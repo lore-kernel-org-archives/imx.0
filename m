@@ -1,155 +1,119 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2B4D3E49FD
-	for <imx@lists.linux.dev>; Thu,  8 Oct 2026 09:19:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CBDC3CE4B6
+	for <imx@lists.linux.dev>; Thu,  8 Oct 2026 09:21:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791451159; cv=none; b=sUeQNb8ZaXGUfQAhGW4iPsMf2m288CUwyakxuswi4B0IWgMICwc+vNornZ8ghG03bxVBj/kGop+Iqjr5eRYZ0ekeKVlIrkbuQuDlXbdZ4Sa+NuXBtqOYiwjmyyoL9J7k06NkeU8WR0OB7S7+tcgvRWgWMLDILGaVp0YaNmWKofo=
+	t=1791451292; cv=none; b=Jeu7r2UryQommf0ECMxPOez+6W+GSiSuUiOyfMIU8e+izNdyQ7IhxcDP/i4AX10tG64qXHUHrc3A2+iS+73i7mMjvybExIKGDdWhvHOl4Yt4cB7OH6eZ+qxj18vKFPQkr48I+PiiQvZLEoNkKZtCbiJYoe0QGC5MrkZpuzKtoTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791451159; c=relaxed/simple;
-	bh=8FnQf8cSiTWxOcQ+6Ks/8xHPStNPYdQd/qTr4c9giis=;
+	s=arc-20240116; t=1791451292; c=relaxed/simple;
+	bh=22I8Evx6+fn4DWTC2K8qgkz6YO6sBw8CyCEr/0jeyHE=;
 	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
-	 Date; b=YtzYGXBFihNPib8602Qk6syiyQpWobKVebzGbZIlI85a64HtQnYR0JZZ4mv7dsPKDRtF8iOgWdzmEJI8z6IaMy41iXfxqhNPTeqg5fc5/LbgoYYd6v+h8mmwdqO6j7M3hMh7msnyE1ZRdORFawYQ0UD+NIHBBQRkSACOlHbNGyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mJqvR+sd; arc=none smtp.client-ip=100.103.45.18
+	 Date; b=sarnXrbU1a+ZS0l6PE2SWJy7XlZF31P8m1eZzpmFmrQ0i3BiNHdFz2ixiH4lFQgeriKtDytYetwMDmUdAJnpW1YGkxJPosmbdmRgHZJb+GXOdQXU8U+/NOojQIWIkVFixhll2SKUTf1UgglnwUhYHKanqLNIGpaaFDXGuFHaMSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gTWyZ87o; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mJqvR+sd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5AF71F00893;
-	Thu,  8 Oct 2026 09:19:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gTWyZ87o"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D9C81F000FF;
+	Thu,  8 Oct 2026 09:21:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791451148;
-	bh=IX6OD3XMr6BOhYjA4MDNTKoQ5ZjPqIXzu9RfFgyusE4=;
+	s=k20260515; t=1791451285;
+	bh=Mzsso3N/wjQZP+6/gYmTkAujwisEqp7hu/xFn70bKPY=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=mJqvR+sd0SOOlqhl1V33pHVgohxTu0mV42MUT10piULBv6VzW5xV7Q4kv3161w2e0
-	 Tv4H+vKz94KlcY1LqqU4ylcmogoYRPkpV8jY3nU9zFMM5Nl7k/Grb9w6l4mEnYUTs9
-	 v68DnLSON2emfCzJNi542Vwy9VSyB51Hgd7gRnJOLBwSzLOLU2oCTY9MGY/R1+OuC6
-	 wc8ZRXhwaKuB/yghYlylP7IJxVsH8mVca+/DJ5Gf3RQ8H5cuXk8KE1Av3Rr/rbi7s7
-	 tnfotkF+Gmv92VSnWsKnermPbpTTPAfk9xq7XQ+awTnAFxhD3LVQb2Ggd71i1D7A5c
-	 hDVa8glefPMOg==
-Message-ID: <sashiko-outbox-163920@kernel.org>
+	b=gTWyZ87oMTBZPigsZQJdUO9Q0+kJE4n2d9qIWzSVZy6YW4P6OSU9A+kCy1HknloKc
+	 dVIber3eVqGvwVn4A0XxsCb20TtdUYtLTesjg+dminCWNikmBdCq0Sl3E2w2EmWIye
+	 gbyavwRdJHX5znvdUecZMi1LA/CYEbbCzVJ+amKkkfVn860mwObeROfLkx54r64mc7
+	 We6PbzpDgNjP1TWaSMTh0cbHcKoWdY9WudTtLUv4tSbudXKOpTFibcuBEKfhkVAcC9
+	 w1sIgwtt3GxKF7eUN1lbbPnxE3nHWDFJjF7imh3iHrY89Ln/01Hl7XCs9KzwmbNR89
+	 uv5ZW/TscgKXg==
+Message-ID: <sashiko-outbox-163926@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v6 7/9] irqchip/imx-irqsteer: Allow building as module
+Subject: Re: [PATCH v6 4/9] irqchip/imx-irqsteer: Convert to
+ devm_pm_runtime_set_active_enabled()
 Reply-To: sashiko-reviews@lists.linux.dev
 To: Zhipeng.wang_1@oss.nxp.com
 Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20261008090231.796511-8-Zhipeng.wang_1@oss.nxp.com>
+In-Reply-To: <20261008090231.796511-5-Zhipeng.wang_1@oss.nxp.com>
 References: <20261008090231.796511-1-Zhipeng.wang_1@oss.nxp.com>
- <20261008090231.796511-8-Zhipeng.wang_1@oss.nxp.com>
+ <20261008090231.796511-5-Zhipeng.wang_1@oss.nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 08 Oct 2026 09:19:07 +0000
+Date: Thu, 08 Oct 2026 09:21:24 +0000
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] irqchip: imx-irqsteer module unload causes use-after-free
-- [High] irqchip: imx-irqsteer UAF due to missing synchronize_irq() on remo=
-ve
-- [Medium] pm: CCF warning in devres teardown if pm_runtime_resume_and_get(=
-) fails
+- [High] irqchip/imx-irqsteer: NULL pointer dereference in suspend due to e=
+arly PM enable
 --
 
-commit 47b4fb3a979bc15759a7bda151b9b79c2c92332a
-Author: Jindong Yue <jindong.yue@nxp.com>
+commit 5322ea0be538e254fa9c813752002c35702c23cf
+Author: Zhipeng Wang <zhipeng.wang_1@nxp.com>
 
-irqchip/imx-irqsteer: Allow building as module
+irqchip/imx-irqsteer: Convert to devm_pm_runtime_set_active_enabled()
 
-Make the driver buildable as a module by turning the Kconfig symbol into
-a tristate and using module_platform_driver() instead of
-builtin_platform_driver(), and add the MODULE_DEVICE_TABLE() and module
-metadata needed for autoloading.
-
-> diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
-> index 20b77fbc51ee0..105108d2e6ff7 100644
-> --- a/drivers/irqchip/Kconfig
-> +++ b/drivers/irqchip/Kconfig
-> @@ -555,7 +555,7 @@ config CSKY_APB_INTC
->  	  the controller's register.
-> =20
->  config IMX_IRQSTEER
-> -	bool "i.MX IRQSTEER support"
-> +	tristate "i.MX IRQSTEER support"
-
-[Severity: High]
-Does converting IMX_IRQSTEER to a tristate expose a use-after-free during
-module unload?
-
-The IRQ domain framework does not take a module reference on the irqchip
-module. This means the module can be unloaded even while downstream
-consumers hold active IRQ mappings in their irq_desc structures.
-
-When unloaded, irq_domain_remove() emits a warning but proceeds to free
-the domain. The irqchip module's .text and .rodata sections are then
-freed, leaving the downstream irq_desc structures with dangling chip
-pointers to the freed imx_irqsteer_irq_chip struct. A subsequent read of
-/proc/interrupts will dereference the freed pointer.
+imx_irqsteer_probe() enables runtime PM with pm_runtime_enable(), but
+imx_irqsteer_remove() never disables it. Runtime PM therefore stays
+enabled after the device is unbound, and rebinding it triggers an
+unbalanced pm_runtime_enable warning. This commit uses
+devm_pm_runtime_set_active_enabled() to automatically disable runtime PM
+on unbind, fixing the imbalance.
 
 > diff --git a/drivers/irqchip/irq-imx-irqsteer.c b/drivers/irqchip/irq-imx=
 -irqsteer.c
-> index 15ee50f65d54c..85edd5e33ca9c 100644
+> index d05de3d26fb28..5acc04504e520 100644
 > --- a/drivers/irqchip/irq-imx-irqsteer.c
 > +++ b/drivers/irqchip/irq-imx-irqsteer.c
-[ ... ]
-> @@ -369,4 +371,7 @@ static struct platform_driver imx_irqsteer_driver =3D=
- {
->  	.probe		=3D imx_irqsteer_probe,
->  	.remove		=3D imx_irqsteer_remove,
->  };
-> -builtin_platform_driver(imx_irqsteer_driver);
-> +module_platform_driver(imx_irqsteer_driver);
+> @@ -239,6 +239,10 @@ static int imx_irqsteer_probe(struct platform_device=
+ *pdev)
+>  	if (irqsteer_has_chanctrl(data->devtype_data))
+>  		writel_relaxed(BIT(data->channel), data->regs + CHANCTRL);
+> =20
+> +	ret =3D devm_pm_runtime_set_active_enabled(&pdev->dev);
+> +	if (ret)
+> +		goto out;
+> +
 
 [Severity: High]
-Does enabling module unload via module_platform_driver() expose a
-use-after-free in imx_irqsteer_remove() due to missing synchronization?
+Does moving the PM runtime enablement before platform_set_drvdata() introdu=
+ce
+a race condition?
 
-When the module is unloaded, imx_irqsteer_remove() clears the chained
-handler:
+The PM runtime is now enabled early, and the IRQ domain is subsequently
+created and exposed globally.
 
-    for (i =3D 0; i < irqsteer_data->irq_count; i++) {
-        if (!irqsteer_data->irq[i])
-            break;
+If a concurrent child device or userspace sysfs bind maps, requests, and
+releases an IRQ from this domain before platform_set_drvdata() is reached,
+releasing the IRQ invokes irq_bus_sync_unlock().
 
-        irq_set_chained_handler_and_data(irqsteer_data->irq[i],
-                                         NULL, NULL);
-        irq_dispose_mapping(irqsteer_data->irq[i]);
-    }
+This in turn calls pm_runtime_put_autosuspend(), dropping the usage count to
+zero and queuing a runtime suspend which invokes imx_irqsteer_suspend().
 
-This teardown loop lacks a call to synchronize_irq(). If a parent
-interrupt fires concurrently on another CPU just before the handler is
-set to NULL, imx_irqsteer_irq_handler() will execute. Since there is no
-synchronization, imx_irqsteer_remove() will return and trigger the
-devres framework to free irqsteer_data while the handler is still
-actively dereferencing it.
+Since platform_set_drvdata() has not been called yet, will dev_get_drvdata()
+return NULL in the suspend callback and cause a NULL pointer dereference wh=
+en
+passed to imx_irqsteer_save_regs()?
 
-[Severity: Medium]
-Will enabling module unload also trigger a clock underflow warning if
-pm_runtime_resume_and_get() fails in imx_irqsteer_remove()?
+>  	data->domain =3D irq_domain_create_linear(dev_fwnode(&pdev->dev), data-=
+>reg_num * 32,
+>  						&imx_irqsteer_domain_ops, data);
 
-During unload, imx_irqsteer_remove() calls:
+[ ... ]
 
-    ret =3D pm_runtime_resume_and_get(&pdev->dev);
-
-And later:
-
-    if (ret >=3D 0)
-        pm_runtime_put_noidle(&pdev->dev);
-
-If pm_runtime_resume_and_get() fails (for example, due to a hardware
-timeout), the device remains suspended and the clock's enable_count
-remains 0. The function ignores this failure and allows devres to
-unconditionally call clk_disable_unprepare() on the clock. Calling
-clk_disable() on a clock with an enable_count of 0 triggers a kernel
-stack trace.
-
-> +
-> +MODULE_DESCRIPTION("i.MX IRQSTEER interrupt multiplexer/remapper driver"=
-);
-> +MODULE_LICENSE("GPL");
+> @@ -260,9 +264,6 @@ static int imx_irqsteer_probe(struct platform_device =
+*pdev)
+> =20
+>  	platform_set_drvdata(pdev, data);
+> =20
+> -	pm_runtime_set_active(&pdev->dev);
+> -	pm_runtime_enable(&pdev->dev);
+> -
+>  	return 0;
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261008090231.7965=
-11-1-Zhipeng.wang_1@oss.nxp.com?part=3D7
+11-1-Zhipeng.wang_1@oss.nxp.com?part=3D4
