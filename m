@@ -1,169 +1,124 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013007.outbound.protection.outlook.com [40.107.159.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C3D047255E
-	for <imx@lists.linux.dev>; Thu,  8 Oct 2026 09:04:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.7
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791450297; cv=fail; b=eanec99z8Nn8ZNCyzvJX0Iw2kAUAD4LHYyGeEqmzWU7QEsyDxNuC17lQtiR3TQY2NVlf9fs8yui1jR40T7L+2i4l1GrIcSeMPGRtTAFmkmeWfwiqfFSDw6iq5JDtwwahJh50zHj3El94lx5jWjGxKXMz6Ra+iH1WmF2BVdZvKp0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791450297; c=relaxed/simple;
-	bh=7+zgrgMyF/Ryci4kLWDC1s1LqCjGBhNVKcRWtEscp/4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=rqJOH4nGNq33a+0gs5DrPBPGATZ5rdX0tCjDY2sGSzwB/Ytaf6lC4nDBuaA1xMg1fOoPgEEky6TVHWYXepEWSpR3FP85/L4+U0YPRqaNgKqzoiGpPB1XLYAtJdvde/lmwiyS5nzb4vxhAPtUw9FAKFM8froTgtqZryL9uqzafAE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=SclcAJ4n; arc=fail smtp.client-ip=40.107.159.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9707B3E9C11
+	for <imx@lists.linux.dev>; Thu,  8 Oct 2026 09:13:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791450792; cv=none; b=SsHSyANokKZHCL7TQ52+kelNqpVwxc+HgudB2KBHvD45cqlC5rZQDSXSGLYKdeuLtl6V79eGeALAOE2O2Mvafteusf8ZAXSYvjWXGm2YTuvXnu/aET1pyE4EyHuDtr/qX6C/IqjKeSG40wpFhl94GiKaUYyjhYKRH5ekYn+N6Tg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791450792; c=relaxed/simple;
+	bh=90n6qDxpXHXjopvZQpNCTSZGflXLuJsjQGljFL/Dcy0=;
+	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
+	 Date; b=i4WviJtsAx3hAybxaskdFURSZdJgfCbCQPc0c0h5aT6uYnGdP4xEW2lxK0rRNonk6g61cEUHsCoyJg5Jinkzd0P1tkKkqxWMbgCncfvk0Pg7S7kEDERaL2jfF4yFVh4DpUv4vxYduLKoecLDzy9gmcaNYebmyfpUNe+dRzdaFsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TLXwu2pR; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="SclcAJ4n"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=glq5TMXuCWteuh+64WfM/O6KXQZXtmdw9RS4qvly6Zyxzg+ncbtJq8yddKFb63ztcGU8RtXDADUKosNhxoRz0ogU4hStPZSLQ/UIQ1Oq/Dug06Z+qCoiWLt8QIfnJIeWAdTs+J16AqRj1XRRfQxcRgl1zNM3iKZ2M4mal2cQtW5rJ82pMErShgDXzk2rDX6vkiCW1zrPrVS4152q8bQKIxmCoJI5TkwZMJzwpio+8szTrGnQmZfZczhIihBS8bxOyVHRH0ek+oAONMvnKg3B6pjmldbWvMlBSpB2N1coonBz2vEoF9Da/j4LV4ZR/xi5cRk6MYzWWpqkSihu6q9kEw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pbzgh1rE9jSe1dLpi2zHw9RLF4HlxFwww2OgMXtHNUA=;
- b=f5dM5faSsTfcPwt9+Drfgxrk8EK9h7lr3tBRzjYFv6QTa+d/pjY30mQEP29QfF5NLktfVf5Zta5lXHVjG/VVuCsHGP/2wAT6nzY+gFsRakUvSeGnA8B23qhzrEFWZpKjOG0Rm5Ymak3VLl5iuqR91lyKKSDq00B3BisZVTDpPYsrPdSCfTVCKeBxb3hj5Ojk5/9P0ZgJ+WhwdaINaCx+ymW7Y7QOC/vzRA5iim4K/mPWbAQiH/Om0pyPpoO28We5IcqL8UQH25YQuT/0qL1U+ZdhLJdHRvaCcxDB57jSjj0Esu4uk8Otk7CoiBaQ3HJkQHhIhbPNW4bypp9InoTITQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pbzgh1rE9jSe1dLpi2zHw9RLF4HlxFwww2OgMXtHNUA=;
- b=SclcAJ4nCNKfIo4bBx5KCZj3esVqFqz6rueNG4qBFuHy8mM24jDUGwig9x1uDxX/LAIjQm7i+FTUIN69f1OveulZ5XoFM3uDMBXyUyVMkoaLh1Oi1A3cDCYLryqYo2XfdMULfrnpzhpXT+pDJzjcFaZ/5TAYa0ZB5H4W4IBL1vZeT1E0tgsbs651H7iQQBxgnjjFg+sc9nomEqG7CS3csFTcXS4W3ke+y+P/ZzxHPWDelhZl7Pk1MEx0SOqR7/gXENGVDYN/iIYIH5wZZWl93JhtvrG580NhGNznngVwk/B+X/xVXI8FQf/I9trbT2ZKDWUbrhGOXCAL2Dr21qe7yA==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from DB8PR04MB6858.eurprd04.prod.outlook.com (2603:10a6:10:113::9)
- by AM8PR04MB7459.eurprd04.prod.outlook.com (2603:10a6:20b:1dc::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.18; Thu, 8 Oct
- 2026 09:04:47 +0000
-Received: from DB8PR04MB6858.eurprd04.prod.outlook.com
- ([fe80::bc6f:5fd7:462:d0b5]) by DB8PR04MB6858.eurprd04.prod.outlook.com
- ([fe80::bc6f:5fd7:462:d0b5%6]) with mapi id 15.21.0496.015; Thu, 8 Oct 2026
- 09:04:47 +0000
-From: Zhipeng.wang_1@oss.nxp.com
-To: Thomas Gleixner <tglx@kernel.org>,
-	Marc Zyngier <maz@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>
-Cc: Radu Rendec <radu@rendec.net>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Jindong Yue <jindong.yue@nxp.com>,
-	xuegang.liu@nxp.com,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v6 9/9] irqchip/imx-irqsteer: Use devm_irq_domain_create_linear()
-Date: Thu,  8 Oct 2026 18:02:31 +0900
-Message-Id: <20261008090231.796511-10-Zhipeng.wang_1@oss.nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20261008090231.796511-1-Zhipeng.wang_1@oss.nxp.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TLXwu2pR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D63D41F000FF;
+	Thu,  8 Oct 2026 09:13:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791450789;
+	bh=b0mXAItSe3POnN36gR2+lkcCIlYAJHd0GGfLooMD+BE=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=TLXwu2pRB4JQXVXOlNcCFNEGB5smUb2XSHbilnbFrRxnpuNlH6kndlGeiTC0tTBuw
+	 r9/OD9M39weJdX+nVLtZOJFHjQrmZNCNb9Imjb9kiJTv1mUDRy2IQqgaTJxJA9tVnI
+	 /MEj/EuHewZ8uKYkMUpOW31YX+HjP5g3E4Zv7Irk32b/esTW/40EF6c2oAzWZPXK57
+	 SgNZzthG1a/n2jWCvonOwuYhCxdaqzX+TEiYxTEty8bH8PpEKMbc5y/pugdb3G+vnh
+	 i9aNbXbEtQ+vc5bUTtNth31kVYNWxSPodDiDYZ95lkzjbaF18B9SbPYkDYMPyel126
+	 6v+Ob8ZZQ/MLA==
+Message-ID: <sashiko-outbox-163905@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v6 6/9] irqchip/imx-irqsteer: Let devres own the clock
+Reply-To: sashiko-reviews@lists.linux.dev
+To: Zhipeng.wang_1@oss.nxp.com
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20261008090231.796511-7-Zhipeng.wang_1@oss.nxp.com>
 References: <20261008090231.796511-1-Zhipeng.wang_1@oss.nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: MA5PR01CA0137.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:1d5::17) To DB8PR04MB6858.eurprd04.prod.outlook.com
- (2603:10a6:10:113::9)
+ <20261008090231.796511-7-Zhipeng.wang_1@oss.nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 08 Oct 2026 09:13:08 +0000
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB8PR04MB6858:EE_|AM8PR04MB7459:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7ed75c2e-04dc-4620-ffdf-08df251b33cb
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|19092799006|23010399003|11063799006|18002099003|10067099003|56012099006|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	6egNc5AGUTw/vmjndqCdiJSK+RSG1hmTsS9juVEgYBpvLx328idUPIi1bu1Qtp534rWu9aHT055AD3Tw++LVdmF1q+jN9KFmQ5fKVTLasY+8EEub0m3E0rOVQ3hSuq89/FR83aKSdv/yKeXBvPtpRxnWgCdGuP81gdS0MsJNgmPGnQmp8TB3SFRDjVe5zrHgJKF5kOH7ALWvmvoLi/zbeCBPc9Oi8hrPOIqlVRY+oQoq2Z6lf0VDZF9fAX/n4IGQtwx9eOoG1yHL6DcWflbRZg3eqaaC/rnZeZ31vytA9ZM4imUp9p26irpuzCIlB5Z7iCf5JK/wjoe4BX6kWYFmQ62XXZFYTdbIIS0jFU166fWL/XZS2ZC4bYZM7pL9dpsYURQj28vEYD8NP/0A19XbLNEN7AdAmEgJ6PPJgCjKABIzjbYrwBbW2/xGAJKp3BEW9El+B/vLm887DCj6yjZmoBPTXZWSlT3EvrmGQaF284kDvfRguY0nRoq729nmgIknFlj0qaJzXKO8eq5sbJzx0D+yBxpQu9Cn8Mq/SvgNnIevjcWy1PpJwq3Qjoh9vRbVRSa7mgOTefPJ+VI2+YsmzXIUpbMRvezzadNYpTM38b+YCUFcziLyxeMCKAip5meCBTIaBVyG7Q540KPGmfBD4rqXGxXQgZCuqaziwyXjd7A=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB8PR04MB6858.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(19092799006)(23010399003)(11063799006)(18002099003)(10067099003)(56012099006)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?+JFNNfk5cY17p4+mA4QQkbRWbjJUZDnguDeSQyFyvYO60gJLiF3Wkh+wiBM8?=
- =?us-ascii?Q?oFhTIks/zVcd8s/NfYmIRm/YSOYAHau6t+Dx87nAhr0QlfDJBZeZKovOpwOV?=
- =?us-ascii?Q?IT15PrOXi1Uv/FH8GY5GKPbIvWBJHSXfUlcQyx8G9gAgsFePtBMPRckP0O+V?=
- =?us-ascii?Q?th/siRhHfN2tRNv4evxvo0qQjg/CltmxSztvdGI2nPiL0WMnLxut+9X5HnTq?=
- =?us-ascii?Q?n9qjJwYt6vPNHOpGI9cqObzSrdkDhXt98kJivelJMwa18BjCG/D8E24ZKHDR?=
- =?us-ascii?Q?6b2B2txPdpXLi+mbfFnNd1h1si2qmoX2j1UioIcd83/OM24s5n0/cS9aVRwf?=
- =?us-ascii?Q?YcwTKPbiKmqbjrQX3hVV1w7t2zE5Td/vvVhaz/GsJQFwuiZ/yKAoGHPeGluy?=
- =?us-ascii?Q?5pfdG+tQdqNsffUYv86Wj+JzbybqOfdeBl+kDvA3Te24mrWkXruY7QwMPDYG?=
- =?us-ascii?Q?IRcrBtOJzrLH4mQLsU37PEbH5XrmKy80J+fHS99KoIp9MMI6Ybey8CAxi0qK?=
- =?us-ascii?Q?YMiTRplGmxOcmmqF/jvCHgL+pnJ5iKxosaQ8uiefCmytfvIngFbgLdqEhpGk?=
- =?us-ascii?Q?OQMRYGDU5WcrJvG+LwtXCC2r7/pZ6qqs4K9SU45cD6eLGeoPZl77uOFmQVvl?=
- =?us-ascii?Q?gJ3psH4Blf5AMALWjwZaeBMKES1xwOEJ9VtYXSbItO/mHvYe2xvu9FeFxgSW?=
- =?us-ascii?Q?MtrHHbgMTyWr1zA3Vc7CJ76LHZzbv4BjwdScCH6ei7bmiDSp4Af3XaVPzwlM?=
- =?us-ascii?Q?1KImYBJT+mxwEQtr+X6Azn8V5hCAmqHk4CVi96Xz909H8YD/op6uovyJLTul?=
- =?us-ascii?Q?0oYLtlRoc3ykx0SPzpYbInCzQeQOHcw093zk39MayvoWcKjZeqSE4a/ySULn?=
- =?us-ascii?Q?yO8evha+CVfrdyXsDG/jqNbK2zANt66punMQOp9W3HOVB8VBJizNbqM7D2Re?=
- =?us-ascii?Q?VKrr3/STdSrj3QGhHzWPspFuLxWLu7WRTnmc/nrU/ncanmuZIy0EdN75ql8A?=
- =?us-ascii?Q?aGNolTbmwquLWMnOxfBS3HaZkPo0lvVjG1swl1R/9rI/9f0iTDLeeu9Njmb9?=
- =?us-ascii?Q?R2SrJt5Uau7zCPUxf9YXhtp8ETnLwQrKom5IiSf8zevyc45yHr6riPGdljKL?=
- =?us-ascii?Q?CHaH7/hhR4Gt+WMFpifbF2fdi8io1h9yUkvFnHg/qaQAAjS+yRKzlBF7UQ3C?=
- =?us-ascii?Q?E/HYdRoiS6P7FDhLW7QpIwYdCs1fKlcP9J6epXytRUokwOqTJs5NBg0TlW8Z?=
- =?us-ascii?Q?lRF4wsse5HWCzuvezaPaa1UN5FKlidGjNPXCH+drg53H2umhS1SKhGLV6BQ/?=
- =?us-ascii?Q?/UKlWhrA47ENrFUAV5PcawwiRuWWg0OX/UUwQ6VgKsi0olV/wOPswFYv5fC1?=
- =?us-ascii?Q?99zO84dXp0ClSMCgdfBxVRKQ+HS+ySEGIr/b1iZjWwd7EAeh5ybV0n+t5DYM?=
- =?us-ascii?Q?gPc9JrFFmVZ5SJAbyx7t55lokiHQeHveFOI4g/MZeBU0zyIFgJlf42RcJ8/h?=
- =?us-ascii?Q?/TYGJ3CFHtohoxbv2w6QRdlDczoGbbkt4XHCoaqUN8Tdior0aLIi2S0VDrEh?=
- =?us-ascii?Q?4RZmc16snJXesENR5r9paKL4BZX2uJJ5FpPakXqyDlBdCh3o9LZGDWttHucP?=
- =?us-ascii?Q?CG2Rhldofv/xoUCfv4eEcJf2/WCklPwG0HZs9g2o+XLolqKhyzJsHQsV4CRa?=
- =?us-ascii?Q?RjH71u5hnLrojD9vbyw9HACCz73EIjK52/0C9RPB1Jf55varf13qlAt3MfwY?=
- =?us-ascii?Q?zdGGm4UJqlbQCKPrhmrsBclzoNd3+NRnI02ypAXvgdEdUoV1lTw+?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7ed75c2e-04dc-4620-ffdf-08df251b33cb
-X-MS-Exchange-CrossTenant-AuthSource: DB8PR04MB6858.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Oct 2026 09:04:47.4178
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: HsXH2pBz3rY6mCzQSZ15NIc99SLxWl0MWl8kZ8m266Ky51fxUoMHtb3OTy6piPSY39R68EGI4ajauYhbvqFEk/MTWgxDtNh03jM0LTwVZPpLB0R0sir+y6BTBSoEGHG6
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7459
 
-From: Zhipeng Wang <zhipeng.wang_1@nxp.com>
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] pm: clock underflow warning on devres cleanup if pm_runtime_resu=
+me_and_get() fails
+--
 
-The driver open-codes an irq_domain_info and calls
-devm_irq_domain_instantiate() only to get a linear revmap domain tied to
-the device lifetime. Use the new devm_irq_domain_create_linear() helper
-instead. No functional change.
+commit 7ea8370844753a72ff02a8217ace864b04cf2175
+Author: Zhipeng Wang <zhipeng.wang_1@nxp.com>
 
-Signed-off-by: Zhipeng Wang <zhipeng.wang_1@nxp.com>
----
- drivers/irqchip/irq-imx-irqsteer.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+irqchip/imx-irqsteer: Let devres own the clock
 
-diff --git a/drivers/irqchip/irq-imx-irqsteer.c b/drivers/irqchip/irq-imx-irqsteer.c
-index 85edd5e33ca9..f5601769d036 100644
---- a/drivers/irqchip/irq-imx-irqsteer.c
-+++ b/drivers/irqchip/irq-imx-irqsteer.c
-@@ -246,8 +246,9 @@ static int imx_irqsteer_probe(struct platform_device *pdev)
- 	if (ret)
- 		return ret;
- 
--	data->domain = irq_domain_create_linear(dev_fwnode(&pdev->dev), data->reg_num * 32,
--						&imx_irqsteer_domain_ops, data);
-+	data->domain = devm_irq_domain_create_linear(&pdev->dev, dev_fwnode(&pdev->dev),
-+						     data->reg_num * 32,
-+						     &imx_irqsteer_domain_ops, data);
- 	if (!data->domain) {
- 		dev_err(&pdev->dev, "failed to create IRQ domain\n");
- 		return -ENOMEM;
-@@ -294,8 +295,6 @@ static void imx_irqsteer_remove(struct platform_device *pdev)
- 		irq_dispose_mapping(irqsteer_data->irq[i]);
- 	}
- 
--	irq_domain_remove(irqsteer_data->domain);
--
- 	if (ret >= 0)
- 		pm_runtime_put_noidle(&pdev->dev);
- }
--- 
-2.34.1
+This commit transitions the imx-irqsteer driver to use devm_clk_get_enabled=
+()
+for clock lifecycle management. It also limits runtime PM callbacks to
+clk_enable() and clk_disable() since preparation is handled by devres.
 
+> diff --git a/drivers/irqchip/irq-imx-irqsteer.c b/drivers/irqchip/irq-imx=
+-irqsteer.c
+> index fa233de9bc2b2..15ee50f65d54c 100644
+> --- a/drivers/irqchip/irq-imx-irqsteer.c
+> +++ b/drivers/irqchip/irq-imx-irqsteer.c
+[ ... ]
+> @@ -273,15 +266,23 @@ static int imx_irqsteer_probe(struct platform_devic=
+e *pdev)
+>  	platform_set_drvdata(pdev, data);
+> =20
+>  	return 0;
+> -out:
+> -	clk_disable_unprepare(data->ipg_clk);
+> -	return ret;
+>  }
+> =20
+>  static void imx_irqsteer_remove(struct platform_device *pdev)
+>  {
+>  	struct irqsteer_data *irqsteer_data =3D platform_get_drvdata(pdev);
+> -	int i;
+> +	int i, ret;
+> +
+> +	/*
+> +	 * The device may be runtime-suspended here, in which case the runtime
+> +	 * suspend callback has already dropped the clock enable count. Resume
+> +	 * it so the devres clk_disable_unprepare(), which runs after remove(),
+> +	 * finds the clock enabled and stays balanced. On success drop the
+> +	 * usage count again with pm_runtime_put_noidle(): it must not trigger a
+> +	 * suspend (which would re-disable the clock) and must not leak to the
+> +	 * next probe of this persistent device.
+> +	 */
+> +	ret =3D pm_runtime_resume_and_get(&pdev->dev);
+> =20
+>  	for (i =3D 0; i < irqsteer_data->irq_count; i++) {
+>  		if (!irqsteer_data->irq[i])
+> @@ -294,8 +295,8 @@ static void imx_irqsteer_remove(struct platform_devic=
+e *pdev)
+> =20
+>  	irq_domain_remove(irqsteer_data->domain);
+> =20
+> -	if (!pm_runtime_status_suspended(&pdev->dev))
+> -		clk_disable_unprepare(irqsteer_data->ipg_clk);
+> +	if (ret >=3D 0)
+> +		pm_runtime_put_noidle(&pdev->dev);
+
+[Severity: Medium]
+If pm_runtime_resume_and_get() fails, the device remains suspended and its
+clock remains disabled.
+
+Since devres owns the clock via devm_clk_get_enabled(), won't devres
+unconditionally call clk_disable_unprepare() after imx_irqsteer_remove()
+returns?
+
+Could this trigger a WARN(core->enable_count =3D=3D 0) in the clock framewo=
+rk and
+unbalance the clock state?
+
+>  }
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261008090231.7965=
+11-1-Zhipeng.wang_1@oss.nxp.com?part=3D6
