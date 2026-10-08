@@ -1,179 +1,114 @@
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E840835AC2F
-	for <imx@lists.linux.dev>; Thu,  8 Oct 2026 09:16:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.203.200.13
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791450992; cv=pass; b=UCuFSz+l94giKUi3sGQVu8EhZAfwWkXJRyl/HjkxO2SVMzUT8AIg4/rwotchtzNhGpMTmkCjUYWQO5d241lUYTtJCSzo5IdaNQAH30kjNdakhH9HDIy3dB+fFrgKo1949DYKXTDINJBB7JAII8OtXvmQVscLMZg5iOZ4v9AXWjw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791450992; c=relaxed/simple;
-	bh=oeNocdBtGSNtf4Oc8ZdgL9NyH9DsOP0rYtNm5SDKuuM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=S7Zyzs1+KxKTF/Vh9J+ccZstTby8v6iDl3BEJvIn7rgxjY1SeSWniJAQlZB1QCclBwzrpYLQb4H+0A5zoR7LL77ywAjZ7pFOMdKIz5Jt095K8dmr8Nj6Gr8pGIX9rAEKbOvRkTtuVeqv6cx9TE5YOrsfVct68sz72Q+OuElGsXI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b=Cv9Osw04; arc=pass smtp.client-ip=185.203.200.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59C1F4772BE
+	for <imx@lists.linux.dev>; Thu,  8 Oct 2026 09:18:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791451100; cv=none; b=ajRMKazm/6LduRN/oFKbET1EgXE0zc3oodx6R7JvfrZ2CRfiz0znTLuRFEkLYxXmL1UoUnqektNMDjdKHqMc7eecK8bcKCiJwfzPFcwniRMVwmbPKKk20OammvHnHSY9WZffMDe/G82vfgZTB7NJXkLVfbLu+NeueO4C5g+se+k=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791451100; c=relaxed/simple;
+	bh=pqsYHhDwz+qpoiRcroM7PIPJwQaLTq7TRiL+DomnusM=;
+	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
+	 Date; b=OffK9GqsrfHDPDooKQm4jcF6zG+a1t7AQPydhE6tRwxfnu8udOfHpRw35f19xkDxyclH/6XKTbIUtgOAixnEQ0M+Et0wLHtLl1ICNAJOFH3+kOkxewCFQQDSfxF0wjU+OKBP0YbuPUDxAWTEru88QROd/QJhTJCmyb+9CLJK91Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hYCZ9Ii9; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b="Cv9Osw04"
-Received: from ratatoskr.trumtrar.info (unknown [IPv6:2a00:1f:f805:4b01:1e0e:d42d:4ec8:33b2])
-	(Authenticated sender: str@pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id A35A920236B;
-	Thu, 08 Oct 2026 11:16:09 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1791450969;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UaplkSRGqxbhrj1hN3GAnSe1S7ZD9fZ7xSQQdPnw3wY=;
-	b=Cv9Osw04VC4rVCwjeeME3KYX5nL0qh1krdpZqDYbrTwn4qsHWVqg/VivexQxmS5Qe24zTN
-	YRELmHg5/mQgMVZUEqZXm4yV8qa9VphqbpZc/8n14pnk7bLsFnGC9oEvRFMBIjj5cCJgxb
-	LlPRkc5n1MDOoRozfa6ysgauO+8J3PEy1OymI5avsqkkk13AVALwi6LCuH9eQqqnHYz3/9
-	4F4Gtn+hx+oD1CZbH0uc3yjLW3DWzqtjQZftBbAx8rhuVTWciP63OlcQSRDIME6of6VOnp
-	HFQvIi19x/DOXkbtMpIQFRrFsN6sLnKyfRIF8BtE85+hVFhKZLFPHAQASvy1NQ==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1791450969; a=rsa-sha256;
-	cv=none;
-	b=YnISrEZzZGzhajlskrl6TLydqQQeXRDKE5tIGMx4V6uAOZyroT6GebBCSKT/Zj1A/10LFH
-	zqNqh+kp0nOQjfZmFqT1akxVkTJcDaLebwj+/FlAJxkIYYRP9VI8RjPjXjRwwiYXvJbjhc
-	676UbsDPiEC8NsiYA1SBPnKqbSw3FXTxhunuX6pdV7FcjF8DDRNisCLGj5KQTqi7/mNKKd
-	yIGSxUUIXPnT9o4iO6bidU3Tf/KUlGRdCTEXiAh2fXUvjU4+SX4vJSLhuVExbsfIdRBrV0
-	8N1A2MXeAdQLrZ+nz4KEMSrJbg87bmISmRuH5N7ZUKt3ipHhtGE+MK1vqJi2yw==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=str@pengutronix.de smtp.mailfrom=s.trumtrar@pengutronix.de
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1791450969;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UaplkSRGqxbhrj1hN3GAnSe1S7ZD9fZ7xSQQdPnw3wY=;
-	b=auAixPFWK5I4JCs2dLN5KFff/kXgD629RUw+qqF9NKTLkiGHNOUFSetwSqTv9cWpxtRd24
-	b39onPlp5XEIKnz6E+lkMvOAgAQuxbZSNjgePpMiRyUiSk9MeJmTULeBPAURNTWbeKCZi2
-	IQFPOQ2AKMI0j5FPneNk6Mdl4FRXo3GYnuwtRku+Du4hbyz49MZb+wq9pgEa0GOJLqoOFN
-	lWk91xuAGD0+2pA1MZrxLM0+m69bR6b80x3ffp5ji1mdx1tUViGK8+TjCjrTaN7nlXGHL9
-	GgdXNkblafY+6/LoYKlh3rOc3YAcDIXmg+rhnduYkOXoESIeDIDdPKr0iRzWEA==
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Thu, 08 Oct 2026 11:16:01 +0200
-Subject: [PATCH v9 3/3] arm64: dts: imx8mp-skov: support new 7inch panel
- board
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hYCZ9Ii9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64A1E1F000FF;
+	Thu,  8 Oct 2026 09:18:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791451091;
+	bh=dJ5VywbTJjmSWguyom8FtMFSvR0VkwTCnbh9Hbgxx7k=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=hYCZ9Ii97WeWj+lV+Y3Hex3NCkiAnQP7IHeY5P8z2E/SqskPGUWS18Zy4ctEfAUwR
+	 nczkMFVOIaGqkj9gj5Tu+tgFJxUvzx3T3iSNRaIxHH8TURIXvHMZvt1f2UHyStgHUm
+	 jN7xvWn/JIxfc99GrrxU+F2Bmk4VjDLJUarj6hI6TfBImpXGUl95XAJnfliQklo2XF
+	 22FFTMaB78jABA9yjIU1dgTJqn2+U0FWNc6beFcj674N2ppw3MZxppSwbKOswh41at
+	 XXSWrabOvIS1BwHlld7napMTUp202zCkhZ3geBmdilbtC01F6CEgbpiIHASgpMFIJc
+	 xAMTQgfyoPs2g==
+Message-ID: <sashiko-outbox-163917@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v6 5/9] irqchip/imx-irqsteer: Mask all interrupts in
+ probe()
+Reply-To: sashiko-reviews@lists.linux.dev
+To: Zhipeng.wang_1@oss.nxp.com
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20261008090231.796511-6-Zhipeng.wang_1@oss.nxp.com>
+References: <20261008090231.796511-1-Zhipeng.wang_1@oss.nxp.com>
+ <20261008090231.796511-6-Zhipeng.wang_1@oss.nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 08 Oct 2026 09:18:11 +0000
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261008-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-v9-3-11fa90f531fc@pengutronix.de>
-References: <20261008-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-v9-0-11fa90f531fc@pengutronix.de>
-In-Reply-To: <20261008-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-v9-0-11fa90f531fc@pengutronix.de>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>
-Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>, 
- =?utf-8?q?S=C3=B8ren_Andersen?= <san@skov.dk>, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3740;
- i=s.trumtrar@pengutronix.de; h=from:subject:message-id;
- bh=oeNocdBtGSNtf4Oc8ZdgL9NyH9DsOP0rYtNm5SDKuuM=;
- b=owGbwMvMwCUmtVehiCsuTInxtFoSQ9bx+AgLh8lS66abzNT70xeWICD2KsjgnL1awEv1d/ZnT
- /dIdVZ1lLIwiHExyIopsqgsrOAT9fjgGTlNhAtmDisTyBAGLk4BmEi6GMN/l5D5Nj9D5qUtkDvw
- 9ebHf6Y8uU8UYiY9k9lx6n3hId6Yv4wM88Vfv/jQZNWcP9M0eJWK8/1PR32WcEm+kLledio46dh
- MVgA=
-X-Developer-Key: i=s.trumtrar@pengutronix.de; a=openpgp;
- fpr=24A1780E1548F0495996140A1ABD20720A5E5622
 
-This board is similar to the already upstream
-imx8mp-skov-revc-jutouch-jt101tm023 but uses a different 7" panel.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] irqchip/imx-irqsteer: missing wmb() allows interrupt storm race
+--
 
-Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
----
- Documentation/devicetree/bindings/arm/fsl.yaml     |  1 +
- arch/arm64/boot/dts/freescale/Makefile             |  3 ++
- .../imx8mp-skov-revc-jutouch-jt070tm041.dtso       | 38 ++++++++++++++++++++++
- 3 files changed, 42 insertions(+)
+commit e530007174d6dce33c6ec542e006f51e4a17dc73
+Author: Zhipeng Wang <zhipeng.wang_1@nxp.com>
 
-diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
-index 5599e45ffdcec..59d2430a6d0e3 100644
---- a/Documentation/devicetree/bindings/arm/fsl.yaml
-+++ b/Documentation/devicetree/bindings/arm/fsl.yaml
-@@ -1153,6 +1153,7 @@ properties:
-               - skov,imx8mp-skov-revb-mi1010ait-1cp1 # SKOV i.MX8MP climate control with 10.1" panel
-               - skov,imx8mp-skov-revc-hdmi # SKOV i.MX8MP climate control without panel
-               - skov,imx8mp-skov-revc-bd500 # SKOV i.MX8MP climate control with LED frontplate
-+              - skov,imx8mp-skov-revc-jutouch-jt070tm041 # SKOV i.MX8MP climate control with 7" JuTouch panel
-               - skov,imx8mp-skov-revc-jutouch-jt101tm023 # SKOV i.MX8MP climate control with 10" JuTouch panel
-               - skov,imx8mp-skov-revc-tian-g07017 # SKOV i.MX8MP climate control with 7" panel
-               - skov,imx8mp-skov-revc-touch # SKOV i.MX8MP climate control revision C with touch panel
-diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index d706290b8dd02..dd69992e9e17e 100644
---- a/arch/arm64/boot/dts/freescale/Makefile
-+++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -476,10 +476,13 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-revb-mi1010ait-1cp1.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-revc-bd500.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-revc-hdmi.dtb
- 
-+imx8mp-skov-revc-jutouch-jt070tm041-dtbs += imx8mp-skov-revc-touch.dtb \
-+	imx8mp-skov-revc-jutouch-jt070tm041.dtbo
- imx8mp-skov-revc-jutouch-jt101tm023-dtbs += imx8mp-skov-revc-touch.dtb \
- 	imx8mp-skov-revc-jutouch-jt101tm023.dtbo
- imx8mp-skov-revc-tian-g07017-dtbs += imx8mp-skov-revc-touch.dtb \
- 	imx8mp-skov-revc-tian-g07017.dtbo
-+dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-revc-jutouch-jt070tm041.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-revc-jutouch-jt101tm023.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-revc-tian-g07017.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-toradex-smarc-dev.dtb
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-skov-revc-jutouch-jt070tm041.dtso b/arch/arm64/boot/dts/freescale/imx8mp-skov-revc-jutouch-jt070tm041.dtso
-new file mode 100644
-index 0000000000000..7b3535f47f3ed
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-skov-revc-jutouch-jt070tm041.dtso
-@@ -0,0 +1,38 @@
-+// SPDX-License-Identifier: (GPL-2.0 OR MIT)
-+
-+/dts-v1/;
-+/plugin/;
-+
-+#include <dt-bindings/interrupt-controller/irq.h>
-+#include <dt-bindings/gpio/gpio.h>
-+
-+&{/} {
-+	model = "SKOV IMX8MP CPU revC - JuTouch JT070TM041";
-+	compatible = "skov,imx8mp-skov-revc-jutouch-jt070tm041", "fsl,imx8mp";
-+};
-+
-+&{/panel} {
-+	compatible = "jutouch,jt070tm041";
-+};
-+
-+&i2c2 {
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+
-+	touchscreen@2a {
-+		compatible = "eeti,exc81w32", "eeti,exc80h84";
-+		reg = <0x2a>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_touchscreen>;
-+		interrupts-extended = <&gpio4 28 IRQ_TYPE_LEVEL_LOW>;
-+		reset-gpios = <&gpio4 29 GPIO_ACTIVE_LOW>;
-+		touchscreen-size-x = <1024>;
-+		touchscreen-size-y = <600>;
-+		vdd-supply = <&reg_vdd_3v3>;
-+	};
-+};
-+
-+&lvds_bridge {
-+	/* IMX8MP_VIDEO_PLL1 = IMX8MP_CLK_MEDIA_DISP2_PIX * 7 */
-+	assigned-clock-rates = <0>, <358400000>;
-+};
+irqchip/imx-irqsteer: Mask all interrupts in probe()
 
--- 
-2.51.0
+This commit masks all input interrupts in probe() before setting up
+chained handlers. This prevents an interrupt storm if a child interrupt
+was left unmasked during driver unload, as the hardware would otherwise
+assert it immediately upon re-mapping in the new domain.
 
+> diff --git a/drivers/irqchip/irq-imx-irqsteer.c b/drivers/irqchip/irq-imx=
+-irqsteer.c
+> index 5acc04504e520..fa233de9bc2b2 100644
+> --- a/drivers/irqchip/irq-imx-irqsteer.c
+> +++ b/drivers/irqchip/irq-imx-irqsteer.c
+
+[ ... ]
+
+> @@ -239,6 +239,14 @@ static int imx_irqsteer_probe(struct platform_device=
+ *pdev)
+>  	if (irqsteer_has_chanctrl(data->devtype_data))
+>  		writel_relaxed(BIT(data->channel), data->regs + CHANCTRL);
+> =20
+> +	/*
+> +	 * Mask all interrupts before wiring up the chained handlers. CHANMASK
+> +	 * has inverted polarity (a set bit enables the interrupt), so writing
+> +	 * zero masks the source.
+> +	 */
+> +	for (i =3D 0; i < data->reg_num; i++)
+> +		writel_relaxed(0, data->regs + CHANMASK(i, data->reg_num));
+> +
+
+[Severity: Medium]
+Is an explicit memory barrier needed here to ensure the masks are applied
+before the parent interrupt is unmasked?
+
+Since writel_relaxed() does not provide a barrier, these writes to the IRQ
+Steer hardware could be reordered. The parent GIC interrupt may be unmasked
+before the IRQ Steer actually processes the interrupt masks, leaving a wind=
+ow
+for the interrupt storm this patch is designed to prevent.
+
+The parent GIC driver uses writel_relaxed() to unmask (for example,
+gic_unmask_irq() in GICv2 or gic_poke_irq() in GICv3). Furthermore,
+intervening locks like desc->lock in the IRQ core or irq_domain_mutex
+provide only ACQUIRE and RELEASE semantics. On ARM64, an intervening RELEASE
+followed by an ACQUIRE to different lock addresses can be reordered by the
+CPU.
+
+Could this allow the subsequent GIC relaxed write to cross the prior IRQ
+Steer relaxed write, meaning a full wmb() is strictly required to order
+writes to different I/O peripherals?
+
+>  	ret =3D devm_pm_runtime_set_active_enabled(&pdev->dev);
+>  	if (ret)
+>  		goto out;
+
+[ ... ]
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261008090231.7965=
+11-1-Zhipeng.wang_1@oss.nxp.com?part=3D5
