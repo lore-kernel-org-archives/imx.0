@@ -1,74 +1,84 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53F2D3D6CD5;
-	Fri,  9 Oct 2026 10:22:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9764D3C9EE4;
+	Fri,  9 Oct 2026 10:36:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791541370; cv=none; b=cLeaRB3pmCAazt6YKD0P6GyeQBu/DRCzoTiLMx+IDzUpMcvwwpZrBOgLkOcXK4b6TliD/w4H0Jq1A0gI1hylIv1/zrY+o94N7djOu5b1b0mWxxuO47x4EK57RKcehUlQK0cx/iO/XPxx0YJH3j/ZztTNFa+sJv7YvEZ+tIeJhn8=
+	t=1791542187; cv=none; b=Ct/hHEdp98fUC8tnUIVhx/XwddZAeImRgngPmUpNvW0fIybFtFb4avb3X7b4csIcvDfCz9ll/XJPDHvL+qlR+PATY/cYbBiR48/HpbEQHCD8f9BVK4Fv/s1mCoRhF5rZ1F74RKR6fwx0mL86jLq9+kqlSwaLt6IUHMt1xX6V9MI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791541370; c=relaxed/simple;
-	bh=Hd0FMdzu0y1SF/lIOubkmZBiDg7SLtjvRGJ+Vxmy4KA=;
+	s=arc-20240116; t=1791542187; c=relaxed/simple;
+	bh=1RN/EsYxex/ghP4ZDZXyxYt0QsAUcFF6WUJ8Shxv248=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=G7eomoRfmZna2j3wse2FtHnzbsxaRkEJYdvC9/+PRR5oeuWBw2su1kZIZslwnY9AD15jTLIhlSxxNRyTmq1z0nAdUZnX2qbqrCd8MUoyVExA7BhtvHSYeP0jHB8sHeaTtifa9MBjDcNCzSvnGQuen6XocNY46zxxPg7mkrg6P8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NNtbgk/H; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=t1Gx+qruIIB39kbGy/Y8QE7xIJW+FLpcQAarN4IVzkfhHIj47u8rwvPwKoqpna8+TQvqp2dbVN3EWyfzhAjFJcnIIW8Pv93evNJsV0feD9wZU6AV08qM8U9wUjw4fePyHR0wHg70jsPIrNOpjPOAGZ8GsZ7RLEiwA4BS/DoX/uI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kmiJWVSq; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NNtbgk/H"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2186F1F000FF;
-	Fri,  9 Oct 2026 10:22:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kmiJWVSq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 233051F000FF;
+	Fri,  9 Oct 2026 10:36:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791541368;
-	bh=aiuVVmjDxFja6mEi48+BQ4MgfN4UMQG6MWoTBxBEvCE=;
+	s=k20260515; t=1791542186;
+	bh=ynxo/0gvOeqQKfEE3XBlWSt5mCkBPjwXEsdxR42jXko=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=NNtbgk/HDvEUXitP5GQ3CoS1QSFn0VHVJWNdFpTDDbz8+vz4UVXoox4HjB/zIqlVi
-	 CC4i9ojkFBOrRIEwH5Nxirvvvd0uGBbVeOxGBsjTmF/9W/52Ve40MCVrs5M27ammhG
-	 8dDNIpvHzodHNMnFIGJXqNLvlbdZpYzd3zej7JqlbiHW29VG9m7bL7hUoEJINWkr7X
-	 xbxFJ2hGIPZWCd4UdjZOISr7fQ3MgQPRGsmnm4WS1XRs4RGN/YIdv2x9EE8VOE3QvF
-	 sKfw+8cUyC2i22aBbtyMJBG1bPgSNCUNX5sZKm1JyryEjfkAh3jWQFOsTjr7YI+fZd
-	 /z8HAb/kF14Vw==
-Date: Fri, 9 Oct 2026 12:22:45 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Cc: Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>, 
-	=?utf-8?B?U8O4cmVu?= Andersen <san@skov.dk>, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v9 2/3] arm64: dts: imx8mp-skov-revc: convert to overlays
-Message-ID: <20261009-aspiring-wild-bull-1affaa@quoll>
-References: <20261008-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-v9-0-11fa90f531fc@pengutronix.de>
- <20261008-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-v9-2-11fa90f531fc@pengutronix.de>
+	b=kmiJWVSqeo7ISWCaqD2mb+bNrWb4QSniIZrpYPC00A+TSoPkAo7bhgfD28rugcFid
+	 +QTTIx7JJsyFEHXf2COoyENEPaq3FT7QbdvVjoR3O01U/qeMqijlGdaIja0fDkvyDj
+	 wsip9cZbfN9NEZPeSbIhmElKm7tfCIcvqqt1nJpa91/Jyk3IY7gLb/SDSR7ktwMs3X
+	 vvUCaEL7l9jeKQ4RXtS93Odq4TEmBD0dZsqjXzfQzwRe5Whle0QRQPgALsjJcubUjJ
+	 ttwoVJlaiWYfObG+/BDGZ0jT2cjqoWQId0JRAQElFPqHFhYSd+G/JBAZ+bRLWrT3pt
+	 QW3ivHBdk7eZA==
+Date: Fri, 9 Oct 2026 11:36:22 +0100
+From: Simon Horman <horms@kernel.org>
+To: Vinod Koul <vkoul@kernel.org>
+Cc: Frank.Li@oss.nxp.com, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Frank Li <Frank.Li@nxp.com>, Yicong Hui <yiconghui@gmail.com>,
+	"open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH 1/1] net: ethernet: micrel: ks8842: use
+ dmaengine_submit() instead of ->tx_submit()
+Message-ID: <20261009103622.GY83879@horms.kernel.org>
+References: <20261002193022.168248-1-Frank.Li@oss.nxp.com>
+ <20261007144334.GR83879@horms.kernel.org>
+ <asZhHwzXU1sdk3TH@parshuram>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261008-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-v9-2-11fa90f531fc@pengutronix.de>
+In-Reply-To: <asZhHwzXU1sdk3TH@parshuram>
 
-On Thu, Oct 08, 2026 at 11:16:00AM +0200, Steffen Trumtrar wrote:
-> The i.MX8MP Skov RevC jutouch 10" and Tian 7" variants are pretty
-> similar, apart from the Display and touch controller.
+On Wed, Oct 07, 2026 at 05:11:27PM +0200, Vinod Koul wrote:
+> On 07-10-26, 15:43, Simon Horman wrote:
+> > On Fri, Oct 02, 2026 at 03:30:19PM -0400, Frank.Li@oss.nxp.com wrote:
+> > > From: Frank Li <Frank.Li@nxp.com>
+> > > 
+> > > Replace direct dma_async_tx_descriptor->tx_submit() calls with the
+> > > proper dmaengine_submit() API wrapper.
+> > > 
+> > > Assisted-by: LLM
+> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > 
+> > Hi Frank,
+> > 
+> > Is there a back-story to this change?
+> > Is it part of something larger?
 > 
-> Move the common bindings to imx8mp-skov-revc-touch.dts and convert both
-> variants to use overlays applied on this base version.
+> Yep, Frank has been fixing direct calls with wrappers with aim to
+> eventually start moving dmaengine guts internal and have a good
+> consumer/provider split of the engine and objects
+
+Thanks,
+
+In that case all looks good to me.
+
 > 
-> Add a compatible for revC-based Skov boards with a touch panel for the
-> common dts.
-> 
-> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> ---
->  Documentation/devicetree/bindings/arm/fsl.yaml     |  1 +
+> > In face value it looks like a cleanup to an unmaintained driver.
+> > And if so, I'm not sure it's worth the churn.
 
-I guess "squash these two" under second binding patch was confusing.
-Squash these two bindings patches.
-
-This style generates checkpatch warning, which of course could be a
-false positive but git history would tell you we never do that.
-
-Best regards,
-Krzysztof
+Reviewed-by: Simon Horman <horms@kernel.org>
 
