@@ -1,99 +1,105 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C51C946AF04
-	for <imx@lists.linux.dev>; Fri,  9 Oct 2026 06:47:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31640472062;
+	Fri,  9 Oct 2026 07:23:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791528455; cv=none; b=L7CrxwslADCKyYlx0+RpM5L6j5huU5eUP0twLkujSmEnS0NdgBc+oMl09I4+g8mEC/ERW/HbPJ+2UvxXaGm8ej0djrw2Akx7NONPTRSYPBl1GATR7Qtxjqj+p/Ovn7gYDwPnt04ivNulKGcNZfuUE4scVmBRYw81l/TBohlHyQc=
+	t=1791530583; cv=none; b=g245kac2DQaEApdop2YVVxJ2wwb6QCWkhQCSYShzOrD1zpW1sQQwHtb0lKkNZCkIL+qoIecCj3alPxF1D5oGXyhkadvdrLUnH/ukmd4UBpLav/2dF34q1UbMDCwws30lrgEP4rzjHK5Obl28D4y3JED7jmYf/kqSD65ma8VLor0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791528455; c=relaxed/simple;
-	bh=gOJ3hw8ZQPA3InuBbTmHq+ABxKn7mXvdviQFFb/cxuc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UvuD3St2OkAfH9aojQXqLHuLdkqb6aa2aODkwuPoJ2tsnFTevO0/C0Os6Nb5pBgo8aq3+TvPCcw57uYucSCLgr2284W9+nAdqIf47tbKgfG5xsTo7w2BDA2+gwm2ALAOBOaCStXwPuwI3RJ1CaVGOVA778+2HLGdT4YkyihLNdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=PPuq+vZS; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	s=arc-20240116; t=1791530583; c=relaxed/simple;
+	bh=WsYk4mwXHGtEeA9/sqqtPLloNXN/PsNfk1fSu7KICtk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=g68uoj909WMdWvczgiSIYLJmNVKEue0e4TLQHjW4nNivy2tYnegGEt6JzblK3/gFf+WIIwB5I/tQ3rqrvEhsmzExSOfNoV8W3L8cUn/4UhO/V1T7s3/Sqkl0Pf0hNPiPYYrFoCNKbheJxEHqSStn8a2N73WrhsSulGS4ENW13kc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=t8CehVv4; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="PPuq+vZS"
-Received: from francesco-nb.. (90-182-211-1.rcp.o2.cz [90.182.211.1])
-	by mail11.truemail.it (Postfix) with ESMTPA id C8EAF1FA63;
-	Fri,  9 Oct 2026 08:47:22 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1791528443;
-	bh=wUE2v0QW5+a/Ub6fmgECQzNmuGdaL/exMPYRoSsqo3I=; h=From:To:Subject;
-	b=PPuq+vZSDhSo8bEfEH3jnD024MnC2tzVwXmX1k9LkTqzG5UGMexs+6O57/58EOBzt
-	 F6WgNvKUi2I2p3lMxChjLrYTtvLOg8mdnUHOYDNB1OF0A80body8ajs16KLnCAekoX
-	 DJkmw9lOAScLnhpboyLF8yevStacGglpL/sG2iqvI5FUgvrPfEIOIgdXFeb5LXsnJE
-	 Hw2i683LFF//t+18VOj/1EnI+mn9m2/svIX+x0k//ZgL7gXwtQGQuIaEh/WbE0uVb+
-	 twUoKMPhxYC/GpMfLrPtsA2Zlxgp+MdcLELhAQgva702H2cG5Tm6SkO2gAXB7bVPJL
-	 +jyCl1n5O971Q==
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Frank Li <Frank.Li@nxp.com>,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Nishanth Menon <nm@ti.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>
-Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
-	linux-kernel@vger.kernel.org,
-	linux-bsp@toradex.com
-Subject: [PATCH] MAINTAINERS: Add entry for Toradex boards
-Date: Fri,  9 Oct 2026 08:47:04 +0200
-Message-ID: <20261009064705.10116-1-francesco@dolcini.it>
-X-Mailer: git-send-email 2.47.3
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="t8CehVv4"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DE6991692;
+	Fri,  9 Oct 2026 00:22:57 -0700 (PDT)
+Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 29DE03F8C6;
+	Fri,  9 Oct 2026 00:22:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1791530581; bh=WsYk4mwXHGtEeA9/sqqtPLloNXN/PsNfk1fSu7KICtk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=t8CehVv4+Lz8Ugsv96BmQeZ1twjOPHaeTSryLFZ8XK8XZigz5W+IYmOHxXvNgxCos
+	 N7BdEXolPVcgXabranRPAkc3TgIpNDG7vL7on5JnWLSDBD8O+6Xi8OgL/yfdqoaAGW
+	 FrYeFAl55KJTNtuwLj3854pSMLI1wyh9ufDn1hq0=
+Date: Fri, 9 Oct 2026 08:22:55 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Peng Fan <peng.fan@oss.nxp.com>
+Cc: Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>, Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oupton@kernel.org>, Fuad Tabba <fuad.tabba@linux.dev>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	"Ivan T. Ivanov" <iivanov@suse.de>,
+	Francesco Dolcini <francesco@dolcini.it>,
+	Frank Li <frank.li@nxp.com>, linux-arm-kernel@lists.infradead.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kvmarm@lists.linux.dev, imx@lists.linux.dev,
+	Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH v4] arm64: errata: Add NXP iMX8QM workaround for A53
+ cache coherency issue
+Message-ID: <asiWTxgGxJ5JIFcl@arm.com>
+References: <20260824-imx8qm-cache-coherency-v4-v4-1-b2e528c7d05e@nxp.com>
+ <asTZEhzMDs869r_n@arm.com>
+ <aseZUwi0CYTXuE/I@shlinux89>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aseZUwi0CYTXuE/I@shlinux89>
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
+On Thu, Oct 08, 2026 at 09:23:31PM +0800, Peng Fan wrote:
+> On Tue, Oct 06, 2026 at 12:18:42PM +0100, Catalin Marinas wrote:
+> >On Mon, Aug 24, 2026 at 12:02:04PM +0800, Peng Fan (OSS) wrote:
+> >>   - Disabling KVM since correct TLB maintenance cannot be guaranteed
+> >>     for guests.
+> >
+> >Do you need virtualisation on such platform? An alternative would be for
+> 
+> We not have KVM support in our software release for i.MX8QM.
+> 
+> >the guests to be aware of the erratum as well and use the right TLBI/IC
+> >ops. But you'd also need to upgrade the VMID-aware ops in KVM (unless
+> >the hardware can't work around stage 2 TLBI at all).
+> 
+> We not have test cases for this since KVM is not in our release scope. 
+> Could we take this as a future enablement to avoid uneccessary churn
 
-Add a MAINTAINERS entry for Toradex board device trees to ensure
-that we are included in patch discussions and can provide reviews
-and feedback on proposed changes.
+Yes, you can leave it out if you don't care about the KVM use-cases.
 
-Toradex has been developing and supporting its System on Modules and
-carrier boards for many years, including their Linux mainline support.
+> >There's a precedent with 4311569 to wire up a SoC erratum into the CPU
+> >errata framework. That one is a system wide feature, so only probed once
+> >for the CPUs coming up at boot (though still probed for each late CPUs).
+> >For iMX, you need this turned on early, hence the boot probing. But
+> >calling it a strict boot CPU feature is a bit of a stretch. It also gets
+> >probed on every CPU, unnecessarily.
+> >
+> >I think we could do with something like below (maybe as a preparatory
+> >patch). We could also add it to 4311569 even if it changes its scope
+> >from system to boot CPU (the early param is available).
+> >
+> >Only compile-tested and haven't tried wiring up your workaround:
+> 
+> With type set to ARM64_CPUCAP_SOC_ERRATUM for i.MX8QM and your patch
+> applied, I not see issues in my test.
+> 
+> Would you post it as a formal patch or need me to include your patch
+> with i.MX8QM errata patch in a patchset?
 
-As the hardware vendor, Toradex has access to schematics, bills of
-materials and other internal hardware documentation, allowing to
-review and validate changes against the actual hardware.
+Please post it with your patchset. Feel free to add a co-developed-by or
+suggested-by me on the new cpucap proposal.
 
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
----
-Frank, Nishanth, Vignesh: up to you to decide who is picking up this
----
- MAINTAINERS | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 483415e46217..fcc2e429bcd7 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -28088,6 +28088,21 @@ L:	platform-driver-x86@vger.kernel.org
- S:	Maintained
- F:	drivers/platform/x86/topstar-laptop.c
- 
-+TORADEX BOARD SUPPORT
-+M:	Francesco Dolcini <francesco.dolcini@toradex.com>
-+L:	linux-bsp@toradex.com
-+S:	Supported
-+F:	arch/arm/boot/dts/nxp/imx/imx*-apalis*
-+F:	arch/arm/boot/dts/nxp/imx/imx*-colibri*
-+F:	arch/arm64/boot/dts/freescale/imx*-apalis*
-+F:	arch/arm64/boot/dts/freescale/imx*-aquila*
-+F:	arch/arm64/boot/dts/freescale/imx*-colibri*
-+F:	arch/arm64/boot/dts/freescale/imx*-lino*
-+F:	arch/arm64/boot/dts/freescale/imx*-toradex-*
-+F:	arch/arm64/boot/dts/freescale/imx*-verdin*
-+F:	arch/arm64/boot/dts/ti/k3-*-aquila*
-+F:	arch/arm64/boot/dts/ti/k3-*-verdin*
-+
- TORADEX EMBEDDED CONTROLLER DRIVER
- M:	Emanuele Ghidoli <ghidoliemanuele@gmail.com>
- M:	Francesco Dolcini <francesco@dolcini.it>
 -- 
-2.47.3
-
+Catalin
