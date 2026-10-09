@@ -1,120 +1,127 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25F3C33438F;
-	Fri,  9 Oct 2026 19:49:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35635397338;
+	Fri,  9 Oct 2026 23:06:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791575376; cv=none; b=K/cKNyX1bb9dCjaSOqTVNzxl+uBsmK2gRikI0HzJNj4kcZXZYFwX+gEyJyeHSXx9ppYl/NSjFlzlGz+56jDXWsRhFr6fXRC1hWQYCPBR9+j5lWHwvRDzMnOnf/awUnS4rlVNhpS40kAbBFlRNGHtYhmp0aYPUW1/gXr2WtIAxi8=
+	t=1791587203; cv=none; b=pe+TmzW6hm3zvVywyzQMPv1Ld/ZGZ/Aa11bTKuUYH9iqPffoQOviCKxBm6zZ3fKX9mmfD9o5K0l84U8x7H1fiGjAm6osStBGzamHjnrJ8gDXZB9icGAcHizV5AFSxz/V7WiflbN8/2IrxHkutmjy1RezwN74Qrhl1Us8PCEWaPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791575376; c=relaxed/simple;
-	bh=zKjRbBBghZhhm9MgKbix9lA+Z+RbUgkvQF2BfvaXddA=;
-	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
-	 Date; b=V1Yvb0EnQpJ5Z5HFxCkrl1LXXL7CheR7gRHSUgA5GE8hMClPaDh+wfjxuGZtehgFEvdr/WX1jdMSr5ZQFvKbV56Eainb2t2ET6jHdJSnNM9acNbg7qwhNhgn4FmLixc4aWr4DZtD6mUWZNBOk9vx7DSIWSWhKSV0K8aGP3Mhypw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SYRAfrgp; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791587203; c=relaxed/simple;
+	bh=uTKaAhre+h+714f57a5ptCMXQK1uVjxd7BGGrgoLev8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cxUs8uTbKDn1imD5PYOzPaz9wRyt31Jn8bkFF9kbpC8f1MLUi7VI2fyABaJxm/Lf4ve7YnUSpI92nFIDAjlI+NmacuSF6XlMwNUZ/XPLnXpG5oG2JQlB7nUfl4LXYuLvAfrdHzv19rgdm2jQZzX13rYhU6kUgZI8dIIpz7cdMWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aAic0nc6; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SYRAfrgp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F07D81F00893;
-	Fri,  9 Oct 2026 19:49:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791575366;
-	bh=GnN+uCQ1dn99HSmrnfByAoCGFhNnJOVkc264ZjjBaEE=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=SYRAfrgpG40UzmzPoY+nBCbGd4Oi9+7mJEk/N5iH9ECp5ejGNDc2UNZX9xKlJjWYg
-	 ychJhkHA+/FNT4Y7R2hEulHUcAjPbf92Mo7Vfdum2Ci3Cu2pF0qBMmE4Iyg0un5ib+
-	 bE76nrnwwy/ruMWQs0Pc6QTCthUApYIav02AT7VKj9+j/p+MIf+6KAFpumNWo45MAB
-	 uhNtyohpJa+1XYRphC0iZ67KazNzQ5Peh+FxDtiY6IdDMsljl9dpaj7nO4ItrrBACT
-	 CkPN/kEfnswq7qnHwQmh6jzNLdpPV7575+M6ZYbMuvG9+T1Q4rOrZCgpvy+VDXevPn
-	 JvU4eUsuUQUPw==
-Message-ID: <sashiko-outbox-166013@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 07/13] ARM: dts: imx6ul: Add Variscite WM8904 and
- WM8731 support
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Stefano Radaelli" <stefano.radaelli21@gmail.com>
-Cc: robh@kernel.org, imx@lists.linux.dev, conor+dt@kernel.org, devicetree@vger.kernel.org, Frank.Li@kernel.org
-In-Reply-To: <50f74f31925dd5d43d5b6578888c33875d8f2a20.1791487179.git.stefano.r@variscite.com>
-References: <cover.1791487179.git.stefano.r@variscite.com>
- <50f74f31925dd5d43d5b6578888c33875d8f2a20.1791487179.git.stefano.r@variscite.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 09 Oct 2026 19:49:25 +0000
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aAic0nc6"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1791587201; x=1823123201;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=uTKaAhre+h+714f57a5ptCMXQK1uVjxd7BGGrgoLev8=;
+  b=aAic0nc6rzg/cIa8jUt+ZqkwQ0X6bW/ibP0/4KUyDMTQNePWjNtbzsV8
+   e9tF44LYtjbhJY60V5w2aIvdHC4pjGwUSmlUqFHE+CrZFiM7bmgOtsytF
+   fbsklqJpnVIwsKTm0Hvb00XMRvOGnsRtOnXxbC7MlRvNZ29fY4aex00Wk
+   TGjX3CdfHzg46kc8swFvI+VEg4fgFc6EsYTxxzaXWaxCSrBu/tCMQte7q
+   2cBnvYDhmHZNqAqHGC0FbOJpMNeDWiDqHo2g0DDgNM26W2Y4dEBlbMxgv
+   FWvJEhALfcJoi59bSQMKfYq4ePnb/DG6Zjnv10X8oJyeE3C353fb7HhVe
+   g==;
+X-CSE-ConnectionGUID: 76/G8LbkTBmA0qJUf6CTHQ==
+X-CSE-MsgGUID: JGOcgOQ5RmqX/RuS0alKTw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11930"; a="488600"
+X-IronPort-AV: E=Sophos;i="6.27,149,1787036400"; 
+   d="scan'208";a="488600"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2026 16:06:40 -0700
+X-CSE-ConnectionGUID: n4P8RrsxR6aa5kfwEkAmww==
+X-CSE-MsgGUID: LYrnRV7hRty7C3yaBeE6rw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,149,1787036400"; 
+   d="scan'208";a="355088"
+Received: from ssimmeri-mobl2.amr.corp.intel.com (HELO [10.125.109.123]) ([10.125.109.123])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2026 16:06:39 -0700
+Message-ID: <1c913faa-06da-4b02-bd47-c74da54df0de@intel.com>
+Date: Fri, 9 Oct 2026 16:06:37 -0700
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] dmaengine: change dmaengine_get_unmap_data() first
+ arg to dma_chan
+To: Frank Li <Frank.li@oss.nxp.com>
+Cc: Vinod Koul <vkoul@kernel.org>, Dan Williams <djbw@kernel.org>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ "David S. Miller" <davem@davemloft.net>, Frank Li <Frank.Li@kernel.org>,
+ Jon Mason <jdmason@kudzu.us>, Allen Hubbe <allenbh@gmail.com>,
+ Ard Biesheuvel <ardb@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Eric Biggers <ebiggers@kernel.org>,
+ "open list:CRYPTO API" <linux-crypto@vger.kernel.org>,
+ open list <linux-kernel@vger.kernel.org>,
+ "open list:DMA GENERIC OFFLOAD ENGINE SUBSYSTEM"
+ <dmaengine@vger.kernel.org>, "open list:NTB DRIVER CORE"
+ <ntb@lists.linux.dev>, imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>
+References: <20260922184527.2414043-1-Frank.Li@oss.nxp.com>
+ <b40fa0d7-fbd0-4ee8-b99c-781d08c18838@intel.com> <asi3R24SY-Y2wJQx@parshuram>
+ <67081b4f-56a8-4ead-a912-645d5f742fd8@intel.com> <ask6Ud7ps9A1Gkc1@SMW015318>
+From: Dave Jiang <dave.jiang@intel.com>
+Content-Language: en-US
+In-Reply-To: <ask6Ud7ps9A1Gkc1@SMW015318>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] sound: simple-audio-card: inverted DAPM routing for WM8731 microph=
-one
---
 
-commit fed6a844cfc964e2cba2d176b3deac928acc5e54
-Author: Stefano Radaelli <stefano.r@variscite.com>
 
-ARM: dts: imx6ul: Add Variscite WM8904 and WM8731 support
+On 10/9/26 12:02 PM, Frank Li wrote:
+> On Fri, Oct 09, 2026 at 09:19:43AM -0700, Dave Jiang wrote:
+>>
+>>
+>> On 10/9/26 2:43 AM, Vinod Koul wrote:
+>>> On 22-09-26, 16:09, Dave Jiang wrote:
+>>>>
+>>>>
+>>>> On 9/22/26 11:45 AM, Frank.Li@oss.nxp.com wrote:
+>>>>> From: Frank Li <Frank.Li@nxp.com>
+>>>>>
+>>>>> Replace the struct device *dev argument with struct dma_chan *chan so
+>>>>> callers do not need to reach into the dma_device internals to obtain
+>>>>> the device pointer.  The implementation now derives the device via
+>>>>> dmaengine_get_dma_device(chan), which correctly handles the per-channel
+>>>>> IOMMU mapping case.
+>>>>>
+>>>>> Prepare to make dma_device private and make dmaengine API consistent.
+>>>>>
+>>>>> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+>>>>
+>>>> For the NTB bits:
+>>>> Acked-by: Dave Jiang <dave.jiang@intel.com>
+>>>>
+>>>>
+>>>>> ---
+>>>>>  crypto/async_tx/async_memcpy.c      | 4 ++--
+>>>>>  crypto/async_tx/async_pq.c          | 4 ++--
+>>>>>  crypto/async_tx/async_raid6_recov.c | 4 ++--
+>>>>>  crypto/async_tx/async_xor.c         | 8 ++++----
+>>>>
+>>>> Maybe one day Dan's wishes will become true and someone will finally deprecate async_tx....
+>>>
+>>> Does Intel still have use it. I am looking at fixing the names and we
+>>> can drop async_tx completely...?
+>>>
+>> I don't think so. Not since ioatdma days. Dan has talked about wanting to remove async_tx for quite a few years now. No idea if there are ARM dma devices that still use that or not.
+> 
+> Maybe we can create patch to skip build it firstly, let's see if there are
+> really user.
 
-Add shared WM8904 and WM8731 codec and sound-card descriptions for
-VAR-SOM-6UL and DART-6UL. Reuse imx6ul-var-som-audio.dtsi for SAI2
-and select the clock setup and audio routes in each codec file.
+There is a way to mark something going towards deprecation in KCONFIG right?
 
-[ ... ]
+DJ
 
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-wm8731.dtsi b/a=
-rch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-wm8731.dtsi
-> new file mode 100644
-> index 0000000000000..ed9af0a39714c
-> --- /dev/null
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-wm8731.dtsi
-> @@ -0,0 +1,50 @@
-> +// SPDX-License-Identifier: GPL-2.0+
-> +/*
-> + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com
-> + */
-> +
-> +#include "imx6ul-var-som-audio.dtsi"
-> +
-> +/ {
-> +	sound {
-> +		compatible =3D "simple-audio-card";
-> +		simple-audio-card,bitclock-master =3D <&sound_master>;
-> +		simple-audio-card,format =3D "i2s";
-> +		simple-audio-card,frame-master =3D <&sound_master>;
-> +		simple-audio-card,name =3D "wm8731audio";
-> +		simple-audio-card,routing =3D
-> +			"Headphone Jack", "RHPOUT",
-> +			"Headphone Jack", "LHPOUT",
-> +			"LLINEIN", "Line Jack",
-> +			"RLINEIN", "Line Jack",
-> +			"MICIN", "Mic Bias",
-> +			"Mic Bias", "Mic Jack";
+> 
+> Frank
 
-[Severity: High]
-Does this routing reverse the logical signal flow for the microphone?
-
-The simple-audio-card,routing property expects pairs in the format of
-{"sink", "source"}.
-
-In the DART WM8904 wrapper also added in this patch, the microphone routing=
- is
-correctly set up with audio flowing from the jack to the codec input, and b=
-ias
-flowing from the codec to the jack:
-
-    "IN2L", "Microphone Jack",
-    "Microphone Jack", "MICBIAS"
-
-However, the WM8731 configuration here uses "MICIN" as the sink for "Mic Bi=
-as",
-and "Mic Bias" as the sink for "Mic Jack". This appears to treat the bias as
-an audio source for the input pin, and the jack as a source for the bias.
-
-Could this reversed routing violate DAPM semantics and prevent microphone a=
-udio
-from being properly captured?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1791487179.gi=
-t.stefano.r@variscite.com?part=3D7
