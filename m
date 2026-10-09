@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2CBE44F564;
-	Fri,  9 Oct 2026 19:49:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E70424FDE63;
+	Fri,  9 Oct 2026 19:49:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791575371; cv=none; b=c0v6t6qCzvyoIgK6qRKpJdnTRNoGwkJ4EsZiLfqlWl9r/FIxQ1sikU//g5YtanvBS2nSQy9Ecl2CaFJLr02MxMnPAzbsnLHZCr+K0hc4i/SBhSnw8t9ZPQnmelm4OB4FiRX6Dnc7tE9MRMlJW98dDkC5RjQRCVrk7y8E4OUNeAw=
+	t=1791575374; cv=none; b=R8SAHx40x93axOz6vCYSbruNlR9OI1SBc8QlPoUewUbndRnxZ0BnEyyJkqHlyyHig8pXAkph6KOto9/3dBq3kkymtopJFWyU6D87Ci7XCB8VK+xdo7oVqU4RF27qIKRru2WTM6YAA70KKZyGqrpA1EDLR2rn9RDyGIQXGpDqIEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791575371; c=relaxed/simple;
-	bh=dgngywEBVHvAWH2my/Gvtg1m1TKfqMBoo5XoShQKhJM=;
+	s=arc-20240116; t=1791575374; c=relaxed/simple;
+	bh=n3D4RFgaM/P0KaH6DwkxRmJ8Dh/7th0XmRMcB8x/CfM=;
 	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
-	 Date; b=cf6ouZx8ufYWiNlfdDwQnEuoWAHluJYQ4OHYajuDLw8LLvnwi5RM0v8SBnDiwbsb7kxlB7q0eEEIyAU4V+w5BoWGnZeSQ4OQlE+4FT8d7F5OKyuxinEsU1ZbLGfVqvVI9kiyndknJByCo7pctq04nvUzuVsqunPDLmkuHVkDSuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UJ1POv3f; arc=none smtp.client-ip=100.103.45.18
+	 Date; b=kUiI/+9EqrYeWYJdv7UpqJxW7TxpasG/n4zU8+TMRs5QzmqASBY/HCa5T58KAZBC5LH6pjtkWv5p7bel44rIY+7uDHbqUEDlq69zmtGS9d/ee6qUOn8yvMcgqgoDXws/gmAMJ3sBS2JHKbOw5u7sypmBYWyMOLWW3XomjpKXCzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PIehNiUm; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UJ1POv3f"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE13E1F000FF;
-	Fri,  9 Oct 2026 19:49:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PIehNiUm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 244B41F00899;
+	Fri,  9 Oct 2026 19:49:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791575365;
-	bh=51j7XQSpGVADgH2JbKRQSIMIeQ8Qrvhy6krzVGg/6fw=;
+	s=k20260515; t=1791575368;
+	bh=UEkhAmmcyEyhXQ75+tckaYleuolYdZaIW7A40KbYxw8=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=UJ1POv3fplSNg4WPh0u/MV26AW6P7/Mlh7PFDnpSUeIf5yHLdQUxTlrynBcbc167X
-	 pzJgaoRkuRZpfeQa2NU4dLJyZoNMj6S5rRSHsC28PqUX424UciThJquzroMFMDcpGZ
-	 TfcAfqaPSMLqvXPWQMQRHJo3xPrf6+YIMsUnJibXnJC95V6JMSP0S6SUSD3N5Sr1Cr
-	 GDZLfl4+z1OIS2Rjroaf1aXmY++DyJTr9W/qjlzIPOcyllPfY1c060t6jyOUWmq6HI
-	 91chlSwcfKSh2lVaHH9EAHkNnyyiDuYJ0Fm3tSCkgzVkGON0+2Y1DPuRq5gHW+mF8h
-	 Wc4nNbnYsCS7w==
-Message-ID: <sashiko-outbox-166012@kernel.org>
+	b=PIehNiUm0GxYQ7CcZURzcZQ/+alJyg3hPTCYimVEO7UQRHDss+mbdJvpJLO+NoO4+
+	 DvAvQlENsY+2Y9oglNPC6LL0RopLkKedGK1ArCpVh8HB7PPejm6lEHk1P1bVuvyS3X
+	 4GkVbsa2FYj8lITHLZQm7gCDhRI9niTHT3XqJYAreIQRlJVLhUOSLkXm3cK9OdfxVj
+	 P7kybV2viNCIA5jwUtEbvJDF8WlTlHy1AbOX1DkGZZuxnZGZ2nqa0s856kkymRgZPu
+	 conwJEnFeAUVfSo1Vimd2GBtAid9ghTJ/TQ+rnz9HhgU8dSe1bWdQzmpmpJuoNXic9
+	 zX5zXy2GtEjAw==
+Message-ID: <sashiko-outbox-166018@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 06/13] ARM: dts: imx6ul: Extend VAR-SOM-6UL and add
- DART-6UL files
+Subject: Re: [PATCH v5 09/13] ARM: dts: imx6ul: Extend Variscite carrier
+ board descriptions
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Stefano Radaelli" <stefano.radaelli21@gmail.com>
-Cc: devicetree@vger.kernel.org, robh@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, conor+dt@kernel.org
-In-Reply-To: <e11cdc950e41b502e5449830d5f6a82568fc043a.1791487179.git.stefano.r@variscite.com>
+Cc: conor+dt@kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org, Frank.Li@kernel.org
+In-Reply-To: <c53a23adc1e3e9ae7b8c8ffe9e080d743b7af8db.1791487179.git.stefano.r@variscite.com>
 References: <cover.1791487179.git.stefano.r@variscite.com>
- <e11cdc950e41b502e5449830d5f6a82568fc043a.1791487179.git.stefano.r@variscite.com>
+ <c53a23adc1e3e9ae7b8c8ffe9e080d743b7af8db.1791487179.git.stefano.r@variscite.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 09 Oct 2026 19:49:24 +0000
+Date: Fri, 09 Oct 2026 19:49:27 +0000
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,66 +47,57 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Low] dt-bindings: net: micrel: boolean property assigned integer value <=
-1>
+- [Low] dt-bindings: Missing vmmc-supply property in &usdhc1 leaving reg_sd=
+1_vmmc unused
 --
 
-commit 7e70ac71fa47849af4ee0ecb85b6da2be68dfac5
+commit f482087d41ff9ef7afd90e49e664cce4877e9d8e
 Author: Stefano Radaelli <stefano.r@variscite.com>
 
-ARM: dts: imx6ul: Extend VAR-SOM-6UL and add DART-6UL files
+ARM: dts: imx6ul: Extend Variscite carrier board descriptions
 
-Add the DART-6UL module description and wrappers for i.MX6UL,
-i.MX6ULL and i.MX6ULZ, plus an i.MX6ULZ wrapper for VAR-SOM-6UL.
+This patch adds and extends several carrier board descriptions for Variscite
+boards, including the introduction of the Symphony and VAR-6ULCustomBoard
+device tree files. It also refactors common pin groups and peripheral
+configurations into shared components.
 
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-dart.dtsi b/arc=
-h/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-dart.dtsi
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-dart-6ulcustomb=
+oard-sd-card.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-dart-6ulcu=
+stomboard-sd-card.dtsi
 > new file mode 100644
-> index 0000000000000..f7190f6d50b59
+> index 0000000000000..f6cec58f5a4e4
 > --- /dev/null
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-dart.dtsi
-
+> +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-dart-6ulcustomboard-sd=
+-card.dtsi
+> @@ -0,0 +1,31 @@
 [ ... ]
-
-> +&fec1 {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_enet1>, <&pinctrl_enet1_gpio>, <&pinctrl_enet1_=
-mdio>;
-> +	phy-mode =3D "rmii";
-> +	phy-handle =3D <&ethphy0>;
-> +	status =3D "okay";
-> +
-> +	mdio {
-> +		#address-cells =3D <1>;
-> +		#size-cells =3D <0>;
-> +
-> +		ethphy0: ethernet-phy@1 {
-> +			compatible =3D "ethernet-phy-ieee802.3-c22";
-> +			reg =3D <1>;
-> +			clocks =3D <&rmii_ref_clk>;
-> +			clock-names =3D "rmii-ref";
-> +			reset-gpios =3D <&gpio5 0 GPIO_ACTIVE_LOW>;
-> +			reset-assert-us =3D <10000>;
-> +			reset-deassert-us =3D <100000>;
-> +			micrel,rmii-reference-clock-select-25-mhz =3D <1>;
-
-[Severity: Low]
-Does this assignment cause a dtbs_check schema violation?
-
-The micrel,rmii-reference-clock-select-25-mhz property is defined as a bool=
-ean
-in the dt-binding schema. Assigning it an integer value like <1> will trigg=
-er
-a warning during Device Tree compile validation.
-
-Could this be specified simply by its presence without an assigned value,
-such as: micrel,rmii-reference-clock-select-25-mhz; ?
-
-> +			micrel,led-mode =3D <1>;
-> +		};
+> +/ {
+> +	reg_sd1_vmmc: regulator-sd1-vmmc {
+> +		compatible =3D "regulator-fixed";
+> +		regulator-name =3D "VSD_3V3";
+> +		regulator-min-microvolt =3D <3300000>;
+> +		regulator-max-microvolt =3D <3300000>;
 > +	};
 > +};
+> +
+> +&usdhc1 {
+> +	pinctrl-names =3D "default";
+> +	pinctrl-0 =3D <&pinctrl_usdhc1>, <&pinctrl_usdhc1_gpio>;
+> +	cd-gpios =3D <&gpio4 19 GPIO_ACTIVE_LOW>;
+> +	no-1-8-v;
+> +	keep-power-in-suspend;
+> +	wakeup-source;
+> +	status =3D "okay";
+> +};
+
+[Severity: Low]
+Should the usdhc1 node include a vmmc-supply property referencing the
+reg_sd1_vmmc regulator defined just above? The regulator is declared here b=
+ut
+appears to be left unused, which might prevent the SD card from being power=
+ed
+correctly if the MMC subsystem relies on this supply link.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1791487179.gi=
-t.stefano.r@variscite.com?part=3D6
+t.stefano.r@variscite.com?part=3D9
