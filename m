@@ -1,44 +1,42 @@
 Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 714714C9E1C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 725B74CA29E
 	for <imx@lists.linux.dev>; Fri,  9 Oct 2026 11:16:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.203.200.13
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791544581; cv=pass; b=LypfP3q1/Yjl73mfIx0u0wbIUd4cJ7Em4OT3i/bK6/qVk6FEM9n40lxQsfg3G4DD6ITp1+JZf88OQnVhlJE0H/24Ueu6pQKKQXUVjqsnsfo60AzfYvN+5PWVqJMd6BmyzwVH6t28kx2kQOJpdvwP9UX7jy2xO90/jhML4EOD9pg=
+	t=1791544581; cv=pass; b=K5HCmEI3yeJcogiIFEtREGhSaektnEQK36WRt2XN7GneIP5Of0d9HSmbKgurE/nMWQRAnhTqrpFvMczNsVSWoTEzVyaOTvNqIDlk6/atjhwAtQaCutyG7acCMf3kXVSJx9SAhFE3+Qw+iT/uwUcyP+C3yr3FCQTXwVtlyQ5RX9E=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1791544581; c=relaxed/simple;
-	bh=nr3WgYA3wEgw6T9d5UG+JnB8YU98wXc8clf5NFECUiM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=msV47fM8jcYavU69AV4kPyCE8x93j7CWPWKVD6ht0ZFnTw9YrskrcIoBJpN+WdOFZuhx1gc9FRTMyyD4kyMjHaZfF7NfalCji+ln6LeVRT74w3mzRz53nFA3sVwZiasCsYy/XHD2OOg6J3BwX+GB0VB7FA9q4cqWgex3GHmkdc4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b=XPw205Yx; arc=pass smtp.client-ip=185.203.200.13
+	bh=T3ACDfbvQpsVVVLYQgg6TWpBSQG+DtK6HDDd+DKT4GY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=BJByQ84rfjCGYQH7mi6HToqkXdtk1FBZFZmCe1Fx86Jw/NOqVyUH4KMQnFZh/GVUMgZ9ptzBS3wObEnWEt+GMql/O+3YAmqYoRgPPk9vCCGZ/bo4hOsj54bAGFJsoGJH+HsmBCUCAITKfWE4zNMLXZM9RxIBRzf4IgyrI6IyaRA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b=CBerIp8d; arc=pass smtp.client-ip=185.203.200.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b="XPw205Yx"
+	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b="CBerIp8d"
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id E8FAB202601;
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id EF5E5202603;
 	Fri, 09 Oct 2026 13:16:02 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	s=20260414; t=1791544562;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wb5AURV6OQnJ+6bsCo4q3udRoo0e+/xbs0dDLLrfLKU=;
-	b=XPw205YxcwsEwodUkKtRmLRLIn/IfJDYTnaZk3Aien0znFTU5GnjGLzR2xaSkkb7p0LXFd
-	6fCaxudVR+W+Wt2o3wZBFtXRwGsGQ7pP3WwbI3umEiGI/vncX1JAwvH8BPSu2k1/T8my+w
-	xEKlmoJf/XElMMruT//KeZ206uBfpoegyCATqiIX0nbW+1JYcda4WDM/51eoh7EyRScGLv
-	ESyW63IWMcRJebhainlRm8bdw1P/LVOY6i2qxbWFdYmMKMetXsWZtJp2+kxqHI0Nz20EfG
-	CT/exPLvnqjR/IAniGVKu8vgm0kFAKqNYzxVeON7Oh1AlLWDeoApjycZjwk32g==
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=pZhgQZMcCK8iwoM7B5lUWQ/ev59BhqT2j3HB6CW70Ps=;
+	b=CBerIp8dyDVW16GYdn7XotlAyfFv6VEebEIilK0q9DCblkAz3JIHBj5rpbesy4edXPVb/D
+	5kBK+Qc6PfNkmk19mT2jg/l85DvxIUMk0axbEk03/TCljfDXgrRQ08xTSc3bypQ4MvRdtT
+	eOMlnUxcZp/kDxth0THr0HiN1w1SyMrFuO6UpT534nhzvQucTZ2ZlOh/Hl+x/notKjr8px
+	CiOJ1K7l4Sr8l77WwzRcp0p5gJv7d6a6ro1SZyKZW5EdktreLplkpgxl3jyiOUXeuJIcjg
+	mC4k5AT316LmQmqt/7tJUSWJNvnEnSpTUtDJHxR1y2f5wlyzD2C2WNd4v4Zmqg==
 ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1791544562; a=rsa-sha256;
 	cv=none;
-	b=DnAYcl1HhztTQ/DaorxFH5n2UbXVQtNoOj+1ENwlriHiYrtFWqQoeUYif2q1pJvia6VIYC
-	qKLF6CBAY3MLAv8sOoAXDH5dgE4MIs890bBpbpEXlfyNwPPiJzArS+xHWr30/EUSYAUwWK
-	6+qEsqcrcksQnUel7nIILaxZ/XKY9X2SMizOm8egBj42EJJf+Z9WJHJsWcqN3DBPzrP0Y2
-	emFcqCqAi/s0ljGe/Opf1ZVm/dcvZkONX7a708FAzeWv51sVrMihOw5ng5W5dKfagse6v8
-	OJ5rxyHwq+7fyfZPbJxntI9sRHKugSv8s8T8YLcDJRCOBrCnVsYEhko9ynAArA==
+	b=g5XJXXb8JH33Frzm6sOvH/g1BFKvIXKjubdZno9quSsJVMR5ysw9yC/x6+xgriociVmTTX
+	X3tJWN+w/7bgW5LNsLTuMYK1DCPdVqFCsFfisN53Sp19l2E+/YADjim6qNZ8nsH9Mg6Ryf
+	DBdVWhYIQdgN9F5epDkflPxE4CIyZgL6adHm2kZRlKh3IQ0IislkafAqEC2Wl1UaaYpOPP
+	IcQTKmn+6W+2fphOU8oHDrscbjRpT0WHCPgCVtXAdv63ccP6EUO7jYXc9m7fgcpEsyYxc3
+	4wZ0L7OcNzsO4jV1kGtG9xK49kfpNH84J3BYStRmPgpfIc8tXsSW2KgVheTJwg==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=mkl@pengutronix.de
@@ -46,31 +44,31 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	s=20260414; t=1791544562;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wb5AURV6OQnJ+6bsCo4q3udRoo0e+/xbs0dDLLrfLKU=;
-	b=MIcmz5HWNehzSTmkNr0VlsjiFObbZ7uKIqgG8fMYaSi5heJoB7mgyMEU+uGC2YpNsEFOFM
-	I1xIovXX57o6pp5GUN+ou5cCwkMtCTierNO29XA6AAYmpy7pMs/iOLffXMR8QEDxN/S5Ns
-	QEclslYG5RpkRomIL7dc4+t6Z/j6r4hWd6c3OJHliqSz1DiZ+EA5y7bjfIayTI8dwSD//q
-	GBvP/KVPrz/VQK43fyII/ETbSa0rtxbrZopMTkmA34Q1bQOs+ECSPpTo2tLCzLIP9jJNhK
-	SGtEGRca5Sz1/3tviI4kRxEr8yy+aSLc5eS43P94CGgHSVktGg4ksQSUVS98lw==
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=pZhgQZMcCK8iwoM7B5lUWQ/ev59BhqT2j3HB6CW70Ps=;
+	b=cgzNBXu7PisZvbgl39j3u4c7rILXHwqAdmG6S0c5gg5M0EL+95bX8365nkxFYqvIY85nui
+	t+SGuHlz8XY4MvzMdelniTVfGtCwCbtpS4wbE462H1QOw2GLuTSMJYNk9K5f3l5j2gNukT
+	2p+vxx5UyDhZa7knC70O5TWqp+rYRCbQflNARpWLYRuWk6kSqxLDryWz1gO2567RlkahDa
+	8rGl4eZQJWw3j543aB01YvL5trPf3KsCPk9XChXcx50y2aVKbNM9srcXT9G3A3U15iBeds
+	BOi6DDcvLL7xkrQRI33Tlzq47cXmprG550dpxifZHaEsp3VDr+c06k2z9qi+EA==
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1xF8a2-0052MG-2g;
+	id 1xF8a2-0052MH-2p;
 	Fri, 09 Oct 2026 13:16:02 +0200
 Received: from hardanger.blackshift.org (90-182-211-1.rcp.o2.cz [90.182.211.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id B58C15BD5DD;
-	Fri, 09 Oct 2026 10:16:42 +0000 (UTC)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id EAEC95BD5D7;
+	Fri, 09 Oct 2026 10:16:41 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Fri, 09 Oct 2026 12:16:37 +0200
-Subject: [PATCH spi-next 3/3] spi: spi-fsl-lpspi: cache content of
- Interrupt Enable Register (IER)
+Subject: [PATCH spi-next 0/3] spi: spi-fsl-lpspi: various cleanup and
+ enhancement patches - part 2
+Date: Fri, 09 Oct 2026 12:16:34 +0200
+Message-Id: <20261009-spi-fsl-lpspi-more-cleanups-v1-0-2d4549d5205e@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -79,77 +77,40 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261009-spi-fsl-lpspi-more-cleanups-v1-3-2d4549d5205e@pengutronix.de>
-References: <20261009-spi-fsl-lpspi-more-cleanups-v1-0-2d4549d5205e@pengutronix.de>
-In-Reply-To: <20261009-spi-fsl-lpspi-more-cleanups-v1-0-2d4549d5205e@pengutronix.de>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMQQqDMBBFryKz7oCJRbFXKV3EONaRGENGRRDvb
+ tLu/uM/3glCkUngVZwQaWfhxSdQjwLsaPyXkPvEoEtdl62qUQLjIA5dyGteIqF1ZPwWBHtt2+p
+ pqkYbBakQIg18/OpvyLqnY4XP/5Gtm8iuOQ7XdQN+MwRLiQAAAA==
+X-Change-ID: 20260916-spi-fsl-lpspi-more-cleanups-d2c934a372a1
 To: Frank Li <Frank.Li@nxp.com>, Mark Brown <broonie@kernel.org>
 Cc: kernel@pengutronix.de, linux-spi@vger.kernel.org, imx@lists.linux.dev, 
  linux-kernel@vger.kernel.org, Marc Kleine-Budde <mkl@pengutronix.de>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1927; i=mkl@pengutronix.de;
- h=from:subject:message-id; bh=nr3WgYA3wEgw6T9d5UG+JnB8YU98wXc8clf5NFECUiM=;
- b=owGbwMvMwCV2xirl17qZay8xnlZLYsg6sZ9D54XMYqc5seUPk/x9Vz+tXbP0xFe/GZv8JdN6T
- pnkLUup6ChlYRDjYpAVU2RZ+uOEokCgQ2nvy4RJMHNYmUCGMHBxCsBEZoYy/PfYcFimuuql/rEc
- /Rl6asG/ed59LuCv3cjK/K0zerre4ghGhrufHm2xXnVv+aIZN79/CpeZ8blB3lNWfCLDqmMtB04
- xXuEHAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=723; i=mkl@pengutronix.de;
+ h=from:subject:message-id; bh=T3ACDfbvQpsVVVLYQgg6TWpBSQG+DtK6HDDd+DKT4GY=;
+ b=owGbwMvMwCV2xirl17qZay8xnlZLYsg6sZ+F5dqmtZ/2lxnyrJ4kkTatI3uxgeKe2q9RDg+z6
+ 18tDfyq3VHKwiDGxSArpsiy9McJRYFAh9LelwmTYOawMoEMYeDiFICJ7N3B8D/pvdv0n1v22N75
+ 7sa1cM+erR2xHG8Sbp1Tj4/5Ivz+NZ8Kw/9gkfra47v7tNVfN+QUKpd0tJyMyn50qnQ3z18v6V/
+ fS7kB
 X-Developer-Key: i=mkl@pengutronix.de; a=openpgp;
  fpr=C1400BA0B3989E6FBC7D5B5C2B5EE211C58AEA54
 
-To improve performance avoid reading the Interrupt Enable Register (IER)
-from the hardware, cache in struct fsl_lpspi_data::reg_ier.
-
-Introduce struct fsl_lpspi_data::reg_ier, to cache the current value.
-Extend fsl_lpspi_intctrl() to update the cache and replace the open coded
-writing of the IRQ register in fsl_lpspi_prepare_message() with
-fsl_lpspi_intctrl().
-
-In fsl_lpspi_isr() don't read the IER from the hardware, but use the cached
-value from struct fsl_lpspi_data::reg_ier.
+While optimizing the spi-fsl-lpspi driver, I created some cleanup and
+enhacement patches.
 
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/spi/spi-fsl-lpspi.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+Marc Kleine-Budde (3):
+      spi: spi-fsl-lpspi: pass struct fsl_lpspi_data instead of struct spi_controller if possible
+      spi: spi-fsl-lpspi: fsl_lpspi_transfer_one(): directly return ret
+      spi: spi-fsl-lpspi: cache content of Interrupt Enable Register (IER)
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index b25f94b2ef73..5b158b0cb5af 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -122,6 +122,7 @@ struct fsl_lpspi_data {
- 	void (*rx)(struct fsl_lpspi_data *fsl_lpspi);
- 
- 	u32 remain;
-+	u32 reg_ier;
- 	u8 watermark;
- 	u8 txfifosize;
- 	u8 rxfifosize;
-@@ -199,6 +200,7 @@ LPSPI_BUF_TX(u32)
- static void fsl_lpspi_intctrl(struct fsl_lpspi_data *fsl_lpspi,
- 			      unsigned int enable)
- {
-+	fsl_lpspi->reg_ier = enable;
- 	writel(enable, fsl_lpspi->base + IMX7ULP_IER);
- }
- 
-@@ -525,7 +527,7 @@ static int fsl_lpspi_prepare_message(struct spi_controller *controller,
- 	fsl_lpspi_set_cmd(fsl_lpspi);
- 
- 	/* No IRQs */
--	writel(0, fsl_lpspi->base + IMX7ULP_IER);
-+	fsl_lpspi_intctrl(fsl_lpspi, 0);
- 
- 	/* Controller disable, clear FIFOs, clear status */
- 	writel(CR_RRF | CR_RTF, fsl_lpspi->base + IMX7ULP_CR);
-@@ -808,7 +810,7 @@ static irqreturn_t fsl_lpspi_isr(int irq, void *dev_id)
- 	u32 temp_SR, temp_IER;
- 	struct fsl_lpspi_data *fsl_lpspi = dev_id;
- 
--	temp_IER = readl(fsl_lpspi->base + IMX7ULP_IER);
-+	temp_IER = fsl_lpspi->reg_ier;
- 	fsl_lpspi_intctrl(fsl_lpspi, 0);
- 	temp_SR = readl(fsl_lpspi->base + IMX7ULP_SR);
- 
+ drivers/spi/spi-fsl-lpspi.c | 23 +++++++++--------------
+ 1 file changed, 9 insertions(+), 14 deletions(-)
+---
+base-commit: 85b0e19de168d82cbd879a4c8e13fabad5ef4dd8
+change-id: 20260916-spi-fsl-lpspi-more-cleanups-d2c934a372a1
 
--- 
-2.53.0
+Best regards,
+--  
+Marc Kleine-Budde <mkl@pengutronix.de>
 
