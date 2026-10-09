@@ -1,48 +1,49 @@
-Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA9924D9F88
-	for <imx@lists.linux.dev>; Fri,  9 Oct 2026 12:49:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A504944F54F
+	for <imx@lists.linux.dev>; Fri,  9 Oct 2026 13:25:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791550189; cv=none; b=NK8c/1D/CTyseakRHEICTfDlVRLWjzsCIPuCxAOQui5eKuvfjY65OinpJqYGCAGfiVfiSiFRFExLRt7MkQOz/uk2Xgq0dqqmjSyF4toGb9aYypS3SmGoAZ4Qdvcx//wOcyR04XV+SxRNAXm0snSWosr4PG25y4rMElerE4ibcJ0=
+	t=1791552363; cv=none; b=e5cCxgMehIOnE+yLc1/4yZoRRSJT1hcATVGWIGwvSjwSDYp0P1XKQ9hv8XyY9Ps31F/hdbGkV07hBWCL5C8PcgSENfTJ3mFp3ycdJSiwhqSJfXdRehdv+v4ewCNQg+tko2p2gHRbyCme6U4m+e2dmsqGuJtGz8Pwuz5QFK8d9S4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791550189; c=relaxed/simple;
-	bh=1XBsJBnzofYErpaoeoKCSDs1HqT3DWsfGEqap0XFLjs=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=j4vJf27LhSci8wzDEljGqSy4+GeIe4Ixd7QIv345LrCul1799+R714MigmuVvbtxJm2Flr797e7O1b3NFMnL0QrV+g5tXKRtuM+vTbSXqt1rJrwSyPpdzwFckoKu3dV6JddAQY55wLwTSI5mEKbXA+KSXWkyjVI+6A/FwUQs8GA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Received: from inva020.nxp.com (localhost [127.0.0.1])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 49B9B1A02F5;
-	Fri,  9 Oct 2026 14:40:42 +0200 (CEST)
-Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 3C4411A0002;
-	Fri,  9 Oct 2026 14:40:42 +0200 (CEST)
-Received: from lsv15141.swis.ro-buh01.nxp.com (lsv15141.swis.ro-buh01.nxp.com [10.162.246.138])
-	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id 8F8002037D;
-	Fri,  9 Oct 2026 14:40:40 +0200 (CEST)
-From: Claudiu Manoil <claudiu.manoil@nxp.com>
-To: netdev@vger.kernel.org
-Cc: s32@nxp.com,
+	s=arc-20240116; t=1791552363; c=relaxed/simple;
+	bh=Isul0VnRb0UIDbTp9rtxsYmIR3NqMSYyR4nC7kjOiNk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SADlVjXHNjd95q4DeTkw7aJ6hpOXvh6GmzBZoTPfPUe085KIcKZM4rQQiUFY0cxxfgZfnWe/R0VYGvXvhPYzzsVVnnr4q+n/kOsSEpL/gsouJCQGCmRYRHncjrdzSSPCLDWT52Aiy7ZdU/SCgxOFstCQVI/Y+gug9/SbdQwWykk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=i6l2LpQ8; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="i6l2LpQ8"
+Received: from francesco-nb.. (90-182-211-1.rcp.o2.cz [90.182.211.1])
+	by mail11.truemail.it (Postfix) with ESMTPA id A13AD1FBC9;
+	Fri,  9 Oct 2026 15:25:56 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1791552357;
+	bh=5lskzRZiJ/wLUBka/Bq8NWnKrbKgiPUxlSQcyyAYMDw=; h=From:To:Subject;
+	b=i6l2LpQ8qfF86Vi8Cgi/4Mt38dxdm9qSO6urKGuUKTHN1GMR8OzMG/LGjyYD3E6cg
+	 ns+S0c/4ZotRjwC7ayy+BVgTWSQdMoJjD2YdA9cM3Tv0614yTurGCoPJ43OsVBQkRo
+	 NUgMTLmC+02+BLU/MC9Pu9D2WWyNSIpwB0eLIh6AF/kZJ+E7DtM0u8QDKROUocSCDX
+	 Fsh5XSHg7A4/dPXxYh5+N3DMCIcpRQ/fQ89e156BEXx0RiwKJv5OROWvKqW7QgmyZd
+	 Z21XypLpdT+nxZw96q/JlrsBb7C4UtBzjKqH5YfWhTZaqIsElwd14ejDLRmnVSGvpo
+	 g9bCRSmmd4ZOQ==
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
 	Frank Li <Frank.Li@nxp.com>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
+	devicetree@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v1 4/5] arm64: dts: s32n79-rdb: enable NETC IEP18
-Date: Fri,  9 Oct 2026 15:40:33 +0300
-Message-Id: <23e77c8e48f84c67af8ec24bfde712baf64eec54.1791548316.git.claudiu.manoil@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <cover.1791548316.git.claudiu.manoil@nxp.com>
-References: <cover.1791548316.git.claudiu.manoil@nxp.com>
+Subject: [PATCH v1 0/2] arm64: dts: freescale: imx9[135]-toradex-osm-dev: Fix USB_A source PDO to 900 mA
+Date: Fri,  9 Oct 2026 15:25:46 +0200
+Message-ID: <20261009132550.20793-1-francesco@dolcini.it>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -50,28 +51,24 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: ClamAV using ClamSMTP
 
-Enable the NETC v4 ECAM bus #18 on the S32N79-RDB board so that the
-ENETC v4 Pseudo-MAC port (PPM) PF and VF instances are probed.
+From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-Signed-off-by: Claudiu Manoil <claudiu.manoil@nxp.com>
----
- arch/arm64/boot/dts/freescale/s32n79-rdb.dts | 4 ++++
- 1 file changed, 4 insertions(+)
+Correct USB_A source PDO from 3A to 900mA.
 
-diff --git a/arch/arm64/boot/dts/freescale/s32n79-rdb.dts b/arch/arm64/boot/dts/freescale/s32n79-rdb.dts
-index 1feccd61258e..897ba24ac03a 100644
---- a/arch/arm64/boot/dts/freescale/s32n79-rdb.dts
-+++ b/arch/arm64/boot/dts/freescale/s32n79-rdb.dts
-@@ -68,3 +68,7 @@ &usdhc0 {
- 	no-sdio;
- 	status = "okay";
- };
-+
-+&netc_iep18 {
-+	status = "okay";
-+};
+The USB_A Type-C port on the Toradex OSM development board can source
+only 900 mA on VBUS, but the connector advertises a 5V / 3A fixed PDO.
+
+Francesco Dolcini (2):
+  arm64: dts: freescale: imx95-toradex-osm-dev: Fix USB_A source PDO to
+    900 mA
+  arm64: dts: freescale: imx93-imx91-toradex-osm-dev: Fix USB_A source
+    PDO to 900 mA
+
+ .../boot/dts/freescale/imx93-imx91-toradex-osm-dev-common.dtsi  | 2 +-
+ arch/arm64/boot/dts/freescale/imx95-toradex-osm-dev.dts         | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
 -- 
-2.34.1
+2.47.3
 
