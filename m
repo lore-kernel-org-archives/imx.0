@@ -1,105 +1,151 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31640472062;
-	Fri,  9 Oct 2026 07:23:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D93849365A
+	for <imx@lists.linux.dev>; Fri,  9 Oct 2026 08:11:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791530583; cv=none; b=g245kac2DQaEApdop2YVVxJ2wwb6QCWkhQCSYShzOrD1zpW1sQQwHtb0lKkNZCkIL+qoIecCj3alPxF1D5oGXyhkadvdrLUnH/ukmd4UBpLav/2dF34q1UbMDCwws30lrgEP4rzjHK5Obl28D4y3JED7jmYf/kqSD65ma8VLor0=
+	t=1791533512; cv=none; b=peQOWFHRyy0tJNycbXPct/7v0l5AG3jp2vX2LgOViDzZYBlXd3cE8tkckldjFfSWjozMPCRsfcoCPSkGnfEz69b05kQrGYvu9s/3UzNXzTB1mApfx9ML0SEQ0zw7+KV2THjreLeq9GRZlX5duimx19FhOQbWLqXlZCxssFVfGSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791530583; c=relaxed/simple;
-	bh=WsYk4mwXHGtEeA9/sqqtPLloNXN/PsNfk1fSu7KICtk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=g68uoj909WMdWvczgiSIYLJmNVKEue0e4TLQHjW4nNivy2tYnegGEt6JzblK3/gFf+WIIwB5I/tQ3rqrvEhsmzExSOfNoV8W3L8cUn/4UhO/V1T7s3/Sqkl0Pf0hNPiPYYrFoCNKbheJxEHqSStn8a2N73WrhsSulGS4ENW13kc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=t8CehVv4; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1791533512; c=relaxed/simple;
+	bh=gRbbps69VA7y6AulrLwCFY/nwePzdK2qYrbO3Y+LK9M=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=P36JZ6uu6cUq8RWsqzLPE3iRiSdjiy71lHEzh7XkjP8tQM+ah2iOiUALHCDoB4Tw0n9royZxxA+8o4kPZ0TCh4NFHaQIToY+kRUA/QXx5RuldP1QIK7z5WbdhlzRexSnrpJBiC8Yzjpc5y6qNJ9GGW//93AC8A8UNgwqy0l4Nxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=fzcMbtO/; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=FJxHciNn; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="t8CehVv4"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DE6991692;
-	Fri,  9 Oct 2026 00:22:57 -0700 (PDT)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 29DE03F8C6;
-	Fri,  9 Oct 2026 00:22:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1791530581; bh=WsYk4mwXHGtEeA9/sqqtPLloNXN/PsNfk1fSu7KICtk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=t8CehVv4+Lz8Ugsv96BmQeZ1twjOPHaeTSryLFZ8XK8XZigz5W+IYmOHxXvNgxCos
-	 N7BdEXolPVcgXabranRPAkc3TgIpNDG7vL7on5JnWLSDBD8O+6Xi8OgL/yfdqoaAGW
-	 FrYeFAl55KJTNtuwLj3854pSMLI1wyh9ufDn1hq0=
-Date: Fri, 9 Oct 2026 08:22:55 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Peng Fan <peng.fan@oss.nxp.com>
-Cc: Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>, Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oupton@kernel.org>, Fuad Tabba <fuad.tabba@linux.dev>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Steffen Eiden <seiden@linux.ibm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	"Ivan T. Ivanov" <iivanov@suse.de>,
-	Francesco Dolcini <francesco@dolcini.it>,
-	Frank Li <frank.li@nxp.com>, linux-arm-kernel@lists.infradead.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kvmarm@lists.linux.dev, imx@lists.linux.dev,
-	Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH v4] arm64: errata: Add NXP iMX8QM workaround for A53
- cache coherency issue
-Message-ID: <asiWTxgGxJ5JIFcl@arm.com>
-References: <20260824-imx8qm-cache-coherency-v4-v4-1-b2e528c7d05e@nxp.com>
- <asTZEhzMDs869r_n@arm.com>
- <aseZUwi0CYTXuE/I@shlinux89>
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="fzcMbtO/";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="FJxHciNn"
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6993HF8F3768827
+	for <imx@lists.linux.dev>; Fri, 9 Oct 2026 08:11:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	laHJsYnI/7xvkYGI4cOJBcsCLbJtIbGPxkDhu0frTK4=; b=fzcMbtO/4jaXDsL7
+	gyiTrLMv+dryBtFCkSLJXLL6xRC3loCmHoBxikesbtcI2n59pEfjAbFFqVlys9cK
+	wgzZbkBfOCDuOdR728Q0enWZ9JbdarRUaf/Y5t8zWkQ/1Ad+A2Kw6W73cf/sGLo+
+	TH2ZrS7MF7HIwVJAirB8J48huJvqMPKmpX2IIIxaD6Iqfoxi4p1nQSfvtbm+Kb+X
+	IEGXn9VvZ6c8KC4cvcFOER6dWWmzUmAHOX7uIaIsBDeu2F2vtH5KcogCsxd0iW4N
+	8eJ/PG2jfE6q4ywIf0IenZsF0/s5ls/d09K0zripZ/U5DgTAYz12jurE/vDxZCiq
+	aUgBvw==
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4h6fxu2kjs-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <imx@lists.linux.dev>; Fri, 09 Oct 2026 08:11:45 +0000 (GMT)
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-93caf6c528aso1012999685a.0
+        for <imx@lists.linux.dev>; Fri, 09 Oct 2026 01:11:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1791533505; x=1792138305; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=laHJsYnI/7xvkYGI4cOJBcsCLbJtIbGPxkDhu0frTK4=;
+        b=FJxHciNncIdNwT7jmhteGFg2Fnr8lgV4c5gamleBkZW4Qp2t8WquIQmUnMJ+UNZdFE
+         Lc4rWcF0sacYUDd1zXFuH9uItr/bRsxRAnrKJ0H9D0Kx17t3SPotn6X7JgAtCHoeItQE
+         oTzd8gI9RGEjDVMM9h+cj8NrKLXx+uqxlJ50UPjWKuJKZmMTSGEhgNeZzCVAP6uJ62bP
+         mF8CBHuB+0o0MzUvOU32AVURnOAUM0zXZWFU5HWFaV/NETFkaPFniFJkSK/uqqqzYbih
+         x9ZHuTYV+oA4SPn9HIYr5fUfX/oXR1WxzcuOcIuQvXj4XL1LDcxeHzgjFb+j95VkY5mt
+         RQZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791533505; x=1792138305;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=laHJsYnI/7xvkYGI4cOJBcsCLbJtIbGPxkDhu0frTK4=;
+        b=IWAuVfWd2wfEAG9Y1hB5beV73BWbgYwQ7wg3ukwuna2L0lyFiUi0hQhnlt/PKSQfaQ
+         rHz/7iCXgAUiBm3D3NkZjjd+FAJlkvJrwcaGrMp7s77YaEpJJcunqMvOiibTiblaH984
+         MWjF1z7ttZZDvmNE/Ht1QPzsTVB2bu/8+vVKMPU+lp5wfflApa4L/A9kJxvEjS+OnhCy
+         v1I0Icgo2YpS3pdvSQdQFvi7/LRKV6fLrCtX4txwFh6yKdpzK4iH1QQE6vc0PVifJkDE
+         yNo/hBXPHV9HU4goPPofceTzo8k4VukqfDZPhdNuRBSwli7Wk/K7FTf/9P0/YefLtpJ3
+         2nxg==
+X-Forwarded-Encrypted: i=1; AKwUvBykiV+WB2GvDSEQ4EDWp/kXaaGoByiQygdmknh6jrUrQvDNzzXSlN5xV7FcT6SIxdG2Uo0=@lists.linux.dev
+X-Gm-Message-State: AFuF++mohdP1zvGER150yXs6XVIBeoFdfFq/6W7z4WRcsAy/PNy91BL2
+	HLv+6FisnLmpc97zs6i+YzvBAacPrVLzyIXtM6scxz2XdRu+2Y1oPQR55ae+3ediWY1Y9HiTSat
+	Oto5G0n7YAAIL2zyEA81K2zAL7mCs3IwWuQJp7/kvILvSbApsCfTzKHQ=
+X-Gm-Gg: AYBFou2kyQijHqukFubD7AH7w5Hu+6MHEvPYX/sreFjobsAD19upDft7uMmLcXJRxJ0
+	6vCpqNvSTfw4lT8t22YFLXRVR18j6IlMG7XkMGrbZ4S3EzByJjqTV6PaM2VcDWf6KVes6nnlX3f
+	eId+yHdEFdsWdL9mnZg+y13qJKpVDmrtPb/eGBCF+RE7O+JpfqvwJKzsdEk8t4/xwHu9HlnbedT
+	JH++9enkvogYiO37pui3N2HT/Ncqm4WpcEXkd22ezi9G190Z1EJVQ+OnfkWwdoOHroyHPWYuZbg
+	SRE+q/+HmU/xp0ZdiwmteQzM9XSXhRfUJg9bihNjixo/E4ww6cXDesGXbe/HGOR3jNYAyesig2s
+	6tmd4Q1P3eLSNXQTIbYEfj8uN8Do=
+X-Received: by 2002:a05:620a:270d:b0:93e:976b:5c44 with SMTP id af79cd13be357-93ebd2960d8mr145639485a.65.1791533505137;
+        Fri, 09 Oct 2026 01:11:45 -0700 (PDT)
+X-Received: by 2002:a05:620a:270d:b0:93e:976b:5c44 with SMTP id af79cd13be357-93ebd2960d8mr145636485a.65.1791533504545;
+        Fri, 09 Oct 2026 01:11:44 -0700 (PDT)
+Received: from hackbox.tail37bb1b.ts.net ([188.27.161.193])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a18be97d1esm65404655e9.8.2026.10.09.01.11.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Oct 2026 01:11:43 -0700 (PDT)
+From: Abel Vesa <abel.vesa@oss.qualcomm.com>
+To: Frank.Li@nxp.com, Wentao Liang <vulab@iscas.ac.cn>
+Cc: abelvesa@kernel.org, aisheng.dong@nxp.com, bmasney@redhat.com,
+        festevam@gmail.com, imx@lists.linux.dev, kernel@pengutronix.de,
+        linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
+        linux-kernel@vger.kernel.org, mturquette@baylibre.com,
+        peng.fan@nxp.com, s.hauer@pengutronix.de, sboyd@kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH] clk: imx: Fix clock reference leak in imx_get_clk_hw_by_name()
+Date: Fri,  9 Oct 2026 11:11:34 +0300
+Message-ID: <179153345647.1914323.1489876411002078599.b4-ty@b4>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260915055515.1730145-1-vulab@iscas.ac.cn>
+References: <20260915055515.1730145-1-vulab@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aseZUwi0CYTXuE/I@shlinux89>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDA5MDAzMiBTYWx0ZWRfXyLaIUyNbdSkg
+ U1VGNw4y9XnX2e7SFebzkGlIR1RP2WQNuzsHqRK8wTqLryGRGuGjs74ocSLKR7G6ETPErzucyiT
+ svVtJwlCzXRNMqJ8QsD1ma0kHHcg8o0gKnj+dHXXFiZySvImU+Jm0hkm2KOdq6w13jhqXKXG8yH
+ wGcpYH+qCcfpn9TYYH0NqE/Bj9442Tk+C+wSPu45dvXM7IdoKa4nyEFP8QeUKUUvdlzl1s3rqHe
+ R8D/xDr8gzq9Ve3XKemihd09yngud0UJJdnDLDSVoyNXB5uhvrZgiQwVEv2/0lAbaBbO3uLMqY3
+ B6QYTxKbB8w2GdTdJNr/0W5YF8Lm4WE/7vxfQx3MMSkiuIKrjH/WDBgFqlBU55hgGtOMIso1MEW
+ 9CufTvnQLXLzZSNnlzCVy04yw51r6EokqkFsy08cNPxJ+HGWLIrbAw4vzGEHHKQNa06fyLRAlnM
+ 768u0PfRr254QODiPbQ==
+X-Authority-Analysis: v=2.4 cv=QbjzLcbv c=1 sm=1 tr=0 ts=6ac8a1c1 cx=c_pps
+ a=qKBjSQ1v91RyAK45QCPf5w==:117 a=EiYrS7xXfcF7w+nkr41hpQ==:17
+ a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yx91gb_oNiZeI1HMLzn7:22
+ a=EUspDBNiAAAA:8 a=DNK6b7R2SRMYshW6mIMA:9 a=QEXdDO2ut3YA:10
+ a=NFOGd7dJGGMPyQGDc5-O:22
+X-Proofpoint-GUID: 6FrOKAElaWpFoUViPSTLhadRvWAwcFi7
+X-Proofpoint-ORIG-GUID: 6FrOKAElaWpFoUViPSTLhadRvWAwcFi7
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDA5MDAzMiBTYWx0ZWRfX+NP4o+1B6d/p
+ gldILqAb36ErSFJcygxtHmiWOdgc+h22L9VsLbCuIaijmLZMDJJ417IApSZx39pYLtkei2mPrVn
+ I7163Jrifu5GnOBDYqr9lSEUe7UBsEI=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-09_02,2026-10-08_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 spamscore=0 priorityscore=1501 malwarescore=0 clxscore=1015
+ bulkscore=0 phishscore=0 impostorscore=0 suspectscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2610020000 definitions=main-2610090032
 
-On Thu, Oct 08, 2026 at 09:23:31PM +0800, Peng Fan wrote:
-> On Tue, Oct 06, 2026 at 12:18:42PM +0100, Catalin Marinas wrote:
-> >On Mon, Aug 24, 2026 at 12:02:04PM +0800, Peng Fan (OSS) wrote:
-> >>   - Disabling KVM since correct TLB maintenance cannot be guaranteed
-> >>     for guests.
-> >
-> >Do you need virtualisation on such platform? An alternative would be for
-> 
-> We not have KVM support in our software release for i.MX8QM.
-> 
-> >the guests to be aware of the erratum as well and use the right TLBI/IC
-> >ops. But you'd also need to upgrade the VMID-aware ops in KVM (unless
-> >the hardware can't work around stage 2 TLBI at all).
-> 
-> We not have test cases for this since KVM is not in our release scope. 
-> Could we take this as a future enablement to avoid uneccessary churn
 
-Yes, you can leave it out if you don't care about the KVM use-cases.
-
-> >There's a precedent with 4311569 to wire up a SoC erratum into the CPU
-> >errata framework. That one is a system wide feature, so only probed once
-> >for the CPUs coming up at boot (though still probed for each late CPUs).
-> >For iMX, you need this turned on early, hence the boot probing. But
-> >calling it a strict boot CPU feature is a bit of a stretch. It also gets
-> >probed on every CPU, unnecessarily.
-> >
-> >I think we could do with something like below (maybe as a preparatory
-> >patch). We could also add it to 4311569 even if it changes its scope
-> >from system to boot CPU (the early param is available).
-> >
-> >Only compile-tested and haven't tried wiring up your workaround:
+On Tue, 15 Sep 2026 05:55:15 +0000, Wentao Liang wrote:
+> imx_get_clk_hw_by_name() obtains a consumer clock with
+> of_clk_get_by_name(), extracts the hardware pointer with __clk_get_hw()
+> and returns it without ever calling clk_put(), leaking the consumer
+> reference on both return paths.
 > 
-> With type set to ARM64_CPUCAP_SOC_ERRATUM for i.MX8QM and your patch
-> applied, I not see issues in my test.
+> Extract the hardware pointer first and drop the clock reference with
+> clk_put() before returning.
 > 
-> Would you post it as a formal patch or need me to include your patch
-> with i.MX8QM errata patch in a patchset?
+> [...]
 
-Please post it with your patchset. Feel free to add a co-developed-by or
-suggested-by me on the new cpucap proposal.
+Applied, thanks!
 
+[1/1] clk: imx: Fix clock reference leak in imx_get_clk_hw_by_name()
+      commit: 8e177ca735761a1f03e1dedffd7ab00d6d0540ae
+
+Best regards,
 -- 
-Catalin
+Abel Vesa <abel.vesa@oss.qualcomm.com>
