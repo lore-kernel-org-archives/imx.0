@@ -1,124 +1,99 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A7F9431A44;
-	Fri,  9 Oct 2026 06:10:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C51C946AF04
+	for <imx@lists.linux.dev>; Fri,  9 Oct 2026 06:47:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791526239; cv=none; b=CobtlnH6V+9CzL/pITvEdE6HKRNrL9w1NW4rWGafwz4lF3f0keb2eb89IdlgG6E6FH7G+Qeb30xsoKy4BvEZE0Tr/SDyVFqA0UDZo1iD+5u5TLmMdgPH3ksfu2gWMqJn/a3UWaEV/vhCtg/gBaAJt3pXH/4maEsmLk5CEgFgXrU=
+	t=1791528455; cv=none; b=L7CrxwslADCKyYlx0+RpM5L6j5huU5eUP0twLkujSmEnS0NdgBc+oMl09I4+g8mEC/ERW/HbPJ+2UvxXaGm8ej0djrw2Akx7NONPTRSYPBl1GATR7Qtxjqj+p/Ovn7gYDwPnt04ivNulKGcNZfuUE4scVmBRYw81l/TBohlHyQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791526239; c=relaxed/simple;
-	bh=Lu2Ltr3/Ksh0rUUz4TP+cGlhV1FTJXteCg9QUdIuA/s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=r6b011F0bCFfVrphgP8flaG4Jwg7jf6cZQ0fX4dpAvTJw0pEJNIOfKDvOH7MU/52i6Y0uAguEYNS9ba26Xawz2RS1s428AlC2eZRDt3a1sItLxn4Pfqnj8/YuKbb53/46DiT7E/iSQ1py4uOFKxlU9YXTLVdshB/4SdJFYy6sr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m94c6dJS; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791528455; c=relaxed/simple;
+	bh=gOJ3hw8ZQPA3InuBbTmHq+ABxKn7mXvdviQFFb/cxuc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UvuD3St2OkAfH9aojQXqLHuLdkqb6aa2aODkwuPoJ2tsnFTevO0/C0Os6Nb5pBgo8aq3+TvPCcw57uYucSCLgr2284W9+nAdqIf47tbKgfG5xsTo7w2BDA2+gwm2ALAOBOaCStXwPuwI3RJ1CaVGOVA778+2HLGdT4YkyihLNdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=PPuq+vZS; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m94c6dJS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 331381F000FF;
-	Fri,  9 Oct 2026 06:10:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791526232;
-	bh=KS3sgP/eUxT87vqgC+drQoOFDrxJo6kTsTRnflTVKSQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=m94c6dJSC6KB2dY78IwIoo8ekBqOmd5nw+PtP+EH8lg2F8MXcrX/vt3CFVrmOjORv
-	 2EZcDAFb4QoRnqGS5kx7W98EH9zEaLaPwkPI/sSf6f+cYA5X3B4MimVwk5d4etzekH
-	 CJKJoXOxGGIsm6zdVospuTVNU3mm07SjCcgwNg6s2dM/85dezrqsNeydzljQ/CFw6g
-	 GB200OaV+9b8p32LdR1KpQpP2jAdQESH9QrZk9J7w8bRpbqyo6FrNQG37HatBt2XSb
-	 2V9ADm+ETbiwbYEFCiuS/DB95TengT1AHQbNZdwCYpxRA75JeP7K0e7JhB4w6vCjdw
-	 Obi/bn1qnQ3mg==
-Date: Fri, 9 Oct 2026 08:10:29 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Haotian Zhang <vulab@iscas.ac.cn>
-Cc: imx@lists.linux.dev, Thomas Gleixner <tglx@kernel.org>, 
-	linux-arm-kernel@lists.infradead.org, Daniel Lezcano <daniel.lezcano@kernel.org>, 
-	Peng Fan <peng.fan@nxp.com>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, linux-kernel@vger.kernel.org, Jacky Bai <ping.bai@nxp.com>
-Subject: Re: [PATCH v2] clocksource/drivers/timer-imx-gpt: fix resource leak
- on init error paths
-Message-ID: <20261009-miniature-platinum-beaver-fcf647@quoll>
-References: <20261009022818.3025610-1-vulab@iscas.ac.cn>
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="PPuq+vZS"
+Received: from francesco-nb.. (90-182-211-1.rcp.o2.cz [90.182.211.1])
+	by mail11.truemail.it (Postfix) with ESMTPA id C8EAF1FA63;
+	Fri,  9 Oct 2026 08:47:22 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1791528443;
+	bh=wUE2v0QW5+a/Ub6fmgECQzNmuGdaL/exMPYRoSsqo3I=; h=From:To:Subject;
+	b=PPuq+vZSDhSo8bEfEH3jnD024MnC2tzVwXmX1k9LkTqzG5UGMexs+6O57/58EOBzt
+	 F6WgNvKUi2I2p3lMxChjLrYTtvLOg8mdnUHOYDNB1OF0A80body8ajs16KLnCAekoX
+	 DJkmw9lOAScLnhpboyLF8yevStacGglpL/sG2iqvI5FUgvrPfEIOIgdXFeb5LXsnJE
+	 Hw2i683LFF//t+18VOj/1EnI+mn9m2/svIX+x0k//ZgL7gXwtQGQuIaEh/WbE0uVb+
+	 twUoKMPhxYC/GpMfLrPtsA2Zlxgp+MdcLELhAQgva702H2cG5Tm6SkO2gAXB7bVPJL
+	 +jyCl1n5O971Q==
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Frank Li <Frank.Li@nxp.com>,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	Nishanth Menon <nm@ti.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>
+Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
+	linux-kernel@vger.kernel.org,
+	linux-bsp@toradex.com
+Subject: [PATCH] MAINTAINERS: Add entry for Toradex boards
+Date: Fri,  9 Oct 2026 08:47:04 +0200
+Message-ID: <20261009064705.10116-1-francesco@dolcini.it>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20261009022818.3025610-1-vulab@iscas.ac.cn>
+Content-Transfer-Encoding: 8bit
 
+From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-On Fri, 09 Oct 2026 10:28:18 +0800, Haotian Zhang wrote:
-> mxc_timer_init_dt() maps the timer registers with of_iomap() and obtains
-> the ipg and per clocks with of_clk_get_by_name(), but every error path
-> jumps to err_kfree, which only frees the imx_timer structure.  The
-> ioremap'd mapping, the clock references and the mapping created by
-> irq_of_parse_and_map() are leaked when irq_of_parse_and_map() or
-> _mxc_timer_init() fails.
-> 
-> Release the ioremap mapping when irq_of_parse_and_map() fails, and drop
-> the clock references and the IRQ mapping when _mxc_timer_init() fails.
-> 
-> _mxc_timer_init() can fail after mxc_clocksource_init() has registered
-> the sched_clock and the clocksource, and after mxc_clockevent_init() has
-> registered the clock event device.  Those subsystems keep using
-> imxtm->base and imxtm, so neither the mapping nor imxtm itself may be
-> released on that path; request_irq() cannot have succeeded there, so
-> disposing the IRQ mapping is safe.
-> 
-> Fixes: 8051a993ce22 ("clocksource/drivers/timer-imx-gpt: Fix potential memory leak")
-> Assisted-by: DeepSeek-V4.1-Flash
-> Suggested-by: Frank Li <Frank.li@oss.nxp.com>
-> Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-> ---
-> Changes in v2:
->  - Dispose the IRQ mapping and drop the clock references when
->    _mxc_timer_init() fails, instead of leaking the IRQ mapping.
->  - Do not unmap imxtm->base nor free imxtm on that path: the sched_clock,
->    the clocksource and the clock event device may already have been
->    registered and keep using them.
-> 
->  drivers/clocksource/timer-imx-gpt.c | 14 ++++++++++++--
->  1 file changed, 12 insertions(+), 2 deletions(-)
-> 
+Add a MAINTAINERS entry for Toradex board device trees to ensure
+that we are included in patch discussions and can provide reviews
+and feedback on proposed changes.
 
+Toradex has been developing and supporting its System on Modules and
+carrier boards for many years, including their Linux mainline support.
 
+As the hardware vendor, Toradex has access to schematics, bills of
+materials and other internal hardware documentation, allowing to
+review and validate changes against the actual hardware.
 
-Multiple things here:
-1. Your team ignored completely previous feedback.
+Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+---
+Frank, Nishanth, Vignesh: up to you to decide who is picking up this
+---
+ MAINTAINERS | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-2. You use multiple identities with this email, thus I actually doubt we speak
-   with actual person.
-
-3. Finally, same feedback:
-You sent multiple independent patches, to multiple independent
-subsystems. The amount of these patches clearly suggest this was
-AI generated and most likely not tested.
-
-More importantly, you sent all this work without properly organizing
-relevant patches into patchsets. This makes reviewing difficult
-and might cause multiple reviewers to address the same issue.
-Replying to the entire set is impossible and requires handling each
-patch independently, instead of applying or discarding the set.
-Maintainers also won't see the bigger picture of your work. Quite
-worrying.
-
-This is on the verge of hostile patch: bomb us with so many
-contributions, we won't be able to handle them in efficient manner,
-like responding ONCE to ask you to slow down.  Considering all this
-is untested and LLM generated, I have even more doubts whether this
-should be considered for review.
-
-Please read kernel documentation BEFORE posting more work. It will
-explain you how to identify subsystems, how to organize your work per
-subsystem (so a patchset grouping multiple patches with a short cover
-letter), how to document usage of LLM and how what you should not do
-if this was posted in a good faith.
-
-Best regards,
-Krzysztof
-
-
-
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 483415e46217..fcc2e429bcd7 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -28088,6 +28088,21 @@ L:	platform-driver-x86@vger.kernel.org
+ S:	Maintained
+ F:	drivers/platform/x86/topstar-laptop.c
+ 
++TORADEX BOARD SUPPORT
++M:	Francesco Dolcini <francesco.dolcini@toradex.com>
++L:	linux-bsp@toradex.com
++S:	Supported
++F:	arch/arm/boot/dts/nxp/imx/imx*-apalis*
++F:	arch/arm/boot/dts/nxp/imx/imx*-colibri*
++F:	arch/arm64/boot/dts/freescale/imx*-apalis*
++F:	arch/arm64/boot/dts/freescale/imx*-aquila*
++F:	arch/arm64/boot/dts/freescale/imx*-colibri*
++F:	arch/arm64/boot/dts/freescale/imx*-lino*
++F:	arch/arm64/boot/dts/freescale/imx*-toradex-*
++F:	arch/arm64/boot/dts/freescale/imx*-verdin*
++F:	arch/arm64/boot/dts/ti/k3-*-aquila*
++F:	arch/arm64/boot/dts/ti/k3-*-verdin*
++
+ TORADEX EMBEDDED CONTROLLER DRIVER
+ M:	Emanuele Ghidoli <ghidoliemanuele@gmail.com>
+ M:	Francesco Dolcini <francesco@dolcini.it>
+-- 
+2.47.3
 
