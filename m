@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E78474A7CB1;
-	Sat, 10 Oct 2026 12:49:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19EB949503B;
+	Sat, 10 Oct 2026 12:49:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791636596; cv=none; b=NWjp1quINm25ugaaVol1fgf7rsQY2ACryhWYOIyB75elQ9ZLcVoTzvwyDnC24lMxNJwpRuk2rE3h5zYL/E2C3nW8lomH60pJNM6qRXuHJoQYMkvuMvYUo5jBd4YYjUPGpqMoU6nMbhDcurutdxCAwABNssXg+jat/C++ABBA8lw=
+	t=1791636599; cv=none; b=Q4AbnwdtHRU3irpM6Ly9GKy0XDwk7LG5R2oP1CA6HcwYowoW4OAZAmE6k+WG/mKkjhmFKlr+yG+middY7aKj9/lbxm79bo2vOimLzxlz8DZuoqACVCeP3KfIX73YcxBDZcewa48CbNg3q6K1Dv2kdBbaat58cqAJt5lC2Ab0K3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791636596; c=relaxed/simple;
-	bh=N9seFhSPU/pKS3Qhagh6hEw1ab7gi2LBYuJ4c6re96I=;
+	s=arc-20240116; t=1791636599; c=relaxed/simple;
+	bh=sAaXDH38xLKsn8ggNPrR5D9yoVqSdPgUGdXtJ5zMnLQ=;
 	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
-	 Date; b=tzTz7Bx9iPqfKxuWrE5jKkgY8vOCSFVFNDKIElHs0Jf4qphaI09SQM1XW0nsxmeWeAhPbfSHuWl0bRTNgSlul3NFJBnmcgr2eabP1+AzhR3wOLFul8YuRqDR5SRvXBGWvHlH6ayI68nRNn/Lf8a8CxZwVvw73t82KRBokA6BOPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UzFrwIBk; arc=none smtp.client-ip=100.103.45.18
+	 Date; b=lG2jVVAdxJdIYOrIPfH7pCJn3JJVPeTmmeuAEq4J47W0b720uzpmCiIABTSGlnvg6kb9To0zrBISJOQFFWLi+sdRo4W5mzH0Nzh+woq1Zn5XtDhpfzJ3ZtNbDBcvHjrZTr29Rfo3b9Kuyfi1wbJ0sSwqhpXe/jIUJuaqC6R/5s0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gqs81stQ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UzFrwIBk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15F101F00893;
-	Sat, 10 Oct 2026 12:49:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gqs81stQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D05D1F000FF;
+	Sat, 10 Oct 2026 12:49:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791636594;
-	bh=TgsGI63X2QklFAUDp95CwnJSz5F1xKRys7wj3OXv1Ig=;
+	s=k20260515; t=1791636593;
+	bh=MnC4coSqLn+0ix328wN65ZbXK7ftYv9cjIR8DeyKSWY=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=UzFrwIBk5KFHY0qMOKRzXrmkyoLUbabBuRiCRlLKjfKhLg+WK6NTSzTJ7JE6VXOuN
-	 /EJmhwjanNFFaKDrdRSZ0tBfQXMWsAUi2eOUfpruWfMfnRG1dyLfFhrbwR2X21bof2
-	 FI54akK6kiH/uQYWajrz/6PVUKBLz8ZqI1Upj/K3Jqk0/077xce1r+5/yzqUPBrS+u
-	 CxqUYjgvr7DOy16cB1MhEr/nqnlrwWvABn1qnKdSZ5Msv+WsuDLuxT4ZSH9Ql0IEM1
-	 jHaofWFyo64g3CZyJy8ObnESO3AAr0arP2gJgjA/fpNF2iKLCE0gtRrQvs6bMc5GiH
-	 ZcfR9eg+v9mOw==
-Message-ID: <sashiko-outbox-166545@kernel.org>
+	b=gqs81stQNVWHJ0RFUhwkjj4fcCCxu9FpbdWzfBfvyRXRytkGI9uN8awNKM7jJlKki
+	 zqi/HiPsCKQ1Kg7c2yOjsQg33wSr+CRZ+TGb87K0bEp93V44vroJUfLghofaAsJ0yM
+	 qQRx8MSMV2HVYouiBL+yHhORhgBqfBrw7N7eZ/ohe7eJWshwxUTswNE39m08GFQ3Dr
+	 TRnoTOdYH7RlHI08H1fM3QXKGn8Q0S79MX134TBNltb9u+92EEVRWFpbX6NY2LbBZF
+	 YtUnIKcx5iDWlmgFXGWIMO1n8UNmtRw40jTlKwpfHcYIwqEme0zPxDi0+ID8F1zw0h
+	 hXhkpKmSq9Sbw==
+Message-ID: <sashiko-outbox-166542@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH net-next v1 3/5] arm64: dts: s32n79: add NETC IEP18 ECAM
- node for ENETC PPM ports
+Subject: Re: [PATCH net-next v1 1/5] net: enetc: Add pseudo-MAC support for
+ ENETCv4 Ports via a DT overlay
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Claudiu Manoil" <claudiu.manoil@nxp.com>
-Cc: conor+dt@kernel.org, imx@lists.linux.dev, robh@kernel.org, devicetree@vger.kernel.org, Frank.Li@kernel.org
-In-Reply-To: <49a0450c6d906f0ba1a886d86e89f35746a7a6fc.1791548316.git.claudiu.manoil@nxp.com>
+Cc: conor+dt@kernel.org, Frank.Li@kernel.org, robh@kernel.org, imx@lists.linux.dev, devicetree@vger.kernel.org
+In-Reply-To: <5c38f45b9ff1d73c6942d42e23940ecd9ab7b71f.1791548316.git.claudiu.manoil@nxp.com>
 References: <cover.1791548316.git.claudiu.manoil@nxp.com>
- <49a0450c6d906f0ba1a886d86e89f35746a7a6fc.1791548316.git.claudiu.manoil@nxp.com>
+ <5c38f45b9ff1d73c6942d42e23940ecd9ab7b71f.1791548316.git.claudiu.manoil@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 10 Oct 2026 12:49:53 +0000
+Date: Sat, 10 Oct 2026 12:49:52 +0000
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,61 +47,65 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] dt-bindings: PCI node netc_iep18 uses msi-parent instead of msi-ma=
-p breaking MSI routing
+- [Medium] net: enetc: memory leak of partially applied overlay on of_overl=
+ay_fdt_apply() error
 --
 
-commit 31419622a4729bd8008cf190e3a0993387a80408
+commit 8ec35cbb99007d6ea94d2243308ce4530bb6180d
 Author: Claudiu Manoil <claudiu.manoil@nxp.com>
 
-arm64: dts: s32n79: add NETC IEP18 ECAM node for ENETC PPM ports
+net: enetc: Add pseudo-MAC support for ENETCv4 Ports via a DT overlay
 
-Add the netc_iep18 PCIe ECAM host node describing the NETC integrated
-endpoint bus allocated to the first Linux cohort on S32N79.
+This commit introduces pseudo-MAC support for ENETCv4 ports by modeling
+them as fixed links. It uses a compiled device-tree overlay to synthesize
+the fixed-link node at probe time when the port lacks an ethernet DT node
+representation.
 
-> diff --git a/arch/arm64/boot/dts/freescale/s32n79.dtsi b/arch/arm64/boot/=
-dts/freescale/s32n79.dtsi
-> index 94ab58783fdc8..671b807f1c540 100644
-> --- a/arch/arm64/boot/dts/freescale/s32n79.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/s32n79.dtsi
-> @@ -122,6 +122,30 @@ irqsteer_coss: interrupt-controller@4ed00000 {
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c b/drivers/n=
+et/ethernet/freescale/enetc/enetc4_pf.c
+> index 71c971618388b..7999355b5b9f5 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
 [ ... ]
-> +		netc_iep18: pcie@241200000 {
-> +			compatible =3D "pci-host-ecam-generic";
-> +			reg =3D <0x2 0x41200000 0x0 0x100000>;
-> +			#address-cells =3D <3>;
-> +			#size-cells =3D <2>;
-> +			device_type =3D "pci";
-> +			bus-range =3D <0x0 0x0>;
-> +			msi-parent =3D <&its 0x0>;
-
-[Severity: High]
-Does this break MSI routing for the PCIe devices on this bus?
-
-The GICv3 ITS requires an MSI specifier (#msi-cells =3D <1>), and Linux's
-of_check_msi_parent() explicitly rejects msi-parent on bus nodes if the
-target MSI controller has #msi-cells > 0. This causes of_msi_xlate() to
-fail to locate an MSI controller, leaving the PCIe devices entirely without
-an MSI domain.
-
-Furthermore, PCI buses typically use the msi-map property to map Requester
-IDs (RIDs) to MSI sideband Device IDs. Using msi-parent with an argument
-maps all 256 RIDs to the exact same ITS sideband ID (0x0). This breaks MSI
-isolation and contradicts the iommu-map property which maps them to distinct
-Stream IDs (0xc0000 to 0xc00FF).
-
-Should this use msi-map instead, for example:
-msi-map =3D <0x0 &its 0xc0000 0x100>?
-
-> +			iommu-map =3D <0x0 &smmu 0xc0000 0x100>;
-> +			dma-coherent;
-> +			status =3D "disabled";
+> +static int enetc4_apply_overlay(struct enetc_ndev_priv *priv)
+> +{
+> +	u32 size =3D __dtbo_enetc4_pseudo_mac_end - __dtbo_enetc4_pseudo_mac_be=
+gin;
+> +	struct device_node *np =3D dev_of_node(priv->dev);
+> +	int err;
 > +
-> +			/* All NETC PCIe functions */
-> +			ranges =3D <0x82000000 0x0 0x48800000 0x0 0x48800000 0x0 0x4b0000>;
-> +		};
-> +	};
+> +	if (!np)
+> +		return dev_err_probe(priv->dev, -ENODEV,
+> +				     "Missing of_node for Pseudo-MAC port\n");
+> +
+> +	err =3D of_overlay_fdt_apply(__dtbo_enetc4_pseudo_mac_begin, size,
+> +				   &priv->ovcs_id, np);
+> +	if (err)
+> +		return dev_err_probe(priv->dev, err,
+> +				     "Failed to apply fixed-link overlay\n");
+
+[Severity: Medium]
+Can this leak the partially applied overlay changeset?
+
+If of_overlay_fdt_apply() fails during application (for example, from a
+post-apply notifier returning an error), it can return a negative error
+code but still populate the changeset ID in priv->ovcs_id. Returning
+immediately here without calling enetc4_put_overlay() bypasses cleaning up
+the partially applied state.
+
+Looking at the caller enetc4_link_init():
+
+	err =3D enetc4_apply_overlay(priv);
+	if (err)
+		return err;
+
+The error propagates directly and skips the err_mdiobus_create label
+which would otherwise invoke enetc4_put_overlay() to handle the cleanup.
+
+> +
+> +	return 0;
+> +}
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1791548316.gi=
-t.claudiu.manoil@nxp.com?part=3D3
+t.claudiu.manoil@nxp.com?part=3D1
