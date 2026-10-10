@@ -1,127 +1,146 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013007.outbound.protection.outlook.com [40.107.159.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35635397338;
-	Fri,  9 Oct 2026 23:06:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791587203; cv=none; b=pe+TmzW6hm3zvVywyzQMPv1Ld/ZGZ/Aa11bTKuUYH9iqPffoQOviCKxBm6zZ3fKX9mmfD9o5K0l84U8x7H1fiGjAm6osStBGzamHjnrJ8gDXZB9icGAcHizV5AFSxz/V7WiflbN8/2IrxHkutmjy1RezwN74Qrhl1Us8PCEWaPI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791587203; c=relaxed/simple;
-	bh=uTKaAhre+h+714f57a5ptCMXQK1uVjxd7BGGrgoLev8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cxUs8uTbKDn1imD5PYOzPaz9wRyt31Jn8bkFF9kbpC8f1MLUi7VI2fyABaJxm/Lf4ve7YnUSpI92nFIDAjlI+NmacuSF6XlMwNUZ/XPLnXpG5oG2JQlB7nUfl4LXYuLvAfrdHzv19rgdm2jQZzX13rYhU6kUgZI8dIIpz7cdMWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aAic0nc6; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 384C6291C10
+	for <imx@lists.linux.dev>; Sat, 10 Oct 2026 02:01:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.7
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791597713; cv=fail; b=jm5vUGpAd7Tcamd1yKdasP5OUlo2WPTKtJTs82gGonOL2NhX6YH+muXGskgO7qhbgPuHZVDcFp4PyEhL1ZjXioX2VL02ZPyCnZK7UeQpaQIUHw/bqJiPT3P4WAW3vCxvdbDCDZ4QoANM4lhxb84f2gE9uH9TxjGA+LURKOrhm5I=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791597713; c=relaxed/simple;
+	bh=5tbzjSLWZD5kYJO78qINBc0jHaz5sPYE6qlKIhIICBU=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=P9qA42RFXdgzjr+4KFLMv/RMg/OEF1JJ36ZN20IqlnyRXhz3u5URfsIzgq8xo3mXaPxFJAZtTNhTERq0UAwx0Fu0w9cfmtuY+MFCRe/n0uSvn0vQWOkCuiH4HZbgt5P1MHmpA9wVdNitpnu19SPz2DyrrzwBklodiYb1OXQXnak=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=S9puvCLP; arc=fail smtp.client-ip=40.107.159.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aAic0nc6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791587201; x=1823123201;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=uTKaAhre+h+714f57a5ptCMXQK1uVjxd7BGGrgoLev8=;
-  b=aAic0nc6rzg/cIa8jUt+ZqkwQ0X6bW/ibP0/4KUyDMTQNePWjNtbzsV8
-   e9tF44LYtjbhJY60V5w2aIvdHC4pjGwUSmlUqFHE+CrZFiM7bmgOtsytF
-   fbsklqJpnVIwsKTm0Hvb00XMRvOGnsRtOnXxbC7MlRvNZ29fY4aex00Wk
-   TGjX3CdfHzg46kc8swFvI+VEg4fgFc6EsYTxxzaXWaxCSrBu/tCMQte7q
-   2cBnvYDhmHZNqAqHGC0FbOJpMNeDWiDqHo2g0DDgNM26W2Y4dEBlbMxgv
-   FWvJEhALfcJoi59bSQMKfYq4ePnb/DG6Zjnv10X8oJyeE3C353fb7HhVe
-   g==;
-X-CSE-ConnectionGUID: 76/G8LbkTBmA0qJUf6CTHQ==
-X-CSE-MsgGUID: JGOcgOQ5RmqX/RuS0alKTw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11930"; a="488600"
-X-IronPort-AV: E=Sophos;i="6.27,149,1787036400"; 
-   d="scan'208";a="488600"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2026 16:06:40 -0700
-X-CSE-ConnectionGUID: n4P8RrsxR6aa5kfwEkAmww==
-X-CSE-MsgGUID: LYrnRV7hRty7C3yaBeE6rw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,149,1787036400"; 
-   d="scan'208";a="355088"
-Received: from ssimmeri-mobl2.amr.corp.intel.com (HELO [10.125.109.123]) ([10.125.109.123])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2026 16:06:39 -0700
-Message-ID: <1c913faa-06da-4b02-bd47-c74da54df0de@intel.com>
-Date: Fri, 9 Oct 2026 16:06:37 -0700
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="S9puvCLP"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=qxVexJdsdo3RTBkWqXeUQXn9bsYCAZP+yvwK8wz/AigocgLCTUDsyYllKaXRgD5Vaq19e5fUATo1wAmlvidI74EhVukW129cadr3cyAyihGhtqP9ywZQqKL9rVKPAl7IGtNpEYUiFbyhuN0wZ/lLl+46ADdnjQsqUF7qfFJkSuNAgIA4B3n4g5OxPQQLudmtWfA8xCymBg2FNJUKf+H3asGAUUW0yJQCjawvIDNJWk6h/VlCwNmgouuaaCuz1Qf7tDG8vmPDhQlfDVjtlN0LGCBadLP7Q/AehY59tmTajfrR0JmnSV/S9dGWvr/h78Ne71z5lEXsm60THUIebEfd6Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5tbzjSLWZD5kYJO78qINBc0jHaz5sPYE6qlKIhIICBU=;
+ b=NoAK/G473lC2jjxiVuwXyiWIiBqMf7TF31IhYZBUrRLsgoWMc+j2yn0z+rUzvzn3jos7o6XDiSG9XTEpQpheMxVDReBFaUMkU3fj9/olgEoKMXKqTmnhjoD9EoP9e5rG2tw6zUe5z3Sj8JIjASwD0w/YtkRkbzbgU3WZuzxvwYIUipezuBCz5wFMsJBvCiRjDPAjm24tobo9LKnqhZjQdZj69XTBE4dizYl8yfN++/9oUtPM0+q1R0+n9PBtmaguLPXNs/ub/tdlYybTg33yI/NQyFIkMorkPUNqOfSpR+2ruyRtx5AKmCeSARi+oGgbG09wQnwW14OqMNdRM8nnPA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5tbzjSLWZD5kYJO78qINBc0jHaz5sPYE6qlKIhIICBU=;
+ b=S9puvCLPmWXw/mxoZJ7sKWVFpjSXr8+f7Dk0wMQZLWyyNWOgcSb9Dr4nzD5zZnJ2FKkeWBA1pi9WztNVgVZLzJ+IDDCEPFHY/V5V3mIO+EgbsAHmwLSO6sX/uaPLrDvC0jN7DYjujbCaM8TETIOtacoFWsawczO0P/8Zyv0FsiKtUpATxp0P8Wq4B7F8IPEzmjJOjIYjqREdYG8GmHvlKImW8VnvGDMk7QWNr/n8xoVn+VpoJ7dgojtAvZhijGDDoXngKwZbl+0LRkj+AEeJ3XEp4qA37GrfaWun8gbwaEAsAEu4wiH8Z3thofv51YTQ1rGT9HJznhFNOef+nZb15g==
+Received: from AS4PR04MB9338.eurprd04.prod.outlook.com (2603:10a6:20b:4e6::17)
+ by MRWPR04MB11496.eurprd04.prod.outlook.com (2603:10a6:501:75::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.17; Sat, 10 Oct
+ 2026 02:01:47 +0000
+Received: from AS4PR04MB9338.eurprd04.prod.outlook.com
+ ([fe80::7c4c:9c56:8552:f680]) by AS4PR04MB9338.eurprd04.prod.outlook.com
+ ([fe80::7c4c:9c56:8552:f680%6]) with mapi id 15.21.0496.015; Sat, 10 Oct 2026
+ 02:01:47 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: Claudiu Manoil <claudiu.manoil@nxp.com>
+CC: dl-S32 <S32@nxp.com>, Vladimir Oltean <vladimir.oltean@nxp.com>, Clark
+ Wang <xiaoning.wang@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub
+ Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>
+Subject: RE: [PATCH net-next v1 2/5] net: enetc: Enable probing of version 4.4
+ devices
+Thread-Topic: [PATCH net-next v1 2/5] net: enetc: Enable probing of version
+ 4.4 devices
+Thread-Index: AQHdV+todoZtUuB4hEiKAorU+ERkYLb2Aydg
+Date: Sat, 10 Oct 2026 02:01:46 +0000
+Message-ID:
+ <AS4PR04MB9338CC6990BCB8781706AAD088912@AS4PR04MB9338.eurprd04.prod.outlook.com>
+References: <cover.1791548316.git.claudiu.manoil@nxp.com>
+ <701f38d08f9ea371877645223e6ac919af7870b5.1791548316.git.claudiu.manoil@nxp.com>
+In-Reply-To:
+ <701f38d08f9ea371877645223e6ac919af7870b5.1791548316.git.claudiu.manoil@nxp.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: AS4PR04MB9338:EE_|MRWPR04MB11496:EE_
+x-ms-office365-filtering-correlation-id: 690e9d85-7a98-462f-51fe-08df267270be
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|23010399003|376014|19092799006|1800799024|38070700021|56012099006|11063799006|4143699003|22082099003|18002099003|6133799003|10067099003;
+x-microsoft-antispam-message-info:
+ PDaa6n5O7l1klPEDyD2O/sfnCzL6GlxwuG8Fy2gLFVrbCzYHBqDYW42YoCltj31H7ZqzjPlkIvz9e9ofaFJUtLg60N6f4p1gzzSmBjxTJZxfy7QIrfyBmDBjgyaRW4+ESOD1Q3j3gPee3XmHiKVUXx5ok1CIItVTp9Pktq+9soh5pkItVEgxuNybxkr44IOeaKY7I7qEJmrCnAA4NPna1PUQLZFCGN7DbXNgE/+so7+ksjLNDhgH1YkYXi40QfOIsIYpy9iB6mmSN6ZsZwXI7g0asweU2ZvFJViS3th7NyyFcOGH4MYdzF3+BF7BTTVm+2sglhR3ByodU5REQlZLpMKeZofDv9PFYX+QoLszMf2akXdx9ku1/p9BSjH3cQ3jGpQR8UTb0OZhJV9vcj+v3gSst+pfnFtkC7Vytd2IQ3ERb7671anoFF+tKst/5kdhsKFl5X0c9lViGu/v3kQ5Pr3Dr+de4fMzVNlyQl54plGuGy7xcx/oWxW9IerFmrIn9DOqypmPH28UoL4/YeTaD0U/Sjj3BPfcX5ubirVKgPvWmaXw/uOGKOGfp2ACsvm2QtVw4jvrQ/gr4G602rg/LKtmZMa7qsS52FgCf5mLK9jvdkt4qoYGONdr27ypHDCdN1ButCGvb8th5QjsrstCoJEROLrbb6hN96bjRP+7Ejtgo84zgMlKBF4I/SBMgPGba0hI2S6G6r5Fvvoaa5KcQ/03sBAhKZMMyQxHSX9LwPI=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9338.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(376014)(19092799006)(1800799024)(38070700021)(56012099006)(11063799006)(4143699003)(22082099003)(18002099003)(6133799003)(10067099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?NGRwwB7UOCSfiFzh1RqRvGxzsap8ZE9YxZZDO6Xf2kxC4ARwtuv7W/EsPDXw?=
+ =?us-ascii?Q?u9qrMMH9v0FhPrOzEgpf9ZG9OdGeB3CT/IEZ9FS6jiwAAMXIkVVy2bzDEK6U?=
+ =?us-ascii?Q?r4FmsdsYziStjOM/sGu+rYs1Lp5+CPP8zMgGUeMf2WtVk7Qtzw8lOd68GSTS?=
+ =?us-ascii?Q?q5KPwxHYDGC8TGBNqeXQxljjY9ghErJI+SE7ztVYZmQrM77Glxa6Exqh4O8I?=
+ =?us-ascii?Q?9sAIsK3VVJvqECJWUIhV+UZA9WY6OjVrzFybxG6JrNYrtLvQbeXM9B4AqXR6?=
+ =?us-ascii?Q?1CZwrTGjhOrS3+f4emwFzdrukIXWaR86bp5nOHCEk69UNSAPTnNUydqhYRCC?=
+ =?us-ascii?Q?jI7CGLRP0xHkc+Knvh7luarkUuvEwjOdEK8NgImMVprZ3YpP7PyHUxDqaLvp?=
+ =?us-ascii?Q?oM/IgB3ba9yqKpkgJXiqf/ZAQnzxyuthFYX6+HBaIhfH9SGuxq/0MenVjbW7?=
+ =?us-ascii?Q?1DD7Br+3+yQMBCU92M6GE/+o0gvHIWB0JfT4z4tz9zr4V9ihqt1ob7sFkvBi?=
+ =?us-ascii?Q?zEyXvs4yNHxCaCKJzTPYnr8SV77k5nnM1swNs/DYdQzFJ9cgKygxZhNX/4+5?=
+ =?us-ascii?Q?UE0EmrB4b1Eo+DoEWSqXJomCRW34if3jtb7gVgGNdrp5AnPcC2K9A7quXVMH?=
+ =?us-ascii?Q?w9jwIlw4UgW9OQhGF1eJLhWh4KzkJVmQqgjQ42pHxU3r2PEsl4ItWbqNoJ0P?=
+ =?us-ascii?Q?/mi87cctCLoHmWkqeGzrVkCNSIQqTEYK/MCn+EqCh036GokoLZyig+NrJfj+?=
+ =?us-ascii?Q?AVOEdXePNIHJbB/8ZkFZOnWr9U7UXdX3u+QhH8HKJsJkCdXe03jAMJUodSi/?=
+ =?us-ascii?Q?fEEtCnHnPOK/u6hupn2qcM8Fpjo4VOFVLEmNd7lxPyXF2R45cw6M7+f8tvNR?=
+ =?us-ascii?Q?5MZpOZ2W9ONuOkDfnDBS6hFwb3TK1fmfKl8G8xVmn0iQl50bBJkIDA6desSx?=
+ =?us-ascii?Q?AQ1hwY+yK96pqj/diHGaIcA9XkNbbeb/7GQjHLRzUP9GyEsG6Ynr1S7f8Rsu?=
+ =?us-ascii?Q?G8xHE6fb7fXMUuQHP+RJPJA3g0OTJZGn1N3/KRB3/wsKiKHZTFl0IYrJWTsT?=
+ =?us-ascii?Q?bo9dTH7C2dZWO0+w8J9VseQQGht/tQ74qZV69902yaXPNr+klifnsKo5esal?=
+ =?us-ascii?Q?CuIMvzCQrdpDAeAabh8eNnds5EuPtUmWDvd52zPz9Tif9NSqYNM4DrZxUV0d?=
+ =?us-ascii?Q?bj5WA7On0vlTOrHrn1x0egakL35P5ywPt+PHH8oMOKGka0atJgN9UPruOojb?=
+ =?us-ascii?Q?L2/SMXpHN3kxJtSIpHi3sEufCl3lmgm0p7cLbsupjnB/BXeqg1hltFG+5rrY?=
+ =?us-ascii?Q?TwVaoXCi/CPpR0Iwy/DfGzR/s+hbWd6nYN0V29vA6ky5jjyhezgWrKcMQ4Pr?=
+ =?us-ascii?Q?yvQTIxuATtZtrJmnL7Rb3x175IwJ44ajgg0V6B8t98jX3U7HLgq5W1KPZSnJ?=
+ =?us-ascii?Q?MpKk+FJV5bZYQEgwtUd45DU2sPMJ0/e0QpE/WNcAnXGSF6z55FWcsG8UHMv3?=
+ =?us-ascii?Q?nXRS0+W82zts21BQYyh6pdSIwBWHT3ccxTjMELHZYaW+QDosc98WeyUIlCju?=
+ =?us-ascii?Q?rZ0iJN9xaFA23lEbBHpQRjrtWoNwntsj1zUWZgOillfx5fSvbleJ58MJnFuO?=
+ =?us-ascii?Q?zGH+R9mAHT3O4qVoy0eWG5lVDRF4EA2AnwNm3/oCm+v1FPUDkouT5lIS4FbS?=
+ =?us-ascii?Q?TOlUdsMidJA0i5XEoWdODUfyzGrlGEXmMVRxvtLg8TEmWoPG?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] dmaengine: change dmaengine_get_unmap_data() first
- arg to dma_chan
-To: Frank Li <Frank.li@oss.nxp.com>
-Cc: Vinod Koul <vkoul@kernel.org>, Dan Williams <djbw@kernel.org>,
- Herbert Xu <herbert@gondor.apana.org.au>,
- "David S. Miller" <davem@davemloft.net>, Frank Li <Frank.Li@kernel.org>,
- Jon Mason <jdmason@kudzu.us>, Allen Hubbe <allenbh@gmail.com>,
- Ard Biesheuvel <ardb@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- Eric Biggers <ebiggers@kernel.org>,
- "open list:CRYPTO API" <linux-crypto@vger.kernel.org>,
- open list <linux-kernel@vger.kernel.org>,
- "open list:DMA GENERIC OFFLOAD ENGINE SUBSYSTEM"
- <dmaengine@vger.kernel.org>, "open list:NTB DRIVER CORE"
- <ntb@lists.linux.dev>, imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>
-References: <20260922184527.2414043-1-Frank.Li@oss.nxp.com>
- <b40fa0d7-fbd0-4ee8-b99c-781d08c18838@intel.com> <asi3R24SY-Y2wJQx@parshuram>
- <67081b4f-56a8-4ead-a912-645d5f742fd8@intel.com> <ask6Ud7ps9A1Gkc1@SMW015318>
-From: Dave Jiang <dave.jiang@intel.com>
-Content-Language: en-US
-In-Reply-To: <ask6Ud7ps9A1Gkc1@SMW015318>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: AS4PR04MB9338.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 690e9d85-7a98-462f-51fe-08df267270be
+X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Oct 2026 02:01:46.9342
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: fjjwbTLVjOb38lgs5PONpAcU1ELYUiUR6KjKXmFI3eNt4/0orLeGk1uW7G5IYUGYXEQUdG8jQz/sd0rsSqQoYQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRWPR04MB11496
 
+> The ENETC v4.4 devices are present on S32N79 SoCs and feature only
+> Pseudo-MAC ENETC ports, whose PFs expose both the 0xe101 and 0xe110
 
+I think the device ID of the ENETC PF with the pseudo MAC should be 0xe110.
+The device ID 0xe101 should be only used for the standalone ENETCs (without
+pseudo MAC). Is this a hardware issue? If so, a workaround is to set these =
+PF's
+device ID to 0xe110 in IERB module. Then the device ID 0xe110 will be prese=
+nt
+in the PCIe ECAM space.
 
-On 10/9/26 12:02 PM, Frank Li wrote:
-> On Fri, Oct 09, 2026 at 09:19:43AM -0700, Dave Jiang wrote:
->>
->>
->> On 10/9/26 2:43 AM, Vinod Koul wrote:
->>> On 22-09-26, 16:09, Dave Jiang wrote:
->>>>
->>>>
->>>> On 9/22/26 11:45 AM, Frank.Li@oss.nxp.com wrote:
->>>>> From: Frank Li <Frank.Li@nxp.com>
->>>>>
->>>>> Replace the struct device *dev argument with struct dma_chan *chan so
->>>>> callers do not need to reach into the dma_device internals to obtain
->>>>> the device pointer.  The implementation now derives the device via
->>>>> dmaengine_get_dma_device(chan), which correctly handles the per-channel
->>>>> IOMMU mapping case.
->>>>>
->>>>> Prepare to make dma_device private and make dmaengine API consistent.
->>>>>
->>>>> Signed-off-by: Frank Li <Frank.Li@nxp.com>
->>>>
->>>> For the NTB bits:
->>>> Acked-by: Dave Jiang <dave.jiang@intel.com>
->>>>
->>>>
->>>>> ---
->>>>>  crypto/async_tx/async_memcpy.c      | 4 ++--
->>>>>  crypto/async_tx/async_pq.c          | 4 ++--
->>>>>  crypto/async_tx/async_raid6_recov.c | 4 ++--
->>>>>  crypto/async_tx/async_xor.c         | 8 ++++----
->>>>
->>>> Maybe one day Dan's wishes will become true and someone will finally deprecate async_tx....
->>>
->>> Does Intel still have use it. I am looking at fixing the names and we
->>> can drop async_tx completely...?
->>>
->> I don't think so. Not since ioatdma days. Dan has talked about wanting to remove async_tx for quite a few years now. No idea if there are ARM dma devices that still use that or not.
-> 
-> Maybe we can create patch to skip build it firstly, let's see if there are
-> really user.
-
-There is a way to mark something going towards deprecation in KCONFIG right?
-
-DJ
-
-> 
-> Frank
+> PCI device IDs, while the VFs answer to the usual device ID of 0xef00.
+>=20
+> Signed-off-by: Claudiu Manoil <claudiu.manoil@nxp.com>
 
