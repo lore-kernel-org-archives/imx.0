@@ -1,127 +1,306 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92396277C81
-	for <imx@lists.linux.dev>; Sun, 11 Oct 2026 01:41:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.179
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791682915; cv=pass; b=C3AHcXMzEUW3BEHZoV6ohSVW4XT3iAmL8kFw1Aol353ke8pV2YcpMdKXq7Qoy64DKukc4SP0JvTrfFo3z15n2qmGk/W/5/4qcIaDuHnhDuGpp+dpcWGHvdAu2RVrIynxop+2LgWzrUPDhxT15rMEfjn8pO0ZxcNvvKPKB8WBfMI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791682915; c=relaxed/simple;
-	bh=a+S6iXUXzShXzubhMagWvie9aXwYAtsnVpzohR+ZRkA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nURWGah8iyzb7uOO+v07wdbWdXw6CYw6OcgcnZ9bNROl23/8WydNYZpPRtXwj7/NIgdLlIaU2yPISf3PjdZKVx7ImLJdcqkttDcgvK439DmGL9A9h8PGxdBWINp6oeIJrzPwq3yp6HM/jhSfOX6fUkeb9lbtoaw/J/HsZuMNpcs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W7NIojj7; arc=pass smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W7NIojj7"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2e49fbf92aaso4250055ad.0
-        for <imx@lists.linux.dev>; Sat, 10 Oct 2026 18:41:54 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791682914; cv=none;
-        d=google.com; s=arc-20260327;
-        b=JrQ+6a0HoHOS3tVO+d8LInshNLmh2aK6BvDWQ5BCgwJyhi+1MEcgw3eC8+PdG0++eM
-         XeG9XoCMnOqHTRFrXF0Rmw58I76l3xKIGyIVQ2SYAB6dArb6230v7RshpAOENXkp/Cin
-         pgJUWZkyqCN/ZOTKE29hIrr4PX8O0fq1EjDToh/YjxJeKWWhQ4MSaHjqrX3D2Tn7/1y5
-         Kx83HhFpZEPXXIaknXDFT16Btx/bmNY6mKTfjy8sk+soCVfg74suGPqdCK5JMeYke3a3
-         FTKeHBXJ17viiv10r981zwHUH0gQiWbVSXbLZoja3I4NwmuzVTP13VnRUxW6ekbJUHyn
-         SH2Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=NiZf56Uim4TT6iXbRIM3U2wYf4exyklNf3pNuoRHTuI=;
-        fh=rZAI5KCTM/F8NzXSDlQl6KTKIezdT4dpEbz43BAbVA0=;
-        b=FTo0rF37yCYb0mHqfqYb9CDiB2f+h06UFn/dAMivHnB46TObj5+7MGO+pbh+fWff92
-         3YJBBFrlRyE6jSNoUqNSa++e54sUXuUzgn/LrWwO3HnDWwWyX/0C0pMQIB2p2BTgNF70
-         MHR7sKDDYfIm57NqYeXj7rulLhWeYIFMRe5nuP+Ko8ThteybsER5saJR7dNK8Hc/nSKU
-         qfKbuNLVCNXdoCPoHCqbPiUo+cy7PxWkgDo7WOy2bNkbq2aioC5HSPRd0BVL+mterC4q
-         NFNyIdQQAy72719WT33Bfl8jsCLRTHK4cg7TgKYTZFZglMeQ9YGUjKGf7x4I+SiAt9vE
-         ybtw==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791682914; x=1792287714; darn=lists.linux.dev;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=NiZf56Uim4TT6iXbRIM3U2wYf4exyklNf3pNuoRHTuI=;
-        b=W7NIojj74bmG7MJnhEYO1LeBR31g6XSu7n2btCnIOST5lFhgnAb7ROhiZVO06KMSfC
-         L90NZrceXR71KyS+Tnmmno9Iq6KQQrrWkxfpRK61aGmrrzpMphG9XuVcI3Fvl1fA1+4k
-         cVa6LpVsN0JU/GXWkmmSRphwqkxSEJE9qC5aBxdt1Xn11mYAdfBoKBtc9+jdTYtTzhpa
-         u+Tpj5nOpZozMZF2MD/15CrVu64M6dmO0lp6Zc73LrXiWgqh5slR5Q4VV2TSMO90yntc
-         ZCkjqhbgly0UgpNN5zLMgSVcKZxB5g6FRACD7V481d9If57fe3ESEtFxPSoSKQ/um9s1
-         xMwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791682914; x=1792287714;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=NiZf56Uim4TT6iXbRIM3U2wYf4exyklNf3pNuoRHTuI=;
-        b=PO1EdZHxWhm7GXZEtBP5ZKYz795fBUF3l5vsXGZh8zrjQ+MZI9ttmiA+XvFv0WqMX3
-         uH4d5Fe/SXfa9XImzqRf+EI2VCgoR/w8njOF9UaTZRgXT5MnQYOiBaMZuoYVEquv6QuO
-         BqyYNucqBeS14+TsdKjtNFHMN4+shRvuja+ToV0gwFk/NlHBppgvTk/TpPKlyEVm7SL/
-         iFt9bXGkG5cCXPsA0v+XEaCjkkDCm6oayfUsDT5xeQSNHZVphZvq1Zkp6ALpvMIMJq6Q
-         GRuTJsFBnXO81D9QwMSshXm0YgLynDbPNEPatLWGjm9bTtP0eCWPoke49H2NcbTQIKtG
-         IYCQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxmzKHg8tjnBVBGt7uJ72p+rY5jqAPC29iAUKslSGDDoKVEJNBvEFGuhCpvZmoUwY+6FzU=@lists.linux.dev
-X-Gm-Message-State: AFq9FYJt1pHJg3b9x7/YiE5YZay/YjuASUsftwxcooBLN+OAXvLxH5bm
-	nfCDQJqUelC5/YYDYh5sUQv0CnfUc6GPNlsLf59glgKxelgfmj4QM5n1RwFnjTKc1fu7FVAspVK
-	XyKHzENFmk0czfUUFb3qHF3f94Bf+qb4=
-X-Gm-Gg: AYBFou2cA4qqvHHKiqn46nXs3iU3+hGi15euEoPOIKW5BpYFt2d2gWpja2kUn62uoI4
-	8eNCj5y4MprWroxlZPXnuNlxd7JC2MAMai2LCFSfcC4ZekyGGADc0IiZPFDIT/vYs6hsGHUZyQ9
-	e7j3lENPmmqpI6qynIFuLRPB4y6TblH8auQML5HeNwClsqWD8XeAnqVjBx6IbeBUGOcuxIrRiQe
-	Klml2NwE49db4Y2PCYXJGYQPFRmYrNtxkRxObVVwTQP/3kQlLj2cLs9SLEy1oLvW5yrD5uCt/Qc
-	14jiTnY8S3/PZncQTLx/PlRWQMI/aLihQ4WgLY6tnVtV4gHAyA9Q0J4oholBmqWBBxSBOckRBlt
-	J9vgYrJucQCgHDoGx3FoOcR8t1NGunzcCNRCZ0cJQeGD9dlN3PWgo/9sBHEyWu2s/nqoMWXAnNs
-	AL2n1F5C7CxFlMscQOPu072Jor
-X-Received: by 2002:a17:902:dac3:b0:2dd:c100:7cb6 with SMTP id
- d9443c01a7336-2e842abe6e9mr47983795ad.50.1791682913773; Sat, 10 Oct 2026
- 18:41:53 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0914F3B47D0
+	for <imx@lists.linux.dev>; Sun, 11 Oct 2026 05:53:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791698040; cv=none; b=VZDxtDRfuZefL47xIbToT/FksXnbpRQVZzEs2EFTMaZBjwGmgknsLu4FnRyc1Isroqm6T/idJ43NFYOCe73L8UERJfxKhM4A80V+a6EmHMQAx1SYMqi0KkeTblqyOHcaqQVQpsrWryHyNMrEaIumpyZGFJYZ5VzooEq9W2mfIDQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791698040; c=relaxed/simple;
+	bh=KzdALVeVNbCYMoq59NZHSHrynYNxdDJwch0uYOdz4A0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hhIigCcjsygAFP6TegGgfeGK3yDvsrt2CHOQhg42Vs7sc63KOph5VjVrplCAdvoaA3DV7yLet8V5NwZGWcuDqHQrFesAOOgrZ0z/C3kdDbCwfJcTLLWWPMZ9fM6k3lFs+szEZjkXirptBuSuHQpaRJy9125YYgij+pesIbbZzZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; arc=none smtp.client-ip=92.121.34.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 4672020005D;
+	Sun, 11 Oct 2026 07:53:51 +0200 (CEST)
+Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 2C1FF200055;
+	Sun, 11 Oct 2026 07:53:51 +0200 (CEST)
+Received: from lsv051416.swis.nl-cdc01.nxp.com (lsv051416.swis.nl-cdc01.nxp.com [10.168.48.122])
+	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id 8C61220301;
+	Sun, 11 Oct 2026 07:53:50 +0200 (CEST)
+Date: Sun, 11 Oct 2026 07:53:51 +0200
+From: Jan Petrous <jan.petrous@oss.nxp.com>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>,
+	NXP S32 Linux Team <s32@nxp.com>, Vinod Koul <vkoul@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Bogdan Hamciuc <bogdan.hamciuc@nxp.com>,
+	Ionut Vicovan <ionut.vicovan@nxp.com>, Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Chester Lin <chester62515@gmail.com>,
+	Matthias Brugger <mbrugger@suse.com>,
+	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	linux-arm-kernel@lists.infradead.org, linux-phy@lists.infradead.org,
+	netdev@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+	imx@lists.linux.dev, linux-pci@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Vincent Guittot <vincent.guittot@linaro.org>
+Subject: Re: [PATCH RFC v3 07/12] net: stmmac: dwmac-s32: Add SGMII support
+Message-ID: <asskbxR0/ioYD5mg@lsv051416.swis.nl-cdc01.nxp.com>
+References: <20260919-s32g_serdes-v3-0-9d68868c1e89@oss.nxp.com>
+ <20260919-s32g_serdes-v3-7-9d68868c1e89@oss.nxp.com>
+ <7b0a957d-f770-4bad-b3b9-aeb7a61bfb49@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20261008103831.542533-1-phucduc.bui@gmail.com>
- <20261008103831.542533-22-phucduc.bui@gmail.com> <sashiko-outbox-164068@kernel.org>
-In-Reply-To: <sashiko-outbox-164068@kernel.org>
-From: Bui Duc Phuc <phucduc.bui@gmail.com>
-Date: Sun, 11 Oct 2026 08:41:41 +0700
-X-Gm-Features: AclHuK-QjEu_VAQXcaV6bZOPL7kHjp0kHpv9N9xREPZm8mCCDGSnjyOHWmNvNow
-Message-ID: <CAABR9nFB++tUxLm4M0cB_y9CXxA4QsXTUkS0wKGbd5F9LMrP6Q@mail.gmail.com>
-Subject: Re: [PATCH 21/24] ASoC: renesas: msiof: Fix msiof_close() being
- skipped on rollback
-To: sashiko-reviews@lists.linux.dev, Mark Brown <broonie@kernel.org>, 
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Cc: wsa+renesas@sang-engineering.com, Frank.Li@kernel.org, imx@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7b0a957d-f770-4bad-b3b9-aeb7a61bfb49@bootlin.com>
+X-Virus-Scanned: ClamAV using ClamSMTP
 
-> [Severity: Medium]
-> Does this error path leak the dmaengine_pcm_runtime_data (prtd) memory?
->
+Hi Maxime,
 
-Yes, this leak is pre-existing.
+On Sat, Sep 19, 2026 at 02:04:43PM +0200, Maxime Chevallier wrote:
+> Hi Jan,
+> 
+> On 9/19/26 08:54, Jan Petrous via B4 Relay wrote:
+> > From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+> > 
+> > Wire the NXP S32G SerDes XPCS PCS into the dwmac-s32 glue layer so the
+> > MAC can run SGMII over a SerDes lane.
+> > 
+> > Changes:
+> > - s32_gmac_write_phy_intf_select: replace the hard-coded RGMII selector
+> >   with a switch on phy_interface so SGMII (0x01), RGMII, RMII and MII
+> >   all programme the SoC control register correctly.
+> > - Add s32_gmac_pcs_init: obtain the phylink_pcs handle from the SerDes
+> >   subsystem via s32g_serdes_pcs_create(), keyed by the standard
+> >   pcs-handle property on the GMAC node pointing at the SerDes XPCS lane
+> >   child. Propagates -EPROBE_DEFER if the SerDes driver has not probed
+> >   yet. There is no matching exit hook: the device link created by
+> >   s32g_serdes_pcs_create() covers the lifetime.
+> > - Add s32_gmac_select_pcs: return the stored PCS handle when the
+> >   negotiated interface is SGMII.
+> > - Hook pcs_init and select_pcs into plat_stmmacenet_data.
+> > 
+> > Note that installing a select_pcs callback suppresses the core's
+> > integrated_pcs fallback, because stmmac treats a NULL return from
+> > select_pcs as "no PCS" rather than "fall through". This matches what
+> > dwmac-rzn1 and dwmac-intel already do.
+> > 
+> > Both negotiation modes are supported by the PCS. The board device
+> > trees added later in this series describe the MAC-side link as fixed,
+> > so they exercise the out-of-band path.
+> > 
+> > The XPCS header guards its s32g_serdes_pcs_create() declaration with
+> > IS_REACHABLE(CONFIG_PHY_S32G_SERDES) and provides a static-inline stub
+> > returning -ENODEV otherwise. IS_REACHABLE is false both when the SerDes
+> > driver is disabled and in the built-in-consumer / modular-provider case
+> > (DWMAC_S32=y with PHY_S32G_SERDES=m), so this driver links in all four
+> > combinations of the two symbols.
+> > 
+> > Linking is not sufficient on its own, though. In the DWMAC_S32=y with
+> > PHY_S32G_SERDES=m case the stub makes s32_gmac_pcs_init() return
+> > -ENODEV, and stmmac treats a failing plat->pcs_init() as fatal, so a
+> > built-in MAC would refuse to probe on any device tree describing
+> > pcs-handle. Add a Kconfig dependency forbidding that combination
+> > rather than letting it build into a MAC that cannot probe.
+> > 
+> > Tested on an S32G3-VNP-RDB3 board: GMAC0 links at 1G over SGMII and
+> > passes traffic, both in SerDes mode 1 (alongside two active PCIe root
+> > complexes) and in mode 3.
+> > 
+> > Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+> > ---
+> >  drivers/net/ethernet/stmicro/stmmac/Kconfig     |  6 ++
+> >  drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c | 74 ++++++++++++++++++++++++-
+> >  2 files changed, 78 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/drivers/net/ethernet/stmicro/stmmac/Kconfig b/drivers/net/ethernet/stmicro/stmmac/Kconfig
+> > index e3dd5adda5ac..1443ff4149b4 100644
+> > --- a/drivers/net/ethernet/stmicro/stmmac/Kconfig
+> > +++ b/drivers/net/ethernet/stmicro/stmmac/Kconfig
+> > @@ -192,6 +192,12 @@ config DWMAC_S32
+> >  	tristate "NXP S32G/S32R GMAC support"
+> >  	default ARCH_S32
+> >  	depends on OF && (ARCH_S32 || COMPILE_TEST)
+> > +	# SGMII needs the PCS from the SerDes driver. The header falls back
+> > +	# to a stub returning -ENODEV when that driver is not reachable, and
+> > +	# stmmac makes a failing plat->pcs_init() fatal, so a built-in MAC
+> > +	# with a modular SerDes would refuse to probe on any DT describing
+> > +	# pcs-handle. Forbid that combination instead.
+> > +	depends on PHY_S32G_SERDES || PHY_S32G_SERDES=n
+> 
+> select PHY_S32G_SERDES ? This is what other glues that require PCS do,
+> or there's a catch that prevents using it ?
+> 
 
-Looking at it further, snd_dmaengine_pcm_open() already calls
-snd_pcm_hw_constraint_integer() for SNDRV_PCM_HW_PARAM_PERIODS, so
-the second call in msiof_open() seems to be redundant. Removing it
-would fix both the positive return value and the prtd leak:
+No real catch. As posted, PHY_S32G_SERDES "depends on"
+PCS_NXP_S32G_XPCS, so selecting it from DWMAC_S32 would give an unmet
+dependency warning, but that dependency should have been a select in
+the first place: PCS_NXP_S32G_XPCS has no dependencies of its own.
+With that fixed, PHY_S32G_SERDES only needs ARCH_S32 || COMPILE_TEST,
+which DWMAC_S32 already implies, so DWMAC_S32 can select it the same
+way DWMAC_RZN1 selects PCS_RZN1_MIIC. Done in the next version; a
+built-in MAC then always gets a built-in SerDes driver. The
+IS_REACHABLE() stub in the SerDes header stays, for other consumers
+of s32g_serdes_pcs_create().
 
------------------------------------------------------------------------------------------
-ret = snd_dmaengine_pcm_open(substream, chan);
-if (ret < 0) {
-        dma_release_channel(chan);
-        return ret;
-}
+> >  	help
+> >  	  Support for ethernet controller on NXP S32CC SOCs.
+> >  
+> > diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
+> > index 024d8e10e918..a3a56b21181a 100644
+> > --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
+> > +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
+> > @@ -16,12 +16,14 @@
+> >  #include <linux/of_mdio.h>
+> >  #include <linux/of_address.h>
+> >  #include <linux/phy.h>
+> > +#include <linux/phy/nxp-s32g-serdes.h>
+> >  #include <linux/phylink.h>
+> >  #include <linux/platform_device.h>
+> >  #include <linux/regmap.h>
+> >  #include <linux/stmmac.h>
+> >  
+> >  #include "stmmac_platform.h"
+> > +#include "stmmac.h"
+> >  
+> >  #define GMAC_INTF_RATE_125M	125000000	/* 125MHz */
+> >  
+> > @@ -40,23 +42,89 @@ struct s32_priv_data {
+> >  	phy_interface_t *intf_mode;
+> >  	struct clk *tx_clk;
+> >  	struct clk *rx_clk;
+> > +	/* SGMII PCS provided by the SerDes subsystem (NULL if not SGMII) */
+> > +	struct phylink_pcs *pcs;
+> 
+> There's already a phylink_pcs pointer in priv->hw, you shouldn't have to
+> store your own here.
+> 
 
-snd_soc_set_runtime_hwparams(substream, &msiof_pcm_hardware);
+Right, I'll use priv->hw->phylink_pcs as dwmac-rzn1 and dwmac-socfpga do.
 
-return 0;
------------------------------------------------------------------------------------------
+> >  };
+> >  
+> >  static int s32_gmac_write_phy_intf_select(struct s32_priv_data *gmac)
+> >  {
+> > +	u32 intf_sel;
+> >  	int ret = 0;
+> >  
+> > +	switch (*gmac->intf_mode) {
+> > +	case PHY_INTERFACE_MODE_SGMII:
+> > +		intf_sel = S32_PHY_INTF_SEL_SGMII;
+> > +		break;
+> > +	case PHY_INTERFACE_MODE_RGMII:
+> > +	case PHY_INTERFACE_MODE_RGMII_ID:
+> > +	case PHY_INTERFACE_MODE_RGMII_RXID:
+> > +	case PHY_INTERFACE_MODE_RGMII_TXID:
+> > +		intf_sel = S32_PHY_INTF_SEL_RGMII;
+> > +		break;
+> > +	case PHY_INTERFACE_MODE_RMII:
+> > +		intf_sel = S32_PHY_INTF_SEL_RMII;
+> > +		break;
+> > +	case PHY_INTERFACE_MODE_MII:
+> > +		intf_sel = S32_PHY_INTF_SEL_MII;
+> > +		break;
+> > +	default:
+> > +		dev_err(gmac->dev, "Unsupported phy interface mode: %s\n",
+> > +			phy_modes(*gmac->intf_mode));
+> > +		return -EINVAL;
+> > +	}
+> 
+> We go from supporting RGMII only to RGMII + RMII + MII + SGMII.
+> 
+> Are RMII and MII actually supported on that platform ? if so, can you split
+> that into 2 commits : one for proper inft_sel support with RMII + MII added,
+> the another one for SGMII ? 
+> 
 
-Morimoto-san, Mark, would this be acceptable? If so, I'll send it as
-v2.
+OK, I'll drop RMII+MII modes from it and postpone them to the follow-up
+patch as current focus is SGMII.
 
-Best regards,
-Phuc
+> > +
+> >  	if (gmac->ctrl_sts)
+> > -		writel(S32_PHY_INTF_SEL_RGMII, gmac->ctrl_sts);
+> > +		writel(intf_sel, gmac->ctrl_sts);
+> >  	else
+> >  		ret = regmap_write(gmac->sts_regmap, gmac->sts_offset,
+> > -				   S32_PHY_INTF_SEL_RGMII);
+> > +				   intf_sel);
+> >  
+> >  	dev_dbg(gmac->dev, "PHY mode set to %s\n", phy_modes(*gmac->intf_mode));
+> >  
+> >  	return ret;
+> >  }
+> >  
+> > +static int s32_gmac_pcs_init(struct stmmac_priv *priv)
+> > +{
+> > +	struct s32_priv_data *gmac = priv->plat->bsp_priv;
+> > +	struct device_node *pcs_node;
+> > +
+> > +	/*
+> > +	 * pcs-handle points at the SerDes XPCS lane child node; its
+> > +	 * nxp,xpcs-instance property is what identifies the XPCS instance.
+> > +	 */
+> > +	pcs_node = of_parse_phandle(gmac->dev->of_node, "pcs-handle", 0);
+> > +	if (!pcs_node) {
+> > +		dev_dbg(gmac->dev, "no 'pcs-handle' property, SGMII PCS unavailable\n");
+> > +		return 0;
+> > +	}
+> > +
+> > +	gmac->pcs = s32g_serdes_pcs_create(gmac->dev, pcs_node);
+> > +	of_node_put(pcs_node);
+> > +
+> > +	if (IS_ERR(gmac->pcs)) {
+> > +		int err = PTR_ERR(gmac->pcs);
+> > +
+> > +		gmac->pcs = NULL;
+> > +		/* SerDes may not be probed yet - defer probe. */
+> > +		return err;
+> > +	}
+> > +
+> > +	dev_dbg(gmac->dev, "SGMII PCS created via SerDes XPCS\n");
+> > +	return 0;
+> > +}
+> > +
+> > +static struct phylink_pcs *s32_gmac_select_pcs(struct stmmac_priv *priv,
+> > +					       phy_interface_t interface)
+> > +{
+> > +	struct s32_priv_data *gmac = priv->plat->bsp_priv;
+> > +
+> > +	if (interface == PHY_INTERFACE_MODE_SGMII && gmac->pcs)
+> > +		return gmac->pcs;
+> 
+> No need for the && gmac->pcs here, if it's NULL we return NULL anyway so you
+> can return priv->hw->phylink_pcs
+> 
+
+Agreed. The field is NULL unless the DT has a pcs-handle, so this
+becomes a plain "return priv->hw->phylink_pcs;", as in dwmac-rzn1.
+
+Thanks,
+Jan
+
