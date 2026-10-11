@@ -1,111 +1,127 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19EB949503B;
-	Sat, 10 Oct 2026 12:49:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791636599; cv=none; b=Q4AbnwdtHRU3irpM6Ly9GKy0XDwk7LG5R2oP1CA6HcwYowoW4OAZAmE6k+WG/mKkjhmFKlr+yG+middY7aKj9/lbxm79bo2vOimLzxlz8DZuoqACVCeP3KfIX73YcxBDZcewa48CbNg3q6K1Dv2kdBbaat58cqAJt5lC2Ab0K3Y=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791636599; c=relaxed/simple;
-	bh=sAaXDH38xLKsn8ggNPrR5D9yoVqSdPgUGdXtJ5zMnLQ=;
-	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
-	 Date; b=lG2jVVAdxJdIYOrIPfH7pCJn3JJVPeTmmeuAEq4J47W0b720uzpmCiIABTSGlnvg6kb9To0zrBISJOQFFWLi+sdRo4W5mzH0Nzh+woq1Zn5XtDhpfzJ3ZtNbDBcvHjrZTr29Rfo3b9Kuyfi1wbJ0sSwqhpXe/jIUJuaqC6R/5s0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gqs81stQ; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92396277C81
+	for <imx@lists.linux.dev>; Sun, 11 Oct 2026 01:41:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.179
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791682915; cv=pass; b=C3AHcXMzEUW3BEHZoV6ohSVW4XT3iAmL8kFw1Aol353ke8pV2YcpMdKXq7Qoy64DKukc4SP0JvTrfFo3z15n2qmGk/W/5/4qcIaDuHnhDuGpp+dpcWGHvdAu2RVrIynxop+2LgWzrUPDhxT15rMEfjn8pO0ZxcNvvKPKB8WBfMI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791682915; c=relaxed/simple;
+	bh=a+S6iXUXzShXzubhMagWvie9aXwYAtsnVpzohR+ZRkA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=nURWGah8iyzb7uOO+v07wdbWdXw6CYw6OcgcnZ9bNROl23/8WydNYZpPRtXwj7/NIgdLlIaU2yPISf3PjdZKVx7ImLJdcqkttDcgvK439DmGL9A9h8PGxdBWINp6oeIJrzPwq3yp6HM/jhSfOX6fUkeb9lbtoaw/J/HsZuMNpcs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W7NIojj7; arc=pass smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gqs81stQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D05D1F000FF;
-	Sat, 10 Oct 2026 12:49:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791636593;
-	bh=MnC4coSqLn+0ix328wN65ZbXK7ftYv9cjIR8DeyKSWY=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=gqs81stQNVWHJ0RFUhwkjj4fcCCxu9FpbdWzfBfvyRXRytkGI9uN8awNKM7jJlKki
-	 zqi/HiPsCKQ1Kg7c2yOjsQg33wSr+CRZ+TGb87K0bEp93V44vroJUfLghofaAsJ0yM
-	 qQRx8MSMV2HVYouiBL+yHhORhgBqfBrw7N7eZ/ohe7eJWshwxUTswNE39m08GFQ3Dr
-	 TRnoTOdYH7RlHI08H1fM3QXKGn8Q0S79MX134TBNltb9u+92EEVRWFpbX6NY2LbBZF
-	 YtUnIKcx5iDWlmgFXGWIMO1n8UNmtRw40jTlKwpfHcYIwqEme0zPxDi0+ID8F1zw0h
-	 hXhkpKmSq9Sbw==
-Message-ID: <sashiko-outbox-166542@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH net-next v1 1/5] net: enetc: Add pseudo-MAC support for
- ENETCv4 Ports via a DT overlay
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Claudiu Manoil" <claudiu.manoil@nxp.com>
-Cc: conor+dt@kernel.org, Frank.Li@kernel.org, robh@kernel.org, imx@lists.linux.dev, devicetree@vger.kernel.org
-In-Reply-To: <5c38f45b9ff1d73c6942d42e23940ecd9ab7b71f.1791548316.git.claudiu.manoil@nxp.com>
-References: <cover.1791548316.git.claudiu.manoil@nxp.com>
- <5c38f45b9ff1d73c6942d42e23940ecd9ab7b71f.1791548316.git.claudiu.manoil@nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sat, 10 Oct 2026 12:49:52 +0000
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W7NIojj7"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2e49fbf92aaso4250055ad.0
+        for <imx@lists.linux.dev>; Sat, 10 Oct 2026 18:41:54 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791682914; cv=none;
+        d=google.com; s=arc-20260327;
+        b=JrQ+6a0HoHOS3tVO+d8LInshNLmh2aK6BvDWQ5BCgwJyhi+1MEcgw3eC8+PdG0++eM
+         XeG9XoCMnOqHTRFrXF0Rmw58I76l3xKIGyIVQ2SYAB6dArb6230v7RshpAOENXkp/Cin
+         pgJUWZkyqCN/ZOTKE29hIrr4PX8O0fq1EjDToh/YjxJeKWWhQ4MSaHjqrX3D2Tn7/1y5
+         Kx83HhFpZEPXXIaknXDFT16Btx/bmNY6mKTfjy8sk+soCVfg74suGPqdCK5JMeYke3a3
+         FTKeHBXJ17viiv10r981zwHUH0gQiWbVSXbLZoja3I4NwmuzVTP13VnRUxW6ekbJUHyn
+         SH2Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=NiZf56Uim4TT6iXbRIM3U2wYf4exyklNf3pNuoRHTuI=;
+        fh=rZAI5KCTM/F8NzXSDlQl6KTKIezdT4dpEbz43BAbVA0=;
+        b=FTo0rF37yCYb0mHqfqYb9CDiB2f+h06UFn/dAMivHnB46TObj5+7MGO+pbh+fWff92
+         3YJBBFrlRyE6jSNoUqNSa++e54sUXuUzgn/LrWwO3HnDWwWyX/0C0pMQIB2p2BTgNF70
+         MHR7sKDDYfIm57NqYeXj7rulLhWeYIFMRe5nuP+Ko8ThteybsER5saJR7dNK8Hc/nSKU
+         qfKbuNLVCNXdoCPoHCqbPiUo+cy7PxWkgDo7WOy2bNkbq2aioC5HSPRd0BVL+mterC4q
+         NFNyIdQQAy72719WT33Bfl8jsCLRTHK4cg7TgKYTZFZglMeQ9YGUjKGf7x4I+SiAt9vE
+         ybtw==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791682914; x=1792287714; darn=lists.linux.dev;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=NiZf56Uim4TT6iXbRIM3U2wYf4exyklNf3pNuoRHTuI=;
+        b=W7NIojj74bmG7MJnhEYO1LeBR31g6XSu7n2btCnIOST5lFhgnAb7ROhiZVO06KMSfC
+         L90NZrceXR71KyS+Tnmmno9Iq6KQQrrWkxfpRK61aGmrrzpMphG9XuVcI3Fvl1fA1+4k
+         cVa6LpVsN0JU/GXWkmmSRphwqkxSEJE9qC5aBxdt1Xn11mYAdfBoKBtc9+jdTYtTzhpa
+         u+Tpj5nOpZozMZF2MD/15CrVu64M6dmO0lp6Zc73LrXiWgqh5slR5Q4VV2TSMO90yntc
+         ZCkjqhbgly0UgpNN5zLMgSVcKZxB5g6FRACD7V481d9If57fe3ESEtFxPSoSKQ/um9s1
+         xMwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791682914; x=1792287714;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=NiZf56Uim4TT6iXbRIM3U2wYf4exyklNf3pNuoRHTuI=;
+        b=PO1EdZHxWhm7GXZEtBP5ZKYz795fBUF3l5vsXGZh8zrjQ+MZI9ttmiA+XvFv0WqMX3
+         uH4d5Fe/SXfa9XImzqRf+EI2VCgoR/w8njOF9UaTZRgXT5MnQYOiBaMZuoYVEquv6QuO
+         BqyYNucqBeS14+TsdKjtNFHMN4+shRvuja+ToV0gwFk/NlHBppgvTk/TpPKlyEVm7SL/
+         iFt9bXGkG5cCXPsA0v+XEaCjkkDCm6oayfUsDT5xeQSNHZVphZvq1Zkp6ALpvMIMJq6Q
+         GRuTJsFBnXO81D9QwMSshXm0YgLynDbPNEPatLWGjm9bTtP0eCWPoke49H2NcbTQIKtG
+         IYCQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxmzKHg8tjnBVBGt7uJ72p+rY5jqAPC29iAUKslSGDDoKVEJNBvEFGuhCpvZmoUwY+6FzU=@lists.linux.dev
+X-Gm-Message-State: AFq9FYJt1pHJg3b9x7/YiE5YZay/YjuASUsftwxcooBLN+OAXvLxH5bm
+	nfCDQJqUelC5/YYDYh5sUQv0CnfUc6GPNlsLf59glgKxelgfmj4QM5n1RwFnjTKc1fu7FVAspVK
+	XyKHzENFmk0czfUUFb3qHF3f94Bf+qb4=
+X-Gm-Gg: AYBFou2cA4qqvHHKiqn46nXs3iU3+hGi15euEoPOIKW5BpYFt2d2gWpja2kUn62uoI4
+	8eNCj5y4MprWroxlZPXnuNlxd7JC2MAMai2LCFSfcC4ZekyGGADc0IiZPFDIT/vYs6hsGHUZyQ9
+	e7j3lENPmmqpI6qynIFuLRPB4y6TblH8auQML5HeNwClsqWD8XeAnqVjBx6IbeBUGOcuxIrRiQe
+	Klml2NwE49db4Y2PCYXJGYQPFRmYrNtxkRxObVVwTQP/3kQlLj2cLs9SLEy1oLvW5yrD5uCt/Qc
+	14jiTnY8S3/PZncQTLx/PlRWQMI/aLihQ4WgLY6tnVtV4gHAyA9Q0J4oholBmqWBBxSBOckRBlt
+	J9vgYrJucQCgHDoGx3FoOcR8t1NGunzcCNRCZ0cJQeGD9dlN3PWgo/9sBHEyWu2s/nqoMWXAnNs
+	AL2n1F5C7CxFlMscQOPu072Jor
+X-Received: by 2002:a17:902:dac3:b0:2dd:c100:7cb6 with SMTP id
+ d9443c01a7336-2e842abe6e9mr47983795ad.50.1791682913773; Sat, 10 Oct 2026
+ 18:41:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+References: <20261008103831.542533-1-phucduc.bui@gmail.com>
+ <20261008103831.542533-22-phucduc.bui@gmail.com> <sashiko-outbox-164068@kernel.org>
+In-Reply-To: <sashiko-outbox-164068@kernel.org>
+From: Bui Duc Phuc <phucduc.bui@gmail.com>
+Date: Sun, 11 Oct 2026 08:41:41 +0700
+X-Gm-Features: AclHuK-QjEu_VAQXcaV6bZOPL7kHjp0kHpv9N9xREPZm8mCCDGSnjyOHWmNvNow
+Message-ID: <CAABR9nFB++tUxLm4M0cB_y9CXxA4QsXTUkS0wKGbd5F9LMrP6Q@mail.gmail.com>
+Subject: Re: [PATCH 21/24] ASoC: renesas: msiof: Fix msiof_close() being
+ skipped on rollback
+To: sashiko-reviews@lists.linux.dev, Mark Brown <broonie@kernel.org>, 
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Cc: wsa+renesas@sang-engineering.com, Frank.Li@kernel.org, imx@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] net: enetc: memory leak of partially applied overlay on of_overl=
-ay_fdt_apply() error
---
+> [Severity: Medium]
+> Does this error path leak the dmaengine_pcm_runtime_data (prtd) memory?
+>
 
-commit 8ec35cbb99007d6ea94d2243308ce4530bb6180d
-Author: Claudiu Manoil <claudiu.manoil@nxp.com>
+Yes, this leak is pre-existing.
 
-net: enetc: Add pseudo-MAC support for ENETCv4 Ports via a DT overlay
+Looking at it further, snd_dmaengine_pcm_open() already calls
+snd_pcm_hw_constraint_integer() for SNDRV_PCM_HW_PARAM_PERIODS, so
+the second call in msiof_open() seems to be redundant. Removing it
+would fix both the positive return value and the prtd leak:
 
-This commit introduces pseudo-MAC support for ENETCv4 ports by modeling
-them as fixed links. It uses a compiled device-tree overlay to synthesize
-the fixed-link node at probe time when the port lacks an ethernet DT node
-representation.
+-----------------------------------------------------------------------------------------
+ret = snd_dmaengine_pcm_open(substream, chan);
+if (ret < 0) {
+        dma_release_channel(chan);
+        return ret;
+}
 
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c b/drivers/n=
-et/ethernet/freescale/enetc/enetc4_pf.c
-> index 71c971618388b..7999355b5b9f5 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-[ ... ]
-> +static int enetc4_apply_overlay(struct enetc_ndev_priv *priv)
-> +{
-> +	u32 size =3D __dtbo_enetc4_pseudo_mac_end - __dtbo_enetc4_pseudo_mac_be=
-gin;
-> +	struct device_node *np =3D dev_of_node(priv->dev);
-> +	int err;
-> +
-> +	if (!np)
-> +		return dev_err_probe(priv->dev, -ENODEV,
-> +				     "Missing of_node for Pseudo-MAC port\n");
-> +
-> +	err =3D of_overlay_fdt_apply(__dtbo_enetc4_pseudo_mac_begin, size,
-> +				   &priv->ovcs_id, np);
-> +	if (err)
-> +		return dev_err_probe(priv->dev, err,
-> +				     "Failed to apply fixed-link overlay\n");
+snd_soc_set_runtime_hwparams(substream, &msiof_pcm_hardware);
 
-[Severity: Medium]
-Can this leak the partially applied overlay changeset?
+return 0;
+-----------------------------------------------------------------------------------------
 
-If of_overlay_fdt_apply() fails during application (for example, from a
-post-apply notifier returning an error), it can return a negative error
-code but still populate the changeset ID in priv->ovcs_id. Returning
-immediately here without calling enetc4_put_overlay() bypasses cleaning up
-the partially applied state.
+Morimoto-san, Mark, would this be acceptable? If so, I'll send it as
+v2.
 
-Looking at the caller enetc4_link_init():
-
-	err =3D enetc4_apply_overlay(priv);
-	if (err)
-		return err;
-
-The error propagates directly and skips the err_mdiobus_create label
-which would otherwise invoke enetc4_put_overlay() to handle the cleanup.
-
-> +
-> +	return 0;
-> +}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1791548316.gi=
-t.claudiu.manoil@nxp.com?part=3D1
+Best regards,
+Phuc
