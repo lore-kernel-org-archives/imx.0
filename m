@@ -1,103 +1,159 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A185F2BDC0B;
-	Sun, 11 Oct 2026 15:28:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54DF735E956;
+	Sun, 11 Oct 2026 21:04:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791732511; cv=none; b=qLDxG3lLjHWiKWp/nVxpmmVwH92R4aUasiAj+Uk5Gcw15beXVSxiD7ihzkTTxZc9X411682oW6Krxx4D8hVB8V4v4AxF7LzCtVIf4rroLZkF2YwFn2ErsWDADh4k3t+TOrQ81eURwxElZCW1bYydRvWYz4owDrQ3DECdXS8pdhA=
+	t=1791752654; cv=none; b=KN8hEvcuTAcEB/CH5y8TBdQNtcweeSuUYaz2pew1XQxpyL0iQ/vm9FFzJjPf4V5lK1w43UDBT9JWT1eK4HYa201LIMfKrdCT3yACr/bTvtH/T9yV9mfRhnwaYAHjQGtGcdLzBS/0ACIPqVPQ5U6Y7vqCDDbNdoUDCj1XM1IqiCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791732511; c=relaxed/simple;
-	bh=iWTlLbNdTPnAfkICGWI8CgVbZIJs2fVsJZif8YoATxc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ho68fEG+m+SQ2lucGQ88Dbbf5e+/nQmnetBpdgjLOfsWDYWreTprrBK6lciRkQrFjoHI+Ik4QrWiPq8ahKqf9t70dJcKTdPtwefB95QADtF1LZIzxjpIb5iHFAOIXxC+2lG80R3P4UxxvZ87Teur3lI5gKbb9fp3yb5CBs+MgTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 258B71F0089B;
-	Sun, 11 Oct 2026 15:28:26 +0000 (UTC)
-Message-ID: <8be9c875-68a9-4bb5-b581-501a0a6819f4@linux-m68k.org>
-Date: Mon, 12 Oct 2026 01:28:24 +1000
+	s=arc-20240116; t=1791752654; c=relaxed/simple;
+	bh=qpbEGTvLxbygv5npD62Bzm3P04At/WO1oJDNOyef1Nk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qLoarRn6scJSQQlO/2712YBHVXkIXmNgyxQtKG/lAZgKUVM17crRR40Ko9HLNUmaccffhNhNiwfJ3lcuUakI4XopGfuZspCmSJsCPgns1JN+UfN9DZCosf3r4QZKUsS8r1TdD+RIL+Xc6YnPJfom5f35XFQYDXxgLKPYYZaUzTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WKd0gele; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WKd0gele"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B46E61F0089B;
+	Sun, 11 Oct 2026 21:04:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791752652;
+	bh=IT1YkemJVNo91PZ/vHFhpiJIZ6agvmdqx5nDY6WX42Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=WKd0gele+RANjoxMl1pzsmiQOrSU26DsT9tqLqZVOfOBX1CIoRkg8+aqmnM8o9t4x
+	 yuSKooiYrRqOngIy0u9rTyETk7Tn7B4YqlM4mlS64CuRIg4154IgItYT0n9Xm4rZg9
+	 TaSGmpvaRImJvRtLZAV1Rr8d+/Xu4o2Vr48uBY9cSmyXW/VagA353MXVwiMelRe8wF
+	 ArVt9Q86gyzq76m5pSbOPuhr+g//4ozLXAGbLlvJ8INo3KKFC8YvVXMNK99FLyKFd9
+	 Q6Np+HG6L7E4XAnCptiKklAmZ2qvTTB3EAMIVhVkBdvqXU55haHbr/pru9uL0T9VjI
+	 +lAPknUCWaO+w==
+Date: Sun, 11 Oct 2026 22:04:07 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Ernest Van Hoecke <ernestvanhoecke@gmail.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Kieran Bingham <kieran.bingham@ideasonboard.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+Subject: Re: [PATCH v2 3/6] dt-bindings: connector: Add Toradex camera
+ connector
+Message-ID: <20261011-expulsion-frivolous-690de090cf9d@spud>
+References: <20261001-verdin-imx8mp-hmp-camera-ready-v2-0-7d1343ecd3ec@toradex.com>
+ <20261001-verdin-imx8mp-hmp-camera-ready-v2-3-7d1343ecd3ec@toradex.com>
+ <20261002-prepaid-retired-3d2c9cbc035e@spud>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/2] m68k: coldfire: Add RNG support for MCF54418
-To: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
- Olivia Mackall <olivia@selenic.com>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, linux-m68k@lists.linux-m68k.org,
- linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- Frank Li <Frank.Li@nxp.com>, Herbert Xu <herbert@gondor.apana.org.au>
-References: <20251126-b4-m5441x-add-rng-support-v4-0-5309548c9555@yoseli.org>
- <20251126-b4-m5441x-add-rng-support-v4-2-5309548c9555@yoseli.org>
- <bd25e903-30fc-4905-986c-96d1b42e9f02@linux-m68k.org>
- <ddf0ab32-5b66-453e-b7aa-1722aeaf2aa0@yoseli.org>
- <9ba1ebd8-61cc-4e1a-b68d-906b20dd4999@polyxeno.com>
- <asn8e5puc3I01Lva@gondor.apana.org.au>
-Content-Language: en-US
-From: Greg Ungerer <gerg@linux-m68k.org>
-In-Reply-To: <asn8e5puc3I01Lva@gondor.apana.org.au>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="q3EvCfSuoZ2pke+6"
+Content-Disposition: inline
+In-Reply-To: <20261002-prepaid-retired-3d2c9cbc035e@spud>
 
-Hi JM,
+--q3EvCfSuoZ2pke+6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On 10/10/26 18:51, Herbert Xu wrote:
-> On Wed, Aug 19, 2026 at 07:36:36AM +1000, Greg Ungerer wrote:
->> Hi JM,
->>
->> On 19/8/26 01:09, Jean-Michel Hautbois wrote:
->>> Hi Greg,
->>>
->>> Sorry for the very long silence on this one, it fell off my radar...
->>>
->>> Le 03/12/2025 à 13:15, Greg Ungerer a écrit :
->>>> Hi Jean-Michel,
->>>>
->>>> On 26/11/25 17:08, Jean-Michel Hautbois via B4 Relay wrote:
->>>>> From: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
->>>>>
->>>>> Add support for the hardware Random Number Generator (RNGB) found on
->>>>> MCF54418 ColdFire processors with clock enabled at platform
->>>>> initialization.
->>>>>
->>>>> The RNGB block is compatible with the imx-rngc driver.
->>>>>
->>>>> Reviewed-by: Frank Li <Frank.Li@nxp.com>
->>>>> Signed-off-by: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
->>>>> ---
->>>>>   arch/m68k/coldfire/device.c       | 28 ++++++++++++++++++++++++++++
->>>>>   arch/m68k/coldfire/m5441x.c       |  2 +-
->>>>>   arch/m68k/include/asm/m5441xsim.h |  9 +++++++++
->>>>>   drivers/char/hw_random/Kconfig    |  3 ++-
->>>>>   drivers/char/hw_random/imx-rngc.c |  7 +++++++
->>>>>   5 files changed, 47 insertions(+), 2 deletions(-)
->>>>
->>>> I am happy with the ColdFire arch parts, so from me:
->>>>
->>>>      Acked-by: Greg Ungerer <gerg@linux-m68k.org>
->>>>
->>>> I don't mind taking this commit via the m68knommu git tree if the hw_rng
->>>> maintainers are ok with that. Otherwise if you break out the arch/m68k
->>>> parts I can apply those on their own.
->>>
->>> I think Herbert acked ?
->>> Do you need another ack ?
->>
->> I would like to see an acknowledgement that taking this patch via the
->> m68knommu git tree (to Linus) is ok with the RNG maintainers.
-> 
-> I have no objections to this.
+On Fri, Oct 02, 2026 at 06:05:24PM +0100, Conor Dooley wrote:
+> On Thu, Oct 01, 2026 at 01:44:11PM +0200, Ernest Van Hoecke wrote:
+> > From: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+> >=20
+> > Toradex boards route the sideband signals of their 24-pin camera
+> > connectors to different GPIO controllers. Camera overlays which name
+> > those controllers directly must therefore be duplicated for each host
+> > board.
+> >=20
+> > Describe reset, power-down, detection and power-control as
+> > connector-local GPIO functions. This lets an accessory overlay remain
+> > independent of the host wiring. MIPI CSI-2, I2C, clocks and supplies
+> > remain described separately because the GPIO nexus does not abstract
+> > them.
+> >=20
+> > Signed-off-by: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+> > ---
+> >  .../connector/toradex,camera-connector.yaml        | 81 ++++++++++++++=
+++++++++
+> >  1 file changed, 81 insertions(+)
+> >=20
+> > diff --git a/Documentation/devicetree/bindings/connector/toradex,camera=
+-connector.yaml b/Documentation/devicetree/bindings/connector/toradex,camer=
+a-connector.yaml
+> > new file mode 100644
+> > index 000000000000..27fee3defde7
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/connector/toradex,camera-connec=
+tor.yaml
+> > @@ -0,0 +1,81 @@
+> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/connector/toradex,camera-connector.=
+yaml#
+> > +$schema: http://devicetree.org/meta-schemas/base.yaml#
+> > +
+> > +title: Toradex camera connector GPIO nexus
+> > +
+> > +maintainers:
+> > +  - Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+> > +  - Toradex Linux BSP Team <linux-bsp@toradex.com>
+> > +
+> > +description: |
+> > +  Toradex carrier boards share a common 24-pin, 0.5 mm pitch FFC/FPC c=
+amera
+> > +  connector carrying MIPI CSI-2, I2C, clock, power, and sideband GPIO =
+signals.
+> > +  This binding describes the sideband signals as a GPIO nexus. The oth=
+er
+> > +  connector resources remain described by the surrounding board device=
+ tree.
+> > +
+> > +  The nexus exposes connector-local GPIO function numbers to camera ov=
+erlays
+> > +  and maps the functions wired by a carrier board to their GPIO contro=
+llers.
+> > +  GPIO specifiers contain a function number followed by standard GPIO =
+flags.
+> > +  A board may omit functions which it does not wire.
+> > +
+> > +  The function numbers are:
+> > +    - 0: Camera reset, connector pin 11
+> > +    - 1: Camera power-down, connector pin 22
+> > +    - 2: Camera identification, connector pin 23
+> > +    - 3: Camera power control, connector pin 24
+> > +
+> > +properties:
+> > +  compatible:
+> > +    const: toradex,camera-connector
+>=20
+> This seems overly generic, but I assume that's what it's actually called
+> and if you make a new camera connector the name will be
+> "camera connector 2" or something.
 
-Thanks Herbert.
+Since this came up during last weeks conference, figured I should
+clarify that I was commenting on how the generic name, which typically is
+something we try to avoid (because it is usually used when someone does
+something like "sony,8-megapixel-camera"), was probably actually fine
+here. I wasn't looking for a version to be embedded in the string. I
+already mentioned this to Ernest after the talk, but mentioning it here
+for everyone's benefit..
 
-JM: I have applied this to the for-next branch of the m68knommu git tree.
-I didn't quite go on cleanly, so please double check it for me.
+--q3EvCfSuoZ2pke+6
+Content-Type: application/pgp-signature; name=signature.asc
 
-Regards
-Greg
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCasv5xAAKCRB4tDGHoIJi
+0rp3AQDG2KmW+uhF4maDEpqvD2fEbdFwuOzCqEbgz6CUKjVH/AEAgfi94bnz2cvI
+lHwJ8q0M8cKP9yx53nXNKy8NNFOTSwQ=
+=kIsF
+-----END PGP SIGNATURE-----
+
+--q3EvCfSuoZ2pke+6--
