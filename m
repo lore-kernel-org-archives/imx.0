@@ -1,138 +1,124 @@
-Received: from mslow3.mail.gandi.net (mslow3.mail.gandi.net [217.70.178.249])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96FD23537FF
-	for <imx@lists.linux.dev>; Mon, 12 Oct 2026 09:12:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.178.249
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791796339; cv=none; b=iXShzCYAeZM0G+8F6H4rUmG5goe6ehIGtEf/4dXCpv5Aw/IS13NJlGy+qhM3WMc9y1CrmTvp2/KPK6dx7MOAILCHHC7kBm7q/cXVXytf7YmfB2pI3LIHR3NiGA5cy49L6WeG/WxMQIzzq/KxrWbL+XnYq2xB8wewIPF2F9fXb5k=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791796339; c=relaxed/simple;
-	bh=JJbp9gY5o+Y9jQt84wdvC7PHP6OKYOMmG0y/d7r9l+k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nYK/TJr+lk2Lc1a0mAK44orTmWocpaVSxIywPeYy/Ea4zLvGzXhz7C2M1I7TKjNmrKz0V8opQItLwHJubJF3RMV9zKpaPhwNW23qCskz1/9IDQlt+EfAGjsY3BaWrcmr/zqE+o9obdrrpf5Fz6aLeCFe2uxDNZ6xvfcfZl6hjgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yoseli.org; spf=pass smtp.mailfrom=yoseli.org; dkim=pass (2048-bit key) header.d=yoseli.org header.i=@yoseli.org header.b=AAz8ZPAZ; arc=none smtp.client-ip=217.70.178.249
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yoseli.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yoseli.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A82C470130
+	for <imx@lists.linux.dev>; Mon, 12 Oct 2026 09:16:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791796569; cv=pass; b=WCs2tdrTjJ2rmNCzlhi+mHNBaQFX/mwbPeQNhIfbBGzTr/BfRpd4toIcrQirEsTCvmuJaqrq5QJvYiI+UB91Vgm5nAyOWpZcZy6oxxXLOMhzDYcEIY1J8LoUDJjV5VbR6zyeG+zzQUDkNlOc+lXWZEwRkrXIdJMaIANgwpOoafk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791796569; c=relaxed/simple;
+	bh=Drzvt49CpeOh1RLsB1Atdeu2NC85y5Tl0IIhLhry96Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=N0MTHbO8IfzF47148qLYUzWuN09+Sba1ZqoR7t6lUZ/dCdDqCFBalRN6HT64k8nTDK++WirDYZ7Z/DL6Z69aazuqPBcZHeeZU86cxsR+FrA27lwDCvXtzFVkQtvAuGF8Kbe6f1grdpwa1903zaxe1Gb9q9lRnnPM6pngUy/Q+ws=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NNYdzWfj; arc=pass smtp.client-ip=209.85.218.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yoseli.org header.i=@yoseli.org header.b="AAz8ZPAZ"
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
-	by mslow3.mail.gandi.net (Postfix) with ESMTP id A0EE4580B72
-	for <imx@lists.linux.dev>; Mon, 12 Oct 2026 08:46:29 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 957A53EB8E;
-	Mon, 12 Oct 2026 08:46:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yoseli.org; s=gm1;
-	t=1791794782;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=19boBTCsjzigUNehuNnbCAd0sjXKxyv/w6iDQ2Y4Fdc=;
-	b=AAz8ZPAZyEpuFA2hg1GD2suLLmvBqd0ODa7hc1UL+saONfjIxVSk6G/tnsQe2ISC1P0G4y
-	VfxTMHDMvQ0SZdF0yzIY/jsdYFHuCL2MQyvJFMaWhQm9liejE3gEDXTWRaJYvrtY6XxDTY
-	QeVKWrkiKVYFh8wizEQb7r8XBHtku4LDZ4ZwEiIndpKFQaTH7DIpd3jqTHzBuTH7olquCm
-	HUb/Zl1H7kEfZa5DEizrslSK8++usYILUQQIMp6BKUNSzVEKh+aFJ+ehl/oZFk6NR2R63V
-	nudiPNLAPLX9rUQkjM56gpuhxlvy2Vvo5vSA8vmwDlfzD9bBEl+/zdF274qzUQ==
-Message-ID: <ee54b08f-b3d8-4a62-bc43-0117a9b11102@yoseli.org>
-Date: Mon, 12 Oct 2026 10:46:16 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NNYdzWfj"
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-c29c6a3930bso204118666b.3
+        for <imx@lists.linux.dev>; Mon, 12 Oct 2026 02:16:08 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791796566; cv=none;
+        d=google.com; s=arc-20260327;
+        b=B0tPk9n8ZwoSmuy/lmVk3V5sVCHLBdkzd3cwtvbH873p47Ee2XWAE39+a1ZA/0EJ2e
+         krYGOieOqKVXPrVuESBEe6q8pioO5+P0TMcWhc0imQoR4t42JmgBjzxXzewm7aY3JOgr
+         t4EPo/TkWeGKIWy+U/WJdvSvlsrjLY8XyM/Gyi1pgAX46+gW8TTKningBFnJsTwXrP/k
+         5dfGZXN/95gvIotWgw7bk3+Kw7FjP8kS50PUbdcroD6oby9ycO7GBb33G4mOPB8vSN3+
+         eG99Pze18z6bkIVUaPwxER/7+cJiuGF6d8YeRh6ock3MPEhDDWLuzZLenKDsOL/vQe7C
+         jx7g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Drzvt49CpeOh1RLsB1Atdeu2NC85y5Tl0IIhLhry96Y=;
+        fh=jUkx6rQGxJe7YJvllTw6eNyQkxYTWLy87gUd0spWa7A=;
+        b=sRvYxAD64NTXpeVSNjYO8DmzQ/2yMDg3GjaDsQNiw6HaRy4bLG9IKoquCYVxEkyb31
+         fUk0+HRJd8gLl6E0z3kU9PXtAWqNlbXY6078C2wXWU5mqPdtJPaRptXMk58g/WTn+Z7w
+         VyWOqXP8DUCgLbIYZyTBR+e31klVZd85EypldMCubSa3xTCjjWowFLeNkT75gStox5ky
+         MqyQbfY//If1VYy4ixuI9hnemdPyy0A02JwLyOMadYiI+a9Y3UImKrJTYCRH3hR6iPsA
+         KZSmtxU3pDbunFobeDm8ao2+6NvLFGbyBbqEnsaC3FCDw2h0vkBvGM2cavPqjie1IAiD
+         aEBg==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791796566; x=1792401366; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Drzvt49CpeOh1RLsB1Atdeu2NC85y5Tl0IIhLhry96Y=;
+        b=NNYdzWfj9ccUcpz+/e8KE6V0iOwCjVOV2V7HGEw99Ol043+rAkiteCYPUpNWTm5UPQ
+         JIv6f6SZO8XJEY0bbuqdxX1dzeDSG+8O9UmUrZCtYs+f3AYl97W0A0wSSHUqEwa7xaaV
+         emIuo6VU92U9OCGAHzpYFRn5p1Ip40Xcw9PAZBI4f+q3IeO66MwRmzUM215tz6sBZBpx
+         C103gXopM0o3fnQd1YjP3WfO0mTBw8OQk4QiIhwNomRE5kcidON74boZG3Jacq6elsH4
+         21pjjYZfV5uJ6gfqym9YlAbCByC7Bpxj2cTPQiYtgASotfNks/hZNq2ezZ05900rtKGP
+         glMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791796566; x=1792401366;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Drzvt49CpeOh1RLsB1Atdeu2NC85y5Tl0IIhLhry96Y=;
+        b=IS2jUhNlLDIdzdyWMtaT24CdaKMk+JoScWjcY5rnyHQIkm52jQgqGG92WjQeFU6suC
+         VwfxPZjtypXV15OqUkZjDxy2Kdq7TYbwdsukE38PDlt1F0NtY0+aBIvD0qijnf69wVii
+         fQnH+LtoaNw+niPDIxWlfFuaRvZT6J1dxztFMdzft8euP1hReluhGe0HUJRGSBYa63PH
+         ZP9rN+1JPxW0G61937MtuFpls7uAbzDv2AsF/uBl2hqqbOB80OXKS3pPJaviZ5fQ0eDF
+         UGBNGBdDjIc3sfi31yjL49NIWV5+h8915OftS3QQapsYVMZgGPJtQvCaDTDIDOeb3jnn
+         Jcqg==
+X-Forwarded-Encrypted: i=1; AKwUvBwjsnyFyhWB/PDCvfriXl98LShWwTAkhc1lh9NnBNXursXt9JWx4JCxu7zgtBpNQhw7mhs=@lists.linux.dev
+X-Gm-Message-State: AFq9FYK6DOh+mqYQDC0UfuKr8cE9t1B03iZWCwo2qt/OTyI9LXOwK4tA
+	8OqZW8HUwM2uFo2xaU3QaiBovF6W+x6KV7BfB2PI9AFpKX3BBrO3Nwrhc8UuXCvAob10njj6tj9
+	KL3zodEJ8GMkpHPdW+Pd885oxn2iM324=
+X-Gm-Gg: AYBFou2rICaqPu2aUrvz4kbMdzz0UuBV4CLJfFBHCZQtVn75+4FwiNdYzCcNS/0bH/b
+	8NL97MKg0J5jdgTJAZ6uBHXbjqZe/jOg/0RU7vQNv6xyBLGIqNsGIqk5cN3fdbdW+2iS+DMpU3f
+	tVLemcZYSJw4+revTm4rRB6sAicdJknwuWohskb6AnUWl1/n0h5lQOG8eATt5A1ylEsGhB62DYo
+	gYO6ZErWWiITGeKxcb/O+yUKyIxUN1W+oU1WsX8yqsXzwZ/67EvP3qblZMkEwi/1AH9YAbiDGcs
+	4nQqEFG68KBUVdyp0ZvAe/sVHSHtvO5izLlI9oLmgXz7OaUwR/b5MxjANOijQc6RD7N/9pxHDoa
+	04/3z+jgI1FCTHmaPjkr36nADsCBhfccAKAgGFC8f04UfqBfgwmFLIfEo/PiHQIB6OaMObFHlVi
+	dbU4gCIPgyiktfG5zT7/pyMjOlsjRZ46d/QJBqif/0
+X-Received: by 2002:a17:906:7948:b0:c29:60b7:3f14 with SMTP id
+ a640c23a62f3a-c31aa02b449mr838815766b.46.1791796566369; Mon, 12 Oct 2026
+ 02:16:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/2] m68k: coldfire: Add RNG support for MCF54418
-To: Greg Ungerer <gerg@linux-m68k.org>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
- Olivia Mackall <olivia@selenic.com>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, linux-m68k@lists.linux-m68k.org,
- linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- Frank Li <Frank.Li@nxp.com>, Herbert Xu <herbert@gondor.apana.org.au>
-References: <20251126-b4-m5441x-add-rng-support-v4-0-5309548c9555@yoseli.org>
- <20251126-b4-m5441x-add-rng-support-v4-2-5309548c9555@yoseli.org>
- <bd25e903-30fc-4905-986c-96d1b42e9f02@linux-m68k.org>
- <ddf0ab32-5b66-453e-b7aa-1722aeaf2aa0@yoseli.org>
- <9ba1ebd8-61cc-4e1a-b68d-906b20dd4999@polyxeno.com>
- <asn8e5puc3I01Lva@gondor.apana.org.au>
- <8be9c875-68a9-4bb5-b581-501a0a6819f4@linux-m68k.org>
-Content-Language: fr-FR, en-US, en-GB
-From: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
-In-Reply-To: <8be9c875-68a9-4bb5-b581-501a0a6819f4@linux-m68k.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: jeanmichel.hautbois@yoseli.org
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: dmFkZTEPWrJqe016L8I3chHHuK71fvLMlYu+6IrNfxrvD/MyQtgB2kOmSroRn5pztNxyoPXTsP3v9st2xoK0cTKVkCkEXnzk+tyydkEnZa3BeDOpN+lBo3VSfju+U2Tk5DFLr2QTf3rS7cF70bZN6RCshXOZ6HVSfbaHlah6rgF+S1ghDvtrdNc33ylG978pFkIVKZAjrHrrK4lzsId4ZikSGWG++dyZRIZYSLuxWGOy6uWwFvRqYp7eHk+F8lCkqQkRzDYLf/PNuPs9yHrHnCbSXcwXnUuKid+zR4eyu85684+A5SFc3yxeSVSajXUtZMboFqBEssGGUH2TBR8Yk1f07MSZJgLkJ/dO+CwPvwngLjI92MEv73dMHbbBqJibq0do1B0Lz0Zo4mzA4OezcBN5mVpeb0VThW9sEYznRUJeYGoRvkCbWRdrYkcknQFhqJwUI1dRKs9JjHOG0kHLDHZ8rpKjMT14YRCg/zYDN9c5wK/DOOHXEvlA1ipL+b+3rKxzP3fnDw63p4Y44/pyd0xok+TQxEAM35f5EE+5btGH4X2G7kPlNHHh5Ik+e2cJFW/1kSa3D12NjWBUnaHClNFyhqUsOcUOJZDYAZk3O5uHc2Xx45m7gaOtKGgKEbDe1QC01g3/kF2lnlW+BO6+ah4NHNgEER4kazqxwF5roUA2tzhB1w
+References: <20261011-gpio-mxc-cleanup-v6-0-cb47ce2ad758@nxp.com> <20261011-gpio-mxc-cleanup-v6-3-cb47ce2ad758@nxp.com>
+In-Reply-To: <20261011-gpio-mxc-cleanup-v6-3-cb47ce2ad758@nxp.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Mon, 12 Oct 2026 12:15:28 +0300
+X-Gm-Features: AclHuK973sM-FWRDdJi0fSTDjgQG7reB3UnWpT5L7Xl9I9NH2wEexbwNU5tVEtc
+Message-ID: <CAHp75VfCrQAnVYV-7wiga-R8A4VKgjfV+EHo_7jy=FNmU=Ov6Q@mail.gmail.com>
+Subject: Re: [PATCH v6 03/13] gpio: mxc: fix wakeup_pads bit operations
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Shenwei Wang <shenwei.wang@nxp.com>, linux-gpio@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Greg,
+On Sun, Oct 11, 2026 at 2:54=E2=80=AFPM Peng Fan (OSS) <peng.fan@oss.nxp.co=
+m> wrote:
+>
+> gpio_set_wake_irq() can be called concurrently for different pins on
+> the same port, so use atomic bitops when modifying wakeup_pads.
 
-Le 11/10/2026 à 17:28, Greg Ungerer a écrit :
-> Hi JM,
-> 
-> On 10/10/26 18:51, Herbert Xu wrote:
->> On Wed, Aug 19, 2026 at 07:36:36AM +1000, Greg Ungerer wrote:
->>> Hi JM,
->>>
->>> On 19/8/26 01:09, Jean-Michel Hautbois wrote:
->>>> Hi Greg,
->>>>
->>>> Sorry for the very long silence on this one, it fell off my radar...
->>>>
->>>> Le 03/12/2025 à 13:15, Greg Ungerer a écrit :
->>>>> Hi Jean-Michel,
->>>>>
->>>>> On 26/11/25 17:08, Jean-Michel Hautbois via B4 Relay wrote:
->>>>>> From: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
->>>>>>
->>>>>> Add support for the hardware Random Number Generator (RNGB) found on
->>>>>> MCF54418 ColdFire processors with clock enabled at platform
->>>>>> initialization.
->>>>>>
->>>>>> The RNGB block is compatible with the imx-rngc driver.
->>>>>>
->>>>>> Reviewed-by: Frank Li <Frank.Li@nxp.com>
->>>>>> Signed-off-by: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
->>>>>> ---
->>>>>>    arch/m68k/coldfire/device.c       | 28 ++++++++++++++++++++++++++++
->>>>>>    arch/m68k/coldfire/m5441x.c       |  2 +-
->>>>>>    arch/m68k/include/asm/m5441xsim.h |  9 +++++++++
->>>>>>    drivers/char/hw_random/Kconfig    |  3 ++-
->>>>>>    drivers/char/hw_random/imx-rngc.c |  7 +++++++
->>>>>>    5 files changed, 47 insertions(+), 2 deletions(-)
->>>>>
->>>>> I am happy with the ColdFire arch parts, so from me:
->>>>>
->>>>>       Acked-by: Greg Ungerer <gerg@linux-m68k.org>
->>>>>
->>>>> I don't mind taking this commit via the m68knommu git tree if the hw_rng
->>>>> maintainers are ok with that. Otherwise if you break out the arch/m68k
->>>>> parts I can apply those on their own.
->>>>
->>>> I think Herbert acked ?
->>>> Do you need another ack ?
->>>
->>> I would like to see an acknowledgement that taking this patch via the
->>> m68knommu git tree (to Linus) is ok with the RNG maintainers.
->>
->> I have no objections to this.
-> 
-> Thanks Herbert.
-> 
-> JM: I have applied this to the for-next branch of the m68knommu git tree.
-> I didn't quite go on cleanly, so please double check it for me.
+The code doesn't modify any reader part of this member. So, the above
+paragraph is incorrect, right? Otherwise it needs to be clarified how
+assign_bit() does change anything.
 
-Thanks, I think you missed 1/2 ?
-Or did I miss something ?
+> wakeup_pads is a u32, while assign_bit() operates on unsigned long
+> pointers. On 64-bit platforms, this causes an 8-byte read-modify-write
+> on a 4-byte field, corrupting the adjacent is_pad_wakeup. So change
+> wakeup_pads to unsigned long and reorder to avoid wasting words.
+>
+> And fix the enable/disable path unconditionally sets/clears the
+> wakeup_pads bit even when enable_irq_wake()/disable_irq_wake() fails.
+> Only update the bit on success.
 
-Thanks !
-JM
-
-> 
-> Regards
-> Greg
-
+--=20
+With Best Regards,
+Andy Shevchenko
