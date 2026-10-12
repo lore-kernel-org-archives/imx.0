@@ -1,186 +1,106 @@
-Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A46F34EEFD
-	for <imx@lists.linux.dev>; Mon, 12 Oct 2026 06:54:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BA3B43CE58;
+	Mon, 12 Oct 2026 07:01:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791788057; cv=none; b=WeyQUNCiMPOF/fppfr8AkJsJyAU03zQVyqrf9qdzZyjLATUK+BZouICavUyzaGbvl6Kuf6qomPaKuzrXInLvcUQfQ/T4fUuTqsDeTE0a9kF+dzCgPMiVRqpUJD2RWo1d66RHhJQBTGe0+UAqAtBfu0+Wd1nel6zERl6IocG0Rjk=
+	t=1791788492; cv=none; b=ERhr007w75AdIwKEO5rf9ZBpSkrGLmRurqsIclGfmC5R3wIYJVmSmN7Wed2T6TYQWVAkptNW7pCGLUKMsJ9Mg/CfHW+rknLt4bA1Ms1XsfBdPyE9OqZTvkpDDa9enGAR2kToHTMgFSAWkPfGFIZUMJmTm/H13VGPOa8/EMHYc8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791788057; c=relaxed/simple;
-	bh=+zYvJDjvjyDbkuqVFAXpBeT7NaAXCvb2EXICu/BfR/w=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=SHgNM22tmhj3YQTA69SxKdGrx5iWElNh0Y6chTVRSJ+igrEppVqPV3+hhzI6mD51B6joduWWrwyBmQ1oTpJQvUl3z4NyA2Xx+OTztla9twv/LVHnSIiXudappCZabtcQhNQ0T00yWrxvzaJjRW0HMZbWzcn4Ser56iX35pdVnww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; arc=none smtp.client-ip=92.121.34.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
-Received: from inva021.nxp.com (localhost [127.0.0.1])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 861EA200141;
-	Mon, 12 Oct 2026 08:54:09 +0200 (CEST)
-Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 51BDD20010E;
-	Mon, 12 Oct 2026 08:54:09 +0200 (CEST)
-Received: from lsvm11u0000395.swis.ap-northeast-2.aws.nxp.com (lsvm11u0000395.swis.ap-northeast-2.aws.nxp.com [10.52.9.99])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id A1E6D180006C;
-	Mon, 12 Oct 2026 14:54:07 +0800 (+08)
-From: "Joseph Guo (OSS)" <qijian.guo@oss.nxp.com>
-Date: Mon, 12 Oct 2026 15:54:06 +0900
-Subject: [PATCH] arm64: dts: imx95-19x19-frdm-pro: add boot phase
+	s=arc-20240116; t=1791788492; c=relaxed/simple;
+	bh=g4bC95k/83YDAhQySELPrFvvlVbK4HTHelRMPJQ/tss=;
+	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
+	 Date; b=ecsAVm5yBQlwEY30+1l5PXa0oherFRbu9wS/Bp3Wfwd0vaRLalawy6GzA9DozrgjnHOWhtcTAWAOYbCKvfiAwhGVM1WHSm33znoKeZA8k6cPLPFaaqlf1H1mX8MSA++nYi8VWyLXZePZhEsr0BmFFY00weJ+8NYnKQ2SRe3wALs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i2kRR14Y; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i2kRR14Y"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 799901F0089C;
+	Mon, 12 Oct 2026 07:01:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791788490;
+	bh=Q+rhVFXjcCRwUhLz1zsT4v7aj7XIDp3JgKgImaUAzWk=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=i2kRR14YMdaGSvFlZYDf9/hB9g3zynzMH1hV7uIOoUSDwYzja4+k7lGjYhMu9qW5F
+	 QUKz9dm5jW68fM/EQJAU0ecoGUZIbnp0YjCnRPScADoLizrn5QhwHG3buq0kAfakOg
+	 Tg9TWh6VvpvY93cMjcbR5HAZXEgzjyZ0i3vNHW64DPCG22ZQahUKVDuu/luJypWX6Y
+	 /OKAgGX6CZGfoahlRdiRl3GHQDaBwfVfo1Yf/n1UJccok4V42RyxkKCuvk2aEDWtpM
+	 fkJ15aSdA2sAiPHP6sFQEsfklH7eNHINk7V2KAGY/2q+a3eqeN5auitFvWgDSXvCX/
+	 rJj3A0jjHRJJA==
+Message-ID: <sashiko-outbox-167770@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] arm64: dts: imx95-19x19-frdm-pro: add boot phase
  properties
+Reply-To: sashiko-reviews@lists.linux.dev
+To: =?utf-8?b?Sm9zZXBoIEd1byAoT1NTKQ==?= <qijian.guo@oss.nxp.com>
+Cc: imx@lists.linux.dev, conor+dt@kernel.org, Frank.Li@kernel.org, devicetree@vger.kernel.org, robh@kernel.org
+In-Reply-To: <20261012-bootph-frdm-imx95-pro-v1-1-6757c5f04a17@nxp.com>
+References: <20261012-bootph-frdm-imx95-pro-v1-1-6757c5f04a17@nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 12 Oct 2026 07:01:30 +0000
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261012-bootph-frdm-imx95-pro-v1-1-6757c5f04a17@nxp.com>
-X-B4-Tracking: v=1; b=H4sIAA2EzGoC/x3MPQqAMAxA4atIZgNt/UG9ijioTTWDtqQiQvHuF
- sdveC9BJGGKMBQJhG6O7M8MXRaw7vO5EbLNBqNMq5U2uHh/hR2d2AP5ePoGg3hsyTpV93XVdAS
- 5DUKOn/87Tu/7AQbONc5nAAAA
-X-Change-ID: 20261012-bootph-frdm-imx95-pro-6edf0494358e
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Joseph Guo <qijian.guo@nxp.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1791788047; l=3678;
- i=qijian.guo@nxp.com; s=20250519; h=from:subject:message-id;
- bh=T+rRMEHcGNOjswqqiijOmdJK9cCyXurOqzLoJPYfDBM=;
- b=joEyfLlMputGo/6PnO31LjUBvTRea/hUFN1YiXx+PERr/tQBkfeTl5ebpL7aTz1znUl5Imlld
- p7NHVREfdVkDB9+FEs/flnxUP0fvWa99WTCMRmruxs+LHIvIu7ywGUi
-X-Developer-Key: i=qijian.guo@nxp.com; a=ed25519;
- pk=VRjOOFhVecTRwBzK4mt/k3JBnHoYfuXKCm9FM+hHQhs=
-X-Virus-Scanned: ClamAV using ClamSMTP
 
-From: Joseph Guo <qijian.guo@nxp.com>
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] dts: Missing bootph-pre-ram for gpio3 breaks early SD card access
+--
 
-Add boot phase properties to essential resources during boot phase.
+commit dc22078eb20524e315ef0d520678ff9336ed179e
+Author: Joseph Guo <qijian.guo@nxp.com>
 
-FRDM-IMX95-PRO need UART, SD-Card, eMMC access during boot process.
+    arm64: dts: imx95-19x19-frdm-pro: add boot phase properties
+   =20
+    Add boot phase properties to essential resources during boot phase.
+   =20
+    FRDM-IMX95-PRO need UART, SD-Card, eMMC access during boot process.
 
-Signed-off-by: Joseph Guo <qijian.guo@nxp.com>
----
- arch/arm64/boot/dts/freescale/imx95-19x19-frdm-pro.dts | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+> diff --git a/arch/arm64/boot/dts/freescale/imx95-19x19-frdm-pro.dts b/arc=
+h/arm64/boot/dts/freescale/imx95-19x19-frdm-pro.dts
+> index 1f62d729a5e77..8dc1134f8d24d 100644
+> --- a/arch/arm64/boot/dts/freescale/imx95-19x19-frdm-pro.dts
+> +++ b/arch/arm64/boot/dts/freescale/imx95-19x19-frdm-pro.dts
+> @@ -180,6 +180,7 @@ reg_usdhc2_vmmc: regulator-usdhc2 {
+>  		regulator-min-microvolt =3D <3300000>;
+>  		gpio =3D <&gpio3 7 GPIO_ACTIVE_HIGH>;
+>  		enable-active-high;
+> +		bootph-pre-ram;
+>  	};
 
-diff --git a/arch/arm64/boot/dts/freescale/imx95-19x19-frdm-pro.dts b/arch/arm64/boot/dts/freescale/imx95-19x19-frdm-pro.dts
-index 1f62d729a5e7778e570fe2a66d1b2cb70ec6feec..8dc1134f8d24d3ac4928b63ce21d328295cb2ba7 100644
---- a/arch/arm64/boot/dts/freescale/imx95-19x19-frdm-pro.dts
-+++ b/arch/arm64/boot/dts/freescale/imx95-19x19-frdm-pro.dts
-@@ -180,6 +180,7 @@ reg_usdhc2_vmmc: regulator-usdhc2 {
- 		regulator-min-microvolt = <3300000>;
- 		gpio = <&gpio3 7 GPIO_ACTIVE_HIGH>;
- 		enable-active-high;
-+		bootph-pre-ram;
- 	};
- 
- 	reg_usdhc3_vmmc: regulator-usdhc3 {
-@@ -418,6 +419,7 @@ &lpuart1 {
- 	/* console */
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_uart1>;
-+	bootph-pre-ram;
- 	status = "okay";
- };
- 
-@@ -696,6 +698,7 @@ pinctrl_reg_usdhc2_vmmc: regusdhc2vmmcgrp {
- 		fsl,pins = <
- 			IMX95_PAD_SD2_RESET_B__GPIO3_IO_BIT7			0x31e
- 		>;
-+		bootph-pre-ram;
- 	};
- 
- 	pinctrl_sai5: sai5grp {
-@@ -712,6 +715,7 @@ pinctrl_uart1: uart1grp {
- 			IMX95_PAD_UART1_RXD__AONMIX_TOP_LPUART1_RX		0x31e
- 			IMX95_PAD_UART1_TXD__AONMIX_TOP_LPUART1_TX		0x31e
- 		>;
-+		bootph-pre-ram;
- 	};
- 
- 	pinctrl_uart5: uart5grp {
-@@ -737,6 +741,7 @@ IMX95_PAD_SD1_DATA6__USDHC1_DATA6			0x138e
- 			IMX95_PAD_SD1_DATA7__USDHC1_DATA7			0x138e
- 			IMX95_PAD_SD1_STROBE__USDHC1_STROBE			0x158e
- 		>;
-+		bootph-pre-ram;
- 	};
- 
- 	pinctrl_usdhc1_100mhz: usdhc1-100mhzgrp {
-@@ -753,6 +758,7 @@ IMX95_PAD_SD1_DATA6__USDHC1_DATA6			0x138e
- 			IMX95_PAD_SD1_DATA7__USDHC1_DATA7			0x138e
- 			IMX95_PAD_SD1_STROBE__USDHC1_STROBE			0x158e
- 		>;
-+		bootph-pre-ram;
- 	};
- 
- 	pinctrl_usdhc1_200mhz: usdhc1-200mhzgrp {
-@@ -769,12 +775,14 @@ IMX95_PAD_SD1_DATA6__USDHC1_DATA6			0x13fe
- 			IMX95_PAD_SD1_DATA7__USDHC1_DATA7			0x13fe
- 			IMX95_PAD_SD1_STROBE__USDHC1_STROBE			0x15fe
- 		>;
-+		bootph-pre-ram;
- 	};
- 
- 	pinctrl_usdhc2_gpio: usdhc2gpiogrp {
- 		fsl,pins = <
- 			IMX95_PAD_SD2_CD_B__GPIO3_IO_BIT0			0x31e
- 		>;
-+		bootph-pre-ram;
- 	};
- 
- 	pinctrl_usdhc2: usdhc2grp {
-@@ -787,6 +795,7 @@ IMX95_PAD_SD2_DATA2__USDHC2_DATA2			0x138e
- 			IMX95_PAD_SD2_DATA3__USDHC2_DATA3			0x138e
- 			IMX95_PAD_SD2_VSELECT__USDHC2_VSELECT			0x51e
- 		>;
-+		bootph-pre-ram;
- 	};
- 
- 	pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {
-@@ -799,6 +808,7 @@ IMX95_PAD_SD2_DATA2__USDHC2_DATA2			0x138e
- 			IMX95_PAD_SD2_DATA3__USDHC2_DATA3			0x138e
- 			IMX95_PAD_SD2_VSELECT__USDHC2_VSELECT			0x51e
- 		>;
-+		bootph-pre-ram;
- 	};
- 
- 	pinctrl_usdhc2_200mhz: usdhc2-200mhzgrp {
-@@ -811,6 +821,7 @@ IMX95_PAD_SD2_DATA2__USDHC2_DATA2			0x138e
- 			IMX95_PAD_SD2_DATA3__USDHC2_DATA3			0x138e
- 			IMX95_PAD_SD2_VSELECT__USDHC2_VSELECT			0x51e
- 		>;
-+		bootph-pre-ram;
- 	};
- 
- 	pinctrl_usdhc3: usdhc3grp {
-@@ -984,6 +995,7 @@ &usdhc1 {
- 	pinctrl-2 = <&pinctrl_usdhc1_200mhz>;
- 	pinctrl-3 = <&pinctrl_usdhc1>;
- 	pinctrl-names = "default", "state_100mhz", "state_200mhz", "sleep";
-+	bootph-pre-ram;
- 	status = "okay";
- };
- 
-@@ -996,6 +1008,7 @@ &usdhc2 {
- 	pinctrl-3 = <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;
- 	pinctrl-names = "default", "state_100mhz", "state_200mhz", "sleep";
- 	vmmc-supply = <&reg_usdhc2_vmmc>;
-+	bootph-pre-ram;
- 	status = "okay";
- };
- 
+[Severity: Medium]
+Will this regulator be available in the SPL phase without adding bootph-pre=
+-ram
+to the gpio3 node?
 
----
-base-commit: 3d7783543c2646af69ad65825e810060494bea21
-change-id: 20261012-bootph-frdm-imx95-pro-6edf0494358e
+Since the fdtgrep tool extracts nodes tagged with bootph-pre-ram but does n=
+ot
+automatically trace and retain phandles for nodes lacking the tag, the
+gpio3 controller node will be entirely stripped from the SPL device tree.
 
-Best regards,
--- 
-Joseph Guo <qijian.guo@nxp.com>
+Could the gpio3 node also be marked with bootph-pre-ram so that
+reg_usdhc2_vmmc can resolve its GPIO dependency?
 
+[ ... ]
+
+> @@ -996,6 +1008,7 @@ &usdhc2 {
+>  	pinctrl-3 =3D <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;
+>  	pinctrl-names =3D "default", "state_100mhz", "state_200mhz", "sleep";
+>  	vmmc-supply =3D <&reg_usdhc2_vmmc>;
+> +	bootph-pre-ram;
+>  	status =3D "okay";
+>  };
+
+[Severity: Medium]
+Similarly to the regulator, usdhc2 relies on gpio3 for card detect during t=
+he
+boot process (cd-gpios =3D <&gpio3 00 GPIO_ACTIVE_LOW>).
+
+If the gpio3 node is missing from the SPL device tree, will usdhc2 fail to
+probe during early boot because it cannot resolve the cd-gpios property?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261012-bootph-frd=
+m-imx95-pro-v1-1-6757c5f04a17@nxp.com?part=3D1
