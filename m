@@ -1,176 +1,196 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013052.outbound.protection.outlook.com [52.101.72.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej2-f7.google.com (mail-ej2-f7.google.com [74.125.228.135])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 707394DD3B4
-	for <imx@lists.linux.dev>; Mon, 12 Oct 2026 19:38:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C26B33CCFCB
+	for <imx@lists.linux.dev>; Mon, 12 Oct 2026 19:48:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.135
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791833891; cv=fail; b=Q3g24iCF7qa3Sy9sx4x2rom30k9fJWjV3nBDmNRU8Hfg42/XzrPcxsSWY66gOdTPHADTzPyWhWQH+Z8R7+ZVtUP5eDdBB8jpONSXqSA4zRd1YtHABcqNRKuFjM3drJK3cA7z6sLsRueoXxquARYk3wiEUIZDueVE8t9Qg/Mdltk=
+	t=1791834489; cv=pass; b=XQHx5hB+HP2ywnjXay7J570hCf14Aixwnv7D8LIS6iIzY7VDSaRYHRmldSeDyaE8MbaFZPHFiRIPsFaKjgaxZbJf1zC66+XfNhmdkqiIJrgP9gdAfJ/jlNnTYop9eRHoWzgUCnZC02GlLI6M0wse0ancFMk9o/vDofeAFuK1X6s=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791833891; c=relaxed/simple;
-	bh=whmRED53R05XWtPIKTAu1c6t9Ig73ZdlQ6gG2gTKr3Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Kmc/LowrbCUk++Aig7fgZ4UMBgf3Nzr2IpwHFW/H3e8cpS0zsHP0Qnvg5204neDvbI0p0/ZIWUZsrcXgvLS+VFRUqB8OoL/jWGSK3mm1B5DYcg5ewDb/lPFY4PaEVhjjT6Cx9TlGrikDAY4I5jsWR9sw+bNg6qnD8Lrxb/k+aOk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=JbuA5irY; arc=fail smtp.client-ip=52.101.72.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	s=arc-20240116; t=1791834489; c=relaxed/simple;
+	bh=UUoBuGmd8fFx8whvNQfzDXZoaxMzirKFYCsoIfjrUgE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=abN+IP2AXh/bPGfswgEzrvZOIBbi8hHCmqiGrHeb2LCqLSv7BwtcgTwqzfLVbfb/8Is0pua9xUU4BnSlOl93D0oH1QLWEj0LCg7ss6OInXk8ilv3FL/v8ohMO5n8ro4vAc9nEYBiUNof1MNPi3F3ylsOsNHye2x9CvoN5mtZWPg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hRhO2U5z; arc=pass smtp.client-ip=74.125.228.135
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="JbuA5irY"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gvzS00S/c966HO54GlOU3uC+NGULZw5oyzcAKEjI1golDM4zwBxB3WSjB3V+NCkXUMK5xn/oSB1qgA6TMI8SD5LsskuPI9Nj0Qq24PKXjdjOXA/ugr02t/rz09V1Wm82RubnwgpBzvkWe2LL6x2d6wMQ4OW1s/7om/HDkdzskP4TjIc+EPmDSdDx3MDCYsE3tt11j/ScGwn+3UMIQ2ocJzxi3GGhA/J8TKC6oV/pK5P11n5o1BNsBMicu+4t2hV5Ji5xOgIQRuFbfy2nfvBBRAcqh0tvVNqYexjHTECDaA67boPqwbETTVD6S1Xsaicmj5El29YVrIo+lBMk+Z6wmQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dFx7q2gw969qniP021RhhbzLfMyq69zDXvyzx/KYCbM=;
- b=Le1HtPxtT/gI9eaAKmjkXKmnfOMDD9kjIvGRuGjFXpaW+KMvWBHUyKpAeoJWYv+spSw+WUD8M+JJSt6LthyncNYuucojfce21L4nbYtCWG+aMkA1um3xcXpmemC8FxsL+gOGcO18R5X8Tuve4h8TckA3pmN8I97yx8MIZCGuQGUmck1wyMhvn/4UzmiqTw5glO7GwVwwpP3W6Jp9UaSNMbsnvkCDAkVw+nITygamj5Y5UtJJMvL9VzhMzH8ghxvWPLT37ldN1LzgG66ESeWfVzRgVObknNJl/tFcQS95QIXPC+TFu9Yk/typhKiAvJPyye8bMVkRKAGaiEXq+MAZkQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dFx7q2gw969qniP021RhhbzLfMyq69zDXvyzx/KYCbM=;
- b=JbuA5irYB80cqE0PuEJ41/b1dxWDokyq+qxhV50btZJv/D8tY2Sz9YT2kxIAcSVRLA6zCd3TijbSL5KzbOe2yJQwT3Vz8L5qLTQ6ZVRVR5zMKvbqWi/K+libK1NkUdAObVEgVhxIfhignf/uuTsWnKK1ivqiMSzCz6Qnz98L7wbYQCD9j0u2QaQruy3aLRlC0Ly2BgdaXODJZQeN/GnI2QxBlnpB/TOAUY3Lcwv+s9Dn11AgZittn9kegjjfmZHQ4sd4Y+yMsLe5c6qLzhg5hAItIVygH7MdtJuWPD3hwOqKro+DfOxK5GzAbrRItP+StV5k6G6L7BJP7zrnk1melw==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by VI3PR04MB213044.eurprd04.prod.outlook.com (2603:10a6:800:375::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.21; Mon, 12 Oct
- 2026 19:38:07 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0496.021; Mon, 12 Oct 2026
- 19:38:07 +0000
-Date: Mon, 12 Oct 2026 14:37:57 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: guoniu.zhou@oss.nxp.com
-Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Martin Kepplinger-Novakovic <martink@posteo.de>,
-	Rui Miguel Silva <rmfrfs@gmail.com>,
-	Purism Kernel Team <kernel@puri.sm>,
-	Bryan O'Donoghue <bod@kernel.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev,
-	linux-media@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, Alice Yuan <alice.yuan@nxp.com>
-Subject: Re: [PATCH] media: imx-mipi-csis: add support for
- MEDIA_BUS_FMT_YUYV8_1X16
-Message-ID: <as03FYJTi__INJZL@SMW015318>
-References: <20261009-csis_sam-v1-1-81f2b0fb76ef@oss.nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261009-csis_sam-v1-1-81f2b0fb76ef@oss.nxp.com>
-X-ClientProxiedBy: PH7P222CA0024.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:510:33a::24) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hRhO2U5z"
+Received: by mail-ej2-f7.google.com with SMTP id a640c23a62f3a-c2e15e7ab2bso177452666b.1
+        for <imx@lists.linux.dev>; Mon, 12 Oct 2026 12:48:07 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791834486; cv=none;
+        d=google.com; s=arc-20260327;
+        b=s2tEYPyn6QGTNn7bfTQAZom5Z4SkvQwlLA8C58EiZcwCR9oA2b+eisxBrS1t8qrwVm
+         +qjgJMDe5P+bsO8Urj8QvrcxpJbCwSBq4TECpf1cTl98Jq8DWlIQRY40FoqfYJrycqne
+         5UufkRpPA2aIYHHwYrkTtjpyU4hh+gdo9XOenHOFumwrcQUZEr/1a1PAF64SrXlbZ32D
+         HyGDbA6cdhhxshUlSSxZdAiYRIFIpBccblu7f6o1AoAr0/SjRbRnwKfl0anZgyyLnGCO
+         naO8QLH63J38UkYpeTpn0SW6hf5Ao46SwHA2gWTgQ6JNG+He4ylNjPFGpmPofJy8humz
+         eBIg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=hePjOQgDk2oAPjPtpp2sw4T2GMv65ZXd7JkCbKndfRI=;
+        fh=2Zq9wskZjgkZ2yAiuEdOwzB8ysks8IKpx1ks8+edE0w=;
+        b=VmDlQoKLkQCLsTFGo1HLuUevaA2XOka8mOuPPFFy5tcZiJ0JBsXLVvsa1dqxsRm82M
+         EHKYu9EeXDjOa/bWaSfqkstfGvI8QTlxHMs2kCjJpblO1eCIw3ZnergtkDSyQCUKdZ+S
+         4qokv9cNdlKqXt6+fUurSFv3q8C6u8JmzprQWGVmwVdfSwbNWVX5ApnK515Yd0rtCgYu
+         I1cuYIYB7xmzTkla+Wrt5QA07PSR9pNEMwcK+uavZevZA6kVJ5UH19WqmySiC8zhkR/4
+         fQTFSTBvyGrJBBPEjCz7pkfSWVvxoFgRU+jz+1TJ4JxCL8pU5Tct77s1I+qBOutAEvDT
+         TSLg==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791834486; x=1792439286; darn=lists.linux.dev;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=hePjOQgDk2oAPjPtpp2sw4T2GMv65ZXd7JkCbKndfRI=;
+        b=hRhO2U5zJzct6dDkZ3G/h4q84VB5ntTRDJnQGT0K1BUgMrxto1+VV/j7ZM6v0UT53P
+         aiW91PMAOM0NwGe0wYYp0RyQ3cpj9vEyHG/33rO31qNdKzLQHslq2TYEYXxiF6xvty1+
+         Vj+qVsCx4cfFyDKgn4uZkdaC4IUeq1K1w8zppcNw/sUsx0+w1Qp8aOvndj6yD8toixvv
+         vBh486qgh7zXcRyOJ3WCWeOndOAEnW0ROJ2rJaMcqpwCD1STnXCznkzI+mXKxLEYX+0c
+         wbPyX4RHjiqkU4WD7cdpOxWn8QwEXtDMYxn/AhK/7sr1CroJzBVI7YsZRd2IyN6W3Rcc
+         mYEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791834486; x=1792439286;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=hePjOQgDk2oAPjPtpp2sw4T2GMv65ZXd7JkCbKndfRI=;
+        b=k94PvCU+tscW34Nlbp1/pipu46QsXPIK7BFVIe4UdhwmNhrcWRODr6awTxlB5Txcw/
+         fUraYwJPeUg85ebjO1AUDU329q4N19nmHF7CyqmFwlT1VzTqd1lUQkEs6s7iVhP4sov4
+         SWSKqg83Cj0MP5bM5pVT7AK7weqK3JxI9/xXObO1u5FVXwCcyWKPG7HFhoyKaw0XB8Om
+         XkHA6v/XPhJ+/gpgAfyGlXXExUgJcSNdENjWjlrb/nz5R5Lke3ee48435Ldt9U6XH6YW
+         m3HCxBS6Eso/JogNwqhAvFmuMp/4fRx6hXQEYnuepJ6sNkyk3S4p75pcoheR1LQYutK0
+         2gEA==
+X-Forwarded-Encrypted: i=1; AKwUvBzqTt06TeEjtcrJyZ5XDUTLnr5pnnCyA2Az9XU2z6/ggkcRdCX/rFc7VasR2b8UFKCDv8U=@lists.linux.dev
+X-Gm-Message-State: AFq9FYKbR2WrwCcOfMiYX2P6KvTLlyUhpPeF4VmPLTct39tHCNqITiTQ
+	lePELTt5kINkz2JnpjjLdpYf9wwANu09DClgYsQO3XtuALvRZ3HjjNq5QKZ6xFKiK1WNX+VHtbj
+	G/h+rlRJfqfKVZbST7iHAYQWveyvc5ec=
+X-Gm-Gg: AYBFou14yv5BpD7S+q/UC4P6KDoQy14trW67pjHGKxxHgHmXhkMGTnKbjJfI4fkglJw
+	wtw/f6Nk/oFbL/9YWHEPl/v8WZY1nEgjBWD64trzS5zCYDyae243DeJoDeplt1OJBCm3RSym8gn
+	dXX7d0BMNPJ50xDfDAhoXmeALkMIuvdI7aYUTVJi2XicLbw0BKtcMquYiUG4Pc9TcWnBi8hz+L9
+	DplGlGd+Pg1Qy4JqdLKqvPcJ6hSn1hBeivDNzTjCMVMv2VbL1jPBw/N/AO2vvwHCO1TuWERzyWX
+	5y+uwKHhZrt1LRuM7kdYHzjqw4n1S6NSnwoozYV36Wz3uAjC7cjNx9fIaA==
+X-Received: by 2002:a17:907:7b8d:b0:c2d:d9f4:2c85 with SMTP id
+ a640c23a62f3a-c31aa0c129fmr992438966b.41.1791834485955; Mon, 12 Oct 2026
+ 12:48:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|VI3PR04MB213044:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9c1c441f-912a-4b77-ea8a-08df28985704
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|23010399003|7416014|1800799024|366016|376014|10067099003|22082099003|18002099003|3023799007|11063799006|261009223027099003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	hV9KGk+j+cG8/DCN3/4wB9mkr4+1XseJYJljQ3oLpRh3MvwTB+kRRhO83eNxIQ0bbODI3JJ33voCiSFm3xE/gMO3O69pDPASl2Bppg4prWHJWezz0k2uLl2J4h1u7boEZ3URANoGCiVmYyvk+RDkA8nwwFk2o29GRz6U8uUBdY8I/r9XcCqr4IA6d5iEJ22aA7fv10BdgyCJvr+gbRdI4yCzcAAjU3KqIoFWmVv90RPUvJWQVdTuHLoVA8+faD5gefM+YsDFqSXLpGXZQVVLtalUjFWSnbG3gfffNrL4lH0zFKzufPyWn0kG2mtzP4vdynuKQPcuEShqN50pWqJD0ORBTellUp1ejGYEBAwnhC5Mz4pkF4jbGrIf46EtQvfYMkojssceZRJO7SdTFxtNOu55FyzIjsGYzvn+Ltd+zN+Bw0+h0i2ZJFJXyehwZ7Tcd+3G3xEKf0Xlzzwre2ojfLxSrdouG/lpsJCjED/jb+C4FnA4P/ISei9Jwd2y9Wl0BEmjPv4E1uqYt28tL2DAWsfnGU16J2DnIyvDp4KhzDiDQuKsBeTneKtGFhtLNcKCluCKtwZoHrDwCTHqcB+7m1SgUhlC2FgKlrm96gztb4K8ghEEBABRmz9WgWNV7hw6EcLGDMql3vz7CdI11BDwJXjUUKiHEM0Z6ucegdIIKOY=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(23010399003)(7416014)(1800799024)(366016)(376014)(10067099003)(22082099003)(18002099003)(3023799007)(11063799006)(261009223027099003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?6lrl6liDvOl8kpbXOfNFyoiYXFAnhMLwU50eI+6OJb15f3MJpyaNHy9hu3i8?=
- =?us-ascii?Q?MbKGyrw/s98Iu4Kg2wtf+lJapcioJPBYQKp3a+Sr/Iy59qx1z5MT4pU0fLrs?=
- =?us-ascii?Q?xIdPLH/UsQ1fK1sc1iFG0PC1CAki6+LtHONjahLhd8IzIAGiHpagCNmNoPJP?=
- =?us-ascii?Q?2zHHJSmpPMi6IF0M3E7T/03FmMplM+1mVxy84hVEuHoJ7JhIHdgrYqzlydpE?=
- =?us-ascii?Q?Ok+j/0HPHGMAaeI4MwVgfnp9CpiL1GU50duRr1XVH747FhO6JM5B6fuBybUG?=
- =?us-ascii?Q?MLov3pDG+oYRQR0IMTZmF8dAv9jJrCe3Vz/5GUHewX4bMPnyjNiBDVBmgSKr?=
- =?us-ascii?Q?uzZ7UtBUxAmMyXc7vJS5emxJJ8GKYrhR/YwGYO7tlC9fKBIhEZVzLkOCYk8X?=
- =?us-ascii?Q?f5x8yiucw5RwlnpjGni/DN1BmrcdGh1KvzyH5wxOuoxliguAokcBQUjLIIVE?=
- =?us-ascii?Q?r7R8Whno+YQm7HDft8ErH2kXdGr0FoZbNX1P3KORldWjgWtNDD76zTcy+a8W?=
- =?us-ascii?Q?drLM6v7ud6yRLWi1LwUL4pyS8gUZvH4DdZm99vwabs2efirajbgGQkqPQfs0?=
- =?us-ascii?Q?QlRIgt8LHsDs2EaeKr7LrzdMCvU8+RIpzDmztAv/ZXn1TI62ydTNGlEhPxKK?=
- =?us-ascii?Q?5m1f0vz8XHjSoxtRfRY02wEYemZJcTAGhzHguhJvTL/MMTO7dZYouvXP2WUW?=
- =?us-ascii?Q?614Vmd9IN5ylLRA2lOZn8/SDJEmL5drs4Ygz8VRCBWOFGy/35IQytRJ2zB6q?=
- =?us-ascii?Q?NKjxlImjsAHXNBnWrKPIT4aDXvUw4iT61ZHlcKGoVPFq4kyQabL5jkE6a8n1?=
- =?us-ascii?Q?u8UHs6JtGw51pJLuAGX4A3gcYmfWp9N8nWJBHZEEF6T1QgdYzFlj/vEPkKeH?=
- =?us-ascii?Q?HyUnoF2/wToP4A72YifeLlo8oZbGZMU1biE5sSkep4olulHJB5iQMspTNEw8?=
- =?us-ascii?Q?ZuxiKChivwjASgUFsXwSRjOC0O0jJZpMeel36/Xm/lvBCVcnqt7cZ3GLPvWu?=
- =?us-ascii?Q?oZg9N8Fip3uYf8kMk9zKu8vZQnfuj9m2yLdUKQtLpUMhWjI33EMUk9CZwMaz?=
- =?us-ascii?Q?w4IdCvHMLTr989XutE+RpHwxkCrWAc/sB8TA6M4hU9UNIevk3TbpeRHT1bH0?=
- =?us-ascii?Q?2i014b0rYfgNywd3ZJzcCyK0e4jqxennc6XLtPNc1USmt0gvv7r+XbAUDypB?=
- =?us-ascii?Q?Gx/7bqwGPt9wsknvnoamLLIHSoOWC6BRG4/6kqdUvVEEcqVdP3dBQKxqn3Qc?=
- =?us-ascii?Q?aoltt5PZsUp++08J9APQM8YvjFRDQwWnKDTqpBEL52fqMSjo6WJIMRZCq7IC?=
- =?us-ascii?Q?3VRiPqgCtuWCUaL5yak4HNoxwLa2e8wsjt808hHIsYNxJrdc/rJ7E6zg7xKs?=
- =?us-ascii?Q?iy+2EIjent4XX5Fp4RJ2tj7dRKUZUOFG179Z3k+mmXwBOBJm5+UvX2miuHsT?=
- =?us-ascii?Q?DRJF6MKWe+bpjDlu4yBTJbbIpF9EW7d1KlwcQnbaC+0C8TWVydHa1EaM8LZj?=
- =?us-ascii?Q?DYWBsAumrGlWP+rIVnOWl8WyxqufGT6GbAMZC2kMk7vWWVXvEod2Osf0yvqE?=
- =?us-ascii?Q?pddy3Pl7ciKOPKj4WJVm3llOHqzxfh7wlGysGpR/hE3wo0Ipo2dEafTJfwJD?=
- =?us-ascii?Q?hOxgZGy+OOH7E+smVXgI9EVVxHuaFJlXQlPdgWYY9rGRt6v6HtbbS95x+lTS?=
- =?us-ascii?Q?BNW+u4oKfgmEjcC1NKMxG3HR/9rgPIPtCzr4eQ3EZsAL7jRCQoPv1977flcD?=
- =?us-ascii?Q?13wYq8gTTzJGc0h0LO6uuzbMsWzxITl9ZNpLjzT5twe1zIBVo2y8?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9c1c441f-912a-4b77-ea8a-08df28985704
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Oct 2026 19:38:07.2866
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: X6Symnd84yFwnEuSAwAcPxZMyV2C9QNjE38H/MWUoHLkZB6ZaWrHUmrlDmAaUGJzB4cSYbUxabd5ApmFHODdVP5sScik8aQIbNwwqm8a+kz3FhmGQjRqOITZ2i+hfMoC
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI3PR04MB213044
+References: <20260919-s32g_serdes-v3-0-9d68868c1e89@oss.nxp.com>
+ <20260919-s32g_serdes-v3-4-9d68868c1e89@oss.nxp.com> <6aabb56e-406f-4d13-9fd8-54822202039f@bootlin.com>
+ <assmUIvWMuZsp8OO@lsv051416.swis.nl-cdc01.nxp.com>
+In-Reply-To: <assmUIvWMuZsp8OO@lsv051416.swis.nl-cdc01.nxp.com>
+From: Coia Prant <coiaprant@gmail.com>
+Date: Tue, 13 Oct 2026 03:47:58 +0800
+X-Gm-Features: AclHuK-mWeAUUjbT2q4HaMO7I1jbUFx_FPbAu9P_i7ekNoCvSs5mbKy3dUi7DkU
+Message-ID: <CALj3r0gQkUARS1e+2CGB3JsrGJ2XrzuoChfz0cWYRpK4kq1Uxg@mail.gmail.com>
+Subject: Re: [PATCH RFC v3 04/12] net: pcs: add NXP SerDes XPCS shared core
+To: Jan Petrous <jan.petrous@oss.nxp.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>, 
+	Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>, NXP S32 Linux Team <s32@nxp.com>, 
+	Vinod Koul <vkoul@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	Manivannan Sadhasivam <mani@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
+	Lorenzo Pieralisi <lpieralisi@kernel.org>, =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	Bjorn Helgaas <bhelgaas@google.com>, Bogdan Hamciuc <bogdan.hamciuc@nxp.com>, 
+	Ionut Vicovan <ionut.vicovan@nxp.com>, Andrew Lunn <andrew@lunn.ch>, 
+	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
+	Clark Wang <xiaoning.wang@nxp.com>, Philipp Zabel <p.zabel@pengutronix.de>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Chester Lin <chester62515@gmail.com>, Matthias Brugger <mbrugger@suse.com>, 
+	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Richard Cochran <richardcochran@gmail.com>, 
+	linux-arm-kernel@lists.infradead.org, linux-phy@lists.infradead.org, 
+	netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
+	imx@lists.linux.dev, linux-pci@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com, 
+	Vincent Guittot <vincent.guittot@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Oct 09, 2026 at 06:58:41PM +0800, guoniu.zhou@oss.nxp.com wrote:
-> From: Alice Yuan <alice.yuan@nxp.com>
->
-> Add MEDIA_BUS_FMT_YUYV8_1X16 to the list of supported bus formats.
->
-> The format uses the same CSI-2 YUV422 8-bit data type and 16-bit
-> parallel bus width as MEDIA_BUS_FMT_UYVY8_1X16, but with a different
-> component ordering. Supporting YUYV allows sensors and bridge devices
-> that output YUYV formatted YUV422 data to be used with the i.MX MIPI
-> CSIS driver without requiring format conversion.
->
-> Signed-off-by: Alice Yuan <alice.yuan@nxp.com>
-> Signed-off-by: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
-> ---
+Hi Jan,
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Thanks for the pointers. A few thoughts.
 
->  drivers/media/platform/nxp/imx-mipi-csis.c | 5 +++++
->  1 file changed, 5 insertions(+)
+> Yes. The S32G accessor is the same DW indirect scheme pcs-xpcs-plat
+> implements (page into the viewport at 0xff, then the low address byte
+> at a 4-byte stride), so there is no reason for S32G to carry its own
+> copy of the XPCS code. The next version drops the shared core, exposes
+> each XPCS instance as a mii_bus from the SerDes PHY driver and creates
+> the PCS with xpcs_create_pcs_mdiodev(), much like the RK3568 glue.
+> Details in my reply to Andrew.
 >
-> diff --git a/drivers/media/platform/nxp/imx-mipi-csis.c b/drivers/media/platform/nxp/imx-mipi-csis.c
-> index 5f9691d76434..14a00b9fcedf 100644
-> --- a/drivers/media/platform/nxp/imx-mipi-csis.c
-> +++ b/drivers/media/platform/nxp/imx-mipi-csis.c
-> @@ -382,6 +382,11 @@ static const struct csis_pix_format mipi_csis_formats[] = {
->  		.output = MEDIA_BUS_FMT_UYVY8_1X16,
->  		.data_type = MIPI_CSI2_DT_YUV422_8B,
->  		.width = 16,
-> +	}, {
-> +		.code = MEDIA_BUS_FMT_YUYV8_1X16,
-> +		.output = MEDIA_BUS_FMT_YUYV8_1X16,
-> +		.data_type = MIPI_CSI2_DT_YUV422_8B,
-> +		.width = 16,
->  	},
->  	/* RGB formats. */
->  	{
->
-> ---
-> base-commit: b38d06ad1e13c32970d58039c154f009b81a3368
-> change-id: 20261009-csis_sam-c5c10ed12322
->
-> Best regards,
-> --
-> Guoniu Zhou <guoniu.zhou@oss.nxp.com>
->
->
+> The part that does not fit pcs-xpcs-plat as-is is ownership, not
+> access: the XPCS windows sit inside the SerDes subsystem register
+> space, and their bring-up is ordered against the PCIe lane and the
+> other XPCS instance, so the bus is registered by the SerDes PHY driver
+> rather than by a standalone snps,dw-xpcs device. The accessor itself
+> is a few lines; if Alex's pcs-xpcs-regmap is merged first I will use
+> it rather than open-code another bus.
+
+On the transport split: I think the cleanest path is to split the MMIO
+accessor out into its own module, say pcs-xpcs-mmio, exporting the
+read/write helpers. Then pcs-xpcs-plat can call into those exported
+symbols instead of open-coding the page/stride scheme, and S32G can do
+the same for its indirect window. That way nobody carries a private
+copy of the accessor. If that turns out to be too invasive for plat,
+keeping a separate pcs-xpcs-plat copy is workable too, but I'd rather
+avoid it.
+
+If Alex's pcs-xpcs-regmap lands first, that's the natural place for
+the S32G accessor; pcs-xpcs-mmio would only be needed if the regmap
+approach doesn't fit.
+
+> S32G needs the same kind of thing: skip the generic soft reset, and no
+> EEE registers. I will start with the existing PMA-ID mechanism, since
+> that is what TXGBE and FBNIC use today, and switch to a callback if one
+> is agreed in the Rockchip thread. I'll Cc you on those patches.
+
+On the shared-core duplication: rather than copying the whole XPCS
+core, I'd look at how the existing users express their quirks.
+
+Wangxun has a genuinely different PMA ID, so it can branch on the
+ID before the reset path and keep the generic core untouched.
+
+The older NXP devices do the opposite: they fake the PCS ID at the MDIO
+layer so the core sees a magic value it then interprets. That leaves
+the magic in the core and a fake ID in the glue, and it doesn't scale
+to a third user.
+
+For S32G, I'd prefer one of these two approaches:
+
+- A flag in struct dw_xpcs, e.g. DW_XPCS_NO_RESET, that the glue sets
+  and the core checks before the soft reset and EEE paths. Works when
+  the quirk applies to a whole instance regardless of the PMA ID.
+- A platform callback, e.g. plat->pma_config(), where the glue can
+  return early to skip the parts it doesn't need. More flexible, but
+  also more surface area; I'd only go there if flags aren't enough.
+
+Either is better than another fake ID, because the quirk stays visible
+at the point where it matters instead of being hidden behind a made-up
+value in the transport layer.
+
+One question: how does S32G relate to the earlier NXP devices already
+in pcs-xpcs.c? Same IP, same PCS ID, same quirks, or something else?
+If they're the same family, it would be good to clean all of them up
+in one go rather than adding a third mechanism on top of the old
+fake-ID one.
+
+Separately, I have a plan to propose platform callbacks for the XPCS core
+at some point, regardless of whether S32G ends up needing them. The
+core currently has no way for a platform glue or PMA to limit or override
+parts of the generic behaviour, and I think that gap needs closing.
+The exact shape can be discussed once RK3568 lands. Happy to Cc you on
+the related thread when that happens.
+
+- Coia
