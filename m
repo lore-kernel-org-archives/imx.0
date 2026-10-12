@@ -1,83 +1,83 @@
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C428416856
-	for <imx@lists.linux.dev>; Mon, 12 Oct 2026 10:33:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 082E6370AC1
+	for <imx@lists.linux.dev>; Mon, 12 Oct 2026 10:40:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.176
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791801213; cv=pass; b=VZsSoGSUy3bwtdGMN1KFL8OtvosCJ7zavMR787qGzSW8oU0CFQKiEJVQjsX+XKw/mgFNcqPZVy79/iGBr7TvnXPduR8ZDeJa5TEaJ7Hz+05JifUkDL8fdqfs2Uj4ce8WzOGfjanqfppmq18EdDZ0Uo86WmvKdrIfQxOZVEnbF3A=
+	t=1791801622; cv=pass; b=jx3luelcgrmUYANBlemYCXV9/OXKSLmHu3NCeyYTimsU5NfnkP2Sr5/wfnbJbBevPnJeazmmrqpTRX2AiUfD27ejp2dbwv5yApkScVQHiExmEOeyQMsflXp6gcbARveE3SPnM4LUTMZ3LnwpU3U4kDgfo5WsKq01HPOoHA30p9Q=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791801213; c=relaxed/simple;
-	bh=K58spMtUXSSstSD13s5KRjPSopvKSNrgFnbERIc/EfE=;
+	s=arc-20240116; t=1791801622; c=relaxed/simple;
+	bh=92KIamnWD8cd5WYLKJyli8qdGUGMlFHe2PGqMoGdBQI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ov9mtHtv3Mkl2S+mMCIX/dIgd40rG/jB39unQLwbQmYv1lOApne3M3KVPli46duTXQ/aw0mTQf8hFaFmlFjeY6F+TPXqNZ9vY65XnLBcyI0UpGgw+YPXmC1MfG4HWWARYmQ4reeXW72rCoSj5JNZbCm8ChZZdlF1hwcXNQekVPQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MVn9zLs2; arc=pass smtp.client-ip=209.85.218.51
+	 To:Cc:Content-Type; b=LGM6Xdjgba9s/PYzmdb/o3mPhMFRyQnjtcR9T2k5JwIU5KRT5BNNoT2rXM/FRxo5pX33+e2vaJpQHbCRbBwOooOocY6mscVK5Yj71McQeetJhWC4D4NFP0iZO7zWxhqnC9hOcUGP9EyXSwhg5xSxOvcGZCnjo3PVJifj2fBt2EA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aDHGafJg; arc=pass smtp.client-ip=209.85.208.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MVn9zLs2"
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-c31a34de844so257381966b.3
-        for <imx@lists.linux.dev>; Mon, 12 Oct 2026 03:33:25 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791801204; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aDHGafJg"
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-3a9e87ba7f2so4089591fa.1
+        for <imx@lists.linux.dev>; Mon, 12 Oct 2026 03:40:20 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791801619; cv=none;
         d=google.com; s=arc-20260327;
-        b=dH57f33A1X0k8YdAsA++RbH5m0nBzxX0kAOyOSxntf4VDPCvMMaRxb8VnwFzgfPk6D
-         NO8f+EymHAzuK16Xtc1hE81S0gvp1ixrBEkV9+mDG5BD2v8JzFhdRZCMqsJYiin01fqM
-         tJG2MXt4fl8gD9enqKGsDgA1Gb/eSb2GIR8fiMHmr2m6y7k4cTUe+LElGWqDKjwGZ7Gw
-         IXO0nfz2KnL10OWjom4rFoVbJD3e2xRcm3o6TwfLQnHWDDxXoSvWvuQYrNosmAQ7a2PD
-         z6RjzQueKNMraWHeUFGprWfcE00EX4C6ZATzo85AwPrSLWuxFNX49SuVKSD6m9Pak41Q
-         /27w==
+        b=TFprvWJzTy9cHnwOdwuqwCHgzBmnrXvuw7l8w1V2DvvcPVXiAm9b8lznzZZkMgziNl
+         hTxruXxvfeSMAoVDCwIvaLRlpmhk+v9SgLwGsnqjn8YxB5pXFmWKDXMJTtaXHA/PZmJQ
+         FrMP4gWB9qAsAR0z0ptUCYvrR+97ZATTlTn9QzGxM0FOW+AHoy5RYkQgItUx8NsyMZ0+
+         NUd01JG/OZhowW+SPdkPwBKu5x/IIW8LlA3TOjFM+VFsVNjZcZkpF6vHPvftrCOun6bN
+         5c7VU43p5P+IgZAtdayURuZmVxCkQ/9b2r38YamHsbOZJaWJ455qtXVSeXpFIyW++rP2
+         sdhQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=WCb6XoubVQ4Mh43VO0uwVKASyleTbzUvSNlnrWOxN8o=;
-        fh=Ju/OpY0YmXK9tXjw35NcSSRxHwTKKcYh4F0/I4dxHLI=;
-        b=PKNvefaz7UieiBP83GhmFc3tfGtiUoJTXo45xFVXvwqBC4K48BtF6y7hoViNF1uTbI
-         Hl8cDwaQUvHrzQY7OI/Q5heW0GUvV9gx5oOWYMc3XBdieQLBbjDC5uAnNIhpwfGLUps1
-         2fMStEBefb6E5Tcn47sgFCzibASSE3+eiZt0P9Rf0iK8ADDIbzwtJoTORYHjRAyrf2/M
-         sKzI0vuB1BprAQiWGrFIyTWJwF/lQ4gQq31R7lMLj7eufTR91IFJGbZI0GsYlvBd247x
-         svEu85xnXNKElhEs5ZpNzt3A7bM6GyYC6qoB6GTFB6cH2Ok3MLyJp8m/4TfcDdh9nzgl
-         pBBQ==;
+        bh=qb9r1QTfT6Icnt2JRunI17mQhOI8vmMkb4F7tmAW4fo=;
+        fh=pErieDvnJe1t/MXNhOA+3+G8yUrlube7Tk7JP36Vc+w=;
+        b=R9HO8u9rJiNOda6oQZMyqP9QbKhrP7jXRP7mCEMP+ndoo0vMz+OQHiBjyI3dL+lfOx
+         6o1nrEprKi1lpQmYkP/B9pBYBuHga9O+M8UZXeaoRpsfBwRU7UsqCpme/zePTzM6bG75
+         3FgHJlM4por+ZVUCnuUHq8Aia3qFpYSwRNV7YIFS7EMvRM4TeDbQlMVrLOClVA+cWeXJ
+         0BJOPJ614tnTofIRtN9XaSPmKnSiEbP7Fo3yrKIiPOeTP8nBIAhMbwxBYkaLRp+NJ0d+
+         2W2FowRoG2Raq3HqgSVtv/aa57v5Twa2H3dqoA8uNtrqB8jDDz5MzK+HDqh17R2xaRjA
+         3CVA==;
         darn=lists.linux.dev
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791801204; x=1792406004; darn=lists.linux.dev;
+        d=gmail.com; s=20251104; t=1791801619; x=1792406419; darn=lists.linux.dev;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=WCb6XoubVQ4Mh43VO0uwVKASyleTbzUvSNlnrWOxN8o=;
-        b=MVn9zLs2UmNHme1bxgp0yjiAwaxQMJaBlAgG7I9aLVU8MXvrX2x0dt7qxRooHa1oyG
-         xCD/9RK5MIAlmloXPPECbvEDPz7xbtB75Ej8iQrwr/CaXOVFOpoRRdhs2YZPL1AZT7OV
-         OFHnYJmsdGxMe4S33cV0qeIv2F7fmpYkqtw7VRO541k5X7LppzfMS0MhZIW11cja0imf
-         Q5is8nqYbSyjE0jigNgbjF2A4SLJD82qhH02RxL3jLFnYy1ROI9mgVY8ElwuQ1ueWUri
-         Osnx3PY2nLRkhFmyb6/L8x3G5p1yOmd7hWMp2h9lEXkH070APj2FgoKZQwSpNrLHZDn+
-         vOWA==
+        bh=qb9r1QTfT6Icnt2JRunI17mQhOI8vmMkb4F7tmAW4fo=;
+        b=aDHGafJgmTalqpybbdITxDk4Cnn1QmlOPOkSLGa+jYqwBDp134Filp26x2nGMFcOrh
+         DfYvF3zeJr+Ybw3lbfh8QtZFcj29jDMu0O23EhirB2/5dCtqzYVTVH1mBpGXhU2+MZIz
+         P3RGAkTgIJEUVDvAmRv8vL698abOllGRt2uQFb2EE1Gz+Naa2e06Y7KfvZN0czqbAnH/
+         ZsZZ5o2Qu8eqFYobhbzYtdRrHBifJjO6hhkiC9cq8lmh+GrrBdG9/AeVhPXfLxkbuenk
+         v/t/JT6+II1m0Lsbf2+apWzOUdHEfD96p2YmfpZzHUJdyEcqmReys6/11W0Po60sDxi3
+         YRgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791801204; x=1792406004;
+        d=1e100.net; s=20260707; t=1791801619; x=1792406419;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=WCb6XoubVQ4Mh43VO0uwVKASyleTbzUvSNlnrWOxN8o=;
-        b=r1wM79U/NBdW7CHq6Uy3G9X7IPYAmeMU6uGGHVz7VrVCFCFjsrsrAN5l86coRLcgze
-         JGIZeuXkVBq3zzcZk0YT4J9rQ39U0wMtyg13M+6DFYRbqa3VtjAfbPcX2xtbKDlziwyA
-         nQ6iErf/DndfzQJe4myvplOA1CslAndel5ntYesU/6McIK3G67rdKRumxqSJIdLG03ov
-         YNiTeHD12z30NmKwA2eST9XVakZoU58IdCddHyKU6A8SoRzKNdVksxMAY2OhNnTUfkBE
-         rL8MNCA2mr9C4Lf6HyUd/Wt8vIjCkLNKONEZqbgLHtzGdoT+26LX5D77nJnsJ8BOlmFD
-         g9OQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwngbim8Kr1NKjLQJvRs4ENNqR4N0JDS8ZakDHhm25M/W3YqX1q7ioUK45FnuMk1aWMpxI=@lists.linux.dev
-X-Gm-Message-State: AFq9FYK5G46EC5ewpYLi4bi82zY9MQDyhkA/ZIXYtD892IlXtVbEoo29
-	QpOC1NEQDdM64fjOhASvdzdHzxfTnREXods93LLMRDM4EZOn9cmlXY4Rfx+F2DKs4p9vF+HGNC8
-	nCUOp8DK394Jx84R0XKD4w78El6LiceI=
-X-Gm-Gg: AYBFou0weUKkwromQqbc9dcR2V4m9xfiFpnj6Dhss8Yq+zvBVanpWXfkdZ085o5BD8Y
-	4CEatR7h2ljoU1xNM8bKaiIuuWFyGT2Ekn1DwFv6QML/jiQi/IvaKcalY8HIpch3McqpvbN0yaa
-	DXLc7E8+s20U/IJx2WOxBvPmsWUmq9oYWB1eSzuHbe2d8mlnLIwqXl3bInhqYoNTubhxcCBpL49
-	g+PriGX/OLvq0PVj4jDYKZjZ8vzgrvwijTCSde7O+9q+a7Cegheg6hdRg139/jy2N2A2EcWLKAf
-	icPpGxbhS00xxfIJHQZstp+2/QodxuG0G/68g43hywKfvHVZyVtcXKJU+vjL8Vg2LC2jSFIzD8H
-	OduqnPi/qrrPZwqqKHriE7BPlxLuApMaMb6Qz7ZzQ1bb5h6s4jKGikmgYY9skzaYbCo8PSP18PQ
-	HIgCZQmE524Fc1DSBuAzJPOIxrp7A8/6rz8WYs8ub0
-X-Received: by 2002:a17:907:2d88:b0:c2e:4373:521 with SMTP id
- a640c23a62f3a-c31aa0d2286mr787580766b.46.1791801204012; Mon, 12 Oct 2026
- 03:33:24 -0700 (PDT)
+        bh=qb9r1QTfT6Icnt2JRunI17mQhOI8vmMkb4F7tmAW4fo=;
+        b=C4DEXqIvHirMMzwnwIAJl3IHmPEPk44twRClnFtqvJpNIkp0Oe7BCx8HrvgOVCIsVC
+         sQzkvSkojDMHlLv24ewP+5h6uBIs2vPqONptc//+t7WHj2biIXwQV2C8KI1wI1gGOSXP
+         N79zD8kE00/zPr6V+M8nFlCA+QCNN9m3UiWQVzJzl0FPpHEOkHzjl2DVhILgtixYg0aF
+         isDdpNJ6p4oSpdrCuzPdFrjCq9PO6oGjKSr3nX9aRNK1Q8YSvzmGuGema0oxe2cj/Sou
+         u1uXNo7Dg7W3EmIpnUVwTYEgV9oS2RTKARgc4VgoZ7lsIS6Qap54LBhYv/WAFxcKRf84
+         VHyQ==
+X-Forwarded-Encrypted: i=1; AKwUvBx2CBeyvAKit7i//wBLjBOxwuDJehfOsC+pH5WmDA5amnbgVarJRcxuwD5lIY4UVIPNUiw=@lists.linux.dev
+X-Gm-Message-State: AFq9FYJiWeuGJB+N6kq+hkaQR9HLLHBWu3yG9xXOPf1W3UftLQbyp/hc
+	XZk15BDrVHvJOmIWYzsSFbq7d0jZ9+PqDIhSRhn+DOINQP8mcMzDjY6Tv2Lfz6ULXor/k9yGhrV
+	i4GSyS+9eE8xiB2P+StfwoZseXw6bqng=
+X-Gm-Gg: AYBFou04ujympoGFLvAfUWZkxa8lGvP3aFM5b7+ufXZvP22KnGIfXTMUrHdU/YI4h85
+	U/CuExyQwaRdiEUaNSFtHVRFtrqzo3CFMOg3g87RodnaaJzulyAGjaVwE/U3u+nyWHgqSVvR4GG
+	PaKsz2qMffvbw7jfPGuOs1MLaiJk/P2pTDbsUotLFyZgtHuTL683EOzFXNm18S+fHnHcbqIs35p
+	7HZJI9i5pp4PmLVU3teVkcZ7y6f6ujPQgfWPPPymPB3T/5bSQ2sIhMfGDARLNtfRx7F4KnkbFwG
+	KIhQiUPGKACXE2V+FUirSlaSGz5N1lrs92DBajZVHHp4QYqXaILT5PBKQ+P2jpva0EF0DwRyxmq
+	bRuCtB7tPwxdu3qmJ2Nu4H9DXo4EWPsJ5XMtbGPSmKTRSYBOFT9DPMTWLTI7B/jn21CusGECAhk
+	40crivpY4x2LooBBj+5rItADSnF5CJDhvQ8uw5UU/U
+X-Received: by 2002:a2e:bc18:0:b0:3a7:5ff2:576 with SMTP id
+ 38308e7fff4ca-3a9c4eb3dadmr26987981fa.1.1791801618912; Mon, 12 Oct 2026
+ 03:40:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -85,15 +85,14 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 References: <20261011-gpio-mxc-cleanup-v6-0-cb47ce2ad758@nxp.com>
- <20261011-gpio-mxc-cleanup-v6-6-cb47ce2ad758@nxp.com> <CAHp75VcadkqzMxShq1PLzqgNZypB+vqr3a_m1utu-NOx39iK1g@mail.gmail.com>
- <asyvcJxbM5aD8pzE@shlinux89>
-In-Reply-To: <asyvcJxbM5aD8pzE@shlinux89>
+ <20261011-gpio-mxc-cleanup-v6-8-cb47ce2ad758@nxp.com> <CAHp75VeonKZtX8moOdXrmTJbjH5Ew5iVdDDc3KfqQ9r_tvHg1g@mail.gmail.com>
+ <asyw9ns870F0g7UD@shlinux89>
+In-Reply-To: <asyw9ns870F0g7UD@shlinux89>
 From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Mon, 12 Oct 2026 13:32:47 +0300
-X-Gm-Features: AclHuK8bE2RNRViMXGduuI7Gu1WFvoqdAJYcBik89ymBcvSwk0SX4J83VWey8Go
-Message-ID: <CAHp75Vfi8xqFU7nUjE1ktYKWgXGYy3XQKnz4nAJZeR2_o3ywkA@mail.gmail.com>
-Subject: Re: [PATCH v6 06/13] gpio: mxc: replace of_device_is_compatible()
- with hwdata flags
+Date: Mon, 12 Oct 2026 13:39:41 +0300
+X-Gm-Features: AclHuK8j5vu_bU9arYI-L7AJUk-wyVDtV4Vr4-xee8wNlRYyo0Qc1_7I9JALruk
+Message-ID: <CAHp75VcO8YEBbt--P8WO-_Vu1O0mR2nsdqeBSG=JgavCEoR3Dg@mail.gmail.com>
+Subject: Re: [PATCH v6 08/13] gpio: mxc: use local dev variable
 To: Peng Fan <peng.fan@oss.nxp.com>
 Cc: Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
 	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
@@ -103,76 +102,45 @@ Cc: Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>, Fr
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Oct 12, 2026 at 12:54=E2=80=AFPM Peng Fan <peng.fan@oss.nxp.com> wr=
-ote:
-> On Mon, Oct 12, 2026 at 12:25:41PM +0300, Andy Shevchenko wrote:
+On Mon, Oct 12, 2026 at 1:01=E2=80=AFPM Peng Fan <peng.fan@oss.nxp.com> wro=
+te:
+> On Mon, Oct 12, 2026 at 12:30:07PM +0300, Andy Shevchenko wrote:
 > >On Sun, Oct 11, 2026 at 2:54=E2=80=AFPM Peng Fan (OSS) <peng.fan@oss.nxp=
 .com> wrote:
 
 ...
 
-> >>  struct mxc_gpio_hwdata {
-> >>         unsigned dr_reg;
+> >>         struct device_node *np =3D pdev->dev.of_node;
 > >
-> >>         unsigned high_level;
-> >>         unsigned rise_edge;
-> >>         unsigned fall_edge;
-> >> +       unsigned int flags;
-> >
-> >Obviously you need another precursor patch to move from 'unsigned' to
-> >'unsigned int' in the whole driver.
+> >Why not this one? Is it even used? Perhaps you want to have
 >
-> Could we keep as it is? I try to avoid adding more changes if not critica=
-l.
+> of_alias_get_id() is used, there is no counterpart in fwnode api for it.
+>
+> >  struct fwnode_handle *fwnode =3D dev_fwnode(dev);
+> >
+> >here?
 
-No, be consistent. You can add a new member with just 'unsigned' type,
-but it's discouraged, sooner or later you should provide such a change
-anyway.
+What about using to_of_node() for that one and fwnode for IRQ APIs?
 
-> >>  };
+> >> +       struct device *dev =3D &pdev->dev;
 
 ...
 
-> >> +#define MXC_GPIO_HW_DATA_COMMON        \
-> >> +       .dr_reg         =3D 0x00, \
-> >> +       .gdir_reg       =3D 0x04, \
-> >> +       .psr_reg        =3D 0x08, \
-> >> +       .icr1_reg       =3D 0x0c, \
-> >> +       .icr2_reg       =3D 0x10, \
-> >> +       .imr_reg        =3D 0x14, \
-> >> +       .isr_reg        =3D 0x18, \
-> >> +       .edge_sel_reg   =3D 0x1c, \
-> >> +       .low_level      =3D 0x00, \
-> >> +       .high_level     =3D 0x01, \
-> >> +       .rise_edge      =3D 0x02, \
-> >> +       .fall_edge      =3D 0x03
+> >> -       dev_info(&pdev->dev, "%s failed with errno %d\n", __func__, er=
+r);
+> >> +       dev_info(dev, "%s failed with errno %d\n", __func__, err);
 > >
-> >Why?! Just to save a few lines? This makes it harder to follow the data =
-part.
+> >This message simply needs to be killed, with initcall_debug in the
+> >kernel command line you will get something similar from driver core.
 >
-> If I expand the macro the imx7d, imx8qm, imx8qxp hwdata, 24 lines will be
-> duplicated. I would keep as it is.
->
-> The current hwdata as below:
-> static struct mxc_gpio_hwdata imx7d_gpio_hwdata =3D {
->         MXC_GPIO_HW_DATA_COMMON,
->         .flags =3D MXC_GPIO_HAS_POWER_OFF,
-> };
->
-> static struct mxc_gpio_hwdata imx8qm_gpio_hwdata =3D {
->         MXC_GPIO_HW_DATA_COMMON,
->         .flags =3D MXC_GPIO_FALL_EDGE_WAKEUP_BROKEN | MXC_GPIO_HAS_PAD_WA=
-KEUP,
-> };
->
-> static struct mxc_gpio_hwdata imx8qxp_gpio_hwdata =3D {
->         MXC_GPIO_HW_DATA_COMMON,
->         .flags =3D MXC_GPIO_HAS_PAD_WAKEUP,
-> };
+> ok. Let me fold the change in this patch, I would not introduce
+> another patch to just drop this line.
 
-Yes, I saw it in the next patch(es) and commented there that what
-should be done is split of the common part to another data structure
-(or be wrapped into one with a .flags member).
+Why not? This is a logically different change. Since the driver was
+not touched for a long time there is a technical debt, you can first
+send fixes separately, followed by a number of the drops like this one
+(remove a noisy line), followed by new features. Make it three patch
+series.
 
 --=20
 With Best Regards,
