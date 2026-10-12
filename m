@@ -1,60 +1,31 @@
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02C613D093A
-	for <imx@lists.linux.dev>; Mon, 12 Oct 2026 06:31:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.203.200.13
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791786691; cv=pass; b=tqK1CgajhgH41CgvivZ2faquisXV+QThSI5b7KhgXOOrVb0n7Tl7+caUz0ylyoin5z4j53J2DqfZClRA9f6SiCMO4CmEpuCfgCfd3NfGgohXFkQC8uG3KvRrwel54iWQ3D9tVG3rrbtN4uwQcLg3S3pBPCCCv/cEiFlEyt2MHRY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791786691; c=relaxed/simple;
-	bh=8afguFn9yCXQFLb7LXj2fhjSLNZL3S+XDu9Q+mLI4AI=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=jKDjpWQA1aFwoUQcMgAQgGBuNWiuR6m7MMVMMUnynuBDolc1l6rL2iE7J2nK/wtv71CacIA13xmlB7IT26OG3i5GVQzlnT3ZCVvhj9fshnr/324/At9hZ9vTWdBYNrTzekiVzWRr34WBnioKfdKFAGTqthobnmqsXWDTtTxP6f4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b=O10tlFPT; arc=pass smtp.client-ip=185.203.200.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b="O10tlFPT"
-Received: from ratatoskr.trumtrar.info (unknown [IPv6:2a00:1f:f805:2b01:a03:2f4:308a:7b52])
-	(Authenticated sender: str@pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 0CB02200073;
-	Mon, 12 Oct 2026 08:31:19 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1791786679;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=b4Qvrcwgu9I6f+1f4CHY/F3cNNpArFkZBjt+WcNGphI=;
-	b=O10tlFPTf+hrOW2UHCdoV8hV99JAzcxybcmSLrG8vbv9LcQh5PGBZZY24oEviD3qVWFhaK
-	nDblnZdpli4OfMiCoKLqb7vcrSXux11zm6+QWGONXFs/+ywDVFRlAsPIscuvFsRUjVgUSV
-	DeC27JrTlLlNVNFNgtZhAJ8wjGnkBvI0p8rRxUo3RyLIDas9XftFXtV68+9ZRyidhYYz/G
-	u4/e7BEZ7la3QIoUHDD9vRvZSZyRxpIFlyWCIPnb5reG89qiOIu4YRLGWDC/IkmVtzl4X0
-	h65JnlF2dyefbL6jtc5SCLy8rTuDh4TDob0J8KCinFJ5/IvfrR2JkB1d2qFAfA==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1791786679; a=rsa-sha256;
-	cv=none;
-	b=VIPoaprsfdu3fAhw3VBh5+Y+Xm1bJ/2RKzNWw+sKrsJl3ph3lJJeOJ1rrm0oUedAKoBWjn
-	PMjzebHjmAJXPWn324Z7XurLFfRm0zfF7M9c22Cb0HtrHe6+YxzvUHnMctkx7a/IdEBIf3
-	rSuj1ervuY19P5/ymHVA14kfYu34nNg2jAkKI6oPXjR/2hAHJvcXQw4uHV+dQ7OkFBv45M
-	6J5GqDIWxTv/1Xjbi7ASiiC2wlXxdDIOri/WBgqF5mTr8x8+UiqLXbORoVwTFvYtbRz2Un
-	wxqZdRVEBWG8G6v4QsyMyIPfA4LyiKDA/Z4yVNeOCGrpaJvox9+/CFoxkZ+lCw==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=str@pengutronix.de smtp.mailfrom=s.trumtrar@pengutronix.de
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1791786679;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=b4Qvrcwgu9I6f+1f4CHY/F3cNNpArFkZBjt+WcNGphI=;
-	b=NTpd09FIsikTzkvs174+SHq5dfFQW9XWeU7qRaLNNhsIVN4PdG8xkvzFUPS8CwxBSlyhuN
-	SU4U+B18+cPCqA0ga4//B58S39lPygRYwdJNe4q/0CoiKVmSd25YhsR9ukeb7J4ToOT/I0
-	kWaOZgoW/UL+YQZ0Ib4SHC4Bskkgb+V0VQei60Ulkq6dvsV38s82uVJtUAaBGbyNC9jEA5
-	LY5fmvWMTbdlBAwe0WmBUDU5jq4uj07bDQ/F3NlDG6MTczlZ6ZWZtmE0uBjxdTtsfHW1Q5
-	yVw8oDyog9eBsz1+mjuTecKD+043Xfaqw72fATSwb+QTpdkJpjKAXAKpcBtD2A==
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Subject: [PATCH v10 0/4] arm64: dts: imx8mp-skov: add new 7" variant
-Date: Mon, 12 Oct 2026 08:30:29 +0200
-Message-Id: <20261012-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-v10-0-0906e57486a3@pengutronix.de>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A46F34EEFD
+	for <imx@lists.linux.dev>; Mon, 12 Oct 2026 06:54:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791788057; cv=none; b=WeyQUNCiMPOF/fppfr8AkJsJyAU03zQVyqrf9qdzZyjLATUK+BZouICavUyzaGbvl6Kuf6qomPaKuzrXInLvcUQfQ/T4fUuTqsDeTE0a9kF+dzCgPMiVRqpUJD2RWo1d66RHhJQBTGe0+UAqAtBfu0+Wd1nel6zERl6IocG0Rjk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791788057; c=relaxed/simple;
+	bh=+zYvJDjvjyDbkuqVFAXpBeT7NaAXCvb2EXICu/BfR/w=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=SHgNM22tmhj3YQTA69SxKdGrx5iWElNh0Y6chTVRSJ+igrEppVqPV3+hhzI6mD51B6joduWWrwyBmQ1oTpJQvUl3z4NyA2Xx+OTztla9twv/LVHnSIiXudappCZabtcQhNQ0T00yWrxvzaJjRW0HMZbWzcn4Ser56iX35pdVnww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; arc=none smtp.client-ip=92.121.34.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 861EA200141;
+	Mon, 12 Oct 2026 08:54:09 +0200 (CEST)
+Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 51BDD20010E;
+	Mon, 12 Oct 2026 08:54:09 +0200 (CEST)
+Received: from lsvm11u0000395.swis.ap-northeast-2.aws.nxp.com (lsvm11u0000395.swis.ap-northeast-2.aws.nxp.com [10.52.9.99])
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id A1E6D180006C;
+	Mon, 12 Oct 2026 14:54:07 +0800 (+08)
+From: "Joseph Guo (OSS)" <qijian.guo@oss.nxp.com>
+Date: Mon, 12 Oct 2026 15:54:06 +0900
+Subject: [PATCH] arm64: dts: imx95-19x19-frdm-pro: add boot phase
+ properties
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -62,121 +33,154 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/53Su2rDMBQG4FcJmqtydJcztXTp2KFb6SDLUqKU2
- MayTUrIu1d2oQlUi7IIdPj5ji7njKIbgotouzmjwc0hhq5NGwIPG2T3pt05HJpUQBSoBEYFnhU
- GPHZ9sDgcT/rY4/jVzbgZIz5MYzfZPVahTStraltzAYZVFiWuH5wPp7XXB3p7fn95RZ+/5TjVB
- 2fHpc0S3Ic4dsP3eqaZrPHy7jNJQQJUiIYyyVn11Lt2N41D14bTY+PW3jO96pyqAp2moKO1qry
- lCSdZnV11BaRAZynYKO6VY17TimV1fqvLAp0vurdgtabKAs3q4kYvehmRglJ5Y4RzUHuZ1eW9u
- kxBb7RXJN1ASJ/V1b36ErRGG+BcEilNVtdXXbOSX9XrzDjJBBe0NvmJrP50AqAL9GqZd+JNBV4
- w4u0//XK5/AC8yyyr7wMAAA==
-X-Change-ID: 20260325-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-3dbcb450a39c
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261012-bootph-frdm-imx95-pro-v1-1-6757c5f04a17@nxp.com>
+X-B4-Tracking: v=1; b=H4sIAA2EzGoC/x3MPQqAMAxA4atIZgNt/UG9ijioTTWDtqQiQvHuF
+ sdveC9BJGGKMBQJhG6O7M8MXRaw7vO5EbLNBqNMq5U2uHh/hR2d2AP5ePoGg3hsyTpV93XVdAS
+ 5DUKOn/87Tu/7AQbONc5nAAAA
+X-Change-ID: 20261012-bootph-frdm-imx95-pro-6edf0494358e
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
  Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
  Sascha Hauer <s.hauer@pengutronix.de>, 
  Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>
-Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>, 
- =?utf-8?q?S=C3=B8ren_Andersen?= <san@skov.dk>, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, 
- Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3658;
- i=s.trumtrar@pengutronix.de; h=from:subject:message-id;
- bh=8afguFn9yCXQFLb7LXj2fhjSLNZL3S+XDu9Q+mLI4AI=;
- b=owGbwMvMwCUmtVehiCsuTInxtFoSQ9aZuq2ZdceZ9aduUxbw/N3OfPNI7rSAs9bHLppHB93gV
- bETKXnSUcrCIMbFICumyKKysIJP1OODZ+Q0ES6YOaxMIEMYuDgFYCLX+xn+ZzeeNrz/yzNI88OD
- xUd/iWkY95+bGnvWzy5G48rTH/ImBxj+2U3dHNV7Sk51p8Xr848W6VSG6tlV+Rt2l/w8Ga56qyq
- SCQA=
-X-Developer-Key: i=s.trumtrar@pengutronix.de; a=openpgp;
- fpr=24A1780E1548F0495996140A1ABD20720A5E5622
+ Fabio Estevam <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Joseph Guo <qijian.guo@nxp.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1791788047; l=3678;
+ i=qijian.guo@nxp.com; s=20250519; h=from:subject:message-id;
+ bh=T+rRMEHcGNOjswqqiijOmdJK9cCyXurOqzLoJPYfDBM=;
+ b=joEyfLlMputGo/6PnO31LjUBvTRea/hUFN1YiXx+PERr/tQBkfeTl5ebpL7aTz1znUl5Imlld
+ p7NHVREfdVkDB9+FEs/flnxUP0fvWa99WTCMRmruxs+LHIvIu7ywGUi
+X-Developer-Key: i=qijian.guo@nxp.com; a=ed25519;
+ pk=VRjOOFhVecTRwBzK4mt/k3JBnHoYfuXKCm9FM+hHQhs=
+X-Virus-Scanned: ClamAV using ClamSMTP
 
-Add a new board variant for the Skov i.MX8MP based family of boards.
+From: Joseph Guo <qijian.guo@nxp.com>
 
-This variant uses a different 7" panel than the existing ones.
-As the already upstream boards and this new one are almost identical,
-convert the other device trees to a base devicetree and apply the touch
-controllers and panels via overlays.
+Add boot phase properties to essential resources during boot phase.
 
-Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+FRDM-IMX95-PRO need UART, SD-Card, eMMC access during boot process.
+
+Signed-off-by: Joseph Guo <qijian.guo@nxp.com>
 ---
-Changes in v10:
-- rebase onto imx-dt64-7.4
-- rearrange binding and code patches
-- Link to v9: https://patch.msgid.link/20261008-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-v9-0-11fa90f531fc@pengutronix.de
+ arch/arm64/boot/dts/freescale/imx95-19x19-frdm-pro.dts | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-Changes in v9:
-- fix dtbscheck error
-- squash new compatible into 7" devicetree patch
-- Link to v8: https://patch.msgid.link/20260831-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-v8-0-e2e635452ba9@pengutronix.de
-
-Changes in v8:
-- add #address-cells and #size-cells to i2c2
-- fix touchscreen resolution
-- add missing binding includes
-- Link to v7: https://patch.msgid.link/20260727-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-v7-0-ca8a0446166a@pengutronix.de
-
-Changes in v7:
-- address more of sashikos rightful feedback
-- Link to v6: https://patch.msgid.link/20260727-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-v6-0-fa8f71dfc56f@pengutronix.de
-
-Changes in v6:
-- address sashikos rightful feedback
-- Link to v5: https://patch.msgid.link/20260727-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-v5-0-67faa5ee0bf6@pengutronix.de
-
-Changes in v5:
-- convert to overlays
-- Link to v4: https://patch.msgid.link/20260706-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-v4-0-dfc0c8827c02@pengutronix.de
-
-Changes in v4:
-- fix Makefile sort order
-- add touchscreen fallback compatible
-- fix lvds_bridge comment
-- Link to v3: https://patch.msgid.link/20260701-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-v3-0-d74f7e3f8293@pengutronix.de
-
-Changes in v3:
-- rebase to v7.2-rc1
-- Link to v2: https://patch.msgid.link/20260427-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-v2-0-e2b79fc24391@pengutronix.de
-
-Changes in v2:
-- rebase to v7.1-rc1
-- Link to v1: https://patch.msgid.link/20260325-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-v1-0-10255d236439@pengutronix.de
-
-To: Rob Herring <robh@kernel.org>
-To: Krzysztof Kozlowski <krzk+dt@kernel.org>
-To: Conor Dooley <conor+dt@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-To: Pengutronix Kernel Team <kernel@pengutronix.de>
-To: Fabio Estevam <festevam@gmail.com>
-To: Shawn Guo <shawnguo@kernel.org>
-Cc: Søren Andersen <san@skov.dk>
-Cc: devicetree@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: imx@lists.linux.dev
-Cc: linux-arm-kernel@lists.infradead.org
+diff --git a/arch/arm64/boot/dts/freescale/imx95-19x19-frdm-pro.dts b/arch/arm64/boot/dts/freescale/imx95-19x19-frdm-pro.dts
+index 1f62d729a5e7778e570fe2a66d1b2cb70ec6feec..8dc1134f8d24d3ac4928b63ce21d328295cb2ba7 100644
+--- a/arch/arm64/boot/dts/freescale/imx95-19x19-frdm-pro.dts
++++ b/arch/arm64/boot/dts/freescale/imx95-19x19-frdm-pro.dts
+@@ -180,6 +180,7 @@ reg_usdhc2_vmmc: regulator-usdhc2 {
+ 		regulator-min-microvolt = <3300000>;
+ 		gpio = <&gpio3 7 GPIO_ACTIVE_HIGH>;
+ 		enable-active-high;
++		bootph-pre-ram;
+ 	};
+ 
+ 	reg_usdhc3_vmmc: regulator-usdhc3 {
+@@ -418,6 +419,7 @@ &lpuart1 {
+ 	/* console */
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_uart1>;
++	bootph-pre-ram;
+ 	status = "okay";
+ };
+ 
+@@ -696,6 +698,7 @@ pinctrl_reg_usdhc2_vmmc: regusdhc2vmmcgrp {
+ 		fsl,pins = <
+ 			IMX95_PAD_SD2_RESET_B__GPIO3_IO_BIT7			0x31e
+ 		>;
++		bootph-pre-ram;
+ 	};
+ 
+ 	pinctrl_sai5: sai5grp {
+@@ -712,6 +715,7 @@ pinctrl_uart1: uart1grp {
+ 			IMX95_PAD_UART1_RXD__AONMIX_TOP_LPUART1_RX		0x31e
+ 			IMX95_PAD_UART1_TXD__AONMIX_TOP_LPUART1_TX		0x31e
+ 		>;
++		bootph-pre-ram;
+ 	};
+ 
+ 	pinctrl_uart5: uart5grp {
+@@ -737,6 +741,7 @@ IMX95_PAD_SD1_DATA6__USDHC1_DATA6			0x138e
+ 			IMX95_PAD_SD1_DATA7__USDHC1_DATA7			0x138e
+ 			IMX95_PAD_SD1_STROBE__USDHC1_STROBE			0x158e
+ 		>;
++		bootph-pre-ram;
+ 	};
+ 
+ 	pinctrl_usdhc1_100mhz: usdhc1-100mhzgrp {
+@@ -753,6 +758,7 @@ IMX95_PAD_SD1_DATA6__USDHC1_DATA6			0x138e
+ 			IMX95_PAD_SD1_DATA7__USDHC1_DATA7			0x138e
+ 			IMX95_PAD_SD1_STROBE__USDHC1_STROBE			0x158e
+ 		>;
++		bootph-pre-ram;
+ 	};
+ 
+ 	pinctrl_usdhc1_200mhz: usdhc1-200mhzgrp {
+@@ -769,12 +775,14 @@ IMX95_PAD_SD1_DATA6__USDHC1_DATA6			0x13fe
+ 			IMX95_PAD_SD1_DATA7__USDHC1_DATA7			0x13fe
+ 			IMX95_PAD_SD1_STROBE__USDHC1_STROBE			0x15fe
+ 		>;
++		bootph-pre-ram;
+ 	};
+ 
+ 	pinctrl_usdhc2_gpio: usdhc2gpiogrp {
+ 		fsl,pins = <
+ 			IMX95_PAD_SD2_CD_B__GPIO3_IO_BIT0			0x31e
+ 		>;
++		bootph-pre-ram;
+ 	};
+ 
+ 	pinctrl_usdhc2: usdhc2grp {
+@@ -787,6 +795,7 @@ IMX95_PAD_SD2_DATA2__USDHC2_DATA2			0x138e
+ 			IMX95_PAD_SD2_DATA3__USDHC2_DATA3			0x138e
+ 			IMX95_PAD_SD2_VSELECT__USDHC2_VSELECT			0x51e
+ 		>;
++		bootph-pre-ram;
+ 	};
+ 
+ 	pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {
+@@ -799,6 +808,7 @@ IMX95_PAD_SD2_DATA2__USDHC2_DATA2			0x138e
+ 			IMX95_PAD_SD2_DATA3__USDHC2_DATA3			0x138e
+ 			IMX95_PAD_SD2_VSELECT__USDHC2_VSELECT			0x51e
+ 		>;
++		bootph-pre-ram;
+ 	};
+ 
+ 	pinctrl_usdhc2_200mhz: usdhc2-200mhzgrp {
+@@ -811,6 +821,7 @@ IMX95_PAD_SD2_DATA2__USDHC2_DATA2			0x138e
+ 			IMX95_PAD_SD2_DATA3__USDHC2_DATA3			0x138e
+ 			IMX95_PAD_SD2_VSELECT__USDHC2_VSELECT			0x51e
+ 		>;
++		bootph-pre-ram;
+ 	};
+ 
+ 	pinctrl_usdhc3: usdhc3grp {
+@@ -984,6 +995,7 @@ &usdhc1 {
+ 	pinctrl-2 = <&pinctrl_usdhc1_200mhz>;
+ 	pinctrl-3 = <&pinctrl_usdhc1>;
+ 	pinctrl-names = "default", "state_100mhz", "state_200mhz", "sleep";
++	bootph-pre-ram;
+ 	status = "okay";
+ };
+ 
+@@ -996,6 +1008,7 @@ &usdhc2 {
+ 	pinctrl-3 = <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;
+ 	pinctrl-names = "default", "state_100mhz", "state_200mhz", "sleep";
+ 	vmmc-supply = <&reg_usdhc2_vmmc>;
++	bootph-pre-ram;
+ 	status = "okay";
+ };
+ 
 
 ---
-Steffen Trumtrar (4):
-      arm64: dts: freescale: imx8mp: skov: fix sort order
-      dt-bindings: arm: fsl: add compatibles for Skov i.MX8MP boards
-      arm64: dts: imx8mp-skov-revc: convert to overlays
-      arm64: dts: imx8mp-skov: support new 7inch panel board
-
- Documentation/devicetree/bindings/arm/fsl.yaml     |  2 +
- arch/arm64/boot/dts/freescale/Makefile             | 10 ++-
- .../imx8mp-skov-revc-jutouch-jt070tm041.dtso       | 38 ++++++++++
- .../imx8mp-skov-revc-jutouch-jt101tm023.dtso       | 38 ++++++++++
- .../dts/freescale/imx8mp-skov-revc-tian-g07017.dts | 81 ----------------------
- .../freescale/imx8mp-skov-revc-tian-g07017.dtso    | 40 +++++++++++
- ...h-jt101tm023.dts => imx8mp-skov-revc-touch.dts} | 26 +++----
- 7 files changed, 135 insertions(+), 100 deletions(-)
----
-base-commit: 7f47e8eafbf55a2ad0697e5d28f5e6cff2fa42f9
-change-id: 20260325-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-3dbcb450a39c
+base-commit: 3d7783543c2646af69ad65825e810060494bea21
+change-id: 20261012-bootph-frdm-imx95-pro-6edf0494358e
 
 Best regards,
---  
-Steffen Trumtrar <s.trumtrar@pengutronix.de>
+-- 
+Joseph Guo <qijian.guo@nxp.com>
 
