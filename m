@@ -1,156 +1,138 @@
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011061.outbound.protection.outlook.com [40.107.130.61])
+Received: from mslow3.mail.gandi.net (mslow3.mail.gandi.net [217.70.178.249])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 113B344F545
-	for <imx@lists.linux.dev>; Mon, 12 Oct 2026 07:45:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.61
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791791108; cv=fail; b=ZME/HpmeiCGp4r1EYrGZfcAa1/W0z/X7JCn/j2rrajhwNlkM3kjUx+jEF51doiYYZsJpSrDkrt8xoDbGIGB4ztwJfcjo90bq+hXCWxnlwLqTmBg0SLfOKe4W21Lv7lnUHyc7kYtZijzRp8+qVKsiwCKvG+Qwb9zxwmlxSsEDxsE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791791108; c=relaxed/simple;
-	bh=1ihIOvmTG4yDOEiPv7K2lRqoUuuVUsItFTSF+NNW8Y4=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=EIoBwz+0OvFVoo7zNQfWYzAqo9gfXacyMwtWHp5olqywCNgeS/nAme/loNRKITPl3boZm5PNb9dMk0L++VK4Vx0ZWpQiwam6i0Y8oAWrwbqi+gvaBeQw3Nu1N1FUlt857H0RJLkuPmyzSyWNsM8NNswVJt60xA/RH8L7arkF2MM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=C5htsCSk; arc=fail smtp.client-ip=40.107.130.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96FD23537FF
+	for <imx@lists.linux.dev>; Mon, 12 Oct 2026 09:12:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.178.249
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791796339; cv=none; b=iXShzCYAeZM0G+8F6H4rUmG5goe6ehIGtEf/4dXCpv5Aw/IS13NJlGy+qhM3WMc9y1CrmTvp2/KPK6dx7MOAILCHHC7kBm7q/cXVXytf7YmfB2pI3LIHR3NiGA5cy49L6WeG/WxMQIzzq/KxrWbL+XnYq2xB8wewIPF2F9fXb5k=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791796339; c=relaxed/simple;
+	bh=JJbp9gY5o+Y9jQt84wdvC7PHP6OKYOMmG0y/d7r9l+k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nYK/TJr+lk2Lc1a0mAK44orTmWocpaVSxIywPeYy/Ea4zLvGzXhz7C2M1I7TKjNmrKz0V8opQItLwHJubJF3RMV9zKpaPhwNW23qCskz1/9IDQlt+EfAGjsY3BaWrcmr/zqE+o9obdrrpf5Fz6aLeCFe2uxDNZ6xvfcfZl6hjgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yoseli.org; spf=pass smtp.mailfrom=yoseli.org; dkim=pass (2048-bit key) header.d=yoseli.org header.i=@yoseli.org header.b=AAz8ZPAZ; arc=none smtp.client-ip=217.70.178.249
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yoseli.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yoseli.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="C5htsCSk"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NV9DMzgrhw0B7ymxrejdF7ld3VZWVANvllfO+2Y2vZoEQGN0g0QkMnff+XIBeA8g1VJik9jWOFkZaGmJyGSPBa8ylZDKVDKFAbRoVwJHNBHFLVvbhZhh+qCs/DpZyr2WbreVt2mV7wDY/TPyDgTd8BQqhPfuVeqMdiTUXD+f9vMupsx99/b3NiBDxg4c0f+u1mmHGhlN0aAN9tY4H6LElpDl9Yi37pDJDQhT/oesc6yjpasbdO2ZXcl0dNNfjd2lMQkQ8LdJv8L/tJcckmZ+OwiFgkn3b1xFfhi8/sjizmukErnasnwHrzw3lsdMlgMpXsOO4M/Pwqjo9qFX9d9Cbg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1ihIOvmTG4yDOEiPv7K2lRqoUuuVUsItFTSF+NNW8Y4=;
- b=mOPqq9a+j7q3dcQ/O96i5KWI6jy+zUnBhYjScgZ8EZuVnDwZNk+6f/kzeYzcO30xgX2WqKV2guj3Yj0oBIBR8poxdXDhCV0IdG45j5x8b1kwubPNOmarF6+g54FTn1tp85AWHkcCvuu/E+HKdu6Niyr+Dl8aUTsGK8N1rvF+s6jAEUJxwfamNiujrh12inIqvr42eRR/IM0KnrSoxWsP21lzYyIxKv6SN70gxKZfEeVmgBjyUoMfC+I6g+1M10bTY6gj0zb07OuOmT34t0gd9P7AS93Ghbd4q2UqXqJ6ifsYu/Z8Q+zhYTic54mvjoMPJmTiYl5qvcwVgN1ZcL2ZyQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1ihIOvmTG4yDOEiPv7K2lRqoUuuVUsItFTSF+NNW8Y4=;
- b=C5htsCSkm9CduTDRWZ0wsP4g4waPVUquoGiNtf6h0LiHZavjPXjBE2bkJ/IFzXLc0lOn/yQhAhZr1NiwpFJ5c8NOmatOI6j+G4BI3orE72i4W4pTtd1R4mkNI+jce0bLbACyxo9kPDgxDf1TGF4eDQvNC/HAiBITwN7R6Qkg79mp6FQYocXy/7gqCeKO/4SC8AjzIEHBA5xoGwgQQL6Xxb+Zl7tEPiDggkJPlpAPmFWy2We1KAB2bD9qihpEMad6H0TDjJ3pKzcDprC/9eWQu6ZJIp3sMkvwIhVxN85v1EXTTB8og2saFRmPuTrLc0OYYAhtilQLwtbue4h3/L4yNQ==
-Received: from GV2PR04MB11740.eurprd04.prod.outlook.com
- (2603:10a6:150:2cd::13) by AM9PR04MB8571.eurprd04.prod.outlook.com
- (2603:10a6:20b:436::23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.21; Mon, 12 Oct
- 2026 07:45:03 +0000
-Received: from GV2PR04MB11740.eurprd04.prod.outlook.com
- ([fe80::ca5f:7e1c:a67a:a490]) by GV2PR04MB11740.eurprd04.prod.outlook.com
- ([fe80::ca5f:7e1c:a67a:a490%4]) with mapi id 15.21.0496.020; Mon, 12 Oct 2026
- 07:45:03 +0000
-From: Claudiu Manoil <claudiu.manoil@nxp.com>
-To: Wei Fang <wei.fang@nxp.com>
-CC: dl-S32 <S32@nxp.com>, Vladimir Oltean <vladimir.oltean@nxp.com>, Clark
- Wang <xiaoning.wang@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub
- Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>
-Subject: RE: [PATCH net-next v1 2/5] net: enetc: Enable probing of version 4.4
- devices
-Thread-Topic: [PATCH net-next v1 2/5] net: enetc: Enable probing of version
- 4.4 devices
-Thread-Index: AQHdV+toM4heoR/OyUSjS2DByV80E7b2BsQAgAOD1pA=
-Date: Mon, 12 Oct 2026 07:45:03 +0000
-Message-ID:
- <GV2PR04MB11740B17401171A7F3876B6E0969F2@GV2PR04MB11740.eurprd04.prod.outlook.com>
-References: <cover.1791548316.git.claudiu.manoil@nxp.com>
- <701f38d08f9ea371877645223e6ac919af7870b5.1791548316.git.claudiu.manoil@nxp.com>
- <AS4PR04MB9338CC6990BCB8781706AAD088912@AS4PR04MB9338.eurprd04.prod.outlook.com>
-In-Reply-To:
- <AS4PR04MB9338CC6990BCB8781706AAD088912@AS4PR04MB9338.eurprd04.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: GV2PR04MB11740:EE_|AM9PR04MB8571:EE_
-x-ms-office365-filtering-correlation-id: 74b89a5a-22f6-4c22-4979-08df2834ba20
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|19092799006|366016|1800799024|23010399003|6133799003|10067099003|18002099003|22082099003|38070700021|11063799006|4143699003|56012099006;
-x-microsoft-antispam-message-info:
- j4+IMvWTR0y0hkiIc1dPhqa1ooVYXCZphRHha9Eh/6keMuzKWVDJBIa+X8fMFu/Bb13Iu9kAI0OmgKMDm+mlq4QjW0IanRoLV1p4d1VncsMuOVBYHdFuLPX6wvqmtLPJ80XwpeCC1h0Fe+e9OOtHGf5fuZCkvv954rqVar0UtzcdGRGcafZky6gLYQq5Svyf9CL28ZBYUvKuEY3+Fwr4Qc9455lGeDlf/6HN0G+ZtIT06lHn/XcsaJKuu/XWqtmPOskbFqszdDJ42A1aWx7DsHZ7kgXWpBFpr/+5VfZjSlo0RUl250PEWwWTgRhsOnVRj9eiZBbUqYBmWth9X5rEZEONwogaPReFCuXYF4enPHTF4oxkUvC+rvaI6iCHkCO2Bq8u2YvrGX0ck+AYTZ69JTHdFJoh0cyhhvn0FiWCEC7Jt5UcLYsp+xpBJcSCbYNlUqlq1188AeZ0Vj8JNNuKdZ+c9ZO9+sk4drM8RYpmrEEuT2TkMmo6u2mTB17fpr+FxXZ2MFP1erySy32iZs/hUCULtQM2G4EO0ZkSS3/pZU+50fJ9kLr7AmHYp/LjEOlv30U32VXxviOSYOoI8/AHa3yOfTvIbiSMRP9TMX3RR4rO2v+MMk5pv29MPP068Iy2+/y/jrPLHx0K9qneZZ5FUDHHQqZXk+f2pHDjhTH94YZkGfg6RQH5xu7KuoS9sJZXwBbJCghD5tdoVDpg2t1JDZcSiR9xM5AqYai3zlgnySY=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11740.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(19092799006)(366016)(1800799024)(23010399003)(6133799003)(10067099003)(18002099003)(22082099003)(38070700021)(11063799006)(4143699003)(56012099006);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?k+RBLv4eYxxcYWKRGXqV8ohx7blgfGl5Od+druE3SW6Jl6GdMeq25XRcflSV?=
- =?us-ascii?Q?eUyfwWtqlDzhkwWk7w/q8oQLBQzPlCsNzwq8I30d0sRWTSxpSLxxQokxUVEI?=
- =?us-ascii?Q?ZwQh21JVV5PNHwz0UQp4eWYzK3p/FPGsBEGR+/cmAkGh//YgyzUiok9xMWqW?=
- =?us-ascii?Q?5/+ZgeX4tvemAIDZbOm41DL2yaMRmHiW21ShLeXYNcezKB38IiDhqktaOgZT?=
- =?us-ascii?Q?ftCFQvJBQqTRTqmsJGLuYCyrUXUi+jmDFdFCDKFpT+HF3EgbblxD9Qn2NR0D?=
- =?us-ascii?Q?kWyHuDjdYNDUFSFj4DSsPITsAivcLBqk73BjbfwNzfYrKrA7BN5FkTqMkQW4?=
- =?us-ascii?Q?c/LwKta8+VyhwNgsy+DDHT76/L/K+DHbzpKCuoXuHCZoYq+JsTNtcTweudkU?=
- =?us-ascii?Q?vg1BglfJYNdanfXj8/Ls/AVaK+v6SGQxyVvd5sJmrN0oeqgXXFfWiLuB4Iun?=
- =?us-ascii?Q?E8mHiuYFoG7d95Vz7H1/L/9HSFd89aZks4cfYrFrEwOcFiXz0y0liqWv/T8J?=
- =?us-ascii?Q?KKBoJn83vgo8YYENAec9mN1H3qDXg3nyUbv26Q2/ICcdEf//B4JvdHwsYugy?=
- =?us-ascii?Q?if1pAwE/REYpnNEbWqAbQbMxHE7/TKD7yNnKjmK+05yK5ChfEDukRJ+/2kzR?=
- =?us-ascii?Q?vOrq2txwEQPdOcpuH7oEsH4icIZR9tx7aLBRZ7r8VINZ/A4SJ4kv2PR5lSrP?=
- =?us-ascii?Q?znXCM4GqOWV4X37afiUK375zrWegWzGiC1t9BSIOx01Mcx5DjInVW4QERz7d?=
- =?us-ascii?Q?MEyy8SW3UVt/s9ar0r+9ZRanznxTsqAenYzTVDKC84MpgNbFFzZHCWhBoJRD?=
- =?us-ascii?Q?vwu/+krGisXgctPTzv9NoLPizRqDHgOq4lhwoRCFKEAYtjOW/zEXB+S+VbNa?=
- =?us-ascii?Q?F9WWF0cDhnSGf1h0WLKy8UjUYUY9vTGXs0D/kzG4Sg9YxEsiiArtVHRHapRe?=
- =?us-ascii?Q?LOJYwPptbDXvOg9GADsZWqnYlsJdOfEa8dB03aGOmsBdz88dCpSlqsDPn11f?=
- =?us-ascii?Q?hN+OpFrg+dmEaj0Cy06a8PLqWEghTsLELIPywx50k0bSh34oKNPqJnCE8SJK?=
- =?us-ascii?Q?fz1QhLKIMqi+qmfjY2DzK1WeU1BC+UcdaraI5Py8QmRKznWxnwRLGXMLPesU?=
- =?us-ascii?Q?li+nLume0tKAB3INhHbHKkiHZpiNhJZF6NZYRpwdJT9NB8DbACgr/uAf/L+A?=
- =?us-ascii?Q?X7GfSmlKFYhvhDMty/a661pgQyfzxnaDz5O9ncSbLVGOeMAOBudn9d19QHc5?=
- =?us-ascii?Q?N1EERLhpJCme3ptbMrOK0GRta/URpm7oIEIW5UkKL7Gmj6f+HmNqZwlkOX45?=
- =?us-ascii?Q?GuHiauGSnxzGhzfLTjSNg80m0gTIGxu1AFjFKKme6QB01G/ErqKTayh5Rqc/?=
- =?us-ascii?Q?mEL4wnZz+lriyCS6X95Fw400SYRE8ljTQ639gs9EUYgIOTBXuxQ6gkuYFbWM?=
- =?us-ascii?Q?3fN/uD6z1CdWsd+CSnKhU1K9+gywMSCXzEI+h8T2rLpSVXU9a75TkPod52vR?=
- =?us-ascii?Q?/vqMDR6mRvuUvWwchaPXhmj+3VfNjgNyJ4b1ZCX/XjA8GM1W6+df/wXijzGL?=
- =?us-ascii?Q?KQtZgPDhfX+iiO9rpbLaZIb5pIi3HyWiSDEfKq+HKx/wYbQ5g3CYsve8eUWs?=
- =?us-ascii?Q?BXfpu5NZH3Txai/8EVeyfAZwOWwzD6DU0HDWXTzLaIkNGN3zb5i0523Ms4t4?=
- =?us-ascii?Q?K9k0UTFNDOLr4kqyKlbgxDsmIbJeuz/yuB/LMliU+mxIeePhDEz1XS+f1vbL?=
- =?us-ascii?Q?KCKqLzX5gA=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=yoseli.org header.i=@yoseli.org header.b="AAz8ZPAZ"
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+	by mslow3.mail.gandi.net (Postfix) with ESMTP id A0EE4580B72
+	for <imx@lists.linux.dev>; Mon, 12 Oct 2026 08:46:29 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 957A53EB8E;
+	Mon, 12 Oct 2026 08:46:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yoseli.org; s=gm1;
+	t=1791794782;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=19boBTCsjzigUNehuNnbCAd0sjXKxyv/w6iDQ2Y4Fdc=;
+	b=AAz8ZPAZyEpuFA2hg1GD2suLLmvBqd0ODa7hc1UL+saONfjIxVSk6G/tnsQe2ISC1P0G4y
+	VfxTMHDMvQ0SZdF0yzIY/jsdYFHuCL2MQyvJFMaWhQm9liejE3gEDXTWRaJYvrtY6XxDTY
+	QeVKWrkiKVYFh8wizEQb7r8XBHtku4LDZ4ZwEiIndpKFQaTH7DIpd3jqTHzBuTH7olquCm
+	HUb/Zl1H7kEfZa5DEizrslSK8++usYILUQQIMp6BKUNSzVEKh+aFJ+ehl/oZFk6NR2R63V
+	nudiPNLAPLX9rUQkjM56gpuhxlvy2Vvo5vSA8vmwDlfzD9bBEl+/zdF274qzUQ==
+Message-ID: <ee54b08f-b3d8-4a62-bc43-0117a9b11102@yoseli.org>
+Date: Mon, 12 Oct 2026 10:46:16 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11740.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 74b89a5a-22f6-4c22-4979-08df2834ba20
-X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Oct 2026 07:45:03.5915
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: vuz8h6yAhPZCg7KOz4PRfcZw23UL9Nf+vkAcTnk7YlE0s8O8xYqw8MlKp+U7dpqwE4+vaHbr0pmbi35Zqdzhiw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8571
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 2/2] m68k: coldfire: Add RNG support for MCF54418
+To: Greg Ungerer <gerg@linux-m68k.org>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
+ Olivia Mackall <olivia@selenic.com>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, linux-m68k@lists.linux-m68k.org,
+ linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ Frank Li <Frank.Li@nxp.com>, Herbert Xu <herbert@gondor.apana.org.au>
+References: <20251126-b4-m5441x-add-rng-support-v4-0-5309548c9555@yoseli.org>
+ <20251126-b4-m5441x-add-rng-support-v4-2-5309548c9555@yoseli.org>
+ <bd25e903-30fc-4905-986c-96d1b42e9f02@linux-m68k.org>
+ <ddf0ab32-5b66-453e-b7aa-1722aeaf2aa0@yoseli.org>
+ <9ba1ebd8-61cc-4e1a-b68d-906b20dd4999@polyxeno.com>
+ <asn8e5puc3I01Lva@gondor.apana.org.au>
+ <8be9c875-68a9-4bb5-b581-501a0a6819f4@linux-m68k.org>
+Content-Language: fr-FR, en-US, en-GB
+From: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
+In-Reply-To: <8be9c875-68a9-4bb5-b581-501a0a6819f4@linux-m68k.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: jeanmichel.hautbois@yoseli.org
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: dmFkZTEPWrJqe016L8I3chHHuK71fvLMlYu+6IrNfxrvD/MyQtgB2kOmSroRn5pztNxyoPXTsP3v9st2xoK0cTKVkCkEXnzk+tyydkEnZa3BeDOpN+lBo3VSfju+U2Tk5DFLr2QTf3rS7cF70bZN6RCshXOZ6HVSfbaHlah6rgF+S1ghDvtrdNc33ylG978pFkIVKZAjrHrrK4lzsId4ZikSGWG++dyZRIZYSLuxWGOy6uWwFvRqYp7eHk+F8lCkqQkRzDYLf/PNuPs9yHrHnCbSXcwXnUuKid+zR4eyu85684+A5SFc3yxeSVSajXUtZMboFqBEssGGUH2TBR8Yk1f07MSZJgLkJ/dO+CwPvwngLjI92MEv73dMHbbBqJibq0do1B0Lz0Zo4mzA4OezcBN5mVpeb0VThW9sEYznRUJeYGoRvkCbWRdrYkcknQFhqJwUI1dRKs9JjHOG0kHLDHZ8rpKjMT14YRCg/zYDN9c5wK/DOOHXEvlA1ipL+b+3rKxzP3fnDw63p4Y44/pyd0xok+TQxEAM35f5EE+5btGH4X2G7kPlNHHh5Ik+e2cJFW/1kSa3D12NjWBUnaHClNFyhqUsOcUOJZDYAZk3O5uHc2Xx45m7gaOtKGgKEbDe1QC01g3/kF2lnlW+BO6+ah4NHNgEER4kazqxwF5roUA2tzhB1w
 
-From: Wei Fang <wei.fang@nxp.com>
-Sent: Saturday, October 10, 2026 5:02 AM
-[...]
-> Subject: RE: [PATCH net-next v1 2/5] net: enetc: Enable probing of versio=
-n 4.4
-> devices
->=20
-> > The ENETC v4.4 devices are present on S32N79 SoCs and feature only
-> > Pseudo-MAC ENETC ports, whose PFs expose both the 0xe101 and 0xe110
->=20
-> I think the device ID of the ENETC PF with the pseudo MAC should be 0xe11=
-0.
-> The device ID 0xe101 should be only used for the standalone ENETCs (witho=
-ut
-> pseudo MAC). Is this a hardware issue? If so, a workaround is to set thes=
-e PF's
-> device ID to 0xe110 in IERB module. Then the device ID 0xe110 will be pre=
-sent
-> in the PCIe ECAM space.
->=20
+Hi Greg,
 
-Ok, will consider going forward with 0xe110 exclusively, in v2.
-Thanks.
+Le 11/10/2026 à 17:28, Greg Ungerer a écrit :
+> Hi JM,
+> 
+> On 10/10/26 18:51, Herbert Xu wrote:
+>> On Wed, Aug 19, 2026 at 07:36:36AM +1000, Greg Ungerer wrote:
+>>> Hi JM,
+>>>
+>>> On 19/8/26 01:09, Jean-Michel Hautbois wrote:
+>>>> Hi Greg,
+>>>>
+>>>> Sorry for the very long silence on this one, it fell off my radar...
+>>>>
+>>>> Le 03/12/2025 à 13:15, Greg Ungerer a écrit :
+>>>>> Hi Jean-Michel,
+>>>>>
+>>>>> On 26/11/25 17:08, Jean-Michel Hautbois via B4 Relay wrote:
+>>>>>> From: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
+>>>>>>
+>>>>>> Add support for the hardware Random Number Generator (RNGB) found on
+>>>>>> MCF54418 ColdFire processors with clock enabled at platform
+>>>>>> initialization.
+>>>>>>
+>>>>>> The RNGB block is compatible with the imx-rngc driver.
+>>>>>>
+>>>>>> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+>>>>>> Signed-off-by: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
+>>>>>> ---
+>>>>>>    arch/m68k/coldfire/device.c       | 28 ++++++++++++++++++++++++++++
+>>>>>>    arch/m68k/coldfire/m5441x.c       |  2 +-
+>>>>>>    arch/m68k/include/asm/m5441xsim.h |  9 +++++++++
+>>>>>>    drivers/char/hw_random/Kconfig    |  3 ++-
+>>>>>>    drivers/char/hw_random/imx-rngc.c |  7 +++++++
+>>>>>>    5 files changed, 47 insertions(+), 2 deletions(-)
+>>>>>
+>>>>> I am happy with the ColdFire arch parts, so from me:
+>>>>>
+>>>>>       Acked-by: Greg Ungerer <gerg@linux-m68k.org>
+>>>>>
+>>>>> I don't mind taking this commit via the m68knommu git tree if the hw_rng
+>>>>> maintainers are ok with that. Otherwise if you break out the arch/m68k
+>>>>> parts I can apply those on their own.
+>>>>
+>>>> I think Herbert acked ?
+>>>> Do you need another ack ?
+>>>
+>>> I would like to see an acknowledgement that taking this patch via the
+>>> m68knommu git tree (to Linus) is ok with the RNG maintainers.
+>>
+>> I have no objections to this.
+> 
+> Thanks Herbert.
+> 
+> JM: I have applied this to the for-next branch of the m68knommu git tree.
+> I didn't quite go on cleanly, so please double check it for me.
+
+Thanks, I think you missed 1/2 ?
+Or did I miss something ?
+
+Thanks !
+JM
+
+> 
+> Regards
+> Greg
+
