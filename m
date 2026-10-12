@@ -1,128 +1,82 @@
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8412946F4A1
-	for <imx@lists.linux.dev>; Mon, 12 Oct 2026 09:39:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.172
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791797958; cv=pass; b=NoV0ACZy8O3ee7DbG7AOqALM8m/XiJOmdkTUfYSZDnZj5f0mzbNPbbUSWh509P+A4OqedI4Mf8rA2alxpxclvZySG7IEx0WZd/Ky/r3Nm0tyvBeC1O2qbjToVkgwm3qPJEmVcYn9yBomidxrXZUDNpon+Gs0HxOgS2N+f2q8+jQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791797958; c=relaxed/simple;
-	bh=xctuaA4PulzCyQhRxtqWpMmwfC55/Ln+sQuojgXBfss=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eMl/C33kKyFCK8qhXu7f+3/K0obn+BtBjbWDrpSWN6C/LC1sTa6wlyq3uhrv13zQF4Ophyf5nabGC41maNPbxyxdWo7O6HraPwMLAol0g1RZNUGsUv3H1SeH/rX25uJrg2m0VBSsLVw3SrLj7bTYoosRxoc3VGguc6P9mG692Ck=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IsMzjypu; arc=pass smtp.client-ip=209.85.208.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B18B83AAF5C;
+	Mon, 12 Oct 2026 09:43:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791798234; cv=none; b=Zo02MiRMKSDKo2whvicsj9fWDCo6Y7Au1dADiaF2DZaclA004lCdTumhg4wpRP1HeA3a0oqq+dml+V703Co6eSTJrj3msbEUGtTFBwGKPXk9b9213xiYE7cjrdYBlU6x/bicTep66u6A3ZafvwKgyWqVfSv8j8gHTaCIyQ7uuy8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791798234; c=relaxed/simple;
+	bh=VIMNNJNGn25Dr7GqLIZip7ZIs8se4jphDPs2Kc9ADf8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DadcOd+OJtTmrEI+vTXOm165DB5eaT9CaY7/RewOdoqI2zS39blH7MGYFpDkEtGGgEsu5ynSkTVJb5Qg8Vhze1xQVMio4Eo2BB83sNn+fAuOX+Ot/XZbGGwuWiQHaFTw109f0BsC3pDD6/Z/3RRfGH0JCkCyFlLsm0HUnf+RHf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VvQ3uqex; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IsMzjypu"
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-3a98fcbfb1dso11948491fa.1
-        for <imx@lists.linux.dev>; Mon, 12 Oct 2026 02:39:17 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791797955; cv=none;
-        d=google.com; s=arc-20260327;
-        b=XZeKQwYDfJIRIVbbfWneCRVDJ02ATqkhkFtqZ1cP9Am4FBdHSSFp8A2SXraqAhEAzl
-         Dc4hwLGZ9mO6AFrF9cuZ+wFcuNckSnVgY0POoW/IFJTPYf4H9Ssss10rT/Mhtqjw6Irc
-         lzlssc31n2S6pevn6IrfNr+KdUOO8RoCuzk7vyGc3KYy+iVtWyWIaYtCGrAhBkOyhGT4
-         Kdme+rm1TQxFb88yPFsU7QLYY4DxpQ0uyQ0qQgkbjmpg2uJ29Ci0LHosg/n6cL73imjy
-         m2C6x+5EfJqRamP5Of8ErPghpJluLN315eG5gcwt7/MKD2vH9fNPB/t8QEajcSS4bqvO
-         uKaQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=xctuaA4PulzCyQhRxtqWpMmwfC55/Ln+sQuojgXBfss=;
-        fh=bp7IRdHntiExTmH+oIWmUj2M2su6dsCd13buo8t5OvU=;
-        b=k2sg59HOzAnog6ebTUV7ywL0wXLTGFBw8yN5cK75lk/kDm2TKb18uvU3MUa8lbyT4Y
-         sURKHHXQgb7O0CZtcUGOBrnzB7Ucv63UpFVoy14z9SF4gzIb2bUGns6jhYNVvbAOv7MV
-         NnpZqg04FxHV/WBAFJM8OGzjLm6SM9BfKEIylT1d21BHfpoIv3jdP/Sq428nVDaWJmL9
-         ys4RBsH1DlCalgKarJeTKC2sAkGqc7HJy9PjlYT86mXpWS4MRXacCwIqPBzW9kDkVAWH
-         yaDFieVUXQHtOc299HhqD2a3cgNWE98Xung3oF84lfvGsBrajd3wxkXmrs4oBsYWfC6a
-         6NJg==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791797955; x=1792402755; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=xctuaA4PulzCyQhRxtqWpMmwfC55/Ln+sQuojgXBfss=;
-        b=IsMzjypupi/4dmYj5oaPGFlzw4lmu458HMFj14jGKhsMe8XmgpTOvsROb6bjkRVGTz
-         9MjZbfwCcCKjejyWrvU004XbN/AfcTJ36bPBWDfxT8QNA5Eoh6FC62lCE1VWD+Xy+NHV
-         FALU+1+uBO1PFhixjjuLvL9su7OygcuQcHz9BgF3lYmPDZhEUnWZMw8pDv56tQhTxawD
-         2gEXifjmayBLIcTwS8ssm209Tem86CFwzbqUdW5KD33/JwcrEpCM6XBKMqvrwMtg46zN
-         UK/dmQqp7yZSNFzKPT5FdoqqgkzZl9KK+5No0AcglJ5r+OES/BZIKatYU7rF5Zj8gbNy
-         4dXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791797955; x=1792402755;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=xctuaA4PulzCyQhRxtqWpMmwfC55/Ln+sQuojgXBfss=;
-        b=rbXXOwhxKsj93P0JkaoUKCritJ9DkprBKNsKNuqcGqWdwEsRY168RTRexWINGmRocB
-         P9nIZxSLoGk+YiymwP6G6DebYo4v3d6Ah0qsi6ntBi00c3p2lksbSH3p47hMFAxIbMve
-         QDjCoB1pVKiOkZHk6bVEKhfm/+ufxin/OZvASS0HcEDWqN1bIUfgTBQRrhp1SDYONA6X
-         eXEfuYAFMDFSb6/6z5B5qepJnkTCXb6naV+JiT9poJVHOjZfN3VP54BTQtDz6ezAff5R
-         ID7l/Xf5OnKmMFK0oH0ktDPcncNFehp0BL61xDtn4nQHd9FLhjqQGC2OYBbtqSqQAFYG
-         mmyw==
-X-Forwarded-Encrypted: i=1; AKwUvBzyum9pIDNIX+qCtaKPkZBmlghKrWpuOfM0UbYeLo69iv0W9mk7aO9q4uMUXNjWBHoejhc=@lists.linux.dev
-X-Gm-Message-State: AFq9FYIi/lumc04AeP1AjPKbMKDmg7PHrqV0I4YJ4/yHJbWF+IjnFu+C
-	IclasXIwMD+BIAuUlf/0PRWhQT6MW4K0oqYkvdEpylyyNW4gN7i+EggxjAWn1hDeha0eMdqoOnZ
-	2R8hKMhvm60nSLw6rKNO/xCsMvd1waeQ=
-X-Gm-Gg: AYBFou23Lz/hBox1f/Kay2F4Nf8INa+PZGH0mugTyukyzWSp8jWVaWLl8EEeetiuWvz
-	xgA4sz0cY4RNd2Zx4pxHx0I8ak3sfw3rTTKBpgYVeUKh5yQJtFv68/kZo5ku66v9LqxPYYwnJx6
-	9D8QGceMxMEpaCVojQr3C4LwrUqctoFXxwau0HS6zkdxU+5au0sNA5liel5aposlgl0uq0hRmXo
-	QbU2vEEjhWoLTHarTj4mgmdGxEP9I4uzic6BvLyW0dzu/W0B5QNhkQZ8c0LPOh+hDiwFIfIOwck
-	1v+p9zdqF50l7gEkWieoy6A1RcuT9pg+hL8bcRtfAX8TorUk6XrXbRnaIE+VSqNf9gRERtKmETk
-	LwOsGXihfqg6UmmGxOBRpXJn5KD/7zRn6PeDHQpQhF2+VgSe8qTkx8afExuMpVK/AbSC5imwBWm
-	od/RTG/Vvu3Q8HbdEg3Z0+mJpGeJmtJ8yeu7RIAIk4
-X-Received: by 2002:a2e:a58b:0:b0:3a3:7681:6d5b with SMTP id
- 38308e7fff4ca-3a9c53852a5mr24148381fa.19.1791797955285; Mon, 12 Oct 2026
- 02:39:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VvQ3uqex"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27A101F0089B;
+	Mon, 12 Oct 2026 09:43:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791798233;
+	bh=n8g3m07kswQUB2aEv58Z2fxCH8Bc2AGaIzxQdV0JnjE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=VvQ3uqexE/Ntit4Uo3Vnyg1hfJ5wxdiRHSmkrQz2UynJivsnVns11WZvmUtdFQ+Np
+	 vUZms2MpfqdwiihALNylI7gBnQTtYqomf0s4nk9GNPPpWxLzNEQ+uKoX1kmdD/Wz7x
+	 HW8OL9GhTXSMosGLbjUQjO6ff1Iu6loj56wKj8lyybKhGOjVzh4+yPQ7WDkAdhPhtP
+	 sm8dS4tSZL8Zhe3PsLI2/i0H1mwr359RzrwTlwKwOc2+L+C1lMAnEfDi9xCKMejdGP
+	 oEAJKfI9cm3VlT2tfIBYBOEx5BbO1LIdLTiTEarIzuNRfYTBxEVGLXJJbArYMhF5Ts
+	 PjH/vNLgk6Hlg==
+Date: Mon, 12 Oct 2026 15:13:45 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Xu Yang <xu.yang_2@oss.nxp.com>
+Cc: ivaylo <ivo.ivanov.ivanov1@gmail.com>, vkoul@kernel.org, 
+	neil.armstrong@linaro.org, dmitry.baryshkov@oss.qualcomm.com, linux-phy@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev
+Subject: Re: [PATCH] phy: phy-snps-eusb2: fix FSEL_48_MHZ_VAL definition
+Message-ID: <asyrexEOKzZkoD23@debian>
+References: <20260908085953.3315953-1-xu.yang_2@oss.nxp.com>
+ <aaf8a5ef-2abe-4269-804e-4d2dd1bc4d3e@gmail.com>
+ <ogfpkqixf3xkyvh4bbpvui5ybfaro6g35g6u5kb56k2jsyrsmt@jm67at6cpksf>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20261011-gpio-mxc-cleanup-v6-0-cb47ce2ad758@nxp.com> <20261011-gpio-mxc-cleanup-v6-9-cb47ce2ad758@nxp.com>
-In-Reply-To: <20261011-gpio-mxc-cleanup-v6-9-cb47ce2ad758@nxp.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Mon, 12 Oct 2026 12:38:37 +0300
-X-Gm-Features: AclHuK-Z5wvwMJRFMQw1kYvrinOCHaZjgXVZjShRyJvcSKeeEwPjXo7VOTJgmQg
-Message-ID: <CAHp75VcktnQVpqLADs5AccUj6U7KLjAatPaSzMX8SXDrbbs6Ng@mail.gmail.com>
-Subject: Re: [PATCH v6 09/13] gpio: mxc: use cleanup guard for
- pm_runtime_get_noresume() balance
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Shenwei Wang <shenwei.wang@nxp.com>, linux-gpio@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ogfpkqixf3xkyvh4bbpvui5ybfaro6g35g6u5kb56k2jsyrsmt@jm67at6cpksf>
 
-On Sun, Oct 11, 2026 at 2:54=E2=80=AFPM Peng Fan (OSS) <peng.fan@oss.nxp.co=
-m> wrote:
->
-> pm_runtime_get_noresume() in probe must be balanced by
-> pm_runtime_put_noidle() on error paths, or pm_runtime_put_autosuspend()
-> on success. devm_pm_runtime_get_noresume() cannot be used here because
-> its devres action (pm_runtime_put_noidle()) would fire on unbind in
-> addition to the success-path pm_runtime_put_autosuspend(), causing a
-> usage counter underflow.
->
-> Use a __free guard to automatically call pm_runtime_put_noidle() on
-> error paths, and disarm it with no_free_ptr() before the success-path
-> pm_runtime_put_autosuspend().
+On Wed, Sep 09, 2026 at 10:49:41AM +0800, Xu Yang wrote:
+> On Tue, Sep 08, 2026 at 04:17:57PM +0400, ivaylo wrote:
+> > On 8.09.26 12:59, Xu Yang wrote:
+> > > From: Xu Yang <xu.yang_2@nxp.com>
+> > > 
+> > > According to Synopsys eUSB2 PHY Databook, FSEL_48_MHZ_VAL should be 0x6
+> > > for supported 48 MHz reference clock.
+> > 
+> > I don't see this as a justified change. Samsung's implementation of eUSB2
+> > differs from the generic Synopsys interface, as is visible from the
+> > differences
+> > between QCOM's implementation and Samsung's.
+> > 
+> > From what I see for exynos2200, the FSEL value is 0x2 for both 24 MHz and
+> > 48 MHz. The differentiating part is that the upper PLL divider is 0x0 for 24
+> > MHz
+> > and 0x1 for 48 MHz. The current programming was taken from the samsung\
+> 
+> For Product Code H483-0, it's 0x2 for 24 MHz and 0x6 for 48 MHz. The PLL divider
+> is 0x0 for 24 MHz and 0x1 for 48 MHz too. So it does seem like something mismatch
+> in your side. Because the FSEL_*_MHZ_VAL is common definition in the driver, this
+> means FSEL_48_MHZ_VAL is not common anymore. But if you have confirmed it's simply
+> like that, it's fine. Others need to add their specific definition in the future.
+> 
 
-...
+If the values differ between vendor implementations, then please deal with it
+using compatible check or drvdata.
 
-> +DEFINE_FREE(pm_runtime_put_noidle, struct device *, if (_T) pm_runtime_p=
-ut_noidle(_T))
+- Mani
 
-Please, split this to a separate patch and move it directly to pm_runtime.h=
-.
-
---=20
-With Best Regards,
-Andy Shevchenko
+-- 
+மணிவண்ணன் சதாசிவம்
