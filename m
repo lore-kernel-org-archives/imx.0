@@ -1,147 +1,158 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3C9139CCF9
-	for <imx@lists.linux.dev>; Sun, 11 Oct 2026 21:42:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E45A21FF2A;
+	Mon, 12 Oct 2026 00:02:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791754937; cv=none; b=dycPm/03hudP1rYExqD8M6sqjT16m8V3bgYEghIT60e+O9vaSxhWL+sCbaPM0ffpDHZhuEqCWLmc7tmuRFMv4dR73OVq3U07Avsi+sq2ph6qE09+sE8Frj+MteqkItSVwF0g1oMR/v/acw+NAIJ0VAWc5dCOufgUjc73NX6mJTo=
+	t=1791763329; cv=none; b=Nvlh+iwh2Ie23GVH6s0DgfMD/3f8RILUjAGEElQS48j8DThAmfvQ4g8GCWMbOGQUYplvMVRVChnjJvaml8OSbCRfzkpUsSdZFC5wBYOISE2iVFKHKuGh24KJIiS2QEcZTVGqyoer2KPA5LcjQj8O1M2zNtMrn1r2p6z0qcQXpa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791754937; c=relaxed/simple;
-	bh=k43IbaF6TdU+8O/x/tfa/3tzN+/gA6OynfUGsXVIY2E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UPN8HcnJ8evK0SZ715TaDdH8oiRdOC8tftzTqEPeKcdy1OToPjzeDq2cp0LGJ1uhsno65wwxwU1rLueysT7xew7N9/fbfd/Nm/6APr4QIDCRcuatQA2jdEuDTjfcVbgWy6XAvM0MLQgQiX66h2ay4KF2VzWoJSFLcIkR82mVW74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EyIKFx3a; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791763329; c=relaxed/simple;
+	bh=q7xHYe+k0mPe1R+mJYS433as71ocv2X4aSPPcqnLYvI=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=q2HhorM0iec6j/fFWw93RRwLjAzXjdISNdrmiPGKpRx9TgBww0KS1h9cwuVHYN3vNlAv9dRgTCFpdI8nRuOG7pTzokr/4f6o9jkMKrbu+FXgFvEnGEcKbTQD6vH/kf7q07IfiLjdOt/jlWDzv+Vtr/6I/AqJLJ5dWvnsTlQzTZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lqFLIEAE; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EyIKFx3a"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4a018dc1f98so10000175e9.3
-        for <imx@lists.linux.dev>; Sun, 11 Oct 2026 14:42:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791754933; x=1792359733; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=+5CIZCQrM8vHqdGBQkpWsSJmLyDFs444j3c0Qt3YBk8=;
-        b=EyIKFx3aFfREhkHi7yfaoAPG4v4UbgNiTKl8NrKH+vHdxk3OgmP+xNllNNmrmukUsB
-         HoL/FWgVKVcexXRSAHzeROYxQGB+Tb0R7ia77pwb256MqOwT1kJSNHzaLWakh9oKFd3E
-         KWr0BFKjRkeIy2LcNHmb7M02tYPgfvfC15yqNo5xhAmRYmgg22sLJGrl/UjT98+Vrlw+
-         sCNqMK6MXAs3UipL+USsH2lHHMr4AXijnHa4eUL2VDXVO+s+HBWIjY0hgnu2UNQNGaRH
-         SDWOZwVfVxg8k7JbvzewUq9lND8JnmSldHBJLMJGURjhumguGkhCsnBg0Cete9mnbTEm
-         SFog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791754933; x=1792359733;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=+5CIZCQrM8vHqdGBQkpWsSJmLyDFs444j3c0Qt3YBk8=;
-        b=JklI03DZn8l9/kahwk2ANOlKzyK57OxWPquBt2xwq76+z8cSNhWvx0ADPzbeAaUZ0c
-         o/zqHz2zR5KsPm2TXds1zzJui1QpdXTIX+keIoQcJX8m4ve+V+XmN5g9rUWXKY83imUx
-         aO9Wu4fUzbfJOiPxcEOdYqrSbWglofJt5Vo1m+RQwYIXCHh4lL8BB1RdPi0IcNafYFaH
-         BwCScSz3Ip2b4W18TbBDk7SCEeK4cqlPuQaLeii6mvquVBueVQmLPUg6P2tr+VMgI9xS
-         Qnct1fQHn/fPD5yUm7C5i5SmHCfLko5ioc7TyAAeOasdS4Vex7DCiZPpWYKPoydWL9J3
-         Hnug==
-X-Forwarded-Encrypted: i=1; AKwUvBwon+JkLLKNhr8iJAH80FaVYW0r+g72bQelPlNuyPhXuGRiMsNKHswnnsjffg3GmmTQhWU=@lists.linux.dev
-X-Gm-Message-State: AFq9FYL4p1rLznphH2VRUJ3O0J8//xHD89D8gMuoVwiK5PCrFHmyeAha
-	RdrPIRZ7LO5YZyou/24jd9YdhjuS7j3lYo3rSKXD3wj/gfAmMVMXluSG
-X-Gm-Gg: AYBFou33Hpf3RcFn9tEjszO9BN1ba6Sin80TcwvY8iHTl+lwlgT0rCmM/2DH3LB3mUn
-	44lro7v3/6NjEpZxjl+AY5mI3IMkAOD2Nvsx22GGzUUGjxEkwXREegvAtkV5HBXO2Nh0d9kVyOR
-	9A8I1sXIc321HJQahtoWwV/z2fpzdzeCtCCaY2j+RBb46eCnvFdxI4WogEoOD9HT7nnWdTbC6tq
-	uSULI7Dz9BU0sJ2RxZmw+nCqOu6iWJPmDVY8f88wQ0UBgaBDkwxH4inYr8mLkaLmmqd+oJS8eXX
-	7OqLsq+EyHfhQVZR6i1zQsf87IQ3E3eWm3tQwMCtLV1QB3pe7qqAJ7cPafhvjwEG3gCPdxOA9BT
-	Hd99ud0wPcHCkYDKg5DThF4s3pq/0eYU73kjTpJKYYMAkp1NA+rwGpca0buZGqqrjx/fTXJ8Wp+
-	beVzLM7w0nW50r7Q0U0bXOqX/eO+qsjkKIt/R1vxy18MhnHHo8EB2wndNjkpRrqsHQEN9Xp94sW
-	F7y22g9F9ZjmNkCz2IZKiNvlplBN60BF9+TK3YiAdprGRMTstPXqCdTW356nLdsA5FOuWR9F8Jx
-	bhOF3kvY2qoKvepXgpIjo4zI1e7+
-X-Received: by 2002:a05:600c:8184:b0:4a0:1c17:4fb2 with SMTP id 5b1f17b1804b1-4a18e4d854cmr109941355e9.31.1791754932570;
-        Sun, 11 Oct 2026 14:42:12 -0700 (PDT)
-Received: from Lord-Beerus.station ([31.27.155.43])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a18bf2343asm451871005e9.9.2026.10.11.14.42.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 11 Oct 2026 14:42:09 -0700 (PDT)
-Date: Sun, 11 Oct 2026 23:42:06 +0200
-From: Stefano Radaelli <stefano.radaelli21@gmail.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: devicetree@vger.kernel.org, robh@kernel.org, Frank.Li@kernel.org,
-	imx@lists.linux.dev, conor+dt@kernel.org
-Subject: Re: [PATCH v5 06/13] ARM: dts: imx6ul: Extend VAR-SOM-6UL and add
- DART-6UL files
-Message-ID: <aswCrsVs4Z7n864c@Lord-Beerus.station>
-References: <cover.1791487179.git.stefano.r@variscite.com>
- <e11cdc950e41b502e5449830d5f6a82568fc043a.1791487179.git.stefano.r@variscite.com>
- <sashiko-outbox-166012@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lqFLIEAE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A7A41F0089C;
+	Mon, 12 Oct 2026 00:02:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791763327;
+	bh=UOBLYemmNMySix3BY2EnTEqYJu43hmHq/DXqqMBM8PE=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=lqFLIEAEHlPW4cfy1h+9Kf9T4Z10wWPgq2PVKAzXmqJ/RFOQP2VuYM4FmH/99GOYW
+	 aHjALvaU0lZUx1D9ZdwGPkS92L7ZHxWpS/QegI68SuVDDotExHIFSoY/RSLHHak4dJ
+	 lO/0RKs60cP5sDWxYw/YvCZ6qUMdNaV6itD6uS0r5xdpG+XjvaPkDv0I34eKSvEGYh
+	 c091zi9moFHz+Z6eyMhXYQ9eAR8LMYsX239Ldi9W8trsCYQTUs8L8RWpkJuXJTqkmf
+	 kViIyINhffiNztV3/BEk2RBdbMw25goa+UxvIqUkZCOX/ljYICiYYnCeaPZrrOcwQA
+	 93exXXblq0X1Q==
+Subject:
+ Re: [PATCH net v2 3/3] ptp: qoriq: fix support for PTP_EXTTS_REQUEST2 ioctl
+From: netdev-bot+sashiko@kernel.org
+To: vjardin@free.fr
+Cc: yangbo.lu@nxp.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ richardcochran@gmail.com, jacob.e.keller@intel.com, kory.maincent@bootlin.com,
+ claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, wei.fang@nxp.com,
+ xiaoning.wang@nxp.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, ioana.ciornei@nxp.com
+Date: Mon, 12 Oct 2026 00:02:05 +0000
+Message-ID: <179176332574.434549.17881202126873427960@kernel.org>
+In-Reply-To:
+ <20261009-for-upstream-qoriq-ptp-extts-flags-v2-3-0f4eeff2295d@free.fr>
+References:
+ <20261009-for-upstream-qoriq-ptp-extts-flags-v2-3-0f4eeff2295d@free.fr>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <sashiko-outbox-166012@kernel.org>
 
-On Fri, Oct 09, 2026 at 07:49:24PM +0000, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [Low] dt-bindings: net: micrel: boolean property assigned integer value <1>
-> --
-> 
-> commit 7e70ac71fa47849af4ee0ecb85b6da2be68dfac5
-> Author: Stefano Radaelli <stefano.r@variscite.com>
-> 
-> ARM: dts: imx6ul: Extend VAR-SOM-6UL and add DART-6UL files
-> 
-> Add the DART-6UL module description and wrappers for i.MX6UL,
-> i.MX6ULL and i.MX6ULZ, plus an i.MX6ULZ wrapper for VAR-SOM-6UL.
-> 
-> > diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-dart.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-dart.dtsi
-> > new file mode 100644
-> > index 0000000000000..f7190f6d50b59
-> > --- /dev/null
-> > +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-dart.dtsi
-> 
-> [ ... ]
-> 
-> > +&fec1 {
-> > +	pinctrl-names = "default";
-> > +	pinctrl-0 = <&pinctrl_enet1>, <&pinctrl_enet1_gpio>, <&pinctrl_enet1_mdio>;
-> > +	phy-mode = "rmii";
-> > +	phy-handle = <&ethphy0>;
-> > +	status = "okay";
-> > +
-> > +	mdio {
-> > +		#address-cells = <1>;
-> > +		#size-cells = <0>;
-> > +
-> > +		ethphy0: ethernet-phy@1 {
-> > +			compatible = "ethernet-phy-ieee802.3-c22";
-> > +			reg = <1>;
-> > +			clocks = <&rmii_ref_clk>;
-> > +			clock-names = "rmii-ref";
-> > +			reset-gpios = <&gpio5 0 GPIO_ACTIVE_LOW>;
-> > +			reset-assert-us = <10000>;
-> > +			reset-deassert-us = <100000>;
-> > +			micrel,rmii-reference-clock-select-25-mhz = <1>;
-> 
-> [Severity: Low]
-> Does this assignment cause a dtbs_check schema violation?
-> 
-> The micrel,rmii-reference-clock-select-25-mhz property is defined as a boolean
-> in the dt-binding schema. Assigning it an integer value like <1> will trigger
-> a warning during Device Tree compile validation.
-> 
-> Could this be specified simply by its presence without an assigned value,
-> such as: micrel,rmii-reference-clock-select-25-mhz; ?
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-This is addressed by the preceding patches in this series.
-Patch 05/13 changes this property from a boolean to enum: [1]
-to satisfy the dt-schema unit checks for the -mhz suffix.
-Patch 04/13 updates the driver to use of_property_present(),
-accepting both the existing empty form and the numeric form
-without changing the clock selection.
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-The <1> assignment here is intentional and matches the updated
-binding.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Stefano
+- [Medium] The commit message says that making the legacy
+  PTP_EXTTS_REQUEST ioctl strict "cannot be avoided", because the core…
+
+--
+
+ptp: qoriq: fix support for PTP_EXTTS_REQUEST2 ioctl
+
+This patch sets .supported_extts_flags in ptp_qoriq_caps to
+PTP_RISING_EDGE | PTP_STRICT_FLAGS, so that the PTP core stops rejecting
+every PTP_EXTTS_REQUEST2 request. Because of this, the legacy
+PTP_EXTTS_REQUEST ioctl now also rejects falling-edge and both-edge
+requests.
+
+> This also makes the legacy PTP_EXTTS_REQUEST ioctl strict: a request for
+> the falling edge, or for both edges, now fails with -EOPNOTSUPP instead
+> of being timestamped on the rising edge. That cannot be avoided: the core
+> adds PTP_STRICT_FLAGS to every PTP_EXTTS_REQUEST2 request, so a driver
+> has to declare it to accept them, and once declared it applies to both
+> ioctls.
+
+> diff --git a/drivers/ptp/ptp_qoriq.c b/drivers/ptp/ptp_qoriq.c
+> index 76272e5ac5b85..bcd29104effe7 100644
+> --- a/drivers/ptp/ptp_qoriq.c
+> +++ b/drivers/ptp/ptp_qoriq.c
+> @@ -355,6 +355,7 @@ static const struct ptp_clock_info ptp_qoriq_caps = {
+>  	.n_per_out	= 0,
+>  	.n_pins		= 0,
+>  	.pps		= 1,
+> +	.supported_extts_flags = PTP_RISING_EDGE | PTP_STRICT_FLAGS,
+
+[Severity: Medium]
+Is the "cannot be avoided" part of the commit message accurate?
+
+In ptp_extts_request() in drivers/ptp/ptp_chardev.c, the strict bit is
+only added for PTP_EXTTS_REQUEST2. For the legacy ioctl it is always
+removed by the mask:
+
+drivers/ptp/ptp_chardev.c:ptp_extts_request() {
+    ...
+	if (cmd == PTP_EXTTS_REQUEST2) {
+		/* Tell the drivers to check the flags carefully. */
+		req.extts.flags |= PTP_STRICT_FLAGS;
+    ...
+	} else {
+		req.extts.flags &= PTP_EXTTS_V1_VALID_FLAGS;
+    ...
+}
+
+PTP_EXTTS_V1_VALID_FLAGS contains only ENABLE, RISING and FALLING. The
+.enable callback can therefore tell the two ioctls apart by checking
+PTP_STRICT_FLAGS in rq->extts.flags.
+
+Drivers in the tree already do this. mv88e6xxx declares
+RISING | FALLING | STRICT and rejects the unsupported edge combination
+only for strict requests:
+
+drivers/net/dsa/mv88e6xxx/ptp.c:mv88e6352_ptp_enable_extts() {
+    ...
+	if ((rq->extts.flags & PTP_STRICT_FLAGS) &&
+	    (rq->extts.flags & PTP_ENABLE_FEATURE) &&
+	    (rq->extts.flags & PTP_EXTTS_EDGES) == PTP_EXTTS_EDGES)
+		return -EOPNOTSUPP;
+    ...
+}
+
+sja1105 does something similar in sja1105_ptp.c.
+
+Could qoriq do the same? It would declare PTP_RISING_EDGE |
+PTP_FALLING_EDGE | PTP_STRICT_FLAGS in ptp_qoriq_caps. Then
+ptp_qoriq_enable() would return -EOPNOTSUPP when STRICT, ENABLE and
+FALLING are all set. That fixes PTP_EXTTS_REQUEST2 and leaves the legacy
+ioctl lenient. enetc_ptp.c also uses ptp_qoriq_enable(), so the same
+check would cover enetc.
+
+As written, with the Fixes: tag, this is going to stable. Legacy
+PTP_EXTTS_REQUEST calls on QorIQ timers that ask for the falling edge or
+for both edges now fail with -EOPNOTSUPP. Before this patch they
+succeeded and were timestamped on the rising edge. Commit 7c571ac57d9d
+calls the legacy edge flags hints that are not expected to be enforced.
+
+testptp hits this path. Running it with -e and -E 2 or -E 3 sends
+PTP_EXTTS_REQUEST with PTP_FALLING_EDGE set.
+
+If the stricter legacy behaviour is intended, could the commit message
+say that a lenient alternative exists, rather than saying the change
+cannot be avoided?
+
+>  	.adjfine	= ptp_qoriq_adjfine,
+>  	.adjtime	= ptp_qoriq_adjtime,
+>  	.gettime64	= ptp_qoriq_gettime,
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261009-for-upstream-qoriq-ptp-extts-flags-v2-0-0f4eeff2295d%40free.fr
