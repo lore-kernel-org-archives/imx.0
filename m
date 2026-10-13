@@ -1,177 +1,109 @@
-Received: from mail-yx1-f46.google.com (mail-yx1-f46.google.com [74.125.224.46])
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EFC04F5E09
-	for <imx@lists.linux.dev>; Tue, 13 Oct 2026 12:00:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791892838; cv=pass; b=Z46p2ZA4j8pHDQNgBvUe8e2wMxgpJacWa1bzpAYwvN+lZ8sLBlmifUf5lNMa6fCOgWd7uYFbUGsUkhAftWlSKbsN/bPH46MwZz/TnSghbJcddAlPFGqUuOifNoWmgUbwX2udY7fbZWHUb8v02B/yJCh1OByFXoeC8FZbMriDpfc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791892838; c=relaxed/simple;
-	bh=3MZ0rBUQQ/DT6hYuG6QZ4NQ/FBC1DV7mDn+OHinCE3k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iNTkibbg4WOSKg9O74weyEHWh896d5gt0By9ZkiEp9UPx2GH6GWVev5z8u9yKRnL15/qc6bJiSkGb4UrqI/HBawOKTiBnvCVIF1RwwVcgJ2eKZY+64MG4eEeKaOncxP3oH0cB2oPA6dApHCCJzlJWASqzcy7wydgGMskTkQXA34=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=MVPbkELM; arc=pass smtp.client-ip=74.125.224.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C8E44EB872
+	for <imx@lists.linux.dev>; Tue, 13 Oct 2026 12:50:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791895819; cv=none; b=PXbKR/EX91Bkq5lPYU1KNheUJXLum7N4GJzv3UXPvSi0uQS1WWdz1cL6Ag9UPotVFcHm9KI8gJbl6Nm92ZsTbIIOX9x/ual0bNBaabm/4/9oZ5y0CCHEp+gtZ3z1ttulAA8iXyFMNclczEDhmuMAWWRz/fgMPP1AWEKtVL8gTR0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791895819; c=relaxed/simple;
+	bh=depoyDI+kx+4ryylKY71m6Q7qJvtM7ohRhEWVjSSpgY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kQ4FA1vi5ClYemBFZzCeQxETSdYrDtOi8uPsMr741zKVDNBddLFpDRR7honiI2/s4p+4Pg9+VTmxaY6rNUzxL4gEGgcJm785p/JRtoVzOQZXe6GTRngq629ppZfs+5glmiCk3e/vEXif5VAuU8at4Ar09Ut/XqYGmjuD/mjaLUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=nmFIZ9/y; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="MVPbkELM"
-Received: by mail-yx1-f46.google.com with SMTP id 956f58d0204a3-677af43eed4so2398618d50.0
-        for <imx@lists.linux.dev>; Tue, 13 Oct 2026 05:00:36 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791892836; cv=none;
-        d=google.com; s=arc-20260327;
-        b=fsk2NsZ0DDwgBV/jvR/NDqvXcXaGwvUsFXJPbsmCXZ+zANtnCbRdERmazb+vwczquT
-         VLlY73E0d1SKqLrIziu78qjJaDx1pDu9aqNGgNmQZckdlYi+fFKU9+9Uf2dX5bIBvtEk
-         Cir6CqMnm9t/c4bJNJsVmld/TIE7xOW86wDCdycdFKHZR7/7Xyp7TNsHEu+PpWjHKq0Q
-         bPQPfrbEFStncBxR6m9z0BT8crbIYQuCK4NLBGAYl66qD3oicZMZ/2wFqgH81BNCmLai
-         eibpDMnbO8xfI+YheqbbkkFEjlt689Tapfbg7YucIRvnTk9bSZa3/NT28b9usqzpa5BX
-         2oZg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=pPCqI76VDLf6A6OD3FPwbH85jg0U2eYBPW7UJZyjAkU=;
-        fh=yFLI6qgbFhSgnO4+uCDwhkVo9LFrb3P9f4GqcNL5dTM=;
-        b=NBwR6ioYoU/JsNkjTXMDmBLaaSgQHzIPCAS81IBneXMhjg8eZp/UIIxvKysc53SjtZ
-         bNfI9fYw1vulQQUUrBoAlrZUIXLugKjJgTa5ZFIzdtDECPUHW87j0asy/QTjGF5q/TKF
-         dJhT4Lh4z+CzHiwgmxVrWZ7TL9ASys7xvNS0T3uJEAdHwzU/NPXOrRd+WmiDdsoQWme7
-         8b9L2xL2ofgj3Tr7OvCDxagkCtSJS2/fHffKNfrhu5cqbUUquHOo43h8l19DxS0HUyP8
-         Vc1OGQ9SW+7ea3/QQZgs+Ugg8NKQH1f+ZOI2go0rEYjVZjqjK6FvepbdVi7B+3NePQ/V
-         hXNg==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amarulasolutions.com; s=google; t=1791892836; x=1792497636; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=pPCqI76VDLf6A6OD3FPwbH85jg0U2eYBPW7UJZyjAkU=;
-        b=MVPbkELMgJi6sJIVsQ7u6/s6gg2IGlL1SsDowwh/nuD8IpMQqfvil2QXEdc0lN+GsV
-         mKh02ibVjuKQD90l8WK71Qk+qmpi1is9WmECcLU30waw21ZjBkCznjQaUv3A0bYqD3CG
-         /43U5sgJH5bbujyQOHUmLAMjNc2R9dY62seus=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791892836; x=1792497636;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=pPCqI76VDLf6A6OD3FPwbH85jg0U2eYBPW7UJZyjAkU=;
-        b=XxcskQZPhO1REooDz00vzOe/tU5iJDXrbY5KSRRI94nveEj6IID3LmP+mR4fhdx+xS
-         DH6jgG98p029sNPFSy5Lbg9ps6yqjhjRnD0sOz7n3r0MO+63rYJaCRJpcNaI/njVdS1q
-         XFSYcIeBumSmRenbYkcLjPxqTjaogRHSBMv19G8gZw/syH6tlg4YY3T4hGl3Wx50kHI1
-         yXlQhkF1Ui43+/Picyq6tssBGvwTVZw2AmfnV3tA47gCorccLdzU6KdRaGkwF+33QqYK
-         ykiBcWIxuqM4GrvvtHHA3aWFjlB2KwOiNRSLPG9SUlfCnLw7l0fPIhPb6fMZMuUj86SD
-         CtiA==
-X-Forwarded-Encrypted: i=1; AKwUvByIDoUF0Al8DCaqcdk8BM/jolMhlgCG0YsEjtOsvayLdQIu4Pi5StvOIqS0Dy5uc5HLFOY=@lists.linux.dev
-X-Gm-Message-State: AFq9FYKl3/dcMqVOmKnVdY1p7KrbdS+KbEGaMRjsSC3gtuwtIZZFCLMi
-	5n4kacVfLEyQCPzD7qf04vvsoPYz4bycVNTZPP3D4hST5KtTuGySN6n53fNFa6WAp/UECYxFkR2
-	Fqo+XO6znDXeSytZq6nVSjsuVDHUpAdCJDfTov23rMw==
-X-Gm-Gg: AYBFou2EdvoruJtIvkAOVxX9zxjYeVwL2ViK7sQk9Mftsg997NLaO8SsszkSB4yeCsy
-	3Wm8JreVjy1TPcwhY8uxDsgq51lVRbW/UL+uY/Z3jwM2J2KHA78D79pM/Alz3KCT9yOrlqaEcm7
-	lNmc6hiPYuHjBxkniN9HAwpdo/eGOXPtFJE1eWQ626Jz8+pEALmc72iUYDyi5qe07mpjiZ/Vtnv
-	COoMb0wDTpUjIMc8C0mMPFV3I0T7TSoY+pPfEGYYpoPUJ4rpntFIclLad93e8P+5ktBBWDLYIFv
-	2lpmAsBxIKdsXMKIr2wyNu8z3tl2B3TAWeDXqhF79/eORPBJpX7vOx7Lj2C40r3JuhKZD9XZDjD
-	DkzES7Gb10dSuxfYq5Q9uQgESM7AWtd2GZome0j9lYQED
-X-Received: by 2002:a05:690e:418b:b0:677:d67d:39e3 with SMTP id
- 956f58d0204a3-67936767e9cmr4005406d50.2.1791892835727; Tue, 13 Oct 2026
- 05:00:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="nmFIZ9/y"
+Received: from francesco-nb (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch [83.173.201.248])
+	by mail11.truemail.it (Postfix) with ESMTPA id 30FC31FA7B;
+	Tue, 13 Oct 2026 14:50:14 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1791895815;
+	bh=gIIe7Oi+djZ9XgtHUXw31H42TUuD0xP0hAFUDgxj2bU=; h=From:To:Subject;
+	b=nmFIZ9/ygIVjsJ+MFJOliYWK15FxmtiHwLb1yir2UWXDHQzZe/lNhR6cCWLXfERX+
+	 U/CU5C9Rb2PzY7pmzWpQrE1ub+62YmLDTzrO2r8tfszo/jPxbVgrfmWphOgxTp5ZMa
+	 GhRh5Pq8he1TT12R4H40qzivyWsNTks5OKRZPiApYbXMNJGWQxg9Y56nX3Eo4kshJm
+	 Mfvg4ANNyC8BVdagjE3Epp20tpDj33S2saBFU8AZ7n9OQlCSUhTcsvy39iR2U5QWMG
+	 k+gyFjAMMA1+TXVvSJXU6wa6NwQ00y6uwcJPHNT7u78y2qAo+PdGoe9uc8DuDngorT
+	 NXedGwmBcUUnw==
+Date: Tue, 13 Oct 2026 14:50:12 +0200
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: Francesco Dolcini <francesco@dolcini.it>,
+	Leonardo Costa <leoreis.costa@gmail.com>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Robert Foss <rfoss@kernel.org>, Jonas Karlman <jonas@kwiboo.se>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, dri-devel@lists.freedesktop.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	Leonardo Costa <leonardo.costa@toradex.com>
+Subject: Re: [PATCH 0/3] Add VGA support for Apalis iMX6
+Message-ID: <20261013125012.GB73534@francesco-nb>
+References: <20261012-v1-apalis-imx6-enable-vga-v1-0-8905d8746504@toradex.com>
+ <20261012164054.GA56180@killaraus.ideasonboard.com>
+ <20261013090631.GA33628@francesco-nb>
+ <20261013111158.GG56180@killaraus.ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260904101243.412006-1-dario.binacchi@amarulasolutions.com>
- <179070048452.199845.10870046832708018931.b4-ty@b4> <CABGWkvojte=RG=BJ=jvcq5HfUcYUZNsWNN+c5zDh-449VJ8Svg@mail.gmail.com>
- <ar2q8M7Sn9DccVBI@redhat.com>
-In-Reply-To: <ar2q8M7Sn9DccVBI@redhat.com>
-From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Date: Tue, 13 Oct 2026 14:00:24 +0200
-X-Gm-Features: AclHuK8xxG5WHCzDqDFRzliodJK57Ya-SC3DZoZtYPsOSf_tESDvqgcH-jYqUEQ
-Message-ID: <CABGWkvpjZsDR=tOEeNfEGY3TWC0U3o=ZZE4BEWCx8DF7uBmt+g@mail.gmail.com>
-Subject: Re: (subset) [PATCH v14 0/4] Support spread spectrum clocking for
- i.MX8M PLLs
-To: Sudeep Holla <sudeep.holla@kernel.org>, Abel Vesa <abelvesa@kernel.org>
-Cc: linux-kernel@vger.kernel.org, michael@amarulasolutions.com, 
-	linux-amarula@amarulasolutions.com, Brian Masney <bmasney+clk@redhat.com>, 
-	Cristian Marussi <cristian.marussi@arm.com>, Fabio Estevam <festevam@gmail.com>, 
-	Frank Li <Frank.Li@nxp.com>, Jerome Brunet <jbrunet+clk@baylibre.com>, 
-	Brian Masney <bmasney@redhat.com>, Peng Fan <peng.fan@nxp.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Sebin Francis <sebin.francis@ti.com>, Stephen Boyd <sboyd@kernel.org>, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261013111158.GG56180@killaraus.ideasonboard.com>
 
-Hi Sudeep, Abel,
+On Tue, Oct 13, 2026 at 01:11:58PM +0200, Laurent Pinchart wrote:
+> On Tue, Oct 13, 2026 at 11:06:31AM +0200, Francesco Dolcini wrote:
+> > On Mon, Oct 12, 2026 at 06:40:54PM +0200, Laurent Pinchart wrote:
+> > > On Mon, Oct 12, 2026 at 04:25:22AM -0300, Leonardo Costa wrote:
+> > > > This series adds a device tree overlay that enables the VGA output on Apalis
+> > > > iMX6, which is driven from a parallel RGB interface passing through a
+> > > > non-programmable video DAC.
+> > > > 
+> > > > The video DAC is a simple resistor network gated by an active-low
+> > > > data-enable signal. For the bridge to work properly, this series also
+> > > > changes the following in the dt-bindings and simple-bridge driver:
+> > > > 
+> > > > - dt-bindings: Add a new compatible for the bridge in the simple-bridge
+> > > >   binding. This is necessary because the existing dumb-vga-dac compatible
+> > > >   doesn't describe a data-enable signal polarity.
+> > > > 
+> > > > - simple-bridge: Add the VGA bridge match-table entry and timings
+> > > >   struct, setting the DRM_BUS_FLAG_DE_LOW flag for the bridge.
+> > > 
+> > > Is there schematics available anywhere ? That would help reviewing the
+> > > series ?
+> > 
+> > This circuit is on the SoM, and the SoM schematics are
+> > confidential and not generally available.
+> > 
+> > I tried to extract as ascii art the relevant circuit, hope it helps
+> 
+> Thank you, it makes things clearer.
+> 
+> The circuit seems fairly generic. Wouldn't it be better to add an
+> optional property ot the dumb-vga-dac instead of a new compatible string
+> specific to Apalis ?
 
-On Thu, Oct 1, 2026 at 2:36=E2=80=AFAM Brian Masney <bmasney@redhat.com> wr=
-ote:
->
-> + Sudeep
->
-> Hi Dario,
->
-> On Wed, Sep 30, 2026 at 11:01:28AM +0200, Dario Binacchi wrote:
-> > On Tue, Sep 29, 2026 at 6:48=E2=80=AFPM Brian Masney <bmasney@redhat.co=
-m> wrote:
-> > >
-> > >
-> > > On Fri, 04 Sep 2026 12:06:29 +0200, Dario Binacchi wrote:
-> > > > Support spread spectrum clocking for i.MX8M PLLs
-> > > >
-> > > > The series adds support for spread spectrum clocking for i.MX8M{M,N=
-,P}
-> > > > PLLs (audio, video and DRAM). It has been tested for the video PLL =
-on
-> > > > boards using i.MX8MN and i.MX8MP.
-> > > >
-> > > > While at it, it validates the spread spectrum configuration in the =
-clk
-> > > > core before it reaches the providers, and fixes the i.MX SCMI OEM
-> > > > extension, which converted the spread to the wrong unit.
-> > > >
-> > > > [...]
-> > >
-> > > Applied, thanks!
-> > >
-> > > [2/4] clk: validate spread spectrum configuration
-> > >       commit: 109124b8ff43fb911d5b8790bb5e4c5684f72d88
-> >
-> > Thanks for picking up patch 2/4.
-> >
-> > I put the two fixes at the head of the series expecting them to go in t=
-ogether.
-> > Am I missing something for 1/4?
-> >
-> > And how should 3/4 and 4/4 be handled?
->
-> I can pick up the other SCMI patches, however I am waiting for a
-> Reviewed-by or an Acked-by from Sudeep for the SCMI changes in patches 1
-> and 3. It looks like Sudeep wasn't CCed on the original series so I added
-> him.
->
-> Abel is the maintainer for imx in patch 4. I can take this as well,
-> however I'd need an Acked by from Abel.
+We discussed this internally and we were not 100% sure, so we decided to
+go with this proposal that seemed easier and less controversial.
 
-Just a gentle ping. Any chance to get your acks on 1/4 and 3/4
-(Sudeep) and 4/4 (Abel)?
+With that wrote, I let Leonardo comment on the pro/cons of the two
+approaches.
 
-Thanks and regards,
-
-Dario
->
-> Brian
->
-
-
---=20
-Dario Binacchi
-Senior Embedded Software Engineer
-M. +39 328 0625246
-dario.binacchi@amarulasolutions.com
-=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
-=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95
-Amarula Solutions SRL
- Via Felice Cavallotti 25D, 41012 Carpi, MO, IT
-info@amarulasolutions.com
-www.amarulasolutions.com
+Francesco
