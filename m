@@ -1,55 +1,54 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25E48480359
-	for <imx@lists.linux.dev>; Tue, 13 Oct 2026 16:51:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19C6247ACE7
+	for <imx@lists.linux.dev>; Tue, 13 Oct 2026 16:52:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791910318; cv=none; b=qyDNJjBR6dRBeAJDrINVAIGvycFiWa4N06nNmb/p41N88lhJ1cXkCy3pMrsFSOqg+88lXJHB6OaBQiIgIWJfLN7bjPDCmNlopYd9kaNSxv8Tdw5nmvYyvBHIo0OAnJNhWBNJZKSZ3PWzK8a2zfv+Dlh7A01hMocBnJs0hhgB2XM=
+	t=1791910362; cv=none; b=FRdaFrX0kRBO3frujEX7oTW3X5LmI22dvlzligwy4SUGQg/2+62JhjCqw+axIjPQXDXDQ1x1puK9ZxXigTFJQvdHsa5h+mCSmtO5NmxpvG4X+yaPNFpl81ABxXPWXPP7LMzlAJOfirTipQ0mCmW9eBDjT13yXPWaTk+Zv2bdLQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791910318; c=relaxed/simple;
-	bh=0ViHQJP6tSLk1UV3pfKJO29C714UPZR37o6g6K/Byng=;
+	s=arc-20240116; t=1791910362; c=relaxed/simple;
+	bh=2kvmNKcTF1OSxfJGbx91Ab7juSk8uVHf9kwGVHZ7/jc=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=B0fVZ+Vsr9hxUaMfc5opomvGDW05y9/dQRR+7/NHI+Wvs7EZmrCd9dKwiTiAW2Hk4tPhSA15v+Ii2t2jkpAwbfpcDLrWeGcGzwE5f4+de3ycDZkN8ZUUIn17Lk1L/9bEayCARgGFyv55DIoNUPtLh02DvcdAcOxxC2xjbSQfhpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HvWia53Z; arc=none smtp.client-ip=100.103.45.18
+	 To:Cc:Content-Type; b=Bj8PmfrrzE0uYuXtapW+4sHgYRqUhUjFaxQ2p/FzzKBJM5IWIZX/ARiOfyFXB+fihxFqrTrr4nFfpX3LoS1cXOFY2e86scrv/7SITmjG2AK8mp+X1Kww7BiWKBuRMkdwYKOx1td9Nv3gV/ojEBbh+480Uek4gtqfgCCdilDu7Zg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SJEUpDdw; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HvWia53Z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D44141F00898
-	for <imx@lists.linux.dev>; Tue, 13 Oct 2026 16:51:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SJEUpDdw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C15591F0089B
+	for <imx@lists.linux.dev>; Tue, 13 Oct 2026 16:52:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791910316;
-	bh=l3/WP5D92dJn63pBVARZJXVp+tuxI1GnuqurUpTZ5jA=;
+	s=k20260515; t=1791910360;
+	bh=eldS8GplNjgTNKWeHV2zLRcIwD+JHyo0Mc6Zm17nTyg=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=HvWia53ZYyhgcZ+OXH68fzSeCTvCqsiRulCTPfoxOQFfsZUMZ7HrmAVwxHq0TSIhj
-	 0p0utXPvGUyGvZfDQB4Zcxctz5BdVh9RNiCElplGq3DFOQ58ymsICvXX2ZTjDpPP4B
-	 X0wiA+SPk4Lsr7Lf84b/BHLe6yTWho8RUweV+v0/4IPNRf3MO6T4p9lFHjOlHvuMRv
-	 KDbjyXUs12NH2QVqjoNNpwHh39PeyGCKmtbRFz3nSwX8yaEs0h5ugUoL2dsycH0fjl
-	 yTrrtTaV2/funlxY0mmHwruBFnUq4eeaX+TzpQ6hDC5aiF2tziZWKHelXDMRPTCo4h
-	 Tmxw75p8hc4Og==
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5bc18f54abbso1503698e87.1
-        for <imx@lists.linux.dev>; Tue, 13 Oct 2026 09:51:56 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBy2+izvSrqxHRI344oE8e7zRqHj2Xoqp7tIx9g0ovMkQrm3B++NIheTInQE9jfhSuFr8nE=@lists.linux.dev
-X-Gm-Message-State: AFq9FYJkrfMZ8sk4IXA6WZ2VxIFN7vRDZM88+lhl/9w7Q3EOZ44W1rL6
-	eJ9NotaO5jZ+DiL0q/CNl1D0+mLFCuvCVoaYR1v0COJ9m0aTuVmSZ3O2exy8F4eiBNE7Eh8wmYR
-	Up2spP7g/CgOCKqlVEpC+y1n/xgQqQsY=
-X-Received: by 2002:a05:6512:2245:b0:5ae:b7bc:27a7 with SMTP id
- 2adb3069b0e04-5bcde35cab3mr4460647e87.6.1791910315615; Tue, 13 Oct 2026
- 09:51:55 -0700 (PDT)
+	b=SJEUpDdwlT97nO6lc0n/R6Oe6uXVsnSWlQ0PeDy68BYviEoMgIWrnSABf3oPREArF
+	 KT92We0VmupMcw/WlzrS1W2uypvCMnqG4UJlLxrY+JdQaE2iCNsdGjUbZmCkRgVbjq
+	 LetOsuaXa0B8VBYz1dPLtr2qQQpSwp5KqmjHKQPC7Xep0RSFtXcZ3TIDQ4cDAgZYDq
+	 i6OJQMYhDTTFYSZ0ejFn1IoXo4MgY9WDYSnaN1KnRd5XeTgMwwQT+B0U2D/saX5pmb
+	 L/CNyWm1cXwvXzKrBYPRujo5jJN3PJC7m5D50N0qIx8ENFaEWI4fJhfZQ/dhRkGZvb
+	 39rAOgxT96J3g==
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-3a5a26c8412so30720801fa.3
+        for <imx@lists.linux.dev>; Tue, 13 Oct 2026 09:52:40 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBz/MNIHR4cdqBn00p0T+iJ20u1v5w295CEgmI69srQLRryYDoIfoY6URdEXyRevngre0yY=@lists.linux.dev
+X-Gm-Message-State: AFq9FYI+PPUUkhcOkdloEnyITJOKkgvWVPD49AwUaRihmnXe8GwtrXPd
+	2R4j6dZOWtVuIF3hT/PvvEnCXaoCnI2VogiR5vukl8jluL638xa2cyky99vKo4e+Ct+lVxb8tUe
+	FpoiOGOrfIvgKSZp/dD7dawp4NRWKjfc=
+X-Received: by 2002:a05:651c:b0f:b0:3a3:52a7:3a1d with SMTP id
+ 38308e7fff4ca-3a9c5125e97mr30998631fa.1.1791910359553; Tue, 13 Oct 2026
+ 09:52:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20261013-gpio-mxc-cleanup-v7-0-c4d769587d3e@nxp.com> <20261013-gpio-mxc-cleanup-v7-1-c4d769587d3e@nxp.com>
-In-Reply-To: <20261013-gpio-mxc-cleanup-v7-1-c4d769587d3e@nxp.com>
+References: <20261013-gpio-mxc-cleanup-v7-0-c4d769587d3e@nxp.com> <20261013-gpio-mxc-cleanup-v7-2-c4d769587d3e@nxp.com>
+In-Reply-To: <20261013-gpio-mxc-cleanup-v7-2-c4d769587d3e@nxp.com>
 From: Linus Walleij <linusw@kernel.org>
-Date: Tue, 13 Oct 2026 18:51:42 +0200
-X-Gmail-Original-Message-ID: <CAD++jLm3vuQr7WeYGMVVaNN5MuzuQvGrZFA4jboYBrTfCUfy8Q@mail.gmail.com>
-X-Gm-Features: AclHuK_fxfc0XIQk4rQosnKB8so3c6I-uEvWCQIJ_fa7_pXjDsATNC4VePcqcl4
-Message-ID: <CAD++jLm3vuQr7WeYGMVVaNN5MuzuQvGrZFA4jboYBrTfCUfy8Q@mail.gmail.com>
-Subject: Re: [PATCH v7 1/4] gpio: mxc: fix race between chained IRQ handler
- install and probe completion
+Date: Tue, 13 Oct 2026 18:52:27 +0200
+X-Gmail-Original-Message-ID: <CAD++jLk1CC+hKyjRh=-dJ8M3oeMqo_8AVkNCUEUxpTRX1=SXDA@mail.gmail.com>
+X-Gm-Features: AclHuK_VSzCmWjCTJqET6DItFfQvgfiwDPO4tQVVwYVu_IZrlaY_9fZ_pvqLqPA
+Message-ID: <CAD++jLk1CC+hKyjRh=-dJ8M3oeMqo_8AVkNCUEUxpTRX1=SXDA@mail.gmail.com>
+Subject: Re: [PATCH v7 2/4] gpio: mxc: fix both_edges bit operations
 To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
 Cc: Bartosz Golaszewski <brgl@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
 	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
@@ -60,33 +59,31 @@ Cc: Bartosz Golaszewski <brgl@kernel.org>, Frank Li <Frank.Li@nxp.com>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 13, 2026 at 8:03=E2=80=AFAM Peng Fan (OSS) <peng.fan@oss.nxp.co=
+On Tue, Oct 13, 2026 at 8:04=E2=80=AFAM Peng Fan (OSS) <peng.fan@oss.nxp.co=
 m> wrote:
+
 > From: Peng Fan <peng.fan@nxp.com>
 >
-> mxc_update_irq_chained_handler() is called before the IRQ domain, the
-> generic IRQ chip, and the port list entry are set up. If an interrupt
-> arrives in that window:
+> gpio_set_irq_type() can be called concurrently for different pins on
+> the same port.  The IRQ core serializes per irq descriptor, but
+> different pins have different descriptors, so on SMP systems two
+> concurrent gpio_set_irq_type() calls for pins on the same port run
+> without mutual exclusion.
 >
->  - mx3_gpio_irq_handler() calls generic_handle_domain_irq() with
->    port->domain still NULL.
->  - mx2_gpio_irq_handler() walks mxc_gpio_ports, but the port has not
->    been added to the list yet.
+> The read-modify-write of port->both_edges is performed outside the
+> port-wide scoped_guard(gpio_generic_lock_irqsave) section, so
+> concurrent updates for different pins can overwrite each other,
+> causing missed interrupts or stuck IRQ lines on dual-edge triggered
+> pins.
 >
-> Additionally, if any of the subsequent probe steps
-> (gpio_generic_chip_init(), devm_gpiochip_add_data(),
-> irq_domain_create_legacy(), or mxc_gpio_init_gc()) fail, the error
-> paths never unregister the chained handler, leaving a dangling handler
-> that points at freed memory.
+> The original uniprocessor MXC SoCs were not affected; the race
+> became reachable on multi-core i.MX7 and i.MX8 SoCs that reuse this
+> driver.
 >
-> Move the handler installation after all its dependencies are ready and
-> after list_add_tail(), so the handler is never live while the data
-> structures it touches are incomplete, and is never installed if probe
-> fails.
+> Convert both_edges from u32 to unsigned long and use set_bit(),
+> clear_bit(), and test_bit() to make the modifications atomic.
 >
-> Fixes: 5f6d1998adeb ("gpio: mxc: release the parent IRQ in runtime suspen=
-d")
-> Assisted-by: LLM
+> Fixes: 910862ec092c ("mxc: emulate GPIO interrupt on both-edges")
 > Reviewed-by: Frank Li <Frank.Li@nxp.com>
 > Signed-off-by: Peng Fan <peng.fan@nxp.com>
 
