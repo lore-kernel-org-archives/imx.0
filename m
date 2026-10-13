@@ -1,265 +1,176 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013038.outbound.protection.outlook.com [40.107.159.38])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05FB94E3257;
-	Tue, 13 Oct 2026 10:57:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791889087; cv=none; b=BAPLgwCoRtAuGxbvzuZdhyi9fMqbuUEIRh3TvOyu1RqW9zQN2bT0ZRMjRb0/gZWOhCBkQrj5ZKzXTmpsBq3/z1IhWFnqwjd3rvgWM43LqRMw+Pzu06CZHNss1cWAmC3t/g9o5faRlFOneHU/b8RgetYytWlDtU0pJ/oQ9xZNvR8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791889087; c=relaxed/simple;
-	bh=7eanEjJdrMECPM7v8HhfuSDHAfuKythZ9q9LJ+TfcJw=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Ahs44OTKAlSmyVUzyFpdUKHZ4lpka9hloC+nY5miWmX/VwQ5WLnu4MJJWfS6Hs/bvbCuUWWnpbMFDv9JbN1tSK5KcefHFn05PCQoUgPnIjgTFWE/h2yWG2MNPGHnU6uXrO+4RLoDocezuxRf/HF26NW+SEXPQigBbSOfDIcQKCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dtuHFFRO; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B3CA3C1D57;
+	Tue, 13 Oct 2026 11:05:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.38
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791889510; cv=fail; b=S0kJUI1YEynEcdKxc/fI1s4bEpUVefWArXY90H+ddxTyFP+le3hJ0efZqOwXdHXWP7A0u/POrF5xv6FO9ls18AtqYvlLatiM7KlZSlDJOVa9Uu6c9XrJ1tZR+2kpRAcQubZNN1AbeJ6O7I0jGpOilgucWtxtAwzmT2mbSmcnIBQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791889510; c=relaxed/simple;
+	bh=5iYnMgnzIioDCAMrGzBQM2hL3PaZih18/TZckdKzG8A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=GZrgcF3VeFTT5YpAsfLYgoPE/KaKvEULKoRDmbDIsrCeFlx4+AOLLWV/Q5FRVvK3ePW6q4sa1A18+jaVvOvxlXpafLjUG1woVYgFqA67s4EJzo8myLzpC61hdFc3ddLznVlKIPxDaKsH8FOdJpkXRWQbj/tQYAXs+Kzk+mL1h4o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=fail (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=Rh4Lubjw reason="signature verification failed"; arc=fail smtp.client-ip=40.107.159.38
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dtuHFFRO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 824E61F0089B;
-	Tue, 13 Oct 2026 10:57:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791889077;
-	bh=QvPQmojfQvdSuKzFwSonxR1bfeKW0jigc5qUQGEDGRc=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=dtuHFFROKKBVT90olJh3vQshzbvhEZIMKZJInp1SlLIZqBvMSYRGKp0k9GdEp+zR8
-	 hqcia1+sB6J5fdOHUAMFr2WPYpSEDdHCTeLnCUdKJMNETK0izv1r96nZiwlKSpzglY
-	 ScEbsQB5o6XcwiRVHqM+gBy5jLG4lIQ1PWSgrDFfEGjPMQpzCOdkbPFxB3Mpo2Chrs
-	 MkvAqZaozczI8C1+/MFQ3BGdDnoaNecHCfQL1jL8MT1Daupb1XJRqGiwXh4peHKfvI
-	 kLuNyeBn5vGN9taXByqxtg8SldmBQz1aow47h+ONF3DCje0QE9qocxALY3Lr3izKmK
-	 Rx+z7+uPo0WIg==
-Subject: Re: [PATCH v5 net-next 9/9] net: dsa: netc: add PTP one-step
- timestamping support
-From: netdev-bot+sashiko@kernel.org
-To: wei.fang@oss.nxp.com
-Cc: xiaoning.wang@nxp.com, andrew@lunn.ch, olteanv@gmail.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- richardcochran@gmail.com, linusw@kernel.org, wei.fang@nxp.com,
- imx@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
-Date: Tue, 13 Oct 2026 10:57:56 +0000
-Message-ID: <179188907611.434549.18346411156046070175@kernel.org>
-In-Reply-To: <20261012095924.1129312-10-wei.fang@oss.nxp.com>
-References: <20261012095924.1129312-10-wei.fang@oss.nxp.com>
-X-sashiko-severity: Low
-Content-Type: text/plain; charset="utf-8"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="Rh4Lubjw"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=r+U2/aEWItOhp5cNZ2Igh0Yeg3qOWOzJL+3AbcRrbY5+lAbEJuVwk7Res8NNo5S6i/vD64+33OdjH4WiFo7gX8S+G/oZEhSdGBiUe4xjGVCxOpAUCnBxSmWLjbYyDSe4BlRyNQTXUzhV1sx6USOmXmBe5+FbBGXu/hFj7+IGbrx+Ie0IPLLu2eNzmP72b+FSx3IbHRhsy0u60SXaOpQ9S0z8vkr/dIztZejMx8G1O+/sBPCWaaNTwKt+6AXNBBdBdS1OnsoGjwPs5kARNbrZWiMF3ZY9eTEwD/IjkNjLM0PRiE/9dsv4xQyEHXGkmWIdfUEiAI19SRlwAu6YhIuMCw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zJ6kk9VVrckqtWhbaKMrKbILO3azMjgLh2JGa9GmY0Y=;
+ b=WbvdAN/7aVGTq2ZaX+3o5Jjf7WgBPrFupvHGLJfTzYQwe1t7uANbSacBXd+k46N3MF5maJAmzNHKs5xj9zavnxbLsprYPEJeRk3fE5Qy+SppVt26ObsXzr3b4k38LuGw0OZRDji7ZVgX4Ij5PuJ1Deu8vdVvxl+lxUreW0gqaplU/nvLTVHY8d+AmneH+LprbizHsyjt+u4IsmzATT6nDnhLHsyuqwOrdrVuFGwo71orSuOMgtiPH+//4HkjL6a+cpKpLPvM7o0NuiSbZWi5tZnPBsxfhlaFU5bR4NBYiYd4Y/MXhVE3ioEKhJv/L2TwoQBwOFqbULFrSnSfitmNig==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zJ6kk9VVrckqtWhbaKMrKbILO3azMjgLh2JGa9GmY0Y=;
+ b=Rh4LubjwrB4oocsn7epAAT3qd8lbOjYuxSEU9QnLltIAis4mxiFE/6+nBBH6eB1iVBnxDvWogAgb/nKlOWc8v11vEbY82u1bAO3wLVezE6jHGKCNUgHYTpG6zIj+BlrcjZasyPO/7DrX0kCG8bdcwvARbA0iEz5BlN+SOiaYUajkRJiXHeegxC3Ee91U1z+g7CrXGCLz9HkwhWIL26IjcyBeebICnxEmN7ePaG7XPddVgJlvQfwZxJJHIbh7it7Hfde0KS8fIStVIfVYhqCEQTrU/A09ghcOLeXDLQh8Gy1rx8YtR1Io6fXlrRyDFvm5aQjiVv1KAXh18P4DnjINLg==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from AM8PR04MB7874.eurprd04.prod.outlook.com (2603:10a6:20b:24d::9)
+ by MMZPR04MB327879.eurprd04.prod.outlook.com (2603:10a6:190:28::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.12; Tue, 13 Oct
+ 2026 11:05:06 +0000
+Received: from AM8PR04MB7874.eurprd04.prod.outlook.com
+ ([fe80::ac38:1699:6f18:c5d9]) by AM8PR04MB7874.eurprd04.prod.outlook.com
+ ([fe80::ac38:1699:6f18:c5d9%6]) with mapi id 15.21.0522.011; Tue, 13 Oct 2026
+ 11:05:06 +0000
+Date: Tue, 13 Oct 2026 19:09:41 +0800
+From: Peng Fan <peng.fan@oss.nxp.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: linux-gpio@vger.kernel.org, imx@lists.linux.dev, Frank.Li@kernel.org
+Subject: Re: [PATCH v7 2/4] gpio: mxc: fix both_edges bit operations
+Message-ID: <as4Rdckv0hdCFBqd@shlinux89>
+References: <20261013-gpio-mxc-cleanup-v7-0-c4d769587d3e@nxp.com>
+ <20261013-gpio-mxc-cleanup-v7-2-c4d769587d3e@nxp.com>
+ <sashiko-outbox-169085@kernel.org>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <sashiko-outbox-169085@kernel.org>
+X-ClientProxiedBy: SI2PR02CA0009.apcprd02.prod.outlook.com
+ (2603:1096:4:194::11) To AM8PR04MB7874.eurprd04.prod.outlook.com
+ (2603:10a6:20b:24d::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM8PR04MB7874:EE_|MMZPR04MB327879:EE_
+X-MS-Office365-Filtering-Correlation-Id: e7880a6e-df3c-48a3-c5b6-08df2919d69a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|376014|23010399003|19092799006|56012099006|11063799006|4143699003|261009223027099003|10067099003|18002099003|22082099003|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	2HLsYsLkW7wFOfkyrVjUR1tonyAmUZsIijwSNnmyBArIIiUisQsKBCBt1o6ew+IfuznJzbFNRMEzkgyZ64gzWVzVs3BhnEKpavPJAVZLZ2kJ+UeuLjAVZEdgxoPzFYHUe7xo3W/N2047YWDWo+5X/pX/jWtL1368rDoOm+TzsQge+K5ddEo9LPh5nkt4HPAOf+6pdTWXEzIjd1TPX1bYaKMUUy0GjVoGmbkXR/Ub+498XJGKfYwEbAxTDTtzC17e+Z5rYP2KNKDv3hMo4dCXzcV5IaVIi5+KMCcchUC9Qd98OSAjtINHbpfpgCw1WUAubljrJScDlzdRdK++BnYgqMouOTIIGaL41ZyKrLW/H1N+8GkauY3ibnoluOZi7xrdaclIkcYXEPv36mrkrjE29fsMystNgDor68Vvu7PXJKRQuf/276KYsNr5xsybRN+Y9eTFl6+epMgrahz9bUboI8SEnwSB/PQjdHrbYLU0KInXqZmJzLcN++ZbE3MwBdXn4FpaF8ZjkWU3FYgRefMQx4PdS4K9SydnI9K0qAbdW5THxOeAEj28zO0GyQHACcZKEnv7oUMgXtKIxAnYq2oPKY9wiITIn9kEb5Ykw/3aHug=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7874.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(23010399003)(19092799006)(56012099006)(11063799006)(4143699003)(261009223027099003)(10067099003)(18002099003)(22082099003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?iso-8859-1?Q?orUGBvaLHFHdGy8Gx7ttcENu4OS97lDSGFlKQsFRJe0HQWvBDENOCy8Lxv?=
+ =?iso-8859-1?Q?IpRKDQfRQOaO/tE7npmG61k00fUR1NTbZEScD9kWvOoZLI7sXrNiVDCQvO?=
+ =?iso-8859-1?Q?gYs8tkudVexMebCZ3lnfqKyVgAxRl6r6+alOSIwHZ/dH6ZVyI9Kd1lxCro?=
+ =?iso-8859-1?Q?wBDe8etJfEJ3l2V3hTZPg3n3ey64C+Oj8as7ojzeX1gFg2qQGaeonmvBun?=
+ =?iso-8859-1?Q?F6vpF/8K+9J6CWtFpa2QTjabCBwA07WEyDA3a9zWMP65UA7+Sq8r43Wn5a?=
+ =?iso-8859-1?Q?/PzwGSKD1J+0ptOIMzARe1dNrnLfTszGaz2Jc4Eer7lRENrWafShVD+os9?=
+ =?iso-8859-1?Q?runTddEbshGr8tvLyneyrtKcAqYU83f0riDNjbEfSe0ki1gR3GMCuo6b6n?=
+ =?iso-8859-1?Q?5JuSW/eQZL+6KCHw/+6JIaFHWi60j65J0R8cwOCLyfu99XFypsvEJNA0qd?=
+ =?iso-8859-1?Q?zZqFccGG/Itvl2Th1OVFGxRzwUpG/UXOVDGS/w2X0raRWFnsi8qUxLuAgl?=
+ =?iso-8859-1?Q?zIPnsvOEW3Dp1W+Xhw6HeQep2qaL5iKQTotuS+mScnCNiOs6RQ0eLDcluP?=
+ =?iso-8859-1?Q?x3bq7QmAr9wWvW9pvYuaIzFnsqvIHdPsiGvMYA8i8ondrQDHKUsPe0pUHh?=
+ =?iso-8859-1?Q?lt5603Pryb/mz8Qo3HuviwlRlcysqcYFECQ4BkGmJMQZf/GwpVK+YLfLXt?=
+ =?iso-8859-1?Q?9OgNJKdPBdzVyR1RItTAet86uxTBoSXOJ8qp15cvvcRlXZJRcL0CU9OB/1?=
+ =?iso-8859-1?Q?m9ElOnFEm77TtJizqwvSh1GJDX72cqbrockdjm1QllgrPeX4uSNZ7zMYD3?=
+ =?iso-8859-1?Q?1Egb8QOJOFxHXmle2Yisvkr1TPra7OAHD+KW0ZU2H4JeVEEMu0IwSoFlmy?=
+ =?iso-8859-1?Q?ZF6j/HNwuUSKFFifirZEv+dGjkaG5WnSS9dMFU1xkxXOF/vmeteizQvXQO?=
+ =?iso-8859-1?Q?hhlAJN5497iMnEmIohymxAmcCzycqN/pa4PtuPWWa0t+qu4Hd0/CKzAjqd?=
+ =?iso-8859-1?Q?UkwEfygpFErwApi9qE0h4wLBL/TMrIMs6w5aq/vUVJtb8gLNSnJGES7iRK?=
+ =?iso-8859-1?Q?XMWSESS2L8dk6b/p0pVmvDe7BZRlSRYyCkBuFY13olacdcERJWCj8t5npn?=
+ =?iso-8859-1?Q?GAIHn3UodcvrLrUDPtBztzxvFT5rxpQXpebDBEoYgX5tFRhPOihDl1sHoJ?=
+ =?iso-8859-1?Q?843Q0nWYObNXJfhMApnPVMVNj2Ys3DpTeyogxbS2xgCMzkhdbe7UzdM8Gi?=
+ =?iso-8859-1?Q?u/1rBDg2sY91V+O15b7IaTCZ7q7TnaGLI7JeGuPUL7prPUOSEwB6rjcnRT?=
+ =?iso-8859-1?Q?C4oZBxjN7oJzePETtv71UcZqSS5nP88+XvwaIv33azR+nHw618iH+U5t1w?=
+ =?iso-8859-1?Q?nyIgTMACfsBG6rycSWSoccEyZt0XoadyX4D2jZ1uBGyZtpzfDXZwo+3Cwz?=
+ =?iso-8859-1?Q?9+KOI5lynPdDA2gLcIyTv5pF1//bQaXAEKeIaNOm/weE4Z6GuhwrjVYEPV?=
+ =?iso-8859-1?Q?UHR2H5CIjFC097cpi9mPEXB86znr9IoftbocrKaL6y4EBszQ0jFzIftOuW?=
+ =?iso-8859-1?Q?lTeQ2ZLk4qzjQAQiy31k9XGoen8I0ECI+uzQA/iMQpq01ieFsaBpAhlpBL?=
+ =?iso-8859-1?Q?X7fLXcgKKiOhQWdQXI/aQDm4WPSZLHrAosrRKXuzBQ568Bqp72wl/n778q?=
+ =?iso-8859-1?Q?c26IXJGEsQTkOFBS9UFBP43xmfr752E7mft0jJniAaahU06XwbTVfL4xq2?=
+ =?iso-8859-1?Q?lW8mf3zQ8Ys+o1GrIaImFqJA4YmGp9GceWpSd3Phg8NoFO3T1D8NyC7owI?=
+ =?iso-8859-1?Q?Tj6ZEuWMy0TPOiEizw3HhriayietbLeeabVevfk9UuwSYeIcWCl+?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e7880a6e-df3c-48a3-c5b6-08df2919d69a
+X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7874.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Oct 2026 11:05:06.2592
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: L7+zAar1z9dV0E5OXKdZwlu5OD2BwzqePqtmgW5uZ7BSANa/9BMYTKkyMCYGSpt7RsEZU7BGdDJ5K68uZDV5TlUJjDrmniD4Xux9U4LBT4JvG9BhKPtk03XwGCtelAyw
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MMZPR04MB327879
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+On Tue, Oct 13, 2026 at 06:26:06AM +0000, sashiko-bot@kernel.org wrote:
+>Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+>- [Medium] gpio: state corruption on error path in gpio_set_irq_type()
+>--
+>
+>commit 3d5872f9d45fab5b313d49ded5e6a9aacb019069
+>Author: Peng Fan <peng.fan@nxp.com>
+>
+>gpio: mxc: fix both_edges bit operations
+>
+>This commit converts both_edges from u32 to unsigned long and uses atomic
+>bitops to prevent concurrent updates from overwriting each other.
+>
+>> diff --git a/drivers/gpio/gpio-mxc.c b/drivers/gpio/gpio-mxc.c
+>> index e05f276a50e8d..7e17d7668980d 100644
+>> --- a/drivers/gpio/gpio-mxc.c
+>> +++ b/drivers/gpio/gpio-mxc.c
+>
+>[ ... ]
+>
+>> @@ -168,7 +169,7 @@ static int gpio_set_irq_type(struct irq_data *d, u32 type)
+>>  	int edge;
+>>  	void __iomem *reg = port->base;
+>>  
+>> -	port->both_edges &= ~(1 << gpio_idx);
+>> +	clear_bit(gpio_idx, &port->both_edges);
+>
+>[Severity: Medium]
+>If a caller requests an unsupported IRQ type, the switch statement later in
+>this function falls through to the default case and returns -EINVAL:
 
-Low priority / nit picks for your consideration:
+This is false alarm. __irq_set_trigger() already guard, there is no chance
+to 'return -EINVAL' here. The 'return -EINVAL' is just defensive code.
 
-- [Low] The commit message does not describe the valid-window recovery
-  that the code implements.
-- [Low] The new one-step code reads the global jiffies_64 directly in two
-  places.
-- [Low] In netc_port_onestep_sync_enqueue(), the queue-full check
-  (skb_queue_len(&np->onestep_queue) >= NETC_ONESTEP_QTH) jumps to…
-- [Low] netc_port_enable_onestep() sets np->onestep_state =
-  NETC_ONESTEP_IDLE without checking the current state.
+Regards
+Peng
 
---
-
-net: dsa: netc: add PTP one-step timestamping support
-
-This adds one-step Sync offload for NETC switch ports and advertises
-HWTSTAMP_TX_ONESTEP_SYNC. The per-port PM_SINGLE_STEP register is shared,
-so the tagger hands each one-step Sync to the switch driver. The driver
-queues them and sends them one at a time from a work item using a To_Port
-subtype 3 tag. Lost responses are recovered through tstamp_timeout_work
-and a 2^30 ns validity window.
-
-> Since
-> the tag timestamp is only 30 bits wide and the hardware accounts for a
-> single wrap at most, also schedule the work when the PTP time has
-> advanced beyond NETC_ONESTEP_VALID_WINDOW since the in-flight frame was
-> queued, as its correction field can no longer be computed correctly.
-
-[Severity: Low]
-This paragraph doesn't seem to match what netc_onestep_timeout() does. I
-see three differences.
-
-First, the check never reads the PTP clock. It compares jiffies_64 with
-np->onestep_tx_time + 1 + nsecs_to_jiffies64(NETC_ONESTEP_VALID_WINDOW).
-The code comment says this is on purpose, because the PHC may be stepped
-backwards.
-
-Second, np->onestep_tx_time is set in netc_port_onestep_work() just before
-the frame is programmed and passed to onestep_sync_xmit(). It is not set
-when the frame is put on onestep_queue.
-
-Third, netc_onestep_timeout() is only called from
-netc_port_onestep_sync_enqueue(). That means this check only resumes the
-drain when a new Sync is enqueued. If no new Sync arrives, queued frames
-wait for the 5 second tstamp_timeout_work.
-
-Could the commit message be reworded to describe this?
-
-> diff --git a/drivers/net/dsa/netc/netc_ptp.c b/drivers/net/dsa/netc/netc_ptp.c
-> index 756c69a02064e..c3875bce80bc1 100644
-> --- a/drivers/net/dsa/netc/netc_ptp.c
-> +++ b/drivers/net/dsa/netc/netc_ptp.c
-
-[ ... ]
-
-> @@ -68,12 +96,286 @@ static int netc_get_ts_req_id(struct netc_port *np)
->  	return ts_req_id;
->  }
->  
-
-[ ... ]
-
-> +void netc_port_disable_onestep(struct netc_port *np)
-> +{
-> +	struct sk_buff_head free_list;
-> +
-> +	if (!dsa_port_is_user(np->dp))
-> +		return;
-> +
-> +	__skb_queue_head_init(&free_list);
-> +
-> +	spin_lock_bh(&np->onestep_lock);
-> +	skb_queue_splice_init(&np->onestep_queue, &free_list);
-> +	np->onestep_state = NETC_ONESTEP_PORT_INACTIVE;
-> +	spin_unlock_bh(&np->onestep_lock);
-> +
-> +	cancel_work_sync(&np->onestep_work);
-> +	netc_tx_dropped_add(np->dp->user, skb_queue_len(&free_list));
-> +	__skb_queue_purge(&free_list);
-> +}
-> +
-> +void netc_port_enable_onestep(struct netc_port *np)
-> +{
-> +	if (!dsa_port_is_user(np->dp))
-> +		return;
-> +
-> +	spin_lock_bh(&np->onestep_lock);
-> +	np->onestep_state = NETC_ONESTEP_IDLE;
-> +	spin_unlock_bh(&np->onestep_lock);
-> +}
-
-[Severity: Low]
-Is it safe to set NETC_ONESTEP_IDLE here without checking the current
-state? netc_port_enable_onestep() is called from both netc_port_enable()
-and netc_mac_link_up(). The single-outstanding-frame rule for
-PM_SINGLE_STEP depends on NETC_ONESTEP_IN_FLIGHT, and this write
-discards it.
-
-Take a link flap:
-
-netc_mac_link_down()
-  netc_port_disable_onestep()
-    onestep_state = NETC_ONESTEP_PORT_INACTIVE
-    cancel_work_sync(&np->onestep_work)
-  netc_port_mac_tx_graceful_stop()
-
-cancel_work_sync() only waits for the worker. A subtype 3 frame already
-passed to dsa_enqueue_skb()->dev_queue_xmit() may still be in the conduit
-qdisc, the ENETC TX ring or the switch port egress queue. The graceful
-stop only drains the MAC TX FIFO.
-
-netc_mac_link_up()
-  netc_port_enable_onestep()
-    onestep_state = NETC_ONESTEP_IDLE
-
-The next Sync then reprograms PM_SINGLE_STEP while the older frame may
-still be pending. Could the older frame go out with the new frame's
-offset and checksum-update settings? Could it also get a wrong
-correctionField if it waited longer than 2^30 ns?
-
-A Sync sent between .port_enable and the first mac_link_up looks mostly
-blocked, because phylink keeps carrier off until mac_link_up.
-
-[ ... ]
-
-> +	NETC_SKB_CB(skb)->tstamp = tstamp;
-> +	NETC_SKB_CB(skb)->ts_req_id = ts_req_id;
-> +	NETC_SKB_CB(skb)->ptp_flag = NETC_PTP_FLAG_ONESTEP;
-> +	NETC_SKB_CB(dummy_skb)->ts_req_id = ts_req_id;
-> +	NETC_SKB_CB(dummy_skb)->ptp_tx_time = jiffies_64;
-> +	NETC_SKB_CB(dummy_skb)->ptp_flag = NETC_PTP_FLAG_ONESTEP;
-> +	np->onestep_tx_time = NETC_SKB_CB(dummy_skb)->ptp_tx_time;
-
-[Severity: Low]
-Should this be get_jiffies_64() instead of a direct read of jiffies_64?
-include/linux/jiffies.h says:
-
-  The 64-bit value is not atomic on 32-bit systems - you MUST NOT read it
-  without sampling the sequence number in jiffies_lock.
-  get_jiffies_64() will do this for you as appropriate.
-
-netc_port_prepare_twostep() fills the same ptp_tx_time field, for entries
-on the same tstamp_queue, with get_jiffies_64().
-
-On 32-bit builds (possible through COMPILE_TEST), a torn read could make
-netc_port_tstamp_timeout_work() reclaim this token's ts_req_id early or
-very late. The time_after64(jiffies_64, expire_time) check in
-netc_onestep_timeout() below has the same problem. It could report the
-in-flight frame as expired at the wrong time.
-
-[ ... ]
-
-> +static bool netc_onestep_timeout(struct netc_port *np)
-> +{
-> +	u64 expire_time;
-> +
-> +	/* Use monotonic jiffies_64, as the PHC may be stepped backwards.
-> +	 * Add one tick since the ns-to-jiffies conversion rounds down, so
-> +	 * the software window is never shorter than the hardware window.
-> +	 */
-> +	expire_time = np->onestep_tx_time + 1 +
-> +		      nsecs_to_jiffies64(NETC_ONESTEP_VALID_WINDOW);
-> +	if (np->onestep_state == NETC_ONESTEP_IN_FLIGHT &&
-> +	    time_after64(jiffies_64, expire_time))
-> +		return true;
-> +
-> +	return false;
-> +}
-> +
-> +void netc_port_onestep_sync_enqueue(struct dsa_switch *ds, int port,
-> +				    struct sk_buff *skb)
-> +{
-> +	struct netc_port *np = NETC_PORT(ds, port);
-> +
-> +	spin_lock_bh(&np->onestep_lock);
-> +	if (unlikely(np->onestep_state == NETC_ONESTEP_PORT_INACTIVE))
-> +		goto free_skb;
-> +
-> +	if (unlikely(skb_queue_len(&np->onestep_queue) >= NETC_ONESTEP_QTH))
-> +		goto free_skb;
-> +
-> +	__skb_queue_tail(&np->onestep_queue, skb);
-> +	if (likely(np->onestep_state == NETC_ONESTEP_IDLE) ||
-> +	    netc_onestep_timeout(np)) {
-
-[Severity: Low]
-Can the queue-full check keep the drain stalled after
-NETC_ONESTEP_VALID_WINDOW has passed?
-
-If the response for the in-flight frame is lost, onestep_state stays
-NETC_ONESTEP_IN_FLIGHT. Suppose onestep_queue reaches 512 entries before
-the window (about 1.07s) expires. From then on, every enqueue takes the
-goto free_skb path and never calls netc_onestep_timeout().
-
-The only recovery left is netc_port_tstamp_timeout_work() expiring the
-token after NETC_TSTAMP_TIMEOUT (5 seconds). Every Sync that arrives
-before then is dropped.
-
-Would it be better to evaluate netc_onestep_timeout() before rejecting a
-frame because the queue is full?
-
-> +		np->onestep_state = NETC_ONESTEP_SCHEDULED;
-> +		schedule_work(&np->onestep_work);
-> +	}
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261012095924.1129312-1-wei.fang%40oss.nxp.com
+>
+>	switch (type) {
+>	...
+>	default:
+>		return -EINVAL;
+>	}
+>
+>Could clearing both_edges early here leave the software state desynchronized
+>from the hardware on this error path?
+>
+>If the hardware was previously configured for dual-edge interrupts, test_bit()
+>in the IRQ handler will now return false, failing to flip the edge and
+>potentially leading to a stuck IRQ line or interrupt storm.
+>
+>-- 
+>Sashiko AI review � https://sashiko.dev/#/patchset/20261013-gpio-mxc-cleanup-v7-0-c4d769587d3e@nxp.com?part=2
+>
