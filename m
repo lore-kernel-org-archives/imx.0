@@ -1,21 +1,21 @@
 Received: from mail.fris.de (mail.fris.de [116.203.77.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A99742A17F
-	for <imx@lists.linux.dev>; Tue, 13 Oct 2026 09:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E5303BCD32
+	for <imx@lists.linux.dev>; Tue, 13 Oct 2026 09:45:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.77.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791884756; cv=none; b=Rgq4Mi8u4h5NgfAVRT96pMReCwA5dMY1jtVgzGNt4nM60CUfrRBzU9pOYrpnnUUvYOyOlybCbClKClKkzkh0aRx1ec5illu+0nAFTMLzY7/riEayE0fUuishc0DwrMVYl1qWyD2YXjwbxRZ7FHuoe5kgRQV1rVMXOKXAz9iP260=
+	t=1791884757; cv=none; b=cPZf30YNuXg30UVbCtcHv314ue6YAA1WRtdyP08QDFhfpF33t73kg0scTVhQATFLNjvtxLm0xdXPRNnRgeEJBIcUExsAB56vuTKtFopQZ7lmrUg85SNxz6YKERqWU4T3PsvHWSMYOWQSZCm7hvKXirL0ZXcXp+4z0WIOZsIWrEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791884756; c=relaxed/simple;
-	bh=LHSboAToH0blVvk3F5cXasMAbc6k+aV/ipaqPrPri/o=;
+	s=arc-20240116; t=1791884757; c=relaxed/simple;
+	bh=bbak2Pa+Xa6pT0U72nKivkLCl/5t2TslhXBlYh342Ow=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=FmnL9AmeziCux6eut6ZkK1NodXpi5UnaOZ2Q34t2+CJsKpuXDn9sbzqR72yHIQkuMsLefXAO1nD1hA/6j1akojLllM6rawydSgEKRBIzHGhdC9lWDTzUHDouzlKJM9CQQb2J4WkdBQCMCPTYGtckYuhMx1me+TBzbQmqmf2ND30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de; spf=pass smtp.mailfrom=fris.de; dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b=g1ICr0bc; arc=none smtp.client-ip=116.203.77.234
+	 In-Reply-To:To:Cc; b=U50u8y7Ik+iBoyWsMbormUiH1UBfEXXlYa7NlFm+SRXoRC8vF2tGwAFEURG32oWnKd3xWMhiSpy6uAbXx1uxcnXwd4RDpTWmRJpNqP8vz2qEK0YerASXgL3BagdJVl62CgxxJ8uu/QiC5REKa0UPcDQgDOq9VHSgPbQHvym5hwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de; spf=pass smtp.mailfrom=fris.de; dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b=DQF5f9Qf; arc=none smtp.client-ip=116.203.77.234
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fris.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b="g1ICr0bc"
+	dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b="DQF5f9Qf"
 From: Frieder Schrempf <frieder@fris.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fris.de; s=mail;
 	t=1791884743;
@@ -23,15 +23,15 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fris.de; s=mail;
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=uuMgQ0i0EhEzmfgP8r1W/diFinK/iV2etDFg22neMpo=;
-	b=g1ICr0bcCHY4JXdYSNZK9F0V1rTOt4Zwkn8emZ4QcET2bp3d7zbzJpoCTECqeHlzjKJnzX
-	c43vq+M5tl0Cf3qopQQMpTSQHGfsdyNldJOXk+cOw8g4Z8e+bXN4YaOov5UPwfOOOdjqPB
-	oV4jJO6pcGfDtj9udbDylNCfovUoiAH2zhx5SFo6UuKeFqajBbqyibpVV/MZPLzQIfCID9
-	GNPRinPgTIIczTdKTTbT/0zz66QtJ3FwG8/bFC6SsomWI4u8W0CwbAQCZuGQwYl66AEDI6
-	ROV+DABFHubyqDZ2Ezucsq33Z73qBGOtOtI6vxOM/kZQInyGfSi5llOPnTR++Q==
-Date: Tue, 13 Oct 2026 11:44:47 +0200
-Subject: [PATCH 2/8] arm64: dts: imx8mp-kontron: Fix GPIO labels according
- to OSM spec
+	bh=Q4aN/1amNQxJNk4c7N2lTGAkvvrYpTHFVDkBhjGRCG4=;
+	b=DQF5f9Qf02loEdyarV+8QiKydpwwICnIRQBoax1929zpGNgFXFnDuuQE271Ww63A7jpAaR
+	i9ubdjBd7PrDA5FOA1k9MyudWEy0KUXrnkn7bT6iVpOfPQm6nDMgDpnlkWBiCoKpc4WM4h
+	6PdgGBtYTVQGdHKSJ8vpNQtMbAu33xbjf0xMmO0nMolvDyKevWEPqoUis1v9BeKBRJUGwY
+	cQPeazv79j0kFPm2q6YmAx80VCOiNmT1DGI8SqI6w1ikdY59yUXqoIwD0DYOfl+H8dW4sh
+	mSk4vH7Yc7UEdxW6Tka7KyzqnjlPrrmpqjBL5UeJmy004jQnErtUaUM73R+5yg==
+Date: Tue, 13 Oct 2026 11:44:49 +0200
+Subject: [PATCH 4/8] arm64: dts: imx8mm-kontron: Fix wrong label for
+ SPI_A_SDI_(IO0) pad
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -40,7 +40,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261013-upstreaming-gpio-label-fixes-v1-2-94f09ec520ef@kontron.de>
+Message-Id: <20261013-upstreaming-gpio-label-fixes-v1-4-94f09ec520ef@kontron.de>
 References: <20261013-upstreaming-gpio-label-fixes-v1-0-94f09ec520ef@kontron.de>
 In-Reply-To: <20261013-upstreaming-gpio-label-fixes-v1-0-94f09ec520ef@kontron.de>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -52,126 +52,42 @@ To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
 Cc: Eberhard Stoll <eberhard.stoll@kontron.de>, devicetree@vger.kernel.org, 
  imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
  linux-kernel@vger.kernel.org
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5231;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1266;
  i=frieder.schrempf@kontron.de; h=from:subject:message-id;
- bh=P7zRyEtLVs0alTYfa2W2pXIHV5EGBxZ9yMkrcZy/Vnc=;
- b=owGbwMvMwCWWWSatKlDTJMZ4Wi2JIevs36N53K1sPuskXk8rvfJt37bgD+qnv0qd+/FgRvW2S
- /zbxI4FdZSyMIhxMciKKbJI8Vu8tjWL9ZE/Vh0FM4eVCWQIAxenAExkBj8jQ3tgFFd6mW7tdLug
- lm+u+/8rWLJf5heexLRw0RoR3c+3QhgZtv0Tq9iwVH5T6ffit9cmuGqyWp+4rGjSslYqdcPtiW1
- n+AE=
+ bh=jzjRSZBC4S/DaUSvV4n8aM/sXC+EPXR9oQqPjvOEE/c=;
+ b=owGbwMvMwCWWWSatKlDTJMZ4Wi2JIevs36MBzhnyemqeagx9Lj8if4l4dOzdnbWac9O+Xd8Eb
+ zl4T67pKGVhEONikBVTZJHit3htaxbrI3+sOgpmDisTyBAGLk4BmEifHCPD/Ycboh5ELdn/ckuV
+ 9963s/SjmFdveybj7yu6Z9U3D63ISwz/Y3sVy2Y/Xl6Z3PMwXK02/tuXKyJ1+3bNfjd5r0fsHV0
+ JPgA=
 X-Developer-Key: i=frieder.schrempf@kontron.de; a=openpgp;
  fpr=1A0F38EB3D365D4C1FC67B5A69761B25107C8216
 
 From: Eberhard Stoll <eberhard.stoll@kontron.de>
 
-The OSM specification provides generic names for all pads. Fix the
-GPIO labels to use the correct pad names in order to align the
-labels with the spec and with other OSM module devicetrees.
+The OSM-S pad SPI_A_SDI_(IO0) is incorrectly named as SPI_A_SCK.
+Therefore SPI_A_SDI(IO0) is missing and the label SPI_A_SCK is
+duplicated. Fix this.
 
-Fixes: 946ab10e3f40 ("arm64: dts: Add support for Kontron OSM-S i.MX8MP SoM and BL carrier board")
+Fixes: 6f5e6d7306c0 ("arm64: dts: imx8mm-kontron: Refactor devicetree for OSM-S module and board")
 Signed-off-by: Eberhard Stoll <eberhard.stoll@kontron.de>
 Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
 ---
- .../boot/dts/freescale/imx8mp-kontron-osm-s.dtsi   | 50 +++++++++++++---------
- 1 file changed, 29 insertions(+), 21 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8mm-kontron-osm-s.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-kontron-osm-s.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-kontron-osm-s.dtsi
-index 3c183ab573bed..3459ee2c0eb64 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-kontron-osm-s.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-kontron-osm-s.dtsi
-@@ -141,16 +141,19 @@ &gpio1 {
- 	gpio-line-names = "GPIO_A_0", "GPIO_A_1", "", "",
- 			  "", "GPIO_A_2", "GPIO_A_3", "GPIO_A_4",
- 			  "GPIO_A_5", "USB_B_EN", "USB_A_ID", "USB_B_ID",
--			  "USB_A_EN", "USB_A_OC","CAM_MCK", "USB_B_OC",
--			  "ETH_B_MDC", "ETH_B_MDIO", "ETH_B_TXD3", "ETH_B_TXD2",
--			  "ETH_B_TXD1", "ETH_B_TXD0", "ETH_B_TX_EN", "ETH_B_TX_CLK",
--			  "ETH_B_RX_DV", "ETH_B_RX_CLK", "ETH_B_RXD0", "ETH_B_RXD1",
--			  "ETH_B_RXD2", "ETH_B_RXD3";
-+			  "USB_A_EN", "USB_A_OC#","CAM_MCK", "USB_B_OC#",
-+			  "ETH_B_MDC", "ETH_B_MDIO",
-+			  "ETH_B_(S)(R)(G)MII_TXD3", "ETH_B_(S)(R)(G)MII_TXD2",
-+			  "ETH_B_(S)(R)(G)MII_TXD1", "ETH_B_(S)(R)(G)MII_TXD0",
-+			  "ETH_B_(R)(G)MII_TX_EN(_ER)", "ETH_B_(R)(G)MII_TX_CLK",
-+			  "ETH_B_(R)(G)MII_RX_DV(_ER)", "ETH_B_(R)(G)MII_RX_CLK",
-+			  "ETH_B_(S)(R)(G)MII_RXD0", "ETH_B_(S)(R)(G)MII_RXD1",
-+			  "ETH_B_(R)(G)MII_RXD2", "ETH_B_(R)(G)MII_RXD3";
- };
- 
- &gpio2 {
- 	gpio-line-names = "", "", "", "", "", "", "", "", "", "", "", "",
--			  "SDIO_A_CD", "SDIO_A_CLK", "SDIO_A_CMD", "SDIO_A_D0",
-+			  "SDIO_A_CD#", "SDIO_A_CLK", "SDIO_A_CMD", "SDIO_A_D0",
- 			  "SDIO_A_D1", "SDIO_A_D2", "SDIO_A_D3", "SDIO_A_PWR_EN",
- 			  "SDIO_A_WP";
- };
-@@ -158,13 +161,13 @@ &gpio2 {
- &gpio3 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_gpio3>;
--	gpio-line-names = "PCIE_WAKE", "GPIO_A_7", "PCIE_A_PERST", "SDIO_B_D5",
-+	gpio-line-names = "PCIe_WAKE#", "GPIO_A_7", "PCIe_A_PERST#", "SDIO_B_D5",
- 			  "SDIO_B_D6", "SDIO_B_D7", "UART_B_RX", "I2S_LRCLK",
- 			  "UART_B_RTS", "UART_B_CTS", "SDIO_B_D0", "SDIO_B_D1",
- 			  "SDIO_B_D2", "SDIO_B_D3", "SDIO_B_WP", "SDIO_B_D4",
--			  "PCIE_SM_ALERT", "SDIO_B_CLK", "SDIO_B_CMD", "GPIO_B_0",
--			  "GPIO_B_1", "", "BOOT_SEL0", "BOOT_SEL1",
--			  "", "", "SDIO_B_CD", "SDIO_B_PWR_EN",
-+			  "PCIe_SM_ALERT#", "SDIO_B_CLK", "SDIO_B_CMD", "GPIO_B_0",
-+			  "GPIO_B_1", "", "BOOT_SEL0#", "BOOT_SEL1#",
-+			  "", "", "SDIO_B_CD#", "SDIO_B_PWR_EN",
- 			  "HDMI_CEC", "HDMI_HPD";
- };
- 
-@@ -172,10 +175,14 @@ &gpio4 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_gpio4>;
- 	gpio-line-names = "GPIO_B_5", "GPIO_B_6", "GPIO_B_7", "GPIO_C_0",
--			  "ETH_A_MDC", "ETH_A_MDIO", "ETH_A_RXD0", "ETH_A_RXD1",
--			  "ETH_A_RXD2", "ETH_A_RXD3", "ETH_A_RX_DV", "ETH_A_RX_CLK",
--			  "ETH_A_TXD0", "ETH_A_TXD1", "ETH_A_TXD2", "ETH_A_TXD3",
--			  "ETH_A_TX_EN", "ETH_A_TX_CLK", "GPIO_B_3", "GPIO_B_4",
-+			  "ETH_MDC", "ETH_MDIO",
-+			  "ETH_A_(S)(R)(G)MII_RXD0", "ETH_A_(S)(R)(G)MII_RXD1",
-+			  "ETH_A_(R)(G)MII_RXD2", "ETH_A_(R)(G)MII_RXD3",
-+			  "ETH_A_(R)(G)MII_RX_DV(_ER)", "ETH_A_(R)(G)MII_RX_CLK",
-+			  "ETH_A_(S)(R)(G)MII_TXD0", "ETH_A_(S)(R)(G)MII_TXD1",
-+			  "ETH_A_(S)(R)(G)MII_TXD2", "ETH_A_(S)(R)(G)MII_TXD3",
-+			  "ETH_A_(R)(G)MII_TX_EN(_ER)", "ETH_A_(R)(G)MII_TX_CLK",
-+			  "GPIO_B_3", "GPIO_B_4",
- 			  "GPIO_B_2", "GPIO_A_6", "CAN_A_TX", "UART_A_CTS",
- 			  "UART_A_RTS", "CAN_A_RX", "CAN_B_TX", "CAN_B_RX",
- 			  "I2S_B_DATA_IN", "CARRIER_PWR_EN", "I2S_A_DATA_IN", "I2S_B_DATA_OUT";
-@@ -183,13 +190,14 @@ &gpio4 {
- 
- &gpio5 {
- 	gpio-line-names = "I2S_BITCLK", "I2S_A_DATA_OUT", "I2S_MCLK", "PWM_2",
--			  "PWM_1", "PWM_0", "SPI_A_SCK", "SPI_A_SDO",
--			  "SPI_A_SDI", "SPI_A_CS0", "SPI_B_SCK", "SPI_B_SDO",
--			  "SPI_B_SDI", "SPI_B_CS0", "I2C_A_SCL", "I2C_A_SDA",
--			  "I2C_B_SCL", "I2C_B_SDA", "PCIE_SMCLK", "PCIE_SMDAT",
--			  "I2C_CAM_SCL", "I2C_CAM_SDA", "UART_A_RX", "UART_A_TX",
-+			  "PWM_1", "PWM_0", "SPI_A_SCK", "SPI_A_SDO_(IO1)",
-+			  "SPI_A_SDI_(IO0)", "SPI_A_CS0#", "SPI_B_SCK", "SPI_B_SDO",
-+			  "SPI_B_SDI", "SPI_B_CS0#", "I2C_A_SCL", "I2C_A_SDA",
-+			  "I2C_B_SCL", "I2C_B_SDA", "PCIe_SMCLK", "PCIe_SMDAT",
-+			  "I2C_CAM_SCL/CSI_TX_P", "I2C_CAM_SDA/CSI_TX_N",
-+			  "UART_A_RX", "UART_A_TX",
- 			  "UART_C_RX", "UART_C_TX", "UART_CON_RX", "UART_CON_TX",
--			  "PCIe_CLKREQ", "UART_B_TX";
-+			  "PCIe_CLKREQ#", "UART_B_TX";
- };
- 
- &i2c1 { /* OSM-S I2C_A */
-@@ -623,7 +631,7 @@ pinctrl_pcie: pciegrp {
- 			MX8MP_IOMUXC_UART4_RXD__PCIE_CLKREQ_B		0x19 /* PCIe_CLKREQ# */
- 			MX8MP_IOMUXC_NAND_CE1_B__GPIO3_IO02		0x19 /* PCIe_A_PERST# */
- 			MX8MP_IOMUXC_NAND_ALE__GPIO3_IO00		0x19 /* PCIe_WAKE# */
--			MX8MP_IOMUXC_NAND_READY_B__GPIO3_IO16		0x19 /* PCIe_SM_ALERT */
-+			MX8MP_IOMUXC_NAND_READY_B__GPIO3_IO16		0x19 /* PCIe_SM_ALERT# */
- 		>;
- 	};
- 
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-kontron-osm-s.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-kontron-osm-s.dtsi
+index 4fb13d8ecfd45..35b76cd02b1df 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-kontron-osm-s.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mm-kontron-osm-s.dtsi
+@@ -230,7 +230,7 @@ &gpio5 {
+ 	gpio-line-names = "UART_B_TX", "SDIO_B_PWR_EN", "SDIO_B_WP", "PWM_2",
+ 			  "PWM_1", "PWM_0", "", "",
+ 			  "", "", "SPI_A_SCK", "SPI_A_SDO_(IO1)",
+-			  "SPI_A_SCK", "SPI_A_CS0#", "", "",
++			  "SPI_A_SDI_(IO0)", "SPI_A_CS0#", "", "",
+ 			  "I2C_A_SCL", "I2C_A_SDA", "I2C_B_SCL", "I2C_B_SDA",
+ 			  "PCIe_SMCLK", "PCIe_SMDAT", "SPI_B_SCK", "SPI_B_SDO",
+ 			  "SPI_B_SDI", "SPI_B_CS0#", "UART_CON_RX", "UART_CON_TX",
 
 -- 
 2.55.0
