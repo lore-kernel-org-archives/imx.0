@@ -1,109 +1,153 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13C0C3E5EF8;
-	Tue, 13 Oct 2026 10:04:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791885865; cv=none; b=CNOKiiMLtn7koYR3MhxEPcZXLLIXeZqQmNE/orifAwTFt7LWCrRTbrxTq1Fum+LoQPcc7Bw2E4+zfKbenEh6pwGrONNoOs49QkO8wiRpTZyutt32k3WUEOjiJrwcSaKRQf3aZywW/V3BKdaoVEOUqT32UIJxmrlq9FTb2kF2SjQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791885865; c=relaxed/simple;
-	bh=/NC730XZOMYDt4GVQ2K2vEbKuYoqsCk0p/VYYgZdjdk=;
-	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
-	 Date; b=aQEjtkaEV0b1Ew34je6QbwhxoW4yevspsjiveIWUQz+LNu3D3oVlv6PgvCu9JhVhBQVrAnnG925GSEiKtnHoaF94+wnZLJn1F+N8b2KpBcZ6zL0kBpyqlRDB/ZjxiCOTy84CwKJqS9MRuHAF2GoQHfqn7g1td4DZS+C6bC3u+jI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P+4W3WFF; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E4D438E135
+	for <imx@lists.linux.dev>; Tue, 13 Oct 2026 10:12:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.175
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791886373; cv=pass; b=GeqHfHrd3EQoHzSGEZbcJ3Jo1W5897g2y89Kb5XuV3yXfXpvkuSb3TyDnIurhsHhATRWhke55i8Iets+Xet4kjNGgFT6kQcTY5QSYMnnZHqqFOW9cE3V04Z7ON6m5svO7wyFv4EMvupohpirWcuadmzDHfYQNu5Fq7sKCzRP/8I=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791886373; c=relaxed/simple;
+	bh=oYpuymV3tgk09qaaDkKOhd9dg2Zp4VCoofN6vnpJl7A=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=tenxQSjPzYr0VagwkF+fdUVgbdClEe6LHSy7QVqvFhVXzfxs1FjsYPMLZ3oVBbX42hHNHepEt5iwHIzWG8ASFQsDRVIlbvLAq6QDYd53WrCxzGDo7RCdGDfhO2grw9QoNVk6aXuhldT2OTwRPsNXBa5nLCBgEp6VA1Cai5tdKlU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PNmkqHIq; arc=pass smtp.client-ip=209.85.215.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P+4W3WFF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64D041F000FF;
-	Tue, 13 Oct 2026 10:04:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791885863;
-	bh=iHiVg+aZG4pM8+gIH8GNMP+tNeAg84piZsO/NMb4uJk=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=P+4W3WFFhdhNaVqBfwaxiGj6lEUhJRSRE5mpa0ur2Cp9kVmO7dlPGFHKbTMPeXLyz
-	 FhSfrSdm2aI3L4iCladiGLpbnlW7QbRtau4hWeK9BjUHrQ1hSvKtoMAm5UjqmCWTmo
-	 iehJ4tKqkJ0Bplk0XcuwXPY14m2YGbemyFQqy4a6LsEAaB2YcvvnjHSoKSK0feZFsm
-	 I1O0abSWa9bSUP4qhboVt7wofyeylu+auebdqBVJL7TD7BTAYyX/a5H4C92gzqoVEd
-	 rT1rk+Rm6hNMQXkMqcuKyF1tY3XlblwXB4JEoXw5cr+pDNlC38qYU6rhB7f93xGifs
-	 NmyqVzlzfW44w==
-Message-ID: <sashiko-outbox-169447@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 3/8] arm64: dts: imx8mp-kontron: Remove obsolete
- VDD_CARRIER regulator
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Frieder Schrempf" <frieder@fris.de>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20261013-upstreaming-gpio-label-fixes-v1-3-94f09ec520ef@kontron.de>
-References: <20261013-upstreaming-gpio-label-fixes-v1-0-94f09ec520ef@kontron.de>
- <20261013-upstreaming-gpio-label-fixes-v1-3-94f09ec520ef@kontron.de>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 13 Oct 2026 10:04:22 +0000
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PNmkqHIq"
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-cd5d2dafeccso993418a12.2
+        for <imx@lists.linux.dev>; Tue, 13 Oct 2026 03:12:52 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791886372; cv=none;
+        d=google.com; s=arc-20260327;
+        b=D/3N4+obUBiWy1OpHBequZ+ir+yCO2XXeyWMzxmNpI7u/ADC+Wjwye/S6US+z9nFRY
+         4QnT8QfdPb5aGIRt5J1gxddkeBrqPpzQnSLWmJE643dfTuHQnAweFbbIoddK2a7jvmez
+         J4oImAr6xxqu1ULEZPhv2FBhdF8qs289LSrgkJJ2R3C63t+uyZw5tyQKS5HMFdUE/hkf
+         EcJ1Kj00VO+Hg2hhGwaFAKDdogfpc9rzggN8ySZ9vOg0HqMnYGL5ZLleGdemEFRWfiUf
+         tNTPKQJAjCbocvRuuBgrDx3xjWjxqYzvy7TJ4J632cfo8upwlGS4YZz8wch+RTorp1DZ
+         ehHg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=oYpuymV3tgk09qaaDkKOhd9dg2Zp4VCoofN6vnpJl7A=;
+        fh=viyrustq55YXdjxVZ5JXHBU6CwUT9OOh1xr/mW71ERI=;
+        b=HWSjZ10aKcgEeRZ3aZTr77nmXqSU7Gq3Y8VEuWrwLtJK8QvNBFQdwGbZvgRhtG17wK
+         czZvEQMjDdIOd0nW1VqAWs2h8gVkr6obWPer+i25vVaNCIRfuXW6I05hgRNNpVGbElA2
+         xl1MHIa7d4iH44G4hSnK7cOxhRWZvfUQNiPe0RKNqXXbLYwyzs9v+kRvhhRmhKnPK76Q
+         6nW8RMhlDo5xGbR7TSBp3ud2BuPgVEUHpC7DPJ547c3t9vaXi5Xn2r6NdRDvCwIfgd18
+         9+ycWmPLH5X5blry4AVoS9RsXdRY1Xe1FCyJGT3BpGv3IGUHxzZZzt9rc+GyZFGLNjIH
+         6QEg==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791886372; x=1792491172; darn=lists.linux.dev;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=oYpuymV3tgk09qaaDkKOhd9dg2Zp4VCoofN6vnpJl7A=;
+        b=PNmkqHIqqmiAwdcwJXTxkQ3X1SFogz/yPtQ7GFa0x7kaHe2hwSPhcsCkcA9pF03R3W
+         p2d/qcV3MpLZ4O40XsaPgsYUP+AyFI09X4xDSkr0NPoeV+vzXBcxJ5pzH0slRwCCBPcQ
+         MbnIWLr7AvyFk8JMdt1z6BWgBqVCpAqoAAyJBIJ6YY+7A0ZBysZM39d7MipEGe851ifb
+         2zDJy/sh8k2c/NTueOB/b1r/qChgnU8QrAu9qcTD7s+GXauOaPC7sntfzJMzmr5UeYrp
+         y4YFNxnyat7/cKQmDkwsNdoTsZWICKtI6cElY6K4ZH5c3BBZBpGoJWGJXUPopjXgiF26
+         cbvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791886372; x=1792491172;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=oYpuymV3tgk09qaaDkKOhd9dg2Zp4VCoofN6vnpJl7A=;
+        b=OKfRrHckgCqwe27l8vqQlj2z5mEt4Fm3uGa8aZm2WF3S+EkVDTFmOfpkUuoLafqc2R
+         WvrKxtDu8mpdKN+bbdMi00Qwy2uTtubLFaEJJHAkmnXpeblcHmQXUUtJ1qP0sR5csbi4
+         WJdJr8bzMZhK569CcBkXfNI/dsJ8P5bwDKohAK4Ip3j6SpMYM1xwRCJK6WU6hoPmfl53
+         ONCaAkeiVB+7e2KhgvUu9niu/piUnkTSrXzu8Ktg3oY7tFXOp9cO+iuhZW6ceTnAH1MM
+         vZGt7C+0ARC++UlyJRLJTTsTaJRw7bEqrngM0JAixQmNOChauZXjSPdt5++ltbRV8yap
+         VACQ==
+X-Forwarded-Encrypted: i=1; AKwUvBw/Ufd2vnC69mQNzLHV/QjjUrpZ/gxWPz7uRNk+lTt1MJGYWQFDLubLQZUH+/vBeusRPYg=@lists.linux.dev
+X-Gm-Message-State: AFq9FYIJlzM63iR3iOyEEpW6p+RHKuDnJKZHD7u2nb2bO+bjDvwmaUj3
+	kKd08OYQqmfgLQqBgAEHfMLiy5+QhOpJ3kIB2o0MuF74T7SRn8OJEFiYL5XK0F6ZS8mNxrucMb8
+	Um7hvEYRmUt//vMF43Ri+xFr8lIrwlcY=
+X-Gm-Gg: AYBFou1dXnzbmX9LHNsvslpq7xMgD1UG74MndirgpBsl5iDGgWsLZ+TvJss32GsABjM
+	8U89aVoLbfNn7yvr6lVq3z45wLoOg+mAnWAtiFYPPYWs3dPjTX36MS5Ma7xiWNptQ+L/TyaAPpT
+	ADlIaX+WlwdSVh4K0CFdvfosyLI9fvdTZ4PBfeL5lE2aD/HVcJKIXHr6ouYdipO4kOZKs1sKOAH
+	war1nFY/GBGbevVqxrHLwO6MfoSxz8SR89bx0MvoR+MaYMqnvy86CCsO7qLvwJN4npnOrE7Un+W
+	ZcnaNV4hgKe2bWnLdxdT3PwyPCuTUIJKf72C/u2QLoGxXHQMXCoHNHp+Ra2pi1QY4lLYtRWBPm/
+	mKzxSDUB8DaFauCkFDFUFfNd4yNZbV/zW+br2+EVq/anTsJmMR2vWGsrJWxdhY7MCjbg=
+X-Received: by 2002:a05:6300:6bc8:10b0:3e1:9071:acb1 with SMTP id
+ adf61e73a8af0-3e19071d79emr3692539637.89.1791886371799; Tue, 13 Oct 2026
+ 03:12:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+References: <20261008103831.542533-1-phucduc.bui@gmail.com>
+ <20261008103831.542533-22-phucduc.bui@gmail.com> <87o6cyxyau.wl-kuninori.morimoto.gx@renesas.com>
+ <CAABR9nHvCfabGfBu85bm1r=hP3b0ZiCsgZfShhOv3gNUfjjhGg@mail.gmail.com> <87se2aw3ot.wl-kuninori.morimoto.gx@renesas.com>
+In-Reply-To: <87se2aw3ot.wl-kuninori.morimoto.gx@renesas.com>
+From: Bui Duc Phuc <phucduc.bui@gmail.com>
+Date: Tue, 13 Oct 2026 17:12:40 +0700
+X-Gm-Features: AclHuK9ysK1Jav05byu2z6c82z-Prt9juV9RV67s1OGQmeMH_qLrceJ2TQNxX6U
+Message-ID: <CAABR9nG-YJZEdj6pVD-gbGU6J2EfRMQYsKd7u0UTgfrWOyAPXA@mail.gmail.com>
+Subject: Re: [PATCH 21/24] ASoC: renesas: msiof: Fix msiof_close() being
+ skipped on rollback
+To: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Cc: Vijendar Mukunda <Vijendar.Mukunda@amd.com>, 
+	Venkata Prasad Potturu <venkataprasad.potturu@amd.com>, Liam Girdwood <lgirdwood@gmail.com>, 
+	Mark Brown <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+	povik+lin@cutebit.org, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+	Andrei Simion <andrei.simion@microchip.com>, Nicolas Ferre <nicolas.ferre@microchip.com>, 
+	Alexandre Belloni <alexandre.belloni@bootlin.com>, David Rhodes <david.rhodes@cirrus.com>, 
+	Richard Fitzgerald <rf@opensource.cirrus.com>, Shengjiu Wang <shengjiu.wang@gmail.com>, 
+	Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>, 
+	Nicolin Chen <nicoleotsuka@gmail.com>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Cezary Rojewski <cezary.rojewski@intel.com>, Peter Ujfalusi <peter.ujfalusi@linux.intel.com>, 
+	Bard Liao <yung-chuan.liao@linux.intel.com>, 
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>, 
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
+	Biju Das <biju.das.jz@bp.renesas.com>, 
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, Heiko Stuebner <heiko@sntech.de>, 
+	Kees Cook <kees@kernel.org>, Syed Saba Kareem <syed.sabakareem@amd.com>, 
+	wangdicheng <wangdicheng@kylinos.cn>, Chris Bainbridge <chris.bainbridge@gmail.com>, 
+	Linus Walleij <linusw@kernel.org>, Charles Keepax <ckeepax@opensource.cirrus.com>, 
+	Neo Chang <YLCHANG2@nuvoton.com>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>, u.kleine-koenig@baylibre.com, 
+	Pengpeng Hou <pengpeng@iscas.ac.cn>, 
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>, Hemanth Selam <hemanth.selam@gmail.com>, 
+	Md Shofiqul Islam <shofiqtest@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Zain Aboobacker <zainaboobacker33@gmail.com>, Sang-Heon Jeon <ekffu200098@gmail.com>, 
+	Ajit Kumar Pandey <AjitKumar.Pandey@amd.com>, 
+	Ravulapati Vishnu vardhan rao <Vishnuvardhanrao.Ravulapati@amd.com>, Bo Shen <voice.shen@atmel.com>, 
+	Vinod Koul <vkoul@kernel.org>, linux-sound@vger.kernel.org, asahi@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, patches@opensource.cirrus.com, 
+	linuxppc-dev@lists.ozlabs.org, imx@lists.linux.dev, 
+	linux-rockchip@lists.infradead.org, linux-renesas-soc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Low] dts: Stale CARRIER_PWR_EN label in carrier board gpio-line-names ov=
-errides
---
+Hi Morimoto-san,
 
-commit b5bf4333f3ce6c5ca93d4fd597b09395c78fe9b7
-Author: Eberhard Stoll <eberhard.stoll@kontron.de>
+Thank you for your confirmation.
 
-arm64: dts: imx8mp-kontron: Remove obsolete VDD_CARRIER regulator
+> > For MSIOF, I noticed that snd_dmaengine_pcm_open() already calls
+> > snd_pcm_hw_constraint_integer() for SNDRV_PCM_HW_PARAM_PERIODS,
+> > so the call in msiof_open() seems redundant.
+> >
+> > Since the first call succeeds, the second call should return 0.
+> > Would removing the redundant call be acceptable?
+>
+> Nice cache, yes please.
+>
 
-This commit removes the VDD_CARRIER regulator from the Kontron OSM-S i.MX8MP
-SoM devicetree. It also renames the CARRIER_PWR_EN gpio line to GPIO_C_1, as
-the signal is now controlled by hardware on regular revisions rather than
-software.
+For rz-ssi: in DMA mode, the driver registers the generic dmaengine
+PCM component, whose .open callback already applies the integer
+PERIODS constraint via snd_dmaengine_pcm_open().
 
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-kontron-osm-s.dtsi b/ar=
-ch/arm64/boot/dts/freescale/imx8mp-kontron-osm-s.dtsi
-> index 3459ee2c0eb64..4fd42e7170ee8 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mp-kontron-osm-s.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8mp-kontron-osm-s.dtsi
-[ ... ]
-> @@ -185,7 +162,7 @@ &gpio4 {
->  			  "GPIO_B_3", "GPIO_B_4",
->  			  "GPIO_B_2", "GPIO_A_6", "CAN_A_TX", "UART_A_CTS",
->  			  "UART_A_RTS", "CAN_A_RX", "CAN_B_TX", "CAN_B_RX",
-> -			  "I2S_B_DATA_IN", "CARRIER_PWR_EN", "I2S_A_DATA_IN", "I2S_B_DATA_OUT=
-";
-> +			  "I2S_B_DATA_IN", "GPIO_C_1", "I2S_A_DATA_IN", "I2S_B_DATA_OUT";
->  };
+Could we drop rz_ssi_pcm_open_dma() instead, and keep the return
+value fix only for rz_ssi_pcm_open_pio()?
 
-[Severity: Low]
-Is this rename incomplete? While "CARRIER_PWR_EN" is updated to "GPIO_C_1"
-here in the SoM's &gpio4 node, the carrier boards provide their own
-gpio-line-names overrides for &gpio4 which still hardcode the old name.
-
-For the BL OSM-S carrier board:
-
-arch/arm64/boot/dts/freescale/imx8mp-kontron-bl-osm-s.dts:&gpio4 {
-    ...
-    gpio-line-names =3D "CAN_B_RX", "CAN_B_TX", "CAN_A_RX", "CAN_A_TX",
-                      ...
-                      "TFT_STBY", "CARRIER_PWR_EN", "I2S_A_DATA_IN", "I2S_L=
-RCLK";
-}
-
-And similarly for the SMARC carrier board:
-
-arch/arm64/boot/dts/freescale/imx8mp-kontron-smarc.dtsi:&gpio4 {
-    ...
-    gpio-line-names =3D "", "", "", "",
-                      ...
-                      "TEST", "CARRIER_PWR_EN", "I2S0_SDIN", "I2S0_LRCK";
-}
-
-Since the board-level overrides remain, the old label is still exported to
-userspace on these boards. Does this defeat the purpose of the rename for
-those devices?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261013-upstreamin=
-g-gpio-label-fixes-v1-0-94f09ec520ef@kontron.de?part=3D3
+Best regards,
+Phuc
