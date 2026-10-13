@@ -1,145 +1,117 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7C724DD3B2
-	for <imx@lists.linux.dev>; Tue, 13 Oct 2026 11:12:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B91E54EB85C;
+	Tue, 13 Oct 2026 11:17:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791889933; cv=none; b=tn7i6PvHauuaYV1uTeOvC9EZZ1U9jIl8BHCkCFPeFDUepyx4gMhjSb0mqymEjLs2a0mLyOp2faHHN4xdtQGry3DT/T6qkR2VXjGwX0Mz79zAmChJQvt4ly2VRAlnE8CaSAhajb9SVoMrxGijzZZkH1SOy7+6GsUQOOwBOxf0AaE=
+	t=1791890272; cv=none; b=ey5a+EsMxaePAity+HL7lfXKz/RdUWCawvJhQAJ9+77qqPp2iHWMLXKTHorZReU0XeRGj4DKWvrz+q0nv90zNBkVRBabm8Z2b2pGUJnGJeJxEz1a9Qs0+h1wec3UEauM0nyK7yJJ7kLI3FQ6snIvzDGvEDoTFVx9XyvgMm1ykRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791889933; c=relaxed/simple;
-	bh=TLb9LXej9xG19WtKDwfE0UKEiJVXsGn15ErYlOXigNA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fEzSpnaNJq6FTNWKtflsGk6qB8mjLkAkZUAWnTbckYo+o/xJ02+JsuxIiFiGF1lnmD9RBTIotsAOvwv8b5bP85KXO8vyyvu1E/pE3ONH3W4wDgvbGXstzuyuS41w4xnbhVTzZ6+g9LiBbAjuGgj01dM/956R61UC43Q+qQfoYco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=TlB8Bi30; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	s=arc-20240116; t=1791890272; c=relaxed/simple;
+	bh=Us5JQeyWAjeqkzjH07CkgrToUp8VEU6EHoilQK39GyI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eL10PeHJ6o7ogUiY4FZNMz8z6RdRta0DPOgF0D3/G2kGGPASSjB0fhg+ANudha5lUglzDq5IRl/pm3IGciiAyXpGOQMul/EnLOBSgyuQfaL5mN7UtpLDc127n7aY99VxGUOMf3JqM6NGy9zXSimS7jw2i2Nu/Ict3q2wXhbk5yY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=YAvubxDS; arc=none smtp.client-ip=188.40.3.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="TlB8Bi30"
-Received: from killaraus.ideasonboard.com (unknown [185.104.138.147])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id C3259BC;
-	Tue, 13 Oct 2026 13:10:07 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1791889807;
-	bh=TLb9LXej9xG19WtKDwfE0UKEiJVXsGn15ErYlOXigNA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TlB8Bi30S5ri9HBtUHlzY6zY08CIHKtIIbBSKb5dt3zziN/pA8ByDTu5OVF15NSXn
-	 4xX7plyX8+U+sKzluFZfMATxaCJc0e/z0jlrmKi5bA3n8XANXoMWrPozvIdfIiMT60
-	 g+KdWAYoNwARwKCbEJ7Ue5TdERCKx0zSHWA4Wlas=
-Date: Tue, 13 Oct 2026 13:11:58 +0200
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Francesco Dolcini <francesco@dolcini.it>
-Cc: Leonardo Costa <leoreis.costa@gmail.com>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Robert Foss <rfoss@kernel.org>, Jonas Karlman <jonas@kwiboo.se>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="YAvubxDS"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=ew.tq-group.com; s=default2602; h=Content-Transfer-Encoding:MIME-Version:
+	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References;
+	bh=qOLekdNuUKzpmlNyvUEJ41eSHKcZqRHe2taebwYI0Go=; b=YAvubxDSLgMXQsRLVXATgjnTRu
+	TeM+Df/7kbL3PpG9O/K1StvWDylRJiGYleSUQ7mv5zj5TnPw6e4ty6DGXxH2fS5M+Qh+gVbE+wkVa
+	qayoGrFSvZ9JMvDdR8rBRIkjGXBWlz7dFa1j4yMulvo8Z+5NKMQNXAgMdPiqxdZyNFvjxB/Xiogbi
+	T7KEhvuLEIPto301Kl97eXPQLEhIIApSd1gepYxrIketSCmcZJRj3MkGc6GBQ2EFXNHo+riRLfYfT
+	lfQawsFTPNpkyjzkwdzMEDhdlQ5Ejo+t9dmx0OqwUEU/2rlwS6oCoZXzRTljXVOavCDg4ubeRhIEN
+	HNwxwb9w==;
+Received: from sslproxy03.your-server.de ([88.198.220.132])
+	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <alexander.stein@ew.tq-group.com>)
+	id 1xGaVq-000OBb-1c;
+	Tue, 13 Oct 2026 13:17:42 +0200
+Received: from localhost ([127.0.0.1])
+	by sslproxy03.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <alexander.stein@ew.tq-group.com>)
+	id 1xGaVp-0005it-2s;
+	Tue, 13 Oct 2026 13:17:41 +0200
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Frank Li <Frank.Li@nxp.com>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, dri-devel@lists.freedesktop.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	Leonardo Costa <leonardo.costa@toradex.com>
-Subject: Re: [PATCH 0/3] Add VGA support for Apalis iMX6
-Message-ID: <20261013111158.GG56180@killaraus.ideasonboard.com>
-References: <20261012-v1-apalis-imx6-enable-vga-v1-0-8905d8746504@toradex.com>
- <20261012164054.GA56180@killaraus.ideasonboard.com>
- <20261013090631.GA33628@francesco-nb>
+	Fabio Estevam <festevam@gmail.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Dong Aisheng <aisheng.dong@nxp.com>
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux@ew.tq-group.com,
+	Liu Ying <victor.liu@nxp.com>
+Subject: [PATCH 0/5] LVDS support for TQMa8Xx
+Date: Tue, 13 Oct 2026 13:17:24 +0200
+Message-ID: <20261013111737.998282-1-alexander.stein@ew.tq-group.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20261013090631.GA33628@francesco-nb>
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: Clear (ClamAV 1.4.3/28152/Tue Oct 13 08:26:14 2026)
 
-Hi Francesco,
+Hi,
 
-On Tue, Oct 13, 2026 at 11:06:31AM +0200, Francesco Dolcini wrote:
-> On Mon, Oct 12, 2026 at 06:40:54PM +0200, Laurent Pinchart wrote:
-> > On Mon, Oct 12, 2026 at 04:25:22AM -0300, Leonardo Costa wrote:
-> > > This series adds a device tree overlay that enables the VGA output on Apalis
-> > > iMX6, which is driven from a parallel RGB interface passing through a
-> > > non-programmable video DAC.
-> > > 
-> > > The video DAC is a simple resistor network gated by an active-low
-> > > data-enable signal. For the bridge to work properly, this series also
-> > > changes the following in the dt-bindings and simple-bridge driver:
-> > > 
-> > > - dt-bindings: Add a new compatible for the bridge in the simple-bridge
-> > >   binding. This is necessary because the existing dumb-vga-dac compatible
-> > >   doesn't describe a data-enable signal polarity.
-> > > 
-> > > - simple-bridge: Add the VGA bridge match-table entry and timings
-> > >   struct, setting the DRM_BUS_FLAG_DE_LOW flag for the bridge.
-> > 
-> > Is there schematics available anywhere ? That would help reviewing the
-> > series ?
-> 
-> This circuit is on the SoM, and the SoM schematics are
-> confidential and not generally available.
-> 
-> I tried to extract as ascii art the relevant circuit, hope it helps
+this series adds the LVDS support for TQMa8Xx on MBa8Xx. It is based on
+next-20261012.
 
-Thank you, it makes things clearer.
+The first 3 patches are from an earlier v9 series from Liu Ying [1], with a
+smallmodification in patch 3 (changes mentioned there).
 
-The circuit seems fairly generic. Wouldn't it be better to add an
-optional property ot the dumb-vga-dac instead of a new compatible string
-specific to Apalis ?
+Patches 4 and 5 add the overlay for LVDS support.
 
-> BLUE (5 bits)
-> =============
-> DISP0_DATA[4] ---[R30   348R]---+
-> DISP0_DATA[3] ---[R33   715R]---+
-> DISP0_DATA[2] ---[R36  1.47K]---+-------- VGA1_B
-> DISP0_DATA[1] ---[R39  2.94K]---+          |
-> DISP0_DATA[0] ---[R42  5.90K]---+          D
->                                            |
-> DI0_PIN15 ------------------------------ G | T4 MMBF2201N
->                                            S
->                                            |
->                                           GND
-> 
-> 
-> RED (5 bits)
-> ============
-> DISP0_DATA[15] --[R31   348R]---+
-> DISP0_DATA[14] --[R34   715R]---+
-> DISP0_DATA[13] --[R37  1.47K]---+-------- VGA1_R
-> DISP0_DATA[12] --[R40  2.94K]---+          |
-> DISP0_DATA[11] --[R43  5.90K]---+          D
->                                            |
-> DI0_PIN15 ------------------------------ G | T5 MMBF2201N
->                                            S
->                                            |
->                                           GND
-> 
-> 
-> GREEN (6 bits)
-> ==============
-> DISP0_DATA[10] --[R32   348R]---+
-> DISP0_DATA[9]  --[R35   715R]---+
-> DISP0_DATA[8]  --[R38  1.47K]---+
-> DISP0_DATA[7]  --[R41  2.94K]---+-------- VGA1_G
-> DISP0_DATA[6]  --[R44  5.90K]---+          |
-> DISP0_DATA[5]  --[R45  11.8K]---+          D
->                                            |
-> DI0_PIN15 ------------------------------ G | T6 MMBF2201N
->                                            S
->                                            |
->                                           GND
+Thanks to Liu for providing the DT patches earlier on.
+
+Best regards,
+Alexander
+
+[1] https://lore.kernel.org/all/20250414035028.1561475-17-victor.liu@nxp.com
+
+Alexander Stein (2):
+  arm64: dts: freescale: Add LVDS overlays for TQMa8Xx
+  arm64: dts: freescale: Add dual-channel LVDS overlay for TQMa8Xx
+
+Liu Ying (3):
+  dt-bindings: firmware: imx: Add SCU controlled display pixel link
+    nodes
+  arm64: dts: imx8qxp: Add display controller subsystem
+  arm64: dts: imx8qxp: Add MIPI-LVDS combo subsystems
+
+ .../devicetree/bindings/firmware/fsl,scu.yaml |  20 +
+ arch/arm64/boot/dts/freescale/Makefile        |  14 +
+ .../arm64/boot/dts/freescale/imx8-ss-dc0.dtsi | 408 ++++++++++++++++
+ .../boot/dts/freescale/imx8qxp-ss-dc.dtsi     | 240 ++++++++++
+ .../dts/freescale/imx8qxp-ss-mipi-lvds.dtsi   | 443 ++++++++++++++++++
+ arch/arm64/boot/dts/freescale/imx8qxp.dtsi    |   7 +-
+ .../dts/freescale/mba8xx-lvds-g133han01.dtso  | 160 +++++++
+ .../freescale/mba8xx-lvds0-tm070jvhg33.dtso   |  88 ++++
+ .../freescale/mba8xx-lvds1-tm070jvhg33.dtso   |  88 ++++
+ arch/arm64/boot/dts/freescale/mba8xx.dtsi     |  58 ++-
+ 10 files changed, 1522 insertions(+), 4 deletions(-)
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8-ss-dc0.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8qxp-ss-dc.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8qxp-ss-mipi-lvds.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/mba8xx-lvds-g133han01.dtso
+ create mode 100644 arch/arm64/boot/dts/freescale/mba8xx-lvds0-tm070jvhg33.dtso
+ create mode 100644 arch/arm64/boot/dts/freescale/mba8xx-lvds1-tm070jvhg33.dtso
 
 -- 
-Regards,
+2.55.0
 
-Laurent Pinchart
