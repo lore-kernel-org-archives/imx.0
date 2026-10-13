@@ -1,83 +1,95 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3257037267A;
-	Tue, 13 Oct 2026 21:13:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C94FD51A736
+	for <imx@lists.linux.dev>; Tue, 13 Oct 2026 23:11:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791926015; cv=none; b=L2KunHAwnzq9dmirZ7dJbyasPjlCQK5iygE+Nt62edzmQ6TBaMwmtMZCuOtnl5v3Ry1ZecpmsfCRZDX46hzKpy1zlobRFc/iWQFNAusSbwIq9imKD6zrYkrhbGD+ZIodFHNQy1E+Fd/t4Y4tWoUf8gJst6VfeKNKzisQohLhh1c=
+	t=1791933065; cv=none; b=JZKmftPjLYJOY4iI4ImfcNmB0JeonXgxyoLtm4FOCmHNOF25KE2pn2UtmCp0ZE7n+zxKr1v4uKyxq+V9/VBfke/33H0fabCLKy0ZjK+1vwxwuMXK6C9bLXbckQHL7jf4ffjNMbwocQukynni96u6QyN/neS9H6NYj2vR0G+9Lgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791926015; c=relaxed/simple;
-	bh=vb+/L5DrD8P4i5I3JmtjCZ64SxVzPyuxRci20FwgNwc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dhiTFj3l+cH6Ymv0AQ90NBFnJ5zkbwTUEaQ0Hjp0YMq6dQzjayyHSqlFKEz47gFD0K8I+E175PfseARivBXo6//HEuefkTuaX8HxkVI7J1olP9J2Fdr6ZbQGG4ahyeaAeV17kyLH3ZTZ6m5mDQmDFDDSvDhNZWEbu5gaK8VlsLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=t0QIdCoq; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1791933065; c=relaxed/simple;
+	bh=L9F6PA2N+WOVHYi9v7Bq2XrIKM0xEoyFhvJzFmeoaAk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=I4xSIEacYqPnvSaoGsS5BYv8Ao1oBwfkoLPmWBeMDvIo9hB8mfp84uCRiob+JLKPBZb9u1UWXs1DDvBSJwNjr6fIDmexxMtAKg9BYiCQ2q8pPI/KVGCaXYsHnlK3VKe6HCp3KYvcJ9gPdRrznBfaF8+ckvTEXOzkVPLtIOm9XiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cXnoMKNU; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="t0QIdCoq"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=I8Pm8HNepE95itWfgTl7gsXRQvYzWAvqH3Xb35WTFZ8=; b=t0QIdCoqO7+iId2qjBqXfbTsQ3
-	Y3Dce4bEIGPb5Lg38EMUrBnz6qfT9tSyobJOijsJTa6xLdl1oBkY7xKWl72DpVZ/9TWZQugamS4DS
-	DS61xGRd+DUSq4xUvqIuKlUO4dssuXOheNmqgsWxJ7V+Blhv7vf4nL9oOXuHLuwiUzUIQJPBROoJ0
-	BqFpUbU6ODoFOsTmXTSxrV94rUEoDBhFYlHQ5d4DITyaOOL86A3PVJHFW7SRaifG/71psarx8penN
-	ecTJ0v9s+JOZ8p9rGZfmWFKERt4CpP510TQbAX3iXHdJ6T00HGr19D90az/gM8wgTTr9e6oBnr/WL
-	CBwwFiyQ==;
-Received: from [50.53.43.113] (helo=[192.168.254.34])
-	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xGjoJ-0000000E4Xt-3Jem;
-	Tue, 13 Oct 2026 21:13:25 +0000
-Message-ID: <127cc922-79e3-4e62-a5ba-67655caa2d56@infradead.org>
-Date: Tue, 13 Oct 2026 14:13:21 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cXnoMKNU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 793881F008A1
+	for <imx@lists.linux.dev>; Tue, 13 Oct 2026 23:11:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791933064;
+	bh=tQzVrs0c3UvtqevA7XvTO2dEu5Cjq2oDofNx0flPKCg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=cXnoMKNUewpGzi0kloDWjmhf/SKeTwdAKWxZK63VS3RqXI1gGkv9WbEss/R+6NtR5
+	 afV8Xzak+mL1HcsPdSp3rfi/MDJSfxhvtOd/OApINRNvaemiYhrj5zxjh5Ab6isQ/d
+	 43/RrcdFOTfW6rRhkyGbA446qMibkxdBosJUebvyj8ypY2Q0RKkjG3FyHVVgSLuaTW
+	 Fjj1ki7atePwDeCeOF2BGAXzuC/UnB4J9eX2hNkmE5GJ5NS3izVSe2aBgyhhR+j1X9
+	 p8+N41kn5vQntFvsR6l2BNYwhq3xn8q18tRqjDxPDzwiQqiyhsxksyPHlyoDn4xyU/
+	 +jslPJBjMyGQw==
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5bcd17f3a93so3020037e87.2
+        for <imx@lists.linux.dev>; Tue, 13 Oct 2026 16:11:04 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBw8HvdFA4H7hrjvNBoyiGXZublFGjzGgnsws4vFSR8NHZNskiOimn9zKWyhOX9u9annLk4=@lists.linux.dev
+X-Gm-Message-State: AFq9FYK06gN95sTTuTEWKBP9MK/acUgt7xj1Q6U2EzEBZX2Ja+srTlT6
+	NIFaoE8VYA/XG6GwZZV+3RJeaoFXK4i9BQkTXcN9lxEjrme0N8xy+B5L9lH0TYVIog1BO1tJCjz
+	Px5ZqQwIFjRaf4VAs3dIucq33BgOrIHs=
+X-Received: by 2002:a05:6512:1586:b0:5ba:3c5e:2b20 with SMTP id
+ 2adb3069b0e04-5bcde6c08a8mr4390697e87.29.1791933063163; Tue, 13 Oct 2026
+ 16:11:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] dmaengine: shdma: move shdma_chan and shdma_desc
- structs to private header
-To: Frank.Li@oss.nxp.com, Vinod Koul <vkoul@kernel.org>,
- Frank Li <Frank.Li@kernel.org>,
- "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
- Bjorn Andersson <andersson@kernel.org>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- "open list:DMA GENERIC OFFLOAD ENGINE SUBSYSTEM"
- <dmaengine@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
-Cc: imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>
-References: <20261013203433.337893-1-Frank.Li@oss.nxp.com>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20261013203433.337893-1-Frank.Li@oss.nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20261011-gpio-mxc-cleanup-v6-0-cb47ce2ad758@nxp.com> <20261011-gpio-mxc-cleanup-v6-7-cb47ce2ad758@nxp.com>
+In-Reply-To: <20261011-gpio-mxc-cleanup-v6-7-cb47ce2ad758@nxp.com>
+From: Linus Walleij <linusw@kernel.org>
+Date: Wed, 14 Oct 2026 01:10:48 +0200
+X-Gmail-Original-Message-ID: <CAD++jLnDxTAz2=ge5RgvO02mp+BJyLBV0zR8xqsm8LSsSEcRYQ@mail.gmail.com>
+X-Gm-Features: AclHuK849G_ijc3QWZ7kME4RYf6sglZkaE0fzQjq6-hvA40gFn4QJl3T4CzdDQE
+Message-ID: <CAD++jLnDxTAz2=ge5RgvO02mp+BJyLBV0zR8xqsm8LSsSEcRYQ@mail.gmail.com>
+Subject: Re: [PATCH v6 07/13] gpio: mxc: convert pad wakeup compatible checks
+ to hwdata flags
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: Bartosz Golaszewski <brgl@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Shenwei Wang <shenwei.wang@nxp.com>, 
+	Andy Shevchenko <andy.shevchenko@gmail.com>, linux-gpio@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	Peng Fan <peng.fan@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+Hi Peng,
 
+On Sun, Oct 11, 2026 at 1:51=E2=80=AFPM Peng Fan (OSS) <peng.fan@oss.nxp.co=
+m> wrote:
 
-On 10/13/26 1:34 PM, Frank.Li@oss.nxp.com wrote:
-> From: Frank Li <Frank.Li@nxp.com>
-> 
-> Move struct shdma_chan and struct shdma_desc from the public header
-> include/linux/shdma-base.h into the driver-private header
-> drivers/dma/sh/shdma.h. These structs are only used internally by the
-> shdma driver and do not need to be exposed to external users.
-> 
-> Prepare to make struct dma_async_tx_descriptor private.
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+>  static bool mxc_gpio_generic_config(struct mxc_gpio_port *port,
+>                 unsigned int offset, unsigned long conf)
+>  {
+> -       struct device_node *np =3D port->dev->of_node;
+> +       int ret;
+> +
+> +       if (!mxc_gpio_has_pad_wakeup(port))
+> +               return false;
 
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-Thanks.
+Why is the entire call to mxc_gpio_generic_config()
+bailing out here if the port does not have pad wakeup?
 
-> ---
->  drivers/dma/sh/shdma-base.c |  2 +-
->  drivers/dma/sh/shdma.h      | 80 +++++++++++++++++++++++++++++++++++++
->  include/linux/shdma-base.h  | 80 +------------------------------------
->  3 files changed, 83 insertions(+), 79 deletions(-)
+> -       if (of_device_is_compatible(np, "fsl,imx8dxl-gpio") ||
+> -           of_device_is_compatible(np, "fsl,imx8qxp-gpio") ||
+> -           of_device_is_compatible(np, "fsl,imx8qm-gpio"))
+> -               return (gpiochip_generic_config(&port->gen_gc.gc,
+> -                                               offset, conf) =3D=3D 0);
+> +       ret =3D gpiochip_generic_config(&port->gen_gc.gc, offset, conf);
+> +       if (ret)
+> +               return false;
 
--- 
-~Randy
+Then no generic config can happen.
+
+This looks weird, isn't it just some of the configs that
+don't work?
+
+Yours,
+Linus Walleij
