@@ -1,93 +1,112 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19C6247ACE7
-	for <imx@lists.linux.dev>; Tue, 13 Oct 2026 16:52:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E68E522F03
+	for <imx@lists.linux.dev>; Tue, 13 Oct 2026 17:12:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791910362; cv=none; b=FRdaFrX0kRBO3frujEX7oTW3X5LmI22dvlzligwy4SUGQg/2+62JhjCqw+axIjPQXDXDQ1x1puK9ZxXigTFJQvdHsa5h+mCSmtO5NmxpvG4X+yaPNFpl81ABxXPWXPP7LMzlAJOfirTipQ0mCmW9eBDjT13yXPWaTk+Zv2bdLQA=
+	t=1791911576; cv=none; b=AzsUsCQScbOQ32w6VgGjsl5hVonvSUuBVZrSHtOby7JGiH3wlVQhCvJ8RjmSdc3v1riUcHDPI2pz4ilM6b8bVhyfaLawYnVO+fak/gkkSl1k+hCBPG6yn7xkI7utYvkS69p50rNj3uWq3EU6MEcnC+NuNxRDi8ne1baH/wQ+BCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791910362; c=relaxed/simple;
-	bh=2kvmNKcTF1OSxfJGbx91Ab7juSk8uVHf9kwGVHZ7/jc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Bj8PmfrrzE0uYuXtapW+4sHgYRqUhUjFaxQ2p/FzzKBJM5IWIZX/ARiOfyFXB+fihxFqrTrr4nFfpX3LoS1cXOFY2e86scrv/7SITmjG2AK8mp+X1Kww7BiWKBuRMkdwYKOx1td9Nv3gV/ojEBbh+480Uek4gtqfgCCdilDu7Zg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SJEUpDdw; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SJEUpDdw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C15591F0089B
-	for <imx@lists.linux.dev>; Tue, 13 Oct 2026 16:52:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791910360;
-	bh=eldS8GplNjgTNKWeHV2zLRcIwD+JHyo0Mc6Zm17nTyg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=SJEUpDdwlT97nO6lc0n/R6Oe6uXVsnSWlQ0PeDy68BYviEoMgIWrnSABf3oPREArF
-	 KT92We0VmupMcw/WlzrS1W2uypvCMnqG4UJlLxrY+JdQaE2iCNsdGjUbZmCkRgVbjq
-	 LetOsuaXa0B8VBYz1dPLtr2qQQpSwp5KqmjHKQPC7Xep0RSFtXcZ3TIDQ4cDAgZYDq
-	 i6OJQMYhDTTFYSZ0ejFn1IoXo4MgY9WDYSnaN1KnRd5XeTgMwwQT+B0U2D/saX5pmb
-	 L/CNyWm1cXwvXzKrBYPRujo5jJN3PJC7m5D50N0qIx8ENFaEWI4fJhfZQ/dhRkGZvb
-	 39rAOgxT96J3g==
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-3a5a26c8412so30720801fa.3
-        for <imx@lists.linux.dev>; Tue, 13 Oct 2026 09:52:40 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBz/MNIHR4cdqBn00p0T+iJ20u1v5w295CEgmI69srQLRryYDoIfoY6URdEXyRevngre0yY=@lists.linux.dev
-X-Gm-Message-State: AFq9FYI+PPUUkhcOkdloEnyITJOKkgvWVPD49AwUaRihmnXe8GwtrXPd
-	2R4j6dZOWtVuIF3hT/PvvEnCXaoCnI2VogiR5vukl8jluL638xa2cyky99vKo4e+Ct+lVxb8tUe
-	FpoiOGOrfIvgKSZp/dD7dawp4NRWKjfc=
-X-Received: by 2002:a05:651c:b0f:b0:3a3:52a7:3a1d with SMTP id
- 38308e7fff4ca-3a9c5125e97mr30998631fa.1.1791910359553; Tue, 13 Oct 2026
- 09:52:39 -0700 (PDT)
+	s=arc-20240116; t=1791911576; c=relaxed/simple;
+	bh=xSkfTaYrSMPHg2IM9WCzV6VsQG8nhipepnWid2s0Mi4=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=d5cMOzrCneruMYt9jTXiafE4u+Xv9BxO8+Si28zxvy6WONivsITdmU2BQA7B0ltgFg3FS1xN72sNK6OXjtktfQRuotwr3DskdryxPupXjAJSwhq4HrUYQKVLN/kaYerYBE8gsOCW9rnyZOFQUcw/T4TjTNc57stARTgP1AgLLU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id B979F20021E;
+	Tue, 13 Oct 2026 19:12:53 +0200 (CEST)
+Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id ACDC22000E4;
+	Tue, 13 Oct 2026 19:12:53 +0200 (CEST)
+Received: from lsv15141.swis.ro-buh01.nxp.com (lsv15141.swis.ro-buh01.nxp.com [10.162.246.138])
+	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id A64C7202DA;
+	Tue, 13 Oct 2026 19:12:52 +0200 (CEST)
+From: Claudiu Manoil <claudiu.manoil@nxp.com>
+To: netdev@vger.kernel.org
+Cc: s32@nxp.com,
+	linux-kernel@vger.kernel.org,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	imx@lists.linux.dev
+Subject: [PATCH net-next v2 2/5] net: enetc: Enable probing of version 4.4 devices
+Date: Tue, 13 Oct 2026 20:12:46 +0300
+Message-Id: <537a977b10b3d76c30b1f879f423bde4fd6f42f8.1791908694.git.claudiu.manoil@nxp.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <cover.1791908694.git.claudiu.manoil@nxp.com>
+References: <cover.1791908694.git.claudiu.manoil@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20261013-gpio-mxc-cleanup-v7-0-c4d769587d3e@nxp.com> <20261013-gpio-mxc-cleanup-v7-2-c4d769587d3e@nxp.com>
-In-Reply-To: <20261013-gpio-mxc-cleanup-v7-2-c4d769587d3e@nxp.com>
-From: Linus Walleij <linusw@kernel.org>
-Date: Tue, 13 Oct 2026 18:52:27 +0200
-X-Gmail-Original-Message-ID: <CAD++jLk1CC+hKyjRh=-dJ8M3oeMqo_8AVkNCUEUxpTRX1=SXDA@mail.gmail.com>
-X-Gm-Features: AclHuK_VSzCmWjCTJqET6DItFfQvgfiwDPO4tQVVwYVu_IZrlaY_9fZ_pvqLqPA
-Message-ID: <CAD++jLk1CC+hKyjRh=-dJ8M3oeMqo_8AVkNCUEUxpTRX1=SXDA@mail.gmail.com>
-Subject: Re: [PATCH v7 2/4] gpio: mxc: fix both_edges bit operations
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Bartosz Golaszewski <brgl@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Shenwei Wang <shenwei.wang@nxp.com>, 
-	Andy Shevchenko <andy.shevchenko@gmail.com>, linux-gpio@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	Peng Fan <peng.fan@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: ClamAV using ClamSMTP
 
-On Tue, Oct 13, 2026 at 8:04=E2=80=AFAM Peng Fan (OSS) <peng.fan@oss.nxp.co=
-m> wrote:
+The ENETC v4.4 devices are present on S32N79 SoCs and feature only
+Pseudo-MAC ENETC ports, whose PFs use either the 0xe101 or the 0xe110
+PCI device ID, and the VFs answer to the usual device ID of 0xef00.
 
-> From: Peng Fan <peng.fan@nxp.com>
->
-> gpio_set_irq_type() can be called concurrently for different pins on
-> the same port.  The IRQ core serializes per irq descriptor, but
-> different pins have different descriptors, so on SMP systems two
-> concurrent gpio_set_irq_type() calls for pins on the same port run
-> without mutual exclusion.
->
-> The read-modify-write of port->both_edges is performed outside the
-> port-wide scoped_guard(gpio_generic_lock_irqsave) section, so
-> concurrent updates for different pins can overwrite each other,
-> causing missed interrupts or stuck IRQ lines on dual-edge triggered
-> pins.
->
-> The original uniprocessor MXC SoCs were not affected; the race
-> became reachable on multi-core i.MX7 and i.MX8 SoCs that reuse this
-> driver.
->
-> Convert both_edges from u32 to unsigned long and use set_bit(),
-> clear_bit(), and test_bit() to make the modifications atomic.
->
-> Fixes: 910862ec092c ("mxc: emulate GPIO interrupt on both-edges")
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+While the ENETC PF instances are usually designated by the 0xe101 ID,
+in newer IP versions the 0xe110 ID was introduced to indicate the
+power-on reset default NETC switch management interface. These IDs
+do not indicate any functional difference between the designated
+ENETC instances, and can be interchanged and re-assigned at boot time
+(i.e. from firmware).
 
-Reviewed-by: Linus Walleij <linusw@kernel.org>
+Signed-off-by: Claudiu Manoil <claudiu.manoil@nxp.com>
+---
+v2:
+ - Described why there are two ENETC PF IDs in the commit message, as per
+   review.
 
-Yours,
-Linus Walleij
+ drivers/net/ethernet/freescale/enetc/enetc.c    | 12 ++++++++++++
+ drivers/net/ethernet/freescale/enetc/enetc_hw.h |  1 +
+ 2 files changed, 13 insertions(+)
+
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
+index c6571b5cc842..be7795d4e0c6 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+@@ -3862,6 +3862,18 @@ static const struct enetc_platform_info enetc_info[] = {
+ 	  .dev_id = NXP_ENETC_VF_DEV_ID,
+ 	  .data = &enetc4_vf_data,
+ 	},
++	{ .revision = ENETC_REV_4_4,
++	  .dev_id = NXP_ENETC_PPM_DEV_ID,
++	  .data = &enetc4_ppm_data,
++	},
++	{ .revision = ENETC_REV_4_4,
++	  .dev_id = NXP_ENETC_PF_DEV_ID,
++	  .data = &enetc4_ppm_data,
++	},
++	{ .revision = ENETC_REV_4_4,
++	  .dev_id = NXP_ENETC_VF_DEV_ID,
++	  .data = &enetc4_vf_data,
++	},
+ };
+ 
+ int enetc_get_driver_data(struct enetc_si *si)
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc_hw.h b/drivers/net/ethernet/freescale/enetc/enetc_hw.h
+index 2c9d9042eb0b..64789bd0f33e 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc_hw.h
++++ b/drivers/net/ethernet/freescale/enetc/enetc_hw.h
+@@ -414,6 +414,7 @@ enum enetc_bdr_type {TX, RX};
+ #define ENETC_REV_1_0		0x0100
+ #define ENETC_REV_4_1		0X0401
+ #define ENETC_REV_4_3		0x0403
++#define ENETC_REV_4_4		0x0404
+ 
+ #define ENETC_G_EIPBRR1		0x0bfc
+ #define ENETC_G_EPFBLPR(n)	(0xd00 + 4 * (n))
+-- 
+2.34.1
+
