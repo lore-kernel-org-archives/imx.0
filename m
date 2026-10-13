@@ -1,182 +1,145 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013012.outbound.protection.outlook.com [40.107.162.12])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 654F64D0A0F
-	for <imx@lists.linux.dev>; Tue, 13 Oct 2026 11:06:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791889616; cv=fail; b=cZuoBdxxMypS4f8ofNWq9PmD8s2MAcd/vUMFM8rl/r1ix95CR0U6B0mdiPrpj8dRTfQyjINDaCrhNMhPmfjxAkaMUlT9V8qkvacXhbjMpgyYFo9QXBwNsfYWwoErgunoTleJn/XLme1oJ67bCHwnYtzSsWTZksSVP3VSVgWcePQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791889616; c=relaxed/simple;
-	bh=ifHdXaXz+nw4Ozlk99u29KCWm/xJ0x4ZPPD1qc2zK3Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=SqkThF3opJKeibo2vkqof22fhiQGpsagSEdkQrMB5jTSs1V0DVjK1xVoMcXRTGWe92PpoZhyW8eiKT5f6z9mNy2DwS1PAu9G0bXxjHOf+Gzvg+5K2+NLOCWZEGV3MPNDBZaXXZmG/VAXDfpenOg4O5fGPuziTVLOEOCpKOa8bU0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=fail (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=ETxUUKMZ reason="signature verification failed"; arc=fail smtp.client-ip=40.107.162.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7C724DD3B2
+	for <imx@lists.linux.dev>; Tue, 13 Oct 2026 11:12:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791889933; cv=none; b=tn7i6PvHauuaYV1uTeOvC9EZZ1U9jIl8BHCkCFPeFDUepyx4gMhjSb0mqymEjLs2a0mLyOp2faHHN4xdtQGry3DT/T6qkR2VXjGwX0Mz79zAmChJQvt4ly2VRAlnE8CaSAhajb9SVoMrxGijzZZkH1SOy7+6GsUQOOwBOxf0AaE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791889933; c=relaxed/simple;
+	bh=TLb9LXej9xG19WtKDwfE0UKEiJVXsGn15ErYlOXigNA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fEzSpnaNJq6FTNWKtflsGk6qB8mjLkAkZUAWnTbckYo+o/xJ02+JsuxIiFiGF1lnmD9RBTIotsAOvwv8b5bP85KXO8vyyvu1E/pE3ONH3W4wDgvbGXstzuyuS41w4xnbhVTzZ6+g9LiBbAjuGgj01dM/956R61UC43Q+qQfoYco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=TlB8Bi30; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="ETxUUKMZ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TogCq98tk1AXO9CsV2ozdEV3e3JK+HTOoxpZFZUquDU4WCtKmlW441vXb4rdPKsaDOIs2wUMez+aRWFrTBa9aJ8xm3ggmxRj0MW5PSy4W6+4sYFyNROczCeQVj+piH4uEUqyyaWPgiHR201oGgMoYKm8f3/YTbbHftP1z1n5fpq1aN3pYPcOIL0zVHeJlwmR6WH/qelDZRr3+5FrbMEc7IXUt8aWw4/zYWAje7B0r/+t0liv1oZ871XDr0tB/+CfPM7tF7rr0zIkX+M4ct18+hXvrvKibEqff7I3rSvP7DviudN8T2Dw2Kot0ELEvlpfRViVdnv+HVPwDE/zSMfEKA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=LPWJmqVorznMd75DhJyBXBx8g+JuPfiFX2877B/SDNU=;
- b=tOwcGnb6MbJ4wKL4ANIPSjWRmhtnLayh6C7Wy/VVhrx6wcyaRRLn2b0q4+j9l4w0a4+p40fF4ECMjX02RLY6jw6MRtjl50W1Q6HWfisdTdn4f4MK9ZD1xaf7pjYIYNNVY4htWBocJ6sX1DJtSmTxwRxe1yEbG7GMAvLll5gbo0c22aB5J/JsFXlA1uhKO3wiZ7tUNPZkV5MLHxe4curDOwUtuvWLj0eaqSCO7fPzipLQSjWx/ik8dV6LtjmYibeMoNeDxLT8IXP+vj7SWpzmJJIE5YQj3JiuUHwQz04ns4/iXbODZKZtlUIT053hdSmo72HDczG98Fag5Jk1mLKgmQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=LPWJmqVorznMd75DhJyBXBx8g+JuPfiFX2877B/SDNU=;
- b=ETxUUKMZ5QKyWsy5Jh7z+15/mbRCMbGL7i32u8zH9YfT3HAh6tuNGlBE4QErNQdkwK9jpopnvcDMvB7LrzpaZP7rloUg27mP5bUo0DKzFwSUpJOj7J6Ew9IZH734h+Wd/NXZ2sOfd/YRUyvoUYk4CJKTVI5XmqQ2ySBBRvQZpwNbzX98gnlOsCq69PlyTK16ES/Bec4AsSbnIneRwgj31myXvaLl7meyC25AKlhVkmQxQl4MXzky1dy479pjtNZ2DIVCZpd12y8o0lpKG1AL3lioPoYZakPy72TQ+03Lovgq4AWlbvKXWTQL2SrGQ6kL0nMXasrJwHqfvDD86xOjlQ==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from AM8PR04MB7874.eurprd04.prod.outlook.com (2603:10a6:20b:24d::9)
- by PAWPR04MB11647.eurprd04.prod.outlook.com (2603:10a6:102:509::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.23; Tue, 13 Oct
- 2026 11:06:52 +0000
-Received: from AM8PR04MB7874.eurprd04.prod.outlook.com
- ([fe80::ac38:1699:6f18:c5d9]) by AM8PR04MB7874.eurprd04.prod.outlook.com
- ([fe80::ac38:1699:6f18:c5d9%6]) with mapi id 15.21.0522.011; Tue, 13 Oct 2026
- 11:06:52 +0000
-Date: Tue, 13 Oct 2026 19:11:27 +0800
-From: Peng Fan <peng.fan@oss.nxp.com>
-To: sashiko-bot@kernel.org
-Cc: linux-gpio@vger.kernel.org, imx@lists.linux.dev, Frank.Li@kernel.org
-Subject: Re: [PATCH v7 3/4] gpio: mxc: fix wakeup_pads bit operations
-Message-ID: <as4R31FJUNlnqdOX@shlinux89>
-References: <20261013-gpio-mxc-cleanup-v7-0-c4d769587d3e@nxp.com>
- <20261013-gpio-mxc-cleanup-v7-3-c4d769587d3e@nxp.com>
- <sashiko-outbox-169107@kernel.org>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <sashiko-outbox-169107@kernel.org>
-X-ClientProxiedBy: MA5PR01CA0195.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:1b2::6) To AM8PR04MB7874.eurprd04.prod.outlook.com
- (2603:10a6:20b:24d::9)
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="TlB8Bi30"
+Received: from killaraus.ideasonboard.com (unknown [185.104.138.147])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id C3259BC;
+	Tue, 13 Oct 2026 13:10:07 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1791889807;
+	bh=TLb9LXej9xG19WtKDwfE0UKEiJVXsGn15ErYlOXigNA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TlB8Bi30S5ri9HBtUHlzY6zY08CIHKtIIbBSKb5dt3zziN/pA8ByDTu5OVF15NSXn
+	 4xX7plyX8+U+sKzluFZfMATxaCJc0e/z0jlrmKi5bA3n8XANXoMWrPozvIdfIiMT60
+	 g+KdWAYoNwARwKCbEJ7Ue5TdERCKx0zSHWA4Wlas=
+Date: Tue, 13 Oct 2026 13:11:58 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Francesco Dolcini <francesco@dolcini.it>
+Cc: Leonardo Costa <leoreis.costa@gmail.com>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Robert Foss <rfoss@kernel.org>, Jonas Karlman <jonas@kwiboo.se>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, dri-devel@lists.freedesktop.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	Leonardo Costa <leonardo.costa@toradex.com>
+Subject: Re: [PATCH 0/3] Add VGA support for Apalis iMX6
+Message-ID: <20261013111158.GG56180@killaraus.ideasonboard.com>
+References: <20261012-v1-apalis-imx6-enable-vga-v1-0-8905d8746504@toradex.com>
+ <20261012164054.GA56180@killaraus.ideasonboard.com>
+ <20261013090631.GA33628@francesco-nb>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM8PR04MB7874:EE_|PAWPR04MB11647:EE_
-X-MS-Office365-Filtering-Correlation-Id: 80265f5e-1765-41d8-823c-08df291a15bf
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|1800799024|19092799006|376014|366016|260925022911599003|260925021911599003|260925021311599003|10067099003|261009223027099003|4143699003|11063799006|18002099003|22082099003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	WSXxQFlCJKMMNqQbwN9cdkqmNCBPqwKwqVJQjDXVvpgYvC3rGg65bbgFgaZDg6AmqtofXUkU8jU+7hnZeKzUqz5ituV/IDXBwvRfZVv2g6M4alcPBet3PGLoqVD+zf9arj2v5+3Lk+AqoON12DUDcGXjd3bzk1ygZxjEY8ZejX4ocTcwjjte4UlnMPnPRf4YA6COakH9zjS1T0Z5odBlqGuJZXmv/9plrqAryyNQTG3kqKpcWFMzxqjrSUvB1xE6BEuv6azpdEQO8DyUDd4jW/X7Uq+tR77ZCBetmHGxeA0sZJv9CLds1EdT8X7359+CCctKfnG8U5QzOHwkUYwhBVpGRSNZe4wTJhuDx7lOK0JxUEM5SxyC5O+/TyAO71PTdPX/IU+yzTqNN9Pk1gKTif1zO5Dshk229qMxE+TWTlBS/tLxPFRIaBL1GqnnQt9cR7mRCBh1HRtSrMP1cgUOndauzedc80+DB3XRvfPpVvzc+xiu4HY7aIDJXSw+GEMwe78KJyUmqjelTEg4Ve6h2GODTdjen02gbLY383EjOn95Dd9y1AogZpsBMLXmdIkOgVFUu7s4f2ZccgDrDHRVMJtv9F4fOaNAUk+ZuK2Ofy4=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7874.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(19092799006)(376014)(366016)(260925022911599003)(260925021911599003)(260925021311599003)(10067099003)(261009223027099003)(4143699003)(11063799006)(18002099003)(22082099003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?ArXsVbem89ESqmmxMnhnQbO297vRuLVWnjQG9PfYnpBP0h9If7Gf+Gby3v?=
- =?iso-8859-1?Q?VIQhklU4G74jXN90RcPixu8JbWiccgsIf/ovjqCPcsXLLd2S7bpm1peTeK?=
- =?iso-8859-1?Q?LMR1jZ33HSyiI06dpKw6bNE+y5kSld9YwYFSbgsORQe/HFefxiHB0k+RRX?=
- =?iso-8859-1?Q?vDNXFFOzgxtwHX33sOVdmLpR43p7ekbFjsyUJYTKJCSi2GQ8whn8ob1y8D?=
- =?iso-8859-1?Q?hftB6igcqhIfLQOdpSQKRy/qE3aPV++TUuFuz+XO7WkXkRVrf2LZ0aIoLq?=
- =?iso-8859-1?Q?Ds5qd05M48da+qj2Nula3KG5I6EmuC7l5rqrxzrrUId/uoBMqMBShSvNOU?=
- =?iso-8859-1?Q?kz+ainfXa1UpaZyfDdZQXySpdsuAdhAfVmeZxzkBzPtAqB3r1FUx4FLOsG?=
- =?iso-8859-1?Q?L1xql+6IY5UZrgd0gnBqYXLHmk3m/IoqKGFshPtk74fISy1MUQjRwv8YI8?=
- =?iso-8859-1?Q?Aq9sVT8Y6LjHcZnZdONqQ0ZOa+j2hcxmYsSggXp8AxDNsuShmaQOEBWUbM?=
- =?iso-8859-1?Q?01q5yJUaFaJ0FR/0ryoP3XBrMdsG0br9yn8+BGeUvHE3r6I9zAcE5QvLyj?=
- =?iso-8859-1?Q?R6Vz7IgczQA4nWNr2+ZaN0W13hO6qwvHFzafbcIhA2yx5RjUHcQ70C529G?=
- =?iso-8859-1?Q?Z+4VsjGchsFwyTamHBi23xutMPUQl1SXIrXfmWjSPXM8QDw9lKtnZGluHV?=
- =?iso-8859-1?Q?pn/rerMuL7XAFeQ0k+zazMw/ikTzlI4VZaldG2yis/qCQ8LlCX+Ct+WWOE?=
- =?iso-8859-1?Q?bz5UCT651zdhry6X7+cI8FqzKHC1Vd2JOHYxjzzZeU7euASOakqewd4Phm?=
- =?iso-8859-1?Q?JpBPQ0tyZplJKnKvBT41TVLwGtahSMLmZCR7nwXnhHRdX1TbtSv1F8w/XI?=
- =?iso-8859-1?Q?uB+yeKMvi+NrT4IZ+KARhSRK2NXWMLqMks+9So/8mKeM3rhWL88jkZtRJr?=
- =?iso-8859-1?Q?rIUjcpngfh29Jg/KG4JHBg6rw/NlrKq49wIiwRH+/SzpDCZx0PKhgTF/+p?=
- =?iso-8859-1?Q?hhUCL0LR+L/DEFmjd/qn1EI7BvRLVdZn7e5tRqrxp+uRKQoJAYMcaFq3fE?=
- =?iso-8859-1?Q?IJYY4RxgeJzWvO8LXA5Av1qo+//n5s1myKz4dM1sZ8Hyc32Cg3YoxFxYwc?=
- =?iso-8859-1?Q?0kT4rrrsbn0Gi3KUAWMO4gj8sZETU9pyCnNKIM0OHmVf9tY5wokTkcC0el?=
- =?iso-8859-1?Q?ffKnDdM2NjETif9GqAADVcOCE7xTcjZS6KBlzu+msQqfZryNDNHEHzv48w?=
- =?iso-8859-1?Q?rt/fNo7+iEfqONhi+wtHLQHqQufFEC4tLKupYjfecUZ3RauWVztff8dO09?=
- =?iso-8859-1?Q?+H8SUhntmoxAMWH7V2gIXmIsFeMyw5RwY/UXuU9qqHIm3kr+tuMYAfFuBR?=
- =?iso-8859-1?Q?AnzDF2lU3qZqS0CejHvNczZjalqOCrO36o66lO8VdLouSdMFt07p/p8VV2?=
- =?iso-8859-1?Q?wXY49qJVS7EsvCsVJnJx5JOjJUy0dSTuieXywrX6gedJS35pCTcF0NFZDy?=
- =?iso-8859-1?Q?gxAr/I8/ycFkR30sC91h6PqLHLDlIUHYc09jjjqWWMkR7Yf6YHAN4rQ/ea?=
- =?iso-8859-1?Q?iCYGXnKcOM5LyI6iH4Tl0z5oX6ib+keBFPqNGCrO9hyZXtLo0FdFw/V7YK?=
- =?iso-8859-1?Q?ZU9l7K2SP5eqT9W2FyAbMLuZkHM6L347iO+xyNBgAFQPiVnKRUFAHUq7Q3?=
- =?iso-8859-1?Q?u2DofTKeSLbtH2a7VxEqH7yz9eB7Hy4Sopd1sAS3UnjbwDwOwPZqeCo2fc?=
- =?iso-8859-1?Q?AhHGUAFoEuAMqU7BfGIlFbwHlKO4iVSPq249pSf7ootMyY6m3wcv0zslZB?=
- =?iso-8859-1?Q?Vxdot7I/M+3AImky5set72cgPLIXLcxDLxJtYwgVdWOyqkygXKoq?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 80265f5e-1765-41d8-823c-08df291a15bf
-X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7874.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Oct 2026 11:06:52.1583
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: gHrNOP8FTvVj36SQR22Nl9KYEq9IecGKMTs8hrzEpuWa1HzByHuJgKJYngHQ7JrS6At1d+cKPzmRRyEYhrodYdUJL8n5bYBvizh6i71tEuaynmmYIONi62O45BBJI24G
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR04MB11647
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261013090631.GA33628@francesco-nb>
 
-On Tue, Oct 13, 2026 at 06:35:07AM +0000, sashiko-bot@kernel.org wrote:
->Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
->- [Medium] gpio: mxc: missing for_each_set_bit hunk and sign-extension bug
->--
->
->commit 163a0b84d8efa779538111b96ea2ce2543fbd9da
->Author: Peng Fan <peng.fan@nxp.com>
->
->    gpio: mxc: fix wakeup_pads bit operations
->    
->    gpio_set_wake_irq() can be called concurrently for different pins on
->    the same port. The writer-vs-writer race is the concern: two concurrent
->    gpio_set_wake_irq() calls for different pins on the same port both do
->    a non-atomic read-modify-write on the same wakeup_pads word.
->
->> diff --git a/drivers/gpio/gpio-mxc.c b/drivers/gpio/gpio-mxc.c
->> index 7e17d7668980d..e3a80f17d0412 100644
->> --- a/drivers/gpio/gpio-mxc.c
->> +++ b/drivers/gpio/gpio-mxc.c
->> @@ -72,8 +72,8 @@ struct mxc_gpio_port {
->>  	unsigned long both_edges;
->>  	struct mxc_gpio_reg_saved gpio_saved_reg;
->>  	bool power_off;
->> -	u32 wakeup_pads;
->>  	bool is_pad_wakeup;
->> +	unsigned long wakeup_pads;
->
->[Severity: Medium]
->The commit message states "The reader side (for_each_set_bit in
->noirq_suspend, wakeup_pads > 0) runs in noirq context", but it appears
->the hunk that changes this loop is missing from the patch.
->
->Because wakeup_pads is now an unsigned long, the existing loop in
->drivers/gpio/gpio-mxc.c:mxc_gpio_set_pad_wakeup() has a sign-extension issue:
->
->	for (i = 0; i < 32; i++) {
->		if ((port->wakeup_pads & (1 << i))) {
+Hi Francesco,
 
-The code will not incur error. for_each_set_bit() patch will be in
-the following up patchset after the fixes patchset.
+On Tue, Oct 13, 2026 at 11:06:31AM +0200, Francesco Dolcini wrote:
+> On Mon, Oct 12, 2026 at 06:40:54PM +0200, Laurent Pinchart wrote:
+> > On Mon, Oct 12, 2026 at 04:25:22AM -0300, Leonardo Costa wrote:
+> > > This series adds a device tree overlay that enables the VGA output on Apalis
+> > > iMX6, which is driven from a parallel RGB interface passing through a
+> > > non-programmable video DAC.
+> > > 
+> > > The video DAC is a simple resistor network gated by an active-low
+> > > data-enable signal. For the bridge to work properly, this series also
+> > > changes the following in the dt-bindings and simple-bridge driver:
+> > > 
+> > > - dt-bindings: Add a new compatible for the bridge in the simple-bridge
+> > >   binding. This is necessary because the existing dumb-vga-dac compatible
+> > >   doesn't describe a data-enable signal polarity.
+> > > 
+> > > - simple-bridge: Add the VGA bridge match-table entry and timings
+> > >   struct, setting the DRM_BUS_FLAG_DE_LOW flag for the bridge.
+> > 
+> > Is there schematics available anywhere ? That would help reviewing the
+> > series ?
+> 
+> This circuit is on the SoM, and the SoM schematics are
+> confidential and not generally available.
+> 
+> I tried to extract as ascii art the relevant circuit, hope it helps
 
-Regards
-Peng
+Thank you, it makes things clearer.
 
->			...
->
->On 64-bit platforms, when i == 31, the 32-bit signed expression (1 << 31)
->evaluates to -2147483648. When bitwise ANDed with the newly widened
->unsigned long, it sign-extends to 0xFFFFFFFF80000000UL, which inadvertently
->masks against bits 32-63 as well.
->
->Could the missing for_each_set_bit hunk be added to resolve this?
->
->>  	u32 pad_type[32];
->>  	const struct mxc_gpio_hwdata *hwdata;
->>  };
->
->-- 
->Sashiko AI review · https://sashiko.dev/#/patchset/20261013-gpio-mxc-cleanup-v7-0-c4d769587d3e@nxp.com?part=3
->
+The circuit seems fairly generic. Wouldn't it be better to add an
+optional property ot the dumb-vga-dac instead of a new compatible string
+specific to Apalis ?
+
+> BLUE (5 bits)
+> =============
+> DISP0_DATA[4] ---[R30   348R]---+
+> DISP0_DATA[3] ---[R33   715R]---+
+> DISP0_DATA[2] ---[R36  1.47K]---+-------- VGA1_B
+> DISP0_DATA[1] ---[R39  2.94K]---+          |
+> DISP0_DATA[0] ---[R42  5.90K]---+          D
+>                                            |
+> DI0_PIN15 ------------------------------ G | T4 MMBF2201N
+>                                            S
+>                                            |
+>                                           GND
+> 
+> 
+> RED (5 bits)
+> ============
+> DISP0_DATA[15] --[R31   348R]---+
+> DISP0_DATA[14] --[R34   715R]---+
+> DISP0_DATA[13] --[R37  1.47K]---+-------- VGA1_R
+> DISP0_DATA[12] --[R40  2.94K]---+          |
+> DISP0_DATA[11] --[R43  5.90K]---+          D
+>                                            |
+> DI0_PIN15 ------------------------------ G | T5 MMBF2201N
+>                                            S
+>                                            |
+>                                           GND
+> 
+> 
+> GREEN (6 bits)
+> ==============
+> DISP0_DATA[10] --[R32   348R]---+
+> DISP0_DATA[9]  --[R35   715R]---+
+> DISP0_DATA[8]  --[R38  1.47K]---+
+> DISP0_DATA[7]  --[R41  2.94K]---+-------- VGA1_G
+> DISP0_DATA[6]  --[R44  5.90K]---+          |
+> DISP0_DATA[5]  --[R45  11.8K]---+          D
+>                                            |
+> DI0_PIN15 ------------------------------ G | T6 MMBF2201N
+>                                            S
+>                                            |
+>                                           GND
+
+-- 
+Regards,
+
+Laurent Pinchart
