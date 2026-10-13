@@ -1,156 +1,274 @@
-Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 209F52D738F;
-	Tue, 13 Oct 2026 14:05:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C38063DD526;
+	Tue, 13 Oct 2026 14:20:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791900318; cv=none; b=KjyNhV8gfpwXbOLi1xbMJWnziO5ihneIhdblWdKv1G08D3WNYF35qe9xWd0WsG0SUVtkvKi3p5xHH+X8VdIrkr3mTWRc5PVHOMS1SG+xXyNhktjRCiQrcsIq2gYhztPg4u98kdj75vq/zUN+riCHIjyLE5Mlb1HgmXouKImWRWw=
+	t=1791901207; cv=none; b=nuYCztvpW51j5yJeSX+wHMIwXHttxSl/kgBytgzeVV/iH9iKJe641ePG0gqgCdg70JNO8f2TG23lX/782kjSkTz86DF492fK99CFfhqCJTxiDjC89d9rz9Wd98GCMDuHkiubJvuRqwKIA4UWDHMfBH9s8aGMnWN9j21G3vW+sUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791900318; c=relaxed/simple;
-	bh=uEQ2tY9xTG8yKAecuC6cIO200KOxqrXCYwFmpV3eRv8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AYzEX5egdYa1WytnV0yvuWPKCAERhtgdTkrLqh2IGce3H/oHvTUy8PWkziTLjDvU26HcgQQ4CjiXYlV7QdA+kgeDqsw1jg0ie+hdeMz+p95lnmOLYo1EqwqksunFNh/NoYzdLG53MJ49/BHuGhaH7K9N8o81IrnlSsA/ry2aNWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=b7EnCqfg; arc=none smtp.client-ip=188.40.3.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1791901207; c=relaxed/simple;
+	bh=w9iXcdNAy9q5kpInJ63QcmeNzkngbgW7GozEWnALozk=;
+	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
+	 References:Date:Message-Id; b=qVgqyK5CH7H+Z9Rpnbdd1PHrdjfjIfXMjlP77Fh68IL0Cp49zPjgao4VWClwDpK5qNHWYvTrgQCLWZlpiCctktXzdtZDF/MiZQaJoBRT0vvpg7PwvVZWKIhtavB+BuOewnLoVAOIp3exoc4rRzHLxSvVE+hh2yXIzyDmB2IQvn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RBa5hNQ1; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="b7EnCqfg"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=ew.tq-group.com; s=default2602; h=Content-Type:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=plEBybSZs17ofMuAql8ugZTiTKQWX5rpFZ+CNp+rQ5I=; b=b7EnCqfgNyAuiYM2hWQuUcSZ/9
-	BazouujCmceVJE8w4EpCnRZg+p6ycrKpM6mhEQnCeDHNoEXey019Q9kv6q5rqeolY0reFBvRQjYmh
-	fFjVULtGgjdPnFfJyduak3ySqj+qiQF8nhJ8l4XeIENiOYDZB//9TVD6g4sAktGeBMhDlQqftVTQC
-	HdgN1p8mmK131FimY2kkYRhP0F0YKkfYrUDFe/FFGWuqev6sPLEdB394NCQ6KWBJwt1r7+y88fdk7
-	6QohO8bc652qdCPf/yfDqgOxiW7iESqOMbW5n16hvnPg+b5rEummT59mo4BFDDkaQiN5RpIcIqapK
-	1L1LqAeQ==;
-Received: from sslproxy03.your-server.de ([88.198.220.132])
-	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1xGd7x-000L1C-34;
-	Tue, 13 Oct 2026 16:05:14 +0200
-Received: from localhost ([127.0.0.1])
-	by sslproxy03.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1xGd7x-000HRa-1z;
-	Tue, 13 Oct 2026 16:05:13 +0200
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: imx@lists.linux.dev, devicetree@vger.kernel.org, robh@kernel.org,
- conor+dt@kernel.org, Frank.Li@kernel.org
-Subject: Re: [PATCH 2/5] arm64: dts: imx8qxp: Add display controller subsystem
-Date: Tue, 13 Oct 2026 16:05:12 +0200
-Message-ID: <5866247.LvFx2qVVIh@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <sashiko-outbox-169627@kernel.org>
-References:
- <20261013111737.998282-1-alexander.stein@ew.tq-group.com>
- <20261013111737.998282-3-alexander.stein@ew.tq-group.com>
- <sashiko-outbox-169627@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RBa5hNQ1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C5F31F000FF;
+	Tue, 13 Oct 2026 14:20:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791901205;
+	bh=VFUKf4WT1PC9FZhPf1gCPKKTYAdHhpxy5ngxtUFm0FA=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date;
+	b=RBa5hNQ1EN2izACHg84lWz5itrvyP4DdpiIfrFn53wQagcEmr6uIIfWUcwEQLB5L/
+	 NvO/QyG3zHF/ZQA6xsa2I2OtO7Vgbe2q4O2JCQfxQiMsCbdtB8Ya+3TWOiH0L10mr2
+	 vpKxgbS2l/nJl+GOIuZxBKulvZYfWD1fzfqRTdA7ASbQs77j+qAQWE9PI3mE655ajK
+	 j8Sm4Q2ZRMoiOIxX+jNBucWHbtsbi2h+pbacGEoKWZtbSLu5FEzseYvtg7WIOvfgPB
+	 4eV6gwNjqt2rCCyWA/leg2O500s9Js5Y/dJXtWAWWmWuWI9qBQWgBX9Fd1Ck6s8jYo
+	 x0Y7AYsvviyhA==
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset="utf-8"
-X-Virus-Scanned: Clear (ClamAV 1.4.3/28152/Tue Oct 13 08:26:14 2026)
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v7 3/3] PCI: imx6: Add root port reset to support link
+ recovery
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: sashiko-reviews@lists.linux.dev
+Cc: hongxing.zhu@oss.nxp.com, robh@kernel.org, conor+dt@kernel.org, 
+ Frank.Li@kernel.org, linux-pci@vger.kernel.org, imx@lists.linux.dev, 
+ devicetree@vger.kernel.org
+In-Reply-To: <20260618093438.12B9B1F000E9@smtp.kernel.org>
+References: <20260618092100.3669556-1-hongxing.zhu@oss.nxp.com>
+ <20260618092100.3669556-4-hongxing.zhu@oss.nxp.com>
+ <20260618093438.12B9B1F000E9@smtp.kernel.org>
+Date: Tue, 13 Oct 2026 19:49:58 +0530
+Message-Id: <179190119866.12828.2001673028236159096.b4-reply@b4>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=8140; i=mani@kernel.org;
+ h=from:subject:message-id; bh=w9iXcdNAy9q5kpInJ63QcmeNzkngbgW7GozEWnALozk=;
+ b=owEBbQGS/pANAwAKAVWfEeb+kc71AcsmYgBqzj4RkBQlSf3o29RXJHwdXpSm1eckarO9yUILS
+ yP/8ZK8AKyJATMEAAEKAB0WIQRnpUMqgUjL2KRYJ5dVnxHm/pHO9QUCas4+EQAKCRBVnxHm/pHO
+ 9ePsB/9DHNBVfn9ovVA2xK9tUOEQ6HNVfHyRBIDmNnF4AUcIQI+0Jc+Vrvd1vaZ0D63d/gzM6jL
+ lCEBcTpCwGmui/G0Z4eBI6h6uVoeRkhyyXKPhHehcUmT5Jj/ODZxYwO8qPUIftHkqU4BkKgEcs4
+ QEICN2DSUTXuoiN03pDSxaHOH2TYPpN1dr23GnM+DuEzGHocyiZ39QHfBDE/bVwwFrJF2hfhxq2
+ jwVAC04yQayPunzab/Eu2WWiA9uhLc8brfbT1ZC6OeJsHBH8ShajPqR0S3kIgto8xnaV72hhz/y
+ D7pqYNFx5FapicDEdbLHCTivwhOatU0D7ShJAFg1eT2lxMae
+X-Developer-Key: i=mani@kernel.org; a=openpgp;
+ fpr=C668AEC3C3188E4C611465E7488550E901166008
 
-Am Dienstag, 13. Oktober 2026, 13:29:55 Mitteleurop=C3=A4ische Sommerzeit s=
-chrieb sashiko-bot@kernel.org:
-> Thank you for your contribution! Sashiko AI review found 1 potential issu=
-e(s) to consider:
-> - [Medium] arm64: dts: Missing power-domains and compatible override for =
-dc0_irqsteer
+On 2026-06-18 09:34 +0000, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 7 potential issue(s) to consider:
+> - [High] Using read-modify-write operations on a mixed RW/W1C register unintentionally clears pending hardware interrupts.
+> - [High] The ISR unconditionally clears the link down status bit even if the interrupt is disabled, dropping shared link recovery events.
+> - [High] Unsafe, lockless iteration over the PCI bus devices list without holding pci_bus_sem.
+> - [High] The threaded interrupt handler is not synchronized during system shutdown, leading to a race condition with controller power-off.
+> - [High] Accessing shared LUT GPR registers without acquiring imx_pcie->lock causes a data race.
+> - [Medium] The `imx_pcie_reset_root_port` function silently ignores failures to recover the PCIe link.
+> - [Low] The patch references undeclared functions and undefined struct members, causing build failures.
+
+Atleast some of these issues are valid. Can you please take a look?
+
+- Mani
+
 > --
->=20
-> commit ae70e9d2f5935bf44872ed0bd30be554653b06e0
-> Author: Liu Ying <victor.liu@nxp.com>
->=20
-> arm64: dts: imx8qxp: Add display controller subsystem
->=20
-> Add display controller subsystem in i.MX8qxp SoC.
->=20
-> > diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-dc0.dtsi b/arch/arm6=
-4/boot/dts/freescale/imx8-ss-dc0.dtsi
-> > new file mode 100644
-> > --- /dev/null
-> > +++ b/arch/arm64/boot/dts/freescale/imx8-ss-dc0.dtsi
+> 
+> commit 1a657928e9eb6aa6da8f1cc80545e5be5d066898
+> Author: Richard Zhu <hongxing.zhu@nxp.com>
+> 
+> PCI: imx6: Add root port reset to support link recovery
+> 
+> The PCIe link can go down due to various unexpected circumstances. Add
+> root port reset support to enable link recovery for the i.MX PCIe
+> controller when the optional "intr" interrupt is present.
+> 
+> > diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+> > index 98e1db751132a..b38eb61983e15 100644
+> > --- a/drivers/pci/controller/dwc/pci-imx6.c
+> > +++ b/drivers/pci/controller/dwc/pci-imx6.c
+> 
 > [ ... ]
-> > +dc0_subsys: bus@56000000 {
+> 
+> > @@ -1442,6 +1450,13 @@ static int imx_pcie_host_init(struct dw_pcie_rp *pp)
+> >  
+> >  	imx_setup_phy_mpll(imx_pcie);
+> >  
+> > +	/*
+> > +	 * Callback invoked by PCI core when link down is detected and
+> > +	 * recovery is needed.
+> > +	 */
+> > +	if (pp->bridge)
+> > +		pp->bridge->reset_root_port = imx_pcie_reset_root_port;
+> 
+> [Severity: Low]
+> Is reset_root_port defined in struct pci_host_bridge? Looking at
+> include/linux/pci.h, this member does not appear to exist in the standard
+> kernel. Does this patch depend on a prerequisite patch that adds it?
+> 
 > [ ... ]
-> > +	dc0_irqsteer: interrupt-controller@56000000 {
-> > +		compatible =3D "fsl,imx-irqsteer";
-> > +		reg =3D <0x56000000 0x1000>;
-> > +		interrupt-controller;
-> > +		interrupt-parent =3D <&gic>;
-> > +		#interrupt-cells =3D <1>;
-> [ ... ]
-> > +		clocks =3D <&dc0_lis_lpcg IMX_LPCG_CLK_4>;
-> > +		clock-names =3D "ipg";
-> > +		fsl,channel =3D <0>;
-> > +		fsl,num-irqs =3D <512>;
-> > +	};
->=20
-> [Severity: Medium]
-> Is the dc0_irqsteer node missing a power-domains property?
->=20
-> If it lacks power-domains =3D <&pd IMX_SC_R_DC_0>;, could this trigger a =
-bus
-> fault (SError) during boot or suspend/resume cycles if the irqsteer driver
-> accesses its registers when the IMX_SC_R_DC_0 power domain is off?
-
-I cannot test suspend/resume but adding the power-domain is reasonable.
-Will be added in v2.
-
-> > diff --git a/arch/arm64/boot/dts/freescale/imx8qxp-ss-dc.dtsi b/arch/ar=
-m64/boot/dts/freescale/imx8qxp-ss-dc.dtsi
-> > new file mode 100644
-> > --- /dev/null
-> > +++ b/arch/arm64/boot/dts/freescale/imx8qxp-ss-dc.dtsi
-> > @@ -0,0 +1,236 @@
-> > +// SPDX-License-Identifier: GPL-2.0+
-> > +/*
-> > + * Copyright 2024 NXP
-> > + */
+> 
+> > @@ -1774,6 +1795,86 @@ static const struct dev_pm_ops imx_pcie_pm_ops = {
+> >  				  imx_pcie_resume_noirq)
+> >  };
+> >  
+> > +static irqreturn_t imx_pcie_lnk_irq_isr(int irq, void *priv)
+> > +{
+> > +	struct imx_pcie *imx_pcie = priv;
+> > +	struct dw_pcie *pci = imx_pcie->pci;
+> > +	struct device *dev = pci->dev;
+> > +	u32 val;
 > > +
-> > +&dc0 {
-> > +	compatible =3D "fsl,imx8qxp-dc";
-> > +};
->=20
+> > +	regmap_read(imx_pcie->iomuxc_gpr, IMX95_LINK_INT_CTRL_STS, &val);
+> > +	if (val & IMX95_LINK_DOWN_INT_STS) {
+> > +		dev_dbg(dev, "PCIe link down detected, initiating recovery\n");
+> > +		/* Clear link down interrupt status by writing 1b'1 to it */
+> > +		regmap_set_bits(imx_pcie->iomuxc_gpr, IMX95_LINK_INT_CTRL_STS,
+> > +				IMX95_LINK_DOWN_INT_STS);
+> > +		if (!(val & IMX95_LINK_DOWN_INT_EN))
+> > +			return IRQ_NONE;
+> 
+> [Severity: High]
+> If this interrupt is shared and masked during thread execution, could this
+> unconditionally clear a new link down event?
+> 
+> Since the status is cleared before checking IMX95_LINK_DOWN_INT_EN, if a new
+> event triggers concurrently with the threaded handler, it appears the event
+> will be cleared and then discarded when the ISR returns IRQ_NONE.
+> 
+> > +		regmap_clear_bits(imx_pcie->iomuxc_gpr, IMX95_LINK_INT_CTRL_STS,
+> > +				  IMX95_LINK_DOWN_INT_EN);
+> > +
+> > +		return IRQ_WAKE_THREAD;
+> > +	}
+> > +
+> > +	regmap_read(imx_pcie->iomuxc_gpr, IMX95_PE0_INT_STS, &val);
+> > +	if (unlikely(val))
+> > +		regmap_write(imx_pcie->iomuxc_gpr, IMX95_PE0_INT_STS, val);
+> > +
+> > +	return IRQ_NONE;
+> > +}
+> > +
+> > +static irqreturn_t imx_pcie_lnk_irq_thread(int irq, void *priv)
+> > +{
+> > +	struct imx_pcie *imx_pcie = priv;
+> > +	struct dw_pcie *pci = imx_pcie->pci;
+> > +	struct dw_pcie_rp *pp = &pci->pp;
+> > +	struct pci_dev *port;
+> > +
+> > +	for_each_pci_bridge(port, pp->bridge->bus)
+> > +		if (pci_pcie_type(port) == PCI_EXP_TYPE_ROOT_PORT)
+> > +			pci_host_handle_link_down(port);
+> 
+> [Severity: High]
+> Is it safe to iterate over the PCI bus devices list asynchronously here without
+> holding the pci_bus_sem semaphore?
+> 
+> If concurrent PCI enumeration, hotplug device removal, or SR-IOV VF
+> modifications occur, could this result in list pointer corruption or a
+> use-after-free?
+> 
+> [Severity: Low]
+> Also, is pci_host_handle_link_down() declared in the standard kernel headers?
+> I am unable to find it in include/linux/pci.h, which might cause a build
+> failure without a prerequisite patch.
+> 
+> > +
+> > +	regmap_set_bits(imx_pcie->iomuxc_gpr, IMX95_LINK_INT_CTRL_STS,
+> > +			IMX95_LINK_DOWN_INT_EN);
+> 
+> [Severity: High]
+> Can regmap_set_bits() unintentionally clear pending hardware interrupts here?
+> 
+> Since regmap_set_bits() performs a read-modify-write, and the
+> IMX95_LINK_DOWN_INT_STS (BIT 11) is a write-1-to-clear bit, could it
+> accidentally write back a 1 for a newly arrived link down event and
+> permanently lose that event?
+> 
+> > +
+> > +	return IRQ_HANDLED;
+> > +}
+> > +
+> > +static int imx_pcie_reset_root_port(struct pci_host_bridge *bridge,
+> > +				    struct pci_dev *pdev)
+> > +{
+> > +	struct pci_bus *bus = bridge->bus;
+> > +	struct dw_pcie_rp *pp = bus->sysdata;
+> > +	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+> > +	struct imx_pcie *imx_pcie = to_imx_pcie(pci);
+> > +	int ret;
+> > +
+> > +	imx_pcie_msi_save_restore(imx_pcie, true);
+> > +	if (imx_check_flag(imx_pcie, IMX_PCIE_FLAG_HAS_LUT))
+> > +		imx_pcie_lut_save(imx_pcie);
+> 
+> [Severity: High]
+> Does imx_pcie_lut_save() need to acquire the imx_pcie->lock?
+> 
+> Since imx_pcie_reset_root_port() runs asynchronously in the recovery thread,
+> could this cause a data race on the shared IMX95_PE0_LUT_ACSCTRL index
+> register if another device probe concurrently calls imx_pcie_add_lut()?
+> 
+> > +	imx_pcie_stop_link(pci);
+> > +	imx_pcie_host_exit(pp);
+> > +
+> > +	ret = imx_pcie_host_init(pp);
+> > +	if (ret) {
+> > +		dev_err(pci->dev, "Failed to re-init PCIe\n");
+> > +		return ret;
+> > +	}
+> > +	ret = dw_pcie_setup_rc(pp);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	imx_pcie_start_link(pci);
+> > +	dw_pcie_wait_for_link(pci);
+> 
 > [Severity: Medium]
-> Should there be an override for &dc0_irqsteer in this file to set its
-> SoC-specific compatible string?
->=20
-> For example, setting compatible =3D "fsl,imx8qxp-irqsteer", "fsl,imx-irqs=
-teer";
-> here would ensure the node matches correctly. Omitting the SoC-specific
-> compatible string might mask the missing power domain violation from
-> dtbs_check and prevent SoC-specific driver quirks from applying.
-
-This is a good idea. I removed the "default" compatible, similar to the
-other dc nodes.
-
-> &dc0_irqsteer {
-> 	compatible =3D "fsl,imx8qxp-irqsteer", "fsl,imx-irqsteer";
-> };
-
-This is added in imx8qxp-ss-dc.dtsi instead in v2.
-
-Best regards,
-Alexander
-=2D-=20
-TQ-Systems GmbH | M=C3=BChlstra=C3=9Fe 2, Gut Delling | 82229 Seefeld, Germ=
-any
-Amtsgericht M=C3=BCnchen, HRB 105018
-Gesch=C3=A4ftsf=C3=BChrer: Detlef Schneider, R=C3=BCdiger Stahl, Stefan Sch=
-neider
-http://www.tq-group.com/
+> Should the return value of dw_pcie_wait_for_link() be checked and propagated?
+> 
+> If the link fails to come up (for example, returning -ETIMEDOUT because the
+> endpoint was unplugged), dropping the error allows the function to
+> unconditionally return 0. Could this leave the system in an inconsistent
+> state?
+> 
+> > +
+> > +	if (imx_check_flag(imx_pcie, IMX_PCIE_FLAG_HAS_LUT))
+> > +		imx_pcie_lut_restore(imx_pcie);
+> 
+> [Severity: High]
+> Similar to the save function above, does imx_pcie_lut_restore() need to
+> acquire imx_pcie->lock to prevent data races on the shared LUT index register
+> during restoration?
+> 
+> [ ... ]
+> 
+> > @@ -1973,15 +2074,46 @@ static int imx_pcie_probe(struct platform_device *pdev)
+> 
+> [ ... ]
+> 
+> >  static void imx_pcie_shutdown(struct platform_device *pdev)
+> >  {
+> >  	struct imx_pcie *imx_pcie = platform_get_drvdata(pdev);
+> >  
+> > +	if (imx_pcie->lnk_intr > 0)
+> > +		regmap_clear_bits(imx_pcie->iomuxc_gpr, IMX95_LINK_INT_CTRL_STS,
+> > +				  IMX95_LINK_DOWN_INT_EN);
+> >  	/* bring down link, so bootloader gets clean state in case of reboot */
+> >  	imx_pcie_assert_core_reset(imx_pcie);
+> 
+> [Severity: High]
+> Can a concurrent threaded interrupt handler run during this shutdown process?
+> 
+> Since disable_irq() is not called, if a link down event triggers just before
+> shutdown, could the thread access PCIe configuration space right as
+> pci_pwrctrl_power_off_devices() powers off the hardware, potentially causing a
+> synchronous external abort?
+> 
+> -- 
+> Sashiko AI review · https://sashiko.dev/#/patchset/20260618092100.3669556-1-hongxing.zhu@oss.nxp.com?part=3
+> 
 
 
