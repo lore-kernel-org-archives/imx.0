@@ -1,228 +1,149 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013029.outbound.protection.outlook.com [40.107.162.29])
+Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6063051A738
-	for <imx@lists.linux.dev>; Tue, 13 Oct 2026 14:34:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.29
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791902066; cv=fail; b=BOEj+BbMokyAanfg/rH/ceI5dRZ9jSYMpMiqa/KDTaJqQgLWb332nRWOZiXYBOmSD8IeKLodttK7OBNb8YDVROpCdVhU1X1pzHe1t+tBj+5P18HP3vjj6MUxRVSGTueACBjz611yLUeqIeS2ydUjpWnYQfnLRYs8TGsNIIE8yGI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791902066; c=relaxed/simple;
-	bh=0WBMtUnOoD6gW0h6mokJUx+7CpXa+Cn65KX8FKMAb+w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=HLrtOgvw0pBsSPUWwggF4YC4SB91lFchGR3XuqaRGzvOl12QmfKS6naRyMfH9duGnLsTXp82lVD9nRoJMehqAnE2PcrqvduZTZqUF/rnGmHLyFe5QsCmv8VYIZ1xxVMk0mj9g+HIhKM5UvnKuIVWkuLgaLzOzekWOztwd42NoQg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=fail (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=IL2OKT7z reason="signature verification failed"; arc=fail smtp.client-ip=40.107.162.29
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C4614FD79A
+	for <imx@lists.linux.dev>; Tue, 13 Oct 2026 14:37:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791902250; cv=none; b=pavTem4EGP1rnMhL0yMzBJFX0ATDNJiRZtwBL+SVgs4fUh1ax2LfVbBackyQbmYsZLZXkY2V4IzFg6nlmYZcv7injmKyIsPrTz3pgfyAXV9UkgInRRCuj30G/wFGMnbCOqcXtUh+PZO2QnKDBjKZvqXHD1Pt40r5x1LLnlT9xAU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791902250; c=relaxed/simple;
+	bh=5jKPCpzP3ydgQqLnqgc6m8dhumkZpBBD4O7fxHqz170=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LZ9V4BwvTYUMRDLtWAP/1+ycWGL/cyDKFehoRtwT0HAbUhyFfYnJ/osPZXxB3wjKfCmd1ml7l2Eq2ykP6lCQvm0LDroSDLM+R/wRYy3J/pNFGF84MQVAG1Ozb42UKlhIPQCid6/qyIjhVZRmkU+HcmZZVJIyDQLtPBBiSzaYxws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; arc=none smtp.client-ip=92.121.34.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="IL2OKT7z"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=R0m9CnA2/GkSnUdvsYFm3L0YSdBNuLv+Ln0sjm71XFMu4S5iVp5tz3t3wvITtnIGdzcBBgELpDHa5fzepWbIr4bKJ7D7ia6aJoFNEUP0jO5VtGHsJhvJ7IXaZA4X/szLArpkvHXAsbzUcGfuG1WrwcX1y8tbiJcDzHiUKKYsebWLv9a0a35ttWjakbNg1v7yGbiiOS/Z68WOVtPmyB93uPFRV1+henC4nT7vTNHDT1aTzLnPR+4ANwtcejnunB5tRzzcoP8Ts0Bx/n46iSqj6PworEfLBrPiRmJvOyEOz6JiGzZUEwNynJkm5PSKfA3gcoRtSRXMA0Onz74HkptwPw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Zv/6YMR3V87TlB+IHfICERyLlEUcLohIbEarFOwu/KY=;
- b=fZ4N1xEiNhqEHJpxixn2DuArhW083vwNHs9WDWkINs7mwJoGVS+w1FRqNuT1IyL78rZswmwSelDalM5As4zav89oFcHhrU4Ra9BcZKnJI3hIh0WJbmqyTa1vaIPxVrbE50Otcx9Qe6/jH0prkqHXLaU/+lZES31CFnP4r4icVGjwsNrZi0fPSkgOErRnWq5W14KUaDkW3ROVI56rcmP3kbjsn4RuU3446tnPciI8t8BCnZfC0uWJMTRYZN41M0ujkTOraW1PkTsBmYvcwVEKJtU8HX3aSbhVZ4eJuQSvPV7Pe3A3EQ/W/XzhW6tsIwKtWnShQAvpdkStrJ1ZNiVgVw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Zv/6YMR3V87TlB+IHfICERyLlEUcLohIbEarFOwu/KY=;
- b=IL2OKT7zBJvLCKhIjVP5EXarX2FGuhVyaR682FPkC+kHl407lWEYjw+ef2trcdYSmxmp486MRN4+/btM0XAnyjO+LllxuQgfkr+tzqqJdKG6EL7IX3wvlSIb7h2NAV4mXxjohyC652e7eU0kALjy0OILYI2NJXKpv7VFSbYD0M1u5waC4k7KYveTO6cv5Nyw4l4DerLTFWY5dxMJcvVikkRkPihhY5IHtLG8M1avHo9zrU+C4/JrujF46RqCvUSiDiLsx7vvXowqi6vRL2iz3ppR5klC8Ff/funYiCNEKlZfAJWZCZXnEyZ7HMXud7nHgA0mb73JOPCEDWO03bOpug==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by AM8PR04MB7444.eurprd04.prod.outlook.com (2603:10a6:20b:1de::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.12; Tue, 13 Oct
- 2026 14:34:20 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0522.011; Tue, 13 Oct 2026
- 14:34:20 +0000
-Date: Tue, 13 Oct 2026 09:34:09 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id EC50A1A01A5;
+	Tue, 13 Oct 2026 16:37:21 +0200 (CEST)
+Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id C89A01A00E9;
+	Tue, 13 Oct 2026 16:37:21 +0200 (CEST)
+Received: from lsv051416.swis.nl-cdc01.nxp.com (lsv051416.swis.nl-cdc01.nxp.com [10.168.48.122])
+	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id 516EE202DA;
+	Tue, 13 Oct 2026 16:37:21 +0200 (CEST)
+Date: Tue, 13 Oct 2026 16:37:21 +0200
+From: Jan Petrous <jan.petrous@oss.nxp.com>
+To: Frank Li <Frank.li@oss.nxp.com>
+Cc: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>,
+	NXP S32 Linux Team <s32@nxp.com>, Vinod Koul <vkoul@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Bogdan Hamciuc <bogdan.hamciuc@nxp.com>,
+	Ionut Vicovan <ionut.vicovan@nxp.com>, Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Chester Lin <chester62515@gmail.com>,
+	Matthias Brugger <mbrugger@suse.com>,
+	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
-	=?iso-8859-1?Q?S=F8ren?= Andersen <san@skov.dk>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Subject: Re: [PATCH v11 0/4] arm64: dts: imx8mp-skov: add new 7" variant
-Message-ID: <as5BYS-xnFY7WuCH@SMW015318>
-References: <20261013-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-v11-0-b97ad841598b@pengutronix.de>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20261013-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-v11-0-b97ad841598b@pengutronix.de>
-X-ClientProxiedBy: PH7P220CA0155.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:510:33b::8) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	Fabio Estevam <festevam@gmail.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	linux-arm-kernel@lists.infradead.org, linux-phy@lists.infradead.org,
+	netdev@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+	imx@lists.linux.dev, linux-pci@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Vincent Guittot <vincent.guittot@linaro.org>
+Subject: Re: [PATCH RFC v3 03/12] dt-bindings: PCI: nxp,s32g-pcie: Fix SerDes
+ PHY phandle in example
+Message-ID: <as5CIYxKJTra4hqM@lsv051416.swis.nl-cdc01.nxp.com>
+References: <20260919-s32g_serdes-v3-0-9d68868c1e89@oss.nxp.com>
+ <20260919-s32g_serdes-v3-3-9d68868c1e89@oss.nxp.com>
+ <as0qORxP0Roh9ktO@SMW015318>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AM8PR04MB7444:EE_
-X-MS-Office365-Filtering-Correlation-Id: 760215ae-601a-4c26-33f3-08df29371187
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|19092799006|366016|7416014|376014|23010399003|22082099003|18002099003|10067099003|11063799006|261009223027099003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	CZEGaX3ie36z+wBxTQyEXsQ1v0t3r5vz/GkXzkLwH2YOFXJjA8v5wWN6+Hviwlb16EzC7X2iX/a4ZfZnrypOxTRLIVeUyVhiUtkD6VPEC8uPyzAwCmO0EdWGfdgUgutkl6ptwFF80pN10SEVIcJHYNXwlFNq5PvWPcTsJNEN7P723HPLxqaSHopdT1RsLDoCJ//x2qwX6K5pJzVnwsqLNNhHBWdJA6GHRC3NnQ9NGmmvWUCDWELsEqvr5SWNe14XXYGaGeM9mjaHMLCFUniK3S6U7nogv7/uLCsX6seMM+JnoxT8tUmV3fW6h64nGoFU+ame+XCtq5O/ZStfSpErlvlT0nBLqOZyDryoghwZ7hbF3K08eEFyC9bL2mc7URZXrQuJuujnpZzMCEU409OtqYm0UlMhz0ojZI4wMaGEBYmbTzETh7/4L3gFDPeL93805OC0uHBm02m+IOSzZuGGPcb8cyoQLjeR7vdOymBWeo/zfqam6TmeJ7amxlTf7DlFgsgopbDJ3Q7R3x5Vmp9xYetK+SLJtAP5efmGFxl4Se6dGqA4OBJoIqvpnDitwoCDjpcDaOeDdo2s3DzTIb1qWF49YQC2R+32neMtQX55mPcwDq+sUEDM4GGaTQSberKz
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(366016)(7416014)(376014)(23010399003)(22082099003)(18002099003)(10067099003)(11063799006)(261009223027099003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?bqs/kiOG4LmRSzphnSfDZb7Q2U2H9bsxm7Do3pBvC47cLYzl+6hY8rlsp8?=
- =?iso-8859-1?Q?doFcieUwli3x/V2JMgXe/Dityg/OdfhAlloukDOOuMt/ZLyjYeNJXoIZRG?=
- =?iso-8859-1?Q?9mRKNClKcDklvD9yrlBdGC7R6Ema8L2YxMkDQoBn9Zbqq1jfY7Iel51P1C?=
- =?iso-8859-1?Q?Sm4CFUeejbN2mtsw0gtTQP9BdOKe5ifcFQyHeGxEiVnqICVVi/4OUOedSJ?=
- =?iso-8859-1?Q?2D3yUjuMCGpLgYn1eOAWsgR3ZxogDPnDd6Py4yyB+zYVteCnHIJFqhH2e0?=
- =?iso-8859-1?Q?9VYdumcseR8/7IreFCxohvQS6HRJwXXawynHk2aB9jBtoY9sna9p3/7ESL?=
- =?iso-8859-1?Q?viZv+qzIIHlyZ8IdEbLrW3ueXPUw/fR9N9yyxsrDemrxRgXjXsovhS3sF7?=
- =?iso-8859-1?Q?W27GZqP3FBtmHoyJFGlOFytRWuG8traRtLWWOH91uRLWFmRShKIyKwVaCz?=
- =?iso-8859-1?Q?1ZLvw/tRMBhDLztCgS/pYwczQw2Nvbs7Urdo3Xo/YKe4jABPcF4s3FzUEw?=
- =?iso-8859-1?Q?M9J2ffGAjtF2Z0xmTdOFKsAWdoL1z6chKGzEEQsKaComhpUzPce6/5wQ1L?=
- =?iso-8859-1?Q?ktIzST4frsPChVLI5IGwiQj4WEGn22U1IKMrDxf5FNCaH9qmBS6zspgeiW?=
- =?iso-8859-1?Q?AbVU7WCaHFv3J2wHE34iSgDQWlIXZy7m6WvBpP+pCFh2A/QFi3/Tzuwb81?=
- =?iso-8859-1?Q?g7wthqcwVis5Fd7TggyHxeOBX0K50e29bOH2YxJULmHciVeVKL6XHpzDem?=
- =?iso-8859-1?Q?e1IHl5k/5v7/YdHb5s4ayzG3RCg4O9hLspJViZix75arXbKVBtk1116Dx7?=
- =?iso-8859-1?Q?94rgb6a91dys9xzI09TAJ+P6KOen8RKWbQX8zAFQ9ir/y6dG1IBnfGTMyx?=
- =?iso-8859-1?Q?R5+UXNys3Ba9fRpzwmbrmIHp2PkYidec1JbJx+VEVa7zwD3dCtZxfHImuA?=
- =?iso-8859-1?Q?b5TOyydSfn1ceN2jddhqWae0PifUBr+4da7STXKkuDu3xogdsov1yJ/4LW?=
- =?iso-8859-1?Q?oe1OoBw6bkHK4AD9hNVja0+PY0QUa/mIxS65Vf1KDA+jj3xRR+epmnHqFs?=
- =?iso-8859-1?Q?r6VOdpqlg5Gdy5gI9hy6e2m3H8u3GHtxLhwZCWOSaS9geWXgqZbek/vzhr?=
- =?iso-8859-1?Q?kb8JdkGqnG89vvd1ZxL2LnFVod3Yx/qbr/JX6o53/VKaNQ7eOrHL8pnZSA?=
- =?iso-8859-1?Q?QnQM1Mk7ZNdMskblhrhuBPVA6S2K69MCj85ZnIxJTV6zQFW03wBw9l9dsH?=
- =?iso-8859-1?Q?0ED1O8D89DKRDYxPc4D9RcpAdnAEsyAdXV52oStrrOlTlGnisV1BvdtSR2?=
- =?iso-8859-1?Q?J+zlYQ9N7Bn/XXhuhd+oDdBmKcpYZoZVzQ6Hja4EuYg14jldNJ0Nf0w0uK?=
- =?iso-8859-1?Q?MaqG+q8ovSewfcoP3o/oDZJV7I5Xd2zGUHCjdeGNCHTLfnDfenwUGxlFsQ?=
- =?iso-8859-1?Q?JM+jne4+wvBHOT/ueUeLKy5jKtGzM8ixQASC+m3hAxpMMefeDpI6ozu6nw?=
- =?iso-8859-1?Q?TLNrznMU0voi2vfDNziSchaPGrm3n2uIzALU1jJQEm6TZVSYngtKtGlZB7?=
- =?iso-8859-1?Q?PC+PSPNRHngdcIlPkn5V0jfN6LhTB76bLfSEkRuH9HWe+KFRo5uQUQ+f32?=
- =?iso-8859-1?Q?q38U3oJdre9gwX5ia4MJIjDFlHrHQ17pos/BFFqfJAXxQRys3hb+5uBvFT?=
- =?iso-8859-1?Q?HjxEn5zKs/tx/guKr0+j8q9MUC6YhsE6q3v6vkrq0KzQeHT52xGQp+bamH?=
- =?iso-8859-1?Q?qZmjxL1KrlJko+BlT9A8fPFwzhnuC2OSzj9Wv/LD3nFhkImnlqto9r91wz?=
- =?iso-8859-1?Q?ETEefaFHjvc5wD5gOoS+IgSDQ9aMZSBOCwLpCQhnYnsBLebLflpF?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 760215ae-601a-4c26-33f3-08df29371187
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Oct 2026 14:34:20.7251
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: r/N6PrJvKG743qiAwzKmPFCwPpvKUk1Jw8yDW8H4qi/yYsGA2AhE+wlDS1p10FivTc9f/PGUAQoHERbBidnJTABwPAjwWPmnputQdRtmcUioJKbUIu26Z8jhJQLwU/wV
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7444
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <as0qORxP0Roh9ktO@SMW015318>
+X-Virus-Scanned: ClamAV using ClamSMTP
 
-On Tue, Oct 13, 2026 at 08:21:07AM +0200, Steffen Trumtrar wrote:
-> Add a new board variant for the Skov i.MX8MP based family of boards.
->
-> This variant uses a different 7" panel than the existing ones.
-> As the already upstream boards and this new one are almost identical,
-> convert the other device trees to a base devicetree and apply the touch
-> controllers and panels via overlays.
->
-> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> ---
-> Changes in v11:
+On Mon, Oct 12, 2026 at 01:43:05PM -0500, Frank Li wrote:
+> On Sat, Sep 19, 2026 at 08:54:31AM +0200, Jan Petrous via B4 Relay wrote:
+> > [You don't often get email from devnull+jan.petrous.oss.nxp.com@kernel.org. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
+> >
+> > From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+> >
+> > The example references the SerDes PHY as
+> >
+> >   phys = <&serdes0 PHY_TYPE_PCIE 0 0>;
+> >
+> > i.e. the SerDes node itself with three PHY cells. That does not match
+> > the SerDes binding: the per-lane child node is the generic PHY
+> > provider and carries '#phy-cells = <0>', while the SerDes node itself
+> > has no '#phy-cells' at all.
+> >
+> > Point the example at the PCIe lane child instead, which is also what
+> > the S32G3 board device trees use. The dt-bindings/phy/phy.h include is
+> > dropped along with the now-unused PHY_TYPE_PCIE constant.
+> >
+> > The schema itself is unchanged; 'phys: maxItems: 1' already describes
+> > the corrected form.
+> >
+> > Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+> > ---
+> >  Documentation/devicetree/bindings/pci/nxp,s32g-pcie.yaml | 3 +--
+> >  1 file changed, 1 insertion(+), 2 deletions(-)
+> >
+> > diff --git a/Documentation/devicetree/bindings/pci/nxp,s32g-pcie.yaml b/Documentation/devicetree/bindings/pci/nxp,s32g-pcie.yaml
+> > index 66a050028278..29323e50bd8b 100644
+> > --- a/Documentation/devicetree/bindings/pci/nxp,s32g-pcie.yaml
+> > +++ b/Documentation/devicetree/bindings/pci/nxp,s32g-pcie.yaml
+> > @@ -82,7 +82,6 @@ unevaluatedProperties: false
+> >  examples:
+> >    - |
+> >      #include <dt-bindings/interrupt-controller/arm-gic.h>
+> > -    #include <dt-bindings/phy/phy.h>
+> >
+> >      bus {
+> >          #address-cells = <2>;
+> > @@ -124,7 +123,7 @@ examples:
+> >                  ranges;
+> >
+> >                  device_type = "pci";
+> > -                phys = <&serdes0 PHY_TYPE_PCIE 0 0>;
+> > +                phys = <&serdes0_pcie0>;
+> 
+> I don't think it fix somethings. The "serdes0" just a label, point to
+> provider, which is not neccsary that "#phy-cells" is 0.
+> 
+> Examples just show need how many phys and don't care about phy provider's
+> arguments
+> 
 
-Please slow down. and reply krzy's feedback at v10.
+The example validates either way, agreed. The three cells are the
+'#phy-cells = <3>' of the downstream nxp,s32cc-serdes binding, which
+was never posted upstream; patch 1 is the only SerDes binding for S32G
+and has no three-cell provider. I would rather have the example match
+it.
 
-Frank
+The form depends on the outcome of your patch 1 comment, so I will
+keep this patch in sync with that. If you prefer the phys line
+untouched, I can drop it and keep only the ranges fix v4 adds here.
 
-> - remove code-style fix from overlay-conversion patch
-> - change patch subject
-> - Link to v10: https://patch.msgid.link/20261012-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-v10-0-0906e57486a3@pengutronix.de
->
-> Changes in v10:
-> - rebase onto imx-dt64-7.4
-> - rearrange binding and code patches
-> - Link to v9: https://patch.msgid.link/20261008-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-v9-0-11fa90f531fc@pengutronix.de
->
-> Changes in v9:
-> - fix dtbscheck error
-> - squash new compatible into 7" devicetree patch
-> - Link to v8: https://patch.msgid.link/20260831-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-v8-0-e2e635452ba9@pengutronix.de
->
-> Changes in v8:
-> - add #address-cells and #size-cells to i2c2
-> - fix touchscreen resolution
-> - add missing binding includes
-> - Link to v7: https://patch.msgid.link/20260727-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-v7-0-ca8a0446166a@pengutronix.de
->
-> Changes in v7:
-> - address more of sashikos rightful feedback
-> - Link to v6: https://patch.msgid.link/20260727-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-v6-0-fa8f71dfc56f@pengutronix.de
->
-> Changes in v6:
-> - address sashikos rightful feedback
-> - Link to v5: https://patch.msgid.link/20260727-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-v5-0-67faa5ee0bf6@pengutronix.de
->
-> Changes in v5:
-> - convert to overlays
-> - Link to v4: https://patch.msgid.link/20260706-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-v4-0-dfc0c8827c02@pengutronix.de
->
-> Changes in v4:
-> - fix Makefile sort order
-> - add touchscreen fallback compatible
-> - fix lvds_bridge comment
-> - Link to v3: https://patch.msgid.link/20260701-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-v3-0-d74f7e3f8293@pengutronix.de
->
-> Changes in v3:
-> - rebase to v7.2-rc1
-> - Link to v2: https://patch.msgid.link/20260427-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-v2-0-e2b79fc24391@pengutronix.de
->
-> Changes in v2:
-> - rebase to v7.1-rc1
-> - Link to v1: https://patch.msgid.link/20260325-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-v1-0-10255d236439@pengutronix.de
->
-> To: Rob Herring <robh@kernel.org>
-> To: Krzysztof Kozlowski <krzk+dt@kernel.org>
-> To: Conor Dooley <conor+dt@kernel.org>
-> To: Frank Li <Frank.Li@nxp.com>
-> To: Sascha Hauer <s.hauer@pengutronix.de>
-> To: Pengutronix Kernel Team <kernel@pengutronix.de>
-> To: Fabio Estevam <festevam@gmail.com>
-> To: Shawn Guo <shawnguo@kernel.org>
-> Cc: Søren Andersen <san@skov.dk>
-> Cc: devicetree@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: imx@lists.linux.dev
-> Cc: linux-arm-kernel@lists.infradead.org
->
-> ---
-> Steffen Trumtrar (4):
->       arm64: dts: freescale: imx8mp: skov: fix sort order
->       dt-bindings: arm: fsl: add compatibles for Skov i.MX8MP boards
->       arm64: dts: imx8mp-skov-revc: convert jutouch and tian to overlays
->       arm64: dts: imx8mp-skov: support new 7inch panel board
->
->  Documentation/devicetree/bindings/arm/fsl.yaml     |  2 +
->  arch/arm64/boot/dts/freescale/Makefile             | 10 ++-
->  .../imx8mp-skov-revc-jutouch-jt070tm041.dtso       | 38 ++++++++++
->  .../imx8mp-skov-revc-jutouch-jt101tm023.dtso       | 38 ++++++++++
->  .../dts/freescale/imx8mp-skov-revc-tian-g07017.dts | 81 ----------------------
->  .../freescale/imx8mp-skov-revc-tian-g07017.dtso    | 40 +++++++++++
->  ...h-jt101tm023.dts => imx8mp-skov-revc-touch.dts} | 24 ++-----
->  7 files changed, 134 insertions(+), 99 deletions(-)
-> ---
-> base-commit: 7f47e8eafbf55a2ad0697e5d28f5e6cff2fa42f9
-> change-id: 20260325-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-3dbcb450a39c
->
-> Best regards,
-> --
-> Steffen Trumtrar <s.trumtrar@pengutronix.de>
->
->
+BR.
+/Jan
