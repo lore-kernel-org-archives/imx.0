@@ -1,116 +1,134 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.fris.de (mail.fris.de [116.203.77.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63B294E36C9;
-	Tue, 13 Oct 2026 11:29:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28A4F375F88
+	for <imx@lists.linux.dev>; Tue, 13 Oct 2026 11:51:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.77.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791890997; cv=none; b=Sn58hVO8IGdQa+et18fkehoqIaZurMjRYnnVmUfjHbwA6OGm16myYfhT0OVxCFMc6ObdpTuaqt/OLMoePNGR6U3831FGQlfQRDZbfggaOqvO3zmuTVOpjcByCWoni9nguRGMdfbkUhvTtkPaLdBJmmtWRYcIbnMWYTQ9kCzUd+A=
+	t=1791892307; cv=none; b=nqYWDXRJPsN9iOq9G8jxVOm9qbaoyM5rzJ2TkiUSwhQbve9g+gJ6B5meXPqmTNyySFBXBptob+9hv2V7ko/sA1HyTU2a5G3NmdEFmrK6kVSg3vFncJjq2g2oWU7GcG5TYNSYq+bD2D3xsIvluT+Xg5yji3gSv9i2Mgb8KJVKrlY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791890997; c=relaxed/simple;
-	bh=bHaRHBzr9vYzN0OxH/XkBTGm3Jclt56DR+mfMHziyOw=;
-	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
-	 Date; b=k/gOcm2m10Tz+MDaP5TtyT04NVACYLe22dyxkdv2hueKGjDylW+sg+e4d0/E303enwQb00nAOTK7B+FGSyVGfiKPb1GLJNgLLExr9Gxz4n4RRZfr+cy1+Fdsu4p3nHJxq5gFmYTDztKDMrckqgjaxzaPlgrul8cAw67SGBmM5zs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZIM3pzWH; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791892307; c=relaxed/simple;
+	bh=cIShYeI3uOsgq2p2WGei4CtzmrDQP5XChUf5tYX8QLc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=gxBu8tWsiJ86GhHS5usemy8+1AtnZ91nekSMMwTjFyMcUwrIBZVsEz3u7DkPj1GKG+gznyw5uvNwlqgUeeWQXaxoM8EvJ5WMw3ZnkWTpLI/aP+BpOxAkrF6yKOnD2RRlpz4CHANwHMIhXjVk1L7yCQSJ6jNdFup9XMqNjgm6swE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de; spf=pass smtp.mailfrom=fris.de; dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b=z8QIS+EK; arc=none smtp.client-ip=116.203.77.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fris.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZIM3pzWH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A91301F000FF;
-	Tue, 13 Oct 2026 11:29:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791890996;
-	bh=vD6tXUZ0PJiUIUFf3AtKlJJxHo5XXK8AE2SuPoYzLEQ=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ZIM3pzWHrAGpz9o1fHWHKyYjtDuOF78vh+O34kaHMziuATPyCNFsL+vWgvYgkZBpz
-	 afPozNANYOxdJbb7tgpLb9TfV0HG4IKjOA99oTvwSp2mYBv6dH/FMVMacDyJtVpvNY
-	 oS7XYEU4Y4GpsbhmADuJz7q8Rbvsn+BhvcYz+ZGiPAloR8UXptGGOk/c5x3swy/G1v
-	 WXw8jG8etBGJ6NVZM5wl+pC2qypffPjywdPXQ5l7CPGl6QDfMSvTp8lBLSR5yzOm96
-	 LcfMW6agHBAp47r/AC0oUtvphS8MhTQrRTq0MbTEXsubzknk1DyutCJ+QJlb0HT75M
-	 /Iq1YxLefHAdw==
-Message-ID: <sashiko-outbox-169627@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 2/5] arm64: dts: imx8qxp: Add display controller
- subsystem
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Alexander Stein" <alexander.stein@ew.tq-group.com>
-Cc: imx@lists.linux.dev, devicetree@vger.kernel.org, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20261013111737.998282-3-alexander.stein@ew.tq-group.com>
-References: <20261013111737.998282-1-alexander.stein@ew.tq-group.com>
- <20261013111737.998282-3-alexander.stein@ew.tq-group.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 13 Oct 2026 11:29:55 +0000
+	dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b="z8QIS+EK"
+From: Frieder Schrempf <frieder@fris.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fris.de; s=mail;
+	t=1791892304;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KsG4E7aRTBns4kMYtLjpkG5awBdjw9he/iK/yHlji88=;
+	b=z8QIS+EKxKo9K94EIaWFfURwted8ao1VqhfKf1QhehonOMXXeKWt+HtbLbgxlNJwA5Lc97
+	8GsIEFuG6jm6j3kJkUmgadJbn+RZ9mloT0iWbBVmDYvD/lBz6oSxJbqSKIDSlGQl+6yVUP
+	u/2iG8os20G7qh1vx2l2EMAM7ilYVKpHlv6a0h/KzNvFMVQjQJoUkhZZ/42dXCxsvomGN6
+	1c54JAs3wFU76iaKXcc6dBKVhcbBlulcZITjhZg80StbuVSQ7iQiH7HTjC2M5xz4ePziBA
+	s1iJHdm9MDz9dnEA8dMOf1JxW0S9CXctwHxGGSxpBQnHQrf6agq1m9D3sBI9Jg==
+Date: Tue, 13 Oct 2026 13:51:07 +0200
+Subject: [PATCH v2 2/9] arm64: dts: imx8mp-kontron: Fix GPIO for DL panel
+ standby signal
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261013-upstreaming-gpio-label-fixes-v2-2-d464ca652c91@kontron.de>
+References: <20261013-upstreaming-gpio-label-fixes-v2-0-d464ca652c91@kontron.de>
+In-Reply-To: <20261013-upstreaming-gpio-label-fixes-v2-0-d464ca652c91@kontron.de>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>, 
+ Frieder Schrempf <frieder.schrempf@kontron.de>
+Cc: Eberhard Stoll <eberhard.stoll@kontron.de>, devicetree@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1912;
+ i=frieder.schrempf@kontron.de; h=from:subject:message-id;
+ bh=zqKe5SSvEE0xziVYkkE5XVoVhrCJnP1Q6qOdqCtplLU=;
+ b=owGbwMvMwCWWWSatKlDTJMZ4Wi2JIeuctF+5kl7Ii5CmTwyJcfb3fU1udvwLzvw95Wutz6k/O
+ 4r+7L3SUcrCIMbFICumyCLFb/Ha1izWR/5YdRTMHFYmkCEMXJwCMJGTfQz/1A88TI59fOf9ap/b
+ 248b/amXvse3k81hbqZQhBL3H09bS0aG47P5ODek15z/IbDF/eXGc2xnjbjbKkNeHLy1WXvHym0
+ BvAA=
+X-Developer-Key: i=frieder.schrempf@kontron.de; a=openpgp;
+ fpr=1A0F38EB3D365D4C1FC67B5A69761B25107C8216
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] arm64: dts: Missing power-domains and compatible override for dc=
-0_irqsteer
---
+From: Frieder Schrempf <frieder.schrempf@kontron.de>
 
-commit ae70e9d2f5935bf44872ed0bd30be554653b06e0
-Author: Liu Ying <victor.liu@nxp.com>
+On the BL carrier board the panel standby signal of the DL display is
+connected to the OSM-S pad GPIO_A_7. On the i.MX8MP OSM-S module this
+pad is NAND_CE0_B/GPIO3_IO01. Due to an incorrect pad mapping, the
+overlay uses SAI3_RXFS/GPIO4_IO28 instead, which is the I2S_B_DATA_IN
+pad.
 
-arm64: dts: imx8qxp: Add display controller subsystem
+Use the correct GPIO for the panel standby hog. GPIO_A_7 is already
+muxed as GPIO by the SoM devicetree, so drop the extra pinctrl group.
 
-Add display controller subsystem in i.MX8qxp SoC.
+Fixes: 946ab10e3f40 ("arm64: dts: Add support for Kontron OSM-S i.MX8MP SoM and BL carrier board")
+Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
+---
+ .../boot/dts/freescale/imx8mp-kontron-dl.dtso      | 25 ++++++++--------------
+ 1 file changed, 9 insertions(+), 16 deletions(-)
 
-> diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-dc0.dtsi b/arch/arm64/=
-boot/dts/freescale/imx8-ss-dc0.dtsi
-> new file mode 100644
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx8-ss-dc0.dtsi
-[ ... ]
-> +dc0_subsys: bus@56000000 {
-[ ... ]
-> +	dc0_irqsteer: interrupt-controller@56000000 {
-> +		compatible =3D "fsl,imx-irqsteer";
-> +		reg =3D <0x56000000 0x1000>;
-> +		interrupt-controller;
-> +		interrupt-parent =3D <&gic>;
-> +		#interrupt-cells =3D <1>;
-[ ... ]
-> +		clocks =3D <&dc0_lis_lpcg IMX_LPCG_CLK_4>;
-> +		clock-names =3D "ipg";
-> +		fsl,channel =3D <0>;
-> +		fsl,num-irqs =3D <512>;
-> +	};
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-kontron-dl.dtso b/arch/arm64/boot/dts/freescale/imx8mp-kontron-dl.dtso
+index 88b30ca66adf5..13c6d55126f44 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-kontron-dl.dtso
++++ b/arch/arm64/boot/dts/freescale/imx8mp-kontron-dl.dtso
+@@ -52,22 +52,21 @@ panel_in_lvds0: endpoint {
+ 	};
+ };
+ 
+-&gpio4 {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_gpio4>, <&pinctrl_panel_stby>;
+-
+-	panel-rst-hog {
++&gpio3 {
++	panel-stby-hog {
+ 		gpio-hog;
+-		gpios = <21 GPIO_ACTIVE_HIGH>;
++		gpios = <1 GPIO_ACTIVE_HIGH>;
+ 		output-high;
+-		line-name = "panel-reset";
++		line-name = "panel-standby";
+ 	};
++};
+ 
+-	panel-stby-hog {
++&gpio4 {
++	panel-rst-hog {
+ 		gpio-hog;
+-		gpios = <28 GPIO_ACTIVE_HIGH>;
++		gpios = <21 GPIO_ACTIVE_HIGH>;
+ 		output-high;
+-		line-name = "panel-standby";
++		line-name = "panel-reset";
+ 	};
+ };
+ 
+@@ -127,12 +126,6 @@ &pwm1 {
+ };
+ 
+ &iomuxc {
+-	pinctrl_panel_stby: panelstbygrp {
+-		fsl,pins = <
+-			MX8MP_IOMUXC_SAI3_RXFS__GPIO4_IO28		0x19
+-		>;
+-	};
+-
+ 	pinctrl_touch: touchgrp {
+ 		fsl,pins = <
+ 			MX8MP_IOMUXC_GPIO1_IO06__GPIO1_IO06		0x19
 
-[Severity: Medium]
-Is the dc0_irqsteer node missing a power-domains property?
+-- 
+2.55.0
 
-If it lacks power-domains =3D <&pd IMX_SC_R_DC_0>;, could this trigger a bus
-fault (SError) during boot or suspend/resume cycles if the irqsteer driver
-accesses its registers when the IMX_SC_R_DC_0 power domain is off?
-
-> diff --git a/arch/arm64/boot/dts/freescale/imx8qxp-ss-dc.dtsi b/arch/arm6=
-4/boot/dts/freescale/imx8qxp-ss-dc.dtsi
-> new file mode 100644
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx8qxp-ss-dc.dtsi
-> @@ -0,0 +1,236 @@
-> +// SPDX-License-Identifier: GPL-2.0+
-> +/*
-> + * Copyright 2024 NXP
-> + */
-> +
-> +&dc0 {
-> +	compatible =3D "fsl,imx8qxp-dc";
-> +};
-
-[Severity: Medium]
-Should there be an override for &dc0_irqsteer in this file to set its
-SoC-specific compatible string?
-
-For example, setting compatible =3D "fsl,imx8qxp-irqsteer", "fsl,imx-irqste=
-er";
-here would ensure the node matches correctly. Omitting the SoC-specific
-compatible string might mask the missing power domain violation from
-dtbs_check and prevent SoC-specific driver quirks from applying.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261013111737.9982=
-82-1-alexander.stein@ew.tq-group.com?part=3D2
