@@ -1,57 +1,57 @@
 Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55CF83E1203;
-	Tue, 13 Oct 2026 13:03:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 209F52D738F;
+	Tue, 13 Oct 2026 14:05:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791896617; cv=none; b=eYe1rz4kxKvxPmBVBAiLvQQfZtGqAucVW7qnYAbz/dWdqglOVrBPn+61GBwEU2xck/Ixs6It8FdsumQI6Xpxnc7uqG07t0TP2+AsndMalPXrPBKewJtMDjEivn/Y9y8wPIeC2wlx/CaYDJ79GhfW6NCIIL7IydpBsq1OYEaZlzc=
+	t=1791900318; cv=none; b=KjyNhV8gfpwXbOLi1xbMJWnziO5ihneIhdblWdKv1G08D3WNYF35qe9xWd0WsG0SUVtkvKi3p5xHH+X8VdIrkr3mTWRc5PVHOMS1SG+xXyNhktjRCiQrcsIq2gYhztPg4u98kdj75vq/zUN+riCHIjyLE5Mlb1HgmXouKImWRWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791896617; c=relaxed/simple;
-	bh=egmBtondgyOXHx5RLyTTc2jqoZj6T+91zbuQyedbmiE=;
+	s=arc-20240116; t=1791900318; c=relaxed/simple;
+	bh=uEQ2tY9xTG8yKAecuC6cIO200KOxqrXCYwFmpV3eRv8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MXKCg6hR3UjnsmesamBWmwEUU2LLm0Uz5nGOGZs6H96ytogzPKzWHmeziuPbiQjhCG36HQHY0nwfSjAA52DYBn7VpBwppyQ7HRsFmd6BL/u8Xc1PbohW3Orz18UYMXVv4qYH+3QLbNXlcS4vTpCmCn+eEAQs0Wgq7IQZIU7zbnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=NHz8tD9O; arc=none smtp.client-ip=188.40.3.216
+	 MIME-Version:Content-Type; b=AYzEX5egdYa1WytnV0yvuWPKCAERhtgdTkrLqh2IGce3H/oHvTUy8PWkziTLjDvU26HcgQQ4CjiXYlV7QdA+kgeDqsw1jg0ie+hdeMz+p95lnmOLYo1EqwqksunFNh/NoYzdLG53MJ49/BHuGhaH7K9N8o81IrnlSsA/ry2aNWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=b7EnCqfg; arc=none smtp.client-ip=188.40.3.216
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="NHz8tD9O"
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="b7EnCqfg"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=ew.tq-group.com; s=default2602; h=Content-Type:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=TIHcLfREShiK1c2i9NlsVC922V9xk09myq8IMmakA5k=; b=NHz8tD9O5+lLMvWRRVIuyb/ffs
-	oQlD8v1zY4aVLgkRGo2l7QfPvge2/tDH7tmb8SQEBW0TbC5fzHA3ao847WSYUuIDkEDR+nSncP/KG
-	jRSv0I2XXaNvnO87UZon+sOi+eL4+s/07iKwRl3rANL/viPNA9BwWIvYLpK+07oFguGFLgkJ6W4fj
-	apz4ffO7gVOPeiOh1b1fNPJM1VbaZNdUXANi4cMdUmBRxPhSSm6O/YyaxOLwLk4G5o7y+8pza4tFb
-	roUxnmShOFci6SLpVkzDVGQyjCIlQF59KQJBCAHFZ6k1pce+2z203Tnc7bhXDCifAtrRrkC5JiKtF
-	JCljZXlw==;
-Received: from sslproxy06.your-server.de ([78.46.172.3])
+	bh=plEBybSZs17ofMuAql8ugZTiTKQWX5rpFZ+CNp+rQ5I=; b=b7EnCqfgNyAuiYM2hWQuUcSZ/9
+	BazouujCmceVJE8w4EpCnRZg+p6ycrKpM6mhEQnCeDHNoEXey019Q9kv6q5rqeolY0reFBvRQjYmh
+	fFjVULtGgjdPnFfJyduak3ySqj+qiQF8nhJ8l4XeIENiOYDZB//9TVD6g4sAktGeBMhDlQqftVTQC
+	HdgN1p8mmK131FimY2kkYRhP0F0YKkfYrUDFe/FFGWuqev6sPLEdB394NCQ6KWBJwt1r7+y88fdk7
+	6QohO8bc652qdCPf/yfDqgOxiW7iESqOMbW5n16hvnPg+b5rEummT59mo4BFDDkaQiN5RpIcIqapK
+	1L1LqAeQ==;
+Received: from sslproxy03.your-server.de ([88.198.220.132])
 	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.96.2)
 	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1xGcAG-0003cr-18;
-	Tue, 13 Oct 2026 15:03:32 +0200
+	id 1xGd7x-000L1C-34;
+	Tue, 13 Oct 2026 16:05:14 +0200
 Received: from localhost ([127.0.0.1])
-	by sslproxy06.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	by sslproxy03.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1xGcAF-0000yV-36;
-	Tue, 13 Oct 2026 15:03:31 +0200
+	id 1xGd7x-000HRa-1z;
+	Tue, 13 Oct 2026 16:05:13 +0200
 From: Alexander Stein <alexander.stein@ew.tq-group.com>
 To: sashiko-reviews@lists.linux.dev
 Cc: imx@lists.linux.dev, devicetree@vger.kernel.org, robh@kernel.org,
  conor+dt@kernel.org, Frank.Li@kernel.org
-Subject: Re: [PATCH 4/5] arm64: dts: freescale: Add LVDS overlays for TQMa8Xx
-Date: Tue, 13 Oct 2026 15:03:31 +0200
-Message-ID: <14085313.O9o76ZdvQC@steina-w>
+Subject: Re: [PATCH 2/5] arm64: dts: imx8qxp: Add display controller subsystem
+Date: Tue, 13 Oct 2026 16:05:12 +0200
+Message-ID: <5866247.LvFx2qVVIh@steina-w>
 Organization: TQ-Systems GmbH
-In-Reply-To: <sashiko-outbox-169626@kernel.org>
+In-Reply-To: <sashiko-outbox-169627@kernel.org>
 References:
  <20261013111737.998282-1-alexander.stein@ew.tq-group.com>
- <20261013111737.998282-5-alexander.stein@ew.tq-group.com>
- <sashiko-outbox-169626@kernel.org>
+ <20261013111737.998282-3-alexander.stein@ew.tq-group.com>
+ <sashiko-outbox-169627@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -62,74 +62,89 @@ Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset="utf-8"
 X-Virus-Scanned: Clear (ClamAV 1.4.3/28152/Tue Oct 13 08:26:14 2026)
 
-Am Dienstag, 13. Oktober 2026, 13:28:27 Mitteleurop=C3=A4ische Sommerzeit s=
+Am Dienstag, 13. Oktober 2026, 13:29:55 Mitteleurop=C3=A4ische Sommerzeit s=
 chrieb sashiko-bot@kernel.org:
 > Thank you for your contribution! Sashiko AI review found 1 potential issu=
 e(s) to consider:
-> - [High] dts: unit address mismatch in dc0_pc channel@1 breaks LVDS1 hard=
-ware mapping
+> - [Medium] arm64: dts: Missing power-domains and compatible override for =
+dc0_irqsteer
 > --
 >=20
-> commit 9e71d1e0ae4bcdbdae19947de71699d2eb47af70
-> Author: Alexander Stein <alexander.stein@ew.tq-group.com>
+> commit ae70e9d2f5935bf44872ed0bd30be554653b06e0
+> Author: Liu Ying <victor.liu@nxp.com>
 >=20
-> arm64: dts: freescale: Add LVDS overlays for TQMa8Xx
+> arm64: dts: imx8qxp: Add display controller subsystem
 >=20
-> Add overlays for the supported LVDS display tianma tm070jvhg33 on both
-> LVDS0 and LVDS1 channels on connector X14 (+ control on X22).
-> The corresponding display controller PLL is configured with 10x the
-> pixelclock.
+> Add display controller subsystem in i.MX8qxp SoC.
 >=20
-> > diff --git a/arch/arm64/boot/dts/freescale/mba8xx-lvds1-tm070jvhg33.dts=
-o b/arch/arm64/boot/dts/freescale/mba8xx-lvds1-tm070jvhg33.dtso
+> > diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-dc0.dtsi b/arch/arm6=
+4/boot/dts/freescale/imx8-ss-dc0.dtsi
 > > new file mode 100644
-> > index 0000000000000..4a8ba61962725
 > > --- /dev/null
-> > +++ b/arch/arm64/boot/dts/freescale/mba8xx-lvds1-tm070jvhg33.dtso
->=20
+> > +++ b/arch/arm64/boot/dts/freescale/imx8-ss-dc0.dtsi
 > [ ... ]
+> > +dc0_subsys: bus@56000000 {
+> [ ... ]
+> > +	dc0_irqsteer: interrupt-controller@56000000 {
+> > +		compatible =3D "fsl,imx-irqsteer";
+> > +		reg =3D <0x56000000 0x1000>;
+> > +		interrupt-controller;
+> > +		interrupt-parent =3D <&gic>;
+> > +		#interrupt-cells =3D <1>;
+> [ ... ]
+> > +		clocks =3D <&dc0_lis_lpcg IMX_LPCG_CLK_4>;
+> > +		clock-names =3D "ipg";
+> > +		fsl,channel =3D <0>;
+> > +		fsl,num-irqs =3D <512>;
+> > +	};
 >=20
-> > +&dc0_pc {
-> > +	#address-cells =3D <1>;
-> > +	#size-cells =3D <0>;
-> > +	status =3D "okay";
-> > +
-> > +	channel@1 {
-> > +		reg =3D <0>;
+> [Severity: Medium]
+> Is the dc0_irqsteer node missing a power-domains property?
 >=20
-> [Severity: High]
-> Does this reg value incorrectly map channel@1 to hardware index 0 instead=
- of 1?
->=20
-> It appears this overrides the channel@1 child node of &dc0_pc but explici=
-tly
-> sets reg =3D <0>. This will incorrectly update hardware channel 0, overri=
-ding the
-> base device tree which expects channel 1, and will also trigger a DTC unit
-> address mismatch warning.
->=20
-> This can cause the LVDS1 display output to not function correctly because=
- its
-> pixel combiner channel configuration is applied to channel 0 instead of
-> channel 1.
+> If it lacks power-domains =3D <&pd IMX_SC_R_DC_0>;, could this trigger a =
+bus
+> fault (SError) during boot or suspend/resume cycles if the irqsteer driver
+> accesses its registers when the IMX_SC_R_DC_0 power domain is off?
 
-Ah, that's true. Will fix in v2.
-Actually I would like to skip those "overwrites" as the value are already s=
-et
-in base .dtsi. But then dtbs_check complains like this:
-> /fragment@3/__overlay__/channel@1: node has a unit name, but no reg or ra=
-nges property
+I cannot test suspend/resume but adding the power-domain is reasonable.
+Will be added in v2.
+
+> > diff --git a/arch/arm64/boot/dts/freescale/imx8qxp-ss-dc.dtsi b/arch/ar=
+m64/boot/dts/freescale/imx8qxp-ss-dc.dtsi
+> > new file mode 100644
+> > --- /dev/null
+> > +++ b/arch/arm64/boot/dts/freescale/imx8qxp-ss-dc.dtsi
+> > @@ -0,0 +1,236 @@
+> > +// SPDX-License-Identifier: GPL-2.0+
+> > +/*
+> > + * Copyright 2024 NXP
+> > + */
+> > +
+> > +&dc0 {
+> > +	compatible =3D "fsl,imx8qxp-dc";
+> > +};
+>=20
+> [Severity: Medium]
+> Should there be an override for &dc0_irqsteer in this file to set its
+> SoC-specific compatible string?
+>=20
+> For example, setting compatible =3D "fsl,imx8qxp-irqsteer", "fsl,imx-irqs=
+teer";
+> here would ensure the node matches correctly. Omitting the SoC-specific
+> compatible string might mask the missing power domain violation from
+> dtbs_check and prevent SoC-specific driver quirks from applying.
+
+This is a good idea. I removed the "default" compatible, similar to the
+other dc nodes.
+
+> &dc0_irqsteer {
+> 	compatible =3D "fsl,imx8qxp-irqsteer", "fsl,imx-irqsteer";
+> };
+
+This is added in imx8qxp-ss-dc.dtsi instead in v2.
 
 Best regards,
 Alexander
-
-> > +		status =3D "okay";
-> > +	};
-> > +};
->=20
->=20
-
-
 =2D-=20
 TQ-Systems GmbH | M=C3=BChlstra=C3=9Fe 2, Gut Delling | 82229 Seefeld, Germ=
 any
