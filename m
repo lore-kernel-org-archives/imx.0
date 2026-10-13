@@ -1,147 +1,131 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F44A157A5A
-	for <imx@lists.linux.dev>; Tue, 13 Oct 2026 09:59:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD8683EB11C
+	for <imx@lists.linux.dev>; Tue, 13 Oct 2026 09:59:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791885597; cv=none; b=U3WmT9xQPYA882Hz/qSmnbUY0s+oV7ZaJ5cRfa+5A4s3EucOSLaNZ/J0ZqyZuqZhRRlomGdUj06axs+zdHJ9Z3xzxgX92c+u0emDJQC3J68M1xs6RRDflHm5f4PX1nBd02egN2lToeKDVIjOcVVfmJZILPW9T9Ac84wcJfJ/EsA=
+	t=1791885597; cv=none; b=exrvL0GuH2nhxwE75mLHJef2tiqGCFgWCepWvMfktq7TrSWsvB+0KYz4fw5B5R6gvMC6+rrmjJEi8YyizTkaec3NxFWE2CwwI+Y2So+FlooRxikoSFYkNH+G9c6tWB7rv+bqRoOvj8+WwnPOtjdU+bzdq6f1WYAKTgy+jnmWCIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1791885597; c=relaxed/simple;
-	bh=5YZu0ozIsXdt5YN1fN4LUb/CqqLL1K6e0ESYREAXCkc=;
+	bh=DknPkjRq9/2KncIY+46WisFJwqpOK9NoWhMV0r3o6nQ=;
 	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
-	 Date; b=Hzn7XmV5XAD1JmIyOL1eGOc2PeONFppQQl24WJrCy1Ize9akZzKq1vHtiRgi8oO/tkfKgCL7wJbt1u58KOdt27Tqlnf26N8LAknIcdXTu1W9kWw9bk44XEguWRc4mi2IaukQHCvydT7anMgCPskrBkU9nRqY1xXL8Y5WwZisgSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZyVUs5RP; arc=none smtp.client-ip=100.103.45.18
+	 Date; b=rI3qGGfxAGhXgz7uRYuN5ZQgYL5cdIQ7zxqp8bu04tdu5QoVq75eC7auJBBFyNtwfcOob7XRSM9luC0T7Ar6xpH7Cuz0sNtWCehTRP7b7ItoOeuKk6ezkBBDsd31neAuAR42e9EohrVRWpffzjvd78k+N14vfAbdLPQj82qvtFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lMseEz/g; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZyVUs5RP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A19041F000FF;
-	Tue, 13 Oct 2026 09:59:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lMseEz/g"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 619CB1F00893;
+	Tue, 13 Oct 2026 09:59:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791885595;
-	bh=N4CugEqYG5kca+dJgzriuqGrDAhbcqbI/VMgOVhaZJA=;
+	s=k20260515; t=1791885596;
+	bh=VZJXOU+xyXwt7eZFDLK7Vf4Zs0nBDHBLve+CzAoY5LM=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ZyVUs5RPj7NmwEFzPWo3/jnrCeNoYb+idYR06zkp5PAKgvWLBPLhA54YPGU/P7fLU
-	 lKuI0skoEu1O2Snj3SrLD3aT9x2PV/M6eDjHWzmA+2kdRemN6QUI6/jO+QYRZ/mO7/
-	 ZLAfaWz/Apd/aiYblKTgNkoiLn1OeB/U9Y87ZSlyIrJQBM0aAFyrIar9Vj7WDNPOHv
-	 WeMlBfepD+Oa89iKuynPM5DMlyNfD1bpQiI21cQELHZvfniyOsrvw3pQXe7R22P6SR
-	 6UhpDUcC+QkoKel09uMZ3MqxvL1yb3tPp5LQ2Nl5JkuluXwXePV+V8SCRG9i3mxw9I
-	 frc8yYXIEtK/w==
-Message-ID: <sashiko-outbox-169415@kernel.org>
+	b=lMseEz/gnw9Be5/TRd4LhTrZC/vDOyrQfEr+IURfgDu58aoCV8ujBLP8CNVVJuKZ9
+	 y4QtHm5LEnQ435kJGHDlrF/PYNiK2GfphJMWpsFpXkn0jVxkv3j752CQq3HdhGgqzg
+	 IUEmshlSYeYLqSDwtb+mh4NAlvFWFCm0rSFOptC2rBS5nmZ/aBZPhJ3yBVk+N7tGvU
+	 QY7RGOop0Vrt1H8QtEWDJYg36DpmuNNsBChf9gEeyXq/Kob/ViF/+enpz3Cmck/SzV
+	 tZqjxG0g8WPm3LsF7uTREF7unzEw4yriTKfByDR7jdlo52jWpO9QI2I04t4jvuniXj
+	 H4qSEVZvEqI/g==
+Message-ID: <sashiko-outbox-169416@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 net-next 4/9] net: dsa: netc: tie setup resources and
- reset to DSA setup/teardown
+Subject: Re: [PATCH v5 net-next 5/9] net: dsa: netc: use entry ID instead of
+ pointer to track host flood rule
 Reply-To: sashiko-reviews@lists.linux.dev
 To: wei.fang@oss.nxp.com
 Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20261012095924.1129312-5-wei.fang@oss.nxp.com>
+In-Reply-To: <20261012095924.1129312-6-wei.fang@oss.nxp.com>
 References: <20261012095924.1129312-1-wei.fang@oss.nxp.com>
- <20261012095924.1129312-5-wei.fang@oss.nxp.com>
+ <20261012095924.1129312-6-wei.fang@oss.nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 13 Oct 2026 09:59:55 +0000
+Date: Tue, 13 Oct 2026 09:59:56 +0000
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] dsa: AB-BA deadlock between dsa2_mutex and pci device_lock during =
-switch setup/teardown
-- [High] netc: race condition in netc_switch_reset() leading to unheld PCI =
-device lock
+- [High] netc: Sleeping in Atomic Context during port_set_host_flood
 --
 
-commit f362c9d18af3d66bf5d5401a43abc544295b1901
+commit ec5410333ea86338656a97517d41df973b9cde3c
 Author: Wei Fang <wei.fang@nxp.com>
-Subject: net: dsa: netc: tie setup resources and reset to DSA setup/teardown
 
-This commit modifies the NETC switch driver to explicitly allocate and free
-resources during DSA setup and teardown, instead of relying on devm allocat=
-ions
-during PCI probe. It also adds a PCI reset into netc_setup() to ensure a
-clean hardware state when starting up.
+    net: dsa: netc: use entry ID instead of pointer to track host flood rule
+   =20
+    Replace the struct ipft_entry_data pointer in struct netc_port with a
+    plain u32 entry ID (ipft_hf_eid), using NTMP_NULL_ENTRY_ID as the
+    sentinel value. The ipft_entry_data allocation is now freed immediately
+    inside netc_port_add_host_flood_rule() after the hardware entry is
+    committed, so no heap memory survives beyond that function. As a result,
+    netc_free_host_flood_rules() is no longer needed and can be removed.
 
 > diff --git a/drivers/net/dsa/netc/netc_main.c b/drivers/net/dsa/netc/netc=
 _main.c
+> index c639ae67c9b71..e33a184fd0054 100644
 > --- a/drivers/net/dsa/netc/netc_main.c
 > +++ b/drivers/net/dsa/netc/netc_main.c
-
 [ ... ]
-
-> +static int netc_switch_reset(struct netc_switch *priv)
-> +{
-> +	if (priv->in_probe)
-> +		return pci_reset_function_locked(priv->pdev);
+> @@ -1890,7 +1876,7 @@ static void netc_port_set_host_flood(struct dsa_swi=
+tch *ds, int port,
+>  				     bool uc, bool mc)
+>  {
+>  	struct netc_port *np =3D NETC_PORT(ds, port);
+> -	struct ipft_entry_data *old_host_flood;
+> +	u32 old_entry_id;
+> =20
+>  	/* Do not add host flood rule to ingress port filter table when
+>  	 * the port has joined a bridge. Otherwise, the ingress frames
+> @@ -1898,7 +1884,7 @@ static void netc_port_set_host_flood(struct dsa_swi=
+tch *ds, int port,
+>  	 * will be redirected directly to the CPU port.
+>  	 */
+>  	if (dsa_port_bridge_dev_get(np->dp)) {
+> -		netc_port_remove_host_flood(np, np->host_flood);
+> +		netc_port_remove_host_flood(np, np->ipft_hf_eid);
+> =20
+>  		return;
+>  	}
+> @@ -1908,20 +1894,18 @@ static void netc_port_set_host_flood(struct dsa_s=
+witch *ds, int port,
+> =20
+>  	/* IPFT does not support in-place updates to the KEYE element,
+>  	 * we need to add a new entry and then delete the old one. So
+> -	 * save the old entry first.
+> +	 * save the old entry ID first.
+>  	 */
+> -	old_host_flood =3D np->host_flood;
+> -	np->host_flood =3D NULL;
+> +	old_entry_id =3D np->ipft_hf_eid;
+> =20
+>  	if (netc_port_add_host_flood_rule(np, uc, mc)) {
 
 [Severity: High]
-Can a concurrent thread execute this path without holding the PCI device
-lock?
+Does this code sleep in atomic context?
 
-In a multi-switch DSA tree, priv->in_probe is set to true during
-netc_switch_probe(). The thread then calls dsa_register_switch(), which
-internally acquires and releases dsa2_mutex. If the DSA tree is incomplete,
-it returns, and the thread can be preempted before executing
-priv->in_probe =3D false.
+The port_set_host_flood callback in DSA drivers is invoked via
+ndo_change_rx_flags (e.g., when toggling promiscuous or allmulti mode on the
+interface). The networking core holds netif_addr_lock_bh() during this
+operation, creating an atomic context where sleeping is prohibited.
 
-Concurrently, a second thread could probe the second switch, complete the
-tree, acquire dsa2_mutex, and call dsa_tree_setup_switches(). This invokes
-netc_setup() for the first switch. Observing priv->in_probe =3D=3D true, the
-second thread would call pci_reset_function_locked() on the first switch's
-PCI device, despite not holding its device lock.
+However, netc_port_set_host_flood() calls netc_port_add_host_flood_rule(),
+which performs a sleepable allocation:
 
-> +
-> +	return pci_reset_function(priv->pdev);
+	host_flood =3D kzalloc_obj(*host_flood);
 
-[Severity: High]
-Does this introduce an AB-BA deadlock between the PCI device lock and
-dsa2_mutex?
+Additionally, it calls ntmp_ipft_add_entry(), which allocates a DMA buffer
+using dma_alloc_coherent() with GFP_KERNEL and calls read_poll_timeout()
+with a 10us sleep (usleep_range). Executing these sleepable operations while
+holding a spinlock with BH disabled will trigger a sleeping-in-atomic panic.
 
-When a multi-switch DSA tree is set up, netc_setup() can be called for an
-already-probed switch. In this case, priv->in_probe is false, and
-netc_switch_reset() calls pci_reset_function(), which acquires the PCI
-device lock. However, netc_setup() is invoked by the DSA core with the
-global dsa2_mutex held.
-
-Conversely, when a switch is unbound (e.g. via sysfs), the driver core first
-acquires the switch's device lock and then calls the driver's remove
-callback. The netc_switch_remove() function calls dsa_unregister_switch(),
-which attempts to acquire dsa2_mutex:
-
-net/dsa/dsa.c:dsa_unregister_switch() {
-    ...
-    mutex_lock(&dsa2_mutex);
-    dsa_switch_remove(ds);
-    mutex_unlock(&dsa2_mutex);
-    ...
-}
-
-If Thread 1 is unbinding Switch A (holding the device lock for A and waiting
-for dsa2_mutex) while Thread 2 is probing Switch B (holding dsa2_mutex and
-calling pci_reset_function(A) inside netc_setup(A)), the system could
-deadlock.
-
-> +}
-
-[ ... ]
-
-> @@ -2475,12 +2565,15 @@ static int netc_switch_probe(struct pci_dev *pdev,
->  	ds->ageing_time_max =3D U32_MAX;
->  	ds->priv =3D priv;
->  	priv->ds =3D ds;
-> +	priv->in_probe =3D true;
-> =20
->  	err =3D dsa_register_switch(ds);
->  	if (err)
->  		return dev_err_probe(dev, err,
->  				     "Failed to register DSA switch\n");
-> =20
-> +	priv->in_probe =3D false;
-> +
->  	return 0;
->  }
+> -		np->host_flood =3D old_host_flood;
+>  		dev_err(ds->dev, "Failed to add host flood rule on port %d\n",
+>  			port);
+>  		return;
+>  	}
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261012095924.1129=
-312-1-wei.fang@oss.nxp.com?part=3D4
+312-1-wei.fang@oss.nxp.com?part=3D5
