@@ -1,274 +1,227 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011054.outbound.protection.outlook.com [52.101.65.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C38063DD526;
-	Tue, 13 Oct 2026 14:20:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791901207; cv=none; b=nuYCztvpW51j5yJeSX+wHMIwXHttxSl/kgBytgzeVV/iH9iKJe641ePG0gqgCdg70JNO8f2TG23lX/782kjSkTz86DF492fK99CFfhqCJTxiDjC89d9rz9Wd98GCMDuHkiubJvuRqwKIA4UWDHMfBH9s8aGMnWN9j21G3vW+sUc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791901207; c=relaxed/simple;
-	bh=w9iXcdNAy9q5kpInJ63QcmeNzkngbgW7GozEWnALozk=;
-	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
-	 References:Date:Message-Id; b=qVgqyK5CH7H+Z9Rpnbdd1PHrdjfjIfXMjlP77Fh68IL0Cp49zPjgao4VWClwDpK5qNHWYvTrgQCLWZlpiCctktXzdtZDF/MiZQaJoBRT0vvpg7PwvVZWKIhtavB+BuOewnLoVAOIp3exoc4rRzHLxSvVE+hh2yXIzyDmB2IQvn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RBa5hNQ1; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98F6851A141
+	for <imx@lists.linux.dev>; Tue, 13 Oct 2026 14:26:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791901615; cv=fail; b=j9Qz5tTECmOkO9ReH/iDhbtcipBdGQFJB1zlC1Aqe8Fssj/pmCBTmoJ5ODZ0Gd50fyN0WGwa5Yu0nt0mtb3c1T+HBtgKsruaQUnKeVeI0GDN5+D/eJmDuk0E2xiTKQXTN8JYTSS6c0Q6JXs0jtUkGmR7aARbqS/G4xnKCWfWF9s=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791901615; c=relaxed/simple;
+	bh=XyqzKNRyKc7Pog3etKQhDA3OABeK4UYU3pmFBVwDV1I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=o6lOhCOP6Y+5BI8J6Me5Tay2c2SQPg/sjZgATSrvugLBIZl3oninNG5FXbIc3qf6zvn2WfxiuBddYoEyr39z7w9rXsvaGA27qKSoD512Xs4q7ADv/LA0eJ1Zi+V78AvL2lhoMhnI3F0s6iaQuCypn+lDkl1QyJWaP5WxfG7iIjU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=BihwXb4B; arc=fail smtp.client-ip=52.101.65.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RBa5hNQ1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C5F31F000FF;
-	Tue, 13 Oct 2026 14:20:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791901205;
-	bh=VFUKf4WT1PC9FZhPf1gCPKKTYAdHhpxy5ngxtUFm0FA=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=RBa5hNQ1EN2izACHg84lWz5itrvyP4DdpiIfrFn53wQagcEmr6uIIfWUcwEQLB5L/
-	 NvO/QyG3zHF/ZQA6xsa2I2OtO7Vgbe2q4O2JCQfxQiMsCbdtB8Ya+3TWOiH0L10mr2
-	 vpKxgbS2l/nJl+GOIuZxBKulvZYfWD1fzfqRTdA7ASbQs77j+qAQWE9PI3mE655ajK
-	 j8Sm4Q2ZRMoiOIxX+jNBucWHbtsbi2h+pbacGEoKWZtbSLu5FEzseYvtg7WIOvfgPB
-	 4eV6gwNjqt2rCCyWA/leg2O500s9Js5Y/dJXtWAWWmWuWI9qBQWgBX9Fd1Ck6s8jYo
-	 x0Y7AYsvviyhA==
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="BihwXb4B"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=kyk88aQceW9ba+Xx4WNMJGKif5CB3uuN4Fa3TDDMUzNAg36AB4/N9/7FXLvfDhGVG0UNxSHpUmFNJP544L9Q4PUGJnnv5XhVNFAyaEh/5FnmF9QE4uW2S3JzT0Nf9jHCJJD7VdXJiCbUh8yLBRwUxF1k66qahNI6VAxKQakUHzn88l7U0Arg6wKxjQKRw82GyYCRRbX+rmVm2IhiyomTZlVC1SwgudmH8THubzfg1hoj4ZMrbL+hTVvvNyIJvR1ZUVG02IITA5VpbVkL/D/dN5EYuMN+WOM9vXYK1NYoWnE6q4K6xj2UgmScOou91PFgFI0nueT7hqQpZo90Wfjn+g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=kwYrqLWnFJcJohC+cPbikw1CYQn+xvuGaM21oYGMmIM=;
+ b=TucJD6cHVX06oFbaqO1Eh4KXsExDiDh+oYeV0AgfiSRqxQFnvX83Tzf7eloSmC3fPAACIVd7Qyr+cScIxwzqP9CO0IriHHJzrxPCVvqOMLWAJo1nX/MWuLNbFwajVhqmxum9EVipiKK3+E1NVaiG08RU6ESI/7BXYw/9P2Ljni3nKtNz00HKTJjNAkAN6IP5sIl4HVfFQ58HXvqDi6kp80MrbiYpdAZcnk9lBjA3lvP4bw9pRpjSJCXdknwrhKcd+GjI9nVvd1Y09+3uHQZo6k36q9ekGjIhMKyy3dp6vCuosECMTCnLKnA3Jjlchh4cRMbBijZ4ZdbHfuR9IzlCEA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=kwYrqLWnFJcJohC+cPbikw1CYQn+xvuGaM21oYGMmIM=;
+ b=BihwXb4BMqHwnPSGs/y4ku9ioPKhZ0Uf9cquisFbWcMukvOaC2yqxef4nqZ1ELwOifmkeavQPRLEMk2V3bdgWAFR75rTQARLQGWbXBdfMUXWCupw4tpp1hJmkr/dTZ4L+P3+WornNid1ht4ec1pE/U4Ryj14w+CrEGGpMoVowaSpdkt5InAYK9udpJQv7/WO9nRmfYCoK/UoMYVt8YJKq+xrGd7V1J01M2cavdfyhjDedfkPnD1j50RWDKUZNIRPvcdEoUwTgom0cB2nsGUwd0UiInMrp7/7yHf73oKqmKmO+9m7eVYsCkH9a4RFyAhWn5siBsMS6Xt9XNNSM4ey1Q==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by AS5PR04MB9755.eurprd04.prod.outlook.com (2603:10a6:20b:650::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.19; Tue, 13 Oct
+ 2026 14:26:49 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0522.011; Tue, 13 Oct 2026
+ 14:26:48 +0000
+Date: Tue, 13 Oct 2026 09:26:29 -0500
+From: Frank Li <Frank.li@oss.nxp.com>
+To: Larisa Grigore <larisa.grigore@oss.nxp.com>
+Cc: NXP S32 Linux Team <s32@nxp.com>, Alim Akhtar <alim.akhtar@samsung.com>,
+	Avri Altman <avri.altman@sandisk.com>,
+	Bart Van Assche <bvanassche@acm.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	"Martin K. Petersen" <mkp@kernel.org>,
+	Sai Krishna Potthuri <sai.krishna.potthuri@amd.com>,
+	Ajay Neeli <ajay.neeli@amd.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Pedro Sousa <pedrom.sousa@synopsys.com>,
+	Hannes Reinicke <hare@suse.de>,
+	Joao Pinto <Joao.Pinto@synopsys.com>, linux-scsi@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org, clizzi@redhat.com,
+	aruizrui@redhat.com, eballetb@redhat.com, echanude@redhat.com
+Subject: Re: [PATCH v8 07/12] dt-bindings: ufs: Add NXP S32N79 UFS host
+ controller
+Message-ID: <as4_lVm9tvTeOkBp@SMW015318>
+References: <20261013103003.373156-1-larisa.grigore@oss.nxp.com>
+ <20261013103003.373156-8-larisa.grigore@oss.nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261013103003.373156-8-larisa.grigore@oss.nxp.com>
+X-ClientProxiedBy: PH7P221CA0026.NAMP221.PROD.OUTLOOK.COM
+ (2603:10b6:510:32a::21) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v7 3/3] PCI: imx6: Add root port reset to support link
- recovery
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: sashiko-reviews@lists.linux.dev
-Cc: hongxing.zhu@oss.nxp.com, robh@kernel.org, conor+dt@kernel.org, 
- Frank.Li@kernel.org, linux-pci@vger.kernel.org, imx@lists.linux.dev, 
- devicetree@vger.kernel.org
-In-Reply-To: <20260618093438.12B9B1F000E9@smtp.kernel.org>
-References: <20260618092100.3669556-1-hongxing.zhu@oss.nxp.com>
- <20260618092100.3669556-4-hongxing.zhu@oss.nxp.com>
- <20260618093438.12B9B1F000E9@smtp.kernel.org>
-Date: Tue, 13 Oct 2026 19:49:58 +0530
-Message-Id: <179190119866.12828.2001673028236159096.b4-reply@b4>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=8140; i=mani@kernel.org;
- h=from:subject:message-id; bh=w9iXcdNAy9q5kpInJ63QcmeNzkngbgW7GozEWnALozk=;
- b=owEBbQGS/pANAwAKAVWfEeb+kc71AcsmYgBqzj4RkBQlSf3o29RXJHwdXpSm1eckarO9yUILS
- yP/8ZK8AKyJATMEAAEKAB0WIQRnpUMqgUjL2KRYJ5dVnxHm/pHO9QUCas4+EQAKCRBVnxHm/pHO
- 9ePsB/9DHNBVfn9ovVA2xK9tUOEQ6HNVfHyRBIDmNnF4AUcIQI+0Jc+Vrvd1vaZ0D63d/gzM6jL
- lCEBcTpCwGmui/G0Z4eBI6h6uVoeRkhyyXKPhHehcUmT5Jj/ODZxYwO8qPUIftHkqU4BkKgEcs4
- QEICN2DSUTXuoiN03pDSxaHOH2TYPpN1dr23GnM+DuEzGHocyiZ39QHfBDE/bVwwFrJF2hfhxq2
- jwVAC04yQayPunzab/Eu2WWiA9uhLc8brfbT1ZC6OeJsHBH8ShajPqR0S3kIgto8xnaV72hhz/y
- D7pqYNFx5FapicDEdbLHCTivwhOatU0D7ShJAFg1eT2lxMae
-X-Developer-Key: i=mani@kernel.org; a=openpgp;
- fpr=C668AEC3C3188E4C611465E7488550E901166008
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AS5PR04MB9755:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3eaf8992-9a49-4d63-e380-08df293603bb
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|366016|1800799024|19092799006|23010399003|376014|7416014|261009223027099003|18002099003|22082099003|3023799007|10067099003|4143699003|56012099006|11063799006;
+X-Microsoft-Antispam-Message-Info:
+ C8Q5vDLdmUxbTL7SxM0uPL3a55qzr2dolTHMo2mh3IxHdU3n4X6KhqzGCvzAehs198UCduyg3CoEA6v2qArQx21QsH5F4iG+Xx75VLQ2d4HSnS843jH3sUSKdhlraUll7BK5vni6JnqIbdk5ABEurrtkK1ktPyT1fUus2789T2F0beEhjfwRWP9YOPC4oksdxXMuIgwaGHheZeQOP/4yFnuW98yEEkYRiiwndqpHT7FwudtC03ejMjXBdCjTvz/P2MbW6orM+pourfZ8bc0iEZKNSH5Lx61+bSnP+yWPuu2UuwY5ZKCHURkhmlSWxEfQwGWSpoigdyrYmI08JsRyS9fZC4XPbHcudlXMoKO0p4MNVKET9vTZIZvZmriJf8oFJLY1Rvu/2jNrMacc3Kb7mjkumu0+aQM0ifY+05Fir5oJkKg58RkqtSwg6sjGEm8UKVAzYnLqt5jCv1cOMoBWvzi+VcKWZVjg3zgICiaAbtyznSjaoXgR+Yi7+lg5vwYA5Huuiw6oGv82TDHhASm+NKGU4UH3VbvlYZjAAAvdvw4WspdR1zm8x5B7i3Afpq734AQIXyyELVFlLj6aMeaKTzqjsSyzsF7kyUhf5mqnH/UofFcBe9fCyXmX8+ySwp3u
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(19092799006)(23010399003)(376014)(7416014)(261009223027099003)(18002099003)(22082099003)(3023799007)(10067099003)(4143699003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?us-ascii?Q?rtRRsIbl7zuF/MRarOau1xrCCTVK/a3eK8SZnMxA8W1E3btgWr2zdS3mOhjG?=
+ =?us-ascii?Q?mooDUTgvgobDngT8oUGWlqt7SIi3VoYHAPzzworOHRHzhP9N+VgcAj/YnDjQ?=
+ =?us-ascii?Q?gkxa+4xXJDaPJsSOHMFcdCGUQkE3k2tkfLr7I6+LkHtAKIL9Y98TUXfBTC+X?=
+ =?us-ascii?Q?OtjYnnFtJY4GCKiCTfMr/zuK3brWhlCFjtKFF4CSKjnwihpjEx+XYkpb1X8T?=
+ =?us-ascii?Q?9zFShl6DR8EGDUDMAOq4TsLGc3AolhijV5ND/q2RACmTC3aiYKWU64XBb2Fn?=
+ =?us-ascii?Q?dVUIzLuaLL0xT2i1/ueQRSw/ftKdSBFpprrV01djmdaAgGIz6H2tVxx8hGxj?=
+ =?us-ascii?Q?WY0516nM16LHHiU1JrmTAX8gBI5+8G1vi9dTH/x0RgxUSac6KKBKQunWEI8W?=
+ =?us-ascii?Q?CO80GxMcyTt5VYNNMllkEYvMQ/MoL3jNBvVVqxtUXuztNyMR1KOJxdn4Z3ES?=
+ =?us-ascii?Q?YK7TIsL8unk6czs8ny92KMv+RRSd0muYNpHN+r+3w70KJiyJh2kseGBfe0MF?=
+ =?us-ascii?Q?fDCrQI89S4g7NNco43F699e2aP7Wg+K+SO8I7vjDEtgF6skZgMletJub6Neu?=
+ =?us-ascii?Q?UXoORgFDr2v1o0bf2irxKMIgHXHUzKAHps4CfK9E285ytcxFTG+oglRaCPNU?=
+ =?us-ascii?Q?SFX13zHUtWgiXJaysmPOD+iKuNQmM5aRHIZB3IHmu0XoBx2BfTzpjpjQ1tBh?=
+ =?us-ascii?Q?HFF4+6WYruKUfnWZpdAGZrwyz095rN5sGtqgkDT3uLTJwTLrhyXHJs5plhAw?=
+ =?us-ascii?Q?Y8MknMjRb7eGC/AbhKemQrJPG1wp+ljgtlaonsdTzVQNrVyjox8HtgX9imqI?=
+ =?us-ascii?Q?X6ucd2Et9OjFMSv4eC2cerneEV7FQtnJMpLFCOoOLVD05znn7xrAVkEYNapt?=
+ =?us-ascii?Q?EILFMF72ttQJeJTDswSuuIPdC7yMT4n5JmoGEzLe3+oBp0sdW0S43xc5psKt?=
+ =?us-ascii?Q?O2aQ9JRxoE6Ib8reLfO5B8X/CLR4OiFUlk5uGOL779AAIcwXb+YlQ2VIqc4K?=
+ =?us-ascii?Q?07jr85A4U1dn2xz5YL7s5f+SkP4qdpfoKcRtP3zcIDH6sI+Qr/QcrS9CfONj?=
+ =?us-ascii?Q?ONnBJyWLv5Af0Nwrw8wQEfspSGC0qVk6eHWGKVed3G2oSCG8nIMxJsAMk7vw?=
+ =?us-ascii?Q?UZ9+9xu8M7l4f6BCWNGjrftZwLrO55mPua7ppcEI/RBIU4ZLLi32cU0PeX6C?=
+ =?us-ascii?Q?3MJj0oMURuof2KOpXRr+EKlfeRoixWskzoU+o8R4z9EPgwInTkvwRo1it4q0?=
+ =?us-ascii?Q?eHvXxQehi24kfau309ARbswibd3Ldmsl0vt8DVelS6Fl9sPe8TBC6q+MJWIA?=
+ =?us-ascii?Q?K4uNbQVL2yYM5NceTr7lq3Z3SBYCy2STje7IMtqbKJf2vtK4Lh26pokgzqhj?=
+ =?us-ascii?Q?QgxjBXabfNGsuuVt4d2YPAnzNBIrq6/dNhlyfHIYm8+Iib7PQlwiqB+vtVqF?=
+ =?us-ascii?Q?1VkH14QcWQ6dl3qdi3ffUmLV/p+PUAgFYaDUxhDXrc9VgXkuq8ljreC4Zofg?=
+ =?us-ascii?Q?Sw9nmLQ0vDcLvmmR1MTr+wNHnW8gMmVYuoli4Nm1X8jJPpCZhDfQa2fsXkcz?=
+ =?us-ascii?Q?/5CYwcZ16sFbWEsKtW0xZYQGJvsZWV+/BHtRKjFaS5fdiMuMKHyNEnl3UMP9?=
+ =?us-ascii?Q?g/1roPTzQL8i0yECY/JHPOkElyyIxnq/OWo994c0KQeWdO3nzQOk4hBAe2+h?=
+ =?us-ascii?Q?x/XyiIuPifqwCqbA6N10LOHECRv0uoA42nu4ylLST70j1B3vfLy2TmQIayw7?=
+ =?us-ascii?Q?MVppbt3CjQ9xc/Q8LpaVnpqFsxMKrMAr+Us3/kbAT78uQDPCQkud?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3eaf8992-9a49-4d63-e380-08df293603bb
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Oct 2026 14:26:48.3960
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Eq2VxUbZvFsZ12JZUpaG6mb1CHXO/gNkcOllKhvdHczLizOKFWmuFbr2DIgpjaA6WvNiq3pkUPFnxVDtWBlEf4hEJfl079mAG5rzabVNV7nsNX2fqo/emmay64+VlqkB
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS5PR04MB9755
 
-On 2026-06-18 09:34 +0000, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 7 potential issue(s) to consider:
-> - [High] Using read-modify-write operations on a mixed RW/W1C register unintentionally clears pending hardware interrupts.
-> - [High] The ISR unconditionally clears the link down status bit even if the interrupt is disabled, dropping shared link recovery events.
-> - [High] Unsafe, lockless iteration over the PCI bus devices list without holding pci_bus_sem.
-> - [High] The threaded interrupt handler is not synchronized during system shutdown, leading to a race condition with controller power-off.
-> - [High] Accessing shared LUT GPR registers without acquiring imx_pcie->lock causes a data race.
-> - [Medium] The `imx_pcie_reset_root_port` function silently ignores failures to recover the PCIe link.
-> - [Low] The patch references undeclared functions and undefined struct members, causing build failures.
+On Tue, Oct 13, 2026 at 12:29:58PM +0200, Larisa Grigore wrote:
+> Document the UFS host controller on the NXP S32N79 SoC.
+>
+> Signed-off-by: Larisa Grigore <larisa.grigore@oss.nxp.com>
+> ---
 
-Atleast some of these issues are valid. Can you please take a look?
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
-- Mani
-
+>  .../bindings/ufs/nxp,s32n79-ufshc.yaml        | 65 +++++++++++++++++++
+>  1 file changed, 65 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/ufs/nxp,s32n79-ufshc.yaml
+>
+> diff --git a/Documentation/devicetree/bindings/ufs/nxp,s32n79-ufshc.yaml b/Documentation/devicetree/bindings/ufs/nxp,s32n79-ufshc.yaml
+> new file mode 100644
+> index 000000000000..14291c5506f1
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/ufs/nxp,s32n79-ufshc.yaml
+> @@ -0,0 +1,65 @@
+> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/ufs/nxp,s32n79-ufshc.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: NXP S32N79 Universal Flash Storage (UFS) Controller
+> +
+> +maintainers:
+> +  - Larisa Grigore <larisa.grigore@oss.nxp.com>
+> +
+> +properties:
+> +  compatible:
+> +    const: nxp,s32n79-ufshc
+> +
+> +  reg:
+> +    items:
+> +      - description: UFS Host Controller registers
+> +      - description: System Control Module registers
+> +
+> +  reg-names:
+> +    items:
+> +      - const: ufshc
+> +      - const: scm
+> +
+> +  clocks:
+> +    maxItems: 1
+> +
+> +  clock-names:
+> +    items:
+> +      - const: core
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - reg-names
+> +  - clocks
+> +  - clock-names
+> +  - operating-points-v2
+> +
+> +allOf:
+> +  - $ref: ufs-common.yaml
+> +
+> +unevaluatedProperties: false
+> +
+> +examples:
+> +  - |
+> +    ufshc@4ac80000 {
+> +        compatible = "nxp,s32n79-ufshc";
+> +        reg = <0x4ac80000 0x1000>, <0x4ac40000 0x1000>;
+> +        reg-names = "ufshc", "scm";
+> +        interrupt-parent = <&irqsteer_coss>;
+> +        interrupts = <211>;
+> +        clocks = <&clks 0x92>;
+> +        clock-names = "core";
+> +        operating-points-v2 = <&ufs_opp_table>;
+> +
+> +        ufs_opp_table: opp-table {
+> +            compatible = "operating-points-v2";
+> +
+> +            opp-0 {
+> +                opp-hz = /bits/ 64 <0>;
+> +            };
+> +        };
+> +    };
 > --
-> 
-> commit 1a657928e9eb6aa6da8f1cc80545e5be5d066898
-> Author: Richard Zhu <hongxing.zhu@nxp.com>
-> 
-> PCI: imx6: Add root port reset to support link recovery
-> 
-> The PCIe link can go down due to various unexpected circumstances. Add
-> root port reset support to enable link recovery for the i.MX PCIe
-> controller when the optional "intr" interrupt is present.
-> 
-> > diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-> > index 98e1db751132a..b38eb61983e15 100644
-> > --- a/drivers/pci/controller/dwc/pci-imx6.c
-> > +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> 
-> [ ... ]
-> 
-> > @@ -1442,6 +1450,13 @@ static int imx_pcie_host_init(struct dw_pcie_rp *pp)
-> >  
-> >  	imx_setup_phy_mpll(imx_pcie);
-> >  
-> > +	/*
-> > +	 * Callback invoked by PCI core when link down is detected and
-> > +	 * recovery is needed.
-> > +	 */
-> > +	if (pp->bridge)
-> > +		pp->bridge->reset_root_port = imx_pcie_reset_root_port;
-> 
-> [Severity: Low]
-> Is reset_root_port defined in struct pci_host_bridge? Looking at
-> include/linux/pci.h, this member does not appear to exist in the standard
-> kernel. Does this patch depend on a prerequisite patch that adds it?
-> 
-> [ ... ]
-> 
-> > @@ -1774,6 +1795,86 @@ static const struct dev_pm_ops imx_pcie_pm_ops = {
-> >  				  imx_pcie_resume_noirq)
-> >  };
-> >  
-> > +static irqreturn_t imx_pcie_lnk_irq_isr(int irq, void *priv)
-> > +{
-> > +	struct imx_pcie *imx_pcie = priv;
-> > +	struct dw_pcie *pci = imx_pcie->pci;
-> > +	struct device *dev = pci->dev;
-> > +	u32 val;
-> > +
-> > +	regmap_read(imx_pcie->iomuxc_gpr, IMX95_LINK_INT_CTRL_STS, &val);
-> > +	if (val & IMX95_LINK_DOWN_INT_STS) {
-> > +		dev_dbg(dev, "PCIe link down detected, initiating recovery\n");
-> > +		/* Clear link down interrupt status by writing 1b'1 to it */
-> > +		regmap_set_bits(imx_pcie->iomuxc_gpr, IMX95_LINK_INT_CTRL_STS,
-> > +				IMX95_LINK_DOWN_INT_STS);
-> > +		if (!(val & IMX95_LINK_DOWN_INT_EN))
-> > +			return IRQ_NONE;
-> 
-> [Severity: High]
-> If this interrupt is shared and masked during thread execution, could this
-> unconditionally clear a new link down event?
-> 
-> Since the status is cleared before checking IMX95_LINK_DOWN_INT_EN, if a new
-> event triggers concurrently with the threaded handler, it appears the event
-> will be cleared and then discarded when the ISR returns IRQ_NONE.
-> 
-> > +		regmap_clear_bits(imx_pcie->iomuxc_gpr, IMX95_LINK_INT_CTRL_STS,
-> > +				  IMX95_LINK_DOWN_INT_EN);
-> > +
-> > +		return IRQ_WAKE_THREAD;
-> > +	}
-> > +
-> > +	regmap_read(imx_pcie->iomuxc_gpr, IMX95_PE0_INT_STS, &val);
-> > +	if (unlikely(val))
-> > +		regmap_write(imx_pcie->iomuxc_gpr, IMX95_PE0_INT_STS, val);
-> > +
-> > +	return IRQ_NONE;
-> > +}
-> > +
-> > +static irqreturn_t imx_pcie_lnk_irq_thread(int irq, void *priv)
-> > +{
-> > +	struct imx_pcie *imx_pcie = priv;
-> > +	struct dw_pcie *pci = imx_pcie->pci;
-> > +	struct dw_pcie_rp *pp = &pci->pp;
-> > +	struct pci_dev *port;
-> > +
-> > +	for_each_pci_bridge(port, pp->bridge->bus)
-> > +		if (pci_pcie_type(port) == PCI_EXP_TYPE_ROOT_PORT)
-> > +			pci_host_handle_link_down(port);
-> 
-> [Severity: High]
-> Is it safe to iterate over the PCI bus devices list asynchronously here without
-> holding the pci_bus_sem semaphore?
-> 
-> If concurrent PCI enumeration, hotplug device removal, or SR-IOV VF
-> modifications occur, could this result in list pointer corruption or a
-> use-after-free?
-> 
-> [Severity: Low]
-> Also, is pci_host_handle_link_down() declared in the standard kernel headers?
-> I am unable to find it in include/linux/pci.h, which might cause a build
-> failure without a prerequisite patch.
-> 
-> > +
-> > +	regmap_set_bits(imx_pcie->iomuxc_gpr, IMX95_LINK_INT_CTRL_STS,
-> > +			IMX95_LINK_DOWN_INT_EN);
-> 
-> [Severity: High]
-> Can regmap_set_bits() unintentionally clear pending hardware interrupts here?
-> 
-> Since regmap_set_bits() performs a read-modify-write, and the
-> IMX95_LINK_DOWN_INT_STS (BIT 11) is a write-1-to-clear bit, could it
-> accidentally write back a 1 for a newly arrived link down event and
-> permanently lose that event?
-> 
-> > +
-> > +	return IRQ_HANDLED;
-> > +}
-> > +
-> > +static int imx_pcie_reset_root_port(struct pci_host_bridge *bridge,
-> > +				    struct pci_dev *pdev)
-> > +{
-> > +	struct pci_bus *bus = bridge->bus;
-> > +	struct dw_pcie_rp *pp = bus->sysdata;
-> > +	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
-> > +	struct imx_pcie *imx_pcie = to_imx_pcie(pci);
-> > +	int ret;
-> > +
-> > +	imx_pcie_msi_save_restore(imx_pcie, true);
-> > +	if (imx_check_flag(imx_pcie, IMX_PCIE_FLAG_HAS_LUT))
-> > +		imx_pcie_lut_save(imx_pcie);
-> 
-> [Severity: High]
-> Does imx_pcie_lut_save() need to acquire the imx_pcie->lock?
-> 
-> Since imx_pcie_reset_root_port() runs asynchronously in the recovery thread,
-> could this cause a data race on the shared IMX95_PE0_LUT_ACSCTRL index
-> register if another device probe concurrently calls imx_pcie_add_lut()?
-> 
-> > +	imx_pcie_stop_link(pci);
-> > +	imx_pcie_host_exit(pp);
-> > +
-> > +	ret = imx_pcie_host_init(pp);
-> > +	if (ret) {
-> > +		dev_err(pci->dev, "Failed to re-init PCIe\n");
-> > +		return ret;
-> > +	}
-> > +	ret = dw_pcie_setup_rc(pp);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	imx_pcie_start_link(pci);
-> > +	dw_pcie_wait_for_link(pci);
-> 
-> [Severity: Medium]
-> Should the return value of dw_pcie_wait_for_link() be checked and propagated?
-> 
-> If the link fails to come up (for example, returning -ETIMEDOUT because the
-> endpoint was unplugged), dropping the error allows the function to
-> unconditionally return 0. Could this leave the system in an inconsistent
-> state?
-> 
-> > +
-> > +	if (imx_check_flag(imx_pcie, IMX_PCIE_FLAG_HAS_LUT))
-> > +		imx_pcie_lut_restore(imx_pcie);
-> 
-> [Severity: High]
-> Similar to the save function above, does imx_pcie_lut_restore() need to
-> acquire imx_pcie->lock to prevent data races on the shared LUT index register
-> during restoration?
-> 
-> [ ... ]
-> 
-> > @@ -1973,15 +2074,46 @@ static int imx_pcie_probe(struct platform_device *pdev)
-> 
-> [ ... ]
-> 
-> >  static void imx_pcie_shutdown(struct platform_device *pdev)
-> >  {
-> >  	struct imx_pcie *imx_pcie = platform_get_drvdata(pdev);
-> >  
-> > +	if (imx_pcie->lnk_intr > 0)
-> > +		regmap_clear_bits(imx_pcie->iomuxc_gpr, IMX95_LINK_INT_CTRL_STS,
-> > +				  IMX95_LINK_DOWN_INT_EN);
-> >  	/* bring down link, so bootloader gets clean state in case of reboot */
-> >  	imx_pcie_assert_core_reset(imx_pcie);
-> 
-> [Severity: High]
-> Can a concurrent threaded interrupt handler run during this shutdown process?
-> 
-> Since disable_irq() is not called, if a link down event triggers just before
-> shutdown, could the thread access PCIe configuration space right as
-> pci_pwrctrl_power_off_devices() powers off the hardware, potentially causing a
-> synchronous external abort?
-> 
-> -- 
-> Sashiko AI review · https://sashiko.dev/#/patchset/20260618092100.3669556-1-hongxing.zhu@oss.nxp.com?part=3
-> 
-
-
+> 2.43.0
+>
+>
