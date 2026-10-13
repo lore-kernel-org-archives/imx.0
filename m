@@ -1,104 +1,96 @@
-Received: from 10.mo581.mail-out.ovh.net (10.mo581.mail-out.ovh.net [178.33.250.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F2313BBA1A
-	for <imx@lists.linux.dev>; Tue, 13 Oct 2026 16:13:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.33.250.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25E48480359
+	for <imx@lists.linux.dev>; Tue, 13 Oct 2026 16:51:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791908029; cv=none; b=nI8a40CZ7RwfiM8HqpV7FJDz4gkNdpp3VF2CVOTPe/FNbyAdWabpgbWM7HJ6XC7tAHkIwHTWgPpPJ0A2o9yjpIXFiYT+lLq1aD0aXFhNPOC3sxtSMFKPKG6AEeBkCLaAA5QtWn/rJ0Zj+f5AGlmx9qBKeYXws4yB3T0gyt2KNjM=
+	t=1791910318; cv=none; b=qyDNJjBR6dRBeAJDrINVAIGvycFiWa4N06nNmb/p41N88lhJ1cXkCy3pMrsFSOqg+88lXJHB6OaBQiIgIWJfLN7bjPDCmNlopYd9kaNSxv8Tdw5nmvYyvBHIo0OAnJNhWBNJZKSZ3PWzK8a2zfv+Dlh7A01hMocBnJs0hhgB2XM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791908029; c=relaxed/simple;
-	bh=kfP8OPsPqO/oUZC3gPAT+oD2S4HQ3xDeqjik6j/TtY4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=XwQ7/+Wy2LMXJOF9wcL/fLAFLYvrCQX7wZ2jNDEnV7DIAydxJlB45W43dEdvuKxgjVa3oC85QjnD6u8HTpH3SZwF+cshvKJILNWvAm6D1Iaq8vnhtQHHRJXILPolAgBd4B0v9kjfwXMpIIZGdUc1vuxwzvex0dJPiyjrI0Jd33Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=armadeus.com; spf=pass smtp.mailfrom=armadeus.com; dkim=pass (2048-bit key) header.d=armadeus.com header.i=@armadeus.com header.b=htzndDN0; arc=none smtp.client-ip=178.33.250.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=armadeus.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=armadeus.com
+	s=arc-20240116; t=1791910318; c=relaxed/simple;
+	bh=0ViHQJP6tSLk1UV3pfKJO29C714UPZR37o6g6K/Byng=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=B0fVZ+Vsr9hxUaMfc5opomvGDW05y9/dQRR+7/NHI+Wvs7EZmrCd9dKwiTiAW2Hk4tPhSA15v+Ii2t2jkpAwbfpcDLrWeGcGzwE5f4+de3ycDZkN8ZUUIn17Lk1L/9bEayCARgGFyv55DIoNUPtLh02DvcdAcOxxC2xjbSQfhpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HvWia53Z; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armadeus.com header.i=@armadeus.com header.b="htzndDN0"
-Received: from director1.ghost.mail-out.ovh.net (unknown [10.110.43.32])
-	by mo581.mail-out.ovh.net (Postfix) with ESMTP id 4j3zkg49Fzz60Mh
-	for <imx@lists.linux.dev>; Tue, 13 Oct 2026 16:07:39 +0000 (UTC)
-Received: from ghost-submission-c7b579475-655hp (unknown [10.110.164.42])
-	by director1.ghost.mail-out.ovh.net (Postfix) with ESMTPS id 10B87C12C2;
-	Tue, 13 Oct 2026 16:07:38 +0000 (UTC)
-Received: from armadeus.com ([37.59.142.104])
-	by ghost-submission-c7b579475-655hp with ESMTPSA
-	id J4tGM0lXzmr7Qy8AW2yxgA
-	(envelope-from <sebastien.szymanski@armadeus.com>); Tue, 13 Oct 2026 16:07:38 +0000
-Authentication-Results:garm.ovh; auth=pass (GARM-104R005ed722c48-267d-45b9-9d0f-38bc83d56095,
-                    E71387541862F9B32BD99FE93336DDEC16E392F6) smtp.auth=sebastien.szymanski@armadeus.com
-X-OVh-ClientIp:92.148.202.169
-From: =?utf-8?q?S=C3=A9bastien_Szymanski?= <sebastien.szymanski@armadeus.com>
-Date: Tue, 13 Oct 2026 18:07:24 +0200
-Subject: [PATCH] ARM: dts: apf6: fix Ethernet support
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HvWia53Z"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D44141F00898
+	for <imx@lists.linux.dev>; Tue, 13 Oct 2026 16:51:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791910316;
+	bh=l3/WP5D92dJn63pBVARZJXVp+tuxI1GnuqurUpTZ5jA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=HvWia53ZYyhgcZ+OXH68fzSeCTvCqsiRulCTPfoxOQFfsZUMZ7HrmAVwxHq0TSIhj
+	 0p0utXPvGUyGvZfDQB4Zcxctz5BdVh9RNiCElplGq3DFOQ58ymsICvXX2ZTjDpPP4B
+	 X0wiA+SPk4Lsr7Lf84b/BHLe6yTWho8RUweV+v0/4IPNRf3MO6T4p9lFHjOlHvuMRv
+	 KDbjyXUs12NH2QVqjoNNpwHh39PeyGCKmtbRFz3nSwX8yaEs0h5ugUoL2dsycH0fjl
+	 yTrrtTaV2/funlxY0mmHwruBFnUq4eeaX+TzpQ6hDC5aiF2tziZWKHelXDMRPTCo4h
+	 Tmxw75p8hc4Og==
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5bc18f54abbso1503698e87.1
+        for <imx@lists.linux.dev>; Tue, 13 Oct 2026 09:51:56 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBy2+izvSrqxHRI344oE8e7zRqHj2Xoqp7tIx9g0ovMkQrm3B++NIheTInQE9jfhSuFr8nE=@lists.linux.dev
+X-Gm-Message-State: AFq9FYJkrfMZ8sk4IXA6WZ2VxIFN7vRDZM88+lhl/9w7Q3EOZ44W1rL6
+	eJ9NotaO5jZ+DiL0q/CNl1D0+mLFCuvCVoaYR1v0COJ9m0aTuVmSZ3O2exy8F4eiBNE7Eh8wmYR
+	Up2spP7g/CgOCKqlVEpC+y1n/xgQqQsY=
+X-Received: by 2002:a05:6512:2245:b0:5ae:b7bc:27a7 with SMTP id
+ 2adb3069b0e04-5bcde35cab3mr4460647e87.6.1791910315615; Tue, 13 Oct 2026
+ 09:51:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20261013-apf6-fix-ethernet-v1-1-9530efe1d23e@armadeus.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMwQ5FMBSE4VeRs3aSloS4ryIW1JRj0SttiUS8u
- 2L5ZTL/SQFeEOiXneSxS5C/S9B5Rmbu3QSWMZkKVVRa6ZL71VZs5WDEGd4hsqlrUzYKVmGg9Fs
- 90v422+5z2IYFJj4huq4bM+Rl6HUAAAA=
-X-Change-ID: 20261013-apf6-fix-ethernet-c77c390ef0eb
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Andrew Lunn <andrew@lunn.ch>, 
- Shawn Guo <shawnguo@kernel.org>, Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- =?utf-8?q?S=C3=A9bastien_Royen?= <sebastien.royen@armadeus.com>, 
- Julien Boibessot <julien.boibessot@armadeus.com>, stable@vger.kernel.org, 
- =?utf-8?q?S=C3=A9bastien_Szymanski?= <sebastien.szymanski@armadeus.com>
-X-Mailer: b4 0.16.0
-x-ovh-tracer-id: 6290121306616026755
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: dmFkZTFwwrfl1iPxPmWO6o6uy7jINWKAyMh0x8QwmnQbFs9EgGBBoRnjM3BUaJEZr2O/b+jim7kDcbnaQ7gbObCvdaGwmrI7ygNuePUx2XfOlPU+ynH2L/Y3qjv+8V1sNGQDoWzTS4dPbg8+1q+A4z3650pMSEERHWOc6c7wHIzQ/cd0AAinuhk1ciGuYw2D4AM54rlUTc3EI7eSXJzVYl3OyTQSK/C+/uQKTz4zratc5VMMn5UDog0h/EUCyQxoTf55Y9AhqDDFZ6zvIsDrjC6HgMcTURajxU4gpbIZHaHPJuId6YRUZECM9rjL8rwWeXi3BZLeaf9O0cp/v2LK91+ydBE1ZsROIPhVRczfWXHrdB/GPRHx+PzBdwc12YTfR0zGB4ZA2qCiZFJsjAp4r+IoBdi4Tr3IU3ZoCB3HLutTvO6oCFCDGi/UfvD946CdKc4cUyTUBsmVeyI6oWGDuThez4vtszx8caRZjzwwf9GFSozHzovm2PkHWOdyvuaNhToIzLDWMIFheDATXY+bveNazDLlXCJyCflL02M8JG2mK9AY7cPGOEVWpjNYvTh9epZkTpGGiH/FIhQttZOhoKMUKmkUvWUWjWT6W7oJ1VhqHqoSMtmt3FMokrtUS/bNDQzU7z1TiaaI6Ki9pE0a3EL7hlEgWnpxCursUe/B20XuLHNLPg
-DKIM-Signature: a=rsa-sha256; bh=3JJebDaF8d0BDkPiP93+YZIa8Qgu2HPfzUYjFA6D8SE=;
- c=relaxed/relaxed; d=armadeus.com; h=From; s=ovhmo103079-selector1;
- t=1791907659; v=1;
- b=htzndDN0tLZisLCb4+yCj80PN7xv9g7YXxQHdVwxNFA1I1KYQbyiZdbAzxypK7zIFvtWUdlA
- r+p/WVV+ppUAzuY9Cza1y/KRrwjnBRzj7oRtHamoL4OZoIQbEG3XxkBEHIrdeIpf1KXsfSXMgrq
- 2/UbPM+mFpBi2IH1HsQ5viSypY+iiIFKg1drKuXZkQavLVjJhuqIRQm3zouS2VZrbD1Xz6WIxod
- yySiVzNtMLCjy/x0YLJTaXg29Aks8YfKXhaRmr6Nr6MiJWt0mlCrXkCR4PjW8lgmCZKsqFPEfV1
- 4XJdz2LUx6I4EgcjawOWbX78kUilhY/TtDYORO48qvGqw==
+References: <20261013-gpio-mxc-cleanup-v7-0-c4d769587d3e@nxp.com> <20261013-gpio-mxc-cleanup-v7-1-c4d769587d3e@nxp.com>
+In-Reply-To: <20261013-gpio-mxc-cleanup-v7-1-c4d769587d3e@nxp.com>
+From: Linus Walleij <linusw@kernel.org>
+Date: Tue, 13 Oct 2026 18:51:42 +0200
+X-Gmail-Original-Message-ID: <CAD++jLm3vuQr7WeYGMVVaNN5MuzuQvGrZFA4jboYBrTfCUfy8Q@mail.gmail.com>
+X-Gm-Features: AclHuK_fxfc0XIQk4rQosnKB8so3c6I-uEvWCQIJ_fa7_pXjDsATNC4VePcqcl4
+Message-ID: <CAD++jLm3vuQr7WeYGMVVaNN5MuzuQvGrZFA4jboYBrTfCUfy8Q@mail.gmail.com>
+Subject: Re: [PATCH v7 1/4] gpio: mxc: fix race between chained IRQ handler
+ install and probe completion
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: Bartosz Golaszewski <brgl@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Shenwei Wang <shenwei.wang@nxp.com>, 
+	Andy Shevchenko <andy.shevchenko@gmail.com>, linux-gpio@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	Peng Fan <peng.fan@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Commit f5d9aa79dfdf ("ARM: imx6q: remove clk-out fixup for the Atheros
-AR8031 and AR8035 PHYs") removed a PHY fixup that setted the clock.
-Make the Ethernet interface work again by doing as advised in the
-commit's log, set the clock in the device tree.
+On Tue, Oct 13, 2026 at 8:03=E2=80=AFAM Peng Fan (OSS) <peng.fan@oss.nxp.co=
+m> wrote:
+> From: Peng Fan <peng.fan@nxp.com>
+>
+> mxc_update_irq_chained_handler() is called before the IRQ domain, the
+> generic IRQ chip, and the port list entry are set up. If an interrupt
+> arrives in that window:
+>
+>  - mx3_gpio_irq_handler() calls generic_handle_domain_irq() with
+>    port->domain still NULL.
+>  - mx2_gpio_irq_handler() walks mxc_gpio_ports, but the port has not
+>    been added to the list yet.
+>
+> Additionally, if any of the subsequent probe steps
+> (gpio_generic_chip_init(), devm_gpiochip_add_data(),
+> irq_domain_create_legacy(), or mxc_gpio_init_gc()) fail, the error
+> paths never unregister the chained handler, leaving a dangling handler
+> that points at freed memory.
+>
+> Move the handler installation after all its dependencies are ready and
+> after list_add_tail(), so the handler is never live while the data
+> structures it touches are incomplete, and is never installed if probe
+> fails.
+>
+> Fixes: 5f6d1998adeb ("gpio: mxc: release the parent IRQ in runtime suspen=
+d")
+> Assisted-by: LLM
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
 
-Fixes: f5d9aa79dfdf ("ARM: imx6q: remove clk-out fixup for the Atheros AR8031 and AR8035 PHYs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sébastien Szymanski <sebastien.szymanski@armadeus.com>
----
- arch/arm/boot/dts/nxp/imx/imx6qdl-apf6.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+Reviewed-by: Linus Walleij <linusw@kernel.org>
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-apf6.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-apf6.dtsi
-index b78ed7974ea9..b55a3539fbe8 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-apf6.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-apf6.dtsi
-@@ -41,6 +41,7 @@ ethphy1: ethernet-phy@1 {
- 			reg = <1>;
- 			interrupt-parent = <&gpio1>;
- 			interrupts = <28 IRQ_TYPE_LEVEL_LOW>;
-+			qca,clk-out-frequency = <125000000>;
- 			status = "okay";
- 		};
- 	};
-
----
-base-commit: 24a19b953e2a3d0ea5a8c4951a0ab8f32720c907
-change-id: 20261013-apf6-fix-ethernet-c77c390ef0eb
-
-Best regards,
---  
-Sébastien Szymanski <sebastien.szymanski@armadeus.com>
-
+Yours,
+Linus Walleij
