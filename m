@@ -1,120 +1,104 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from 10.mo581.mail-out.ovh.net (10.mo581.mail-out.ovh.net [178.33.250.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FC20513554;
-	Tue, 13 Oct 2026 15:51:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F2313BBA1A
+	for <imx@lists.linux.dev>; Tue, 13 Oct 2026 16:13:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.33.250.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791906667; cv=none; b=K1Z+xoWtl1D1WAuGNcqAsihoQo3Wmuwa4qF5TBq+z+U90ZfHpaBWEgnPjjVtKi/HG+qXEAcFQjeX5TF5UmKsS07z6g3rlvabaA0UIIfpP8ii+Vh4pKo9nw1g4JADy1hBe2sW+8gggdJ7NXYf8gHE8osEkjbiY7RVvat3f5v0nD8=
+	t=1791908029; cv=none; b=nI8a40CZ7RwfiM8HqpV7FJDz4gkNdpp3VF2CVOTPe/FNbyAdWabpgbWM7HJ6XC7tAHkIwHTWgPpPJ0A2o9yjpIXFiYT+lLq1aD0aXFhNPOC3sxtSMFKPKG6AEeBkCLaAA5QtWn/rJ0Zj+f5AGlmx9qBKeYXws4yB3T0gyt2KNjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791906667; c=relaxed/simple;
-	bh=r3dPIqJVZRDrga/MJbTb3/5uaWkSC7+Lc43sA/eq0hQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IZC6z0ETHKyvLJVwguzUtl2+mIGS8+3LQdWuBhRwzILCAQLXqAhFHA1Q7xzxU82nmGWy7Dv9IOg5lxb1ltgX0U9f/V0d57SuKNajirpdsHRfeYi9W73//0RBO9qQZm9u56FEbFRONwqWIPH/GSVKUB6liKGA6EAVCPW95juRh1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M7k7sMsx; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791908029; c=relaxed/simple;
+	bh=kfP8OPsPqO/oUZC3gPAT+oD2S4HQ3xDeqjik6j/TtY4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=XwQ7/+Wy2LMXJOF9wcL/fLAFLYvrCQX7wZ2jNDEnV7DIAydxJlB45W43dEdvuKxgjVa3oC85QjnD6u8HTpH3SZwF+cshvKJILNWvAm6D1Iaq8vnhtQHHRJXILPolAgBd4B0v9kjfwXMpIIZGdUc1vuxwzvex0dJPiyjrI0Jd33Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=armadeus.com; spf=pass smtp.mailfrom=armadeus.com; dkim=pass (2048-bit key) header.d=armadeus.com header.i=@armadeus.com header.b=htzndDN0; arc=none smtp.client-ip=178.33.250.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=armadeus.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=armadeus.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M7k7sMsx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 230E81F000FF;
-	Tue, 13 Oct 2026 15:51:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791906665;
-	bh=MJ86ar7ft1Sjd5oHlVMjY4gwK71NzHJf7v8T3vhrJ3o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=M7k7sMsxNzFfFxydRPey+N/9CCSkwmN5DyNYLRN5dFgRPYd43mfp0TWbfEdFgtY/w
-	 H00/6MvApVWWBqq6LDZx7/+XInjZmbM5zuio3/3YukuSPwX35+4v+bZT4srhksV8Y/
-	 8bn1MH/mlIp1/ryVdV5wSZQDhrWJpceSWiOoCDwcWL+D5pwOATLTjZsmlUmRJ4pMfD
-	 kLlwAqKnCSGxhK43xZgCQAZ5VYC99wMNctVqXBsraoV+Tk46krOgTi1shEbqCtFfVL
-	 Yf1Ycg8KCjLzBo9AnqlKiK7HQ47FXsYThbecmNPzqLxcksT0Py5AI5nA/VimCa4vcF
-	 VB7t70b3CeeaA==
-Date: Tue, 13 Oct 2026 17:51:03 +0200
-From: Thierry Reding <thierry.reding@kernel.org>
-To: Pawel Zalewski <pzalewski@thegoodpenguin.co.uk>
-Cc: Andi Shyti <andi.shyti@kernel.org>, 
-	Mika Westerberg <westeri@kernel.org>, Shyam Sundar S K <shyam-sundar.s-k@amd.com>, 
-	Elie Morisse <syniurge@gmail.com>, Benson Leung <bleung@chromium.org>, 
-	Guenter Roeck <groeck@chromium.org>, Mika Westerberg <mika.westerberg@linux.intel.com>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Wolfram Sang <wsa+renesas@sang-engineering.com>, 
-	Devyn Liu <liudingyuan@h-partners.com>, Oleksij Rempel <o.rempel@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Binbin Zhou <zhoubinbin@loongson.cn>, Khalil Blaiech <kblaiech@nvidia.com>, 
-	Asmaa Mnebhi <asmaa@nvidia.com>, Mukesh Kumar Savaliya <mukesh.savaliya@oss.qualcomm.com>, 
-	Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>, Ard Biesheuvel <ardb@kernel.org>, 
-	Laxman Dewangan <ldewangan@nvidia.com>, Dmitry Osipenko <digetx@gmail.com>, 
-	Jonathan Hunter <jonathanh@nvidia.com>, Israel Cepeda <israel.a.cepeda.lopez@intel.com>, 
-	Hans de Goede <hansg@kernel.org>, Sakari Ailus <sakari.ailus@linux.intel.com>, 
-	Hans Hu <hanshu@zhaoxin.com>, George Cherian <gcherian@marvell.com>, linux-i2c@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, chrome-platform@lists.linux.dev, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-arm-msm@vger.kernel.org, linux-tegra@vger.kernel.org
-Subject: Re: [PATCH 1/2] i2c: i2c-core-acpi: use named initializers for
- acpi_device_id
-Message-ID: <as5TMuJUE3H7bcFX@orome>
-References: <20260918-acpi-i2c-v1-0-caf4bea4886c@thegoodpenguin.co.uk>
- <20260918-acpi-i2c-v1-1-caf4bea4886c@thegoodpenguin.co.uk>
- <as5S4eXw9_olPYTK@orome>
+	dkim=pass (2048-bit key) header.d=armadeus.com header.i=@armadeus.com header.b="htzndDN0"
+Received: from director1.ghost.mail-out.ovh.net (unknown [10.110.43.32])
+	by mo581.mail-out.ovh.net (Postfix) with ESMTP id 4j3zkg49Fzz60Mh
+	for <imx@lists.linux.dev>; Tue, 13 Oct 2026 16:07:39 +0000 (UTC)
+Received: from ghost-submission-c7b579475-655hp (unknown [10.110.164.42])
+	by director1.ghost.mail-out.ovh.net (Postfix) with ESMTPS id 10B87C12C2;
+	Tue, 13 Oct 2026 16:07:38 +0000 (UTC)
+Received: from armadeus.com ([37.59.142.104])
+	by ghost-submission-c7b579475-655hp with ESMTPSA
+	id J4tGM0lXzmr7Qy8AW2yxgA
+	(envelope-from <sebastien.szymanski@armadeus.com>); Tue, 13 Oct 2026 16:07:38 +0000
+Authentication-Results:garm.ovh; auth=pass (GARM-104R005ed722c48-267d-45b9-9d0f-38bc83d56095,
+                    E71387541862F9B32BD99FE93336DDEC16E392F6) smtp.auth=sebastien.szymanski@armadeus.com
+X-OVh-ClientIp:92.148.202.169
+From: =?utf-8?q?S=C3=A9bastien_Szymanski?= <sebastien.szymanski@armadeus.com>
+Date: Tue, 13 Oct 2026 18:07:24 +0200
+Subject: [PATCH] ARM: dts: apf6: fix Ethernet support
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ta66zshbuz6aaek2"
-Content-Disposition: inline
-In-Reply-To: <as5S4eXw9_olPYTK@orome>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20261013-apf6-fix-ethernet-v1-1-9530efe1d23e@armadeus.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMwQ5FMBSE4VeRs3aSloS4ryIW1JRj0SttiUS8u
+ 2L5ZTL/SQFeEOiXneSxS5C/S9B5Rmbu3QSWMZkKVVRa6ZL71VZs5WDEGd4hsqlrUzYKVmGg9Fs
+ 90v422+5z2IYFJj4huq4bM+Rl6HUAAAA=
+X-Change-ID: 20261013-apf6-fix-ethernet-c77c390ef0eb
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Andrew Lunn <andrew@lunn.ch>, 
+ Shawn Guo <shawnguo@kernel.org>, Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ =?utf-8?q?S=C3=A9bastien_Royen?= <sebastien.royen@armadeus.com>, 
+ Julien Boibessot <julien.boibessot@armadeus.com>, stable@vger.kernel.org, 
+ =?utf-8?q?S=C3=A9bastien_Szymanski?= <sebastien.szymanski@armadeus.com>
+X-Mailer: b4 0.16.0
+x-ovh-tracer-id: 6290121306616026755
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: dmFkZTFwwrfl1iPxPmWO6o6uy7jINWKAyMh0x8QwmnQbFs9EgGBBoRnjM3BUaJEZr2O/b+jim7kDcbnaQ7gbObCvdaGwmrI7ygNuePUx2XfOlPU+ynH2L/Y3qjv+8V1sNGQDoWzTS4dPbg8+1q+A4z3650pMSEERHWOc6c7wHIzQ/cd0AAinuhk1ciGuYw2D4AM54rlUTc3EI7eSXJzVYl3OyTQSK/C+/uQKTz4zratc5VMMn5UDog0h/EUCyQxoTf55Y9AhqDDFZ6zvIsDrjC6HgMcTURajxU4gpbIZHaHPJuId6YRUZECM9rjL8rwWeXi3BZLeaf9O0cp/v2LK91+ydBE1ZsROIPhVRczfWXHrdB/GPRHx+PzBdwc12YTfR0zGB4ZA2qCiZFJsjAp4r+IoBdi4Tr3IU3ZoCB3HLutTvO6oCFCDGi/UfvD946CdKc4cUyTUBsmVeyI6oWGDuThez4vtszx8caRZjzwwf9GFSozHzovm2PkHWOdyvuaNhToIzLDWMIFheDATXY+bveNazDLlXCJyCflL02M8JG2mK9AY7cPGOEVWpjNYvTh9epZkTpGGiH/FIhQttZOhoKMUKmkUvWUWjWT6W7oJ1VhqHqoSMtmt3FMokrtUS/bNDQzU7z1TiaaI6Ki9pE0a3EL7hlEgWnpxCursUe/B20XuLHNLPg
+DKIM-Signature: a=rsa-sha256; bh=3JJebDaF8d0BDkPiP93+YZIa8Qgu2HPfzUYjFA6D8SE=;
+ c=relaxed/relaxed; d=armadeus.com; h=From; s=ovhmo103079-selector1;
+ t=1791907659; v=1;
+ b=htzndDN0tLZisLCb4+yCj80PN7xv9g7YXxQHdVwxNFA1I1KYQbyiZdbAzxypK7zIFvtWUdlA
+ r+p/WVV+ppUAzuY9Cza1y/KRrwjnBRzj7oRtHamoL4OZoIQbEG3XxkBEHIrdeIpf1KXsfSXMgrq
+ 2/UbPM+mFpBi2IH1HsQ5viSypY+iiIFKg1drKuXZkQavLVjJhuqIRQm3zouS2VZrbD1Xz6WIxod
+ yySiVzNtMLCjy/x0YLJTaXg29Aks8YfKXhaRmr6Nr6MiJWt0mlCrXkCR4PjW8lgmCZKsqFPEfV1
+ 4XJdz2LUx6I4EgcjawOWbX78kUilhY/TtDYORO48qvGqw==
 
+Commit f5d9aa79dfdf ("ARM: imx6q: remove clk-out fixup for the Atheros
+AR8031 and AR8035 PHYs") removed a PHY fixup that setted the clock.
+Make the Ethernet interface work again by doing as advised in the
+commit's log, set the clock in the device tree.
 
---ta66zshbuz6aaek2
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH 1/2] i2c: i2c-core-acpi: use named initializers for
- acpi_device_id
-MIME-Version: 1.0
+Fixes: f5d9aa79dfdf ("ARM: imx6q: remove clk-out fixup for the Atheros AR8031 and AR8035 PHYs")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sébastien Szymanski <sebastien.szymanski@armadeus.com>
+---
+ arch/arm/boot/dts/nxp/imx/imx6qdl-apf6.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
-On Tue, Oct 13, 2026 at 05:48:58PM +0200, Thierry Reding wrote:
-> On Fri, Sep 18, 2026 at 02:01:50PM +0100, Pawel Zalewski wrote:
-> > Use a designated initializer for the acpi_device_id fields which makes =
-the
-> > code more readable and consistent with how lists are initialized in the
-> > rest of the kernel code base. Also drop explicitly setting fields to 0
-> > where it is redundant.
-> >=20
-> > Unify the list terminator to have a single space between the brackets a=
-nd
-> > no trailing comma.
-> >=20
-> > Signed-off-by: Pawel Zalewski <pzalewski@thegoodpenguin.co.uk>
-> > ---
-> >  drivers/i2c/i2c-core-acpi.c | 14 +++++++-------
-> >  1 file changed, 7 insertions(+), 7 deletions(-)
->=20
-> Reviewed-by: Thierry Reding <treding@nvidia.com>
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-apf6.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-apf6.dtsi
+index b78ed7974ea9..b55a3539fbe8 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6qdl-apf6.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-apf6.dtsi
+@@ -41,6 +41,7 @@ ethphy1: ethernet-phy@1 {
+ 			reg = <1>;
+ 			interrupt-parent = <&gpio1>;
+ 			interrupts = <28 IRQ_TYPE_LEVEL_LOW>;
++			qca,clk-out-frequency = <125000000>;
+ 			status = "okay";
+ 		};
+ 	};
 
-Nevermind, I realized too late that this popped up in my inbox because
-of Andi's message saying the patches were applied.
+---
+base-commit: 24a19b953e2a3d0ea5a8c4951a0ab8f32720c907
+change-id: 20261013-apf6-fix-ethernet-c77c390ef0eb
 
-Thierry
+Best regards,
+--  
+Sébastien Szymanski <sebastien.szymanski@armadeus.com>
 
---ta66zshbuz6aaek2
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmrOU2cACgkQ3SOs138+
-s6EkQg//Q94g8lhAZ9FF1mSkUo8+4iAGe4AwVPaHJcaAsp/d3MMwLNgGHDNCCUTg
-G+wEpoEVHWYXoLXJdfApoubX1HNKCyZixOydZMuy/vyjfKK8d24WoUwsrruWKNoC
-Qr6q3NbnPuILsnE6wQDTVdRqZ5iJlmJKMwdL9zfnVqM3bLVwpDqLWA7QkJrqsNY+
-XJcQw62QQ2bvNUYmnEMs96w/3hFC5bQeQkZcRFHxT5YaZwH7n8XX3hvrMUqPUclG
-PWzaf3rRgKJvhonQNuJSHjaSbHTtBt1uuxV/RncTBbTqczCwADWg+huMeyInDKNG
-9jZddMF5telzFS0C6Qm320brFB2ZzTRmjHM+2QzdwwnIN48mkmpy3lwdzBDIsd1O
-aHW2OyY2zyfp3NG+HeVuBNWw3ctMLcffAk5pdZeVvW15ZaAYUMBFd6xMDS40I4TX
-6zJCJz7BRWHyAxLcuIK90E5LgVatIVCJvHGaYnwGPWgGan7CvL3WC+bGGu9u5huD
-LdxQ8jbuT81xOMrbWy9h8so1N+3KjZXMnz12Z2TD8mK+BJpgZt52vXOSzmNWB5Jt
-O1f8qDoslIrvaisD5tgoXZmn9NhZquYjFl1HqpnHxWpBK4rCW0fzIcMO1vByl8eF
-cwD+MtMt4inGeVuyn7CCI4ntQKPY1jGEF0X9EwXGBBfcYoocK/A=
-=H7B1
------END PGP SIGNATURE-----
-
---ta66zshbuz6aaek2--
