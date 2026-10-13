@@ -1,229 +1,186 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A9375172C2
-	for <imx@lists.linux.dev>; Thu, 15 Oct 2026 10:23:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E51E251812D;
+	Thu, 15 Oct 2026 10:32:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792059833; cv=none; b=cFCM2oTcWZPuopsfIw0nUy7ozG9NAl5QkNBomwG9brIOjgmhKnBOEXq7j9sAaCClx0sL/Sa+atwDLix6LjO7uKM3463Vdx5L7Q6cdcJJOFgI8KFym6o1li+8s45d2WQyn3a+dlh0MPMTkFC7OPcKEqg0+Lsv/zG+1GM0Ph5PmUA=
+	t=1792060349; cv=none; b=OSAUZL8hvhL0OLqVC5hmi0Ul5yJV4a51SzV5n2y/r8KtDXwH8ltwk87NggzoETt1oKpScnNuJCywv0vGXLQHIwqiYaHWw1UWPFu2jX6yzmek/Wkfl4AS5iFHZRfoh54eq8fhT22HEn3SijKL/6Yw230w4XulLaWmL5GiSyLJn6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792059833; c=relaxed/simple;
-	bh=oPmXs6PcNZzdaUBQIem0fqkF464Nvc5dRLKpKu7jUms=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=BKNmKO9VicjUJICtV2H7iKrxAPHEAUvyxeczgoyJ2MUrI99qa8oJEPmmrT9KzTZiFYcOz/OLTtjLT+Pb0PaxgMxm1WwEhgbySqcOYyK9f0qw1rIVW9jk+My0xQFn+7Jdo0l1CE5M89JYMGHosjJH/hWoOmloz5Nshx+afrRZ2mQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Ace8xCUu; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1792060349; c=relaxed/simple;
+	bh=XUYOScsxtpoMvmTZT4+4w0G08Qy83jX28yQHeYVl7kI=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=DzX0JVAwq62geJBRHAppZq2wvtzxZhlLGpcbCWfTnlrs87AbvHMrwix1Xm9m1pUJF0OUKPT37WAHjfoKg4NjUN4+A6ELKhYisj+PpS1pxUCbTen4mTcbKoGu6ExWOQzAO42/lp3faG1bdX/79Ba+AQ5fBrhDyu4OKvebFmsAAPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PI5GrVnW; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Ace8xCUu"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 7A23AC63455;
-	Thu, 15 Oct 2026 10:24:44 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 25C6460360;
-	Thu, 15 Oct 2026 10:23:48 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D42F410328AF1;
-	Thu, 15 Oct 2026 12:23:38 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1792059822; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=syd7pC4o5FJKMVRMWpCAKTHTRahn3mOftmNMccwmH/o=;
-	b=Ace8xCUuDmy99gChU5whbEEs/vV1Zgx81j6uZ2vPRDsuS2uWtV3wHkbSBZpuubVwoDO0LD
-	FFin5ZP5IE+TBXZY/0lr8BC4sk/M2N8bp7MGccKzQ3BysKg4kM/e4zu/iOgFygjFunmsYU
-	E2TqqaLif1Ynj1paiWS+ZV7ndEhuAvbHQMVnxs+qaKYE71A/BEbNtsX0mmG/2lhAO46x+G
-	JwmybegxkH9+cmVYix7T1DMcQh7Ssx4cFuV0yhYiO7Cf9YWrSP+brI4riERcG4HjF4zJf4
-	CdGKzXP2QSw5n8x3SaO/Cv0orIyZORSkUClnrtSqn00QYK5dGHI2AntSnyaGsw==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Bough Chen <haibo.chen@oss.nxp.com>
-Cc: Pratyush Yadav <pratyush@kernel.org>,  Michael Walle
- <mwalle@kernel.org>,  Takahiro Kuwano <takahiro.kuwano@infineon.com>,
-  Richard Weinberger <richard@nod.at>,  Vignesh Raghavendra
- <vigneshr@ti.com>,  "linux-mtd@lists.infradead.org"
- <linux-mtd@lists.infradead.org>,  "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>,  "michael@walle.cc" <michael@walle.cc>,
-  Bough Chen <haibo.chen@nxp.com>,  "open list:NXP i.MX 7D/6SX/6UL/93 AND
- VF610 ADC DRIVER" <imx@lists.linux.dev>
-Subject: Re: [PATCH v2] mtd: spi-nor: clear the default RDCR opcode when
- entering Octal DTR
-In-Reply-To: <20261015031017.pdqnv2bp5627bhed@shlinux89> (Bough Chen's message
-	of "Thu, 15 Oct 2026 11:10:17 +0800")
-References: <20260929-spi-nor-fix-v2-1-75440cfe4e76@nxp.com>
-	<87zex05uvn.fsf@bootlin.com>
-	<AS8PR04MB8820E136E7257FC5A02F1A3E908C2@AS8PR04MB8820.eurprd04.prod.outlook.com>
-	<20261015031017.pdqnv2bp5627bhed@shlinux89>
-User-Agent: mu4e 1.12.12; emacs 30.2
-Date: Thu, 15 Oct 2026 12:23:38 +0200
-Message-ID: <87zewfuus5.fsf@bootlin.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PI5GrVnW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14E431F000C6;
+	Thu, 15 Oct 2026 10:32:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792060347;
+	bh=LsdCD24KD2Tp7y3HBX5d5H3zRxOHnSIBh2ksy9wg8Ts=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=PI5GrVnWNLXPUfA56WspsR/Sfk0JXapnfU2XLZpZyaYhVj7WNauNiYX8WZHeKvjuX
+	 5SPyA829h6ChMVvtyYpWgC9r5KhwBmWi0V9iMUVWBSOABvvFFoQ7pIFY42kEWmFQDW
+	 eH/hAvT8mHUsib5HpTG1kCLTIREHI5WbXfXRuxWoLuvwfn0jI4Kmv3qzJqMtz1kniP
+	 2mY6REC4hDxFvstBjKKrjG0lY9PS7KCcSPrnW2it1S5hUOa0yuDC9X/40L4T6+HGb3
+	 ynwiYKfpWJ3TlxbrBUA9buCkJjSpmDaMyM6UnyC3rTAvgSUUUH05G4s3qMUaPr+7SB
+	 I2d/0P6cLtriw==
+From: Mark Brown <broonie@kernel.org>
+To: Vijendar Mukunda <Vijendar.Mukunda@amd.com>, 
+ Venkata Prasad Potturu <venkataprasad.potturu@amd.com>, 
+ Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>, 
+ Takashi Iwai <tiwai@suse.com>, povik+lin@cutebit.org, 
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+ Andrei Simion <andrei.simion@microchip.com>, 
+ Nicolas Ferre <nicolas.ferre@microchip.com>, 
+ Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+ David Rhodes <david.rhodes@cirrus.com>, 
+ Richard Fitzgerald <rf@opensource.cirrus.com>, 
+ Shengjiu Wang <shengjiu.wang@gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>, 
+ Fabio Estevam <festevam@gmail.com>, Nicolin Chen <nicoleotsuka@gmail.com>, 
+ Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Cezary Rojewski <cezary.rojewski@intel.com>, 
+ Peter Ujfalusi <peter.ujfalusi@linux.intel.com>, 
+ Bard Liao <yung-chuan.liao@linux.intel.com>, 
+ Kai Vehmanen <kai.vehmanen@linux.intel.com>, 
+ Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>, 
+ Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>, 
+ Geert Uytterhoeven <geert+renesas@glider.be>, 
+ Magnus Damm <magnus.damm@gmail.com>, Biju Das <biju.das.jz@bp.renesas.com>, 
+ Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, 
+ Heiko Stuebner <heiko@sntech.de>, phucduc.bui@gmail.com
+Cc: Kees Cook <kees@kernel.org>, Syed Saba Kareem <syed.sabakareem@amd.com>, 
+ wangdicheng <wangdicheng@kylinos.cn>, 
+ Chris Bainbridge <chris.bainbridge@gmail.com>, 
+ Linus Walleij <linusw@kernel.org>, 
+ Charles Keepax <ckeepax@opensource.cirrus.com>, 
+ Neo Chang <YLCHANG2@nuvoton.com>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>, 
+ u.kleine-koenig@baylibre.com, Pengpeng Hou <pengpeng@iscas.ac.cn>, 
+ Cristian Ciocaltea <cristian.ciocaltea@collabora.com>, 
+ Hemanth Selam <hemanth.selam@gmail.com>, 
+ Md Shofiqul Islam <shofiqtest@gmail.com>, 
+ Bjorn Helgaas <bhelgaas@google.com>, 
+ Zain Aboobacker <zainaboobacker33@gmail.com>, 
+ Sang-Heon Jeon <ekffu200098@gmail.com>, 
+ Ajit Kumar Pandey <AjitKumar.Pandey@amd.com>, 
+ Ravulapati Vishnu vardhan rao <Vishnuvardhanrao.Ravulapati@amd.com>, 
+ Bo Shen <voice.shen@atmel.com>, Vinod Koul <vkoul@kernel.org>, 
+ linux-sound@vger.kernel.org, asahi@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, patches@opensource.cirrus.com, 
+ linuxppc-dev@lists.ozlabs.org, imx@lists.linux.dev, 
+ linux-rockchip@lists.infradead.org, linux-renesas-soc@vger.kernel.org, 
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20261008103831.542533-1-phucduc.bui@gmail.com>
+References: <20261008103831.542533-1-phucduc.bui@gmail.com>
+Subject: Re: [PATCH 00/24] ASoC: Fix constraint return value handling
+Message-Id: <179190764565.42298.7608820451808443258.b4-ty@b4>
+Date: Tue, 13 Oct 2026 17:07:25 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4621; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=XUYOScsxtpoMvmTZT4+4w0G08Qy83jX28yQHeYVl7kI=;
+ b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLIurF436QbXa43IwJtVz+a9/WP+dErigiRWRdWnu6RO7
+ AjMf7hrdUcpC4MYF4OsmCJLXBb3y/qS12v4Di5sg5nDygQyhIGLUwAmIiLKyHDq2uODof8nCxuF
+ ZpfxcTPWcS7d8W7zzOu3Jb2WdVWxqZ9n+J+wZiZ7iINepZ/T5W/rbJe6Pjpf3LOofnnrcZW5jw+
+ FszMBAA==
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On 15/10/2026 at 11:10:17 +08, Bough Chen <haibo.chen@oss.nxp.com> wrote:
+On Thu, 08 Oct 2026 17:38:07 +0700, phucduc.bui@gmail.com wrote:
+> ASoC: Fix constraint return value handling
+> 
+> From: bui duc phuc <phucduc.bui@gmail.com>
+> 
+> Hi all,
+> 
+> snd_pcm_hw_constraint_minmax() and snd_pcm_hw_constraint_integer()
+> may return positive values on success. However, ASoC only marks the
+> DAI, link, or component as started or opened when the corresponding
+> callback returns 0.
+> 
+> [...]
 
-> On Tue, Sep 29, 2026 at 09:10:37AM +0000, Bough Chen (OSS) wrote:
->> > -----Original Message-----
->> > From: Miquel Raynal <miquel.raynal@bootlin.com>
->> > Sent: Tuesday, September 29, 2026 4:23 PM
->> > To: Bough Chen (OSS) <haibo.chen@oss.nxp.com>
->> > Cc: Pratyush Yadav <pratyush@kernel.org>; Michael Walle
->> > <mwalle@kernel.org>; Takahiro Kuwano <takahiro.kuwano@infineon.com>;
->> > Richard Weinberger <richard@nod.at>; Vignesh Raghavendra
->> > <vigneshr@ti.com>; linux-mtd@lists.infradead.org; linux-
->> > kernel@vger.kernel.org; michael@walle.cc; Bough Chen
->> > <haibo.chen@nxp.com>
->> > Subject: Re: [PATCH v2] mtd: spi-nor: clear the default RDCR opcode wh=
-en
->> > entering Octal DTR
->> >=20
->> > On 29/09/2026 at 14:53:07 +08, haibo.chen@oss.nxp.com wrote:
->> >=20
->> > > From: Haibo Chen <haibo.chen@nxp.com>
->> > >
->> > > The core defaults opcodes.read_sr2 to the legacy RDCR opcode (0x35).
->> > > In 8D-8D-8D mode the opcode is extended to two bytes per cmd_ext_typ=
-e,
->> > > but the resulting command is not a valid SR2 read for these flashes,
->> > > which access their status/config registers through a vendor-specific
->> > > indirect register space. Since spi_nor_cache_sr_lock_bits() now reads
->> > > SR2 during init, i.e. after the switch to Octal DTR, the extended RD=
-CR
->> > > gets no data back and the read times out (on i.MX FlexSPI: -ETIMEDOUT
->> > > and a controller
->> > > WARN() during probe with Micron MT35xU and Macronix octal parts).
->> > >
->> > > Clear read_sr2 when the switch to Octal DTR actually succeeds, so the
->> > > SR2 read is skipped (a cleared opcode already means "unsupported").
->> > > Doing it in spi_nor_set_octal_dtr() keys off the real runtime
->> > > protocol: a flash that advertises Octal DTR but runs in (x)STR becau=
-se
->> > > the host lacks support keeps its usable RDCR.
->> > >
->> > > Assisted-by: LLM
->> > > Fixes: b7b63475903c ("mtd: spi-nor: Create a local SR cache")
->> > > Fixes: 63489002d397 ("mtd: spi-nor: Refactor Read Status/Write Status
->> > > support")
->> > > Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
->> > > ---
->> > > Changes in v2:
->> > > - Rework the fix following review: instead of guarding the read at r=
-untime
->> > >   in spi_nor_read_sr2(), clear the default RDCR opcode.read_sr2 once=
-, at the
->> > >   point the switch to Octal DTR succeeds (spi_nor_set_octal_dtr()).
->> >=20
->> > I don't get that choice. Why switching when Octal DTR succeeds only? S=
-R2 is
->> > either supported or not supported, I don't think it is anyway differen=
-t when
->> > entering octal DTR mode, is it? So I would expect SR2 to be cleared ea=
-rlier than
->> > that, once we know the chip is octal DTR capable. And this must be ear=
-ly
->> > enough so that manufacturer drivers can still set their own value.
->> >=20
->> > I am wondering whether we should simply drop sr2 opcode in the QER SFDP
->> > parsing entirely for octal DTR devices (Michael?).
->>=20
->> The reason I clear it at the point Octal DTR actually succeeds rather th=
-an
->>  "once the chip is octal-DTR-capable" is that capability !=3D running mo=
-de:=20
->> a chip can advertise Octal DTR while still running in (x)STR because the=
- host=20
->> controller does not support 8D (see reply below). In that (x)STR case RD=
-CR is
->>  valid and needed, so keying off capability alone would wrongly drop a u=
-sable
->>  SR2 read.
->>=20
->> That said, I agree the current spot is awkward and does not let manufact=
-urer=20
->> drivers override the value. I'm happy to move it earlier. Two options:
->> 1, Clear it during SFDP QER parsing (as you suggest) for octal-DTR-capab=
-le devices.
->>      This is the natural place next to the existing read_sr2 =3D 0 QER c=
-ases, and it runs=20
->>       before the manufacturer late_init/fixups, so a driver can still in=
-stall its own SR2
->>       opcode afterwards.=20
->>      My only concern is the capability-vs-running-mode point above =E2=
-=80=94 we'd be=20
->>      clearing based on advertised 8D capability, not on whether 8D is ac=
-tually entered.
->>=20
->> 2, Clear it in spi_nor_late_init_params() after the manufacturer hooks, =
-gated on=20
->>      octal-DTR capability, so vendor values set in their late_init are p=
-reserved.
->>=20
->> If the capability-based approach is acceptable (i.e. we accept that a ch=
-ip advertising
->>  8D but forced to STR by the host loses its RDCR), I'll go with dropping=
- it in the QER SFDP
->>  parsing. Michael, do you have a preference?
->
-> Hi Miquel,
->
-> Any suggestion?
->
-> Regards
-> Haibo Chen
->
->> >=20
->> >=20
->> > > - Key the clear off the real runtime protocol so a flash that advert=
-ises
->> > >   Octal DTR but runs in (x)STR (host without 8D support) keeps its
->> > >   RDCR.
->> >=20
->> > Are you sure this is a valid case?
->>=20
->> Yes. spi_nor_setup() computes shared_mask =3D hwcaps->mask & params->hwc=
-aps.mask,=20
->> i.e. the intersection of flash and controller capabilities. If the host =
-does not support 8D,=20
->> SNOR_HWCAPS_READ_8_8_8_DTR is not in shared_mask, spi_nor_select_read() =
-picks a=20
->> non-8D read_proto/write_proto, and spi_nor_set_octal_dtr() bails out ear=
-ly at:
->>=20
->> if (!(nor->read_proto =3D=3D SNOR_PROTO_8_8_8_DTR &&
->>       nor->write_proto =3D=3D SNOR_PROTO_8_8_8_DTR))
->> 	return 0;
->>=20
->> So the chip stays in (x)STR with reg_proto =3D=3D SNOR_PROTO_1_1_1, and =
-RDCR is still a valid=20
->> single-byte SR2 read there. That is the case I wanted to avoid breaking =
-by keying the clear
->>  off the negotiated runtime protocol rather than the advertised capabili=
-ty. If we move the=20
->> clear to capability-based SFDP/late_init as discussed, this is exactly t=
-he scenario we need to=20
->> be comfortable regressing (an 8D-capable part on a non-8D host would los=
-e its RDCR read of SR2).
+Applied to
 
-I am sorry but I failed to find devices acting like you describe. Your
-commit log mentions Micron MT35X and Macronix devices. I checked the
-datasheets:
-- Micron octal devices do not seem to use SR2 at all, they have a flag
-  register, but that's something else (like Winbond) and they have
-  similar support for it both in ODTR and in SSDR mode.
-- Macronix octal products feature several SR/CR. The sr1_and_sr2 opcode
-  exist but I would like to stop using it since there is no more need
-  for it and it just complexifies everything for no good reason. There
-  is no difference between the SSDR and the ODTR instruction sets, they
-  both support the same opcodes for reading and writing those registers
-  (with the subtlety that the repeated opcode should be a bitwise
-  complement).
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-7.4
 
-Which device do you use exactly? Why is it not working? Are you sure it
-is not a problem with your controller or the SFDP tables instead?
+Thanks!
+
+[01/24] ASoC: amd: acp: Fix .close() being skipped on rollback
+        https://git.kernel.org/broonie/misc/c/2c3400aa9f39
+[02/24] ASoC: amd: ps: Fix acp63_pdm_dma_close() being skipped on rollback
+        https://git.kernel.org/broonie/misc/c/172888114dda
+[03/24] ASoC: amd: ps: Fix acp63_sdw_dma_close() being skipped on rollback
+        https://git.kernel.org/broonie/misc/c/45dd2b22ea89
+[04/24] ASoC: amd: raven: Fix acp3x_dma_close() being skipped on rollback
+        https://git.kernel.org/broonie/misc/c/37ceef26df57
+[05/24] ASoC: amd: renoir: Fix acp_pdm_dma_close() being skipped on rollback
+        https://git.kernel.org/broonie/misc/c/a92571113ef2
+[06/24] ASoC: amd: vangogh: Fix acp5x_dma_close() being skipped on rollback
+        https://git.kernel.org/broonie/misc/c/38559fcd1c51
+[07/24] ASoC: amd: yc: Fix acp6x_pdm_dma_close() being skipped on rollback
+        https://git.kernel.org/broonie/misc/c/06654a3ef513
+[08/24] ASoC: apple: mca: Ensure the DAI is marked as started on success
+        https://git.kernel.org/broonie/misc/c/4d23ef7515dd
+[09/24] ASoC: atmel: atmel-pcm-pdc: Fix atmel_pcm_close() being skipped on rollback
+        https://git.kernel.org/broonie/misc/c/50aaca643038
+[10/24] ASoC: codecs: cs42l42: Ensure the DAI is marked as started on success
+        https://git.kernel.org/broonie/misc/c/c2a3d0b2be0c
+[11/24] ASoC: codecs: nau8325: Ensure the DAI is marked as started on success
+        https://git.kernel.org/broonie/misc/c/0634e7b24727
+[12/24] ASoC: codecs: nau8540: Ensure the DAI is marked as started on success
+        https://git.kernel.org/broonie/misc/c/1de1fd7c69a3
+[13/24] ASoC: codecs: nau8821: Ensure the DAI is marked as started on success
+        https://git.kernel.org/broonie/misc/c/fc5da89a0a8a
+[14/24] ASoC: codecs: nau8824: Ensure the DAI is marked as started on success
+        https://git.kernel.org/broonie/misc/c/e66285731262
+[15/24] ASoC: codecs: nau8825: Ensure the DAI is marked as started on success
+        https://git.kernel.org/broonie/misc/c/552944e3b027
+[16/24] ASoC: codecs: wm8580: Ensure the DAI is marked as started on success
+        https://git.kernel.org/broonie/misc/c/b2c81f056c53
+[17/24] ASoC: codecs: wm8782: Ensure the DAI is marked as started on success
+        https://git.kernel.org/broonie/misc/c/29f52545ada7
+[18/24] ASoC: imx-pcm-rpmsg: Fix imx_rpmsg_pcm_close() being skipped on rollback
+        https://git.kernel.org/broonie/misc/c/85e56c3bbb7e
+[19/24] ASoC: intel: atom: Fix .shutdown() being skipped on rollback
+        https://git.kernel.org/broonie/misc/c/e3bb57581104
+[20/24] ASoC: renesas: fsi: Ensure the component is marked as opened on success
+        https://git.kernel.org/broonie/misc/c/6bba4e5a171c
+[21/24] ASoC: renesas: msiof: Fix msiof_close() being skipped on rollback
+        https://git.kernel.org/broonie/misc/c/b7c58a55fd9b
+[22/24] ASoC: renesas: rz-ssi: Ensure the component is marked as opened on success
+        https://git.kernel.org/broonie/misc/c/fd5c45166d65
+[23/24] ASoC: rockchip: rk3399_gru_sound: Mark the link as started on success
+        https://git.kernel.org/broonie/misc/c/8a43611c834f
+[24/24] ASoC: rockchip: rockchip_max98090: Mark the link as started on success
+        https://git.kernel.org/broonie/misc/c/303961c7daf1
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
 Thanks,
-Miqu=C3=A8l
+Mark
+
