@@ -1,174 +1,162 @@
-Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C1FB3F1AC4
-	for <imx@lists.linux.dev>; Tue, 13 Oct 2026 02:56:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.181
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791860170; cv=none; b=fMLCC23euXNqPfGYhXo+E7sWY0UG3Jh/rt/raW55YZmApD3hQShsI+kkjk4OHnb/U4/1C/5hhNqk5wljBcX0HnxHICBGJAfpNnMhC/cJa3JWq4CSkzxFzzq0zAc0XDi5X7bDLfHpzC/pf3YLhagrheiqzst1dpoL/d26wddCNBI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791860170; c=relaxed/simple;
-	bh=CJIEnX0P5e5vEIvo4jO29/P3pon7RQPwtjkdjcPRZxE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=YBOZjDWOb997iJmydpEfZzTFSrpuOu1ZFWCpfKg8qhbfxeOdYh32C0LgKKD03xIEDGpQ/NeX8BuYl4U9ip1RUH5PA4yaREsWZ2zkbgOMH3obZfWsaSNcwhSnA0xA2OMOX4GUi0BwD6rR+PMaHfVzXSHmIWGlScCdoHf1SRa9RJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RutI+IRw; arc=none smtp.client-ip=74.125.82.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 039903932DA
+	for <imx@lists.linux.dev>; Tue, 13 Oct 2026 04:18:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.172
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791865122; cv=pass; b=dfnJbxIGkGoHKQKZrBUajIuE+2HTPA3qEBOFcB/SDkFm1qrKjicm340K4UqfGjO34J1A2rHHqW9CmpjRelLSIo9oUleDZda3K9n8ak9C2fKEvDm43EmA+wOjcG98QVqUFAdWxzJmIqnshFFjFZtKJywp5C/q1TtTsIN984xcxz0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791865122; c=relaxed/simple;
+	bh=RXTMOQ3s/A/fpHZbZ7Z1yCnaHYebzC4eV4sd40V0Aoc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ftBahvTLq5QCZ11RrMwlvP8JSkMeSvwu8b0pDc91Y6ACeL+49igD/mBS9yRg6niCmuMfj4BuhGZ6pVq2902sFBKENpafVas+uRjjp6FLZOb0lNT6QkBIM8pPK6FnC1pCjdoqdYgTC4sjAVrayOL4FpnhHAr0huuvGJmfAGTTW2Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rA3kN58n; arc=pass smtp.client-ip=209.85.215.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RutI+IRw"
-Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-35829219da8so2195225eec.0
-        for <imx@lists.linux.dev>; Mon, 12 Oct 2026 19:56:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rA3kN58n"
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-cc751eddf25so1437493a12.3
+        for <imx@lists.linux.dev>; Mon, 12 Oct 2026 21:18:40 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791865120; cv=none;
+        d=google.com; s=arc-20260327;
+        b=K54TRkCqLzv41Z2SBuoJjcWs/ChMNVo0ZEp8pByskFlKCIMpS8kf1GxTj7LfpP708a
+         4wiKVjYJO6Xt8X4pcRRrNB/RlWvFzVc87bFYoJ6aX5u+LcI+1CH+2NAeLReHCYAjR/yc
+         DrMkjeJ1LEHyvHL/913oreDRrIRp08jVBAccX8MThzOcYbhtIFWpnDM9+7kdcaFAVgAu
+         ZTJD1ni3elDCwOhmCcKQgWMMQZpwOkZKfnkFy4uSXIkEcYJ6F9bKpdnxXyT84laiADdT
+         GRkhC1s3kPiL9MT208rfc9iuqIm55UjkDb5IaAyvOhUG7OWGAA+y2AW3CGmvRb2rDw4R
+         +4wA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=RXTMOQ3s/A/fpHZbZ7Z1yCnaHYebzC4eV4sd40V0Aoc=;
+        fh=myqxa0onV8TSqQKXw0VAgXMQwethrW1RPqtbhcF6TYI=;
+        b=lP8jSFtlv4UkYsGoxeo2pzi1ZcfTPR8KPfwiLW8VSAxGVwTU+iBNeAyIRFAnm4LqjU
+         qBkvXn3Yeustwo+qq2wvWlWJ1cBw2qFprMt/A7TEe3Is/qIH9PHSWArDY5wTKLG5ftwv
+         4Ng/gO7f3yqYnc7ZvJWYquelWbjCoRDEZ6U16lnXNlRLL14wZR/0HzO6w03dWzEIAm+n
+         rxOTF9QawVRJhQMWsTZ68EHPc1O+7PaLDhZMIFk9R3M4ljmYBFRByRVhI5USvB1zCesy
+         aXCGe++URmzZl6mF7o9gHcE9l5IqfyvTmGjxAfStKp2Ud/ZwMDgA5THDT4kg8cvQdPcw
+         MzWg==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791860168; x=1792464968; darn=lists.linux.dev;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=hIfDhWm6ixjJFnpSOj18AG3Xc7oniyYktxCnB0/d6hI=;
-        b=RutI+IRwA/D5xd61/n8WF84gApBNH++UZ1hsnkGpS1SdSUzwqS9Dt4LVLcY9C5wn5w
-         VDDfAwIRni/9zJchKQPcA+b8vpgW9+E+Vs/0PitIx/KERhHoVRytQe/WY5lxTh6ah1oR
-         JoWVngu9LDtV0KwLKA4AvnM1OBLVF3EeI0BjzDW/QK6NlVPsDtWp5kUHc3rlBZdPSrCg
-         nOTJfArxtpa9GmeuqjrCvr4/CBkG1BQgaUC5KNHum7KFsYYD386SU2lxid/+7LuYOXqA
-         xx6lfSm4KxYY0C/Yx19Bid6POL51jjdHEuIAT9l934tdaavMN/gS0KgeuQ+uuCpUOK3u
-         YO0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791860168; x=1792464968;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20251104; t=1791865120; x=1792469920; darn=lists.linux.dev;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=hIfDhWm6ixjJFnpSOj18AG3Xc7oniyYktxCnB0/d6hI=;
-        b=TZ0aJYS80m5q5GhoxDVLWMBdqdbS0gLIUOMKMpYbeA5Da+vwcQBabD+Wxy4IGCurTD
-         deqj583Dyjfuj7fTvNFvXrtTECC5h6vGk6Fxa4BWlVNRZNgTLmscWB5kpwP5FwoJcWuS
-         hnyg5J6wtaXa4yIXpryITDuB2dscdzoi4j9eM+fw5fkJZM0T9jmZYEcESfoT5EIshtG6
-         wQSRb9c6+3b8QbTwHATTFL5/Z7sqxRQccpyi0P3Wz48JyOSoTnkmR0AX9GLQZO6vJcbi
-         1G3xSN6NCGYRWn+GmILOXSb2OLvBEla2R0fydQunAhHetQARJsG+kMVHJeymzLRIdVZ+
-         EXwQ==
-X-Forwarded-Encrypted: i=1; AKwUvByupgTXABfFtiZCs/6YtO9jbYigzPZF5eQQCsUj1yprzETF+0d4t1V2pAlgr+DQTDLpnlA=@lists.linux.dev
-X-Gm-Message-State: AFq9FYJaLuNA6WSow1MZUBu1XLZmphm3xr8+J1ThX82PQW4OCzS2htWX
-	3u39x5nMPbQHUL4atpiL/CaStjXj9mSHDOCISp/e5Gv9OA+KfxAsgpPD
-X-Gm-Gg: AYBFou19PkC1Uw/6yX+apPkaasE8mxxHBAjkfkbSi39+aGFyeJPoxe0SqfxsQxR0P7S
-	sLrvn5IWfBpXDtUkgIiJm6me0dfE4H0MkNMm4rRPkmjXjQ+UlEwSeisY0B30fpuu1IjTjvOb2Ik
-	07wK7xHNCV24C8QMphzru8xgQw48Ny9WLCsIxIlu13tD3azXR4RaK+lxPFPqZgLw1Z1OpBs1qYQ
-	mYCpnxsD6SJhrdvmVgGOGjEYApPd+bzneZ+xbGq9SnQXbGlDYBPHqn6aERoIBivJwWGzXh3toMc
-	tp6AcmtT8iRCdlbbbjLI38cbGi5XevTKv1VOmWtrljYJQ5bzjIfL3CYM6yBubRuupXTdluLs7Po
-	EiKxbVHGo0ozr5Pq9BN6aBMcGMvs7ZBT9SGocFeo+kTtWFy+dt+sEKk/V9oMtq4NjVxj0XAMwBi
-	2Cr8TxOWByUzkYwRFEeA0nu4tx8FRPSjj0ZGQ+q3QxwtEt2C+SP8VqaZayZ/YgV/zDAjYIH2Pvj
-	Q==
-X-Received: by 2002:a05:7301:4694:b0:351:694d:9ca1 with SMTP id 5a478bee46e88-3537b3c7ed1mr16260351eec.27.1791860167835;
-        Mon, 12 Oct 2026 19:56:07 -0700 (PDT)
-Received: from [127.0.1.1] ([2404:f801:8028:3:8056:897e:dae3:8e2e])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3537ca1b556sm50889219eec.9.2026.10.12.19.56.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Oct 2026 19:56:06 -0700 (PDT)
-From: Subasri S <subasris1210@gmail.com>
-Date: Tue, 13 Oct 2026 08:25:39 +0530
-Subject: [PATCH RESEND v2 3/3] usb: typec: Use %pe to print error pointers
+        bh=RXTMOQ3s/A/fpHZbZ7Z1yCnaHYebzC4eV4sd40V0Aoc=;
+        b=rA3kN58n6WhWWCSJ9eyxQzNQxvdalF7niTq9VVMun/fvqel0+sK38ZFMEQtefDcaCk
+         ScZVjjwLJDI+CknTAWyw3wddU/L0QJEceys6YV3kajUS0BSIt9askWJDaJiftIuio4gA
+         WOspe0kUveeW5NjfHta1kq5ls7QCwddeDiXpKmWG8d1H+HxCllmBqfY3f572qRD/wFhs
+         v23dk+VtveFUveNdAXmeSlFHa5Q62/Fk//QzCjwYlhqw74qFvs3v4ce+3Vt0O2jocGwT
+         khU5II8M2iKRU3mbuHrsvmMXD3zMeh0p3q7ogu93gE/DtrTBIc2VYXrzW8AoMaekq78l
+         WSoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791865120; x=1792469920;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=RXTMOQ3s/A/fpHZbZ7Z1yCnaHYebzC4eV4sd40V0Aoc=;
+        b=bELnJUNhLtvnLjh9DrRB5PURl2e0GMQuTJ3hCeZXUeFccEhfd0t3dmOyLXWlUdQ8OR
+         eONU45E3O9FgJbVt1ujJE8MaCgiNNzyafCjWsASJRtc6WTCzTWLR5qCx3x/JjzEKU550
+         mxqrFvtvobNt1h4WWV0nsTo4+ENcEF+zjTNYotpshDyoUbGzNS6gIr119rLEAMd7RJZH
+         HseDDno4XHwJvuyM2qK3yQdxCHMnxfkrLki8tDtkklNz5uEDeJVbU30JNIe9poANZAt6
+         ICqwKPNAyQ9m4Va8YiSiPw8HaXKBVKlFbkx/GqNGC2eNRTgXD/m7Y+00OYCMhDgLLEs4
+         KZ7w==
+X-Forwarded-Encrypted: i=1; AKwUvBzsJaDYTuZpryeXFQkyj25FYDOzFFNg3Ou6EHhznWstAyZgRgUcdBRfGbfSCcLzmsIv5Kg=@lists.linux.dev
+X-Gm-Message-State: AFq9FYLuEJEUYp+V5FSh1WaK35ug+xrHGh29shV/HGtBSQH8jno0d/bV
+	XTw0PFbAlJedVp8a4zRCOKCANkDotVsYuK/2uTr6DtNKnTjLjHsq0Nxna/mauIErLD/3HR2VC13
+	GPzwezpVpFRXqOMmPPQRQD95fhs11NIE=
+X-Gm-Gg: AYBFou0pV8QH9/QCi+xrjbo4UgJOKEx05kO45DFyV+rSDfVkMLgKdKHUkuf40h+qpWU
+	9lJzhjtfntCg+Nbk2zYdF0elKiVbaW/FJvr2ylAJGng7RGuzsKNCODRVaL9RPmCNcrz85UVmaB9
+	GJilXLoXq/wyj8lU0ott08DmCCGrPUJIZNn6JHEtIFZtt7dF2Hvv8JSI83xpfCazQ16fvlEfhlX
+	KFAxXe0FfVPTNgfbjB1UlKWKl0lDIl9M7HQQc4u5bjnCENK59gNwT+pjIZ/JhATbQ1Nv+2UbwMl
+	CUHBCQrxsyzDbxNOARxroH9M7zqwM6dKDUnzSj/UDSMx82VCaJobOKinjB8XdZRpCD5L8vAztRK
+	H3NIAKl0uz6X+LLo3+rblx+Schp8OPyvQfb4h7vI23GJpp+vVm/dEsRaqIFGsLPtJU7s=
+X-Received: by 2002:a05:6a21:4eab:b0:3e0:de06:126b with SMTP id
+ adf61e73a8af0-3e16beff287mr10686193637.66.1791865120247; Mon, 12 Oct 2026
+ 21:18:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261013-usb-ptr_err_patchset-v2-3-f83351b3fc3d@gmail.com>
-References: <20261013-usb-ptr_err_patchset-v2-0-f83351b3fc3d@gmail.com>
-In-Reply-To: <20261013-usb-ptr_err_patchset-v2-0-f83351b3fc3d@gmail.com>
-To: Peter Chen <peter.chen@kernel.org>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Duncan Sands <duncan.sands@free.fr>, 
- Chas Williams <3chas3@gmail.com>, Minas Harutyunyan <hminas@synopsys.com>, 
- Hans de Goede <hansg@kernel.org>, 
- Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
- Badhri Jagan Sridharan <badhri@google.com>
-Cc: linux-usb@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- linux-atm-general@lists.sourceforge.net, netdev@vger.kernel.org, 
- Subasri S <subasris1210@gmail.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1791860140; l=2977;
- i=subasris1210@gmail.com; s=20260709; h=from:subject:message-id;
- bh=CJIEnX0P5e5vEIvo4jO29/P3pon7RQPwtjkdjcPRZxE=;
- b=CqTrpBWOFP7IoNCOlvIrFBD5UbdJH+gppg/u95/nDgGJAjX+b/exGfLDCfXtlh5uuq2LH1vXW
- RiZAV3SFerPA8GsjssqIRbmCZ+Q0/MSnQEOT7IZw/FpnBBlI0t3pHAb
-X-Developer-Key: i=subasris1210@gmail.com; a=ed25519;
- pk=6C4wavGFy/OsR8yQQKNWuDXoYPHp2L3sfgNfyzTruTk=
+References: <20261008103831.542533-1-phucduc.bui@gmail.com>
+ <20261008103831.542533-22-phucduc.bui@gmail.com> <87o6cyxyau.wl-kuninori.morimoto.gx@renesas.com>
+In-Reply-To: <87o6cyxyau.wl-kuninori.morimoto.gx@renesas.com>
+From: Bui Duc Phuc <phucduc.bui@gmail.com>
+Date: Tue, 13 Oct 2026 11:18:28 +0700
+X-Gm-Features: AclHuK8E-95w9dmy_Nn8Ii2RGxOq8D0J-l4YT38o4WK2kAtoUqqhMqA48tZbgYk
+Message-ID: <CAABR9nHvCfabGfBu85bm1r=hP3b0ZiCsgZfShhOv3gNUfjjhGg@mail.gmail.com>
+Subject: Re: [PATCH 21/24] ASoC: renesas: msiof: Fix msiof_close() being
+ skipped on rollback
+To: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Cc: Vijendar Mukunda <Vijendar.Mukunda@amd.com>, 
+	Venkata Prasad Potturu <venkataprasad.potturu@amd.com>, Liam Girdwood <lgirdwood@gmail.com>, 
+	Mark Brown <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+	povik+lin@cutebit.org, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+	Andrei Simion <andrei.simion@microchip.com>, Nicolas Ferre <nicolas.ferre@microchip.com>, 
+	Alexandre Belloni <alexandre.belloni@bootlin.com>, David Rhodes <david.rhodes@cirrus.com>, 
+	Richard Fitzgerald <rf@opensource.cirrus.com>, Shengjiu Wang <shengjiu.wang@gmail.com>, 
+	Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>, 
+	Nicolin Chen <nicoleotsuka@gmail.com>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Cezary Rojewski <cezary.rojewski@intel.com>, Peter Ujfalusi <peter.ujfalusi@linux.intel.com>, 
+	Bard Liao <yung-chuan.liao@linux.intel.com>, 
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>, 
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
+	Biju Das <biju.das.jz@bp.renesas.com>, 
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, Heiko Stuebner <heiko@sntech.de>, 
+	Kees Cook <kees@kernel.org>, Syed Saba Kareem <syed.sabakareem@amd.com>, 
+	wangdicheng <wangdicheng@kylinos.cn>, Chris Bainbridge <chris.bainbridge@gmail.com>, 
+	Linus Walleij <linusw@kernel.org>, Charles Keepax <ckeepax@opensource.cirrus.com>, 
+	Neo Chang <YLCHANG2@nuvoton.com>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>, u.kleine-koenig@baylibre.com, 
+	Pengpeng Hou <pengpeng@iscas.ac.cn>, 
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>, Hemanth Selam <hemanth.selam@gmail.com>, 
+	Md Shofiqul Islam <shofiqtest@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Zain Aboobacker <zainaboobacker33@gmail.com>, Sang-Heon Jeon <ekffu200098@gmail.com>, 
+	Ajit Kumar Pandey <AjitKumar.Pandey@amd.com>, 
+	Ravulapati Vishnu vardhan rao <Vishnuvardhanrao.Ravulapati@amd.com>, Bo Shen <voice.shen@atmel.com>, 
+	Vinod Koul <vkoul@kernel.org>, linux-sound@vger.kernel.org, asahi@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, patches@opensource.cirrus.com, 
+	linuxppc-dev@lists.ozlabs.org, imx@lists.linux.dev, 
+	linux-rockchip@lists.infradead.org, linux-renesas-soc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Use the %pe format specifier instead of %ld with PTR_ERR() for printing
-error pointers in various typec drivers. This prints symbolic
-error names (e.g.-ENOMEM) instead of errno numbers (e.g. -12),
-making error logs more readable.
+Hi Morimoto-san,
 
-Fix coccinelle reported warning:
-WARNING: Consider using %pe to print PTR_ERR()
+Thank you for your review.
 
-Compile tested only.
+>
+> If so,
 
-Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Subasri S <subasris1210@gmail.com>
----
- drivers/usb/typec/mux/pi3usb30532.c | 6 ++----
- drivers/usb/typec/tcpm/tcpm.c       | 2 +-
- drivers/usb/typec/wusb3801.c        | 4 ++--
- 3 files changed, 5 insertions(+), 7 deletions(-)
+Although I don't have MSIOF hardware, I tested this on FSI hardware.
 
-diff --git a/drivers/usb/typec/mux/pi3usb30532.c b/drivers/usb/typec/mux/pi3usb30532.c
-index 985683fe49e9..b32f4c433de9 100644
---- a/drivers/usb/typec/mux/pi3usb30532.c
-+++ b/drivers/usb/typec/mux/pi3usb30532.c
-@@ -139,8 +139,7 @@ static int pi3usb30532_probe(struct i2c_client *client)
- 
- 	pi->sw = typec_switch_register(dev, &sw_desc);
- 	if (IS_ERR(pi->sw)) {
--		dev_err(dev, "Error registering typec switch: %ld\n",
--			PTR_ERR(pi->sw));
-+		dev_err(dev, "Error registering typec switch: %pe\n", pi->sw);
- 		return PTR_ERR(pi->sw);
- 	}
- 
-@@ -151,8 +150,7 @@ static int pi3usb30532_probe(struct i2c_client *client)
- 	pi->mux = typec_mux_register(dev, &mux_desc);
- 	if (IS_ERR(pi->mux)) {
- 		typec_switch_unregister(pi->sw);
--		dev_err(dev, "Error registering typec mux: %ld\n",
--			PTR_ERR(pi->mux));
-+		dev_err(dev, "Error registering typec mux: %pe\n", pi->mux);
- 		return PTR_ERR(pi->mux);
- 	}
- 
-diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-index 89eec20a2064..ad10470ea73b 100644
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -4796,7 +4796,7 @@ static void tcpm_typec_connect(struct tcpm_port *port)
- 			port->partner_desc.accessory = TYPEC_ACCESSORY_NONE;
- 		partner = typec_register_partner(port->typec_port, &port->partner_desc);
- 		if (IS_ERR(partner)) {
--			dev_err(port->dev, "Failed to register partner (%ld)\n", PTR_ERR(partner));
-+			dev_err(port->dev, "Failed to register partner (%pe)\n", partner);
- 			return;
- 		}
- 
-diff --git a/drivers/usb/typec/wusb3801.c b/drivers/usb/typec/wusb3801.c
-index 6062875fb04a..86d13ab41670 100644
---- a/drivers/usb/typec/wusb3801.c
-+++ b/drivers/usb/typec/wusb3801.c
-@@ -277,8 +277,8 @@ static void wusb3801_hw_update(struct wusb3801 *wusb3801)
- 		if (partner_type != WUSB3801_STAT_PARTNER_STANDBY) {
- 			wusb3801->partner = typec_register_partner(port, &desc);
- 			if (IS_ERR(wusb3801->partner))
--				dev_err(dev, "Failed to register partner: %ld\n",
--					PTR_ERR(wusb3801->partner));
-+				dev_err(dev, "Failed to register partner: %pe\n",
-+					wusb3801->partner);
- 		}
- 
- 		data_role = pwr_role == TYPEC_SOURCE ? TYPEC_HOST : TYPEC_DEVICE;
+I added a .close() callback to fsi_soc_component and forced fsi_dai_startup()
+to fail to trigger rollback in __soc_pcm_open().
 
--- 
-2.43.0
+When fsi_pcm_open() returned 1 from snd_pcm_hw_constraint_integer(),
+ the .close() callback was skipped during rollback.
+When it returned 0, the callback was called as expected.
 
+>we would like to have such comment to indicate such background,
+> because it is not intuitive for people.
+> Otherwise, someone (maybe me :) will return to the original code.
+>
+
+I'll add a comment to explain why the return value must be normalized to 0
+in the affected drivers.
+
+For MSIOF, I noticed that snd_dmaengine_pcm_open() already calls
+snd_pcm_hw_constraint_integer() for SNDRV_PCM_HW_PARAM_PERIODS,
+so the call in msiof_open() seems redundant.
+
+Since the first call succeeds, the second call should return 0.
+Would removing the redundant call be acceptable?
+
+Best regards,
+Phuc
