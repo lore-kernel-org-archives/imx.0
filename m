@@ -1,139 +1,203 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0671049A3DD
-	for <imx@lists.linux.dev>; Wed, 14 Oct 2026 11:42:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.177
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791978160; cv=pass; b=hAl0m4LwLM/ViBvidtvBc9RdZ50UFglZ74urwDAwSH1+RdPgrdVcbgU/safJwaxOGEjPwEYugK6bxEjjlCGxa+c+BKq4d5JJ7DK7SDQSwThVJjg0J1XWBb9Sf8Jpujt8H6xkPSKV717Cev24RlWdyEtvO8ETSZRP4BBa4MzqUcU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791978160; c=relaxed/simple;
-	bh=SExSlJOtRhRzpIj7eRr0FWRac1iKGklAYskw7N+LI/0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SGX2VCcy7fvW9yUTOFRAcxwrNKUBvG+xBqK4xC9mmu2xNG04vOvIVcmZQ22Yaz9MB7VagagtG5/zyrIX2dVx5Xyl0OuFD2wVCL+N19DYSNsevxPxIVL6H6VT5bvZkW5Xn/xLurAMkWyNN/SY8eRROoNWaOIFYdq5yNbwR+v3lEk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I9gU2yB4; arc=pass smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 211894CA771
+	for <imx@lists.linux.dev>; Wed, 14 Oct 2026 11:52:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.170
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791978757; cv=none; b=F0Z/1b1m5RQNlY0AJ5wFeDilokDMEUnOu8qmKOa9zt/d7/rmCLunGDWQSnn6L0T4zsdZ0zB3L7iDWPfPO1WeVmomVFTlUidHVdS0RRzbfuSaMKJdDZN33UNPwPSJjTKM36LQJ9gjBRx40ddhmukYl7GMWE1Q0uqS1kY50FwclCI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791978757; c=relaxed/simple;
+	bh=YHkNh+k1uYUdhN/GX2GoXGxLYEYQZpiM737GZ/FheL8=;
+	h=Date:Subject:In-Reply-To:CC:From:To:Message-ID; b=O2slDvXCW1SIlrKvPMai662xgtO56NsXQVJttfQHGoHJ+m7Nya87rhCHwLPPT1Dy4gDDUg1UFtTB/Dig7oQDXw3iqYkaakQ7fJJn+dmCMr+9Z73tLXo7pyAxjt5R9fM8xO9kCXgSNU3mfgFsNs+OSL+rsktYbtE38vQ/ld78llI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dabbelt.com; spf=pass smtp.mailfrom=dabbelt.com; dkim=pass (2048-bit key) header.d=dabbelt-com.20251104.gappssmtp.com header.i=@dabbelt-com.20251104.gappssmtp.com header.b=Rt1bXwiz; arc=none smtp.client-ip=74.125.82.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dabbelt.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dabbelt.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I9gU2yB4"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2e812e2b31bso22118265ad.3
-        for <imx@lists.linux.dev>; Wed, 14 Oct 2026 04:42:38 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791978158; cv=none;
-        d=google.com; s=arc-20260327;
-        b=nCvWwKFf2MBG7T0K+6IUfm6XTveWgpspDGIZ3rllGnSyqVZ5WsAjLfG5hMar/mPnyI
-         8lnW5ajcaEfDUhLMTHAXjiQLg2aiuLCJIVEEyp2Keyur1WaIDPTcNJ0NCqIrISvD0JiC
-         1rrcBMSm+gpQ17J2LaVfmbzf/fpNawa9KeTWznkcfjeObGCK45O4DIDxlH8gSVm71jlz
-         nNo9t+kqRnAIznPip4XotmB6qhVv0RhD6K4jIc2JThwoWDO7OCyNVLBTV02qD28liBCZ
-         EY6OlW+utg8rl83Uy910PDwU4bqffSP/N5pNeyKFsxNFDGG6zFrHVWPqDtrVZffNqWTx
-         8ADg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=SExSlJOtRhRzpIj7eRr0FWRac1iKGklAYskw7N+LI/0=;
-        fh=17g2iuLKBjRyMlzC/x1mZJd7kY9aTMZ2En2pJqwm6g4=;
-        b=QEca6uBaesiZHYltCYoPmjSK4TGQTOoXMXFLHSQcAPdes3qtE/mWz4Sc0I7bsJRduC
-         sWUdPAVILifu/nA6l6t2NP9MCVbsLXac4fPgMDQ3zgiz2imGZYB39kuvVe+S6zk4GBq7
-         SMK2ybdjr+XJlmUQI2K6dD4zYTBtbR06agmNQTRNQgtk3Mcs+fFvkX5X7/PT72/QzTMH
-         AJpwt4rE3nAL+n4iFRyn2cwZeDVek+o5OF4UmkbKTz+iJjeTdIiarW38aNZUZS7YGdIR
-         xq89P03MutgpIH4Kn7A3ItEhNNYqSv22GGg/KcqE7T96g8/zTWt8nbKs+lyszFcJKrXx
-         u3wQ==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=dabbelt-com.20251104.gappssmtp.com header.i=@dabbelt-com.20251104.gappssmtp.com header.b="Rt1bXwiz"
+Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-33fb4680717so2461701eec.1
+        for <imx@lists.linux.dev>; Wed, 14 Oct 2026 04:52:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791978158; x=1792582958; darn=lists.linux.dev;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=SExSlJOtRhRzpIj7eRr0FWRac1iKGklAYskw7N+LI/0=;
-        b=I9gU2yB4q1JUABIIm2OW/CrBdDgu4X6mdHbetIMDODTFlbBhd+3Zb7hWC61kR3sg1a
-         KI63QcpebwYICqg4cG5BAl5IdxnorPquIUer3mmFlXifpzvR2EgzmBNx/ctMcAMLUEFa
-         jiJbdsg2Xd22ymuFlD86w0lzecTUEQ4WglBQnJTN1kQuaUbFhRlOUiaC4sjLyYfBlD7Z
-         D95FX03VKeNjPOBvhYM15u+kqg6A0ESyerWid4ubQAnCiS9vJsyL86ZKvfPzPwRowTg5
-         0VKQRdMgqwDmFB/QXY5GYHl64Eu1CCcHmuDE/TPJJdQSlFsUyigDg7SrJfkuZr8XKiKL
-         7VPA==
+        d=dabbelt-com.20251104.gappssmtp.com; s=20251104; t=1791978751; x=1792583551; darn=lists.linux.dev;
+        h=message-id:to:from:cc:in-reply-to:subject:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=yAV+C6S/vBnhLrjCXwEiKS2AZjZdz8SQL6UJRh8bA3A=;
+        b=Rt1bXwiz51Crqr1DKPgDs69pFqMBrWWRGGei98Pplz6+PGTPJmAyYEs/cbT8EaIV83
+         VxfTx19Ly8EFOH3+U2LvoqOX3aHWEXY0Ol2IUEnkPRkY90mK1t2z/q2cFwifM6vVJRY1
+         9hTRMGQ4TXcN4abudutiEvY2H++0gSyComwlwTfPQLNtJtV8oo8tdPHWi/u+rjbx1iny
+         rEsUFl1OjaSJnkogBineLpyO76nZW8fpGUS+7ADeJgw6Pz19tNO6YgtTSYNNzuEuhh6i
+         1pnQ5A6ASmefEuwJbW92Hg3Lxn95ZliWGHKzAkKVGt05zrp9MTtyWMYbVxkmWtbdyqJX
+         Q6bA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791978158; x=1792582958;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=SExSlJOtRhRzpIj7eRr0FWRac1iKGklAYskw7N+LI/0=;
-        b=z3uccSdx21GfRKbiN8R5Mj9ZbriPWhBo5B1dPyWf5ZAbhIW7vFcH0RDFOxkW6asAvm
-         PLcROqxLnlKoJGnF9QxzuTsyooZEBeQF3ZJE7s+mWceSGssuZmEmEhcEAdTA9CIAGgTa
-         93TgTqInbmFxe34trYqcHQdZIqsq7gH016xqOsOXHvNI517n2yQRNogL8PakT/MbAMaV
-         k8hdFxheA8YTv2NTAj857TBTDlUGsSynN9eUtCbVCEvMNGTi0nvwCSPv/TvIoFp2wqiy
-         roQ7wDq8oZDT1TCVvBowuMKEQq6XhP2pObTA1fcDyyV2ltPj4DldITqtlLbzbeZGh/7a
-         JdQQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxZxIbj7b2vgYCmQ+bqxHVyObRmtxlZ2ExvqEpnYjZcOYY4zA6nv0Xd+OBv82cbOqVx1bE=@lists.linux.dev
-X-Gm-Message-State: AFq9FYLXnAEGwVjRU/10jwPPSjJLI+4+Ueygd7fIq0MMulIRX5vZ+EDp
-	Kio/ZI4OxpqgzJ6I8JWa2bfFg+phH42PUoT/E9KFsbpyHoUS6/jogWypFtYkh9OighSVqRAtLyS
-	HJYldAL/LIpA2Sr0ppLcvk6V4Kfq93ek=
-X-Gm-Gg: AYBFou094EJOSL96qbu3edHpua4wRwDPtwpaQVTj+7SDhpn00gBE4ZOZpQ5FsfIkWTq
-	2fxAzr4ziDvFpm2sGlTDm0N+tDJx1zeULxNBo9O214nsdlasoEWflpl+P5N8NgRZGtpbhR8/v+a
-	QSe7UVx04lNeumsEiMOq9SsFr9ayJm56UoBD/jmFIxjjli/Pw1gAVOVApROKjzjsy7BvAHak/M6
-	QXe4KSImk10fXIEy8JJbdBHplr3+IASfL+0PIylST8Pek0qNL4h5UYcGBzT7Sf+0xPSWzXE+bCN
-	vSZxRjixCWo9s4KvCkoseBcprl9Vws1BAMinCXhF3x+tyq0fLoyF462cdYIxlBYKutupP5WwRWH
-	BUjkMN3t7+14A72xgL/1N54RoylDXkg+MALRjCFajGJ74DDP2qS59pHwAuLzFrnMENxU=
-X-Received: by 2002:a17:902:db0b:b0:2db:3b35:1ac6 with SMTP id
- d9443c01a7336-2e8427efd9dmr151731365ad.5.1791978158291; Wed, 14 Oct 2026
- 04:42:38 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1791978751; x=1792583551;
+        h=message-id:to:from:cc:in-reply-to:subject:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=yAV+C6S/vBnhLrjCXwEiKS2AZjZdz8SQL6UJRh8bA3A=;
+        b=Fd/9A2E45WzVRMAw2pwSBDvUGh2Sxcb9CC2ALuTct6BOSftPP8Di+kPtP6ZlMRVqMj
+         9/4cjoNXOKiqxtZLugzfNZ7yF28gaX91TjfrESjHHyMBxhJn3PrPM4WNKxFO07Jq6t/m
+         RQ1LNStwavzYrMmXtDjgA3AeiJgZJ5qg4TIuk9bb8qlwuKHOwB/cpl6qqbwiElgoepYV
+         epJ/zasiZCvROD0Y8SZFXC9y7c/g2CNDPq1I1sM+rH5vbUvMmlD/EfCONbXiNEhP4926
+         WfCAeD2BeT71yZlvFTauoUBsqBvJGrn7Zdd/qyXxWPd5/5b1rOHKUCbXsQoM5KSM4CQS
+         KDfw==
+X-Forwarded-Encrypted: i=1; AKwUvBzpXQC8XOb9lS8dk+pdKRxGoqAY6KCUjsTSDwk/tJzXolhgPeTZ/ScE3f+aFP+UAgLf9xY=@lists.linux.dev
+X-Gm-Message-State: AFq9FYK0ngQfNiv9f/viXBLConbYI6Hko1Ceyr3V2jdPl6AKaaiPVXGv
+	VJBTzI6ESj+LiLqjOi460ekzbSxCyLwMCrPZSMwkSChQMRafDOqm5Na3s+0yJk/HIYI=
+X-Gm-Gg: AYBFou33Y8D0L9lGF6zLBFhOMKSsw//4C//GSCbvtFgjO8CkbvkaYri4nuLGFguDF6V
+	fPbo0xqLFvKqFrDASNYlDT60aBq3epFLU8v1eqEYQscyFeEvVXzqfI4A0EdIFm8c03QpjLdjSgX
+	jrVFJLtMZ22kD6Cb0wDWbEMrHyjE2LfQUzhcOxxuTUrfhQmIMTRHQz0nJtEFYMCp43sYNRl6592
+	uT1Ma9qgRvF8VBBoR5hysWsHHoEln1IkicvpfwiHLuz8oqzoDYrjspR+DUKeTdD59/EwvvB5Nf6
+	IOWOZjFg2eiSrQBD3T8d/HerCdNQVY1yKpcT7lzgcfSTgN1xWslvjOGtIQvHgDLi33bqHtj7j+m
+	1JUeWoUgZJgCXi8IdSPjtGgz+E50ijD9RUCeNUuUDLa5dJoOT1YLqoHQr7NkFql49hJa/EzWoxj
+	TUnUNHGGAjiQGjn/2+AhWyBQo/rXJqc00j61025iWP1gvlTBhulM59pmGUD5yxTnyMvKVjpAj99
+	H7jrltGGLZ1dQJjW71eZcUh0ncGF7/Lcc+FpqCQ
+X-Received: by 2002:a05:693c:810e:b0:359:861:7cbd with SMTP id 5a478bee46e88-35908617e44mr16791919eec.10.1791978750686;
+        Wed, 14 Oct 2026 04:52:30 -0700 (PDT)
+Received: from localhost ([2001:5a8:4687:d600:c5e7:8e91:8246:979c])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-35c89429484sm15935072eec.23.2026.10.14.04.52.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Oct 2026 04:52:29 -0700 (PDT)
+Date: Wed, 14 Oct 2026 04:52:29 -0700 (PDT)
+X-Google-Original-Date: Wed, 14 Oct 2026 04:52:25 PDT (-0700)
+Subject:     Re: [RFC PATCH] firmware: scmi: Make SCMI arch independent
+In-Reply-To: <20260710-romantic-dashing-gecko-e31a98@sudeepholla>
+CC: michal.simek@amd.com, cristian.marussi@arm.com, sudeep.holla@kernel.org,
+  linux-kernel@vger.kernel.org, monstr@monstr.eu, git@amd.com, vincent.guittot@linaro.org,
+  Souvik.Chakravarty@arm.com, alexs@kernel.org, andy@kernel.org, brgl@kernel.org, bmasney@redhat.com,
+  dlechner@baylibre.com, dzm91@hust.edu.cn, festevam@gmail.com, Frank.Li@nxp.com, linux@roeck-us.net,
+  jic23@kernel.org, corbet@lwn.net, lenb@kernel.org, lgirdwood@gmail.com, linusw@kernel.org,
+  lukasz.luba@arm.com, broonie@kernel.org, mturquette@baylibre.com, nuno.sa@analog.com,
+  pavel@kernel.org, peng.fan@nxp.com, kernel@pengutronix.de, p.zabel@pengutronix.de,
+  rafael@kernel.org, s.hauer@pengutronix.de, skhan@linuxfoundation.org, sboyd@kernel.org,
+  ulfh@kernel.org, viresh.kumar@linaro.org, si.yanteng@linux.dev, arm-scmi@vger.kernel.org,
+  imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
+  linux-doc@vger.kernel.org, linux-gpio@vger.kernel.org, linux-hwmon@vger.kernel.org,
+  linux-iio@vger.kernel.org, linux-pm@vger.kernel.org
+From: Palmer Dabbelt <palmer@dabbelt.com>
+To: sudeep.holla@kernel.org
+Message-ID: <mhng-8AE63289-05A8-49D5-B38A-F5AA1D56C2E8@Palmers-Mini.rwc.dabbelt.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-References: <20261008103831.542533-1-phucduc.bui@gmail.com>
- <20261008103831.542533-19-phucduc.bui@gmail.com> <14bbf027-4a16-4bac-b530-d4654ed38d4a@gmail.com>
-In-Reply-To: <14bbf027-4a16-4bac-b530-d4654ed38d4a@gmail.com>
-From: Bui Duc Phuc <phucduc.bui@gmail.com>
-Date: Wed, 14 Oct 2026 18:42:26 +0700
-X-Gm-Features: AclHuK--pm1YXW-dAVCk4mePmFKUqLdOhzguEaV2jSOsxf_MJ7HFDWxjeVZGb_U
-Message-ID: <CAABR9nHyso5GHpc5Gg-KLF3hJkCHQCYz_mK_i3_0fWDEimLEtw@mail.gmail.com>
-Subject: Re: [PATCH 18/24] ASoC: imx-pcm-rpmsg: Fix imx_rpmsg_pcm_close()
- being skipped on rollback
-To: Chancel Liu <chancel.liu@gmail.com>
-Cc: Vijendar Mukunda <Vijendar.Mukunda@amd.com>, 
-	Venkata Prasad Potturu <venkataprasad.potturu@amd.com>, Liam Girdwood <lgirdwood@gmail.com>, 
-	Mark Brown <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
-	povik+lin@cutebit.org, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
-	Andrei Simion <andrei.simion@microchip.com>, Nicolas Ferre <nicolas.ferre@microchip.com>, 
-	Alexandre Belloni <alexandre.belloni@bootlin.com>, David Rhodes <david.rhodes@cirrus.com>, 
-	Richard Fitzgerald <rf@opensource.cirrus.com>, Shengjiu Wang <shengjiu.wang@gmail.com>, 
-	Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>, 
-	Nicolin Chen <nicoleotsuka@gmail.com>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Cezary Rojewski <cezary.rojewski@intel.com>, Peter Ujfalusi <peter.ujfalusi@linux.intel.com>, 
-	Bard Liao <yung-chuan.liao@linux.intel.com>, 
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>, 
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>, 
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
-	Biju Das <biju.das.jz@bp.renesas.com>, 
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, Heiko Stuebner <heiko@sntech.de>, 
-	Kees Cook <kees@kernel.org>, Syed Saba Kareem <syed.sabakareem@amd.com>, 
-	wangdicheng <wangdicheng@kylinos.cn>, Chris Bainbridge <chris.bainbridge@gmail.com>, 
-	Linus Walleij <linusw@kernel.org>, Charles Keepax <ckeepax@opensource.cirrus.com>, 
-	Neo Chang <YLCHANG2@nuvoton.com>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>, u.kleine-koenig@baylibre.com, 
-	Pengpeng Hou <pengpeng@iscas.ac.cn>, 
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>, Hemanth Selam <hemanth.selam@gmail.com>, 
-	Md Shofiqul Islam <shofiqtest@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Zain Aboobacker <zainaboobacker33@gmail.com>, Sang-Heon Jeon <ekffu200098@gmail.com>, 
-	Bo Shen <voice.shen@atmel.com>, Vinod Koul <vkoul@kernel.org>, linux-sound@vger.kernel.org, 
-	asahi@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	patches@opensource.cirrus.com, linuxppc-dev@lists.ozlabs.org, 
-	imx@lists.linux.dev, linux-rockchip@lists.infradead.org, 
-	linux-renesas-soc@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
 
-Hi Liu,
-
-
+On Fri, 10 Jul 2026 01:59:04 PDT (-0700), sudeep.holla@kernel.org wrote:
+> On Fri, Jul 10, 2026 at 10:46:15AM +0200, Michal Simek wrote:
+>>
+>>
+>> On 7/10/26 10:38, Sudeep Holla wrote:
+>> > On Fri, Jul 10, 2026 at 09:42:09AM +0200, Michal Simek wrote:
+>> > >
+>> > >
+>> > > On 7/10/26 09:35, Sudeep Holla wrote:
+>> > > > On Fri, Jul 10, 2026 at 09:03:32AM +0200, Michal Simek wrote:
+>> > > > >
+>> > > > >
+>> > > > > On 7/9/26 17:56, Cristian Marussi wrote:
+>> > > > > > On Thu, Jul 09, 2026 at 03:27:00PM +0200, Michal Simek wrote:
+>> > > > > > > On heterogenious systems like AMD/Xilinx FPGA there is a need to talk to
+>> > > > > > > SCMI server from different architectures than ARM that's why remove
+>> > > > > > > ARM/ARM64 Kconfig dependency with also remove ARM from description and
+>> > > > > > > rename folder to reflect it.
+>> > > > > >
+>> > > > > > While I understand dropping the dependency on ARM (I always wanted to do
+>> > > > > > that and test if it worked at all on some otehr archs with QEMU), I am
+>> > > > > > not sure about the whole renaming party ? why is needed just for
+>> > > > > > cosmetic reasons ? it is at the end an arm originated protocol so I dont
+>> > > > > > see it as a being wrong to be named as such even though used by other
+>> > > > > > archs...I have not really strong opinion on this...
+>> > > > >
+>> > > > > I have been in CC on U-Boot RPMI patches which got to my attention because
+>> > > > > I don't want to have another interface for MB-V(riscv-) running in
+>> > > > > programmable logic and have another server in the system doing the same
+>> > > > > thing.
+>> > > > >
+>> > > >
+>> > > > Ah that's interesting. I wasn't aware of that. I still agree with the move
+>> > > > in principle, but how does that align with these:
+>> > > >
+>> > > > drivers/clk/clk-rpmi.c
+>> > > > drivers/irqchip/irq-riscv-rpmi-sysmsi.c
+>> > > > include/linux/mailbox/riscv-rpmi-message.h
+>> > > > drivers/mailbox/riscv-sbi-mpxy-mbox.c(Should be fine as it is just transport)
+>> > >
+>> > > I am having separate discussion on u-boot mailing list about RPMI and it's
+>> > > usage on non riscv architectures because one raised argument was that it is
+>> > > community driver spec compare to SCMI which is owned by ARM. But IMHO only
+>> > > for riscv.
+>> > >
+>> >
+>> > IIRC in LPC 2024, we did discuss opening up SCMI so that RISCV could use it as
+>> > is instead of copying quite a lot from SCMI for RPMI in some closed groups.
+>> >
+>> > Here is the summary we got from couple of RISC-V vendors at the time:
+>> > "
+>> > RPMI is comparable to Arm SCMI, but it includes RISC-V-specific services such
+>> > as HART State Management, CPPC, Management Mode, and RAS Agent. The SBI MPXY
+>> > extension enables secure and non-secure system partitions to exchange RPMI
+>> > messages, allows an M-mode RPMI transport to be shared with S-mode, and lets
+>> > hypervisors virtualize RPMI for guests or VMs.
+>> >
+>> > RPMI development is already well advanced, with much of the client-driver work
+>> > implemented in OpenSBI. Supervisor software can access selected RPMI services
+>> > through SBI MPXY. A permissively licensed reference implementation, librpmi,
+>> > is also available for platform vendors.
+>> >
+>> > RPMI was created after evaluating Arm SCMI, mainly to support RISC-V-specific
+>> > requirements.
+>> > "
+>> >
+>> > I didn't pursue it any further following some of these followup discussions
+>> > post LPC 2024.
+>>
+>> interesting. It looks like that they even didn't try to ARM about it.
+>>
+>> >
+>> > > >
+>> > > > Now I feel we need some alignment before making $subject move.
+>> > > >
+>> > > > > Based on that we had discussed about it with Vincent and Souvik (we missed
+>> > > > > you there) about using SCMI on non ARM platform and both of them didn't see
+>> > > > > the concern to be marked as ARM only protocol.
+>> > > > > Truth is that some of protocols have ARM in description, file names, etc but
+>> > > > > some of them not. That's why I think it is good time to sync it up and
+>> > > > > enable
+>> > > > > running this protocol on other SOCs.
+>> > > > >
+>> > > > > > ... my concern really is ... wont this full scale rename simply generate
+>> > > > > > a lot of un-needed churn for future fixes and/or backporting ?
+>> > > > > I don't think it is going to be a big problem because it is just git mv
+>> > > > > which git is able to gracefully handle.
+>> > > > >
+>> > > >
+>> > > > Otherwise it may end up being unnecessary churn though I completely agree
+>> > > > with the git/backporting aspects. Just don't want to churn things up until
+>> > > > we have some plan and further changes/users of this move.
+>> > >
+>> > > As I wrote above AMD/Xilinx platform with SCMI server where ARM RPU/APUs
+>> > > (with multiple VMs) and Microblaze-V in programmable logic acting as
+>> > > separate agents is going to be the first user. And for being able to run
+>> > > SCMI on Linux running on Microblaze-V I need enable SCMI on non ARM
+>> > > architecture.
+>> > >
+>> >
+>> > Ah OK, if the plan is to just use SCMI as is and having "ARM/arm" name is
+>> > a blocker, then sure we can get that done. Hope you are aware of and already
+>> > considered some of the RISC-V specifics listed above and ruled out any of
+>> > those as concerns to use SCMI on RISC-V platforms.
+>>
+>> I know that we can't maintain SCMI and RPMI servers running on the same chip
+>> doing the same things. We don't have space for it and make no sense to
+>> duplicate testing on it too.
+>>
 >
-> Reviewed-by: Chancel Liu <chancel.liu@gmail.com>
->
+> That is very valid and compelling reason to re-use and agree with your
+> assessment. If you can make it work, go for it 😉.
 
-Thank you for your review.
+Ya, it'd be great if we could stop duplicating specs in RISC-V land, 
+it's just a big time sink.  So
 
-Best regards,
-Phuc
+Acked-by: Palmer Dabbelt <palmer@dabbelt.com>
+
+if that helps any.
