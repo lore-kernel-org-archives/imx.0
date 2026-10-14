@@ -1,33 +1,32 @@
 Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB9E0488231
-	for <imx@lists.linux.dev>; Wed, 14 Oct 2026 07:58:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 115E2483806
+	for <imx@lists.linux.dev>; Wed, 14 Oct 2026 07:58:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791964713; cv=none; b=IJ2HgY+cipn6/B5+03Do0GbDfZ3M3+jAEDJa55eom7cqHG+SLcK+yiAqrsHhwF8SsVhqnR0jqJUcRUbAp320mFwNawuqG+VjGdgxaogWqtHk+KoscWTdmGZKGyey6ZeuFSaa92A/R5+xeyZwelh4EtQFXcN141fB3+e6pA59i18=
+	t=1791964714; cv=none; b=YUm8qq7Lr1vGcuwxBoHS5sp9eey4xSGupUqyJkG6jpA/qZY2I2CfGwfXrl7H/QgwwUUnhIMBlSFYae8yiJ3bDPEUml1XJjBvNTm9uw66ISYk29nVqLR2tQcdXngnKdX628YFD+xvDGeK5dsowid1NGJeXnuU/u8Xwy6Wdg3sumM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791964713; c=relaxed/simple;
-	bh=j8znPYvO8T/miBT1BL+J/7PHalINMcufRdxFNLNw4TA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k5U+0GtTkznbupoIO5/eTC47NoqkKj9Mjcq3Xts80FptwP1RTAVBMprXBG5jqXeHXl4HFeY6ZR3ieaeQem8g064ZujHlZSnhTk1aVX8Yl6cF0RHfA4nWc7jX0UcUX3aKHDqSCGc9t0TwftuEZyiMmGc6+JIhBcnXUjbW4cyP5lk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=YQpi4LNQ; arc=none smtp.client-ip=217.194.8.81
+	s=arc-20240116; t=1791964714; c=relaxed/simple;
+	bh=zZkaNhMeyWvsOyp3RwtHHvZXYxTdhPKOL6ptWxLjJSE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XW+Vem52gwtx0yyglrDn0QqKU8XqS8Zq1XM25T2a6RFKJYn5xsStZ9JsUipbNBOc+5BuTBADFPTzaxqEueBQQ6bwJpNC0l4x940xulwwRQ8Utn6ahlkVkPLu+MpUObdyrukzk9XX8/AbcJVTiibAjuVeaopNXawlBwYfpCTvN+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=IIMSMLfB; arc=none smtp.client-ip=217.194.8.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="YQpi4LNQ"
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="IIMSMLfB"
 Received: from francesco-nb.. (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 42C4F22B73;
-	Wed, 14 Oct 2026 09:58:29 +0200 (CEST)
+	by mail11.truemail.it (Postfix) with ESMTPA id 8F98A22925;
+	Wed, 14 Oct 2026 09:58:27 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1791964709;
-	bh=Nv1QRKVD0rhHN7pKsXLPrsiYoxShZ0enIr7QyxQJp0s=; h=From:To:Subject;
-	b=YQpi4LNQGJxIumQ2T5EsXikjrwl07DOxUA6tybUsS8Q1OCAMNEVEFry5Z95/30zQ6
-	 XHIgfQ1oICc3wceqlCd4BhvE4ar2yaB+PCF4hqKDkOXpiIXl9GslDsPGfLDF/Ebj05
-	 D0C1ZO0BX94XScAABV+JWSYNJv0McG9Ke3c7Kn20TWkdqJzYRFA5LkMIYMN4RD6I3J
-	 OOjCkDtPEwt93ho8SoKSJ5iBsYtwEyzJ9YbSP2hCCSFIKNZqOvlYNGn1cMtQ/Og50B
-	 DEJJiVqiuxkufOU7iIR0c6gCyPaiFuGNMvbhLwQbLNsFpwPDGA5YuNm5EuW6MxoUka
-	 iPwg/ofD/9n3A==
+	s=default; t=1791964708;
+	bh=1yC2vfl11Uvz+rPgJVGzarEqP1vrhE7ym9xxRH2Eha0=; h=From:To:Subject;
+	b=IIMSMLfBZLhPlC9dzthw9/IeIr8yB0aT2jxjCI7A+Gy3afeV+bD+lDTo2g5tr9Ue8
+	 ybqG0Wc4TAkAhBJpOAXQFAA/bdhzOhgAsgkagm6oMw+sCI3nwkbF6/ME+yRjao+lFk
+	 1bHGhonHW3ASGuaPt76ML1D49go1ojvrvVRQqMUPxbqddsi/ZvUbLW6GnILSWtUJR6
+	 Y2sc+Ft2qkgaofzz+oDcN/83CK7o2Uezmi2Wj8BNxCXQmIIeZ+aG18GKcJmKl51sWO
+	 fDN4DsTyoqZvGL03h437HN/Y8S8vVO5yyqI625d/ZQx8EaQni4hJsH5dF4QzgD2Ev8
+	 RZ+ES7r3g9phQ==
 From: Francesco Dolcini <francesco@dolcini.it>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -41,12 +40,10 @@ Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v1 2/2] arm64: dts: freescale: imx93-imx91-toradex-osm-dev: Remove ETH_A PHY interrupt
-Date: Wed, 14 Oct 2026 09:58:10 +0200
-Message-ID: <20261014075812.29154-3-francesco@dolcini.it>
+Subject: [PATCH v1 0/2] arm64: dts: freescale: Remove Toradex OSM Development Board ETH_A PHY interrupt
+Date: Wed, 14 Oct 2026 09:58:08 +0200
+Message-ID: <20261014075812.29154-1-francesco@dolcini.it>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261014075812.29154-1-francesco@dolcini.it>
-References: <20261014075812.29154-1-francesco@dolcini.it>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -57,45 +54,29 @@ Content-Transfer-Encoding: 8bit
 
 From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-The OSM Development Board is shared across OSM modules. The Ethernet PHY
-interrupt connection to GPIO_A7 has been removed to resolve a boot strap
-conflict on OSM iMX95.
+GPIO_A7 is a boot strap on the OSM iMX95 module. The pull-up on the OSM
+Development Board Ethernet PHY interrupt line causes the module to enter USB
+loader mode instead of booting normally when the reset button is held for more
+than 0.5 seconds.
 
-Update the OSM iMX93 and iMX91 Device Trees accordingly. Remove the PHY
-interrupt configuration to use polling, and move the GPIO_A7 pinctrl
-configuration to the GPIO controller. The pin is now available in the
-jumper area for general-purpose use.
+To resolve this issue, the PHY interrupt connection has been removed from the
+carrier board, and GPIO_A7 is now exposed in the jumper area for
+general-purpose use.
 
-Fixes: e8a8c86875f4 ("arm64: dts: freescale: Add Toradex OSM iMX93")
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
----
- .../dts/freescale/imx93-imx91-toradex-osm-dev-common.dtsi   | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+Since the OSM Development Board is shared across OSM modules, update the Device
+Trees for OSM iMX95, iMX93 and iMX91 accordingly. The Ethernet PHY now operates
+in polling mode on all three modules.
 
-diff --git a/arch/arm64/boot/dts/freescale/imx93-imx91-toradex-osm-dev-common.dtsi b/arch/arm64/boot/dts/freescale/imx93-imx91-toradex-osm-dev-common.dtsi
-index 566671b32308..24b4bf579835 100644
---- a/arch/arm64/boot/dts/freescale/imx93-imx91-toradex-osm-dev-common.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx93-imx91-toradex-osm-dev-common.dtsi
-@@ -93,7 +93,7 @@ &gpio2 {
- 
- &gpio4 {
- 	pinctrl-names = "default";
--	pinctrl-0 = <&pinctrl_gpio_a6>;
-+	pinctrl-0 = <&pinctrl_gpio_a6>, <&pinctrl_gpio_a7>;
- };
- 
- /* OSM I2C_B */
-@@ -262,10 +262,6 @@ &mdio {
- 
- 	ethphy_a: ethernet-phy@2 {
- 		reg = <2>;
--		pinctrl-names = "default";
--		pinctrl-0 = <&pinctrl_gpio_a7>;
--		interrupt-parent = <&gpio4>;
--		interrupts = <15 IRQ_TYPE_LEVEL_LOW>;
- 		ti,rx-internal-delay = <DP83867_RGMIIDCTL_2_00_NS>;
- 		ti,tx-internal-delay = <DP83867_RGMIIDCTL_2_00_NS>;
- 	};
+Francesco Dolcini (2):
+  arm64: dts: freescale: imx95-toradex-osm-dev: Remove ETH_A PHY
+    interrupt
+  arm64: dts: freescale: imx93-imx91-toradex-osm-dev: Remove ETH_A PHY
+    interrupt
+
+ .../freescale/imx93-imx91-toradex-osm-dev-common.dtsi    | 6 +-----
+ arch/arm64/boot/dts/freescale/imx95-toradex-osm-dev.dts  | 9 +++++----
+ 2 files changed, 6 insertions(+), 9 deletions(-)
+
 -- 
 2.47.3
 
