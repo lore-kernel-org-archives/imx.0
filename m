@@ -1,165 +1,171 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011035.outbound.protection.outlook.com [52.101.65.35])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com [209.85.167.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F76451AFF0
-	for <imx@lists.linux.dev>; Wed, 14 Oct 2026 13:55:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.35
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791986142; cv=fail; b=TNpk82IclRW+VyDu2goOKmYDlU/mRFRCf2xT7FhBRSNzX6oSlv0E+RzaqtMZR3plA909gB3krd7qhEzJE1Z7yQfM5NPAfPtnnmx7AwN1yQ/s7pnJ7QAq26E9RlJhdmTkepQWHH/EnFf8x4YdIK2j58I6jLYXke4LilH270PZCmk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791986142; c=relaxed/simple;
-	bh=S6+HFYIg+zdxGR8wAF6TgRU9CRboh0mEUiNyGvxM6xs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=e5GsdYMPG21OppQNWVBbHk1KlvD1SjlNUYg3UJSst0jnAxXcYaMMN1jtHKWqD8lStYMsALNhVUnO/wyTaLnk5meuDMcD+EBuUzzIH2IbXToJrr231EtJUau0EPnycngAztt8iBFN8aXdVSOTvla9dSWPYDvyOzruEEBxO+rsV3w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=E0gBbP0Z; arc=fail smtp.client-ip=52.101.65.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5108A51EE12
+	for <imx@lists.linux.dev>; Wed, 14 Oct 2026 13:57:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.179
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791986276; cv=none; b=TpmmogY7YWGcGoCHWw8Xv+X5KLhS/h0d7znD6RGuMaU0uOsyoXc1kR5mxqsA9Vuro39csTAkP3FsCUu5PsdqgIQa9EdM0wP7pD7rGW87dxUuPHKxPPRx3+MZEhJlwLUY3Ahk1KamGsgiEmigUvwKqol0EukMGH0XaY7nCQFfGa4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791986276; c=relaxed/simple;
+	bh=TMXUtKO2nNHGtsYqDTL68aTnNZaX3Bqh2FqKHXbmdTM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Zs2d4KBlhs1OrMAfRVSB03zszaXzrytWnPVFzmmC1t+F31lXG5Z2uR1hpqN5kBE3bc3nvKOcpgiRckanphpWIj6k35zlV1iQpDBieJIzumgGTAxCaOYoYrOTKUuqyDl3w8L1s3/jTO5KOvCJEbMiaofmu8gda7iBFUIGZ44r618=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j3bbyGUl; arc=none smtp.client-ip=209.85.167.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="E0gBbP0Z"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mYCh9qEgTRe9+5YfEOB67JqIHGWLAejjRHGpVpPR0fYmyLYdjcwl7ab5jon2zBnqB6E6VjXExtwcaexWxxbIAqSQn5xGyA9j8S2a1lrS5sYrlx6UyJZ90KGFr1iqoC/4yKAW6pJz/2N2f9hU6U5tERiTWaaQXyL4G3nikCYGYwyM4FyCONbS0NDsNCzDcNCynM54wx0nn9i2hv/qXQv7Pos2avP0ZvSAksgBvH/z9zlSRfuwG0yhc6azSttlqRZpCyWCnDSTe/WkPROpNDIKVRNOFfS74906qcwC5nztfh0UqP3/cHwYgmQ/yKaVd8Nbie8l+B259spLnPpvFs3reA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=g6gHCLzDRSqYLaq085ZlrN7eR1mwVP9CFMv/OS8W9YQ=;
- b=wOEUGnKsAIi/fbgqctZeAQOrdWctaSqKMdvsbdO/yMhI4LEGmNrIBpDMDAd8OZqNxboat/OTXaDjWO1Nd+DPZWK2UrQ4nnwWwewySL3dyGiGz0cm+L84slm17ZRInUgeCndCE4MxilqvlbqK4sZJhrkNYKdp4UGhvebUtpXrv55/goMqApwZcAH5EnmtnRg9Hhz8CXSYalaL0mRVZ3XiE+usLKkiDf4Y1z/eb84+xGNsbZUVeN1X2iH/9s70pDLvYODX8ZThTtluGCjyyDfihDCK4I1dRm3WLjbcNXpmEJS0dqIGKvT603WpB635uDfVqz86ZBoUObbkFjLitLAwww==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=g6gHCLzDRSqYLaq085ZlrN7eR1mwVP9CFMv/OS8W9YQ=;
- b=E0gBbP0Z0EZK9UZXTSsFdIQO9/47nksTWwfKP6dyMB9RTNYnfvaEOB4ZoCN21WVWWhBMcUeQkrTijfLX1XqevW+FpTM3AWsElvkK8NUIMqVq62IgVRxZl+XbdZ4QX6McliZz8K4aDVA9sYClqHLY2mKPGOEE5mngrVMCvF4/3dFDGihF5cwON9bMq4rS8pvNYk8+N7iCNwp1gOoMLvXHbkxCQ9rtKKehseDA6kFH/b5/ZJ1Z9WxYLDnBMUGMfdmplxhdfuCDoKZMw2HodNVZJC60W52IOLTnTT4Heys/XbBjs292W3WKZ/15EYIeZ29SyQQbOM/9hMay/NrCYeWa0A==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by GV4PR04MB11901.eurprd04.prod.outlook.com (2603:10a6:150:2eb::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.13; Wed, 14 Oct
- 2026 13:55:33 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0522.012; Wed, 14 Oct 2026
- 13:55:33 +0000
-Date: Wed, 14 Oct 2026 08:55:21 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Dong Aisheng <aisheng.dong@nxp.com>, Liu Ying <victor.liu@nxp.com>,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux@ew.tq-group.com
-Subject: Re: [PATCH v2 2/5] arm64: dts: imx8qxp: Add display controller
- subsystem
-Message-ID: <as-JyQG5vgaPYLeH@SMW015318>
-References: <20261014071657.118378-1-alexander.stein@ew.tq-group.com>
- <20261014071657.118378-3-alexander.stein@ew.tq-group.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261014071657.118378-3-alexander.stein@ew.tq-group.com>
-X-ClientProxiedBy: PH0PR07CA0116.namprd07.prod.outlook.com
- (2603:10b6:510:4::31) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j3bbyGUl"
+Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-4b28d9537bcso2977762b6e.0
+        for <imx@lists.linux.dev>; Wed, 14 Oct 2026 06:57:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791986274; x=1792591074; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=7e0ci0C74qh1IaIQAQj4oYwASorhtlXqumTlEsvUPK0=;
+        b=j3bbyGUld5Vjbu5EiddkW9GV5geeLTgeyJFbi7XJbxQLL3D2l2jngfOf6LqQb70zcz
+         ZmzVPaPmP/luHwv8IG503XTPU5QyPqbmfmro/mJyraZRcoemqDsG4Unr2SC28fqrsZnn
+         dQlQ4pAoVeomPPHWZdOLrrCu9tS9S1+koWf4idFzbhtKFJf6+uI8h7u5q2PRIkbrkTm0
+         qEChbpxuu9iK8GOSQ/NOs6gH9FzWEEDekzwMp1SyrZ3RmtWhGx5X/l9n5G5QgwNDfm6T
+         UcbDkeVk0UrfUPbqAKEW3Wf5aIMeHng+C75IIy8hDKlXc/jWTpX6PoBCFqTGGzKiq89X
+         GRBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791986274; x=1792591074;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=7e0ci0C74qh1IaIQAQj4oYwASorhtlXqumTlEsvUPK0=;
+        b=iaPeHNux+GCkOEGAY+8vNqavedXVpfs68Ibsqu3Db2yw1kSx0DajXVk4s51cYfy+ro
+         zCoJ3kqePD2z5/ZXlRctjSKr+2kV1Gtw8LBGzCJ41rh55XSSJ4g39PTSH5D197H9esps
+         TooDKnBlnIH26pSdjsxcR+9cDAWcbVJ28rJcnBCnnSfa+VrqRNIw8G8sShDXWQK4O2Ms
+         yzAVK1o1gV2V/6qSK0JgpwowCGRO0F1RP4t3cffJOG0U4feVaeL6WOGJd2sg3eyyBpqV
+         8mHaH180vvntPy1jl2KlUXWuLirpJ2DMZp1dPFPiqtVFvhRyGV2/E4vpEeesCkgZKauH
+         J1fA==
+X-Forwarded-Encrypted: i=1; AKwUvBxl8+pnRhaWEzfwxBVhsatXpQDcW5qzHQWLMFuAJvWBrtae1kaZ/PGUcqRLAcLGHtV5qzw=@lists.linux.dev
+X-Gm-Message-State: AFq9FYINVe/f/SZsyDiwxsxLqq7HGuvHPwi+arv3DeZ0J2y69Fg3KPAj
+	StmACF1RfvWvFc1FnWRzc6f2M7lDJWawZY4Bj/mSMbiBZ1yMLrB8DH71
+X-Gm-Gg: AYBFou1C9RDoWLfszUoW6rF4IfqavlDb0o6nWManhH7XF6tqf7ijn7StOh+kOaLDw20
+	Yg/AQIeBeF2OkzvIC7pnGMnqIJooBmmZ5ERsYyyuaLUoxlcOdvyFKcG6qpOkmILTq5Yw+RFn0MP
+	B6JUByufutjuTvscT5ybjMoECHZmwC17C3F+Owut5UxlguAMRovT1r8pXuA/0pQqFwkTOXw/ETh
+	6GJzpQ/O9VqXNrdXNy5Am2KezLcKG6TtcHwDU+xO0XERtW+9EljaVQHJp8fczVUByq79xoagHSv
+	INEd3+8yi/1PLhg3oIKeyRTdUMEc2rWE5dPG8uwq4QcQ9NEyQPZnMrTozBqRF4hPxCPz8Of/1X2
+	Vebzkf/LNDZbVTGSNtvvjJ7nraZgrzuQrgHFj26m5O61yG/Tezky5B5NgiZq63XCWFarsJCTmO5
+	6r8A7s8kyQNWFw6g9mNsttHmp+VFbi6//9vsUK2YS4OgpMkhRzuXXJBaHv93hfD4enFRYpZ4LGi
+	Mbs/nhYDHIAzhk=
+X-Received: by 2002:a05:6808:1a19:b0:4f3:28f7:dfb with SMTP id 5614622812f47-50c516e42fcmr11298620b6e.14.1791986273875;
+        Wed, 14 Oct 2026 06:57:53 -0700 (PDT)
+Received: from leonardoc-nb ([67.159.246.222])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-50c1815fd26sm17891866b6e.10.2026.10.14.06.57.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Oct 2026 06:57:51 -0700 (PDT)
+Date: Wed, 14 Oct 2026 10:57:40 -0300
+From: Leonardo Costa <leoreis.costa@gmail.com>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: Francesco Dolcini <francesco@dolcini.it>, 
+	Andrzej Hajda <andrzej.hajda@intel.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	Robert Foss <rfoss@kernel.org>, Jonas Karlman <jonas@kwiboo.se>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	Leonardo Costa <leonardo.costa@toradex.com>
+Subject: Re: [PATCH 0/3] Add VGA support for Apalis iMX6
+Message-ID: <druavdvcgm3rljk3mhano3o424xyelupmcz7kbzguuljdsungx@xuj2ovbvz654>
+References: <20261012-v1-apalis-imx6-enable-vga-v1-0-8905d8746504@toradex.com>
+ <20261012164054.GA56180@killaraus.ideasonboard.com>
+ <20261013090631.GA33628@francesco-nb>
+ <20261013111158.GG56180@killaraus.ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|GV4PR04MB11901:EE_
-X-MS-Office365-Filtering-Correlation-Id: 55a3d3ff-0752-451c-33f3-08df29fad0e0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|23010399003|19092799006|56012099006|11063799006|4143699003|261009223027099003|10067099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	lZuARZEQjkJ22GoJzna5z2jXntiD5+Y6FmbwSA34l0yvSFcxfxJnyuusVDiM9YDnuod3B1uOjCT241Q8kwL7Ljl2KqnSSy0G/rtPedlyC3KtYz8jnp44j2fSUgcj8C8yRxA3z1AEBsDEvyr4k8xfivzC5keIelUfUf/AoXWhmM8s3JC4X3T7hL2exU1A3AHXPduwvTMYCUfsFH9pjvbbB9Zu6uwks9q80BWJ8X7Dw5MRkUvakJ+qfMzNQwpeKVW7nPIllBmHKz4uW5OGY7uYQ8kSOMu8SNb2r/3ocped4Tv27P10N3KyZX0jLZkCtKbVkFCfbWXx+3GXPJZEgKqT2WUERwk4MVKzrKN4A57NlEFJXfAIsIjfZu/+MoNE5+wzR8eWMmqxmYN3Mwjg2zWN6J5BNR+wkW40TXCmNSmKoIKW7vGPUlupqg6t742AWQey9+mG4kdU1hBxUir7X+92GcB9Kf75Xoy1ktakOSua6gYA748la8yXzHVwTUxYMLrR5kLoHKKTKOopXCub357fcH7GrY2PcC3edLJSNHBl/WOqOIYTpAs+07Z8af3AqAd0WRZ76dFIbz1EgN00avTWwzwfNWhVZOgl0NgwOTRr6dr74VOK2g7OcVcPmVWIfzstCkbHmv7JosICm98lRmnWxAs+aZo0KHfvu/s9B9KXxT8=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(23010399003)(19092799006)(56012099006)(11063799006)(4143699003)(261009223027099003)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?YZrs7EW95Zs3wlvzGy6pz4+ICJCJEc+DOn3UIG/1lu9y1E36S1VYXZDJx30T?=
- =?us-ascii?Q?MOcLG2S0d85DLixfIFpQza8nKp+8m+wb39/+t56YKZ6gnTp6N3R6NC8CVrgo?=
- =?us-ascii?Q?dPWCRVW2Os0uBmgYl1yGVpY3f38yC5DsmMUR5lBhGPhWQ0NKaVuZBfgylMxD?=
- =?us-ascii?Q?y3lGxXcVlAHg4f47qwk7SzDtptkFTT0jURMmRNzTltBhWCgOGu/fAqMA6JWY?=
- =?us-ascii?Q?4TpVPxcvCd0pneB8I+muE7FH8+E6Njt/pYKDTeKuoFK3186BGrS5zl1cVi+5?=
- =?us-ascii?Q?krJ/twNrXsTOwCJVtk3eQHMy3WlJcNThl40bDNeR0rs3y6yG6Iw5phMd2FDe?=
- =?us-ascii?Q?6b1WkbLexkcWf2qo0hUknY5JgUN+afN7d4udvD9WOjBQ8Tp779TNKP21FKJc?=
- =?us-ascii?Q?RjPRked/K0A+f7WsJf89U2yg/B+m6ZbMIv6TI6/4pE7WzUoRQjcMU1T2GJdZ?=
- =?us-ascii?Q?CSV19UXL2SHMstWbTw+neFL0SDRixvtb1EtIm1dCPOm3ZAC8asMURu0PkuS4?=
- =?us-ascii?Q?lG6eLpSISu0fP2YW+XrNb+OrrIz8KDBKcXyw+EQ4xqrfO+ri337ZzTtDA+SP?=
- =?us-ascii?Q?e8NyqzUfx2NHzDQNY0P3Xt3dTjnutSpDAs2K+G92tOAJ7PCcpDy2/Sv9dpe0?=
- =?us-ascii?Q?c5Qatg1at5cKrfGYlGFSKEXSlWGsGzYjMf7VZz6jYfYQHmUQ1fNIP+f6AfgQ?=
- =?us-ascii?Q?ts04X27LNslOZNlz+6iawXGLKxqmRP+CO3Jq0DiRyl+nunbGzDnFl7H9Ynz+?=
- =?us-ascii?Q?PzYqE7CzxMpMH9N+XA5lC2T3cRTC7cB600NKVYAIX8COq4uIfJ/iob/C+AdT?=
- =?us-ascii?Q?JrrxUEYLFNw+RXV6WyDJ7l3yhKstvdeET7M1iCvnSLuEdVpyaZcYWfy2otqX?=
- =?us-ascii?Q?197jVFGqk5QOTPR+0u8skXlE1pso9Cmpp3gUHy0wUcl7rxzcmEwahfz584yI?=
- =?us-ascii?Q?FFPWgCwf873m0QCTleqXDgGCjGnpEDNarq1jsxu305FDYWn+oYJC8PFfMT+W?=
- =?us-ascii?Q?pK9BgUEKwE7B5WJ7bAuYoR2SmGFm3ATmjWsQn1FsdVcbHk8/iTsi5XdcjiaI?=
- =?us-ascii?Q?8gSEGGF6TOlZ3/431ZcyLhfXGNDoItcLx47zPmdUflV80+zaSvi1KreUIeT3?=
- =?us-ascii?Q?bWs1DdWN7ltrilEJh9KbeMS7RftHd1QiscDojpPE0k1wU+dN/skb/fPM8zn0?=
- =?us-ascii?Q?C0CtAiVPZadnDKBeH+PexvM5uc111V8F7Bo3zkYxDYyVVWaJndRyftgi2O/0?=
- =?us-ascii?Q?+r5Y1SZDp70nGEMNKZCHPgKy7mxvpmzbXvssklsMPmnojw5Gu+4OmnPP0jv/?=
- =?us-ascii?Q?eO5kzSRaw8jQfMEJF+KaGh9zZs2Cw6g09jRYlOu493AUOlf2Y8KixOkq11vD?=
- =?us-ascii?Q?pEMfB/s/K3VnOpNWETqAcvPLB6I5mWIGzCqva+8zjFLqKgrDMJH+j9I7TMmv?=
- =?us-ascii?Q?1XK3I5yWKgctFqvD8GWFUI5mWwiLpwkhnwbYCqZr2kqMbIzCSlcs9FA8fmES?=
- =?us-ascii?Q?vCWVAbQEoVjFA9YxYceClthVabqy5I63Q6+PsMHUSzHYEltmw2zxvXa+s0v2?=
- =?us-ascii?Q?GNqqRe1ZQ/muH/JJHbJjnbu1BOBhwmRtPfpfGUbkSGYrZDtutJIKWk2Aq7Xv?=
- =?us-ascii?Q?/SK+T80qNj2K18r/prKAH6kr6AbvfRd1z/qtx99etkSNGTeKSkQXCcvSD2qp?=
- =?us-ascii?Q?PQt+ktonYKzraTqckR/qaqS3h9WK17ARV5LTO5oby11aquBZRRIWr4DB/i1w?=
- =?us-ascii?Q?l4gmo+VPdrIGsz7opBEIJk0FSAsKHr5pGZSK6KBscSsTqC4unN4A?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 55a3d3ff-0752-451c-33f3-08df29fad0e0
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Oct 2026 13:55:33.6126
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: B4yv+PqziUTSvATlwY7K5zTWfJcAjGk+RltkZCJgtBq1zlPkyS+zZETfz5zY1fOTWWC0tYQ7fZHPeDeryoxJ52ZjXZxkrFb+V7sL5ObFV6Fl5vcBQ3jx5nZBKhNRQEzY
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV4PR04MB11901
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261013111158.GG56180@killaraus.ideasonboard.com>
 
-On Wed, Oct 14, 2026 at 09:16:46AM +0200, Alexander Stein wrote:
-> From: Liu Ying <victor.liu@nxp.com>
->
-> Add display controller subsystem in i.MX8qxp SoC.
->
-> Signed-off-by: Liu Ying <victor.liu@nxp.com>
-> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-> ---
-> Changes in v2:
-> * Remove default compatible from irqsteer in generic DC .dtsi
-> * Add imx8qxp-specific compatibles in imx8qxp-specific .dtsi
-> * Add power-domain to irqsteer
->
->  .../arm64/boot/dts/freescale/imx8-ss-dc0.dtsi | 408 ++++++++++++++++++
->  .../boot/dts/freescale/imx8qxp-ss-dc.dtsi     | 240 +++++++++++
->  arch/arm64/boot/dts/freescale/imx8qxp.dtsi    |   4 +-
->  3 files changed, 651 insertions(+), 1 deletion(-)
->  create mode 100644 arch/arm64/boot/dts/freescale/imx8-ss-dc0.dtsi
->  create mode 100644 arch/arm64/boot/dts/freescale/imx8qxp-ss-dc.dtsi
->
-> diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-dc0.dtsi b/arch/arm64/boot/dts/freescale/imx8-ss-dc0.dtsi
-> new file mode 100644
-> index 0000000000000..e94fbc6eae07d
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx8-ss-dc0.dtsi
-...
-> +
-> +	dc0_pc: pixel-combiner@56020000 {
-> +		#address-cells = <1>;
-> +		#size-cells = <0>;
-> +		reg = <0x56020000 0x10000>;
+Hi Laurent,
 
-reg should be first property, check others, you can use
+On Tue, Oct 13, 2026 at 01:11:58PM +0200, Laurent Pinchart wrote:
+> Hi Francesco,
+> 
+> On Tue, Oct 13, 2026 at 11:06:31AM +0200, Francesco Dolcini wrote:
+> > On Mon, Oct 12, 2026 at 06:40:54PM +0200, Laurent Pinchart wrote:
+> > > On Mon, Oct 12, 2026 at 04:25:22AM -0300, Leonardo Costa wrote:
+> > > > This series adds a device tree overlay that enables the VGA output on Apalis
+> > > > iMX6, which is driven from a parallel RGB interface passing through a
+> > > > non-programmable video DAC.
+> > > > 
+> > > > The video DAC is a simple resistor network gated by an active-low
+> > > > data-enable signal. For the bridge to work properly, this series also
+> > > > changes the following in the dt-bindings and simple-bridge driver:
+> > > > 
+> > > > - dt-bindings: Add a new compatible for the bridge in the simple-bridge
+> > > >   binding. This is necessary because the existing dumb-vga-dac compatible
+> > > >   doesn't describe a data-enable signal polarity.
+> > > > 
+> > > > - simple-bridge: Add the VGA bridge match-table entry and timings
+> > > >   struct, setting the DRM_BUS_FLAG_DE_LOW flag for the bridge.
+> > > 
+> > > Is there schematics available anywhere ? That would help reviewing the
+> > > series ?
+> > 
+> > This circuit is on the SoM, and the SoM schematics are
+> > confidential and not generally available.
+> > 
+> > I tried to extract as ascii art the relevant circuit, hope it helps
+> 
+> Thank you, it makes things clearer.
+> 
+> The circuit seems fairly generic. Wouldn't it be better to add an
+> optional property ot the dumb-vga-dac instead of a new compatible string
+> specific to Apalis ?
 
-https://github.com/lznuaa/dt-format/
+See the diff below, this was the initial idea we had when working on
+this. On one hand, at least to me it seems like something that other
+bridges could use, and a new property seems reasonable. On the other,
+since we don't know exactly how much configuration is expected from a
+bridge in the simple-bridge driver, we weren't sure if this would be
+accepted, and went with the simpler solution of creating a new binding
+for our bridge, which also seemed less intrusive.
 
-Frank
+What are your thoughts about a change like this?
+
+diff --git a/drivers/gpu/drm/bridge/simple-bridge.c b/drivers/gpu/drm/bridge/simple-bridge.c
+index 3fba7002322e..41b00a44983a 100644
+--- a/drivers/gpu/drm/bridge/simple-bridge.c
++++ b/drivers/gpu/drm/bridge/simple-bridge.c
+@@ -171,6 +171,7 @@ static int simple_bridge_probe(struct platform_device *pdev)
+ {
+ 	struct simple_bridge *sbridge;
+ 	struct device_node *remote;
++	u32 de;
+ 
+ 	sbridge = devm_drm_bridge_alloc(&pdev->dev, struct simple_bridge,
+ 					bridge, &simple_bridge_bridge_funcs);
+@@ -212,6 +213,19 @@ static int simple_bridge_probe(struct platform_device *pdev)
+ 	sbridge->bridge.of_node = pdev->dev.of_node;
+ 	sbridge->bridge.timings = sbridge->info->timings;
+ 
++	if (!sbridge->bridge.timings &&
++	    !of_property_read_u32(pdev->dev.of_node, "data-enable-active", &de)) {
++		struct drm_bridge_timings *timings;
++
++		timings = devm_kzalloc(&pdev->dev, sizeof(*timings), GFP_KERNEL);
++		if (!timings)
++			return -ENOMEM;
++
++		timings->input_bus_flags = de ? DRM_BUS_FLAG_DE_HIGH :
++						DRM_BUS_FLAG_DE_LOW;
++		sbridge->bridge.timings = timings;
++	}
++
+ 	return devm_drm_bridge_add(&pdev->dev, &sbridge->bridge);
+ }
