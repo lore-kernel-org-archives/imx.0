@@ -1,142 +1,101 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71F58489FBC;
-	Wed, 14 Oct 2026 07:29:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB9E0488231
+	for <imx@lists.linux.dev>; Wed, 14 Oct 2026 07:58:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791962971; cv=none; b=INaV+wxcc8Nt02hrpq9wf3HwTPNgb/3eS+nGIcgNFSvNhcekGwqp+p5iH7AIqjJgQd69/WY9XML7buTQB7Rbg2HCxOn9C12u+y9Yq6FeS5EHrwnZIjwHFNpeO5OaEDHFUU/4tnwnEur9verFWdLBoBbznfSOe7yJZPWtFewderI=
+	t=1791964713; cv=none; b=IJ2HgY+cipn6/B5+03Do0GbDfZ3M3+jAEDJa55eom7cqHG+SLcK+yiAqrsHhwF8SsVhqnR0jqJUcRUbAp320mFwNawuqG+VjGdgxaogWqtHk+KoscWTdmGZKGyey6ZeuFSaa92A/R5+xeyZwelh4EtQFXcN141fB3+e6pA59i18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791962971; c=relaxed/simple;
-	bh=vJG0BrH2YlV4SouCeAbKpfs9mIcwxLtNgwdVCIWL+6c=;
-	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
-	 Date; b=MqV11NDlJCrrYTYx+IrK00ictiG6m1rgm9nY3zMlDezdFH8ssmqW/ujkmnORSxIxQB3LiMOQBxj4X3NGRqpxfBAboq6U9XOyKBN5BRgYWG86QMhk8lEvepbFXzQs16wcfOUNYjZMQzxuKM5M1FTchUH3dC7/aSiB1hYt5hQq3yw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oW0sDTpF; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791964713; c=relaxed/simple;
+	bh=j8znPYvO8T/miBT1BL+J/7PHalINMcufRdxFNLNw4TA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=k5U+0GtTkznbupoIO5/eTC47NoqkKj9Mjcq3Xts80FptwP1RTAVBMprXBG5jqXeHXl4HFeY6ZR3ieaeQem8g064ZujHlZSnhTk1aVX8Yl6cF0RHfA4nWc7jX0UcUX3aKHDqSCGc9t0TwftuEZyiMmGc6+JIhBcnXUjbW4cyP5lk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=YQpi4LNQ; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oW0sDTpF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ADFF1F000FF;
-	Wed, 14 Oct 2026 07:29:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791962965;
-	bh=yhFKxNTpHyvYsilbup8LwxaUHwN4lYlPT/FNLPrrSAo=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=oW0sDTpFfJG5DUGO/NrhE9zdvJU2JtXiMtMio3qA0gqxn06Jbzb/rugptYZrHUPu2
-	 YcFOSMvAtay7OTGDdH8gaPlTwKXVUW6YffaTEuLNPA5/tPw7AUHgXx01maRfJjTSo+
-	 fnJWMC0PPP+cBKlsvWcob8r0/LSYIZIOGxYbO1QAMiHJjeCqN4qmao2a4QMBgYVUwR
-	 hZcZHO5IjaNWWF3RDUjBsS2YbauQjHrbLn8j8ZYdqo7k1ojdoZRloX5iTEfv4VHfDw
-	 bFdOggDM43JgqZUumdF9cRN0yF1AIZP0daLKnRBeVaRtXnNcYMJXUdFpYeHwNiIeP1
-	 Zh5Cci29T8/kg==
-Message-ID: <sashiko-outbox-170941@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 3/5] arm64: dts: imx8qxp: Add MIPI-LVDS combo
- subsystems
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Alexander Stein" <alexander.stein@ew.tq-group.com>
-Cc: imx@lists.linux.dev, devicetree@vger.kernel.org, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20261014071657.118378-4-alexander.stein@ew.tq-group.com>
-References: <20261014071657.118378-1-alexander.stein@ew.tq-group.com>
- <20261014071657.118378-4-alexander.stein@ew.tq-group.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 14 Oct 2026 07:29:25 +0000
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="YQpi4LNQ"
+Received: from francesco-nb.. (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id 42C4F22B73;
+	Wed, 14 Oct 2026 09:58:29 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1791964709;
+	bh=Nv1QRKVD0rhHN7pKsXLPrsiYoxShZ0enIr7QyxQJp0s=; h=From:To:Subject;
+	b=YQpi4LNQGJxIumQ2T5EsXikjrwl07DOxUA6tybUsS8Q1OCAMNEVEFry5Z95/30zQ6
+	 XHIgfQ1oICc3wceqlCd4BhvE4ar2yaB+PCF4hqKDkOXpiIXl9GslDsPGfLDF/Ebj05
+	 D0C1ZO0BX94XScAABV+JWSYNJv0McG9Ke3c7Kn20TWkdqJzYRFA5LkMIYMN4RD6I3J
+	 OOjCkDtPEwt93ho8SoKSJ5iBsYtwEyzJ9YbSP2hCCSFIKNZqOvlYNGn1cMtQ/Og50B
+	 DEJJiVqiuxkufOU7iIR0c6gCyPaiFuGNMvbhLwQbLNsFpwPDGA5YuNm5EuW6MxoUka
+	 iPwg/ofD/9n3A==
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v1 2/2] arm64: dts: freescale: imx93-imx91-toradex-osm-dev: Remove ETH_A PHY interrupt
+Date: Wed, 14 Oct 2026 09:58:10 +0200
+Message-ID: <20261014075812.29154-3-francesco@dolcini.it>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261014075812.29154-1-francesco@dolcini.it>
+References: <20261014075812.29154-1-francesco@dolcini.it>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [Low] dts: simple-pm-bus node specifies address cells but lacks memory-ma=
-pped children
-- [Low] dts: irqsteer evades DT binding by omitting SoC-specific compatible=
- and power-domains
---
+From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-commit bf42b82f7a33a44c5f4805e13c2e5eb848f29919
-Author: Liu Ying <victor.liu@nxp.com>
+The OSM Development Board is shared across OSM modules. The Ethernet PHY
+interrupt connection to GPIO_A7 has been removed to resolve a boot strap
+conflict on OSM iMX95.
 
-arm64: dts: imx8qxp: Add MIPI-LVDS combo subsystems
+Update the OSM iMX93 and iMX91 Device Trees accordingly. Remove the PHY
+interrupt configuration to use polling, and move the GPIO_A7 pinctrl
+configuration to the GPIO controller. The pin is now available in the
+jumper area for general-purpose use.
 
-The MIPI-LVDS combo subsystems are peripherals of pixel link MSI bus in
-i.MX8qxp display controller subsystem. Add the MIPI-LVDS combo subsystems.
+Fixes: e8a8c86875f4 ("arm64: dts: freescale: Add Toradex OSM iMX93")
+Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+---
+ .../dts/freescale/imx93-imx91-toradex-osm-dev-common.dtsi   | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-> diff --git a/arch/arm64/boot/dts/freescale/imx8qxp-ss-mipi-lvds.dtsi b/ar=
-ch/arm64/boot/dts/freescale/imx8qxp-ss-mipi-lvds.dtsi
-> new file mode 100644
-> index 0000000000000..67f5392cfc803
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx8qxp-ss-mipi-lvds.dtsi
+diff --git a/arch/arm64/boot/dts/freescale/imx93-imx91-toradex-osm-dev-common.dtsi b/arch/arm64/boot/dts/freescale/imx93-imx91-toradex-osm-dev-common.dtsi
+index 566671b32308..24b4bf579835 100644
+--- a/arch/arm64/boot/dts/freescale/imx93-imx91-toradex-osm-dev-common.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx93-imx91-toradex-osm-dev-common.dtsi
+@@ -93,7 +93,7 @@ &gpio2 {
+ 
+ &gpio4 {
+ 	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_gpio_a6>;
++	pinctrl-0 = <&pinctrl_gpio_a6>, <&pinctrl_gpio_a7>;
+ };
+ 
+ /* OSM I2C_B */
+@@ -262,10 +262,6 @@ &mdio {
+ 
+ 	ethphy_a: ethernet-phy@2 {
+ 		reg = <2>;
+-		pinctrl-names = "default";
+-		pinctrl-0 = <&pinctrl_gpio_a7>;
+-		interrupt-parent = <&gpio4>;
+-		interrupts = <15 IRQ_TYPE_LEVEL_LOW>;
+ 		ti,rx-internal-delay = <DP83867_RGMIIDCTL_2_00_NS>;
+ 		ti,tx-internal-delay = <DP83867_RGMIIDCTL_2_00_NS>;
+ 	};
+-- 
+2.47.3
 
-[ ... ]
-
-> +&dc0_pl_msi_bus {
-> +	mipi_lvds_0_irqsteer: interrupt-controller@56220000 {
-> +		compatible =3D "fsl,imx-irqsteer";
-
-[Severity: Low]
-Does this node omit the required SoC-specific compatible and power domains?
-
-The fsl,irqsteer.yaml DT binding schema strictly requires the power-domains
-property when the fsl,imx8qxp-irqsteer compatible is used. By only specifyi=
-ng
-the generic fsl,imx-irqsteer compatible, this evades the schema's
-enforcement.
-
-Failing to model the power domain directly on the interrupt controller viol=
-ates
-the hardware description conventions. The equivalent node in imx8-ss-mipi0.=
-dtsi
-correctly included both the SoC-specific compatible and the power-domains
-property.
-
-> +		reg =3D <0x56220000 0x1000>;
-> +		interrupts =3D <GIC_SPI 59 IRQ_TYPE_LEVEL_HIGH>;
-
-[ ... ]
-
-> +	mipi_lvds_0_csr: bus@56221000 {
-> +		compatible =3D "simple-pm-bus", "syscon";
-> +		reg =3D <0x56221000 0x1000>;
-> +		clocks =3D <&mipi_lvds_0_di_mipi_lvds_regs_lpcg IMX_LPCG_CLK_4>;
-> +		clock-names =3D "ipg";
-> +		#address-cells =3D <1>;
-> +		#size-cells =3D <1>;
-> +		ranges;
-> +
-> +		mipi_lvds_0_pxl2dpi: pxl2dpi {
-
-[Severity: Low]
-Is this simple-pm-bus configuration correct given that it lacks memory-mapp=
-ed
-children?
-
-The mipi_lvds_0_csr node specifies #address-cells =3D <1> and #size-cells =
-=3D <1>,
-but its children (like pxl2dpi and ldb) do not possess reg properties. The
-device tree compiler (dtc) expects children of simple-pm-bus or simple-bus
-nodes to have reg properties if #address-cells is greater than 0.
-
-This will trigger simple_bus_reg and avoid_unnecessary_addr_size dtc warnin=
-gs
-during the build and violates standard DT architecture patterns.
-
-> +			compatible =3D "fsl,imx8qxp-pxl2dpi";
-> +			fsl,sc-resource =3D <IMX_SC_R_MIPI_0>;
-
-[ ... ]
-
-> +	mipi_lvds_1_irqsteer: interrupt-controller@56240000 {
-> +		compatible =3D "fsl,imx-irqsteer";
-
-[Severity: Low]
-Like the mipi_lvds_0_irqsteer node above, does this irqsteer node also omit
-the fsl,imx8qxp-irqsteer SoC-specific compatible and the power-domains
-property?
-
-> +		reg =3D <0x56240000 0x1000>;
-> +		interrupts =3D <GIC_SPI 60 IRQ_TYPE_LEVEL_HIGH>;
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261014071657.1183=
-78-1-alexander.stein@ew.tq-group.com?part=3D3
