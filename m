@@ -1,108 +1,140 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66C1C4F798D;
-	Wed, 14 Oct 2026 11:10:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791976255; cv=none; b=Q1rBQAhrdkGOEkDqTeI90yDgyE3a9fmN5Eev9O7K42tOUyoACMdTHdNeH7jlCvtsOIqE3O3Im1o0yR9nLHGk1cgVUYjdlccrD/0QBSqPBqSurWQ2pFM2PtDbedHbohaHlshqt0hVcgvKOu/Cub02sfnVg/EBPht+ch7QiufLdqY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791976255; c=relaxed/simple;
-	bh=dEHPKb1DKoNwCQMbfM4JudnCdMqGpWORd6mwaTX1o8I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OxXEoJjidzUpsMCrXM72xcyVQZ9M+vj+Ch5+BZSVXkfQZ9JNbk0XenWMWiXoDT2wJbLnEAw8AEyA2tZ6HhK0Shf46LvFnBli5b3snqEh7v7U7JTcar/xng/ogWWlvE0paILxIh8DXoqMh/OsuVuZAWC2no/S8OJhjCn8rOL9UZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CWx4n9R4; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1307E4A92EE
+	for <imx@lists.linux.dev>; Wed, 14 Oct 2026 11:39:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.171
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791977977; cv=pass; b=rXMlyYd1JCLDVev0jj4MiGBU3A+Lzw1cLqb2lmTwAiYnXGuBzw3dfCGwGLMCLTWXzbF7TCLJj2ugq0yGdYSm/Fp206Oje7Aiz1XcegNUTGn7+Hsv9fmIy4ncbYRzaXfLwsJ8NzJXOZbBZrMS9DAEABXUaD287Y7p8MaHeb4Wp80=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791977977; c=relaxed/simple;
+	bh=86HyIPwleJgWRq7xObrqY9hZQITORuKm8Ont8f8xwzw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=JtiCcr0vSqS+hb7hyJMAN2QjyMcEE2S9KiwlJ270/kfvuhmIAQX7PyjEEG3L+77c8oaaa573UrvgY2k1t2Z7GeNWr4XnTkxnVQy5z2mJEeumpMkOd2Z/KmQbd46fX2vApnFAE/xttKAdcZbthhP4nUWbDl0bAGiXIyfciJh/kqo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eriwDF89; arc=pass smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CWx4n9R4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F4171F000FF;
-	Wed, 14 Oct 2026 11:10:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791976251;
-	bh=y96IkeDxhN2mv/HtCGTf5fVU+AZ1Foo8ubrdmppnui8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=CWx4n9R46TUqwkh7PD3NrIpvAN6CeIsqtkLYPEI3nayTP82qiokRVEOSoTXi7JDun
-	 0T0Y0ZEdhNY2vwCweSoDYhfikgZsICh522SJERQY0izF6rslpI26wHSvQIRECpsgPw
-	 3T8DjC2hYwURj40OV3fgiSvD+O4LbCMP2loE5Hb3qn0Q/X6ZDvxT8K8G6R8xy9n45W
-	 XkCJlBrfGwp7E33utB0UnoF0NNz+aoNjOUT0mKmuIfJbZJpYRgX53yGP0t/xm9KADF
-	 r5HiAjK5/IcJVwY9jbWjDDP9ib7KsTnjIst2A5lQBCczmVDW6JacaVfo5Wh07knVNM
-	 ToBz+IPNA4kow==
-Date: Wed, 14 Oct 2026 13:10:48 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Larisa Grigore <larisa.grigore@oss.nxp.com>
-Cc: NXP S32 Linux Team <s32@nxp.com>, 
-	Alim Akhtar <alim.akhtar@samsung.com>, Avri Altman <avri.altman@sandisk.com>, 
-	Bart Van Assche <bvanassche@acm.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
-	"Martin K. Petersen" <mkp@kernel.org>, Sai Krishna Potthuri <sai.krishna.potthuri@amd.com>, 
-	Ajay Neeli <ajay.neeli@amd.com>, Manivannan Sadhasivam <mani@kernel.org>, 
-	Pedro Sousa <pedrom.sousa@synopsys.com>, Hannes Reinicke <hare@suse.de>, 
-	Joao Pinto <Joao.Pinto@synopsys.com>, linux-scsi@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-arm-msm@vger.kernel.org, clizzi@redhat.com, aruizrui@redhat.com, eballetb@redhat.com, 
-	echanude@redhat.com
-Subject: Re: [PATCH v8 07/12] dt-bindings: ufs: Add NXP S32N79 UFS host
- controller
-Message-ID: <20261014-valiant-goose-of-revolution-efec17@quoll>
-References: <20261013103003.373156-1-larisa.grigore@oss.nxp.com>
- <20261013103003.373156-8-larisa.grigore@oss.nxp.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eriwDF89"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2e5fb79ce82so21913185ad.0
+        for <imx@lists.linux.dev>; Wed, 14 Oct 2026 04:39:35 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791977975; cv=none;
+        d=google.com; s=arc-20260327;
+        b=fFJvMQXBTsIzX45l+PNku8x+UQ3JhL9suUdGRuJvqamsID0C7nN/+E+7HEagowxbOU
+         fIAKp7Pb0sUIxElbLDyyabXYp3HaEBJ/9Bx39hiIPssAAv6OItq2/ayui6VHqzbakpeU
+         ILb5P3s+q+aoOTZD9pzgEFqCdAY55Rtg65qZrOWKE77IzWp5vxn78Iy8CUd1/hjWurKQ
+         aqa/Cso1lgUGAvMvozdYFEOcNChA3jK78ph9z7S4parymHitRnmQGWTweYVCBJgXuI/P
+         wSrpYqrleUATZvgwtgIC1DWADGDi+DnwGLyC1W6RQhOhGeFFj1JAvm08HTQWEEvHDlOn
+         UdLQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=86HyIPwleJgWRq7xObrqY9hZQITORuKm8Ont8f8xwzw=;
+        fh=mpNRPqutRj+9DYhWr8bZu7IJwS47AM9+U1GgP81TjgA=;
+        b=iziUN5Fk+Vzx62/DzSaaWpm11qr0p0MBzCpXu1zoYi9epubv0yBB+qr/15Lm/JrxA6
+         kwoc6wx391n9i4BJ8GKAltvyuipuhueQS5Z6XQ/7eDl6/61QsQ1ApWhrUNhz7tnxBph/
+         d7K1B4dGo/R8UQgD1StcpWRi2Whc2BhPy/dqqcF6K2ffu7sLjZ94pqFSCkpO2ab4fWIn
+         9O5jJmvfEjs2wDbpkCxpN8zML4ZpuZVgqiLeQsl7ywekDUoxYSgvCwyPuT64wfYEWUDj
+         L9TUnAky3NaK3gy3dKRL6OltZRPDz+0zV+otj/EZk7e82Te0D95DTiqL2BfXvZx7fkyz
+         VWMw==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791977975; x=1792582775; darn=lists.linux.dev;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=86HyIPwleJgWRq7xObrqY9hZQITORuKm8Ont8f8xwzw=;
+        b=eriwDF89oyU450sggqluSKSqMT6IAyPCSbSUjzF45Nvzd8Jsob/RE4Tr09b+o1AEFD
+         5/7IYtVUcgnCrX9XQlTDgbpXVUVpK2dbF4Yu6cpEpJD+0AFjPZrKy9faIXfeSEjb2+Cq
+         3/DKVwhwX8si/iBLaU095YHRGbp8XM04jfoMF7xinK8IEUf3PIMn8gmtXCgRlCReFfgH
+         7UyVv2Rm8NOYHiZ8ljA1ObVjBMy9I2+LcqJWVZJ+5LsrgtgLGLWcn8kO6GOl7Tt1dAs5
+         IUDXMAOqNObCZTVh40+ZhlAYQw4U8t2IFciTOQGppfsSeAokCEbDMQz06neSGM+cDAJD
+         xp2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791977975; x=1792582775;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=86HyIPwleJgWRq7xObrqY9hZQITORuKm8Ont8f8xwzw=;
+        b=ClcFvf7V48HgZbh1W4oRT9J13TXyqh4ZegnVZIOgg5Tjeg6gauY8DqmrpHD+yQ76q+
+         h30QQd/Id6dZH6y8iCx3D+rBMuCXZrXKVAVcYaTt0Oq73L/SzycY583wf5/mBM4XycbL
+         MGNGS2q3BQhg3ouduEu1xBg035q3FJhMS0EuuLAQIArSI5zpag22GdXiUOiaVDTX2aRs
+         ghdfHeOvAYDfxUL2/axzut1VJHlPUu0bu2fX0KrvgKr1ZPsgcnbVrVjI2mZI9XoPI6vy
+         m8P300Vf/GvYz7f4tQD0Fq4xBHgC1GUP6UBSmmnBY/1LGsi8Z8YXFOJo4K6EC9rl3rU8
+         rIhw==
+X-Forwarded-Encrypted: i=1; AKwUvBwa/Cfjy8qHzFuHZDb72wTLCR5kjJD22Uo5QUULoz4xt/iTPSXMcDCtH+qXcTD4eR3hW/c=@lists.linux.dev
+X-Gm-Message-State: AFq9FYKBZWR8iSo66nVYe41BK0NYJ1Z275mIMc6cyUw/1XRGcGfPNXtB
+	dAsYDHyxvxI+jG8ZOArBgaHdP+VSurBpiWKSb4XFkwj6iocwnNyI/qRfQirzrA/FIp/lXZl6Nq+
+	OPK1WtYBrEfyKa++jm60NltyWAMYzOJM=
+X-Gm-Gg: AYBFou1Dvv4LCYO6i/Hk5BPIl062Ai0G+zrAo3AJAqRwxA6+m/O3Nvb/XdxObUshUDa
+	7PA7cFq5CR3uiyIPe0713XWJIHlqghh2WSUz6CKVyLVQHtf9nyjjcQshaHoBJQa4C+K76x0i6qZ
+	EEl5Czl3db3pNpsQhCj68Hkf9tIpVj5b3Fyxfrr4AoRGErwCRmszI9cKfLvUPylIeXwoJR45hXW
+	qEVrJ4sbz3edurLSm+ZsrTwVc6nI0FkdeRo3qf1w+hzBPSiBr21/tbe00rMBIGaXulv6i25z8Yq
+	OE9drgdooG69dUdCwdC22vQgSNySdCHO221NKLB6SoZOkG/mjsNHkHOQe79TvlY0jUlwsppwgZr
+	f8xtff8L/Lwcf3CXXqNRFvuE5QkoH6kwWzu7V6QsnydqRf2CFtMAo6E6QQYzC6QRvEcw=
+X-Received: by 2002:a17:902:c946:b0:2e7:e73e:7091 with SMTP id
+ d9443c01a7336-2e842bc6d99mr145871485ad.31.1791977975265; Wed, 14 Oct 2026
+ 04:39:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20261013103003.373156-8-larisa.grigore@oss.nxp.com>
+References: <20261008103831.542533-1-phucduc.bui@gmail.com> <fc30ea4e-3c2f-4ba4-9ae2-054db9b49fd5@amd.com>
+In-Reply-To: <fc30ea4e-3c2f-4ba4-9ae2-054db9b49fd5@amd.com>
+From: Bui Duc Phuc <phucduc.bui@gmail.com>
+Date: Wed, 14 Oct 2026 18:39:23 +0700
+X-Gm-Features: AclHuK9jgQVtz3xDN60LQFsNWM2GDbLorSH_eG4NihFn39vhGI4sDgE_b4KgxkY
+Message-ID: <CAABR9nGbO1tBOL=fN90ZrYPkv767qh_sJG_UHP-FW5C7sBPpmw@mail.gmail.com>
+Subject: Re: [PATCH 00/24] ASoC: Fix constraint return value handling
+To: "Mukunda,Vijendar" <vijendar.mukunda@amd.com>
+Cc: Venkata Prasad Potturu <venkataprasad.potturu@amd.com>, Liam Girdwood <lgirdwood@gmail.com>, 
+	Mark Brown <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+	povik+lin@cutebit.org, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+	Andrei Simion <andrei.simion@microchip.com>, Nicolas Ferre <nicolas.ferre@microchip.com>, 
+	Alexandre Belloni <alexandre.belloni@bootlin.com>, David Rhodes <david.rhodes@cirrus.com>, 
+	Richard Fitzgerald <rf@opensource.cirrus.com>, Shengjiu Wang <shengjiu.wang@gmail.com>, 
+	Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>, 
+	Nicolin Chen <nicoleotsuka@gmail.com>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Cezary Rojewski <cezary.rojewski@intel.com>, Peter Ujfalusi <peter.ujfalusi@linux.intel.com>, 
+	Bard Liao <yung-chuan.liao@linux.intel.com>, 
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>, 
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>, 
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
+	Biju Das <biju.das.jz@bp.renesas.com>, 
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, Heiko Stuebner <heiko@sntech.de>, 
+	Kees Cook <kees@kernel.org>, Syed Saba Kareem <syed.sabakareem@amd.com>, 
+	wangdicheng <wangdicheng@kylinos.cn>, Chris Bainbridge <chris.bainbridge@gmail.com>, 
+	Linus Walleij <linusw@kernel.org>, Charles Keepax <ckeepax@opensource.cirrus.com>, 
+	Neo Chang <YLCHANG2@nuvoton.com>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>, u.kleine-koenig@baylibre.com, 
+	Pengpeng Hou <pengpeng@iscas.ac.cn>, 
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>, Hemanth Selam <hemanth.selam@gmail.com>, 
+	Md Shofiqul Islam <shofiqtest@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Zain Aboobacker <zainaboobacker33@gmail.com>, Sang-Heon Jeon <ekffu200098@gmail.com>, 
+	Ajit Kumar Pandey <AjitKumar.Pandey@amd.com>, 
+	Ravulapati Vishnu vardhan rao <Vishnuvardhanrao.Ravulapati@amd.com>, Bo Shen <voice.shen@atmel.com>, 
+	Vinod Koul <vkoul@kernel.org>, linux-sound@vger.kernel.org, asahi@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, patches@opensource.cirrus.com, 
+	linuxppc-dev@lists.ozlabs.org, imx@lists.linux.dev, 
+	linux-rockchip@lists.infradead.org, linux-renesas-soc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Oct 13, 2026 at 12:29:58PM +0200, Larisa Grigore wrote:
-> +  clocks:
-> +    maxItems: 1
-> +
-> +  clock-names:
-> +    items:
-> +      - const: core
+Hi Mukunda,
 
-I don't get why you added the clock-names.
+Thanks for the review.
 
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - reg-names
-> +  - clocks
-> +  - clock-names
-> +  - operating-points-v2
+> > Found by manual code inspection.
+> For AMD patches:
+>
+> Reviewed-By: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
 
-Your opp-table is empty, so requiring such property looks like wrongly
-written driver.
-
-> +
-> +allOf:
-> +  - $ref: ufs-common.yaml
-> +
-> +unevaluatedProperties: false
-> +
-> +examples:
-> +  - |
-> +    ufshc@4ac80000 {
-> +        compatible = "nxp,s32n79-ufshc";
-> +        reg = <0x4ac80000 0x1000>, <0x4ac40000 0x1000>;
-> +        reg-names = "ufshc", "scm";
-> +        interrupt-parent = <&irqsteer_coss>;
-> +        interrupts = <211>;
-> +        clocks = <&clks 0x92>;
-> +        clock-names = "core";
-> +        operating-points-v2 = <&ufs_opp_table>;
-> +
-> +        ufs_opp_table: opp-table {
-> +            compatible = "operating-points-v2";
-> +
-> +            opp-0 {
-> +                opp-hz = /bits/ 64 <0>;
+ I'll send v2 shortly with your Reviewed-by tag.
 
 Best regards,
-Krzysztof
-
+Phuc
