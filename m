@@ -1,332 +1,351 @@
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D20EF4E06F8
-	for <imx@lists.linux.dev>; Wed, 14 Oct 2026 12:15:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E01B0480960
+	for <imx@lists.linux.dev>; Wed, 14 Oct 2026 12:37:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791980136; cv=none; b=rH6KRzQm0IIWfeEraBKrAtV54w3gxp+ci+ykigBbGhgkSlHFlIdR12H3bzLgsVI/zWK1WAmMBsTjuSPCv/jQQC6aY7cahpcfp923ORgCKELxBn7vStVcokSzGYQGMhj+EisFNPMM9UEn6n/VBAmi2riKJV8JtbAOkI3gnZF7Qvc=
+	t=1791981428; cv=none; b=m2yG2hSZC2DTWgd1jNgYRMdkbCYWh59AU0WpzDtAA7oRwH/3e3iRzKkTCbzKWGRkC6GR+ebvD4URe4ECAjlmWj9yaYXg69sZe9pFI8OnH4GDrDB5vR0Klb+Aozttt9T0zljeHntO/z2LWFBqzGTWZ1mN02AYPbuDpYRXc0DWP90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791980136; c=relaxed/simple;
-	bh=Ikezn1vsfaFOFxAxkHwfbzIhAdAp+RKLZsFOAngLDoo=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=oklXkKh8VlJJzjkdJn3pXkVMKONx/a+7BlMhKBd8atz2GtL79dwXsP1Datg3VmU8LX7WBwU4hacHMCargoSlGaP2GgEe2PsGGSeDRpVoTJmm1ujR6Vm7MRLxbefRMrThyAOAy+H9OBBKGHpbshyMvCwKoCtiymCzE8r29fUA8RM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=rQwLiqC+; arc=none smtp.client-ip=209.85.221.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1791981428; c=relaxed/simple;
+	bh=3JI92fChNel+xLl9nSTOo1s0KJ3h4nXbqoiyZakFteo=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ViN6QnALJlWXIUO+cJ6tIOgBqRQ+PcTIDzuiEWlff82okOrCfTubXMQ3zch5FOnVRPJ1tQOvfkTPfjgg7PGQGygc1hkO4/T0XZa2rsswZmG/2Gdkn80nXKqZvEXDlamgYw5Pf3k57l8Lb9S83T9PKrYXFlnnnTJPhrRlh75ottE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=oEaAZpzQ; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=fuTAS9vO; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="rQwLiqC+"
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-48870973bddso2422991f8f.1
-        for <imx@lists.linux.dev>; Wed, 14 Oct 2026 05:15:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="oEaAZpzQ";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="fuTAS9vO"
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69EBbAZZ2685707
+	for <imx@lists.linux.dev>; Wed, 14 Oct 2026 12:37:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=EVpFNB3CilehugVbDMWv6b
+	Xoo9vCpK+FUU09DpaShRU=; b=oEaAZpzQnRbW6odHN3Vc0Ke0cjE66Hax9LD3Qd
+	77MOTgT2nx+LnmVlaDJNhBJLk27an0caCqtbIi1+j33OpqUoKTX5lYgkyDUJi8zb
+	QvRpqwR197fXX30KKofHac1+bP4u/Ki1gMHSHOjIr+Lnj7JZsN8U43WHkgNFCIze
+	WO1jSCbCQ+eWwP6X0uqohJlLMagM3itjEpyfgnZ8CrygJEh2vBQBIMrLO+ChmgoW
+	K807Zdtd1Vfm+dvHodUlUUAO+Fo7xRk/8E6OiN8cfqfvl+CoqFl0FKhgCQMf7bH7
+	qry7cn3jG9NxoHZscZjQ7pEclEu2AqhAp0ZFSKn4twS+AhiQ==
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ha46u1hw3-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <imx@lists.linux.dev>; Wed, 14 Oct 2026 12:37:06 +0000 (GMT)
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-93cb6391e89so880717685a.1
+        for <imx@lists.linux.dev>; Wed, 14 Oct 2026 05:37:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1791980132; x=1792584932; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:in-reply-to:organization
-         :autocrypt:content-language:references:cc:to:subject:reply-to:from
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=O0shSTot49RHkwbUZQlg7t0vkhs8LKxmI2yP6wvbvZU=;
-        b=rQwLiqC+Qcj8TuJmfBSGZfszoUKi9hYs9bRcL25uRMCnwsPZ7ylO1pbf/3D6UViwFN
-         OLwf6qAS9efEjmeUlWBJhST/ULC7KafMXEhLJ6RNx5voSErfnI7lEHgCKnxpblPT0WTm
-         1ObzIxq9imaPaCkPyovNqPCk7ixPPDIaUJ/pHet6hfaAIhxoMA66CF4TuyLtvLy2x/lK
-         UMaGaS3tXYWnGj08tQOpIhUiOtmt4b61L+qphodaBnGo12fFz06nvJe6PXg8hBYvGc+L
-         DfIqkxuSOkSgMY1Lql4wOYelmL96SZcPajHMekd7Hlf9+bGNVlzTotk4/kMBhM6BH/Hl
-         MiHA==
+        d=oss.qualcomm.com; s=google; t=1791981425; x=1792586225; darn=lists.linux.dev;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=EVpFNB3CilehugVbDMWv6bXoo9vCpK+FUU09DpaShRU=;
+        b=fuTAS9vOFzPeoM4cX0aCDGE2NfsjwUSGj2cqxKPKDnHON5onrsdwodHslXCG9XKCFv
+         jcJnqRtFwtpUTWwiMobRNpIlFKy66US6fJV1AY7Exb1WOCmRprDBWgN7V1RvtCS2cImU
+         bpJMNyepvA7PR4gKRqVYV9/hjuNAAeCSx0P9jb0uE8+UhyDSh7QoNpfORc5nF0lqxLU5
+         PLpex0K5zogZDYQdciJTy5NC7Cl+OEfXSmmydFLuZms1VZBlIiQXDUU8nTBiM0l+H+4K
+         XXF9E6ZyebXcrpS21hHoqT/JpHlf70J6WMgecuCs2WDEn9iugF1IYGSqDtQqRyPojbfn
+         Dmqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791980132; x=1792584932;
-        h=content-transfer-encoding:content-type:in-reply-to:organization
-         :autocrypt:content-language:references:cc:to:subject:reply-to:from
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=O0shSTot49RHkwbUZQlg7t0vkhs8LKxmI2yP6wvbvZU=;
-        b=0hTIfQh1gPzTTiwXC77vNrWcdaZHsq2yQsSh63T7Euiodnhw04kYiHzQvvZ/2WaL/L
-         MY+ClaQ42swOFWYumnnoJ6Z8nv7h8smTLitYQcIaYlj10e4DrsWEE9Ql9FEctd5oNScP
-         RgaaxWMtFpRgmjtGWesrhbrlukeuHYmNdNOH4gRaHGzTw0JQ76MFbMSe9MdiEFTH7/Cx
-         oOtVA22tmIYDMbuqjLjp7kXRCz5X4U/5hh+7lAiHvmVnwEqjHLUf4iT4zv3q2kb2eZmq
-         jE0yCFk7FKLtjJ9fF46nWbT7OdkbyibjfBZ8VPimDzktLMYvTdzUieWun8LmqvpTQiLp
-         w3Ww==
-X-Forwarded-Encrypted: i=1; AKwUvBy14bM22PCw6WDUWIPoGYIGVzslrAXP8TauERpQhp8PoqdGe3zl/Cu3wLAon7fieRYgtAo=@lists.linux.dev
-X-Gm-Message-State: AFq9FYLJ5KAL8iVf9wEb4mH/qg3aPXCU/rosr71BmK3tb2TasYiekcku
-	yf/5Mkfc/2LMZ54qB+Ss4IXft8SVvBz3u58HgUZ2mxzdH1ne04zoMTCnS7WRCM7oFbc=
-X-Gm-Gg: AYBFou1gy+pfWFuKUvffG/oSsDcLfYokxdebtKThnDqiyJYgI2DFbuNeMa/kDk8c6In
-	TokSK8tRpUA38BGJ3HpQ48np8CI4Y1J0v/iGMIqqnBNyoYl6AmeuS6v2fXJRXBDGUhBOEPhP0Qq
-	T0mlD7LDShK47epzcpW3YcTl7INlMP3iSFAXwMxQ/ebEUu/VQ49kmF3Y2tlqKqYCzzbwQUjdD+7
-	87XBMrZrXXTOPPWrRGH+6HxOPzZs8zfPUx2bkREa54v/GlTDdK0hMdw1N1UWGiGs4WhMd42k3Ao
-	kl2hdxWGE4Les8Srl4gY70jOMbkR4psMCZ5MSq1a3WkzXoIFp8+Zo5RnJ8vcPSbAcgzIixe4jU4
-	lVa37S8k8XwCEhB1wSjXVs77nN+0RNuN36j87g5wG0255oKcAAXmwLHc2VP5Ia78vloV0xZt5Ci
-	Zwx1sxYBx6ILpIyK/4ynoDgmdyp8CH7d7NQsljFUv2xVUOB0I9ns5nrGKFU2RqPd4WFtmj341Ts
-	2NlxsXwhX3Pa66Kt5OFCGAjScZz4FhPTVfhacNZCvuCqcPl1EC5GO0=
-X-Received: by 2002:a05:6000:2506:b0:48b:946:c1f7 with SMTP id ffacd0b85a97d-48db94bb90bmr29731276f8f.31.1791980130857;
-        Wed, 14 Oct 2026 05:15:30 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:106d:1080:fdbf:f373:6d5b:93e4? ([2a01:e0a:106d:1080:fdbf:f373:6d5b:93e4])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48de0bd1843sm11655892f8f.56.2026.10.14.05.15.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 14 Oct 2026 05:15:30 -0700 (PDT)
-Message-ID: <a47f24bb-7c49-4e39-9aac-69da552fb2b0@linaro.org>
-Date: Wed, 14 Oct 2026 14:15:28 +0200
+        d=1e100.net; s=20260707; t=1791981425; x=1792586225;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=EVpFNB3CilehugVbDMWv6bXoo9vCpK+FUU09DpaShRU=;
+        b=S9ZD1+gQht/UuUtpK0Oni84ei/K5shuLkYgJWvwe6frFieDhUSRWLRUeCIjciqFWZP
+         AE3wwxkHNAQ8zYBq5QrMvdrISqfJFcj5ueSN/YZudam/n819SDG4yc5QM874RCA1TU+R
+         q84otsYQo3nq0JZk593xBm33YF3tVCCoDZn+3K/o4a/PXuU37v4mIHIJdiykz8JNoaCj
+         Ftgu64bMkCsI5Koy4OpDH1gNi6T8c7cNUYdvXMHGe0y/4JxYwvXrbR6wnbYFwb+xhB+C
+         lfG3jiGiBQp+WXh6oSv69X0ncOpFPeqS7y3BzNcjQGF38RCKLe9/MHHVOOSbkJs0XLBj
+         ff7Q==
+X-Forwarded-Encrypted: i=1; AKwUvBzUJ8MEcXlNYP/I+VngdZS9n+GtAFUoa0v1IYb0lpsxwYry1Wv2gggCYHs2llcpXyKDc7I=@lists.linux.dev
+X-Gm-Message-State: AFq9FYIwPPUMWR34Mmp/Baxj/yTJtuj96mNe3QCpzqmdptTV32WP/2Ni
+	WrYdoExtKMtQMZvF0ocbW+yj2u7SZd+eOjnJ5OZb3e2xlnnuUZPb6/iOp/FuQdQGAcYsPGJUEvh
+	GDGyHilVQjyN3Va7wOHsLvJgh2Tr5im3Ki20cLfYL1pLwPvkoWBOzczc=
+X-Gm-Gg: AYBFou1CT4memSzlfaCncYQJGlT3fqkSIZC8Ngi3MZDjHO5s9dls+aR0WlTb9kppMjj
+	S7L4TId6Exd9hQtuQcl7tbxSn+WqNBC/0IbY+wTwOSC9OUw8MglayHgFMoDtSoT73Tzc7JZ4/yo
+	cScPSGxfTE55R2SH1674lOLfi3FYl8WZ0u7eDZMQ+tfTbnwU6ZjR8uMEqudgJuwR3GwQMROmE/H
+	SidVqXE+TVnBzxfvqzviiZqO3O9NcXGuQ4TgGX9Fu6QFCFC2HMEGmnQFBhxRtfNFUKF8na1FzOP
+	8CMG1tzEpOm/Se3VxuM2nKHbvV2Qwr8GX79cfrskC5dRKkUEXPO1nHuebjWBwilsu3uAzuHY+8z
+	2AfwedRcIFb4kPVf15rafDHIXu8b5
+X-Received: by 2002:a05:620a:8389:b0:93b:d79a:c463 with SMTP id af79cd13be357-93ebd26b5e0mr2523456085a.59.1791981424735;
+        Wed, 14 Oct 2026 05:37:04 -0700 (PDT)
+X-Received: by 2002:a05:620a:8389:b0:93b:d79a:c463 with SMTP id af79cd13be357-93ebd26b5e0mr2523450185a.59.1791981424148;
+        Wed, 14 Oct 2026 05:37:04 -0700 (PDT)
+Received: from brgl-qcom.local ([2a01:cb1d:dc:7e00:8916:7b9b:97a2:6c96])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a19f318c31sm206122615e9.3.2026.10.14.05.37.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Oct 2026 05:37:03 -0700 (PDT)
+From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Subject: [PATCH net-next v16 0/7] net: stmmac: qcom-ethqos: add support for
+ SCMI power domains
+Date: Wed, 14 Oct 2026 14:36:39 +0200
+Message-Id: <20261014-qcom-sa8255p-emac-v16-0-0266c2ead980@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Neil Armstrong <neil.armstrong@linaro.org>
-Reply-To: Neil Armstrong <neil.armstrong@linaro.org>
-Subject: Re: [PATCH 2/2] dt-bindings: usb: snps,dwc3: Fix downstream port
- numbering
-To: Chen-Yu Tsai <wenst@chromium.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Felipe Balbi <balbi@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, linux-usb@vger.kernel.org,
- devicetree@vger.kernel.org, Kevin Hilman <khilman@baylibre.com>,
- Jerome Brunet <jbrunet@baylibre.com>,
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
- Sven Peter <sven@kernel.org>, Janne Grunau <j@jannau.net>,
- Neal Gompa <neal@gompa.dev>, Joel Stanley <joel@jms.id.au>,
- Andrew Jeffery <andrew@codeconstruct.com.au>,
- Ryan Chen <ryan_chen@aspeedtech.com>, Billy Tsai
- <billy_tsai@aspeedtech.com>, Michal Simek <michal.simek@amd.com>,
- Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Peter Griffin
- <peter.griffin@linaro.org>, =?UTF-8?Q?Andr=C3=A9_Draszik?=
- <andre.draszik@linaro.org>, Tudor Ambarus <tudor.ambarus@linaro.org>,
- Heiko Stuebner <heiko@sntech.de>, Alim Akhtar <alim.akhtar@samsung.com>,
- Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
- Masami Hiramatsu <mhiramat@kernel.org>, Yixun Lan <dlan@kernel.org>,
- Troy Mitchell <troy.mitchell@linux.spacemit.com>,
- Minda Chen <minda.chen@starfivetech.com>,
- Shyam Pandey <radhey.shyam.pandey@amd.com>,
- Wei Yang <yangwei1@eswincomputing.com>,
- Senchuan Zhang <zhangsenchuan@eswincomputing.com>,
- Hang Cao <caohang@eswincomputing.com>, Li Jun <jun.li@nxp.com>,
- Peng Fan <peng.fan@nxp.com>, Roy Luo <royluo@google.com>,
- Yang Xiwen <forbidden405@foxmail.com>,
- Ahmad Zainie <wan.ahmad.zainie.wan.mohamad@intel.com>,
- Robert Marko <robert.marko@sartura.hr>, Xu Yang <xu.yang_2@nxp.com>,
- Wesley Cheng <quic_wcheng@quicinc.com>,
- Stanley Chang <stanley_chang@realtek.com>, Ze Huang <huang.ze@linux.dev>,
- Aswath Govindraju <a-govindraju@ti.com>, Roger Quadros <rogerq@kernel.org>,
- linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org,
- linux-kernel@vger.kernel.org, asahi@lists.linux.dev,
- linux-aspeed@lists.ozlabs.org, imx@lists.linux.dev,
- linux-samsung-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- linux-rockchip@lists.infradead.org, linux-riscv@lists.infradead.org,
- spacemit@lists.linux.dev
-References: <20261014082037.1774672-1-wenst@chromium.org>
- <20261014082037.1774672-3-wenst@chromium.org>
- <7020a7a6-332e-4fd0-a659-d82eb768614c@linaro.org>
- <CAGXv+5G1kgyumbj7wGf6rPFbg3spSO0zYmEkn-hZT4qUdJbytA@mail.gmail.com>
- <03375a31-0ac6-47a4-b0dc-6327080e1622@linaro.org>
- <CAGXv+5H+ZZXnZKB4EzXP0O9f4YGHBHsz3YCRyRJgX9V6RW1eug@mail.gmail.com>
-Content-Language: en-US, fr
-Autocrypt: addr=neil.armstrong@linaro.org; keydata=
- xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
- GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
- BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
- qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
- 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
- AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
- OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
- Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
- YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
- GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
- UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
- GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
- yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
- QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
- SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
- 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
- Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
- oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
- M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
- 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
- KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
- 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
- QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
-Organization: Linaro
-In-Reply-To: <CAGXv+5H+ZZXnZKB4EzXP0O9f4YGHBHsz3YCRyRJgX9V6RW1eug@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAFd3z2oC/3XTy26cMBQA0F+JWJfRfdi+dlb5j6oLG+wEKQMJT
+ FGqaP69BqkFaewNEhgO9/ndLHEe4tI8P303c1yHZZjGfIPmx1PTvfnxNbZDnx80BKRBQLWf3XR
+ tF29J6482Xn3XWmWAWPtOIzX5u485puFrR382Y7y1Y/y6Nb/yyduw3Kb5z/63Fffz3XUIBXfFF
+ lomL65LGI2xL+/D6OfpMs2vO7fyfwKBpERwJkSLkeCIwYcHQh0EFrNbVSaSGGMArHTRPxD6TBS
+ j0JkA7Dmy94ntYyLmIAhdiTCZUFYSgiVlML5My3L5/O3f86vXS75slc+AAUSqAdZ47lUg31t+B
+ PZI5F8kBhhMCZIM9RkCZHAqSAWyJwixBNkMaUskIfcX0FYgd4aKEbkMddo6VlFMSlSBEE4ScXH
+ iYJsXx0CB2Ho0NQoPylCxYbhNLwZJwemgMbkaRQcl5YrnhkKbZydg7BI5wBrFJwrLCW4LgeiSN
+ c7FZGONUgflwBapbTFiR0hBlHjpa5Q+UZWybwsSLSVmIRAuzdT9fv8LafKE/q4EAAA=
+X-Change-ID: 20250704-qcom-sa8255p-emac-8460235ac512
+To: Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Vinod Koul <vkoul@kernel.org>,
+        Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+        Chen-Yu Tsai <wens@kernel.org>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Jerome Brunet <jbrunet@baylibre.com>, Shawn Guo <shawnguo@kernel.org>,
+        Fabio Estevam <festevam@gmail.com>,
+        Jan Petrous <jan.petrous@oss.nxp.com>, s32@nxp.com,
+        Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>,
+        Romain Gantois <romain.gantois@bootlin.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Christophe Roullier <christophe.roullier@foss.st.com>,
+        Bartosz Golaszewski <brgl@kernel.org>,
+        Eric Dumazet <edumazet@kernel.org>, Radu Rendec <radu@rendec.net>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org,
+        Drew Fustini <dfustini@tenstorrent.com>, linux-sunxi@lists.linux.dev,
+        linux-amlogic@lists.infradead.org, linux-mips@vger.kernel.org,
+        imx@lists.linux.dev, linux-renesas-soc@vger.kernel.org,
+        linux-rockchip@lists.infradead.org, sophgo@lists.linux.dev,
+        linux-riscv@lists.infradead.org, brgl@kernel.org,
+        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+        Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+        Sashiko <sashiko-bot@kernel.org>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7865;
+ i=bartosz.golaszewski@oss.qualcomm.com; h=from:subject:message-id;
+ bh=3JI92fChNel+xLl9nSTOo1s0KJ3h4nXbqoiyZakFteo=;
+ b=owEBbQKS/ZANAwAKAQWdLsv/NoTDAcsmYgBqz3dh44xUDWD4gypAZq0VHb6gBzU8G5BnVE4C1
+ /e3UOQADJ+JAjMEAAEKAB0WIQSR5RMt5bVGHXuiZfwFnS7L/zaEwwUCas93YQAKCRAFnS7L/zaE
+ w1rgD/416+tDKuxenpypb4rL9y/Y7Z5Ro6iQ7GKyeMUxd7+uqf03H+7frSbWAU+kLIVZZu+e/ip
+ cRvtQj+uBEjl9AsaFzDX7RWqgYB2KEaPMsbjzzKqrQYrH2+u3QZpx5F65j5a2HzopoCIBYupQJt
+ 4Pyxg0m5tTq6PSNVvB/tRKk6zDvwjPZ4KYOWJAEbRrPT0GfjMDbi7lvRwO3VEObjxoaOaToq1F3
+ V5lN9MfgUfYDC6pX/YQjX1SJkKRmxOz0SgUQSgoN43OBN+lOkQdzAUnnq9usDPAw6RQW2vwbXEM
+ huGteMONpZmYMVL6qz9N1eU9jEe0YR3Cqn+3gcnzhiPtzP71wSPBGC5HV4ysmdh+PHBPF++VpmU
+ Zt2ejLLjwgbHEKR95etuZXzVbxE/1kEzIca31WpjmE5d/k+yu87SVXtx2r51nITrCIdAjTZsTHt
+ 62dsa4AuNlmZwdZrqxIEgA7IOlCMTPB2Br50JxL3g/dmH2EjYojeG8GikqKPai2PZlVAUN5fESr
+ L+z8y9d0yOjcbPuTvs3i7MUEMlQwOZCrrvl9HYPrQi34U3Zhas2dOuDHPMi5tAemeY3QZWJS7zs
+ IkUWljHunYnwT2K1vMKSNQT9DE8eNscl2KdUZnQjQNrTvrS5LRRFTx6O3/2m8Ne01oUxca5Zin9
+ yxencD94IX2Gsjg==
+X-Developer-Key: i=bartosz.golaszewski@oss.qualcomm.com; a=openpgp;
+ fpr=169DEB6C0BC3C46013D2C79F11A72EA01471D772
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDE0MDA1MCBTYWx0ZWRfX3+S7S/qKfq5U
+ Hm5qKPDQSQghkiCyYSWD4aLRDpIBTzOzIKySS2aRlKpEf6AR1xh/lqDCY7sdRAYEwCrTokl7DgX
+ sS7cEuBr8j3MVmoFCNocr86QIdSp97E=
+X-Proofpoint-GUID: 9x_xCUlbIAlYaPvXaPoXeAIkzAPbnxCz
+X-Authority-Analysis: v=2.4 cv=Y6ttIReN c=1 sm=1 tr=0 ts=6acf7772 cx=c_pps
+ a=qKBjSQ1v91RyAK45QCPf5w==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=660iZSQnnn4A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=YMgV9FUhrdKAYTUUvYB2:22 a=bC-a23v3AAAA:8
+ a=EUspDBNiAAAA:8 a=VwQbUJbxAAAA:8 a=KKAkSRfTAAAA:8 a=PHq6YzTAAAAA:8
+ a=LD4EYYuP07UOpJRtIbAA:9 a=Wuut_rWLunZvJXiu:21 a=QEXdDO2ut3YA:10
+ a=NFOGd7dJGGMPyQGDc5-O:22 a=FO4_E8m0qiDe52t0p3_H:22 a=cvBusfyB2V15izCimMoJ:22
+ a=ZKzU8r6zoKMcqsNulkmm:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDE0MDA1MCBTYWx0ZWRfX/geP9htzciFp
+ v6gz/TNh1pF6LEfAmWlORJbwWacqon5GHjQnMtVmxt0Nwdb+SBonke54EoOVOzT035lf6RTmAbM
+ tTR0MBGniCddlgPapdfoDmwd1yiVTs45XgBGnRoYPrEJ2gQRyD33GeVzJgv/TNQpc91py21JD2l
+ I2y7hA4a2Y39SPwyV0wN49njruW7S4hbuUJb8IQx3U0PP92oIRD0h67CLu8wmQOk2hk9gVJTGG+
+ 7K4gwbnZw0Dr9llED4+KoQwr9BSuFzyvPVEetaTSkSBgQOGswDWpzIwza6h3kkb1lNeE2xNyFz4
+ m7Xo31gHceE3RZK5h6BmQjoTWX3+5Jd2x/A4g6Vh2Vx6SBff19EPYRK+JtySrm6L4TQwdbJ6x0x
+ AApgKPwzWv+Rd1YLP3mt7/WMjc9e2NlR0aPCLZShRiRcUOr1YepCboKj3dxTpNgnPpEdAhPfce4
+ seeC9iDczM6u192epNg==
+X-Proofpoint-ORIG-GUID: 9x_xCUlbIAlYaPvXaPoXeAIkzAPbnxCz
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-13_01,2026-10-09_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 malwarescore=0 adultscore=0 phishscore=0
+ lowpriorityscore=0 clxscore=1015 spamscore=0 suspectscore=0 bulkscore=0
+ impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610080000
+ definitions=main-2610140050
 
-On 10/14/26 12:14, Chen-Yu Tsai wrote:
-> On Wed, Oct 14, 2026 at 6:44 PM Neil Armstrong
-> <neil.armstrong@linaro.org> wrote:
->>
->> On 10/14/26 11:29, Chen-Yu Tsai wrote:
->>> On Wed, Oct 14, 2026 at 5:28 PM Neil Armstrong
->>> <neil.armstrong@linaro.org> wrote:
->>>>
->>>> On 10/14/26 10:20, Chen-Yu Tsai wrote:
->>>>> The DWC3 controller can operate in host mode. It does so with a XHCI
->>>>> compliant host controller. The XHCI has two downstream ports, one for
->>>>> HS and one for SS. USB downstream ports start from 1, not 0.
->>>>
->>>> Is there something in index 0 we will need to define at some point ?
->>>
->>> On the host side, no. Downstream ports start at 1.
->>>
->>> On the device mode side, I believe the numbers are completely made up.
->>>
->>>> Using 0 as base for numbering in DT isn't incompatible with the USB
->>>> spec using base 1 for numbering,
->>>
->>> But you end up with diverging numbering schemes, and it diverges
->>> from other USB controllers, particularly XHCI, which DWC3 embeds.
->>>
->>> And it also differs from the numbering currently used for directly
->>> connected onboard devices (like hubs), which use or expect the USB
->>> numbering scheme.
->>>
->>> Sure we can make DWC3 "special", drop inclusion of usb-hcd.yaml,
->>> and duplicate the section for onboard devices. On Linux, we can
->>> add some more code to xhci_find_raw_port_number() to make an
->>> exception for DWC3 controllers.
->>>
->>> Also, usb_of_get_connect_type() is already broken for DWC3 based
->>> controllers that only describe the HS connection but not the SS
->>> connection. usb_of_get_connect_type() currently doesn't call
->>> usb_hcd_find_raw_port_number() so both HS and SS get mapped to port 1,
->>> which wouldn't be in the DT since HS is currently port@0. But even if
->>> it did, SS would get mapped to port 2 anyway.
->>>
->>>
->>> IMHO having consistent numbering across controller types would be
->>> better. This avoids making the USB core and hub code deal with more
->>> exceptions, and also easier to understand and write device trees.
->>
->> I was in the impression the port number not necessarily reflects
->> an actual physical numbering, and can be a logical number we would
->> then map in the kernel.
->>
->> I don't see any issue here having base 0 for the bindings and then
->> converting it to base 1 for the XHCI port numbering.
->>
->> Each controller (Host, Device, OTG) will have it's own numbering anyway,
->> so using the XHCI numbering only sounds a bad idea TBH.
-> 
-> OK. So we keep the port numbering, which is different from the embedded
-> device numbering, even for the same dual role controller? See below.
-> 
-> I hope you see why I think it is confusing.
-> 
->>>
->>>>> Reconcile the downstream port numbering with the common USB host
->>>>> binding, renumbering the downstream port numbers from 0 and 1 to
->>>>> 1 and 2.
->>>>>
->>>>> This is non-backwards compatible, however it won't break current
->>>>> major implementations:
->>>>>
->>>>> - dwc3 "gadget mode" in Linux kernel only requires a connection to be
->>>>>      present; it doesn't matter which port it is
->>>>>      - dwc3 "host mode" OF graph connections aren't supported yet [1]
->>>>> - FreeBSD doesn't use the OF graph for anything
->>>>> - U-boot doesn't use the OF graph for USB
->>>>> - OpenBSD doesn't support dwc3, only the XHCI in dwc3, and doesn't use
->>>>>      the OF graph for USB
->>>>> - coreboot doesn't use the OF graph for anything
->>>>> - Zephyr doesn't support dwc3
->>>>> - TF-A doesn't use the OF graph for anything
->>>>> - EDK2 doesn't support dwc3 and doesn't support OF graph
->>>>> - OP-TEE doesn't support dwc3 and doesn't support OF graph
->>>>>
->>>>> [1] WIP to tie OF graph port node to USB port device
->>>>>
->>>>> Fixes: a33113f73693 ("dt-bindings: usb: snps,dwc3: document HS & SS OF graph ports")
->>>>> Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
->>>>> ---
->>>>> It is unclear to me whether the HS/SS numbering is fixed for all dwc3
->>>>> variants. I checked Allwinner H616 and Rockchip RK3588 and they both
->>>>> have HS as port 1 and SS as port 2.
->>>>>
->>>>> This also doesn't cover a potential "multi-port" DWC3 implementation,
->>>>> which Qualcomm seems to have.
->>>>
->>>> It breaks the current Qualcomm numbering on numerous boards.
->>>
->>> Yes. It breaks _everyone_ using the current numbering in the sense that
->>> they are no longer valid, but should not affect actual usage.
->>
->> Older DT are supposed to be working on new kernels, you will break ABI
->> and will break usage if the port numbering is enforced to enabled embedded
->> hubs for example.
-> 
-> On that front, embedded hubs already require you to use the USB numbering.
-> 
-> If you write
-> 
->      dwc3 {
->          hub@0 {
->              compatible = "usb0123,abcd";
->              reg = "0";
->          };
->      };
-> 
-> It won't match anything. The current USB HCD binding doesn't prevent you
-> from using port 0, but the kernel won't tie the USB device to it, even
-> if it is a single port USB controller. As I mentioned, USB downstream
-> ports start at 1, even for root hubs that only have 1 downstream port.
-> 
-> The kernel also doesn't check if the compatible property is correct, but
-> that is a separate issue. Maybe it should though, so people can see that
-> their DT is incorrect, like if they swapped HS and SS ports for a USB 3.x
-> hub.
+Add support for the firmware-managed variant of the DesignWare MAC on
+the sa8255p platform. This series contains new DT bindings and driver
+changes required to support the MAC in the STMMAC driver.
 
-TBH this USB device bindings for embedded hubs is wrong in many of ways.
+It also reorganizes the ethqos code quite a bit to make the introduction
+of power domains into the driver a bit easier on the eye.
 
-So, is the downstream port index a numbering scheme from Linux ? Will each port
-will have the same number on every OS implementation ? Do all OSes implement
-the root as a the virtual root hub ? do they always use the same indexing ?
+The DTS changes will go in separately.
 
-My comparison is PCI(e) where the controller port number is a Linux internal
-numbering we don't use in DT, we only use the BDF of the downstream bus/endpoints
-enumeration which is standardized.
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+---
+Changes in v16:
+- Split out the SerDes PHY patches into their own series
+- only set the serdes mode for actual serdes PHY modes
+- reject non-serdes PHY modes on SCMI variants
+- extend some comments to unconfuse sashiko
+- add a fix for an issue reported by sashiko where the tick counter would
+  get reprogrammed even without the CSR clock
+- Link to v15: https://patch.msgid.link/20260923-qcom-sa8255p-emac-v15-0-e82f33720737@oss.qualcomm.com
 
-So I think we should actually use the same scheme for usb, but having a subnode
-per controller usb port with a hierarchy of nodes representing devices.
+Changes in v15:
+- Squash patches 6 and 7 to avoid a potential hang-on-resume regression
+  (Sashiko)
+- Fix the AUTONEG_DISABLE early return path in forced mode (Sashiko)
+- Fix Kconfig dependencies on generic power domains (Sashiko)
+- Set the performance level back to 0 on unbind in the PHY driver
+  (Sashiko)
+- Use devm_pm_runtime_enable() where applicable
+- Link to v14: https://patch.msgid.link/20260908-qcom-sa8255p-emac-v14-0-ec212b747a7d@oss.qualcomm.com
 
-Keeping the current USB device bindings and trying to make it work is wrong here.
+Changes in v14:
+- let genpd's own runtime suspend/resume callbacks own the perf state entirely
+  by calling dev_pm_genpd_set_performance_state() in set_mode()
+  unconditionally in the sgmii PHY driver
+- drop usleep_range() from the PHY driver when setting the state as the level
+  setting is already synchronous
+- add missing power-domains limits for ma35d1/k3-dwmac
+- fix ordering of clearing the sgmii loopback
+- configure the wrapper clocks synchronously in scmi setup
+- Link to v13: https://patch.msgid.link/20260713-qcom-sa8255p-emac-v13-0-119f8699ef8e@oss.qualcomm.com
 
-Neil
+Changes in v13:
+- Reapply OPP on speed change in the PHY driver
+- Use linux/device-id/of.h instead of mod_devicetable.h
+- Fix the "invalid PTP clock rate" warning on sa8255p
+- Add commits necessary to allow correct link speed change with SCMI
+- Link to v12: https://patch.msgid.link/20260706-qcom-sa8255p-emac-v12-0-e3ab1ecf2901@oss.qualcomm.com
 
-> 
-> 
-> ChenYu
-> 
-> 
->> Neil
->>
->>>
->>> This comment refers to "multiport" controllers from Qualcomm [1], which
->>> would have ports beyond 1 and 2.
->>>
->>> [1] https://lore.kernel.org/all/20240420044901.884098-8-quic_kriskura@quicinc.com/
->>>
->>>
->>>>> ---
->>>>>     Documentation/devicetree/bindings/usb/snps,dwc3-common.yaml | 4 ++--
->>>>>     1 file changed, 2 insertions(+), 2 deletions(-)
->>>>>
->>>>> diff --git a/Documentation/devicetree/bindings/usb/snps,dwc3-common.yaml b/Documentation/devicetree/bindings/usb/snps,dwc3-common.yaml
->>>>> index 6c0b8b653824..4b6304bd2ec1 100644
->>>>> --- a/Documentation/devicetree/bindings/usb/snps,dwc3-common.yaml
->>>>> +++ b/Documentation/devicetree/bindings/usb/snps,dwc3-common.yaml
->>>>> @@ -410,11 +410,11 @@ properties:
->>>>>           property is used.
->>>>>
->>>>>         properties:
->>>>> -      port@0:
->>>>> +      port@1:
->>>>>             $ref: /schemas/graph.yaml#/properties/port
->>>>>             description: High Speed (HS) data bus.
->>>>>
->>>>> -      port@1:
->>>>> +      port@2:
->>>>>             $ref: /schemas/graph.yaml#/properties/port
->>>>>             description: Super Speed (SS) data bus.
->>>>>
->>>>
->>
+Changes in v12:
+- Drop the power-domain-names from the SGMII PHY DT bindings
+- Add missing Kconfig dependency on PM for the new SGMII PHY driver
+- Link to v11: https://patch.msgid.link/20260629-qcom-sa8255p-emac-v11-0-1b7fb95b51f9@oss.qualcomm.com
+
+Changes in v11:
+- Take a new approach: add a dedicated driver for the firmware-managed
+  SGMII PHY and simplify changes made to the MAC driver
+- Link to v10: https://patch.msgid.link/20260323-qcom-sa8255p-emac-v10-0-79302b238a16@oss.qualcomm.com
+
+Changes in v10:
+- Fix unit address in DT example
+- Link to v9: https://patch.msgid.link/20260316-qcom-sa8255p-emac-v9-0-c58934e76ff2@oss.qualcomm.com
+
+Changes in v9:
+- Rebase on top of current linux-next again
+- Link to v8: https://patch.msgid.link/20260311-qcom-sa8255p-emac-v8-0-58227bcf1018@oss.qualcomm.com
+
+Changes in v8:
+- Rebase on top of recent changes in linux-next which required an
+  extensive rework
+- Drop partial R-b tags
+- Link to v7: https://patch.msgid.link/20260306-qcom-sa8255p-emac-v7-0-d6a3013094b7@oss.qualcomm.com
+
+Changes in v7:
+- Restored the correct authorship after learning git uses .mailmap for
+  the --author switch
+- Rebased on top of changes from Russell
+- Fixed resource management issues in error paths
+- Link to v6: https://lore.kernel.org/r/20260112-qcom-sa8255p-emac-v6-0-86a3d4b2ad83@oss.qualcomm.com
+
+Changes in v6:
+- Fix $id value in the bindings
+- Drop patch 3/8 from the series
+- Update init/exit callback signatures
+- Link to v5: https://lore.kernel.org/r/20251107-qcom-sa8255p-emac-v5-0-01d3e3aaf388@linaro.org
+- Link to v6: https://lore.kernel.org/r/20251219-qcom-sa8255p-emac-v6-0-487f1082461e@oss.qualcomm.com
+
+Changes in v5:
+- Name the DT binding document after the new compatbile
+- Add missing space
+- Make the power-domains limits stricter
+- Link to v4: https://lore.kernel.org/r/20251104-qcom-sa8255p-emac-v4-0-f76660087cea@linaro.org
+
+Changes in v4:
+- Remove the phys property from the SCMI bindings
+- Mark the power-domain-names property as required
+- Set maxItems for power-domains to 1 for all existing bindings to
+  maintain the current requirements after modifying the value in the
+  top-level document
+- Link to v3: https://lore.kernel.org/r/20251027-qcom-sa8255p-emac-v3-0-75767b9230ab@linaro.org
+
+Changes in v3:
+- Drop 'power' and 'perf' prefixes from power domain names
+- Rebase on top of Russell's changes to dwmac
+- Rebase on top of even more changes from Russell that are not yet
+  in next (E1vB6ld-0000000BIPy-2Qi4@rmk-PC.armlinux.org.uk)
+- Link to v2: https://lore.kernel.org/all/20251008-qcom-sa8255p-emac-v2-0-92bc29309fce@linaro.org/
+
+Changes in v2:
+- Fix the power-domains property in DT bindings
+- Rework the DT bindings example
+- Drop the DTS patch, it will go upstream separately
+- Link to v1: https://lore.kernel.org/r/20250910-qcom-sa8255p-emac-v1-0-32a79cf1e668@linaro.org
+
+---
+Bartosz Golaszewski (7):
+      net: stmmac: dwmac4: don't program the 1us tick counter without a CSR clock
+      dt-bindings: net: qcom: document the ethqos device for SCMI-based systems
+      net: stmmac: qcom-ethqos: set serdes mode before powerup
+      net: stmmac: qcom-ethqos: update phy_mode to the resolved interface in mac_finish()
+      net: stmmac: qcom-ethqos: reuse the address of ethqos_emac_driver_data
+      net: stmmac: qcom-ethqos: factor out linux-level setup into a separate function
+      net: stmmac: qcom-ethqos: add support for sa8255p
+
+ .../bindings/net/allwinner,sun7i-a20-gmac.yaml     |   3 +
+ .../bindings/net/altr,socfpga-stmmac.yaml          |   3 +
+ .../bindings/net/amlogic,meson-dwmac.yaml          |   3 +
+ .../devicetree/bindings/net/eswin,eic7700-eth.yaml |   3 +
+ .../devicetree/bindings/net/intel,dwmac-plat.yaml  |   3 +
+ .../bindings/net/loongson,ls1b-gmac.yaml           |   3 +
+ .../bindings/net/loongson,ls1c-emac.yaml           |   3 +
+ .../bindings/net/nuvoton,ma35d1-dwmac.yaml         |   3 +
+ .../devicetree/bindings/net/nxp,dwmac-imx.yaml     |   3 +
+ .../devicetree/bindings/net/nxp,lpc1850-dwmac.yaml |   3 +
+ .../devicetree/bindings/net/nxp,s32-dwmac.yaml     |   3 +
+ .../devicetree/bindings/net/qcom,ethqos.yaml       |   3 +
+ .../bindings/net/qcom,sa8255p-ethqos.yaml          | 107 +++++++++
+ .../devicetree/bindings/net/renesas,rzn1-gmac.yaml |   3 +
+ .../bindings/net/renesas,rzv2h-gbeth.yaml          |   3 +
+ .../devicetree/bindings/net/rockchip-dwmac.yaml    |   3 +
+ .../devicetree/bindings/net/snps,dwmac.yaml        |   5 +-
+ .../bindings/net/sophgo,cv1800b-dwmac.yaml         |   3 +
+ .../bindings/net/sophgo,sg2044-dwmac.yaml          |   3 +
+ .../devicetree/bindings/net/spacemit,k3-dwmac.yaml |   3 +
+ .../bindings/net/starfive,jh7110-dwmac.yaml        |   3 +
+ .../devicetree/bindings/net/stm32-dwmac.yaml       |   3 +
+ .../devicetree/bindings/net/tesla,fsd-ethqos.yaml  |   3 +
+ .../devicetree/bindings/net/thead,th1520-gmac.yaml |   3 +
+ .../bindings/net/toshiba,visconti-dwmac.yaml       |   3 +
+ MAINTAINERS                                        |   1 +
+ .../ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c    | 265 +++++++++++++++++----
+ drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c  |   9 +-
+ 28 files changed, 402 insertions(+), 54 deletions(-)
+---
+base-commit: 07d73541fde12a6c05f230509142a66e6c8751eb
+change-id: 20250704-qcom-sa8255p-emac-8460235ac512
+
+Best regards,
+-- 
+Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 
