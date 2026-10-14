@@ -1,59 +1,61 @@
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B182B3988E3
-	for <imx@lists.linux.dev>; Wed, 14 Oct 2026 08:21:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8CF44ABBB8
+	for <imx@lists.linux.dev>; Wed, 14 Oct 2026 08:21:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791966080; cv=none; b=gVEYalt/wBnQTKmwLRbHT4ewa81ppEH2/bC2oYSlg7cgEFpHHJdpfrMOpfTLTyia2Y0476UpuuEVArHZt7S15QopZUG37M7NCdRwiHR3x0xpgUUfLa2b0dDwLyzpCryOWuV6eK9cDOBidtIXhloOJe39MpKJ2pd6E1LjDirFOj4=
+	t=1791966091; cv=none; b=QcYlr4FYV0HnNjTF4WMtBIdihVkdiG8IVy2Tc5n6G/XZ5sq37iQ7MRBONPeQbe+/G7gwocPSr5iLMTfewVH9zHR3bWrouBDqLx3PdA2Krof+LEnYp6INr2j+AEH74DcITjw+3EJQdvBkFaaA++ann8MRfz0nr2tbzfbG1y7dM/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791966080; c=relaxed/simple;
-	bh=f4Crb3c+dv8KnX89knlqIY/7BdSoK+Hx/YKrvclncpc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=igIcb4aD+GFli6VRqzjfWJvBrAvrYZWTRFB3HfYIvvwC/tJF8+TCrfYhRncqE6n7woz1JvY61bFn0k2rrTZt+WEpqyNdEYFbdwE9J1pmACOiwzHlH+8Sv6bvmrDCOxkGiV69ubyXi8gi3pWcN29zVpCNY+X/Ti20BxcdpTtEE/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=cyuQeyQZ; arc=none smtp.client-ip=209.85.216.44
+	s=arc-20240116; t=1791966091; c=relaxed/simple;
+	bh=ZF13MrI063aqe++Q9B1kh+9t6IG7M6JUt1+4zyXr1qU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=KgJdpLw8x6JA8ZpqdcFP8uLQJgmrnO0LawjRU5a9O2eLiDh35fg3cqHAzy9ypsaWzH42BNAYOfXlpv4p9DEmExmg7JwZM8DfLFRLeh6LSvASwZmsX7n9QHGgOhRFWtWNPf5ys5ZDnwONtXjgNzGHE/x5KJP+iTlVF9WH3275y7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=bf81cTlC; arc=none smtp.client-ip=209.85.215.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="cyuQeyQZ"
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-3ab41538192so2757585a91.0
-        for <imx@lists.linux.dev>; Wed, 14 Oct 2026 01:21:18 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="bf81cTlC"
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-cc1c9879395so1395626a12.1
+        for <imx@lists.linux.dev>; Wed, 14 Oct 2026 01:21:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1791966078; x=1792570878; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=j8YsVbXOdF61Llj8qBDqVp2Fp9mYBbP2iNpUhV0IltE=;
-        b=cyuQeyQZl7rhFOsFLlDeEq/JmvFfm94Jyh9/B+UZaJznAzcxYllxc0UghKhlgL4XKH
-         EEvDwugDMNGM1Xld3IS8KgmEPG/PITxyLz3ec7FaEZxBOYjQYeN/+SEmDHFxPq0K5uYs
-         Z7aG2xzkCbTqzX0mvxIlgxxXeTRJOSpydkLkU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791966078; x=1792570878;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=chromium.org; s=google; t=1791966089; x=1792570889; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=j8YsVbXOdF61Llj8qBDqVp2Fp9mYBbP2iNpUhV0IltE=;
-        b=gDlI/TLb4tp+Oji4S0bKK/c9egv5iQRIBQFqZ4nH2FTLRiywVu4isyiIpWEkiflDSz
-         y4GeEAtWt+nE+1QV3nQqCHKeC53rxsTU3Mucg3pir1jppPYY29Uyjq6mfEGfQjSSgYac
-         ceBGFipPd8Kbdl4cNdmNsrbBwSyrcAQpJv7aVl/DfVkVzRHDWsel9cvIc4A0h3raZbqY
-         E68eKH/geDDIng5i5YsRj6Vbo981vTQK8dphlApa46tYAYekpjIBrLHnO6oH42ZzbD6u
-         DCPoj5sDESsjJ+DmqMzC1SOgndIxpDDZ0jy3gzgJSPiDUYKg31r25K3TSUfM8iECqMo0
-         28Hg==
-X-Forwarded-Encrypted: i=1; AKwUvByv8Y4S+C8yIw5dyrqCgXX4gXXQn0S1nE8ec0S6UyC91K2NvITLPyoGxBog1NxjfwKQuQI=@lists.linux.dev
-X-Gm-Message-State: AFq9FYLcbyjvmbRCHmuEilWMSqA5AIu/3yU0kkIRY8YTE0mH3kXrfolq
-	uqmlLk3FxC5jBx2eAYkvpODko81nrSh312Yf8+3ugv+1Afi9aMhZv8az7XJBkfL0WQ==
-X-Gm-Gg: AYBFou0YvGpNER/74fKFaBY78C8/zDt0FZLeSAfT1SslIt3l2UoTjdX9x+uto+Vk5We
-	6cw9qFP72yhIx6884w9O1N1j7xhRgbo0YRdU0W0xIldYvF5fAu+eaIvxZ34jZfvXs6KKTTfEjsN
-	/DZ//i92ZGi8cdPAjIyGAqC5KIvc8diC+84xspdOiAO4eu01WLqjsDFJmtXTg8bKKd68OuzY4ci
-	grrpu0CAFHLqBGDhWQv/mjVek0qaUOJZrT8EqL6xl0YuyX6RauBXDgPo6f0hZX8BEELvPb57KH2
-	9d5jB0O02e5nGaEp+XgxsaekbjMpV2lMUmaSAUL1dndUZ6JlixfIL5tu1YKcUPc5BdgfY/FeqrJ
-	0oUmEo5iwjhAJsB2yBvEjNQDGAJDIF35LS3czMvj9HIltQyujH3EgfsBcP1FSoul8iuuZSkkxEV
-	FVMTsskggshOGIwFP4jeU+kosXSE+5OdfX6q8ewQlZOo5+qq4OWp4dVu3CwgRMap2YzmN3xlHWb
-	em6QPTI+Gx6wQ1gR7Uqt2fVsCz4tHNWuQSyUUJ3TJ1aMx+kl4QBrE0YqRukEvA5rWHa
-X-Received: by 2002:a17:90b:4a45:b0:39d:f247:bab with SMTP id 98e67ed59e1d1-3ab3a2fe791mr12737876a91.6.1791966077891;
-        Wed, 14 Oct 2026 01:21:17 -0700 (PDT)
+        bh=yVCZM5zURPRE62cvJS0zNIsVrphYetwj1gaMWhP5efk=;
+        b=bf81cTlCd2Y68gk5qjKkJDOykeILVYLhEEzk17RDDuuwq0XBEWY6sa0GrkiFwl4k6B
+         c2mD/prX8TDwKQLQss5/u0r4PqzZUQ9FM6rNxXtU5HiNMtI1ht8ULrwR9lmt7/7x9Lin
+         pScvQh9Cvac2emB1sJ5jdNLEdlXyXB+vxUNUU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791966089; x=1792570889;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=yVCZM5zURPRE62cvJS0zNIsVrphYetwj1gaMWhP5efk=;
+        b=KSn8EHLk3pIT+C/FYjBOQg8l5PK4dxWdGGoCQMa38ZJBx7SFyJ2kRaUxotRGXdfmyN
+         vb2uoGQH1P6y9YH9CyE38bZARnjVyocork+seBQt2R1ep7EMUeWhQHpOfic/uZ+NZMbr
+         uLbVrLDgb5lLvpZgFOw3T8xKWA09h54vL23W/AmRuSbRdajv3l28gBKWCrnSd/kkVBFL
+         lXl+ASGczIY0RZ7nVEpk2V9SgmK+15xxwBt7ii2HqCE9JJi50ML0TPiIP9+nKHWeDZbL
+         41xLCi6GxfW81vTcSDeFP7unymLWx9XxIPNcpVOyxdOm2J2By9G/S0rxROSx6AHJeAxG
+         sQVg==
+X-Forwarded-Encrypted: i=1; AKwUvBzkhzqUuxLY4IpDGygKjRyVevOUx5a5/9mTUzkbSE1I1XmRdKYP86Pug8nE+EZcOHaMyfM=@lists.linux.dev
+X-Gm-Message-State: AFq9FYKnpF6tfnW3ZyLX/+iEZQZGxOOutpVd7dtPMr7lzzdxVPJnmSbe
+	JwoRaiECWbWwse60rJFNq8Dk5Enl5QeIDVKbI9wqHT0+Xbe0Z0+CEESz9XnRhYZGwQ==
+X-Gm-Gg: AYBFou0zQfm2hgf3GutAdsq24Gwd5eGcP43G/Ok5CGW1nEgELeRQ+cxM0QzxT5+ojNA
+	0pS9ivy712BmhQlYUarpzjd4/zUEqT8+v233j/O+Sonpvx9tkmZ2mIP2v1LC08dsLkl4RZPrZ58
+	z356SEfqajeM4gZm0YbcYBn0rHXO12VN3enB7O7nLcas0FiQEC5vTFKcM5v15Xe0SuzVhTmRbYS
+	b+VZCiajYFhNJrxJHtkXsyhiK8iz71iZKAfz4uzvkypglGk9jmu3G6S/BH5TLlAhtlaB/EFzPVv
+	aRrOmPBVsClJ/YH8MetzzAiyJTgxfFYoyQuIaO3aimLwKlr7g3XKb7RwiMu/pgynq0lEk+KWZNA
+	FsK/umwOYoIdQnDrMlOkWDBlEs/S1x04WEifdWMnDxczCmdmwus8vXoM7SiXZOj7KjixwgeoZHf
+	Fe3rO5z3ULM5Ngt3DreVW9bCfalCMIXH5H6FTeeOKf/SDXc+ysoEQBcIhIBpU+MUhKTLnnIhofX
+	LqidbQEfRr5wLFVphKk4l6lO5JpivJSxMhHXt6t5QgUj4UB+/bn6salfA==
+X-Received: by 2002:a17:90b:2b44:b0:3ac:7842:bd50 with SMTP id 98e67ed59e1d1-3ac7842c19bmr520798a91.15.1791966089278;
+        Wed, 14 Oct 2026 01:21:29 -0700 (PDT)
 Received: from wenst-7875.tpe.corp.google.com ([2a00:79e0:203d:7:373a:9eb7:c5ba:7b5c])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ac5f04e324sm3682141a91.2.2026.10.14.01.21.06
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ac5f04e324sm3682141a91.2.2026.10.14.01.21.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Oct 2026 01:21:17 -0700 (PDT)
+        Wed, 14 Oct 2026 01:21:28 -0700 (PDT)
 From: Chen-Yu Tsai <wenst@chromium.org>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Felipe Balbi <balbi@kernel.org>,
@@ -116,10 +118,12 @@ Cc: Chen-Yu Tsai <wenst@chromium.org>,
 	linux-rockchip@lists.infradead.org,
 	linux-riscv@lists.infradead.org,
 	spacemit@lists.linux.dev
-Subject: [PATCH 0/2] dt-bindings: usb: downstream host ports for hcd and dwc3
-Date: Wed, 14 Oct 2026 16:20:34 +0800
-Message-ID: <20261014082037.1774672-1-wenst@chromium.org>
+Subject: [PATCH 1/2] dt-bindings: usb: hcd: Add downstream USB ports
+Date: Wed, 14 Oct 2026 16:20:35 +0800
+Message-ID: <20261014082037.1774672-2-wenst@chromium.org>
 X-Mailer: git-send-email 2.56.0.212.g129ede20d9-goog
+In-Reply-To: <20261014082037.1774672-1-wenst@chromium.org>
+References: <20261014082037.1774672-1-wenst@chromium.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -128,59 +132,43 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
+Besides hard-wired downstream USB devices, a USB HCD's downstream ports
+can also connect to USB connector nodes via OF graph, just like with a
+USB hub.
 
-Hi folks,
+Allow a "ports" child node and describe the possible downstream port
+nodes. USB downstream port numbers start at 1.
 
-I mentioned to a couple people at LPC that the USB host controller
-bindings were missing downstream port definitions, and that the ones
-used for dwc3 don't align with USB hardware port numbering.
+Also fix up the address portion of hard-wired downstream USB devices to
+match.
 
-The dwc3 discrepancy was originally noticed by Wei [1] and Konrad [2]
-while adapting my M.2 E-key USB support series [3][4] to Qualcomm devices.
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+---
+ Documentation/devicetree/bindings/usb/usb-hcd.yaml | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-Here are the binding changes. If you were CC-ed, then you were listed as
-the maintainer of any one of the dwc3 implementations or platforms using
-it. So this change would affect you.
-
-Patch 1 adds the "ports" definitions to the common USB host controller
-binding. This just follows what is used in usb-hub.yaml. Nothing
-special.
-
-Patch 2 "fixes" the port numbering used in the common dwc3 binding. The
-dwc3 includes an XHCI for host mode operation, and its port numbering
-should follow the common usb-hcd.yaml binding. This clashes with the
-existing arbitrary port numbering found in dwc3. I checked all the
-big projects, and it seems that only Linux is using them, and it doesn't
-care about the numbering anyway.
-
-So while the patches looks small, there are actually 26 other dwc3
-implementation bindings that are affected.
-
-And this series currently only has the binding changes. There are
-probably close to 500 dts files that need to be fixed as well. I asked
-LLM to help me fix the arm64 ones already, and it seemed to do a good
-job with some hand holding.
-
-Please have a look. I fully expect there to be a lot of hair pulling.
-
-
-Thanks
-ChenYu
-
-[1] https://lore.kernel.org/all/20260731073306.1895428-1-wei.deng@oss.qualcomm.com/
-[2] https://lore.kernel.org/all/c6526ba0-be08-46c6-a501-1b161939657c@oss.qualcomm.com/
-[3] v6: https://lore.kernel.org/all/20260721065413.2306137-1-wenst@chromium.org/
-[4] v9 (latest): https://lore.kernel.org/all/20260916075745.3549953-1-wenst@chromium.org/
-
-
-Chen-Yu Tsai (2):
-  dt-bindings: usb: hcd: Add downstream USB ports
-  dt-bindings: usb: snps,dwc3: Fix downstream port numbering
-
- .../devicetree/bindings/usb/snps,dwc3-common.yaml      |  4 ++--
- Documentation/devicetree/bindings/usb/usb-hcd.yaml     | 10 +++++++++-
- 2 files changed, 11 insertions(+), 3 deletions(-)
-
+diff --git a/Documentation/devicetree/bindings/usb/usb-hcd.yaml b/Documentation/devicetree/bindings/usb/usb-hcd.yaml
+index 45a19d4928af..24df99dfb243 100644
+--- a/Documentation/devicetree/bindings/usb/usb-hcd.yaml
++++ b/Documentation/devicetree/bindings/usb/usb-hcd.yaml
+@@ -29,8 +29,16 @@ properties:
+   "#size-cells":
+     const: 0
+ 
++  ports:
++    $ref: /schemas/graph.yaml#/properties/ports
++    description: The downstream facing USB ports
++
++    patternProperties:
++      "^port@[1-9a-f][0-9a-f]?$":
++        $ref: /schemas/graph.yaml#/properties/port
++
+ patternProperties:
+-  "^.*@[0-9a-f]{1,2}$":
++  "^.*@[1-9a-f][0-9a-f]?$":
+     description: The hard wired USB devices
+     type: object
+     $ref: /schemas/usb/usb-device.yaml
 -- 
 2.56.0.212.g129ede20d9-goog
 
