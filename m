@@ -1,187 +1,289 @@
-Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f50.google.com (mail-yx1-f50.google.com [74.125.224.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B40F74DF4DC;
-	Wed, 14 Oct 2026 09:51:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791971518; cv=none; b=J79YujILglawtZVwwKLpy1B/DJWUcEH7UiV60hJhJ8Xy6z80Z8Xwi6VcCWLEIWADur0IToUn9x/JImCKP4cGGFJe+seH0vtgFQ0ARNpE3+/rjkM9r+n0/vGfMB8AIfPT90K+FNNQkLJiPADIn9W+htQ7qJrKIsn/zdeD3P2ea/Q=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791971518; c=relaxed/simple;
-	bh=aA9hNSxz1vjdTkgnJho2BTzP5XSFQlBPKVnD9tD4N3I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=s3Ka8hX3WnO1jaJNaXnWSUrqtv5/IR3P4rA/rh9CBaO/dPCpSh35nzaAnLJQNbP7CS08Vd1MOBwzPDJGA/47ldcmHs9WxlfvZ7HaTj+pbVrIwfiigaTwfyOLRlD6y54Z9w2ZC8Tf5MDjfxZi7UABHYJWB+gx35XLfblHzkRoLOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=pZTmyLpG; arc=none smtp.client-ip=188.40.3.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D2AE4EA37B
+	for <imx@lists.linux.dev>; Wed, 14 Oct 2026 10:14:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791972894; cv=pass; b=PofKEuH/fYP5i3WH+vteZ8rgfCYYoXfyYC3Cs17qPSyT79VqjSRrGOUeRCCTc+/QaI4xm2la3WK4muZtRGMeWmKKuWnwLaG8p/h1RXfnbCk3LMgPrJ92JNhlq2nBRyr4l22rgTKM23+mZMGriX6Fvhp5zec+QiUcW5CB6Q8Qucg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791972894; c=relaxed/simple;
+	bh=+23UWhQI/KNob9ARYWQiZhgyqTCPgnw2PPmhgS8i4i4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=n7ICEg49hQhMdcUul0n5L/aCVfimR6IxAP7TZkMaQY3a7J9DMz/MGEs0RMiJSREoQsJVBJc+mwu4c6ko9ONOclgyywoirOZDAz1h0Q7hLJn7xBeT7j3J4XkroybQr7any02faxR0mmJuwcoyZGKfhNI4aj3JfuS/8WrEEK++PPY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=MtofjYjW; arc=pass smtp.client-ip=74.125.224.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="pZTmyLpG"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=ew.tq-group.com; s=default2602; h=Content-Type:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=H6QzKIwSmfFejp0WgfYGwApBPn5BWj9AueYoyESHiu8=; b=pZTmyLpGv5uzvKoAEf6LcZRLoY
-	fdKg5EQZT+7+iyB/at67qqVFLP1rCc2ERpMG2r7GYjmm1wrjTwoUE6/HFsb68z/M2qU8RSk7td0dx
-	9V5mzhH+0kDqRiLFnr/jHxRCnFT4Gu3F0vgJX5XU2uJzvOmJJGOOiaoCr77VgddmmfvlM/XgqRM/f
-	bArM/e3gMzEUbeKe9Fu1ripCb+vQkymuXmO/98tyuf9bvhLijr/lgWqfXnGGr4v1OtBpHO4kfB1Cm
-	sm281qalXLqO2ZsPjQA4IMhDnB3w221meunO0GyrFvUgIbUgac5R6FHgRfL2lGqzt5E0MEovbbWAk
-	0jzvLkHQ==;
-Received: from sslproxy06.your-server.de ([78.46.172.3])
-	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1xGvEv-000Oea-0l;
-	Wed, 14 Oct 2026 11:25:37 +0200
-Received: from localhost ([127.0.0.1])
-	by sslproxy06.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1xGvEu-000Geq-30;
-	Wed, 14 Oct 2026 11:25:36 +0200
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: imx@lists.linux.dev, devicetree@vger.kernel.org, robh@kernel.org,
- conor+dt@kernel.org, Frank.Li@kernel.org
-Subject:
- Re: [PATCH v2 3/5] arm64: dts: imx8qxp: Add MIPI-LVDS combo subsystems
-Date: Wed, 14 Oct 2026 11:25:36 +0200
-Message-ID: <5262517.31r3eYUQgx@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <sashiko-outbox-170941@kernel.org>
-References:
- <20261014071657.118378-1-alexander.stein@ew.tq-group.com>
- <20261014071657.118378-4-alexander.stein@ew.tq-group.com>
- <sashiko-outbox-170941@kernel.org>
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="MtofjYjW"
+Received: by mail-yx1-f50.google.com with SMTP id 956f58d0204a3-67990a45e02so358900d50.3
+        for <imx@lists.linux.dev>; Wed, 14 Oct 2026 03:14:49 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791972888; cv=none;
+        d=google.com; s=arc-20260327;
+        b=hm+lf0vJVRWdGDgcRddNfwKStW4X8zDXURr2edEIWAYDIBA5l4g0H4DrbSpYMnGh0M
+         ulYLMdx3t5vdDuvHRG5dxbmhba3IZSjXVR4XqkW4xlLfIeNQHFiEkfCyg396w5bMevam
+         bnLZdxi5mPoTcWgDc9blrkOgv2qMiBzdtg2Zzp7szdR5YK3JS/B77imxmPUb8NgSerLJ
+         vWc/5ug4QWgW8M6w2wAg/rKKn3c6SacHoLpUNExYtm6YuLbpyDSRZK2zX1l9zVOwJsFk
+         /h6b4s/37Viu81qiYaG2w3kyWQAy84Jr8/o5tQEUZ3v1GPHZuSobVMTRjEiDDGSReHVV
+         R+AQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Edwfse8WHzu9gP6zUwwr3O8TIa4a9hek/bDZw8bIzFg=;
+        fh=PWmQvG84TQo/SNnUeJ85Bu0fjpH05S/jc66i7Z3a16s=;
+        b=EGgNLwKa/lEBCIC7YmVve18H1Qvc6Ts2OQPqwMhtP/SBTlO2pNt5ds5wNhxIFpSyHc
+         HmLSEW9DGrSIPNKCO5yQ60NWnuZOJliqzbFNuq9GHQEYJJGDj0D3FOH9pIzoHFdfYJAV
+         c8SoTsyIJMY1rsyrChICGfhxNB6qN15qcei2FGoAi/2009/n/DNG1KlxqSVPqPotqMYs
+         DlxNbeFwLDoUMW/bftrayO6N+ADqrQ9+DyNU59hL/TUBRFEQyiA3uwb2uGUkAm0axDXx
+         YZ7Mnz/NTTU9ZT1/uTjCb70TzTIs2T/0DMldROnf//R51wR/+JMZTPioEJ5vw3Y0ig2m
+         CFWw==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1791972888; x=1792577688; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Edwfse8WHzu9gP6zUwwr3O8TIa4a9hek/bDZw8bIzFg=;
+        b=MtofjYjWvDWlGwXlIK3usJpJfh+VXnKH2V5I26gqN1NGQ6bei1bpZT4eE+AcgIE2+N
+         gSwWTVyL+W7DEj+h+j/YixTz43Iz8JRmt5cCJKvyXBSMYfmxvTjeBxcMVk6WfiOXWjCV
+         NSmlNWCEiVJU2j0cX3noPKSGCRhe9I3KBv+bA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791972888; x=1792577688;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Edwfse8WHzu9gP6zUwwr3O8TIa4a9hek/bDZw8bIzFg=;
+        b=yMH0DT7HNm6kDI34qSyu8Ro6K/NLNFrB12SLETC9Johl3IzChIz4u2IGyJi41qG14O
+         mWpynvQrySsiP4sKSWDD4jHkFSLol4li9tfCSLis6HQfbMWOMhOQ76z2QPEQuWFh4P9T
+         Q1dAVnjaXYhrrVIWzMRrkr/CIqxgX9gziQLdNi76M+r/2/QsPgdVM8DVltdmhfasTy55
+         4l8BwL347fMJPZBKaPXD9hKpKzVLrFV1ZtkoiiSH8Z611YuPHncIEKpLOJ3IvSxOI4cH
+         7czWfsrcLa/+RtlAVkHiFtg0BApynz7SDn7rksCYlMp46IbP/UIKR5Bu4Xl/8A6JFYA4
+         igVw==
+X-Forwarded-Encrypted: i=1; AKwUvBzJX7WFGBr8ttNr85VkEs+2dhNY7lMYsEctX3i434Qw3zLRjTBDkEY0MpKGHpKAjn5Vn+I=@lists.linux.dev
+X-Gm-Message-State: AFq9FYLqaqpicx1CKDYNdCn+SjW3Nn0TEUkw3yxONW8HzCzT7hRvCSIL
+	xqmWMhkAq11uCb75i7APNPfO7zj56bGcrfFNba38jer+D+UhRKOsEQABSf4gzNwTJ6DdJFyjJjc
+	yBofQPl6LnwBQJUy59j6pua7idm1GKYW05FziPBuI
+X-Gm-Gg: AYBFou36Sx+Or6FldL91e4bJmw/pichxiKEh+qiv0OKzpTRYAfRax71TKVCQPglJGXD
+	RTHD5gn8/p9i92wjrV45j8uHzOjQ8kH67mis6KmxQc4dkej8VVocihYTSZuMmrm1yB5fTX5yDsA
+	MUWpwJb2hvKMOZsYcGFMsnfgtUCvKpXLa7PhqBLXYHEl73nLp5X98APRXXEhOn58Tpii14tMwRW
+	Sbn3g/wwXpS7npBNkaizd0iB376iMhA+/tePHn8ww8mLulzJNEBUF/fyta0XuHbao/Bx8t9Klfb
+	fjLVgAMPmS6ya1CJaWz4SX8+BPStFrFBRXeZHhZgv5unLbi/IkTEU7yq
+X-Received: by 2002:a05:690e:1206:b0:677:ac49:ebc4 with SMTP id
+ 956f58d0204a3-67936a424f4mr7759702d50.67.1791972888459; Wed, 14 Oct 2026
+ 03:14:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+References: <20261014082037.1774672-1-wenst@chromium.org> <20261014082037.1774672-3-wenst@chromium.org>
+ <7020a7a6-332e-4fd0-a659-d82eb768614c@linaro.org> <CAGXv+5G1kgyumbj7wGf6rPFbg3spSO0zYmEkn-hZT4qUdJbytA@mail.gmail.com>
+ <03375a31-0ac6-47a4-b0dc-6327080e1622@linaro.org>
+In-Reply-To: <03375a31-0ac6-47a4-b0dc-6327080e1622@linaro.org>
+From: Chen-Yu Tsai <wenst@chromium.org>
+Date: Wed, 14 Oct 2026 19:14:37 +0900
+X-Gm-Features: AclHuK8K2ha0wfmSqlf_vB5Bnq5oR8A0v5D4YSyisrVXA9HcSK0AnBminp1imug
+Message-ID: <CAGXv+5H+ZZXnZKB4EzXP0O9f4YGHBHsz3YCRyRJgX9V6RW1eug@mail.gmail.com>
+Subject: Re: [PATCH 2/2] dt-bindings: usb: snps,dwc3: Fix downstream port numbering
+To: Neil Armstrong <neil.armstrong@linaro.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Felipe Balbi <balbi@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	linux-usb@vger.kernel.org, devicetree@vger.kernel.org, 
+	Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, Sven Peter <sven@kernel.org>, 
+	Janne Grunau <j@jannau.net>, Neal Gompa <neal@gompa.dev>, Joel Stanley <joel@jms.id.au>, 
+	Andrew Jeffery <andrew@codeconstruct.com.au>, Ryan Chen <ryan_chen@aspeedtech.com>, 
+	Billy Tsai <billy_tsai@aspeedtech.com>, Michal Simek <michal.simek@amd.com>, 
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Peter Griffin <peter.griffin@linaro.org>, =?UTF-8?Q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>, 
+	Tudor Ambarus <tudor.ambarus@linaro.org>, Heiko Stuebner <heiko@sntech.de>, 
+	Alim Akhtar <alim.akhtar@samsung.com>, Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Yixun Lan <dlan@kernel.org>, 
+	Troy Mitchell <troy.mitchell@linux.spacemit.com>, Minda Chen <minda.chen@starfivetech.com>, 
+	Shyam Pandey <radhey.shyam.pandey@amd.com>, Wei Yang <yangwei1@eswincomputing.com>, 
+	Senchuan Zhang <zhangsenchuan@eswincomputing.com>, Hang Cao <caohang@eswincomputing.com>, 
+	Li Jun <jun.li@nxp.com>, Peng Fan <peng.fan@nxp.com>, Roy Luo <royluo@google.com>, 
+	Yang Xiwen <forbidden405@foxmail.com>, 
+	Ahmad Zainie <wan.ahmad.zainie.wan.mohamad@intel.com>, 
+	Robert Marko <robert.marko@sartura.hr>, Xu Yang <xu.yang_2@nxp.com>, 
+	Wesley Cheng <quic_wcheng@quicinc.com>, Stanley Chang <stanley_chang@realtek.com>, 
+	Ze Huang <huang.ze@linux.dev>, Aswath Govindraju <a-govindraju@ti.com>, 
+	Roger Quadros <rogerq@kernel.org>, linux-arm-kernel@lists.infradead.org, 
+	linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	asahi@lists.linux.dev, linux-aspeed@lists.ozlabs.org, imx@lists.linux.dev, 
+	linux-samsung-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	linux-rockchip@lists.infradead.org, linux-riscv@lists.infradead.org, 
+	spacemit@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"
-X-Virus-Scanned: Clear (ClamAV 1.4.3/28153/Wed Oct 14 08:24:15 2026)
 
-Am Mittwoch, 14. Oktober 2026, 09:29:25 Mitteleurop=C3=A4ische Sommerzeit s=
-chrieb sashiko-bot@kernel.org:
-> Thank you for your contribution! Sashiko AI review found 2 potential issu=
-e(s) to consider:
-> - [Low] dts: simple-pm-bus node specifies address cells but lacks memory-=
-mapped children
-> - [Low] dts: irqsteer evades DT binding by omitting SoC-specific compatib=
-le and power-domains
-> --
->=20
-> commit bf42b82f7a33a44c5f4805e13c2e5eb848f29919
-> Author: Liu Ying <victor.liu@nxp.com>
->=20
-> arm64: dts: imx8qxp: Add MIPI-LVDS combo subsystems
->=20
-> The MIPI-LVDS combo subsystems are peripherals of pixel link MSI bus in
-> i.MX8qxp display controller subsystem. Add the MIPI-LVDS combo subsystems.
->=20
-> > diff --git a/arch/arm64/boot/dts/freescale/imx8qxp-ss-mipi-lvds.dtsi b/=
-arch/arm64/boot/dts/freescale/imx8qxp-ss-mipi-lvds.dtsi
-> > new file mode 100644
-> > index 0000000000000..67f5392cfc803
-> > --- /dev/null
-> > +++ b/arch/arm64/boot/dts/freescale/imx8qxp-ss-mipi-lvds.dtsi
->=20
-> [ ... ]
->=20
-> > +&dc0_pl_msi_bus {
-> > +	mipi_lvds_0_irqsteer: interrupt-controller@56220000 {
-> > +		compatible =3D "fsl,imx-irqsteer";
->=20
-> [Severity: Low]
-> Does this node omit the required SoC-specific compatible and power domain=
-s?
->=20
-> The fsl,irqsteer.yaml DT binding schema strictly requires the power-domai=
-ns
-> property when the fsl,imx8qxp-irqsteer compatible is used. By only specif=
-ying
-> the generic fsl,imx-irqsteer compatible, this evades the schema's
-> enforcement.
->=20
-> Failing to model the power domain directly on the interrupt controller vi=
-olates
-> the hardware description conventions. The equivalent node in imx8-ss-mipi=
-0.dtsi
-> correctly included both the SoC-specific compatible and the power-domains
-> property.
+On Wed, Oct 14, 2026 at 6:44=E2=80=AFPM Neil Armstrong
+<neil.armstrong@linaro.org> wrote:
+>
+> On 10/14/26 11:29, Chen-Yu Tsai wrote:
+> > On Wed, Oct 14, 2026 at 5:28=E2=80=AFPM Neil Armstrong
+> > <neil.armstrong@linaro.org> wrote:
+> >>
+> >> On 10/14/26 10:20, Chen-Yu Tsai wrote:
+> >>> The DWC3 controller can operate in host mode. It does so with a XHCI
+> >>> compliant host controller. The XHCI has two downstream ports, one for
+> >>> HS and one for SS. USB downstream ports start from 1, not 0.
+> >>
+> >> Is there something in index 0 we will need to define at some point ?
+> >
+> > On the host side, no. Downstream ports start at 1.
+> >
+> > On the device mode side, I believe the numbers are completely made up.
+> >
+> >> Using 0 as base for numbering in DT isn't incompatible with the USB
+> >> spec using base 1 for numbering,
+> >
+> > But you end up with diverging numbering schemes, and it diverges
+> > from other USB controllers, particularly XHCI, which DWC3 embeds.
+> >
+> > And it also differs from the numbering currently used for directly
+> > connected onboard devices (like hubs), which use or expect the USB
+> > numbering scheme.
+> >
+> > Sure we can make DWC3 "special", drop inclusion of usb-hcd.yaml,
+> > and duplicate the section for onboard devices. On Linux, we can
+> > add some more code to xhci_find_raw_port_number() to make an
+> > exception for DWC3 controllers.
+> >
+> > Also, usb_of_get_connect_type() is already broken for DWC3 based
+> > controllers that only describe the HS connection but not the SS
+> > connection. usb_of_get_connect_type() currently doesn't call
+> > usb_hcd_find_raw_port_number() so both HS and SS get mapped to port 1,
+> > which wouldn't be in the DT since HS is currently port@0. But even if
+> > it did, SS would get mapped to port 2 anyway.
+> >
+> >
+> > IMHO having consistent numbering across controller types would be
+> > better. This avoids making the USB core and hub code deal with more
+> > exceptions, and also easier to understand and write device trees.
+>
+> I was in the impression the port number not necessarily reflects
+> an actual physical numbering, and can be a logical number we would
+> then map in the kernel.
+>
+> I don't see any issue here having base 0 for the bindings and then
+> converting it to base 1 for the XHCI port numbering.
+>
+> Each controller (Host, Device, OTG) will have it's own numbering anyway,
+> so using the XHCI numbering only sounds a bad idea TBH.
 
-That's correct. Proper compatible and power-domain will be added in v3.
+OK. So we keep the port numbering, which is different from the embedded
+device numbering, even for the same dual role controller? See below.
 
->=20
-> > +		reg =3D <0x56220000 0x1000>;
-> > +		interrupts =3D <GIC_SPI 59 IRQ_TYPE_LEVEL_HIGH>;
->=20
-> [ ... ]
->=20
-> > +	mipi_lvds_0_csr: bus@56221000 {
-> > +		compatible =3D "simple-pm-bus", "syscon";
-> > +		reg =3D <0x56221000 0x1000>;
-> > +		clocks =3D <&mipi_lvds_0_di_mipi_lvds_regs_lpcg IMX_LPCG_CLK_4>;
-> > +		clock-names =3D "ipg";
-> > +		#address-cells =3D <1>;
-> > +		#size-cells =3D <1>;
-> > +		ranges;
-> > +
-> > +		mipi_lvds_0_pxl2dpi: pxl2dpi {
->=20
-> [Severity: Low]
-> Is this simple-pm-bus configuration correct given that it lacks memory-ma=
-pped
-> children?
->=20
-> The mipi_lvds_0_csr node specifies #address-cells =3D <1> and #size-cells=
- =3D <1>,
-> but its children (like pxl2dpi and ldb) do not possess reg properties. The
-> device tree compiler (dtc) expects children of simple-pm-bus or simple-bus
-> nodes to have reg properties if #address-cells is greater than 0.
->=20
-> This will trigger simple_bus_reg and avoid_unnecessary_addr_size dtc warn=
-ings
-> during the build and violates standard DT architecture patterns.
+I hope you see why I think it is confusing.
 
-I think that is not correct. mipi_lvds_0_csr is a simple-pm-bus as it needs
-clocks and power-domains. AFAIK as it is not a simple-bus the
-avoid_unnecessary_addr_size warning is not applicable.
+> >
+> >>> Reconcile the downstream port numbering with the common USB host
+> >>> binding, renumbering the downstream port numbers from 0 and 1 to
+> >>> 1 and 2.
+> >>>
+> >>> This is non-backwards compatible, however it won't break current
+> >>> major implementations:
+> >>>
+> >>> - dwc3 "gadget mode" in Linux kernel only requires a connection to be
+> >>>     present; it doesn't matter which port it is
+> >>>     - dwc3 "host mode" OF graph connections aren't supported yet [1]
+> >>> - FreeBSD doesn't use the OF graph for anything
+> >>> - U-boot doesn't use the OF graph for USB
+> >>> - OpenBSD doesn't support dwc3, only the XHCI in dwc3, and doesn't us=
+e
+> >>>     the OF graph for USB
+> >>> - coreboot doesn't use the OF graph for anything
+> >>> - Zephyr doesn't support dwc3
+> >>> - TF-A doesn't use the OF graph for anything
+> >>> - EDK2 doesn't support dwc3 and doesn't support OF graph
+> >>> - OP-TEE doesn't support dwc3 and doesn't support OF graph
+> >>>
+> >>> [1] WIP to tie OF graph port node to USB port device
+> >>>
+> >>> Fixes: a33113f73693 ("dt-bindings: usb: snps,dwc3: document HS & SS O=
+F graph ports")
+> >>> Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+> >>> ---
+> >>> It is unclear to me whether the HS/SS numbering is fixed for all dwc3
+> >>> variants. I checked Allwinner H616 and Rockchip RK3588 and they both
+> >>> have HS as port 1 and SS as port 2.
+> >>>
+> >>> This also doesn't cover a potential "multi-port" DWC3 implementation,
+> >>> which Qualcomm seems to have.
+> >>
+> >> It breaks the current Qualcomm numbering on numerous boards.
+> >
+> > Yes. It breaks _everyone_ using the current numbering in the sense that
+> > they are no longer valid, but should not affect actual usage.
+>
+> Older DT are supposed to be working on new kernels, you will break ABI
+> and will break usage if the port numbering is enforced to enabled embedde=
+d
+> hubs for example.
 
->=20
-> > +			compatible =3D "fsl,imx8qxp-pxl2dpi";
-> > +			fsl,sc-resource =3D <IMX_SC_R_MIPI_0>;
->=20
-> [ ... ]
->=20
-> > +	mipi_lvds_1_irqsteer: interrupt-controller@56240000 {
-> > +		compatible =3D "fsl,imx-irqsteer";
->=20
-> [Severity: Low]
-> Like the mipi_lvds_0_irqsteer node above, does this irqsteer node also om=
-it
-> the fsl,imx8qxp-irqsteer SoC-specific compatible and the power-domains
-> property?
+On that front, embedded hubs already require you to use the USB numbering.
 
-That's correct. Proper compatible and power-domain will be added in v3.
+If you write
 
-Best regards
-Alexander
+    dwc3 {
+        hub@0 {
+            compatible =3D "usb0123,abcd";
+            reg =3D "0";
+        };
+    };
 
-> > +		reg =3D <0x56240000 0x1000>;
-> > +		interrupts =3D <GIC_SPI 60 IRQ_TYPE_LEVEL_HIGH>;
->=20
->=20
+It won't match anything. The current USB HCD binding doesn't prevent you
+from using port 0, but the kernel won't tie the USB device to it, even
+if it is a single port USB controller. As I mentioned, USB downstream
+ports start at 1, even for root hubs that only have 1 downstream port.
 
-
-=2D-=20
-TQ-Systems GmbH | M=C3=BChlstra=C3=9Fe 2, Gut Delling | 82229 Seefeld, Germ=
-any
-Amtsgericht M=C3=BCnchen, HRB 105018
-Gesch=C3=A4ftsf=C3=BChrer: Detlef Schneider, R=C3=BCdiger Stahl, Stefan Sch=
-neider
-http://www.tq-group.com/
+The kernel also doesn't check if the compatible property is correct, but
+that is a separate issue. Maybe it should though, so people can see that
+their DT is incorrect, like if they swapped HS and SS ports for a USB 3.x
+hub.
 
 
+ChenYu
+
+
+> Neil
+>
+> >
+> > This comment refers to "multiport" controllers from Qualcomm [1], which
+> > would have ports beyond 1 and 2.
+> >
+> > [1] https://lore.kernel.org/all/20240420044901.884098-8-quic_kriskura@q=
+uicinc.com/
+> >
+> >
+> >>> ---
+> >>>    Documentation/devicetree/bindings/usb/snps,dwc3-common.yaml | 4 ++=
+--
+> >>>    1 file changed, 2 insertions(+), 2 deletions(-)
+> >>>
+> >>> diff --git a/Documentation/devicetree/bindings/usb/snps,dwc3-common.y=
+aml b/Documentation/devicetree/bindings/usb/snps,dwc3-common.yaml
+> >>> index 6c0b8b653824..4b6304bd2ec1 100644
+> >>> --- a/Documentation/devicetree/bindings/usb/snps,dwc3-common.yaml
+> >>> +++ b/Documentation/devicetree/bindings/usb/snps,dwc3-common.yaml
+> >>> @@ -410,11 +410,11 @@ properties:
+> >>>          property is used.
+> >>>
+> >>>        properties:
+> >>> -      port@0:
+> >>> +      port@1:
+> >>>            $ref: /schemas/graph.yaml#/properties/port
+> >>>            description: High Speed (HS) data bus.
+> >>>
+> >>> -      port@1:
+> >>> +      port@2:
+> >>>            $ref: /schemas/graph.yaml#/properties/port
+> >>>            description: Super Speed (SS) data bus.
+> >>>
+> >>
+>
