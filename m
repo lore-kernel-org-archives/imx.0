@@ -1,196 +1,89 @@
-Received: from TYVP286CU001.outbound.protection.outlook.com (mail-japaneastazon11011012.outbound.protection.outlook.com [52.101.125.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43250370D7C;
-	Thu, 15 Oct 2026 03:56:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.125.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792036569; cv=fail; b=lyuntcG4lsKifAm88pw0GLIbRR4TsiB4HrLzfLVxpaRvaj7+1PKoRnRkr7OAOjILUwynsZK+68HTy94957V+KdhCsW4zo0BM2H/qstbTVvJMRuiGxmJ8zx+eRFit9b+CtV43vMnu9zuCV5J3S5dgc59RxMGzEoTjJ5NKiXy0jmc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792036569; c=relaxed/simple;
-	bh=SxzGGtyMwt01eveExTFDuekyDvhVfDQSdON+iGAYiWQ=;
-	h=Message-ID:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
-	 Date:MIME-Version; b=r5giia2Qsgu7Iuq6BKVXCTVfpbDJTduSxegLZ+os+hBeplDAX4GiQhOgNWZn/+h+LDdY1x6uPCj8CrkWS6rUkyjCLU/gRuWilN39vbuQs0Gwwbh6eH3TVUey3iYYS4YPrSDMyfBK7NiWUBf5r1Mn2xyp+vrS1BTLcR3UR3Fp6q4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b=nr7jvbZA; arc=fail smtp.client-ip=52.101.125.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B29DD3515C8
+	for <imx@lists.linux.dev>; Thu, 15 Oct 2026 06:31:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792045882; cv=none; b=S0SR/V35m+WudobIE3WOktqmVH3xyXcyEGgGuhkagT8dC7i0v/6/cfzZ3QU5l7x8suG9PTRiqt831y7UBbg5loJGCJ10e+IvxpXOgRh+jPReCxtXrDxrkS2LyxGusjLY5Z459vjgdUzMds/H1irHWiPcOt7cDD3QzlMTLnBX3xc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792045882; c=relaxed/simple;
+	bh=dCXhnYzCwpnojI7u2wCu1WWFpQblxRM81sL7Ra6gHb4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QoQNWP6n1BosMwYgmZq1+9C6I/ijbOvPe1ndKhA//P84c+WrK78eS7Q+2BqIXb83Xx5gBNqMA8HCWq/IhTdp9WHNl4P9Pq4fogIyH/UKn5cQpMf27fNys5XPEi+hi8pjXsWeU5Ep4YPmOA3foZhq34PNoDwBN8orb1mbn0CUB0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=zzQuVjTI; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b="nr7jvbZA"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=cnKnlIvg7VhEt2rqxfuiEIELs+kcPL30GSEnjimht+E6syt5Av/fHLAWANdjrYotfFWAsPt/v4J2yOYkR1aHINdu5DARE5EURBIhsd37tQc+KwJcU6thvFoRKbn0qfkmZMucBKhoI/F3/9lkbGn/iB+thAVHQV/fhtWY1z+RXBcUhxoxCij55whgYPwuU0l5FtNWKye+HIQrlXi26NZcpUyT9sptKaw1MdaWQseYRMsXKhKLqR1ADN9RUHqZoo1NP0l4Dj5NtXunNePXkNtMWHmdH6br4WEaKMIXFRJNpWNoyRHKMg0QMsSmcLWx4h1ujGPrdnwxRzW67iGBC9+gGQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=FvZz5cOK2QJv/it/kOYOZpRvIxM8j8zz94SAxWAtqLA=;
- b=hFl/il1V36MopNG2RQI2qVGElQyN6yT7xkoT6fl/X2ZX64YE1C65EhTi58UF3yr+fFcDcrAF+MrrwlVdtQTUju4ow7BtkoIBpkVgMJsoLSYmWS0oF5jJrlUr6btqYR7YJlR+E7He1Qd7KrnNEDvGfDuQ9o7+qzuoZjgBSzo+94l/C+sUAxY8EuiiK3hDYWBVkCeG/tmSCvVv19EaEHCFnsH7RVTKkMElZKi0aTLdZVh8su6hTFwmsyREVLMnGsQC2GkfUF8b6I/q/Tr02CK2QkdTjxUQrLWliRU0hw1+dlMoLLz33sovG+JplOwL5vxxfVwa5nMs1X4Oqy+W0y5f/w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
- dkim=pass header.d=renesas.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=FvZz5cOK2QJv/it/kOYOZpRvIxM8j8zz94SAxWAtqLA=;
- b=nr7jvbZAFmZL1Qt3fgWK7DfrZ6ih/k3uMSF6LOR0387baUQuZvp+JB64cy1DqK9OQOljvwb31lmcCY4CL7s2HlqfqOwRsRTEP6Nsz//odK6RgJaluy2kWURrprSu7vXQprZXevC0Y1kTwN25TPllSXyz1xVOYGvIu/9LF7Gb45I=
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=renesas.com;
-Received: from OS9PR01MB820914.jpnprd01.prod.outlook.com
- (2603:1096:604:50f::14) by OS3PR01MB6627.jpnprd01.prod.outlook.com
- (2603:1096:604:10d::14) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.13; Thu, 15 Oct
- 2026 03:56:03 +0000
-Received: from OS9PR01MB820914.jpnprd01.prod.outlook.com
- ([fe80::12e4:c507:3730:2294]) by OS9PR01MB820914.jpnprd01.prod.outlook.com
- ([fe80::12e4:c507:3730:2294%6]) with mapi id 15.21.0496.021; Thu, 15 Oct 2026
- 03:56:03 +0000
-Message-ID: <8733u7d3cd.wl-kuninori.morimoto.gx@renesas.com>
-From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-To: phucduc.bui@gmail.com
-Cc: Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
-	Venkata Prasad Potturu <venkataprasad.potturu@amd.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	povik+lin@cutebit.org,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Andrei Simion <andrei.simion@microchip.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	David Rhodes <david.rhodes@cirrus.com>,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Shengjiu Wang <shengjiu.wang@gmail.com>,
-	Xiubo Li <Xiubo.Lee@gmail.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Nicolin Chen <nicoleotsuka@gmail.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="zzQuVjTI"
+Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id 6B3EA1FAE5;
+	Thu, 15 Oct 2026 08:31:09 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1792045870;
+	bh=HxESBsBcOxfIXhfEgZgU6ibboT4Rgframa1w/vi5IdE=; h=From:To:Subject;
+	b=zzQuVjTIDnlKGOVfK6vm4rVXgCh5moV/gqYTfDabv86bGMpRNP4ZJkj5ZqNHA079n
+	 rVCKfmhb2JYJhimweFdfdC4bAhRB+OMjW+U0f3YzgAtliHKpMQTOavGvMJjKiy3Gue
+	 9j+lrelQA3LfwygkQ0qcS5yPJgKA+w+0Lg5N85tqzkw5xI0opeMFxiLtsq0qTmaRvK
+	 yQMtpeL20zCmEReNzv486ii7N7qNyZEzYgJC7EXuUwwZ7qsO1zMI/14cw3gvEYfwcX
+	 Jiz8PaRUNneymfFB0Rn9UOSmQDod3q6HoRUXXhgAno6eUqfeYfcIg0yi2ZLHJxd0kf
+	 kxrxPARlvXS1Q==
+Date: Thu, 15 Oct 2026 08:31:05 +0200
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Frank Li <Frank.li@oss.nxp.com>, Liu Ying <victor.liu@nxp.com>
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Cezary Rojewski <cezary.rojewski@intel.com>,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Kees Cook <kees@kernel.org>,
-	Syed Saba Kareem <syed.sabakareem@amd.com>,
-	wangdicheng <wangdicheng@kylinos.cn>,
-	Chris Bainbridge <chris.bainbridge@gmail.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Neo Chang <YLCHANG2@nuvoton.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
-	u.kleine-koenig@baylibre.com,
-	Pengpeng Hou <pengpeng@iscas.ac.cn>,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Hemanth Selam <hemanth.selam@gmail.com>,
-	Md Shofiqul Islam <shofiqtest@gmail.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Zain Aboobacker <zainaboobacker33@gmail.com>,
-	Sang-Heon Jeon <ekffu200098@gmail.com>,
-	Bo Shen <voice.shen@atmel.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	linux-sound@vger.kernel.org,
-	asahi@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	patches@opensource.cirrus.com,
-	linuxppc-dev@lists.ozlabs.org,
-	imx@lists.linux.dev,
-	linux-rockchip@lists.infradead.org,
-	linux-renesas-soc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 21/25] ASoC: renesas: msiof: Remove redundant period constraint
-In-Reply-To: <20261015014324.5569-22-phucduc.bui@gmail.com>
-References: <20261015014324.5569-1-phucduc.bui@gmail.com>
-	<20261015014324.5569-22-phucduc.bui@gmail.com>
-User-Agent: Wanderlust/2.15.9 Emacs/30.2 Mule/6.0
-Content-Type: text/plain; charset=US-ASCII
-Date: Thu, 15 Oct 2026 03:56:02 +0000
-X-ClientProxiedBy: TYCP286CA0349.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:405:7c::18) To OS9PR01MB820914.jpnprd01.prod.outlook.com
- (2603:1096:604:50f::14)
+	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Dong Aisheng <aisheng.dong@nxp.com>, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux@ew.tq-group.com
+Subject: Re: [PATCH v2 2/5] arm64: dts: imx8qxp: Add display controller
+ subsystem
+Message-ID: <20261015063105.GA5720@francesco-nb>
+References: <20261014071657.118378-1-alexander.stein@ew.tq-group.com>
+ <20261014071657.118378-3-alexander.stein@ew.tq-group.com>
+ <as-JyQG5vgaPYLeH@SMW015318>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: OS9PR01MB820914:EE_|OS3PR01MB6627:EE_
-X-MS-Office365-Filtering-Correlation-Id: cf07033e-9629-4a38-38f6-08df2a703ba9
-X-LD-Processed: 53d82571-da19-47e4-9cb4-625a166a4a2a,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|1800799024|366016|7416014|52116014|18002099003|22082099003|10067099003|11063799006|4143699003|261009223027099003|56012099006|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	Bvb5CO+Dsjg3Lo6MIlIzOJHXzdU1eAbhEoN3UACiWRVtbTrDF3DkW6WjynUvCowhRtsL6L1zPkldLwocUC3qukuHao23aLwiCL4Y2ZgoCchp/3/6m8U0ysKG6RWaxLC46uoOx6lVvKgjhLmoL9z1OyOYUaPjehKrzCGcrr//sIAD+TcWe5RCu1bewXgRfUq87UlGalTtOfA3RR8WEDdtBfjSeqdsfqX9EytMRtPzzkdpK1oWGtd2eIZrVVQmQpr7kACkk0+VLInRqipgaV9cYOGI8+41V6hrN4o8E35pMyAF2COvtRPcbhhP8WCAY25WbHw0HgdQ9yMIP17jUoUPasq1Bltbh3z60YLCR6EVGsk7uTLWDMFOVLuYKWNbtYT809DK+mRpKv5Ob1FkvQyfuA5EhxMDf959OO5pIhYKSBz9tqaa1odJlsixYXGO7NJ1ELNb0Xwn1X1oj9QLH8fwqR7LuRWjXbffwcCaNK04WgIz+jqQa+7+9zgKPU6uW6AbRJTkafaweNaEPIrpNZEb7rJ0mFFKLEI9Arrike8qHe7B0KSdEVwnbR20esgKZKAdO24P9udwDCaqBVXAxzlzNKsIUQ6+eFNc9GN99SfAs98vFc6VMmyMQfLlHWyatdpZ3YS30KoY9MEJ4McEIiaXDAuCjAh9nC3CqEOa7PyeO4wW+TWpox3Z0//4uGcnginBjhUIpedZaqblcd6+GedzhMZIVvpjs8ZIfm23Onah9l4=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:OS9PR01MB820914.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(1800799024)(366016)(7416014)(52116014)(18002099003)(22082099003)(10067099003)(11063799006)(4143699003)(261009223027099003)(56012099006)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?nO6DMYyAfqYcD9dkNp4NjBzUPAdr6oQqlSW+DsAwVrolkXEW65ulgg2Prr0V?=
- =?us-ascii?Q?M8FNJu6JumXt9mzXQei106ayUCqIVp9Oncgk84N7iR9jDt7QYRdLxhaKLDAa?=
- =?us-ascii?Q?3xf+GmTDyzG4GEWihgaAKt0Tii6mdfKsEYIo/uTXfi6K93D9nrFwOxgyB9NZ?=
- =?us-ascii?Q?x8ZuzgpPHdIBEOKF/SoGRELgPJkuq/1ctdSOGy/cFW0OfyOsLC5Ktv6y0ull?=
- =?us-ascii?Q?xf5JX0u0tDQtmtlORe2ifyPPWMpxmPED20tm69uFbSyRHUgk0srv2eFO6A0S?=
- =?us-ascii?Q?lwkH1njT0Cqu+aLErpEDj1VUKVl6svftdLIM7t9oNHFiDJTAJgdB16qmmKea?=
- =?us-ascii?Q?IEoQnCDty/iUXhhOKmoTmYKGbYqPaG6LwWGGC+1rzOFUPwytldk40tNUkV2x?=
- =?us-ascii?Q?aQKoVQUWIRhBOW++tONWid/N2HquAiw1tfJm2gcYqQmP/bQ9Huyv+UQ0Ttjw?=
- =?us-ascii?Q?rI5RVb47GCjpGZMGJUEP2uSNXYb055xo5D97pYF4AGUSUFW8x7RnED77vly3?=
- =?us-ascii?Q?tnSBzqXKRUN/yW+/iDqBkMn2x9cnKIQq+1iIUQSOvrqvM/sqUeDVXRO5M5SK?=
- =?us-ascii?Q?tUBy4a7oCzWKyTj0x2PHVUXp6jmw3e2CwZ/+TRDyjrZ3opmrJFVdK38TKnnW?=
- =?us-ascii?Q?iKPjp/cjFApKWZmNL/dysIhUQ8GodU7sabUrqWO61H5HVFDkDQWn5vT0XNTG?=
- =?us-ascii?Q?WHgV1u9RePIncMEGBmEhmnaxPcWhst5JIQJN4HHEgdofT4Kkbdp8vaSKhV81?=
- =?us-ascii?Q?Nsqxrp2ohH3f4kPVpRF1BKU6BQo8RLCOfH3hqwEI5KZI2LHJ/CNtiNKZtgzp?=
- =?us-ascii?Q?2r4XzD9M0ixke+QxnlVfmlrXcWa6O++iYowsWmXV0ddBqwgTgTlJOnHdb9Hg?=
- =?us-ascii?Q?HcXT9sBGOtDTJWPTI40SlcQUUMuwZdYFYMKN5YbFYS3RYFD4IGF0Z8Uj04VY?=
- =?us-ascii?Q?aEQ2y2Y9/pqcs8KoSnIWkypuM45V/fRbGs0bkmjr/bbkyQ4JzepWcQlIZYI+?=
- =?us-ascii?Q?L/BtZ7t9NRLeOyItX39o1HIWQIOX91e2OZVDl9xExOsoIhBo9ozkhK8aewti?=
- =?us-ascii?Q?L9mE19UkiYu1mzjWoOk+Hg+AjKTh1vbLxPtZzxf5KRHAZ9x2ZVweqwxtY91B?=
- =?us-ascii?Q?u0vJa7U87SisM0U7txndIMwSi0u8PoVSmIyUAoBclpTaQgiaL7MgX0LANVUX?=
- =?us-ascii?Q?FCev0YBvdM2pk/+SmTVIfkssLcunFyIKr9Rrt3MEMbLOsQExyEQ+s/udWXre?=
- =?us-ascii?Q?p9FlcAmr0kOkQV+ddshanPQYcQ/OwCANQkxjug7t7tqfkOlG8S6la82UOvPw?=
- =?us-ascii?Q?Layes56wzMYBTOlh5hzBr2ViUaL7YtgtheHxOYylDS/eyUADE4mnjw27ZX0K?=
- =?us-ascii?Q?VucHgDim5UtVn0x5IFCg1pTiNCewUClpbOmVFwLDVnzQ+16nEawnFL6m2Dxv?=
- =?us-ascii?Q?Qa2lnCuIxMbUOtSHcUXDjHrUNwOIgDIL0dvHVwEJezauCl0irZ8j2nvjvg11?=
- =?us-ascii?Q?HoecT/Xx0I1hdvSRhTnzCt9q3sBrdJvwQpZOAtkq1LvdumlOZPbgRw17+ZYj?=
- =?us-ascii?Q?EFpThIFAtSnvjxeLmI+VHg4xOOrVWDdBUHTTYLX63v1sOqFZ1KgXBLCvwGfj?=
- =?us-ascii?Q?vlaqxofvex2MWshEkBdOokoYyJ8dVeFBV05NTVirI2bYjr1zp7FmHh39/TY/?=
- =?us-ascii?Q?IUPbib7PuLW74sUVhq+UsvpjxB4/QJ952Zv1adv+RRQjzJ4/o3TElMddVHHo?=
- =?us-ascii?Q?2PVZApdItbV1ABFrEzQS/qQKEdoinV3kP0eZxDOmhtSGNbcagyLQ?=
-X-OriginatorOrg: renesas.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cf07033e-9629-4a38-38f6-08df2a703ba9
-X-MS-Exchange-CrossTenant-AuthSource: OS9PR01MB820914.jpnprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2026 03:56:03.6439
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 53d82571-da19-47e4-9cb4-625a166a4a2a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: XkIL51mP7YKXmYFBYOlBxTEKwwOk0anEgiHdpNNbxUcRuCI3okVcxpxFnpj206tsh1Kbc9tfm1tVB/aKkrJ9Fe7L0ScdZX2VdrZc3DxRl2zj4oAzzEV0fyxsRlAhce7d
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS3PR01MB6627
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <as-JyQG5vgaPYLeH@SMW015318>
 
+Hello Liu,
 
-Hi
+On Wed, Oct 14, 2026 at 08:55:21AM -0500, Frank Li wrote:
+> On Wed, Oct 14, 2026 at 09:16:46AM +0200, Alexander Stein wrote:
 
-> snd_pcm_hw_constraint_integer() is already called by
-> snd_dmaengine_pcm_open(). Calling it again in msiof_open() is
-> unnecessary, as the constraint is already applied and the second
-> call returns 0.
+[...]
+
+> > diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-dc0.dtsi b/arch/arm64/boot/dts/freescale/imx8-ss-dc0.dtsi
+> > new file mode 100644
+> > index 0000000000000..e94fbc6eae07d
+> > --- /dev/null
+> > +++ b/arch/arm64/boot/dts/freescale/imx8-ss-dc0.dtsi
+> ...
+> > +
+> > +	dc0_pc: pixel-combiner@56020000 {
+> > +		#address-cells = <1>;
+> > +		#size-cells = <0>;
+> > +		reg = <0x56020000 0x10000>;
 > 
-> Remove the redundant constraint call.
+> reg should be first property, check others, you can use
 > 
-> Signed-off-by: bui duc phuc <phucduc.bui@gmail.com>
-> ---
+> https://github.com/lznuaa/dt-format/
 
-Acked-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+We have a tool in the Linux tree, ./scripts/dtc/dt-check-style,
+I would advise to use it and improve it if needed.
 
-Thank you for your help !!
+Documentation/devicetree/bindings/dts-coding-style.rst is the reference
+document.
 
-Best regards
----
-Kuninori Morimoto
+Francesco
+
