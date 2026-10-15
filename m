@@ -1,104 +1,124 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE96A35B657;
-	Thu, 15 Oct 2026 14:49:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792075777; cv=none; b=m9RUu/dbU900ZyV3ZXHjCq/ZZ5FPwsPd8he9hEC15tCfbwnDpBmBcuLtIz5XQw9uWDbsN9bK/X2PISHkhXiMa240NelBZVAPn1lIcgUO5NzV/MDAayqfPrB1Iq1dWIekx4jfLsLBidUy4EcXTwktNmJGn9XTW2m5Ef86uxe9mZ0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792075777; c=relaxed/simple;
-	bh=4spVMkFgVYjmLJANVFncw2j/6pf3ftTyNatFPPzON80=;
-	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
-	 Date; b=ooGonYYHn04zvRYJCpHHSmuZe/JxxKfBtLgcn6svz0qlwjXtcpJ+daWSJCE0l4JrObatTvQYqjGZFfEOhGN9Ws6Fip+/Y3xLUenUm940v9cm43MAO2HzKpm4bWbRlUSS63BCZ1X+dqvZLAFLgI+cuhAmSk0L8dv+YravtEeODkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZjyYYRcP; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AE784E36CB
+	for <imx@lists.linux.dev>; Thu, 15 Oct 2026 15:05:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.203.200.13
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792076726; cv=pass; b=eHtfHksV5JzErWNgjP34byMTaEaDTEu4mBTFUs7opzzV9JcOVSQc1+7ka2XQ3xLL7N8xSeJyjK6xMs41Ijducw9DUcM9wEgFQdZT3BjigdGpVXsL5T1Eh65kVluq1QMPoGALK1hQGuk4uanj8JeE6yM/Pd0vaXEQgs4eYO3sXOQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792076726; c=relaxed/simple;
+	bh=yOUdyLoJbgngqAiK5WpuKQJyz6Ta5+CI0sQ7w8XL28g=;
+	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
+	 References:Date:Message-Id; b=Mq4vRBCG/Vm5vVFNkhYQBdzHLqJ/tSHGuCx8XAJ92DhWRI9LxsaAGIwmehnpSVX/q7t0Qr4MdxyLnh291QXUYXv0Rn3YqftR3YoQzTPAOdaEzyhKiMrZW4LO3Pu7IPl45IK484b2v4HJ06VfZ5CUkBdzLZ8WZnC8hrq4RTPLxBA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b=Eie4RBsx; arc=pass smtp.client-ip=185.203.200.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZjyYYRcP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 809F91F000C4;
-	Thu, 15 Oct 2026 14:49:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792075775;
-	bh=lEge8ljtpcuR7TuB3i+gROEvBcKUdmwuZAuN6R6a45g=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ZjyYYRcP2CpscCtdUlAOwOvNn1E7M4Hty9v3eSvFpzNHEXZwhcrFgSTrYMd8nF8sU
-	 iPLX5IIn6yxsKgw0F6GMLFi1KyeFEWddwUSKV6i1veU48+69AlpvKI9bvgm2dVhHE+
-	 2OldiHzPkW8vjI4cNjnipFpP+4RJm+E/oqKcPUCxSMjLLDj01aWTRzrjyby4mG0MDG
-	 B7TbG9okqkC20PzWqXEs5v9ymMqbmQ4ayWcyMMqRDV8oMsoznzhoizaND/8aZpM/WV
-	 7g15kTpnBRndrfazDSPK68uDC69vioGIFjGwK1H9uzgCzm2XWLIzGlXhYpGqp3eoQm
-	 /aHq/WFWQGA2Q==
-Message-ID: <sashiko-outbox-172996@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 1/3] dt-bindings: remoteproc: imx_rproc: document
- memory-region-names to avoid hidden ABI
-Reply-To: sashiko-reviews@lists.linux.dev
-To: Frank.Li@oss.nxp.com
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20261015-memory-region-name-v5-1-abc358b39a96@nxp.com>
-References: <20261015-memory-region-name-v5-0-abc358b39a96@nxp.com>
- <20261015-memory-region-name-v5-1-abc358b39a96@nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 15 Oct 2026 14:49:34 +0000
+	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b="Eie4RBsx"
+Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
+	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 422C72027F6;
+	Thu, 15 Oct 2026 17:05:16 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1792076716;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TYdla+PqI3wsjHkd5101uWBVNz379TLzIPl97+TUntY=;
+	b=Eie4RBsxT/AEhNd2oF/h9gdiTlZWNDMc0G4zhnIK5bGNjr0QtfGRR3YKrgui1MmVdVdfqj
+	WJK3qzO+jhM7AvdsrQyPYmIIJTu/eRgFuWRiJbmtCDKxhavjAzFFc2f3E8EzYpNVchzlps
+	CAt7JfiQKqQq6f5hMD44D1Y9w8Uia7TFW1rafowgvyJ0iMGDJwY2ECPTgpecmNWR45HIFQ
+	xrW1jQU0Vh4bA7+y5XcMEwNQpUY7SZso5MUbZ77KEm3gR9KLtmorRYlX+61cxKS68OcRlI
+	i6tPys2xs5YHLxid+816v7daAdc2CsOuEnMyDx+PSZP2K0cXuT4JzvWcYwliww==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1792076716; a=rsa-sha256;
+	cv=none;
+	b=JexLc8E+Sh4lxtRILA9yZ3Q4d+9LAR1ILfCCqeHuobTWY3ZtutuKcL7nqwmplWOJrLspfr
+	KcFe43TyKz3K9um9N4PXD5kB4fSgm46B1PIjWk2tlKKo8HseInjiiuVoGL65wjmCGhYoyg
+	uvzutLhlk+PMO2iB6cnVyhMxkgRnBJ0wi5B0JqQVITmm4a8+2IJE/YFqOTLRQvFSuJkamw
+	8FvOtvMJX42o2y+tZo3tv0/Jtx5gMjli0nIMWSDwubMO5MnPyvtlYJBY27DiGJtg+AByiw
+	OVH0dONli55YgYQ1fY3MJwg6nGdJFko9nii4AXFYGlkofhjFUo8UIua4rMtpAw==
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=mkl@pengutronix.de
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1792076716;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TYdla+PqI3wsjHkd5101uWBVNz379TLzIPl97+TUntY=;
+	b=X3UotEYCcgYDFMoGzJHklnyRW+SMXIBPsiVaB+T1Vhzqmp0H4a7h2IVoI+d0l/dWoQtDUV
+	W2zyLG3ItsgE1Y5xdJ7RSsJWbtVWUtx6oRJ5crNE4ngbx/0Vtcz5hK80P4QApdwsLr+xuY
+	gvZSDO4GGlyxVsTz9knVjv7aE9Z+riNVR99K+tZ9P1SIRKfBn+WNk0KSo0ZQGOQzCK+yqa
+	HZtLKjAucDIiK0Rl0JaA3nrAQHwowDwDoTJKq/ftTR8opivPf7hQHzVor6CTyFymLRm6Ex
+	hs0nyKyAnV/TUfv8pVvIQQjTS80uqL/jz+6SD3Qiw++h/QYcWhyC2XfuiItBtA==
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1xHN1A-0062cg-0Q;
+	Thu, 15 Oct 2026 17:05:16 +0200
+Received: from hardanger.blackshift.org (p4ffb23c7.dip0.t-ipconnect.de [79.251.35.199])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id D52DD5C51FE;
+	Thu, 15 Oct 2026 15:05:15 +0000 (UTC)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH net v3] can: flexcan: flexcan_get_berr_counter: don't
+ wakeup controller if interface is down
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
+Cc: netdev@vger.kernel.org, linux-can@vger.kernel.org, mkl@pengutronix.de, 
+ kernel@pengutronix.de, haibo.chen@oss.nxp.com, shawnguo@kernel.org, 
+ imx@lists.linux.dev
+In-Reply-To: <20260930062738.30145-1-chunyuzhiqiang@yinhe.ht>
+References: <20260930062738.30145-1-chunyuzhiqiang@yinhe.ht>
+Date: Thu, 15 Oct 2026 17:05:09 +0200
+Message-Id: <179207670996.973975.6070771111462330170.b4-review@b4>
+X-Mailer: b4 0.17-dev-6be7c
+X-Developer-Signature: v=1; a=openpgp-sha256; l=814; i=mkl@pengutronix.de;
+ h=from:subject:message-id; bh=yOUdyLoJbgngqAiK5WpuKQJyz6Ta5+CI0sQ7w8XL28g=;
+ b=owGbwMvMwCV2xirl17qZay8xnlZLYsi68HrF0hk3cyQF56pYJPHoiZ05o3h10xPtFp7ApNo5e
+ z/NMg3b01HKwiDGxSArpsiy9McJRYFAh9LelwmTYOawMoEMYeDiFICJCJxlZJgUdiHn87UE/ZOm
+ izbEMZwSL85Vuhm67E7HBNazN8OaH21lZDhaYv3r5Se/3xFH3F+4HAxT4Pbq0Z21XPTIFYmk9zP
+ WTmEBAA==
+X-Developer-Key: i=mkl@pengutronix.de; a=openpgp;
+ fpr=C1400BA0B3989E6FBC7D5B5C2B5EE211C58AEA54
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Low] dt-bindings: imx-rproc: strict regex rejects valid memory-region-na=
-mes
---
+> [ ... 25 lines skipped ... ]
+> diff --git a/drivers/net/can/flexcan/flexcan-core.c b/drivers/net/can/flexcan/flexcan-core.c
+> index 30ae7c344a05..5903f450d30c 100644
+> --- a/drivers/net/can/flexcan/flexcan-core.c
+> +++ b/drivers/net/can/flexcan/flexcan-core.c
+> @@ -765,6 +765,9 @@ static int flexcan_get_berr_counter(const struct net_device *dev,
+>  	const struct flexcan_priv *priv = netdev_priv(dev);
+>  	int err;
+>
+> +	if (!netif_running(dev))
+> +		return 0;
+> +
 
-commit 6408464abda5d8740cc2d4f521608bce19b964e6
-Author: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+What about fixing it on the CAN netlink level? As far as I can see,
+can_fill_info() is called with RTNL lock, so it should be fine to move
+the check for netif_running() there.
 
-dt-bindings: remoteproc: imx_rproc: document memory-region-names to avoid h=
-idden ABI
-   =20
-Document the optional memory-region-names property explicitly to identify t=
-he=20
-expected memory regions. This avoids relying on memory node names as a hidd=
-en=20
-DT ABI, which previously allowed incorrect names to silently pass validatio=
-n.
-   =20
-Link: https://lore.kernel.org/imx/a3602ef8-2b77-4cc3-adef-2c4cba08a5d9@nabl=
-adev.com/ [1]
-Link: https://lore.kernel.org/imx/alexXTYQHUs76J7v@SMW015318/T/#mb9dc709ff3=
-adc24d9db6d30c973f37b580f6f1f9 [2]
+>  	err = pm_runtime_resume_and_get(priv->dev);
+>  	if (err < 0)
+>  		return err;
 
-> diff --git a/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.y=
-aml b/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml
-> index c18f71b648890..f87036299a7b6 100644
-> --- a/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml
-> +++ b/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml
-> @@ -62,6 +62,15 @@ properties:
->      minItems: 1
->      maxItems: 32
-> =20
-> +  memory-region-names:
-> +    minItems: 1
-> +    maxItems: 32
-> +    items:
-> +      anyOf:
-> +        - const: rsc-table
-> +        - pattern: "^vdev[0-9]+(buffer|vring[0-9]+)$"
-> +        - pattern: "^m(4|7|33)-reserved(-[a-z0-9-]+)+$"
+regards,
+Marc
 
-[Severity: Low]
-Does this regular expression structurally exclude the valid base names
-themselves?
-
-Because of the + quantifier at the end of the pattern, it requires at least
-one suffix. If a device tree author attempts to add memory-region-names =3D
-"m7-reserved" to match an existing node label like m7_reserved (e.g., in
-imx95-19x19-evk.dts), dtbs_check will throw a validation error.
-
-Should the + be changed to * to allow "m4-reserved", "m7-reserved", and
-"m33-reserved" without requiring a suffix?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261015-memory-reg=
-ion-name-v5-0-abc358b39a96@nxp.com?part=3D1
+-- 
+Marc Kleine-Budde <mkl@pengutronix.de>
