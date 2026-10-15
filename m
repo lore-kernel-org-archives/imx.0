@@ -1,205 +1,204 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013044.outbound.protection.outlook.com [52.101.83.44])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C686350A18
-	for <imx@lists.linux.dev>; Thu, 15 Oct 2026 08:37:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.44
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792053438; cv=fail; b=fncZmm6uJ3UflRug3rKHst1eJGRx2CKEEDBBtocaoXpf8Tww1sXUsBoshjVedzVR5dEl8i8uekc/Rvw+si3acHLibtXL6d0UsdvPeZvmIWXAGggTwzMzkvO7aREKhoqHYeOOnJeqhXKSU0aYg+f4fyIa5zhvtgbgif3PUOtqfr4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792053438; c=relaxed/simple;
-	bh=nMEVS/tmDd2nfFYq7235NJA0OOl8SuAJqLZbtMH5fLA=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=Mtc+nIsjU413WAdXwTmwxbOeFSzWg9RV85eQFUGHd9lKBljGo/hVSUZchefvKQlkKe/pEk9eAcA1EOLRRPAnCRSAerV0EjBDdl8fo8jiGvOML7MCR64Qe2VeyiV1xLe4BE19Z62P8prQ6TYpIiW6lBC/1jBDrMgBEbWB7qKQ9rM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=ieFs4hi9; arc=fail smtp.client-ip=52.101.83.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FCBC39EF12;
+	Thu, 15 Oct 2026 08:44:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792053883; cv=none; b=cu8qsfLDERq3FadG3U4+FxNeVScvZXUgS9udDoQWwaRaRSujLH8wy7EsrlBESlqmKEvNom5m6AuOvoJZqT/DXUqArUcIuPsgL908gNY2mGqVqNhm42FlM8yMckrWr8dtF1XfhpH2CmsR1/5rmVgL/doaSIhGLlpMQOxOP9aJYuY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792053883; c=relaxed/simple;
+	bh=bZkLoYIQQjVUK4XHgnMXsLjSW9f51PKOjGdxmTBIdGc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BJ//20MvAxWFkRPpdwYe+3C/VU6TMRnr+LdW+HhvDyxmPXdEpBpEar13EygLzWwdiw924GMs3eWQrrFIQBNLsW6VOJVHAL+W3905nHDqfUxMiqznPP3tuehpfRV0QbuYU2s94sU8Gwa+PKn0UjaZhKKmDJb9SUHEMsy+K0XAYa0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QseqCGbK; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="ieFs4hi9"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CKesrXv05Qb+tHw+4HhWZl0jlbMNvd2W6XkbjdKO6PIL+AuaJxs+ZwXpkF3PDJcvzA0faB7O5sbNdcmtVtC0cElxZ0rBcTofK9WjnIVLNLCnnsPoOgAZDgq6SRiPWhZ3sJX53r1DZppmEZ/PX9Ny7FluMA1pwJPklrM0umlnumQ6tpqKK1vqVmP1EQGbT2e3pyJbpIWBufB5sMc1mQT6PueCfNhIAlpzwzqX93Bt9QfxmPOD9z9gKr3RudKp1GxW3llxzY5X3VDm6bKud93M+nUmwuarUzx7dgxgzncPgazxMrgAa9wTvGL/g1tHItZmfQ73wVgpNU/OQXYwVPCd+Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MYlZPvQuHvj65ToX2Gpf0xcDzUS1JOADQYvoxSVj/3E=;
- b=ZeqFr5UXzY31wHNhnDqaPazK1z5zCyuOcK5diqERbph3Wjg+BFYM6GzV33tkxcsKb3qi3L6mglzUr2yALjv3UGJRoJ/BkUUdNLEx1rGyMUGHMrIgYQaW1dkob+Lh3JrnEHBYhxbFwXjCWQGZpJaNqTIJlZIJQfZZToMJWFm/j9XXUS6sXhvt1Jo/nPNBWE0R0Ty+CeOmad7R1rQr6BS4KaIUQnclWG0TMVMdXt64hISwj88jbkqcF+qmO0xb1eU6tbZnJzUSJhozeXZXUbJibb3qcMS64ExZlUglZ+8QWKs4Xd6m65SjTFf/a+2u8M/aW9mp6/U77FfMTWT8mMe2fA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MYlZPvQuHvj65ToX2Gpf0xcDzUS1JOADQYvoxSVj/3E=;
- b=ieFs4hi926tTVwdaMHARE/LvkDSPJeC50tlTsEBdFGWeJANtukh89ES8LQui9y2yizwS6RqcO7StR0Rf7I49wv1ymXIZ58evoNXPRdEtQkW7G6FL81hFzNsrNCC+QrJgX3c4dt1NtGxiIts5rW2oQQ1qOUgAD8pZyptjA62vMzAnzWmWhj1MUwNzS8HOQMWBU0mHpHgekOnrDxf5lOACNzQ8meVQ7YFEuvDo3rqKfoFWwN/RItkNobO5HkHfBfSAiQ9iis2oubnqSY+JHSAyePAU8YB7FKxrmXeOuygp89kS/WI5C8ATxCUdAPky22/qyRIIIlh2jXCN6qh+VIlyFg==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PAXPR04MB9422.eurprd04.prod.outlook.com (2603:10a6:102:2b4::21)
- by WA4PR04MB308399.eurprd04.prod.outlook.com (2603:10a6:1d0:109::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.13; Thu, 15 Oct
- 2026 08:37:08 +0000
-Received: from PAXPR04MB9422.eurprd04.prod.outlook.com
- ([fe80::54e:28bf:aa85:d25d]) by PAXPR04MB9422.eurprd04.prod.outlook.com
- ([fe80::54e:28bf:aa85:d25d%3]) with mapi id 15.21.0522.012; Thu, 15 Oct 2026
- 08:37:08 +0000
-From: Xu Yang <xu.yang_2@oss.nxp.com>
-To: peter.chen@kernel.org,
-	gregkh@linuxfoundation.org
-Cc: linux-usb@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QseqCGbK"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1792053880; x=1823589880;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=bZkLoYIQQjVUK4XHgnMXsLjSW9f51PKOjGdxmTBIdGc=;
+  b=QseqCGbKZZpSazTWS/JX92E31oTTW/uaSRB/KgyYE++FKmVJqq/iZEHj
+   Qm3qIcOqlTUcFp2Ah6DaRWLiTjc+jKCzJumsns6CrUfSDogyn7RykuUFd
+   nh9UHzyWdlGmyf8x2GhAEzeELVKUXaS7zw0Zz6XSh0dr98Qh1BTJcea7t
+   TY8Ce5U8HEQqNFbmA4lthTX8jFczI/mSm1qjgykRSkINR9+jhnfCphOK1
+   5A6Jdw9ZX2YFaMs5mJ0jdWnrXP+Z0rcCFRp/IWrfBD1nnHSLtxGtrXYZO
+   9oxFj1m7PvB3v7/QRRjIIN6dqbltDlkQqetPR3jzwYDWmC5nenvm+Ta8Y
+   Q==;
+X-CSE-ConnectionGUID: sRd0U2aOQJmxrBtxxlUAIQ==
+X-CSE-MsgGUID: E3uEARJjT0+D3pkCiuApXA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11935"; a="848212"
+X-IronPort-AV: E=Sophos;i="6.27,159,1787036400"; 
+   d="scan'208";a="848212"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2026 01:44:40 -0700
+X-CSE-ConnectionGUID: wGs0T18cRx2rtVYfmexHUA==
+X-CSE-MsgGUID: +Cukhbh6TOyI157YdPCwvQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,159,1787036400"; 
+   d="scan'208";a="1576023"
+Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
+  by orviesa009.jf.intel.com with ESMTP; 15 Oct 2026 01:44:36 -0700
+Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1xHH4j-00000000G7W-2o18;
+	Thu, 15 Oct 2026 08:44:33 +0000
+Date: Thu, 15 Oct 2026 16:43:40 +0800
+From: kernel test robot <lkp@intel.com>
+To: Claudiu Manoil <claudiu.manoil@nxp.com>, netdev@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, s32@nxp.com,
 	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	jun.li@nxp.com,
-	guptarud@gmail.com,
-	regressions@leemhuis.info
-Subject: [PATCH] usb: chipidea: otg: fix fsm deadlock and B-device gadget registration
-Date: Thu, 15 Oct 2026 16:41:40 +0800
-Message-Id: <20261015084140.61544-1-xu.yang_2@oss.nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SG2PR04CA0216.apcprd04.prod.outlook.com
- (2603:1096:4:187::18) To PAXPR04MB9422.eurprd04.prod.outlook.com
- (2603:10a6:102:2b4::21)
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Wei Fang <wei.fang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@kernel.org>,
+	Russell King <linux@armlinux.org.uk>, imx@lists.linux.dev,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH net-next v2 1/5] net: enetc: Add pseudo-MAC support for
+ ENETCv4 Ports via a fixed-link node
+Message-ID: <202610151650.UHqL0Sb7-lkp@intel.com>
+References: <d7b51cb29758538a4c68a700dd8cd41b6e7e08b6.1791908694.git.claudiu.manoil@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9422:EE_|WA4PR04MB308399:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8a6e41a6-5fc9-4a05-9375-08df2a977fbe
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|19092799006|366016|1800799024|56012099006|5023799004|11063799006|261009223027099003|10067099003|18002099003|6133799003|3023799007;
-X-Microsoft-Antispam-Message-Info:
-	AVSBp0gPBTxYEnkSiFBfeRxN9BUYYv02nHwmOC4cjJCmlTSvQ08fws07WKFRf43uKRtCIDF/1rt9shL/+igA6lfr86R4b+OIfWpkb8FsMy2eq75bYNay0Qv1CKaLAQWkcuFTvC9eo+1E7pDAawhKFEIJrpksnaaCk8wWHGbnWz8y3TO9WVf+KB0IoNUlaIdwSr9NK4nZx+WR3hMTHLYQpkaLdjZBgMtYOwoYE4BvwTbJloRbLsKR4r6HslkDHt4JuxfcGatx1/CrVbp1GsI15jwHqStycZtPtYJvk6OGMY/jWeHhHx0DvgjBJ1KrfwnhaaSDkATnmPCOVFwPdJ0QeIJjtdb6T4Lk/oYuUjdBdooGy+X4+oyEU5diqfP7NJevbobeQR1ZwrRpG8qN6FyD8Hi1Qab92YVFadqzF2C51zBlS9fEyOD+9UqHQ7JtZGdge/9TQ1kKPbsEBXTfPLufCdA+iq25O7vEugUFhk9jBNMajPyONcXB4yKrQA5voHHR8wJboiKwuH03NCEygv2YWnkOqgCRXA98l7bI7LrUHDmyJAua2cKSz1JGl9Zfxip4+oz139v7hsHvi6wjSMHdnnh4w9YzsptCBlGaHFeMPySWcnUrWq9xntyWHNZWKPdj
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9422.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(19092799006)(366016)(1800799024)(56012099006)(5023799004)(11063799006)(261009223027099003)(10067099003)(18002099003)(6133799003)(3023799007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?t4f9X2Paef6Q269ihbWRP99hH3X16ZmxN9o+fNv11FIoD2V2D/uCYzeZ3hDU?=
- =?us-ascii?Q?U1VqBzo78achQLsmMDNbbZ/fsv6H99ytNl9ZZv7O+kbQZTpSwjcRt0PLFT+a?=
- =?us-ascii?Q?5NGWNO2IJxkXmVEmYLjpOURbG3fOiZUFlxUpG8fz7jZpXm0tWOC35YANSGMM?=
- =?us-ascii?Q?X1feq5tDcn2R95IyllXb1gbpgAoku9eAZdTLV+d0Yy6LUAikk/zVqfWJlQOJ?=
- =?us-ascii?Q?QSYv3MxWihQOneP6HQTba93WN5J3HAACUMr3iWEQlDx8AY+OHqhtd8gkSDMp?=
- =?us-ascii?Q?VOxwaOA8E2FeSd2RLcn+SCiDr07UCyhfkh5QpWVkiWMOSX7Feebt4Kd8HoRi?=
- =?us-ascii?Q?KqKSIZ0zGcLiqM947DNEx14CduywfusAlrbS2XZm36NVgAJ/MubMrU7qwxAt?=
- =?us-ascii?Q?++NFXacCz8K1IWm2O49BE3rN+ie05Rs5oTysljFYdgodOu4VXkzTG3jvcmTg?=
- =?us-ascii?Q?gCQdamEMYbQ+QoyY/9ad7CR6vtxif6uxNix+ZM9lSP5D5nESY0vDBRdh0SGV?=
- =?us-ascii?Q?E86GZBR4ubPx0dPeFdeFIBdjCIv1PFyfq2gV2KKtr+2M4cavoKzrHrmqnNH9?=
- =?us-ascii?Q?oq2WmDFZaFlVl4atl9NUv8zZopG7i6MO86VQlTKgFf4wJ+T7tPF7VjonXsUv?=
- =?us-ascii?Q?CMYUkW1Tp9gX4muwGzXI6p6BhEbtBk70mwkF+CWe/lqk0kE+P9/qnnJM4TMk?=
- =?us-ascii?Q?C0+MC7TCBhJaWbhGAIC/v2varOCxauzyNKx3JuoTukVmzJjYLNN9xSa7Lg8j?=
- =?us-ascii?Q?64Y5XFQHWvnpKgQgiLYs6nbGo3Gq12klfNMkcpY6Msz9fqgdr+B6CIMe+Fzn?=
- =?us-ascii?Q?3C7e/88ayRI6ujbqKDJmK+0ph5tBK1rkviCP53XaG6XAfLKOsMBrPMrl+fvk?=
- =?us-ascii?Q?TKuAYxyMpiUW/VV8K6+66JYZuwI+VaaF8GtODC/DI/uRC0nqyuazjW2wGV2f?=
- =?us-ascii?Q?u0DjG/nJXp3k2PhWCNlNO0Ht7hfZPcm1WW1E9JU/zlGX7OYq/pdVJbUSF4O6?=
- =?us-ascii?Q?pY12ilZiiHZ1ABonhY38+ksjOTuJaS78LgyH2k4VOZCuMZSvYTLkugKeE1Zk?=
- =?us-ascii?Q?oVOXdaSf5LKeKTtNEqxesM7k7JTy+wHGsk53AlevzpTpp1iPfDRAx0QIjtju?=
- =?us-ascii?Q?RVtzk8NAzOqajxozH4Cug5WDOwAyWWqKSCdWVladVu80y0oCb4Aw2UJJHW4+?=
- =?us-ascii?Q?oaYl1vz5Mt8yrt+HQ/9ca9g/LcdUTIR6jG7IhCF+Ol0DZ602S2QIgUbHGvbl?=
- =?us-ascii?Q?8sPrgjtgpvcIgaOyyt2uOboIPLs/yjNN4qqpqGoP4Ftyr0dDrxsfYrmPsbyz?=
- =?us-ascii?Q?kCXPULyWY+AvzbzxAsEVW8wpnkqBfFCpc5oFjw4v+8WdRZndD/J8oycpLSBI?=
- =?us-ascii?Q?Ydkc6goDKrLxq8b6N6UPtkyVlrC1kqtUDIz8jlIs4NR+A7PNRqx2A7b368Xo?=
- =?us-ascii?Q?KdExEOCQjRHdT7gwdT9DsWX2Tv24dnHNyihfbWG4s1I3mCznI8A/zPgjKJ30?=
- =?us-ascii?Q?20R5XgUsMlaC0BEm9mLJsx9CwcHDCFYrCwVSixy6ISoay1gYrV9pp6NJQX3/?=
- =?us-ascii?Q?2qmjwlvmGTW2gVA07C1gie/onLTKqy5PkaS+WdQYmN8HhZptHX02pUuFVEl/?=
- =?us-ascii?Q?6MwPh+vdOOjTNAFbNz3lxJqY9okM0UEdZwJTPMtGssGt6gH6i0RGin5xuC85?=
- =?us-ascii?Q?xVlxgYU2WYDLeVn38WBic92mUGxmVIAnZ3R+dJy+Ms7/ezUQSEbjatG8EyRz?=
- =?us-ascii?Q?84RQvZJ5j+RUq8hOM9z5f0qlzVM7eYPSdsQ8axEpOr5ZBi1um5fz?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8a6e41a6-5fc9-4a05-9375-08df2a977fbe
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9422.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2026 08:37:08.4738
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: K5hcQzNRohLJ2bE8aR8SGSUPEA51N+nDTtIdGIU1TbjRlWM3WHoQFHEdubKGDRX8FITJEwM39T2g2cIz+Fuu1+2R2QdbJXVYohFXHdwITZmzHfDTuKErnviRXIJeMSqQ
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: WA4PR04MB308399
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d7b51cb29758538a4c68a700dd8cd41b6e7e08b6.1791908694.git.claudiu.manoil@nxp.com>
 
-From: Xu Yang <xu.yang_2@nxp.com>
+Hi Claudiu,
 
-Commit dd0c03d68522 ("usb: chipidea: udc: support dynamic gadget
-add/remove") introduced two regressions on the OTG FSM path:
+kernel test robot noticed the following build errors:
 
-1. Self-deadlock on gadget->host role switch.
+[auto build test ERROR on net-next/main]
 
-   otg_statemachine() holds fsm.lock while calling otg_set_state()
-   -> otg_set_protocol() -> ci_otg_start_host(fsm, 1), which calls
-   ci_role_stop() to tear down the gadget role. Since rdrv->stop is
-   now udc_stop() (previously the lightweight udc_id_switch_for_host()),
-   this reaches:
+url:    https://github.com/intel-lab-lkp/linux/commits/Claudiu-Manoil/net-enetc-Add-pseudo-MAC-support-for-ENETCv4-Ports-via-a-fixed-link-node/20261013-201245
+base:   net-next/main
+patch link:    https://lore.kernel.org/r/d7b51cb29758538a4c68a700dd8cd41b6e7e08b6.1791908694.git.claudiu.manoil%40nxp.com
+patch subject: [PATCH net-next v2 1/5] net: enetc: Add pseudo-MAC support for ENETCv4 Ports via a fixed-link node
+config: x86_64-buildonly-randconfig-1004-20261015 (https://download.01.org/0day-ci/archive/20261015/202610151650.UHqL0Sb7-lkp@intel.com/config)
+compiler: clang version 22.1.8 (https://github.com/llvm/llvm-project ca7933e47d3a3451d81e72ac174dcb5aa28b59d1)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261015/202610151650.UHqL0Sb7-lkp@intel.com/reproduce)
 
-     ci_role_stop(ci)
-       -> udc_stop(ci)
-         -> usb_del_gadget_udc()
-           -> gadget_unbind_driver()
-             -> usb_gadget_udc_stop_locked()
-               -> ci_udc_stop()
-                 -> ci_udc_stop_for_otg_fsm()
-                   -> mutex_lock(&ci->fsm.lock)  <- deadlock
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202610151650.UHqL0Sb7-lkp@intel.com/
 
-   The same thread that already holds fsm.lock tries to acquire it
-   again. Use mutex_trylock() in ci_udc_stop_for_otg_fsm() instead:
-   when the lock is held by this thread, otg_statemachine() is
-   already driving the exact same transition and will leave the FSM
-   state consistent on its own (otg_set_protocol()/otg_set_state()
-   overwrite whatever ci_udc_stop_for_otg_fsm() would set), so it is
-   safe to skip the redundant correction rather than deadlock on it.
+All errors (new ones prefixed by >>):
 
-2. B-device gadget UDC never registered in FSM mode.
+>> drivers/net/ethernet/freescale/enetc/enetc4_pf.c:963:2: error: call to undeclared function 'of_changeset_revert'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+     963 |         of_changeset_revert(priv->ppm_ocs);
+         |         ^
+>> drivers/net/ethernet/freescale/enetc/enetc4_pf.c:964:2: error: call to undeclared function 'of_changeset_destroy'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+     964 |         of_changeset_destroy(priv->ppm_ocs);
+         |         ^
+>> drivers/net/ethernet/freescale/enetc/enetc4_pf.c:992:2: error: call to undeclared function 'of_changeset_init'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+     992 |         of_changeset_init(ocs);
+         |         ^
+>> drivers/net/ethernet/freescale/enetc/enetc4_pf.c:994:15: error: call to undeclared function 'of_changeset_create_node'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+     994 |         fixed_link = of_changeset_create_node(ocs, np, "fixed-link");
+         |                      ^
+>> drivers/net/ethernet/freescale/enetc/enetc4_pf.c:994:13: error: incompatible integer to pointer conversion assigning to 'struct device_node *' from 'int' [-Wint-conversion]
+     994 |         fixed_link = of_changeset_create_node(ocs, np, "fixed-link");
+         |                    ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>> drivers/net/ethernet/freescale/enetc/enetc4_pf.c:1000:8: error: call to undeclared function 'of_changeset_add_prop_u32'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+    1000 |         err = of_changeset_add_prop_u32(ocs, fixed_link, "speed", speed);
+         |               ^
+>> drivers/net/ethernet/freescale/enetc/enetc4_pf.c:1004:8: error: call to undeclared function 'of_changeset_add_prop_bool'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+    1004 |         err = of_changeset_add_prop_bool(ocs, fixed_link, "full-duplex");
+         |               ^
+>> drivers/net/ethernet/freescale/enetc/enetc4_pf.c:1008:8: error: call to undeclared function 'of_changeset_apply'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+    1008 |         err = of_changeset_apply(ocs);
+         |               ^
+   drivers/net/ethernet/freescale/enetc/enetc4_pf.c:1020:2: error: call to undeclared function 'of_changeset_destroy'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+    1020 |         of_changeset_destroy(ocs);
+         |         ^
+   9 errors generated.
 
-   Before dd0c03d68522, ci_hdrc_gadget_init() unconditionally called
-   udc_start(), which registers the gadget via usb_add_gadget_udc().
-   That commit moved udc_start()/udc_stop() to rdrv->start/stop and
-   removed the call from ci_hdrc_gadget_init(), relying on
-   ci_role_start() to invoke rdrv->start when a role becomes active.
 
-   However, ci_hdrc_otg_fsm_init() does not go through
-   ci_role_start() for the B-device (id=1) case, so the gadget is
-   never registered in FSM mode, and no gadget driver can ever bind
-   to start the state machine. Call ci_role_start(ci, CI_ROLE_GADGET)
-   there to register the gadget, same as the non-FSM mode path does.
+vim +/of_changeset_revert +963 drivers/net/ethernet/freescale/enetc/enetc4_pf.c
 
-Closes: https://lore.kernel.org/linux-usb/8e659c4f-723b-4241-9c2b-8ea42c6c3600@gmail.com
-Fixes: dd0c03d68522 ("usb: chipidea: udc: support dynamic gadget add/remove")
-Assisted-by: Claude:claude-sonnet-5
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
----
- drivers/usb/chipidea/otg_fsm.c | 2 ++
- drivers/usb/chipidea/udc.c     | 3 ++-
- 2 files changed, 4 insertions(+), 1 deletion(-)
+   957	
+   958	static void enetc4_put_ppm_fixed_link(struct enetc_ndev_priv *priv)
+   959	{
+   960		if (!priv->ppm_ocs)
+   961			return;
+   962	
+ > 963		of_changeset_revert(priv->ppm_ocs);
+ > 964		of_changeset_destroy(priv->ppm_ocs);
+   965		kfree(priv->ppm_ocs);
+   966		priv->ppm_ocs = NULL;
+   967	}
+   968	
+   969	/* Pseudo-MAC ports have no real PHY; the link is fixed, with the operating
+   970	 * speed set at probe time from PCR[PSPEED]. Describe this with a fixed-link
+   971	 * subnode synthesized at runtime onto the port's own OF node, so phylink
+   972	 * picks it up through dev_fwnode() exactly as if it came from static DT.
+   973	 */
+   974	static int enetc4_add_ppm_fixed_link(struct enetc_ndev_priv *priv)
+   975	{
+   976		struct device_node *np = dev_of_node(priv->dev);
+   977		struct device_node *fixed_link;
+   978		struct of_changeset *ocs;
+   979		int speed, err;
+   980	
+   981		if (!np)
+   982			return dev_err_probe(priv->dev, -ENODEV,
+   983					     "Missing of_node for Pseudo-MAC port\n");
+   984	
+   985		enetc4_get_pcr_speed(&priv->si->hw, &speed);
+   986		speed = enetc_phylink_match_pseudo_mac_speed(speed);
+   987	
+   988		ocs = kzalloc_obj(*ocs);
+   989		if (!ocs)
+   990			return -ENOMEM;
+   991	
+ > 992		of_changeset_init(ocs);
+   993	
+ > 994		fixed_link = of_changeset_create_node(ocs, np, "fixed-link");
+   995		if (!fixed_link) {
+   996			err = -ENOMEM;
+   997			goto err_destroy;
+   998		}
+   999	
+> 1000		err = of_changeset_add_prop_u32(ocs, fixed_link, "speed", speed);
+  1001		if (err)
+  1002			goto err_put_node;
+  1003	
+> 1004		err = of_changeset_add_prop_bool(ocs, fixed_link, "full-duplex");
+  1005		if (err)
+  1006			goto err_put_node;
+  1007	
+> 1008		err = of_changeset_apply(ocs);
+  1009		if (err)
+  1010			goto err_put_node;
+  1011	
+  1012		of_node_put(fixed_link);
+  1013		priv->ppm_ocs = ocs;
+  1014	
+  1015		return 0;
+  1016	
+  1017	err_put_node:
+  1018		of_node_put(fixed_link);
+  1019	err_destroy:
+  1020		of_changeset_destroy(ocs);
+  1021		kfree(ocs);
+  1022	
+  1023		return dev_err_probe(priv->dev, err,
+  1024				     "Failed to add fixed-link node\n");
+  1025	}
+  1026	
 
-diff --git a/drivers/usb/chipidea/otg_fsm.c b/drivers/usb/chipidea/otg_fsm.c
-index 642729893cc2..03bebee17eb1 100644
---- a/drivers/usb/chipidea/otg_fsm.c
-+++ b/drivers/usb/chipidea/otg_fsm.c
-@@ -840,6 +840,8 @@ int ci_hdrc_otg_fsm_init(struct ci_hdrc *ci)
- 			hw_read_otgsc(ci, OTGSC_BSV) ? 1 : 0;
- 		/* Enable BSV irq */
- 		hw_write_otgsc(ci, OTGSC_BSVIE, OTGSC_BSVIE);
-+
-+		return ci_role_start(ci, CI_ROLE_GADGET);
- 	}
- 
- 	return 0;
-diff --git a/drivers/usb/chipidea/udc.c b/drivers/usb/chipidea/udc.c
-index c29b2d0dcc7c..1e0d295f5431 100644
---- a/drivers/usb/chipidea/udc.c
-+++ b/drivers/usb/chipidea/udc.c
-@@ -2167,7 +2167,8 @@ static void ci_udc_stop_for_otg_fsm(struct ci_hdrc *ci)
- 	if (!ci_otg_is_fsm_mode(ci))
- 		return;
- 
--	mutex_lock(&ci->fsm.lock);
-+	if (!mutex_trylock(&ci->fsm.lock))
-+		return;
- 	if (ci->fsm.otg->state == OTG_STATE_A_PERIPHERAL) {
- 		ci->fsm.a_bidl_adis_tmout = 1;
- 		ci_hdrc_otg_fsm_start(ci);
--- 
-2.34.1
-
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
