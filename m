@@ -1,123 +1,145 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29C494D09F3;
-	Thu, 15 Oct 2026 11:12:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1A994D957C
+	for <imx@lists.linux.dev>; Thu, 15 Oct 2026 11:12:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792062753; cv=none; b=IqTPoZbpwfGdoCjiaXKUrjXJwJK0GYWFicUs7plDLUFxVXTQywduuu7f/rizTpX8Ljngz5gDiTkaiZ3xmbcVePjN5qJqMHpTURGKQKA8m2VCbYAHm82tcMlkWULIUwYTlpq/yC70TdzpORX/lsosMbV58f8RiiKAK/va+yRdmd4=
+	t=1792062768; cv=none; b=CvVTeVuFfhM0lTvmWsAwHpQvbr6dQc2Tx5HQ1p3bkIFvGw6u542pAbmcyzQQwRw4zuvTNcPwpv53IcInyXflUiIJtYKv6OlSfZXSugFEmvQBJ94UiugYJtGy7x+xo3V0thM9cEXwmrHcmQSyEkP6WQR5RUsGuGuFWdr+wHQUH+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792062753; c=relaxed/simple;
-	bh=bkweXtoihosFshd+ODeZ15r+eBZfG4aT59zz7MBbLuo=;
+	s=arc-20240116; t=1792062768; c=relaxed/simple;
+	bh=VREGc/jXj0Z0SXjsh8IXf33tikwFMJzZfA+YaVWVO10=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mlEjjGp6ZjUmKurL5QTi1zw4+0vnP86WOupPWupb77fBt2wFWe3Tm0XvseHwvTL5xKQQDOM3XtUkO2irLlLF5rX2HeMxifzDyuvYeF/1fbIfbUFhtQg7Nj9XsNL9flgs8IEOHwrV0GwGu9AAoKzkDwUPd7KsJZAmu5XaxAawFYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R+8xOXUk; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=Eu3KTi7OPRhAAqSqH1a2GDcX1NVbs0g6oQmMqvrSRV6qYE116youLHhIpLu13zcVEaBZpeX1yrj818QCgq2PTqCIEgAmsSU/N+UkOZ7SnCVhYqT9mb9ZddrptyT6bv4iJlN++sA4bc2hxKnte/pxFgNtI1KMRC/5bxfyRGPYLW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=grqw1sCv; arc=none smtp.client-ip=209.85.221.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R+8xOXUk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5727F1F000C4;
-	Thu, 15 Oct 2026 11:12:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792062751;
-	bh=Hd6BBnEO5pGpbCON7Q87RSeR9u1q3VXpiWY+WMKFASs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=R+8xOXUkDkZ9pKZHBmcNtj8NyuP6cR0oqQgoZ8UCc+tB3DzT4QCvEJXW8Nh+PAHLO
-	 l4qO7p4Clap8JJBD57iJA17dF9oaApVDpvp9NMyxi2p9zza3C5/jxCXVuqp97P3kH/
-	 6RncdVn38CsHW39zcgI8DIfqy4X+t2GhIU9JFMzzboPBxl+hGJOmX6ojQV+MHKJjzv
-	 keBaU7H/dW4cHXdRTPAOoj3PXUzd0obz4/xGRkI4yhpdkI4hjeNJmNTCIIZMIQGcGL
-	 wUvK5fhMpbxaZqaxQQpRrEEA+IDFwqvTiLrkNMorRjRdP64wUDyKUMoYHX3QYp6pVZ
-	 cc0SD3e32mliw==
-Date: Thu, 15 Oct 2026 12:12:17 +0100
-From: Mark Brown <broonie@kernel.org>
-To: phucduc.bui@gmail.com
-Cc: Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
-	Venkata Prasad Potturu <venkataprasad.potturu@amd.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-	povik+lin@cutebit.org, Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Andrei Simion <andrei.simion@microchip.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	David Rhodes <david.rhodes@cirrus.com>,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Shengjiu Wang <shengjiu.wang@gmail.com>,
-	Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>,
-	Nicolin Chen <nicoleotsuka@gmail.com>, Frank Li <Frank.Li@nxp.com>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="grqw1sCv"
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-48c45111bebso3249769f8f.0
+        for <imx@lists.linux.dev>; Thu, 15 Oct 2026 04:12:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792062765; x=1792667565; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=VUqBmWmM5axrFUhnR3iwkhZ6bc0BaajgOPvb6M4hJIo=;
+        b=grqw1sCvQB96NVj9CrjU05hBC+X2+LmRWO1Fw/0XmVuL3BNz/n8lcKOwMAkV/xQdhI
+         igA30WOkBxhEnQf3CEoEKnMAxnuRMh5M/FFmigVF82SJ0loL2NG7FJn5493szSDZukEX
+         XB+RvGB1odLJZ7I1fLDS8Nv8YVIO7mz17OgZjoM0zY86mL37V/NXwBccbRYvaGOIxcxj
+         O4fBOKT7mmNxjcahC7iMlldd/XxsXjZmfXStv5eyOcbh3r46WKHH2heDDCvcdfXbqFL9
+         NrTBFaukAlY7NDNpa7LikPM68dkhK8zg028bN7S3n0JMk6+xw2aaoei86o6DFl08tvsT
+         k2/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792062765; x=1792667565;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=VUqBmWmM5axrFUhnR3iwkhZ6bc0BaajgOPvb6M4hJIo=;
+        b=SVjGjrBTnwpsxn94xmu0vUuMO8XOvTRdLu3yxcZ8i9PG+tpJFdf4sOB3OwJCXsDN7D
+         aiRW9PL8yVZLgqALVwFmIo2SDo475XzSwM6D4crdQD9uAFDvM1FkrT4wVCTpythQyBVt
+         uPXx7RCutFd+nR4JykU2AEWP7dZk2WjvPd2gcX44H+edIU1CYgUwF+0qi8K8qQKQooI4
+         drCvMLo1vmswIn9qX39VUCOysxXtf8KWnY46VKvU/epWa6naLrIUQcf6wJtqVdBF3kgA
+         OrGZOucWhlV4zmDwzb9cTXXCzkSApdbzWhuRSbvGaagnadqDa2GNJ3+uwJ+kb2pThbzm
+         /vJg==
+X-Forwarded-Encrypted: i=1; AKwUvBwcmpR7ef3yyARtCfOVcmfojn4Glz6FblZwNecD7pt9HptLAIw1PP9CUUhoECX06lHDwac=@lists.linux.dev
+X-Gm-Message-State: AFq9FYKsyMWjdoMB876Nf3FjYYsR46R5+BFhxhg8M7odxFOhX9umtrs4
+	za26eWoP4KdBHiMioHADhRb7/iZ8xXgnpzv2jgqjjnvgGCkO881qjr3V
+X-Gm-Gg: AYBFou0VZhkzd8TdfhP6PI5rOqUQ/hmn/lc8KejB18CtE6PYzXyL+i0r6VqnSTN7xqL
+	EApSXZJWwiJisycj7J2vFbQKscXGs6lxJfkqBNUEMjZouBipUUoYZgjEpdIQyB9zlcQ7VzCnKFn
+	IosR50k+Gn1/pZQ01cIM09qiyvlxWHKwvkfURzDcYglj2qyXIcDmnyN+cZDGH90VqjrRvIcpnpD
+	qYhxsCfIz58YbaNJpeKSXM0r54hNn5OAacheUWWmJOmWgOslaMR0jYBTzq+AGHJb90kBB1uE50A
+	pFgSX9UcKEU6pL3kfLMgUJPWv5cys03/KlL+GmqwzrfoUFQTsTmJx9RpKpawMsNnzwCQo6v1L8h
+	LP9jRVqhBD5JlC7ZSa+YohegcPCqjKYDVwXY3AZVBMO+ePwM7pnBU87jsB6tR7QgQ148YfXU3KZ
+	A9O49d9bisY+xA58yDJC89y2PiQaiIYocOLjOpVKhzqoK6fqHGF4GgbMKQEYmNdfZdo8rlY3jxG
+	E4t8uO065GzbWfQhbLkbL6tSQTuynIMZO0+Aix6heQx7ldx+24/sSOt0USH2mWAmXWIXKdk090O
+	45o/cFgCn/H0BzEYE1JJIVuDSXPP
+X-Received: by 2002:a05:6000:987:b0:488:7787:469d with SMTP id ffacd0b85a97d-48df14ed887mr6757337f8f.25.1792062764555;
+        Thu, 15 Oct 2026 04:12:44 -0700 (PDT)
+Received: from Lord-Beerus.station ([93.66.71.207])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48de0bc50e0sm24262249f8f.49.2026.10.15.04.12.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Oct 2026 04:12:43 -0700 (PDT)
+Date: Thu, 15 Oct 2026 13:12:40 +0200
+From: Stefano Radaelli <stefano.radaelli21@gmail.com>
+To: Peng Fan <peng.fan@oss.nxp.com>
+Cc: Frank Li <Frank.Li@nxp.com>, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, pierluigi.p@variscite.com,
+	Stefano Radaelli <stefano.r@variscite.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Cezary Rojewski <cezary.rojewski@intel.com>,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Heiko Stuebner <heiko@sntech.de>, Kees Cook <kees@kernel.org>,
-	Syed Saba Kareem <syed.sabakareem@amd.com>,
-	wangdicheng <wangdicheng@kylinos.cn>,
-	Chris Bainbridge <chris.bainbridge@gmail.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Neo Chang <YLCHANG2@nuvoton.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
-	u.kleine-koenig@baylibre.com, Pengpeng Hou <pengpeng@iscas.ac.cn>,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Hemanth Selam <hemanth.selam@gmail.com>,
-	Md Shofiqul Islam <shofiqtest@gmail.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Zain Aboobacker <zainaboobacker33@gmail.com>,
-	Sang-Heon Jeon <ekffu200098@gmail.com>,
-	Bo Shen <voice.shen@atmel.com>, Vinod Koul <vkoul@kernel.org>,
-	linux-sound@vger.kernel.org, asahi@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, patches@opensource.cirrus.com,
-	linuxppc-dev@lists.ozlabs.org, imx@lists.linux.dev,
-	linux-rockchip@lists.infradead.org,
-	linux-renesas-soc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 00/25] ASoC: Fix constraint return value handling
-Message-ID: <ad722297-5ca5-42c5-a07e-59fa958387c1@sirena.org.uk>
-References: <20261015014324.5569-1-phucduc.bui@gmail.com>
+	Fabio Estevam <festevam@gmail.com>
+Subject: Re: [PATCH v1 1/1] arm64: dts: imx8mn-evk: Pass GPIO_OPEN_DRAIN flag
+ on i2c3 GPIOs
+Message-ID: <atC1KAbaRwnrn-mR@Lord-Beerus.station>
+References: <20261015081149.5919-1-stefano.r@variscite.com>
+ <atCy2Li2wrPHhW8K@shlinux89>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="syrl3Afg657kytt3"
-Content-Disposition: inline
-In-Reply-To: <20261015014324.5569-1-phucduc.bui@gmail.com>
-X-Cookie: Tax and title extra.
-
-
---syrl3Afg657kytt3
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <atCy2Li2wrPHhW8K@shlinux89>
 
-On Thu, Oct 15, 2026 at 08:42:59AM +0700, phucduc.bui@gmail.com wrote:
+On Thu, Oct 15, 2026 at 07:02:48PM +0800, Peng Fan wrote:
+> On Thu, Oct 15, 2026 at 10:11:49AM +0200, Stefano Radaelli wrote:
+> >From: Stefano Radaelli <stefano.r@variscite.com>
+> >
+> >scl-gpios and sda-gpios need GPIO_OPEN_DRAIN flag, otherwise the
+> >following run-time warning is seen:
+> >
+> >gpio-146 (scl): enforced open drain please flag it properly in DT/ACPI DSDT/board file
+> >
+> >Signed-off-by: Stefano Radaelli <stefano.r@variscite.com>
+> >---
+> > arch/arm64/boot/dts/freescale/imx8mn-evk.dtsi | 4 ++--
+> > 1 file changed, 2 insertions(+), 2 deletions(-)
+> >
+> >diff --git a/arch/arm64/boot/dts/freescale/imx8mn-evk.dtsi b/arch/arm64/boot/dts/freescale/imx8mn-evk.dtsi
+> >index 3e590afa4fab..036afa0f6990 100644
+> >--- a/arch/arm64/boot/dts/freescale/imx8mn-evk.dtsi
+> >+++ b/arch/arm64/boot/dts/freescale/imx8mn-evk.dtsi
+> >@@ -287,8 +287,8 @@ &i2c3 {
+> > 	pinctrl-names = "default", "gpio";
+> > 	pinctrl-0 = <&pinctrl_i2c3>;
+> > 	pinctrl-1 = <&pinctrl_i2c3_gpio>;
+> >-	scl-gpios = <&gpio5 18 GPIO_ACTIVE_HIGH>;
+> >-	sda-gpios = <&gpio5 19 GPIO_ACTIVE_HIGH>;
+> >+	scl-gpios = <&gpio5 18 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+> >+	sda-gpios = <&gpio5 19 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+> 
+> I think ODE should be configured for pinctrl_i2c3_gpio.
+> 
+> Regards
+> Peng
 
-> Changes in v2:=20
->  - Add Reviewed-by tags from Vijendar Mukunda and Chancel Liu.
->  - Remove redundant integer constraints already applied by=20
->    snd_dmaengine_pcm_open().
+Hi Peng,
 
-v1 was applied, please send incremental changes for the differences.
+I followed the same approach used in commit
+2b1d5d054d29e08926f05cfa30e34d149644585e, as well as in the other i.MX
+DTS files that use GPIO_OPEN_DRAIN for I2C bus recovery.
 
---syrl3Afg657kytt3
-Content-Type: application/pgp-signature; name="signature.asc"
+Even in imx8mn-evk.dtsi itself, I2C2 uses the same configuration,
+with GPIO_OPEN_DRAIN specified in the GPIO properties and without
+ODE enabled in the pinctrl.
 
------BEGIN PGP SIGNATURE-----
+Wouldn't introducing a different configuration for I2C3 create some
+inconsistency and potentially cause confusion?
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmrQtRAACgkQJNaLcl1U
-h9DzAQf/WcguhgqKmLmBlSGrfAmohZap9b+qyUgyk3gBcdL4pfDRN2N0m/jg80sq
-EGu7yBR6LzgAalcEkMLnjACfVsi4kZuopa6nijef9rrYX/cJcxUrOSjK3l2G+rD8
-U6h20fO6YVWgAkmtLtV9G7PU+gy+06ZO8snDL9dTODv9DYyWZvQ4mTgJvAK7rYQP
-mBKi2rhlpXe2rMyRIvXW4FQtX1kqOzt+gtSHjApzltjchxaDuM6/jThE4a8+o4Ms
-XpUeCo9/Bg4u29Zt4okIN1S1up/cOjyNcEQwgf+5Lf0qlZXbV4Dyk43TNms3vuED
-ZSE26kZ6DpaP/lgPoejNuYeJrPX9Pw==
-=HbjQ
------END PGP SIGNATURE-----
+If enabling ODE in the pinctrl is the preferred approach, wouldn't it
+make more sense to address this in a separate follow-up patch, updating
+the existing I2C recovery pinctrl configurations consistently across the
+affected DTS files?
 
---syrl3Afg657kytt3--
+What do you think?
+
+Best Regards,
+Stefano
