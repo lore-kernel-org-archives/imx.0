@@ -1,316 +1,171 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013044.outbound.protection.outlook.com [40.107.159.44])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010067.outbound.protection.outlook.com [52.101.69.67])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63EEF3D6493
-	for <imx@lists.linux.dev>; Thu, 15 Oct 2026 02:16:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CB2B1E0DE8;
+	Thu, 15 Oct 2026 02:50:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.67
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792030601; cv=fail; b=EwxkQxm8gWqoX9/963dd5Tc15I1pk9XRTPbEXTd9gali3fB3m1htL8hVrsMJn/uMVQEDDvnutJnei29cIfC0FMetq33xdavJw47YloRGSWdrjvOj8n9PV5MO153DTm0NJceIYgAt9wEdM0rVrHPv8/Iw6nTXQUzFA8xi7AtLaoA=
+	t=1792032656; cv=fail; b=VVwGgVMa2MAsptOt2yojwTG6H0sCoO5dKt+sVRWDjk5GAawA5F+Aglq4fZFHPFMuN+MKSr7szdLNCzuWfwEFxIqVGUvPd/1jUQOskKyEIvBRRqI05pUmp6eDstaATgrqp650vKXEgMHPXxcgJ+BvmJzGe2zcZ1Z+gaTOb0Z11tE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792030601; c=relaxed/simple;
-	bh=AicSALScglMVVJJ3fkzL3hqM2Bhb/HnDDzhhfKRIHkY=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=QeSMBKBFJbUt04cVR+CF+FVvVVnFyAHjY7ZPE/7NOq3B+9/bIc5MKCy7dARSq36s2sZpW8i6VBxbyt8XbE5466Qc9x+Ad42e/ghUKY1YJftOWayBp9t93c3bkQzgIlyTKLQ3tfAzKkrtYBV39etDFcJCdYuU0am2lGAiNsvYhw8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=HIOmvo3n; arc=fail smtp.client-ip=40.107.159.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	s=arc-20240116; t=1792032656; c=relaxed/simple;
+	bh=Jrlwbn/WJj/bjBtURyT12iGD1CJcPGPbQB9rTMv9Iw8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=fB2Zqx86EnGjbOMkCjw+C05+DBqHcOj+2RNqrKOB/2XVDMSl/MuXKQyyh43I3JuPEfdmKCg/fOn5EVSAwiDZt/fI//QrnBWthNKwnBw4AXx4k3yS2SBqdwxsziyZ/K7cMKV7t7uuc9e917inXUbkWsL/n+1By/R/3z4MLMr2baE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=AZH5MTvD; arc=fail smtp.client-ip=52.101.69.67
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="HIOmvo3n"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="AZH5MTvD"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=upAPQiPkpI5MGIXZ6c9rHjL12y8eYp+pegw4pLMGtKaHDTlF24OwbMoC8YeGIbeZzimxuzubBsHqhyTe2HJHfg+v2jbw7/bcycKLxISxJ/j36fwntFg4YSOuxMR70CoZdkH9Z08XHJ+SHnSXmkm6xAhV6yo6+wqxqO8bpbpgfDKjAps8ZqbAPHYaYpVVtxxYZIZi8y00u9fQlqqQs56OCkRnd+AOglYqHw99QtaEaJH+T8u9GCvvYP3t4NVQFcEOIT9GSWoStDD6qDhGem8bIowC3chqnQ8V0GsUkxbcJQiUihoeinXta2WZZGpO0IPxM4EbYQ2X/ZgIL5diJT3qtw==
+ b=rtrO4hWACq6t1SFGl+z3lpXZN0vDfJSttWm/bCZcI23pmm4fTYaNZDJpHoIljKghI5QK20HNzyWvuByfju+v4Nts8cX8n2oN2u5DPOfXar2CBNWPWfte+ErRFJOFWZ34LeipUuQWCLjzM8LxyxdTxUigHdtWYihaw6qvU6iRfuFhqiUn9p8F4RTouU61Vg1KZeFsYuDKuIEQwAsuuD3ntuOUjPfdG9lK+5FuH3qB6JOzWaLkoQTmQo61nciQiib+Nav3wq3QYEKkT0oGSiQ2TRJmMXtWu/n/XUuLwXsP42XngmsWWd2mAKsmQzMzVbFwz1z0+XrTbsj95Mb/R29KZA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=q9gW6wwryeuZ6FJWimskwKiUHTO1ilUjjC63eeivGWg=;
- b=AvGx2+ckkUCSXf8PnNSdMYfKMr/XzJG1MMvorMyw18G93qil7o3qckiCiWZw8iTGSyfpxVOL7B6Yf+plYcKHG8QHM3CMuZD4cwOZcim0t/8ilHVcIBFUtKiGPEWYhm7YZeTg/3/tvmus+iVSZZ4T4gvOarfEYqkGV9FshuZ+vw5z4r5vAWFiSlMKfGtLsblxewqNrEavPq+PgzY53TdtbRQz7353aI8ktcqIsu4brRE6KeYHn3kA9eKSHL+ncJ+Z9s+0fY5049YL64IhkCpucukPDcDkMQ0d0qjNZ+cpy2z3DBa0laRM/QLuWujyCGxWS67ts3PCA2svlecvF78Vsw==
+ bh=48fSqzBh6k8SdUvaZJRDMQ5j7EeYs6MxfBoN7Ej7QaI=;
+ b=g6nNaKrG7r6HebSDQp1Hz9JYmYm1t2SLXUScll0/O8knqWm3hHg9Ye1Vcl9ePYxu+YyuRWBeE/lDrz7q+Yz3ZUXYZAoLZ85hsBAU5cyiOBd1CugWR/hTjZ1455SclvODmhAsmEfGgOVLBRu5JW+aMh7Nvfv1xNnyZrKkjf12V65QvMBumo7Ozp8aBS3cCDaMHFiA04ydMgnI4ekzKBTD5qKqHwS36WzBUHvf3HJx5uqd0vKrGi1cVQJreBnzUg5H2liSyAQjJrDBWAzUFqi4itYpGCk7hEfhrH6Lj4F52a5xEknqMO89PeLlapNj26v3trI/QZvmXr3g4wjSwUGPsg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=q9gW6wwryeuZ6FJWimskwKiUHTO1ilUjjC63eeivGWg=;
- b=HIOmvo3nWlcQLacpbuPrj/8X/F2MxMFd0Z1BmrJBbMJg7OowdpBFipecguHdwD0pvbfexCYBCU5BJ6NRj+qs0XoPfLWOs8osHVxkL39dIOGJkVYtPBOcyuLsLV9IkGJ4xAoKx1hCRHkLtXz4jxzg4Y1mTTY4WJvZ62BKBwhFcWKJvnNh8eEPizOpx3lMIz9H4OyHaucEfhK2e1F0A6WqFnRi9hPXhfDjaj9r5vBj2axhvtKnZwHLkoJvT+gkS7pdTlECl49o3Wq8PtQWA+Dn1VuD953WI15u6MU4I/xrt3NqQjpn7dYaNHULzQgzeVCGWUVxz8B/zi1eOWbuZiGUcA==
-Received: from AS4PR04MB9338.eurprd04.prod.outlook.com (2603:10a6:20b:4e6::17)
- by GV4PR04MB501844.eurprd04.prod.outlook.com (2603:10a6:150:411::8) with
+ bh=48fSqzBh6k8SdUvaZJRDMQ5j7EeYs6MxfBoN7Ej7QaI=;
+ b=AZH5MTvDe6zVpmROgWS9ceE1mTA1MWNTDvBSC9viq206rCoghAHtU3LY5yO9ers9TUsC+c1q/FWsW/JmVvO8Jy59PAZWUWubLywgqA/PGCwz5XcKqjFrkaoU6o3eHFZUV1CXYBut852usib+TvO5RVIOw2wdGqDwTvXKNRfDdZ6v9jVFvbJc/DlN2NpfTngHkxXZVRnai5gHtunCLzFFGnOdz6VXLqw2fO1oayUyyPNQHqHK2Zp5cyY1C+Cmn69ybhUo6QIp08bwen7VqaANvctenXgGiT7HOysgYIcpqKTtPvsdVpFVebJZGGILto744JKMnXkFQNxZxLUaBXn2Dw==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from AM8PR04MB7874.eurprd04.prod.outlook.com (2603:10a6:20b:24d::9)
+ by PAXPR04MB9007.eurprd04.prod.outlook.com (2603:10a6:102:20f::12) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.13; Thu, 15 Oct
- 2026 02:16:35 +0000
-Received: from AS4PR04MB9338.eurprd04.prod.outlook.com
- ([fe80::7c4c:9c56:8552:f680]) by AS4PR04MB9338.eurprd04.prod.outlook.com
- ([fe80::7c4c:9c56:8552:f680%6]) with mapi id 15.21.0522.012; Thu, 15 Oct 2026
- 02:16:35 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: Claudiu Manoil <claudiu.manoil@nxp.com>
-CC: dl-S32 <S32@nxp.com>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Clark Wang <xiaoning.wang@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob
- Herring <robh@kernel.org>, Saravana Kannan <saravanak@kernel.org>, Russell
- King <linux@armlinux.org.uk>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: RE: [PATCH net-next v2 1/5] net: enetc: Add pseudo-MAC support for
- ENETCv4 Ports via a fixed-link node
-Thread-Topic: [PATCH net-next v2 1/5] net: enetc: Add pseudo-MAC support for
- ENETCv4 Ports via a fixed-link node
-Thread-Index: AQHdWzYWcGWiu6GnSkuraTQS0Cw4c7b91uag
-Date: Thu, 15 Oct 2026 02:16:35 +0000
-Message-ID:
- <AS4PR04MB933876A424328F6A6FCFD29C889C2@AS4PR04MB9338.eurprd04.prod.outlook.com>
-References: <cover.1791908694.git.claudiu.manoil@nxp.com>
- <d7b51cb29758538a4c68a700dd8cd41b6e7e08b6.1791908694.git.claudiu.manoil@nxp.com>
-In-Reply-To:
- <d7b51cb29758538a4c68a700dd8cd41b6e7e08b6.1791908694.git.claudiu.manoil@nxp.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AS4PR04MB9338:EE_|GV4PR04MB501844:EE_
-x-ms-office365-filtering-correlation-id: cc1d2dec-85cd-424d-9e68-08df2a625683
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|1800799024|23010399003|376014|7416014|19092799006|38070700021|56012099006|5023799004|11063799006|4143699003|261009223027099003|18002099003|10067099003|22082099003|6133799003|3023799007;
-x-microsoft-antispam-message-info:
- AmvesX40FKgQLxSMekA31Lk2JMiL2xARqSwn0ZpUS7xxK2Q+44lV/oJJLbq6iALU/XxSlN+5rwXUC2mCWY3cGnsM83yZMaxaCZYDKWS9TGXwSlohOItIy98Kj4xv53RwH3hlY0w58J6rFBF2Jn95sCqKUlQmB3hODp9NK9gSkXeRn++TTGvnhHrr0qazJlMbCsXyDRWRKikJww/LW/AU1AdsdenAbhmAZd91jMIUEFzfwtQwgY5aXQ9vsK94EDHjH1KhcUAs6Tr6U0TwZDXnz0TC82bLLvi5TT4S/49pUpE/7CHWFkUpoW9pmNkIlseQAY508wC53LkBQK2Z+YtBv55Lp3lEbqaNsyWLubC6vXEBxLxOP0wDxvqmpklqf4CVzudZih0lrwMZiX02WoVVj06iOqrs9vkkelITnLX7WjiTl2ok3S+mP4mKoeIaf/zXrRGLsHNMvfD0zPDqy2knrBIQnMrJCP/crowc5seet1ad2HaQQ62Wd8UNvA2AfTfVDR18gpDUAIqz+C0SF2Og2amm3TRt8W/KXfXU8xLbINO7s8kjhhMws6yfQJzNzSRzUx1LhatHuuGnaBbE0pg1OBxFH4NbmvqLuz37MghZCE0OBfT/q86EkWIo0hqFog+rWb987CSFDIzrEKEG+J9+iqYAYGDHNcMcSuvJgzbbgMYIogdqZT1BZOWe19ewkgcIrXzX/WpiIxuvQ/l6QzyAbBxe6OU/NIDYDFUUwbVFdts=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9338.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(376014)(7416014)(19092799006)(38070700021)(56012099006)(5023799004)(11063799006)(4143699003)(261009223027099003)(18002099003)(10067099003)(22082099003)(6133799003)(3023799007);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?Ce03STH+wInOTFdcslqsqt1lJ7HjLGoukGzg2b97yqgw7V1RiR2gILdPMIPH?=
- =?us-ascii?Q?fLyJtIa/ozE1V9y1vDyleXnn5SXcYYwT2kS3aGXKYFbL0n2KOC3jJK+gOYVG?=
- =?us-ascii?Q?E9oqnLqfNWcvWSUB6oWAByuV8F3JhAtiizL5o3l0wRWXS9D0XBiVn9/jNGlp?=
- =?us-ascii?Q?2SIHtF/G3ZHswg5HlRv7pPT3ktktJ8Duuz+Fn2BPVPm9dKh21RgUDtJzY4yL?=
- =?us-ascii?Q?n4glbwk1DWGRpFhxnnPC8bmUP2usxSNe/28S+ChKWNShqFfSYR4ukFO+itys?=
- =?us-ascii?Q?S/OMNbksjwOwkAFByi0Ck4DPZ2gWYX8kBQRTOVkiv8sNmeXZM/BevDxexypF?=
- =?us-ascii?Q?Fy2kJnGmk3lek5wNShTLYEIfJfCGctFybR/itu7efHP74mDpoH54TlGdJL5Z?=
- =?us-ascii?Q?ViIlAIqTzY2kAolIDXRiNfcDGliHxP2pqq6NKxr38MJk+a452AFmLZsvGN9p?=
- =?us-ascii?Q?3Hztozfpx3VMx5qophRHRrC6uATzViWeXNA/DOGOShOk4/6mFkk5YDUXuRI1?=
- =?us-ascii?Q?WVBZKq8Wq6uw5ttGLsOIs4zlBuC/7XgO9PAVbrKxL+DhBxGcFGcrIzDtnUqv?=
- =?us-ascii?Q?zuDKe2utT0y8GGUsRmWSxxAGqpZ/fMB1iRyS/mGnA28+TivjFy2n+TXHtZgQ?=
- =?us-ascii?Q?/bp7yXUOcbAcbzkepjVkg1Kb5KryduyRiOvsAj+rfu8om5uyWekGmKUYtxgc?=
- =?us-ascii?Q?rh8zGc6OQ9tbtIS9W9qT7awqNhNdo8bGz0GHyJfUPtSyqblhJNnsRR7jFAyB?=
- =?us-ascii?Q?KKhQb7ER9yjDvwyb29k75vN6ms9Dw/dxKKOsSP/6oILpdngyY8r5cOKavlhb?=
- =?us-ascii?Q?q23trwv+umnuFjnQ4xt/Ziqr0Ru52OrtXLadfvPDGjCgG+kIcAju18wr2xEO?=
- =?us-ascii?Q?MIFtipKmoGNw63eeLgvMQ9Bw2ctPR3b5rhpDS7Hb6KywgU43/5XsrtDCgRN5?=
- =?us-ascii?Q?PxeMdY14P4/7otUaaukZUOeisAtrPtxyGY/wEGetcp4zwG8n4oApFt5ZSpK4?=
- =?us-ascii?Q?lvDqumgk7oNzkfDSZrqSAUihO7OVabYCxouykJviJABT9kFr8YUBmJPPdA4U?=
- =?us-ascii?Q?4pCJBdZL+AkI3GcWvqKrQUV11GiCnlaKtH74FCvHsEceLVhCCuGHpp7Tzf8b?=
- =?us-ascii?Q?segQixJ3YSYrRaYW88UDYusYRP9NmBv72sJfJRk6DBk3Ew6GaW/Fx7ZQmest?=
- =?us-ascii?Q?zuqcg832SxyYYyAahUgak8tKWkxerdNNjIt7UNcdsYWKPSonr1L5jnjazGor?=
- =?us-ascii?Q?ZvDAkveKEcHvFAqy8fWw/VJO7JJk5Ry+MG5xsT1QtwMb+gkLrSGsFpf2Lg0t?=
- =?us-ascii?Q?pLE5a1CPdvi8KzoCbFwhXUnIVON9yLKz0ymdHPkl1jERq5QykczsqO9VRnM/?=
- =?us-ascii?Q?/7qNsHQdlzdR/2PjOsvaQEA9ltXWMqzrQ2r/29DV78zWusEnLCRDb8ZFuDQf?=
- =?us-ascii?Q?4nWmZs+YsajUNBFFlJGm7td8UEfa4jLZc64CrSgLDK3usExaXcii/aoDBo0u?=
- =?us-ascii?Q?dMfP5UxR370/SNx4tRdtk9Mh/SIk8Sn9czXYXj+nfIaqzDI2zmtSpjAhuklz?=
- =?us-ascii?Q?EGj3HTLRs8VOJ3dmVdA6zCBN554jhayxahgzbw9U0eajs2av+KpgB1q6pZ3U?=
- =?us-ascii?Q?8y4kcNzqenktd5Cl6mHEwin5Zkf+5ltv4tA57R+G/fn1TrTnCl+ABpIIto7J?=
- =?us-ascii?Q?IKtfExKgh7XxnfWIw+u78ebqWQofQAfPynmKsakjua+CBYuJ?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ 2026 02:50:51 +0000
+Received: from AM8PR04MB7874.eurprd04.prod.outlook.com
+ ([fe80::ac38:1699:6f18:c5d9]) by AM8PR04MB7874.eurprd04.prod.outlook.com
+ ([fe80::ac38:1699:6f18:c5d9%6]) with mapi id 15.21.0522.013; Thu, 15 Oct 2026
+ 02:50:51 +0000
+Date: Thu, 15 Oct 2026 10:55:24 +0800
+From: Peng Fan <peng.fan@oss.nxp.com>
+To: Frank.Li@oss.nxp.com
+Cc: Dan Williams <djbw@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Vinod Koul <vkoul@kernel.org>, Frank Li <Frank.Li@kernel.org>,
+	Jon Mason <jdmason@kudzu.us>, Dave Jiang <dave.jiang@intel.com>,
+	Allen Hubbe <allenbh@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Eric Biggers <ebiggers@kernel.org>,
+	"open list:CRYPTO API" <linux-crypto@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>,
+	"open list:DMA GENERIC OFFLOAD ENGINE SUBSYSTEM" <dmaengine@vger.kernel.org>,
+	"open list:NTB DRIVER CORE" <ntb@lists.linux.dev>,
+	imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH v3 1/2] dmaengine: change dmaengine_get_unmap_data()
+ first arg to dma_chan
+Message-ID: <atBAnIzA3X6PgB+6@shlinux89>
+References: <20261014190337.1718622-1-Frank.Li@oss.nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261014190337.1718622-1-Frank.Li@oss.nxp.com>
+X-ClientProxiedBy: MA5P287CA0108.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:1b5::16) To DBBPR04MB7883.eurprd04.prod.outlook.com
+ (2603:10a6:10:1e9::23)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM8PR04MB7874:EE_|PAXPR04MB9007:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2bf76b5c-d46c-4439-9a03-08df2a671dd4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|23010399003|376014|19092799006|7416014|11063799006|56012099006|10067099003|261009223027099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	bTgjaLCG+PHyMRCJpWxYT6uUmN9vud1dK0Sks8zmFlEbVYOpAWAZMCSVWvuGT4U7pHHeWKrAcJOTgOOXiCKi/ZNWZ+26ZzeyKbhXYwvJa/fJ40k5Yc9FSPYOPx8mfpHHkTsND2cFqwhhRZdfEJaEBGM3ONE1MpI1CCw/lBi76SYXd0F7no0qEy1+0klJAt90mFyeB5zScgI/yMGxgheDX/RecGZdk6n2R0bPZI3lvE5XEoAHAeUe3smxQ2y6N1P9OGqbrMWvJtK2DMNkQkg8jq3yzF1ZOzzyZwLLIRaDuuuXO/lcWc3Rd7AGOwN+ELTgWzzIIr5yX8nI+7LhYaG/zA+erejXVzufkaALPKzGTMdIoXEcbKQ6HNNBBCX3WVbKiFxXzNnbIwetKiTbOy6TutIsvLdXGh5b6bovBdTwsjQSTmClkGP12RzUrBcHgfvC0IOC9VssGYRyIvi6gglub8YP/M1p4B8il1ObS1FmLmJli55Ff846JHKbdPA2aAUw9OsCM4mr1mDg+iHS1VB8xd48Y9fDFR4MdFh4xV2T0TyaE1FpEVJWXoNtbYu6VaDQIZID51gdvQJW/stYcHbl4skq+8ocw3zMNvbNCgSRfeKmpaP9j/9L8PUpMZA3Jm2I
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7874.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(376014)(19092799006)(7416014)(11063799006)(56012099006)(10067099003)(261009223027099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?GFeiX1wx3IsfZOTdpabcFwOBY7jeo/p8f3NV46yTpXEc5fGPOYjwGfhwb+Ti?=
+ =?us-ascii?Q?M+AdhA8XWVA6OqoW792ni7dDxFbU4JiRvchlm0mV0TEJWJiy2xsnKEptJjLv?=
+ =?us-ascii?Q?MhmjatyOhbypgwZLTPEZsLq6WzGiDbz7iAPMmfoqBQj0yrKKd9Lildd1wncm?=
+ =?us-ascii?Q?xg/75qSwvCoRoAA0tlSEdYvaZ7NiIaVEt7P4LVGs2TYmJJbhCqQI3ttfx9hH?=
+ =?us-ascii?Q?O93Ft51g7gG9yk+O5ZxZtalg7Y52+7WC6XRnF07Jd9hVQ4E0HZ7iQ9etezT2?=
+ =?us-ascii?Q?IxUdJ5bOUdxmenMherLcQzN2A53BSUOaNlq9VlIfJNRAV2Js9kfMDGNXGi1c?=
+ =?us-ascii?Q?kzMBb/EJPDP4KOv74dr+IK9FJ9aOoN9nB+jdAHpdzqD6eB/P4XWMlIQs0o9L?=
+ =?us-ascii?Q?8EOA4HMBpinrX3reIHodaBDXiclDTuQAK6MwHr3a0ggkyTjrd1RbKEUKUhRj?=
+ =?us-ascii?Q?CxSYX4s1UiXM4h+LCw1HSGBcVsZPlv/Kk4C/rSpdseq6AFNq1VaqYPdN6fjy?=
+ =?us-ascii?Q?j+D5RPHxmNTo03QQlR1UK1WRxzEwuy9lx0Lb3yp5WBRDhdNeWhsCvHDygYO6?=
+ =?us-ascii?Q?ZJcZVtV3B8mQY+IFOdfLBTcOUxZQ4kPofK1/yrNS/8roTXPUPWEOeOKG1RXJ?=
+ =?us-ascii?Q?l0jYdAuXzXdCDuQLRoBbxc3fTIXCF3Nf1KpwMnNW0aHao2RMob0Fa1zdfIdj?=
+ =?us-ascii?Q?RR5n/6QJvyES6gHB4NE9/VNVeDAwqSrInqt3wAOX92X8rrzprx5EIHclXeZH?=
+ =?us-ascii?Q?N1Kz482dGDmE2MV6j9/Hr3FaiWdh31rhhvDrVZmzTarbzT+2TNFRcDT9YwRp?=
+ =?us-ascii?Q?a3Rmq+qEtdH+ZflFUpszp+htWNAXjgeP5A+tze0TToAYahKnM1VP2DbVnTex?=
+ =?us-ascii?Q?T6OrOhRhkdPJD1uOSqJiO9Ea9GTIffbFb4v24FKk4JnqSfIcDNVdHIAsPuvr?=
+ =?us-ascii?Q?RG5J45CU8+FlAIdKRLBspaqPrCk1ARieeR0WtU6r6UqNvuqLR+aDiSqQaFpb?=
+ =?us-ascii?Q?fa72rPgENQPU9yJq/bYgN1NRaMvQ7XpzYqngrngu+HKIfpO8TBWkEY2RHkeU?=
+ =?us-ascii?Q?igeZgYF6i/9t1ytWuUmG+7firaX2poi06L/w+1kLmjjUxVjNae28LnYpJp0i?=
+ =?us-ascii?Q?mlnHdOSRbEatduybT1HVpAzuObg5f5SIBkSiMldFUJY2qS3lbOe/t3L2F7Sd?=
+ =?us-ascii?Q?AhdkwwKagPpgASIub9Pn5XVTQDKEcNaeUGjDEe8LkecUjUSl/5spDMMHTZUb?=
+ =?us-ascii?Q?YF3+1lvz16HIQR4mTScofPWXJmxmevmorZaHutEWfV2vh6wRtezWUfWD5OHA?=
+ =?us-ascii?Q?jL+PtBZhatMQayAuRYyotpi2nbiOsK3PzchXamXEBOvJr69yKJFoSJfpM8Nt?=
+ =?us-ascii?Q?WbfIJO7VWTUkQ+y8lxdQkINYEls5GJMWsVY9PYzBtVC53+r8jiU8K+iO6q7M?=
+ =?us-ascii?Q?fnZueZbJLJT9XyhyX/6NsE413NiAX6RDIh21WN4BROjO6siN9exFMTvbdVXm?=
+ =?us-ascii?Q?/baKFLz5eJ6SabuCbriIU4WCGZxFewdGnjgs5CbLgtBhZbhIejmLSFm3RcVU?=
+ =?us-ascii?Q?9jQ8s1kgkXXTofqfgROuXoMCFiYWiDlkxaTttULPKL6/2oc2mAtrHbbwbKkr?=
+ =?us-ascii?Q?IvjGzYaQDXGzRyczGAxvQEE2G59Sr3IjxXESLo/lWvN4+L4bWJehsfSxLVRG?=
+ =?us-ascii?Q?5bpU2ruV2gtXxJocCzewC28A612ONkN3gA2AFSoWmRjJANDIf1xvxWroMCyp?=
+ =?us-ascii?Q?ddyogrXZ3HCMfmcVJMrIbVWXLABUgVU9SG7vOw6y5C9i/PEflBws?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2bf76b5c-d46c-4439-9a03-08df2a671dd4
+X-MS-Exchange-CrossTenant-AuthSource: DBBPR04MB7883.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AS4PR04MB9338.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cc1d2dec-85cd-424d-9e68-08df2a625683
-X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Oct 2026 02:16:35.6240
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2026 02:50:51.0963
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: jLHQwyjWJfG9wzXYtYqI5N6WBDFoRU13o8J7Tyb4wOSjlGy/OHFNTC4tP72NLG0h0PE2W6+CznB4Ka9GpAi/xQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV4PR04MB501844
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: yulFTnXWPohs8xlnmdPrEuS+lwpw2H9BrscHvdokwuxHPlsd1yPm1+ST8PMP+SbKPBwDOkLp6Ti934nforsLjpUfiHgufEuwuSKmzqXSbLz6cL2KrrSgpG0J8IqqVrvM
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB9007
 
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc.h
-> b/drivers/net/ethernet/freescale/enetc/enetc.h
-> index d9e91832a9c1..ed5402f1b73c 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc.h
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc.h
-> @@ -500,6 +500,7 @@ struct enetc_ndev_priv {
->=20
->  	struct clk *ref_clk; /* RGMII/RMII reference clock */
->  	u64 sysclk_freq; /* NETC system clock frequency */
-> +	struct of_changeset *ppm_ocs; /* pseudo-MAC fixed-link changeset */
+Hi Frank,
 
-struct enetc_ndev_priv is shared by both PF and VF, but ppm_ocs is only
-used by PF. Would it be better to move it to struct enetc_pf?
+Seems Patch 2/2 is not sent out?
 
->  };
->=20
->  #define ENETC_CBD(R, i)	(&(((struct enetc_cbd *)((R).bd_base))[i]))
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-> b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-> index 71c971618388..70e34ca6ddf8 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-> @@ -1,8 +1,9 @@
->  // SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
-> -/* Copyright 2024 NXP */
-> +/* Copyright 2024, 2026 NXP */
->=20
->  #include <linux/clk.h>
->  #include <linux/module.h>
-> +#include <linux/of.h>
->  #include <linux/of_net.h>
->  #include <linux/of_platform.h>
->  #include <linux/unaligned.h>
-> @@ -932,6 +933,14 @@ static void enetc4_pl_mac_link_down(struct
-> phylink_config *config,
->  	enetc4_mac_tx_graceful_stop(pf);
->  }
->=20
-> +static void enetc4_get_pcr_speed(struct enetc_hw *hw, int *speed)
-> +{
-> +	u32 val =3D enetc_port_rd(hw, ENETC4_PCR);
-> +	int pspeed =3D FIELD_GET(PCR_PSPEED, val);
-> +
-> +	*speed =3D (pspeed + 1) * 10;
-> +}
-> +
->  static const struct phylink_mac_ops enetc_pl_mac_ops =3D {
->  	.mac_select_pcs =3D enetc4_pl_mac_select_pcs,
->  	.mac_config =3D enetc4_pl_mac_config,
-> @@ -946,23 +955,112 @@ static void enetc4_pci_remove(void *data)
->  	enetc_pci_remove(pdev);
->  }
->=20
-> +static void enetc4_put_ppm_fixed_link(struct enetc_ndev_priv *priv)
-> +{
-> +	if (!priv->ppm_ocs)
-> +		return;
-> +
-> +	of_changeset_revert(priv->ppm_ocs);
-> +	of_changeset_destroy(priv->ppm_ocs);
-> +	kfree(priv->ppm_ocs);
-> +	priv->ppm_ocs =3D NULL;
-> +}
-> +
-> +/* Pseudo-MAC ports have no real PHY; the link is fixed, with the operat=
-ing
-> + * speed set at probe time from PCR[PSPEED]. Describe this with a fixed-=
-link
-> + * subnode synthesized at runtime onto the port's own OF node, so phylin=
-k
-> + * picks it up through dev_fwnode() exactly as if it came from static DT=
-.
-> + */
-> +static int enetc4_add_ppm_fixed_link(struct enetc_ndev_priv *priv)
-> +{
-> +	struct device_node *np =3D dev_of_node(priv->dev);
-> +	struct device_node *fixed_link;
-> +	struct of_changeset *ocs;
-> +	int speed, err;
-> +
-> +	if (!np)
-> +		return dev_err_probe(priv->dev, -ENODEV,
-> +				     "Missing of_node for Pseudo-MAC port\n");
-> +
-> +	enetc4_get_pcr_speed(&priv->si->hw, &speed);
-> +	speed =3D enetc_phylink_match_pseudo_mac_speed(speed);
-> +
-> +	ocs =3D kzalloc_obj(*ocs);
-> +	if (!ocs)
-> +		return -ENOMEM;
-> +
-> +	of_changeset_init(ocs);
-> +
-> +	fixed_link =3D of_changeset_create_node(ocs, np, "fixed-link");
-> +	if (!fixed_link) {
-> +		err =3D -ENOMEM;
-> +		goto err_destroy;
-> +	}
-> +
-> +	err =3D of_changeset_add_prop_u32(ocs, fixed_link, "speed", speed);
-> +	if (err)
-> +		goto err_put_node;
-> +
-> +	err =3D of_changeset_add_prop_bool(ocs, fixed_link, "full-duplex");
-> +	if (err)
-> +		goto err_put_node;
-> +
-> +	err =3D of_changeset_apply(ocs);
-> +	if (err)
-> +		goto err_put_node;
-> +
-> +	of_node_put(fixed_link);
-> +	priv->ppm_ocs =3D ocs;
-> +
-> +	return 0;
-> +
-> +err_put_node:
-> +	of_node_put(fixed_link);
-> +err_destroy:
-> +	of_changeset_destroy(ocs);
-> +	kfree(ocs);
-> +
-> +	return dev_err_probe(priv->dev, err,
-> +			     "Failed to add fixed-link node\n");
-> +}
-> +
->  static int enetc4_link_init(struct enetc_ndev_priv *priv,
->  			    struct device_node *node)
->  {
-> +	bool dynamic =3D node && of_node_check_flag(node, OF_DYNAMIC);
->  	struct enetc_pf *pf =3D enetc_si_priv(priv->si);
->  	struct device *dev =3D priv->dev;
->  	int err;
->=20
-> -	err =3D of_get_phy_mode(node, &pf->if_mode);
-> -	if (err) {
-> -		dev_err(dev, "Failed to get PHY mode\n");
-> -		return err;
-> +	/* Pseudo-MAC ENETCs are described by a runtime-synthesized fixed-link
-> +	 * node rather than static DT. This covers both a missing OF node and a
-> +	 * PCI-synthesized (OF_DYNAMIC) node, which is an empty node created
-> +	 * by the PCI core and thus carries no fixed-link description.
-> +	 */
-> +	if (enetc_is_pseudo_mac(priv->si) && (!node || dynamic)) {
+On Wed, Oct 14, 2026 at 03:03:24PM -0400, Frank.Li@oss.nxp.com wrote:
+>From: Frank Li <Frank.Li@nxp.com>
+>
+>Replace the struct device *dev argument with struct dma_chan *chan so
+>callers do not need to reach into the dma_device internals to obtain
+>the device pointer.  The implementation now derives the device via
+>dmaengine_get_dma_device(chan), which correctly handles the per-channel
+>IOMMU mapping case.
+>
+>Prepare to make dma_device private and make dmaengine API consistent.
+>
+>Acked-by: Dave Jiang <dave.jiang@intel.com>
+>Signed-off-by: Frank Li <Frank.Li@nxp.com>
+>---
+>V3 split from origianl thread
+>https://lore.kernel.org/dmaengine/20260923-dmaengine_prep_dma_pq-v2-0-32ed65b8a9b4@nxp.com/
+>V2 change collect Dave Jiang ack tags
+>v1 version at
+>https://lore.kernel.org/imx/b40fa0d7-fbd0-4ee8-b99c-781d08c18838@intel.com/T/#t
+>---
+> crypto/async_tx/async_memcpy.c      | 4 ++--
+> crypto/async_tx/async_pq.c          | 8 ++++----
+> crypto/async_tx/async_raid6_recov.c | 8 ++++----
+> crypto/async_tx/async_xor.c         | 8 ++++----
+> drivers/dma/dmaengine.c             | 4 ++--
+> drivers/dma/dmatest.c               | 2 +-
+> drivers/dma/mv_xor.c                | 4 ++--
+> drivers/ntb/ntb_transport.c         | 4 ++--
+> drivers/ntb/test/ntb_perf.c         | 2 +-
+> include/linux/dmaengine.h           | 4 ++--
+> 10 files changed, 24 insertions(+), 24 deletions(-)
+>
 
-This indicates that the node pointer can be NULL, but
-enetc4_add_ppm_fixed_link() subsequently does not allow node
-to be NULL. This is puzzling.
 
-> +		pf->if_mode =3D PHY_INTERFACE_MODE_INTERNAL;
-> +
-> +		err =3D enetc4_add_ppm_fixed_link(priv);
-> +		if (err)
-> +			return err;
-> +
-> +		/* The fixed-link node was spliced onto dev's own of_node, so
-> +		 * phylink will find it via dev_fwnode(dev). Use that node for
-> +		 * the subsequent MDIO/phylink setup below.
-> +		 */
-> +		node =3D dev_of_node(dev);
-
-Based on the implementation of enetc4_add_ppm_fixed_link(), the
-input parameter dev->of_node cannot be NULL. I'm not familiar
-with the of_changeset_* APIs. Will enetc4_add_ppm_fixed_link()
-update this pointer?
-
-> +	} else {
-> +		err =3D of_get_phy_mode(node, &pf->if_mode);
-> +		if (err) {
-> +			dev_err(dev, "Failed to get PHY mode\n");
-> +			return err;
-> +		}
->  	}
->=20
->  	err =3D enetc_mdiobus_create(pf, node);
->  	if (err) {
->  		dev_err(dev, "Failed to create MDIO bus\n");
-> -		return err;
-> +		goto err_mdiobus_create;
->  	}
->=20
->  	err =3D enetc_phylink_create(priv, node, &enetc_pl_mac_ops);
-
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
