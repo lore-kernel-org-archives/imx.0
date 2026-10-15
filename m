@@ -1,179 +1,209 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012006.outbound.protection.outlook.com [52.101.66.6])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0FDB46C4AC
-	for <imx@lists.linux.dev>; Thu, 15 Oct 2026 16:22:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.6
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792081378; cv=fail; b=o6mw5VR2B1/Vd6oiS1p0WvOfnqYqSumVW/g2xS3VvmPElo+ZO9EsuyRWRXPwCadF353zDkKGMj4kcCXUJS2siAPOwkv1Mx+cbxqt19NiOYG5VizjKuINpoVxPWJ2JMvEkvpKbEzS4P4SAAQ0T6RN6JXOteEqfTt8SrGXW166Okc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792081378; c=relaxed/simple;
-	bh=11VGpVKsd1pjySXvyP2aApcWIryqbg0G73YyKzLLHsc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Gv1Zd20mtwZRbsCo/QFKmcGdimncuE2CcqcWi4JASq8z3LqzHJ3WfI8kRX5sxMhNiNPFrBNOgB6hLbvyqPvoZAIAjc+P4zJz7BiazdtXV9a72pkw2rVFZqd2FXeZHMRGOTcfguCZKKtspbtWryBnkFnZplULeG41npsBbLTxAnw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=tL4R1NiN; arc=fail smtp.client-ip=52.101.66.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 781F7350298
+	for <imx@lists.linux.dev>; Thu, 15 Oct 2026 16:23:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792081404; cv=none; b=qU3PzfIMcmhwRw/0iJ5cb14Xlt7se373RFOTCTPdxFIA3/dmH77b3j+v/2I+EtMlMp28AhncBDPs+m+5rZHFvoaZkuwyl8FvmWvPLZuvZnWVB1MGGVRBEEZNZoG7kNH2HKhQXK42a9N4mIjlkz+O5bgcSpCT6scYL89QnqrqhLc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792081404; c=relaxed/simple;
+	bh=QPdfVv0xjaBDwPQ8HURDYLE3vCH7R5wni8Gxnxxzetw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mbRv4vDZ5q48+7bJ91LcWYCyaV2tQiidtsIfD/x165rywOOpCPON8kUXl7tgKyFiYOB7be2quTK2dxcA3qP01v1SJN7YLjxDdW8abWMxm7Q/+V8/5CThPJuTyu87/k94L5umZ/lcVbRNVoUQ5ME7WZO0ahwT21wPCtgHQxI+ofw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=o33NiboW; arc=none smtp.client-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="tL4R1NiN"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=C8AWK18lQ/O7d8Wy+aIYIeFNK1FwhZTErNau7DGPzliXEi2wELH03aYk8umAH5inIJ7n+Bdwt7OIGCBxNoK/olSDo0+cJNRuO1KxRq8x7bLDq+zImGKR+vK4J27JxZDowMEJHVlKPA57NgNin96TlkDjvK7t1BfLhq/urym1CuI1DqxsEG6eFM/DFYKacl/za5SWfVrDReubtIACN26vKrznQZVxto3OlwiyHyKY3zA6Cm7cxjaf1Ivh93ccgQEOuuBrdewNfnQ5dvDpiufYhqYY5rLrWGmo8gGIFZgr00th4o/Av9BSx4hh9KBKUnbFzuoWhoG44rmw4cwLd+5gdQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=s2GQtuAM+4BXTK2kBAwAFBC5IJiYjAytN5LyZ54PkXw=;
- b=RdUiEtiPVoiTrVMBh85Z8uOHL5pHFSFRt6uf5NBlltrRT25dyIJ+XlJWBONatvJV/G7Gb+pX8iA5egHe59xM8wy2vQGlDfZp93Kpr+NNw9tw5/+DCDuEbVzQyupN0CgANTLxv5RMZSDNNOu3x378nacMCxssn5gAhARvQZeGCuIeiRHe2tXDoMyF2c831xx3OeCCjHlq9bfhpV8/SVexstT5hD2Kye/Cuu6zR9IT5S6ikmO0cSYNMLYq8Ty436sgJT/8ig6AXZv/qiqL0K5yFl0DKHa/GWSWqVt5Lw0Gt2qmFgSikQ/e5/nk/x01wBLMQ/yDbRT0sHtXO5S+YBYxpg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=s2GQtuAM+4BXTK2kBAwAFBC5IJiYjAytN5LyZ54PkXw=;
- b=tL4R1NiNs3Uu+K/lgZj946rR1COAL4EqL/4uPjlF343rZyKKtB0Fo/uoris+gymjMLPDGGQcI3tQA4fI+ONcHT9mKlpLtC/zNLR0CA0XeiHSVk4MU9qY+HLihjYZyyg+qN62NVyPxs//Vzg5YMW8CEhLkF1ZqH1fP3LQhvfuEp/p+yWo4fC4++dJvLRRWa1J3Rr149Z7Cg+oBa2A+WhNekT8fqkdD7jVg29z1GIc8DF1ePkTPDEpg5C5DKeXWkcoRyQ1gEZFi6dY/muBDrn9hOaQ9O7InzMoyitbUdLLxHooM2/HaKoRsZAB6/zugBh2S6aDaNC9TolBWqY8Twe7eQ==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by AS1PR04MB9238.eurprd04.prod.outlook.com (2603:10a6:20b:4c6::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.13; Thu, 15 Oct
- 2026 16:22:45 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0522.012; Thu, 15 Oct 2026
- 16:22:44 +0000
-Date: Thu, 15 Oct 2026 11:22:33 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: Liu Ying <victor.liu@nxp.com>
-Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="o33NiboW"
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-48b0d19cf7eso113731f8f.1
+        for <imx@lists.linux.dev>; Thu, 15 Oct 2026 09:23:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792081386; x=1792686186; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=H1Zj18i8wLD+v0cMejrP3M0EMkqe51uSgByins6dl78=;
+        b=o33NiboW5zHJfLoACBxPZbimP29l+ZN48cYWqhtfQFvn+Isq+2usyfBTTeSG2An/9W
+         Dz7vzqbsjRZhRC76gmTaZjpoNzYxvsE7q55GMlYDn+4ddxP0nqnLqrSCQ1ASVL4R+fzQ
+         pxauguxkvo0eTkoppMQ3l1wD4IWsWPDZM2n4owwVcTJdfrlSGdqnBLi5wHKoc97p4TmC
+         p/G85dApYwJfLDXdHpAf6W4U6Oel7omlHndEOUOJm0Bcaz+ehgx3qGDrDqg/vzB6gn/p
+         WsYNngLJV49xCA/vm/7g/uOHjZEx6Yx7XNp7pFdq4KhjCV29aD1sBIRtgDfk16UZHPIU
+         y7ng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792081386; x=1792686186;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=H1Zj18i8wLD+v0cMejrP3M0EMkqe51uSgByins6dl78=;
+        b=2FiGCctwsV2OCZ0HM7DDVYKdM9PAmfov07DisYKlWuuEi+9kQ0kUFGiIC6NnPXKuB1
+         kLwfpAwtF+H8bmsyRTHMWdKQNCFuHajdfy5CV4cLmOsn+Tj4eh6a0EhlzGAsFkEI5JhB
+         dRs8HlMmhr41Qcmy2XKHHZESB77L+/WatwkzfoLzxzUJqZLqZZe72q8bkptwJpAlr563
+         yS7Evpo6wZw3tpFLRL2ci6lcJ0TthKVlOpKOykZApnQoxk37ej+n/UdsBnVtR9WB9Ru1
+         C0jWCNZhxtzMjBdjw2gh/R9NdPFIL2N71SdliMzfJJWtEhrNNsSlTtOBs/NJxMs+UnpB
+         9ahQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwDjC6LZVCyaxF3LvaRo7IiNJp/6q8rGXyjaBCXt2OxnYLdfIV2oAU+D1kJ7WiVodslpy0=@lists.linux.dev
+X-Gm-Message-State: AFq9FYLKhuO2nlyi3F8nKupp3FryG89QNWpeyuSI52MojIUk/tidfMwF
+	oK8bI34KIS5itwso4yXcnZuNQUZhugdyCWerCP6RKoJ80dmGT881qChM
+X-Gm-Gg: AYBFou10wM440FIVThHpdHX3RVNVaC2KxurgQK25ox36jMc6LviDRPXMvNv31hY48RD
+	lh0+S+CZ0FhO9VIfxBi+WgZCiwhRWpGJaGn23defEykJrqetfQtoM5U2ZS2Zw/uRduEDpo8IK+B
+	mGvXHWgN0yaoMNiE7qGM/sMx43rvSNPIjO15iwvhZnH2sB/g1JolTsHDRwkBiyUCuVAjOJX6ZD2
+	6da6SXH4ccIVivhXUzIch6il5EiVRA4O+JsoSDiO+EFIM8HCNFXUF5ySy1Dh/EGz1+OYzOLHYst
+	RuluWwbWDE2xVDXYs1s2NiTUK3r2JJudVbaXgZh4UDT9BEXZ1X4wzmolw55MNmL4N4/B6kmo6pa
+	LbrKezHitS+HztmzJEAq80hsk7k28N7fbPQ5QPO5KDJzI5+QAx/IxAYV+Iuu51aPooDbA9CMHXS
+	1/jP8Zn03UxB4Wko0dMiQkp/eUJBd2JhjEO6W+JIqPylc1M8K+CB1TlAebymdrJpPoEoOwcLhyO
+	Kfnq2Axb5qU3VbN3gGrnzzVVTiyxnKa+A9563Z7+iJNTUkYfwR1qxU1ZFWX8nsxTeUx5eHi+Dw0
+	O1Z7zeePJjIxC3t6qnDWoA==
+X-Received: by 2002:a5d:428f:0:b0:487:13a9:80d with SMTP id ffacd0b85a97d-48dfadffbcbmr1105292f8f.10.1792081386308;
+        Thu, 15 Oct 2026 09:23:06 -0700 (PDT)
+Received: from Lord-Beerus.station ([93.66.71.207])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48de0ab4f34sm20616982f8f.28.2026.10.15.09.23.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Oct 2026 09:23:05 -0700 (PDT)
+From: Stefano Radaelli <stefano.radaelli21@gmail.com>
+X-Google-Original-From: Stefano Radaelli <stefano.r@variscite.com>
+To: Frank Li <Frank.Li@nxp.com>,
+	linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Cc: pierluigi.p@variscite.com,
+	Stefano Radaelli <stefano.r@variscite.com>,
+	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Dong Aisheng <aisheng.dong@nxp.com>, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux@ew.tq-group.com
-Subject: Re: [PATCH v2 2/5] arm64: dts: imx8qxp: Add display controller
- subsystem
-Message-ID: <atD9yeOeHZiKzhZD@SMW015318>
-References: <20261014071657.118378-1-alexander.stein@ew.tq-group.com>
- <20261014071657.118378-3-alexander.stein@ew.tq-group.com>
- <atBLglf0gSLS7XkW@raspi>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <atBLglf0gSLS7XkW@raspi>
-X-ClientProxiedBy: SJ0PR03CA0264.namprd03.prod.outlook.com
- (2603:10b6:a03:3a0::29) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Subject: [PATCH v1 1/1] arm64: dts: imx8mm-var-dart-sonata: Add OV5640 camera support
+Date: Thu, 15 Oct 2026 18:23:01 +0200
+Message-ID: <20261015162301.63838-1-stefano.r@variscite.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AS1PR04MB9238:EE_
-X-MS-Office365-Filtering-Correlation-Id: 49cfd447-0005-43f5-556b-08df2ad88ad9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|23010399003|366016|376014|7416014|19092799006|56012099006|11063799006|4143699003|261009223027099003|18002099003|10067099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	qGZe0e3IwkDC6BLmbE9k72stuHMZ5wLi1qzhMfBrEUO9YXLVbh75gt+V/s/0pqoolDOuDHGWGK8P5yzZU/rv5gKmW1g6xZ8dMzSkqYzO84Kzh4NRu9rT7nGpMt9LGkqaIxe/nXkI+cv8COlY1RnLIRCaCNA8SbaBW6EnlqTikCYLCEp/O3VsBzMO+N2K1v5OWBOgZrWWwnle+e1JRJ/mJCM6112Zh+dKHPPwxTjFyrpm7QyU9SzjdJs51REaSY1FxAUOOoEbrdHRF2276G60mGM5pSQmXUrFc2ue+akS9F4VTpKvZuR/Vtd6tVrbuzfd7O2o9pK3vAGKBQ1qNzXtcYHW6gVLHw2SogZ2QotakQEstdnVst8I6AJQm552O8V8sNlrB1kiAQQLFYe6tAfvrtmEJWLWoOc0Akz1OE5K22PqYyJaDoFtKbMeyuYCFvm4Wrv/9JwM2mh+XON37L9gXzJfnFUtZfEARv6eYDS4ELleT8qIF0MPxnKoORI7kNLwkxsWBkQ2+dDSdmZLrba64/OEB7ornMUjCP5v8pTlYmbOw9eoM6Wxju0zy7BoiwFIopnRKZcT12dN8nv7SndCh9SI2VXNnq47So1xM4GixZj9JyZmruWmR63jpT9wZ57D3e0JthACfSV/unbHqhzOasBt0ZoynypQlP3OBd5DO2A=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(366016)(376014)(7416014)(19092799006)(56012099006)(11063799006)(4143699003)(261009223027099003)(18002099003)(10067099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?DvrRG4AWHgUDm+3l8qHemANhq2FbJjIUP2YFYmPzwI+t5sN3MI/GHnxFouZb?=
- =?us-ascii?Q?rj348uQzuyIuKUTJ962BVSsLkcAk2UgwMmxIyY/oEsKKga3VUl4YuXa/N9fb?=
- =?us-ascii?Q?yJ4EqM2GIgkaeBx/ESbjg8xD+4xcevKIvrBINTAWO4bq94icEAy5AcYgen2L?=
- =?us-ascii?Q?WAa4mIVsZ7G+2rUf7BKaDNMsaL1QawKDgQSRCVjY6CXDL3owKbZDgNItI44L?=
- =?us-ascii?Q?lbCcg7QlzerRGwgtGDtZJP79RiESeK578NykyI/2cm3YHrt0fa2gLYBo6Bqe?=
- =?us-ascii?Q?aIWzwBzCfSeKfvw2730Mh/oyRBwMzYaL8MXC//7acr6bVJFVy2N8Bau8bQQH?=
- =?us-ascii?Q?RGQSXZ2teW3t3zcwYgS9Cm6P4zB/ow47WEwpTSOki+j3Z1L/pMlbJMoMukJb?=
- =?us-ascii?Q?ur717mOjQD5hUQRbns9j+g+pyVoSi52eEaxYzz8tTCsjif4GVcZ3kAMc4Jlt?=
- =?us-ascii?Q?f2xLb9ziIRUgx5Z7i0Z9PKt3RLFmC8Q5oAuqkHw3g7sl4O0y9oq2pnDSv2Tq?=
- =?us-ascii?Q?EzvDQnNhsz7rtX7FyVfVGaP3GHn/qKFG+93ReChji6JX6B9mkooBBsQVNXOX?=
- =?us-ascii?Q?J0zsJXiDzmqZnnMDpEAicKxLkmgmcNWp9HEdVS0HTk5rjW0dLgsaCRLQXqYM?=
- =?us-ascii?Q?hluiMKGcHnVLleTLzOp2yt7Svf0V7GECF2rOt2teZpjHh1WwD7F8UpbGN+wy?=
- =?us-ascii?Q?7V0ERa+/IN429NIZv1vedqpNVR+3BLigeqQydIto4hoRMMNAL5rt6uF0GD9C?=
- =?us-ascii?Q?TQOWhuiJUiaSMnGqFWIHQGPsYoXS/XZTt0LDL07n5ZdcUo6ClR1bDDycWN5F?=
- =?us-ascii?Q?g4AC/mK/WbB8CWkhedRJPgUkG7/iiHG41UhJ3wg5/JrQhE89+FoA27AKlJQC?=
- =?us-ascii?Q?VESpOW8jXStwlhy/qm73nDbLg4JHhIg9Tv+oO9uyApnqUmKgwVozB1Cg9z1b?=
- =?us-ascii?Q?yvB2BlhJgDaovUqyttSmcPrUIcVEj5Sit8BXFNyvmn8Mw6YtY5Bw7sHJXDJu?=
- =?us-ascii?Q?r67NhgEXb4/QZdgUquDkIq76impe1Ny3AAevlBmEUGA6+i4jAYjOEEL1giXh?=
- =?us-ascii?Q?HpSagv6g6R/z1LqjEjUcqPVNu4/m6Pzz8eebMalFe9o7Ba3rOBBo08pg6G7N?=
- =?us-ascii?Q?7cK9e+az4cIFanxoxqEQ1B03tm9WKTU9XmydwNpLa0mKnLciOEdX2PzFINOZ?=
- =?us-ascii?Q?JX9QC4A+C4z69DT+vG3QNndYYmKSuSXgdcNBXHawLyY+Bc8H3aaZd1w2vrCM?=
- =?us-ascii?Q?VJTeaUPuvu7/N+HSfZzEP5Bp70x3Ny87LG0d31m5WeDwpXkRVoa3Vqwgy4C7?=
- =?us-ascii?Q?uJg9IYipJd7EFrizEwdDulAOtn/iZZrO0tfy9XcSDBEPv4L8jMf9MAs2hlW/?=
- =?us-ascii?Q?2umtFGKXmT9Ze6Loa/2jIG5h1wnFeH5pEg9Qu/nkKNGdibbxPPek4bQ7cXfv?=
- =?us-ascii?Q?PHP8PcVF3kXNUZp8s6ZwN1fq+jze8LpZQMMnFqy9LBImvmxnqu52if0CUft1?=
- =?us-ascii?Q?vw7njfRSj/+OOVEf11W6OvjOVwoUQpQ+52OuNdA8pw3hg3MgUPcZOVnxGIk1?=
- =?us-ascii?Q?n3uk9E2mWSqagxpFVe4r4DF/7ptRYrY1NSPECOuFYl8/w9dChCaxINuRgtfc?=
- =?us-ascii?Q?O8oR72MBC3mw6be1xydVW4GTR2bovkqUXQ0k+rsaQNDY/PkeCLCYAxGvBElQ?=
- =?us-ascii?Q?gZ+9bq96WqrnhzzxddD75whpdKhtbejv+WZ6k1tjcJlh8HTIQEPmRjyNcAgw?=
- =?us-ascii?Q?GvCGHTVgQbVTPRWGkhADMVE0r5H6Wm2+dbF93wbFyZv0UHPG0AYO?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 49cfd447-0005-43f5-556b-08df2ad88ad9
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2026 16:22:44.4384
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: jEjlCJclL7mfnm+Hbag7+9ol8P1lItEyrv+9fm+62m0OWEIj47HJbK1sBzITtud1baluXHrZ/YxtnUBze12pNlX68hC4rkqV6hdPcdW7JprQO1WlCX0kANDtYN84Y8S1
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS1PR04MB9238
+Content-Transfer-Encoding: 8bit
 
-On Thu, Oct 15, 2026 at 11:41:54AM +0800, Liu Ying wrote:
-> Hi Alexander,
->
-> On Wed, Oct 14, 2026 at 09:16:46AM +0200, Alexander Stein wrote:
->
-> [...]
->
-...
-> > +
-> > +			dc0_framegen1: framegen@5618d400 {
-> > +				reg = <0x5618d400 0x98>;
-> > +				clocks = <&dc0_disp_lpcg IMX_LPCG_CLK_1>;
-> > +				interrupt-parent = <&dc0_intc>;
-> > +				interrupts = <28>, <29>, <30>, <31>,
-> > +					     <45>, <46>, <47>, <48>;
-> > +				interrupt-names = "int0", "int1", "int2", "int3",
-> > +						  "primsync_on", "primsync_off",
-> > +						  "secsync_on", "secsync_off";
-> > +			};
-> > +
-> > +			dc0_tcon1: tcon@5618e400 {
-> > +				reg = <0x5618e400 0x588>;
-> > +
-> > +				port {
-> > +					dc0_disp1_dc0_pixel_combiner_ch1: endpoint {
-> > +						remote-endpoint = <&dc0_pixel_combiner_ch1_dc0_disp1>;
-> > +					};
-> > +				};
-> > +			};
-> > +		};
-> > +	};
->
-> I'm thinking that it would be good to have a complete display controller
-> DT node in the first place, including those prefetch engines attached to
-> fetchunits through the fsl,prg property.
+From: Stefano Radaelli <stefano.r@variscite.com>
 
-what's current prefetch engines status? Is it possible merge at v7.5 ?
+Add support for the OV5640 camera connected to the Sonata carrier
+board's first MIPI CSI port.
 
-Frank
+Describe the sensor on I2C2, its 24 MHz reference clock, fixed supplies,
+and reset and power-down signals controlled by the GPIO expander.
+Connect the sensor to the MIPI CSI receiver using two data lanes and
+enable the receiver and CSI bridge.
 
->  In this way, display controller
-> driver's life would be easier - all child/grandchild devices are always
-> available.  I'm considering to adding a check to the Linux display controller
-> driver to ensure the availability(at least for critical child/grandchild
-> devices).
->
-> --
-> Regards,
-> Liu Ying
->
+Signed-off-by: Stefano Radaelli <stefano.r@variscite.com>
+---
+ .../dts/freescale/imx8mm-var-dart-sonata.dts  | 66 +++++++++++++++++++
+ 1 file changed, 66 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-var-dart-sonata.dts b/arch/arm64/boot/dts/freescale/imx8mm-var-dart-sonata.dts
+index 57d29a5c3821..427a255fe8ec 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-var-dart-sonata.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mm-var-dart-sonata.dts
+@@ -75,12 +75,39 @@ clk40m: oscillator {
+ 		clock-output-names = "can_osc";
+ 	};
+ 
++	camera_clk: oscillator-cam {
++		compatible = "fixed-clock";
++		#clock-cells = <0>;
++		clock-frequency = <24000000>;
++	};
++
+ 	pcie0_refclk: pcie0-refclk {
+ 		compatible = "fixed-clock";
+ 		#clock-cells = <0>;
+ 		clock-frequency = <100000000>;
+ 	};
+ 
++	reg_camera_1v5: regulator-camera-1v5 {
++		compatible = "regulator-fixed";
++		regulator-name = "CAM_1V5";
++		regulator-min-microvolt = <1500000>;
++		regulator-max-microvolt = <1500000>;
++	};
++
++	reg_camera_1v8: regulator-camera-1v8 {
++		compatible = "regulator-fixed";
++		regulator-name = "CAM_1V8";
++		regulator-min-microvolt = <1800000>;
++		regulator-max-microvolt = <1800000>;
++	};
++
++	reg_camera_2v8: regulator-camera-2v8 {
++		compatible = "regulator-fixed";
++		regulator-name = "CAM_2V8";
++		regulator-min-microvolt = <2800000>;
++		regulator-max-microvolt = <2800000>;
++	};
++
+ 	reg_usdhc2_vmmc: regulator-vmmc-usdhc2 {
+ 		compatible = "regulator-fixed";
+ 		pinctrl-names = "default";
+@@ -95,6 +122,10 @@ reg_usdhc2_vmmc: regulator-vmmc-usdhc2 {
+ 	};
+ };
+ 
++&csi {
++	status = "okay";
++};
++
+ &ecspi1 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_ecspi1>;
+@@ -200,6 +231,26 @@ ft5x06_ts: touchscreen@38 {
+ 		wakeup-source;
+ 	};
+ 
++	ov5640_mipi1: camera@3c {
++		compatible = "ovti,ov5640";
++		reg = <0x3c>;
++		clocks = <&camera_clk>;
++		clock-names = "xclk";
++		AVDD-supply = <&reg_camera_2v8>;
++		DOVDD-supply = <&reg_camera_1v8>;
++		DVDD-supply = <&reg_camera_1v5>;
++		powerdown-gpios = <&pca6408_1 3 GPIO_ACTIVE_HIGH>;
++		reset-gpios = <&pca6408_1 1 GPIO_ACTIVE_LOW>;
++
++		port {
++			ov5640_mipi1_ep: endpoint {
++				remote-endpoint = <&mipi1_sensor_ep>;
++				clock-lanes = <0>;
++				data-lanes = <1 2>;
++			};
++		};
++	};
++
+ 	extcon_ptn5150: typec@3d {
+ 		compatible = "nxp,ptn5150";
+ 		reg = <0x3d>;
+@@ -263,6 +314,21 @@ st33ktpm2xi2c: tpm@2e {
+ 	};
+ };
+ 
++&mipi_csi {
++	status = "okay";
++
++	ports {
++		port@0 {
++			reg = <0>;
++
++			mipi1_sensor_ep: endpoint {
++				remote-endpoint = <&ov5640_mipi1_ep>;
++				data-lanes = <1 2>;
++			};
++		};
++	};
++};
++
+ &pcie_phy {
+ 	fsl,refclk-pad-mode = <IMX8_PCIE_REFCLK_PAD_INPUT>;
+ 	fsl,tx-deemph-gen1 = <0x2d>;
+-- 
+2.47.3
+
