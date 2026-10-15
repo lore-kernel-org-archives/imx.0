@@ -1,74 +1,72 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010067.outbound.protection.outlook.com [52.101.69.67])
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013013.outbound.protection.outlook.com [52.101.72.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CB2B1E0DE8;
-	Thu, 15 Oct 2026 02:50:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.67
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 055753E2767
+	for <imx@lists.linux.dev>; Thu, 15 Oct 2026 03:05:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.13
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792032656; cv=fail; b=VVwGgVMa2MAsptOt2yojwTG6H0sCoO5dKt+sVRWDjk5GAawA5F+Aglq4fZFHPFMuN+MKSr7szdLNCzuWfwEFxIqVGUvPd/1jUQOskKyEIvBRRqI05pUmp6eDstaATgrqp650vKXEgMHPXxcgJ+BvmJzGe2zcZ1Z+gaTOb0Z11tE=
+	t=1792033557; cv=fail; b=nMU+S8D278ZaWOxG0HvXV35iReWSPGC91Txm0kVxFm+mJC/ZNVeL5cpEoOt3xb128VIFDvy6Vu7mZyEGM21oNkmr5BCNF9G0lQx2xrYTGoiQWRRLabeXuQ//O10yJQ/pFlNcSeLji0pgbwuQPmwZESc8LIkhRbs29EpHps5WtFE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792032656; c=relaxed/simple;
-	bh=Jrlwbn/WJj/bjBtURyT12iGD1CJcPGPbQB9rTMv9Iw8=;
+	s=arc-20240116; t=1792033557; c=relaxed/simple;
+	bh=64Jnx1tcRn3jvRjWZS2wJOHLGUIedqnp8kJataULDF4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=fB2Zqx86EnGjbOMkCjw+C05+DBqHcOj+2RNqrKOB/2XVDMSl/MuXKQyyh43I3JuPEfdmKCg/fOn5EVSAwiDZt/fI//QrnBWthNKwnBw4AXx4k3yS2SBqdwxsziyZ/K7cMKV7t7uuc9e917inXUbkWsL/n+1By/R/3z4MLMr2baE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=AZH5MTvD; arc=fail smtp.client-ip=52.101.69.67
+	 Content-Disposition:In-Reply-To:MIME-Version; b=a1LkHoCNuXPr0qkruBDIax+dpTKNsZ11uiR1OorNbLSKatld5CTvHqiAtzVwgogcKGt3oLjQ9/wXAuKcmhp+SF7zR67z7pvBmD1PW9nUdB7rFr/dzGIs5pOiGx7AdkG/oj5PpI986dNi0RIzTuBekx6ajpZw+vfv43HTzvD7T4s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=Cw/pg19w; arc=fail smtp.client-ip=52.101.72.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="AZH5MTvD"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="Cw/pg19w"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rtrO4hWACq6t1SFGl+z3lpXZN0vDfJSttWm/bCZcI23pmm4fTYaNZDJpHoIljKghI5QK20HNzyWvuByfju+v4Nts8cX8n2oN2u5DPOfXar2CBNWPWfte+ErRFJOFWZ34LeipUuQWCLjzM8LxyxdTxUigHdtWYihaw6qvU6iRfuFhqiUn9p8F4RTouU61Vg1KZeFsYuDKuIEQwAsuuD3ntuOUjPfdG9lK+5FuH3qB6JOzWaLkoQTmQo61nciQiib+Nav3wq3QYEKkT0oGSiQ2TRJmMXtWu/n/XUuLwXsP42XngmsWWd2mAKsmQzMzVbFwz1z0+XrTbsj95Mb/R29KZA==
+ b=ZBBpDLgB2nnHexedHwkNRKx49BhMkthBY4x1dgVG3rGNlAn/dSNlWmHb0VBUYFOjYpQtsOuo1R1QbvazaV1bWUN6N4LcW80QiSFlLEVT4wO5xmLLeKLi8q30SouK3+LhDyPMKUGO44aRd4cvYykPo9QZ12fQ9jwjJ6+2coiC0zs2Fv7azjlS2jBaaLc9t86bN4l3PfWidk7uk7RqhaW03o0+sMy2vacFLWlGdHDpFAp2eKBpuP9Z6k+51LspduAdT2RBot+WGtkI37jxACSPuNazPcizbYp0uxoo81UL+NUrz/ICIcTRg9lhqO6GJEV6AGL/OaGFDAo2+2DhZaqbrQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=48fSqzBh6k8SdUvaZJRDMQ5j7EeYs6MxfBoN7Ej7QaI=;
- b=g6nNaKrG7r6HebSDQp1Hz9JYmYm1t2SLXUScll0/O8knqWm3hHg9Ye1Vcl9ePYxu+YyuRWBeE/lDrz7q+Yz3ZUXYZAoLZ85hsBAU5cyiOBd1CugWR/hTjZ1455SclvODmhAsmEfGgOVLBRu5JW+aMh7Nvfv1xNnyZrKkjf12V65QvMBumo7Ozp8aBS3cCDaMHFiA04ydMgnI4ekzKBTD5qKqHwS36WzBUHvf3HJx5uqd0vKrGi1cVQJreBnzUg5H2liSyAQjJrDBWAzUFqi4itYpGCk7hEfhrH6Lj4F52a5xEknqMO89PeLlapNj26v3trI/QZvmXr3g4wjSwUGPsg==
+ bh=cskSQFU2iBL6alZqFV+eIIXKDIhr2Usw+63w3Bq7by4=;
+ b=SChaDbMq6TWRcUv47ZRtjc0g9NAgZZdjNhTW4KCGWstk/GhPEGIMt65TLzrfx3viMVJdaoJtNYcHcq31G0E2CKKY3k/FaG3LeL2vTCCoIVOP1ps/t6xF85vMA8QyVzN4MexTKCgPLbW3bBENE1wnMIxxh736lYjpb2O6TvuIu5emucGyM+0pH0O5BcvzkuBNAD4l/tG3TYVurDLXLetccc6zrUp3bdxiiq7PdkItvUXUvBmo1vNUigx3YIP9Ki9EiBN32Rv6Y69VTu2N4SR9lkYSdZ57q18I2Ma91Nyv7u1Gh7xQh8nzkGmn7EnjHhK+dPz3fx2RU8CWHmKItglfdw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=48fSqzBh6k8SdUvaZJRDMQ5j7EeYs6MxfBoN7Ej7QaI=;
- b=AZH5MTvDe6zVpmROgWS9ceE1mTA1MWNTDvBSC9viq206rCoghAHtU3LY5yO9ers9TUsC+c1q/FWsW/JmVvO8Jy59PAZWUWubLywgqA/PGCwz5XcKqjFrkaoU6o3eHFZUV1CXYBut852usib+TvO5RVIOw2wdGqDwTvXKNRfDdZ6v9jVFvbJc/DlN2NpfTngHkxXZVRnai5gHtunCLzFFGnOdz6VXLqw2fO1oayUyyPNQHqHK2Zp5cyY1C+Cmn69ybhUo6QIp08bwen7VqaANvctenXgGiT7HOysgYIcpqKTtPvsdVpFVebJZGGILto744JKMnXkFQNxZxLUaBXn2Dw==
+ bh=cskSQFU2iBL6alZqFV+eIIXKDIhr2Usw+63w3Bq7by4=;
+ b=Cw/pg19wkrbBXgJrJwfzmLrAIloIt//BSgS3jxB3+7gR+gXv0dXcyPI6bNfGvRA5fk7LDVdS1gZnkL8YF0mL2jwBpgTonFi5VuFxpLcN8i9lPArhQqU2PBiIxXVsQgZcQSdolYzM3gWlg5vvieFwx1cTZuroANrW+Yv0goodvPJhFR5zmfjxEoGGSjKT8VnszitBLacoKcdu9Vtpu8zcmiK1bGVjnuzPMIHMV1vNghQZD95dF/9SmEJTrcoDtZ8Bm7GYD/ei0Ubx2b/KZx4Y/72mMDLBgz6NreWPWxrmYNmrL0vlqlyHOdYvpcDhmyuOPC2MXHUeTdSOp//f/nGf4g==
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from AM8PR04MB7874.eurprd04.prod.outlook.com (2603:10a6:20b:24d::9)
- by PAXPR04MB9007.eurprd04.prod.outlook.com (2603:10a6:102:20f::12) with
- Microsoft SMTP Server (version=TLS1_2,
+Received: from PA6PR04MB11909.eurprd04.prod.outlook.com
+ (2603:10a6:102:51c::22) by MRWPR04MB11519.eurprd04.prod.outlook.com
+ (2603:10a6:501:76::14) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.13; Thu, 15 Oct
- 2026 02:50:51 +0000
-Received: from AM8PR04MB7874.eurprd04.prod.outlook.com
- ([fe80::ac38:1699:6f18:c5d9]) by AM8PR04MB7874.eurprd04.prod.outlook.com
- ([fe80::ac38:1699:6f18:c5d9%6]) with mapi id 15.21.0522.013; Thu, 15 Oct 2026
- 02:50:51 +0000
-Date: Thu, 15 Oct 2026 10:55:24 +0800
-From: Peng Fan <peng.fan@oss.nxp.com>
-To: Frank.Li@oss.nxp.com
-Cc: Dan Williams <djbw@kernel.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Vinod Koul <vkoul@kernel.org>, Frank Li <Frank.Li@kernel.org>,
-	Jon Mason <jdmason@kudzu.us>, Dave Jiang <dave.jiang@intel.com>,
-	Allen Hubbe <allenbh@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Eric Biggers <ebiggers@kernel.org>,
-	"open list:CRYPTO API" <linux-crypto@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>,
-	"open list:DMA GENERIC OFFLOAD ENGINE SUBSYSTEM" <dmaengine@vger.kernel.org>,
-	"open list:NTB DRIVER CORE" <ntb@lists.linux.dev>,
-	imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH v3 1/2] dmaengine: change dmaengine_get_unmap_data()
- first arg to dma_chan
-Message-ID: <atBAnIzA3X6PgB+6@shlinux89>
-References: <20261014190337.1718622-1-Frank.Li@oss.nxp.com>
-Content-Type: text/plain; charset=us-ascii
+ 2026 03:05:48 +0000
+Received: from PA6PR04MB11909.eurprd04.prod.outlook.com
+ ([fe80::a4b:fa4e:7fe7:e6a2]) by PA6PR04MB11909.eurprd04.prod.outlook.com
+ ([fe80::a4b:fa4e:7fe7:e6a2%7]) with mapi id 15.21.0522.012; Thu, 15 Oct 2026
+ 03:05:48 +0000
+Date: Thu, 15 Oct 2026 11:10:17 +0800
+From: Bough Chen <haibo.chen@oss.nxp.com>
+To: Miquel Raynal <miquel.raynal@bootlin.com>
+Cc: Pratyush Yadav <pratyush@kernel.org>, Michael Walle <mwalle@kernel.org>,
+	Takahiro Kuwano <takahiro.kuwano@infineon.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	"linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"michael@walle.cc" <michael@walle.cc>,
+	Bough Chen <haibo.chen@nxp.com>,
+	"open list:NXP i.MX 7D/6SX/6UL/93 AND VF610 ADC DRIVER" <imx@lists.linux.dev>
+Subject: Re: [PATCH v2] mtd: spi-nor: clear the default RDCR opcode when
+ entering Octal DTR
+Message-ID: <20261015031017.pdqnv2bp5627bhed@shlinux89>
+References: <20260929-spi-nor-fix-v2-1-75440cfe4e76@nxp.com>
+ <87zex05uvn.fsf@bootlin.com>
+ <AS8PR04MB8820E136E7257FC5A02F1A3E908C2@AS8PR04MB8820.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261014190337.1718622-1-Frank.Li@oss.nxp.com>
-X-ClientProxiedBy: MA5P287CA0108.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:1b5::16) To DBBPR04MB7883.eurprd04.prod.outlook.com
- (2603:10a6:10:1e9::23)
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <AS8PR04MB8820E136E7257FC5A02F1A3E908C2@AS8PR04MB8820.eurprd04.prod.outlook.com>
+X-ClientProxiedBy: MA5P287CA0170.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:1af::7) To PA6PR04MB11909.eurprd04.prod.outlook.com
+ (2603:10a6:102:51c::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -76,96 +74,180 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM8PR04MB7874:EE_|PAXPR04MB9007:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2bf76b5c-d46c-4439-9a03-08df2a671dd4
+X-MS-TrafficTypeDiagnostic: PA6PR04MB11909:EE_|MRWPR04MB11519:EE_
+X-MS-Office365-Filtering-Correlation-Id: b92c975d-37c7-4102-fe5e-08df2a69361c
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|23010399003|376014|19092799006|7416014|11063799006|56012099006|10067099003|261009223027099003|18002099003|22082099003;
+	BCL:0;ARA:13230040|19092799006|23010399003|1800799024|376014|7416014|366016|6133799003|10067099003|22082099003|18002099003|3023799007|5023799004|261009223027099003|11063799006|4143699003|261009221227099003|56012099006;
 X-Microsoft-Antispam-Message-Info:
-	bTgjaLCG+PHyMRCJpWxYT6uUmN9vud1dK0Sks8zmFlEbVYOpAWAZMCSVWvuGT4U7pHHeWKrAcJOTgOOXiCKi/ZNWZ+26ZzeyKbhXYwvJa/fJ40k5Yc9FSPYOPx8mfpHHkTsND2cFqwhhRZdfEJaEBGM3ONE1MpI1CCw/lBi76SYXd0F7no0qEy1+0klJAt90mFyeB5zScgI/yMGxgheDX/RecGZdk6n2R0bPZI3lvE5XEoAHAeUe3smxQ2y6N1P9OGqbrMWvJtK2DMNkQkg8jq3yzF1ZOzzyZwLLIRaDuuuXO/lcWc3Rd7AGOwN+ELTgWzzIIr5yX8nI+7LhYaG/zA+erejXVzufkaALPKzGTMdIoXEcbKQ6HNNBBCX3WVbKiFxXzNnbIwetKiTbOy6TutIsvLdXGh5b6bovBdTwsjQSTmClkGP12RzUrBcHgfvC0IOC9VssGYRyIvi6gglub8YP/M1p4B8il1ObS1FmLmJli55Ff846JHKbdPA2aAUw9OsCM4mr1mDg+iHS1VB8xd48Y9fDFR4MdFh4xV2T0TyaE1FpEVJWXoNtbYu6VaDQIZID51gdvQJW/stYcHbl4skq+8ocw3zMNvbNCgSRfeKmpaP9j/9L8PUpMZA3Jm2I
+	JgROuxPS5i0p2y6c4ZLnSVyE9jQb1kvzO5D/nSezCHys4KOCy3w4VBGbJfj34RBSsuk54/JFOGgkT+PrpDi1G4rrg9Wvo/GUSmerCYIAPPFQalVqH/Fd/wgj6IJwRMUXpJMwvAPcpBvbV36Z74ymGKRys+v5OnEyM1lOakPiwvwJFX1xOXuH6NxfCQIspndZL8pnMacAgpcWyczewYUte7/qIFlkGvcIxo2mxcCCQ9JY40wu+YYwR/4HyssDMStk7NPxjKoRRaNebaeK9i0CuWqJYpbPXmhNZuwlTlCkhLI+Mjo8vZ1q898p2JejqxaBW1EHqxXmXYudjnq/qpHlh6hdvDzCWvvv5IOSbimqJTTgHMkJ3RBoUDRR25+QwAZ6S73GKPeBpw8kZkl5fasa6cQeD6l+2VcnznA8t9hJIirfgHJJgChB+LS6gL//CmRVC/51O5u8bN0o8PBBK5VkrxkDuFIEFV334tjQcwFFtB4MgAcHDnU0FEKhNBvIiaJnoQBnejXMWjV11JtJiuFvVv9sSmjJlLAaMCfynOj9wQc4dZMF+CSefVoBszcS6A1N9QmQ/1BgIaalT+VHu9BeepGNZhzV3j2uxuEcM+kCCU/9VwvKWYvsXiqgo4JOWw9Oj8LI5rLVgWmJ1Np8C7zDAqC3mLAEelhUdoRTt3svf9I=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7874.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(376014)(19092799006)(7416014)(11063799006)(56012099006)(10067099003)(261009223027099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA6PR04MB11909.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(23010399003)(1800799024)(376014)(7416014)(366016)(6133799003)(10067099003)(22082099003)(18002099003)(3023799007)(5023799004)(261009223027099003)(11063799006)(4143699003)(261009221227099003)(56012099006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?GFeiX1wx3IsfZOTdpabcFwOBY7jeo/p8f3NV46yTpXEc5fGPOYjwGfhwb+Ti?=
- =?us-ascii?Q?M+AdhA8XWVA6OqoW792ni7dDxFbU4JiRvchlm0mV0TEJWJiy2xsnKEptJjLv?=
- =?us-ascii?Q?MhmjatyOhbypgwZLTPEZsLq6WzGiDbz7iAPMmfoqBQj0yrKKd9Lildd1wncm?=
- =?us-ascii?Q?xg/75qSwvCoRoAA0tlSEdYvaZ7NiIaVEt7P4LVGs2TYmJJbhCqQI3ttfx9hH?=
- =?us-ascii?Q?O93Ft51g7gG9yk+O5ZxZtalg7Y52+7WC6XRnF07Jd9hVQ4E0HZ7iQ9etezT2?=
- =?us-ascii?Q?IxUdJ5bOUdxmenMherLcQzN2A53BSUOaNlq9VlIfJNRAV2Js9kfMDGNXGi1c?=
- =?us-ascii?Q?kzMBb/EJPDP4KOv74dr+IK9FJ9aOoN9nB+jdAHpdzqD6eB/P4XWMlIQs0o9L?=
- =?us-ascii?Q?8EOA4HMBpinrX3reIHodaBDXiclDTuQAK6MwHr3a0ggkyTjrd1RbKEUKUhRj?=
- =?us-ascii?Q?CxSYX4s1UiXM4h+LCw1HSGBcVsZPlv/Kk4C/rSpdseq6AFNq1VaqYPdN6fjy?=
- =?us-ascii?Q?j+D5RPHxmNTo03QQlR1UK1WRxzEwuy9lx0Lb3yp5WBRDhdNeWhsCvHDygYO6?=
- =?us-ascii?Q?ZJcZVtV3B8mQY+IFOdfLBTcOUxZQ4kPofK1/yrNS/8roTXPUPWEOeOKG1RXJ?=
- =?us-ascii?Q?l0jYdAuXzXdCDuQLRoBbxc3fTIXCF3Nf1KpwMnNW0aHao2RMob0Fa1zdfIdj?=
- =?us-ascii?Q?RR5n/6QJvyES6gHB4NE9/VNVeDAwqSrInqt3wAOX92X8rrzprx5EIHclXeZH?=
- =?us-ascii?Q?N1Kz482dGDmE2MV6j9/Hr3FaiWdh31rhhvDrVZmzTarbzT+2TNFRcDT9YwRp?=
- =?us-ascii?Q?a3Rmq+qEtdH+ZflFUpszp+htWNAXjgeP5A+tze0TToAYahKnM1VP2DbVnTex?=
- =?us-ascii?Q?T6OrOhRhkdPJD1uOSqJiO9Ea9GTIffbFb4v24FKk4JnqSfIcDNVdHIAsPuvr?=
- =?us-ascii?Q?RG5J45CU8+FlAIdKRLBspaqPrCk1ARieeR0WtU6r6UqNvuqLR+aDiSqQaFpb?=
- =?us-ascii?Q?fa72rPgENQPU9yJq/bYgN1NRaMvQ7XpzYqngrngu+HKIfpO8TBWkEY2RHkeU?=
- =?us-ascii?Q?igeZgYF6i/9t1ytWuUmG+7firaX2poi06L/w+1kLmjjUxVjNae28LnYpJp0i?=
- =?us-ascii?Q?mlnHdOSRbEatduybT1HVpAzuObg5f5SIBkSiMldFUJY2qS3lbOe/t3L2F7Sd?=
- =?us-ascii?Q?AhdkwwKagPpgASIub9Pn5XVTQDKEcNaeUGjDEe8LkecUjUSl/5spDMMHTZUb?=
- =?us-ascii?Q?YF3+1lvz16HIQR4mTScofPWXJmxmevmorZaHutEWfV2vh6wRtezWUfWD5OHA?=
- =?us-ascii?Q?jL+PtBZhatMQayAuRYyotpi2nbiOsK3PzchXamXEBOvJr69yKJFoSJfpM8Nt?=
- =?us-ascii?Q?WbfIJO7VWTUkQ+y8lxdQkINYEls5GJMWsVY9PYzBtVC53+r8jiU8K+iO6q7M?=
- =?us-ascii?Q?fnZueZbJLJT9XyhyX/6NsE413NiAX6RDIh21WN4BROjO6siN9exFMTvbdVXm?=
- =?us-ascii?Q?/baKFLz5eJ6SabuCbriIU4WCGZxFewdGnjgs5CbLgtBhZbhIejmLSFm3RcVU?=
- =?us-ascii?Q?9jQ8s1kgkXXTofqfgROuXoMCFiYWiDlkxaTttULPKL6/2oc2mAtrHbbwbKkr?=
- =?us-ascii?Q?IvjGzYaQDXGzRyczGAxvQEE2G59Sr3IjxXESLo/lWvN4+L4bWJehsfSxLVRG?=
- =?us-ascii?Q?5bpU2ruV2gtXxJocCzewC28A612ONkN3gA2AFSoWmRjJANDIf1xvxWroMCyp?=
- =?us-ascii?Q?ddyogrXZ3HCMfmcVJMrIbVWXLABUgVU9SG7vOw6y5C9i/PEflBws?=
+	=?utf-8?B?RVpTQjl4bDNlZnpLdVAwN1R1WWIvQlJVMkhEdnFxRFRGdElQRGk3T1hBTkVv?=
+ =?utf-8?B?UXRDYXJYZFJvOUZJbEkxVGxCS0cwYVhXbFFFR2pKNm5NK3NCNXp0MzQvMk02?=
+ =?utf-8?B?cHY5MVhJZ25hZXdhVk4rVVFGcVRxOXVlaXNsSkpweCtQYzhiV25kOVlkdEtH?=
+ =?utf-8?B?QVJkc0dvdStnRDVYZXBPbUoxbURVcndiYUszVUFkZ1JTR0Z3ZVljZWRWR2hO?=
+ =?utf-8?B?NktHc29PcXdRdzBrczVPNGY4VTUvSDlrcUt1QUgzWTNvVkR4bGJUVFFDUFhm?=
+ =?utf-8?B?WnRCaTcweDdmdHB1MWhHM2xYVm85NTVvZldPR2dIbzBvb3A5SW1vWVQreXR4?=
+ =?utf-8?B?aktNdFA0U3d6UG9tZ2ZTamhKWmxRT0hHS0ZMeHJXMkp5RldDOHJrbGc5V3JG?=
+ =?utf-8?B?L0c2dzN6Vmw1aFZPRTkyem0xdnBLVUpOVEM3czEvc0dQamJJTnBpQWs0RzhZ?=
+ =?utf-8?B?VGxzd052ay9QeFdpeEcxNjhQK0lLczc1NnI1MHR6VHJjVVZDRnBNOXd6bENK?=
+ =?utf-8?B?UFNNMWtuazBYNVVkOTJoMFFWbk1HQm03MFEwRWtRdlV5SkV2b2Vsem85Z2Mr?=
+ =?utf-8?B?VURiUHR4eURXSDNaempuZWo3V3g0dG10WlNORWhlMVZWMjJQT2RoN2xiK1dI?=
+ =?utf-8?B?NEwrY0pqL1RKNUszUXhybGVwK0tndXp3L1FzSitsb1RDN0E4WDNSQW56THVC?=
+ =?utf-8?B?Ykh1cE11cksvR0dZY2cwMmdtdUZhSkZEcVk1Wk04a1pUYnZwdGdQM3VYc2k5?=
+ =?utf-8?B?RVMwV3g4ZHV3WVVldzJ3Mi9mTFdXbHVTamVtUnVWNmRqVUR2MDg2bnlPSU9K?=
+ =?utf-8?B?cjBrZXdib1ZwZmFQRUhLMitCbnoxdUE0R3JIZUxLeXFXUTBoaU9BQ0RtdVJ1?=
+ =?utf-8?B?Q05PWWhvdytQNkkrald2elpSTEVNM1VRME1lSDVkbnZWVWdRQ1hkaDJFUHBX?=
+ =?utf-8?B?VU9kbzV5bFkxVUVHcTRkM21ibnF5L2xqdUoyK1kzekZ0Zm5EWkYxOEk4VHky?=
+ =?utf-8?B?UENjRWNlQmg2b1RJSG9wWTJKZ3pZdzlscjBKazMxVjc4eXllMktwZnN6SEdD?=
+ =?utf-8?B?bG1La0d4NW5Gb3V3a25iT1R4S1k3RHBObitUNFRtYXJtQ2p5TVNJallkTk1W?=
+ =?utf-8?B?cHVwTjBMQVN2S2pGUW04OGMyUnRFVzA1Y1pWcFdqOTN2S2V4NjB1ZHNURUN1?=
+ =?utf-8?B?TFgzUHV5b1JhQjMvdXczNXhONXg3SVdCSk1UUVJvOElncGh6elAxdVFBRmxO?=
+ =?utf-8?B?NDJFRjYwWmxRTUhyOGYxbzVBZUFnUWVKdTM5TGFXb3g0K0RLanFiWWl5aWt1?=
+ =?utf-8?B?RmZDR2VQV3VqYjd4enZJNHhUeHFlWXFIUXV1Vkk2ZlZFQ3g2NGRZUkFSMCtv?=
+ =?utf-8?B?OXpNUTBHN210dmxWdmFPV2Z2V1B5NXRBcDNLaVpKQUhTQkMzSzJvUFFBTFp4?=
+ =?utf-8?B?WUxQTzhNSC9BZGhVbjN5dUk0K0VPN1c0aGRWQlFSZndZS0pCMHFiVXJkN3NC?=
+ =?utf-8?B?Q1JxS1ZUNTVvZFQycDU2SlFDUlVVVkdTVUVnRjVlVkdYVDljb1FiTlY4VzNk?=
+ =?utf-8?B?RWxyY0h2Mzk3VSsvdFdHNmJxMjFaaWdvRllVMGRianVDbWdvS2dObkMvUWZO?=
+ =?utf-8?B?ZWd6S3VndGhoSjdPajFGcW5URmZJcDlHbS9lbU90WkFSU2Urcnl2Mm5rWmtW?=
+ =?utf-8?B?SU5XWjAyWVhSR09kbWpEL1FPdlcvRExMZTk5dGJCcWdwZUN3RDFWak4yM1Qz?=
+ =?utf-8?B?eFBxVXQ1MVdvS09zb20wbGh5anBTcDVwQ2MvVm1iU3dvVVZSelNEZ2NoUDZN?=
+ =?utf-8?B?dGtuL291ODV0ck8reStnajc1azZYZnEyNzgwcjZFWWpwMEowWFVsSHMzbENz?=
+ =?utf-8?B?cE90YXE3RWxtYnc2NUp5M0F2cWlXWGVMVzNCam9aWUc4UUFMRHowVXZTZ2t5?=
+ =?utf-8?B?YUlnVWd5ZU5zSXJCVmNCUGIwd05ZYnRoV0ZFZDVKRGpkYytncEc3cGpBYlFX?=
+ =?utf-8?B?K1p3OVpDQkR5RjJCbURwelMwcGdWQVI1WWZ2VU5lZDg2d1pKSWJuL1E0U0ZY?=
+ =?utf-8?B?N0NabmVSQ01TN3k2bVgvSXB6ZmZxYmNEbGJDcmhZNkFsL0RvMEZZdldDZUVH?=
+ =?utf-8?B?bG8xcUNFRjJZYjkzdFBKSndQTU9zbnQ4dW5ONFdXdmFUQSt5ZVMzcUJCRVVB?=
+ =?utf-8?B?SDNlSmZSYTFjRkp3VnovdTlQUEt2SSs2Ti9qWWJRaVprQ3BIamxxRWFkTldI?=
+ =?utf-8?B?bTRDMTB2MCtDc2pJRTRKZ2FYYXJrQWRYeHlWMVczWXptUndUS3p3NnZHRmMr?=
+ =?utf-8?B?NHdPUllSZm1nWjVlRloyTjJDMEdNL3BhbklsVWgrVlFZeS83bStNbTE5ak4r?=
+ =?utf-8?Q?Lezrm8yneRJ0h+EeZ9UGzV6B/Ey0tPcSt0QmV?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2bf76b5c-d46c-4439-9a03-08df2a671dd4
-X-MS-Exchange-CrossTenant-AuthSource: DBBPR04MB7883.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b92c975d-37c7-4102-fe5e-08df2a69361c
+X-MS-Exchange-CrossTenant-AuthSource: PA6PR04MB11909.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2026 02:50:51.0963
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2026 03:05:48.4464
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: yulFTnXWPohs8xlnmdPrEuS+lwpw2H9BrscHvdokwuxHPlsd1yPm1+ST8PMP+SbKPBwDOkLp6Ti934nforsLjpUfiHgufEuwuSKmzqXSbLz6cL2KrrSgpG0J8IqqVrvM
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB9007
+X-MS-Exchange-CrossTenant-UserPrincipalName: 9PYxa3X44MiPotF5y5608/yEGo9t6DndtpfrS7roD9dAtuNJVGbR/0vH/wuTuhpeO9EUg2LNEyVR+jbPE0RXTTKQ/TTh+uyY5c6XkbrJhdrR8wa5uAeHzAS26WLxaOC4
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRWPR04MB11519
 
-Hi Frank,
+On Tue, Sep 29, 2026 at 09:10:37AM +0000, Bough Chen (OSS) wrote:
+> > -----Original Message-----
+> > From: Miquel Raynal <miquel.raynal@bootlin.com>
+> > Sent: Tuesday, September 29, 2026 4:23 PM
+> > To: Bough Chen (OSS) <haibo.chen@oss.nxp.com>
+> > Cc: Pratyush Yadav <pratyush@kernel.org>; Michael Walle
+> > <mwalle@kernel.org>; Takahiro Kuwano <takahiro.kuwano@infineon.com>;
+> > Richard Weinberger <richard@nod.at>; Vignesh Raghavendra
+> > <vigneshr@ti.com>; linux-mtd@lists.infradead.org; linux-
+> > kernel@vger.kernel.org; michael@walle.cc; Bough Chen
+> > <haibo.chen@nxp.com>
+> > Subject: Re: [PATCH v2] mtd: spi-nor: clear the default RDCR opcode when
+> > entering Octal DTR
+> > 
+> > On 29/09/2026 at 14:53:07 +08, haibo.chen@oss.nxp.com wrote:
+> > 
+> > > From: Haibo Chen <haibo.chen@nxp.com>
+> > >
+> > > The core defaults opcodes.read_sr2 to the legacy RDCR opcode (0x35).
+> > > In 8D-8D-8D mode the opcode is extended to two bytes per cmd_ext_type,
+> > > but the resulting command is not a valid SR2 read for these flashes,
+> > > which access their status/config registers through a vendor-specific
+> > > indirect register space. Since spi_nor_cache_sr_lock_bits() now reads
+> > > SR2 during init, i.e. after the switch to Octal DTR, the extended RDCR
+> > > gets no data back and the read times out (on i.MX FlexSPI: -ETIMEDOUT
+> > > and a controller
+> > > WARN() during probe with Micron MT35xU and Macronix octal parts).
+> > >
+> > > Clear read_sr2 when the switch to Octal DTR actually succeeds, so the
+> > > SR2 read is skipped (a cleared opcode already means "unsupported").
+> > > Doing it in spi_nor_set_octal_dtr() keys off the real runtime
+> > > protocol: a flash that advertises Octal DTR but runs in (x)STR because
+> > > the host lacks support keeps its usable RDCR.
+> > >
+> > > Assisted-by: LLM
+> > > Fixes: b7b63475903c ("mtd: spi-nor: Create a local SR cache")
+> > > Fixes: 63489002d397 ("mtd: spi-nor: Refactor Read Status/Write Status
+> > > support")
+> > > Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+> > > ---
+> > > Changes in v2:
+> > > - Rework the fix following review: instead of guarding the read at runtime
+> > >   in spi_nor_read_sr2(), clear the default RDCR opcode.read_sr2 once, at the
+> > >   point the switch to Octal DTR succeeds (spi_nor_set_octal_dtr()).
+> > 
+> > I don't get that choice. Why switching when Octal DTR succeeds only? SR2 is
+> > either supported or not supported, I don't think it is anyway different when
+> > entering octal DTR mode, is it? So I would expect SR2 to be cleared earlier than
+> > that, once we know the chip is octal DTR capable. And this must be early
+> > enough so that manufacturer drivers can still set their own value.
+> > 
+> > I am wondering whether we should simply drop sr2 opcode in the QER SFDP
+> > parsing entirely for octal DTR devices (Michael?).
+> 
+> The reason I clear it at the point Octal DTR actually succeeds rather than
+>  "once the chip is octal-DTR-capable" is that capability != running mode: 
+> a chip can advertise Octal DTR while still running in (x)STR because the host 
+> controller does not support 8D (see reply below). In that (x)STR case RDCR is
+>  valid and needed, so keying off capability alone would wrongly drop a usable
+>  SR2 read.
+> 
+> That said, I agree the current spot is awkward and does not let manufacturer 
+> drivers override the value. I'm happy to move it earlier. Two options:
+> 1, Clear it during SFDP QER parsing (as you suggest) for octal-DTR-capable devices.
+>      This is the natural place next to the existing read_sr2 = 0 QER cases, and it runs 
+>       before the manufacturer late_init/fixups, so a driver can still install its own SR2
+>       opcode afterwards. 
+>      My only concern is the capability-vs-running-mode point above — we'd be 
+>      clearing based on advertised 8D capability, not on whether 8D is actually entered.
+> 
+> 2, Clear it in spi_nor_late_init_params() after the manufacturer hooks, gated on 
+>      octal-DTR capability, so vendor values set in their late_init are preserved.
+> 
+> If the capability-based approach is acceptable (i.e. we accept that a chip advertising
+>  8D but forced to STR by the host loses its RDCR), I'll go with dropping it in the QER SFDP
+>  parsing. Michael, do you have a preference?
 
-Seems Patch 2/2 is not sent out?
+Hi Miquel,
 
-On Wed, Oct 14, 2026 at 03:03:24PM -0400, Frank.Li@oss.nxp.com wrote:
->From: Frank Li <Frank.Li@nxp.com>
->
->Replace the struct device *dev argument with struct dma_chan *chan so
->callers do not need to reach into the dma_device internals to obtain
->the device pointer.  The implementation now derives the device via
->dmaengine_get_dma_device(chan), which correctly handles the per-channel
->IOMMU mapping case.
->
->Prepare to make dma_device private and make dmaengine API consistent.
->
->Acked-by: Dave Jiang <dave.jiang@intel.com>
->Signed-off-by: Frank Li <Frank.Li@nxp.com>
->---
->V3 split from origianl thread
->https://lore.kernel.org/dmaengine/20260923-dmaengine_prep_dma_pq-v2-0-32ed65b8a9b4@nxp.com/
->V2 change collect Dave Jiang ack tags
->v1 version at
->https://lore.kernel.org/imx/b40fa0d7-fbd0-4ee8-b99c-781d08c18838@intel.com/T/#t
->---
-> crypto/async_tx/async_memcpy.c      | 4 ++--
-> crypto/async_tx/async_pq.c          | 8 ++++----
-> crypto/async_tx/async_raid6_recov.c | 8 ++++----
-> crypto/async_tx/async_xor.c         | 8 ++++----
-> drivers/dma/dmaengine.c             | 4 ++--
-> drivers/dma/dmatest.c               | 2 +-
-> drivers/dma/mv_xor.c                | 4 ++--
-> drivers/ntb/ntb_transport.c         | 4 ++--
-> drivers/ntb/test/ntb_perf.c         | 2 +-
-> include/linux/dmaengine.h           | 4 ++--
-> 10 files changed, 24 insertions(+), 24 deletions(-)
->
+Any suggestion?
 
+Regards
+Haibo Chen
 
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
+> > 
+> > 
+> > > - Key the clear off the real runtime protocol so a flash that advertises
+> > >   Octal DTR but runs in (x)STR (host without 8D support) keeps its
+> > >   RDCR.
+> > 
+> > Are you sure this is a valid case?
+> 
+> Yes. spi_nor_setup() computes shared_mask = hwcaps->mask & params->hwcaps.mask, 
+> i.e. the intersection of flash and controller capabilities. If the host does not support 8D, 
+> SNOR_HWCAPS_READ_8_8_8_DTR is not in shared_mask, spi_nor_select_read() picks a 
+> non-8D read_proto/write_proto, and spi_nor_set_octal_dtr() bails out early at:
+> 
+> if (!(nor->read_proto == SNOR_PROTO_8_8_8_DTR &&
+>       nor->write_proto == SNOR_PROTO_8_8_8_DTR))
+> 	return 0;
+> 
+> So the chip stays in (x)STR with reg_proto == SNOR_PROTO_1_1_1, and RDCR is still a valid 
+> single-byte SR2 read there. That is the case I wanted to avoid breaking by keying the clear
+>  off the negotiated runtime protocol rather than the advertised capability. If we move the 
+> clear to capability-based SFDP/late_init as discussed, this is exactly the scenario we need to 
+> be comfortable regressing (an 8D-capable part on a non-8D host would lose its RDCR read of SR2).
+> 
+> Regards
+> Haibo Chen
+> 
+> > 
+> > Thanks,
+> > Miquèl
