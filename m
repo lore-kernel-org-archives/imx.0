@@ -1,117 +1,121 @@
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85FA34AA402
-	for <imx@lists.linux.dev>; Thu, 15 Oct 2026 08:12:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72FA34A3F08;
+	Thu, 15 Oct 2026 08:25:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792051923; cv=none; b=SFNKXXLHlUysZlnIG5/Ia8MpGCw7v1Qs20kv/LRm5H6QIok9CVdcQtlpBV3+LKyynPB8zqeWJpvc+PLhg1a+6zgGBVNmFK+2MPbdKz0XZy2J5bFrG+DncrXt9SCPxeyFTVC+fJ+uvQtQxNDjfDNeOleHy+Tgt/t4R914y6I3v98=
+	t=1792052708; cv=none; b=BYZVYnWzo6RiNy3UDSWsPC8TqDwFFCWS1aFcCzsb7kDhJl9qj2S+OktUBsYGkyQz5pHViDiw8NoRcqhgjvdg62yTiJJRUk9rZHRFAJokQFloa184NDaeBMwx45KIIDOLyCN/OAmesmvYnqlHTIT4Itsnms1qpOZNrmwhSgCop0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792051923; c=relaxed/simple;
-	bh=HUysfWcwgaCnsXaXq97C5D3DJcHzVD/nOuWhNnFXHNM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BSdx4Z2KDGdE3jtxr8PoYydeD2Mapf7KUfi8NDs2+vyIqn36DIpt/eGU1RqGc/YaHnexLeBW2l/nDbI/ovkFkxEpLoNIuFhmDdIh/k+GwMfs5vzKg8Zrrhfkoeqd9TXNnvyeO4Ae5+BN4hHBDy3UpFjBq9/3gibRkdv6xn5djc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mKKyqLX7; arc=none smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1792052708; c=relaxed/simple;
+	bh=xDtLZHyfp+AIKd7OVWBh7n32PD+EWS9ETfRWqwxtIqQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ZxvOmUKazP6mz4hEa52RqNUY8AdhowF7lEBhlrw4A1WOCPsWT1hjzz4IOs3cDpW9Abq+tc7Xdqppn8wvqykc80qzvnyonAjYnSE6B7frQCCyN/h8p2RJq1qQdCrgdQFazB1haIIVRW/2OQSgdx9TP3sGOJXo4UU8sprtx0ayNpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=MZ3+x7VP; arc=none smtp.client-ip=188.40.3.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mKKyqLX7"
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-48c6f764f82so569247f8f.0
-        for <imx@lists.linux.dev>; Thu, 15 Oct 2026 01:12:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792051921; x=1792656721; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=GHuAmdmkXZvDWTufmXOc4smtM5tKnn8omClhm1kd2uo=;
-        b=mKKyqLX73qb8mltoWWgEoLcHXkRkz0x5+pjoW2+S8vcnOS+gYAa8qD+msKUTEIwuwA
-         lKPvxQ8SR9g7ZHcHF6WgWZCejW+d+XVJc8b1CU+SFnu8i36Rkumh+XK7MHnx84xMEKO0
-         9S/4Z4iL7WIccRri3RLUgtsKdKVxj3r1vk0yu/arAR6NCSHxtBEZFdNQWGcMoBQr1/Aq
-         /zZLcEoBsHEdimaMyF9E8vo6v0CJN0oUGKvA+II9cAk7HlMnCgCmeNBNSYpXCdlSdosq
-         m1XSzfAOWyiwAs1WGfWpVFt9wXYcu4jdvKdBwar4gYJGz0ey1Vn4pN4bVEOwr2/fZ6zU
-         yPug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792051921; x=1792656721;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=GHuAmdmkXZvDWTufmXOc4smtM5tKnn8omClhm1kd2uo=;
-        b=DAdEoO0lwDTjKe/qn5meWGsDP4qWPPZo5kaM2J4RdiXf1mkP+wKno2Okw6QZER7iYk
-         qdwg0vGH/r03bUFNanDux9I6OA7zQzVYl8LykcUTwYGloEYEKORZvcHF41FZ/8J4HrOo
-         og/SazfaKg8HjaJtJhfDqHtzk6J103SUqoRUD7a0TI6bBrQDXCOQoN+KbIXt/sP+A/CD
-         9ahkmgS/R5yLBYT4yy4x4JUT9cisRDnA2DbgXQveDh9MpfBpVoT8/0x93meVB8r8yI9d
-         LfV4fzxHyUGpMLQWxmq1+u/oJ5sd5uKhHmLpvWZs4qVgYZ76Atja5MckBv1IJY22pOCL
-         jigA==
-X-Forwarded-Encrypted: i=1; AKwUvBxbSsr9pECFMpSEsDBDFZOlWI+bcikr4MseK2hgk8S9Q+xkzp7kg2seEY9lMFh2k1CB/vg=@lists.linux.dev
-X-Gm-Message-State: AFq9FYJ0fISqinBgzXDvTchIESugfsssokjY4Kk+B0OTExZimEUxyz0U
-	dBbWg/LN23Odb/Zf0gtcDybawjCHJIQEwqEOQsga+uJPxgpb9BEzLn+s
-X-Gm-Gg: AYBFou2L+ORf2Y/3yk4ea9vSBtWq9//kqT3N3rGOU0g9DnTVbZGhqYZn9BmGlgFPu51
-	NqgXI6zERQ/fs7JMu5BjSB+IcUmfOe6JveTVzmcu7RVs24KGvs+ZxgmfdRJnwjJ4oq8b4vup+oP
-	ajlal8ToOf9i0S3UZaqXU6UCRN0+fs3xGSDhXk0T6J0EfDL8dERy41FZNwv1TTOu2oyWoN/Yszm
-	oOvhpuX1P0QClWkYf83jjpxwHXOtvhLpnQRI73fYWfqJMhBrTaz7XId0Y64wa892RV3k/jmUcmg
-	QBqfZ2mjKjoB/A6lqmU9vRopTFf7hB++w7tjDcHYnwDAebYMRGVHQxhX4tT68SkRPkcCjZmfP7u
-	zdAgXZIYfSlM77buUBgsqR5jdvvR4mNgOS7n0tPVtMKch+Of3cxE13fRg4wygsVZlBUi00Ovvhe
-	DylkWFd8Y8WcPWP5319rm/rmxlplLFHt+pJRNRT8QT7Hu7m+vPbf2ZhApzeQp8xAXXpsi+Y9rH1
-	CdEgaBvS45yL7ee/ly6aMYMT98pdtC7LwkFAN7l+strPUU6uNmit4yB280k6ZgJJqaKBaVxDGxn
-	wuhT9B3llUI+LQQwm1jXoDkd+6IeuotY
-X-Received: by 2002:a05:6000:2993:20b0:48c:4442:54e with SMTP id ffacd0b85a97d-48dbaae710dmr26750262f8f.30.1792051920518;
-        Thu, 15 Oct 2026 01:12:00 -0700 (PDT)
-Received: from Lord-Beerus.station ([93.66.71.207])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48de3f7f8b8sm16237534f8f.35.2026.10.15.01.11.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Oct 2026 01:11:59 -0700 (PDT)
-From: Stefano Radaelli <stefano.radaelli21@gmail.com>
-X-Google-Original-From: Stefano Radaelli <stefano.r@variscite.com>
-To: Frank Li <Frank.Li@nxp.com>,
-	linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Cc: pierluigi.p@variscite.com,
-	Stefano Radaelli <stefano.r@variscite.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Subject: [PATCH v1 1/1] arm64: dts: imx8mn-evk: Pass GPIO_OPEN_DRAIN flag on i2c3 GPIOs
-Date: Thu, 15 Oct 2026 10:11:49 +0200
-Message-ID: <20261015081149.5919-1-stefano.r@variscite.com>
-X-Mailer: git-send-email 2.47.3
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="MZ3+x7VP"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=ew.tq-group.com; s=default2602; h=Content-Type:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=ZRE9TYKLF/tjZX5aLFVe0iHhVl7KukoN/rYEWXfPZ7Y=; b=MZ3+x7VP1t2K7cPkbBmet9IWgX
+	XXbss1UeBss3IrZXh6UXVrJoJXBDTGUloSVuJ70WfmoFm5LMxxuKbRNIAEZ24TRfAOm5wGTw3Hp3a
+	V88fQKZazCehrIOlN+N3LDOl+HHP2t45BWnP4yuf0j9anSs3DiM63obW6E6vOOh2AH69O33RY6ByH
+	0vo8T+PB+mX+dupqpFdUDUq7vT7UC9l3vwxEpE7IhZH0ewvt7SnmoPzHIAyMw35hpgnFKy2YnvMME
+	FkmTyUyot1Qrz6Qbo9Wr8gvsPYqiFWhhOtzsm4Hv3XyDwQ41R2UXFqiZXFPmm3FjNax6momT3lC0o
+	1HMB07bg==;
+Received: from sslproxy08.your-server.de ([78.47.166.52])
+	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <alexander.stein@ew.tq-group.com>)
+	id 1xHGlr-000Ici-2T;
+	Thu, 15 Oct 2026 10:25:03 +0200
+Received: from localhost ([127.0.0.1])
+	by sslproxy08.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <alexander.stein@ew.tq-group.com>)
+	id 1xHGlr-000NCR-0T;
+	Thu, 15 Oct 2026 10:25:03 +0200
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Frank Li <Frank.li@oss.nxp.com>, Liu Ying <victor.liu@nxp.com>,
+ Francesco Dolcini <francesco@dolcini.it>
+Cc: Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ Dong Aisheng <aisheng.dong@nxp.com>, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux@ew.tq-group.com
+Subject:
+ Re: [PATCH v2 2/5] arm64: dts: imx8qxp: Add display controller subsystem
+Date: Thu, 15 Oct 2026 10:25:01 +0200
+Message-ID: <5661700.31r3eYUQgx@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20261015063105.GA5720@francesco-nb>
+References:
+ <20261014071657.118378-1-alexander.stein@ew.tq-group.com>
+ <as-JyQG5vgaPYLeH@SMW015318> <20261015063105.GA5720@francesco-nb>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+X-Virus-Scanned: Clear (ClamAV 1.4.3/28154/Thu Oct 15 08:24:22 2026)
 
-From: Stefano Radaelli <stefano.r@variscite.com>
+Hi,
 
-scl-gpios and sda-gpios need GPIO_OPEN_DRAIN flag, otherwise the
-following run-time warning is seen:
+Am Donnerstag, 15. Oktober 2026, 08:31:05 Mitteleurop=C3=A4ische Sommerzeit=
+ schrieb Francesco Dolcini:
+> Hello Liu,
+>=20
+> On Wed, Oct 14, 2026 at 08:55:21AM -0500, Frank Li wrote:
+> > On Wed, Oct 14, 2026 at 09:16:46AM +0200, Alexander Stein wrote:
+>=20
+> [...]
+>=20
+> > > diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-dc0.dtsi b/arch/ar=
+m64/boot/dts/freescale/imx8-ss-dc0.dtsi
+> > > new file mode 100644
+> > > index 0000000000000..e94fbc6eae07d
+> > > --- /dev/null
+> > > +++ b/arch/arm64/boot/dts/freescale/imx8-ss-dc0.dtsi
+> > ...
+> > > +
+> > > +	dc0_pc: pixel-combiner@56020000 {
+> > > +		#address-cells =3D <1>;
+> > > +		#size-cells =3D <0>;
+> > > +		reg =3D <0x56020000 0x10000>;
+> >=20
+> > reg should be first property, check others, you can use
 
-gpio-146 (scl): enforced open drain please flag it properly in DT/ACPI DSDT/board file
+You are right. I'll fix.
 
-Signed-off-by: Stefano Radaelli <stefano.r@variscite.com>
----
- arch/arm64/boot/dts/freescale/imx8mn-evk.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+> >=20
+> > https://github.com/lznuaa/dt-format/
+>=20
+> We have a tool in the Linux tree, ./scripts/dtc/dt-check-style,
+> I would advise to use it and improve it if needed.
+>=20
+> Documentation/devicetree/bindings/dts-coding-style.rst is the reference
+> document.
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mn-evk.dtsi b/arch/arm64/boot/dts/freescale/imx8mn-evk.dtsi
-index 3e590afa4fab..036afa0f6990 100644
---- a/arch/arm64/boot/dts/freescale/imx8mn-evk.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mn-evk.dtsi
-@@ -287,8 +287,8 @@ &i2c3 {
- 	pinctrl-names = "default", "gpio";
- 	pinctrl-0 = <&pinctrl_i2c3>;
- 	pinctrl-1 = <&pinctrl_i2c3_gpio>;
--	scl-gpios = <&gpio5 18 GPIO_ACTIVE_HIGH>;
--	sda-gpios = <&gpio5 19 GPIO_ACTIVE_HIGH>;
-+	scl-gpios = <&gpio5 18 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-+	sda-gpios = <&gpio5 19 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
- 	status = "okay";
- 
- 	pca6416: gpio@20 {
--- 
-2.47.3
+Oh nice, I wasn't aware of that. Thanks for the hint.
+
+Best regards,
+Alexander
+
+=2D-=20
+TQ-Systems GmbH | M=C3=BChlstra=C3=9Fe 2, Gut Delling | 82229 Seefeld, Germ=
+any
+Amtsgericht M=C3=BCnchen, HRB 105018
+Gesch=C3=A4ftsf=C3=BChrer: Detlef Schneider, R=C3=BCdiger Stahl, Stefan Sch=
+neider
+http://www.tq-group.com/
+
 
