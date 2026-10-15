@@ -1,152 +1,77 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE9E04908AF;
-	Thu, 15 Oct 2026 09:18:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CD9050AC27;
+	Thu, 15 Oct 2026 09:41:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=180.181.231.80
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792055903; cv=none; b=QhjlzVHi0qVpbLdBZh0J9xp1AGUxbTwAnBglb6S0LxezGCVKpXZeQXG1wvlnEbV1nyhXzyjHKJozwd2zofNUv2zamDJBmxTFlKEd2ThdnbdJcOGE5/BFb9ArJgE33j7XNR9q0aB+nG9JlxKLpvEQdzWfu+RnpSk1jSSaw8ti21E=
+	t=1792057286; cv=none; b=AezCtWMuZqDpdza1q+VXv20lfH2BzjVwYOQZS0rhrEX0YkTY/1ZGzM5JPBAGeE3H/+qBbp3VsutOBbfKKZAaPNtaxE6sdinRu1dy5R9j6AP7f8NRWBHtUgkIfVhYi6zJ2WYy901R1sRnkPh8uBfLGIFLG3ORUQh2wbUT154nyQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792055903; c=relaxed/simple;
-	bh=99OWVA7qzNNDoX8gL0gzJ8GQOJyhSiGEbNZEf+X+AZU=;
-	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
-	 Date; b=I0CWUtWqTrEY+dXQ/caW6jGz8u9sWwSctyQYBVg42TWrHoW7OPsmBRtSmJFChzvYp5tAMNQMKtqeYbgOfnM/gDnWxLsQD/mTYOWtF5E7VS4rqnUkdVemJtijpjUNUQ4+iYYhzygPIBkQxkCZCOhJO2NEt0NuCQ9ZZXwvC1CXoz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fVkdIizr; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792057286; c=relaxed/simple;
+	bh=auBgT54f76xLHPsbAf5D64XC3Y7tMTvc8isupb3BnWQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LYL876Cts1HBJm+Hh83xBa75QwjQt6t7fUkd6tM990j2KOC3WKNmIljjVddJMRxHwRKrDFFmaGd7fWjXXJF6YRPSiCVWCMwa24No3KmZKC27toYybjt9r/0THdhisl4L4pQndc1/xKbrtI/+bMzyakj6Y7B81hxDFCL4Gmwyyds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b=AayoWzIl; arc=none smtp.client-ip=180.181.231.80
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fVkdIizr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45F8D1F000C4;
-	Thu, 15 Oct 2026 09:18:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792055901;
-	bh=j/GId1WSGt3DChVkrft8jp6mc5PUb7LWRrXmjYk0mTQ=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=fVkdIizrDvmdZxECxXtMcxOmRbnctW+DYly9QfkGSXH+amlWDVlmqu7qd1FhqvjGn
-	 1InvS7IPZOXilXviOu8WJb0rchmfSWA0tAjwyyl9evaEAPWGvV4PK57+PHG1I2u2f+
-	 vKxHPTvwnzCL3QUpJ7OGE8MZR/qHotSW+LoyTwGOLfQzekzb+4wxLv2L/BnpJAfydu
-	 lB1kGqOdvLWvw0Jtqmk1Ln0Mq0+anz+lg4bJbGPdkhpY5WnLGiDKvbtfFd2n58UyX/
-	 LLNQJUfpMQZOThD1FCJBXWVgAkTnowss0hJ4OlJn9dCGUFzavlS2IKQV4d0Vpm3IT6
-	 EiKTkiKgzistw==
-Message-ID: <sashiko-outbox-172558@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] usb: chipidea: otg: fix fsm deadlock and B-device
- gadget registration
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Xu Yang" <xu.yang_2@oss.nxp.com>
-Cc: linux-usb@vger.kernel.org, imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20261015084140.61544-1-xu.yang_2@oss.nxp.com>
-References: <20261015084140.61544-1-xu.yang_2@oss.nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 15 Oct 2026 09:18:20 +0000
+	dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b="AayoWzIl"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
+	from:content-type:reply-to; bh=n/dObaMkUWm5pUqDYuOvXJ2uzV/iakL+4bYfynFPMTA=; 
+	b=AayoWzIl507yCoEfvjqfTQoiWeTVGYboAIKqziCOjo9+D1pJH3shHm2jQuig9q+R8AdT/5yHe2f
+	qNVO626Q6NxguYxuu70Ckd0KoTflmJ5AMRYgBTA/3/zdOhMjD72rWq5b6pVmnBLeXfMKFCRkCNpZU
+	qPNKcNcJBXHRb5Zhlyh1+ECXrFUGZtsOCl0uFZR9VBHdUrYZG445G0CZ9WK0A9ApyiL4EvdYFCcQC
+	ohSUk86lI9xyB9lW+d+zPZq9mYDdFAoTfwr8CHpiyqh6Kr2itvVJzRQJo2ClqhSRdV/uSa1WIY+dE
+	n450QdfRBPr4zy6msj5Pkig6LKYvBK6kJ60g==;
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.98.2 #2 (Debian))
+	id 1xHHx4-000000047Y7-2R5o;
+	Thu, 15 Oct 2026 17:40:43 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Thu, 15 Oct 2026 20:40:42 +1100
+Date: Thu, 15 Oct 2026 20:40:42 +1100
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: jeanmichel.hautbois@yoseli.org
+Cc: Greg Ungerer <gerg@linux-m68k.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Olivia Mackall <olivia@selenic.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, linux-m68k@lists.linux-m68k.org,
+	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH v4 1/2] hwrng: imx-rngc: Use optional clock
+Message-ID: <atCfmsPr85oAnsJT@gondor.apana.org.au>
+References: <20251126-b4-m5441x-add-rng-support-v4-0-5309548c9555@yoseli.org>
+ <20251126-b4-m5441x-add-rng-support-v4-1-5309548c9555@yoseli.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251126-b4-m5441x-add-rng-support-v4-1-5309548c9555@yoseli.org>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
-- [High] usb: mutex_trylock causes FSM state desync on concurrent gadget un=
-bind
-- [High] usb: chipidea: ci->role tracking overwritten causing role leak
-- [Medium] usb: sysfs group and interrupt leak on ci_role_start failure
---
+On Wed, Nov 26, 2025 at 08:08:09AM +0100, Jean-Michel Hautbois via B4 Relay wrote:
+> From: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
+> 
+> Change devm_clk_get() to devm_clk_get_optional() to support platforms
+> where the RNG clock is always enabled and not exposed via the clock
+> framework (such as ColdFire MCF54418).
+> 
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> Signed-off-by: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
+> ---
+>  drivers/char/hw_random/imx-rngc.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-commit d4ddf8577a4cff784c649763c60a4691a5af4109
-Author: Xu Yang <xu.yang_2@nxp.com>
-
-usb: chipidea: otg: fix fsm deadlock and B-device gadget registration
-
-This commit fixes a self-deadlock on gadget-to-host role switches during
-OTG FSM state transitions by changing to mutex_trylock. It also ensures the
-B-device gadget UDC is properly registered in FSM mode by invoking
-ci_role_start.
-
-Closes: https://lore.kernel.org/linux-usb/8e659c4f-723b-4241-9c2b-8ea42c6c3=
-600@gmail.com
-
-> diff --git a/drivers/usb/chipidea/otg_fsm.c b/drivers/usb/chipidea/otg_fs=
-m.c
-> --- a/drivers/usb/chipidea/otg_fsm.c
-> +++ b/drivers/usb/chipidea/otg_fsm.c
-> @@ -840,6 +840,8 @@ int ci_hdrc_otg_fsm_init(struct ci_hdrc *ci)
->  			hw_read_otgsc(ci, OTGSC_BSV) ? 1 : 0;
->  		/* Enable BSV irq */
->  		hw_write_otgsc(ci, OTGSC_BSVIE, OTGSC_BSVIE);
-> +
-> +		return ci_role_start(ci, CI_ROLE_GADGET);
-
-[Severity: Medium]
-Does this return path potentially leak the inputs_attr_group and
-ci_otg_wq resources if ci_role_start fails?
-
-Earlier in ci_hdrc_otg_fsm_init, inputs_attr_group is registered in sysfs
-and the OTGSC_BSVIE interrupt is enabled just above this new call. If
-ci_role_start returns an error, it appears this immediately propagates up to
-ci_hdrc_probe, bypassing local cleanup like removing the sysfs group and
-disabling the interrupt.
-
-Furthermore, returning an error here propagates to ci_hdrc_probe, which
-jumps to the deinit_gadget label, bypassing the deinit_otg label where the
-ci_otg_wq workqueue would normally be destroyed.
-
-[Severity: High]
-Could this also cause the ci->role tracking state to become corrupted
-during probe?
-
-This new call to ci_role_start internally sets ci->role =3D CI_ROLE_GADGET.
-However, when returning back to ci_hdrc_probe, the code unconditionally
-executes:
-
-ci->role =3D ci_get_role(ci);
-
-If the ID pin changes from 1 to 0 in the brief window between
-ci_hdrc_otg_fsm_init and ci_get_role during probe, ci->role is overwritten
-to CI_ROLE_HOST while the CI_ROLE_GADGET role remains actively running. When
-the FSM later transitions and attempts to stop the current role via
-ci_role_stop, it uses the corrupted ci->role state to stop the non-existent
-Host role instead of the running Gadget role, which can lead to both drivers
-being active simultaneously.
-
->  	}
-> =20
->  	return 0;
-
-[ ... ]
-
-> diff --git a/drivers/usb/chipidea/udc.c b/drivers/usb/chipidea/udc.c
-> --- a/drivers/usb/chipidea/udc.c
-> +++ b/drivers/usb/chipidea/udc.c
-> @@ -2167,7 +2167,8 @@ static void ci_udc_stop_for_otg_fsm(struct ci_hdrc =
-*ci)
->  	if (!ci_otg_is_fsm_mode(ci))
->  		return;
-> =20
-> -	mutex_lock(&ci->fsm.lock);
-> +	if (!mutex_trylock(&ci->fsm.lock))
-> +		return;
-
-[Severity: High]
-Can this mutex_trylock abort state cleanup on contention from unrelated
-threads?
-
-The commit message notes this is to fix a self-deadlock when the FSM thread
-already holds the lock. However, mutex_trylock returns false if any thread
-holds the lock, not just the current thread.
-
-If an independent thread unbinds the gadget driver (e.g. via sysfs or module
-unload) while the FSM worker thread happens to hold the lock for an
-unrelated state transition, mutex_trylock will fail here.
-
-The unbind thread would then silently return, skipping the necessary
-OTG_STATE_UNDEFINED and PROTO_UNDEF state resets. This would leave the FSM
-in an inconsistent state while the driver is unbound, causing it to ignore
-future events.
-
->  	if (ci->fsm.otg->state =3D=3D OTG_STATE_A_PERIPHERAL) {
->  		ci->fsm.a_bidl_adis_tmout =3D 1;
->  		ci_hdrc_otg_fsm_start(ci);
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261015084140.6154=
-4-1-xu.yang_2@oss.nxp.com?part=3D1
+Patch applied.  Thanks.
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
