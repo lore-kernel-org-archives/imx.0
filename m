@@ -1,64 +1,72 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011021.outbound.protection.outlook.com [52.101.65.21])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010043.outbound.protection.outlook.com [52.101.69.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D57242379A
-	for <imx@lists.linux.dev>; Thu, 15 Oct 2026 15:25:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CC57472061;
+	Thu, 15 Oct 2026 15:51:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.43
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792077911; cv=fail; b=WgEd3Od0LSBZHUASto8FI6Fervf1PWfR7AaVFiEGDYZ5mM9y+psJh54W2tT1YP6K2ydn60CB1iQuk1tq6LVeLBgAl+Ae8fQi1stNrKAGVBjZUh9lBUysH7OHpyfw5u2YF89YqMeJinoTeYeqGDQoJbjP9NKe0TJpMLZ5DOfO2Os=
+	t=1792079521; cv=fail; b=onvHr2fcc7qxEPILxJGSuaE+3n8Y228ovZv9n5jYCPfCnLuIQZGwJiVITa5aYGyTDF85WTMzER00A8agoDvr8QlKyNXQi8MtKHalGErZaleCIMFoxm52WMv/V7VS1F//6AlWf6BIyiH7rwgvXVwfr3u52qMxAJ8cTVTTwVjus0A=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792077911; c=relaxed/simple;
-	bh=8U1NpvnVCO0Owhibyckrt5cxGOKTLNqjsmenssCCU2s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=rveg8XKIlp0OHqJNv/gaHYnkOsm3c4yxZlVt9Sy2ZkzvuebzCGFoImHZ6GoJoD6tegouIOn3m2ZGtcOAWvXfhguCKU4w3wq7iUDGkIv9MqDCaePPv/2JNhClSbqbGUXddZu+98qe26T5VbkFvQKkg/WIi1dbOt8y5/Mb3i1DLEA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=d6Dq3Npu; arc=fail smtp.client-ip=52.101.65.21
+	s=arc-20240116; t=1792079521; c=relaxed/simple;
+	bh=f6IEGuhFvo1BZe81ftp+KMqccyOM8UvV8N1XtPjBvPw=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=mj40YS0I7twOCgh2Iqp3J10y1yjxrnuOApJCPpQgJkdMiGt8tZ0j86hHpvXuz5XquGHlkZKVdxTzku61Ur1z6AeAcJkKYenQ5ovM6OE3zG2M129zEkalnu/QSFcZj2Sr1HYMFwnA9Kd5lGjp6UANFyOb+zJnXBK0BtzL7ZJlBS0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=XA95L2ZY; arc=fail smtp.client-ip=52.101.69.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="d6Dq3Npu"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="XA95L2ZY"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=yob4rHTTVNaAmJHG9EajJnS+Y4ycItjOZVNI4Hg6gnq/Q/XaaVRlL8o+xBSv+Tj1CwbF9f6v8KCsp6Nh65i4UoUQIuZYqvPxbDv+Vw/twpdgDS0Akjxn6k3zjsxOn6L3/jAyyXrc0f+85HRqDLmn47R4+ytBxPlc15Ns7HZ9NNj68WFrSmgQWsofHPAa5Aui1A1xO47PJ1he056wACUnKN0HARj1tVC9oUtNizW6sLHB7/iawjBKWpLjlFIhRPIE1MZjtw7CV2Vb8UflgWtm7zSlR0Q3I2e3JFHh6PdpFzQZ4wtdsKyB69GcxFlGn0P+QtQHk6/kEd+RePDMCkaWXA==
+ b=K3xtp6gOzuZ28z0w2qjpSDAnTN6ecgfRan7GD7MdgEsdgLIS/L49VTkKt6L5eA5bVnJNApL2/ZiZK1MxByrr8fS6MmI5LExehHWgDNlKhRC5p5JoCuO8xzEHSAg9kPUKhIKXASfKOMAMlQVczFJDxV4ro5dIL89ZPZ5ywPlOgazLLSdiOdL8tqS52FIGtsuuO9kRv5hca4eOVkBiW4li47qFyw8+I45IcIRRkIHo7dEv72Ab/1bba/ZxJ9JVEXVhYpvlzC1i9Pm7w/5NR4VUAz6WYaVqHzySpUzsilMvBdg1KbcOmrMAHWlaDOUatti88NgbIgHyPM2UyNc33VBIhg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JPnqRj+ouWeiOmjc3Ub3XFr/pLArvg8XvA/m9s4Q9QM=;
- b=N9audIVyp4jW8kxHC9IfOTrPljS3FU/Ga20TSVxw2yZKuT0xYiOBg50PreaMTpWLhsYpf9bSw+5erCB2N6MGYFJMWaIn2XeVuxJgzyTHOSTI/hxhYQO7ADA/S2S9/c4hQ/MInap/n6m26Ay5FraFfjVgLIsFBipxWyD7hJlcBESLMPftsKJrnLMsTutnsk1g2SHHznlAvLhJLxB63fI4WQtIngad0/2/nAxWeJ521aUt1ol6zqfoGwdSdAYU6Mbohcj35mmKuUrk+xJrfCxYww4vunSlGBJL6VmeZNqlCPM0nLbmLn39as32L0tJy1JfxMslV2brQo4Ozl3FQ7mIHQ==
+ bh=CrS/8F8sFRpsmHDBEr2rgrhFRj7OATF7NJ/9TauNxR8=;
+ b=oKENd1w16QcUAzf/yQsJw+zrdpEV8x1QK/gtPNj8YGxBGhsdfhl6/SNsCsyhpp5VBkxTbMUDvWlVBVx0gvYk0l+0mnXeMhB4MbcMWXHAKaQlozxSL0QTVQdcDROnhZVIh9+rG+g2UGqeDcLttdTbpT5CiRec2gapjzF4PHh4Xw3NXl+PrgsH1NaEDpTx3Qpic5v1/eOH5p8EExKYI/IzjNw0bbogcxpyTTSnWU4NS6RUxFX3JF7nV1LIAdxn42ZnN8u2Pb9ZIyNlgGZjZo9SL5OJDRULVnxYbKVIf+OC88fzaJ55CpdVuFVkyVkJXKBzbTjWKIAxmmU+Yw2nF2pjAg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JPnqRj+ouWeiOmjc3Ub3XFr/pLArvg8XvA/m9s4Q9QM=;
- b=d6Dq3NpuzTD764RGw63lVC/lRQ4z8bfhbWVNbejQrZA+DagH36uCp65p2Y7MndWp3bHwqE/SHA9Y1qN9rqI7LrfBDnQtRl1XK856GMTrACQYqkVdns1Wr9N79AY4n0IK2da2eoK66aDYfFlAx3chIIPhLuJYlrsj+19SS5qUF7JbksuP5btz2vTxXf75L5MbVHdFZvLOS/JaAGVuiDRqnrRuYOR8I/NmcLoXHmlXQRXHWnh15ODPuDvFIBIfokJemB9ym47NSsGv4Bc6kI7dtArHL695gvH27C0TjcL3+2ERPCLIqZdAiFN5lmJSjwFDsmWp4SlC10LN+LYm9DjYow==
+ bh=CrS/8F8sFRpsmHDBEr2rgrhFRj7OATF7NJ/9TauNxR8=;
+ b=XA95L2ZYGVOv3AE2Xfy4tiWYkDtCFtvvGPeEarO2FMNeknXqvwSeiVevOq+n61XkKasDDvUtQmn55aeSCPWP/YOKKtkXRm/m33kB9MiXozepsuBxauUNvOCHcXLd6duDC33naQL1xdAJyaJV3zBprgUp2tG6JziBXbiWKniZZyuYor7n3Os9OaX6+RflbHBbSYDoXNwzXlRgAXRe+Z7HiCALwjKRIt5lx7zwUWUUsdNwE+bJRmT65Y/DH6xSzegIs6KfVbGn407joK41AqdvOdQSnPqySDFdEP7OmXhV+f8JBLmeFrN4u0HKbO2j9/E09tVrdjqyiQ+OO3vGvV6viQ==
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
 Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by PA1PR04MB10601.eurprd04.prod.outlook.com (2603:10a6:102:488::19) with
+ by AM9PR04MB8472.eurprd04.prod.outlook.com (2603:10a6:20b:417::15) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.13; Thu, 15 Oct
- 2026 15:24:58 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.14; Thu, 15 Oct
+ 2026 15:51:45 +0000
 Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
  ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
  ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0522.012; Thu, 15 Oct 2026
- 15:24:58 +0000
-Date: Thu, 15 Oct 2026 10:24:49 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: Otavio Salvador <otavio@ossystems.com.br>
-Cc: gregkh@linuxfoundation.org, jirislaby@kernel.org, Frank.Li@nxp.com,
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-	linux-serial@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	"Rodrigo M. Duarte" <rodrigo.duarte@ossystems.com.br>
-Subject: Re: [PATCH] serial: imx: keep the CPU out of deep idle while an
- RS485 port is open
-Message-ID: <atDwQfCyI6yUpAWK@SMW015318>
-References: <20261015144627.2461915-1-otavio@ossystems.com.br>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261015144627.2461915-1-otavio@ossystems.com.br>
-X-ClientProxiedBy: DS7P220CA0038.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:8:223::29) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ 15:51:45 +0000
+From: Frank.Li@oss.nxp.com
+To: Dan Williams <djbw@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Vinod Koul <vkoul@kernel.org>,
+	Frank Li <Frank.Li@kernel.org>,
+	Jon Mason <jdmason@kudzu.us>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Allen Hubbe <allenbh@gmail.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Eric Biggers <ebiggers@kernel.org>,
+	linux-crypto@vger.kernel.org (open list:CRYPTO API),
+	linux-kernel@vger.kernel.org (open list),
+	dmaengine@vger.kernel.org (open list:DMA GENERIC OFFLOAD ENGINE SUBSYSTEM),
+	ntb@lists.linux.dev (open list:NTB DRIVER CORE)
+Cc: imx@lists.linux.dev,
+	Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH v4 1/2] dmaengine: change dmaengine_get_unmap_data() first arg to dma_chan
+Date: Thu, 15 Oct 2026 11:51:05 -0400
+Message-ID: <20261015155118.3063149-1-Frank.Li@oss.nxp.com>
+X-Mailer: git-send-email 2.43.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: PH3PEPF0000409E.namprd05.prod.outlook.com
+ (2603:10b6:518:1::4e) To GV2PR04MB11799.eurprd04.prod.outlook.com
  (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -67,165 +75,299 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|PA1PR04MB10601:EE_
-X-MS-Office365-Filtering-Correlation-Id: 307044b7-c6ac-4929-1dff-08df2ad07939
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AM9PR04MB8472:EE_
+X-MS-Office365-Filtering-Correlation-Id: c2f948c9-2dca-45fc-1066-08df2ad43695
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|7416014|23010399003|19092799006|366016|56012099006|11063799006|10067099003|261009223027099003|261009221227099003|22082099003|18002099003|6133799003;
+	BCL:0;ARA:13230040|1800799024|23010399003|376014|7416014|19092799006|366016|921020|56012099006|11063799006|261009223027099003|10067099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	gMQ5u9HqP4JWIiA7iC72ofpYoGC1K958dC+sIejkzSZQ3YvL6x/Uyuz78+XUGoQ7wG8A+m2RO58gvidCWDbYM/0TsgnmkiEdsUGtr/i4i9tGEAFOSgsc7g0G9rBCZjjGs9ORM0iiFJwGyFTS3cVZ2cj5pYbtWTrXiiKK4yBddSdIUO0+UVaFMnwIsOGLtLhbYTA429wVprNv0SDWYPLGLlpxrG46rTbIL91IJjCBgLtW5wYxuUcRAdnrtksS8EZphla89IScS/JpzW6itx8q0qqZIUKFFLRJo9t53YmB1mgyx8b3rVE9PMzE5JhaTNmSICDHQ+LElsffpv9zg7Vj6DBf8donAnMIZT6EP9k05tqmYzs2DSUBXxTuYUAP2cti1LCcpMyhztrGagZ8JPn+zgnCuE/xQid5LL5/FHMdENpAox+ykB9a5TalSx4cGgU7WY2H1faKP0li28Mw6vjeWpyrYRAKtQGvHWjLj8dIeqvCqPt1jktnC8jBSmzHzntcEmzOle1bkVEnLBB6+OtFWPsj0fYaGurwrZijx0RIgm7CGSQ/EBKoLqC2gigQHQXOw9luiF5k7XoLkEFX6l1jhfZ8piF01IHRy8ZIuI0btwBkGdJpK9oofv0TrU2VOfF7kDv5NH81YmojYoM4Rt8qRsP1vbFuVaePbAx7HWbwnUU=
+	fJ3Dkos6kHfKYThXwvK0ACCQOGGw32oiXtbueulDCrYNLZt6zJ+VJI/XJxuSshnykYXoWuFnwQiW5M7g0gcuPssKVlJ9gg9eaM424dgnFeD4DXVUy3TRVZvSCXjAHdweRN0KMXmeAsKbTcwjPj8gxPDSGup4/DCrEw5PMVbn+eOHaKqE5Zf7uhjYPX4bq7+rx1G0rydGS+cqpdFf0mygLgahCycJU+sibwPc3MgwAvAMeIYA4/QqIcWeMab4KG50N/pq/qLqR1EaAgjPXxaFlyBhPi3g3AdHzIgFmt0oFK3Ji1UDiYVeSrZtb5b7SXBnt9Rj2r0IgFrtgNrqpOpkJkzm49KDT6dzBzP5prBEvZlt2lpV+n3lRpfC4QhS9SYtawsZALHUJGqImZW+jhLUDExkApJtd7WNKqSLg0wyQjVPIHtUI1q+m8aT3D+eydyMG83noUjqeN4EIpa0qjYtoKqRNl4E+jf5mvbTPWDYcX/bYz3qJe8ryhdn9tnmz1VpfTLkHRWuyMItA9O+V4DdXKu4qWL6e04nOxewGdJMv6S6JE3eZPHPSXDmxnvcWtE5trK2RX4Tl/aTUoPzrpz59MnOapqWx8jVQFhBbWW320WgVKnSyjzo+uCdo6TKSsy2G94iMCKpT2xWwJemr7xzhfAJItug+ZJSLavMe5waEME=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(7416014)(23010399003)(19092799006)(366016)(56012099006)(11063799006)(10067099003)(261009223027099003)(261009221227099003)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(376014)(7416014)(19092799006)(366016)(921020)(56012099006)(11063799006)(261009223027099003)(10067099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?DmyyZaqPCaeaIuXx3qHsjlVNCXZ3pv8Gl86gVr0cUd6CrGZL8wRuOm6b4b6C?=
- =?us-ascii?Q?x/sfh5DQWAhXLEsS7w+toZ/AEBXbNsR/HyC9pU2SeX8OTrvz2dMBqPgLj5I/?=
- =?us-ascii?Q?asTnQETmEB1THnYH+jqTedhAZcIgz+iM65/oUsRjyPcO246o6uMIHc1G1ANH?=
- =?us-ascii?Q?Z3JK9z4XrNCXkIjbFnBqt+IDPVuz6UdobiIR5HkbjD9vjB+Sp2I8ScsBS4u2?=
- =?us-ascii?Q?G1SJtN/nUM0+2aXxzz3R/5tEP6T0FnTzxQfGbYj7KLUzGhvAyShFl/TUYMti?=
- =?us-ascii?Q?MRCH0Ze+uDRxVyaqh7coPNGqP1f8Qoqif5rJuv9I46WEGz2KE4ZrZoleVlmd?=
- =?us-ascii?Q?A8NqZLYOrzGREgdQB+F7HigQH0AiOhsJ2NBj4SviYpXjJFTE54jMZ8W/iQxs?=
- =?us-ascii?Q?RHgS0wOBrH099FNm41ovtzuO33Omkgi9wOS748A9XtUqeTggZS0buPf8yOY2?=
- =?us-ascii?Q?Ganm9S5IRsoQymq7ZQMDuOFiNHxxIHLDjtRF1JjemgA3hxok3MuTGihyRWQA?=
- =?us-ascii?Q?1v8+CD0aSJM9zqeDDBHIaNC62JzkGd7Hefu5+HdcDDsoGUOD5eY+4FeV1RCc?=
- =?us-ascii?Q?uaPujjbhJcnqY4MKmEdSTw1umy5WCGXYJbdQ5W6wk8a9n0yM3iq6HUO2It13?=
- =?us-ascii?Q?/gZiopvzc/ofjOS1mo7bVPm0MVwdSweoBYHjKO4NAe9y9ZtmAEwMZFN88cOF?=
- =?us-ascii?Q?zclZ1tmxIuYCBRo/bMjeaZWdU7iAnWvA+0FFa7iWPi+JS5xBWgPkmkG61wqX?=
- =?us-ascii?Q?/KzVd2cWYiORb6kPdV2e4DOAdCvz5SoqISIqgnbPPvj2DFbr/pNvqq0FJf5H?=
- =?us-ascii?Q?jc8Vg40DZNIe1RaFiKQUSuN51vGsYlXDoukf7aZq6dCl/6GB6Mg27z80DrdA?=
- =?us-ascii?Q?vfwyq/R/Ha0V7UqEyg2rjtSa2ajXcB9csm9DNSb0OwopDPQupDM1anQmftLS?=
- =?us-ascii?Q?MnX0uHpGySy7Ey/IKCoQcp3TVKQsnqiAd//vmKarB7vFZ3QqZTGRozj/6JnT?=
- =?us-ascii?Q?UZlCeTxX/oEnYTx9dWaaLLPb/G+DCFnRBx9d0B9jb3CP6QvAMR6vnNxQPHyY?=
- =?us-ascii?Q?qXvfaXrBqDxEpZD3ddQjJaz+3Kr34JLXXfGXCsxiMNGgncExz9efpSjbDJT1?=
- =?us-ascii?Q?qg3pPbKwiDF8jcri0HDmCBtKBYaYMywGrK3Gx/jszovBZSD6Nt94WujuJSXx?=
- =?us-ascii?Q?fOKs3PXMGpPMrGWnvRHHx53VI1QuhkMvb88cXVMxMvfnfR43bCsJBBSAUZXx?=
- =?us-ascii?Q?x2k7N0zf/R5akUB3UPXqxVDCZw595I5P2bAKTg4rFbXITdPkn2MnwJ0RQqdp?=
- =?us-ascii?Q?Oe0I+HsW4fzSepVjREXSU4BdhdLwZ413GHvF+zJpp4z3qJfAaPtVaNPpr1ym?=
- =?us-ascii?Q?6B7JNu0klER2K9oCsfkj6Q6iYLYv9dZD6eXoyFYBC9c7gCLYvyIPlJQOCGwz?=
- =?us-ascii?Q?g6OBy0Q5IW3mDBYtBKWNjVr8a5JlkGVUh4Gtn1Vq/V/ADrwQOubFDNe4+183?=
- =?us-ascii?Q?M1LKxAWvorb56dmdw1MzITExfbmY0vWIN8m7NV1muGZ4Q8aiygHHgogdW/EX?=
- =?us-ascii?Q?HgmNQSowo/OFrFSCy79KqfszijiOj89ejLAlzTuxqUSCNAOFC9gCHMAjxRHX?=
- =?us-ascii?Q?1xo+SdohaOus598ZpCQMpNF6vRO4TDZChxINyO13G7M/Jv/CWZM/mc3+0/tS?=
- =?us-ascii?Q?ALzbn0GJi2yFeJUrhtXNcxOn71fo9HX0vKoML+NW/qqk59sscn6xzGjbtPUS?=
- =?us-ascii?Q?BuHadmClVSpryLKG/s31NmVskL2z+sND1dECJ+x0bu0S5Y480Eq0?=
+	=?us-ascii?Q?YYg3A23jIvkh8EKWHMAr4IOCURqorRT72owF/cziAalRC6+o45VL7JzW4Jed?=
+ =?us-ascii?Q?eYbN34RTF7+PghuBfd2CNuW4Ks48+GfrVuVWBk0eDqnQVB8MFOEkiAKKeE/o?=
+ =?us-ascii?Q?lFN0ZXOqBEHasc91zSwFcnSQn1QgYBawydtpVUE9lPDbVJJD7khlo3htG3Qe?=
+ =?us-ascii?Q?I87giv1cZ1W0rVZmzmpkhIO+FbyXism0a5q0zF254xafn9ZoY7q3QSDPsxdT?=
+ =?us-ascii?Q?QfkmhbMDUGx1ZlJ6khn24WQnEARCnPb5xZV5u93syEDS79b22boFIbpHJ/Ld?=
+ =?us-ascii?Q?DFDRhS5leTm3Tm+Ey+b+aKkiWmAG3cWge/ovN2AcgUnFAO7p9M0n8PWmxTkQ?=
+ =?us-ascii?Q?Eupk9Af/qYD+zagYcmD9Jg6Vdy8qD4uLmRKJvvHIpq8OcBX796CsGLEckJd9?=
+ =?us-ascii?Q?F1NQNks8gXxGi8ezxKdeOMXD9/0CYYAqdwGWUPI5xjRaOyc5aTigbofwAF1S?=
+ =?us-ascii?Q?0pmJQpSKJVeB+9uUqhOk2PHl+mv7fX+d40ZzJl087GvMSRa0JPNUZycnPbBD?=
+ =?us-ascii?Q?C71l1Qh3KXyLZ4nBaVdAMqLb/g+tk2Hj2BlzpdwQNDDVgkMivYKwdOIhVoGt?=
+ =?us-ascii?Q?gbjeNxwu8zB+r89+p5XBE6Pbz4u57ODxeuAba/1EsD+pwBFqPoeJkIZOl0Ae?=
+ =?us-ascii?Q?CnmiAZJ85hU7Bw46sd+VYQjujujiEHD64yVsCLfn17gk0yhLd6c6nPsZf1Gr?=
+ =?us-ascii?Q?JH9z0ny8eYpEyBhQO1f29bHUqTqOQXgMyHEEFrx/yiBl35In4tPG1SG8Z7Xc?=
+ =?us-ascii?Q?TFYNcP9nMC7gdl4wo9myC9VBtwCmXZ5EJWpj/Anbg49YOpW4IXsXSyiBcxg6?=
+ =?us-ascii?Q?XSdzj+Dc8KTps/G8sJBR8Ukcr+V0R9tEESESx+dV+DwZuFHpFU6LcvG9J8vp?=
+ =?us-ascii?Q?v/tGarbQDVi9gGqaVybcmKC2Iq3j1k4xj0kNh07avsLRr0NI/VCIRyMJNZp0?=
+ =?us-ascii?Q?ygseM6eQyhpUccmu/nOxgiRbV8x6AYy2oXx+J3+lED8Z0W+4JiXs6JJr1KmK?=
+ =?us-ascii?Q?BgeurIsgtEoHeqFwOEbhvWFxrZZpTIsWpuIbnW+Fm9qb+e6yT92DmtoJhg2h?=
+ =?us-ascii?Q?uJO4ReSkE1bX4/p8CZc7xaII98YYIGysxtexkXPLffcoTwz5KBhQtc692chs?=
+ =?us-ascii?Q?qTIg+bSmdp0FmxclaSJInXbUbE42tzyEgVmWFgyIi1MWoZL+VA2gnpKhfopC?=
+ =?us-ascii?Q?JCWsGGlBFj//tNB+Avd4p7XWIrw32EkO7T38Rv7IHRadqvDjOqfeOuBCmZNH?=
+ =?us-ascii?Q?A3yFoTLoOml7g3OpMW1Mqk0cTnhnz6IGC9VUiJ5RucPemB6U969sRhWcJQbd?=
+ =?us-ascii?Q?CWw+Yby25Eb/WiUgdtmMqcXoX0OIaiHtxChubI3GlGhKPHtSKN6Ipvty3hZs?=
+ =?us-ascii?Q?CS4dsrUvVqM5IkfhVQuj5n/ayrTCXWNh9rSgfD3D7egfrypVOEgpIaJRrOoO?=
+ =?us-ascii?Q?9LjHqYN/hp1XrnCnnpanSyGlG4Aj2g/VqKm0LM0Pw1Sk6c4gvq2KZufXzjMS?=
+ =?us-ascii?Q?iX5o+DaecQLVUpNkyTzxJyhSRsPENpPbCn9UVIHqrs34pilwsez9FH8hYa/s?=
+ =?us-ascii?Q?dzr8wERadJ81RHD66gK46Vgk0TSsJYn9ULAwQm+z4MzSlecMNuh5IiNnPz9x?=
+ =?us-ascii?Q?Z0rwgdbQpMLxoMr3VzuNLMYQtfkraEfsu/zgIdOLNngB5BLKrnymS7M1JBOa?=
+ =?us-ascii?Q?IRYGrQP5x/SpSQmAxqd9zxrucLalYqcDEH8VSP9nTESqvjqfGENbhYt3tqHY?=
+ =?us-ascii?Q?4vDp1F8PaqqaQsJC2sYyHiHyphZzMWwxaAWRLKNOEa+IBjYRKKge?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 307044b7-c6ac-4929-1dff-08df2ad07939
+X-MS-Exchange-CrossTenant-Network-Message-Id: c2f948c9-2dca-45fc-1066-08df2ad43695
 X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2026 15:24:58.8029
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2026 15:51:45.0108
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: yLS862lWwogSBiYDOc3T49Iy0TVjiMv0/UJmPdDo/cE5dzDNcCIdyjbL0T7kJG4u3WaghcaWYF0cJKe0xYZzeyKXQWgEjhUMBrSe0AdnZMTtaEhWUq2fLWk+TBccOZ8F
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10601
+X-MS-Exchange-CrossTenant-UserPrincipalName: TfubjXeylG9udQOioqdObJ9jGYm6PhUKNru7uyJL1pW7N1WVeSZnyue8zKc8P/9GGAh9G1oSoP0x8aT1ZUVO22m4jQsNdFiD9K4yqmYjVcg7lyPDYZe1P7P5WTLXHM5o
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8472
 
-On Thu, Oct 15, 2026 at 11:46:27AM -0300, Otavio Salvador wrote:
-> [You don't often get email from otavio@ossystems.com.br. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
->
-> In RS485 mode the driver releases the transmitter (RTS/DE) from the TX
-> complete interrupt. On i.MX6UL/ULL the imx6sx cpuidle driver offers an
-> "ARM power off" state with a declared exit latency of 300us, measured at
-> up to 2ms. When the CPU enters it while the last character is shifted
-> out, DE is released that much later. Modbus RTU slaves may answer after
-> 3.5 character times (1.75ms at >=19200 baud), so the head of their reply
-> collides with our still-driven transmitter and is lost.
->
-> Add a CPU latency QoS request of 100us while an RS485 port is open. It
-> excludes the power-off state but keeps WFI and WAIT (50us) available, so
-> cpuidle can stay enabled and the constraint only applies while the port
-> is in use.
->
-> The request is added on startup and removed on shutdown, and its value
-> follows the RS485 state in imx_uart_rs485_config(), so RS485 enabled
-> through TIOCSRS485 after the port is opened, as libmodbus does, is
-> covered as well.
->
-> Tested-by: Rodrigo M. Duarte <rodrigo.duarte@ossystems.com.br>
-> Signed-off-by: Otavio Salvador <otavio@ossystems.com.br>
-> ---
+From: Frank Li <Frank.Li@nxp.com>
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Replace the struct device *dev argument with struct dma_chan *chan so
+callers do not need to reach into the dma_device internals to obtain
+the device pointer.  The implementation now derives the device via
+dmaengine_get_dma_device(chan), which correctly handles the per-channel
+IOMMU mapping case.
 
->  drivers/tty/serial/imx.c | 28 ++++++++++++++++++++++++++++
->  1 file changed, 28 insertions(+)
->
-> diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
-> index 986fefb45c632..be05ed94bf0c4 100644
-> --- a/drivers/tty/serial/imx.c
-> +++ b/drivers/tty/serial/imx.c
-> @@ -24,6 +24,7 @@
->  #include <linux/ktime.h>
->  #include <linux/mutex.h>
->  #include <linux/pinctrl/consumer.h>
-> +#include <linux/pm_qos.h>
->  #include <linux/rational.h>
->  #include <linux/slab.h>
->  #include <linux/of.h>
-> @@ -237,6 +238,7 @@ struct imx_port {
->         struct hrtimer          trigger_start_tx;
->         struct hrtimer          trigger_stop_tx;
->         unsigned int            rxtl;
-> +       struct pm_qos_request   rs485_pm_qos;
->  };
->
->  struct imx_port_ucrs {
-> @@ -339,6 +341,22 @@ static void start_hrtimer_ms(struct hrtimer *hrt, unsigned long msec)
->         hrtimer_start(hrt, ms_to_ktime(msec), HRTIMER_MODE_REL);
->  }
->
-> +/*
-> + * In RS485 mode the transmitter is only released from the TX complete
-> + * interrupt. If the CPU sits in a deep idle state at that point, the wakeup
-> + * delays the release long enough to collide with fast responders on the
-> + * bus. The i.MX6UL/SX "ARM power off" state has a 300us exit latency and was
-> + * measured at up to 2ms, so keep the CPU out of states slower than this while
-> + * an RS485 port is open.
-> + */
-> +#define IMX_UART_RS485_CPU_LATENCY_US  100
-> +
-> +static s32 imx_uart_rs485_cpu_latency(u32 rs485_flags)
-> +{
-> +       return rs485_flags & SER_RS485_ENABLED ?
-> +               IMX_UART_RS485_CPU_LATENCY_US : PM_QOS_DEFAULT_VALUE;
-> +}
-> +
->  /* called with port.lock taken and irqs off */
->  static void imx_uart_soft_reset(struct imx_port *sport)
->  {
-> @@ -1585,6 +1603,9 @@ static int imx_uart_startup(struct uart_port *port)
->
->         uart_port_unlock_irqrestore(&sport->port, flags);
->
-> +       cpu_latency_qos_add_request(&sport->rs485_pm_qos,
-> +                                   imx_uart_rs485_cpu_latency(port->rs485.flags));
-> +
->         return 0;
->  }
->
-> @@ -1710,6 +1731,8 @@ static void imx_uart_shutdown(struct uart_port *port)
->
->         clk_disable_unprepare(sport->clk_per);
->         clk_disable_unprepare(sport->clk_ipg);
-> +
-> +       cpu_latency_qos_remove_request(&sport->rs485_pm_qos);
->  }
->
->  /* called with port.lock taken and irqs off */
-> @@ -2053,6 +2076,11 @@ static int imx_uart_rs485_config(struct uart_port *port, struct ktermios *termio
->                 imx_uart_start_rx(port);
->         }
->
-> +       /* The request only exists while the port is open */
-> +       if (cpu_latency_qos_request_active(&sport->rs485_pm_qos))
-> +               cpu_latency_qos_update_request(&sport->rs485_pm_qos,
-> +                                              imx_uart_rs485_cpu_latency(rs485conf->flags));
-> +
->         return 0;
->  }
->
-> --
-> 2.55.0
->
->
+Prepare to make dma_device private and make dmaengine API consistent.
+
+Acked-by: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+V4: none, just respin to miss patch2
+V3 split from origianl thread
+https://lore.kernel.org/dmaengine/20260923-dmaengine_prep_dma_pq-v2-0-32ed65b8a9b4@nxp.com/
+V2 change collect Dave Jiang ack tags
+v1 version at
+https://lore.kernel.org/imx/b40fa0d7-fbd0-4ee8-b99c-781d08c18838@intel.com/T/#t
+---
+ crypto/async_tx/async_memcpy.c      | 4 ++--
+ crypto/async_tx/async_pq.c          | 8 ++++----
+ crypto/async_tx/async_raid6_recov.c | 8 ++++----
+ crypto/async_tx/async_xor.c         | 8 ++++----
+ drivers/dma/dmaengine.c             | 4 ++--
+ drivers/dma/dmatest.c               | 2 +-
+ drivers/dma/mv_xor.c                | 4 ++--
+ drivers/ntb/ntb_transport.c         | 4 ++--
+ drivers/ntb/test/ntb_perf.c         | 2 +-
+ include/linux/dmaengine.h           | 4 ++--
+ 10 files changed, 24 insertions(+), 24 deletions(-)
+
+diff --git a/crypto/async_tx/async_memcpy.c b/crypto/async_tx/async_memcpy.c
+index c538e30e99094..893e7e17f1f61 100644
+--- a/crypto/async_tx/async_memcpy.c
++++ b/crypto/async_tx/async_memcpy.c
+@@ -39,8 +39,8 @@ async_memcpy(struct page *dest, struct page *src, unsigned int dest_offset,
+ 	struct dma_async_tx_descriptor *tx = NULL;
+ 	struct dmaengine_unmap_data *unmap = NULL;
+ 
+-	if (device)
+-		unmap = dmaengine_get_unmap_data(device->dev, 2, GFP_NOWAIT);
++	if (chan)
++		unmap = dmaengine_get_unmap_data(chan, 2, GFP_NOWAIT);
+ 
+ 	if (unmap && is_dma_copy_aligned(device, src_offset, dest_offset, len)) {
+ 		unsigned long dma_prep_flags = 0;
+diff --git a/crypto/async_tx/async_pq.c b/crypto/async_tx/async_pq.c
+index 27f99349e310b..733af24a2762b 100644
+--- a/crypto/async_tx/async_pq.c
++++ b/crypto/async_tx/async_pq.c
+@@ -187,8 +187,8 @@ async_gen_syndrome(struct page **blocks, unsigned int *offsets, int disks,
+ 
+ 	BUG_ON(disks > MAX_DISKS || !(P(blocks, disks) || Q(blocks, disks)));
+ 
+-	if (device)
+-		unmap = dmaengine_get_unmap_data(device->dev, disks, GFP_NOWAIT);
++	if (chan)
++		unmap = dmaengine_get_unmap_data(chan, disks, GFP_NOWAIT);
+ 
+ 	/* XORing P/Q is only implemented in software */
+ 	if (unmap && !(submit->flags & ASYNC_TX_PQ_XOR_DST) &&
+@@ -309,8 +309,8 @@ async_syndrome_val(struct page **blocks, unsigned int *offsets, int disks,
+ 
+ 	BUG_ON(disks < 4 || disks > MAX_DISKS);
+ 
+-	if (device)
+-		unmap = dmaengine_get_unmap_data(device->dev, disks, GFP_NOWAIT);
++	if (chan)
++		unmap = dmaengine_get_unmap_data(chan, disks, GFP_NOWAIT);
+ 
+ 	if (unmap && disks <= dma_maxpq(device, 0) &&
+ 	    is_dma_pq_aligned_offs(device, offsets, disks, len)) {
+diff --git a/crypto/async_tx/async_raid6_recov.c b/crypto/async_tx/async_raid6_recov.c
+index e53870d84bc55..306448c47aa00 100644
+--- a/crypto/async_tx/async_raid6_recov.c
++++ b/crypto/async_tx/async_raid6_recov.c
+@@ -28,8 +28,8 @@ async_sum_product(struct page *dest, unsigned int d_off,
+ 	u8 ax, bx;
+ 	u8 *a, *b, *c;
+ 
+-	if (dma)
+-		unmap = dmaengine_get_unmap_data(dma->dev, 3, GFP_NOWAIT);
++	if (chan)
++		unmap = dmaengine_get_unmap_data(chan, 3, GFP_NOWAIT);
+ 
+ 	if (unmap) {
+ 		struct device *dev = dma->dev;
+@@ -96,8 +96,8 @@ async_mult(struct page *dest, unsigned int d_off, struct page *src,
+ 	const u8 *qmul; /* Q multiplier table */
+ 	u8 *d, *s;
+ 
+-	if (dma)
+-		unmap = dmaengine_get_unmap_data(dma->dev, 3, GFP_NOWAIT);
++	if (chan)
++		unmap = dmaengine_get_unmap_data(chan, 3, GFP_NOWAIT);
+ 
+ 	if (unmap) {
+ 		dma_addr_t dma_dest[2];
+diff --git a/crypto/async_tx/async_xor.c b/crypto/async_tx/async_xor.c
+index 84458375b202b..40caee262a4ab 100644
+--- a/crypto/async_tx/async_xor.c
++++ b/crypto/async_tx/async_xor.c
+@@ -178,8 +178,8 @@ async_xor_offs(struct page *dest, unsigned int offset,
+ 
+ 	BUG_ON(src_cnt <= 1);
+ 
+-	if (device)
+-		unmap = dmaengine_get_unmap_data(device->dev, src_cnt+1, GFP_NOWAIT);
++	if (chan)
++		unmap = dmaengine_get_unmap_data(chan, src_cnt + 1, GFP_NOWAIT);
+ 
+ 	if (unmap && dma_xor_aligned_offsets(device, offset,
+ 				src_offs, src_cnt, len)) {
+@@ -310,8 +310,8 @@ async_xor_val_offs(struct page *dest, unsigned int offset,
+ 
+ 	BUG_ON(src_cnt <= 1);
+ 
+-	if (device)
+-		unmap = dmaengine_get_unmap_data(device->dev, src_cnt, GFP_NOWAIT);
++	if (chan)
++		unmap = dmaengine_get_unmap_data(chan, src_cnt, GFP_NOWAIT);
+ 
+ 	if (unmap && src_cnt <= device->max_xor &&
+ 	    dma_xor_aligned_offsets(device, offset, src_offs, src_cnt, len)) {
+diff --git a/drivers/dma/dmaengine.c b/drivers/dma/dmaengine.c
+index 34be53487a21d..52e7dcc4e5822 100644
+--- a/drivers/dma/dmaengine.c
++++ b/drivers/dma/dmaengine.c
+@@ -1477,7 +1477,7 @@ static int __init dmaengine_init_unmap_pool(void)
+ }
+ 
+ struct dmaengine_unmap_data *
+-dmaengine_get_unmap_data(struct device *dev, int nr, gfp_t flags)
++dmaengine_get_unmap_data(struct dma_chan *chan, int nr, gfp_t flags)
+ {
+ 	struct dmaengine_unmap_data *unmap;
+ 
+@@ -1487,7 +1487,7 @@ dmaengine_get_unmap_data(struct device *dev, int nr, gfp_t flags)
+ 
+ 	memset(unmap, 0, sizeof(*unmap));
+ 	kref_init(&unmap->kref);
+-	unmap->dev = dev;
++	unmap->dev = dmaengine_get_dma_device(chan);
+ 	unmap->map_cnt = nr;
+ 
+ 	return unmap;
+diff --git a/drivers/dma/dmatest.c b/drivers/dma/dmatest.c
+index 2ae3469397f37..043bb065dd68a 100644
+--- a/drivers/dma/dmatest.c
++++ b/drivers/dma/dmatest.c
+@@ -748,7 +748,7 @@ static int dmatest_func(void *data)
+ 			filltime = ktime_add(filltime, diff);
+ 		}
+ 
+-		um = dmaengine_get_unmap_data(dma_dev, src->cnt + dst->cnt,
++		um = dmaengine_get_unmap_data(chan, src->cnt + dst->cnt,
+ 					      GFP_KERNEL);
+ 		if (!um) {
+ 			failed_tests++;
+diff --git a/drivers/dma/mv_xor.c b/drivers/dma/mv_xor.c
+index c4e0dce3ca64e..dec01b6264d7a 100644
+--- a/drivers/dma/mv_xor.c
++++ b/drivers/dma/mv_xor.c
+@@ -794,7 +794,7 @@ static int mv_chan_memcpy_self_test(struct mv_xor_chan *mv_chan)
+ 		goto out;
+ 	}
+ 
+-	unmap = dmaengine_get_unmap_data(dma_chan->device->dev, 2, GFP_KERNEL);
++	unmap = dmaengine_get_unmap_data(dma_chan, 2, GFP_KERNEL);
+ 	if (!unmap) {
+ 		err = -ENOMEM;
+ 		goto free_resources;
+@@ -927,7 +927,7 @@ mv_chan_xor_self_test(struct mv_xor_chan *mv_chan)
+ 		goto out;
+ 	}
+ 
+-	unmap = dmaengine_get_unmap_data(dma_chan->device->dev, src_count + 1,
++	unmap = dmaengine_get_unmap_data(dma_chan, src_count + 1,
+ 					 GFP_KERNEL);
+ 	if (!unmap) {
+ 		err = -ENOMEM;
+diff --git a/drivers/ntb/ntb_transport.c b/drivers/ntb/ntb_transport.c
+index f9caa1a653c5b..e1cb55890d72b 100644
+--- a/drivers/ntb/ntb_transport.c
++++ b/drivers/ntb/ntb_transport.c
+@@ -1532,7 +1532,7 @@ static int ntb_async_rx_submit(struct ntb_queue_entry *entry, void *offset)
+ 	if (!is_dma_copy_aligned(device, pay_off, buff_off, len))
+ 		goto err;
+ 
+-	unmap = dmaengine_get_unmap_data(device->dev, 2, GFP_NOWAIT);
++	unmap = dmaengine_get_unmap_data(chan, 2, GFP_NOWAIT);
+ 	if (!unmap)
+ 		goto err;
+ 
+@@ -1872,7 +1872,7 @@ static int ntb_async_tx_submit(struct ntb_transport_qp *qp,
+ 	if (!is_dma_copy_aligned(device, buff_off, dest_off, len))
+ 		goto err;
+ 
+-	unmap = dmaengine_get_unmap_data(device->dev, 1, GFP_NOWAIT);
++	unmap = dmaengine_get_unmap_data(chan, 1, GFP_NOWAIT);
+ 	if (!unmap)
+ 		goto err;
+ 
+diff --git a/drivers/ntb/test/ntb_perf.c b/drivers/ntb/test/ntb_perf.c
+index dfd175f79e8f0..5fea36432ba92 100644
+--- a/drivers/ntb/test/ntb_perf.c
++++ b/drivers/ntb/test/ntb_perf.c
+@@ -809,7 +809,7 @@ static int perf_copy_chunk(struct perf_thread *pthr,
+ 	dst_vaddr = dst;
+ 	dst_dma_addr = peer->dma_dst_addr + (dst_vaddr - vbase);
+ 
+-	unmap = dmaengine_get_unmap_data(dma_dev, 1, GFP_NOWAIT);
++	unmap = dmaengine_get_unmap_data(pthr->dma_chan, 1, GFP_NOWAIT);
+ 	if (!unmap)
+ 		return -ENOMEM;
+ 
+diff --git a/include/linux/dmaengine.h b/include/linux/dmaengine.h
+index 805668fbe4376..6d918ccf852f9 100644
+--- a/include/linux/dmaengine.h
++++ b/include/linux/dmaengine.h
+@@ -676,7 +676,7 @@ static inline void dma_set_unmap(struct dma_async_tx_descriptor *tx,
+ }
+ 
+ struct dmaengine_unmap_data *
+-dmaengine_get_unmap_data(struct device *dev, int nr, gfp_t flags);
++dmaengine_get_unmap_data(struct dma_chan *chan, int nr, gfp_t flags);
+ void dmaengine_unmap_put(struct dmaengine_unmap_data *unmap);
+ #else
+ static inline void dma_set_unmap(struct dma_async_tx_descriptor *tx,
+@@ -684,7 +684,7 @@ static inline void dma_set_unmap(struct dma_async_tx_descriptor *tx,
+ {
+ }
+ static inline struct dmaengine_unmap_data *
+-dmaengine_get_unmap_data(struct device *dev, int nr, gfp_t flags)
++dmaengine_get_unmap_data(struct dma_chan *chan, int nr, gfp_t flags)
+ {
+ 	return NULL;
+ }
+-- 
+2.43.0
+
