@@ -1,62 +1,64 @@
-Received: from mail-vs1-f47.google.com (mail-vs1-f47.google.com [209.85.217.47])
+Received: from mail-vk1-f170.google.com (mail-vk1-f170.google.com [209.85.221.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C22273B6C13
-	for <imx@lists.linux.dev>; Fri, 16 Oct 2026 23:28:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8E003BBA0B
+	for <imx@lists.linux.dev>; Fri, 16 Oct 2026 23:28:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792193296; cv=none; b=T00lG77BvBtI/2ZJrl4OPE0LFdfXJqAY844jOFF9AhAec9vL9yTctY0dSDL3x2XEwOkGxl3XPGApmkZzFep7xqxCHRQYgxNBqtZ88qFYWAg+eXqy5lCzUigOndGO5/o4SZV2PwQ8O/x+d/PdEzmS4pEhKGqFUrtHadLT7aMYJEM=
+	t=1792193300; cv=none; b=AIGHG+YynGOgRaI4u2PU5z+ruYTqzgvZCFqnuUGYowN3G/0bOoV4v2pJeXkOmsd9r7l/Y6q6/LkrV32w5fKmpbhFtBOBpaKmhrn+fZTnJootRVhFK1S3xigrtyWfN0DxvbvXo+ulaRBN79Fuop4MD8CyP803Z8CQk6lHq9jDcSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792193296; c=relaxed/simple;
-	bh=CwWDDjpNnsPleVo1jcGzFZvinjzTeCjJVRg9u/FiAbc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Et47+aRkoQWlJIuZF3cVj9A+YEOBjKKB4Gu481Br6TPRknHM+i31Q+/x1/brtMRjD3guByAnsBuYLZg7sX8BOmRj3sU+ewlZp33mYrbnWDrjqK/epibm1lrAN4cpTHYCR3s0Gr3Feg9erYsL2QWXizS3DdYwFuvC8JKZuoaWd38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qUT7ltW5; arc=none smtp.client-ip=209.85.217.47
+	s=arc-20240116; t=1792193300; c=relaxed/simple;
+	bh=o6kdkAZEToRtv0bcStkT85Ju116In3ipVIQYN1vFQ+k=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=iKS2gVu2O/cz/y05FS7TI6KWLhUWb7+1u65Hqh17NvsFuWJk7LGqTWXPju53D6uDe+0x1VLcFeUGVkaDlTZIC5ltXnKDCYuj3GRwbDDbOL1YB7tk/5VQ7iNn6pGt8O1rKRHaAl8FJCXfiYDSYltyD0WTOqq/ZtOLO0z9xh14XNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fju6SRvq; arc=none smtp.client-ip=209.85.221.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qUT7ltW5"
-Received: by mail-vs1-f47.google.com with SMTP id ada2fe7eead31-74ab6c88052so114694137.2
-        for <imx@lists.linux.dev>; Fri, 16 Oct 2026 16:28:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fju6SRvq"
+Received: by mail-vk1-f170.google.com with SMTP id 71dfb90a1353d-5d8e5624261so154301e0c.0
+        for <imx@lists.linux.dev>; Fri, 16 Oct 2026 16:28:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792193294; x=1792798094; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=L+nHfvIYCrgROUwGVGZYqdh67rBw+LFFXBTqFw6Ps2c=;
-        b=qUT7ltW5oyo7/kmKPS34c2xrsingbi/xmugqjGPKjHzeBTkVl8Bmyrt5oDgt234Ds/
-         u1iac6Vzk49NsLjmSfWs6q+SqyPcWraR3KhOmQfKM291kBhthZUxSLerru50U63kXY34
-         wU86t0WStXl4iOF8YhDRaeapMsh4Wlua6vyKsaGaEMSrCas9xdtJ4C2gqNXvnzAgC8eX
-         6Bm51BReitRAVIBUZlhqtrk1IgZJpn4PGB4HENfP/oCh5cmRcmuiUt3HIfh1nHPUBM3D
-         +or8O72mzH7p9lD1YZ7Kn0CcN0EC7UGfaGos+zkXL0kDkauudZF4h8rklKewDnzVga+2
-         /Pww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792193294; x=1792798094;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1792193298; x=1792798098; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=L+nHfvIYCrgROUwGVGZYqdh67rBw+LFFXBTqFw6Ps2c=;
-        b=cDgP8YqgpX7LEj/Kfi49pr//e/SYyET3mQ6zhxGH2zLaM8xyT8iJBtvdGtCWJ7t+9+
-         AeE5xxGRDQe3DeHE8lL9+zgIKkJNzHU1apbCKZnlxoUZx4duQmXwSmrKqY3zFdQW0DhU
-         JPNEIwBOhEjxJKJ7qwAgvs7e2qL/Pl6Nw6Bj7pYsoPr2nDyoiF1NwEhuoy4FWPsx/P+u
-         H8j/6qTd7w9xe01sk3ZwCfZ1ajO3Cdf910NjHpQxMdJkkmZXuT4j9S10ia5P9svK5q04
-         ankqPTm9Mf3pcVrAxymra/Y2M9oWus1wsT66IZGeAabTKjmsLR1IOD1W5zZTbOyZ7uov
-         iqdQ==
-X-Forwarded-Encrypted: i=1; AKwUvBygmaAU98jCC0+xOVIeaCiOCFZfnQ8btEHVRcQy+yMJyXNt4P2blUgNPEvqnwJtTo8VQkw=@lists.linux.dev
-X-Gm-Message-State: AFq9FYISQgLmo1LbU52o7N6//uyK88RMMRrOs8TI4TwTd2Roq0U8wY2/
-	hsjcAJpEa0pMyUFD/kxfoFnPfNGrSl1ZB+KqxP0ykhGOhV2g/67XJAw5
-X-Gm-Gg: AYBFou2PwcvoiLxoInhD/8u1XVDEmWUZLYrbBBU4YPUGuOIZfQdxdy3mAg5rXMUf4to
-	IFMB0IfYdwDVOKVgDn+MLtqzWmQqw8eU6eEOGMuSioQl23Us7Ht32sSKHx+X8k5LE/ekSCkNJQI
-	C+9JmryKGepbupsd5W3hZx6vjNdNwSqaJNZLYMxPedRBx/snzn4vsrYOuDg1oveUPby+2gtXOnR
-	XAE3pqZhF0BHrl/sF69B4ljRcO0bQEcdBthTuG0oHtKa1Vq14NYB5lF3gbRJV7qN11tLNLTt8rj
-	AIAa5izRodfpl5L5yaeyJXui0qMhRXB7Jsn7o1Sri0OafZTFhIpGkgfaIzkIFvrOZjWzAWL73TO
-	wQy8BKpYL6EhJRXHMuIGlqQpTVquujzu7F4rKc71QQQZLFq6venVzIoGpFtrK+QFW5K7sb1j/M3
-	2FHZs2qmEQsblUCtMNYfySdAq1GTr36H/L5SRgZjMbJ/88gTkzZdlAWI6Axoc7lLzjjueWuDETX
-	JtqLRRl6SwN9MZgtgusH3FRzDzrVTQt3H1aNtsA6Y9/CGw=
-X-Received: by 2002:a05:6102:4247:b0:785:c39b:6a1 with SMTP id ada2fe7eead31-7cc3691f50bmr274471137.6.1792193293549;
-        Fri, 16 Oct 2026 16:28:13 -0700 (PDT)
+        bh=AsagHKk4Izz9QG2y+9vzDv+u1V8rfrHnbTHd/Qn0ZOc=;
+        b=fju6SRvqJ0Vyo8wTx7dXEMgpKXVxXwVtMm5Mos92SwiAs0+XNIk+ZGNwtEAlNM5UX8
+         k5YkyqsLr2XtED/D7Qh7I2lzXBqNqglGGUYN9mRmA8aEykzUBsA7kE7WUbfccedM7Clr
+         fz806dkgtUJwxy8SYoOt6GIEj8fTpIZ767NV1kEmNURZK3aHFO+CSr0fp91vt1cTAdMz
+         nX9EzOidZ5cKxUu/roc9gJdkA0tTZvb5cXEjBkquA8buLrlc9kX0GdEKNUA/Xtxz6BbG
+         UkwbxNPVCgHu7hGhqePjQGgPiIS0CGUkw6097bFS+/QUxj1OKhy90dQwAB/oCpwtiGEl
+         EdZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792193298; x=1792798098;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=AsagHKk4Izz9QG2y+9vzDv+u1V8rfrHnbTHd/Qn0ZOc=;
+        b=0M0FQh4pq61rwJIgQ+2O3dnAUR2875UxloAr4YO3pYgw+7oqM/3CRTfxrqAHuoDoQ4
+         9snJl2gTcKHUxn1K6uRyv0QQKcFedvu8eD2rn894I2ND8HXYjoJUq9qLtylCiZpSnk6r
+         fCA+9/q3MBc5kv2OrLCz/H0hzt39jf3u2ICoyFp3b8HaBruPd9Fn22HRmodzDhCuvzg/
+         hDyJHqb7GkpFQFzIOfpibKBnH/L9xGO2GlOqOK2fmyM8M7hXfS6WDC6mNkscFUAP43MS
+         OUbluanl0Vzh7PXgLCftoMphmMmGzbFzxUT5TCQ36px2smHtONYMRSvG8Rg2ts/F0tMm
+         BkwQ==
+X-Forwarded-Encrypted: i=1; AKwUvBznA1sYjix6yKpOnLwdDykdgH/tnqKJDnZ5uXqz3dC+7MzkhJMxRnx0PnU33g9d1D1Nr/I=@lists.linux.dev
+X-Gm-Message-State: AFq9FYIKQgaVSAvt2UliMHq2vP+I2KSWswpqn0/ijQ7wrvwIkSniNnFz
+	anptAZY0a/nQU+J5s9fTFUI2GQRxA5KnfWG4NYlEbtL/SpbqgKZ0Bcks
+X-Gm-Gg: AYBFou3cOp4y6lQq8OwMBhEqUsdlAbCCUKkfqv3kn2A86chdwJDlOhMRtc4QIV1aS/u
+	3hEv89fFCnK64Dmc8cJ4yNe5uuHHHomrR60dCACzXfKkbjbUmvRzJJPdna+KJQg+PQ8cvts58tl
+	kOj4gZdSyNAeONCsozCUqMdpWgJ1SeWXbXqLJXE3A/DJ3/vtEbhBE1DGb89vpMV6atUpx5rzaPD
+	eKo2kWf48SJow9rX36Tr5Uz+6f4Y2G9buHbq2/XMZjpwsEfA0YKDQWToP2qc98Kkkrcg3ZZhOLt
+	3pRsipA8IrrAVf6DzxrBC/jkgoFI/vRcnEoeGEShjSD+B3PyQhdhW63zjrKb1oR8ivPTzv1iqjr
+	Y4KTWJGveUaDqpgVPwNWCUrSyVetHP/6Xzsu/uzoH2Xi23jm4xe21hTOysD17BX3YmlnofMnQmP
+	ECl2xp3Kj+pgMO+VYENrzov71XKjptfIhbEPw+pW/MGMWTiBk39Hr9Xf1bbfpTacdFu3giFHAwz
+	DvYA9okHDrDDQPKdOWQV8NEV55RqhxAkUWVm7NSa/zrb+TycklHgLooFA==
+X-Received: by 2002:ac5:c007:0:20b0:5c9:a60b:e5bd with SMTP id 71dfb90a1353d-5eaaa61b5e1mr428147e0c.13.1792193297779;
+        Fri, 16 Oct 2026 16:28:17 -0700 (PDT)
 Received: from fabio-X870-EAGLE-WIFI7.. ([2804:1b3:a801:42fc:16d8:d66b:d6c1:caeb])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ea9b4f58bbsm2804299e0c.10.2026.10.16.16.28.08
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ea9b4f58bbsm2804299e0c.10.2026.10.16.16.28.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Oct 2026 16:28:12 -0700 (PDT)
+        Fri, 16 Oct 2026 16:28:17 -0700 (PDT)
 From: Fabio Estevam <festevam@gmail.com>
 To: Frank.Li@nxp.com
 Cc: robh@kernel.org,
@@ -67,10 +69,12 @@ Cc: robh@kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	Fabio Estevam <festevam@gmail.com>,
 	stable@vger.kernel.org
-Subject: [PATCH 1/2] dt-bindings: nvmem: imx-iim: Allow syscon fallback on i.MX5
-Date: Fri, 16 Oct 2026 20:27:59 -0300
-Message-ID: <20261016232800.536654-1-festevam@gmail.com>
+Subject: [PATCH 2/2] ARM: dts: imx5: Restore IIM syscon fallback
+Date: Fri, 16 Oct 2026 20:28:00 -0300
+Message-ID: <20261016232800.536654-2-festevam@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261016232800.536654-1-festevam@gmail.com>
+References: <20261016232800.536654-1-festevam@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -79,59 +83,51 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The i.MX51 and i.MX53 SoC device code reads the unique ID through
-syscon_regmap_lookup_by_compatible(). Their IIM nodes therefore need the
-syscon fallback so the syscon core can instantiate a regmap.
+Commit d5b55c35e033 ("ARM: dts: imx: Fix the iim compatible string")
+removed all IIM fallback compatibles because the binding only accepted one
+compatible. The i.MX51 and i.MX53 SoC device code still looks up the IIM
+with syscon_regmap_lookup_by_compatible(), though. Without the syscon
+fallback, syscon_node_to_regmap() cannot instantiate the regmap and boot
+reports:
 
-Allow the two-item compatible sequence for these SoCs. This prepares for
-restoring the fallback removed while making the IIM nodes conform to the
-binding.
+  imx_soc_device_init: failed to find fsl,imx53-iim regmap!
 
-Cc: stable@vger.kernel.org
+Restore the syscon fallback on i.MX51 and i.MX53.
+
 Fixes: d5b55c35e033 ("ARM: dts: imx: Fix the iim compatible string")
+Cc: stable@vger.kernel.org
 Signed-off-by: Fabio Estevam <festevam@gmail.com>
 ---
- .../devicetree/bindings/nvmem/imx-iim.yaml    | 20 +++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+ arch/arm/boot/dts/nxp/imx/imx51.dtsi | 2 +-
+ arch/arm/boot/dts/nxp/imx/imx53.dtsi | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/nvmem/imx-iim.yaml b/Documentation/devicetree/bindings/nvmem/imx-iim.yaml
-index bb37d72c9eaa..ebfd947e6800 100644
---- a/Documentation/devicetree/bindings/nvmem/imx-iim.yaml
-+++ b/Documentation/devicetree/bindings/nvmem/imx-iim.yaml
-@@ -20,13 +20,17 @@ allOf:
+diff --git a/arch/arm/boot/dts/nxp/imx/imx51.dtsi b/arch/arm/boot/dts/nxp/imx/imx51.dtsi
+index c8698a9af1a7..e0494aa30a6b 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx51.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx51.dtsi
+@@ -476,7 +476,7 @@ aipstz2: bridge@83f00000 {
+ 			};
  
- properties:
-   compatible:
--    enum:
--      - fsl,imx25-iim
--      - fsl,imx27-iim
--      - fsl,imx31-iim
--      - fsl,imx35-iim
--      - fsl,imx51-iim
--      - fsl,imx53-iim
-+    oneOf:
-+      - enum:
-+          - fsl,imx25-iim
-+          - fsl,imx27-iim
-+          - fsl,imx31-iim
-+          - fsl,imx35-iim
-+      - items:
-+          - enum:
-+              - fsl,imx51-iim
-+              - fsl,imx53-iim
-+          - const: syscon
+ 			iim: efuse@83f98000 {
+-				compatible = "fsl,imx51-iim";
++				compatible = "fsl,imx51-iim", "syscon";
+ 				reg = <0x83f98000 0x4000>;
+ 				interrupts = <69>;
+ 				clocks = <&clks IMX5_CLK_IIM_GATE>;
+diff --git a/arch/arm/boot/dts/nxp/imx/imx53.dtsi b/arch/arm/boot/dts/nxp/imx/imx53.dtsi
+index 93225a56896f..13550d12f694 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx53.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx53.dtsi
+@@ -668,7 +668,7 @@ aipstz2: bridge@63f00000 {
+ 			};
  
-   reg:
-     maxItems: 1
-@@ -50,7 +54,7 @@ examples:
-     #include <dt-bindings/clock/imx5-clock.h>
- 
-     iim: efuse@63f98000 {
--        compatible = "fsl,imx53-iim";
-+        compatible = "fsl,imx53-iim", "syscon";
-         reg = <0x63f98000 0x4000>;
-         interrupts = <69>;
-         clocks = <&clks IMX5_CLK_IIM_GATE>;
+ 			iim: efuse@63f98000 {
+-				compatible = "fsl,imx53-iim";
++				compatible = "fsl,imx53-iim", "syscon";
+ 				reg = <0x63f98000 0x4000>;
+ 				interrupts = <69>;
+ 				clocks = <&clks IMX5_CLK_IIM_GATE>;
 -- 
 2.43.0
 
