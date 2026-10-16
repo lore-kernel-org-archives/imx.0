@@ -1,139 +1,258 @@
-Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011010.outbound.protection.outlook.com [52.101.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E62C4A64DB
-	for <imx@lists.linux.dev>; Fri, 16 Oct 2026 14:42:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.148
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792161751; cv=none; b=CwNky8QQDHQdavv4Ht+BITxd0gGFY+CTlVH4EVIGnWoPtK/UiAxSE5LTUMNPOfjNF7ppz3LgKz9BD68QXU9hZ0KHe8soa4RxJuX4kuQFJAIBPpBHaFOwDlfbmQQOv8OBTgae2pMoNdoGWBdbWpmiTt8Ss+gukNasOk0Z7OihDb4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792161751; c=relaxed/simple;
-	bh=+nc4F9eQckj7R90Z9Q2QAGsijSxI7+KgudcWTIBAlmg=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=Nq6ubMSkF75bK5+WG2FqYiBrdQaotqimXYkuE1mjlcGdyP626mP1sV//MN+wXWomnb1cU5XYy9be+BcSVCQey6kO0lBgkJDp8UMyoDcW2M0JqnE/k9NVxRydP8ioei/yxRgMStQ2QJ9WxnZ/aqEKU38R3obaUZbrW2fS+ZKD0PA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=V8PPXjMs; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=a9Zs3sm4; arc=none smtp.client-ip=103.168.172.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F08E4D7942;
+	Fri, 16 Oct 2026 15:05:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.10
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792163138; cv=fail; b=n8R9FWpiLQYu6vkmPajMMqawYqI5OSWPs+KB3ZX+Wj8DGo63wN8cI54dNGZOkG3PzlYdoNA7tagVTTN9pyjDe176IczvTK3Cr/LB8gXcpPtPQI31rRn7BOAaGwo1bC8GyaCITFbaQ/ThwPOn93XT9hzFMBKx/CI/m/B8/1P5UUU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792163138; c=relaxed/simple;
+	bh=0WRYcQLREGaClhqZ/JdhBSgncat4WTNqeIeZVaw1i+E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Qr1vy//M5yShOfHrGmyhiiDK5kKgNBbDs27zt82PjdhNu9+PJd9F5Yzy2CEIsjSiHWhNWugYJZ3hUXv7zdJGTz+qEZfMqRXXz9OLOKuNjbBg6pgKHzInRA3FDBMfx4IFpgbs/NcAjAIYfO8gUoetNhpdTDpbq0UM08EuWIuZk2Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=fail (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=MSDLhApF reason="signature verification failed"; arc=fail smtp.client-ip=52.101.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="V8PPXjMs";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="a9Zs3sm4"
-Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
-	by mailfout.phl.internal (Postfix) with ESMTP id B1F69EC00C4
-	for <imx@lists.linux.dev>; Fri, 16 Oct 2026 10:42:28 -0400 (EDT)
-Received: from ams-imap-03 ([10.64.2.23])
-  by ams-compute-02.internal (MEProxy); Fri, 16 Oct 2026 10:42:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1792161744;
-	 x=1792248144; bh=aKpnb7yXuWN79+CT5JC4DKumb3SvQ4AMvlQXBzXMP+M=; b=
-	V8PPXjMs0B4JLEonkN+/l4V+KmdgVisapme+D4QH/aGw2aL3CKGOL8e0fPYGutdq
-	wnSTTsR0DzK/y1Z6hAHJrE7z8e8yilGlTKCYsYl3iw8Id85p27nsE1854z5ZKd3l
-	UoGPdjeF9uHeMvGWG4JSrjmht5J6u/4PNsziIeCZDpQ4s0s/uvpMAs8fDgdaj7xl
-	oHCaFeJsuc640hOvysj/4+wPWRqMawEDbMwGv2dNfS9tbHDsOfb53aUkmC2QsyQD
-	DKi5TFNzDqLYGj6yh0CIDLjxKK2j13tSBsTG/lTH6nKq3OQKYsmR1xPxS9MAGyWj
-	ySxVnI8WVrs+vYQJWJSGxg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1792161744; x=
-	1792248144; bh=aKpnb7yXuWN79+CT5JC4DKumb3SvQ4AMvlQXBzXMP+M=; b=a
-	9Zs3sm4I76Vaj5D6gQON7Vx6K4rcAflIUWoxzAZpFk7qPRtBn1fJgfVJ5NqwMh1w
-	bT/j5grxJRoDMItroh9/WZZwTe9vwhdUpsoDPEpfVynaD0NMY39hLTms5w1GD5tI
-	Y5mV0xNGmtN+aBHZH9Bn3NeONPRwl/LLc7EEhH8sh8nLfKVp3SgAXoMmTV7Qpt9r
-	hCI+Vs1/B1WKKy9I0fxBuqzAbV5o20XEA4FLhvMtRkWLyBGMNjpUGzWMjU6jnFMQ
-	3bP/YcP72IPuZUaP76bXdaYn22oyqllcPMZoL1/6Z3BBEt9oMFOQQp+rDBSkrIWP
-	PRWjTNIsTUwLed6INZaWw==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
-	repo=github.com/dkim2wg/interop; date=2026-10-08; sw=lmtpprox;
-	action=sign d=arndb.de a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1792161744; d=arndb.de;
-	mf=PGFybmRAYXJuZGIuZGU+; rt=PGlteEBsaXN0cy5saW51eC5kZXY+;
-	s=fm1:rsa-sha256:SfScxmpV48ynolCPMQ3LjdAGZA1wOkePMzplIku3CsfCN6Y
-	/sslWRM5fl4BicUV152bgrS4b8n54tClvC1Wo87VtIjRiUDVvwu8KQvKkJPqjZkO
-	j0ZiHz1dnGEExIZ3pxV7GyNmA2j1a3vHMhJRPJnJFQCYPZGCqVUudT9XXh0CxED8
-	/xIKoVmxIw1cWR2Gc2R7TgD2BVN1owQjLEYsOTTCjAy1dV500UtKj/UN/ULTZ5lZ
-	+tfurSEAk1Rrv0Ru9KLIR4sdLBNdTrbsnt7U26sQLVq8pXO2xWHDi6HCbk8PeBYd
-	d6zCFfsQEwls21rirZ9Rh0IWmb7/KD1HMXw1zGA==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
-	repo=github.com/dkim2wg/interop; date=2026-10-08; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:517RQdKwcZ2E9HUT6oL098gqiwhapSKZVShqyWaxe/s=:+nc4F9eQckj7R90Z9Q2QAGsijSxI7+KgudcWTIBAlmg=;
-X-ME-Sender: <xms:yzfSavWKk1CWdiXw8r5FzOYTFtgxgqNYCIKultGgH9-tltZJS8QZ7Q>
-    <xme:yzfSaiYcFUmqFhP3QgSplPucIvjUaZznOayAqtrHDxZ5tqdQJdzAn2nHLVvsfyKfz
-    fDN4q3F_BkwHyrIRYKtn0FjUYinJU0azr8k1pRN8Pk8a76CQ0X2QA8T2Q>
-X-ME-Proxy-Cause: dmFkZTF+3rfSvQkPH5vX+1X2huUFhfjyJS4C9bKeG9uGBVPWuaVR0D3ZOB7E78/lg6lBuU
-    yeBeDN3khuVjziy4hSwH9Df2QVhA0Xv5BaQrEJmvPDOP3bk2IIb77+jIifD9y5gHsoM6uH
-    0BpA3/U3YMURqaIU3ydySEv5DU07I/Jq0t5sA7PZhzNG/2Y0PDb+t3LFZAmaAD5CebEXhF
-    aKhfQfmsQWHms8hnZM06bYRxMF0H3s5kZnDarIoMXepYLKKjDvRkeZdTj7d/WZ1kjLRsWj
-    khDmaG7O5INuZPg/R2wbe6iKf7de5mIwuPeBJAn5JcJO+0tSKulsLV5NSZBtSIfdJjTTk5
-    olmJOdht7R5yTejFZHBHUB9g6WzTtvOi/zkP63dRWIc6dsUGD7WGwk1Q3JfA7Axsayc8L9
-    gIFNTGForC1WFBhK8RxKPPSVFfP/K9wZZ7lVIbRhUtVXiYlyNgtb89JNlKSeaUhqyMsrns
-    WNirtWw2o5aLwlNXNu7Bijbt1wX/2zTPZUDpBw6G2Co4QALkUsn0f+w0pdT8wZv5kGMpji
-    cyEnkjEHMalCTDmSMX9n+izdpCFFIzZXCElzfy5sWo4vJm2buslxecJgKRv7R9TbcQTwW/
-    1qEgRPGeFhuCW5t414ga+l5N7kd9eF5PU8pBlfqTAQwjXVZhP8eOlCDNs5hg
-X-ME-Proxy: <xmx:zTfSam7umEVih8a4--NQmF-q0lwAH6Fr1UyW46AQFqENdv7HVBbRiA>
-    <xmx:zTfSarwroTDoX6Lc1tXnVi4_ZYKYGPziuDSlyLyfPNBv3mZmjQCyTw>
-    <xmx:zTfSaieiBasoGJWfcs8R-MyABsbCqWo_hUa-NNOLOUbebiIUEvPfZw>
-    <xmx:zTfSaoB_OuzJ4sZYoFis-zvJp8bGgMDz0LmIdb9Ji7OJn3-_025LVw>
-    <xmx:0DfSaiI0VNjCYk10DjPyPdQ372pfkfhUVI0srhoHy_PJQoP8GzEpKklL>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.ams.internal (Postfix, from userid 501)
-	id A5F3C32A008E; Fri, 16 Oct 2026 10:42:19 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="MSDLhApF"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=jjFw+lmQVt1D1K9V9gS1XRppXjGpCtgpjMqK+4O9wafLppP+CNPqS6P6CDfq2Ux+T/z9cn+sHtiBwCZAtGmgMeJfGc6rUZ7eiN6ua5mM70IumBJdcRbZgaVvSHRnDxkysw1VSAni0It/gYy7Ym6kQzTTQ6c6/rQWIFdphML1rpF6e8Z0wWHn7VUfiahUkYkiOk20DeLC7lvZYzGzoMCfOvLZ89TSgDuLzQXeilzAldeyrtwauHosu2w1PNdK2X7dloYoWvSkgA01ec8GPxlox1RPKxNtafTjuhle1GmjBEKzadJZt0YDGsWGb/a886NjQh125QxeyhIXZ+QcZG+H4g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ycmdzewuDr0AEqdQsXNiWDEcvWLW4j6qyCR2R59mBxw=;
+ b=G3HCxxRHh/tYdZa3MvjEXJpJfvFIEsTVKKIpq/SUM/06W3Zf3o9+DzxctYBzz6bcR9kZ9zqSAaivjT5cbVHHIiIsSSVwO7BDSr61nnRfBjYlIvPNfc2NAj8AwyB/QRCkDfF7e+0Nqk7QF8oY15SqO6j/G9T1jIX6W2KunM22Wdh2xT7KAfrsmIeoLPtgQhLnhJOPa8/oFe78HR7fSwx/RgZTy5LmKdTIjpXc013PcD1hdAuvOxnkh6Fy+iC29DQLATPLMPsLNmK5AIl8uMpaIUF2qRVaUhhxAfMiZNhI86/jOGMc9TzHd24pXyuvACHhiYeO6Q+uWWcZnsAkCFuQyg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ycmdzewuDr0AEqdQsXNiWDEcvWLW4j6qyCR2R59mBxw=;
+ b=MSDLhApFkqw1zxp6Ljc680xZburBfuyFopvLjPCTT0y/zikjv1fHrwzs+30CPkmCrHZXoXoRBDfTObxDXroFQSo4bHxPFeS3kK+rYdoa889yrMWx3eM8eBL2kC9s7ufPzdY1w268KMmGJzTu6RddPOVc8ONXPZq/PBQdbNTvDtY7E7yaBwxmzipW4LtfX/tIJwvQnLlBMC71RXsgLU2QPCIkyZX3Zr2qmhbN1ukS6VKqkUc3H9BKTNftqPfRBwJJu6fh0okwtTJtM7+BCd9LmyLIKp8Y9IoSDLYnmiXYoZw8OfCzjgCzXlx1VivzXxQpGcJeOK/Ua5H88J+eMm/dLw==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by VI2PR04MB10905.eurprd04.prod.outlook.com (2603:10a6:800:272::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.15; Fri, 16 Oct
+ 2026 15:05:32 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0522.013; Fri, 16 Oct 2026
+ 15:05:32 +0000
+Date: Fri, 16 Oct 2026 11:05:22 -0400
+From: Frank Li <Frank.li@oss.nxp.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>, imx@lists.linux.dev,
+	vkoul@kernel.org, devicetree@vger.kernel.org,
+	dmaengine@vger.kernel.org, Frank.Li@kernel.org, robh@kernel.org,
+	conor+dt@kernel.org
+Subject: Re: [PATCH v2 2/3] dmaengine: fsl-edma: support per-channel DT child
+ nodes
+Message-ID: <atI9MsuyHFqi1i_4@lizhi-Precision-Tower-5810>
+References: <20260930-edma-iommu-v2-0-72a62bf44c74@nxp.com>
+ <20260930-edma-iommu-v2-2-72a62bf44c74@nxp.com>
+ <20260930064224.59C941F00899@smtp.kernel.org>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260930064224.59C941F00899@smtp.kernel.org>
+X-ClientProxiedBy: SJ0PR05CA0158.namprd05.prod.outlook.com
+ (2603:10b6:a03:339::13) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-ThreadId: A4WN0AQLOakc
-Date: Fri, 16 Oct 2026 16:41:39 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Andy Shevchenko" <andriy.shevchenko@linux.intel.com>,
- "Arnd Bergmann" <arnd@kernel.org>
-Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
- "Jiri Slaby" <jirislaby@kernel.org>,
- =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
- "Hugo Villeneuve" <hvilleneuve@dimonoff.com>, linux-kernel@vger.kernel.org,
- linux-serial@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- imx@lists.linux.dev
-Message-Id: <912aecf9-b135-48fb-b539-52ba3a1704a1@app.fastmail.com>
-In-Reply-To: <atImm4Ixv_PwUqLb@ashevche-desk.local>
-References: <20261016130328.1037616-1-arnd@kernel.org>
- <atImm4Ixv_PwUqLb@ashevche-desk.local>
-Subject: Re: [PATCH 1/2] tty: serial: remove hub6 multiport support
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|VI2PR04MB10905:EE_
+X-MS-Office365-Filtering-Correlation-Id: f19ddb54-2909-4049-8c3a-08df2b96ec35
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|23010399003|1800799024|376014|366016|18002099003|22082099003|10067099003|4143699003|261009223027099003|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	s/EhvnWyVRB1MYF+xFjCjw+TqMhJT4W7V4wLbijoYgSNp2dkeKJt9b2P3QJeyYBjhpCv+cfiqVOOpsO4Acli48cNrLXrvkNEhXl/PLaZCxRs/102155akduicrDaGrVqMsStCMeP8Ka3PQYBE8543townmqL5tK21rT7lupO4YwbX6pBOWfEGeXnl/tY2WqFYoW9bsR6NCrSj1JeyVxxLrgtD4p27h283gfc+k+eljdpskKVf68KPJycuIC24v2/H8tXxdhcV2ROWpHhLOJDgR+OLONIU6a9+Htyl5DtqfnZC25lGQx4ggOw4EoI4pHdE5rlfb5fVn7U8bMDsxQ6yenu/mp6kuNGsJZ3Nj+ly90S0eW6+jkMJYG4R56pYEatqy4DnbDjusYMqiYaNv+JWfP69U6BUrujM5/s3HP0YIbzR6MnR6CSpvMtzqzxL6omSdRes9WjMF5NbaBPnPsa/wNIbYtSE4x4fVwTfCfcJgGLhaH5RlBou3pFhECjMEnQXlt09HakJThHLE25/BKXV86MYFrKVjdIWxK71pqlnXOy5zZRPs6/yUx6NR4CqB7xGJzb/1EK3lG+WN9f2d697e/crwLgkdRNSA+vsbld1/4=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(23010399003)(1800799024)(376014)(366016)(18002099003)(22082099003)(10067099003)(4143699003)(261009223027099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?iso-8859-1?Q?S58ur3BtCHts8/ZJ/CHAT5bP9C1U+cFrYe+axRFjR026qEtFxoZiFfubav?=
+ =?iso-8859-1?Q?nx3hMYZPCWtz7HTWKzYMEkvEE9qeVhGYLHJ2szdFDceW/0VZWjcl6oP4DY?=
+ =?iso-8859-1?Q?P9gJVglq6c5KUSZcdKpz9PRVh+XD5qgs00twBPYvCMRRJEIxALH4wgVMva?=
+ =?iso-8859-1?Q?WDC8PbsEhpH0HmIPpysvwji7KSJOlrsybQSDlHozhkomZztfv5/M9F/TYL?=
+ =?iso-8859-1?Q?Aot3H5nADWOA2wjtZElUuRhbuIssFKeyuTaDkxBhKY4od3EtUOaye3Y6dQ?=
+ =?iso-8859-1?Q?+8mX9Q+yeXRFw1XYcPpV09MvuT8O+YNTURD6qzXOYhmJRNM2bos45FnqmU?=
+ =?iso-8859-1?Q?waA87WaVoCjkDLWOI0ucGgdKFIEvTbFF2NZCwvu1M5LKVrsF0TLZcgn6JA?=
+ =?iso-8859-1?Q?sSIbxg3rmArHxJyVr4eLt13k9279cdAHelqVpADKdVBxK/D1flhG6STKeL?=
+ =?iso-8859-1?Q?D1y4ZJmFanuupW4xrSgGR+6CWkJpAxPEMxPJBsqQoy0cPQ+n1c/IHblpSq?=
+ =?iso-8859-1?Q?onByjJEk3zpjg8wCHyuVIFXm7xujunyoT3M9JG5f3gLeKdz6KmkW/T+8s7?=
+ =?iso-8859-1?Q?Ao7TUz7cK8gOp0bDIJBc4X/w6kTUt6clL1AkoKWfS/5mRFATxLDHL+M6pT?=
+ =?iso-8859-1?Q?1O+wBF63dxQ6eGpPjK7+TkT5B+l45LV1GArGA2KLir7DWgubYC3NNxQWPc?=
+ =?iso-8859-1?Q?kLhG8s+2ZrRtiK5FZfQ4KOChDPxBlHqYrjfSDWL3pQyqS+yYTQ+TkeA3b2?=
+ =?iso-8859-1?Q?wxbpXfRsZYF/OCHjSWxif0MLjiyHrlN4uDbaoOxBYmUaQWzt50e4++J2hK?=
+ =?iso-8859-1?Q?9UGfTo5Pop1a/tTIpQ1gqVcdfPYqrS2G79FISMUO8bQg9uEx68EYfgaTzS?=
+ =?iso-8859-1?Q?n9XBOacrRbTXbHj9mXgJfQQ4/aF0GEkDkueQ+8kq81N0I9q2cSp+sI5fiC?=
+ =?iso-8859-1?Q?Xf7QiB4krZ2ZwKf2K2oQRdy+GCUouW2o0MUFDKvp5jti3BKadVJ9A7Ju+F?=
+ =?iso-8859-1?Q?54FARlFFBfM0ne+T00mZdoyb+4L6DNKPSd1PxpIyuA9NDxnKAnS+J+ySta?=
+ =?iso-8859-1?Q?xBWpXh1CQsx2ZrDgRWNzjvCguQn4hETok2XyfSQlu685vK4JJIGAggbkQ+?=
+ =?iso-8859-1?Q?xXbF4pTHriYUywqrn7K6T9vgcLt7Z0VfblmKjIuLHznFb3jle19akK3J8P?=
+ =?iso-8859-1?Q?832ADJHYqykJGuIxR8wNhh4yqZHa8+83t4yxvajG+0Llk0pSLzZ+m419E/?=
+ =?iso-8859-1?Q?OWS9oTH/OBMDqdXqhEOBBJvQCqmlp2eh+2Ss+/WBDnMuAawVEan9vTaYd6?=
+ =?iso-8859-1?Q?jyUeNw+e6OhlTkDiMsEvjsO3nEyLMm9Lvhms9RD0ZPRFZ3bvKEWVwps1Iy?=
+ =?iso-8859-1?Q?D8VbpmLo7Vazdj0L5MjPAk7DXHqQCcXL9Ea1vz7d4vnuWOk00/RT2K9S3J?=
+ =?iso-8859-1?Q?ByQmcgAkgCTljiRThQrmrOPRYKYP50iVQ0/84syAZJqyvVDrdqvbn966qM?=
+ =?iso-8859-1?Q?M6zK6tgSlibDyi46L0LpxapGHF/+RxsVNHvo4K9t2R3VW5Sfdg9FN1Cc25?=
+ =?iso-8859-1?Q?KcQVAvKzHcvnHHYGhVeJvpAdAceJ6oT5gRp4xUs8/ogWZu6xVHDNQGPEiu?=
+ =?iso-8859-1?Q?dESGKOXgT5G6jajtqnPC/6DGRtkDd1bOi5OgeNr0ZF/9y/5kJ9ApmJwW2+?=
+ =?iso-8859-1?Q?hYDwyuwQlFL4KWM+FAgmr1DjwJch9rkDAXSvn+0nXefIVS2i6vxzAROKri?=
+ =?iso-8859-1?Q?GDnnwfXTG9MJ4FK4sHWsuwD7E6pDfUOLdoivJvg+239Oe0l+E5pG9U9WEK?=
+ =?iso-8859-1?Q?V2uS7JNTq+eojhNs4hlZP5gYeKUgZsZ1qrXQ9tBgvvRdlIRVkvif?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f19ddb54-2909-4049-8c3a-08df2b96ec35
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Oct 2026 15:05:32.1139
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: fvIjsRbQiJvhOHgAu/EB0hoi9DVPtHwEqFuCeSxz1zSAjj0bdgID5L4fdfFXVppdyFApwYAm07ym57UVDWQXv2nWDzyWH+cPkcf1d2odEfAtQcuOH+ubu5keRHzXq8vX
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB10905
 
-On Fri, Oct 16, 2026, at 15:28, Andy Shevchenko wrote:
-> On Fri, Oct 16, 2026 at 02:59:47PM +0200, Arnd Bergmann wrote:
->
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> But there are some minor issues to fix, see below.
->
-> ...
->
->>  {
->>  	unsigned long old_iobase, old_mapbase;
->> -	unsigned int old_type, old_iotype, old_hub6, old_shift;
->> +	unsigned int old_type, old_iotype, old_shift;
->
-> Move it line up, so we will have reversed xmas tree order.
->
-> ...
->
->> +	/* hub6 is no longer support */
->> +        if (new_info->hub6 != 0)
->> +                return -EINVAL;
->
-> Please, fix the indentation, should use tabs.
+On Wed, Sep 30, 2026 at 06:42:23AM +0000, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 3 potential issue(s) to consider:
+> - [High] dmaengine: fsl-edma: kernel panic due to post-registration dev->bus modification
+> - [High] dmaengine: fsl-edma: probe deferral masked in DT IRQ lookup
+> - [Low] dmaengine: fsl-edma: compilation failure due to undefined function and member
+> --
 
-Fixed both, and the typo in the comment here, thanks
-for the review!
+Need fix these sashiko report problem or provide explain.
 
-    Arnd 
+Frank
+
+>
+> commit 7b47892ce3017d20fbf0bc531e1531f30816d5d2
+> Author: Peng Fan <peng.fan@nxp.com>
+>
+>     dmaengine: fsl-edma: support per-channel DT child nodes
+>
+> This commit adds support for parsing per-channel child nodes from the
+> devicetree. It configures per-channel IRQs and IOMMUs based on the child
+> properties. Existing devicetrees without child nodes continue to work as
+> before.
+>
+> > diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-main.c
+> > index d9fb717b5b53c..e7e5b33cfcb20 100644
+> > --- a/drivers/dma/fsl-edma-main.c
+> > +++ b/drivers/dma/fsl-edma-main.c
+> [ ... ]
+> > @@ -695,6 +699,133 @@ static int fsl_edma3_attach_pd(struct platform_device *pdev, struct fsl_edma_eng
+> [ ... ]
+> > +static int fsl_edma_configure_chan_from_dt(struct platform_device *pdev,
+> > +					   struct fsl_edma_engine *fsl_edma)
+> > +{
+> [ ... ]
+> > +	for_each_available_child_of_node(np, child) {
+> > +		struct fsl_edma_chan *fsl_chan;
+> > +		int ch_id, irq;
+> [ ... ]
+> > +		fsl_chan = &fsl_edma->chans[ch_id];
+> > +
+> > +		irq = of_irq_get(child, 0);
+> > +		if (irq > 0) {
+> > +			fsl_chan->txirq = irq;
+> > +			fsl_chan->irq_handler = fsl_edma3_tx_handler;
+> > +		}
+>
+> [Severity: High]
+> If of_irq_get() returns -EPROBE_DEFER because the interrupt controller
+> is not yet ready, it seems that error code is silently dropped since
+> only irq > 0 is checked.
+>
+> Later in fsl_edma3_irq_init(), if fsl_chan->txirq <= 0, it tries to fall
+> back to platform_get_irq() which will fail because the interrupts are
+> defined in the child nodes.
+>
+> Would this cause fsl_edma3_irq_init() to return -EINVAL, permanently failing
+> the probe instead of correctly deferring it?
+>
+> > +	}
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +static int fsl_edma_configure_chan_iommu(struct platform_device *pdev,
+> > +					struct fsl_edma_engine *fsl_edma)
+> > +{
+> [ ... ]
+> > +	for_each_available_child_of_node(np, child) {
+> > +		struct fsl_edma_chan *fsl_chan;
+> > +		int ch_id;
+> [ ... ]
+> > +		list_for_each_entry(chan, &fsl_edma->dma_dev.channels,
+> > +				    device_node) {
+> > +			struct device *chdev;
+> > +
+> > +			if (to_fsl_edma_chan(chan) != fsl_chan)
+> > +				continue;
+> > +
+> > +			chdev = dmaengine_chan_dev(chan);
+>
+> [Severity: Low]
+> Does dmaengine_chan_dev() exist in the kernel?
+>
+> It looks like this might cause a compilation failure because the function is
+> undefined.
+>
+> > +			chdev->bus = pdev->dev.bus;
+>
+> [Severity: High]
+> Is it safe to modify the bus of an already-registered device here?
+>
+> Since fsl_edma_configure_chan_iommu() is called after
+> dmaenginem_async_device_register(), bus_add_device() has already seen a
+> NULL bus during registration and skipped incrementing the subsystem reference
+> count.
+>
+> If probe fails or the driver unbinds later, device_del() will call
+> bus_remove_device(), which will see this newly assigned bus and attempt to
+> drop the reference twice.
+>
+> Could this cause a use-after-free panic in the bus subsystem?
+>
+> > +			if (fsl_edma->drvdata->flags & FSL_EDMA_DRV_TCD64)
+> > +				dma_coerce_mask_and_coherent(chdev,
+> > +					DMA_BIT_MASK(64));
+> > +			else
+> > +				dma_coerce_mask_and_coherent(chdev,
+> > +					DMA_BIT_MASK(32));
+> > +			ret = of_dma_configure(chdev, child, true);
+> > +			if (ret) {
+> > +				dev_err(&pdev->dev,
+> > +					"IOMMU config failed for channel %d: %d\n",
+> > +					ch_id, ret);
+> > +				of_node_put(child);
+> > +				return ret;
+> > +			}
+> > +
+> > +			chan->chan_dev->chan_dma_dev = true;
+>
+> [Severity: Low]
+> Does struct dma_chan have a member named chan_dev?
+>
+> This looks like it will cause another compilation failure.
+>
+> > +			break;
+> > +		}
+> > +	}
+> > +
+> > +	return 0;
+> > +}
+>
+> --
+> Sashiko AI review · https://sashiko.dev/#/patchset/20260930-edma-iommu-v2-0-72a62bf44c74@nxp.com?part=2
