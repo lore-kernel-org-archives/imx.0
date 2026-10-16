@@ -1,168 +1,138 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013069.outbound.protection.outlook.com [40.107.159.69])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 837333D5C38
-	for <imx@lists.linux.dev>; Fri, 16 Oct 2026 20:12:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.69
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792181560; cv=fail; b=kJs9PxWJU/8EzHSgl9GMEejRHWvPZfF9idwFtVTIX0KFN7rft11G+1prdguGBdEdLv2T0IqiWJu6NXj/F1zun1KqbV6N2OXiEtStTTyGmDT1epie45o+GJ9+ndt+GCLzM7IdPg8hlT9CbDDBehkoW+PgEM7pUdK7AKRr5Zt2nEY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792181560; c=relaxed/simple;
-	bh=EABhWoLcjV2LseBuri61iZlgIhglpfDJiBFSX6EEOQc=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=R6XtkINur1kiWLzDBJcE7WTBUVOBjF3HUw1j6VI+QGVXYcD7rfG03aTUeqo5vmTncuMarm19EtgwEdLYlhXiEaLZPxzCRTv1BH1jNjE0v4vpj/j+jlQ7dze8ExkzSMeWoc8VmEq15H3vsGBO+FPUbZO5pCsWjHTja+pQTVSFaws=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=Dq9H8acx; arc=fail smtp.client-ip=40.107.159.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AA2E40B109;
+	Fri, 16 Oct 2026 20:18:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792181933; cv=none; b=bJwOGUrH6yWdpTEhRj6ROFyXI4D7Zsa6HuqPedfqtbH5tKIUWq7cO8LcQAnMS5/NiW2qRkpGXV2tO/rWN6oXFdg0/Nj1qIkoJQb2qM9dJSkWD+rJ4IOeQ6UoCvMnkZ2odLfYhgiaA6vBBR0aaO6MnWYomF5/R11hnyuJkQtjxag=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792181933; c=relaxed/simple;
+	bh=1B1ej6X099roilERBi+YWq+vy0abdU7RceiOoAuQYmY=;
+	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
+	 Date; b=U1OP/2tTzX4TN9ztLkNQAqM0XAJuWnDfRlcwJnZJXiL5EwaeYRot+TAyYcj5ONvpvz6Fcs3ckDNaZXVD/HF+/LrmktXk+G7pRdwq5U9HFjpj/Qjlm0w4N09fY5J0hOAD8v7HM2nWJ16+kCCV2HAD+swWzYjgeJwUaC0K5Cajr/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oPA7Dr04; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="Dq9H8acx"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=eKrmDI1llY6BUERfIoRyMURriX1RJ4ZSwQSQQ1M7Y6DXr0uQ/FqHLTBMmOAOZUZP6mEz/DC5Wxvh3YBlLcnxKWeMmZuPCQ/NC7dhH0KKooftvya9kqOl4qIYWn7+YmeIk50Ss4Q0TDJOuharN5cVfa33rrvN0jEoCZ05ptn0Don7eaOMmRzbvkuRYlIMe12/spc/r1hbSZ96mkOk/XpHIEhpEDpd6MSuXY475emQHGUiO3ySk+QYkwgXr4npyy1EZzFJDwvvpl+WJhYCeX75o0qNsatC+CbrxEpzb57zrnYC7bXzm3aXyaNTDlEnMoFAXy/ngmjOfHY1i7k26oBCpA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GHJXiywH86VtoTDLrlm7iP3whdx8pmIgYCaQWpC+qfc=;
- b=LZHdXAGzWYwjSXU1j60wsMlVWxC9XAvtUv31lAV3U3dsf1B9d2EtSjGyEEWEv6bP/lRXpZF8Z6/Fh7TCZtubOfUFUKXgol0VQlMjHo9LCBZHnk3oVdIw58qYCJEBsS+8JeKhAVxcc+QcYBhaE4lGVcTL1Gg5BEVBOCgtfMDA8YeWRAteklpHku66DAANdsAVz4cat1MXTm+4AxBt3Bn926jeR06CLT91kzSTJQOOIsICx7ZNHYiN6bt82rw9oT+edrXlaYflHfBjr9owBtthJrF1GD6fp4+/wv2tq3Ya1V6x6fyPfEJhKxVKyQPBhsB9XhwFnqhVQDxUy3+W9BGmXw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GHJXiywH86VtoTDLrlm7iP3whdx8pmIgYCaQWpC+qfc=;
- b=Dq9H8acx5TwlQOV7Ju4cyvO355nKGRhC9IFJHgGIlAemylpOlIlujGfXotUzk7g70HUqNPr+JB11qcb78IgtHqTe3Mfqt58jBl+bLqXwI+Pf6kG1ZzjyKD+iDHKM8pOf6wUbW5IWhSzWs+dONQWv+DhcyJj7F8pFLyXIlnmmSUEsc0ZYQSq+hDVwYrLBl0xvqv4F4kUNobm5cCgKt7w6GmAB+b7q8Kwceb9pNim1s7M67KIbPqBB1XLciJMf04tsWAaTYHHKAmQeLLaGdJnZcXtuhXHtJgTRkjYzVmk6gFI/DRElyF0iSYGcnSYM0Lxf/xmMACts/QjA/NbB8QcAug==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by AS8PR04MB8738.eurprd04.prod.outlook.com (2603:10a6:20b:42b::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.15; Fri, 16 Oct
- 2026 20:12:04 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0522.013; Fri, 16 Oct 2026
- 20:12:04 +0000
-From: Frank.Li@oss.nxp.com
-Date: Fri, 16 Oct 2026 16:10:57 -0400
-Subject: [PATCH 14/14] ARM: dts: imx6sx-sdb-mqs: remove empty pinctrl-0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261016-arm_dts_cleanup2-v1-14-3a0cab9fd784@nxp.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oPA7Dr04"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 678DD1F000C5;
+	Fri, 16 Oct 2026 20:18:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792181925;
+	bh=ciIrD9qA9+7gsXNW9FF54lAFKsEbb4sS8vCJEvM2bG8=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=oPA7Dr04sh00yqAH0uAFSJLMxCJ/OW6evb4RNw/yWKU2Vi71woZrmC8b+/A21Dibh
+	 y+BquO0NiN4vGKU50WQCuCo+F1z8YdBS6lUuUk0vCgFqSVyv79Os3SwQ7xF9Mqjr2A
+	 wHhArk94bsgQgOF0KTkGEFtJ2wI9Psbm8CxHo63MZH69zH1ztKwiKD5+zoxhErJz9m
+	 j1DTR6Qoo9+BstRQqFPxCIeBPtBp8J2wO/DCXN778UDsdEhWccTfvS2Dhx3n2mVCic
+	 QqoKv9Zy/6mKDXaVwSAqsB5Oa93xVlB9RYmE5qWNDpgxq4dBF4WtfEFmdtRnn16FT0
+	 c2mEFmwoLlniQ==
+Message-ID: <sashiko-outbox-174907@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 14/14] ARM: dts: imx6sx-sdb-mqs: remove empty pinctrl-0
+Reply-To: sashiko-reviews@lists.linux.dev
+To: Frank.Li@oss.nxp.com
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org
+In-Reply-To: <20261016-arm_dts_cleanup2-v1-14-3a0cab9fd784@nxp.com>
 References: <20261016-arm_dts_cleanup2-v1-0-3a0cab9fd784@nxp.com>
-In-Reply-To: <20261016-arm_dts_cleanup2-v1-0-3a0cab9fd784@nxp.com>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Frank Li <Frank.Li@nxp.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1792181453; l=768;
- i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
- bh=OMxbueNGr+vRDQa7DFmLaaH4S/x0dnn/E7+QFXHkFWk=;
- b=FJa7gf7JTKcjGoQCdp3joa8TaYT932wNRIskvvF//dVE9tSX5U6LLwo1/QtO8jSg7vMY5hBkr
- Lv2ZrbjtrDWASRP43bS7OOVqpg9i/ynr9dKFnBySBTYWd1cSZVdJo5m
-X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
- pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
-X-ClientProxiedBy: DS3P220CA0013.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:8:45f::13) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+ <20261016-arm_dts_cleanup2-v1-14-3a0cab9fd784@nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 16 Oct 2026 20:18:44 +0000
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AS8PR04MB8738:EE_
-X-MS-Office365-Filtering-Correlation-Id: b40c2649-8505-49c6-291c-08df2bc1bf14
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|366016|1800799024|376014|7416014|23010399003|10067099003|18002099003|3023799007|22082099003|261009223027099003|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	hNOuRwf3PCVSIS5cX+zU/0SVIjVHR3Y79tTkdxTXS1EiSN7VFRUjDB1Nc5Xl6nKfU83Atj9viA70BHES9po2K7cl1DeG+dXA4HCAUkRkfjIOYk//1e6hh3s++kp78WuVN2iHvwgBfIljLKFdGrLvHN2ryqdXu1GNdw+yI8eThpiabBVK1VSJNJ8BXQZhj6n85FLOOnV+zWyKSXFIk5k3nLTLjx+SbGW0Xkdt6BeFzW+oBnLEX0gwP0Jabt+qwG87/9uYoTduaWmMeIyYStWTJZnsdBE50mTmJT9/IWURx+u4i7VpY3dE+jZTJCf0JW6je5Zl02XhoDmGZOLWwXjX9CDzhWlBPyhX2BKdhklxCO7HlyFq1rxeJRqDLKyFVvVf/viXYuaECPNeodUa3AhVzIvhNERtia1g0j5twjq9yAXHzu1RqN6j4FYfGoE7WrxL/ioQ8P9czNVnlDm4AxaqJgl+AIRGf4fScfviCwvunYz3dBWNvmtddmXZC+PRb5M1Qi69qON4KwMb0BU2kW9yeiP9BYMx0LQ0LxBM0uTt5gAf4xizLyuh93f7IucbxTzR5hxMYhAykX/4xjKOni3nTY5pKPojXiUkfNvmmoLArMyrxROOFEANZVzdpwUdyXma
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(1800799024)(376014)(7416014)(23010399003)(10067099003)(18002099003)(3023799007)(22082099003)(261009223027099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?NGkyc3pvbzJGUzJCaytiYndoV09WeS9velRFeUoySXJmMTlpbWZwVmxiN052?=
- =?utf-8?B?TkpBYTlINTQzOWxnRHljQ2lESzZ6SmdTd21IWG80MlFSV01IRjIvWUdzd2lR?=
- =?utf-8?B?emphQkVOWXhoVHRwQXJ1amJCYlRhQTRGN3JldytLUmo5TmsycW1Sa3ZSK3k2?=
- =?utf-8?B?S0ZDdGp5LzNKeXFidm0zbzNJZXl3emhCa2JEOE5CcFVqalFyZDdxWEpSOEE4?=
- =?utf-8?B?NUdzUW42cUF6cWRDcEZtY0x2di8rRFRCVTRYbmV0ZnE1N0c2NXFWU1Q5dUdw?=
- =?utf-8?B?VE1qMTJUMnhlamtJeFF1Wk5HQjJZVmlqNGN6NGJOMjRQaEFjbDFHc2g5QmYv?=
- =?utf-8?B?Q3hZc0wrejF0c2tyakg2YmQwQ1N3Vi9MdllNQi8yejdJUVRTbDZQTzhPb2M0?=
- =?utf-8?B?b3VOQS92bkh2dnorenRFYmpGcEN0T3pyR21xMnpNNEE0aUtGM3YwMWpGOE15?=
- =?utf-8?B?Zmd6VTlQYW15Q3NIY2dIT0tSQzNGL2NoYlJKSnMzMzA1OElKTUxobVpTL0tt?=
- =?utf-8?B?RXpwSzhpcFJhWTJhZ0ZqY0ZrTS8rdkxJdEw0Ry8wL2ZuZVZnYUtVVkVDNDlI?=
- =?utf-8?B?SkxYNlRId2QvQllDTnQ0ZHpic1FCdURLenZ5MVgxMUNpM1F6ZVVXZEhpLzNv?=
- =?utf-8?B?bStoNWNIazlHbDNKNnJCS0kyVTJ3YWRhQU9Tc3VIVEN1a2pZZVJKRC8xN2hj?=
- =?utf-8?B?aURSZFpUeTVXSXpIcU1Ga3A2V3czZlhOeVhaeUtrS2s1Q2RWdWJMRTY3bzM4?=
- =?utf-8?B?amhwRjhrMlVvcG5IUldQdDR3VVF5YmxObUcrYUZDdUk0cU5zencxL3U2QzY1?=
- =?utf-8?B?MFdtenZ5TTlXTTBQcFlYMGJFMytHeDd3blljTkMzdTY0eEVCZCtlOE10YUNQ?=
- =?utf-8?B?ZGRvbDhnSHBBRUxxNmxkZktQS1FYTTBqRCtTL2J1MHBhekI1T1luUCt2RHBl?=
- =?utf-8?B?d1NuaU5uK0VPbC9GR0VZRXJ6U3RVK0daNU42aDdXVlNPOHlhWVNSTUUzbWph?=
- =?utf-8?B?WHJVT2R1NWVmRnZTRXF4cU9xTkxWdE9IZ1NLRHJxYW5JU0RyMHVtTDh0aEI4?=
- =?utf-8?B?UTZ5elRpbUVOcHMvTU5UYW84UUcwYVlUSnRVeXRKTHNWaVpiaGV3c2s5aks2?=
- =?utf-8?B?cHJpMm40NXM2QXFGVVZSc3IyNUU2ZFVPWnU3VkwxazdLTk5XK1pjbStzb0h2?=
- =?utf-8?B?MzBKQkkrQ0FJZDZoWm5Cd3dDZnI5TUdUb2VsYkhSc0h1aGRHYW5vbzZSQU1W?=
- =?utf-8?B?UzdZY1pLOVhJWUZOQ2R4Y3VkVVYvVU5QcHN6WnpZL09EclpyZWI2TVAyUzZY?=
- =?utf-8?B?RXU0SEZ6d243WmY1RlhQYm11dDR5QmR3K3F5blg1ODE2NG40aHl6d0xxY3pJ?=
- =?utf-8?B?SFIvNXkrZFRiWUs4Y2pXUjV6RjZPWEpsU1FHdFdYeldWaGJsRmNQS2F0bXZN?=
- =?utf-8?B?Z2pQUmVTMUlSSk9kK2k1QjlhNjF4MG0rNEJCUWhpekcrMTRGcVhLZnBjVmhZ?=
- =?utf-8?B?Z2pscEJ2cDRFalg5elFQamJNUGYrUVNFQzNxSHAzN0ZMNFhBaDJOMmRmbS9K?=
- =?utf-8?B?TDh5ZU1yR1ppWnRTUXIwczF2R0wvMklCeUVOV1BiV1lZNysxTHZjYm1KbEpB?=
- =?utf-8?B?Zk1oV09qY1JidEQ2cHpibWRnNG0vRU53V2wxUk15YnNuN2lhZEdMUkVsQnZH?=
- =?utf-8?B?dngrTi93ZTFUSXdOYW1aV21MeE8zWWlKdnYwdmMzSnFkYkV0OVUwWFRMVndU?=
- =?utf-8?B?aUNSYXRBaDVKZ2VHMGF6b0gxY1hzVTB2MVFqVXJqUklaQkZORDRxbFBrZ0VX?=
- =?utf-8?B?dTRUM0tMeU1UcHZyUFRZcHVHL1owN0dwbm5BZWNCRURsbmJFa29YVmJuYmFU?=
- =?utf-8?B?bVZrSEZqUW16TUFpTmdmVjB5aE1CN0pLVGVObTJ2SldHVUVieTlvNjl6Sjhr?=
- =?utf-8?B?VHFydUNHdnVvcFpLcCtGTkFaNyt2STdJV21VbGplV2Y3TEplUHo3b2RkL0Zh?=
- =?utf-8?B?MlNqUlVWM3dvNjNOYzdwRXNMREVwRUl6TDRHcVJOc3JyTElQWmxiNmZEUW9S?=
- =?utf-8?B?Q2h0U0U0aTBtY1QrVG9KYWRnUG12VTRRcngrVjZreVFDWXNrTWVOTVJONDhF?=
- =?utf-8?B?WWNMbFA0emdwaVZDT2RhcWRmVVIrRVhSbERmS2RscG1RNE04c0NuK1RINFlT?=
- =?utf-8?B?WE9UMWllZ012VWZ6OTRYT0xWUUIrWjh6eFNEYnZWNjhTeENESklYNWU5c0o5?=
- =?utf-8?B?ZjEvZGpwR2FZMUd0MkFvS1Y4a0dhTDZmMU5KSXZBcm1lamNJNDZnY08wYzUx?=
- =?utf-8?B?VGdlck1jOUVCTUYxRFVESXJNUTB2K2Q0UEdwZHhRVURhWkFFVm50bUFBL1NM?=
- =?utf-8?Q?c/v64wftBBCy5wK2yCzGR9Kio7/QsVNo4+/eV?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b40c2649-8505-49c6-291c-08df2bc1bf14
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Oct 2026 20:12:04.5584
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: KJBNZLJU+hXJpMO3JC2eqsoivY5VepiWs94kwOtxdyx5ho1UYz+g1qYcQVNgkRcmb3YSvSBs6f+TwUcTRKkbVYcr6gc2twySmVd70Pnsb7lMgoOF46DGNPOk2wnzv/TI
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8738
 
-From: Frank Li <Frank.Li@nxp.com>
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] ARM: dts: imx6sx-sdb-mqs: inherited sai1 pinctrl-0 conflicts with =
+audmux
+--
 
-Remove empty property pinctrl-0 to fix below CHECK_DTBS warnings:
-  arch/arm/boot/dts/nxp/imx/imx6sx-sdb-mqs.dtb: sai@21d4000 (fsl,imx6sx-sai): pinctrl-0: True is not of type 'array'
-        from schema $id: http://devicetree.org/schemas/pinctrl/pinctrl-consumer.yaml
+commit 7833db678f76ab4ca49bd301d79848b89980d394
+Author: Frank Li <Frank.Li@nxp.com>
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
- arch/arm/boot/dts/nxp/imx/imx6sx-sdb-mqs.dts | 1 -
- 1 file changed, 1 deletion(-)
+ARM: dts: imx6sx-sdb-mqs: remove empty pinctrl-0
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6sx-sdb-mqs.dts b/arch/arm/boot/dts/nxp/imx/imx6sx-sdb-mqs.dts
-index a4ab2d3e960c4..82ae475a018e1 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6sx-sdb-mqs.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx6sx-sdb-mqs.dts
-@@ -33,7 +33,6 @@ &mqs {
- };
- 
- &sai1 {
--	pinctrl-0 = <>;
- 	status = "okay";
- };
- 
+This commit removes the empty pinctrl-0 property from the sai1 node in
+imx6sx-sdb-mqs.dts to resolve a dtbs_check schema validation warning.
 
--- 
-2.43.0
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx6sx-sdb-mqs.dts b/arch/arm/boot=
+/dts/nxp/imx/imx6sx-sdb-mqs.dts
+> index a4ab2d3e960c4..82ae475a018e1 100644
+> --- a/arch/arm/boot/dts/nxp/imx/imx6sx-sdb-mqs.dts
+> +++ b/arch/arm/boot/dts/nxp/imx/imx6sx-sdb-mqs.dts
+> @@ -33,7 +33,6 @@ &mqs {
+>  };
+> =20
+>  &sai1 {
+> -	pinctrl-0 =3D <>;
+>  	status =3D "okay";
+>  };
+> =20
 
+[Severity: High]
+Does removing pinctrl-0 =3D <>; here without using /delete-property/ cause
+&sai1 to inherit pinctrl-0 =3D <&pinctrl_sai1>; from imx6sx-sdb.dtsi and
+conflict with &audmux at probe time?
+
+imx6sx-sdb-mqs.dts includes imx6sx-sdb.dts, which includes imx6sx-sdb.dtsi
+where &sai1 and &audmux are defined as:
+
+arch/arm/boot/dts/nxp/imx/imx6sx-sdb.dtsi:
+    &audmux {
+        pinctrl-names =3D "default";
+        pinctrl-0 =3D <&pinctrl_audmux>;
+        status =3D "okay";
+    };
+    ...
+    &sai1 {
+        pinctrl-names =3D "default";
+        pinctrl-0 =3D <&pinctrl_sai1>;
+        status =3D "disabled";
+    };
+
+In imx6sx-sdb.dtsi, pinctrl_audmux and pinctrl_sai1 configure the same five
+CSI pads:
+
+    pinctrl_audmux: audmuxgrp {
+        fsl,pins =3D <
+            MX6SX_PAD_CSI_DATA00__AUDMUX_AUD6_TXC   0x130b0
+            MX6SX_PAD_CSI_DATA01__AUDMUX_AUD6_TXFS  0x130b0
+            MX6SX_PAD_CSI_HSYNC__AUDMUX_AUD6_TXD    0x120b0
+            MX6SX_PAD_CSI_VSYNC__AUDMUX_AUD6_RXD    0x130b0
+            MX6SX_PAD_CSI_PIXCLK__AUDMUX_MCLK       0x130b0
+        >;
+    };
+    ...
+    pinctrl_sai1: sai1grp {
+        fsl,pins =3D <
+            MX6SX_PAD_CSI_DATA00__SAI1_TX_BCLK      0x130b0
+            MX6SX_PAD_CSI_DATA01__SAI1_TX_SYNC      0x130b0
+            MX6SX_PAD_CSI_HSYNC__SAI1_TX_DATA_0     0x120b0
+            MX6SX_PAD_CSI_VSYNC__SAI1_RX_DATA_0     0x130b0
+            MX6SX_PAD_CSI_PIXCLK__AUDMUX_MCLK       0x130b0
+        >;
+    };
+
+In MQS mode, sai1 routes audio internally to the MQS block (&mqs, which uses
+pinctrl_mqs on SD2_CLK and SD2_CMD) rather than using external SAI1 pins.
+Commit 73691f21e211 ("ARM: dts: imx6sx-sdb: Add MQS support") originally set
+pinctrl-0 =3D <>; in imx6sx-sdb-mqs.dts to override pinctrl-0 =3D <&pinctrl=
+_sai1>;
+from imx6sx-sdb.dtsi while leaving &audmux enabled.
+
+When pinctrl-0 =3D <>; is simply removed, &sai1 retains pinctrl-0 =3D <&pin=
+ctrl_sai1>;
+from imx6sx-sdb.dtsi while both &audmux and &sai1 have status =3D "okay",
+causing pinctrl_bind_pins() -> pin_request() to fail with -EINVAL when the
+second device probes.
+
+Should this use /delete-property/ pinctrl-0; (and /delete-property/
+pinctrl-names;) instead so that the inherited pinctrl properties are removed
+from &sai1?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261016-arm_dts_cl=
+eanup2-v1-0-3a0cab9fd784@nxp.com?part=3D14
