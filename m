@@ -1,121 +1,222 @@
-Received: from mail-vk1-f170.google.com (mail-vk1-f170.google.com [209.85.221.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013046.outbound.protection.outlook.com [52.101.72.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 197B13BE174
-	for <imx@lists.linux.dev>; Fri, 16 Oct 2026 20:48:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.170
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792183723; cv=none; b=pOAW8O8oRGfSxFxhmo02loQJwac4LCCLyoINt5W9rrA791QGATBjUmMOMrCKItwPGwqzSCiCnm3N7BhrIJmEzQL9H4kCtT3+quY1V3nHvrF1STlERlKpiaLVNiaEQehW/gXmU1/gef9mMTl/jHSPqoCyl777vkRint7cI/TPJyA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792183723; c=relaxed/simple;
-	bh=FhSBZW7Jpj+THEoTkniaEwqOd1DSuDXMTlV1dtr09P8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=n79GsmV1flLojC/gAoKCroXw0r0UXp7qMUD5KJoGquB64yWdIDHQzrx9MYYTOi8iaXXd28nOOqXjqQdygl0UiJTCH11z6YRH3dBHxZGAdK9LkBgobEf/3CAOFTOeEAOUN1RxeB45HeUg6mBCLItxBsFtYHeJv9OVl8yBRdiljSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G1E0uytl; arc=none smtp.client-ip=209.85.221.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B6B03CDBA4
+	for <imx@lists.linux.dev>; Fri, 16 Oct 2026 20:57:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.46
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792184252; cv=fail; b=IAK4qC/WmjX4M2G0bNWXOnnRj+9bp0eARw16PKYC9Di2bwa5pbIXsUIyA3Qyj3tbm3BZajqGE7Y6MUjo6MKFlrI9fwDU8gqtWStDxKnyBcgVu9iQZVgGRHs5TPb1inC3cof2n7085jfwDYUKwCl2eDnd8Rf26wYAYnu7wZYw70E=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792184252; c=relaxed/simple;
+	bh=cATRf/qmq8wTPePKrUiLLyxRNFvd1f6obHyE1/lpGVo=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=PWkVtKyGuJ5ZYUpTEa24McE8XSYXXI57CBcK6zZusbvP6j1/WjOemhUO8lXME1/AlTajNB8ipS2T0f8FR0fLZraUyPSJnHXXpn0Oy4rPtgGvyYvGruFHYf0a8+e9mL9t4OGxRXgtmTVoEYjqX6lyMQnh7g1DU2irf8lZaWLTGaI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=JgnPAWOi; arc=fail smtp.client-ip=52.101.72.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G1E0uytl"
-Received: by mail-vk1-f170.google.com with SMTP id 71dfb90a1353d-5c9e7731b34so214577e0c.2
-        for <imx@lists.linux.dev>; Fri, 16 Oct 2026 13:48:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792183716; x=1792788516; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=IbKdCffk3oF5JNe4bLXvDyGBPerJKYVxL0w+jpUvxD4=;
-        b=G1E0uytl8EzyeY/Ge270bFKuYuDUHg5J0iA30W6ik+nqctNbq4CKNZpLe7dieZE5Sj
-         ZUuQcdHpczitnG40FEGlLapgcVal4B8V/PE4nO03AtPIgm9U/vRl8t+ofY0ysKnm3Vbm
-         uI7fBG5PzNGuAUEtIFsp3W6K4Fnr8lJDSMkv6UOe+sJcbth+WA+yksolUCMDMQ1NzFuX
-         xSNGh92fUNNqD/t0SPKm4PQ3LEL50OFQ6vQWSmIlFUpcTIrYrVWT1bkRv9nSyoodgKsI
-         rx2MwQzCyR2Wcp2lc7jDMvg1u3ujnyu4U6NYUDdyY/9dNXCNRxTJI2tohIl17sOA7Q5t
-         XrSw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792183716; x=1792788516;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=IbKdCffk3oF5JNe4bLXvDyGBPerJKYVxL0w+jpUvxD4=;
-        b=AZL5eRvj/iOwLYwEJEDmyYGHf49EqFAoW3HwKL+lz9sV+Rd5rwsi9iF7OsMK6789Iv
-         VF2RPXK1EnvjjLmxL7qhrJlJlhdWDoy5CP2c7FCDoF2NnWM990UAOEzCQCk1mpma2IQh
-         uEFpr7bVwOligo+AM/cK0iMYn8bScHKg6VN39IW6d9rPvaTj6ikaZ51qbq18EarFgvgD
-         zkOE1d+iwmR0wEaAjPCoWSeD1su8C4N+gZxfh+UxYSc7uSHDzz/tLeqLQZu8dKG0ZBtV
-         FjdZ4UElIib7qzkUaowPnNgnMW1e7bvUwG6A6WzhAuFujAfuktNgbFax721HI03Uo9Tj
-         llUQ==
-X-Forwarded-Encrypted: i=1; AKwUvByo7wTpHqyVN8BT3tljmwK+EhITvUbMY5QvPCOw+OX5CErwCLrq3ZDDzBia8wspFgJURDE=@lists.linux.dev
-X-Gm-Message-State: AFq9FYIZ8jOQu/bY9kHa60AyEs0EpydRdGnAUq1V5eU1DTuB/SZhvueq
-	VdqCV+5n5p02WnHRo1BeeysHNtFsOk/ar3sFsTs5KAxPScMUOvlfKbCk
-X-Gm-Gg: AYBFou3GnNkNpvPThJFsfciuohAMeZwVx8tR1BY/pswB9JOeWmX+53FPvNNdhvnxDj1
-	taUFxZ99umjyYXFAQ7iAkR89uL6UQ5fSPV3MLFnIHt+Vt9HdaJhoQWNBqg6KNtZaXu1zUfJ4HLH
-	imbcg2EvSEbF/CcmMKP1AjV7q3qU75DwOO1803IjAs3XtO0mfeBg2q6NIbgvx7KZjCgmHHnMV6/
-	JMXdyTZPFGbNSCFMxwc2WIKr6Xb11m5nYXEpzq3M1UpEgWYa9bTzYoTvZUmJARRqW+ibwYgkO68
-	1R/kcGz78AfJ/Ov6ntg747p3SNxifdmer60jkbzKvCqjHWz8gcTA2PyJLAuuBjDfBTJhYB2oAqV
-	6LhjqJnAR16BJTEBpLInYSofhD6xJKvAsIlTkHOQlQat6QbSB1+Hcr1lv1kkqiJ/clyAGPqRTfb
-	XsKXQDe0FBBPWxzrPDXgR9UnvO7N2jw3FJAqfhGdsCo3tychPRFWuBlMPNZs2Im/r7RpPmAdax6
-	tUuaz06EucwYwNNwDCPqb8fAqmCVp9c9C2vrZiPknnkST8=
-X-Received: by 2002:a05:6122:4889:b0:5ea:9f1d:c842 with SMTP id 71dfb90a1353d-5eaaa6647cbmr588454e0c.15.1792183715924;
-        Fri, 16 Oct 2026 13:48:35 -0700 (PDT)
-Received: from fabio-X870-EAGLE-WIFI7.. ([2804:1b3:a801:42fc:16d8:d66b:d6c1:caeb])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ea9b55cc65sm2463872e0c.17.2026.10.16.13.48.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Oct 2026 13:48:35 -0700 (PDT)
-From: Fabio Estevam <festevam@gmail.com>
-To: Frank.Li@nxp.com
-Cc: robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Fabio Estevam <festevam@gmail.com>
-Subject: [PATCH v2] ARM: dts: imx27-eukrea: Remove invalid spi-cpol
-Date: Fri, 16 Oct 2026 17:48:17 -0300
-Message-ID: <20261016204817.463567-1-festevam@gmail.com>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="JgnPAWOi"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=L7DV5SoU/jJuLHOAweVFgibFEgUiXOw/JZoVSc/YLrhOUVZVxYDz5TdP742Pv0jdQ5HcEr3WbsyXOgzi/XcQf+giJPtWp6eX4mOgtEICbXcv+H/RaLy3tb8e1DcO179sQRKjIBSK5wciX4JVv+cTwpjCUMjFKJQYRB8S/QSKxD/R+HdgJICKxGWQJ6GrHK9eWZUj1X46wo0Mhv37TvMfTGDl/ki9P1OSsb7CKiy0VDUrDJk5WElqBsLxlo7xlkBkCcLk1H+IWNQuOjDrR/26zAtz2cW9OaKC3J9n0e71QgMblMgH1BEFVCP5SEplxmgZTnqtGZ06w59JdXhQ47ocmQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=fgsFc41Vp5j5r9mjFkMH01PTWzYOkTIqjcFxaK6ekAU=;
+ b=ppbHejBZpWjS7Umxjc5NCSS0Eu1vQ/ov/EXa2+OOiqu5Eyx9lXS0+t6omsw5Ghy24mGjkN7MtZzAIDmjW5vYyaAnayhDd3PA62vl/TE6dB8DQzsW9ydD6y3A7GE/upx7RWk7xD/OEBNuT4KHBLT0jbsI/ttrOGjsIG+U0ZkAtVeXdzXSWMzP/pzW61oqlZZiv93lbnrJr55zTu/Qcbe/6mXvrAqklqcxvof4OTRpU1EvsY1lwZqvvefsnJ4vwa95He0Stcf3RO8DREOgG4GTrPTCzSF/Gv1prZiFR8KMoqYBmrh/jo/vHC5DjT6xsOQRBC51r4Xbzf38cEc7p4LY2g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=fgsFc41Vp5j5r9mjFkMH01PTWzYOkTIqjcFxaK6ekAU=;
+ b=JgnPAWOiEMOwelCD7D8+rDJwzo0ddUHTC0Lq9KnOqWOTk8fgHHiYYf1p7zGcW0FAIloJBdNFUb4mAeL+xzloyspybherezJDAxgHGm6nPMxzGqtCfWIEfDbQQU6A4KjVoukYN85VyiMutOdiHemqTkNHKmK+3+L0IMngEHVIbsLzyQk1BuTgwDMMCVRsLMn4yCB4gaUC/bm4Y9991FKmbwkPo60renP1m9RmV7k39hmVCvUTjkPAiy6JGXZOHxWwDvHI/jo8Hm2IU0A1pUBTeYMoGnLN4H1MJ/hTkjH0i1OkNbfS4ne2IBBTnkMDIcHVbC6tkNKzJRwhvu5ngxPALw==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by BESPR04MB035703.eurprd04.prod.outlook.com (2603:10a6:b10:118::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.17; Fri, 16 Oct
+ 2026 20:57:26 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0522.013; Fri, 16 Oct 2026
+ 20:57:26 +0000
+From: Frank.Li@oss.nxp.com
+To: Mark Brown <broonie@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Christoph Niedermaier <cniedermaier@dh-electronics.com>,
+	Marek Vasut <marex@nabladev.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Ashish Yadav <ashish.yadav@infineon.com>,
+	Colin Huang <u8813345@gmail.com>,
+	Sanman Pradhan <psanman@juniper.net>,
+	Thorsten Blum <blum@kernel.org>,
+	Troy Mitchell <troy.mitchell@linux.dev>,
+	Eddie James <eajames@linux.ibm.com>,
+	Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>,
+	linux-spi@vger.kernel.org (open list:SPI SUBSYSTEM),
+	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
+	kernel@dh-electronics.com (open list:DH ELECTRONICS DHSOM SOM AND BOARD SUPPORT),
+	linux-kernel@vger.kernel.org (open list)
+Cc: imx@lists.linux.dev
+Subject: [PATCH 1/1] dt-bindings: spi: Add separate binding for dh,dhcom-board
+Date: Fri, 16 Oct 2026 16:57:14 -0400
+Message-ID: <20261016205718.877668-1-Frank.Li@oss.nxp.com>
 X-Mailer: git-send-email 2.43.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: DS7P220CA0113.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:8:25f::15) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|BESPR04MB035703:EE_
+X-MS-Office365-Filtering-Correlation-Id: 54bcda35-b754-4628-a355-08df2bc8157f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|23010399003|19092799006|7416014|376014|366016|921020|56012099006|11063799006|261009223327099003|261009221227099003|261009223027099003|261009221727099003|261009220027099003|10067099003|18002099003|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	iyX0yrP1wyT++ln09RoH/tiyC+3vfgtjMC62KS7gWg2VihtAEm77MbgepSsWfrTpyPOhexssrveT418UG9bgCcJaSLcHgAsjoUlnBZX2HLJUuzU+Kc7RtnIQObFHrXXVDTKdSg58RLxFPOl8phqZWsFxLc1Jjfb5Hv4qzWaYi5DHWwz5Zfdj3HzMBDbvuhWkjnrOblmCk75XTvweFY8VJNyqgh0TyrEX5UtxcyEGK3mpNnCvJ/Zb+v8iyPQsKQ4r8RaUza38gxCc6Sbr3k60jEzWkWZ/vHMOrbBY7BY197ub6bGl4feq4oUBdPHU2KfndBPmYQvVavE/lNxAuQ6IrKlo2N/4FmBV2VtwhOgE477f6IQk7mUbjjHFscNkW4eOA0NypBLqFupGlXsd5u11pXxa+MqSdJVurhXC+1tuNwF14PtH3RzMgUvY9y3s7HLjzViqRLwlswbb2kuR9HIqo6AH7fF+Mh3lBrzq49Glu7YzQOkDfropJbVTt4JstTriBACuaIAUHyragwG4qOEUsr7O7z2nvUqBUZbr3sLCiZ2jvhuduSk/+Nz8QStcFmFbFww9zS1K8/foKoFTJ87E0WmWqBE93h/MDcqZmaxpm3/3qzTe91U/G5ogOpcFBDd75QKXqaKE8+xpzfZRwjmaqw==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(19092799006)(7416014)(376014)(366016)(921020)(56012099006)(11063799006)(261009223327099003)(261009221227099003)(261009223027099003)(261009221727099003)(261009220027099003)(10067099003)(18002099003)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?lWX8J89plyC00rpHYTmA03RtuX8GBNvc/OXM2FWya1hQCx8S3SX4TeSFyGAQ?=
+ =?us-ascii?Q?lY6bGRHlCY9S3EI2/8WUsyrWG4YinQw9J1lUdSBneEDomm+Fyuch2rmRj7Fa?=
+ =?us-ascii?Q?Y0h15KuYpcuc0B+3UNw7tB/k6IhhOus3Qk9GQMY4NFNMiYsf12pBshtRJ9w6?=
+ =?us-ascii?Q?vTx2GHIFCQdz4j5F9lmxl0I4utY6XCDWt7iOSm/BBaz1YvZpdRbYGfEVqV9r?=
+ =?us-ascii?Q?ltdlATcyWL4MA7q8pLbMq8eGFMnj3v8LKoxPpSIunKXHtx0WA0ADnshEL4SP?=
+ =?us-ascii?Q?6DX2tblv+XSgN+fqu2D+mb8guY2FICDfpyUEm4Ln6lxvSLJHipYxv/MXsxUf?=
+ =?us-ascii?Q?EZggnfhEHy0AOSt9BN0hLStUvGa+IuCpsSHhAvUBHlD3iS2U+4BljwsRRtjj?=
+ =?us-ascii?Q?Bwi5MTobhNCfYzfRlmYVA9todl1h6dTGvM8t+iwI7j7IkEKlK4nWPS9JOQVX?=
+ =?us-ascii?Q?hVN0a0FXFHzn+rHQLxCT6FNHtSCgi/yUQWcSJVEkS4bIGq/yJPQ79+bWv/Ng?=
+ =?us-ascii?Q?c+sgINE6hRHRS7SDLudBmpXgFXf8NZ3+9TCuo09MCWeOs/ZIsJW4IUPI46D2?=
+ =?us-ascii?Q?/KVdWMAJehQZHF4BYUdP/3kPqAW+OaIcR2wUil/fIJmJK3tXHbPrgbFcqOOT?=
+ =?us-ascii?Q?o6PCYhJEmkGls8CILVNojWb0OILvmDwDleiTk4DHN0VoUvGaRv7NsdL6b69V?=
+ =?us-ascii?Q?W2yrSCltdJTIf/UKaRozCpLvwAACTxpKlhBVJ7euEK66TM0g3DB7vaD99tp3?=
+ =?us-ascii?Q?/MotWMnFdtX1pAX0m+Gdw0RGAWc5J2qb40MAKj/5A2YE5s5mpCrrL2EnkuKK?=
+ =?us-ascii?Q?xjCxDTQs/h+ANs8WOtkF+LrMzBeWLWkmNBOQF+19EGgsr6wkOyFaUEaijBV2?=
+ =?us-ascii?Q?sA5E8S4waxYLM2ywNUVjgPIre+5Hb1wTK7Poo8vz8bHhVSP5DAY9ZANJfQgT?=
+ =?us-ascii?Q?yx0qKM/eN8sZxpWbIZEA0y97dYrPRUPRUlUeWEnUf621KTCtt0GkUyXPrsAl?=
+ =?us-ascii?Q?7Hy6gQ2DMEmd60LXCY5Xo/uTMERSd4Iq52kzj8FEle1lwuRgqocFt07zHcVE?=
+ =?us-ascii?Q?MauHvTHOvc27d8BTWnwKF30TDlnWzLwrLlmSTAyh0RcZY5vuH+xIXcvlVjXj?=
+ =?us-ascii?Q?sIq1/yKJahQraSYR9wcrVnZfub1gCa7KTdhjDwmMYoDFvc2aUwmD/gEs9IHi?=
+ =?us-ascii?Q?jyQhnz4xNKVuVeGNLYjsbGd4X4cYhPh+8lgV8ZP8TCMryx5yWpHwjNqyFe40?=
+ =?us-ascii?Q?ApcmgidCuYUdesk7oHIPUVzocyMf3PHwi6fmqX6vMKEvrsE2y14+2NrP3YRR?=
+ =?us-ascii?Q?mZx/er3ExoO5As7Va9SB8Mz4vdwaB1QxMrc8W2JpeoJtdmHjON8xEreSAPZY?=
+ =?us-ascii?Q?BNFGLo5kJopPmkRENQT7ZoWwSY/tLO227p660o13hRjnQQTByyivXi42+JAl?=
+ =?us-ascii?Q?rbXtbMk+C7YfBFiRQX0yzmhPT/hYDcZmMccbM3HbdRInN2l1SThBvf5fwEqA?=
+ =?us-ascii?Q?R8M14hg4/L2UURcDKfxPhqjH/ubZG+9O26GWJ/0m2RKiX+j8mDFFah2413kA?=
+ =?us-ascii?Q?JrS497wNh/OjHbhV8MgIL563LeLUxO4DTP7f7Y3wGi0aa4PLKOZvZwZpgeyE?=
+ =?us-ascii?Q?OAjmHtMDgnrhiH7ISv8TPb00V1zgTMnhdtpKGPjgMi/sbjDkqO11FcCRnmUa?=
+ =?us-ascii?Q?CRw73hKDZw1jPywAYaDzyqUU/YtkzCW/7Ko+MsZFSkXftXLKIbfOtbDJUlib?=
+ =?us-ascii?Q?6gv+Hzivh2UYRAlAWNFiSGAeyG0q+MfduCu7Ku4B1ryWDz8Dj8V7?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 54bcda35-b754-4628-a355-08df2bc8157f
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Oct 2026 20:57:26.5777
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: uiL+8MsCGHGqJKp/m6rDRHgwqFSrTZqOJYYT0b4SEoS5f8oTIUPsPMVJVKhiv8H5N+lrTo9zkj0owqdRmvA/2OlYAPIpXHlmQLXMWhsnLC+uneGzMN+3LHukbpniu/dc
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BESPR04MB035703
 
-The ADS7846 timing diagrams show DCLK low when inactive, and its pin
-descriptions specify that DIN is latched on the rising edge of DCLK
-while DOUT is shifted on the falling edge. This corresponds to SPI mode
-0, with CPOL=0 and CPHA=0.
+From: Frank Li <Frank.Li@nxp.com>
 
-The spi-cpol property without spi-cpha instead selects SPI mode 2,
-which uses the opposite clock edges and does not match the ADS7846
-serial interface. Remove the invalid property.
+The dh,dhcom-board SPI device uses spi-cpha and spi-cpol properties,
+which are not permitted by the trivial-devices schema. Move it to a
+dedicated binding file that references spi-peripheral-props.yaml and
+explicitly allows those SPI mode properties.
 
-This also matches the driver behavior: ads7846_probe() clears
-SPI_MODE_X_MASK and selects SPI_MODE_0 before calling spi_setup().
+Fixes below CHECK_DTBS warnings:
+  arch/arm/boot/dts/nxp/imx/imx6ull-dhcor-maveo-box.dtb: spidev@0 (dh,dhcom-board): 'spi-cpha', 'spi-cpol' do not match any of the regexes: '^pinctrl-[0-9]+$'
+        from schema $id: http://devicetree.org/schemas/trivial-devices.yaml
 
-This fixes the following dtbs_check warning:
-
-  imx27-eukrea-mbimxsd27-baseboard.dtb: ads7846@0 (ti,ads7846):
-    Unevaluated properties are not allowed (spi-cpol was unexpected)
-
-Signed-off-by: Fabio Estevam <festevam@gmail.com>
+Assisted-by: LLM
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
 ---
-Changes since v1:
+ .../bindings/spi/dh,dhcom-board.yaml          | 46 +++++++++++++++++++
+ .../devicetree/bindings/trivial-devices.yaml  |  2 -
+ 2 files changed, 46 insertions(+), 2 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/spi/dh,dhcom-board.yaml
 
-- Remove spi-cpol from the dts instead of adding it to the binding. (Sashiko)
-
- arch/arm/boot/dts/nxp/imx/imx27-eukrea-mbimxsd27-baseboard.dts | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/arch/arm/boot/dts/nxp/imx/imx27-eukrea-mbimxsd27-baseboard.dts b/arch/arm/boot/dts/nxp/imx/imx27-eukrea-mbimxsd27-baseboard.dts
-index 26833ed3339e..cf5603ec6826 100644
---- a/arch/arm/boot/dts/nxp/imx/imx27-eukrea-mbimxsd27-baseboard.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx27-eukrea-mbimxsd27-baseboard.dts
-@@ -77,7 +77,6 @@ ads7846@0 {
- 		pinctrl-0 = <&pinctrl_touch>;
- 		reg = <0>;
- 		interrupts-extended = <&gpio4 25 IRQ_TYPE_LEVEL_LOW>;
--		spi-cpol;
- 		spi-max-frequency = <1500000>;
- 		ti,keep-vref-on;
- 	};
+diff --git a/Documentation/devicetree/bindings/spi/dh,dhcom-board.yaml b/Documentation/devicetree/bindings/spi/dh,dhcom-board.yaml
+new file mode 100644
+index 0000000000000..ed213cbe9b04c
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/dh,dhcom-board.yaml
+@@ -0,0 +1,46 @@
++# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/spi/dh,dhcom-board.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: DH electronics GmbH on-board CPLD trivial SPI device
++
++maintainers:
++  - Marek Vasut <marex@denx.de>
++  - Frank Li <Frank.Li@nxp.com>
++
++allOf:
++  - $ref: spi-peripheral-props.yaml
++
++properties:
++  compatible:
++    const: dh,dhcom-board
++
++  reg:
++    maxItems: 1
++
++  spi-cpha: true
++
++  spi-cpol: true
++
++required:
++  - compatible
++  - reg
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    spi {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        cpld@0 {
++            compatible = "dh,dhcom-board";
++            reg = <0>;
++            spi-max-frequency = <1000000>;
++            spi-cpol;
++            spi-cpha;
++        };
++    };
+diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
+index a8b2b9deade4c..f3099e55b6f5a 100644
+--- a/Documentation/devicetree/bindings/trivial-devices.yaml
++++ b/Documentation/devicetree/bindings/trivial-devices.yaml
+@@ -119,8 +119,6 @@ properties:
+           - devantech,srf10
+             # DFRobot SEN0322 oxygen sensor
+           - dfrobot,sen0322
+-            # DH electronics GmbH on-board CPLD trivial SPI device
+-          - dh,dhcom-board
+             # DA9053: flexible system level PMIC with multicore support
+           - dlg,da9053
+             # DMARD05: 3-axis I2C Accelerometer
 -- 
 2.43.0
 
