@@ -1,120 +1,106 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D79541DED8;
-	Fri, 16 Oct 2026 07:43:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCC1D3CFF4C
+	for <imx@lists.linux.dev>; Fri, 16 Oct 2026 08:40:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792136603; cv=none; b=Bx/2FusB0Nqe+uqbGbNIwmY1DL0DpkRPJSY5fwyJz5Y2Q6GwAvCFRFHof/sJQADTfjlhfbB9sxdBfcZ25Uki1WOg0mmMKkSR2pFGtpv8Zv8E27BULjXZ4Eb2UlTXZQE8EkufLoP9ksU2sE8nObdEv9NZWtfCvmnulfd+cAl7w1k=
+	t=1792140056; cv=none; b=hTx5HhI/Y6qUNHI+V2Gm+pSmFBPxCtOcdTqHREA4/IF7N413lp16K6U+inGF5fvD41LPP7viXQzzFX0/bPV0U+LpF9J9dRyxL8WRN6uDILLgu1Sq34H8StnIGcmlxZy1BYL558ZA+upqYMA/EIiS1zZml0Mo165K9p+QZBDgXDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792136603; c=relaxed/simple;
-	bh=mhJJOiGSAySJ9mUo6G70qcgxDi+mETTMgMGHEkSRrZQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=KYfxXfIVLJiZj8HGUiUTA9+jCTl2z1+SIeJTflDE564sA957yZTpFirI4DCbFMsLLRSkC838ZvDFN1ypEJt3iVp2sjYwwnmJaGg6GI6XrIkjcS6WJuKKnl+KoDnM0kwrNjVqzrLECZx3/1alScMpt8haO7O1Ayk2g2YBwglTj+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rd5Epjv5; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1792140056; c=relaxed/simple;
+	bh=zCNrwnurgO+KAhjv03oxH9hTcLmUU1xStBcQnjNB2S0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Hyys4cYzK07tIw6Io45BUwj0RYYet9SixI8pIXtYB++vdBbIr3J+mCQ70E3PMEmCxJr3YZEhDsOSxEGt/jHHWkjKsv7mnWCAF3jvPdVCl5WGMyXuZ9zj+133nKMPc8z45B6OgwwNDMw5+Y/AkbxTF3theNHDeCg4Pknw8oG6DhA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y3BCA0z8; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rd5Epjv5"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 92AE7C2BD00;
-	Fri, 16 Oct 2026 07:43:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1792136602;
-	bh=mhJJOiGSAySJ9mUo6G70qcgxDi+mETTMgMGHEkSRrZQ=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=rd5Epjv5ZNDk13xDFDcn4hXK1WxmYIoDwTccqODq6XhzONNdjPZqW2RgG9fSvQpAN
-	 fzNm6AWcscR8VQh1msxERCJDhwY7dam6LWDzDXu08RKHYSrSJ5Njx1SZSjabpgBgKM
-	 Dsb1v5zubd8GB30UgXuM+lzsw0I2sT9T9EaSemV6G31J4KVao0oUbSQmiIsdJuCpia
-	 ECWriGG2l0TCAs4w/LxVeIZo8aXaDjIuVuTJU566GkNgmydq6ZUzalA425vewBVrm8
-	 QaCyeOzc64oRp7yKPX4ns+jjqTUJ3NdwZR84HQjxsv05TsmZkXiFJ6+HnjD/rSIK//
-	 50m0QHJzuWqYQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 756AACCA46D;
-	Fri, 16 Oct 2026 07:43:22 +0000 (UTC)
-From: Haoning CHENG via B4 Relay <devnull+Haoning.CHENG.cn.bosch.com@kernel.org>
-Date: Fri, 16 Oct 2026 15:43:19 +0800
-Subject: [PATCH RESEND v11 2/3] thermal/drivers/imx: Fix rounding and clamp
- for i.MX7D alarm
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y3BCA0z8"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4a1cef0439aso3226125e9.0
+        for <imx@lists.linux.dev>; Fri, 16 Oct 2026 01:40:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792140053; x=1792744853; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=+GyvDCXoOZxhaF1YO2iBjYziahy1VyrzPfIWpLTL1Is=;
+        b=Y3BCA0z8PEiXJUcYFKrig9byYpYNUBxMU+AwRIRoVoSdtAz9FZRlXk+8PMnsD+3oER
+         uZ0rdSQliMUyFfTgZFvLWOe67mikfM7AJDoA/08Hx6mglbaWvFu9hfEcvDfB4zFG5/R8
+         hYXFA5Qx6uiRm0yjuxJYk0MT0ITAiGtI813eaAlsYOJkgNXSPmHSPoO/8cxGvAsIPIVH
+         87fkJbBoa1Mm10kNg2hV91fTNbAEI3uy/R/ZdoutXtT8jhNyQHxYWGEjRrrVSCeo4Wfe
+         krgZK5pNxy8zeNBAMgbROkEet88qUhsYOuy2ju6NaqQhjLPQeU/Z0uh5uoKjy+7MJOoC
+         V/Dg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792140053; x=1792744853;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=+GyvDCXoOZxhaF1YO2iBjYziahy1VyrzPfIWpLTL1Is=;
+        b=f1yM/JFdUDxP69eQavdxn94NJn0lWUkyeyc+6O3AGZs4/2KFxLcQZ+4azZdXf9cfJe
+         uV2rjE2sq8goGt6NDs456SbMFTpKMDyQQd4O991ZU2eKaRyhJ1/b1wQK4bYCzLi17nXV
+         XB4PirbDyc3w/AlLavHI8WQ7gq+w7jf4e0EFjkZni5xYln9iCOW/bKC8dQGSEWNF1F1X
+         4fSvZYo9IBQoWe1fX7gjfnMChAi4Ehu1SXnmCQfZvynO8HcKxPICRPiJ+paTfR78TSga
+         qMuq+C1ZYZ3wDxjkfAeNTWqCaDlEpY24xBdcH6yuvQf6DpGvb/L3Gw7ilNnQmkOmeqEL
+         wjjw==
+X-Forwarded-Encrypted: i=1; AKwUvBzTNcjr5BpXZUu2a45i83Cek6rzGMn4emwCzC6TuaaIjye8CFFxqWpbk/hy0fYy6x+UQ00=@lists.linux.dev
+X-Gm-Message-State: AFq9FYIjr9wcZULzIj8qYCrKPc1VuBt0NTNNbT0L9CigfM2AGjFKFKMJ
+	HSGbhmKmw/K3DX1iITBvKkYGulbEhpJol0De99LGokSZia94DMOXRzXk0QWBOQ==
+X-Gm-Gg: AYBFou2divxF1AUwuS+nfTtMxSOQ0D+UQHG/6gqZTLSINvMuWRT+qT45Yi7sABfWyF5
+	6IYN49DX5Of3zrsCnggRGg4g31C/UDcGdTM1D38TwTGahabRvVDLzOXk3xFmIc5tTnKl+IrDUoA
+	gF9BxXKjVr+qioTJHzOoNfpHGX4bSJLTr3xRMfhjVbHL5jxGLl7w05pOfbCJtCc0OsUQhZXdh+/
+	JpERm4qIXfWeBb3U1FT2FOfyUGZrjuX7vj/UaRuquVIDvraIZOrjh/QXDUmMATl10Ji5iMjQyAJ
+	e9LGl7VAJHvleTAFisRRb5sbbGRFds/kG2uFV+npjEHg5MPmyBxfzMh0ZwYQrLgEJKgYqIArHlU
+	2ZGIaB3HC4uWdMxB4BMEcBvDrqSv19Uwi5SewaTg2wC3KQkFQn48r4VSIYJIXEmC/EyIebjpA87
+	WXKrGArWg1b3DsmjuuSAXowXHUGqOkIXW8UAytSopD8G/NRdTPpWLBG+v+Sa2lvEcGhrJl6SoPU
+	e4uw3zPjlAfnHpMAh5ZZY5rK/taIsHXwV+SosjftKmK8+Nya3zCOLSthicEW71TrMEJVNdQeEvy
+	rthYZb5ZyKPPD0+/oIQ+bGzJgSUnzRn+
+X-Received: by 2002:a05:600c:3e8f:b0:4a0:263c:704f with SMTP id 5b1f17b1804b1-4a18e4a3fbdmr441778475e9.16.1792140052601;
+        Fri, 16 Oct 2026 01:40:52 -0700 (PDT)
+Received: from Lord-Beerus.station ([93.66.71.207])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48dfd5033a2sm3715233f8f.45.2026.10.16.01.40.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 Oct 2026 01:40:51 -0700 (PDT)
+From: Stefano Radaelli <stefano.radaelli21@gmail.com>
+X-Google-Original-From: Stefano Radaelli <stefano.r@variscite.com>
+To: Frank Li <Frank.Li@nxp.com>,
+	linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Cc: pierluigi.p@variscite.com,
+	Stefano Radaelli <stefano.r@variscite.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Subject: [PATCH v1 0/2] arm64: dts: imx8mm: Enable DMIC input on Variscite boards
+Date: Fri, 16 Oct 2026 10:40:09 +0200
+Message-ID: <cover.1792139809.git.stefano.r@variscite.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261016-b4-symana21-11221-imx-thermal-support-upstream-6-18-v11-2-b80952ad27d6@cn.bosch.com>
-References: <20261016-b4-symana21-11221-imx-thermal-support-upstream-6-18-v11-0-b80952ad27d6@cn.bosch.com>
-In-Reply-To: <20261016-b4-symana21-11221-imx-thermal-support-upstream-6-18-v11-0-b80952ad27d6@cn.bosch.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>, 
- Daniel Lezcano <daniel.lezcano@linaro.org>, Zhang Rui <rui.zhang@intel.com>, 
- Lukasz Luba <lukasz.luba@arm.com>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: linux-pm@vger.kernel.org, devicetree@vger.kernel.org, 
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- linux-kernel@vger.kernel.org, Haoning CHENG <Haoning.CHENG@cn.bosch.com>, 
- Frank Li <Frank.Li@nxp.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1792136598; l=1704;
- i=Haoning.CHENG@cn.bosch.com; s=20260709; h=from:subject:message-id;
- bh=9D7qX15817iSb+CvnZ+YgaTi5ivABKiNn7DaNl6d+D8=;
- b=QTdxPyVh9i+tDNJQHQbs6X5wRrRFVMdipSTtK30+5tr0CDv/2gJpTOkfg+62ds1QqQmfeqDA8
- LTMuohO8wWBCO5gqwolSiYJ5Y2avhBTENrUmX4nDEdJdSMwRHxxzrqu
-X-Developer-Key: i=Haoning.CHENG@cn.bosch.com; a=ed25519;
- pk=glQGwad/fosRS5gZUJYbLDPPLGe7rFTrTV2VxY/ySdc=
-X-Endpoint-Received: by B4 Relay for Haoning.CHENG@cn.bosch.com/20260709
- with auth_id=860
-X-Original-From: Haoning CHENG <Haoning.CHENG@cn.bosch.com>
-Reply-To: Haoning.CHENG@cn.bosch.com
+Content-Transfer-Encoding: 8bit
 
-From: Haoning CHENG <Haoning.CHENG@cn.bosch.com>
+This series describes the digital microphone connection to the WM8904
+codec on the Variscite DART-MX8M-MINI and VAR-SOM-MX8M-MINI platforms.
 
-Convert the alarm temperature from millicelsius to degrees for i.MX7D
-using ceiling division instead of integer division, ensuring rounding
-errors do not cause the alarm to trigger below the intended threshold.
-Use DIV_ROUND_UP() for non-negative values and plain integer division
-for negative values, since C rounds toward zero which is equivalent to
-ceiling when the divisor is positive.
+Configure IN1L as DMICDAT1 on both platforms to enable the digital
+microphone capture path.
 
-Add clamp() to ensure the hardware register value stays within the 9-bit
-range (0..0x1ff) of the i.MX7D alarm field, preventing silent truncation
-if an out-of-range value is written.
+Stefano Radaelli (2):
+  arm64: dts: imx8mm-var-dart: Enable WM8904 DMIC input
+  arm64: dts: imx8mm-var-som: Enable WM8904 DMIC input
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
-Signed-off-by: Haoning Cheng <Haoning.CHENG@cn.bosch.com>
----
- drivers/thermal/imx_thermal.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8mm-var-dart.dtsi | 2 ++
+ arch/arm64/boot/dts/freescale/imx8mm-var-som.dtsi  | 2 ++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/drivers/thermal/imx_thermal.c b/drivers/thermal/imx_thermal.c
-index 38c993d1bcb3..7f7d1116b9d6 100644
---- a/drivers/thermal/imx_thermal.c
-+++ b/drivers/thermal/imx_thermal.c
-@@ -240,10 +240,16 @@ static void imx_set_alarm_temp(struct imx_thermal_data *data,
- 
- 	data->alarm_temp = alarm_temp;
- 
--	if (data->socdata->version == TEMPMON_IMX7D)
--		alarm_value = alarm_temp / 1000 + data->c1 - 25;
--	else
-+	if (data->socdata->version == TEMPMON_IMX7D) {
-+		if (alarm_temp >= 0)
-+			alarm_temp = DIV_ROUND_UP(alarm_temp, 1000);
-+		else
-+			alarm_temp /= 1000;
-+		alarm_value = alarm_temp + data->c1 - 25;
-+		alarm_value = clamp(alarm_value, 0, 0x1ff);
-+	} else {
- 		alarm_value = (data->c2 - alarm_temp) / data->c1;
-+	}
- 
- 	regmap_write(map, soc_data->high_alarm_ctrl + REG_CLR,
- 		     soc_data->high_alarm_mask);
 
+base-commit: 31f9ec9f38735f42e1f0ba57347c420e56b99824
 -- 
-2.43.0
-
+2.47.3
 
