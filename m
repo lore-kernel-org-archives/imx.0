@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9793F3803D1
-	for <imx@lists.linux.dev>; Fri, 16 Oct 2026 04:14:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D5983769FD
+	for <imx@lists.linux.dev>; Fri, 16 Oct 2026 04:14:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792124069; cv=none; b=iUPMTK/AkoroAnIZ1nvh4oa+PV1oK71QGsOPox1UlkCa7oUA83Haxny3sVvioQU0CB1gpiqoEpqP5AcMPXpDLlVHqzkRdFf4fC1i9Bu8AsR2LBDhnHeRGBmEHNR3185Q30SGV5BO/IacyZjYh+YZMD3mN/H1rNCmcxHv+pDHqp0=
+	t=1792124101; cv=none; b=UjKABwplsqnAZwo1c1+FP3lNI+A0FBDCB4ACX3RvmZjTWWhgwWfYxXjqwGhJ8u4bIGGWQER02+TnWtz4cWzjX3H/tDN5jGOqpH0k8/ABISV41Lnsi6OPuiDOL+68Rm0Ss+0GGvCzalfSJqVC7UrQhdNNL7USr/WSRofCUnab0fE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792124069; c=relaxed/simple;
-	bh=1qShpWkrIk8ai5vN3ZG4QhRWYLqN9LSi2vc6ZeUDvQA=;
+	s=arc-20240116; t=1792124101; c=relaxed/simple;
+	bh=JsS1qKigA32TwTWkA0ijc5IJGDu/dHPZimpuAlXn3us=;
 	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
-	 Date; b=SJyX0Udmb4sWgCNEb14cvyxBsW01gfr6IDrbnj9duoSmjivhihn9r43HblHSBXG7+xfGzIYzV8m5rHdRF22ruibUxKmt4eCqAz8zQK3irN3M8bu3yp7PzknZshoEXLhQnrZ9FExyBVjUvmaNZ8yz1pLDlT6n0N2FQCEywOnsFXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i/govUBy; arc=none smtp.client-ip=100.103.45.18
+	 Date; b=QG4n/iSXpByz5oU6ycIkSifKYIypCBsUabVUCVl2f8fe7FkYkOW49keN+TlndGszMwZbdTQvLgbWTKC75XTUmo0R/ZV6/l7KxCa5tfJYHANK1BJZgCWQvyZbSM/EEIGaAOjt4TUJPj1AcMw5NAnaBQAHFwMZ60Yazi+sdRYFrU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xhq7ztTd; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i/govUBy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 055CA1F000C4;
-	Fri, 16 Oct 2026 04:14:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xhq7ztTd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BD601F000C4;
+	Fri, 16 Oct 2026 04:14:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792124068;
-	bh=kGf/hKMC6+KNN0JIxshZbAzsrcin4zRS95zIJoBdN9Q=;
+	s=k20260515; t=1792124099;
+	bh=MUQxIQbI6E8jRIQwMoZQ6KBFbH1byoEgl7YN7NeuSuM=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=i/govUBysJyOkFt2am1lIWU39JsegEy10JMPQY+qQAf5BwtvSUflwWFyfaiddM7cK
-	 ZWXSOHJwdQJko4rSM7IPOBoWft8vR5XyggpgeAWg0YcMku2CUenkLhvVOTSP/DMwTq
-	 hOre3b8yrjFqShMEYeo/AlRdmcHwtqr9XhU2fITt1vFffNBDiXfi8sgi8YRKkAF2uo
-	 IJNWJ6eLaXdkChu7idkyKVE4FyFYYMwfsLrp1PKb/di2Vu2wyF4tP+t/zuOUTJ9ST5
-	 GDvYbCU20DM9BTXxmseCdjAbRgBd+JSOfzzYnPpfMp0hsnF8ZzAk5v5RVVP4VhkrLQ
-	 uSmSU5lgev8wg==
-Message-ID: <sashiko-outbox-173747@kernel.org>
+	b=Xhq7ztTdM3kG9joeWJbJnxZwB8HTDnJx7DznibPVLaLyYlYWCiueuoSv/lSREX8B5
+	 BG5XnbVyO4BLOVFnhioMQR7opZcMXpumtpnhMjj3sY0Z16R+Vy8Jl0P4hVsxBwbYUA
+	 2yj2kM5joLjts2usSAVtgoQAiWC1WvQYnJfYtBgFO2EynaxDj5DRJahmYBsHChxdtb
+	 pyF3vP6f0UFrTprYdrt85s/DGn1xHzP+Cu/DJSdAo+7wEZikJ+efnQM801WJ1eNSkM
+	 x7px6df106joQuMtJkjIMWkATOVS3t7f211JW27Urj1DHwKTCkgPIdvKUogViaTwYl
+	 dPMXGUTPHyBvQ==
+Message-ID: <sashiko-outbox-173752@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 18/25] ASoC: imx-pcm-rpmsg: Fix imx_rpmsg_pcm_close()
- being skipped on rollback
+Subject: Re: [PATCH v2 04/25] ASoC: amd: raven: Fix acp3x_dma_close() being
+ skipped on rollback
 Reply-To: sashiko-reviews@lists.linux.dev
 To: phucduc.bui@gmail.com
 Cc: imx@lists.linux.dev, Frank.Li@kernel.org, wsa+renesas@sang-engineering.com
-In-Reply-To: <20261015014324.5569-19-phucduc.bui@gmail.com>
+In-Reply-To: <20261015014324.5569-5-phucduc.bui@gmail.com>
 References: <20261015014324.5569-1-phucduc.bui@gmail.com>
- <20261015014324.5569-19-phucduc.bui@gmail.com>
+ <20261015014324.5569-5-phucduc.bui@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 16 Oct 2026 04:14:27 +0000
+Date: Fri, 16 Oct 2026 04:14:59 +0000
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,28 +47,28 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Medium] ASoC: fsl: rpmsg: remote state leak on hw_constraint error
+- [High] sound: memory leak of runtime->private_data in acp3x_dma_close()
 --
 
-commit e67c435f012ba584c1ab6a6bd485da78b988ac05
+commit f9bf5629ed83739ae2130cf6fe20e488a93aca99
 Author: bui duc phuc <phucduc.bui@gmail.com>
 
-ASoC: imx-pcm-rpmsg: Fix imx_rpmsg_pcm_close() being skipped on rollback
+ASoC: amd: raven: Fix acp3x_dma_close() being skipped on rollback
 
-This commit fixes an issue where the close callback was being skipped
-when snd_pcm_hw_constraint_integer() returned a positive value. It ensures
-the component is properly marked as opened by explicitly returning 0 on suc=
-cess.
+The commit ensures that acp3x_dma_open() explicitly returns 0 on success.
+This prevents ASoC from skipping the .close() callback during rollback when
+snd_pcm_hw_constraint_integer() returns 1.
 
-> diff --git a/sound/soc/fsl/imx-pcm-rpmsg.c b/sound/soc/fsl/imx-pcm-rpmsg.c
-> index 7086fb7fc1eba..85b7c929a28a4 100644
-> --- a/sound/soc/fsl/imx-pcm-rpmsg.c
-> +++ b/sound/soc/fsl/imx-pcm-rpmsg.c
-> @@ -269,7 +269,13 @@ static int imx_rpmsg_pcm_open(struct snd_soc_compone=
-nt *component,
->  	info->stream_timer[substream->stream].substream =3D substream;
->  	timer_setup(&info->stream_timer[substream->stream].timer,
->  		    imx_rpmsg_timer_callback, 0);
+> diff --git a/sound/soc/amd/raven/acp3x-pcm-dma.c b/sound/soc/amd/raven/ac=
+p3x-pcm-dma.c
+> index 37ea5c572eb94..7650574990210 100644
+> --- a/sound/soc/amd/raven/acp3x-pcm-dma.c
+> +++ b/sound/soc/amd/raven/acp3x-pcm-dma.c
+> @@ -237,7 +237,13 @@ static int acp3x_dma_open(struct snd_soc_component *=
+component,
+> =20
+>  	i2s_data->acp3x_base =3D adata->acp3x_base;
+>  	runtime->private_data =3D i2s_data;
 > -	return ret;
 > +
 > +	/*
@@ -77,35 +77,30 @@ nt *component,
 > +	 * return 0 to ensure .close() is not skipped on rollback.
 > +	 */
 > +	return 0;
->  }
 
-[Severity: Medium]
-If snd_pcm_hw_constraint_integer() returns an error, can this still leave t=
-he
-remote DSP in a leaked state?
+[Severity: High]
+Does this code leak the i2s_data structure stored in runtime->private_data?
 
-Earlier in imx_rpmsg_pcm_open(), an open message is successfully sent to the
-remote DSP:
+While this patch ensures that acp3x_dma_close() is not skipped on rollback,
+acp3x_dma_close() does not appear to free the memory allocated in
+acp3x_dma_open():
 
-sound/soc/fsl/imx-pcm-rpmsg.c:imx_rpmsg_pcm_open() {
-	...
-	info->send_message(msg, info);
-	...
-	ret =3D snd_pcm_hw_constraint_integer(substream->runtime,
-					    SNDRV_PCM_HW_PARAM_PERIODS);
-	if (ret < 0)
-		return ret;
-	...
+sound/soc/amd/raven/acp3x-pcm-dma.c:acp3x_dma_close() {
+    ...
+	ins =3D substream->runtime->private_data;
+	if (!ins)
+		return -EINVAL;
+
+	if (substream->stream =3D=3D SNDRV_PCM_STREAM_PLAYBACK) {
+    ...
+	}
+
+	return 0;
 }
 
-Because returning a negative error code prevents ASoC from marking the
-component as opened, snd_soc_component_close() will skip calling the close
-callback on error rollback.=20
-
-Does the driver need to manually send a close message before returning the
-error, or is there another way to ensure the remote DSP state is cleaned up
-on this failure path?
+Since there is no kfree(ins) in acp3x_dma_close(), repeatedly opening and
+closing the stream could cause a memory leak.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261015014324.5569=
--1-phucduc.bui@gmail.com?part=3D18
+-1-phucduc.bui@gmail.com?part=3D4
