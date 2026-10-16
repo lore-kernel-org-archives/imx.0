@@ -1,80 +1,35 @@
-Received: from mail-vk1-f170.google.com (mail-vk1-f170.google.com [209.85.221.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8E003BBA0B
-	for <imx@lists.linux.dev>; Fri, 16 Oct 2026 23:28:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B44C4CF471;
+	Fri, 16 Oct 2026 23:50:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792193300; cv=none; b=AIGHG+YynGOgRaI4u2PU5z+ruYTqzgvZCFqnuUGYowN3G/0bOoV4v2pJeXkOmsd9r7l/Y6q6/LkrV32w5fKmpbhFtBOBpaKmhrn+fZTnJootRVhFK1S3xigrtyWfN0DxvbvXo+ulaRBN79Fuop4MD8CyP803Z8CQk6lHq9jDcSY=
+	t=1792194608; cv=none; b=eJYg7Y+PKwqm6R0fgTsV80QFlfCz7bux6cBTmj8hPlmMcxNcHQuojFLRLCRlh1kgu40R6TpNb7ZEYC+8ZYcwSjQnZMkZzoF2o3BsO7DdH3lo/Sl92gxqWRcVDz1Bq3gL3K231iTFZoYIHZl+NtDDh0RQlf7GYPvvIcgkfcsjSpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792193300; c=relaxed/simple;
-	bh=o6kdkAZEToRtv0bcStkT85Ju116In3ipVIQYN1vFQ+k=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iKS2gVu2O/cz/y05FS7TI6KWLhUWb7+1u65Hqh17NvsFuWJk7LGqTWXPju53D6uDe+0x1VLcFeUGVkaDlTZIC5ltXnKDCYuj3GRwbDDbOL1YB7tk/5VQ7iNn6pGt8O1rKRHaAl8FJCXfiYDSYltyD0WTOqq/ZtOLO0z9xh14XNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fju6SRvq; arc=none smtp.client-ip=209.85.221.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1792194608; c=relaxed/simple;
+	bh=Jzau5Zs36QLahvULJ0vVF89cMo9+XwnRCzgTGBuX7XQ=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=e16OdUWVKxi1kW65a2ff2Re8lchL/iXzZ/5zW/Bsc3pwbxtRwKJyF+sV4JU5OpGNzSJbf4aVaHxn381bu/zBgCCfHSSRmHBGUu/lk/dZZZfUvDBxeEe45gBQ98Kd/1Ai4VIy1GPhHpYgmHBGleohNHcHimL3UZ9dsYntCESdZNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kXfjNq8t; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fju6SRvq"
-Received: by mail-vk1-f170.google.com with SMTP id 71dfb90a1353d-5d8e5624261so154301e0c.0
-        for <imx@lists.linux.dev>; Fri, 16 Oct 2026 16:28:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792193298; x=1792798098; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=AsagHKk4Izz9QG2y+9vzDv+u1V8rfrHnbTHd/Qn0ZOc=;
-        b=fju6SRvqJ0Vyo8wTx7dXEMgpKXVxXwVtMm5Mos92SwiAs0+XNIk+ZGNwtEAlNM5UX8
-         k5YkyqsLr2XtED/D7Qh7I2lzXBqNqglGGUYN9mRmA8aEykzUBsA7kE7WUbfccedM7Clr
-         fz806dkgtUJwxy8SYoOt6GIEj8fTpIZ767NV1kEmNURZK3aHFO+CSr0fp91vt1cTAdMz
-         nX9EzOidZ5cKxUu/roc9gJdkA0tTZvb5cXEjBkquA8buLrlc9kX0GdEKNUA/Xtxz6BbG
-         UkwbxNPVCgHu7hGhqePjQGgPiIS0CGUkw6097bFS+/QUxj1OKhy90dQwAB/oCpwtiGEl
-         EdZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792193298; x=1792798098;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=AsagHKk4Izz9QG2y+9vzDv+u1V8rfrHnbTHd/Qn0ZOc=;
-        b=0M0FQh4pq61rwJIgQ+2O3dnAUR2875UxloAr4YO3pYgw+7oqM/3CRTfxrqAHuoDoQ4
-         9snJl2gTcKHUxn1K6uRyv0QQKcFedvu8eD2rn894I2ND8HXYjoJUq9qLtylCiZpSnk6r
-         fCA+9/q3MBc5kv2OrLCz/H0hzt39jf3u2ICoyFp3b8HaBruPd9Fn22HRmodzDhCuvzg/
-         hDyJHqb7GkpFQFzIOfpibKBnH/L9xGO2GlOqOK2fmyM8M7hXfS6WDC6mNkscFUAP43MS
-         OUbluanl0Vzh7PXgLCftoMphmMmGzbFzxUT5TCQ36px2smHtONYMRSvG8Rg2ts/F0tMm
-         BkwQ==
-X-Forwarded-Encrypted: i=1; AKwUvBznA1sYjix6yKpOnLwdDykdgH/tnqKJDnZ5uXqz3dC+7MzkhJMxRnx0PnU33g9d1D1Nr/I=@lists.linux.dev
-X-Gm-Message-State: AFq9FYIKQgaVSAvt2UliMHq2vP+I2KSWswpqn0/ijQ7wrvwIkSniNnFz
-	anptAZY0a/nQU+J5s9fTFUI2GQRxA5KnfWG4NYlEbtL/SpbqgKZ0Bcks
-X-Gm-Gg: AYBFou3cOp4y6lQq8OwMBhEqUsdlAbCCUKkfqv3kn2A86chdwJDlOhMRtc4QIV1aS/u
-	3hEv89fFCnK64Dmc8cJ4yNe5uuHHHomrR60dCACzXfKkbjbUmvRzJJPdna+KJQg+PQ8cvts58tl
-	kOj4gZdSyNAeONCsozCUqMdpWgJ1SeWXbXqLJXE3A/DJ3/vtEbhBE1DGb89vpMV6atUpx5rzaPD
-	eKo2kWf48SJow9rX36Tr5Uz+6f4Y2G9buHbq2/XMZjpwsEfA0YKDQWToP2qc98Kkkrcg3ZZhOLt
-	3pRsipA8IrrAVf6DzxrBC/jkgoFI/vRcnEoeGEShjSD+B3PyQhdhW63zjrKb1oR8ivPTzv1iqjr
-	Y4KTWJGveUaDqpgVPwNWCUrSyVetHP/6Xzsu/uzoH2Xi23jm4xe21hTOysD17BX3YmlnofMnQmP
-	ECl2xp3Kj+pgMO+VYENrzov71XKjptfIhbEPw+pW/MGMWTiBk39Hr9Xf1bbfpTacdFu3giFHAwz
-	DvYA9okHDrDDQPKdOWQV8NEV55RqhxAkUWVm7NSa/zrb+TycklHgLooFA==
-X-Received: by 2002:ac5:c007:0:20b0:5c9:a60b:e5bd with SMTP id 71dfb90a1353d-5eaaa61b5e1mr428147e0c.13.1792193297779;
-        Fri, 16 Oct 2026 16:28:17 -0700 (PDT)
-Received: from fabio-X870-EAGLE-WIFI7.. ([2804:1b3:a801:42fc:16d8:d66b:d6c1:caeb])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ea9b4f58bbsm2804299e0c.10.2026.10.16.16.28.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Oct 2026 16:28:17 -0700 (PDT)
-From: Fabio Estevam <festevam@gmail.com>
-To: Frank.Li@nxp.com
-Cc: robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Fabio Estevam <festevam@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 2/2] ARM: dts: imx5: Restore IIM syscon fallback
-Date: Fri, 16 Oct 2026 20:28:00 -0300
-Message-ID: <20261016232800.536654-2-festevam@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261016232800.536654-1-festevam@gmail.com>
-References: <20261016232800.536654-1-festevam@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kXfjNq8t"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07E5B1F000C4;
+	Fri, 16 Oct 2026 23:50:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792194607;
+	bh=Czw/lh14HoM3oBp7m7rksbbW1fhyazY+7Yq29EDqtac=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=kXfjNq8t04Hiwf5WEPapYRF4cLesZZRXjvLQwH+3vKnIMagMVAa2M8VhTW7N7Pq1M
+	 OTVlWPKtPfSQXSQbLsCglZpdHvzpgGfb5t37f2vPu0kqeb56c2AS63uJNZFo0W/gcT
+	 72Ffk5CKCM4tGylliXhZqYsStfze1vCi4YiH4t8yp8CFAMYYB0dRo+rVVPf9xEvGjh
+	 AbdXi3ZzTYKRO743Sl+DPoBTw5jMcdCB8aRA5FHhvBI7X7WPpyPrVbJARCAEjyHlI2
+	 Z2N+TtmryiWaaD942/jdo1mA0aq3Yc6I8BG9AiunFpFx4fJhZgkcJXe92pMw7mPXke
+	 PuNnkI/GhQqJQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F1581380CECD;
+	Fri, 16 Oct 2026 23:50:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -82,52 +37,82 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v5 00/13] ARM: dts: imx6ul: Extend VAR-SOM-6UL and add
+ DART-6UL support
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179219460577.1014323.18259783279842882110.git-patchwork-notify@kernel.org>
+Date: Fri, 16 Oct 2026 23:50:05 +0000
+References: <cover.1791487179.git.stefano.r@variscite.com>
+In-Reply-To: <cover.1791487179.git.stefano.r@variscite.com>
+To: Stefano Radaelli <stefano.radaelli21@gmail.com>
+Cc: Frank.Li@nxp.com, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, pierluigi.p@variscite.com,
+ stefano.r@variscite.com, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+ hkallweit1@gmail.com, linux@armlinux.org.uk, shawnguo@kernel.org,
+ qijian.guo@nxp.com, francesco.dolcini@toradex.com, josua@solid-run.com,
+ ernest.vanhoecke@toradex.com, mehmet.fide@screeningeagle.com,
+ Markus.Niebel@ew.tq-group.com, maudspierings@gocontroll.com,
+ hvilleneuve@dimonoff.com, eichest@gmail.com, netdev@vger.kernel.org
 
-Commit d5b55c35e033 ("ARM: dts: imx: Fix the iim compatible string")
-removed all IIM fallback compatibles because the binding only accepted one
-compatible. The i.MX51 and i.MX53 SoC device code still looks up the IIM
-with syscon_regmap_lookup_by_compatible(), though. Without the syscon
-fallback, syscon_node_to_regmap() cannot instantiate the regmap and boot
-reports:
+Hello:
 
-  imx_soc_device_init: failed to find fsl,imx53-iim regmap!
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Restore the syscon fallback on i.MX51 and i.MX53.
+On Thu,  8 Oct 2026 21:37:40 +0200 you wrote:
+> VAR-SOM-6UL already has mainline support on the Concerto-Board with
+> i.MX6UL and i.MX6ULL. This series extends that support with additional
+> module configurations, the Symphony-Board carrier and i.MX6ULZ variants.
+> It also adds support for DART-6UL on VAR-6ULCustomBoard with i.MX6UL,
+> i.MX6ULL and i.MX6ULZ.
+> 
+> The 90 new DTBs describe reference configurations with alternative
+> storage, wireless and audio assemblies. These choices change the devices
+> connected to the same SoM interfaces and require different controller,
+> pin or device-node descriptions: eMMC versus NAND, SD card versus SDIO
+> wireless, and the available wireless modules and audio codecs. They do
+> not enumerate every possible combination of fitted and unfitted optional
+> peripherals. The four existing Concerto DTBs remain available with their
+> original names and compatible strings.
+> 
+> [...]
 
-Fixes: d5b55c35e033 ("ARM: dts: imx: Fix the iim compatible string")
-Cc: stable@vger.kernel.org
-Signed-off-by: Fabio Estevam <festevam@gmail.com>
----
- arch/arm/boot/dts/nxp/imx/imx51.dtsi | 2 +-
- arch/arm/boot/dts/nxp/imx/imx53.dtsi | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+Here is the summary with links:
+  - [v5,01/13] dt-bindings: arm: fsl: Add Variscite i.MX6UL board variants
+    (no matching commit)
+  - [v5,02/13] dt-bindings: arm: fsl: Add Variscite i.MX6ULL board variants
+    (no matching commit)
+  - [v5,03/13] dt-bindings: arm: fsl: Add Variscite i.MX6ULZ board variants
+    (no matching commit)
+  - [v5,04/13] net: phy: micrel: Check RMII clock select property presence
+    https://git.kernel.org/netdev/net-next/c/5babd12ed114
+  - [v5,05/13] dt-bindings: net: micrel: Fix RMII clock select property type
+    https://git.kernel.org/netdev/net-next/c/1b93cd0f6584
+  - [v5,06/13] ARM: dts: imx6ul: Extend VAR-SOM-6UL and add DART-6UL files
+    (no matching commit)
+  - [v5,07/13] ARM: dts: imx6ul: Add Variscite WM8904 and WM8731 support
+    (no matching commit)
+  - [v5,08/13] ARM: dts: imx6ul: Add Variscite storage and wireless options
+    (no matching commit)
+  - [v5,09/13] ARM: dts: imx6ul: Extend Variscite carrier board descriptions
+    (no matching commit)
+  - [v5,10/13] ARM: dts: imx6ul: Share Variscite PHY clock and update PHY options
+    (no matching commit)
+  - [v5,11/13] ARM: dts: imx6ul: Add Variscite i.MX6UL board variants
+    (no matching commit)
+  - [v5,12/13] ARM: dts: imx6ull: Add Variscite i.MX6ULL board variants
+    (no matching commit)
+  - [v5,13/13] ARM: dts: imx6ulz: Add Variscite i.MX6ULZ board variants
+    (no matching commit)
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx51.dtsi b/arch/arm/boot/dts/nxp/imx/imx51.dtsi
-index c8698a9af1a7..e0494aa30a6b 100644
---- a/arch/arm/boot/dts/nxp/imx/imx51.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx51.dtsi
-@@ -476,7 +476,7 @@ aipstz2: bridge@83f00000 {
- 			};
- 
- 			iim: efuse@83f98000 {
--				compatible = "fsl,imx51-iim";
-+				compatible = "fsl,imx51-iim", "syscon";
- 				reg = <0x83f98000 0x4000>;
- 				interrupts = <69>;
- 				clocks = <&clks IMX5_CLK_IIM_GATE>;
-diff --git a/arch/arm/boot/dts/nxp/imx/imx53.dtsi b/arch/arm/boot/dts/nxp/imx/imx53.dtsi
-index 93225a56896f..13550d12f694 100644
---- a/arch/arm/boot/dts/nxp/imx/imx53.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx53.dtsi
-@@ -668,7 +668,7 @@ aipstz2: bridge@63f00000 {
- 			};
- 
- 			iim: efuse@63f98000 {
--				compatible = "fsl,imx53-iim";
-+				compatible = "fsl,imx53-iim", "syscon";
- 				reg = <0x63f98000 0x4000>;
- 				interrupts = <69>;
- 				clocks = <&clks IMX5_CLK_IIM_GATE>;
+You are awesome, thank you!
 -- 
-2.43.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
