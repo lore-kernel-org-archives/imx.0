@@ -1,52 +1,48 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B1B857F726
-	for <imx@lists.linux.dev>; Fri, 16 Oct 2026 18:40:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF1414B920C
+	for <imx@lists.linux.dev>; Fri, 16 Oct 2026 18:58:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792176040; cv=none; b=YhRYvJBI27ZU5mYP5GeMl/jl65Q+csHMwgnUi116qBjDTOfQqo7p/3Hw+D8ABBQFvNhyMMqucZKXSeYVATnlZC5WTix+tIn8hr+12+ggTi3Bve0bO4/Isnp8C6e0zh3+VaOuTp40OjjC/ncMHsGUNOjdd5nPrvbkCJtX0h2sckU=
+	t=1792177112; cv=none; b=EhfAP4xc+RW0HvVoyLj2TQa8swJljiFHuZCm8g/VEn96cS5JuFrqXPdTvspNik2Qvpm4c1+X7b94ADeHdUE/kAv89eQq+b61FSkj3Jc0DP9rP/wCvGO4rkk/nTtm6Uo0Sw8+Dnp4Jl9+2fL5MfC1rky2ArVUWLoTwS5pIIZy4/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792176040; c=relaxed/simple;
-	bh=EF72CgHdOXLnmh/mpSOx62aTsle3MCEHx9TlZcDnN8Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=juEQxsPGE99/RY3xhddTSKFVh7ths+E3Dy1AYC9DrFcH9h/RVQxrzOTWFFQl3+N7XwokwMfAeRD5SF8A1nJRcIVuBGHlOKPaietrycA/2bHZM5WL1tqzs1PJIKGiTK9wXOzFPTTHrH2lPXtMgheNF4uDMA8RaLD0w94JgL9e+Fs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=ZWGFy9Hw; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	s=arc-20240116; t=1792177112; c=relaxed/simple;
+	bh=c07PDig+LSsE24sQR4HQwR8JnWSTzX5sad8ADiutG3M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KAS+j2gX1Rmmni1AQ2BTd4nlkxG6QPIWkAv5QPJpoEMnxs6xlZAVG6vApP2IPuvqXXlzlpCBrjV13uH8vRe2LUjAevnWTdqNdjdHoFPiYslQtfxG1yAfzBgmRBvQE/921qSKurxEnDAdZoCcxgAsA0eDjtZ8FXUiTPEmAN08lxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=iCcXohur; arc=none smtp.client-ip=178.251.229.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="ZWGFy9Hw"
-Received: from francesco-nb.. (93-33-119-6.ip44.fastwebnet.it [93.33.119.6])
-	by mail11.truemail.it (Postfix) with ESMTPA id AE6D41FB49;
-	Fri, 16 Oct 2026 20:40:29 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1792176030;
-	bh=E7Nc8Mvd7NrUs/gWx3FaCKJorqSwr6trCvvoTs/mlio=; h=From:To:Subject;
-	b=ZWGFy9Hwb5NYNwRADPCHYGGZUNKUGmr4Ar1YSd8anfwhCJ3iesNyNUTrq/J0vz7Pi
-	 c0pZ4rjMd6JsTRchbN9hhdenKE76u4zyDOZPvAoednawuGIjEpqKZhUgDfQyuzfkIS
-	 fu7O2CncaVocTuuO5BPBBD52cVrEncQlt0HDOlRiIySKRo6Ku/kQBMAzTK2RngB2V3
-	 jHNe0EefY6XVGjbie7HS12rQFMFJPT10nZq99FAeLhwGI1NyX8WB6imDrJSa1FH8kt
-	 q1yatLz1Ogph4JlBC1MqPIa/3GadGTvtCbLC7YYyYmEff6NStpewHxf+HARuakEDn4
-	 Nqjaotkev5yAw==
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
-	devicetree@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="iCcXohur"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id ACFAD1060F1;
+	Fri, 16 Oct 2026 20:58:19 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
+	s=dkim; t=1792177101; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=3M3kA3GZbcaM6eIdFleDuwMC14PtsMd6qtqktQqPFSE=;
+	b=iCcXohurxm6O4ru4PCCQYfFl8lWcLu3E5FNfUVcPdNZMvhsNr0TKrPil/ppnwj+RkLboq1
+	GRvstPf8HGuxz+F0bisaB5nI+lGtTqLG4V2C5+9x+9IJdgph+7F2S+g4j4eb3vyeonuPL/
+	ABjwt7anNn417szKlzGabfKAmOFY3RCvNgzbqTFScmrv+9SNGINaSyO7LGJkXQemqaEb70
+	AvqG4x4teMftB6XJthjPMjj3YsDYBqO1gWKI7QUt7ZGN3zjxFuaOskzeAoPoplRFpXBQpP
+	U5MFIwupId91Q+SwA4sH2AaMgglVcPXuTAqRJ0IDq+h6r5kTwSH5xJ8T4Clymg==
+From: Marek Vasut <marex@nabladev.com>
+To: netdev@vger.kernel.org
+Cc: Marek Vasut <marex@nabladev.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Wei Fang <wei.fang@nxp.com>,
 	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 2/2] arm64: dts: freescale: imx93-imx91-toradex-osm-dev: Remove ETH_A PHY interrupt
-Date: Fri, 16 Oct 2026 20:40:19 +0200
-Message-ID: <20261016184020.46763-3-francesco@dolcini.it>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261016184020.46763-1-francesco@dolcini.it>
-References: <20261016184020.46763-1-francesco@dolcini.it>
+Subject: [net,PATCH] Revert "enetc: Increase eMDIO MDC rate to 2.5 MHz"
+Date: Fri, 16 Oct 2026 20:57:38 +0200
+Message-ID: <20261016185817.54096-1-marex@nabladev.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -54,57 +50,53 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
+This reverts commit 587acb86d6465efdc03f6d8524461e6e725597b7.
 
-The OSM Development Board is shared across OSM modules. GPIO_A7 is a
-boot strap on the OSM iMX95 module, and the pull-up on the carrier board
-Ethernet PHY interrupt line connected to it breaks the reset sequence.
+While the i.MX95 MDIO MDC clock is improved by the commit
+587acb86d646 ("enetc: Increase eMDIO MDC rate to 2.5 MHz"),
+other SoCs use different base clock for their MDIO and the
+MDC clock on those SoCs is set out of specification by the
+aforementioned commit. The fix for the i.MX95 MDIO MDC has
+to be done differently, and will be done so in a follow up
+change. Until that is done, revert the commit to fix the
+other SoCs.
 
-On the OSM Development Board the PHY interrupt line reaches GPIO_A7
-through a jumper. Boards are shipped with this jumper removed to avoid
-the strap conflict, with no change to the board revision, and GPIO_A7
-is available in the jumper area for general-purpose use. A future board
-revision might drop the PHY interrupt connection from the schematics
-altogether.
-
-Update the OSM iMX93 and iMX91 Device Trees accordingly. Switch the PHY
-to polling and move the GPIO_A7 pinctrl configuration to the GPIO
-controller. Polling works regardless of whether the jumper is fitted, so
-this is transparent across existing and future board revisions.
-
-Fixes: e8a8c86875f4 ("arm64: dts: freescale: Add Toradex OSM iMX93")
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Fixes: 587acb86d646 ("enetc: Increase eMDIO MDC rate to 2.5 MHz")
+Signed-off-by: Marek Vasut <marex@nabladev.com>
 ---
-v2: explain the jumper and board revision situation in the commit message
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: Clark Wang <xiaoning.wang@nxp.com>
+Cc: Claudiu Manoil <claudiu.manoil@nxp.com>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc: Wei Fang <wei.fang@nxp.com>
+Cc: imx@lists.linux.dev
+Cc: linux-kernel@vger.kernel.org
+Cc: netdev@vger.kernel.org
 ---
- .../dts/freescale/imx93-imx91-toradex-osm-dev-common.dtsi   | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+NOTE: This is for v7.4
+---
+ drivers/net/ethernet/freescale/enetc/enetc_mdio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx93-imx91-toradex-osm-dev-common.dtsi b/arch/arm64/boot/dts/freescale/imx93-imx91-toradex-osm-dev-common.dtsi
-index 566671b32308..24b4bf579835 100644
---- a/arch/arm64/boot/dts/freescale/imx93-imx91-toradex-osm-dev-common.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx93-imx91-toradex-osm-dev-common.dtsi
-@@ -93,7 +93,7 @@ &gpio2 {
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc_mdio.c b/drivers/net/ethernet/freescale/enetc/enetc_mdio.c
+index a90a04a47befd..998aaa394e9c4 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc_mdio.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc_mdio.c
+@@ -24,7 +24,7 @@
  
- &gpio4 {
- 	pinctrl-names = "default";
--	pinctrl-0 = <&pinctrl_gpio_a6>;
-+	pinctrl-0 = <&pinctrl_gpio_a6>, <&pinctrl_gpio_a7>;
- };
+ #define ENETC_EMDIO_CFG \
+ 	(MDIO_CFG_HOLD(2) | \
+-	 MDIO_CFG_CLKDIV(66) | \
++	 MDIO_CFG_CLKDIV(258) | \
+ 	 MDIO_CFG_NEG)
  
- /* OSM I2C_B */
-@@ -262,10 +262,6 @@ &mdio {
- 
- 	ethphy_a: ethernet-phy@2 {
- 		reg = <2>;
--		pinctrl-names = "default";
--		pinctrl-0 = <&pinctrl_gpio_a7>;
--		interrupt-parent = <&gpio4>;
--		interrupts = <15 IRQ_TYPE_LEVEL_LOW>;
- 		ti,rx-internal-delay = <DP83867_RGMIIDCTL_2_00_NS>;
- 		ti,tx-internal-delay = <DP83867_RGMIIDCTL_2_00_NS>;
- 	};
+ #define MDIO_CTL_DEV_ADDR(x)	((x) & 0x1f)
 -- 
-2.47.3
+2.53.0
 
