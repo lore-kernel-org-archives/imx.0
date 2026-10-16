@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8433A3BE162
-	for <imx@lists.linux.dev>; Fri, 16 Oct 2026 10:56:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 608DD3A0B2E
+	for <imx@lists.linux.dev>; Fri, 16 Oct 2026 10:56:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792148219; cv=none; b=AQNRO37lCEp2omXqYXLBgbDRDdALAFYUefayhfr9MlEu3HnrnMWT5quesVEpbQNgLJ81ZNzuuBW+SkXXWZrZmZmWenW2ck+IFH1wyjQBjJ367uHyjyOjudGbnjh4WzIR4+/7dK4zf8Sg+m7dhq2+iX3Q1M+EXjYojCL1/wccKKc=
+	t=1792148220; cv=none; b=jaqvY1LmOcmzsBBDBKgAjhODBL99cqqNTcqJ6uEZYs6tAu8Rd4Bm/MPN7GFiwXkN6FavL6VlVseXGHVZfJRNEG6VtUGaAsCkhpENBbPqQu+u7XXIQ5EHIw487MBoC/vwTfEFR4oggmr5+E6qAwtvhVWKTEEf8NiNveyEZTznViY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792148219; c=relaxed/simple;
-	bh=mvTFbFjW7scEceTLx1q5bdNx0DE8EXnFpX/Goz4mKlM=;
+	s=arc-20240116; t=1792148220; c=relaxed/simple;
+	bh=irfIajnFWu2g+9+TH4ADlcQhgMvkbq631aiNAFZq6+4=;
 	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
-	 Date; b=YTcnnHFMVI/MlYhWNPFUP+ehEMY+YEYkx8rX2naM6+D2rR0AOLYo8HrrZfPU3xzuZKBz5fJendjvaP5TW6mhSBqHPiLZDUQ+nGzAZsQ/LRMmI6SEbnchTd5Krh7tfgsR2YNSf25EtLJlz1PsIrDNHDgzEX89jc4hLv2JUX/kSSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hf2CxPQm; arc=none smtp.client-ip=100.103.45.18
+	 Date; b=UmC2vY4MYyIxCZ8CnOQ8cH6aUyS/BQJjL0jzvPb4H2QPKArokd5hJzPolJCulbbq1lPF8SaUf598hskboAgsqX30XraRBgLHHy8O1v4zSopTzG5mG6RHf2GO1k7ARmy2z4Pf4bItefDjZWGReOIa4YxF/huc0kK6b5GZoZ6OzO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U55hAwy2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hf2CxPQm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4185D1F000C4;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U55hAwy2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2B361F000C5;
 	Fri, 16 Oct 2026 10:56:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792148218;
-	bh=fhjE1SMznZpqDY5Ufv2yEUMpYViYlwML7OuJRg9pr4I=;
+	s=k20260515; t=1792148219;
+	bh=LI6pjZWzrYVFJPmLF6f9VaTsfteZSwjYiDKL5epM0Ew=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Hf2CxPQmtmatECEAfjcLGiWhacKCyMtQPDSbbvJtDFhsZTX7MSUx3mpAbF0Ra/V2f
-	 RS2LG1sMOyvNOprc13qpGPG8w1EAfjdezK9hYl1jW2ZDahqsgwqT6Qt/gKHnGMWxOS
-	 ArXPRR/mEhQyPSVpc4y5kB4PdUREIo9CB8sRgXfxVFLGYEo5OrG1pnCbmXSHuuZnRR
-	 Uq4ze9OYMCJL54T4ipLBc3wP4zsCypllBqMKAYJHTgfu4cDiqY64A4sRW+u8rmgo3m
-	 cAAEHV9Td7u+UKzfJqtqO+FktjCn04EqryZ7IonbMfamkB7Vc2zYHyRm1aKyeFKKfE
-	 cy4VCmq0w8bcg==
-Message-ID: <sashiko-outbox-174214@kernel.org>
+	b=U55hAwy20aKV4pG6hwtWgPBRwL1u2zOCh1upTMoi2yC8td+FSV6DbfC6sRZrptI4l
+	 xKcEhi5XSIPooDMG5KsKlZjNiNqdssr0lGFZpBjtGgrMnc5tGGOE05WXeuVOCz07e3
+	 TAARjTfP4u/lzdmkWE6tjfFwMjBgxwLdcRNUBJblrsjwDEXfifQymkrD4A4ugrXnPl
+	 8EGNRYdGkrac1pJ6SjiwZyvIcnO9u+x33nEM+2rtrs0TcSH6mUmCPyJ+95F6vtSeT3
+	 pFa6OuDluQ0R/mfvslBk7Us9eSJS7jA2OcWdtF6M6r8Geq07UU7cC0x5zAVK7d7dLo
+	 KpeqdCZ3V3VFw==
+Message-ID: <sashiko-outbox-174217@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 net 5/8] net: enetc: ensure head buffer has at least
- 16 octets
+Subject: Re: [PATCH v4 net 8/8] net: enetc: ensure enetc_xdp_xmit() calls
+ enetc_update_tx_ring_tail()
 Reply-To: sashiko-reviews@lists.linux.dev
 To: vladimir.oltean@nxp.com
 Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20261015105536.1692348-6-vladimir.oltean@nxp.com>
+In-Reply-To: <20261015105536.1692348-9-vladimir.oltean@nxp.com>
 References: <20261015105536.1692348-1-vladimir.oltean@nxp.com>
- <20261015105536.1692348-6-vladimir.oltean@nxp.com>
+ <20261015105536.1692348-9-vladimir.oltean@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 16 Oct 2026 10:56:57 +0000
+Date: Fri, 16 Oct 2026 10:56:58 +0000
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,66 +47,57 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] enetc: missing lock release on dropped one-step tstamp packets
+- [High] net: enetc: XDP_XMIT_FLUSH is ignored when k =3D=3D 0 causing TX r=
+ing stalls
 --
 
-commit 9392e5d35a9d4208a5ea777cd38ae2adf7ac8c86
+commit a3de2d9d87edd1ec648a1023c638ce2d70118f57
 Author: vladimir.oltean@nxp.com <vladimir.oltean@nxp.com>
-net: enetc: ensure head buffer has at least 16 octets
 
-This commit addresses a hardware issue in ENETC devices where transmitting
-frames with a head buffer under 16 bytes causes an interrupt storm. It adds
-a check in enetc_start_xmit to pull at least 16 bytes into the linear skb
-header, dropping the packet if that fails.
+net: enetc: ensure enetc_xdp_xmit() calls enetc_update_tx_ring_tail()
 
-Closes: https://lore.kernel.org/netdev/b3d9136c-2803-4203-b1ea-1f9e62de80a1=
-@gmail.com/
+This commit changes the loop exit condition that triggers the TX doorbell
+in enetc_xdp_xmit(). It replaces the redundant xdp_tx_frm_cnt variable with
+the loop index k and updates the logic determining when to flush the TX
+ring.
 
 > diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/e=
 thernet/freescale/enetc/enetc.c
-> index 707c17fe4a4c5..89b47accbac84 100644
 > --- a/drivers/net/ethernet/freescale/enetc/enetc.c
 > +++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-> @@ -1079,6 +1079,12 @@ static netdev_tx_t enetc_start_xmit(struct sk_buff=
- *skb,
->  		if (eth_skb_pad(skb))
->  			return NETDEV_TX_OK;
+[ ... ]
+> @@ -1928,22 +1928,20 @@ int enetc_xdp_xmit(struct net_device *ndev, int n=
+um_frames,
+>  						    &xdp_redirect_arr[i]);
+>  			break;
+>  		}
+> -
+> -		xdp_tx_frm_cnt++;
+>  	}
 > =20
-> +		if (unlikely(skb_headlen(skb) < ENETC_MIN_BUFF_SIZE &&
-> +			     !pskb_may_pull(skb, ENETC_MIN_BUFF_SIZE))) {
-> +			dev_kfree_skb_any(skb);
-> +			return NETDEV_TX_OK;
-> +		}
-> +
+> -	if (unlikely((flags & XDP_XMIT_FLUSH) || k !=3D xdp_tx_frm_cnt))
+> +	if (unlikely(k && ((flags & XDP_XMIT_FLUSH) || k < num_frames)))
+>  		enetc_update_tx_ring_tail(tx_ring);
 
 [Severity: High]
-Does this error path miss releasing the bit lock for one-step timestamp
-packets?
+If a caller batches XDP frames by making multiple ndo_xdp_xmit() calls
+with flags =3D 0, and then makes a final call with flags =3D XDP_XMIT_FLUSH,
+does this new condition safely handle the case where the final call fails
+to enqueue any frames?
 
-Earlier in enetc_start_xmit(), the bit lock is acquired for packets with
-the ENETC_F_TX_ONESTEP_SYNC_TSTAMP flag:
+If the caller passes num_frames =3D=3D 0, or if the first frame fails to map
+(for example, due to a full TX ring or DMA error), the loop exits with
+k =3D 0.
 
-        if (enetc_cb->flag & ENETC_F_TX_ONESTEP_SYNC_TSTAMP) {
-                if (test_and_set_bit_lock(ENETC_TX_ONESTEP_TSTAMP_IN_PROGRE=
-SS,
-                                          &priv->flags)) {
-                        skb_queue_tail(&priv->tx_skbs, skb);
-                        return NETDEV_TX_OK;
-                }
-        }
+With the addition of the "k &&" guard, the entire condition evaluates to
+false.
 
-If the newly added pskb_may_pull() check fails, the packet is freed and the
-function returns NETDEV_TX_OK without clearing the previously acquired lock.
+Could this skip enetc_update_tx_ring_tail() and leave previously queued
+packets stalled in the TX ring without a doorbell ring, violating the
+XDP_XMIT_FLUSH contract?
 
-Could this leave the ENETC_TX_ONESTEP_TSTAMP_IN_PROGRESS bit permanently se=
-t,
-causing subsequent one-step timestamp packets to queue infinitely to tx_skbs
-without ever being dequeued?
-
->  		if (unlikely(skb_shinfo(skb)->nr_frags > priv->max_frags))
->  			if (unlikely(skb_linearize(skb)))
->  				goto drop_packet_err;
+>  	enetc_unlock_mdio();
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261015105536.1692=
-348-1-vladimir.oltean@nxp.com?part=3D5
+348-1-vladimir.oltean@nxp.com?part=3D8
