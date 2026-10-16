@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D5983769FD
-	for <imx@lists.linux.dev>; Fri, 16 Oct 2026 04:14:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10A3738DD3
+	for <imx@lists.linux.dev>; Fri, 16 Oct 2026 04:16:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792124101; cv=none; b=UjKABwplsqnAZwo1c1+FP3lNI+A0FBDCB4ACX3RvmZjTWWhgwWfYxXjqwGhJ8u4bIGGWQER02+TnWtz4cWzjX3H/tDN5jGOqpH0k8/ABISV41Lnsi6OPuiDOL+68Rm0Ss+0GGvCzalfSJqVC7UrQhdNNL7USr/WSRofCUnab0fE=
+	t=1792124172; cv=none; b=mV+T3XUVIIrA6g+4HvhB2E6wDG640uiHqdBmH7bSDhYo108tOfHY9byK8gpWRFi+BOodmKgyRRYOCUWNQVZCAaPhky4lDExuKFFR5IX5TwRKtQN5OPmehPxojPdWIDKQhQpHw8ut9ZeONcKjWWCcuM149YIUp0QXzz9mMEqCSLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792124101; c=relaxed/simple;
-	bh=JsS1qKigA32TwTWkA0ijc5IJGDu/dHPZimpuAlXn3us=;
+	s=arc-20240116; t=1792124172; c=relaxed/simple;
+	bh=mSput05j82kmJpb7IUc5xresK8aJ5f1dz51zkJ33N5s=;
 	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
-	 Date; b=QG4n/iSXpByz5oU6ycIkSifKYIypCBsUabVUCVl2f8fe7FkYkOW49keN+TlndGszMwZbdTQvLgbWTKC75XTUmo0R/ZV6/l7KxCa5tfJYHANK1BJZgCWQvyZbSM/EEIGaAOjt4TUJPj1AcMw5NAnaBQAHFwMZ60Yazi+sdRYFrU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xhq7ztTd; arc=none smtp.client-ip=100.103.45.18
+	 Date; b=u1w0wRIsC/7LpdXsavOq54/1dHc5ZRXAkaBv8Anv+AXD3kRguNMbgBrC6MpiGDbNmZYQ9bO9IwMKpjUW+Byz5NOiksS1/Cna1gNCLvrkAfbT7YREdWDP/mePuuQL0mYAc8AqO1b0gLSpIsMILWDvjyjL+QsvLBp4fPNXPBDD650=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aqA1QBNw; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xhq7ztTd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BD601F000C4;
-	Fri, 16 Oct 2026 04:14:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aqA1QBNw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 534C91F000C5;
+	Fri, 16 Oct 2026 04:16:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792124099;
-	bh=MUQxIQbI6E8jRIQwMoZQ6KBFbH1byoEgl7YN7NeuSuM=;
+	s=k20260515; t=1792124170;
+	bh=7s/7o3gtr+3dMPcD3YCyJGIX2K/g7DpRH0pEX+ukyNo=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Xhq7ztTdM3kG9joeWJbJnxZwB8HTDnJx7DznibPVLaLyYlYWCiueuoSv/lSREX8B5
-	 BG5XnbVyO4BLOVFnhioMQR7opZcMXpumtpnhMjj3sY0Z16R+Vy8Jl0P4hVsxBwbYUA
-	 2yj2kM5joLjts2usSAVtgoQAiWC1WvQYnJfYtBgFO2EynaxDj5DRJahmYBsHChxdtb
-	 pyF3vP6f0UFrTprYdrt85s/DGn1xHzP+Cu/DJSdAo+7wEZikJ+efnQM801WJ1eNSkM
-	 x7px6df106joQuMtJkjIMWkATOVS3t7f211JW27Urj1DHwKTCkgPIdvKUogViaTwYl
-	 dPMXGUTPHyBvQ==
-Message-ID: <sashiko-outbox-173752@kernel.org>
+	b=aqA1QBNw9kbujYJpbbYdHeCpC6rcEvcLTCMO3SfXmx1CbONqNGWjs6XU6ADQvZuW6
+	 Gb2khDm64baWMQZfKz4vBadFgL5RKICZx6aTTKZ0gfkTYnkophvjMQi1RUeybj2NbP
+	 XJPcdGB2I0nRQ7vFxq+4F8emCL9usissmu/gAeodpJAvJLAINDFQitdm62nHWiZyu/
+	 prQ0v3NPI2qQw9RXeKc+v0M7veGyv8VVnYg5WIGek0rlhE/5AppNKqSCqnbi38pVad
+	 NApY9+/uXHkS/WHejaBCzIkqbuEwMzoW1gE/NyE0TjyfKJKsao+cxCps6U9ZARxJvP
+	 expGT0dOx08Hw==
+Message-ID: <sashiko-outbox-173754@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 04/25] ASoC: amd: raven: Fix acp3x_dma_close() being
- skipped on rollback
+Subject: Re: [PATCH v2 09/25] ASoC: atmel: atmel-pcm-pdc: Fix
+ atmel_pcm_close() being skipped on rollback
 Reply-To: sashiko-reviews@lists.linux.dev
 To: phucduc.bui@gmail.com
 Cc: imx@lists.linux.dev, Frank.Li@kernel.org, wsa+renesas@sang-engineering.com
-In-Reply-To: <20261015014324.5569-5-phucduc.bui@gmail.com>
+In-Reply-To: <20261015014324.5569-10-phucduc.bui@gmail.com>
 References: <20261015014324.5569-1-phucduc.bui@gmail.com>
- <20261015014324.5569-5-phucduc.bui@gmail.com>
+ <20261015014324.5569-10-phucduc.bui@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 16 Oct 2026 04:14:59 +0000
+Date: Fri, 16 Oct 2026 04:16:09 +0000
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,30 +47,30 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] sound: memory leak of runtime->private_data in acp3x_dma_close()
+- [High] sound: atmel: Use-after-free and NULL deref in atmel_pcm_hw_free r=
+ace
 --
 
-commit f9bf5629ed83739ae2130cf6fe20e488a93aca99
+commit 04962f72fa0bbcac4e1c99626f3cc0f25a8a7762
 Author: bui duc phuc <phucduc.bui@gmail.com>
 
-ASoC: amd: raven: Fix acp3x_dma_close() being skipped on rollback
+ASoC: atmel: atmel-pcm-pdc: Fix atmel_pcm_close() being skipped on rollback
 
-The commit ensures that acp3x_dma_open() explicitly returns 0 on success.
-This prevents ASoC from skipping the .close() callback during rollback when
-snd_pcm_hw_constraint_integer() returns 1.
+This commit fixes an issue where atmel_pcm_close() might be skipped on
+rollback. It forces atmel_pcm_open() to explicitly return 0 on success,
+as snd_pcm_hw_constraint_integer() can return 1, which causes ASoC to skip
+marking the component as opened.
 
-> diff --git a/sound/soc/amd/raven/acp3x-pcm-dma.c b/sound/soc/amd/raven/ac=
-p3x-pcm-dma.c
-> index 37ea5c572eb94..7650574990210 100644
-> --- a/sound/soc/amd/raven/acp3x-pcm-dma.c
-> +++ b/sound/soc/amd/raven/acp3x-pcm-dma.c
-> @@ -237,7 +237,13 @@ static int acp3x_dma_open(struct snd_soc_component *=
+> diff --git a/sound/soc/atmel/atmel-pcm-pdc.c b/sound/soc/atmel/atmel-pcm-=
+pdc.c
+> index 374f93fa6e0b0..4cedf2ad934d6 100644
+> --- a/sound/soc/atmel/atmel-pcm-pdc.c
+> +++ b/sound/soc/atmel/atmel-pcm-pdc.c
+> @@ -295,6 +295,13 @@ static int atmel_pcm_open(struct snd_soc_component *=
 component,
+>  	}
+>  	runtime->private_data =3D prtd;
 > =20
->  	i2s_data->acp3x_base =3D adata->acp3x_base;
->  	runtime->private_data =3D i2s_data;
-> -	return ret;
-> +
 > +	/*
 > +	 * ASoC only marks the component as opened when .open() returns 0.
 > +	 * Since snd_pcm_hw_constraint_integer() may return 1, explicitly
@@ -79,28 +79,50 @@ component,
 > +	return 0;
 
 [Severity: High]
-Does this code leak the i2s_data structure stored in runtime->private_data?
+Could this change expose a race condition during teardown? By ensuring
+atmel_pcm_close() executes, it seems we can now hit a use-after-free or
+NULL pointer dereference.
 
-While this patch ensures that acp3x_dma_close() is not skipped on rollback,
-acp3x_dma_close() does not appear to free the memory allocated in
-acp3x_dma_open():
+When an audio stream is closed, ALSA triggers snd_pcm_drop() followed by
+trigger(STOP), which disables the PDC but does not disable SSC interrupts
+globally. This is followed by atmel_pcm_hw_free(), which clears the
+interrupt handler:
 
-sound/soc/amd/raven/acp3x-pcm-dma.c:acp3x_dma_close() {
+sound/soc/atmel/atmel-pcm-pdc.c:atmel_pcm_hw_free() {
     ...
-	ins =3D substream->runtime->private_data;
-	if (!ins)
-		return -EINVAL;
-
-	if (substream->stream =3D=3D SNDRV_PCM_STREAM_PLAYBACK) {
+    prtd->params->dma_intr_handler =3D NULL;
     ...
-	}
-
-	return 0;
 }
 
-Since there is no kfree(ins) in acp3x_dma_close(), repeatedly opening and
-closing the stream could cause a memory leak.
+And finally atmel_pcm_close() is called, which frees the prtd structure:
+
+sound/soc/atmel/atmel-pcm-pdc.c:atmel_pcm_close() {
+    ...
+    kfree(prtd);
+    ...
+}
+
+Meanwhile, an interrupt can still fire, and atmel_ssc_interrupt() calls the
+handler without synchronization:
+
+sound/soc/atmel/atmel_ssc_dai.c:atmel_ssc_interrupt() {
+    ...
+    dma_params->dma_intr_handler(ssc_sr, dma_params->substream);
+    ...
+}
+
+Since there is no synchronize_irq() in the PCM teardown path,
+atmel_ssc_interrupt() can race with atmel_pcm_hw_free() and
+atmel_pcm_close(). This could lead to a NULL pointer dereference if
+dma_intr_handler is evaluated after being cleared, or a use-after-free of
+prtd if kfree(prtd) executes while atmel_pcm_dma_irq() is still actively
+processing the stream on another CPU.
+
+> +
+>   out:
+>  	return ret;
+>  }
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261015014324.5569=
--1-phucduc.bui@gmail.com?part=3D4
+-1-phucduc.bui@gmail.com?part=3D9
