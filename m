@@ -1,65 +1,65 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F14EC3890F8
-	for <imx@lists.linux.dev>; Fri, 16 Oct 2026 04:11:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D86B37F01B
+	for <imx@lists.linux.dev>; Fri, 16 Oct 2026 04:12:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792123912; cv=none; b=HhxZNft6Bxw3SYInMGBrKYa0k0Mm3hrjAN61eFDfRk2hwDyn0pFa5y4S5W9Xeb2eZx1giWZaDfHAyefFZ69O0ipZFQYlTsb9tK5zk1RlsyKUkKsp90fG3RN1QFe3O2wF84QHNLNZAjSa9h6MaeadAOPyAs6neJqAaYpsHRxV8Hg=
+	t=1792123924; cv=none; b=tC1EarIweUQmjwop88ioOwV0WKZQYu9BgY5y2VwoVkUJNKuTrjCf0a29AZX3acDLQWslEWK1L/2bahIDjJ9XFCD0vM+kDHHCrwQvhjiDcTNS7nXHlo1+KdKQxBcwJpoTJvPGZM4XgkPLm8Yln2oyrUbW8Dtx8qRxC9+faAS7q3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792123912; c=relaxed/simple;
-	bh=4ChQc4DpaiRpFVYZQOX6JdbhBOh/CN3kyOWjnYuDL7A=;
+	s=arc-20240116; t=1792123924; c=relaxed/simple;
+	bh=J+EeYnRsgcM/YnSU55c+lLcyk00OoD5ti7bbsMzTw18=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GQ8bXvPw7vDexLKzg57EfD60yGyBDrTFdNSaMXfCH0nMOeilGmMeddop8r+x8OAe499p8Hd7bysuIKjwD/085DoFK+fuTLEPlkAaHhk4A1c+nc+RZNa8UiB43UQpd8qGdywGUXKMonIpaX1BOP+2HLITYWxIbG4nYeBAUPoYFeY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e7C3b7hc; arc=none smtp.client-ip=209.85.214.176
+	 MIME-Version; b=ZrUpoUapRf0lMXlAhPcn/fvl/KGSCwS+uPegeMEq770LuuSMHjBtc7on2a9oY/7OLQxcv3gmJVH4/asak8vbnwpHDDPT06ciV8LCaQ+kaZOs9qa9OSaxNK3GYyiAHYZ/pvyxfmAIYLUcu4dDUY51JRTzFF1zkdQxNY8rC5QNnJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OtSJTRwZ; arc=none smtp.client-ip=209.85.214.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e7C3b7hc"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2d6e954afbdso13640805ad.2
-        for <imx@lists.linux.dev>; Thu, 15 Oct 2026 21:11:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OtSJTRwZ"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2e946155442so20861825ad.3
+        for <imx@lists.linux.dev>; Thu, 15 Oct 2026 21:12:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792123910; x=1792728710; darn=lists.linux.dev;
+        d=gmail.com; s=20251104; t=1792123922; x=1792728722; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=DnS3efznOy4aR/sEoOKiH1O7kNcA8JAEG4dTp1VvwAA=;
-        b=e7C3b7hcq+BCPXHUHAbTbTn40WOrKpyxZ++XJoq5gx67YZ7+sDhlxDfB7i8bi1S6ne
-         vBd3vOznDEMKyCejB4MJREfvTdn43ylWbkfPcWmn6Q62pJK0i56l194GlnVQZ+7Vdy32
-         18GGHWP5liXMng+QH5SNcjF1xCsSlqPi5XSn/ZR9hfdZYFGZwRgiwmVQdZtHy9Q2vBsS
-         TN4DQZ1MS6pZzlaNiGDfC44Q3qyRK/NheBMm3VAnsPltb0qtRlJ+/axk9lkjtVu/QZ1j
-         ZFUNkImtt4OTAz+wcZXxYpTnqCRWe4g8h/uVHASEptg4ezGq2AvKiXOIBJmGSIKLC/h7
-         Gm2Q==
+        bh=7rWy1nSOU2shSy9HWS2JIxQi3sc/L3puAcABYmBjXjQ=;
+        b=OtSJTRwZqj87qbq4XlFAcJM2rygoNb8t07UozZeQaNPuXrNZ0QD/hUNS119FeasF+Q
+         5f2oNkupULi3aw8oY+OUZV6MgiTlY244KUwPq5iU+S+p1XjP87BWz0GD7FNorW4eHEnG
+         U9YQ9envir6vJtPxQyz9KMC1iX/t2twBY1EB4nzTHTbDDlTqRNyvzXmnSuFLJHmss63J
+         CwEs6Rb6evzSEaqFHwcChS72rnBzDIZNbofGcRo+8e+alSnnZcPi8pOYhhoiu2HqGiIo
+         Rr1ZUrTEFYe6GR++e+NhXPyjwysgBQBGnksj8kJvvsZe2z+xBmUyBHq+xozbpfk93i2c
+         luAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792123910; x=1792728710;
+        d=1e100.net; s=20260707; t=1792123922; x=1792728722;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=DnS3efznOy4aR/sEoOKiH1O7kNcA8JAEG4dTp1VvwAA=;
-        b=gssthH4Zw+Se5NE4fas7NIaOmQSBU94qk22eDerEpgGmMHFCW1B9rL+RrtvuS1/f96
-         9C1j1kwSyx4cgAI6/I9P5YNJsssoHzsISFI3Rr2+q7NkAMfNQBc8hFRpjjPNQ0LtRNzK
-         0C+kpUKuWTZEe4KGWQJ/+qtj5UXOgAOER1KCDyww81tmjXXpKAIllfBhr5CqBlfotVe2
-         BM7bmj5JFPyTI78xVQTzalKfUy7m1LnAa7r0S2/3VFOoaZ/AUQr9e7IFhZJxfAK27kmN
-         sAEccLSs09c/cFgjVOziMPcu82D+K0gpNd0HO7qQ27OxOJA51rVoUtZ0b9q301MQwSTX
-         ZsbA==
-X-Forwarded-Encrypted: i=1; AKwUvBxJMhymZLpzi5saecUq/iwZy89aSl2dJT6XkiSWOWBaAxDQF2EnmFkjyzgFF1K+crKAV2c=@lists.linux.dev
-X-Gm-Message-State: AFq9FYI9+GndffhFm3UIjE51Jh2tyvuuro80WlrvzLG8ldEsXiEdPJw9
-	SbxXa0/0+vV8RG8Z7p8QUwX5x+O4kQkCl/hYNkFP5RAf/TSdYWDyGP8w
-X-Gm-Gg: AYBFou0SVGnogwoFY9TLd8fgtpLHerVwEdvqhJUWJ0/gXbW103w9PYSbet4K43O1gKo
-	05MHUexwpkPpcTarWM8gne2CCzMw/D0eFB0PfJcra7t8UmTekm9ruXAifiAt9kZcHxpElX+wFof
-	XCkGkCgBomEDw9ZdCopaQ+b7+DMmWPJ9aNsfYD2MBHtA5NHlqF1R0MDilG3teJvNbfMWF9MgoE4
-	4GsTVsrLqBIXXY+TSsUNNwkvZp2mX8JFfew6ZbmryxhGrp7hKs30R87/5Xx+uOcAX1KeFYYXuD+
-	RQw6lQjgo6tKBTKQdUkAEH41WqkTRh6DxR/Dyvvgk9XmbGO6tk4Ww/CEA1ULoBsowcLiX/MrOOS
-	wZ+T4ZB5h/CLV49A/yXmbXULHcK37E8bWT+wuYGD/6mof9pAlnTS+eK5oedBUH4oiLRM/Gi0D/q
-	Y2WREyTRf56sAZUHJyrFY88a98R3FODpN91nNltFFKqy1Tk5e/eaZqVs1BM4pD5PGgez5tG7EvB
-	+04GFTK3QrAqzUr16bUucHsBPSKW4VFmgPk3AvbBt0pjSmGwZPEG5W6eFzr+rSGtP4/x2wWeXUH
-	hfAOM6L/tyObxQ==
-X-Received: by 2002:a17:903:38c4:b0:2dd:c100:4257 with SMTP id d9443c01a7336-2e842f11875mr181177615ad.59.1792123910214;
-        Thu, 15 Oct 2026 21:11:50 -0700 (PDT)
+        bh=7rWy1nSOU2shSy9HWS2JIxQi3sc/L3puAcABYmBjXjQ=;
+        b=08GAxVWw7DDuWhmZUc48l4lRfJ4zCTN12F4FUfNdL3ecP7VT3SwQzuzhgzqsdqXXp6
+         QixkcgCozuA0Ub9tUCac6f2evFL4eWu/wzzg5OmybmujoqXz94UbdCoaNbJcxRh0vju+
+         bbovWf7ROW6gZsQ7FazKkKSAIwYLWOPOvYGFOZ0Uhn3GDNuJI52RxKY0BX/J0os8KafG
+         B6laSXpvA0PV+khQj4YIkI6sJ+t8npfsjEK9c1fU6WEImjcEp1bsQaEXeDhuW8klZcLq
+         B6LcNHNXaoRqqOzX+OstYSXL9RJearhvrVs8sBCverxGYxzVrF0A+xm+9KC++ypQhimK
+         czrQ==
+X-Forwarded-Encrypted: i=1; AKwUvByBZK52I2MybCqBu/bzCswKhTDa3BPXP0MtKB1gq9lj9M7oitGsKhddfXc1ziS88ZRneqE=@lists.linux.dev
+X-Gm-Message-State: AFq9FYJ+5tvQ7Edwf6VJLoA0MKDd3ErsvpHy2hZ0JARW2jjyuZCsvxpM
+	3axOOIRE/0pqEY5wWX6c8PJNG/rQvA9ec8P2QkmJFJhjUNhy4gHcdrc1
+X-Gm-Gg: AYBFou2/Vqmx/8z6oaENgrUsrpYakmiDvXkuL6OZ+zTFgvt1QkhwgQGiCYfVmB56Lzd
+	DYGEcG0qg4UzSmtYn6KfWG1DMj/tXSov/QT+60ZiD3bLlILVLHU8BET7VO4hqpswTT/C0qLhgjF
+	WfzNA5qfq9qG+3K1U9PKxL+Kt7iTlDeTJjoDntPvRXL6KlI+fLorLjs0J2pMrvVYHSyhak05rmT
+	sJqF4WssRIaDZlRzascP1ejQYu3nQa8JjSmQ97Oa7TYJYul6jfB8y5xouJL+advoekvL86HJlJy
+	v7kEoYI3l9RB/RDwl3gcPhFmwYAqnLdnqCDQjKa/fFaly3qoOlbNsoILCQrkdnzjAIDEeNNt994
+	Om1WDV3th5583YGQBMkATsglSw0ya4p3VXBvsBFFwc4WchAjwPq0HfpIO7kT7Ssziw5O7lW2Mlc
+	e1mV5aCfpg/qxbml5YVnu0HipCRScb3ezNfcRerbDBs+LlXAU/8BsmPshLQPDvOLE65QrWsFMIv
+	BDDCh8gyEOO3enm3/Arz9YEYrJU45zaPcqTsEjCzctoxEQtH3x0hZr9CvvdJt620Yqo1th929hX
+	ZOhqwMifJpVfBg==
+X-Received: by 2002:a17:903:4b4c:b0:2e9:66c4:1717 with SMTP id d9443c01a7336-2e966c41865mr35460075ad.61.1792123922489;
+        Thu, 15 Oct 2026 21:12:02 -0700 (PDT)
 Received: from phuc-desktop.. ([183.91.15.56])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e97e8ab443sm3815785ad.65.2026.10.15.21.11.38
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e97e8ab443sm3815785ad.65.2026.10.15.21.11.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Oct 2026 21:11:49 -0700 (PDT)
+        Thu, 15 Oct 2026 21:12:02 -0700 (PDT)
 From: phucduc.bui@gmail.com
 To: Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
 	Venkata Prasad Potturu <venkataprasad.potturu@amd.com>,
@@ -120,9 +120,9 @@ Cc: Kees Cook <kees@kernel.org>,
 	linux-renesas-soc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	bui duc phuc <phucduc.bui@gmail.com>
-Subject: [PATCH 08/11] ASoC: renesas: msiof: Remove redundant period constraint
-Date: Fri, 16 Oct 2026 11:09:43 +0700
-Message-ID: <20261016040946.521195-9-phucduc.bui@gmail.com>
+Subject: [PATCH 09/11] ASoC: renesas: rz-ssi: Explain component open return value handling
+Date: Fri, 16 Oct 2026 11:09:44 +0700
+Message-ID: <20261016040946.521195-10-phucduc.bui@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261016040946.521195-1-phucduc.bui@gmail.com>
 References: <20261016040946.521195-1-phucduc.bui@gmail.com>
@@ -136,42 +136,28 @@ Content-Transfer-Encoding: 8bit
 
 From: bui duc phuc <phucduc.bui@gmail.com>
 
-snd_pcm_hw_constraint_integer() is already called by
-snd_dmaengine_pcm_open(). Calling it again in msiof_open() is
-unnecessary, as the constraint is already applied and the second
-call returns 0.
+Add a comment explaining why .open() must return 0 on success
+to ensure the component is correctly marked as opened and
+prevent future changes from reintroducing the issue.
 
-Remove the redundant constraint call.
-
-Acked-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 Signed-off-by: bui duc phuc <phucduc.bui@gmail.com>
 ---
- sound/soc/renesas/rcar/msiof.c | 10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+ sound/soc/renesas/rz-ssi.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/sound/soc/renesas/rcar/msiof.c b/sound/soc/renesas/rcar/msiof.c
-index 9fead9a22cdc..11a6f22ec0ad 100644
---- a/sound/soc/renesas/rcar/msiof.c
-+++ b/sound/soc/renesas/rcar/msiof.c
-@@ -419,19 +419,13 @@ static int msiof_open(struct snd_soc_component *component,
- 		return PTR_ERR(chan);
- 
- 	ret = snd_dmaengine_pcm_open(substream, chan);
--	if (ret < 0)
--		goto open_err_dma;
--
--	snd_soc_set_runtime_hwparams(substream, &msiof_pcm_hardware);
--
--	ret = snd_pcm_hw_constraint_integer(substream->runtime, SNDRV_PCM_HW_PARAM_PERIODS);
--
--open_err_dma:
- 	if (ret < 0) {
- 		dma_release_channel(chan);
+diff --git a/sound/soc/renesas/rz-ssi.c b/sound/soc/renesas/rz-ssi.c
+index 2e297f721bb6..9f36fe2c16d2 100644
+--- a/sound/soc/renesas/rz-ssi.c
++++ b/sound/soc/renesas/rz-ssi.c
+@@ -946,6 +946,11 @@ static int rz_ssi_pcm_open_pio(struct snd_soc_component *component,
+ 	if (ret < 0)
  		return ret;
- 	}
  
-+	snd_soc_set_runtime_hwparams(substream, &msiof_pcm_hardware);
-+
++	/*
++	 * ASoC only marks the component as opened when .open() returns 0.
++	 * Since snd_pcm_hw_constraint_integer() may return 1, explicitly
++	 * return 0 to ensure the component is correctly marked as opened.
++	 */
  	return 0;
  }
  
