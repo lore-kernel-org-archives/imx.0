@@ -1,145 +1,121 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f170.google.com (mail-vk1-f170.google.com [209.85.221.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FDB444725A;
-	Fri, 16 Oct 2026 20:21:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 197B13BE174
+	for <imx@lists.linux.dev>; Fri, 16 Oct 2026 20:48:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792182082; cv=none; b=sMFpg2YnT8u6uTLBTPU58psbJwQzUMZaHYauj+l7WM8wU75k/DgYgMecLsgXIQb6+Btc0lcExFM7YXVuPhHp1FFVrOW2IpjTsVVLXHObShV5tRFmTE6SHF4LT3U6i/Sct640s0Y7dBkKMvjn5NHFiRbJvCnjJXMVD0HohOv4PwU=
+	t=1792183723; cv=none; b=pOAW8O8oRGfSxFxhmo02loQJwac4LCCLyoINt5W9rrA791QGATBjUmMOMrCKItwPGwqzSCiCnm3N7BhrIJmEzQL9H4kCtT3+quY1V3nHvrF1STlERlKpiaLVNiaEQehW/gXmU1/gef9mMTl/jHSPqoCyl777vkRint7cI/TPJyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792182082; c=relaxed/simple;
-	bh=XaCnz6fQ9p84ULQ1TfD9GecokZrdf5vkl40KfIWQYTY=;
-	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
-	 Date; b=jrkc946i5KmKQfn1TCnXImgApXgeGbE5quTP2ktG/MvNKs9Kp9MgKWo5/8dpbhv5fHpG7l0bswm+Ci3a6W/9FXg0axO5nuEbLuL/vBjSrJ2D51GA24FxaYFcmn2ehE9XAHoTWqYiHdhFVGEpngmFQUOT3SQ6MqrgVttugJ7eWOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jJKFEmOV; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792183723; c=relaxed/simple;
+	bh=FhSBZW7Jpj+THEoTkniaEwqOd1DSuDXMTlV1dtr09P8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=n79GsmV1flLojC/gAoKCroXw0r0UXp7qMUD5KJoGquB64yWdIDHQzrx9MYYTOi8iaXXd28nOOqXjqQdygl0UiJTCH11z6YRH3dBHxZGAdK9LkBgobEf/3CAOFTOeEAOUN1RxeB45HeUg6mBCLItxBsFtYHeJv9OVl8yBRdiljSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G1E0uytl; arc=none smtp.client-ip=209.85.221.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jJKFEmOV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2693C1F000C5;
-	Fri, 16 Oct 2026 20:21:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792182077;
-	bh=3I7EpaKT4qrAZGcQkYQmerKp262D18wn1f7f8r/v6PU=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=jJKFEmOV/pvQpUdfmXuzXLI1l6bZSlwt9sEc/a9Pwk9yGEiUTjbBDL9mgxARv8mGF
-	 XwfzMfzL8yDhseCWCGznRM1lkR+meAcIVjgBpgyUVDhvhlOl63kJpYZYQBiBw82L/A
-	 iQvhpHy/wZXf4i0CYoVlOhmcasAtsXhr+Ns+AQK8Onh7hgvOVvflTOHQl6BsTy2bjm
-	 b8114RakKQtW9c29FFhCKIOqQoOCe5klXzDhRymBU/ZhI1Phc4OfJFn/IwWlLlugxW
-	 430bY5AQ90JmtJbWldJnMJiShZbGd4LxSvGjo9lQ7jWyniNtY2nfbkn+/4OLufUOcn
-	 JFAPDafMNmRGw==
-Message-ID: <sashiko-outbox-174911@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 03/14] ARM: dts: imx6dl-b155v2: add touchscreen size
- properties
-Reply-To: sashiko-reviews@lists.linux.dev
-To: Frank.Li@oss.nxp.com
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20261016-arm_dts_cleanup2-v1-3-3a0cab9fd784@nxp.com>
-References: <20261016-arm_dts_cleanup2-v1-0-3a0cab9fd784@nxp.com>
- <20261016-arm_dts_cleanup2-v1-3-3a0cab9fd784@nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 16 Oct 2026 20:21:16 +0000
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G1E0uytl"
+Received: by mail-vk1-f170.google.com with SMTP id 71dfb90a1353d-5c9e7731b34so214577e0c.2
+        for <imx@lists.linux.dev>; Fri, 16 Oct 2026 13:48:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792183716; x=1792788516; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=IbKdCffk3oF5JNe4bLXvDyGBPerJKYVxL0w+jpUvxD4=;
+        b=G1E0uytl8EzyeY/Ge270bFKuYuDUHg5J0iA30W6ik+nqctNbq4CKNZpLe7dieZE5Sj
+         ZUuQcdHpczitnG40FEGlLapgcVal4B8V/PE4nO03AtPIgm9U/vRl8t+ofY0ysKnm3Vbm
+         uI7fBG5PzNGuAUEtIFsp3W6K4Fnr8lJDSMkv6UOe+sJcbth+WA+yksolUCMDMQ1NzFuX
+         xSNGh92fUNNqD/t0SPKm4PQ3LEL50OFQ6vQWSmIlFUpcTIrYrVWT1bkRv9nSyoodgKsI
+         rx2MwQzCyR2Wcp2lc7jDMvg1u3ujnyu4U6NYUDdyY/9dNXCNRxTJI2tohIl17sOA7Q5t
+         XrSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792183716; x=1792788516;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=IbKdCffk3oF5JNe4bLXvDyGBPerJKYVxL0w+jpUvxD4=;
+        b=AZL5eRvj/iOwLYwEJEDmyYGHf49EqFAoW3HwKL+lz9sV+Rd5rwsi9iF7OsMK6789Iv
+         VF2RPXK1EnvjjLmxL7qhrJlJlhdWDoy5CP2c7FCDoF2NnWM990UAOEzCQCk1mpma2IQh
+         uEFpr7bVwOligo+AM/cK0iMYn8bScHKg6VN39IW6d9rPvaTj6ikaZ51qbq18EarFgvgD
+         zkOE1d+iwmR0wEaAjPCoWSeD1su8C4N+gZxfh+UxYSc7uSHDzz/tLeqLQZu8dKG0ZBtV
+         FjdZ4UElIib7qzkUaowPnNgnMW1e7bvUwG6A6WzhAuFujAfuktNgbFax721HI03Uo9Tj
+         llUQ==
+X-Forwarded-Encrypted: i=1; AKwUvByo7wTpHqyVN8BT3tljmwK+EhITvUbMY5QvPCOw+OX5CErwCLrq3ZDDzBia8wspFgJURDE=@lists.linux.dev
+X-Gm-Message-State: AFq9FYIZ8jOQu/bY9kHa60AyEs0EpydRdGnAUq1V5eU1DTuB/SZhvueq
+	VdqCV+5n5p02WnHRo1BeeysHNtFsOk/ar3sFsTs5KAxPScMUOvlfKbCk
+X-Gm-Gg: AYBFou3GnNkNpvPThJFsfciuohAMeZwVx8tR1BY/pswB9JOeWmX+53FPvNNdhvnxDj1
+	taUFxZ99umjyYXFAQ7iAkR89uL6UQ5fSPV3MLFnIHt+Vt9HdaJhoQWNBqg6KNtZaXu1zUfJ4HLH
+	imbcg2EvSEbF/CcmMKP1AjV7q3qU75DwOO1803IjAs3XtO0mfeBg2q6NIbgvx7KZjCgmHHnMV6/
+	JMXdyTZPFGbNSCFMxwc2WIKr6Xb11m5nYXEpzq3M1UpEgWYa9bTzYoTvZUmJARRqW+ibwYgkO68
+	1R/kcGz78AfJ/Ov6ntg747p3SNxifdmer60jkbzKvCqjHWz8gcTA2PyJLAuuBjDfBTJhYB2oAqV
+	6LhjqJnAR16BJTEBpLInYSofhD6xJKvAsIlTkHOQlQat6QbSB1+Hcr1lv1kkqiJ/clyAGPqRTfb
+	XsKXQDe0FBBPWxzrPDXgR9UnvO7N2jw3FJAqfhGdsCo3tychPRFWuBlMPNZs2Im/r7RpPmAdax6
+	tUuaz06EucwYwNNwDCPqb8fAqmCVp9c9C2vrZiPknnkST8=
+X-Received: by 2002:a05:6122:4889:b0:5ea:9f1d:c842 with SMTP id 71dfb90a1353d-5eaaa6647cbmr588454e0c.15.1792183715924;
+        Fri, 16 Oct 2026 13:48:35 -0700 (PDT)
+Received: from fabio-X870-EAGLE-WIFI7.. ([2804:1b3:a801:42fc:16d8:d66b:d6c1:caeb])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ea9b55cc65sm2463872e0c.17.2026.10.16.13.48.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 Oct 2026 13:48:35 -0700 (PDT)
+From: Fabio Estevam <festevam@gmail.com>
+To: Frank.Li@nxp.com
+Cc: robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	Fabio Estevam <festevam@gmail.com>
+Subject: [PATCH v2] ARM: dts: imx27-eukrea: Remove invalid spi-cpol
+Date: Fri, 16 Oct 2026 17:48:17 -0300
+Message-ID: <20261016204817.463567-1-festevam@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] ARM: dts: imx6dl-b155v2: panel size in touchscreen-size-x/y breaks=
- touch
---
+The ADS7846 timing diagrams show DCLK low when inactive, and its pin
+descriptions specify that DIN is latched on the rising edge of DCLK
+while DOUT is shifted on the falling edge. This corresponds to SPI mode
+0, with CPOL=0 and CPHA=0.
 
-commit a32e64e0ae8dfc5c902cc7abdcc408b2bb7583c9
-Author: Frank Li <Frank.Li@nxp.com>
+The spi-cpol property without spi-cpha instead selects SPI mode 2,
+which uses the opposite clock edges and does not match the ADS7846
+serial interface. Remove the invalid property.
 
-ARM: dts: imx6dl-b155v2: add touchscreen size properties
+This also matches the driver behavior: ads7846_probe() clears
+SPI_MODE_X_MASK and selects SPI_MODE_0 before calling spi_setup().
 
-This commit adds touchscreen-size-x and touchscreen-size-y properties to the
-eeti,exc80h84 touchscreen node in imx6dl-b155v2.dts to satisfy the
-eeti,exc3000 devicetree schema requirements.
+This fixes the following dtbs_check warning:
 
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6dl-b155v2.dts b/arch/arm/boot/=
-dts/nxp/imx/imx6dl-b155v2.dts
-> index 7edc788bcb8f3..54db44613df66 100644
-> --- a/arch/arm/boot/dts/nxp/imx/imx6dl-b155v2.dts
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6dl-b155v2.dts
-> @@ -25,6 +25,8 @@ touchscreen@2a {
->  		pinctrl-0 =3D <&pinctrl_q7_gpio0>;
->  		interrupt-parent =3D <&gpio5>;
->  		interrupts =3D <2 IRQ_TYPE_LEVEL_LOW>;
-> +		touchscreen-size-x =3D <1366>;
-> +		touchscreen-size-y =3D <768>;
->  		touchscreen-inverted-x;
->  		touchscreen-inverted-y;
->  		reset-gpios =3D <&tca6424a 21 GPIO_ACTIVE_HIGH>;
+  imx27-eukrea-mbimxsd27-baseboard.dtb: ads7846@0 (ti,ads7846):
+    Unevaluated properties are not allowed (spi-cpol was unexpected)
 
-[Severity: High]
-Does setting touchscreen-size-x and touchscreen-size-y to the display panel=
-'s
-1366x768 pixel resolution introduce a regression in touch coordinate report=
-ing
-for this controller?
+Signed-off-by: Fabio Estevam <festevam@gmail.com>
+---
+Changes since v1:
 
-Per Documentation/devicetree/bindings/input/touchscreen/touchscreen.yaml,
-touchscreen-size-x and touchscreen-size-y describe the coordinate space of =
-the
-touchscreen controller itself (maximum coordinate reported + 1), rather than
-the LCD panel dimensions.
+- Remove spi-cpol from the dts instead of adding it to the binding. (Sashiko)
 
-In drivers/input/touchscreen/exc3000.c, exc3000_info defines the native 14-=
-bit
-coordinate maximum for the EXC80H84 controller:
+ arch/arm/boot/dts/nxp/imx/imx27-eukrea-mbimxsd27-baseboard.dts | 1 -
+ 1 file changed, 1 deletion(-)
 
-	[EETI_EXC80H84] =3D {
-		.name =3D "EETI EXC80H84 Touch Screen",
-		.max_xy =3D SZ_16K - 1,
-	},
+diff --git a/arch/arm/boot/dts/nxp/imx/imx27-eukrea-mbimxsd27-baseboard.dts b/arch/arm/boot/dts/nxp/imx/imx27-eukrea-mbimxsd27-baseboard.dts
+index 26833ed3339e..cf5603ec6826 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx27-eukrea-mbimxsd27-baseboard.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx27-eukrea-mbimxsd27-baseboard.dts
+@@ -77,7 +77,6 @@ ads7846@0 {
+ 		pinctrl-0 = <&pinctrl_touch>;
+ 		reg = <0>;
+ 		interrupts-extended = <&gpio4 25 IRQ_TYPE_LEVEL_LOW>;
+-		spi-cpol;
+ 		spi-max-frequency = <1500000>;
+ 		ti,keep-vref-on;
+ 	};
+-- 
+2.43.0
 
-During probe, exc3000_probe() initializes the axes to [0, 16383], and then
-calls touchscreen_parse_properties():
-
-	max_xy =3D data->info->max_xy;
-	input_set_abs_params(input, ABS_MT_POSITION_X, 0, max_xy, 0, 0);
-	input_set_abs_params(input, ABS_MT_POSITION_Y, 0, max_xy, 0, 0);
-
-	touchscreen_parse_properties(input, true, &data->prop);
-
-With touchscreen-size-x =3D <1366> and touchscreen-size-y =3D <768>,
-touchscreen_parse_properties() overwrites the axis maximums and
-data->prop.max_x / max_y to 1365 and 767.
-
-However, the exc3000 driver does not program these dimensions into the
-hardware or scale the raw coordinates in software. When a touch interrupt
-occurs, exc3000_interrupt() -> exc3000_handle_mt_event() ->
-exc3000_report_slots() passes unscaled 14-bit coordinates (0..16383) direct=
-ly
-to touchscreen_report_pos():
-
-	touchscreen_report_pos(input, prop,
-			       get_unaligned_le16(buf + 2),
-			       get_unaligned_le16(buf + 4),
-			       true);
-
-Because touchscreen-inverted-x and touchscreen-inverted-y are also set on
-touchscreen@2a, touchscreen_report_pos() -> touchscreen_apply_prop_to_x_y()
-inverts the raw coordinates against the overridden maximums:
-
-	if (prop->invert_x)
-		*x =3D prop->max_x - *x;
-
-	if (prop->invert_y)
-		*y =3D prop->max_y - *y;
-
-Whenever the controller reports raw X > 1365 or raw Y > 767, this unsigned
-subtraction wraps around and reports negative coordinates to input_report_a=
-bs(),
-while also advertising the wrong axis range to userspace.
-
-Should touchscreen-size-x and touchscreen-size-y be set to <16384> to match
-the EETI EXC80H84 controller's 16384x16384 coordinate space?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261016-arm_dts_cl=
-eanup2-v1-0-3a0cab9fd784@nxp.com?part=3D3
