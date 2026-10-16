@@ -1,342 +1,319 @@
-Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43F9A4A64F9;
-	Fri, 16 Oct 2026 12:46:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792154820; cv=none; b=Sgx0pDTt9BlBmXppCKNfryLOCPGOmzui3hwjgVMhF4UvWMDiGazi85norT8PikSJqbdeP0XQatez2lmCO1nrkYBlLFTz8HXgksS4cTOMgzgRaKjLnmyJEq7HaX7y5gDlsxjlm5XwO0QcNymg+GXpR/7+06LeYhdY9PJxj0MMYW4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792154820; c=relaxed/simple;
-	bh=iwFRe0x5R64IjJM1NKQzD/MMh2sqIiyiUFYw9B0hU+A=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=f8RcNFkee5jj3s+BXN7/Xx7gHvhBNSMoAYDK2gTZTvEdQWoaC85fUFsZ6f7Vj0P+9m0CfxOxXIxHABVEieDdb+BwETThmqgwYPP5DqAhNhhkRpG+53cpPbpHL5KtH908KUCoLWQWvhZh7KWFuyFvnnCAh0xRdDovJOhLe6z88Uo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=NLMwkmij; arc=none smtp.client-ip=188.40.3.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA1DE442FDF
+	for <imx@lists.linux.dev>; Fri, 16 Oct 2026 12:48:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792154899; cv=pass; b=uKw0ObnJL5xGO/ScRoirc45mlGod2DXNlAvXe6U7TBvIJAqluXMDcWg0bkb89ggNO2/vIzRZv11FO78H90NGix9OqspevrQWpAesrz2eLSSuU3S8hpI4AC7OyGBh0Gdy+dvsS3GRHym+CfVy+mzf3O6+bR56M2aaaV6Slmmp8eM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792154899; c=relaxed/simple;
+	bh=of8ZV/kCyQQV+q31+bi/0MLLfWXyjaVnFi/w7NTjqrQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EPZDoUZCcGFboxlGHH0wuHypafhv2KkmvR0Tz7zxNCDINxn8TNkZOFg+B5H3kCDa2NmVUZ4B9hY71Ul06ed5RegmlEwYv/Uevu+LpdJkO+aZ0H/4Kz6CmtTkeT2lthCDlOpIFHOzwrmdi+xGRU1a4n/Vga2Y5Ta9ktp3Uf+apCM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=q3kzT8sY; arc=pass smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="NLMwkmij"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=ew.tq-group.com; s=default2602; h=Content-Type:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=dlTrUEnRZVx+j7axS6IuyLIe6jm/VwYwyUkOeXEqth4=; b=NLMwkmijk5ThyIm5lEeHXDiZOs
-	BpIdQyt9l2SgBRBTGubhZqY9Aha7FpVPoGVIS1wBVXEl+lkbyxHLo+6Q5fRkY9TNcjZUd6h6zNrO1
-	RFcPls/njlg8+IiXMSXGR77t8tdcSlZZojLdmAQnYtst9H00Hn43fzvXQvsrpo2HrabbqnJq6lub+
-	SRXE4Nf2LyeEZkeQW8nXWbmwNxnPlCpmv++nDOA9PjKGXQCeLLbEm15mnHO6dCXnLWRgdjQ5hD/0c
-	K4QZug2zXTDWXWFdCtwmlOPgg3otdl/GcOTZIlnIzXFarnpdC+Ew1xzUH6fBrkeOGtbtNoOzVOaNI
-	jA4dT3Sg==;
-Received: from sslproxy03.your-server.de ([88.198.220.132])
-	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1xHhKj-000Ei6-1B;
-	Fri, 16 Oct 2026 14:46:49 +0200
-Received: from localhost ([127.0.0.1])
-	by sslproxy03.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1xHhKi-000065-2R;
-	Fri, 16 Oct 2026 14:46:48 +0200
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Liu Ying <victor.liu@nxp.com>
-Cc: Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Dong Aisheng <aisheng.dong@nxp.com>, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux@ew.tq-group.com
-Subject:
- Re: [PATCH v2 2/5] arm64: dts: imx8qxp: Add display controller subsystem
-Date: Fri, 16 Oct 2026 14:46:47 +0200
-Message-ID: <7640235.DvuYhMxLoT@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <atBLglf0gSLS7XkW@raspi>
-References:
- <20261014071657.118378-1-alexander.stein@ew.tq-group.com>
- <20261014071657.118378-3-alexander.stein@ew.tq-group.com>
- <atBLglf0gSLS7XkW@raspi>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="q3kzT8sY"
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4a16bc2278aso46385055e9.1
+        for <imx@lists.linux.dev>; Fri, 16 Oct 2026 05:48:17 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792154896; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Ii3yFRVKR6ASl8XIo6VUfu22TVVk3UjG7sjwB0a1TLv3APgUGxV8yfYjjarnKiA+8O
+         9QJ6CWPQS7XtAkHVgR5SyUtc0TMp6Vi0pZwu9fOhcmIwnsbBboSLbkYEPFzicE4nRhIw
+         ny+611XogZPLUm2BaqmeZ7F0tXXdmh1BeDYjK6z7OzpNH0me12c2uvZobh4JGlaW0lKW
+         P7ABPq3JbwRdE2L2Z/rcjtfLz0Qx9cPSBloxpcMlHtT4A62gcIcTyjAiRDql3EMvoxw2
+         MuNnqlowcrRI6xSJPYwrNdbHbv6hpO4YKgSXMywFqbzSH8FM3pUk1xdWscykd+eeHqw2
+         wSrQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=4OlgrAJhI4dBHdDb8YFJyI1V/AAzFncQtNS2z/ZSh9A=;
+        fh=rIn9XoiPWLOmXmOF07NIk7OJkVwNVIlPgKvJqeeKBS0=;
+        b=noQId4a7sG0OlDXk70oVB7w0kEGdkdqPaC5jXws19eEkoK9Fh9srQDUmqpp3AjevX6
+         XykJDs73FPkVqbRi8eVIy1pvAo+XHQxsfZ6Rogec7IHsHGAArl8ZxRzaq4P6oWIXm+XS
+         YF48UYvvoIe+KIFMabbuMsqc13hWbW2qCSWD5NViBM+YwGJYKkbeRFnazhI5QapawD4z
+         Lgrts2y2Lf+1O6wWjrbEivIE8dgB4YXZAMET/2FeJrv4RNzaJaBVz3sRcYX/8wssYbIX
+         hMBywyBAeGObwx6OpVs2J2sdLxWSoJgfvYTJ0Ut8uDCyRkshf0iNlCpHTapNcr7MNVbs
+         FspA==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792154896; x=1792759696; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=4OlgrAJhI4dBHdDb8YFJyI1V/AAzFncQtNS2z/ZSh9A=;
+        b=q3kzT8sYJUadwFEVVBj7Im41acfjhHERybNalUfB4KMhlLITmbfsoe1Hmq8tAVIKMw
+         2vbNLlyDkrSwosRscQMZGE3eci07cCwngWiGDgFV59QxRGXK0/m2ZwOZHFqLEa+DoYAK
+         ScUubtSh7pvC6PwXkQ5GxXWbI5F2A/EKU+x5/p/94/wIT7ZNwJ+Jt5FSQN/WgVUU/DrC
+         SZeoUf16g3aPrihCK+nkEAWI21jpn2sHipY7igs2NkDPiYSb424/4njNYfFqyMA7X/ev
+         ABS+MWnl6ARiRb0hdMK5qIvparlal7GFgA83Uvs8A4PFwrTEYYMR76S3co7+gNdJDQeS
+         cWUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792154896; x=1792759696;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=4OlgrAJhI4dBHdDb8YFJyI1V/AAzFncQtNS2z/ZSh9A=;
+        b=GbZfVaoVuVaxtOyDABoMAgxkrzlv0YaKPfLg+fhKrRx+zK3kmD7bTObS/nt7YI+7Pp
+         o+Il3POxfLcIVJ2c73zmYLXR8BdCwnPgY9/+ahii+6toYMDxYD0AiRG+/Y0OGiMdFnYE
+         almeR879EDdjqoP4Vqef3EvGfKGT16DTh4Mzrh/ZotEu0w8amxgnRcVISLtUby8n8e50
+         MZkgIyJ9gijOyjXXqotTIKfXHt30TvIkH2bHJ/CgKPwRGN+dbYTe1ZJeqglBkLJMYBNO
+         eww3zmJEX00mwFTV5NtWdpfxXptFNzGe1NACAbnAUHDUVvd4fU1kce2r5/JEr4kRtxf5
+         s2lw==
+X-Forwarded-Encrypted: i=1; AKwUvBw4f0coUq/U3GhYRo9DgfDqHyWFcORM6blpR7SlBIfm0WaOxEibisNwDMhadg4mbZpInSY=@lists.linux.dev
+X-Gm-Message-State: AFq9FYKhgIHBCAP60gXjbd8D/i8y6IjKvkvrRFXiy8BMXQvpLVtV/RYo
+	CIwxla/OMpvBB000JmbozgOnYB7qoC1oHVWold55nsQuBCA3hzKTwrXmjb89jkBRdw+850wF5wy
+	9fP5uI9POl7dsrlo7h0bDPHhUnUs6lVU=
+X-Gm-Gg: AYBFou1BRt6asuNh/M/xrLsOOG2K7mGAo/G0q4cH/Ej8rJotfZt4orkENWznYoNFPTf
+	PExsnDP6GTdWVtHhFXZInKfrWPaHCdgw6EjxXX4kt3S3k2UDnbW8IZrSX1IREVSguQxfjDPdL2x
+	mhO4REAUlwKCOv4cviOdm3trBonsD2l8Ew2yanvIIvFKZIQQBILJVPI8A6zunq8C7WuheJmKphL
+	GGI1Mr1S+3RHvUnZFkpg1DnOeQdQhDYn6U+lEiC9BoHzS7L6HWDPJRdLGansvzWP0yadEyJYYK5
+	7w+kK2bbHM4hM4chCJrr4VJUrqDo8Bzphq8snk+24krvnfl9g5740iVZr31meUJymROg67Qzn7y
+	k6QHZZYgizjspCBzK+gNj9PMARQCtpnYmkTxUa1NuthW6Dhs2j3vQYODe/ComCnDcAqJGtmqhwn
+	M=
+X-Received: by 2002:a05:600c:8b30:b0:4a1:d492:1604 with SMTP id
+ 5b1f17b1804b1-4a1d49217abmr8476215e9.11.1792154895917; Fri, 16 Oct 2026
+ 05:48:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+References: <20261015194142.3488169-1-Frank.Li@oss.nxp.com>
+In-Reply-To: <20261015194142.3488169-1-Frank.Li@oss.nxp.com>
+From: "Lad, Prabhakar" <prabhakar.csengg@gmail.com>
+Date: Fri, 16 Oct 2026 13:47:48 +0100
+X-Gm-Features: AclHuK8lvl444VKeNoxNELwm6dJ26rZofEbdCjP1xmIlQpJFpVbMZ5iIywezxjA
+Message-ID: <CA+V-a8vFf-4e3k1wUeDTjHMx1rb27WMrnsVn6OuijHA0ACzpHA@mail.gmail.com>
+Subject: Re: [PATCH v4 1/1] media: dt-bindings: convert ovti,ov2659.txt to
+ yaml format
+To: Frank.Li@oss.nxp.com
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+	"open list:MEDIA INPUT INFRASTRUCTURE (V4L/DVB)" <linux-media@vger.kernel.org>, 
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, 
+	imx@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"
-X-Virus-Scanned: Clear (ClamAV 1.4.3/28155/Fri Oct 16 08:24:17 2026)
 
-Hi,
+On Thu, Oct 15, 2026 at 8:41=E2=80=AFPM <Frank.Li@oss.nxp.com> wrote:
+>
+> From: Frank Li <Frank.Li@nxp.com>
+>
+> Convert the OmniVision OV2659 camera sensor binding from plain text to
+> YAML schema format.
+>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> Chagne in v4
+> - update MAINTAINER files
+>
+> change in v3
+> - update subject.
+>
+> change in v2
+> - drop rob's review by because use new file
+> - use new file ovti,2659 according to sakari's feedback
+> - v1 (2025) https://lore.kernel.org/imx/aPdHqCWNdmVkch7S@valkosipuli.reti=
+isi.eu/
+> ---
+>  .../bindings/media/i2c/ovti,ov2659.txt        | 47 ---------
+>  .../bindings/media/i2c/ovti,ov2659.yaml       | 95 +++++++++++++++++++
+>  MAINTAINERS                                   |  2 +-
+>  3 files changed, 96 insertions(+), 48 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/media/i2c/ovti,ov26=
+59.txt
+>  create mode 100644 Documentation/devicetree/bindings/media/i2c/ovti,ov26=
+59.yaml
+>
+Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-Am Donnerstag, 15. Oktober 2026, 05:41:54 Mitteleurop=C3=A4ische Sommerzeit=
- schrieb Liu Ying:
-> Hi Alexander,
->=20
-> On Wed, Oct 14, 2026 at 09:16:46AM +0200, Alexander Stein wrote:
->=20
-> [...]
->=20
-> > +	dc0: display-controller@56180000 {
-> > +		reg =3D <0x56180000 0x40000>;
-> > +		clocks =3D <&dc0_lpcg IMX_LPCG_CLK_4>;
-> > +		power-domains =3D <&pd IMX_SC_R_DC_0>;
-> > +		#address-cells =3D <1>;
-> > +		#size-cells =3D <1>;
-> > +		ranges;
-> > +		status =3D "disabled";
-> > +
-> > +		dc0_intc: interrupt-controller@56180040 {
-> > +			reg =3D <0x56180040 0x60>;
-> > +			clocks =3D <&dc0_lpcg IMX_LPCG_CLK_5>;
-> > +			interrupt-controller;
-> > +			interrupt-parent =3D <&dc0_irqsteer>;
-> > +			#interrupt-cells =3D <1>;
-> > +			interrupts =3D <448>, <449>, <450>,  <64>,
-> > +				      <65>,  <66>,  <67>,  <68>,
-> > +				      <69>,  <70>, <193>, <194>,
-> > +				     <195>, <196>, <197>,  <72>,
-> > +				      <73>,  <74>,  <75>,  <76>,
-> > +				      <77>,  <78>,  <79>,  <80>,
-> > +				      <81>, <199>, <200>, <201>,
-> > +				     <202>, <203>, <204>, <205>,
-> > +				     <206>, <207>, <208>,   <5>,
-> > +				       <0>,   <1>,   <2>,   <3>,
-> > +				       <4>,  <82>,  <83>,  <84>,
-> > +				      <85>, <209>, <210>, <211>,
-> > +				     <212>;
-> > +			interrupt-names =3D "store9_shdload",
-> > +					  "store9_framecomplete",
-> > +					  "store9_seqcomplete",
-> > +					  "extdst0_shdload",
-> > +					  "extdst0_framecomplete",
-> > +					  "extdst0_seqcomplete",
-> > +					  "extdst4_shdload",
-> > +					  "extdst4_framecomplete",
-> > +					  "extdst4_seqcomplete",
-> > +					  "extdst1_shdload",
-> > +					  "extdst1_framecomplete",
-> > +					  "extdst1_seqcomplete",
-> > +					  "extdst5_shdload",
-> > +					  "extdst5_framecomplete",
-> > +					  "extdst5_seqcomplete",
-> > +					  "disengcfg_shdload0",
-> > +					  "disengcfg_framecomplete0",
-> > +					  "disengcfg_seqcomplete0",
-> > +					  "framegen0_int0",
-> > +					  "framegen0_int1",
-> > +					  "framegen0_int2",
-> > +					  "framegen0_int3",
-> > +					  "sig0_shdload",
-> > +					  "sig0_valid",
-> > +					  "sig0_error",
-> > +					  "disengcfg_shdload1",
-> > +					  "disengcfg_framecomplete1",
-> > +					  "disengcfg_seqcomplete1",
-> > +					  "framegen1_int0",
-> > +					  "framegen1_int1",
-> > +					  "framegen1_int2",
-> > +					  "framegen1_int3",
-> > +					  "sig1_shdload",
-> > +					  "sig1_valid",
-> > +					  "sig1_error",
-> > +					  "reserved",
-> > +					  "cmdseq_error",
-> > +					  "comctrl_sw0",
-> > +					  "comctrl_sw1",
-> > +					  "comctrl_sw2",
-> > +					  "comctrl_sw3",
-> > +					  "framegen0_primsync_on",
-> > +					  "framegen0_primsync_off",
-> > +					  "framegen0_secsync_on",
-> > +					  "framegen0_secsync_off",
-> > +					  "framegen1_primsync_on",
-> > +					  "framegen1_primsync_off",
-> > +					  "framegen1_secsync_on",
-> > +					  "framegen1_secsync_off";
-> > +		};
-> > +
-> > +		dc0_pixel_engine: pixel-engine@56180800 {
-> > +			reg =3D <0x56180800 0xac00>;
-> > +			clocks =3D <&dc0_lpcg IMX_LPCG_CLK_5>;
-> > +			#address-cells =3D <1>;
-> > +			#size-cells =3D <1>;
-> > +			ranges;
-> > +
-> > +			dc0_constframe0: constframe@56180960 {
-> > +				reg =3D <0x56180960 0xc>, <0x56184400 0x20>;
-> > +				reg-names =3D "pec", "cfg";
-> > +			};
-> > +
-> > +			dc0_extdst0: extdst@56180980 {
-> > +				reg =3D <0x56180980 0x1c>, <0x56184800 0x28>;
-> > +				reg-names =3D "pec", "cfg";
-> > +				interrupt-parent =3D <&dc0_intc>;
-> > +				interrupts =3D <3>, <4>, <5>;
-> > +				interrupt-names =3D "shdload", "framecomplete", "seqcomplete";
-> > +			};
-> > +
-> > +			dc0_constframe4: constframe@561809a0 {
-> > +				reg =3D <0x561809a0 0xc>, <0x56184c00 0x20>;
-> > +				reg-names =3D "pec", "cfg";
-> > +			};
-> > +
-> > +			dc0_extdst4: extdst@561809c0 {
-> > +				reg =3D <0x561809c0 0x1c>, <0x56185000 0x28>;
-> > +				reg-names =3D "pec", "cfg";
-> > +				interrupt-parent =3D <&dc0_intc>;
-> > +				interrupts =3D <6>, <7>, <8>;
-> > +				interrupt-names =3D "shdload", "framecomplete", "seqcomplete";
-> > +			};
-> > +
-> > +			dc0_constframe1: constframe@561809e0 {
-> > +				reg =3D <0x561809e0 0xc>, <0x56185400 0x20>;
-> > +				reg-names =3D "pec", "cfg";
-> > +			};
-> > +
-> > +			dc0_extdst1: extdst@56180a00 {
-> > +				reg =3D <0x56180a00 0x1c>, <0x56185800 0x28>;
-> > +				reg-names =3D "pec", "cfg";
-> > +				interrupt-parent =3D <&dc0_intc>;
-> > +				interrupts =3D <9>, <10>, <11>;
-> > +				interrupt-names =3D "shdload", "framecomplete", "seqcomplete";
-> > +			};
-> > +
-> > +			dc0_constframe5: constframe@56180a20 {
-> > +				reg =3D <0x56180a20 0xc>, <0x56185c00 0x20>;
-> > +				reg-names =3D "pec", "cfg";
-> > +			};
-> > +
-> > +			dc0_extdst5: extdst@56180a40 {
-> > +				reg =3D <0x56180a40 0x1c>, <0x56186000 0x28>;
-> > +				reg-names =3D "pec", "cfg";
-> > +				interrupt-parent =3D <&dc0_intc>;
-> > +				interrupts =3D <12>, <13>, <14>;
-> > +				interrupt-names =3D "shdload", "framecomplete", "seqcomplete";
-> > +			};
-> > +
-> > +			dc0_fetchwarp2: fetchwarp@56180a60 {
-> > +				reg =3D <0x56180a60 0x10>, <0x56186400 0x190>;
-> > +				reg-names =3D "pec", "cfg";
-> > +			};
-> > +
-> > +			dc0_fetchlayer0: fetchlayer@56180ac0 {
-> > +				reg =3D <0x56180ac0 0xc>, <0x56188400 0x404>;
-> > +				reg-names =3D "pec", "cfg";
-> > +			};
-> > +
-> > +			dc0_layerblend0: layerblend@56180ba0 {
-> > +				reg =3D <0x56180ba0 0x10>, <0x5618a400 0x20>;
-> > +				reg-names =3D "pec", "cfg";
-> > +			};
-> > +
-> > +			dc0_layerblend1: layerblend@56180bc0 {
-> > +				reg =3D <0x56180bc0 0x10>, <0x5618a800 0x20>;
-> > +				reg-names =3D "pec", "cfg";
-> > +			};
-> > +
-> > +			dc0_layerblend2: layerblend@56180be0 {
-> > +				reg =3D <0x56180be0 0x10>, <0x5618ac00 0x20>;
-> > +				reg-names =3D "pec", "cfg";
-> > +			};
-> > +
-> > +			dc0_layerblend3: layerblend@56180c00 {
-> > +				reg =3D <0x56180c00 0x10>, <0x5618b000 0x20>;
-> > +				reg-names =3D "pec", "cfg";
-> > +			};
-> > +		};
-> > +
-> > +		dc0_display_engine0: display-engine@5618b400 {
-> > +			reg =3D <0x5618b400 0x14>, <0x5618b800 0x1c00>;
-> > +			reg-names =3D "top", "cfg";
-> > +			interrupt-parent =3D <&dc0_intc>;
-> > +			interrupts =3D <15>, <16>, <17>;
-> > +			interrupt-names =3D "shdload", "framecomplete", "seqcomplete";
-> > +			power-domains =3D <&pd IMX_SC_R_DC_0_PLL_0>;
-> > +			#address-cells =3D <1>;
-> > +			#size-cells =3D <1>;
-> > +			ranges;
-> > +
-> > +			dc0_framegen0: framegen@5618b800 {
-> > +				reg =3D <0x5618b800 0x98>;
-> > +				clocks =3D <&dc0_disp_lpcg IMX_LPCG_CLK_0>;
-> > +				interrupt-parent =3D <&dc0_intc>;
-> > +				interrupts =3D <18>, <19>, <20>, <21>,
-> > +					     <41>, <42>, <43>, <44>;
-> > +				interrupt-names =3D "int0", "int1", "int2", "int3",
-> > +						  "primsync_on", "primsync_off",
-> > +						  "secsync_on", "secsync_off";
-> > +			};
-> > +
-> > +			dc0_tcon0: tcon@5618c800 {
-> > +				reg =3D <0x5618c800 0x588>;
-> > +
-> > +				port {
-> > +					dc0_disp0_dc0_pixel_combiner_ch0: endpoint {
-> > +						remote-endpoint =3D <&dc0_pixel_combiner_ch0_dc0_disp0>;
-> > +					};
-> > +				};
-> > +			};
-> > +		};
-> > +
-> > +		dc0_display_engine1: display-engine@5618b420 {
-> > +			reg =3D <0x5618b420 0x14>, <0x5618d400 0x1c00>;
-> > +			reg-names =3D "top", "cfg";
-> > +			interrupt-parent =3D <&dc0_intc>;
-> > +			interrupts =3D <25>, <26>, <27>;
-> > +			interrupt-names =3D "shdload", "framecomplete", "seqcomplete";
-> > +			power-domains =3D <&pd IMX_SC_R_DC_0_PLL_1>;
-> > +			#address-cells =3D <1>;
-> > +			#size-cells =3D <1>;
-> > +			ranges;
-> > +
-> > +			dc0_framegen1: framegen@5618d400 {
-> > +				reg =3D <0x5618d400 0x98>;
-> > +				clocks =3D <&dc0_disp_lpcg IMX_LPCG_CLK_1>;
-> > +				interrupt-parent =3D <&dc0_intc>;
-> > +				interrupts =3D <28>, <29>, <30>, <31>,
-> > +					     <45>, <46>, <47>, <48>;
-> > +				interrupt-names =3D "int0", "int1", "int2", "int3",
-> > +						  "primsync_on", "primsync_off",
-> > +						  "secsync_on", "secsync_off";
-> > +			};
-> > +
-> > +			dc0_tcon1: tcon@5618e400 {
-> > +				reg =3D <0x5618e400 0x588>;
-> > +
-> > +				port {
-> > +					dc0_disp1_dc0_pixel_combiner_ch1: endpoint {
-> > +						remote-endpoint =3D <&dc0_pixel_combiner_ch1_dc0_disp1>;
-> > +					};
-> > +				};
-> > +			};
-> > +		};
-> > +	};
->=20
-> I'm thinking that it would be good to have a complete display controller
-> DT node in the first place, including those prefetch engines attached to
-> fetchunits through the fsl,prg property.  In this way, display controller
-> driver's life would be easier - all child/grandchild devices are always
-> available.  I'm considering to adding a check to the Linux display contro=
-ller
-> driver to ensure the availability(at least for critical child/grandchild
-> devices).
+Cheers,
+Prabhakar
 
-Well, this sounds reasonable, but this is beyond my knowledge about the
-internals of the display controller.
-=46WIW it works (at least in my case), any additional DT node could be added
-later on. If there is something to test/review feel free to send it onto the
-list. Please keep me on CC.
-
-Thanks and best regards
-Alexander
-=2D-=20
-TQ-Systems GmbH | M=C3=BChlstra=C3=9Fe 2, Gut Delling | 82229 Seefeld, Germ=
-any
-Amtsgericht M=C3=BCnchen, HRB 105018
-Gesch=C3=A4ftsf=C3=BChrer: Detlef Schneider, R=C3=BCdiger Stahl, Stefan Sch=
-neider
-http://www.tq-group.com/
-
-
+> diff --git a/Documentation/devicetree/bindings/media/i2c/ovti,ov2659.txt =
+b/Documentation/devicetree/bindings/media/i2c/ovti,ov2659.txt
+> deleted file mode 100644
+> index 92989a619f292..0000000000000
+> --- a/Documentation/devicetree/bindings/media/i2c/ovti,ov2659.txt
+> +++ /dev/null
+> @@ -1,47 +0,0 @@
+> -* OV2659 1/5-Inch 2Mp SOC Camera
+> -
+> -The Omnivision OV2659 is a 1/5-inch SOC camera, with an active array siz=
+e of
+> -1632H x 1212V. It is programmable through a SCCB. The OV2659 sensor supp=
+orts
+> -multiple resolutions output, such as UXGA, SVGA, 720p. It also can suppo=
+rt
+> -YUV422, RGB565/555 or raw RGB output formats.
+> -
+> -Required Properties:
+> -- compatible: Must be "ovti,ov2659"
+> -- reg: I2C slave address
+> -- clocks: reference to the xvclk input clock.
+> -- clock-names: should be "xvclk".
+> -- link-frequencies: target pixel clock frequency.
+> -
+> -Optional Properties:
+> -- powerdown-gpios: reference to the GPIO connected to the pwdn pin, if a=
+ny.
+> -  Active high with internal pull down resistor.
+> -- reset-gpios: reference to the GPIO connected to the resetb pin, if any=
+.
+> -  Active low with internal pull up resistor.
+> -
+> -For further reading on port node refer to
+> -Documentation/devicetree/bindings/media/video-interfaces.txt.
+> -
+> -Example:
+> -
+> -       i2c0@1c22000 {
+> -               ...
+> -               ...
+> -                ov2659@30 {
+> -                       compatible =3D "ovti,ov2659";
+> -                       reg =3D <0x30>;
+> -
+> -                       clocks =3D <&clk_ov2659 0>;
+> -                       clock-names =3D "xvclk";
+> -
+> -                       powerdown-gpios =3D <&gpio6 14 GPIO_ACTIVE_HIGH>;
+> -                       reset-gpios =3D <&gpio6 15 GPIO_ACTIVE_LOW>;
+> -
+> -                       port {
+> -                               ov2659_0: endpoint {
+> -                                       remote-endpoint =3D <&vpfe_ep>;
+> -                                       link-frequencies =3D /bits/ 64 <7=
+0000000>;
+> -                               };
+> -                       };
+> -               };
+> -               ...
+> -       };
+> diff --git a/Documentation/devicetree/bindings/media/i2c/ovti,ov2659.yaml=
+ b/Documentation/devicetree/bindings/media/i2c/ovti,ov2659.yaml
+> new file mode 100644
+> index 0000000000000..926e5cd966b8d
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/media/i2c/ovti,ov2659.yaml
+> @@ -0,0 +1,95 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/media/i2c/ovti,ov2659.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: OmniVision OV2659 1/5-Inch 2Mp SOC Camera
+> +
+> +maintainers:
+> +  - Frank Li <Frank.Li@kernel.org>
+> +
+> +description:
+> +  The Omnivision OV2659 is a 1/5-inch SOC camera, with an active array s=
+ize of
+> +  1632H x 1212V. It is programmable through a SCCB. The OV2659 sensor su=
+pports
+> +  multiple resolutions output, such as UXGA, SVGA, 720p. It also can sup=
+port
+> +  YUV422, RGB565/555 or raw RGB output formats.
+> +
+> +properties:
+> +  compatible:
+> +    const: ovti,ov2659
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  clocks:
+> +    maxItems: 1
+> +
+> +  clock-names:
+> +    items:
+> +      - const: xvclk
+> +
+> +  powerdown-gpios:
+> +    description:
+> +      Reference to the GPIO connected to the pwdn pin, if any.
+> +      Active high with internal pull down resistor.
+> +    maxItems: 1
+> +
+> +  reset-gpios:
+> +    description:
+> +      Reference to the GPIO connected to the resetb pin, if any.
+> +      Active low with internal pull up resistor.
+> +    maxItems: 1
+> +
+> +  port:
+> +    $ref: /schemas/graph.yaml#/$defs/port-base
+> +    unevaluatedProperties: false
+> +
+> +    properties:
+> +      endpoint:
+> +        $ref: /schemas/media/video-interfaces.yaml#
+> +        unevaluatedProperties: false
+> +
+> +        properties:
+> +          link-frequencies:
+> +            description: Target pixel clock frequency.
+> +            maxItems: 1
+> +
+> +        required:
+> +          - link-frequencies
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - clocks
+> +  - clock-names
+> +  - port
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/gpio/gpio.h>
+> +
+> +    i2c {
+> +        #address-cells =3D <1>;
+> +        #size-cells =3D <0>;
+> +
+> +        camera@30 {
+> +            compatible =3D "ovti,ov2659";
+> +            reg =3D <0x30>;
+> +
+> +            clocks =3D <&clk_ov2659 0>;
+> +            clock-names =3D "xvclk";
+> +
+> +            powerdown-gpios =3D <&gpio6 14 GPIO_ACTIVE_HIGH>;
+> +            reset-gpios =3D <&gpio6 15 GPIO_ACTIVE_LOW>;
+> +
+> +            port {
+> +                endpoint {
+> +                    remote-endpoint =3D <&vpfe_ep>;
+> +                    link-frequencies =3D /bits/ 64 <70000000>;
+> +                };
+> +            };
+> +        };
+> +    };
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index fe10d29b7657b..585bd3344a9e2 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -20591,7 +20591,7 @@ S:      Maintained
+>  W:     https://linuxtv.org
+>  Q:     http://patchwork.linuxtv.org/project/linux-media/list/
+>  T:     git git://linuxtv.org/mhadli/v4l-dvb-davinci_devices.git
+> -F:     Documentation/devicetree/bindings/media/i2c/ovti,ov2659.txt
+> +F:     Documentation/devicetree/bindings/media/i2c/ovti,ov2659.yaml
+>  F:     drivers/media/i2c/ov2659.c
+>  F:     include/media/i2c/ov2659.h
+>
+> --
+> 2.43.0
+>
