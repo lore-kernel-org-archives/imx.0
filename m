@@ -1,165 +1,342 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FCE84746BD
-	for <imx@lists.linux.dev>; Fri, 16 Oct 2026 11:26:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.182
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792149971; cv=pass; b=nhaTXOPTCT8xd2alWyWXHiu3zk8sy6uAFk+w5FPdDhf1tQwBt6d1ZuY8es/f3U6aNYfiPiN7zp3FLtpd0zpo1oLSFrE2PdV10zHQzOrzLSOgoFlHWsF07dhO2sWgwgjLoOkkklwjuSc72MwfdlIT7Akcm7uE5tKArLRqocbq9RI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792149971; c=relaxed/simple;
-	bh=R7fc9o/O4yqhA3W/kJmDsBhaIBU4bJflgTG28U+KE44=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qEkN45gGdlseiVrYi2UEoCDgVjw4JBWk7kJ3dREJ4kV5Uu7Y4w/QbP1274eQsGrPUnVT35Q1/7z6umW4naaeSl95B4cLqG3m81rQBY/N/NFHpTIGCvmdkc7eLR7UL1oj+H4JaHUc6eiuzlzbifcmboMBiC/iPCFh1WPyplEHMxg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UG2+dOpU; arc=pass smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43F9A4A64F9;
+	Fri, 16 Oct 2026 12:46:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792154820; cv=none; b=Sgx0pDTt9BlBmXppCKNfryLOCPGOmzui3hwjgVMhF4UvWMDiGazi85norT8PikSJqbdeP0XQatez2lmCO1nrkYBlLFTz8HXgksS4cTOMgzgRaKjLnmyJEq7HaX7y5gDlsxjlm5XwO0QcNymg+GXpR/7+06LeYhdY9PJxj0MMYW4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792154820; c=relaxed/simple;
+	bh=iwFRe0x5R64IjJM1NKQzD/MMh2sqIiyiUFYw9B0hU+A=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=f8RcNFkee5jj3s+BXN7/Xx7gHvhBNSMoAYDK2gTZTvEdQWoaC85fUFsZ6f7Vj0P+9m0CfxOxXIxHABVEieDdb+BwETThmqgwYPP5DqAhNhhkRpG+53cpPbpHL5KtH908KUCoLWQWvhZh7KWFuyFvnnCAh0xRdDovJOhLe6z88Uo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=NLMwkmij; arc=none smtp.client-ip=188.40.3.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UG2+dOpU"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2df8c28a0b1so28461725ad.1
-        for <imx@lists.linux.dev>; Fri, 16 Oct 2026 04:26:08 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792149968; cv=none;
-        d=google.com; s=arc-20260327;
-        b=aXrlNhQplqmqUVuci3veska65JIfm+zI4LpC11uVH7hj1QmmThKPcHoerlPptvjzv4
-         F+bNyNc+VEl7jNTCo1xgr6VXcTZao8oUfVEN3YSW2izS31eYkfWQNGs13ymvTLNqyZiJ
-         RUF9Md3a8d/P+gFcT8m5KQUDVu3+D5CvPBxQS4Wm0PlVRZNPTd0tlU+w9k000ijg47Um
-         DH8HAdVe9HTRglJc07nphkEI2Q9p9WrWfUuSA4SbshcV/B+5/GVAwRj412XxxOiMrcLL
-         XyXgpoI39Z57f/qN6mNK/s9mhrOfkywrcGIVlV0Mn7PG8qYMriIQ0Ptu6FXIgRru7EdX
-         705w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=vApPRxEqpGQADna5mwyiV+wtnRS+6fLHQ7GBxAw9kX8=;
-        fh=Gny7zfqWySiCJ+OcZZ3xVLWOgC6VIIGG/Ucr7hwrs7M=;
-        b=Xk2KOa07MhAstdoUIA9edJE2i5L8IRVOjOrMznBZ19TCFinOR9V9XK9bxuI/rUAt9M
-         YaaTC43w9RNmhNp28olBEZs/1Y9svMndPV8FHi6Lem/s3WfXnPChvNJnnSDLGboa/nO4
-         aX5lYvj0GDgZw3Q6Q2DLsPCnM1ea58c78OwBOyhsTPBwzvSdGyEJ97COHO5JNFVexxFC
-         +AY9XRZoPW3hFY+TydZRUsr5i4Rswzs/DMteeCluyDCEdN2nkDMsq3rwHRh/gvtGtWIH
-         6At6G62BwL26W+qQ8mRx1bYM3K++Tmv2RNWAspVLYBXsWHr8w1GBQuegv4daEV+5M810
-         48wg==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792149968; x=1792754768; darn=lists.linux.dev;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=vApPRxEqpGQADna5mwyiV+wtnRS+6fLHQ7GBxAw9kX8=;
-        b=UG2+dOpU/PQfOESHhp7MjaPbDCmVW0bFq7RfGA7rFl/VKHOpRiaHkezgJR1NIwv1Ub
-         eCngxcNIv8r0emkd/CXi2O7IAyT/N8QknSIRb7nNMtT2Ryc06EuqSN87uuyeyW6zToaz
-         EnIZybD5vdKa8ve2Dy9421nMH4HO3SdCi9jC8YwLTbieSAzp+eLjVy8tPd9AWzbic4Qm
-         At9aD4YfWc0SdYS/BgSdcBc/az7P53ztUyjeCnGwoPUQYRnzsn+pdIUDggQ8G3tfkzV2
-         B1PGPfIf9FSPIxSBYW8BMf8NGFu5mppJDFX97dwshzayVZO4ufGYHHxBcjvtQa6dCYO2
-         sdUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792149968; x=1792754768;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=vApPRxEqpGQADna5mwyiV+wtnRS+6fLHQ7GBxAw9kX8=;
-        b=N2KEOf3CoN9c9ZQhaQXRDv9SRMtABSmC8VJXFnItyD27AzYIE3YGFtOZLgfuMVaM7D
-         u7/NvQsORjkuHSUiCon3Ix16VNELkYViMy4Jd8CNNOn1R29VVvOWijV/rpsoTDaN6rh1
-         Az8n4C7rIjkfmPAHg4kLHMVeYjIMCY2r0NNmNDJouPtLMMX2LFt8dYD2sq4kDFD8rOAG
-         aamsrJ0crNZWrAZuMEv2F/tIwiHGbQimQ7F9Ho3VGRaat56hJhyc4kQxYq0BuUB0o0Hn
-         4a1NbJXXIjKxYJXeKmSS0zWKVuuk0QyXyyXbsChRPNSQdzJucEKGG6P6IKVZWWM4BDMS
-         u/Og==
-X-Forwarded-Encrypted: i=1; AKwUvBy9WngSOfLx1K+5HQPyXBFyVYs0NT/4vlvCis3Tg45rztBgU5zr2isGjqlPTO4jEiBaljw=@lists.linux.dev
-X-Gm-Message-State: AFq9FYJb1jGCPW80P5v1NcPnlNwNZTg6kBvcUuLcOLTOUOp43wWAyOMZ
-	vW0mrhVKhGAsByxFixv71laZWJ6rnisjmfIX1dkZ/Cc83o6MfalNgUCeIc3bJN5ddQ1dEg5keC2
-	UmwSPZtbGsJrdFTc5GSSMrN00xbieBbY=
-X-Gm-Gg: AYBFou31f/dw1R1CqhiymWtYS74bClPPpL2iXF0DZFokBNEaRd1wfcDbfmObPGk6oac
-	QcaZ8yEMyleguis/rJL+LQb2WLHPXoeMvPRCppxRrtJukYHm3T0HWHTEZHYy7ZIlK+Edb0xGf7T
-	nZiIKagaTy7aE+xl4QpOOpqGHVI7ydmjDXKn+T9gCF4Yh68IWdSB0QzVQVGl6XJxq4F2wpo4Xsj
-	1ZYdrcoSLTp7fYx90sVetjsavmxdkbxSxELWeF+A3+N6Eq3QRkaSKe0rZ8ZjWiVTfQlJgj8ugP/
-	ZbX9OJOqileVdTT03qVq57bWRVPm7IXobHpJwQBRtVYMfvph0zTjPFgNP5XCB6SdSr3wXAaYP7m
-	FB7F+pcDVkj6j4WQjt2eaJ/GJ7we6aqaoKYZOybu626d8rTrEueFghRD6oiGqTHn4Wy5c
-X-Received: by 2002:a17:903:11ce:b0:2e9:4e83:1979 with SMTP id
- d9443c01a7336-2e94e836527mr62789995ad.32.1792149967287; Fri, 16 Oct 2026
- 04:26:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="NLMwkmij"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=ew.tq-group.com; s=default2602; h=Content-Type:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=dlTrUEnRZVx+j7axS6IuyLIe6jm/VwYwyUkOeXEqth4=; b=NLMwkmijk5ThyIm5lEeHXDiZOs
+	BpIdQyt9l2SgBRBTGubhZqY9Aha7FpVPoGVIS1wBVXEl+lkbyxHLo+6Q5fRkY9TNcjZUd6h6zNrO1
+	RFcPls/njlg8+IiXMSXGR77t8tdcSlZZojLdmAQnYtst9H00Hn43fzvXQvsrpo2HrabbqnJq6lub+
+	SRXE4Nf2LyeEZkeQW8nXWbmwNxnPlCpmv++nDOA9PjKGXQCeLLbEm15mnHO6dCXnLWRgdjQ5hD/0c
+	K4QZug2zXTDWXWFdCtwmlOPgg3otdl/GcOTZIlnIzXFarnpdC+Ew1xzUH6fBrkeOGtbtNoOzVOaNI
+	jA4dT3Sg==;
+Received: from sslproxy03.your-server.de ([88.198.220.132])
+	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <alexander.stein@ew.tq-group.com>)
+	id 1xHhKj-000Ei6-1B;
+	Fri, 16 Oct 2026 14:46:49 +0200
+Received: from localhost ([127.0.0.1])
+	by sslproxy03.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <alexander.stein@ew.tq-group.com>)
+	id 1xHhKi-000065-2R;
+	Fri, 16 Oct 2026 14:46:48 +0200
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Liu Ying <victor.liu@nxp.com>
+Cc: Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ Dong Aisheng <aisheng.dong@nxp.com>, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux@ew.tq-group.com
+Subject:
+ Re: [PATCH v2 2/5] arm64: dts: imx8qxp: Add display controller subsystem
+Date: Fri, 16 Oct 2026 14:46:47 +0200
+Message-ID: <7640235.DvuYhMxLoT@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <atBLglf0gSLS7XkW@raspi>
+References:
+ <20261014071657.118378-1-alexander.stein@ew.tq-group.com>
+ <20261014071657.118378-3-alexander.stein@ew.tq-group.com>
+ <atBLglf0gSLS7XkW@raspi>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20261015014324.5569-1-phucduc.bui@gmail.com> <20261016040048.506531-1-phucduc.bui@gmail.com>
- <46a96bc8-2ee7-4c6f-ad8e-94321f8b9630@sirena.org.uk>
-In-Reply-To: <46a96bc8-2ee7-4c6f-ad8e-94321f8b9630@sirena.org.uk>
-From: Bui Duc Phuc <phucduc.bui@gmail.com>
-Date: Fri, 16 Oct 2026 18:25:56 +0700
-X-Gm-Features: AclHuK9bobvuHZz0ZvKJfKfhAJdiG3c7XQlmqU2uHEyUuNfyFRrkKv-rn3SiKZ0
-Message-ID: <CAABR9nG8PeQS4GBGwENfHTRBUnroKYQiEu29iztix+py=Arprg@mail.gmail.com>
-Subject: Re: [PATCH v2 25/25] ASoC: rockchip: rockchip_max98090: Mark the link
- as started on success
-To: Mark Brown <broonie@kernel.org>
-Cc: Vijendar Mukunda <Vijendar.Mukunda@amd.com>, 
-	Venkata Prasad Potturu <venkataprasad.potturu@amd.com>, Liam Girdwood <lgirdwood@gmail.com>, 
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, povik+lin@cutebit.org, 
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>, Andrei Simion <andrei.simion@microchip.com>, 
-	Nicolas Ferre <nicolas.ferre@microchip.com>, 
-	Alexandre Belloni <alexandre.belloni@bootlin.com>, David Rhodes <david.rhodes@cirrus.com>, 
-	Richard Fitzgerald <rf@opensource.cirrus.com>, Shengjiu Wang <shengjiu.wang@gmail.com>, 
-	Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>, 
-	Nicolin Chen <nicoleotsuka@gmail.com>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Cezary Rojewski <cezary.rojewski@intel.com>, Peter Ujfalusi <peter.ujfalusi@linux.intel.com>, 
-	Bard Liao <yung-chuan.liao@linux.intel.com>, 
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>, 
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>, 
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
-	Biju Das <biju.das.jz@bp.renesas.com>, 
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, Heiko Stuebner <heiko@sntech.de>, 
-	Kees Cook <kees@kernel.org>, Syed Saba Kareem <syed.sabakareem@amd.com>, 
-	wangdicheng <wangdicheng@kylinos.cn>, Chris Bainbridge <chris.bainbridge@gmail.com>, 
-	Linus Walleij <linusw@kernel.org>, Charles Keepax <ckeepax@opensource.cirrus.com>, 
-	Neo Chang <YLCHANG2@nuvoton.com>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>, u.kleine-koenig@baylibre.com, 
-	Pengpeng Hou <pengpeng@iscas.ac.cn>, 
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>, Hemanth Selam <hemanth.selam@gmail.com>, 
-	Md Shofiqul Islam <shofiqtest@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Zain Aboobacker <zainaboobacker33@gmail.com>, Sang-Heon Jeon <ekffu200098@gmail.com>, 
-	Bo Shen <voice.shen@atmel.com>, Vinod Koul <vkoul@kernel.org>, linux-sound@vger.kernel.org, 
-	asahi@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	patches@opensource.cirrus.com, linuxppc-dev@lists.ozlabs.org, 
-	imx@lists.linux.dev, linux-rockchip@lists.infradead.org, 
-	linux-renesas-soc@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+X-Virus-Scanned: Clear (ClamAV 1.4.3/28155/Fri Oct 16 08:24:17 2026)
 
-Hi Mark,
+Hi,
 
-> Can you please resubmit this as a separate patch as a new thread without
-> the series numbering?  This is really going to mess with the tooling :(
->
-> Please don't send new patches in reply to old patches or serieses, this
-> makes it harder for both people and tools to understand what is going
-> on - it can bury things in mailboxes and make it difficult to keep track
-> of what current patches are, both for the new patches and the old ones.
->
-> Series numbering only makes sense within a series for ordering, if
-> you're sending something separately to a series or a new series then
-> preserving the ordering of the series just causes confusion.
+Am Donnerstag, 15. Oktober 2026, 05:41:54 Mitteleurop=C3=A4ische Sommerzeit=
+ schrieb Liu Ying:
+> Hi Alexander,
+>=20
+> On Wed, Oct 14, 2026 at 09:16:46AM +0200, Alexander Stein wrote:
+>=20
+> [...]
+>=20
+> > +	dc0: display-controller@56180000 {
+> > +		reg =3D <0x56180000 0x40000>;
+> > +		clocks =3D <&dc0_lpcg IMX_LPCG_CLK_4>;
+> > +		power-domains =3D <&pd IMX_SC_R_DC_0>;
+> > +		#address-cells =3D <1>;
+> > +		#size-cells =3D <1>;
+> > +		ranges;
+> > +		status =3D "disabled";
+> > +
+> > +		dc0_intc: interrupt-controller@56180040 {
+> > +			reg =3D <0x56180040 0x60>;
+> > +			clocks =3D <&dc0_lpcg IMX_LPCG_CLK_5>;
+> > +			interrupt-controller;
+> > +			interrupt-parent =3D <&dc0_irqsteer>;
+> > +			#interrupt-cells =3D <1>;
+> > +			interrupts =3D <448>, <449>, <450>,  <64>,
+> > +				      <65>,  <66>,  <67>,  <68>,
+> > +				      <69>,  <70>, <193>, <194>,
+> > +				     <195>, <196>, <197>,  <72>,
+> > +				      <73>,  <74>,  <75>,  <76>,
+> > +				      <77>,  <78>,  <79>,  <80>,
+> > +				      <81>, <199>, <200>, <201>,
+> > +				     <202>, <203>, <204>, <205>,
+> > +				     <206>, <207>, <208>,   <5>,
+> > +				       <0>,   <1>,   <2>,   <3>,
+> > +				       <4>,  <82>,  <83>,  <84>,
+> > +				      <85>, <209>, <210>, <211>,
+> > +				     <212>;
+> > +			interrupt-names =3D "store9_shdload",
+> > +					  "store9_framecomplete",
+> > +					  "store9_seqcomplete",
+> > +					  "extdst0_shdload",
+> > +					  "extdst0_framecomplete",
+> > +					  "extdst0_seqcomplete",
+> > +					  "extdst4_shdload",
+> > +					  "extdst4_framecomplete",
+> > +					  "extdst4_seqcomplete",
+> > +					  "extdst1_shdload",
+> > +					  "extdst1_framecomplete",
+> > +					  "extdst1_seqcomplete",
+> > +					  "extdst5_shdload",
+> > +					  "extdst5_framecomplete",
+> > +					  "extdst5_seqcomplete",
+> > +					  "disengcfg_shdload0",
+> > +					  "disengcfg_framecomplete0",
+> > +					  "disengcfg_seqcomplete0",
+> > +					  "framegen0_int0",
+> > +					  "framegen0_int1",
+> > +					  "framegen0_int2",
+> > +					  "framegen0_int3",
+> > +					  "sig0_shdload",
+> > +					  "sig0_valid",
+> > +					  "sig0_error",
+> > +					  "disengcfg_shdload1",
+> > +					  "disengcfg_framecomplete1",
+> > +					  "disengcfg_seqcomplete1",
+> > +					  "framegen1_int0",
+> > +					  "framegen1_int1",
+> > +					  "framegen1_int2",
+> > +					  "framegen1_int3",
+> > +					  "sig1_shdload",
+> > +					  "sig1_valid",
+> > +					  "sig1_error",
+> > +					  "reserved",
+> > +					  "cmdseq_error",
+> > +					  "comctrl_sw0",
+> > +					  "comctrl_sw1",
+> > +					  "comctrl_sw2",
+> > +					  "comctrl_sw3",
+> > +					  "framegen0_primsync_on",
+> > +					  "framegen0_primsync_off",
+> > +					  "framegen0_secsync_on",
+> > +					  "framegen0_secsync_off",
+> > +					  "framegen1_primsync_on",
+> > +					  "framegen1_primsync_off",
+> > +					  "framegen1_secsync_on",
+> > +					  "framegen1_secsync_off";
+> > +		};
+> > +
+> > +		dc0_pixel_engine: pixel-engine@56180800 {
+> > +			reg =3D <0x56180800 0xac00>;
+> > +			clocks =3D <&dc0_lpcg IMX_LPCG_CLK_5>;
+> > +			#address-cells =3D <1>;
+> > +			#size-cells =3D <1>;
+> > +			ranges;
+> > +
+> > +			dc0_constframe0: constframe@56180960 {
+> > +				reg =3D <0x56180960 0xc>, <0x56184400 0x20>;
+> > +				reg-names =3D "pec", "cfg";
+> > +			};
+> > +
+> > +			dc0_extdst0: extdst@56180980 {
+> > +				reg =3D <0x56180980 0x1c>, <0x56184800 0x28>;
+> > +				reg-names =3D "pec", "cfg";
+> > +				interrupt-parent =3D <&dc0_intc>;
+> > +				interrupts =3D <3>, <4>, <5>;
+> > +				interrupt-names =3D "shdload", "framecomplete", "seqcomplete";
+> > +			};
+> > +
+> > +			dc0_constframe4: constframe@561809a0 {
+> > +				reg =3D <0x561809a0 0xc>, <0x56184c00 0x20>;
+> > +				reg-names =3D "pec", "cfg";
+> > +			};
+> > +
+> > +			dc0_extdst4: extdst@561809c0 {
+> > +				reg =3D <0x561809c0 0x1c>, <0x56185000 0x28>;
+> > +				reg-names =3D "pec", "cfg";
+> > +				interrupt-parent =3D <&dc0_intc>;
+> > +				interrupts =3D <6>, <7>, <8>;
+> > +				interrupt-names =3D "shdload", "framecomplete", "seqcomplete";
+> > +			};
+> > +
+> > +			dc0_constframe1: constframe@561809e0 {
+> > +				reg =3D <0x561809e0 0xc>, <0x56185400 0x20>;
+> > +				reg-names =3D "pec", "cfg";
+> > +			};
+> > +
+> > +			dc0_extdst1: extdst@56180a00 {
+> > +				reg =3D <0x56180a00 0x1c>, <0x56185800 0x28>;
+> > +				reg-names =3D "pec", "cfg";
+> > +				interrupt-parent =3D <&dc0_intc>;
+> > +				interrupts =3D <9>, <10>, <11>;
+> > +				interrupt-names =3D "shdload", "framecomplete", "seqcomplete";
+> > +			};
+> > +
+> > +			dc0_constframe5: constframe@56180a20 {
+> > +				reg =3D <0x56180a20 0xc>, <0x56185c00 0x20>;
+> > +				reg-names =3D "pec", "cfg";
+> > +			};
+> > +
+> > +			dc0_extdst5: extdst@56180a40 {
+> > +				reg =3D <0x56180a40 0x1c>, <0x56186000 0x28>;
+> > +				reg-names =3D "pec", "cfg";
+> > +				interrupt-parent =3D <&dc0_intc>;
+> > +				interrupts =3D <12>, <13>, <14>;
+> > +				interrupt-names =3D "shdload", "framecomplete", "seqcomplete";
+> > +			};
+> > +
+> > +			dc0_fetchwarp2: fetchwarp@56180a60 {
+> > +				reg =3D <0x56180a60 0x10>, <0x56186400 0x190>;
+> > +				reg-names =3D "pec", "cfg";
+> > +			};
+> > +
+> > +			dc0_fetchlayer0: fetchlayer@56180ac0 {
+> > +				reg =3D <0x56180ac0 0xc>, <0x56188400 0x404>;
+> > +				reg-names =3D "pec", "cfg";
+> > +			};
+> > +
+> > +			dc0_layerblend0: layerblend@56180ba0 {
+> > +				reg =3D <0x56180ba0 0x10>, <0x5618a400 0x20>;
+> > +				reg-names =3D "pec", "cfg";
+> > +			};
+> > +
+> > +			dc0_layerblend1: layerblend@56180bc0 {
+> > +				reg =3D <0x56180bc0 0x10>, <0x5618a800 0x20>;
+> > +				reg-names =3D "pec", "cfg";
+> > +			};
+> > +
+> > +			dc0_layerblend2: layerblend@56180be0 {
+> > +				reg =3D <0x56180be0 0x10>, <0x5618ac00 0x20>;
+> > +				reg-names =3D "pec", "cfg";
+> > +			};
+> > +
+> > +			dc0_layerblend3: layerblend@56180c00 {
+> > +				reg =3D <0x56180c00 0x10>, <0x5618b000 0x20>;
+> > +				reg-names =3D "pec", "cfg";
+> > +			};
+> > +		};
+> > +
+> > +		dc0_display_engine0: display-engine@5618b400 {
+> > +			reg =3D <0x5618b400 0x14>, <0x5618b800 0x1c00>;
+> > +			reg-names =3D "top", "cfg";
+> > +			interrupt-parent =3D <&dc0_intc>;
+> > +			interrupts =3D <15>, <16>, <17>;
+> > +			interrupt-names =3D "shdload", "framecomplete", "seqcomplete";
+> > +			power-domains =3D <&pd IMX_SC_R_DC_0_PLL_0>;
+> > +			#address-cells =3D <1>;
+> > +			#size-cells =3D <1>;
+> > +			ranges;
+> > +
+> > +			dc0_framegen0: framegen@5618b800 {
+> > +				reg =3D <0x5618b800 0x98>;
+> > +				clocks =3D <&dc0_disp_lpcg IMX_LPCG_CLK_0>;
+> > +				interrupt-parent =3D <&dc0_intc>;
+> > +				interrupts =3D <18>, <19>, <20>, <21>,
+> > +					     <41>, <42>, <43>, <44>;
+> > +				interrupt-names =3D "int0", "int1", "int2", "int3",
+> > +						  "primsync_on", "primsync_off",
+> > +						  "secsync_on", "secsync_off";
+> > +			};
+> > +
+> > +			dc0_tcon0: tcon@5618c800 {
+> > +				reg =3D <0x5618c800 0x588>;
+> > +
+> > +				port {
+> > +					dc0_disp0_dc0_pixel_combiner_ch0: endpoint {
+> > +						remote-endpoint =3D <&dc0_pixel_combiner_ch0_dc0_disp0>;
+> > +					};
+> > +				};
+> > +			};
+> > +		};
+> > +
+> > +		dc0_display_engine1: display-engine@5618b420 {
+> > +			reg =3D <0x5618b420 0x14>, <0x5618d400 0x1c00>;
+> > +			reg-names =3D "top", "cfg";
+> > +			interrupt-parent =3D <&dc0_intc>;
+> > +			interrupts =3D <25>, <26>, <27>;
+> > +			interrupt-names =3D "shdload", "framecomplete", "seqcomplete";
+> > +			power-domains =3D <&pd IMX_SC_R_DC_0_PLL_1>;
+> > +			#address-cells =3D <1>;
+> > +			#size-cells =3D <1>;
+> > +			ranges;
+> > +
+> > +			dc0_framegen1: framegen@5618d400 {
+> > +				reg =3D <0x5618d400 0x98>;
+> > +				clocks =3D <&dc0_disp_lpcg IMX_LPCG_CLK_1>;
+> > +				interrupt-parent =3D <&dc0_intc>;
+> > +				interrupts =3D <28>, <29>, <30>, <31>,
+> > +					     <45>, <46>, <47>, <48>;
+> > +				interrupt-names =3D "int0", "int1", "int2", "int3",
+> > +						  "primsync_on", "primsync_off",
+> > +						  "secsync_on", "secsync_off";
+> > +			};
+> > +
+> > +			dc0_tcon1: tcon@5618e400 {
+> > +				reg =3D <0x5618e400 0x588>;
+> > +
+> > +				port {
+> > +					dc0_disp1_dc0_pixel_combiner_ch1: endpoint {
+> > +						remote-endpoint =3D <&dc0_pixel_combiner_ch1_dc0_disp1>;
+> > +					};
+> > +				};
+> > +			};
+> > +		};
+> > +	};
+>=20
+> I'm thinking that it would be good to have a complete display controller
+> DT node in the first place, including those prefetch engines attached to
+> fetchunits through the fsl,prg property.  In this way, display controller
+> driver's life would be easier - all child/grandchild devices are always
+> available.  I'm considering to adding a check to the Linux display contro=
+ller
+> driver to ensure the availability(at least for critical child/grandchild
+> devices).
 
-Sorry for the inconvenience.
+Well, this sounds reasonable, but this is beyond my knowledge about the
+internals of the display controller.
+=46WIW it works (at least in my case), any additional DT node could be added
+later on. If there is something to test/review feel free to send it onto the
+list. Please keep me on CC.
 
-This was patch 25 of v2. I had only managed to send the first 24
-patches previously.
-Patch 25 failed to send due to an error, so I sent it afterward to
-complete the series history.
+Thanks and best regards
+Alexander
+=2D-=20
+TQ-Systems GmbH | M=C3=BChlstra=C3=9Fe 2, Gut Delling | 82229 Seefeld, Germ=
+any
+Amtsgericht M=C3=BCnchen, HRB 105018
+Gesch=C3=A4ftsf=C3=BChrer: Detlef Schneider, R=C3=BCdiger Stahl, Stefan Sch=
+neider
+http://www.tq-group.com/
 
-Link to v2:
-https://lore.kernel.org/all/20261015014324.5569-1-phucduc.bui@gmail.com/
 
-Since you had already applied v1, this patch does not necessarily need
-to be resubmitted,
-so please feel free to ignore it.
-
-Link v1 :
-https://lore.kernel.org/all/20261008103831.542533-1-phucduc.bui@gmail.com/
-
-I have also sent the incremental changes in a separate thread, as you requested:
-
-https://lore.kernel.org/all/20261016040946.521195-1-phucduc.bui@gmail.com/
-
-Best regards,
-Phuc
