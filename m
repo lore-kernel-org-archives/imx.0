@@ -1,102 +1,76 @@
-Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF1414B920C
-	for <imx@lists.linux.dev>; Fri, 16 Oct 2026 18:58:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE3644CF491;
+	Fri, 16 Oct 2026 19:03:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792177112; cv=none; b=EhfAP4xc+RW0HvVoyLj2TQa8swJljiFHuZCm8g/VEn96cS5JuFrqXPdTvspNik2Qvpm4c1+X7b94ADeHdUE/kAv89eQq+b61FSkj3Jc0DP9rP/wCvGO4rkk/nTtm6Uo0Sw8+Dnp4Jl9+2fL5MfC1rky2ArVUWLoTwS5pIIZy4/8=
+	t=1792177422; cv=none; b=OWosytsTxoLYfBntc72m4o6EYu0urZq+Ga6Xhl4zV65pzAjQ82ZlPkEMBRBc7DVx5fFKFyNlgspOH58N1OhfIIefVyabd1MmiYT0J66sxmfezeOnl1u3kjwbXLW4eWSO5mIAGkb3qSN7z+Ag8N1gd74LyTfNCzurfrcQtXvT0C8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792177112; c=relaxed/simple;
-	bh=c07PDig+LSsE24sQR4HQwR8JnWSTzX5sad8ADiutG3M=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KAS+j2gX1Rmmni1AQ2BTd4nlkxG6QPIWkAv5QPJpoEMnxs6xlZAVG6vApP2IPuvqXXlzlpCBrjV13uH8vRe2LUjAevnWTdqNdjdHoFPiYslQtfxG1yAfzBgmRBvQE/921qSKurxEnDAdZoCcxgAsA0eDjtZ8FXUiTPEmAN08lxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=iCcXohur; arc=none smtp.client-ip=178.251.229.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
+	s=arc-20240116; t=1792177422; c=relaxed/simple;
+	bh=DxOA3K04TdGKgV9RBzwq7NMB042SfZvdvrNpiga7nYU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=BSQmMF0xfJPhPVqZhRqtrmLo+QMmnJ9GNUvu3UgDnQuxnkfYNJ5Okfm8oqZ/KH3Wzbc3bJR+DqTTO6+jl3TkZvJXNPKXsQ7sr9amisyA3sL0Gq9bhCbli3xpa9dTrDvrvgNxl9+1NaomSqNJazGFXlbGUPEIcyD6gt+3+8LESMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l1MPcn7w; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="iCcXohur"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id ACFAD1060F1;
-	Fri, 16 Oct 2026 20:58:19 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1792177101; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding; bh=3M3kA3GZbcaM6eIdFleDuwMC14PtsMd6qtqktQqPFSE=;
-	b=iCcXohurxm6O4ru4PCCQYfFl8lWcLu3E5FNfUVcPdNZMvhsNr0TKrPil/ppnwj+RkLboq1
-	GRvstPf8HGuxz+F0bisaB5nI+lGtTqLG4V2C5+9x+9IJdgph+7F2S+g4j4eb3vyeonuPL/
-	ABjwt7anNn417szKlzGabfKAmOFY3RCvNgzbqTFScmrv+9SNGINaSyO7LGJkXQemqaEb70
-	AvqG4x4teMftB6XJthjPMjj3YsDYBqO1gWKI7QUt7ZGN3zjxFuaOskzeAoPoplRFpXBQpP
-	U5MFIwupId91Q+SwA4sH2AaMgglVcPXuTAqRJ0IDq+h6r5kTwSH5xJ8T4Clymg==
-From: Marek Vasut <marex@nabladev.com>
-To: netdev@vger.kernel.org
-Cc: Marek Vasut <marex@nabladev.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Wei Fang <wei.fang@nxp.com>,
-	imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [net,PATCH] Revert "enetc: Increase eMDIO MDC rate to 2.5 MHz"
-Date: Fri, 16 Oct 2026 20:57:38 +0200
-Message-ID: <20261016185817.54096-1-marex@nabladev.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l1MPcn7w"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADD9E1F000C4;
+	Fri, 16 Oct 2026 19:03:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792177421;
+	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=l1MPcn7wUKA11mOSJL22YnTaEa/FxCCDODmgLCSStH+eJ96lzxGK9WTi5p1Eli7dJ
+	 HxGA676nimrjAwcCVEq8q38nrTOrausAuDgmsAtvtUCzNDu0UQQpzSmJaDp+GjVMUy
+	 MljQin400Mh9OhtO+7hi3FQ5OHoHRNXq20c/1HlpjvrEYc3AY7icHre+kKzhSRUoVG
+	 ry3+joGHnkhiIHX4briX28rBYQZVcSHqZL+Qqzq/pFeNjplP6KE3ha2LD8yHmrMWWK
+	 yscNk1uflZ79XybqDi/YuX5D8wiFaqae5rXvJ7gQIvxmlfK6qA6WPRqBtLfK62puTv
+	 4h9IRsTtCOStw==
+From: netdev-bot+sinfo@kernel.org
+To: Marek Vasut <marex@nabladev.com>
+Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, Clark Wang <xiaoning.wang@nxp.com>,
+ Claudiu Manoil <claudiu.manoil@nxp.com>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Vladimir Oltean <vladimir.oltean@nxp.com>, Wei Fang <wei.fang@nxp.com>,
+ imx@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [net,PATCH] Revert "enetc: Increase eMDIO MDC rate to 2.5 MHz"
+Date: Fri, 16 Oct 2026 19:03:40 +0000
+Message-ID: <179217742020.408196.3167550560236175089@kernel.org>
+In-Reply-To: <20261016185817.54096-1-marex@nabladev.com>
+References: <20261016185817.54096-1-marex@nabladev.com>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
 
-This reverts commit 587acb86d6465efdc03f6d8524461e6e725597b7.
+Hi!
 
-While the i.MX95 MDIO MDC clock is improved by the commit
-587acb86d646 ("enetc: Increase eMDIO MDC rate to 2.5 MHz"),
-other SoCs use different base clock for their MDIO and the
-MDC clock on those SoCs is set out of specification by the
-aforementioned commit. The fix for the i.MX95 MDIO MDC has
-to be done differently, and will be done so in a follow up
-change. Until that is done, revert the commit to fix the
-other SoCs.
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-Fixes: 587acb86d646 ("enetc: Increase eMDIO MDC rate to 2.5 MHz")
-Signed-off-by: Marek Vasut <marex@nabladev.com>
----
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: Clark Wang <xiaoning.wang@nxp.com>
-Cc: Claudiu Manoil <claudiu.manoil@nxp.com>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Vladimir Oltean <vladimir.oltean@nxp.com>
-Cc: Wei Fang <wei.fang@nxp.com>
-Cc: imx@lists.linux.dev
-Cc: linux-kernel@vger.kernel.org
-Cc: netdev@vger.kernel.org
----
-NOTE: This is for v7.4
----
- drivers/net/ethernet/freescale/enetc/enetc_mdio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc_mdio.c b/drivers/net/ethernet/freescale/enetc/enetc_mdio.c
-index a90a04a47befd..998aaa394e9c4 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc_mdio.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc_mdio.c
-@@ -24,7 +24,7 @@
- 
- #define ENETC_EMDIO_CFG \
- 	(MDIO_CFG_HOLD(2) | \
--	 MDIO_CFG_CLKDIV(66) | \
-+	 MDIO_CFG_CLKDIV(258) | \
- 	 MDIO_CFG_NEG)
- 
- #define MDIO_CTL_DEV_ADDR(x)	((x) & 0x1f)
--- 
-2.53.0
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
 
+ - What hardware the change was tested on. For driver fixes please
+   mention the device (and if relevant firmware version) used for
+   testing, or say that the change was not tested on real hardware.
+
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
+
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
