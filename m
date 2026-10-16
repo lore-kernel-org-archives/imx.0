@@ -1,138 +1,173 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013012.outbound.protection.outlook.com [52.101.83.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AA2E40B109;
-	Fri, 16 Oct 2026 20:18:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792181933; cv=none; b=bJwOGUrH6yWdpTEhRj6ROFyXI4D7Zsa6HuqPedfqtbH5tKIUWq7cO8LcQAnMS5/NiW2qRkpGXV2tO/rWN6oXFdg0/Nj1qIkoJQb2qM9dJSkWD+rJ4IOeQ6UoCvMnkZ2odLfYhgiaA6vBBR0aaO6MnWYomF5/R11hnyuJkQtjxag=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792181933; c=relaxed/simple;
-	bh=1B1ej6X099roilERBi+YWq+vy0abdU7RceiOoAuQYmY=;
-	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
-	 Date; b=U1OP/2tTzX4TN9ztLkNQAqM0XAJuWnDfRlcwJnZJXiL5EwaeYRot+TAyYcj5ONvpvz6Fcs3ckDNaZXVD/HF+/LrmktXk+G7pRdwq5U9HFjpj/Qjlm0w4N09fY5J0hOAD8v7HM2nWJ16+kCCV2HAD+swWzYjgeJwUaC0K5Cajr/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oPA7Dr04; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E61453BBFC0
+	for <imx@lists.linux.dev>; Fri, 16 Oct 2026 20:21:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792182071; cv=fail; b=nlEoFxrWABX8fNzuBoWApDPqNTZuLz5cAU/m4hpYVi/Req4oofpBWL2kxxrMz1AgaMKoij1HZwQk9uvv/+qz+dUYiXk5vpTtPot18bJr8J87lrxUDMRH/qObyu/i3xO+im+mVl5sWRBx2Nim0l7LyUMafARf0A2KeaQ7wJui98o=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792182071; c=relaxed/simple;
+	bh=e5yIddnKvv7dJjypHq50zSIGrUuqSm80icRFFBP+pE8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=e8wH3BbJ+73DUzuafUUb8M6EEwiSwY63VKMjz4FHoFujW4oPwcdltA7eJY3h25z+vKTR7CeOiFf7RYoYmHoV8+Iqck8rzGImlMk7mCodRqpLrNeS8wuqwTcvKcxrz2WyJMOck2o96+EVl/SzjAizRwK3U0IbO8BraR1eCQ+OtKs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=lujio3i3; arc=fail smtp.client-ip=52.101.83.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oPA7Dr04"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 678DD1F000C5;
-	Fri, 16 Oct 2026 20:18:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792181925;
-	bh=ciIrD9qA9+7gsXNW9FF54lAFKsEbb4sS8vCJEvM2bG8=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=oPA7Dr04sh00yqAH0uAFSJLMxCJ/OW6evb4RNw/yWKU2Vi71woZrmC8b+/A21Dibh
-	 y+BquO0NiN4vGKU50WQCuCo+F1z8YdBS6lUuUk0vCgFqSVyv79Os3SwQ7xF9Mqjr2A
-	 wHhArk94bsgQgOF0KTkGEFtJ2wI9Psbm8CxHo63MZH69zH1ztKwiKD5+zoxhErJz9m
-	 j1DTR6Qoo9+BstRQqFPxCIeBPtBp8J2wO/DCXN778UDsdEhWccTfvS2Dhx3n2mVCic
-	 QqoKv9Zy/6mKDXaVwSAqsB5Oa93xVlB9RYmE5qWNDpgxq4dBF4WtfEFmdtRnn16FT0
-	 c2mEFmwoLlniQ==
-Message-ID: <sashiko-outbox-174907@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 14/14] ARM: dts: imx6sx-sdb-mqs: remove empty pinctrl-0
-Reply-To: sashiko-reviews@lists.linux.dev
-To: Frank.Li@oss.nxp.com
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20261016-arm_dts_cleanup2-v1-14-3a0cab9fd784@nxp.com>
-References: <20261016-arm_dts_cleanup2-v1-0-3a0cab9fd784@nxp.com>
- <20261016-arm_dts_cleanup2-v1-14-3a0cab9fd784@nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 16 Oct 2026 20:18:44 +0000
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="lujio3i3"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=emkjPR8Wmm8QGFzsCsl6z4QrNIDHtIXQRvBfvb0dakP3YZJhTPmXJ5aHSzz59cjeKd/94PArAQ3EHijOyz+E04i0fVPsx6LkgjC1HdtZ+s6Jb5bMk5FKV4x7f11EHfMHZShm2iQTF6Fjsd31fO//7sV6qrDVfPuFdTWFtTCR3GuOmY5WhBRj0sUEDbjL29SBaVFUf6s+W8bN1f2srE4FuW7rM2meR5qLAfrT2zR8+ATBfE0QxcZY3nJyD9MkPTYngt1R1ZMQKX1PCNuoFmwZhLUhnf57LXwATV8UNbpxSCQbfAa7CFMco/h2H5zC2K9T9C23VoYDqSZuQu5M8Qjuvg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=KUQ1eIKJh9vjo/ubvkwTOKMV1/Rtoeos3EcYTT5lJ9A=;
+ b=RONF7U+Jk2NjAAjrc9qbOSgrZ07D8n/UCg1q42S4cVcGzh3ZunEhaT6fQh4YREcw+SRPdnZ9KsGjRH1J/wHhE+jvp4Cwvkttf5vfUu7DRx+Ngm5EgpiJPjo2KLDQtPqXm6/BZLuexM65rKryqmb2cneONtSFi+I2V4cjBt8DAbNGd32MUKdPT6dWztbEV4gB6sHjIOcYmwOUq9/8woR+rRLEyu8IdJbatKL3PoiCYtQdMJhKOZx+c780vIKHT7CurvnXtcdpC8ZiHidRFWmOjFxvp0SqFaNfPsGVPQdBqIE4ph2VetvP9m75POXlp0+ck7U9BAHXWbDx+dzxwa+m1g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KUQ1eIKJh9vjo/ubvkwTOKMV1/Rtoeos3EcYTT5lJ9A=;
+ b=lujio3i3mmHe+N9UlrHrz/1i8kO6wqmIZYpivnu3P7gXtZkk8IwyC4rJK6GcAqcbzzIIR4AK2kyuohDy3trxnrn0P+M+CMT6jCwvPaKHkMVwTmgLcSnA5LmPFQwxmE1PvpIymfzlWgUnfmPXlhV0eMKlRCGTbJn29t0ZIXGH9KZ6K+vDHuPp6e2bgIctQajXCxA1VR5wpVi76iAMBkkp/gSEsli57lu6WFOaOkhAfT2lcEWBERiU4b8Vo81pb5U6P3huOY19KmatNkVzjHnqe/g9O0EuSRk7NTYjOjOSTHhGwOESxpIgZiz8cF199bKOsEkO9hp00iS8jeYRQhCrhg==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by GVXPR04MB10660.eurprd04.prod.outlook.com (2603:10a6:150:221::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.14; Fri, 16 Oct
+ 2026 20:21:01 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0522.013; Fri, 16 Oct 2026
+ 20:21:01 +0000
+Date: Fri, 16 Oct 2026 15:20:51 -0500
+From: Frank Li <Frank.li@oss.nxp.com>
+To: Stefano Radaelli <stefano.radaelli21@gmail.com>
+Cc: Frank Li <Frank.Li@nxp.com>, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, pierluigi.p@variscite.com,
+	Stefano Radaelli <stefano.r@variscite.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Subject: Re: [PATCH v1 1/1] arm64: dts: imx8mm-var-dart-sonata: Add OV5640
+ camera support
+Message-ID: <atKHI1B0hL6q-CmY@SMW015318>
+References: <20261015162301.63838-1-stefano.r@variscite.com>
+ <atEci_KwxUdvAekv@SMW015318>
+ <atJY6DzjmAeq7U8q@Lord-Beerus.station>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <atJY6DzjmAeq7U8q@Lord-Beerus.station>
+X-ClientProxiedBy: PH7P220CA0063.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:510:32c::30) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|GVXPR04MB10660:EE_
+X-MS-Office365-Filtering-Correlation-Id: 34f81cd5-985e-4795-37c5-08df2bc2ff0f
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|19092799006|23010399003|1800799024|366016|7416014|376014|18002099003|10067099003|22082099003|11063799006|4143699003|261009223027099003|56012099006;
+X-Microsoft-Antispam-Message-Info:
+ 6JxD0WenGgfeRxxnRz8HbxTkT9ukWhE+BVXZnAA+AUXnQxXho+f8z+bIQTDyxtU4BRs7TYlW25+oa1rzqSE4DmldBJEjj9iwnBm+iyZEgBK1LzHMlVqz1u3vmozqUBNTDFsw57pYNrXG76vF/dvk5wAwS7RudzzFnKMNEz5HNYqfhAcyVbXkjbr1lyRgyVLX7gyeTKMW0gLzuxEwnkePcOK9WMItqSXY7vVmjCkedE3e9L9Ol27PyvOIrhz43p1QO4SdI9LLfseZNRBhX1Qv5a1KOjpjvEJqMkl7cybvNwBqslcw3WFZRizmOWPQByNs3NuBr8rgnVY0ccUjS88Jho4vEFj9UGiFOnBtmlWeoENaAQ/x/hmtvM55lWb32r6+Hf6f7rxrve9/dfBGWpbcFX1ifWHhwSch6a44nQbNbHsyoHJHHwg9nsuSZYDmG1H+1eYRMGfpJNELm+hN6ErneGOYhPtLYEgVX56sQ9KhzAurqL/047RzLk/y+iuD5G5oAdQPr0mIS4sbXMQrvqb+ZjlkzrEQqjsI+pWNA7xTsoz7QPwArM5GxW/wVMvSu6H+bCVeINHmA2RbZjl27qG3txCfRDdOJmn8dsuMinBqbOdjb3JYaLVOLfKMHgDFu/Ck9bT+1OH2E5buwNHwptrf1L7CRBekK5O9N8VV/GK4NKM=
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(23010399003)(1800799024)(366016)(7416014)(376014)(18002099003)(10067099003)(22082099003)(11063799006)(4143699003)(261009223027099003)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?us-ascii?Q?qXoS3JXr/cF56BIaIlSG6eKy0fB7JFWagQZv3O2KE1NkbygiKTY10tH0GtrK?=
+ =?us-ascii?Q?20BxhFfEEMEvG796e1CVKT6+Tm2L/HNLCBGSDEUqtCKUc6fc1kyOjj87COrr?=
+ =?us-ascii?Q?LroKyMf7TTwJb4EvNJJo/u1clK6RkKdl40mqDmDpv5oZQiwCv2x5wAeSJXJe?=
+ =?us-ascii?Q?jUO3HtGi2PAXpEB2yE1Rjo1r4KE5OBnhYfagUqYdrRVpt44W7yo1HujYChVC?=
+ =?us-ascii?Q?Uz8ktQ+Lytv/mWBfQCPFxpWOqwIyfXeVnbpkSEbSDLaXldWh6qVhvWVr52CJ?=
+ =?us-ascii?Q?MniHi6cIiCN7rispv3p+/+NFPvJup5CcoTZXoH72eUmSA0eZAefzux0R4IT6?=
+ =?us-ascii?Q?uHqfhIMYlqbWb1vfcJEG4DEc3weULteJ1/MDdRu9HVAKaQAp/I8LfkS6WUFC?=
+ =?us-ascii?Q?bEzJuQIUmqWH20NV3TzrMxIR7wIcYPugH0yzUS5PTCKjupEQ6cNsH49feGJ9?=
+ =?us-ascii?Q?VHN2F+Wj73/99UnUhZAjL53e8vbk+jEdHJxpwuLE875gP/fO6nmckCOr06KR?=
+ =?us-ascii?Q?1ll1Gxl03DfV7KIGMkx83NWYO2feE4XjBi6KhsaaWpIqM6govXIrRBHoJgWg?=
+ =?us-ascii?Q?ta+D3fzfXXkIXdWny7g2MAcAT0oLiIwU3WLDIGnUrWKbQF6P33n7EvuAiRMG?=
+ =?us-ascii?Q?MEpVuHwdwrFZgrJSIosJjQLTLGkBGn36IQQeKHZgMvrgU88meW6BWETa3CG4?=
+ =?us-ascii?Q?1jQqEyiEpMz753Tk1iMCaH48YZvkr0zV+SOxXuw0WYuoVYrY0bMd7Qq+I1xa?=
+ =?us-ascii?Q?A0HVY8c/pKpMSgE3A6zLoW4KNY1gQedEAiq+R9UySqtFQofYlPQkkdW9Ut3v?=
+ =?us-ascii?Q?cmZ9tJVmXlGOQKEvLgzjt8mc39CuAyDGXFZLJekPGTGLerJcva0XTe5av3PJ?=
+ =?us-ascii?Q?ONIRtksH76mFa6o/9KacfW9Vbao08tm5pGAySBWqgSPs1jezU9mNDdObvvjs?=
+ =?us-ascii?Q?YlZZd3jYuVYc/Z3qVm5ZY2V/V4BTZ5CYl+xHwGFo3bXiUmUmUeERwEBIzEsz?=
+ =?us-ascii?Q?eOVFYvKTPQj1+iS4BwAQA/Mncxkii4vA951dUUZ7a+StP0x3WX1YvZE7fCmM?=
+ =?us-ascii?Q?XGAqMfwGMU/DHTkFbp6pMun8xulRorg5Yuosh59Nbu1i+WYwGVMKz67GhNb4?=
+ =?us-ascii?Q?b9VqIIXxQR8Or8ElT6owHPtQgk7EoV+/SNufZBL2BbZKr4VadVfDqjdyM3gN?=
+ =?us-ascii?Q?2+xAkPLqW+hOyl+646ZAlRxOkRAs8BiSsnqjz3fojdZYRLhBWEUCliJeOT0s?=
+ =?us-ascii?Q?ZZgubTBPeAmcZDKGle1Dkydgz8+9GVlj8PbwUu8ca3RmtQ4X41yDxEBlp6XK?=
+ =?us-ascii?Q?Z24mP21VpVxDVbvs12LCz4jnYbtCM0uTBQy3sPjs0khFMoRPsngaKqVdptiG?=
+ =?us-ascii?Q?V9BwX/++14eJlS7va2o9YlrL0QXVMQ2Wxt9tGlIDKYnZYAfsEIB22j7mDjo7?=
+ =?us-ascii?Q?YshF41bF+ZJGaGQ3sGC2U2woTTr87G1dZkRhweLhzjEkhlRtQRYaYDx/ir/S?=
+ =?us-ascii?Q?Yq6XErwuudJsbVrt3LcFFMaEys1FL33P7qOwxLvzoxn5QU6X6MwyfNOufAN4?=
+ =?us-ascii?Q?ERROda1czJXYgi1WBBcCR59MlnAAUoDQvmkXOGqX/+IbZu+81qZgmeOoWioH?=
+ =?us-ascii?Q?+uPSHbABsWvv16vl8o/ecKo/iC7+MMPR596luiYRsZvliBeg1t/fCSDpHqiv?=
+ =?us-ascii?Q?mb6p8amp66nV/vUdI3OqQM81om/Af8YT/pIjIrp1iLO8/UVKZEolb0N+YPKD?=
+ =?us-ascii?Q?ZsEoOAukFsnjYaKNCqakZIJ5qFZDjeAtbDZsa6vYen2N/Of0AI+R?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 34f81cd5-985e-4795-37c5-08df2bc2ff0f
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Oct 2026 20:21:01.5611
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: mdgOvlOnp8WbsG6e144yCgtJnCVPL0RUwn8EWMsI8HBcaBdNUAs+HufXrpX6yHrEm7HNbvQTns26tkPrZHwg56XPv7xUPqz0O5Whdeyg6GjTgH3lwSkCglIgy6oL2r9i
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10660
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] ARM: dts: imx6sx-sdb-mqs: inherited sai1 pinctrl-0 conflicts with =
-audmux
---
+On Fri, Oct 16, 2026 at 07:03:36PM +0200, Stefano Radaelli wrote:
+> On Thu, Oct 15, 2026 at 01:33:47PM -0500, Frank Li wrote:
+> > On Thu, Oct 15, 2026 at 06:23:01PM +0200, Stefano Radaelli wrote:
+> > > From: Stefano Radaelli <stefano.r@variscite.com>
+> > >
+> > > Add support for the OV5640 camera connected to the Sonata carrier
+> > > board's first MIPI CSI port.
+> >
+> > Does this board only support ov5640 camera? Suppose ov5640 module also use
+> > for other boards.
+> >
+> > Can you refer https://lore.kernel.org/imx/20261011-expulsion-frivolous-690de090cf9d@spud/
+> > to define connectors?
+> >
+> > Frank
+> >
+>
+> Hi Frank,
+>
+> Thanks for your feedback! I looked at the Toradex approach you linked.
+>
+> In our case, the same connector can also accommodate Basler cameras and
+> potentially other camera modules in the future, while some of our other
+> carrier boards use different connectors.
+>
+> Given these differences, I would prefer to keep the classic approach proposed
+> in this patch, describing the camera directly in the carrier board DTS.
+> Do you think we should still use connector bindings in our case?
+> If so, how would you suggest handling these differences?
 
-commit 7833db678f76ab4ca49bd301d79848b89980d394
-Author: Frank Li <Frank.Li@nxp.com>
+Need understand whole board familar, basic Two problem:
 
-ARM: dts: imx6sx-sdb-mqs: remove empty pinctrl-0
+ 	Does carrier board support difference kinds camera?
 
-This commit removes the empty pinctrl-0 property from the sai1 node in
-imx6sx-sdb-mqs.dts to resolve a dtbs_check schema validation warning.
+	Does carrier board or camera module reused for other boards?
 
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6sx-sdb-mqs.dts b/arch/arm/boot=
-/dts/nxp/imx/imx6sx-sdb-mqs.dts
-> index a4ab2d3e960c4..82ae475a018e1 100644
-> --- a/arch/arm/boot/dts/nxp/imx/imx6sx-sdb-mqs.dts
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6sx-sdb-mqs.dts
-> @@ -33,7 +33,6 @@ &mqs {
->  };
-> =20
->  &sai1 {
-> -	pinctrl-0 =3D <>;
->  	status =3D "okay";
->  };
-> =20
+Frank
 
-[Severity: High]
-Does removing pinctrl-0 =3D <>; here without using /delete-property/ cause
-&sai1 to inherit pinctrl-0 =3D <&pinctrl_sai1>; from imx6sx-sdb.dtsi and
-conflict with &audmux at probe time?
-
-imx6sx-sdb-mqs.dts includes imx6sx-sdb.dts, which includes imx6sx-sdb.dtsi
-where &sai1 and &audmux are defined as:
-
-arch/arm/boot/dts/nxp/imx/imx6sx-sdb.dtsi:
-    &audmux {
-        pinctrl-names =3D "default";
-        pinctrl-0 =3D <&pinctrl_audmux>;
-        status =3D "okay";
-    };
-    ...
-    &sai1 {
-        pinctrl-names =3D "default";
-        pinctrl-0 =3D <&pinctrl_sai1>;
-        status =3D "disabled";
-    };
-
-In imx6sx-sdb.dtsi, pinctrl_audmux and pinctrl_sai1 configure the same five
-CSI pads:
-
-    pinctrl_audmux: audmuxgrp {
-        fsl,pins =3D <
-            MX6SX_PAD_CSI_DATA00__AUDMUX_AUD6_TXC   0x130b0
-            MX6SX_PAD_CSI_DATA01__AUDMUX_AUD6_TXFS  0x130b0
-            MX6SX_PAD_CSI_HSYNC__AUDMUX_AUD6_TXD    0x120b0
-            MX6SX_PAD_CSI_VSYNC__AUDMUX_AUD6_RXD    0x130b0
-            MX6SX_PAD_CSI_PIXCLK__AUDMUX_MCLK       0x130b0
-        >;
-    };
-    ...
-    pinctrl_sai1: sai1grp {
-        fsl,pins =3D <
-            MX6SX_PAD_CSI_DATA00__SAI1_TX_BCLK      0x130b0
-            MX6SX_PAD_CSI_DATA01__SAI1_TX_SYNC      0x130b0
-            MX6SX_PAD_CSI_HSYNC__SAI1_TX_DATA_0     0x120b0
-            MX6SX_PAD_CSI_VSYNC__SAI1_RX_DATA_0     0x130b0
-            MX6SX_PAD_CSI_PIXCLK__AUDMUX_MCLK       0x130b0
-        >;
-    };
-
-In MQS mode, sai1 routes audio internally to the MQS block (&mqs, which uses
-pinctrl_mqs on SD2_CLK and SD2_CMD) rather than using external SAI1 pins.
-Commit 73691f21e211 ("ARM: dts: imx6sx-sdb: Add MQS support") originally set
-pinctrl-0 =3D <>; in imx6sx-sdb-mqs.dts to override pinctrl-0 =3D <&pinctrl=
-_sai1>;
-from imx6sx-sdb.dtsi while leaving &audmux enabled.
-
-When pinctrl-0 =3D <>; is simply removed, &sai1 retains pinctrl-0 =3D <&pin=
-ctrl_sai1>;
-from imx6sx-sdb.dtsi while both &audmux and &sai1 have status =3D "okay",
-causing pinctrl_bind_pins() -> pin_request() to fail with -EINVAL when the
-second device probes.
-
-Should this use /delete-property/ pinctrl-0; (and /delete-property/
-pinctrl-names;) instead so that the inherited pinctrl properties are removed
-from &sai1?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261016-arm_dts_cl=
-eanup2-v1-0-3a0cab9fd784@nxp.com?part=3D14
+>
+> Thanks,
+> Best Regards,
+> Stefano
