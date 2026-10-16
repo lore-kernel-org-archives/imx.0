@@ -1,183 +1,111 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 824923815D2
-	for <imx@lists.linux.dev>; Fri, 16 Oct 2026 04:12:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9793F3803D1
+	for <imx@lists.linux.dev>; Fri, 16 Oct 2026 04:14:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792123950; cv=none; b=MMa8Fym6oe37428olSdAE+eM23VKNunK2F4met/zLfheGvR6WRMexW31gFayalOZ5ldbcuifVgQHUVBUFk8cRm87Yldn3SCOlveNNJcFVudg3NRKEsONaK+V1yXHcBdXQgTc/weoN6zNQ/VUV1uO90W2qbxcsvUaDRjf5jLZL/s=
+	t=1792124069; cv=none; b=iUPMTK/AkoroAnIZ1nvh4oa+PV1oK71QGsOPox1UlkCa7oUA83Haxny3sVvioQU0CB1gpiqoEpqP5AcMPXpDLlVHqzkRdFf4fC1i9Bu8AsR2LBDhnHeRGBmEHNR3185Q30SGV5BO/IacyZjYh+YZMD3mN/H1rNCmcxHv+pDHqp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792123950; c=relaxed/simple;
-	bh=r7OlKukmBvsw9WjHDtwSqYZmBLqvfhuoOIuidK+OgfM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XcjzmgO8S8gHexqlQ7UJWNX7ysGq7nOpPMfKXVStdL5nNhnTVaa9U5CjYXkMWP5bzcajU+J/f10YF8yCaJSE1+BTnR0n9J46F8hGt7Y32qdD6NCIiOhyLJXu30+tyK6RpUd6biJPDFBNBNEShnzJQyJPhv5nutPl3RiJvoPxvJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e0mro+ed; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1792124069; c=relaxed/simple;
+	bh=1qShpWkrIk8ai5vN3ZG4QhRWYLqN9LSi2vc6ZeUDvQA=;
+	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
+	 Date; b=SJyX0Udmb4sWgCNEb14cvyxBsW01gfr6IDrbnj9duoSmjivhihn9r43HblHSBXG7+xfGzIYzV8m5rHdRF22ruibUxKmt4eCqAz8zQK3irN3M8bu3yp7PzknZshoEXLhQnrZ9FExyBVjUvmaNZ8yz1pLDlT6n0N2FQCEywOnsFXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i/govUBy; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e0mro+ed"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2e831e86ebfso16181505ad.1
-        for <imx@lists.linux.dev>; Thu, 15 Oct 2026 21:12:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792123948; x=1792728748; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=tCZ6GoTFAN+ex1Ct3jpbL93IWIQW5JGKx6t1S7CNuas=;
-        b=e0mro+edLHTUyODn4mQfLKJc/ybY7dpzr9qgnfW8LRS0f0dF/nBP3F8CwrhfcE75ak
-         QoxyvwBRZbmo8Bn7EzOBq1NlZob/M2Ophkknq6vpx4iWC8M153n9br3x4WUNL4Bg/g8z
-         PWzhTJK6qvZY0zt3WHiAbSPZXuZ9LDVIgysmL9MOya1WWk0wjblnzcvL4gT6SE4NtK/g
-         EOwiajIe5m0uP+pDqbyW3UugvW8IwqswRi0WS5V3aH6sROsGguJqiSefLKTROHIrcCRH
-         ED886CK7c9d+QBmMIQr/mk8gR2WpfC+lgAIfLFrAFrHLsntLOFlLggip5QNji3ipQ8KX
-         FwHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792123948; x=1792728748;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=tCZ6GoTFAN+ex1Ct3jpbL93IWIQW5JGKx6t1S7CNuas=;
-        b=25etUqyPQGK5tavH+eb2U2RyfQDCcWj8OImwYaV4KBDdBBC2RWS8tOC4y6sjA4z/d9
-         h03UqZqIT0fvQzocMZGNiHU7eAd/BMz8XhDtU+5JVgqj/o7UzTbjjczl13v4LV5ojLla
-         14ESfoozj55zgbnXpi0wj39KuuPVBmPBxL7JJeqgHfA+4DzJUwgk+UIh57NXux4KT1Ob
-         1/0QpsgtL72NCGIEZl37AJ+aKbX3hAWntXgVIox7LDJm/fB+ot76FTtAAraWOXpfluwz
-         l9ydq4tcHLOq/w13kp1jDG9eoIgY5Ca7yvfnyO2E/tlGF1HqA5U5T+bJnJyD5gmf1umi
-         mV0g==
-X-Forwarded-Encrypted: i=1; AKwUvBxNAw9pGAodxPKQUC4ugeJDMOfg/LIXu7DwUSbP5LRYD7eoyImuirLs0wpnELdfoRBPaZc=@lists.linux.dev
-X-Gm-Message-State: AFq9FYLP44tj2PJaK2+m1EJ+vQj3loPBEoFPCZSE+Uw42ap5nObv++/l
-	w4tHhwL1Rks81wQyrHZGI1YfL8n/MGGunXP/FSpthFQQomHgNSQTfXY7
-X-Gm-Gg: AYBFou3H7Z4U6eYeEVkDm/GTeiYNe6tujnvIOWbT4U7ylqyiLKKUfLQClV/I+21jgFg
-	AQW4jSG1s074f0SbgJsa/MlfHV3MK1oYMalIUcUJV6zqaAg7/GU/9tNsGWlfHeyKELA5zJjoIYU
-	oCfnwlJxvruJ5VynSQBzb9BOny+s5n2M1kiM9UH4fL5CCl4VGQo6uESgL5is6OTh1ZRdry93ASF
-	ERvG5cnuWYFltLY0N7rMDbQt6qM2S7IGUZec4oHwAd/2+Zde8LjIagjF8LkMW0Mjb0mhb7YCM+K
-	NOlND8be9ktIi1UrGtPHzfRM+kr1h9k9YO+zc44++V82hURm7OshBwogmqVqfSalfeWMi8hL78b
-	FR6/lomPH6TjWWG6KfPL1dxgERDjxRDHZtZZsM3nb4e+KUFzcDgK2yAwPo1rwXhaf/sYdKMNB+I
-	gB/D+Wo7QRYf1X7ZOAz3LwoCpy9QRgti9ptRLxMNFMHj0cpIB930YaNZjpXeoTFskk0Um5SsEAA
-	M5Xt5Be2/D6Dwj1uilBewCp7E9ZztjuhstoGAkykLrB3zGpWqhu5QIXxhi4Ut672W8atBAL1Diu
-	LcPKrqNMcpRwRA==
-X-Received: by 2002:a17:903:94e:b0:2e9:4243:431d with SMTP id d9443c01a7336-2e942434bd5mr63920435ad.30.1792123947778;
-        Thu, 15 Oct 2026 21:12:27 -0700 (PDT)
-Received: from phuc-desktop.. ([183.91.15.56])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e97e8ab443sm3815785ad.65.2026.10.15.21.12.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Oct 2026 21:12:27 -0700 (PDT)
-From: phucduc.bui@gmail.com
-To: Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
-	Venkata Prasad Potturu <venkataprasad.potturu@amd.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	povik+lin@cutebit.org,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Andrei Simion <andrei.simion@microchip.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	David Rhodes <david.rhodes@cirrus.com>,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Shengjiu Wang <shengjiu.wang@gmail.com>,
-	Xiubo Li <Xiubo.Lee@gmail.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Nicolin Chen <nicoleotsuka@gmail.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Cezary Rojewski <cezary.rojewski@intel.com>,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Heiko Stuebner <heiko@sntech.de>
-Cc: Kees Cook <kees@kernel.org>,
-	Syed Saba Kareem <syed.sabakareem@amd.com>,
-	wangdicheng <wangdicheng@kylinos.cn>,
-	Chris Bainbridge <chris.bainbridge@gmail.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Neo Chang <YLCHANG2@nuvoton.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
-	u.kleine-koenig@baylibre.com,
-	Pengpeng Hou <pengpeng@iscas.ac.cn>,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Hemanth Selam <hemanth.selam@gmail.com>,
-	Md Shofiqul Islam <shofiqtest@gmail.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Zain Aboobacker <zainaboobacker33@gmail.com>,
-	Sang-Heon Jeon <ekffu200098@gmail.com>,
-	Bo Shen <voice.shen@atmel.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	linux-sound@vger.kernel.org,
-	asahi@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	patches@opensource.cirrus.com,
-	linuxppc-dev@lists.ozlabs.org,
-	imx@lists.linux.dev,
-	linux-rockchip@lists.infradead.org,
-	linux-renesas-soc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	bui duc phuc <phucduc.bui@gmail.com>
-Subject: [PATCH 11/11] ASoC: rockchip: Explain DAI link startup return value handling
-Date: Fri, 16 Oct 2026 11:09:46 +0700
-Message-ID: <20261016040946.521195-12-phucduc.bui@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261016040946.521195-1-phucduc.bui@gmail.com>
-References: <20261016040946.521195-1-phucduc.bui@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i/govUBy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 055CA1F000C4;
+	Fri, 16 Oct 2026 04:14:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792124068;
+	bh=kGf/hKMC6+KNN0JIxshZbAzsrcin4zRS95zIJoBdN9Q=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=i/govUBysJyOkFt2am1lIWU39JsegEy10JMPQY+qQAf5BwtvSUflwWFyfaiddM7cK
+	 ZWXSOHJwdQJko4rSM7IPOBoWft8vR5XyggpgeAWg0YcMku2CUenkLhvVOTSP/DMwTq
+	 hOre3b8yrjFqShMEYeo/AlRdmcHwtqr9XhU2fITt1vFffNBDiXfi8sgi8YRKkAF2uo
+	 IJNWJ6eLaXdkChu7idkyKVE4FyFYYMwfsLrp1PKb/di2Vu2wyF4tP+t/zuOUTJ9ST5
+	 GDvYbCU20DM9BTXxmseCdjAbRgBd+JSOfzzYnPpfMp0hsnF8ZzAk5v5RVVP4VhkrLQ
+	 uSmSU5lgev8wg==
+Message-ID: <sashiko-outbox-173747@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 18/25] ASoC: imx-pcm-rpmsg: Fix imx_rpmsg_pcm_close()
+ being skipped on rollback
+Reply-To: sashiko-reviews@lists.linux.dev
+To: phucduc.bui@gmail.com
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org, wsa+renesas@sang-engineering.com
+In-Reply-To: <20261015014324.5569-19-phucduc.bui@gmail.com>
+References: <20261015014324.5569-1-phucduc.bui@gmail.com>
+ <20261015014324.5569-19-phucduc.bui@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 16 Oct 2026 04:14:27 +0000
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: bui duc phuc <phucduc.bui@gmail.com>
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] ASoC: fsl: rpmsg: remote state leak on hw_constraint error
+--
 
-Add comments explaining why the .startup() callbacks must return
-0 on success to ensure the DAI link is correctly marked as started
-and prevent future changes from reintroducing the issue.
+commit e67c435f012ba584c1ab6a6bd485da78b988ac05
+Author: bui duc phuc <phucduc.bui@gmail.com>
 
-Signed-off-by: bui duc phuc <phucduc.bui@gmail.com>
----
- sound/soc/rockchip/rk3399_gru_sound.c  | 5 +++++
- sound/soc/rockchip/rockchip_max98090.c | 5 +++++
- 2 files changed, 10 insertions(+)
+ASoC: imx-pcm-rpmsg: Fix imx_rpmsg_pcm_close() being skipped on rollback
 
-diff --git a/sound/soc/rockchip/rk3399_gru_sound.c b/sound/soc/rockchip/rk3399_gru_sound.c
-index 0ec80a4b8c59..d4a0daabfb42 100644
---- a/sound/soc/rockchip/rk3399_gru_sound.c
-+++ b/sound/soc/rockchip/rk3399_gru_sound.c
-@@ -266,6 +266,11 @@ static int rockchip_sound_startup(struct snd_pcm_substream *substream)
- 	if (ret < 0)
- 		return ret;
- 
-+	/*
-+	 * ASoC only marks the DAI link as started when .startup() returns 0.
-+	 * Since snd_pcm_hw_constraint_minmax() may return 1, explicitly
-+	 * return 0 to ensure the DAI link is correctly marked as started.
-+	 */
- 	return 0;
- }
- 
-diff --git a/sound/soc/rockchip/rockchip_max98090.c b/sound/soc/rockchip/rockchip_max98090.c
-index d54c36682415..de392b420ebd 100644
---- a/sound/soc/rockchip/rockchip_max98090.c
-+++ b/sound/soc/rockchip/rockchip_max98090.c
-@@ -202,6 +202,11 @@ static int rk_aif1_startup(struct snd_pcm_substream *substream)
- 	if (ret < 0)
- 		return ret;
- 
-+	/*
-+	 * ASoC only marks the DAI link as started when .startup() returns 0.
-+	 * Since snd_pcm_hw_constraint_minmax() may return 1, explicitly
-+	 * return 0 to ensure the DAI link is correctly marked as started.
-+	 */
- 	return 0;
- }
- 
--- 
-2.43.0
+This commit fixes an issue where the close callback was being skipped
+when snd_pcm_hw_constraint_integer() returned a positive value. It ensures
+the component is properly marked as opened by explicitly returning 0 on suc=
+cess.
 
+> diff --git a/sound/soc/fsl/imx-pcm-rpmsg.c b/sound/soc/fsl/imx-pcm-rpmsg.c
+> index 7086fb7fc1eba..85b7c929a28a4 100644
+> --- a/sound/soc/fsl/imx-pcm-rpmsg.c
+> +++ b/sound/soc/fsl/imx-pcm-rpmsg.c
+> @@ -269,7 +269,13 @@ static int imx_rpmsg_pcm_open(struct snd_soc_compone=
+nt *component,
+>  	info->stream_timer[substream->stream].substream =3D substream;
+>  	timer_setup(&info->stream_timer[substream->stream].timer,
+>  		    imx_rpmsg_timer_callback, 0);
+> -	return ret;
+> +
+> +	/*
+> +	 * ASoC only marks the component as opened when .open() returns 0.
+> +	 * Since snd_pcm_hw_constraint_integer() may return 1, explicitly
+> +	 * return 0 to ensure .close() is not skipped on rollback.
+> +	 */
+> +	return 0;
+>  }
+
+[Severity: Medium]
+If snd_pcm_hw_constraint_integer() returns an error, can this still leave t=
+he
+remote DSP in a leaked state?
+
+Earlier in imx_rpmsg_pcm_open(), an open message is successfully sent to the
+remote DSP:
+
+sound/soc/fsl/imx-pcm-rpmsg.c:imx_rpmsg_pcm_open() {
+	...
+	info->send_message(msg, info);
+	...
+	ret =3D snd_pcm_hw_constraint_integer(substream->runtime,
+					    SNDRV_PCM_HW_PARAM_PERIODS);
+	if (ret < 0)
+		return ret;
+	...
+}
+
+Because returning a negative error code prevents ASoC from marking the
+component as opened, snd_soc_component_close() will skip calling the close
+callback on error rollback.=20
+
+Does the driver need to manually send a close message before returning the
+error, or is there another way to ensure the remote DSP state is cleaned up
+on this failure path?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261015014324.5569=
+-1-phucduc.bui@gmail.com?part=3D18
