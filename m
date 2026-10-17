@@ -1,57 +1,48 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F24D33B2FCA;
-	Sat, 17 Oct 2026 17:39:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 482C73A48E2
+	for <imx@lists.linux.dev>; Sat, 17 Oct 2026 18:19:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792258790; cv=none; b=ecK5aY0YMuoLRGEMekn2EzpwwbLHv2OJNYnP2Pqwaxzz7JGocDEMKL7wa/2VFNXM/CpQbi87CFml8qP9Fhl/s5EBY8iTLuZ7zaboVaGTSM8SDukZFXMforGV1CDQcCnqtWVRB+PWQQlVKIIzpDdbRL4w1dYIFQtbRpAUs2rToJc=
+	t=1792261157; cv=none; b=p2IYsAeaLfnmiOUFW3341UnkrTJ8m0+rL9WGWtb1KN8SQSEi7CTTkd2ZXCYDIcQHg7E+q0bQd2r1+5xPdFmbxbTwX5mK05N0ruMuh7E0ldToIzu5Siqzcxh2xWGE3uifZjp+Vad4Docll0t4h3kL3tCtN+4tNaifeSeGcYCP6V0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792258790; c=relaxed/simple;
-	bh=BKW9ieMLcQJ9Ko3+eSZK8W4qLz2GntiOycxJB1eDVUw=;
+	s=arc-20240116; t=1792261157; c=relaxed/simple;
+	bh=L/P4HtHRbTJElNoTQJpIvdWlFl4tFtfm9DPAIaSyhQU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YDZnuyrAgvAe/ZQ4mddLvyOR01udMlKKPn940uaSwWR83jIWYIr8C2ZPmhpsIxMLccx7jBtzKXyrUxDc77nzEbc54OAfCWBlqbnOSo61xDhQzQNFP2TcE54da7sFUwrqJUN58XXkuGTrNMKOcMOyASKlUlB/6/A5/+ZSATvasC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=E0hKo2Fy; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=BmmAokqC8P1pJnuPRd9BXqKp4w/TuAW5x6mEYdnMFZ/3MasN5qUR4PDJrCxtHZSiK2e6uqdrLIXlMKC3oWFelkNDiqgd/gaiVQjmIli0TFN48ext0GJF9ow7fyftXDRYDf4iUtcIiNRexdlB4RgFXcuMv08sMKgkNvnrczC6WWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=jzlvZpvD; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="E0hKo2Fy"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=/3wyvCgF7xvp0uGxR/dqJ+LvnFcAl8T7SfLqaAeJ9Rc=; b=E0hKo2Fyr9kBeq4dGcwbVc5YSE
-	6briuCcRfeFiHCB07U89czZciGFAhsWpSB1M4TKmpxHfdWuk8n8L+nfoafbdM6OMCNY/SHwozuKSy
-	h/m2jy1RCJ8aYzFoWZa7i6nheTrzusNZflefORJuyWhQ+ywTHMAXbM0iJSLwMEnFiAhQ=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xI8NR-00BMvD-PW; Sat, 17 Oct 2026 19:39:25 +0200
-Date: Sat, 17 Oct 2026 19:39:25 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Marek Vasut <marex@nabladev.com>
-Cc: netdev@vger.kernel.org, Vladimir Oltean <vladimir.oltean@nxp.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="jzlvZpvD"
+Received: from francesco-nb (xcpe-178-82-167-143.dyn.res.sunrise.net [178.82.167.143])
+	by mail11.truemail.it (Postfix) with ESMTPA id 250AE1FB65;
+	Sat, 17 Oct 2026 20:19:11 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1792261151;
+	bh=RpTSiOPXX8wfXwImlsolqAJ9WURkWVPhsipC38lvdxg=; h=From:To:Subject;
+	b=jzlvZpvDijkHExpia6go2tWbL3gNnnjaUicl7J7bG70rCpdlLnO8iHeVsDtLJViux
+	 G3R//dDgdpE7pm/TrJ9l0f9Wh50G4iFB+ITanrSWaa55O8UQncNVS8brkzOTdwAiEe
+	 bhxDAd08+EjuGnO2gfRzltiq+umepgVu/4Bjdp1aqrlF4vw0CXPQBlXZ2CTIhxWCer
+	 ZUFWxjn1WZ84+F8ib/kG8fP71kbQVHT0ARvMxM8EmRow+UZ81Sa1Ikz+yW4bJsqJYL
+	 7747Z+S5rXrSaQydALonfGxM/fBRBQpgt38PiLRxMDq3hY0hxaRTLWVQaIIMIQcenJ
+	 r6yvejn38Da1A==
+Date: Sat, 17 Oct 2026 20:19:06 +0200
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Frank.Li@oss.nxp.com
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Eric Dumazet <edumazet@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
-	UNGLinuxDriver@microchip.com, Wei Fang <wei.fang@nxp.com>,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org
-Subject: Re: [net-next,PATCH 2/2] enetc: Make eMDIO MDC rate configurable
- from DT
-Message-ID: <84dec379-cfcf-4b95-95a7-e86b312c52ac@lunn.ch>
-References: <20261016193344.115518-1-marex@nabladev.com>
- <20261016193344.115518-2-marex@nabladev.com>
- <725fe351-bdd0-4b53-b551-0f638d02f98a@lunn.ch>
- <32239c97-e1dc-416d-8570-f681f91df0c8@nabladev.com>
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH 08/14] ARM: dts: imx6qdl-apalis: remove disabled node
+ "panel-lvds"
+Message-ID: <20261017181906.GA8265@francesco-nb>
+References: <20261016-arm_dts_cleanup2-v1-0-3a0cab9fd784@nxp.com>
+ <20261016-arm_dts_cleanup2-v1-8-3a0cab9fd784@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -60,12 +51,29 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <32239c97-e1dc-416d-8570-f681f91df0c8@nabladev.com>
+In-Reply-To: <20261016-arm_dts_cleanup2-v1-8-3a0cab9fd784@nxp.com>
 
-> The clock would be way too fast, on MX95 that would be over 33 MHz.
+Hi Frank,
 
-O.K. I've run systems at ~ 12Mhz. The steps where quiet big, and it
-was unreliable at the next possible speed. I guess you start needing
-careful design, balanced lines, termination etc for really high speed.
+On Fri, Oct 16, 2026 at 04:10:51PM -0400, Frank.Li@oss.nxp.com wrote:
+> From: Frank Li <Frank.Li@nxp.com>
+> 
+> "panel-lvds"'s status is disabled and no dtso overlay to enable it. So
+> remove it to fix below CHECK_DTBS:
+>  arch/arm/boot/dts/nxp/imx/imx6q-apalis-eval.dtb: panel-lvds (panel-lvds): compatible: ['panel-lvds'] is too short
+>         from schema $id: http://devicetree.org/schemas/display/panel/panel-lvds.yaml
+> 
+> Reduce move than 44 lines warnings.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-	Andrew
+Please, do not merge this. This is just breaking functionality for real
+user to fix a warning.
+
+There is a series [1] already posted to address the issue correctly, so that
+we can have the issue fixed without impacting users.
+
+[1] https://lore.kernel.org/all/20261001155412.3177428-1-leoreis.costa@gmail.com/
+
+Francesco
+
