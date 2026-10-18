@@ -1,64 +1,42 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
+Received: from out198-13.us.a.mail.aliyun.com (out198-13.us.a.mail.aliyun.com [47.90.198.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35B4F3D3002
-	for <imx@lists.linux.dev>; Sun, 18 Oct 2026 04:09:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 846EB379ED7
+	for <imx@lists.linux.dev>; Sun, 18 Oct 2026 10:21:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=47.90.198.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792296579; cv=none; b=GF9b5eWpD9T0Or+EY3W36ojxrntMG0y6tLrYWjQ2D4gZVYR4w90y2ODk5zQUguAkdo/SQUwyiwPDjnTzFX1Tbg9rT7Tf0NHyLkU9515eYYw8b3amekvXHlwVUY7JCcfONR6ZF73SMHaKDGwFo46InCtbfFPkOGoKDe5doW8R0Yo=
+	t=1792318909; cv=none; b=lkFUaIrHm3Z2KsOaBoYDkFbXaump6g2wtn8wfCxSAmUCHX3LrYnVq+vpfnHxw1UAXyCUjwEpIdle/2tpXfzmeuxKsToRrOo0NDuZjaXYsNygC78Brle2v2763iHlPeqTGzUTy8U8NAFTFHy9fR1losoFk7uJpYmBG2fP+uFaLIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792296579; c=relaxed/simple;
-	bh=G6YCQUWoTfdoR9sjUuiGCFgf7yaWwuioxagRevsh1y4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=lmENLjS0tgJ8XD0Og1h8keFKi65t1/UqIkkwWYj7L/4O/6bhAnEIgScSHEwcKwcScOSohJMShJkPHtH4fY0aO6P0/QOjc+Sd1/zT9NO7RsXyzRUGJ6rJ3iuCkMkLHujwt1geleOOul6w37TsDEafpsjfuUpK1K3txudtnt3RngQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=j5t9eGMW; arc=none smtp.client-ip=220.197.31.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1792318909; c=relaxed/simple;
+	bh=MqIop+Ry5uHGldSb9XPw77eJyDNc2sII9hGClB09mQs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=b8/M4Mb5qSr/MZPwqP8lDWyOas+GseXeOoM+lWjYv3vAAUzEPaF6dqyL2R2chq+/1O37Tn+f19qcrQmrBi7Lhsc7cL06TTpD4mckqasSfzXkMvjxDJhl8hELc5lB5aIgSM1wAPPtYI73cFNPf1Uugi5mcNCzF5kveBSZdCN/EcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yinhe.ht; spf=pass smtp.mailfrom=yinhe.ht; dkim=pass (2048-bit key) header.d=yinhe.ht header.i=@yinhe.ht header.b=bTY7rcoL; arc=none smtp.client-ip=47.90.198.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yinhe.ht
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yinhe.ht
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="j5t9eGMW"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=SX
-	ugwLdUOyNBCr4mpnAsSBw9bY2S7YZs8qkchEaRL6o=; b=j5t9eGMWH1jEU6vcmH
-	hJ0BG0o+xoJB80HfRxMDs2+x4Qq9zVweFxIEgWil8IrJNRupqs3935+LnJB+aLuc
-	Xd8IZhB7TkDjCWThydVOXpzkuavJEx90aPyVEfIgRN9Rf7ENzqe0lho3P07kCGFw
-	DipcWlKdUtE8p7PuR61jOIX+Y=
-Received: from pc.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wD3n6n9RdRqdUaGAw--.28247S2;
-	Sun, 18 Oct 2026 12:07:27 +0800 (CST)
-From: Jiale Yao <yaojiale02@163.com>
-To: Vinod Koul <vkoul@kernel.org>,
-	Frank Li <Frank.Li@kernel.org>,
-	Zhang Wei <zw@zh-kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Linus Walleij <linusw@kernel.org>,
-	H Hartley Sweeten <hsweeten@visionengravers.com>,
-	Ryan Mallon <rmallon@gmail.com>,
-	Mika Westerberg <mika.westerberg@iki.fi>,
-	Ebony Zhu <ebony.zhu@freescale.com>,
-	Kumar Gala <galak@gate.crashing.org>,
-	Dan Williams <djbw@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Zhangfei Gao <zhangfei.gao@marvell.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Qiao Zhou <zhouqiao@marvell.com>,
-	Leo Yan <leoy@marvell.com>,
-	Lennert Buytenhek <buytenh@marvell.com>,
-	Nicolas Pitre <nico@marvell.com>,
-	Saeed Bishara <saeed@marvell.com>,
-	Maciej Sosnowski <maciej.sosnowski@intel.com>,
-	Shawn Guo <shawn.guo@freescale.com>,
-	Srinidh Kasagar <srinidhi.kasagar@stericsson.com>,
-	dmaengine@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
+	dkim=pass (2048-bit key) header.d=yinhe.ht header.i=@yinhe.ht header.b="bTY7rcoL"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=yinhe.ht; s=default;
+	t=1792318890; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=oPcpo3LDbQ/rlNvHeFnmd3lUFBVjp8gt26UuGxzknmc=;
+	b=bTY7rcoL9TQjU8l8jgNCaE07za6UgS5HbTwyzPpwQiKAX68UOOVhJ3PNDDkElrOZ8PEn/o8SI6EiSps/LlFY1d78z/oAo7WEMPQDxTpLxcP2IBmxRj2D17/iEhaetETTd42wB8VITYs56uQ4gHH5+56pfmIZ+hGh9CjxhJPpv2bxTrLLhWyDCDws0sR6R3TBbLRWF0siXr2wtN0n7MDntErqtZ3KfD1GJl2jTEfo+X+3x85vfDgIipKIjp/MSjKB7oMHNe3eUTzFcpre7sR6keVlWKlTv1+UvMrIFiNfckxI2SBHy24I2HNr1YvuxUmIvoliiQm3GdzJ/x43w6sf3w==
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07668728|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.0457954-0.00438278-0.949822;FP=5349324788030295733|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037032089;MF=chunyuzhiqiang@yinhe.ht;NM=1;PH=DS;RN=8;RT=8;SR=0;TI=SMTPD_---.jiygvZo_1792318888;
+Received: from galx..(mailfrom:chunyuzhiqiang@yinhe.ht fp:SMTPD_---.jiygvZo_1792318888 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Sun, 18 Oct 2026 18:21:29 +0800
+From: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
+To: netdev@vger.kernel.org
+Cc: linux-can@vger.kernel.org,
+	mkl@pengutronix.de,
+	kernel@pengutronix.de,
+	haibo.chen@oss.nxp.com,
+	shawnguo@kernel.org,
 	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Cc: Jiale Yao <yaojiale02@163.com>
-Subject: [PATCH 0/7] dmaengine: drain completion tasklets during teardown
-Date: Sun, 18 Oct 2026 12:07:16 +0800
-Message-Id: <20261018040724.534641-1-yaojiale02@163.com>
-X-Mailer: git-send-email 2.34.1
+	ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
+Subject: [PATCH net v4] can: dev: can_fill_info(): don't wake up controller if interface is down
+Date: Sun, 18 Oct 2026 18:17:44 +0800
+Message-ID: <20261018101744.93657-1-chunyuzhiqiang@yinhe.ht>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -66,44 +44,58 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3n6n9RdRqdUaGAw--.28247S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7ZrWDJF18Xw4rGry3XF4kXrb_yoW8GFykpF
-	WfG3yY9rW8tF4Yk3WkJa12vFyrX393J3yYkwsxtw15ua15ZF9Yqr1rK3WYgF4jyr4xZF4j
-	qa1DtF1rur1kAFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0z_l1vfUUUUU=
-X-CM-SenderInfo: x1dryxhdohiji6rwjhhfrp/xtbCzR9gmmrURf+2FwAA3N
 
-Several DMAengine drivers defer interrupt completion processing to
-tasklets, but release channel resources without draining tasklets that
-were already queued. Stopping or releasing an IRQ prevents new hard IRQ
-handlers, but does not synchronize the deferred tasklet.
+If the interface is down, the CAN controller might be powered down, the
+clock disabled, and/or its external reset asserted.
 
-Depending on the driver, a late tasklet can access freed descriptor
-storage or invoke a completion callback after its client data has been
-released. Ensure each producer is stopped before killing the tasklet and
-freeing the resources it can access.
+Don't call do_get_berr_counter() to read the CAN bus error counters if
+the interface is down. This fixes a generic logic problem that exists
+on all platforms.
 
-Each patch is independent and keeps the synchronization local to one
-driver's channel or device teardown path.
+Fixes: ec56acfef2af1 ("can: flexcan: flexcan_get_berr_counter(): switch on clocks before accessing ecr register")
+Cc: stable@vger.kernel.org
+Signed-off-by: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
+---
+v1 -> v2:
+  - Reword the commit message to drop the MDIS reasoning.
+  - Add Fixes: tag.
 
-Jiale Yao (7):
-  dmaengine: ep93xx: drain tasklet before freeing channel resources
-  dmaengine: fsldma: drain channel tasklet during removal
-  dmaengine: mmp_pdma: drain channel tasklets during removal
-  dmaengine: mmp_tdma: synchronize tasklet when freeing a channel
-  dmaengine: mv_xor: drain IRQ tasklet before freeing channel memory
-  dmaengine: mxs-dma: synchronize tasklet when freeing a channel
-  dmaengine: ste_dma40: synchronize tasklet when releasing a channel
+v2 -> v3:
+  - Use the title and commit message suggested by Bough Chen.
+  - Drop the i.MX8QXP-specific crash dump and erratum explanation.
+  - Drop the m_can reference.
+  - Drop the Link: tag.
 
- drivers/dma/ep93xx_dma.c | 4 +++-
- drivers/dma/fsldma.c     | 1 +
- drivers/dma/mmp_pdma.c   | 4 ++++
- drivers/dma/mmp_tdma.c   | 2 ++
- drivers/dma/mv_xor.c     | 6 ++++--
- drivers/dma/mxs-dma.c    | 1 +
- drivers/dma/ste_dma40.c  | 2 ++
- 7 files changed, 17 insertions(+), 3 deletions(-)
+v3 -> v4:
+  - Move the netif_running() check from the flexcan driver to
+    can_fill_info() and can_get_size() in the CAN core, as suggested by
+    Marc Kleine-Budde. This covers all CAN drivers, not just flexcan.
 
+ drivers/net/can/dev/netlink.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/can/dev/netlink.c b/drivers/net/can/dev/netlink.c
+index 6f83b87d54fc..d17f4e9cc144 100644
+--- a/drivers/net/can/dev/netlink.c
++++ b/drivers/net/can/dev/netlink.c
+@@ -584,7 +584,7 @@ static size_t can_get_size(const struct net_device *dev)
+ 	size += nla_total_size(sizeof(u32));			/* IFLA_CAN_STATE */
+ 	size += nla_total_size(sizeof(struct can_ctrlmode));	/* IFLA_CAN_CTRLMODE */
+ 	size += nla_total_size(sizeof(u32));			/* IFLA_CAN_RESTART_MS */
+-	if (priv->do_get_berr_counter)				/* IFLA_CAN_BERR_COUNTER */
++	if (priv->do_get_berr_counter && netif_running(dev))	/* IFLA_CAN_BERR_COUNTER */
+ 		size += nla_total_size(sizeof(struct can_berr_counter));
+ 	if (priv->termination_const) {
+ 		size += nla_total_size(sizeof(priv->termination));		/* IFLA_CAN_TERMINATION */
+@@ -735,7 +735,7 @@ static int can_fill_info(struct sk_buff *skb, const struct net_device *dev)
+ 	    nla_put(skb, IFLA_CAN_CTRLMODE, sizeof(cm), &cm) ||
+ 	    nla_put_u32(skb, IFLA_CAN_RESTART_MS, priv->restart_ms) ||
+ 
+-	    (priv->do_get_berr_counter &&
++	    (priv->do_get_berr_counter && netif_running(dev) &&
+ 	     !priv->do_get_berr_counter(dev, &bec) &&
+ 	     nla_put(skb, IFLA_CAN_BERR_COUNTER, sizeof(bec), &bec)) ||
+ 
 -- 
-2.34.1
+2.47.3
 
