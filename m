@@ -1,65 +1,63 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C35049B459
-	for <imx@lists.linux.dev>; Sun, 18 Oct 2026 12:32:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 499664C2251
+	for <imx@lists.linux.dev>; Sun, 18 Oct 2026 14:23:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792326774; cv=none; b=czGyIFMP9Ab5mdXeoWFnoxmKr3d0V/Zqf7Xx8aTKf5CU2m3cv85oIWra0w6wdUF5uziBWjLb8rT4vvWnAjQczf9q+wAqlji8YUwiAHVFaMhKVq/kVA+lB/4m80VGUKlMkwSVSp8oeNkoiPQ6w8C1Kxdkk3aWX4OQghNd4BwwJT4=
+	t=1792333397; cv=none; b=Yvvpq1wDzYDHws062RrrDctpiklMPaIN/l0hedZV/G/1xum8y8btD7XmyhnYZ6lAUw8Oh4piapOcBY+H5DkYI17ygsbeBw0u0I+Z2lG1Sl+gJxPRAeuLypU2HAPJHIAf6hypHK3ax7EdW1VAwsu44Y1rqLiIfIlkvEZ7bwKsjP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792326774; c=relaxed/simple;
-	bh=sDeH5Aa/6RVXWRKxDt4y6WTi40kVY22vaLdAcItynqs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZlwloFS2g86mji5WIehhDHPt5dWx8cY/egjJyzQbMLDIVauIY54vaYYq6EeTKDlNj9Qg+U2O9rjS2yj3Z/ELYj0956KdZaQ41PpGFDPNQttfqZ7mPk3xTdeoGt9ohmDmLMOvvTWGVTj2RrcQpQr7eGUH/htHGhMsWLINOAOEZRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RtJZ+XyH; arc=none smtp.client-ip=209.85.128.47
+	s=arc-20240116; t=1792333397; c=relaxed/simple;
+	bh=DehZpx2/K8ju4VpADuJdHXsOH8lGOwPvHMyPcJsyyKs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=n5DTHhIe39Om+qC4BjLChwwNonf0x03pSsMWiOWnapKgt4JlCFtJImqdmehcvC1/5l/aaQD44A8IBMIlM5hhLTZMI7vr3VRd0IlMH8PlxFbefVxOIOPMYiQfaNXZlkAFmg5Wjae0/gj342+5+cfraR3G2JKisx1e8H8rfZe4HB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DVYTaLOE; arc=none smtp.client-ip=209.85.221.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RtJZ+XyH"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4a1e1dade31so2634855e9.3
-        for <imx@lists.linux.dev>; Sun, 18 Oct 2026 05:32:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DVYTaLOE"
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-48c5358fc28so1060068f8f.0
+        for <imx@lists.linux.dev>; Sun, 18 Oct 2026 07:23:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792326771; x=1792931571; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=le/7ZMUGNW/GaIhf/O4ysG6KC+WhTS8gzrqG1Rpguic=;
-        b=RtJZ+XyHsTJsRaAwa6isJkqYoAaxrKKNxNHWyGXTl08zLd9uhbdPlUsItP/QJG1+kU
-         ENW6O5EeLfQn9yiedGJ1MrGWQmquT+zoweBDGSMHGnw+nIvrpBRpJQe210Sf//OxV1T4
-         9EzhZpgX7nQfMSItI6/cjvDULcDA1sFO/aSqElZMPc3/0kffK+BHuWoCQFiedeQn+XCd
-         99VhKtqd0u9a3HH3LkeMQHszFN4qIkfbcXJtJbKowv4zP9yrT11ccZ9vsCHY1KowRhgJ
-         3T55G3GYDBZiqPKI06tUz7uZBIKybxh1KmQGtLMi5SOy0sf9P70IQN90NScYwoqkeQui
-         mIWw==
+        d=gmail.com; s=20251104; t=1792333394; x=1792938194; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=A95fhrvfAAlu2Cvs/sZqanN19o2eeng7TB9Tzs9GgKQ=;
+        b=DVYTaLOEzltDWYa/RDOUoglJco5kAKU4+q/NmqjUI4Mc1Ki8gvO58SMLVqXZjsetRW
+         9SVTvWjLp5K7p5dv/EJN4TTp7FMiP7n7P+RunU+4S78EJrnNFi4LnlPMtRoy7G0DN0Pm
+         lQpByqhLL1xYf2imM9XCsGm2FhwGS+qjLJCkrvWHgn4ZZt/xSGqvgTKWr//56Pi2nmwO
+         JZ70Bixftu0wrbRA8ikvDOn7V0Xt2wSEFm1APtmyq96/MY/lHMI1K85UluKswdpB47AB
+         Rm68IiJUPRSEVbtiy4dY9GqB7Wqp6vIrzaCFH4ufT0HCoLMs+rIi9H9UpUKC4pq/OQvF
+         qnGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792326771; x=1792931571;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=le/7ZMUGNW/GaIhf/O4ysG6KC+WhTS8gzrqG1Rpguic=;
-        b=IUfpb8nmspEo+uorpLKPaED0FEH5e6oB2ksmiANhQfm6L2Y/qDAe7HO3B1SU0ZOZfE
-         6uWaw03t1UkeQwq4lejNthDuVachYeFiRsFo4RoAn63NoQ8FboOPPibJSkxCH3iDs/7L
-         4MAtvzGRm4r94Mml6cKGDvHpe4So0Rbo3Ky3gI5x0VBBAJqNDTkwJb+SUSUBWBbQs10h
-         V3YYKw8tSIbiTndAuTAwZOmw/dF9muiuSarytkGn/THbpmdmSbFzMtCbaUV50KdiULmM
-         MTGCuzGWVWFhznIKsOaCkh8XmODnHOFVB6d16Z/DCVXrVDtNbB2qRaHoTFCpPmznMpI0
-         yEVg==
-X-Forwarded-Encrypted: i=1; AKwUvByVuEXQhoPP7bjTvbeUfggzdR7ZwHFxCZ+kWLanXNn+2RgWjt8KLDwiFHNRALlhvAXAOa8=@lists.linux.dev
-X-Gm-Message-State: AFq9FYIwsgoEEQoafsEaEQYOv9ltXdlb3LjH3f+oqnx6nHg4VTSscFwm
-	CdT4awwIld7GN7Dicic55haAiCmzjpd6r9Mqf6NF2A90NVVlFBKyopQs
-X-Gm-Gg: AYBFou3OewLcXOu0qAeur/P6jN1QM5uez/r4VnN433RyCzfdM+zeuzRrzh/Jy2ZBlHQ
-	mxpZips4h2XukiplZBs5Ilx6Haz1ojMiBXF4rf+XpCWLTAjaIP9oCFHz5jTAjr1nFNnotLqhDhr
-	XQhTiEhHeNqANIMgbiVDCcLYAYz0a5ZBB4/nNC80Q2uZyHfpIKVyCzZ3zaU2W+FSK9gfOPuuIt1
-	BRSWpa5q3n/q/SEW2tXsHO0ZZYgbQgRsqiYKfI6JvPcVFDVlx1LEyfC6AvhhfC3kz7qxYZpAYeO
-	E+wR2RgDHwlXHIqr3OZBctXiWrpsG1qw4qeUrMuvB6ycj9phzKTVwbsgybwkz1hJ3U4gFMP7gVD
-	8DiLTgaVWsMR3bJE54Pk6nByMNj0oxwBznyBPAEJWcf04UVvWLw92Zb31mZ4FE8PuqrA7nxpriR
-	4oIOZQMqMPtSH/5JEs/VzxmMTCW1tDaxsUGv5K2ljchr5PHrZrEUjlZsf3J3S1CX3UUpibSJUva
-	D4V8nbnzF4FP607dGqgHEeHoyzCxqO29CQ8EDq3X7dhwnyQ+k1YNenMVkQmzATlyCVmzYRez/KG
-	TP4XoMGcq3lUxqFGpgqYog==
-X-Received: by 2002:a05:600c:4e8a:b0:4a0:4a8:d444 with SMTP id 5b1f17b1804b1-4a1d7630cf8mr109051655e9.33.1792326771289;
-        Sun, 18 Oct 2026 05:32:51 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1792333394; x=1792938194;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=A95fhrvfAAlu2Cvs/sZqanN19o2eeng7TB9Tzs9GgKQ=;
+        b=zeOXhPqRlolxEW6eV/mXVLny8HORA2xVCe0jxF1T9YJ/NYYBl7UQhKk7QGpi53Oh2k
+         NFs2elMZysjNeScSmZMc8sC85zg9kz/27iIOsbGIa/ZUjpYkFl96eiGugj/micalMJUW
+         PJ7sIGKquxAoE618HUgwbEUJ4eqTD1H4OxOocq/zcoNRoNF8KKFwp1ThxtMJ4LxwCTBh
+         KvE8/w4BMDHfl56A6zjuI1mT2L9GxlSR/1Kq6TET8E6mbEToXjbFn/bzsdrVmDnK+0FS
+         bPGBaSA226f3nB97QU7o9UQh/4XlTNekHlser+0PrX8WhkUEJDQxgPETvhARAxk1fkKP
+         mD4g==
+X-Forwarded-Encrypted: i=1; AKwUvBxthzeJ37HTgaOnrkn4TxtA/bjppra7xTvHb1dvwT5CyCY7gHlnoaRNOOzVDJ6bVherjOw=@lists.linux.dev
+X-Gm-Message-State: AFq9FYL4cjmIV1FIf4VmFlLvF+GdX8IVeljNQaaqrQwMvodpfBLK6tVv
+	QujDgTgPeqCLoVWOmPSpDdqp1zr+2NWQiNo+tTC+WyuhSDrkYjGa7RYP
+X-Gm-Gg: AYBFou0PTNvgQS5suqqFGu5/M0uueBOaQRBpRX2TowIjGcjRokCgwVG/EAbxIcDf2My
+	fJukPFVRHPEb2ncZ5p3jKnF4Fw2Etbj5AYF6kzSFpxD2CD5H49p+FLB5McBOOeIRcyc9CLq5yNj
+	qxaJFCF33N8hRJbZsYTivR1uuL9MUDVNIrVgYrYH0Ev2eEZyVnxdHn2cHx2BiOfYctJBnfQhBKb
+	PfzlVq4etUohVozW3QlT5HVT3hU9UJ9mkTBMMgNEU6V8R5Q0EQLHmg+d4xlj/IF82rw31kl6TDY
+	SCeUef3KE9fjmULYOFQFYyY7NdjgNbaJOrgU3c3s2D9rKfcZ2RmlRnZyW5lciOI37rptxHB/X0F
+	SJ1vRvOQ+EQTHZhQ8LVQX1YMEJMGqnlEtXYcpHnr/A0aVQ4EmnVVjBFLmfjC7BTbd54DM4JxpSM
+	VgVY0cbcyyAJvdP0m7I4MAI2dNCndHuhtbZON3cOSDQiSrNNarb17C4Z1ENtbipmiPTPeZDg3iJ
+	F2uEMqT/E3cgUz87tcVMTZu/j46k3sgqc1YIQswg3gWv9148/SNyjqUGVFW+9tzYEFqQHoCCF0x
+	hTXbSRr6Tn61Dd8JfYkF6w==
+X-Received: by 2002:adf:e18e:0:b0:48c:7387:6b88 with SMTP id ffacd0b85a97d-48e07fa0252mr10691595f8f.37.1792333394198;
+        Sun, 18 Oct 2026 07:23:14 -0700 (PDT)
 Received: from Lord-Beerus.station ([93.66.71.207])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1c8ddde4esm245012535e9.12.2026.10.18.05.32.50
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48dfd4f8cfesm14971909f8f.37.2026.10.18.07.23.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 18 Oct 2026 05:32:50 -0700 (PDT)
+        Sun, 18 Oct 2026 07:23:13 -0700 (PDT)
 From: Stefano Radaelli <stefano.radaelli21@gmail.com>
 X-Google-Original-From: Stefano Radaelli <stefano.r@variscite.com>
 To: Frank Li <Frank.Li@nxp.com>,
@@ -74,13 +72,12 @@ Cc: pierluigi.p@variscite.com,
 	Conor Dooley <conor+dt@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Subject: [PATCH v1 4/4] arm64: dts: imx93-var-som-symphony: Mark I2C recovery GPIOs as open drain
-Date: Sun, 18 Oct 2026 14:32:27 +0200
-Message-ID: <ec5fdbdf55d25cdcb756d16709a7011d5bbea9b4.1792326585.git.stefano.r@variscite.com>
+	Fabio Estevam <festevam@gmail.com>,
+	Luan Rafael Carneiro <luan.r@variscite.com>
+Subject: [PATCH v1 1/1] arm64: dts: imx8mm-var-som: Use the official product names in model strings
+Date: Sun, 18 Oct 2026 16:23:10 +0200
+Message-ID: <20261018142310.28242-1-stefano.r@variscite.com>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <cover.1792326585.git.stefano.r@variscite.com>
-References: <cover.1792326585.git.stefano.r@variscite.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -91,42 +88,46 @@ Content-Transfer-Encoding: 8bit
 
 From: Stefano Radaelli <stefano.r@variscite.com>
 
-Mark the SCL and SDA GPIOs used for LPI2C1 and LPI2C5 bus recovery
-as open drain to match the I2C bus requirements.
-This also avoids the warning emitted when the I2C core enforces
-open-drain operation on SCL.
+Replace VAR-SOM-MX8MM with the official VAR-SOM-MX8M-MINI product
+name and identify the carrier as Symphony-Board.
 
+This aligns the model strings exposed to userspace with the product
+names used in Variscite documentation.
+
+Co-developed-by: Luan Rafael Carneiro <luan.r@variscite.com>
+Signed-off-by: Luan Rafael Carneiro <luan.r@variscite.com>
 Signed-off-by: Stefano Radaelli <stefano.r@variscite.com>
 ---
- arch/arm64/boot/dts/freescale/imx93-var-som-symphony.dts | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8mm-var-som-symphony.dts | 2 +-
+ arch/arm64/boot/dts/freescale/imx8mm-var-som.dtsi         | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx93-var-som-symphony.dts b/arch/arm64/boot/dts/freescale/imx93-var-som-symphony.dts
-index 409c7e74ffe3..1f0954620195 100644
---- a/arch/arm64/boot/dts/freescale/imx93-var-som-symphony.dts
-+++ b/arch/arm64/boot/dts/freescale/imx93-var-som-symphony.dts
-@@ -210,8 +210,8 @@ &lpi2c1 {
- 	pinctrl-0 = <&pinctrl_lpi2c1>;
- 	pinctrl-1 = <&pinctrl_lpi2c1_gpio>;
- 	pinctrl-2 = <&pinctrl_lpi2c1_gpio>;
--	scl-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>;
--	sda-gpios = <&gpio1 1 GPIO_ACTIVE_HIGH>;
-+	scl-gpios = <&gpio1 0 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-+	sda-gpios = <&gpio1 1 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
- 	status = "okay";
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-var-som-symphony.dts b/arch/arm64/boot/dts/freescale/imx8mm-var-som-symphony.dts
+index fd0a1862ce90..d9b588526542 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-var-som-symphony.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mm-var-som-symphony.dts
+@@ -11,7 +11,7 @@
+ #include "imx8mm-var-som-wifi-bt-iw61x.dtsi"
  
- 	pcal6408: gpio@21 {
-@@ -265,8 +265,8 @@ &lpi2c5 {
- 	pinctrl-0 = <&pinctrl_lpi2c5>;
- 	pinctrl-1 = <&pinctrl_lpi2c5_gpio>;
- 	pinctrl-2 = <&pinctrl_lpi2c5_gpio>;
--	scl-gpios = <&gpio2 23 GPIO_ACTIVE_HIGH>;
--	sda-gpios = <&gpio2 22 GPIO_ACTIVE_HIGH>;
-+	scl-gpios = <&gpio2 23 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-+	sda-gpios = <&gpio2 22 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
- 	status = "okay";
+ / {
+-	model = "Variscite VAR-SOM-MX8MM Symphony evaluation board";
++	model = "Variscite VAR-SOM-MX8M-MINI on Symphony-Board";
+ 	compatible = "variscite,var-som-mx8mm-symphony", "variscite,var-som-mx8mm", "fsl,imx8mm";
  
- 	pca9534: gpio@20 {
+ 	chosen {
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-var-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-var-som.dtsi
+index 514cc568fb71..e717bc229d3e 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-var-som.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mm-var-som.dtsi
+@@ -7,7 +7,7 @@
+ #include "imx8mm.dtsi"
+ 
+ / {
+-	model = "Variscite VAR-SOM-MX8MM module";
++	model = "Variscite VAR-SOM-MX8M-MINI module";
+ 
+ 	memory@40000000 {
+ 		device_type = "memory";
 -- 
 2.47.3
 
