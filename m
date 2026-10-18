@@ -1,65 +1,65 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F07B33F5B3
-	for <imx@lists.linux.dev>; Sun, 18 Oct 2026 12:32:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BBA249A3C8
+	for <imx@lists.linux.dev>; Sun, 18 Oct 2026 12:32:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792326769; cv=none; b=E7+5/TJ7KeReBmueSnLvapNRS5ICYsCk4KCidu5i1TPsEcpEhT89LJawIpIH0BpwDuzKQY8PDCQPgpkJd8mfKNimobjGgMRhHQc33jxws4d/WEfHVkxGc0NG8tbr7qZPu+3aTUAAMAcQDqjfaWYotOUnGmDw5AdJK3DZrlQsifI=
+	t=1792326772; cv=none; b=ZygBAnPrFN/YDKJ4JG89TlgU+rvKWy7YgVlXN+j+APAnYEDNd2RX+RGxjq2iV1krM+Cjb4ealu5GcNtBovKIZH3gVGrop1abqx/UTIKDMB989m6/fyVGYW/ZynorqFLHUYAZ4pOww6kGd9zffTQQUF6c4dlVzyZSWZyt2EAezfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792326769; c=relaxed/simple;
-	bh=kTz07uCPd3IIAU2tuW29eA2AVOLw4tb4lfqCUC95pLA=;
+	s=arc-20240116; t=1792326772; c=relaxed/simple;
+	bh=Nukw122yROk9xDRYamq2giXRAL8IsIdNMGYZGAIWjvo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=poQ9DoZKyE3GvKqVNi1wYQoL3zL2hLIqfBZypCoutuLGObdgxkK6akM4TL+IROUrnhVL50PXZSSD7jXuZhnV2fXk7N2SfPlBTlDKNV2+YLgafvYx7DtO6raOu5ADAZK0xxCtbdQq7+gMNbMySb4WN8xyKtOBudakMMJsTPD6wns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=n5RM62Tu; arc=none smtp.client-ip=209.85.128.52
+	 MIME-Version; b=psHeoduxsv/rrXU74TL2Susjra3jnIGJWrZYZIxkhe1XKLodKcU15JtXXdBKX1fM7W0a5xReD6axCsDJAXbgeXiBccHEM9VkJ9+EnbVBSAd0RzI63/WVPdokrZdlxn1bK8/vQPjTM/5NcYtbho6eaAamGINC9BYZ9w9hpTDFhM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DperoFki; arc=none smtp.client-ip=209.85.128.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="n5RM62Tu"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4a1e3b87ac5so2660565e9.1
-        for <imx@lists.linux.dev>; Sun, 18 Oct 2026 05:32:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DperoFki"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-49d05d51553so8131865e9.2
+        for <imx@lists.linux.dev>; Sun, 18 Oct 2026 05:32:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792326767; x=1792931567; darn=lists.linux.dev;
+        d=gmail.com; s=20251104; t=1792326768; x=1792931568; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Mbhy+FzLVarX5z41FEjg/6yaqn9vrkSa3rr8ypDlujw=;
-        b=n5RM62Tupt8ujNnplvxv9n5HcD8b1z5bFOEhyguD87uisFhZfdfl+RgpCzWiOUmyiy
-         4sGrMNrsFnkvvI4uDewxdrmljMgR5Cr46rfQW1Wxid9cgNarz5uqMloOsv/uj8k1betj
-         GqfvwbSsDss5VgYep+TgcxcWT3zIRXY9Is+YNBg+etkURTTOTzaA3jfHyuki3q4T8yqq
-         I28f55sjCnh5v0CrY4nkwAvqggTBoz21pYUOZPBqbua6+/Jkkder79c3KhXJgUe+vOGN
-         gZpMFZqzzOSTWFS3IxpiODyNncd2Z3w9dJ4AY0JZYUW0CMzEkQxVNVejY4gviaFY/dbg
-         2CLg==
+        bh=0ea1NkzfJDwnTqydzvzwnSUsTKx9gypchzjscNQluAM=;
+        b=DperoFki0z1UBBKM2uAIAHYdSR8U4v7mMJfiOFohRmpuZK/wwDORZ6nlOeiDWQleSa
+         JiRcyN7op9ErjBJIODhGadsADeyYy1piiQ3D4RKKFHlOJrloWguoZy8hGFFAKf/FK+pT
+         YgRYxlq3eJ8gdOv/pU6RdXblCwBDPN+4a/xMEMR6mBOS7FldpUiaxwjx1rzD+ZDEpqTr
+         LMvqvENp0SF+4AeNQ2A5uekRCKtvwHVtNxLiw2gXiH5AppQwcYtUId7XQiNroc+fWv7N
+         UFBuRNz5KXw1dasUI2Yek6VNyVowu8IS9ljjoJudx/DtbJRpayXITIJaCylQ8Y5ojhsi
+         zAOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792326767; x=1792931567;
+        d=1e100.net; s=20260707; t=1792326768; x=1792931568;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Mbhy+FzLVarX5z41FEjg/6yaqn9vrkSa3rr8ypDlujw=;
-        b=MVGJNMCBWJFR9xGtN/siufwssDwBC8BQiiF9YEvgy2TL02GA3gKpWqgyHvRBmzo+tx
-         lrWbDW20PFU1qak+oHDSkwZ2xTZCrHhRE7h1QiPHuW9j4gEDevibhIOsHNdp6DrpCwHS
-         8HfGf34NfzFHy92UqFhaLNtsKQ0HoUE30focY8ZoK7wOaO+lnpNVmX/obkgqqD8v/QLD
-         LOCpPZ3AHMQxYaen3HXNv6DeKA72EgAfq1F+eGFE0LKSEvnbsCr2n84/OhhtXNOM1WQq
-         ABwy7HI5pdNUemNlKvIfIBtLFvRB20P+acJOEUzCZMY5HQlyyXiQcadgaN+5irOOP8S9
-         OVNA==
-X-Forwarded-Encrypted: i=1; AKwUvBwEoHDZHlcx1wVIA74D/lZzu9E3Hr8a5nIRZtghHshhx4tJ5ayITPYMpJOrJUBYAtNgbS8=@lists.linux.dev
-X-Gm-Message-State: AFq9FYKPledH+Kakam+HW1vmXc2GxiJbS2pnPDOtRLJr88r7b5FzbBsv
-	Y/U9oRTKCLjUG6CC4R05Incy5KRc2w3Vmh1DG9/tbELhtElZzoZshjvT
-X-Gm-Gg: AYBFou122lJKAAYqqZILbxwWO1swzstBsuMuaM0FnngelRj6mvPHdutos7AvbqKlvrc
-	09Lz7LVBWNwVYS2wujYRTid9gyUXhjSrInXdBOvjKq5omlYhgg8pTAK4cbg9ClS2Apu2e1qw89U
-	AemA6s+xSVjI7+A/BdrjoduSCCB44XWIvqXJ2ijyFGpD9L9EFYKZfqtIBFj4GmXPiY0k8Ts4rGy
-	WLSPiMKx5GJb5Tn6cmTxCmGxt3qZNKiX8DyUQPftKg46JAqKqcyVsFmKuCmHJcHeLO34UR65z3A
-	gtR1zf4KHS92Wt7n2qfHTO3sHJmTlNagfTHEHRcqxglxqQQgTIWhsgTtC+k0XQBubp7/gZ9mF1J
-	5vnc6fKfz7TjbMTMydFdLFSrxGtc2WJUMvLPHbCUkLxG4O6mSHGLPXbktcDsH9UwyCaTBw/DTIX
-	DN9gdfF1KU0ygcErnAdOmWxgYQKenHXZs9TO/6on71GBYrGbhDdlp5UmngfJ+0cH/OtFfFMKYq8
-	kHOj4sD1IITZ9dAagrjdIpTMBcF+HWx1CzWQs0qsNS/dZsiElQesC+Kzt+Bwodp7NWA8hxhZaSP
-	OljCq4/zBX1SxpgcZKkrn24=
-X-Received: by 2002:a05:600c:6815:b0:49f:fd40:80fa with SMTP id 5b1f17b1804b1-4a1d762367fmr103844675e9.34.1792326766510;
-        Sun, 18 Oct 2026 05:32:46 -0700 (PDT)
+        bh=0ea1NkzfJDwnTqydzvzwnSUsTKx9gypchzjscNQluAM=;
+        b=YZCRuCyj876Wfsasv5igwYEO0cdbe7ur7ZvWc5U8gJMeFvbXcA93w6PEItCYwDVJ52
+         GuwwBhsLWHeZYA6k7+jG/EUMCSCD+vS4ZlnVkzsuqszQk5W7LusLvlZXGeXz/wehDep/
+         IfTiZxmanmDCXJv4R7tfnvUD/pNg62WGGKhHNt8PxP9XON7240CRvLjJoJjA1c2HgKQl
+         WFstMxiVLwM453XJiuBFzZfMCC0Rp/t3DmSrTfOMQUD3zms5wTI5b9bByQxRdBcxm++l
+         88S7ZUAlLLLkHWwoPU4o6bM7Cm3Pj0OZN5gxmrkWc62Qd9XLeXPYojgZ3FnAIbN9r4/W
+         EAEQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzbdErimL6y+vaCqyrn2U7lmRq5DDRgvXYrmpHVtJ0CD6oFAeA5xx2NFVFuIXZEcEgu5lM=@lists.linux.dev
+X-Gm-Message-State: AFq9FYLd+km6hDyP9xvKyhHqb+zUKH96NYuQS1SqgYeMuiC4tDaM0eUi
+	Ow6GSLKQYvUvn3KC0PguFp6eZDtClDLeOq7ob9zIv7XyO6jJ0gnVzY5N
+X-Gm-Gg: AYBFou3PnF5mKo5h3TSo3FO8o9XjWoqcPFPJmj0PJWTmAL7ySrFmj5A9pMfs003nkeq
+	jLyyuIOGXWkcQ0swWOqC+iY8hBie/VJXDCiGkRKdcRJcURHGWfdW/et6eJkXWHXmtb/M8mZEh7H
+	99NAKCFQKxwOGt7qkiedTf2wczImSIcl2PFSzrCuVQVpF8Xs01Q72dylSEaiY9pyb4B308TzBM0
+	8ZfoJzTay4BIwHYMcqy8CsmRxr7+eN/ZP972TGc7ubmgFUN9Vtj5mWLRICiL89UNCNuX8xT1cRX
+	TmTVx77zhIRQUwpGSjkBpbKoLT3I3jQZKR7xJK4k7Gb8MJiD8Yg5EtYUQSH0m2rsta9JKTx7h1N
+	GcqwQhZ2YMbTqqUWzgmY2J5TqZVrcoaYYciz3r2EHgCtuJQsYkNVNQpcOxfZSd4tadd2oO1WY7G
+	gXxQJCe/josWPQP3Pr3YO+pMwpkVEyRg0TWhKEjrSDxsS19BBqGOW5ZdOrjUGEv0joJ1tC4MjgL
+	TIFpEEab1TVWeVQRpEC8MehuoC5B2IzrCPXWFtFJ7pmZaFBznLrEPEnojRv5QkcAc8Jcqu0cc2V
+	5Rx+cxu+fOiQWTi4YhVVOw==
+X-Received: by 2002:a05:600c:1f86:b0:4a1:93fd:8f8 with SMTP id 5b1f17b1804b1-4a1d75ab363mr108377035e9.4.1792326767681;
+        Sun, 18 Oct 2026 05:32:47 -0700 (PDT)
 Received: from Lord-Beerus.station ([93.66.71.207])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1c8ddde4esm245012535e9.12.2026.10.18.05.32.45
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1c8ddde4esm245012535e9.12.2026.10.18.05.32.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 18 Oct 2026 05:32:46 -0700 (PDT)
+        Sun, 18 Oct 2026 05:32:47 -0700 (PDT)
 From: Stefano Radaelli <stefano.radaelli21@gmail.com>
 X-Google-Original-From: Stefano Radaelli <stefano.r@variscite.com>
 To: Frank Li <Frank.Li@nxp.com>,
@@ -75,9 +75,9 @@ Cc: pierluigi.p@variscite.com,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>
-Subject: [PATCH v1 1/4] arm64: dts: imx91-var-som: Mark I2C recovery GPIOs as open drain
-Date: Sun, 18 Oct 2026 14:32:24 +0200
-Message-ID: <f591f8cde74ef4b3bd0e2fcc2108b8564b195e90.1792326585.git.stefano.r@variscite.com>
+Subject: [PATCH v1 2/4] arm64: dts: imx91-var-som-symphony: Mark I2C recovery GPIOs as open drain
+Date: Sun, 18 Oct 2026 14:32:25 +0200
+Message-ID: <35386d3fe663aa5e42dfbe904b554968ab8d5f7a.1792326585.git.stefano.r@variscite.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <cover.1792326585.git.stefano.r@variscite.com>
 References: <cover.1792326585.git.stefano.r@variscite.com>
@@ -91,31 +91,31 @@ Content-Transfer-Encoding: 8bit
 
 From: Stefano Radaelli <stefano.r@variscite.com>
 
-Mark the SCL and SDA GPIOs used for LPI2C3 bus recovery as open drain to
+Mark the SCL and SDA GPIOs used for LPI2C1 bus recovery as open drain to
 match the I2C bus requirements.
 This also avoids the warning emitted when the I2C core enforces
 open-drain operation on SCL.
 
 Signed-off-by: Stefano Radaelli <stefano.r@variscite.com>
 ---
- arch/arm64/boot/dts/freescale/imx91-var-som.dtsi | 4 ++--
+ arch/arm64/boot/dts/freescale/imx91-var-som-symphony.dts | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx91-var-som.dtsi b/arch/arm64/boot/dts/freescale/imx91-var-som.dtsi
-index b30a0d8a81ba..a90a784f1966 100644
---- a/arch/arm64/boot/dts/freescale/imx91-var-som.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx91-var-som.dtsi
-@@ -89,8 +89,8 @@ &lpi2c3 {
- 	pinctrl-0 = <&pinctrl_lpi2c3>;
- 	pinctrl-1 = <&pinctrl_lpi2c3_gpio>;
- 	pinctrl-2 = <&pinctrl_lpi2c3_gpio>;
--	scl-gpios = <&gpio2 29 GPIO_ACTIVE_HIGH>;
--	sda-gpios = <&gpio2 28 GPIO_ACTIVE_HIGH>;
-+	scl-gpios = <&gpio2 29 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-+	sda-gpios = <&gpio2 28 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+diff --git a/arch/arm64/boot/dts/freescale/imx91-var-som-symphony.dts b/arch/arm64/boot/dts/freescale/imx91-var-som-symphony.dts
+index c1e6c9978275..437a23840898 100644
+--- a/arch/arm64/boot/dts/freescale/imx91-var-som-symphony.dts
++++ b/arch/arm64/boot/dts/freescale/imx91-var-som-symphony.dts
+@@ -224,8 +224,8 @@ &lpi2c1 {
+ 	pinctrl-0 = <&pinctrl_lpi2c1>;
+ 	pinctrl-1 = <&pinctrl_lpi2c1_gpio>;
+ 	pinctrl-2 = <&pinctrl_lpi2c1_gpio>;
+-	scl-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>;
+-	sda-gpios = <&gpio1 1 GPIO_ACTIVE_HIGH>;
++	scl-gpios = <&gpio1 0 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
++	sda-gpios = <&gpio1 1 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
  	status = "okay";
  
- 	pmic@25 {
+ 	pca9534: gpio@20 {
 -- 
 2.47.3
 
