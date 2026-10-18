@@ -1,41 +1,81 @@
-Received: from out198-13.us.a.mail.aliyun.com (out198-13.us.a.mail.aliyun.com [47.90.198.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 846EB379ED7
-	for <imx@lists.linux.dev>; Sun, 18 Oct 2026 10:21:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=47.90.198.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3099447884B
+	for <imx@lists.linux.dev>; Sun, 18 Oct 2026 12:32:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792318909; cv=none; b=lkFUaIrHm3Z2KsOaBoYDkFbXaump6g2wtn8wfCxSAmUCHX3LrYnVq+vpfnHxw1UAXyCUjwEpIdle/2tpXfzmeuxKsToRrOo0NDuZjaXYsNygC78Brle2v2763iHlPeqTGzUTy8U8NAFTFHy9fR1losoFk7uJpYmBG2fP+uFaLIA=
+	t=1792326768; cv=none; b=Qo04tVzKAX+r2MOMFaxMPRfzsf4T5ApyHX7d7wsCbnhn76qNWfjtV/C+VfUQGM04nf9hpoEEGuUYvl1z6FN68smlZQwoYv46P51EITyA8o1/Ki0OrlT21UdyiE6r0jmiY7YVJ6/9QI4n4B0BQgwTYDkK55Y29eI2wHuT4NNtt9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792318909; c=relaxed/simple;
-	bh=MqIop+Ry5uHGldSb9XPw77eJyDNc2sII9hGClB09mQs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=b8/M4Mb5qSr/MZPwqP8lDWyOas+GseXeOoM+lWjYv3vAAUzEPaF6dqyL2R2chq+/1O37Tn+f19qcrQmrBi7Lhsc7cL06TTpD4mckqasSfzXkMvjxDJhl8hELc5lB5aIgSM1wAPPtYI73cFNPf1Uugi5mcNCzF5kveBSZdCN/EcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yinhe.ht; spf=pass smtp.mailfrom=yinhe.ht; dkim=pass (2048-bit key) header.d=yinhe.ht header.i=@yinhe.ht header.b=bTY7rcoL; arc=none smtp.client-ip=47.90.198.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yinhe.ht
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yinhe.ht
+	s=arc-20240116; t=1792326768; c=relaxed/simple;
+	bh=jK42QSJLlFCZiNAkrZ4uWt8pBppxkc2bz1zJLNGahFA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NXEstSY8PL+iJmmQrFrk+bn2eMDR1uV4MFEIcMEU+ge49g/9Noc0+SNZ8lu8SqJIgsGlG32sCexBHAD37pZnbaj2U0DeV/Bsi8GAZ+DqJIWrrQlojF0qys46NOVa0cLeYiAwkXOjz7qxzW8N+JGmGdv+C82oT87mEEMj1kLTtQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FXtqBhpg; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yinhe.ht header.i=@yinhe.ht header.b="bTY7rcoL"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=yinhe.ht; s=default;
-	t=1792318890; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=oPcpo3LDbQ/rlNvHeFnmd3lUFBVjp8gt26UuGxzknmc=;
-	b=bTY7rcoL9TQjU8l8jgNCaE07za6UgS5HbTwyzPpwQiKAX68UOOVhJ3PNDDkElrOZ8PEn/o8SI6EiSps/LlFY1d78z/oAo7WEMPQDxTpLxcP2IBmxRj2D17/iEhaetETTd42wB8VITYs56uQ4gHH5+56pfmIZ+hGh9CjxhJPpv2bxTrLLhWyDCDws0sR6R3TBbLRWF0siXr2wtN0n7MDntErqtZ3KfD1GJl2jTEfo+X+3x85vfDgIipKIjp/MSjKB7oMHNe3eUTzFcpre7sR6keVlWKlTv1+UvMrIFiNfckxI2SBHy24I2HNr1YvuxUmIvoliiQm3GdzJ/x43w6sf3w==
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07668728|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.0457954-0.00438278-0.949822;FP=5349324788030295733|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037032089;MF=chunyuzhiqiang@yinhe.ht;NM=1;PH=DS;RN=8;RT=8;SR=0;TI=SMTPD_---.jiygvZo_1792318888;
-Received: from galx..(mailfrom:chunyuzhiqiang@yinhe.ht fp:SMTPD_---.jiygvZo_1792318888 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Sun, 18 Oct 2026 18:21:29 +0800
-From: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
-To: netdev@vger.kernel.org
-Cc: linux-can@vger.kernel.org,
-	mkl@pengutronix.de,
-	kernel@pengutronix.de,
-	haibo.chen@oss.nxp.com,
-	shawnguo@kernel.org,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FXtqBhpg"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4a1b07c3c5fso14182225e9.1
+        for <imx@lists.linux.dev>; Sun, 18 Oct 2026 05:32:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792326765; x=1792931565; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=GpPqZvPlIP3fXy4tW9d7V+mx955z5cVsFSY/eblWfwA=;
+        b=FXtqBhpgc70KfLuc8L0c2maaxQAwSfB8VoKdFcgfzRGgXS0lhB8Q9KAVEtsoLnAi7p
+         DQzMSr0gPNbFAIjKf47N0CMarIxKDMk3/IRbk9Z+kJID8Q20yudGh4Ykbw6IewF7zSoM
+         bH1D1r7Mfp10I/K4DVp5UWKrwjT3n2sH+2FhyFWtysUzW9zZLwrAofq1RuTu8DzJ/G/E
+         owlAK2MRBB0EOEaTl898MJCBmrTmFmk5O27pwSO18oEEt10S3xnP8XJe8hIMl3nSOcB3
+         fRDwCUICowdJ1Wvf2Cof31bZ8W7BlYqm0lRXUSMxZIgusujTsECD7vRse9IKIP3X91Xk
+         Nz+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792326765; x=1792931565;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=GpPqZvPlIP3fXy4tW9d7V+mx955z5cVsFSY/eblWfwA=;
+        b=uTNZ/hZ4iSuLySCI2poStt+c9Y3BKIvWFIpdwDmSvL/DEVxc5JxdLwxjYX+YCsV7/7
+         XYM8vevR3BU/VkG3byb7T2/fpwIOITDeRHohRaySI1wy/1/UpqwK9Ki3JXHlSbT7Ht1Q
+         Jcfal9F8uxJKtP9rFsG5gnNe6Q/CZwC8CsVliqCq4t02Wf01lPqfg69U3PSWTFBv8v5r
+         Wuw03RJQTiYaOv0v+PUsjBXfyBrTqXVAsUVXeGmDii2Szsq5JC2ALgR6gSsalzOiLx6I
+         uOaJaofWefcgkFy/6dfiD25059yII8oYq75NZPU6Kk7Ny6RCvtI7qrk31+YMePkw+6nT
+         9M+g==
+X-Forwarded-Encrypted: i=1; AKwUvBzUGrq83cEYekoZJ9TPkOLJ518dh49J2qzjLbWqy1Y26a0/2W91hdhf+A0/abeamQUlk2U=@lists.linux.dev
+X-Gm-Message-State: AFq9FYIWxwuB0+pgtD32MEBiXxRk0B8o7M7FDOPgIIGLPb1ABkQwO5zR
+	pytx6lpHcXu/11uPsKVlGMXJq/0pW5XxqX+ohMI2z6AL0g/HF3B9uHRP
+X-Gm-Gg: AYBFou0fICr4EIUIJCtdLLjsXG7xj8DfgoLtPeUY1kccm42H/Bg6/pc+Fc/mAQ9bnRt
+	yttRugIvNs4rybhyzImqFqeCyf1HKkAmXgNvFxktN8bQEZyZobBIuOTfni0eDPSQvhoA46e2YfF
+	vvEVZiJT1Gt1xhZH2BRiTc9VRDudtNpiwC7+R1QleF5uWSskrXpWmYjsFkjDtvRyPcB9BJ+/QkG
+	zet+ZWhzrwMvqcRsx1F3xji2TcQQES2qFF2G7qmvvwTf289eQ7M1MqKGsuscfJZ8xeZTjFS+2oe
+	mvIhaHPZzdvXQxsNW4JyocqT5kYOAhmfcwqPze81x2cO1/IjdIXLbW5U15NtTIOtXwDgd6uybsr
+	z4prvwOVOm7IHD1CJJChDad+lCtJ6KyCxwdRTJ5IHpMEYqbXynG7NH8hYNwL9mmCWlr1wXIScJ7
+	HB7oeJeZs9PeDa3KM0Fx1uIUxZpyXh6n19e6tkymDagXIRWNgiPDnmXo7C5a4K+l6IJmKypSAfO
+	x2g33EEWwZUz7cYdkc320i90bzZKYBg90mpJ2eM+7tJpJJH47MLwELywMVDfVRylOocLCpgp6Zq
+	kY+bSsFD7z2KwW/I5by/Qg==
+X-Received: by 2002:a05:600c:6992:b0:4a1:d7c3:d3d with SMTP id 5b1f17b1804b1-4a1d7c30dd2mr96288465e9.10.1792326765173;
+        Sun, 18 Oct 2026 05:32:45 -0700 (PDT)
+Received: from Lord-Beerus.station ([93.66.71.207])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1c8ddde4esm245012535e9.12.2026.10.18.05.32.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 18 Oct 2026 05:32:44 -0700 (PDT)
+From: Stefano Radaelli <stefano.radaelli21@gmail.com>
+X-Google-Original-From: Stefano Radaelli <stefano.r@variscite.com>
+To: Frank Li <Frank.Li@nxp.com>,
+	linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
 	imx@lists.linux.dev,
-	ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
-Subject: [PATCH net v4] can: dev: can_fill_info(): don't wake up controller if interface is down
-Date: Sun, 18 Oct 2026 18:17:44 +0800
-Message-ID: <20261018101744.93657-1-chunyuzhiqiang@yinhe.ht>
+	linux-arm-kernel@lists.infradead.org
+Cc: pierluigi.p@variscite.com,
+	Stefano Radaelli <stefano.r@variscite.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Subject: [PATCH v1 0/4] arm64: dts: Mark Variscite i.MX9 I2C recovery GPIOs as open drain
+Date: Sun, 18 Oct 2026 14:32:23 +0200
+Message-ID: <cover.1792326585.git.stefano.r@variscite.com>
 X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -45,57 +85,29 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-If the interface is down, the CAN controller might be powered down, the
-clock disabled, and/or its external reset asserted.
+The I2C recovery GPIOs on VAR-SOM-MX91 and VAR-SOM-MX93, including their
+Symphony carrier boards, are missing the open-drain flag.
 
-Don't call do_get_berr_counter() to read the CAN bus error counters if
-the interface is down. This fixes a generic logic problem that exists
-on all platforms.
+This series adds GPIO_OPEN_DRAIN to the SCL and SDA GPIO specifiers to
+match the I2C bus requirements and avoid the warning emitted when the
+I2C core enforces open-drain operation on SCL.
 
-Fixes: ec56acfef2af1 ("can: flexcan: flexcan_get_berr_counter(): switch on clocks before accessing ecr register")
-Cc: stable@vger.kernel.org
-Signed-off-by: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
----
-v1 -> v2:
-  - Reword the commit message to drop the MDIS reasoning.
-  - Add Fixes: tag.
+Stefano Radaelli (4):
+  arm64: dts: imx91-var-som: Mark I2C recovery GPIOs as open drain
+  arm64: dts: imx91-var-som-symphony: Mark I2C recovery GPIOs as open
+    drain
+  arm64: dts: imx93-var-som: Mark I2C recovery GPIOs as open drain
+  arm64: dts: imx93-var-som-symphony: Mark I2C recovery GPIOs as open
+    drain
 
-v2 -> v3:
-  - Use the title and commit message suggested by Bough Chen.
-  - Drop the i.MX8QXP-specific crash dump and erratum explanation.
-  - Drop the m_can reference.
-  - Drop the Link: tag.
+ arch/arm64/boot/dts/freescale/imx91-var-som-symphony.dts | 4 ++--
+ arch/arm64/boot/dts/freescale/imx91-var-som.dtsi         | 4 ++--
+ arch/arm64/boot/dts/freescale/imx93-var-som-symphony.dts | 8 ++++----
+ arch/arm64/boot/dts/freescale/imx93-var-som.dtsi         | 4 ++--
+ 4 files changed, 10 insertions(+), 10 deletions(-)
 
-v3 -> v4:
-  - Move the netif_running() check from the flexcan driver to
-    can_fill_info() and can_get_size() in the CAN core, as suggested by
-    Marc Kleine-Budde. This covers all CAN drivers, not just flexcan.
 
- drivers/net/can/dev/netlink.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/can/dev/netlink.c b/drivers/net/can/dev/netlink.c
-index 6f83b87d54fc..d17f4e9cc144 100644
---- a/drivers/net/can/dev/netlink.c
-+++ b/drivers/net/can/dev/netlink.c
-@@ -584,7 +584,7 @@ static size_t can_get_size(const struct net_device *dev)
- 	size += nla_total_size(sizeof(u32));			/* IFLA_CAN_STATE */
- 	size += nla_total_size(sizeof(struct can_ctrlmode));	/* IFLA_CAN_CTRLMODE */
- 	size += nla_total_size(sizeof(u32));			/* IFLA_CAN_RESTART_MS */
--	if (priv->do_get_berr_counter)				/* IFLA_CAN_BERR_COUNTER */
-+	if (priv->do_get_berr_counter && netif_running(dev))	/* IFLA_CAN_BERR_COUNTER */
- 		size += nla_total_size(sizeof(struct can_berr_counter));
- 	if (priv->termination_const) {
- 		size += nla_total_size(sizeof(priv->termination));		/* IFLA_CAN_TERMINATION */
-@@ -735,7 +735,7 @@ static int can_fill_info(struct sk_buff *skb, const struct net_device *dev)
- 	    nla_put(skb, IFLA_CAN_CTRLMODE, sizeof(cm), &cm) ||
- 	    nla_put_u32(skb, IFLA_CAN_RESTART_MS, priv->restart_ms) ||
- 
--	    (priv->do_get_berr_counter &&
-+	    (priv->do_get_berr_counter && netif_running(dev) &&
- 	     !priv->do_get_berr_counter(dev, &bec) &&
- 	     nla_put(skb, IFLA_CAN_BERR_COUNTER, sizeof(bec), &bec)) ||
- 
+base-commit: 31f9ec9f38735f42e1f0ba57347c420e56b99824
 -- 
 2.47.3
 
