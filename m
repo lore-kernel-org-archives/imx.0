@@ -1,48 +1,64 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A244D219E8
-	for <imx@lists.linux.dev>; Sun, 18 Oct 2026 04:08:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35B4F3D3002
+	for <imx@lists.linux.dev>; Sun, 18 Oct 2026 04:09:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792296530; cv=none; b=m55sH1AcxMcjnJB4B+e+wBbnWXvbp41snUVzM14ajYTrFA0vwqPCw6FtZryFybw1DNdplmIi2HZEj8EByhMNlC/as1BbFJ16yEV0MTQbqrM7XoQr7iPPzdKwEpTisuIYB+2DD+o85F1xOg0/GXSkW6V6RIS+C2Z4DcYC6/Fktd4=
+	t=1792296579; cv=none; b=GF9b5eWpD9T0Or+EY3W36ojxrntMG0y6tLrYWjQ2D4gZVYR4w90y2ODk5zQUguAkdo/SQUwyiwPDjnTzFX1Tbg9rT7Tf0NHyLkU9515eYYw8b3amekvXHlwVUY7JCcfONR6ZF73SMHaKDGwFo46InCtbfFPkOGoKDe5doW8R0Yo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792296530; c=relaxed/simple;
-	bh=bTxRs8G0Bwd7zZ4LjTpBMG7fqtk1rqbL5HVg/LUT/gI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=lOB6zWIdp99I57dIFyYL6m2eaxZLzTA5NykCQz6Ds/KrcY0GzU5rqHR/7TNdHRrqm+OM4E07x4FLEpRICr2T0QpFu66MKjwZCSzJp5u40cRbNSmsUTqh87s7zqKg0tKgwaQFpnCWRBNQDmS8Y9ks0dBJ8CcYxFpltCSp5OjbHmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=U/0ItJJF; arc=none smtp.client-ip=117.135.210.5
+	s=arc-20240116; t=1792296579; c=relaxed/simple;
+	bh=G6YCQUWoTfdoR9sjUuiGCFgf7yaWwuioxagRevsh1y4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=lmENLjS0tgJ8XD0Og1h8keFKi65t1/UqIkkwWYj7L/4O/6bhAnEIgScSHEwcKwcScOSohJMShJkPHtH4fY0aO6P0/QOjc+Sd1/zT9NO7RsXyzRUGJ6rJ3iuCkMkLHujwt1geleOOul6w37TsDEafpsjfuUpK1K3txudtnt3RngQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=j5t9eGMW; arc=none smtp.client-ip=220.197.31.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="U/0ItJJF"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="j5t9eGMW"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=O3
-	i/yK5rC1k+fn8RMtLaWFdcUoFsMUXf2CgVoxMe+YA=; b=U/0ItJJF8jyCmxeXjX
-	895pgpe7GzBj9dqLcARE+WvguFtC2NnG+XIDy3fDvd9bX3nbUzTvvnzEwo95iaEa
-	gv8nD5YNe+LbyNjoIUm40h0R6Mbbgg1olS+nMh3iy1LXJRt53JEEAoN7COAbJOzd
-	UrhUNzZLjkqr7P8JXbGTNRICM=
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=SX
+	ugwLdUOyNBCr4mpnAsSBw9bY2S7YZs8qkchEaRL6o=; b=j5t9eGMWH1jEU6vcmH
+	hJ0BG0o+xoJB80HfRxMDs2+x4Qq9zVweFxIEgWil8IrJNRupqs3935+LnJB+aLuc
+	Xd8IZhB7TkDjCWThydVOXpzkuavJEx90aPyVEfIgRN9Rf7ENzqe0lho3P07kCGFw
+	DipcWlKdUtE8p7PuR61jOIX+Y=
 Received: from pc.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wD3n6n9RdRqdUaGAw--.28247S8;
-	Sun, 18 Oct 2026 12:07:34 +0800 (CST)
+	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wD3n6n9RdRqdUaGAw--.28247S2;
+	Sun, 18 Oct 2026 12:07:27 +0800 (CST)
 From: Jiale Yao <yaojiale02@163.com>
 To: Vinod Koul <vkoul@kernel.org>,
 	Frank Li <Frank.Li@kernel.org>,
+	Zhang Wei <zw@zh-kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
+	Linus Walleij <linusw@kernel.org>,
+	H Hartley Sweeten <hsweeten@visionengravers.com>,
+	Ryan Mallon <rmallon@gmail.com>,
+	Mika Westerberg <mika.westerberg@iki.fi>,
+	Ebony Zhu <ebony.zhu@freescale.com>,
+	Kumar Gala <galak@gate.crashing.org>,
+	Dan Williams <djbw@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Zhangfei Gao <zhangfei.gao@marvell.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Qiao Zhou <zhouqiao@marvell.com>,
+	Leo Yan <leoy@marvell.com>,
+	Lennert Buytenhek <buytenh@marvell.com>,
+	Nicolas Pitre <nico@marvell.com>,
+	Saeed Bishara <saeed@marvell.com>,
+	Maciej Sosnowski <maciej.sosnowski@intel.com>,
 	Shawn Guo <shawn.guo@freescale.com>,
+	Srinidh Kasagar <srinidhi.kasagar@stericsson.com>,
 	dmaengine@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
 	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
+	linux-arm-kernel@lists.infradead.org
 Cc: Jiale Yao <yaojiale02@163.com>
-Subject: [PATCH 6/7] dmaengine: mxs-dma: synchronize tasklet when freeing a channel
-Date: Sun, 18 Oct 2026 12:07:22 +0800
-Message-Id: <20261018040724.534641-7-yaojiale02@163.com>
+Subject: [PATCH 0/7] dmaengine: drain completion tasklets during teardown
+Date: Sun, 18 Oct 2026 12:07:16 +0800
+Message-Id: <20261018040724.534641-1-yaojiale02@163.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20261018040724.534641-1-yaojiale02@163.com>
-References: <20261018040724.534641-1-yaojiale02@163.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -50,39 +66,44 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3n6n9RdRqdUaGAw--.28247S8
-X-Coremail-Antispam: 1Uf129KBjvdXoWrKFW8ZFyxKr18tw4kuF15urg_yoWDAwb_Wa
-	10gryfXrn8ZFZ0yw12yrs8ZrWxta4DWF95Wrn2qayaqa43J3ZagrsFvr98C34vga15Za98
-	Zwn8JrWxGrZrGjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRuuWL5UUUUU==
-X-CM-SenderInfo: x1dryxhdohiji6rwjhhfrp/xtbC7wZinGrURgbICgAA3r
+X-CM-TRANSID:_____wD3n6n9RdRqdUaGAw--.28247S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7ZrWDJF18Xw4rGry3XF4kXrb_yoW8GFykpF
+	WfG3yY9rW8tF4Yk3WkJa12vFyrX393J3yYkwsxtw15ua15ZF9Yqr1rK3WYgF4jyr4xZF4j
+	qa1DtF1rur1kAFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0z_l1vfUUUUU=
+X-CM-SenderInfo: x1dryxhdohiji6rwjhhfrp/xtbCzR9gmmrURf+2FwAA3N
 
-The DMA interrupt handler schedules a per-channel tasklet to invoke the
-completion callback. Releasing the IRQ does not drain a tasklet that was
-already queued, so the callback can run after its client state has been
-released.
+Several DMAengine drivers defer interrupt completion processing to
+tasklets, but release channel resources without draining tasklets that
+were already queued. Stopping or releasing an IRQ prevents new hard IRQ
+handlers, but does not synchronize the deferred tasklet.
 
-Kill the tasklet after freeing the IRQ and before releasing the channel
-command storage and clock.
+Depending on the driver, a late tasklet can access freed descriptor
+storage or invoke a completion callback after its client data has been
+released. Ensure each producer is stopped before killing the tasklet and
+freeing the resources it can access.
 
-Fixes: a580b8c5429a ("dmaengine: mxs-dma: add dma support for i.MX23/28")
-Signed-off-by: Jiale Yao <yaojiale02@163.com>
----
- drivers/dma/mxs-dma.c | 1 +
- 1 file changed, 1 insertion(+)
+Each patch is independent and keeps the synchronization local to one
+driver's channel or device teardown path.
 
-diff --git a/drivers/dma/mxs-dma.c b/drivers/dma/mxs-dma.c
-index 7acb3d29dad3..9e85ba45f0fa 100644
---- a/drivers/dma/mxs-dma.c
-+++ b/drivers/dma/mxs-dma.c
-@@ -442,6 +442,7 @@ static void mxs_dma_free_chan_resources(struct dma_chan *chan)
- 	mxs_dma_disable_chan(chan);
- 
- 	free_irq(mxs_chan->chan_irq, mxs_dma);
-+	tasklet_kill(&mxs_chan->tasklet);
- 
- 	dma_free_coherent(mxs_dma->dma_device.dev, CCW_BLOCK_SIZE,
- 			mxs_chan->ccw, mxs_chan->ccw_phys);
+Jiale Yao (7):
+  dmaengine: ep93xx: drain tasklet before freeing channel resources
+  dmaengine: fsldma: drain channel tasklet during removal
+  dmaengine: mmp_pdma: drain channel tasklets during removal
+  dmaengine: mmp_tdma: synchronize tasklet when freeing a channel
+  dmaengine: mv_xor: drain IRQ tasklet before freeing channel memory
+  dmaengine: mxs-dma: synchronize tasklet when freeing a channel
+  dmaengine: ste_dma40: synchronize tasklet when releasing a channel
+
+ drivers/dma/ep93xx_dma.c | 4 +++-
+ drivers/dma/fsldma.c     | 1 +
+ drivers/dma/mmp_pdma.c   | 4 ++++
+ drivers/dma/mmp_tdma.c   | 2 ++
+ drivers/dma/mv_xor.c     | 6 ++++--
+ drivers/dma/mxs-dma.c    | 1 +
+ drivers/dma/ste_dma40.c  | 2 ++
+ 7 files changed, 17 insertions(+), 3 deletions(-)
+
 -- 
 2.34.1
 
