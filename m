@@ -1,42 +1,58 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AF3E46D566;
-	Sun, 18 Oct 2026 19:05:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41A2437FF4B;
+	Sun, 18 Oct 2026 19:37:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792350323; cv=none; b=EUttZi0qnZnjbfRmpDU0mtx/4NnS3ndMqJiTygXxlAQq8pFR0YAO3hpA67aX4pzaTDUv0Em8P4Io1+EUtrCpF1kK5yRxOvAX/L48uNhV8yYVngnVKg9K4nICmI16L68fyR0ovuvxq8lBfnSGJp0DOmcQdjdjXX7p1itFzktRW5s=
+	t=1792352257; cv=none; b=NKphgHzASe347MZOc/Ol5dk1dBetJjtaXgxOKsQ3VJ9sjm1t92VrM+SBU6PtoUSGLJzKL/OeboebgBeg5oga223tn0ddpkerF9IHDoZZw4LYt3CqdvyUqZWdcgVGkBpeVDOat6mvaRG9QEZKKtMFzXOoSlWWLcVTqO/QiF5CXu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792350323; c=relaxed/simple;
-	bh=AE4SalZYqhH3Xwk8wr4yj5xQmGA5rFspyXhmNDptFQU=;
+	s=arc-20240116; t=1792352257; c=relaxed/simple;
+	bh=hWyphUOg7VVggGN5ibCi2ZgClSKjeBRDFRq58pI8Pf4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VQVkQdeISjGR0Jf5dwN50ZqbsNd4zzOXowLDc64ZZccs+KPrQMKKiFNjhzZV6sIG4CQtpOGCupbUWTZsE/ovTXByw0QyrDaqMOAchL+XY/Ei70+r1AiCnMr5XUmorV+go6u42sUuml4L8C1L5af++Rz+/lEoK9OPDB2J325ZEFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qp2z8ENq; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=l8ZClOY1+OXRTr9ah2/CA7ik4CiTbHIF9zV6h5i5jSGdjsRaFbC014JLsK14GwN/lBIwgQduHkX04xqnMR6YGNgMr3U81xu6mjwW6Suh7sapne4LlrnV5naqrCL0IDo/2Ezi5xKcIq8jqHDH8+4/vBPDJcebF2JatTe+Mjw0Wuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TyukweSz; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qp2z8ENq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53D851F000C4;
-	Sun, 18 Oct 2026 19:05:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TyukweSz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4FEB1F000C4;
+	Sun, 18 Oct 2026 19:37:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792350320;
-	bh=d6EGb2ugrbt7//+Eojbe2jEyLxPgQ0l7cnMhVIpHK1A=;
+	s=k20260515; t=1792352255;
+	bh=7aBv2cTg3vXrmEzBIKjR3qBMNhNd7G9cJp9HXCweTFE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Qp2z8ENqhXHUJx4/KuHRL8eb5l6cKZdJPn9YFJB7400ICo4nwiRcdR5hV5OKrUIKo
-	 QUg8xoma1OKOjpRUp9jNBx3ZkoMvGk7YGr+KD0Ujml/MWDC0WhXBn9c06gLZx1Nivy
-	 lxg40xVVbrZH7PWnj62PTUCSCOuGDA74vGDcatHUsF2EPM0F1yW7DBWuauxc9dW2tE
-	 gTS0jMDB/MYQ73O7FcTJmjQIek6Ubc2t9f1raUm4IW8Hzsb+1zAQCEg0ei2MYyyv87
-	 2H5B3jDG2F+wC0NSez8fpKdE8c/E8IQbmcj62dEoG1oyxSATcddyTj7+BOJU9nV9E9
-	 Qdj/inDcBWTYA==
-Date: Sun, 18 Oct 2026 20:05:16 +0100
+	b=TyukweSzzfyf9aI4t4fo11YGVI2ZIoKTyZ3JKHqQ9u6Kwy5kTulnA/xdw57Zg9J5D
+	 MXd+YGf/SsHw8qo+/0P4Xpn1eYWSXqRgLvGDaAXJCE2RpitzMrklDqxzbjkZGnG5OI
+	 QAGeyRjsPYUMj8Qz2+oaPaYZ8yJ3T/dRBNhZaA2Oiy9qGKJ4ZU/4qyuHDl2hzsJpqS
+	 nxaoIPftINW8QaogkcsxfRYk1Qb06IU89BazfdhGEu8+6uTUg8lNcqEbDdpCpnKiAZ
+	 ck7eP3hFOYsokKEbrevZWic3MNYRaIeKvHnV5FHq2EnlEDX8fYe+yeyNBh4qJhmNml
+	 fDcl3e3XkyNZA==
+Date: Sun, 18 Oct 2026 20:37:29 +0100
 From: Conor Dooley <conor@kernel.org>
-To: Fabio Estevam <festevam@gmail.com>
-Cc: Frank.Li@nxp.com, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] dt-bindings: nvmem: imx-iim: Allow syscon fallback
- on i.MX5
-Message-ID: <20261018-suspend-uphill-7fab7a4dd8b2@spud>
-References: <20261016232800.536654-1-festevam@gmail.com>
+To: Marek Vasut <marex@nabladev.com>
+Cc: Frank.Li@oss.nxp.com,
+	Christoph Niedermaier <cniedermaier@dh-electronics.com>,
+	imx@lists.linux.dev, Guenter Roeck <linux@roeck-us.net>,
+	Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Ashish Yadav <ashish.yadav@infineon.com>,
+	Colin Huang <u8813345@gmail.com>,
+	Sanman Pradhan <psanman@juniper.net>,
+	Thorsten Blum <blum@kernel.org>,
+	Troy Mitchell <troy.mitchell@linux.dev>,
+	Eddie James <eajames@linux.ibm.com>,
+	Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>,
+	"open list:SPI SUBSYSTEM" <linux-spi@vger.kernel.org>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	"open list:DH ELECTRONICS DHSOM SOM AND BOARD SUPPORT" <kernel@dh-electronics.com>,
+	open list <linux-kernel@vger.kernel.org>,
+	Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Subject: Re: [PATCH 1/1] dt-bindings: spi: Add separate binding for
+ dh,dhcom-board
+Message-ID: <20261018-freeway-twitch-e813208aa9af@spud>
+References: <20261016205718.877668-1-Frank.Li@oss.nxp.com>
+ <e7095176-44b8-4838-8443-2e515d34cb25@nabladev.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -44,94 +60,118 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="sFPwHorryreAelGg"
+	protocol="application/pgp-signature"; boundary="0TlYiEQJktn+9mNR"
 Content-Disposition: inline
-In-Reply-To: <20261016232800.536654-1-festevam@gmail.com>
+In-Reply-To: <e7095176-44b8-4838-8443-2e515d34cb25@nabladev.com>
 
---sFPwHorryreAelGg
+--0TlYiEQJktn+9mNR
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Oct 16, 2026 at 08:27:59PM -0300, Fabio Estevam wrote:
-> The i.MX51 and i.MX53 SoC device code reads the unique ID through
-> syscon_regmap_lookup_by_compatible(). Their IIM nodes therefore need the
-> syscon fallback so the syscon core can instantiate a regmap.
+On Sat, Oct 17, 2026 at 12:01:55AM +0200, Marek Vasut wrote:
+> On 10/16/26 10:57 PM, Frank.Li@oss.nxp.com wrote:
+> > From: Frank Li <Frank.Li@nxp.com>
+> >=20
+> > The dh,dhcom-board SPI device uses spi-cpha and spi-cpol properties,
+> > which are not permitted by the trivial-devices schema. Move it to a
+> > dedicated binding file that references spi-peripheral-props.yaml and
+> > explicitly allows those SPI mode properties.
+> >=20
+> > Fixes below CHECK_DTBS warnings:
+> >    arch/arm/boot/dts/nxp/imx/imx6ull-dhcor-maveo-box.dtb: spidev@0 (dh,=
+dhcom-board): 'spi-cpha', 'spi-cpol' do not match any of the regexes: '^pin=
+ctrl-[0-9]+$'
+> >          from schema $id: http://devicetree.org/schemas/trivial-devices=
+=2Eyaml
 >=20
-> Allow the two-item compatible sequence for these SoCs. This prepares for
-> restoring the fallback removed while making the IIM nodes conform to the
-> binding.
-
-Making it a syscon is only the right thing to do if it genuinely is a
-syscon. If it's not, then don't. The nvmem driver doesn't treat this as
-a syscon, so the inbuilt regmap locking doesn't actually do anything
-here.
-Surely the right thing to do is for the soc driver to access the efuse
-through the nvmem subsystem somehow?
-
+> How come this did not trigger until now ?
 >=20
-> Cc: stable@vger.kernel.org
-> Fixes: d5b55c35e033 ("ARM: dts: imx: Fix the iim compatible string")
-
-A binding should not have a fixes tag pointing to a devicetree.
-
-> Signed-off-by: Fabio Estevam <festevam@gmail.com>
-> ---
->  .../devicetree/bindings/nvmem/imx-iim.yaml    | 20 +++++++++++--------
->  1 file changed, 12 insertions(+), 8 deletions(-)
+> > Assisted-by: LLM
+> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > ---
+> >   .../bindings/spi/dh,dhcom-board.yaml          | 46 +++++++++++++++++++
+> >   .../devicetree/bindings/trivial-devices.yaml  |  2 -
+> >   2 files changed, 46 insertions(+), 2 deletions(-)
+> >   create mode 100644 Documentation/devicetree/bindings/spi/dh,dhcom-boa=
+rd.yaml
+> >=20
+> > diff --git a/Documentation/devicetree/bindings/spi/dh,dhcom-board.yaml =
+b/Documentation/devicetree/bindings/spi/dh,dhcom-board.yaml
+> > new file mode 100644
+> > index 0000000000000..ed213cbe9b04c
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/spi/dh,dhcom-board.yaml
+> > @@ -0,0 +1,46 @@
+> > +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/spi/dh,dhcom-board.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: DH electronics GmbH on-board CPLD trivial SPI device
 >=20
-> diff --git a/Documentation/devicetree/bindings/nvmem/imx-iim.yaml b/Docum=
-entation/devicetree/bindings/nvmem/imx-iim.yaml
-> index bb37d72c9eaa..ebfd947e6800 100644
-> --- a/Documentation/devicetree/bindings/nvmem/imx-iim.yaml
-> +++ b/Documentation/devicetree/bindings/nvmem/imx-iim.yaml
-> @@ -20,13 +20,17 @@ allOf:
-> =20
->  properties:
->    compatible:
-> -    enum:
-> -      - fsl,imx25-iim
-> -      - fsl,imx27-iim
-> -      - fsl,imx31-iim
-> -      - fsl,imx35-iim
-> -      - fsl,imx51-iim
-> -      - fsl,imx53-iim
-> +    oneOf:
-> +      - enum:
-> +          - fsl,imx25-iim
-> +          - fsl,imx27-iim
-> +          - fsl,imx31-iim
-> +          - fsl,imx35-iim
-> +      - items:
-> +          - enum:
-> +              - fsl,imx51-iim
-> +              - fsl,imx53-iim
-> +          - const: syscon
-> =20
->    reg:
->      maxItems: 1
-> @@ -50,7 +54,7 @@ examples:
->      #include <dt-bindings/clock/imx5-clock.h>
-> =20
->      iim: efuse@63f98000 {
-> -        compatible =3D "fsl,imx53-iim";
-> +        compatible =3D "fsl,imx53-iim", "syscon";
->          reg =3D <0x63f98000 0x4000>;
->          interrupts =3D <69>;
->          clocks =3D <&clks IMX5_CLK_IIM_GATE>;
-> --=20
-> 2.43.0
+> This does not look quite right, since compatible this is used only on:
 >=20
+> arch/arm/boot/dts/imx6ull-dhcor-maveo-box.dts
+>=20
+>        model =3D "DH electronics i.MX6ULL DHCOR on maveo box";
+>        compatible =3D "marantec,imx6ull-dhcor-maveo-box",
+> "dh,imx6ull-dhcor-som",
+>=20
+> So the whole
+>=20
+>        spidev@0 {
+>                compatible =3D "dh,dhcom-board";
+>                reg =3D <0>;
+>                spi-cpha;
+>                spi-cpol;
+>                spi-max-frequency =3D <54000000>;
+>        };
+>=20
+> Should probably use a different compatible.
+>=20
+> Christoph, what device is this on this board ?
+>=20
+> (and this change should only be applied with RB from Christoph, I do not
+> have the hardware so I cannot tell what it really is)
+>=20
+> > +maintainers:
+> > +  - Marek Vasut <marex@denx.de>
+>=20
+> @nabladev.com
+>=20
+> > +  - Frank Li <Frank.Li@nxp.com>
+> > +
+> > +allOf:
+> > +  - $ref: spi-peripheral-props.yaml
+> > +
+> > +properties:
+> > +  compatible:
+> > +    const: dh,dhcom-board
+> > +
+> > +  reg:
+> > +    maxItems: 1
+> > +
+> > +  spi-cpha: true
+> > +
+> > +  spi-cpol: true
+>=20
+> Wouldn't it make more sense to allow those properties for trivial SPI
+> devices in general ?
 
---sFPwHorryreAelGg
+If the device requires them (which it probably does?), then standalone
+makes sense to actually set that requirement.
+
+--0TlYiEQJktn+9mNR
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCatUYbAAKCRB4tDGHoIJi
-0hGqAP9cN5ysdapdPoSFATbC17Mn3qlNsgq8HEDLk97mv8+bsgEAg9wSDBftuEge
-7S0vKI81Zp2CRYt1yIBEbxvF8zAs4gM=
-=gzqd
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCatUf+QAKCRB4tDGHoIJi
+0otLAQDjNTrB0QcnnZX13hltR1wjzbb9ogEMJ8vbEfN8MshylQEAjmdZh9cncbbJ
+5jdU+CjQgPrg1LVfGQA7dr49Xv0gCgQ=
+=xCky
 -----END PGP SIGNATURE-----
 
---sFPwHorryreAelGg--
+--0TlYiEQJktn+9mNR--
