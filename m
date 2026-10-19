@@ -1,125 +1,108 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DB9337F006
-	for <imx@lists.linux.dev>; Mon, 19 Oct 2026 08:13:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C6FB48C41C;
+	Mon, 19 Oct 2026 08:15:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792397583; cv=none; b=K1DjfI0AIXaWRgSR14SupLt1gnuxNXw6VUlKpE0NYZuLAEl2Gl9DidtNtDxXTIzEd5xcN8hsu+GqX4/eB4ZzTLCID66SePu3cyMOTm1Pqer71Hj3VTeoZCosaQzC4n/4+76itpYy7GxQSIostbMGw0mUOgEV1NuCPcMUFEaUZDk=
+	t=1792397743; cv=none; b=G6WD2O7NEbKM4PqxLOiLemawWJJaMKGp6NSqRz3xccMiCrp7XKo24Eqj4QGO557S+v0lDgBquC92oDcCLEBph3nUCiLy0YXHYvJfC1xZF/rC+kZvPQu/TK3buaad7AgVBcNRM5Am7roa5xq9eN9nmU4euTCK6/Uu/iZBUpuGhl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792397583; c=relaxed/simple;
-	bh=OpxKsY4pQMxWXG5ginCdqOe1JmpLsqB7ew68KaUuqRc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Esqrnj6Ld/ieVI+uBhNBstAGrNtGr50MpvVox9iNB7cvhiK6/P0Li3OBYDk/JmGNcv2DZZ7G/ECL23fxTlDLspdKIE140gOx3pqGU6d3c7d0nUV73Nl9wpwNAZCulY8Bhde+CWHsZn+iXsa1RpsG8ualqFDyTds48LPVVeLcynQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XXTCDZYX; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1792397743; c=relaxed/simple;
+	bh=vDns4ZMN4DxjsB8RYhzHH2tAx0kw4XJ8ux/feRqdBwM=;
+	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
+	 Date; b=JNiZ/yKnobbLqC19YkwstJ+tMdRC/ITf+GbjN7a2G8Iw6h/fUMcC3JJ9NngWMPiN/gNkgHMgz2MW/B95fUITiXLM4naERr76ShX8KqeZ1aRgCMbO/znQrI0HqrzRdMgE+hOEYX9dhhOaXhRi+ggutxbF32lcDdRn93zVyc5+7T8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VQdzIBLw; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XXTCDZYX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1792397582; x=1823933582;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=OpxKsY4pQMxWXG5ginCdqOe1JmpLsqB7ew68KaUuqRc=;
-  b=XXTCDZYXha3HqT+9obAKYtYl3pTW5g7LnPV1oa1tX8HdATBXSqukjizS
-   MbUPcWiP7bXmcuw8ujft0Ly/mMun1TSWv3p5qfTSH/kq5ML2ZV4zhQt+Z
-   oicwDcThMIrgXaljbiEiQBqCwZXkxMws8DBlQVwFV+20GT+C4FdOUJ6Rt
-   NuBrqU1xtPV7y+20dXXysEO0198pZLPNGPMrSSE/gqm2ukoJwqSgOBPl3
-   sgVMP1LJRpkdrT0OLBzVMnmED0MLon+7wvq6GKw5aT7E/WfqHSiXWlHYM
-   r1ScK9xhHTUPaJ8EV/tHEFv1qwS0/gce6h1c3+f1t6hltz/NvwkKZh2Cl
-   g==;
-X-CSE-ConnectionGUID: U0vAVzvfRVm3c8+qi9Xc/A==
-X-CSE-MsgGUID: PnxPdU71QcKWRB3k5Rv+lw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11939"; a="944086"
-X-IronPort-AV: E=Sophos;i="6.27,167,1787036400"; 
-   d="scan'208";a="944086"
-Received: from fmviesa011.fm.intel.com ([10.60.135.151])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2026 01:13:02 -0700
-X-CSE-ConnectionGUID: P7yLX90wTAyjhQhKT6K14g==
-X-CSE-MsgGUID: J7SAvJEoR5mx5tic2JqxOQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,167,1787036400"; 
-   d="scan'208";a="4321776"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.245.209])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2026 01:12:59 -0700
-Date: Mon, 19 Oct 2026 11:12:56 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Hugo Villeneuve <hugo@hugovil.com>
-Cc: Arnd Bergmann <arnd@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org,
-	linux-serial@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev
-Subject: Re: [PATCH 1/2] tty: serial: remove hub6 multiport support
-Message-ID: <atXRCJjQGcSKZ_X3@ashevche-desk.local>
-References: <20261016130328.1037616-1-arnd@kernel.org>
- <20261016124839.0d5564f7d7e036ee782a0486@hugovil.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VQdzIBLw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86FC21F000C5;
+	Mon, 19 Oct 2026 08:15:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792397741;
+	bh=H05R6fhpmuoy5+iNvLhFFe3ytIvyPoY7eoQREdM0FTs=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=VQdzIBLwqklX9MEjulaNxwNX5SwO3+7n2IjPlWm7BGQKtd2X/VRoL5c+rKIeC3QZ7
+	 PE7ZsdAJpMAKYb+MdAdVXnYfG8LtMUi3ttr1pvqCoGcgfILOIfnEECXWDcjuItHN0S
+	 0p4WIqW5tnsWtkhs7ymAjH8mha2sanJV6kQPeR8JQVI8CxizUs/Jdl4pZPIVR3eety
+	 4qGSAJW5zvxR5cjT47kWZx7vDNlTZKag3vanPTtw7edMnmIeV6prFeGwDSsLCuetxp
+	 JVqUPqDhYPG5ZnqT1M5UU+DiqkybKo5Avs++XUn2qCu2pJgJwE8rJNQ5ZsCAQM2BRY
+	 kj2JBrXRyNBiQ==
+Message-ID: <sashiko-outbox-176786@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 5/5] arm64: dts: freescale: Add dual-channel LVDS
+ overlay for TQMa8Xx
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Alexander Stein" <alexander.stein@ew.tq-group.com>
+Cc: imx@lists.linux.dev, devicetree@vger.kernel.org, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org
+In-Reply-To: <20261019080621.194103-6-alexander.stein@ew.tq-group.com>
+References: <20261019080621.194103-1-alexander.stein@ew.tq-group.com>
+ <20261019080621.194103-6-alexander.stein@ew.tq-group.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 19 Oct 2026 08:15:41 +0000
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261016124839.0d5564f7d7e036ee782a0486@hugovil.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Fri, Oct 16, 2026 at 12:48:39PM -0400, Hugo Villeneuve wrote:
-> On Fri, 16 Oct 2026 14:59:47 +0200
-> Arnd Bergmann <arnd@kernel.org> wrote:
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Low] arm64: dts: freescale: missing Makefile target for TQMa8XDP LVDS ov=
+erlay
+--
 
-...
+commit d3dd5b226ab9afbea90194501219da137ea03c3a
+Author: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-> >  	switch (up->port.iotype) {
-> > -	case UPIO_HUB6:
-> > -		outb(up->port.hub6 - 1 + offset, up->port.iobase);
-> > -		return inb(up->port.iobase + 1);
-> > -
-> >  	case UPIO_MEM:
-> >  		return readb(up->port.membase + offset);
-> 
-> Maybe change to a simple if/else?
-> 
-> 	if (up->port.iotype == UPIO_MEM)
-> 		return readb(up->port.membase + offset);
-> 	else
-> 		return inb(up->port.iobase + offset);
+arm64: dts: freescale: Add dual-channel LVDS overlay for TQMa8Xx
 
-While it may work, I would still leave a possibility of the default case, but
-Ideally this should be a simple callback level change, so it will be checked
-only once at the probe time or so.
+This commit adds a device tree overlay for the AUO G133HAN01 dual-channel L=
+VDS
+display on the MBa8Xx carrier board and wires it into the Freescale device
+tree Makefile.
 
-...
+> diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts=
+/freescale/Makefile
+> index 84aeff0e78cf2..3b3b1c51fcd6a 100644
+> --- a/arch/arm64/boot/dts/freescale/Makefile
+> +++ b/arch/arm64/boot/dts/freescale/Makefile
+> @@ -846,8 +846,10 @@ dtb-${CONFIG_ARCH_MXC} +=3D imx8qxp-mek-ov5640-csi.d=
+tb
+>  dtb-$(CONFIG_ARCH_MXC) +=3D imx8qxp-tqma8xqp-mba8xx.dtb
+>  dtb-$(CONFIG_ARCH_MXC) +=3D imx8qxp-tqma8xqps-mb-smarc-2.dtb
+> =20
+> +imx8qxp-tqma8xqp-mba8xx-lvds-g133han01-dtbs +=3D imx8qxp-tqma8xqp-mba8xx=
+.dtb mba8xx-lvds-g133han01.dtbo
+>  imx8qxp-tqma8xqp-mba8xx-lvds0-tm070jvhg33-dtbs +=3D imx8qxp-tqma8xqp-mba=
+8xx.dtb mba8xx-lvds0-tm070jvhg33.dtbo
+>  imx8qxp-tqma8xqp-mba8xx-lvds1-tm070jvhg33-dtbs +=3D imx8qxp-tqma8xqp-mba=
+8xx.dtb mba8xx-lvds1-tm070jvhg33.dtbo
+> +dtb-$(CONFIG_ARCH_MXC) +=3D imx8qxp-tqma8xqp-mba8xx-lvds-g133han01.dtb
+>  dtb-$(CONFIG_ARCH_MXC) +=3D imx8qxp-tqma8xqp-mba8xx-lvds0-tm070jvhg33.dtb
+>  dtb-$(CONFIG_ARCH_MXC) +=3D imx8qxp-tqma8xqp-mba8xx-lvds1-tm070jvhg33.dtb
 
-> >  	offset <<= up->port.regshift;
-> >  
-> >  	switch (up->port.iotype) {
-> > -	case UPIO_HUB6:
-> > -		outb(up->port.hub6 - 1 + offset, up->port.iobase);
-> > -		outb(value, up->port.iobase + 1);
-> > -		break;
-> > -
-> >  	case UPIO_MEM:
-> >  		writeb(value, up->port.membase + offset);
-> >  		break;
-> 
-> Similar here:
-> 
-> 	if (up->port.iotype == UPIO_MEM)
-> 		writeb(value, up->port.membase + offset);
-> 	else
-> 		outb(value, up->port.iobase + offset);
+[Severity: Low]
+In the preceding commit ("arm64: dts: freescale: Add LVDS overlays for
+TQMa8Xx"), the single-channel LVDS overlays were added for both
+imx8qxp-tqma8xqp-mba8xx and imx8dxp-tqma8xdp-mba8xx in
+arch/arm64/boot/dts/freescale/Makefile:
 
-Same here, see how we assign the respective callbacks in the 8250, for instance.
+    imx8dxp-tqma8xdp-mba8xx-lvds0-tm070jvhg33-dtbs +=3D imx8dxp-tqma8xdp-mb=
+a8xx.dtb mba8xx-lvds0-tm070jvhg33.dtbo
+    imx8dxp-tqma8xdp-mba8xx-lvds1-tm070jvhg33-dtbs +=3D imx8dxp-tqma8xdp-mb=
+a8xx.dtb mba8xx-lvds1-tm070jvhg33.dtbo
+    dtb-$(CONFIG_ARCH_MXC) +=3D imx8dxp-tqma8xdp-mba8xx-lvds0-tm070jvhg33.d=
+tb
+    dtb-$(CONFIG_ARCH_MXC) +=3D imx8dxp-tqma8xdp-mba8xx-lvds1-tm070jvhg33.d=
+tb
 
--- 
-With Best Regards,
-Andy Shevchenko
+Since both boards share mba8xx.dtsi, tqma8xx.dtsi, and the MIPI-LVDS0/1 and
+DC0 definitions from imx8qxp.dtsi, should imx8dxp-tqma8xdp-mba8xx-lvds-g133=
+han01.dtb
+also be added to the Makefile for TQMa8XDP?
 
+[ ... ]
 
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261019080621.1941=
+03-1-alexander.stein@ew.tq-group.com?part=3D5
