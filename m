@@ -1,89 +1,89 @@
 Received: from fout-b3-smtp.messagingengine.com (fout-b3-smtp.messagingengine.com [202.12.124.146])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF2BF3ADBAC
-	for <imx@lists.linux.dev>; Mon, 19 Oct 2026 08:52:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0580D40EB80
+	for <imx@lists.linux.dev>; Mon, 19 Oct 2026 09:10:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792399952; cv=none; b=lVAAKQXuvkavF5Mw41Vi3KBrrIjpFRW9QvRefQmYCud3rrvgH5DiklixyHsoSGiGYeBJIpGUTeg3uwgw7a+LLB0UMV2P68ibjoc8VFFBtTmBIW+CE0xh+9k/gIxqe0nk5DsSui+p0xj9IzkXf1dUqS0GgP7/GKlERjQKP/gSOr8=
+	t=1792401002; cv=none; b=HE25hA6R5ce9xlOQg25X/urS7OlXSrHVv8XsnT0SrSg3JfBm5Lo8MSL+rW1m/T+kDLZvOC0FZJpaP9CYCBygxOs++7UqLxKnAJsnlBeaDaPpu/wK2U2vfuXd6lbhCCsqKD+/I89s199iV7JwxM7sKpYCfjRn5hmcnXgc8UI654U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792399952; c=relaxed/simple;
-	bh=nEANZGCZ9guMXFCy+MYGNEwKQAPuCeBUOf9W0nQu4uI=;
+	s=arc-20240116; t=1792401002; c=relaxed/simple;
+	bh=kj8LYuKMfDF1niDZrCZLI/kPUrlYb1+h/IT5kGPJW8A=;
 	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=Gg6f+l0n2yVLUu5V0cUG+Q8lYiRKxnQ2HgnPDaguOPO1NiFXdkLsC1WdosR83UmG5udGZjbGRv35H32grqYU4bNo1RiPUumjwrZwVivRSWyGCdesikUw7KQWvqm8jDs/l5zIE8/nH9uIptwquyb+9Uf0kjatUBxWX5uaA1gY5ng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=Bb51uD+z; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=jaGV4Lyb; arc=none smtp.client-ip=202.12.124.146
+	 Subject:Content-Type; b=gdWFT5LsFUPYQJPK5CV635hiRJg3GaoYR5J97q//mYaHaB8lVxtiBr7dIbTom0Bbj3cVEpoYCUcNUyahahcK/C9VM4U0GPO6xG+eFFW6IyJTkuEe4BqYmAgLHeAE8RBbSdL6CHj/h6IaiKwga+ttg+af6M0eIHJ6bC80qHYoFRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=L3f9jObg; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=o0si0j4d; arc=none smtp.client-ip=202.12.124.146
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="Bb51uD+z";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="jaGV4Lyb"
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="L3f9jObg";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="o0si0j4d"
 Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
-	by mailfout.stl.internal (Postfix) with ESMTP id 672491D0006A
-	for <imx@lists.linux.dev>; Mon, 19 Oct 2026 04:52:28 -0400 (EDT)
+	by mailfout.stl.internal (Postfix) with ESMTP id 04BB21D00094
+	for <imx@lists.linux.dev>; Mon, 19 Oct 2026 05:09:59 -0400 (EDT)
 Received: from ams-imap-03 ([10.64.2.23])
-  by ams-compute-02.internal (MEProxy); Mon, 19 Oct 2026 04:52:28 -0400
+  by ams-compute-02.internal (MEProxy); Mon, 19 Oct 2026 05:10:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
 	:cc:content-transfer-encoding:content-type:content-type:date
 	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1792399943;
-	 x=1792486343; bh=cRAdLuUMQVLrTUQtW3xqfK+uVlZ53vZnJeL6TLJsmWc=; b=
-	Bb51uD+zvzxGM6E0mUk8Giz3BKrGMrrYJX4x76rDnG4XXQZ4bkc+QQYo/lCgJKnw
-	/YtlnW8l5Mg7zNTrkuv8QIx8Hjdp5VGbsPy9sKYWCD0qTGCufyK8sWmERvilRBC1
-	suD/h/ro15Dqr3eqcbBnvQ8xJutlBScOOobxIsg/ut5JyYblIKSu9wDnH8zvsxlP
-	KXQF7e6m8fTjtwEWl5yUWto9N9CbV8i0YTjeKgQzTjz4vvcVkEYVyKlAIlPOMFA8
-	bugTzawWB8mC/sORP9m1z3JbxThwVxV/6MEbhhikhts6qbm8ZMASgYX6+okqfCiJ
-	kJ3kS4Opy0c+UjM1O3osRQ==
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1792400994;
+	 x=1792487394; bh=VRrkh9ufsavwUzGW+kYYPeIwYlUPaQhcxxu+q1D/UVU=; b=
+	L3f9jObgZ3Y2ryEcxFVe4eWz9ruWVwAZQKXuzDfBLLT3BVXPvhosOkgbOhc/xE6Q
+	QSpqvBn/ezYeqXvlEqKHan+S6ZE4Hfg/xIF7HrO6VdJMjzxR/G5PhRSIXncyeYhP
+	od6NaTE+aV39GtkEMxS2RS5dO9vDOF0obvGpB4N+FzGXWwTHsYVaFjJ73/13w0eL
+	aTSb3UlflJOwfZaxIy5j00kuNQTFesCg3me+7/Hl61Ymj0uHUgxV34D3OzOGmYO5
+	CPGMKB13D0gFqJ/3id7L3pNMvhRQ/UyF7JTKZwFkCi5XXJYK+5K362BiwQOnpYTM
+	jN1pCdZK0W7qYDu96Ef3sg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1792399943; x=
-	1792486343; bh=cRAdLuUMQVLrTUQtW3xqfK+uVlZ53vZnJeL6TLJsmWc=; b=j
-	aGV4LybY53Wtm+1by7eCtJn0dPTnEINAUicpLQXHxV5Dpv8CaqMBPyu/aGrhq70E
-	+D0eOt+0cLSqy+Ne7G9g5DCqpDVyRGo5IoCPPALX6k48HUC9TcT72rNvXv97v9ra
-	WNcYVRUjWaaoyvyKdjpvs5BaIfl4NXjd76HoNFeeTC3m1zgEnjZ6bKyJMcKpQPNd
-	SurClGB81XgpUnfWbXe1rrYOi3n1+rT2e/xyJjOLwRBmzNlVeZ4LtMkrKfx6nQDg
-	nvtEFB68+rgvgrGIhmfwh9TDI+TsOqpBIqiiXJhmNDJ9u/+P1qyf3WSdOz1U3GDY
-	ntnZ7VFRlLkcAZYCcPGxg==
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1792400994; x=
+	1792487394; bh=VRrkh9ufsavwUzGW+kYYPeIwYlUPaQhcxxu+q1D/UVU=; b=o
+	0si0j4d5WZXMd2S/CGg+i7LWgV8QTkJKVbzYEQ3SSu/0odececm5N8pXpU4nd9WL
+	O5L0+xpLqEsDXIHfZy3zfuwVCfxsk0FUHoQcG/cxcWS8MpQj89X8gzG4DbDwjDYc
+	S/QjI/JexPmTIHyEztVQe58MfdG1gFg1w0uvJwkiKHxXbRcIc+fFPtJSJ9++Etvt
+	T0eCsRxmcb+SfU9fyf7xCurbcmi/3innids7AfkEIQUx1jqfa2WqHd7LQwGiTh/U
+	/2usFcToWLtiprR7vdKEcSKWnt7FU73gao0WOljJ+Fnk0O+yT7LZblFW4TcfAuZm
+	fWmIVcw1PfSxIr/LQDrMg==
 X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
 	repo=github.com/dkim2wg/interop; date=2026-10-08; sw=lmtpprox;
 	action=sign d=arndb.de a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1792399943; d=arndb.de;
+DKIM2-Signature: i=1; m=1; t=1792400994; d=arndb.de;
 	mf=PGFybmRAYXJuZGIuZGU+; rt=PGlteEBsaXN0cy5saW51eC5kZXY+;
-	s=fm1:rsa-sha256:YD36x407u00Gv5Hs5rV9+6tNIhsephlw1uTWcpja5ndjkA8
-	5Fg5ObLqSEQJThwPJVg8NPgc5XP/jKLhGXk/FLWKUpvgbqDYrWxbJ+Tz0fGGMnMJ
-	timeWCq+vpfR10KVdjnpWlxPE8ogm/JNPO9SJczvuKBp89LsoBPRNmIMnJ1kmJ+b
-	MnewcZFlPZsRSrtnEBkwhr43ncyjo6sYBk/k2dpGzC6Q3s8lqVql3PR0s9/lc3BW
-	B8iHNS2ycUINuZ+GmI3eWok7rCRNpouz1viJqKOznsSSPoYi6j1aBNqPyUyciI6T
-	I4DStb09xSvCckNIeKjOX9YVoqSTd2iT60Mp5+w==;
+	s=fm1:rsa-sha256:jTmYj6bZkxRvUoflYfpQMJ/YUsdyFXqnMW+P7ZHoJ5oRerh
+	f4U8tT8k+83ANkaBvuTBgYZYgr5cpDElQ7hHlVUM2GmIB3Bb5GgpZx6pdmm25CxZ
+	JjSEIk5WcYezfyepTJcjZakzvmLPQF0y/vk6PhOKFVZpn91azvikfcJI8kB5Ssyc
+	dssAd/LKeZzlJDAMJXQDJL7GPH/iiFjtH8Ul0Jwpj/fQCejSaLvAFTb1E8PxKyj5
+	29DrqyA8kCiNFJr7ZcptbscG3w/4knuk4zkBNmRQX1QwPHpVcFCo6cEyuYtd73/1
+	Yq6ElawkxO9Qo9E/pNYi359NG2NgwsBHpxcQcbA==;
 X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
 	repo=github.com/dkim2wg/interop; date=2026-10-08; sw=lmtpprox;
 	action=mi-m=1; hc=12;
 	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
 	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:Gs2Wjku2DTGryiiEUBBCDXcmzXgVadBUGqvHkD4nUM0=:nEANZGCZ9guMXFCy+MYGNEwKQAPuCeBUOf9W0nQu4uI=;
-X-ME-Sender: <xms:Q9rVav6D3Dcxo8Dp7JWJFqt_8J5wut7N8gdYQvJz9SaLqGGLFo9Cew>
-    <xme:Q9rVavs6MbXGshW82x0ZHhMokskmEBlDr_L3WY3pDTonLkGORsRJb8Lg1tZyNDm9y
-    4Q8gOCHerODpEO5pp2eFtqjku720t1IBHn0U391crtu2AZA6CGjMaqu>
-X-ME-Proxy-Cause: dmFkZTE/dT272iY9im8e2pKUcyzfMQ8Oyk1kzzEI1f+HUy/s7LMoDoLCYPzG0mJfeS5zgO
-    f0lswCnXyxAz+3erxCsMP4+vKJeE3RV3bgTCuEtU6lTcmjMBsmyugSw1uttzfjVDVBiti2
-    oKBnrV4PrIs5JBpQqCsGNeblrRF+OSCnjJBycE5D6i35XNLxqa7W3RkNG6bn1Kp7rxg5Ip
-    fEQBkYJ23L3N/yWyUzwJ3QLpqiA/HEtisyzb4pkcIX+IMo0Aeou+u1tGFtqCfhGevzHMZd
-    oZ8vtgdi2VkY/na0up9+kUmxThyhDdk2ZOQfeZePrCRPPZSfhi7o/0QYKt05lzKu/bxIgV
-    AReHGFOFOKtO2spw5zIUjzV2Mt6Vy/rb2JeooMviE+ckKOrO3+JXUWT6a431qQDP6wsZ1B
-    JUCNzNfI1KtbtxDKQthKy3ro/ga2f8vCIrc12mHcukL43PJ7Sb0yoVf6WnE7lsuUcx+w58
-    Kf2sKWLGCas3MfVGNk2MBnJSX/QoRwdm3EUscO/dz2rjVB+OurtIIpzt62qEaLAhGVEkKE
-    c9pcKjxpuWjO+sq0+R9/Rtdq9kVa02g/2kcT7+I+UfX0l6V7CWezsZrG7j6LdTN310060G
-    8XMeBKA3hQEDNFFWhRjGxTGMA3jzqme/BM0MinigfjVujLnUyW1g5aT6cz3w
-X-ME-Proxy: <xmx:RdrVapdw0q3pcIo4FDKP9CjLcJ9aFpMgJEYH3YsC-_qpVAdGtBgjkQ>
-    <xmx:RdrVajFt2sfTAI3F-k7Ca0awfyHj4AVnCfEo7BCBIdNnQt__wutuFQ>
-    <xmx:RdrVavieEU2XyCgZuUhkL4gJ2IwJYpDzzOHFKoqLaAcpK4oqiCu9Cg>
-    <xmx:RdrVan3qJP-Cv7JpPw1hwcS8aRNhqb7x5fl54a5BJ8qgeLW8JXE8-Q>
-    <xmx:R9rVan-aKXJyknrQZ5T92z3Wf4yKBw289HESbAn057kGTwA5ZK8ivWH5>
+Message-Instance: m=1; h=sha256:GpfjWsuTedn1PGgZB4VWlRUwOsUX/+Z2h6AxJHYaHpQ=:kj8LYuKMfDF1niDZrCZLI/kPUrlYb1+h/IT5kGPJW8A=;
+X-ME-Sender: <xms:Xt7Vas3ysSKFfiNJy1wYno_yUkPuQEdXrabYyR9YAJwy9aBhPT286g>
+    <xme:Xt7Vah5jcxzIqhvq8DIghfSEWPrG_QFj9PbXEcdjJAwLddOrgJHrWslYGgsluZvgt
+    y8-H8jefJtcTu6FD2CPWr9GdVPVfgkeg2M7yXGVo3I69Hixu2YBJPE>
+X-ME-Proxy-Cause: dmFkZTFYRXPUPX60vo5NxXURpLeDTBW2NZI8Nhg9EestjprxOOBQDyI1yFGxcHxaZcxo8F
+    MJn2vy/9vxZ8o20eiDpdEw5ftI0w1ITcqw5ykPXIOBdMPtdJLJW47TMfiRwM4lk7ZcV9qh
+    zvGtQO9noFJm3b0FJHHoOxqcLFtawzHomex3BgSOg/9OTwGheY5wzKL7BQg4GJFnyCtzxT
+    1CajZ9QN8sQMu9tRvX9eDNhZoRqevBaBn1ivC6bmI3MFnz25M93FUeFiKJlKyzPL2iIAmx
+    k/iYk8h9BVtnzHNACvekCVXHWy3RbL66CyT24pBVKaCNMWkEIM4sTJxkpZ8kg1Awh7b1rw
+    hebVjsrHJEUhKZwpf9TM+E9/iKnmqSq8vzm69uam1kByTTT/HHAZrLcvcCsjddTZtgtLTi
+    V+PYDQETbpZXbil9OwqhkH+gxPBxJRmSUaFsawAHxjC1Iodch2aAzI8yMUX/rbOe4w1+yy
+    dNdJTGcLn5lyBrHS5U+yQx9ICcHlRrm1LHS05NVipPJOKBEfDorfmv7YUBl7sIUD8VzoyX
+    CBBuIJhtchKVXExiDR2tStF3lZwpaB4U3igqg51y37CaXAYppxaGikser/Fy2l7apZ60Np
+    lQpUtKnFODoPj3jKtYmBLZe2+Kvx5wU855/3gXNrTlsXdlmJ+nRr7yaRiIZQ
+X-ME-Proxy: <xmx:YN7VakYRfolVWoq2U4Kc3lbavYH85MB3dAyNB7UvaZUhBGIhJqp41Q>
+    <xmx:YN7VarQRn2XCVfUnO_i8Vs0O-uaURChmxxCsF7vt5XyyBNKOfKJxmg>
+    <xmx:YN7Var9cXWiXeIPHCcUxPBdgYXGeGmE2bHWi-zq2U4RYlY5qdbfpfg>
+    <xmx:YN7VajiCWTDaHDx0Q0CqXJRwJGMthixVQRM4fNhG9TqfDqF_K09CBQ>
+    <xmx:Yt7VatpnyFMnmfC90QxOuCEVgX2unZyDCh70RbGe5e0ToZeFdFPMMhtu>
 Feedback-ID: i56a14606:Fastmail
 Received: by mailuser.ams.internal (Postfix, from userid 501)
-	id 0244532A008F; Mon, 19 Oct 2026 04:52:18 -0400 (EDT)
+	id 4BEE432A008E; Mon, 19 Oct 2026 05:09:50 -0400 (EDT)
 X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -92,48 +92,42 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-ThreadId: A4WN0AQLOakc
-Date: Mon, 19 Oct 2026 10:51:58 +0200
+Date: Mon, 19 Oct 2026 11:09:29 +0200
 From: "Arnd Bergmann" <arnd@arndb.de>
-To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
- "Arnd Bergmann" <arnd@kernel.org>
-Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
- "Jiri Slaby" <jirislaby@kernel.org>,
+To: "Jiri Slaby" <jirislaby@kernel.org>, "Arnd Bergmann" <arnd@kernel.org>,
+ "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
  "Andy Shevchenko" <andriy.shevchenko@linux.intel.com>,
- "Hugo Villeneuve" <hvilleneuve@dimonoff.com>, linux-kernel@vger.kernel.org,
- linux-serial@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- imx@lists.linux.dev
-Message-Id: <d0d4182e-342f-4038-ad9f-e6b580c9f2e5@app.fastmail.com>
-In-Reply-To: <atXLd6SdHNr0UcjI@monoceros>
+ =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+ "Hugo Villeneuve" <hvilleneuve@dimonoff.com>
+Cc: linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev
+Message-Id: <2ef6314b-989e-4982-8964-1d6fdd123f4e@app.fastmail.com>
+In-Reply-To: <0ec5fddf-f8de-4c82-a42d-6abca1e06091@kernel.org>
 References: <20261016130328.1037616-1-arnd@kernel.org>
- <atXLd6SdHNr0UcjI@monoceros>
+ <0ec5fddf-f8de-4c82-a42d-6abca1e06091@kernel.org>
 Subject: Re: [PATCH 1/2] tty: serial: remove hub6 multiport support
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-On Mon, Oct 19, 2026, at 09:51, Uwe Kleine-K=C3=B6nig wrote:
-> On Fri, Oct 16, 2026 at 02:59:47PM +0200, Arnd Bergmann wrote:
->> Link: https://mirrors.nycbug.org/pub/The_Unix_Archive/Unix_Usenet/com=
-p.unix.sysv386/1990-December/007174.html
->> Fixes: a300273c458c ("serial: 8250: hub6: Add cleanup code")
->> Fixes: c526404a4a92 ("serial: 8250: Fix corner case for port matching=
-")
->> Fixes: 7ab80d1e7243 ("serial: 8250: fix compile error with hub6_match=
-_port() when compiled as a module")
->> Fixes: da7b5fd4e17f ("serial: 8250_hub6: add missing include for hub6=
-_match_port()")
->> Fixes: 3d406299d882 ("serial: 8250_hub6: add hub6_match_port()")
->> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+On Mon, Oct 19, 2026, at 10:15, Jiri Slaby wrote:
+
 >
-> Fine for me. I wonder about the amount of Fixes: lines, but don't care
-> enough to check.
+> Great, you would have saved me a headache if you had sent these long 
+> time ago ;).
+>
+> So I will Ack both, once you repost with the reported issues fixed.
 
-My first thought on this was that the hub6 support should just be a
-loadable module and that it would only require inlining hub6_match_port
-into its caller, but then I saw that doing this would be exactly a
-revert of those five patches that each individually make sense.=20
+Ok, sent the updated patches as v3 now. I accidentally ended up
+sending them separately instead of a series, I hope that's still ok.
 
-> Acked-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com>
+I have a few more patches to remove serial port drivers (lpc18xx, mps2,
+21285, acorn, sa1100), but those all depend on Arm platform removal
+patches that I had planned for 7.4 and deferred to 7.5. I'll probably
+send the driver removals for 7.6 then unless you prefer them in 7.5.
 
-Thanks,
+I also have an older series to rework 8250 so the ISA, PnP and
+platform portions can be left out from the core support, this one
+needs to be properly rebased and tested. If anyone else wants to
+give this a shot, I'd be happy to send what I have as a suggestion.
 
-      Arnd
+       Arnd
