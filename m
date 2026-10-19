@@ -1,43 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 556BB61452C;
-	Mon, 19 Oct 2026 14:03:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23B34623883;
+	Mon, 19 Oct 2026 14:04:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792418641; cv=none; b=JyyvjgGe3bapb9LRB6tUspGuFvHdR6vsWqw2MI0zZ/8m7WR22qYXggbkRWFNdFfhg677KirPPpiur8EZ+iYVdUa9bL8gQIATiSxYGfp8AzYmXDpF8HaAwCOpqTUiMiAhvMgkTS+eSc3Pi2boBVXvwdRbwd0v6Ghnp+8oNYdMj2w=
+	t=1792418691; cv=none; b=pn7FlhoYmykVO8s6HkSchM6V/4SLLL2CyrPfa6JbklW76us1w+LojhcSf5De9dnc8Z3pAkksWmGw2aJcJZDQ8d5v0qFtMPT40qQyLJ8y5nADI2PPdCNT4XcY4UuseMM7SbbwAPncYQcWLjJkob//FUIg21VRR755wyBG6lx6TCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792418641; c=relaxed/simple;
-	bh=F6lt85MPcOEl59jtb3ug1gRiJSnG6SVyKhxF5/x/u2w=;
+	s=arc-20240116; t=1792418691; c=relaxed/simple;
+	bh=F/UsXT1e7/AvWIqMK34SiQX1vfA56FuuYZ5XTjxUBKs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LFRjWUBXBBOyAqrOCIEkNYseFyWzdbTyGWU47aceT0vCSkGMV8LDBR7Lo6BQlbR3BqJvXN+CJKx04u6m1J7hGNnJ0QNqKsOaJ6EAAMhzoGQnG0XK9rYw+dyneE31FU+IuDDKR+NL4aIkUa9IzSh8PJlf3xeUQoc79mv/Dz2/Ga0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f0Ihlqp5; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=TYgKF78NYfR9MBeSez/VV5w546OLc21BfsQss044sRvA25MJqyXsBh0kFCcPfYHk903Jk95Yxn79jcREhFd0DCyjkQrb7QCJioGoqrVfQ75gqB7PpecA+Ti6O/wgXXBMCXjzFQlT4u3ZRIPEcdXhLH9cA0RiXmCtUZQb7K+d2HE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T7TraGz+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f0Ihlqp5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E1591F000C5;
-	Mon, 19 Oct 2026 14:03:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T7TraGz+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CBE51F000C6;
+	Mon, 19 Oct 2026 14:04:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792418639;
-	bh=B4aUK8YmLb+jDiSRsCJYcxErZJfEJETwyn2Yf6MMcYY=;
+	s=k20260515; t=1792418689;
+	bh=WTU9jE6vfY4VsFTKT81fPJrxMMr0twbpuj3cAR+x5pk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=f0Ihlqp5IHOLY7iEX/gGb91SPVlxhehyTLXu3PeC61HY2FUHgBSSVHJH286T3Jd9m
-	 GCoHIe72qawwOshCpP10Pd5nvQGwije+bnUZphIHJhrf9ykSoQeG4GcCXt/DL2qzcF
-	 iYUEWotpv5T3U7yDOx2H60YZ4vppYBmQ503K4RviGAEidPwP5Xelr0ZGqwhAxxD/og
-	 Kkd8iV08sv4Exwkmoq6A6QTZAaO8DbWM8DZl/0PuHMYnTY057BY8BjK11Ms9rvsrud
-	 IYZ873sUvUcmxHL5y80Rs9HvjZo1RFTZjd78bJR9ySxjc4vk9JIlvDOcGrLRisPOP+
-	 ht/Mn+jIHhldA==
+	b=T7TraGz+mpaJ8iodszG+WiXHkxbnZYFL/7JttE5RqEtJ5ovQOvIVi/HI2OQEaekp0
+	 0AmhAxpZeiF+LX25JjO/SazdHpifz1WoHge2TIlOf/8gSuDthNur/V6T+kurmIi9ix
+	 zoNS1Gc1U51ucQJ6DF6w1/IpOgx946ZXmBo/FaCxwxj46YKLZyutqyAaywghsW+fiP
+	 xHh8mwI42AL9PK3mrSYcn+OY0AUntk+b/glX0eRvn7qET60kbQt+rpYOnnjVP8O/X0
+	 VC1L1GXnsWXJkjMk4O5Pvknq3movujmn3nCaiIVtzqBMprS+bq2NB3oeif6yj4G2Ov
+	 J28uFx3iqqqiA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Pengpeng Hou <pengpeng@iscas.ac.cn>,
-	Frank Li <Frank.Li@nxp.com>,
+Cc: Jiawen Liu <1298662399@qq.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
+	olteanv@gmail.com,
+	linux-spi@vger.kernel.org,
 	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18-5.10] firmware: imx: scu: manage mailbox channels and global handle
-Date: Mon, 19 Oct 2026 09:51:23 -0400
-Message-ID: <20261019135441.1420968-392-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.18] spi: fsl-dspi: clean up after failed suspend and resume
+Date: Mon, 19 Oct 2026 09:51:57 -0400
+Message-ID: <20261019135441.1420968-426-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261019135441.1420968-1-sashal@kernel.org>
 References: <20261019135441.1420968-1-sashal@kernel.org>
@@ -53,362 +54,405 @@ X-stable-base: Linux 6.18.57
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+From: Jiawen Liu <1298662399@qq.com>
 
-[ Upstream commit 55c748d596f841a18cf659ce0999f64029a5c88c ]
+[ Upstream commit 2543355f3da56a297e3803ccb5d29f4dce5f18f1 ]
 
-imx_scu_probe() requests mailbox channels with the non-managed
-mbox_request_channel_byname() helper and then publishes sc_ipc through
-the global imx_sc_ipc_handle.  Later probe failures, including child
-population failure, can leave the channels and global handle live after
-the probe has failed.
+dspi_suspend() disabled the IRQ before spi_controller_suspend(),
+but ignored a suspend failure and kept tearing the device down.
+Restore the IRQ and return the error if suspend fails.
 
-Register devres actions to free each mailbox channel and clear the global
-handle.  Also depopulate partially created child devices when
-devm_of_platform_populate() reports an error.
+dspi_resume() also left the clock prepared if controller resume or
+hardware init failed. Route those failures through clock cleanup.
 
-Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Jiawen Liu <1298662399@qq.com>
+Link: https://patch.msgid.link/tencent_427FA55E3D59112524886E9C931CA0F92F06@qq.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-## Phase 1: Commit message forensics
+I compared the pre-image to v6.18.53: the buggy suspend/resume path is
+there unchanged, so this is a standalone fix for this tree.
 
-**Step 1.1:** Record: `[firmware/imx SCU] [manage] Register managed
-cleanup for mailbox channels and the global IPC handle, and depopulate
-children if probe fails.`
+## PHASE 1: COMMIT MESSAGE FORENSICS
 
-**Step 1.2:** Tags present:
-- `Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>` (author)
-- `Signed-off-by: Frank Li <Frank.Li@nxp.com>` (i.MX maintainer who
-  applied it)
+**Step 1.1: PARSE THE SUBJECT LINE**
+- Record: `[spi: fsl-dspi:] [clean up] [restore IRQ / clocks after
+  failed suspend and resume]`
+- Subsystem is Freescale DSPI. The verb is “clean up”, but the body
+  describes ignored errors and missing rollback.
 
-No `Fixes:`, `Reported-by:`, `Tested-by:`, `Reviewed-by:`, `Acked-by:`,
-`Link:`, or `Cc: stable`. Absence of those tags is expected for this
-review and is not treated as a negative signal.
+**Step 1.2: PARSE ALL COMMIT MESSAGE TAGS**
+- Record:
+  - `Signed-off-by: Jiawen Liu <1298662399@qq.com>` (author)
+  - `Link: https://patch.msgid.link/tencent_427FA55E3D59112524886E9C931C
+    A0F92F06@qq.com`
+  - `Signed-off-by: Mark Brown <broonie@kernel.org>` (SPI maintainer)
+  - No `Fixes:`, `Reported-by:`, `Tested-by:`, `Reviewed-by:`, `Acked-
+    by:`, or `Cc: stable` (absence of those last two is expected for
+    this review)
+  - Pipeline-added `Signed-off-by: Sasha Levin` / `[ Upstream commit
+    2543355f3da5... ]` ignored per instructions
 
-**Step 1.3:** Record:
-- **Bug:** `imx_scu_probe()` uses unmanaged
-  `mbox_request_channel_byname()` and then publishes `sc_ipc` via the
-  global `imx_sc_ipc_handle`. Later probe failures, including
-  `devm_of_platform_populate()`, leave channels allocated and the global
-  handle set.
-- **Symptom:** Leaked mailbox channels after a failed probe; a live
-  global handle to an object that `devm_kzalloc` then frees; partial
-  child devices left behind.
-- **Version info:** None in the message. Driver originated in v4.20
-  (`edbee095fafb4`).
-- **Root cause:** Non-devm mailbox requests plus a global pointer with
-  no rollback on the remaining error paths.
+**Step 1.3: ANALYZE THE COMMIT BODY TEXT**
+- Record: **Bug:** `dspi_suspend()` calls `disable_irq()` then
+  `spi_controller_suspend()` but ignores a non-zero return and still
+  disables the clock and selects the sleep pin state. **Symptom:** on a
+  failed controller suspend the IRQ stays off, clocks are gated, pins go
+  to sleep, and suspend is reported as success. **Resume bug:**
+  `clk_prepare_enable()` is not undone if `spi_controller_resume()` or
+  `dspi_init()` fails. **Root cause:** missing error checks and missing
+  rollback. No version range in the message.
 
-**Step 1.4:** Record: This is an explicit probe-error-path resource-leak
-/ dangling-pointer fix, not a disguised cleanup. The wording matches the
-diff.
+**Step 1.4: DETECT HIDDEN BUG FIXES**
+- Record: Yes. “Clean up” is error-path recovery: re-enable IRQ and
+  return the error on suspend failure; `clk_disable_unprepare()` on
+  resume failure. That is a leak/imbalance fix, not style.
 
-## Phase 2: Diff analysis
+## PHASE 2: DIFF ANALYSIS
 
-**Step 2.1:** Record:
-- File: `drivers/firmware/imx/imx-scu.c` (+24 / −1)
-- Functions added: `imx_scu_free_mbox_chan()`, `imx_scu_clear_handle()`
-- Function modified: `imx_scu_probe()`
-- Scope: single-file surgical fix
+**Step 2.1: INVENTORY THE CHANGES**
+- Record: `drivers/spi/spi-fsl-dspi.c` only; **+18 / −3**. Functions:
+  `dspi_suspend()`, `dspi_resume()`. Single-file surgical PM error-path
+  fix.
 
-**Step 2.2:** Before → after:
-1. After a successful `mbox_request_channel_byname()`, the channel was
-   never registered with devres. Mid-loop failure (`-EPROBE_DEFER`,
-   `-ENOMEM` from `kasprintf`, later channel failure) returned without
-   `mbox_free_channel()`. After: each channel is wrapped in
-   `devm_add_action_or_reset(..., imx_scu_free_mbox_chan, ch)`.
-2. `imx_sc_ipc_handle = sc_ipc` was published with no undo. After: a
-   matching `devm_add_action_or_reset(..., imx_scu_clear_handle,
-   sc_ipc)` NULLs it on unwind if it still points at this object.
-3. `return devm_of_platform_populate(dev)` could fail after
-   `of_platform_populate()` had already created some children
-   (`devm_of_platform_populate()` does **not** depopulate on failure; it
-   only `devres_free()`s the tracking pointer). After: explicit
-   `of_platform_depopulate(dev)` on that error.
+**Step 2.2: UNDERSTAND THE CODE FLOW CHANGE**
+- Record:
+  - **suspend before:** disable IRQ → ignore `spi_controller_suspend()`
+    → always `clk_disable_unprepare()` → sleep pinctrl → return 0.
+  - **suspend after:** disable IRQ → if `spi_controller_suspend()`
+    fails, `enable_irq()` and return `ret` (clocks/pinctrl untouched).
+  - **resume before:** enable clock → ignore `spi_controller_resume()` →
+    on `dspi_init()` failure return with clock still prepared.
+  - **resume after:** those failures go to `disable_clk`
+    (`clk_disable_unprepare()` + return `ret`). IRQ is still enabled
+    only on the success path.
 
-**Step 2.3:** Record: `[error-path resource leak + dangling global
-pointer]`
-- Mailbox leak: unmanaged `mbox_request_channel_byname()` with no free
-  on later probe failure.
-- Retry hazard: `__mbox_bind_client()` returns `-EBUSY` if `chan->cl` is
-  already set, so a later probe retry can stick forever.
-- Handle leak / UAF: `sc_ipc` is `devm_kzalloc`’d; probe failure
-  releases it while `imx_sc_ipc_handle` still points at it. Other i.MX
-  drivers call `imx_scu_get_handle()`.
-- Child leak: failed `of_platform_populate()` still sets
-  `OF_POPULATED_BUS` and can leave partial children.
+**Step 2.3: IDENTIFY THE BUG MECHANISM**
+- Record: **Error-path / resource-leak / IRQ imbalance.**
+  `spi_controller_suspend()` can return `-EBUSY` from `spi_stop_queue()`
+  after a 5s wait (`drivers/spi/spi.c`). Continuing then gates the clock
+  under a live controller and leaves the IRQ disabled. Resume can leak a
+  prepared clock.
 
-**Step 2.4:** Record: The mailbox and handle `devres` actions are
-obviously correct (`devm_add_action_or_reset` runs the action
-immediately if registration fails). Calling `of_platform_depopulate()`
-only on populate failure is the right API:
-`devm_of_platform_depopulate()` would `WARN` because the managed
-resource was never added. Regression risk is low. Remaining related
-leaks (`gip3`, `soc_device`, secondary static handles) are pre-existing
-and not introduced here.
+**Step 2.4: ASSESS THE FIX QUALITY**
+- Record: Minimal and obviously correct; matches other SPI drivers that
+  already check these returns. Regression risk is low: only error paths
+  change. Idle suspend still returns 0 after stop-queue succeeds. Pre-
+  existing IRQ-before-stop-queue ordering is not introduced here
+  (Sashiko noted it as pre-existing). Resume still does not undo
+  `spi_controller_resume()` on later `dspi_init()` failure;
+  `dspi_init()` only fails on invalid `trans_mode` after a successful
+  probe, so that path is essentially dead.
 
-## Phase 3: Git history
+## PHASE 3: GIT HISTORY INVESTIGATION
 
-**Step 3.1:** Record: Unmanaged `mbox_request_channel_byname()` and
-`imx_sc_ipc_handle = sc_ipc` come from `edbee095fafb4` (“firmware: imx:
-add SCU firmware driver support”, 2018-10-08), first contained in
-**v4.20-rc1**. The bug is long-standing.
+**Step 3.1: BLAME THE CHANGED LINES**
+- Record: On v6.18.53, suspend/resume blame is `c5412ec5f68773`
+  (“Reinitialize DSPI regs after resuming for S32G”, 2025-05-22), which
+  kept the ignore-error pattern. That pattern already existed before
+  S32G (`git show c5412ec5f68773^`). Original driver `349ad66c0ab0b`
+  (Vybrid VF610) already ignored `spi_master_suspend()` and always
+  disabled the clock. Bug is old, not post-6.18.
 
-**Step 3.2:** No `Fixes:` tag. Not applicable.
+**Step 3.2: FOLLOW THE FIXES: TAG**
+- Record: No `Fixes:` tag. Not applicable beyond that.
 
-**Step 3.3:** Related commits on this file:
-- `89f12d6509bff` — kasprintf leak in the same probe loop (same class of
-  bug)
-- `fbf10b86f6057` — OF node leak in probe
-- `97a07dd2b559d` — `devm_mutex_init` (adjacent context; not a
-  functional prerequisite)
-- `ff79af939d847` — `suppress_bind_attrs = true`
+**Step 3.3: CHECK FILE HISTORY FOR RELATED CHANGES**
+- Record: Related: `3d87b613d6a3c` (“Fix external abort on interrupt in
+  resume or exit paths”) added `disable_irq()` in suspend because a
+  shared IRQ after clocks-off caused an external abort on Vybrid. That
+  makes restoring the IRQ on suspend failure required. `9bd77a9ce31dd`
+  only fixed a NULL drvdata in PM. This patch is standalone; later
+  autosel `b6d8099e44987` only switches PM macros.
 
-This is a standalone v1 patch, not part of a series. No follow-ups to
-this file after `55c748d596f84`.
+**Step 3.4: CHECK THE AUTHOR'S OTHER COMMITS**
+- Record: Jiawen Liu is not the SPI maintainer. Same series on this
+  tree: `spi: atcspi200`, `spi: bcmbca-hsspi`, `spi: bcm-qspi`, `spi:
+  bcm63xx-hsspi`, `spi: bcm63xx`, plus `spi: nxp-fspi` probe RPM. Each
+  driver is independent. Mark Brown applied the series.
 
-**Step 3.4:** Pengpeng Hou has only this commit in
-`drivers/firmware/imx/`. Frank Li (NXP i.MX maintainer) applied it.
-Author is a contributor; the applying maintainer is the subsystem owner.
+**Step 3.5: CHECK FOR DEPENDENT/PREREQUISITE COMMITS**
+- Record: No new helpers. Uses `spi_controller_suspend`/`resume`,
+  `enable_irq`/`disable_irq`, `clk_disable_unprepare` already in 6.18.
+  Standalone. Series 3/4 does not need 1/4 or 2/4 for this file.
 
-**Step 3.5:** No hard dependencies. `devm_add_action_or_reset()` is in
-`include/linux/device/devres.h` in this tree. Applies standalone.
+## PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
 
-## Phase 4: Mailing list and external research
+**Step 4.1: FIND THE ORIGINAL PATCH DISCUSSION**
+- Record: `b4 dig -c 2543355f3da5` → https://patch.msgid.link/tencent_42
+  7FA55E3D59112524886E9C931CA0F92F06@qq.com
+- Series: v1 only, `[PATCH 3/4]`. Mark Brown applied all four to
+  `broonie/spi.git for-7.3`. No NAK on this patch. Sashiko flagged two
+  **pre-existing** ordering issues (IRQ before stop-queue; resume queue
+  before `dspi_init()`), not regressions from this diff. No reviewer
+  `Cc: stable`. Direct lore fetch returned 403; thread recovered via `b4
+  dig -m`.
 
-**Step 4.1:** Record:
-- Lore / msgid:
-  https://patch.msgid.link/20260616005902.11634-1-pengpeng@iscas.ac.cn
-- Series: v1 only (`b4 dig -a`)
-- Maintainer apply: Frank Li, “Applied, thanks!” (24 Jul 2026), commit
-  `55c748d596f84`
-- No NAK. No `Cc: stable` suggestion in the thread.
-- Sashiko bot flagged **pre-existing** incomplete cleanup (`gip3`,
-  `soc_device`, secondary handles, RPC timeout). Those are not
-  regressions from this patch.
+**Step 4.2: CHECK WHO REVIEWED THE PATCH**
+- Record: `b4 dig -w`: To Mark Brown; Cc linux-spi, linux-kernel, linux-
+  arm-kernel, imx@, NXP (olteanv, han.xu, haibo.chen). No human
+  Reviewed-by on this patch. Maintainer applied it.
 
-**Step 4.2:** Recipients (`b4 dig -w`): Frank Li, Sascha Hauer,
-Pengutronix, Fabio Estevam, `imx@lists.linux.dev`, `linux-arm-kernel`,
-`linux-kernel`. Appropriate i.MX maintainers were on To/Cc.
+**Step 4.3: SEARCH FOR THE BUG REPORT**
+- Record: No Reported-by / bugzilla / syzbot. Bug is from code
+  inspection of ignored returns.
 
-**Step 4.3:** No bugzilla / syzbot / user `Reported-by`. Bug is from
-code inspection of the probe error path.
+**Step 4.4: CHECK FOR RELATED PATCHES AND SERIES**
+- Record: 1/4 atcspi200, 2/4 bcmbca-hsspi, 3/4 this, 4/4 nxp-fspi
+  (different bug: probe RPM). This hunk does not depend on the others.
+  Frank Li replied only to 4/4.
 
-**Step 4.4:** Standalone 1/1 patch. No series dependencies.
+**Step 4.5: CHECK STABLE MAILING LIST HISTORY**
+- Record: lore.kernel.org/stable search via WebFetch returned 403.
+  UNVERIFIED whether stable@ discussed this SHA. No in-tree evidence it
+  was rejected.
 
-**Step 4.5:** Record: UNVERIFIED for lore.kernel.org/stable (Anubis bot
-wall). Original imx thread has no stable discussion.
+## PHASE 5: CODE SEMANTIC ANALYSIS
 
-## Phase 5: Code semantic analysis
+**Step 5.1: IDENTIFY KEY FUNCTIONS**
+- Record: `dspi_suspend()`, `dspi_resume()`. Callees of interest:
+  `spi_controller_suspend()`, `spi_controller_resume()`, `dspi_init()`.
 
-**Step 5.1:** Record: `imx_scu_free_mbox_chan`, `imx_scu_clear_handle`,
-`imx_scu_probe`.
+**Step 5.2: TRACE CALLERS**
+- Record: Only `SIMPLE_DEV_PM_OPS(dspi_pm, dspi_suspend, dspi_resume)`
+  on v6.18.53 → system-sleep PM for this platform device. Not a syscall
+  hot path; triggered by suspend/resume on i.MX / Vybrid / LS1021A / S32
+  / ColdFire DSPI.
 
-**Step 5.2:** `imx_scu_probe()` is the platform probe for `fsl,imx-scu`.
-`imx_scu_get_handle()` is called from clk-scu, scu-pd, thermal, rtc,
-pinctrl, nvmem, GPIO, reset, FEC, FlexCAN, remoteproc, DRM, SOF, and
-others. Impact is every i.MX8QM/QXP SCU consumer.
+**Step 5.3: TRACE CALLEES**
+- Record: `spi_controller_suspend()` → `spi_stop_queue()` (up to 500 ×
+  ~10ms, then `-EBUSY`) then `__spi_mark_suspended()`.
+  `dspi_transfer_one_message()` waits on `dspi->xfer_done` when
+  `dspi->irq` is set; completion is from `dspi_interrupt()`. DMA mode
+  waits on DMA completions, not that IRQ.
 
-**Step 5.3:** Probe allocates `sc_ipc`, requests MU mailbox channels,
-publishes the global handle, then populates child devices. Callees:
-`mbox_request_channel_byname`, `mbox_free_channel`,
-`devm_of_platform_populate`, `of_platform_depopulate`.
+**Step 5.4: FOLLOW THE CALL CHAIN**
+- Record: Userspace/system suspend → driver PM → `dspi_suspend()`.
+  Reachable whenever this hardware is present and `CONFIG_PM_SLEEP`. In-
+  flight IRQ-mode transfer at suspend can make `spi_stop_queue()` fail;
+  that is the interesting path.
 
-**Step 5.4:** Reachable at boot on SCU SoCs (`subsys_initcall_sync`).
-Not a syscall, but it is the firmware IPC path those boards need to
-bring up clocks, power domains, and peripherals. Unprivileged userspace
-cannot poke it directly.
+**Step 5.5: SEARCH FOR SIMILAR PATTERNS**
+- Record: Many SPI drivers already check `spi_controller_suspend()`
+  (omap2-mcspi, atmel, qup, rockchip, stm32, …). Same author fixed the
+  ignored-return pattern in several Broadcom SPI drivers. Systematic,
+  not one-off.
 
-**Step 5.5:** Same driver already had a kasprintf leak fix in this
-probe. `imx_scu_enable_general_irq_channel()` still requests unmanaged
-`gip3` (pre-existing, not this patch).
+## PHASE 6: CROSS-REFERENCING AGAINST THE LOCAL TREE
 
-## Phase 6: Local tree
+**Step 6.1: DOES THE BUGGY CODE EXIST IN THIS TREE?**
+- Record: Local tree is **6.18.53** (`git describe HEAD` →
+  `v6.18.53-5049-g0f0bdc2b0dffb`, `VERSION=6 PATCHLEVEL=18
+  SUBLEVEL=53`). At **v6.18.53**, `dspi_suspend()` still ignores the
+  suspend return and `dspi_resume()` still returns from `dspi_init()`
+  failure without `clk_disable_unprepare()`. Candidate `1248ec26ed99f`
+  is **not** an ancestor of `v6.18.53`. Bug present.
 
-**Step 6.1:** Local tree is **7.3.0-rc4** (`git describe HEAD` =
-`v7.3-rc4-27-gf0100363d8c37`). Buggy pattern was introduced in v4.20 and
-is in this lineage. `git merge-base --is-ancestor 55c748d596f84 HEAD`
-succeeds. Pre-fix probe is in `55c748d596f84^`.
+**Step 6.2: CHECK FOR BACKPORT COMPLICATIONS**
+- Record: Pre-image on v6.18.53 matches the patch (including `#ifdef
+  CONFIG_PM_SLEEP` / `SIMPLE_DEV_PM_OPS`). Expected apply: **clean**.
+  `git apply --check` on current autosel HEAD fails only because the
+  candidate is already sitting on this working branch.
 
-**Step 6.2:** Expected apply: clean on this tree (`devm_mutex_init`
-context matches).
+**Step 6.3: CHECK IF RELATED FIXES ARE ALREADY HERE**
+- Record: `3d87b613d6a3c` (IRQ disable in suspend) **is** in v6.18.53.
+  No other fix for ignored `spi_controller_suspend()` on this file.
 
-**Step 6.3:** No alternate fix for mailbox/handle cleanup. Prior leak
-fixes (`89f12d6509bff`, `fbf10b86f6057`) do not cover this.
+## PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
 
-## Phase 7: Subsystem context
+**Step 7.1: IDENTIFY THE SUBSYSTEM AND ITS CRITICALITY**
+- Record: `drivers/spi/spi-fsl-dspi.c`. **IMPORTANT** (common
+  NXP/Freescale SPI; not core mm/vfs). `SPI_FSL_DSPI` depends on
+  `ARCH_MXC || ARCH_NXP || M5441x || COMPILE_TEST`. Kconfig: S32, VF610,
+  LS1021A, ColdFire.
 
-**Step 7.1:** Record: `[drivers/firmware/imx] [IMPORTANT]` — i.MX8QM/QXP
-System Controller IPC. Not core mm/net, but it is the firmware bus those
-SoCs use for clocks, PD, pinmux, thermal, RTC.
+**Step 7.2: ASSESS SUBSYSTEM ACTIVITY**
+- Record: File still gets platform and DMA work (S32G series in 2025).
+  PM error handling itself is old and stale.
 
-**Step 7.2:** Mature driver (2018), occasional probe-correctness fixes.
-Not a new subsystem.
+## PHASE 8: IMPACT AND RISK ASSESSMENT
 
-## Phase 8: Impact and risk
+**Step 8.1: DETERMINE WHO IS AFFECTED**
+- Record: Driver-specific: boards with Freescale DSPI that suspend.
+  Embedded/i.MX/Layerscape/S32 population, not all Linux systems.
 
-**Step 8.1:** i.MX8QM/QXP (and similar SCU) users with `CONFIG_IMX_SCU`.
-Driver-specific / SoC-specific.
+**Step 8.2: DETERMINE THE TRIGGER CONDITIONS**
+- Record: System suspend while `spi_stop_queue()` cannot drain
+  (busy/queued messages for ~5s). IRQ-mode in-flight transfer is a
+  realistic trigger because `disable_irq()` runs first and
+  `dspi_transfer_one_message()` uses
+  `wait_for_completion(&dspi->xfer_done)`. Unprivileged users do not
+  call this directly; a suspend with SPI activity can. Resume clock
+  leak: `spi_controller_resume()` `-EBUSY` or `dspi_init()` `-EINVAL`
+  (latter essentially unreachable after probe).
 
-**Step 8.2:** Trigger is probe failure **after** some channels were
-requested: mid-loop `kasprintf` `-ENOMEM`, a later
-`mbox_request_channel_byname()` failure, `devm_mutex_init()` failure, or
-`devm_of_platform_populate()` failure. First-channel `-EPROBE_DEFER`
-does **not** leak (nothing held yet). Not userspace-triggerable except
-via boot / driver bind.
+**Step 8.3: DETERMINE THE FAILURE MODE SEVERITY**
+- Record: Failed suspend that still gates clocks: possible MMIO abort /
+  hang (this driver already hit “external abort on non-linefetch” when
+  the IRQ ran after clocks off — `3d87b613d6a3c`). IRQ left disabled
+  while the device is still active: SPI completions never fire → hung
+  transfers. Resume clock leak: extra power / unbalanced clk prepare.
+  **Severity: HIGH** on the suspend path (hang / abort), **MEDIUM** on
+  the resume leak.
 
-**Step 8.3:** Failure mode:
-- Leaked MU channels → retry gets `-EBUSY` → SCU never probes →
-  clocks/PD/peripherals fail (**HIGH**, can make the board unusable)
-- Dangling `imx_sc_ipc_handle` after `devm` frees `sc_ipc` (**HIGH** UAF
-  if another driver then calls `imx_scu_get_handle()`)
-- Orphan child devices after failed populate (**MEDIUM**)
+**Step 8.4: CALCULATE RISK-BENEFIT RATIO**
+- Record: **Benefit:** high for DSPI suspend users — fail suspend
+  instead of disabling clocks/IRQ incorrectly. **Risk:** low — 21 lines,
+  error paths only, no API/struct change. If stop-queue fails, aborting
+  suspend is the intended PM policy.
 
-Happy-path probe is unchanged.
+## PHASE 9: FINAL SYNTHESIS
 
-**Step 8.4:** Benefit: prevents stuck SCU probe and a global-handle UAF
-on real error paths. Risk: ~24 lines, probe error path only, standard
-`devres` pattern. Ratio: favorable.
+**Step 9.1: COMPILE THE EVIDENCE**
 
-## Phase 9: Synthesis
+FOR:
+- Real ignored-error bug: teardown after failed
+  `spi_controller_suspend()`.
+- IRQ not restored → hung SPI (completion in `dspi_interrupt()`).
+- Clock gated while the controller may still be busy → abort/hang; same
+  class as the already-stable `3d87b613d6a3c` abort fix.
+- Resume path clock leak on error.
+- Small, local, obviously correct; SPI maintainer applied it.
+- Buggy code is in v6.18.53; no extra prerequisites.
+- Same class of SPI PM error-path fixes already common in-tree.
 
-**Evidence FOR:**
-- Real leak of exclusive mailbox channels; `__mbox_bind_client()`
-  returning `-EBUSY` can permanently break SCU probe retry.
-- Global handle left pointing at `devm`-freed `sc_ipc` after populate
-  failure (UAF for every `imx_scu_get_handle()` caller).
-- `of_platform_depopulate()` on failed `devm_of_platform_populate()` is
-  correct (verified against `drivers/of/platform.c`).
-- Small, single-file, no new API.
-- Applied by the i.MX maintainer; v1 accepted as-is.
-- Same probe function already needed leak fixes; this is the
-  mailbox/handle analogue.
-- Code and helpers exist in this 7.3-rc4 tree; no missing prerequisites.
+AGAINST:
+- No user/syzbot report.
+- Worded as “clean up”; failure is an error path, not every suspend.
+- `dspi_init()` resume failure is almost unreachable.
+- Sashiko pre-existing ordering notes (not introduced here).
+- Incomplete undo of `spi_controller_resume()` if `dspi_init()` failed
+  (dead in practice).
 
-**Evidence AGAINST:**
-- No user/syzbot report; author-found error-path bug.
-- Trigger is uncommon (not the first-channel `-EPROBE_DEFER` case).
-- Incomplete: `gip3`, `soc_device`, and secondary IPC statics still leak
-  (pre-existing).
-- Affects SCU i.MX8 platforms only.
+UNRESOLVED:
+- lore.kernel.org HTTP 403; stable@ discussion not independently fetched
+  (thread was recovered with b4).
 
-**Unresolved:** lore.kernel.org/stable search blocked (Anubis). Thread
-via `b4 dig` had no stable nomination.
+**Step 9.2: APPLY THE STABLE RULES CHECKLIST**
+1. Obviously correct and tested? **PASS** — mechanical error-return
+   handling; applied by Mark Brown.
+2. Fixes a real bug that affects users? **PASS** — IRQ/clock teardown on
+   failed suspend; clk leak on resume.
+3. Important issue? **PASS** — hang / possible bus abort, not a style
+   nit.
+4. Small and contained? **PASS** — +18/−3, one file.
+5. No new features or APIs? **PASS**.
+6. Can apply to the local tree? **PASS** — v6.18.53 pre-image matches.
 
-**Stable rules:**
-1. Obviously correct and tested? **PASS** — standard `devres` unwind;
-   maintainer applied it; no NAK.
-2. Real bug affecting users? **PASS** — leaked exclusive channels and a
-   dangling global IPC handle on failed probe.
-3. Important (crash/security/corruption/deadlock)? **PASS** — `-EBUSY`
-   probe stall can prevent SCU bring-up; dangling handle is a UAF.
-   Severity HIGH, not a happy-path panic.
-4. Small and contained? **PASS** — 24 insertions, one file.
-5. No new features/APIs? **PASS**
-6. Can apply to this tree? **PASS** — context matches; helpers present.
+**Step 9.3: CHECK FOR EXCEPTION CATEGORIES**
+- Record: Not a device-ID/quirk/DT/build/doc exception. Qualifies as a
+  normal bugfix.
 
-**Exception category:** none; this is a normal error-path leak/UAF fix.
+**Step 9.4: DECISION**
 
-The local tree is 7.3-rc4. The SCU driver and the buggy unmanaged
-mailbox/handle pattern are in this lineage (since v4.20). The fix is a
-small, correct rollback of probe resources. Remaining gip3/soc_dev gaps
-are not a reason to keep the main channel/handle leak.
+This should be backported to **this 6.18.53 tree**. The important part
+is suspend: do not disable clocks and leave the IRQ off when
+`spi_controller_suspend()` fails. That is a real stability bug on a
+production NXP SPI controller, small enough for stable, and it applies
+cleanly here.
+
+### What the commit solves for stable users
+On Freescale DSPI, suspend currently disables the IRQ, then ignores
+`spi_controller_suspend()`. If the message queue does not stop
+(`-EBUSY`), the driver still turns off the clock and puts pins to sleep
+while reporting success. The IRQ stays disabled. That can hang in-flight
+transfers (`wait_for_completion` never completes) or MMIO-abort if the
+hardware is still live. Resume can also leave `clk_prepare_enable()`
+unbalanced. The patch stops teardown on suspend failure and unwinds the
+clock on resume failure.
+
+### Risk vs benefit
+Benefit is preventing a broken/hung SPI device and possible abort after
+a failed controller suspend. Risk is confined to those error returns;
+successful idle suspend is unchanged.
+
+### Concerns
+No extra commits are required. Do not confuse autosel already having
+this SHA with “already selected for 6.18.y”; `v6.18.53` still has the
+bug.
 
 Verification:
-- [Phase 1] Parsed tags: only author + Frank Li SOBs; no Fixes/Reported-
-  by/Cc: stable
-- [Phase 2] Diff: +24/−1 in `imx_scu_probe()`;
-  `devm_add_action_or_reset` for mbox + handle; `of_platform_depopulate`
-  on populate failure
-- [Phase 2] `devm_of_platform_populate()` on failure does
-  `devres_free(ptr)` without depopulate; `of_platform_populate()` still
-  sets `OF_POPULATED_BUS` — explicit depopulate is required and not a
-  double-free
-- [Phase 2] `__mbox_bind_client()` returns `-EBUSY` if `chan->cl` is set
-  — verified in `drivers/mailbox/mailbox.c`
-- [Phase 3] Blame: bug from `edbee095fafb4` (v4.20-rc1); `git merge-base
-  --is-ancestor 55c748d596f84 HEAD` true
-- [Phase 3] No Fixes: tag; no follow-up commits on this file
-- [Phase 4] `b4 dig -c 55c748d596f84`:
-  https://patch.msgid.link/20260616005902.11634-1-pengpeng@iscas.ac.cn
-- [Phase 4] `b4 dig -a`: v1 only; `b4 dig -w`: Frank Li / Sascha Hauer /
-  imx list CC’d
-- [Phase 4] mbox: Frank Li “Applied, thanks!”; Sashiko noted pre-
-  existing gaps, no NAK
-- [Phase 4] lore.kernel.org/stable: UNVERIFIED (bot challenge)
-- [Phase 5] Callers of `imx_scu_get_handle()` span clk, pd, net,
-  thermal, rtc, drm, etc.
-- [Phase 6] `git describe HEAD`: v7.3-rc4-27-gf0100363d8c37; `make
-  kernelversion`: 7.3.0-rc4; buggy probe exists in parent of this commit
-- [Phase 8] Failure mode: mailbox leak → stuck probe / dangling handle
-  UAF; severity HIGH
+- [Phase 1] Subject/body/tags from `git log -1` / `git show
+  1248ec26ed99f`: no Fixes/Reported-by; Link msgid; SOB Jiawen Liu +
+  Mark Brown
+- [Phase 2] Diff: +18/−3 in `dspi_suspend`/`dspi_resume` only
+- [Phase 3] `git blame` on v6.18.53: `c5412ec5f68773`; ignore-error PM
+  since `349ad66c0ab0b`; `3d87b613d6a3c` in this tree
+- [Phase 3] `git merge-base --is-ancestor 1248ec26ed99f v6.18.53` → no;
+  ancestor of HEAD (autosel) → yes
+- [Phase 3] Author series: several independent SPI PM error-path patches
+- [Phase 4] `b4 dig -c 2543355f3da5`: patch 3/4 v1, lore msgid, applied
+  to broonie for-7.3; Sashiko pre-existing notes only; no NAK
+- [Phase 4] WebFetch lore/stable: 403 — UNVERIFIED stable@ thread
+- [Phase 5] `spi_controller_suspend` → `spi_stop_queue` `-EBUSY`; DSPI
+  IRQ path `wait_for_completion` / `dspi_interrupt`; PM ops only callers
+- [Phase 6] `git describe HEAD` / Makefile: 6.18.53; v6.18.53 file
+  matches patch pre-image
+- [Phase 7] `SPI_FSL_DSPI` on ARCH_MXC/NXP
+- [Phase 8] Failure: hung SPI / possible external abort; severity HIGH
+  on suspend error path
 
 **YES**
 
- drivers/firmware/imx/imx-scu.c | 25 ++++++++++++++++++++++++-
- 1 file changed, 24 insertions(+), 1 deletion(-)
+ drivers/spi/spi-fsl-dspi.c | 21 ++++++++++++++++++---
+ 1 file changed, 18 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/firmware/imx/imx-scu.c b/drivers/firmware/imx/imx-scu.c
-index 8c28e25ddc8a6..28d745ae06067 100644
---- a/drivers/firmware/imx/imx-scu.c
-+++ b/drivers/firmware/imx/imx-scu.c
-@@ -82,6 +82,17 @@ static int imx_sc_linux_errmap[IMX_SC_ERR_LAST] = {
- 
- static struct imx_sc_ipc *imx_sc_ipc_handle;
- 
-+static void imx_scu_free_mbox_chan(void *data)
-+{
-+	mbox_free_channel(data);
-+}
-+
-+static void imx_scu_clear_handle(void *data)
-+{
-+	if (imx_sc_ipc_handle == data)
-+		imx_sc_ipc_handle = NULL;
-+}
-+
- static inline int imx_sc_to_linux_errno(int errno)
+diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+index 83ea296597e94..1283a193b6fcc 100644
+--- a/drivers/spi/spi-fsl-dspi.c
++++ b/drivers/spi/spi-fsl-dspi.c
+@@ -1464,10 +1464,18 @@ static int dspi_init(struct fsl_dspi *dspi)
+ static int dspi_suspend(struct device *dev)
  {
- 	if (errno >= IMX_SC_ERR_NONE && errno < IMX_SC_ERR_LAST)
-@@ -321,6 +332,11 @@ static int imx_scu_probe(struct platform_device *pdev)
- 		dev_dbg(dev, "request mbox chan %s\n", chan_name);
- 		/* chan_name is not used anymore by framework */
- 		kfree(chan_name);
+ 	struct fsl_dspi *dspi = dev_get_drvdata(dev);
++	int ret;
+ 
+ 	if (dspi->irq)
+ 		disable_irq(dspi->irq);
+-	spi_controller_suspend(dspi->ctlr);
 +
-+		ret = devm_add_action_or_reset(dev, imx_scu_free_mbox_chan,
-+					       sc_chan->ch);
-+		if (ret)
-+			return ret;
++	ret = spi_controller_suspend(dspi->ctlr);
++	if (ret) {
++		if (dspi->irq)
++			enable_irq(dspi->irq);
++		return ret;
++	}
++
+ 	clk_disable_unprepare(dspi->clk);
+ 
+ 	pinctrl_pm_select_sleep_state(dev);
+@@ -1485,12 +1493,15 @@ static int dspi_resume(struct device *dev)
+ 	ret = clk_prepare_enable(dspi->clk);
+ 	if (ret)
+ 		return ret;
+-	spi_controller_resume(dspi->ctlr);
++
++	ret = spi_controller_resume(dspi->ctlr);
++	if (ret)
++		goto disable_clk;
+ 
+ 	ret = dspi_init(dspi);
+ 	if (ret) {
+ 		dev_err(dev, "failed to initialize dspi during resume\n");
+-		return ret;
++		goto disable_clk;
  	}
  
- 	sc_ipc->dev = dev;
-@@ -328,6 +344,9 @@ static int imx_scu_probe(struct platform_device *pdev)
- 	init_completion(&sc_ipc->done);
+ 	dspi_set_mtf(dspi);
+@@ -1499,6 +1510,10 @@ static int dspi_resume(struct device *dev)
+ 		enable_irq(dspi->irq);
  
- 	imx_sc_ipc_handle = sc_ipc;
-+	ret = devm_add_action_or_reset(dev, imx_scu_clear_handle, sc_ipc);
-+	if (ret)
-+		return ret;
- 
- 	ret = imx_scu_soc_init(dev);
- 	if (ret)
-@@ -340,7 +359,11 @@ static int imx_scu_probe(struct platform_device *pdev)
- 
- 	dev_info(dev, "NXP i.MX SCU Initialized\n");
- 
--	return devm_of_platform_populate(dev);
-+	ret = devm_of_platform_populate(dev);
-+	if (ret)
-+		of_platform_depopulate(dev);
+ 	return 0;
 +
++disable_clk:
++	clk_disable_unprepare(dspi->clk);
 +	return ret;
  }
+ #endif /* CONFIG_PM_SLEEP */
  
- static const struct of_device_id imx_scu_match[] = {
 -- 
 2.53.0
 
