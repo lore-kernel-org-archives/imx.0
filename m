@@ -1,169 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792422957;
-	b=jHW0zORP5iA4+UEc5f6YJIS7ZLD8DK2yMd0+6CQ1q7slJGd8eXIGczdaIpXP5dBkzZK4
-	 suzgLKjTgGTvbe9jS2XqWCcFHBtaEAoivcF2NviJE2EOTorgQdCYvESa76RtFymgP6mn8
-	 VZhb3BHCc6vcRw0QM5oJXNEpGZemsduNfXUxKlqF73EUeniL92ZvNqJ1mFlDgs3ayKmjk
-	 k88+zg4LjGM6dwjqFjZ1BdOtTwzAbh0QJCf/zu8wvhoeU7d2tyDYkKq7w7PFAXT2RyW4Z
-	 qm43Qo4yMio2n8/yM7y6cXWkLBKnV10mhqBwaRukAbe3He9zZQKp3sWFvwDAFu83OOA==
+	t=1792422762;
+	b=1vAxHoYUfLSWbFOzVNoj0WNnS+5Ilx4giaCPnO1Y+5yzyDcHJ6kbKelpycx1I/FfDnam
+	 QBNq/oO2zJCRPkSoIwDKuy9RqshF22Uc+Kt7k8hwB1arRMZ1KSweVccofa2FqBhaR0XKR
+	 ityH+PuyyT/bY9GSe0xb2C3Pr9hW4q2J3vpJCIitu6pSx5ezKqvi5ZyDYKVuK2nzZELp8
+	 V0zwIAe4aAyvpUhL6jKubULntig5Rw01Av4QIlW/TYGBhQQRJYPvYnmSUE3GkO70bJgIT
+	 ycaFLjIQ8qClO/mTMkFNi8qH+y0wQITExfyAKlWR0iNN1zp5Q+eEzNu5WIaEV5JYFjw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792422957;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=rY7NXz2qfQQtnIEL3eObvxvEOIQ+EeZp99ff3bsp5sk=;
-	b=LfprZZ+hHgUJwDXm+0KS8UOXDah5T4D73bKccUFteS+a45T7K/Lg5yg0xNa86gz/XbXT
-	 Q40udK7liYfEKHxUKKCYfH4t3qwYWMYl76A6tMaR6U5cjVbcPyNM/jsb4HWrCWGtRAI5A
-	 SGt1DSDV1zrAKgB4b/mrGOxD4FgTjgbAITi0XLCYS8CyTad+yzHu321V202WI9EpgJn/9
-	 dRcPfqggG1yc7uu5EhoYcT8vZH1TFeCyFAcfipK0Zr/3q6n0Z5icIcGycvgbJL8RNZIFF
-	 mKY2cSp88gOUY9uwmpl2sArQ7trKK9nNJIfPy/jmGFKRz8K4ffG/G8rBWhT6cPIEU/g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792422762;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=iIpyOaXECDqrIP29D8LBoN6PCkxmxknOELMzFUhz4h8=;
+	b=GDyPTZEa07uagATRYssPa9auS+iFUoqE3dFkz8coMefbrbhWCAy7wOlQCe7dOWJwgRD1
+	 ERaMctffJflnN2ejN4cD5Z5W3PkZqcZb4UzBkQuqQBTnBdIAkcTXxs8+FyTn8IRDHdA5V
+	 IFit1dBDgDki1mZIM4w5MAPzGEC3JLqGnurxkVrdYeEhxLzzepreyKGebjBsPDgGgOfu2
+	 JHzuLRW2NpZYUZhtNvwxqXIj2KSMyLy87vCFeApMSmFYh8o0EvZnqrQEfWYInsfwiFF3F
+	 9G+4MC3TDHjx6wa2N+WpSC0qhSZCdkIEdTw4bdI6ynoVzJpVP+POIb4VX1N5CJ7ZG4A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CnpQzRLX;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ey7WW4p0;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCA27609DCFA;
-	Mon, 19 Oct 2026 15:15:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F05A26098A25
+	for <imx@lists.linux.dev>; Mon, 19 Oct 2026 15:12:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CnpQzRLX
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 269E71F000C4;
-	Mon, 19 Oct 2026 15:15:55 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ey7WW4p0
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 996D01F000C4;
+	Mon, 19 Oct 2026 15:12:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792422956;
-	bh=rY7NXz2qfQQtnIEL3eObvxvEOIQ+EeZp99ff3bsp5sk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CnpQzRLX3TYf8k0qu6IYpaMq62MrzgVnzWtCBEbdnX0IUPXFCp6FFVhb6e/W37EY7
-	 oQdkTxuZitFSXzUqh8YM+LI6hW4HWoVv72MiRtWfb/iuVaWOGKHt2j8Piy3XsHY4bv
-	 HfJH5x277Hg+W3vBh+BKJcUHigFzcPtKnByrkz6Qw0vZi1heWwAKuKjDH8y9RjWbAw
-	 ZWzbQHvwqs0XljbKJDetYNNwEqmAYS1SizYC8c9PQJ/+yV3C9kQ+UX6IhimWK6Szh4
-	 MliM2s0jWJxjgBc2N8LAVJSnUAeqxo/k14Kw0U606JcTDsTXyg4NEZpgxA/P9PGn8a
-	 a/NOnXhhwsAXA==
-From: Maxime Ripard <mripard@kernel.org>
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Maxime Ripard <mripard@kernel.org>
-Cc: dri-devel@lists.freedesktop.org,
-	Aun-Ali Zaidi <admin@kodeit.net>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	amd-gfx@lists.freedesktop.org,
-	Harry Wentland <harry.wentland@amd.com>,
-	Leo Li <sunpeng.li@amd.com>,
-	Rodrigo Siqueira <siqueira@igalia.com>,
-	Liviu Dudau <liviu.dudau@arm.com>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Joel Stanley <joel@jms.id.au>,
-	Dave Airlie <airlied@redhat.com>,
-	Jocelyn Falempe <jfalempe@redhat.com>,
-	Francesco Dolcini <francesco@dolcini.it>,
-	Ian Ray <ian.ray@gehealthcare.com>,
-	Martyn Welch <martyn.welch@collabora.co.uk>,
-	Peter Senna Tschudin <peter.senna@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Alim Akhtar <alim.akhtar@samsung.com>,
-	Inki Dae <inki.dae@samsung.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Kyungmin Park <kyungmin.park@samsung.com>,
-	Peter Griffin <peter.griffin@linaro.org>,
-	Seung-Woo Kim <sw0312.kim@samsung.com>,
-	linux-samsung-soc@vger.kernel.org,
-	Alison Wang <alison.wang@nxp.com>,
-	Stefan Agner <stefan@agner.ch>,
-	Tian Tao <tiantao6@hisilicon.com>,
-	Xinwei Kong <kong.kongxinwei@hisilicon.com>,
-	Yongbang Shi <shiyongbang@huawei.com>,
-	Dexuan Cui <decui@microsoft.com>,
-	Long Li <longli@microsoft.com>,
-	Saurabh Sengar <ssengar@linux.microsoft.com>,
-	linux-hyperv@vger.kernel.org,
-	Fabio Estevam <festevam@gmail.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	imx@lists.linux.dev,
-	Paul Kocialkowski <paulk@sys-base.io>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	Icenowy Zheng <zhengxingda@iscas.ac.cn>,
-	Jianmin Lv <lvjianmin@loongson.cn>,
-	Mingcong Bai <jeffbai@aosc.io>,
-	Qianhai Wu <wuqianhai@loongson.cn>,
-	Xi Ruoyao <xry111@xry111.site>,
-	Abhinav Kumar <abhinav.kumar@linux.dev>,
-	Dmitry Baryshkov <lumag@kernel.org>,
-	Jessica Zhang <jesszhan0024@gmail.com>,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
-	Sean Paul <sean@poorly.run>,
-	freedreno@lists.freedesktop.org,
-	linux-arm-msm@vger.kernel.org,
-	Gerd Hoffmann <kraxel@redhat.com>,
-	spice-devel@lists.freedesktop.org,
-	virtualization@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	linux-renesas-soc@vger.kernel.org,
-	Marcus Folkesson <marcus.folkesson@gmail.com>,
-	Iker Pedrosa <ikerpedrosam@gmail.com>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	Alain Volmat <alain.volmat@foss.st.com>,
-	Raphael Gallais-Pou <rgallaispou@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Philippe Cornu <philippe.cornu@foss.st.com>,
-	Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>,
-	Yannick Fertre <yannick.fertre@foss.st.com>,
-	Chen-Yu Tsai <wens@kernel.org>,
-	Samuel Holland <samuel@sholland.org>,
-	linux-sunxi@lists.linux.dev,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Mikko Perttunen <mperttunen@nvidia.com>,
-	Thierry Reding <thierry.reding@kernel.org>,
-	linux-tegra@vger.kernel.org,
-	Alexey Brodkin <abrodkin@synopsys.com>,
-	Hans de Goede <hansg@kernel.org>,
-	LiangCheng Wang <zaq14760@gmail.com>,
-	Alex Lanzano <lanzano.alex@gmail.com>,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
-	Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>,
-	Chia-I Wu <olvaffe@gmail.com>,
-	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-	Gurchetan Singh <gurchetansingh@chromium.org>,
-	Haneen Mohammed <hamohammed.sa@gmail.com>,
-	Louis Chauvet <louis.chauvet@bootlin.com>,
-	Melissa Wen <melissa.srw@gmail.com>,
-	Oleksandr Andrushchenko <oleksandr_andrushchenko@epam.com>,
-	Ruben Wauters <rubenru09@aol.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	linux-amlogic@lists.infradead.org,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	intel-gfx@lists.freedesktop.org,
-	intel-xe@lists.freedesktop.org,
-	Danilo Krummrich <dakr@kernel.org>,
-	Lyude Paul <lyude@redhat.com>,
-	nouveau@lists.freedesktop.org,
-	Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Zack Rusin <zack.rusin@broadcom.com>,
-	Aditya Garg <aditya.garg@linux.dev>
-Subject: Re: (subset) [PATCH 00/75] drm/connector: Convert all drivers to atomic_create_state and remove reset
-Date: Mon, 19 Oct 2026 17:15:50 +0200
-Message-ID: <179242294379.2822300.2839114266297465713.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20261014-drm-no-more-connector-reset-v1-0-586c9c026823@kernel.org>
-References: <20261014-drm-no-more-connector-reset-v1-0-586c9c026823@kernel.org>
+	s=k20260515; t=1792422761;
+	bh=iIpyOaXECDqrIP29D8LBoN6PCkxmxknOELMzFUhz4h8=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=ey7WW4p0+x7mXJ13MCKBhmCAik9IIsqSqlgNvsaQmwP3B2MOvdfxgYUbLXpJ0zqER
+	 ZGWQ8+26nGwnd1Er8k178EVmPy4IBP0oxWf7KzTJ+Pw/shbN2H7yYCLTVPLpNCNL/W
+	 1ZRYQ1dqJBy8uJ2iWZeN4QaRE1KelwPlElgUJss1jHmCT0y1e3FS4IZdQhUajaDWsu
+	 8UnmhRYPAHCWCFYb7I7p8uqnCjLDhfpjxnkPGLO82VpeIP2v64lEkzM8ryP8Aqme//
+	 j5+u4JkyTMahBysgONngU19hveblJ3tc1tk5RtWcoO72deSWpCrX+cjntK/wzryOus
+	 A+OsXXsRSC5Iw==
+Message-ID: <sashiko-outbox-177646@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH AUTOSEL 6.18-5.10] firmware: imx: scu: manage mailbox
+ channels and global handle
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Sasha Levin" <sashal@kernel.org>
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <20261019135441.1420968-392-sashal@kernel.org>
+References: <20261019135441.1420968-1-sashal@kernel.org>
+ <20261019135441.1420968-392-sashal@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 19 Oct 2026 15:12:41 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -172,26 +60,149 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
 
-On Wed, 14 Oct 2026 19:26:23 +0200, Maxime Ripard wrote:
-> This is a follow-up to the plane and CRTC reset removal series, and
-> part of a larger effort to remove the reset hook from all KMS objects.
-> 
-> The connector reset hook is overloaded: it is called both at probe
-> time to create the initial software state and during suspend/resume to
-> reset hardware and software state. These two roles have different
-> requirements, and the reset hook is not fallible, making error
-> handling difficult for the initial state allocation path.
-> 
-> [...]
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [High] firmware: imx: scu: missing irq channel cleanup in imx_scu_probe()
+- [High] firmware: imx: scu: unmanaged soc_device in imx_scu_soc_init()
+--
 
-Applied to misc/kernel.git (drm-misc-next)
+commit b4c62f6aa45071e2c25e829dc030f6a6f0c1e4ec
+Author: Pengpeng Hou <pengpeng@iscas.ac.cn>
 
-[73/75] drm/vmwgfx: Convert to atomic_create_state
-        commit: e6bb593b800813788dc16179d1305747ff974d00
+firmware: imx: scu: manage mailbox channels and global handle
 
-Thanks!
-Maxime
+This commit registers devres actions in imx_scu_probe() to release
+requested mailbox channels and clear imx_sc_ipc_handle on probe failure,
+and depopulates child devices if devm_of_platform_populate() fails.
+
+> diff --git a/drivers/firmware/imx/imx-scu.c b/drivers/firmware/imx/imx-sc=
+u.c
+> index 8c28e25ddc8a6..28d745ae06067 100644
+> --- a/drivers/firmware/imx/imx-scu.c
+> +++ b/drivers/firmware/imx/imx-scu.c
+[ ... ]
+> @@ -328,6 +344,9 @@ static int imx_scu_probe(struct platform_device *pdev)
+>  	init_completion(&sc_ipc->done);
+> =20
+>  	imx_sc_ipc_handle =3D sc_ipc;
+> +	ret =3D devm_add_action_or_reset(dev, imx_scu_clear_handle, sc_ipc);
+> +	if (ret)
+> +		return ret;
+> =20
+>  	ret =3D imx_scu_soc_init(dev);
+>  	if (ret)
+
+[Severity: High]
+If devm_of_platform_populate(dev) fails later in imx_scu_probe(), does
+imx_scu_soc_init(dev) leave behind an unmanaged soc_device whose attributes
+point to freed devm memory?
+
+In drivers/firmware/imx/imx-scu-soc.c, imx_scu_soc_init() caches sc_ipc in
+imx_sc_soc_ipc_handle, allocates soc_dev_attr, soc_dev_attr->revision, and
+soc_dev_attr->serial_number using devm on the SCU device, and registers the
+SoC device with the unmanaged soc_device_register():
+
+drivers/firmware/imx/imx-scu-soc.c:imx_scu_soc_init() {
+	ret =3D imx_scu_get_handle(&imx_sc_soc_ipc_handle);
+	if (ret)
+		return ret;
+
+	soc_dev_attr =3D devm_kzalloc(dev, sizeof(*soc_dev_attr),
+				    GFP_KERNEL);
+	...
+	soc_dev_attr->revision =3D devm_kasprintf(dev, GFP_KERNEL, "%d.%d",
+						(val >> 4) & 0xf, val & 0xf);
+	...
+	soc_dev_attr->serial_number =3D devm_kasprintf(dev, GFP_KERNEL,
+						     "%016llX", uid);
+	...
+	soc_dev =3D soc_device_register(soc_dev_attr);
+}
+
+In drivers/base/soc.c, soc_device_register() stores the soc_dev_attr pointer
+directly in soc_dev->attr.
+
+When devm_of_platform_populate(dev) fails, devres_release_all(dev) frees
+soc_dev_attr, revision, serial_number, and sc_ipc while soc_dev remains
+registered on soc_bus_type and imx_sc_soc_ipc_handle stays set to the freed
+sc_ipc. Reading /sys/bus/soc/devices/socX/* via soc_info_show() or calling
+soc_device_match() will then dereference freed memory.
+
+Should imx_scu_soc_init() also register devres cleanup to call
+soc_device_unregister(soc_dev) and clear imx_sc_soc_ipc_handle?
+
+> @@ -340,7 +359,11 @@ static int imx_scu_probe(struct platform_device *pde=
+v)
+> =20
+>  	dev_info(dev, "NXP i.MX SCU Initialized\n");
+> =20
+> -	return devm_of_platform_populate(dev);
+> +	ret =3D devm_of_platform_populate(dev);
+> +	if (ret)
+> +		of_platform_depopulate(dev);
+> +
+> +	return ret;
+>  }
+
+[Severity: High]
+Similarly, when devm_of_platform_populate(dev) fails here after
+imx_scu_enable_general_irq_channel(dev) has succeeded, doesn't the
+unmanaged state in drivers/firmware/imx/imx-scu-irq.c remain active while
+its devm-allocated backing structures are freed?
+
+Before devm_of_platform_populate(dev) is called, imx_scu_probe() invokes
+imx_scu_enable_general_irq_channel(dev):
+
+drivers/firmware/imx/imx-scu-irq.c:imx_scu_enable_general_irq_channel() {
+	ret =3D imx_scu_get_handle(&imx_sc_irq_ipc_handle);
+	if (ret)
+		return ret;
+
+	cl =3D devm_kzalloc(dev, sizeof(*cl), GFP_KERNEL);
+	if (!cl)
+		return -ENOMEM;
+
+	cl->dev =3D dev;
+	cl->rx_callback =3D imx_scu_irq_callback;
+
+	/* SCU general IRQ uses general interrupt channel 3 */
+	ch =3D mbox_request_channel_byname(cl, "gip3");
+	...
+	INIT_WORK(&imx_sc_irq_work, imx_scu_irq_work_handler);
+
+	if (!of_parse_phandle_with_args(dev->of_node, "mboxes",
+				       "#mbox-cells", 0, &spec))
+		i =3D of_alias_get_id(spec.np, "mu");
+	...
+	wakeup_obj =3D kobject_create_and_add("scu_wakeup_source", firmware_kobj);
+	...
+	ret =3D sysfs_create_file(wakeup_obj, &wakeup_source_attr.attr);
+}
+
+If devm_of_platform_populate(dev) fails, devres frees cl and sc_ipc and
+clears imx_sc_ipc_handle, but nothing tears down the state created in
+imx_scu_enable_general_irq_channel():
+
+1. The "gip3" mailbox channel ch is not freed with mbox_free_channel(ch),
+   leaving chan->cl pointing to the freed mbox_client cl (which causes a
+   use-after-free in imx_scu_irq_callback() on a gip3 interrupt and causes
+   __mbox_bind_client() to return -EBUSY on any later probe retry), and
+   imx_sc_irq_work is not cancelled.
+
+2. imx_sc_irq_ipc_handle remains non-NULL and points to the freed sc_ipc, so
+   callers such as imx_scu_irq_group_enable() pass the
+   !imx_sc_irq_ipc_handle check and dereference freed memory in
+   imx_scu_call_rpc().
+
+3. wakeup_obj and wakeup_source_attr are leaked under
+   /sys/firmware/scu_wakeup_source (in addition to spec.np from
+   of_parse_phandle_with_args() never being released with of_node_put()).
+
+Could imx_scu_enable_general_irq_channel() register devres actions to
+clean up the gip3 channel, imx_sc_irq_work, imx_sc_irq_ipc_handle, and
+wakeup_obj when probe fails?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261019135441.1420=
+968-392-sashal@kernel.org?part=3D1
