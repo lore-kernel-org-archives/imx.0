@@ -1,70 +1,70 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DB054E36C3
-	for <imx@lists.linux.dev>; Mon, 19 Oct 2026 11:18:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68A064E1C6D
+	for <imx@lists.linux.dev>; Mon, 19 Oct 2026 11:18:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792408731; cv=none; b=J7xhsNP3eDxJF8KlLpy/KiMlEO3Bj0oq1mZre1q7WPRC8eHSaCQgwJu0tV6Dk63o2es+PaQlEIyQ8dTcLgIUFESKbbqTUmyVbUSBfcDzkFZMb8Zj/fVFjqsKf52vDBMBROQHij5LPFj6f3dUq0qh14fkDW7pVJzcL6tz+qd5W+k=
+	t=1792408732; cv=none; b=H1L775oDErJnzfO5VIW0uJdCntpxBd5hWsqxNL4uuQeeiRcx5YZgQnogUKH2yYYzci1TrzEf3+zSTG6k6RprAPhpGtu0Nm1JIORHpn2chEm0vlI1AxvfXryXWvL+Of7mJgh6wodLmWCw0haR5TwIcpc2bnKHJXGr6AWVUEg6imc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792408731; c=relaxed/simple;
-	bh=mhxLCTPjVQZv2OtRsJyKUu3/MGnO5VTuhQw6MyljM28=;
+	s=arc-20240116; t=1792408732; c=relaxed/simple;
+	bh=gazPgJ3DS8KLEAMl28pu8yFODWHBBY3+9gNNd5HjOWU=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=rJDlh3nHCR7IN5+FlkfZ6wX1l3i97W3exKs4lgheVrw0dL0mLQ4KDNGlQOBI7tI1d9Jk8FoNoQfyCc5YygdaznyeR/GEGmczdNquxhRcjCp+FCXygLu9ZArqvoaj3mb8Nsrx11WfWwyBz5ReMx8vvTjgPuLoEMXJvZmYcyc3zh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RiAi6EFU; arc=none smtp.client-ip=209.85.221.49
+	 In-Reply-To:To:Cc; b=JpmnGxrWnuwwmBjtG2u+ZgX4tdlrjUIvMz5FU74eIvvAtiPoXOdgXOH7A7FhbyP1r2lMUCfV8k/mnpzVqlj94GL99qqk9VCEWaSUo0XopLbX7rV3bOEAeMIvATUd8tBcqYMlfMu9r1c5Np3VB13h/DfiHBb7DAxsuZ8fxvYN030=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IGr+GlR5; arc=none smtp.client-ip=209.85.128.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RiAi6EFU"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-48afbd2c386so945936f8f.3
-        for <imx@lists.linux.dev>; Mon, 19 Oct 2026 04:18:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IGr+GlR5"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-49d0da752ffso15807765e9.3
+        for <imx@lists.linux.dev>; Mon, 19 Oct 2026 04:18:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792408725; x=1793013525; darn=lists.linux.dev;
+        d=gmail.com; s=20251104; t=1792408724; x=1793013524; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=ADWQiUiXmhFxdxGNtaNp4L2f/HRKA6KEJjR+eWf0vVM=;
-        b=RiAi6EFUPfisjBzvy/m9DHLUXa5p4zJq+poNlaBi7VsWoCZLAnit8a7tL5UAcR0z+8
-         eLvEy5uFrHmtR+cr0Nd+yeEhdcBRcCk/rxF0YaNv3mD3UyTjHM/Q0eg+vpDmlyF2Ryba
-         ATkuathQWok/xeGdxhcf31rB55PUaMIRS/FPhrvxvY1/BTpLFJ8wgupmQl9WZzwRpVwV
-         IHHNW/esmqPHNcMyeGDWQ6bk2zd5lZHGzQPyUrQDfPwJ/YbrBBY3Heli44En8HQnxp/c
-         Q1ZaESav/Ic/+5T7ScwIoSiSokRcgwDUPkfFFaHaXBN26pzlN99bTP/p4a8NZdQQsMsw
-         wctA==
+        bh=EvDp0WFEeyAl+OoOvKN3vOw6sm+QjhbDzPXRSM8jJo0=;
+        b=IGr+GlR5WWh6a/cN3OwSMe30ldk5eeG1gzjER+ulpv+segMndIOC5i8q7nMt2GdLnT
+         TVW7HrfLoe80EaSFgcZkwkXLDLlmWIOgRl4jZbj68WmUWJlug6Mx8/YvGKk+3hOFhT2t
+         9ypHQ6WHxmhkRs7skVKIXdWpMlpsDxlae70A6yeXLH9wnrAxr0Q5yJ/rQx6fP2JRAk1E
+         wgAuTf5HaWRlG5uDDoVziZJlPAGfboT7uJ3+2T+ei7NDVb2kyAXNtLGlBc7BhAGSTEdL
+         4dSzP2cRhJFd5pSqdr28akFcwzXyKHAC7O3i2ApOn+Mu8jmppfKlo3Fy7if8WoRIs+Mb
+         S+EQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792408725; x=1793013525;
+        d=1e100.net; s=20260707; t=1792408724; x=1793013524;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ADWQiUiXmhFxdxGNtaNp4L2f/HRKA6KEJjR+eWf0vVM=;
-        b=YbsYRHFbCP9sMcl12ns48Of87x7dcJTlW6+knyMjyOzzA56vyuZey+5j0h4Ethsqcy
-         JiyxZHmRMlmIR8w5/Gpw2+Y3p9ZVnhs6KJ0P7vu2ltPQYPyuoiycplvy5QDgPqYiFfuD
-         M7Se19hXWdbI29qYsRxei/6XyKUwGlh7shv9D/UkADLneLihpSLq7g/QcKvRyyaXRqFP
-         HAZJL8fZNPtqvCNoh9KZGAMLf5Mrjpi+aN5NlGy1GZQNHm+sYcbaOChH4KwDjITEn19B
-         hAu2uSd3V2fw1EoWsTgaJ7iV0f0nA4m2AY6adMTfOCrap/T4QPhoLHYhsITe4VNgKS0m
-         1Pqw==
-X-Forwarded-Encrypted: i=1; AKwUvBzX16t0xEUNuvSaFXRGl8Mqmr5pNPbLDEmLGjvvMRNkLdgC+tUA3nXu26FkrBr4bbAnSDo=@lists.linux.dev
-X-Gm-Message-State: AFq9FYLedfJ/KtdvDW6PeHOw6Zt+17vtEAJabxNIwtoWaaxcBUr5nF2U
-	uwT2LDKmX9YFYdQ9QuwS1swhiXMJo+w7wLX7aFgLi89xM2AZIn9yr1kf
-X-Gm-Gg: AYBFou2hkRaBw6ZN+ty5SoNkw8KWxw68rNn952ckNpBDJo1BmOTKpJkBg91gdWiiv2X
-	XvVs6DznHGfwEMKhNE/sE8US6cBZ9nemj4Tkfu7XbHY2Za2q1h+mGM8usbcv4VAEZMPgWI9oytD
-	0sGYK3TO4dsptsuy9fst8umKhnAT93NW7COnZTyntEqhZu6L133XWui+XqkCfjEWUTbYKezL8zo
-	KtFHYk3DwomL51wT2ovTb0GanvKTe26ea1YSwfaaa89ObwK/G64iHpMTv7XTaLYFbBSbTtRro9O
-	f2C/XBOe2Bhmj7zdaj105u3chSUIgeGre4YnwpbEGaJ8td74j1Tt5fo6+z4i/THdi8+Cjsm6Arm
-	90je59oLhczEzduuZYqJh7nTSfWznrQXeZEhQ4d/OZm22p0rQbdYlPsRLjGPvpkkIRvxkSxlNN2
-	ay8IF7B/h9rReeX7RN3b43GyjTHbDcRQQo/mwszlRm0QjZRRctWBjebrM24yiFUreY+Oom7xdR2
-	cOW4wJz02h05sBhrzklBBtZYkspW70G712re67DUXm76NjZOgLjRKeD8Q6RQ8/N6fTcvbsNb/6N
-	pEtM2+sygYo9u7HPHIARWDAIuMLIZr5I
-X-Received: by 2002:a05:600c:858c:b0:4a1:d957:733e with SMTP id 5b1f17b1804b1-4a1d95773ccmr99705095e9.26.1792408725266;
-        Mon, 19 Oct 2026 04:18:45 -0700 (PDT)
-Received: from [10.0.0.136] (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch. [83.173.201.248])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1e3ebb3aasm193183505e9.0.2026.10.19.04.18.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        bh=EvDp0WFEeyAl+OoOvKN3vOw6sm+QjhbDzPXRSM8jJo0=;
+        b=UBCHSWYyNM83rAoDRavEPloCMUW+S4p50KEqLVrS0KdNdJi3oVhpMOyAvr5pRmn/Fw
+         3P37XL83LFws3rynmjsniAbAgh7CSOrVDlN3S2D4OyOYvV4nmcQhvaMuYTwh47l2qMHU
+         ozp9p/neS2jYoJmE0sGv4pVcB84sTw5vf4aNU/y1eTP09u2+TsWEkcwounC7cQTrUjvD
+         6dPDlyjvtBJiKnvXqLUEFCtnXSryWoppWVSu/wvp2WjpgShhwuJkj8BoaUd9gFhr29jN
+         EN4V6yXOomRJjYll3n96iHU/Ce1KxaJlzcwGoq4PGHYcFpKpUTGV380zKAvqr1Ovy+jk
+         1tBw==
+X-Forwarded-Encrypted: i=1; AKwUvBxsuJ7Ra/lkZnW/g0NBUC7/MY7pF75UcQcqbBCFE0nHi8npyQyDd6lXjzXgzFpkYp8nfcY=@lists.linux.dev
+X-Gm-Message-State: AFq9FYLJ2R9uHtgRPPodOuoXXmCh7jDTpPk4KrbPUarnmgzswAas1y0+
+	p7nF4h0YvgO8wm3+RI6RIqD9ZWefjB5tIPRDIy+l8dQU4HGHVr/TZl8w
+X-Gm-Gg: AYBFou2HsSgvw6eyLCoOEjf1lAD0fg/rLncsyOfSxt3rbVQ6cyIkiJb5JKmZ8JiMxWn
+	EjIplo+kqccIM+mPliwGXmIL6oOJrRmOQa8gxRytuv16KBRsX0Ex6gtuC+IQPabn23AT4HlWU1p
+	B69ni8EWsm/+G5+qcGvDOvJ70xBSsZFNIypIn+KxRPQFcSFd0nxCsSyzsE3QqIkLYbq6HhNaddA
+	1fYtwr0uGHAgAIKivYVN73IQdICYfuAd45pX4k7vGA4spKlMi6uCKhSgeSx4YcYAdvMSdPfiouC
+	m6ElLDPBrlJ6Fm4/W/1CT9L2Z7hhUaGWF89rmxYaeCTR7x0rp3m4DypQPJ+buI/s+jU09SABofx
+	cs1yM/bAYSpCsHVx+CWU7ENdxHAsk4dGh1iFFE2Ctc5Usql/wI/oduydy+crjv9vZBR95LKpHSo
+	lkScyJOHIxN4iMqDZNS9zxWC7IlW4E/B2StRJq01DEy8LJmqg10xH153BytpdwnSY2Dnbwh3U9d
+	PhdZlw+AOhAKQ3HKymOYsKyICHb5K0hKjR4Ys7fqvNh6DlT82kIhUz9vNIjoGWb8VW61zy0Mvpz
+	RTXgnEx3K+ldaUp/2HHq0Q==
+X-Received: by 2002:a05:600c:1392:b0:4a1:62b8:9aa1 with SMTP id 5b1f17b1804b1-4a1d75aa87cmr173201555e9.2.1792408724379;
         Mon, 19 Oct 2026 04:18:44 -0700 (PDT)
+Received: from [10.0.0.136] (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch. [83.173.201.248])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1e3ebb3aasm193183505e9.0.2026.10.19.04.18.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Oct 2026 04:18:43 -0700 (PDT)
 From: Antoine Gouby <antoine.gouby@gmail.com>
-Date: Mon, 19 Oct 2026 13:18:33 +0200
-Subject: [PATCH 4/5] ARM: dts: imx6dl-colibri: Add Toradex Resistive Touch
- Display 7" Parallel
+Date: Mon, 19 Oct 2026 13:18:32 +0200
+Subject: [PATCH 3/5] ARM: dts: imx6dl-colibri: Add Toradex Capacitive Touch
+ Display 7" Parallel with Touch Adapter
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -73,7 +73,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261019-colibri-imx6-overlays-v1-4-e4d028727382@toradex.com>
+Message-Id: <20261019-colibri-imx6-overlays-v1-3-e4d028727382@toradex.com>
 References: <20261019-colibri-imx6-overlays-v1-0-e4d028727382@toradex.com>
 In-Reply-To: <20261019-colibri-imx6-overlays-v1-0-e4d028727382@toradex.com>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -86,84 +86,114 @@ Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
  Antoine Gouby <antoine.gouby@toradex.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3261;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4582;
  i=antoine.gouby@toradex.com; h=from:subject:message-id;
- bh=3yhzmAkS0sm6Z89eEvnHRy31Jkz9wloR2qd4ecuJsYo=;
- b=owGbwMvMwCWm0rPo7MxLN2YynlZLYsi6+qe/r05eak5Xb/exYr29f+X5FfZ4G3D/2f5hgRefa
- sW8zA82HaUsDGJcDLJiiiwZT1QF+RRCZD04mpNh5rAygQxh4OIUgIkwRTP8M37288i/Pm6tg5eN
- VBZ6Mrlvmv3xrG/vRfbQ1jsRsTwZrYwMd/LMd85bqCL69jzn710vFGafP3zISMVverOM+IqdUcp
- /2AA=
+ bh=tztsGziNQEcNmWY0BqahbIqgqteAXBpXCYB6S3NjaSU=;
+ b=owGbwMvMwCWm0rPo7MxLN2YynlZLYsi6+qd//yk2n7UTMx/2TFWIXJbWnRq3JTe8fVqVxCcfo
+ Zo9k0qiOkpZGMS4GGTFFFkynqgK8imEyHpwNCfDzGFlAhnCwMUpABOxrWRkmJbC/FhV+sWVskVP
+ dvye6bT02PxTFiKS1fsNEu88z/pVqsnwz7LKsY+NQdNhx3s/38ZTRvd97BbpWNct4N3C+vyTogg
+ XNwA=
 X-Developer-Key: i=antoine.gouby@toradex.com; a=openpgp;
  fpr=68E425110E20541D48088363248CA2CD99D2D899
 
 From: Antoine Gouby <antoine.gouby@toradex.com>
 
-Add a device tree overlay for the Resistive Touch Display 7" Parallel
+Add a device tree overlay for the Capacitive Touch Display 7" Parallel
 on the Colibri iMX6 parallel RGB LCD interface.
 
-The panel is a LogicTechno LT161010-2NHR 7" WVGA TFT Transmissive LCD
-with a resistive touch, handled by the touch controller on the module.
+The panel is a LogicTechno LT161010-2NHC 7" WVGA TFT Transmissive LCD
+and the touch input is provided by an Atmel MaxTouch capacitive touch
+controller.
+
+The touch controller is connected to the Toradex Capacitive Touch
+Adapter, the connection to the various carrier boards is documented in
+the datasheet [1].
+
+The touch interrupt and reset signals on SODIMM 28 and SODIMM 30 share
+their pads with the Colibri PWM<B> and PWM<C> outputs, disable PWM1 and
+PWM4 to avoid the pin conflict.
 
 The overlay is also combined with the Colibri iMX6 V1.2 Evaluation
 Board v3 device tree to provide a ready-to-use DTB.
 
-Link: https://developer.toradex.com/hardware/accessories/displays/resistive-touch-display-7inch-parallel/
+Link: https://developer.toradex.com/hardware/accessories/displays/capacitive-touch-display-7inch-parallel/
+Link: https://developer.toradex.com/hardware/accessories/add-ons/capacitive-touch-adapter/
+Link: https://docs.toradex.com/104615-capacitive-touch-adapter-datasheet.pdf [1]
 Signed-off-by: Antoine Gouby <antoine.gouby@toradex.com>
 ---
- arch/arm/boot/dts/nxp/imx/Makefile                 |  6 +++++
- ...6dl-colibri-panel-res-touch-7inch-parallel.dtso | 29 ++++++++++++++++++++++
- 2 files changed, 35 insertions(+)
+ arch/arm/boot/dts/nxp/imx/Makefile                 |  6 +++
+ ...nel-cap-touch-7inch-parallel-touch-adapter.dtso | 57 ++++++++++++++++++++++
+ 2 files changed, 63 insertions(+)
 
 diff --git a/arch/arm/boot/dts/nxp/imx/Makefile b/arch/arm/boot/dts/nxp/imx/Makefile
-index 4f59ef0855cb..1ea51b13ab7c 100644
+index 7897d9dbdfac..4f59ef0855cb 100644
 --- a/arch/arm/boot/dts/nxp/imx/Makefile
 +++ b/arch/arm/boot/dts/nxp/imx/Makefile
-@@ -92,6 +92,10 @@ imx6dl-colibri-v1.2-eval-v3-panel-cap-touch-7inch-parallel-touch-adapter-dtbs :=
+@@ -88,6 +88,10 @@ imx6dl-colibri-v1.2-eval-v3-hdmi-dtbs := \
  	imx6dl-colibri-v1.2-eval-v3.dtb \
- 	imx6dl-colibri-panel-cap-touch-7inch-parallel-touch-adapter.dtbo
+ 	imx6dl-colibri-hdmi.dtbo
  
-+imx6dl-colibri-v1.2-eval-v3-panel-res-touch-7inch-parallel-dtbs := \
++imx6dl-colibri-v1.2-eval-v3-panel-cap-touch-7inch-parallel-touch-adapter-dtbs := \
 +	imx6dl-colibri-v1.2-eval-v3.dtb \
-+	imx6dl-colibri-panel-res-touch-7inch-parallel.dtbo
++	imx6dl-colibri-panel-cap-touch-7inch-parallel-touch-adapter.dtbo
 +
  imx6dl-colibri-v1.2-iris-hdmi-dtbs := \
  	imx6dl-colibri-v1.2-iris.dtb \
  	imx6dl-colibri-hdmi.dtbo
-@@ -146,12 +150,14 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
+@@ -141,11 +145,13 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
+ 	imx6dl-colibri-iris-v2.dtb \
  	imx6dl-colibri-iris-v2-hdmi.dtb \
  	imx6dl-colibri-panel-cap-touch-7inch-parallel.dtbo \
- 	imx6dl-colibri-panel-cap-touch-7inch-parallel-touch-adapter.dtbo \
-+	imx6dl-colibri-panel-res-touch-7inch-parallel.dtbo \
++	imx6dl-colibri-panel-cap-touch-7inch-parallel-touch-adapter.dtbo \
  	imx6dl-colibri-v1.2-aster.dtb \
  	imx6dl-colibri-v1.2-aster-hdmi.dtb \
  	imx6dl-colibri-v1.2-aster-panel-cap-touch-7inch-parallel.dtb \
  	imx6dl-colibri-v1.2-eval-v3.dtb \
  	imx6dl-colibri-v1.2-eval-v3-hdmi.dtb \
- 	imx6dl-colibri-v1.2-eval-v3-panel-cap-touch-7inch-parallel-touch-adapter.dtb \
-+	imx6dl-colibri-v1.2-eval-v3-panel-res-touch-7inch-parallel.dtb \
++	imx6dl-colibri-v1.2-eval-v3-panel-cap-touch-7inch-parallel-touch-adapter.dtb \
  	imx6dl-colibri-v1.2-iris.dtb \
  	imx6dl-colibri-v1.2-iris-hdmi.dtb \
  	imx6dl-colibri-v1.2-iris-v2.dtb \
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6dl-colibri-panel-res-touch-7inch-parallel.dtso b/arch/arm/boot/dts/nxp/imx/imx6dl-colibri-panel-res-touch-7inch-parallel.dtso
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6dl-colibri-panel-cap-touch-7inch-parallel-touch-adapter.dtso b/arch/arm/boot/dts/nxp/imx/imx6dl-colibri-panel-cap-touch-7inch-parallel-touch-adapter.dtso
 new file mode 100644
-index 000000000000..331c81332081
+index 000000000000..ffc54438d33b
 --- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx6dl-colibri-panel-res-touch-7inch-parallel.dtso
-@@ -0,0 +1,29 @@
++++ b/arch/arm/boot/dts/nxp/imx/imx6dl-colibri-panel-cap-touch-7inch-parallel-touch-adapter.dtso
+@@ -0,0 +1,57 @@
 +// SPDX-License-Identifier: GPL-2.0-only OR MIT
 +/*
 + * Copyright (c) Toradex
 + *
-+ * Toradex Resistive Touch Display 7" Parallel connected through the 40-way
-+ * Unified Interface Display connector.
++ * Toradex Capacitive Touch Display 7" Parallel connected through the 40-way
++ * Unified Interface Display connector and Toradex Capacitive Touch Adapter.
 + *
-+ * https://developer.toradex.com/hardware/accessories/displays/resistive-touch-display-7inch-parallel/
-+ * https://docs.toradex.com/104498-7-inch-parallel-resistive-touch-display-800x480.pdf
-+ * https://www.toradex.com/accessories/resistive-touch-display
++ * Toradex Capacitive Touch Adapter connection with the various carrier boards
++ * is documented in the datasheet [1].
++ *
++ * https://developer.toradex.com/hardware/accessories/displays/capacitive-touch-display-7inch-parallel/
++ * https://docs.toradex.com/104497-7-inch-parallel-capacitive-touch-display-800x480-datasheet.pdf
++ * https://www.toradex.com/accessories/capacitive-touch-display-7-inch-parallel
++ * https://developer.toradex.com/hardware/accessories/add-ons/capacitive-touch-adapter/
++ * https://docs.toradex.com/104615-capacitive-touch-adapter-datasheet.pdf [1]
++ * https://www.toradex.com/accessories/capacitive-touch-adapter
 + */
 +
 +/dts-v1/;
 +/plugin/;
++
++#include <dt-bindings/gpio/gpio.h>
++#include <dt-bindings/interrupt-controller/irq.h>
++
++&atmel_mxt_ts {
++	pinctrl-0 = <&pinctrl_atmel_adap>;
++	/* Colibri SODIMM 28 - TOUCH_INT# */
++	interrupt-parent = <&gpio1>;
++	interrupts = <9 IRQ_TYPE_EDGE_FALLING>;
++	/* Colibri SODIMM 30 - TOUCH_RST# */
++	reset-gpios = <&gpio2 10 GPIO_ACTIVE_LOW>;
++
++	status = "okay";
++};
 +
 +&backlight {
 +	status = "okay";
@@ -174,10 +204,18 @@ index 000000000000..331c81332081
 +};
 +
 +&panel_dpi {
-+	compatible = "logictechno,lt161010-2nhr";
++	compatible = "logictechno,lt161010-2nhc";
 +	power-supply = <&reg_module_3v3>;
 +
 +	status = "okay";
++};
++
++&pwm1 {
++	status = "disabled";
++};
++
++&pwm4 {
++	status = "disabled";
 +};
 
 -- 
