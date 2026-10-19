@@ -1,110 +1,52 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=178.251.229.89
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792453570;
-	b=pMjw6oVSOR4F82cwcr+YP4NGTOf4815tC/5OiraGExwEAQeyJkXcD690apfMwtoMaVfz
-	 BX5pBu082dqfV+wJxWEhLOuMbeXaOW01PkhfeAFR9ShdnGV+34+YigTxC62WOnwFY85e6
-	 82sENTav3VpJbNQS/MzcL6JGpavBPzHiIeqx9QScRKR8XFgenNgSqvs1CWPETQrY9DGZQ
-	 PjjITHVrsW7Zw5qiRK6ZEMYSPlKUbBVui5CjFyzTMDDHP5mpx0RXfxcZXHtb9KUTKBvX5
-	 AO4X1apmOrqattTWd0DKt2OSeF4z9PrsSmIBUH+rYqJHP4KoyiaZsAZRMOXiDgY3wqg==
+	t=1792460285;
+	b=oyZLfC0/GnZtFHqx2lIzsmddsbWPuqtobqzPDKqwNXKF5SFTimubpObFrxrF20V6269J
+	 h40TxcLS8G2gYW6P4VQunnmRcwfnNx9lySvQrZA7jb98TPmPYMO1p3EzGENVxZuia1xjg
+	 7Wr1LGH/72G+FVC+nPvVUUcPsU7jbW/jUyCHaqSj6RZJ3ZCP7Q+rtsjO5LHvCPkXUlu4I
+	 ER4WXcTrQAKPc1J8oF9ZOGbU+CMwk3e9TlgqDmecskzOYSaULCzXqeJLkMXihsUWgl6lz
+	 gI9EdQReVuai32KwHd/UXl9CmjNIvAXiT5zVyGGSOfTdGqzyhGL9GUCEE0mgFC9yXwQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792453570;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:From:To:Cc:In-Reply-To:References:Subject:
-	 Message-Id:Date:MIME-Version:X-Mailer:X-Developer-Signature:
-	 X-Developer-Key:X-Mimecast-Spam-Score:X-Mimecast-MFC-PROC-ID:
-	 X-Mimecast-Originator:Content-Type:Content-Transfer-Encoding;
-	bh=bANbvSVZXQhEXhYP3TP2TElb96lJqFoxNQuXKkY137I=;
-	b=vRr1E71mVJR0zSBKp0iFlXo/NI5MRnqQuv8evv8pPt7XXCZn4pLV5MHynp6htTAy4xg9
-	 21pdEEGh/2Lv+xYc/Gmb4k2SuezXxkloUs/3+rE9CB6DbmtPS29TZNpnGAFonimEfe/sJ
-	 58OxtpCgP4LGhb+UeiCU8bZ1w2FE3Fq3dord1cv6WHYEDgPBTxycDU8JNDq+mCtGN9IkL
-	 qPsvbeCstrK9jj18cxVmQysjKe1DPYCyr72RHsSComZCKOcEgXDENJzRpQG52DVFrtgmJ
-	 T2K0W1x5iYWRjF0dVBsveD8/HRJI9oC2yxHQ7YbWa2IYc65tAO/Mtz3l9vgOsceqIaQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792460285;
+	h=DMARC-Filter:Received:DKIM-Signature:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-Last-TLS-Session-Version;
+	bh=PbjFjYksln6X5VCuok/GYUEp4Jt2bFAm9SetP90rGcM=;
+	b=3EruuPU12pJ66clAoxGvun1wZD8/6h82YwremY6Jxf5xD8ArtjItPwLhODad38E37dxw
+	 v3sjGKxp2Fku/Dhl0JUORcHAi2tDBnXLGa0cDTxsENkSnc554GqXhUbOeFZ4uI6i8e4e+
+	 SaqvqopbC12GXlrLIfqvav01sEyl0KAfipNudya29lehvcqYCUd+78FiL182STuTVT2KZ
+	 sV9vjuu57CGMb7iSc2kHIEQYylprlKXd3Kx5lKo3Z7hL3t6sYAgZRHpAMbFGFd4pTbkWt
+	 3JU+6kOU9p58iB2b27+/CMdrn/6DLAp20KFsVC4N3xks99Smitzhu/nSkY5pgIuoRsw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=F30W39f+;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	dmarc=pass header.from=nabladev.com;
+	spf=pass smtp.mailfrom=nabladev.com;
+	dkim=pass header.d=nabladev.com header.i=@nabladev.com header.a=rsa-sha256 header.s=dkim header.b=gkhjrsVg;
+	arc=none smtp.remote-ip=178.251.229.89
+Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51E4C606A31C
-	for <imx@lists.linux.dev>; Mon, 19 Oct 2026 23:46:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 51E4C606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 860C2606A31A
+	for <imx@lists.linux.dev>; Tue, 20 Oct 2026 01:38:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 860C2606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=F30W39f+
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1792453568;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bANbvSVZXQhEXhYP3TP2TElb96lJqFoxNQuXKkY137I=;
-	b=F30W39f+TIXr/Fp5w8uuXB9BQWFgNgayBKcU8lpItwX4Cg808rbuFGNJl54mVfJwMwu1+O
-	+E9RwfNhVXOOIqQF+HIAW6fvWCgqPYyJRmvG7+Pg64bdlOrt7fRfnbf6KXvf7jW0BgCY4k
-	XH3MmN6IIcQg0Gsqa6ZupKIZqrvinSo=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-606-r3Z5izz2M6WeajuUzoCZ6w-1; Mon, 19 Oct 2026 23:46:07 +0000
-X-MC-Unique: r3Z5izz2M6WeajuUzoCZ6w-1
-X-Mimecast-MFC-AGG-ID: r3Z5izz2M6WeajuUzoCZ6w_1792453566
-Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-535252004e9so64945461cf.1
-        for <imx@lists.linux.dev>; Mon, 19 Oct 2026 16:46:07 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792453566; x=1793058366;
-        h=content-transfer-encoding:content-type:mime-version:date:message-id
-         :subject:references:in-reply-to:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=bANbvSVZXQhEXhYP3TP2TElb96lJqFoxNQuXKkY137I=;
-        b=HOowzQu63rSImKIW7zQGnOd/oE+ygm/juWsH5VW6i6HCu0x98pTRQvdyJwQ0hd7e7s
-         zn8W+KuzyY350o9EKFmoUklvwWTTYR29BapIjpUwyjWgtMOV7tlCXk+v5XrV8oqcuney
-         I01FgQjubm7M8DgaDtPeYyvwN9Z6RAEFZm+b8dX6Fdic8mgm1m9Vu4xcROo3cVs/+mPf
-         dO6eTM77ahDcT9QnMWxF2UTfSeGan8bReb48b0BdczW7+OwcY71dlINOTdECP81CvA9U
-         DBWjy2VOyIPTjFhOVRZb88+SICcLjP5hU/2A6/ZCkSoodAtfye61nyrGId1nDu+aOSQf
-         vduw==
-X-Forwarded-Encrypted: i=1; AKwUvBxVZh53zbuF5HrswahUtUtYaO/EopoPvmrFFpvTHUlycxC9yaAsEFeWBnuxfF4xUuMu5n0=@lists.linux.dev
-X-Gm-Message-State: AFq9FYKsNKz8c7unDzJ5fjxq2s9ZAS/o96LLQH90Bu8buMG14V04D22g
-	bfXt1h7fq8m/JCPgo0haoohZ0jHdaovyLwHHAmQQAsSYZmts0OOrVFBjaI3uq12yoNsxcxAtBcg
-	YNKPTJLg+358wreLSHPBhwk5ni/u+xnzl55xTZXhbeSdB6OeHaSBtrA==
-X-Gm-Gg: AYBFou0wIRAFJzHM9wq+bmhNqR8ylwJ8jhpaU1utpTbTuspAzOYtG9D4pB4snQwTJ2b
-	c/TPc4WphVGh26LHPR60dF9RrADoVJIuZ5CcV7A15eY8OZEmKiZN+K+R/0FNoBmeWIym45Vhx6a
-	jrCgRZRBxkqR1LhmXeMTNmUn1tRjFcx4Kn4sN/30gesabT47wU1RjhpBNL3np10atukmEV4jgUI
-	L9qre6jyDqyb/q+HLyH7Ay3R0UMRCYKiPGcTa1PbTPEiuTTx9WNhw3CvrBv6RwP3nubutOhwiKh
-	aEBkjw54bZgM7Wtpn7uCsn0z/lbRVnpZGVSDwwPqSR3j24wTr09fwsKp2WBS4myre7PpfjMXPVP
-	fodeOdaOQLXDk91IgHZkROWMypuDfsXLr83auik+ZD0zQ4PE22+XD8YOiist9BJYMeYykLk1HPU
-	KvPhq8wZM=
-X-Received: by 2002:a05:622a:a17:b0:536:695f:bdd3 with SMTP id d75a77b69052e-536695fc526mr73027521cf.46.1792453566409;
-        Mon, 19 Oct 2026 16:46:06 -0700 (PDT)
-X-Received: by 2002:a05:622a:a17:b0:536:695f:bdd3 with SMTP id d75a77b69052e-536695fc526mr73027101cf.46.1792453565913;
-        Mon, 19 Oct 2026 16:46:05 -0700 (PDT)
-Received: from bmasney-x1.rmtuswv.csb (c-73-183-53-213.hsd1.pa.comcast.net. [73.183.53.213])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-53656bcf751sm66755561cf.14.2026.10.19.16.46.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Oct 2026 16:46:04 -0700 (PDT)
-From: Brian Masney <bmasney@redhat.com>
-To: linux-kernel@vger.kernel.org, 
- Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Cc: michael@amarulasolutions.com, linux-amarula@amarulasolutions.com, 
- Abel Vesa <abelvesa@kernel.org>, Brian Masney <bmasney+clk@redhat.com>, 
- Cristian Marussi <cristian.marussi@arm.com>, 
- Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>, 
- Jerome Brunet <jbrunet+clk@baylibre.com>, Peng Fan <peng.fan@nxp.com>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Sascha Hauer <s.hauer@pengutronix.de>, Sebin Francis <sebin.francis@ti.com>, 
- Stephen Boyd <sboyd@kernel.org>, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org
-In-Reply-To: <20260904101243.412006-1-dario.binacchi@amarulasolutions.com>
-References: <20260904101243.412006-1-dario.binacchi@amarulasolutions.com>
-Subject: Re: (subset) [PATCH v14 0/4] Support spread spectrum clocking for
- i.MX8M PLLs
-Message-Id: <179245353543.117654.7478218308853360546.b4-ty@b4>
-Date: Mon, 19 Oct 2026 19:45:35 -0400
+	dkim=pass (2048-bit key, unprotected) header.d=nabladev.com header.i=@nabladev.com header.a=rsa-sha256 header.s=dkim header.b=gkhjrsVg
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E71FA108825;
+	Tue, 20 Oct 2026 03:37:56 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
+	s=dkim; t=1792460281;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=PbjFjYksln6X5VCuok/GYUEp4Jt2bFAm9SetP90rGcM=;
+	b=gkhjrsVg8YdzKJiWw+oBJJoGOWMSaX2plJh2ECGP6pobGez/hDtH0UV4Rc2GlxMKP/fXbF
+	mFRHOvJDQ5/kcprfkbErcvoAO2cidfW1VgzDUdVmsiwoKZq51M2pIyMSiB9+mFd5e2Y+XE
+	zIrWXd21uoO8qiwXwxlMoS1cEEkqb5V7RipLdtD1smpxlx42HVcI2xhjn7frxAydftEr9K
+	BRNUqGr0Hyai2/OODFby0KhwLg52WWQJ0Ndu4cZfDaERlK07618LcHO8wB2hrcFgrUvMa/
+	vQkCTJEDpb9ssDuGPZeYe/7oi7OrMmtFkutPvii2Ku6bc20iYPHtQno+K7cwGw==
+Message-ID: <fe920b05-6d89-4dc1-83d3-0664fbc2e00c@nabladev.com>
+Date: Mon, 19 Oct 2026 18:10:18 +0200
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -114,42 +56,86 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-Mailer: b4 0.17-dev-d96cb
-X-Developer-Signature: v=1; a=openpgp-sha256; l=720; i=bmasney@redhat.com;
- s=20250903; h=from:subject:message-id;
- bh=1Zr0ZL61ygpUZIVKFPvP8VcvRE1XoRbIaNzvBa5Hves=;
- b=owGbwMvMwCW2/dJd9di6A+2Mp9WSGLKurd5U80jc7qBgokvY8r53frNq2yaIPGd6+GGbZZjne
- n214wyBHaUsDGJcDLJiiixLco0KIlJX2d67o8kCM4eVCWQIAxenAEzky0pGhs+LnM6uiHrk9rr4
- 0/4fMZde/7r+b8/7skUtx49bnjbmeXiY4Tfbf8k6TpPFLxOWNKb+9OppWtzn388WYsB+4mNltFr
- 8V14A
-X-Developer-Key: i=bmasney@redhat.com; a=openpgp;
- fpr=A46D32705865AA3DDEDC2904B7D2DD275D7EC087
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: FgLhez5QGri027AjSFaRezfg64WafxbLmggAUkSGZJ0_1792453566
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [net-next,PATCH 2/2] enetc: Make eMDIO MDC rate configurable from
+ DT
+To: Wei Fang <wei.fang@nxp.com>, "Frank Li (OSS)" <frank.li@oss.nxp.com>
+Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ Vladimir Oltean <vladimir.oltean@nxp.com>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ "David S. Miller" <davem@davemloft.net>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, Clark Wang <xiaoning.wang@nxp.com>,
+ Claudiu Manoil <claudiu.manoil@nxp.com>, Conor Dooley <conor+dt@kernel.org>,
+ Eric Dumazet <edumazet@kernel.org>, Frank Li <frank.li@nxp.com>,
+ Jakub Kicinski <kuba@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
+ "UNGLinuxDriver@microchip.com" <UNGLinuxDriver@microchip.com>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "imx@lists.linux.dev" <imx@lists.linux.dev>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+References: <20261016193344.115518-1-marex@nabladev.com>
+ <20261016193344.115518-2-marex@nabladev.com> <atKDNdxl0w65s8yQ@SMW015318>
+ <DB9PR04MB933217F7ADCB6223A44DACA7889A2@DB9PR04MB9332.eurprd04.prod.outlook.com>
+ <661412ff-3942-4d1c-be6f-1ef6c54620fd@nabladev.com>
+ <AS4PR04MB933821150913BDCF35C4827F88982@AS4PR04MB9338.eurprd04.prod.outlook.com>
+Content-Language: en-US
+From: Marek Vasut <marex@nabladev.com>
+In-Reply-To: <AS4PR04MB933821150913BDCF35C4827F88982@AS4PR04MB9338.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
+On 10/19/26 4:59 AM, Wei Fang wrote:
 
-On Fri, 04 Sep 2026 12:06:29 +0200, Dario Binacchi wrote:
-> Support spread spectrum clocking for i.MX8M PLLs
+Hello Wei,
+
+>>>>> +int enetc_mdio_update_mdc_div(struct mii_bus *bus) {
+>>>>> +	struct enetc_mdio_priv *mdio_priv = bus->priv;
+>>>>> +	struct device *dev = bus->parent;
+>>>>> +	struct clk *enet_clk;
+>>>>> +	u32 div, mdc_freq;
+>>>>> +
+>>>>> +	if (device_property_read_u32(dev, "clock-frequency", &mdc_freq))
+>>>>> +		return 0;
+>>>>> +
+>>>>> +	enet_clk = devm_clk_get(dev, NULL);
+>>>>> +	if (IS_ERR(enet_clk))
+>>>>> +		return dev_err_probe(dev, PTR_ERR(enet_clk),
+>>>>> +				     "Input clock unknown, not changing MDC
+>>>> frequency\n");
+>>>>
+>>>> binding said clock is optional. If return failure here, it will block
+>>>> existing dts, which have not clock property.
+>>>>
+>>>
+>>> For EMDIO device, the clocks property is not added to
+>>> fsl,enetc-mdio.yaml, I suppose this property should be added to the
+>>> dt-binding doc if the clock is really needed here.
+>>
+>> Isn't this what 1/2 in this series does ? (maybe I misunderstood this
+>> paragraph)
 > 
-> The series adds support for spread spectrum clocking for i.MX8M{M,N,P}
-> PLLs (audio, video and DRAM). It has been tested for the video PLL on
-> boards using i.MX8MN and i.MX8MP.
+> Sorry, my email filtered out the 1/2 patch, so I missed it.
+
+No worries.
+
+>>> For ENETC device, we already have a 'ref' clock in the enetc node, so
+>>> devm_clk_get(dev, NULL) may get the 'ref' clock rather than the system
+>>> clock of NETC.
+>> Shouldn't the clock be described in the MDIO DT node ?
 > 
-> While at it, it validates the spread spectrum configuration in the clk
-> core before it reaches the providers, and fixes the i.MX SCMI OEM
-> extension, which converted the spread to the wrong unit.
+> The enetc_mdio_read_* and enetc_mdio_write_* interfaces are not only
+> used by EMDIO devices, the ENETCs and NETC switches also use them.
+> NETC switches and ENETCs can access external PHYs or internal PCS/Serdes
+> through their own port MDIO registers, instead of through EMDIO devices.
 > 
-> [...]
+> Your first patch only modified the EMDIO binding-doc, not the ENETC and
+> switch binding-doc.
+So I need to patch also 
+Documentation/devicetree/bindings/net/dsa/mscc,ocelot.yaml ? Any other 
+binding document ?
 
-Applied, thanks!
-
-[4/4] clk: imx: pll14xx: support spread spectrum clock generation
-      https://git.kernel.org/clk/linux/c/1ca4bd0c6c0d
-
-Best regards,
--- 
-Brian Masney <bmasney@redhat.com>
-
+Thank you for your help !
