@@ -1,179 +1,1212 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011066.outbound.protection.outlook.com [52.101.65.66])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DC9A379C5D
-	for <imx@lists.linux.dev>; Mon, 19 Oct 2026 02:59:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.66
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792378800; cv=fail; b=C5e51H+sulUEPK771MV7/5DpnS8/WDPn6CLu5EjatEWtdEzD8c8RnSGoBSg2TY7h7tL/4qI679m+wuywbA1T1L3xF6Gj2G0crg3c2sZLyOnICLleB4dzK6H2d3ZeBfH4zyP9Njphu3+KUezhWgNOvNZF++mJo8ORSDMdBw5dsDQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792378800; c=relaxed/simple;
-	bh=H826vY5YSKTACsvFq59wSp7laBxPXljNVS30li1slI0=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=KenawXaAAyyXGGZxQNz8RjmyQa6wWuRbG12DTkBxNJczGhpWC6wQ2wUmOIqb5sba/el/B57yRvVDbo5/m4SfxdDkAssO8j6x6uP11I8X6bfexPfqbYgtcHJ1SrkOlbxm1zaWCExwm2YpCeY2ZmDTw/66wdr/fYB/KP6slacklA0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Zg6dTv5H; arc=fail smtp.client-ip=52.101.65.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F54346AA7C;
+	Mon, 19 Oct 2026 05:34:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792388078; cv=none; b=rDDabkGkDH6YGKfg+jcnRHLx6AGdBSIXnk5hWhoqoo/0+WRuVtgYzkxyuS0hjbyfbXs9dA9MM8yCvFaYZHYWGXdT6zfFR1aVxPiR8uLNW4c02c4qncW5bVvhcoYwBACIu9ySr1nKdSEeA7ISzjMUYcQ5Oy+uzmckB0Ed/g7No50=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792388078; c=relaxed/simple;
+	bh=TBP3VFnyQQl7whZP472uxiDBPBYpD67NA+C+2QfVyQE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=rJnjZGZvJt3Nlx6ucq0xwE6/F5AB+cuPO4f4jjWbGN5K1iJOa9ivcc7yD4SEm9Ci7yBSU0ZihiRGSnvlSarHFCHB5Rzs6No/NOyEesJBJ0aIa5bq0kEUWU1LnPfZz9RP9NWy/DR45rpMZHo1TUXJBTBLlABgkR2uHkL3M600xa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cjuVcrHn; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Zg6dTv5H"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=BAfxtZ+o7v+ox/CmVJmWBb3Gv08txLBF0yArQuKlggTISQQwa1qwApYYRaGXhwrd6W6k2LfMn+rRoHVn/7KmPt9NYWzaUMBgJUjMK+ebO8NyHa6tNi7tPnRqTJoJNpaErudEsNM4TiaXjD/90rfVdyPBkQ9ayYvgeOcxAMhyfkSpjLfl0xTAjC/0iywt5199zwJtMeajH4D2bz2lYjeE7QMF9r2xc8z02YO1zSJ9h9aVHtR9O6Ljlb4fwaRW67KKRpLJI0UEF8EZP0vMSzMcuItFDKdCxnGUOUr7DYYEO5lAAm45FfESMu0lflMUTF8/ejsjT9Vtndb2nURacsUdcQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=H826vY5YSKTACsvFq59wSp7laBxPXljNVS30li1slI0=;
- b=eFr27xJWZbo0phPNB85aoVcD9KsqWB5+VxudtMwpuo1cKFnieES6Z6xpGM3ObrLRwsgo07jm8YpYNv/VY7t3ZxRqEaEps75mjbXnto0QuBJQHzgYXACggoNocWKfY449/GjEYvmzolibkcdkF1tz1NO5y5ykGgDddaBIOX657Q8QOVh5XUh9kJSPWYhrBrN30wOzK3oQnjmKFFjhhFD1qv6Q02bWK1vEQtLkGXsTTuspttnGRLrr/XpHSeyiaWwjvudvJf1CripkOyLVjOaKn0w348uX78tOSxA6egEunInBxFHLGIvTj+jzP+MZ2cyaHAqGuwOqp65LaRsWTLy/Jg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=H826vY5YSKTACsvFq59wSp7laBxPXljNVS30li1slI0=;
- b=Zg6dTv5HLEA0qVpOTBaE6PzfNUxXSbhX7tsfmBLzkYjCfP+Mw9qt3B2Uw0/fPzTSH36sMfZBA54b1O9WAJoNNwO7OZYz+uCnV+nCTc0qZg8WmNSh8RQQGWR3KY4Bb5HNMaCjdflrHs2UgHYI34a9rgh0SY/y/pBJzonX2YH0E4CCE6KyZGX3RUoE1NET24a/aZtK2SeuyR6cqBTdT5OZmjiiT8El/nBSv8iCka2REVFmwqZE1v1MCne3lQmqhRdtNZB5GAMoO20Uw+mK9TY4a5710nXt8kxUSi+Kqw4qEHW5APGZBHfbBzR65JrSUWGJMbhqvf1ZjH6tQT5yJ9LxLQ==
-Received: from AS4PR04MB9338.eurprd04.prod.outlook.com (2603:10a6:20b:4e6::17)
- by DBAPR04MB7285.eurprd04.prod.outlook.com (2603:10a6:10:1ac::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.19; Mon, 19 Oct
- 2026 02:59:55 +0000
-Received: from AS4PR04MB9338.eurprd04.prod.outlook.com
- ([fe80::7c4c:9c56:8552:f680]) by AS4PR04MB9338.eurprd04.prod.outlook.com
- ([fe80::7c4c:9c56:8552:f680%6]) with mapi id 15.21.0522.017; Mon, 19 Oct 2026
- 02:59:55 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: Marek Vasut <marex@nabladev.com>, "Frank Li (OSS)" <frank.li@oss.nxp.com>
-CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, Vladimir Oltean
-	<vladimir.oltean@nxp.com>, "Christophe Leroy (CS GROUP)"
-	<chleroy@kernel.org>, "David S. Miller" <davem@davemloft.net>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, Clark Wang <xiaoning.wang@nxp.com>, Claudiu Manoil
-	<claudiu.manoil@nxp.com>, Conor Dooley <conor+dt@kernel.org>, Eric Dumazet
-	<edumazet@kernel.org>, Frank Li <frank.li@nxp.com>, Jakub Kicinski
-	<kuba@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
-	"UNGLinuxDriver@microchip.com" <UNGLinuxDriver@microchip.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linuxppc-dev@lists.ozlabs.org"
-	<linuxppc-dev@lists.ozlabs.org>
-Subject: RE: [net-next,PATCH 2/2] enetc: Make eMDIO MDC rate configurable from
- DT
-Thread-Topic: [net-next,PATCH 2/2] enetc: Make eMDIO MDC rate configurable
- from DT
-Thread-Index: AQHdXaVPTB8CJdKLoUewahs8NUD/ZLcAl7OAgABoBfCAAP9vgIACLV7Q
-Date: Mon, 19 Oct 2026 02:59:55 +0000
-Message-ID:
- <AS4PR04MB933821150913BDCF35C4827F88982@AS4PR04MB9338.eurprd04.prod.outlook.com>
-References: <20261016193344.115518-1-marex@nabladev.com>
- <20261016193344.115518-2-marex@nabladev.com> <atKDNdxl0w65s8yQ@SMW015318>
- <DB9PR04MB933217F7ADCB6223A44DACA7889A2@DB9PR04MB9332.eurprd04.prod.outlook.com>
- <661412ff-3942-4d1c-be6f-1ef6c54620fd@nabladev.com>
-In-Reply-To: <661412ff-3942-4d1c-be6f-1ef6c54620fd@nabladev.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AS4PR04MB9338:EE_|DBAPR04MB7285:EE_
-x-ms-office365-filtering-correlation-id: daf015f2-04c2-4de3-dd56-08df2d8d0db0
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|376014|1800799024|7416014|23010399003|19092799006|38070700021|11063799006|4143699003|56012099006|261009223027099003|10067099003|18002099003|22082099003;
-x-microsoft-antispam-message-info:
- nC6wKL7iMei+A7t4Gp2AVXlepVKuB3j3W5E8vEx8gD31Wl7x8Pq4TS45HyQEpnWepN89uMm1wBJ9IOnUN+MeZZ2lGJuQ/Vg4cBXN1UaCXqRyEUKtdI0DKX8TmRzJQYU3n0fQjIwrK7cYLOX1qCuyq8xm81n6RnEyjGs19vtXJCPeo7TSPUShZTYpY98qiwuW/+uYafqetamxdBi0DbdMI4bKs1t87uQWOmDqvQ/C0QTdUpVlfK7r+EucPSKR/TK3ZP3oKho7VJUTXXMjtqdIjM0D+VNTvsiyIOiS+aBYeNOOuBiuUv8nUP1l/3UQFJcM+OefsmUZa60ZYbrkcluDDNfh4yVP1rgp9e61e4O/ZpSNRe8noB87xxp+uj8oYJ7EAHcggtD9e0CYsLQl3Elg2I8yGQScnh0EQQTIYvAIN5X9sb+XWgyad0xjAu4ZOmjB7ttwQyReznMMUKeTGO20xbPbgH90uA1C7BEelBh1e2M7LZ3eJGiub3JBcX4t5E0E0jjKdRyB1SObavO32jQFYjhlid80cVmQ+SZ/isYJbunX0reHMSC5ghWn0NDhcKz0f0rIvF2hOWMHGTdCaV30efQGsc3UXuv57UM7yHAMBanKljJi3nZv8VgUQ6AexmktHsBI36PRqvzhjbRMQ/VCcVa0WEVrUY3IpV1MfQCBA2Cowqstg/XpgogF47/r/LG6Yk+PtvJC4AhHRmIzfX/mr5DrRnoNffn7BLdTl1Yvtac=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9338.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(7416014)(23010399003)(19092799006)(38070700021)(11063799006)(4143699003)(56012099006)(261009223027099003)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?RHpLZEtYOFNkMnNyK0hIUTdKWWkzU2JQR0hFcnZsMHUvQlNQbDJQYWh5TFhh?=
- =?utf-8?B?NFpmZ2tNYU5WOEZsVStDeTNxUVE0ODZMNUJ6VGhSbWN2QVRHbGNKMHQ0QmJz?=
- =?utf-8?B?a2xINlNJQmdOU2JqYWRXem1VTmpDSko1dTlsc3Q2T2pwV1k1QjQzM0JXUzgv?=
- =?utf-8?B?YnI4ZmNkaWZwM0FXdlpWWDJKcDhpVHpjME9ybmZPZ3NCNmk4N25mS255QTk1?=
- =?utf-8?B?ODlQaVM0OS9ueTYvSmNFbDNnZDV5c1UyTWFzRnJqYi9tRW1GN0daOWJxR1RH?=
- =?utf-8?B?cXdTN082YTJPOGYyRjQ2RUR1TXFMNWVIcHcwNGt0Q2VxTVJ6LzZGRnY5M044?=
- =?utf-8?B?VjlnYWJqZkx5YVNIZkhoTS9tTnc1MGRYcUJ2bUdZL3MwWU9zSUpVNU9UT2d5?=
- =?utf-8?B?ME5DZU05SlkxeWF4V25XMzI5RWRnZXhKWmZlUHBzUWhOSlpTNVJsZ3prR0t4?=
- =?utf-8?B?L0lBOGZNTERLc3d1S3pPUUFET1Q0UWhuV0M0cDQ3dmNGUmhBY252K2htc0t1?=
- =?utf-8?B?UWI0ZUtrT1kya0laY1psSFlmV3VBdmlLcGdLY1h5ajdXMkw5dFl4WGl0ZVAr?=
- =?utf-8?B?bjNNVnNFajJrZVFub0tndEN5MVJxekF0bWhVcU1rM1VHSXZaRjFOUnFDMEkw?=
- =?utf-8?B?bUhPYzlzTFB1dzBsN0xlVXp4YU5DNmVDVWk2d3ZraGh6bDdtMGhQQm5xL3cw?=
- =?utf-8?B?YTNOTExlZ2E4dngwMGZwcHV2Vlp6ZnNkM2FBN1E2TGVvcjVNaTdEdHQ5ck9D?=
- =?utf-8?B?WFhPcW9BbFJDWUVpN3AxVGxVeWp2ZVhHNkZZVUluRkYzYVc5b0hycEo3ems5?=
- =?utf-8?B?N2VoOE05MFlxK2l2TWllZkI0Skhac0dVMkhkS3FVd2M4Nld2UjFmQjFPTGZa?=
- =?utf-8?B?VExWNGpzQkR2UlNWbGJYSVpwOWpPOUVIRlVwOVdPSHFuQnl0KzVpcVQ2ZjFk?=
- =?utf-8?B?anVUOWx6L05maHNzemhWcFJ6M1h0MVRVUUpvV1d6aTlkMXJEL1cxMnhIYW1l?=
- =?utf-8?B?OUpWNVNxclNuZmlWcENrK1JzdXJsQlJMQWJIZjJiTTJOVHFxNC94TTlGcE9x?=
- =?utf-8?B?WE9nNmo5cDBJcE1XaS80SlkzWDNWWUJjanhEYk9KZkJucnNIU2NEMjBBQ240?=
- =?utf-8?B?cXlOaHphaDBvWlBTOVpZSGJ4STFhenF1ZmpibjhHN2tZbDQwZ3ordWZlNmhj?=
- =?utf-8?B?dS9kbk5RTHRMN0c1bnhiSHlHQ0N4ZnVRMldyTnNLbFZiYUFuYVdNWjlKUjhG?=
- =?utf-8?B?L3FxbFpnMVVmR3V4WTgxQ1E0T3pqZUowcG1VM1NxQy9OMUNWL1pZVDVhUHlC?=
- =?utf-8?B?c3B0TnVXbXJydmFsNFN1TExVS0VhaFhaYzFJa3NuK3JLTlhlbDJkMnVyWE5w?=
- =?utf-8?B?Q3NSWjhhM3Q1alIzTTgwREFUUHVpcDFGdjJlZjB4V3VFUFluQ2pQUmw0a1By?=
- =?utf-8?B?MVFJODRRenVSY2ZxeUZaQU16cnloa2pBZHlnQ2NVeksyTTlBUmtpd1pBbGdo?=
- =?utf-8?B?WjJ1WTJWOWp5cW5wOWxuT2drRFc4YXhScFQ1RlFIVTM2TTFxRjdxMGRUYUxD?=
- =?utf-8?B?SHZSVkxjYk1pcWV4b3pXMVpCWFNZZlNhVDByMnJ1aUlXL1phandNL244WTNU?=
- =?utf-8?B?N0swaldwZGpMOFF0SWN2WWFnY290WHZvNUVvNHB6czY2N2xkNjU4SkNZQWc1?=
- =?utf-8?B?aWd0Tm5YK1ZLd0p4ZUNodE40Wlc1bUhsWUtGMmJ6NDlPSHRJd2ROR3ZFUW92?=
- =?utf-8?B?L0JWR3B1UVlwZmsxek1HYmUxZHp2a081ekJQTDZTdkZNTER2OGszY1BYdHZp?=
- =?utf-8?B?eFRuSGhnUWZBeGxzd085LzdKTGl4V1Z2SnhaaWQ2WFVldmpFTFg0MExSbitX?=
- =?utf-8?B?RXdpK3FseXJmRm8wbWpSWXZXY3VQMlFVWVB0Y0lMd1RpYkdkVzJuTm1TMS9T?=
- =?utf-8?B?WEwyUkx4dEx0TmhxMysyQ0lEK011R3BudXBsdFhjd09GLytLSFNkQStVTGNU?=
- =?utf-8?B?VWVCK1RNOWRCTjlPV2pQajY4ak4rdHptNXRnSXhVZHVLWnlLUGUrQVN1dWQw?=
- =?utf-8?B?b2t2YXp0V05JaXc4cm1JUEdkbDNxeWFGbjVKZ20rS3BmMmc0QTIyRlJ6Rng3?=
- =?utf-8?B?QUVHbm5pdzRyU253TnJNL2x6dTNWMXFSbXcyT1BTRmNvVHhvR1JPdmtZM3dk?=
- =?utf-8?B?N29UN1k3K0pUQVdKOEZUYW00R3VoTzhFRWg0azd2Y2xiQUtjelEzR1czTWpu?=
- =?utf-8?B?M291NHhtM3JpMThLRThkdkxwaTUreTZLSVlEdURxS2FEK3liSWtKZ0N5ZGln?=
- =?utf-8?Q?mv0FpTRL1O62MYG6xE?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cjuVcrHn"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id B8361C2BCFC;
+	Mon, 19 Oct 2026 05:34:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1792388077;
+	bh=TBP3VFnyQQl7whZP472uxiDBPBYpD67NA+C+2QfVyQE=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=cjuVcrHnQTh1fSjkRs0/ryrhMvu3y7l46drhbRl1vUgesb8l6GB3AUnSyTmbcZxh8
+	 EMaIMT4Ge6QWSmrRkOYGTZ3AFh94BnY+lblJMrGpAghQ5qJ0Xe9DT80FydNqxVjHW0
+	 QY8qdEpL0J122yeHsGwBp8obG3PrK8mViDHrrhCXSFiOfCxfGnGq3LpMIZeU4A4w0f
+	 FuI2z1R/7L7SspeqF/CwtYFkP5oWU4lNOnV/cXN1Xrdy7EDqG0VopsM+n9Y3ShRneA
+	 5jIDztbB42NbUHuyIvCNUAxAoyNuN2oX6Ctq+Ba35+GfImGXPlD9EwlkQnNmy8cj4d
+	 lThZO+RA3d2lQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 973D7CCF2DA;
+	Mon, 19 Oct 2026 05:34:37 +0000 (UTC)
+From: Junyi Zhao via B4 Relay <devnull+junyi.zhao.amlogic.com@kernel.org>
+Date: Mon, 19 Oct 2026 13:34:26 +0800
+Subject: [PATCH 1/3] i3c: master: Rework SVC I3C to support vendor glue
+ layers
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AS4PR04MB9338.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: daf015f2-04c2-4de3-dd56-08df2d8d0db0
-X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Oct 2026 02:59:55.2966
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: AoLip3OtQe7IbUrHZY9I5QofQnjd8YF9V2KjQ/EFA+LHuS+/4FgJgpOmDYaO+lFkfkEjlBncOIBCVHk6SgJJMw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR04MB7285
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261019-a9_i3c-v1-1-329d819d621f@amlogic.com>
+References: <20261019-a9_i3c-v1-0-329d819d621f@amlogic.com>
+In-Reply-To: <20261019-a9_i3c-v1-0-329d819d621f@amlogic.com>
+To: Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+ Frank Li <Frank.Li@nxp.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, 
+ Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
+ Miquel Raynal <miquel.raynal@bootlin.com>, Kees Cook <kees@kernel.org>, 
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc: linux-i3c@lists.infradead.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-amlogic@lists.infradead.org, imx@lists.linux.dev, 
+ linux-hardening@vger.kernel.org, xianwei.zhao@amlogic.com, 
+ Kelvin.Zhang@amlogic.com, Junyi Zhao <junyi.zhao@amlogic.com>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1792388075; l=38557;
+ i=junyi.zhao@amlogic.com; s=20260924; h=from:subject:message-id;
+ bh=mDIg70438nrWm43cCN+GqrsV9bjxUSew4NhCAFetomU=;
+ b=7AJO/fN8QU8pgIIPDPL8ti1amdmYR0MyK8uGsk1cM0kra6o+2EeMZVA90RPQMikwvu0bw13rE
+ Z5NOow3OKuIATyHEU17GtZCv2GnSi0HG9TbUTyV5D0lg/+WIiI+lO8b
+X-Developer-Key: i=junyi.zhao@amlogic.com; a=ed25519;
+ pk=hiL5PjGIksGFiWvEx9J3MhQqU/ro6vNbj72NIw4bbvA=
+X-Endpoint-Received: by B4 Relay for junyi.zhao@amlogic.com/20260924 with
+ auth_id=1054
+X-Original-From: Junyi Zhao <junyi.zhao@amlogic.com>
+Reply-To: junyi.zhao@amlogic.com
 
-PiA+Pj4gK2ludCBlbmV0Y19tZGlvX3VwZGF0ZV9tZGNfZGl2KHN0cnVjdCBtaWlfYnVzICpidXMp
-IHsNCj4gPj4+ICsJc3RydWN0IGVuZXRjX21kaW9fcHJpdiAqbWRpb19wcml2ID0gYnVzLT5wcml2
-Ow0KPiA+Pj4gKwlzdHJ1Y3QgZGV2aWNlICpkZXYgPSBidXMtPnBhcmVudDsNCj4gPj4+ICsJc3Ry
-dWN0IGNsayAqZW5ldF9jbGs7DQo+ID4+PiArCXUzMiBkaXYsIG1kY19mcmVxOw0KPiA+Pj4gKw0K
-PiA+Pj4gKwlpZiAoZGV2aWNlX3Byb3BlcnR5X3JlYWRfdTMyKGRldiwgImNsb2NrLWZyZXF1ZW5j
-eSIsICZtZGNfZnJlcSkpDQo+ID4+PiArCQlyZXR1cm4gMDsNCj4gPj4+ICsNCj4gPj4+ICsJZW5l
-dF9jbGsgPSBkZXZtX2Nsa19nZXQoZGV2LCBOVUxMKTsNCj4gPj4+ICsJaWYgKElTX0VSUihlbmV0
-X2NsaykpDQo+ID4+PiArCQlyZXR1cm4gZGV2X2Vycl9wcm9iZShkZXYsIFBUUl9FUlIoZW5ldF9j
-bGspLA0KPiA+Pj4gKwkJCQkgICAgICJJbnB1dCBjbG9jayB1bmtub3duLCBub3QgY2hhbmdpbmcg
-TURDDQo+ID4+IGZyZXF1ZW5jeVxuIik7DQo+ID4+DQo+ID4+IGJpbmRpbmcgc2FpZCBjbG9jayBp
-cyBvcHRpb25hbC4gSWYgcmV0dXJuIGZhaWx1cmUgaGVyZSwgaXQgd2lsbCBibG9jaw0KPiA+PiBl
-eGlzdGluZyBkdHMsIHdoaWNoIGhhdmUgbm90IGNsb2NrIHByb3BlcnR5Lg0KPiA+Pg0KPiA+DQo+
-ID4gRm9yIEVNRElPIGRldmljZSwgdGhlIGNsb2NrcyBwcm9wZXJ0eSBpcyBub3QgYWRkZWQgdG8N
-Cj4gPiBmc2wsZW5ldGMtbWRpby55YW1sLCBJIHN1cHBvc2UgdGhpcyBwcm9wZXJ0eSBzaG91bGQg
-YmUgYWRkZWQgdG8gdGhlDQo+ID4gZHQtYmluZGluZyBkb2MgaWYgdGhlIGNsb2NrIGlzIHJlYWxs
-eSBuZWVkZWQgaGVyZS4NCj4gDQo+IElzbid0IHRoaXMgd2hhdCAxLzIgaW4gdGhpcyBzZXJpZXMg
-ZG9lcyA/IChtYXliZSBJIG1pc3VuZGVyc3Rvb2QgdGhpcw0KPiBwYXJhZ3JhcGgpDQoNClNvcnJ5
-LCBteSBlbWFpbCBmaWx0ZXJlZCBvdXQgdGhlIDEvMiBwYXRjaCwgc28gSSBtaXNzZWQgaXQuDQoN
-Cj4gDQo+ID4gRm9yIEVORVRDIGRldmljZSwgd2UgYWxyZWFkeSBoYXZlIGEgJ3JlZicgY2xvY2sg
-aW4gdGhlIGVuZXRjIG5vZGUsIHNvDQo+ID4gZGV2bV9jbGtfZ2V0KGRldiwgTlVMTCkgbWF5IGdl
-dCB0aGUgJ3JlZicgY2xvY2sgcmF0aGVyIHRoYW4gdGhlIHN5c3RlbQ0KPiA+IGNsb2NrIG9mIE5F
-VEMuDQo+IFNob3VsZG4ndCB0aGUgY2xvY2sgYmUgZGVzY3JpYmVkIGluIHRoZSBNRElPIERUIG5v
-ZGUgPw0KDQpUaGUgZW5ldGNfbWRpb19yZWFkXyogYW5kIGVuZXRjX21kaW9fd3JpdGVfKiBpbnRl
-cmZhY2VzIGFyZSBub3Qgb25seQ0KdXNlZCBieSBFTURJTyBkZXZpY2VzLCB0aGUgRU5FVENzIGFu
-ZCBORVRDIHN3aXRjaGVzIGFsc28gdXNlIHRoZW0uDQpORVRDIHN3aXRjaGVzIGFuZCBFTkVUQ3Mg
-Y2FuIGFjY2VzcyBleHRlcm5hbCBQSFlzIG9yIGludGVybmFsIFBDUy9TZXJkZXMNCnRocm91Z2gg
-dGhlaXIgb3duIHBvcnQgTURJTyByZWdpc3RlcnMsIGluc3RlYWQgb2YgdGhyb3VnaCBFTURJTyBk
-ZXZpY2VzLg0KDQpZb3VyIGZpcnN0IHBhdGNoIG9ubHkgbW9kaWZpZWQgdGhlIEVNRElPIGJpbmRp
-bmctZG9jLCBub3QgdGhlIEVORVRDIGFuZA0Kc3dpdGNoIGJpbmRpbmctZG9jLg0KDQo=
+From: Junyi Zhao <junyi.zhao@amlogic.com>
+
+The SVC I3C controller IP can be integrated into SoCs from different
+vendors. Peripheral resources associated with the controller, such as
+clocks, may vary between vendor implementations.
+
+Rework the driver to separate common functionality from
+vendor-specific extensions. The common logic is shared across all
+implementations, while platform-dependent operations are provided
+through vendor-specific hooks.
+
+Also add a corresponding MAINTAINERS entry for the SILVACO I3C
+controller.
+
+Signed-off-by: Junyi Zhao <junyi.zhao@amlogic.com>
+---
+ MAINTAINERS                                        |   6 +-
+ drivers/i3c/master/Kconfig                         |   9 +-
+ drivers/i3c/master/Makefile                        |   2 +-
+ drivers/i3c/master/svc/Kconfig                     |  21 +
+ drivers/i3c/master/svc/Makefile                    |   5 +
+ .../master/{svc-i3c-master.c => svc/i3c-main.c}    | 467 ++-------------------
+ drivers/i3c/master/svc/i3c-main.h                  | 297 +++++++++++++
+ drivers/i3c/master/svc/i3c-silvaco.c               | 173 ++++++++
+ 8 files changed, 543 insertions(+), 437 deletions(-)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 77bd64bae..dffc63af2 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -25566,7 +25566,11 @@ L:	linux-i3c@lists.infradead.org (moderated for non-subscribers)
+ L:	imx@lists.linux.dev
+ S:	Maintained
+ F:	Documentation/devicetree/bindings/i3c/silvaco,i3c-master.yaml
+-F:	drivers/i3c/master/svc-i3c-master.c
++F:	drivers/i3c/master/svc/Kconfig
++F:	drivers/i3c/master/svc/Makefile
++F:	drivers/i3c/master/svc/i3c-main.c
++F:	drivers/i3c/master/svc/i3c-main.h
++F:	drivers/i3c/master/svc/i3c-silvaco.c
+ 
+ SIMPLEFB FB DRIVER
+ M:	Hans de Goede <hansg@kernel.org>
+diff --git a/drivers/i3c/master/Kconfig b/drivers/i3c/master/Kconfig
+index da96d2aaa..722661c2e 100644
+--- a/drivers/i3c/master/Kconfig
++++ b/drivers/i3c/master/Kconfig
+@@ -45,13 +45,6 @@ config AST2600_I3C_MASTER
+ 	  This driver can also be built as a module.  If so, the module
+ 	  will be called ast2600-i3c-master.
+ 
+-config SVC_I3C_MASTER
+-	tristate "Silvaco I3C Dual-Role Master driver"
+-	depends on HAS_IOMEM
+-	depends on !(ALPHA || PARISC)
+-	help
+-	  Support for Silvaco I3C Dual-Role Master Controller.
+-
+ config MIPI_I3C_HCI
+ 	tristate "MIPI I3C Host Controller Interface driver (EXPERIMENTAL)"
+ 	depends on HAS_IOMEM
+@@ -101,3 +94,5 @@ config AMD_AXI_I3C_MASTER
+ 
+ 	  This driver can also be built as a module. If so, the module
+ 	  will be called amd-i3c-master.
++
++source "drivers/i3c/master/svc/Kconfig"
+diff --git a/drivers/i3c/master/Makefile b/drivers/i3c/master/Makefile
+index 8d82196dc..a85e566ba 100644
+--- a/drivers/i3c/master/Makefile
++++ b/drivers/i3c/master/Makefile
+@@ -3,7 +3,7 @@ obj-$(CONFIG_ADI_I3C_MASTER)		+= adi-i3c-master.o
+ obj-$(CONFIG_CDNS_I3C_MASTER)		+= i3c-master-cdns.o
+ obj-$(CONFIG_DW_I3C_MASTER)		+= dw-i3c-master.o
+ obj-$(CONFIG_AST2600_I3C_MASTER)	+= ast2600-i3c-master.o
+-obj-$(CONFIG_SVC_I3C_MASTER)		+= svc-i3c-master.o
++obj-$(CONFIG_SVC_I3C)		+= svc/
+ obj-$(CONFIG_MIPI_I3C_HCI)		+= mipi-i3c-hci/
+ obj-$(CONFIG_RENESAS_I3C)		+= renesas-i3c.o
+ obj-$(CONFIG_AMD_AXI_I3C_MASTER)	+= amd-i3c-master.o
+diff --git a/drivers/i3c/master/svc/Kconfig b/drivers/i3c/master/svc/Kconfig
+new file mode 100644
+index 000000000..14fa1e542
+--- /dev/null
++++ b/drivers/i3c/master/svc/Kconfig
+@@ -0,0 +1,21 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
++config SVC_I3C
++	tristate "SVC I3C Dual-Role Master driver"
++	depends on HAS_IOMEM
++	depends on !(ALPHA || PARISC)
++	help
++	  Support for SVC I3C Dual-Role Master Controller.
++
++if SVC_I3C
++
++config I3C_SILVACO
++	tristate "Silvaco I3C Master support for other vendors"
++	default y
++	help
++	  Support for Silvaco I3C Dual-Role Master Controller with the
++	  generic (upstream) probe glue. This covers the original
++	  compatible strings such as "silvaco,i3c-master-v1" and
++	  "nuvoton,npcm845-i3c".
++
++endif # SVC_I3C
+diff --git a/drivers/i3c/master/svc/Makefile b/drivers/i3c/master/svc/Makefile
+new file mode 100644
+index 000000000..cf18c5da6
+--- /dev/null
++++ b/drivers/i3c/master/svc/Makefile
+@@ -0,0 +1,5 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR MIT)
++# Copyright (C) 2026 Amlogic, Inc. All rights reserved
++
++obj-$(CONFIG_SVC_I3C)	+= i3c-main.o
++obj-$(CONFIG_I3C_SILVACO)	+= i3c-silvaco.o
+diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc/i3c-main.c
+similarity index 79%
+rename from drivers/i3c/master/svc-i3c-master.c
+rename to drivers/i3c/master/svc/i3c-main.c
+index e700392f0..10e2f7761 100644
+--- a/drivers/i3c/master/svc-i3c-master.c
++++ b/drivers/i3c/master/svc/i3c-main.c
+@@ -6,285 +6,7 @@
+  * Author: Miquel RAYNAL <miquel.raynal@bootlin.com>
+  * Based on a work from: Conor Culhane <conor.culhane@silvaco.com>
+  */
+-
+-#include <linux/bitfield.h>
+-#include <linux/clk.h>
+-#include <linux/completion.h>
+-#include <linux/errno.h>
+-#include <linux/i3c/master.h>
+-#include <linux/interrupt.h>
+-#include <linux/iopoll.h>
+-#include <linux/list.h>
+-#include <linux/module.h>
+-#include <linux/of.h>
+-#include <linux/pinctrl/consumer.h>
+-#include <linux/platform_device.h>
+-#include <linux/pm_runtime.h>
+-
+-/* Master Mode Registers */
+-#define SVC_I3C_MCONFIG      0x000
+-#define   SVC_I3C_MCONFIG_MASTER_EN BIT(0)
+-#define   SVC_I3C_MCONFIG_DISTO(x) FIELD_PREP(BIT(3), (x))
+-#define   SVC_I3C_MCONFIG_HKEEP(x) FIELD_PREP(GENMASK(5, 4), (x))
+-#define   SVC_I3C_MCONFIG_ODSTOP(x) FIELD_PREP(BIT(6), (x))
+-#define   SVC_I3C_MCONFIG_PPBAUD(x) FIELD_PREP(GENMASK(11, 8), (x))
+-#define   SVC_I3C_MCONFIG_PPLOW(x) FIELD_PREP(GENMASK(15, 12), (x))
+-#define   SVC_I3C_MCONFIG_ODBAUD(x) FIELD_PREP(GENMASK(23, 16), (x))
+-#define   SVC_I3C_MCONFIG_ODHPP(x) FIELD_PREP(BIT(24), (x))
+-#define   SVC_I3C_MCONFIG_SKEW(x) FIELD_PREP(GENMASK(27, 25), (x))
+-#define   SVC_I3C_MCONFIG_SKEW_MASK GENMASK(27, 25)
+-#define   SVC_I3C_MCONFIG_I2CBAUD(x) FIELD_PREP(GENMASK(31, 28), (x))
+-
+-#define SVC_I3C_MCTRL        0x084
+-#define   SVC_I3C_MCTRL_REQUEST_MASK GENMASK(2, 0)
+-#define   SVC_I3C_MCTRL_REQUEST_NONE 0
+-#define   SVC_I3C_MCTRL_REQUEST_START_ADDR 1
+-#define   SVC_I3C_MCTRL_REQUEST_STOP 2
+-#define   SVC_I3C_MCTRL_REQUEST_FORCE_EXIT 6
+-#define   SVC_I3C_MCTRL_REQUEST_IBI_ACKNACK 3
+-#define   SVC_I3C_MCTRL_REQUEST_PROC_DAA 4
+-#define   SVC_I3C_MCTRL_REQUEST_AUTO_IBI 7
+-#define   SVC_I3C_MCTRL_TYPE_I3C 0
+-#define   SVC_I3C_MCTRL_TYPE_I2C BIT(4)
+-#define   SVC_I3C_MCTRL_TYPE_DDR BIT(5)
+-#define   SVC_I3C_MCTRL_IBIRESP_AUTO 0
+-#define   SVC_I3C_MCTRL_IBIRESP_ACK_WITHOUT_BYTE 0
+-#define   SVC_I3C_MCTRL_IBIRESP_ACK_WITH_BYTE BIT(7)
+-#define   SVC_I3C_MCTRL_IBIRESP_NACK BIT(6)
+-#define   SVC_I3C_MCTRL_IBIRESP_MANUAL GENMASK(7, 6)
+-#define   SVC_I3C_MCTRL_DIR(x) FIELD_PREP(BIT(8), (x))
+-#define   SVC_I3C_MCTRL_DIR_WRITE 0
+-#define   SVC_I3C_MCTRL_DIR_READ 1
+-#define   SVC_I3C_MCTRL_ADDR(x) FIELD_PREP(GENMASK(15, 9), (x))
+-#define   SVC_I3C_MCTRL_RDTERM(x) FIELD_PREP(GENMASK(23, 16), (x))
+-
+-#define SVC_I3C_MSTATUS      0x088
+-#define   SVC_I3C_MSTATUS_STATE(x) FIELD_GET(GENMASK(2, 0), (x))
+-#define   SVC_I3C_MSTATUS_STATE_DAA(x) (SVC_I3C_MSTATUS_STATE(x) == 5)
+-#define   SVC_I3C_MSTATUS_STATE_SLVREQ(x) (SVC_I3C_MSTATUS_STATE(x) == 1)
+-#define   SVC_I3C_MSTATUS_STATE_IDLE(x) (SVC_I3C_MSTATUS_STATE(x) == 0)
+-#define   SVC_I3C_MSTATUS_BETWEEN(x) FIELD_GET(BIT(4), (x))
+-#define   SVC_I3C_MSTATUS_NACKED(x) FIELD_GET(BIT(5), (x))
+-#define   SVC_I3C_MSTATUS_IBITYPE(x) FIELD_GET(GENMASK(7, 6), (x))
+-#define   SVC_I3C_MSTATUS_IBITYPE_IBI 1
+-#define   SVC_I3C_MSTATUS_IBITYPE_MASTER_REQUEST 2
+-#define   SVC_I3C_MSTATUS_IBITYPE_HOT_JOIN 3
+-#define   SVC_I3C_MINT_SLVSTART BIT(8)
+-#define   SVC_I3C_MINT_MCTRLDONE BIT(9)
+-#define   SVC_I3C_MINT_COMPLETE BIT(10)
+-#define   SVC_I3C_MINT_RXPEND BIT(11)
+-#define   SVC_I3C_MINT_TXNOTFULL BIT(12)
+-#define   SVC_I3C_MINT_IBIWON BIT(13)
+-#define   SVC_I3C_MINT_ERRWARN BIT(15)
+-#define   SVC_I3C_MSTATUS_SLVSTART(x) FIELD_GET(SVC_I3C_MINT_SLVSTART, (x))
+-#define   SVC_I3C_MSTATUS_MCTRLDONE(x) FIELD_GET(SVC_I3C_MINT_MCTRLDONE, (x))
+-#define   SVC_I3C_MSTATUS_COMPLETE(x) FIELD_GET(SVC_I3C_MINT_COMPLETE, (x))
+-#define   SVC_I3C_MSTATUS_RXPEND(x) FIELD_GET(SVC_I3C_MINT_RXPEND, (x))
+-#define   SVC_I3C_MSTATUS_TXNOTFULL(x) FIELD_GET(SVC_I3C_MINT_TXNOTFULL, (x))
+-#define   SVC_I3C_MSTATUS_IBIWON(x) FIELD_GET(SVC_I3C_MINT_IBIWON, (x))
+-#define   SVC_I3C_MSTATUS_ERRWARN(x) FIELD_GET(SVC_I3C_MINT_ERRWARN, (x))
+-#define   SVC_I3C_MSTATUS_IBIADDR(x) FIELD_GET(GENMASK(30, 24), (x))
+-
+-#define SVC_I3C_IBIRULES     0x08C
+-#define   SVC_I3C_IBIRULES_ADDR(slot, addr) FIELD_PREP(GENMASK(29, 0), \
+-						       ((addr) & 0x3F) << ((slot) * 6))
+-#define   SVC_I3C_IBIRULES_ADDRS 5
+-#define   SVC_I3C_IBIRULES_MSB0 BIT(30)
+-#define   SVC_I3C_IBIRULES_NOBYTE BIT(31)
+-#define   SVC_I3C_IBIRULES_MANDBYTE 0
+-#define SVC_I3C_MINTSET      0x090
+-#define SVC_I3C_MINTCLR      0x094
+-#define SVC_I3C_MINTMASKED   0x098
+-#define SVC_I3C_MERRWARN     0x09C
+-#define   SVC_I3C_MERRWARN_NACK BIT(2)
+-#define   SVC_I3C_MERRWARN_CRC	BIT(10)
+-#define   SVC_I3C_MERRWARN_TIMEOUT BIT(20)
+-#define SVC_I3C_MDMACTRL     0x0A0
+-#define SVC_I3C_MDATACTRL    0x0AC
+-#define   SVC_I3C_MDATACTRL_FLUSHTB BIT(0)
+-#define   SVC_I3C_MDATACTRL_FLUSHRB BIT(1)
+-#define   SVC_I3C_MDATACTRL_UNLOCK_TRIG BIT(3)
+-#define   SVC_I3C_MDATACTRL_TXTRIG_FIFO_NOT_FULL GENMASK(5, 4)
+-#define   SVC_I3C_MDATACTRL_RXTRIG_FIFO_NOT_EMPTY 0
+-#define   SVC_I3C_MDATACTRL_RXCOUNT(x) FIELD_GET(GENMASK(28, 24), (x))
+-#define   SVC_I3C_MDATACTRL_TXCOUNT(x) FIELD_GET(GENMASK(20, 16), (x))
+-#define   SVC_I3C_MDATACTRL_TXFULL BIT(30)
+-#define   SVC_I3C_MDATACTRL_RXEMPTY BIT(31)
+-
+-#define SVC_I3C_MWDATAB      0x0B0
+-#define   SVC_I3C_MWDATAB_END BIT(8)
+-
+-#define SVC_I3C_MWDATABE     0x0B4
+-#define SVC_I3C_MWDATAH      0x0B8
+-#define SVC_I3C_MWDATAHE     0x0BC
+-#define SVC_I3C_MRDATAB      0x0C0
+-#define SVC_I3C_MRDATAH      0x0C8
+-#define SVC_I3C_MWDATAB1     0x0CC
+-#define SVC_I3C_MWMSG_SDR    0x0D0
+-#define SVC_I3C_MRMSG_SDR    0x0D4
+-#define SVC_I3C_MWMSG_DDR    0x0D8
+-#define SVC_I3C_MRMSG_DDR    0x0DC
+-
+-#define SVC_I3C_MDYNADDR     0x0E4
+-#define   SVC_MDYNADDR_VALID BIT(0)
+-#define   SVC_MDYNADDR_ADDR(x) FIELD_PREP(GENMASK(7, 1), (x))
+-
+-#define SVC_I3C_MAX_DEVS 32
+-#define SVC_I3C_PM_TIMEOUT_MS 1000
+-
+-/* This parameter depends on the implementation and may be tuned */
+-#define SVC_I3C_FIFO_SIZE 16
+-#define SVC_I3C_PPBAUD_MAX 15
+-#define SVC_I3C_QUICK_I2C_CLK 4170000
+-
+-#define SVC_I3C_EVENT_IBI	GENMASK(7, 0)
+-#define SVC_I3C_EVENT_HOTJOIN	BIT(31)
+-
+-/*
+- * SVC_I3C_QUIRK_FIFO_EMPTY:
+- * I3C HW stalls the write transfer if the transmit FIFO becomes empty,
+- * when new data is written to FIFO, I3C HW resumes the transfer but
+- * the first transmitted data bit may have the wrong value.
+- * Workaround:
+- * Fill the FIFO in advance to prevent FIFO from becoming empty.
+- */
+-#define SVC_I3C_QUIRK_FIFO_EMPTY	BIT(0)
+-/*
+- * SVC_I3C_QUIRK_FLASE_SLVSTART:
+- * I3C HW may generate an invalid SlvStart event when emitting a STOP.
+- * If it is a true SlvStart, the MSTATUS state is SLVREQ.
+- */
+-#define SVC_I3C_QUIRK_FALSE_SLVSTART	BIT(1)
+-/*
+- * SVC_I3C_QUIRK_DAA_CORRUPT:
+- * When MCONFIG.SKEW=0 and MCONFIG.ODHPP=0, the ENTDAA transaction gets
+- * corrupted and results in a no repeated-start condition at the end of
+- * address assignment.
+- * Workaround:
+- * Set MCONFIG.SKEW to 1 before initiating the DAA process. After the DAA
+- * process is completed, return MCONFIG.SKEW to its previous value.
+- */
+-#define SVC_I3C_QUIRK_DAA_CORRUPT	BIT(2)
+-
+-struct svc_i3c_cmd {
+-	u8 addr;
+-	union {
+-		bool rnw;
+-		u8 cmd;
+-		u32 rnw_cmd;
+-	};
+-	u8 *in;
+-	const void *out;
+-	unsigned int len;
+-	unsigned int actual_len;
+-	struct i3c_xfer *xfer;
+-	bool continued;
+-};
+-
+-struct svc_i3c_xfer {
+-	struct list_head node;
+-	struct completion comp;
+-	int ret;
+-	unsigned int type;
+-	unsigned int ncmds;
+-	struct svc_i3c_cmd cmds[] __counted_by(ncmds);
+-};
+-
+-struct svc_i3c_regs_save {
+-	u32 mconfig;
+-	u32 mdynaddr;
+-};
+-
+-struct svc_i3c_drvdata {
+-	u32 quirks;
+-};
+-
+-/**
+- * struct svc_i3c_master - Silvaco I3C Master structure
+- * @base: I3C master controller
+- * @dev: Corresponding device
+- * @regs: Memory mapping
+- * @saved_regs: Volatile values for PM operations
+- * @free_slots: Bit array of available slots
+- * @addrs: Array containing the dynamic addresses of each attached device
+- * @descs: Array of descriptors, one per attached device
+- * @irq: Main interrupt
+- * @num_clks: I3C clock number
+- * @fclk: Fast clock (bus)
+- * @clks: I3C clock array
+- * @xferqueue: Transfer queue structure
+- * @xferqueue.list: List member
+- * @xferqueue.cur: Current ongoing transfer
+- * @xferqueue.lock: Queue lock
+- * @ibi: IBI structure
+- * @ibi.num_slots: Number of slots available in @ibi.slots
+- * @ibi.slots: Available IBI slots
+- * @ibi.tbq_slot: To be queued IBI slot
+- * @ibi.lock: IBI lock
+- * @lock: Transfer lock, protect between IBI work thread and callbacks from master
+- * @drvdata: Driver data
+- * @enabled_events: Bit masks for enable events (IBI, HotJoin).
+- * @mctrl_config: Configuration value in SVC_I3C_MCTRL for setting speed back.
+- */
+-struct svc_i3c_master {
+-	struct i3c_master_controller base;
+-	struct device *dev;
+-	void __iomem *regs;
+-	struct svc_i3c_regs_save saved_regs;
+-	u32 free_slots;
+-	u8 addrs[SVC_I3C_MAX_DEVS];
+-	struct i3c_dev_desc *descs[SVC_I3C_MAX_DEVS];
+-	int irq;
+-	int num_clks;
+-	struct clk *fclk;
+-	struct clk_bulk_data *clks;
+-	struct {
+-		struct list_head list;
+-		struct svc_i3c_xfer *cur;
+-		/* Prevent races between transfers */
+-		spinlock_t lock;
+-	} xferqueue;
+-	struct {
+-		unsigned int num_slots;
+-		struct i3c_dev_desc **slots;
+-		struct i3c_ibi_slot *tbq_slot;
+-		/* Prevent races within IBI handlers */
+-		spinlock_t lock;
+-	} ibi;
+-	struct mutex lock;
+-	const struct svc_i3c_drvdata *drvdata;
+-	u32 enabled_events;
+-	u32 mctrl_config;
+-};
+-
+-/**
+- * struct svc_i3c_i2c_dev_data - Device specific data
+- * @index: Index in the master tables corresponding to this device
+- * @ibi: IBI slot index in the master structure
+- * @ibi_pool: IBI pool associated to this device
+- */
+-struct svc_i3c_i2c_dev_data {
+-	u8 index;
+-	int ibi;
+-	struct i3c_generic_ibi_pool *ibi_pool;
+-};
+-
+-static inline bool svc_has_quirk(struct svc_i3c_master *master, u32 quirk)
+-{
+-	return (master->drvdata->quirks & quirk);
+-}
+-
+-static inline bool svc_has_daa_corrupt(struct svc_i3c_master *master)
+-{
+-	return ((master->drvdata->quirks & SVC_I3C_QUIRK_DAA_CORRUPT) &&
+-		!(master->mctrl_config &
+-		(SVC_I3C_MCONFIG_SKEW_MASK | SVC_I3C_MCONFIG_ODHPP(1))));
+-}
+-
+-static inline bool is_events_enabled(struct svc_i3c_master *master, u32 mask)
+-{
+-	return !!(master->enabled_events & mask);
+-}
++#include "i3c-main.h"
+ 
+ static bool svc_i3c_master_error(struct svc_i3c_master *master)
+ {
+@@ -719,7 +441,7 @@ static int svc_i3c_master_set_speed(struct i3c_master_controller *m,
+ 
+ 	switch (speed) {
+ 	case I3C_OPEN_DRAIN_SLOW_SPEED:
+-		fclk_rate = clk_get_rate(master->fclk);
++		fclk_rate = master->fclk_rate;
+ 		if (!fclk_rate) {
+ 			ret = -EINVAL;
+ 			goto rpm_out;
+@@ -769,7 +491,7 @@ static int svc_i3c_master_bus_init(struct i3c_master_controller *m)
+ 	}
+ 
+ 	/* Timings derivation */
+-	fclk_rate = clk_get_rate(master->fclk);
++	fclk_rate = master->fclk_rate;
+ 	if (!fclk_rate) {
+ 		ret = -EINVAL;
+ 		goto rpm_out;
+@@ -1997,56 +1719,55 @@ static const struct i3c_master_controller_ops svc_i3c_master_ops = {
+ 	.set_speed = svc_i3c_master_set_speed,
+ };
+ 
+-static int svc_i3c_master_probe(struct platform_device *pdev)
++void svc_i3c_master_remove(struct svc_i3c_master *master)
+ {
+-	struct device *dev = &pdev->dev;
+-	struct svc_i3c_master *master;
+-	int ret, i;
++	i3c_master_unregister(&master->base);
++}
++EXPORT_SYMBOL_GPL(svc_i3c_master_remove);
+ 
+-	master = devm_kzalloc(dev, sizeof(*master), GFP_KERNEL);
+-	if (!master)
+-		return -ENOMEM;
++void svc_i3c_save_regs(struct svc_i3c_master *master)
++{
++	master->saved_regs.mconfig = readl(master->regs + SVC_I3C_MCONFIG);
++	master->saved_regs.mdynaddr = readl(master->regs + SVC_I3C_MDYNADDR);
++}
++EXPORT_SYMBOL_GPL(svc_i3c_save_regs);
+ 
+-	master->drvdata = of_device_get_match_data(dev);
+-	if (!master->drvdata)
+-		return -EINVAL;
++void svc_i3c_restore_regs(struct svc_i3c_master *master)
++{
++	if (readl(master->regs + SVC_I3C_MDYNADDR) !=
++	    master->saved_regs.mdynaddr) {
++		writel(master->saved_regs.mconfig,
++		       master->regs + SVC_I3C_MCONFIG);
++		writel(master->saved_regs.mdynaddr,
++		       master->regs + SVC_I3C_MDYNADDR);
++	}
++}
++EXPORT_SYMBOL_GPL(svc_i3c_restore_regs);
+ 
+-	master->regs = devm_platform_ioremap_resource(pdev, 0);
+-	if (IS_ERR(master->regs))
+-		return PTR_ERR(master->regs);
++struct svc_i3c_master *svc_i3c_master_alloc(struct device *dev)
++{
++	struct svc_i3c_master *master;
+ 
+-	master->num_clks = devm_clk_bulk_get_all(dev, &master->clks);
+-	if (master->num_clks < 0)
+-		return dev_err_probe(dev, -EINVAL, "can't get I3C clocks\n");
++	master = devm_kzalloc(dev, sizeof(*master), GFP_KERNEL);
+ 
+-	for (i = 0; i < master->num_clks; i++) {
+-		if (!strcmp(master->clks[i].id, "fast_clk"))
+-			break;
+-	}
++	return master;
++}
++EXPORT_SYMBOL_GPL(svc_i3c_master_alloc);
+ 
+-	if (i == master->num_clks)
+-		return dev_err_probe(dev, -EINVAL,
+-				     "can't get I3C peripheral clock\n");
++int svc_i3c_master_probe(struct platform_device *pdev, struct svc_i3c_master *master)
++{
++	struct device *dev = &pdev->dev;
+ 
+-	master->fclk = master->clks[i].clk;
+-	if (IS_ERR(master->fclk))
+-		return PTR_ERR(master->fclk);
++	int ret;
+ 
+ 	master->irq = platform_get_irq(pdev, 0);
+ 	if (master->irq < 0)
+ 		return master->irq;
+-
+-	master->dev = dev;
+-	ret = clk_bulk_prepare_enable(master->num_clks, master->clks);
+-	if (ret)
+-		return dev_err_probe(dev, ret, "can't enable I3C clocks\n");
+-
+ 	mutex_init(&master->lock);
+-
+ 	ret = devm_request_irq(dev, master->irq, svc_i3c_master_irq_handler,
+ 			       IRQF_NO_SUSPEND, "svc-i3c-irq", master);
+ 	if (ret)
+-		goto err_disable_clks;
++		return ret;
+ 
+ 	master->free_slots = GENMASK(SVC_I3C_MAX_DEVS - 1, 0);
+ 
+@@ -2058,128 +1779,18 @@ static int svc_i3c_master_probe(struct platform_device *pdev)
+ 	master->ibi.slots = devm_kcalloc(&pdev->dev, master->ibi.num_slots,
+ 					 sizeof(*master->ibi.slots),
+ 					 GFP_KERNEL);
+-	if (!master->ibi.slots) {
+-		ret = -ENOMEM;
+-		goto err_disable_clks;
+-	}
+-
+-	platform_set_drvdata(pdev, master);
+-
+-	pm_runtime_set_autosuspend_delay(&pdev->dev, SVC_I3C_PM_TIMEOUT_MS);
+-	pm_runtime_use_autosuspend(&pdev->dev);
+-	pm_runtime_get_noresume(&pdev->dev);
+-	pm_runtime_set_active(&pdev->dev);
+-	pm_runtime_enable(&pdev->dev);
++	if (!master->ibi.slots)
++		return -ENOMEM;
+ 
+ 	svc_i3c_master_reset(master);
+ 
+ 	/* Register the master */
+ 	ret = i3c_master_register(&master->base, &pdev->dev,
+ 				  &svc_i3c_master_ops, false);
+-	if (ret)
+-		goto rpm_disable;
+-
+-	pm_runtime_put_autosuspend(&pdev->dev);
+-
+-	return 0;
+-
+-rpm_disable:
+-	pm_runtime_dont_use_autosuspend(&pdev->dev);
+-	pm_runtime_put_noidle(&pdev->dev);
+-	pm_runtime_disable(&pdev->dev);
+-	pm_runtime_set_suspended(&pdev->dev);
+-
+-err_disable_clks:
+-	clk_bulk_disable_unprepare(master->num_clks, master->clks);
+ 
+ 	return ret;
+ }
+-
+-static void svc_i3c_master_remove(struct platform_device *pdev)
+-{
+-	struct svc_i3c_master *master = platform_get_drvdata(pdev);
+-
+-	i3c_master_unregister(&master->base);
+-
+-	pm_runtime_dont_use_autosuspend(&pdev->dev);
+-	pm_runtime_disable(&pdev->dev);
+-}
+-
+-static void svc_i3c_save_regs(struct svc_i3c_master *master)
+-{
+-	master->saved_regs.mconfig = readl(master->regs + SVC_I3C_MCONFIG);
+-	master->saved_regs.mdynaddr = readl(master->regs + SVC_I3C_MDYNADDR);
+-}
+-
+-static void svc_i3c_restore_regs(struct svc_i3c_master *master)
+-{
+-	if (readl(master->regs + SVC_I3C_MDYNADDR) !=
+-	    master->saved_regs.mdynaddr) {
+-		writel(master->saved_regs.mconfig,
+-		       master->regs + SVC_I3C_MCONFIG);
+-		writel(master->saved_regs.mdynaddr,
+-		       master->regs + SVC_I3C_MDYNADDR);
+-	}
+-}
+-
+-static int __maybe_unused svc_i3c_runtime_suspend(struct device *dev)
+-{
+-	struct svc_i3c_master *master = dev_get_drvdata(dev);
+-
+-	svc_i3c_save_regs(master);
+-	clk_bulk_disable_unprepare(master->num_clks, master->clks);
+-	pinctrl_pm_select_sleep_state(dev);
+-
+-	return 0;
+-}
+-
+-static int __maybe_unused svc_i3c_runtime_resume(struct device *dev)
+-{
+-	struct svc_i3c_master *master = dev_get_drvdata(dev);
+-	int ret;
+-
+-	pinctrl_pm_select_default_state(dev);
+-	ret = clk_bulk_prepare_enable(master->num_clks, master->clks);
+-	if (ret)
+-		return ret;
+-
+-	svc_i3c_restore_regs(master);
+-
+-	return 0;
+-}
+-
+-static const struct dev_pm_ops svc_i3c_pm_ops = {
+-	SET_NOIRQ_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
+-				      pm_runtime_force_resume)
+-	SET_RUNTIME_PM_OPS(svc_i3c_runtime_suspend,
+-			   svc_i3c_runtime_resume, NULL)
+-};
+-
+-static const struct svc_i3c_drvdata npcm845_drvdata = {
+-	.quirks = SVC_I3C_QUIRK_FIFO_EMPTY |
+-		SVC_I3C_QUIRK_FALSE_SLVSTART |
+-		SVC_I3C_QUIRK_DAA_CORRUPT,
+-};
+-
+-static const struct svc_i3c_drvdata svc_default_drvdata = {};
+-
+-static const struct of_device_id svc_i3c_master_of_match_tbl[] = {
+-	{ .compatible = "nuvoton,npcm845-i3c", .data = &npcm845_drvdata },
+-	{ .compatible = "silvaco,i3c-master-v1", .data = &svc_default_drvdata },
+-	{ /* sentinel */ },
+-};
+-MODULE_DEVICE_TABLE(of, svc_i3c_master_of_match_tbl);
+-
+-static struct platform_driver svc_i3c_master = {
+-	.probe = svc_i3c_master_probe,
+-	.remove = svc_i3c_master_remove,
+-	.driver = {
+-		.name = "silvaco-i3c-master",
+-		.of_match_table = svc_i3c_master_of_match_tbl,
+-		.pm = &svc_i3c_pm_ops,
+-	},
+-};
+-module_platform_driver(svc_i3c_master);
++EXPORT_SYMBOL_GPL(svc_i3c_master_probe);
+ 
+ MODULE_AUTHOR("Conor Culhane <conor.culhane@silvaco.com>");
+ MODULE_AUTHOR("Miquel Raynal <miquel.raynal@bootlin.com>");
+diff --git a/drivers/i3c/master/svc/i3c-main.h b/drivers/i3c/master/svc/i3c-main.h
+new file mode 100644
+index 000000000..f72d9c26b
+--- /dev/null
++++ b/drivers/i3c/master/svc/i3c-main.h
+@@ -0,0 +1,297 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * Silvaco dual-role I3C master driver
++ *
++ * Copyright (C) 2020 Silvaco
++ * Author: Miquel RAYNAL <miquel.raynal@bootlin.com>
++ * Based on a work from: Conor Culhane <conor.culhane@silvaco.com>
++ */
++
++#ifndef _SVC_I3C_MASTER_H_
++#define _SVC_I3C_MASTER_H_
++
++#include <linux/bitfield.h>
++#include <linux/clk.h>
++#include <linux/completion.h>
++#include <linux/errno.h>
++#include <linux/i3c/master.h>
++#include <linux/interrupt.h>
++#include <linux/iopoll.h>
++#include <linux/list.h>
++#include <linux/module.h>
++#include <linux/of.h>
++#include <linux/pinctrl/consumer.h>
++#include <linux/platform_device.h>
++#include <linux/pm_runtime.h>
++
++/* Master Mode Registers */
++#define SVC_I3C_MCONFIG      0x000
++#define   SVC_I3C_MCONFIG_MASTER_EN BIT(0)
++#define   SVC_I3C_MCONFIG_DISTO(x) FIELD_PREP(BIT(3), (x))
++#define   SVC_I3C_MCONFIG_HKEEP(x) FIELD_PREP(GENMASK(5, 4), (x))
++#define   SVC_I3C_MCONFIG_ODSTOP(x) FIELD_PREP(BIT(6), (x))
++#define   SVC_I3C_MCONFIG_PPBAUD(x) FIELD_PREP(GENMASK(11, 8), (x))
++#define   SVC_I3C_MCONFIG_PPLOW(x) FIELD_PREP(GENMASK(15, 12), (x))
++#define   SVC_I3C_MCONFIG_ODBAUD(x) FIELD_PREP(GENMASK(23, 16), (x))
++#define   SVC_I3C_MCONFIG_ODHPP(x) FIELD_PREP(BIT(24), (x))
++#define   SVC_I3C_MCONFIG_SKEW(x) FIELD_PREP(GENMASK(27, 25), (x))
++#define   SVC_I3C_MCONFIG_SKEW_MASK GENMASK(27, 25)
++#define   SVC_I3C_MCONFIG_I2CBAUD(x) FIELD_PREP(GENMASK(31, 28), (x))
++
++#define SVC_I3C_MCTRL        0x084
++#define   SVC_I3C_MCTRL_REQUEST_MASK GENMASK(2, 0)
++#define   SVC_I3C_MCTRL_REQUEST_NONE 0
++#define   SVC_I3C_MCTRL_REQUEST_START_ADDR 1
++#define   SVC_I3C_MCTRL_REQUEST_STOP 2
++#define   SVC_I3C_MCTRL_REQUEST_FORCE_EXIT 6
++#define   SVC_I3C_MCTRL_REQUEST_IBI_ACKNACK 3
++#define   SVC_I3C_MCTRL_REQUEST_PROC_DAA 4
++#define   SVC_I3C_MCTRL_REQUEST_AUTO_IBI 7
++#define   SVC_I3C_MCTRL_TYPE_I3C 0
++#define   SVC_I3C_MCTRL_TYPE_I2C BIT(4)
++#define   SVC_I3C_MCTRL_TYPE_DDR BIT(5)
++#define   SVC_I3C_MCTRL_IBIRESP_AUTO 0
++#define   SVC_I3C_MCTRL_IBIRESP_ACK_WITHOUT_BYTE 0
++#define   SVC_I3C_MCTRL_IBIRESP_ACK_WITH_BYTE BIT(7)
++#define   SVC_I3C_MCTRL_IBIRESP_NACK BIT(6)
++#define   SVC_I3C_MCTRL_IBIRESP_MANUAL GENMASK(7, 6)
++#define   SVC_I3C_MCTRL_DIR(x) FIELD_PREP(BIT(8), (x))
++#define   SVC_I3C_MCTRL_DIR_WRITE 0
++#define   SVC_I3C_MCTRL_DIR_READ 1
++#define   SVC_I3C_MCTRL_ADDR(x) FIELD_PREP(GENMASK(15, 9), (x))
++#define   SVC_I3C_MCTRL_RDTERM(x) FIELD_PREP(GENMASK(23, 16), (x))
++
++#define SVC_I3C_MSTATUS      0x088
++#define   SVC_I3C_MSTATUS_STATE(x) FIELD_GET(GENMASK(2, 0), (x))
++#define   SVC_I3C_MSTATUS_STATE_DAA(x) (SVC_I3C_MSTATUS_STATE(x) == 5)
++#define   SVC_I3C_MSTATUS_STATE_SLVREQ(x) (SVC_I3C_MSTATUS_STATE(x) == 1)
++#define   SVC_I3C_MSTATUS_STATE_IDLE(x) (SVC_I3C_MSTATUS_STATE(x) == 0)
++#define   SVC_I3C_MSTATUS_BETWEEN(x) FIELD_GET(BIT(4), (x))
++#define   SVC_I3C_MSTATUS_NACKED(x) FIELD_GET(BIT(5), (x))
++#define   SVC_I3C_MSTATUS_IBITYPE(x) FIELD_GET(GENMASK(7, 6), (x))
++#define   SVC_I3C_MSTATUS_IBITYPE_IBI 1
++#define   SVC_I3C_MSTATUS_IBITYPE_MASTER_REQUEST 2
++#define   SVC_I3C_MSTATUS_IBITYPE_HOT_JOIN 3
++#define   SVC_I3C_MINT_SLVSTART BIT(8)
++#define   SVC_I3C_MINT_MCTRLDONE BIT(9)
++#define   SVC_I3C_MINT_COMPLETE BIT(10)
++#define   SVC_I3C_MINT_RXPEND BIT(11)
++#define   SVC_I3C_MINT_TXNOTFULL BIT(12)
++#define   SVC_I3C_MINT_IBIWON BIT(13)
++#define   SVC_I3C_MINT_ERRWARN BIT(15)
++#define   SVC_I3C_MSTATUS_SLVSTART(x) FIELD_GET(SVC_I3C_MINT_SLVSTART, (x))
++#define   SVC_I3C_MSTATUS_MCTRLDONE(x) FIELD_GET(SVC_I3C_MINT_MCTRLDONE, (x))
++#define   SVC_I3C_MSTATUS_COMPLETE(x) FIELD_GET(SVC_I3C_MINT_COMPLETE, (x))
++#define   SVC_I3C_MSTATUS_RXPEND(x) FIELD_GET(SVC_I3C_MINT_RXPEND, (x))
++#define   SVC_I3C_MSTATUS_TXNOTFULL(x) FIELD_GET(SVC_I3C_MINT_TXNOTFULL, (x))
++#define   SVC_I3C_MSTATUS_IBIWON(x) FIELD_GET(SVC_I3C_MINT_IBIWON, (x))
++#define   SVC_I3C_MSTATUS_ERRWARN(x) FIELD_GET(SVC_I3C_MINT_ERRWARN, (x))
++#define   SVC_I3C_MSTATUS_IBIADDR(x) FIELD_GET(GENMASK(30, 24), (x))
++
++#define SVC_I3C_IBIRULES     0x08C
++#define   SVC_I3C_IBIRULES_ADDR(slot, addr) FIELD_PREP(GENMASK(29, 0), \
++						       ((addr) & 0x3F) << ((slot) * 6))
++#define   SVC_I3C_IBIRULES_ADDRS 5
++#define   SVC_I3C_IBIRULES_MSB0 BIT(30)
++#define   SVC_I3C_IBIRULES_NOBYTE BIT(31)
++#define   SVC_I3C_IBIRULES_MANDBYTE 0
++#define SVC_I3C_MINTSET      0x090
++#define SVC_I3C_MINTCLR      0x094
++#define SVC_I3C_MINTMASKED   0x098
++#define SVC_I3C_MERRWARN     0x09C
++#define   SVC_I3C_MERRWARN_NACK BIT(2)
++#define   SVC_I3C_MERRWARN_CRC	BIT(10)
++#define   SVC_I3C_MERRWARN_TIMEOUT BIT(20)
++#define SVC_I3C_MDMACTRL     0x0A0
++#define SVC_I3C_MDATACTRL    0x0AC
++#define   SVC_I3C_MDATACTRL_FLUSHTB BIT(0)
++#define   SVC_I3C_MDATACTRL_FLUSHRB BIT(1)
++#define   SVC_I3C_MDATACTRL_UNLOCK_TRIG BIT(3)
++#define   SVC_I3C_MDATACTRL_TXTRIG_FIFO_NOT_FULL GENMASK(5, 4)
++#define   SVC_I3C_MDATACTRL_RXTRIG_FIFO_NOT_EMPTY 0
++#define   SVC_I3C_MDATACTRL_RXCOUNT(x) FIELD_GET(GENMASK(28, 24), (x))
++#define   SVC_I3C_MDATACTRL_TXCOUNT(x) FIELD_GET(GENMASK(20, 16), (x))
++#define   SVC_I3C_MDATACTRL_TXFULL BIT(30)
++#define   SVC_I3C_MDATACTRL_RXEMPTY BIT(31)
++
++#define SVC_I3C_MWDATAB      0x0B0
++#define   SVC_I3C_MWDATAB_END BIT(8)
++
++#define SVC_I3C_MWDATABE     0x0B4
++#define SVC_I3C_MWDATAH      0x0B8
++#define SVC_I3C_MWDATAHE     0x0BC
++#define SVC_I3C_MRDATAB      0x0C0
++#define SVC_I3C_MRDATAH      0x0C8
++#define SVC_I3C_MWDATAB1     0x0CC
++#define SVC_I3C_MWMSG_SDR    0x0D0
++#define SVC_I3C_MRMSG_SDR    0x0D4
++#define SVC_I3C_MWMSG_DDR    0x0D8
++#define SVC_I3C_MRMSG_DDR    0x0DC
++
++#define SVC_I3C_MDYNADDR     0x0E4
++#define   SVC_MDYNADDR_VALID BIT(0)
++#define   SVC_MDYNADDR_ADDR(x) FIELD_PREP(GENMASK(7, 1), (x))
++
++#define SVC_I3C_MAX_DEVS 32
++#define SVC_I3C_PM_TIMEOUT_MS 1000
++
++/* This parameter depends on the implementation and may be tuned */
++#define SVC_I3C_FIFO_SIZE 16
++#define SVC_I3C_PPBAUD_MAX 15
++#define SVC_I3C_QUICK_I2C_CLK 4170000
++
++#define SVC_I3C_EVENT_IBI	GENMASK(7, 0)
++#define SVC_I3C_EVENT_HOTJOIN	BIT(31)
++
++/*
++ * SVC_I3C_QUIRK_FIFO_EMPTY:
++ * I3C HW stalls the write transfer if the transmit FIFO becomes empty,
++ * when new data is written to FIFO, I3C HW resumes the transfer but
++ * the first transmitted data bit may have the wrong value.
++ * Workaround:
++ * Fill the FIFO in advance to prevent FIFO from becoming empty.
++ */
++#define SVC_I3C_QUIRK_FIFO_EMPTY	BIT(0)
++/*
++ * SVC_I3C_QUIRK_FLASE_SLVSTART:
++ * I3C HW may generate an invalid SlvStart event when emitting a STOP.
++ * If it is a true SlvStart, the MSTATUS state is SLVREQ.
++ */
++#define SVC_I3C_QUIRK_FALSE_SLVSTART	BIT(1)
++/*
++ * SVC_I3C_QUIRK_DAA_CORRUPT:
++ * When MCONFIG.SKEW=0 and MCONFIG.ODHPP=0, the ENTDAA transaction gets
++ * corrupted and results in a no repeated-start condition at the end of
++ * address assignment.
++ * Workaround:
++ * Set MCONFIG.SKEW to 1 before initiating the DAA process. After the DAA
++ * process is completed, return MCONFIG.SKEW to its previous value.
++ */
++#define SVC_I3C_QUIRK_DAA_CORRUPT	BIT(2)
++
++struct svc_i3c_cmd {
++	u8 addr;
++	union {
++		bool rnw;
++		u8 cmd;
++		u32 rnw_cmd;
++	};
++	u8 *in;
++	const void *out;
++	unsigned int len;
++	unsigned int actual_len;
++	struct i3c_xfer *xfer;
++	bool continued;
++};
++
++struct svc_i3c_xfer {
++	struct list_head node;
++	struct completion comp;
++	int ret;
++	unsigned int type;
++	unsigned int ncmds;
++	struct svc_i3c_cmd cmds[] __counted_by(ncmds);
++};
++
++struct svc_i3c_regs_save {
++	u32 mconfig;
++	u32 mdynaddr;
++};
++
++struct svc_i3c_drvdata {
++	u32 quirks;
++	const void *bsp_data;
++};
++
++/**
++ * struct svc_i3c_master - Silvaco I3C Master structure
++ * @base: I3C master controller
++ * @dev: Corresponding device
++ * @regs: Memory mapping
++ * @saved_regs: Volatile values for PM operations
++ * @free_slots: Bit array of available slots
++ * @addrs: Array containing the dynamic addresses of each attached device
++ * @descs: Array of descriptors, one per attached device
++ * @irq: Main interrupt
++ * @fclk_rate: Fast clock (bus) rate, in Hz, set by the glue layer
++ * @bsp_priv: Private data owned by the glue layer
++ * @xferqueue: Transfer queue structure
++ * @xferqueue.list: List member
++ * @xferqueue.cur: Current ongoing transfer
++ * @xferqueue.lock: Queue lock
++ * @ibi: IBI structure
++ * @ibi.num_slots: Number of slots available in @ibi.slots
++ * @ibi.slots: Available IBI slots
++ * @ibi.tbq_slot: To be queued IBI slot
++ * @ibi.lock: IBI lock
++ * @lock: Transfer lock, protect between IBI work thread and callbacks from master
++ * @drvdata: Driver data
++ * @enabled_events: Bit masks for enable events (IBI, HotJoin).
++ * @mctrl_config: Configuration value in SVC_I3C_MCTRL for setting speed back.
++ */
++struct svc_i3c_master {
++	struct i3c_master_controller base;
++	struct device *dev;
++	void __iomem *regs;
++	struct svc_i3c_regs_save saved_regs;
++	u32 free_slots;
++	u8 addrs[SVC_I3C_MAX_DEVS];
++	struct i3c_dev_desc *descs[SVC_I3C_MAX_DEVS];
++	int irq;
++	unsigned long fclk_rate;
++	void *bsp_priv;
++	struct {
++		struct list_head list;
++		struct svc_i3c_xfer *cur;
++		/* Prevent races between transfers */
++		spinlock_t lock;
++	} xferqueue;
++	struct {
++		unsigned int num_slots;
++		struct i3c_dev_desc **slots;
++		struct i3c_ibi_slot *tbq_slot;
++		/* Prevent races within IBI handlers */
++		spinlock_t lock;
++	} ibi;
++	struct mutex lock;
++	const struct svc_i3c_drvdata *drvdata;
++	u32 enabled_events;
++	u32 mctrl_config;
++};
++
++/**
++ * struct svc_i3c_i2c_dev_data - Device specific data
++ * @index: Index in the master tables corresponding to this device
++ * @ibi: IBI slot index in the master structure
++ * @ibi_pool: IBI pool associated to this device
++ */
++struct svc_i3c_i2c_dev_data {
++	u8 index;
++	int ibi;
++	struct i3c_generic_ibi_pool *ibi_pool;
++};
++
++static inline bool svc_has_quirk(struct svc_i3c_master *master, u32 quirk)
++{
++	return (master->drvdata->quirks & quirk);
++}
++
++static inline bool svc_has_daa_corrupt(struct svc_i3c_master *master)
++{
++	return ((master->drvdata->quirks & SVC_I3C_QUIRK_DAA_CORRUPT) &&
++		!(master->mctrl_config &
++		(SVC_I3C_MCONFIG_SKEW_MASK | SVC_I3C_MCONFIG_ODHPP(1))));
++}
++
++static inline bool is_events_enabled(struct svc_i3c_master *master, u32 mask)
++{
++	return !!(master->enabled_events & mask);
++}
++
++void svc_i3c_save_regs(struct svc_i3c_master *master);
++void svc_i3c_restore_regs(struct svc_i3c_master *master);
++struct svc_i3c_master *svc_i3c_master_alloc(struct device *dev);
++void svc_i3c_master_remove(struct svc_i3c_master *master);
++int svc_i3c_master_probe(struct platform_device *pdev, struct svc_i3c_master *master);
++
++#endif /* _SVC_I3C_MASTER_H_ */
+diff --git a/drivers/i3c/master/svc/i3c-silvaco.c b/drivers/i3c/master/svc/i3c-silvaco.c
+new file mode 100644
+index 000000000..da2fc1560
+--- /dev/null
++++ b/drivers/i3c/master/svc/i3c-silvaco.c
+@@ -0,0 +1,173 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Silvaco dual-role I3C master driver
++ *
++ * Copyright (C) 2020 Silvaco
++ * Author: Miquel RAYNAL <miquel.raynal@bootlin.com>
++ * Based on a work from: Conor Culhane <conor.culhane@silvaco.com>
++ */
++#include "i3c-main.h"
++
++struct svc_origin_priv {
++	int num_clks;
++	struct clk_bulk_data *clks;
++};
++
++static int silvaco_i3c_probe(struct platform_device *pdev)
++{
++	struct device *dev = &pdev->dev;
++	struct svc_i3c_master *master;
++	struct svc_origin_priv *priv;
++	int ret, i;
++
++	master = svc_i3c_master_alloc(dev);
++	if (!master)
++		return -ENOMEM;
++
++	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
++	if (!priv)
++		return -ENOMEM;
++
++	master->drvdata = of_device_get_match_data(dev);
++	if (!master->drvdata)
++		return -EINVAL;
++
++	master->regs = devm_platform_ioremap_resource(pdev, 0);
++	if (IS_ERR(master->regs))
++		return PTR_ERR(master->regs);
++
++	master->irq = platform_get_irq(pdev, 0);
++	if (master->irq < 0)
++		return master->irq;
++
++	priv->num_clks = devm_clk_bulk_get_all(dev, &priv->clks);
++	if (priv->num_clks < 0)
++		return dev_err_probe(dev, -EINVAL, "can't get I3C clocks\n");
++
++	for (i = 0; i < priv->num_clks; i++) {
++		if (!strcmp(priv->clks[i].id, "fast_clk"))
++			break;
++	}
++
++	if (i == priv->num_clks)
++		return dev_err_probe(dev, -EINVAL,
++				     "can't get I3C peripheral clock\n");
++
++	if (IS_ERR(priv->clks[i].clk))
++		return PTR_ERR(priv->clks[i].clk);
++
++	ret = clk_bulk_prepare_enable(priv->num_clks, priv->clks);
++	if (ret)
++		return dev_err_probe(dev, ret, "can't enable I3C clocks\n");
++
++	master->dev = dev;
++	master->bsp_priv = priv;
++	master->fclk_rate = clk_get_rate(priv->clks[i].clk);
++	if (!master->fclk_rate) {
++		dev_err(dev, "can't get I3C fast clock rate\n");
++		ret = -EINVAL;
++		goto err_disable_clks;
++	}
++
++	pm_runtime_set_autosuspend_delay(dev, SVC_I3C_PM_TIMEOUT_MS);
++	pm_runtime_use_autosuspend(dev);
++	pm_runtime_get_noresume(dev);
++	pm_runtime_set_active(dev);
++	pm_runtime_enable(dev);
++
++	ret = svc_i3c_master_probe(pdev, master);
++	if (ret)
++		goto rpm_disable;
++
++	platform_set_drvdata(pdev, master);
++	pm_runtime_put_autosuspend(dev);
++
++	return 0;
++
++rpm_disable:
++	pm_runtime_dont_use_autosuspend(dev);
++	pm_runtime_put_noidle(dev);
++	pm_runtime_disable(dev);
++	pm_runtime_set_suspended(dev);
++
++err_disable_clks:
++	clk_bulk_disable_unprepare(priv->num_clks, priv->clks);
++
++	return ret;
++}
++
++static void silvaco_i3c_remove(struct platform_device *pdev)
++{
++	struct svc_i3c_master *master = platform_get_drvdata(pdev);
++
++	svc_i3c_master_remove(master);
++
++	pm_runtime_dont_use_autosuspend(&pdev->dev);
++	pm_runtime_disable(&pdev->dev);
++}
++
++static int __maybe_unused silvaco_i3c_runtime_suspend(struct device *dev)
++{
++	struct svc_i3c_master *master = dev_get_drvdata(dev);
++	struct svc_origin_priv *priv = master->bsp_priv;
++
++	svc_i3c_save_regs(master);
++	clk_bulk_disable_unprepare(priv->num_clks, priv->clks);
++	pinctrl_pm_select_sleep_state(dev);
++
++	return 0;
++}
++
++static int __maybe_unused silvaco_i3c_runtime_resume(struct device *dev)
++{
++	struct svc_i3c_master *master = dev_get_drvdata(dev);
++	struct svc_origin_priv *priv = master->bsp_priv;
++	int ret;
++
++	pinctrl_pm_select_default_state(dev);
++	ret = clk_bulk_prepare_enable(priv->num_clks, priv->clks);
++	if (ret)
++		return ret;
++
++	svc_i3c_restore_regs(master);
++
++	return 0;
++}
++
++static const struct dev_pm_ops silvaco_i3c_pm_ops = {
++	SET_NOIRQ_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
++				      pm_runtime_force_resume)
++	SET_RUNTIME_PM_OPS(silvaco_i3c_runtime_suspend,
++			   silvaco_i3c_runtime_resume, NULL)
++};
++
++static const struct svc_i3c_drvdata npcm845_drvdata = {
++	.quirks = SVC_I3C_QUIRK_FIFO_EMPTY |
++		SVC_I3C_QUIRK_FALSE_SLVSTART |
++		SVC_I3C_QUIRK_DAA_CORRUPT,
++};
++
++static const struct svc_i3c_drvdata svc_default_drvdata = {};
++
++static const struct of_device_id svc_i3c_master_of_match_tbl[] = {
++	{ .compatible = "nuvoton,npcm845-i3c", .data = &npcm845_drvdata },
++	{ .compatible = "silvaco,i3c-master-v1", .data = &svc_default_drvdata },
++	{ /* sentinel */ },
++};
++MODULE_DEVICE_TABLE(of, svc_i3c_master_of_match_tbl);
++
++static struct platform_driver silvaco_i3c_driver = {
++	.probe = silvaco_i3c_probe,
++	.remove = silvaco_i3c_remove,
++	.driver = {
++		.name = "silvaco-i3c-master",
++		.of_match_table = svc_i3c_master_of_match_tbl,
++		.pm = &silvaco_i3c_pm_ops,
++	},
++};
++module_platform_driver(silvaco_i3c_driver);
++
++MODULE_AUTHOR("Conor Culhane <conor.culhane@silvaco.com>");
++MODULE_AUTHOR("Miquel Raynal <miquel.raynal@bootlin.com>");
++MODULE_DESCRIPTION("Silvaco dual-role I3C master driver");
++MODULE_LICENSE("GPL v2");
+
+-- 
+2.42.0
+
+
