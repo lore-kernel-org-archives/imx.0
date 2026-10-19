@@ -1,218 +1,446 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BD2928C009
-	for <imx@lists.linux.dev>; Mon, 19 Oct 2026 07:17:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE33C494812
+	for <imx@lists.linux.dev>; Mon, 19 Oct 2026 07:40:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792394247; cv=none; b=h3IkUP7RsqcZ/9Caf4tyK8mkk7a0UO9RIHq5Mqvom2xzxIO1hS55NOCvocDEMV/8LtzQZnqg8BKlXKpDBFCiukwupRTfj64oJu+FZBr0LkE83WV3Ub2V0370lXlaDt+tXbH6k+leg+kX0F8ucUUstLrkjLJPzAxeeOdd10Bzzto=
+	t=1792395613; cv=none; b=AXAhNKDG1QxWwU3Q1SbvwjTF9rGFXKMA7fpKIKrI97H0yIlPXaLpPNl57tpTFn95HZ+7+fhVejTx76XyhnrprcuFN/saOch71JKzCRu0vkUTnldwxHVKKqDQ0FuW9aZ98zMMLgVys5zxgnOqEpVolfrJXIXCzXj2wMqBQD6O5aI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792394247; c=relaxed/simple;
-	bh=AhNp0XvG4Nx8L5xxMJ/XrWV/WxIKdNlr8/ZaJD8P4RE=;
-	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
-	 Date; b=HLU98/fIfBkPxyBdEPHV7zCif8Lt/OEsaD55cvIWQUDVXgMRjrqnsXrexLX9FkncD8EfFMfd5aGSeljiBnHYS+qV5TpXSMyNRzn4gHmqcfdpi7SGsXk1LsonNtLzlpkLZnErczGr1I1HS/jUvlcfYSB6Ap2r/XvW21TLuYRSUCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z09I1A7C; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792395613; c=relaxed/simple;
+	bh=DT7tWGRorHL45umJe9t2q7qTRzJoJLjHRBL+ufDbIcQ=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=YQhmlbBQum8lW8CfCLpUSa3gRqvyErNTw0dD/m+q8sqWW+hdCjRlmkaEONPdiHbQtI3yoLmGc4i+tlV1g3ZfUP+rSDPYqPJ6rd7bxT5iRGAWCuWizCH8x7Of1xj1auPjIodq4BJ3hnnTmNC43IJ223qRZpw256o9bvTjk2f3ZPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=U/GqW2qm; arc=none smtp.client-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z09I1A7C"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4435B1F000C4;
-	Mon, 19 Oct 2026 07:17:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792394246;
-	bh=2Lw6vJq3Otlg3YwYvyCurIkYqlpAYVZnQt3TD+TtdKw=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Z09I1A7C9UdkRMTXkPp5zN5vjlVTNTH8kWmgQR4FBXbdCcv0nqlRo316rEtt+RA7J
-	 sArn8MhJ/W6xTAzMV7ZTfakxkdNJ4fulY72oQAuDah3tf87Bvc/MUxzx2oMxbVT/Jd
-	 f+BVSL0XraDmKhljhvN7NcQZ+zUZvFW6gHAb+tS3/qNCAz7MW6xNZNdPQhnjH9+Ali
-	 NEVvoA1hII/An6mfgZww38yRxLFHQhz3JyQen6mxlvUuoJbl63b9rWnpnFHvO/REw0
-	 Co/CKcqvnh9qJXMpob312zsAyxrz6cyy6KgqyQmiflt9n7naSTeVeSKhsBRJnPLis7
-	 sIuyYedHdB8uA==
-Message-ID: <sashiko-outbox-176736@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] ASoC: imx-pcm-rpmsg: Flush pending work in hw_free
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Chancel Liu" <chancel.liu@oss.nxp.com>
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20261019-b4-imx-pcm-rpmsg-concurrent-v1-1-c1fb8c33f4db@nxp.com>
-References: <20261019-b4-imx-pcm-rpmsg-concurrent-v1-1-c1fb8c33f4db@nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 19 Oct 2026 07:17:25 +0000
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="U/GqW2qm"
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-48afbd2c386so792391f8f.3
+        for <imx@lists.linux.dev>; Mon, 19 Oct 2026 00:40:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1792395605; x=1793000405; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:in-reply-to:organization
+         :autocrypt:content-language:references:cc:to:subject:reply-to:from
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=M0SUy48Ueh56GzaTiRmwygfsPwqE3Nw6AJaFjvfAhy4=;
+        b=U/GqW2qmSoX5T1Tx9rzTWXu4csB8ARBH1NqhK/v6y1HetoB41Oe8gEi8TUkmapxWFy
+         YkqS1nPlWHLF4DlnlPPZAh3LRia5C5Fb/X5Gwpf3fyDMSFFEYaalNccgfixHm61r5lRN
+         q/OnrPxCvXBdJ+Dih3Oq+obCTEGTw0/2HP0BzBUm/VYQENLKWFQBD9pjK/VsprbjxVG2
+         q8bzgmRijfGRH4AgN9aflzTAvK04gNvSwm4tery7XbIIuQ842K5Iu53z1YVPGpvh1Y3O
+         oPrICQYy1CV5RKueuRHBs8X4tEzje8K2zjVc5oeGL/HqyTAOd46rcK26+ya44C3ZBnBe
+         Y/Hg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792395605; x=1793000405;
+        h=content-transfer-encoding:content-type:in-reply-to:organization
+         :autocrypt:content-language:references:cc:to:subject:reply-to:from
+         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=M0SUy48Ueh56GzaTiRmwygfsPwqE3Nw6AJaFjvfAhy4=;
+        b=zDSlv/imvfoV+qs+Q0NHb+hjy6uhgxaiViT2muiIbjkMBrcRfi1w7qzuDbGWrvO8P0
+         6HhaaPHvwDL8ybH3rNaPUP+LxOWJRMspczpsoVYhNahwSJeU91mXF/s/h4V0Nm9MbdPr
+         cFADF9PMSLS8Z7JvPQYVaflbgXHt+sPSgxlJItOGuuiHU9aigDjLD7967vpiEL7bNz5x
+         zYYr9i//rTINJ2Xf9wVsRILdah1STAmmdSqwHAU+IDuO7IaIm8XNC1RKiAu6aCCrv0Qr
+         QOYvB6XIhnonIxzydBveKBtO4svFNhAm1BJZC6NmMg5V6PG/p2GEdq4sKaLqN/hUlgli
+         PivQ==
+X-Forwarded-Encrypted: i=1; AKwUvBykBS+jLV4KNfiiCv2drmZOWkvjEqo1boQuxMTuVwX0E0wq4wIgByvkLa86GVR2OYqiKMg=@lists.linux.dev
+X-Gm-Message-State: AFq9FYJrxwuBKbMA7g1pNV+b53JMJlzPIQaUZOXNK2Bb30kS4VPLW4j3
+	wTU0vESRbMid5BjMzAKdVA806SdbEumhAaWKVilgwPHuvlTQz/aElklhrV4TZ5HIlDA=
+X-Gm-Gg: AYBFou3yi28BISyGy9fIW49DYZl6IvqTqVvBFkf1Q9IDlM2bJL93iEqWWcJcRH1wNmo
+	Q8nCF5oHZdU1v19hnINYV0LEAVL+h2ElmLDpekBKHli+tdLBiqfD1JFN6bN2wDdUxWEqsFBlJNx
+	QDGD38gTh64OKwAghhsxGqnZu6mqxVl+TkOxN0bncLjYyPICTwCZjq3yj2rPiL25Gv9vHGcz6PX
+	A1MxE+mcx3s7o8vj/6A266uNCN+D1oixTjqnxgOEuDh+/dD9uXwWVoaCZe81Ktzs89LkNmuMnqI
+	Fm1hjaVJMlrt8aq10MxuWumHFUZsyQ1y98V2TnAFi0weUwf3/3FK0Wrgmc8VmX9NCfSlN6km2eC
+	nK2wlAFNppeUyCfgqXYa4RzQQmnJBBQ+4SWM+VAqtTq7lYu4b/XGoJVppvEgJxRIR/+07LLZX5M
+	hq94Ac5WLq+8ElhSP/5W1mvSV6e09X9EsyoU8c21kPXfao4rP32P0Z3jSKZXGkZAqm0BxybPBrm
+	LDcIfW9IckzDOwZ0y2wDZJeXaRBNMlIl3NnQAvSrnSV2jmpf2ABMw==
+X-Received: by 2002:a05:6000:29c6:b0:48b:5e2:52dd with SMTP id ffacd0b85a97d-48e07bbd36emr9726692f8f.11.1792395604385;
+        Mon, 19 Oct 2026 00:40:04 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:106d:1080:6674:33bf:38d6:bc10? ([2a01:e0a:106d:1080:6674:33bf:38d6:bc10])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48dfd4f8bd9sm22298261f8f.35.2026.10.19.00.40.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 19 Oct 2026 00:40:03 -0700 (PDT)
+Message-ID: <98df3ac1-c6ae-4acb-b0ee-ddda92487660@linaro.org>
+Date: Mon, 19 Oct 2026 09:40:03 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+From: Neil Armstrong <neil.armstrong@linaro.org>
+Reply-To: Neil Armstrong <neil.armstrong@linaro.org>
+Subject: Re: [PATCH 3/3] i3c: master: svc: Add Amlogic A9 glue layer
+To: junyi.zhao@amlogic.com, Alexandre Belloni
+ <alexandre.belloni@bootlin.com>, Frank Li <Frank.Li@nxp.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Kevin Hilman <khilman@baylibre.com>,
+ Jerome Brunet <jbrunet@baylibre.com>,
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+ Miquel Raynal <miquel.raynal@bootlin.com>, Kees Cook <kees@kernel.org>,
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc: linux-i3c@lists.infradead.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-amlogic@lists.infradead.org, imx@lists.linux.dev,
+ linux-hardening@vger.kernel.org, xianwei.zhao@amlogic.com,
+ Kelvin.Zhang@amlogic.com
+References: <20261019-a9_i3c-v1-0-329d819d621f@amlogic.com>
+ <20261019-a9_i3c-v1-3-329d819d621f@amlogic.com>
+Content-Language: en-US, fr
+Autocrypt: addr=neil.armstrong@linaro.org; keydata=
+ xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
+ GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
+ BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
+ qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
+ 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
+ AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
+ OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
+ Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
+ YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
+ GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
+ UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
+ GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
+ yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
+ QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
+ SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
+ 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
+ Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
+ oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
+ M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
+ 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
+ KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
+ 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
+ QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
+Organization: Linaro
+In-Reply-To: <20261019-a9_i3c-v1-3-329d819d621f@amlogic.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [High] ASoC: imx-pcm-rpmsg: unstopped timer in imx_rpmsg_pcm_hw_free() ra=
-ces with hw_free and close
-- [Medium] ASoC: imx-pcm-rpmsg: missing .sync_stop races TERMINATE work wit=
-h hw_params
---
-
-commit 9ebe6dce779f3a2f344611c3f847f58528684b1b
-Author: Chancel Liu <chancel.liu@nxp.com>
-
-ASoC: imx-pcm-rpmsg: Flush pending work in hw_free
-
-This commit moves the flush_workqueue() call from imx_rpmsg_pcm_close() into
-a new imx_rpmsg_pcm_hw_free() component callback so that queued TERMINATE
-work completes before the DAI hw_free() gates the shared audio clock.
-
-> diff --git a/sound/soc/fsl/imx-pcm-rpmsg.c b/sound/soc/fsl/imx-pcm-rpmsg.c
-> index 85b7c929a28a4..6a0174d6c78df 100644
-> --- a/sound/soc/fsl/imx-pcm-rpmsg.c
-> +++ b/sound/soc/fsl/imx-pcm-rpmsg.c
-> @@ -178,6 +178,16 @@ static int imx_rpmsg_pcm_hw_params(struct snd_soc_co=
-mponent *component,
->  	return 0;
->  }
-> =20
-> +static int imx_rpmsg_pcm_hw_free(struct snd_soc_component *component,
-> +				 struct snd_pcm_substream *substream)
-> +{
-> +	struct rpmsg_info *info =3D dev_get_drvdata(component->dev);
+On 10/19/26 07:34, Junyi Zhao via B4 Relay wrote:
+> From: Junyi Zhao <junyi.zhao@amlogic.com>
+> 
+> Add support for the Amlogic A9 implementation of the Silvaco
+> SVC I3C controller.
+> 
+> The glue layer provides Amlogic-specific operations and resource
+> handling while reusing the common SVC I3C core driver.
+> 
+> Add a corresponding MAINTAINERS entry for the Amlogic I3C
+> controller.
+> 
+> Signed-off-by: Junyi Zhao <junyi.zhao@amlogic.com>
+> ---
+>   MAINTAINERS                          |   6 +
+>   drivers/i3c/master/svc/Kconfig       |   7 +
+>   drivers/i3c/master/svc/Makefile      |   1 +
+>   drivers/i3c/master/svc/i3c-amlogic.c | 250 +++++++++++++++++++++++++++++++++++
+>   4 files changed, 264 insertions(+)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index dffc63af2..478979446 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -1398,6 +1398,12 @@ F:	Documentation/userspace-api/media/v4l/metafmt-c3-isp.rst
+>   F:	drivers/media/platform/amlogic/c3/isp/
+>   F:	include/uapi/linux/media/amlogic/
+>   
+> +AMLOGIC I3C DRIVER
+> +M:	Junyi Zhao <junyi.zhao@amlogic.com>
+> +S:	Maintained
+> +F:	Documentation/devicetree/bindings/i3c/amlogic,i3c-a9.yaml
+> +F:	drivers/i3c/master/svc/i3c-amlogic.c
 > +
-> +	flush_workqueue(info->rpmsg_wq);
+>   AMLOGIC MIPI ADAPTER DRIVER
+>   M:	Keke Li <keke.li@amlogic.com>
+>   L:	linux-media@vger.kernel.org
+> diff --git a/drivers/i3c/master/svc/Kconfig b/drivers/i3c/master/svc/Kconfig
+> index 14fa1e542..df3528bc1 100644
+> --- a/drivers/i3c/master/svc/Kconfig
+> +++ b/drivers/i3c/master/svc/Kconfig
+> @@ -18,4 +18,11 @@ config I3C_SILVACO
+>   	  compatible strings such as "silvaco,i3c-master-v1" and
+>   	  "nuvoton,npcm845-i3c".
+>   
+> +config I3C_AMLOGIC
+> +	tristate "Amlogic I3C support"
+> +	default y
+> +	help
+> +	  This selects the Amlogic SoC glue layer support for
+> +	  the Silvaco device driver. This driver is used for A9, C5 SoCs.
+> +
+>   endif # SVC_I3C
+> diff --git a/drivers/i3c/master/svc/Makefile b/drivers/i3c/master/svc/Makefile
+> index cf18c5da6..695863d1f 100644
+> --- a/drivers/i3c/master/svc/Makefile
+> +++ b/drivers/i3c/master/svc/Makefile
+> @@ -3,3 +3,4 @@
+>   
+>   obj-$(CONFIG_SVC_I3C)	+= i3c-main.o
+>   obj-$(CONFIG_I3C_SILVACO)	+= i3c-silvaco.o
+> +obj-$(CONFIG_I3C_AMLOGIC)	+= i3c-amlogic.o
+> diff --git a/drivers/i3c/master/svc/i3c-amlogic.c b/drivers/i3c/master/svc/i3c-amlogic.c
+> new file mode 100644
+> index 000000000..82300d6ae
+> --- /dev/null
+> +++ b/drivers/i3c/master/svc/i3c-amlogic.c
+> @@ -0,0 +1,250 @@
+> +// SPDX-License-Identifier: (GPL-2.0-only OR MIT)
+> +/*
+> + * Copyright (C) 2026 Amlogic, Inc. All rights reserved
+> + */
+> +#include "i3c-main.h"
+> +#include <linux/math64.h>
+> +
+> +/* Amlogic specific registers */
+> +#define I3C_BG_RD_ADDR			0x200
+> +#define I3C_BG_WR_ADDR			0x204
+> +#define I3C_BG_WR_CTRL			0x208
+> +#define I3C_BG_R_TT_LEN			0x20c
+> +#define I3C_BG_X_CNT			0x210
+> +#define I3C_BUS_MON_CTRL		0x214
+> +#define I3C_BUS_MON_ADDR		0x218
+> +#define I3C_BUS_MON_DATA		0x21c
+> +#define I3C_BUS_MON_DATA_MAK		0x220
+> +#define I3C_CLK_SLOW_DIV_CTRL		0x224
+> +#define I3C_BG_R_WCNT_CLR		0x228
+> +#define I3C_DEBUG_MODIFY		0x22c
+> +
+> +#define I3C_AO_CLK_SLOW_DIV_CTRL	0x300
+> +#define I3C_AO_FCLK_DIV_CTRL		0x304
+> +#define I3C_AO_FCLK_DIV_MASK		GENMASK(7, 0)
+> +#define I3C_AO_FCLK_DIV_EN		BIT(8)
+> +#define I3C_AO_FCLK_EN			BIT(9)
+> +#define I3C_AO_DEBUG_MODIFY		0x308
+> +
+> +#define I3C_DEFAULT_FCLK_RATE		25000000UL
+> +
+> +struct amlogic_i3c_priv {
+> +	int num_clks;
+> +	struct clk_bulk_data *clks;
+> +};
+> +
+> +struct amlogic_i3c_drvdata {
+> +	int (*fclk_rate_init)(struct svc_i3c_master *master,
+> +			      struct clk *fclk, unsigned long rate);
+> +};
+> +
+> +static int default_i3c_fclk_rate_init(struct svc_i3c_master *master,
+> +				      struct clk *fclk, unsigned long rate)
+> +{
+> +	int err;
+> +
+> +	err = clk_set_rate(fclk, rate);
+> +	if (err)
+> +		return dev_err_probe(master->dev, err,
+> +				     "setting fast clock rate failed\n");
 > +
 > +	return 0;
 > +}
 > +
->  static snd_pcm_uframes_t imx_rpmsg_pcm_pointer(struct snd_soc_component =
-*component,
->  					       struct snd_pcm_substream *substream)
->  {
-> @@ -285,9 +295,6 @@ static int imx_rpmsg_pcm_close(struct snd_soc_compone=
-nt *component,
->  	struct rpmsg_info *info =3D dev_get_drvdata(component->dev);
->  	struct rpmsg_msg *msg;
-> =20
-> -	/* Flush work in workqueue to make TX_CLOSE is the last message */
-> -	flush_workqueue(info->rpmsg_wq);
-> -
->  	if (substream->stream =3D=3D SNDRV_PCM_STREAM_PLAYBACK) {
->  		msg =3D &info->msg[TX_CLOSE];
->  		msg->s_msg.header.cmd =3D TX_CLOSE;
+> +static int ao_i3c_fclk_rate_init(struct svc_i3c_master *master,
+> +				 struct clk *fclk, unsigned long rate)
+> +{
+> +	unsigned int div_cnt, reg_val;
+> +	unsigned long fin_freq = clk_get_rate(fclk);
+> +
+> +	if (!fin_freq)
+> +		return dev_err_probe(master->dev, -EINVAL,
+> +				     "can't get I3C fast clock rate\n");
+> +
+> +	div_cnt = div64_u64(fin_freq, rate);
+> +	if (!div_cnt || div_cnt > I3C_AO_FCLK_DIV_MASK)
+> +		return dev_err_probe(master->dev, -EINVAL,
+> +				     "requested fast clock frequency too low\n");
+> +
+> +	reg_val = I3C_AO_FCLK_DIV_EN | I3C_AO_FCLK_EN | (div_cnt - 1);
+> +	writel(reg_val, master->regs + I3C_AO_FCLK_DIV_CTRL);
+> +
+> +	return 0;
+> +}
 
-[Severity: High]
-Can info->stream_timer[substream->stream].timer still fire and queue work to
-info->rpmsg_wq after imx_rpmsg_pcm_hw_free() flushes the workqueue?
+You could also create a clock divider, register it and use a common clk_set_rate()
+for both setups.
 
-On an LPA-enabled stream where rpmsg->force_lpa is set in
-imx_rpmsg_pcm_prepare(), advancing appl_ptr while in SNDRV_PCM_STATE_PREPAR=
-ED
-(for example via write before start_threshold is reached, snd_pcm_forward(),
-or snd_pcm_sync_ptr()) invokes pcm_lib_apply_appl_ptr() -> imx_rpmsg_pcm_ac=
-k(),
-which arms the stream timer:
+Neil
 
-sound/soc/fsl/imx-pcm-rpmsg.c:imx_rpmsg_pcm_ack() {
-	...
-		if ((avail - written_num * period_size) <=3D period_size) {
-			imx_rpmsg_insert_workqueue(substream, msg, info);
-		} else if (rpmsg->force_lpa && !timer_pending(timer)) {
-			int time_msec;
+> +
+> +static int amlogic_i3c_probe(struct platform_device *pdev)
+> +{
+> +	struct device *dev = &pdev->dev;
+> +	const struct amlogic_i3c_drvdata *data;
+> +	struct svc_i3c_master *master;
+> +	struct amlogic_i3c_priv *priv;
+> +	struct clk *fclk;
+> +	int ret, i;
+> +
+> +	master = svc_i3c_master_alloc(dev);
+> +	if (!master)
+> +		return -ENOMEM;
+> +
+> +	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
+> +	if (!priv)
+> +		return -ENOMEM;
+> +
+> +	master->drvdata = of_device_get_match_data(dev);
+> +	if (!master->drvdata)
+> +		return -EINVAL;
+> +
+> +	data = master->drvdata->bsp_data;
+> +	if (!data)
+> +		return -EINVAL;
+> +
+> +	master->regs = devm_platform_ioremap_resource(pdev, 0);
+> +	if (IS_ERR(master->regs))
+> +		return PTR_ERR(master->regs);
+> +
+> +	master->irq = platform_get_irq(pdev, 0);
+> +	if (master->irq < 0)
+> +		return master->irq;
+> +
+> +	priv->num_clks = devm_clk_bulk_get_all(dev, &priv->clks);
+> +	if (priv->num_clks < 0)
+> +		return dev_err_probe(dev, -EINVAL, "can't get I3C clocks\n");
+> +
+> +	for (i = 0; i < priv->num_clks; i++) {
+> +		if (!strcmp(priv->clks[i].id, "fast_clk"))
+> +			break;
+> +	}
+> +
+> +	if (i == priv->num_clks)
+> +		return dev_err_probe(dev, -EINVAL,
+> +				     "can't get I3C peripheral clock\n");
+> +
+> +	if (IS_ERR(priv->clks[i].clk))
+> +		return PTR_ERR(priv->clks[i].clk);
+> +	fclk = priv->clks[i].clk;
+> +
+> +	ret = clk_bulk_prepare_enable(priv->num_clks, priv->clks);
+> +	if (ret)
+> +		return dev_err_probe(dev, ret, "can't enable I3C clocks\n");
+> +
+> +	master->dev = dev;
+> +	master->bsp_priv = priv;
+> +	ret = data->fclk_rate_init(master, fclk, I3C_DEFAULT_FCLK_RATE);
+> +	if (ret)
+> +		goto err_disable_clks;
+> +	master->fclk_rate = I3C_DEFAULT_FCLK_RATE;
+> +
+> +	pm_runtime_set_autosuspend_delay(dev, SVC_I3C_PM_TIMEOUT_MS);
+> +	pm_runtime_use_autosuspend(dev);
+> +	pm_runtime_get_noresume(dev);
+> +	pm_runtime_set_active(dev);
+> +	pm_runtime_enable(dev);
+> +
+> +	ret = svc_i3c_master_probe(pdev, master);
+> +	if (ret)
+> +		goto rpm_disable;
+> +
+> +	platform_set_drvdata(pdev, master);
+> +	pm_runtime_put_autosuspend(dev);
+> +
+> +	return 0;
+> +
+> +rpm_disable:
+> +	pm_runtime_dont_use_autosuspend(dev);
+> +	pm_runtime_put_noidle(dev);
+> +	pm_runtime_disable(dev);
+> +	pm_runtime_set_suspended(dev);
+> +
+> +err_disable_clks:
+> +	clk_bulk_disable_unprepare(priv->num_clks, priv->clks);
+> +
+> +	return ret;
+> +}
+> +
+> +static void amlogic_i3c_remove(struct platform_device *pdev)
+> +{
+> +	struct svc_i3c_master *master = platform_get_drvdata(pdev);
+> +
+> +	svc_i3c_master_remove(master);
+> +
+> +	pm_runtime_dont_use_autosuspend(&pdev->dev);
+> +	pm_runtime_disable(&pdev->dev);
+> +}
+> +
+> +static int __maybe_unused amlogic_i3c_runtime_suspend(struct device *dev)
+> +{
+> +	struct svc_i3c_master *master = dev_get_drvdata(dev);
+> +	struct amlogic_i3c_priv *priv = master->bsp_priv;
+> +
+> +	svc_i3c_save_regs(master);
+> +	clk_bulk_disable_unprepare(priv->num_clks, priv->clks);
+> +	pinctrl_pm_select_sleep_state(dev);
+> +
+> +	return 0;
+> +}
+> +
+> +static int __maybe_unused amlogic_i3c_runtime_resume(struct device *dev)
+> +{
+> +	struct svc_i3c_master *master = dev_get_drvdata(dev);
+> +	struct amlogic_i3c_priv *priv = master->bsp_priv;
+> +	int ret;
+> +
+> +	pinctrl_pm_select_default_state(dev);
+> +	ret = clk_bulk_prepare_enable(priv->num_clks, priv->clks);
+> +	if (ret)
+> +		return ret;
+> +
+> +	svc_i3c_restore_regs(master);
+> +
+> +	return 0;
+> +}
+> +
+> +static const struct dev_pm_ops amlogic_i3c_pm_ops = {
+> +	SET_NOIRQ_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
+> +				      pm_runtime_force_resume)
+> +	SET_RUNTIME_PM_OPS(amlogic_i3c_runtime_suspend,
+> +			   amlogic_i3c_runtime_resume, NULL)
+> +};
+> +
+> +static const struct amlogic_i3c_drvdata amlogic_i3c_data = {
+> +	.fclk_rate_init = default_i3c_fclk_rate_init,
+> +};
+> +
+> +static const struct amlogic_i3c_drvdata amlogic_i3c_ao_data = {
+> +	.fclk_rate_init = ao_i3c_fclk_rate_init,
+> +};
+> +
+> +static const struct svc_i3c_drvdata amlogic_a9_drvdata = {
+> +	.quirks = SVC_I3C_QUIRK_FIFO_EMPTY |
+> +		SVC_I3C_QUIRK_FALSE_SLVSTART |
+> +		SVC_I3C_QUIRK_DAA_CORRUPT,
+> +	.bsp_data = &amlogic_i3c_data,
+> +};
+> +
+> +static const struct svc_i3c_drvdata amlogic_a9_ao_drvdata = {
+> +	.quirks = SVC_I3C_QUIRK_FIFO_EMPTY |
+> +		SVC_I3C_QUIRK_FALSE_SLVSTART |
+> +		SVC_I3C_QUIRK_DAA_CORRUPT,
+> +	.bsp_data = &amlogic_i3c_ao_data,
+> +};
+> +
+> +static const struct of_device_id amlogic_i3c_of_match_tbl[] = {
+> +	{ .compatible = "amlogic,i3c-a9", .data = &amlogic_a9_drvdata },
+> +	{ .compatible = "amlogic,i3c-ao-a9", .data = &amlogic_a9_ao_drvdata },
+> +	{ /* sentinel */ },
+> +};
+> +MODULE_DEVICE_TABLE(of, amlogic_i3c_of_match_tbl);
+> +
+> +static struct platform_driver amlogic_i3c_master = {
+> +	.probe = amlogic_i3c_probe,
+> +	.remove = amlogic_i3c_remove,
+> +	.driver = {
+> +		.name = "amlogic-i3c-master",
+> +		.of_match_table = amlogic_i3c_of_match_tbl,
+> +		.pm = &amlogic_i3c_pm_ops,
+> +	},
+> +};
+> +module_platform_driver(amlogic_i3c_master);
+> +
+> +MODULE_AUTHOR("Junyi Zhao <junyi.zhao@amlogic.com>");
+> +MODULE_DESCRIPTION("Amlogic I3C master driver");
+> +MODULE_LICENSE("GPL");
+> 
 
-			time_msec =3D (int)(runtime->period_size * 1000 / runtime->rate);
-			mod_timer(timer, jiffies + msecs_to_jiffies(time_msec));
-		}
-	...
-}
-
-If the substream is then freed via SNDRV_PCM_IOCTL_HW_FREE or closed via
-snd_pcm_release_substream() without having entered SNDRV_PCM_STATE_RUNNING
-(or if closed from SNDRV_PCM_STATE_SUSPENDED), snd_pcm_do_stop() skips the
-SNDRV_PCM_TRIGGER_STOP trigger because snd_pcm_running(substream) is false:
-
-sound/core/pcm_native.c:snd_pcm_do_stop() {
-	if (substream->runtime->trigger_master =3D=3D substream &&
-	    snd_pcm_running(substream)) {
-		substream->ops->trigger(substream, SNDRV_PCM_TRIGGER_STOP);
-		substream->runtime->stop_operating =3D true;
-	}
-	return 0;
-}
-
-In that case, imx_rpmsg_terminate_all() is never called, so stream_timer
-remains armed across imx_rpmsg_pcm_hw_free(). Even when the stream was
-running, imx_rpmsg_terminate_all() runs in atomic trigger context and only
-calls non-synchronous timer_delete(), which does not wait if
-imx_rpmsg_timer_callback() is already running on another CPU and has not yet
-called imx_rpmsg_insert_workqueue(). In addition, SNDRV_PCM_IOCTL_SYNC_PTR
-can still invoke imx_rpmsg_pcm_ack() after hw_free while rpmsg->force_lpa
-remains set.
-
-Because flush_workqueue() was removed from imx_rpmsg_pcm_close() and
-timer_delete() is only called after info->send_message(msg, info) in
-imx_rpmsg_pcm_close(), any TX_PERIOD_DONE or RX_PERIOD_DONE work queued aft=
-er
-imx_rpmsg_pcm_hw_free() can run concurrently with fsl_rpmsg_hw_free() gating
-rpmsg->mclk and can also be sent after TX_CLOSE or RX_CLOSE.
-
-Should imx_rpmsg_pcm_hw_free() synchronously stop the timer with
-timer_delete_sync() and clear rpmsg->force_lpa before calling
-flush_workqueue(info->rpmsg_wq)?
-
-> @@ -624,6 +631,7 @@ static const struct snd_soc_component_driver imx_rpms=
-g_soc_component =3D {
->  	.open		=3D imx_rpmsg_pcm_open,
->  	.close		=3D imx_rpmsg_pcm_close,
->  	.hw_params	=3D imx_rpmsg_pcm_hw_params,
-> +	.hw_free	=3D imx_rpmsg_pcm_hw_free,
->  	.trigger	=3D imx_rpmsg_pcm_trigger,
->  	.pointer	=3D imx_rpmsg_pcm_pointer,
->  	.ack		=3D imx_rpmsg_pcm_ack,
-
-[Severity: Medium]
-What happens if userspace stops a running stream via SNDRV_PCM_IOCTL_DROP
-(or drain) and then calls SNDRV_PCM_IOCTL_HW_PARAMS or
-SNDRV_PCM_IOCTL_PREPARE without calling hw_free() in between?
-
-When snd_pcm_drop() stops a running stream, imx_rpmsg_pcm_trigger() calls
-imx_rpmsg_terminate_all(), which queues TX_TERMINATE or RX_TERMINATE to
-info->rpmsg_wq and leaves the substream in SNDRV_PCM_STATE_SETUP. When
-snd_pcm_hw_params() or snd_pcm_prepare() is called from SNDRV_PCM_STATE_SET=
-UP,
-ALSA does not call .hw_free; instead it relies on snd_pcm_sync_stop() to wa=
-it
-for asynchronous stop operations:
-
-sound/core/pcm_native.c:snd_pcm_hw_params() {
-	...
-	snd_pcm_sync_stop(substream, true);
-	...
-	if (substream->ops->hw_params !=3D NULL) {
-		err =3D substream->ops->hw_params(substream, params);
-		if (err < 0)
-			goto _error;
-	}
-	...
-}
-
-Because imx_rpmsg_soc_component hooks .hw_free rather than .sync_stop:
-
-1. In snd_pcm_hw_params() -> __soc_pcm_hw_params(), fsl_rpmsg_hw_params()
-re-parents the shared audio clock via clk_set_parent() while TX_TERMINATE or
-RX_TERMINATE work may still be pending or executing in info->rpmsg_wq, and
-imx_rpmsg_pcm_hw_params() synchronously calls info->send_message() for
-TX_HW_PARAM or RX_HW_PARAM, which can overtake the queued TERMINATE message.
-
-2. During system suspend, snd_pcm_suspend_all() triggers
-SNDRV_PCM_TRIGGER_SUSPEND (queueing PAUSE or TERMINATE work to info->rpmsg_=
-wq)
-and calls snd_pcm_sync_stop(substream, false) without calling .hw_free,
-allowing imx_rpmsg_pcm_suspend() to synchronously send TX_SUSPEND or
-RX_SUSPEND before the workqueue is flushed.
-
-3. In do_hw_free(), snd_pcm_sync_stop() runs before soc_pcm_hw_clean(),
-whereas component .hw_free runs only after snd_soc_dai_digital_mute() and
-snd_soc_dapm_stream_stop().
-
-Would hooking .sync_stop in imx_rpmsg_soc_component (or in addition to
-.hw_free) ensure the workqueue is flushed across all stop transitions before
-clock reconfiguration, suspend, or hw_free cleanup?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261019-b4-imx-pcm=
--rpmsg-concurrent-v1-1-c1fb8c33f4db@nxp.com?part=3D1
