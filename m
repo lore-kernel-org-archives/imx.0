@@ -1,95 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.83.36
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792444612;
-	b=dGPfYL8CbHIvkhbJb8dEI6r0Q4E17vXwyOHRt2hQ0k0g4mmbDJ05Z6mCSshwStlOzoZH
-	 EUNU0aDzA97RZ7fb15e24eu5LrAZQiGSgS+Fg2izJsSCvfL7V8b/vprIhM3EXlyebbUup
-	 /wcFfV3qSY5r/4WkYTMfWMo05AG7Fp/t1baGpYGuLa8cK4fjfQdAhqHpL9vdAZMgPY9OZ
-	 WRk7DrdgXUpVLAyjC+1vHxpqXtVCHP7C7iZjmzVF4NKOe2yB2//UQNEVcAyhdcwgbJ2SP
-	 352XSxqtfIVEgIL15dPOj4rrt4V6+eOsP9OOyJR1wcYopwQuTiUCrXVw9D78FhVJrpw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792444612;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:Content-Type:Content-Disposition:
-	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-LD-Processed:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=uKT+pI5SkmJNnPjxvzq8yGKSG+XidkiCglWu8x67nnU=;
-	b=AumBmLsGgq8IDlylg0MXDZhVDd6Qm8fz1pvu2etpbzPVkWsOjca3PEVK0c7/7zEk3rmD
-	 a4FJInlsNt/CCIcVCkzcFqZ/tdgqeFqycK+eE35xHZaCOH0DMTKTpDO4vtEWxR8qTzE+g
-	 ElHyhzieC26JpQH5Jq1gPeM+GJH56+4scI3miHay4NJYScyaUzc+nwO1M/XcJAwb4DcRx
-	 wDWmFtnEbwajGlxUp1Mf3OG0qzzXiicHSpnp3fIeqUkHecdou5gckiOaIyPY0gQp5JGO/
-	 szHK2zTJRtGv7ASo8ctVcni+7hWCWGTFZyWoI15RvnrgBI8vAoIilm0hA4gJN/gDu4Q==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.nxp.com;
-	spf=pass smtp.mailfrom=oss.nxp.com;
-	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=gOVA9R2q;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.83.36
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013036.outbound.protection.outlook.com [52.101.83.36])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.174
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792445528;
+	b=rk9GTHPhfhwDXLypntLsBdONVMHs1ssKgETqOkjQcRAlbQ5Uk42xXOXxEYCzztW3PDpc
+	 VlOMpNwRT/CJzz2sj+ID6KmeDaLcEvHF1Fz8LXtb6pAdATAVKB1FPS3otV4wQDgvlXde2
+	 RXTc8AkoqskK3bTqf5gqpO4u6bw1Ib/fV0i+nXi+WzbtBdJO2XhiEv5WWnp+5arA3mlDO
+	 zpHjXJtImlcCgrBcAli0Q6oZijkkmAj0AFl2MYEbLFzWsJWHPxFfC3f0tBAAZhuo+PxYC
+	 ZtK1UD0mlpyIC7f/LS7Z1yGQkH6BAT7kPiF7lEHasAL24aklG8h/VCf3jAtqzCKNVxg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792445528;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=TuVHoTWOLcCyB9PSRvxtA5wjt2JdJw+LyuZbMuRvoqU=;
+	b=QCHHZcLw6aYdSLaP6G2aWCMqHlx8CKpUZcA8ypTyDIE/kJwMNh0wRHFAHf1F6KoUCsEo
+	 W+Bw6es0o4vXzspOw/Es4YXGg7npUhbvCMusU0m6cZknELpgN192esbM7b8vD8YmsiA3z
+	 Q8KeUhsAuBn22/xgtiDo/YXTixVkcjICRn2wdwmr1farmaHl7QL3RZb7X658Q9FyQ1QfD
+	 s1d+zXwZto2ffZ2iEFv4eVMynEOaFrIFPoNQJnwHVl3ysSXHbTMRp79XnOz2s+w/wL51i
+	 lbvuoWFlQO8698+SWSBu0jqrjoouu9+/q0/ppRV/rhy8AGG2nbu3KjJhcaco+RbhONg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=T5wNMLLS;
+	arc=none smtp.remote-ip=74.125.82.174
+Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC1BE606A319
-	for <imx@lists.linux.dev>; Mon, 19 Oct 2026 21:16:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DC1BE606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 111F0606A329
+	for <imx@lists.linux.dev>; Mon, 19 Oct 2026 21:32:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 111F0606A329
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=gOVA9R2q
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PbF/8WCQLrc8s8H0CppcnWAFqUcPzEvbNyNk/wjLNIdLOTrEokjSaYnyrrAXjfRaGk4aYL2JHrQ9axrNu2Uek6OYs4FSdFqRZ2d3JgTFGpOYrfoiYsZ5/4kxv7Uzcqn3Ei1nAMuz8x5ThMqHFXPpfSTOdHaPFFC09yQ9ET9Mn32P5fvJY/L3t3oVJ4/m/u7762Ddp7bpIDnMd901H3S2Zyy4QpEQi1MrXBGSbCua1ZeZwqF2GCvF+fLVBo0RWpvpVEHQciKqgWUsSMuUnuYnyP12pZpVJOhdGl2jTQnc7gpurTnbZvZHDy07YewZiOPUGxz+ZhZpgf+cUuJfrgHnyw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uKT+pI5SkmJNnPjxvzq8yGKSG+XidkiCglWu8x67nnU=;
- b=yg7o5+osIAENf1JI4OmhO1/OjTW1yr6G/vjCsZo97WoaBeLxBet6+WMaW2IOptj3+ClUr1cl18XRG3FLHHtHb5DRboctoEXosmRL7Hesfms+lfDVqd5dBAqztzR5e837MvS70YQesx1Zpfec70XoT/AHFgW3F+QXxSzT/O9IrDBQK2tahvVWbaO8dg4kwP/JAxiuwfdhKDAxsHnZk6p9MfZxNLmvD/WsqqLASAy6OjNq1cY10Aq8U/1hWoifRNh5T/MBK6Efyf6BMzMl+sGtN3kXl++jA0fhueFgqgpHqBxIxsozc9dsVW/task2nfL8Fd+ihEE0uRoNZgivGosLyA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uKT+pI5SkmJNnPjxvzq8yGKSG+XidkiCglWu8x67nnU=;
- b=gOVA9R2q71pUkNMZswiWAfVhUlUr95G13CLB2q+HNwtHtulUbHcAQST6VKabm2J8sXTjFNXGSEL3S6dQcA1lYRSzDZT4Bco0iRpEyEcqOeZv4eKjzlwn+xvLphsEBWpo60QkhGjU9lwYOnqEY+hFYW55aq5uQ/aI3dAK4LhPnxG9cnW8QNqhfWKQCAK4odnNRiI6OMlOy6G5SQvrFZDpEscrtdU8poyuAsM/Yr7PagiOBtyIKkaCWC0Csig6pN/4z1ZUk45OXZrtH50B04uBFcqW2zlkUlW6X+dXXWQZ+NLaAcdwq5DPGck8tNa+WuvPZcV4t8Rzp9rbJ0ZgXhjmAw==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from MI3PR04MB12438.eurprd04.prod.outlook.com (2603:10a6:290:76::14)
- by AM9PR04MB8779.eurprd04.prod.outlook.com (2603:10a6:20b:40a::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.19; Mon, 19 Oct
- 2026 21:16:45 +0000
-Received: from MI3PR04MB12438.eurprd04.prod.outlook.com
- ([fe80::c715:c32:8bb1:b70b]) by MI3PR04MB12438.eurprd04.prod.outlook.com
- ([fe80::c715:c32:8bb1:b70b%6]) with mapi id 15.21.0522.017; Mon, 19 Oct 2026
- 21:16:45 +0000
-Date: Mon, 19 Oct 2026 16:16:35 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: Nishanth Menon <nm@ti.com>
-Cc: Francesco Dolcini <francesco@dolcini.it>, Frank Li <Frank.Li@nxp.com>,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	linux-kernel@vger.kernel.org, linux-bsp@toradex.com
-Subject: Re: [PATCH] MAINTAINERS: Add entry for Toradex boards
-Message-ID: <ataIs-d7mYhNu_wa@SMW015318>
-References: <20261009064705.10116-1-francesco@dolcini.it>
- <20261019190930.eqev72zc7pkzrc26@mummy>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261019190930.eqev72zc7pkzrc26@mummy>
-X-ClientProxiedBy: CY5PR04CA0015.namprd04.prod.outlook.com
- (2603:10b6:930:1e::9) To MI3PR04MB12438.eurprd04.prod.outlook.com
- (2603:10a6:290:76::14)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=T5wNMLLS
+Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-35cd4e8bdbdso6290358eec.1
+        for <imx@lists.linux.dev>; Mon, 19 Oct 2026 14:32:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792445527; x=1793050327; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=TuVHoTWOLcCyB9PSRvxtA5wjt2JdJw+LyuZbMuRvoqU=;
+        b=T5wNMLLSHxwEnTvBrFhb62LuUUGxLfIDBJ1y5DH9NVLAnU9LlR3egC0iRmpVRmlpLH
+         wo+0aoUUFJEgPQTNpRC+H3GYx/zRCY+GIXLk1/T7hkQhy8C+T9Ko2zzKs7lSJXNUWAJw
+         lNlD2wWYbHjTb7h/AefWuqVZcWUfv9RcQfF6wXvVCj6An/LBwYwatESnZgVcl2MQVdMk
+         6aygKkLWVcRjhtBqN+KnRrxi73WpzyiAuZeKGCChGZr0Rdlx+nqfieo4kOLJzzdTU3Vq
+         jM/fwZ8Z0h69EEA/I5feDx3CPfR+hVM1dBnZqu4x5Q21IS2EI8cMQoWhnSuPY79E3KWV
+         nYFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792445527; x=1793050327;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=TuVHoTWOLcCyB9PSRvxtA5wjt2JdJw+LyuZbMuRvoqU=;
+        b=C+uKOW7AxSpDY4BLBoh3k2Zlw5MMxzvyIjyGtaG3z468J53TNzR71Ncfn6nZuz6Ii8
+         NlsCxCYyWhhgmPSml9LD+tUsU00laZhnPX+jTjC4ABhx8Q6dJUSm74L348sYa51lDfEj
+         9O/8Z3q2eptpIQ3PhuJR83LR7V2IgvhRHbQTmsDPUq2ZO6FgEn54vQaoGf8x0b86awND
+         K/q2FnH6EkKm1odCMroNwQCm9eBs5S7N6Cav/bib7E2f5XO/R89tIsY5uY/fP8Yx1RiR
+         iLcjTQb8DAXwJ/+AXC7GjC8epxEJY+bjozUQVPO4os0vkSg6CNJRl2S5zPI713o2FzrN
+         jMuA==
+X-Forwarded-Encrypted: i=1; AKwUvBx5/h91ViTC7EIobqnk8BZS1qgj5eGwjhjwewopjU3wxnPTEDFMzmfxnrSVLPQNrQ7QxDs=@lists.linux.dev
+X-Gm-Message-State: AFq9FYJB0K3pfYdNUD+mmT6byvP7ac203dpr4tctxYSuc7fab+cwowYc
+	+Nta24mAE6P+uBzwl2qlQbmxvd7WPnIkGOmBIXAra8X1U5PrfJ5Q+6ZP
+X-Gm-Gg: AYBFou2yGdH46uf1oIZ96q+7I1wmOQe81GMcTKfUDmmpIIxzZAhlpw+9MtjyDMIFKfC
+	/V/xctplnzGQaO6jtg7A0GLMn503MT5S1q511y5XqjDMflehm6QgC3JlAFMu5MYte8cfZzWly75
+	s2Bcsrvyn0Ip80WtVok+oBCr/tWmA2ggQ7YptrOgM5GsJo0DPfEtCrk/UxiNwcxzgeicSV5lh+U
+	ctCYJHrh/onGv2tcPnWkr9M1zvhEK+8g2zmEAuXNAnOJuqpfjrolKkPmH/TQAPvW5wtqdrqBe5h
+	lLOKqorkAYKQ3ueBzfuikZfRisceYUv2hH+gadmp24iMBlBBOuUkPLyv3KZPMR0b3nby7q6CTbh
+	NCFVvnd3TAApYMNKR48wZJ4rZa+fP+d8przo3wGZB+JJRYY/mrbzE+mmeVV1pQOMEfUR3yIjSCL
+	Y/PG57XNXzhBOjCdmDLLkgyTtw2ZozDYmR0R84sN+DCIbjaK7BVR1IXAdD3+zX5NE0x67jCYmQ+
+	rNhl9MmNEvUmYdO+Rr0QpJ/LWhaKSfGngRhrQTF
+X-Received: by 2002:a05:693c:87d9:20b0:365:b147:b458 with SMTP id 5a478bee46e88-365b147b492mr1344116eec.3.1792445527063;
+        Mon, 19 Oct 2026 14:32:07 -0700 (PDT)
+Received: from google.com ([2a00:79e0:2ebe:8:7c21:7991:4e59:de42])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36082a7b33bsm63920435eec.24.2026.10.19.14.32.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Oct 2026 14:32:05 -0700 (PDT)
+Date: Mon, 19 Oct 2026 14:32:02 -0700
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: Frank.Li@oss.nxp.com
+Cc: Support Opensource <support.opensource@diasemi.com>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Biju Das <biju.das.jz@bp.renesas.com>, 
+	"open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)..." <linux-input@vger.kernel.org>, 
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev, 
+	Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH v2 1/1] dt-bindings: input: dlg,da9062-onkey: Allow
+ wakeup-source property
+Message-ID: <ataMRZc7a0y6IUnG@google.com>
+References: <20261012210054.2848389-1-Frank.Li@oss.nxp.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -99,128 +100,20 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|AM9PR04MB8779:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9baf898b-0054-4607-681c-08df2e264728
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|23010399003|376014|19092799006|56012099006|4143699003|11063799006|261009223027099003|10067099003|18002099003|22082099003|3023799007;
-X-Microsoft-Antispam-Message-Info:
-	TQ6tbyIJQuW07HsJlZODUOCJqGDyIYSXfaOxv33Mf4rQ5JAsnb0UUYiXHYW9YJfjeL64EHkxfHMDCP4LccCC3Q1u6qgg/7tpsGY8/FRiG3yZUfVHkAFzUJKXJiAK4zUzFAqvAsWYDIXllTjH1sUVnfY3W38eL4mXMU08q4fYZuJnD99GVUVIkYYjwqUlxsDyeD4Bew377qIcxyfE1By1ZhP0djXlJwa2RbPf3hBpB6q3+tSWGgCmRpUKP0f5874EhHU3x8fgTqjo441S0xjX6OpHL9/mX4x+Mkx6rISmGkYTg6EOu2KuEspNFIG0aTj1YkqdN79sPqhV3iC/3jO59lLYszFNgVQHNTbIHmk+bi0ZnUDi4tLJoVTK3SsJ7SE1apUa1jj2YltBQwxzKXaDeT6CQJ0kRtK2mJo1gDAQXkeUkhqbTfWzrE0N858EmmNfjO7lTBO2jM8XM28qECK6i5ZlnrKI0SqjDl7ru096fgeiath4LQzYWGJPfLkMfi/6GpGl0oVhbUZuVwxW1GgDWk+4UouP5MhWdeV4ZEiHZzXyduTUabVM4VWRFqHK3wXy9zlYyekGALHEDDgGpwg1PjMoekbO6c2dQkm4PtEdrhzxo7eTCWtbGDkXGqKvzcxX/KlRwm4JjutTxmfDbcd7zbAYYeaEThBXnUFkQmUjWBQ=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(376014)(19092799006)(56012099006)(4143699003)(11063799006)(261009223027099003)(10067099003)(18002099003)(22082099003)(3023799007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Gti/B08xX4pq57RVrVCqGUpgSeUV2RbX7TlKXzK2JV4pMwF0Uc//FPrgJf6F?=
- =?us-ascii?Q?FqWArn7KaUtPhCKi9nwUc+4lwcA3FKQFfFIJw0DddEr1/u2bCRYskD4bjkUd?=
- =?us-ascii?Q?Uc/l7TjJs+WMb85H7fmjWsx6VDa8Y+Ql9chwQ/lYIIVOh8TTRSmmQ49SbzRa?=
- =?us-ascii?Q?Y07hxw5aG1Dz2BdktvtpeI0jgcGO5obBwGfR+MeLBKL6dzsM1rcCBmYgj4Oc?=
- =?us-ascii?Q?QH8y4Dw0zFYcmUoSXXV19ENc2e1weEXA09kBE1/dC8AzysOsbqlay2cKV6Bt?=
- =?us-ascii?Q?5gGG3QKvr9BIlTKNl9NWGDpy2e9jdZbEp8jtcg3mavUt4N3g/bTJTKkqmsdr?=
- =?us-ascii?Q?jPXKUSXpcd7Ymmu8GxXrNhdVFzhNimP1IJl7MLTYDOgpRHnLzOgH4rKb//Vp?=
- =?us-ascii?Q?q2drd1CEFDNEwf4ZAVnS9YqSzioswTvVWH8XqCatNep/tmoLpXkBZ8UDvIZU?=
- =?us-ascii?Q?ZdlmD9E3YRY5yC97Cx3sO0NI/HWxXoWnfmVYG13QFM5KsAt5RJTwD6uTxbvL?=
- =?us-ascii?Q?ptkJmwDVP2ehQJJpJL8Xia0bi3t8Byxbb2TQQV8QIRWJqvpcL1Yl27yu0E/p?=
- =?us-ascii?Q?9dvjnTZR4rl5hWa3dxUJzQ+rMwQHsFTVsTVKyK3d9sHpLQd1/fpPQKifm87K?=
- =?us-ascii?Q?FcnRXk8pHQPe/fmWvXqUzGoSxgQNxCicmAK89uNxyjhnRwfCreta6kwUp2wG?=
- =?us-ascii?Q?QcyjdWXxzql+DVBaUXgHQKVbnmiCFWI/I51yzgU6eP6DnlBfAzBFUn0hl2Fa?=
- =?us-ascii?Q?c7vkkyynPsSgwK5vTOZGRchZDwItta7PuZ8ftEXWBfKG/yQhqyO1Cm164QRG?=
- =?us-ascii?Q?afdjOH/344xJj5U1OCZ+lkrvRR6JCUwUUKDLa/g2RSOUTtDO+ALeCzsymn7R?=
- =?us-ascii?Q?iKLiRFyX7REN7oJBcpTD07OnrPHeKvNAL5Q+M5O5Xzp28/EjvkqxC+GubWOv?=
- =?us-ascii?Q?/tST1kGghkGOzqnni7fxuw8ESZlyXPpk1m6oWZlaVsQqNiXG3VxRito/njsM?=
- =?us-ascii?Q?BL4NvWJY0CPrmec7zDU59YSdw3Qs2ADh01e/7mMxT1S/vfkKiWcUCCyeI/rj?=
- =?us-ascii?Q?ll6WBHie+s0imagW3tF6uzzUGCv6oN8M+lQBLo40nZQKE86e1iGx80igPvnn?=
- =?us-ascii?Q?fvxcuMdsWlMTinusXTGxy6n4Nj9xx3rftXlW9l/q9DQVSPlNi98TYXjt+WCD?=
- =?us-ascii?Q?p2LtGdubDh4kzGJ48+tJ47DPQAlrZtY5/PETE16GnRx8qnwyDTWWARxz/Kkk?=
- =?us-ascii?Q?5fz88jnxs1gjTx5rgAVDWT4U6XgwbamoU2f9HiKD+gTaRyifG1qbwkLN91hX?=
- =?us-ascii?Q?cg1LrF+EyLw3Adjy7UMRKoh3idsLp1qdZS9VqPY8ak11Btto0H/nAQEU7wHA?=
- =?us-ascii?Q?6cyIpV55AX0Jo1pzHhLqKO8q+tFGer6x15aenzz0OQgjAKoMCwtsMfnFK/7O?=
- =?us-ascii?Q?7ulSPlF0Lajf1X9iqt56YpMw6qLZ9J33RAzo1ar49HPtLJQS2Icc4x7rMinb?=
- =?us-ascii?Q?CwnmPVFSM+4G0Jq4Ugvo5cLC6/J7EDke2BLBUX5fDeMCLLkgY4P2CPQX9WSh?=
- =?us-ascii?Q?QpS0qgr4LtKWYjIJLUfGNcRnKZlyunQPM6mbKd5dzS2D0zumCOH1B1iIOQXn?=
- =?us-ascii?Q?obrxTp9psY9qkWqtXfxBdy7iqIRoKAYaJnpHeNh+VW2fTORxPtOpaXIbZvlx?=
- =?us-ascii?Q?5IuOBcHt24J2+/eUpDLXd4yA+9IWMqB4TEaoDSbQPLWXXA3KE9BmMZGHEiox?=
- =?us-ascii?Q?0ekTSkfoaZEPfynSna1BWIzZJe3yJ8W71QIktreLI5OQN3lWyjAr?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9baf898b-0054-4607-681c-08df2e264728
-X-MS-Exchange-CrossTenant-AuthSource: MI3PR04MB12438.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Oct 2026 21:16:44.9403
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: LwqMy90UaBOZXXiIPG5Uu7gYJXwveGGGNjhplKgf8YNW80oVUuDIBoNzRRFHlOO4Nh7tJsGRMxx3DDr5cSrE0dcKcYpwYTyoBYcDHvuZE1W5Jv58DKiwk3y1A4tJ1qCn
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8779
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261012210054.2848389-1-Frank.Li@oss.nxp.com>
 
-On Mon, Oct 19, 2026 at 02:09:30PM -0500, Nishanth Menon wrote:
-> On 08:47-20261009, Francesco Dolcini wrote:
-> > From: Francesco Dolcini <francesco.dolcini@toradex.com>
-> >
-> > Add a MAINTAINERS entry for Toradex board device trees to ensure
-> > that we are included in patch discussions and can provide reviews
-> > and feedback on proposed changes.
-> >
-> > Toradex has been developing and supporting its System on Modules and
-> > carrier boards for many years, including their Linux mainline support.
-> >
-> > As the hardware vendor, Toradex has access to schematics, bills of
-> > materials and other internal hardware documentation, allowing to
-> > review and validate changes against the actual hardware.
-> >
-> > Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-> > ---
-> > Frank, Nishanth, Vignesh: up to you to decide who is picking up this
->
-> Reviewed-by: Nishanth Menon <nm@ti.com>
->
->
-> Frank, if you like to take it via your tree, I have no objections.
+On Mon, Oct 12, 2026 at 05:00:53PM -0400, Frank.Li@oss.nxp.com wrote:
+> From: Frank Li <Frank.Li@nxp.com>
+> 
+> Allow wakeup-source property to fix below CHECK_DTBS warnings:
+>   arch/arm/boot/dts/nxp/imx/imx6dl-emcon-avari.dtb: onkey (dlg,da9063-onkey): 'wakeup-source' does not match any of the regexes: 'pinctrl-[0-9]+'
+> 
+> Acked-by: Rob Herring (Arm) <robh@kernel.org>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-Most part is imx. So I will take it after 7.4-rc1.
+Applied, thank you.
 
-Frank
-
->
-> > ---
-> >  MAINTAINERS | 15 +++++++++++++++
-> >  1 file changed, 15 insertions(+)
-> >
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index 483415e46217..fcc2e429bcd7 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -28088,6 +28088,21 @@ L:	platform-driver-x86@vger.kernel.org
-> >  S:	Maintained
-> >  F:	drivers/platform/x86/topstar-laptop.c
-> >
-> > +TORADEX BOARD SUPPORT
-> > +M:	Francesco Dolcini <francesco.dolcini@toradex.com>
-> > +L:	linux-bsp@toradex.com
-> > +S:	Supported
-> > +F:	arch/arm/boot/dts/nxp/imx/imx*-apalis*
-> > +F:	arch/arm/boot/dts/nxp/imx/imx*-colibri*
-> > +F:	arch/arm64/boot/dts/freescale/imx*-apalis*
-> > +F:	arch/arm64/boot/dts/freescale/imx*-aquila*
-> > +F:	arch/arm64/boot/dts/freescale/imx*-colibri*
-> > +F:	arch/arm64/boot/dts/freescale/imx*-lino*
-> > +F:	arch/arm64/boot/dts/freescale/imx*-toradex-*
-> > +F:	arch/arm64/boot/dts/freescale/imx*-verdin*
-> > +F:	arch/arm64/boot/dts/ti/k3-*-aquila*
-> > +F:	arch/arm64/boot/dts/ti/k3-*-verdin*
-> > +
-> >  TORADEX EMBEDDED CONTROLLER DRIVER
-> >  M:	Emanuele Ghidoli <ghidoliemanuele@gmail.com>
-> >  M:	Francesco Dolcini <francesco@dolcini.it>
-> > --
-> > 2.47.3
-> >
->
-> --
-> Regards,
-> Nishanth Menon
-> Key (0xDDB5849D1736249D) / Fingerprint: F8A2 8693 54EB 8232 17A3  1A34 DDB5 849D 1736 249D
-> https://ti.com/opensource
->
+-- 
+Dmitry
