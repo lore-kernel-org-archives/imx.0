@@ -1,133 +1,222 @@
-Received: from fout-b3-smtp.messagingengine.com (fout-b3-smtp.messagingengine.com [202.12.124.146])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013000.outbound.protection.outlook.com [40.107.162.0])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0580D40EB80
-	for <imx@lists.linux.dev>; Mon, 19 Oct 2026 09:10:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.146
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792401002; cv=none; b=HE25hA6R5ce9xlOQg25X/urS7OlXSrHVv8XsnT0SrSg3JfBm5Lo8MSL+rW1m/T+kDLZvOC0FZJpaP9CYCBygxOs++7UqLxKnAJsnlBeaDaPpu/wK2U2vfuXd6lbhCCsqKD+/I89s199iV7JwxM7sKpYCfjRn5hmcnXgc8UI654U=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792401002; c=relaxed/simple;
-	bh=kj8LYuKMfDF1niDZrCZLI/kPUrlYb1+h/IT5kGPJW8A=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=gdWFT5LsFUPYQJPK5CV635hiRJg3GaoYR5J97q//mYaHaB8lVxtiBr7dIbTom0Bbj3cVEpoYCUcNUyahahcK/C9VM4U0GPO6xG+eFFW6IyJTkuEe4BqYmAgLHeAE8RBbSdL6CHj/h6IaiKwga+ttg+af6M0eIHJ6bC80qHYoFRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=L3f9jObg; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=o0si0j4d; arc=none smtp.client-ip=202.12.124.146
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B2F44973B7
+	for <imx@lists.linux.dev>; Mon, 19 Oct 2026 09:49:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.0
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792403355; cv=fail; b=qTmc719DN6YaFjmeYMNm0RpcxuvIhhbmBf8jRVHD/hDzcRkEGYBsj3zEUgv655CQZFm23hEJ+xvM/3Q2OokbkWUWyX2jTMgGmf43AhPJhOyWMIsRp4RfU9l/4kcosPZPNBkH8PSk6LTwPGDlCjAqHNPzS5uN4RXev6AX3vJaAWE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792403355; c=relaxed/simple;
+	bh=23DHOUAQnaCL0ZhN9hXOAlYLVkQ5Ni31IMPWYwAoz90=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=FSgDl/DmbtYxf/EeXEcyN8LNRgJIUD0MDWWtssy6Efr8tQLElSpR+Ar8zShsVQO4Ju2e3B2vr1FdGheMhn7+nWtoqpTf/CdeydrpFq9s0digqfxWDPzodF6iKmq5q02vNN4sK3D3IRrx9EIs34Qkqan76jTLqJWJWDFOd19z46Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=oTbuLeoB; arc=fail smtp.client-ip=40.107.162.0
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="L3f9jObg";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="o0si0j4d"
-Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
-	by mailfout.stl.internal (Postfix) with ESMTP id 04BB21D00094
-	for <imx@lists.linux.dev>; Mon, 19 Oct 2026 05:09:59 -0400 (EDT)
-Received: from ams-imap-03 ([10.64.2.23])
-  by ams-compute-02.internal (MEProxy); Mon, 19 Oct 2026 05:10:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1792400994;
-	 x=1792487394; bh=VRrkh9ufsavwUzGW+kYYPeIwYlUPaQhcxxu+q1D/UVU=; b=
-	L3f9jObgZ3Y2ryEcxFVe4eWz9ruWVwAZQKXuzDfBLLT3BVXPvhosOkgbOhc/xE6Q
-	QSpqvBn/ezYeqXvlEqKHan+S6ZE4Hfg/xIF7HrO6VdJMjzxR/G5PhRSIXncyeYhP
-	od6NaTE+aV39GtkEMxS2RS5dO9vDOF0obvGpB4N+FzGXWwTHsYVaFjJ73/13w0eL
-	aTSb3UlflJOwfZaxIy5j00kuNQTFesCg3me+7/Hl61Ymj0uHUgxV34D3OzOGmYO5
-	CPGMKB13D0gFqJ/3id7L3pNMvhRQ/UyF7JTKZwFkCi5XXJYK+5K362BiwQOnpYTM
-	jN1pCdZK0W7qYDu96Ef3sg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1792400994; x=
-	1792487394; bh=VRrkh9ufsavwUzGW+kYYPeIwYlUPaQhcxxu+q1D/UVU=; b=o
-	0si0j4d5WZXMd2S/CGg+i7LWgV8QTkJKVbzYEQ3SSu/0odececm5N8pXpU4nd9WL
-	O5L0+xpLqEsDXIHfZy3zfuwVCfxsk0FUHoQcG/cxcWS8MpQj89X8gzG4DbDwjDYc
-	S/QjI/JexPmTIHyEztVQe58MfdG1gFg1w0uvJwkiKHxXbRcIc+fFPtJSJ9++Etvt
-	T0eCsRxmcb+SfU9fyf7xCurbcmi/3innids7AfkEIQUx1jqfa2WqHd7LQwGiTh/U
-	/2usFcToWLtiprR7vdKEcSKWnt7FU73gao0WOljJ+Fnk0O+yT7LZblFW4TcfAuZm
-	fWmIVcw1PfSxIr/LQDrMg==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
-	repo=github.com/dkim2wg/interop; date=2026-10-08; sw=lmtpprox;
-	action=sign d=arndb.de a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1792400994; d=arndb.de;
-	mf=PGFybmRAYXJuZGIuZGU+; rt=PGlteEBsaXN0cy5saW51eC5kZXY+;
-	s=fm1:rsa-sha256:jTmYj6bZkxRvUoflYfpQMJ/YUsdyFXqnMW+P7ZHoJ5oRerh
-	f4U8tT8k+83ANkaBvuTBgYZYgr5cpDElQ7hHlVUM2GmIB3Bb5GgpZx6pdmm25CxZ
-	JjSEIk5WcYezfyepTJcjZakzvmLPQF0y/vk6PhOKFVZpn91azvikfcJI8kB5Ssyc
-	dssAd/LKeZzlJDAMJXQDJL7GPH/iiFjtH8Ul0Jwpj/fQCejSaLvAFTb1E8PxKyj5
-	29DrqyA8kCiNFJr7ZcptbscG3w/4knuk4zkBNmRQX1QwPHpVcFCo6cEyuYtd73/1
-	Yq6ElawkxO9Qo9E/pNYi359NG2NgwsBHpxcQcbA==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
-	repo=github.com/dkim2wg/interop; date=2026-10-08; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:GpfjWsuTedn1PGgZB4VWlRUwOsUX/+Z2h6AxJHYaHpQ=:kj8LYuKMfDF1niDZrCZLI/kPUrlYb1+h/IT5kGPJW8A=;
-X-ME-Sender: <xms:Xt7Vas3ysSKFfiNJy1wYno_yUkPuQEdXrabYyR9YAJwy9aBhPT286g>
-    <xme:Xt7Vah5jcxzIqhvq8DIghfSEWPrG_QFj9PbXEcdjJAwLddOrgJHrWslYGgsluZvgt
-    y8-H8jefJtcTu6FD2CPWr9GdVPVfgkeg2M7yXGVo3I69Hixu2YBJPE>
-X-ME-Proxy-Cause: dmFkZTFYRXPUPX60vo5NxXURpLeDTBW2NZI8Nhg9EestjprxOOBQDyI1yFGxcHxaZcxo8F
-    MJn2vy/9vxZ8o20eiDpdEw5ftI0w1ITcqw5ykPXIOBdMPtdJLJW47TMfiRwM4lk7ZcV9qh
-    zvGtQO9noFJm3b0FJHHoOxqcLFtawzHomex3BgSOg/9OTwGheY5wzKL7BQg4GJFnyCtzxT
-    1CajZ9QN8sQMu9tRvX9eDNhZoRqevBaBn1ivC6bmI3MFnz25M93FUeFiKJlKyzPL2iIAmx
-    k/iYk8h9BVtnzHNACvekCVXHWy3RbL66CyT24pBVKaCNMWkEIM4sTJxkpZ8kg1Awh7b1rw
-    hebVjsrHJEUhKZwpf9TM+E9/iKnmqSq8vzm69uam1kByTTT/HHAZrLcvcCsjddTZtgtLTi
-    V+PYDQETbpZXbil9OwqhkH+gxPBxJRmSUaFsawAHxjC1Iodch2aAzI8yMUX/rbOe4w1+yy
-    dNdJTGcLn5lyBrHS5U+yQx9ICcHlRrm1LHS05NVipPJOKBEfDorfmv7YUBl7sIUD8VzoyX
-    CBBuIJhtchKVXExiDR2tStF3lZwpaB4U3igqg51y37CaXAYppxaGikser/Fy2l7apZ60Np
-    lQpUtKnFODoPj3jKtYmBLZe2+Kvx5wU855/3gXNrTlsXdlmJ+nRr7yaRiIZQ
-X-ME-Proxy: <xmx:YN7VakYRfolVWoq2U4Kc3lbavYH85MB3dAyNB7UvaZUhBGIhJqp41Q>
-    <xmx:YN7VarQRn2XCVfUnO_i8Vs0O-uaURChmxxCsF7vt5XyyBNKOfKJxmg>
-    <xmx:YN7Var9cXWiXeIPHCcUxPBdgYXGeGmE2bHWi-zq2U4RYlY5qdbfpfg>
-    <xmx:YN7VajiCWTDaHDx0Q0CqXJRwJGMthixVQRM4fNhG9TqfDqF_K09CBQ>
-    <xmx:Yt7VatpnyFMnmfC90QxOuCEVgX2unZyDCh70RbGe5e0ToZeFdFPMMhtu>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.ams.internal (Postfix, from userid 501)
-	id 4BEE432A008E; Mon, 19 Oct 2026 05:09:50 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="oTbuLeoB"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=MgqGC7TKcil1MUB7ArJm1YDxYshcjHC1zJ6/wrXXat/CKVFPm9F5Xojn08g0DlxSTkrX0hQhKMqOgNGJpBs05WjMw7JbSgaHjOs3oc0dGV3VVh8GB9QY2KMQKiTgkJniXi8/oUCGsq+pDkV2Xn0S5DCu/xjkPmkj1DqqGWu63Hk26S2DAr6whQKMnS8fSP2BWhFnv9h/0HDsx58ejvRZGXfL5jTGiRQKZ4RoKWUdk4zFd95oFzlzy/B05DKvGe5hwMRSWX/gjqNUbJQI4ENFR/xkMRdVRaq5wdBHo1KjiraOCXwxR/5oKl0SJUJ9JuLxauYsam9/9vvzLVJRdRH3yg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=NQq/slcQaFKKGga24/UH4BgdRBeX//rBZrmtpja4jGQ=;
+ b=NmoWw2sAXlgnB1eq0PvmEJDIjuDaYtohOwMziXkFT4pgKh+MjoISHKM6oT/2m7zals7KzF3ILK1S3KmDNJ0u3nnafmR59Es1pXItC4j6fojwCunzYsmUpSyU2nwhjsaUDB7zN2Wau5S4GS9DdS7WEqLOxe7kcR7wyf8wZPYTjS6soPe/idgTtoGrbvo+MnFj8FHCXK7Wy1evLz5VmL23RcRgNAkhpwoE1SZ1mP8hdca1kS3Q9VOBeSSQLsmN7prY+mx1oZX4j31eCp55dcslRh5TDQhu9G4ZCTJMpo+wz4FfTqvRu3eZx0pRFgg0s3avUP9NErazsQmCex6gQK2zGg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=NQq/slcQaFKKGga24/UH4BgdRBeX//rBZrmtpja4jGQ=;
+ b=oTbuLeoBQ+smFmhZRdPC1J9xvg4Ey9J420mXNfajqs5AAJVKbC0fDZ1OgzswW4L6/giaELrKvaYiXzPIDAmynUwiJ90PviRevsQHl7vUe9DwRm6d7EHqCtgy5TC8Lat3p7c4I56yD+iZtbVSUN2q80U6g/Wi3kegUpiX5DoUTpUMz3CGOSrrtvoQTXVogqGMZO6tghSzjbD3BB94FRjkVA3w+2/1JxmK3f6+rZEVWFFM7n481CJVrnqeAWCzOPojM6voJzkyE1wEHTwobTZT9LuEqy0Oi3WHrE1EHA5Xtm5yi+f3/Rii8w0ZtKsnsiYKYILpMn35cOiU11pUutIyPQ==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from MI9PR04MB350878.eurprd04.prod.outlook.com (2603:10a6:290:c0::7)
+ by MMZPR04MB696060.eurprd04.prod.outlook.com (2603:10a6:190:4c::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.19; Mon, 19 Oct
+ 2026 09:49:09 +0000
+Received: from MI9PR04MB350878.eurprd04.prod.outlook.com
+ ([fe80::8537:1cdd:6c49:6151]) by MI9PR04MB350878.eurprd04.prod.outlook.com
+ ([fe80::8537:1cdd:6c49:6151%6]) with mapi id 15.21.0522.017; Mon, 19 Oct 2026
+ 09:49:09 +0000
+Message-ID: <26f655c8-211b-41a3-bfa4-584bd53a4ca5@nxp.com>
+Date: Mon, 19 Oct 2026 17:50:48 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/5] arm64: dts: imx8qxp: Add display controller
+ subsystem
+To: Frank Li <Frank.li@oss.nxp.com>
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
+ Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Dong Aisheng <aisheng.dong@nxp.com>,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux@ew.tq-group.com
+References: <20261014071657.118378-1-alexander.stein@ew.tq-group.com>
+ <20261014071657.118378-3-alexander.stein@ew.tq-group.com>
+ <atBLglf0gSLS7XkW@raspi> <atD9yeOeHZiKzhZD@SMW015318>
+ <atH5htXNBjFYq6wn@raspi> <atIyHjPaKLlfdv5W@SMW015318>
+From: Liu Ying <victor.liu@nxp.com>
+Content-Language: en-US
+In-Reply-To: <atIyHjPaKLlfdv5W@SMW015318>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SI2PR04CA0018.apcprd04.prod.outlook.com
+ (2603:1096:4:197::9) To MI9PR04MB350878.eurprd04.prod.outlook.com
+ (2603:10a6:290:c0::7)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-ThreadId: A4WN0AQLOakc
-Date: Mon, 19 Oct 2026 11:09:29 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Jiri Slaby" <jirislaby@kernel.org>, "Arnd Bergmann" <arnd@kernel.org>,
- "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
- "Andy Shevchenko" <andriy.shevchenko@linux.intel.com>,
- =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
- "Hugo Villeneuve" <hvilleneuve@dimonoff.com>
-Cc: linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev
-Message-Id: <2ef6314b-989e-4982-8964-1d6fdd123f4e@app.fastmail.com>
-In-Reply-To: <0ec5fddf-f8de-4c82-a42d-6abca1e06091@kernel.org>
-References: <20261016130328.1037616-1-arnd@kernel.org>
- <0ec5fddf-f8de-4c82-a42d-6abca1e06091@kernel.org>
-Subject: Re: [PATCH 1/2] tty: serial: remove hub6 multiport support
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MI9PR04MB350878:EE_|MMZPR04MB696060:EE_
+X-MS-Office365-Filtering-Correlation-Id: 11b962e9-6a06-4ce7-a33b-08df2dc63901
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|1800799024|7416014|19092799006|23010399003|56012099006|10067099003|4143699003|11063799006|5023799004|261009223027099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	AvVdmkCVYslz3yZZRbGJosnr+ZQKYcxK4RtsUlVDXOprsrFR3+pPc+qAdhri0IHc99wAkylwNqsWPBwb63k8GDzjVWZNRSh1J+E54TlZKzryPXkhUpMDq5V4qwb+9t6TqqvOk01bxjB7o3jlB4kPEk6EHiigGGJfxwvv9frfd7GcCvEsiej8j/6HUjXzfoC3SQSmRWbKoJh3zmxE59rnp5AyBYThZ/iSquP6/NzvwaPqdirk2i1Q6PxBGHtjwSrO7uyYNH56ALNKAsC4mAmx4lIyvYYr+VbUiRZCJQ5QR7VkS8omBuDNwHaoY2BnxC5HqorkHvpi0mr61NfaIQjml5xiKnJLzO6fcMAz/f1jobS+5VaBorff5aMXoIL1R33Sep24ztM6tpjANhCdJohokat44bOj8r216ONLF4shzmIAzb29rTGkOUWKJv8nUIjN0CgnFAtN+9mPbfJWi++l0zSaTKOAGQUScnttDlbDAt/8VwF0pfuN4nj0tbsAScTi9kkkyn0gu/cA0UJzHYlbpDqnoyVl3/CNNHhbSbiPGMwi+T8m+9tv641X9pHsq8OpMz2Z2XR9Jq3XzgFwsFYgO1d3bgB5FpJH5vzKFAVQhRBIOngdLpx6t+gM9BSBH6l+fPsRYhfmPVWDZf/3ErmWdvonPWu9peKPK+P/FadpnHA=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI9PR04MB350878.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(7416014)(19092799006)(23010399003)(56012099006)(10067099003)(4143699003)(11063799006)(5023799004)(261009223027099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?bTBxQVZMcStIY2ZJQnhVdXZoZVo1aWlMRUNveVVPSTJ5QjdvODhvZi8wSXZ0?=
+ =?utf-8?B?eUVueGF4RURaOVBFQktuOC9QZm90Q09WVUxDVS9JVGZIY3JoeVBBQ0g2VTNX?=
+ =?utf-8?B?OW1ITkRva1orUWxra1ZlYVJjUStuSVdoODZ2andKOTdjTXlTSWg4dlZrYzND?=
+ =?utf-8?B?VktnS1FuN1ZNWWRIZHJzNUcvSUM3V2Q1YnVtR0ltb0JRTDlTT1dQSWNPandE?=
+ =?utf-8?B?cDNsaWozbnk5d2pkK3VDN3M5RUVZK0c2WkFxY0VPM1lsZXU4anJqbzdTZGpn?=
+ =?utf-8?B?OTR6Q0hBTnlha3g1VWV5TVZRMWM3bGNoWmZCTjg4dGtCUmVacE1zd2NrVVFD?=
+ =?utf-8?B?RHdkb1o3em16Q2FpWkVhMFFxUWc5bjM4bWNrN3YydmtVUURlNVV0VUFOMUh6?=
+ =?utf-8?B?V05kMEhxR3pIOEVqOGE3NUt3WHBBTisxYmZleUpOb09rVFVlVUVZUkNQRUM5?=
+ =?utf-8?B?cnhkNHRsa1k1bkRBaU5sT1BjTStxYmIwUm9zeDBsQ3IyUVQxNGM5VlEzcy8w?=
+ =?utf-8?B?eGVVa20ydjdORTVteXRrTHkwc3h4b01sU1RKOWhLZkRaWCtBQ0pGb2VMbUl0?=
+ =?utf-8?B?YXVGYm5CQm5icGVNRjFkU0dHbSt1OUpTbmREYUhrRGVzdzExbHVSbnA5MUkr?=
+ =?utf-8?B?Q01jdGZqM3NaZzU1ZS9TRG5vR0dWOE5NNmtXK0dvNlFicDB4QlpFU1g2a3E0?=
+ =?utf-8?B?SzE1ZE4xNFRyQXc0N0Z1L09OLzJhekdkVHRRN2xUWFp5bTZLaFdwblR2K0hV?=
+ =?utf-8?B?TTVJSWdLQ0lZYW9zVW5nR0dZaDh5dEFicEJhUlowaE9yOHJvQXJ2Ui9xSlJT?=
+ =?utf-8?B?ZHlGd29SNFVSZWZGa0xhNE1XS0ttN0JQcmZrWkwvVnJQWTB1SitNRmhFd09U?=
+ =?utf-8?B?Y1VEa29EUHBOeFlUeDN0SUZtclVNZ0xOTGRVSy9WSUV0R3VUdlQva0hSbXpM?=
+ =?utf-8?B?QmkrclVtYWRwZGMyQlVJck9IWFpjT3p4SUZKNHowUFRUQzdtK1ZlbnlZQlky?=
+ =?utf-8?B?SnU1WnYyRW55UWxISGxVdWZWWFo0Y0FCb2Zwa3hjaWFRTTducXIvK3FvK3dV?=
+ =?utf-8?B?K3M3NUVwajU2eWRubDE4LzV2eGlEYTZ1N1RWNkJhMExnM29NUDFndE1Pc2xE?=
+ =?utf-8?B?cktlQW5XbHVYZG1tNzd1Z2I1TVQ1eVRNaDlQTjhvUUlhLzZmTS9jODB2TFpZ?=
+ =?utf-8?B?T1FiR1FFYkYvZEtwMmhoRUhIZ1pwNHl6bTRFVFFoV2dCQ2RXQ0pFUHdXbGZI?=
+ =?utf-8?B?WmhBaGF6cGprdmxYVktTUUlMeTEwZ05vNGZLSU1OZE5IWlVDVEI3N2R0cDV6?=
+ =?utf-8?B?ZndDTzVOQUZ1cVVZV0xQaWU4WC9pMUlwR1dlYVdzZ1lkSFpiTWxLa2VRcWdQ?=
+ =?utf-8?B?bVlMZW1sSVFuZFkvaTc0cmhyNWl3WTVXYW8zNytMbWo4WndVYTJydkduR2J2?=
+ =?utf-8?B?WkFSajRwNWlzd21OV1o5Rnp2T0ZDbmR4STBCS05GcU5sK0UyKzI0VExhb3ds?=
+ =?utf-8?B?L3BQb1RtUEhrVXlmdkF3OGlEWGJpbHhnMUptVVJsMzltekV1VGtnNVQwUGN6?=
+ =?utf-8?B?d1k5NWpQOGM3Z3Y3Sk5vZnM2TjNYRmxRd2t3SERIeEViMENjRk1oeStZS2Jv?=
+ =?utf-8?B?R3VkWi9yWXVuQXUxdlhwd3lhL3BZdkkvbjNiOWIxQkpidmxBRUFENHFJNk1h?=
+ =?utf-8?B?MmdBT2M4NnlhdFBpVnRFNk5XNHdoTTk3RFpjSGdobVlwYVJ6NDc2c0J5VnYw?=
+ =?utf-8?B?WlJBVmN2RjlzRTRGU1Uxd1RIdmRZL05DYmp5WmFHeEthV0lSVTJSUkVXLzIw?=
+ =?utf-8?B?M3Z6N2tIVTBCR1dRQUVSdVFxdFc0QmlRL2hnSGFJSlc2NXdIMTh0K2h4Tmxq?=
+ =?utf-8?B?c2R2THhhd2hEb2QvWDBscDhXR1lqbW1xQVBHNEpOT3EwMHdvQnhyMG1zUWdW?=
+ =?utf-8?B?c0tQR0svUWlVZncxaUVOKzdYRko5MjJZdnBoWSs0eEUwRFpRNEg5ci9GSzhq?=
+ =?utf-8?B?VmRPUU0yWUx5ZUp1dGNwSEh2ZGRVU0VQYWgzTWZCU285UEZZNkNqamUzMDYw?=
+ =?utf-8?B?VElnR0lSampTMnEvb05DaHVkUVN3WFBrS2FRbXBBOTM1bW9yL0VudSt0UmdK?=
+ =?utf-8?B?aTRtM1NOcHlWVDA4Ty9vWWNHa3o2cER6Uk05d3VkZ1ZGcVg3SUkycVJxanhX?=
+ =?utf-8?B?K1pibTUxNTgwRmI2WStTbStESFdZcUE5dWdwMmVtMUEybVMyYVFWWFdDUWNF?=
+ =?utf-8?B?dDFGL1E2MXRrYXZ1UkxqS3A2eGRxclN4VzVNNjBXS2htaVdjZVpOWEwxWjl6?=
+ =?utf-8?B?S2NGNElMcDNDVVd1RkpIWTEzQmFPdkNIWEFlaUZ2aVNiakZJZU9TUT09?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 11b962e9-6a06-4ce7-a33b-08df2dc63901
+X-MS-Exchange-CrossTenant-AuthSource: MI9PR04MB350878.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Oct 2026 09:49:09.5586
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Eetc9tT7ZxsZzUPQhGqP7FVfdtmCgqTIzyqZrov/i3bp9D7ti92FEkv/GutdfL4nBu3AzM5SPNQlPBMuhTfNoQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MMZPR04MB696060
 
-On Mon, Oct 19, 2026, at 10:15, Jiri Slaby wrote:
 
->
-> Great, you would have saved me a headache if you had sent these long 
-> time ago ;).
->
-> So I will Ack both, once you repost with the reported issues fixed.
 
-Ok, sent the updated patches as v3 now. I accidentally ended up
-sending them separately instead of a series, I hope that's still ok.
+On Fri, Oct 16, 2026 at 09:18:06AM -0500, Frank Li wrote:
+> On Fri, Oct 16, 2026 at 06:16:38PM +0800, Liu Ying wrote:
+>> On Thu, Oct 15, 2026 at 11:22:33AM -0500, Frank Li wrote:
+>>> On Thu, Oct 15, 2026 at 11:41:54AM +0800, Liu Ying wrote:
+>>>> Hi Alexander,
+>>>>
+>>>> On Wed, Oct 14, 2026 at 09:16:46AM +0200, Alexander Stein wrote:
+>>>>
+>>>> [...]
+>>>>
+>>> ...
+>>>>> +
+>>>>> +			dc0_framegen1: framegen@5618d400 {
+>>>>> +				reg = <0x5618d400 0x98>;
+>>>>> +				clocks = <&dc0_disp_lpcg IMX_LPCG_CLK_1>;
+>>>>> +				interrupt-parent = <&dc0_intc>;
+>>>>> +				interrupts = <28>, <29>, <30>, <31>,
+>>>>> +					     <45>, <46>, <47>, <48>;
+>>>>> +				interrupt-names = "int0", "int1", "int2", "int3",
+>>>>> +						  "primsync_on", "primsync_off",
+>>>>> +						  "secsync_on", "secsync_off";
+>>>>> +			};
+>>>>> +
+>>>>> +			dc0_tcon1: tcon@5618e400 {
+>>>>> +				reg = <0x5618e400 0x588>;
+>>>>> +
+>>>>> +				port {
+>>>>> +					dc0_disp1_dc0_pixel_combiner_ch1: endpoint {
+>>>>> +						remote-endpoint = <&dc0_pixel_combiner_ch1_dc0_disp1>;
+>>>>> +					};
+>>>>> +				};
+>>>>> +			};
+>>>>> +		};
+>>>>> +	};
+>>>>
+>>>> I'm thinking that it would be good to have a complete display controller
+>>>> DT node in the first place, including those prefetch engines attached to
+>>>> fetchunits through the fsl,prg property.
+>>>
+>>> what's current prefetch engines status?
+>>
+>> I need to address quite a few comments on v6.
+>> Some are difficult.
+> 
+> If needn't big change when add prefetch engines, should it be fine add this
+> part firstly? It'd better than nothings.
 
-I have a few more patches to remove serial port drivers (lpc18xx, mps2,
-21285, acorn, sa1100), but those all depend on Arm platform removal
-patches that I had planned for 7.4 and deferred to 7.5. I'll probably
-send the driver removals for 7.6 then unless you prefer them in 7.5.
+Prefetch engine support impacts imx8-dc driver a lot.  I hope we don't need
+to support the case where prefetch engines are bypassed.   Adding this part
+first means that prefetch engines are bypassed in some device trees.
 
-I also have an older series to rework 8250 so the ISA, PnP and
-platform portions can be left out from the core support, this one
-needs to be properly rebased and tested. If anyone else wants to
-give this a shot, I'd be happy to send what I have as a suggestion.
+> 
+> Frank
+> 
+>>
+>>> Is it possible merge at v7.5 ?
+>>
+>> Not sure.
+>>
+>>>
+>>> Frank
+>>>
+>>>>  In this way, display controller
+>>>> driver's life would be easier - all child/grandchild devices are always
+>>>> available.  I'm considering to adding a check to the Linux display controller
+>>>> driver to ensure the availability(at least for critical child/grandchild
+>>>> devices).
+>>>>
+>>>> --
+>>>> Regards,
+>>>> Liu Ying
+>>>>
+>>
+>> --
+>> Regards,
+>> Liu Ying
 
-       Arnd
+-- 
+Regards,
+Liu Ying
