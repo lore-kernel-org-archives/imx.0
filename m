@@ -1,290 +1,215 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D2934848A9;
-	Mon, 19 Oct 2026 05:52:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7D333E5EE7;
+	Mon, 19 Oct 2026 06:00:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792389215; cv=none; b=Wls4/CJyo3X/nMrCnVC1d43RFLjKNSW59dvsx2GhX+X+JtvE8TfjIrEPYlKOEfigSAkxjmrRHG7+6qzaFwv4aI/6gipIvXf3/Ys1nhXXO8d2lfCP2Me5IyOeWPWGFwV2hbp1YIr6U48Jo6iz/fu7j/3i+VzsyZiUmLCQgBl4jOM=
+	t=1792389655; cv=none; b=DCOxXwr3ECVjaYCWaKDCAch1hjj3ETof6+REDwwDRm8BT/3drs6DUKqaxhiMzuzptpGvSiZYanQjVs54bNXlAJS9IODi3nIEvC4Knco53xR4VEVdKOhOu+LgEYLe0cA/3B/6JutTKojGi9rUu0j6DuUtEaANt8y/za+oZY77baE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792389215; c=relaxed/simple;
-	bh=Odbrb2g/txfb1JtG5kb/n0FRk7MR1WMWlgdmU0jJ1X0=;
-	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
-	 Date; b=c5kXSHEhRd1lToyLMyjL8lzfG13jDQT1TSeq301Ku3yhAKEos0sTqqDFGCpE+YeDo5YLcGQVecfrpZyCZkfRkZwgEuzIgMLy6moKWx9Pq443306eXznzUE0u/xmxu+/PLe5PPntp9rNkh0pPaxlUDEjJREMG6F4C6hhwtc3eAdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OFYMXqBa; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792389655; c=relaxed/simple;
+	bh=7quTRFphz4yNtwm02mJ5+bRkGYJqbCC4+RsFZyyoHWs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kglzsg2eBvtLO4BjQQUNMBwfZl1ddPUeX2RjHboUgaSU9rXmE8m5nahV74oUXm7YSKcd9OUvm+0vy/vbNhJ5VCC8APXs7sVVQ/flwspQprQ6/kiVbj85cMHiPRe7ujiIGx/Pa+6DtxTeJw28BwpR7dBRWwvLTqt0x//fnnXmCpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zbpz5q5+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OFYMXqBa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7193A1F000C5;
-	Mon, 19 Oct 2026 05:52:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zbpz5q5+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9A441F000C4;
+	Mon, 19 Oct 2026 06:00:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792389127;
-	bh=rkza5uVRf34cN3QyerCAeal95ev4k8kEa3sElA7jHBE=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=OFYMXqBanYhuS4CFmXxh8oVGz7ZlxTDx99/nflQfpNGVEaiEVutaAGucoj/4rUSL2
-	 rz3hIzTqv1ClPFoQ882yy3Wx7us2HvNYAyOShCcD/kLMDH76WsMRQLYpQEY5MrT0bJ
-	 r9HSi4bTDPBje+MLoTf5XG4fGZmllMDFpLiQk7u9F7Sjqxot97R1iea3ozk4lcZybZ
-	 BUfQEK+TsjcAgmMbIAlLbZ6MURi5H/GuBzyMBSGgapvI3Jkm4WBsb87Wj6bmqYZ5de
-	 vWlvBqNAAkslUahxpbivyXgSpCslTlVD1ZKkF69u2OoTmCg8anOfBfKVfOyxC+YfWI
-	 rwbKUfSsqLf0A==
-Message-ID: <sashiko-outbox-176673@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 3/3] i3c: master: svc: Add Amlogic A9 glue layer
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Junyi Zhao" <junyi.zhao@amlogic.com>
-Cc: linux-i3c@lists.infradead.org, devicetree@vger.kernel.org, linux-amlogic@lists.infradead.org, imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org, neil.armstrong@linaro.org, "Alexandre
- Belloni" <alexandre.belloni@bootlin.com>
-In-Reply-To: <20261019-a9_i3c-v1-3-329d819d621f@amlogic.com>
-References: <20261019-a9_i3c-v1-0-329d819d621f@amlogic.com>
- <20261019-a9_i3c-v1-3-329d819d621f@amlogic.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 19 Oct 2026 05:52:07 +0000
+	s=k20260515; t=1792389651;
+	bh=hL5PQEK/ie9WfNiFzlAjb8P6kM5LwoPPjq6aWCCppCc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Zbpz5q5+6RVkJa2gx9yrULY66JBVQz6RjOFTSlHqlXNAAT3zSgoZlF78ffGQ1xwRb
+	 Iwh/3hF1S2K6upOfbfK7Iha58xCpcuPn5EFFGbd2V1BI/EUwx0jgPsJQ453dzbWLFo
+	 Mcq0MNYYZDwRqfkIhOKSZ7kauhqTFhEsckaoB8uwbDHn+R4IDM5YG5lmJAIMvAs+bS
+	 BqjG4zp/5K+IJ/pjA1u+orH6J1v7EkhXM3Oj+C4oMauYCi5ZtWGYlyN9lOcpZhxs1/
+	 VaDXm4qFEc6gXqip0jrt+9mFkO/HsG/GPk5jpuaZHHv4VwWnxn0ea2zlsFqb+xzjOR
+	 Jw+UtE1+PJzlA==
+Message-ID: <c84d861a-2e28-45b0-80c8-e533864d5e6c@kernel.org>
+Date: Mon, 19 Oct 2026 08:00:42 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/3] dt-bindings: i3c: Add Amlogic A9 I3C controller
+To: junyi.zhao@amlogic.com, Alexandre Belloni
+ <alexandre.belloni@bootlin.com>, Frank Li <Frank.Li@nxp.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+ Miquel Raynal <miquel.raynal@bootlin.com>, Kees Cook <kees@kernel.org>,
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc: linux-i3c@lists.infradead.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-amlogic@lists.infradead.org, imx@lists.linux.dev,
+ linux-hardening@vger.kernel.org, xianwei.zhao@amlogic.com,
+ Kelvin.Zhang@amlogic.com
+References: <20261019-a9_i3c-v1-0-329d819d621f@amlogic.com>
+ <20261019-a9_i3c-v1-2-329d819d621f@amlogic.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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
+In-Reply-To: <20261019-a9_i3c-v1-2-329d819d621f@amlogic.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
-s) to consider:
-- [High] i3c: master: svc: broken probe deferral in amlogic_i3c_probe()
-- [Medium] i3c: master: svc: clock enable leak in amlogic_i3c_remove()
-- [Medium] i3c: master: svc: i3c-amlogic: missing I3C_AO_FCLK_DIV_CTRL rest=
-ore on resume
-- [Medium] i3c: master: svc: incorrect fclk rate and divider math in amlogi=
-c_i3c_probe()
---
+On 19/10/2026 07:34, Junyi Zhao via B4 Relay wrote:
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - amlogic,i3c-a9
+> +      - amlogic,i3c-ao-a9
 
-commit cf70cd7b59395de84561d30a5e3b3862aa275ac4
-Author: Junyi Zhao <junyi.zhao@amlogic.com>
-
-i3c: master: svc: Add Amlogic A9 glue layer
-
-This commit adds an Amlogic A9 glue driver for the Silvaco SVC I3C
-controller, providing Amlogic-specific clock and runtime PM handling while
-reusing the common SVC I3C core driver.
-
-> diff --git a/drivers/i3c/master/svc/i3c-amlogic.c b/drivers/i3c/master/sv=
-c/i3c-amlogic.c
-> new file mode 100644
-> index 0000000000000..82300d6ae5a31
-> --- /dev/null
-> +++ b/drivers/i3c/master/svc/i3c-amlogic.c
-> @@ -0,0 +1,250 @@
-
-[ ... ]
-
-> +static int default_i3c_fclk_rate_init(struct svc_i3c_master *master,
-> +				      struct clk *fclk, unsigned long rate)
-> +{
-> +	int err;
-> +
-> +	err =3D clk_set_rate(fclk, rate);
-> +	if (err)
-> +		return dev_err_probe(master->dev, err,
-> +				     "setting fast clock rate failed\n");
-> +
-> +	return 0;
-> +}
-> +
-> +static int ao_i3c_fclk_rate_init(struct svc_i3c_master *master,
-> +				 struct clk *fclk, unsigned long rate)
-> +{
-> +	unsigned int div_cnt, reg_val;
-> +	unsigned long fin_freq =3D clk_get_rate(fclk);
-> +
-> +	if (!fin_freq)
-> +		return dev_err_probe(master->dev, -EINVAL,
-> +				     "can't get I3C fast clock rate\n");
-> +
-> +	div_cnt =3D div64_u64(fin_freq, rate);
-> +	if (!div_cnt || div_cnt > I3C_AO_FCLK_DIV_MASK)
-> +		return dev_err_probe(master->dev, -EINVAL,
-> +				     "requested fast clock frequency too low\n");
-> +
-> +	reg_val =3D I3C_AO_FCLK_DIV_EN | I3C_AO_FCLK_EN | (div_cnt - 1);
-> +	writel(reg_val, master->regs + I3C_AO_FCLK_DIV_CTRL);
-> +
-> +	return 0;
-> +}
-> +
-> +static int amlogic_i3c_probe(struct platform_device *pdev)
-> +{
-> +	struct device *dev =3D &pdev->dev;
-> +	const struct amlogic_i3c_drvdata *data;
-> +	struct svc_i3c_master *master;
-> +	struct amlogic_i3c_priv *priv;
-> +	struct clk *fclk;
-> +	int ret, i;
-
-[ ... ]
-
-> +	priv->num_clks =3D devm_clk_bulk_get_all(dev, &priv->clks);
-> +	if (priv->num_clks < 0)
-> +		return dev_err_probe(dev, -EINVAL, "can't get I3C clocks\n");
-
-[Severity: High]
-Should amlogic_i3c_probe() pass priv->num_clks instead of -EINVAL to
-dev_err_probe() here?
-
-When devm_clk_bulk_get_all() returns -EPROBE_DEFER because the clock
-controller has not probed yet, passing a hardcoded -EINVAL causes
-dev_err_probe() to log an error and abort probing permanently instead of
-deferring.
+What is ao?
 
 > +
-> +	for (i =3D 0; i < priv->num_clks; i++) {
-> +		if (!strcmp(priv->clks[i].id, "fast_clk"))
-> +			break;
-> +	}
+> +  reg:
+> +    maxItems: 1
 > +
-> +	if (i =3D=3D priv->num_clks)
-> +		return dev_err_probe(dev, -EINVAL,
-> +				     "can't get I3C peripheral clock\n");
+> +  interrupts:
+> +    maxItems: 1
 > +
-> +	if (IS_ERR(priv->clks[i].clk))
-> +		return PTR_ERR(priv->clks[i].clk);
-> +	fclk =3D priv->clks[i].clk;
+> +  clocks:
+> +    minItems: 1
+> +    maxItems: 2
 > +
-> +	ret =3D clk_bulk_prepare_enable(priv->num_clks, priv->clks);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "can't enable I3C clocks\n");
-> +
-> +	master->dev =3D dev;
-> +	master->bsp_priv =3D priv;
-> +	ret =3D data->fclk_rate_init(master, fclk, I3C_DEFAULT_FCLK_RATE);
-> +	if (ret)
-> +		goto err_disable_clks;
-> +	master->fclk_rate =3D I3C_DEFAULT_FCLK_RATE;
+> +  clock-names:
+> +    minItems: 1
+> +    maxItems: 2
 
-[Severity: Medium]
-Can the divider math in ao_i3c_fclk_rate_init() and the hardcoded
-master->fclk_rate assignment in amlogic_i3c_probe() fail probe on a 24 MHz
-input clock or produce an inaccurate fclk_rate?
-
-In ao_i3c_fclk_rate_init(), div_cnt =3D div64_u64(fin_freq, rate) truncates=
- via
-integer division:
-
-1. For the Always-On I3C controller, fast_clk is a9_ao_sys_i3c, which is
-   gated from a9_ao_sys (muxed between the 24 MHz ao_xtal and sys). When
-   fin_freq is 24 MHz, div64_u64(24000000, 25000000) evaluates to 0, causing
-   ao_i3c_fclk_rate_init() to fail probe with -EINVAL.
-
-2. When fin_freq is not an exact multiple of 25 MHz (for example, a
-   166.67 MHz sys clock), div64_u64(fin_freq, rate) truncates down to 6,
-   configuring I3C_AO_FCLK_DIV_CTRL for 27.78 MHz while master->fclk_rate is
-   hardcoded to I3C_DEFAULT_FCLK_RATE (25 MHz). Similarly, in
-   default_i3c_fclk_rate_init(), clk_set_rate() rounds to the closest rate
-   supported by the clock tree rather than guaranteeing 25 MHz. When the
-   actual clock rate exceeds 25 MHz, svc_i3c_master_bus_init() and
-   svc_i3c_master_set_speed() compute ppbaud, odbaud, and i2cbaud assuming
-   25 MHz, which can drive push-pull SCL above the 12.5 MHz MIPI I3C limit.
-
-3. Because (div_cnt - 1) is written into the 8-bit I3C_AO_FCLK_DIV_MASK fie=
-ld
-   (GENMASK(7, 0)), the maximum supported divider is I3C_AO_FCLK_DIV_MASK +=
- 1
-   (256), so checking div_cnt > I3C_AO_FCLK_DIV_MASK is off by one.
-
-Should ao_i3c_fclk_rate_init() round the divider up (for example with
-DIV_ROUND_UP_ULL) and update master->fclk_rate to the actual divided or
-queried clock rate?
+Names go here
 
 > +
-> +	pm_runtime_set_autosuspend_delay(dev, SVC_I3C_PM_TIMEOUT_MS);
-> +	pm_runtime_use_autosuspend(dev);
-> +	pm_runtime_get_noresume(dev);
-> +	pm_runtime_set_active(dev);
-> +	pm_runtime_enable(dev);
-
-[ ... ]
-
-> +static void amlogic_i3c_remove(struct platform_device *pdev)
-> +{
-> +	struct svc_i3c_master *master =3D platform_get_drvdata(pdev);
+> +required:
+> +  - compatible
+> +  - reg
+> +  - interrupts
+> +  - clocks
+> +  - clock-names
 > +
-> +	svc_i3c_master_remove(master);
-> +
-> +	pm_runtime_dont_use_autosuspend(&pdev->dev);
-> +	pm_runtime_disable(&pdev->dev);
-> +}
+> +unevaluatedProperties: false
 
-[Severity: Medium]
-Does amlogic_i3c_remove() leak clock prepare and enable references on
-priv->clks when the device is still active at removal time?
-
-In amlogic_i3c_probe(), clocks are acquired via devm_clk_bulk_get_all() and
-manually enabled with clk_bulk_prepare_enable(priv->num_clks, priv->clks).
-
-During removal, svc_i3c_master_remove() calls
-i3c_master_unregister()->svc_i3c_master_bus_cleanup(), which resumes the
-device via pm_runtime_resume_and_get() and calls
-pm_runtime_put_autosuspend().
-
-If CONFIG_PM is disabled (where runtime PM helpers are no-ops), or if runti=
-me
-suspend is prevented at removal time (for example via sysfs power/control or
-because svc_i3c_master_enable_hotjoin() incremented master->dev's runtime PM
-usage count without a matching put in svc_i3c_master_remove()),
-pm_runtime_dont_use_autosuspend() will not invoke
-amlogic_i3c_runtime_suspend().
-
-Should amlogic_i3c_remove() check !pm_runtime_status_suspended(&pdev->dev)
-after pm_runtime_disable(&pdev->dev) and call clk_bulk_disable_unprepare()
-and pm_runtime_set_suspended(&pdev->dev)?
+This goes before example
 
 > +
-> +static int __maybe_unused amlogic_i3c_runtime_suspend(struct device *dev)
-> +{
-> +	struct svc_i3c_master *master =3D dev_get_drvdata(dev);
-> +	struct amlogic_i3c_priv *priv =3D master->bsp_priv;
+> +if:
+
+And this in allOf, see example schema or other bindings.
+
+> +  properties:
+> +    compatible:
+> +      const: amlogic,i3c-a9
+> +then:
+> +  properties:
+> +    clocks:
+> +      items:
+> +        - description: APB peripheral clock
+> +        - description: I3C fast clock
+> +    clock-names:
+> +      items:
+> +        - const: pclk
+> +        - const: fast_clk
+
+That's just fast
+
+minItems: 1
+
+> +else:
+> +  properties:
+> +    clocks:
+> +      maxItems: 1
+> +    clock-names:
+> +      items:
+> +        - const: fast_clk
+
+maxItems: 1
+
 > +
-> +	svc_i3c_save_regs(master);
-> +	clk_bulk_disable_unprepare(priv->num_clks, priv->clks);
-> +	pinctrl_pm_select_sleep_state(dev);
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
 > +
-> +	return 0;
-> +}
+> +    i3c@3a7000 {
+> +        compatible = "amlogic,i3c-a9";
+> +        reg = <0x3a7000 0x10000>;
+> +        interrupts = <GIC_SPI 153 IRQ_TYPE_LEVEL_HIGH>;
+> +        #address-cells = <3>;
+> +        #size-cells = <0>;
+> +        clocks = <&clkc 15>,
+> +                 <&clkc 16>;
+> +        clock-names = "pclk", "fast_clk";
+> +        status = "disabled";
+> +    };
 > +
-> +static int __maybe_unused amlogic_i3c_runtime_resume(struct device *dev)
-> +{
-> +	struct svc_i3c_master *master =3D dev_get_drvdata(dev);
-> +	struct amlogic_i3c_priv *priv =3D master->bsp_priv;
-> +	int ret;
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
 > +
-> +	pinctrl_pm_select_default_state(dev);
-> +	ret =3D clk_bulk_prepare_enable(priv->num_clks, priv->clks);
-> +	if (ret)
-> +		return ret;
-> +
-> +	svc_i3c_restore_regs(master);
-> +
-> +	return 0;
-> +}
+> +    i3c@22000 {
 
-[Severity: Medium]
-On "amlogic,i3c-ao-a9" devices, can I3C_AO_FCLK_DIV_CTRL lose its
-configuration across suspend and resume?
+Drop, one example is enough.
 
-During probe, ao_i3c_fclk_rate_init() writes I3C_AO_FCLK_DIV_EN,
-I3C_AO_FCLK_EN, and the divider into master->regs + I3C_AO_FCLK_DIV_CTRL.
+> +        compatible = "amlogic,i3c-ao-a9";
+> +        reg = <0x22000 0x10000>;
+> +        interrupts = <GIC_SPI 72 IRQ_TYPE_LEVEL_HIGH>;
+> +        #address-cells = <3>;
+> +        #size-cells = <0>;
+> +        clocks = <&clkc 17>;
+> +        clock-names = "fast_clk";
+> +        status = "disabled";
+> +    };
+> +...
+> 
 
-When suspending and resuming via amlogic_i3c_runtime_suspend() and
-amlogic_i3c_runtime_resume() (which are also used for system sleep via
-pm_runtime_force_suspend() and pm_runtime_force_resume()),
-svc_i3c_save_regs() and svc_i3c_restore_regs() only save and restore
-SVC_I3C_MCONFIG and SVC_I3C_MDYNADDR.
 
-If the controller loses register state during suspend or hibernation,
-wouldn't I3C_AO_FCLK_DIV_CTRL remain unconfigured on resume unless it is
-saved and restored or re-initialized?
-
-[ ... ]
-
-> --=20
-> 2.47.3
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261019-a9_i3c-v1-=
-0-329d819d621f@amlogic.com?part=3D3
+Best regards,
+Krzysztof
