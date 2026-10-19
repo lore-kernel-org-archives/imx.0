@@ -1,248 +1,160 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71B884E73B7;
-	Mon, 19 Oct 2026 11:43:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FCB034750F
+	for <imx@lists.linux.dev>; Mon, 19 Oct 2026 12:01:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792410196; cv=none; b=qFB2kMBAUpKk7mHQMNDti9tDe/rbZtjhvPWiBuTvu9bZqffApspFQaE/heMC2ckfbiwld6rhTssYmAVl9SD5F4mK3b53mlH4wPyW7HyMxt1IrmD8g2jefwO+3mjx0njbpmL7co80efnRbmegbptlpBfx1tKe6DCJY2TYD1l5jWM=
+	t=1792411312; cv=none; b=Wv2BSZiTUScmkvzf9TutirjankbrOW5ln69LxVvOqAv42fPtdVQ5yZF8G2KZ+891xi2Bh+It+SnspaY0jYsQ7W9EqR1PXVlkuGNeww9385OlOuvCXMlhOSJt+ud6RKo1UzOgIDFc7SUijEaKYXBO8nhZFuEKhYDts9aI9iXJ+7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792410196; c=relaxed/simple;
-	bh=+3r96WgvaLZ51mkYfUtue7nreKIDjPHuZYIvt5AP5dQ=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=hlQNNVNgu563/1QobuOvNfWUTZKn3RCD8OVvcUwei9J9mMLuoUBrpZbe0bX4K85/BrKaFvD+uHc4SrfyOodp7WCzBMooW9115BX5kHxnPiVHS9/Bl51xNby8skXVoqbq9+BSisDJVQ8fz6s8HDO0vCvO4ZcJdGMi3ScZZrKwHhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aJADmtGT; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aJADmtGT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DCEF1F000C8;
-	Mon, 19 Oct 2026 11:43:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792410192;
-	bh=meEGW/GS3/XRT3foeZLouvqwfWIt69ajcD2dNzgktWU=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=aJADmtGTCzDVNXW2PAtON20bThik6+ooDjIxlG69gMAO8Oe2N94jox5/vL+e02Ov1
-	 y/DzQV8ofCC841ZTXpafZTJzfTlvmqM2QQJyzssKdKU00ZUrZVbXuZGNXRnB91i05n
-	 MDVrj7KKyWR+RPZ3NrGZtNQ5kIbVn8PgkHlIT0Ozs9cVhijZ27bw0zgagbXrBB7uAf
-	 wBpWoIOmwFCZ45/iik4O3kdrVOvyIEbehNWR2f/V+CYYcDcli2rcTfCu4lNl/TQg75
-	 kZDoIpzjdH5SIchIstgA00odtazP6z5QIUSC+xPjwNgeI4BLZ3EsUiC1h3lWHWHVsp
-	 Z7KD1lAKQ/UCQ==
-Subject: Re: [PATCH v4 net 8/8] net: enetc: ensure enetc_xdp_xmit() calls
- enetc_update_tx_ring_tail()
-From: netdev-bot+sashiko@kernel.org
-To: vladimir.oltean@nxp.com
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, claudiu.manoil@nxp.com, wei.fang@nxp.com,
- xiaoning.wang@nxp.com, ioana.ciornei@nxp.com, zefir.kurtisi@westermo.com,
- zefir.kurtisi@gmail.com, david.laight.linux@gmail.com, netdev@vger.kernel.org,
- imx@lists.linux.dev, linux-kernel@vger.kernel.org
-Date: Mon, 19 Oct 2026 11:43:10 +0000
-Message-ID: <179241019093.3135.3031150554563643199@kernel.org>
-In-Reply-To: <20261015105536.1692348-9-vladimir.oltean@nxp.com>
-References: <20261015105536.1692348-9-vladimir.oltean@nxp.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=arc-20240116; t=1792411312; c=relaxed/simple;
+	bh=JZLWL4f9y/6jv7F0Z8/fJe97Y7HOZcxGPE2Fl3kg3mA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HuMikT0i7fClRzuqKndM93zwfyLp1ST08Ex2lp3EwiZ2J89OuK8WAstYr/8QEfOApaKvQ5TMWEXWBMw8rPQQ1GZqOtSeFtmWVYhSCgW6SvR8yf+Zya/CVYRdHdDZpJzuXtSUWzAf4MvcnyBtG4J3UHRHzZ3ISt5mzOiMDmH4aJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; arc=none smtp.client-ip=92.121.34.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 25FCB200011;
+	Mon, 19 Oct 2026 14:01:42 +0200 (CEST)
+Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 0C5AD200007;
+	Mon, 19 Oct 2026 14:01:42 +0200 (CEST)
+Received: from lsv051416.swis.nl-cdc01.nxp.com (lsv051416.swis.nl-cdc01.nxp.com [10.168.48.122])
+	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id B4878202B7;
+	Mon, 19 Oct 2026 14:01:41 +0200 (CEST)
+Date: Mon, 19 Oct 2026 14:01:41 +0200
+From: Jan Petrous <jan.petrous@oss.nxp.com>
+To: Frank Li <Frank.li@oss.nxp.com>
+Cc: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>,
+	NXP S32 Linux Team <s32@nxp.com>, Vinod Koul <vkoul@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Bogdan Hamciuc <bogdan.hamciuc@nxp.com>,
+	Ionut Vicovan <ionut.vicovan@nxp.com>, Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Chester Lin <chester62515@gmail.com>,
+	Matthias Brugger <mbrugger@suse.com>,
+	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	linux-arm-kernel@lists.infradead.org, linux-phy@lists.infradead.org,
+	netdev@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+	imx@lists.linux.dev, linux-pci@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Vincent Guittot <vincent.guittot@linaro.org>
+Subject: Re: [PATCH RFC v3 03/12] dt-bindings: PCI: nxp,s32g-pcie: Fix SerDes
+ PHY phandle in example
+Message-ID: <atYGpZpI1ecM10kI@lsv051416.swis.nl-cdc01.nxp.com>
+References: <20260919-s32g_serdes-v3-0-9d68868c1e89@oss.nxp.com>
+ <20260919-s32g_serdes-v3-3-9d68868c1e89@oss.nxp.com>
+ <as0qORxP0Roh9ktO@SMW015318>
+ <as5CIYxKJTra4hqM@lsv051416.swis.nl-cdc01.nxp.com>
+ <as-MdloKd-7oJsUU@SMW015318>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <as-MdloKd-7oJsUU@SMW015318>
+X-Virus-Scanned: ClamAV using ClamSMTP
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+On Wed, Oct 14, 2026 at 09:06:46AM -0500, Frank Li wrote:
+> On Tue, Oct 13, 2026 at 04:37:21PM +0200, Jan Petrous wrote:
+> > On Mon, Oct 12, 2026 at 01:43:05PM -0500, Frank Li wrote:
+> > > On Sat, Sep 19, 2026 at 08:54:31AM +0200, Jan Petrous via B4 Relay wrote:
+> > > > [You don't often get email from devnull+jan.petrous.oss.nxp.com@kernel.org. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
+> > > >
+> > > > From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+> > > >
+> > > > The example references the SerDes PHY as
+> > > >
+> > > >   phys = <&serdes0 PHY_TYPE_PCIE 0 0>;
+> > > >
+> > > > i.e. the SerDes node itself with three PHY cells. That does not match
+> > > > the SerDes binding: the per-lane child node is the generic PHY
+> > > > provider and carries '#phy-cells = <0>', while the SerDes node itself
+> > > > has no '#phy-cells' at all.
+> > > >
+> > > > Point the example at the PCIe lane child instead, which is also what
+> > > > the S32G3 board device trees use. The dt-bindings/phy/phy.h include is
+> > > > dropped along with the now-unused PHY_TYPE_PCIE constant.
+> > > >
+> > > > The schema itself is unchanged; 'phys: maxItems: 1' already describes
+> > > > the corrected form.
+> > > >
+> > > > Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+> > > > ---
+> > > >  Documentation/devicetree/bindings/pci/nxp,s32g-pcie.yaml | 3 +--
+> > > >  1 file changed, 1 insertion(+), 2 deletions(-)
+> > > >
+> > > > diff --git a/Documentation/devicetree/bindings/pci/nxp,s32g-pcie.yaml b/Documentation/devicetree/bindings/pci/nxp,s32g-pcie.yaml
+> > > > index 66a050028278..29323e50bd8b 100644
+> > > > --- a/Documentation/devicetree/bindings/pci/nxp,s32g-pcie.yaml
+> > > > +++ b/Documentation/devicetree/bindings/pci/nxp,s32g-pcie.yaml
+> > > > @@ -82,7 +82,6 @@ unevaluatedProperties: false
+> > > >  examples:
+> > > >    - |
+> > > >      #include <dt-bindings/interrupt-controller/arm-gic.h>
+> > > > -    #include <dt-bindings/phy/phy.h>
+> > > >
+> > > >      bus {
+> > > >          #address-cells = <2>;
+> > > > @@ -124,7 +123,7 @@ examples:
+> > > >                  ranges;
+> > > >
+> > > >                  device_type = "pci";
+> > > > -                phys = <&serdes0 PHY_TYPE_PCIE 0 0>;
+> > > > +                phys = <&serdes0_pcie0>;
+> > >
+> > > I don't think it fix somethings. The "serdes0" just a label, point to
+> > > provider, which is not neccsary that "#phy-cells" is 0.
+> > >
+> > > Examples just show need how many phys and don't care about phy provider's
+> > > arguments
+> > >
+> >
+> > The example validates either way, agreed. The three cells are the
+> > '#phy-cells = <3>' of the downstream nxp,s32cc-serdes binding, which
+> > was never posted upstream; patch 1 is the only SerDes binding for S32G
+> > and has no three-cell provider. I would rather have the example match
+> > it.
+> >
+> > The form depends on the outcome of your patch 1 comment, so I will
+> > keep this patch in sync with that. If you prefer the phys line
+> > untouched, I can drop it and keep only the ranges fix v4 adds here.
+> 
+> This patch is not important. suggest drop it.
+>
 
-Critical: 0 · High: 1 (1) · Medium: 0 · Low: 0
+Dropped. The PCIe nodes in the DTS patch carry the 64-bit ranges on
+their own, so nothing else depends on it.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+BR.
+/Jan
 
-- [High] In enetc_xdp_xmit()
-  (drivers/net/ethernet/freescale/enetc/enetc.c), the doorbell condition…
-
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but it comes from
-  the earlier commit in the same series, 'net: enetc: serialize access…
-
---
-
-net: enetc: ensure enetc_xdp_xmit() calls enetc_update_tx_ring_tail()
-
-This commit changes the doorbell condition in enetc_xdp_xmit(). The TX ring
-tail is now updated only when at least one frame was sent and either
-XDP_XMIT_FLUSH was requested or the frames array could not be fully
-enqueued. The redundant xdp_tx_frm_cnt variable is removed in favour of k.
-
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
-> index 218065b9a3777..3003a415418ba 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-
-[ ... ]
-
-> @@ -1928,22 +1928,20 @@ int enetc_xdp_xmit(struct net_device *ndev, int num_frames,
->  						    &xdp_redirect_arr[i]);
->  			break;
->  		}
-> -
-> -		xdp_tx_frm_cnt++;
->  	}
->  
-> -	if (unlikely((flags & XDP_XMIT_FLUSH) || k != xdp_tx_frm_cnt))
-> +	if (unlikely(k && ((flags & XDP_XMIT_FLUSH) || k < num_frames)))
->  		enetc_update_tx_ring_tail(tx_ring);
-
-[Severity: High]
-
-Does the new k && term skip the doorbell when an XDP_XMIT_FLUSH call
-enqueues zero frames?
-
-The old condition rang on every FLUSH call, because k != xdp_tx_frm_cnt was
-always false. XDP_XMIT_FLUSH asks the driver to publish everything queued so
-far. That includes frames from earlier ndo_xdp_xmit() calls made with
-flags == 0.
-
-devmap makes calls like that when the bulk queue fills up:
-
-kernel/bpf/devmap.c:bq_enqueue() {
-    ...
-	if (unlikely(bq->count == DEV_MAP_BULK_SIZE))
-		bq_xmit_all(bq, 0);
-    ...
-}
-
-Only the later __dev_flush() passes XDP_XMIT_FLUSH:
-
-kernel/bpf/devmap.c:__dev_flush() {
-    ...
-		bq_xmit_all(bq, XDP_XMIT_FLUSH);
-    ...
-}
-
-The flags == 0 call advances tx_ring->next_to_use without writing TPIR. If
-the first frame of the next FLUSH batch fails, k is 0 and
-enetc_update_tx_ring_tail() is never called.
-
-The first frame can fail in these cases:
-
-  - enetc_xdp_tx() finds too few free BDs. This is likely right after the
-    previous batch used up the ring.
-  - The head buffer is shorter than ENETC_MIN_BUFF_SIZE.
-  - The frame fails the ENETC_MAX_SKB_FRAGS check.
-  - DMA mapping fails.
-
-On a ring reserved for XDP, the only other TPIR writer is the XDP_TX tail
-update in enetc_clean_rx_ring_xdp(). It rings only when it has enqueued
-XDP_TX frames itself:
-
-	if (xdp_tx_frm_cnt) {
-		spin_lock(&tx_ring->xdp_lock);
-		enetc_update_tx_ring_tail(tx_ring);
-		spin_unlock(&tx_ring->xdp_lock);
-	}
-
-So the stranded BDs stay unpublished until a later call both succeeds and
-flushes. If traffic stops, they never go out.
-
-If they fill the ring, every later enqueue fails on its first frame. TX
-completion cannot reclaim BDs the hardware never saw. Can the XDP TX queue
-then stall permanently, with the xdp_frames and pages still pinned?
-
-Other drivers ring the tail on XDP_XMIT_FLUSH no matter how many frames
-that call sent. For example, i40e_xdp_xmit():
-
-	if (unlikely(flags & XDP_XMIT_FLUSH))
-		i40e_xdp_ring_update_tail(xdp_ring);
-
-Would something like this be closer to the intent?
-
-	if (unlikely((flags & XDP_XMIT_FLUSH) || (k && k < num_frames)))
-
-The commit message says:
-
-    The correct condition on which we should ring the doorbell is when at
-    least one frame was sent, and either the caller required us to flush, or
-    we couldn't enqueue the entire passed array.
-
-The subject says the patch ensures the tail update happens, and the patch
-has a Fixes: tag. Even so, FLUSH calls with k == 0 no longer ring the
-doorbell, and the commit message does not mention this change.
-
->  
->  	enetc_unlock_mdio();
->  
->  out:
-> -	tx_ring->stats.xdp_tx += xdp_tx_frm_cnt;
-> -	tx_ring->stats.xdp_tx_drops += num_frames - xdp_tx_frm_cnt;
-> +	tx_ring->stats.xdp_tx += k;
-> +	tx_ring->stats.xdp_tx_drops += num_frames - k;
->  
->  	spin_unlock(&tx_ring->xdp_lock);
-
-[Severity: High]
-
-This isn't a bug introduced by this patch. It comes from the earlier patch
-in this series, "net: enetc: serialize access to the same TX ring from NAPI
-XDP_TX and ndo_xdp_xmit()".
-
-Can tx_ring->xdp_lock and enetc_mdio_lock deadlock on PREEMPT_RT when the
-ERR050089 workaround (enetc_has_err050089) is enabled?
-
-enetc_xdp_xmit() takes xdp_lock first and then the MDIO read lock:
-
-	spin_lock(&tx_ring->xdp_lock);
-	...
-	enetc_lock_mdio();
-
-enetc_clean_rx_ring_xdp() drops xdp_lock at the out: label but keeps the
-MDIO read lock. It then takes xdp_lock again, so the order is reversed:
-
-out:
-	spin_unlock(&tx_ring->xdp_lock);
-	...
-	if (xdp_tx_frm_cnt) {
-		spin_lock(&tx_ring->xdp_lock);
-		enetc_update_tx_ring_tail(tx_ring);
-		spin_unlock(&tx_ring->xdp_lock);
-	}
-	...
-	enetc_unlock_mdio();
-
-On PREEMPT_RT, rwbase_write_lock() takes the rtmutex and removes
-READER_BIAS. New readers then block behind a pending writer. That would
-allow this cycle:
-
-T1 (RX NAPI, enetc_clean_rx_ring_xdp())
-  holds the MDIO read lock after out:
-
-T3 (_enetc_rd_mdio_reg_wa())
-  write_lock_irqsave(&enetc_mdio_lock, flags);
-  waits for T1 to drop the read lock
-
-T2 (enetc_xdp_xmit() on another CPU, targeting the same XDP TX ring,
-    e.g. after an IRQ affinity change)
-  spin_lock(&tx_ring->xdp_lock);
-  enetc_lock_mdio();          <- blocks behind T3
-
-T1
-  spin_lock(&tx_ring->xdp_lock);  <- blocks behind T2
-
-Non-RT testing would not catch this. On non-RT, qrwlock readers in
-interrupt context ignore a waiting writer, and lockdep treats this
-read_lock as recursive.
-
-Would it help to use one lock order in the RX tail update path? For
-example, the MDIO read lock could be dropped before re-taking xdp_lock and
-then taken again inside it.
-
->  
-> -	return err ?: xdp_tx_frm_cnt;
-> +	return err ?: k;
->  }
->  EXPORT_SYMBOL_GPL(enetc_xdp_xmit);
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261015105536.1692348-1-vladimir.oltean%40nxp.com
