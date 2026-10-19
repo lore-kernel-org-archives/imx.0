@@ -1,176 +1,198 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC9EC4D7D37;
-	Mon, 19 Oct 2026 10:24:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACCD14D7977;
+	Mon, 19 Oct 2026 10:34:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792405477; cv=none; b=LiKnWR9wAEQA13ZolsMYoNPrqTHVAURRUtY4FDnNXT+6+aobkDOkQ4zQoc5F9QMyBSlQo9nnNq+4RezU4HRHSBUFEUnfvF7Et39idUaTvEr5QvPKTNQ5s3dyJi1MrgzKR88gjnoMnKLWeZJVcGyZklMjyFItsUt/xQ3+c1pdN6s=
+	t=1792406050; cv=none; b=aT8gSI2w2TZ669jzIATSHab6TGkaNzKGUcBuQq9wAxg47XJhWbX7fRSdxIJ3J7EvdKtzq82z+NeXI0Kbo+n2dxuZvMgi6ST4ZVDOsIYmLKhV+VB0hXDiVfc/mz/C/ScvPvA8gndYwb61CfG9Nj5Tzzlz2JuOx9YP5WJapegDLRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792405477; c=relaxed/simple;
-	bh=GPMPY+kQ3Cha9/fJLAJ6lUOWS1m2jWJzHBqL0fup13M=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=t/tzFkz5Gj4PJppb7TpJcZZLGscEdlvjfHF4La6jo37BcYdzrrsKz+K41qiyGzP9mVg3xfgXwhATBqS2JI1+jeUZrRctQ3XRWo4sqo90COBYwNUD2t3EFAVHRbOZPUX6E6Wkz8MHJ32BKBXZFiCulua3OxNpQJc0Jo2uz/WnnIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hso6/ckf; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792406050; c=relaxed/simple;
+	bh=PJGT8DxMiD7+pvSBuUnBLIEONlrlsH89GQjqdWvSMfI=;
+	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
+	 Date; b=sWn5aoQksRB0V/hV/T9joOywtLsGkQI841B0QOjKDJzwmpgLmYtxCGW6+r2PBN89g02yVqn+QllJyNMhb4M6IMHPe/EZxntjsQ8ETInwZnktNCejUa8joutNvrEXeA9CcbQL+NoueAEYQg/7Ji6ObEVuZzmP8ekrDFXrURgd0MI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a8HY3GLW; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hso6/ckf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5A9E1F000C4;
-	Mon, 19 Oct 2026 10:24:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a8HY3GLW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 009531F000C4;
+	Mon, 19 Oct 2026 10:34:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792405476;
-	bh=E91DtUbgK5MUC0RbOMDKbAZ4TgBobeht9O9jUXX8XBQ=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=hso6/ckfFMc4C23ZiOqS1niuaRpbrnZ0fMa3OilkBuJrK2DXcBDTZf456t4t0iBTl
-	 pc3k7+rCgoeSiHw0sb/q0QjjZCqnGMIyA7JdqYFxHM8BzfQm65/nUa8ccPKkLSUWNc
-	 vWNxIwWlqSGM1rAmQtBq9ZHH8RQY3JSiMFHatgX0xUR59UZPeh8kH1Lc7NUxnorqG5
-	 DZYhMIlVrzk87wLrKN6WnodcFq9cbEwLYoXCRrWUUUHuPGjbWauGK/dBmKR08L0fRy
-	 bzQrldBsDIcwyjUQyzn1CjAUMgHOaCNAG+uFXfjMgq1JelK10nJYiKe0zIx2iST4tc
-	 txnHyLuFQFcsQ==
-Subject: Re: [PATCH net v4] can: dev: can_fill_info(): don't wake up
- controller if interface is down
-From: netdev-bot+sashiko@kernel.org
-To: chunyuzhiqiang@yinhe.ht
-Cc: netdev@vger.kernel.org, linux-can@vger.kernel.org, mkl@pengutronix.de,
- kernel@pengutronix.de, haibo.chen@oss.nxp.com, shawnguo@kernel.org,
- imx@lists.linux.dev, kuba@kernel.org
-Date: Mon, 19 Oct 2026 10:24:35 +0000
-Message-ID: <179240547538.3135.2010975389384383545@kernel.org>
-In-Reply-To: <20261018101744.93657-1-chunyuzhiqiang@yinhe.ht>
-References: <20261018101744.93657-1-chunyuzhiqiang@yinhe.ht>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20260515; t=1792406047;
+	bh=BxFJg1WeFW7LYxavisv8eBBfuyz6duDUtX3mBa2YhYs=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=a8HY3GLWLkQWLh72816xMNviirN4f0vjbLH2kvDhaKa0n4iULLYjbXftjvW5Kzwos
+	 Yak6w1RKrPXL93g26dgM2oy4X48ak8F5aS9o1SdciNQySjTX8Y471p7hguuPGXNRLd
+	 1Xtdg5jXLKAaebefb2HXaohnqkkvIcxFwfn2J9YcVoCl9rmUXpGPu0e63wSQpgy9FQ
+	 yNntfbEiOCAB2y+x0kqDGjR1FaP26REvYNk0MSwNJ6OFutZuXfKWiVoYRgjg8LObgL
+	 6KVcYiu+bI3xBs7zzvXU9RvIKy1RyTSQD5wCJibID0Ej5jMcW/yf3cZjQbHKlOuhXO
+	 U7YNJTz6BmB8w==
+Message-ID: <sashiko-outbox-176995@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 2/3] drm/bridge: simple-bridge: Support
+ data-enable-active endpoint property
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Leonardo Costa" <leoreis.costa@gmail.com>
+Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org
+In-Reply-To: <20261019-v2-apalis-imx6-enable-vga-v2-2-ef6a3a780472@toradex.com>
+References: <20261019-v2-apalis-imx6-enable-vga-v2-0-ef6a3a780472@toradex.com>
+ <20261019-v2-apalis-imx6-enable-vga-v2-2-ef6a3a780472@toradex.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 19 Oct 2026 10:34:06 +0000
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
-
-Critical: 0 · High: 1 · Medium: 0 · Low: 1
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] The fix is incomplete.
-- [Low] The patch changes netlink uAPI output for every CAN driver that
-  implements do_get_berr_counter: IFLA_CAN_BERR_COUNTER is now left out…
-
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [High] drm/bridge: simple-bridge: missing atomic_check() to propagate DE =
+bus flags
+- [Medium] drm/bridge: simple-bridge: timings devm_kzalloc() lifetime misma=
+tch
 --
 
-can: dev: can_fill_info(): don't wake up controller if interface is down
+commit 17d03fa8dcd99e5bb3af7da622344c856ca2c887
+Author: Leonardo Costa <leonardo.costa@toradex.com>
 
-This adds a netif_running() check to can_get_size() and can_fill_info().
-When the interface is down, do_get_berr_counter() is no longer called and
-IFLA_CAN_BERR_COUNTER is no longer reported. The check used to be in the
-flexcan driver and is now in the CAN core, so it applies to all drivers.
+drm/bridge: simple-bridge: Support data-enable-active endpoint property
 
-> diff --git a/drivers/net/can/dev/netlink.c b/drivers/net/can/dev/netlink.c
-> index 766d455950f55..b958c04d53db6 100644
-> --- a/drivers/net/can/dev/netlink.c
-> +++ b/drivers/net/can/dev/netlink.c
+This commit reads the data-enable-active property from the input endpoint in
+simple_bridge_probe() and allocates a drm_bridge_timings structure to set
+DRM_BUS_FLAG_DE_HIGH or DRM_BUS_FLAG_DE_LOW in input_bus_flags when the bri=
+dge
+does not already define its own timings.
 
-[ ... ]
+> diff --git a/drivers/gpu/drm/bridge/simple-bridge.c b/drivers/gpu/drm/bri=
+dge/simple-bridge.c
+> index 3fba7002322e9..393228bed6e28 100644
+> --- a/drivers/gpu/drm/bridge/simple-bridge.c
+> +++ b/drivers/gpu/drm/bridge/simple-bridge.c
+> @@ -171,6 +171,9 @@ static int simple_bridge_probe(struct platform_device=
+ *pdev)
+>  {
+>  	struct simple_bridge *sbridge;
+>  	struct device_node *remote;
+> +	struct device_node *ep;
+> +	bool de_present;
+> +	u32 de;
+> =20
+>  	sbridge =3D devm_drm_bridge_alloc(&pdev->dev, struct simple_bridge,
+>  					bridge, &simple_bridge_bridge_funcs);
+> @@ -208,10 +211,26 @@ static int simple_bridge_probe(struct platform_devi=
+ce *pdev)
+>  		return dev_err_probe(&pdev->dev, PTR_ERR(sbridge->enable),
+>  				     "Unable to retrieve enable GPIO\n");
+> =20
+> -	/* Register the bridge. */
+>  	sbridge->bridge.of_node =3D pdev->dev.of_node;
+>  	sbridge->bridge.timings =3D sbridge->info->timings;
+> =20
+> +	ep =3D of_graph_get_endpoint_by_regs(pdev->dev.of_node, 0, -1);
+> +	de_present =3D !of_property_read_u32(ep, "data-enable-active", &de);
+> +	of_node_put(ep);
+> +
+> +	if (de_present && !sbridge->bridge.timings) {
+> +		struct drm_bridge_timings *timings;
+> +
+> +		timings =3D devm_kzalloc(&pdev->dev, sizeof(*timings), GFP_KERNEL);
+> +		if (!timings)
+> +			return -ENOMEM;
 
-> @@ -1006,7 +1006,7 @@ static int can_fill_info(struct sk_buff *skb, const struct net_device *dev)
->  	    nla_put(skb, IFLA_CAN_CTRLMODE, sizeof(cm), &cm) ||
->  	    nla_put_u32(skb, IFLA_CAN_RESTART_MS, priv->restart_ms) ||
->  
-> -	    (priv->do_get_berr_counter &&
-> +	    (priv->do_get_berr_counter && netif_running(dev) &&
->  	     !priv->do_get_berr_counter(dev, &bec) &&
->  	     nla_put(skb, IFLA_CAN_BERR_COUNTER, sizeof(bec), &bec)) ||
+[Severity: Medium]
+Can allocating timings with devm_kzalloc() in simple_bridge_probe() cause a
+lifetime mismatch with sbridge->bridge?
+
+sbridge is allocated via devm_drm_bridge_alloc(), which manages the contain=
+er's
+lifetime through sbridge->bridge.refcount and only frees it in
+__drm_bridge_free() after all drm_bridge references are dropped:
+
+drivers/gpu/drm/drm_bridge.c:__drm_bridge_free()
+	if (bridge->funcs->destroy)
+		bridge->funcs->destroy(bridge);
+
+	drm_bridge_put(bridge->next_bridge);
+
+	kfree(bridge->container);
+
+If pdev is unbound while an upstream bridge or encoder still holds a refere=
+nce
+to sbridge->bridge, devres_release_all() will free timings immediately, lea=
+ving
+sbridge->bridge.timings as a dangling pointer that can be dereferenced by
+upstream drivers (for example, in imx8mp_hdmi_pvi_bridge_enable()).
+
+Would embedding struct drm_bridge_timings inside struct simple_bridge (as d=
+one
+in lvds-codec.c and ti-tfp410.c), or pointing to static const
+drm_bridge_timings instances for DRM_BUS_FLAG_DE_HIGH and DRM_BUS_FLAG_DE_L=
+OW,
+avoid this lifetime mismatch?
+
+> +
+> +		timings->input_bus_flags =3D de ? DRM_BUS_FLAG_DE_HIGH :
+> +						DRM_BUS_FLAG_DE_LOW;
+> +		sbridge->bridge.timings =3D timings;
+> +	}
 
 [Severity: High]
-Is this fix complete? Later in the same expression, can_fill_info() calls
-can_tdc_fill_info() for IFLA_CAN_TDC and IFLA_CAN_XL_TDC. That path can
-still read controller registers while the interface is down:
+Will setting only sbridge->bridge.timings->input_bus_flags actually propaga=
+te
+the DE polarity to upstream atomic encoders and bridges?
 
-drivers/net/can/dev/netlink.c:can_tdc_fill_info() {
-    ...
-	if (tdc_is_enabled) {
-		...
-		} else if (dbt_params->do_get_auto_tdcv) {
-			err = dbt_params->do_get_auto_tdcv(dev, &tdcv);
-		}
-    ...
-}
+simple_bridge_bridge_funcs registers atomic state callbacks without an
+.atomic_check callback:
 
-Nothing on this path checks netif_running().
+drivers/gpu/drm/bridge/simple-bridge.c:
+static const struct drm_bridge_funcs simple_bridge_bridge_funcs =3D {
+	.atomic_create_state =3D drm_atomic_helper_bridge_create_state,
+	.atomic_destroy_state =3D drm_atomic_helper_bridge_destroy_state,
+	.atomic_duplicate_state =3D drm_atomic_helper_bridge_duplicate_state,
+	.attach		=3D simple_bridge_attach,
+	.atomic_enable =3D simple_bridge_enable,
+	.atomic_disable =3D simple_bridge_disable,
+};
 
-On Xilinx CAN-FD, xcan_get_auto_tdcv() reads XCAN_SR without taking a
-runtime PM reference. By contrast, xcan_get_berr_counter() calls
-pm_runtime_get_sync() before it reads anything:
+During an atomic modeset, drm_atomic_bridge_chain_check() calls
+drm_atomic_bridge_propagate_bus_flags(), which overwrites
+bridge_state->input_bus_cfg.flags with output_flags from the downstream bri=
+dge
+or connector (0 for a VGA connector) and never checks
+bridge->timings->input_bus_flags:
 
-drivers/net/can/xilinx_can.c:xcan_get_auto_tdcv() {
+drivers/gpu/drm/drm_bridge.c:drm_atomic_bridge_propagate_bus_flags()
+	bridge_state->output_bus_cfg.flags =3D output_flags;
 	...
-	*tdcv = FIELD_GET(XCAN_SR_TDCV_MASK, priv->read_reg(priv, XCAN_SR_OFFSET));
-	...
-}
+	bridge_state->input_bus_cfg.flags =3D output_flags;
 
-After probe, or after xcan_close() calls pm_runtime_put(), the device is
-runtime suspended. At that point xcan_runtime_suspend() has disabled bus_clk
-and can_clk. xcan_close() does not clear ctrlmode, so TDC_AUTO stays set
-after every ifdown.
+Because simple-bridge has a valid drm_bridge_state, upstream bridges and at=
+omic
+encoders such as imx_pd_bridge_atomic_check() in
+drivers/gpu/drm/imx/ipuv3/parallel-display.c read
+next_bridge_state->input_bus_cfg.flags instead of
+next_bridge->timings->input_bus_flags:
 
-TDC_AUTO can also be turned on while the interface is down. For example,
-"ip link set canX type can bitrate ... dbitrate ... fd on" goes through
-can_calc_tdco(), which enables TDC_AUTO when the driver supports it. After
-that, the RTM_NEWLINK notification or an unprivileged "ip -d link show"
-would end up in:
+drivers/gpu/drm/imx/ipuv3/parallel-display.c:imx_pd_bridge_atomic_check()
+	if (next_bridge_state)
+		bus_flags =3D next_bridge_state->input_bus_cfg.flags;
+	else
+		bus_flags =3D di->bus_flags;
 
-can_fill_info()
-  can_tdc_fill_info()
-    xcan_get_auto_tdcv()
-      priv->read_reg(priv, XCAN_SR_OFFSET)
+As a result, bus_flags remains 0 instead of DRM_BUS_FLAG_DE_LOW or
+DRM_BUS_FLAG_DE_HIGH.
 
-and the read happens with the register clock gated. Depending on the SoC,
-this either returns garbage or causes a bus stall or external abort.
-rcar_canfd_get_auto_tdcv() also does a live readl() of cfdsts from this
-path, whatever the interface state.
+Should simple_bridge_bridge_funcs implement an .atomic_check callback that
+copies sbridge->bridge.timings->input_bus_flags into
+bridge_state->input_bus_cfg.flags (similar to tfp410_atomic_check() in
+drivers/gpu/drm/bridge/ti-tfp410.c)?
 
-The commit message says "This fixes a generic logic problem that exists on
-all platforms". Given that, should the do_get_auto_tdcv() readback in
-can_tdc_fill_info() also be gated on netif_running()? Alternatively, should
-xcan_get_auto_tdcv() take a runtime PM reference?
+> +
+> +	/* Register the bridge. */
+>  	return devm_drm_bridge_add(&pdev->dev, &sbridge->bridge);
+>  }
 
-[Severity: Low]
-This also changes what userspace sees for every driver that implements
-do_get_berr_counter(). Together with the matching change in can_get_size(),
-IFLA_CAN_BERR_COUNTER is now left out of RTM_GETLINK and RTM_NEWLINK
-messages whenever the interface is down. As a result, "ip -details link
-show" no longer prints berr-counter for a down interface.
-
-Before this patch the attribute was always present:
-
-- flexcan, xilinx_can and c_can woke the device and reported the real
-  counters.
-- m_can_get_berr_counter() and mcp251xfd_get_berr_counter() returned 0 with
-  zeroed counters when the interface was not up:
-
-drivers/net/can/m_can/m_can.c:m_can_get_berr_counter() {
-    ...
-	if (!(dev->flags & IFF_UP))
-		return 0;
-    ...
-}
-
-The netlink path can no longer reach these driver-level IFF_UP checks.
-
-The commit named in Fixes:, ec56acfef2af1, was added so that userspace could
-call flexcan_get_berr_counter() even while the interface was down. This
-patch reverses that behaviour rather than fixing a defect in it, and it is
-tagged for stable.
-
-Could the commit message say that IFLA_CAN_BERR_COUNTER is no longer
-reported for down interfaces, and explain why that change is acceptable for
-stable?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261018101744.93657-1-chunyuzhiqiang%40yinhe.ht
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261019-v2-apalis-=
+imx6-enable-vga-v2-0-ef6a3a780472@toradex.com?part=3D2
