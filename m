@@ -1,20 +1,20 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.70.38
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.72.54
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792437954;
-	b=qNvUKivUQSpZd/IeYfV4rzfvnr6SuqmcwFwVe/GYqsjShTSheGkdxYwyb0qIGMDwKkAj
-	 zxkb1LPGfWZn+1Aa6YXRiGog4LEpx6b7Y0GnBY3mLXsxsHWWHy4eMWpbXm0t1pubuK/Oc
-	 ruMVejqMRHCVTx4d4c4m4N3rWx6/w9JHZyN/RfT5iEBKvbmyFOGEp5ZCtOzhXjBRkh2kg
-	 a+HEb4fMCTxMcm6/TD5tvjB0g4zQXEgdoKR1FawYwABK4rx27Xe7XdLS6fnwXZMF3FCSD
-	 uyQ1AqeIW4wsy7JCZcq/1cxSPL9NHcMiYN4o4skP2qimQezN8MFiUcj+XhG8DaC9vgA==
+	t=1792438246;
+	b=k3KQ5kZn1T+7oXeSwhDi+Xlz2xm5PkGBqikvfO/USsqYP6teH5EdiNd+l1a5O0/pWrPu
+	 4Mxlon3xxclKjmNTfck7ZKadcOBDzGAnwXoWMH1+NrEAhiep1u5Lg0STgG518YW3c1+59
+	 npWQFLn825jH+ID0D/4MTwbq4sgPqL3d5IB1JRgl6fzS9v6rEgP9E4pxN2uDgi+q2dIVp
+	 QFexRtXTGsiwvBg/JY6zHSVBi8nt9Q1jLpDFJrLrag6KHt7AriZBR9WxuX3LFcESoPLCg
+	 C6bFp3KUeqaWkxwSzvVnNaPc18wDtF5Xv32y5mzXHcMequYvS6sTjunnORbwTxFcTbw==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792437954;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792438246;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
 	 Subject:Message-ID:References:Content-Type:Content-Disposition:
 	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
 	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-LD-Processed:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
 	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
 	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
 	 X-MS-Exchange-CrossTenant-Network-Message-Id:
@@ -24,76 +24,74 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
 	 X-MS-Exchange-CrossTenant-UserPrincipalName:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=b1W9iqUpKXE15L2AZCsufGSTZfeG4IVKBg+0n6MzXgA=;
-	b=FyncRLVPr4I8DXJI7FUy3wQDc0Y4Nlu16QBSCi2/Gpo+tHTpT4AyFLiWyOjjfOVYqfo2
-	 j6RqvUgp8YDyZGD2sjsQ6hTmlCnOB1mvod8zfqQT65TYM3HlR7ziBjMvUMQSBV3ei3fWx
-	 OTWt2y0W1x6+LV2Jehsarxo4XLiAMolEtMwWnNB/5HPossFz5P8iCGy3tfdh7tlj1HO0r
-	 y2Pr48WKZSgmRPpM2gn4+2kQaw6P69/1PCmzIA0DNaryT2oajNsvC4XiyoYHi8H8C9k98
-	 BIf4evElO7GQcNtVTSGyndu0hes+VwUe2MUxRwuGOwT+5f0P1I3y2vp3P0EHKxJAMdg==
+	bh=6PwGTgeJDaH5E4qaEAGq0Ils26uhBrgxsCM2CXVqncA=;
+	b=xJmCIjlt/W6eKaMR5xhYfmlzgKusHzcddMEPqJK4l7q2r9LfnzKmv719VJT/C5gm0P2p
+	 xjp/pxxAhukSiwskTTHLvOt2jfbNojO3ZgUVR8bFN96d9/8fd34R6iJulGytDz4lS2OyB
+	 xjclHekxuLK2gR7EVkJcGfqSjK8DcDPc+QyVE12MB5lz+kg9aCpA2cI9wfnnTGLDNAee+
+	 kV6G/cC2V7a1TvWL6595nb0KkqkfTCQhrsCu44jlCMCAi32WLkHGQlwu6gcYcvSIuwy7A
+	 AVa1W+SiLGisNoPA5PQ1Wd+ae/t5jYM6bAr7XM7NCu6+Lg+rZAIYmshEvAweergzrHg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=oss.nxp.com;
 	spf=pass smtp.mailfrom=oss.nxp.com;
-	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=Ucg19Lso;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.70.38
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011038.outbound.protection.outlook.com [52.101.70.38])
+	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=ryZREfoJ;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.72.54
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013054.outbound.protection.outlook.com [52.101.72.54])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF885606A324
-	for <imx@lists.linux.dev>; Mon, 19 Oct 2026 19:25:53 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DF885606A324
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D40BC606A321
+	for <imx@lists.linux.dev>; Mon, 19 Oct 2026 19:30:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D40BC606A321
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=Ucg19Lso
+	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=ryZREfoJ
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MhH3sJ/sBt+jz4slqNkQt8r2oZo1OQuOunTt3mJfGvcA+HmWJT14O0MNhnQm5g7FlGd04gtzT23ibmaGZxPz7+xFn+e8WF8HxjCcD4/wCMZ0Zd1sJO63YIN0O7L3K13k5mYJcuq7I6jrQ2s1P5jkSLuTdVcUn/FTimqjYwiyCPW1W/6/wWBMhi6dam5iB1/8ISSltFN/1DEGHltcSuY33tcYZNM2N7IqYWGdGvij00eJM3uEjkhe0C9gNQOrJKYBWIAY+g9HcidNJRAI13jOqFyhP+w3yOqi5/qyugR6ScTfxOEw078jsWEeNIbYLgxiFMYkBTE1MN9iA1By2Sa00g==
+ b=iq4kW21mmdJCjIH31MTmwG8jah8tDNU21bZH1qLbYFG2+D7mZZuRba5fFLj+V12byKy0mtG1naZ12RBLa7//i30i9Gt6YZlS5qtoNw6iKBNZnanV7NpzdemGSgtqCp+cwRQccaQrT7HhMxB0op3jUGp2qKyQevmLdHEO2FmKmuQdIZZGOOF3iu6l1P7E8ez+tMcY+ajRK9Q+slt/jyhyuAtn/Rk1RGtcPiO9Nl2FBAk8LWMHVkI7bUeM22O0B4chD3QRXiB3BXeecM236eS2bFL25RXEfA0ppdpFNmZzEfV2/M1CVuC2BYHM4uAC5FOPfvhXEPnlDwUISomTVAd8JQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=b1W9iqUpKXE15L2AZCsufGSTZfeG4IVKBg+0n6MzXgA=;
- b=Idq2Meup2mmBT+5E/zT5CfD1T7sTcvVR7rtdchxu9p8qfI9kwEVofl7qCRXm9hygQw38asGcoV72RwMqCRg43QJQAbeQwUNOycRK/28jUC6lOKR9EVjPC0v+4JJg90BcDYyFP/TkQhTpaWLdm4DTm6HZ8WBho9O/3MC+D+Rb9KstVfRa4mO3acpAzeaZcr07MH90qFC03GnLpw7TaEWvKVLFzgsxHfLkkdNANFFMEB7agCHRGNSFvBuStFlnsh86LuG/4SbV3CTphxrRf1uxMVZOiYiLAqVVCqDub83Nsw9iagdweZfU6EDo0FFlFy3hzi5o7s8+qufQb0V1JNgfug==
+ bh=6PwGTgeJDaH5E4qaEAGq0Ils26uhBrgxsCM2CXVqncA=;
+ b=d5VzZjECkpwBGsDQTO8jUg91svrqEjhOvhMPbhCr8GACVtjy1P0SJTVZTsnBdplR6L78f/XU6u3FohZAfM98AlQ36/kY/uKkjFFE79TGb8HktrrWC1TdXv66gJbGhyTCPtPbIwXOUH7IBnb0YGDljBaKuUq0ouaf+fVbzCoAIRmBcgVLUlG/VXULsVBeTbtdJWHOGTzpbvNBAeJr2okPCscK432mNfoHVdAhvIWUE8Zhy8y5prYG853lxl8fCwbMF5tYtTtBKNA2vh+94a+y5YUwdSvV6PCUS0FE3DtiTmtdInE0GFhcpRlu4In92yfyKnbe/aYLb+71Iuv4Q163Kw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=b1W9iqUpKXE15L2AZCsufGSTZfeG4IVKBg+0n6MzXgA=;
- b=Ucg19LsoPNpvWl3TO7HUfYrE4M4os1tBS1W1/UkPsxxkMt0pl+a04k7HzVeaOlpSPoUUjLfyeUkTIe4yjd1TS9sIOW24Ex1k7qdFgsDtgRh2XB7iMGjycRt0hPejunK50HOB0kTO2AslFBUrbC2YxH+18uVBvoWEtjcKROVraMUDbsZbWdSisFEVuqWf6zNGHQVcB50Q/hIb2Y+Ps9M2DD7DSYDFaEkq3CKQEboXO6t8L1kFMumbiQCkjhnF8Wjo9dvpEZuq3fzEh54AJ4XxXgvWTFkoWWUWqaJxahO5LPYKE8oSMdc8cVGuSEVlqoENJvlIQVR3owk+y5qqrql2BQ==
+ bh=6PwGTgeJDaH5E4qaEAGq0Ils26uhBrgxsCM2CXVqncA=;
+ b=ryZREfoJbWH5TZkA7LfSMob+WpTubO/NHdRo2Njp/thYYT9yNCeT0M+07ue9iiSE6YAjuutIsIQTsSblxxcNOOXd14s2sKR8eTse6RgFO5F1WKNj2VhTUUQ0k9HHtBiRf7ip2vQxhRBaCe9ie2Gtcd3cAxQBiJwrb5rJGnvqqFYusth0lp3jftEq1Y4FIQs0c7b69Pduy6dDaTeFg/kHmuR/9q8sozVSiEtAsOJUr14CBKsWf6XJFOrWj2JAmwQyxD0WW+mAq/1HiUwuelu/4HprWTnVkUxy+lZZ3n3O2wI5b/TPixfX2hCM9sNRumLYZtHqiatn5WQInKGyTWd0/Q==
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
 Received: from MI3PR04MB12438.eurprd04.prod.outlook.com (2603:10a6:290:76::14)
- by VI1PR04MB6861.eurprd04.prod.outlook.com (2603:10a6:803:13c::9) with
+ by DU4PR04MB10934.eurprd04.prod.outlook.com (2603:10a6:10:581::13) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.19; Mon, 19 Oct
- 2026 19:25:50 +0000
+ 2026 19:30:42 +0000
 Received: from MI3PR04MB12438.eurprd04.prod.outlook.com
  ([fe80::c715:c32:8bb1:b70b]) by MI3PR04MB12438.eurprd04.prod.outlook.com
  ([fe80::c715:c32:8bb1:b70b%6]) with mapi id 15.21.0522.017; Mon, 19 Oct 2026
- 19:25:50 +0000
-Date: Mon, 19 Oct 2026 14:25:40 -0500
+ 19:30:42 +0000
+Date: Mon, 19 Oct 2026 14:30:31 -0500
 From: Frank Li <Frank.li@oss.nxp.com>
-To: Antoine Gouby <antoine.gouby@gmail.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
+To: joy.zou@oss.nxp.com
+Cc: Peng Fan <peng.fan@nxp.com>, Dong Aisheng <aisheng.dong@nxp.com>,
+	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
+	Jacky Bai <ping.bai@nxp.com>, Ye Li <ye.li@nxp.com>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Antoine Gouby <antoine.gouby@toradex.com>
-Subject: Re: [PATCH 2/5] ARM: dts: imx6dl-colibri: Add Toradex Capacitive
- Touch Display 7" Parallel
-Message-ID: <atZutHmYt1aNWTpP@SMW015318>
-References: <20261019-colibri-imx6-overlays-v1-0-e4d028727382@toradex.com>
- <20261019-colibri-imx6-overlays-v1-2-e4d028727382@toradex.com>
+	NXP S32 Linux Team <s32@nxp.com>, Linus Walleij <linusw@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>, linux-gpio@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, Joy Zou <joy.zou@nxp.com>
+Subject: Re: [PATCH] pinctrl: imx: Use of_device_id match table for per-SoC
+ data
+Message-ID: <atZv1_t_avZKYeS3@SMW015318>
+References: <20261019-b4-imx937-frdm-scmi-pinctrl-v1-1-0576fb20964b@oss.nxp.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261019-colibri-imx6-overlays-v1-2-e4d028727382@toradex.com>
-X-ClientProxiedBy: PH0PR07CA0091.namprd07.prod.outlook.com
- (2603:10b6:510:4::6) To MI3PR04MB12438.eurprd04.prod.outlook.com
+In-Reply-To: <20261019-b4-imx937-frdm-scmi-pinctrl-v1-1-0576fb20964b@oss.nxp.com>
+X-ClientProxiedBy: PH7P221CA0007.NAMP221.PROD.OUTLOOK.COM
+ (2603:10b6:510:32a::10) To MI3PR04MB12438.eurprd04.prod.outlook.com
  (2603:10a6:290:76::14)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -105,193 +103,79 @@ List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|VI1PR04MB6861:EE_
-X-MS-Office365-Filtering-Correlation-Id: 28dcf0ba-d499-452c-cfd7-08df2e16c8f0
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|DU4PR04MB10934:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4bb1d783-2f6b-4ed2-0ab5-08df2e1776d3
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|1800799024|376014|23010399003|19092799006|56012099006|11063799006|4143699003|261009220027099003|10067099003|261009223027099003|261009221227099003|261009221727099003|261009223327099003|22082099003|18002099003|13003099007;
+	BCL:0;ARA:13230040|376014|1800799024|23010399003|19092799006|366016|56012099006|11063799006|261009223027099003|10067099003|22082099003|18002099003|6133799003;
 X-Microsoft-Antispam-Message-Info:
-	+uvQW2D0P3KxqbjQ0hBURojz76Jm6lanG6AS46PRIOiK8Em1zmvLFIHpzlHHx4WpM3HzgeWXPyuncDMJSSXAE9trs7mmiSrbeLoZjioJAuj0OXacTiOxsPCc/PAGDcO2byXNgJZT525dnd9VBC61mQplftY7IqcER60fUoGClDOIiWQNc6vNS3IPTrvHV2svSh1JBTvVNKOA6Pe1pfVEhgwC4i8Rn6rEWjw5ERpq2WfhtuAodSYCKu2M+UOnqJkWTVqmIi8SqZ0KXj9d7BLh2MDq3yrkWxz86SSDoJjTZhsSqDt9/UgC8MY/wQSzbpCP3vmTjPebESq7hcbvkpS1e9+wAQWVeb7jM18TmdPmzORntC8QIa6VpPp/UWRf2OwmWM9b806y/0DBuAY4GxdU40PRWpColegzrtiD8SsT7oFNOShXeGL5uKNbhpOrpGJ81AcVPKp0vGnFSpZCwBJrEGcnaqI86qis9bB/aoJKSBoauUqBd1svywhuQv4Rl+hwNzeb1due9tk/fqC6L0a9h0lqGsXCwPjAR6EtXbqBnQA9IG2svr8/mDNzUi4seYzqVsnjrholy/5WO/DKsc22Mkmrki2/L09hSeCMuj4i3iCdOknP4jIq4iunSQV1Mg7J
+	ACjIqXuWl0geg9IS53giKD7tOeyfs0+0mDHxHYVrpqSDvsq5NoKTgbv78iF63q9Y9l0ZiJOHfsUq0IjVK2t/cUf751HUfnvc7N1+VzGRVedugTdMyJckBVfwiRK7vUlOydjm7HAN2yhtzA/0cbCkM6MfpAXFEoRZEdJ/+E4C0LIqoBY079E/9Jxx+fJOeDma8M+1vKVM0dMYvttdSbxIThzw1tD/k9OVoCoJZJYga9iuE79xJnw51D80U4Rd12MH3+BlUS4KpcNIrkSpfytwEmrLHFzuXCxvKt/v8pgsEylJVxgcrXH7aonjKJ9xdWG4Skwvmuy08dQVD4z+xEYLQVMOHiTnUNvJqEcKuOPA1n6zKBeUvl+MPssl64zzvT25z82l+Gopr4xa9e54zZSlXD/hr9hmY+PFmJFlaH6nPkUARED3vky6O2kz67ZKsl7zPL9zHqadpoZZnqPIWGpJY9fj6ypxWJUSf1/JzVSU/lGusYwW9rp4n8UT1GNeHP6uAXn0vCrJyNqxvrZuFwLmqeJP9jA/eyum2UDQjP6UE7PLa5ZkSzSjEJVGIgl9B68flWSuE+L4pHdkY6Lp4dDB/GdxhrYE56wf8JtaqEFkH8DmDdNOMZmwzph9F+riUBAzUU9FyEKlCiFx4LYw4vpA8Vl5gXG5aog9jy36LWpZAzA=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(1800799024)(376014)(23010399003)(19092799006)(56012099006)(11063799006)(4143699003)(261009220027099003)(10067099003)(261009223027099003)(261009221227099003)(261009221727099003)(261009223327099003)(22082099003)(18002099003)(13003099007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(23010399003)(19092799006)(366016)(56012099006)(11063799006)(261009223027099003)(10067099003)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?+1kenMPu1RWaSUNbWL202JQgT8bd1yVAXDubzribYCQdFyvVve1hXrFhAFeZ?=
- =?us-ascii?Q?uHwFSmpf6EadDxSXjdOL1+n5hNsRnvOM4fZce81UWWW6DlBBk1zKQpXLnsaw?=
- =?us-ascii?Q?VEiaCpACh18OfdYYy3NamZUoB9fMootIby8JInO275qiqZU/lncnpfaZjSMW?=
- =?us-ascii?Q?BJmvbdg4HObt/6ar0k1bJfyFALwTjcyv3zl6GtWrxVpJcZbryqE367bCJPYV?=
- =?us-ascii?Q?FFYtMiYviBiz3DYN/BU7RTUcRm+ew7fIbs5jOqatCNlga1MXsQMpx8y7SCfi?=
- =?us-ascii?Q?B+gm5G8uWqgrMfVy0KnKoRcozERxzO3A9OSll150PDzTFrsYTsOIlt6Jh4iq?=
- =?us-ascii?Q?Ds2i/d3vEjkqpicj4NNEbHYo3zFAXXWe05lf8/w08qD6ktlecMC07EnnpCdg?=
- =?us-ascii?Q?A1RQ3Q1hWuhA3TmCaXW3+ziGIMYtgEJWAhjN242PW6OtgDcnea6LroV8foNO?=
- =?us-ascii?Q?xDnJ+KvttBsX92WdXCg9p6uJBxgQ73R7/fbyFC2QIfsHpC1vnIdhqXz2SoBI?=
- =?us-ascii?Q?Wl321V43A4Py/6wjKh9Ryq52F3WlXep5A9/nkXSdKrwn8OdtXGrZzGO0W0df?=
- =?us-ascii?Q?tuYetghUx6I7VfKEbwgjNzz2y1z4EXdqxlDuEIqFzoxjRabuWWiACBJ47C0I?=
- =?us-ascii?Q?CSWltHgsKbT1HdV7/dbvVu4c6BwXenMlZdgE6pRUBl210QleoKW1L4iwxtla?=
- =?us-ascii?Q?QaNiwKziik4oKVtoufwsz0OC5qv3BJFvxW1Fr0eyTz3OwP55blepMC4FFieL?=
- =?us-ascii?Q?E0J2kJOdm4IhR/UdZ2Wt4ZghPF/8eFGagA5qkOdlq8kUROJoJOB/rkh9KijD?=
- =?us-ascii?Q?oOXq7H7Lqb6KVSdJ50O/ungIH4skheFeexcITyIpFAbRDPj1IC456FpORkBp?=
- =?us-ascii?Q?+gHX/Ov4CV1Af6pd6gYv8I8+BInXatOVQkWVji0m6+WCN3NI2RUigUqzveLd?=
- =?us-ascii?Q?lxpCl0HGhO5klym1mByJASQe+MEK2uZlScybkdjjcw3N/uhw/x2Tp7lUfgMp?=
- =?us-ascii?Q?FZ5RMgrpnejCnob+R5Tv4Ub0XhCScF1WHhTkNKklQM8mQQXdjPoireO8FXiq?=
- =?us-ascii?Q?gBycXSOn0K5Bzy/OF/9ygMM3ygwBeXo95guHxAB8DYZMi/egWgZJoZXJXAji?=
- =?us-ascii?Q?pvEYx/XwZ8dNHSixtWS8qVEV/yUEkBwjEf39UrfpsrhGTdMsZ7kuXvj5BiWR?=
- =?us-ascii?Q?6INdw9LxCW7K33EWTf8LCWUGTsrPneojAVbWuFzUMNxVm62kcWF/dknrL/fs?=
- =?us-ascii?Q?3zzCRjhnRmBEbZAyhrI99TGxDfS+ObeKbZvvvDLPr7VaxIViOlhs7GMINzGI?=
- =?us-ascii?Q?2M0SLsLbaFV+cdmSkXN1UImhj7r4DklqXBAmHHryEutImdBaV41ThcwLkPU6?=
- =?us-ascii?Q?KhVKNEWhkRlQR7ZBe9xW9UbUCfDCKwMwTh+kMeIHeXPlfM++uIaNSFKuYngz?=
- =?us-ascii?Q?qjFwEsVh6HCtH6zDI7kiYjfzwruoxSRv0K8Cgib+d4b3Xje0NoxsU8yYS/N4?=
- =?us-ascii?Q?46ZJ+4CUm3cWYnkvX6jGHopxU8XqOcK86n15Jtg/+SoyRgXku+oNU9vIffif?=
- =?us-ascii?Q?9rwtKd2Ck6tb6UPIduiaprPEce1jwJhkctBlg1+ZkFRx+zy/Mc74o9tcjOsn?=
- =?us-ascii?Q?JGks8yguewJ7HnJgCWjQvwOy/RgrX63TwLI7b7UqUtZX+OE/Grdmx/VIw/8X?=
- =?us-ascii?Q?a1MXy0FgiZovDTuAo+GWcWlciAsKVeqnMCyqZiWFP+dGQayoyBL0itxCW630?=
- =?us-ascii?Q?saOBkE5HwLR+AZxPIp3QLD8tJsYXp1tlFWyW02yw4jOqE9F13ydU?=
+	=?us-ascii?Q?XEanyw5YWAY3c3212lyAIP+ewIgDbXET0eD3vz88p1zROsR8PLj5TN6GxYI0?=
+ =?us-ascii?Q?Q/dTxNIuI7v5Mkc+WZdPxbahtIpxS+b3Piw+PpW0h8Iwg6vAbR9n8Foad3ho?=
+ =?us-ascii?Q?KyiInqd8tJ41zfSsz6CZH7rZKz3js9vZfVeCHjC4hWeZurHmEa7zzX9neGbE?=
+ =?us-ascii?Q?qps8ybLhFtzGtMWgGmxLHljLMsOVxJ1ufF/tebjBirE9lajvljhoOzwowZqc?=
+ =?us-ascii?Q?qNH86cyU55QKzyjBI2w7qgSRVrB8TwsLuPb10PyGdZFGLGz72Cqyd/QPl0C2?=
+ =?us-ascii?Q?p7MFOzWq9+8cdn2MgIeKCDX3UMsZcSZYVNIB+H3O9zRgcyB0t85kgfPvfOlL?=
+ =?us-ascii?Q?6V7+0dugbesHJhwNKsSy1n2m4fY6y0mObRA7jwh/jEbj9p9xWMUstpaja8Rf?=
+ =?us-ascii?Q?r2qOlv6G0Qc59ckYR9mn/FbghQkL2f1HlgJ42RYdI0OCsVYXCGHLOi1dWE0Q?=
+ =?us-ascii?Q?tJ4/WSvCXyvX0vT/RUOoMiuCkb1Mdm9t5lBYvX+Y+qJrnhM1Fk2nmeaPcJEY?=
+ =?us-ascii?Q?N0Nc+US3e1Hdls3O06eqlqJPE4/abWZ7/31pUS0cSFabbYDYSYVBsIaQXuUq?=
+ =?us-ascii?Q?FI8H427aJZui8Dj1UaB+6TqmxV9bvBlOWp3y0onr0J66J4mIrkFsKoyRC4Ok?=
+ =?us-ascii?Q?Y7bLOBF28KGs7T0P0xMeTr4Y7RnVH4Nv98VR6IusA86OoV06oAkhNb0mYIiA?=
+ =?us-ascii?Q?xLvOmXloZwtlM184dRAWbbeZgyNtl/2qvc0ZnC2kkgsQf8FoFujg7/xv/eGi?=
+ =?us-ascii?Q?asnwfkuXky+/dHhAk6KH6AV316HgdHMGduge0dnxFxk9x+GBbbYw6qSMcQt0?=
+ =?us-ascii?Q?jX5vpFFdiyGaGx0qUXRiJ2mEVlAnI8VfjIayBvGkhZLMGH1iN536a95JY1i4?=
+ =?us-ascii?Q?hamLF4kxUAlz4tbq4M+GB7COPmOFr93j4ACpQKf0A+Ej4AVmRfcw5NpwR7dn?=
+ =?us-ascii?Q?0HTZ6ASmQ/Z6foqfGKUvs/DCsfn7mBnXNO99H3zbR5WHM9WD9dHnw67Coi8n?=
+ =?us-ascii?Q?nJy81+oaquwJtl/VsunkAMEuVJZIb4a4+eriQf5l0SfbTQ/JzcUaxQPwawx/?=
+ =?us-ascii?Q?P0IoYdrtnPeyIFNC9qXkTXgC1XkJGMlj/I4sm25htXs45ALqw75E1Mon+6V5?=
+ =?us-ascii?Q?gOJ/6uKKe9sjUnPSyELC/V0eGBereWISwfaLktFluq5r+LfqpARYsSRAzML9?=
+ =?us-ascii?Q?KfESzfPqPUXYIihN1C+cIRZmTZIANcwOX8LusiZM8R8Ltfe/SXxY/YpNEq/j?=
+ =?us-ascii?Q?JqDtdYDroD8lN87kf64vWkc1zVD0VR/rcgo8soR+wHdMYIa9xkbPHgUmx2k8?=
+ =?us-ascii?Q?v9zSuTIfyRq4H0S0ntO311MF/f0ziHYdfEswctWk2TFxjnSIwIQbsrE+P6Ge?=
+ =?us-ascii?Q?BFsRLNqdosJpkcsNm6gN8Tav5RAM2W+yhkoI30DEi0+3ZpZ79rQCEr9ioAyl?=
+ =?us-ascii?Q?GIirwtzzkrOJT3a2dEut72HMabp1T2n9SuoTeMcz9P+xMv8J54Rb5+LT9ItH?=
+ =?us-ascii?Q?MX8mED5avD+ke53F3YzMXKBSE+NOwVxcMdzveSkk2gxGmTAeM6tKLGcf4d69?=
+ =?us-ascii?Q?wVcrnk9SQzgk98i4ze0xlA1RDl1WgLJA7gOrI36eQogzHu35Ihga/v5RiuXC?=
+ =?us-ascii?Q?PX3bgwaXsb9rd0Lt6klc5p76pDt5skVakHThl0alwR6ENmb789nJRywn0/oF?=
+ =?us-ascii?Q?PE7Z2talcicklC5VSbYzfcwsK4/Rh6F93sQLJ1pkqdZUviay2MrRJrtnvDns?=
+ =?us-ascii?Q?U7N3TmwBIJWB41nmUhvCuv6VsSkbqjQodJDIUg87W45fCulF3yqn?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 28dcf0ba-d499-452c-cfd7-08df2e16c8f0
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4bb1d783-2f6b-4ed2-0ab5-08df2e1776d3
 X-MS-Exchange-CrossTenant-AuthSource: MI3PR04MB12438.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Oct 2026 19:25:50.7323
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Oct 2026 19:30:42.3568
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ioeTwFGMK7+K4ryFmB1EhZ81aAt7ZMmSj3w7e/Cxhr5sj6dAcxKHOd07YhW0fYfbbveMfgmfBD/NxFMp/P419oQkHSLCNLarXFX+WpqA3uEdo1jed77dTyaTY6xwr+ME
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB6861
+X-MS-Exchange-CrossTenant-UserPrincipalName: PDLx+uWTxCdTf8+NQnKUwtVmXC7szK2uqVdqySkj/1bcuonb5KWto6BLdSmLxsOorWoqs0ksmP4zdu3zzvPdEvw+TSE5PXyK2Kc3wtpkRSk1nE5FOvBUDB6zhhUzwbdP
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB10934
 
-On Mon, Oct 19, 2026 at 01:18:31PM +0200, Antoine Gouby wrote:
-> [You don't often get email from antoine.gouby@gmail.com. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
+On Mon, Oct 19, 2026 at 07:09:35PM +0800, joy.zou@oss.nxp.com wrote:
+> From: Peng Fan <peng.fan@nxp.com>
 >
-> From: Antoine Gouby <antoine.gouby@toradex.com>
+> Replace the hardcoded of_machine_is_compatible() if-else chain and the
+> static string allowlist with a proper of_device_id match table carrying
+> per-SoC data via the .data field.
 >
-> Add a device tree overlay for the Capacitive Touch Display 7" Parallel
-> on the Colibri iMX6 parallel RGB LCD interface.
+> This eliminates the static local variable anti-pattern for daisy_off
+> (lazy-initialized, shared across instances) and adopts the idiomatic
+> kernel of_machine_get_match_data() APIs.
 >
-> The panel is a LogicTechno LT161010-2NHC 7" WVGA TFT Transmissive LCD
-> and the touch input is provided by an Atmel MaxTouch capacitive touch
-> controller.
+> A new pinctrl_scmi_imx_data struct captures the daisy register offset
+> for future extensibility when new SoCs may not use register-offset based
+> daisy configuration.
 >
-> The touch controller is connected to the Toradex 10-way Capacitive Touch
-> Interface connector available on Iris v2 and Aster carrier boards.
+> No functional changes.
 >
-> The touch interrupt and reset signals on SODIMM 107 and SODIMM 106 share
-> their pads with the WEIM nEXT_CS1 and nEXT_CS2 chip selects, disable
-> WEIM to avoid the pin conflict.
->
-> The overlay is also combined with the Colibri iMX6 V1.2 Iris v2 and
-> Aster carrier board device trees to provide ready-to-use DTBs.
->
-> Link: https://developer.toradex.com/hardware/accessories/displays/capacitive-touch-display-7inch-parallel/
-> Signed-off-by: Antoine Gouby <antoine.gouby@toradex.com>
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> Signed-off-by: Joy Zou <joy.zou@nxp.com>
 > ---
->  arch/arm/boot/dts/nxp/imx/Makefile                 | 11 +++++++
->  ...6dl-colibri-panel-cap-touch-7inch-parallel.dtso | 38 ++++++++++++++++++++++
 
-File name include key componets, lt161010
-
-such as
-
-imx6dl-colibri-7inch-lt161010.dtso, like others
-
-	imx93-tqma9352-mba93xxla-lvds-tm070jvhg33.dtso
-
-In case you will add more 7" panel in future, panel is quite easily EOL.
-
-Frank
-
->  2 files changed, 49 insertions(+)
->
-> diff --git a/arch/arm/boot/dts/nxp/imx/Makefile b/arch/arm/boot/dts/nxp/imx/Makefile
-> index 76e2ce85a4d3..7897d9dbdfac 100644
-> --- a/arch/arm/boot/dts/nxp/imx/Makefile
-> +++ b/arch/arm/boot/dts/nxp/imx/Makefile
-> @@ -80,6 +80,10 @@ imx6dl-colibri-v1.2-aster-hdmi-dtbs := \
->         imx6dl-colibri-v1.2-aster.dtb \
->         imx6dl-colibri-hdmi.dtbo
->
-> +imx6dl-colibri-v1.2-aster-panel-cap-touch-7inch-parallel-dtbs := \
-> +       imx6dl-colibri-v1.2-aster.dtb \
-> +       imx6dl-colibri-panel-cap-touch-7inch-parallel.dtbo
-> +
->  imx6dl-colibri-v1.2-eval-v3-hdmi-dtbs := \
->         imx6dl-colibri-v1.2-eval-v3.dtb \
->         imx6dl-colibri-hdmi.dtbo
-> @@ -92,6 +96,10 @@ imx6dl-colibri-v1.2-iris-v2-hdmi-dtbs := \
->         imx6dl-colibri-v1.2-iris-v2.dtb \
->         imx6dl-colibri-hdmi.dtbo
->
-> +imx6dl-colibri-v1.2-iris-v2-panel-cap-touch-7inch-parallel-dtbs := \
-> +       imx6dl-colibri-v1.2-iris-v2.dtb \
-> +       imx6dl-colibri-panel-cap-touch-7inch-parallel.dtbo
-> +
->  imx6qdl-dhcom-pdk2-overlay-497-200-x12-dtbs := \
->         imx6q-dhcom-pdk2.dtb \
->         imx6qdl-dhcom-pdk2-overlay-497-200-x12.dtbo
-> @@ -132,14 +140,17 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
->         imx6dl-colibri-iris-hdmi.dtb \
->         imx6dl-colibri-iris-v2.dtb \
->         imx6dl-colibri-iris-v2-hdmi.dtb \
-> +       imx6dl-colibri-panel-cap-touch-7inch-parallel.dtbo \
->         imx6dl-colibri-v1.2-aster.dtb \
->         imx6dl-colibri-v1.2-aster-hdmi.dtb \
-> +       imx6dl-colibri-v1.2-aster-panel-cap-touch-7inch-parallel.dtb \
->         imx6dl-colibri-v1.2-eval-v3.dtb \
->         imx6dl-colibri-v1.2-eval-v3-hdmi.dtb \
->         imx6dl-colibri-v1.2-iris.dtb \
->         imx6dl-colibri-v1.2-iris-hdmi.dtb \
->         imx6dl-colibri-v1.2-iris-v2.dtb \
->         imx6dl-colibri-v1.2-iris-v2-hdmi.dtb \
-> +       imx6dl-colibri-v1.2-iris-v2-panel-cap-touch-7inch-parallel.dtb \
->         imx6dl-cubox-i.dtb \
->         imx6dl-cubox-i-emmc-som-v15.dtb \
->         imx6dl-cubox-i-som-v15.dtb \
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6dl-colibri-panel-cap-touch-7inch-parallel.dtso b/arch/arm/boot/dts/nxp/imx/imx6dl-colibri-panel-cap-touch-7inch-parallel.dtso
-> new file mode 100644
-> index 000000000000..13b4888e07db
-> --- /dev/null
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6dl-colibri-panel-cap-touch-7inch-parallel.dtso
-> @@ -0,0 +1,38 @@
-> +// SPDX-License-Identifier: GPL-2.0-only OR MIT
-> +/*
-> + * Copyright (c) Toradex
-> + *
-> + * Toradex Capacitive Touch Display 7" Parallel connected through the 40-way
-> + * Unified Interface Display and 10-way Capacitive Touch Interface connectors
-> + * (as featured on Iris v2 and Aster v1.1 carrier boards).
-> + *
-> + * https://developer.toradex.com/hardware/accessories/displays/capacitive-touch-display-7inch-parallel/
-> + * https://docs.toradex.com/104497-7-inch-parallel-capacitive-touch-display-800x480-datasheet.pdf
-> + * https://www.toradex.com/accessories/capacitive-touch-display-7-inch-parallel
-> + */
-> +
-> +/dts-v1/;
-> +/plugin/;
-> +
-> +&atmel_mxt_ts {
-> +       status = "okay";
-> +};
-> +
-> +&backlight {
-> +       status = "okay";
-> +};
-> +
-> +&lcd_display {
-> +       status = "okay";
-> +};
-> +
-> +&panel_dpi {
-> +       compatible = "logictechno,lt161010-2nhc";
-> +       power-supply = <&reg_module_3v3>;
-> +
-> +       status = "okay";
-> +};
-> +
-> +&weim {
-> +       status = "disabled";
-> +};
->
-> --
-> 2.55.0
->
->
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
