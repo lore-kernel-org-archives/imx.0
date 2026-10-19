@@ -1,153 +1,176 @@
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C89063E3D98
-	for <imx@lists.linux.dev>; Mon, 19 Oct 2026 10:22:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC9EC4D7D37;
+	Mon, 19 Oct 2026 10:24:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792405377; cv=none; b=ERpA/DYVmbGQztv8NnYjcWXl1BCGbA/b3R77Krljn89Xf0nOvoyxJhuonI/Utgjn0/2+OR+UquWpMjaexL4z7O6PJjr1VNh7si0PGpuCspSCEudH0yMO0wD/lcSSQLRHsdq4uRBJduQH33REnD5iZg7EYqqJHDBgyAjgvRumTzw=
+	t=1792405477; cv=none; b=LiKnWR9wAEQA13ZolsMYoNPrqTHVAURRUtY4FDnNXT+6+aobkDOkQ4zQoc5F9QMyBSlQo9nnNq+4RezU4HRHSBUFEUnfvF7Et39idUaTvEr5QvPKTNQ5s3dyJi1MrgzKR88gjnoMnKLWeZJVcGyZklMjyFItsUt/xQ3+c1pdN6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792405377; c=relaxed/simple;
-	bh=kUUpPsTxPIwjQ86JF12+BW4PvPq7GSCiTMS+HGO3pjU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pyH96rCyo6q5poCodlgRG9QS1qcT3O7C0Iv6LDgb/o7ZiEkV7sLM/1EPpi9TIAn1YJBb5XsBpkIoCmYWHn8MDXv1oLLGog3INU6nUpqyUN/E0sRq4NUPvsitDliyaT2bZV0csmGoU6m5wB9+EhQW3WCTYNrEvh/BUiCu8ePgrww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XjebvyWB; arc=none smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1792405477; c=relaxed/simple;
+	bh=GPMPY+kQ3Cha9/fJLAJ6lUOWS1m2jWJzHBqL0fup13M=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=t/tzFkz5Gj4PJppb7TpJcZZLGscEdlvjfHF4La6jo37BcYdzrrsKz+K41qiyGzP9mVg3xfgXwhATBqS2JI1+jeUZrRctQ3XRWo4sqo90COBYwNUD2t3EFAVHRbOZPUX6E6Wkz8MHJ32BKBXZFiCulua3OxNpQJc0Jo2uz/WnnIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hso6/ckf; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XjebvyWB"
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-48afcfc4bf5so1550185f8f.1
-        for <imx@lists.linux.dev>; Mon, 19 Oct 2026 03:22:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792405374; x=1793010174; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=DcQm1UppAernfyJDNeazwp3tPSiXo5FxZGSLgNLJYCQ=;
-        b=XjebvyWBlQJXALSYD7CVA5xJiE1F2J7xgBZ/5NoELutF5nAAy5NiOc7INiZgdPETGv
-         6iRvNMR9WMF/wiu+qfudktZhfpZ2bHxMmm0VFQIRvHVCptNIodwwgRFZ+Ns4FEP9j6Ks
-         xtmH3v5/QoUiiYcN0K9uUGJa9DxokG8oPH5iR5fGTEfCc/HZzOFu+ILMujICt58XLU1A
-         PhYny+gM5GhEP2WrPWW5UbGiYngHtTfUwzom+4Cw7n0/C98+EfxuoBMEtHV6BvVrZm7e
-         KuwdeaEEZ0SZD1MKRd0sVCIePPXbGTRKjSq2WZWMzKk6kjSOGFMhOzS+SKFZ3rGH2EZ6
-         a5Yw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792405374; x=1793010174;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=DcQm1UppAernfyJDNeazwp3tPSiXo5FxZGSLgNLJYCQ=;
-        b=KO9lww7fvffrQb6XbeOYk+qP7QQZWXFG/vO5mDEmY/xSEjlwgFv1Fo6xxMBIskLd8i
-         QtGO9gi+cR3ZQm28JM/J2N3KAPaEb5X7Be3LR4vI1Q2dlafNyrb/IIyTC6AFIDDf8OJ/
-         7fiZccVY+5LlRN8ziI9/vGd8X1hesXxsu64z32peSZLYGZSciEmSkpDCJ2za4GHcVpMv
-         6OTO9Emx6SC/Nqk/LV7HVg4ohe6bricb/hXAwPtJnQWLf1hBMrQggxe+PhYnic72YeRb
-         +4swSPLt9tDsXTZ7HtAjCXL6nf3sOWnfasJk+HlMadV4WzuwSfx3yYnVM4ZsI/bG70Wu
-         Om/A==
-X-Forwarded-Encrypted: i=1; AKwUvByIpxdnMcj7fDTBsStkzoei9M5jArFsYbzYAA2Yaad6b7xhCqf6xZqcAMlYKPC3W1+aVbQ=@lists.linux.dev
-X-Gm-Message-State: AFq9FYKHY+4avtSM1YFYX9lomyFEAD6ZUhRNH0A+EcD8k8QS6ctpSjcn
-	hMgDAHott9MbJsJgQq3hRCGQvqXdiHtd1Fn8x4yn4njxrFHRUAImMfdv
-X-Gm-Gg: AYBFou2OdazT6KaHxWFkBeqMEX6motg/Lp9UCAR78vdw9jLP0L2FSfV2UuP6jTgyKWd
-	U5m9jvoT9ic9dEVbc4ggbQm4a/HtF4E4CDCbeNOs+heq3TF7qMcDaUbwDnBq/bUn01Kb3D7axF+
-	XykDed70STkEtUM+j5d3PfFD5TLuJ9KT4v+iYFszQcBLYIUxmgQZZkuUvQLsBx4JT7Fc63EI0af
-	+fqJtz/YgnzGeqbqmpl2OV+Og/0pPRBMIlnUHAqMJBeMSxiv+T3tgmuAgqe4DjVcWbg2DAbfTYo
-	n63KayHxnXgJqLD88B1VrxZHu5nVpMNWlr5TeSAQ6TIX24MqrFmrpAG3DplA+sKaDRayuLCTZ4M
-	pEY1A1gA/D0DOBisryRGdKvZLEFMh4arSpEMkFZ+VkawcjLP/Bfh0fj8klBR+3tC0tJKCIVdfQP
-	kOfQMTQspU38bEmVVQolA/DXm4KZ3YDJuDyi+LZdlw3V/utFEVoOz4bJaBDyyTTeNhQzmd1vLUf
-	njpRYo8R+3RuMF2yqAh4VmwalugH/wWGZ9uzHRgKV/Hr7tiWRXWEZ6c8bMCPFbLQLKU4kCywtFM
-	70Djk6W4gIUlrk60AwLXVD1ZnRIRpo9cCiKZZgA=
-X-Received: by 2002:a05:6000:2889:b0:48d:f14a:9179 with SMTP id ffacd0b85a97d-48e07fadef3mr14864487f8f.48.1792405373733;
-        Mon, 19 Oct 2026 03:22:53 -0700 (PDT)
-Received: from Lord-Beerus.station ([93.66.71.207])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48dfd471a64sm23771242f8f.6.2026.10.19.03.22.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Oct 2026 03:22:52 -0700 (PDT)
-Date: Mon, 19 Oct 2026 12:22:50 +0200
-From: Stefano Radaelli <stefano.radaelli21@gmail.com>
-To: Frank Li <Frank.li@oss.nxp.com>
-Cc: Frank Li <Frank.Li@nxp.com>, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, pierluigi.p@variscite.com,
-	Stefano Radaelli <stefano.r@variscite.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Subject: Re: [PATCH v1 1/1] arm64: dts: imx8mm-var-dart-sonata: Add OV5640
- camera support
-Message-ID: <atXver4B2Acc3z0w@Lord-Beerus.station>
-References: <20261015162301.63838-1-stefano.r@variscite.com>
- <atEci_KwxUdvAekv@SMW015318>
- <atJY6DzjmAeq7U8q@Lord-Beerus.station>
- <atKHI1B0hL6q-CmY@SMW015318>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hso6/ckf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5A9E1F000C4;
+	Mon, 19 Oct 2026 10:24:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792405476;
+	bh=E91DtUbgK5MUC0RbOMDKbAZ4TgBobeht9O9jUXX8XBQ=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=hso6/ckfFMc4C23ZiOqS1niuaRpbrnZ0fMa3OilkBuJrK2DXcBDTZf456t4t0iBTl
+	 pc3k7+rCgoeSiHw0sb/q0QjjZCqnGMIyA7JdqYFxHM8BzfQm65/nUa8ccPKkLSUWNc
+	 vWNxIwWlqSGM1rAmQtBq9ZHH8RQY3JSiMFHatgX0xUR59UZPeh8kH1Lc7NUxnorqG5
+	 DZYhMIlVrzk87wLrKN6WnodcFq9cbEwLYoXCRrWUUUHuPGjbWauGK/dBmKR08L0fRy
+	 bzQrldBsDIcwyjUQyzn1CjAUMgHOaCNAG+uFXfjMgq1JelK10nJYiKe0zIx2iST4tc
+	 txnHyLuFQFcsQ==
+Subject: Re: [PATCH net v4] can: dev: can_fill_info(): don't wake up
+ controller if interface is down
+From: netdev-bot+sashiko@kernel.org
+To: chunyuzhiqiang@yinhe.ht
+Cc: netdev@vger.kernel.org, linux-can@vger.kernel.org, mkl@pengutronix.de,
+ kernel@pengutronix.de, haibo.chen@oss.nxp.com, shawnguo@kernel.org,
+ imx@lists.linux.dev, kuba@kernel.org
+Date: Mon, 19 Oct 2026 10:24:35 +0000
+Message-ID: <179240547538.3135.2010975389384383545@kernel.org>
+In-Reply-To: <20261018101744.93657-1-chunyuzhiqiang@yinhe.ht>
+References: <20261018101744.93657-1-chunyuzhiqiang@yinhe.ht>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <atKHI1B0hL6q-CmY@SMW015318>
 
-On Fri, Oct 16, 2026 at 03:20:51PM -0500, Frank Li wrote:
-> On Fri, Oct 16, 2026 at 07:03:36PM +0200, Stefano Radaelli wrote:
-> > On Thu, Oct 15, 2026 at 01:33:47PM -0500, Frank Li wrote:
-> > > On Thu, Oct 15, 2026 at 06:23:01PM +0200, Stefano Radaelli wrote:
-> > > > From: Stefano Radaelli <stefano.r@variscite.com>
-> > > >
-> > > > Add support for the OV5640 camera connected to the Sonata carrier
-> > > > board's first MIPI CSI port.
-> > >
-> > > Does this board only support ov5640 camera? Suppose ov5640 module also use
-> > > for other boards.
-> > >
-> > > Can you refer https://lore.kernel.org/imx/20261011-expulsion-frivolous-690de090cf9d@spud/
-> > > to define connectors?
-> > >
-> > > Frank
-> > >
-> >
-> > Hi Frank,
-> >
-> > Thanks for your feedback! I looked at the Toradex approach you linked.
-> >
-> > In our case, the same connector can also accommodate Basler cameras and
-> > potentially other camera modules in the future, while some of our other
-> > carrier boards use different connectors.
-> >
-> > Given these differences, I would prefer to keep the classic approach proposed
-> > in this patch, describing the camera directly in the carrier board DTS.
-> > Do you think we should still use connector bindings in our case?
-> > If so, how would you suggest handling these differences?
-> 
-> Need understand whole board familar, basic Two problem:
-> 
->  	Does carrier board support difference kinds camera?
-> 
-> 	Does carrier board or camera module reused for other boards?
-> 
-> Frank
-> 
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-Hi Frank,
+Critical: 0 · High: 1 · Medium: 0 · Low: 1
 
-Yes to both:
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-- The carrier board supports different cameras: we currently support
-  OV5640 and Basler modules, and support for another camera is planned.
-- The OV5640 module can be used on multiple carrier boards that share
-  the same camera connector.
-  Other carrier boards in our family use a different connector.
+- [High] The fix is incomplete.
+- [Low] The patch changes netlink uAPI output for every CAN driver that
+  implements do_get_berr_counter: IFLA_CAN_BERR_COUNTER is now left out…
 
-Given these combinations, would you consider reasonable keeping the
-camera described directly in the carrier board DTS as proposed in this patch?
-This would avoid adding complexity across the different configurations.
+--
 
-If you still recommend connector bindings, how would you suggest
-structuring them to handle these differences?
+can: dev: can_fill_info(): don't wake up controller if interface is down
 
-Thank you so much for your help,
-Best Regards,
-Stefano
+This adds a netif_running() check to can_get_size() and can_fill_info().
+When the interface is down, do_get_berr_counter() is no longer called and
+IFLA_CAN_BERR_COUNTER is no longer reported. The check used to be in the
+flexcan driver and is now in the CAN core, so it applies to all drivers.
+
+> diff --git a/drivers/net/can/dev/netlink.c b/drivers/net/can/dev/netlink.c
+> index 766d455950f55..b958c04d53db6 100644
+> --- a/drivers/net/can/dev/netlink.c
+> +++ b/drivers/net/can/dev/netlink.c
+
+[ ... ]
+
+> @@ -1006,7 +1006,7 @@ static int can_fill_info(struct sk_buff *skb, const struct net_device *dev)
+>  	    nla_put(skb, IFLA_CAN_CTRLMODE, sizeof(cm), &cm) ||
+>  	    nla_put_u32(skb, IFLA_CAN_RESTART_MS, priv->restart_ms) ||
+>  
+> -	    (priv->do_get_berr_counter &&
+> +	    (priv->do_get_berr_counter && netif_running(dev) &&
+>  	     !priv->do_get_berr_counter(dev, &bec) &&
+>  	     nla_put(skb, IFLA_CAN_BERR_COUNTER, sizeof(bec), &bec)) ||
+
+[Severity: High]
+Is this fix complete? Later in the same expression, can_fill_info() calls
+can_tdc_fill_info() for IFLA_CAN_TDC and IFLA_CAN_XL_TDC. That path can
+still read controller registers while the interface is down:
+
+drivers/net/can/dev/netlink.c:can_tdc_fill_info() {
+    ...
+	if (tdc_is_enabled) {
+		...
+		} else if (dbt_params->do_get_auto_tdcv) {
+			err = dbt_params->do_get_auto_tdcv(dev, &tdcv);
+		}
+    ...
+}
+
+Nothing on this path checks netif_running().
+
+On Xilinx CAN-FD, xcan_get_auto_tdcv() reads XCAN_SR without taking a
+runtime PM reference. By contrast, xcan_get_berr_counter() calls
+pm_runtime_get_sync() before it reads anything:
+
+drivers/net/can/xilinx_can.c:xcan_get_auto_tdcv() {
+	...
+	*tdcv = FIELD_GET(XCAN_SR_TDCV_MASK, priv->read_reg(priv, XCAN_SR_OFFSET));
+	...
+}
+
+After probe, or after xcan_close() calls pm_runtime_put(), the device is
+runtime suspended. At that point xcan_runtime_suspend() has disabled bus_clk
+and can_clk. xcan_close() does not clear ctrlmode, so TDC_AUTO stays set
+after every ifdown.
+
+TDC_AUTO can also be turned on while the interface is down. For example,
+"ip link set canX type can bitrate ... dbitrate ... fd on" goes through
+can_calc_tdco(), which enables TDC_AUTO when the driver supports it. After
+that, the RTM_NEWLINK notification or an unprivileged "ip -d link show"
+would end up in:
+
+can_fill_info()
+  can_tdc_fill_info()
+    xcan_get_auto_tdcv()
+      priv->read_reg(priv, XCAN_SR_OFFSET)
+
+and the read happens with the register clock gated. Depending on the SoC,
+this either returns garbage or causes a bus stall or external abort.
+rcar_canfd_get_auto_tdcv() also does a live readl() of cfdsts from this
+path, whatever the interface state.
+
+The commit message says "This fixes a generic logic problem that exists on
+all platforms". Given that, should the do_get_auto_tdcv() readback in
+can_tdc_fill_info() also be gated on netif_running()? Alternatively, should
+xcan_get_auto_tdcv() take a runtime PM reference?
+
+[Severity: Low]
+This also changes what userspace sees for every driver that implements
+do_get_berr_counter(). Together with the matching change in can_get_size(),
+IFLA_CAN_BERR_COUNTER is now left out of RTM_GETLINK and RTM_NEWLINK
+messages whenever the interface is down. As a result, "ip -details link
+show" no longer prints berr-counter for a down interface.
+
+Before this patch the attribute was always present:
+
+- flexcan, xilinx_can and c_can woke the device and reported the real
+  counters.
+- m_can_get_berr_counter() and mcp251xfd_get_berr_counter() returned 0 with
+  zeroed counters when the interface was not up:
+
+drivers/net/can/m_can/m_can.c:m_can_get_berr_counter() {
+    ...
+	if (!(dev->flags & IFF_UP))
+		return 0;
+    ...
+}
+
+The netlink path can no longer reach these driver-level IFF_UP checks.
+
+The commit named in Fixes:, ec56acfef2af1, was added so that userspace could
+call flexcan_get_berr_counter() even while the interface was down. This
+patch reverses that behaviour rather than fixing a defect in it, and it is
+tagged for stable.
+
+Could the commit message say that IFLA_CAN_BERR_COUNTER is no longer
+reported for down interfaces, and explain why that change is acceptable for
+stable?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261018101744.93657-1-chunyuzhiqiang%40yinhe.ht
