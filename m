@@ -1,69 +1,69 @@
-Received: from mail-dl1-f46.google.com (mail-dl1-f46.google.com [74.125.82.46])
+Received: from mail-dl1-f53.google.com (mail-dl1-f53.google.com [74.125.82.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFF8F4D7D2F
-	for <imx@lists.linux.dev>; Mon, 19 Oct 2026 10:20:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 034DA4D9557
+	for <imx@lists.linux.dev>; Mon, 19 Oct 2026 10:20:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792405239; cv=none; b=eyzOkia7bUW876+hFedM+bsxBTQQ7i8Hg2Sh7Nu/6ZzzkKYWrxa7Nf6j9VgqLbBYR2LdFEvEjxryaGHANPlOnQuOTowa2OAOc90tQWpy+INNL1ODO7kJ5QpnYA/WKSIDVjLIIH+PxCTEM8crNOz02f1AJCRbAPKfgop0SA4vc98=
+	t=1792405244; cv=none; b=WW7tDqdSwAYnbrtLa0o3DC7JBMYDFRJgxrzEh/S4SooYweKB+2v8gckQDIKpl2x6JCKzBqjHrWGd/b3h3eAVDDqtm+8YGcQcnPEoiWVZAamOoXGi3UESzy3qeLNHiwXhqTWBmUReexch74cy30/yCFLIjShwNOFTWbB8Klym9vE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792405239; c=relaxed/simple;
-	bh=p2BuP3I+TMrSGg/xzqyxfT/0XRDTvkwqjvU6at2DNLc=;
+	s=arc-20240116; t=1792405244; c=relaxed/simple;
+	bh=9EMRcKreP4doQsnkOJ6fF7O/xO+9vD1EZaaP/H+owrE=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ZfvrqabB90p81FjAc+9JdFPwIQqehbtwwuCktnDqsFQ6liRiP+CqcDZxC/wDNJuBGMphrCKo311XF84GCeWZfUf/hhZHOaOZoG11fpJtqm6emJGZNF7s/o2lOCY2/zhsuyVAIhO0/Gs79PFAsm712luPGtoKWSkWg0zhDAqr2Hc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WUkRuAla; arc=none smtp.client-ip=74.125.82.46
+	 In-Reply-To:To:Cc; b=KXUMd4BJoImdawrvOjMexfeEWUmD8la3Hkjsat5F+4CTVLbEk67APkppGAZGxWo079hWKOD+oJHtf8Rq7zQNPJdk+TssndWR5qGTJJD3REQ25NjgoNI2FVwkCNvTO4NdnG1JKTctljY+ca7HRDgDdVlp8HDxZYVbOUPuMxZCtkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FUMCtrCJ; arc=none smtp.client-ip=74.125.82.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WUkRuAla"
-Received: by mail-dl1-f46.google.com with SMTP id a92af1059eb24-157fe9d771bso500274c88.0
-        for <imx@lists.linux.dev>; Mon, 19 Oct 2026 03:20:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FUMCtrCJ"
+Received: by mail-dl1-f53.google.com with SMTP id a92af1059eb24-15354aa70e8so646117c88.1
+        for <imx@lists.linux.dev>; Mon, 19 Oct 2026 03:20:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792405236; x=1793010036; darn=lists.linux.dev;
+        d=gmail.com; s=20251104; t=1792405242; x=1793010042; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=5cb5xsu/Ek8DjIcHOFj6xTziW0Tc8RenZR8/LpBW7iE=;
-        b=WUkRuAlamCw1gzlXX2hJ0xwAa28bGKqDN9wni0S/2knumK55myi0tsGi237CwQtzTb
-         fpjlRO452tMitD1bU/3fQph2Vxg9/pmywKz1gAKXb5zzTivhCr+WrvL0FGXeyaCrnEJA
-         1uPgknDATJFSWHtLxHpwTqAdMChtGh9FjrI2LCKnftsXJWkJY1m4Um6Dl1T3OIx7jY2K
-         /d5Ch72Tb+aHit28vQKaT7t3A5AepDCbHhSC95UEDMhOxEl3alHg8dw4mboNIg3qVSWq
-         FtZiy0VR6+u+jTPLmcNC7QM19d985HQO71RjEjC45eHeb/yxF4H0V2mKXkvv1aIC7hXU
-         R1JQ==
+        bh=wG/mmn2fERUKjshAXPMhmIVjTkfUkF1Vhr38NpDvKtE=;
+        b=FUMCtrCJLygrAAXHiLo3uwvFcZOkj9Gz5rG+hImu5dIOaWUwFVENK5PXDGf85ncJUM
+         1A+X+elg6v3j9CgpedCf1fBKbctuLWcE+uKx6SaOtudT+SwEh1V5uZlSfgmoo59nKZ5l
+         x6/4mmx5wt7Ts+BrvyThZNHIo2DyxH47+KztSRxlBU3cNXF0xfHwU9DPRSc5XE+pn9Sh
+         riGQq8nHR0BBkOwyCZHsmOz7EdDZ/WSXfRLVMT7PWzFGqNl4w4EEiH/LWrLmmJ3UOQ5c
+         La8eoFh5y4NqwOI1jxDPnpP9nPjHZMUdEnHFB5rpCEXRcREiFX5ZIWpWu+ckPfc8fVKi
+         Y10Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792405236; x=1793010036;
+        d=1e100.net; s=20260707; t=1792405242; x=1793010042;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=5cb5xsu/Ek8DjIcHOFj6xTziW0Tc8RenZR8/LpBW7iE=;
-        b=VDaq8UfQviJWWW1HsjTyLd7U1XYMQjTj/bE5I4QWMzl/UczLpC/owKSpDGTqpBxYvN
-         zpGw8twW0fL3y4rf3tBbEP+cURKwnASm6PLJnB1u9bbS0l8Pj2g72mzzD3Kga8TH1Mh/
-         HAToXH0m/s5wl8y3fFs8BqtUP3kvhEol8Jut+jEqT30xhXwwV1JBX5352kKMMzioUXIy
-         qSKniTaauW8Y/Ws9MrhJsw/mbRRAa6whj8vjziNO8KvB4kWt8iFVA6JiDib4cbkprB+t
-         8Wa+QIauF5EXyIeO1Jrf3C4pWOQc6Xb8C6imScMHKcCRZepR3rr1PD6TI31rvPO2kGHh
-         5ZyQ==
-X-Forwarded-Encrypted: i=1; AKwUvBz6RCeuV8sgK5uril2KP8QIPPQtrtCvW4N/wM45O74o+5x+Znk1TWSLC+kFzmasPQRd0fE=@lists.linux.dev
-X-Gm-Message-State: AFq9FYI7up20XKWqVdMs+77wpVnQdMrHkub+PlClu/zx6zOkOQZJ2Qhd
-	PpDpASEcTHWx5zCxhuoJBAWgf93iLeDYvq7+aZI2OQhSEyWUrkw78fg1
-X-Gm-Gg: AYBFou0zYvlSoYfogT52JyowhqZqcetRPSnsKkTzteElJOr0SDeAdILXtF2RWnNOY3d
-	zUbB0FBK5oGogwul2tL/5Ojhdo3d1vYOUUDzmwDkNv4r58YNJsodnQptDkEbasCMfbLP2dq3qAl
-	hTQ4eNncqzt2DwY1g2KGrt3nEiIWS3WfZ8glIM+um0wfkr4M08W1FrOiU5qcNs6w7VQ3yuU8pDV
-	9eKS7Q91JOTbvYmoBrlx7KOatiNnO37BcOW1uUP3MnSlg8kmN2KImAYLe6BVh17eVy66ViOJZw4
-	ZOzREjqOeAal1YLcRr98+DhyfdJV+FFQFuMYWdBB3CNyZIFcY87xeJE2aw5ffyUAOB8131XSJjN
-	cgEdZrvBb7PvHk67vovGW/Fe2ijfGgkMA/DcMZkVkKiawkY6L5gmqas05mJF6yKAgdKJNA+94/t
-	aaaygonkwFOfcEJ69otCDnk7f+1RBHdv8LgMccI/pE5DT/JBN2qPiZKKfYK5E2gKJqGQDNQ51t4
-	Y4=
-X-Received: by 2002:a05:701b:4348:b0:14c:96a4:b631 with SMTP id a92af1059eb24-1851453fc8dmr10504406c88.30.1792405235442;
-        Mon, 19 Oct 2026 03:20:35 -0700 (PDT)
+        bh=wG/mmn2fERUKjshAXPMhmIVjTkfUkF1Vhr38NpDvKtE=;
+        b=w7R2T+VQLX7yWDTViY52I5bPo7ZJz+mug78gnpgz0Jy99s4rmU6YsQxF78bc9icAqr
+         1c2lCIBWlXm9gIkmaEiw/XtP8RyD1whKMIqKxY/eEhaUtv7SwdkQSyLhWh+uUGie33f0
+         GaB7TtFd6xyK/47s4kyKh+gAtJCv2Js+ZOwiLAGNxo+sBsNsRNWFqkbcLGmQF8IN51cM
+         y4+ExK+pokEdZVmVshWWd4/9B1VNadZQtQoME1nUTWuITFLnyMgt5V7wthrSLFa9r3hY
+         K1HT/iyDPxZCt5EY20Mw1yTeOPLlZNRMzijot1jpOD/H362+mrqs2qaNjdFCtd5Q6P4p
+         YFYA==
+X-Forwarded-Encrypted: i=1; AKwUvBwitMDgXFxvfKow7P5IHPU9Kx7sg88OohDWuYXvxHy1Bi/4P7fZwX2sUOIPCN8qKHbUeio=@lists.linux.dev
+X-Gm-Message-State: AFq9FYJoCGn9Dd0lLrNzkBEpsJ+OcLGBoZV6vFJCgq2mqFmaEtePQWzX
+	z3iGmQMqRtVLFsF3ub8BbtBWTf3ma74N/20nOKzLNeU6sKfnxpTC0Z6Y
+X-Gm-Gg: AYBFou2moY/CqW9SdjYta/jXXkXZOF6z91ldPx0fH+qJBZ6boPPNyTPHMM4ENfpP50F
+	8eOw1xKl2uqC9SYUihTh4r9URmzutvfyi956wFpbbKc8/J0l1hJzio4MnLdOdaOOWpX6RA+VNAf
+	txc2S8TGrZYwd4WLOuKwX5dCSpue2mSSyPSaYRUqeg8/+0xX1Uxai1EygyUBeiT7zbmy2ufHBFp
+	LC/0bQzh3DzbilH4o0bEMpNnbMotxPVDs6jHZYtRPIpqnBrY0M/GG6Mp1dB0VR2hCseCPvGseJO
+	Wo7V5sprydqREOF/uRscHw8FfJDo/1Lr9VpbByXZ5LOQpcW7+WlVvbUvCn9sPfZQFaZhMghJaLI
+	EJjxUzBS86DmfDjdpSyc/io8jVqL8QuxKeZNZlOnR708l4OXdVOTsy75V75J+XxEGvm3sjnPeXh
+	AK2p7oqz5hOLVKQHoyQltsdd7ovVdwtR3zSqApr4zGSpAME9KEecH9+MJiVCgT6XmMbpqULNUqA
+	M9ugQevJGHHfg==
+X-Received: by 2002:a05:701b:424d:10b0:13b:4ab5:41d7 with SMTP id a92af1059eb24-1850c9cf427mr12119481c88.3.1792405241814;
+        Mon, 19 Oct 2026 03:20:41 -0700 (PDT)
 Received: from [127.0.1.1] ([67.159.246.222])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-18319d3b880sm26324251c88.10.2026.10.19.03.20.29
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-18319d3b880sm26324251c88.10.2026.10.19.03.20.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Oct 2026 03:20:35 -0700 (PDT)
+        Mon, 19 Oct 2026 03:20:41 -0700 (PDT)
 From: Leonardo Costa <leoreis.costa@gmail.com>
-Date: Mon, 19 Oct 2026 07:17:14 -0300
-Subject: [PATCH v2 1/3] dt-bindings: display: bridge: simple: Add
- data-enable-active to dumb-vga-dac
+Date: Mon, 19 Oct 2026 07:17:15 -0300
+Subject: [PATCH v2 2/3] drm/bridge: simple-bridge: Support
+ data-enable-active endpoint property
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -72,7 +72,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261019-v2-apalis-imx6-enable-vga-v2-1-ef6a3a780472@toradex.com>
+Message-Id: <20261019-v2-apalis-imx6-enable-vga-v2-2-ef6a3a780472@toradex.com>
 References: <20261019-v2-apalis-imx6-enable-vga-v2-0-ef6a3a780472@toradex.com>
 In-Reply-To: <20261019-v2-apalis-imx6-enable-vga-v2-0-ef6a3a780472@toradex.com>
 To: Andrzej Hajda <andrzej.hajda@intel.com>, 
@@ -93,73 +93,71 @@ Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, 
  Leonardo Costa <leonardo.costa@toradex.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1792405217; l=1828;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1792405217; l=2075;
  i=leonardo.costa@toradex.com; s=20261001; h=from:subject:message-id;
- bh=PF05NXBIDireg6ZUuKSrsvk0d/GOH3dnTBdN38H+03I=;
- b=HD53baHT8u8/D5pbXuDGQl16Aht+8414McxB843sMyEC12qLowhQ0jc1HnfAvNB3zgF23VEb/
- NDRwdc+iyH3BM2jB6dL4/ITgsqWwfg90tizY7oL/Djh99ux42ruW1MI
+ bh=/IjtTShiJA+F9KmNWlJJNMy2lTKWTky2io3jmPVXXVA=;
+ b=wT8coFssfadnbio6KHmF1yBAZdfjcW8j5Ftd+0jWUjv7dcyReSTM5NiEs8ga+Dm7iSM19YUzq
+ JsnS98IOb0zBMI8LksAaaJsn7t3ABSIdTS+heHkDqYkDHVufmMApZIH
 X-Developer-Key: i=leonardo.costa@toradex.com; a=ed25519;
  pk=4xvoVLDt+NxIz9D8BJHhT0fD43Ig6XgSDw4jRN/gHzk=
 
 From: Leonardo Costa <leonardo.costa@toradex.com>
 
-Some simple VGA DACs may include a data-enable input that must be driven
-at a specific polarity. Add the data-enable-active property from
-video-interfaces to the input endpoint to describe that polarity.
+Some simple bridges, such as a resistor ladder DAC, may include a
+data-enable input that must be driven at a specific polarity.
+
+Read the data-enable-active property from the input endpoint and fill
+the bridge's input bus flags accordingly, so the upstream encoder drives
+DE with the required polarity. The property is applied only if the
+bridge doesn't provide its own timings struct.
 
 Signed-off-by: Leonardo Costa <leonardo.costa@toradex.com>
 ---
- .../bindings/display/bridge/simple-bridge.yaml     | 28 +++++++++++++++++++++-
- 1 file changed, 27 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/simple-bridge.c | 21 ++++++++++++++++++++-
+ 1 file changed, 20 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/display/bridge/simple-bridge.yaml b/Documentation/devicetree/bindings/display/bridge/simple-bridge.yaml
-index 7636c24906ba..b1b23d41245d 100644
---- a/Documentation/devicetree/bindings/display/bridge/simple-bridge.yaml
-+++ b/Documentation/devicetree/bindings/display/bridge/simple-bridge.yaml
-@@ -43,9 +43,18 @@ properties:
+diff --git a/drivers/gpu/drm/bridge/simple-bridge.c b/drivers/gpu/drm/bridge/simple-bridge.c
+index 848c2df2a276..c5301295658a 100644
+--- a/drivers/gpu/drm/bridge/simple-bridge.c
++++ b/drivers/gpu/drm/bridge/simple-bridge.c
+@@ -183,6 +183,9 @@ static int simple_bridge_probe(struct platform_device *pdev)
+ {
+ 	struct simple_bridge *sbridge;
+ 	struct device_node *remote;
++	struct device_node *ep;
++	bool de_present;
++	u32 de;
  
-     properties:
-       port@0:
--        $ref: /schemas/graph.yaml#/properties/port
-+        $ref: /schemas/graph.yaml#/$defs/port-base
-+        unevaluatedProperties: false
-         description: The bridge input
+ 	sbridge = devm_drm_bridge_alloc(&pdev->dev, struct simple_bridge,
+ 					bridge, &simple_bridge_bridge_funcs);
+@@ -220,10 +223,26 @@ static int simple_bridge_probe(struct platform_device *pdev)
+ 		return dev_err_probe(&pdev->dev, PTR_ERR(sbridge->enable),
+ 				     "Unable to retrieve enable GPIO\n");
  
-+        properties:
-+          endpoint:
-+            $ref: /schemas/media/video-interfaces.yaml
-+            unevaluatedProperties: false
+-	/* Register the bridge. */
+ 	sbridge->bridge.of_node = pdev->dev.of_node;
+ 	sbridge->bridge.timings = sbridge->info->timings;
+ 
++	ep = of_graph_get_endpoint_by_regs(pdev->dev.of_node, 0, -1);
++	de_present = !of_property_read_u32(ep, "data-enable-active", &de);
++	of_node_put(ep);
 +
-+            properties:
-+              data-enable-active: true
++	if (de_present && !sbridge->bridge.timings) {
++		struct drm_bridge_timings *timings;
 +
-       port@1:
-         $ref: /schemas/graph.yaml#/properties/port
-         description: The bridge output
-@@ -65,6 +74,23 @@ required:
-   - compatible
-   - ports
- 
-+allOf:
-+  - if:
-+      not:
-+        properties:
-+          compatible:
-+            contains:
-+              const: dumb-vga-dac
-+    then:
-+      properties:
-+        ports:
-+          properties:
-+            port@0:
-+              properties:
-+                endpoint:
-+                  properties:
-+                    data-enable-active: false
++		timings = devm_kzalloc(&pdev->dev, sizeof(*timings), GFP_KERNEL);
++		if (!timings)
++			return -ENOMEM;
 +
- additionalProperties: false
++		timings->input_bus_flags = de ? DRM_BUS_FLAG_DE_HIGH :
++						DRM_BUS_FLAG_DE_LOW;
++		sbridge->bridge.timings = timings;
++	}
++
++	/* Register the bridge. */
+ 	return devm_drm_bridge_add(&pdev->dev, &sbridge->bridge);
+ }
  
- examples:
 
 -- 
 2.43.0
