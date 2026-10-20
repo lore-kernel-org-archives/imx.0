@@ -1,65 +1,67 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.2
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=220.197.31.4
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792489078;
-	b=Gl+egK0ATxheKjJa8HcRzCMEKJsNhj+5mmejovdeuIDbvYQ0W7/kD8PFn5ibNnqqI6m5
-	 Zi7yTaiji1WxNLFddji7iVN1PR1tcLnp0LIw1xUlN3FzfTTPTqk3UmCHHj2gc3niN/0SC
-	 AZGSejQIFHZK3gKvKPKJCS86GvqshV550xOyWa1q4bNIoPi+vipt9Wlk+bBe1gO+ycVLk
-	 kH+WfNhkvh4A2AKyq2dtR2O8pWdVDvoFhfvFmG96J7/e/AwMAYtthLcDPG2MMQI5mNz3b
-	 VqUljpQhmgF/s9Ul8eAxADuSazYBnrkkbyPh3tx3I3Lh43kANgRmKnssqYBLmgkCqnA==
+	t=1792489080;
+	b=Ss+Xn/9MdP60gMHqAd+0bB0Ufz7SFkmdlLmIZ9EjIoJ5O8UeyeAwoswmIq+vHjihzw66
+	 4gUB1mKoO0rjy6fvmFWffmvMcsUDHVDS6gZOLQAhEXrEgc+YBaTUqnEqGIYi4+zhN38K9
+	 nRh3Nc6es/28870xQ6QKIzyXDyx8Qh7MLlqOK9TWo70rPu8ipKbwReyNXVTO8L9ea6NH6
+	 cbEdCpxZYbIan2OqQ6HKJUo7CYyrj8OTzkUWToHEdbwXurbLDBt3WymRqoDPlKrUDdvnf
+	 ozcZfaU/gKz5C6upSDZQSLiemlP5I51izdQ7v7n2Cb3JhYrjW/M6bj3naMPRIFGhRTg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792489078;
-	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:X-CM-TRANSID:X-Coremail-Antispam:
-	 X-CM-SenderInfo;
-	bh=bpU4pmX+9zma9b0HMHe9OtZavzpqVSsVuDamqHfqBOM=;
-	b=D+x4r77VSS5mw18NG0W0NbK52dX1Pje7xslC0zlD6yHX6jCwFBaNDK3TPW5vnBcIcapj
-	 s5OFHFFFrNw7ZRbYT92mMD/nmoEOFKnebfGd6ymlEYnSWJeeDjKfliY1NCCJN1wqj0Fw6
-	 weAk75JnuU0m1zylk1MNWI4BTBa7SNEcRSN36ugrA59vct3yG7xxhqyk7JIC7aI9H4XUi
-	 05FlqWlm0HCGCUsiBHHbyvl8WSBV79IQmrAmzwgwYAORQFC5ygDg9yTc/MgOzdFGgWN2D
-	 mh/8r2vP3dqaLj6LI6xoEOnednfLOJE6ih0qjKesnEYvBDs9po+Cj16XNFuhnVgwVHQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792489080;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Subject:Date:Message-Id:
+	 X-Mailer:MIME-Version:Content-Transfer-Encoding:X-CM-TRANSID:
+	 X-Coremail-Antispam:X-CM-SenderInfo;
+	bh=TksXlMVZXRpHlnAwSWhbl1BTy5EqD5EPHWFrlK+U+co=;
+	b=O90B52Xsa5Kd+1jDtF7ijQcMRq6dKfEG5Ht5DO9Z13iOW4R7U3KXJVMp3R1h3QpaPO+B
+	 PLAZDIW2ecIX9p/HpiGQnhEvVSTSw6bfx3WOfJ8T2locARlvrgf+HZGtS/bYxq5PVuyyv
+	 CUAl6G4iRbXaJDuq7kgA31CEDS4hbp3jKyMw8QzsUj7Y5UlTKWnQtXhYmugwPJ9o4GRZz
+	 A7v+/FoBRBXbic/XQ5b4nfya9V+962Xre1gfXdGrCzGOZHwSPwntyde8d/N/Q0wPXpraC
+	 T+8cL5+9oRHbeM8s8A9fRoDAr8ayGAkm8I1KKPOHKYjGzMyUcK/GwGhsf+U2O2mH4Rw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=163.com;
 	spf=pass smtp.mailfrom=163.com;
-	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=mS31Dw1N;
-	arc=none smtp.remote-ip=117.135.210.2
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=J6QUpRF1;
+	arc=none smtp.remote-ip=220.197.31.4
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAC6C606A31A
-	for <imx@lists.linux.dev>; Tue, 20 Oct 2026 09:37:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AAC6C606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F3F8606A31B
+	for <imx@lists.linux.dev>; Tue, 20 Oct 2026 09:37:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6F3F8606A31B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=mS31Dw1N
+	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=J6QUpRF1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=bp
-	U4pmX+9zma9b0HMHe9OtZavzpqVSsVuDamqHfqBOM=; b=mS31Dw1N3PrN7zkDWi
-	XwyomNptkrkBuly/amAqP+WmRRjI0TWr6DiJCqezSo/4vO5krC5Hr14I+iaRjKZK
-	8QUVvFId3VA5yksxyZaF7ownrnZOx5VlX3RQovkSrw7Dr3GEqQFTWeF31QyQJ63m
-	tFyyo8v6sP8oRkT6BduT0JPvY=
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Tk
+	sXlMVZXRpHlnAwSWhbl1BTy5EqD5EPHWFrlK+U+co=; b=J6QUpRF1SX7f4nS5et
+	3F66bvy2i9ahCAslj/onOhZXSJPxpDCBYObeEA6AQ9aRR49DsMY2RdxpTk1kMd6m
+	Qnj0TyC5AcBlgd74YY5+fapPLNMqKdsu4Qz8vCRFTnWs1ALbyVStQYxNAvuGDfNW
+	fyldoJGGpPTz9s+rOAzgpKTNc=
 Received: from pc.localdomain (unknown [])
-	by gzsmtp1 (Coremail) with SMTP id PCgvCgD3_4ImNtdqupV5Aw--.29320S4;
-	Tue, 20 Oct 2026 17:36:42 +0800 (CST)
+	by gzsmtp1 (Coremail) with SMTP id PCgvCgD3_4ImNtdqupV5Aw--.29320S2;
+	Tue, 20 Oct 2026 17:36:40 +0800 (CST)
 From: Jiale Yao <yaojiale02@163.com>
 To: Frank Li <Frank.Li@nxp.com>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Shawn Guo <shawn.guo@linaro.org>,
+	Gatien Chevallier <gatien.chevallier@foss.st.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
 	Huang Shijie <b32955@freescale.com>,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH 2/3] bus: imx-weim: reject devices without match data
-Date: Tue, 20 Oct 2026 17:36:34 +0800
-Message-Id: <20261020093637.1654161-3-yaojiale02@163.com>
+	linux-kernel@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com
+Subject: [PATCH 0/3] bus: reject devices without platform match data
+Date: Tue, 20 Oct 2026 17:36:32 +0800
+Message-Id: <20261020093637.1654161-1-yaojiale02@163.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20261020093637.1654161-1-yaojiale02@163.com>
-References: <20261020093637.1654161-1-yaojiale02@163.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -70,49 +72,33 @@ List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PCgvCgD3_4ImNtdqupV5Aw--.29320S4
-X-Coremail-Antispam: 1Uf129KBjvJXoW7Zw13XryrKw4DWF43GFWUXFb_yoW8JFy8pF
-	40gFy3tryUWw47Gw1UAr4UZFy5uFs2k3yDKFy8uwnY9r95tFyDXryFq345u3WFkrZY9a13
-	tF4ktFy8Wa4UWrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jzmhrUUUUU=
-X-CM-SenderInfo: x1dryxhdohiji6rwjhhfrp/xtbC8AsoYmrXNis04wAA3G
+X-CM-TRANSID:PCgvCgD3_4ImNtdqupV5Aw--.29320S2
+X-Coremail-Antispam: 1Uf129KBjvdXoW7Xw47Cw1fXFWxWr47Cry7GFg_yoW3tFc_uF
+	Z3XrnrX34IgryUG3WrArsFyrW3CFWxWrykZr47t3yfX3yUZr15Jr4qq3yrC39rWFWqqFn8
+	Grn8Zr4Yvwn7ujkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU80tC3UUUUU==
+X-CM-SenderInfo: x1dryxhdohiji6rwjhhfrp/xtbCzggoYmrXNiil+gAA3w
 
-Platform driver_override can bind a device to this driver without a
-matching OF entry. In that case, device_get_match_data() returns NULL
-and weim_parse_dt() dereferences it while configuring the controller.
+Platform driver_override can bind a device to a platform driver without
+matching its OF table. The match-data helpers then return NULL.
 
-Reject devices without match data before parsing the device tree.
+The i.MX AIPSTZ and WEIM drivers dereference the missing data during
+probe. The STM32 RIFSC driver stores it for later dereference through
+its debugfs configuration dump. Add checks before each first use so
+these drivers reject unsupported devices instead of dereferencing NULL.
 
-Fixes: 85bf6d4e4b10 ("drivers: bus: add a new driver for WEIM")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiale Yao <yaojiale02@163.com>
----
- drivers/bus/imx-weim.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+Each change is independent and can be applied separately.
 
-diff --git a/drivers/bus/imx-weim.c b/drivers/bus/imx-weim.c
-index 87070155b057..3ecad0e453cc 100644
---- a/drivers/bus/imx-weim.c
-+++ b/drivers/bus/imx-weim.c
-@@ -205,13 +205,17 @@ static int weim_timing_setup(struct device *dev, struct device_node *np,
- 
- static int weim_parse_dt(struct platform_device *pdev)
- {
--	const struct imx_weim_devtype *devtype = device_get_match_data(&pdev->dev);
-+	const struct imx_weim_devtype *devtype;
- 	int ret = 0, have_child = 0;
- 	struct device_node *child;
- 	struct weim_priv *priv;
- 	void __iomem *base;
- 	u32 reg;
- 
-+	devtype = device_get_match_data(&pdev->dev);
-+	if (!devtype)
-+		return -ENODATA;
-+
- 	if (devtype == &imx50_weim_devtype) {
- 		ret = imx_weim_gpr_setup(pdev);
- 		if (ret)
+Jiale Yao (3):
+  bus: imx-aipstz: reject devices without match data
+  bus: imx-weim: reject devices without match data
+  bus: stm32-rifsc: reject debugfs setup without match data
+
+ drivers/bus/imx-aipstz.c  | 2 ++
+ drivers/bus/imx-weim.c    | 6 +++++-
+ drivers/bus/stm32_rifsc.c | 2 ++
+ 3 files changed, 9 insertions(+), 1 deletion(-)
+
 -- 
 2.34.1
 
