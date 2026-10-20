@@ -1,56 +1,60 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792483261;
-	b=Oc/7+LNFGuVB6G2+oxhifJHYVaNAk6JooWOakf6Ol/ZiLCbugW4Fnlp14uID+SIMQb/2
-	 1H/EuOM3+XLTfwczIBbg43TrxJchHVJnU7AVa8p0hpgWwVcVhRY51Z4Pc91wS3UaagHVr
-	 EjC1rGY51pZKNnuxtN9FDsYcRhOg150LM8Vx7b/gllwFPsTnRhEw6090Ea7hkM61qcFef
-	 XzmWDw9mSg5FB0tCTSHJWktg5hItEQbkO4/Es1FFkeVxg9D+tstgHrKLkxpMUi/j2WdA/
-	 vq53BL1uM1z2RZ7jO40PEbFK7X+AtOtpNLpCTEnsxQ/d8iy7gVAPREy2AxLJQRp5b7Q==
+	t=1792483463;
+	b=nn+rgOV0mgR+3yNmfsLaQbMH415ewZ9jucVBuFgMj1T9p0E7DpFp+cIJI/rZLMmbcKPT
+	 a3D3qVkMX9WXzkUYDDHYLCB460NqLoXWTJ356O2Sw3umnUXYqqwScqQdYEAuvzjLA5LXE
+	 CrYWiQ7b+YqecfOUYwImBIeRKLlEJp4K3YKv5k4EnWUqXfy04yFQOKaPyDe37qibbTYlQ
+	 a7rdl7hFHZK5ZbmO/ZkoVirCmZ3zpybDDHu8Kaq8tjmTsgdAXlSAqhjSLQDT2xdcWf1Zp
+	 JBjLKOY8A5x4I9S212z95wnXOeGHgqD2C7eMm1FpFOZ/uoCeth5n5rD2QGZC8x+nrnQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792483261;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=UBotgRTFrFy65yan3gjmTdGhM0soWJEp61xSEN3kB/U=;
-	b=vrlzfKr6HDraHZ80dIaybtGexvkTQHa328d4qlOdciHDn7dDbDZBVB5IEqSHJVzX1lQC
-	 fvPSpugXuHyd4GoHKQFAvh4pz/KYhVC6oYwy/1h6moRRY5KwCUE6lJKpit43A/idSnNqb
-	 4tedo5LzK6xEKdYDnROLgBL2L575mFhoVvj28WgENT7RCJNhN9Ouy85O6+kFk/je+Y/VO
-	 AKREzWrkFBc6rMv0dow8auucDjuQooQvDLnmCNJMt+6o7p3W3xVoE1ER5WAbJLZXHGTpN
-	 g8dB3hyLgj6bdIKTHeTSUR1YxEsL5fqPypG201va43Z8JbVBt1WXTU1ZqlcbazwJDAg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792483463;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:Auto-Submitted:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
+	b=r1apn0rse9yrbGp949MhUou2z747LInhZntky023sh39EhIX96N6MVQ+PXH+VKPYcOdv
+	 KCGUOu/78Nn7+eDNEha6Zo7WViWuYmMUJHNzRDb/S7lm0A30MjXSZ6fU4bS0BiVEGg45u
+	 +GBa1VVbozS8+6UHUmWGXZOkXLd9B2GUh7jArkhbdYbr73P+K1cxKnQrOAUPgzQ5dzfyw
+	 tJEZgUk5dzqIuMIrsWt8EUKfpa9tx6CzdMUlVsqaHB4HcXKdwJ0s/nisuqVsjnBUFIEod
+	 DQ2NyPYF0whdGsfhOD2kEZ7kIv3MygBRfFGhORRdGWu7P4rVQnwz7gT+WXQYbSVVNXQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jz1Q8djX;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CT9XujEv;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49C23606A319
-	for <imx@lists.linux.dev>; Tue, 20 Oct 2026 08:01:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 397F8606A319;
+	Tue, 20 Oct 2026 08:04:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jz1Q8djX
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE8EC1F000C4;
-	Tue, 20 Oct 2026 08:01:00 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CT9XujEv
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4997E1F000C4;
+	Tue, 20 Oct 2026 08:04:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792483261;
-	bh=UBotgRTFrFy65yan3gjmTdGhM0soWJEp61xSEN3kB/U=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=jz1Q8djXYQ+dYSGj3QVARdK4vxI/ygrt0rsutm1wZuM9u5G3259n32fM5k9lb+hZj
-	 tV7UHn4oUhNZYmCNo9q1vUGSgTSjvEtsycvEtDF+7N9ZzDf6vG7O8hUNGXPh3BEPrv
-	 24eCI/j7TkgAi5ZWKeT2R9H1EHwj1YhiT9lZB5vVCQVOHdiGks6kx8txcYxZ1E0wCs
-	 FNKRLfm7wLzwp5EDfTtg5BukoesfMm1PHfxCxTHuMUkKyReaYMNmSepqEUvUHOsd1a
-	 vb7fovsPcgvV285LOeMYlkpTLymZyGfsG+tbw39hLIytg7EfqpxaiPHdbb8eDx3dvH
-	 iuVjVhOj7xGpw==
-Message-ID: <sashiko-outbox-178465@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] media: synopsys: dw-mipi-csi2rx: Fix DPHY testclr reset
- sequence
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Guoniu Zhou" <guoniu.zhou@oss.nxp.com>
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org, media-ci@linuxtv.org
-In-Reply-To: <20261020-dw-csi2rx-v1-1-c58a2e5cd43d@oss.nxp.com>
-References: <20261020-dw-csi2rx-v1-1-c58a2e5cd43d@oss.nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 20 Oct 2026 08:01:00 +0000
+	s=k20260515; t=1792483462;
+	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=CT9XujEv8qyVL5es+LW22rM7MFgjushdbgd9qHIXvjXTdrQUTLjQIIZf/KkJDTRMj
+	 1zBt8eqtZdbUHn1XWSD/DqPBuETv0S2IIRgpkSTRWt+3XdRxw2iMDsTMRwSLg0U1nl
+	 cSaFIwe+eRoHGXuq1lG4pYiHO+gS++UsknTs8o7pKtCfPgNhV4DTJiBSo7HgSRba8a
+	 cCXD3gNJ7jpwQO30xHrpYC9hy6+pN8mKRt1pm2ltCMxb2o7HAJTRiJEoZz6slM/Wcy
+	 gVi9zvuD5bfpUsY80Xi5XSE2PcDwfO8dKmd1J3pjHHxvz/KMV8rRgk6z2XZ8s4sMHi
+	 crTNE9pRe5c9w==
+From: netdev-bot+sinfo@kernel.org
+To: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
+Cc: netdev@vger.kernel.org, linux-can@vger.kernel.org, mkl@pengutronix.de,
+ kernel@pengutronix.de, haibo.chen@oss.nxp.com, shawnguo@kernel.org,
+ imx@lists.linux.dev, stable@vger.kernel.org
+Subject: Re: [PATCH v5] can: dev: can_fill_info(): don't wake up controller if
+ interface is down
+Date: Tue, 20 Oct 2026 08:04:21 +0000
+Message-ID: <179248346178.3290.6150529956117056026@kernel.org>
+In-Reply-To: <20261020075340.417899-1-chunyuzhiqiang@yinhe.ht>
+References: <20261018101744.93657-1-chunyuzhiqiang@yinhe.ht>
+ <20261020075340.417899-1-chunyuzhiqiang@yinhe.ht>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -59,82 +63,26 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
+MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] media: missing MMIO flush before ndelay() in imx93_csi2rx_dphy_a=
-ssert_reset()
---
+Hi!
 
-commit b3d3c4c8602e49d8fd933f7b1d722f45a1287b01
-Author: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-media: synopsys: dw-mipi-csi2rx: Fix DPHY testclr reset sequence
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
 
-This commit updates imx93_csi2rx_dphy_assert_reset() so that the DPHY test
-clear bit is asserted first, held for 15ns, and then deasserted.
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
 
-> diff --git a/drivers/media/platform/synopsys/dw-mipi-csi2rx.c b/drivers/m=
-edia/platform/synopsys/dw-mipi-csi2rx.c
-> index b7247d597c9cc..b9f7ba25bd3ba 100644
-> --- a/drivers/media/platform/synopsys/dw-mipi-csi2rx.c
-> +++ b/drivers/media/platform/synopsys/dw-mipi-csi2rx.c
-> @@ -830,18 +830,23 @@ static void imx93_csi2rx_dphy_assert_reset(struct d=
-w_mipi_csi2rx_device *csi2)
->  {
->  	u32 val;
-> =20
-> -	/* Release Synopsys DPHY test codes from reset */
-> +	/* Put PHY in shutdown mode for configuration */
->  	dw_mipi_csi2rx_write(csi2, DW_MIPI_CSI2RX_DPHY_RSTZ, 0);
->  	dw_mipi_csi2rx_write(csi2, DW_MIPI_CSI2RX_PHY_SHUTDOWNZ, 0);
-> =20
-> +	/*
-> +	 * Apply testclr pulse to load analog programmability defaults
-> +	 * and release the test interface for configuration.
-> +	 */
->  	val =3D dw_mipi_csi2rx_read(csi2, DW_MIPI_CSI2RX_PHY_TST_CTRL0);
-> -	val &=3D ~DPHY_TEST_CTRL0_TEST_CLR;
-> +	val |=3D DPHY_TEST_CTRL0_TEST_CLR;
->  	dw_mipi_csi2rx_write(csi2, DW_MIPI_CSI2RX_PHY_TST_CTRL0, val);
-> =20
-> -	val =3D dw_mipi_csi2rx_read(csi2, DW_MIPI_CSI2RX_PHY_TST_CTRL0);
->  	/* Wait for at least 15ns */
->  	ndelay(15);
-> -	val |=3D DPHY_TEST_CTRL0_TEST_CLR;
-> +
-> +	val =3D dw_mipi_csi2rx_read(csi2, DW_MIPI_CSI2RX_PHY_TST_CTRL0);
-> +	val &=3D ~DPHY_TEST_CTRL0_TEST_CLR;
->  	dw_mipi_csi2rx_write(csi2, DW_MIPI_CSI2RX_PHY_TST_CTRL0, val);
->  }
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
 
-[Severity: Medium]
-Should dw_mipi_csi2rx_read(csi2, DW_MIPI_CSI2RX_PHY_TST_CTRL0) remain before
-ndelay(15) in imx93_csi2rx_dphy_assert_reset()?
-
-When streaming is started via dw_mipi_csi2rx_start() ->
-imx93_csi2rx_dphy_assert_reset(), moving the read of
-DW_MIPI_CSI2RX_PHY_TST_CTRL0 to after ndelay(15) means the posted writel()
-asserting DPHY_TEST_CTRL0_TEST_CLR is no longer flushed to the target
-register before the 15ns CPU delay loop executes.
-
-If that write remains buffered in the interconnect while ndelay(15) runs, t=
-he
-subsequent read will flush the assertion and immediately clear and write
-DPHY_TEST_CTRL0_TEST_CLR back without waiting 15ns, which could violate the
-minimum pulse width.
-
-Note that imx93_csi2rx_dphy_deassert_reset() right below this function
-specifically performs a readback before ndelay() for this reason:
-
-	dw_mipi_csi2rx_write(csi2, DW_MIPI_CSI2RX_PHY_SHUTDOWNZ, 0x1);
-	/*
-	 * ndelay() is not necessary have MMIO operation, need dummy read to
-	 * ensure that the write operation above reaches its target.
-	 */
-	dw_mipi_csi2rx_read(csi2, DW_MIPI_CSI2RX_PHY_SHUTDOWNZ);
-	ndelay(5);
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261020-dw-csi2rx-=
-v1-1-c58a2e5cd43d@oss.nxp.com?part=3D1
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
