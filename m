@@ -1,85 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=116.203.31.6
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.43
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792503249;
-	b=VHyjXs/62Maj0R+tz8ae73/oFc22zZzJVBrF2EhjnxKu9NXbF1SzUI0uMA2rqSVWHvNc
-	 nPe6pGPW8lOH/N2M9gaGbepPVwGUVB4ji+Zvap9jKL3Czy0WfbUJym2+va+Q35zCGIL4j
-	 oz1I3jD16q7x1mTJdcRcuy2mQV2xnSxZvjreveaQe0T7NdroFXMLDmd38pHes15x49lPW
-	 aq3TscfG/Rexlpc+HPYXxDfIGI15SlBzL+SFKFMW4MTKyIyCsWn5/ayh1yY/FvN6pRqJ4
-	 CkvS6otIdR1A8d2W34M8T2yB6Euw4S1aT4jNH1Eqfeoz/d/vpDJr23yo9oeXMzN2Svg==
+	t=1792504800;
+	b=H7F54dV9Nj/WX1ukJ2Dh3t6SIPFtyQncpnVHSBbksfnuEgRr/S/1z6I4wnO/YTlW4bJ1
+	 9uWiWWEwhhP4UdYFV1NEF9e8D49l0ZXMPmKrvoxf7QLTekKcFfRmAP5ZVRk4yS6sYg8fZ
+	 LRjTbgE7g3LtSkhoGDinqgbULE/aY5VuJuqvOXIhaB2K4jGLRK3Hbah+nW24GyvaiXXCU
+	 cHeJKUNgUgb9wkqyRCk3PTdCDqAFhQ5+4UVi0z6a6glsveUbrO+n1usQgFPyqk8aVDpeE
+	 uycY7ksEOSkn4OoShZBG+qCdraNkKIscJS28M1WCGTmjws6OnWh9WLLhP0xMcPAvvgw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792503249;
-	h=DMARC-Filter:DKIM-Signature:X-secureTransport-forwarded:From:
-	 Complaints-To:To:CC:Subject:Thread-Topic:Thread-Index:Date:Message-ID:
-	 References:In-Reply-To:Accept-Language:Content-Language:
-	 X-MS-Has-Attach:X-MS-TNEF-Correlator:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=lTF0a1BWo1WRyCO1Plz6IAaTuq5ujNdrBcn/XSxu1yU=;
-	b=e5bohFm+Aedvwzp0I7x6HEjHUdJGDqT8d7QWnik66PwR8ZWTkcGiT5bDTuKSjmDp185a
-	 i8OI97KfHeFiXKwEHT01F87UR98EpVZiRd9a+j5nEuceD1+zVg04+dC2OjOhpqKLKah82
-	 6nRY3hD/G8qO3/+SsbX2zQpmsHeDNkNv/ydKAianiLOk8vPPUYskNXXzv6OCeYcpqjyHk
-	 VOEpcAwerur9od49i3A/WxG84hQlMaeMSPik9696akoUETDV+o6vdel+PMI0fkwF61gu7
-	 VB6rojISASZ4ceIXBeC+EBGrg6WwjSeJtphma87gha/k6hMpletUZygxNEtjm1nju5w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792504800;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=PnBOhXvJIJK4VLpTdrp7cs6iUz2XtC8WuEePd4QSYVU=;
+	b=vEcfEpa2Ets8P7y0BlCizsFtx7YDGjkuObKEwq0ajbaVUV6ItDsKqBZB2oGrpvECwSR2
+	 IqXRKZCgDS1zDLfNLK8OoOj7G2gJM+0VV92scDx/p8DHHzdK3k+h1+XHxZ4qHFJ7rMci7
+	 EC/f1HRQNUytVc+F7sITvuZcouwD5cqvo1DRfMYqUPeOy2pllvW3HT7LBa1vrIxJdqh8p
+	 eM2U8hFwobDYf2flpeC8rODWbdHXWMI00nTbEG/EiGXOIzqoHwcFhY6FrNhMza5IYCMV3
+	 NU1BAV0axafqlZdDQAzC71uRwpALuvfbFZkqG1j6y4L5moiHHevwN/3XrLaBTnItW3g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=dh-electronics.com;
-	spf=pass smtp.mailfrom=dh-electronics.com;
-	dkim=pass header.d=dh-electronics.com header.i=@dh-electronics.com header.a=rsa-sha256 header.s=dhelectronicscom header.b=ltDx203P;
-	arc=none smtp.remote-ip=116.203.31.6
-Received: from mx3.securetransport.de (mx3.securetransport.de [116.203.31.6])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=Z0XKwlWD;
+	arc=none smtp.remote-ip=209.85.128.43
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9531606A319
-	for <imx@lists.linux.dev>; Tue, 20 Oct 2026 13:34:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D9531606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=dh-electronics.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dh-electronics.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 962B9606A31B
+	for <imx@lists.linux.dev>; Tue, 20 Oct 2026 13:59:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 962B9606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=dh-electronics.com header.i=@dh-electronics.com header.a=rsa-sha256 header.s=dhelectronicscom header.b=ltDx203P
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dh-electronics.com;
-	s=dhelectronicscom; t=1792503206;
-	bh=lTF0a1BWo1WRyCO1Plz6IAaTuq5ujNdrBcn/XSxu1yU=;
-	h=From:To:CC:Subject:Date:References:In-Reply-To:From;
-	b=ltDx203PEt5czqr6p+OuZ8/EmItrMOubS5IB9cXsSWhH61Ja9jwl9pqggE6Qt8tzS
-	 EOSU9kYXjr4EHtXnbccLJch7z4qmqikJ8aCtG0E8Uka2bqwQ0TY+8PkbIlTw9VHGtV
-	 ZoGyDmt6cXPMWU2MpAJEb8500+rX7NfxGCfZEjLzoeen5VDKuEgQ/mG7Ved+z2IVon
-	 e+Rg2oy05EftyZ5rnH3/onFJW8PAzQTIk7BHdqt1Vb6ENGRCv+ZuVLVXN0AGFmcn2L
-	 /vOI04SJpr+6ryLhO/1WDOjAxrimRxU7qerjf2ORIk5bT4ft558ZG/GDhAM9gtwv3j
-	 509W4EU0b7yYA==
-X-secureTransport-forwarded: yes
-From: Christoph Niedermaier <cniedermaier@dh-electronics.com>
-Complaints-To: abuse@cubewerk.de
-To: Conor Dooley <conor@kernel.org>, Marek Vasut <marex@nabladev.com>
-CC: "Frank.Li@oss.nxp.com" <Frank.Li@oss.nxp.com>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>, Guenter Roeck <linux@roeck-us.net>, Jonathan Cameron
-	<jonathan.cameron@oss.qualcomm.com>, Frank Li <Frank.Li@nxp.com>, "Ashish
- Yadav" <ashish.yadav@infineon.com>, Colin Huang <u8813345@gmail.com>, "Sanman
- Pradhan" <psanman@juniper.net>, Thorsten Blum <blum@kernel.org>, Troy
- Mitchell <troy.mitchell@linux.dev>, Eddie James <eajames@linux.ibm.com>,
-	Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>, "open list:SPI SUBSYSTEM"
-	<linux-spi@vger.kernel.org>, "open list:OPEN FIRMWARE AND FLATTENED DEVICE
- TREE BINDINGS" <devicetree@vger.kernel.org>, kernel
-	<kernel@dh-electronics.com>, open list <linux-kernel@vger.kernel.org>, "Mark
- Brown" <broonie@kernel.org>, Rob Herring <robh@kernel.org>, "Krzysztof
- Kozlowski" <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
-Subject: RE: [PATCH 1/1] dt-bindings: spi: Add separate binding for
- dh,dhcom-board
-Thread-Topic: [PATCH 1/1] dt-bindings: spi: Add separate binding for
- dh,dhcom-board
-Thread-Index: AQHdXhJ4wetEp3c+RUWeUdg1WJlLHbcAlj2AgAL8T4CAACG3gIABW++AgAFa0RA=
-Date: Tue, 20 Oct 2026 13:33:24 +0000
-Message-ID: <05e66d8f57a44c9aa87cac1c35e82184@dh-electronics.com>
-References: <20261016205718.877668-1-Frank.Li@oss.nxp.com>
- <e7095176-44b8-4838-8443-2e515d34cb25@nabladev.com>
- <20261018-freeway-twitch-e813208aa9af@spud>
- <fd15f846-94d4-44d8-a42d-5f13a7b18794@nabladev.com>
- <20261019-cycling-unnatural-c1adbfb5c9d9@spud>
-In-Reply-To: <20261019-cycling-unnatural-c1adbfb5c9d9@spud>
-Accept-Language: de-DE, en-US
-Content-Language: de-DE
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=Z0XKwlWD
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4a1e266fca2so18059535e9.3
+        for <imx@lists.linux.dev>; Tue, 20 Oct 2026 06:59:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792504798; x=1793109598; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=PnBOhXvJIJK4VLpTdrp7cs6iUz2XtC8WuEePd4QSYVU=;
+        b=Z0XKwlWDT/EO3+GizcRMFSOyjH9ODAkaJkBLSsTC1+EvhLGdB0CIuV8NfoUbgXap+9
+         tQeettgU00i0vqidKOaTRp5gr2ILxOYGXhNxTgcSyS5dDAZDlVIQLx8h9CaIXcTzQSK9
+         3MBDiv45ZNTyllRq6Op3Cunl2BQsOWXW7nZHzGvBLF1pLpo8frrv+3aEsNSaCcc8PRvx
+         FgIkWzLFY2AIu55DSgrVQ1HHNY55JLWF53q/0RvukK5Xi+dIuDiU8nRhdyZmXP4gq2Vp
+         QmCoeDP7zy9sYpyJPZ9v6VMBOrd/f92GlyBPVntxvM60sN5AzCQjuslkotmeTnNFoSK+
+         CWMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792504798; x=1793109598;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=PnBOhXvJIJK4VLpTdrp7cs6iUz2XtC8WuEePd4QSYVU=;
+        b=fDbnujaF8ImE7uZxrH90OT/SkX7EB2q1X9uoQqPGCIWVopqC8szrIIE1AnUulaBiuy
+         m+nAjrS0fQOFlb2pjVWjIc/1jQQK5eEGGHPp/nKKNzsQXqp/VJLpiR/yYa4GVtQFQser
+         dYG0hinm2Mo6yxpAzal5ljC0Wwkw+Oe+OxMRVWwYHbyGGLhqMMt8TO4D3D+ihC3HkmDr
+         IHfdxYP74wrhXDyn17CzNJ9Wgx+baWQvxbcA0xdqw8oFws6btwVnR8/aK0/jFdR3E6qK
+         zZ/nZDA9Htf3eBM/Q1XBH9zacsQaf5DaeHRL7HLs7iZ2xqFiaWpzhZRIpRvy6ZrT6gK7
+         IUkA==
+X-Forwarded-Encrypted: i=1; AKwUvBw8N6sYeWLTH400EVxq2Shuu3VJdQAbI/V8mEYZ7BuX0hq2KWMwOFKEwfR/4jDPkxqBmCk=@lists.linux.dev
+X-Gm-Message-State: AFq9FYK5cpdGrgMrvM9Mazz04PES3eBzt2RNHSMjfokDgwk0HzcsU71w
+	E0JueB+9VnnP/h0IczZw8IFj1NHeipMut2O3LncVT83lMPr+sWsyo/Yj
+X-Gm-Gg: AYBFou2HVsBlM2IPsk3ukSozf29qpK17+LRVn/j75TOp3S4alI2pX5pwgC2ABUqyfLc
+	nIZBHtI+oxfyu5Z1ycw8blr7L3G5jV6v6PbLHr7APqgVnSzlyLik6DFOX8O3JXK6GMCPTEIvf/M
+	xyGPrbrdu1oSOQL1Rc5ZPUzw+JFTyVbRKqZ/SwXZVd5wVHMr3n0148OVOIkoqumWS+AFEaqyacI
+	k0r5H98aP1WnYP6gyCGOoXnaFBA7n4CW3jLCU6O0L65XfQ97qXLBo0jyG+NycDLFIu9bF4qKsbY
+	xfMylGPWcuRgup09imBUmjQink+dE+J2PvqaDNVzXxJAgbS5LjgyJVwwWBR8lFfWN5VsKyd1VV4
+	arGTYm9aQWsN0OU/odN1jmRGVWHzNcIKVkuE8XXoK3408VggEzYGLoU6ucFQLLIMJNsTOIcW+QJ
+	R0TAnJ8zGvvDakpALaKODcKezB701s7R4t3LfgitJJSl2BHSNc9H36iKGpRc5/I0P5UDDOOEyFx
+	f2wwKBzlX0//R5qW9YX9FgNrLtBdSbl3zOLHU81MmcKkarUGL/k1VB4LMF0PhQbT3T98eF0xxCH
+	D7/COAxJvLSi6CZZm2SQQt4o1ehi
+X-Received: by 2002:a05:600c:c082:b0:4a1:f377:5c6b with SMTP id 5b1f17b1804b1-4a1f3775fa9mr44357515e9.7.1792504797648;
+        Tue, 20 Oct 2026 06:59:57 -0700 (PDT)
+Received: from Lord-Beerus.station ([93.66.71.207])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e1d8214e1sm6231804f8f.37.2026.10.20.06.59.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Oct 2026 06:59:56 -0700 (PDT)
+Date: Tue, 20 Oct 2026 15:59:53 +0200
+From: Stefano Radaelli <stefano.radaelli21@gmail.com>
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: Frank Li <Frank.Li@nxp.com>, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, pierluigi.p@variscite.com,
+	Stefano Radaelli <stefano.r@variscite.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH v1 0/4] arm64: dts: Mark Variscite i.MX9 I2C recovery
+ GPIOs as open drain
+Message-ID: <atdz2TonrGyL9Ox4@Lord-Beerus.station>
+References: <cover.1792326585.git.stefano.r@variscite.com>
+ <20261020064106.197223-1-peng.fan@oss.nxp.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -89,135 +106,48 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261020064106.197223-1-peng.fan@oss.nxp.com>
 
-From: Conor Dooley <conor@kernel.org>
-Sent: Monday, October 19, 2026 8:23 PM
-> On Sun, Oct 18, 2026 at 11:38:09PM +0200, Marek Vasut wrote:
-> > On 10/18/26 9:37 PM, Conor Dooley wrote:
-> > > On Sat, Oct 17, 2026 at 12:01:55AM +0200, Marek Vasut wrote:
-> > > > On 10/16/26 10:57 PM, Frank.Li@oss.nxp.com wrote:
-> > > > > From: Frank Li <Frank.Li@nxp.com>
-> > > > >=20
-> > > > > The dh,dhcom-board SPI device uses spi-cpha and spi-cpol properti=
-es,
-> > > > > which are not permitted by the trivial-devices schema. Move it to=
- a
-> > > > > dedicated binding file that references spi-peripheral-props.yaml =
-and
-> > > > > explicitly allows those SPI mode properties.
-> > > > >=20
-> > > > > Fixes below CHECK_DTBS warnings:
-> > > > >     arch/arm/boot/dts/nxp/imx/imx6ull-dhcor-maveo-box.dtb: spidev=
-@0 (dh,dhcom-board): 'spi-cpha', 'spi-cpol' do not match any of the regexes=
-: '^pinctrl-[0-9]+$'
-> > > > >           from schema $id: http://devicetree.org/schemas/trivial-=
-devices.yaml
-> > > >=20
-> > > > How come this did not trigger until now ?
-> > > >=20
-> > > > > Assisted-by: LLM
-> > > > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > > > > ---
-> > > > >    .../bindings/spi/dh,dhcom-board.yaml          | 46 +++++++++++=
-++++++++
-> > > > >    .../devicetree/bindings/trivial-devices.yaml  |  2 -
-> > > > >    2 files changed, 46 insertions(+), 2 deletions(-)
-> > > > >    create mode 100644 Documentation/devicetree/bindings/spi/dh,dh=
-com-board.yaml
-> > > > >=20
-> > > > > diff --git a/Documentation/devicetree/bindings/spi/dh,dhcom-board=
-.yaml b/Documentation/devicetree/bindings/spi/dh,dhcom-board.yaml
-> > > > > new file mode 100644
-> > > > > index 0000000000000..ed213cbe9b04c
-> > > > > --- /dev/null
-> > > > > +++ b/Documentation/devicetree/bindings/spi/dh,dhcom-board.yaml
-> > > > > @@ -0,0 +1,46 @@
-> > > > > +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-> > > > > +%YAML 1.2
-> > > > > +---
-> > > > > +$id: http://devicetree.org/schemas/spi/dh,dhcom-board.yaml#
-> > > > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > > > > +
-> > > > > +title: DH electronics GmbH on-board CPLD trivial SPI device
-> > > >=20
-> > > > This does not look quite right, since compatible this is used only =
-on:
-> > > >=20
-> > > > arch/arm/boot/dts/imx6ull-dhcor-maveo-box.dts
-> > > >=20
-> > > >         model =3D "DH electronics i.MX6ULL DHCOR on maveo box";
-> > > >         compatible =3D "marantec,imx6ull-dhcor-maveo-box",
-> > > > "dh,imx6ull-dhcor-som",
-> > > >=20
-> > > > So the whole
-> > > >=20
-> > > >         spidev@0 {
-> > > >                 compatible =3D "dh,dhcom-board";
-> > > >                 reg =3D <0>;
-> > > >                 spi-cpha;
-> > > >                 spi-cpol;
-> > > >                 spi-max-frequency =3D <54000000>;
-> > > >         };
-> > > >=20
-> > > > Should probably use a different compatible.
-> > > >=20
-> > > > Christoph, what device is this on this board ?
+On Tue, Oct 20, 2026 at 02:41:04PM +0800, Peng Fan (OSS) wrote:
+> On Sun, 18 Oct 2026 14:32:23 +0200 Stefano Radaelli <stefano.radaelli21@gmail.com> wrote:
+> 
+> > The I2C recovery GPIOs on VAR-SOM-MX91 and VAR-SOM-MX93, including their
+> > Symphony carrier boards, are missing the open-drain flag.
+> > 
+> > This series adds GPIO_OPEN_DRAIN to the SCL and SDA GPIO specifiers to
+> > match the I2C bus requirements and avoid the warning emitted when the
+> > I2C core enforces open-drain operation on SCL.
+> > 
+> > Stefano Radaelli (4):
+> >   arm64: dts: imx91-var-som: Mark I2C recovery GPIOs as open drain
+> >   arm64: dts: imx91-var-som-symphony: Mark I2C recovery GPIOs as open
+> >     drain
+> >   arm64: dts: imx93-var-som: Mark I2C recovery GPIOs as open drain
+> >   arm64: dts: imx93-var-som-symphony: Mark I2C recovery GPIOs as open
+> >     drain
+> > 
+> >  arch/arm64/boot/dts/freescale/imx91-var-som-symphony.dts | 4 ++--
+> >  arch/arm64/boot/dts/freescale/imx91-var-som.dtsi         | 4 ++--
+> >  arch/arm64/boot/dts/freescale/imx93-var-som-symphony.dts | 8 ++++----
+> >  arch/arm64/boot/dts/freescale/imx93-var-som.dtsi         | 4 ++--
+> >  4 files changed, 10 insertions(+), 10 deletions(-)
+> > 
+> 
+> LGTM:
+> 
+> Reviewed-by: Peng Fan <peng.fan@nxp.com>
+> 
+> BTW: Do you need fixes tag?
 
-There is no device connected to these pins, only an extension connector.
-The "dh,dhcom-board" device was used only to test the hardware and was
-unfortunately forgotten to be removed. In the production version, no
-device is connected to this interface. It should actually be removed.
-Should I create a patch for this?
+Hi Peng,
 
-> > > > (and this change should only be applied with RB from Christoph, I d=
-o not
-> > > > have the hardware so I cannot tell what it really is)
-> > > >=20
-> > > > > +maintainers:
-> > > > > +  - Marek Vasut <marex@denx.de>
-> > > >=20
-> > > > @nabladev.com
-> > > >=20
-> > > > > +  - Frank Li <Frank.Li@nxp.com>
-> > > > > +
-> > > > > +allOf:
-> > > > > +  - $ref: spi-peripheral-props.yaml
-> > > > > +
-> > > > > +properties:
-> > > > > +  compatible:
-> > > > > +    const: dh,dhcom-board
-> > > > > +
-> > > > > +  reg:
-> > > > > +    maxItems: 1
-> > > > > +
-> > > > > +  spi-cpha: true
-> > > > > +
-> > > > > +  spi-cpol: true
-> > > >=20
-> > > > Wouldn't it make more sense to allow those properties for trivial S=
-PI
-> > > > devices in general ?
-> > >=20
-> > > If the device requires them (which it probably does?), then standalon=
-e
-> > > makes sense to actually set that requirement.
-> >=20
-> > All right.
-> >=20
-> > But in any case, the compatible string should likely be fixed here, thi=
-s
-> > does not seem right. The dh,dhcom-board was describing some CPLD/FPGA o=
-n one
-> > of the evalboards.
->=20
-> Ye I don't disagree there. "dhcom-board" seems not nearly specific
-> enough about what the device is.
+Thanks for the review!
+I treated this as a DT cleanup since the core already enforces
+open-drain operation on SCL, so I think it is fine to keep the series
+without Fixes tags.
 
-There isn't actually a user for this device, see above. It's only used down=
-stream
-at DH electronics for a connection to a PSoC chip. But even for this purpos=
-e, it's
-not being used correctly. What should we do now?
-
-Regards
-Christoph
+Thanks,
+Best Regards,
+Stefano
