@@ -1,20 +1,20 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.159.49
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.159.23
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792512418;
-	b=krLMID04YkcwX+atx6fj1vbhkIuq3+BUTi+3YbhjeDdfmwyVJrTFAiewEdKLSOu8XvmX
-	 OsdrcGvyypdXpIkXKgh8+NWGorXAQopZn9McwWF7185DwT52Gu4n/Ua82u9U7vDzJzwQR
-	 focJ523wqB7EsLYu2rr2dfNSZ/QVfsWMQ2Lp6BBv5kzq/mC0BEI/wEsBSEIMnh/yH0bas
-	 sofimVkR9nX5t7dIVzW2Stajn/TXN1lVy04acE0srN5cRjllkxqrGbiUqHvDYQDXkAjf+
-	 ei8E56uRLSt+2XGojdnbqMTzvRQGXwZUGLansuL/hZsCuf8lodeuG1pvc4dAKDvsllA==
+	t=1792514343;
+	b=E9M0SOJuCVEwfvdb4thhxfC20z+Y2ctqPPP4OZqB0rJKNx8KEl1ru16Wtyk8eWLos6a0
+	 CfSgjFw2rSm01n+BtVr6yI4MIKgRpj5mW71hvDsFer8zEPmoo2J8rqf6/IkaMv2ETFpOW
+	 uEazFyLr/qSo6i+MmyDZNMfySh8g3JSE534v0btcBN1PYuJVL80xMgf69ELSrpFIIshFn
+	 AmQgYzW5lXYQ9P2pO1UoWrWemA6rAPbK92kmrn60oEW/Kq0yMG8vqil3ph6vh+aV7yIHH
+	 tom0AeuGDkEslyiVx38yvJXcIC8k7jsLV/m03iBv44itZ+n3tBCYP4u46PE72SH2YkA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792512418;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792514343;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
 	 Subject:Message-ID:References:Content-Type:Content-Disposition:
 	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
 	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
+	 X-LD-Processed:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
 	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
 	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
 	 X-MS-Exchange-CrossTenant-Network-Message-Id:
@@ -24,74 +24,79 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
 	 X-MS-Exchange-CrossTenant-UserPrincipalName:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=5BCnk88S0aGlsS8RoQkcoP/wYU7AczF+WG5JZl73g0w=;
-	b=JuYyV4g1Kk2Vvr3fvAhiYVvinPjS3W4Y2aEhsRFG01qW5o8YtsOv8EXRUs1O8KzTTCvj
-	 87aefgw7qPmpuJWhackDXcWgsMplM000vnc1Oawp1xySyYEbOiugrHXOL8zMqiVwozPGy
-	 Hj0a4oe9CUDIqbx+bRi1UWl2XZR2hOO+3O20dG3FJq+vvFRtJ6X530ipWjYK9K3AJL6aQ
-	 5hHR9VvB/fTEFpVXbD3AU5MTWc/vayfSxhGn8grfR4cIQwKtH6HclY9crqWNkNE+INlTt
-	 RGhDQw7EqV7V0sX3JP7ZcNtE/J6Eo1r3/AuC4jWiaTD8qLF7vS947rqqt5MVR+EaDUg==
+	bh=mqqUkrsSo19Dsa5xn/C5cv0OWJ853bYCNHZfKHN06S0=;
+	b=e2DPJIHlVfrs0PpF8HyQOJPSxEAeVwA+f3Hpu2nSmI7zXcpIfBq07MxOyTs2JrBlyAR+
+	 Xl0Pn7CEF1xivInw5eeFovIrODdLRV/n6NK/lBfwOsChMmLt6XTah1ZLM4UizOONFA4J/
+	 vV0lcizHyD5TZsJN6QVAlZtIXljsbRmvTlKBgH3STGMC5iET013z9270vy7VrhUtC75SH
+	 bqgBfpB3ocyH7f7X7QOEgGAp8QCy+qghGTDFmtcCEXRnxZJQvoU0hhmocLXww4hGmBY3A
+	 zo0Brqb2hkOtI2eCf1E9GuTs3MdQCsCMQo8QsStZJ0YBqVjFa/9/Ag1mL6wN3bFgafw==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=oss.nxp.com;
 	spf=pass smtp.mailfrom=oss.nxp.com;
-	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=Jfl6uNgO;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.159.49
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013049.outbound.protection.outlook.com [40.107.159.49])
+	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=hd3WVcl2;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.159.23
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013023.outbound.protection.outlook.com [40.107.159.23])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B81C606A319
-	for <imx@lists.linux.dev>; Tue, 20 Oct 2026 16:06:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5B81C606A319
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07EC060A262A
+	for <imx@lists.linux.dev>; Tue, 20 Oct 2026 16:39:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 07EC060A262A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=Jfl6uNgO
+	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=hd3WVcl2
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=tx2G4LO25ITP49Takbz28jJ6op+kKY6vlH8cJGiJ3OD9WTcg38Ng4QhsdzTZmg8pwnvXf24pX4wZ+IBwi7g+Wli6MBu1XdU9mgkk7TWI33SemYX9C819Szd6Y+Jiv5WVCJ4EEpUgvblNv3syo5IZbrYjZ0ohyt13Bx5APozpaw3KiXejHtq2EoRvQdeLpX/n3936/NtI2H5sObFpe0YbjC8MUlcnDaFB2ShL1a5a4e9lfVfSXZfMteQDJG+5t8DkVN91Ga4osH4x1MXaarL58qAhw+NAvPbd8BqfIBtpSTLLhc4BJHc+QrPG4pcmEhZM4+5rKzvqWdmGXOhU2uaxIw==
+ b=tMfK83psMxnXinI7T3OUNgy6RxxP5b488ajf8cs2Ki/uyqRmVm7RJRgcCWQYUfCdcBk3/gaE7Wet5VlqJHLaUPVBot0ecA/aRw5WlvSyU/k5oGrglN+7m5oYwL6ckZdCgWeJKCGdSfOYvjQEj7oxxKmXOD5am4FRSTAMtbLe90vk1DC9JovRh/JUlXNQDV7rC74pMc7Uk/wPGqftrKXScplzXXIAuUEPoJkDOpwgOa3vPmN17HPJq/qqCYYagaxZ4nSQqh8ROFG0LhxVXaNeIDhcCJffeGIwgXACBF6jLrFc1JpJjp8MCDQdlIFzMQQcJmZJmIF15uGfw1x1JCI/oQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5BCnk88S0aGlsS8RoQkcoP/wYU7AczF+WG5JZl73g0w=;
- b=ONYONIxGc9azqkxC4Fp2KbJHeXxwy/P5A9sHcyKwjirlungzzZLxiPi+zKe0PKOk7SiRMVpvMqQo49+bSL0v8KrYhXa1dPheb98xN/8VKIkJyZcp0vHpbgZo+9Dif0tiFF7adfoHj/xu8eGsuShwcEh/WF8Vj0sYGfkMjja5fTRHVew+jRZ94rLpQ8/AN5emsShDUIR3r2as4Kp6+JNc3GamtG6rrbTIT0XF3ylCjOH7slk0ppKPhHHsYrDfQSLrbqiu7QXARxjG0YZpnNi7Xrc30E5xlty0ysRoXhmLZrKvqhewsXZB0p5X8CpswWK+IWoFITN4QugR5rZMDIYCdA==
+ bh=mqqUkrsSo19Dsa5xn/C5cv0OWJ853bYCNHZfKHN06S0=;
+ b=bSbp2zrPaSHzMmW2OxGQf5TWUJYeDWAjd8kAIWjmya377U+AEDsydTMq04raZLJMp/HhhfMXMYyTXczIyBXzcx+ldosQWs6nlpc37l2I9Yi2E3lA2Quk2cFy5cQ2xrsDI4aKU+SHrpOtqrXTMBpvAVe8j3gCerGYlc5ujZ8J0mgjZJTa7WTqGVZDA8+J1Ujc00WtP7Lx65i779kedU4HJnQ+WITS+3iYwXVwY/u3LwELJ0CamlN/ffcoirCOVsqeKMlY73jFWNIIWPRH6yfNj1A/Zjx49qNDSdHGpIZTEiRZI/iN5kCxLl3OJkivljNptg9vo5zdi1pO7Rb9CxyZEw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5BCnk88S0aGlsS8RoQkcoP/wYU7AczF+WG5JZl73g0w=;
- b=Jfl6uNgOpbxkXg+lXhfMdaa4zWIyf7+VxiBo8RZTMg/U6D+nGFgc46XQJyTgtQq18cLhOeOeYLBkY1bqOqeIqx2snM2ULb/HgUSDuchAPy2dxsNwmiphT8M6e5lutTwTaIzUMWXW8Fc/VZqltezay++AUe2zznt03PMkgFjmaK6gOkq5A5P5qZLixjfMtelekkDUBppAJgqIpO5HBIZGoNNUT1g4n2xgDcOuECLUT1Skbi326Vlqjl2/QmIoxUdtvbYeBL+DOVEzDYGkkPQi4aWCMNUsu+SlYfFjgbVTkCnWbjQjResFK9GhyyDc6ab4Vwd5Qcqm7eSHfIlRRM3kPg==
+ bh=mqqUkrsSo19Dsa5xn/C5cv0OWJ853bYCNHZfKHN06S0=;
+ b=hd3WVcl22MzZMJl0gEDTvmkqKkFljhh4akpSenIm8z/5fptDzXpFagKUWZUlwJqgN9B4OpYvIe+JtkVxS9/yel9mKNaKP2l+RtSrKW7vgAiYsP/8yO0k9Wv068+WEgLX2/XsZK3ix7hKoH6g1RWZE+P9sTGWUZdWhrQ2dI/ZJ8EQ3SwY6EIb7VvIpAhp3i0LkzP9aATOz+eYFxJfqfWWDowIDE8ZEdkJ9XIDn1FFi7zpO3j4iXLTpi78rVPwsJHSsAaGIuEvzHUufJ6FyxNiWfBBEaFAFvgQiq9fEIXpcB9e25JoAbxPn/bWh0OfzHV53K71MwleF057hTf2nZp5vQ==
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
 Received: from MI3PR04MB12438.eurprd04.prod.outlook.com (2603:10a6:290:76::14)
- by MI9PR04MB342248.eurprd04.prod.outlook.com (2603:10a6:290:d3::22) with
+ by DU0PR04MB9273.eurprd04.prod.outlook.com (2603:10a6:10:354::15) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.15; Tue, 20 Oct
- 2026 16:06:54 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.19; Tue, 20 Oct
+ 2026 16:38:59 +0000
 Received: from MI3PR04MB12438.eurprd04.prod.outlook.com
  ([fe80::c715:c32:8bb1:b70b]) by MI3PR04MB12438.eurprd04.prod.outlook.com
  ([fe80::c715:c32:8bb1:b70b%6]) with mapi id 15.21.0522.017; Tue, 20 Oct 2026
- 16:06:54 +0000
-Date: Tue, 20 Oct 2026 11:06:46 -0500
+ 16:38:59 +0000
+Date: Tue, 20 Oct 2026 12:38:51 -0400
 From: Frank Li <Frank.li@oss.nxp.com>
-To: Jiale Yao <yaojiale02@163.com>
-Cc: Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Shawn Guo <shawn.guo@linaro.org>,
-	Huang Shijie <b32955@freescale.com>, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 2/3] bus: imx-weim: reject devices without match data
-Message-ID: <ateRlt9Na6qDfjmT@SMW015318>
-References: <20261020093637.1654161-1-yaojiale02@163.com>
- <20261020093637.1654161-3-yaojiale02@163.com>
+To: Francesco Dolcini <francesco@dolcini.it>
+Cc: Leonardo Costa <leoreis.costa@gmail.com>, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, Frank.Li@nxp.com,
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+	francesco.dolcini@toradex.com, leonardo.costa@toradex.com,
+	hvilleneuve@dimonoff.com, marex@nabladev.com,
+	stefano.r@variscite.com, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/7] ARM: dts: imx6q-apalis: Add Toradex Capacitive Touch
+ Display 10.1" LVDS
+Message-ID: <ateZGwrFGfD1j-i3@lizhi-Precision-Tower-5810>
+References: <20261001155412.3177428-1-leoreis.costa@gmail.com>
+ <20261001155412.3177428-4-leoreis.costa@gmail.com>
+ <ar6JnZp1jBvlc8bx@SMW015318>
+ <20261002081824.GA7222@francesco-nb>
+ <ar_bsQbD-IbvUf86@SMW015318>
+ <20261005075319.GA7692@francesco-nb>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261020093637.1654161-3-yaojiale02@163.com>
-X-ClientProxiedBy: DS1PR03CA0003.namprd03.prod.outlook.com
- (2603:10b6:8:450::16) To MI3PR04MB12438.eurprd04.prod.outlook.com
- (2603:10a6:290:76::14)
+In-Reply-To: <20261005075319.GA7692@francesco-nb>
+X-ClientProxiedBy: DS1P221CA0001.NAMP221.PROD.OUTLOOK.COM (2603:10b6:8:451::6)
+ To MI3PR04MB12438.eurprd04.prod.outlook.com (2603:10a6:290:76::14)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -102,102 +107,293 @@ List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|MI9PR04MB342248:EE_
-X-MS-Office365-Filtering-Correlation-Id: 10886205-3f38-46a1-ffaf-08df2ec428ff
+X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|DU0PR04MB9273:EE_
+X-MS-Office365-Filtering-Correlation-Id: 28150ce6-9876-468f-5391-08df2ec8a428
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|23010399003|19092799006|1800799024|56012099006|11063799006|4143699003|10067099003|22082099003|18002099003|3023799007;
+	BCL:0;ARA:13230040|23010399003|19092799006|7416014|1800799024|376014|366016|11063799006|5023799004|4143699003|56012099006|10067099003|261009223027099003|22082099003|18002099003|3023799007|8126099003;
 X-Microsoft-Antispam-Message-Info:
-	D8iDL0YUdgw2O+fMLkXYRxZyWLd8I5nNSwhLE1sOSoYZNkfxrI02WQB2szOjfy0aVx9QxGnL4TZq7Qn0ibVU5AC5fQkiAps/Rrd8T+GoIS1jBx8hJ2RzXmnpYbbpf6bzFFnBT6hbkIc7+DtPvkL44Zk82MwyZW0OWG3RHGHJbV5CEX6K1rKdEbZQLWGjBOeuKGIqpnU3fh0NVI6r+EGdsgBsmaOcEqsrHiAU2lXVcIQZyep0V0Y3Ub07pJOUYI94eHzaji4fCar7wwzO6jyrgP7XTlurlziyNJdfJKEr8PidzGg32B+lZxJ7QcQazYPVz/lhASudZeiQI5ZTixcUq5vhIU1qcgtBpN2A/fsxr4Wb7NnYYTDyyoleLdkJB1vEOZ7qh1/4PAIPXw/KfwJXfCNPOJY9gATp0HEsSBt6+0iF47tf6mAstzdRlQeMmIl/9DJ8vYrBNErn2j3rdiAIfyNughuN9v7O+jYwwuRRw4ENB5Klu6taVM4le+jTlyqyqsRsHdkc36kEYnScCCNqNGOO9kAJuW2+lQJgGqO4rsLrj9KHMHdiHKkapriObCoQ0hqBurU9skXKWAZVZz9ZDyAIUQtA6PXIQOVLiJc6j/7yxIws4X6CitopzznhcnbZtUlqbTNnsooCvwZku63yM1xfEuZ8MStEkj8GDxXWim0=
+	FqcfQM6ntAahdoaBJAqEyakw3UnX/sq1Qy0qidekK2rxhWrJL+hpOBHkZF2FTsmHLiPF6xW0TGDzLUnTlIqLUjhCUCwf15x1SruoGZNE7zP/ZVFXZhfv5tOotiQTpyBms90DaAi0WFX7u9A8Lb+B+IAWUqeDbGhp1YMQu/0gZ9xegSuknf9F11GEVBGdrQsmJb+l2cJVhHA4X4RYbBlfAVDBq0H977OGASdLoPM9FFfoZWi9pTvT+HG/HqeDIcT9/lP9f2F/XeigCf0vUwnsN7zmmdnHNa2/2c3GrD6FDnx3UuY+30P0p4JJ0pvjIMnK8N6H4LD99ZDkogh9Fdtjd9d5yEbkBaIEde+A6mNwMw7H3ak1h6u3WxtdjupXO7dknLxGyHmNweSdbsvpQGCTtgX6PdABQxq+A1jrfeJHDgzK5s0keOou5PJPS/CiFuGfo2onIAuboNr4GHueSjKH0s4H+wcjFVlJFY5r0rSRHSCeKxjJLUbrli5bK13C4EHl3sDSznnvU5toWlInrPIJq8TsnSfMG/GHfsIQlyBHc8nyN4C3+PRot791G/SYSZ4N2BwHSZdf1b5bbkutzTy7LYw/olwNnVYhxVgTNMhvH14TwMBNIc0FZ4KfExycKHxI
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(23010399003)(19092799006)(1800799024)(56012099006)(11063799006)(4143699003)(10067099003)(22082099003)(18002099003)(3023799007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(19092799006)(7416014)(1800799024)(376014)(366016)(11063799006)(5023799004)(4143699003)(56012099006)(10067099003)(261009223027099003)(22082099003)(18002099003)(3023799007)(8126099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Wkz9tndMCFh4ibjcPCQ8bowXgUy8owclRCXBdTip0aUhlzYo45D6CQIHJQBX?=
- =?us-ascii?Q?oAKn65NBUMOS8DUFdVjlgMu6ttbpV3ltrCGzdq1xVYdLZOCafaszlIVmuzbi?=
- =?us-ascii?Q?VqORCVHgWj/aC24P8DAE6Dw3LWPoPhSNJZ+ZTyVa4XmXNa4cHFlW6r3mToa7?=
- =?us-ascii?Q?RG4QPMBzsfPCM9ZMto/2RLfcIG7rW9vxhw8I948Z7Dh7azwThjemsmusFUrR?=
- =?us-ascii?Q?9zT2mxvX6jdzjgpQohxWv/jUZa+4UArbFiROXQ3nGlIHzMptKTavpHxesE4m?=
- =?us-ascii?Q?jWyvhbmV8/h+044T5r47+jMRitS0Wa7x8qJhAIbDWB8ciNQglG8z5thkU1WS?=
- =?us-ascii?Q?XkSF/vRE6XfLPoLPUZaJh5YCjaIPDQkTdvOkaecOWZjlpi7o8F3vkY/Qj816?=
- =?us-ascii?Q?K499q3JUCvsJrkrFJ4EO35vxZ3KCKpqHu7f4nN7ORBlqeedhFPJXi5hWfqWf?=
- =?us-ascii?Q?Ua/puwnz/mXAvlHbclE9vFyoi84ApxMfR5NYaP/JmBZs3bNWfJP2qJmt1TcL?=
- =?us-ascii?Q?bE+hviTCUvHv206uoKj3++eoy7QeoVlC4xn8B6ZFsSutJQj2nrWrypa/tiiu?=
- =?us-ascii?Q?leNsfpwwD3ksll9lQqjfdRV6Hrcddj1Q3j4uVmhHtZ7S+oIEJCjhx/esw4iW?=
- =?us-ascii?Q?JOOF2bRzzXv/hImihObv8xbxW4n/iwY7HHukDNlL1qbqCS8bsa9G8fyUUK2Z?=
- =?us-ascii?Q?qVy2wk1WDX7kMCgp1K8GNPcdtJ9w2/DCOsqWlLXhKIM26lR/dS17sWgSIJwP?=
- =?us-ascii?Q?2653M7RlaAUI2by1sc/6tnFhad/NyAGdd78XWtBzofwOzmD/Gim0rOEZYD//?=
- =?us-ascii?Q?YJu5dC6yatTiuouBgJZghG3gjpbGYt/JrimIn4AAUoSqisUhf/JgwKX7It7m?=
- =?us-ascii?Q?cLfsdxmryU1/7ZkERP76ZwcwBydwGCxBLABS6UvdqufRT22OmRGZFTtiXbTN?=
- =?us-ascii?Q?7z5SqpcZku6yL2LVKz/xBd0KzJIb0R86Yxv3wTJaYb4XDsf6IRYEuINhcX++?=
- =?us-ascii?Q?ocEGJ+KL2lKoy+nygol9o+Lpq0vVx/QUk2ChqQ0JsJL3FQL6la01K8D+n/jA?=
- =?us-ascii?Q?2DdiR7lNevQ+A1GhokuNMvCBt4aMK6aUv4jbb++IeiGUj4uwflLnykxtYpwp?=
- =?us-ascii?Q?CxZg/M7vpyMtp0XMUMIofBJcchuEfTV1x/1EeKx0vjrYqJVaRV7CXDwFBu+v?=
- =?us-ascii?Q?YT+e5ZItF3oUHYMzS6L4e4h11Lol3PHbWrBtIW7La5fQ5PUBenLnhm436TDs?=
- =?us-ascii?Q?7XH5+UwfJW/X5SPEUgQylFZuH5uVE6kYvaZxvpIqP4enNEKXRaqbKq17IWY1?=
- =?us-ascii?Q?a2WNeyLog6JI7LBgAgvo6jYX9bITeAfFSy1vbmYPG11IG2flUe0jFyRX8+Kx?=
- =?us-ascii?Q?wXJjcLRiZJniBNlSdD8bPPDfrknufUaJWzSQx2eEjL2RVD4AR3RE2f4aLnt0?=
- =?us-ascii?Q?IG1F3nqHE5PVc5qX0fqXCsS0pVjYpzMOCtOo4ovM0uVIEdtn8uGpTLIllgfj?=
- =?us-ascii?Q?8h900Xge7fJ41HzEmZvedRWHarE1OqymMtYt+9DW0jTE85mu8JI0NMrobrdb?=
- =?us-ascii?Q?6jVZ1VdtnNUVarP5IW3mk/7dYUdARZfq4idq4eakNiewY9sCtY4PR98QU6zU?=
- =?us-ascii?Q?0po/0K5cC/oyDTIztutshI+mxWyV4s5hiVu08e6gcToZwDBjxTdoyfsTTJpu?=
- =?us-ascii?Q?q/bqYVfUI8m6pOkWeLHQU1rE1Eo7mj4vxmsPSpiXXBKEQ90HGd6UmGJIJlDJ?=
- =?us-ascii?Q?4nwjKTz0KgtumK64DU4QCRN+/Hcsx632oWZA3YkdAr92zEYQV31U?=
+	=?us-ascii?Q?pD8/clzvpMjJsu/niAPwuaH55agSZDf2080uLT0muCX6HFYMjnZP3MUHsnba?=
+ =?us-ascii?Q?1P7qzzRTMpFkcV1Rpn3ZRr2mGarc/UN/xxL+lbxnxkjOvas7gU88296/mGbR?=
+ =?us-ascii?Q?I8ieF9XENQZ87no85Ao3JsmT62XP6zaZODYzZfoTONth5sUeqXYYwp3dmlbh?=
+ =?us-ascii?Q?SPx0xe0aWZCWqJ3BfAbfzxZmbbdEFMbB167hIzLPIuC7NVUegdxbcuPwtYD7?=
+ =?us-ascii?Q?63ICTBk4QjbTkgcgj2Or5qafCPU90sIFGGVvJikJwbRmBp/xYuaYwSBLw6Nr?=
+ =?us-ascii?Q?NHvt81Zq6xu10oXZB49C+ueEYUqURzZZ/AXShHTNlOeKsKZ/HamzUsewbET9?=
+ =?us-ascii?Q?ouEFQLhTkwfXFO6xSPzzZKT1b5ZYbh1/yMqR71jb7EZbFK1yaiZcRllGC74b?=
+ =?us-ascii?Q?1yBwTQO0qHQtjNl+FVb3BCq0bnpUkVbzAbmizueP3O8DNRuYaUc/x63WLfXR?=
+ =?us-ascii?Q?oYdDfif3Q8cmM94IfGA6XNvNj6/QtXTI04Kf1vDAeiO0ESqRFOpY1mm1u6hE?=
+ =?us-ascii?Q?0sJ6o1ds3Z02r+MkhpTk06bpk+yXshqX18B0oZOvfnshuB6yqgPBBI23AGMZ?=
+ =?us-ascii?Q?Nn4EEt3UCnRvwprkWA6C55NexUBOqNAfvSqcJVh5420S5n1eDDZrS+WLVdAV?=
+ =?us-ascii?Q?TX61ramsAd87jYQCd+PMfvvmxHN6ukFjTgusUeFMemsgsB2olSyS7Hn9jYrp?=
+ =?us-ascii?Q?94jZn7JuG2An8ZP7elWGffqPiU+2zfEywX/5UgqBpkLpB9lENIZiP60Mvkq9?=
+ =?us-ascii?Q?y70kzTGwzJ1jWhjxvrOqSeTN78A+kRMF3OkuMv0Z2Rd2J90ZLtRPgs/3Coe/?=
+ =?us-ascii?Q?NhdzaQsWH6PzUgfQqekDxNT/DH+6gLPZorTe0UG+fdvxM8OuY1CKMKhjBAzm?=
+ =?us-ascii?Q?7SbWQhhV+UXhjT3nNvZTz9GjU8v0pdG4H5enqF59sCb+vXLwCkoRUKSwmOf0?=
+ =?us-ascii?Q?5jQl3et8MDtyrrCdZR541uZi3wygBY2/5ybizVzeP2KLkAQAabv2h3OzkHVH?=
+ =?us-ascii?Q?20tDm73NSimC6t5e3L2KFigNSqV9kBP3qW3caQ1TeaxUPAxCVewf+g6jAoPF?=
+ =?us-ascii?Q?YsEebhY7B/fH7Gx6DJ8UiD22xghSFGrtMw/d2n07irZJcTbYp4KuGHjENuhh?=
+ =?us-ascii?Q?jFk35T/3/dANu113emGKe6nawQkM9W17ej9CFA3V+ff7YkhpItsyfP0MYHLQ?=
+ =?us-ascii?Q?g+yA0i9bDvaumf7dSfKE+lQcV37LbUn6RP7mCZ2osUOmEMlA1P8d+4APG/hU?=
+ =?us-ascii?Q?Bs2deUXhAN1Sht2PhJ+cLmeqZ0JVYNWF9JFyEoof2NPki8o0pc+Q7Y9QEWfp?=
+ =?us-ascii?Q?Yzjgswdf7M/JNVMxPiY1bDwmPNNCZDMl3K6scFtxz68XC8jWpYiM4j5SepH+?=
+ =?us-ascii?Q?pD0rsuH3M7QLpZMfVkOo0DmViITPothyyFz3yAKcMMbxKphH0WCnxsla0TRP?=
+ =?us-ascii?Q?0TG37WI+eKrpz8z/CBPsTMnFIuiPhqVrbvASil+ZH+g9x5zkPvF7s6V9nNNV?=
+ =?us-ascii?Q?WQMtdb+4v61rMWCS90AOXFRLgT/SWkfNsRCI7ZgyBKF9SBtsOpn4spXjX9Lx?=
+ =?us-ascii?Q?kdMrfxtqcrcUn7h2JobNFr1G0dwaMEGnPxjPVBOD/pS40BEqOgv/N85Mvh8r?=
+ =?us-ascii?Q?NtkES33J+XMJGn5iBV9kiJ5y/RzpsPGKTPKcv1jMB6VPp7qUCBlN/n74TVs8?=
+ =?us-ascii?Q?CnhOszaA90dCk34mz/qHVe62n+BZTvsGo3I2Tr1gbMsd+A1Owg1R5odEts3X?=
+ =?us-ascii?Q?0uFN/NFlbNKi9MYmpxB3I/28xXHTlliHCs/uGO44kWYOboXUqynl?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 10886205-3f38-46a1-ffaf-08df2ec428ff
+X-MS-Exchange-CrossTenant-Network-Message-Id: 28150ce6-9876-468f-5391-08df2ec8a428
 X-MS-Exchange-CrossTenant-AuthSource: MI3PR04MB12438.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Oct 2026 16:06:54.8044
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Oct 2026 16:38:59.3416
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Uqza651ixKx56Iw7rqhWFeRLPSkDcYUe948Ipqr3k2eXFnThlnl1tnSUyLXChGydqAd2CLom4GGKYo/AQ/ckXcDILr6YSxtXsizChZyoYFqXE+hHP694N8S0FVGNa3Jw
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MI9PR04MB342248
+X-MS-Exchange-CrossTenant-UserPrincipalName: TxI3O/GF+AtD3LESAl6Cwh7weGqqS9cFlTQfoTxMIcJSFBavwfzo5aRFCrPGwj/b+L0/YjXqYfMDta8d5NQrD8loRyyC4lYdMuNe7tqiUa9td3pC/bOo7EDp3QYsUDHg
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR04MB9273
 
-On Tue, Oct 20, 2026 at 05:36:34PM +0800, Jiale Yao wrote:
-> Platform driver_override can bind a device to this driver without a
-> matching OF entry. In that case, device_get_match_data() returns NULL
-> and weim_parse_dt() dereferences it while configuring the controller.
+On Mon, Oct 05, 2026 at 09:53:19AM +0200, Francesco Dolcini wrote:
+> Hello Frank,
 >
-> Reject devices without match data before parsing the device tree.
+> On Fri, Oct 02, 2026 at 11:28:33AM -0500, Frank Li wrote:
+> > On Fri, Oct 02, 2026 at 10:18:24AM +0200, Francesco Dolcini wrote:
+> > > On Thu, Oct 01, 2026 at 11:26:05AM -0500, Frank Li wrote:
+> > > > On Thu, Oct 01, 2026 at 12:52:53PM -0300, Leonardo Costa wrote:
+> > > > > From: Leonardo Costa <leonardo.costa@toradex.com>
+> > > > >
+> > > > > Add a device tree overlay for the Toradex Capacitive Touch Display 10.1"
+> > > > > LVDS connected via the Apalis iMX6 LDB.
+> > > > >
+> > > > > The panel is a LogicTechno LT170410-2WHC 10.1" WXGA IPS LCD and the
+> > > > > touch input is provided by an Atmel MaxTouch capacitive touch
+> > > > > controller.
+> > > > >
+> > > > > Remove the panel-lvds node from the Apalis iMX6 dtsi, as it is an
+> > > > > external component that does not exist at the SoM level.
+> > > > >
+> > > > > The overlay is also combined with the Apalis iMX6 V1.2 Ixora Carrier
+> > > > > Board V1.2 device tree to provide a ready-to-use DTB.
+> > > > >
+> > > > > Link: https://developer.toradex.com/hardware/accessories/displays/capacitive-touch-display-101inch-lvds
+> > > > > Signed-off-by: Leonardo Costa <leonardo.costa@toradex.com>
+> > > > > ---
+> > > > >  arch/arm/boot/dts/nxp/imx/Makefile            |  6 +++
+> > > > >  ...6q-apalis-panel-cap-touch-10inch-lvds.dtso | 53 +++++++++++++++++++
+> > > > >  arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi | 13 -----
+> > > > >  3 files changed, 59 insertions(+), 13 deletions(-)
+> > > > >  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6q-apalis-panel-cap-touch-10inch-lvds.dtso
+> > > >
+> > > > similar 7" case, add panel module name in file
+> > > >
+> > > > imx6q-apalis-lvds-panel-lt170410.dtso
+> > >
+> > > This does not work, sorry, the current name is the correct one, for
+> > > various reasons:
+> > >
+> > >  - the product is a display made with a specific connector, touch
+> > >    controller and display and more. The actual panel is just part of it
+> > >  - the current name wholly describe the product, it's a public product
+> > >    with an official name, all of that is clearly linked in the commit
+> > >    message and comments. there is no ambiguity.
+> > >  - the same toradex accessories are not module specific, they are used
+> > >    across multiple families/carrier board. It is a whole ecosystem that is
+> > >    building on top of standardized interfaces and connectors. The same
+> > >    overlay file is available for multiple boards and in multiple SoC
+> > >    vendor directory (as of now TI and NXP, soon we are going to have
+> > >    also QCOM). Having a consistent naming scheme is important, we cannot
+> > >    call the same things differently every time.
+> > >  - there was a situation in which we did a new product revision of a
+> > >    display, specifically the "Toradex Capacitive Touch Display 10.1"
+> > >    LVDS" there are two versions. The official product name is the same,
+> > >    apart an additional version number, one is version1, the other is
+> > >    version2. They have differences, and it's not just the panel, more
+> > >    stuff changed, so having the panel name in the filename will not
+> > >    help. v2 support is already in [1], for reference.
+> > >  - the toradex naming scheme is not encoding the actual part number used
+> > >    in the product name, for example we have apalis imx6 v1.2 that uses a
+> > >    different touch/adc than previous apalis imx v1.1. The product has a
+> > >    different schematics, different BoM and so on
+> >
+> > Do you have schematics number to identify it?
+>
+> Why do you ask specifically about schematics? We have schematics and we
+> have a way to identify a product to the related schematic. The way we
+> identify schematics, whatever is a number, a string, or anything else
+> seems not relevant to me.
+>
+> But yes, answering you question, we do have schematics and a unique
+> way to identify them, and it's not using "numbers".
+>
+> What matters here, is that Toradex products have a unique number,
+> and we have a way to trace product revisions.
+>
+> So, for each product we have
+>
+> <product name> <pid>
+>
+> and <pid> is 8 digits, the first 4 digits is the end customer product
+> definition, and it matches with the product name, and the last 4 digits
+> is the product revision.
+>
+> All of that is documented, see https://developer.toradex.com/hardware/hardware-resources/general-product-information/ordering-information-and-product-identification-pid-pid4-and-pid8/,
+> and this is what is used for any kind of product traceability.
+>
+> Staying on our LVDS 10inch panel example
+>
+> Capacitive Touch Display 10.1" LVDS | PID4: 1212 | PID8: 12121000 | (version 1)
+> Capacitive Touch Display 10.1" LVDS | PID4: 1212 | PID8: 12122000 | (version 2)
 
-This should never happen, if run to here, driver data is always existed.
+include  12121000 in your file names.
+
+>
+>
+> > > , and there is no
+> > >    reference of the difference touch/adc in the name. You can see this
+> > >    information from the public documentation just looking at the
+> > >    version. or you can check yourself comparing the two DTS in the linux
+> > >    kernel tree.
+> > >
+> > > [1]
+> > >  arch/arm64/boot/dts/ti/k3-am625-verdin-panel-cap-touch-10inch-lvds.dtso
+> > >  arch/arm64/boot/dts/ti/k3-am625-verdin-panel-cap-touch-10inch-lvds-v2.dtso
+> >
+> > V2 is okay, but "panel-cap-touch-10inch-lvds" is too common. This may
+> > cause naming pollution if we implement shared one panel dtso for all boards.
+>
+> This is the product name, what is missing is the vendor. Given the
+> vendor (Toradex), the product is unique.
+
+Generally, it is not unique. We met similar problem. LCD panel is EOL.
+Need reply with new one. i.MX production life is longer than other external
+componenets. You are still work on i.mx6, even i.mx28 still have some
+customer use it.
+
+>
+> We could rename all of our accessories dtbo adding a "tdx" prefix (when
+> they are Toradex products, of course).
+>
+> So for example we could have
+>
+> k3-am625-verdin-tdx-panel-cap-touch-10inch-lvds.dtso
+> k3-am625-verdin-tdx-panel-cap-touch-10inch-lvds-v2.dtso
+
+tdx is good. The problem is that "panel-cap-touch-10inch-lvds" is too
+generally.
+
+>
+> This way your concern on name pollution is solved using the vendor
+> ("tdx") as prefix in the accessory name.
+
+pollution is just one problem. We need identify it quickly. if you create
+imx7-xxx-panel-cap-touch-10inch-lvds.dtso, it is hard to know if it is
+similar existing imx6's panel-cap-touch-10inch-lvds. even it may use for
+other imx8 imx9's productions.
+
+>
+> It's going to be a pain to rename this stuff, and it's going to have an
+> impact on users (that as I keep writing and insisting are the one that
+> matter). On the other hand, when we have a toradex product ("verdin", or
+> "apalis", ...), having a matching Toradex accessory to me is the default
+> and this info is not needed.
+
+
+>
+> When adding non-toradex accessory to a toradex board we make explicit
+> the vendor of the accessory, see
+>
+> arch/arm64/boot/dts/ti/k3-am625-verdin-rpi-display-2-7in.dtso
+>
+> where we have the "rpi" prefix.
+
+Ideally, rpi-display-2-7in.dtso should reused for all boards, which use
+rpi defined connectors. Now exsiting these combinations reason is current
+nexus node is not good enough. but we face to this directions.
+
+And anyway, rpi-display-2-7in is not good name because rpi many produce
+difference 2-7in panels in future.
 
 Frank
 >
-> Fixes: 85bf6d4e4b10 ("drivers: bus: add a new driver for WEIM")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Jiale Yao <yaojiale02@163.com>
-> ---
->  drivers/bus/imx-weim.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
+> So, my proposal would be to accept that for dtbo, combined with Toradex
+> board, the default is to be a Toradex accessory, therefore there is no
+> need of any additional string in the name. The second option, would be
+> to add a redundant "tdx" prefix. It will create a rename mess and it
+> will have an impact to the user, but it will not be wrong.
 >
-> diff --git a/drivers/bus/imx-weim.c b/drivers/bus/imx-weim.c
-> index 87070155b057..3ecad0e453cc 100644
-> --- a/drivers/bus/imx-weim.c
-> +++ b/drivers/bus/imx-weim.c
-> @@ -205,13 +205,17 @@ static int weim_timing_setup(struct device *dev, struct device_node *np,
+> Your proposal, onthe other hand, is not working, and not matching the
+> reality of the product described by the dtbo.
 >
->  static int weim_parse_dt(struct platform_device *pdev)
->  {
-> -	const struct imx_weim_devtype *devtype = device_get_match_data(&pdev->dev);
-> +	const struct imx_weim_devtype *devtype;
->  	int ret = 0, have_child = 0;
->  	struct device_node *child;
->  	struct weim_priv *priv;
->  	void __iomem *base;
->  	u32 reg;
+> > > > > +/dts-v1/;
+> > > > > +/plugin/;
+> > > > > +
+> > > > > +&{/} {
+> > > > > +	panel-lvds {
+> > > > > +		compatible = "logictechno,lt170410-2whc";
+> > > > > +		backlight = <&backlight>;
+> > > > > +		power-supply = <&reg_3v3_sw>;
+> > > >
+> > > > use name reg_lvds_panel, it help improve reusablity.
+> > >
+> > > I disagree.
+> > >
+> > > The regulator should be the one that is physically used on
+> > > the board. The DTS *must* describe the HW as accurately as possible, we
+> > > are not supposed to invent non existing regulator and more in general
+> > > non existing HW.
+> >
+> > It reflact hardware, it connect by a connectors HEAD. In Connect HEADER,
+> > VCC for panel is fixed naming, like vcc_lcd_xxxx. Difference mainboards
+> > route it to difference supply.
+> >
+> > Dtso file should use name in HEADER.  The main dts descript how connect
+> > it to provider, currently use additional label for it.
 >
-> +	devtype = device_get_match_data(&pdev->dev);
-> +	if (!devtype)
-> +		return -ENODATA;
-> +
->  	if (devtype == &imx50_weim_devtype) {
->  		ret = imx_weim_gpr_setup(pdev);
->  		if (ret)
-> --
-> 2.34.1
+> The power supply it is not the pin number on the connector.
 >
+> The power supply is in the board.
+
+In addon boards or mainboard? generally, there always power supply into
+connector.
+
+> We have board in which the power
+> supply can be controlled by a gpio, board in which it is fixed, board in
+> which this power supply is shared with other peripherals. So no, the
+> power supply is not the pin number in the connector. What you write here
+> is wrong.
+
+It depend on where controller it, in addon boards or mainboards?
+
+if in addon boards,  gpio should be in connectors.  if it is mainboars,
+a power-supply wire should go through connectors, you use it as connector's
+regulators.
+
+Frank
+
+>
+> > > I see your need to avoid duplication, and I agree with it. But an
+> > > accurate HW description and the user experience trumps this need.
+> > > And I insist on the user experience, what we are doing is for someone to
+> > > use, we should not make the life of people hard because we decide on
+> > > non-descriptive or inaccurate names.
+> >
+> > We take an iterative approach, learning and improving as we progress. New
+> > issues are addressed step by step, and better solutions are adopted
+> > whenever they are identified. Once a new approach proves to be more
+> > effective, we gradually transition to it, especially for new drivers and
+> > DTS changes.
+>
+> Yes, of course. I agree. And this has nothing to do with that we are
+> discussing here.
+>
+> Francesco
 >
