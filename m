@@ -1,102 +1,52 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=178.251.229.89
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792504800;
-	b=H7F54dV9Nj/WX1ukJ2Dh3t6SIPFtyQncpnVHSBbksfnuEgRr/S/1z6I4wnO/YTlW4bJ1
-	 9uWiWWEwhhP4UdYFV1NEF9e8D49l0ZXMPmKrvoxf7QLTekKcFfRmAP5ZVRk4yS6sYg8fZ
-	 LRjTbgE7g3LtSkhoGDinqgbULE/aY5VuJuqvOXIhaB2K4jGLRK3Hbah+nW24GyvaiXXCU
-	 cHeJKUNgUgb9wkqyRCk3PTdCDqAFhQ5+4UVi0z6a6glsveUbrO+n1usQgFPyqk8aVDpeE
-	 uycY7ksEOSkn4OoShZBG+qCdraNkKIscJS28M1WCGTmjws6OnWh9WLLhP0xMcPAvvgw==
+	t=1792507295;
+	b=BiWH9iCFK2e4ZXBZ8pqjZrdguzzDjfWB6Otz+YRKrMgD5zAc/0iqIjEZo884twhnWp96
+	 a0MeAA1RiLghiqCfVP8khpH7URUeguKhOJ0zHUrmXFJx65TJz6k773LaC5eU3KQAIbcoC
+	 eE6AEOYw/srbxeNvUDs4ov5+QoI8dGtzLYWNBDby1DCbpEdXDDazs8yXznwnzMtrj9ECM
+	 10TqFkfXfgmSplgYNLEdoNNjfdecBJ1F4M0DK5EMSARSjEXkgzjb2wPmsx85xmsJsRDa0
+	 mDsl21LsWdJRT8AdqC7rxWUD1eL4l/UiC4Vat+v4tI2jNl57rRi8U4GnA7ZQKihvFgg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792504800;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=PnBOhXvJIJK4VLpTdrp7cs6iUz2XtC8WuEePd4QSYVU=;
-	b=vEcfEpa2Ets8P7y0BlCizsFtx7YDGjkuObKEwq0ajbaVUV6ItDsKqBZB2oGrpvECwSR2
-	 IqXRKZCgDS1zDLfNLK8OoOj7G2gJM+0VV92scDx/p8DHHzdK3k+h1+XHxZ4qHFJ7rMci7
-	 EC/f1HRQNUytVc+F7sITvuZcouwD5cqvo1DRfMYqUPeOy2pllvW3HT7LBa1vrIxJdqh8p
-	 eM2U8hFwobDYf2flpeC8rODWbdHXWMI00nTbEG/EiGXOIzqoHwcFhY6FrNhMza5IYCMV3
-	 NU1BAV0axafqlZdDQAzC71uRwpALuvfbFZkqG1j6y4L5moiHHevwN/3XrLaBTnItW3g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792507295;
+	h=DMARC-Filter:Received:DKIM-Signature:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-Last-TLS-Session-Version;
+	bh=obZm6fYxDBkvsgsqatxSsEtySSvVtNol2JAwOQdxyP8=;
+	b=bI27wN78WKs8fiPqwUX5qZVUK8yHBmpahjeFxx7kuWIIbws1F8RdH7MzH2CsQxLaIgmh
+	 Hzol0L8DUwaODQZM0eCkjHJ4HNSmalMgDvmFSbEgajvUw3iF+OB8vXMAiWJY3FtzkiNb6
+	 OSdzxF0egDJRr+Vfzz4I7AZKIg6f8tutgk5eEi7hOimEvA6Xu061p73fewneFeJzOkqVb
+	 SoW6m3qZxuB5mpmo3b0u+uGRkh0wjRJj5hGtptmp63WZk3WSmCFtb7qnEl2p7mx6geHJE
+	 4D8mNbYI7nnavFmEAYT+8wKOiM4KmSRH9Jxj9lvXZNIvAvtYa490uyEmAwthWKCq6Kw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=Z0XKwlWD;
-	arc=none smtp.remote-ip=209.85.128.43
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=nabladev.com;
+	spf=pass smtp.mailfrom=nabladev.com;
+	dkim=pass header.d=nabladev.com header.i=@nabladev.com header.a=rsa-sha256 header.s=dkim header.b=KZIpTYXr;
+	arc=none smtp.remote-ip=178.251.229.89
+Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 962B9606A31B
-	for <imx@lists.linux.dev>; Tue, 20 Oct 2026 13:59:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 962B9606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2FF4606A336
+	for <imx@lists.linux.dev>; Tue, 20 Oct 2026 14:41:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F2FF4606A336
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=Z0XKwlWD
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4a1e266fca2so18059535e9.3
-        for <imx@lists.linux.dev>; Tue, 20 Oct 2026 06:59:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792504798; x=1793109598; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=PnBOhXvJIJK4VLpTdrp7cs6iUz2XtC8WuEePd4QSYVU=;
-        b=Z0XKwlWDT/EO3+GizcRMFSOyjH9ODAkaJkBLSsTC1+EvhLGdB0CIuV8NfoUbgXap+9
-         tQeettgU00i0vqidKOaTRp5gr2ILxOYGXhNxTgcSyS5dDAZDlVIQLx8h9CaIXcTzQSK9
-         3MBDiv45ZNTyllRq6Op3Cunl2BQsOWXW7nZHzGvBLF1pLpo8frrv+3aEsNSaCcc8PRvx
-         FgIkWzLFY2AIu55DSgrVQ1HHNY55JLWF53q/0RvukK5Xi+dIuDiU8nRhdyZmXP4gq2Vp
-         QmCoeDP7zy9sYpyJPZ9v6VMBOrd/f92GlyBPVntxvM60sN5AzCQjuslkotmeTnNFoSK+
-         CWMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792504798; x=1793109598;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=PnBOhXvJIJK4VLpTdrp7cs6iUz2XtC8WuEePd4QSYVU=;
-        b=fDbnujaF8ImE7uZxrH90OT/SkX7EB2q1X9uoQqPGCIWVopqC8szrIIE1AnUulaBiuy
-         m+nAjrS0fQOFlb2pjVWjIc/1jQQK5eEGGHPp/nKKNzsQXqp/VJLpiR/yYa4GVtQFQser
-         dYG0hinm2Mo6yxpAzal5ljC0Wwkw+Oe+OxMRVWwYHbyGGLhqMMt8TO4D3D+ihC3HkmDr
-         IHfdxYP74wrhXDyn17CzNJ9Wgx+baWQvxbcA0xdqw8oFws6btwVnR8/aK0/jFdR3E6qK
-         zZ/nZDA9Htf3eBM/Q1XBH9zacsQaf5DaeHRL7HLs7iZ2xqFiaWpzhZRIpRvy6ZrT6gK7
-         IUkA==
-X-Forwarded-Encrypted: i=1; AKwUvBw8N6sYeWLTH400EVxq2Shuu3VJdQAbI/V8mEYZ7BuX0hq2KWMwOFKEwfR/4jDPkxqBmCk=@lists.linux.dev
-X-Gm-Message-State: AFq9FYK5cpdGrgMrvM9Mazz04PES3eBzt2RNHSMjfokDgwk0HzcsU71w
-	E0JueB+9VnnP/h0IczZw8IFj1NHeipMut2O3LncVT83lMPr+sWsyo/Yj
-X-Gm-Gg: AYBFou2HVsBlM2IPsk3ukSozf29qpK17+LRVn/j75TOp3S4alI2pX5pwgC2ABUqyfLc
-	nIZBHtI+oxfyu5Z1ycw8blr7L3G5jV6v6PbLHr7APqgVnSzlyLik6DFOX8O3JXK6GMCPTEIvf/M
-	xyGPrbrdu1oSOQL1Rc5ZPUzw+JFTyVbRKqZ/SwXZVd5wVHMr3n0148OVOIkoqumWS+AFEaqyacI
-	k0r5H98aP1WnYP6gyCGOoXnaFBA7n4CW3jLCU6O0L65XfQ97qXLBo0jyG+NycDLFIu9bF4qKsbY
-	xfMylGPWcuRgup09imBUmjQink+dE+J2PvqaDNVzXxJAgbS5LjgyJVwwWBR8lFfWN5VsKyd1VV4
-	arGTYm9aQWsN0OU/odN1jmRGVWHzNcIKVkuE8XXoK3408VggEzYGLoU6ucFQLLIMJNsTOIcW+QJ
-	R0TAnJ8zGvvDakpALaKODcKezB701s7R4t3LfgitJJSl2BHSNc9H36iKGpRc5/I0P5UDDOOEyFx
-	f2wwKBzlX0//R5qW9YX9FgNrLtBdSbl3zOLHU81MmcKkarUGL/k1VB4LMF0PhQbT3T98eF0xxCH
-	D7/COAxJvLSi6CZZm2SQQt4o1ehi
-X-Received: by 2002:a05:600c:c082:b0:4a1:f377:5c6b with SMTP id 5b1f17b1804b1-4a1f3775fa9mr44357515e9.7.1792504797648;
-        Tue, 20 Oct 2026 06:59:57 -0700 (PDT)
-Received: from Lord-Beerus.station ([93.66.71.207])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e1d8214e1sm6231804f8f.37.2026.10.20.06.59.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Oct 2026 06:59:56 -0700 (PDT)
-Date: Tue, 20 Oct 2026 15:59:53 +0200
-From: Stefano Radaelli <stefano.radaelli21@gmail.com>
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Frank Li <Frank.Li@nxp.com>, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, pierluigi.p@variscite.com,
-	Stefano Radaelli <stefano.r@variscite.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH v1 0/4] arm64: dts: Mark Variscite i.MX9 I2C recovery
- GPIOs as open drain
-Message-ID: <atdz2TonrGyL9Ox4@Lord-Beerus.station>
-References: <cover.1792326585.git.stefano.r@variscite.com>
- <20261020064106.197223-1-peng.fan@oss.nxp.com>
+	dkim=pass (2048-bit key, unprotected) header.d=nabladev.com header.i=@nabladev.com header.a=rsa-sha256 header.s=dkim header.b=KZIpTYXr
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1B4321087B7;
+	Tue, 20 Oct 2026 16:41:22 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
+	s=dkim; t=1792507288;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=obZm6fYxDBkvsgsqatxSsEtySSvVtNol2JAwOQdxyP8=;
+	b=KZIpTYXrLOZeb0sWyDSqtRamX8N7fjSjraNOOVWlArE4s24uLb0AYU+UyW1juMdh/ZkGJd
+	smxH2yDoOk8ZkWPYrAiSAquObI+DVKplBXgsANRlvr7sYUP4Jq9rFR2aAtRObeqWtj4A65
+	RIO78yCfyJvsRNMnGKyQP8ykSis8A8fjfhfA/BOsenJ+s+NQBhZ4B35lI0xWX88L385IAs
+	8w5WzVK2R0jWVWrmM5Vc1ZBrbfkuyd1lE0WYd376dqn2pH07IeLYOdBDMG08IjIxxi74ym
+	m3yamkl3pp9LxSRe41HKBvL1u484D9TJtuLQRm8JonNtwsCrlDMhPTIQBCzmJQ==
+Message-ID: <087bdc09-cf57-444e-aa29-f977998b0024@nabladev.com>
+Date: Tue, 20 Oct 2026 16:41:20 +0200
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -106,48 +56,100 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261020064106.197223-1-peng.fan@oss.nxp.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] dt-bindings: spi: Add separate binding for
+ dh,dhcom-board
+To: Christoph Niedermaier <cniedermaier@dh-electronics.com>,
+ Conor Dooley <conor@kernel.org>
+Cc: "Frank.Li@oss.nxp.com" <Frank.Li@oss.nxp.com>,
+ "imx@lists.linux.dev" <imx@lists.linux.dev>,
+ Guenter Roeck <linux@roeck-us.net>,
+ Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>,
+ Frank Li <Frank.Li@nxp.com>, Ashish Yadav <ashish.yadav@infineon.com>,
+ Colin Huang <u8813345@gmail.com>, Sanman Pradhan <psanman@juniper.net>,
+ Thorsten Blum <blum@kernel.org>, Troy Mitchell <troy.mitchell@linux.dev>,
+ Eddie James <eajames@linux.ibm.com>,
+ Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>,
+ "open list:SPI SUBSYSTEM" <linux-spi@vger.kernel.org>,
+ "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+ <devicetree@vger.kernel.org>, kernel <kernel@dh-electronics.com>,
+ open list <linux-kernel@vger.kernel.org>, Mark Brown <broonie@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>
+References: <20261016205718.877668-1-Frank.Li@oss.nxp.com>
+ <e7095176-44b8-4838-8443-2e515d34cb25@nabladev.com>
+ <20261018-freeway-twitch-e813208aa9af@spud>
+ <fd15f846-94d4-44d8-a42d-5f13a7b18794@nabladev.com>
+ <20261019-cycling-unnatural-c1adbfb5c9d9@spud>
+ <05e66d8f57a44c9aa87cac1c35e82184@dh-electronics.com>
+Content-Language: en-US
+From: Marek Vasut <marex@nabladev.com>
+In-Reply-To: <05e66d8f57a44c9aa87cac1c35e82184@dh-electronics.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Tue, Oct 20, 2026 at 02:41:04PM +0800, Peng Fan (OSS) wrote:
-> On Sun, 18 Oct 2026 14:32:23 +0200 Stefano Radaelli <stefano.radaelli21@gmail.com> wrote:
-> 
-> > The I2C recovery GPIOs on VAR-SOM-MX91 and VAR-SOM-MX93, including their
-> > Symphony carrier boards, are missing the open-drain flag.
-> > 
-> > This series adds GPIO_OPEN_DRAIN to the SCL and SDA GPIO specifiers to
-> > match the I2C bus requirements and avoid the warning emitted when the
-> > I2C core enforces open-drain operation on SCL.
-> > 
-> > Stefano Radaelli (4):
-> >   arm64: dts: imx91-var-som: Mark I2C recovery GPIOs as open drain
-> >   arm64: dts: imx91-var-som-symphony: Mark I2C recovery GPIOs as open
-> >     drain
-> >   arm64: dts: imx93-var-som: Mark I2C recovery GPIOs as open drain
-> >   arm64: dts: imx93-var-som-symphony: Mark I2C recovery GPIOs as open
-> >     drain
-> > 
-> >  arch/arm64/boot/dts/freescale/imx91-var-som-symphony.dts | 4 ++--
-> >  arch/arm64/boot/dts/freescale/imx91-var-som.dtsi         | 4 ++--
-> >  arch/arm64/boot/dts/freescale/imx93-var-som-symphony.dts | 8 ++++----
-> >  arch/arm64/boot/dts/freescale/imx93-var-som.dtsi         | 4 ++--
-> >  4 files changed, 10 insertions(+), 10 deletions(-)
-> > 
-> 
-> LGTM:
-> 
-> Reviewed-by: Peng Fan <peng.fan@nxp.com>
-> 
-> BTW: Do you need fixes tag?
+On 10/20/26 3:33 PM, Christoph Niedermaier wrote:
 
-Hi Peng,
+Hello Christoph,
 
-Thanks for the review!
-I treated this as a DT cleanup since the core already enforces
-open-drain operation on SCL, so I think it is fine to keep the series
-without Fixes tags.
+[...]
 
-Thanks,
-Best Regards,
-Stefano
+>>>>>> +++ b/Documentation/devicetree/bindings/spi/dh,dhcom-board.yaml
+>>>>>> @@ -0,0 +1,46 @@
+>>>>>> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
+>>>>>> +%YAML 1.2
+>>>>>> +---
+>>>>>> +$id: http://devicetree.org/schemas/spi/dh,dhcom-board.yaml#
+>>>>>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>>>>>> +
+>>>>>> +title: DH electronics GmbH on-board CPLD trivial SPI device
+>>>>>
+>>>>> This does not look quite right, since compatible this is used only on:
+>>>>>
+>>>>> arch/arm/boot/dts/imx6ull-dhcor-maveo-box.dts
+>>>>>
+>>>>>          model = "DH electronics i.MX6ULL DHCOR on maveo box";
+>>>>>          compatible = "marantec,imx6ull-dhcor-maveo-box",
+>>>>> "dh,imx6ull-dhcor-som",
+>>>>>
+>>>>> So the whole
+>>>>>
+>>>>>          spidev@0 {
+>>>>>                  compatible = "dh,dhcom-board";
+>>>>>                  reg = <0>;
+>>>>>                  spi-cpha;
+>>>>>                  spi-cpol;
+>>>>>                  spi-max-frequency = <54000000>;
+>>>>>          };
+>>>>>
+>>>>> Should probably use a different compatible.
+>>>>>
+>>>>> Christoph, what device is this on this board ?
+> 
+> There is no device connected to these pins, only an extension connector.
+> The "dh,dhcom-board" device was used only to test the hardware and was
+> unfortunately forgotten to be removed. In the production version, no
+> device is connected to this interface. It should actually be removed.
+> Should I create a patch for this?
+
+In that case, I would suggest to remove this whole spidev@0 from this DT 
+with proper Fixes: tag .
+
+[...]
+
+>>> But in any case, the compatible string should likely be fixed here, this
+>>> does not seem right. The dh,dhcom-board was describing some CPLD/FPGA on one
+>>> of the evalboards.
+>>
+>> Ye I don't disagree there. "dhcom-board" seems not nearly specific
+>> enough about what the device is.
+> 
+> There isn't actually a user for this device, see above. It's only used downstream
+> at DH electronics for a connection to a PSoC chip. But even for this purpose, it's
+> not being used correctly. What should we do now?
+I think this patch can also be dropped, the dh,dhcom-board would be left 
+as a legacy compatible for the CPLD/FPGA on the DHCOM PDK2 board (where 
+it is not described yet, but should be) , and the dh-dhcom-board should 
+remain a trivial device, since the CPLD/FPGA is connected via some 
+parallel bus if I recall it right ?
