@@ -1,57 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792537450;
-	b=qB0nuJ2Ri76IXSpa412UwZS17/E0sue7eFOJVUm77uezN3tYirFwSivguWPt3/d7sIsL
-	 ozHnsikpdaTVWZsMbW22CEMzPbFFgxwsvj9qNXkCSY5RBjn9wjZa3zw4I0Rsmaf96XN3E
-	 H/AorXzKXFJLwqny4UcEPA1SFURNRNZro1J9RkquLujpXAsvp4+Rq77ntsSpQWxSW8/Db
-	 YO1aW1O/GTqq2ig4rVba7tEZZGO4naPW4O241DrOfHY6mN2uQZhV31MkZbfakVUA5+YC6
-	 kKHYfOwdIkytp4v6O3FPj4/bsSwY1pKV0L13nB5ue6a0NqkRwE1qQw8uAn5HxCh8XMA==
+	t=1792539065;
+	b=5i6/6tU+LrSM3wrF7Y7Kq7fX5jHY2YKtmZvjuUkT5+UpbGDz/6L6XNQDjb+ihMFpCinN
+	 OeRJAWaahUdOusk5/hGdk5SZ0KJ95CmYPE819W9BX1tVGiuJyqOFfwQt3YKo2EjH1iXz0
+	 N3lmPu7lFNGQ9tc9FaVHZrZY90KTViL0ECOu+3xG6APpTJ6XcvfniNGaZfU/W6l7+Q7Jr
+	 gLHZqpC1rS8EUS2UXwFNVE0MMeFXavriTBnz9G6o4j7ygXYnx6rZNvGzvAyoY49eyeB68
+	 er/1tGMqVmIqje4QLXe77zbUSNG2nSjX47nzu1RU19SX7KBu9amK+V7fXmiX8zKIFeg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792537450;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792539065;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=H7wFHZnciW9Pf28TVKxrZFY03mYFgE43S37eCBdMlpY=;
-	b=uNDDSzFqbYAa945TEAiuis4WP8Rf30HohHjneTBqTEcCjDKy5zFS5i8S+c59LO0HWzbb
-	 me7gFVDT2kbLlJLndm6oQs4hinO7qowqGch1TNaNtlL2DVcUEYIZgkq5goKXdGq6E93DO
-	 ex7AFPtdu+CNNXL9Ju3Jye+qarnDCThVOJfb/21rvqdUwwYhdZ5hyfYWjIzpd49qngRKJ
-	 vaRJO0Up02mcjsXEnzQJ76Qdf5G/Bb5iElWn66akVedcDdbK9pOEJ/ZU3xTeUypbrCE+I
-	 M2NHMCZH4ELJe/It5Hh3weDCbVudFojsHVl4pm1cd2O/fk392lfoblHgcClIG4riRww==
+	bh=WyTydnEI7HaZcYU8Jg8Dgk33OVrWs9PmKRbuXg17Oyw=;
+	b=wyav2YuQi1kf6cFOl1/uOPOjVcbQtYVjevGQLXuTGE9E2YjEuSiDM4fb1GQ5pJ6wFDmC
+	 VqOBUMay+e/mtMO8JxP9M0KKad6IF6Glbxkn+DgSZDagl6Pxfexoo5ExYA7I8Hs7i1Mwf
+	 tse1ILFlly+d3Edo46Xe7zkoA3kjFccTCP34CEjLYo5gvuCyyzGJWp9634wCE4mjrcPIS
+	 JfXEgHU10gPXNHDgjV0NSy/632bucL80RVayDPOMRzgur6FPLyhkMAK/unPNfZgdL9vsC
+	 BsRFRg82xaEyKga2XncbOLyLonRCOY9XgRl6mqxFQ994spw1uFf+9tzpOXqvIOcOE+g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ITqedP9f;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EeiR2Hy4;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10A10606A319;
-	Tue, 20 Oct 2026 23:04:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2376D606A31F;
+	Tue, 20 Oct 2026 23:31:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ITqedP9f
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAC451F000C9;
-	Tue, 20 Oct 2026 23:04:08 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EeiR2Hy4
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30D691F000CA;
+	Tue, 20 Oct 2026 23:31:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792537449;
-	bh=H7wFHZnciW9Pf28TVKxrZFY03mYFgE43S37eCBdMlpY=;
+	s=k20260515; t=1792539064;
+	bh=WyTydnEI7HaZcYU8Jg8Dgk33OVrWs9PmKRbuXg17Oyw=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ITqedP9fPRTEDVupCS4ICjQ90O3eRM8wd0qNFb1pPZiPabdt9btbfb4swKMHEwi/v
-	 AomYgVuYO1hobt+TG26xhQvNnSq0Y6c6hNy+ZB91TTleIIUWbZfkvUhJAqpQ7Pzemp
-	 7XV46E8o0GjM/5Ma86aBY15IWaR+c8GlbHcH4tKKoZgYiISEsf+QsuTSX5QdOkgEJm
-	 Qsay+T0UJLbHK/3iJQK77XXnCCWrSBjZ71vnaVprH+DRPdUkWZUCYIGKfgttTFn5su
-	 r1dHVyHKc/DUqkPxPWh8oHVL3DlPaF9T9jOqnmdjQdJWwdNe5kmXssyDmhNYzTvt9q
-	 BaOOTqV6/na2g==
-Message-ID: <sashiko-outbox-179591@kernel.org>
+	b=EeiR2Hy4d4o/s/Rjqykrd8x8aJE3gcmxa3ZvBSN2zlwBCU+KaCsM+YvSB3xEQzBW3
+	 wkYsmSZH44UltBNiPI4Dk0iBdyrlkdDSLr+nfww91a/0SyhqPj6ej6xeSICEEMAme4
+	 rsESQJFAmJqwzlj9fCEOjH9Avb0BtpQtZtAPqlRt+U+7iyx70sxHt/ATgSyZL8DZJC
+	 i4JWEl7TADOlI585o4hJcbtfn1oN2Q71nEEK5Qs3BidT+EBT9T6EogIRn3N/z4+m/w
+	 5veoUoyL+Jl+zj9tAg5jLGI3VZJ1cNr/VpbTysy72iQi50Oi3NAt//EkN5KI8nZXkK
+	 iBL9gs3W4Aeaw==
+Message-ID: <sashiko-outbox-179604@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 5/7] arm64: dts: imx8dxl-evk: Add onboard GPIO mux
- controller
+Subject: Re: [PATCH v3 7/7] arm64: dts: imx8dxl-evk: add lcdif overlay
 Reply-To: sashiko-reviews@lists.linux.dev
 To: Frank.Li@oss.nxp.com
 Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20261020-dxl_lcdif-v3-5-adc944659e14@nxp.com>
+In-Reply-To: <20261020-dxl_lcdif-v3-7-adc944659e14@nxp.com>
 References: <20261020-dxl_lcdif-v3-0-adc944659e14@nxp.com>
- <20261020-dxl_lcdif-v3-5-adc944659e14@nxp.com>
+ <20261020-dxl_lcdif-v3-7-adc944659e14@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 20 Oct 2026 23:04:08 +0000
+Date: Tue, 20 Oct 2026 23:31:03 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -61,168 +60,174 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [High] arm64: dts: imx8dxl-evk: spi0_mux and m4_debug_mux driven low on p=
-robe
+- [High] arm64: dts: imx8dxl-evk: invalid and ignored bus-width in adma_lcd=
+if endpoint
+- [Medium] arm64: dts: imx8dxl-evk: incomplete audio disabling in lcdif ove=
+rlay
 --
 
-commit a3a65e29ad3fd8c46c72a9be8f8c719076ef18d5
+commit 99ed2360e1f19a7e9e6652f9b6385f7a7a06174f
 Author: Frank Li <Frank.Li@nxp.com>
 
-arm64: dts: imx8dxl-evk: Add onboard GPIO mux controller
+arm64: dts: imx8dxl-evk: add lcdif overlay
 
-This commit adds four gpio-mux controllers and a pinctrl-multiplexer node
-to describe the onboard signal multiplexer on imx8dxl-evk, and removes the
-regulator-m2uart1sel node.
+This commit adds a device tree overlay to support the waiken,101wx001-wct L=
+CD
+panel on the i.MX8DXL EVK board, configuring the LCDIF controller pins and
+disabling conflicting peripherals.
 
-> diff --git a/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts b/arch/arm64/b=
-oot/dts/freescale/imx8dxl-evk.dts
-> index 0ede0c7ed422c..0ee2a028ebff6 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts
-> +++ b/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts
-> @@ -97,14 +97,68 @@ vdevbuffer: memory-vdevbuffer@90400000 {
->  		};
->  	};
-> =20
-> -	m2_uart1_sel: regulator-m2uart1sel {
-> -		compatible =3D "regulator-fixed";
-> -		regulator-min-microvolt =3D <3300000>;
-> -		regulator-max-microvolt =3D <3300000>;
-> -		regulator-name =3D "m2_uart1_sel";
-> -		gpio =3D <&pca6416_1 6 GPIO_ACTIVE_HIGH>;
-> -		enable-active-high;
-> -		regulator-always-on;
-> +	m4_debug_mux: mux-controller-0 {
-> +		compatible =3D "gpio-mux";
-> +		#mux-control-cells =3D <0>;
-> +		#mux-state-cells =3D <1>;
-> +		mux-gpios =3D <&pca6416_1 3 GPIO_ACTIVE_HIGH>;
-> +	};
-> +
-> +	spi3_mux: mux-controller-1 {
-> +		compatible =3D "gpio-mux";
-> +		#mux-control-cells =3D <0>;
-> +		#mux-state-cells =3D <1>;
-> +		mux-gpios =3D <&pca6416_1 4 GPIO_ACTIVE_HIGH>;
-> +	};
-> +
-> +	uart1_mux: mux-controller-2 {
-> +		compatible =3D "gpio-mux";
-> +		#mux-control-cells =3D <0>;
-> +		#mux-state-cells =3D <1>;
-> +		mux-gpios =3D <&pca6416_1 6 GPIO_ACTIVE_HIGH>;
-> +	};
-> +
-> +	spi0_mux: mux-controller-3 {
-> +		compatible =3D "gpio-mux";
-> +		#mux-control-cells =3D <0>;
-> +		#mux-state-cells =3D <1>;
-> +		mux-gpios =3D <&pca6416_1 7 GPIO_ACTIVE_HIGH>;
-> +	};
-> +
-> +	pinctrl-gpiomux {
-> +		compatible =3D "pinctrl-multiplexer";
-> +
-> +		m4_debug_fun: cm4-uart-grp {
-> +			mux-states =3D <&m4_debug_mux 1>;
-> +		};
-> +
-> +		spi0_fun: spi0-grp {
-> +			mux-states =3D <&spi0_mux 1>;
-> +		};
-> +
-> +		spi3_fun: spi3-grp {
-> +			mux-states =3D <&spi3_mux 1>;
-> +		};
-> +
-> +		uart1_fun: uart1-grp {
-> +			mux-states =3D <&uart1_mux 1>;
-> +		};
-> +
-> +		lcd_0_fun: lcd0-grp {
-> +			mux-states =3D <&spi0_mux 0>;
-> +		};
-> +
-> +		lcd_1_fun: lcd1-grp {
-> +			mux-states =3D <&spi3_mux 0>;
-> +		};
-> +
-> +		lcd_2_fun: lcd2-grp {
-> +			mux-states =3D <&uart1_mux 0>;
-> +		};
-> +
-> +		lcd_3_fun: lcd3-grp {
-> +			mux-states =3D <&m4_debug_mux 0>;
-> +		};
->  	};
-> =20
->  	mux3_en: regulator-0 {
+> diff --git a/arch/arm64/boot/dts/freescale/imx8dxl-evk-lcdif-101wx001.dts=
+o b/arch/arm64/boot/dts/freescale/imx8dxl-evk-lcdif-101wx001.dtso
+> new file mode 100644
+> index 0000000000000..39abf9b3884ea
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx8dxl-evk-lcdif-101wx001.dtso
+> @@ -0,0 +1,119 @@
 
 [ ... ]
 
-> @@ -658,7 +712,7 @@ &cm40_intmux {
-> =20
->  &cm40_lpuart {
->  	pinctrl-names =3D "default";
-> -	pinctrl-0 =3D <&pinctrl_cm40_lpuart>;
-> +	pinctrl-0 =3D <&pinctrl_cm40_lpuart>, <&m4_debug_fun>;
->  	status =3D "disabled";
->  };
-> =20
+> +&acm {
+> +	status =3D "disabled";
+> +};
+> +
+> +&adma_lcdif {
+> +	pinctrl-0 =3D <&pinctrl_lcdif>, <&lcd_0_fun>, <&lcd_1_fun>, <&lcd_2_fun=
+>, <&lcd_3_fun>;
+> +	pinctrl-names =3D "default";
+> +	status =3D "okay";
+> +
+> +	port {
+> +		lcdif_out: endpoint {
+> +			bus-width =3D <18>;
+> +			remote-endpoint =3D <&panel_in>;
+> +		};
+> +	};
+> +};
 
 [Severity: High]
-Does adding spi0_mux and m4_debug_mux without an active consumer or
-idle-state =3D <1> cause those muxes to be driven low (state 0, lcd_0_fun
-and lcd_3_fun) at boot instead of keeping the hardware pull-up default
-(state 1)?
+Is bus-width =3D <18> in lcdif_out valid for the fsl,lcdif binding or handl=
+ed
+by the mxsfb driver?
 
-When mux_gpio_probe() in drivers/mux/gpio.c probes each gpio-mux node, it
-requests the mux gpios as outputs initialized low (state 0):
+In Documentation/devicetree/bindings/display/fsl,lcdif.yaml, the port
+property references /schemas/graph.yaml#/properties/port directly without
+video-interfaces.yaml:
 
-drivers/mux/gpio.c:mux_gpio_probe() {
+  port:
+    $ref: /schemas/graph.yaml#/properties/port
+    description: The LCDIF output port
+
+Because /schemas/graph.yaml#/properties/port enforces additionalProperties:
+false on endpoint nodes, adding bus-width =3D <18> causes dtbs_check schema
+validation to fail on imx8dxl-evk-lcdif-101wx001.dtb.
+
+In addition, neither mxsfb, drm_panel_bridge, nor panel-simple parses
+bus-width from the endpoint node. When mxsfb_crtc_atomic_enable() calls
+mxsfb_set_formats() in drivers/gpu/drm/mxsfb/mxsfb_kms.c, the hardware bus
+width is selected from bridge_state->input_bus_cfg.format:
+
+	switch (bus_format) {
+	case MEDIA_BUS_FMT_RGB565_1X16:
+		ctrl |=3D CTRL_BUS_WIDTH_16;
+		break;
+	case MEDIA_BUS_FMT_RGB666_1X18:
+		ctrl |=3D CTRL_BUS_WIDTH_18;
+		break;
+	case MEDIA_BUS_FMT_RGB888_1X24:
+		ctrl |=3D CTRL_BUS_WIDTH_24;
+		break;
+
+Since waiken_101wx001_panel in drivers/gpu/drm/panel/panel-simple.c sets
+bus_format to MEDIA_BUS_FMT_RGB888_1X24:
+
+static const struct panel_desc waiken_101wx001_panel =3D {
 	...
-	mux_gpio->gpios =3D devm_gpiod_get_array(dev, "mux", GPIOD_OUT_LOW);
-	...
-}
+	.bus_format =3D MEDIA_BUS_FMT_RGB888_1X24,
+	.connector_type =3D DRM_MODE_CONNECTOR_DPI,
+	.bus_flags =3D DRM_BUS_FLAG_DE_HIGH | DRM_BUS_FLAG_PIXDATA_DRIVE_NEGEDGE,
+};
 
-Because neither spi0_mux nor m4_debug_mux specifies idle-state =3D <1>, both
-lines remain driven low unless an enabled device selects spi0_fun or
-m4_debug_fun:
+mxsfb_set_formats() will program CTRL_BUS_WIDTH_24 instead of
+CTRL_BUS_WIDTH_18 even though only 18 data lines (D00..D17) are wired in
+pinctrl_lcdif, dropping the upper 6 bits of each pixel.
 
-1. In arch/arm64/boot/dts/freescale/imx8dxl-evk.dts, spi0_fun is defined in
-pinctrl-gpiomux, but has no consumer. Meanwhile, &sai0 is enabled (used by
-sound-bt-sco) and muxes its signals onto the spi0 pads via pinctrl_sai0
-without referencing spi0_fun:
+[ ... ]
 
-	&sai0 {
-		pinctrl-names =3D "default";
-		pinctrl-0 =3D <&pinctrl_sai0>;
+> +&sai0 {
+> +	status =3D "disabled";
+> +};
+> +
+> +&sai1 {
+> +	status =3D "disabled";
+> +};
+> +
+> +&wm8960_1 {
+> +	status =3D "disabled";
+> +};
+> +
+> +&wm8960_2 {
+> +	status =3D "disabled";
+> +};
+> +
+> +&wm8960_3 {
+> +	status =3D "disabled";
+> +};
+
+[Severity: Medium]
+Should this overlay also disable the remaining audio nodes in
+arch/arm64/boot/dts/freescale/imx8dxl-evk.dts and
+arch/arm64/boot/dts/freescale/imx8-ss-audio.dtsi that depend on &acm, &sai0,
+&sai1, and &wm8960_1..&wm8960_3?
+
+Because of_link_to_phandle() in drivers/of/property.c does not create
+fw_devlink links to suppliers with status =3D "disabled", the enabled consu=
+mer
+devices still attempt to probe when this overlay is applied:
+
+1. The audio LPCG nodes in arch/arm64/boot/dts/freescale/imx8-ss-audio.dtsi
+(spdif0_lpcg, sai0_lpcg, sai1_lpcg, sai2_lpcg, sai3_lpcg, mclkout0_lpcg,
+mclkout1_lpcg, and mqs0_lpcg) remain enabled and reference disabled &acm. In
+drivers/clk/imx/clk-imx8qxp-lpcg.c, imx8qxp_lpcg_clk_probe() ->
+imx_lpcg_parse_clks_from_dt() fails with -ENODEV:
+
+	ret =3D of_clk_parent_fill(np, parent_names, count);
+	if (ret !=3D count) {
+		dev_err(&pdev->dev, "failed to get clock parent names\n");
+		return count;
+	}
+
+2. &asrc0, &sai2, and &sai3 remain enabled in
+arch/arm64/boot/dts/freescale/imx8dxl-evk.dts and fail clock acquisition in
+fsl_asrc_probe() and fsl_sai_probe() because their parent clocks in &acm,
+sai2_lpcg, and sai3_lpcg are unavailable.
+
+3. The four sound card nodes in arch/arm64/boot/dts/freescale/imx8dxl-evk.d=
+ts
+(sound-bt-sco, sound-wm8960-1, sound-wm8960-2, and sound-wm8960-3) remain
+enabled while referencing the disabled &sai0, &sai1, and &wm8960_1..&wm8960=
+_3
+nodes:
+
+	sound-bt-sco {
+		compatible =3D "simple-audio-card";
 		...
-		status =3D "okay";
+		btcpu: simple-audio-card,cpu {
+			sound-dai =3D <&sai0>;
+		...
 	};
 
-	pinctrl_sai0: sai0grp {
-		fsl,pins =3D <
-			IMX8DXL_SPI0_CS0_ADMA_SAI0_RXD		0x06000060
-			IMX8DXL_SPI0_CS1_ADMA_SAI0_RXC		0x06000040
-			IMX8DXL_SPI0_SCK_ADMA_SAI0_TXC		0x06000060
-			IMX8DXL_SPI0_SDI_ADMA_SAI0_TXD		0x06000060
-			IMX8DXL_SPI0_SDO_ADMA_SAI0_TXFS		0x06000040
-		>;
-	};
+	sound-wm8960-1 {
+		compatible =3D "fsl,imx-audio-wm8960";
+		model =3D "wm8960-audio";
+		audio-cpu =3D <&sai1>;
+		audio-codec =3D <&wm8960_1>;
+		audio-asrc =3D <&asrc0>;
 
-2. For m4_debug_mux, m4_debug_fun is only attached to &cm40_lpuart, which h=
-as
-status =3D "disabled", while &adc0 and imx8dxl-cm4 are enabled and share the
-pads controlled by m4_debug_mux (&pca6416_1 3).
-
-Should &sai0 include <&spi0_fun> in pinctrl-0, and should the mux controlle=
-rs
-specify idle-state =3D <1> (or have m4_debug_fun selected by an enabled
-consumer) so that sai0 and the m4 / adc0 signals are not disconnected on
-probe?
+causing simple_probe(), fsl_asoc_card_probe(), and graph_probe() to defer
+probe indefinitely on boot.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261020-dxl_lcdif-=
-v3-0-adc944659e14@nxp.com?part=3D5
+v3-0-adc944659e14@nxp.com?part=3D7
