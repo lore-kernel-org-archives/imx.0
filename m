@@ -1,105 +1,105 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.65.14
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792465232;
-	b=bCF3oZgPTkHHZCgckMYqpSNg7FQ/PSwSQ4TFh5arjNCckgEjzTn4SMYIkt2k0djHoy7t
-	 OgvJaH1p5wGduot8NwF/JyNieGg+x6+QLHgcrasLZpSBzYj+nFCr/cuFqW+FGN/9R5bLq
-	 A39/uiV+GAVqIQMgywOu7VLSdLNTk4wbJuQHTFEtsBwAqQpNMcErNLIQIXQR/K2xOCmP/
-	 yiigcI1PhC7axi469zJPTH0Uxqgf4jgfTX7G6PNvZlj68N1yt1OH+//m+xg0vEYkeXJFJ
-	 jA1oMymDglX7Z3ExkKvSqItH9LBAbwvezUZVerNPi/gmZpHi3nRH9MZCL7Gcx1/e4Tg==
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=185.56.87.4
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
+	t=1792476816;
+	b=O8ztxOdyDwNM2FMssZbtMjdu+Xo/VIDmHJt44e5zkI1MTZ4Kk5M+I2/XLuFi+qB42yTc
+	 nRu7jPCndCRTGKZ9Gtyfpx9I+CCQQ/FkKUC1v0cPXHf1ySqo0a8qIwOKNk86G/Crb0wOd
+	 SD378oHYvfAP9t4bCecgwEizIMQRoRi31a3lBepeVT8xKn6u4wA19RCnbK1rscG2kuQoE
+	 1UDzMy84I93YoJPaH9+wLNhxuIqN48c4kDbOeQjyyKIPeSOtjplK0d6XpBpgOJEr2+dYP
+	 FYxucZVppLedCNxVNUkTd6o1rj2KseXxgXnx3ISb2aqkWMQB3RT55Bl1pZOGntjL64g==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792465232;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:From:Date:Subject:
-	 Content-Type:Content-Transfer-Encoding:Message-Id:X-B4-Tracking:To:Cc:
-	 X-Mailer:X-Developer-Signature:X-Developer-Key:X-ClientProxiedBy:
-	 MIME-Version:X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=vXf2PRBtCffARJRCksY/U1VwasnAViJ7bZBXAb3Ni48=;
-	b=ay3xtZfKpVP3xXHxDhoeuhJyxlGdmqrLB6Mo6yVPlG/8n8OAYoujB9cfYMSsi6GWSN4e
-	 gpFX+mtCIHzZsbQ5tb0kYmlWTWWzKMqKUolQUImnG/JaFvDAmufOqCN6aXLbaH/rDdV/i
-	 RW3Rg+44jucPN21XdsHfHzFD6neiSMFnsGHdCPoMwlO5TryFz4eHw5un79CDQwzLpQX7S
-	 Trw0RPE0+NGAPyBswz7kA2o4VQ4uPNIq9gUuT73J6/D/zs5j5BjIWyvbb9NRHBkHcJGK2
-	 Os6wL2h55uwaz0FHd6kaEG6oyHZ0DVxQyopHAsdK57RpzndmLsPK5C8wttQbaDepRrw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792476816;
+	h=DMARC-Filter:DKIM-Signature:Received:DKIM-Signature:Received:Date:
+	 From:To:Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To:X-AntiAbuse:X-AntiAbuse:X-AntiAbuse:
+	 X-AntiAbuse:X-AntiAbuse:X-Source:X-Source-Args:X-Source-Dir:
+	 X-SGantispam-id:X-AntiAbuse:AntiSpam-DLS:AntiSpam-DLSP:AntiSpam-DLSRS:
+	 AntiSpam-TS:CFBL-Address:CFBL-Feedback-ID;
+	bh=VBod7zScKYToVtl6NM7uKvGih1bUiQG6dq4Lml4LGug=;
+	b=RSpUVwG4XGyVFgxg6sp2NxEL4OhFQM3febJkhtJ7vUrthYqQsgDWfCj0eJAmPqg6DL7Z
+	 eb2UsWINxgiN0gdldHqsFf3UL3OGKBzTv2WJylfFEaNp/Xn6jYs4vVmjLCgljWDF0HTMt
+	 TTOpr/JFN2VDYsqz5RtbpSQC6ZQwD0LfpFMPHBFYKMbl+4vMT33hGg0BNa+5pZ11vzxTt
+	 f5g6bBHTp0dguIlG8S3Ql1er+Z/Aeh2Z2JW70/YUgWOi8cd44Z7TaLxL7k8qgdg5tRISf
+	 OhXoCe0tiPwf96WeuycMovCDMxBRDGB+JH1UCrrS5oH7yHIVYvu024a6eUEodINWtlA==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.nxp.com;
-	spf=pass smtp.mailfrom=oss.nxp.com;
-	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=wO92w6n9;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.65.14
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011014.outbound.protection.outlook.com [52.101.65.14])
+	dmarc=pass header.from=valla.it;
+	spf=pass smtp.mailfrom=valla.it;
+	dkim=pass header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.a=rsa-sha256 header.s=default header.b=BDwYEB0W;
+	dkim=pass header.d=valla.it header.i=@valla.it header.a=rsa-sha256 header.s=default header.b=Lu1GRVPG;
+	arc=fail smtp.remote-ip=185.56.87.4
+Received: from delivery.antispam.mailspamprotection.com (delivery.antispam.mailspamprotection.com [185.56.87.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56170606A319
-	for <imx@lists.linux.dev>; Tue, 20 Oct 2026 03:00:30 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 56170606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DDC3606A322
+	for <imx@lists.linux.dev>; Tue, 20 Oct 2026 06:13:35 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5DDC3606A322
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valla.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valla.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=wO92w6n9
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MaOQpP62P0KA/tgA0MkcpiM6YLcMTbxo/fdyzVh8ZVAVaPrmVZNmuhkVjyPaxSWeC6j/K954wmkB/Kstu7bmc+liEJd6NKZPGTmiAw37YeBtXfBpkv/DpzuCjgXIWs7PcPnoEmetxXSIDSwt1KSPRHkgb1qmo2tZ7byu5i4XG6npweces4cFA9o5CMYzt1X+sZELYb+vXHJnJIX4mlA+KsTyNYXzI+9oLG4flm6ei+Zf5/XON+f6lQgtniPpLc/Nz5YvUzLEMJWeTMG2A5AmgnVPwPHka69XvXS54H0swKXdf+Q1WN8wXqnuiFEZBiwiWEegWRh/S/oxNmWsrH2tpQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vXf2PRBtCffARJRCksY/U1VwasnAViJ7bZBXAb3Ni48=;
- b=H4hwyOaPY83gEt6ylPz5HzAOU+toocvMUjaZknCDq9PdwfIVPZHKI4aXoDBq+cBS6tUy7XBgpdS+1weySA622XvLCtef1pJnXGMG7xhoLYYD/7B6GsO1fdbV8YMDdUT9dF6XMqY5dqcoMVLSANjw+meQN4CVFQuBeGlQV6NI7zIWXcBPl654dUESJJ0jqeJ1r/2FAMTgp0OHTHnX6+JYukuMvOC5ja+ln5q8adp4rVh0j2QwKWso/unxA7ZNsmVU6sN4y95CJHyAXxUlfPW+C0/Fl9qXwwCwMSlKoYAWDqt1QPLEY1LALjXYjS8mUA+L6JB6AlH+wKWNfYx3iW63zQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vXf2PRBtCffARJRCksY/U1VwasnAViJ7bZBXAb3Ni48=;
- b=wO92w6n9BVm2V+i1pVwyYWws6WLPOLEo2KvgjUkRpI7nj/SFnJeKgGFhmMzYGpeRHPAzPYxfSvu6YrvzopwPPy0nXypAPkiX1op+5dSOWbYuNX9MxOXX2rztHO7N3VZa1mLbizKRgx92M4spWjOsFpmGuRP6SfDcKCu7jiVrc3XhETc0lGXEK7DFPIYW38N27hiNm7TQewgDhFEWbyH2SB6vYu3EOl89S7doAnMX3W4aaZmrJCrikAfIm9HhQljmigZk/a9ERmxLQ8tq5Juc/xXGzKhkOrGeV60oFnf11d4MmLmOtjbPYWhsrM6BJHn70Vqur5rAypRPTJYAfWpj+g==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from DB8PR04MB6667.eurprd04.prod.outlook.com (2603:10a6:10:10e::22)
- by AM0PR04MB164874.eurprd04.prod.outlook.com (2603:10a6:20b:807::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.14; Tue, 20 Oct
- 2026 03:00:28 +0000
-Received: from DB8PR04MB6667.eurprd04.prod.outlook.com
- ([fe80::e1b:d361:7aba:6960]) by DB8PR04MB6667.eurprd04.prod.outlook.com
- ([fe80::e1b:d361:7aba:6960%4]) with mapi id 15.21.0522.017; Tue, 20 Oct 2026
- 03:00:28 +0000
-From: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
-Date: Tue, 20 Oct 2026 11:04:57 +0800
-Subject: [PATCH] media: synopsys: dw-mipi-csi2rx: Fix DPHY testclr reset
- sequence
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261020-dw-csi2rx-v1-1-c58a2e5cd43d@oss.nxp.com>
-X-B4-Tracking: v=1; b=H4sIAFja1moC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzNDAyMD3ZRy3eTiTKOiCl0zIyNTM0vzNBPTpCQloPqCotS0zAqwWdGxtbU
- AeuzowlsAAAA=
-To: Michael Riesch <michael.riesch@collabora.com>, 
- Bryan O'Donoghue <bod@kernel.org>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Hans Verkuil <hverkuil+cisco@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
- Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
- imx@lists.linux.dev, Guoniu Zhou <guoniu.zhou@oss.nxp.com>
-X-Mailer: b4 0.14.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1792465507; l=2164;
- i=guoniu.zhou@oss.nxp.com; s=20250815; h=from:subject:message-id;
- bh=nsDSCw79V47dREBnaEHxEbVb4bN6njIp1F2cAEj2W4w=;
- b=XlwO6xCsHo0Ts06fboyElq+ZETEjyL7JDkNF9u4Qsg+88G1VbSAxh9U2o0qZnQVT5pVGao0qN
- uYVRuIxbv6RC5c5k12eDexLbX1a4W+WbaVzRCk601svLlLWO5OJ8Jcm
-X-Developer-Key: i=guoniu.zhou@oss.nxp.com; a=ed25519;
- pk=MM+/XICg5S78/gs+f9wtGP6yIvkyjTdZwfaxXeu5rlo=
-X-ClientProxiedBy: SI2P153CA0002.APCP153.PROD.OUTLOOK.COM
- (2603:1096:4:140::16) To DB8PR04MB6667.eurprd04.prod.outlook.com
- (2603:10a6:10:10e::22)
+	dkim=pass (1024-bit key, unprotected) header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.a=rsa-sha256 header.s=default header.b=BDwYEB0W;
+	dkim=pass (1024-bit key, unprotected) header.d=valla.it header.i=@valla.it header.a=rsa-sha256 header.s=default header.b=Lu1GRVPG
+ARC-Seal: i=1; cv=none; a=rsa-sha256; d=outgoing.instance-europe-west4-c54f.prod.antispam.mailspamprotection.com; s=arckey; t=1792476815;
+	 b=WNvUpp4vx1l69v5SAoy6iH1ia5vXotjx18MTniscYYR9fZgbYADi1ro8Qy+84F9vcbHpKJwTtz
+	  wr2awIguhKbgfKHWrHHbYRP5c77WCgMFENpISPXPnmlSVpd7q6sPSgotpPhj3hd2Msmv7PJB5M
+	  8Px4zOD79FLpcLaN8wJALNzf1Hfp9uFe+OenmgpdVWduF0856nID07xuQKRy2A3PtFMJsDd8/c
+	  zfYXkAoSgEb3dm3lM2eIvrJSXCUEHWbFsbnjdtpgLTg2/wcjCgo7gX1V1kLOrtY1hjodZAZZWp
+	  RwwGt5RycRcPOr+mvlFYv0XcKjXZsniN0ww42m+3uxdV+w==;
+ARC-Authentication-Results: i=1; outgoing.instance-europe-west4-c54f.prod.antispam.mailspamprotection.com; smtp.remote-ip=35.214.173.214;
+	iprev=pass (214.173.214.35.bc.googleusercontent.com) smtp.remote-ip=35.214.173.214;
+	auth=pass (LOGIN) smtp.auth=esm19.siteground.biz;
+	dkim=pass header.d=valla.it header.s=default header.a=rsa-sha256;
+	arc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed; d=outgoing.instance-europe-west4-c54f.prod.antispam.mailspamprotection.com; s=arckey; t=1792476815;
+	bh=BLyVi9noksr977RBj4Cms4tPuxnqjRaYZqn2pFov1I8=;
+	h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:
+	  From:Date:DKIM-Signature:DKIM-Signature;
+	b=w9rUkBbouqrw3zB14GCQKN46gv5DRTGw2j1aQ3dTiJRN6qn1tqGLJA9az1/wwH/hl2nuuQZKCE
+	  AUfY7GixIf5vShx1RoV0/Bw/U/wKz+1S6Z+KKF5qpD32H3hoOOeBOUXzHlpyxeNOQGGgb75rMG
+	  E/uHWFUD24J1SyZXGRw64SEpIdwAR7Ws7c57IqrJWb6rAzF9F/Dh276f9YhbVxY0hatOAG/GPb
+	  cf3CftPl47zsQsR1iCKEPqC7F+64FdMnyGY11Ut+udHeLeHMNve5hSVJRJoG52BXzf3hIBy7Gu
+	  5GgjzsHnySmvQEqYW5wmf2/zPOE6VBm23V18sPdbe11mgA==;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=antispam.mailspamprotection.com; s=default; h=CFBL-Feedback-ID:CFBL-Address
+	:Content-Type:MIME-Version:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	List-Unsubscribe:Content-Transfer-Encoding;
+	bh=VBod7zScKYToVtl6NM7uKvGih1bUiQG6dq4Lml4LGug=; b=BDwYEB0WdpMSYAxs8NKGT9yqHH
+	qFn3WAuMfTf6xDLQBOCkQA72mZlm7Lab3mC4LDS8s0E6S9nuurLtcVgFGWGikCxkVYbSMXjsnIzVs
+	oZnQb3moDB5kXfa72pUl9C5JBq6+9WX+EDX2HCzH/iy7oCNmCU1srKc+9pvGPpA1p3MA=;
+Received: from 214.173.214.35.bc.googleusercontent.com ([35.214.173.214] helo=esm19.siteground.biz)
+	by instance-europe-west4-c54f.prod.antispam.mailspamprotection.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.100.1)
+	(envelope-from <francesco@valla.it>)
+	id 1xJ36F-00000005kW2-1mE2
+	for imx@lists.linux.dev;
+	Tue, 20 Oct 2026 06:13:27 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=valla.it;
+	s=default; h=Subject:Cc:To:From:Date:list-help:list-unsubscribe:
+	list-subscribe:list-post:list-owner:list-archive;
+	bh=VBod7zScKYToVtl6NM7uKvGih1bUiQG6dq4Lml4LGug=; b=Lu1GRVPGNdmlqmsYH5zsLHzoUD
+	w9j7LpHN9aAToa+3AdoDIDlTFJZuelB/VAauhlvvjFMElg6G+qCBXQO/Zf3+sPVC9QqpJ7g85SQWQ
+	4xkAWIvKObsXe0uveYUhD1ZKj7JBvyjSPOIkiRw1J3crjBYNmE99zI+w5opamT2rKI3g=;
+Received: from [82.89.62.246] (port=60683 helo=bywater)
+	by esm19.siteground.biz with essmtpa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.100.1)
+	(envelope-from <francesco@valla.it>)
+	id 1xJ360-00000000CBU-2RNP;
+	Tue, 20 Oct 2026 06:13:12 +0000
+Date: Tue, 20 Oct 2026 08:13:10 +0200
+From: Francesco Valla <francesco@valla.it>
+To: Frank.Li@oss.nxp.com
+Cc: Bjorn Andersson <andersson@kernel.org>, 
+	Mathieu Poirier <mathieu.poirier@linaro.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>, linux-remoteproc@vger.kernel.org, 
+	devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>, 
+	Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH v6 2/3] remoteproc: imx_rpoc: use memory-region-names to
+ avoid hidden ABI
+Message-ID: <atcF6uQh0LE1UzNG@bywater>
+References: <20261019-memory-region-name-v6-0-2e46b2e7d667@nxp.com>
+ <20261019-memory-region-name-v6-2-2e46b2e7d667@nxp.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -109,125 +109,132 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB8PR04MB6667:EE_|AM0PR04MB164874:EE_
-X-MS-Office365-Filtering-Correlation-Id: eb93cbfa-5866-4bca-98da-08df2e564b98
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|366016|1800799024|19092799006|23010399003|56012099006|11063799006|261009223027099003|10067099003|18002099003|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	thvenrdJYgtavdeTH0VH91oI5ep9kabkygLWZpr5XVj6YL+SIR59ptwypVucrEn8fc6RhluruZOlua5WyLx8jSOEjXQoyK5AT4TyO5rZbvJ2e3jT5aszNBwwWZXarKMQAK/wDpQU6eoV27RtCfcERFxSQISPee1gKdeN8+HNuQTNERFMK9ECIgiX7iQ7hp7Oj4y1VuT6uoJtrpMtCSgBGXZPjXobzrSc47kKdfmDmIsR3VcZ98qYsdA1ggfs7qZrnNf0RUskCE5Sah7dWKbxXFvC4vCOMC2CqYpVobHp2lhQzn2MFUt9bqlXZhbP6fuW0+TUY37zmSrNT3jVZOxU3QazNOW9yInDAVH8PwXG3uectq5EcoFQZfXWciq/vmgOYlEMsAQV44h2m+g7Q5ic0pFb/6CypyV6PfkXcbBbzuvB2Le6h5VO2lXP1LVS0ImaUZ38VKyLToX8zw/3Rm6gr9FYhxQBXUpqXBdy9kbY6ii/8e3PD5m3ngsAxLm5FcL11SbsYtRDu5OSvFvWKEqzjff1HNbnHG2D4u1hfyiQmPUUuCvJWYYmBdT1zvEygz4HEV+yxIISF3ftHo8MUnxXBi67CLL6AJoLHrKbwoq7udCZY9A7RbdP57CdUpGHV4PpHRn9mO6QoJgbrt0wTMhX+L2aksQw7ly/hnbnQnTkUu0=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB8PR04MB6667.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(19092799006)(23010399003)(56012099006)(11063799006)(261009223027099003)(10067099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?S2pxcTFBSEd2QlNUeGtUNFNSYzFZNVArVDluSWVveVk2NDh1UXplMWZ5a2hO?=
- =?utf-8?B?VmlMUU1veEN1eW5wNG5FOHhpc05aSU5MSWU5RGhnSkp5RTR5WldTWmpwdUM0?=
- =?utf-8?B?bVZPRkQ1YXdBOUhyZTdhOElhS3dBSTNucmN3bGhjUHhUcktMdngzd3ovQjNL?=
- =?utf-8?B?V1RBZzcwNUNNZllCbkV3SENlRWhvbDY0SEIzZnorbVNRYitCVWduTmJSOEp4?=
- =?utf-8?B?UVd5L1RvMVRjYlVFeVRGQzZVNkx1WkxlajdFdVBJYXRoUDhIczVmMFpqaERJ?=
- =?utf-8?B?RzhtUHdzQU9xOE5zdCsxSHQvL1N6MnZVT3AxU0NVOHR5RlJoeGZ1OHl0aWpi?=
- =?utf-8?B?NFFXSE1VWm01TkJ6NHlsTThtYnlGSE1EanR6VTk0eWN6dGZvOFlKNmh1cUZM?=
- =?utf-8?B?dVBpNmgva2RhNWNramNzNUxzZC9vNUs2MWtBUlRnSkpxK1VvYkh4cGtJNStu?=
- =?utf-8?B?TytpSTZuTVI3a0tmcGlvM1BTMFdnaGQ0b0NOdzMyV0NMYlh2KzNheXJuWkNi?=
- =?utf-8?B?WXJmeU1zM3Z2SlUzQ0dMLzJ6NWVsTUNkb3hlcGluS2VrQXJzNmlEVy83VFk3?=
- =?utf-8?B?bzhOQWpGMjhSaWpEM3pYSzAyZExzcmJ6WnZLMGpZclloSkpYSWJ6UGdiRXY3?=
- =?utf-8?B?L3ZCeXlLNSsvSFNpSmdTNWRPWDQzejFFWTh2SVRpd3lmWWtNWGIrd0p2b2Iz?=
- =?utf-8?B?MXF1ZXlFT0hac3UwY2pxdnJDTHFXMDhKWXFPRCt1WmNnMWYxai9wb1E5S0FI?=
- =?utf-8?B?ZzFJREVpUW5WeUVMbHA4K0ZXUmo5djJRbEttdTlEbkg1ckVSRlp0RG1Lbkw2?=
- =?utf-8?B?Q0twYkU5TDBOZit4Z3pWVjVLbGNxNEl3VUdlSHlVd3UrMXhGR1VQWllLZHpn?=
- =?utf-8?B?NnBQMUN2bmFQQ2FvaHZIUk5WTVpEOUFXQjFTcnRxdkwvVzZNM2hFZUFWc1NV?=
- =?utf-8?B?V29hT3NCWGZ4TUN4d1ZRdGtncFh5OHRMSG9hakE5RFVvWDM3bE1ibWdXbjBS?=
- =?utf-8?B?Q05BSmJRYm5SSmtUZW9LcHZQUGo3VHJ6TnlSbXJxMm93R1A4TDlITTJhYXBv?=
- =?utf-8?B?NWRLNTlRK291ZDExdXZvYmxMZFhibzc4L1czSytMSnhzcHlFaDNnS1hkNDkz?=
- =?utf-8?B?c1VwUmV2UVhsdmhWb2FlWnZyckptV2lRdUZ0Rk1YSmZVbzdhWVdzOWprWU5U?=
- =?utf-8?B?cVVPU1FOdjhJOTBlOU9QcHcreHlhcmhZRFNPY0RaNVlqYkpxb2ttbFZDb2RN?=
- =?utf-8?B?RmJFREFSTHhYcFpFdXZBeEc1OHM1b0VvekJMNHJOUUdKTHAzNERIWWwzd2t0?=
- =?utf-8?B?azJKOW1tdzMvTTRUS3RvdVJPNE95TEg5T0RGZnBSV2IvajdYTm81ZGhKdGhu?=
- =?utf-8?B?a2pyQTZOdVVaa1hVUWxUcjNNNDc1UXFRMHRoWndMVUEzWEpOL0Y1MWJtSmdo?=
- =?utf-8?B?UnJrTE9hbzJzK1E4UGpoK01ZSStJelorRm16MDZjKy9IZitEQ01BeWFsVmZL?=
- =?utf-8?B?RDQyVHlMYVppek8yeUR5MmpQbHJsSkF6Y1dQS3QyYUhVZjVlV0FkYWZ1elhM?=
- =?utf-8?B?dGZaWjRzM3E0bGdaQlovOW96dHRueGN2S3JlYVZqcmJNd0lwcWIzcTFVaHM5?=
- =?utf-8?B?MU5vVHpSSnNxbmNBeGZ1THdOOEswZ2NjQTc2aXp5ZVdkbExwODcrMXh6WEIw?=
- =?utf-8?B?T0lFUGhMYWkxNTc1L2swSVd0RlB3OVQxTE5weXNERVhnMTV0Y2JSMHFsZUpl?=
- =?utf-8?B?VnR1NWRjRzVwQ1ZMRURIVmF3SVdhYkZRZ1AzTC9GbnVIckNya3NpTDdIeGRM?=
- =?utf-8?B?Y09GTEVnOWp6ZGlteHZaUWZvR21NSDN3Tzc5TzMwYXhGcTEzaE4xd0hjOWwy?=
- =?utf-8?B?MkluclF4Slp2Rnl3UEtJUFNXZklKeGw3WTllVVhBV0pINXVMbGRiN1BZTEND?=
- =?utf-8?B?UEtjMVlhSlhDNkhxUXBjS0pGNzlwdjk0bTB0ZUl2WEpDOHM1N3dCaXdhM1pD?=
- =?utf-8?B?bkM1MGlWeFBzUGhCcnRCdmkxTjh5bVNMelZDOVpsenVubFMxZVlhdkRkdmVE?=
- =?utf-8?B?UndtUTBFVGNMMVFlOW5NOEZyNmsvTGtiRmljenZqZVltYWpodDFRUGhxd2JU?=
- =?utf-8?B?aDYxc0dCdVhzT3pmVnZNZDhzWktNaXlIdUhkaFJGY3ozVTAzOTRQanZTbGRm?=
- =?utf-8?B?emxZbGZsQitBVEw2cHpsTUlaZzJuT1FxakdkcVI1OC9OU2Ixa2xNUGk2RWJW?=
- =?utf-8?B?OUE0S1lzTWkwZmluRmV6Sm5LU3RVVHBrMTEzWlJmRFAzekJMaUtidmw4b2NB?=
- =?utf-8?B?WlRhbndpSlViTEl5V3h2a3pObXdOUzIvSzdxMjFzV0FEa2tUYzE4UGtoSHdK?=
- =?utf-8?Q?NQc0nfeuxFWY2Xm48xJ4tVaje1hK+w5eejZos?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: eb93cbfa-5866-4bca-98da-08df2e564b98
-X-MS-Exchange-CrossTenant-AuthSource: DB8PR04MB6667.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Oct 2026 03:00:28.1346
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: PpsWYM0b3f5dqDrDN6Q9wxk93NJvcBpKfhNSSnUpHEiHc6YfwFBTRBzjKOPj0EjyI3MtxMLOpMaLoKbACAGmo66Cyxy0NRtDd+VWWPcsrTXggjtPSOQy8cxDl4SaGtt5
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB164874
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261019-memory-region-name-v6-2-2e46b2e7d667@nxp.com>
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - esm19.siteground.biz
+X-AntiAbuse: Original Domain - lists.linux.dev
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - valla.it
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-SGantispam-id: 70cb3b80dc2a3e4722b7395af5bc37d8
+X-AntiAbuse: ID - 70cb3b80dc2a3e4722b7395af5bc37d8
+AntiSpam-DLS: false
+AntiSpam-DLSP: 
+AntiSpam-DLSRS: 
+AntiSpam-TS: 1.0
+CFBL-Address: feedback@antispam.mailspamprotection.com; report=arf
+CFBL-Feedback-ID: 1xJ36F-00000005kW2-1mE2-feedback@antispam.mailspamprotection.com
+Authentication-Results: outgoing.instance-europe-west4-c54f.prod.antispam.mailspamprotection.com;
+	iprev=pass (214.173.214.35.bc.googleusercontent.com) smtp.remote-ip=35.214.173.214;
+	auth=pass (LOGIN) smtp.auth=esm19.siteground.biz;
+	dkim=pass header.d=valla.it header.s=default header.a=rsa-sha256;
+	arc=none
 
-The Synopsys DPHY datasheet recommends applying a testclr pulse at
-first power-up to reset the PHY configuration to its default values
-before any test control register is programmed.
+Hi Laurentiu,
 
-The existing code deasserts testclr first and then asserts it, which
-is the reverse of the sequence recommended by the DPHY documentation.
+On Mon, Oct 19, 2026 at 02:55:49PM -0400, Frank.Li@oss.nxp.com wrote:
+> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+> 
+> The driver currently derives the memory region type from the referenced
+> memory node name, creating a hidden DT ABI. Since memory node names are
+> not constrained by the binding, incorrect names can silently pass DT
+> validation, as seen in examples using "vdevbuffer" instead of
+> "vdev0buffer" ([1] and [2]).
+> 
+> Parse memory-region-names to identify the expected memory regions and avoid
+> relying on memory node names as ABI.
+> 
+> Link: https://lore.kernel.org/imx/a3602ef8-2b77-4cc3-adef-2c4cba08a5d9@nabladev.com/ [1]
+> Link: https://lore.kernel.org/imx/alexXTYQHUs76J7v@SMW015318/T/#mb9dc709ff3adc24d9db6d30c973f37b580f6f1f9 [2]
+> 
+> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+> Reviewed-by: Peng Fan <peng.fan@nxp.com>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  drivers/remoteproc/imx_rproc.c | 32 ++++++++++++++++++++++++++++++--
+>  1 file changed, 30 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
+> index 581bb07f5893f..714c3615d1884 100644
+> --- a/drivers/remoteproc/imx_rproc.c
+> +++ b/drivers/remoteproc/imx_rproc.c
+> @@ -28,6 +28,25 @@
+>  #include "imx_rproc.h"
+>  #include "remoteproc_internal.h"
+>  
+> +static int imx_rproc_rmem_to_resource(struct device_node *np,
+> +				      int index,
+> +				      struct resource *res)
+> +{
+> +	int ret;
+> +
+> +	ret = of_reserved_mem_region_to_resource(np, index, res);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* "memory-region-names" is optional */
+> +	ret = of_property_read_string_index(np, "memory-region-names",
+> +					    index, &res->name);
+> +	if (ret == -EINVAL)
+> +		return 0;
+> +
+> +	return ret;
+> +}
+> +
 
-Generate the required TESTCLR pulse by asserting TESTCLR, waiting
-for the required pulse width, and then deasserting it.
+The position of this code here seems wrong - please move it down in this
+same file, near the other functions.
 
-Fixes: ec40b431f0ab ("media: synopsys: csi2rx: add i.MX93 support")
-Signed-off-by: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
----
- drivers/media/platform/synopsys/dw-mipi-csi2rx.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+With that fixed:
 
-diff --git a/drivers/media/platform/synopsys/dw-mipi-csi2rx.c b/drivers/media/platform/synopsys/dw-mipi-csi2rx.c
-index b7247d597c9c..b9f7ba25bd3b 100644
---- a/drivers/media/platform/synopsys/dw-mipi-csi2rx.c
-+++ b/drivers/media/platform/synopsys/dw-mipi-csi2rx.c
-@@ -830,18 +830,23 @@ static void imx93_csi2rx_dphy_assert_reset(struct dw_mipi_csi2rx_device *csi2)
- {
- 	u32 val;
- 
--	/* Release Synopsys DPHY test codes from reset */
-+	/* Put PHY in shutdown mode for configuration */
- 	dw_mipi_csi2rx_write(csi2, DW_MIPI_CSI2RX_DPHY_RSTZ, 0);
- 	dw_mipi_csi2rx_write(csi2, DW_MIPI_CSI2RX_PHY_SHUTDOWNZ, 0);
- 
-+	/*
-+	 * Apply testclr pulse to load analog programmability defaults
-+	 * and release the test interface for configuration.
-+	 */
- 	val = dw_mipi_csi2rx_read(csi2, DW_MIPI_CSI2RX_PHY_TST_CTRL0);
--	val &= ~DPHY_TEST_CTRL0_TEST_CLR;
-+	val |= DPHY_TEST_CTRL0_TEST_CLR;
- 	dw_mipi_csi2rx_write(csi2, DW_MIPI_CSI2RX_PHY_TST_CTRL0, val);
- 
--	val = dw_mipi_csi2rx_read(csi2, DW_MIPI_CSI2RX_PHY_TST_CTRL0);
- 	/* Wait for at least 15ns */
- 	ndelay(15);
--	val |= DPHY_TEST_CTRL0_TEST_CLR;
-+
-+	val = dw_mipi_csi2rx_read(csi2, DW_MIPI_CSI2RX_PHY_TST_CTRL0);
-+	val &= ~DPHY_TEST_CTRL0_TEST_CLR;
- 	dw_mipi_csi2rx_write(csi2, DW_MIPI_CSI2RX_PHY_TST_CTRL0, val);
- }
- 
+  Reviewed-by: Francesco Valla <francesco@valla.it>
 
----
-base-commit: d7e7bca7169873b46e857c025c10f3336c1258d8
-change-id: 20261020-dw-csi2rx-6225697f45bb
+>  #define IMX7D_SRC_SCR			0x0C
+>  #define IMX7D_ENABLE_M4			BIT(3)
+>  #define IMX7D_SW_M4P_RST		BIT(2)
+> @@ -648,7 +667,7 @@ static int imx_rproc_prepare(struct rproc *rproc)
+>  		int err;
+>  		struct resource res;
+>  
+> -		err = of_reserved_mem_region_to_resource(np, i++, &res);
+> +		err = imx_rproc_rmem_to_resource(np, i++, &res);
+>  		if (err)
+>  			break;
+>  
+> @@ -823,11 +842,20 @@ static int imx_rproc_addr_init(struct imx_rproc *priv,
+>  	if (nph <= 0)
+>  		return 0;
+>  
+> +	if (!of_property_present(np, "memory-region-names")) {
+> +		dev_warn(dev, "using node names for carveouts should be avoided\n");
+> +	} else {
+> +		if (nph != of_property_count_strings(np, "memory-region-names")) {
+> +			dev_err(dev, "invalid reserved memory name count\n");
+> +			return -EINVAL;
+> +		}
+> +	}
+> +
+>  	/* remap optional addresses */
+>  	for (a = 0; a < nph; a++) {
+>  		struct resource res;
+>  
+> -		err = of_reserved_mem_region_to_resource(np, a, &res);
+> +		err = imx_rproc_rmem_to_resource(np, a, &res);
+>  		if (err) {
+>  			dev_err(dev, "unable to resolve memory region\n");
+>  			return err;
+> 
+> -- 
+> 2.43.0
+> 
+>
 
-Best regards,
--- 
-Guoniu Zhou <guoniu.zhou@oss.nxp.com>
+Thank you!
+
+Regards,
+Francesco
 
