@@ -1,60 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=194.104.109.113
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792484939;
-	b=doBz5hOdUXGNNotK6A3tiO8hLvqZK40FDTd/Gj3YlO04pc/uqSLf6CNTyrhx9Lwub8mc
-	 riU7j+FJxnmr2M5ks5ZlU2Gfn6o9S7QsHS+bmtMh0eUHLcffE2mUshDwxZ4EN2Ug3285k
-	 Njdb6iEntThtVzeQcHivIpptLHAvWTdj6LP7mrHSMR8G82gM9K4SkJAVgeB0pAiOLh1/m
-	 38d6RlS0wdXf9tTbvP81I39gZkKU1kxV45RhUtGrvQJPGfdVZiDdgpD6Uw/9IDIca1wAE
-	 MZhyXHUdrsna/fnsi8QIRKInQF4NNQsvDzmKuntRxaDnvym1Ez6eW0VYSDPnFnXarOg==
+	t=1792486610;
+	b=nqqAuAbQzttVTKVobCVKKPs4xEeSQlR0VSIXNE2s3+qyM8iX4pX+tUx567MOPRNTABDs
+	 lm+Qv2nSQw5PUdNTV5xyl34o5i0pRst0AGnozGxyD9KnQYcTXk8ATyTfstq66pPbYt2Vl
+	 ICWtax80nrdbIdrS6/JzoyMhBOqJqhLRaTe4xX5HRhDByL3HIKBt2JYQqrLKmh67LO/8I
+	 QPkq2L16YdxGuY/IhPNQX3RbMIqyG0Nl9XN47WjfuJl4lGAw/X7K25BOoHuU6ODkBv0ge
+	 rXnBvD/KXf5QeoA35qz7li7sEQ6GVmqYjlYUtd6wpXdRRnNxPb6+lwlu6tNYx0YXGvg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792484939;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=vyucOTsSgLZgrADiAoF4uVAGYoXy/9hXlyt8Dq2To40=;
-	b=e9Ab364P2Ptz19HP6Y0OkqzjrTpMYoU+Ab2RGT/t3Oz68cW167mK+BNzcHex2j2V9ZHb
-	 kjks/CqNs4vxZcW+1jpHMty+I30RMjlNaftzj8hCY1bQAkDQI13WdlPJ0QYXK0kar8JGn
-	 fJOcLumsRQevaUmq6FuD0c7zs3xX4l44MotB97zIngvnJnXpnKBc5vNniSaaeMjTJp53s
-	 MZDupR7uX0zvM9cBgR1Fx+CWc2HpQ6rHF1/oprzqmqOknUFofDGRn3nn/3qsi+NfOLv+T
-	 tfEWU0DpDFG+XziZTq8C1pWH2omxgYEmE6N1DZKAOOC42fxSN74D6ud9Jpm3BsdfiDw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792486610;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:In-Reply-To:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-Exchange-RoutingPolicyChecked:
+	 X-OriginatorOrg:X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:
+	 X-Mimecast-Spam-Score:X-Mimecast-MFC-PROC-ID:X-Mimecast-Originator:
+	 Content-Type:Content-Disposition:Content-Transfer-Encoding;
+	bh=u/ZKkzTjwfr3n/ITzObs2PSQp6GJy+fC0uLKRCdBMyk=;
+	b=IQvPWpnQ+km1ynE9W63LCHfPN72Gb/G85e4+dD/w6WGvW8UEe8hyMkIqSZZ8M2S4FKYX
+	 qNWkZLpeEBkjpfDfM9J9CskICykzPsVMq/2+07SUYBZj+5PevWZaTlRCNChHPTX4K6BbD
+	 iy9CjNHoXV5foroCRAV0aaRxaTtd3YMMVxbVTTUGercXgQ87Em8Ym4eQ+gA5d+FkbsYe8
+	 qM9vHtpUN8HNXDkeipCAeCrGfM8sBiRQrpk4gA6tg0eZUqcIdo4EK5EhjQCfBelc+567N
+	 FVgxlv5+eL055tgPnzcWZ8xlG+nQTQCZFIrrYMo8M+vjxLHtjvK7RNiaj04askUvh0Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=X1QbPGdg;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=toradex.com;
+	spf=pass smtp.mailfrom=toradex.com;
+	dkim=pass header.d=toradex.com header.i=@toradex.com header.a=rsa-sha256 header.s=toradex-com header.b=aY7wucE8;
+	arc=none smtp.remote-ip=194.104.109.113
+Received: from de-smtp-delivery-113.mimecast.com (de-smtp-delivery-113.mimecast.com [194.104.109.113])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC2F9606A31D;
-	Tue, 20 Oct 2026 08:28:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C41A1606A31B
+	for <imx@lists.linux.dev>; Tue, 20 Oct 2026 08:56:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C41A1606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=toradex.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toradex.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=X1QbPGdg
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D432C1F000C4;
-	Tue, 20 Oct 2026 08:28:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792484938;
-	bh=vyucOTsSgLZgrADiAoF4uVAGYoXy/9hXlyt8Dq2To40=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=X1QbPGdgGnyhvJgbj7nWBs0fVTqa5p3X3mLygwxpvPDz9+wfNiTKokVt0ZtNOjqUb
-	 9cJVxAXCFuD3SCUwfbCHTxcYB3tsU6zhrXh8vS5UymufrU7P++7C8dFUNBOsSNlK1c
-	 E2d6mNbN5GR6oWEY4Zk/+p4UsxGJz6e2ndGdP5oZwd1/FPmLe5EmhM8Ei0WCxECcNH
-	 bsMY5aEaq+fEx5ihYAfkfBb8nQLL615Xe/GUSikth3TmMaehviaPtc/VJaMDEvsQO6
-	 eV3pDVkCZshpB9c9lHzueJ0U+q5EGx8ORf4nzypZ42lMu6hoE1wyrN97augvkuf7tF
-	 FRQFMtjq4blYA==
-Date: Tue, 20 Oct 2026 10:28:52 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Frank.Li@oss.nxp.com
-Cc: Neil Armstrong <neil.armstrong@linaro.org>, 
-	Jessica Zhang <jesszhan0024@gmail.com>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Thierry Reding <thierry.reding@gmail.com>, 
-	"open list:DRM PANEL DRIVERS" <dri-devel@lists.freedesktop.org>, 
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev, 
-	Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH v2 1/1] dt-bindings: display: sgd,gktw70sdae4se: use
- unevaluatedProperties
-Message-ID: <20261020-artificial-olive-mushroom-b798c5@quoll>
-References: <20261019205000.1084408-1-Frank.Li@oss.nxp.com>
+	dkim=pass (1024-bit key, unprotected) header.d=toradex.com header.i=@toradex.com header.a=rsa-sha256 header.s=toradex-com header.b=aY7wucE8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=toradex.com; s=toradex-com;
+	t=1792486602;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=u/ZKkzTjwfr3n/ITzObs2PSQp6GJy+fC0uLKRCdBMyk=;
+	b=aY7wucE8f5EkLFwn3pxqa/I1L8LRXo9MlNlF3m1xPFvGIS7Gi7jEa0zu9VArxkYp/mY3ye
+	SzrCnFHgRV5+clIKSeu2bqUzSkoHkFiggUaoqB99cJ0JlfZxsHTa9mAkcaALqOm940U0Z2
+	3oOvEivme/376PLhqSXEFhAGbIbP9bs=
+Received: from ZR1P278CU001.outbound.protection.outlook.com
+ (mail-switzerlandnorthazon11022141.outbound.protection.outlook.com
+ [40.107.168.141]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ de-mta-35-l11lLxbRMfG1mUtqDRJ7hA-1; Tue, 20 Oct 2026 08:56:39 +0000
+X-MC-Unique: l11lLxbRMfG1mUtqDRJ7hA-1
+X-Mimecast-MFC-AGG-ID: l11lLxbRMfG1mUtqDRJ7hA_1792486598
+Received: from ZRAP278MB0495.CHEP278.PROD.OUTLOOK.COM (2603:10a6:910:2e::8) by
+ ZR4P278MB010980.CHEP278.PROD.OUTLOOK.COM (2603:10a6:910:bc::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.19; Tue, 20 Oct
+ 2026 08:56:36 +0000
+Received: from ZRAP278MB0495.CHEP278.PROD.OUTLOOK.COM
+ ([fe80::88:6821:13f5:a5b2]) by ZRAP278MB0495.CHEP278.PROD.OUTLOOK.COM
+ ([fe80::88:6821:13f5:a5b2%3]) with mapi id 15.21.0522.017; Tue, 20 Oct 2026
+ 08:56:36 +0000
+Date: Tue, 20 Oct 2026 10:56:34 +0200
+From: Francesco Dolcini <francesco.dolcini@toradex.com>
+To: Frank Li <Frank.li@oss.nxp.com>
+Cc: Antoine Gouby <antoine.gouby@gmail.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Antoine Gouby <antoine.gouby@toradex.com>
+Subject: Re: [PATCH 2/5] ARM: dts: imx6dl-colibri: Add Toradex Capacitive
+ Touch Display 7" Parallel
+Message-ID: <atcswu1h7We8bIEw@francesco-nb>
+References: <20261019-colibri-imx6-overlays-v1-0-e4d028727382@toradex.com>
+ <20261019-colibri-imx6-overlays-v1-2-e4d028727382@toradex.com>
+ <atZutHmYt1aNWTpP@SMW015318>
+In-Reply-To: <atZutHmYt1aNWTpP@SMW015318>
+X-ClientProxiedBy: ZR0P278CA0030.CHEP278.PROD.OUTLOOK.COM
+ (2603:10a6:910:1c::17) To ZRAP278MB0495.CHEP278.PROD.OUTLOOK.COM
+ (2603:10a6:910:2e::8)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -64,30 +105,139 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: ZRAP278MB0495:EE_|ZR4P278MB010980:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6412736e-4109-4657-2014-08df2e880c13
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|366016|376014|1800799024|7416014|18002099003|22082099003|13003099007|4143699003|10067099003|261009223027099003|56012099006
+X-Microsoft-Antispam-Message-Info: R4XvKjHI4McU0FtbqOTC7azxsGgsef5awbJkPtjzdk6hBvjaPfWHdtNWhPL2ezC1m0O72bEXTrHI/NXDsTy5WaTA34HOH71YSUmWraZ7yM05cfrKTnXe4Rke/yfbvp8ga3KcgL1pGoP2NSFrZnpU7t5Hp8i8XsAIqlAitWtNUTfaewb+hLEPG9Ym1zsUNG8jcAo+XlaTpgGeGkcQmIVe1Lh7rTBgyJM/dsk85zGCZD7NpRzJjdL7mgqZYMPYmmroUPZMUG9Lg9JXTt3xjOevFC9w5Q8SvsZaTZLhcJMNGY5hmJJtwi1ZjMddsteSCNfkB62BzVzhYj5rZdpziESq3/jiI36JkJeHAz40Dy0xfscCem/HhqDCNnupcj6pytHWp4S56kjydunyrcj5Ny2bH6D7Fy5L3yS15gMX81QDEhPF5fED1YxSlnY/2j4L8rMdP5iNlWb1Lt1Z+mxV2LJA8bGpdnSHeRimWHFVbVFzvoCl3ZXmva4z1Z6vhPkRdwX7VakefX0X624hQDRAet1QiQYRE1FLj60OM4wQxjrb69zgVe7Ozd3OK9P2VXXY25Avcf0rDQgazVZRLLYPQH3YNQGsFH7tglCQuvkAWGEC8AXgsDteDixyQwUiWu5WUeH1
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ZRAP278MB0495.CHEP278.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(376014)(1800799024)(7416014)(18002099003)(22082099003)(13003099007)(4143699003)(10067099003)(261009223027099003)(56012099006);DIR:OUT;SFP:1102
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?R3zOYKUov0WFQ4qHlX9n87k+pF2iR9sakGbKYjcckXnJ8hm6Wg6CjkEBwoNN?=
+ =?us-ascii?Q?S2Tgnn9ftBF/0Gm9cSsoHNavFH9zfKYjlRqz+DMkfL2t7kHi7uvhCzGu/i5K?=
+ =?us-ascii?Q?cK7else5ESs3oDMWtNsGvS2HfhC13uR/FEd/DWbTOZsQ6qi4rMXV/sihB1ih?=
+ =?us-ascii?Q?mOFuCAtmrtLOQV/CRn/LsXZeEwILtdri/V8yi9UgTYYi0Yglqf1WEjO0SfE7?=
+ =?us-ascii?Q?hFoBoS7pKfkTGWzqSfo4ZHGmD1OJcAw2yk3nhKNj9/rVTN/9TR4RWUYoORD3?=
+ =?us-ascii?Q?PXWsRa0x88fCPd2wNaXMyYM9LoDeW1W1eL47PmAQ3PeFenFTXTibszlEskIK?=
+ =?us-ascii?Q?9R2tg4f8PGgnLOxBEvFbcII9TzqGBEVGH3KlDRnF8eSI1wBi/R8Kxu/WUjFJ?=
+ =?us-ascii?Q?S1WRcMa+gFqQClY9OgCtRuvBj6tCU7l5Nv2aRjlS47vZO2Fhr966zxkxt6ul?=
+ =?us-ascii?Q?qmlZ9b0B9GhQ4a+HJMAfBLWScw4hOuKT/uRjwMLrSxxZMzvKgr8nHBb4e0/I?=
+ =?us-ascii?Q?Jbmzm2HdJrOQnd/PnlUM934cWm2jKYEDMPc49UsObVdXNC9qk0tZGhpE3Mi/?=
+ =?us-ascii?Q?6XphWnIaa6aRp4uScLSLSmGubVwMJzaNqmqp40mWbgZGmu5j6GIo+x3jPWyk?=
+ =?us-ascii?Q?kv49H4Kp0ZuP/xbzITCyqBhfgYMXFWet14DhPfnHGSoTAL9YjtcLTWQilV+0?=
+ =?us-ascii?Q?YaFUubKMSSxW3qr+LJZPYHVOxx+ByqeyuCm7Zi+IBstba54tcqfgxVWqIqQa?=
+ =?us-ascii?Q?bgeO5JUpf3rlaXkTrCFB0B3Xn+6jvXg7IWMKW+2Ep5lUVUTU1Cxox82zfMjD?=
+ =?us-ascii?Q?3pu6HfwEK6DuBS4ZuOh6Wdjk3w3P1R/TOWKJPEC4VWP3/tkbUXudqnF2pZvJ?=
+ =?us-ascii?Q?RVW7PLS56v7xACKg50LR0fbXhePkuRBquuqqxvELngaUrNAiPL/YtTuiMTFp?=
+ =?us-ascii?Q?fz00/c4YW7wo31cNPCNQRsZIhvSgZwCjb93liL8NVLw8PR/XzR9Ih9whjlQJ?=
+ =?us-ascii?Q?NJjs/N4XU3UzaAgTpk0QMR4wwJiMGMLYvxMdzVHMjZBavhgKKhHmB3VynYse?=
+ =?us-ascii?Q?ySYNyUrVHx7d+LQtrFt+5BSSrSYIH+ujXiUW13I10Lw3VGQGN4e6wLOU5QT8?=
+ =?us-ascii?Q?QNmGsNoq9WfD1oSg60dBXWRMkSrVLbym75/ibspdWukaM/HGXvRw8lSr//of?=
+ =?us-ascii?Q?End2o9SXGUejNhezoZsjQk06+ZsrixUGZq9sqtdxi/GA4Pa9ouMzE2JubH+7?=
+ =?us-ascii?Q?bGx/ckQkIPtMypZAhef8iZGe7CuWzsRUEQv6mWKxMvxSSSKTKbQNdOpenClK?=
+ =?us-ascii?Q?fHmXloqDJhbxBBmDV8/ZvzmKTvcovY0pKZ5s7YuB2sww32qSYJEaeOT2xEJG?=
+ =?us-ascii?Q?nEb8A0T+HmONOZ2iCoi/opjp1Tm1wPz98wmwqlnTZ9G1zMlKMmgrZL0mZ/kT?=
+ =?us-ascii?Q?CscwSGrMJ62aXbc5xCsxcINfE0xPcKpPl81eIdcIdjdkaRcRa/liGuk/ZkLP?=
+ =?us-ascii?Q?c5TGLRkaD5xLRj0P9opVtGUOoLSyjJVxDTVRj5pmNUrRCiF8H/EuMiML0TFG?=
+ =?us-ascii?Q?m+a2nzGdp1FKcLSiwft8yOUFHJE5QDkTi/HjkuKyIA7S5LNOaLGukVT2cQpH?=
+ =?us-ascii?Q?X8bfo5QFZFZVfjuBzuw7LimZai8npYnaYKPMJczVxyLuVPPpT3IAiqWKDR+3?=
+ =?us-ascii?Q?DPFVPvlE79rQ9MGxJLD/cE8x4ZH9R8CkLRt3B6iUUX3RivMI8Rj2BEXLg6sh?=
+ =?us-ascii?Q?XQtTOp/OzkNuTU0RGvrf63XJbKtyZfg=3D?=
+X-Exchange-RoutingPolicyChecked: ABjYSMLcC2xAx8G3RnyEYK0AwQSkw6cvs/X9HsXVeKeGzXZIElYVvxQGZXTVwN7ndbCBJUDYbcbmli45cr2Cxvuaw9tA4zV/bPlse3JNtqMI02gN7NOBfF7R6QGT0fIxSZ2JAWGmAV48eZ2g/gStIaFk6H1Ed1ChzE0TXx+V2Cm/QnfoMyjJ8itwLEugNwridQd/4Mic77d/DeXfvnpy6smXOuA2Rp8Hfp1gz8S2LwFfr9o/T6HsOpK+BH2im9tM84ENH+OTzYnHh8VfqVHJedkWAukihYzHI+8KzQilqslHMmnfK6SYzadE81kHLzIXamx/bW2ockhmMIVk1Wm7+A==
+X-OriginatorOrg: toradex.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6412736e-4109-4657-2014-08df2e880c13
+X-MS-Exchange-CrossTenant-AuthSource: ZRAP278MB0495.CHEP278.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Oct 2026 08:56:36.4497
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: d9995866-0d9b-4251-8315-093f062abab4
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: NpVYyFGouNLPYSdtvMsnQ869Cw+9EZKh7N0xdKgLQHAtm4Wu1jpKTnJPy9XxmYiHAL6fykWotaPZR99/0SEhNfJnCnp9FgssmCQIUQZkh6c=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: ZR4P278MB010980
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: qaecp6ZpryefG2oNfO-ODOO6JN3ZCg3V6ceGuJ-4aRY_1792486598
+X-Mimecast-Originator: toradex.com
+Content-Type: text/plain; charset=WINDOWS-1252
 Content-Disposition: inline
-In-Reply-To: <20261019205000.1084408-1-Frank.Li@oss.nxp.com>
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Oct 19, 2026 at 04:50:00PM -0400, Frank.Li@oss.nxp.com wrote:
-> From: Frank Li <Frank.Li@nxp.com>
-> 
-> Use unevaluatedProperties replace additionalProperties because it ref
-> other yaml file to allow backlight and label property.
-> 
-> Drop panel-timing and port, which copy from panel-common.yaml. Others have
-> additional restrictions.
-> 
-> Fix below CHECK_DTBS warning:
->   arch/arm/boot/dts/nxp/imx/imx6q-var-dt6customboard.dtb: lvds-panel (sgd,gktw70sdae4se): 'backlight', 'label' do not match any of the regexes: '^pinctrl-[0-9]+$'
->         from schema $id: http://devicetree.org/schemas/display/panel/sgd,gktw70sdae4se.yaml
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
-> changes in v2:
-> - drop panel-timing and port
+Hello Frank,
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+On Mon, Oct 19, 2026 at 02:25:40PM -0500, Frank Li wrote:
+> On Mon, Oct 19, 2026 at 01:18:31PM +0200, Antoine Gouby wrote:
+> > [You don't often get email from antoine.gouby@gmail.com. Learn why this=
+ is important at https://aka.ms/LearnAboutSenderIdentification ]
+> >
+> > From: Antoine Gouby <antoine.gouby@toradex.com>
+> >
+> > Add a device tree overlay for the Capacitive Touch Display 7" Parallel
+> > on the Colibri iMX6 parallel RGB LCD interface.
+> >
+> > The panel is a LogicTechno LT161010-2NHC 7" WVGA TFT Transmissive LCD
+> > and the touch input is provided by an Atmel MaxTouch capacitive touch
+> > controller.
+> >
+> > The touch controller is connected to the Toradex 10-way Capacitive Touc=
+h
+> > Interface connector available on Iris v2 and Aster carrier boards.
+> >
+> > The touch interrupt and reset signals on SODIMM 107 and SODIMM 106 shar=
+e
+> > their pads with the WEIM nEXT_CS1 and nEXT_CS2 chip selects, disable
+> > WEIM to avoid the pin conflict.
+> >
+> > The overlay is also combined with the Colibri iMX6 V1.2 Iris v2 and
+> > Aster carrier board device trees to provide ready-to-use DTBs.
+> >
+> > Link: https://developer.toradex.com/hardware/accessories/displays/capac=
+itive-touch-display-7inch-parallel/
+> > Signed-off-by: Antoine Gouby <antoine.gouby@toradex.com>
+> > ---
+> >  arch/arm/boot/dts/nxp/imx/Makefile                 | 11 +++++++
+> >  ...6dl-colibri-panel-cap-touch-7inch-parallel.dtso | 38 ++++++++++++++=
+++++++++
+>=20
+> File name include key componets, lt161010
+>=20
+> such as
+>=20
+> imx6dl-colibri-7inch-lt161010.dtso, like others
+>=20
+> =09imx93-tqma9352-mba93xxla-lvds-tm070jvhg33.dtso
+>=20
+> In case you will add more 7" panel in future, panel is quite easily EOL.
 
-Best regards,
-Krzysztof
+Let's try to settle this topic.
+
+What you are proposing is not ok, I have already provided a complete
+and detailed explanation on this topic here, please have a look again:
+
+ - https://lore.kernel.org/all/20261005075319.GA7692@francesco-nb/
+ - https://lore.kernel.org/all/20261005075319.GA7692@francesco-nb/
+
+In addition to that, I'd like to say that this is exactly the same as
+the raspberry pi display, see
+
+ arch/arm64/boot/dts/ti/k3-am625-verdin-rpi-display-2-7in.dtso
+ arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk-rpi-display-2-5in.dtso
+ arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk-rpi-display-2-7in.dtso
+ arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk-rpi-display-2.dtsi
+
+
+If you are concerned about this name being too generic and the risk of
+name conflict or potential confusion my proposal is to add a `tdx`
+prefix to the name.
+
+The proposed name would be
+`imx6dl-colibri-tdx-panel-cap-touch-7inch-parallel.dtso`.=20
+
+With such prefix we would have a clear Toradex "namespace" that would
+prevent any kind of conflict and confusion.
+
+Can we find a way forward on this, that allow both to have a correct
+name and solve also your concerns?=20
+
+Francesco
 
