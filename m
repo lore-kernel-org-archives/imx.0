@@ -1,82 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=220.197.31.2
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792483955;
-	b=x7sMJAMw9L2dpRD1ntyaXc8qh0jmPYcddTfjNS+H357G+6hmrazdZiXLZjxq4fJCV/4i
-	 cNbkZfdPVPq40dbAhO0sseZUxBu+PAzWkONILqb2ZLrmq2dKDx9Kvi1tsNdZxudFkyEqA
-	 xYrMUVVrmVbf4MfaBq/PFWLaCF7HGDrHDrX23bCiCf1I8cVge5E5E4l5HlTLRj6gdkrGk
-	 3isTZzA+N+foLpr8MbnstijYyJ6VNO0z0e6zNu3s1ybpjDDO2dLx7YcsPY30yTmR//gEN
-	 fq5xk7QgUJKb47SAkOVJC1g0GLIWdIOLcwG9wHttm6zrk2UhHBsrzMHuhC0GAp4qCtA==
+	t=1792484939;
+	b=doBz5hOdUXGNNotK6A3tiO8hLvqZK40FDTd/Gj3YlO04pc/uqSLf6CNTyrhx9Lwub8mc
+	 riU7j+FJxnmr2M5ks5ZlU2Gfn6o9S7QsHS+bmtMh0eUHLcffE2mUshDwxZ4EN2Ug3285k
+	 Njdb6iEntThtVzeQcHivIpptLHAvWTdj6LP7mrHSMR8G82gM9K4SkJAVgeB0pAiOLh1/m
+	 38d6RlS0wdXf9tTbvP81I39gZkKU1kxV45RhUtGrvQJPGfdVZiDdgpD6Uw/9IDIca1wAE
+	 MZhyXHUdrsna/fnsi8QIRKInQF4NNQsvDzmKuntRxaDnvym1Ez6eW0VYSDPnFnXarOg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792483955;
-	h=DMARC-Filter:DKIM-Signature:Date:From:To:Cc:Subject:X-Priority:
-	 X-Mailer:In-Reply-To:References:X-NTES-SC:Content-Transfer-Encoding:
-	 Content-Type:MIME-Version:Message-ID:X-Coremail-Locale:X-CM-TRANSID:
-	 X-CM-SenderInfo:X-Coremail-Antispam;
-	bh=aEsK9vnGIWgdQWg/4/gp+ERqdPLdZK75eQSfT/gO9Pk=;
-	b=l8QuVJPNp6FNotVxNjIXkol1pfkQXybetQPOxfKf9mZkhLBt3sfRz/WDpYzL7Hmx+hOx
-	 /sb8nr+1ehNiuL3BuIGXQV9wQyya9ji2l+ecFzO0s9yM5qO+juZ4gB6epG41i0OD0IxOV
-	 nogaexJwvPD+RSExBD5xwQ/l1UR0ACCWUw7BAnKLrr7g587dygfx5o+uoN9athTFntJ8d
-	 SV+vl7Ew12T+VPxoUeOZ5wscJHmYRbrqeEpmNXfuHlADmU4ndomUpdc5389Sad9v3ZktD
-	 xLUqmbLd4lo2cBXlhlhUG+MTiL/1wW6pr5O0gJYWiUUvBKrv5N+5qgUu8di1Af8zOnw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792484939;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=vyucOTsSgLZgrADiAoF4uVAGYoXy/9hXlyt8Dq2To40=;
+	b=e9Ab364P2Ptz19HP6Y0OkqzjrTpMYoU+Ab2RGT/t3Oz68cW167mK+BNzcHex2j2V9ZHb
+	 kjks/CqNs4vxZcW+1jpHMty+I30RMjlNaftzj8hCY1bQAkDQI13WdlPJ0QYXK0kar8JGn
+	 fJOcLumsRQevaUmq6FuD0c7zs3xX4l44MotB97zIngvnJnXpnKBc5vNniSaaeMjTJp53s
+	 MZDupR7uX0zvM9cBgR1Fx+CWc2HpQ6rHF1/oprzqmqOknUFofDGRn3nn/3qsi+NfOLv+T
+	 tfEWU0DpDFG+XziZTq8C1pWH2omxgYEmE6N1DZKAOOC42fxSN74D6ud9Jpm3BsdfiDw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=163.com;
-	spf=pass smtp.mailfrom=163.com;
-	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=RCnjv+vU;
-	arc=none smtp.remote-ip=220.197.31.2
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=X1QbPGdg;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F9C9606A319
-	for <imx@lists.linux.dev>; Tue, 20 Oct 2026 08:12:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5F9C9606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC2F9606A31D;
+	Tue, 20 Oct 2026 08:28:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=RCnjv+vU
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Date:From:To:Subject:Content-Type:MIME-Version:
-	Message-ID; bh=aEsK9vnGIWgdQWg/4/gp+ERqdPLdZK75eQSfT/gO9Pk=; b=R
-	Cnjv+vUw17RM25HbbvPqMuGddLQAMNXJ0irypFTfWPLOd6+HOf3gwWx8a2uP2SmB
-	iDAziIByqccqzbaF9irRVvpqnnVhRrfSP0844asw+laXL975n8MmReJ8/wccS40t
-	dwd/tu0cxmXnt80jgfrZdR4QRYqABLnulyXy8r/pSc=
-Date: Tue, 20 Oct 2026 16:10:32 +0800 (CST)
-From: "jiale yao" <19888972804@163.com>
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: "Frank Li" <Frank.Li@kernel.org>, "Zhang Wei" <zw@zh-kernel.org>,
-	"Sascha Hauer" <s.hauer@pengutronix.de>,
-	"Pengutronix Kernel Team" <kernel@pengutronix.de>,
-	"Fabio Estevam" <festevam@gmail.com>,
-	"Linus Walleij" <linusw@kernel.org>,
-	"H Hartley Sweeten" <hsweeten@visionengravers.com>,
-	"Ryan Mallon" <rmallon@gmail.com>,
-	"Mika Westerberg" <mika.westerberg@iki.fi>,
-	"Ebony Zhu" <ebony.zhu@freescale.com>,
-	"Kumar Gala" <galak@gate.crashing.org>,
-	"Dan Williams" <djbw@kernel.org>,
-	"Andrew Morton" <akpm@linux-foundation.org>,
-	"Zhangfei Gao" <zhangfei.gao@marvell.com>,
-	"Arnd Bergmann" <arnd@arndb.de>, "Qiao Zhou" <zhouqiao@marvell.com>,
-	"Leo Yan" <leoy@marvell.com>,
-	"Lennert Buytenhek" <buytenh@marvell.com>,
-	"Nicolas Pitre" <nico@marvell.com>,
-	"Saeed Bishara" <saeed@marvell.com>,
-	"Maciej Sosnowski" <maciej.sosnowski@intel.com>,
-	"Shawn Guo" <shawn.guo@freescale.com>,
-	"Srinidh Kasagar" <srinidhi.kasagar@stericsson.com>,
-	dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re:Re: [PATCH 0/7] dmaengine: drain completion tasklets during
- teardown
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2023.4-cmXT build
- 20260511(2e539873) Copyright (c) 2002-2026 www.mailtech.cn 163com
-In-Reply-To: <20261020073620.224795-1-peng.fan@oss.nxp.com>
-References: <20261020073620.224795-1-peng.fan@oss.nxp.com>
-X-NTES-SC: AL_Qu2SAPiTvEAo5CabY+kcn08ShO49XMOyvfoi2YFTc+MEpyPT/CwnXV1dJHjX9MKlLySpjjK2QjZX0MN8TZd4HI2VUqoFvXudLFbzFGVQoQ==
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=GBK
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=X1QbPGdg
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D432C1F000C4;
+	Tue, 20 Oct 2026 08:28:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792484938;
+	bh=vyucOTsSgLZgrADiAoF4uVAGYoXy/9hXlyt8Dq2To40=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=X1QbPGdgGnyhvJgbj7nWBs0fVTqa5p3X3mLygwxpvPDz9+wfNiTKokVt0ZtNOjqUb
+	 9cJVxAXCFuD3SCUwfbCHTxcYB3tsU6zhrXh8vS5UymufrU7P++7C8dFUNBOsSNlK1c
+	 E2d6mNbN5GR6oWEY4Zk/+p4UsxGJz6e2ndGdP5oZwd1/FPmLe5EmhM8Ei0WCxECcNH
+	 bsMY5aEaq+fEx5ihYAfkfBb8nQLL615Xe/GUSikth3TmMaehviaPtc/VJaMDEvsQO6
+	 eV3pDVkCZshpB9c9lHzueJ0U+q5EGx8ORf4nzypZ42lMu6hoE1wyrN97augvkuf7tF
+	 FRQFMtjq4blYA==
+Date: Tue, 20 Oct 2026 10:28:52 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Frank.Li@oss.nxp.com
+Cc: Neil Armstrong <neil.armstrong@linaro.org>, 
+	Jessica Zhang <jesszhan0024@gmail.com>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Thierry Reding <thierry.reding@gmail.com>, 
+	"open list:DRM PANEL DRIVERS" <dri-devel@lists.freedesktop.org>, 
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev, 
+	Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH v2 1/1] dt-bindings: display: sgd,gktw70sdae4se: use
+ unevaluatedProperties
+Message-ID: <20261020-artificial-olive-mushroom-b798c5@quoll>
+References: <20261019205000.1084408-1-Frank.Li@oss.nxp.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -86,66 +64,30 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Message-ID: <3d4b1cde.711e.1a1585cb34c.Coremail.19888972804@163.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:bCgvCgCnV_34IddqIc9cAA--.879W
-X-CM-SenderInfo: x1dryxhdohiji6rwjhhfrp/xtbCzhgXUWrXIfhxlAAA3R
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261019205000.1084408-1-Frank.Li@oss.nxp.com>
 
-SGkgUGVuZywKCkF0IDIwMjYtMTAtMjAgMTU6MzY6MTksICJQZW5nIEZhbiAoT1NTKSIgPHBlbmcu
-ZmFuQG9zcy5ueHAuY29tPiB3cm90ZToKPk9uIFN1biwgMTggT2N0IDIwMjYgMTI6MDc6MTYgKzA4
-MDAgSmlhbGUgWWFvIDx5YW9qaWFsZTAyQDE2My5jb20+IHdyb3RlOgo+Cj4+IFNldmVyYWwgRE1B
-ZW5naW5lIGRyaXZlcnMgZGVmZXIgaW50ZXJydXB0IGNvbXBsZXRpb24gcHJvY2Vzc2luZyB0bwo+
-PiB0YXNrbGV0cywgYnV0IHJlbGVhc2UgY2hhbm5lbCByZXNvdXJjZXMgd2l0aG91dCBkcmFpbmlu
-ZyB0YXNrbGV0cyB0aGF0Cj4+IHdlcmUgYWxyZWFkeSBxdWV1ZWQuIFN0b3BwaW5nIG9yIHJlbGVh
-c2luZyBhbiBJUlEgcHJldmVudHMgbmV3IGhhcmQgSVJRCj4+IGhhbmRsZXJzLCBidXQgZG9lcyBu
-b3Qgc3luY2hyb25pemUgdGhlIGRlZmVycmVkIHRhc2tsZXQuCj4+IAo+PiBEZXBlbmRpbmcgb24g
-dGhlIGRyaXZlciwgYSBsYXRlIHRhc2tsZXQgY2FuIGFjY2VzcyBmcmVlZCBkZXNjcmlwdG9yCj4+
-IHN0b3JhZ2Ugb3IgaW52b2tlIGEgY29tcGxldGlvbiBjYWxsYmFjayBhZnRlciBpdHMgY2xpZW50
-IGRhdGEgaGFzIGJlZW4KPj4gcmVsZWFzZWQuIEVuc3VyZSBlYWNoIHByb2R1Y2VyIGlzIHN0b3Bw
-ZWQgYmVmb3JlIGtpbGxpbmcgdGhlIHRhc2tsZXQgYW5kCj4+IGZyZWVpbmcgdGhlIHJlc291cmNl
-cyBpdCBjYW4gYWNjZXNzLgo+PiAKPj4gRWFjaCBwYXRjaCBpcyBpbmRlcGVuZGVudCBhbmQga2Vl
-cHMgdGhlIHN5bmNocm9uaXphdGlvbiBsb2NhbCB0byBvbmUKPj4gZHJpdmVyJ3MgY2hhbm5lbCBv
-ciBkZXZpY2UgdGVhcmRvd24gcGF0aC4KPj4gCj4+IEppYWxlIFlhbyAoNyk6Cj4+ICAgZG1hZW5n
-aW5lOiBlcDkzeHg6IGRyYWluIHRhc2tsZXQgYmVmb3JlIGZyZWVpbmcgY2hhbm5lbCByZXNvdXJj
-ZXMKPj4gICBkbWFlbmdpbmU6IGZzbGRtYTogZHJhaW4gY2hhbm5lbCB0YXNrbGV0IGR1cmluZyBy
-ZW1vdmFsCj4+ICAgZG1hZW5naW5lOiBtbXBfcGRtYTogZHJhaW4gY2hhbm5lbCB0YXNrbGV0cyBk
-dXJpbmcgcmVtb3ZhbAo+PiAgIGRtYWVuZ2luZTogbW1wX3RkbWE6IHN5bmNocm9uaXplIHRhc2ts
-ZXQgd2hlbiBmcmVlaW5nIGEgY2hhbm5lbAo+PiAgIGRtYWVuZ2luZTogbXZfeG9yOiBkcmFpbiBJ
-UlEgdGFza2xldCBiZWZvcmUgZnJlZWluZyBjaGFubmVsIG1lbW9yeQo+PiAgIGRtYWVuZ2luZTog
-bXhzLWRtYTogc3luY2hyb25pemUgdGFza2xldCB3aGVuIGZyZWVpbmcgYSBjaGFubmVsCj4+ICAg
-ZG1hZW5naW5lOiBzdGVfZG1hNDA6IHN5bmNocm9uaXplIHRhc2tsZXQgd2hlbiByZWxlYXNpbmcg
-YSBjaGFubmVsCj4+IAo+PiAgZHJpdmVycy9kbWEvZXA5M3h4X2RtYS5jIHwgNCArKystCj4+ICBk
-cml2ZXJzL2RtYS9mc2xkbWEuYyAgICAgfCAxICsKPj4gIGRyaXZlcnMvZG1hL21tcF9wZG1hLmMg
-ICB8IDQgKysrKwo+PiAgZHJpdmVycy9kbWEvbW1wX3RkbWEuYyAgIHwgMiArKwo+PiAgZHJpdmVy
-cy9kbWEvbXZfeG9yLmMgICAgIHwgNiArKysrLS0KPj4gIGRyaXZlcnMvZG1hL214cy1kbWEuYyAg
-ICB8IDEgKwo+PiAgZHJpdmVycy9kbWEvc3RlX2RtYTQwLmMgIHwgMiArKwo+Cj5Zb3UgbWlnaHQg
-bmVlZCB0byBhZGQgYSBiaXQgbW9yZSBjb250ZXh0IG9uIHRoZSBpc3N1ZXMuCj4KPlRha2luZyBt
-eHMtZG1hIGZvciBleGFtcGxlLCBpdCBpcyBub24tU01QIHByb2Nlc3Nvci4KPgo+VGhlIG5vcm1h
-bCBjb21wbGV0aW9uIHBhdGggaXM6Cj4xLiBETUEgaGFyZGlycSBmaXJlcyAtPiBteHNfZG1hX2lu
-dF9oYW5kbGVyKCkgLT4gdGFza2xldF9zY2hlZHVsZSgpIC0+IHJhaXNlcyBUQVNLTEVUX1NPRlRJ
-UlEKPjIuIGlycV9leGl0KCkgLT4gc29mdGlycSBwcm9jZXNzaW5nIC0+IHRhc2tsZXRfYWN0aW9u
-KCkgLT4gbXhzX2RtYV90YXNrbGV0KCkgcnVucwo+My4gUmV0dXJuIHRvIHByb2Nlc3MgY29udGV4
-dAo+Cj5UaGUgdGFza2xldCBhbG1vc3QgYWx3YXlzIGNvbXBsZXRlcyBiZWZvcmUgcHJvY2VzcyBj
-b250ZXh0IHJlc3VtZXMuCj5UaGUgb25seSB3YXkgdG8gaGl0IHRoZSByYWNlIG9uIFVQIGlzIGlm
-IHNvZnRpcnEgcHJvY2Vzc2luZyBnZXRzIGRlZmVycmVkCj50byBrc29mdGlycWQsIGFuZCB0aGVu
-Ogo+SW4gUFJFRU1QVF9SVCBjYXNlOiBUYXNrbGV0cyBiZWNvbWUgdGhyZWFkZWQgYW5kIGNhbiBp
-bnRlcmxlYXZlLgo+SXMgdGhlcmUgYSBjaGFuY2UgdGhhdCBpbiBub24tUlQgY2FzZSwgY291bGQg
-d2UgaGl0IGlzc3VlcyBvbiBVUCBwcm9jZXNzb3I/Cj4KPk9yIEkgbWF5IHVuZGVyc3RhbmQgd3Jv
-bmc/CgpUaGFua3MgZm9yIHRoZSBkZXRhaWxlZCBhbmFseXNpcy4KClRoZSBub3JtYWwgVVAvbm9u
-LVJUIHBhdGggdXN1YWxseSBydW5zIHRoZSB0YXNrbGV0IGZyb20gaXJxX2V4aXQoKSwgYXMKeW91
-IGRlc2NyaWJlZC4gSG93ZXZlciwgaWYgdGhlIERNQSBJUlEgcmFpc2VzIFRBU0tMRVRfU09GVElS
-USBhZnRlciB0aGF0CnZlY3RvciBoYXMgYWxyZWFkeSBiZWVuIHByb2Nlc3NlZCBpbiB0aGUgY3Vy
-cmVudCBzb2Z0aXJxIHBhc3MsCm5lZWRfcmVzY2hlZCgpIG9yIHRoZSBzb2Z0aXJxIHRpbWUvcmVz
-dGFydCBsaW1pdHMgY2FuIGRlZmVyIGl0IHRvCmtzb2Z0aXJxZC4gUHJvY2VzcyBjb250ZXh0IG1h
-eSB0aGVuIHJlbGVhc2UgdGhlIGNoYW5uZWwgYmVmb3JlIHRoZQp0YXNrbGV0IHJ1bnMuCgpBIHNp
-bWlsYXIgdGVhcmRvd24gaXNzdWUgd2FzIGZpeGVkIGJ5IGNvbW1pdCAwY2E3OTk3OTM4NGYKKCJS
-RE1BL2VyZG1hOiBGaXggQ0VRIHRhc2tsZXQgdXNlLWFmdGVyLWZyZWUgb24gcmVtb3ZhbCIpLiBm
-cmVlX2lycSgpCnN5bmNocm9uaXplcyB0aGUgaGFyZCBJUlEgaGFuZGxlciwgYnV0IGRvZXMgbm90
-IGRyYWluIGFuIGFscmVhZHkgcXVldWVkCnRhc2tsZXQuCgpGb3IgbXhzLWRtYSwgdGhlIGRlZmVy
-cmVkIHRhc2tsZXQgbWF5IGludm9rZSB0aGUgY29tcGxldGlvbiBjYWxsYmFjawphZnRlciBpdHMg
-Y2xpZW50IGRhdGEgaGFzIGJlZW4gcmVsZWFzZWQuIFRoZXJlZm9yZSB0aGlzIGNhbiBhbHNvIGhh
-cHBlbgpvbiBVUC9ub24tUlQsIGFsdGhvdWdoIHRoZSB3aW5kb3cgaXMgbmFycm93LgoKPgo+UmVn
-YXJkcwo+UGVuZwo+Cj4+ICA3IGZpbGVzIGNoYW5nZWQsIDE3IGluc2VydGlvbnMoKyksIDMgZGVs
-ZXRpb25zKC0pCj4+IAo+PiAtLSAKPj4gMi4zNC4xCj4KPlNlbnQgdXNpbmcgaGttbCAoaHR0cHM6
-Ly9naXRodWIuY29tL3NqcDM4L2hhY2tlcm1haWwpCgoKVGhhbmtzLApKaWFsZQo=
+On Mon, Oct 19, 2026 at 04:50:00PM -0400, Frank.Li@oss.nxp.com wrote:
+> From: Frank Li <Frank.Li@nxp.com>
+> 
+> Use unevaluatedProperties replace additionalProperties because it ref
+> other yaml file to allow backlight and label property.
+> 
+> Drop panel-timing and port, which copy from panel-common.yaml. Others have
+> additional restrictions.
+> 
+> Fix below CHECK_DTBS warning:
+>   arch/arm/boot/dts/nxp/imx/imx6q-var-dt6customboard.dtb: lvds-panel (sgd,gktw70sdae4se): 'backlight', 'label' do not match any of the regexes: '^pinctrl-[0-9]+$'
+>         from schema $id: http://devicetree.org/schemas/display/panel/sgd,gktw70sdae4se.yaml
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> changes in v2:
+> - drop panel-timing and port
+
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+
+Best regards,
+Krzysztof
+
