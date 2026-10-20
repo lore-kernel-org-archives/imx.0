@@ -1,94 +1,145 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.52
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792490677;
-	b=I/l5qncnexTJ6hzXj4diVs58ewXQiT/lHQ4U7nFSyV2N7Jk+GYX6TrgHcXNKoA0f+6QV
-	 JX0nUnLdY7wV/jeICbG1uAMzd/QiY2RN6DjXl96CHndMzbGOGKyYVJdW7XIoWGH1wiyfS
-	 LTSqUaDl37/Jt3qAPkVcSgGen6lkBUL06Mbfm2g/ie/0GTVyPIa+fKGZSHYwcXbXA3hAh
-	 5e6OV8jVIYicvJ+UFqRI0tcKkIfFwDVKRKjGSvqV1FlTBPk93gitmJo6ABT56XG4BxglC
-	 otvTGn7kAc8TbGXFyK/Nv9S2TvaN8GwhkciAqW3ZosiBfGx8CXBkQERuWd0iM17xc0A==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792490677;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:Content-Transfer-Encoding:
-	 In-Reply-To;
-	bh=U0/lnzk5hFsVd5ZzP5Fnt4j1JlLknKQhx8BKtAG3IEE=;
-	b=Mv54FHThXzDM4L/eGR4MxxhtSnrokEpAVKe9vLUsD0QcfSCdeX5cPurdu8Yr3Sg4L4bO
-	 +ifG5x9V1yaTGi74+Si6PmBL0UyJcDxs1UysVTHvydheKGuL8tBDcqUrcFQ7yDEjxU99Y
-	 BDbdQrNuoZTPFkezd0CNn5q9gUAe08clI5vpXVr79HgFjDFse/5wXyTwjETh+hWuYs7O8
-	 HiFDlloEV15EUsNe2n6/Og2ZPKTQkLw3YMKQJg7egHpPQnY9THYMyvVFj7hNB6n8teM52
-	 0ECQ4hqFCXgoKoEKfNUgp2HyD/+znIYDwc6blH7ZU5zlv1wgzE0wFNxYF3vVuZzqk2w==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=o+2RxzIm;
-	arc=none smtp.remote-ip=74.125.82.52
-Received: from mail-dl1-f52.google.com (mail-dl1-f52.google.com [74.125.82.52])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.159.9
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792492217;
+	b=vsudUo2ZhhIRfoaRJyHOvQu2aF4yHl9wsiTtKi/fu7vOtZpGYuyV7lKbWvUc6ZGzvaAZ
+	 w1EtgOnR9wNKS/VEZjZvwQoA7SAvoAjeGN4wJMW69sw+oPsZ6Ex3ahuPUqq9qJpoAQXMj
+	 I5zJrzhGCyQ8qcDFUCaE7N1EsL74p9I711jsqOjt8uI9YVCjdCK69vmu/q2XkYXM7Tyvz
+	 Lkv8UK93Zv9qQ+CY6/LGSoZcj/I3K9qxZkQtJYgFR0CRfzfOaxk7JTFNbEF7wg76SOc7F
+	 sH1PI04fJHtZCE1purVwugTPDio7k8zGIiVLSpkDPKIPFgfJKck1oUvyVpV8XFbknWQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792492217;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:CC:Subject:
+	 Thread-Topic:Thread-Index:Date:Message-ID:References:In-Reply-To:
+	 Accept-Language:Content-Language:X-MS-Has-Attach:X-MS-TNEF-Correlator:
+	 msip_labels:x-ms-publictraffictype:x-ms-traffictypediagnostic:
+	 x-ms-office365-filtering-correlation-id:x-ms-exchange-senderadcheck:
+	 x-ms-exchange-antispam-relay:x-microsoft-antispam:
+	 x-microsoft-antispam-message-info:x-forefront-antispam-report:
+	 x-ms-exchange-antispam-messagedata-chunkcount:
+	 x-ms-exchange-antispam-messagedata-0:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-AuthAs:X-MS-Exchange-CrossTenant-AuthSource:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-originalarrivaltime:
+	 X-MS-Exchange-CrossTenant-fromentityheader:
+	 X-MS-Exchange-CrossTenant-id:X-MS-Exchange-CrossTenant-mailboxtype:
+	 X-MS-Exchange-CrossTenant-userprincipalname:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=EaYw9OSd4pZZy/XrGF7rS93GV05twuc3u6CtaTihWSI=;
+	b=t/NeE3gYs2VdHd4bVqWUNKj08z/QaIWPGdhlI+NCSQFf0+51N9hTuSDoN75H2oSuDjbe
+	 AKcfdXqGaDIkbnwmTsinBoHj5UQXxPKaLMv6zimdQkooQAfaAGShRuuwMP7X1/wipf6fm
+	 P7/z1o9XwAkKJQraLiXn+OB9low7TWFnHlBFl7s/FvG0ugahzkdnWB7Vk/f+wD8g5up2F
+	 l98BVbxINQFWjIssOB+SxwItTSRcEQeEgSLCUkUHdz0bgSRlPyfUiXnPWZOS/PYyYFHvH
+	 3STz2sI+dNfVu4BMYQhzhPycZ2gIZdZoJyUUKBcYBTL3AsyrBGB+C5cao6CbtKYveYQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nxp.com;
+	spf=pass smtp.mailfrom=nxp.com;
+	dkim=pass header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=PoVlBXVi;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.159.9
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013009.outbound.protection.outlook.com [40.107.159.9])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75BF5606A31D
-	for <imx@lists.linux.dev>; Tue, 20 Oct 2026 10:04:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 75BF5606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50EDD606A328;
+	Tue, 20 Oct 2026 10:30:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 50EDD606A328
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=o+2RxzIm
-Received: by mail-dl1-f52.google.com with SMTP id a92af1059eb24-188406bb948so397040c88.1
-        for <imx@lists.linux.dev>; Tue, 20 Oct 2026 03:04:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792490676; x=1793095476; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=U0/lnzk5hFsVd5ZzP5Fnt4j1JlLknKQhx8BKtAG3IEE=;
-        b=o+2RxzImk6rim5NkI4UGDo51eHi0wrk3XL7J5fZP2AFG5N/SPPqTMIgzh+zgeZ7dX3
-         YvxVA0yfigOY4FIunIqPF+gGfAQe5Ay8CAhNY9UDZqYr+SjdJu7P5fHznEXrMj4Pf2Po
-         ToHJcDh+BgDhmOPqMF5mOCl5EtPmX/qL9Y20DD2pKmgvydaL23I9jAQ6PRaP8B/V3NM5
-         nyJDrlrp9W3KqoObz+U6y8YgrySuq4+NpYPO3VwVBt7JcBOAJwBrTemNwwfj4Z+XaOb4
-         DWB6cExiGHG0Rb8QHP/0+A6Dgra4vEiVO5UGZvWhf9PMkxqxXJd5nirJqt8B7x4ZmZa1
-         PWXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792490676; x=1793095476;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=U0/lnzk5hFsVd5ZzP5Fnt4j1JlLknKQhx8BKtAG3IEE=;
-        b=BcOtISkaK+tAuov0XmKSzVc5WiMcZi1PkOe+co4S6hfDmvgeAdwK4TLuAHhBSG6+4X
-         Tb5geK8u7jNwgl6s4CRJiFKiALtNzrYS2Lnrof6fwbOWCAPwWSy+Ucv1N/bO9O1ubMWL
-         bT97c0qmH6smImhppZ16zdFWxpskDERZUe3o61M9E1lVuAitEHvh6BaeEBzCPcYkeIqO
-         gcgBX82BPS/A5TB+UmqksT8pINgDLxHMGUkRG10Y2NgH92Mn/0H/twNac3QmfQ1lV1Nn
-         DyQM+xRWzExtjwRaBfJYY2AhEvaNmZ7ZY5CrluhNDrtqObWRkecwaY3g/OeEpuZwd9yo
-         cJ4A==
-X-Forwarded-Encrypted: i=1; AKwUvBz87uZu4CZ48aI01DQ4Ctt5Ee/Xw6MUFdLZveJ2YBleThtMqksOplTME2z9fy8dRFrAZ6s=@lists.linux.dev
-X-Gm-Message-State: AFq9FYLWjSEgVZZJ4mHpMO4j8s/BRsIPxexUTtUWByMITJItW+yrqxkA
-	BeHAF6U07ZEBebfh7jnh1hProgHSyOyp3p+bRee2V1Hpsucl2tYBGzPW
-X-Gm-Gg: AYBFou2pYLyF7KzUF0Y/APbYmf8cNAry6llvlq9nTbLf3OfrTeW+LGgzQyv2fX9S5vl
-	F1A6yoGg6zvzro5A6fI7wEkODWsV8kIiOH3v7rcwIcfofK2XvUiVW9ZxFDKYa3mn9Whhb69d/rt
-	VjbqphJKAhEkHIBgZk2AXmTSCw1L1FuKz2IOo/Ec4EWnmM77mNABbERhdXQmw28bpbNX+DxOqMI
-	srj2ipTlD+lfTP2aHfGv2LbGNLb4l0EauqTk6YdAZIOng9k/6QOnUpPyTm9Fo1+d+AaAcoEuYf8
-	BLcJ5DzKt85Uo95I/KRnecT6psgMuKokWKwi+sfwRTjfphF+zrHGcyXjGnzLC7NpytMssqzNTWL
-	js4f0JoJtZv6k3ZJlBVsr1kUpa/V+tr/Aht/doaWyP1Lwwvq6C+YyXD+RAo8T+8Fowvem3iPDyx
-	FnP8Aedj0BgRRjyHxDsQgro+PXhqE4NTEAxnPRNIYZkuUi/EJHOPEJaB9KZbmKf+LKh7858/2Ir
-	V7hFs3fUpDLG8DEUQ8mU/70Ep1lZKR6OhMRMNNHp4o9AveDjfEwyQbPGnwPwg==
-X-Received: by 2002:a05:701b:204f:20b0:151:7f08:5961 with SMTP id a92af1059eb24-1850c9cf541mr15980378c88.4.1792490675971;
-        Tue, 20 Oct 2026 03:04:35 -0700 (PDT)
-Received: from leonardoc-nb ([67.159.246.222])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1831996071csm36076766c88.9.2026.10.20.03.04.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Oct 2026 03:04:35 -0700 (PDT)
-Date: Tue, 20 Oct 2026 07:04:29 -0300
-From: Leonardo Costa <leoreis.costa@gmail.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
-	imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org
-Subject: Re: [PATCH v2 3/3] ARM: dts: imx6q-apalis: Add VGA overlay
-Message-ID: <t5mkri7cbalmy55ylrb7stanrnmxc7ep4vhmtw2nzulhgdi6wm@jsdhywrqubwx>
-References: <20261019-v2-apalis-imx6-enable-vga-v2-0-ef6a3a780472@toradex.com>
- <20261019-v2-apalis-imx6-enable-vga-v2-3-ef6a3a780472@toradex.com>
- <sashiko-outbox-177001@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=PoVlBXVi
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=DsTBWOMh2xRfXX0Fo8R8FSILTpS3fugSwJklb2qP92J298L0lBnS1Iz0E2gWnD07RIBJs5XYE1PVOEdQGUI9DNckLqnsMc4Os1AY8wBPmVBgywCN5zbwuCBDkQQvYGnXuc0kyu34TI54SSlmzt/S12CFo0z5zwh0IgV1RNjCmLe1NC85O4+PayAIn6JjPiuiP7RnG+f6ujFf/tuujnL3+VGz5Kd4JdimZs4+tzK3TwmP9p8LmdfgL0xNcuirq8WhGRhPU72E0ZVPEEUOJSQLMcK1ZpEwbnwo/btaRgx5LSelo9TdkD1r60sD8dCDbLie83cfomd/0kdgCjInQxadpA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=EaYw9OSd4pZZy/XrGF7rS93GV05twuc3u6CtaTihWSI=;
+ b=fs+eiQF96WuVcVVap2gCG+LahGY6QDYxJ4Rsug++xSik1u/cB34+N/sqUf0IMtgZQlhEsipZbmJYmGESeX6pVs/IEvw6YeHlynb7DLgek0rMs4sy8VVlFFtMn0mkmIwaLkJkK+6EEbitYZArue3Bz/NBPfLyxdXHo9SoewTr488OEx59nhLFGOv6rny2yWTslQVXkn3yN7DBxGoL5OPHqS3Y+chjKl5oxkhK77dWG0JfeYOPgWgmacJa+NqVIbDyYelfSLYDea6362ysjGuBxdraNrqPJvvlJgWyH4z7nfY6SOnXw447HjcdctM6LyjMdh5v0uqJegcGtzCDm8djoA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=EaYw9OSd4pZZy/XrGF7rS93GV05twuc3u6CtaTihWSI=;
+ b=PoVlBXViGqwglpfiFHe5CJeKrtfrpu0RpzSqCIUq4IGIXYCVE1udQzA6CG2lFf+4EhX9wNMX83fcJ2E+aUI+piL4t2Ur3H83EFYxusCEMQXKeAwIYYhun4SwHYYmA7LkdKf6aOmDgHw5H+ElZfnCaEHM08ulcjDKJN9aF/pbOPU6ymBHp/RlonfoRAJzD51AHHcYbyxd7h0481+uKc8GrSy5M85pyj2AsuKnj1Z+l0F/OOsxVs657SbO3BLHECUEmiNk4eC0GnXALuOeKVvIcQhRgzAEOfkjnYcLIfxnPZEBdSBCJk/rwoCZ/N32FBo/KyltoJq4wU+hoM6pUkH6RQ==
+Received: from AMBPR04MB484752.eurprd04.prod.outlook.com
+ (2603:10a6:20b:7da::11) by AS8PR04MB7736.eurprd04.prod.outlook.com
+ (2603:10a6:20b:2af::20) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.14; Tue, 20 Oct
+ 2026 10:30:14 +0000
+Received: from AMBPR04MB484752.eurprd04.prod.outlook.com
+ ([fe80::47e:af5a:c2c:93bb]) by AMBPR04MB484752.eurprd04.prod.outlook.com
+ ([fe80::47e:af5a:c2c:93bb%6]) with mapi id 15.21.0546.012; Tue, 20 Oct 2026
+ 10:30:14 +0000
+From: Sherry Sun <sherry.sun@nxp.com>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>, Frank Li <frank.li@nxp.com>
+CC: Pengutronix Kernel Team <kernel@pengutronix.de>, Lucas Stach
+	<l.stach@pengutronix.de>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "regressions@lists.linux.dev"
+	<regressions@lists.linux.dev>
+Subject: RE: [REGRESSION] Potential problems for DT-described PCIe nodes on
+ i.MX
+Thread-Topic: [REGRESSION] Potential problems for DT-described PCIe nodes on
+ i.MX
+Thread-Index: AQHdYHWdGFNcUmvO90+txsav+NGSFrcGOi8A
+Date: Tue, 20 Oct 2026 10:30:14 +0000
+Message-ID:
+ <AMBPR04MB4847528E0F026D1CB38E88AE0492672@AMBPR04MB484752.eurprd04.prod.outlook.com>
+References: <171421fb-d0a6-4e3f-b2dc-226e9c548972@pengutronix.de>
+In-Reply-To: <171421fb-d0a6-4e3f-b2dc-226e9c548972@pengutronix.de>
+Accept-Language: zh-CN, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+ MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_Enabled=True;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_SiteId=686ea1d3-bc2b-4c6f-a92c-d99c5c301635;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_SetDate=2026-10-20T10:27:05.0000000Z;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_Name=NXP
+ Confidential;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_ContentBits=3;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_Method=Standard
+authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: AMBPR04MB484752:EE_|AS8PR04MB7736:EE_
+x-ms-office365-filtering-correlation-id: f6e95164-c07b-459d-1946-08df2e9520c2
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|376014|1800799024|19092799006|23010399003|38070700021|11063799006|56012099006|10067099003|18002099003|22082099003;
+x-microsoft-antispam-message-info:
+ Mww5ciGrOMimrENLgFcCkfym9+o/SjqMgMgmFn0JRSYdpA/i6CFPTb8MevDYFQpG0fkl7awZ9d92hLrcnjH3oSU98XOaVqql9yN/6PXmdtoj5aIdT4L9dCy4cMyFhqsIvz8CrKi2N4mqPoM9HdEfbI5bI9O1UiDEosXj5fuSpyVkHGqaieAmXrLVbVD+pr7MxenvjrG1q+J4XHxFBZa/oGawp87kmgMCb8O5vvMtDpsESyx7gXNKMhzrCWEdiKD3xNbSrxvZuPo6JrLKYwpjBEPqRKwEG6UWb4PIxklz2NIGKTjZ7Lvzve32GJ7TMZXKqEGzli8wkC29L2pdZbPdkV5m+p6hy1VBwFzsp0lySctPbUyxxafl1nUpAHByJ3eIjCpC94pUOn98zFOa+97hyPNg1+uiqjGp71UWOud+u3dTfK0lE6salrAZNcL5qHDgxH1nMy4UauIc/keG/Nb4dfXPItm9FY3GayvAeUSf1P0xi/j4LjafOEoMg2iqeVbHL7LAV2Ih+UrJTn3CgS0lBNKgcLZeLdKy2Y1YvlxOCJ+cTlm5lk/EuusJPs+RtBur7WICiah+rV2J6EhwtCXJPj85sSg4NfqIOXql7JoXBY8iouV1XN9k3NobPLTeW/zNE2EoDqjvyr8gXRlPxK3y/rYcH4IcA+TzrJU4koZvbUVxM3furSdv5Uztcf3gxT53BNcxjXa0LBSLB4VHk05z0y/s0X1/0L9syYi5d12iNcY=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AMBPR04MB484752.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(19092799006)(23010399003)(38070700021)(11063799006)(56012099006)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?PhoTXH7uJq10RW9AKPtnqWrTm1f3vjLIs36b6EggmJfKOfXAk4lugs2tMRk6?=
+ =?us-ascii?Q?IC/0eyH8ltj1D4H3ygUaf2X5e3+4Rl9soFA6kxJou6thconM+tRyvs6YPquc?=
+ =?us-ascii?Q?M6PH6q7T/CJIlofrLdCKp4AxbzA7Lv8JbdFBmQfpPJk+dDq8S+bV0ZU2qqnZ?=
+ =?us-ascii?Q?ZLxKTW8fki/0dB5mv2wfgtRNID9W714RAqenRDmY3exRY7GX9pCvaxVNYl48?=
+ =?us-ascii?Q?/N6t3IrPBUKHBfRabTQ4t1tWHjJ6eyx08/1ZtShGOrjc1HOKwbCXedyI8PtF?=
+ =?us-ascii?Q?Y7w7StvchOWFJz+dXbywjv02XX9lZFA4J0/MIFK7J7LPLTDd4zt9U8Dk6zkA?=
+ =?us-ascii?Q?sHtnBnx8+o1blTUaHBoSaSONcgCGOYO0+19NAfa/ibTOb3kdhayoeE8DyePX?=
+ =?us-ascii?Q?I16xcqWSHOJKu+dItH8MSkWCytlIUuIk5NYrG0eyf2T+POwZ0X18JCdagn71?=
+ =?us-ascii?Q?aMdZZDfzB5E7JMUXmGwLR0TpKw0uBC+HKtuA2/vElaZakskqggAmPSi7u6yM?=
+ =?us-ascii?Q?QkoN4fBuYGvqqyz3Svl5VSIOHYHuq7mt4+hl5XzrLyNevkT1MGYLjL3is9nC?=
+ =?us-ascii?Q?oYf7zKwNn7JlHgBzlsvqTkrV6HAh8aYcs6swBfxlYtSm/oQ5s5zWU8dkKN7m?=
+ =?us-ascii?Q?QmVw3MTA9ZVheKjScQ57S11Zn/xZ5Wuo7SrKG18qSGaj+BYGGA1DIZ2KkKHh?=
+ =?us-ascii?Q?B5LWqq1giq/k8aZYjpl3lbbsO8OGHUcco3sVQFKBv4uGrWhbWISk8Qd4iCgr?=
+ =?us-ascii?Q?TBVZEqM/3v0o+V3Q03hzF6/LaxSaztg1b2VzOdzfgcRv1k5r38bNeheb15dX?=
+ =?us-ascii?Q?XOk/LfXJhNIuqf9oIPqOstexcbZ9GVl2t37bt4feXGaE5vfEuWZAXa0IRLMG?=
+ =?us-ascii?Q?qyVN1Gc++LzqZWnKVXE5zvZfJ9VmlOl8L41RY9hqn32b64WcP6t4RCRlGIVT?=
+ =?us-ascii?Q?tzUPiYHxyRoObLwHqe9wpYdr5mUgI7AASUoWvTQ511+Thok/P1gv5fhqEpYV?=
+ =?us-ascii?Q?FlA5nDAPIE2tlQIHTfyRKMmvxxSLwhAtXjfhwStoSqH12N94pL010bJ2egWt?=
+ =?us-ascii?Q?q3rbcfqSXLp7Nrje6yzupQYQAO2xSlnV07M+2eydIELNW453d7sakXSkNS2X?=
+ =?us-ascii?Q?V8vDUR+xw7LVEk9mr1kCQ3G1GC6NQJ5eyoyLZzDhV2HtMb4yp2svbswmH4w+?=
+ =?us-ascii?Q?1IL5IdNEsNcYaU8BDuuKFA7aa81XrXaDmrdFoYzyx7igQYr7XwucqxJ/bCrT?=
+ =?us-ascii?Q?9/nNx4L8TWS9u2bn+cs/H8esLA3d/Y5Uz8NcfPHHrRc1hLSYhQF6seEPeoIC?=
+ =?us-ascii?Q?rZeP2AYtms9a+mynd6SAcXdqF+B1wpoQwuvdlaa+EjrTwWd6NzJS5krKUVNe?=
+ =?us-ascii?Q?PSLe2ase9budl8edbcY07B1i44v01J5enUvW7YlnCpQNHXMw3l2o08ac0MOZ?=
+ =?us-ascii?Q?x/nLnbcW1oGg35N3Or9ifsB4oGktTPQs2HeBxmTVKnKbCCGrQsGWpLDmTwkX?=
+ =?us-ascii?Q?z/aqlko0RsI9Ji+wGBURN1rqPrBCsxKnyeXGcDFWViTXv2NhuVmogS18Ia9N?=
+ =?us-ascii?Q?Tf68yGeDjxmMYZwoYI3ZXHth0Myu9+BP7rj7gW7RbbNRcpUfcvxP2X9L1UY3?=
+ =?us-ascii?Q?r9Qarc6V1bR/yhCvdX1gvg33Gm6Xam9sZuFwFYJZNjDQq9Ctk1LHc97WouJ0?=
+ =?us-ascii?Q?A2x4PcI9AYGz6K5nX1NRx8c/mM7igqhQJTS6/l9l/PXuXyjS?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -98,122 +149,60 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <sashiko-outbox-177001@kernel.org>
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: AMBPR04MB484752.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f6e95164-c07b-459d-1946-08df2e9520c2
+X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Oct 2026 10:30:14.4301
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: HJC9EKoPHD4LiG92+3G7IWznK35ty2eRuF28KPYHYca0MmxQFvM0LWPE7HRkCAArfdaS4j0wxescfGXRnzne7g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7736
 
-On Mon, Oct 19, 2026 at 10:36:09AM +0000, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [High] ARM: dts: imx6q-apalis: VGA data-enable-active ignored by simple-bridge
-> --
-> 
-> commit a66c8dd73182954ba43ed81cada90ae73edf93a0
-> Author: Leonardo Costa <leonardo.costa@toradex.com>
-> 
-> ARM: dts: imx6q-apalis: Add VGA overlay
-> 
-> This commit adds a device tree overlay for the VGA output on the Apalis
-> Evaluation Board, connecting the parallel RGB display interface to a
-> non-programmable video DAC and VGA connector with an active-low data-enable
-> signal, and wires up composite DTB targets in the Makefile.
-> 
-> > diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-apalis-eval-vga.dtso b/arch/arm/boot/dts/nxp/imx/imx6q-apalis-eval-vga.dtso
-> > new file mode 100644
-> > index 0000000000000..991c2b7c27773
-> > --- /dev/null
-> > +++ b/arch/arm/boot/dts/nxp/imx/imx6q-apalis-eval-vga.dtso
-> > @@ -0,0 +1,80 @@
-> 
-> [ ... ]
-> 
-> > +	vga-encoder {
-> > +		compatible = "dumb-vga-dac";
-> > +
-> > +		ports {
-> > +			#address-cells = <1>;
-> > +			#size-cells = <0>;
-> > +
-> > +			port@0 {
-> > +				reg = <0>;
-> > +
-> > +				vga_enc_in: endpoint {
-> > +					data-enable-active = <0>;
-> > +					remote-endpoint = <&vga_display_out>;
-> > +				};
-> > +			};
-> 
-> [Severity: High]
-> Does data-enable-active = <0> on vga_enc_in actually reach the IPUv3
-> CRTC?
-> 
-> In simple_bridge_probe() in drivers/gpu/drm/bridge/simple-bridge.c, the
-> data-enable-active property is parsed into timings->input_bus_flags:
-> 
-> 	if (de_present && !sbridge->bridge.timings) {
-> 		struct drm_bridge_timings *timings;
-> 
-> 		timings = devm_kzalloc(&pdev->dev, sizeof(*timings), GFP_KERNEL);
-> 		if (!timings)
-> 			return -ENOMEM;
-> 
-> 		timings->input_bus_flags = de ? DRM_BUS_FLAG_DE_HIGH :
-> 						DRM_BUS_FLAG_DE_LOW;
-> 		sbridge->bridge.timings = timings;
-> 	}
-> 
-> However, simple_bridge_bridge_funcs registers atomic bridge state
-> callbacks without an .atomic_check callback:
-> 
-> static const struct drm_bridge_funcs simple_bridge_bridge_funcs = {
-> 	.atomic_create_state = drm_atomic_helper_bridge_create_state,
-> 	.atomic_destroy_state = drm_atomic_helper_bridge_destroy_state,
-> 	.atomic_duplicate_state = drm_atomic_helper_bridge_duplicate_state,
-> 	.attach		= simple_bridge_attach,
-> 	.atomic_enable = simple_bridge_enable,
-> 	.atomic_disable = simple_bridge_disable,
-> };
-> 
-> During drm_atomic_bridge_chain_check() ->
-> drm_atomic_bridge_propagate_bus_flags(), sbridge's
-> bridge_state->input_bus_cfg.flags is overwritten with the downstream
-> display-connector bridge's input_bus_cfg.flags (which is 0), and
-> sbridge->bridge.timings->input_bus_flags is never copied into
-> bridge_state->input_bus_cfg.flags.
-> 
-> Then, upstream in imx_pd_bridge_atomic_check() in
-> drivers/gpu/drm/imx/ipuv3/parallel-display.c:
-> 
-> 	if (next_bridge)
-> 		next_bridge_state = drm_atomic_get_new_bridge_state(crtc_state->state,
-> 								    next_bridge);
-> 
-> 	if (next_bridge_state)
-> 		bus_flags = next_bridge_state->input_bus_cfg.flags;
-> 	else
-> 		bus_flags = di->bus_flags;
-> 
-> Because next_bridge_state is non-NULL, bus_flags is read as 0 from
-> next_bridge_state->input_bus_cfg.flags without consulting
-> next_bridge->timings->input_bus_flags.
-> 
-> When ipu_crtc_mode_set_nofb() -> ipu_di_init_sync_panel() runs,
-> sig_cfg.enable_pol = !(imx_crtc_state->bus_flags & DRM_BUS_FLAG_DE_LOW)
-> evaluates to 1, driving the data-enable pin active-high instead of
-> active-low and gating off the VGA DAC output during active video.
-> 
-> Should simple-bridge implement .atomic_check to populate
-> bridge_state->input_bus_cfg.flags from bridge->timings->input_bus_flags
->  so the active-low polarity is propagated to imx-parallel-display?
-> 
-> [ ... ]
-> 
-> -- 
-> Sashiko AI review · https://sashiko.dev/#/patchset/20261019-v2-apalis-imx6-enable-vga-v2-0-ef6a3a780472@toradex.com?part=3
+> Subject: [REGRESSION] Potential problems for DT-described PCIe nodes on
+> i.MX
+>
+> Hi,
+>
+> Linux commits:
+>
+> 9dc39532172c ("ARM: dts: imx6qdl: Add Root Port node and PERST
+> property") 37f53f50b36f ("arm64: dts: imx8mm: Add Root Port node and
+> PERST property") 396fbe9a028d ("arm64: dts: imx8mp: Add Root Port node
+> and PERST property")
+>
+> Both in v7.2-rc1 introduce potential regressions for i.MX boards that alr=
+eady
+> described a root port under a different node name, e.g.:
+>
+> host@0:   ZII RDU2
+> root@0,0: GE Boards
+> pcie@0,0: Gateworks boards
+> root@0,0: SolidRun Hummingboard
+>
+> All these nodes may become stale now as the SoC DTSI have introduced thei=
+r
+> own pcie@0.
+>
+> At least on the ZII board, barebox fixes up a MAC address into the DT nod=
+e,
+> which is no longer used if the kernel decides to use the newly added
+> duplicate pcie@0 node instead.
+>
+> Fix is probably merging the existing properties and child nodes to be und=
+er
+> the new &pcie_port0/&pcie0_port0 and drop the board-level Root Port node.
+>
 
-This and the other comment regarding atomic_check are addressed by the
-patch series below, which is listed as a dependency for this patch series:
+Hi Ahmad, thanks for the report.
+Agree for the fix plan -- merge the existing properties and child nodes to =
+the new pcie_port0.
+I will send a patch set to fix above impacted dts/dtsi files.
 
-    https://lore.kernel.org/all/20261002-v1-simple-bridge-atomic-check-v1-1-ef5d8332b078@toradex.com/T/#u
+Best Regards
+Sherry
 
-Leonardo
+
+NXP Confidential
