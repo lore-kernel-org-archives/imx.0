@@ -1,55 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792489323;
-	b=PJEKUNGFxMWtVXtOVOGKrI/NcPwaqvAiUQmgM7M6fiin+R9rRfwq3qVC7AYNOAxOz+Bm
-	 0iOSdbtYoJjUfcduF9dmQwdvFo9B32X7bAGS/ah3hxOS7+ZqPUkzt3BEB53fgGQli02gW
-	 UBQTIlrPe9nMiZiamQYx7a8AaygvBh0KD7LXyz1Vmvw2iIuYSkirTQr9AtlkdKm6idPXp
-	 Jql3Gz7dS9ftkA3MLCAIOV/+9OARhQsWpx9gli/u6TQzl4TlLjvNNnCJg1vGTvdpNI5Ap
-	 5+mtynV7iGONlgW3e7gNtyjAjZJEV/az1FEZkbKWeZpkfGZK6j5a1s4gY3phf9EhFAw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792489323;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type;
-	bh=0+w8L47pJ+QcNLvLT+uIclzH7RIf3GF4X4bJ73TryAA=;
-	b=Uu4RdRLyn1yeVoO9v7+cCdBwwUcPqMT52JC59gXEjOk45TdDcc7Da7AvYgS+ZcBB0PEN
-	 WbVn3PxsGawE8+LRAoIEzZtIE6KCcCupGwZwXG9PS51quUd34dgjLqgkMg506XXj4R9Rs
-	 Y9A6SsUEPVAB6Ikcd55PJUzi+jrB8hHLbTdLLPA7UJjvrs7Pd8QBLmVG4QTOZrq5yDrhv
-	 tkgFoiX9HW7sjX9wM9s7Mlrl3UeQwZ3ZyP2npDBxNv085Vec2gvSG5pdJRazPMujtTyUA
-	 Ash7h4bnUK5CIGexS5M2xOerwKHIACXFx79+4NFMyUx2BwiSDWkyzfX/BXgrferJ84A==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Km8EWCwx;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792489874;
+	b=wFjEf0XOcwHSBuL+8eqCJLRbnn1fhWh8oFg46eZtw8PulfK1Fu+4lsUNG81ANoTreQ4Z
+	 75igDTp2dWvV79UwNghRT0w6Bopy3ZAwnjYcdLw4MlZ2dN8lxyfVxpnRaZHjxM/aYp8wv
+	 XGW2iOukXw3iMmCfUYGzJrSQW8LQIVJXWBx9OHTOfPZk+K1q9xBeEjM/cuFbVmj30t9Vp
+	 ulni8zSLqpoM34f4xCtfMc8KV9kK6pY76BMhKgoBTZoQVGXsMrf7huwNFFU9+7bPzEAFK
+	 ocxrcyWGE2sYpTtzUiUKIlZm3EPr9bQj5kHrHwPn16Wx+Iov+zEbJignDmr4QNWorcA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792489874;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Date:From:To:
+	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=sIpSqzi/Abc8gRzDzU5hCgB+RMFMVY65xxDiyw9uw6w=;
+	b=EI713nY4kHtNNmGPqpjhDZAjQvSmqTxrCJdBiT9EBHiPNf3uY1z57Z4rHpXv9UKpzqEX
+	 gzxPHejmzS6MDdKXChzIo4IZgy29m7cVmQUtkSOwcU/TArbaZV5uXmZgS55ZjWUumeQ4H
+	 n3KSopwaXHrDvmPy8zLfZHlEU5Q3FTTTYW7euzMxowo8lmfAN5Cw6ZiTRMRnmzPBIDUBL
+	 xgkJ4psJE5uvALn2YXPfg0XxxtPEa6u9qvDZQBM6hGTFEV5IwgXKipy1vLkOUoVG/61TH
+	 vjCLFBORJb96UaH7rOCqtpEWbKNAU+l5HkO8X7dpSAJ4BmhzNNBAjzE6yIpm1Ar7ciA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=none header.from=pengutronix.de;
+	spf=pass smtp.mailfrom=pengutronix.de;
+	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=F+inmk8+;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
+Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 960E660A4AEB
-	for <imx@lists.linux.dev>; Tue, 20 Oct 2026 09:42:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5078606A319
+	for <imx@lists.linux.dev>; Tue, 20 Oct 2026 09:51:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E5078606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Km8EWCwx
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 455D11F000CC
-	for <imx@lists.linux.dev>; Tue, 20 Oct 2026 09:42:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792489322;
-	bh=0+w8L47pJ+QcNLvLT+uIclzH7RIf3GF4X4bJ73TryAA=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=Km8EWCwxR+Zzjh6FMYg3SBjjCDcSzE2FgVCyhoD2TL60ip0UhKwxmoFunZ89pAQpC
-	 ou5A7JPBulAZT5eYwHLFszy/9nlJQiL+Ahb/SEm2bQmy0SDPK/zi3cHWoiyXokweUh
-	 DPuqOBdHE4bJdZhm57SOraVQU6dxmL5ExRYiKDxATyoV1WhFME2PVYN/l/J93U/yvX
-	 sC5TPcsmr+cMVH/NbYMgVMb276IrtsBIjrsRN73qGUhkvWuJVnBnHDK/wy5lvQRwJw
-	 jPWhBpvoNpDAL5JSW4T98ybUn38x0YU2gmShcc4PPKBO6O2BHTC7XzAd0hpbuOGYCz
-	 Hmsp8qOYID4jQ==
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-6b1cc392d8bso3754740a12.1
-        for <imx@lists.linux.dev>; Tue, 20 Oct 2026 02:42:02 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBx+lOEG5VumcFMiTsrkUi2yagAJWTrnPDffoMk1DYht3Vxbsz8Ml/FNLOhAiUM/X7dDwnw=@lists.linux.dev
-X-Gm-Message-State: AFq9FYKwHLx9qz1IUdlq4Kx6V185HmHnq7OFa/HubtEC8hOAKWXkDK6+
-	UAFvkcP030ruxiA/CgHMh05EUxAvbt8vx8mpGRyw40QSSFKIYp5aEaRDmYPKHhMADfdic9px1me
-	/UVZJ2qOjl0+r0+BHBab94PwkwCq6eUg=
-X-Received: by 2002:a17:907:3fa0:b0:c3e:f39b:2298 with SMTP id
- a640c23a62f3a-c419e64893cmr786840566b.16.1792489321089; Tue, 20 Oct 2026
- 02:42:01 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=F+inmk8+
+Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
+	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 407DB202136;
+	Tue, 20 Oct 2026 11:51:11 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1792489871;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sIpSqzi/Abc8gRzDzU5hCgB+RMFMVY65xxDiyw9uw6w=;
+	b=F+inmk8+BWKdlWmII9j1FwQ8ZkirIYpvf7J2BXbNnbHKN2wZ6pt8af6eCr3GWOprGiAQ6t
+	x/SnVHooIEkmFEjGYUvzANW2NJbkEeNYSHRaHvIc15+C8ATIc/cK972tSfGPfvHDGuvz0Y
+	EYko5EcQx2W6GJEXn3LhMSeRB2Ylkg+kHWE+EdkxG3a4AOlTV+lUYL6oi80yvo2ThII5m8
+	wYXNTA5/MVgq+/LPUQ1ejrkEiJmMTvy2SafZu9vQHb4g7p2IK2mWRLUUPk/b6jRpcSJ/+z
+	0fFSg9TcuY4npx5eN5Tre5ZHm3TTJynTCifvFk2TADJjpC3u6lDN2bhlJW06VA==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1792489871; a=rsa-sha256;
+	cv=none;
+	b=JcAvXIKNB9zbuEkNoZ0Hyk36oTVvObYVO98dC51mPIrtt9LvM7ILQQskrEPa/KQkJdLJVV
+	cbwz/Kpza5F6F/CQtahiXuWlbB+24spOIrnKzvZWk7hahOAR0eI86YqiTBbDqlh88Gt15w
+	BR0EYfRjska1/ZwsBHWABpceEU4Dg60yxOW1wKCvhsd/WMbjBI3MATG7F0QbAyhiBsGTN9
+	2csSk/2qCyEaTT3u88fIOkGH9nazxToJ00/s1+H+voeJbs1wm+03J6qCX77fL22PohSfq5
+	zWrm0RVwYm8piVPkk83udAPvb3IR+4xMWI9AmPTzTgkWYCjPSi46hk74SprCFw==
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=mkl@pengutronix.de
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1792489871;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sIpSqzi/Abc8gRzDzU5hCgB+RMFMVY65xxDiyw9uw6w=;
+	b=TiJwoGqXO+VJNCXruAdacdRkbBX2i23UqFlIsn1kNULa96SjCWVP0DQvnTS5NsBcYWx2Zt
+	wWDj+1Z7GmhGba8u5mTH6b/I0jXpN6xftmuetwRcibFglIwtdDaxvmbh73Vdw7EEoEFk3u
+	lxX7LSHtydd6XuO6o7F/Gqt5zsc/0OJHIGXga0EO5hq+ddGEcs6mJZ/3oMbkBTVsdvyinX
+	Y+SV9X66ggHGZyaGLgPPq+CdvWzldWgahD0ONTaRI3AqtuevxhSpfLb9YszxKCkcNThjBL
+	K8lqqtvf1xjvJDEaI+W4I/mUoO2bI0XDuu0GK/dMJb2G8v3UkEDAZnhPNk6W7w==
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1xJ6Ux-000LuK-0X;
+	Tue, 20 Oct 2026 11:51:11 +0200
+Received: from pengutronix.de (p4ffb23c7.dip0.t-ipconnect.de [79.251.35.199])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id D4A7C5C9E75;
+	Tue, 20 Oct 2026 09:51:10 +0000 (UTC)
+Date: Tue, 20 Oct 2026 11:51:10 +0200
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Vincent Mailhol <mailhol@kernel.org>
+Cc: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>, netdev-bot+sinfo@kernel.org, 
+	netdev@vger.kernel.org, linux-can@vger.kernel.org, kernel@pengutronix.de, 
+	haibo.chen@oss.nxp.com, shawnguo@kernel.org, imx@lists.linux.dev, stable@vger.kernel.org
+Subject: Re: [PATCH v5] can: dev: can_fill_info(): don't wake up controller
+ if interface is down
+Message-ID: <20261020-precise-panther-of-symmetry-db65f4-mkl@pengutronix.de>
+References: <20261018101744.93657-1-chunyuzhiqiang@yinhe.ht>
+ <20261020075340.417899-1-chunyuzhiqiang@yinhe.ht>
+ <CAMZ6RqKpP62XS5tPR714wUmwf6QkdY4V5fb7c4rTFSyoDc+DAA@mail.gmail.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -59,138 +103,89 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-References: <20261018101744.93657-1-chunyuzhiqiang@yinhe.ht> <20261020075340.417899-1-chunyuzhiqiang@yinhe.ht>
-In-Reply-To: <20261020075340.417899-1-chunyuzhiqiang@yinhe.ht>
-From: Vincent Mailhol <mailhol@kernel.org>
-Date: Tue, 20 Oct 2026 11:41:49 +0200
-X-Gmail-Original-Message-ID: <CAMZ6RqKpP62XS5tPR714wUmwf6QkdY4V5fb7c4rTFSyoDc+DAA@mail.gmail.com>
-X-Gm-Features: AclHuK8j2vhxpboFrSJHqbPHA0Zbly9gk71zkz9XBFZmbhQnPSzUv9vvEhv9tcQ
-Message-ID: <CAMZ6RqKpP62XS5tPR714wUmwf6QkdY4V5fb7c4rTFSyoDc+DAA@mail.gmail.com>
-Subject: Re: [PATCH v5] can: dev: can_fill_info(): don't wake up controller if
- interface is down
-To: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
-Cc: netdev-bot+sinfo@kernel.org, netdev@vger.kernel.org, 
-	linux-can@vger.kernel.org, mkl@pengutronix.de, kernel@pengutronix.de, 
-	haibo.chen@oss.nxp.com, shawnguo@kernel.org, imx@lists.linux.dev, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="oohqafi5cryltzdr"
+Content-Disposition: inline
+In-Reply-To: <CAMZ6RqKpP62XS5tPR714wUmwf6QkdY4V5fb7c4rTFSyoDc+DAA@mail.gmail.com>
 
-On Tue. 20 Oct. 2026 at 10:02, ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht> wrote:
-> If the interface is down, the CAN controller might be powered down, the
-> clock disabled, and/or its external reset asserted.
+
+--oohqafi5cryltzdr
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v5] can: dev: can_fill_info(): don't wake up controller
+ if interface is down
+MIME-Version: 1.0
+
+Hey Vincent,
+
+Looks like you've set up your email/attention filter pretty well :D
+Thanks for reviewing this TDC patch.
+
+On 20.10.2026 11:41:49, Vincent Mailhol wrote:
+> On Tue. 20 Oct. 2026 at 10:02, ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht> w=
+rote:
+> > If the interface is down, the CAN controller might be powered down, the
+> > clock disabled, and/or its external reset asserted.
+> >
+> > Don't call do_get_berr_counter() or do_get_auto_tdcv() to read the CAN
+> > controller if the interface is down. This fixes a generic logic problem
+> > that exists on all platforms.
+> >
+> > As a result, IFLA_CAN_BERR_COUNTER and IFLA_CAN_TDC are no longer
+> > reported for down interfaces. This is intentional: the counters are not
+> > meaningful in that state, and calling into the driver can wake a
+> > runtime-suspended controller or touch registers whose clocks are gated.
 >
-> Don't call do_get_berr_counter() or do_get_auto_tdcv() to read the CAN
-> controller if the interface is down. This fixes a generic logic problem
-> that exists on all platforms.
+> The CAN TDC parameters are still meaningful when the interface is down.
+
+ACK
+
+> What about this:
 >
-> As a result, IFLA_CAN_BERR_COUNTER and IFLA_CAN_TDC are no longer
-> reported for down interfaces. This is intentional: the counters are not
-> meaningful in that state, and calling into the driver can wake a
-> runtime-suspended controller or touch registers whose clocks are gated.
-
-The CAN TDC parameters are still meaningful when the interface is down.
-
-What about this:
-
----8<---
-diff --git a/drivers/net/can/dev/netlink.c b/drivers/net/can/dev/netlink.c
-index 766d455950f55..1bc160b78b0e1 100644
---- a/drivers/net/can/dev/netlink.c
-+++ b/drivers/net/can/dev/netlink.c
-@@ -910,7 +910,7 @@ static int can_tdc_fill_info(struct sk_buff *skb,
-const struct net_device *dev,
-                if (tdc_manual) {
-                        tdcv = tdc->tdcv;
-                        err = 0;
--               } else if (dbt_params->do_get_auto_tdcv) {
-+               } else if (dbt_params->do_get_auto_tdcv && netif_running(dev)) {
-                        err = dbt_params->do_get_auto_tdcv(dev, &tdcv);
-                }
-                if (!err && nla_put_u32(skb, IFLA_CAN_TDC_TDCV, tdcv))
----8<---
-
-?
-
-All the other TDC parameters should still be available when the
-interface is down, so just gating the auto tdcv is enough I think.
-
-> Fixes: ec56acfef2af1 ("can: flexcan: flexcan_get_berr_counter(): switch on clocks before accessing ecr register")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
-> ---
-> v5:
->  - Gate can_tdc_fill_info() on netif_running() for IFLA_CAN_TDC, as
->    requested by Marc Kleine-Budde. This branch has no IFLA_CAN_XL_TDC
->    definition or call path at all.
->  - Keep the TDC part of can_get_size() consistent with can_fill_info(),
->    without hiding the non-TDC data bittiming attributes.
->  - Document that IFLA_CAN_BERR_COUNTER is no longer reported for down
->    interfaces, and explain why this is acceptable for stable.
->  - Clarify the Fixes: rationale.
-> ---
->  drivers/net/can/dev/netlink.c | 17 ++++++++++-------
->  1 file changed, 10 insertions(+), 7 deletions(-)
->
+> ---8<---
 > diff --git a/drivers/net/can/dev/netlink.c b/drivers/net/can/dev/netlink.c
-> index 6f83b87d54fc..66b37257b76b 100644
+> index 766d455950f55..1bc160b78b0e1 100644
 > --- a/drivers/net/can/dev/netlink.c
 > +++ b/drivers/net/can/dev/netlink.c
-> @@ -548,8 +548,9 @@ static size_t can_tdc_get_size(struct data_bittiming_params *dbt_params,
->         return size;
->  }
+> @@ -910,7 +910,7 @@ static int can_tdc_fill_info(struct sk_buff *skb,
+> const struct net_device *dev,
+>                 if (tdc_manual) {
+>                         tdcv =3D tdc->tdcv;
+>                         err =3D 0;
+> -               } else if (dbt_params->do_get_auto_tdcv) {
+> +               } else if (dbt_params->do_get_auto_tdcv && netif_running(=
+dev)) {
+>                         err =3D dbt_params->do_get_auto_tdcv(dev, &tdcv);
+>                 }
+>                 if (!err && nla_put_u32(skb, IFLA_CAN_TDC_TDCV, tdcv))
+> ---8<---
 >
-> -static size_t can_data_bittiming_get_size(struct data_bittiming_params *dbt_params,
-> -                                         u32 tdc_flags)
-> +static size_t
-> +can_data_bittiming_get_size(struct data_bittiming_params *dbt_params,
-> +                           u32 tdc_flags, bool tdc_if_running)
->  {
->         size_t size = 0;
+> ?
 >
-> @@ -560,7 +561,8 @@ static size_t can_data_bittiming_get_size(struct data_bittiming_params *dbt_para
->         if (dbt_params->data_bitrate_const)             /* IFLA_CAN_DATA_BITRATE_CONST */
->                 size += nla_total_size(sizeof(*dbt_params->data_bitrate_const) *
->                                        dbt_params->data_bitrate_const_cnt);
-> -       size += can_tdc_get_size(dbt_params, tdc_flags);/* IFLA_CAN_TDC */
-> +       if (tdc_if_running)
-> +               size += can_tdc_get_size(dbt_params, tdc_flags);/* IFLA_CAN_TDC */
->
->         return size;
->  }
-> @@ -584,7 +586,7 @@ static size_t can_get_size(const struct net_device *dev)
->         size += nla_total_size(sizeof(u32));                    /* IFLA_CAN_STATE */
->         size += nla_total_size(sizeof(struct can_ctrlmode));    /* IFLA_CAN_CTRLMODE */
->         size += nla_total_size(sizeof(u32));                    /* IFLA_CAN_RESTART_MS */
-> -       if (priv->do_get_berr_counter)                          /* IFLA_CAN_BERR_COUNTER */
-> +       if (priv->do_get_berr_counter && netif_running(dev))    /* IFLA_CAN_BERR_COUNTER */
->                 size += nla_total_size(sizeof(struct can_berr_counter));
->         if (priv->termination_const) {
->                 size += nla_total_size(sizeof(priv->termination));              /* IFLA_CAN_TERMINATION */
-> @@ -598,7 +600,8 @@ static size_t can_get_size(const struct net_device *dev)
->         size += can_ctrlmode_ext_get_size();                    /* IFLA_CAN_CTRLMODE_EXT */
->
->         size += can_data_bittiming_get_size(&priv->fd,
-> -                                           priv->ctrlmode & CAN_CTRLMODE_FD_TDC_MASK);
-> +                                           priv->ctrlmode & CAN_CTRLMODE_FD_TDC_MASK,
-> +                                           netif_running(dev));
->
->         return size;
->  }
-> @@ -735,7 +738,7 @@ static int can_fill_info(struct sk_buff *skb, const struct net_device *dev)
->             nla_put(skb, IFLA_CAN_CTRLMODE, sizeof(cm), &cm) ||
->             nla_put_u32(skb, IFLA_CAN_RESTART_MS, priv->restart_ms) ||
->
-> -           (priv->do_get_berr_counter &&
-> +           (priv->do_get_berr_counter && netif_running(dev) &&
->              !priv->do_get_berr_counter(dev, &bec) &&
->              nla_put(skb, IFLA_CAN_BERR_COUNTER, sizeof(bec), &bec)) ||
->
-> @@ -764,7 +767,7 @@ static int can_fill_info(struct sk_buff *skb, const struct net_device *dev)
->                      sizeof(priv->bitrate_max),
->                      &priv->bitrate_max)) ||
->
-> -           can_tdc_fill_info(skb, dev, IFLA_CAN_TDC) ||
-> +           (netif_running(dev) && can_tdc_fill_info(skb, dev, IFLA_CAN_TDC)) ||
->
->             can_ctrlmode_ext_fill_info(skb, priv)
->             )
+> All the other TDC parameters should still be available when the
+> interface is down, so just gating the auto tdcv is enough I think.
+
+Yes, the call to dbt_params->do_get_auto_tdcv() should be gated. Also
+check if the size calculation has to be adjusted.
+
+Marc
+
+--
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+
+--oohqafi5cryltzdr
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSl+MghEFFAdY3pYJLMOmT6rpmt0gUCatc5jAAKCRDMOmT6rpmt
+0nqQAQDFE0poV14+sbIMKaNsuuocohzz2kYO1yLbnen0y4r2GgEA/iRq9AE8P+au
+ApN2V2Kjw22cFR/qUFocozaZypahHgo=
+=ZMqO
+-----END PGP SIGNATURE-----
+
+--oohqafi5cryltzdr--
