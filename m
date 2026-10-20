@@ -1,60 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=136.143.188.112
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792497420;
-	b=rSZpPbRyPG8ocXpAroMkw61e5rJ2iNer+kKNoFBYPxrCzVqLKEQOITyH9eJEh52PCuNe
-	 JKZQ7a7kWgTYlvYMg1H6Dw3llO7nEfuZWbaLf+vApgWnBQvaYTotfkJvpNXcY+4zsgw4d
-	 4+2ef6kunQkNdAhvpsi4od8WFqJXzEc2KGXlTRo2xYNbTQEFq2p54Gt/uA/edp8qoGkdY
-	 emZ2tSysVrnmQRRMLx36ihmu17yiIH9dOw0nMZgISBRnsh8fN62fMV5+dnHp0gqru+XNN
-	 B5R29EVq+5uIiY8iVJujrLm0t0nNQ9x3rgC5vDiivhnHQNJKpC5RCZqLvmrZQD81Ykw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792497420;
-	h=DMARC-Filter:DKIM-Signature:Received:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-ZohoMailClient;
-	bh=c2ZbwGjZo805kTuwhmgN0xpP/j40ipqRFn+sWpKGPvk=;
-	b=XRHoXJj7xpRoPfWfeEqCqlKLYXfe07KCubMvtV4sWvPqm8THv3vKh+3OWc2As0G8Dbg1
-	 UXA2lU5XJ+FFnAXLggjA3WAwjDCUnztUaKYtpNPkk0pIPF8Uhq0VcCZrN5RL1Pt9Zzs43
-	 sbb2725VYS4hsfBc6cSFxKjpuQY+YX4GlHJJS1b8JKzgVwvf/NTOrzCbt03K0QdF70C/h
-	 yJZRjMB22ANHrWD90bbRjiqzZCZnze19KjSxY53qMuxFCkHIqoM2s3Ew+cGRZHtInPwhy
-	 BKw6E49cCz8GdyQimE6GHboyGHZ/A1EoZBLP9zNODaCc1Mv1/GqQVr31uAblrOWDW+g==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=collabora.com;
-	spf=pass smtp.mailfrom=collabora.com;
-	dkim=pass header.d=collabora.com header.i=michael.riesch@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=kMVgNC2D;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=136.143.188.112
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=80.86.107.70
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792497667;
+	b=MmVPkdaFdB3vtsPMdUWTyV+b8wtypyMCANypAFAJaJS0DbFQR5wFq5Fm4Iqk/Ahc/+zw
+	 xzh4gjsTW5byWarmUwxigcqtjVCWQoIacF616ckNG7TYerA7psYbA0d8yCXBaiP1pS07A
+	 khNRvrxmhFvtbxUYxKc4slhSq2cwuAo+m9HCFzddX1E796o58ca9JCMRd/JkD8FoL9waQ
+	 +etLLs4hbAQiD84k7+AZeDBhk4t5sJbdEL2VvlWkoXXzmseeSDcc4l2tQFtVQpF3rIQAD
+	 M/++3s+GjCPpcR/cOt1EfcEILTB3sSLlqwfGENg9ISLD9tKPcWDzEY/5SzPvC3tEiUA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792497667;
+	h=DMARC-Filter:Received:DKIM-Filter:DKIM-Signature:Message-ID:Subject:
+	 From:To:Cc:Date:In-Reply-To:References:Content-Type:
+	 Content-Transfer-Encoding:User-Agent:MIME-Version;
+	bh=TalOl96alln21uvpuXQrkyMghf/Vuyhv5RoGgLmGEUY=;
+	b=WF74AVgRDEg46ZZ9xAtsnBbT1gBPDnwYe1iKk49D/BdAnuS4WKsnnU7JryvAeB6NQwP0
+	 TJwzHVybZx5pSVQALgQ++BFVEjKptVgeuRykQGZn16qNI7D0oCDtvspIZfs7f6x5zIUbB
+	 RrZ2mpg4jSQ8JjtC/7Fxv4aBHGub+E/v+h2GmMzj3yzYIqHrJJyMIoiz/lEPI1kyKacUh
+	 HCwcpEXwqRfjqPDASglGC7/Mt+iJdoNPVkVxfPIuO4BO10ribK3dRzDR03UJLT6EP3LBu
+	 6iGhxmNHNFs6OT9Xj81OwkOqIEZzGWzpfXvd2wszuYU3v5rAdz8UgsV0hZYu6cG2qng==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=rendec.net;
+	spf=pass smtp.mailfrom=rendec.net;
+	dkim=pass header.d=rendec.net header.i=@rendec.net header.a=rsa-sha256 header.s=default header.b=IoA9DM3u;
+	arc=none smtp.remote-ip=80.86.107.70
+Received: from mail.mindbit.ro (xs1.mindbit.ro [80.86.107.70])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96FE9606A322
-	for <imx@lists.linux.dev>; Tue, 20 Oct 2026 11:56:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 96FE9606A322
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A981606A31A
+	for <imx@lists.linux.dev>; Tue, 20 Oct 2026 12:01:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5A981606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=rendec.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rendec.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=collabora.com header.i=michael.riesch@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=kMVgNC2D
-ARC-Seal: i=1; a=rsa-sha256; t=1792497409; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=RoCmToWOf394k0bNeMAdI18hlfYKv1ergYluUZbLe9t9HJZRbvl+DWDpasNCpvw5fqGFyWxA/FxdhCjuVnIkbv9dRcJQCAHXxrLuqO+usje/Wp7grwlIBke9hq4bONPQtazD0LJ9vJBBvY9nClkvHg1acMbQ3A+ggfVqVruYxQs=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1792497409; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=c2ZbwGjZo805kTuwhmgN0xpP/j40ipqRFn+sWpKGPvk=; 
-	b=N0Rct2ytsi4ujkSxoUvgsb996x6uP00IJ30A7ekxzGbFuRnoUb2k0Jg0d9VdVH/j02amdAc2N9FcxBHj5FkNjwBNw8u1lzxTV0Pezov09jpeEf8GQEEbVPDspaBxj6WfAQa2DPfMzvaoGAWX3on2zRudjnemv/weXShsZGtp3M8=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=michael.riesch@collabora.com;
-	dmarc=pass header.from=<michael.riesch@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1792497409;
-	s=zohomail; d=collabora.com; i=michael.riesch@collabora.com;
-	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=c2ZbwGjZo805kTuwhmgN0xpP/j40ipqRFn+sWpKGPvk=;
-	b=kMVgNC2Dp5udpbBOpRLjrJR8Xau8wjJ6QVzNhTrYbhX/XnAa26KJKHE+cWmX3Bzr
-	1FpHUkM2A4X5Wg/wsPwtTP00qT6jaPeqiShJFSYxAV0g16UzPr8A7DXLCkEk/IEQS6S
-	YVea53ODaI/4QbnfS3wo0XLdvmuquTW2Wg61KnRA=
-Received: by smtp.zohomail.com with SMTPS id 1792497407312902.680867488977;
-	Tue, 20 Oct 2026 04:56:47 -0700 (PDT)
-Message-ID: <b67086ba-7b05-4c57-a701-ecb7634b6abc@collabora.com>
-Date: Tue, 20 Oct 2026 13:56:43 +0200
+	dkim=pass (2048-bit key, unprotected) header.d=rendec.net header.i=@rendec.net header.a=rsa-sha256 header.s=default header.b=IoA9DM3u
+Received: from dog.kanata.rendec.net (pool-174-112-193-187.cpe.net.cable.rogers.com [174.112.193.187])
+	by mail.mindbit.ro (Postfix) with ESMTPSA id 1A7F3D1E92;
+	Tue, 20 Oct 2026 15:01:00 +0300 (EEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.mindbit.ro 1A7F3D1E92
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rendec.net;
+	s=default; t=1792497662;
+	bh=TalOl96alln21uvpuXQrkyMghf/Vuyhv5RoGgLmGEUY=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=IoA9DM3uQ4UY3J4z1Rpp24cbuQNN2UnOqLaUqj0hwLdCujZ1j2I3dvMfXrymdnV5J
+	 dqo20YP+goVaiJIn3CCmsa/WzeVP/XFr9Q1ol5djxpIvuU13oMXXsOhyPehxgR8e6G
+	 r2vuPCLgR7SAcDypK1g2agVgoIRzqdDr2avJqXdVhHHkBMUOVWebPI8XqAX5uxraEU
+	 7gg4UX6chUbvk2yibIb2R5DXaEzWYUK+pwpwewdTTgjZpWN8u9nSSTCANy+KBHiG7v
+	 Oo6eCJUOGOW8QqfS//trrd9vjdmAHV0/Pw+yeH72nmy4yeJhj3fsNcwn7KGL7KIEdr
+	 1U3bawos4Pwbg==
+Message-ID: <f642a27d36844b8cc4d164f518f7177252624975.camel@rendec.net>
+Subject: Re: [PATCH v6 7/9] irqchip/imx-irqsteer: Allow building as module
+From: Radu Rendec <radu@rendec.net>
+To: Zhipeng.wang_1@oss.nxp.com, Thomas Gleixner <tglx@kernel.org>, Marc
+ Zyngier	 <maz@kernel.org>, Frank Li <Frank.Li@nxp.com>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
+	 <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Jindong Yue
+	 <jindong.yue@nxp.com>, xuegang.liu@nxp.com, linux-kernel@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Date: Tue, 20 Oct 2026 08:00:59 -0400
+In-Reply-To: <20261008090231.796511-8-Zhipeng.wang_1@oss.nxp.com>
+References: <20261008090231.796511-1-Zhipeng.wang_1@oss.nxp.com>
+	 <20261008090231.796511-8-Zhipeng.wang_1@oss.nxp.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-2.fc43) 
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -64,86 +72,83 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] media: synopsys: dw-mipi-csi2rx: Fix DPHY testclr reset
- sequence
-To: Guoniu Zhou <guoniu.zhou@oss.nxp.com>, Bryan O'Donoghue <bod@kernel.org>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Hans Verkuil <hverkuil+cisco@kernel.org>, Frank Li <Frank.Li@nxp.com>,
- Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev
-References: <20261020-dw-csi2rx-v1-1-c58a2e5cd43d@oss.nxp.com>
-Content-Language: en-US
-From: Michael Riesch <michael.riesch@collabora.com>
-In-Reply-To: <20261020-dw-csi2rx-v1-1-c58a2e5cd43d@oss.nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ZohoMailClient: External
 
-Hi Guoniu,
+On Thu, 2026-10-08 at 18:02 +0900, Zhipeng.wang_1@oss.nxp.com wrote:
+> From: Jindong Yue <jindong.yue@nxp.com>
+>=20
+> Make the driver buildable as a module by turning the Kconfig symbol into
+> a tristate and using module_platform_driver() instead of
+> builtin_platform_driver(), and add the MODULE_DEVICE_TABLE() and module
+> metadata needed for autoloading.
 
-Thanks for the patch.
+I believe both high-severity issues flagged by sashiko [1] are valid.
+Looking at what other drivers do (e.g. drivers/irqchip/irq-ts4800.c,
+drivers/irqchip/irq-pruss-intc.c), you should do something similar:
+iterate over the hwirqs and call irq_dispose_mapping(). That would
+solve both problems because synchronize_irq() gets called indirectly
+via irq_domain_disassociate().
 
-On 10/20/26 05:04, Guoniu Zhou wrote:
-> The Synopsys DPHY datasheet recommends applying a testclr pulse at
-> first power-up to reset the PHY configuration to its default values
-> before any test control register is programmed.
-> 
-> The existing code deasserts testclr first and then asserts it, which
-> is the reverse of the sequence recommended by the DPHY documentation.
-> 
-> Generate the required TESTCLR pulse by asserting TESTCLR, waiting
-> for the required pulse width, and then deasserting it.
-> 
-> Fixes: ec40b431f0ab ("media: synopsys: csi2rx: add i.MX93 support")
-> Signed-off-by: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
+There is nothing wrong with the patch itself (the conversion to
+loadable module), so my r-b tag can stay as long as the above issue is
+addressed in a separate patch. Thanks!
 
-Acked-by: Michael Riesch <michael.riesch@collabora.com>
+[1] https://lore.kernel.org/all/sashiko-outbox-163920@kernel.org/
 
-Best regards,
-Michael
-
+> The clock, runtime PM and IRQ domain are already owned by devres, so no
+> further teardown is needed to support unbind and reload.
+>=20
+> Signed-off-by: Jindong Yue <jindong.yue@nxp.com>
+> Signed-off-by: Zhipeng Wang <zhipeng.wang_1@nxp.com>
+> Reviewed-by: Radu Rendec <radu@rendec.net>
 > ---
->  drivers/media/platform/synopsys/dw-mipi-csi2rx.c | 13 +++++++++----
->  1 file changed, 9 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/media/platform/synopsys/dw-mipi-csi2rx.c b/drivers/media/platform/synopsys/dw-mipi-csi2rx.c
-> index b7247d597c9c..b9f7ba25bd3b 100644
-> --- a/drivers/media/platform/synopsys/dw-mipi-csi2rx.c
-> +++ b/drivers/media/platform/synopsys/dw-mipi-csi2rx.c
-> @@ -830,18 +830,23 @@ static void imx93_csi2rx_dphy_assert_reset(struct dw_mipi_csi2rx_device *csi2)
->  {
->  	u32 val;
->  
-> -	/* Release Synopsys DPHY test codes from reset */
-> +	/* Put PHY in shutdown mode for configuration */
->  	dw_mipi_csi2rx_write(csi2, DW_MIPI_CSI2RX_DPHY_RSTZ, 0);
->  	dw_mipi_csi2rx_write(csi2, DW_MIPI_CSI2RX_PHY_SHUTDOWNZ, 0);
->  
-> +	/*
-> +	 * Apply testclr pulse to load analog programmability defaults
-> +	 * and release the test interface for configuration.
-> +	 */
->  	val = dw_mipi_csi2rx_read(csi2, DW_MIPI_CSI2RX_PHY_TST_CTRL0);
-> -	val &= ~DPHY_TEST_CTRL0_TEST_CLR;
-> +	val |= DPHY_TEST_CTRL0_TEST_CLR;
->  	dw_mipi_csi2rx_write(csi2, DW_MIPI_CSI2RX_PHY_TST_CTRL0, val);
->  
-> -	val = dw_mipi_csi2rx_read(csi2, DW_MIPI_CSI2RX_PHY_TST_CTRL0);
->  	/* Wait for at least 15ns */
->  	ndelay(15);
-> -	val |= DPHY_TEST_CTRL0_TEST_CLR;
+> =C2=A0drivers/irqchip/Kconfig=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 | 2 +-
+> =C2=A0drivers/irqchip/irq-imx-irqsteer.c | 7 ++++++-
+> =C2=A02 files changed, 7 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
+> index 20b77fbc51ee..105108d2e6ff 100644
+> --- a/drivers/irqchip/Kconfig
+> +++ b/drivers/irqchip/Kconfig
+> @@ -555,7 +555,7 @@ config CSKY_APB_INTC
+> =C2=A0	=C2=A0 the controller's register.
+> =C2=A0
+> =C2=A0config IMX_IRQSTEER
+> -	bool "i.MX IRQSTEER support"
+> +	tristate "i.MX IRQSTEER support"
+> =C2=A0	depends on ARCH_MXC || ARCH_S32 || COMPILE_TEST
+> =C2=A0	default y if ARCH_MXC || ARCH_S32
+> =C2=A0	select IRQ_DOMAIN
+> diff --git a/drivers/irqchip/irq-imx-irqsteer.c b/drivers/irqchip/irq-imx=
+-irqsteer.c
+> index 15ee50f65d54..85edd5e33ca9 100644
+> --- a/drivers/irqchip/irq-imx-irqsteer.c
+> +++ b/drivers/irqchip/irq-imx-irqsteer.c
+> @@ -10,6 +10,7 @@
+> =C2=A0#include <linux/irqchip/chained_irq.h>
+> =C2=A0#include <linux/irqdomain.h>
+> =C2=A0#include <linux/kernel.h>
+> +#include <linux/module.h>
+> =C2=A0#include <linux/of.h>
+> =C2=A0#include <linux/of_irq.h>
+> =C2=A0#include <linux/platform_device.h>
+> @@ -359,6 +360,7 @@ static const struct of_device_id imx_irqsteer_dt_ids[=
+] =3D {
+> =C2=A0	{ .compatible =3D "nxp,s32n79-irqsteer",	.data =3D &s32n79_data },
+> =C2=A0	{},
+> =C2=A0};
+> +MODULE_DEVICE_TABLE(of, imx_irqsteer_dt_ids);
+> =C2=A0
+> =C2=A0static struct platform_driver imx_irqsteer_driver =3D {
+> =C2=A0	.driver =3D {
+> @@ -369,4 +371,7 @@ static struct platform_driver imx_irqsteer_driver =3D=
+ {
+> =C2=A0	.probe		=3D imx_irqsteer_probe,
+> =C2=A0	.remove		=3D imx_irqsteer_remove,
+> =C2=A0};
+> -builtin_platform_driver(imx_irqsteer_driver);
+> +module_platform_driver(imx_irqsteer_driver);
 > +
-> +	val = dw_mipi_csi2rx_read(csi2, DW_MIPI_CSI2RX_PHY_TST_CTRL0);
-> +	val &= ~DPHY_TEST_CTRL0_TEST_CLR;
->  	dw_mipi_csi2rx_write(csi2, DW_MIPI_CSI2RX_PHY_TST_CTRL0, val);
->  }
->  
-> 
-> ---
-> base-commit: d7e7bca7169873b46e857c025c10f3336c1258d8
-> change-id: 20261020-dw-csi2rx-6225697f45bb
-> 
-> Best regards,
-
+> +MODULE_DESCRIPTION("i.MX IRQSTEER interrupt multiplexer/remapper driver"=
+);
+> +MODULE_LICENSE("GPL");
