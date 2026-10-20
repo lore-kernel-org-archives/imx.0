@@ -1,68 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=80.86.107.70
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792497667;
-	b=MmVPkdaFdB3vtsPMdUWTyV+b8wtypyMCANypAFAJaJS0DbFQR5wFq5Fm4Iqk/Ahc/+zw
-	 xzh4gjsTW5byWarmUwxigcqtjVCWQoIacF616ckNG7TYerA7psYbA0d8yCXBaiP1pS07A
-	 khNRvrxmhFvtbxUYxKc4slhSq2cwuAo+m9HCFzddX1E796o58ca9JCMRd/JkD8FoL9waQ
-	 +etLLs4hbAQiD84k7+AZeDBhk4t5sJbdEL2VvlWkoXXzmseeSDcc4l2tQFtVQpF3rIQAD
-	 M/++3s+GjCPpcR/cOt1EfcEILTB3sSLlqwfGENg9ISLD9tKPcWDzEY/5SzPvC3tEiUA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792497667;
-	h=DMARC-Filter:Received:DKIM-Filter:DKIM-Signature:Message-ID:Subject:
-	 From:To:Cc:Date:In-Reply-To:References:Content-Type:
-	 Content-Transfer-Encoding:User-Agent:MIME-Version;
-	bh=TalOl96alln21uvpuXQrkyMghf/Vuyhv5RoGgLmGEUY=;
-	b=WF74AVgRDEg46ZZ9xAtsnBbT1gBPDnwYe1iKk49D/BdAnuS4WKsnnU7JryvAeB6NQwP0
-	 TJwzHVybZx5pSVQALgQ++BFVEjKptVgeuRykQGZn16qNI7D0oCDtvspIZfs7f6x5zIUbB
-	 RrZ2mpg4jSQ8JjtC/7Fxv4aBHGub+E/v+h2GmMzj3yzYIqHrJJyMIoiz/lEPI1kyKacUh
-	 HCwcpEXwqRfjqPDASglGC7/Mt+iJdoNPVkVxfPIuO4BO10ribK3dRzDR03UJLT6EP3LBu
-	 6iGhxmNHNFs6OT9Xj81OwkOqIEZzGWzpfXvd2wszuYU3v5rAdz8UgsV0hZYu6cG2qng==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=rendec.net;
-	spf=pass smtp.mailfrom=rendec.net;
-	dkim=pass header.d=rendec.net header.i=@rendec.net header.a=rsa-sha256 header.s=default header.b=IoA9DM3u;
-	arc=none smtp.remote-ip=80.86.107.70
-Received: from mail.mindbit.ro (xs1.mindbit.ro [80.86.107.70])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792498819;
+	b=UjPdL43j1nfmGm5P/gTEiM7iiFq1RjJVZViRCX5xzCkBZQ7E7sCQ3nMDFMt+3pote0+z
+	 6Ty4RvvlEVC1qNQBweteDc+0SdyTzkwgu0ddIyQOL8xEIQQrPX7ALyTCewRrmVoc+ELN0
+	 +pF4Inzipukn8B+uSc1E9X3kNELzatLyQ9/dkrAWQwoii9/q6kZa2gFOhBLfrIHy5rhEK
+	 3D+bWImsbAF4Vtni716CSxzyYd5GGmPvFPcvzxsZR5j51EUTfwZO42xVj28v5PCYKMply
+	 wqKeCdTHNLXEuK8Z+knep7LoXxGutc3SC/G2JTYMZGTp1QOEmL5t9KdOksOFDgalcnw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792498819;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Date:From:To:
+	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=wznNCRKHtn1iM9EvO1UMzM82x96//EGlJSq6jELOgak=;
+	b=2SdpargGfucl+WuhgFQqZmDR+0WO2as5kpJmMltxoZ3GoMIdlClwIjDR8kmGIsNPW1Pk
+	 0BZuhID8IBMRT3Jt+mj5tgj2Z5QuLTaAzG4t8RH/Y3rWs79tByigo96DNDGMTxvTCwoGP
+	 c9VScoAvuRlmEeVK1t8h8BH6YDlNpihbQ1NgzsuaPnYjdHSd8A4aKkphpFfG1qOwaoHId
+	 8e7fBe/vsg3n0LbQF+BUdnmt5eKeI3CkarQXrGmErUlFmihZHQKythSf6GM8ypYetlaqw
+	 5BI8+9Zha4Bv8M91Fk6REDfg31Jnx2Tx8QPMYemzPVtpEk6CraNF+SQAADjOkCmoGHw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=none header.from=pengutronix.de;
+	spf=pass smtp.mailfrom=pengutronix.de;
+	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=P5BmVsGM;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
+Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A981606A31A
-	for <imx@lists.linux.dev>; Tue, 20 Oct 2026 12:01:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5A981606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=rendec.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rendec.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E61C606A33F
+	for <imx@lists.linux.dev>; Tue, 20 Oct 2026 12:20:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0E61C606A33F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=rendec.net header.i=@rendec.net header.a=rsa-sha256 header.s=default header.b=IoA9DM3u
-Received: from dog.kanata.rendec.net (pool-174-112-193-187.cpe.net.cable.rogers.com [174.112.193.187])
-	by mail.mindbit.ro (Postfix) with ESMTPSA id 1A7F3D1E92;
-	Tue, 20 Oct 2026 15:01:00 +0300 (EEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.mindbit.ro 1A7F3D1E92
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rendec.net;
-	s=default; t=1792497662;
-	bh=TalOl96alln21uvpuXQrkyMghf/Vuyhv5RoGgLmGEUY=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=IoA9DM3uQ4UY3J4z1Rpp24cbuQNN2UnOqLaUqj0hwLdCujZ1j2I3dvMfXrymdnV5J
-	 dqo20YP+goVaiJIn3CCmsa/WzeVP/XFr9Q1ol5djxpIvuU13oMXXsOhyPehxgR8e6G
-	 r2vuPCLgR7SAcDypK1g2agVgoIRzqdDr2avJqXdVhHHkBMUOVWebPI8XqAX5uxraEU
-	 7gg4UX6chUbvk2yibIb2R5DXaEzWYUK+pwpwewdTTgjZpWN8u9nSSTCANy+KBHiG7v
-	 Oo6eCJUOGOW8QqfS//trrd9vjdmAHV0/Pw+yeH72nmy4yeJhj3fsNcwn7KGL7KIEdr
-	 1U3bawos4Pwbg==
-Message-ID: <f642a27d36844b8cc4d164f518f7177252624975.camel@rendec.net>
-Subject: Re: [PATCH v6 7/9] irqchip/imx-irqsteer: Allow building as module
-From: Radu Rendec <radu@rendec.net>
-To: Zhipeng.wang_1@oss.nxp.com, Thomas Gleixner <tglx@kernel.org>, Marc
- Zyngier	 <maz@kernel.org>, Frank Li <Frank.Li@nxp.com>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
-	 <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Jindong Yue
-	 <jindong.yue@nxp.com>, xuegang.liu@nxp.com, linux-kernel@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Date: Tue, 20 Oct 2026 08:00:59 -0400
-In-Reply-To: <20261008090231.796511-8-Zhipeng.wang_1@oss.nxp.com>
-References: <20261008090231.796511-1-Zhipeng.wang_1@oss.nxp.com>
-	 <20261008090231.796511-8-Zhipeng.wang_1@oss.nxp.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-2.fc43) 
+	dkim=pass (2048-bit key, unprotected) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=P5BmVsGM
+Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
+	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 521F9201EDB;
+	Tue, 20 Oct 2026 14:20:16 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1792498816;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wznNCRKHtn1iM9EvO1UMzM82x96//EGlJSq6jELOgak=;
+	b=P5BmVsGMl6TW795WF/XQZb/3Ngvx4XMNNB+tUG4ttxk5H9NojOr1MqetCCoWC+/NlF0DFD
+	idzG3jxi5EJl00OInDoKxLhHYMB/vSSBQLhges08ddPNJEBvAF/j0NcmRpK9lRKTqaclRQ
+	o97BZLaKj9HL7pcVCLFLXlmIWdIn6458sERehOtdlTJAvbmHa+mTsHEtsO9bKayDdzAu31
+	klKzRRwKkx1axzpH2B26GQLQ4G5K2HE5AXhuTTLbOPNLM3W94Z+k5GUVbxCx136V+BsMMF
+	pDfffXp/g2/nIzZuABLYH72OQ08Dc6m1fs2LFO9Wx0lf8hrlBxaLHMJ6p3vOcg==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1792498816; a=rsa-sha256;
+	cv=none;
+	b=HP50idT8l3jSXcw623YS6fFJlNS7xlD6trJkMyp9QnOYF60ccN2x2poaEyZwBixNob8o/O
+	EO3l7VZTmAgUG6sH0X3G56FxxfIaecsyj2tOn8bmUoI361Wa+3khefnwsIxgLX+3ewccdq
+	R10hbQFGdXb63RJfwv7aJ4GiZJ4H0QpWaz8xO8dSQZ7eV/9EXVHAzzFBnMjLoQh0Phq4OQ
+	PdgQTkmuj3Mqvbqdgu7DVR1z6vs8FYbrmwyZD7yOjsZerPD68D22Sgcxx+/WYQ5/+hx2md
+	rYJSpgyURaKhH6juiesIhseLbFKbbHJYP3iVZHr7n67D1LY7gnAqNMLsAVMTfA==
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=mkl@pengutronix.de
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1792498816;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wznNCRKHtn1iM9EvO1UMzM82x96//EGlJSq6jELOgak=;
+	b=JrbvSXOM1mMNRcfNYcFCVQOT6WPCV4flyN8bqSu3g20Qp9whnFokNVi2CiliuHMy8/cFUn
+	G3f2qI1ir6JzzxwcZgUzrPRvXz1yO5NRWqO/CRU/jlGyAmD3AdcHKuljkvdz1AY2LgwxFV
+	Ff2gTvbIbAztFRQd50SwAXyYHXqi3MI+sb6jib0iW8up1HciMuTzNBqbTGoKOnctyi9SaY
+	gNjySsV5O1OjdWJxUdk3CVCcED2dcleu54lb20fJC9/Dsa08/RrEEwVgVyJl/SVTx9pkLx
+	cC0UB36Y4e1guNRSpI76LrtGQV4fZofaN9TKFQx3VfqvFZ30F4KRxi66qYJVng==
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1xJ8pE-000N34-0l;
+	Tue, 20 Oct 2026 14:20:16 +0200
+Received: from pengutronix.de (p4ffb23c7.dip0.t-ipconnect.de [79.251.35.199])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id E4B045CA0EF;
+	Tue, 20 Oct 2026 12:20:15 +0000 (UTC)
+Date: Tue, 20 Oct 2026 14:20:15 +0200
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Vincent Mailhol <mailhol@kernel.org>
+Cc: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>, netdev-bot+sinfo@kernel.org, 
+	netdev@vger.kernel.org, linux-can@vger.kernel.org, kernel@pengutronix.de, 
+	haibo.chen@oss.nxp.com, shawnguo@kernel.org, imx@lists.linux.dev, stable@vger.kernel.org
+Subject: Re: [PATCH v5] can: dev: can_fill_info(): don't wake up controller
+ if interface is down
+Message-ID: <20261020-nebulous-meaty-guillemot-bb7589-mkl@pengutronix.de>
+References: <20261018101744.93657-1-chunyuzhiqiang@yinhe.ht>
+ <20261020075340.417899-1-chunyuzhiqiang@yinhe.ht>
+ <CAMZ6RqKpP62XS5tPR714wUmwf6QkdY4V5fb7c4rTFSyoDc+DAA@mail.gmail.com>
+ <20261020-precise-panther-of-symmetry-db65f4-mkl@pengutronix.de>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -72,83 +104,42 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="nhduwjfuedzjltb2"
+Content-Disposition: inline
+In-Reply-To: <20261020-precise-panther-of-symmetry-db65f4-mkl@pengutronix.de>
 
-On Thu, 2026-10-08 at 18:02 +0900, Zhipeng.wang_1@oss.nxp.com wrote:
-> From: Jindong Yue <jindong.yue@nxp.com>
->=20
-> Make the driver buildable as a module by turning the Kconfig symbol into
-> a tristate and using module_platform_driver() instead of
-> builtin_platform_driver(), and add the MODULE_DEVICE_TABLE() and module
-> metadata needed for autoloading.
 
-I believe both high-severity issues flagged by sashiko [1] are valid.
-Looking at what other drivers do (e.g. drivers/irqchip/irq-ts4800.c,
-drivers/irqchip/irq-pruss-intc.c), you should do something similar:
-iterate over the hwirqs and call irq_dispose_mapping(). That would
-solve both problems because synchronize_irq() gets called indirectly
-via irq_domain_disassociate().
+--nhduwjfuedzjltb2
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v5] can: dev: can_fill_info(): don't wake up controller
+ if interface is down
+MIME-Version: 1.0
 
-There is nothing wrong with the patch itself (the conversion to
-loadable module), so my r-b tag can stay as long as the above issue is
-addressed in a separate patch. Thanks!
+On 20.10.2026 11:51:10, Marc Kleine-Budde wrote:
+> Yes, the call to dbt_params->do_get_auto_tdcv() should be gated. Also
+> check if the size calculation has to be adjusted.
 
-[1] https://lore.kernel.org/all/sashiko-outbox-163920@kernel.org/
+pw-bot: cr
 
-> The clock, runtime PM and IRQ domain are already owned by devres, so no
-> further teardown is needed to support unbind and reload.
->=20
-> Signed-off-by: Jindong Yue <jindong.yue@nxp.com>
-> Signed-off-by: Zhipeng Wang <zhipeng.wang_1@nxp.com>
-> Reviewed-by: Radu Rendec <radu@rendec.net>
-> ---
-> =C2=A0drivers/irqchip/Kconfig=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 | 2 +-
-> =C2=A0drivers/irqchip/irq-imx-irqsteer.c | 7 ++++++-
-> =C2=A02 files changed, 7 insertions(+), 2 deletions(-)
->=20
-> diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
-> index 20b77fbc51ee..105108d2e6ff 100644
-> --- a/drivers/irqchip/Kconfig
-> +++ b/drivers/irqchip/Kconfig
-> @@ -555,7 +555,7 @@ config CSKY_APB_INTC
-> =C2=A0	=C2=A0 the controller's register.
-> =C2=A0
-> =C2=A0config IMX_IRQSTEER
-> -	bool "i.MX IRQSTEER support"
-> +	tristate "i.MX IRQSTEER support"
-> =C2=A0	depends on ARCH_MXC || ARCH_S32 || COMPILE_TEST
-> =C2=A0	default y if ARCH_MXC || ARCH_S32
-> =C2=A0	select IRQ_DOMAIN
-> diff --git a/drivers/irqchip/irq-imx-irqsteer.c b/drivers/irqchip/irq-imx=
--irqsteer.c
-> index 15ee50f65d54..85edd5e33ca9 100644
-> --- a/drivers/irqchip/irq-imx-irqsteer.c
-> +++ b/drivers/irqchip/irq-imx-irqsteer.c
-> @@ -10,6 +10,7 @@
-> =C2=A0#include <linux/irqchip/chained_irq.h>
-> =C2=A0#include <linux/irqdomain.h>
-> =C2=A0#include <linux/kernel.h>
-> +#include <linux/module.h>
-> =C2=A0#include <linux/of.h>
-> =C2=A0#include <linux/of_irq.h>
-> =C2=A0#include <linux/platform_device.h>
-> @@ -359,6 +360,7 @@ static const struct of_device_id imx_irqsteer_dt_ids[=
-] =3D {
-> =C2=A0	{ .compatible =3D "nxp,s32n79-irqsteer",	.data =3D &s32n79_data },
-> =C2=A0	{},
-> =C2=A0};
-> +MODULE_DEVICE_TABLE(of, imx_irqsteer_dt_ids);
-> =C2=A0
-> =C2=A0static struct platform_driver imx_irqsteer_driver =3D {
-> =C2=A0	.driver =3D {
-> @@ -369,4 +371,7 @@ static struct platform_driver imx_irqsteer_driver =3D=
- {
-> =C2=A0	.probe		=3D imx_irqsteer_probe,
-> =C2=A0	.remove		=3D imx_irqsteer_remove,
-> =C2=A0};
-> -builtin_platform_driver(imx_irqsteer_driver);
-> +module_platform_driver(imx_irqsteer_driver);
-> +
-> +MODULE_DESCRIPTION("i.MX IRQSTEER interrupt multiplexer/remapper driver"=
-);
-> +MODULE_LICENSE("GPL");
+Marc
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+
+--nhduwjfuedzjltb2
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSl+MghEFFAdY3pYJLMOmT6rpmt0gUCatdcfQAKCRDMOmT6rpmt
+0ms+AQCNjeuij2m7hnT3oBUURNKN4beYCNdM1WnZwZS7UABeIAEAgwL1U0D8Xxcz
+nca95JtOHUYJ6DbtY23yjikAIH4CgwM=
+=DDNG
+-----END PGP SIGNATURE-----
+
+--nhduwjfuedzjltb2--
