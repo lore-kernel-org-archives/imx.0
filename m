@@ -1,58 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792461779;
-	b=4yAehVdP+OY5fqwKw0YQLgyRjuE32cJA0XfuUDoJFlL6eMKHdDc8KUgiPaSdIQK66Rjw
-	 xg7xgzMkNfY/T3I1U7UZ91SWdfGGIayph3r5iCyMuw4UUQggsYHbgWyWp3VPBXvWSE01B
-	 RihYkxbChOP9VoWSfxeKW5YvuPY/fJ6/81KYd4kPmrQCpsqx5ipWf5oofTuaPnVz39Orw
-	 aH+PMKCvWsDj6lW68ZfzESJOWWPsjXfLPmqA8HWUWbSRbsMFsPyOviszamXuL9/7m/l1L
-	 Hr4jsRi9dau6cxj0gBPjf7tFdRoA1dBSucxcbGwUS4cqO4le1HnRJb59K8YZ5eNdRlA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792461779;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=nOZ4Ter206XpxcOoYF6+q+So3F0oft7pzSF2vobVs3M=;
-	b=z4gzgmw0KbFkc0Kharnxadx9wQlK6Okgkw6WExcwRKI0ST9QYwxCIemCqc9CEET0mXyT
-	 DVzx79rQEBeH5VNydhibhOmIFS89JPJDYyIUgXf0/0gsGea3aT9MRCNAa5hTrxhxnIXTv
-	 sesffoQKHb16GmFrDh95VwwWvyHxHyj5cs2ryQZV7ifWXMpS6Tcjd4ehOyKU1RVwouVfs
-	 NMVZJaQMqemGkyV0ffCGWNPTtLY6F+4evofy81aOSOClb7EiVx/lmtlqP1MWlCY3mPMLK
-	 ap+YsIW98isV9pdQazu/rMHGVO5XX6WFLFfn4D2kf8Sfws/Sa6jQY7vpDzmWDlC748A==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Hi5nSi0Z;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.214.176
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792462259;
+	b=JyxWB+0iPx0z7USV19DObkv2Ajbg16W72hTo8g6cy3yMpz1FCDBDROm7cV9Q5T1pX2br
+	 PdNbEe1Hbjg0mnGuGo6eiGG/uhrrkpjDH2x1NIvPqfvqtHAKPBY+X0gz1oHZKXkw3jzb6
+	 fq5qg/QGm9wS/9MDEqrfaQRTx45q+CTFHamvHs5dGyUsAQ67Y6FPnk/4EjzZBgVQBOa6R
+	 1Lu8SZ6zTMbVI6/WNlE9IrxL3HRyrwkH8hLG0ay5jIlADYbdyRXp0K6lVeszMt95BGtab
+	 y3puw9WYgbbcpD1/b8hdzAVRRYQ43V8zidltlumLiKBKMFwGQyGjynOGt38jsZRr8Zw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792462259;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type;
+	bh=J2awcyyaXtld8u9NUvdPyChgRrjEUxgKgS4S5LDKLZg=;
+	b=uoYIx1EUmfgZm9m3O5yhZIkqFFlhWFPmly6qYvHsFPyG1RTq6fz9LLxQvNzXD9HdYxTj
+	 pLeJS4QEtQmISzlIaoCIQatD+nUZuQ8qv+R9WRKqlmR+glQ/L+dsKOuKhKiAqhhKL1CFP
+	 +jlmpCZwopeSFhmL7QAPIjlaUBrSBZrYyEFn8VeY5IjTm0cpwjSqX8pRivuvdZlKODxTc
+	 FRgG/UT0bkkQFNk+anltW2QeDxCyXLNEi0fKz1Lu/fkb0DLdf3ig28VF7EzlTgrQtedNq
+	 Ej8R0OKJnUmhJOTEselPSSkJAzFktPB5E2O/itGkGupEMDhYXucdAH6T2I033XfsUgw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=daUiAR3A;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.214.176
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0474606A319;
-	Tue, 20 Oct 2026 02:02:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25B6D606A31A
+	for <imx@lists.linux.dev>; Tue, 20 Oct 2026 02:10:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 25B6D606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Hi5nSi0Z
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E04711F000C4;
-	Tue, 20 Oct 2026 02:02:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792461778;
-	bh=nOZ4Ter206XpxcOoYF6+q+So3F0oft7pzSF2vobVs3M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Hi5nSi0Z8e4PuO1zKyB1ESBMT7Zc9KPxYUe3Bk9Z6LfL/4bOKOA+XMoewdt4dVXwO
-	 1Y6PhXJZaVCbF4HFyBVScVN17PIkL46KDlsZ2hg/HtJIDoxqQ1rCrbfpdYb4JXR/Ef
-	 84g8R1QG00wFQyOpX3UlpM7TqM7T+aJVmktP2c7F6iIXbBq7BMq9NwrDrVfBJtErR7
-	 8SQVHrqkKNe7hrYc6kM82Hn2eclsjmJ++91F0fjdDVX4IBYbuOrb2YOqUdgYmYJxDP
-	 XXe8tou7YeMTxbmY//w09p1rOdPnGrKrMJ77GKNMqtuuQ8LHfz1D2Nl2Am75fGcWrk
-	 QEM61ljMCKXxA==
-Date: Mon, 19 Oct 2026 19:02:56 -0700
-From: "Peter Chen (Qualcomm)" <peter.chen@kernel.org>
-To: Frank Li <Frank.li@oss.nxp.com>
-Cc: Xu Yang <xu.yang_2@oss.nxp.com>, pawell@cadence.com, rogerq@kernel.org,
-	gregkh@linuxfoundation.org, Frank.Li@nxp.com,
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-	balbi@kernel.org, linux-usb@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	jun.li@nxp.com
-Subject: Re: [PATCH] usb: cdns3: imx: fix kernel panic on remove due to kfree
- of static platform_data
-Message-ID: <atbL0FjdTOQoJHjQ@hu-petche-lv.qualcomm.com>
-References: <20261019084944.2051097-1-xu.yang_2@oss.nxp.com>
- <atZ_w13x6QgsMhwn@SMW015318>
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=daUiAR3A
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2e99b1e5b4cso14228635ad.0
+        for <imx@lists.linux.dev>; Mon, 19 Oct 2026 19:10:58 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792462257; cv=none;
+        d=google.com; s=arc-20260327;
+        b=cP9D6zQQwiK3picnSVwmN+fUi9IJ50swstGWg1Sh6EypHkyy3Zw2rnkNY9I9e3tINV
+         BNp7enhGm9FztwyhVnWUbmQtjbf1pG/qSEKj+v3MDSVLR2hsTQNlA4EamonId0IlAXX+
+         AtbPGDVyHRS76VE4Lls5CLRjEf6ICoTseblBIAfSDbu1Y29AEVm06wbq+NJgrRwCfyrn
+         rfe576JAzH9PW5GYy6A4rpZDDC6SabOmxJpA6kQpqwZ4DgI0FW/apEn20JqZ3L17oMlv
+         olVuoGsgILX8gNi1lOENNWAhxXfsSSw7HmV9tjiOyqu2muu2EtYYqQHXve7PU0gwVK4R
+         MygA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=J2awcyyaXtld8u9NUvdPyChgRrjEUxgKgS4S5LDKLZg=;
+        fh=q/IMQ6rzYalxvFU4xDzXVHn3zRNdc3oqhdt0N8xGTNs=;
+        b=kfbFHcGK/uuFkFXr9JtxauSeWmzhDMehZA7+10qjODvGTWyatZcMZzhEuwSBtv/ZxW
+         PyPBvnlnpy8qRJi8cbs26oOJhGGFFEjrM4tbseGAD19R+7s+tAwLZW5yCX+6cudn5xKo
+         w/qg/QSTORv2Hvk2yAbu1nOtBlxyzmTdZxOgRWne63dgJrIKm8MwCcNV0tuBFWJC2qwy
+         XgGVkNcTbZeKWcDMgod1Aq1TB7oMJzL5+5XmRy2K9aKmwvDhrDDWQMLfdLW2MN+6tAHK
+         5lnnL2qvkOHydQ5OqGuTRZhtBgYM9dN2smbXq1L9Me2cbY1R6a3LZ4IivZSBcbjsWY1R
+         kGRw==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792462257; x=1793067057; darn=lists.linux.dev;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=J2awcyyaXtld8u9NUvdPyChgRrjEUxgKgS4S5LDKLZg=;
+        b=daUiAR3AJtzlL/FLTBJziXrDwr3Qz4e+1czgXhxGWdith+mpfWh2ViaI3kqYa2aDPP
+         kB4s7JBn0+jBX8HJJC1hyj9dqM1mTLQep//PmoD4gI0b7Rsy6ZrZCUty3GfZ/EBtqfBW
+         +Kws7RA/3laWZlayD54MSv327HfZ0rPxhgl5sgLC0QiipS4d4UXt+rnddt+RQlHHLQ3K
+         p+DO5mGP/vVQPYkiyEglHi0axYIo1H0E3pRR2LjsNMwkgT4ExHIiEngAKVmeWS6f1Mc1
+         0wrxDKtRUHTJuF6uAvNAxWd/Cn7nnfM6qWH+WtgYYJD5MAlBfWbFII1EBqBznl/sXkmI
+         mESQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792462257; x=1793067057;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=J2awcyyaXtld8u9NUvdPyChgRrjEUxgKgS4S5LDKLZg=;
+        b=kcNjp9RW2kk8akmEGnDH5D5dBRT9UZAvGYQQIXtEJmk2JS3XiCtoBbkDZyl8y2EtyA
+         iWNrUlcLbs8lYGXkpOtNl1n6kelu/I+GVk+cmHyNoh1RUEjhDHs7a2L3T4RRiUWV+W2i
+         niPaHcB030zvqaWVQg1WGqKIxkSq3kwz6fEnZV0PfMLQAJ2VChAwNM6qt6P83+NFKFqb
+         WGnTAFh5gpWSKR/2W8iTylrbfxB4B8OZyUp8V9BufqIGruf6LRLdXKoUiHzSG95DaL9S
+         Sedxmbvn4C+Lk2cb3tNvkaICgRM+ByRAyxrUny40z1+72p+WzOEZZZjfOTxR1sTb9bqF
+         8usg==
+X-Forwarded-Encrypted: i=1; AKwUvBxpWVrYOP+kPCz0uVyIUAEHfCV1D77vR0qOO5WNceGmjuNXB36S89T64lkZ4FUHHWj/bec=@lists.linux.dev
+X-Gm-Message-State: AFq9FYI0/T+iRpG+59Ki/OEgQeI9DS/SHvf5SjyLJ7UEedczy04Y1oQs
+	vgFak7mS3xDmAR5GV8/oETNr2jqLF2ll8GACsJqCUtGtyepbp9D9AH9VNm2lOZ3USud1dlaO7YO
+	+Bf8bekvJf4/eU4HjY++p472JpQ9Lh9E=
+X-Gm-Gg: AYBFou13J2dIZZGTBNEwffRJiWBrZVVejT6m+i45YUJWEv1zkDgR2eW705dHoijKwWj
+	2cWHnZSFWxtXfWv5dQyChHqvSfQNjKUZNDV2PxFqbo+TfYk6bof2P2NY0SEDdOhMxamHvC7s1pA
+	JiaXkTr+315cUQ9lgndwSD1KnIoSb1LSHl/vKMq/BynMmOYrVOBW+CWhr1r3KUov47QdV91EpY4
+	ELBU1LqPRaZXvNF19oKI/5BzLEZBxQ/C1veUXou5+hHzF9fVKN2YqwWN9Ne98Qr/RAB47dUYTq3
+	gPAkKdRnUegyqCkyv4LFS+oPC0Hpl9WNICUxaUGcSnMJfUmWyZOad5vLAVtvVtI9bLERCelcpfA
+	razf9zfDO/XAzUhr9sIoqBp5+IwjFNjqxDqFMor9llCpzy174L/6A7LEV4tgcCTH+oDI=
+X-Received: by 2002:a17:902:e547:b0:2e8:93b5:c555 with SMTP id
+ d9443c01a7336-2e9a6e5296emr76192995ad.61.1792462257434; Mon, 19 Oct 2026
+ 19:10:57 -0700 (PDT)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -62,80 +103,68 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <atZ_w13x6QgsMhwn@SMW015318>
+References: <20261016040946.521195-1-phucduc.bui@gmail.com>
+ <20261016040946.521195-11-phucduc.bui@gmail.com> <14f60932-9a85-45ee-ad87-593c20cc116b@tuxon.dev>
+In-Reply-To: <14f60932-9a85-45ee-ad87-593c20cc116b@tuxon.dev>
+From: Bui Duc Phuc <phucduc.bui@gmail.com>
+Date: Tue, 20 Oct 2026 09:10:45 +0700
+X-Gm-Features: AclHuK-OxoOqEZe9QHO9PQT5BaN1GB4IUM0kwzQZDjYp5iThqBCJWYOaobvziFs
+Message-ID: <CAABR9nGOmx6zvost-Y9Zd2nzQa+ZMYxt2PtZ8xYPLZqZVGHegg@mail.gmail.com>
+Subject: Re: [PATCH 10/11] ASoC: renesas: rz-ssi: Remove redundant component
+ open callback
+To: claudiu beznea <claudiu.beznea@tuxon.dev>
+Cc: Vijendar Mukunda <Vijendar.Mukunda@amd.com>, 
+	Venkata Prasad Potturu <venkataprasad.potturu@amd.com>, Liam Girdwood <lgirdwood@gmail.com>, 
+	Mark Brown <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+	povik+lin@cutebit.org, Andrei Simion <andrei.simion@microchip.com>, 
+	Nicolas Ferre <nicolas.ferre@microchip.com>, 
+	Alexandre Belloni <alexandre.belloni@bootlin.com>, David Rhodes <david.rhodes@cirrus.com>, 
+	Richard Fitzgerald <rf@opensource.cirrus.com>, Shengjiu Wang <shengjiu.wang@gmail.com>, 
+	Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>, 
+	Nicolin Chen <nicoleotsuka@gmail.com>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Cezary Rojewski <cezary.rojewski@intel.com>, Peter Ujfalusi <peter.ujfalusi@linux.intel.com>, 
+	Bard Liao <yung-chuan.liao@linux.intel.com>, 
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>, 
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>, 
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
+	Biju Das <biju.das.jz@bp.renesas.com>, 
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, Heiko Stuebner <heiko@sntech.de>, 
+	Kees Cook <kees@kernel.org>, Syed Saba Kareem <syed.sabakareem@amd.com>, 
+	wangdicheng <wangdicheng@kylinos.cn>, Chris Bainbridge <chris.bainbridge@gmail.com>, 
+	Linus Walleij <linusw@kernel.org>, Charles Keepax <ckeepax@opensource.cirrus.com>, 
+	Neo Chang <YLCHANG2@nuvoton.com>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>, u.kleine-koenig@baylibre.com, 
+	Pengpeng Hou <pengpeng@iscas.ac.cn>, 
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>, Hemanth Selam <hemanth.selam@gmail.com>, 
+	Md Shofiqul Islam <shofiqtest@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Zain Aboobacker <zainaboobacker33@gmail.com>, Sang-Heon Jeon <ekffu200098@gmail.com>, 
+	Bo Shen <voice.shen@atmel.com>, Vinod Koul <vkoul@kernel.org>, linux-sound@vger.kernel.org, 
+	asahi@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	patches@opensource.cirrus.com, linuxppc-dev@lists.ozlabs.org, 
+	imx@lists.linux.dev, linux-rockchip@lists.infradead.org, 
+	linux-renesas-soc@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On 26-10-19 15:38:27, Frank Li wrote:
-> On Mon, Oct 19, 2026 at 04:49:44PM +0800, Xu Yang wrote:
-> > From: Xu Yang <xu.yang_2@nxp.com>
-> >
-> > When cdns_imx_remove() calls of_platform_depopulate(), the child
-> > platform device is destroyed. platform_device_release() then calls
-> > kfree(pdev->dev.platform_data), but cdns3-imx assigns a pointer to
-> > a static global variable as platform_data, so kfree() on it triggers
-> > a kernel panic.
-> >
-> > [   56.809541] Call trace:
-> > [   56.811982]  kfree+0x44/0x398 (P)
-> > [   56.815300]  platform_device_release+0x24/0x4c
-> > [   56.819747]  device_release+0x3c/0xa0
-> > [   56.823413]  kobject_put+0xa0/0x120
-> > [   56.826906]  klist_children_put+0x18/0x28
-> > [   56.830920]  klist_prev+0xb4/0x1c0
-> > [   56.834325]  device_for_each_child_reverse+0x7c/0xc8
-> > [   56.839294]  of_platform_depopulate+0x34/0x80
-> > [   56.843664]  cdns_imx_remove+0x34/0xcc [cdns3_imx]
-> >
-> > Fix this by iterating over child devices and clearing platform_data
-> > to NULL before of_platform_depopulate() is called, preventing the
-> > invalid kfree().
-> >
-> > Fixes: ff6d6e6c6778 ("usb: cdns3: imx: add glue layer runtime pm implementation")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-> > ---
-> 
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Hi Claudiu,
 
-Acked-by: Peter Chen <peter.chen@kernel.org>
 
-Peter
-> 
-> >  drivers/usb/cdns3/cdns3-imx.c | 8 ++++++++
-> >  1 file changed, 8 insertions(+)
+> > In DMA mode, the generic dmaengine PCM component already applies
+> > the integer PERIODS constraint in snd_dmaengine_pcm_open().
 > >
-> > diff --git a/drivers/usb/cdns3/cdns3-imx.c b/drivers/usb/cdns3/cdns3-imx.c
-> > index a2f041e1707c..2c86fadd2cf2 100644
-> > --- a/drivers/usb/cdns3/cdns3-imx.c
-> > +++ b/drivers/usb/cdns3/cdns3-imx.c
-> > @@ -218,12 +218,20 @@ static int cdns_imx_probe(struct platform_device *pdev)
-> >  	return ret;
-> >  }
+> > Since rz_ssi_pcm_open_dma() only applies this constraint, remove
+> > the redundant component .open callback.
 > >
-> > +static int cdns_imx_reset_pdata(struct device *dev, void *data)
-> > +{
-> > +	if (device_is_compatible(dev, "cdns,usb3"))
-> > +		dev->platform_data = NULL;
-> > +	return 0;
-> > +}
-> > +
-> >  static void cdns_imx_remove(struct platform_device *pdev)
-> >  {
-> >  	struct device *dev = &pdev->dev;
-> >  	struct cdns_imx *data = dev_get_drvdata(dev);
-> >
-> >  	pm_runtime_get_sync(dev);
-> > +	device_for_each_child(dev, NULL, cdns_imx_reset_pdata);
-> >  	of_platform_depopulate(dev);
-> >  	clk_bulk_disable_unprepare(data->num_clks, data->clks);
-> >  	pm_runtime_disable(dev);
-> > --
-> > 2.34.1
-> >
-> >
+> > Signed-off-by: bui duc phuc<phucduc.bui@gmail.com>
+>
+> FTR:
+>
+> Reviewed-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+> Tested-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+>
 
--- 
+Thanks for reviewing and testing!
 
-Thanks,
-Peter Chen
+Best regards,
+Phuc
