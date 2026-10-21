@@ -1,56 +1,111 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.180.131
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792575819;
-	b=rHYaqDA4UJizZHOvI1y+yLOEo1JyD4hwNPJUb70omPSBSrq9cNxMVzHMcZbqofYY5j9B
-	 ODqTUIhJzuA0k7AurNmxRoKPAg8nkenW4UOR5cYFCEd72CjfyskpZqIyQ5K1xiCtGcmhd
-	 nPmj+UazoIph0+G5v3I/xqzBJRvE7F3aqWsw17H0pcfcR7YT3J9OQpnC4ZRF8A536sZFp
-	 jqA1mV6oSSuenUbNhUxmMfiJ+vOU0P0cqMKwgefqN9e1OybnpekeyyLrfoLd90I4J8LIS
-	 UhKsEVhXfa1/qZ+fEB1pPaOUAa5X+AU85kzI+wkNDCShAj1+uqxHosaTmLlkMDg/OYQ==
+	t=1792575883;
+	b=rp1hQ2GXF7XK+NtsJiU/3MRbvmx03p1dQIbUw0tbFv/iouOOW5JqrRs6PtmxCxVPelBF
+	 SWpawOHNEuAZu9W+D2xdefgIFGQYkWOWlh8leGrNYYRe524lVU1nV3bhQa1BCZJ1JahGc
+	 bM7HIcofq0douXxEXZr/EVospG1/YThiPPEBkFCWjWPflwL5neASSII5pXBvP/KOljXHx
+	 YgR1Jg//t19BgwBpj1f1AjwhVWqXKZYCArXha+BPv83zzpAJBw/dCEfbQZ56KBbp+5P9Y
+	 XU+fZ8dFWUlNFhfyVh/zTf0XvY389Pcosb1MRbpeaXGwOHvR2lieLRddgKu3dhF+0Dg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792575819;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=v8RjLRdh07kwuUBeHPoP4UoL1RXignKxNhLp2yK86f4=;
-	b=U2eobIaZ5/mUGscnXN6mBNVM7McDvxIYwhkg+jRCRBcefYCNFA6AqBFtCEHaXHWRsx9M
-	 WFu9Xvs+CRqWcVkdFFPeBJbXDoK8G8f4Syy/uryxAvkcp+CaopfmSReS1fQ4wt+0RQBHx
-	 cAoCeYItVOCqPCYpvSTpGDlC+wC2Z5+1S8ZDtixY49F/gsKadMmR5TIRb+bnI8ikifuy+
-	 LAJCyV1do2mEDyyUzh2+HsnGW2TBEu/8UY+llU/oF+fQj9C28/qCNoFTJIP4vToHesaQM
-	 lQYiYyJM462xUSMYWElLxks9YExXP7ZiQTJU0S0DdsS0I3JkYwloeUw5ZuuY98JfjLQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792575883;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
+	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:Message-ID:
+	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:
+	 Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:X-Proofpoint-Spam-Info:
+	 X-Proofpoint-ORIG-GUID:X-Proofpoint-Spam-Details-Enc:
+	 X-Authority-Analysis:X-Proofpoint-GUID:X-Proofpoint-Virus-Version:
+	 X-Proofpoint-Spam-Details;
+	bh=ZICGnoDUzzWlAQIxspOsX/uJiYZvuNvYB+Jhm0X2C4U=;
+	b=4XJ5USBpFqqVqb4O9E3dd3r40pkk+zySsulRcD4GWt7hmmBwCjGRjXDLxqYcyVPyoMTJ
+	 dIQnc1+TRyDZ6yDoaRdAok193dYHvP5DRxx1IuQzjk0I2mg6vICT/3DJHaCxHNz5fA0T/
+	 WBrJlI/zFqQ+/jO6fUz0cKxkUFHsY/Q5tBiCw3adZ8JstNXbOLG7Ut3LzF62/p9tgiATk
+	 7ur2k0fwD34dze+jEP/rupge/AtU0pEZgCext9+G4UuEVsQuNBmeApDgFBXo9XaDerhq8
+	 iQtivPIkiUtaOv4J53ygLots22uezF4GGw42a1PcXNAZ8vEUVxJtKw0TV3mzSnYgMZg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UTQYwpKj;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=oss.qualcomm.com;
+	spf=pass smtp.mailfrom=oss.qualcomm.com;
+	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=ahXk7078;
+	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=dZFbn7jY;
+	arc=none smtp.remote-ip=205.220.180.131
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A09A2606A31B;
-	Wed, 21 Oct 2026 09:43:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAC17606A325
+	for <imx@lists.linux.dev>; Wed, 21 Oct 2026 09:44:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EAC17606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UTQYwpKj
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2295C1F000C9;
-	Wed, 21 Oct 2026 09:43:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792575818;
-	bh=v8RjLRdh07kwuUBeHPoP4UoL1RXignKxNhLp2yK86f4=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=UTQYwpKjBq3N8ZeQOUXqS+hoCXDeUOHWN/LwlUNEBgUH40+VsbHHBCSv7wtquiUUX
-	 ZKzHJGK2T6AyUr1tLhIZupkIBKqY2S0lHKHXMPJ2GUHz43rZhBXAvekT133TaAv2qQ
-	 XAyf859dOP2VrwlHifn/txhYFgMBLfDn9FCzQBoXyaos36nNWtMKjBRnbOTPu1Z7Zy
-	 4yfxv+GKmaFJ7iw2mHyGr4eDGWxlJMrr0yznoj9pO5CedVogE+eubpXR1/g+oAvitO
-	 Ol+s8XBVUjK4awITnPD1sCpMdBh63vdOx5BRlQ6JDaapHicNBMpNfxrBCWlwltIFJR
-	 pEchrCjSVcFUg==
-Message-ID: <sashiko-outbox-180049@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 2/2] arm: dts: nxp: imx: Add devicetree files for M48
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Petko Manolov" <petko.manolov@konsulko.com>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20261021092140.4142493-3-petko.manolov@konsulko.com>
-References: <20261021092140.4142493-1-petko.manolov@konsulko.com>
- <20261021092140.4142493-3-petko.manolov@konsulko.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 21 Oct 2026 09:43:37 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=ahXk7078;
+	dkim=pass (2048-bit key, unprotected) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=dZFbn7jY
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69L5jBQG3711760
+	for <imx@lists.linux.dev>; Wed, 21 Oct 2026 09:44:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	ZICGnoDUzzWlAQIxspOsX/uJiYZvuNvYB+Jhm0X2C4U=; b=ahXk7078Eg6/b5Ya
+	BEW6RV60mcxyAc3S+r/XwNQA8a5FhN9ioUdntl5Hh2qEPJaAB6KJuZlvz+rwprEr
+	g9xvPfooth56P+Qs5KIVFP2xPsqNgZwEUq5snCTWrGa5e0dF2G6yPPYDAGQItnKg
+	81trmTb8mz34C1Dmny8QhvNV3lb85iZ+kxmKXeA2I2S6OZ3yk9DIxFvB+qojIotU
+	Z48gmHMqxhI7tsRmT7aDo5PSGmiAvuftosIIImUw7c6r+js6IcXjgqXE20fKdRBV
+	4WH7b66ZvGpz36jOQ+09QSNZX1NusCJY5yu+W3FdP3QLkRHhpjiCi4AfJHXpISgh
+	DhIygQ==
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hed9v3c23-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <imx@lists.linux.dev>; Wed, 21 Oct 2026 09:44:41 +0000 (GMT)
+Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-93df7a9466bso4986685a.2
+        for <imx@lists.linux.dev>; Wed, 21 Oct 2026 02:44:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1792575881; x=1793180681; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ZICGnoDUzzWlAQIxspOsX/uJiYZvuNvYB+Jhm0X2C4U=;
+        b=dZFbn7jY/mZMQKRPLDJJSXjh7ZMDl3YM6xdcYX1d7GJEoTTEJbcIuJWIikH7BTHwhU
+         oHLGFd5HUPd6dLtT+h+Q3cVFTyJXxRAf7ffQlbdgmLOOGiLDgyrL0hdIIjm3ctkLox+Z
+         Pg73axFajVNqZ7ruUhIC3NTkbfLXpEFSkdqt6uTkUi4slc2TbrBEfgX0Pb4wZ74TGS2B
+         cF8roNWzZgHVv1F5X8ZYyeBlnq0ISTfyu5c/DR011eWl7djUPxMSK8aEkU+sXoL71zPf
+         ZcgcYFSujzpLAne2jK6DlW6D6bL8+riL1V/9MwLHt+STb4TMaqX1RQ18DSxgVkNAxp1J
+         nQCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792575881; x=1793180681;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ZICGnoDUzzWlAQIxspOsX/uJiYZvuNvYB+Jhm0X2C4U=;
+        b=rW9B8RsqsD6E7YCZf4jOFSGEFSXOnCDNaE8ildALFr2Xa+0h0CvJFMOLrFn5TVirvS
+         n6ge4tosP6KzkVLiidbONmiRJ+NYFyr8uMvVaKtQaJxIC/n+12z2z4ASZDqER9ETE+Rc
+         XMzwzNkgNUnR5+J+Jg/kzgmdnPLIuY00lFMzk+qqzKIIA/qTjfJuKH7/ctsM+Oz+sXwB
+         wZIPYLJBgcLLb5K0XvIY5yAu/xcjhYtXay9rcSDZuX/CWiJI87FXLj58v8T4XsqGX/c8
+         iG+BC3F2IVbOo+41iZrKPDiptWty5zfLcIeTFKvMPunaWtVsXTo+kJ5iaGsos9NPJNyg
+         9SMw==
+X-Forwarded-Encrypted: i=1; AKwUvByI7Tquw+yQyRPpRoxPryO/npm0iM82nV/TMHDTD7r4oVKHq+kHTWWwc5/goca55hODTio=@lists.linux.dev
+X-Gm-Message-State: AFq9FYJYb0g6mOHfil6yV4y9IxSNmpfeUV2w7sRHo+KKNAlH8hx8f0bw
+	cSHwxWGN8ikFsBeeBrdha3SLE2Q43x+fY84uhbj7pSjaCZcEJjYz+jmo3pf/AWg7VR43VbhNohV
+	BVa3aCFw9L7w7MsBhIUr6OBrca69yPhrxWlQUEDXTRwIDP9mi59Yqpck=
+X-Gm-Gg: AYBFou25bHcwWaQdO29szG2ckpqzdKAKtxcUUDC4OunJBYRueQwugsWO4l/GeBOC0mX
+	SDqUr+egmC8YHKzAiwysMJxHfTuMHxLrOHm9PxpGOwJ7K7orKVj7ErDmLPCSBoPbK6fzZR0EKw9
+	iRncMtsBvZTBxChZgnWmU3ep+mXKdqzC0bMaHW+0dAfn7wVN4kN8rkq9RxOa6D5S0fdo4/IuUAF
+	k1t7eX8q+/CYyplO/z6iUynonUYgBJt/l2ci3zbBj1n4nGFnnLaFiARNAzAxKD9zbL2nJ3C3g+M
+	bEu4ieFFCYDHLZ5uVHnVGr7KcL9D24ZoHGSQHgxusAw4+QxbWOefDL3o1046r76qZYjm9gwKQQ+
+	etD/dtfjhayIw+tKm2+QWOg==
+X-Received: by 2002:a05:620a:4511:b0:93e:6d87:4f69 with SMTP id af79cd13be357-93f57f3bf10mr367398785a.3.1792575880995;
+        Wed, 21 Oct 2026 02:44:40 -0700 (PDT)
+X-Received: by 2002:a05:620a:4511:b0:93e:6d87:4f69 with SMTP id af79cd13be357-93f57f3bf10mr367390585a.3.1792575880494;
+        Wed, 21 Oct 2026 02:44:40 -0700 (PDT)
+Received: from [192.168.226.26] ([178.235.128.140])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c4678f7cc2csm59794166b.24.2026.10.21.02.44.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 21 Oct 2026 02:44:39 -0700 (PDT)
+Message-ID: <8ceba969-91d2-4b43-81d0-b26e7139664b@oss.qualcomm.com>
+Date: Wed, 21 Oct 2026 11:44:31 +0200
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -59,240 +114,145 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] dt-bindings: usb: snps,dwc3: Fix downstream port
+ numbering
+To: Chen-Yu Tsai <wenst@chromium.org>,
+        Neil Armstrong <neil.armstrong@linaro.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Felipe Balbi <balbi@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley
+ <conor+dt@kernel.org>, linux-usb@vger.kernel.org,
+        devicetree@vger.kernel.org, Kevin Hilman <khilman@baylibre.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Sven Peter <sven@kernel.org>, Janne Grunau <j@jannau.net>,
+        Neal Gompa <neal@gompa.dev>, Joel Stanley <joel@jms.id.au>,
+        Andrew Jeffery <andrew@codeconstruct.com.au>,
+        Ryan Chen <ryan_chen@aspeedtech.com>,
+        Billy Tsai
+ <billy_tsai@aspeedtech.com>,
+        Michal Simek <michal.simek@amd.com>, Frank Li <Frank.Li@nxp.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        Peter Griffin
+ <peter.griffin@linaro.org>,
+        =?UTF-8?Q?Andr=C3=A9_Draszik?=
+ <andre.draszik@linaro.org>,
+        Tudor Ambarus <tudor.ambarus@linaro.org>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>, Yixun Lan <dlan@kernel.org>,
+        Troy Mitchell <troy.mitchell@linux.spacemit.com>,
+        Minda Chen <minda.chen@starfivetech.com>,
+        Shyam Pandey <radhey.shyam.pandey@amd.com>,
+        Wei Yang <yangwei1@eswincomputing.com>,
+        Senchuan Zhang <zhangsenchuan@eswincomputing.com>,
+        Hang Cao <caohang@eswincomputing.com>, Li Jun <jun.li@nxp.com>,
+        Peng Fan <peng.fan@nxp.com>, Roy Luo <royluo@google.com>,
+        Yang Xiwen <forbidden405@foxmail.com>,
+        Ahmad Zainie <wan.ahmad.zainie.wan.mohamad@intel.com>,
+        Robert Marko <robert.marko@sartura.hr>, Xu Yang <xu.yang_2@nxp.com>,
+        Wesley Cheng <quic_wcheng@quicinc.com>,
+        Stanley Chang <stanley_chang@realtek.com>,
+        Ze Huang <huang.ze@linux.dev>, Aswath Govindraju <a-govindraju@ti.com>,
+        Roger Quadros <rogerq@kernel.org>,
+        linux-arm-kernel@lists.infradead.org,
+        linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org,
+        asahi@lists.linux.dev, linux-aspeed@lists.ozlabs.org,
+        imx@lists.linux.dev, linux-samsung-soc@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-rockchip@lists.infradead.org,
+        linux-riscv@lists.infradead.org, spacemit@lists.linux.dev,
+        Mathias Nyman <mathias.nyman@intel.com>
+References: <20261014082037.1774672-1-wenst@chromium.org>
+ <20261014082037.1774672-3-wenst@chromium.org>
+ <7020a7a6-332e-4fd0-a659-d82eb768614c@linaro.org>
+ <CAGXv+5G1kgyumbj7wGf6rPFbg3spSO0zYmEkn-hZT4qUdJbytA@mail.gmail.com>
+ <03375a31-0ac6-47a4-b0dc-6327080e1622@linaro.org>
+ <b4c0761b-34f2-42ad-97e7-ab34ae776281@oss.qualcomm.com>
+ <8d4d3ec2-3c97-4a46-97f8-048fdf81b853@linaro.org>
+ <CAGXv+5G_ig=k-eH8Cp0ES70WxTHcBS2TVj9VmHaG9caROiAuQQ@mail.gmail.com>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <CAGXv+5G_ig=k-eH8Cp0ES70WxTHcBS2TVj9VmHaG9caROiAuQQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDIxMDAzOCBTYWx0ZWRfXyZJE/pdaFF66
+ NQbNb3RZHFp6P6RlPzpdXpfYsBISTj0eNQ4jb0ddDh/5dXMVsTiQJ64Rh0JF3SwyPnSu4IkD1dT
+ 50edOoF7fNFwn7VaN398AqICGJeoQIs=
+X-Proofpoint-ORIG-GUID: r_7Qe5kT5yZLoAh5cWYASP1f6cpV0Pd7
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDIxMDAzOCBTYWx0ZWRfX0KAJ/3GuTlo0
+ acOqVPwZ/wqKup0CQ43ZaZBV33otcLbEjfH4zb3XOXr2lUJXf9BDwPNHFFzXrJ+CXjgGYufQwrH
+ O5EVoziNA3pRH79YPo3ly6Bd0hkx0dhs+Dy/NzzwUaBj3bpphrZuJH80CQcx/XyIKHNDckQZKxw
+ KQ5/qFXJCf3N9PQewIgxDGAu3rnv73PNLwzBXfbrOIcR+pVy0wDbJulB/BSkae0Nq1Wvl3XErP0
+ kU/llrDlir4inn8tzc5gocUg5OvTuFxgd5bh5pG62j+YMdhNkOqxHoyEY62sbhPYj1KMegbFvKu
+ h9hfSBCqqyqjzq/6lvykuZVWHIpAJQv3UH+uxUFXSo1GuophRugtqGi+xoKkNfor8ebE/VxTxO8
+ RyyeJ0vT1x0BuIOAeN7IsguW0wKNxtZP2fKqTkDElTqssMe88QBft4yALSH7GZXUYc6E/Q1Hd0w
+ MFTrdNdys31iGsRJV6A==
+X-Authority-Analysis: v=2.4 cv=I6zw19gg c=1 sm=1 tr=0 ts=6ad88989 cx=c_pps
+ a=hnmNkyzTK/kJ09Xio7VxxA==:117 a=PRfkaYvzSr8QmIIGAkY2Sg==:17
+ a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=rJkE3RaqiGZ5pbrm-msn:22
+ a=NEAV23lmAAAA:8 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=KKAkSRfTAAAA:8
+ a=iuaGvn3fa_lUOTDqeYoA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=PEH46H7Ffwr30OY-TuGO:22 a=cvBusfyB2V15izCimMoJ:22
+X-Proofpoint-GUID: r_7Qe5kT5yZLoAh5cWYASP1f6cpV0Pd7
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-21_02,2026-10-19_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 suspectscore=0 clxscore=1015 bulkscore=0 lowpriorityscore=0
+ impostorscore=0 spamscore=0 priorityscore=1501 malwarescore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2610190000 definitions=main-2610210038
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
-s) to consider:
-- [Medium] ARM: dts: imx6qdl-draeger-m48: missing GPIO_OPEN_DRAIN on I2C re=
-covery GPIOs
-- [Medium] ARM: dts: imx6qdl-draeger-m48: halved LVDS pixel clock in split =
-mode
-- [Medium] ARM: dts: imx6: missing ODE and SION bits on HDMI DDC pins in dr=
-aeger-m48
-- [Low] ARM: dts: imx6qdl-draeger-m48: undocumented draeger vendor prefix
---
+On 10/15/26 11:00 AM, Chen-Yu Tsai wrote:
+> (Cc-ed Mathias, the xHCI driver maintainer in case I misunderstood xHCI.)
+> 
+> On Thu, Oct 15, 2026 at 4:44 PM Neil Armstrong
+> <neil.armstrong@linaro.org> wrote:
+>>
+>> On 10/14/26 18:36, Konrad Dybcio wrote:
+>>> On 10/14/26 11:44 AM, Neil Armstrong wrote:
+>>>> On 10/14/26 11:29, Chen-Yu Tsai wrote:
+>>>>> On Wed, Oct 14, 2026 at 5:28 PM Neil Armstrong
+>>>>> <neil.armstrong@linaro.org> wrote:
 
-commit 1f358a609d69dc3047258ea0965effc8740f95c7
-Author: Petko Manolov <petko.manolov@konsulko.com>
+[...]
 
-arm: dts: nxp: imx: Add devicetree files for M48
 
-This commit adds devicetree files for the i.MX6 DualLite and i.MX6 Quad
-variants of the Draeger M48 board.
+>> How about the USB4, does it use the USB3.0 port ?
+> 
+> I'm not familiar with USB4. A quick search says that it can tunnel
+> USB 3.x, DP, and PCIe, and it doesn't have its own USB HCI defined.
+> 
+> So I'm thinking the USB4 controller would be more like a nexus node
+> or multiplexing node, or perhaps like a USB C connector. It has input
+> ports for all the protocols it can tunnel, connected to their respective
+> controllers (XHCI, DP, PCIe). The binding probably would be very messy
+> if one controller supported multiple outgoing ports, as each downstream
+> port has a 3-to-1 relationship with its respective upstream protocol
+> interfaces.
 
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6dl-draeger-m48.dts b/arch/arm/=
-boot/dts/nxp/imx/imx6dl-draeger-m48.dts
-> new file mode 100644
-> index 0000000000000..b0bc9a67f5b34
-> --- /dev/null
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6dl-draeger-m48.dts
-> @@ -0,0 +1,16 @@
-[ ... ]
-> +/ {
-> +	model =3D "Draeger M48 i.MX6 DualLite";
-> +	compatible =3D "draeger,imx6dl-m48", "fsl,imx6dl";
-> +};
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-draeger-m48.dts b/arch/arm/b=
-oot/dts/nxp/imx/imx6q-draeger-m48.dts
-> new file mode 100644
-> index 0000000000000..ff9c337e93fbf
-> --- /dev/null
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6q-draeger-m48.dts
-> @@ -0,0 +1,16 @@
-[ ... ]
-> +/ {
-> +	model =3D "Draeger M48 i.MX6 Quad";
-> +	compatible =3D "draeger,imx6q-m48", "fsl,imx6q";
-> +};
+Yeah that is more or less it.
 
-[Severity: Low]
-The root compatible properties in
-arch/arm/boot/dts/nxp/imx/imx6dl-draeger-m48.dts and
-arch/arm/boot/dts/nxp/imx/imx6q-draeger-m48.dts introduce the "draeger"
-vendor prefix, but Documentation/devicetree/bindings/vendor-prefixes.yaml
-only contains entries for "^dptel,.*" and "^dragino,.*" in patternPropertie=
-s:
+There needs to be a connection between the USB4 router and the native
+(USB3 *port*, not hub | PCIe *port*, not RC | DPTX) protocol adapter
+where the tunneled packets end up at to create a PM devlink between it
+and the USB4 router.
 
-  "^dptel,.*":
-    description: Guangdong Dapu Telecom Co., Ltd.
-  "^dragino,.*":
-    description: Dragino Technology Co., Limited
+ACPI does that by adding a `usb4-host-interface = &reference_to_router`
+property, for DT that's still undecided:
 
-Should the "draeger" vendor prefix be documented in
-Documentation/devicetree/bindings/vendor-prefixes.yaml so that checkpatch.pl
-and schema validation do not warn about an undocumented compatible string
-vendor?
+https://github.com/devicetree-org/dt-schema/pull/196
 
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-draeger-m48.dtsi b/arch/ar=
-m/boot/dts/nxp/imx/imx6qdl-draeger-m48.dtsi
-> new file mode 100644
-> index 0000000000000..19207d45764c0
-> --- /dev/null
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-draeger-m48.dtsi
-> @@ -0,0 +1,213 @@
-[ ... ]
-> +&hdmi {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_hdmi>;
-> +	status =3D "okay";
-> +};
-> +
-> +&i2c2 {
-> +	clock-frequency =3D <100000>;
-> +	pinctrl-names =3D "default", "gpio";
-> +	pinctrl-0 =3D <&pinctrl_i2c2>;
-> +	pinctrl-1 =3D <&pinctrl_i2c2_gpio>;
-> +	scl-gpios =3D <&gpio4 12 GPIO_ACTIVE_HIGH>;
-> +	sda-gpios =3D <&gpio4 13 GPIO_ACTIVE_HIGH>;
-> +	status =3D "okay";
-> +
-> +	eeprom_mac: eeprom@50 {
-> +		compatible =3D "atmel,24c08";
-> +		reg =3D <0x50>;
-> +		pagesize =3D <16>;
-> +	};
-> +};
-> +
-> +&i2c3 {
-> +	pinctrl-names =3D "default", "gpio";
-> +	pinctrl-0 =3D <&pinctrl_i2c3>;
-> +	pinctrl-1 =3D <&pinctrl_i2c3_gpio>;
-> +	scl-gpios =3D <&gpio3 17 GPIO_ACTIVE_HIGH>;
-> +	sda-gpios =3D <&gpio3 18 GPIO_ACTIVE_HIGH>;
-> +	status =3D "okay";
-> +};
+As far as the Qualcomm implementation goes, I was hoping we could
+go forward with base1 numbering as the DWC3 is an XHCI controller:
 
-[Severity: Medium]
-During adapter registration for &i2c2 and &i2c3,
-i2c_init_recovery() -> i2c_gpio_init_generic_recovery() in
-drivers/i2c/i2c-core-base.c requests scl-gpios with
-GPIOD_OUT_HIGH_OPEN_DRAIN and sda-gpios with GPIOD_IN.
+https://lore.kernel.org/linux-usb/20260929-topic-dwc3_tunneling_state-v4-0-63e296346d57@oss.qualcomm.com/
 
-When GPIO_OPEN_DRAIN is not set on scl-gpios in the devicetree,
-gpiod_configure_flags() in drivers/gpio/gpiolib.c logs a runtime warning:
-
-	if (lflags & GPIO_OPEN_DRAIN)
-		set_bit(GPIOD_FLAG_OPEN_DRAIN, &desc->flags);
-	else if (dflags & GPIOD_FLAGS_BIT_OPEN_DRAIN) {
-		set_bit(GPIOD_FLAG_OPEN_DRAIN, &desc->flags);
-		gpiod_warn(desc,
-			   "enforced open drain please flag it properly in DT/ACPI DSDT/board fi=
-le\n");
-	}
-
-In addition, because sda-gpios is requested with GPIOD_IN,
-i2c_init_recovery() in drivers/i2c/i2c-core-base.c checks whether the line =
-is
-single-ended before enabling sda driving for bus recovery:
-
-		if (bri->sda_gpiod) {
-			bri->get_sda =3D get_sda_gpio_value;
-			if (gpiod_get_direction(bri->sda_gpiod) =3D=3D GPIO_LINE_DIRECTION_OUT ||
-			    gpiod_is_single_ended(bri->sda_gpiod))
-				bri->set_sda =3D set_sda_gpio_value;
-		}
-
-Without GPIO_OPEN_DRAIN on sda-gpios, gpiod_is_single_ended(bri->sda_gpiod)
-returns false and bri->set_sda remains NULL, preventing recovery from drivi=
-ng
-sda to generate a stop condition. Also, pinctrl_i2c2_gpio and
-pinctrl_i2c3_gpio below use pad config 0x1b820 without the sion bit
-(0x40000000), unlike pinctrl_i2c2 and pinctrl_i2c3 (0x4001b820).
-
-Should scl-gpios and sda-gpios in &i2c2 and &i2c3 be flagged with
-(GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN), and should pinctrl_i2c2_gpio and
-pinctrl_i2c3_gpio also set 0x4001b820?
-
-> +
-> +&ldb {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_lvds>;
-> +	fsl,dual-channel;
-> +	status =3D "okay";
-> +
-> +	lvds-channel@0 {
-> +		fsl,data-mapping =3D "spwg";
-> +		fsl,data-width =3D <24>;
-> +		status =3D "okay";
-> +
-> +		display-timings {
-> +			native-mode =3D <&timing0>;
-> +
-> +			/* LVDS split mode */
-> +			timing0: timing-1920x1080 {
-> +				clock-frequency =3D <71190000>;	/* pixclk / 2 */
-> +				hactive =3D <1920>;
-> +				vactive =3D <1080>;
-> +				hback-porch =3D <60>;		/* left * 2 */
-> +				hfront-porch =3D <60>;		/* right * 2 */
-> +				vback-porch =3D <30>;
-> +				vfront-porch =3D <3>;
-> +				hsync-len =3D <60>;		/* hsync * 2 */
-> +				vsync-len =3D <17>;
-> +			};
-
-[Severity: Medium]
-In timing0 under &ldb, the horizontal parameters specify the full two-chann=
-el
-line totals (1920 + 60 + 60 + 60 =3D 2100 pixels per line, 1130 lines per
-frame), which require a 142.38 MHz pixel clock for 60 Hz, while
-clock-frequency is pre-divided by 2 to 71190000.
-
-When fsl,dual-channel is enabled, imx_ldb_encoder_atomic_mode_set() in
-drivers/gpu/drm/imx/ipuv3/imx-ldb.c treats mode->clock as the full combined
-display interface pixel clock (di_clk =3D mode->clock * 1000) and already
-halves the per-channel serial clock multiplier:
-
-	if (dual) {
-		serial_clk =3D 3500UL * mode->clock;
-		imx_ldb_set_clock(ldb, mux, 0, serial_clk, di_clk);
-		imx_ldb_set_clock(ldb, mux, 1, serial_clk, di_clk);
-	} else {
-		serial_clk =3D 7000UL * mode->clock;
-		imx_ldb_set_clock(ldb, mux, imx_ldb_ch->chno, serial_clk,
-				  di_clk);
-	}
-
-Meanwhile, ipu_di_sync_config_noninterlaced() in
-drivers/gpu/ipu-v3/ipu-di.c clocks all 2100 horizontal pixels per line at
-di_clk.
-
-Will pre-dividing clock-frequency to 71190000 here cause the display
-interface and lvds channels to run at half the intended clock rate (30 Hz
-instead of 60 Hz), and should clock-frequency be <142380000> instead?
-
-> +		};
-> +	};
-> +};
-[ ... ]
-> +&iomuxc {
-[ ... ]
-> +	pinctrl_hdmi: hdmigrp {
-> +		fsl,pins =3D <
-> +			MX6QDL_PAD_EIM_D16__HDMI_TX_DDC_SDA	0x1b0b0
-> +			MX6QDL_PAD_EIM_EB2__HDMI_TX_DDC_SCL	0x1b0b0
-> +		>;
-> +	};
-
-[Severity: Medium]
-The &hdmi node in arch/arm/boot/dts/nxp/imx/imx6qdl-draeger-m48.dtsi does n=
-ot
-specify an external ddc-i2c-bus phandle, so dw_hdmi_probe() in
-drivers/gpu/drm/bridge/synopsys/dw-hdmi.c uses the internal DesignWare ddc
-i2c master on the pads configured by pinctrl_hdmi.
-
-Here MX6QDL_PAD_EIM_D16__HDMI_TX_DDC_SDA and
-MX6QDL_PAD_EIM_EB2__HDMI_TX_DDC_SCL are configured with 0x1b0b0, which omits
-both open drain enable (0x800) and software input on (0x40000000). Other
-i.MX6 boards using the internal hdmi ddc controller (such as
-imx6qdl-apalis.dtsi and imx6qdl-colibri.dtsi in pinctrl_hdmi_ddc) configure
-these pads with 0x4001b8b1.
-
-Without open drain and software input on enabled on these pads, can hdmi ed=
-id
-reads over the internal ddc i2c bus fail?
-
-[ ... ]
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261021092140.4142=
-493-1-petko.manolov@konsulko.com?part=3D2
+Konrad
