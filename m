@@ -1,13 +1,13 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.66.26
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.70.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792573382;
-	b=VPd7h4CEiPNN2wzhaeO2XFlp+A6lCiJgQI/LLaQwVXbepTKndGABrNTiAG1tqd2o4t24
-	 UTeYHdqq79w8OJz5N1xg7+UtwixpCOK2gU1jJKJejNUblDEYKzfLSDPYdXHcFxwiM6QQi
-	 ESEoNr6bKCsPN3pktuc6JBY1MUEy8HQwdwZS3Zmt78jRYanwdeU2e6nS8J8JiQqVRvqln
-	 UQmKnHdhJQ3t9qvfHISxeRBer8AIbMkbwpRMUsICn8F7Ks8p8W5Zi+5opDp7D2W0B0Yhz
-	 PhO4R8IhjMX3I2ccspy6YssDaV4scVhkY+fls3gAXGUIGtJF/xQ6P1G0L1a3UF7QhEQ==
+	t=1792573388;
+	b=Of/j12uvdzMsLj52t4SMW56xms531yGt9tmsOPXBfVmE1eBMRAtvMgOPqBpf5F7Rrbk5
+	 1Ie+mt+poO7e7feenw4tSEkguDoC5MWzUs4L1gy6h4cVS9sqyirgH2TarIX+RdboqRjSg
+	 wrhKqd4vYMW13syQnAjCFbMBdYgJ1D/GQBH/82ij+NgeDf+WRnuHkkubdT9E2bRoHGR5W
+	 82RUsDBP8C4nKgcPUquWCAy3xq8ErtWxcJx+1j6fs0JswbxDX3EnrRNS8VG8dEUulh4Pp
+	 Z3qpbH8ON35Wi0/HsWt5KCRXMNB5iKgnzPHsYIQLP2m1J3KCke5uUXlQ7tCsGyCsO/A==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792573382;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792573388;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:From:Date:Subject:
 	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
 	 In-Reply-To:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
@@ -25,61 +25,61 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
 	 X-MS-Exchange-CrossTenant-UserPrincipalName:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=r0/Q3V8H+HalEu5A2X6Zfztrxh8LFhqMqSl3QcBFW1g=;
-	b=cZ39t5715GHcFLOetyPL+OkJV3bPyfE0OhmhdeMx+jGKmb5YZPaG/EWHkC7AbPYUU3Fi
-	 ONyL/cTTo+MiRWLlhBVqSrUZCSf6oaCsURqS6tR/XzfCrQsJWFJmdzM8d5Idjj/aD2NyQ
-	 pU16n4ua2gxmBO/o2xKKI80bWh9cEm9Dpt5ym2y0qNIEcpemKGgBH8D8/pj6bzTZ0LqGK
-	 0rWAiHB/tjZYTl3eC8+ONkhNV3i6CP5tO8MmANhoznI8CSre6DDr43/g6wWSo1covsJM4
-	 IQnBlWm+K7bv/xl3xZTBvSdGNONhgp9nJD5sF5P9k7Oa5nUBxkFiAHenEL8PhA68yHA==
+	bh=hruwcTtAP2uELqKOn3lcx/65GNiUMUcA+hLMTLAdsAk=;
+	b=3QEX6z4f67S13WROC+2Gy/3En9IfVLBgNArJRvHRSbV3LiuBVUp9WLLx5RmuXNajObaS
+	 fopI/BLona8iPcxvrsEjKmdXjRWaDC/7FX9q55tb0LKYEUxfkTo2Cv20kdHqeXCikVhXu
+	 VLZWUiQy+ZqmQa4S7BFaFtJPFj/jzBMdVixy0uNY8tdYp1G3wIMZ87R+BhYWg1TLSmZfL
+	 1J1i/+HSj4aAshZy8+JofS/a5+GlQIvhtjqAxDBhZMHKfBjhLyTVTufZgcLYo2FBumBnf
+	 DMyeNN6NjhKtFSRbJFfwL9jMYrt1Is1d0d4AHfqKEgkIEnsJv6LbWmBHnB7QHFMoDFQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=oss.nxp.com;
 	spf=pass smtp.mailfrom=oss.nxp.com;
-	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=FOZ1QBNb;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.66.26
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012026.outbound.protection.outlook.com [52.101.66.26])
+	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=yI1+xZe6;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.70.18
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011018.outbound.protection.outlook.com [52.101.70.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0CF0606A31A
-	for <imx@lists.linux.dev>; Wed, 21 Oct 2026 09:03:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A0CF0606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 093B9606A32C
+	for <imx@lists.linux.dev>; Wed, 21 Oct 2026 09:03:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 093B9606A32C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=FOZ1QBNb
+	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=yI1+xZe6
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KHrUBUzNzTpODvIjIUpLnc/1biWwQ+2u40cNGDpKWImm0elMBT59bWhAKC55+sYgFdf5zHGUy3XCFUIZp0/QCjfRw3GhAqWGav6IX73iNkfoWq5gbOUUvrkwULojBiD0Fwp8PguCi20YgHEQ/GS+BikL8zKYgkofddC7qSVCqY1OQ92V5XpM1LKEOkRuVfjOAjiKDCiNIXbYZj8Q26EwB4Ci5AnTpmQ80m5AZ/QdHDmAyfsqkB75fAwWTlgrsOokXXcjaD0U7YUaJPXkVG4G+SO5vrkVW27VU3niNMk1gki/ayg+u2mtiXb25E/n7z6vCBVo6xdJItdHpy7VyFJVvQ==
+ b=jjrGrWo4d1miEUZLT2IdOirGSFPdgoqQg013LzWJfw6KSY31FCBO1VsLjb28l6RourgzVuN286g+UQPpmDQVzYSbcDcicq+R1ztnlVsPbtyLVIYsEe199uu21bH4TSr1V9eyi6JNh5FFixpbvhN3ycWv6rwpkknKFDcoIgNcoZ5TLuhx+ZSlXsTXxRMk+q+B9Bw7piqprXgCme/C559vgESvls5anwAECpkPiw6W5RT7JIXUqPAXXcYnG51Oh+3dIKh+u43IwZhb43zO2AJDBgwk+hOyffjyKcEnWtztC+/rThs3bTeOR4OUg/+A+deoIeKTN6Em9b7M6sgCO2hdMg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=r0/Q3V8H+HalEu5A2X6Zfztrxh8LFhqMqSl3QcBFW1g=;
- b=uVu1L6UAftkCtod1x2DeqtyYzvmX7pRRoczZbygNn/WO7x3Cu2mKACK1B1iBmZYOvaIkQOIu8i2WwKD9ezY/WRTIGCdGDWHdqSW6e0rKR/huRafhhyP44gs3u7+7LDuy1BOKqVb4gq47anu/qRNyKqYLgz9Zg0SmLe105l5idNC4OU3jCtpYTVHb+hfkFa7c9JTRl0kOeRuW40u9HIngcy//iNYhvwakCeZgv6pZpUfd6TrAO5DtFpwQe4bC7dk8x/W+6PBuGxkp79mmU71c3sGQATXtYEEtIhoIfdM0YGWEIJG3WjpvT9zxzbGWiUmWqN0Tng5haMTJHHahUL0RVA==
+ bh=hruwcTtAP2uELqKOn3lcx/65GNiUMUcA+hLMTLAdsAk=;
+ b=g8aQjafVJWZ7riLdm9WwvYH6wpJQn/yoORpKrIcYcxPn8yracFCOmXSFZyx8/GOnvBiY0JWiNJpgCGK3GPWu+d4dk5ldCIwzGd+psztHMQnK9YX47ct+W/tWvGCA3fKOcKIrjhYW3TPvJkYulRMtSPGWEh1sQZvm1X4R0wff3oBhVyq5zYJX/Vb2cJJBBE3RElYj5pNfJvUuSuhuIDxhqQreYW58K+FZI4LhVLkXwjSieKZ6qK5q5mS+oHnoRo40T7KPPeorYuilw1oT9C2PJGPIP989eE0nlLhKKoScO9P3N96w9XxbNwDuOYco4YPdtW3mDt915rs+lEk9oGsPyg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=r0/Q3V8H+HalEu5A2X6Zfztrxh8LFhqMqSl3QcBFW1g=;
- b=FOZ1QBNb8xSc9HszXa7FCjndqP66G03SLsUVMqTW2Zq4L/d2kABpc+M3zZZRLDSvUmudNTedBDD52RD0RdaiXV3n4HjWVxv9/Qai+0fGHgXp6sGyUpaPAQCCKhY0OHy3V2Y8SpPm+KuTgFPMsTsqjTKX3qvQGXpsy+YrAe6Iehyq6q4kDcgMgLtD4TCZqQk6H9QMC+j99KfG1XhX7AvmqhJeQYZXpnYZOdQz7kMUjwFUKH7UQiJ9zwp6W74zMBcd/6y2eQ2TPWq31ogv6f1Oh0xh5mhqXkTjoEGUlsvdDUG6SZN0RG9FH3h4/gyFU/MGQ3YJ5pJBtp6uhR1ur5krfQ==
+ bh=hruwcTtAP2uELqKOn3lcx/65GNiUMUcA+hLMTLAdsAk=;
+ b=yI1+xZe6oSZlRi4bd8I1YWcHtSSonNxOvrpOWM4UZlA5HW6pPdYBy/wi/1hakyE2ph1SNp71S9caym+JD/iC6bVUO4+e0zXMr8+UXfzrLiRgQl5/dwpAmgCXkVIWdijD38J2Z90smuDFkLTWg8+/ibdHfV37byRzb2oHlBImEB74z+uH9gIwxEr5duM7767WhavW8zPCY1Hf+bDivs32tSFwOYd5N160vtbTvdLeoED9pmtEYApRDzlHiIU/KinJsbSjTqxI4QVmYk3bGzumz6MOykrZdBQ2tDIpjRYCU2A5oduruEI4bK+T4xIuDG5mI4Lv2YeUESUVEdKctIiIHQ==
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
 Received: from VI2PR04MB11276.eurprd04.prod.outlook.com (2603:10a6:800:296::7)
  by AS8PR04MB7960.eurprd04.prod.outlook.com (2603:10a6:20b:2a8::5) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.15; Wed, 21 Oct
- 2026 09:02:58 +0000
+ 2026 09:03:05 +0000
 Received: from VI2PR04MB11276.eurprd04.prod.outlook.com
  ([fe80::60d7:a8e5:eb88:9be]) by VI2PR04MB11276.eurprd04.prod.outlook.com
  ([fe80::60d7:a8e5:eb88:9be%6]) with mapi id 15.21.0522.017; Wed, 21 Oct 2026
- 09:02:58 +0000
+ 09:03:05 +0000
 From: "Sherry Sun (OSS)" <sherry.sun@oss.nxp.com>
-Date: Wed, 21 Oct 2026 17:04:23 +0800
-Subject: [PATCH 2/3] arm64: dts: imx8mm-venice: Move board Root Port
- children under &pcie0_port0
+Date: Wed, 21 Oct 2026 17:04:24 +0800
+Subject: [PATCH 3/3] arm64: dts: imx8mp: Move board Root Port children
+ under &pcie0_port0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261021-imx-pcie-rp-stale-nodes-v1-2-db6590e972b6@nxp.com>
+Message-Id: <20261021-imx-pcie-rp-stale-nodes-v1-3-db6590e972b6@nxp.com>
 References: <20261021-imx-pcie-rp-stale-nodes-v1-0-db6590e972b6@nxp.com>
 In-Reply-To: <20261021-imx-pcie-rp-stale-nodes-v1-0-db6590e972b6@nxp.com>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -91,15 +91,15 @@ Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
  sherry.sun@nxp.com
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1792573508; l=5032;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1792573508; l=6396;
  i=sherry.sun@nxp.com; s=20260723; h=from:subject:message-id;
- bh=hhgW1XgX8Zpx7To8Gt4ZtnUa8rKnMoTro8XXemtPPg0=;
- b=pILm9R64X4QWyHp2+DXkkbf3xmfG/wATSG4BRHxDnYo2+XkpHE9Lv/kWm2FvdFOax2T3y45zx
- kMDKW79mp6rCgxPrjyHBDKDs/JAaiYxuft8kvPbNANM0QFlfyiFGLTa
+ bh=BpA7og3KZpXb/zf11CT55anvBy9XlLtbQrHNsmZoqW4=;
+ b=NTqxXW4M17QmADnava5HmgmgDsURBHwL3NVpaAu1lWRB1QGmROw6Mt4yiuzPQsXntBpeF1fBK
+ UlhxySujBwpBEwAhyNKlEyhyKXaIzQbi5XgT1qEbJTx2l20jhxHTX2f
 X-Developer-Key: i=sherry.sun@nxp.com; a=ed25519;
  pk=YnYnIFJ2l+5v951x9shBVfHhminNi+3LTfFa3PxSdnI=
-X-ClientProxiedBy: MA0PR01CA0039.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:81::10) To VI2PR04MB11276.eurprd04.prod.outlook.com
+X-ClientProxiedBy: SI3PR01CA0009.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:296::14) To VI2PR04MB11276.eurprd04.prod.outlook.com
  (2603:10a6:800:296::7)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -112,85 +112,88 @@ Precedence: list
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: VI2PR04MB11276:EE_|AS8PR04MB7960:EE_
-X-MS-Office365-Filtering-Correlation-Id: 32811dc1-7875-4bdc-6232-08df2f521a60
+X-MS-Office365-Filtering-Correlation-Id: 4ee5fb01-bc09-406b-9643-08df2f521e14
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|23010399003|1800799024|7416014|376014|19092799006|366016|261009223027099003|56012099006|11063799006|10067099003|18002099003|22082099003;
 X-Microsoft-Antispam-Message-Info:
-	geX3GREHQegiLR0WP+JHin4wzVHaPy6wT7cpDV9fBp0tHH4Eq5Cc4e/5XsLeR2IjaHE/V9gDVN9D1BCwO31XeVMDrC0zyGf/yiQsY/7Tk56G1BKwXBuLw7AKkTagnm+Cu7dtwsS5NJIpTn5Tvw9zN2JbCUFfEiBHgykMmSK4vE9+dQPQOiXIVFhQ5VMWomSXo2H8AhwpmrVmVNnLNssAmOQ4bRYItdvyaJTBztd+q97itiBiI/ifbxmIhNFuJcMXJ5Q0p09TKDhqz+sbhccPdySk+/Ev7WrkaH5C9uu3LhHZH6kdHS54M4NybjcuTJ7jRtZjvy4zyhaPIKW6p7IjT+otj/3wFlOMScB5+JLpxJnuTwbNDC9ujQrCluDfCx27pDenNuYjm5YWsqHy14rOEebNftA1+p2B0FQO9zw5LXV1el2CYO0CE7VhX+sKN1of16Oz4ro1+LEKoZDoJrLE0gJBp1nqTRIwjBMeGe5noApBE+ww+n6JMCtjWvdofAkJRo7PZLsCoLEwprRiKYWAm89c1o+HmbfInvd5R9NRlYz0Um24f2rmpB27h9Gv+/Hn4jgAfOdu3j9NOIifVDp22N2OP8YKqMt/G/8y2BQ0U5gMdpSaAJA5kmziIQswwpxX
+	bFu+qzp0jsvHrue+ZgdWR5qh3kHe0hGL6Tu0uyCbu53D/JHZmndL5Xt2vcrgklpoTtBgaozcYI30YrG9KeqnuHxK8fanD0GSZ/3p3dQgGbqbSEO/UOkBoXgZb9X0AE+qkYbFilS0IjFF7qUjGDXqrHKcqXyokHTSQOsYzFNH5y0esJ539sr4zKMcwFDgLB31nJOh33I61aS5/BFF67677fHYftz2FNGTZXdglyOGxkG9NBiCTJrkwYMw3AO04Rc4ULZ8cYbUNpD7BjW8B/s9wC9Ipc47EhX1UEfwhmtEYj74RGmK49Nix7o4b/s8KHcRVV5VH1lDjBxGbU0aTXse0JaFk7YTfNU/A8DYMDN+kxBo3QbY8hqSfEl85JT8jD6saLqw9T10zVOGdJo/KFHw6qA+KGzdQSqhbo56PP0FbwPTLbkGtk8oH/XGX87HoY5+ox+Sadoh0vVCdwitMx4BGksE6aFACbAy4RsrkJ12x5HwdACFuw7be33CsS/2VXxzA9FpG2mt/VnIZHmscwFB8f4OgJoqmCuVXgJ49DoT3k6bV6zEfj743ze+YE2YUIjzvGERWGkrdL4aqVfS3hjD7RPx7bUgnJbXM5kzX2MinV5khnS+9sJ2RjkRfgZCJDyR
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI2PR04MB11276.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(7416014)(376014)(19092799006)(366016)(261009223027099003)(56012099006)(11063799006)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?dnVEdUY5T1ZDWlFNVFltWDFLUE5aQmlhRmc3RkpXRzMxdTNpS0ZQWFAyUTIv?=
- =?utf-8?B?TFBmbHg5VlhzTTJCdEVhaDhmc1BqVUVLZ2pMYlRQb2pibjhKSzRnS1M5dnpV?=
- =?utf-8?B?L3B4RjZKNFQ4TFZDTXlSeVBVMEhWRkxxSzB5VU5MOUNOcnpEV1RzeHl6Vis2?=
- =?utf-8?B?ZjZiYWFlSkltbDR2VEJYY0l5cVNJc3E2VjZicURCUVVZMmtCaGVBU05sQm85?=
- =?utf-8?B?MkIwZFlXYkpXeXhJTVpRUCt6Rmd2M3JESkNjVUxXdEkxeGduc1poTGdXWkJG?=
- =?utf-8?B?SjBDTXhhZTYrQzVMV05lTGg5WFVtOTBKbGR2WDA0VGFjUENCVFVPUTZJbXlq?=
- =?utf-8?B?OUtvV3JFTkt1UTVUaGF6VFRxdmFvdWJpZkZBbHduWUc5VXZIM3RZWGtvNktv?=
- =?utf-8?B?MEVNVmFvN2FydGNCNGRDMXFMRFFJdW12UFl6TzYxeGxrOTg4WUJsQktWb051?=
- =?utf-8?B?YVhNVzZ2djJzOGdOTVRnWWpxNVNwMEMxaEJta213d2lobTZNcC9nRHdRcnJU?=
- =?utf-8?B?R3pBSjFUekxsYjloT0N0cXlOZmgzZll4L3Q4TVd5ei9HVVF4RTlmNnFIWDdK?=
- =?utf-8?B?dnFQYkVrN3RIdWxiYW1nWng1VTRlcG5ISVFKbWZCdmwzK0QwYWVUekFOaG9B?=
- =?utf-8?B?YUlTSUJEb3hwSnZOUGtYNGVZVC80UW5LSm9qT2M4c1pjNTM4MEk5aVMvTkpi?=
- =?utf-8?B?RzJQQzlmNFB2Q05uUTZxSVVZUm5WdTh6VURBM1luZWVTZGhobmhOTDZ3WDdz?=
- =?utf-8?B?YlVHa080KzM0SGNpbzZhT3V3Skp4aWI3OHRjSXFESThkV1BrN1dKRGIwVUNG?=
- =?utf-8?B?U09BVnFyUE9MaGx0Ull4WGt3d0JFdnJNUCtOQm9lK29XWjVwNDRWcjcveGwx?=
- =?utf-8?B?a3R6VEJIVStlUWtjSW5Ia1dwa1B6QXdYL05mNUoxR3lkOXZYTkFFZnVBQ1Rw?=
- =?utf-8?B?dHFNekFSQUh1RURFZVNMemtEV0Y3Nkw0SE9kSzNlQkwwdC90QS9MZHRpQXlw?=
- =?utf-8?B?NWE5SDVmTHhKNHJYTEkxNGwxSG1VMHpDaHM2K1VvYnFya0JSS2xXMU8vNTU1?=
- =?utf-8?B?OW5TaE1oMSt5WlN4bzl0dHUvQ1QrbmZiU1dMRlNHV1JNZU1yWU5jZjg1L1FX?=
- =?utf-8?B?cTJ3RmltclRkN25ma2w2K1d2ZlJaTTJaWGtjZlN0NjkvWlFJSW1ENlhKM1p5?=
- =?utf-8?B?Q080eXZrT3pRbTdxU1pMQU9kRmowZUtvdjcvVlJtY0taeU1ieHBtVTZZU2Zk?=
- =?utf-8?B?TGtXbzUrWFNBL2hMU2tDSGZHdnJvRDk1NElBUFdoYWlHN0hJQyt4QzZ1M25u?=
- =?utf-8?B?VWJXYkV4T013VVlzTSsxb3BPbHdBQnlQWk5yTFN2RVBDUEkyK2dDdWFMMXBJ?=
- =?utf-8?B?KzA0YVJrL2Z4Y2YraklHd2JQU2pGTVpKVmptVi9RRWZSUG5HTVJqczNwODhM?=
- =?utf-8?B?YUUxMGdOUDV2SGxucTFsUVJFanRjV2NRSndPT0ZKQlR3bXZkTWwxVVlTaUZk?=
- =?utf-8?B?SVdrZnhKamFPNUs5d1JueHlSR3lwaHExOW1EYXVRRkJIUVN1MGFTOVk3bHp6?=
- =?utf-8?B?SzNnaVRwa2VpUVozcXdHZ29wT3VFNncyaTJuZ1VGVlJqZWVrYVlaVHdWR2JK?=
- =?utf-8?B?cFA1UkxPOGNiamRnOUI1L0Y5ellVRi9QZnhCVmY5NWVQcm1jU0xlUXlqeWUx?=
- =?utf-8?B?NGhwbkdnRDkrT29ZQ0tWMjdORlBPV1pZNXpCUUFVd0tYalBKK3JPWW1wTWl4?=
- =?utf-8?B?S0dnMjFJVm5VRGZLT0FOYU9CL1hCUkg0clZvS3VzL1dlVVBvc2JETDFCL1B2?=
- =?utf-8?B?L0huVi9JT1QyTVZDZ0U3Z3hBWGlaTXlRWm9RYnZKWEQ1UXFVSGhZWksvMkhn?=
- =?utf-8?B?b2lIbGhwYWVnRlZMOWE3MjlKUjNBdjhpTjN2QTM2QmZudmg4RWUzK2JGOXBp?=
- =?utf-8?B?RnhaOWJDbnlLQkxvdlh1Vk1QbWIxelNTVmtESEZGSjhqR0hGN0VCSlFuR21L?=
- =?utf-8?B?b2N5NEp3S3hZalNtbFZZcjRQSUl5MlZMM1ovRUpFWTlBVVRSbEVZRGV2aWth?=
- =?utf-8?B?azdCMGhpa1dDVTNJLzR3QTYxbFo0ZXk4bWVIci9ZMXcyN2w2NmRnUS9QL0cz?=
- =?utf-8?B?Rk5NUEluQUtKYkdjd3NsUm14bWthQzNIRW1aSUhkVkpCSG1ZNEs5RXB0TFRX?=
- =?utf-8?B?SUtwdVR3bjl3Nk9QQ1dTS015clBYTmJ4RlFIekJxd1pYOXVmdm4rWU1YK3Ra?=
- =?utf-8?B?bjFod05odUcxQkNzSmMrZlRmSVVQdmJUdllYMERQbXh3S0hJd0ROTEV4ZFQx?=
- =?utf-8?B?MkhUL2IvNnVXcTFJMldnSTBWdVhXQ3FEZGU5ZjV2cjl3bWhld1FOSVNEUDhl?=
- =?utf-8?Q?zMk/jyOcwKduvas5EJmIyte/tTfMOK9mXaWHo?=
+	=?utf-8?B?azd4UVIvWGZxU1YzNURRQmhoUWRuMldkVXkyZHF1TjVXY3ZpK29XTVMrTE8x?=
+ =?utf-8?B?ay9Rdm5ITjFhNCthWDJNK3QyZmRCU1F2U2RKUGdUU01RcCt5cWlXK2orUCsy?=
+ =?utf-8?B?VnE1ckNyMFVacS90NFJwWHRtbmVnRFFWU1E2TzB3RjFKT2FSakxBbzRxbk1L?=
+ =?utf-8?B?WFhaMkJWc3hJWEFGK2pocDBWdEkvbi94YlkwdXZIUGZncks2b3BXZUk5ZWt4?=
+ =?utf-8?B?VGNUcmRZTDJhL3h1L2d1RS9IUE5XQjhjV3FscUtFdEVBeG54WE9xakVwVDY0?=
+ =?utf-8?B?V3FuMzZkQjJPQ01sM1MrTW4xMU40MW5tK1BtR1ZkQkhBc2d1V0xXTHlEUThY?=
+ =?utf-8?B?UUFnNXdjKzh2M3B0UjZjMVNKUVhoWmxUV3pZMzlvQWptRE5SUUJDaU5uU2dv?=
+ =?utf-8?B?eFAzOFhYL0ZxdDRKVVhCVEt1WXBzVHRBd2xCY0p0NXhzU3BjQndocjlOSE5H?=
+ =?utf-8?B?cDIyZllLaCsrN3JzNmhSZ0VhYWUwVWxab0dCdk90K3h0STVpMVJWUWNlei9E?=
+ =?utf-8?B?QjNobmltdDlBM3RWeEJNMkYzWG9MOTc0RFNrTnI0YVZBdDZUNGw5M3pzaEtX?=
+ =?utf-8?B?Wlg0alo4SmNFTnF1QVNqWkNnN3BFc0NkelBYa1MzUFBRZ2liZ1pGemJpMzU5?=
+ =?utf-8?B?a1RURUFHY0xHWGdjMGRKZlhNVDRac01DMHlNdFk1dVgrcTlvMGdLSEhObkUx?=
+ =?utf-8?B?ZmswL1RwejR3ZDVIb284NDhtejJ4bzg4SlRpV2dYeHhoeUV1TUpBZkJtci9R?=
+ =?utf-8?B?R2xKYzBadGlMRURwWlI4QmdvakszQnNXcGtINVJGYlp5bnJNL2JvOWlSQ2Jr?=
+ =?utf-8?B?bE5hVzRFREVOaDBESnV2R3I2dXJEVktkSG5PVWNUWEc1djhuczVVVWNGbmFT?=
+ =?utf-8?B?c1FYZVpPYUJpQTNKT0lvQ1BxcWVpZW1FazNDanFOekZ5R2xaWFlCUllFVFdo?=
+ =?utf-8?B?dWo4RlJyMktGUllJZW4va2R6VmdGU2ZTeU5VNzVkM3d3SVptbHZwS2E5d0ww?=
+ =?utf-8?B?WWh3bWU2WVBZUzRCYXBSNk1UcmVwczdENDgzc2xsK2RyYmVVQ0NVcEtlNlNB?=
+ =?utf-8?B?aG1UMGE0NE1iM1RDQ2VlMXlxa3E0L2x0RzlQWHF5czRVTTNtV1BzT0lWdFRm?=
+ =?utf-8?B?bThGR2JHTGFDWVJBU3ZzMmloeFNTSWpOV2JEckgzbkhHTlYyZEd3ekFDOGdX?=
+ =?utf-8?B?TVJqenhmejNRa3ZvenlNcnhudGtHTzNZU2V3VXhZRmthVTZySE8vb25Jc2dZ?=
+ =?utf-8?B?U042NmFDMDZmeHNkRjBUVENJM1o5ZEQ0UzF1a0lyVFRQZGdNYXZWVUFKRHho?=
+ =?utf-8?B?K1h4V0Y0emsyb1hlQjRDQWoxK2lWSlk3aXBqUndpNXdTd1NnOC83b0R0OS92?=
+ =?utf-8?B?VXRsRjAvZGtLTWdRUlZDNWZ4SDFoMkF1MzEwWHVOKzhPRDNrNGU5MndqeFZo?=
+ =?utf-8?B?b3JJWG9QLzBmOVgxM2JOS1RCb2V6S1QramV2cGl0RTZqNjBXbFR2QXZRZktz?=
+ =?utf-8?B?YitRWDdrSU9Xa1N5MUE0YldrWStXbFdKVFlWczVGMTlPRTRJNEJKeHpkYkJZ?=
+ =?utf-8?B?ODgwZ05ldmhMMndCNjRBbEhXTy9yZ25uNi9vWEszSGJTeVFQVTcrM0NFbEYy?=
+ =?utf-8?B?S2poYXJXd0FQRFQzM016cEpDZ3BUL0tZVTBnc3liekt3Y1pyVGU2RllHa21y?=
+ =?utf-8?B?bHFZcFpNdmc3L2d1cUxPNmxvUGkrblZiVzI4SGpLR2s4R2w5SmdlOXVTdUtQ?=
+ =?utf-8?B?UURLTHJJcG9mbkpKNDkrM1ZFblhoRVZteUFvZ3g4ekU0aGZHQjNUcG95RVNw?=
+ =?utf-8?B?Zk5PYUkxTjU5RjM2QWJFTFkrVFRoNWVvbDN4RGhiZFRZTVJ5dk1mVmpPaWJp?=
+ =?utf-8?B?MDh4Q1RkNWhLdi9JaUZzbkRrT09tSHBGYVJJMXFNL1N5UGVVZG5TSEtISENE?=
+ =?utf-8?B?K1YzZnYxWmo5QjhuNStRdmpHQXprM2xFUzlPRi8rWFAwT2lUSEU4TWVKRlJi?=
+ =?utf-8?B?VWF4aTA1anMyVmNiUmg4V0pwWlo5UkEwcGR6cW40R2tLZFZpVi95cXJrbmIz?=
+ =?utf-8?B?VWY5ODMrSlo0ZTBWRitYL2loaW9ZbUdOMENhN0c3d2htMmhOVnJLYmcrRTk5?=
+ =?utf-8?B?TmVuNGNaOE9jaThJSWRyemc4SHh2MzFubVBaRldyMXNPZVZIWm1YS2hZbTZt?=
+ =?utf-8?B?MnVub1h2OTl4Vjllai9OSjZqd0dOSmM5T2RraTczWjRJREZXM0VlQ1A3SkFE?=
+ =?utf-8?B?dGprbHFZaWhYOVhIQWZYNFZSRzhaWFhvMmZrV0Y3bGJXb1l0ay8yWW5hVzNS?=
+ =?utf-8?B?eTVwNTFpV1R5REVuemM4SlU1cjRBOFRuSTRYeUsvNW9PT1RWNk9makhPWnJl?=
+ =?utf-8?Q?VwfE4X+3hh+U1PVscKgViQaBd3V5TbD6Gp0r3?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 32811dc1-7875-4bdc-6232-08df2f521a60
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4ee5fb01-bc09-406b-9643-08df2f521e14
 X-MS-Exchange-CrossTenant-AuthSource: VI2PR04MB11276.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Oct 2026 09:02:58.7444
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Oct 2026 09:03:04.9604
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2lMc0WUFzmpMs6UA/Yal6TtBQ//yQQ8YhtRR8s3HsLnortWSUSQysFc2EpT6TtePrc/5PF6GHI3Rn7dfpwDIGbCYAL28H1q4nOrPfVBNuDQ0U1L8mgIyABt2txrYB3kA
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3emX6FU4v0qCwtKo8CimM5hUJeYtMQIROk2CZjbzgT7RwWSzDILFiKOp4XNb5fRQw2MmuQdZv6oZkMNDTEnTKaSXRJkPpQbU9k98o/tV2mMSM4inLtSXcGauyHaHwp3/
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7960
 
 From: Sherry Sun <sherry.sun@nxp.com>
 
-Commit 37f53f50b36f ("arm64: dts: imx8mm: Add Root Port node and PERST
+Commit 396fbe9a028d ("arm64: dts: imx8mp: Add Root Port node and PERST
 property") added a Root Port node pcie@0 to the SoC level host bridge.
-However, the Gateworks imx8mm-venice boards already described the Root
-Port as pcie@0,0 in the board DT.
+However, some boards already described the Root Port with a different
+node name:
+  imx8mp-venice-gw72xx/gw73xx/gw82xx.dtsi: pcie@0,0
+  imx8mp-hummingboard-pulse.dts:           root@0,0
 
 Both nodes now share devfn 0 under the same host bridge.
 of_pci_find_child_device() returns the first match, which is the SoC
 pcie@0 node, so the board level Root Port node and all of its children
-become stale. Also, since both nodes have device_type = "pci",
-pci_host_common_parse_ports() registers two Root Ports for the same
-port.
+become stale. Also, for the Gateworks boards, since both nodes have
+device_type = "pci", pci_host_common_parse_ports() registers two Root
+Ports for the same port.
 
-Fix this by moving the children of the board level Root Port node under
-&pcie0_port0 and dropping the duplicated board level Root Port node.
+Fix this by moving the children of the board level Root Port nodes
+under &pcie0_port0 and dropping the duplicated board level Root Port
+nodes.
 
 The moved nodes are now located on the secondary bus of the Root Port
 (bus 1), so update their reg bus number and unit addresses accordingly
@@ -198,23 +201,53 @@ to keep dtc pci_device_reg/pci_device_bus_num checks happy. Only the
 devfn is used to match the PCI device to its DT node, so this does not
 change the matching.
 
-Fixes: 37f53f50b36f ("arm64: dts: imx8mm: Add Root Port node and PERST property")
+Fixes: 396fbe9a028d ("arm64: dts: imx8mp: Add Root Port node and PERST property")
 Reported-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Closes: https://lore.kernel.org/all/171421fb-d0a6-4e3f-b2dc-226e9c548972@pengutronix.de/
 Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
 ---
- .../boot/dts/freescale/imx8mm-venice-gw72xx.dtsi   | 22 ++++++++--------------
- .../boot/dts/freescale/imx8mm-venice-gw73xx.dtsi   | 22 ++++++++--------------
- .../boot/dts/freescale/imx8mm-venice-gw7902.dts    | 16 +++++-----------
- 3 files changed, 21 insertions(+), 39 deletions(-)
+ .../dts/freescale/imx8mp-hummingboard-pulse.dts    | 17 ++++++-----------
+ .../boot/dts/freescale/imx8mp-venice-gw72xx.dtsi   | 22 ++++++++--------------
+ .../boot/dts/freescale/imx8mp-venice-gw73xx.dtsi   | 22 ++++++++--------------
+ .../boot/dts/freescale/imx8mp-venice-gw82xx.dtsi   | 22 ++++++++--------------
+ 4 files changed, 30 insertions(+), 53 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw72xx.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw72xx.dtsi
-index 266038fbbef9..404600f121b6 100644
---- a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw72xx.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw72xx.dtsi
-@@ -156,36 +156,30 @@ &pcie0 {
- 	assigned-clock-parents = <&clk IMX8MM_SYS_PLL2_50M>,
- 				 <&clk IMX8MM_SYS_PLL2_250M>;
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-hummingboard-pulse.dts b/arch/arm64/boot/dts/freescale/imx8mp-hummingboard-pulse.dts
+index d32844c3af05..911799db4b91 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-hummingboard-pulse.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-hummingboard-pulse.dts
+@@ -59,18 +59,13 @@ &pcie {
+ 	pinctrl-names = "default";
+ 	reset-gpio = <&gpio4 28 GPIO_ACTIVE_LOW>;
+ 	status = "okay";
++};
+ 
+-	root@0,0 {
+-		compatible = "pci16c3,abcd";
+-		reg = <0x00000000 0 0 0 0>;
+-		#address-cells = <3>;
+-		#size-cells = <2>;
+-
+-		/* Intel i210 */
+-		pcie_eth: ethernet@1,0 {
+-			compatible = "pci8086,157b";
+-			reg = <0x00010000 0 0 0 0>;
+-		};
++&pcie0_port0 {
++	/* Intel i210 */
++	pcie_eth: ethernet@0,0 {
++		compatible = "pci8086,157b";
++		reg = <0x00010000 0 0 0 0>;
+ 	};
+ };
+ 
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw72xx.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw72xx.dtsi
+index 76020ef89bf3..224b494bc51d 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw72xx.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw72xx.dtsi
+@@ -156,35 +156,29 @@ &pcie {
+ 	pinctrl-0 = <&pinctrl_pcie0>;
+ 	reset-gpio = <&gpio4 29 GPIO_ACTIVE_LOW>;
  	status = "okay";
 +};
  
@@ -244,26 +277,25 @@ index 266038fbbef9..404600f121b6 100644
  				#address-cells = <3>;
  				#size-cells = <2>;
  				ranges;
- 
+-
 -				eth1: ethernet@0,0 {
 -					reg = <0x0000 0 0 0 0>;
 -					#address-cells = <3>;
 -					#size-cells = <2>;
 -					ranges;
--
 -					local-mac-address = [00 00 00 00 00 00];
 -				};
 +				local-mac-address = [00 00 00 00 00 00];
  			};
  		};
  	};
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw73xx.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw73xx.dtsi
-index 2aa6c1090fc7..1bf1a34551d9 100644
---- a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw73xx.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw73xx.dtsi
-@@ -176,36 +176,30 @@ &pcie0 {
- 	assigned-clock-parents = <&clk IMX8MM_SYS_PLL2_50M>,
- 				 <&clk IMX8MM_SYS_PLL2_250M>;
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw73xx.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw73xx.dtsi
+index 5eb114d2360a..c704a73cdb6e 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw73xx.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw73xx.dtsi
+@@ -168,35 +168,29 @@ &pcie {
+ 	pinctrl-0 = <&pinctrl_pcie0>;
+ 	reset-gpio = <&gpio4 29 GPIO_ACTIVE_LOW>;
  	status = "okay";
 +};
  
@@ -293,51 +325,66 @@ index 2aa6c1090fc7..1bf1a34551d9 100644
  				#address-cells = <3>;
  				#size-cells = <2>;
  				ranges;
- 
+-
 -				eth1: ethernet@0,0 {
 -					reg = <0x0000 0 0 0 0>;
 -					#address-cells = <3>;
 -					#size-cells = <2>;
 -					ranges;
--
 -					local-mac-address = [00 00 00 00 00 00];
 -				};
 +				local-mac-address = [00 00 00 00 00 00];
  			};
  		};
  	};
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7902.dts b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7902.dts
-index 468c7e993c52..38c019790511 100644
---- a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7902.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7902.dts
-@@ -635,22 +635,16 @@ &pcie0 {
- 	assigned-clock-parents = <&clk IMX8MM_SYS_PLL2_50M>,
- 				 <&clk IMX8MM_SYS_PLL2_250M>;
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw82xx.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw82xx.dtsi
+index 2b86cc62a41a..bb62a91b6029 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw82xx.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw82xx.dtsi
+@@ -239,35 +239,29 @@ &pcie {
+ 	pinctrl-0 = <&pinctrl_pcie0>;
+ 	reset-gpio = <&gpio4 29 GPIO_ACTIVE_LOW>;
  	status = "okay";
 +};
  
--	pcie@0,0 {
--		reg = <0x0000 0 0 0 0>;
--		device_type = "pci";
 +&pcie0_port0 {
-+	eth1: ethernet@0,0 {
+ 	pcie@0,0 {
+-		reg = <0x0000 0 0 0 0>;
 +		reg = <0x10000 0 0 0 0>;
+ 		device_type = "pci";
  		#address-cells = <3>;
  		#size-cells = <2>;
  		ranges;
  
--		eth1: ethernet@0,0 {
+-		pcie@0,0 {
 -			reg = <0x0000 0 0 0 0>;
--			#address-cells = <3>;
--			#size-cells = <2>;
--			ranges;
--
--			local-mac-address = [00 00 00 00 00 00];
--		};
-+		local-mac-address = [00 00 00 00 00 00];
- 	};
- };
++		pcie@7,0 {
++			reg = <0x3800 0 0 0 0>;
+ 			device_type = "pci";
+ 			#address-cells = <3>;
+ 			#size-cells = <2>;
+ 			ranges;
  
+-			pcie@7,0 {
+-				reg = <0x3800 0 0 0 0>;
+-				device_type = "pci";
++			eth1: ethernet@0,0 {
++				reg = <0x0000 0 0 0 0>;
+ 				#address-cells = <3>;
+ 				#size-cells = <2>;
+ 				ranges;
+-
+-				eth1: ethernet@0,0 {
+-					reg = <0x0000 0 0 0 0>;
+-					#address-cells = <3>;
+-					#size-cells = <2>;
+-					ranges;
+-					local-mac-address = [00 00 00 00 00 00];
+-				};
++				local-mac-address = [00 00 00 00 00 00];
+ 			};
+ 		};
+ 	};
 
 -- 
 2.50.1
