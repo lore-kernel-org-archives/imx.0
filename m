@@ -1,52 +1,52 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=178.251.229.89
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792603181;
-	b=bppxQ6FyeUmwepro8MBGUaJP2rIgYKJj3CO6EGZYODgMnXZ/432MJRCX5SI9yHNNVjf9
-	 aOltx5oTz/usHOtLs5PwlvQ7TtH7CX4HJTRmc3CBBmvA6FRZrm36iZB80MfJ7g8GIRCdA
-	 GyrfCI1EKKFoyiIWxomuwgtbPomOXeZcfKiWtC4ojBecgzzZMI9QKRllV8ZXKpHqnoA0k
-	 /L1bQx6G0y+YnnUUtMLnpqvGhxkaFWoUE4W5GMvLry8vSPotEpb8WhlekEpd+t5j3RLqK
-	 uaUFJtYeRapTuH6fP+mgP2jJx8JfnDssBYzSkkA4hVO6+k9uFNzR+JoqoWEvpwrYoyw==
+	t=1792603239;
+	b=nDjAFYxfAKgLNgtswkKBkdqlve1usCPHCdHJHGowRhjTa9pigzsFpheUTSF4GSWda93N
+	 ILDpBo54Jw5mN5YR7V3LVing5qIsrv6Lz8dgKQRxX4QR/ZbSAC2727YWODQfWeWgxFYCk
+	 HNLrab01YG/gVyy3LZM0Cp4Fik7uqX9zYi3A02FvI5W+X5hIAYiVGGs18yY+ueTedpOi/
+	 J0u95Vm4gy2rB178X7VSZ2L4Ve1LESy21tSRVcHjqFCXZUsvMtFIdambOdcz/nXVsaxZN
+	 gHQ9qWLoJ2PswrEq7K9Pc8Vm8N7EDqzamHG3nwkUwtIuhfk/f+f7ZYzoDVZP7tzhHqA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792603181;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792603239;
 	h=DMARC-Filter:Received:DKIM-Signature:Message-ID:Date:MIME-Version:
 	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
 	 Content-Type:Content-Transfer-Encoding:X-Last-TLS-Session-Version;
-	bh=p/oEcNKqidn4ieT1WIF/VipiAVLf85drKemekyUd3/Y=;
-	b=tyUoS6hRY3p94z8d99xxF48kYva1u03I2Uy0sbGx7TZgos/N/9NZe1NQhEEvS9325uGp
-	 ACTRMIPzgJZ8Yxmeys/vusWcjKZzLKPFtgXCuKKXbfddbUO4soTmcKit01udSKVl7vNMC
-	 pSXoWXxN9y99Pd8wj1QJNPT4QJHVI95pZJmR2ak5RuX64wDBukAZ9HJ7jTr/ewEVqppCK
-	 AXdjaWhUdpdqAO2l4UYyc1Rux/OZccxSnG+CFPdHJCjUly1NoReGQ3jVnhkQ2yRER26QW
-	 ajMRNuM1mJYA0gBoDyROnpPxiHqG4RxY77oL/Zj2Aainqu0NSGNQwGGKL0ptH/9cFFA==
+	bh=SuDvx00jor0zB+rk10Hah3tZomTrz/6EdT+On4Upk9g=;
+	b=aSJ68ujcu0ZrTaWaznvjxuDbMRye9NDExXpHpXMDvGHtaljQiKf/hQUuslT4uv6PvDm6
+	 e04oaa2dCRYI7to3xf4KWTBb2SPrRH4vOXqG0W0c9709n6yNFpEHRX/Og52a4O9zb+wks
+	 gfA6og3m0wFa31LsGrvnAbPVtatDtPKgOY6lZuP5gqw0QhQdhDABkanVzHzKkF4mVUtaO
+	 fi5POFC4kaOLbN3I9fPByQp2SGl2H1mTCe+y3O9bJzInisa92vr+v9QY77c+4pz2nS0HZ
+	 etU1q77fE21BOW6Vqrl4H8oEh8MuV+VJ4b03XK3C23h/zUy/uh0eYOvZ8u1SP9cvJBQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=nabladev.com;
 	spf=pass smtp.mailfrom=nabladev.com;
-	dkim=pass header.d=nabladev.com header.i=@nabladev.com header.a=rsa-sha256 header.s=dkim header.b=VlfyyDlU;
+	dkim=pass header.d=nabladev.com header.i=@nabladev.com header.a=rsa-sha256 header.s=dkim header.b=XuBYSPHg;
 	arc=none smtp.remote-ip=178.251.229.89
 Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E1F0606A31A
-	for <imx@lists.linux.dev>; Wed, 21 Oct 2026 17:19:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5E1F0606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93B9E606A319
+	for <imx@lists.linux.dev>; Wed, 21 Oct 2026 17:20:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 93B9E606A319
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=nabladev.com header.i=@nabladev.com header.a=rsa-sha256 header.s=dkim header.b=VlfyyDlU
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 96C6D10A93D;
-	Wed, 21 Oct 2026 19:19:31 +0200 (CEST)
+	dkim=pass (2048-bit key, unprotected) header.d=nabladev.com header.i=@nabladev.com header.a=rsa-sha256 header.s=dkim header.b=XuBYSPHg
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 07E231051F7;
+	Wed, 21 Oct 2026 19:20:31 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1792603173;
+	s=dkim; t=1792603232;
 	h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=p/oEcNKqidn4ieT1WIF/VipiAVLf85drKemekyUd3/Y=;
-	b=VlfyyDlUqMsVamAweIBx8XqfE3scpw/yiN1G5k6hPlSg7yEhTErIDLKCr7X/QugmOEc3SE
-	Q0c/X9kPTLrw5X/fCxt+qPzOEivqk6RICAaNdcuXHKyVjPNk4ZFZ7pX3BJenR/BzlSvCjD
-	jK2z/nldjYt7uAja1frN/uJ5tVL/czMUF+8Pybx2qbqS9jehqyRGfRu2z5Uyd1b5z6L/+0
-	+B0pdA7MoDpuManAJuKsA+uRQVVclBB5x6ZKIWKNXna9ueFhsY6d+SWafizZLXhuDRuyeY
-	fYBBdNIkyX842C97CG4ccd6KO+KdIEW7Ica6X+KctBsnj2/GuivdKL7lL2U7TA==
-Message-ID: <1073daf0-3676-4123-9ca4-c182ea5883a3@nabladev.com>
-Date: Wed, 21 Oct 2026 19:19:30 +0200
+	bh=SuDvx00jor0zB+rk10Hah3tZomTrz/6EdT+On4Upk9g=;
+	b=XuBYSPHgIeqY/Zc+aoRhwxC2Koif9dMn8TiYbm+/fpd+cuKrZE9gVoaOEwTbUvKl5jX2fx
+	iozIXA3WwRrIcH8f5LZHJhdPOVNcJTnHN+9O9nT99HmPO1tbfSEv4LWkaz8DqMszURdO0D
+	ou8YSL5AujzVwu+rG1AI3ryFt/4z9enkbIlZXTPgVNIrDtG7iBF4kt26w3wkdOiWVUi+9Q
+	Vv1Ic19nDJ96rDT83NQyfUMQ+jti4RJV7M6LRWxczrNxq1lUIorAn5konHJ2rho/0jmxrr
+	yKNedkmkv5AZqgw9PvRLEc2v3l/hcNAmxp0HbxTSKV0BQRvfCDgBa/p97J7l2w==
+Message-ID: <3ca82faf-dc5a-4ef7-ad8a-f6273b3e0388@nabladev.com>
+Date: Wed, 21 Oct 2026 19:20:31 +0200
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -57,8 +57,7 @@ List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] ARM: dts: imx6ull-dhcor-maveo-box: Remove unused SPI
- device
+Subject: Re: [PATCH 2/2] ARM: dts: imx6ull-dhcor-maveo-box: Correct PCB number
 To: Christoph Niedermaier <cniedermaier@dh-electronics.com>,
  linux-arm-kernel@lists.infradead.org
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -68,19 +67,17 @@ Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
  imx@lists.linux.dev, kernel@dh-electronics.com, linux-kernel@vger.kernel.org
 References: <20261021134435.17350-1-cniedermaier@dh-electronics.com>
+ <20261021134435.17350-2-cniedermaier@dh-electronics.com>
 Content-Language: en-US
 From: Marek Vasut <marex@nabladev.com>
-In-Reply-To: <20261021134435.17350-1-cniedermaier@dh-electronics.com>
+In-Reply-To: <20261021134435.17350-2-cniedermaier@dh-electronics.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Last-TLS-Session-Version: TLSv1.3
 
 On 10/21/26 3:44 PM, Christoph Niedermaier wrote:
-> On the maveo box, the SPI pins are connected to connector X10,
-> but no device is connected. The device "dhcom-board" was used
-> only to test the hardware, but was not removed afterward. So
-> remove this device to accurately represent the current hardware
-> configuration here.
+> The PCB number of the maveo box isn't 525. Change the
+> number to the correct number, 625.
 > 
 > Fixes: 145e2732a5e9 ("ARM: dts: imx6ull-dhcor: Add Marantec maveo box")
 > Signed-off-by: Christoph Niedermaier <cniedermaier@dh-electronics.com>
@@ -98,18 +95,17 @@ On 10/21/26 3:44 PM, Christoph Niedermaier wrote:
 > Cc: kernel@dh-electronics.com
 > Cc: linux-kernel@vger.kernel.org
 > ---
->   arch/arm/boot/dts/nxp/imx/imx6ull-dhcor-maveo-box.dts | 8 --------
->   1 file changed, 8 deletions(-)
+>   arch/arm/boot/dts/nxp/imx/imx6ull-dhcor-maveo-box.dts | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
 > diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-dhcor-maveo-box.dts b/arch/arm/boot/dts/nxp/imx/imx6ull-dhcor-maveo-box.dts
-> index 047f7b2d8526..eb0b91040110 100644
+> index eb0b91040110..bb82d97f9d84 100644
 > --- a/arch/arm/boot/dts/nxp/imx/imx6ull-dhcor-maveo-box.dts
 > +++ b/arch/arm/boot/dts/nxp/imx/imx6ull-dhcor-maveo-box.dts
-> @@ -60,14 +60,6 @@ &ecspi4 {
->   	pinctrl-0 = <&pinctrl_ecspi4>;
->   	pinctrl-names = "default";
->   	status = "okay";
-
-Drop "status = "okay"" too , since this controller will be unused ?
-
-[...]
+> @@ -6,7 +6,7 @@
+>    * DHCOM iMX6ULL variant:
+>    * DHCR-iMX6ULL-C080-R051-SPI-WBT-I-01LG
+>    * DHCOR PCB number: 578-200 or newer
+> - * maveo box PCB number: 525-200 or newer
+> + * maveo box PCB number: 625-200 or newer
+Is the rev.200 correct , or is the base board still rev.100 ?
