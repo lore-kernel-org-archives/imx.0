@@ -1,59 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.171
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792616279;
-	b=ARAxmK2HE48oquqIl9BY4q7pfwA4V+D0MmVNWn9ekLbm19u1emiOFLyYdkM9ODEfHw6N
-	 yVgn/Y6HOuZdcGrMtnmfG/Bnw6mS2mJVeE6DTiSs3JR0Ht9+anoFZk1ubB0unmU7z3XLq
-	 CnThvbyuYKBZSOcmcGc6++cc5Vi7VtC+SKD4XREzMBRwbOXc5o5pSLdVTj8aoIM3/fOUT
-	 B16z0R2nJJM8KoX8BEPMnUl0mHTwOYFjAqqt1kFcOh3avKX+h1XPv1ZW0ye+fsi2CFR4t
-	 i04glH0O1wC0wJLS1W4r22jgeIt1vtNOyBBIJLrlWSB5PuoRleoC2mrNq2WdNg9I7BA==
+	t=1792623299;
+	b=TTcbF9B4J/OpjdMSqDYKp6CpMnnC3SUllNl/U2jNgv5XMFcHeV52MwG1LQreoH+BZwl3
+	 7HjW2VzomdCNpgXXtIBfG368rNeeU9lAxRi99WKf252tzBuyzgyr8v3vrufkO2eShdAIi
+	 l2edW8SIewzixPixkbAqqljPPT4d2+ocG3QDZsy6UROzcxtbYKokdp1HQPp1yZKnyRcZb
+	 OnuGkKt15G2FGeEr8KWO8wAs94kW045gBadbcqt/ikipsJ28BS6UQazfhAsDFGK0najU4
+	 2u9hB/Ozkt9aeSeuBDLhlJGjLGvWQhxNmhygfgvRQXKuCsVxG3K6p23CQ12DSlY/Log==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792616279;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=RoPYXNx8Lhh+gxboIK53SazpXFScKewuHPdEWXWClIQ=;
-	b=YXaj7OVpBTNuWPh32kd7Gzf1Cf+StTsaEtbO9gGd526cyB4giDIZiG5rMr0je2OK5wE5
-	 Cvgwn6coACEP63jctsZhok7WEGqwTZ80a00+Xd3OvFh2DZRASrBNfBMynMbKyYNA6h9ro
-	 EOwAiV+Jh5RT9uurz4ips4pPI+3JVEjg4TDfDH57vD1vr1XFG8O/fvIHEh3BC6FfX33Rq
-	 hnmHThPKDVVUZX4x6/Eg1Vz/MjiAe6gLHTxgNFbJNv5/hI7SHkicD38vRB7ECDbWkhm90
-	 Od2qkjyg4c5KFRgPWN07x3BFZRHRTpRZiH7OyKLwBKyMCv81fhVQD0eq7LcDbuH6ljw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792623299;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=9tda7KCgHiHf7p60vP6BBaPr59gypHnjN4ebH49SPko=;
+	b=n3xG2x75Pps08XPcFGUv68YIzyPRZiQE9FAJmBZoyJhz0fJcmbFHyOzBaFJOKXc9/L3v
+	 Zi+joBuKQqO5NTRZHnjzQ3yCbTrDb0J6zDyELZ7x+BF3uZqA91tgmeaX+MU5oKtRPbEa7
+	 q//BJyouxh3RojOlapRGsk4wudhAWYjZE4XpQlC/PXZoVU4BsjvH7eEmv5gzvHKJDMFw7
+	 65R+V05OoPrai6vVHmt3RQ/dMpXMaD0Rnimh3lKcN8a8zoVJZOG1immk9v3tJia6AxEc7
+	 4Nqx4ROpmJebxO3mQq9trRvEqnb7Riomr2SMYnGf4A4y4m02Zn/Q5zrSb8gwk2mik4A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TmDcETqQ;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=U1SVe8Fh;
+	arc=none smtp.remote-ip=74.125.82.171
+Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9CCC606A319;
-	Wed, 21 Oct 2026 20:57:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D54A7606A320
+	for <imx@lists.linux.dev>; Wed, 21 Oct 2026 22:54:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D54A7606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TmDcETqQ
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3A531F000C1;
-	Wed, 21 Oct 2026 20:57:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792616278;
-	bh=RoPYXNx8Lhh+gxboIK53SazpXFScKewuHPdEWXWClIQ=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=TmDcETqQQWZ7UNAkdLQzZnoVagebGhDwyftfx54jk8oxVgT1sRrly36lUQ2WbL0B/
-	 zAh43+pssuDXP4y3IoaRoyNAc5lbsZQURPZb03aQ38uJUD2g98ttoHUnwBLrUWWHYS
-	 KxLcnNZPQppWxfhBH1FzoQ1edLnBl+Rb0JLn4WFfSaR7eGeoViZGfkdqAbTHm+2ZLu
-	 kFg+boKf7C4UcG0Fu4GPAc1QXyoEapG+fH5oQYCAQfxVUh2uNMIysuQBogv+6RgXLK
-	 ASBF2gPjIFTv7xzKWkq52hggyDPFSUL1fbbdDJ/G+mYMb3Kf2R+D99mPHq3Z86CAmd
-	 SLC/aL22fNHsw==
-Message-ID: <sashiko-outbox-180673@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 1/1] arm64: dts: freescale: ls208xa: correct USB
- compatible strings
-Reply-To: sashiko-reviews@lists.linux.dev
-To: Frank.Li@oss.nxp.com, =?utf-8?b?b3BlbiBsaXN0OkFSTS9GUkVFU0NBTEUgSU1Y?=
- =?utf-8?b?IC8gTVhDIC8gTEFZRVJTQ0FQRSBBUk0gQVJDSElULi4u?= <imx@lists.linux.dev>,
- =?utf-8?b?b3BlbiBsaXN0Ok9QRU4gRklSTVdBUkUgQU5EIEZMQVRURU5FRCBERVZJQ0Ug?=
- =?utf-8?b?VFJFRSBCSU5ESU5HUw==?= <devicetree@vger.kernel.org>
-Cc: robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20261021204516.4031644-1-Frank.Li@oss.nxp.com>
-References: <20261021204516.4031644-1-Frank.Li@oss.nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 21 Oct 2026 20:57:57 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=U1SVe8Fh
+Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-3550c917fd3so1658888eec.0
+        for <imx@lists.linux.dev>; Wed, 21 Oct 2026 15:54:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792623298; x=1793228098; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=9tda7KCgHiHf7p60vP6BBaPr59gypHnjN4ebH49SPko=;
+        b=U1SVe8FhU3Adg8eFQ9Go3yan5tgeWUM1elRkX6VF7oWdMWUpUlZ1R3FO34tdt5efJe
+         pNXAYTKM0VEw37znA5iPHGGi413e8DU+6jX359nEslw3eI/H52n/QIWJWQb5M9uad4nv
+         6Bz8niBD96Rb0af+l6bg2AQpblEvyvTqjo6rQIKoMWILI8HK+iFQrgF0sRGnuwMMidv6
+         wTYFQOxAhcfoSGjU2q5zquqaUssNJFQ0PgQ6KHsGNee0ClV+o6nC2HUOBmcgxCDMFzDl
+         A7crLVqpzg23T779JmxWvJNOQEdhxVeNjHfgUmmI6spP9o5BRTY1/RL6G9MTrDbUi8kd
+         HH1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792623298; x=1793228098;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=9tda7KCgHiHf7p60vP6BBaPr59gypHnjN4ebH49SPko=;
+        b=A1p41ZN3V7W2Sh8O6ipi9yMQL/jyM8mtlWHqzecU1hdyD5Ar8WuwywZi7ZA+gqpOma
+         ecLXvUyt13SeZAZSJHZbc94c6cHzuARrdz67qs82psJTCL3mLIRRabzBMQMbWa0N+I0Z
+         aupcExPlZtaVmnvwNHFnRwuJGLzcORyuKtOt3yE2U6DwQJmvgQeups2jcRtRvxPRgfm0
+         oWWy98NnysV+Qa6Vw9/9mx2GNJZOSpNakmSFoHautFQzRzef3D3MOgf5kDmGjJx+Fi5Y
+         kt9+kIkFX2DG7aGheKhXHk/2rrTapcpyoyB1gBd/edqh39NKliHpbiYWLirg1iAi0vkj
+         dsxQ==
+X-Forwarded-Encrypted: i=1; AKwUvBywYkJbEozGgeEXRTWKR6+GC30Ot9mOkmlUwDBCaHp9lDG/ewJ5p+EiUlHbr8L5rWSTytA=@lists.linux.dev
+X-Gm-Message-State: AFq9FYIMIL5AQIyN1V6dEp+wDAG+B39agH1j4R72RQ+kNJCAsw5Zn8Ka
+	8jldiqBE7BTndiuEozb1jkG1NWKSv3wJwP0wIzqYNkSKLMlsjSgKl3FO
+X-Gm-Gg: AYBFou1L7Z85PmAYN096/onuada9VqVqCwMPKmz1pDmR1AmI3vKq7z/z9pQkhtxHwMD
+	d6OOGFXs3FBBZfh0azYt8OvMpOadF6deWcKktHCJpOpPn/biKDAzCQUX/wOcSutLRB3LP+67GHX
+	PvxcHhYkFTJpfxL9DGYexYZJ3En/znb0R6RpAqzFbSyMOz9XTr+TBp+GM9VxBmrbevM5BwELqcu
+	jm4gB82VD+uQQKlMDQWJCIwh7CAEBcy1UBTIODhok1ZESgfffHNhS+BJX4uIThZ5PsMLeCgmdOQ
+	O3cmmyz61xTMzuE1tq0YY4xr2LiW6UlOdxqcz7inGu5T9w26Hh2Gclg5liEcw1BtO2i/KYJx2K5
+	Ib94J+ayOA2CLgQPvU+YOEWXdBpptuHnNHyX2cEONCg1fmoqT2Z3m5ZpoqOffL9vmOaW/X3W/M8
+	WOG6potzKc98cZvTrJXV3Xg1N50NZay3PWNipPgjoKpAe3NiGw6nSA35HPP41cNpLeKD4/U3ru7
+	9WJrbrjlsj0h53oVXTx96+6W0EA8OC86Uv8xlM2XcDBuuoC55dEo6oGmqvFyeIMEe+tRBiz+aOn
+	bPfj3/LZFP35nULkEAABe/Rro1sju0cGd65aT9mFQPt0Ph8dTUKZy+gG5UGCP4ZhfyWx9/bu2iK
+	p0lAxYSUneO0=
+X-Received: by 2002:a05:7300:d212:b0:328:7033:9b8c with SMTP id 5a478bee46e88-3674c43c208mr4277149eec.6.1792623297862;
+        Wed, 21 Oct 2026 15:54:57 -0700 (PDT)
+Received: from kapoor.iiserb.ac.in ([203.18.51.239])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-368ee692656sm442943eec.28.2026.10.21.15.54.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Oct 2026 15:54:57 -0700 (PDT)
+From: Arnav Kapoor <kapoorarnav43@gmail.com>
+To: Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: Arnav Kapoor <kapoorarnav43@gmail.com>,
+	linux-iio@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] iio: adc: fsl-imx25-gcq: check the return value of the
+Date: Thu, 22 Oct 2026 04:24:45 +0530
+Message-ID: <20261021225450.628499-1-kapoorarnav43@gmail.com>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -62,150 +104,152 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [High] arm64: dts: freescale: missing dma-coherent on ls208xa usb0 and us=
-b1 nodes
-- [High] arm64: dts: freescale: missing iommus property on ls208xa usb0 and=
- usb1 nodes
---
+The driver ignores the return value of all the regmap accesses. If one
+of them fails, e.g. because the memory mapped registers can't be
+accessed, the driver just continues with an undefined state.
 
-commit 299ff7e71139430a2f497142fe0c4f1de05bde95
-Author: Frank Li <Frank.Li@nxp.com>
+The most severe case is the read of the FIFO in
+mx25_gcq_get_raw_value(): the destination variable is not initialized,
+so a failed read leaks uninitialized stack memory to userspace.
 
-arm64: dts: freescale: ls208xa: correct USB compatible strings
+Check the return value of all the register accesses and propagate the
+errors to the caller. In the interrupt handler, where there is not much
+that can be done about a failed access, just don't use the content of
+the status register if it can't be read.
 
-This commit updates the usb0 and usb1 compatible strings in
-fsl-ls208xa.dtsi from "snps,dwc3" to "fsl,ls208xa-dwc3" with a
-"fsl,ls1028a-dwc3" fallback so that the controller programs the
-Layerscape-specific gsbuscfg0 value.
+Signed-off-by: Arnav Kapoor <kapoorarnav43@gmail.com>
+---
+ drivers/iio/adc/fsl-imx25-gcq.c | 82 ++++++++++++++++++++++++---------
+ 1 file changed, 60 insertions(+), 22 deletions(-)
 
-> diff --git a/arch/arm64/boot/dts/freescale/fsl-ls208xa.dtsi b/arch/arm64/=
-boot/dts/freescale/fsl-ls208xa.dtsi
-> index cc1a64e63ed55..3b0a26bf609cc 100644
-> --- a/arch/arm64/boot/dts/freescale/fsl-ls208xa.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/fsl-ls208xa.dtsi
-> @@ -1288,7 +1288,7 @@ bus: bus {
->  			dma-ranges =3D <0x0 0x0 0x0 0x0 0x100 0x00000000>;
-> =20
->  			usb0: usb@3100000 {
-> -				compatible =3D "snps,dwc3";
-> +				compatible =3D "fsl,ls208xa-dwc3", "fsl,ls1028a-dwc3";
->  				reg =3D <0x0 0x3100000 0x0 0x10000>;
->  				interrupts =3D <GIC_SPI 80 IRQ_TYPE_LEVEL_HIGH>;
->  				dr_mode =3D "host";
-> @@ -1299,7 +1299,7 @@ usb0: usb@3100000 {
->  			};
-> =20
->  			usb1: usb@3110000 {
-> -				compatible =3D "snps,dwc3";
-> +				compatible =3D "fsl,ls208xa-dwc3", "fsl,ls1028a-dwc3";
->  				reg =3D <0x0 0x3110000 0x0 0x10000>;
->  				interrupts =3D <GIC_SPI 81 IRQ_TYPE_LEVEL_HIGH>;
->  				dr_mode =3D "host";
-
-[Severity: High]
-Should usb0 (usb@3100000) and usb1 (usb@3110000) in
-arch/arm64/boot/dts/freescale/fsl-ls208xa.dtsi also have the dma-coherent
-property when switching to "fsl,ls1028a-dwc3"?
-
-When usb0 and usb1 match "fsl,ls1028a-dwc3" in dwc3_generic_driver
-(drivers/usb/dwc3/dwc3-generic-plat.c), they select fsl_ls1028_dwc3:
-
-drivers/usb/dwc3/dwc3-generic-plat.c:
-    static const struct dwc3_generic_config fsl_ls1028_dwc3 =3D {
-        .properties.gsbuscfg0_reqinfo =3D 0x2222,
-    };
-
-During probe via dwc3_core_probe() -> dwc3_get_software_properties() ->
-dwc3_core_init() -> dwc3_config_soc_bus() in drivers/usb/dwc3/core.c, the
-driver writes 0x2222 to DWC3_GSBUSCFG0:
-
-drivers/usb/dwc3/core.c:dwc3_config_soc_bus()
-    if (dwc->gsbuscfg0_reqinfo !=3D DWC3_GSBUSCFG0_REQINFO_UNSPECIFIED) {
-        u32 reg;
-
-        reg =3D dwc3_readl(dwc, DWC3_GSBUSCFG0);
-        reg &=3D ~DWC3_GSBUSCFG0_REQINFO(~0);
-        reg |=3D DWC3_GSBUSCFG0_REQINFO(dwc->gsbuscfg0_reqinfo);
-        dwc3_writel(dwc, DWC3_GSBUSCFG0, reg);
-    }
-
-As noted in commit 1c97fc901fb6 ("usb: dwc3: dwc3-generic-plat: Add
-layerscape dwc3 support"), this configures the controller to issue
-cache-coherent snooping transactions.
-
-However, unlike the other Layerscape device trees updated in commit
-7b204755ebc214 ("arm64: dts: layerscape: add dma-coherent for usb node")
-(fsl-ls1012a.dtsi, fsl-ls1028a.dtsi, fsl-ls1043a.dtsi, fsl-ls1046a.dtsi,
-fsl-ls1088a.dtsi, and fsl-lx216x.dtsi) and sibling masters in
-fsl-ls208xa.dtsi (sata0, sata1, pcie1..4), neither usb0, usb1, nor their
-parent bus or soc nodes have dma-coherent.
-
-As a result, of_dma_is_coherent() in drivers/of/address.c returns false for
-the dwc3 sysdev and the child xhci-hcd device:
-
-drivers/of/address.c:of_dma_is_coherent()
-    while (node) {
-        if (of_property_read_bool(node, "dma-coherent"))
-            return true;
-
-        if (of_property_read_bool(node, "dma-noncoherent"))
-            return false;
-
-        node =3D of_get_next_dma_parent(node);
-    }
-    return dma_default_coherent;
-
-Won't this cause a coherency mismatch where the controller snoops caches
-while Linux maps coherent buffers (such as dwc3 event buffers and xhci
-rings) as Normal Non-Cacheable and omits IOMMU_CACHE in the stage-1 page
-tables?
-
-[Severity: High]
-Could removing "snps,dwc3" from usb0 (usb@3100000) and usb1 (usb@3110000)
-without adding iommus properties also break USB transfers when booting with
-U-Boot?
-
-In arch/arm64/boot/dts/freescale/fsl-ls208xa.dtsi, the arm,mmu-500 node
-(smmu: iommu@5000000) is enabled:
-
-arch/arm64/boot/dts/freescale/fsl-ls208xa.dtsi:
-    smmu: iommu@5000000 {
-        compatible =3D "arm,mmu-500";
-        reg =3D <0 0x5000000 0 0x800000>;
-        #global-interrupts =3D <12>;
-        #iommu-cells =3D <1>;
-        stream-match-mask =3D <0x7c00>;
-        dma-coherent;
-
-On Layerscape platforms with an smmu, U-Boot programs the hardware stream
-IDs for the USB controllers so their traffic routes through iommu@5000000,
-and U-Boot's device tree fixup dynamically injects the iommus property by
-searching for nodes matching compatible =3D "snps,dwc3".
-
-When commit 7b204755ebc214 ("arm64: dts: layerscape: add dma-coherent for
-usb node") removed "snps,dwc3" from the other smmu-equipped Layerscape
-device trees (fsl-ls1028a.dtsi, fsl-ls1088a.dtsi, and fsl-lx216x.dtsi), it
-added iommus =3D <&smmu 1> to usb0 and iommus =3D <&smmu 2> to usb1:
-
-arch/arm64/boot/dts/freescale/fsl-ls1088a.dtsi:
-    usb0: usb@3100000 {
-        compatible =3D "fsl,ls1088a-dwc3", "fsl,ls1028a-dwc3";
-        reg =3D <0x0 0x3100000 0x0 0x10000>;
-        interrupts =3D <GIC_SPI 80 IRQ_TYPE_LEVEL_HIGH>;
-        dr_mode =3D "host";
-        iommus =3D <&smmu 1>;
-        dma-coherent;
-
-Without "snps,dwc3" or explicit iommus =3D <&smmu 1> and iommus =3D <&smmu =
-2>
-properties on usb0 and usb1 in fsl-ls208xa.dtsi, won't U-Boot's fixup skip
-both nodes, leaving them unattached to smmu in Linux while hardware still
-routes their stream IDs through iommu@5000000 and triggers unmatched-stream
-faults?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261021204516.4031=
-644-1-Frank.Li@oss.nxp.com?part=3D1
+diff --git a/drivers/iio/adc/fsl-imx25-gcq.c b/drivers/iio/adc/fsl-imx25-gcq.c
+index dc310ed616a1..b6c1ed867177 100644
+--- a/drivers/iio/adc/fsl-imx25-gcq.c
++++ b/drivers/iio/adc/fsl-imx25-gcq.c
+@@ -83,7 +83,13 @@ static irqreturn_t mx25_gcq_irq(int irq, void *data)
+ 	struct mx25_gcq_priv *priv = data;
+ 	u32 stats;
+ 
+-	regmap_read(priv->regs, MX25_ADCQ_SR, &stats);
++	/*
++	 * If the status can't be read we don't know whether the conversion
++	 * has finished. The interrupt is still acknowledged below, so just
++	 * skip the completion and let the reader time out.
++	 */
++	if (regmap_read(priv->regs, MX25_ADCQ_SR, &stats))
++		stats = 0;
+ 
+ 	if (stats & MX25_ADCQ_SR_EOQ) {
+ 		regmap_set_bits(priv->regs, MX25_ADCQ_MR,
+@@ -109,15 +115,29 @@ static int mx25_gcq_get_raw_value(struct device *dev,
+ {
+ 	long time_left;
+ 	u32 data;
++	int ret;
+ 
+ 	/* Setup the configuration we want to use */
+-	regmap_write(priv->regs, MX25_ADCQ_ITEM_7_0,
+-		     MX25_ADCQ_ITEM(0, chan->channel));
++	ret = regmap_write(priv->regs, MX25_ADCQ_ITEM_7_0,
++			   MX25_ADCQ_ITEM(0, chan->channel));
++	if (ret) {
++		dev_err(dev, "Failed to setup the queue item: %d\n", ret);
++		return ret;
++	}
+ 
+-	regmap_clear_bits(priv->regs, MX25_ADCQ_MR, MX25_ADCQ_MR_EOQ_IRQ);
++	ret = regmap_clear_bits(priv->regs, MX25_ADCQ_MR,
++				MX25_ADCQ_MR_EOQ_IRQ);
++	if (ret) {
++		dev_err(dev, "Failed to clear the EoQ interrupt: %d\n", ret);
++		return ret;
++	}
+ 
+ 	/* Trigger queue for one run */
+-	regmap_set_bits(priv->regs, MX25_ADCQ_CR, MX25_ADCQ_CR_FQS);
++	ret = regmap_set_bits(priv->regs, MX25_ADCQ_CR, MX25_ADCQ_CR_FQS);
++	if (ret) {
++		dev_err(dev, "Failed to trigger the queue: %d\n", ret);
++		return ret;
++	}
+ 
+ 	time_left = wait_for_completion_interruptible_timeout(
+ 		&priv->completed, MX25_GCQ_TIMEOUT);
+@@ -129,7 +149,11 @@ static int mx25_gcq_get_raw_value(struct device *dev,
+ 		return -ETIMEDOUT;
+ 	}
+ 
+-	regmap_read(priv->regs, MX25_ADCQ_FIFO, &data);
++	ret = regmap_read(priv->regs, MX25_ADCQ_FIFO, &data);
++	if (ret) {
++		dev_err(dev, "Failed to read the FIFO: %d\n", ret);
++		return ret;
++	}
+ 
+ 	*val = MX25_ADCQ_FIFO_DATA(data);
+ 
+@@ -204,14 +228,18 @@ static int mx25_gcq_setup_cfgs(struct platform_device *pdev,
+ 	 * Setup all configurations registers with a default conversion
+ 	 * configuration for each input
+ 	 */
+-	for (i = 0; i < MX25_NUM_CFGS; ++i)
+-		regmap_write(priv->regs, MX25_ADCQ_CFG(i),
+-			     MX25_ADCQ_CFG_YPLL_OFF |
+-			     MX25_ADCQ_CFG_XNUR_OFF |
+-			     MX25_ADCQ_CFG_XPUL_OFF |
+-			     MX25_ADCQ_CFG_REFP_INT |
+-			     MX25_ADCQ_CFG_IN(i) |
+-			     MX25_ADCQ_CFG_REFN_NGND2);
++	for (i = 0; i < MX25_NUM_CFGS; ++i) {
++		ret = regmap_write(priv->regs, MX25_ADCQ_CFG(i),
++				   MX25_ADCQ_CFG_YPLL_OFF |
++				   MX25_ADCQ_CFG_XNUR_OFF |
++				   MX25_ADCQ_CFG_XPUL_OFF |
++				   MX25_ADCQ_CFG_REFP_INT |
++				   MX25_ADCQ_CFG_IN(i) |
++				   MX25_ADCQ_CFG_REFN_NGND2);
++		if (ret)
++			return dev_err_probe(dev, ret,
++					     "Failed to write the configuration register\n");
++	}
+ 
+ 	device_for_each_child_node_scoped(dev, child) {
+ 		u32 reg;
+@@ -265,16 +293,26 @@ static int mx25_gcq_setup_cfgs(struct platform_device *pdev,
+ 			return dev_err_probe(dev, -EINVAL,
+ 					     "Invalid fsl,adc-refn property value\n");
+ 
+-		regmap_update_bits(priv->regs, MX25_ADCQ_CFG(reg),
+-				   MX25_ADCQ_CFG_REFP_MASK |
+-				   MX25_ADCQ_CFG_REFN_MASK,
+-				   refp | refn);
++		ret = regmap_update_bits(priv->regs, MX25_ADCQ_CFG(reg),
++					 MX25_ADCQ_CFG_REFP_MASK |
++					 MX25_ADCQ_CFG_REFN_MASK,
++					 refp | refn);
++		if (ret)
++			return dev_err_probe(dev, ret,
++					     "Failed to update the configuration register\n");
+ 	}
+-	regmap_set_bits(priv->regs, MX25_ADCQ_CR,
+-			MX25_ADCQ_CR_FRST | MX25_ADCQ_CR_QRST);
+ 
+-	regmap_write(priv->regs, MX25_ADCQ_CR,
+-		     MX25_ADCQ_CR_PDMSK | MX25_ADCQ_CR_QSM_FQS);
++	ret = regmap_set_bits(priv->regs, MX25_ADCQ_CR,
++			      MX25_ADCQ_CR_FRST | MX25_ADCQ_CR_QRST);
++	if (ret)
++		return dev_err_probe(dev, ret,
++				     "Failed to reset the conversion queue\n");
++
++	ret = regmap_write(priv->regs, MX25_ADCQ_CR,
++			    MX25_ADCQ_CR_PDMSK | MX25_ADCQ_CR_QSM_FQS);
++	if (ret)
++		return dev_err_probe(dev, ret,
++				     "Failed to configure the conversion queue\n");
+ 
+ 	return 0;
+ }
