@@ -1,57 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=116.203.31.6
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792589545;
-	b=dkXF1NsTGbQ8MRhEhANGrTb2g3Evblj/d7tObrUedcM6k0KIGoisUy6SKyCZQ/L5S4wj
-	 SUVJjsJK/rKdEC0Pv4VoC2Vm4EMKMuD5GtEn4tx8Pnbx6uj/DWbVenWMWtSuA42L33GBz
-	 MitrwBhogJ/nr5DKFTSgAo1z9t+Snzg4VO4EdKdbwXA1Fs+wyCEEznUNfFgVK+DP6iHmp
-	 OF0jUu5Q+J5uQ5NPaRUd3uBNzsFrg/tZOtRUTx+Acbxxy5gx+/WwP8Vk7/iS3YOyQZkno
-	 stGoDc36qrPUwn53G43sIKyiD0HgLuhGHO3lFABkdoUXSPumRaasieokWvvByBdZNDg==
+	t=1792590334;
+	b=xOHUMlitt3dmTYQTjLnnvJjxSel0Y28jzJzMGycESRf40oNqcCBRHFOyCEqUCBo0CVN0
+	 1JXcrm31v9nhFMrDSi/4mLjIxj0S5U/JDZqjoQiLu612wj32EkgsV09BljrvgR9XqLeuH
+	 ICn6kWZa5DsPDgvtdGwAMhcC2xn5UEoIsUWGRXcMV6dFdcWv2UQvYTm3HfrVE+bW5TRwl
+	 j/sAXk5Y+JrwNE4zUT2OHNRuRiE2eikYhII+nibVczDxkNgqryFWTJ3XYrJk40PsER78e
+	 +NKi3JHuI52Y4j/L9qjc8bXSXTwALzwXPX7b/JPQVsNqNpjOExSK/x6s3sXTJgz1RwQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792589545;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=nkCVEX498q5doKwO4jXKTlZE0yPa4CJnNDHG1G24Xpc=;
-	b=JEIVuG+1gkx9pnIQi3eooiihGRQdW2P6TkS2EIrx7FpilFo+AWiHTg/E2cOUfuHX0h87
-	 h1kaJgWPu5MrW3WTqqyNSUNsfMr9pl/ZB0wQWS04W9YaH1wnSp74ZayxnK0NjnaAxQh78
-	 DCZMTr6XJD+lFB17bfmTkjKKr2k7G9xaWw71oZZv5LWEUSjgOAoGthXhDoXvjeKamtpJ7
-	 fY/NONa0AFchfC7IchFHxhZ8qrWXx8ez0e1/KpwGHkHTN+il1pPeCHcDIgjGRANXWQvyu
-	 04croo3MYg/9C7dqIcyAEqySXMQC62NGiQMRkuEbjqqJw5OtYtS9Qu3Ul2lXwFXIPfA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792590334;
+	h=DMARC-Filter:DKIM-Signature:From:To:CC:Subject:Date:Message-ID:
+	 X-klartext:MIME-Version:Content-Transfer-Encoding:Content-Type;
+	bh=GwYxX1wk58u2mRJeMPK0eBJeUORqabGvuAvjULQKsPI=;
+	b=kgLTilpCOEnnSlRONpKpmq4kHjJ6WATOxcZkkvBvt4A2HBEWcL9RfQZo0DKObeEWHdCN
+	 W0joSHOu1iFcjCtNlK54d1DWvnSrRpzwVnP+kQffsF0dsxh8KLoquTQZXEAEdl7OQTg10
+	 ZcfLk8h0cwXK1aiMC3jSXhfV5WApQXYDcMhHXgUsDi+c/jnbNyl878Lw3BYwUeckR+s/9
+	 WNozK40gZaeOLEyD6VSjVJxepnwV1zAagE34/HA7mtge9D1xAh6UzNZJeAp6VGkbXMfSN
+	 +JJ+DPzbp9P8d3CWeahAguwHRaXVtDwxnEqmJneMpbhlVi77nqyL3/fzoOlmsYP+VhA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="mk42l/ej";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BCBB606A31A;
-	Wed, 21 Oct 2026 13:32:25 +0000 (UTC)
+	dmarc=pass header.from=dh-electronics.com;
+	spf=pass smtp.mailfrom=dh-electronics.com;
+	dkim=pass header.d=dh-electronics.com header.i=@dh-electronics.com header.a=rsa-sha256 header.s=dhelectronicscom header.b=GPql0afa;
+	arc=none smtp.remote-ip=116.203.31.6
+Received: from mx3.securetransport.de (mx3.securetransport.de [116.203.31.6])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A133606A31A
+	for <imx@lists.linux.dev>; Wed, 21 Oct 2026 13:45:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5A133606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=dh-electronics.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dh-electronics.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mk42l/ej
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 938E61F000C4;
-	Wed, 21 Oct 2026 13:32:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792589544;
-	bh=nkCVEX498q5doKwO4jXKTlZE0yPa4CJnNDHG1G24Xpc=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=mk42l/ejngg/OGmJIFtOludEcT5A6LxrDM8rI5d85T5gZqki4USMgKkPF355ijiCN
-	 1w7K+izU3cHj8PVBDMDKgsXBNRJrKA5XuA0WHFEJuXLT4EHBkX5lyTTKC2Gwq829SO
-	 UIRkvRTFscKEyKkHBpNs15NS4BO4447Ev33gs4Tb4JYGPL/aWzRtWGEjPIg9Z0zzIy
-	 h31NDQSXad1LyKKJ8Fq1vAJPIwA0gPr4AsqPnY+NDl+z9snrIGgK+sHl1p61CgPntJ
-	 OuHjAeFwtcCopcuRotb8Mc0skiqh2QiPvgmV1K6P43VgWZ5YBUbQOC/WFHsn2jYun+
-	 G7/sukh4OKe1g==
-Message-ID: <sashiko-outbox-180310@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 3/5] clk: imx8mp: Allow adjusting the video PLL rates
- for the LDB clock
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Miquel Raynal" <miquel.raynal@bootlin.com>
-Cc: linux-clk@vger.kernel.org, imx@lists.linux.dev, devicetree@vger.kernel.org, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20261021-ge-clk-lcm-v1-3-246cc35b5ffb@bootlin.com>
-References: <20261021-ge-clk-lcm-v1-0-246cc35b5ffb@bootlin.com>
- <20261021-ge-clk-lcm-v1-3-246cc35b5ffb@bootlin.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 21 Oct 2026 13:32:24 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=dh-electronics.com header.i=@dh-electronics.com header.a=rsa-sha256 header.s=dhelectronicscom header.b=GPql0afa
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dh-electronics.com;
+	s=dhelectronicscom; t=1792590294;
+	bh=GwYxX1wk58u2mRJeMPK0eBJeUORqabGvuAvjULQKsPI=;
+	h=From:To:CC:Subject:Date:From;
+	b=GPql0afaXz3KvtX0jWuuLVZm9xr+e42VbE+OOBRuTufjjkrn/ECrHgaXzhWEUZHhe
+	 hDhkpnf5uK0mccZ1mJzjWmI8HjHtn10YcefBLxHdYqScM09PqFRiGdNr91xQR3pnx9
+	 3YE3U3SsMX89Rt35CSXu6u+FnpWyU4hE1mf/BBliiRUahmuiiiYp42CfNkYofXFQXM
+	 62c924b+NzmvmBr7cYanchI4aPKbo1xoRPUDiRCAaF/dfb/m/d5dMCRQ01E4R495I5
+	 fW5bcpEhbRYHNH9ipZLWhNuml6g4QUk0YfKqfM9U4v2lrxVsiM//CuUthXh3mUtaVu
+	 /9g0TttgrpLPw==
+From: Christoph Niedermaier <cniedermaier@dh-electronics.com>
+To: <linux-arm-kernel@lists.infradead.org>
+CC: Christoph Niedermaier <cniedermaier@dh-electronics.com>, Rob Herring
+	<robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+	<conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, Sascha Hauer
+	<s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Marek Vasut <marex@nabladev.com>,
+	<devicetree@vger.kernel.org>, <imx@lists.linux.dev>,
+	<kernel@dh-electronics.com>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH 1/2] ARM: dts: imx6ull-dhcor-maveo-box: Remove unused SPI device
+Date: Wed, 21 Oct 2026 15:44:34 +0200
+Message-ID: <20261021134435.17350-1-cniedermaier@dh-electronics.com>
+X-klartext: yes
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -60,86 +60,54 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] clk: imx8mp: media_ldb registered with imx8m_clk_hw_composite_bu=
-s_flags()
---
+On the maveo box, the SPI pins are connected to connector X10,
+but no device is connected. The device "dhcom-board" was used
+only to test the hardware, but was not removed afterward. So
+remove this device to accurately represent the current hardware
+configuration here.
 
-commit 0eadafd0202ef3a4c96dd126be3ffec604e5e8eb
-Author: Miquel Raynal <miquel.raynal@bootlin.com>
+Fixes: 145e2732a5e9 ("ARM: dts: imx6ull-dhcor: Add Marantec maveo box")
+Signed-off-by: Christoph Niedermaier <cniedermaier@dh-electronics.com>
+---
+Cc: Rob Herring <robh@kernel.org>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
+Cc: Conor Dooley <conor+dt@kernel.org>
+Cc: Frank Li <Frank.Li@nxp.com>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+Cc: Fabio Estevam <festevam@gmail.com>
+Cc: Marek Vasut <marex@nabladev.com>
+Cc: devicetree@vger.kernel.org
+Cc: imx@lists.linux.dev
+Cc: kernel@dh-electronics.com
+Cc: linux-kernel@vger.kernel.org
+---
+ arch/arm/boot/dts/nxp/imx/imx6ull-dhcor-maveo-box.dts | 8 --------
+ 1 file changed, 8 deletions(-)
 
-clk: imx8mp: Allow adjusting the video PLL rates for the LDB clock
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-dhcor-maveo-box.dts b/arch/arm/boot/dts/nxp/imx/imx6ull-dhcor-maveo-box.dts
+index 047f7b2d8526..eb0b91040110 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6ull-dhcor-maveo-box.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx6ull-dhcor-maveo-box.dts
+@@ -60,14 +60,6 @@ &ecspi4 {
+ 	pinctrl-0 = <&pinctrl_ecspi4>;
+ 	pinctrl-names = "default";
+ 	status = "okay";
+-
+-	spidev@0 {
+-		compatible = "dh,dhcom-board";
+-		reg = <0>;
+-		spi-cpha;
+-		spi-cpol;
+-		spi-max-frequency = <54000000>;
+-	};
+ };
+ 
+ &gpio1 {
+-- 
+2.30.2
 
-This commit adds the CLK_SET_RATE_PARENT flag to the IMX8MP_CLK_MEDIA_LDB
-clock so that rate changes can propagate to the parent video PLLs.
-
-> diff --git a/drivers/clk/imx/clk-imx8mp.c b/drivers/clk/imx/clk-imx8mp.c
-> index fe6dac70f1a15..3540992b89409 100644
-> --- a/drivers/clk/imx/clk-imx8mp.c
-> +++ b/drivers/clk/imx/clk-imx8mp.c
-> @@ -753,7 +753,7 @@ static int imx8mp_clocks_probe(struct platform_device=
- *pdev)
->  	hws[IMX8MP_CLK_MEDIA_MIPI_PHY1_REF] =3D imx8m_clk_hw_composite("media_m=
-ipi_phy1_ref", imx8mp_media_mipi_phy1_ref_sels, ccm_base + 0xbd80);
->  	hws[IMX8MP_CLK_MEDIA_DISP1_PIX] =3D imx8m_clk_hw_composite_bus_flags("m=
-edia_disp1_pix", imx8mp_media_disp_pix_sels, ccm_base + 0xbe00, CLK_SET_RAT=
-E_PARENT);
->  	hws[IMX8MP_CLK_MEDIA_CAM2_PIX] =3D imx8m_clk_hw_composite("media_cam2_p=
-ix", imx8mp_media_cam2_pix_sels, ccm_base + 0xbe80);
-> -	hws[IMX8MP_CLK_MEDIA_LDB] =3D imx8m_clk_hw_composite("media_ldb", imx8m=
-p_media_ldb_sels, ccm_base + 0xbf00);
-> +	hws[IMX8MP_CLK_MEDIA_LDB] =3D imx8m_clk_hw_composite_bus_flags("media_l=
-db", imx8mp_media_ldb_sels, ccm_base + 0xbf00, CLK_SET_RATE_PARENT);
-
-[Severity: Medium]
-Should IMX8MP_CLK_MEDIA_LDB in imx8mp_clocks_probe() be registered with
-imx8m_clk_hw_composite_flags() instead of
-imx8m_clk_hw_composite_bus_flags()?
-
-In the i.MX8MP CCM register map, offsets 0xa000..0xc300 (including
-media_ldb at ccm_base + 0xbf00) are IP peripheral clock slices rather than
-bus clock slices (0x8800..0x9300).
-
-Using imx8m_clk_hw_composite_bus_flags() passes IMX_COMPOSITE_BUS to
-__imx8m_clk_hw_composite() in drivers/clk/imx/clk-composite-8m.c:
-
-	} else if (composite_flags & IMX_COMPOSITE_BUS) {
-		div->shift =3D PCG_PREDIV_SHIFT;
-		div->width =3D PCG_PREDIV_WIDTH;
-		divider_ops =3D &imx8m_clk_composite_divider_ops;
-		mux_ops =3D &imx8m_clk_composite_mux_ops;
-	} else {
-		div->shift =3D PCG_PREDIV_SHIFT;
-		div->width =3D PCG_PREDIV_WIDTH;
-		divider_ops =3D &imx8m_clk_composite_divider_ops;
-		mux_ops =3D &clk_mux_ops;
-		if (!(composite_flags & IMX_COMPOSITE_FW_MANAGED))
-			flags |=3D CLK_SET_PARENT_GATE;
-	}
-
-Passing IMX_COMPOSITE_BUS selects imx8m_clk_composite_mux_ops (intended for
-the dual SEL_A/SEL_B glitchless mux on core and bus slices) instead of
-clk_mux_ops, and drops CLK_SET_PARENT_GATE (added in commit 936c383673b9 to
-gate IP peripheral clock slices during reparenting and avoid clock
-glitches).
-
-In drivers/clk/imx/clk.h, imx8m_clk_hw_composite_flags() is available for IP
-peripheral clock slices that need extra clock flags while keeping
-composite_flags set to 0:
-
-#define imx8m_clk_hw_composite_flags(name, parent_names, reg, flags) \
-	_imx8m_clk_hw_composite(name, parent_names, reg, \
-			0, IMX_COMPOSITE_CLK_FLAGS_DEFAULT |  flags)
-
->  	hws[IMX8MP_CLK_MEMREPAIR] =3D imx8m_clk_hw_composite_critical("mem_repa=
-ir", imx8mp_memrepair_sels, ccm_base + 0xbf80);
->  	hws[IMX8MP_CLK_MEDIA_MIPI_TEST_BYTE] =3D imx8m_clk_hw_composite("media_=
-mipi_test_byte", imx8mp_media_mipi_test_byte_sels, ccm_base + 0xc100);
->  	hws[IMX8MP_CLK_ECSPI3] =3D imx8m_clk_hw_composite("ecspi3", imx8mp_ecsp=
-i3_sels, ccm_base + 0xc180);
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261021-ge-clk-lcm=
--v1-0-246cc35b5ffb@bootlin.com?part=3D3
