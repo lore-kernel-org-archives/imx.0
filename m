@@ -1,103 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.176
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792586132;
-	b=VUZbCeq+rTl0HW7byJD+QbRuxLgJgL/3w5wOlaeOY/oUJ3Ru08R8XJY9OD+Qq3VTJ2hv
-	 f7/ZJsk8/uINoENExpDhJ5d2yZLxfqmXAxTsa3Wwtg39aQ1MglMU/thM3jJnYKMQ2i9TI
-	 bzr2UYWmTFYpYqIOAcvOoIsBC+MDZcmOiZUpcp+NDucOjXljfZsD514gHdkuQxwhMVv+Z
-	 GyI3ASsLmj/0fwe77VnTGPVgptzErVshplTKY6OzKsj4S5c7LlQuzziDsS6hrnxms/Ws/
-	 QyenJeY+bvUlt9tnxp6MYUcvTtxCyYPW9uyO54n6OK+BCOldU7I6dHnvJvjsx1b131w==
+	t=1792588225;
+	b=nfzeuaIIwZpSQdQ3JP5+TgqLTLyMdk5GsN3LV3k9QDzpSx4VPh5Last1mWOeewjfCjgA
+	 xKZvfJLuhTLIZ08H+HT3H3jLebIBE2dGp5Dl5qaZq5soXY+J6eq0CdZ5pPvZIEbJNI/ys
+	 SuZ3t+FC0Oagrs/ebxw9R2nq7TtdvTWN+rrqk5qJ8xDm4hrTtBJ8NbIgfWXTt0Eh0xuhz
+	 P3WOZsL3B8zLfVNoiZ8fItbGvZpl7mcv8kpSXjz2bFgnuCyRzyHZtrKxT/cc1nuFYmrEw
+	 4eYn2lIhutBR3NmmnQIDgQaWxLadcTwkLb76VYd9FECPO2VRiQrIfguWbveX1RypSAg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792586132;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=EYl3M1lNXMEDde5L6u4dnJnpfbfwZtPoUfD3SBMHOns=;
-	b=QpkcZHYLSJb5oCCv/sQ98zM3V14MmZ3QvS2TktalTW6v/vUdngUtL/DAaYYMa2GY3R3B
-	 K1UQzvzvJWMxV6ZK2V0rX34ST4EacJesv7YMFClxcS6L2aClHqwlqg30hUGFMWMHPMD78
-	 qzlwDd2RkrLOS0KvtPztUxjshmhOGcKhcfzpG5Gdske1F9j4uftGbz5PRLtsA7JAsUQXI
-	 OIg/sRbC4HwJoWa1ouoQnSPBCC0bBBm1Ot/DZnpqO3DvWKfV5Y9V5dyEtinmcbT4PL84R
-	 gT76WWaiOh872k7fkz32b1vJ9Ecf0eY3GbF7UoyIfIFOGQoFk5rtuGm8WVkUyvrcReA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792588225;
+	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:Subject:
+	 Date:Message-Id:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:X-Last-TLS-Session-Version;
+	bh=4ST0S09FqoMhYeE6cyXYxn/H30wuNQQmvIaLab0ur0Q=;
+	b=3PCVErlpnl4ymmR1pJMRpjrhl3f11bGTTg9H7tBQafCRggtaqqAq5HwauZL8wVi2TjDu
+	 vkBk7Je2+wn/ugZRant+U5vvTH1t397EciNKEeSR/iWhbGPvEqeUAzJLCHy/TISvhUw2y
+	 btIsJVFF0L9o7cxcrWJNnsR+3cJItlALxygo6dRyX4zBahD0ttk1fMIuPZqmxxePk9gjk
+	 83SBPihHTevcNMEOt4tVNEAwy/apxI2h7SzzdJ8QoAPLw4lez9M4AG5M4tmuPMQVx0RkW
+	 OBcN6+6kC2beFQShMTrlNlvKRjkYxxACwKyY+6mmMoNKo2UhrmErXGH6S6+JN+CkosA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=XFwHApHW;
-	arc=none smtp.remote-ip=209.85.210.176
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=bootlin.com;
+	spf=pass smtp.mailfrom=bootlin.com;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=QVDszHTp;
+	arc=none smtp.remote-ip=185.171.202.116
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D491606ABCB
-	for <imx@lists.linux.dev>; Wed, 21 Oct 2026 12:35:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7D491606ABCB
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58388606A328
+	for <imx@lists.linux.dev>; Wed, 21 Oct 2026 13:10:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 58388606A328
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=XFwHApHW
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-8a06b44bd01so358301b3a.0
-        for <imx@lists.linux.dev>; Wed, 21 Oct 2026 05:35:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792586132; x=1793190932; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=EYl3M1lNXMEDde5L6u4dnJnpfbfwZtPoUfD3SBMHOns=;
-        b=XFwHApHWP52T07tBjMNaHXXtntphXUI0CMfNtx2QP9CA8YBunN19xZWDOIq1Vqynoh
-         pQ+AwEeowGMyq4glCCDK5RUOvCAzCQbvuipB5cp50dnPI1tQkCfTQD4EaZH3UoL+d64v
-         koEoNTOZ428BOXRUosgMSL2yCtfoA0uCTtSC41sJ+YobCCUZQ3JInp6Y9xQs+0K/J/ms
-         klnBYt4YW8LyMT+RRjLwv1S+a+KJ8WX+VzGOwTIgNp3HLQCipLeHG7Rs1YyQx9L38epk
-         sWlZXm1nQllnVoqGj75g6BnYK0cMWROW7JNlK5u3hBAfLQe0W/ShMH0hw8CIVRKhhElI
-         BPCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792586132; x=1793190932;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=EYl3M1lNXMEDde5L6u4dnJnpfbfwZtPoUfD3SBMHOns=;
-        b=wPWe+KUDwTZmv+SfwS2kpeZIaD6jwjN+nDj+nZD1AULho+ehj51h9qnu9Br5V9bg9E
-         BwmqSx6N/C6QfOoKHRBtpif2I3HQw+Tmu0WsPl5ei/Ct/TJkaXP5nK+jJ/SWpZu/nZzM
-         5zoSOiTyMr3hp9teYrHWMc6FTKWU7dOvhfmazo8LHvq8JuMcp/9m0WMz1SJd/GGdRibt
-         UrqALIZn1/nE1d7nlbjDintSwQSUt54bIfVFRwzeUMWzJbROzgW7IngtiHl1BW1kRS+l
-         i8mGXhpLEhS2LACV4yCnYnY6aq2Pn86ILch5uDAH6RzF3KDowjls/ZKyWhGj2kUOv4tQ
-         tjUQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxhZgN9p/ROkeP9eyV/AMnaiAbLp2bqj3FSDfqasRqoo3YgM2+G8BsaIlT8n1+NpcQE0Ek=@lists.linux.dev
-X-Gm-Message-State: AFq9FYJakboZmhutj6gFaFBP3B7PCMkwAl5mGyLgiPGBr0Iv7cp7Hj+y
-	spHaylAlaiXSg4KDqceL8i943s/p8FyqVlfpZI6tdO9Qn8AS7Py22ve+
-X-Gm-Gg: AYBFou1sWppIIf8Fs7w1kWBCSdxcV6towO+i2/u9NJGYwSEcdnPpYujEMwMALedO/B3
-	tRCZ2aI+fOYgD+u17XXMPUIp3HPS5URPBxeMYlbwIsGsFs1wUi9Nb64CSY+gva6b+fjaShI6w2O
-	U+u8FYc6zdKEfCSlRM22W8o0piqeHTlSFnhauvCAC3NJDe4J5EL/EYBG70PFhxtc+rmO5QQUxre
-	hlcFhG38sk9kove9CK2K4w8WG3frx1DQp9h1Pxoy+cpSIL8Va5DkdnrZ5jD/2ih1AqMDGa5Ykp1
-	/XgOrmmJ/duTEkYze/oOOHtUDkd231kaDFbPv+WrzFvxHozwPnL4UO6P7fLzvDWJJ4O/H6PuPDu
-	kxLPT1naeyaF8CEjMMGGwYYRL2DyEiJxEEhVW/vFDQF1KDTyyinNnWipul4BqwNJOTCyx3Paa7g
-	uXf2ydytdZIuxyK6U0eLNAT5oJgxwmdhMpEWT/x3D25sR1FNbkw3ivHOi3S4RPw6o3qtmgfEEc7
-	HT4zcoEB/octBSjdWUDoP1lImh4G+sw6SK/aEkR7P6BirP1du97vcLiuW0CFse758WK6KVJQMR7
-	7oZgy4M=
-X-Received: by 2002:a05:6a00:998:b0:89f:1b32:29a5 with SMTP id d2e1a72fcca58-8a089c4294dmr1551510b3a.7.1792586131851;
-        Wed, 21 Oct 2026 05:35:31 -0700 (PDT)
-Received: from FLK-B04Q314.global.tektronix.net ([87.58.102.86])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8a0894b484esm825732b3a.13.2026.10.21.05.35.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Oct 2026 05:35:30 -0700 (PDT)
-From: Krzysztof Kaszubski <sympthicode@gmail.com>
-To: Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: Fabio Estevam <festevam@gmail.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Alice Guo <alice.guo@nxp.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	imx@lists.linux.dev,
-	devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] ARM: dts: imx7ulp: Add TMP6 PWM node to i.MX7ULP
-Date: Wed, 21 Oct 2026 14:35:19 +0200
-Message-ID: <20261021123522.346317-1-sympthicode@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261021084602.121087-1-sympthicode@gmail.com>
-References: <20261021084602.121087-1-sympthicode@gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=QVDszHTp
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 45D9AC5CD75;
+	Wed, 21 Oct 2026 13:11:20 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 31886606E3;
+	Wed, 21 Oct 2026 13:10:21 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 46490103289F5;
+	Wed, 21 Oct 2026 15:10:08 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1792588215; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=4ST0S09FqoMhYeE6cyXYxn/H30wuNQQmvIaLab0ur0Q=;
+	b=QVDszHTpvMd0uArH8cax+y7uc7PR6lDDUG/ztuFY19H7Sm6xsZbZkqjfIALPe5dUq/UHo0
+	GkoauflJLjv0jy5182Pp8dtZsnH60ZOGBKxxienme64ueeB0KHyebhiikeN6dHfekffbzS
+	IWDMPkMz0MKNWKKM0u0JJzqyZMJp6DKxEyeaMDwAbdx+yMJW72Z3jA2RWH05AsrRDGpnDV
+	E96iuOBE0nnG60ZPRTGYd+7ULhKzfyEi2aa914baO7L0vC6hSo/RxCNguUv4FBPijXmIcg
+	U9LoHjJ299KCHt6zJFmOKf3W2oWBAetv6D2rFEtA0DPg6lEfeLq6y3GgHFZS6Q==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 0/5] clk: Use v2 rate calculation on i.MX8MP
+Date: Wed, 21 Oct 2026 15:09:56 +0200
+Message-Id: <20261021-ge-clk-lcm-v1-0-246cc35b5ffb@bootlin.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -107,47 +62,72 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWOywqDMBREfyVk3ZQ8MIqU0v8oLm5uooYabRMrB
+ fHfG3V5BubMrDS56F2iNVlpdItPfhoziAuh2MPYOeZtZiq51IJLwXKCw4sNGJjhthItAoAoaS6
+ 8o2v975A9m5Oj+3yzcz5DGlxKcDhrctuVXMny8CWEwY8dWyrGWaXRcjCgsGgf0dke5itO4b6PG
+ Ej5wRSCn2uiBGolUUssDG227Q/gN0fWzwAAAA==
+X-Change-ID: 20261021-ge-clk-lcm-b0d81fcaaa17
+To: Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney+clk@redhat.com>, 
+ Jerome Brunet <jbrunet+clk@baylibre.com>, Abel Vesa <abelvesa@kernel.org>, 
+ Peng Fan <peng.fan@nxp.com>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Ian Ray <ian.ray@gehealthcare.com>, 
+ =?utf-8?q?Herv=C3=A9_Codina?= <herve.codina@bootlin.com>, 
+ Luca Ceresoli <luca.ceresoli@bootlin.com>, linux-clk@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, 
+ Miquel Raynal <miquel.raynal@bootlin.com>
+X-Mailer: b4 0.14.3
+X-Last-TLS-Session-Version: TLSv1.3
 
-Add the Low Power Timer/Pulse Width Modulation Module 6 (TPM6)
-node to the i.MX 7ULP device tree.
+Hello,
 
-TPM6 is located in the Application Domain (Cortex-A7) at base
-address 0x40a10000. This enables PWM and timer support for
-peripherals connected to this domain, such as display backlight
-controllers.
+Thanks to Brian's series, we can finally solve the problem of rate
+calculation faced with the i.MX8MP LDB/PIX clocks. I've tested this
+series using a v7.1 mainline kernel with a lot of unrelated DRM
+patches. I then re-applied it on top of clk-next after fixing the few
+conflicts when applying Brian's series, but that means I cannot (yet)
+run a 7.2/7.3 kernel on the platform (and applying this series with b4
+will fail due to Brian's series no longer applying on top of clk-next).
 
-Signed-off-by: Krzysztof Kaszubski <sympthicode@gmail.com>
+The DTS patch is there for reference, I don't mind if it's not picked
+up.
+
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 ---
-v2:
- - Move tpm6 node under ahbbridge1 (bus@40800000), before lpi2c6@40a40000
-   (reported by DT bot)
- - Fix author/Signed-off-by email typo (simpthicode -> sympthicode)
+Miquel Raynal (5):
+      clk: composite: Initialize inner hw clocks during registration
+      clk: Fix v2 rate negotiation with composite clocks
+      clk: imx8mp: Allow adjusting the video PLL rates for the LDB clock
+      clk: imx8mp: Set v2 rate negociation to LDB and pixel clocks
+      arm64: dts: imx8mp: Drop VIDEO_PLL1 assigned rate
 
- arch/arm/boot/dts/nxp/imx/imx7ulp.dtsi | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ arch/arm64/boot/dts/freescale/imx8mp.dtsi |  6 ++----
+ drivers/clk/clk-composite.c               | 34 ++++++++++++++-----------------
+ drivers/clk/clk.c                         |  2 +-
+ drivers/clk/imx/clk-imx8mp.c              |  6 +++---
+ 4 files changed, 21 insertions(+), 27 deletions(-)
+---
+base-commit: 31c632c62c5b98fd965ef5cff3c3fc1ffff02913
+change-id: 20261021-ge-clk-lcm-b0d81fcaaa17
+prerequisite-message-id: <20260327-clk-scaling-v8-0-86cd0aba3c5f@redhat.com>
+prerequisite-patch-id: 8f4664c519b38f0c34e388104f9a75e0946c27f7
+prerequisite-patch-id: 041b5fbc0014b25795f8eda6b89b6b61131d51ca
+prerequisite-patch-id: 2b9d8038fb1733a94291248ce9042139275fb4d1
+prerequisite-patch-id: dcf50f042320b672cabff74bcb861e5ddf26bf6b
+prerequisite-patch-id: 3539877187131dae288e6bcfb204d047e5768f84
+prerequisite-patch-id: e55a07d726e3caad4508b8f200a8a8c17327c8aa
+prerequisite-patch-id: f09cbe9bc44cc58bf47aae239c3558b4e6f6233e
+prerequisite-patch-id: 272e0710fba77dd768e6312aacef5a3e9addebc0
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx7ulp.dtsi b/arch/arm/boot/dts/nxp/imx/imx7ulp.dtsi
-index 39e37ae9b2b1..6240750b84dc 100644
---- a/arch/arm/boot/dts/nxp/imx/imx7ulp.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx7ulp.dtsi
-@@ -366,6 +366,16 @@ ahbbridge1: bus@40800000 {
- 		reg = <0x40800000 0x800000>;
- 		ranges;
- 
-+		tpm6: pwm@40a10000 {
-+			compatible = "fsl,imx7ulp-pwm";
-+			reg = <0x40a10000 0x1000>;
-+			assigned-clocks = <&pcc3 IMX7ULP_CLK_LPTPM6>;
-+			assigned-clock-parents = <&scg1 IMX7ULP_CLK_SOSC_BUS_CLK>;
-+			clocks = <&pcc3 IMX7ULP_CLK_LPTPM6>;
-+			#pwm-cells = <3>;
-+			status = "disabled";
-+		};
-+
- 		lpi2c6: i2c@40a40000 {
- 			compatible = "fsl,imx7ulp-lpi2c";
- 			reg = <0x40a40000 0x10000>;
+Best regards,
 -- 
-2.43.0
+Miquel Raynal <miquel.raynal@bootlin.com>
 
