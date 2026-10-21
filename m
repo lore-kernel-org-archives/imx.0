@@ -1,47 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.28.1
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792583319;
-	b=Ib9pAvOb1cW3xMLcg47QM7Gq8je84YhEkmKO0/AhbdbRQwIv436pTXAHvTFzjqZqhPGP
-	 BORCSJZY7zERh3mKjYKzwyq6Xm0NwRMJotFn7+BqH56LSf4Jdn0SOu1WjCfLTmD2qYMI3
-	 yZa2cDZnPteAM/OX2hUCBiCedAeywFU6Vffg4l82DCYg4/Nb2XshdOZaM/dBiCW5Vez5w
-	 4/J2iALUBj3MLyfCsRMCItlyEJdZr76dwnqkaqPQONub8A7GtD+VkMm7yQO8BJi9ZgdYa
-	 lu0ZUSbUhh+TE7jWYRjLVnYNJXBbxHR3gCGvRiJStEnfdCOc1K6mwbRujjZ4wi+02qA==
+	t=1792583441;
+	b=p0/2pLQv2XgEfm+36If0FXsm4S4cbDgn7lZ5c2U5fzXWR11IlKd4Uzwd1EMsjWMmNvjC
+	 iQ4dYYGBuG58tE/3PJZUBGSKFupXLKELbc+9d40muXQ6gTyhK2n5ENFcX4DV9mUYMcu3L
+	 dzq0LXgLdfGPVeoC/id/E5FFBRLG5Ba1IQWZdafLcRx5MJIDXJGTVbfeLDiMABfgJi1PV
+	 V+PzwLXdL8H3kwKFrwEK++gfrSeh83plbUS2pmyM428iTCWVrRq22q2F394hdc5zDKfos
+	 HNVqk/RLeUuv1xtwSH/5xtDNDEp49A+tzIqmBiboFVjm4QGFCPzFmGT/hCnq7aRJcKQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792583319;
-	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:From:Content-Language:Autocrypt:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=P+P5ZMQTBAwifUc4og7voZXXPSPAoXdrR3ly/exkImc=;
-	b=1M+HlccLKEk2Ok5hJ1KRxVgsLCdP9DCj8kFhDXZLzMfgu6LQL0JKeQEu2Ud/xsapWLhz
-	 OyBWFXZxFVDA6RMWbiQxSQzrfFOYImw3ttuOlmvi+MexSADBjfcEHA6Em3VI1igcTvCgE
-	 /elXgpNYb+OKxq5L+/fctaVx29noRPMGaBFB5rXy366ec39GOaTnNx1z1+Iac6/P2vzim
-	 7S6RSjd3WYyxfth1iE6Wcc16Cq+YQmbbv2SeyLEb225lIN7U2ZIp9lXkZHnrdrIH75R3+
-	 53rZDBoRwQJmp8rbNw8eaiRkGJMtvclyTHp+pHn3NY2zI/QTwQM9YZbE4+9VDqiwEKA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792583441;
+	h=DMARC-Filter:DKIM-Signature:X-Alimail-AntiSpam:Received:Date:From:To:
+	 Cc:Reply-To:Message-ID:Subject:X-Mailer:MIME-Version:
+	 x-aliyun-im-through:References:x-aliyun-mail-creator:In-Reply-To:
+	 x-aliyun-mailtrack:Content-Type:Content-Transfer-Encoding;
+	bh=72FzsWQIjcY8v6oyt0wQCHWqJMzFBXUTwABFBwus7wg=;
+	b=EtLZsHxNoMk9vU5D9YyXxMsatqVuEi2NJbn+XQK3B+qbazkiv5QhYVrWKD7LCxN7V52V
+	 eECyH7FqXBlpt9U0oPASnVOd6j6tY/fS7QXJD/lVa7M7tP2W1VcuMPpqFMFnNFB1pVrQD
+	 buubrV2/1JvXBla6ZiRmFj2YX0dPplRprdy9V/a9fejwLOuz3lNx1S6u5T/evhF1GZgrU
+	 fjz+c4Owg8qNoPzzHpASt2xPuoa9bt2fBriTlHPG05IVD7YzYc5W8F9nGFAuZUB1qEfRc
+	 Ja4U8dR9vPGC8hEKQzDx40CchAj5QH7PItaeYIiupwfD3wkiVmChlIrzBbBMjyYdW6A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UIAXE+9t;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=none header.from=yinhe.ht;
+	spf=pass smtp.mailfrom=yinhe.ht;
+	dkim=pass header.d=yinhe.ht header.i=@yinhe.ht header.a=rsa-sha256 header.s=default header.b=bgMF+pv1;
+	arc=none smtp.remote-ip=115.124.28.1
+Received: from out28-1.mail.aliyun.com (out28-1.mail.aliyun.com [115.124.28.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66E24606A328;
-	Wed, 21 Oct 2026 11:48:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88738606A322
+	for <imx@lists.linux.dev>; Wed, 21 Oct 2026 11:50:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 88738606A322
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yinhe.ht
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yinhe.ht
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UIAXE+9t
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56D641F000C4;
-	Wed, 21 Oct 2026 11:48:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792583319;
-	bh=P+P5ZMQTBAwifUc4og7voZXXPSPAoXdrR3ly/exkImc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=UIAXE+9twiE2YHeUN7Y9SD9H2FrwBPp0T+KEKufY7AGbTtLYv0cxySK0uYXAj57GO
-	 msSiSqwWKhvotgBfsZZoQjmD6r2bPxl0XbHoMSRl2KgtRbqqpZlF0SOh4QyDusDxbx
-	 OnxtNB983yISKBOeZ3EdQTbo/ofK9sqijAbC/S0n8sVuM5wiQBQS8ZHI5uRBpmg20M
-	 AekqusowJ0X3TLrQI3dQn6nZ/SkCQNViPQ1Uzy7RC0o7rxVkswn2HSGEMq/HUdRiN0
-	 IAme8nSXbSqXyXBuCLzYIm4IdtQA0Oc8gME2vigxscYgX+FRkZotMV3zQLcLCGL3eJ
-	 Jh4zjjvB+OJLw==
-Message-ID: <4ef66cfe-9ff8-4d26-87de-48485e9d4fa3@kernel.org>
-Date: Wed, 21 Oct 2026 13:48:35 +0200
+	dkim=pass (2048-bit key, unprotected) header.d=yinhe.ht header.i=@yinhe.ht header.a=rsa-sha256 header.s=default header.b=bgMF+pv1
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=yinhe.ht; s=default;
+	t=1792583430; h=Date:From:To:Message-ID:Subject:MIME-Version:Content-Type;
+	bh=72FzsWQIjcY8v6oyt0wQCHWqJMzFBXUTwABFBwus7wg=;
+	b=bgMF+pv1GPQkl57dOMNOU1b0VSwL7y9CH/rBzMKGrSHxkBGZwYxlinnM6ll+3RMILTphhZnY9W1xgD3ZejdNU71pmEr59SNzbMeMIAiSMBXIjKK87hnnTdEmh91TdDJ6JieHTXnkHhYbDN94hIcxGldWBgQ1JkJqWVNZONpYqfyTqhfROpFcWH+7+F5LvxI2RbLfj2OfbW9n/N+68XVwPfBQvbNEke4MjSg3rGxs5A25lxwyJxW7ecu+q5Aq3Ho/XOXBJ3DETM9QF9NVby7dNey2kDoSDtkO0KGokIuWvkrhMUN6wEvgG6OHkh5j2glfQLLDpU5/shgbfIO+dyxVfA==
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.135073|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_news_journal|0.0351905-0.00102775-0.963782;FP=2045342384072965914|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037034184;MF=chunyuzhiqiang@yinhe.ht;NM=1;PH=DW;RN=10;RT=10;SR=0;TI=W4_0.2.3_21251643_1792583429724_o7001c188k;
+Received: from WS-web (chunyuzhiqiang@yinhe.ht[W4_0.2.3_21251643_1792583429724_o7001c188k] cluster:ay29) at Wed, 21 Oct 2026 19:50:29 +0800
+Date: Wed, 21 Oct 2026 19:50:29 +0800
+From: "=?UTF-8?B?5rez5LqO5pm65by6?=" <chunyuzhiqiang@yinhe.ht>
+To: "Vincent Mailhol" <mailhol@kernel.org>
+Cc: "netdev" <netdev@vger.kernel.org>,
+  "linux-can" <linux-can@vger.kernel.org>,
+  "mkl" <mkl@pengutronix.de>,
+  "kernel" <kernel@pengutronix.de>,
+  "haibo.chen" <haibo.chen@oss.nxp.com>,
+  "shawnguo" <shawnguo@kernel.org>,
+  "imx" <imx@lists.linux.dev>,
+  "stable" <stable@vger.kernel.org>,
+  "netdev-bot+sinfo" <netdev-bot+sinfo@kernel.org>
+Reply-To: "=?UTF-8?B?5rez5LqO5pm65by6?=" <chunyuzhiqiang@yinhe.ht>
+Message-ID: <7860eacb-9b7f-41f9-9e60-d48fdee47d4f.chunyuzhiqiang@yinhe.ht>
+Subject: =?UTF-8?B?UkXvvJpbUEFUQ0ggdjZdIGNhbjogZGV2OiBjYW5fZmlsbF9pbmZvKCk6IGRvbid0IHdha2Ug?=
+  =?UTF-8?B?dXAgY29udHJvbGxlciBpZiBpbnRlcmZhY2UgaXMgZG93bg==?=
+X-Mailer: [Alimail-Mailagent revision 74][W4_0.2.3][null][Chrome]
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -51,106 +67,23 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6] can: dev: can_fill_info(): don't wake up controller if
- interface is down
-To: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
-Cc: netdev@vger.kernel.org, linux-can@vger.kernel.org, mkl@pengutronix.de,
- kernel@pengutronix.de, haibo.chen@oss.nxp.com, shawnguo@kernel.org,
- imx@lists.linux.dev, stable@vger.kernel.org, netdev-bot+sinfo@kernel.org
-References: <20261021023334.11803-1-chunyuzhiqiang@yinhe.ht>
-From: Vincent Mailhol <mailhol@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=mailhol@kernel.org; keydata=
- xjMEZluomRYJKwYBBAHaRw8BAQdAf+/PnQvy9LCWNSJLbhc+AOUsR2cNVonvxhDk/KcW7FvN
- JFZpbmNlbnQgTWFpbGhvbCA8bWFpbGhvbEBrZXJuZWwub3JnPsKZBBMWCgBBFiEE7Y9wBXTm
- fyDldOjiq1/riG27mcIFAmdfB/kCGwMFCQp/CJcFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcC
- F4AACgkQq1/riG27mcKBHgEAygbvORJOfMHGlq5lQhZkDnaUXbpZhxirxkAHwTypHr4A/joI
- 2wLjgTCm5I2Z3zB8hqJu+OeFPXZFWGTuk0e2wT4JzjgEZx4y8xIKKwYBBAGXVQEFAQEHQJrb
- YZzu0JG5w8gxE6EtQe6LmxKMqP6EyR33sA+BR9pLAwEIB8J+BBgWCgAmFiEE7Y9wBXTmfyDl
- dOjiq1/riG27mcIFAmceMvMCGwwFCQPCZwAACgkQq1/riG27mcJU7QEA+LmpFhfQ1aij/L8V
- zsZwr/S44HCzcz5+jkxnVVQ5LZ4BANOCpYEY+CYrld5XZvM8h2EntNnzxHHuhjfDOQ3MAkEK
-In-Reply-To: <20261021023334.11803-1-chunyuzhiqiang@yinhe.ht>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+x-aliyun-im-through: {"version":"v1.0"}
+References: <20261021023334.11803-1-chunyuzhiqiang@yinhe.ht>,<4ef66cfe-9ff8-4d26-87de-48485e9d4fa3@kernel.org>
+x-aliyun-mail-creator: W4_0.2.3_null_QuNTW96aWxsYS81LjAgKFdpbmRvd3MgTlQgNi4xOyBXT1c2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzEwOS4wLjU0MTQuMTIwIFNhZmFyaS81MzcuMzYgZGluZ3RhbGstd2luLzEuMC4wIG53KDAuMTQuNykgRGluZ1RhbGsoOC4xLjAtUmVsZWFzZS42MDIxMTAxKSBNb2pvLzEuMC4wIE5hdGl2ZSBBcHBUeXBlKHJlbGVhc2UpIENoYW5uZWwvMjAyMTAwIChMaW51eDYuMTIuMTAwK2RlYjEzLWFtZDY0OC4xLjAtUmVsZWFzZS42MDIxMTAxKQ==uM
+In-Reply-To: <4ef66cfe-9ff8-4d26-87de-48485e9d4fa3@kernel.org>
+x-aliyun-mailtrack: {"foreign-track":"0"}
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
 
-On 21/10/2026 at 04:33, ChunYuZhiQiang wrote:
-> If the interface is down, the CAN controller might be powered down, the
-> clock disabled, and/or its external reset asserted.
-> 
-> Don't call do_get_berr_counter() or do_get_auto_tdcv() to read the CAN
-> controller if the interface is down. This fixes a generic logic problem
-> that exists on all platforms.
-> 
-> As a result, IFLA_CAN_BERR_COUNTER is no longer reported for down
-> interfaces, and the automatic TDCV readback is skipped. The other TDC
-> parameters are still reported, as they are meaningful while the
-> interface is down. This is intentional: the counters and the automatic
-> TDCV are not meaningful in that state, and calling into the driver can
-> wake a runtime-suspended controller or touch registers whose clocks are
-> gated.
-> 
-> Fixes: ec56acfef2af1 ("can: flexcan: flexcan_get_berr_counter(): switch on clocks before accessing ecr register")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
-> ---
-> v6:
->  - Only gate do_get_auto_tdcv() on netif_running(), as suggested by
->    Vincent Mailhol and Marc Kleine-Budde. The other TDC parameters are
->    still reported for down interfaces.
->  - Adjust can_tdc_get_size() so that only the automatic TDCV size is
->    skipped when the interface is down.
->  - Keep the berr-counter gating unchanged.
-> ---
->  drivers/net/can/dev/netlink.c | 21 ++++++++++++---------
->  1 file changed, 12 insertions(+), 9 deletions(-)
-> 
-> diff --git a/drivers/net/can/dev/netlink.c b/drivers/net/can/dev/netlink.c
-> index 6f83b87d54fc..ae0cef791ef3 100644
-> --- a/drivers/net/can/dev/netlink.c
-> +++ b/drivers/net/can/dev/netlink.c
-> @@ -517,7 +517,7 @@ static int can_changelink(struct net_device *dev, struct nlattr *tb[],
->  }
->  
->  static size_t can_tdc_get_size(struct data_bittiming_params *dbt_params,
-> -			       u32 tdc_flags)
-> +			       u32 tdc_flags, bool auto_tdcv_running)
-
-Nitpick: I think it is slightly better to pass dev rather than
-auto_tdcv_running:
-
-	static size_t can_tdc_get_size(const struct net_device *dev,
-				       struct data_bittiming_params *dbt_params,
-				       u32 tdc_flags)
-
-The reason is that by passing dev, it would be easier in the future if
-for whatever reason we need to retrieve other values. (And to be
-honest, I was not going to comment just for this, but because a v7 is
-needed anyway, I think you can add this small change while at it).
-
->  {
->  	bool tdc_manual = tdc_flags & CAN_CTRLMODE_TDC_MANUAL_MASK;
->  	size_t size;
-> @@ -538,7 +538,7 @@ static size_t can_tdc_get_size(struct data_bittiming_params *dbt_params,
->  	}
->  
->  	if (tdc_flags) {
-> -		if (tdc_manual || dbt_params->do_get_auto_tdcv)
-> +		if (tdc_manual || (dbt_params->do_get_auto_tdcv && auto_tdcv_running))
-
-And by passing dev, this becomes:
-
-		if (tdc_manual || (dbt_params->do_get_auto_tdcv && netif_running(dev)))
-
-making the pattern slightly more consistent throughout the file.
-
->  			size += nla_total_size(sizeof(u32));	/* IFLA_CAN_TDCV */
->  		size += nla_total_size(sizeof(u32));		/* IFLA_CAN_TDCO */
->  		if (dbt_params->tdc_const->tdcf_max)
-> @@ -548,8 +548,9 @@ static size_t can_tdc_get_size(struct data_bittiming_params *dbt_params,
->  	return size;
->  }
-
-
-Yours sincerely,
-Vincent Mailhol
+SGkgVmluY2VudCwKCj4gTml0cGljazogSSB0aGluayBpdCBpcyBzbGlnaHRseSBiZXR0ZXIgdG8g
+cGFzcyBkZXYgcmF0aGVyIHRoYW4KPiBhdXRvX3RkY3ZfcnVubmluZzoKPgo+ICBzdGF0aWMgc2l6
+ZV90IGNhbl90ZGNfZ2V0X3NpemUoY29uc3Qgc3RydWN0IG5ldF9kZXZpY2UgKmRldiwKPiAgICAg
+ICAgICAgIHN0cnVjdCBkYXRhX2JpdHRpbWluZ19wYXJhbXMgKmRidF9wYXJhbXMsCj4gICAgICAg
+ICAgICB1MzIgdGRjX2ZsYWdzKQo+Cj4gVGhlIHJlYXNvbiBpcyB0aGF0IGJ5IHBhc3NpbmcgZGV2
+LCBpdCB3b3VsZCBiZSBlYXNpZXIgaW4gdGhlIGZ1dHVyZSBpZgo+IGZvciB3aGF0ZXZlciByZWFz
+b24gd2UgbmVlZCB0byByZXRyaWV2ZSBvdGhlciB2YWx1ZXMuCgpBZ3JlZWQsIHRoYXQncyBjbGVh
+bmVyIGFuZCBtb3JlIGNvbnNpc3RlbnQgd2l0aCB0aGUgcmVzdCBvZiB0aGUgZmlsZS4KSSdsbCBm
+b2xkIHRoaXMgaW50byB2NzogY2FuX3RkY19nZXRfc2l6ZSgpIGFuZApjYW5fZGF0YV9iaXR0aW1p
+bmdfZ2V0X3NpemUoKSB3aWxsIHRha2UgZGV2IGluc3RlYWQgb2YgYSBib29sLCBhbmQgdGhlClRE
+Q1Ygc2l6ZSBjb25kaXRpb24gd2lsbCB1c2UgbmV0aWZfcnVubmluZyhkZXYpIGRpcmVjdGx5LgoK
+VGhhbmtzLApDaHVuWXVaaGlRaWFuZw==
