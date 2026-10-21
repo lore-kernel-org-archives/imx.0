@@ -1,95 +1,47 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.70.41
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792582499;
-	b=a1kvNdM72u5iIf6MuFMNjz7hNzVp6x0//Rp2nNzBL8T59rwLfjiht+Wj2Wvx47a3mxL0
-	 L2Yq+SSMwQYddfcgpsTb59eHMCOsMHq2gnbKFgHkqOHAzq+/ZPTjTNoT/ejgE3y8AZgRS
-	 6zN5aNA+g/I/a8jUx4cDAGMkyTqupaxaE6cW37dIBsJOGD+VPnF7BvlYzEC1dvkaguCr0
-	 +x4kD1wfIdlhMAOQA0HaiYDJPoLu8rmXOz8DeHcm2TMJtqXNGVcMVe8v7h7Mx/wqdPY0t
-	 NeJg+xyLUPHHbGy27004HX0vJ+u5CyCG8+ghthT8oRVqMrPMfmg+9ePofHnPzwgVulw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792582499;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:Content-Type:Content-Disposition:
-	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=1rVS5lv2lXGwUOC8HcUumutJyKA7KNV6pw8LNsf7nII=;
-	b=nWyDSONmZSTc4SIG0ioKkVqQ415bTTfxjoKfOAQcuLKpPcmStfOXThh88Oofslh762yw
-	 N1OxHnnruc9UurqfdISwf6XaH9SHWRJrIUd6lXuYTiMnHfk6X4hh5L8ZaCHuCEzgLly0P
-	 AYMwwVBEDLn4Ua/3wn8R4Tk/zfXDzIcA6MVe1HW3sRNREMsXO+oxOTXOvbroiFUcU0Sil
-	 IoKwJm8kNosIbpBnn3460I3yZynuTCqOlUlvtBeZGatQXNMVDDMlaVlTSmHfwQhbUG4ue
-	 HE4kT9e49Y7P3dOKZ1jxuKiGTkSmsiZ+YKF15jpXNk1PIgHkR8omD8KxDtQ3A/Pid9Q==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nxp.com;
-	spf=pass smtp.mailfrom=nxp.com;
-	dkim=pass header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=L749O85Y;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.70.41
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011041.outbound.protection.outlook.com [52.101.70.41])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792583319;
+	b=Ib9pAvOb1cW3xMLcg47QM7Gq8je84YhEkmKO0/AhbdbRQwIv436pTXAHvTFzjqZqhPGP
+	 BORCSJZY7zERh3mKjYKzwyq6Xm0NwRMJotFn7+BqH56LSf4Jdn0SOu1WjCfLTmD2qYMI3
+	 yZa2cDZnPteAM/OX2hUCBiCedAeywFU6Vffg4l82DCYg4/Nb2XshdOZaM/dBiCW5Vez5w
+	 4/J2iALUBj3MLyfCsRMCItlyEJdZr76dwnqkaqPQONub8A7GtD+VkMm7yQO8BJi9ZgdYa
+	 lu0ZUSbUhh+TE7jWYRjLVnYNJXBbxHR3gCGvRiJStEnfdCOc1K6mwbRujjZ4wi+02qA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792583319;
+	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:From:Content-Language:Autocrypt:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=P+P5ZMQTBAwifUc4og7voZXXPSPAoXdrR3ly/exkImc=;
+	b=1M+HlccLKEk2Ok5hJ1KRxVgsLCdP9DCj8kFhDXZLzMfgu6LQL0JKeQEu2Ud/xsapWLhz
+	 OyBWFXZxFVDA6RMWbiQxSQzrfFOYImw3ttuOlmvi+MexSADBjfcEHA6Em3VI1igcTvCgE
+	 /elXgpNYb+OKxq5L+/fctaVx29noRPMGaBFB5rXy366ec39GOaTnNx1z1+Iac6/P2vzim
+	 7S6RSjd3WYyxfth1iE6Wcc16Cq+YQmbbv2SeyLEb225lIN7U2ZIp9lXkZHnrdrIH75R3+
+	 53rZDBoRwQJmp8rbNw8eaiRkGJMtvclyTHp+pHn3NY2zI/QTwQM9YZbE4+9VDqiwEKA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UIAXE+9t;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27690606A31B
-	for <imx@lists.linux.dev>; Wed, 21 Oct 2026 11:34:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 27690606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66E24606A328;
+	Wed, 21 Oct 2026 11:48:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=L749O85Y
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=b/cTBLVBt2g6y1PPHFXODD8O3bARgPRJoXj7NCq8Esbrb5VkVFpyNDduBGmthsGlsBRyDshPTOGftGOGENJjx4MyN6zCqTxXX6znQMom/NYtKwwSltGSOYplXrfrJCsYqnOC8GHFA8JLDockAjZPT6Rx4iobuVFrCagXX6GmZIFBbwKV6NbW4dKJSrKo/qLc4PEdhPjl3b96YXhodx7bNideYA3rERunU3DoktdLlkafdNg71zJcovyo2dx09zSPN6zpOxmP/rWYmJpIsQQFWwGwA+CRnQAEEL8EIUSyJ9Rm++kHmo+rGT9XcqurcXP3wo/8Pv0OV6fa9hwuvrGZJw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1rVS5lv2lXGwUOC8HcUumutJyKA7KNV6pw8LNsf7nII=;
- b=Lmo5knlTZkWqMIZ9uXazjsBG7X1d02jgL7EoswvPm84E5T6eIkfX54SKkgSZoKazwXRix578B67dhGwReWWfkck1PI3hiJKES7iqP55yRHiehEd52HGe/1AquAynvObSgWB1tTRTS/TZ2VFhpqPw88dKEU/7skFAcBxEuhgkGDmitwjCIOqY3npiGWeaXex/snLIp35MPECtFX7hEoRT39Xw8FeAZRjgYymHWXgNn5fVLHQHbPWoTWuTGSh0O0wWsS55I/VoS98TIm6L5fCG0MTx37VuBhCEtSTIusaLjjRTixS+pjuEw0iBqjOdwxj7CoT97EGCA5Q7G4Kflw6qOA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1rVS5lv2lXGwUOC8HcUumutJyKA7KNV6pw8LNsf7nII=;
- b=L749O85Y/7jqnRkUmf5v8Ij4NnjDcGZSuE7L0tH4agdUP7Q8zcp1ZUcVQExZPXpPU4UdVCOrPQeoOXgtU4aXz88EHz75QkO4TafWoPQfDLjzAtffGCWbQ3l7Y9RlJYXvkN8PoCVwRwbiPfwLzXIrvoxOlxd0plKFHKP+fjwCROnMUkCi/lXOUy1/3+2VHONllaBHTjUu/xkOjh59eOSBXpN5yC7T7hH+Z9IXbiy5ZaZCQYH5GHUlNik8a3yroVgkgsUd3vLC3ndBCYsfu2BtBjs5lRrVgUSK5r11vNh/bZNgoxWNYim3CSk0LoxtEQFyTrxiWN+hcf8cw3MFtfoR9A==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM0PR04MB6900.eurprd04.prod.outlook.com (2603:10a6:208:17d::10)
- by VE1PR04MB7310.eurprd04.prod.outlook.com (2603:10a6:800:1a2::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.13; Wed, 21 Oct
- 2026 11:34:54 +0000
-Received: from AM0PR04MB6900.eurprd04.prod.outlook.com
- ([fe80::7fda:8431:ca1b:b023]) by AM0PR04MB6900.eurprd04.prod.outlook.com
- ([fe80::7fda:8431:ca1b:b023%4]) with mapi id 15.21.0546.012; Wed, 21 Oct 2026
- 11:34:54 +0000
-Date: Wed, 21 Oct 2026 14:34:50 +0300
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: Claudiu Manoil <claudiu.manoil@nxp.com>, Wei Fang <wei.fang@nxp.com>, 
-	Clark Wang <xiaoning.wang@nxp.com>, Ioana Ciornei <ioana.ciornei@nxp.com>, 
-	Zefir Kurtisi <zefir.kurtisi@westermo.com>, Zefir Kurtisi <zefir.kurtisi@gmail.com>, 
-	David Laight <david.laight.linux@gmail.com>, netdev@vger.kernel.org, imx@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 net 0/8] Fix short frame transmission in enetc
-Message-ID: <hnpdglhqlyaxp62tdqtr6bht7ltbawwinrfisrhfd5ncgfgter@ngf35z7rubch>
-References: <20261015105536.1692348-1-vladimir.oltean@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261015105536.1692348-1-vladimir.oltean@nxp.com>
-X-ClientProxiedBy: FR2P281CA0064.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:93::12) To AM0PR04MB6900.eurprd04.prod.outlook.com
- (2603:10a6:208:17d::10)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UIAXE+9t
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56D641F000C4;
+	Wed, 21 Oct 2026 11:48:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792583319;
+	bh=P+P5ZMQTBAwifUc4og7voZXXPSPAoXdrR3ly/exkImc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=UIAXE+9twiE2YHeUN7Y9SD9H2FrwBPp0T+KEKufY7AGbTtLYv0cxySK0uYXAj57GO
+	 msSiSqwWKhvotgBfsZZoQjmD6r2bPxl0XbHoMSRl2KgtRbqqpZlF0SOh4QyDusDxbx
+	 OnxtNB983yISKBOeZ3EdQTbo/ofK9sqijAbC/S0n8sVuM5wiQBQS8ZHI5uRBpmg20M
+	 AekqusowJ0X3TLrQI3dQn6nZ/SkCQNViPQ1Uzy7RC0o7rxVkswn2HSGEMq/HUdRiN0
+	 IAme8nSXbSqXyXBuCLzYIm4IdtQA0Oc8gME2vigxscYgX+FRkZotMV3zQLcLCGL3eJ
+	 Jh4zjjvB+OJLw==
+Message-ID: <4ef66cfe-9ff8-4d26-87de-48485e9d4fa3@kernel.org>
+Date: Wed, 21 Oct 2026 13:48:35 +0200
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -99,139 +51,106 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM0PR04MB6900:EE_|VE1PR04MB7310:EE_
-X-MS-Office365-Filtering-Correlation-Id: b96f1267-ca7f-4342-9ac8-08df2f67537a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|19092799006|1800799024|366016|376014|7416014|6133799003|10067099003|18002099003|22082099003|261009223027099003|11063799006|5023799004|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	1IHtCUGHsGyMH08kjx8DhCC27zVz3JiIiJxngb2im9Pt7jZB4d0z4wKipYVd8Y0JAvem3L64Vtj1sdzJYFHeW8dpw0inqd9FqkIEYQlHg9HfQZcGocM8iHwGfmWcQWg+s2C/jSykDvzfBPdEeG6u4SuuixEt0Xcdt1+f0idYL0Ii2RzQV7NTz/tVuhntGXaCGYh9wB6RbrIFM9SyVux2nZcpNbrG4vfVJZHzueB49QIURqSmVQkCYs/FIAEns2GJI7Q2Lh0U0gHjhi8cne0BE5zDu68Wjf6XvA83LJA1mbCQawM5Nh02R26PrAJtNTC071kojOJ21rrKLtW0GEOVlCHmI3k4kN9TmVbjahRcuK7D1wIMzJSUUwJZyMzzbI2IMdu5TSBNJ6vMZ7eVzntTprt7zqPV/HDAWIQRKyC2IHS+Jx/nGIVGBl8Hl1vIYmq4WNKE7D5IW+bB7WfIDPYo5gogmi3z6pBF5IaLcBMkpOeHpBzzbu0zomflIrO5ti6/27RXBfvm9r5rLJrQijGzbafLlPWYyRFLGnLQs+0MAKjXTz7feHq+0zliqPHRo5BQNlxHnj971Tc0Qe0q5zldTaCrsap+ZieCP1jA3x5PBjxEIfE9P8dMkeBQrwO/Y57y
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB6900.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(19092799006)(1800799024)(366016)(376014)(7416014)(6133799003)(10067099003)(18002099003)(22082099003)(261009223027099003)(11063799006)(5023799004)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?fXKaYoSUvc1kbzhhxS7EvWZrO30l2WcCp/lggfV3KOBvI5fU3AYFdJKtdcjS?=
- =?us-ascii?Q?KF1QCL9IT9j5KuE5lmqutQfMjzLePIKY8+sNboKvDNxVgwDoIchD1DfIYURF?=
- =?us-ascii?Q?4cMELBNnbA1vDsRpblIZ22yF1aK6TjK4dMwewqa2kEQcvyBNmDM/i4k8w5Kv?=
- =?us-ascii?Q?jcpqMvDbr/F9RDF3Bw2cY/roH9tp7KEKVSP+4AZuvUpG8DCpKGCITXX6dzOo?=
- =?us-ascii?Q?RkPggHTyMBnGJD4JxOCiLeo9PGLDK+bJ9lHV//oEqz1fr+YEA7W1ZFZfwQaM?=
- =?us-ascii?Q?BfMt2h1IPjzYq7YHw/tc1+MXDqMWoH9wGtdH/m18dt2IunaRgxVB/Fi8tZcf?=
- =?us-ascii?Q?2WxxHTAEXJGFgBYoO3cYnU16YezGUNte2HFQoO/bl/2Xd+01kr+UpF3xzS04?=
- =?us-ascii?Q?zyjey7I3D5a7SrrdjRjhMpASkv5vlylojkDxxhS48a98w6r/boxi707HPzEC?=
- =?us-ascii?Q?yI9MQJhdzh3yWkSb7TDGrYbMkG2+hmlVzwr9qpg2BjlfdlUtAI+pARpGLFm7?=
- =?us-ascii?Q?fplXaMg7UySc75y3WTQFAWYnh2WDgKrGqrnuV+//Jt7Ut2cgRd/SW7ZP02DA?=
- =?us-ascii?Q?0wPSv0CcxTwXhWejdaQfkYP4J4pLdLalBruP9R9Hm0ptf2O3xTv4SuRYReix?=
- =?us-ascii?Q?AazAAQLzWAb3EPaKfnAfbY3uD+QBRE9DVsCZWCFhdEXSQo7Y3qSAgeLpXB3Q?=
- =?us-ascii?Q?FWoO/1UWo+hkNgU+SFV2xeW86HyN6Nsq4saP7jtMqP3LOBIcpPUpx/a1AiBQ?=
- =?us-ascii?Q?b6l5+YzCRYY3kjRIJaGe7ZdwoazoPn8iLuvVYGNGIH51QF3VNo/z3zGGt1I6?=
- =?us-ascii?Q?iB2k/JZmfrDM/6kLW2yLVQIp5W5cYPoCf+L2QqsOFIqqgLfBYMkE0sQ9g1mT?=
- =?us-ascii?Q?Lhg7vM6viZvccrsJjxR22VToZmOyUZcBRxrGtvpJ/Uytw6kWT2YdoQZhapt/?=
- =?us-ascii?Q?KdFVTAIHaRJEyeEloKGmDKkhvHusE596z7UZIFUf3WGQmaHioqV7Z93BhDKF?=
- =?us-ascii?Q?OTMSUTZs2aabLSa7x7fXjtmsis8RUeLAiBUIJrquwLBDJgQuVPC6LueAJFUv?=
- =?us-ascii?Q?wvLHR1zu0kisHSwnnDAnDySJFfwBhHxxiUiDtA0HWDuqwGgXB+oPpzaAC4m8?=
- =?us-ascii?Q?BvwotcLlkJeopSPeJDTcNtV+pEf/jNdiOPSNjLAGauyQRy01P5OEMNpFPN+1?=
- =?us-ascii?Q?y7YhB8beBJn7Yh02rP+Ocqpsh1HI/ipm9mnbR5rtSVHiRW5cFg1p3MhAHK08?=
- =?us-ascii?Q?IZ0fQLNmFw6EIMVYppXU+CfjfpwJqyqp6WcmHauk6lh2EdSEf0zejHm6SsUj?=
- =?us-ascii?Q?+4MGMwE1TaEPSlNBCnZxAqcTMAzn5H65NmbJ3EVqKgiM+ITMboSjONRsHwcz?=
- =?us-ascii?Q?dtfspjSlxDa6T3RKTShB4jBqrgVsjgTKEj0u95CccwfUrS/E2dkqMHn70d2N?=
- =?us-ascii?Q?M5S8NS9rV/Qthb8Pu1unXK2BT/BtuBE60rOUZW3jo2aDX/dFCohHQseBCMXd?=
- =?us-ascii?Q?Zt4Aour6dO8sOuKrHlutRf+lHG73MvcFdMnTVl1EjbwvVT/wdQ20KJynNUbZ?=
- =?us-ascii?Q?IzTanlaMzHeGyC98C4SehEpp6Lk059et2Asc98PPs3cRwy2tgfNwEBchqvQd?=
- =?us-ascii?Q?fl+YD4SSOh5MJ8y2YLO/47jQB2rShkFiC5DqsPYYajFSsLZLiUv918dlJ4c7?=
- =?us-ascii?Q?NIf5nUpvurX4Ce6+HtB1/ML+Ana1FJcsf/HAr4xhOleeGEiTHbmLlpa5+eUI?=
- =?us-ascii?Q?YerYBD57Yg=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b96f1267-ca7f-4342-9ac8-08df2f67537a
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB6900.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Oct 2026 11:34:54.0259
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 714lpFNrNfF0pdQXTShclWRAimGcxSw+dUylDdcthQVJl1zEESX20JO9p3abOwzaLsYTO3Bkp0K1pCXqyEZqUA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB7310
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6] can: dev: can_fill_info(): don't wake up controller if
+ interface is down
+To: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
+Cc: netdev@vger.kernel.org, linux-can@vger.kernel.org, mkl@pengutronix.de,
+ kernel@pengutronix.de, haibo.chen@oss.nxp.com, shawnguo@kernel.org,
+ imx@lists.linux.dev, stable@vger.kernel.org, netdev-bot+sinfo@kernel.org
+References: <20261021023334.11803-1-chunyuzhiqiang@yinhe.ht>
+From: Vincent Mailhol <mailhol@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=mailhol@kernel.org; keydata=
+ xjMEZluomRYJKwYBBAHaRw8BAQdAf+/PnQvy9LCWNSJLbhc+AOUsR2cNVonvxhDk/KcW7FvN
+ JFZpbmNlbnQgTWFpbGhvbCA8bWFpbGhvbEBrZXJuZWwub3JnPsKZBBMWCgBBFiEE7Y9wBXTm
+ fyDldOjiq1/riG27mcIFAmdfB/kCGwMFCQp/CJcFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcC
+ F4AACgkQq1/riG27mcKBHgEAygbvORJOfMHGlq5lQhZkDnaUXbpZhxirxkAHwTypHr4A/joI
+ 2wLjgTCm5I2Z3zB8hqJu+OeFPXZFWGTuk0e2wT4JzjgEZx4y8xIKKwYBBAGXVQEFAQEHQJrb
+ YZzu0JG5w8gxE6EtQe6LmxKMqP6EyR33sA+BR9pLAwEIB8J+BBgWCgAmFiEE7Y9wBXTmfyDl
+ dOjiq1/riG27mcIFAmceMvMCGwwFCQPCZwAACgkQq1/riG27mcJU7QEA+LmpFhfQ1aij/L8V
+ zsZwr/S44HCzcz5+jkxnVVQ5LZ4BANOCpYEY+CYrld5XZvM8h2EntNnzxHHuhjfDOQ3MAkEK
+In-Reply-To: <20261021023334.11803-1-chunyuzhiqiang@yinhe.ht>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Oct 15, 2026 at 01:55:28PM +0300, vladimir.oltean@nxp.com wrote:
-> This is a belated follow-up to Zefir Kurtisi's report:
-> https://lore.kernel.org/netdev/20260220132930.2521155-1-zefir.kurtisi@gmail.com/
+On 21/10/2026 at 04:33, ChunYuZhiQiang wrote:
+> If the interface is down, the CAN controller might be powered down, the
+> clock disabled, and/or its external reset asserted.
 > 
-> which is that the ENETC misbehaves when transmitting packets smaller
-> than 16 octets sans FCS: it sends them but does not update the completed
-> index in the transmit BD ring. I did find a sentence in the reference
-> manual explicitly stating these short frames are not supported.
+> Don't call do_get_berr_counter() or do_get_auto_tdcv() to read the CAN
+> controller if the interface is down. This fixes a generic logic problem
+> that exists on all platforms.
 > 
-> The original series was focused on handling the invalid frame
-> geometries (now patches 4, 5 and 6). However, review pointed out further
-> issues in annex code. The other patches handle those.
+> As a result, IFLA_CAN_BERR_COUNTER is no longer reported for down
+> interfaces, and the automatic TDCV readback is skipped. The other TDC
+> parameters are still reported, as they are meaningful while the
+> interface is down. This is intentional: the counters and the automatic
+> TDCV are not meaningful in that state, and calling into the driver can
+> wake a runtime-suspended controller or touch registers whose clocks are
+> gated.
 > 
-> v1 at:
-> https://lore.kernel.org/netdev/20260401172246.1075883-1-vladimir.oltean@nxp.com/
+> Fixes: ec56acfef2af1 ("can: flexcan: flexcan_get_berr_counter(): switch on clocks before accessing ecr register")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
+> ---
+> v6:
+>  - Only gate do_get_auto_tdcv() on netif_running(), as suggested by
+>    Vincent Mailhol and Marc Kleine-Budde. The other TDC parameters are
+>    still reported for down interfaces.
+>  - Adjust can_tdc_get_size() so that only the automatic TDCV size is
+>    skipped when the interface is down.
+>  - Keep the berr-counter gating unchanged.
+> ---
+>  drivers/net/can/dev/netlink.c | 21 ++++++++++++---------
+>  1 file changed, 12 insertions(+), 9 deletions(-)
 > 
-> v2 at:
-> https://lore.kernel.org/netdev/20260406204122.167237-1-vladimir.oltean@nxp.com/
-> 
-> v3 at:
-> https://lore.kernel.org/netdev/20260915222735.1016937-5-vladimir.oltean@nxp.com/
-> 
-> Change log in individual patches. At a high level:
-> - applied feedback from Wei Fang, David Laight and Sashiko
-> - dropped "[PATCH v3 net 7/7] net: enetc: drain and cancel one-step TX
->   tstamp queue when going down" because addressing Sashiko's feedback
->   would grow this series to a point where it would become impossible to
->   make any progress; plus it becomes more and more unrelated to the main
->   objective. Will address that part separately.
-> - dropped "[PATCH v3 net 6/7] net: enetc: linearize PTP event packets
->   with one-step TX timestamping"; also unrelated to short frames, will
->   resubmit separately.
-> - split v3's "pad short frames in software" into patch 4 (do not rely on
->   mEMAC hardware frame padding) and patch 5 (ensure head buffer has at
->   least 16 octets).
-> - reworked v3's "pad short XDP frames coming from devmap": instead of
->   padding the xdp_frame in place through a new generic xdp_frame_pad()
->   helper (which only covered ndo_xdp_xmit()), patch 6 now pads in the
->   driver using the shared tx_pad buffer, covering the XDP_TX path too.
->   Consequently, there is no longer a change to include/net/xdp.h, so the
->   BPF/XDP folks are no longer CCed.
-> - new patches:
->   - 2/8: serialize access to the same TX ring from NAPI XDP_TX and
->     ndo_xdp_xmit()
->   - 7/8: fix leak of pending XDP_TX frames when going down
-> 
-> Vladimir Oltean (8):
->   net: enetc: consistently track dropped frames in enetc_xdp_xmit()
->   net: enetc: serialize access to the same TX ring from NAPI XDP_TX and
->     ndo_xdp_xmit()
->   net: enetc: fix bogus TX ring consumer index after reinitialization
->   net: enetc: do not rely on mEMAC hardware frame padding
->   net: enetc: ensure head buffer has at least 16 octets
->   net: enetc: pad short XDP frames in software
->   net: enetc: fix leak of pending XDP_TX frames when going down
->   net: enetc: ensure enetc_xdp_xmit() calls enetc_update_tx_ring_tail()
-> 
->  drivers/net/ethernet/freescale/enetc/enetc.c | 160 ++++++++++++++++---
->  drivers/net/ethernet/freescale/enetc/enetc.h |  12 ++
->  2 files changed, 148 insertions(+), 24 deletions(-)
-> 
-> -- 
-> 2.43.0
->
+> diff --git a/drivers/net/can/dev/netlink.c b/drivers/net/can/dev/netlink.c
+> index 6f83b87d54fc..ae0cef791ef3 100644
+> --- a/drivers/net/can/dev/netlink.c
+> +++ b/drivers/net/can/dev/netlink.c
+> @@ -517,7 +517,7 @@ static int can_changelink(struct net_device *dev, struct nlattr *tb[],
+>  }
+>  
+>  static size_t can_tdc_get_size(struct data_bittiming_params *dbt_params,
+> -			       u32 tdc_flags)
+> +			       u32 tdc_flags, bool auto_tdcv_running)
 
-In short:
+Nitpick: I think it is slightly better to pass dev rather than
+auto_tdcv_running:
 
-pw-bot: cr
+	static size_t can_tdc_get_size(const struct net_device *dev,
+				       struct data_bittiming_params *dbt_params,
+				       u32 tdc_flags)
 
-I've received a rainfall of AI review from the Sashiko bot, on some
-emails netdev was copied, on some it was not. Some of the feedback is
-valid (a lot is duplicated, and that makes up a lot of the noise), and
-that valid feedback falls into one of 2 categories:
-- in scope for this patch set
-- out of scope for this patch set
+The reason is that by passing dev, it would be easier in the future if
+for whatever reason we need to retrieve other values. (And to be
+honest, I was not going to comment just for this, but because a v7 is
+needed anyway, I think you can add this small change while at it).
 
-I can't humanly respond to all that verbiage, sorry.
+>  {
+>  	bool tdc_manual = tdc_flags & CAN_CTRLMODE_TDC_MANUAL_MASK;
+>  	size_t size;
+> @@ -538,7 +538,7 @@ static size_t can_tdc_get_size(struct data_bittiming_params *dbt_params,
+>  	}
+>  
+>  	if (tdc_flags) {
+> -		if (tdc_manual || dbt_params->do_get_auto_tdcv)
+> +		if (tdc_manual || (dbt_params->do_get_auto_tdcv && auto_tdcv_running))
 
-Because I want to get this issue resolved ASAP, I will trim v5 to just 4
-patches, which touch only what is strictly in scope, and will defer the
-rest of the feedback to other patch sets to follow.
+And by passing dev, this becomes:
+
+		if (tdc_manual || (dbt_params->do_get_auto_tdcv && netif_running(dev)))
+
+making the pattern slightly more consistent throughout the file.
+
+>  			size += nla_total_size(sizeof(u32));	/* IFLA_CAN_TDCV */
+>  		size += nla_total_size(sizeof(u32));		/* IFLA_CAN_TDCO */
+>  		if (dbt_params->tdc_const->tdcf_max)
+> @@ -548,8 +548,9 @@ static size_t can_tdc_get_size(struct data_bittiming_params *dbt_params,
+>  	return size;
+>  }
+
+
+Yours sincerely,
+Vincent Mailhol
