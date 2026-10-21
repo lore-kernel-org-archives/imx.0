@@ -1,13 +1,13 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.65.60
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.70.61
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792593439;
-	b=UjpbSxpgVMslbU8xiLlfmHGEyB3WX79qlSIgkniR0jS4wF2CcLHjQ7EPcKS4jJXm7nny
-	 NAtdWSFcZcDkbkTstIC1Ldz9QKUcyqqaqtYjaaAbVMDerugRMACXZxpqqTWWy8IhyDEQb
-	 b0lREEdAH/FXlVfzTJBccpMb0C9Rb5jkY3S7/Jjorifchh2whzAz9BG0VMPIdtthv/YLV
-	 Uh2GGvvKfB5zOt3EBJFIEHWpVX7Sh8RXG5IlWB1etQH7lXNIJ4FJyQYMZqNyl9jkJkH/K
-	 20hhe7Ol2KzfIGa6s8aOPdIaKbPGSOUlzonQzgJ1CRUfS00FfxS6XER7ZtTbq97U4aQ==
+	t=1792593648;
+	b=fsQeAChlKsksmbenU5jcCeGIpDcqqMLq9XQNZZ71foEnVGr8yzOOATl69ywsMOJK1ZG3
+	 0zVjWe1lTNdVUW+JgubOvLs6Dn+cXixnMDI1+WV/09QnUsoK1bOSP+m98jXQ/duTgHDuL
+	 R6NP+LZJwy0A7S3v+41UmWsVcgMmZwvvoo8aKJEBcCKKGgqa340SD1psv9LANOrJJuIJj
+	 mgas/hvNO4HKpkIzVpImw+VhIGuT2qBDhuLcinVyPq5VtT2g0Wn4iD8r5FiyfGK1u+lBf
+	 Z3ybC+8+/sHy22qJInmn/UBlrvFaxvkZyazeflx03XElFOyWwh4+wXg60FbzwNyvJpA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792593439;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792593648;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
 	 Subject:Message-ID:References:Content-Type:Content-Disposition:
 	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
@@ -24,85 +24,75 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
 	 X-MS-Exchange-CrossTenant-UserPrincipalName:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=/zOBCCMcC9+Ss7AsuwDjFtkz7VCjAw/hS+sgCQ3RMwY=;
-	b=J9wV/P+frO4tXkc3yi/rqFBBsOp2GPInIM5c3i4w2eBCaznPjK/LguK8xAgpiKB9wMVA
-	 BBBQte0hMbjD0l3F/U4VJVSpmc2SaE8LuAIXZqfF8VFtzrdnhva6q9k9Bd+Z94x3rCF+7
-	 FdK6PU+y9uk5ijr2h2WVq/Ohg31zkmyc9RtlFOsnKc6jydzxwtyvUYF/PB+dThbL001xJ
-	 YrrdMb9WeYjZggun4sEGeBxT1gyS8BiI18XlqflIysj6OGNUt3qGBZKN7ER853DbskrIR
-	 ptXGn0Ilhh5ryCRLdSoJhWSJVNHH0CnxPORrq9NTUKBcJdbLzbbFZ4cPkchBrGN9pmg==
+	bh=DVloUJ3IW5U812kAdZS/3hs2PvtVqUW/lxZ0j98KBYE=;
+	b=rzunaNBS9nSeubxFKlDvdjh24OimY07h7SB//bRIyoKfIdd4c5xHLxm/aowsYt3RgJce
+	 gsCCRFT4LKMWDUcskrCIie4f4GxCXkKeaL2ZBqkSMlk/mySEf7G9xJiPF2xyYDB0ioGVX
+	 99u4ZPpkycTx0XGIkyAcLz8nnGHEuNcsFgzBHIyKuxkMzh8t36PQtcKlh2v5TWfIcwIpr
+	 83wi0bcqtElpkTRwnM3vwpUwkBj0dLssz4HfyFnwSlKNiuMdgzkt3DDoMbZBfY5+dvE05
+	 J7mP5ZLv9U8T5ABPo1bJq0DVF0SHK8nwB5YyaokEnChdXiVA58HULsW1rxq0wKpx9yQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=oss.nxp.com;
 	spf=pass smtp.mailfrom=oss.nxp.com;
-	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=ucX01732;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.65.60
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011060.outbound.protection.outlook.com [52.101.65.60])
+	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=aXQ51rAx;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.70.61
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011061.outbound.protection.outlook.com [52.101.70.61])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89B27606A31D
-	for <imx@lists.linux.dev>; Wed, 21 Oct 2026 14:37:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 89B27606A31D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A44E5606A31F
+	for <imx@lists.linux.dev>; Wed, 21 Oct 2026 14:40:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A44E5606A31F
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=ucX01732
+	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=aXQ51rAx
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GOZOWsqsMYS62hxWa2g5YwWt3gOrMB+7p/XxT540Q8ZGYGSobRrigOSLoS4OcWarynBINPF7Vdidn9fOuxhehh9xFzxMO1RvsUVNQX45nNNcB7Zr/i0+bM1V7mq+AxingWTJDlOdg28DHV6x76YG5byCRJsRQQl2DGjz3SYl6jCgWhXDPuBBXZiV3I0ysGcNeOjtkZN0XzzC1LiEE191J0/aR5y5aUWQqdZw3PWctDzuKiC9V4wg694sx6kbP11cP84SNnxvUsvaKSzUc3R44k7d56Hp755fn1mClXR2bGH5I+TTwmDpjhglzo0iOZeDllCm4CUjfCEa3QdqzBKsSw==
+ b=r+KHCQjU+izgAl+UTmQ6YpIAKUv66BrajeI7xaOIR8SX6FQN6PizX+pCnRGD0evx55XXE8PBjdOqO3eIQV87uTFHF5wXhl+0MmuuER6aoULOODBeRHJZgetvk5L/w73r3ZBNfIKgdVOr2rLcmsFEBNFqEXmGEajDdvlgcingmMUliHgWATZ9UslhjXNg3Z3MPaQYaWzs4fOY56EXXI2DxO0STcwjOScUuPzjc5yjtCxuWJl+gs8PatuqWLH5BLNaJmZ0x6B9DUKU+32lTtx7qdlcVcMagN87e0oSrsvCTcr3pyhOE4IHBlTFVvQKrJ54N/tq0UR42l2nUb7DQxtM1g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/zOBCCMcC9+Ss7AsuwDjFtkz7VCjAw/hS+sgCQ3RMwY=;
- b=m5jhVwzXtevM7bSV+gMpQ3SSKHZ1AtQhkfw+HItp+gmI5S5IWPbmu3jDLrtjfrvpnFoD7bfsPye7GttQUV8NCW4z7BgqkczE4h4WEFsO1+JoRpMmrxbqpD7BlCLTmaaZJ0Tetawy/1vcLhNI9hSfxQVFxcel3hh64AKjT7xnjnCsxr6IA/4Sc3iHGtNDsjBHaVfdxSJ7Fb1dCbIHNH5V+9J3mqQc2c2VJV75cpPgvB2eI80jRliRZFya90UgkqObnoLhWdWbFiQQiKP5zDxmck6hxfq/qm32/AUFQKWUosAnrQMPC+e8sFeeAAn7H3V+1+4BQps7CK6j/V32JJ3IjQ==
+ bh=DVloUJ3IW5U812kAdZS/3hs2PvtVqUW/lxZ0j98KBYE=;
+ b=D8kJu8cLsnduIzvWa30F6u7+TfLP3JKXqlwA28KmP0BVEqcD6bkxhp9q2Na9Fx6yPXddmZ7lYAd/+fgUTj8tSxFYxMujCRmu88eSKqeBp8EJWBnkhJMZFQ2vbTuP41cVhR5OFQe0vBDnBdDI5KgxWFoPXrNqQccm1AlYyw/tRRow21+uXquAwavpr/3dT+le9j6+mWGmsEHA0sxR6gfwtbkGKK5EGIENtFZpl47ZFxH1Hq069CPlW7TU1T0kFtFxFjA1/dWKLWrY7gGYvAyn6sW2J01uFMjAUnLextFU4PN8caBUtIbL7J37exapioA1B+eComqjt3g+ZKNDSJNTpg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/zOBCCMcC9+Ss7AsuwDjFtkz7VCjAw/hS+sgCQ3RMwY=;
- b=ucX01732tOwOVCxYuVyeV0CYv22VdmrUOroa+Niuf4fZw271evv+hIaw6C179e6w0DNfzKGYY6KYZd5dwbG3fipx40ZQBHSUTmzBWfr/n5afeglRBd/Ua8i9UXdyVacYhquruS1LI+ie0TvAySCUEO2aDQMDYiDk86GG7kK1QnIMVHNRAKa+RIXvgozj0jhht+MpcEa2Jje+Nf/2lvlUZZMB+gEOVM8XDvUUWeo5tVEBLHdcC80q6bG/+hjy+pwHyHl7hQ4Mz+n3xBRGdnuJen+JID5Y4/KzQqjIKfEYCrqwCOTSrm/+jxWk1Mtu0hqfKbLrFzfPDHo1x3Nfy7PwJw==
+ bh=DVloUJ3IW5U812kAdZS/3hs2PvtVqUW/lxZ0j98KBYE=;
+ b=aXQ51rAxknXYN78iL+EElpaUHqO3XtUTmF839lujF40VG7F/rJSjx0aJLiLgr5/3SFKd/5ikkytw8ZBr1n4sQkk/02THGRg/Xfxmv9Jvo2NrtP5PC3BDYhdFyD+rUZsUnDBG9Jn2pqbgm/T0QOHsKtE4SBqaDiUHhkuZai5Q8oyrNR8ECdOFMZcMe1sZrhInj/bwBvuEIH4/f7MW2azURDBPPgd/b47lBv+yK2+vmrFrR4mqAm15IjiF9hP84dUCaJezkU2I+cV0OZdrQArg9M9M0fBCs3UaA/7+c7/LJx8IfH10YqaLoAVSHTIuglJ9UjHsfd0OO+FN2QIUJ8eBXQ==
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
 Received: from MI3PR04MB12438.eurprd04.prod.outlook.com (2603:10a6:290:76::14)
- by VI0PR04MB554873.eurprd04.prod.outlook.com (2603:10a6:800:361::24) with
+ by MA9PR04MB158479.eurprd04.prod.outlook.com (2603:10a6:250:10a::11) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.19; Wed, 21 Oct
- 2026 14:37:15 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.15; Wed, 21 Oct
+ 2026 14:40:45 +0000
 Received: from MI3PR04MB12438.eurprd04.prod.outlook.com
  ([fe80::c715:c32:8bb1:b70b]) by MI3PR04MB12438.eurprd04.prod.outlook.com
  ([fe80::c715:c32:8bb1:b70b%6]) with mapi id 15.21.0546.012; Wed, 21 Oct 2026
- 14:37:11 +0000
-Date: Wed, 21 Oct 2026 10:37:03 -0400
+ 14:40:45 +0000
+Date: Wed, 21 Oct 2026 09:40:34 -0500
 From: Frank Li <Frank.li@oss.nxp.com>
-To: Junyi Zhao <junyi.zhao@amlogic.com>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Frank Li <Frank.Li@nxp.com>, Rob Herring <robh@kernel.org>,
+To: Krzysztof Kaszubski <sympthicode@gmail.com>
+Cc: Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	linux-i3c@lists.infradead.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-amlogic@lists.infradead.org, imx@lists.linux.dev,
-	linux-hardening@vger.kernel.org, xianwei.zhao@amlogic.com,
-	Kelvin.Zhang@amlogic.com
-Subject: Re: [PATCH 1/3] i3c: master: Rework SVC I3C to support vendor glue
- layers
-Message-ID: <atjOD0PwVGDeh2uL@lizhi-Precision-Tower-5810>
-References: <20261019-a9_i3c-v1-0-329d819d621f@amlogic.com>
- <20261019-a9_i3c-v1-1-329d819d621f@amlogic.com>
- <atZ-YyEmG-KvUZAF@SMW015318>
- <887f0b2d-3a05-418b-bda5-0b01abbcb409@amlogic.com>
+	Fabio Estevam <festevam@gmail.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Alice Guo <alice.guo@nxp.com>, Peng Fan <peng.fan@nxp.com>,
+	imx@lists.linux.dev, devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Krzysztof Kaszubski <simpthicode@gmail.com>
+Subject: Re: [PATCH] ARM: dts: imx7ulp: add "tpm6" pwm node to i.MX7ULP
+Message-ID: <atjO4g8fqmtgKsTi@SMW015318>
+References: <20261021084602.121087-1-sympthicode@gmail.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <887f0b2d-3a05-418b-bda5-0b01abbcb409@amlogic.com>
-X-ClientProxiedBy: DS7P221CA0028.NAMP221.PROD.OUTLOOK.COM
- (2603:10b6:8:25c::14) To MI3PR04MB12438.eurprd04.prod.outlook.com
+In-Reply-To: <20261021084602.121087-1-sympthicode@gmail.com>
+X-ClientProxiedBy: PH0P220CA0010.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:510:d3::20) To MI3PR04MB12438.eurprd04.prod.outlook.com
  (2603:10a6:290:76::14)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -114,144 +104,105 @@ List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|VI0PR04MB554873:EE_
-X-MS-Office365-Filtering-Correlation-Id: ea2be661-942d-411e-7295-08df2f80caa0
+X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|MA9PR04MB158479:EE_
+X-MS-Office365-Filtering-Correlation-Id: e097d14d-c424-48a7-58fb-08df2f8149f3
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|19092799006|1800799024|23010399003|366016|6133799003|18002099003|22082099003|11063799006|4143699003|10067099003|261009223027099003|56012099006;
+	BCL:0;ARA:13230040|23010399003|1800799024|19092799006|376014|7416014|366016|10067099003|18002099003|22082099003|261009223027099003|11063799006|56012099006;
 X-Microsoft-Antispam-Message-Info:
-	OK5scHxVYjktj1WRuMSTmAjb7hi7fIXj/6fRuR1Np7oPDnIZk5SQy9inA9ByGClZiO+xwAwxGgqAbMC0vteHFau4KnEhtnTJV+W9goCbj7E+RXanri6uj5ki5biYg74tq93RERPXFK1UuU5/EG9D/7qJTALgVD2VrEcrVRzmsK1HDAyDo/I8wVhNIQXfIhWZ0Z7tXBqq8oSJfNvZ9YJWKF9hmubQftZTS+TAO7shEGnevUFi3t2Ze1/WqAF8mxMUcJ7NYqQbbWO4MEAj49CwhusaMIDP9EWwG41XDhmo/AQP7QoKch7kSAhyqTuY4WtTWTKNqbCOIyeF5YoCImcZ6Jzd5uLX5mbSbz6H8Q1IMGKgP5WzbQte2g8rOl5NR+uiT6sdbqATq35JaeyGz+FTRGZtJtG2JOGSi1VVAkiMdCX7Yj9QMXYdYizZ0RjONMsP9xNi5J0JRj0mV0FyezuIStiATZC3OxuhmRv0lE2tbeeuVtGhzGQ0r81bs22rF+eqYgKpZivVTURBSQ3UbkoIObwgT5zKjKEcEWbjJMmcZ8veENSRn/H3Di+cQEHKvk5uGg9vzXWSedZc8ZCNtalXRFoo4dtjDZYxHd8BHE3kgdfrjx4uVJM9DI/iP0uz4iGf1ZRehYb5R2fKdpmmCxvAlKBWEx9YELDlJgs/ASprHSg=
+	oWjhLyULezXqNeu6SMtX+h3DjnUVuOq/E2Gc00ysplu74tOutK9Hc/KXbNcHUrQjF1JyIyEtiIS07NIJ301n1zvOhZKQSU5wrlGRN+FKiACabxofgg0eAk4KUg10gwAp7hAlMr0FJUCuq54Pyauy2AOswWIzgNBS8O86fBYbmd6wV9mjQ5CctNsnM/IALisz8QweKTfsA2WFJsMj5RGVJXv9Mp6Xz+gBI+pLJyHB+wKnuQoW8gjgpErBrBXOdpERALdwlNQe8ZtI15bmB72YQ/En4201yu3ioN7Nqff7sC1rQJOojGiJXQTjWjn1Rrac7PBs0yiWVY9dcFt/BBkibPVbFMAKlBvYRgAn3alxYbt07TF3gJnI3VdoFVCMD1Y9FAfUkUc8z2KOYpskbNB9q+Wn2RcrOaxzVVo4NcInZFt4PDTwJTtWsKyLFUC+5H1d27zPg+6bfMjEmMp2AP30g99SZg0MBMI+21KtwejcAj1xpWpvZk3skW4tEJnlJjSt2WUmPKaKW841ySwMzLo4vZr+dx+3e5fqtniI0ucYWDn12MRGea79W44YxaDs/s4D+ARqv//GS0e3d6CPAmUMF40F0gH4RxHgvqg6ewJN2H9e7QYGS752/k9+ogaPRD0ilKWCUMQb+yY0TG9trR2EGUhxuxXKv90GMqtJNALUyOQ=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(19092799006)(1800799024)(23010399003)(366016)(6133799003)(18002099003)(22082099003)(11063799006)(4143699003)(10067099003)(261009223027099003)(56012099006);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(19092799006)(376014)(7416014)(366016)(10067099003)(18002099003)(22082099003)(261009223027099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?fH/Nm9VMbmbm3c28hmsWRmiGP9n4j3LGGRwyiDSKkooLNYRdD2t2HwvBWFMz?=
- =?us-ascii?Q?vRfZVXZODkeSxJlHrls+V/ORzUpBnQOgVyJ1IkSZ/RNr7t3iXN+CL7HTwJmK?=
- =?us-ascii?Q?8Cb/WZSADbEJAG+wdK5B20Sl6rX43ITsMXkq6B6ggAqVAwcSeR0jC5IzlNJ4?=
- =?us-ascii?Q?ngxghJruXvIEITL5GOuWGXSll2RdPIBazg+YMUFevwH7KjcCFplCsvBDex+2?=
- =?us-ascii?Q?uSH/vW4egEqN1SJ5vIZ6YBOumfSsBhEhf9UtTFeH8VBKCkXB8x/AfAHos9Sq?=
- =?us-ascii?Q?1kmiv2IIHn+XCueZzbIhuA709K2eK3dDVuKWsePio/j3qjTmesYXvHj5pGT4?=
- =?us-ascii?Q?vVumRw0uF9HH1qoG7l5/22mQXtSvk+s/PyHImeBUKV3OQil0GB19xxxrlpIR?=
- =?us-ascii?Q?qlIlRVYgCL99KExclSalZf2IR4UUSnkbbl1QnWciTQ9IhZwY0199oolPwLtm?=
- =?us-ascii?Q?Q1M4uK6Y3HVSgfujHUs/H0pEpwSox+SecyEygLpbw6oyjtpxcSRh1SlMLJT/?=
- =?us-ascii?Q?Hpxzu0A81W0zLLoUgXEjaO4mL8lwfKFOJO8p1p9vNWAMgr87zpmpUb/KlSi3?=
- =?us-ascii?Q?qnEDSctuIn9bi5PEeFhn9KDgE3eV+5X/VZcINXvL0ijmGqmoWFrqZVs85AIo?=
- =?us-ascii?Q?t5erYDowYx7isWzw5Ae2zVegMTgslKly1DAn3KsFxlg1LM0/nyrmaeE2jZ1c?=
- =?us-ascii?Q?UUVCXfbZBjKsoPM+yNBlhdLnCcvqjh2/yB6BNDIaIsS05AnuQKUF4Hk+b5xI?=
- =?us-ascii?Q?JxB6yTyzJokVzgZHTz1kJaq8chYCHp5KnQV5rih4FL3uw31D4XNJzXFqm9mL?=
- =?us-ascii?Q?X2DAGjnD+Ga8AKvocQxlbwk0czwn1ApOKY980Co1rhX0acl7I+IemU/bvn/2?=
- =?us-ascii?Q?gC6qpyoOcs2BBuXXiNKFLBR6ZcxoiyUiHz0Z5Cz+EcYc6IC8S8WDs4BXtHHL?=
- =?us-ascii?Q?8dYuaWTIMYk25c2OWaeBU9rzQlctY7kCwFc/mH4/La3LSeWiJqjV/uKyne9L?=
- =?us-ascii?Q?XPW5/R1sOz6bYn+CqQ1ialnjJW4fay25cNQXTTQBqFUTSjsw85HyFLtLLF3t?=
- =?us-ascii?Q?Jj4lIHvI3vwOOhmknf6odrcPmSEEAZyzfOz7oOlbIhcDL3WtedqbdN2Odgwh?=
- =?us-ascii?Q?4DWbzlg4nx92v+nrt8FZ0or0JryT/TCDFONRpKmrc1LdFAbkjXH+dFKqaRvN?=
- =?us-ascii?Q?fwsTYs6v9WjxU19clEhtesdvzGpmChoTsQ5SrYY4fZj6EpdP39eFiR6y2xsU?=
- =?us-ascii?Q?GCAIe3kBsInavroBoXBA4sJtNBp0iuSEr9a8bhrai5meDjX0nsNqSt3eIitT?=
- =?us-ascii?Q?T1A8qvLP/r16PYO8QHsnWSTOur7dzXfNOaYvDZzer42UNSfK1ckTmwS5LBvy?=
- =?us-ascii?Q?daLIFYVcH5znESa2MFRXNbU2dmAZuOz3N9FKG3AAfolu3UT1dX1vVY/wEAwx?=
- =?us-ascii?Q?vnxYsBYu9UpwbA4sFhHWmeBIXQETpwoUU2Wrcm0TIDVnHNRd8/jiyrQMnLPu?=
- =?us-ascii?Q?A8o96jTOkkz7ddvY6HX92DM5qfINo9UY1ga/EyCrX1hXADCOVBQKcToeVrBR?=
- =?us-ascii?Q?A9FG8w7fDQEJcvdfjhQii8GSau3sTmASQDLN93Xpc599Eo8IyjXqcFWsZMww?=
- =?us-ascii?Q?DqNVYHGYwqowoWtMVaUSsbYZYvokChFTuXOiQz2snSN2Pn9Mo7CAKqmsCuIh?=
- =?us-ascii?Q?/dwH5q4vkmpFdcYZM/FbZVfpxMBuJyFiLKn86SRskZIp/GkFzF1Ge+9/F+g/?=
- =?us-ascii?Q?5Wfg0Q6+kUi68bja5zh0k90bahYes8W55ibT2m201Wcg/0RHXXRh?=
+	=?us-ascii?Q?wpVF3cwSuVI3FNewoJwTBs0JjvZ4Lgm+NrW8s5b9WR1i9npaWm42Tn7Xb+Yg?=
+ =?us-ascii?Q?j8nFph1K8N632CyRiPVyd/hYS18JeLWxfSp+5K61fnWeEqtc6uEXUYwDpKte?=
+ =?us-ascii?Q?neBB+zKdEI5Dpu6ZB7t4u2v0LbaQj5gseqFmf3Uq5VpD+7WcoDTWzcG/xLos?=
+ =?us-ascii?Q?whySF6CmSH2gUV9oajtIFJi4JgzYPL45hqrjlRzyKBGZPL8v8CiH2aAPw+yV?=
+ =?us-ascii?Q?BZz9q/1MFSEJeTXDn+aJmrBodcK9t3fKRnNwLKxhsruJvyI4D9sV7MGVkI45?=
+ =?us-ascii?Q?pre6Q1GcSWMuQhbK4Kp+xaJIiQmNwYpkLHnL6FLg6O9LqYcs9m/NlYkeXuhn?=
+ =?us-ascii?Q?gFteBsQ4k1umwN88gZsTp8YVfFkTar5nyBnH32VZoP1XUcqXojcNB0eHFsRY?=
+ =?us-ascii?Q?W5mCIkHCNjk/F2Loe6tCuN8o+/7E0h0qk+pHg0PijwZstkzApPKVCR/5guTp?=
+ =?us-ascii?Q?Vze+AAcd3JM1570CRV0WJ/zSEIOfm/SBmBQTSZJ9MFCVzF6pJL290WAUlg0H?=
+ =?us-ascii?Q?/q2Lh/f57ZZnyqyNPN2ptSF0GFySIFXrAoCP9RtPEF8+K/95IxZLUnpcWc1k?=
+ =?us-ascii?Q?kHxOg99GPNfzXQ9oCJwTXAUDngmqRjHKNHEPzsHtLFxLMFZ26mdhlPfl2umF?=
+ =?us-ascii?Q?aRUQsy/HAv+GbafVPBCJDLLLToVKXk0Vaog0UF2m6eeFD+VSPfriUgZYdzYp?=
+ =?us-ascii?Q?uDphG/f/s1HhRWiCTwJL/YqOmvaKsg9KCRBN99MzSF/OMugEXL7txlNYOt+D?=
+ =?us-ascii?Q?+0OQltw5N4NYwS0eYeF7/BIQWKfY/s9HGE5LrwbTlL/i+jh4ZHkhY9ZmDQth?=
+ =?us-ascii?Q?BaMXVLXLfMWNVXAIPyNFCMQAFABQgPnqLN/YRqmznb1oDYpNlNBzqndHHWdQ?=
+ =?us-ascii?Q?1ThNv23ZMLDc54/7oYccfJ2URlb7Vq1UVgUNg8vWBi/f6/gOxnj3MELJ/DAE?=
+ =?us-ascii?Q?LDU6iyoLDL3dEqBnaTcgcR4ONKzl8W4cnF9t6rMMjanD0FjIPGur7og6AOgO?=
+ =?us-ascii?Q?1QGXH425KmZYbYSTSPCWtH/TZALKCz8EXqK+cjew3KpfIwQTJ12pwg7ZPq1V?=
+ =?us-ascii?Q?i8vNbElUhHzUdSZyvbQD3Hc+1OnTA1jGRnOFfAkuyrS/cOcKgJ3wHx8x8V3M?=
+ =?us-ascii?Q?itnDkWyUt/+bdQFxqccI8xZK3UdBQuDZuRkehkBXAa9/pDFNjHJAH1b4SA7Z?=
+ =?us-ascii?Q?YLHqmf10u0fn4TUq2ZnmVKg17wfk+Mi8aNHG1tiRIekldSANT/nr6BCn+ZzE?=
+ =?us-ascii?Q?sINrH6/qDz9ideAU3904AdFO3iUkOoKTjszaAQ72IA5EUxDlnKj75IJADJ0N?=
+ =?us-ascii?Q?aY+S/w35kufihWDQIwvbvcmtd1F9AvXDI3Wv1HHdfOeazcopPctTU8sJw/fF?=
+ =?us-ascii?Q?OChFxpBRtOlAkfd189ldhKrYl9z+sUcXisPp34I0YO9twFEc3eMtU9alhpCR?=
+ =?us-ascii?Q?icUlSb8yoab8pbWJqECviif2MEt1uAXuNEUo6T0oVcINTlX/hjCmWbXk+MCp?=
+ =?us-ascii?Q?PINFjFFThj4EStmkOcvS2Wb68nOIXu7FlfDLrFZwKHmCo5JpbUJ6qqjTGRzF?=
+ =?us-ascii?Q?YSgBJbdLUQwoHkNRyvhYtZSwNrzQm/7CUTBRARnAvAwXKrwIcxEz9Kn9DC/a?=
+ =?us-ascii?Q?wFTkdiQSOBqdOrSS5IEW1iCXJovXrBZP/B+xx0EVlHflM6tfzcl/vlH4ijZt?=
+ =?us-ascii?Q?wIKolAljbpFmlph9l5STS+evhEVJWFq17O19IVXMpQlgh2FdbraATiewc1V+?=
+ =?us-ascii?Q?dZYW6swAgDG3ppiDVnFSD7/KgHH2/DmmeV+GLFyKzoHl+JP7fbh1?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ea2be661-942d-411e-7295-08df2f80caa0
+X-MS-Exchange-CrossTenant-Network-Message-Id: e097d14d-c424-48a7-58fb-08df2f8149f3
 X-MS-Exchange-CrossTenant-AuthSource: MI3PR04MB12438.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Oct 2026 14:37:11.2761
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Oct 2026 14:40:45.0263
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: n/2YHTHgzfiwuDgUCGKB7fr6IGIO9ddgF6xE3FmkkIodcXB2BsO0EkJsz+K+w2WpvoBJ2m8pLRB1Of/R48fUKVCLLRWPmgkd3mazjPaLavX3XmyxndBNLCwDxobQAAzV
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB554873
+X-MS-Exchange-CrossTenant-UserPrincipalName: 5ubIot1MA2ojvrJ89gKj4yBJwv2zJfu6uhkhEHTrjxdVzexGs38mZH5XEGaQtO1e5TeonKVqNOnMoDoLKy3YixonnoG7VEdZvDzL+Q7h40xkc1/TbpKIVuQesxsK4W1k
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MA9PR04MB158479
 
-On Wed, Oct 21, 2026 at 10:56:19AM +0800, Junyi Zhao wrote:
-> Hi Frank,
+On Wed, Oct 21, 2026 at 10:45:59AM +0200, Krzysztof Kaszubski wrote:
+> [You don't often get email from sympthicode@gmail.com. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
 >
-> Thanks for looking at this.
+> From: Krzysztof Kaszubski <simpthicode@gmail.com>
 >
-> Amlogic A9 used the same SVC I3C IP engine, but the integration of it
-> differs in the resources *around* the controller, which cannot be
-> expressed as another quirks entry:
+> Add the Low Power Timer/Pulse Width Modulation Module 6 (TPM6)
+> node to the i.MX 7ULP device tree.
 >
-> - On the "ao" instance the bus clock is generated by an internal
->   divider (I3C_AO_FCLK_DIV_CTRL @0x304) programmed directly by the
->   driver; there is no CCF clock to clk_set_rate() on, while the
->   common probe assumes the fclk is a plain enable-able clock.
-
-If it is in I3C memory region, you can do that by use callback. otherwise
-should go through clock framework.
-
+> TPM6 is located in the Application Domain (Cortex-A7) at base
+> address 0x40a10000. This enables PWM and timer support for
+> peripherals connected to this domain, such as display backlight
+> controllers.
 >
-> - Amlogic added register blocks outside the Silvaco map: a
->   DMA bridge and a bus monitor (0x200..0x22c).
-
-Does DMA bridge only for I3C? It should be go through standard DMA engine.
-
-what bus monitor use for.
-
->   Enabling the DMA bridge later will need hooks in the common
->   transfer path.
-
-We also need support DMA in future.
-
+> Signed-off-by: Krzysztof Kaszubski <simpthicode@gmail.com>
+> ---
+>  arch/arm/boot/dts/nxp/imx/imx7ulp.dtsi | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
 >
-> Adding A9 support to svc-i3c-master.c directly, would make these
-> becomes if-branches in probe()/PM/transfer paths of the shared
-> driver, and the next vendor repeats that.
-
-You can use callback function in drvdata.
-
-> With the glue layer,
-> i3c-main.c keeps today's logic unchanged: i3c-silvaco.c is the
-> current probe code moved as-is (rename with 79% similarity), so
-> blame/history is preserved.
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx7ulp.dtsi b/arch/arm/boot/dts/nxp/imx/imx7ulp.dtsi
+> index 39e37ae9b2b1..f5ec5e9d65de 100644
+> --- a/arch/arm/boot/dts/nxp/imx/imx7ulp.dtsi
+> +++ b/arch/arm/boot/dts/nxp/imx/imx7ulp.dtsi
+> @@ -216,6 +216,16 @@ tpm5: tpm@40260000 {
+>                         clock-names = "ipg", "per";
+>                 };
 >
-> If the file move is the main concern, I can keep
-> svc-i3c-master.c where it is and only export the alloc/probe/remove/PM/
-> interface for glue drivers -- the essential part for me is keeping
-> the resource handling out of the common code paths.
+> +               tpm6: pwm@40a10000 {
 
-Now, there are not much user yet. Rename or re-org only when it becomes
-complex enough.
+Order by address
 
 Frank
 
+> +                       compatible = "fsl,imx7ulp-pwm";
+> +                       reg = <0x40a10000 0x1000>;
+> +                       assigned-clocks = <&pcc3 IMX7ULP_CLK_LPTPM6>;
+> +                       assigned-clock-parents = <&scg1 IMX7ULP_CLK_SOSC_BUS_CLK>;
+> +                       clocks = <&pcc3 IMX7ULP_CLK_LPTPM6>;
+> +                       #pwm-cells = <3>;
+> +                       status = "disabled";
+> +               };
+> +
+>                 usbotg1: usb@40330000 {
+>                         compatible = "fsl,imx7ulp-usb", "fsl,imx6ul-usb", "fsl,imx27-usb";
+>                         reg = <0x40330000 0x200>;
+> --
+> 2.43.0
 >
-> Also, per Neil's suggestion I'll try modeling the AO divider as a
-> CCF clock in v2, which should drop one hook.
 >
-> Thanks,
-> Junyi
->
->
-> On 2026/10/20 4:32, Frank Li wrote:
-> > [ EXTERNAL EMAIL ]
-> >
-> > On Mon, Oct 19, 2026 at 01:34:26PM +0800, Junyi Zhao via B4 Relay wrote:
-> > > [You don't often get email from devnull+junyi.zhao.amlogic.com@kernel.org. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
-> > >
-> > > From: Junyi Zhao <junyi.zhao@amlogic.com>
-> > >
-> > > The SVC I3C controller IP can be integrated into SoCs from different
-> > > vendors. Peripheral resources associated with the controller, such as
-> > > clocks, may vary between vendor implementations.
-> > >
-> > > Rework the driver to separate common functionality from
-> > > vendor-specific extensions. The common logic is shared across all
-> > > implementations, while platform-dependent operations are provided
-> > > through vendor-specific hooks.
-> > >
-> > > Also add a corresponding MAINTAINERS entry for the SILVACO I3C
-> > > controller.
-> > >
-> > > Signed-off-by: Junyi Zhao <junyi.zhao@amlogic.com>
-> > > ---
-> >
-> > No big difference. Needn't rework svc-i3c-master.c, you can add amlogic at
-> > svc-i3c-master.c directly.
-> >
-> > Frank
