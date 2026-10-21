@@ -1,101 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.176
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792572371;
-	b=MaYHUfB53mZ54NRvYWk2SGml+El4UxG3aF416JGQeZ/YPK9iFwb9rCqgsYOleMVMrQUc
-	 PRJoxrhhMtX+HCvhmMGhA1S1VlAOjxIiak3JFBds4LJy1gdT87VbJ2BoDP/rJjYqBAOOj
-	 54UiMTWtGAsGUIHnLtcalWHGpd0scF7SsqoVU5BM6TzzqDy2w06ISdp/zcVzWxzHZQb62
-	 3XeoPlQn4anLghqpmU3mRPKUTP84oaMP6rhdK62iYuMSkjXO+o9Ro+7chBVUPwq89+MHJ
-	 xU76v7MlkF5YND9B2CCZ6ezUY5ZGbF3hkpwvj7rMzEQpopLYdqdfdV6vBUzqcx0xFXA==
+	t=1792572810;
+	b=UrX7f5oMmDRp2/Kmk54kQdKDdUNe3A0cYmG3OHjKSyYyvADyX7B6Bo5bSylyMdl6ji6J
+	 NnP/7MLMo4BP3KMvKXEWEDRf9ZUpcs09k0M0Om4V5GNALe6wT/Y2wpPt2Ni+23TsHteFB
+	 Kgx8sLp6cqQGU1nDditxgym0M/dJpmSlnK3V68jWdTJ5PoqqSHCJTjXRO+nN9BKiwEuQJ
+	 vqMM8fyEoShs+sfiV8gH8g693et/uMMmXDei+ViTET9E5zVZSe8Bi0h6ctmEj/wLGD8sV
+	 QcKm5ldmqni6jXmAY4J6aiyRBCT2beHvJ2+P5e79s6BZwUzhPDiOQLEGWGADq1xohxw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792572371;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=cYjE70VK9dQOuYVSDX1vCeqjSSE/jR55HkQy4/7ye/I=;
-	b=R30LQpk/s72EhpNyTiIp2nzEyEeSG336F1WnxynOFFBDVdpeFpBm9k4pdk6TzGeVHeKR
-	 WEhfTAQxf+zHwgtWdeUqHgWxEkgyYv5gnQAdo/o6L8+5tCmuHs1JlKSCThI7IQDQjx3cU
-	 7l6BFLinKkyMDgatvkvGaQXO5eHVNfhQOSiaLjrOWzhE22LW3LGWuYWq5aUC1lxUNlh70
-	 C93mLf+e4kRmKNMzh37mY7sQnPW/Q9D+YkY2ba0+t3kWPfL5ofW94MbnBdfjoH9ThaMO7
-	 oFULN7N8eTigG7uYj07rAJBuEcyP0ZcgdtlW7lDPFQp1DqZDWSiWPgp4OZgTmGm+LBw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792572810;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=QfifPJMf0jj3XcnoaFXRLLnQtKD3QBHTpiJ+wC9FSO4=;
+	b=yQX0wj0Q8Wvzm73wM4SgHfQzSabV4RkmYeKhgXn1Am2E63PZHms+ATJ5A/Ihgocz91M6
+	 AETXf3ZylqC7esOebtmrvFPTRA2A98SrrQJVGfUknS21ottvhr0ewyEBKLHD31ogERsoG
+	 IDh8qjZJvZi/o/DWVKH8yMV8rnMo+Yd83CITaTpE0Psj7lme0Ca/a7/TSNLJtbJGJoyKR
+	 fjD3ttmzox5xzpFJWRGYS4/nmy5fPR9QPHpCv9EE5eDeaBBfzjV+v+Em7Fk1kXY/4nWoh
+	 Lf34XL1vqgYbzu78f5yJ1472kuLDj5fnKRRLhtGPbzRLWA8el9vxMMcQh2wOV1asimg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b="DtxR/0Ij";
-	arc=none smtp.remote-ip=209.85.210.176
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fqt6miEW;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9439A606A32A
-	for <imx@lists.linux.dev>; Wed, 21 Oct 2026 08:46:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9439A606A32A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9030F606A31B;
+	Wed, 21 Oct 2026 08:53:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=DtxR/0Ij
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-8a06210b29fso173759b3a.1
-        for <imx@lists.linux.dev>; Wed, 21 Oct 2026 01:46:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792572370; x=1793177170; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=cYjE70VK9dQOuYVSDX1vCeqjSSE/jR55HkQy4/7ye/I=;
-        b=DtxR/0IjVpWuoIatFhI1jf7BcjN9KRBipFDWHBCO6+EltVWtdVw/+FVYAmXGQl16iJ
-         DePS6snW5YadToIm+kuSyDorhBdj1D4ppmeoe1X3LxiP4WgQ2O2BHH/AXeD/GJ+beQFV
-         Dly1D4OXVkjcMsrQG8YKDwG/tZUh0X83K3Q70KPAtjKo0Jc40G2YIDqfq1ADxZEZYPE+
-         NjdRbTWMGZWcoz+0ZB9/Dy7nvigVH7lY2Cf8WtPQbvuBMH2NmodVlcLJcCFSmwAW575v
-         i4gNIxhNhs7EJLrjuwMGRHs0lq0wBvdhguIaOIX3wqGFQ8G4K43ImaapL3ld05CKLpY8
-         z6yw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792572370; x=1793177170;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=cYjE70VK9dQOuYVSDX1vCeqjSSE/jR55HkQy4/7ye/I=;
-        b=aDBqMs6uohmQ7rUvs9W4rd6MJTBYYIFI+8NjrM2GItCMkJ+sMbFG1ZSOcOVDeONSof
-         QgPQAuSZ85OXCcikw4JrrSAfJJ6+raiover5B+7PdfM82ky3lNkQjgQ5tziMi2s2nbUK
-         Sv5JWSkiLDQe5q5MJnKQ7hjClyHI4AO0DYQBqUNHyphH7LZXtHxyFbl/TOywJElPcG9x
-         McK4tjmWJ2/P20C87NDPVHoBQuJxiTZEPPij1K/KLP5Y4Bo6c5FNwKPm2Cifcq3GXasl
-         eeLALNJXstLNuaM2UKZbAv9S8VTgS708y9YGUVNjkZD3cC9E8DxQyvODmRHgS0JF1DDW
-         CL+A==
-X-Forwarded-Encrypted: i=1; AKwUvBzpnWTUlN62knvoYyo3ZtXej8JzwfQHwwJ484Izs+iZb+JGeqZeny6S4mq8R3cPZvHE8pw=@lists.linux.dev
-X-Gm-Message-State: AFq9FYKAGwhRfNwEMrakG+OTF7OzpnasvL98uGKNI7SjcwDkIcxvsBfV
-	u2A9xqb+pU0JsML9NcvTLcjbqdYWXkxkYGWxXGnw8qb7rcSSTCvKL2XA
-X-Gm-Gg: AYBFou1cuj1tiDVBqF+00QyQt7NGFL5AtSGNmiqB4guy7sDNwI4s+jqAFpS34TN0MHp
-	KT2LS8+Y8iJ2ZTlPoaJC/xK9Z+wLY0yiIFmF4skx5CzFMRRc0nB8vgg9Rbc8hrqUK/UvmbbX7B9
-	xmdnKiw94f4ybFulcxCCMG7RhnOI1bP6f+RJHHs5gky8oPVQ5ZUXpNc7dbr5oIg9oGtTYEekynx
-	zjjeW9swLa3kijNoSxXEL4InFqv7kA05ss19+kGMiq6stemKiWznLZYHMx5D+I6GPvAUzrUOM84
-	e4bc6pAV/yTCMIzsJGsiaO6T90vEGBOenB9h9IR1YiUnxNxskiHjboK24MmuUDxORhFQO75m8K5
-	ABsu+0xIpubXB6OZu/PIxTy8vssV9K8i+qxAE8+yMWv5Q7Zug7i81Al7Jx/NvNE/cV2fnKLACwD
-	j6+eHFXttWg9fbeKzVn9kIRgYhmnoNIG9RwixAemGr9+qEaA/X0hYOetH8kwXsZyrrgBDrh6m3T
-	5sferFsu1iPUuW8yR57zWjdYsnlQTvp9V2+Q3HEQZcTU8a1Q7W069aHNNcJ5oNojffx1lvnBlKr
-	XlddDsI=
-X-Received: by 2002:aa7:8887:0:b0:89f:129a:9590 with SMTP id d2e1a72fcca58-8a089ebacf3mr1029844b3a.48.1792572369847;
-        Wed, 21 Oct 2026 01:46:09 -0700 (PDT)
-Received: from FLK-B04Q314.global.tektronix.net ([87.58.102.86])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8a0895c08c8sm604998b3a.25.2026.10.21.01.46.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Oct 2026 01:46:09 -0700 (PDT)
-From: Krzysztof Kaszubski <sympthicode@gmail.com>
-To: Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: Fabio Estevam <festevam@gmail.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Alice Guo <alice.guo@nxp.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	imx@lists.linux.dev,
-	devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Krzysztof Kaszubski <simpthicode@gmail.com>
-Subject: [PATCH] ARM: dts: imx7ulp: add "tpm6" pwm node to i.MX7ULP
-Date: Wed, 21 Oct 2026 10:45:59 +0200
-Message-ID: <20261021084602.121087-1-sympthicode@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fqt6miEW
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3EB41F000C9;
+	Wed, 21 Oct 2026 08:53:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792572810;
+	bh=QfifPJMf0jj3XcnoaFXRLLnQtKD3QBHTpiJ+wC9FSO4=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=fqt6miEWeV9aK2twfFzpl2nG9OalkQ74dFbzpK67AZVTTh/fy8Yz1jERfslz5thKJ
+	 1dc46SrABiWPg0fKciZbzRPnFcVHT8F1NJf3mWfrEJe2udtFi4KqHdOiCrlPqPqb1x
+	 l4BRuU2KNd/V5BNbMczz7qfZ4Iam4ObV84fA7IESDrLkqUdSCkJkmiJdmDs1Z1vuUN
+	 PaYnsu7Xq1gidOAP53D99xZYsgdKIUitkGm5Kk92uqMxVnwHrh9gYqlP11NRlUmV42
+	 zdnpm1Z22X6KDaxGVl3AeYcuIHo6j92rAzkgfD1pArAFMwjH5XcH2c5Q/o9WSldDgM
+	 EMFS7GrKohTXQ==
+Message-ID: <sashiko-outbox-179991@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] ARM: dts: imx7ulp: add "tpm6" pwm node to i.MX7ULP
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Krzysztof Kaszubski" <sympthicode@gmail.com>
+Cc: imx@lists.linux.dev, devicetree@vger.kernel.org, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org
+In-Reply-To: <20261021084602.121087-1-sympthicode@gmail.com>
+References: <20261021084602.121087-1-sympthicode@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 21 Oct 2026 08:53:29 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -104,45 +58,80 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: Krzysztof Kaszubski <simpthicode@gmail.com>
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Low] ARM: dts: imx7ulp: tpm6 placed under ahbbridge0 instead of ahbbridg=
+e1
+--
 
-Add the Low Power Timer/Pulse Width Modulation Module 6 (TPM6)
-node to the i.MX 7ULP device tree.
+commit cb9013d8dcda32d8a277bf006e44680f1bf14cb8
+Author: Krzysztof Kaszubski <simpthicode@gmail.com>
 
-TPM6 is located in the Application Domain (Cortex-A7) at base
-address 0x40a10000. This enables PWM and timer support for
-peripherals connected to this domain, such as display backlight
-controllers.
+ARM: dts: imx7ulp: add "tpm6" pwm node to i.MX7ULP
 
-Signed-off-by: Krzysztof Kaszubski <simpthicode@gmail.com>
----
- arch/arm/boot/dts/nxp/imx/imx7ulp.dtsi | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+This commit adds the tpm6 (pwm@40a10000) device tree node to
+arch/arm/boot/dts/nxp/imx/imx7ulp.dtsi to enable PWM and timer support in t=
+he
+Application Domain.
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx7ulp.dtsi b/arch/arm/boot/dts/nxp/imx/imx7ulp.dtsi
-index 39e37ae9b2b1..f5ec5e9d65de 100644
---- a/arch/arm/boot/dts/nxp/imx/imx7ulp.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx7ulp.dtsi
-@@ -216,6 +216,16 @@ tpm5: tpm@40260000 {
- 			clock-names = "ipg", "per";
- 		};
- 
-+		tpm6: pwm@40a10000 {
-+			compatible = "fsl,imx7ulp-pwm";
-+			reg = <0x40a10000 0x1000>;
-+			assigned-clocks = <&pcc3 IMX7ULP_CLK_LPTPM6>;
-+			assigned-clock-parents = <&scg1 IMX7ULP_CLK_SOSC_BUS_CLK>;
-+			clocks = <&pcc3 IMX7ULP_CLK_LPTPM6>;
-+			#pwm-cells = <3>;
-+			status = "disabled";
-+		};
-+
- 		usbotg1: usb@40330000 {
- 			compatible = "fsl,imx7ulp-usb", "fsl,imx6ul-usb", "fsl,imx27-usb";
- 			reg = <0x40330000 0x200>;
--- 
-2.43.0
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx7ulp.dtsi b/arch/arm/boot/dts/n=
+xp/imx/imx7ulp.dtsi
+> index 39e37ae9b2b1e..f5ec5e9d65de2 100644
+> --- a/arch/arm/boot/dts/nxp/imx/imx7ulp.dtsi
+> +++ b/arch/arm/boot/dts/nxp/imx/imx7ulp.dtsi
+> @@ -216,6 +216,16 @@ tpm5: tpm@40260000 {
+>  			clock-names =3D "ipg", "per";
+>  		};
+> =20
+> +		tpm6: pwm@40a10000 {
+> +			compatible =3D "fsl,imx7ulp-pwm";
+> +			reg =3D <0x40a10000 0x1000>;
+> +			assigned-clocks =3D <&pcc3 IMX7ULP_CLK_LPTPM6>;
+> +			assigned-clock-parents =3D <&scg1 IMX7ULP_CLK_SOSC_BUS_CLK>;
+> +			clocks =3D <&pcc3 IMX7ULP_CLK_LPTPM6>;
+> +			#pwm-cells =3D <3>;
+> +			status =3D "disabled";
+> +		};
+> +
+>  		usbotg1: usb@40330000 {
+>  			compatible =3D "fsl,imx7ulp-usb", "fsl,imx6ul-usb", "fsl,imx27-usb";
+>  			reg =3D <0x40330000 0x200>;
 
+[Severity: Low]
+Should tpm6 (pwm@40a10000) be placed under ahbbridge1 instead of ahbbridge0?
+
+In arch/arm/boot/dts/nxp/imx/imx7ulp.dtsi, this hunk inserts tpm6 inside
+ahbbridge0 (bus@40000000) between tpm5 (tpm@40260000) and usbotg1
+(usb@40330000). However, ahbbridge0 only covers the address range 0x40000000
+through 0x407fffff:
+
+	ahbbridge0: bus@40000000 {
+		compatible =3D "simple-bus";
+		#address-cells =3D <1>;
+		#size-cells =3D <1>;
+		reg =3D <0x40000000 0x800000>;
+		ranges;
+
+Peripherals in the 0x40800000..0x40ffffff range and clocked by pcc3 reside
+under ahbbridge1 (bus@40800000):
+
+	ahbbridge1: bus@40800000 {
+		compatible =3D "simple-bus";
+		#address-cells =3D <1>;
+		#size-cells =3D <1>;
+		reg =3D <0x40800000 0x800000>;
+		ranges;
+
+		lpi2c6: i2c@40a40000 {
+
+Placing pwm@40a10000 under ahbbridge0 puts it outside the parent bus reg
+range and out of unit-address order when compiling or validating device tre=
+es
+that include imx7ulp.dtsi. Should tpm6 be moved under ahbbridge1 right befo=
+re
+lpi2c6 (i2c@40a40000)?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261021084602.1210=
+87-1-sympthicode@gmail.com?part=3D1
