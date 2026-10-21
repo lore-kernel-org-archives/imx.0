@@ -1,100 +1,108 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.70.47
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792571109;
-	b=sWwU+EYdThmhPBYtdJFCpiNJ2dzP1lR1SpM3sOOY1MoJZXT7micZ6un/xf0zkUDyi2VL
-	 vdLWSnlvCHhjgjF/K4BNpRl4zZgZTiBe562SVBFHDBh5JyIGxzPu0ZyccUwqcnnVxDujJ
-	 MG1vKsdAuajQ81YZuzDrMe9ZnEOOE2XO35xXwkqnOZIXymgATo7aHns2QQ7IwUdb6nPkG
-	 nYPBzTq6wVKdos6Mg2MHvVzAg0tl4Lo3pbfqG91BrTZh7+BCF9o82O8Nd7qyLllk2G9Lx
-	 br62p4drrr3kQuKODRVyxtlA+2kHhqkjzUIbRIMDFXdTzu0kwDaxaRg3T3mo1bDsyew==
+	t=1792571276;
+	b=TParmi7bcIYNWqOrxL5ppi79QntOmNNoXeiOHuaUvBpedQ/MDMOJa0ksvDzCg5SkfElA
+	 Qowa8H32Fm+aYfnHQ3KzW5efHjMSoWq+2tDXc+m0slqMQwZzpM3xn7oIuIiQwkgKuFxx0
+	 ZPjUyW9LFeISiiELTfncIYZj3ffy7py2x9qhT0vivAlVNpH8RteVSPNO3rxQkipzRnLhm
+	 mqjCqAz95jCBI0aWoBbcPqQ6humyMRj3rxPo4FDCz7iTjKjtar0rieUHWTj7d4fK4cEUA
+	 UWVLg1A/zfU/e7JvaUic4ms8VOGr1phYyIMzAX0mAByOoYHVSqGEyG51RPVTSLWy9RA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792571109;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Date:From:To:
-	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=h/hSC13tu4dTP+Bia0+DJf04N3hSWtGlShKyDnRL7mY=;
-	b=CufaQ2X+YpykwA3rW/ZJQhuuId8UhAI687wOfaQLqQdyrtw1jEvQlGx99I3mp0LDY5G9
-	 y51liPecJF86FVXMZ0ioUSmKnN3bBkNMzOj/hsDEWiaXtmLF8XxNv/oM/3rS1ioiet0dZ
-	 KMa604PXYO5YJLlVAYAR8nD8KP7CTr8mcxp7Uocse8wAFujs9lnp1/asKW8YGKI4Zevxw
-	 QJ8x9vUHyZDBdRG91YRjVwxcER+/i1oR2YzNEQ/tAaDTFAcAjNUg6Q8rbvJ62xwBYQN8X
-	 8sznRiN+tx8DVff43ETSmE6PuNs9mNdfJ+7OJpKS9FhY4BJSM13XAutR3nd8+9XscUA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792571276;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:Content-Type:Content-Disposition:
+	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=GzRjMn9nsx05XJdSIh+c6gdAaZKurrSAnsrWXCODiig=;
+	b=dK1bHS1AYNgzVlXWlaOARD43Wc2nAmfGGFO3fgqqLSNizLVv4BubfbMm7BL52Ek8OfYg
+	 WzbQRicaX9gyPzZUTK0xUTsbB/0Wf02nd1otw1xqNr7nvIM7l5xLpYqdiGjtoCTMeHm94
+	 NNATpakUoPezhvb2JRCMp4fLsxoB+mz/Xf4ynVxbxdBlV5Tv0aJbEIK27TsWIIMqgZamz
+	 mpk0O4Uk9c5nqh2vApcOiudPXF0VfQRe6l1kMUwB4LjfdnGdAtg/hOID1alf/Y192Pa6a
+	 RXNG8cyvM4IjZaWO1foPEeu8s3Gbqd21jGJm11xtERmhRqVocyIrDqjAicFcZU3So5w==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=pengutronix.de;
-	spf=pass smtp.mailfrom=pengutronix.de;
-	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=ModqUn0U;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+	dmarc=pass header.from=nxp.com;
+	spf=pass smtp.mailfrom=nxp.com;
+	dkim=pass header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=f9onuT6U;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.70.47
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011047.outbound.protection.outlook.com [52.101.70.47])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB048606A31A
-	for <imx@lists.linux.dev>; Wed, 21 Oct 2026 08:25:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AB048606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8AA9606A31A
+	for <imx@lists.linux.dev>; Wed, 21 Oct 2026 08:27:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E8AA9606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=ModqUn0U
-Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
-	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id BA7062017C1;
-	Wed, 21 Oct 2026 10:25:05 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1792571105;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=h/hSC13tu4dTP+Bia0+DJf04N3hSWtGlShKyDnRL7mY=;
-	b=ModqUn0U7SvXLPIOvg59+ttcxnb+c4CE8d+IDpnr4PSUi36yuvWT3eu2PEg1faj87YhtJQ
-	qbXFSEWzYyEXafbsczgAFQWWwuqzDHxpowRhariajDufP0JisX4Be5yKhD8NmvCKwi/VFz
-	JdztHHP/R2gVt6LtS8lfB5IB9YSw3VlZ3y9GUFWYw2HXXLCvFPmZ33K/suan9OKeDFJj7F
-	XVjmsTuDf9Pfmg3DBxRSSQ+jpKkVzel5HxcFpRNtn8v2KxrfQTLK0LEgrIl+Iub8jf+V4I
-	atZjrZMKD4wftZNkRaegunjPeOHWs54DNfGCLnVxPeON09tbJmtrKhNNwOuyGg==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1792571105; a=rsa-sha256;
-	cv=none;
-	b=SKeytmx2kIxQFwEoUwR7R/voLGRQp0LHENS7evjTOEE2yGXeNLZ+W94ewy3bWOS8tT09eL
-	BFzVgfbIDn15fmSk2nWpc0syspUYgOAaAdLt866/Hn8l+5KKwafd4aWQ7tTaifuxld+VEh
-	nhCmmV4E4YFWlrzugkf9XKTdJRPt5VLBlh7Sy5ydu9xm+Cd21y8GYN5KAbBG5iTuq0j0/E
-	fRq3oOh05k5JGlxczL9jnRdwZELE+sYMXn6c/rSPMIhasR3wJ7ZHi6MtwLkRaLJzCWZnBQ
-	bS8Aguce46mclBJ1scbWlXpaSrEmct6eZDa5aF798wkjvwPXVkJzAApvIapAtw==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=mkl@pengutronix.de
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1792571105;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=h/hSC13tu4dTP+Bia0+DJf04N3hSWtGlShKyDnRL7mY=;
-	b=L/lSW23VUgXM7ErPE49WVAreysdIAVPGQSVZvBbS3m3gyyrZG8Z9Ae6HT/CGJ9fxd1liNw
-	jK+bJ+w3SSjXjttF69t7dZ+rRxysbRv9xYLZu1NWeVs+2fckYqypnJwUM6WR1Qrl7ldDhS
-	ypEGUUUdgXQE6DaywMEOqnFMDthrLQReGbdM2OZr1QUZZCmzQTn6jGUsPcXSz/9opMELex
-	t7/jH1QSqW/Pn2kD8dhMcThPYieQX11Pr6ZLW/NT27wvNhcURylrH9TsOB6zCH1LC+TuBi
-	s1lA9EumnhiUmxpFHthCBzkGS7S8Y6T4bGhUarzKxYLp75IyG3U7u6TgOnVk9g==
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1xJRdB-000Wuk-27;
-	Wed, 21 Oct 2026 10:25:05 +0200
-Received: from pengutronix.de (p4ffb23c7.dip0.t-ipconnect.de [79.251.35.199])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 5CCA05CADD0;
-	Wed, 21 Oct 2026 08:25:05 +0000 (UTC)
-Date: Wed, 21 Oct 2026 10:25:05 +0200
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: =?utf-8?B?5rez5LqO5pm65by6?= <chunyuzhiqiang@yinhe.ht>
-Cc: netdev-bot+sinfo <netdev-bot+sinfo@kernel.org>, 
-	netdev <netdev@vger.kernel.org>, linux-can <linux-can@vger.kernel.org>, 
-	kernel <kernel@pengutronix.de>, "haibo.chen" <haibo.chen@oss.nxp.com>, 
-	shawnguo <shawnguo@kernel.org>, imx <imx@lists.linux.dev>, stable <stable@vger.kernel.org>
-Subject: Re: =?utf-8?B?UkXvvJpbUEFUQ0ggdjZdIGNhbjogZGV2OiBjYW5fZmlsbF9p?=
- =?utf-8?B?bmZvKCk6?= don't wake up controller if interface is down
-Message-ID: <20261021-robust-electric-beaver-796542-mkl@pengutronix.de>
-References: <20261021023334.11803-1-chunyuzhiqiang@yinhe.ht>
- <20261021-romantic-jaybird-of-cookies-1ed8e1-mkl@pengutronix.de>
- <b9c8e7d7-584e-43d0-88a6-ee0ee6e6c700.chunyuzhiqiang@yinhe.ht>
+	dkim=pass (2048-bit key, unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=f9onuT6U
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=InzCciVApaNu4d9d4zHd7ZhiOorLKuqwIiQ+G0pCtLyoAWbATATrI9wBGv/qHYU4RmrATvptQvgsqIw32ZAoTTySz/OcjZKCL/oO0aZ6u0QVaya6eEJok5kFa4L6fEhMe/mSOMJ9M9iSsgmPL7z9LWn42K0lLaE3GaGTpo48HY49P6eUkVf+VYBofLiv6+579EzJfmeTDGb8djZThpcIJZWnDWxzbC4dnPV0ciJPgGdtASLay2ir0WGa0/FbS0p9+ImOg6tUHdJGWwuzgdH/hbEVaQ+3LCNQhUxLVEm2CzCHHF8P7dpzElwx8Plxgo08EZytI0re1YiPfVKxDvt5Qg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=GzRjMn9nsx05XJdSIh+c6gdAaZKurrSAnsrWXCODiig=;
+ b=NmlrEOo2405uELgdKW7EE07CsDpCHX4LHa+/b+DfzqU5cOUFVtAC7uUwsZneZcV3W7cXjFKUkG06tFcVlzR5rc/uZW42rNGh8O61doA9WtrMyChTcxCUfiZcgenlSowRiuh9WI9pHPNFGamXvcBUJS50QHNSK8litDb93Ar+P075EllO49b0P0IVZLPWX/16puMQnsi45DXbaGvZQZkBovYAMOIhFh8vD3/+Wgj7QrH/XEI2Yglv+Qavalmr1jhMXlYM04GwnjPpdnL1at+uohrjnHAMpUToM1laVzH9LSwkzFGng76lyIvpMoLlClzWn1wSqd0HRcgNLjzcz4s5Rg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=GzRjMn9nsx05XJdSIh+c6gdAaZKurrSAnsrWXCODiig=;
+ b=f9onuT6UbNxEV9U8Ppm0ZxA83FSWui8LRo8eNk1jX5kF0esz1xYTMTw1Cw5ek8UpiZLzzYHTdF1VTA28t+FtM7tV+Zi8LpyFxiPAakuKnwMsbvt/eAJgwU2S/3tlshxOUhiSY+awuKu9d45CfmsxOmTuBF1YE0zlA3B1U9DJV9O+C7hEwxhM5FCATybMYBXtD/+1kRe3mTMkQ0Tg2esEK1e0y3+DwHwABc3wznHmAvAHE6utr7SkPgn4PSfxxDYMmt/BMBCLd2RweFFOn9ddRiweOnd2F5LL20DXBcpkgjPxFo1MHeDvy3zpCwy0jqKvaNatnMC/5QhXAj2OKfB6KA==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from MI9PR04MB350878.eurprd04.prod.outlook.com (2603:10a6:290:c0::7)
+ by DB9PR04MB11509.eurprd04.prod.outlook.com (2603:10a6:10:5e0::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.19; Wed, 21 Oct
+ 2026 08:27:49 +0000
+Received: from MI9PR04MB350878.eurprd04.prod.outlook.com
+ ([fe80::8537:1cdd:6c49:6151]) by MI9PR04MB350878.eurprd04.prod.outlook.com
+ ([fe80::8537:1cdd:6c49:6151%6]) with mapi id 15.21.0546.012; Wed, 21 Oct 2026
+ 08:27:49 +0000
+Date: Wed, 21 Oct 2026 16:29:21 +0800
+From: Liu Ying <victor.liu@nxp.com>
+To: Frank.Li@oss.nxp.com
+Cc: Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Jessica Zhang <jesszhan0024@gmail.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Sam Ravnborg <sam@ravnborg.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, dri-devel@lists.freedesktop.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	Robert Chiras <robert.chiras@nxp.com>, Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH v3 5/7] arm64: dts: imx8dxl-evk: Add onboard GPIO mux
+ controller
+Message-ID: <ath34U4JkqSZmofA@raspi>
+References: <20261020-dxl_lcdif-v3-0-adc944659e14@nxp.com>
+ <20261020-dxl_lcdif-v3-5-adc944659e14@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261020-dxl_lcdif-v3-5-adc944659e14@nxp.com>
+X-ClientProxiedBy: SG2PR02CA0136.apcprd02.prod.outlook.com
+ (2603:1096:4:188::16) To MI9PR04MB350878.eurprd04.prod.outlook.com
+ (2603:10a6:290:c0::7)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -104,60 +112,104 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="23cwxmzpbad3gume"
-Content-Disposition: inline
-In-Reply-To: <b9c8e7d7-584e-43d0-88a6-ee0ee6e6c700.chunyuzhiqiang@yinhe.ht>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MI9PR04MB350878:EE_|DB9PR04MB11509:EE_
+X-MS-Office365-Filtering-Correlation-Id: 31b3ed78-efe2-4ec4-9e37-08df2f4d3136
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|1800799024|19092799006|366016|376014|7416014|4143699003|56012099006|11063799006|10067099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	kcCodV+DPUI9U1gKzJxQdWW6BYmMaAmhFfLO1E6ghAYOMiGzjzY//kfhZB4fxCbL9HAxMhlzK9Tl+KU2sIRrtU6qkRYLkhWC8Yp7bweNIHKjm+ob4sMI0yiXWv32swL9zCBXSSC/vbKB94pWkmsarc5n52uUYUt6E1H7yqhwjdzwXEamWVTnhWzP8lWULXxL+4zksRtnL4BwDF26m03aNXKllHzmfCkhVO0IakY7SDTYS/joukEmPYEZQjaCoX9nI6/aDqaJzENPI4h9LfOSvim/ZDLFM6B17MmoEJKbT7D7IAd4q5vDFw4P81qBatQK6GnTLXjE2EGbMlf60cGsZzp7xftqrQ3rfPXWY8yg1cc4cPDVUResqfj1H4WbNnRpdv+nMWvjVNNmO4G7P9/Y0f44B3W44icOnZe9FpxzBe+cTbNy63oycnVXDrnbbLnZBpf8PNOToqZHeLyCLxpgsXqqGNRIDnwwZFFS4PmXxBwuX+SX7hIvKo3F9vjwdA0vZiOMy3E86n3YskkEYuUNRyNs8V1y1rvSQrza9F5PSXEuSkC231hJ5V/L9L5izOqc/7egIKM7NJldpC44j/F22mwK/vwYbWiU5bTU4EHsVwmaWE1l/Qn7BGo7KkYS173Zj8cVQs7iK/ksSYu811A4uIYPAWbcMTkTsvVawRs2Q60=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI9PR04MB350878.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(19092799006)(366016)(376014)(7416014)(4143699003)(56012099006)(11063799006)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?5gywwsxNAnndCumqQh1JCLDAju6y7g/ZF9YAod/c4RONyly7JxWzKMqAmSob?=
+ =?us-ascii?Q?pwKUzdrKhFnpgpe1rpfmPpu3LMGI48KLjt06KOQSYax1Kk7M/N1vYaqGBcQ1?=
+ =?us-ascii?Q?xWU6qfR6Zbbcw6kqqGaZJiBeokBjJOYzH48ztC1QZLvUVEj2zEzOKuGd+ipW?=
+ =?us-ascii?Q?AJOmTgIStyHveODSTOcWZKlsZcCpCyQDSJMxQ1z56nqEsz8AvwF1DGsqU7A5?=
+ =?us-ascii?Q?JJ2qHJhvvyaGlI9iWquyOVWQroXbY8dDdN1ZYVB4JvlSo70sw4CnKCkIk236?=
+ =?us-ascii?Q?hB5KNNffS7ZCEBoEPssKiUfoHDdq/hE62VAbyj+jB5wq2Lmu7NOuM2uF0Tas?=
+ =?us-ascii?Q?clAr5h3NiXJLX7NoV0RbUONok6rdoVeIIarnb3FyP2h99rG5OmFc6aJTLQQp?=
+ =?us-ascii?Q?SPqPEtqIDketrroXwtJuKuxmV6bfhkfsdmTsQ9YdMkc/hNOxdpQVyD9V5/mA?=
+ =?us-ascii?Q?cJp+LdgO2nDJl8TGDxOjZeYi37RHkdKDr6XHl4AmjjVNymNPY1Xmwwq4JcCE?=
+ =?us-ascii?Q?KavXt3vsHf/V4aIv2L1rrVXDZnhX396qmA2gikZh7seKZ5DtGxiovyHp7CkK?=
+ =?us-ascii?Q?sIKOR/8/B89nVVVbrnWywqO0JuhkF5gVDarwEtZ/2QWGgYxeQKEOpeW1jwHJ?=
+ =?us-ascii?Q?VDfhuAiCdfc7w8QNLPE5J/PlSmv2l3be373EvUVqhp2WTw1NXGS3KDPQ4bfd?=
+ =?us-ascii?Q?F01Do/znXTUUkSKBIonHV7T3B1qF4U6A3BlPfwZNHFAYb9UOMEl7cBpKhUWR?=
+ =?us-ascii?Q?l5jHOgpuY1K0FFmI8Sf5GELFB/zb07nbkMzTZrYS+7TBQCTGfDxxU9zwBLsE?=
+ =?us-ascii?Q?DskzKiRbhG0I3nzaJgOJmBLJxiL+KBKRPmPQb8JuLTZGA+1tBg04eAeyWCTv?=
+ =?us-ascii?Q?vYBdmwSM4WB5pnlKhm0nXLeKEgse7N5m5MSFAxoJWchCbo99znSV8KcTgay/?=
+ =?us-ascii?Q?C+YnQcbv8aD2NBiwyl9X25Oqf9OcWyRO4V+jq00Dn8GdiFUEzmd+oeLcCZih?=
+ =?us-ascii?Q?5phmWs2TaEVEBR4snk083v0qKtzPeQGGmN5zIjjCjzyt2HZnMa/bnzXNfllt?=
+ =?us-ascii?Q?cSb7M4nWwuvowFaSpKyh1hGlXRmtEC1TS89Kk4fyhCnMV6x80ehvoAdK3rGe?=
+ =?us-ascii?Q?M/s3vzFyu4nwQxCWP/CWHchVGFKWQs4GZHu/yf+rAPAHJqT6DS8MXptQoFII?=
+ =?us-ascii?Q?bsTYYk0h25cqpkGyVCoMJJSafT5X6XfZtFT1dGFT8VSfJICx4ogPc2+14fjU?=
+ =?us-ascii?Q?9Mzh5PBj6S0xrNxD6juiGWn69J/hjnuR9KGuH26MByw4jqQ98KZz2NYyfsTV?=
+ =?us-ascii?Q?edeICWyikuigy9av7ymMzG0zN2FSLwWMaHmu1E7eDsThkLRdV9N5HNbtVFkY?=
+ =?us-ascii?Q?7p2ITzScdH+CXOtt1KiWCOQ+jkgGTwyydkc7l98MaSYYB5r6xrsN4FqNTfbp?=
+ =?us-ascii?Q?k9p786wKQQVSeGrIpuToXt2QlIYYwbB10XRIPwzzzYvle+gQG+6/2wqerRmf?=
+ =?us-ascii?Q?yudMpYUoRDP6fkO9B45vPKgpHuKwiroyzXQbu/+KasvYnyjUVEEZ6ApMwupS?=
+ =?us-ascii?Q?eqwj2op6WwhleOpMg1s1nzg6SWdL+N4QwcivZ0OpFdLHydRfECxm6ZHDJOtw?=
+ =?us-ascii?Q?uMTdNcdWRRQknxKwdZtkW06AxRTHFxk93KD6ia0yPVTnfRufxi5EaYnqs4Wc?=
+ =?us-ascii?Q?+OqkBgWboqfzT8T73GFfhjLUk9b5eVU9wjK0AcLjx87nDqBhkgb9n2DNQKQ+?=
+ =?us-ascii?Q?SMBvsDXbjw=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 31b3ed78-efe2-4ec4-9e37-08df2f4d3136
+X-MS-Exchange-CrossTenant-AuthSource: MI9PR04MB350878.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Oct 2026 08:27:49.5395
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: thgoPj8s1m0+s57qFezi8jTvDblDs+3CVUWfgg/CgllpuU7Em7Uluw/FDxnzCAvOyOVq8gBuMStnsm8Dz6Cfpw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB11509
 
+On Tue, Oct 20, 2026 at 04:12:55PM -0400, Frank.Li@oss.nxp.com wrote:
 
---23cwxmzpbad3gume
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: =?utf-8?B?UkXvvJpbUEFUQ0ggdjZdIGNhbjogZGV2OiBjYW5fZmlsbF9p?=
- =?utf-8?B?bmZvKCk6?= don't wake up controller if interface is down
-MIME-Version: 1.0
+[...]
 
-On 21.10.2026 16:20:18, =E6=B7=B3=E4=BA=8E=E6=99=BA=E5=BC=BA wrote:
-> > This patch doesn't apply to current net-next/main branch. Please rebase,
-> > in particular you're missing commit e63281614747 ("can: netlink: add
-> > initial CAN XL support").
->
-> Understood, v6 was based on an NXP lf-6.18.y tree.
+> +	pinctrl-gpiomux {
+> +		compatible = "pinctrl-multiplexer";
+> +
+> +		m4_debug_fun: cm4-uart-grp {
+> +			mux-states = <&m4_debug_mux 1>;
+> +		};
+> +
+> +		spi0_fun: spi0-grp {
+> +			mux-states = <&spi0_mux 1>;
+> +		};
+> +
+> +		spi3_fun: spi3-grp {
+> +			mux-states = <&spi3_mux 1>;
+> +		};
+> +
+> +		uart1_fun: uart1-grp {
+> +			mux-states = <&uart1_mux 1>;
+> +		};
+> +
+> +		lcd_0_fun: lcd0-grp {
+> +			mux-states = <&spi0_mux 0>;
+> +		};
+> +
+> +		lcd_1_fun: lcd1-grp {
+> +			mux-states = <&spi3_mux 0>;
+> +		};
+> +
+> +		lcd_2_fun: lcd2-grp {
+> +			mux-states = <&uart1_mux 0>;
+> +		};
+> +
+> +		lcd_3_fun: lcd3-grp {
+> +			mux-states = <&m4_debug_mux 0>;
+> +		};
 
-:)
+Nit: Can you sort the child node names alphabetically?
 
-> I'll rebase onto
-> current net-next/main, including e63281614747, and rework the patch so
-> that both IFLA_CAN_TDC and IFLA_CAN_XL_TDC only skip the automatic TDCV
-> readback when the interface is down. The size calculation will be
-> adjusted for both paths as well.
->
-> I'll send v7 as a new, independent thread.
+>  	};
 
-Thanks, As you're contributing regularly, using b4 [1] can safe you and the
-maintainers a lot of time.
-
-regards,
-Marc
-
-[1] https://b4.docs.kernel.org/en/latest/index.html
-
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---23cwxmzpbad3gume
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQSl+MghEFFAdY3pYJLMOmT6rpmt0gUCath23gAKCRDMOmT6rpmt
-0mD/AP9Eh5XlKdXKOa2UiFUhZEc1UXRpmwnvIOx1SR9MsUjEwwEAlqpEJAiHMOue
-fWPjTyoVWe1ENIgRJBzOrAKw1c4OhgM=
-=B863
------END PGP SIGNATURE-----
-
---23cwxmzpbad3gume--
+-- 
+Regards,
+Liu Ying
