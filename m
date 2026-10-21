@@ -1,67 +1,104 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.194.8.81
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792607839;
-	b=asZdRKaNawRLuA9UgHn6zC4BIrP3DxYt89OYKtGOuVQPgXJ3xFplSRQMh810bZiS4U/R
-	 fLPcI+nc82ZHSN7MGJsTLQdkxJahuHo+I/kCi0suOBn0Wza5m12JsRTJnKK2jp7NgK1Px
-	 poMxNQPLReyvjRRNGiBAYmOsMiqIqhLqDFaMTwvza+656T+Hj6ZzAST48Ovw+t6rYaz+/
-	 hokHhYxQLuP9MJN+pTWk9HrH6uzVhjMSDAO+8m9wnurqkHlE3dnoTa30hisftkVvHTaiw
-	 B/c+4+MCr989n9iPoXzGDP6mGUOSysX3ddjv5QYrvtVgIIlET0NL2gEOfQDmRK4n6xQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792607839;
-	h=DMARC-Filter:Received:DKIM-Signature:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=vZoLJuTtQKLg7le3DcIFYtP5fGVhQZQLGkovX+brljM=;
-	b=OvSZ8sk+ez4kexSWD7AHJpNIghkTSrkTCeyDN5tc0v33zeV+MBs3k68T9ld6wVhzu31q
-	 +7oUT0a3rmbM2SqwdlnEUMuleNYSZuzi30T0HJx6ZL2IcHDRpjUlxsDkB0O/y4CYyGgl3
-	 mVOnjeq7jO88C/skLl9et1qwxG62lGR9tl4VZbn6ViQ0sOYzNYw0Gy7SjQSW7yd/ZG9zM
-	 Zw5CKRWD5B7Oe23qsiWy9XKzIYQW/MIMw+KTdHjxqFMpM7iHs/KT8d3JobcmwDrOBsznW
-	 jVjAmBi2NxmGoPeVE0ZiRbm0qfsebEzcdR6CcbZ794CCfRSHWRF9pKIpKsufV0IbW8A==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=dolcini.it;
-	spf=pass smtp.mailfrom=dolcini.it;
-	dkim=pass header.d=dolcini.it header.i=@dolcini.it header.a=rsa-sha256 header.s=default header.b=geMMPvYn;
-	arc=none smtp.remote-ip=217.194.8.81
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.69.27
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792615527;
+	b=BzBQIPoNcJmEqmdhm79JPh7PpsUwZ+dRAYeHDUpoVqoN1KdqKVU1Oi99tlQAhpcnjTFA
+	 fP6yr6YzoEqrsPPWDHH9qnKUyOHXrMLIgniSjY4tTv0fRnPg4b88aoueUbx0dtzmDD37J
+	 RvSVnSqYSlCx+U4DUbtPMZgso3ae3a3XLq0vbCKt7O3keLobeTAnML4RHkaf4ey00l0Zu
+	 lHDlRtFh8XpWe+Xxz8QBDxyoGXLEg1XvDS54NNgbwJbrAvmF0MHSFUhU/JHCJHDsPoy4c
+	 kYwm408r5MWmWjW0GVKIUBeeY+qaeFfl3bWiabym5/vL9W81j00npgRm4P9xZDIX/Ag==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792615527;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:Content-Transfer-Encoding:Content-Type:
+	 X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=ov0+XC3xLT1rVHG+ZYpStv339MBhTuoi90aqs1QB8rc=;
+	b=ur5m/YDHgIwrtC7YTxiybG8H1pFNMlDP83Et36RyI9PclXBQuOy8iL8scaqhZawypumx
+	 pvKhkRgg+48HcdC4Tqn86+wkQAJzprAelCpp9e2kYgxGsb0dIKLNhDHNqUyX1zzSFX46r
+	 hV8sVVanDt4Lm9ner1x8CTOGVBnAAl1hzQ442Nb404yi/U3hru1cfeS28GGLTj6LGv90D
+	 cTbzIzbKxOgKDHf3LLlrLE2EOv1QBWH5QqYJBmN/Pd+fM9Mg+WD3pwmCZ6W5tHQ/riS/G
+	 OH8BdcHzGILfZzo7JDuOviLhhWSlwXpjcVTPnr5rJi20FouWVuIC6CIzkwUZdat3Gqw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=oss.nxp.com;
+	spf=pass smtp.mailfrom=oss.nxp.com;
+	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=wweK7SKN;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.69.27
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010027.outbound.protection.outlook.com [52.101.69.27])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C3EC606A31B
-	for <imx@lists.linux.dev>; Wed, 21 Oct 2026 18:37:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2C3EC606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F8D0606A31A
+	for <imx@lists.linux.dev>; Wed, 21 Oct 2026 20:45:26 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2F8D0606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=dolcini.it header.i=@dolcini.it header.a=rsa-sha256 header.s=default header.b=geMMPvYn
-Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 53DB71F8D1;
-	Wed, 21 Oct 2026 20:37:08 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1792607828;
-	bh=vZoLJuTtQKLg7le3DcIFYtP5fGVhQZQLGkovX+brljM=; h=From:To:Subject;
-	b=geMMPvYngn0H4t28uKQQEecN1/bxf/dEtIJlow+C9lQm8GCeyim4/IfbzBP+hpQ89
-	 noFQLdGDpaJmieI9uLkXIDit3R04DVO0Fm/2vp8hGaOvThka/Quph19vyqJwNc7rvi
-	 dTV6h2n5uercGurux+uTywbRlkWjg6utsUQUdewxUtuKHni/7vVaUgQjYfO4o471uI
-	 U+ihLq60RIGZk3Uix3woeN5D0kqGdTa5L5A3WofQCbRe90DF2Zfgc8q2LwZJpY5GMF
-	 Jri72b7y0wZVJOWqPG6/Q4DtzbklPbMip9+mN+BUYUxXkX3iyVZLcr+OJN3ZYblZDq
-	 Eb3doXU8uNgHg==
-Date: Wed, 21 Oct 2026 20:37:04 +0200
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Marek Vasut <marex@nabladev.com>
-Cc: Christoph Niedermaier <cniedermaier@dh-electronics.com>,
-	linux-arm-kernel@lists.infradead.org, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=wweK7SKN
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Cl916+zGkAz2nKa6hRhpTZpi2w+frt9DYnNbyoj/NJMCo3x/ehTnqghe09usI/8FlJ6lcxfWvCVPXnQwdpmzz5CFXQzDW16fSyB6hAI4DETHW+oxLqntLN/zuu7SJU0n2p4ULAXWhEv9VzINAQRZoy+kGSCm7o4wNer/zURFhi+nxXQgWQ862iGD09ABdZ9BWvgdmo9yc3g52bDUpZw2LN3ipV83rSxIkhXz2U2583+Umi0g+1DXezZNQDGWbLSViL2OskjRBUzj/9uwQEditHhepYR67m0O+8c5ad36OUVzhE/j2ScSUjI88kUbr4QOnWAQg8JFSwLCN+l9vbHreA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ov0+XC3xLT1rVHG+ZYpStv339MBhTuoi90aqs1QB8rc=;
+ b=x8y0+PWoFB1ojX7VVCI2eReNigXEFaDgb75VpJdYMkAXhqO+bg3N0pv46iCPRf4M+8gp9SavGQdItbuGJEM0iF2/OkcNUaOUl5iqUnuOxOUlNN0gxijbIrcrJaMxLNP2luUwhiQK8tY528XDiTmJDvk6KoK7hCkUClb68w2eWvzz9umk9Yj9MsRaR9z9Voy8fVBH8ZU5vABmoaW/Emru4xReInfVtN5qeHrrfcmkYnhZdisvXFGc6GD9joT42UVXqqRZXGvHvnXsBwZh+552rgsNr8n6cL75DS8EbcM0AAT9vT+CGhOsGV2kF2guWNmUcTudie88fiRmnFq6EhrdEQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ov0+XC3xLT1rVHG+ZYpStv339MBhTuoi90aqs1QB8rc=;
+ b=wweK7SKN1v4c6L83hJ8ax2gaE8SYipWNXHgXYvdwYaKgvvfZ1OWjAR95ZHw07neyS38FrrxVdaukX9IdVmjnhZLuevB0nPyCmNO0NPqi+NK9RDS7d3CDwwYJ/Lv8+9/iJ6yoyOLhg51/iWSnCgtJV0bwJyar/+37OS+oC+L7J3Ahn+nvf8IVJGsJWXIXbSloM92J7PP975Ja2ONwFwtpkFcs3dAXBnK41ZMnQ6eC2hLYEu36GGTiZZ0b8tMqSkoAAOkrfCpmLIx/1NJyua96UZXzBneklPlH6UDlDKv95wn8nMpP5rfVzpbH5vT0t4xC8w7eAM43lHZ06qTw7IbMJA==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from MI3PR04MB12438.eurprd04.prod.outlook.com (2603:10a6:290:76::14)
+ by BR0PR04MB337759.eurprd04.prod.outlook.com (2603:10a6:2c8:60::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.15; Wed, 21 Oct
+ 2026 20:45:24 +0000
+Received: from MI3PR04MB12438.eurprd04.prod.outlook.com
+ ([fe80::c715:c32:8bb1:b70b]) by MI3PR04MB12438.eurprd04.prod.outlook.com
+ ([fe80::c715:c32:8bb1:b70b%6]) with mapi id 15.21.0546.012; Wed, 21 Oct 2026
+ 20:45:23 +0000
+From: Frank.Li@oss.nxp.com
+To: Frank Li <Frank.Li@nxp.com>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, kernel@dh-electronics.com,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] ARM: dts: imx6ull-dhcor-maveo-box: Remove unused SPI
- device
-Message-ID: <20261021183704.GA1116319@francesco-nb>
-References: <20261021134435.17350-1-cniedermaier@dh-electronics.com>
- <1073daf0-3676-4123-9ca4-c182ea5883a3@nabladev.com>
+	Fabio Estevam <festevam@gmail.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Priyanka Jain <priyanka.jain@nxp.com>,
+	Tao Yang <b31903@freescale.com>,
+	Yogesh Gaur <yogeshnarayan.gaur@nxp.com>,
+	Santan Kumar <santan.kumar@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	imx@lists.linux.dev (open list:ARM/FREESCALE IMX / MXC / LAYERSCAPE ARM ARCHIT...),
+	linux-arm-kernel@lists.infradead.org (moderated list:ARM/FREESCALE IMX / MXC / LAYERSCAPE ARM ARCHIT...),
+	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
+	linux-kernel@vger.kernel.org (open list)
+Cc: imx@lists.linux.dev
+Subject: [PATCH 1/1] arm64: dts: freescale: ls208xa: correct USB compatible strings
+Date: Wed, 21 Oct 2026 16:45:15 -0400
+Message-ID: <20261021204516.4031644-1-Frank.Li@oss.nxp.com>
+X-Mailer: git-send-email 2.43.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: PH8P221CA0024.NAMP221.PROD.OUTLOOK.COM
+ (2603:10b6:510:2d8::30) To MI3PR04MB12438.eurprd04.prod.outlook.com
+ (2603:10a6:290:76::14)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -71,50 +108,103 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1073daf0-3676-4123-9ca4-c182ea5883a3@nabladev.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|BR0PR04MB337759:EE_
+X-MS-Office365-Filtering-Correlation-Id: 362a144f-814e-41bd-ca6d-08df2fb43ad4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|366016|7416014|1800799024|23010399003|376014|10067099003|18002099003|261021123027099003|261009223027099003|11063799006|921020|261021121427099003|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	8huErkNFNyb4ZniO8tp5Q5crTBQSzWmoua45BeCqHO+FB/4zddLvUdiKMqFxauTmvTM1XFf7sR79Yyzb5FyifndUiZWcma5GIzlZsgvCJclxVmgJ9ryaAcxKlAN7ZkVZ1t60m5OAA6NmKetryAjE9zJorPziykY0OdqCjeXgCWyZiEn4o9uA2uW72pEmlNHX7n7S+ZF5QkgDCI38TI+7HgewaVmiyh9zoLpZOKgIpwx56SfAaxUkPwPbDhOZq/c3xJ5NNQ+Of/lAeIvEp6M9bJnLYm4K226jX92Fn3xzpr06aeoJU/NofQ/F0lBDFbM8lxkHpyhLt7BwqN9chh5/7wlCwEdnOaCykjQsphD9S6Kp0wB2/tttU05ig3e+ogtveqcRfPACdwzOpA+X1T4zp0qowQZLbpQ71bMr2PYCO8QYf0oMdYwXUaSHjaM/XvJYAl7uxhe4LzfIpXRHkeOBQrBQVjsPtGRW0dzgSg/X0Pvl0RrfJKyUAKfhRsH/UDizr0O9lkUDrDhLbSEYhlkpwWXe5d/iI1A+ECAQlcj9LgtZKRbjM/U/EEbaTC9WCKUpqNGR36gLkG3hEayuGd+sH3ABoHBuB9pKehcRRv+LcC506zhDjsJIqRVfo2QT7TG54/BxjXCgtUWLlECRXkju4nSX9YHtZo2WXYbqPSlMXAbyIRrND3bnmkCoHksV/3gQbLrYfXI4E5zeZ+Zc+Tl7Pw==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(7416014)(1800799024)(23010399003)(376014)(10067099003)(18002099003)(261021123027099003)(261009223027099003)(11063799006)(921020)(261021121427099003)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?4MHnEXzaJ0h2G04jgPrWPWR45AsmVtAg6bP/o5yvysQ1Q4nJ7bJGOam2f4Le?=
+ =?us-ascii?Q?Vus4azdq13qk6EPy40A5SUghOwR/GzuyZWwE7bdJZT8Tcl6ATO1bwP6gxIs1?=
+ =?us-ascii?Q?i+aR3g7lnYhFbsxG38gngpHeAUpJlE//nHz5/J42VzsE2C1O5z1xAaEb/o2j?=
+ =?us-ascii?Q?3urVBmf5zH9Oe7Xolomjy5VINGga9VLTX8ktAW6z0JWxcjMoVhb40AycnAYr?=
+ =?us-ascii?Q?nLcxmpltVRjXuWvMtIfieK9HhvKaWEcY9uconwLI7KUitLVh8rtuPGnpZ4In?=
+ =?us-ascii?Q?jewxzh2jQbqhPCv1bfL/wqUTvEX6t9rrd3zEDrYpIvEPOrYjU5euqADAvSoQ?=
+ =?us-ascii?Q?pola0Imy0JXlJuCtCKCmYcuX6GMUigb2s1g9cJMDo5okXtomT0KjMk7XN7ir?=
+ =?us-ascii?Q?x6fBgxIxAtieRUvKUtgjnK7QF9CbkEhLI/peG/FMz8ryZKw1/83vWd7YoQQg?=
+ =?us-ascii?Q?EaboU10wdcflmSoMNto87g5FnKlgpvlLanmdJ4AAItJp0ImTcERVQvwDxIEO?=
+ =?us-ascii?Q?7e3Jf2K3hpyD3/ucy77PqssLuZbtguFRzB78rG6r24cc1fKoTZwvvp67wteB?=
+ =?us-ascii?Q?DYBx04ZbMVGpw1EV+IKXuRfFnnxXieqZG346GFYMGBTsTJ+bhBSTFH4VAq4h?=
+ =?us-ascii?Q?UbBzDeOT+IkYZqTzljB9DZUZzROVudi5qh+aQcTlmJvkPzkBoUbFIhU3I3D+?=
+ =?us-ascii?Q?6H5HPj5OX/Sq4SoqA7j8SO/KdhqtzW4hkJ5J7+c/l6wvxtm7KYFdi7q9MArF?=
+ =?us-ascii?Q?6Y6Sc4/r+LCuRD5pEKSmmLuqAHAluBns1NcPBnSEJZv5Y/B4jI1LCreSIzD0?=
+ =?us-ascii?Q?GqTQipTTR+SNRVWdYELwCLqQ1Gw1tyRFAAqTs2rqTD41XTxFJtd+LRImkjCF?=
+ =?us-ascii?Q?vrbnKQd4xbE+eEzM6iret0WF6ua+iKEa+GEXCe2dM4F1WH2gX02CpQiUUDas?=
+ =?us-ascii?Q?g2FcUmEpZSNBPpRcFuy0nPy1dDp4VNc4lAsYQXf2Iv67qisAL2H8YHeTyWGk?=
+ =?us-ascii?Q?ufkIcrU0iYS7SKtZbaxXM14cs1Baq3ijcF5mxA+rPmAWNf7Cn8R4I7cFpwGv?=
+ =?us-ascii?Q?EJbBnN6862STjlR7YvWk+i+V63nmBveyOx5NnRG7R7zX3e+H14s6Bk27cHjI?=
+ =?us-ascii?Q?TNdnLKit9B0EcrKBt6xHS0MlWhQcynp+0v3AWYhyH/FGZ5IVZAjgGamESKQp?=
+ =?us-ascii?Q?2Aq9CL3ngGw5Y/MyDTGMlzoTvUmJcfzHqjZfwE0e4/2N4WG3JdF/7PwYNk+S?=
+ =?us-ascii?Q?b7CP+3WF9UYfVoQlODLY5+laQoVUW1zejqM5htwn8xqQKe6s2fxTWI8QOaCY?=
+ =?us-ascii?Q?54yMWNVIPKQoea0+VsQ0zhRZF0AW1tbp7upc7TXmp8mHPlGn0vJ9T1lxu6QT?=
+ =?us-ascii?Q?3wayjqWrtCYopsRJIaUjkDh/vUZKk6YtDFvpkzpqLOqM4rQGKJAWNcag7StJ?=
+ =?us-ascii?Q?Siuu6HYkZO3gwc01mMZB2AYOFcssRPKmYMfU+4RMLwymGws1w++IGJAYoxz1?=
+ =?us-ascii?Q?eQHWSCYLP/FGaksDL4Hfi/woFcZoBozjH6jZZfhnWuPYd9OKAHb3/VlVJZdE?=
+ =?us-ascii?Q?5vSndKqE0LfnoPIDESfY9r4ktWqrTWBYmLcO7/I/cRZM75c7ua+n7bCO9+1D?=
+ =?us-ascii?Q?JlDAwRsWVEx0AdDIS5x1WcydTBwoaydyIqjqQEYdteJcQUWjUGAgDrOba4h4?=
+ =?us-ascii?Q?E3iPlanI+BpXGjvRNQQu0mCZgaf+AL55ziA1/F3ld7ZDKMtClORYfwQkuljk?=
+ =?us-ascii?Q?6jFDzeXhRuURIrDjA8LQaOyWQPCifoSAijUrmf4gd9U+nCyUlH86?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 362a144f-814e-41bd-ca6d-08df2fb43ad4
+X-MS-Exchange-CrossTenant-AuthSource: MI3PR04MB12438.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Oct 2026 20:45:23.8550
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: QGSpc6jV5BMHkk+DntuZI8jNWLb1w2eu2rHiwXd5kPbAlBytZ3APycN3iDTUh9crOwq455zuQMogUFxeB9ungYm3vThvAKjXQm9tTDttbXVWIHP+Xjl1AhWJsE48aOJ0
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BR0PR04MB337759
 
-On Wed, Oct 21, 2026 at 07:19:30PM +0200, Marek Vasut wrote:
-> On 10/21/26 3:44 PM, Christoph Niedermaier wrote:
-> > On the maveo box, the SPI pins are connected to connector X10,
-> > but no device is connected. The device "dhcom-board" was used
-> > only to test the hardware, but was not removed afterward. So
-> > remove this device to accurately represent the current hardware
-> > configuration here.
-> > 
-> > Fixes: 145e2732a5e9 ("ARM: dts: imx6ull-dhcor: Add Marantec maveo box")
-> > Signed-off-by: Christoph Niedermaier <cniedermaier@dh-electronics.com>
-> > ---
-> > Cc: Rob Herring <robh@kernel.org>
-> > Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
-> > Cc: Conor Dooley <conor+dt@kernel.org>
-> > Cc: Frank Li <Frank.Li@nxp.com>
-> > Cc: Sascha Hauer <s.hauer@pengutronix.de>
-> > Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-> > Cc: Fabio Estevam <festevam@gmail.com>
-> > Cc: Marek Vasut <marex@nabladev.com>
-> > Cc: devicetree@vger.kernel.org
-> > Cc: imx@lists.linux.dev
-> > Cc: kernel@dh-electronics.com
-> > Cc: linux-kernel@vger.kernel.org
-> > ---
-> >   arch/arm/boot/dts/nxp/imx/imx6ull-dhcor-maveo-box.dts | 8 --------
-> >   1 file changed, 8 deletions(-)
-> > 
-> > diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-dhcor-maveo-box.dts b/arch/arm/boot/dts/nxp/imx/imx6ull-dhcor-maveo-box.dts
-> > index 047f7b2d8526..eb0b91040110 100644
-> > --- a/arch/arm/boot/dts/nxp/imx/imx6ull-dhcor-maveo-box.dts
-> > +++ b/arch/arm/boot/dts/nxp/imx/imx6ull-dhcor-maveo-box.dts
-> > @@ -60,14 +60,6 @@ &ecspi4 {
-> >   	pinctrl-0 = <&pinctrl_ecspi4>;
-> >   	pinctrl-names = "default";
-> >   	status = "okay";
-> 
-> Drop "status = "okay"" too , since this controller will be unused ?
+From: Frank Li <Frank.Li@nxp.com>
 
-you can instantiate a new device on the SPI bus from userspace. up to
-you, but if I was a user I would appreciate to have it enabled.
+Correct usb0 and usb1 compatible strings from generic "snps,dwc3"
+to SoC-specific "fsl,ls208xa-dwc3" with "fsl,ls1028a-dwc3" fallback.
 
-Francesco
+It requires updating the specific gsbuscfg0 value compared to the
+generic snps,dwc3.
+
+Depends on commit 1c97fc901fb6 ("usb: dwc3: dwc3-generic-plat: Add
+layerscape dwc3 support").
+
+Due to complex dts renaming, the Fixes tag below points to the first
+commit where enable usb0 and usb1.
+
+Fixes: ad5b6611e1574 ("arm64: dts: ls2081a-rdb: Add DTS for NXP LS2081ARDB")
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+ arch/arm64/boot/dts/freescale/fsl-ls208xa.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/freescale/fsl-ls208xa.dtsi b/arch/arm64/boot/dts/freescale/fsl-ls208xa.dtsi
+index cc1a64e63ed55..3b0a26bf609cc 100644
+--- a/arch/arm64/boot/dts/freescale/fsl-ls208xa.dtsi
++++ b/arch/arm64/boot/dts/freescale/fsl-ls208xa.dtsi
+@@ -1288,7 +1288,7 @@ bus: bus {
+ 			dma-ranges = <0x0 0x0 0x0 0x0 0x100 0x00000000>;
+ 
+ 			usb0: usb@3100000 {
+-				compatible = "snps,dwc3";
++				compatible = "fsl,ls208xa-dwc3", "fsl,ls1028a-dwc3";
+ 				reg = <0x0 0x3100000 0x0 0x10000>;
+ 				interrupts = <GIC_SPI 80 IRQ_TYPE_LEVEL_HIGH>;
+ 				dr_mode = "host";
+@@ -1299,7 +1299,7 @@ usb0: usb@3100000 {
+ 			};
+ 
+ 			usb1: usb@3110000 {
+-				compatible = "snps,dwc3";
++				compatible = "fsl,ls208xa-dwc3", "fsl,ls1028a-dwc3";
+ 				reg = <0x0 0x3110000 0x0 0x10000>;
+ 				interrupts = <GIC_SPI 81 IRQ_TYPE_LEVEL_HIGH>;
+ 				dr_mode = "host";
+-- 
+2.43.0
 
