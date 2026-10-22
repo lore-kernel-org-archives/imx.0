@@ -1,93 +1,111 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.84.65
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792701635;
-	b=YsnADyvZCfQaWpin3zyTl3lqRW0kTUPgYn6tLO4LRhljZRnkoW0SkhVwo0oFZZigNBdr
-	 Ycbw5wyCbuTQIeQyIBQOPUDaTJEWkhV1Ia0zjrLaoNLPgSbFOqrJzusgKzta9IyFxeKOc
-	 WWDOqyNSqvHLfCAvtRo7yTbhslbpMHZFkGaof018sdZWCFxtyEoJ/ltnNhh1mUnT1J5Ha
-	 HSIotgQmeaABxQkV1N91JtS9d9ud/iEL0eIgFQooG2flG++DQ9BObsa0QMntCDv40LybC
-	 ITSeAq8rpx9co6NMkUr1lRetWINjFcaT4dEL/eh/ZSJl0hSGLocKZ53sScNb9N6wWUw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792701635;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:Content-Type:Content-Disposition:
-	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=29uYZ3MI3ajddo/lkMf4kDoPDZSo+wMUk8ZudWJScSw=;
-	b=wd6mfC0hzmC/qQuKuNqyMWbV+hod1kvlq/Oxq9UpOgR/gBTbmb3Uh1z1n3OPcBVPiRJa
-	 cx6R11lkc669tIa78QDOrcj3VfTi/M3iPOBJEH+sDzdjAlymmtvZGFwDHNSmvnIFujQJp
-	 FN+BhIoC1ronmbKba+8/HQOm/tegyjaUJVSKe2Rfe67O0VxhV/gnJxpuUmobVFNcD9uts
-	 YmlNyjAT1NoidFGy3/WYlr7N3PNzSCcy2zkMIihuqeiKlDBgNUa3A8pbOKNLN6Zrx3LeQ
-	 4GvTNkjipbVjVBGjTZM1g/Qs+Uhiz5JDZOyH89tomk6F1ieDXaYVozSbDBnbBxMwK5w==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.nxp.com;
-	spf=pass smtp.mailfrom=oss.nxp.com;
-	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=BZgNig9C;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.84.65
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010065.outbound.protection.outlook.com [52.101.84.65])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.46
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792702087;
+	b=fma8WlBcsAoQ6DxLZ5Wos1ks6PcFpztltLBqxr/BWbmqlC3jCVIr0ZZYkw2xnjnyuThS
+	 WoX3VygD+lAfLG1c0r6LjQehPMoKda1MaHzI8xORl69KjkKO4u2KIQbRU4wP2OJBRSRm4
+	 XHWxJYpRbVT+2WVxBB7piY9sn5xGOcHLRSp4KewGBx/57CESNXisJ24NwgfLgw1vuXsMf
+	 sVBerXBa5UrwRXJEY+kYLnzkQ0CtCD8k0vNAKy3AS+q3msuyspqL1stpto9mlbov1bsqR
+	 39pPLW+VL3h1dCGxZAGnra3Im+pHsEQvCv4rNEdfm3/7RYdBam2FAeOVdx2oF9jCuew==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792702087;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:X-Mailer:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=y5/2svsntF9R7wAKTIjqq4lXpmG9ahkTltbSjO27xnw=;
+	b=ob+/0kA4Hfv8MKK0eSrRKDhc9fMDQ3+U3hCi27ZJGFHhU1iNwi493/zEMz2MCisuHh2t
+	 3gpF301Gq9xCrxxupYU9Oc6r2UZUtJ2HSwqIWntVptvhlLF34BDO0B3nrqLegDSGMQwtk
+	 IHXBpxmiVH5oTsKNtkTzCsGcH8gCcbiNGPYnmTBjkIHKKxfEX/g/vdShyuQpLZ8TvB1ng
+	 KAJFYHLFUawTDuGg5nCztlKqVQ6ip/Xxby2Xac6brECNuH7uMt8dVxcuhWNwRrzFKpVsg
+	 j1xG6YJ04goMM+Se/mQYa2Z7UAJ1Dm2SSA/qVq3zil8BD1bvD/rt0gOOkS+ZUTlGOqQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=ZTTPop2r;
+	arc=none smtp.remote-ip=209.85.128.46
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7B19606A319;
-	Thu, 22 Oct 2026 20:40:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C7B19606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74B7B606A323
+	for <imx@lists.linux.dev>; Thu, 22 Oct 2026 20:48:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 74B7B606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=BZgNig9C
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UTCSDRFRjwcgujxBG5KjtMtXToP4IrlSS32+79sueAEkikqh+WrFTRezFpDEBD9vweGvnJR8+n8LRrXDllFHchkvTdGr7a72dgOdCreg9WMoLNOejjhPDRsAXtH9U8CZjxS7Bmw557ySkBrUxSflTeEhebGayMF3DvoUe0s6zwid+95Oa89IRsF6Yck8CG1T+pYoEib53Tc7rRmp+GPbDsHs7PAYn0hV7N4N3YsjrhdXEQbL7xr+TTRGZrreBf5Wg0yRt1m9gaENAdb+3dDC7c0R0+hdZ9d5jL+vfidHcfNFDclRh+sH1acVSnFcbFmYb4yU1uei1cud2/tNnSfzjg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=29uYZ3MI3ajddo/lkMf4kDoPDZSo+wMUk8ZudWJScSw=;
- b=L8kUs4kMBkcoKD3sTG7Azxj8K/prhOr0kegQ4TC8bPXd3G4iyrfQ5cwGt7XKt72qhYF0qWPe4LNs2GEU0ajNVmnFgduVAmUB/E6a7cba13PUVMeYkyA2+gO3x9AVkmnLtyFExJ9VEmN4bn5pHfuzHyCS3lE0nrH8+gXonQcobcQIiyAF3r4G4eXVW3+yJSYiNCPOr6gHH/y7cJlHlj3bS1T+DvALZa/GUmBN9phlZyLg+GkEEeCDS3Id6Cs2glThwT89UixzyrJz/mJxew3jht5eythimPOpExHrB1Q7bgl32yWZ+Qn/Z4pJlysOlJ/cVdXn2o7/sJaNmcb5DSY8wQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=29uYZ3MI3ajddo/lkMf4kDoPDZSo+wMUk8ZudWJScSw=;
- b=BZgNig9CEfwYz+9yDkpsTg27sf5Dar5Z5wD+B/3JPiI2r/lVnpCvMjPlCgkpiY8zo6Wr0l0lHE8gUEutrfPGyw7Gvf3JxNJvgVnGYV/JXE3jvxUAxk7wEGbe/r6n1bTLefuhkmqa4o2ZM6hWdOXULgC3PeO0EMvBSp6rZZU7OIlb/Be+LBolt40kj3JiAq5xka7TGJNkIg7ry7MBq0T0Zrd9HF19LTXaFboJLl9f1jv23IcRshbRFg9YUp+rCo+HSSn4zX20S7T+6AcMggFBVGvLqGL4WB85kxBLe8nJ3w8qVk71qCkyFQOru9GosCzO5ZBleD3Ki9RY/IkkIr+y1A==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from MI3PR04MB12438.eurprd04.prod.outlook.com (2603:10a6:290:76::14)
- by PA1PR04MB10868.eurprd04.prod.outlook.com (2603:10a6:102:482::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.15; Thu, 22 Oct
- 2026 20:40:32 +0000
-Received: from MI3PR04MB12438.eurprd04.prod.outlook.com
- ([fe80::c715:c32:8bb1:b70b]) by MI3PR04MB12438.eurprd04.prod.outlook.com
- ([fe80::c715:c32:8bb1:b70b%6]) with mapi id 15.21.0546.012; Thu, 22 Oct 2026
- 20:40:32 +0000
-Date: Thu, 22 Oct 2026 16:40:25 -0400
-From: Frank Li <Frank.li@oss.nxp.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: "Joseph Guo (OSS)" <qijian.guo@oss.nxp.com>, imx@lists.linux.dev,
-	conor+dt@kernel.org, Frank.Li@kernel.org,
-	devicetree@vger.kernel.org, robh@kernel.org
-Subject: Re: [PATCH] arm64: dts: imx95-19x19-frdm-pro: add boot phase
- properties
-Message-ID: <atp0uQDD8EuhYyb1@lizhi-Precision-Tower-5810>
-References: <20261012-bootph-frdm-imx95-pro-v1-1-6757c5f04a17@nxp.com>
- <sashiko-outbox-167770@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <sashiko-outbox-167770@kernel.org>
-X-ClientProxiedBy: DS7P222CA0017.NAMP222.PROD.OUTLOOK.COM (2603:10b6:8:2e::26)
- To MI3PR04MB12438.eurprd04.prod.outlook.com (2603:10a6:290:76::14)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=ZTTPop2r
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4a208d93758so2138885e9.3
+        for <imx@lists.linux.dev>; Thu, 22 Oct 2026 13:48:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792702086; x=1793306886; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=y5/2svsntF9R7wAKTIjqq4lXpmG9ahkTltbSjO27xnw=;
+        b=ZTTPop2r2NZ0KT5d/qJD/f7yWfcXk+QuxLiJ3EITC4opGknJCAW78ZhL0ZnreBfLeY
+         24+2yFcHxiqaN15GAEoomtxExVfyBU0U4Cxk0vVr7anKW4Ct7Q8Sbf+xzBS3//TohA4g
+         6upLYb+yKA7CvEHXrBmqJgS7HLWJ1GB06aBwSuFH2e4g0yor90FRwC/KBRHJjpi+l5PI
+         wWRcCvNe9oeH22x2kk42JbEIg6+r9aYEa5Nd5+OO2zF+ITGE0rAMAclYXQPDjXRmIz2+
+         3qQTlPpT6uw5laVfnb0UqUqTx3hsgjeFgTP1MUc5v32KEA/LUaLRkI0NFdAkoupaqxUM
+         Ivgg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792702086; x=1793306886;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=y5/2svsntF9R7wAKTIjqq4lXpmG9ahkTltbSjO27xnw=;
+        b=VoQat0d0aNANuzC+R0r9kT+4sbc2mv7CgMQNpjJuhyRRXRnKmgzxKBqYXVZKF7hxkm
+         JjY6NsA7GZjfJfNfOLEWxgLJZT+zO8Z5+wg9S3qG3GVDXkvzArkAE+16+FfbwDO9gTey
+         FND3dHMW+tUcz8Yzst4Udn8x1ogML3gE0N5z4UFPjDusDL4chMkyhbdHkBAY9wsqJTSz
+         JP0n0xtQb+qPVVSGck+ds+6+sRFmJ1VEje0PeNTX+EaGLOoR2jIhONT0Q3WH4jdJltMG
+         36B1bVjJ49JV8hqhmyuQxL2SMlO0OLDjGot4fFHIfePiGRpNH0eIKITi2Pf7X2erKoj3
+         TrDw==
+X-Forwarded-Encrypted: i=1; AKwUvBzBBP6PcjwlVGtAKy3P+5/g9itoXgXcXtgKdF/kOCzo+S8F3USKJQkn4JUbUejWkowGU10=@lists.linux.dev
+X-Gm-Message-State: AFq9FYJ06zyL2rEzzN7xRNVub6EZgYIyevp9Hq9yMAH9/OJquRhfuKaL
+	q1tVEfjIpLUx2REE4ZCUSLHJFRtmZEgEGgmOaFAQIchVs2OQzCWLPDlR
+X-Gm-Gg: AYBFou1Wj8urZPje/mQLUdMVzfUusBIaTvCceKdA6ZwNkGKDDphb54pB6YShMpt9Ui6
+	LnPM909zn5sOoDn4U1Y/Vcn9pzoC0f/Vmb9tjRGHVc+gbsdg6XVC2qQwIFevnVUsR10CuszAP50
+	6TogGvpJ7jIZvQlsHJw6cft8F+67Ptq6yCq8S+OIUrymPBfVQfUnyxGopVLKOZXFGXSAjPvZwk+
+	cpv6pg6r3NpKzGlze+RuKfd2t8HnQv7g+PWrzQ867dZsPw0a76y4jefYJGUtuatfefklOuR8u2b
+	I//lfaLbGTgqNUFhraZr5jjke72WYRvS06gRFE3n2PqzTHLX+rvuPszubhY0ZzSgKttPoSsPl2Z
+	Pz0PBlCs7J5kaQmmpISbFSgpsBf9wrf8bNHHhp4yRGcCVZ6Ic6TquZ0K5j+uaaTwvD55+PcqKgv
+	kyS/8zRjYyXMfunlMj784oopcaG7mf5f7BgUc9Mu3v2Qd3HuUsjami7GH/cOcDlRBrPZEqPJ/JN
+	jXMxVaB66tONSkqe5U/1XA48exjmhLDzFme/jcMLCAq87diyBdTJk9jrwRAm/s4MobmkO2mCyF0
+	SDSmne+FA/KHeYLiY9WpXDITO5wermMatisnma4=
+X-Received: by 2002:a05:600c:1c09:b0:4a1:f377:5c6d with SMTP id 5b1f17b1804b1-4a211cd5bb2mr3236035e9.6.1792702085705;
+        Thu, 22 Oct 2026 13:48:05 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e380314aesm308718f8f.28.2026.10.22.13.48.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Oct 2026 13:48:05 -0700 (PDT)
+Date: Thu, 22 Oct 2026 21:48:03 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski
+ <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Claudiu Manoil
+ <claudiu.manoil@nxp.com>, Wei Fang <wei.fang@nxp.com>, Clark Wang
+ <xiaoning.wang@nxp.com>, Ioana Ciornei <ioana.ciornei@nxp.com>, Zefir
+ Kurtisi <zefir.kurtisi@westermo.com>, Zefir Kurtisi
+ <zefir.kurtisi@gmail.com>, netdev@vger.kernel.org, imx@lists.linux.dev,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 net 2/4] net: enetc: do not rely on mEMAC hardware
+ frame padding
+Message-ID: <20261022214803.40cb2aac@pumpkin>
+In-Reply-To: <kaqeg262ql6mucqzn46axaniowt35eq3hd52nefev2uvvkbfkz@6onteyxyjypx>
+References: <20261021145314.1435049-1-vladimir.oltean@nxp.com>
+	<20261021145314.1435049-3-vladimir.oltean@nxp.com>
+	<20261022093359.723c7e93@pumpkin>
+	<euqz7djxfn4tqbd63ymcj2bnu7k2bb6hzlmeilao3rvjdhyisf@bk3wj5hinfnr>
+	<20261021145314.1435049-1-vladimir.oltean@nxp.com>
+	<20261021145314.1435049-3-vladimir.oltean@nxp.com>
+	<20261022093359.723c7e93@pumpkin>
+	<euqz7djxfn4tqbd63ymcj2bnu7k2bb6hzlmeilao3rvjdhyisf@bk3wj5hinfnr>
+	<20261022112218.11a1faa8@pumpkin>
+	<20261022112218.11a1faa8@pumpkin>
+	<kaqeg262ql6mucqzn46axaniowt35eq3hd52nefev2uvvkbfkz@6onteyxyjypx>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -97,97 +115,144 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|PA1PR04MB10868:EE_
-X-MS-Office365-Filtering-Correlation-Id: ea3626da-00a0-47fd-b259-08df307cb737
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|366016|23010399003|376014|1800799024|18002099003|22082099003|11063799006|4143699003|261009223027099003|261021121427099003|10067099003|261022105027099003|56012099006|261022075727099003;
-X-Microsoft-Antispam-Message-Info:
-	SFX4bAjY+41WpnXUeXiuEf3t+2MExGngPnbv6ThejuKiFmXoa3s+agvsm04Yrps7pm6Qme2tEGLUTI1cAkoP1lqGpXtsHgGgFEYL7AzDHaScDj8WJxwwRnI3mLAN/pzCG3ngyJkUVgb4JbPol/UMdDiyg9B8Bnz5AxEq6TZKkE28sxTcUBPtzkalzbU6L7xEe0cvPehh4+8NSXTwnD1AbjS0/+Pkuhp6OIdtCM3vwwMTid6Gz/1LJ+jrazI8DdN9lB53F8Rd+u7NU27MCR+Dcrb7Y8pZgtcL//ciEAe7qBo6aYrwX9yQ6u2RGDpTn3gTw7cZCyMuHs7kXOotIK7USeZggzDrY0WN08CRj+07aryAiabtPSmT4snYeo1gfpqDm18xeQifJL+ugfn3IcMbT6BIKDii8ni+kjFTRt47y/SpE2jsGtx9+tA6ioMF5Weg4dIuFukTmxaRMTWkPpYfvTBPkHCR+3lz4j9N8Pg45AbDXoYsm0Id8a3ksOcG1YSCr5o7D/O0oi6ki/MstLerIMvbhaCG1S8Z93vlu+DuDX2NVuredV0KBcmiAG6rlV466eUgMS/YDtCRvsDJDHVv5a7awq6Oalij0vIZGDMUne4/eyzbeNOCProVnptKEeUhJBmRKkboEeCSXcZ09O92wQf9FAb1si0VOlQ96JNj+QY=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(23010399003)(376014)(1800799024)(18002099003)(22082099003)(11063799006)(4143699003)(261009223027099003)(261021121427099003)(10067099003)(261022105027099003)(56012099006)(261022075727099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?5acRA46tsOAfuSnXq0JHciqVR559pfBt6vpBHiak7kOd5qna5Ts9whWriTkk?=
- =?us-ascii?Q?yUImUzGlcsVRPwZZvqjfcIzNKkt4uQOOPAXxjHFuyN54x2BPYtBM5eyLoIlm?=
- =?us-ascii?Q?Pbh9CGh5cw3+sZK8IOZJ3x0GR2ouzIi1YIhdKMcZerSXdqQuuuUFM3ct+dB4?=
- =?us-ascii?Q?cNIgw6T1ry4HlUUq3e7aXF346hXyRicFQzMbS35RNr280iPKqaFc5BDZUXLg?=
- =?us-ascii?Q?EkD1QFmJtprwnomvZmFhVOX3oQYyB3iJUel2LD1xkCHpqJqc9T/vy2pacwyM?=
- =?us-ascii?Q?n1YLnGlLhdCJ3AivcXpzzOjCE6tkzcdSfsMwA564HONhn1rH98djtfSPM4TO?=
- =?us-ascii?Q?FBu1aUj+4Zz5c+M92YhNVBPB/56fGwUUfVnNGh4d8HiE6yDNGuU8+xpeyb6Y?=
- =?us-ascii?Q?Ai0nmJ0INNlBi7TxNKByZPchnrAn1YjoruWt1PuQcjCdMUTj+vLZHQTCpQbq?=
- =?us-ascii?Q?BQ462Ynv05yLsbt12JCqHjby7XG/K5KaPCEwTTkoqSOuOW1K0xGgEH6ukGBw?=
- =?us-ascii?Q?il2f8uhZtmVHSA4ZHC/ZoNhy/TC/kerHkB/eBBroa11Qnyx0Y4xcRCcWjFsP?=
- =?us-ascii?Q?oGoggPws2OKl3598l8IXDSpVNfFe96ZwMFoM5SjhrSWnEeLRC4XP7nDXZZzC?=
- =?us-ascii?Q?rj7XSuuRO8jz2wbU4hmAVdzOYiNAFSejvddH8hPmwOBfp0Z0fL9wPNnVaeYB?=
- =?us-ascii?Q?2mGT5tVZ1+3+/PPMUYXMsEG5dKJEIAlerN86bWmYX0nKou01NjV1VAVqPCrY?=
- =?us-ascii?Q?6+8sCSxq23JXA+hRNBOOw1BaX6uYTWOIfio39rPhKjDT1rPppPGW0V8J4sYE?=
- =?us-ascii?Q?wvNyh8AYqY9aULeCvCAWlaFY7kTlf4FeuIFwN5ey8xlpGX+6tU2Uzm2K7BSR?=
- =?us-ascii?Q?uawDHlWlm/UqLZnzPrvgsxBbWbIFFog6fVdkml2x2LTKc9VAsmShXxT2oKhG?=
- =?us-ascii?Q?kZf1OKr8losb39PHGEHN/JAH7oTl/42FoWJPHpv6MKL3CFzNDjNhqxY31xRd?=
- =?us-ascii?Q?rBZdfDKZ/hX3ZG6PryeS1FCEPqLLAgBjqGudkSgzdb+uqz3Hwm+JUcRKRiHO?=
- =?us-ascii?Q?Ne5d3MSMMCy/4CK94tQN499JkL7knmWWtolzg6VIUg/HyJwSrS3ZQE5aJnr0?=
- =?us-ascii?Q?OGJaj5/13XojuqmDqEtjwyIxYLX4i8TACI8Skr3r/MrrMQJFuSqKbZ+JdhvG?=
- =?us-ascii?Q?rZQUNKfa+4XLZyCIJBFWRKxoj3dYItvQNSTlVVmVsZN6nJBWx4NdYyHbv41m?=
- =?us-ascii?Q?C4KXBxqHx4tHrmSJLDNUKsDd2yxyAPwFy6FwzPuCF9Q0giWq/eDHMBKUnYTC?=
- =?us-ascii?Q?6LA9BWD0XQRyErsFzM25w5ubt/Y0iinrXga0HxmraH+NOXsTjkGtwW/c9Sa/?=
- =?us-ascii?Q?4MHrEwLR9XEo92SiK8fJkkOOhmA8ySZh/+t6pAWzPUH3l+5z4rgg/neBfzqH?=
- =?us-ascii?Q?LcGnb2ZeyGrnyyz+35BlLHBIftb3oRl6cfFtdFUZivlgnG78g8xd4FkesdEa?=
- =?us-ascii?Q?YtHg/zgOXWuYGk06cMN1fbWG+ziuxgIovY7cTDuyfeiJUMLZqbR9uylarjjq?=
- =?us-ascii?Q?KgmP1pFqdlz41UgGblN1EwWMQ7UobkocuuXFEJkQ6D1diHZ4Fr03iQCpjS5/?=
- =?us-ascii?Q?bKhup9GdZ+BGxZZRltbiFlD+sC7B4WSCVoZP2u5v1EsLb9jiwkloH3zQ8UcD?=
- =?us-ascii?Q?6ZpxWQqSXN6tLAMqiMIlb/WBosY2fOjXm+lSakSnmSVG5L+XaYvtZzwtY+f1?=
- =?us-ascii?Q?U5CRpgB/k5PeKsTsdKGmvBlVJ5/jIJwOhcKmYGErp9u2jg1ZCQpg?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ea3626da-00a0-47fd-b259-08df307cb737
-X-MS-Exchange-CrossTenant-AuthSource: MI3PR04MB12438.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Oct 2026 20:40:32.0366
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: FDxxYH5rUrhmjgz1/eYp0onFXxzWWumJkVVhpzvYB1HAHo89gk9VRZo4um2csiYQyvCCZlymknQkDLM9Y3Ad02ouZmTAodSqb70TN6+ZahEObkLyi0JTAth80qd0IGaV
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10868
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, Oct 12, 2026 at 07:01:30AM +0000, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [Medium] dts: Missing bootph-pre-ram for gpio3 breaks early SD card access
-> --
->
-> commit dc22078eb20524e315ef0d520678ff9336ed179e
-> Author: Joseph Guo <qijian.guo@nxp.com>
->
->     arm64: dts: imx95-19x19-frdm-pro: add boot phase properties
->
->     Add boot phase properties to essential resources during boot phase.
->
->     FRDM-IMX95-PRO need UART, SD-Card, eMMC access during boot process.
->
-> > diff --git a/arch/arm64/boot/dts/freescale/imx95-19x19-frdm-pro.dts b/arch/arm64/boot/dts/freescale/imx95-19x19-frdm-pro.dts
-> > index 1f62d729a5e77..8dc1134f8d24d 100644
-> > --- a/arch/arm64/boot/dts/freescale/imx95-19x19-frdm-pro.dts
-> > +++ b/arch/arm64/boot/dts/freescale/imx95-19x19-frdm-pro.dts
-> > @@ -180,6 +180,7 @@ reg_usdhc2_vmmc: regulator-usdhc2 {
-> >  		regulator-min-microvolt = <3300000>;
-> >  		gpio = <&gpio3 7 GPIO_ACTIVE_HIGH>;
-> >  		enable-active-high;
-> > +		bootph-pre-ram;
-> >  	};
->
-> [Severity: Medium]
-> Will this regulator be available in the SPL phase without adding bootph-pre-ram
-> to the gpio3 node?
->
-> Since the fdtgrep tool extracts nodes tagged with bootph-pre-ram but does not
-> automatically trace and retain phandles for nodes lacking the tag, the
-> gpio3 controller node will be entirely stripped from the SPL device tree.
->
-> Could the gpio3 node also be marked with bootph-pre-ram so that
-> reg_usdhc2_vmmc can resolve its GPIO dependency?
+On Thu, 22 Oct 2026 15:35:05 +0300
+Vladimir Oltean <vladimir.oltean@nxp.com> wrote:
 
-Is it true?
+> On Thu, Oct 22, 2026 at 11:22:18AM +0100, David Laight wrote:
+> > On Thu, 22 Oct 2026 12:41:49 +0300
+> > Vladimir Oltean <vladimir.oltean@nxp.com> wrote:
+> >   
+> > > On Thu, Oct 22, 2026 at 09:33:59AM +0100, David Laight wrote:  
+> > > > On Wed, 21 Oct 2026 17:53:12 +0300
+> > > > vladimir.oltean@nxp.com wrote:
+> > > >     
+> > > > > The driver sets the ENETC_PM0_CMD_TXP bit to pad short buffers.
+> > > > > This works, however sending short frames from user space and looking at
+> > > > > the padding bytes inserted by the MAC at the link partner, we notice on
+> > > > > LS1028A that the first octet of padding is sometimes not 0.
+> > > > > 
+> > > > > This is fine per 802.3, which does not require that the padding is zero.
+> > > > > 
+> > > > > However, there is an unproven suspicion that the padding bytes may
+> > > > > come from internal memories, and unfortunately I couldn't get sufficient
+> > > > > priority for this octet's origin to be investigated by hardware
+> > > > > engineers.
+> > > > > 
+> > > > > To be defensive and not leak any sensitive information from the SoC,
+> > > > > let's pad all frames to ETH_ZLEN in software, so that the MAC doesn't
+> > > > > have to do anything.
+> > > > > 
+> > > > > There are 2 distinct cases to handle, for GSO and non-GSO. For non-GSO
+> > > > > things are trivial; we need to call eth_skb_pad(). For GSO, things are
+> > > > > not simple, because user space may set gso_size to a very small value,
+> > > > > which could make the GSO super-skb smaller than ETH_ZLEN;    
+> > > > 
+> > > > That isn't sensible.
+> > > > The minimum frame is 64 bytes (including FCS), subtract that, the MAC
+> > > > header (14 bytes), minimum IP header (20), minimum TCP (20) and that
+> > > > leaves 6 bytes for user data.
+> > > > I doubt it is sensible to do GSO for anything under the minimum mtu
+> > > > (128 bytes rings a bell somewhere).    
+> > > 
+> > > My fault for not being clear and inviting this kind of objection.
+> > > 
+> > > Since we do GSO in software, we advertise NETIF_F_GSO_UDP_L4 too, and
+> > > there, Sashiko came on v3 with the observation that for UDP GSO, user
+> > > space can set gso_size to a small value using setsockopt(UDP_SEGMENT):
+> > > https://lore.kernel.org/netdev/178960175550.22033.10648880872141935672@kernel.org/  
+> > 
+> > I'd fix that in the setsockopt code.
+> > But that might be a bug anyway.  
+> 
+> Why a bug?
+> 
+> > UDP segmentation has to use IP fragmentation and that is usually done because
+> > the interface/path mtu is too short.  
+> 
+> In my testing, UDP GSO does not generate IP fragments, but rather, each
+> UDP segment is its own datagram.
 
-Frank
+Hmmm....
+I wouldn't have thought that was generally useful.
+Losing data from random points in a connection is going to be hard
+to recover from.
+I guess that it why it is per-socket rather than system wide.
+I mean, you can run telnet over udp and just hope no packets get lost.
+
+> Are you thinking of UDP Fragmentation Offload instead? As per
+> https://docs.kernel.org/networking/segmentation-offloads.html#udp-fragmentation-offload
+> this is deprecated and AFAIU not what this is about.
+
+That is the sort of UDP segmentation I thought made sense.
+OTOH I think the main user of it was NFS, but even then 8k datagrams
+were actually so unreliable it was often much better to tell UDP to fragment
+the 8k blocks into 1k chunks (IIRC that was a mount option).
+
+> 
+> The docs do also explicitly say that UDP Segmentation Offload does not
+> generate IP fragments.
+> 
+> > But there is a minimum mtu for IPv4 of (something like) 128 bytes, and
+> > it may be invalid to fragment into smaller pieces.  
+> 
+> I have no idea what you are referring to, here, with the minimum MTU of
+> 128 bytes.
+
+The correct number is probably 68 (min max size of an IPv4 fragment) rather
+than 576 (for a reassembled message) - I think both are from the start of
+the IP headers.
+That means there is no sane reason to fragment anything so small that
+ethernet frames get padded.
+
+> 
+> > > Sensible or not, it is possible, and I did generate a test program using
+> > > an LLM to confirm this.
+> > > 
+> > > Regardless of that, the last segment of a GSO super-skb would need
+> > > padding anyway, because even with a 'normal' TCP MSS, the skb->len
+> > > modulo gso_size could still result in a last frame < ETH_ZLEN. Padding
+> > > just the GSO super-skb, as I did in v3, would also not fix this.  
+> > 
+> > True, but that is a different check to the one you did.  
+> 
+> So what is your suggestion for the driver to do?
+
+Clearly you need to allow a BD for padding if the final fragment is short.
+That is one extra BD for the entire frame, that same as a non-GSO message.
+You could leave the hardware padding 'stupidly short' gso fragments.
+I assume the driver is building the ethernet/IP/UDP/TDP header so that
+will be one buffer and not hit the 'fragmented after 14 bytes' issue.
+
+> 
+> > > > But does this code allow for the VLAN tag that you forgot about in the
+> > > > other patch?    
+> > > 
+> > > Not sure I understand your concern here? Is it that with VLAN TX
+> > > insertion offload, we pad "too much" (i.e. to ETH_ZLEN, then the NIC
+> > > pushes an extra VLAN_HLEN)? I'm not sure that's a problem..  
+> > 
+> > That is a problem, VLAN packets should only be padded to 64 bytes
+> > including the VLAN header and CRC.
+> > However such overlong packets are likely to be tolerated because
+> > an ethernet switch can add a VLAN header before forwarding a packet
+> > and it can't know whether a short packet is padded.  
+> 
+> Well, if it's a theoretical problem but it's not a practical problem,
+> I'd prefer leaving it as is.
+> 
+> Since eth_skb_pad() itself is unaware of VLAN TX offloads, I'd be
+> opening myself up to an endless rabbit hole ("why didn't you fix this
+> in eth_skb_pad()? It's a generic problem." followed by
+> "changing eth_skb_pad() broke 20 drivers!")...
+> 
+> Unless it's very clear why I'd be doing this, I'd very much prefer not to.
+
+VLAN headers came in after I stopped writing ethernet drivers!
+I think systems have to tolerate extra padding when a VLAN header is present.
+
+David
+
+
