@@ -1,57 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792682184;
-	b=Kh97uHJ6aVChhV+qlfQBwLpM3+xnJKt/1Y9Suwejw4tQcGOLUXbpJ13oY2CnMl2etuoP
-	 cLJTypbGboQWm+m+6kTqUYGXoFQEYXl1wzr+6V6hwfiX2LTwlzEWr2T0TQuk2MARpYaA5
-	 W5MJ80EFWnSzJNHUvc632mRaTWtDbj2JMdIa3Y/mUeUghnmmO9gysionlqKE04I04NrBC
-	 JsA/XFQvGjfb1ttHcuoeJQPl8+hspkXTFRN1ZcGobNyCV9A82oG88JPorfEkwG4Hqkgkl
-	 n3UJJcZQU0lphabRs0LOZHEZsLmwkg20RztW1LFRR1hJ+1puo9mu5rgJgCBxPVm04gA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792682184;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=8H6+UE0okItxfC44yLRwjAt7ioe2opIB/iP9myL0jXQ=;
-	b=E1yk7sZ1hZFKHD7x1z+WIwlFWvbNhXpEmSOVDqfoatpNQVeSkQ7x5ssla0onMrgOfZlf
-	 7teNvE2JPDxIwIn0gAoEvBkochlRw6LT8Ox+RTmXuyX2rzsYEV8QZmNPB+/yKMw6G1kbO
-	 TP2vLlEf/25aptjLoAKJHU3ROK3yW1HIG+zYsl0dPQYIfG8NPOxRKvzZ7/BeBUN2qoQ+l
-	 WWN084WtZzu7cdKCxZrPi57kmlu2CgPi1W2CR8HLFsVnoejG3PUgOUiPO6qCoWCAt1EG7
-	 LZf83oqOXTsS/Irl/9k6TSEfkXFHhamXwK0TjFJ/6ns1FI9lGCc+zvMmjyf86S8zEoA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TVgDs6VB;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.83.43
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792684574;
+	b=SQI/KOzB9rDD7uM7aQCysExWnymQW2sVZMUywLHxkKqrLk/UluhaUUsXdefI/uARBowK
+	 E9XhCl9DLuDeq1MtP1E7ySR4iO8J1Sw2lByKRRynKQqKtHIxvl6+5r4NLRLKfSpRoVgXf
+	 Y5squgaGvOePuG9eV0pRVUZOLAWn/SmiscYs8p00XTIY9MxmbBglwlrJZOzyFiX4YpepJ
+	 6tMIEWG+qygRA6YnT9O9s4+dXqfGzhJes7Glx/1u5+upwUUux1kRgUVmai8Y3dHV7FDhF
+	 xGIw4AiDugchJcMEzdXb+L3xFPhUMXmf2B5vbEdWMheKov05G0YXA1iA6t4Ol6oGSiA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792684574;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:Content-Type:Content-Disposition:
+	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=9irhYSs7tYnwBabFDIG38h/JX5qepDmLAZu/Ak3BZ9g=;
+	b=dB7IyFpMmDT6mFr5JpomgUbg9Gh5nSJ7y4gxpUVI7dj4oF4CaSUguyLIInhrB6h7f4VC
+	 svZqDDaOcMbBSzvEIP9OBDDBlMKzh/2wrw1orDvi7t7JgyTqYHr4QPbtMQr7M6iS1twDe
+	 OLO/oRt14a/QAs2u2aoFVKTX/ORwu8zQcUaiX7+ZEB6F/rT4yJ6cy0B3Ah9m81lvZAItd
+	 AnnDwxZp7XuT2Cw5y9DV+GojygWD3rvxxMTCfgbtCIqGT5XaKW+S35eiRpYmRwY+VS9cG
+	 dJXVpqXET7jojQh9t70E5tU/Xiv6vvkgBMCD6P32sKldlfqy2fS0lUb1K4QdlNxsl9g==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=oss.nxp.com;
+	spf=pass smtp.mailfrom=oss.nxp.com;
+	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b="XgoFSB/I";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.83.43
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013043.outbound.protection.outlook.com [52.101.83.43])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 961E9606ACE3;
-	Thu, 22 Oct 2026 15:16:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6644606A31F
+	for <imx@lists.linux.dev>; Thu, 22 Oct 2026 15:56:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C6644606A31F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TVgDs6VB
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B82E41F01825;
-	Thu, 22 Oct 2026 15:16:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792682184;
-	bh=8H6+UE0okItxfC44yLRwjAt7ioe2opIB/iP9myL0jXQ=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=TVgDs6VBpL20xZweONWdFzP9lLLdk31LTKlxd1is87mOc6GeEpVm5/XJuW0y11med
-	 VcqF3oq7YiQU1Ugn5mS0S42fbsxm/DrWmCPpaeR1IsYLb4dCTEG7kcSYoWcp0j1jzZ
-	 7VR3+5HlVsRgwqQ+juR4PH68VvLdNPJ+mWLM1JuMMpu8+JwJxlvJ2n1/8lGSvbboT7
-	 Dq8Wp7eBa4Gy9Kx6fdkLWNQpW323JZavcr+vG3GqtngqQ2zlVf2Im92kT5X/9dN4XJ
-	 FHa0ITfdlKJj03RW8Hb7vRHUlnOHzEUb7geYy4lu28ietNMD3miyzMJXxWplE04VWR
-	 ZHzzNlVWmumbQ==
-Message-ID: <sashiko-outbox-181685@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 2/3] arm64: dts: freescale: imx8mp-toradex-smarc: Add
- camera connector nexus
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Ernest Van Hoecke" <ernestvanhoecke@gmail.com>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20261022-v1-smarc-imx8mp-cameras-v2-2-cfe3d25e7aed@toradex.com>
-References: <20261022-v1-smarc-imx8mp-cameras-v2-0-cfe3d25e7aed@toradex.com>
- <20261022-v1-smarc-imx8mp-cameras-v2-2-cfe3d25e7aed@toradex.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 22 Oct 2026 15:16:23 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=XgoFSB/I
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=qeCLvgyEc8WJojoCssFm/TIW/bWa/N+Vt5DnU6wps8D3M6bxQP3A1Cu3xvRyR17FOX4vpEQytf96mz7Yiuk3aOZKalbTWbDxdBuALKByUM34NSJlokwTnJUbEHAq3dTXsg4/td40zqyU/DoCgwQKiz+iTORsdCy2urYmFGRvQw/PjK5jAo/3i9ZtyZaJ3/+hsLq9ds57On16xSd1o89IUGkInslc3oYrUD/oC2mtiPWJkEhMd+Qnhix0YFhTFCbBCaIzkIvx2JuQhFsllfO6RgXVJecbanybwsf8f0bmtzj7zjE8v4H4amFT+rl12y/pM6uF6NNaZhYnkwsy5eWv7g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=9irhYSs7tYnwBabFDIG38h/JX5qepDmLAZu/Ak3BZ9g=;
+ b=lZ4/lwNw1NjJ3e7zThLwvixWTfM81oURbj4yvXdwligDY3JBB3ym3xbBmxQxK+j+F5JVMwsLrVn3gHAmHRPz/mgWK0k+GPezIimfvJZUG0oNf+Ttmi14i5hcQr5v16vk8iqE7C9oTr49iMupSOLFZC2iUQLn/kTpZ5j4w8+jC9IXDPtrML8HcdmbAKXlH3exCjiIcNCj4mb40mSdDJZxPfPRoyny2fBnpfXxTyw5+UObOuuo2GTVHaptPTJG5UeDCXszz0EeNjKlmuSxbsRr+oFxCBpAgMB/WnU2ca8m7RKCsTca1WBgwkGorbiprsjek3XvQSuxN6b3Jnyd4p2EMw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=9irhYSs7tYnwBabFDIG38h/JX5qepDmLAZu/Ak3BZ9g=;
+ b=XgoFSB/IZk6WcvRYlAK29U7UBCeORvuRDePZmfQckjchp57he44fChywRLl0nbETFSWL/E+1+7RL5Y1jBsuKL2BUv1smYFuYpEjCE/CNVGAYGlAI7/9B/UnUTSluBK9SZc2HALUlVd3z4CnKek+w5mWi/sG2nGf25fJ+EkNPJotLG9cwHBaDyeHd+U7P1QMFJp13/6uY3t9v4Y9U8D/LAKrFAxm86cVbyd+g5u0b37QCtpohE0C/QQv/TRbQhVTBfUA5BPdJ2AjV9vf8WBnSkTnWYVzgRhJrvX/JqEaG8miTG/c/Cu16uY9b5MECn78ZbDoX0bwhiqN815M3QLqR4Q==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from MI3PR04MB12438.eurprd04.prod.outlook.com (2603:10a6:290:76::14)
+ by DUZPR04MB10061.eurprd04.prod.outlook.com (2603:10a6:10:4df::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.15; Thu, 22 Oct
+ 2026 15:56:10 +0000
+Received: from MI3PR04MB12438.eurprd04.prod.outlook.com
+ ([fe80::c715:c32:8bb1:b70b]) by MI3PR04MB12438.eurprd04.prod.outlook.com
+ ([fe80::c715:c32:8bb1:b70b%6]) with mapi id 15.21.0546.012; Thu, 22 Oct 2026
+ 15:56:10 +0000
+Date: Thu, 22 Oct 2026 10:55:59 -0500
+From: Frank Li <Frank.li@oss.nxp.com>
+To: Arnav Kapoor <kapoorarnav43@gmail.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, linux-iio@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: adc: fsl-imx25-gcq: check the return value of the
+Message-ID: <atoyD5GpW-4uWKjq@SMW015318>
+References: <20261021225450.628499-1-kapoorarnav43@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261021225450.628499-1-kapoorarnav43@gmail.com>
+X-ClientProxiedBy: PH8PR07CA0039.namprd07.prod.outlook.com
+ (2603:10b6:510:2cf::7) To MI3PR04MB12438.eurprd04.prod.outlook.com
+ (2603:10a6:290:76::14)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -60,138 +101,70 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|DUZPR04MB10061:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2085cf5e-b34f-4e09-709a-08df3054fdce
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|23010399003|1800799024|7416014|19092799006|366016|261021121427099003|56012099006|261009223027099003|11063799006|10067099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	W4W5Hn9lfPockmGEjYxdFYgmxDTIG97zJbiHGa7hRcgm2GexqpZ5mEhTZOwK2N1XttpZXCSoJCEWqDIuc/OFI4kWrqsV2LvYn2Vn/Oucesh/y65DtaTjpGN1pOxEx103jkzFwkrFFFc/BFL+lAy7PYSP20Ym0bDtqbnXuWMQyu2TetmfyNgRCaCgwXysn4kanGjquRUGWZKCPZO0rEz47CVCiZ5ycisfO0R/8SyLY+0iHM/gC4YLm44PVb8xHmOw2K6GLhAJwq6eDPlN6lZRnml/YeUoGgVeuIchk7Xv34hvsyrYmJ16vYEIvx9T7mrC4HzFMjbyjgEk4EEgT12Zu2XIn0RbFh5V9zOJLUGgCUWfLJ8eOk+DutpnLQ5RSju5sasQtW5Mz1sVEpr3qw3t6rdoJaJyjBrJmj8RE9tGVJ3/dDliSoMmuVLziF2E0d2YN0Ite29F3vf61oe2qhz0VURMqNNG+CXTuKJg13Wvt9ogiLx23BMk1b3JBsNQJfzf4ilZXf6EUupJo8AFc8mqMqyME+qmGEkX7/AgE6ceTgwKvhB/BULBBvbB8QxHsRmKw/h7Co+P6MwfbDuF0LUYPvRd13JYM6XMDzcqhJ9A/9gbF2Rtxqe9B/yRTGwXV7Bz1CYRcQwI9aMEFuA3o/kcETYmK71V3ZEA10qpOdP+qb8=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(1800799024)(7416014)(19092799006)(366016)(261021121427099003)(56012099006)(261009223027099003)(11063799006)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?jmjS5MRoCSaO3uEW4GVOkWI0EgHcx9TizGUOIMQ8tb9PpnYChGLg7ocvdJ8I?=
+ =?us-ascii?Q?y9NO8SUYEZeWARIhylkHCsaq4ntgmz9Cr3+irHp3JRDNir7yu9pDMJQKWFak?=
+ =?us-ascii?Q?w20mxJKrw/e2bBabdxA2ps4D0GwGeiavXBh1MTVs2OCaPtnFiWjFzaEsucoA?=
+ =?us-ascii?Q?TUvYJkClxRRIOzJA7TBu6rm1Qg4NU/cN9WrMVfVprntysgj5UJFR1bKlpTBO?=
+ =?us-ascii?Q?Np4quAO0npvMKsBsZUACxDQhYL/A1f43tWIpWFwh9Ce3uPZBHSubpMPSOZrO?=
+ =?us-ascii?Q?7YpdaAorlk+51DrKeJZGxwJwQ6SysWUABc7O9dUNdIU2itl2zLDXxlFTfZ/5?=
+ =?us-ascii?Q?RhOrBVErM3VXXK4F6INWuFfwyoguAcH+FX+2On/FpRw/qgXT6ikAnTcT7KzV?=
+ =?us-ascii?Q?74URAucPnjvEQJUWAavomujApX+PWdfYzjEURqYV94Hu7nzraUAImnEJaZD9?=
+ =?us-ascii?Q?R27c1RHWEbfnDG1OOwZn1fh08M+GKq5bEA1C3m+fWMVfDFlZAIS5kcdJIHWz?=
+ =?us-ascii?Q?4ULvHK6LObZtoCd7N5Jxpf94Cx3RHxFF3xHrn2Z6QPFvOl8ngK9s7aWgyoEu?=
+ =?us-ascii?Q?kc+ffY2l2v0DktrvOl7TktQm01TGelYEzjCOw7I1vYhVX/amghrX7k3yqOHy?=
+ =?us-ascii?Q?SNrb26FNRcfcgBMRHvtYTALYcEOf/V3Ky57uz3amDc2Ay9gWYth/1WvV/3Zq?=
+ =?us-ascii?Q?9Xe+/sX//H8QgLaYkAIgPtgCZYCKLEyfy/zRASVJPBk13oBXQTJxxQR5EyV6?=
+ =?us-ascii?Q?FzGn416lYukQCr2W1gT+gfpRGv6iDe1cwrh8qis9jgmb9Ajl3jYSUoMJTfiy?=
+ =?us-ascii?Q?ynF0PFlXSv43il2HRbP7e/GRa1O5lGdW5m+Ig+5N1YudbVt4MPWWSb1wxSHO?=
+ =?us-ascii?Q?8CVKp55SKXaNNzknDLpUoSvQJyGYqcgf2AYv7qt3sEzEFFYORbzUfPZSczo7?=
+ =?us-ascii?Q?UO4+O86jObpb+qOGUd7Yp7+ve7M3+T9vj7Mk/O30iipL7T+QD8JgSyr0OlyT?=
+ =?us-ascii?Q?0RWRt4sfQGPGNrt5QY3qOptENec10OVDf/Wto3zZwgN+3LOXkWVQWmifln67?=
+ =?us-ascii?Q?71DDFxNGmnaXAJ53nEK22XFXcU+cHH+a89mRVvFBaO6O7atntYt0q1SlRx96?=
+ =?us-ascii?Q?Z2eZyO1hWzNMhnXnG0/QpJWgsqw5owZ4Npwy8bFMYkCVyiT0hqwov2aM/0a4?=
+ =?us-ascii?Q?R/fUOXJJCI7OkwJlpkxmWspceJGkwtvZiVxB/w3Z4lyN6VmAobQlP+eIT3wB?=
+ =?us-ascii?Q?704k/XcKbAWojJ0XUE+/k9zTKe2HwI6kspefZySPhX/VDArNCt336xsGGGt2?=
+ =?us-ascii?Q?AldW80q4zqOHwtIAJEzmJ7LET6CqHG+L1pODku8+T0Tmt03KL9vWUtvNqpBW?=
+ =?us-ascii?Q?BvxFsx8FK1+3/74k6T438SSHxRSOZXOctCy/lX9dHheu0Bc8ACGl7UzCqap/?=
+ =?us-ascii?Q?pgvBcxj8COimNYeB0/HtOyU2ohHBTmi+iCqaI891vBpX+ZUz3MTAu2sKLyDN?=
+ =?us-ascii?Q?HBP1JVNHJlDQtyVIGNdRItQi1WkxC1GAwxcBYoaAf0QJteyaEqf3gQU7fV1g?=
+ =?us-ascii?Q?WmYzDWEZ+Tjkm/gim3ThL+BLUltok/HAjluzcogJ4wx7OOeX5BYgu23X0Kr+?=
+ =?us-ascii?Q?GAYvCCmHiiUkewJagvVmvxtLi8ZyVZw3c7/oTnFq54LCi/MZ1oj2F7w0YMLd?=
+ =?us-ascii?Q?e6lgu88vcd0sKOegfbgrnXl0fsLB9jPfM5yTso9rR+5Hqa4hJdEJ1GYSsDBE?=
+ =?us-ascii?Q?kTuXQeREtVP5wcULdBlo1HmFNVTvr/TC/1hkqvXyJVmFSI5898eM?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2085cf5e-b34f-4e09-709a-08df3054fdce
+X-MS-Exchange-CrossTenant-AuthSource: MI3PR04MB12438.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Oct 2026 15:56:10.4164
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: HA3vRY+ztQcJiLS7cDLlgLpaTOd9HwzSWotS+ZRhlQWJKH1PVIu0+1bFYn7vyKdfWOhJYcJrcw+HlXRlp050gr+ah3WELrgV5jl+d0UyQoEEawv5IknLKuEXe4kn854k
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DUZPR04MB10061
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [High] arm64: dts: imx8mp-toradex-smarc: camera-connector nexus breaks fw=
-_devlink
-- [Medium] arm64: dts: freescale: undocumented toradex,camera-connector com=
-patible
---
+On Thu, Oct 22, 2026 at 04:24:45AM +0530, Arnav Kapoor wrote:
+> [You don't often get email from kapoorarnav43@gmail.com. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
+>
+> The driver ignores the return value of all the regmap accesses. If one
+> of them fails, e.g. because the memory mapped registers can't be
+> accessed, the driver just continues with an undefined state.
 
-commit d093f7d003a6a1108921f20ccc8a5a3a82a991c7
-Author: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+MMIO never return failure. if write register fail at irq, it will cause
+irq storm.
 
-arm64: dts: freescale: imx8mp-toradex-smarc: Add camera connector nexus
-
-This commit adds two camera connector gpio nexus nodes to
-imx8mp-toradex-smarc-dev.dts and adds labels for the camera i2c buses and
-mipi csi receivers in imx8mp-toradex-smarc.dtsi.
-
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-toradex-smarc-dev.dts b=
-/arch/arm64/boot/dts/freescale/imx8mp-toradex-smarc-dev.dts
-> index c28d63293149b..e0096388fbfe1 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mp-toradex-smarc-dev.dts
-> +++ b/arch/arm64/boot/dts/freescale/imx8mp-toradex-smarc-dev.dts
-> @@ -13,6 +13,32 @@ / {
->  		     "toradex,smarc-imx8mp",
->  		     "fsl,imx8mp";
-> =20
-> +	smarc_csi0: camera-connector-0 {
-> +		compatible =3D "toradex,camera-connector";
-
-[Severity: Medium]
-Is there a devicetree binding schema documenting the
-"toradex,camera-connector" compatible string used in camera-connector-0 and
-camera-connector-1 in
-arch/arm64/boot/dts/freescale/imx8mp-toradex-smarc-dev.dts?
-
-Neither Documentation/devicetree/bindings/ in the tree nor this patch series
-defines "toradex,camera-connector", which causes dtbs_check validation on
-imx8mp-toradex-smarc-dev.dtb to fail to match any schema:
-
-Documentation/devicetree/bindings/submitting-patches.rst:
-  6) Any compatible strings used in a chip or board DTS file must be
-     previously documented in the corresponding DT binding file
-     in Documentation/devicetree/bindings.  This rule applies even if
-     the Linux device driver does not yet match on the compatible
-     string.
-
-Should a binding schema be added before using this compatible string?
-
-> +		#gpio-cells =3D <2>;
-> +		/*
-> +		 * CAM_0_CON_RST     (pin 11) - SMARC GPIO2 (P110)
-> +		 * CAM_0_CON_PWRCTRL (pin 24) - SMARC GPIO0 (P108)
-> +		 */
-> +		gpio-map =3D <0 0 &som_gpio_expander 2 GPIO_ACTIVE_HIGH>,
-> +			   <3 0 &som_gpio_expander 0 GPIO_ACTIVE_HIGH>;
-> +		gpio-map-mask =3D <0xffffffff 0x0>;
-> +		gpio-map-pass-thru =3D <0x0 0xffffffff>;
-> +	};
-> +
-> +	smarc_csi1: camera-connector-1 {
-> +		compatible =3D "toradex,camera-connector";
-> +		#gpio-cells =3D <2>;
-> +		/*
-> +		 * CAM_1_CON_RST     (pin 11) - SMARC GPIO3 (P111)
-> +		 * CAM_1_CON_PWRCTRL (pin 24) - SMARC GPIO1 (P109)
-> +		 */
-> +		gpio-map =3D <0 0 &som_gpio_expander 3 GPIO_ACTIVE_HIGH>,
-> +			   <3 0 &som_gpio_expander 1 GPIO_ACTIVE_HIGH>;
-> +		gpio-map-mask =3D <0xffffffff 0x0>;
-> +		gpio-map-pass-thru =3D <0x0 0xffffffff>;
-> +	};
-
-[Severity: High]
-Will routing consumer gpios through camera-connector-0 and
-camera-connector-1 cause fw_devlink to block consumer camera devices from
-probing?
-
-Because camera-connector-0 and camera-connector-1 are top-level nodes with a
-compatible property, of_platform_default_populate_init() ->
-of_platform_default_populate() -> of_platform_populate() ->
-of_platform_bus_create() instantiates platform devices for them that have no
-matching driver.
-
-When a consumer device (such as camera@3c in the ov5640 overlay) references
-&smarc_csi0 or &smarc_csi1 in reset-gpios and powerdown-gpios, fw_devlink
-resolves the supplier through of_link_property() -> parse_gpios() ->
-parse_suffix_prop_cells():
-
-drivers/of/property.c:parse_suffix_prop_cells() {
-	if (of_parse_phandle_with_args(np, prop_name, cells_name, index,
-				       &sup_args))
-		return NULL;
-
-	return sup_args.np;
-}
-
-Unlike of_get_named_gpiod_flags() in drivers/gpio/gpiolib-of.c, which calls
-of_parse_phandle_with_args_map() to traverse gpio-map,
-parse_suffix_prop_cells() calls of_parse_phandle_with_args() and stops at
-the nexus node itself.
-
-As a result, fw_devlink_create_devlink() links the camera consumer to the
-driverless camera-connector platform device instead of som_gpio_expander.
-When the camera consumer probes via really_probe() ->
-device_links_check_suppliers(), it sees that the supplier has no bound
-driver:
-
-drivers/base/core.c:device_links_check_suppliers() {
-		if (link->status !=3D DL_STATE_AVAILABLE &&
-		    !device_link_test(link, DL_FLAG_SYNC_STATE_ONLY)) {
-...
-			device_links_missing_supplier(dev);
-			ret =3D dev_err_probe(dev, -EPROBE_DEFER,
-					    "supplier %s not ready\n", dev_name(link->supplier));
-			break;
-		}
-}
-
-Note that simply dropping the compatible property from camera-connector-0
-and camera-connector-1 without updating fw_devlink to traverse gpio-map
-would leave the nexus nodes without a struct device, causing
-fwnode_links_check_suppliers() in device_links_check_suppliers() to defer
-the consumer permanently with "wait for supplier /camera-connector-0" even
-after driver_deferred_probe_timeout expires.
-
-Could this regression be avoided by teaching fw_devlink to resolve through
-gpio-map (for example using of_parse_phandle_with_args_map() in
-drivers/of/property.c) before relying on a driverless gpio nexus node?
-
-[ ... ]
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261022-v1-smarc-i=
-mx8mp-cameras-v2-0-cfe3d25e7aed@toradex.com?part=3D2
+Frank
