@@ -1,100 +1,87 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.51
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792677782;
-	b=oNdUq54QPzDss9DVCOmB8rOItjP5d6F8btUYCrDM65jVorEAA4PGucbxEEcQCMx12CGE
-	 xj+A+I538vknFsR9TtGtAmHw49OKF87SbhxBJy/dX2ox2YK6ReNR2dveJpmNOz8/dwUwS
-	 cng539dEjztmFDWHGEM2RWDtfIT36J2FNx7yUiQR5famucm5PywwHO51nM++lX+P5E+Gi
-	 IRQMpZtxFSuxMxExIJuvWyCIZ1bDQSxcFpJN4Davb6472ZP/+MP/oV/DlOfDHlWoNXz9R
-	 WpdSu6nYiFE6FW5Q75rzXaMBfcX1Y+vGMfWkhblS/7gGkRuzKKeQ8KHruQ7j0or6GAQ==
+	t=1792678181;
+	b=v77v7PxNl5xjADH4AFQ1rL1hN53Lr0i0ImZ/Erkh/sTeOSOrrxeb4sK12k++JNUuVvw6
+	 cOS/p6L3y83ylCSfWIGYID59hx4hcIRtDLBuMyGmDXBukvXa3ZC9uNEc2WTv5vziqoAO3
+	 v8iINmU3ki7gM+RtabgqB5PRxTYo3kfop+TUW8XwcSgIKQFOhf8vd7nhBs5dzj788dH8E
+	 8SZ61sJ6v34idA5h0kczi4+3UiJIWi/sWn84Ovnxm/HEdfYOnBOnNZpO3eZSNUJ5i4yrv
+	 D8ki0IpfZlH3YMinZBbMrV+4TEQYZQLSOjAV0ZisJsiuwnLYtOCiPoow4jSy5Ir12IQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792677782;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792678181;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=yV1RxJJscrXOeI7Q/8W59C0ANld22tAuW0rA5vcBUxc=;
-	b=zVy4ItHePR0W+YQBwU6RSJbxz8Lp+ymNMi7QI6RLrb/jFy5SCIuPUs0LMG0/+drbn5vj
-	 ryzfLeO9+6VB8UVorEfp1WEa7s59psMuZ9Cns/P/fRGg7/RjCHzP8j1RzIhnGW4cb7QtI
-	 uB5haa/bwJacYP5nVhoWWbJc/eD5uO9B0GJAUhCIFWMkGKOQTNGMLSFrSpRicltH+rlPn
-	 r9v0NJn9qHFLuPnFUso3IvjaeM4qn5oUGfFjPH5UW3Au/wy88t4Eqh99gY5UxigoniCFP
-	 vSCq5+8KQ8dO3SVzJuEgRayMe5XGLG500m3f7Gv9N7qmZDPq/LV2+ibAVB03706AX7A==
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:Subject:Date:
+	 Message-Id:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-B4-Tracking:To:Cc:X-Mailer;
+	bh=YXago1OoE7za0flCz23UuKhtMvUqXuNpFfpj2dGF/2k=;
+	b=EN5CYOMoLwTumee9odxxL/oVqdz/WuGqC+YDHN0ryuz/7vT5MGrtXkEYZF9d1d0ZooYt
+	 PPt7DrTEvjCTSnPCz1cUhRzGLGFz7kgfMxFiJ8wfj9aVWw9uBR2uT6b03Iw4E0PM2dx/4
+	 gJATh6d9jkVqbwIL5JrW9dfgdRT6o25s/XKrXldNsBJq0zqoIPgMqJXr/nABMbCqae5bw
+	 uJtH977kwuhO7zLsY1boeV+6PVTuk9IKvgFS7eTvdDcQFwSSJzebXzJ+9qLHOico2dqdi
+	 mFKrF/vYNPHiMbLFQEvYvO9s/YMzsl8PgkU5fMc3mKuLRGJLcGow68ITtzK3YMIAOOQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=konsulko.com;
-	spf=pass smtp.mailfrom=konsulko.com;
-	dkim=pass header.d=konsulko.com header.i=@konsulko.com header.a=rsa-sha256 header.s=google header.b=MWy7IWjj;
-	arc=none smtp.remote-ip=209.85.128.43
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=pgvxZFoW;
+	arc=none smtp.remote-ip=209.85.221.51
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE38606A33D
-	for <imx@lists.linux.dev>; Thu, 22 Oct 2026 14:03:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8AE38606A33D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=konsulko.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=konsulko.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 172ED606A322
+	for <imx@lists.linux.dev>; Thu, 22 Oct 2026 14:09:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 172ED606A322
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=konsulko.com header.i=@konsulko.com header.a=rsa-sha256 header.s=google header.b=MWy7IWjj
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4a1dede3c2cso24251195e9.2
-        for <imx@lists.linux.dev>; Thu, 22 Oct 2026 07:03:01 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=pgvxZFoW
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-48e20ed3b9dso1860076f8f.2
+        for <imx@lists.linux.dev>; Thu, 22 Oct 2026 07:09:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google; t=1792677780; x=1793282580; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=yV1RxJJscrXOeI7Q/8W59C0ANld22tAuW0rA5vcBUxc=;
-        b=MWy7IWjjxEf1LPsZQYe+Or2IE/tpZ+jVWDDUNo2/cfA+uAirooVg0Q8b+3rl4hOfe9
-         PqT0Jh/eMWR77yulqqNKTbiIIc41uOkyT1uRoVs4V8mPxp0ottRKG79H0tmQSsziet4p
-         X8IGQeXTdk9bu8MmJ38BnOhCd35hfHuQj/0Yc=
+        d=gmail.com; s=20251104; t=1792678179; x=1793282979; darn=lists.linux.dev;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=YXago1OoE7za0flCz23UuKhtMvUqXuNpFfpj2dGF/2k=;
+        b=pgvxZFoWCuR7OIm51+aPWn6Vp2Eq4gafvdUTDOssyhZghyr5OpgyA+oRXRJQw29/uw
+         MZDXaJ8od9trtu9h2YpaSJFi5le6yBXn8unUgnqfrkryjND37V53BHvKlZzzsml21Iys
+         LmanTETlRblj/xvCX+djC0cd2/9NLpYEmbtPVwLiLRqZAN7k/3q0NzPA9SA4qcSEzRHm
+         iNcYC9NSNDbXrX9GjnlplL/w8FHiUVy4Vv7nwSUeDJx7/eqp4E1SCR5FLTlMDXYiZd3c
+         TtGCY7AiC14lqGrsfEBKciBp9jGWWFolEEKiWO2JN+mfu7DNwVSFLtBvLUEzcHOtNmEX
+         UTFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792677780; x=1793282580;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=yV1RxJJscrXOeI7Q/8W59C0ANld22tAuW0rA5vcBUxc=;
-        b=Ld3QegsfoKLPYHwCCWVR/0qevYDgDuPImaVdQ6pgOUfJNgb3t08979URkibCXILQeC
-         cToKCcidb4ryP4ongoPNmtQ/R7iE7/123XNk43v4qA5VjqNQi4s9FDkB5fgAMLBJDZsJ
-         vylYDBGjQnLDpx83dEMO0BMwsUPpHQryTmVk32m6pUlPnoAhoz/ZFA/a/avjQ+4AODWe
-         8hWrY5kDxc+wgTyAGXeCebRgV46n93RE+9zlGRg4UgC/xv4qoPmmmL+rq//x/XD6jXLg
-         dWKYy5HIdls1SEohqcLTBuNo7M18P3Yzq1puRQOLOGLX5e3hMN5byVbJcmoJYMoXLtaA
-         oNDA==
-X-Forwarded-Encrypted: i=1; AKwUvBzkhXqNW7olgO8Oicpl0R1bwZwrJP90Ac56M0ZjCt0OdB3rYJzVuBo2b+OEMNSz8U0IkTs=@lists.linux.dev
-X-Gm-Message-State: AFq9FYI2jaTZzruwbGcL83DuUTkaA/77kZKMi97IlywEecy6fx0ud67F
-	d1GWctqBGoZ7fyz8ndT/YNwEXPO4C3sLH3cPlBdVUCycJArn7ur304/fd6pcCRoJCDE=
-X-Gm-Gg: AYBFou0sGPWQAuBlkX/1YJZd07DOsCrG1XIrEbtC4NNeyLYmd7/MfpbzpYLA8CNiWDd
-	xUnF+3z36HJJYEMkzZbTTSq8z/UXtg/TTKx/whidhvoRCmQzB7C6UAGo2tYRpnbnmjEjQ2WIHxh
-	BOgVrLcvbicQw4rmpgO9LWBugJ7yHXPLhqQSpYz6OuExp6+8Znj8JV0ZS6rh0jVYHQbkWUBf+66
-	f5VaLNwLmCLvbu9HaVrWLpTtLUoW92VWbBvzcs4sVnAU2ZbLU7hqO79oXX6zJkg5GJ1Pq7dNYbQ
-	u3Kasnm5hASBT5QYapQIOHMexWAWAIUk22bqG+AcN1lEFZNN1mMWuT/mCka+2hLly1cZgdDVeWY
-	oVB9P6pd0W+g6V3FaJXDvZV9LzDi6OjKeoMcftrDqMS1kHbTA/bQj1XmcCJotgL1EjRre2iMaDK
-	srd6NDVMHUVR0syCoJ+sL2bQ9ft8aAvjK3w06Lmh5Y0+t5w25nZFIiTSqryeBbJYRLvuuYCJNSf
-	osif7ucdEuzrEbzcOj90+ShzGOjb+mYuXhLi8FX8fFs7FPdhNJYFQs3/tuGcX/NvyaSW/bR
-X-Received: by 2002:a5d:584d:0:b0:48e:28bd:e010 with SMTP id ffacd0b85a97d-48e28bde4b0mr8838292f8f.7.1792677779627;
-        Thu, 22 Oct 2026 07:02:59 -0700 (PDT)
-Received: from tone.k.g (lan.nucleusys.com. [92.247.61.126])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e2582a53fsm12538258f8f.32.2026.10.22.07.02.58
+        d=1e100.net; s=20260707; t=1792678179; x=1793282979;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=YXago1OoE7za0flCz23UuKhtMvUqXuNpFfpj2dGF/2k=;
+        b=Bo7CnG8tjmmZJ6IH/rSB5RbtURo/Hh6GaRlpk7qbqMaqiQ0LRALzpqkGdbEM1BrcUd
+         gQ6dPeBlnnQT29T/rEJuP4UmP88lu2QLOKJMcT6WdezZ+w4do+zemrzJyKQpTvdBE/ct
+         oqG4JQlrcrDzt5Rb4V4fsv+PWuPlBR9IBhTKhPKWhyWRjO1ZHdadEncfS4JH+P7uOB/y
+         wolCrGFRQKchINBxowaNKk4NVt4WSyxg1bCOlcnSD1v/E63f5rhfBPTOg8A4crHJUYhm
+         zf6wU2DO/M4xzlSg0TBWpg16ws4fdX8y/xnhdjy5e62ysdK34oTeyPWcN7/9QVAMWxBz
+         +D5A==
+X-Gm-Message-State: AFq9FYKgHpWMZeRaKTi/6yYWC0dseHbjjYLcr1sUrUovd3rh3/QamR+U
+	azHYukuBBsbR4I6taAqm3Q9YtXDreAMowXaWJnd0dMW2qFG3QKjHC9qj
+X-Gm-Gg: AYBFou1qqID3p/xQi5yqSAEdwNKXMRfNTaVcB49M89yHYp5boZidQK25LytgG6P4DUQ
+	CKMAncEQJkAvT1CgLtEUQ6LDLCvUsn1C8tqRii16qfnTy3ntWXogIxVAf8J3+rZIPu2EV7zLowU
+	ivkDneY09+DYbUutT9au2TfkVMiNs7n+BdLlFy+HqHzOcquEodsGQHW2cKlAfLUE81dr06sFT4h
+	4pkD/rN6hS+K0H8wPPS+VWOU8vLQmqtN8WP7lAyy2Yth5P57GcS5xhUpzXz0I/OIVY47tQJzEyv
+	qYO3JSPS8ZFv54gOoAM1acYo+ZfIFToYEQqNf4CehAupZ7olTC1Lo3b1pi99QIs16of7UObnbpE
+	RtAyXZEBy1rjUMJjBmj61bn2nrB2+mZDQPVjVGs85nQFSt+d9pq9z7cLM76Fad8wgizQU3HKggL
+	LTlS9+edeCSJ7lJXEbL48ABbYsFhyLkil6mp+BdwaLWAiStrQV77OQIb6DW7jFep9lPoH7sipL8
+	V3h4Wv2WM/dOOGot/1sXZ1AJecF7KDzzolykZ3LIPjw6P5yFsoOx/rrhuMU9U6N2ByP7osxVPjW
+	KB4bdMOItHzS0rWdarcXSXn/+nQQy0fCAUwtAuENqiNtztM0Xktqba8=
+X-Received: by 2002:adf:e00e:0:20b0:48e:1e03:687f with SMTP id ffacd0b85a97d-48e264c3ffamr7880482f8f.31.1792678179143;
+        Thu, 22 Oct 2026 07:09:39 -0700 (PDT)
+Received: from ernest.hoecke-nb (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch. [83.173.201.248])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e2584e760sm12368150f8f.59.2026.10.22.07.09.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Oct 2026 07:02:59 -0700 (PDT)
-From: Petko Manolov <petko.manolov@konsulko.com>
-To: linux-kernel@vger.kernel.org
-Cc: devicetree@vger.kernel.org,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	Frank.Li@nxp.com,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	arnemaximilian.richter@draeger.com,
-	martynas.grybauskas@draeger.com,
-	Petko Manolov <petko.manolov@konsulko.com>
-Subject: [PATCH v4 2/2] arm: dts: nxp: imx: Add devicetree files for M48
-Date: Thu, 22 Oct 2026 17:02:43 +0300
-Message-ID: <20261022140244.3476844-3-petko.manolov@konsulko.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261022140244.3476844-1-petko.manolov@konsulko.com>
-References: <20261022140244.3476844-1-petko.manolov@konsulko.com>
+        Thu, 22 Oct 2026 07:09:38 -0700 (PDT)
+From: Ernest Van Hoecke <ernestvanhoecke@gmail.com>
+Subject: [PATCH v2 0/5] arm64: dts: freescale: Share the Toradex Cortex-M
+ UART overlay
+Date: Thu, 22 Oct 2026 16:09:32 +0200
+Message-Id: <20261022-v1-imx95-overlays-v2-0-c769d6eb54fd@toradex.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -104,310 +91,74 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIABwZ2moC/32NTQ6DIBBGr2JmXRrAnzhd9R6NC8CxTlKlgYZoD
+ Hcv9QBdvpd87zsgUmCKcKsOCJQ4sl8L6EsFbjbrkwSPhUFL3UnUWiQleNmwFT5ReJk9ih5tbVD
+ 1rcUayu4daOLtbD6GwjPHjw/7eZHUz/6rFSNFh42S0ky2se5exmak7er8AkPO+QsnW9p3tAAAA
+ A==
+To: Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+X-Mailer: b4 0.13.0
 
-M48 is a heterogeneous board made by Draeger that is based on two
-independent cpus, that are monitoring each other.  One of them is
-imx6, the other is Altera SoCFPGA Cyclone 5.  The latter is booting
-independently off qspi.
+Several Toradex modules assign one UART to firmware running on their
+Cortex-M core: Verdin UART_4 on Verdin iMX8M Mini, Verdin iMX8M Plus
+and Verdin iMX95, Aquila UART_4 on Aquila iMX95 and SER0 on Toradex
+SMARC iMX95. The overlays reserving it only differ in the UART
+instance.
 
-Add the DT for the two variants of M48 that are based on imx6q and
-imx6dl.
+Label that UART uart_mcu in each module device tree and share one
+overlay, imx-tdx-uart-mcu.dtso, which reserves the labelled UART. The
+merged Verdin iMX8M Mini overlay becomes the shared one, and the
+combined Verdin iMX8M Mini DTB keeps its name. NXP's imx9-mqs.dtso
+uses the same pattern with its mqs1_conflict_dev board label.
 
-Signed-off-by: Petko Manolov <petko.manolov@konsulko.com>
+The overlays mark the port as reserved so Linux does not claim it.
+Firmware remains responsible for configuring the UART and its pads.
+
+Signed-off-by: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
 ---
- arch/arm/boot/dts/nxp/imx/Makefile            |   2 +
- .../boot/dts/nxp/imx/imx6dl-draeger-m48.dts   |  16 ++
- .../boot/dts/nxp/imx/imx6q-draeger-m48.dts    |  16 ++
- .../boot/dts/nxp/imx/imx6qdl-draeger-m48.dtsi | 213 ++++++++++++++++++
- 4 files changed, 247 insertions(+)
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6dl-draeger-m48.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6q-draeger-m48.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6qdl-draeger-m48.dtsi
+Changes in v2:
+- Share one overlay through a uart_mcu label instead of adding
+  identical per-module overlays (Frank), and include the merged Verdin
+  iMX8M Mini overlay
+- Add Verdin iMX8M Plus, previously posted with the Verdin iMX8M OV5640
+  series:
+  https://lore.kernel.org/r/20261001-verdin-imx8mp-hmp-camera-ready-v2-2-7d1343ecd3ec@toradex.com
+- Drop the Verdin iMX95 NAU8822 BTL patch, now covered by the shared
+  NAU8822 BTL series:
+  https://lore.kernel.org/all/20261022-imx-nau8822-btl-v2-0-b4221ed43650@toradex.com/
+- Rebase onto imx/dt64
+- Link to v1: https://lore.kernel.org/r/20260922-v1-imx95-overlays-v1-0-694100afb4bc@toradex.com
 
-diff --git a/arch/arm/boot/dts/nxp/imx/Makefile b/arch/arm/boot/dts/nxp/imx/Makefile
-index 1a2539fa19b4..cdd252fd5109 100644
---- a/arch/arm/boot/dts/nxp/imx/Makefile
-+++ b/arch/arm/boot/dts/nxp/imx/Makefile
-@@ -104,6 +104,7 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
- 	imx6dl-dfi-fs700-m60.dtb \
- 	imx6dl-dhcom-pdk2.dtb \
- 	imx6dl-dhcom-picoitx.dtb \
-+	imx6dl-draeger-m48.dtb \
- 	imx6dl-eckelmann-ci4x10.dtb \
- 	imx6dl-emcon-avari.dtb \
- 	imx6dl-gw51xx.dtb \
-@@ -219,6 +220,7 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
- 	imx6q-display5-tianma-tm070-1280x768.dtb \
- 	imx6q-dmo-edmqmx6.dtb \
- 	imx6q-dms-ba16.dtb \
-+	imx6q-draeger-m48.dtb \
- 	imx6q-ds.dtb \
- 	imx6q-emcon-avari.dtb \
- 	imx6q-evi.dtb \
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6dl-draeger-m48.dts b/arch/arm/boot/dts/nxp/imx/imx6dl-draeger-m48.dts
-new file mode 100644
-index 000000000000..b0bc9a67f5b3
---- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx6dl-draeger-m48.dts
-@@ -0,0 +1,16 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ * (C) Copyright 2020 Draeger and Licensors, info@draeger.com
-+ *
-+ * Device Tree file for Draeger M48 Board
-+ */
-+
-+/dts-v1/;
-+
-+#include "imx6dl.dtsi"
-+#include "imx6qdl-draeger-m48.dtsi"
-+
-+/ {
-+	model = "Draeger M48 i.MX6 DualLite";
-+	compatible = "draeger,imx6dl-m48", "fsl,imx6dl";
-+};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-draeger-m48.dts b/arch/arm/boot/dts/nxp/imx/imx6q-draeger-m48.dts
-new file mode 100644
-index 000000000000..ff9c337e93fb
---- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx6q-draeger-m48.dts
-@@ -0,0 +1,16 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ * (C) Copyright 2020 Draeger and Licensors, info@draeger.com
-+ *
-+ * Device Tree file for Draeger M48 Board
-+ */
-+
-+/dts-v1/;
-+
-+#include "imx6q.dtsi"
-+#include "imx6qdl-draeger-m48.dtsi"
-+
-+/ {
-+	model = "Draeger M48 i.MX6 Quad";
-+	compatible = "draeger,imx6q-m48", "fsl,imx6q";
-+};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-draeger-m48.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-draeger-m48.dtsi
-new file mode 100644
-index 000000000000..bb2c149c64bb
---- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-draeger-m48.dtsi
-@@ -0,0 +1,213 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ * (C) Copyright 2020 Draeger and Licensors, info@draeger.com
-+ * Based on work by Russell King
-+ *
-+ * Device Tree file for Draeger M48 Board
-+ */
-+
-+#include <dt-bindings/gpio/gpio.h>
-+
-+/ {
-+	aliases {
-+		mmc0 = &usdhc3;
-+	};
-+
-+	chosen {
-+		stdout-path = &uart1;
-+	};
-+
-+	/* Will be filled by the bootloader */
-+	memory@10000000 {
-+		device_type = "memory";
-+		reg = <0x10000000 0x80000000>;
-+	};
-+};
-+
-+&fec {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_enet>;
-+	phy-mode = "rgmii-id";
-+	phy-handle = <&ethphy>;
-+	status = "okay";
-+
-+	mdio {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		ethphy: ethernet-phy@0 {
-+			reg = <0>;
-+			rxc-skew-ps = <1380>;
-+			rxd0-skew-ps = <0>;
-+			rxd1-skew-ps = <0>;
-+			rxd2-skew-ps = <0>;
-+			rxd3-skew-ps = <0>;
-+			rxdv-skew-ps = <0>;
-+			txc-skew-ps = <1860>;
-+			txd0-skew-ps = <0>;
-+			txd1-skew-ps = <0>;
-+			txd2-skew-ps = <0>;
-+			txd3-skew-ps = <0>;
-+			txen-skew-ps = <0>;
-+		};
-+	};
-+};
-+
-+&hdmi {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_hdmi>;
-+	status = "okay";
-+};
-+
-+&i2c2 {
-+	clock-frequency = <100000>;
-+	pinctrl-names = "default", "gpio";
-+	pinctrl-0 = <&pinctrl_i2c2>;
-+	pinctrl-1 = <&pinctrl_i2c2_gpio>;
-+	scl-gpios = <&gpio4 12 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-+	sda-gpios = <&gpio4 13 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-+	status = "okay";
-+
-+	eeprom_mac: eeprom@50 {
-+		compatible = "atmel,24c08";
-+		reg = <0x50>;
-+		pagesize = <16>;
-+	};
-+};
-+
-+&i2c3 {
-+	pinctrl-names = "default", "gpio";
-+	pinctrl-0 = <&pinctrl_i2c3>;
-+	pinctrl-1 = <&pinctrl_i2c3_gpio>;
-+	scl-gpios = <&gpio3 17 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-+	sda-gpios = <&gpio3 18 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-+	status = "okay";
-+};
-+
-+&ldb {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_lvds>;
-+	fsl,dual-channel;
-+	status = "okay";
-+
-+	lvds-channel@0 {
-+		fsl,data-mapping = "spwg";
-+		fsl,data-width = <24>;
-+		status = "okay";
-+
-+		display-timings {
-+			native-mode = <&timing0>;
-+
-+			/* LVDS split mode */
-+			timing0: timing-1920x1080 {
-+				clock-frequency = <142380000>;
-+				hactive = <1920>;
-+				vactive = <1080>;
-+				hback-porch = <60>;		/* left * 2 */
-+				hfront-porch = <60>;		/* right * 2 */
-+				vback-porch = <30>;
-+				vfront-porch = <3>;
-+				hsync-len = <60>;		/* hsync * 2 */
-+				vsync-len = <17>;
-+			};
-+		};
-+	};
-+};
-+
-+&uart1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_uart1>;
-+	status = "okay";
-+};
-+
-+&usdhc3 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_usdhc3>;
-+	bus-width = <4>;
-+	non-removable;
-+	status = "okay";
-+};
-+
-+&iomuxc {
-+	pinctrl_enet: enetgrp {
-+		fsl,pins = <
-+			MX6QDL_PAD_KEY_COL1__ENET_MDIO		0x1b0b0
-+			MX6QDL_PAD_ENET_MDC__ENET_MDC		0x1b0b0
-+			MX6QDL_PAD_RGMII_TXC__RGMII_TXC		0x13018
-+			MX6QDL_PAD_RGMII_TD0__RGMII_TD0		0x1b018
-+			MX6QDL_PAD_RGMII_TD1__RGMII_TD1		0x1b018
-+			MX6QDL_PAD_RGMII_TD2__RGMII_TD2		0x1b018
-+			MX6QDL_PAD_RGMII_TD3__RGMII_TD3		0x1b018
-+			MX6QDL_PAD_RGMII_TX_CTL__RGMII_TX_CTL	0x13018
-+			MX6QDL_PAD_ENET_REF_CLK__ENET_TX_CLK	0x1b0b0
-+			MX6QDL_PAD_RGMII_RXC__RGMII_RXC		0x13030
-+			MX6QDL_PAD_RGMII_RD0__RGMII_RD0		0x1b030
-+			MX6QDL_PAD_RGMII_RD1__RGMII_RD1		0x1b030
-+			MX6QDL_PAD_RGMII_RD2__RGMII_RD2		0x1b030
-+			MX6QDL_PAD_RGMII_RD3__RGMII_RD3		0x1b030
-+			MX6QDL_PAD_RGMII_RX_CTL__RGMII_RX_CTL	0x13030
-+		>;
-+	};
-+
-+	pinctrl_hdmi: hdmigrp {
-+		fsl,pins = <
-+			MX6QDL_PAD_EIM_D16__HDMI_TX_DDC_SDA	0x4001b8b1
-+			MX6QDL_PAD_EIM_EB2__HDMI_TX_DDC_SCL	0x4001b8b1
-+		>;
-+	};
-+
-+	pinctrl_i2c2: i2c2grp {
-+		fsl,pins = <
-+			MX6QDL_PAD_KEY_COL3__I2C2_SCL		0x4001b820
-+			MX6QDL_PAD_KEY_ROW3__I2C2_SDA		0x4001b820
-+		>;
-+	};
-+
-+	pinctrl_i2c2_gpio: i2c2gpiogrp {
-+		fsl,pins = <
-+			MX6QDL_PAD_KEY_COL3__GPIO4_IO12		0x4001b820
-+			MX6QDL_PAD_KEY_ROW3__GPIO4_IO13		0x4001b820
-+		>;
-+	};
-+
-+	pinctrl_i2c3: i2c3grp {
-+		fsl,pins = <
-+			MX6QDL_PAD_EIM_D17__I2C3_SCL		0x4001b820
-+			MX6QDL_PAD_EIM_D18__I2C3_SDA		0x4001b820
-+		>;
-+	};
-+
-+	pinctrl_i2c3_gpio: i2c3gpiogrp {
-+		fsl,pins = <
-+			MX6QDL_PAD_EIM_D17__GPIO3_IO17		0x4001b820
-+			MX6QDL_PAD_EIM_D18__GPIO3_IO18		0x4001b820
-+		>;
-+	};
-+
-+	pinctrl_lvds: lvdsgrp {
-+		fsl,pins = <
-+			MX6QDL_PAD_EIM_A22__GPIO2_IO16		0x1b010	/* DISPLAY_EN */
-+			MX6QDL_PAD_EIM_A20__GPIO2_IO18		0x1b010	/* BACKLIGHT_EN */
-+			MX6QDL_PAD_EIM_A18__GPIO2_IO20		0x1b010	/* DISP0_CONTRAST */
-+		>;
-+	};
-+
-+	pinctrl_uart1: uart1grp {
-+		fsl,pins = <
-+			MX6QDL_PAD_SD3_DAT7__UART1_TX_DATA	0x1b010
-+			MX6QDL_PAD_SD3_DAT6__UART1_RX_DATA	0x1b010
-+		>;
-+	};
-+
-+	pinctrl_usdhc3: usdhc3grp {
-+		fsl,pins = <
-+			MX6QDL_PAD_SD3_CMD__SD3_CMD		0x1b060
-+			MX6QDL_PAD_SD3_CLK__SD3_CLK		0x1b060
-+			MX6QDL_PAD_SD3_DAT0__SD3_DATA0		0x1b060
-+			MX6QDL_PAD_SD3_DAT1__SD3_DATA1		0x1b060
-+			MX6QDL_PAD_SD3_DAT2__SD3_DATA2		0x1b060
-+			MX6QDL_PAD_SD3_DAT3__SD3_DATA3		0x1b060
-+			MX6QDL_PAD_NANDF_CS1__SD3_VSELECT	0x1b060
-+		>;
-+	};
-+};
+---
+Ernest Van Hoecke (5):
+      arm64: dts: freescale: imx8mm-verdin: Share the UART_4 MCU overlay
+      arm64: dts: freescale: imx8mp-verdin: Add Cortex-M7 UART_4 overlay
+      arm64: dts: freescale: imx95-verdin: Add Cortex-M7 UART_4 overlay
+      arm64: dts: freescale: imx95-aquila: Add Cortex-M7 UART_4 overlay
+      arm64: dts: freescale: imx95-toradex-smarc: Add Cortex-M7 SER0 overlay
+
+ arch/arm64/boot/dts/freescale/Makefile                    | 15 +++++++++++++--
+ arch/arm64/boot/dts/freescale/imx-tdx-uart-mcu.dtso       | 14 ++++++++++++++
+ .../arm64/boot/dts/freescale/imx8mm-verdin-uart4-mcu.dtso | 14 --------------
+ arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi          |  2 +-
+ arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi          |  2 +-
+ arch/arm64/boot/dts/freescale/imx95-aquila.dtsi           |  2 +-
+ arch/arm64/boot/dts/freescale/imx95-toradex-smarc.dtsi    |  2 +-
+ arch/arm64/boot/dts/freescale/imx95-verdin.dtsi           |  2 +-
+ 8 files changed, 32 insertions(+), 21 deletions(-)
+---
+base-commit: 7f47e8eafbf55a2ad0697e5d28f5e6cff2fa42f9
+change-id: 20260922-v1-imx95-overlays-89b3a9185b93
+
+Best regards,
 -- 
-2.47.3
+Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
 
