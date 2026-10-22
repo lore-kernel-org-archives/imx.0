@@ -1,106 +1,87 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.70.69
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792672514;
-	b=azYED9ns/mcxxvnXfGzjm6RWCOIaEyT/ZcTcjVOyYJT1+LHdBoIyLZDKVbKs1T/9hvRP
-	 A+vmRDGTcKhWAug2ZyGhj4Skm5pVj+Xw9mkPqw96HpeX17bF735oaBg8VSU9DHLZ6mTeu
-	 SmemxDR+2wLp7uVuxaoy4C/ndYeYD1pamgZBKOwyyRGrIj0uIF2acw+nufan0JjX/4nj4
-	 IY5OnGdgUvpqk6DWWBrLGEfI444zlWX63CLWTz5OtCpwRhvBji+kuVPJDx4BH/cLycCos
-	 yBbRsxtiQ3Sv7f0GEffp8p244lsSmcvHsUjcWD3IeWtCAUnBT87nUx0lPzwrIoONxcQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792672514;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:Content-Type:Content-Disposition:
-	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=cN3yjrUS+bIGsRfJ433np9N55gI53v8epZkOcISeaco=;
-	b=Ay7j2MO/fbemhTjRGw8hJsVKIMv80PnLklT3dBY0jXsDhYE6AzOyWPU59vXJUuw+mihT
-	 mapQKeAYRBoX/3u9gQ9AbChxYqAr/pjN5NEV39B6P+szSuHRh/R4gqts+ZM3ZMsgVjqJv
-	 W7mefWq2liZEgpmCQ+OWapk1Aw8Rx/QnFUtiIKXTKJ/bCWXbSWTKiZnSLx66CMXY+UU7f
-	 ee6M6r3JjrXT7KxuO2+IW8AS68H0kIhVn87XlwOd7bYbmgFx5rZBfX3INyyBqq0VLmNvX
-	 tv+A2ns9dACJ+D5n46i/Yk8LZug0KEON9lhuuFXJDOn/Z6yVhbpe0FpYfE4ePjgawKA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nxp.com;
-	spf=pass smtp.mailfrom=nxp.com;
-	dkim=pass header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=WlbOzqCa;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.70.69
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011069.outbound.protection.outlook.com [52.101.70.69])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.45
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792673492;
+	b=3tTrWSm0LS0Yvz/ZAAVY6YzbWkc4lQ69Rji0CkvgvR6AF1cNZmmwOyUeFsrMx4gXtclM
+	 tq4thTjo6Om39fvKTlZIMd311adn7Aze4sSBq2iqOYxfNoeBD3bpR/muhgisF52lLWmRU
+	 BWy9n/swTWUZxN3H/4sqtbE+kw+VS9f/PlHghUX7VZfIc/MPAAlf57JeEiwf0LWv76HnW
+	 lIUtpgXRgIwU8JSeMSmWfv+KcEOP10/WVfKl9qNSZPI/kazBXWF7iPGItIVV2iXMTY9/s
+	 bShnzcww6qXrnvzaF/V6Nzj0euAKN/oPN5zz2H1Nwye1tRaVbhflfH+nZd5zSuuzNcA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792673492;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:Subject:Date:
+	 Message-Id:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-B4-Tracking:To:Cc:X-Mailer;
+	bh=hAf8XmQfH8PWn7lymtqjp6h8RME9h4xbTbTpyoS4dss=;
+	b=hAYqSWd0Ah5BnJDgXpzNUnIvrKAUjreLvlWq9OivCs9m/1hIsN2EvlF1ORu4JkgCt7hv
+	 NQ8KXc7nRusa/8n+UwjzRJBlArBIwVrckAARwjkjNCanOKQkpeM2RTd64qJ97hrB84skH
+	 RGlx4MvIQr1GmFcLaOYYJ2ZXcayfDuALtPGCoA1wkNuukbio2RA9AchBy9ZAjQ196pLYq
+	 6eEdlPEoNdJACVgKpyq/K4uqXS2Tsry7Fhq79qSxLpR5c13Wk1+yWl+hlT8pAccFjhVYJ
+	 2WVnoxXkBVrazXsZitFF53i7nGH9CyMICJiLRndEIbMu+rQpO+Ab/orp1qx7CYnroGg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=nDkTo1ES;
+	arc=none smtp.remote-ip=209.85.128.45
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BD0B606A319
-	for <imx@lists.linux.dev>; Thu, 22 Oct 2026 12:35:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5BD0B606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9C8C606A31A
+	for <imx@lists.linux.dev>; Thu, 22 Oct 2026 12:51:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E9C8C606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=WlbOzqCa
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=meODwcZFz9qCgfbFQ6paJUHTzk6SOKT0/8ck4IeTweSPytj/dCfZ++Tyz65GhaMigiuzWwbet4+sYmiV8PKbVNHwuQO0+U9rnQkZHobj5cAHzwfmWFKbEDtp4apP7dN4+rLOdT/6j4OFRRxGeq4ZKC0FwiWPDfCWflLp4QW/gOp19waA0imU5w6gDQE0QRrI+r3Sw8qCh74OqtI62162pre81JZWLlld4gd38/urNikBLgddqemMzVtSGi8LHN604Aqi2mqAvU3oyp5o8++M4F7kSijqGivChUcruaMG1WIvwLDOa7luIgPC6KRxF5XhYtV2Bf0GlU4zLNorakZIFg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cN3yjrUS+bIGsRfJ433np9N55gI53v8epZkOcISeaco=;
- b=Z+VxMV7XyiQL1LdrjnB0dT9w+2lku0gSGvr30mi2fFdWgjI0FEqwR9i30mGrnpr7d6lCkwxKD7gN3k9seAZgnxKchaiyZ4GD9dpTxhEnMAAq+y9DMGAw7196DC/u3Y+b8X2p2BSmWED5Aw2WzlZ36uLyVXbn2qSfOZoePNxkRVjwvxFTpYqN8epLeE4dnX3a5rArtHc7n/+6TotUs0nP+swnPbw5ut/FPqGpnMZz8Tr2hkLR6lNjJDjfRwszeIjB4cuDyDivpkGHwAD3LSKV+juUxo60WTBh6VHAyO+BVCVfq+mBNFMD91EjQMRzoEQK4lDhxYmMpSG9AP/9+DBDfA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cN3yjrUS+bIGsRfJ433np9N55gI53v8epZkOcISeaco=;
- b=WlbOzqCaTAI5QCQMFy+jJp2+TjEA7ik0dv1Jhxulm3Z05N1sOumKnuHWxfjvgRHtf+lREIMKgyMcFIluqTklV2MDCi2kocn5Pt/otwmSbIA6TflzH0514ySYMCobhgelvjV7mwCDuYewBa1jUW0Nb9j6ClmqItKlQZnyz5AYDJMwUVlAl6vXttoJvwamlq8nW79cm0d4wqx4l21D1eEynPDaLFuST69NDBgM8V3OWOws1kmHwxSDjP+HNHUY0b45cK/1/rqd486szJC193G2EiKASrfdgcOgDP/jSWwaz7tj6LozThaYLxKaVpuGFmnFIBsKe0e+wl5rQLBbRHUxZA==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM0PR04MB6900.eurprd04.prod.outlook.com (2603:10a6:208:17d::10)
- by MRWPR04MB12305.eurprd04.prod.outlook.com (2603:10a6:501:7f::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.15; Thu, 22 Oct
- 2026 12:35:09 +0000
-Received: from AM0PR04MB6900.eurprd04.prod.outlook.com
- ([fe80::7fda:8431:ca1b:b023]) by AM0PR04MB6900.eurprd04.prod.outlook.com
- ([fe80::7fda:8431:ca1b:b023%4]) with mapi id 15.21.0546.012; Thu, 22 Oct 2026
- 12:35:08 +0000
-Date: Thu, 22 Oct 2026 15:35:05 +0300
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
-To: David Laight <david.laight.linux@gmail.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Claudiu Manoil <claudiu.manoil@nxp.com>, Wei Fang <wei.fang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, 
-	Ioana Ciornei <ioana.ciornei@nxp.com>, Zefir Kurtisi <zefir.kurtisi@westermo.com>, 
-	Zefir Kurtisi <zefir.kurtisi@gmail.com>, netdev@vger.kernel.org, imx@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 net 2/4] net: enetc: do not rely on mEMAC hardware
- frame padding
-Message-ID: <kaqeg262ql6mucqzn46axaniowt35eq3hd52nefev2uvvkbfkz@6onteyxyjypx>
-References: <20261021145314.1435049-1-vladimir.oltean@nxp.com>
- <20261021145314.1435049-3-vladimir.oltean@nxp.com>
- <20261022093359.723c7e93@pumpkin>
- <euqz7djxfn4tqbd63ymcj2bnu7k2bb6hzlmeilao3rvjdhyisf@bk3wj5hinfnr>
- <20261021145314.1435049-1-vladimir.oltean@nxp.com>
- <20261021145314.1435049-3-vladimir.oltean@nxp.com>
- <20261022093359.723c7e93@pumpkin>
- <euqz7djxfn4tqbd63ymcj2bnu7k2bb6hzlmeilao3rvjdhyisf@bk3wj5hinfnr>
- <20261022112218.11a1faa8@pumpkin>
- <20261022112218.11a1faa8@pumpkin>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261022112218.11a1faa8@pumpkin>
- <20261022112218.11a1faa8@pumpkin>
-X-ClientProxiedBy: AS4P195CA0027.EURP195.PROD.OUTLOOK.COM
- (2603:10a6:20b:5d6::16) To AM0PR04MB6900.eurprd04.prod.outlook.com
- (2603:10a6:208:17d::10)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=nDkTo1ES
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4a1df146015so14298275e9.0
+        for <imx@lists.linux.dev>; Thu, 22 Oct 2026 05:51:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792673489; x=1793278289; darn=lists.linux.dev;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=hAf8XmQfH8PWn7lymtqjp6h8RME9h4xbTbTpyoS4dss=;
+        b=nDkTo1ESR4MmBG3LBs5fpImz7uqPKabzYkZMpyR7yDxAI6biGJnhVYjWoY+mo+DpFz
+         3zoym2QbJtWM77Tf1kLvbv3QHTp6246kCXilZ67jBPpMXmXphnfrEUlVWJcIR4ww7gkR
+         vvLOmDWyGDEvd9ovo8GA7Lt7mECdxR68ow4/bNO/2aQV04asLNObWiaGeJcuhFN6XfIo
+         SucTKVkXr0ABGWVobhhidSa0/6Er2e1Cwkt2XfHsbtZDf2lltbGHAbj91t1+WyjQBoFV
+         8m/2b2cHi0Wtx6PQ+9jCtCVPikLWgrjnRa2AGkOObKnv7ol4k2foyV7hRWVnpIqmN0NX
+         sS0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792673489; x=1793278289;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=hAf8XmQfH8PWn7lymtqjp6h8RME9h4xbTbTpyoS4dss=;
+        b=psaTz6aCn59jl9cfqI8R7n1wuh+3wIyTI41jyFBdeuSD9R10yBqfDMvvTVa1pWvHR7
+         hY8PD34olYKRh4EkubZRTlpE4JzlmX6ag915gGF8Odk3RzEWO4wZut8GYoT3qzY8Mll5
+         SxTC/WdiVdyokyhjW14c0ORqIi/Ad61SWffsWce59aFuxzmG0x6GqrmAMBew1a4gax1v
+         FYteHa9HgsiYt1n3CQZ1mRxOGChz4p8ASYR40HsjgkoH79slxr+8GEIgcxkXSvqlc2zW
+         KrD78up2uNjbSBZSKOb6VxHRb5k/5DbEIdq9Mr1P61fJpnAqypqd+j7DFKFBFnMM24VB
+         wFsQ==
+X-Gm-Message-State: AFq9FYLiRwW0PGh30l8kEqjLJK+0eFD9JQh6zN7RRBYbmkqIGOltcuqb
+	ngmfyUf1C49PdsxCcEQkx49Ho82jdX9hdAQIyHa7mgxABRfOW1LBW0zy
+X-Gm-Gg: AYBFou1K/M0yGz+KqSYpd1+/njr4grHYqAJhnChY/Eq7iNceHEYLcLnoWvbzfJjgYUA
+	hQxLovhmhroqOMV2VewQdo+WkxDFwRv69U/Kpgm4hBkFowj4qGj+jssXif6AmyPc60OcKsVEq8I
+	bHCzlwVmuJog6VCrxX8VB4lZOPgfK8S9b/ftFtsZ0G+0qQ/MUNDDC2nfv1veOKyKi7hNApQmjyL
+	BxHfH4rSRmwkzFEh4vxoyOTESWIQcd7PxSqpvsQIq3qVCnudH3B/QwoYtRK3TcuZo4o5BwYI0r+
+	LRkVdG5vjMh09rV7jJWgCJhCkm0sCEuL4fCTcEU/5pcRlfWFX0Tu+iY/qMeedICokxKSdM2jSQ8
+	iyO/wsdrNYrexKqIKicGxSXTd1ZGqzhVwZiLZm/y830ROAV2nZgcQk2PS/mwhNT7E/Xek02T6xu
+	LXmnWxlQBzDeI+opUzUtvEPnNdCdQLniat0LAzudbrqmOPSvR4wy6DYA8KD/VHpUWey2KdRdbpT
+	iZWiZTQF+9lVZXsBK0L73f4kMaSwVn+tVEO3EirXsCndce15HiPTeZljHGnnoDWYKEHaKQWm9C8
+	bcuhqZ/WapIBWdPcH9GHtSQ3i+oRF+mxHqF5xYDZaETxNYEP3NJRv+c=
+X-Received: by 2002:a05:600c:3ba0:b0:4a1:7d9b:d4ae with SMTP id 5b1f17b1804b1-4a1fdb078ebmr127894895e9.5.1792673488922;
+        Thu, 22 Oct 2026 05:51:28 -0700 (PDT)
+Received: from ernest.hoecke-nb (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch. [83.173.201.248])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a203a0f243sm64112995e9.5.2026.10.22.05.51.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Oct 2026 05:51:28 -0700 (PDT)
+From: Ernest Van Hoecke <ernestvanhoecke@gmail.com>
+Subject: [PATCH v2 0/5] arm64: dts: freescale: Share the Toradex NAU8822
+ BTL overlay
+Date: Thu, 22 Oct 2026 14:51:04 +0200
+Message-Id: <20261022-imx-nau8822-btl-v2-0-b4221ed43650@toradex.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -110,159 +91,73 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM0PR04MB6900:EE_|MRWPR04MB12305:EE_
-X-MS-Office365-Filtering-Correlation-Id: fcde4849-59e5-4b79-7925-08df3038e85d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|23010399003|1800799024|7416014|376014|366016|18002099003|22082099003|4143699003|11063799006|261009223027099003|261021135927099003|261021121427099003|10067099003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	aoFis67tVBM2sssiZiKP1CpaHjRPqsi5ITm6zcK5pKSKBFOaW505Bq+pbracuMX0bgbbv7FLfl5G/WyJHUu7dxYJkXgV8gIExnYrT+Gh6+CLHSWNY/0pjkIh0ULZ51VHWyKxmJWXvzYqNYsALQZY3VCyeaHQ5ZLBeYMoyJLEPdxlN0gi1ABM4Q81cSoAFE08t+F8DaGKamtUoe5JzBJDNgzrWFp3BD39frk9S4CyEOjJQp1BnLyjomWeFfgSnwWw/lVihVRDx+35Dwwc8eCzbJcsoPPU2sVFY6Paog1Gfdx4D/IX7X9GsYFBWBxGQ6P1kkiHmVnFFb4xdl/DOfP/Gm2i9ojqmM+JTve4dJH/C4WsMhaWrdi5fVYHLc6m7aql8DiewNBNWGx027iBkO+8Zy9e3Vxz6RbcXJg293IM/OFh9pUxGq/ysd8eCBEtyDMgxW2ai/gCjt82Gez/HDD7serH8lN9k0+mAp+63ieSTExgmgSkNo2XEHB8hwKElzfetoeZFwQpzaKE13gbPqbqXZ626fVz0mElpPI3GHT2w5p+j3tU6jIkiTX+e1mK2RlA9f3NX6MoYH7GSkzh5W1XWMCHALYr5y5AgUqhV86ySJrRvJtPMoy/5ofDuTA6QKyS
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB6900.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(23010399003)(1800799024)(7416014)(376014)(366016)(18002099003)(22082099003)(4143699003)(11063799006)(261009223027099003)(261021135927099003)(261021121427099003)(10067099003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?O9CVPyOlvZk3OTq5stXJKr9eErBAC4X2CGRODNIyYVeav1qSXGzAxwGVMlh/?=
- =?us-ascii?Q?HQyDNdriMYN4REc7A2HWw45sNKBq6YdYQH2lHimQtHjQg7yPznju0VkghJL2?=
- =?us-ascii?Q?2GQklxoYW2WiE954E0d5eSZzy7ijJx0hAc0AzLOieiqxkLLaBCjPXEan1f/u?=
- =?us-ascii?Q?zzlNZh94nSl5HgAdgMzh1LsQlun8arq8RaDvi4iFwUecArr6yYywlZrTycZv?=
- =?us-ascii?Q?+WSDImo+8Xambk2p24O6kKoN5WfhKBy7aTIyWo8KQ2IenzsBWy2pBJDs4OGF?=
- =?us-ascii?Q?JbF+EJ8Ld/wdGScNfPEyygxEZS8XBy9mMqyQwzPuahOZSPZDaarVXos2A6v6?=
- =?us-ascii?Q?QuP6ZuJoZwYnc6klio/9wR9YXQmt3I4RLHZwO6URnp12gLZqvcy4mBvD22S8?=
- =?us-ascii?Q?LcQewUNm97X0DDDC4MZ6MlfalOg+gQOjvSMeGAApNbR6GEcpCbj9IShjgqOz?=
- =?us-ascii?Q?CBLF3gemvOY/mJLvQX4x1t4j8AW2A8QpbzPP33SHJ4nPSfyNkuuOdG1Fi+/e?=
- =?us-ascii?Q?5MKgVtCbwFcAV0hDmokimKaLnIu2aOBWYmTMOBByAlRGhg/t6ZdukQ7B5Qbo?=
- =?us-ascii?Q?qh0uxYEwICBPAtk1L0tGkeYwZgmOMYsNBhvbhojmx99FViX9jXiwaJybhGyO?=
- =?us-ascii?Q?zF2yNzIbi+dp863fjJaresRs3jukt+sGejgjj8w1Mi8Z1T3iiuRF7OEPvzyu?=
- =?us-ascii?Q?cuXFpkr8V9spfBL0y/+ScaA8G17L9y5gyHQ+VPXOxPI9Jk+8tRhI/Tzu6Eyu?=
- =?us-ascii?Q?WyDhS+V5gLLjn1mPwJJMN9Fvi92l1TRhAR+6iaZcQJvShsHxY82zwHTWhZkL?=
- =?us-ascii?Q?14BuM1AoibEcV0jKH9TfEK8QNUnmWXEBPzS0NKPbbFLwASQZq2SdsiUIveDI?=
- =?us-ascii?Q?vGuH2TMwRtL0c6X4Gm4B03MwWGbFfwEmkOAGuAdJeyuP7ZMgtmzCATm9ykBe?=
- =?us-ascii?Q?RlhrcnC1vJf+bUv1cxK+TSDWeE3cav7gjK4JS3yeJvG4yHcarAW7FrOp5VCY?=
- =?us-ascii?Q?pdk40Jy4icaxkCtINCiwhHAZZgeKYDkyATBnSSzxzxm7frPq12i8CcR5qhYK?=
- =?us-ascii?Q?sV9TrLhy42kWJP1s7IsSgPsp41HW0HQxNaeuQldJWcF4OK8Ab2Lw1vxlRB9k?=
- =?us-ascii?Q?nWXXxwf5gbCu5e1qBevMjp3xOeLAEClSnz3SLWZxD1h3iDgw9qMOzVFX8G2n?=
- =?us-ascii?Q?USSU2XJ3/6BsSMcfqX5AIzsx4f/EYEd/o7HKz/VOzZUEgd/Jz716Kd0OxaEj?=
- =?us-ascii?Q?ewlmQkn3kVik6nyGL+NOZxr9Dmub81c8vgFfLa114o92Is/3btcJtT15OBo1?=
- =?us-ascii?Q?wQsRLHbXPYxg8nIrHanDyH9wSLu5SIEDBS7uLgdAmIOtavvuVtSOun8V2thq?=
- =?us-ascii?Q?BCDJlu/7ZPpDuygsSJJXVQyRV/FHs8/X+keZZTy768LRH6Fq98ywLeAqHtLm?=
- =?us-ascii?Q?jkwQRfByXxoRA33WtHLH6ZyghIu0fAf/3OoRxD5EzgmyNeU5YUylU6XbD3Wh?=
- =?us-ascii?Q?zLZMnTCMSdVnvKGQtLKeBAlJRmEA2tGo7C6oyxlPy8BNIWPx6AtSR2HKYuRc?=
- =?us-ascii?Q?S3tdPRJZcl2na8SQPj51neCgHcSRNPPNLmwbsjis2LdeJGkHWRL/wbpoMgDn?=
- =?us-ascii?Q?SZkBfVBYFHCYaJBWIkK2McbOPZ71CVIvFsXqSNt2F+WD58Hz5BT/Kusy/Uog?=
- =?us-ascii?Q?2RWo5nC0Kalcj6WZ3dEanm2G8KP0gNBoxOurjOYy68xMvXAKwvUbPksTkJpP?=
- =?us-ascii?Q?Hl7vtUlM2g=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fcde4849-59e5-4b79-7925-08df3038e85d
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB6900.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Oct 2026 12:35:08.6477
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: aFG4/n5KH03HRTeg/UPdqQmp+oDVqKDrIbp9V+CkQPgwcRkUAGgp39ndjPTTMGROL57VIqXqviIQim3cF6Oq9w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRWPR04MB12305
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIALgG2moC/x2NQQ6DIBREr9Kw7m/g2yh01Xs0LhC+lUTBgCUa4
+ 92LLt9M5s3OEkVHib1uO4uUXXLBF8D7jZlB+y+Bs4UZcqwFRwFuWsHrn5SI0C0jWFJYYyW6vpG
+ srOZIvVsv46ctPLi0hLhdB1mc6eXiijeQKVrnT6WcZvDBg9ETRQ2hNKPeEkTSdoMsgJeKm7oyq
+ NSzfxeltrQ+TJhYexzHH0xT9a3IAAAA
+To: Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+X-Mailer: b4 0.13.0
 
-On Thu, Oct 22, 2026 at 11:22:18AM +0100, David Laight wrote:
-> On Thu, 22 Oct 2026 12:41:49 +0300
-> Vladimir Oltean <vladimir.oltean@nxp.com> wrote:
-> 
-> > On Thu, Oct 22, 2026 at 09:33:59AM +0100, David Laight wrote:
-> > > On Wed, 21 Oct 2026 17:53:12 +0300
-> > > vladimir.oltean@nxp.com wrote:
-> > >   
-> > > > The driver sets the ENETC_PM0_CMD_TXP bit to pad short buffers.
-> > > > This works, however sending short frames from user space and looking at
-> > > > the padding bytes inserted by the MAC at the link partner, we notice on
-> > > > LS1028A that the first octet of padding is sometimes not 0.
-> > > > 
-> > > > This is fine per 802.3, which does not require that the padding is zero.
-> > > > 
-> > > > However, there is an unproven suspicion that the padding bytes may
-> > > > come from internal memories, and unfortunately I couldn't get sufficient
-> > > > priority for this octet's origin to be investigated by hardware
-> > > > engineers.
-> > > > 
-> > > > To be defensive and not leak any sensitive information from the SoC,
-> > > > let's pad all frames to ETH_ZLEN in software, so that the MAC doesn't
-> > > > have to do anything.
-> > > > 
-> > > > There are 2 distinct cases to handle, for GSO and non-GSO. For non-GSO
-> > > > things are trivial; we need to call eth_skb_pad(). For GSO, things are
-> > > > not simple, because user space may set gso_size to a very small value,
-> > > > which could make the GSO super-skb smaller than ETH_ZLEN;  
-> > > 
-> > > That isn't sensible.
-> > > The minimum frame is 64 bytes (including FCS), subtract that, the MAC
-> > > header (14 bytes), minimum IP header (20), minimum TCP (20) and that
-> > > leaves 6 bytes for user data.
-> > > I doubt it is sensible to do GSO for anything under the minimum mtu
-> > > (128 bytes rings a bell somewhere).  
-> > 
-> > My fault for not being clear and inviting this kind of objection.
-> > 
-> > Since we do GSO in software, we advertise NETIF_F_GSO_UDP_L4 too, and
-> > there, Sashiko came on v3 with the observation that for UDP GSO, user
-> > space can set gso_size to a small value using setsockopt(UDP_SEGMENT):
-> > https://lore.kernel.org/netdev/178960175550.22033.10648880872141935672@kernel.org/
-> 
-> I'd fix that in the setsockopt code.
-> But that might be a bug anyway.
+The NAU8822 audio codec on the Toradex Verdin Development Board and
+Apalis Evaluation Board V1.2 can combine its two loudspeaker outputs
+into a Bridge Tied Load (BTL) output. The overlay selecting this mode
+only sets a property on the codec node, which both boards label
+nau8822_1a independent of the module.
 
-Why a bug?
+Instead of adding identical overlays for every module, rename the
+merged Verdin iMX8M Mini overlay to imx-tdx-nau8822-btl.dtso and combine it
+with the Verdin iMX8M Plus, Verdin iMX95, Lino iMX91, Lino iMX93 and
+Apalis iMX8 device trees. The combined Verdin iMX8M Mini DTB keeps its
+name.
 
-> UDP segmentation has to use IP fragmentation and that is usually done because
-> the interface/path mtu is too short.
+To: Frank Li <Frank.Li@nxp.com>
+To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Pengutronix Kernel Team <kernel@pengutronix.de>
+To: Fabio Estevam <festevam@gmail.com>
+To: Rob Herring <robh@kernel.org>
+To: Krzysztof Kozlowski <krzk+dt@kernel.org>
+To: Conor Dooley <conor+dt@kernel.org>
+Cc: imx@lists.linux.dev
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: devicetree@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
 
-In my testing, UDP GSO does not generate IP fragments, but rather, each
-UDP segment is its own datagram.
+Changes in v2:
+- Split the BTL patch out of the Verdin iMX8M Plus overlay series, whose
+  display overlays are deferred
+- Share one overlay instead of adding an iMX8M Plus copy (Frank)
+- Also replace the Verdin iMX95 and Apalis iMX8 BTL overlays posted in
+  https://lore.kernel.org/r/20260922-v1-imx95-overlays-v1-1-694100afb4bc@toradex.com
+  https://lore.kernel.org/r/20261001-v1-apalis-colibri-imx8-dtsos-v1-1-21881dc324c1@toradex.com
+- Add Lino iMX91/iMX93 combinations
+- Link to v1: https://lore.kernel.org/r/20260907-verdin-imx8mp-non-camera-overlays-ready-v1-0-ca0c63c2994f@toradex.com
 
-Are you thinking of UDP Fragmentation Offload instead? As per
-https://docs.kernel.org/networking/segmentation-offloads.html#udp-fragmentation-offload
-this is deprecated and AFAIU not what this is about.
+---
+Ernest Van Hoecke (5):
+      arm64: dts: freescale: imx8mm-verdin: Share the NAU8822 BTL overlay
+      arm64: dts: freescale: imx8mp-verdin: Add NAU8822 Bridge Tied Load
+      arm64: dts: freescale: imx8-apalis: Add NAU8822 Bridge Tied Load
+      arm64: dts: freescale: imx95-verdin: Add NAU8822 Bridge Tied Load
+      arm64: dts: freescale: imx9{1,3}-lino: Add NAU8822 Bridge Tied Load
 
-The docs do also explicitly say that UDP Segmentation Offload does not
-generate IP fragments.
+ arch/arm64/boot/dts/freescale/Makefile                 | 18 ++++++++++++++++--
+ ...n-dev-nau8822-btl.dtso => imx-tdx-nau8822-btl.dtso} |  5 +++--
+ 2 files changed, 19 insertions(+), 4 deletions(-)
+---
+base-commit: 7f47e8eafbf55a2ad0697e5d28f5e6cff2fa42f9
+change-id: 20261021-imx-nau8822-btl-de926231bf78
 
-> But there is a minimum mtu for IPv4 of (something like) 128 bytes, and
-> it may be invalid to fragment into smaller pieces.
+Best regards,
+-- 
+Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
 
-I have no idea what you are referring to, here, with the minimum MTU of
-128 bytes.
-
-> > Sensible or not, it is possible, and I did generate a test program using
-> > an LLM to confirm this.
-> > 
-> > Regardless of that, the last segment of a GSO super-skb would need
-> > padding anyway, because even with a 'normal' TCP MSS, the skb->len
-> > modulo gso_size could still result in a last frame < ETH_ZLEN. Padding
-> > just the GSO super-skb, as I did in v3, would also not fix this.
-> 
-> True, but that is a different check to the one you did.
-
-So what is your suggestion for the driver to do?
-
-> > > But does this code allow for the VLAN tag that you forgot about in the
-> > > other patch?  
-> > 
-> > Not sure I understand your concern here? Is it that with VLAN TX
-> > insertion offload, we pad "too much" (i.e. to ETH_ZLEN, then the NIC
-> > pushes an extra VLAN_HLEN)? I'm not sure that's a problem..
-> 
-> That is a problem, VLAN packets should only be padded to 64 bytes
-> including the VLAN header and CRC.
-> However such overlong packets are likely to be tolerated because
-> an ethernet switch can add a VLAN header before forwarding a packet
-> and it can't know whether a short packet is padded.
-
-Well, if it's a theoretical problem but it's not a practical problem,
-I'd prefer leaving it as is.
-
-Since eth_skb_pad() itself is unaware of VLAN TX offloads, I'd be
-opening myself up to an endless rabbit hole ("why didn't you fix this
-in eth_skb_pad()? It's a generic problem." followed by
-"changing eth_skb_pad() broke 20 drivers!")...
-
-Unless it's very clear why I'd be doing this, I'd very much prefer not to.
