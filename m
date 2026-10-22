@@ -1,102 +1,80 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=188.40.3.216
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792658044;
-	b=QxN/X1JuupdLdzT6rlgX0NbwL0E1rYjQEMJ6ckghCGLwrhuzOylBFMwsvJXhH+dpjLqu
-	 monlVTYZbPEtEydV+9dQ5vafp2ey7UxEO6rchz1MK51HmlF549/7X4GtaCs6YsrSleKjC
-	 E/bGA7/kbCyw0sEN1C8KqaO+4ju4Q9RDsrywFBxJMk8rGq02Nd3F/oS+Z+VNC8M0w++dC
-	 7hXc4HaBWqev+FTFVKNsBj3wTadB9MouWtirIy9QxW2V4BaRPvSvp3Wvry6gu/317U/DD
-	 0pAU8ueTEmhlKyH74pKqW9HFPdov29g0c0yYqDZ8TXnB8ByfK+kzJdg6pMtK9t9ijFw==
+	t=1792659016;
+	b=gadvasP4YygMXqM/kKMFsUJFMVn/hhzQFo6yptoQgbomvZD19EEPhtNvzcQFaRfYI/0K
+	 FrZovs+MEagz8Vygv3Jg5zvg9uTqZne8tp92QUK7+y3A/QxsbZHO9e2PUY4jIXueHnlwx
+	 0w7lYkunBzfds46heIM6r2xVbZJ1R62PDOqBZc9d/Sp6Y46uD2oQwn/K6gfR1uDxyOBRU
+	 s83I4YUHDcVIzmj2WH4z8zwl4GveJSPwN2xXN3m0e80rHeeJkx/r0A50DSTOdjuzpIKdx
+	 5VM63mNfqnTy3XJeHCjFUhE9pWtjQ9/rVPNIqBGewRMoa/sFMCbYnXJhLoBYnFiX+Dg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792658044;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:X-Mailer:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=Yax36yyXPOjU+t0sLu2tNeMo+58jNxQtj3yAO7yym5E=;
-	b=30HK/hw2UU18ozYIlbf61+tylPPWSuizxn7Y0j5tTg/hXCJAibe4/w6OhCxHJCqftjgZ
-	 /HO4RGYqav8FoAcahIlSIiAutArmfA8nrEk/H5sctCU41gJ0xtnq/Z1TazG9Z35Ylwowa
-	 beEhOqB1DzDaxTlE4SEAwiel8oumW8ORlU7xcp8rmYmUkCNe/xw0L3dkAn+SEA42T4Pmp
-	 sZ9E0hfvD7iQPYWnhPUpmM0hmT0BoHo/bPf0KxPExTC0hJaaVW00X7447y2LhD68FdXr/
-	 /IMb7VNK89NqSU7us8qVOdh/Ypte5MznAm4ihyN6y+JFDrpEx/xuf+xx4fLuaAec+AQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792659016;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:Organization:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type:X-Virus-Scanned;
+	bh=YAcKsa+N22qMYtLETYzF0/wBbwZ/VrpjV+7wi9PY8jc=;
+	b=cld++G6zh70M1JSJ9J63TpuawOQC0jA+Y1jssRY8sZgSl1D1N/LQw+d/OQFwb/Gw8/nx
+	 6s873r0ZVFZ1mNVWFY/TdWb02FlSsDCapk6X2tuVer3ExFClkG0WSAOqAHiwqggcU2HFu
+	 HnzsF4/M8njpSl24NRuAj7fjrt325abg7lXe4W3QQtgfquoe85dBjIYB4m6ufP/Wrzaq8
+	 HG05z9IMiqmol0BsT1W1wMYavapGbehjROT0p1D2Y53UZ+5Smq8tdlC4NMTH226ub4BMX
+	 NqRXnyVJEH4Y7Ed9UimQW2X5jXuByWpg4AaPOyCwkmW6DXpmUim1vaZ/ZUN/NwLscDA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=Cjg6uMU+;
-	arc=none smtp.remote-ip=209.85.128.49
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=ew.tq-group.com;
+	spf=pass smtp.mailfrom=ew.tq-group.com;
+	dkim=pass header.d=ew.tq-group.com header.i=@ew.tq-group.com header.a=rsa-sha256 header.s=default2602 header.b=Fjvp4tRY;
+	arc=none smtp.remote-ip=188.40.3.216
+Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E766C606A31E
-	for <imx@lists.linux.dev>; Thu, 22 Oct 2026 08:34:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E766C606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98951606A31A;
+	Thu, 22 Oct 2026 08:50:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 98951606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=Cjg6uMU+
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4980fe6b3beso3682365e9.0
-        for <imx@lists.linux.dev>; Thu, 22 Oct 2026 01:34:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792658042; x=1793262842; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Yax36yyXPOjU+t0sLu2tNeMo+58jNxQtj3yAO7yym5E=;
-        b=Cjg6uMU+MmcHbP9OMCgjTXS0AVvXO7hC1L2VutqosNCRyj9jYTBtNPk/30m14OlNs0
-         4qPxBY5XXyk8iAY6pxkAIBUsc5va6kk/OJEL76/baiGkdUuUqbRoVI3n0oze69e65xNT
-         YhvqPtiV2r0PetYSNjICI2x109ATyh/EacmgqTwv/0M5DzQBtSOf5uwPh7fOaRZFgNge
-         ZCUFMb4pZ3nLA5N7xDrTNYIgkczJAN+lzUSg5rS7kG2rtVj3PguOPAEniIPrbQfIZdwp
-         Kqxm2LPzxeqKB8OAuZG6dGq35/N835fTa4Puck+VSne3c1w3e0i/8Qe1NLmYNqp+8fu6
-         skPg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792658042; x=1793262842;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Yax36yyXPOjU+t0sLu2tNeMo+58jNxQtj3yAO7yym5E=;
-        b=sj1B7KVDC97bNMbDEjYO4jjJgt/TsHkaH/RQ8mxQ4HDK7S38HznHGcmLrABUVM5grB
-         h+nToXgTPHRtIvDKgpjVxLuzRnOSfO8SSwbDdN0zEYXQLeY+R8LQCQFh3Yv83hEeh57C
-         pCMxF1G33pPnsIG8oDh7UTktzIm5F0N1R1Y74dJN96cNDKDsHlPtlccNmuurKSbCTa40
-         5c7ChrwW4FRmcfRluHIes6rfbYLCnfuHgeq3YTyvVC03RnBZkHF9US3gdjvRBwRqY4W4
-         agI3D+LpCRdy4IX7cwxSzVUCkw15gy0eDyIZFd1tVBT5fJjuVfNkpykTLv0x6PN6P/1o
-         gnpA==
-X-Forwarded-Encrypted: i=1; AKwUvBxazLsPgjpbzoehRSHEGAGqXwL03emXkgRUZrj6rP4X8MfbGt+amX7fMvQNsbevYqBB/dU=@lists.linux.dev
-X-Gm-Message-State: AFq9FYJGTNqdQPM8dWljy47MU4PAoDdG2jieKQvHQOWcQOCveo8vK2n+
-	HF+BOHNofquQNUGewwg4mr/HJkzCTo9jCGZYwUl6ZoyS/A6G9aqXRvBn
-X-Gm-Gg: AYBFou2Y3FJtrLDUpx5Kx7CHP0L6HCrd1QsBAVDHK3esO+KRBbAsj8ZaT/sk8RMS7kE
-	IbD3QB9M9jH0fjWPopoVxz+RgRMjO09UniW9djdLEZNzpxBc5LX+FN8zzT+hQJ0RS9TOyjZTxz3
-	PXNYsHMbqAE+feH9GL6doWW6nGxKov9qfM7DY9sRcDuX4UhzhbsM9LWShDWcW15u8FjoYPsnbAz
-	o1OoTAkRGstzKjq/jhiQC5xnjDIZzzFyXRHgkbLG5mbwfSudeiJ/xTCbMqdUdJwKahheFkXAoxc
-	4AzwtCO2TlmDt6DN9HNwElkjAuwG79XbGynEGfG4BhHiOkcgN5v816ke1pPjC7BZuMU56aVOL4O
-	x/IMUyhrI9W/Nbj3ScLU7ZDN3AU0lq4890kZJp2q52x2HGr3mx847HcC8isWOQR/bJ9C8nexxZX
-	F03ZbyhDvUKf34kOGFk4qJ5off9EojxlqTEqm1fLOuiV8N2UXWtdJv/FxzEo10sIAJQWIpZBsRS
-	UC08yp9cESCFO+pNO+KZfunhStYcy2EioIpWpSlIBUJoaJKxBUJByIdAdcTR4Z+WdxToWtfEexA
-	wvv4h89YH3ao3eMz
-X-Received: by 2002:a05:600c:a49:b0:49f:ffa2:1c72 with SMTP id 5b1f17b1804b1-4a204b20321mr33355645e9.11.1792658041966;
-        Thu, 22 Oct 2026 01:34:01 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a203b28f91sm51399915e9.5.2026.10.22.01.34.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Oct 2026 01:34:01 -0700 (PDT)
-Date: Thu, 22 Oct 2026 09:33:59 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: vladimir.oltean@nxp.com
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski
- <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Claudiu Manoil
- <claudiu.manoil@nxp.com>, Wei Fang <wei.fang@nxp.com>, Clark Wang
- <xiaoning.wang@nxp.com>, Ioana Ciornei <ioana.ciornei@nxp.com>, Zefir
- Kurtisi <zefir.kurtisi@westermo.com>, Zefir Kurtisi
- <zefir.kurtisi@gmail.com>, netdev@vger.kernel.org, imx@lists.linux.dev,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 net 2/4] net: enetc: do not rely on mEMAC hardware
- frame padding
-Message-ID: <20261022093359.723c7e93@pumpkin>
-In-Reply-To: <20261021145314.1435049-3-vladimir.oltean@nxp.com>
-References: <20261021145314.1435049-1-vladimir.oltean@nxp.com>
-	<20261021145314.1435049-3-vladimir.oltean@nxp.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	dkim=pass (2048-bit key, unprotected) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.a=rsa-sha256 header.s=default2602 header.b=Fjvp4tRY
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=ew.tq-group.com; s=default2602; h=Content-Type:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=YAcKsa+N22qMYtLETYzF0/wBbwZ/VrpjV+7wi9PY8jc=; b=Fjvp4tRYs+w2onr2DddcI/RLjM
+	RM9Vkh66VbyHCLExBUIFMhI74h9LVKaDhmCmzUO3tuZL/wAVmNBSL89ficrYac6ppFtsgfRj0l+hU
+	/mRwNe6vHvo1bzs/fdzI+ZxWZvu4S8yJyv0C2atQjvxYU9n8KX2VKTW7iMCrDAGwYapvIK4RspQEX
+	7mE9YejleLQttF6qj7q1gcDByK11TgyihDPrbc518mGkLVJIVM4m0+wT6zp3vm65OtAAr8+yf/SRJ
+	WBn8R63OjO9wRsdtm/hjReE0zFgmajM4n8dW+fVvIv5g1vl0sk+96FwPBm3emEMikgtWKu7CciAob
+	hNS7aK1g==;
+Received: from sslproxy07.your-server.de ([78.47.199.104])
+	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <alexander.stein@ew.tq-group.com>)
+	id 1xJoUx-000EsD-2E;
+	Thu, 22 Oct 2026 10:50:07 +0200
+Received: from localhost ([127.0.0.1])
+	by sslproxy07.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <alexander.stein@ew.tq-group.com>)
+	id 1xJoUx-000Pxn-0U;
+	Thu, 22 Oct 2026 10:50:07 +0200
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux@ew.tq-group.com, Peng Fan <peng.fan@nxp.com>
+Subject:
+ Re: [PATCH 2/2] arm64: dts: imx8qm-tqma8qm: Re-enable A72 cluster after
+ ERR050104 workaround
+Date: Thu, 22 Oct 2026 10:50:05 +0200
+Message-ID: <16849484.O9o76ZdvQC@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20261022-8qm-v1-2-2a597cb3debd@nxp.com>
+References:
+ <20261022-8qm-v1-0-2a597cb3debd@nxp.com>
+ <20261022-8qm-v1-2-2a597cb3debd@nxp.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -106,289 +84,74 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+X-Virus-Scanned: Clear (ClamAV 1.4.3/28161/Thu Oct 22 08:24:11 2026)
 
-On Wed, 21 Oct 2026 17:53:12 +0300
-vladimir.oltean@nxp.com wrote:
+Hi Peng,
 
-> The driver sets the ENETC_PM0_CMD_TXP bit to pad short buffers.
-> This works, however sending short frames from user space and looking at
-> the padding bytes inserted by the MAC at the link partner, we notice on
-> LS1028A that the first octet of padding is sometimes not 0.
-> 
-> This is fine per 802.3, which does not require that the padding is zero.
-> 
-> However, there is an unproven suspicion that the padding bytes may
-> come from internal memories, and unfortunately I couldn't get sufficient
-> priority for this octet's origin to be investigated by hardware
-> engineers.
-> 
-> To be defensive and not leak any sensitive information from the SoC,
-> let's pad all frames to ETH_ZLEN in software, so that the MAC doesn't
-> have to do anything.
-> 
-> There are 2 distinct cases to handle, for GSO and non-GSO. For non-GSO
-> things are trivial; we need to call eth_skb_pad(). For GSO, things are
-> not simple, because user space may set gso_size to a very small value,
-> which could make the GSO super-skb smaller than ETH_ZLEN;
+thanks for the patch.
 
-That isn't sensible.
-The minimum frame is 64 bytes (including FCS), subtract that, the MAC
-header (14 bytes), minimum IP header (20), minimum TCP (20) and that
-leaves 6 bytes for user data.
-I doubt it is sensible to do GSO for anything under the minimum mtu
-(128 bytes rings a bell somewhere).
-
-But does this code allow for the VLAN tag that you forgot about in the
-other patch?
-
-I also noticed that the code seems to dma map the fragments for each
-gso segment separately, just mapping each skb fragment would be better.
-(But that is for another patch series.) 
-
-David
-
-> padding that
-> would produce more segments than originally intended. What needs to be
-> done is to pad individual segments instead.
-> 
-> When a GSO segment's hdr_len + data_len is below ETH_ZLEN, append a
-> zero-padding data BD and advertise the padded length in the header BD's
-> frm_len.
-> 
-> The padding bytes are always the same zeros, so a single read-only
-> DMA-coherent buffer (tx_pad, ETH_ZLEN bytes, zero-initialized by
-> dma_alloc_coherent() and never written) is shared by all padding BDs of
-> the ring. Like the header BD, a padding BD carries no per-BD DMA address,
-> so cleanup does not unmap it. The pad BD becomes the segment's last BD,
-> so the F flag and the skb pointer move onto it. Segment checksums are
-> unaffected as they are computed over data_len only, before padding.
-> 
-> The worst-case descriptor reservation grows by one BD per segment.
-> The pad BD also counts towards the per-frame chained BD limit (15 on
-> LS1028A, including the head and extension BD), so a padded segment may
-> use one data BD less.
-> 
-> Only LS1028A (NETCv1) needs this. On i.MX95 (NETC v4.1), it was observed
-> that padding bytes are always zero, and the reference manual also
-> documents in "106.3.5.1.2.1.3.7 FCS generation and append on transmit"
-> that HTA Transmit pads short frames (including LSO segment frames) with
-> zeros before appending the FCS. On LS1028A it does not say this (padding
-> seems an exclusively mEMAC task).
-> 
-> Nonetheless, for simplicity's sake, we keep the unconditional eth_skb_pad()
-> call in the common transmit path, but we leave the hardware LSO transmit
-> path unpadded in software. The latter is only present on NETC v4.1 and
-> later (thus already contains zeroes).
-> 
-> Fixes: fb8629e2cbfc ("net: enetc: add support for software TSO")
-> Fixes: d4fd0404c1c9 ("enetc: Introduce basic PF and VF ENETC ethernet drivers")
-> Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Am Donnerstag, 22. Oktober 2026, 03:50:02 Mitteleurop=C3=A4ische Sommerzeit=
+ schrieb Peng Fan (OSS):
+> From: Peng Fan <peng.fan@nxp.com>
+>=20
+> The ERR050104 cache coherency workaround for i.MX8QM/8QP has been
+> merged upstream (d44e08dab27d). The workaround addresses the incorrect
+> wiring of upper address bits in the A53 subsystem that corrupts TLBI and
+> IC maintenance operations between A53 and A72 clusters.
+>=20
+> Previously the A72 CPUs (cpu@100, cpu@101) and cpu-map were removed
+> from the TQMa8QM DTSI with an explicit comment "Due to missing
+> workaround for ERR050104". With the software workaround is in place,
+> remove the workaround-comment block and restore the full SMP topology.
+>=20
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
 > ---
-> v4->v5:
-> - account for the pad BD in the new enetc_tso_count_descs() helper
->   from "net: enetc: reserve VLAN extension BDs for software TSO",
->   instead of open-coding it in enetc_start_xmit()
-> - count the pad BD towards the per-frame chained BD limit, so a padded
->   segment may use one data BD less
-> - explain in the commit message why hardware LSO is not affected
-> v3->v4:
-> - split from "net: enetc: pad short frames in software", bring its own
->   justification:
->   https://lore.kernel.org/netdev/20260921112946.edo5uw6cl7jx6oez@skbuf/
-> ---
->  drivers/net/ethernet/freescale/enetc/enetc.c | 61 ++++++++++++++++++--
->  drivers/net/ethernet/freescale/enetc/enetc.h |  6 ++
->  2 files changed, 62 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
-> index f6b352a3a49c..a9ea124f7835 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-> @@ -524,7 +524,7 @@ static int enetc_map_tx_buffs(struct enetc_bdr *tx_ring, struct sk_buff *skb)
->  static int enetc_map_tx_tso_hdr(struct enetc_bdr *tx_ring, struct sk_buff *skb,
->  				struct enetc_tx_swbd *tx_swbd,
->  				union enetc_tx_bd *txbd, int *i, int hdr_len,
-> -				int data_len)
-> +				int data_len, int frm_len)
->  {
->  	union enetc_tx_bd txbd_tmp;
->  	u8 flags = 0, e_flags = 0;
-> @@ -541,7 +541,7 @@ static int enetc_map_tx_tso_hdr(struct enetc_bdr *tx_ring, struct sk_buff *skb,
->  	txbd_tmp.buf_len = cpu_to_le16(hdr_len);
->  
->  	/* first BD needs frm_len and offload flags set */
-> -	txbd_tmp.frm_len = cpu_to_le16(hdr_len + data_len);
-> +	txbd_tmp.frm_len = cpu_to_le16(frm_len);
->  	txbd_tmp.flags = flags;
->  
->  	/* For the TSO header we do not set the dma address since we do not
-> @@ -613,6 +613,22 @@ static int enetc_map_tx_tso_data(struct enetc_bdr *tx_ring, struct sk_buff *skb,
->  	return 0;
->  }
->  
-> +static void enetc_append_tx_pad(struct enetc_bdr *tx_ring, int i, int pad_len)
-> +{
-> +	struct enetc_tx_swbd *tx_swbd = &tx_ring->tx_swbd[i];
-> +	union enetc_tx_bd *txbd = ENETC_TXBD(*tx_ring, i);
-> +
-> +	enetc_clear_tx_bd(txbd);
-> +	txbd->addr = cpu_to_le64(tx_ring->tx_pad_dma);
-> +	txbd->buf_len = cpu_to_le16(pad_len);
-> +	txbd->flags = ENETC_TXBD_FLAGS_F;
-> +
-> +	tx_swbd->len = pad_len;
-> +	tx_swbd->is_eof = true;
-> +	tx_swbd->do_twostep_tstamp = false;
-> +	tx_swbd->check_wb = false;
-> +}
-> +
->  static __wsum enetc_tso_hdr_csum(struct tso_t *tso, struct sk_buff *skb,
->  				 char *hdr, int hdr_len, int *l4_hdr_len)
->  {
-> @@ -687,7 +703,8 @@ static int enetc_lso_count_descs(const struct sk_buff *skb)
->  
->  static int enetc_tso_count_descs(const struct sk_buff *skb)
->  {
-> -	int count = tso_count_descs(skb);
-> +	/* +gso_segs to cover one pad BD per segment */
-> +	int count = tso_count_descs(skb) + skb_shinfo(skb)->gso_segs;
->  
->  	/* Each segment also needs an extension BD for VLAN insertion */
->  	if (skb_vlan_tag_present(skb))
-> @@ -926,6 +943,9 @@ static int enetc_map_tx_tso_buffs(struct enetc_bdr *tx_ring, struct sk_buff *skb
->  	i = tx_ring->next_to_use;
->  
->  	while (total_len > 0) {
-> +		int max_data_bds;
-> +		int frm_len;
-> +		int pad_len;
->  		char *hdr;
->  
->  		/* Get the BD */
-> @@ -937,6 +957,12 @@ static int enetc_map_tx_tso_buffs(struct enetc_bdr *tx_ring, struct sk_buff *skb
->  		data_len = min_t(int, skb_shinfo(skb)->gso_size, total_len);
->  		total_len -= data_len;
->  
-> +		/* Pad segments below ETH_ZLEN so the mEMAC does not pad them. */
-> +		frm_len = max_t(int, hdr_len + data_len, ETH_ZLEN);
-> +		pad_len = frm_len - (hdr_len + data_len);
-> +		/* The pad BD counts towards the max chained BD limit */
-> +		max_data_bds = priv->max_frags - !!pad_len;
-> +
->  		/* prepare packet headers: MAC + IP + TCP */
->  		hdr = tx_ring->tso_headers + i * TSO_HEADER_SIZE;
->  		tso_build_hdr(skb, hdr, &tso, data_len, total_len == 0);
-> @@ -944,7 +970,7 @@ static int enetc_map_tx_tso_buffs(struct enetc_bdr *tx_ring, struct sk_buff *skb
->  		/* compute the csum over the L4 header */
->  		csum = enetc_tso_hdr_csum(&tso, skb, hdr, hdr_len, &pos);
->  		count += enetc_map_tx_tso_hdr(tx_ring, skb, tx_swbd, txbd,
-> -					      &i, hdr_len, data_len);
-> +					      &i, hdr_len, data_len, frm_len);
->  		bd_data_num = 0;
->  
->  		while (data_len > 0) {
-> @@ -966,8 +992,10 @@ static int enetc_map_tx_tso_buffs(struct enetc_bdr *tx_ring, struct sk_buff *skb
->  			csum = csum_block_add(csum, csum2, pos);
->  			pos += size;
->  
-> +			/* When padding, the pad BD is the last one, not this */
->  			err = enetc_map_tx_tso_data(tx_ring, skb, tx_swbd, txbd,
->  						    tso.data, size,
-> +						    !pad_len &&
->  						    size == data_len);
->  			if (err) {
->  				if (i == 0)
-> @@ -982,12 +1010,19 @@ static int enetc_map_tx_tso_buffs(struct enetc_bdr *tx_ring, struct sk_buff *skb
->  			bd_data_num++;
->  			tso_build_data(skb, &tso, size);
->  
-> -			if (unlikely(bd_data_num >= priv->max_frags && data_len))
-> +			if (unlikely(bd_data_num >= max_data_bds && data_len))
->  				goto err_chained_bd;
->  		}
->  
->  		enetc_tso_complete_csum(tx_ring, &tso, skb, hdr, pos, csum);
->  
-> +		if (pad_len) {
-> +			enetc_bdr_idx_inc(tx_ring, &i);
-> +			enetc_append_tx_pad(tx_ring, i, pad_len);
-> +			tx_swbd = &tx_ring->tx_swbd[i];
-> +			count++;
-> +		}
-> +
->  		if (total_len == 0)
->  			tx_swbd->skb = skb;
->  
-> @@ -1050,6 +1085,9 @@ static netdev_tx_t enetc_start_xmit(struct sk_buff *skb,
->  			enetc_unlock_mdio();
->  		}
->  	} else {
-> +		if (eth_skb_pad(skb))
-> +			return NETDEV_TX_OK;
-> +
->  		if (unlikely(skb_shinfo(skb)->nr_frags > priv->max_frags))
->  			if (unlikely(skb_linearize(skb)))
->  				goto drop_packet_err;
-> @@ -2285,8 +2323,18 @@ static int enetc_alloc_tx_resource(struct enetc_bdr_resource *res,
->  		goto err_alloc_tso;
->  	}
->  
-> +	res->tx_pad = dma_alloc_coherent(dev, ETH_ZLEN, &res->tx_pad_dma,
-> +					 GFP_KERNEL);
-> +	if (!res->tx_pad) {
-> +		err = -ENOMEM;
-> +		goto err_alloc_pad;
-> +	}
-> +
->  	return 0;
->  
-> +err_alloc_pad:
-> +	dma_free_coherent(dev, bd_count * TSO_HEADER_SIZE, res->tso_headers,
-> +			  res->tso_headers_dma);
->  err_alloc_tso:
->  	enetc_dma_free_bdr(res);
->  err_alloc_bdr:
-> @@ -2298,6 +2346,7 @@ static int enetc_alloc_tx_resource(struct enetc_bdr_resource *res,
->  
->  static void enetc_free_tx_resource(const struct enetc_bdr_resource *res)
->  {
-> +	dma_free_coherent(res->dev, ETH_ZLEN, res->tx_pad, res->tx_pad_dma);
->  	dma_free_coherent(res->dev, res->bd_count * TSO_HEADER_SIZE,
->  			  res->tso_headers, res->tso_headers_dma);
->  	enetc_dma_free_bdr(res);
-> @@ -2425,6 +2474,8 @@ static void enetc_assign_tx_resource(struct enetc_bdr *tx_ring,
->  	tx_ring->tx_swbd = res ? res->tx_swbd : NULL;
->  	tx_ring->tso_headers = res ? res->tso_headers : NULL;
->  	tx_ring->tso_headers_dma = res ? res->tso_headers_dma : 0;
-> +	tx_ring->tx_pad = res ? res->tx_pad : NULL;
-> +	tx_ring->tx_pad_dma = res ? res->tx_pad_dma : 0;
->  }
->  
->  static void enetc_assign_rx_resource(struct enetc_bdr *rx_ring,
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc.h b/drivers/net/ethernet/freescale/enetc/enetc.h
-> index d9e91832a9c1..db3b3bad0f59 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc.h
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc.h
-> @@ -145,6 +145,8 @@ struct enetc_bdr_resource {
->  	};
->  	char *tso_headers;
->  	dma_addr_t tso_headers_dma;
-> +	void *tx_pad;
-> +	dma_addr_t tx_pad_dma;
->  };
->  
->  struct enetc_bdr {
-> @@ -182,6 +184,10 @@ struct enetc_bdr {
->  	/* DMA buffer for TSO headers */
->  	char *tso_headers;
->  	dma_addr_t tso_headers_dma;
-> +
-> +	/* Shared read-only zero buffer to pad short frames to ETH_ZLEN */
-> +	void *tx_pad;
-> +	dma_addr_t tx_pad_dma;
->  } ____cacheline_aligned_in_smp;
->  
->  static inline void enetc_bdr_idx_inc(struct enetc_bdr *bdr, int *i)
+>  arch/arm64/boot/dts/freescale/imx8qm-tqma8qm.dtsi | 7 -------
+>  1 file changed, 7 deletions(-)
+>=20
+> diff --git a/arch/arm64/boot/dts/freescale/imx8qm-tqma8qm.dtsi b/arch/arm=
+64/boot/dts/freescale/imx8qm-tqma8qm.dtsi
+> index f0e398eb2aad7..8cd6e75eb87a9 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8qm-tqma8qm.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8qm-tqma8qm.dtsi
+> @@ -15,13 +15,6 @@ / {
+>  	model =3D "TQ-Systems i.MX8QM TQMa8QM";
+>  	compatible =3D "tq,imx8qm-tqma8qm", "fsl,imx8qm";
+> =20
+> -	/* Due to missing workaround for ERR050104 */
+> -	cpus {
+> -		/delete-node/ cpu-map;
+> -		/delete-node/ cpu@100;
+> -		/delete-node/ cpu@101;
+> -	};
+> -
+
+While the patch itself is correct, it is not sufficient. Instead please
+revert commit 5d20f1ccb3393 ("arm64: dts: imx8qm-tqma8qm-mba8x: Disable
+Cortex-A72 cluster"). This will restore the thermal zone for cpu1-cluster.
+This commit was created with the intention to be reverted, once the
+errata has been dealt with.
+With the revert:
+Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+
+Thanks and best regards,
+Alexander
+
+>  	memory@80000000 {
+>  		device_type =3D "memory";
+>  		/*
+>=20
+>=20
+
+
+=2D-=20
+TQ-Systems GmbH | M=C3=BChlstra=C3=9Fe 2, Gut Delling | 82229 Seefeld, Germ=
+any
+Amtsgericht M=C3=BCnchen, HRB 105018
+Gesch=C3=A4ftsf=C3=BChrer: Detlef Schneider, R=C3=BCdiger Stahl, Stefan Sch=
+neider
+http://www.tq-group.com/
+
 
