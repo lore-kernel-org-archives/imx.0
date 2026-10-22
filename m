@@ -1,57 +1,103 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.54
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792678237;
-	b=U+QR1hEZgSMfFWICUvJ3YcIEwk7YVG8MPiLuTDw2fdZy/nXnBywNaP/1K/o90I4V/yws
-	 EFVFet/YpBSnmBBCBZd+wzm01JmbFWGMktIMyBlQThgMgNFkMfCrdy36TDzlHj0EhAxj1
-	 S5vc2WLBV+zIWmYm+aeKM6oUp7aI7H3lXsdzWG043Lz8WJLaxvTcgwHwhUPhPSnLkUXoy
-	 C5tX0v6i8pCGCHa9VQnrkarLD1lbkyhrLftvUXjalODoGdXQrxDCGqJE/vqODa0BdmTAT
-	 5M23ubX9TK3aDPXZdEBA0XV+znvf9VTjgUGhNfXhT/jDoiDlkqx+XYLwzBJn0jlAGpg==
+	t=1792678552;
+	b=FVVFZIRv5Xj2Pu1+tn/9vFNb7Rtv6no2iaAPIbW7CUyyJv4TEBn+pt9VGb7AZFYGoo3E
+	 2s0E/1HrPEuo3rhZU1LKcG7Annx2bbUfvZiebpzeDewVW9mlGNGvD4SialUWBYqSmrnpM
+	 zqqqPvl9BZeoPsF299NH1LS55JR4hRmHMczEPuyuSRnRR2yTulMiiRZ7WSU1J8E01kNWJ
+	 PiNwHuiy6TAPklslXwy7FiTB12acVAjXE46jbLCgpiUISpv2GSavAzCc5tNaJnFCVv/pT
+	 aQ1H/5r7+McUvDQgvcjkFnkSi68PGkpnE2Vj/G3L/HxWeJld9SgnZbNlMALwOiydD2A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792678237;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=weVRdQtifwkxw5sFIAJqPF/iG+27RAB5rTL5mR7KELY=;
-	b=Wq3pNVWq0IhzFPr/ZjsRQJuyeoJUNCjE1e96ego5aR/zCaLUid4TqA65GjdgMeMyXiMe
-	 sHppMx3B9oBmzQgHHNCjRSSWQnPuyMTGJzP8dWjmlUdjvOd4fuNLjD9VwAsouMjPQM4sv
-	 RtEqVSoMn66BxoKshnyfZ8sFrDKuA8rlaHJjIgpK3ca082CBYF9H8xjfJXdXd8CZ6a6Wm
-	 9bnRLWSMhG+IDQyte4ZKgJWlSFW0crIo2V35zznzKbtIv6/u5P1eoHcUSgwxgn0gU4/zn
-	 N0R7TgKfbU9PO4wAcXhs99VWTyWw7bfCrWhslaALba7QlmgzspGhCxMl3nUgFOfGdSQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792678552;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=DYTy/UTl+vBn4EAGrIttzpHzPB3aaGAMqMkXs9OYaPM=;
+	b=luAUyPX2bDtEp9+JYgde9NKowEropWKfI+RG0ywl4LSPqvQ8Ka8WM9SzOZVKxfKH4oFO
+	 JlJwv/UeJgtxiFDe4qrYprQyUVtKzaCMBMSNghn5DLCj9rYA/8xMek7fYSUHF+whtm6Zs
+	 qJCvtznFFcPR7GJxpzgSEBd2jAs4/V5iTE+iEZhmsswTDoPaM05mXr/PE5Oq/QwL4ruIf
+	 T06HubQVdcE6vLzsdJ/dWNuTUe/yeOftycIB7U/knIFQ20yYofZlaRDD73oYIb67JfqIN
+	 fQ8+i9AzPt6iaNRW/pQqEJ0tkFr3ex3w9gJzeVCBH0izaj/XLdnu6Vgcsoitxqra7LQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nJ7Ww7JO;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b="g6uXL/Cl";
+	arc=none smtp.remote-ip=209.85.128.54
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78C0F60A260A;
-	Thu, 22 Oct 2026 14:10:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ACB6606A31D
+	for <imx@lists.linux.dev>; Thu, 22 Oct 2026 14:15:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1ACB6606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nJ7Ww7JO
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96A4B1F000C3;
-	Thu, 22 Oct 2026 14:10:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792678237;
-	bh=weVRdQtifwkxw5sFIAJqPF/iG+27RAB5rTL5mR7KELY=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=nJ7Ww7JOTSBg+vBYOaSZFAq+VsYPt0Z+Jr+MNxpyRwl1yeo8ZymvWqW1KJEpw3xD6
-	 0hseAlqMtCZiCSrzp6C39ZQEEtno/gwXmFQMqbWbAhRq37lUkiVFcNPvEUcj/PvJ/D
-	 vcUCzKxUghZCoAxKyhMFBgcB4pz7dIhis7QIafOV7/wrso/vjAB+xk3zpuoymsdLgo
-	 KiRdMyNfousXfFJIum9ZlYS7N0cluBir6G01goapltHYh/ZwhCOlejGmsD5MRKZI+G
-	 mouBbtxw0d2QxNdudN/j+ZXvAD57+qgdmeKKdKySIMjQABIvO3071SuMeSeH03UWyJ
-	 Wbf3r/MMaTN3w==
-Message-ID: <sashiko-outbox-181612@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 1/2] dt-bindings: arm: fsl: add Draeger M48 dual-cpu
- board
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Petko Manolov" <petko.manolov@konsulko.com>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20261022140244.3476844-2-petko.manolov@konsulko.com>
-References: <20261022140244.3476844-1-petko.manolov@konsulko.com>
- <20261022140244.3476844-2-petko.manolov@konsulko.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 22 Oct 2026 14:10:36 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=g6uXL/Cl
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4a140e7405dso16602745e9.3
+        for <imx@lists.linux.dev>; Thu, 22 Oct 2026 07:15:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792678550; x=1793283350; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=DYTy/UTl+vBn4EAGrIttzpHzPB3aaGAMqMkXs9OYaPM=;
+        b=g6uXL/Cla5irmFD1V0JPyI48wOVvSr3LcaDWgZaxhmbvB0LCGWz2fUJvtwooyXrz1S
+         DC/cScLoUMk+fz6wGyhCZsQBtxsSQb7f1kxFwOKaa9YkozeWuDBIz/cdoFcdhljyDbU8
+         g5bGsZpW2XyIpPUI8MRcq1vr9Pqy+oJJhbbUWtu6LzYLDOK5qRczoR0ZK59IOgLMgaMU
+         +mBoZXTyK9g/PR/6NPFFshmq4WOJfYjl0gL8ewH3m8MbBQVP6IKuMqph/5rC7nt3x2Jl
+         Q9LzqS0mAuyiVEd/SwA7YQ2SSTqOef5EkPMhzO6H70Y2PRtLFCssfIUOeeNh5uE0BIcy
+         pIkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792678550; x=1793283350;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=DYTy/UTl+vBn4EAGrIttzpHzPB3aaGAMqMkXs9OYaPM=;
+        b=r/9zgTUfPimqXNyoJt7w5kKIL+oF3kZ9qiut2gBbCWxYF24fBuP8OaXKZAyQrtJwHI
+         HrJFtsNcAEQokANELHv2S+T38t8kS4xoPCQmqZOEM/WnorXztHewWmwavli2MJpQEE4T
+         IWayVHAyjR4nR7cucrcxclW8/SB/0+z6fYuPMbodHmFENG14IG0w4V+vFQ9zK4OA2Gnz
+         wmyYgzyDE3xsz1P9XTDL7wwEbRJkZ8CiyNgEsN+MQg3dS9JQcPx+O7sXWJ96Y5sUTZUW
+         1nhZPs/U69/6ZEqXvPHS1Lq+Il1igZ+M+WGR0OKWjJKQHwUEdlTsxJo3PGnWclx5Q9QQ
+         Npbw==
+X-Forwarded-Encrypted: i=1; AKwUvBwewKYL+yFdKYV6duB6KPkQonIfv2KES68ZxUzfAGCDXl+mUQs82XpaOmyMvCX0smhMwsk=@lists.linux.dev
+X-Gm-Message-State: AFq9FYIBxxzNty7GmunEitPyYoRDHunim7o5i15wcFIIiflWmySjfqPp
+	4OVMkogQ0xYCXDkeNhL0Xiq5BotNWVB804xMLQjFe9r284qudbgN1kN4
+X-Gm-Gg: AYBFou39LhykNiY+q93NuiWXrKZhGFlDKjKe3xKD/hxK8XOQNld0w1zZpOezlLcuf3a
+	JELMROdGJuELHEZJPcCO3xBCk/2mwimrjCFHeq0pMVRhNdx50QS6L0n2hETmZdgcVdZdgGXO2c8
+	BBDkOKdcBfpEQNt1AL6nRWjDtLbjnOVHJuWdTzQ7aRMHDYrwr38CMzMJyQ3FpBACsJsnDn6kc0S
+	gSkwfc2tuw0Z8s/DUQGMruu43eMwGzqVOw2U8LLrBp2JoJL3k9vu2u64kE2y+TX8GsDpH+Ar2ED
+	jbzzrDTYdxnXAXl33w/jWm8l6vcQgVbH7E817+RnVW+iW9IteLETsiXnTw/CwMhsrATehF6bhAB
+	26I3GUkT7sxOsZ/JWHSzlBcaldJPQ0Sv4wFkS0I7nhs0rmn2ye9RxhXdHbQ/cI743j+8nXTER3a
+	snvgLYzh+22Is1l9sgPpLbBzI5KGMO5zFGvlAD40/ZLl9zqujv3dGzl/1XKvbi7l9pXzkLCuOwT
+	ehiPo7+3p0TgIq3tk2dfWTH6jRFOXAXFOgAWta3ToISbBjufyckRtwcxjTj+pDPAZ1jOtp+6M7N
+	Mx5GnkDU9AgPJsx/9otftZhplUcZMldwdLrX5eAtalaIpQj2YQI8uO8=
+X-Received: by 2002:a05:600c:34ca:b0:4a0:eae0:769a with SMTP id 5b1f17b1804b1-4a1fdd39e68mr111050565e9.28.1792678550121;
+        Thu, 22 Oct 2026 07:15:50 -0700 (PDT)
+Received: from ernest.hoecke-nb (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch. [83.173.201.248])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a203add62dsm82627145e9.2.2026.10.22.07.15.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Oct 2026 07:15:49 -0700 (PDT)
+Date: Thu, 22 Oct 2026 16:15:48 +0200
+From: Ernest Van Hoecke <ernestvanhoecke@gmail.com>
+To: Frank Li <Frank.li@oss.nxp.com>
+Cc: Francesco Dolcini <francesco@dolcini.it>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+Subject: Re: [PATCH 0/4] arm64: dts: freescale: Add Toradex iMX95 overlays
+Message-ID: <ew6jybymalb3d3q7hen4qubefipnofcfzsrzyjdajuagw5fnov@b2oe5mjyz63w>
+References: <20260922-v1-imx95-overlays-v1-0-694100afb4bc@toradex.com>
+ <arKn0LhC5fty7dHN@SMW015318>
+ <20260922165846.GA290956@francesco-nb>
+ <arLJl3jyyytfS_Qw@SMW015318>
+ <20260923084111.GA460930@francesco-nb>
+ <arPrD4TDYhjYxFGJ@SMW015318>
+ <20260924101308.GA45659@francesco-nb>
+ <arU0sLhGG__lh98n@SMW015318>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -60,68 +106,30 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <arU0sLhGG__lh98n@SMW015318>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Low] dt-bindings: arm: fsl: undocumented draeger vendor prefix in fsl.ya=
-ml
---
+On Thu, Sep 24, 2026 at 09:33:20AM -0500, Frank Li wrote:
+> [...]
+> imx-uart<n>-mcu.dtso. similar case imx9-mqs.dtso.  Uart<n> is cross while
+> imx famililer.
+> 
+> Frank
+> 
 
-commit 3465979b7c116a128c865587fd61bc41cff5927b
-Author: Petko Manolov <petko.manolov@konsulko.com>
+Hi Frank,
 
-dt-bindings: arm: fsl: add Draeger M48 dual-cpu board
+v2 follows this. The UART overlays are now a single shared overlay,
+imx-tdx-uart-mcu.dtso. Each module device tree labels the UART it
+assigns to the Cortex-M core uart_mcu, so the same overlay also covers
+the Verdin iMX8M Mini and Plus, where it is UART4 instead of LPUART2:
+https://lore.kernel.org/r/20261022-v1-imx95-overlays-v2-0-c769d6eb54fd@toradex.com
 
-This commit adds the draeger,imx6q-m48 and draeger,imx6dl-m48 board
-compatible strings to Documentation/devicetree/bindings/arm/fsl.yaml.
+The Verdin iMX95 NAU8822 BTL patch (1/4) moved to the shared NAU8822 BTL
+overlay series:
+https://lore.kernel.org/r/20261022-imx-nau8822-btl-v2-0-b4221ed43650@toradex.com
 
-> diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentati=
-on/devicetree/bindings/arm/fsl.yaml
-> index 656f2596e1d53..8f3a04228780a 100644
-> --- a/Documentation/devicetree/bindings/arm/fsl.yaml
-> +++ b/Documentation/devicetree/bindings/arm/fsl.yaml
-> @@ -260,6 +260,7 @@ properties:
->                - boundary,imx6q-nitrogen6x
->                - compulab,cm-fx6           # CompuLab CM-FX6
->                - dmo,imx6q-edmqmx6         # Data Modul eDM-QMX6 Board
-> +              - draeger,imx6q-m48         # Draeger imx6q variant of M48
->                - ds,imx6q-sbc              # Da Sheng COM-9XX Modules
->                - embest,imx6q-marsboard    # Embest MarS Board i.MX6Dual
->                - emtrion,emcon-mx6         # emCON-MX6D or emCON-MX6Q SoM
-> @@ -458,6 +459,7 @@ properties:
->                - boundary,imx6dl-nit6xlite     # Boundary Devices Nitroge=
-n6 Lite
->                - boundary,imx6dl-nitrogen6x    # Boundary Devices Nitroge=
-n6x
->                - bticino,imx6dl-mamoj      # BTicino i.MX6DL Mamoj
-> +              - draeger,imx6dl-m48        # Draeger imx6dl variant of M48
->                - eckelmann,imx6dl-ci4x10
->                - emtrion,emcon-mx6         # emCON-MX6S or emCON-MX6DL SoM
->                - emtrion,emcon-mx6-avari   # emCON-MX6S or emCON-MX6DL So=
-M on Avari Base
-
-[Severity: Low]
-Both hunks in properties:compatible of
-Documentation/devicetree/bindings/arm/fsl.yaml introduce compatible strings
-with the draeger vendor prefix (draeger,imx6q-m48 and draeger,imx6dl-m48),
-and the follow-up commit 6e00402d882f ("arm: dts: nxp: imx: Add devicetree
-files for M48") uses them as well.
-
-However, patternProperties in
-Documentation/devicetree/bindings/vendor-prefixes.yaml does not appear to
-have a matching "^draeger,.*" entry:
-
-  "^dptel,.*":
-    description: Guangdong Dapu Telecom Co., Ltd.
-  "^dragino,.*":
-    description: Dragino Technology Co., Limited
-
-Should the "^draeger,.*" vendor prefix be added to
-Documentation/devicetree/bindings/vendor-prefixes.yaml so that
-scripts/checkpatch.pl (in process()) and devicetree schema validation
-(dt_binding_check and dtbs_check) do not report draeger as an undocumented
-vendor prefix?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261022140244.3476=
-844-1-petko.manolov@konsulko.com?part=3D1
+Best regards,
+Ernest
