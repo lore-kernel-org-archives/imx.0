@@ -1,87 +1,88 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.44
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792678986;
-	b=HH+DpGbCUZuk9+m+Skm8uuVRgfzkVpipBfgQ+CX+Jpra8WTiVBPcrPDUvItD0Io96TyL
-	 yTvgWf4aITVxs+0wO7ygiR/TtjtnYyRvdjki39yhh2HICGHVvluRGPPOyO++P0SIlcIbb
-	 H0HxaD7OKa0NoW7qvE7tMCTSv4UjqH8Wk4IdwHf4Mh2XABD6iekPVCjBJzI2rurQ6aTkd
-	 J8FhmMRE6YWfO1jUlwscTKjhSIqjQsySpPlNK4Zf23/+x7/YFoaIq+eNrh99fXJyy2U43
-	 bjXIc7YMJQWYjCn+i0A3CPoXBT5/ioZ5cmAOzW8kYFrJtl0KjwXhJ/+0cE66YncRaXQ==
+	t=1792679490;
+	b=FPbz0wmHCKefLKt9ODphymx7LSm/4mdlol1TXrF1dlZEDmbpssBcJAyOBxMCqQC5oc0M
+	 AsIZ1pb80g/2vqbo0aFpYJYUkC0PvzuZEAkJBhTNB3ChRsqWuVVUH0EcFXDYpBeVv7/lj
+	 JuEQJ1Rd3nJMwdX8sKndd2r7pRaDb2+FoCGJfN1uVXZHhly7jUgU8+gaeCPAKfdnFS6Zq
+	 IiwOGdDqWdrt9IxRapxa7aQK6vOunIohDauECaHuJjtAYw4ctW+2CrkTsE/OR2NtJiRnk
+	 B+QTbryjd4gH6wBPTITBZ0BODJtlYT+kefl1uL/Gz9wU6LDPF4bAxNfTKEyDsjF5acA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792678986;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792679490;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:Date:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 Message-Id:X-B4-Tracking:To:Cc:X-Mailer;
-	bh=myYidWIIbWAkZv9VR701i1PRbNKaJd28wzAcC9LDW4Q=;
-	b=M5C0h0lgQ9TBAF1bl3xjxHE1dHJwAlhZHkq3Aw0AygL0ngGORXLlsM6ua6nteSZLCfoj
-	 0AYbbUPGbzDgmygkZR2iWZYPuFDve7iW3fXySe1rr0fwC4/7OCQnAzPbwcqVbKOFV7x9a
-	 CVI/lfzasu4uhnUrxe9CJ4jg+4ZVB5R4SyaRdKugBXtaJP07mowZUPA/mywq5vOvfOGD2
-	 /6d0lT4Lyjga+jIfRxjlpBR+RTuYBy2hAY8HhXPHyu6VdQzYFDklms4LSTTwP3hGY5N6r
-	 cD9GiesFeFQN+5pmiES04xmidoahetciOf3NN4JQxzDFQ5cyjlue83s1Q0BOZ0UFj7g==
+	 From:Subject:Date:Message-Id:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:X-B4-Tracking:To:Cc:X-Mailer;
+	bh=VMwAi1eN8x7Ostj9pYIqVLUHvczC37pf1z6i56KRaM8=;
+	b=5W6YrzfY/JA5bgXHP63tZ2q74vSyy1GnDZ6sT1kV+jZLDjYqcawkhaK4ex5BQ+blQBpa
+	 X4x0gGExygrruwQj8T0dFy/X1wXGtMoOxlxQ8wwKmFBxr/8BQWnLWBv/VUKYEHVJk6/HF
+	 QPrgcPSCnojRVrpzYzn2mHaI9JuFbDpQ2lgKDZ8z5cB0e8vTt3NEuNIHH8SR3h45edFfT
+	 RUiWmvET7i+UdY3lVqHpu/DRALaKKO2IN+FXGqi7HY11JpFBG6l5QgaWBRr5cjwfUPFtn
+	 djaRq8tNp039fItdDq32Nu63CtmitI2ZSsAlpA4DAEEK203+qOb8hFlUuuxJ10NB9+A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=oyiYo4KR;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=QD4+9XV2;
 	arc=none smtp.remote-ip=209.85.128.44
 Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CC61606A319
-	for <imx@lists.linux.dev>; Thu, 22 Oct 2026 14:23:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4CC61606A319
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD9FD606A319
+	for <imx@lists.linux.dev>; Thu, 22 Oct 2026 14:31:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CD9FD606A319
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=oyiYo4KR
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4a1ec92f655so12030945e9.0
-        for <imx@lists.linux.dev>; Thu, 22 Oct 2026 07:23:06 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=QD4+9XV2
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4a1b07c3c5fso17795375e9.1
+        for <imx@lists.linux.dev>; Thu, 22 Oct 2026 07:31:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792678985; x=1793283785; darn=lists.linux.dev;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+        d=gmail.com; s=20251104; t=1792679488; x=1793284288; darn=lists.linux.dev;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=myYidWIIbWAkZv9VR701i1PRbNKaJd28wzAcC9LDW4Q=;
-        b=oyiYo4KRBFqQFBolNE/z3QqlVQ4VmhzAD/ta+Cc7MVziAro4ENl0Q/PNGd7vcbKQZZ
-         vj2GwE0fZOzVQKFpYD46yJZ0k9fOQx1xEAyVAJf9VG/26KFUcAEspmdWPV87eR15mGgb
-         ktLODJ3lkPZIceg5Ndya5DB8n5TtuDYfT7eRdocZ3NXZSxdVdN+pIqCE/rNV3bDNFTSE
-         E4b3Db6+vO9aoEjR551HVD4LXVGTL9LmE2sWvKYt4gqTprDr07UPQgNH7OiSiA2oF61m
-         VllwZW0JVYqBWm+aYK1pbdAlQbLIcFxqHeJDaIqTvXgZfE+xRqqWs2xLcRPEDYkuoNSv
-         RtDg==
+        bh=VMwAi1eN8x7Ostj9pYIqVLUHvczC37pf1z6i56KRaM8=;
+        b=QD4+9XV2mg2jdvD/poFx9l2NjMR0lhaBpADNs1HatDdIfo36T/zlvkWj0w1DgIdxhF
+         cuBE29c8NvPfFU62ltxuAvAbELvXmlL2zhos46qdto2d8iAV9CTqQQqk/FDWM0Wv6cNT
+         PJWfeX2tF9BEztsDRB2x7WUa92MxTwCe2pl8moVu3BhPtrxyyKjkNaVoh/f26Xmi+LIB
+         q9yawoKr9SEBaWc9wWWVaX+ymZN4+stACeVmSdpzcDKCPOEGuJHumllB1MaenqistrUN
+         Awlao363NhqnEdK6MnA2Ng7YbdVu/ooSrKOiH+c7GO75rUmDnfB9KwQ57FhP3HrKjt3V
+         3lgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792678985; x=1793283785;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=myYidWIIbWAkZv9VR701i1PRbNKaJd28wzAcC9LDW4Q=;
-        b=TxEG+bmDIxiSm67FKNOHBd7MRxc7bmlpE6PCut1SyCXJEPVN0/og1kTiGDaih+XTF8
-         zoT3sdLF2Sb371TROpgVtHLyV3ihLuBUAB2oJXwKqdxOjP+wke/IHA1hEzVH6IESIFkM
-         umQdliQh5KW2VkEqndp66LAUzuM3CruTLE/ODiIEkwRZVZqPCqIc78S4uvoeorzBf/e3
-         mo5rTJ6TMntZOdsc2x5rgSP63wiqTyeGNl+ajXlZLM/TpUM1QlfTGABJreaOsGe8FLoQ
-         vfAEjeSFzLYTfg27lz3fI9Fmx8/UjVMFEn3E/eG1Se7DTrU5xFMBH+K697bXm4tUjZZO
-         8rNA==
-X-Forwarded-Encrypted: i=1; AKwUvBwbwkFT/ubxMfac8g0hN0aZWrLt4opEGOOHCZy5SEDFWTX468zS1oJ7uxhsPQ+iQia+ppw=@lists.linux.dev
-X-Gm-Message-State: AFq9FYL9/fPWe1S5rlv7wJlAjF+iY9QfBN/JLEQnMhFfYYRiEtrWHQtT
-	dVdeXYTKoL1xBC77tWYA2nhqLU4lQV4gbwG+3NZiiZxBkNOefxclWVMd47lLsqQc
-X-Gm-Gg: AYBFou355KtKU0x6Qh7nMDnFtrZeEfQ5WTxCD5GRN44VckUr051kpIh1f8z1V0yRW8Z
-	0a4++0Q/xwFQ6kNe6QOn7dQs3i9xXPwHDW/irAkoofeZ7qkkNSDC0j7/SUZVb/HC+IOGj170qqE
-	GWRuXzHEhYtxiay3yPUQO/P7gyDn03aGJr/rwopboXF0f0Ek4eKBGs+oRZmLpTZj4ivuOL8CZTE
-	5oAhBdYOV4ogsKiY5AcDmFEfuzbc4d7RFvfzfuaOcpti1eqvX3AQNp7SkX90IwaB0+T/fVDsHI0
-	6WVe4JkYIDdpLnGiN3agn5oKiTv5lMX/RM6UJpGUD6lWGDtKP/yELYbOtc9AvtOFAWcW3Rkm9QW
-	LbUOUv/+IulpLWbNf7h9pXOgt2k0RBIT7u+AhpyDhaB9gGoPzjy/t6eAmzll8HWVfwFp9tGOucn
-	2MtL1lmN5qag9teLtxqjRcWuODFHUxiU4TdRkABNINKs8yKz/wtLhkxZ1NuH0TPE9rsOzMkDtxL
-	zRytE436+W9ZXBWAxLkvC4F6BnkZawTqLR6dnb9YedfprPYzpcZXa2Jo9dCXhL40x1ZsuTzouos
-	G9ndkJnLXyePluyxKyocZIL+RcN8ONJ7RnjTmcrRFcS3e02TMLqGodc=
-X-Received: by 2002:a05:600c:a49:b0:49f:ffa2:1c72 with SMTP id 5b1f17b1804b1-4a204b20321mr50739115e9.11.1792678984170;
-        Thu, 22 Oct 2026 07:23:04 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1792679488; x=1793284288;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=VMwAi1eN8x7Ostj9pYIqVLUHvczC37pf1z6i56KRaM8=;
+        b=0+V4N/kbgtwys09ezCUnAbib93VP54m++GpaDlLlHZq0m1ma2LcoKhgbj4fN3FBLfh
+         P0gToifIz2RPeh70OrI/ErFafHoJonTOVyAsfQGJKRVAZ60elcbOraJ1M7rGlejUDRs5
+         OtNb1cRxW1ZntY3OWHMKw/N+dX2qRSz1BaYs/RVNdpQye7TSTNYJ+b7UM8ZXg/iUt9Y/
+         ffvhAAt6hpq1DYQLHV1S2uopyvSspZFGTz2x+OozSzPncgfS/QoCNOAXYI3cOfNGwusu
+         HlvsFYrG4Rdo8r/hEgo6sOjUlVkG02VKlKSFjrBhyZMVAwYNP9+zZDt0+dbXioBM1PW2
+         f3FQ==
+X-Forwarded-Encrypted: i=1; AKwUvByk6zT0735ZcmG9+m9nW/ujreIdX0/RB+bg+iF/liSXDPq3n5A2UCSiIgw9Sg1eGcd5fCc=@lists.linux.dev
+X-Gm-Message-State: AFq9FYIuIe4dKGaKgqeO0KCcb7m8GxGt/Wpj2v1oSNNRSZbXCA8y58zE
+	juGQvI1FcQ+wkng+z6t9D6KL/Tm7XcTCvZb8p6S06XhHLlS6KM3YZoip
+X-Gm-Gg: AYBFou39dv8UChRVmRXiDeHbLCO3iaujdnv8vwcih1zDq/dwA+OcwbPwUKXS/dipREA
+	G0mx0UqXIgD0iIr0B4smgcHaiUvevq1J1VByUoSA2pJtO53HxzqZKgUIlcE4Rab+dkBZwR/Kq7T
+	4wL7cFiYhgFsEjM+x4fkdYaxI0uR1g5MDT/OPKD+5pyyOY4IAu3rDc+qQTewyzECEZFDE4KgC4N
+	GIsYWojjOWWQw37tfEX10BkZ99BcHIeHCyq10kwDK18rIXFGeaZb5Pn+AaYfYs8oc9cu0nVyFIV
+	XigKlp0M88IkfDmIquwZETePMIrK9oSgzTQHj9Cb/egQSL/h4IoYCOo8h/NyXURrCuzOvvmzc9X
+	3g1LaUS11ejsA08HAW4nEnf/s7fu9OJfIZEQUF1G4WEu1MCmQc91VRRqYVjZ7B8N/3sbVmE4/NH
+	upi8yjncTtVOAKb8YaTgjnHl3bca/KSh0D/t+RXEn8r6C2aif8t6gMo19cigV+YweJVrRTsq5a3
+	KskX3s7oEhgDTH2EClH/xiwa0gkhCLKN7UziI5Z4I1moQMEareYVJmgvVZYL5UHEugaY8I3oKJD
+	vjJKNtkHvfFAvg4WE7Og2QTqQ4ZnZMPLm7kbHYCf1OdpW7jav62goNs=
+X-Received: by 2002:a05:600c:4f91:b0:4a1:e0e3:7fe0 with SMTP id 5b1f17b1804b1-4a1fdd0fb13mr106097695e9.12.1792679487933;
+        Thu, 22 Oct 2026 07:31:27 -0700 (PDT)
 Received: from ernest.hoecke-nb (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch. [83.173.201.248])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a207b29276sm95945435e9.6.2026.10.22.07.23.03
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a200f4d16bsm85693745e9.2.2026.10.22.07.31.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Oct 2026 07:23:03 -0700 (PDT)
+        Thu, 22 Oct 2026 07:31:27 -0700 (PDT)
 From: Ernest Van Hoecke <ernestvanhoecke@gmail.com>
-Date: Thu, 22 Oct 2026 16:22:59 +0200
-Subject: [PATCH v3] arm64: dts: freescale: imx8mp-verdin: Add Cortex-M7
- remoteproc
+Subject: [PATCH v3 0/4] arm64: dts: freescale: Add Verdin iMX8M OV5640
+ camera overlays
+Date: Thu, 22 Oct 2026 16:31:24 +0200
+Message-Id: <20261022-verdin-imx8mp-hmp-camera-ready-v3-0-90a30b0b0d55@toradex.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -93,99 +94,134 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261022-verdin-imx8mp-m7-v3-1-af284e28531d@toradex.com>
-X-B4-Tracking: v=1; b=H4sIAEIc2moC/4XNTQ6CMBAF4KuQrh3TH1KoK+9hXNR2kC4KpDUNh
- HB3BxYmunHxFm+S983KMqaAmV2qlSUsIYdxoKJOFXO9HZ4IwVNnkkstuORQMPkwQIhzGyeIDVh
- tUOpWt00tGM2mhF2YD/J2p96H/BrTcnwoYr8eGDfiF+spzkZMFhJav0ARwEE5o2qDzj9MdyXJe
- pzPboxsx4v8gIJz8ReUBDZeqFoRSPkGt217A40DcXcRAQAA
+X-B4-Tracking: v=1; b=H4sIAD0e2moC/4XNwQ6CMBAE0F8hPbtm2xIET/6H8VDbRXookNY0E
+ MK/uxBj4onDHGYObxaRKHpK4losIlL2yQ89F30qhO1M/yLwjrtQqCpssIZM0fkefJjqMELHsSZ
+ QNBDJuBkqdFVtVIuqVIKRMVLrp/3g/uDe+fQe4rz/ZbmtX1riEZ0lIGjb6LIh655Ne2PJOJrOd
+ ghiw7P6gRJRHoKKwYuTutQMcv7BdV0/H/Z5uB8BAAA=
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
  Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
  Sascha Hauer <s.hauer@pengutronix.de>, 
  Pengutronix Kernel Team <kernel@pengutronix.de>, 
  Fabio Estevam <festevam@gmail.com>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+Cc: Kieran Bingham <kieran.bingham@ideasonboard.com>, 
+ Francesco Dolcini <francesco.dolcini@toradex.com>, 
+ Dave Stevenson <dave.stevenson@raspberrypi.com>, devicetree@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, 
  Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
 X-Mailer: b4 0.13.0
 
-From: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+Add shared OV5640 camera overlays for Verdin iMX8M Mini and Verdin
+iMX8M Plus, and support a second camera through the Verdin iMX8M Plus
+Mezzanine.
 
-Describe the Cortex-M7 remote processor available on the Verdin iMX8M
-Plus SoM.
+These patches are the follow-up promised when the OV5640 patches
+were removed from v2 of the Verdin iMX8M Mini overlay series:
+https://lore.kernel.org/r/20260713-v1-verdin-imx8mm-dtbos-v1-0-4acd63db4504@toradex.com
+
+Verdin iMX8M Mini and Verdin iMX8M Plus can use the same 24-pin camera
+connector on the Verdin Development Board, Dahlia and Mallow carrier
+boards. The connector's sideband signals are routed to different GPIO
+controllers, however, and the two SoCs use different capture pipelines.
+Describing these details directly in an accessory overlay would require
+a separate camera overlay for each SoM and carrier combination.
+
+Following feedback on the Verdin iMX8M Mini series, introduce a binding
+for the connector's sideband GPIO nexus. Add connector mappings to the
+carrier descriptions and stable labels for the SoM-specific CSI media
+nodes. This allows one pair of OV5640 overlays to be shared by both SoMs
+and all three carrier boards.
+
+The binding intentionally covers only the connector's GPIO signals.
+MIPI CSI-2 endpoints, I2C, clocks and supplies continue to use their
+existing bindings and are connected through stable labels in the Verdin
+device trees.
+
+The unsuffixed camera overlay describes the current camera module with
+its 27 MHz oscillator. A separate overlay supports the legacy module
+with its 24 MHz oscillator.
+
+The Verdin iMX8M Plus Mezzanine exposes the SoC's second MIPI CSI-2
+interface through another 24-pin camera connector. Its camera control
+signals can be routed through either the default or alternate GPIO
+jumper positions. Reuse the connector nexus for both configurations so
+that they share one camera and media-pipeline description. Provide 27
+MHz and 24 MHz variants for each jumper configuration.
+
+The default GPIO routing is intended for a single camera because it
+shares control signals with the native CSI_1 connector. The alternate
+routing permits native and mezzanine cameras to be used together, but
+conflicts with the Atmel MXT touchscreen GPIO.
+
+The shared 27 MHz overlay was run-tested on Verdin iMX8M Mini and Verdin
+iMX8M Plus. Both shared camera overlays were compiled, applied and
+schema-validated with the WiFi and non-WiFi variants of all three
+supported carrier boards on both SoCs. All mezzanine overlays were also
+tested both standalone and in the dual camera use case on the iMX8MP.
+
+When fw_devlink is enforcing probe ordering, camera probing depends on
+the GPIO nexus support from [1]. Without it, fw_devlink can treat the
+connector nexus itself as the supplier of the camera regulator instead
+of following gpio-map to the underlying GPIO controller. This can leave
+the regulator and camera waiting, for example:
+
+  i2c 2-003c: deferred probe pending: i2c: supplier regulator-camera not ready
+
+[1] https://lore.kernel.org/all/20261020-fw-devlink-nexus-ready-v3-0-fd6f1c17e16d@toradex.com/
 
 Signed-off-by: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
 ---
-This patch was previously part of the Verdin iMX8M OV5640 series and is
-now sent separately, as requested on v2.
----
 Changes in v3:
-- Split out of the Verdin iMX8M OV5640 series (Frank)
-- Move the UART_4 overlay to the shared Toradex Cortex-M UART series:
-  https://lore.kernel.org/r/20261022-v1-imx95-overlays-v2-0-c769d6eb54fd@toradex.com
+- Drop the Cortex-M7 remoteproc and UART_4 overlay patches, which are
+  now sent separately (Frank)
+- Collect Frank's R-b on the dt-bindings patch
+- dt-bindings: Keep the all-ones gpio-map-mask and gpio-map-pass-thru,
+  as discussed on v2:
+  https://lore.kernel.org/r/20261021-huddling-fabulous-75f0298c2fad@spud
+- Point to v3 of the fw_devlink nexus series
+- Rebase onto imx/dt64; drop the dependency on the Verdin iMX8M Plus
+  display overlay series, which is deferred
 - Link to v2: https://lore.kernel.org/r/20261001-verdin-imx8mp-hmp-camera-ready-v2-0-7d1343ecd3ec@toradex.com
 
 Changes in v2:
+- dt-bindings: Drop the unrelated GPIO controller node from the example
+- dt-bindings: Describe the physical connector (24-pin, 0.5 mm pitch
+  FFC/FPC) shared by Toradex carrier boards, following the discussion
+  on the compatible name
+- Keep the toradex,camera-connector compatible, the all-ones
+  gpio-map-mask and the absence of gpio-controller
 - Rebase
 - Link to v1: https://lore.kernel.org/r/20260910-verdin-imx8mp-hmp-camera-ready-v1-0-3c9349ecdb9f@toradex.com
+
 ---
- arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi | 33 ++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
+Ernest Van Hoecke (4):
+      dt-bindings: connector: Add Toradex camera connector
+      arm64: dts: freescale: imx8m{m,p}-verdin: Add camera connector nexus
+      arm64: dts: freescale: imx8m{m,p}-verdin: Add shared OV5640 overlays
+      arm64: dts: freescale: imx8mp-verdin: Add mezzanine OV5640 overlays
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi
-index 9fee2cf9ef54..45a4713c260f 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi
-@@ -77,6 +77,18 @@ key-wakeup {
- 		};
- 	};
- 
-+	imx8mp-cm7 {
-+		compatible = "fsl,imx8mp-cm7";
-+		clocks = <&clk IMX8MP_CLK_M7_DIV>;
-+		mbox-names = "tx", "rx", "rxdb";
-+		mboxes = <&mu 0 1
-+			  &mu 1 1
-+			  &mu 3 1>;
-+		memory-region = <&vdev0buffer>, <&vdev0vring0>, <&vdev0vring1>,
-+				<&rsc_table>;
-+		syscon = <&src>;
-+	};
-+
- 	sound_hdmi: sound-hdmi {
- 		compatible = "fsl,imx-audio-hdmi";
- 		model = "audio-hdmi";
-@@ -185,6 +197,27 @@ reserved-memory {
- 
- 		/* Use the kernel configuration settings instead */
- 		/delete-node/ linux,cma;
-+
-+		vdev0vring0: vdev0vring0@55000000 {
-+			reg = <0 0x55000000 0 0x8000>;
-+			no-map;
-+		};
-+
-+		vdev0vring1: vdev0vring1@55008000 {
-+			reg = <0 0x55008000 0 0x8000>;
-+			no-map;
-+		};
-+
-+		rsc_table: rsc-table@550ff000 {
-+			reg = <0 0x550ff000 0 0x1000>;
-+			no-map;
-+		};
-+
-+		vdev0buffer: vdev0buffer@55400000 {
-+			compatible = "shared-dma-pool";
-+			reg = <0 0x55400000 0 0x100000>;
-+			no-map;
-+		};
- 	};
- };
- 
-
+ .../connector/toradex,camera-connector.yaml        | 81 ++++++++++++++++++++++
+ arch/arm64/boot/dts/freescale/Makefile             | 30 ++++++++
+ .../dts/freescale/imx8m-verdin-ov5640-24mhz.dtso   | 17 +++++
+ .../boot/dts/freescale/imx8m-verdin-ov5640.dtsi    | 78 +++++++++++++++++++++
+ .../boot/dts/freescale/imx8m-verdin-ov5640.dtso    | 18 +++++
+ .../boot/dts/freescale/imx8mm-verdin-dahlia.dtsi   | 17 +++++
+ .../boot/dts/freescale/imx8mm-verdin-dev.dtsi      | 17 +++++
+ .../boot/dts/freescale/imx8mm-verdin-mallow.dtsi   | 17 +++++
+ arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi   |  8 ++-
+ .../boot/dts/freescale/imx8mp-verdin-dahlia.dtsi   | 17 +++++
+ .../boot/dts/freescale/imx8mp-verdin-dev.dtsi      | 17 +++++
+ .../boot/dts/freescale/imx8mp-verdin-mallow.dtsi   | 17 +++++
+ ...-verdin-mezzanine-ov5640-24mhz-alt-jumpers.dtso | 19 +++++
+ ...din-mezzanine-ov5640-24mhz-default-jumpers.dtso | 18 +++++
+ ...imx8mp-verdin-mezzanine-ov5640-alt-jumpers.dtso | 38 ++++++++++
+ ...mp-verdin-mezzanine-ov5640-default-jumpers.dtso | 42 +++++++++++
+ .../freescale/imx8mp-verdin-mezzanine-ov5640.dtsi  | 78 +++++++++++++++++++++
+ arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi   |  7 +-
+ 18 files changed, 534 insertions(+), 2 deletions(-)
 ---
 base-commit: 7f47e8eafbf55a2ad0697e5d28f5e6cff2fa42f9
-change-id: 20261020-verdin-imx8mp-m7-a69e26868741
+change-id: 20260908-verdin-imx8mp-hmp-camera-ready-60d68a2f0242
 
 Best regards,
 -- 
