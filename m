@@ -1,72 +1,83 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=188.68.39.254
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792666296;
-	b=SCwzMsvyaNagw4GW/SNno3c0GedPB12sTRcbpnqnB4JXurarEsVfaLCpMNv/3s5tt+4B
-	 ecAJCsymTSQH0yKAMkUaUFc+C9ViuXqjwugutmY1hFM+gTUwuuF6ddQEaHS6WTBM1DV2Z
-	 MrPQ1mInxa8IkYrocnClnOiUU/F4X02McWqYw4lqMzEalpKlF8DtA97YLrpvVxRgwBHOw
-	 L+ksW5vS1hFcoZc0xMnAgEk5b5lgXEeL4J7s7mAxZtO7OXaiVimtr9sMvU1sIFtWWKzky
-	 JnnRmxQoEqk1RtA1OoRVTPm6YHpDAUABCt4G7CmKPIjiVfAVONeP2qMvzqyH5UC8GWA==
+	t=1792666721;
+	b=hb+w7tKDNPC/al8be7zU5kgykkzLNOvj++oje7bQInqtPCjxh43AQbEkwttpMPEe5KmP
+	 8fk7AzCmWDnNKfNFIrIzGKsTborfq67pWlU4MtjX9TJgisa8uaxnbVQoT+fO6OsS5Mk0C
+	 33KVP3XeoTz/zP+Zu4AQFDPCW32M52WRDUZlsCG8DpU1s/AXKSbuVMUAW3s8DAuCnShUj
+	 wz9p+42+x/do+6o4bepoq7zCNxBIVEN6KgO+AcJ/Jb3gXLvXw3dyjTXIyyjdjN/AaVefD
+	 Ns8CDyB0FQgH81xhy0sKdSqJyHoEbh2G1zm4aqe0HpT+xfz8vvx3HGeY9mb9NlxPKTw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792666296;
-	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:To:Cc:
-	 Subject:In-Reply-To:References:User-Agent:Date:Message-ID:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 X-Last-TLS-Session-Version;
-	bh=b7ihbGSWVLPuUe+7XubAjvHWls5cuf5rKU39/PaWcuw=;
-	b=25gyoLzBeVJodZvM47vw6TaSofHMqwhEadGKivMG0qzcsgVNAY0yB9YJg8Jr5s3rX8Pd
-	 AxcVPDibgr1I9gR3IHRceBuLRel8iwE95k6O9dsjB4tDLhKSSrRI7iRhbLCUFLUrax7pi
-	 rUgEFNeZiQWHf1Ebgv7RAG2EGlc0i6La7hFs6pEbOU2CZM17333XGS7pQSuwnz5qoyNKK
-	 rW2V1CKrc8LP9XuNcYsyyYcNs4l3CHYAPbPmP6rB5xDivoassueC+kuBd8/Y+8OIq8fid
-	 nPdnnngfrrn+4575z2HQfynzUWubHTdvBBPwKv2uC0pQndoySgUss12U0nOv/7BR6MA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792666721;
+	h=DMARC-Filter:DKIM-Signature:X-secureTransport-forwarded:From:
+	 Complaints-To:To:CC:Subject:Thread-Topic:Thread-Index:Date:Message-ID:
+	 References:In-Reply-To:Accept-Language:Content-Language:
+	 X-MS-Has-Attach:X-MS-TNEF-Correlator:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=43/F1bWKItWCpS9O3/hFiulcJFFFuEja5jONgOWJrrA=;
+	b=b9ToV7tzpY46PfqLaKGxpfX1CUEt+ja4oYeTf3ialajGm38Z+2JLLptA3zgRwfSb2lMA
+	 dSHba3YVvOzm5wPBMWsSNdlwP4WTFj3s3LASiSpG7iW7meNorxIpkViszl9mgBG7/TJFW
+	 sYA24ImSnfZeL6o1Zvl4NWt29BxDccmmUEH5CgMoB/35bz6Z1wv4VCN1TFl0yGvONuUJ0
+	 ekRue2muVOVeQUfyX6PzU04QTZHIBSeXsKhVPYExVU6RIMr8WcK+0N6eGQNvTq5JL55WD
+	 rit1w7khRgfwO1o11+V6kHMgYcElj8FdP1jkkhcwnKS5bJif+v2I+mSObos3enYCoRg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=bootlin.com;
-	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=AQxVeyyb;
-	arc=none smtp.remote-ip=185.246.85.4
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	dmarc=pass header.from=dh-electronics.com;
+	spf=pass smtp.mailfrom=dh-electronics.com;
+	dkim=pass header.d=dh-electronics.com header.i=@dh-electronics.com header.a=rsa-sha256 header.s=dhelectronicscom header.b=T8eDSq1a;
+	arc=none smtp.remote-ip=188.68.39.254
+Received: from mx2.securetransport.de (mx2.securetransport.de [188.68.39.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CF5D606A31A
-	for <imx@lists.linux.dev>; Thu, 22 Oct 2026 10:51:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6CF5D606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F33C606A31B
+	for <imx@lists.linux.dev>; Thu, 22 Oct 2026 10:58:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6F33C606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=dh-electronics.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dh-electronics.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=AQxVeyyb
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 9DCA44E412A3;
-	Thu, 22 Oct 2026 10:51:33 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 5A92C60360;
-	Thu, 22 Oct 2026 10:51:33 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4ACD310328D6E;
-	Thu, 22 Oct 2026 12:51:30 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1792666292; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=b7ihbGSWVLPuUe+7XubAjvHWls5cuf5rKU39/PaWcuw=;
-	b=AQxVeyybWvNhpYdzlh8vAq4aInIZo7CBTAdsck0AVY3jEC1K75GkphIP4SVc8imY93RBR2
-	l8+P0nokuVroD4uwhJnKWHztaqo2GE1PzxkRbKMzSrpetwopybBppJOUdsnzfoAE8KedcJ
-	PjjLBUHd/h4hflbypURLAOeAm8Cu8CGbTqEdS0DLDv0wvQDFSEwdSWBUJs1dVt9OYiRsRp
-	ZzNXb1tY9RWuIWPsrMlfh1Us37b5z3SlaKJT4WpOkFIczRuwRTN56eZeylh8VDYKWlzrQR
-	lVPWtf945X2Tw+OhODpl4sW56m+gHkjKxK53C8QSNtcjrR7Kp9dYbS99xo7s4A==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: haibo.chen@oss.nxp.com
-Cc: Pratyush Yadav <pratyush@kernel.org>,  Michael Walle
- <mwalle@kernel.org>,  Takahiro Kuwano <takahiro.kuwano@infineon.com>,
-  Richard Weinberger <richard@nod.at>,  Vignesh Raghavendra
- <vigneshr@ti.com>,  linux-mtd@lists.infradead.org,
-  linux-kernel@vger.kernel.org,  imx@lists.linux.dev,  michael@walle.cc,
-  Haibo Chen <haibo.chen@nxp.com>
-Subject: Re: [PATCH v4] mtd: spi-nor: clear the default read_sr2 opcode for
- Octal DTR flashes
-In-Reply-To: <20261022-spi-nor-fix-v4-1-fba3ec3d2b5e@nxp.com> (haibo chen's
-	message of "Thu, 22 Oct 2026 18:45:16 +0800")
-References: <20261022-spi-nor-fix-v4-1-fba3ec3d2b5e@nxp.com>
-User-Agent: mu4e 1.12.12; emacs 30.2
-Date: Thu, 22 Oct 2026 12:51:29 +0200
-Message-ID: <87o6cmovny.fsf@bootlin.com>
+	dkim=pass (2048-bit key, unprotected) header.d=dh-electronics.com header.i=@dh-electronics.com header.a=rsa-sha256 header.s=dhelectronicscom header.b=T8eDSq1a
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dh-electronics.com;
+	s=dhelectronicscom; t=1792666702;
+	bh=43/F1bWKItWCpS9O3/hFiulcJFFFuEja5jONgOWJrrA=;
+	h=From:To:CC:Subject:Date:References:In-Reply-To:From;
+	b=T8eDSq1aNTq5qFIZmDgPlXMQcyqp0+IRXU+FNvoJRSUWGugD36vx4KVMV60c72tbG
+	 se2zHEEAYq7LQ1RVdD+vxjf1UX8NqONBoxlJ3E6+oudzjjjYC0JT2TyF1VfvGler67
+	 w+I2aZRYcwJNLxPdjRoFz/j2OWT/WZP/iroCChyb/NShCoeaWy9uJJDJ5y1MADyzsp
+	 htRDJukA4E+OaJz6VZ/xB3UkKJInSI5Oma2GwlGcFW+msZ051UhsqG+Q520P6efuqF
+	 KHJnfqm3yITECyWe5wtYPcAxZE7HswtAxt+Ylrrj3hnFXQ4Q2trnkn8S0i90E+h1jj
+	 CKw/NTUMmq3RA==
+X-secureTransport-forwarded: yes
+From: Christoph Niedermaier <cniedermaier@dh-electronics.com>
+Complaints-To: abuse@cubewerk.de
+To: Francesco Dolcini <francesco@dolcini.it>, Marek Vasut <marex@nabladev.com>
+CC: "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
+	<festevam@gmail.com>, "devicetree@vger.kernel.org"
+	<devicetree@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
+	kernel <kernel@dh-electronics.com>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH 1/2] ARM: dts: imx6ull-dhcor-maveo-box: Remove unused SPI
+ device
+Thread-Topic: [PATCH 1/2] ARM: dts: imx6ull-dhcor-maveo-box: Remove unused SPI
+ device
+Thread-Index: AQHdYWJZTE2xKAx+vUqMiv2pzw4VvLcIHF4AgAAVrACAAAUxgIABDqQA///kbACAADcugA==
+Date: Thu, 22 Oct 2026 10:58:19 +0000
+Message-ID: <794745ff1c484257bef4f17917f3cf0e@dh-electronics.com>
+References: <20261021134435.17350-1-cniedermaier@dh-electronics.com>
+ <1073daf0-3676-4123-9ca4-c182ea5883a3@nabladev.com>
+ <20261021183704.GA1116319@francesco-nb>
+ <d4b9c444-a848-4b4f-9273-1c832db45fc8@nabladev.com>
+ <71d725ee47804205826bdda322fdfdb6@dh-electronics.com>
+ <20261022092536.GA232648@francesco-nb>
+In-Reply-To: <20261022092536.GA232648@francesco-nb>
+Accept-Language: de-DE, en-US
+Content-Language: de-DE
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -76,71 +87,33 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
 
-On 22/10/2026 at 18:45:16 +08, haibo.chen@oss.nxp.com wrote:
-
-> From: Haibo Chen <haibo.chen@nxp.com>
->
-> The core defaults opcodes.read_sr2 to the legacy RDCR opcode (0x35), and
-> spi_nor_cache_sr_lock_bits() reads SR2 during spi_nor_init(), i.e. after
-> the flash has been switched to its runtime protocol. On an octal flash
-> running in 8D-8D-8D mode the opcode is extended per cmd_ext_type (e.g.
-> 0x3535), but RDCR is not a valid register read there: these parts access
-> their status/configuration registers through a vendor-specific indirect
-> space, if at all. The flash does not answer, the register read times out
-> and probe (or resume) fails (on i.MX FlexSPI: -ETIMEDOUT and a controller
-> WARN(), seen with a Micron MT35XU01G and a Macronix MX25UW51345G).
->
-> Clear read_sr2 on every path that enables 8D-8D-8D, so that
-> spi_nor_read_sr1_and_sr2() degrades to an SR1-only read and no
-> unsupported command is issued. A manufacturer driver that genuinely
-> needs an SR2 read in this mode can still install its own opcode in a
-> later fixup.
->
-> - spi_nor_parse_profile1(): the common case. The xSPI Profile 1.0 table
->   does not describe any SR2/RDCR read, and it runs before the
->   manufacturer late_init.
-> - mt35xu512aba_post_sfdp_fixup(): some mt35xu512aba batches lack the
->   Profile 1.0 table and enable 8D here instead, with the BFPT QER field
->   left at a reserved value so read_sr2 keeps its RDCR default.
-> - spi_nor_no_sfdp_init_params(): non-SFDP parts that enable 8D via
->   SPI_NOR_OCTAL_DTR_READ keep the RDCR default too.
->
-> CMP (the only user of SR2 beyond quad-enable in the locking code) is
-> Winbond-specific and is not placed in SR2 on their 8D-capable parts, so
-> no octal flash loses a usable SR2 read because of this change.
->
-> Fixes: b7b63475903c ("mtd: spi-nor: Create a local SR cache")
-
-Is this still relevant?
-
-> Fixes: 63489002d397 ("mtd: spi-nor: Refactor Read Status/Write Status
-> support")
-
-Will be merged in the next cycle, so Cc: stable is probably required.
-
-> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-> ---
-
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-
-> Changes in v4:
-> - Following the Sashiko review and Miquel's preference, keep the
->   capability-based clear but cover every path that enables 8D-8D-8D, not
->   only the xSPI Profile 1.0 one:
->     - spi_nor_parse_profile1() (the common case, already in v3),
->     - mt35xu512aba_post_sfdp_fixup(): some batches lack the 8D command
->       info in SFDP so Profile 1.0 parsing may not clear it,
->     - spi_nor_no_sfdp_init_params(): non-SFDP parts using
->       SPI_NOR_OCTAL_DTR_READ.
-> - Checked all vendor drivers; Micron is the only one that enables 8D
->   outside Profile 1.0 parsing. Macronix and Cypress rely on Profile
-> 1.0.
-
-Winbond as well (see my W25QxxPW series).
-
-Thanks,
-Miqu=C3=A8l
+RnJvbTogRnJhbmNlc2NvIERvbGNpbmkgPGZyYW5jZXNjb0Bkb2xjaW5pLml0Pg0KU2VudDogVGh1
+cnNkYXksIE9jdG9iZXIgMjIsIDIwMjYgMTE6MjYgQU0NCj4gDQo+IEhlbGxvIENocmlzdG9waCwN
+Cj4gDQo+IE9uIFRodSwgT2N0IDIyLCAyMDI2IGF0IDA5OjEyOjEyQU0gKzAwMDAsIENocmlzdG9w
+aCBOaWVkZXJtYWllciB3cm90ZToNCj4+IEZyb206IE1hcmVrIFZhc3V0IDxtYXJleEBuYWJsYWRl
+di5jb20+DQo+PiBTZW50OiBXZWRuZXNkYXksIE9jdG9iZXIgMjEsIDIwMjYgODo1NiBQTQ0KPj4+
+IE9uIDEwLzIxLzI2IDg6MzcgUE0sIEZyYW5jZXNjbyBEb2xjaW5pIHdyb3RlOg0KPj4+PiBPbiBX
+ZWQsIE9jdCAyMSwgMjAyNiBhdCAwNzoxOTozMFBNICswMjAwLCBNYXJlayBWYXN1dCB3cm90ZToN
+Cj4+Pj4+IE9uIDEwLzIxLzI2IDM6NDQgUE0sIENocmlzdG9waCBOaWVkZXJtYWllciB3cm90ZToN
+Cj4gDQo+IFsuLi5dDQo+IA0KPj4+Pj4+IC0tLSBhL2FyY2gvYXJtL2Jvb3QvZHRzL254cC9pbXgv
+aW14NnVsbC1kaGNvci1tYXZlby1ib3guZHRzDQo+Pj4+Pj4gKysrIGIvYXJjaC9hcm0vYm9vdC9k
+dHMvbnhwL2lteC9pbXg2dWxsLWRoY29yLW1hdmVvLWJveC5kdHMNCj4+Pj4+PiBAQCAtNjAsMTQg
+KzYwLDYgQEAgJmVjc3BpNCB7DQo+Pj4+Pj4gICAgIHBpbmN0cmwtMCA9IDwmcGluY3RybF9lY3Nw
+aTQ+Ow0KPj4+Pj4+ICAgICBwaW5jdHJsLW5hbWVzID0gImRlZmF1bHQiOw0KPj4+Pj4+ICAgICBz
+dGF0dXMgPSAib2theSI7DQo+Pj4+Pg0KPj4+Pj4gRHJvcCAic3RhdHVzID0gIm9rYXkiIiB0b28g
+LCBzaW5jZSB0aGlzIGNvbnRyb2xsZXIgd2lsbCBiZSB1bnVzZWQgPw0KPj4+Pg0KPj4+PiB5b3Ug
+Y2FuIGluc3RhbnRpYXRlIGEgbmV3IGRldmljZSBvbiB0aGUgU1BJIGJ1cyBmcm9tIHVzZXJzcGFj
+ZS4gdXAgdG8NCj4+Pj4geW91LCBidXQgaWYgSSB3YXMgYSB1c2VyIEkgd291bGQgYXBwcmVjaWF0
+ZSB0byBoYXZlIGl0IGVuYWJsZWQuDQo+Pj4gR29vZCBwb2ludCAtLSBDaHJpc3RvcGgsIGlzIHRo
+aXMgdGhlICh1c2UpY2FzZSBoZXJlICwgY2FuIHRoZSB1c2VyIGRvIHRoYXQ/DQo+Pg0KPj4gSSBk
+b24ndCB0aGluayB0aGF0J3MgdGhlIGNhc2UsIHNpbmNlIHRoZXJlIGlzbid0IGN1cnJlbnRseSBh
+biBTUEkgZGV2aWNlDQo+PiBjb25uZWN0ZWQgdG8gdGhpcyBpbnRlcmZhY2UuIE5ldmVydGhlbGVz
+cywgSSdkIGJlIGludGVyZXN0ZWQgdG8ga25vdyBob3cNCj4+IHRvIGluc3RhbnRpYXRlIGEgbmV3
+IGRldmljZSBmcm9tIHVzZXIgc3BhY2UuDQo+IA0KPiBEb2N1bWVudGF0aW9uL3NwaS9pbnN0YW50
+aWF0aW5nLWRldmljZXMucnN0DQoNClRoaXMgaXMgYSByZWxhdGl2ZWx5IG5ldyBkb2N1bWVudCwg
+SSBoYXZlbid0IHNlZW4gaXQgeWV0LiBUaGFuayB5b3UgdmVyeSBtdWNoLg0KDQpJJ20gbm93IGxl
+YW5pbmcgdG93YXJkIGxlYXZpbmcgdGhlIGludGVyZmFjZSBzZXQgdG8g4oCcb2theeKAnSBzbyB0
+aGF0IHRoZSBleGlzdGluZw0KU1BJIHBpbnMgb24gWDEwIGNvbm5lY3RvciBjYW4gZWFzaWx5IGFj
+Y2Vzc2VkIGluIHRoZSBmdXR1cmUuDQoNCkBNYXJlazogSWYgeW91IGluc2lzdCwgSSBjYW4gYWxz
+byByZW1vdmUgdGhlIHN0YXR1cyBsaW5lLg0KDQoNClJlZ2FyZHMNCkNocmlzdG9waA0K
