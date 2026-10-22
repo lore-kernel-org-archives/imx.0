@@ -1,106 +1,104 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.69.53
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792663590;
-	b=pihJ+eFAizhLrgErcpD25pjJ/xjTqAu9Gjn1D0GJFaY/VPai3FbI7AH+3A/2kB4bG+rF
-	 d4IkfDndPuseF6sQn6u9sQJ2F6/C6/aEsZyU6EJTFEONXnI2XeJaTHdIw3TGP2so1oheH
-	 FNUAbl3flfVYP/Jxq9vub+22xI7hyMuthTOEya/oqpRu+CnAzWDbWFBcmxs5wgMKCW2JC
-	 Nbf9OiKkqEw+BFFnT4CNTDpYpH/ujd/0HlAuWkc+JXP3TY+05Z/T83hsIG6ojbpflClPd
-	 7RNd/wDJ1QkuSfPtUUndLXRIMpJcApS/n7BLr2EspElwCDWmLOMhx9nfHxN4tQeGV1w==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792663590;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:From:Date:Subject:
-	 Content-Type:Content-Transfer-Encoding:Message-Id:X-B4-Tracking:
-	 X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
-	 X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=noLkfI1i0GtYQwfbbS+wG3diQbBD6shC7ACKQcK6p1k=;
-	b=q3Juqo6heZzMMRpQcVAca/Uf+6MLyzpZ76ncNkqrKxFs6pfTH9PjXIlBSOgcSQ1BhXi6
-	 g5BKEZZHX5LsQQH4puTCq+GneUlKRqJnv6GVwx1KmSdXyBK1WuyR2PdryPWKv/5r1uTeZ
-	 DtP3a1hqBQn3IvlxUG0/ecu5MB8929TUvEVGmYvOxN2bk7IBVQdeqwqeYaU1qmv6mL2s/
-	 2Wwtt2qc8ABhwuqAWbaF6RCUj08qN8jQHCVfll57YdresFlmxgejCVEHBkaVc+065q668
-	 rhoEVtM/WyLIj4/Vdju2jqnnCHdBtUwGcxJG0nOd3z22hkuU5YPoxKN5koQjvv1Xj+A==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.nxp.com;
-	spf=pass smtp.mailfrom=oss.nxp.com;
-	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=jcpxWEGT;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.69.53
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010053.outbound.protection.outlook.com [52.101.69.53])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.51
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792664543;
+	b=nI+LrC22U96g4Pc7fT1UPPpBu+dNfhWnq/ytmy9jGIBtathagXeLzbxxASC4Qp+A7VC6
+	 iNlaAhIG6tt1dENuRfDmsrLYJ+n7HI6nafsjm8kvWwxnsHfCf/RZm2N2siy0HqUkLua0k
+	 VMGkWBw0DINTG4V+Tk0z4WLzYmd8Y+xnkPr8wmH3RLjqsRYpZwvhzRkTCIgmSV9Ivd75X
+	 7V3+aAQXuoCJBboLJNWuQt7hQeyCFkBJw/CEBrCbNNpJEw4O9ohDb6tymS1ir0VA26TAF
+	 YC8RtaNWPW0d9seshz3aPeTBAq0AfxwFbwxCKWAXkowB8jltMAJPnTQWWGA0j4TpXnw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792664543;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:X-Mailer:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=X1hkH/WoS1PUodSVVDSJVTIP1ucGICUHF3hWVbzAKEQ=;
+	b=K7FwN1cpOipGv8yQE+VonEy+J32KQ8fWglAMQomUrc05OLY59U7ee7Sud9sw0SJqdFaY
+	 FaTZ4rrnI0XDn1fUd28viHVidXrajpkl8f2ObsHnpwr3nKPgzo+pW0JdHlc1YhOjSQNbf
+	 IDBW0GCb+tx54WAtNegzEk8OYxS7G0lgAM9NfWy6d8ZhVNQwue+MSxnYSwRCZNLVSCdD7
+	 XjVequIIbaAfcskx5QAPw+J6cPdIHkKnDvR6/Iivm0iyUmepHSHQ/xFnKCH+r6b2lPuFt
+	 Iguzrgz/dgTbfek1NUXkyUZKqDJbJX6NukPj0Y3lM3qRr0fqvFtgf7kzJ/94ogxWQ9Q==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=YBM8aN9r;
+	arc=none smtp.remote-ip=209.85.128.51
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23078606A319
-	for <imx@lists.linux.dev>; Thu, 22 Oct 2026 10:06:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 23078606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18404606A321
+	for <imx@lists.linux.dev>; Thu, 22 Oct 2026 10:22:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 18404606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=jcpxWEGT
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=HVNk1srLLxVKh0LbNut3cv991ENO6oawteKsyIT++bFJgJDMhkQOuVMkQpLHe1jDy+xv9l9v5OVRKePA2MGOLFugjzrvqVFvc+dRjsgbEfUeQmvd+VZdy0edoyi1z1HVsJwr4BkhS15RKlLXhD82vjsr1ZutQfLDikcMC9iN658bZbw/jRIBOYe5eN7PcFm5WodZFbw/pEVAYasJgR7MwPTENZjG7VRxvgcWonvjG6xr3Xu2waOXYob83lm23PMY7jx3StiUjXgSND2jxZdnAT9UG21a0MfinMqikqGCPWIoQgzFN8GlZwK/q1HqrjknD9CpwU/MLHpOp1k0ICariA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=noLkfI1i0GtYQwfbbS+wG3diQbBD6shC7ACKQcK6p1k=;
- b=jH3TylsOFB23BXYPP/MUBrTBgbMFq75u7zu0cy3KTvhn0YjhZUY44arfeQc6/XcZxBj5NqQeu2rtOcZxciKzWuQ7s2i9tRBNNOuM3xwb7FHEA4tI3THdqftOODzX3Bso+RyntH1WEymISGFPSI7SOHAupReppcXcjNnGMtSdUvbiYkRtx/R2fdBLTU71tGz2q0sbAosy9bTSR/p0v18vNWopwLXrMQmkGCr1edbCDip4eldGE7JvSjQomqFSPsu7m14ppFgVB0je5hvtL02Kqarwy5PyKZS1bI/WVvUWhB2kqsKrFy43uW2YNXApzv+Ti/2qDWWXbTlT2780ga8EZw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=noLkfI1i0GtYQwfbbS+wG3diQbBD6shC7ACKQcK6p1k=;
- b=jcpxWEGT1j+shCsH531soGS1p1DFaFIjnUAWFpjd6GPhCCQNW1NaOcTJtRmEkz+ClnG3zrbbJHfw4lSW7DIgBZPCW2wcG4IL4MMaWPluwrikKAPBFX/VJtjT+ktKzPL4A0Bd8pawlicFIjVkKRugac0+zzbjQq6vpV8HkBcD7YkE1kpjIFUM5ACou0uVKcCCHUDRExycDcexsqFOCyelW07ppu1VFYxQCFpVuHDefDEht6gJebSPYUSXXGTfn22vQG52UqH+0c9My2L/E7dnuD5iHlI846+X/0r3JbN7SY9YLfPqdQvZoZXToCCl1IsE18tdsU0sEp5nBWeYCYwTSw==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from VI2PR04MB11276.eurprd04.prod.outlook.com (2603:10a6:800:296::7)
- by AM8PR04MB7954.eurprd04.prod.outlook.com (2603:10a6:20b:237::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.15; Thu, 22 Oct
- 2026 10:06:23 +0000
-Received: from VI2PR04MB11276.eurprd04.prod.outlook.com
- ([fe80::60d7:a8e5:eb88:9be]) by VI2PR04MB11276.eurprd04.prod.outlook.com
- ([fe80::60d7:a8e5:eb88:9be%6]) with mapi id 15.21.0522.017; Thu, 22 Oct 2026
- 10:06:22 +0000
-From: "Sherry Sun (OSS)" <sherry.sun@oss.nxp.com>
-Date: Thu, 22 Oct 2026 18:08:59 +0800
-Subject: [PATCH] tty: serial: core: fix synchronous external abort in
- uart_tiocmget() for runtime-suspended ports
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261022-b4-serial_uart_tiocmget-v1-1-9608a5e4bb10@nxp.com>
-X-B4-Tracking: v=1; b=H4sIALrg2WoC/x3MTQqAIBBA4avErBN0kBZdJUKsxhroj9EiiO6et
- XyL790QSZgi1MUNQidH3tYcpiygn/w6kuIhN6DGymhE1Vn1ET+7w0tyibd+GSkpxEBeUzVYGyD
- rXSjw9Z+b9nleQSjeXWkAAAA=
-X-Change-ID: 20261022-b4-serial_uart_tiocmget-22fea0e6d44f
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Jiri Slaby <jirislaby@kernel.org>, Rob Herring <robh@kernel.org>, 
- Alan Cox <alan@linux.intel.com>, Florian Eckert <fe@dev.tdt.de>, 
- Lee Jones <lee@kernel.org>, Maarten Brock <m.brock@vanmierlo.com>
-Cc: linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org, 
- imx@lists.linux.dev, sherry.sun@nxp.com
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1792663752; l=3550;
- i=sherry.sun@nxp.com; s=20260723; h=from:subject:message-id;
- bh=Nqr32+auMbZlche2USrO1xSax+p6qxa6eNN++gwgU3U=;
- b=A1dUYODJ5TR0QB0f6EKSrPny8yiQXA8eEplOwyuBfC10yjTGv9RN+pD3r7inDWGkUW/boGGiN
- /k/+SU17Jf0C46ufMjRsGhyfw7Ea4eeXjrX0MpIxkFNfJmIS/JYWgBv
-X-Developer-Key: i=sherry.sun@nxp.com; a=ed25519;
- pk=YnYnIFJ2l+5v951x9shBVfHhminNi+3LTfFa3PxSdnI=
-X-ClientProxiedBy: SI2P153CA0005.APCP153.PROD.OUTLOOK.COM
- (2603:1096:4:140::11) To VI2PR04MB11276.eurprd04.prod.outlook.com
- (2603:10a6:800:296::7)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=YBM8aN9r
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4a1e34ecb02so11594465e9.2
+        for <imx@lists.linux.dev>; Thu, 22 Oct 2026 03:22:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792664541; x=1793269341; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=X1hkH/WoS1PUodSVVDSJVTIP1ucGICUHF3hWVbzAKEQ=;
+        b=YBM8aN9rJTcxBoBMt5GkSu0kL1m2C8vOYr1CMY9UIfNfR6iw7TZ/LemTveTgiQQfaS
+         zDMHMAptqinW/jZvz3qx9AhHWc7LRjTYqBOtT8OkSNSMNarVDmsWBgQ2Kn8E5sIYxgCI
+         expDucA0SmDlGRXAV6Q2RkrPAx0tidq+shw64mPn9SVeVCYpI8aDfbPg4cqaKroOtcpm
+         8emaUu2zdi865Y+Q0HV69Kbaik996LYBx/Z2zUfMZYHMfX5vcET7xzOTLxzjYSmFleni
+         x1NR7DV2UYn8NzcB89sG42DhDo2olT/IZ+jg5sPvnAR7aitTVkBrzkoq1pSOg9PaeT5T
+         /DFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792664541; x=1793269341;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=X1hkH/WoS1PUodSVVDSJVTIP1ucGICUHF3hWVbzAKEQ=;
+        b=rGlQZmMGuRW473FF82jNYxoCI1XZwoH996IFSL60+HgPxXilhIjEmG5DLDWzHpPmnx
+         iAVhHEV/8VxjbNhhA6v4T2yvDVRm0LgqPjN6RAvHDAteTqQgLjwNz6Rjl/5Yc2DHUyTs
+         zU1r3eBSo2Wsdx6oaE5q/FZb94ak2K7Mu2e/t3Hh9eM1ziqifR2Vzz/kfd77mgFY6+xQ
+         BP6eYUnTcN+vH9gH24r5xgswNL2N9YHBNQB8365AW4nlrI75pW3gc2/KlgyhCYmADYAL
+         9WgGs7iqBn9CHdfzTZk432rxMWqQQtGAyOdaySFCVEbqLhen3+WUXFyO5o0Zdo+7icq3
+         AsvQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwnywTMNI+LsTEhhCIRNAxCoG63q27TEqLc7V8uGrg4ZQMZ9Ca+6D/4Qa/DT/ebhISTLWY=@lists.linux.dev
+X-Gm-Message-State: AFq9FYKRQXdBDpMeSw9IV7X3XXz4TJRXYoQ2YRea5ZCwIaKUiomqS6F5
+	CC9YZ4d1kyzuR1X1jFQ/oS51myNWTJp+54o7S2ZlGjRurjmY3uND5EFa
+X-Gm-Gg: AYBFou2EGDtRU/5XRDxinQIFpYjFGwLEkVPCTEGb5p4Cuko0LyXyhBxGzfdwDaoyJI3
+	gATvX+G77F+mAllUGSX3y9CuY0r6ZagfZcdv637BNKLW3A30uY4pyWmZeOYA2KyIhtcLdM9bJUR
+	s1q4JQ+3V7YrHhP9ReP/LWSh6EQ/Ir49w/X6IqcrfC7JxYP/+GngYDzWrgNxkcuqjTl6IgDGdkI
+	M4As++KL+jimhSIwRte9PquvCUD6sGZdGutZ0DGAbkMGanJbt+pNEo0PybWru6kOHZeK1cxaoRj
+	6qz+3DtrfvaaIWvXH/qRW7tL5qeFobi3lDELcHM1LKWQ9Tx95XrHNbk05LKVAtccs4md/0gxmsn
+	A6p4LsPPqZAQbmFjmYRuv5VQszUzhwJQ1vVFLQ1yZ1tplFkr/Liq07G2OzKUpo2I/87HrTITirh
+	i+LNzT/WNNHyd9iSrnABhbC4DXaq/oaf2IXLhREvyZhLaHmxgyL+2raEs6Zfv9cJCusaC84KGPC
+	4ArGrKYEPH9W9KJhNDqLwySSRIPHQtzaXtpdU+aDkDHiBnN5RzwQu1/+GdBK8SZnziWviHX4c3I
+	VSy+pOh6+sTTik9vtg==
+X-Received: by 2002:a05:600c:3e85:b0:4a1:e6c8:ff74 with SMTP id 5b1f17b1804b1-4a1fdd575ffmr96476065e9.29.1792664541152;
+        Thu, 22 Oct 2026 03:22:21 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a203b37df4sm60298495e9.6.2026.10.22.03.22.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Oct 2026 03:22:20 -0700 (PDT)
+Date: Thu, 22 Oct 2026 11:22:18 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski
+ <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Claudiu Manoil
+ <claudiu.manoil@nxp.com>, Wei Fang <wei.fang@nxp.com>, Clark Wang
+ <xiaoning.wang@nxp.com>, Ioana Ciornei <ioana.ciornei@nxp.com>, Zefir
+ Kurtisi <zefir.kurtisi@westermo.com>, Zefir Kurtisi
+ <zefir.kurtisi@gmail.com>, netdev@vger.kernel.org, imx@lists.linux.dev,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 net 2/4] net: enetc: do not rely on mEMAC hardware
+ frame padding
+Message-ID: <20261022112218.11a1faa8@pumpkin>
+In-Reply-To: <euqz7djxfn4tqbd63ymcj2bnu7k2bb6hzlmeilao3rvjdhyisf@bk3wj5hinfnr>
+References: <20261021145314.1435049-1-vladimir.oltean@nxp.com>
+	<20261021145314.1435049-3-vladimir.oltean@nxp.com>
+	<20261022093359.723c7e93@pumpkin>
+	<euqz7djxfn4tqbd63ymcj2bnu7k2bb6hzlmeilao3rvjdhyisf@bk3wj5hinfnr>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -110,153 +108,96 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: VI2PR04MB11276:EE_|AM8PR04MB7954:EE_
-X-MS-Office365-Filtering-Correlation-Id: ffab5eca-f70f-49a9-27dc-08df30242008
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|366016|1800799024|7416014|376014|23010399003|6133799003|10067099003|18002099003|261021121427099003|261021123027099003|11063799006|261009223027099003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	e63gm9zr5TzwGc//3rOIz50xyXF4tMN1K6KnB4rLVby9npWNMMoIN9j6Af5wLVl8xweHyCxKnOeWYYVdjG2s9LczDXLw/WPDSO4aS5zRJiDik/iNeVBOV5xcmn6TQg4QdXQOQqu2YR8cwp7Y9xSrtDOWh3KqaX2WLAyKu3c31q8UJCfewItqlf0vMjpkwbspwvXiMzOFDClUfDahAPna1RRreJKkm6xj3AIU51VS3RL5PFtBF5KqxKSherIvitMT86bOxcSJN6irYJSOxPPAw6w80xK9SDbIYhBCD4IgVnkaDjW9dVq48Ad5/zckJT/rBCaI6gDS9cErCMDNiUgEhVwCavNXl0DjW+MBtSEqGMF/HDu9ryOTrPGGen04TbrHkIOg2yBh6BfAlO1VOXpTPx1ZrSF79ztcqYp1qmh5ooaq6XlsFIdgMVUz7/vmu2D0zZ+tlPdG/C7jkDe1r7/s4TOzqtiEYQicdAGsOhHrm73obSWNVTJMuxiFbfMbxwyCWeDuNJ/eZh16H51tLFQmCYL7LafvX7GUASp7V/6ChYLTcCGrjOpXPuJ4OR1DBtboji86U7OG0lPa14lWwY2zmN5huzGuorPan/nXO69z4wtasQeqY6+SIGxJG/Ho0LCKNCRyLtRSAtCujJZyNPdKlnYPqatnFFctDD76sQZyUJc=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI2PR04MB11276.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(1800799024)(7416014)(376014)(23010399003)(6133799003)(10067099003)(18002099003)(261021121427099003)(261021123027099003)(11063799006)(261009223027099003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cU15Q1JmdVlURXZ2L08xWU9WUXpRL245alp4N2dDdTh6Mjd6Q2VGVGRHUFAw?=
- =?utf-8?B?eTBLNDQvM3FtaHI1Z0c2L09SaklYelNNYUd0dWp4RUpPRU9HcVkwY2RBMWcr?=
- =?utf-8?B?WDlsbW5Eb2ZOQmI2Z3BlM0g0YitFaTVSeFZCQjJhOXhJZkROaEdPU1B0KzdJ?=
- =?utf-8?B?TStBa2NUbXFVa2M5bXY0dEpLdGVCWE14VWxqeUgvUzc4SWNGQmdHTGZmNWQ4?=
- =?utf-8?B?YXZrTFNYODBVdXNrTUtjU1ByUHlsUGoxbG1PQlQ3RjMxZkZHbHI2TFZTMXFP?=
- =?utf-8?B?alI4THVDKzNoMWJHbUV2TnJRRXFmb1NZRkVucXZ1dTgvMEdKeWUxajArNWFh?=
- =?utf-8?B?RWlPODlHeG14T1FhVFpaVHNzdFViaGNCTVYvTkh3aFF4Z0oxWnB2R2NUZyt6?=
- =?utf-8?B?N3MxU05tb2FUVHNGODM2T2lxeHd1aFFnb3h3VU1paDR1NEJ5M0haWGhPajJv?=
- =?utf-8?B?RzEwVXBZMnJlMTdGV2w3NzdyNEhVVUdQWklFVFpGVzFXVGg0VkxWL3NxNnpS?=
- =?utf-8?B?QmVtZm1qc1lJbGExWWxiYUlZOXRIQTNHZmJyK29QdkxnUDRpR2J5aVB4d3dm?=
- =?utf-8?B?Rk1mL1JiaThzRlFDVVdkMUFZeCtHUk1taFdhQjBYZXhrRjRITWEyMURRRTdH?=
- =?utf-8?B?ZzFaQnhObG9jTlJDbWhtM1FtZXNpYVRtNWZDVGVFWVcxSEcybGxiSkxXQmNR?=
- =?utf-8?B?VkUzdWkzMUNHNzF1VEY1dWEyWEVMdENXOGRFTUlidDRxcjNORVNSWjJPRDd4?=
- =?utf-8?B?eWo3bnJqb3JGYkFZNEFabDE3SlY5YVNKTHdVeGRVUkNCL0FMaS8vN054cnh5?=
- =?utf-8?B?bUtEeEpLVVNDaDBESTljOXdNQTZzeDZKWTlpWnJHa3VMR3RJTzVTYnpXN3J1?=
- =?utf-8?B?U0lnZjZOdzlIYnhIbGFoK0lEVnZCQ1VMeUNGUGI4dUpUY2xWZjNsYVRPWGxr?=
- =?utf-8?B?N1lBZkp2VFc3dE50UUVsWFRndW1rdlN2Y01XMjdCTlZSdDlTQnVsbTVhRzZy?=
- =?utf-8?B?Ymgza3ZWSXB4NkJjTFNQYVhjZDVjNEJQWEJ0cVpjdlYzWmdQVGJxMmZKYTZC?=
- =?utf-8?B?ZGNPUUF1UkFoTTU0eitUQytma3BrUTQ4MDBoVlBTOGd2MHVLRk1XOTRrbmp2?=
- =?utf-8?B?YnN0eTFBSXUvdmFiWGR5cFRYaHRkVUo1b3c4ZlUwdnR3cXM1YTIzVERBRFRN?=
- =?utf-8?B?VHVSLzR2MTc4eTJhb0kwa1hjU0x5M29KbjZpREY4SkhQZlJzVHdrMWVheTRp?=
- =?utf-8?B?OHdLV0RsVUM2U1BrODNMMzlGZENEanppWER4NmtxN1VzZmRFZTFkYXozWHRw?=
- =?utf-8?B?a1R3OFdjb214MCswTTZnbGNwUmtROE9YWEdURGdqbmZRdGFwaTE2NDNyUlUr?=
- =?utf-8?B?dTNJM0VoYUhEL3dwT0JQMXBIRTByaCtic2hjR25RbEF4czB2TG9Ha1hUV1Jr?=
- =?utf-8?B?T01kbjNtT3VsRXZ5KytQUGthK1BTR2FycUhWYWJEaXh4Z2QvZmpHTGpnck8r?=
- =?utf-8?B?TEFkYmhvc1hoZ0owWUFUb3pwR3VYRlJpeXVva2trRXI4Tkt6K2hnSTdtSGtp?=
- =?utf-8?B?MDBuUlJudmhUTjZ5TGx6SjBJeDkxTU9DbkFEZm1QK3VOT3B0c2pQcVNKcThh?=
- =?utf-8?B?Zm1Sclg1RjFvbUtpU3VHaE1JS2RXajhoS043WGQ0VE5jZXZleEQ1S3p2SWxt?=
- =?utf-8?B?ZzhnWVpPeWt3ODl6eU1UNVB0M05ITUZFQXhydm1xd3hPT0pLOWlzaFlxMTJz?=
- =?utf-8?B?R1RiaEJNbHdiZDNQcWVnRjlsRXRFQWRKS2hTMXU5OUljQ0wzdXM2NUV3TXIz?=
- =?utf-8?B?UG5mNWdJWjNiRTR0VzBiSSt0Mit1cll0cTFvZHJmanRzWXM0WWlXZ1JQcU9J?=
- =?utf-8?B?UngvMEc1elhYanRmWFJxdTVtd3pTcU0wbVI3M2wyUm5XUFNoNVJTRThCbU44?=
- =?utf-8?B?TlMrRDFMY1pvRlo4NEdIcjhPZE1SRm9PczF0aGpsNDRUeWxoOTFCdHJUUk9B?=
- =?utf-8?B?QkE3Ky83VW9aMml0Q1pMTVFFRFgwblJFYW1RTmNKOTV2aXlCREo1VXFNK1pF?=
- =?utf-8?B?SkF5SnFacTNSdCsvRnArK3hkTlpkRXpva080NklIb0pvMzFZWmpQN1NXL1o4?=
- =?utf-8?B?WWwwNjcyekNFcWF3Nmg4dy9OWXRicGtRYkpoNk9YM01aTmhNa3lJbWtmN2Ey?=
- =?utf-8?B?WEdENXpsWXpoYlZrYUhDVEJHa3B1V0wxRGVMcjYrbkcxOG9YUXhLSGp0RmJQ?=
- =?utf-8?B?ajAzWXZMaGR6WHg4K2E4Uzh6aWw1dVZvaFg0bStCa2RQUFlxNjFVOStUaDBB?=
- =?utf-8?B?NW1TcjZuYS91Qm1qSHViRlRJeDRBNnZQbU9BNDNaM3hGT1pvUDFtRS9qdWdt?=
- =?utf-8?Q?bi1oNUNKExVMdU49h0o1SfajN8pgC6VuRuAWs?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ffab5eca-f70f-49a9-27dc-08df30242008
-X-MS-Exchange-CrossTenant-AuthSource: VI2PR04MB11276.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Oct 2026 10:06:22.6627
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 8HvScN0JGksNG7Gx9z3aH+KRgeccjRNKsI8ttLie1ziGy8tdRfv1JyPEChor9qJ5EVlbBvqE8cjpIdDiz79sHAVFHIyIK1P3QuUzCCwDNxf/oNWOvyJijfotogxoAHMG
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7954
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: Sherry Sun <sherry.sun@nxp.com>
+On Thu, 22 Oct 2026 12:41:49 +0300
+Vladimir Oltean <vladimir.oltean@nxp.com> wrote:
 
-uart_tiocmget() reads the hardware through ops->get_mctrl(), and the
-only check it does first is whether TTY_IO_ERROR is set. That is not
-enough to know the port is powered.
+> On Thu, Oct 22, 2026 at 09:33:59AM +0100, David Laight wrote:
+> > On Wed, 21 Oct 2026 17:53:12 +0300
+> > vladimir.oltean@nxp.com wrote:
+> >   
+> > > The driver sets the ENETC_PM0_CMD_TXP bit to pad short buffers.
+> > > This works, however sending short frames from user space and looking at
+> > > the padding bytes inserted by the MAC at the link partner, we notice on
+> > > LS1028A that the first octet of padding is sometimes not 0.
+> > > 
+> > > This is fine per 802.3, which does not require that the padding is zero.
+> > > 
+> > > However, there is an unproven suspicion that the padding bytes may
+> > > come from internal memories, and unfortunately I couldn't get sufficient
+> > > priority for this octet's origin to be investigated by hardware
+> > > engineers.
+> > > 
+> > > To be defensive and not leak any sensitive information from the SoC,
+> > > let's pad all frames to ETH_ZLEN in software, so that the MAC doesn't
+> > > have to do anything.
+> > > 
+> > > There are 2 distinct cases to handle, for GSO and non-GSO. For non-GSO
+> > > things are trivial; we need to call eth_skb_pad(). For GSO, things are
+> > > not simple, because user space may set gso_size to a very small value,
+> > > which could make the GSO super-skb smaller than ETH_ZLEN;  
+> > 
+> > That isn't sensible.
+> > The minimum frame is 64 bytes (including FCS), subtract that, the MAC
+> > header (14 bytes), minimum IP header (20), minimum TCP (20) and that
+> > leaves 6 bytes for user data.
+> > I doubt it is sensible to do GSO for anything under the minimum mtu
+> > (128 bytes rings a bell somewhere).  
+> 
+> My fault for not being clear and inviting this kind of objection.
+> 
+> Since we do GSO in software, we advertise NETIF_F_GSO_UDP_L4 too, and
+> there, Sashiko came on v3 with the observation that for UDP GSO, user
+> space can set gso_size to a small value using setsockopt(UDP_SEGMENT):
+> https://lore.kernel.org/netdev/178960175550.22033.10648880872141935672@kernel.org/
 
-On last close, tty_port_close() calls tty_port_shutdown(), which runs
-uart_tty_port_shutdown() under port->mutex and powers the port down
-with uart_change_pm(UART_PM_STATE_OFF). port->mutex is then dropped,
-and only after that does tty_port_close() set TTY_IO_ERROR. A caller
-waiting for port->mutex in uart_tiocmget() gets the mutex in between,
-sees TTY_IO_ERROR still clear and reads a register of a port that has
-already been powered down.
+I'd fix that in the setsockopt code.
+But that might be a bug anyway.
+UDP segmentation has to use IP fragmentation and that is usually done because
+the interface/path mtu is too short.
+But there is a minimum mtu for IPv4 of (something like) 128 bytes, and
+it may be invalid to fragment into smaller pieces.
 
-A TIOCMGET ioctl from userspace cannot get there, as it needs an open
-file and the file being closed is the last one. But an in-kernel user
-that holds the tty through tty_kopen_shared() can, because
-tty_kopen_shared() only takes a reference to the tty and does not open
-it. ledtrig-tty does this and polls the modem control lines every
-~100ms:
+> Sensible or not, it is possible, and I did generate a test program using
+> an LLM to confirm this.
+> 
+> Regardless of that, the last segment of a GSO super-skb would need
+> padding anyway, because even with a 'normal' TCP MSS, the skb->len
+> modulo gso_size could still result in a last frame < ETH_ZLEN. Padding
+> just the GSO super-skb, as I did in v3, would also not fix this.
 
-  ledtrig_tty_work() -> tty_get_tiocm() -> uart_tiocmget()
-    -> ops->get_mctrl() -> register read
+True, but that is a different check to the one you did.
 
-On i.MX93 with fsl_lpuart, opening and closing the port in a loop while
-the LED trigger is attached to it makes the trigger hit this window
-after the LPUART clocks have been gated. The register read in
-lpuart32_get_mctrl() then causes a synchronous external abort:
+> > But does this code allow for the VLAN tag that you forgot about in the
+> > other patch?  
+> 
+> Not sure I understand your concern here? Is it that with VLAN TX
+> insertion offload, we pad "too much" (i.e. to ETH_ZLEN, then the NIC
+> pushes an extra VLAN_HLEN)? I'm not sure that's a problem..
 
-  Internal error: synchronous external abort: 0000000096000010 [#1]  SMP
-  Workqueue: events ledtrig_tty_work
-  pc : lpuart32_get_mctrl+0x4c/0x64
-  Call trace:
-   lpuart32_get_mctrl+0x4c/0x64 (P)
-   tty_get_tiocm+0x1c/0x30
-   ledtrig_tty_work+0x48/0x2dc
+That is a problem, VLAN packets should only be padded to 64 bytes
+including the VLAN header and CRC.
+However such overlong packets are likely to be tolerated because
+an ethernet switch can add a VLAN header before forwarding a packet
+and it can't know whether a short packet is padded.
 
-Fix this by also checking state->pm_state in uart_tiocmget() and
-returning -EIO unless the port is powered on. pm_state is the serial
-core record of the port power state. It is only changed under
-port->mutex, which uart_tiocmget() already holds, and on close it is
-set to UART_PM_STATE_OFF in the same critical section that powers the
-port down, before port->mutex is dropped.
+> Anyway, with VLAN TX offload, the VLAN tag is not part of the frm_len.
+> It's part of the extension BD that we forgot to account for, when
+> determining whether the TX BD ring has enough space for the frame under
+> transmission.
 
-Callers that have the port open, such as userspace TIOCMGET and serdev,
-are not affected, as pm_state stays UART_PM_STATE_ON while the port is
-open. The only exception is system suspend, where uart_suspend_port()
-powers the port down and uart_tiocmget() now returns -EIO instead of
-touching the hardware.
+That is what I was thinking of.
+By brain thought it was a normal BD - so would be in the 15 limit.
 
-Fixes: 761ed4a94582 ("tty: serial_core: convert uart_close to use tty_port_close")
-Fixes: 6dec659896b4 ("leds: ledtrig-tty: Add additional line state evaluation")
-Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
----
- drivers/tty/serial/serial_core.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+David
 
-diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
-index c0deec0e6af4..272feae690ce 100644
---- a/drivers/tty/serial/serial_core.c
-+++ b/drivers/tty/serial/serial_core.c
-@@ -1088,7 +1088,13 @@ static int uart_tiocmget(struct tty_struct *tty)
- 	guard(mutex)(&port->mutex);
- 
- 	uport = uart_port_check(state);
--	if (!uport || tty_io_error(tty))
-+	/*
-+	 * TTY_IO_ERROR alone does not tell whether the hardware can be
-+	 * accessed: on last close it is set only after the port has been
-+	 * powered down and port->mutex dropped. Check the power state too.
-+	 */
-+	if (!uport || tty_io_error(tty) ||
-+	    state->pm_state != UART_PM_STATE_ON)
- 		return -EIO;
- 
- 	guard(uart_port_lock_irq)(uport);
-
----
-base-commit: 9a482184d910775cf648863148944945b74e2815
-change-id: 20261022-b4-serial_uart_tiocmget-22fea0e6d44f
-
-Best regards,
--- 
-Sherry Sun <sherry.sun@nxp.com>
+> > I also noticed that the code seems to dma map the fragments for each
+> > gso segment separately, just mapping each skb fragment would be better.
+> > (But that is for another patch series.)   
+> 
+> Noted, I can look into this separately.
+> 
+> Thanks for the review!
 
