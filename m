@@ -1,20 +1,20 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.127.87
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.70.69
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792669454;
-	b=jGWVXUizkQGA5OQtRUd3kx2dnOE54i9mssjW/meF65KDjOCI61CoUZB45lLVgg4guJbo
-	 lAQNX+NUWKytztd/llARCb9rJyKIn+/Agd0gy7OtR6nHcVwXGL3aByoTZHW08hS+Lk5mN
-	 rNq0Pj1lvhIKnPFkhZlI3dBuEE784g7PLJxeXJybl4aJ4bqtLNbGOK0Xt6kAlgBM0lw57
-	 FWkvvQ+B+0uESKQrigAI1EHVtaSl44/T75UcYVfHkqFc8Tei7ZnHUk5GuGCWuBOep0kM1
-	 cYbXWeiLLJ5F1p30khoIfCk9Y+zn5ckaSllfZDEMXpcxz37lK+efvLLB9cEKrVtfMrA==
+	t=1792672514;
+	b=azYED9ns/mcxxvnXfGzjm6RWCOIaEyT/ZcTcjVOyYJT1+LHdBoIyLZDKVbKs1T/9hvRP
+	 A+vmRDGTcKhWAug2ZyGhj4Skm5pVj+Xw9mkPqw96HpeX17bF735oaBg8VSU9DHLZ6mTeu
+	 SmemxDR+2wLp7uVuxaoy4C/ndYeYD1pamgZBKOwyyRGrIj0uIF2acw+nufan0JjX/4nj4
+	 IY5OnGdgUvpqk6DWWBrLGEfI444zlWX63CLWTz5OtCpwRhvBji+kuVPJDx4BH/cLycCos
+	 yBbRsxtiQ3Sv7f0GEffp8p244lsSmcvHsUjcWD3IeWtCAUnBT87nUx0lPzwrIoONxcQ==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792669454;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
-	 User-Agent:From:Subject:To:Cc:References:Content-Language:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	a=rsa-sha256; c=relaxed/relaxed; t=1792672514;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:Content-Type:Content-Disposition:
+	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
 	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
 	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
 	 X-MS-Exchange-CrossTenant-Network-Message-Id:
@@ -24,84 +24,83 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
 	 X-MS-Exchange-CrossTenant-UserPrincipalName:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=uGIx2mYr1H8b/VUYu1u/ApjefmPuM8Lgrnb8EdFNicU=;
-	b=DCgPbB8Di/cDEzUVTczaaJi3bBwBFSIqjoVrTnKex9dGh5z/sMvWOhFYuaDgCpe7QSzO
-	 Kdz1xQv18ECYphQ+rUEgeNFDD06klGi97PhjbppQSh+A3ZKpvyxc7c7KjCEM0JLyw9C+C
-	 +mPKl/vulbfGSQ9LLqKpCTW2PZ7HyWMgCWYjgOtt2G+EyC81Rs8qmqA/dHa77DPfoOzc1
-	 g0T8UhF+RSbc8NWBWWgkUBK8ej0bGT2VLmgwNDz00wMzP+rVI2glmvsAZ70VROMMrSHhH
-	 3bBUx9aMwJwhyjW0SGWTR518RnA9k+AhNBcRE/ogmwDCGYhEx6fxiKU35mlUhEb3LrQ==
+	bh=cN3yjrUS+bIGsRfJ433np9N55gI53v8epZkOcISeaco=;
+	b=Ay7j2MO/fbemhTjRGw8hJsVKIMv80PnLklT3dBY0jXsDhYE6AzOyWPU59vXJUuw+mihT
+	 mapQKeAYRBoX/3u9gQ9AbChxYqAr/pjN5NEV39B6P+szSuHRh/R4gqts+ZM3ZMsgVjqJv
+	 W7mefWq2liZEgpmCQ+OWapk1Aw8Rx/QnFUtiIKXTKJ/bCWXbSWTKiZnSLx66CMXY+UU7f
+	 ee6M6r3JjrXT7KxuO2+IW8AS68H0kIhVn87XlwOd7bYbmgFx5rZBfX3INyyBqq0VLmNvX
+	 tv+A2ns9dACJ+D5n46i/Yk8LZug0KEON9lhuuFXJDOn/Z6yVhbpe0FpYfE4ePjgawKA==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=amlogic.com;
-	spf=pass smtp.mailfrom=amlogic.com;
-	dkim=pass header.d=amlogic.com header.i=@amlogic.com header.a=rsa-sha256 header.s=selector1 header.b=ESMczTLF;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.127.87
-Received: from TYDPR03CU002.outbound.protection.outlook.com (mail-japaneastazon11023087.outbound.protection.outlook.com [52.101.127.87])
+	dmarc=pass header.from=nxp.com;
+	spf=pass smtp.mailfrom=nxp.com;
+	dkim=pass header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=WlbOzqCa;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.70.69
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011069.outbound.protection.outlook.com [52.101.70.69])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F033606A321
-	for <imx@lists.linux.dev>; Thu, 22 Oct 2026 11:44:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3F033606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amlogic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amlogic.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BD0B606A319
+	for <imx@lists.linux.dev>; Thu, 22 Oct 2026 12:35:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5BD0B606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=amlogic.com header.i=@amlogic.com header.a=rsa-sha256 header.s=selector1 header.b=ESMczTLF
+	dkim=pass (2048-bit key, unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=WlbOzqCa
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=leXb9mQ41wQTfImzSJfgoJ6jlT/z7Gt0jxK4uN4a1emQ2DuGmSM05W3bRr2VgwEUndZVaWGAwkSW+C5VzxwYFxI66YVIFaotNXLO+8DlmM2HUwAJeXMf+ZmQSnDA7tdynZx74c5lbdmTuOzyT86sk/9BZSYCbT8Ml254fFDJP+hCcOV9q5zsUxGhsk+9qJJjeR0g4JVDH6639CtPzfcEz6r09TP2fiLqd26UiAbL0eCT77guuNpNOWLVSuNUwWvegppOaIIBCKDcwAG4/2FqzDFY1ww813CPEgkpwYQLb9quhN3Ws+JS5EAMsttkripFXHRgfFBM+s003hsyK6fFlw==
+ b=meODwcZFz9qCgfbFQ6paJUHTzk6SOKT0/8ck4IeTweSPytj/dCfZ++Tyz65GhaMigiuzWwbet4+sYmiV8PKbVNHwuQO0+U9rnQkZHobj5cAHzwfmWFKbEDtp4apP7dN4+rLOdT/6j4OFRRxGeq4ZKC0FwiWPDfCWflLp4QW/gOp19waA0imU5w6gDQE0QRrI+r3Sw8qCh74OqtI62162pre81JZWLlld4gd38/urNikBLgddqemMzVtSGi8LHN604Aqi2mqAvU3oyp5o8++M4F7kSijqGivChUcruaMG1WIvwLDOa7luIgPC6KRxF5XhYtV2Bf0GlU4zLNorakZIFg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uGIx2mYr1H8b/VUYu1u/ApjefmPuM8Lgrnb8EdFNicU=;
- b=VWya3e5ASXIb07T5c5Ws/lbFlqbOKkYrsGT1Vu7MHZkNM+lvwmjGDP1Tf6H4649Jl8ad532kQtMJ8cBiY8jB3P/05u1aSBgPsis5OCULE3okN+C/vcdMpR8EtbJP78wZSsCuRWJzE31dYCA4siDxvNEiAFb0wWUJ6FZYSB6TWNdCRGAjas+qMLXHTMSXxbKATcsnc10p2jZvpj71Jcg8+t87XnW1Ms8Xi2DkBBjYqzMW8Yi4Aq6O4NmssRyI3bFIpsXYlepOKDdRUJ3E6CjtPF7DegBGEdPEc7GGGm6yvnfHeXf+ukDUtIw8R0ZHr8bR3ZqfuzofSChxu2rtQ91NQQ==
+ bh=cN3yjrUS+bIGsRfJ433np9N55gI53v8epZkOcISeaco=;
+ b=Z+VxMV7XyiQL1LdrjnB0dT9w+2lku0gSGvr30mi2fFdWgjI0FEqwR9i30mGrnpr7d6lCkwxKD7gN3k9seAZgnxKchaiyZ4GD9dpTxhEnMAAq+y9DMGAw7196DC/u3Y+b8X2p2BSmWED5Aw2WzlZ36uLyVXbn2qSfOZoePNxkRVjwvxFTpYqN8epLeE4dnX3a5rArtHc7n/+6TotUs0nP+swnPbw5ut/FPqGpnMZz8Tr2hkLR6lNjJDjfRwszeIjB4cuDyDivpkGHwAD3LSKV+juUxo60WTBh6VHAyO+BVCVfq+mBNFMD91EjQMRzoEQK4lDhxYmMpSG9AP/9+DBDfA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amlogic.com; dmarc=pass action=none header.from=amlogic.com;
- dkim=pass header.d=amlogic.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amlogic.com;
- s=selector1;
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uGIx2mYr1H8b/VUYu1u/ApjefmPuM8Lgrnb8EdFNicU=;
- b=ESMczTLFf36ctASmNazIVHo0JurFI6+teFaNGPHFzeThsWOgNI9TmMbKJw8qD75rorAepWUyOU7fhp6u/9mWgw7QAV72Qed3i9n2aNPu9MY9ySQ7cTVW29zFCx6Nsi3i/d8fSK359NASFq2BxYCrEN6HadclsVhDAZjoH/mwO4DwaRZ0ncQr/EFGq+FJn1+9nNobZgeuK2uTTZOqr4Xd6bmb+IUEVyty6hWhIISx3CQy6nw4QJm88CJPLkHFCEJvb4RxtyQlP3RJzQMF6U94P8ROffnRGsNMsVcY4+/fIbQ5NdqypiEkLJsuPZUZ2EwPovuTVJXCTG1Nominy5m1nQ==
+ bh=cN3yjrUS+bIGsRfJ433np9N55gI53v8epZkOcISeaco=;
+ b=WlbOzqCaTAI5QCQMFy+jJp2+TjEA7ik0dv1Jhxulm3Z05N1sOumKnuHWxfjvgRHtf+lREIMKgyMcFIluqTklV2MDCi2kocn5Pt/otwmSbIA6TflzH0514ySYMCobhgelvjV7mwCDuYewBa1jUW0Nb9j6ClmqItKlQZnyz5AYDJMwUVlAl6vXttoJvwamlq8nW79cm0d4wqx4l21D1eEynPDaLFuST69NDBgM8V3OWOws1kmHwxSDjP+HNHUY0b45cK/1/rqd486szJC193G2EiKASrfdgcOgDP/jSWwaz7tj6LozThaYLxKaVpuGFmnFIBsKe0e+wl5rQLBbRHUxZA==
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amlogic.com;
-Received: from TYZPR03MB5743.apcprd03.prod.outlook.com (2603:1096:400:74::7)
- by SEYPR03MB7968.apcprd03.prod.outlook.com (2603:1096:101:168::14) with
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM0PR04MB6900.eurprd04.prod.outlook.com (2603:10a6:208:17d::10)
+ by MRWPR04MB12305.eurprd04.prod.outlook.com (2603:10a6:501:7f::20) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.15; Thu, 22 Oct
- 2026 11:44:09 +0000
-Received: from TYZPR03MB5743.apcprd03.prod.outlook.com
- ([fe80::7f51:5771:90c4:8c40]) by TYZPR03MB5743.apcprd03.prod.outlook.com
- ([fe80::7f51:5771:90c4:8c40%3]) with mapi id 15.21.0546.012; Thu, 22 Oct 2026
- 11:44:09 +0000
-Message-ID: <4da3cd55-0115-4817-a19d-18a69b7a7cc6@amlogic.com>
-Date: Thu, 22 Oct 2026 19:44:03 +0800
-User-Agent: Mozilla Thunderbird
-From: Junyi Zhao <junyi.zhao@amlogic.com>
-Subject: [PATCH 1/3] i3c: master: Rework SVC I3C to support vendor glue layers
-To: Frank Li <Frank.li@oss.nxp.com>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Frank Li <Frank.Li@nxp.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>,
- Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
- Miquel Raynal <miquel.raynal@bootlin.com>, Kees Cook <kees@kernel.org>,
- "Gustavo A. R. Silva" <gustavoars@kernel.org>,
- linux-i3c@lists.infradead.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-amlogic@lists.infradead.org, imx@lists.linux.dev,
- linux-hardening@vger.kernel.org, xianwei.zhao@amlogic.com,
- Kelvin.Zhang@amlogic.com
-References: <20261019-a9_i3c-v1-0-329d819d621f@amlogic.com>
- <20261019-a9_i3c-v1-1-329d819d621f@amlogic.com> <atZ-YyEmG-KvUZAF@SMW015318>
- <887f0b2d-3a05-418b-bda5-0b01abbcb409@amlogic.com>
- <atjOD0PwVGDeh2uL@lizhi-Precision-Tower-5810>
-Content-Language: en-GB
-In-Reply-To: <atjOD0PwVGDeh2uL@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SI2PR02CA0001.apcprd02.prod.outlook.com
- (2603:1096:4:194::10) To TYZPR03MB5743.apcprd03.prod.outlook.com
- (2603:1096:400:74::7)
+ 2026 12:35:09 +0000
+Received: from AM0PR04MB6900.eurprd04.prod.outlook.com
+ ([fe80::7fda:8431:ca1b:b023]) by AM0PR04MB6900.eurprd04.prod.outlook.com
+ ([fe80::7fda:8431:ca1b:b023%4]) with mapi id 15.21.0546.012; Thu, 22 Oct 2026
+ 12:35:08 +0000
+Date: Thu, 22 Oct 2026 15:35:05 +0300
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
+To: David Laight <david.laight.linux@gmail.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Claudiu Manoil <claudiu.manoil@nxp.com>, Wei Fang <wei.fang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, 
+	Ioana Ciornei <ioana.ciornei@nxp.com>, Zefir Kurtisi <zefir.kurtisi@westermo.com>, 
+	Zefir Kurtisi <zefir.kurtisi@gmail.com>, netdev@vger.kernel.org, imx@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 net 2/4] net: enetc: do not rely on mEMAC hardware
+ frame padding
+Message-ID: <kaqeg262ql6mucqzn46axaniowt35eq3hd52nefev2uvvkbfkz@6onteyxyjypx>
+References: <20261021145314.1435049-1-vladimir.oltean@nxp.com>
+ <20261021145314.1435049-3-vladimir.oltean@nxp.com>
+ <20261022093359.723c7e93@pumpkin>
+ <euqz7djxfn4tqbd63ymcj2bnu7k2bb6hzlmeilao3rvjdhyisf@bk3wj5hinfnr>
+ <20261021145314.1435049-1-vladimir.oltean@nxp.com>
+ <20261021145314.1435049-3-vladimir.oltean@nxp.com>
+ <20261022093359.723c7e93@pumpkin>
+ <euqz7djxfn4tqbd63ymcj2bnu7k2bb6hzlmeilao3rvjdhyisf@bk3wj5hinfnr>
+ <20261022112218.11a1faa8@pumpkin>
+ <20261022112218.11a1faa8@pumpkin>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261022112218.11a1faa8@pumpkin>
+ <20261022112218.11a1faa8@pumpkin>
+X-ClientProxiedBy: AS4P195CA0027.EURP195.PROD.OUTLOOK.COM
+ (2603:10a6:20b:5d6::16) To AM0PR04MB6900.eurprd04.prod.outlook.com
+ (2603:10a6:208:17d::10)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -112,185 +111,158 @@ List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TYZPR03MB5743:EE_|SEYPR03MB7968:EE_
-X-MS-Office365-Filtering-Correlation-Id: 866d1f2f-de9f-48a4-f2d6-08df3031c8ca
+X-MS-TrafficTypeDiagnostic: AM0PR04MB6900:EE_|MRWPR04MB12305:EE_
+X-MS-Office365-Filtering-Correlation-Id: fcde4849-59e5-4b79-7925-08df3038e85d
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|23010399003|7416014|376014|366016|261021121427099003|56012099006|11063799006|4143699003|261009223027099003|10067099003|18002099003|22082099003|261021123027099003|6133799003;
+	BCL:0;ARA:13230040|19092799006|23010399003|1800799024|7416014|376014|366016|18002099003|22082099003|4143699003|11063799006|261009223027099003|261021135927099003|261021121427099003|10067099003|56012099006;
 X-Microsoft-Antispam-Message-Info:
-	xscYFe5Vw9zyXLI4Y+XnLybhG71tO1NWPjaU4fJVcpZwwtGn7aBMEl+4/2s6qWkTRGsU+bGX9d5usagUeD9BmMnCv0Jf4OHUmPATY0DbDGzd4VKPlKahL/hrLkZkTaPkT5or3b89MsQyGSpSEvxosOAKU+wpyAMN33cqONF8BqF24JCfmyfMvlQdi7uQLaJ6u9dTZw50xQWBqZtn/he+5twJOLC8JNzCzIZ8mVymcI6dTd6dgFRjbVNfAwKnTubL81dcC6W8WC4XHdtrB8/cQ0j49lf+3g/6PSRbklf9wrCWosqE1uZduvDjvTzuNDG+MR/LXc5JQMWqagTQXLRd7UDSKPQ2m+hP+rQ/SShExPf/7R5Z681OsowlyHlHPwZz8PUX8ca5OHIRHUBYIeCNGo2Ge/AaFTIHczksmlwXxxMP7uILVOjpXn1xjoOfRFbHcrF/1SiT4GjWhf00OcowMkW55QngG4yZSv0zsKR7YpYqdEu7csNz94EWtncbtLHC2sdj4LDHRREBWgquAxfbWrgfZrmdDnC7HfFmCa98A70u8VLbtgDPaiJyqYMbbdXOsOx0UMLhRqC3iUKyVwSOjGhP7fFtUalG5kVoEfQjKUwZm5RezLWr7KxFjliZGdAxt4UoFUOvnn2rPPp+XtnROmf+18Lw3x9SvknpO7QbKnk=
+	aoFis67tVBM2sssiZiKP1CpaHjRPqsi5ITm6zcK5pKSKBFOaW505Bq+pbracuMX0bgbbv7FLfl5G/WyJHUu7dxYJkXgV8gIExnYrT+Gh6+CLHSWNY/0pjkIh0ULZ51VHWyKxmJWXvzYqNYsALQZY3VCyeaHQ5ZLBeYMoyJLEPdxlN0gi1ABM4Q81cSoAFE08t+F8DaGKamtUoe5JzBJDNgzrWFp3BD39frk9S4CyEOjJQp1BnLyjomWeFfgSnwWw/lVihVRDx+35Dwwc8eCzbJcsoPPU2sVFY6Paog1Gfdx4D/IX7X9GsYFBWBxGQ6P1kkiHmVnFFb4xdl/DOfP/Gm2i9ojqmM+JTve4dJH/C4WsMhaWrdi5fVYHLc6m7aql8DiewNBNWGx027iBkO+8Zy9e3Vxz6RbcXJg293IM/OFh9pUxGq/ysd8eCBEtyDMgxW2ai/gCjt82Gez/HDD7serH8lN9k0+mAp+63ieSTExgmgSkNo2XEHB8hwKElzfetoeZFwQpzaKE13gbPqbqXZ626fVz0mElpPI3GHT2w5p+j3tU6jIkiTX+e1mK2RlA9f3NX6MoYH7GSkzh5W1XWMCHALYr5y5AgUqhV86ySJrRvJtPMoy/5ofDuTA6QKyS
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYZPR03MB5743.apcprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(7416014)(376014)(366016)(261021121427099003)(56012099006)(11063799006)(4143699003)(261009223027099003)(10067099003)(18002099003)(22082099003)(261021123027099003)(6133799003);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB6900.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(23010399003)(1800799024)(7416014)(376014)(366016)(18002099003)(22082099003)(4143699003)(11063799006)(261009223027099003)(261021135927099003)(261021121427099003)(10067099003)(56012099006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Q1M3Q1VlWXNJMkJhNFBxY2lIL0Z2R1Zrbk5Lb1doSE03NGZHSFF3MDg4RXVh?=
- =?utf-8?B?Mk5BRlFBL2pqd2R1cGJSY2tCSjJSeUYraFowQXcxSTBZWTJqUit0QlFMOWg1?=
- =?utf-8?B?aTdQdzgrZzdidzIyc0FCcjBIQUk5TlpvNWo5eEhwa1QwQmZGS3R6QUJRdTJK?=
- =?utf-8?B?dWNkSm4rZmg5d2luaTFRcHV0bC82aEw5UWE1VzZBSUpPSmZPWmQ0MzJEVjBn?=
- =?utf-8?B?MGkyRjVxQThhcXU1RGlxSnV0VUNVOXJRMFdUY3crSVllWkxOYUsrek52LytD?=
- =?utf-8?B?TU5NV3FUZDczdWZlSHFWeGZRbGhOZHN6ZUhldVZaY2pwUGtYM1BDOCtRQU14?=
- =?utf-8?B?a3RTMW1GOHFLQmIyVC9oeG1iN2UxL1g0TzFVb2ZJcDI4bksxbjZ6b2JhcWVT?=
- =?utf-8?B?bHVPQnNnK3A1UmtqbGZ6NCtjV2luMmRCN2hENUZzNGpLOGc5NkR2Y01yQmcv?=
- =?utf-8?B?NFU2UUNLRmpwTXE1Tm81SW9ndUFkSmJIMkMwQWFFV095M3U1RXZtOFhmSnhG?=
- =?utf-8?B?cG5OWnlsei9jRjN2VEwxcklqcWlnanMzOG9rWXRrajVtWlZBcW5xSEd1QUYx?=
- =?utf-8?B?QkdLWjVxajlPQlZZUzVBNmY3L1pPbVBHdEtvNllubnY4SkgzVlY1MGdnSGZ4?=
- =?utf-8?B?aFhUY3Vzbm9XbUlaK0hNTVI2YnRZclVva2UzT3daY21KenNtMnB3cGhMK1Er?=
- =?utf-8?B?MEZ2UW1PTHArSHJIQ0xSYlllTDFZZnIxK3JZT0l5T3E5ME5CTVhTT2QvWm43?=
- =?utf-8?B?M21USW9jU0hJQmZ6NmFDeE9vb1NHNzBZSHF6Nk1sTXdsMmNMZFR2WFVWZjhT?=
- =?utf-8?B?R3Q2K04reUNpMzZGYXVtYkllTGVZRGJqbnVnVk9ZYzQ1N0FCaHhsNUFkYzlp?=
- =?utf-8?B?TEw5bVRjS2lUSkt0cll3R1RZR2Z5NE1hVFFjSGdWVU5VZjZJbVViNHNDdXZk?=
- =?utf-8?B?NDhQYWtjQmFlWDJSTWovVWtwRDE1NnF1QmVZY2dZMHd3N0lxTjVBTlFNT1g4?=
- =?utf-8?B?MTZYYmRGb3NscnFvMFozRlRhWUV1ZWp4VDZVZDJkSExVLzFoRmxRQlVKSnRh?=
- =?utf-8?B?WmQxeUxOMG1YdkZ0R01sak5qSXBKNkxaM0RwdDRpck1pOGtYWWNMd2d4bGxV?=
- =?utf-8?B?dE4rZXJPckJwZk1RZWFyZkR2a0xlVHBJMzB3MDhtRERWZjJHa3pscGxqZFZj?=
- =?utf-8?B?Q0lOM3RkbDhwaWc4Y1RyZU1pWFBEUXN4MHRjTUVUQkJObWVqYnBKTTh1UTUx?=
- =?utf-8?B?UVIrMitEQllCZkVMNUZEY1cyMnUvMkk0OVR3ZHRyWnhpbzNCa1E3aFlzSXNu?=
- =?utf-8?B?UTU4RmlmSXhqSUVtZkJ1RGllRGlod0pKYVRBSHR5eFB4Mmpsall2ekpyQTRQ?=
- =?utf-8?B?WjhrbEJvaWtqb1Z0MzlkbGFyQjZUM3BzT3ZFZ01XUVlPT1o1RnRRK0JNZi9h?=
- =?utf-8?B?TEY4ZWVvaVNsSjcxVklvd1FnR1ZrU1RmWDZFOVJ0R3VQLzdZWDFlOTNtN1k4?=
- =?utf-8?B?MU5ROWlKdWFFNFVkM3IrYXFBK3lzYkUzblhCZzZ5SXpab3VTUWV2SHVXT0Qv?=
- =?utf-8?B?Z0ZqeHBCdEtuNit1RzRoSXdhdVR3YnRiL1lBekZBS0VUSnZOMVMwU3dSTTRT?=
- =?utf-8?B?RHIwMlA2VEZ5VHQ3dkFmSzlGRnBtbGwrTkNyai9vS2FBSXZ1YjUzM0E2cks5?=
- =?utf-8?B?TGxFQXdSSXZwTlJoY2xaQTI1TWZkZ1FHajU1K3E3VU4wY2JMb2xjUEhEdHR2?=
- =?utf-8?B?WjNRTjhLWjBudklzd0JjcHhSb2dYTWV3WGNSbG1hNlpLbXloS0hqOE1SR1dm?=
- =?utf-8?B?M0RCOG92a2pSSHQxR01uYzRoanZLTjc1aE9QeEZhc1pGM1FiRHlIaktFSjdv?=
- =?utf-8?B?eWJVbzZiMTdIb2VySWxiSFVaRDJpc2djaGxqN3NDWnNNWjhYWHhGV0pDM1FJ?=
- =?utf-8?B?K0JGZFE4bGlIeVZQRjVOUS9uRjJYMGtCS3VkN0hqR0lab0RlRFpEbERUaHUz?=
- =?utf-8?B?a2ZtSkI0dkVvam5jaFBtS2hoM2JRN3ZHSG44RmxWUGo0RERCTkt0cUpwUDlh?=
- =?utf-8?B?ZjViaktsQXoxOVZxNUpIVmNEak9ZQUxMK1M4aCtlU3ZuNjNYUkpHejhqM2kv?=
- =?utf-8?B?ZmdDYlNFL29kWjNocmx1eXcwUUZkK3VaKytPb01PUnZVM3RWeGRLbGZmdGNK?=
- =?utf-8?B?TVliYWVVaFVkMFFjcWRDMDAwQS9KL1lxSGt6Yi9PRzVaQ0tzVDVyd25VbVhx?=
- =?utf-8?B?NXQ3QnM0cnQyYmhabjEzY0FScVY5TWpJZHVmdUpHTkkyNHNjWkZJYWx5Z2M5?=
- =?utf-8?B?eDd4M2h0b1VaNGYxYldhNjV4QXlXZjdNNkZZZ24xTGlMNTRVSGI2Zz09?=
-X-OriginatorOrg: amlogic.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 866d1f2f-de9f-48a4-f2d6-08df3031c8ca
-X-MS-Exchange-CrossTenant-AuthSource: TYZPR03MB5743.apcprd03.prod.outlook.com
+	=?us-ascii?Q?O9CVPyOlvZk3OTq5stXJKr9eErBAC4X2CGRODNIyYVeav1qSXGzAxwGVMlh/?=
+ =?us-ascii?Q?HQyDNdriMYN4REc7A2HWw45sNKBq6YdYQH2lHimQtHjQg7yPznju0VkghJL2?=
+ =?us-ascii?Q?2GQklxoYW2WiE954E0d5eSZzy7ijJx0hAc0AzLOieiqxkLLaBCjPXEan1f/u?=
+ =?us-ascii?Q?zzlNZh94nSl5HgAdgMzh1LsQlun8arq8RaDvi4iFwUecArr6yYywlZrTycZv?=
+ =?us-ascii?Q?+WSDImo+8Xambk2p24O6kKoN5WfhKBy7aTIyWo8KQ2IenzsBWy2pBJDs4OGF?=
+ =?us-ascii?Q?JbF+EJ8Ld/wdGScNfPEyygxEZS8XBy9mMqyQwzPuahOZSPZDaarVXos2A6v6?=
+ =?us-ascii?Q?QuP6ZuJoZwYnc6klio/9wR9YXQmt3I4RLHZwO6URnp12gLZqvcy4mBvD22S8?=
+ =?us-ascii?Q?LcQewUNm97X0DDDC4MZ6MlfalOg+gQOjvSMeGAApNbR6GEcpCbj9IShjgqOz?=
+ =?us-ascii?Q?CBLF3gemvOY/mJLvQX4x1t4j8AW2A8QpbzPP33SHJ4nPSfyNkuuOdG1Fi+/e?=
+ =?us-ascii?Q?5MKgVtCbwFcAV0hDmokimKaLnIu2aOBWYmTMOBByAlRGhg/t6ZdukQ7B5Qbo?=
+ =?us-ascii?Q?qh0uxYEwICBPAtk1L0tGkeYwZgmOMYsNBhvbhojmx99FViX9jXiwaJybhGyO?=
+ =?us-ascii?Q?zF2yNzIbi+dp863fjJaresRs3jukt+sGejgjj8w1Mi8Z1T3iiuRF7OEPvzyu?=
+ =?us-ascii?Q?cuXFpkr8V9spfBL0y/+ScaA8G17L9y5gyHQ+VPXOxPI9Jk+8tRhI/Tzu6Eyu?=
+ =?us-ascii?Q?WyDhS+V5gLLjn1mPwJJMN9Fvi92l1TRhAR+6iaZcQJvShsHxY82zwHTWhZkL?=
+ =?us-ascii?Q?14BuM1AoibEcV0jKH9TfEK8QNUnmWXEBPzS0NKPbbFLwASQZq2SdsiUIveDI?=
+ =?us-ascii?Q?vGuH2TMwRtL0c6X4Gm4B03MwWGbFfwEmkOAGuAdJeyuP7ZMgtmzCATm9ykBe?=
+ =?us-ascii?Q?RlhrcnC1vJf+bUv1cxK+TSDWeE3cav7gjK4JS3yeJvG4yHcarAW7FrOp5VCY?=
+ =?us-ascii?Q?pdk40Jy4icaxkCtINCiwhHAZZgeKYDkyATBnSSzxzxm7frPq12i8CcR5qhYK?=
+ =?us-ascii?Q?sV9TrLhy42kWJP1s7IsSgPsp41HW0HQxNaeuQldJWcF4OK8Ab2Lw1vxlRB9k?=
+ =?us-ascii?Q?nWXXxwf5gbCu5e1qBevMjp3xOeLAEClSnz3SLWZxD1h3iDgw9qMOzVFX8G2n?=
+ =?us-ascii?Q?USSU2XJ3/6BsSMcfqX5AIzsx4f/EYEd/o7HKz/VOzZUEgd/Jz716Kd0OxaEj?=
+ =?us-ascii?Q?ewlmQkn3kVik6nyGL+NOZxr9Dmub81c8vgFfLa114o92Is/3btcJtT15OBo1?=
+ =?us-ascii?Q?wQsRLHbXPYxg8nIrHanDyH9wSLu5SIEDBS7uLgdAmIOtavvuVtSOun8V2thq?=
+ =?us-ascii?Q?BCDJlu/7ZPpDuygsSJJXVQyRV/FHs8/X+keZZTy768LRH6Fq98ywLeAqHtLm?=
+ =?us-ascii?Q?jkwQRfByXxoRA33WtHLH6ZyghIu0fAf/3OoRxD5EzgmyNeU5YUylU6XbD3Wh?=
+ =?us-ascii?Q?zLZMnTCMSdVnvKGQtLKeBAlJRmEA2tGo7C6oyxlPy8BNIWPx6AtSR2HKYuRc?=
+ =?us-ascii?Q?S3tdPRJZcl2na8SQPj51neCgHcSRNPPNLmwbsjis2LdeJGkHWRL/wbpoMgDn?=
+ =?us-ascii?Q?SZkBfVBYFHCYaJBWIkK2McbOPZ71CVIvFsXqSNt2F+WD58Hz5BT/Kusy/Uog?=
+ =?us-ascii?Q?2RWo5nC0Kalcj6WZ3dEanm2G8KP0gNBoxOurjOYy68xMvXAKwvUbPksTkJpP?=
+ =?us-ascii?Q?Hl7vtUlM2g=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fcde4849-59e5-4b79-7925-08df3038e85d
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB6900.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Oct 2026 11:44:09.2601
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Oct 2026 12:35:08.6477
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0df2add9-25ca-4b3a-acb4-c99ddf0b1114
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: umr+7D8HDT8iInYpkHMKhgwXiUWQUTzd51vHW+4eiomhd1+3BATaAYNi4rW43O13rZ/nnEibtqBOsG+CtyyZeg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SEYPR03MB7968
+X-MS-Exchange-CrossTenant-UserPrincipalName: aFG4/n5KH03HRTeg/UPdqQmp+oDVqKDrIbp9V+CkQPgwcRkUAGgp39ndjPTTMGROL57VIqXqviIQim3cF6Oq9w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRWPR04MB12305
 
-Hi frank，
-	thks for your details.
+On Thu, Oct 22, 2026 at 11:22:18AM +0100, David Laight wrote:
+> On Thu, 22 Oct 2026 12:41:49 +0300
+> Vladimir Oltean <vladimir.oltean@nxp.com> wrote:
+> 
+> > On Thu, Oct 22, 2026 at 09:33:59AM +0100, David Laight wrote:
+> > > On Wed, 21 Oct 2026 17:53:12 +0300
+> > > vladimir.oltean@nxp.com wrote:
+> > >   
+> > > > The driver sets the ENETC_PM0_CMD_TXP bit to pad short buffers.
+> > > > This works, however sending short frames from user space and looking at
+> > > > the padding bytes inserted by the MAC at the link partner, we notice on
+> > > > LS1028A that the first octet of padding is sometimes not 0.
+> > > > 
+> > > > This is fine per 802.3, which does not require that the padding is zero.
+> > > > 
+> > > > However, there is an unproven suspicion that the padding bytes may
+> > > > come from internal memories, and unfortunately I couldn't get sufficient
+> > > > priority for this octet's origin to be investigated by hardware
+> > > > engineers.
+> > > > 
+> > > > To be defensive and not leak any sensitive information from the SoC,
+> > > > let's pad all frames to ETH_ZLEN in software, so that the MAC doesn't
+> > > > have to do anything.
+> > > > 
+> > > > There are 2 distinct cases to handle, for GSO and non-GSO. For non-GSO
+> > > > things are trivial; we need to call eth_skb_pad(). For GSO, things are
+> > > > not simple, because user space may set gso_size to a very small value,
+> > > > which could make the GSO super-skb smaller than ETH_ZLEN;  
+> > > 
+> > > That isn't sensible.
+> > > The minimum frame is 64 bytes (including FCS), subtract that, the MAC
+> > > header (14 bytes), minimum IP header (20), minimum TCP (20) and that
+> > > leaves 6 bytes for user data.
+> > > I doubt it is sensible to do GSO for anything under the minimum mtu
+> > > (128 bytes rings a bell somewhere).  
+> > 
+> > My fault for not being clear and inviting this kind of objection.
+> > 
+> > Since we do GSO in software, we advertise NETIF_F_GSO_UDP_L4 too, and
+> > there, Sashiko came on v3 with the observation that for UDP GSO, user
+> > space can set gso_size to a small value using setsockopt(UDP_SEGMENT):
+> > https://lore.kernel.org/netdev/178960175550.22033.10648880872141935672@kernel.org/
+> 
+> I'd fix that in the setsockopt code.
+> But that might be a bug anyway.
 
-On 21/10/2026 22:37, Frank Li wrote:
-> [ EXTERNAL EMAIL ]
-> 
-> On Wed, Oct 21, 2026 at 10:56:19AM +0800, Junyi Zhao wrote:
->> Hi Frank,
->>
->> Thanks for looking at this.
->>
->> Amlogic A9 used the same SVC I3C IP engine, but the integration of it
->> differs in the resources *around* the controller, which cannot be
->> expressed as another quirks entry:
->>
->> - On the "ao" instance the bus clock is generated by an internal
->>    divider (I3C_AO_FCLK_DIV_CTRL @0x304) programmed directly by the
->>    driver; there is no CCF clock to clk_set_rate() on, while the
->>    common probe assumes the fclk is a plain enable-able clock.
-> 
-> If it is in I3C memory region, you can do that by use callback. otherwise
-> should go through clock framework.
+Why a bug?
 
-The AO divider register is inside the I3C mem region, so I'll
-handle it with a drvdata callback. I'll also evaluate Neil's suggestion
-of modeling it as a CCF clock for v2; if that works out cleanly, the
-callback goes away entirely.
+> UDP segmentation has to use IP fragmentation and that is usually done because
+> the interface/path mtu is too short.
 
-> 
->>
->> - Amlogic added register blocks outside the Silvaco map: a
->>    DMA bridge and a bus monitor (0x200..0x22c).
-> 
-> Does DMA bridge only for I3C? It should be go through standard DMA engine.
-> 
-> what bus monitor use for.
-> 
->>    Enabling the DMA bridge later will need hooks in the common
->>    transfer path.
-> 
-> We also need support DMA in future.
+In my testing, UDP GSO does not generate IP fragments, but rather, each
+UDP segment is its own datagram.
 
-Yes, the bridge is dedicated to the I3C controller, and the data path
-will go through the standard dmaengine framework: our SoC-internal DMA
-controller has its own dmaengine driver, and the I3C driver only uses
-the standard slave API .
+Are you thinking of UDP Fragmentation Offload instead? As per
+https://docs.kernel.org/networking/segmentation-offloads.html#udp-fragmentation-offload
+this is deprecated and AFAIU not what this is about.
 
-"DMA bridge" is a small set of registers inside the I3C mem region,
-  which adapt the I3C FIFOs to the SoC-internal DMA controller. 
-Programming them is part of the I3C controller initialization, not part 
-of the DMA engine configuration.
+The docs do also explicitly say that UDP Segmentation Offload does not
+generate IP fragments.
 
-The bus monitor is a debug block, not necessary, i will drop it.
+> But there is a minimum mtu for IPv4 of (something like) 128 bytes, and
+> it may be invalid to fragment into smaller pieces.
 
+I have no idea what you are referring to, here, with the minimum MTU of
+128 bytes.
+
+> > Sensible or not, it is possible, and I did generate a test program using
+> > an LLM to confirm this.
+> > 
+> > Regardless of that, the last segment of a GSO super-skb would need
+> > padding anyway, because even with a 'normal' TCP MSS, the skb->len
+> > modulo gso_size could still result in a last frame < ETH_ZLEN. Padding
+> > just the GSO super-skb, as I did in v3, would also not fix this.
 > 
->>
->> Adding A9 support to svc-i3c-master.c directly, would make these
->> becomes if-branches in probe()/PM/transfer paths of the shared
->> driver, and the next vendor repeats that.
-> 
-> You can use callback function in drvdata.
-> 
->> With the glue layer,
->> i3c-main.c keeps today's logic unchanged: i3c-silvaco.c is the
->> current probe code moved as-is (rename with 79% similarity), so
->> blame/history is preserved.
->>
->> If the file move is the main concern, I can keep
->> svc-i3c-master.c where it is and only export the alloc/probe/remove/PM/
->> interface for glue drivers -- the essential part for me is keeping
->> the resource handling out of the common code paths.
-> 
-> Now, there are not much user yet. Rename or re-org only when it becomes
-> complex enough.
-> 
+> True, but that is a different check to the one you did.
 
-Okay， isee your point.
-I'll keep svc-i3c-master.c as a single file and add optional callbacks 
-to struct svc_i3c_drvdata instead of the split and rename.
+So what is your suggestion for the driver to do?
 
-
-> Frank
+> > > But does this code allow for the VLAN tag that you forgot about in the
+> > > other patch?  
+> > 
+> > Not sure I understand your concern here? Is it that with VLAN TX
+> > insertion offload, we pad "too much" (i.e. to ETH_ZLEN, then the NIC
+> > pushes an extra VLAN_HLEN)? I'm not sure that's a problem..
 > 
->>
->> Also, per Neil's suggestion I'll try modeling the AO divider as a
->> CCF clock in v2, which should drop one hook.
->>
->> Thanks,
->> Junyi
->>
->>
->> On 2026/10/20 4:32, Frank Li wrote:
->>> [ EXTERNAL EMAIL ]
->>>
->>> On Mon, Oct 19, 2026 at 01:34:26PM +0800, Junyi Zhao via B4 Relay wrote:
->>>> [You don't often get email from devnull+junyi.zhao.amlogic.com@kernel.org. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
->>>>
->>>> From: Junyi Zhao <junyi.zhao@amlogic.com>
->>>>
->>>> The SVC I3C controller IP can be integrated into SoCs from different
->>>> vendors. Peripheral resources associated with the controller, such as
->>>> clocks, may vary between vendor implementations.
->>>>
->>>> Rework the driver to separate common functionality from
->>>> vendor-specific extensions. The common logic is shared across all
->>>> implementations, while platform-dependent operations are provided
->>>> through vendor-specific hooks.
->>>>
->>>> Also add a corresponding MAINTAINERS entry for the SILVACO I3C
->>>> controller.
->>>>
->>>> Signed-off-by: Junyi Zhao <junyi.zhao@amlogic.com>
->>>> ---
->>>
->>> No big difference. Needn't rework svc-i3c-master.c, you can add amlogic at
->>> svc-i3c-master.c directly.
->>>
->>> Frank
+> That is a problem, VLAN packets should only be padded to 64 bytes
+> including the VLAN header and CRC.
+> However such overlong packets are likely to be tolerated because
+> an ethernet switch can add a VLAN header before forwarding a packet
+> and it can't know whether a short packet is padded.
 
+Well, if it's a theoretical problem but it's not a practical problem,
+I'd prefer leaving it as is.
+
+Since eth_skb_pad() itself is unaware of VLAN TX offloads, I'd be
+opening myself up to an endless rabbit hole ("why didn't you fix this
+in eth_skb_pad()? It's a generic problem." followed by
+"changing eth_skb_pad() broke 20 drivers!")...
+
+Unless it's very clear why I'd be doing this, I'd very much prefer not to.
