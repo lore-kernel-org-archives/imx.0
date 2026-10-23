@@ -1,103 +1,78 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.51
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792764641;
-	b=CBm5lEGd2gCIrd3OiLsLPKcIyvMlilvHxP2nsqt3cLhLTHVXB95YyFjrYOCCkehH6m5F
-	 fQKuZP0NGt87ZEt8RvJXEbnTGIuV8nUjmhWIyDmJgBBLm1BzBZcge3jKftQ7P0N/uQjKu
-	 KzoT/L0SDQkgzYnRFrc6tZxF7OdSlpGWl+pfX+MoX6u3be83HPWlSnwBXggHmTEQlQPRq
-	 vgI6KQg2cIfGCAYYHdICK/8lZa/6+iWU/B531DENFGlbHnrhbpZb/hywKL2ISM4eHyKo+
-	 MRIuSMDznosNwYdt/YAUGFpWnYNUE0Qb053Gkxu8Mpf2GxwNbUvhpLFLpUXR5okIR8Q==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792764641;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type;
-	bh=rUCby3YZiB/c/K75Lnrq0ACWkSYD91hEUwrMnP6159o=;
-	b=MUVSN4mD31gN66KxBmfCtKKD+c5ytQ5VCrHxNL1Vpcy3Tf5akWDtMjtLb7DPrB4qhIeU
-	 r7FaZ/gTdFBJKSwfC1VRyP8IS2t+3g0KQrZ/0V1+F4g7cMsH+6E0JHawADrNePQVLOGCZ
-	 amHILQqOKERSjp0AC55mnCCM5QulHAc+QF/D47Kceowz+pyc0JhOquoROn+wyYYylpEls
-	 7bk117si71yXc7k1lFpdi7672mlfEgV9sSAx8/0JxhmpgNYTNBdOBSfBFhDbZ2+pJN5D1
-	 g4u92fA5MyK4FvobJV9xIfOae6dM4tQYuGx2Uqp0xeqsFZonJbz1oH4F7pg7tNQYfHQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=baylibre.com;
-	spf=pass smtp.mailfrom=baylibre.com;
-	dkim=pass header.d=baylibre.com header.i=@baylibre.com header.a=rsa-sha256 header.s=google header.b=L9d+4jve;
-	arc=none smtp.remote-ip=209.85.221.51
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792765227;
+	b=CKwlN+xk4mt6iCWuiH68qT7ShsvOAPYfDKYTTF2gCDWT6QB59I3/gXf0bLUe6mCH4hci
+	 R/ZVMxpBrAy4M1xvf43ZcyiN0KNnlfmx53GNKNvDBRGUH1ZDoRNXZILq8I5SmpEXilyvn
+	 u0uTQaurP6uEI1jG1xOBT4xEP/GYWwRXTrzudLjJb7kLmiLs0ac3Ehr+oatPAulRevqKx
+	 6azl0/vevhuT00Wq1pKQN2A70hDLn2iTT3orWrZ7qfPfSom5sqWmx6q0X9uNSNyz+vh0C
+	 3FSdnK5qHiyxEPSLnV6O2AR1Knq4p9vVclVvmsXu7OqfeDNOL+LqHVEXCAtxuNi9HCg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792765227;
+	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Message-Id:X-B4-Tracking:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=dtJsbMDToX25UaJkQ9Vjt0xJWTfjICbAooiSfipFqtI=;
+	b=ougf9/oNnR1ztQ35ecSyxyNyZ4ZHijsl4/xrDcTwUezIsCQ5bKkBUgw+k5cOVz4nShFd
+	 l9NKEEOT/rzATn7pMk0LOMw5tfr3evu8E6j+bjwEucBFT6jLM2W33s2JsZ7+SBDbtbUxO
+	 +hy/lLws6juLkTl35HhiEYtmczgQpYi/bU4tE/lj3kih/39FlenUan6K5iTqEutWq8ZLO
+	 qu6tiIg6IyPNOgAlhYaaH00dj9jPwA9u3jZwjMTf3o2+RifYBqRS0wmDFBCj88/8a5hvK
+	 JXp1VdP2Ay9VfqOgubhmKMXZ9hIvILXZu1S2BGFbLU3srTAxc92oxbLsoU7STAqhHMA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=M1EZiU9s;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE4E2606A31D;
+	Fri, 23 Oct 2026 14:20:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=M1EZiU9s
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1792765226;
+	b=OhuvNphG5QU84UrWdVp4hyrMJxMZWlTcczqjtP/q083Zgbc0gLEKM4rLUUpI4ii3t+SA
+	 e1ANP2+4dz23yzilUSUYIPNfZJi5IG8Z7MBaQQZR/agKyw/Czjv2Ko0YwP5nuRpPI7cCO
+	 crBrSD4GCtL06av7zIK0FWcF7ooCoh+AHZJmSCnNDMeGRIyhsKjeGYT/L0pBCLqrsOETp
+	 ncXbXJ56DPveuAg51Zum68/YhuSdDAaeaOhomhVoNOaMowdTCraIlrdYWtFpszvZdvQDD
+	 FZjv6GwrEfe6mE+W6VXYgJaRiY/b9gMeo6B3wspXSUdjKbld8Fhc/Mb6GENzhpLPgMg==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1792765226;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:X-B4-Tracking:To:Cc:X-Mailer:X-Developer-Signature:
+	 X-Developer-Key:X-Endpoint-Received:X-Original-From:Reply-To:
+	 Content-Transfer-Encoding;
+	bh=dtJsbMDToX25UaJkQ9Vjt0xJWTfjICbAooiSfipFqtI=;
+	b=iiyvnYjxRScfk56YP4iiW848QLiQqU00wLuB3QABfYCBDA4Vbf8DC0AqAaboKWSetKe9
+	 B1dRzWhwnadUeWEQf1Z29UlNSRc6QCqBwos5D29PUDatJwcvTs4G+l7oMTOMIW7C522/x
+	 zxWYKqJdxf/0cJwLkeVrZ2tFt9s8QHyIE2xp5+cx8sa8E2+Ik79Oa0Y4YGf74AeFU2b+j
+	 Xf4cGpKlcTpIWwGTVNBDZtfExJZ60DBZ860MuRamGw4UIc2wZMU0lUZmcCrERI4mwcWW7
+	 OUwslXI0uz41e8aAubuAxT+Hu928BPV/NN2PwwTdbSb7ANjYY1JbH65GtjhrJnISspw==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBD43606A31E
-	for <imx@lists.linux.dev>; Fri, 23 Oct 2026 14:10:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BBD43606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=baylibre.com header.i=@baylibre.com header.a=rsa-sha256 header.s=google header.b=L9d+4jve
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-48afcd7ba9bso575444f8f.3
-        for <imx@lists.linux.dev>; Fri, 23 Oct 2026 07:10:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre.com; s=google; t=1792764638; x=1793369438; darn=lists.linux.dev;
-        h=content-type:mime-version:message-id:date:references:in-reply-to
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=rUCby3YZiB/c/K75Lnrq0ACWkSYD91hEUwrMnP6159o=;
-        b=L9d+4jveeGApOa+R2resC9vwGyLZGrkP9dw+MM3b4T7fAViABIDIJaKXi3wuRnqjCw
-         D9cZ8Jx6MBHqjrOlP7G9lbgbDFxZEX5/jJ2ezby1Xj1oGlCZjY2IJ5jl8hk2KwvFVt1l
-         AJ9YX2mGl8XbkzU6u4CQtAGmO2cR8Z38YFfVCJz6Ni6IBClGxp1Z2SlAwQ+1tn82lZiz
-         o0fuCd/nsPzSp3iYtHjBaXrSwHSwfPCuxoALjcy6F5NSSVJpXnQpi95A/fbD/ZO+mavi
-         fdrILYI90/dTEewiEQq87BC0lVgaWqynIpAaYsyLO8TlHudva9ZtQFb/caeu2/gMRQMJ
-         OtaQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792764638; x=1793369438;
-        h=content-type:mime-version:message-id:date:references:in-reply-to
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=rUCby3YZiB/c/K75Lnrq0ACWkSYD91hEUwrMnP6159o=;
-        b=eoxC2GH4zCH+MPaynMu389zG2ekP++NjmB2wgXZQA+9NJhbKWgJQXRbATk680cGXTz
-         D5MErDUgSVZtuMjnT1RnMfHBvgJknglo/CMYkNlLdCRP3lPTETFpAQZ1dxYVycq3egV2
-         FhCmpz9A2NO+CvBFSnD0wHJaZs3Sz1RzdnTshB7OAtzUTqcaX/HblirjxQiXLYx+HjdY
-         n9bj91cMT6XSXjdWoGbQEmVzdp/sb6pKRcgPFnWgfevXfL8w+6WONydobCi65HL4pRJY
-         cXb3oiEeu3paYPNAk/vhu0LcIZZGcMeu6+jM7ShFGIByR+uUul8bGaRMii8l6ZDinUxq
-         jWAg==
-X-Forwarded-Encrypted: i=1; AKwUvBxtArtJ5obZvbXQ5kdWxPSGxM9xmJ+92tM8h9mE00r4vBEDC2o2K5OpUqMHliHgSCw7MuQ=@lists.linux.dev
-X-Gm-Message-State: AFq9FYIpjz3NOHbBW2iScVcEsk5vsqx+tWEDToBRljuMhr2+aH2crg8D
-	K5QYvyfxS1tsxYboPKD2IaWRni73wKVRUNnE/nWWn/+oCApbbrJHxP1Gf0TmDhvR5Qs=
-X-Gm-Gg: AYBFou2m926ImbddklvyWbvxEa6DWpGlNOJeInNkGkE82efumg4fUJiiCFFlchwvW9C
-	0tranpVf3oZW3L+zm1JrDBTUJpIu63ZfQHjRvnt/KW//RmWjl1CYSBfy8BuNXYUgXae+nYhojdH
-	bWG9HO28m49fl78yFLBVlBnpE43nuz8LZ5snNaZ+P63MTBl81HnDB/pp4aanSxeQZ6/Umb/OC72
-	M7n4EClVX5gpUwtsk9BHy9pGDrtEqh0s0SWdTDRCkvHSGQlbgjd2e5fQb+yNfsTzpRybVRVXJ5t
-	qlrb1fYcB4zqFO7YT3U8JEsQ45q0ctezoULMz2e3LD0pth9p3geQhW3UhCKbtwD9BmQL0aaQN5l
-	fYEE5xr7x19FrozeDK4G9xmX3ujTZTRfL2RV3DKFxs2wunjhnXUWGj5GSXv+e/FEYZv1tb6EgJo
-	zUWlGTwJUypq/ENk5OQrj1HrkruiLWYgQNDUMlRkLJadjs1BYc5uxZ3t6TgNDU9v/sY13NM28va
-	WaR/lAuwN3fyYRz/HEzAxz2HvsfPUU4QpsHmBSaj3N7ZN7PiIPjidZYIeA22Stq0gv+JezyqaSr
-	lf2Pw/fFUVhJbiIe2qlK
-X-Received: by 2002:a05:6000:986:b0:48d:ef7a:e59f with SMTP id ffacd0b85a97d-48e3859df5dmr4185485f8f.17.1792764638081;
-        Fri, 23 Oct 2026 07:10:38 -0700 (PDT)
-Received: from localhost (82-67-6-57.subs.proxad.net. [82.67.6.57])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e3d3ee6a5sm73564f8f.12.2026.10.23.07.10.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Oct 2026 07:10:35 -0700 (PDT)
-From: Jerome Brunet <jbrunet@baylibre.com>
-To: Brian Masney <bmasney@redhat.com>, Miquel Raynal
- <miquel.raynal@bootlin.com>
-Cc: Stephen Boyd <sboyd@kernel.org>, Abel Vesa <abelvesa@kernel.org>, Peng
- Fan <peng.fan@nxp.com>, Frank Li <Frank.Li@nxp.com>, Sascha Hauer
- <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- Ian Ray <ian.ray@gehealthcare.com>, =?utf-8?Q?Herv=C3=A9?= Codina
- <herve.codina@bootlin.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
- linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- devicetree@vger.kernel.org
-Subject: Re: [PATCH 0/5] clk: Use v2 rate calculation on i.MX8MP
-In-Reply-To: <atjIIHkoNwBVDO5b@redhat.com>
-References: <20261021-ge-clk-lcm-v1-0-246cc35b5ffb@bootlin.com>
- <atjIIHkoNwBVDO5b@redhat.com>
-Date: Fri, 23 Oct 2026 16:10:34 +0200
-Message-ID: <1jtsmch5id.fsf@starbuckisacylon.baylibre.com>
+	by smtp.kernel.org (Postfix) with ESMTPS id 837891F01828;
+	Fri, 23 Oct 2026 14:20:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792765226;
+	bh=dtJsbMDToX25UaJkQ9Vjt0xJWTfjICbAooiSfipFqtI=;
+	h=From:Date:Subject:To:Cc:Reply-To;
+	b=M1EZiU9sjV7lFgoaBhOi4N55VCRCZZs8gaWH61qU7L7U+9P6XhupROzxL2eaCv+FB
+	 c1JbRTtoViiUqh8ZqoP/pqnqVab6MHydUknqo59AfmASMYQ/flLcXncEYr8n7wUM9X
+	 7a7IHfY3Vt1v1S8VEW7RfgDE9jHvhBowUppDMo7KfUhFxdfFp82QqVEorMHZ2BRzup
+	 IE6mILFNi7BzeQPUEjxCBOQR1MTubombSzESoGgNQdxupRZ7D4iWl4jm0Jv1K+M/4j
+	 tZ1DDCnpHqGp5DAChQfpVw/7KP61Mr5Icbtj/Is2YkUlXiH0TeZiVxmZzIObUPDGTH
+	 6LsAWncZvOR2w==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id D6EBD4454F;
+	Fri, 23 Oct 2026 14:20:24 +0000 (UTC)
+From: Vincent Jardin via B4 Relay <devnull+vjardin.free.fr@kernel.org>
+Date: Fri, 23 Oct 2026 16:20:19 +0200
+Subject: [PATCH v3] i2c: imx: add I2C_M_REV_DIR_ADDR and I2C_M_NOSTART
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -107,172 +82,362 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <20261023-for-upstream-i2c-imx-lx2160-reverse-v3-1-a07b249df381@free.fr>
+X-B4-Tracking: v=1; b=H4sIACJt22oC/5XPQY7CMAwF0KugrDGKnTZJZzX3GLEIwYFIQJHDV
+ EWod5+UkYAlLL8X73/fVGHJXNTX4qaEh1xyf6rBLBcq7sNpx5C3NSvSZLXXDlIv8HsuF+FwhEw
+ R8nGEw0hoNVSApTC40DWbrrWI3qsqnYVTHu8tP+ua97lcerneSwecr5/5AwJCImcj+7ixVn8nY
+ V4lUbM+0IuI9J5Is4imMQ6b2IbuIS7/f0dN5n1Jm5ACu7bx3j63TdP0B2282+xwAQAA
+To: Oleksij Rempel <o.rempel@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Andi Shyti <andi.shyti@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>
+Cc: linux-i2c@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Carlos Song <carlos.song@nxp.com>, Haobin Jiang <lemonoutput@foxmail.com>, 
+ Vincent Jardin <vjardin@free.fr>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1792765224; l=11530;
+ i=vjardin@free.fr; s=20260525; h=from:subject:message-id;
+ bh=5U+7si5KHQfRi+kyZkNw1CyRUTDh9ShUhHfMbHzoPK8=;
+ b=wz5WTmYFk1M5LAaVWF9wi6Sd7J2GLYLZ8358iWYiarw1BE3sVxhZHuICTfMdLtav9VsbDPf8o
+ uI003nDXD/1BWlOugHBKPSXVkJM8/rzCUkNCk5XANK2TVXqz8nzyPSY
+X-Developer-Key: i=vjardin@free.fr; a=ed25519;
+ pk=hppgLeFpGpKOi7LNwGEZ4jOYofJCoGd4Jf1ltAabiLw=
+X-Endpoint-Received: by B4 Relay for vjardin@free.fr/20260525 with
+ auth_id=871
+X-Original-From: Vincent Jardin <vjardin@free.fr>
+Reply-To: vjardin@free.fr
+Content-Transfer-Encoding: 7bit
 
-On mer. 21 oct. 2026 at 10:11, Brian Masney <bmasney@redhat.com> wrote:
+From: Vincent Jardin <vjardin@free.fr>
 
-> Hi Miquel (and Jerome),
->
-> On Wed, Oct 21, 2026 at 03:09:56PM +0200, Miquel Raynal wrote:
->> Hello,
->> 
->> Thanks to Brian's series, we can finally solve the problem of rate
->> calculation faced with the i.MX8MP LDB/PIX clocks. I've tested this
->> series using a v7.1 mainline kernel with a lot of unrelated DRM
->> patches. I then re-applied it on top of clk-next after fixing the few
->> conflicts when applying Brian's series, but that means I cannot (yet)
->> run a 7.2/7.3 kernel on the platform (and applying this series with b4
->> will fail due to Brian's series no longer applying on top of clk-next).
->> 
->> The DTS patch is there for reference, I don't mind if it's not picked
->> up.
->> 
->> Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
->
-> Thanks for testing and posting this!
->
-> I know that Jerome would like to see some changes to my rate change
-> series before it can be merged. I'm going to probably poorly describe
-> his concerns here, so apologies in advance if I miscommunicate this
-> Jerome. I'd appreciate it if you could clarify.
->
-> - Currently the latest version posted (v8) to the list has the LCM
->   helper (clk_hw_get_children_lcm) in drivers/clk/clk.c, and the LCM
->   helper should be in clk-divider.c. I agree that it should be in the
->   divider code, but we'd have to export some additional APIs to allow
->   that. In the future if we went with what's in v8, and wanted to fix
->   the fractional dividers, then it would need a similar type of helper
->   in clk.c, which is not ideal. I initially went with this approach to
->   limit the APIs that are exported from the clk core.
->
-> - I have a draft v9 series that I haven't posted yet that adds two new
->   helpers: clk_hw_get_num_children() and clk_hw_get_child_by_index()
->   similar to the existing functions for the parents. This allows moving
->   the LCM logic into clk-divider.c where it belongs, however the
->   downside to this approach is that it expands the clk exported APIs so
->   that providers will be able to fully walk the clk tree. The concern is
->   that providers may abuse this in the future and it may limit future
->   changes / cleanups to the clk core. For example, if we wanted to clean
->   up the way locking is done, this may potentially limit the available
->   options.
->   https://git.kernel.org/pub/scm/linux/kernel/git/clk/linux.git/log/?h=clk-divider-scaling-v9
->
-> - He would like to see it where each clk consumer sets the min/max rate
->   that's acceptable, and the clk scaling in the provider takes those
->   ranges into account when rates are negotiated.
->
-> Anyways, please chime in Jerome if I got this right / wrong, and any
-> additional concerns.
->
+The Realtek RTL8366SE SMI read frame per:
 
-Hi Brian, Miquel,
+  S Addr Rd [A] reg[7:0] [A] reg[15:8] [A] [data[7:0]] A [data[15:8]] NA P
 
-Thanks Brian for the summary, and Miquel for testing and posting this.
-The i.MX8MP LDB/pixel case is a real problem and I'd like us to solve
-it. My concerns are about how, more than whether.
+Linux support it using I2C_M_REV_DIR_ADDR on a write message
+that inverts the transmitted R/W bit, and I2C_M_NOSTART on the following
+read message that continues the frame without re-addressing.
 
-You got most of it. The main nuance is I want to convey is where it
-should live IMO: not in a divider helper, and not in providers at all,
-but in the core. I'll try to explain.
+This NXP i2c-imx is missing such support, so on an LX2160A the Realtek switch
+could not be used.
 
-So far, CCF has preserved the settings of each element, or more
-honestly, left them alone: if a divider divides by 4, it keeps doing so
-whatever happens to its parent. This behavior has been there for years
-and many devices rely on it, even if unknowingly. Miquel, I understand
-you would rather make the new behavior the default, but I think this one
-is here to stay. That said, it would be nice to have a way to say that
-the rate should be preserved rather than the setting. I'll come back
-to that.
+Acked-by: Carlos Song <carlos.song@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Vincent Jardin <vjardin@free.fr>
+---
+Follow the logics from i2c-algo-bit and i2c-s3c2410 (addr ^= 1).
 
-My first concern is about the responsibilities of each component. IMO a
-provider should only describe the transfer function it implements:
-"given this parent rate, here is what I can do". It should not walk
-the tree or care about what its children are doing. Coordinating the
-providers is the core's job, without assumptions about their transfer
-functions.
+Documentation/i2c/i2c-protocol.rst says I2C_M_NOSTART "may also be used
+between direction changes by some rare devices"; the RTL8366SE is one of
+such device !
 
-Providers already query their parents: a mux asks each candidate
-parent what it can provide, and a clock with CLK_SET_RATE_PARENT
-forwards its request upward. That is the request path, and the core
-stays in charge of it. Reading the state of children or siblings, and
-deciding on their behalf, is a different thing. Once a provider is
-allowed to do that, there is no good reason to deny it to the others,
-and I think that would make the core much harder to maintain. It could
-also get in the way of other pressing work, like the global lock problem,
-where tree walking will certainly play a critical role. Miquel's
-patch 2 is a good illustration: the helper ends up comparing the
-clk_hw of the tree with the inner clk_hw of a composite, which is not
-part of the tree.
+- The NOSTART read turns the bus around without waiting for a completion,
+  because the controller stretches SCL after the previous byte and the
+  frame is therefore still open. That is what lets i2c_imx_read() enter
+  the state the ISR would otherwise have moved to.
 
-My second concern is that it is tied to the integer divider, since it
-relies on the LCM. If another element with a different transfer
-function sits on the path, it does not work, as we discussed. We could
-extend the principle to other types, but:
-* I don't see how the different types would reconcile, since each one
-  does its own thing in its own .determine_rate();
-* the change is no longer simple and harmless if it has to spread to
-  every provider to work.
+- I2C_FUNC_PROTOCOL_MANGLING also covers I2C_M_IGNORE_NAK,
+  I2C_M_NO_RD_ACK and I2C_M_STOP, which this driver does not implement.
+  They are rejected with -EOPNOTSUPP rather than advertised and silently
+  ignored. I2C_M_NOSTART on the first message is rejected as well, and
+  so is a NOSTART read after a read.
+---
+Changes in v3:
+- i2c_imx_check_msgs(): reject a NOSTART read that follows a read. The
+  controller NACKs the last byte of a read, the target then stops
+  transmitting and the continuation would only clock in 0xff.
+  From Sashiko on the v2 resend: no known user sends such a sequence,
+  and i2c-algo-bit has the same limitation. No other changes.
+  I did not want to spend time arguing, it is a safety Sashiko helps with.
+- Link to v2: https://lore.kernel.org/r/20261023-for-upstream-i2c-imx-lx2160-reverse-v2-1-03afae754886@free.fr
 
-The behavior is also hard for consumers to predict. For example, the
-parent rate is only negotiated with the subtree of the divider's
-direct parent. With a gate between the divider and the PLL, the other
-branches of the PLL are left out. That could be fixed with more tree
-walking in the provider, which brings us back to my first point.
+Changes in v2:
+- message validation with i2c_imx_check_msgs() (Carlos Song)
+  No functional change
+- Link to v1: https://lore.kernel.org/r/20260807-for-upstream-i2c-imx-lx2160-reverse-v1-1-f276ce8cb660@free.fr
+---
+ drivers/i2c/busses/i2c-imx.c | 157 ++++++++++++++++++++++++++++++++-----------
+ 1 file changed, 117 insertions(+), 40 deletions(-)
 
-If such a mechanism is needed, I would much prefer it done entirely in
-the core, in a generic way, with no assumption about the transfer
-functions involved. I realize this may go against a direction
-suggested at a previous LPC, which this series followed, and I think the
-points above are worth reconsidering it for.
+diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
+index 9477d814fde9..37fd14222b9e 100644
+--- a/drivers/i2c/busses/i2c-imx.c
++++ b/drivers/i2c/busses/i2c-imx.c
+@@ -1000,16 +1000,10 @@ static inline int i2c_imx_isr_write(struct imx_i2c_struct *i2c_imx)
+ 	return 1;
+ }
+ 
+-static inline int i2c_imx_isr_read(struct imx_i2c_struct *i2c_imx)
++static inline void i2c_imx_setup_read(struct imx_i2c_struct *i2c_imx)
+ {
+-	int result;
+ 	unsigned int temp;
+ 
+-	result = i2c_imx_isr_acked(i2c_imx);
+-	if (result)
+-		return result;
+-
+-	/* setup bus to read data */
+ 	temp = imx_i2c_read_reg(i2c_imx, IMX_I2C_I2CR);
+ 	temp &= ~I2CR_MTX;
+ 	if ((i2c_imx->msg->len - 1) || (i2c_imx->msg->flags & I2C_M_RECV_LEN))
+@@ -1017,6 +1011,18 @@ static inline int i2c_imx_isr_read(struct imx_i2c_struct *i2c_imx)
+ 
+ 	imx_i2c_write_reg(temp, i2c_imx, IMX_I2C_I2CR);
+ 	imx_i2c_read_reg(i2c_imx, IMX_I2C_I2DR); /* dummy read */
++}
++
++static inline int i2c_imx_isr_read(struct imx_i2c_struct *i2c_imx)
++{
++	int result;
++
++	result = i2c_imx_isr_acked(i2c_imx);
++	if (result)
++		return result;
++
++	/* setup bus to read data */
++	i2c_imx_setup_read(i2c_imx);
+ 
+ 	return 0;
+ }
+@@ -1172,6 +1178,16 @@ static irqreturn_t i2c_imx_isr(int irq, void *dev_id)
+ 	return i2c_imx_master_isr(i2c_imx, status);
+ }
+ 
++static u8 i2c_imx_addr_byte(struct i2c_msg *msg)
++{
++	u8 addr = i2c_8bit_addr_from_msg(msg);
++
++	if (msg->flags & I2C_M_REV_DIR_ADDR)
++		addr ^= 1;
++
++	return addr;
++}
++
+ static int i2c_imx_dma_write(struct imx_i2c_struct *i2c_imx,
+ 					struct i2c_msg *msgs)
+ {
+@@ -1200,7 +1216,7 @@ static int i2c_imx_dma_write(struct imx_i2c_struct *i2c_imx,
+ 	 * Write slave address.
+ 	 * The first byte must be transmitted by the CPU.
+ 	 */
+-	imx_i2c_write_reg(i2c_8bit_addr_from_msg(msgs), i2c_imx, IMX_I2C_I2DR);
++	imx_i2c_write_reg(i2c_imx_addr_byte(msgs), i2c_imx, IMX_I2C_I2DR);
+ 	time_left = wait_for_completion_timeout(
+ 				&i2c_imx->dma->cmd_complete,
+ 				msecs_to_jiffies(DMA_TIMEOUT));
+@@ -1242,14 +1258,20 @@ static int i2c_imx_prepare_read(struct imx_i2c_struct *i2c_imx,
+ 	int result;
+ 	unsigned int temp = 0;
+ 
+-	/* write slave address */
+-	imx_i2c_write_reg(i2c_8bit_addr_from_msg(msgs), i2c_imx, IMX_I2C_I2DR);
+-	result = i2c_imx_trx_complete(i2c_imx, !use_dma);
+-	if (result)
+-		return result;
+-	result = i2c_imx_acked(i2c_imx);
+-	if (result)
+-		return result;
++	/*
++	 * I2C_M_NOSTART continues a frame that is already open, so there is
++	 * no address phase: go straight to turning the bus around.
++	 */
++	if (!(msgs->flags & I2C_M_NOSTART)) {
++		/* write slave address */
++		imx_i2c_write_reg(i2c_imx_addr_byte(msgs), i2c_imx, IMX_I2C_I2DR);
++		result = i2c_imx_trx_complete(i2c_imx, !use_dma);
++		if (result)
++			return result;
++		result = i2c_imx_acked(i2c_imx);
++		if (result)
++			return result;
++	}
+ 
+ 	dev_dbg(&i2c_imx->adapter.dev, "<%s> setup bus\n", __func__);
+ 
+@@ -1371,16 +1393,18 @@ static int i2c_imx_atomic_write(struct imx_i2c_struct *i2c_imx,
+ 	int i, result;
+ 
+ 	dev_dbg(&i2c_imx->adapter.dev, "<%s> write slave address: addr=0x%x\n",
+-		__func__, i2c_8bit_addr_from_msg(msgs));
++		__func__, i2c_imx_addr_byte(msgs));
+ 
+-	/* write slave address */
+-	imx_i2c_write_reg(i2c_8bit_addr_from_msg(msgs), i2c_imx, IMX_I2C_I2DR);
+-	result = i2c_imx_trx_complete(i2c_imx, true);
+-	if (result)
+-		return result;
+-	result = i2c_imx_acked(i2c_imx);
+-	if (result)
+-		return result;
++	if (!(msgs->flags & I2C_M_NOSTART)) {
++		/* write slave address */
++		imx_i2c_write_reg(i2c_imx_addr_byte(msgs), i2c_imx, IMX_I2C_I2DR);
++		result = i2c_imx_trx_complete(i2c_imx, true);
++		if (result)
++			return result;
++		result = i2c_imx_acked(i2c_imx);
++		if (result)
++			return result;
++	}
+ 	dev_dbg(&i2c_imx->adapter.dev, "<%s> write data\n", __func__);
+ 
+ 	/* write data */
+@@ -1402,7 +1426,7 @@ static int i2c_imx_atomic_write(struct imx_i2c_struct *i2c_imx,
+ static int i2c_imx_write(struct imx_i2c_struct *i2c_imx, struct i2c_msg *msgs)
+ {
+ 	dev_dbg(&i2c_imx->adapter.dev, "<%s> write slave address: addr=0x%x\n",
+-		__func__, i2c_8bit_addr_from_msg(msgs));
++		__func__, i2c_imx_addr_byte(msgs));
+ 
+ 	i2c_imx->state = IMX_I2C_STATE_WRITE;
+ 	i2c_imx->msg = msgs;
+@@ -1411,8 +1435,16 @@ static int i2c_imx_write(struct imx_i2c_struct *i2c_imx, struct i2c_msg *msgs)
+ 	/*
+ 	 * By writing the device address we start the state machine in the ISR.
+ 	 * The ISR will report when it is done or when it fails.
++	 *
++	 * I2C_M_NOSTART continues a frame that is already open and so has no
++	 * address byte: push the first data byte instead. That raises the same
++	 * interrupt and the ISR carries on from the second byte.
+ 	 */
+-	imx_i2c_write_reg(i2c_8bit_addr_from_msg(msgs), i2c_imx, IMX_I2C_I2DR);
++	if (msgs->flags & I2C_M_NOSTART)
++		imx_i2c_write_reg(msgs->buf[i2c_imx->msg_buf_idx++], i2c_imx,
++				  IMX_I2C_I2DR);
++	else
++		imx_i2c_write_reg(i2c_imx_addr_byte(msgs), i2c_imx, IMX_I2C_I2DR);
+ 	wait_event_timeout(i2c_imx->queue,
+ 			   i2c_imx->state == IMX_I2C_STATE_DONE ||
+ 			   i2c_imx->state == IMX_I2C_STATE_FAILED,
+@@ -1529,22 +1561,29 @@ static int i2c_imx_read(struct imx_i2c_struct *i2c_imx, struct i2c_msg *msgs,
+ 
+ 	dev_dbg(&i2c_imx->adapter.dev,
+ 		"<%s> write slave address: addr=0x%x\n",
+-		__func__, i2c_8bit_addr_from_msg(msgs));
++		__func__, i2c_imx_addr_byte(msgs));
+ 
+ 	i2c_imx->is_lastmsg = is_lastmsg;
+ 
+-	if (block_data)
+-		i2c_imx->state = IMX_I2C_STATE_READ_BLOCK_DATA;
+-	else
+-		i2c_imx->state = IMX_I2C_STATE_READ;
+ 	i2c_imx->msg = msgs;
+ 	i2c_imx->msg_buf_idx = 0;
+ 
+-	/*
+-	 * By writing the device address we start the state machine in the ISR.
+-	 * The ISR will report when it is done or when it fails.
+-	 */
+-	imx_i2c_write_reg(i2c_8bit_addr_from_msg(msgs), i2c_imx, IMX_I2C_I2DR);
++	if (msgs->flags & I2C_M_NOSTART) {
++		i2c_imx->state = block_data ? IMX_I2C_STATE_READ_BLOCK_DATA_LEN
++					    : IMX_I2C_STATE_READ_CONTINUE;
++		i2c_imx_setup_read(i2c_imx);
++	} else {
++		if (block_data)
++			i2c_imx->state = IMX_I2C_STATE_READ_BLOCK_DATA;
++		else
++			i2c_imx->state = IMX_I2C_STATE_READ;
++
++		/*
++		 * By writing the device address we start the state machine in the ISR.
++		 * The ISR will report when it is done or when it fails.
++		 */
++		imx_i2c_write_reg(i2c_imx_addr_byte(msgs), i2c_imx, IMX_I2C_I2DR);
++	}
+ 	wait_event_timeout(i2c_imx->queue,
+ 			   i2c_imx->state == IMX_I2C_STATE_DONE ||
+ 			   i2c_imx->state == IMX_I2C_STATE_FAILED,
+@@ -1574,6 +1613,37 @@ static int i2c_imx_read(struct imx_i2c_struct *i2c_imx, struct i2c_msg *msgs,
+ 	return ret;
+ }
+ 
++#define I2C_IMX_UNSUPPORTED_PROTOCOL_MANGLING_FLAGS \
++	(I2C_M_IGNORE_NAK | I2C_M_NO_RD_ACK | I2C_M_STOP)
++
++static int i2c_imx_check_msgs(struct i2c_msg *msgs, int num)
++{
++	int i;
++
++	for (i = 0; i < num; i++) {
++		/* Reject rather than silently transfer */
++		if (msgs[i].flags & I2C_IMX_UNSUPPORTED_PROTOCOL_MANGLING_FLAGS)
++			return -EOPNOTSUPP;
++
++		if (msgs[i].flags & I2C_M_NOSTART) {
++			/*
++			 * NOSTART continues an already open frame. The first
++			 * message has nothing to continue from,
++			 * a 0 length continuation leaves the controller with
++			 * no byte to clock.
++			 */
++			if (i == 0 || msgs[i].len == 0)
++				return -EOPNOTSUPP;
++
++			if ((msgs[i].flags & I2C_M_RD) &&
++			    (msgs[i - 1].flags & I2C_M_RD))
++				return -EOPNOTSUPP;
++		}
++	}
++
++	return 0;
++}
++
+ static int i2c_imx_xfer_common(struct i2c_adapter *adapter,
+ 			       struct i2c_msg *msgs, int num, bool atomic)
+ {
+@@ -1583,6 +1653,10 @@ static int i2c_imx_xfer_common(struct i2c_adapter *adapter,
+ 	struct imx_i2c_struct *i2c_imx = i2c_get_adapdata(adapter);
+ 	int use_dma = 0;
+ 
++	result = i2c_imx_check_msgs(msgs, num);
++	if (result)
++		return result;
++
+ 	/* Start I2C transfer */
+ 	result = i2c_imx_start(i2c_imx, atomic);
+ 	if (result) {
+@@ -1604,7 +1678,7 @@ static int i2c_imx_xfer_common(struct i2c_adapter *adapter,
+ 		if (i == num - 1)
+ 			is_lastmsg = true;
+ 
+-		if (i) {
++		if (i && !(msgs[i].flags & I2C_M_NOSTART)) {
+ 			dev_dbg(&i2c_imx->adapter.dev,
+ 				"<%s> repeated start\n", __func__);
+ 			temp = imx_i2c_read_reg(i2c_imx, IMX_I2C_I2CR);
+@@ -1636,7 +1710,8 @@ static int i2c_imx_xfer_common(struct i2c_adapter *adapter,
+ #endif
+ 
+ 		use_dma = i2c_imx->dma && msgs[i].len >= DMA_THRESHOLD &&
+-			msgs[i].flags & I2C_M_DMA_SAFE;
++			msgs[i].flags & I2C_M_DMA_SAFE &&
++			!(msgs[i].flags & I2C_M_NOSTART);
+ 		if (msgs[i].flags & I2C_M_RD) {
+ 			int block_data = msgs->flags & I2C_M_RECV_LEN;
+ 
+@@ -1730,7 +1805,9 @@ static int i2c_imx_init_recovery_info(struct imx_i2c_struct *i2c_imx,
+ static u32 i2c_imx_func(struct i2c_adapter *adapter)
+ {
+ 	return I2C_FUNC_I2C | I2C_FUNC_SMBUS_EMUL
+-		| I2C_FUNC_SMBUS_READ_BLOCK_DATA;
++		| I2C_FUNC_SMBUS_READ_BLOCK_DATA
++		| I2C_FUNC_NOSTART
++		| I2C_FUNC_PROTOCOL_MANGLING;
+ }
+ 
+ static const struct i2c_algorithm i2c_imx_algo = {
 
-I say "if" because I doubt clock trees are designed with runtime rate
-negotiation in mind. So far, we have mostly dealt with these cases by
-removing CLK_SET_RATE_PARENT and using assigned-clock-rates on the
-shared ancestor. I understand that falls short when the PLL has to
-follow the display mode, as here.
+---
+base-commit: 3d6d817622b0a9721e3cc404df3469171582be13
+change-id: 20260807-for-upstream-i2c-imx-lx2160-reverse-7a94b9561188
 
-For rate negotiation, my suggestion would be to reuse what the
-framework already has: clock ranges, and re-running .determine_rate()
-on the children being dragged along, with the common ancestor's rate
-pinned. When that rate does not suit a sibling's range, other ancestor
-rates can be tried within the constraints, rather than giving up.
-
-clk_set_rate() is a best effort function. It tries to get as close to
-the request as possible, honoring the ranges of every clock along the
-path, and it is up to the consumer to decide whether the result is
-good enough. That decision is lost if the framework recomputes the
-rates of a sibling branch on its own. Ranges could help it decide:
-either "I'm fine with the new rate", or -EBUSY.
-
-What I'm suggesting is to treat any clock with a range as one that
-needs updating. Its consumer cared enough to tell us what it can and
-cannot cope with. That removes the need for a specific flag, and puts
-the rate policy in the consumer, which is where I'd prefer use case
-choices to live, rather than in the provider or the core. It would
-also fix clocks being dragged out of their range during an update.
-Presumably, a clock without a range does not care enough to give us a
-decider, so the framework has no basis to act on its behalf and keeps
-today's behavior. I think this behavior will keep on being good enough
-for the vast majority clocks out there and it is a lot lighter
-on the math side (which is already quite severe as it is)
-
-I've been checking whether the idea is remotely feasible. It involves
-multiple planning stages and multiple tops. It is still very rough,
-but there is the beginning of something:
-
-https://github.com/jbrun3t/linux/commits/clk/clk-rate-range-update/
-
-Miquel, if you fancy trying it, please let me know whether it works
-for you. All you should need is to set a range on the clocks you care
-about.
-
-Sorry for this rather long explanation.
-
-Brian, your series is what got this discussion going, I know a lot of
-efforts have gone into it already. I'd be glad to work on this together.
-
-> Brian
->
-
+Best regards,
 -- 
-Jerome
+Vincent Jardin <vjardin@free.fr>
+
+
