@@ -1,108 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.83.67
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792739248;
-	b=iZA0RD9zs9I9phQLxoMWbk1zSQVhppMhkD5lz9HS7oTqO6GLUDQnL+PoJgpt2eo/Us77
-	 T5fZzEiNKAuaZz/Cv837mwduVKXyD7weUtrlMw5QGeX7byFvZ81gSifGK7tSlGzEBClMg
-	 IBYioQkLOCZYbd5PS5UXWwGRdUmRovVmLZyVvoqq0Zb28W0oJwD1FhTc4aM1f8S/yC9ht
-	 QdxcBdjszE5dL2JkyCHMsc4sEigKnIAwGmoRjO2jSLCry2XdWbRQ4udkqfMbWkW5AEl9/
-	 Iz+QlJL6CuqleCdJpW6noJ5KTQlx/RFqtJGf5W4jSaT20gXjY5C488ldA4kweQMb5RQ==
+	t=1792742728;
+	b=XmOT+h37yDazs09v6iIPEhfORqYB31FYLDoGf/cSFSEY2zhb6opbdOP2r4IRvW8dLF5E
+	 0FbhFOdO+zFnhZ3GgfjM0Bsmo1ldEnkhQYM4yoRJXlrT67HV8LnSQT+0vL0lz+CjiCt2y
+	 z9LGRV6og1bStS5wb5sejbhVaoDfwG+2MF0r/fqqvijfD5nNn8Lyn1PPWzM7IAf+Bdyw9
+	 XClyTTkRi5ij2L2ho89KPb/avG0eqiqaPXg5X8hfd9fqWEyCiguUwSPIg/Gq/+cbn+YZ5
+	 oSW0/pYdy0+ak1OEwQ9R9dposQWWpBxDh23saGIeM0ov4Jua0N1xhkJUfN9sLNQUJng==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792739248;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:From:Date:Subject:
-	 Content-Type:Content-Transfer-Encoding:Message-Id:X-B4-Tracking:
-	 X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
-	 X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=tL8xTL1rsEvusWU+NkX50y7lNoQgmfN1AzMTmKmsrl0=;
-	b=FFXKsGJOQQZ220rxVS9Ba8+zmExLZR1Y89ebUjAOnH9ZD1ZtdUXT1euGOrXcdq8eU0NU
-	 UJXDzVMsB6az9ge5Ybj6Z1pVSg6DOQpYwuXzXW/7Dcgu+pEbIVPTcujk4fzvfKP4xRtdu
-	 fp01qywBdffLs6GK3NUjXj6wWf9GKQRs8ufqGrqZcCdQmuTbkuo+k2pBSmzBBML7cL6Xg
-	 bAROht8cauroqWCQH08q1fEla0ZmK7rSr2aV6mdq9SLFLd2XewEOlrnfINJ4wgXoCFWgp
-	 vjG7qJpt0YhBahjeKMNH7WViuVuS8WKWcgYMxOO94uVAE1FnUYj7CLDDxlobfSO/qrw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792742728;
+	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Message-Id:X-B4-Tracking:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=We23a8YmV1MydTQVOVcqW5epbVH/tjYZRWEjKwty+fM=;
+	b=MPf3rhoW4IAblylMxvZd2vQO2qsk9LKet3lR7LwQa7VrKhlwOLQxuhnvaj1ydFtDVMFd
+	 W+Io7Vji+QhDzC7F9F6914CKCRvSED2vO68Fb8q+bV1SuxvaqRFhbTr9B4321tNKQN7KF
+	 kReZ55zNl9vohOAW7pvqh8K9fhuHHd9HjEEbOuVo0lKdJjOc7EAzYfdljUZaCmWcxLyoJ
+	 bnvhaKrYti0LQDe/9YtWc3x1/CCUmIkkC3qwSZIDxa0dEZV0wWBcOOiG65NsYXWZ9Ix7h
+	 Dc18Bl91B48z1xlqJl10weF1GopIxTA6vptKeIAD4e5dvE0QmUiaydoPSBCccyOMq+Q==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.nxp.com;
-	spf=pass smtp.mailfrom=oss.nxp.com;
-	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=bMlJHjqa;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.83.67
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013067.outbound.protection.outlook.com [52.101.83.67])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QGB6SWuA;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91128606A320
-	for <imx@lists.linux.dev>; Fri, 23 Oct 2026 07:07:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 91128606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 718AC606A329;
+	Fri, 23 Oct 2026 08:05:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=bMlJHjqa
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ch+tn0CdQfBDDIo233zZ8mHB9+Mov42XzVYejC5vWNLOMZj7azhUgr5wNT0RJO9gIpYb/+9tadtvco9MXAxV1fQwxtKcmIi5FiCZoolnbEXFByszccYp+TEwDH9TETCrD5OX+36kjLNYG04zPjYh6n460NTjkbThkOZztQE9M6Zw+VEf2uEBTiR78hvKjfA6dL2HH7a493F2ZIL74So8ogB8xKgmamqdt45V/Bwc5VdDbvWZieMNFsEevQBfBMFE4bYirwHYFpN5mYYvftm5kJjeSZsZ8EQiPbIkhvWQ1Wfg29mWhLI3WkDzFc1EztdX2PDduJXRRjZZ3obLWBqy3g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tL8xTL1rsEvusWU+NkX50y7lNoQgmfN1AzMTmKmsrl0=;
- b=yxV9nFaqEwDA086Hy/haO+vwHboX3lwOU9tq9meqlcpxicdYyymmeGXeM276Y8b3g8BjLX293w261aFGIwJ3AfAcZ5xqbwq/E4HNH+Musgvv6JNg1kSiQWg9s7n9Ill8lgT1YUWznW/2GSVrgvIqZJeUYloqQshPSsTpEkBDL09D3cfSRtPLlTsNxyTEqbCQBOJzf0T0PEeeG34KMi8faSvfL9n2Sn7nO9Lx7VFXgdFBMljHyCAG+zWjm47B03GbQN4otNnorD3c4faaKDnbxnKuUamOraG2/vp/oRtgBrx8RVfFSc5gB0HovwbpecwQDHb7RWqf22pW1RJrrQpo5g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tL8xTL1rsEvusWU+NkX50y7lNoQgmfN1AzMTmKmsrl0=;
- b=bMlJHjqajw9izxu2G5g6dprM0Ofu3j86Um3wjd9zBwxs1Imippts3+vkKcI07er16jnhuSXIKdMGu2nD1ggnszNwiOWr+SBQqlOrawve2xDBlgRslpk+ujPn/YYgNT0AFEdYppA/ZM2BQbQKAMCqnpGkKUgn30n0JdSinKUME5K2fvs6++LAEacgUUb8kG0RPWY+jgzKIuiZEzrYRCIMEyo67aaduo80HvokSrJ16bkrsA57reiDf7dtpVdknDb9du7ZPqLVTwUs4UMr6RF8/Ooptdo5mPTilfxbpey4cpYlJzozTDTTkgi3HmNELLpbAbqHZF/Eye2phAWdb9fT8Q==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PA6PR04MB11909.eurprd04.prod.outlook.com
- (2603:10a6:102:51c::22) by VI2PR04MB10091.eurprd04.prod.outlook.com
- (2603:10a6:800:22f::10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.19; Fri, 23 Oct
- 2026 07:07:22 +0000
-Received: from PA6PR04MB11909.eurprd04.prod.outlook.com
- ([fe80::a4b:fa4e:7fe7:e6a2]) by PA6PR04MB11909.eurprd04.prod.outlook.com
- ([fe80::a4b:fa4e:7fe7:e6a2%7]) with mapi id 15.21.0546.016; Fri, 23 Oct 2026
- 07:07:22 +0000
-From: haibo.chen@oss.nxp.com
-Date: Fri, 23 Oct 2026 15:11:54 +0800
-Subject: [PATCH v5] mtd: spi-nor: clear the default read_sr2 opcode for
- Octal DTR flashes
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261023-spi-nor-fix-v5-1-bb6e0ce21169@nxp.com>
-X-B4-Tracking: v=1; b=H4sIALkI22oC/33MQQ6CMBCF4auYrq0pQ0vFlfcwLtoylS4E0poGQ
- 7i7AwuVxLh8L/n+iSWMARM77SYWMYcU+o6G2u+Ya013Qx4a2gwEVKKGI09D4F0fuQ8jR6vRIoD
- RUjASQ0S619rlSrsN6dHH5xrPxfL+7uSCF9xhpayphfO2OXfjcHD9nS2VDN+y3kogqZWUxFCir
- rayfMtCAGxlSdJ6b4SwWjnQWyn/SEnSW1OiKxuwCj9ynucX2YnodlIBAAA=
-X-Change-ID: 20260928-spi-nor-fix-eb7ebe22a740
-To: Pratyush Yadav <pratyush@kernel.org>, Michael Walle <mwalle@kernel.org>, 
- Takahiro Kuwano <takahiro.kuwano@infineon.com>, 
- Miquel Raynal <miquel.raynal@bootlin.com>, 
- Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>
-Cc: linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org, 
- imx@lists.linux.dev, michael@walle.cc, Haibo Chen <haibo.chen@nxp.com>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1792739523; l=7268;
- i=haibo.chen@nxp.com; s=20250421; h=from:subject:message-id;
- bh=8wpCsjz8f6Fv7dmKbaq0WGU9v+jDfolyvlIJKnIdZng=;
- b=DdCGIFdWMhBXn+cho9IkeqZXyN+WyNOyrxJSMJ/p/ddSf7tSM7JmWgGGtGnTuY1/gJnQRqix1
- 5jCbDsw2rJBA6DQICFyGCdQXTJC9drXZLBfDeWSf1DKkvlpkHwChn9B
-X-Developer-Key: i=haibo.chen@nxp.com; a=ed25519;
- pk=HR9LLTuVOg3BUNeAf4/FNOIkMaZvuwVJdNrGpvKDKaI=
-X-ClientProxiedBy: SI2P153CA0034.APCP153.PROD.OUTLOOK.COM
- (2603:1096:4:190::17) To PA6PR04MB11909.eurprd04.prod.outlook.com
- (2603:10a6:102:51c::22)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QGB6SWuA
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1792742728;
+	b=gMXJA8mkimIiyQlQeTVw0ROx5LVm+XKrMmmefdGxSn7QkruadJUME6p2s/BzkQy7V/jJ
+	 nYyGkBXl5kEVh//8rTYc6XEuPdU91+u2NSKqZaACQ5U2UYvDftF/xX8Gzd+/+m8dQBkw2
+	 uO96w+Hni/8aZlBd2IFy8dmvpdu83k7RiT54w56mp47HfT8+SqnreGH/9kX0hR72AWvhN
+	 Qb1onsN9YEyLHTJ/GdEwtr6gLtuU/4jGNFlyfHYcTvHa+csh73h5CZbty3Zb2XyNo3I6V
+	 6qcoES95gwSLBNr3t2SX6qIRc8NfA93EWWMon6kWh6dsVXLTzUFqy9RVqGaUE/3u8HA==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1792742728;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:X-B4-Tracking:To:Cc:X-Mailer:X-Developer-Signature:
+	 X-Developer-Key:X-Endpoint-Received:X-Original-From:Reply-To:
+	 Content-Transfer-Encoding;
+	bh=We23a8YmV1MydTQVOVcqW5epbVH/tjYZRWEjKwty+fM=;
+	b=V/GeItG80FoTyn+xXvb2SZCwxvM02v6jVogLvRCKZmA8pPr6s1ByGMYmwGR7dbQIThd0
+	 9G0k1cvRWxj/tMGYDYpTgs5SVs0UwroAyH3Sjil/wkx1N4Vhdrp1ZAbMt1xC+Cl07zklU
+	 n4N5AsVXLUX1o2E7loxsakm4Q1FVf+C58x7uNja0jgUW5DgKkdMclue0YrgvslES/WMVC
+	 +0TgZabe08hcvkcpxS3M8K3BTQAbr5cTcwIlzrx3fGhHH8pSeadH34/d0iyoXDq9sPJO7
+	 Sy2CCaa7ng96Xzg6JHh2wH1rL7tXBkN0g5QsATytMODDyEfpv2Tmb8pdUc/CFoktsXg==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.kernel.org (Postfix) with ESMTPS id 892AC1F01829;
+	Fri, 23 Oct 2026 08:05:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792742728;
+	bh=We23a8YmV1MydTQVOVcqW5epbVH/tjYZRWEjKwty+fM=;
+	h=From:Date:Subject:To:Cc:Reply-To;
+	b=QGB6SWuA+f/m7Aa9vJN4SrijDRuss5lLsUXtl7iR7KlESLa1CDandkgh1/HA6D6MQ
+	 e9NTZJIfBgyuu1ejFLCnKi2LRwTP3l+TIN+u62q1V6d4MgKZreqTADCiQOZxdSL0M7
+	 ORmSaf/4RXSycmd0MfGwDr2NpfQe4ySp5HPqwJekCO1G1H9mUCZ4eeGHSqEkBMjDVH
+	 UudBVuSPpmkmkjQczZCH1yiSFOtmtxWtWGX+i5dRCxV1VxtcnWLnGPdqzuszJsDvpu
+	 MxNBcZcs9os/sVMVOORwmRsu8oJcAmRAMrnrRERfREQ8VYZu7HjEhfZ5vyz6UJswC8
+	 h9HLHJMvvXmSQ==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id 182F04440C;
+	Fri, 23 Oct 2026 08:05:27 +0000 (UTC)
+From: Vincent Jardin via B4 Relay <devnull+vjardin.free.fr@kernel.org>
+Date: Fri, 23 Oct 2026 10:05:15 +0200
+Subject: [PATCH RESEND v2] i2c: imx: add I2C_M_REV_DIR_ADDR and
+ I2C_M_NOSTART
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -112,221 +83,356 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA6PR04MB11909:EE_|VI2PR04MB10091:EE_
-X-MS-Office365-Filtering-Correlation-Id: 575fe637-5a25-4333-1fcd-08df30d4486b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|23010399003|19092799006|11063799006|5023799004|56012099006|261009223027099003|261021121427099003|261022105027099003|261022075727099003|10067099003|18002099003|6133799003|3023799007;
-X-Microsoft-Antispam-Message-Info:
-	DkTDll7Yyc3JKZZHXlldJ45E+s/u3FeU8I7tOYdJUFpdprIeak03uYRdtiCm+hQo0mu6ds7aIWWvj1ISs4dbqrdCIv0v6shsYLJXYpgczrqo2EBr6kXZ2D+LHL/o42nSY4bEIztJPT0aGiyC3IXW2cmmlkaDZobpMgX130i0JzxzLVRjWHl9lQnGXtNb0XYHdwwalbJ9kGYONzPwib4j86CjFCIEW9B7sNEMWbcnsBzykwWLEP+431GzCy0NSchsTcxCtk5niRPASshq2pSS6QqOO49q7EnsmQUC5ewxtWG9zunstF7zUgPgO8lfE1bIxXNWx6OzWYZj3KLFrpykRwL/ZaI2TubQOPIh3Khq6CDnQiFYmczhik7JrJbYg1EIgji++kWDNXHEx8eKjy0gzoTnVjq5dWxfeiZlY2a8ExADYtJINmw3EINufPFm/FAvhL7YdmIKkXjMvQ+5mLNI48dwt9VWjrlDtHyqnXyieAmdsTSOqud69+vymR9j2xV5AOTVjlzcxhhf3wauXto25Rw4zlNJALtcFxP9sqA/rUI2G4TKEexGi5DfJk0OAWEf9hMVCgqwgHmI2G8WRS38GDsv81vsQw2iWRbgfhhSxfg=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA6PR04MB11909.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(23010399003)(19092799006)(11063799006)(5023799004)(56012099006)(261009223027099003)(261021121427099003)(261022105027099003)(261022075727099003)(10067099003)(18002099003)(6133799003)(3023799007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MjUwbzVEeW1JeU5kKzJPOVl3SFhQRmtMMFEycDlaN0lMWmZYYzZqL3ZRazk3?=
- =?utf-8?B?N1Z0WDdLcVlYSW5ZNGptWVB1TTM1MlZ5YnI1R3dYT28zTWVndjhiTUp0TE9r?=
- =?utf-8?B?bFBodTJjVHo4WFlJcXBLWW1DNmxOUDIrNUxzNjZ4MXFteXk4akFya0lDUUlL?=
- =?utf-8?B?SUw0UUFBNEk2cmZVY3pPb2ZuNUZWd1p1UFNJVUxuZE55UDVxMzVWaEtQKzR1?=
- =?utf-8?B?TzdXZXJmM2M3dTlJQndpUW9aL3JFTlFjdW1IRTRKeVludWNsdFR6Q1VWYzVX?=
- =?utf-8?B?dENWOTNCRUZLUFdwRXlWVjFrZXl1dFpBUm1iaDRvMTg1YnpuRWZrVVc2Mjl0?=
- =?utf-8?B?VVRXRnlSUFRkNWxYRlU0TkdydmltdW9CcU1IT0p6WStROFpDOENJMThGQmw0?=
- =?utf-8?B?bmNvNzdnUFprUytvNmdZbWRxWlZqTk9uQlRmV1FTZ254amY0Nm5ZRnFwQmNW?=
- =?utf-8?B?K2RISStGUndkZDRNSndHUHpRYVV0T0RDS0U3dGY0L3dtOFYzRVduVXlkWXda?=
- =?utf-8?B?YmZBY1JxTnJVbCtEZ2lYWmFmWGVvNDJ4dlREbGorU2g5c0FYT2Fxb09NZ1F4?=
- =?utf-8?B?aVFjL21MbUIzNHpKdWtONG55UkZlbXdQa0g4Q21CaWYyVklSOEt6NG83M2Q3?=
- =?utf-8?B?NEZyZkR3QTViWUEwY2x5SEdBMXJ3SmQ0clMvOFF6NGQvZ25HY2xubDdkVWtY?=
- =?utf-8?B?b0xwVEFEbFlEaWhZUDFHVHdReSs2RkhHUHpUZW14NnhyUDdBMmRrVDRBeXJX?=
- =?utf-8?B?WmFZR2VubVorYVh6ellzelR6dnkzVXZXMlBrcHFLV0VqNkxaUi9nNHI3UHhP?=
- =?utf-8?B?d0QvN1c4a2pGMUN0RnlJWFhUbktIQkZvT1l0Z3hyYWpzKzc0RnUxWXFwS0Vm?=
- =?utf-8?B?Q3BYYVR0dzJFRTJMRXArdHB0aERCQVBZTTFlaUV1Y0dkdmZpY1Z4YitpUXlP?=
- =?utf-8?B?UExtekJYM0tjTjRnNk1Rck8zbmtWNmZIbDlDemJOaDFaTDhsZ09OOEZ3WWo5?=
- =?utf-8?B?RVBnQ2JFTXJFelFmSWdpcDdGUzBKN1g5eFlWY1phQ2EzVndXRUJ5WnZEVjFE?=
- =?utf-8?B?emUxMnZVZUdwazNXcXAxbzlCYk9KTFFXdjdVQTJOTnpPR3Q5VTlSUWRtS1VF?=
- =?utf-8?B?RHd1Umhqakh3V2xXZnI3Z2lPb0NxZ3N3NmJNa2RBV0YydXJ6cWpJOW8xbXlo?=
- =?utf-8?B?Y2pIWUZraUZ6SjlDc1NkbHQvTUpTSVpVYWd3bERvYU90aWExK0Fjd2dLTmFv?=
- =?utf-8?B?ZlJrZXZGVkhNUFVkdnpTOVc0eC94dHp1TFMzWlhTZUNlcHA5L2Q2RXlUTENP?=
- =?utf-8?B?WTNSMjJBZGx0MmRocWpGTFM2OURSWThJbnRVVlMrM05rYjFHWXNOMFFidGNI?=
- =?utf-8?B?dGUzejVZdkowNkhjbGplcEZueDFyZEcxYmFuYi9wRkZoZUluc3ZDbmRPQzJN?=
- =?utf-8?B?K1NORUREZiswSXgxazg5WHMxaFBNbDV6SFd3U2VWdk1aUUdsOXdrREUxU3g2?=
- =?utf-8?B?N3ZacVM4TmV6WVp5ZVprRGZBaXpDQjZRVm5INGJNdGgyOEZ0UVlJeU1UZXZu?=
- =?utf-8?B?R0xTSi9vMmVhbjhIaW1MUlh3WC9HM2I1bjJuRkFRQ0pUMk8yMklsQURlQ1Ba?=
- =?utf-8?B?K0xJS1BVNXBnMEl3UGVnV3B0b244cXBJbVZMMGc2NkxRa04vbkltQ3ZoSTBo?=
- =?utf-8?B?enJOeTk0RHU1b2o3enlQTmsrZDRDTmEyWTQ0NTlsQ2tUU2VxZkdNZWF6MFF5?=
- =?utf-8?B?cDY2UVdINk1KYS9yK0NIVXJjbW9LN1IwTlNSL2duQkZtdkRIY2NFRjh1RHJz?=
- =?utf-8?B?RDVNRm5RN2xsTlJpUmY4ZklVQzlKQnFwVE4wK3FJS2ZMTWRJVnVOWmVzaVFD?=
- =?utf-8?B?M2lIL2lqT2xFc0xkTHVYUVNzejI1YXA5N3VNRzZLRXF1OHg4cXc5ZnFpNnll?=
- =?utf-8?B?MTRSWjBlbTBIT2RIZ09hTXhKUGlURURxUk9SZUJxc3UrS3V2L3lVZXdQYjM0?=
- =?utf-8?B?YS9oRUJEZzBtblNvQkxmSU91RlVGV3Btc1ZFaStIUFh2eExVZUNRU0FUZTVB?=
- =?utf-8?B?OU9hcVh1QkJNZVFELzJhUXVyVnQrNXpUOGNRSmJBSlBLVlBweHBTdXZRMlZR?=
- =?utf-8?B?WDJVYVJQdTdXZ3pmUzZDOUdWMVZmMkpnU0pSa2w4c0t3MzQ5RTRSVllRMTlJ?=
- =?utf-8?B?aGJvQVlYR003WDBSM2JIV3A1Ym1obTYzT2hTc1hLbThxNGovRGl1K3ZuUk5R?=
- =?utf-8?B?OFdEMlU5cHFrYWZRc2d6c2QrSW1KOU5zUGo3Ym1RTWFqS2YzUUZ6Zk9Hd01k?=
- =?utf-8?B?Y2M2Q3RwRXh2MllhMzd5eHR4STRnaFV0N253amdzVVlpYks2Sml5RFJRT1Z1?=
- =?utf-8?Q?rCLQRUKWXuoRTPuRCwy/dD5L0Jv62VFAElYPN?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 575fe637-5a25-4333-1fcd-08df30d4486b
-X-MS-Exchange-CrossTenant-AuthSource: PA6PR04MB11909.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Oct 2026 07:07:22.0340
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: B/pfPCE8bJ3xnWk+IPSpQfxr7H5utdyCbP6yZjn59qfcjyu9reeSrkIgIb5U3Vic6zVDslYEsnZ7OkSctK6RJJ55kyadVkZDoLU7eYF0ToYq2+mj/1NJPDnnztrU37fh
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB10091
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <20261023-for-upstream-i2c-imx-lx2160-reverse-v2-1-03afae754886@free.fr>
+X-B4-Tracking: v=1; b=H4sIADoV22oC/5XNMQ+CMBCG4b9iOnumd0IBJwddHXQ0DlCv2kTFX
+ JFgCP/dyqKjjt9d8ry9Ciyeg1pMeiXc+uDrWxw0nSh7Lm8nBn+MW5Emo3OdgasFHvfQCJdX8GT
+ BXzu4dIRGQwRYAkNWFklVpAYxz1WU7sLOd2Nlr7br3XqzUod4P/vQ1PIc4y2O3786LQKCo8xYz
+ m1ljF46YZ45GfWWvkSk30R6izhP5hkmNi2LjzgMwwvyGOJULgEAAA==
+To: Oleksij Rempel <o.rempel@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Andi Shyti <andi.shyti@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>
+Cc: linux-i2c@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Carlos Song <carlos.song@nxp.com>, Haobin Jiang <lemonoutput@foxmail.com>, 
+ Vincent Jardin <vjardin@free.fr>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1792742726; l=11255;
+ i=vjardin@free.fr; s=20260525; h=from:subject:message-id;
+ bh=WiWfwJ6/hA56r4jsG0++u+NW6uZ/JjT3AlfhiASLboY=;
+ b=nG6AqkL29THn9RuOUVPetlCnVX8fKnK6GM6H+zBVQaCymdlXjyJ6u8b7hdh0QQs8YpBIxI7nv
+ 9V3/EuC2gW1CiPwSCWelc6PdFGVV4jCICRCKb5BBDkImDg8tIfn/5iS
+X-Developer-Key: i=vjardin@free.fr; a=ed25519;
+ pk=hppgLeFpGpKOi7LNwGEZ4jOYofJCoGd4Jf1ltAabiLw=
+X-Endpoint-Received: by B4 Relay for vjardin@free.fr/20260525 with
+ auth_id=871
+X-Original-From: Vincent Jardin <vjardin@free.fr>
+Reply-To: vjardin@free.fr
+Content-Transfer-Encoding: 7bit
 
-From: Haibo Chen <haibo.chen@nxp.com>
+From: Vincent Jardin <vjardin@free.fr>
 
-The core defaults opcodes.read_sr2 to the legacy RDCR opcode (0x35), and
-spi_nor_cache_sr_lock_bits() reads SR2 during spi_nor_init(), i.e. after
-the flash has been switched to its runtime protocol. On an octal flash
-running in 8D-8D-8D mode the opcode is extended per cmd_ext_type (e.g.
-0x3535), but RDCR is not a valid register read there: these parts access
-their status/configuration registers through a vendor-specific indirect
-space, if at all. The flash does not answer, the register read times out
-and probe (or resume) fails (on i.MX FlexSPI: -ETIMEDOUT and a controller
-WARN(), seen with a Micron MT35XU01G and a Macronix MX25UW51345G).
+The Realtek RTL8366SE SMI read frame per:
 
-Clear read_sr2 on every path that enables 8D-8D-8D, so that
-spi_nor_read_sr1_and_sr2() degrades to an SR1-only read and no
-unsupported command is issued. A manufacturer driver that genuinely
-needs an SR2 read in this mode can still install its own opcode in a
-later fixup.
+  S Addr Rd [A] reg[7:0] [A] reg[15:8] [A] [data[7:0]] A [data[15:8]] NA P
 
-- spi_nor_parse_profile1(): the common case. The xSPI Profile 1.0 table
-  does not describe any SR2/RDCR read, and it runs before the
-  manufacturer late_init.
-- mt35xu512aba_post_sfdp_fixup(): some mt35xu512aba batches lack the
-  Profile 1.0 table and enable 8D here instead, with the BFPT QER field
-  left at a reserved value so read_sr2 keeps its RDCR default.
-- spi_nor_no_sfdp_init_params(): non-SFDP parts that enable 8D via
-  SPI_NOR_OCTAL_DTR_READ keep the RDCR default too.
+Linux support it using I2C_M_REV_DIR_ADDR on a write message
+that inverts the transmitted R/W bit, and I2C_M_NOSTART on the following
+read message that continues the frame without re-addressing.
 
-CMP (the only user of SR2 beyond quad-enable in the locking code) is
-Winbond-specific and is not placed in SR2 on their 8D-capable parts, so
-no octal flash loses a usable SR2 read because of this change.
+This NXP i2c-imx is missing such support, so on an LX2160A the Realtek switch
+could not be used.
 
-Fixes: 63489002d397 ("mtd: spi-nor: Refactor Read Status/Write Status support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Acked-by: Carlos Song <carlos.song@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Vincent Jardin <vjardin@free.fr>
 ---
-Changes in v5:
-- No code change; address review feedback from Miquel on v4:
-    - Drop the Fixes: b7b63475903c tag, keep only the Refactor one.
-    - Add Cc: stable.
-    - Collect Reviewed-by: Miquel Raynal.
-- Link to v4: https://lore.kernel.org/r/20261022-spi-nor-fix-v4-1-fba3ec3d2b5e@nxp.com
+Follow the logics from i2c-algo-bit and i2c-s3c2410 (addr ^= 1).
 
-Changes in v4:
-- Following the Sashiko review and Miquel's preference, keep the
-  capability-based clear but cover every path that enables 8D-8D-8D, not
-  only the xSPI Profile 1.0 one:
-    - spi_nor_parse_profile1() (the common case, already in v3),
-    - mt35xu512aba_post_sfdp_fixup(): some batches lack the 8D command
-      info in SFDP so Profile 1.0 parsing may not clear it,
-    - spi_nor_no_sfdp_init_params(): non-SFDP parts using
-      SPI_NOR_OCTAL_DTR_READ.
-- Checked all vendor drivers; Micron is the only one that enables 8D
-  outside Profile 1.0 parsing. Macronix and Cypress rely on Profile 1.0.
-- Link to v3: https://lore.kernel.org/r/20261022-spi-nor-fix-v3-1-bffa00b75c27@nxp.com
+Documentation/i2c/i2c-protocol.rst says I2C_M_NOSTART "may also be used
+between direction changes by some rare devices"; the RTL8366SE is one of
+such device !
 
-Changes in v3:
-- Clear opcodes.read_sr2 in spi_nor_parse_profile1() (capability based)
-  instead of in spi_nor_set_octal_dtr() (runtime-protocol based), as
-  suggested by Miquel and Michael. It runs for octal-capable parts and
-  before the manufacturer late_init, so a driver can still install its
-  own SR2 opcode afterwards.
-- Confirmed on a Micron MT35XU01G (i.MX95) and a Macronix MX25UW51345G
-  (i.MX8ULP): both publish the xSPI Profile 1.0 table, and 0x35 is not a
-  valid SR2 read in 8D mode on either.
-- Drop the Assisted-by tag (removed upstream for 7.3).
-- Link to v2: https://lore.kernel.org/r/20260929-spi-nor-fix-v2-1-75440cfe4e76@nxp.com
+- The NOSTART read turns the bus around without waiting for a completion,
+  because the controller stretches SCL after the previous byte and the
+  frame is therefore still open. That is what lets i2c_imx_read() enter
+  the state the ISR would otherwise have moved to.
+
+- I2C_FUNC_PROTOCOL_MANGLING also covers I2C_M_IGNORE_NAK,
+  I2C_M_NO_RD_ACK and I2C_M_STOP, which this driver does not implement.
+  They are rejected with -EOPNOTSUPP rather than advertised and silently
+  ignored. I2C_M_NOSTART on the first message is rejected as well.
+---
+RESEND:
+- No change since v2 of 2026-08-12, only added:
+  Acked-by from Carlos Song and Reviewed-by from Frank Li
+- Resent as a new thread
+- Haobin Jiang's "i2c: imx: honour I2C_M_IGNORE_NAK" v3 is built on top of it:
+  https://lore.kernel.org/r/tencent_342A87BFCECA70C9982E68A79AAD878B6909@qq.com
+- Link to v2: https://lore.kernel.org/r/20260812-for-upstream-i2c-imx-lx2160-reverse-v2-1-f1343714c5a9@free.fr
 
 Changes in v2:
-- Rework the fix following review: instead of guarding the read at runtime
-  in spi_nor_read_sr2(), clear the default RDCR opcode.read_sr2 once, at the
-  point the switch to Octal DTR succeeds (spi_nor_set_octal_dtr()).
-- Key the clear off the real runtime protocol so a flash that advertises
-  Octal DTR but runs in (x)STR (host without 8D support) keeps its RDCR.
-- Drop the swp.c change and the -EOPNOTSUPP handling; a cleared read_sr2
-  already means "no SR2 read", handled by the existing debugfs caching path.
-- Trim the code comment; move the details to the commit message.
-- Link to v1: https://lore.kernel.org/r/20260928-spi-nor-fix-v1-1-ce65ba90cfbd@nxp.com
+- message validation with i2c_imx_check_msgs() (Carlos Song)
+  No functional change
+- Link to v1: https://lore.kernel.org/r/20260807-for-upstream-i2c-imx-lx2160-reverse-v1-1-f276ce8cb660@free.fr
 ---
- drivers/mtd/spi-nor/core.c      |  6 ++++++
- drivers/mtd/spi-nor/micron-st.c | 10 ++++++++++
- drivers/mtd/spi-nor/sfdp.c      | 11 +++++++++++
- 3 files changed, 27 insertions(+)
+ drivers/i2c/busses/i2c-imx.c | 153 ++++++++++++++++++++++++++++++++-----------
+ 1 file changed, 113 insertions(+), 40 deletions(-)
 
-diff --git a/drivers/mtd/spi-nor/core.c b/drivers/mtd/spi-nor/core.c
-index 90524c58602e1c27cd83951ab0cdd3669a2ebfd6..8ded5cd12669161a95d7c08773b5a3a9a5f9b3ac 100644
---- a/drivers/mtd/spi-nor/core.c
-+++ b/drivers/mtd/spi-nor/core.c
-@@ -2711,6 +2711,12 @@ static void spi_nor_no_sfdp_init_params(struct spi_nor *nor)
- 		spi_nor_set_read_settings(&params->reads[SNOR_CMD_READ_8_8_8_DTR],
- 					  0, 20, SPINOR_OP_READ_FAST,
- 					  SNOR_PROTO_8_8_8_DTR);
-+		/*
-+		 * The default SR2 read opcode(35h) is not usable in
-+		 * 8D-8D-8D mode; drop it so spi_nor_init() does not issue an
-+		 * unsupported command.
-+		 */
-+		params->opcodes.read_sr2 = 0;
- 	}
+diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
+index 9477d814fde9..7dc9c43673ee 100644
+--- a/drivers/i2c/busses/i2c-imx.c
++++ b/drivers/i2c/busses/i2c-imx.c
+@@ -1000,16 +1000,10 @@ static inline int i2c_imx_isr_write(struct imx_i2c_struct *i2c_imx)
+ 	return 1;
+ }
  
- 	if (no_sfdp_flags & SPI_NOR_OCTAL_DTR_PP) {
-diff --git a/drivers/mtd/spi-nor/micron-st.c b/drivers/mtd/spi-nor/micron-st.c
-index f97f2dead8c2f175564410871c896260dc31aad3..cff774a83d7656ca2d7dc5af13a78c8c520b1dd9 100644
---- a/drivers/mtd/spi-nor/micron-st.c
-+++ b/drivers/mtd/spi-nor/micron-st.c
-@@ -181,6 +181,16 @@ static int mt35xu512aba_post_sfdp_fixup(struct spi_nor *nor)
- 	nor->params->rdsr_dummy = 8;
- 	nor->params->rdsr_addr_nbytes = 0;
+-static inline int i2c_imx_isr_read(struct imx_i2c_struct *i2c_imx)
++static inline void i2c_imx_setup_read(struct imx_i2c_struct *i2c_imx)
+ {
+-	int result;
+ 	unsigned int temp;
  
-+	/*
-+	 * Some batches do not expose the 8D-8D-8D command information through
-+	 * SFDP (see above), so spi_nor_parse_profile1() may not run and clear
-+	 * the default SR2 read opcode(35h). Drop it here as well: it is not a
-+	 * valid register read in 8D-8D-8D mode and would time out during
-+	 * spi_nor_init(). Clearing it again when it was already cleared is
-+	 * harmless.
-+	 */
-+	nor->params->opcodes.read_sr2 = 0;
+-	result = i2c_imx_isr_acked(i2c_imx);
+-	if (result)
+-		return result;
+-
+-	/* setup bus to read data */
+ 	temp = imx_i2c_read_reg(i2c_imx, IMX_I2C_I2CR);
+ 	temp &= ~I2CR_MTX;
+ 	if ((i2c_imx->msg->len - 1) || (i2c_imx->msg->flags & I2C_M_RECV_LEN))
+@@ -1017,6 +1011,18 @@ static inline int i2c_imx_isr_read(struct imx_i2c_struct *i2c_imx)
+ 
+ 	imx_i2c_write_reg(temp, i2c_imx, IMX_I2C_I2CR);
+ 	imx_i2c_read_reg(i2c_imx, IMX_I2C_I2DR); /* dummy read */
++}
 +
- 	/*
- 	 * The BFPT quad enable field is set to a reserved value so the quad
- 	 * enable function is ignored by spi_nor_parse_bfpt(). Make sure we
-diff --git a/drivers/mtd/spi-nor/sfdp.c b/drivers/mtd/spi-nor/sfdp.c
-index 4a3f82e97cef8a76c9704918aa6558ca4e2f2b97..722eeff71d0df8c47ec7bdd795c08ba1bdf5e9cc 100644
---- a/drivers/mtd/spi-nor/sfdp.c
-+++ b/drivers/mtd/spi-nor/sfdp.c
-@@ -1344,6 +1344,17 @@ static int spi_nor_parse_profile1(struct spi_nor *nor,
++static inline int i2c_imx_isr_read(struct imx_i2c_struct *i2c_imx)
++{
++	int result;
++
++	result = i2c_imx_isr_acked(i2c_imx);
++	if (result)
++		return result;
++
++	/* setup bus to read data */
++	i2c_imx_setup_read(i2c_imx);
+ 
+ 	return 0;
+ }
+@@ -1172,6 +1178,16 @@ static irqreturn_t i2c_imx_isr(int irq, void *dev_id)
+ 	return i2c_imx_master_isr(i2c_imx, status);
+ }
+ 
++static u8 i2c_imx_addr_byte(struct i2c_msg *msg)
++{
++	u8 addr = i2c_8bit_addr_from_msg(msg);
++
++	if (msg->flags & I2C_M_REV_DIR_ADDR)
++		addr ^= 1;
++
++	return addr;
++}
++
+ static int i2c_imx_dma_write(struct imx_i2c_struct *i2c_imx,
+ 					struct i2c_msg *msgs)
+ {
+@@ -1200,7 +1216,7 @@ static int i2c_imx_dma_write(struct imx_i2c_struct *i2c_imx,
+ 	 * Write slave address.
+ 	 * The first byte must be transmitted by the CPU.
  	 */
- 	nor->params->hwcaps.mask |= SNOR_HWCAPS_PP_8_8_8_DTR;
+-	imx_i2c_write_reg(i2c_8bit_addr_from_msg(msgs), i2c_imx, IMX_I2C_I2DR);
++	imx_i2c_write_reg(i2c_imx_addr_byte(msgs), i2c_imx, IMX_I2C_I2DR);
+ 	time_left = wait_for_completion_timeout(
+ 				&i2c_imx->dma->cmd_complete,
+ 				msecs_to_jiffies(DMA_TIMEOUT));
+@@ -1242,14 +1258,20 @@ static int i2c_imx_prepare_read(struct imx_i2c_struct *i2c_imx,
+ 	int result;
+ 	unsigned int temp = 0;
  
+-	/* write slave address */
+-	imx_i2c_write_reg(i2c_8bit_addr_from_msg(msgs), i2c_imx, IMX_I2C_I2DR);
+-	result = i2c_imx_trx_complete(i2c_imx, !use_dma);
+-	if (result)
+-		return result;
+-	result = i2c_imx_acked(i2c_imx);
+-	if (result)
+-		return result;
 +	/*
-+	 * The xSPI Profile 1.0 table does not describe a Read Configuration
-+	 * Register (RDCR, 35h) instruction, and the single-byte RDCR default
-+	 * is not usable in 8D-8D-8D mode. Drop the SR2 read opcode for these
-+	 * octal-capable flashes so spi_nor_read_sr1_and_sr2() degrades to an
-+	 * SR1-only read and spi_nor_init() does not issue an unsupported
-+	 * command that the flash never answers. A manufacturer driver that
-+	 * actually needs SR2 can install its own opcode in a later fixup.
++	 * I2C_M_NOSTART continues a frame that is already open, so there is
++	 * no address phase: go straight to turning the bus around.
 +	 */
-+	nor->params->opcodes.read_sr2 = 0;
++	if (!(msgs->flags & I2C_M_NOSTART)) {
++		/* write slave address */
++		imx_i2c_write_reg(i2c_imx_addr_byte(msgs), i2c_imx, IMX_I2C_I2DR);
++		result = i2c_imx_trx_complete(i2c_imx, !use_dma);
++		if (result)
++			return result;
++		result = i2c_imx_acked(i2c_imx);
++		if (result)
++			return result;
++	}
+ 
+ 	dev_dbg(&i2c_imx->adapter.dev, "<%s> setup bus\n", __func__);
+ 
+@@ -1371,16 +1393,18 @@ static int i2c_imx_atomic_write(struct imx_i2c_struct *i2c_imx,
+ 	int i, result;
+ 
+ 	dev_dbg(&i2c_imx->adapter.dev, "<%s> write slave address: addr=0x%x\n",
+-		__func__, i2c_8bit_addr_from_msg(msgs));
++		__func__, i2c_imx_addr_byte(msgs));
+ 
+-	/* write slave address */
+-	imx_i2c_write_reg(i2c_8bit_addr_from_msg(msgs), i2c_imx, IMX_I2C_I2DR);
+-	result = i2c_imx_trx_complete(i2c_imx, true);
+-	if (result)
+-		return result;
+-	result = i2c_imx_acked(i2c_imx);
+-	if (result)
+-		return result;
++	if (!(msgs->flags & I2C_M_NOSTART)) {
++		/* write slave address */
++		imx_i2c_write_reg(i2c_imx_addr_byte(msgs), i2c_imx, IMX_I2C_I2DR);
++		result = i2c_imx_trx_complete(i2c_imx, true);
++		if (result)
++			return result;
++		result = i2c_imx_acked(i2c_imx);
++		if (result)
++			return result;
++	}
+ 	dev_dbg(&i2c_imx->adapter.dev, "<%s> write data\n", __func__);
+ 
+ 	/* write data */
+@@ -1402,7 +1426,7 @@ static int i2c_imx_atomic_write(struct imx_i2c_struct *i2c_imx,
+ static int i2c_imx_write(struct imx_i2c_struct *i2c_imx, struct i2c_msg *msgs)
+ {
+ 	dev_dbg(&i2c_imx->adapter.dev, "<%s> write slave address: addr=0x%x\n",
+-		__func__, i2c_8bit_addr_from_msg(msgs));
++		__func__, i2c_imx_addr_byte(msgs));
+ 
+ 	i2c_imx->state = IMX_I2C_STATE_WRITE;
+ 	i2c_imx->msg = msgs;
+@@ -1411,8 +1435,16 @@ static int i2c_imx_write(struct imx_i2c_struct *i2c_imx, struct i2c_msg *msgs)
+ 	/*
+ 	 * By writing the device address we start the state machine in the ISR.
+ 	 * The ISR will report when it is done or when it fails.
++	 *
++	 * I2C_M_NOSTART continues a frame that is already open and so has no
++	 * address byte: push the first data byte instead. That raises the same
++	 * interrupt and the ISR carries on from the second byte.
+ 	 */
+-	imx_i2c_write_reg(i2c_8bit_addr_from_msg(msgs), i2c_imx, IMX_I2C_I2DR);
++	if (msgs->flags & I2C_M_NOSTART)
++		imx_i2c_write_reg(msgs->buf[i2c_imx->msg_buf_idx++], i2c_imx,
++				  IMX_I2C_I2DR);
++	else
++		imx_i2c_write_reg(i2c_imx_addr_byte(msgs), i2c_imx, IMX_I2C_I2DR);
+ 	wait_event_timeout(i2c_imx->queue,
+ 			   i2c_imx->state == IMX_I2C_STATE_DONE ||
+ 			   i2c_imx->state == IMX_I2C_STATE_FAILED,
+@@ -1529,22 +1561,29 @@ static int i2c_imx_read(struct imx_i2c_struct *i2c_imx, struct i2c_msg *msgs,
+ 
+ 	dev_dbg(&i2c_imx->adapter.dev,
+ 		"<%s> write slave address: addr=0x%x\n",
+-		__func__, i2c_8bit_addr_from_msg(msgs));
++		__func__, i2c_imx_addr_byte(msgs));
+ 
+ 	i2c_imx->is_lastmsg = is_lastmsg;
+ 
+-	if (block_data)
+-		i2c_imx->state = IMX_I2C_STATE_READ_BLOCK_DATA;
+-	else
+-		i2c_imx->state = IMX_I2C_STATE_READ;
+ 	i2c_imx->msg = msgs;
+ 	i2c_imx->msg_buf_idx = 0;
+ 
+-	/*
+-	 * By writing the device address we start the state machine in the ISR.
+-	 * The ISR will report when it is done or when it fails.
+-	 */
+-	imx_i2c_write_reg(i2c_8bit_addr_from_msg(msgs), i2c_imx, IMX_I2C_I2DR);
++	if (msgs->flags & I2C_M_NOSTART) {
++		i2c_imx->state = block_data ? IMX_I2C_STATE_READ_BLOCK_DATA_LEN
++					    : IMX_I2C_STATE_READ_CONTINUE;
++		i2c_imx_setup_read(i2c_imx);
++	} else {
++		if (block_data)
++			i2c_imx->state = IMX_I2C_STATE_READ_BLOCK_DATA;
++		else
++			i2c_imx->state = IMX_I2C_STATE_READ;
 +
- out:
- 	kfree(dwords);
++		/*
++		 * By writing the device address we start the state machine in the ISR.
++		 * The ISR will report when it is done or when it fails.
++		 */
++		imx_i2c_write_reg(i2c_imx_addr_byte(msgs), i2c_imx, IMX_I2C_I2DR);
++	}
+ 	wait_event_timeout(i2c_imx->queue,
+ 			   i2c_imx->state == IMX_I2C_STATE_DONE ||
+ 			   i2c_imx->state == IMX_I2C_STATE_FAILED,
+@@ -1574,6 +1613,33 @@ static int i2c_imx_read(struct imx_i2c_struct *i2c_imx, struct i2c_msg *msgs,
  	return ret;
+ }
+ 
++#define I2C_IMX_UNSUPPORTED_PROTOCOL_MANGLING_FLAGS \
++	(I2C_M_IGNORE_NAK | I2C_M_NO_RD_ACK | I2C_M_STOP)
++
++static int i2c_imx_check_msgs(struct i2c_msg *msgs, int num)
++{
++	int i;
++
++	for (i = 0; i < num; i++) {
++		/* Reject rather than silently transfer */
++		if (msgs[i].flags & I2C_IMX_UNSUPPORTED_PROTOCOL_MANGLING_FLAGS)
++			return -EOPNOTSUPP;
++
++		if (msgs[i].flags & I2C_M_NOSTART) {
++			/*
++			 * NOSTART continues an already open frame. The first
++			 * message has nothing to continue from,
++			 * a 0 length continuation leaves the controller with
++			 * no byte to clock.
++			 */
++			if (i == 0 || msgs[i].len == 0)
++				return -EOPNOTSUPP;
++		}
++	}
++
++	return 0;
++}
++
+ static int i2c_imx_xfer_common(struct i2c_adapter *adapter,
+ 			       struct i2c_msg *msgs, int num, bool atomic)
+ {
+@@ -1583,6 +1649,10 @@ static int i2c_imx_xfer_common(struct i2c_adapter *adapter,
+ 	struct imx_i2c_struct *i2c_imx = i2c_get_adapdata(adapter);
+ 	int use_dma = 0;
+ 
++	result = i2c_imx_check_msgs(msgs, num);
++	if (result)
++		return result;
++
+ 	/* Start I2C transfer */
+ 	result = i2c_imx_start(i2c_imx, atomic);
+ 	if (result) {
+@@ -1604,7 +1674,7 @@ static int i2c_imx_xfer_common(struct i2c_adapter *adapter,
+ 		if (i == num - 1)
+ 			is_lastmsg = true;
+ 
+-		if (i) {
++		if (i && !(msgs[i].flags & I2C_M_NOSTART)) {
+ 			dev_dbg(&i2c_imx->adapter.dev,
+ 				"<%s> repeated start\n", __func__);
+ 			temp = imx_i2c_read_reg(i2c_imx, IMX_I2C_I2CR);
+@@ -1636,7 +1706,8 @@ static int i2c_imx_xfer_common(struct i2c_adapter *adapter,
+ #endif
+ 
+ 		use_dma = i2c_imx->dma && msgs[i].len >= DMA_THRESHOLD &&
+-			msgs[i].flags & I2C_M_DMA_SAFE;
++			msgs[i].flags & I2C_M_DMA_SAFE &&
++			!(msgs[i].flags & I2C_M_NOSTART);
+ 		if (msgs[i].flags & I2C_M_RD) {
+ 			int block_data = msgs->flags & I2C_M_RECV_LEN;
+ 
+@@ -1730,7 +1801,9 @@ static int i2c_imx_init_recovery_info(struct imx_i2c_struct *i2c_imx,
+ static u32 i2c_imx_func(struct i2c_adapter *adapter)
+ {
+ 	return I2C_FUNC_I2C | I2C_FUNC_SMBUS_EMUL
+-		| I2C_FUNC_SMBUS_READ_BLOCK_DATA;
++		| I2C_FUNC_SMBUS_READ_BLOCK_DATA
++		| I2C_FUNC_NOSTART
++		| I2C_FUNC_PROTOCOL_MANGLING;
+ }
+ 
+ static const struct i2c_algorithm i2c_imx_algo = {
 
 ---
-base-commit: 9a482184d910775cf648863148944945b74e2815
-change-id: 20260928-spi-nor-fix-eb7ebe22a740
+base-commit: 3d6d817622b0a9721e3cc404df3469171582be13
+change-id: 20260807-for-upstream-i2c-imx-lx2160-reverse-7a94b9561188
 
 Best regards,
 -- 
-Haibo Chen <haibo.chen@nxp.com>
+Vincent Jardin <vjardin@free.fr>
+
 
