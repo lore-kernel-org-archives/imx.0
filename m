@@ -1,101 +1,78 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.65.4
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792768557;
-	b=kJJjgzpp/Ip3Z3I4sFhwTenw1e1B8Ggucfb4FZ9btCyha2n0UVaKJpoYPvVyWluKtaxT
-	 AHzgkAFzjphbFsKSl2WTcM3jl+Fw/nATWPgs2QM2WrDwxDNa5z+pnlXVzgdeOIUHSun6m
-	 CJriuJ6Y7hzAMXw/FmABk4RQrQjDPkSOI9Tliz4CunfYKPILgkV3sacLmj57vGRD+ycpJ
-	 c6iVcEhGaUgYxeVWhVcWkNWhPDa/JU1yP/8bOV1tybS6RKi9hnRR6PBM6VhAhH/EOzCoj
-	 DX409DxM8Av/ST2KxjF3gt1tiZDrqmhnwLPb+M0gQggEchleJfU7rHn08xdXIAVEvNQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792768557;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:Content-Type:Content-Disposition:
-	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-LD-Processed:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=5oJpRDVpwsYL5wMq42O/LjLxP7ykplzeP8H6xERXWeg=;
-	b=QJ9H6fGkgpxzoZCl5/XiK7tZEVT+xmRzemH+TFapaF3sD747PoNI8r5e8Lc35y0wdn8M
-	 +Ip52pogDSOy71g3FEiBCH8nDLPX4PWK1g9qmvuAmB4raE5EQ5iDOatIYpkIys0jmhcbG
-	 2N4gyPmI7Sc7u8SE/7LXadUbVxXyGHqw0bZXERqe0GNPFQSkt8uAwEVcoKFjndUjSgYJ+
-	 38JVGZcUtCveZbmVhTiUNbAm1ftMvtzkZBNALJgSxkux34XqxSuqW/+Gcz+o5uXpEnQRB
-	 Z8j+e1Nm/CNBEBTz06uS2yolc4bpd1FwTS5qiSOf6W3KcmQIRVB/98cdCRrV3LLlOuw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.nxp.com;
-	spf=pass smtp.mailfrom=oss.nxp.com;
-	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=RLLVD7dZ;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.65.4
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011004.outbound.protection.outlook.com [52.101.65.4])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792773157;
+	b=yuF4osoxt+WBMGhFhK/w45UylnlDC31jTxJO3fdZmcceDV3kcG7gsplHLr+xBPO7NyWZ
+	 Vx100VyXb9rytQE1CgEwv5px/4ybc2gEljpKVNxX+YWigC7E4h3M1pathcxs0fQntDVyC
+	 Tb1UkoLBWfUnR4ONPZEoMi5y+zt3wb1G6rMJ8kfqY33HTuFPVqMbhfEoECpxmCM1x02ta
+	 sl+UlG0wvJBPkahR2qdivKcfbzvdIle24qneiNdFndOpIr+kRbPDBs4r3BKq3N3M76KSh
+	 8sfV4gEzgJAW6FEdCJZxtSAByfmWo2ekuaOkE8XFsLz8vkBk2mYCjVwirfTOMZ64XtA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792773157;
+	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:To:Cc:
+	 Subject:In-Reply-To:References:User-Agent:Date:Message-ID:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-Last-TLS-Session-Version;
+	bh=GJaEsAUs5iY5xuOs9aLJMvr/KwgNOBTvxn59QhAokoc=;
+	b=QYcFrryajugnAg7A7uVLPNtCL4yTiz0sYzACWv7bitqhj2VIgnFEybfPW4sd4MuRhPcW
+	 Q86KfjUCzRHBdWljQqwNBT6ZHc2NKBg1Nw5wk1wb0trWO7GbRRT0GAqTpP9H7mUuCgEvW
+	 XoWqUQU3jkYrVv7dlr3LtPOILYP9R2XibOCph76aiJM8gT6A1a5J1yggl/i5m6fHCFJzb
+	 MBKrHw4Z47DNDul1axI0fpesKVzxdxF0qb/MAoaBpGIAWCNkE8VnJcVX3eV/hGRS7W3bz
+	 Xv8uueaIXIrKqbekboBcVrqGUIC89GE1vR+vzAyZMIILE4bssfblGboyzi7ZrSqyQhg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=bootlin.com;
+	spf=pass smtp.mailfrom=bootlin.com;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b="b/7K4SLQ";
+	arc=none smtp.remote-ip=185.246.85.4
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58419606A31B
-	for <imx@lists.linux.dev>; Fri, 23 Oct 2026 15:15:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 58419606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1572606A31E
+	for <imx@lists.linux.dev>; Fri, 23 Oct 2026 16:32:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C1572606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=RLLVD7dZ
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=yw6FOWl4vSjsWh0rvQSQfJmO7rEqTM+QyjAvQbfjYu83H8RyQR7MKERuYfHsf4aDuHxDJI9y87OYt+lOZ8Ac6np2LDzgvN/mIOCUjeFgiE8eWv29qy8kz98HAflqC0mo8eI4Zi1XfLfolNUAPIy5PMlc8MO88KpAhygbENnGLXakQmfR/bS+VKNbLdeybsONxW4NIjNUM7ynhvV3h0AJIyB9EqFT0XA7RKyLtjsHTxWcaYq1gBJI+50EVAzF0kv7YnXEdL51SlrOWQutSczjqAJ4JqgIlkkSML3+sQMCYSj2tx4Y6YOX5CXQ5S7Eu+w2fqI8kryZrdC/4+u8yEA8Jg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5oJpRDVpwsYL5wMq42O/LjLxP7ykplzeP8H6xERXWeg=;
- b=oBtzsgnMQUBNylmiTQGjTSqzsSsnoIFmBt4j1puUybQaki02BIQhg2ZMW38GVlaHM5UVIA9JS4ZaCW+R+lQKkjl6+V0zLiSI3TjgjoiS0Jc7CrQPDhem0bLU9AvD21W1ZE5+Md1OaUxtM2w0TUebkK0fZYGf9nI8VqWu0qmLzErh8eg+audCBWqpJrQcG7Ogky+7GJF4QCk8J3YZVdxN0A1clqWTMAoWkf5FyYuI1UsQSHHnphs6UEwoKOUatee1HBrzyZ3+LMXyaP48OSamLOKgJCDGoJnSW2kxAFKeV5a2vTHWY3wJDei2yMDtXJ7beXF22Ou1ZrzKa3LGMiybOw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5oJpRDVpwsYL5wMq42O/LjLxP7ykplzeP8H6xERXWeg=;
- b=RLLVD7dZAXsr6hCPMjXa19ntVtc/iJDJqTUWe/7NpuoB+QkxxNndovb/FgaMKP6rAVdWJZwepGTQRiig0CpgYMsEmJTCGjl7hfP+Xc34JTiCitXq5QL3rE9MJusk3IVWDqC3ri5TYgKNUBmSA4duMFX6Tszy/GDNfnZNqPsgwnaVd/wrrUeTTIoXQob73JCZPMlIS9t8zJRyO7bsWZ86Gb/3idBkgVxX48GCO5nveZ7KB5ypGSj/0pjg5hGQiH1Ya8D03NMfgwJvzWaamiyG8831s0KRwxHro27EYS4fTGhqHq9Dj1nfvdUyg4hltca9pVtQG83pIEZPPFHXfNgXBw==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from MI3PR04MB12438.eurprd04.prod.outlook.com (2603:10a6:290:76::14)
- by MA9PR04MB215426.eurprd04.prod.outlook.com (2603:10a6:250:106::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.19; Fri, 23 Oct
- 2026 15:15:53 +0000
-Received: from MI3PR04MB12438.eurprd04.prod.outlook.com
- ([fe80::c715:c32:8bb1:b70b]) by MI3PR04MB12438.eurprd04.prod.outlook.com
- ([fe80::c715:c32:8bb1:b70b%6]) with mapi id 15.21.0546.012; Fri, 23 Oct 2026
- 15:15:47 +0000
-Date: Fri, 23 Oct 2026 10:15:36 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: Stefano Radaelli <stefano.radaelli21@gmail.com>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
-	Stefano Radaelli <stefano.r@variscite.com>,
-	linux-arm-kernel@lists.infradead.org, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	pierluigi.p@variscite.com, Nate.D@variscite.com,
-	Peng Fan <peng.fan@nxp.com>, Shawn Guo <shawnguo@kernel.org>
-Subject: Re: [RFC] arm64: dts: freescale: Supporting Variscite SoM and
- carrier revisions
-Message-ID: <att6GNZAVv64Rlnv@SMW015318>
-References: <20261023115242.11197-1-stefano.r@variscite.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261023115242.11197-1-stefano.r@variscite.com>
-X-ClientProxiedBy: PH0P220CA0030.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:510:d3::30) To MI3PR04MB12438.eurprd04.prod.outlook.com
- (2603:10a6:290:76::14)
+	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=b/7K4SLQ
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 2352F4E412D7;
+	Fri, 23 Oct 2026 16:32:33 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id CD2BB60398;
+	Fri, 23 Oct 2026 16:32:32 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BAE7A1032902F;
+	Fri, 23 Oct 2026 18:32:22 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1792773147; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=GJaEsAUs5iY5xuOs9aLJMvr/KwgNOBTvxn59QhAokoc=;
+	b=b/7K4SLQrEUfvlJZ21l0bHavKh2fwL+sBqvQoA9vMBAnYRa9Fx6i7jB288fELO7lx8Q6aB
+	L7amEk2PoqLRf7ON0d/L3VAgjuEXiaRH8ElumIYoH74qU6IxSvYQkJR6bGYBcM6Refv4h/
+	aHS+7HaEkVoY6RRHEOlQ+Zk9xda2H2Ph7CJIonF2oz5lr28WME6yVzc2JyScv/PbqsXpRl
+	IHuc38eqbE+O5/Is0OnWOgTWCghBB48iKxPDW8hYvdhtuucHW8JZCLT704Wq9IFs7tLCnl
+	8IhXLf+Udkt/6Hln2I7apz+t3grcOq9ysARa1SdNUyVWVf5WHMw4tyrK3nbxtg==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Jerome Brunet <jbrunet@baylibre.com>
+Cc: Brian Masney <bmasney@redhat.com>,  Stephen Boyd <sboyd@kernel.org>,
+  Abel Vesa <abelvesa@kernel.org>,  Peng Fan <peng.fan@nxp.com>,  Frank Li
+ <Frank.Li@nxp.com>,  Sascha Hauer <s.hauer@pengutronix.de>,  Pengutronix
+ Kernel Team <kernel@pengutronix.de>,  Fabio Estevam <festevam@gmail.com>,
+  Rob Herring <robh@kernel.org>,  Krzysztof Kozlowski <krzk+dt@kernel.org>,
+  Conor Dooley <conor+dt@kernel.org>,  Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>,  Ian Ray <ian.ray@gehealthcare.com>,
+  =?utf-8?Q?Herv=C3=A9?= Codina <herve.codina@bootlin.com>,  Luca Ceresoli
+ <luca.ceresoli@bootlin.com>,  linux-clk@vger.kernel.org,
+  linux-kernel@vger.kernel.org,  imx@lists.linux.dev,
+  linux-arm-kernel@lists.infradead.org,  devicetree@vger.kernel.org
+Subject: Re: [PATCH 0/5] clk: Use v2 rate calculation on i.MX8MP
+In-Reply-To: <1jtsmch5id.fsf@starbuckisacylon.baylibre.com> (Jerome Brunet's
+	message of "Fri, 23 Oct 2026 16:10:34 +0200")
+References: <20261021-ge-clk-lcm-v1-0-246cc35b5ffb@bootlin.com>
+	<atjIIHkoNwBVDO5b@redhat.com>
+	<1jtsmch5id.fsf@starbuckisacylon.baylibre.com>
+User-Agent: mu4e 1.12.12; emacs 30.2
+Date: Fri, 23 Oct 2026 18:32:22 +0200
+Message-ID: <87h5icnzs9.fsf@bootlin.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -105,132 +82,398 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|MA9PR04MB215426:EE_
-X-MS-Office365-Filtering-Correlation-Id: 031a1091-420d-4b00-7411-08df311883fb
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|366016|376014|7416014|1800799024|19092799006|23010399003|261022105027099003|261022075727099003|10067099003|56012099006|18002099003|22082099003|11063799006;
-X-Microsoft-Antispam-Message-Info:
- uN948liOzVwNH3SHQQYOg3hA2o8DxiQ2VqLsOpKePl6X/76phwUcrFnlZV1mlcNDBZj6yFyjcJ65M5iqWAAEnXs1tWDffzu6GG7dkimsFdptX1kDXmkBaFUHGszVJE0IqnkxDvTC84H1CdEBgfK+eC/LbjVMs6b4thAViJa9SAc4/AvmjYw7cvbvzX3hPPg6clqSha+Kx0Jayhy9M09Wcqk7e8sfJ9vuBwlPFNZrusSCy6zElGDeu/o8JPtl2ThGqsbuBuDo7NMtDNALWq+/W30XmqHrXTyITOTALG73gOYsFQqAFJlGH5EW2yX6J9xs4zyAihHZpwY+cmXOF1qJpI3/wS+K5CtYau8wLIB423GrVupv4MyXN2kBpKGXBpRLxk2ZLo5Kg0G/bwTP8Hwds34hXm/x1EmCqOKJYdflKFCtq/zO/D5KoqcsD9IcoqP3CGM7og/iK+kmwclj4G19c43XukhzgWsgVXgJO7nytv7/XPMcYYeQPFW8YB4OflTnDl++q0BmS35MK+2fZvyGlXnSmAlATLLVE2KlG/nFGxGrdD2J4dzYW0AN8xkzoCfRy8KDYP6fvieMNFlbDfM7/o05sZ9pu/4Mqlt5NnJxaYxhfPR0K1R9gF0tBpavv4vK0aB6ZLBrgnC9aNwk2F8jMeTlBcVUdfntiynHK6RChpE=
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(19092799006)(23010399003)(261022105027099003)(261022075727099003)(10067099003)(56012099006)(18002099003)(22082099003)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?us-ascii?Q?yJkmBM6TlVeRh3yanJH7R4ylslpvf72g7Ya+E6ykOiITSEn61GjEySVlKJ0P?=
- =?us-ascii?Q?tRm8Z8OdVUFk5uTXPRmBB3q3/6NLOoXdjmTaBQ/FxUJGk+DTyH6WOSnQNpet?=
- =?us-ascii?Q?gE8F38motOyAiMgwgCvzOjBfKUSDqGmatjMXHsAeXJEz8No7B6XFMGEt9eFF?=
- =?us-ascii?Q?asXWzcb0xIhPRspq3IEAnrauD7b3KbfzZkaMibh1deWGcHN8d9WzOLolaLPH?=
- =?us-ascii?Q?Cu6sz9AfarPbzI0SA+NM3xV8jNyURNFBxkq0XnjCokGgmCrQnPwTV6roAACM?=
- =?us-ascii?Q?mHn6TMhPLMCBqgbGRY0wuv9SRFmxFvDDXtG6Q/ptKqBajGyzN3g89Toa0+/V?=
- =?us-ascii?Q?1ygPs6PGqJl3Dt1RF2Dho1Z3HW+p2gbhHs6mXdDFDvZ1+DC/PNEnJ5REbSXt?=
- =?us-ascii?Q?hELUFZ/srlesmzJ6EFwa95O1486H7lSeSSeJZXCEGTcufixoFDKmANrySyRK?=
- =?us-ascii?Q?FXRGS4HFvbkxYg2NupLDGykzLTFTCO1kpu59Bzdzgry/UZwIwmpru6N2+hDg?=
- =?us-ascii?Q?6lptC/H5nQKyGirFf7z19NsmRBpgPnZ9kFctkca9eXKlrgz0SYAOkekjYEUp?=
- =?us-ascii?Q?aEsA3CD0zORvkvYy02Sqj4O5g4ijbJiGsojYxrKQOdA0h5Iy56QCk5NLvB+n?=
- =?us-ascii?Q?3uB57wy6XeUaSNaKIENKTdRZ4PGruP2Fv+gWGpdrbugk5X1L7cZmO9Nm2iTr?=
- =?us-ascii?Q?JwxAHS/IddVRQaNQR1aUGQrthu/1QiJh/7WWmo1ov3P/m2uRVYKxmXyslD8g?=
- =?us-ascii?Q?lMTPRagH99JDiMsSyhnN7/FqNuhDGkK8BZGTEEf/HGKvNleB1ok8AYkon4gj?=
- =?us-ascii?Q?ulPf3wiRhEeDNuPl8PNSH132meV6LIUKK+Ah3iH3/ScTUwTZsxJI6WFG7DY8?=
- =?us-ascii?Q?GQf8D4Q0xpaXS2ISY+PM0YAP2Ukv9E2sToTzTjKpMOYq6cAs1WlNSEwJJgPo?=
- =?us-ascii?Q?B+BG1IlsUpLiyWBO2zM4cWUP5+D5BBPeW4nBcF3sfLOISYjIyg3cHOwmlKWW?=
- =?us-ascii?Q?Dgi2z0c196gg5tQLdWlsdbhLxgpOihx52I7bsO31hcQEh7Z8fMe+FsW5stbt?=
- =?us-ascii?Q?Y4PTNeQLEn/Fc9N2kKyZg5aVkuZssbkqnXy6U8ZhtE0/iDtSDASKqOPwckyO?=
- =?us-ascii?Q?OpMKe6145OO/+qoN0X3sfw8Ilu2aLXe26rdGtFuve+I+diEMpyAFsJ17b7DY?=
- =?us-ascii?Q?oOscNny9OvayAb2I/UNqeZhSfJglizQJnNWgcZXOG7q523/JurfNqxMMTv7G?=
- =?us-ascii?Q?IAeGXqwwDjoLmMb2mzQ8dAmcW8yzOKLZyoOBzNptZLVWJKSJYIW85PfBYNCi?=
- =?us-ascii?Q?TDJGRaSYkFUqH4CtYO4GumASRcxvl6FCP0nIEUFfTi9cYKjMpp5RpM/ZubmD?=
- =?us-ascii?Q?l1ukniBMIMJ7+Fo9dcfmtc1x0NvRfPTIbc4S0CDBZQdQIoSDQ1iq7K0KZLX4?=
- =?us-ascii?Q?0Jk+WSevc1p30YKI7CU8dBclBw69g7AYj5fdefrf7F2HO99+uL3fCmdS/755?=
- =?us-ascii?Q?dA0+kuaNONuHGW6ks9PnOGaxJX+PlPejKLveP6WG7HGAHrIErTQG0IlTjkwz?=
- =?us-ascii?Q?6HQkooGV154fA54unSaprj0acxlNXxc3yTon8CR7JJS1l0RhfRd38MY1Godj?=
- =?us-ascii?Q?bpAW86Tya7UMv4FQG4TGkBNV8apjRNnglnmgsVddzFdESmOyVSwM1WY6k9Ct?=
- =?us-ascii?Q?cYaBA/VKxk+so3KrBc2A6YanLj5xzuBs48Vva2WCderqeD5wY9B6Q+waWu7T?=
- =?us-ascii?Q?lu7L7UQSrXF8DfAVilt3kxvuUXh8K0QJFE9e+hJUSuDCWYz5VZTR?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 031a1091-420d-4b00-7411-08df311883fb
-X-MS-Exchange-CrossTenant-AuthSource: MI3PR04MB12438.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Oct 2026 15:15:47.5483
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: TsntFsBw1CXhi2/Ksgb5wugGO0KlicxSofL0v+eC5jXpk0Ei5GxVSM05gGHQmM+Fc8y5WzSEf4BVCpc2FVEmudDyfoV/uuIq8hGKuTzylnLrVYRl3csveXQBaDq+vL91
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MA9PR04MB215426
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Fri, Oct 23, 2026 at 01:52:41PM +0200, Stefano Radaelli wrote:
-> Hi all,
->
-> At Variscite, we are starting to look at how best to maintain upstream
-> Linux support for multiple hardware revisions of our SoMs and carrier
-> boards. We would appreciate guidance before settling on an approach.
-> Our goal is to support new revisions while allowing customers to keep
-> using current kernels on older hardware.
->
-> Our platforms are typically described by a SoM .dtsi and a carrier-board
-> .dts, for example imx8mm-var-som.dtsi and imx8mm-var-som-symphony.dts.
-> Both the SoM and the carrier can evolve independently. Some revisions
-> require changes to the hardware description, while others may work with
-> the same DT. Over time, this leaves us with several combinations to
-> support,> without wanting to duplicate complete device trees for each.
->
-> What would be the recommended upstream approach to organizing and
-> maintaining these revisions and their supported combinations?
->
-> One possibility we have considered is keeping the common SoM and carrier
-> descriptions in .dtsi files, with revision-specific .dtsi files extending
-> or overriding them, and small top-level .dts files selecting the required
-> combination. Would this be a suitable structure? Are there established
-> patterns or existing platforms we should follow, particularly to keep
-> changes for newer revisions from affecting older ones?
+Hello,
 
-It is quite depend on how much difference. maybe choose overlay to update.
-but some change is quite big. Have to rename to .dtsi and use difference
-dts to include dtsi.
+On 23/10/2026 at 16:10:34 +02, Jerome Brunet <jbrunet@baylibre.com> wrote:
 
+> On mer. 21 oct. 2026 at 10:11, Brian Masney <bmasney@redhat.com> wrote:
 >
-> We are also wondering how to handle revisions that can share the same
-> description. As a concrete example, we have discussed the following
-> possible grouping for DART-MX8M Mini and Sonata:
+>> Hi Miquel (and Jerome),
+>>
+>> On Wed, Oct 21, 2026 at 03:09:56PM +0200, Miquel Raynal wrote:
+>>> Hello,
+>>>=20
+>>> Thanks to Brian's series, we can finally solve the problem of rate
+>>> calculation faced with the i.MX8MP LDB/PIX clocks. I've tested this
+>>> series using a v7.1 mainline kernel with a lot of unrelated DRM
+>>> patches. I then re-applied it on top of clk-next after fixing the few
+>>> conflicts when applying Brian's series, but that means I cannot (yet)
+>>> run a 7.2/7.3 kernel on the platform (and applying this series with b4
+>>> will fail due to Brian's series no longer applying on top of clk-next).
+>>>=20
+>>> The DTS patch is there for reference, I don't mind if it's not picked
+>>> up.
+>>>=20
+>>> Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+>>
+>> Thanks for testing and posting this!
+>>
+>> I know that Jerome would like to see some changes to my rate change
+>> series before it can be merged. I'm going to probably poorly describe
+>> his concerns here, so apologies in advance if I miscommunicate this
+>> Jerome. I'd appreciate it if you could clarify.
+>>
+>> - Currently the latest version posted (v8) to the list has the LCM
+>>   helper (clk_hw_get_children_lcm) in drivers/clk/clk.c, and the LCM
+>>   helper should be in clk-divider.c. I agree that it should be in the
+>>   divider code, but we'd have to export some additional APIs to allow
+>>   that. In the future if we went with what's in v8, and wanted to fix
+>>   the fractional dividers, then it would need a similar type of helper
+>>   in clk.c, which is not ideal. I initially went with this approach to
+>>   limit the APIs that are exported from the clk core.
+>>
+>> - I have a draft v9 series that I haven't posted yet that adds two new
+>>   helpers: clk_hw_get_num_children() and clk_hw_get_child_by_index()
+>>   similar to the existing functions for the parents. This allows moving
+>>   the LCM logic into clk-divider.c where it belongs, however the
+>>   downside to this approach is that it expands the clk exported APIs so
+>>   that providers will be able to fully walk the clk tree. The concern is
+>>   that providers may abuse this in the future and it may limit future
+>>   changes / cleanups to the clk core. For example, if we wanted to clean
+>>   up the way locking is done, this may potentially limit the available
+>>   options.
+>>   https://git.kernel.org/pub/scm/linux/kernel/git/clk/linux.git/log/?h=
+=3Dclk-divider-scaling-v9
+>>
+>> - He would like to see it where each clk consumer sets the min/max rate
+>>   that's acceptable, and the clk scaling in the provider takes those
+>>   ranges into account when rates are negotiated.
+>>
+>> Anyways, please chime in Jerome if I got this right / wrong, and any
+>> additional concerns.
+>>
 >
->   imx8mm-var-dart-2.0-sonata-1.0.dtb
->     DART-MX8M Mini v2.0-v2.1 on Sonata v1.0-v1.3
-
-How about use boards compatible string? You add new compatible for new
-boards, so user know this dts cover which boards.
-
+> Hi Brian, Miquel,
 >
->   imx8mm-var-dart-2.2-sonata-1.4.dtb
->     DART-MX8M Mini v2.2 on Sonata v1.4
+> Thanks Brian for the summary, and Miquel for testing and posting this.
+> The i.MX8MP LDB/pixel case is a real problem and I'd like us to solve
+> it. My concerns are about how, more than whether.
 >
-> These are proposed names, assuming that the same DT correctly describes
-> all the hardware combinations covered by each entry.
-
-If new boards 2.3 appear, do you plan change to
-imx8mm-var-dart-2.2-sonata-1.4-2.3.dtb?
-
-Rename affect addtional problem or efforts when back port.
-
+> You got most of it. The main nuance is I want to convey is where it
+> should live IMO: not in a divider helper, and not in providers at all,
+> but in the core. I'll try to explain.
 >
-> Would it be acceptable to keep updating the first DTS to support a
-> compatible revision such as v2.1, retaining the v2.0 filename, as long as
-> it remains correct for all previously supported hardware?
-
-I think it is fine.
-
-Frank
-
-> In this scheme,
-> we would add a separate DTS/DTB for v2.2 only if a different description
-> were needed.
+> So far, CCF has preserved the settings of each element, or more
+> honestly, left them alone: if a divider divides by 4, it keeps doing so
+> whatever happens to its parent. This behavior has been there for years
+> and many devices rely on it, even if unknowingly. Miquel, I understand
+> you would rather make the new behavior the default, but I think this one
+> is here to stay. That said, it would be nice to have a way to say that
+> the rate should be preserved rather than the setting. I'll come back
+> to that.
 >
-> This is an initial idea rather than a settled design, so suggestions for
-> a different approach would be very welcome.
+> My first concern is about the responsibilities of each component. IMO a
+> provider should only describe the transfer function it implements:
+> "given this parent rate, here is what I can do". It should not walk
+> the tree or care about what its children are doing. Coordinating the
+> providers is the core's job, without assumptions about their transfer
+> functions.
 >
-> Thanks,
-> Best Regards,
-> Stefano
+> Providers already query their parents: a mux asks each candidate
+> parent what it can provide, and a clock with CLK_SET_RATE_PARENT
+> forwards its request upward. That is the request path, and the core
+> stays in charge of it. Reading the state of children or siblings, and
+> deciding on their behalf, is a different thing. Once a provider is
+> allowed to do that, there is no good reason to deny it to the others,
+> and I think that would make the core much harder to maintain. It could
+> also get in the way of other pressing work, like the global lock problem,
+> where tree walking will certainly play a critical role. Miquel's
+> patch 2 is a good illustration: the helper ends up comparing the
+> clk_hw of the tree with the inner clk_hw of a composite, which is not
+> part of the tree.
 >
+> My second concern is that it is tied to the integer divider, since it
+> relies on the LCM. If another element with a different transfer
+> function sits on the path, it does not work, as we discussed. We could
+> extend the principle to other types, but:
+> * I don't see how the different types would reconcile, since each one
+>   does its own thing in its own .determine_rate();
+> * the change is no longer simple and harmless if it has to spread to
+>   every provider to work.
+>
+> The behavior is also hard for consumers to predict. For example, the
+> parent rate is only negotiated with the subtree of the divider's
+> direct parent. With a gate between the divider and the PLL, the other
+> branches of the PLL are left out. That could be fixed with more tree
+> walking in the provider, which brings us back to my first point.
+>
+> If such a mechanism is needed, I would much prefer it done entirely in
+> the core, in a generic way, with no assumption about the transfer
+> functions involved. I realize this may go against a direction
+> suggested at a previous LPC, which this series followed, and I think the
+> points above are worth reconsidering it for.
+>
+> I say "if" because I doubt clock trees are designed with runtime rate
+> negotiation in mind. So far, we have mostly dealt with these cases by
+> removing CLK_SET_RATE_PARENT and using assigned-clock-rates on the
+> shared ancestor. I understand that falls short when the PLL has to
+> follow the display mode, as here.
+>
+> For rate negotiation, my suggestion would be to reuse what the
+> framework already has: clock ranges, and re-running .determine_rate()
+> on the children being dragged along, with the common ancestor's rate
+> pinned. When that rate does not suit a sibling's range, other ancestor
+> rates can be tried within the constraints, rather than giving up.
+>
+> clk_set_rate() is a best effort function. It tries to get as close to
+> the request as possible, honoring the ranges of every clock along the
+> path, and it is up to the consumer to decide whether the result is
+> good enough. That decision is lost if the framework recomputes the
+> rates of a sibling branch on its own. Ranges could help it decide:
+> either "I'm fine with the new rate", or -EBUSY.
+
+I see an upside with this approach: we could keep one single rate
+negotiation logic. But it still requires modifications to be done on a
+per user basis to be enabled (but that is needed from your perspective).
+
+While I fully understand all the concerns expressed above, there has
+been one minor point that arose while working on your series: it's
+very hard to determine the tolerance beyond which the clock rate shall
+be refused. Expect bikeshedding on a per driver basis.
+
+> What I'm suggesting is to treat any clock with a range as one that
+> needs updating. Its consumer cared enough to tell us what it can and
+> cannot cope with. That removes the need for a specific flag, and puts
+> the rate policy in the consumer, which is where I'd prefer use case
+> choices to live, rather than in the provider or the core. It would
+> also fix clocks being dragged out of their range during an update.
+> Presumably, a clock without a range does not care enough to give us a
+> decider, so the framework has no basis to act on its behalf and keeps
+> today's behavior. I think this behavior will keep on being good enough
+> for the vast majority clocks out there and it is a lot lighter
+> on the math side (which is already quite severe as it is)
+
+Well, yeah, I see we share conclusions :-)
+
+> I've been checking whether the idea is remotely feasible. It involves
+> multiple planning stages and multiple tops. It is still very rough,
+> but there is the beginning of something:
+>
+> https://github.com/jbrun3t/linux/commits/clk/clk-rate-range-update/
+>
+> Miquel, if you fancy trying it, please let me know whether it works
+> for you. All you should need is to set a range on the clocks you care
+> about.
+
+I managed to pull most of the clock patches in your branch and apply
+them to my 7.2 branch (with a couple of tweaks). I then made the changes
+to request a tolerance as you hinted (available below) in the two
+relevant drivers: it worked as expected!
+
+While doing so, I realized the whole operation (set rate, set rate
+range, get rate and verify) needs to be repeated almost identically in
+every user of the "tolerance composition" logic, which probably
+indicates that a core helper would be relevant instead. I had in mind
+something like ~clk_set_rate_and_tolerance() which would do the
+equivalent of my fsl_ldb_link_rate_set() and lcdif_pixel_rate_set()
+helpers.
+
+> Sorry for this rather long explanation.
+>
+> Brian, your series is what got this discussion going, I know a lot of
+> efforts have gone into it already. I'd be glad to work on this together.
+
+In case that is relevant, here is below the code snippet which I used to
+get my panels working after removing the assigned rates from the DTS on
+i.MX8MP.
+
+Thanks,
+Miqu=C3=A8l
+
+diff --git a/drivers/gpu/drm/bridge/fsl-ldb.c b/drivers/gpu/drm/bridge/fsl-=
+ldb.c
+index 1d65c75845a4..db17b26b7f3f 100644
+--- a/drivers/gpu/drm/bridge/fsl-ldb.c
++++ b/drivers/gpu/drm/bridge/fsl-ldb.c
+@@ -16,6 +16,13 @@
+ #include <drm/drm_bridge.h>
+ #include <drm/drm_of.h>
+=20
++#define FSL_LDB_CLK_TOLERANCE_PERCENT  1
++
+ #define LDB_CTRL_CH0_ENABLE                    BIT(0)
+ #define LDB_CTRL_CH0_DI_SELECT                 BIT(1)
+ #define LDB_CTRL_CH1_ENABLE                    BIT(2)
+@@ -111,6 +118,44 @@ static unsigned long fsl_ldb_link_frequency(struct fsl=
+_ldb *fsl_ldb, int clock)
+                return clock * 7000;
+ }
+=20
++static int fsl_ldb_link_rate_set(struct fsl_ldb *fsl_ldb,
++                                const struct drm_display_mode *mode)
++{
++       unsigned long requested_link_freq, min_link_freq, max_link_freq;
++       unsigned long configured_link_freq;
++       int ret;
++
++       requested_link_freq =3D fsl_ldb_link_frequency(fsl_ldb, mode->clock=
+);
++       min_link_freq =3D requested_link_freq -
++                       requested_link_freq * FSL_LDB_CLK_TOLERANCE_PERCENT=
+ / 100;
++       max_link_freq =3D requested_link_freq +
++                       requested_link_freq * FSL_LDB_CLK_TOLERANCE_PERCENT=
+ / 100;
++
++       ret =3D clk_set_rate(fsl_ldb->clk, requested_link_freq);
++       if (ret) {
++               dev_err(fsl_ldb->dev, "Failed to set %pC to %lu Hz: %d\n",
++                       fsl_ldb->clk, requested_link_freq, ret);
++               return ret;
++       }
++
++       ret =3D clk_set_rate_range(fsl_ldb->clk, min_link_freq, max_link_fr=
+eq);
++       if (ret) {
++               dev_err(fsl_ldb->dev,
++                       "Failed to keep %pC in [%lu, %lu] Hz: %d\n",
++                       fsl_ldb->clk, min_link_freq, max_link_freq, ret);
++               return ret;
++       }
++
++       configured_link_freq =3D clk_get_rate(fsl_ldb->clk);
++       if (configured_link_freq < min_link_freq ||
++           configured_link_freq > max_link_freq)
++               dev_warn(fsl_ldb->dev,
++                        "Configured %pC clock (%lu Hz) does not match requ=
+ested LVDS clock: %lu Hz\n",
++                        fsl_ldb->clk, configured_link_freq, requested_link=
+_freq);
++
++       return 0;
++}
++
+ static int fsl_ldb_attach(struct drm_bridge *bridge,
+                          struct drm_encoder *encoder,
+                          enum drm_bridge_attach_flags flags)
+@@ -130,11 +175,10 @@ static void fsl_ldb_atomic_enable(struct drm_bridge *=
+bridge,
+        const struct drm_display_mode *mode;
+        struct drm_connector *connector;
+        struct drm_crtc *crtc;
+-       unsigned long configured_link_freq;
+-       unsigned long requested_link_freq;
+        bool lvds_format_24bpp;
+        bool lvds_format_jeida;
+        u32 reg;
++       int ret;
+=20
+        /* Get the LVDS format from the bridge state. */
+        bridge_state =3D drm_atomic_get_new_bridge_state(state, bridge);
+@@ -175,14 +219,9 @@ static void fsl_ldb_atomic_enable(struct drm_bridge *b=
+ridge,
+        crtc_state =3D drm_atomic_get_new_crtc_state(state, crtc);
+        mode =3D &crtc_state->adjusted_mode;
+=20
+-       requested_link_freq =3D fsl_ldb_link_frequency(fsl_ldb, mode->clock=
+);
+-       clk_set_rate(fsl_ldb->clk, requested_link_freq);
+-
+-       configured_link_freq =3D clk_get_rate(fsl_ldb->clk);
+-       if (configured_link_freq !=3D requested_link_freq)
+-               dev_warn(fsl_ldb->dev,
+-                        "Configured %pC clock (%lu Hz) does not match requ=
+ested LVDS clock: %lu Hz\n",
+-                        fsl_ldb->clk, configured_link_freq, requested_link=
+_freq);
++       ret =3D fsl_ldb_link_rate_set(fsl_ldb, mode);
++       if (ret)
++               return;
+=20
+        clk_prepare_enable(fsl_ldb->clk);
+=20
+@@ -241,6 +280,8 @@ static void fsl_ldb_atomic_disable(struct drm_bridge *b=
+ridge,
+        regmap_write(fsl_ldb->regmap, fsl_ldb->devdata->ldb_ctrl, 0);
+=20
+        clk_disable_unprepare(fsl_ldb->clk);
++
++       clk_drop_range(fsl_ldb->clk);
+ }
+=20
+ #define MAX_INPUT_SEL_FORMATS 1
+diff --git a/drivers/gpu/drm/mxsfb/lcdif_kms.c b/drivers/gpu/drm/mxsfb/lcdi=
+f_kms.c
+index ade76c3f4e4e..2dddb82e0269 100644
+--- a/drivers/gpu/drm/mxsfb/lcdif_kms.c
++++ b/drivers/gpu/drm/mxsfb/lcdif_kms.c
+@@ -32,6 +32,13 @@
+ #include "lcdif_drv.h"
+ #include "lcdif_regs.h"
+=20
++#define LCDIF_PIXEL_CLK_TOLERANCE_PERCENT      1
++
+ struct lcdif_crtc_state {
+        struct drm_crtc_state   base;   /* always be the first member */
+        u32                     bus_format;
+@@ -527,6 +534,38 @@ static void lcdif_crtc_atomic_flush(struct drm_crtc *c=
+rtc,
+        spin_unlock_irq(&crtc->dev->event_lock);
+ }
+=20
++static int lcdif_pixel_rate_set(struct lcdif_drm_private *lcdif,
++                               const struct drm_display_mode *m)
++{
++       unsigned long pix_rate =3D m->clock * 1000;
++       unsigned long min_rate, max_rate;
++       int ret;
++
++       /*
++        * Pin the pixel rate so a change on the PLL made for another branch
++        * (typically the LDB serializer clock) does not drag it away.
++        */
++       min_rate =3D pix_rate - pix_rate * LCDIF_PIXEL_CLK_TOLERANCE_PERCEN=
+T / 100;
++       max_rate =3D pix_rate + pix_rate * LCDIF_PIXEL_CLK_TOLERANCE_PERCEN=
+T / 100;
++
++       ret =3D clk_set_rate(lcdif->clk, pix_rate);
++       if (ret) {
++               drm_err(lcdif->drm, "Failed to set pixel clock to %lu Hz: %=
+d\n",
++                       pix_rate, ret);
++               return ret;
++       }
++
++       ret =3D clk_set_rate_range(lcdif->clk, min_rate, max_rate);
++       if (ret) {
++               drm_err(lcdif->drm,
++                       "Failed to keep pixel clock in [%lu, %lu] Hz: %d\n",
++                       min_rate, max_rate, ret);
++               return ret;
++       }
++
++       return 0;
++}
++
+ static void lcdif_crtc_atomic_enable(struct drm_crtc *crtc,
+                                     struct drm_atomic_commit *state)
+ {
+@@ -537,8 +576,11 @@ static void lcdif_crtc_atomic_enable(struct drm_crtc *=
+crtc,
+        struct drm_display_mode *m =3D &lcdif->crtc.state->adjusted_mode;
+        struct drm_device *drm =3D lcdif->drm;
+        dma_addr_t paddr;
++       int ret;
+=20
+-       clk_set_rate(lcdif->clk, m->clock * 1000);
++       ret =3D lcdif_pixel_rate_set(lcdif, m);
++       if (ret)
++               return;
+=20
+        pm_runtime_get_sync(drm->dev);
+=20
+@@ -568,6 +610,8 @@ static void lcdif_crtc_atomic_disable(struct drm_crtc *=
+crtc,
+=20
+        lcdif_disable_controller(lcdif);
+=20
++       clk_drop_range(lcdif->clk);
++
+        spin_lock_irq(&drm->event_lock);
+        event =3D crtc->state->event;
+        if (event) {
