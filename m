@@ -1,105 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.45
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792756376;
-	b=3tenrQutKu7bEkDvIZSb/p4Ham53RNfpoG4U+Xe/dJ3jB5hb73r2n2Tomj5GI3tm13Pq
-	 B38+DPbkEUx8gKsDB3d61k9ZJWz8l9XEYTnsVWkxmD7csl8NfbZRlzjZfSotQW0yvH+RT
-	 dnCt0TnPevfguJaZK8Jr+6YXNTmrSyBHVlZ9lVr4ZnbX4uJqepYc8Dx5202VNyz9bZTqK
-	 Jh2jFlYHM8pNCUFbtN4D6NnXNuSND4HGJTrE6rWnwqV4lGZxNUwpHu0RFinSF5PHC2zBO
-	 vgKWz9xQRoZPaMMRNsYJAJyFbzt7Sfuqhepr8iI8IZHxmSeNHBeNGl0Sq1oJUAwaVIw==
+	t=1792763481;
+	b=Dg8rFPPBioCoqTThsGDWuHMGkXcYpGWFVgCodS/eCoZSkysUQ2i41WuaU7e6BWa02oYc
+	 oS5kR40d4heq3xLysJLYYI/4aIOzoNOQJTALwuhkdpopK/eCHpceUG6w2178hl57J+ocO
+	 kYb6sz/gp1EDCZdeO0PD0sx7/4cjRVHtkJl/IwAmE2SK04bhv2ekPHYfSpsaoWnc80Knj
+	 YLYHXLetcYI29gnt8QaO/hVG/gqD5mPFywgdd8Y2V1tKvo8ttyfJvAtt1ovXGjEiX+gPy
+	 SdN06DLoyv10XfHluoOz+74qcaTpkQ3TgNeJq5QyB0J1+ALacmJ6HwW26nbd2PUWhvQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792756376;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792763481;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:X-Google-Original-From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=J03TI8MCNYKa0Va1UVEBwFeBVNvHx3CWdHxIg7mHyDk=;
-	b=SnHxRbyIM3DUB4PbaleMXoJSicThVAUBHUIwGrjpCGiwdweX8tKLZLasYZOGK85L6RiR
-	 Fd1zAwg8ayjctVQuo3znodLO7vnREhQFDXhJqnRG98oKywYMkTB+mObjwRxjB45Vj+K3C
-	 xDne0MJoi3v5mlhasF4yo9yNca9/qMG7RgkAXg3J9OC+Qq9uUSFCKsj4Lj23u7afW0qw0
-	 SrmGrFGxaMdvriUz6PpnC7Z9CTBcL2l6zLKzFoUJqQ+iJQsnAUwQocZdPY/nIpts/gxrt
-	 PUOwLi6jbG3jlwV0bWDktiW3vmxChu81Ivt573eDMtQ/X+PiOX6vorVnHec50c5evtA==
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=wLlMw0tkVCijJdHRbK9nVgzTmO5b6r27lqMQqqKuArg=;
+	b=rFzB4k6Wh2fy7p6FQN8zd7iWySNECg86A3vLd49RfBQioC9dNoh0GBAwKmHnCFI3npJJ
+	 T7w6s6YdOjfrfvN5tltbZor35YtIR5n+Il6pS7ETmsNTYHsXQZg10zWdqTpnPBOJL8nm1
+	 uuOBwIvt+IslVz9Yhs9i5+HVCgyjKAC3xcKECHzbY+PyXX+mGVSa4JAYskmRCvn9w8jr1
+	 eoNRzbCcpw7HPZHXvnSsyWeBHiW1pqDnBiJ5lrqiVGLb34O4oU52YyBGzOU7og4tA7VI1
+	 D3o+LCjl7MrEzQKMIN29eATmyaAlcXnaOzwyPeO6Me6RJaoKd2E4F0Zh0xLfzPL3eyg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b="HZeXJDA/";
-	arc=none smtp.remote-ip=209.85.128.48
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=fHgluEav;
+	arc=none smtp.remote-ip=209.85.221.45
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C35F4606A31B
-	for <imx@lists.linux.dev>; Fri, 23 Oct 2026 11:52:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C35F4606A31B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 274C0606A31F
+	for <imx@lists.linux.dev>; Fri, 23 Oct 2026 13:51:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 274C0606A31F
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=HZeXJDA/
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-49d05d51553so5529725e9.2
-        for <imx@lists.linux.dev>; Fri, 23 Oct 2026 04:52:55 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=fHgluEav
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-48e1d0e5dafso1410787f8f.1
+        for <imx@lists.linux.dev>; Fri, 23 Oct 2026 06:51:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792756374; x=1793361174; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=J03TI8MCNYKa0Va1UVEBwFeBVNvHx3CWdHxIg7mHyDk=;
-        b=HZeXJDA/9AsX1KnTAG37fgXvovbHAa/Y6UZt3+x5ThNfJ1l50hcYV7HOuyNkYp2xhl
-         KQ31SMnY0pgfLv+ObVZ+knPgHZuR6uwll5uT1jaj2Wfv1+FIevL/OLnlOeoUbNB+lgSx
-         vI+0GyxJkDXPQOzNC/hQN3aek6ywxYpObUqhRsbXEgX+y3YdrngRnwy2BP9Mgpkj8mJ3
-         CXaKhqIzRH61W+MHA93RaY1jPf2F4wNUHyxE/LAcI2e4HHf5RlSRmZD2EqqEcVcN6coN
-         abqqmRm4EPNK1td/8rfZOYhCOwPFPfj4VHU0LTK/pqotNUu28twX2/lDYXfcmr+jOVWa
-         RyTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792756374; x=1793361174;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+        d=gmail.com; s=20251104; t=1792763479; x=1793368279; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=J03TI8MCNYKa0Va1UVEBwFeBVNvHx3CWdHxIg7mHyDk=;
-        b=hMc6jDGbAur1IsJevph9WikNN9mvVwzZZpws5JRJxBSP09qLCMgzJ2NXzmZX0fRmh0
-         ojP5kQgGgmtFT8oKM6gqg5D/pD0eYxOZ13g0PnbJ9iq9rtigmBSe66TTu//S0rvM5Cx9
-         IDmU01lD1BVsMXUEdGdVq0gUmzh3dI6IiPvs89PRz9813c2u8TQt43uvAwRtb5Hg1p0x
-         tMU3O79BnTf88Nt/NLaOMjFty0D35LBjW9WtdM5AfEFbFcuD/khKmdhYTrzC/lIoa13c
-         2gpm0BNlJt5NH5c3h/pVAjJJdvN7/KGvPcAeHL1J1DgIuqY+cDvV8XMOKIMw8gFTBo1H
-         5AdQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzDGyrjb+pR6FWbcmvzX7Iz8rfT+9CJpUhhhA25z0RaIjLNZgb88LTVxrXqESxxW4ONYP4=@lists.linux.dev
-X-Gm-Message-State: AFq9FYJb9yQD5oR2tLhpZSv1/yFFdctddKL3jddMJYU14YIVQmrhKDTT
-	k96mrHja8vZJRage27EHGoRt40d/p1ZyPzMsCktwutco3DZXd3++bg5i
-X-Gm-Gg: AYBFou0CB5RC2oArnbzJlkUm1AT5LdMsl3p178iqKjlYsvGRCGVBdWdar6AFDr98xAc
-	FRUEP+aWIkE2IoeN0ZdtfWgUPnHq0LGp3gWVH/ootFz0e0Xd/6ntn2Oid1LE25WS7XM8JVH0M/5
-	r4eGQ42GrDzw/Qj7Efaxffav+YFWdUIX9hZChumJLngvyVMyk+e+gvaFBXjpG8DMJAA333uYu01
-	VjTYrXHwbtjHI8aEkzoerjAvRkEgoModPa3YXWKMJYiT/iE0A9giljiuOKUBfosthu+ODrv3y64
-	bIgnoqe09rjNND2AzTu+iyN3SlAWt8hZ/b0PWcLOOcG7UHpKrG2zoqm0xfuFc3RJpEIK9fHcjCl
-	zYnhgdAczTCeYj4Urv6PhUH2ym3TIypPIj/TdrBo4HEE9c2bn95dliMnDf5+rXAOTcEVilKnI0y
-	26IExeTjXnMyryWZsc+eKBG4nfEitkrKo2t3in7JXQWNIC4OpLiNPsRA3xoVbYIrIZv42zI1zZk
-	79PeX/t79CheyMY8yC1aZPXOH089SMh4KFnUTsDx1IZH1SHBZUQQfum1gXOjntsaUVtIjWLxPmN
-	gDVYDKcBeNmvUkMzZGk1FxlpDg1CbUDC/llrLWgQib1NcIrTuZvLwRxz36iYH6F1wa4tgeWL5V4
-	=
-X-Received: by 2002:a05:600c:c116:b0:4a1:825a:56fd with SMTP id 5b1f17b1804b1-4a211dd9423mr26760585e9.32.1792756373823;
-        Fri, 23 Oct 2026 04:52:53 -0700 (PDT)
-Received: from GLaDOS.station ([187.13.215.146])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a21045df9dsm83319775e9.8.2026.10.23.04.52.51
+        bh=wLlMw0tkVCijJdHRbK9nVgzTmO5b6r27lqMQqqKuArg=;
+        b=fHgluEavXPqse/GOLe+XQqFdCW4RbpERe0/ZKwQRfKBCPlb3gHKa2xGODkt3+gw9IS
+         HjH06DQSyaYFIUXef/HTlZmXzPr+82NqR9GPLajdIZdUIoYrBFNyXO8NVtq2jB93o66D
+         Hoi9Y8YBh/SI/03M6dHT8wC/Xcqtl7iaWkTqa4b0AwvM9dbJMlJMM5KSTZ+Zb6l2j7Jy
+         7oUaoZwRQJscMOP26T58IaotLOgWHKqyD5j8mzDsEQllkEokTPD3BcPyYo3VAb9z0bLT
+         rfLzfJnYMDt+xyYyDIu9HbDpgIA3jLEhy/kI1xRusO8p2ZPv1g6XQELRrOQYot0mulgh
+         qsyQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792763479; x=1793368279;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=wLlMw0tkVCijJdHRbK9nVgzTmO5b6r27lqMQqqKuArg=;
+        b=I+OfQgprgVQHulG9YPF9FVqbZ5CTpsyaTL7hdGan2fcKbEJG4kTR4yK19MPCK/x/L4
+         ukvLTfSh2EMGvGb3ro6PIQ/p6NuLxYDo4WRnkHyQJvBa3pqgl3Dd99faHCptKRXpNdB6
+         XogDrjcaYMaeMNBNz+IdQH4cXEzgWpLVM9DRcZk5fH4aTuI2tSAyIS1mad647HmG0KeE
+         iE/C3ozxmkH5m4nERpsNQR7JhFvFfWfwDmXEZmc4p83urGx5ckltOmS5kCLn3rlQcoVA
+         l8i7kWQcXiwKgc2ZAZhVqxAsew1oLlbr2zU2i3Wuc9Oh0TpttEU6DpdtG4lScv2NIumk
+         gW2g==
+X-Forwarded-Encrypted: i=1; AKwUvBxEnImbtRz8ppF19oBzq9Afp4cZZobULw3YzG6gp2dp4+wUYMpqqdZ5Lyg2IqeasZrLgh8=@lists.linux.dev
+X-Gm-Message-State: AFq9FYJSuBSqFM22rZYBYslM00exPwGVEbFuvjNp/sxfyJxLhXPCIz47
+	bdDZ4zp3gOYpf0X+4fl8ZnJiDYHU3IES3bzFEiNDQtDinrG8XAe0eq0k
+X-Gm-Gg: AYBFou0j2gZOmQljJgpLmVerAjKsnOeled1fxzzstc3K3WL6k5gQJNSByx/wJrCFgF5
+	uD6ZvBnJ6lg8CEc21kfd94QvvbOH7bkNhmw7uhF0MkWVJVROHH5BtShH4Lbz/JZO476ucBiupDs
+	R7GQfbr8Ct6y+4ye0cuc/rVSqQl70Kp/lbTkhdJTYIfIPXWd38whJZGX8p2rjZRfeeiFQkZXwtJ
+	S+13YivaiVC+e4Y0fR5aTNtmB5g4Kn6G9TR2ZfjBXAMe++pzXoKKAX0eaEa6zWdYgiB7G21vyTq
+	Cf9kZC4+4ZhkC8aOUVWqLhOkFZ9KnrAtiADClcKA9m8iskspCXeW1j78/Hsrq4NnmMEcGd29BuZ
+	UOS+nh7EQWlCC0jECGnSnb1lzMa8hc6cz80ysXa+A1RPyuAVSQ3FCdpfcmPrMB/0hOpkjJlt/NC
+	N+nBmk28oqzeOSAlMYjDlUBC42Pu4DsGieYAb7EP0BlyogQPyotcl6gCMoOsSE7hg0ub8GoH28f
+	EV/MGNaKrau1aeWjndhQEskJjK8WtV6uB+B7dDf4R9k3vY9kLpswAE0olEvTHyn8XjB2HTvukle
+	va2nO0qcBMsl6hg/FU8XdKpsgd9clMUITlQP2Dg06oQ4kIUck6GNYA0=
+X-Received: by 2002:a05:6000:46c8:b0:48d:f3ec:e818 with SMTP id ffacd0b85a97d-48e2d1430d7mr7952493f8f.7.1792763479100;
+        Fri, 23 Oct 2026 06:51:19 -0700 (PDT)
+Received: from ernest.hoecke-nb (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch. [83.173.201.248])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e380314a3sm4401217f8f.27.2026.10.23.06.51.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Oct 2026 04:52:53 -0700 (PDT)
-From: Stefano Radaelli <stefano.radaelli21@gmail.com>
-X-Google-Original-From: Stefano Radaelli <stefano.r@variscite.com>
-To: devicetree@vger.kernel.org,
-	imx@lists.linux.dev
-Cc: Stefano Radaelli <stefano.r@variscite.com>,
-	linux-arm-kernel@lists.infradead.org,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	pierluigi.p@variscite.com,
-	Nate.D@variscite.com,
-	Peng Fan <peng.fan@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>
-Subject: [RFC] arm64: dts: freescale: Supporting Variscite SoM and carrier revisions
-Date: Fri, 23 Oct 2026 13:52:41 +0200
-Message-ID: <20261023115242.11197-1-stefano.r@variscite.com>
-X-Mailer: git-send-email 2.47.3
+        Fri, 23 Oct 2026 06:51:18 -0700 (PDT)
+Date: Fri, 23 Oct 2026 15:51:17 +0200
+From: Ernest Van Hoecke <ernestvanhoecke@gmail.com>
+To: Frank Li <Frank.li@oss.nxp.com>
+Cc: Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Kieran Bingham <kieran.bingham@ideasonboard.com>, 
+	Francesco Dolcini <francesco.dolcini@toradex.com>, Dave Stevenson <dave.stevenson@raspberrypi.com>, 
+	devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+Subject: Re: [PATCH v3 4/4] arm64: dts: freescale: imx8mp-verdin: Add
+ mezzanine OV5640 overlays
+Message-ID: <zv4gir4qrx62cwyl47cypuk57q7ci4l2piml5cgchhiys2hyli@ubzeh3nw4itu>
+References: <20261022-verdin-imx8mp-hmp-camera-ready-v3-0-90a30b0b0d55@toradex.com>
+ <20261022-verdin-imx8mp-hmp-camera-ready-v3-4-90a30b0b0d55@toradex.com>
+ <atp-MEqHMT7F75qn@lizhi-Precision-Tower-5810>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -109,56 +104,63 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <atp-MEqHMT7F75qn@lizhi-Precision-Tower-5810>
 
-Hi all,=0D
-=0D
-At Variscite, we are starting to look at how best to maintain upstream=0D
-Linux support for multiple hardware revisions of our SoMs and carrier=0D
-boards. We would appreciate guidance before settling on an approach.=0D
-Our goal is to support new revisions while allowing customers to keep=0D
-using current kernels on older hardware.=0D
-=0D
-Our platforms are typically described by a SoM .dtsi and a carrier-board=0D
-.dts, for example imx8mm-var-som.dtsi and imx8mm-var-som-symphony.dts.=0D
-Both the SoM and the carrier can evolve independently. Some revisions=0D
-require changes to the hardware description, while others may work with=0D
-the same DT. Over time, this leaves us with several combinations to=0D
-support, without wanting to duplicate complete device trees for each one.=0D
-=0D
-What would be the recommended upstream approach to organizing and=0D
-maintaining these revisions and their supported combinations?=0D
-=0D
-One possibility we have considered is keeping the common SoM and carrier=0D
-descriptions in .dtsi files, with revision-specific .dtsi files extending=0D
-or overriding them, and small top-level .dts files selecting the required=0D
-combination. Would this be a suitable structure? Are there established=0D
-patterns or existing platforms we should follow, particularly to keep=0D
-changes for newer revisions from affecting older ones?=0D
-=0D
-We are also wondering how to handle revisions that can share the same=0D
-description. As a concrete example, we have discussed the following=0D
-possible grouping for DART-MX8M Mini and Sonata:=0D
-=0D
-  imx8mm-var-dart-2.0-sonata-1.0.dtb=0D
-    DART-MX8M Mini v2.0-v2.1 on Sonata v1.0-v1.3=0D
-=0D
-  imx8mm-var-dart-2.2-sonata-1.4.dtb=0D
-    DART-MX8M Mini v2.2 on Sonata v1.4=0D
-=0D
-These are proposed names, assuming that the same DT correctly describes=0D
-all the hardware combinations covered by each entry.=0D
-=0D
-Would it be acceptable to keep updating the first DTS to support a=0D
-compatible revision such as v2.1, retaining the v2.0 filename, as long as=0D
-it remains correct for all previously supported hardware? In this scheme,=0D
-we would add a separate DTS/DTB for v2.2 only if a different description=0D
-were needed.=0D
-=0D
-This is an initial idea rather than a settled design, so suggestions for=0D
-a different approach would be very welcome.=0D
-=0D
-Thanks,=0D
-Best Regards,=0D
-Stefano=0D
+On Thu, Oct 22, 2026 at 05:20:48PM -0400, Frank Li wrote:
+> On Thu, Oct 22, 2026 at 04:31:28PM +0200, Ernest Van Hoecke wrote:
+> > From: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+> >
+> > The Verdin iMX8M Plus exposes its second MIPI CSI-2 interface through the
+> > Verdin iMX8M Plus Mezzanine. Add overlays for using a Toradex OV5640 camera
+> > on this interface.
+> >
+> > The mezzanine can route the camera control signals through two jumper
+> > configurations. Describe each configuration as a GPIO nexus mapping so the
+> > camera description remains independent of the physical routing.
+> >
+> > The default positions share the native CSI_1 GPIOs and are intended for a
+> > single camera. The alternate positions permit simultaneous native and
+> > mezzanine cameras, but conflict with the Atmel MXT touchscreen GPIO.
+> >
+> > The current camera set uses a 27 MHz on-board oscillator. The legacy camera
+> > module uses 24 MHz, so provide variants for both.
+> >
+> > Link: https://developer.toradex.com/hardware/verdin-som-family/add-ons/verdin-imx8m-plus-mezzanine/
+> > Link: https://developer.toradex.com/hardware/accessories/cameras/csi-camera-module-5mp-ov5640-arducam
+> > Link: https://developer.toradex.com/hardware/legacy-products/other/csi-camera-module-5mp-ov5640/
+> > Signed-off-by: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+> > ---
+> >  arch/arm64/boot/dts/freescale/Makefile             | 19 ++++++
+> >  ...-verdin-mezzanine-ov5640-24mhz-alt-jumpers.dtso | 19 ++++++
+> >  ...din-mezzanine-ov5640-24mhz-default-jumpers.dtso | 18 +++++
+> >  ...imx8mp-verdin-mezzanine-ov5640-alt-jumpers.dtso | 38 +++++++++++
+> >  ...mp-verdin-mezzanine-ov5640-default-jumpers.dtso | 42 ++++++++++++
+> >  .../freescale/imx8mp-verdin-mezzanine-ov5640.dtsi  | 78 ++++++++++++++++++++++
+> 
+> why not share with imx8m-verdin-ov5640.dtsi, which is almost the same.
+> 
+> Frank
+
+Hi Frank,
+
+Both camera modules have their own oscillator, and the native and
+Mezzanine connectors have their own supply, so each overlay describes its
+own clock and regulator nodes. They also use a different I2C bus, CSI
+receiver and connector. Both overlays are applied together for two
+cameras (imx8mp-verdin-wifi-dev-dual-ov5640), so their node names and
+labels must be unique, and a single .dtsi cannot be included twice.
+
+The connector nexus makes the GPIOs independent of the routing, but an
+overlay still has to name the connector, bus and receiver it uses. One
+overlay for either connector would need the target to be chosen when it
+is applied, which is what the DT connector/addon work is about, so sadly
+we have to wait for that to make things more generic.
+
+What is left in common is a few constant sensor properties, so I would
+like to keep the two files.
+
+Thanks for your input and best regards,
+Ernest
+
