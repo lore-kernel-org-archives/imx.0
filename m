@@ -1,56 +1,104 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792786019;
-	b=z5Lprox7H3dIWX0uq8sOVGue8S18X3nrzjvIV1Jtld28p8Wca+563wLqOH5bUUmG5F4G
-	 0sBv8xXAjVmcvnEhKQdOwD0+Ow9mR7qzLshAFEbyQTCzQDPhxHocySFF1LNV2GjkoPutg
-	 gpyggFpWhxBXFqqPmLYSXa5N3pNY0FypiIGWCpRqwyLLysNvYfqM9l/ykCYOgR49IA3FH
-	 P8/VM98WRZRYBmbcWCceGhQfCmEIePEHstwi46/WdAvBac5pB/+/zgyvVWOG/448lW7Jr
-	 XUk/WjAUxxMy6l8JUjWcvxlY9QxkYPtVg4y1S3KDytasO9FS1koe1G4KFQwfFIV+mbw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792786019;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=1xbW0gED+/2J2YzZoOddp/9wnZ2oY4IZ+JT4oKEW64k=;
-	b=KfGjO07NHxsK1PI5V7+RpRbMKaomywe4Ihcq8R9735qjS1+0Y4YJPAu+HOAcsslK541o
-	 md5avK2RMkGZ3B1PMWBYy/V7d9xtl4Mh6Dl7xHKPcy6M6lZpdHlDUZjpKAz4AmMgM+UrW
-	 FiPpGb3Id7G65y9O0vyoL+cKga+ZbkOjsv5O/iHGUfPZSk9bu8k0QY4oo3pefjgggrllJ
-	 tmt8ZcdfAhl1wKCx2UnXiVzE4EqX4jfHSBgBg6gaaxt0OJ2aJwACalEeLVIu3Tv66IwEp
-	 ktnrG+X1o5sjKZGpxOHMcj6LANiATdXUl5v8LzxBuKLa9Rzwb3V6A79M0k3l/+BUGEA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RJoC3vVC;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.162.37
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792787006;
+	b=L12Q6kFt3CKdAReLp9Ns/D6rtAsjgfGf4x1mw8FA+TmtReowx9L+JVzwrmFdtEu9dS9t
+	 ZoshZTO/czzQKMeh6vwlhe0Xwqf+nx3+XUvcxms6NTVBDk1SGp5zdfqsC/hHL6ZeSNpoL
+	 oA1A1AK4tGKnfZycrD4ExCXj5NCllwvH/xu+mERjx+Sg4wtdRyM2wuzIqukeyHk3C+3s9
+	 9S7BMBn7ohV+qbumclbIoLCj2/SHo3K4V1DXEYyd1aDlhVJs8VkXvssbSf8OGuLsDpKXU
+	 ybaTZIbt9XoSIYJ8vdxVUWCV3M3hQs83aaCheJSxtNyts1HJlywAqz2IA2hgtGJYbwA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792787006;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:Content-Type:Content-Disposition:
+	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-LD-Processed:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=jLIWgfQRXqIhXta1NfslHWfBc295tPLuV452mZ0pJ/8=;
+	b=HH3EiAhFa+KaTvvTv7M9hdR4JBl10X7jthplHoUpIGT9boZMV0rff2l1QE1WxvBtgnY0
+	 ddCiOf8DKhJ6Uq81UYcLqlTZO/je+QriIyIom2y8MxqkhKUgTSf8CasPgDyQ0ZV/0a5R0
+	 RuW0BmJahhpjF+HY54qy3LPxvT9wL8uDjFhXx/i0D8WEhGwl8uMv2UOdbpmcafPzsfx+l
+	 P5thd9mlUtlB+p2FZ+/EIYCe4M7ihtGBnTRZuuGhn9WX4o39ohptyZxBR3V5RMJzvB2+x
+	 yQSK0rM4zn0GKwNClM/ULjT6YsCmtite148Da2F1q/YepFczHb6rhR/4VjkRTnRBmQg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=oss.nxp.com;
+	spf=pass smtp.mailfrom=oss.nxp.com;
+	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=SkccTX7Y;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.162.37
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013037.outbound.protection.outlook.com [40.107.162.37])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11BBF606A31D;
-	Fri, 23 Oct 2026 20:06:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1C79606A31D
+	for <imx@lists.linux.dev>; Fri, 23 Oct 2026 20:23:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D1C79606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RJoC3vVC
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ACB81F01825;
-	Fri, 23 Oct 2026 20:06:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792786018;
-	bh=1xbW0gED+/2J2YzZoOddp/9wnZ2oY4IZ+JT4oKEW64k=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=RJoC3vVCeOAvr6Y0LTDZs0R5EARa4oY8zuQ93BY/41wC8RF521CTdXoLb5l/ZivWH
-	 O2Hd8tKZcaEip1pqMwuGuxwU0hVW/aC8CysQ32qxGfxGiG/9dAIs9glGfugMXY9TDX
-	 Srsuwqu8yzC6u/D2GQqNnzQkIzHpOMeA/DmAv3Vbvi9h8Oa+g63PWc2LkKOqkTxp4R
-	 VU9D9oOf6DyIOSFBpp3bUxfn5q8lpExes8SmGJZclqbWdDghoK1rgitCcgLiAiGW6g
-	 P3SLFetjYq5S7ZDyGsv1sn6cPBHwMI0SIyCp9ZxmZ1vge1TN725x+IrcKpMmIxjVkB
-	 wr7Twzrg2WLhg==
-Message-ID: <sashiko-outbox-183160@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 7/7] arm64: dts: imx8dxl-evk: add lcdif overlay
-Reply-To: sashiko-reviews@lists.linux.dev
-To: Frank.Li@oss.nxp.com
-Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20261023-dxl_lcdif-v4-7-4ae8395a4b23@nxp.com>
-References: <20261023-dxl_lcdif-v4-0-4ae8395a4b23@nxp.com>
- <20261023-dxl_lcdif-v4-7-4ae8395a4b23@nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 23 Oct 2026 20:06:57 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=SkccTX7Y
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ynFT0b+G7kUtFrSzsgS3/QTBIKuZuNv0b4Zwj0Sgy30BbJQVd62iPCyPg0BoXCjAcvosM8bc11dYFVFgAltKMSnyGigtuqpry6UzGsBQ8UWFoiEcCRORCK8UvvL9KiXdwWx8atoSvc0scyC1/9AvrxJATAX6fvXpAO6BI57qbNYeLvsJGMOGZqpVioHbhZQXcdjjke7jCmPMy5EbykbfEbJ7JAnVbfVTX6FI2b8/iZKdMa+muDp3IREgmcSUiaOZ8Yi6EFNayh0jN8SzdVRcDJr76jx41/HImJSx4eHXm/kdcqgugDsvrA98qqsMkw4Yc4DwsbhvmVqAnXik4j4/Xg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jLIWgfQRXqIhXta1NfslHWfBc295tPLuV452mZ0pJ/8=;
+ b=OE/UJIyggwwEtHpFRsc0GWZRdzmGoSJq+u9b7K/fBPBAODZIe+S28ZEySYBj1dh5N0Z5B6e+1J9Uu5Xjz885w3f7vI+vSAMqflS28wK0nid5JyTa+vjF/VaANmSb/BI/XsUcY8ympDP8x6xQtIvMdnTJ7xitor0R7pF3CQKsecQqKEd43dZiFwzOUng4PdeU00pwGxOGM9yIYzxDpnbm7UpDtG3gD+QHy91E7wdJ7+eiliRgjUcQzShFF2/DVlMb2ZfQrM5dMnB8NUzlnEeCXqp7YkN8QUA0JqgFGikj40dyLkdrADR7aiT/EYVHEalZZ0QPsDnNM68p3gM9u+7K6A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jLIWgfQRXqIhXta1NfslHWfBc295tPLuV452mZ0pJ/8=;
+ b=SkccTX7YqCnnlEj8u3QTZAcTB5VC5cD6e2LHZn4qERNQ2nEYeN9CCaXXTiGALWKiM2PCYyVXOsgYkkufCYqFmQ6FxipVthKZRY7B/nZJ3Ct1tbDlD87PyWpVH3SIp0BGWuJRHNvpWK3ICfoITuqkyBjwff2rG5TEZdFqtp+aBG8Cex5Xqr+LUubw/XGNYyn1CUjzrUSnoM8jN61HyWBcrhK0PF1k3PASgRIRKDqlG8ryLhtdaMG2yKkvvKIhK4XPy4kQkdT2ua1m/zOdy+Gi9A6VQOlNSWdOBGbRDjjFiDyr9cbwgRtD//XPaCRWM1GavsFD96LuIh2O9szlz+bIkg==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from MI3PR04MB12438.eurprd04.prod.outlook.com (2603:10a6:290:76::14)
+ by AM6PPF2AB6264CA.eurprd04.prod.outlook.com (2603:10a6:20f:fff1::a87) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.20; Fri, 23 Oct
+ 2026 20:23:22 +0000
+Received: from MI3PR04MB12438.eurprd04.prod.outlook.com
+ ([fe80::c715:c32:8bb1:b70b]) by MI3PR04MB12438.eurprd04.prod.outlook.com
+ ([fe80::c715:c32:8bb1:b70b%6]) with mapi id 15.21.0546.012; Fri, 23 Oct 2026
+ 20:23:22 +0000
+Date: Fri, 23 Oct 2026 15:23:12 -0500
+From: Frank Li <Frank.li@oss.nxp.com>
+To: Ernest Van Hoecke <ernestvanhoecke@gmail.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Kieran Bingham <kieran.bingham@ideasonboard.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+Subject: Re: [PATCH v3 4/4] arm64: dts: freescale: imx8mp-verdin: Add
+ mezzanine OV5640 overlays
+Message-ID: <atvCMGUsLXImGhxZ@SMW015318>
+References: <20261022-verdin-imx8mp-hmp-camera-ready-v3-0-90a30b0b0d55@toradex.com>
+ <20261022-verdin-imx8mp-hmp-camera-ready-v3-4-90a30b0b0d55@toradex.com>
+ <atp-MEqHMT7F75qn@lizhi-Precision-Tower-5810>
+ <zv4gir4qrx62cwyl47cypuk57q7ci4l2piml5cgchhiys2hyli@ubzeh3nw4itu>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <zv4gir4qrx62cwyl47cypuk57q7ci4l2piml5cgchhiys2hyli@ubzeh3nw4itu>
+X-ClientProxiedBy: PH7P221CA0026.NAMP221.PROD.OUTLOOK.COM
+ (2603:10b6:510:32a::21) To MI3PR04MB12438.eurprd04.prod.outlook.com
+ (2603:10a6:290:76::14)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -59,136 +107,132 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|AM6PPF2AB6264CA:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2662818a-9a78-4178-1b6b-08df31437c1d
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|1800799024|376014|19092799006|23010399003|56012099006|11063799006|4143699003|261009223027099003|261021121427099003|261022105027099003|261022075727099003|10067099003|18002099003|22082099003|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	+tlK3Jjr+y696Yco7a9rVO3UGQDVJipSEEvCsPJtSaC9tVkf+f8fO1OGnanDxqifDk4KV1iQT1Gy6l06VyR7t3HjGeqkuO646q8uFr2IXFmKSIOs50iOzVqx1ujRFeTmXkhflktcxp2Ev/TLn5J+mxyNddBg8C/wK66dTzyQHE12CsE3snbwMDglUADhM+pWTofpfuhYlskICC2hMegvTGc8mAZKT0WtXS6oj7tTpKsTzqbuEKrU3JFSc1EDVXejVe4iMOMUmPlO1tTcRrc0S891DAcgBIt3Zb4BA4efPxyWEGdoa77pLU5RNGD2ChBE5/CCRKHEKW9ptVxsmULR1lx0NpghHk2d7TN6MlB35QemJ6oSJSD/8MdrhcA+4FCOwHqjHEzl0tG4SMIR5Cb9d+LBpQXn4luTNkTC0RWuAsGvbLUyipJEEJelwOcw2b2l5oSB2Lpo2S9KptxHNrOMgJamz9F6xfsGo82XCrLGDqd4/Gum1BVGZFu2ho1yz2SaPJcC+ucZVveFpSkUAEbYPQcjzeFBDkpk6DGWwarm6c6gtKdXjMTFpLkbzajOQxHYVsWxzdrZWRwK76kIJBUUnAOPfHi7rJamKp/Q0kYidhw=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(1800799024)(376014)(19092799006)(23010399003)(56012099006)(11063799006)(4143699003)(261009223027099003)(261021121427099003)(261022105027099003)(261022075727099003)(10067099003)(18002099003)(22082099003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?EqtF7EJGf6upf58ZS4loszTV8Uco0oD4tTAQY7fzuEhPA9kqgT1wlhI8qZ73?=
+ =?us-ascii?Q?rgn7cbLobx9oRUvuXZ5sOXXMFnrbfJjtZH8L6KuQIc7u2RolA+IOHj+6Tx2+?=
+ =?us-ascii?Q?zsxv7WMtT0D/BZ4HfGwMaOld7iXz5w9aYPCd/JCvvSHcIoecVhweuKpBEUU0?=
+ =?us-ascii?Q?vonQ58Gd2Tcq4y7lPF7w4yiYAfWwxzfjjxceh/Mb438h1PriMoovbG/68h62?=
+ =?us-ascii?Q?OK4iXbkz7UOVdkVyYzB2RwCHCHSkElkMBmfnprDYIV3CnC/ldXVEsZRW+wEE?=
+ =?us-ascii?Q?EtcTUTsMjtRxUXu9AOu67TAD9Hhbf0fp9guox/Us/7B6s+LlJJACUtlLzw3p?=
+ =?us-ascii?Q?Fru3la59ADHoe59H3jdGr8VSfwWVdLvqMjXKeI0BueEOqeJqb+2Wr26/KaYZ?=
+ =?us-ascii?Q?yNM7Dty8eV0Z0Arj6wDsoArqiVF9LosYuh3+kbOUPsWVD/2f9LyULrjqltzT?=
+ =?us-ascii?Q?xhwJtGqrJtjUVmuEDFj6kmjVNn6cibCl7HZy/mVRhSmZWolvtZylnx+qWqnh?=
+ =?us-ascii?Q?To8MsCkXpp0tzBpzqhPJgRti7ZQtImfOQSkdGi23Xbl8JCCijRwkvYerbAUI?=
+ =?us-ascii?Q?G9ST/pkwHFXvvnpiuvAQFRnZHRPzxdifYR54M2KdaGmRaDcL0I5Mtdi6ZPiN?=
+ =?us-ascii?Q?uBAyewUFuEJvvwt+dvCzy6uzerPlcfzanREMFROhi6mxMQKTaQMLFb0t1DI9?=
+ =?us-ascii?Q?BofDUTEeA/cA8jrgue+uFOM6ypu3PYz8+yZnruGKyN2lkp7OFzRonxadsW4x?=
+ =?us-ascii?Q?Uf0i2CYSycgGOw7sZbyHJv85o3OsH4ZYqjV0X81zAFzqaOYDBEG3p0ybVRZu?=
+ =?us-ascii?Q?7stdMcsRA1amZfDP09V01FqAvwYhb04Yycki5Yqyi4k42w0phE0PnfR+i4XA?=
+ =?us-ascii?Q?p6Ju7Ke/BtTdKzXqiQL3BTLz1jOuN7mj8uOmgiidNLwu5B+f67WZqFxn/XfL?=
+ =?us-ascii?Q?1j76bs1ouBN09WsXdbkQNH2BIAUKKMbAvLqwhNLCMkh3VKghfopRDg1Ule/F?=
+ =?us-ascii?Q?4fx4pepocovMV91kBcLSyEUvjHBfcLHoOry16bQe3k4PkAcTbrfahf5E8wID?=
+ =?us-ascii?Q?X3ur9RzQjFC3vg3lcSMJbUvAgW47BlXvOLEOGLOscYobZT9oJg4Ecg/MdT9N?=
+ =?us-ascii?Q?OKk+05ID5CE/3nWbRbZNCcFBGqImDys2U88GCjy1vzEd+pmoKabdJePQavY1?=
+ =?us-ascii?Q?ivWTiqCLlGZElUnxngaNcOuAQwS43k2tfWHdnP0WyOoEA8EVFqwVGKv7/4yI?=
+ =?us-ascii?Q?TmWetlxROO1Qckf6AcQ+jeGB68Et0u2iwlMTCT1hCWXcR38KS/kJCBbaSrfR?=
+ =?us-ascii?Q?FENRtjqrHO02mXqehUUK6u+NFsAuY10CsB8YTnxm6O3APlQQGQT1DbcC1vcc?=
+ =?us-ascii?Q?fKk3xyxTHRZ0hSgYvs82bJosr2mEZ0JA+kB8lLm/LeDmOmD4fJWUxJ2s6kwx?=
+ =?us-ascii?Q?xXoNlj0AlGEVrAWNYCP88vnKydkTBqkb6+HZkWeP7SGP6Rfx75lFx30Z4/9B?=
+ =?us-ascii?Q?K3CBhlX43y0S3fQBeu3Pirn/aDyA8CxXWjDsAsMCS+s2ZjvGCrfHQYw3wncl?=
+ =?us-ascii?Q?2va71Jwp21XLXEKwolpNpsk4xuFruSZvXLGVrzj9Jy5NoClVr6RBR/rYz++b?=
+ =?us-ascii?Q?mVmidRB7QuHY1JSXRFEYwzp/y9kCS3kp8xDv42WJ7ZuXmEFjKUu623A76q5g?=
+ =?us-ascii?Q?2jy+HLJx9ABpSybwLhRh9t9IMB3YnLKRM2jsxL8Kl3TNQs5QmrrYRPl+l51C?=
+ =?us-ascii?Q?8UUF+qiT3t8olQvkTe9fFaIX97J+tCGahDLRvLrShB+/3FsjCgvX?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2662818a-9a78-4178-1b6b-08df31437c1d
+X-MS-Exchange-CrossTenant-AuthSource: MI3PR04MB12438.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Oct 2026 20:23:22.6990
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4sakzegnpIEo2L444FNchRt+cWvMWl3XTqH8uUz6Js0G0azY5iGkX8pInuuLx7MM/Q3hYnyA1Hn6iBbmo4t/4vGAbV/+irnFoJze97DlmTtJONTJpW7TCL2KpxZr3uS0
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM6PPF2AB6264CA
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [Medium] arm64: dts: imx8dxl-evk: invalid and ignored bus-width in adma_l=
-cdif endpoint
-- [Medium] arm64: dts: imx8dxl-evk: lcdif overlay leaves broken audio consu=
-mers enabled
---
+On Fri, Oct 23, 2026 at 03:51:17PM +0200, Ernest Van Hoecke wrote:
+> On Thu, Oct 22, 2026 at 05:20:48PM -0400, Frank Li wrote:
+> > On Thu, Oct 22, 2026 at 04:31:28PM +0200, Ernest Van Hoecke wrote:
+> > > From: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+> > >
+> > > The Verdin iMX8M Plus exposes its second MIPI CSI-2 interface through the
+> > > Verdin iMX8M Plus Mezzanine. Add overlays for using a Toradex OV5640 camera
+> > > on this interface.
+> > >
+> > > The mezzanine can route the camera control signals through two jumper
+> > > configurations. Describe each configuration as a GPIO nexus mapping so the
+> > > camera description remains independent of the physical routing.
+> > >
+> > > The default positions share the native CSI_1 GPIOs and are intended for a
+> > > single camera. The alternate positions permit simultaneous native and
+> > > mezzanine cameras, but conflict with the Atmel MXT touchscreen GPIO.
+> > >
+> > > The current camera set uses a 27 MHz on-board oscillator. The legacy camera
+> > > module uses 24 MHz, so provide variants for both.
+> > >
+> > > Link: https://developer.toradex.com/hardware/verdin-som-family/add-ons/verdin-imx8m-plus-mezzanine/
+> > > Link: https://developer.toradex.com/hardware/accessories/cameras/csi-camera-module-5mp-ov5640-arducam
+> > > Link: https://developer.toradex.com/hardware/legacy-products/other/csi-camera-module-5mp-ov5640/
+> > > Signed-off-by: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+> > > ---
+> > >  arch/arm64/boot/dts/freescale/Makefile             | 19 ++++++
+> > >  ...-verdin-mezzanine-ov5640-24mhz-alt-jumpers.dtso | 19 ++++++
+> > >  ...din-mezzanine-ov5640-24mhz-default-jumpers.dtso | 18 +++++
+> > >  ...imx8mp-verdin-mezzanine-ov5640-alt-jumpers.dtso | 38 +++++++++++
+> > >  ...mp-verdin-mezzanine-ov5640-default-jumpers.dtso | 42 ++++++++++++
+> > >  .../freescale/imx8mp-verdin-mezzanine-ov5640.dtsi  | 78 ++++++++++++++++++++++
+> >
+> > why not share with imx8m-verdin-ov5640.dtsi, which is almost the same.
+> >
+> > Frank
+>
+> Hi Frank,
+>
+> Both camera modules have their own oscillator, and the native and
+> Mezzanine connectors have their own supply, so each overlay describes its
+> own clock and regulator nodes. They also use a different I2C bus, CSI
+> receiver and connector. Both overlays are applied together for two
+> cameras (imx8mp-verdin-wifi-dev-dual-ov5640),
 
-commit 19a4bb9fef78514466afe51bb1b962f7fabf9e20
-Author: Frank Li <Frank.Li@nxp.com>
+Okay, I see share one imx8m-verdin-ov5640.dtso
 
-arm64: dts: imx8dxl-evk: add lcdif overlay
+> so their node names and
+> labels must be unique, and a single .dtsi cannot be included twice.
 
-This commit adds a device tree overlay to support the waiken,101wx001-wct L=
-CD
-panel on imx8dxl-evk boards, enabling adma_lcdif and disabling conflicting
-peripherals that share pins with the 18-bit LCDIF interface.
+mezzanine actually connect by another connectors ? so it need new one files
+because current nexus node's limitation.
 
-> diff --git a/arch/arm64/boot/dts/freescale/imx8dxl-evk-lcdif-101wx001-wct=
-.dtso b/arch/arm64/boot/dts/freescale/imx8dxl-evk-lcdif-101wx001-wct.dtso
-> new file mode 100644
-> index 0000000000000..39abf9b3884ea
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx8dxl-evk-lcdif-101wx001-wct.dtso
-[ ... ]
-> +&acm {
-> +	status =3D "disabled";
-> +};
-> +
-> +&adma_lcdif {
-> +	pinctrl-0 =3D <&pinctrl_lcdif>, <&lcd_0_fun>, <&lcd_1_fun>, <&lcd_2_fun=
->, <&lcd_3_fun>;
-> +	pinctrl-names =3D "default";
-> +	status =3D "okay";
-> +
-> +	port {
-> +		lcdif_out: endpoint {
-> +			bus-width =3D <18>;
-> +			remote-endpoint =3D <&panel_in>;
-> +		};
-> +	};
-> +};
+Can you make imx8mp-verdin-mezzanine-ov5640.dtsi also standardize, like
+use unified camera_i2c_2, camera_connector2, compre to imx8m-verdin-ov5640.dtso
 
-[Severity: Medium]
-Is bus-width valid or handled in the adma_lcdif endpoint node here?
+And avoid dtso include dtso file.  Now perfer only include dtsi file.
 
-In Documentation/devicetree/bindings/display/fsl,lcdif.yaml, the port node =
-is
-defined purely via /schemas/graph.yaml#/properties/port:
+Frank
 
-  port:
-    $ref: /schemas/graph.yaml#/properties/port
-    description: The LCDIF output port
-
-Because /schemas/graph.yaml#/properties/port enforces unevaluatedProperties:
-false on endpoint and does not reference video-interfaces.yaml, adding
-bus-width =3D <18> causes dtbs_check validation to fail on
-imx8dxl-evk-lcdif-101wx001-wct.dtb.
-
-Furthermore, at runtime, adma_lcdif (fsl,imx8dxl-lcdif / fsl,imx6sx-lcdif) =
-is
-driven by mxsfb, and neither mxsfb, drm_panel_bridge, nor panel-simple pars=
-es
-bus-width from the endpoint node. Instead, the call chain:
-
-  mxsfb_crtc_atomic_enable()
-    -> mxsfb_crtc_mode_set_nofb()
-      -> mxsfb_set_formats()
-
-selects CTRL_BUS_WIDTH_* solely from the panel's media bus format. Since
-waiken_101wx001_wct_panel in drivers/gpu/drm/panel/panel-simple.c specifies:
-
-  .bus_format =3D MEDIA_BUS_FMT_RGB888_1X24,
-
-mxsfb_set_formats() programs LCDC_CTRL with CTRL_BUS_WIDTH_24 instead of
-CTRL_BUS_WIDTH_18, causing the controller to output 24-bit RGB888 when only=
- 18
-data lines (ADMA_LCDIF_D00 through ADMA_LCDIF_D17) are routed on the board.
-
-[ ... ]
-> +&sai0 {
-> +	status =3D "disabled";
-> +};
-> +
-> +&sai1 {
-> +	status =3D "disabled";
-> +};
-> +
-> +&wm8960_1 {
-> +	status =3D "disabled";
-> +};
-> +
-> +&wm8960_2 {
-> +	status =3D "disabled";
-> +};
-> +
-> +&wm8960_3 {
-> +	status =3D "disabled";
-> +};
-
-[Severity: Medium]
-Should this overlay also disable asrc0, sai2, sai3, and the root sound card
-nodes from arch/arm64/boot/dts/freescale/imx8dxl-evk.dts?
-
-Disabling acm, sai0, sai1, and wm8960_1..3 while leaving their consumers
-enabled in the base DTB causes several probe failures and permanently defer=
-red
-devices at boot:
-
-1. asrc0 remains enabled in imx8dxl-evk.dts and references <&acm
-IMX_ADMA_ACM_AUD_CLK0_SEL> and <&acm IMX_ADMA_ACM_AUD_CLK1_SEL>. With acm
-disabled, of_clk_get_hw_from_clkspec() returns ERR_PTR(-ENOENT), causing
-fsl_asrc_probe() in sound/soc/fsl/fsl_asrc.c to fail with -ENOENT.
-
-2. sai2 and sai3 remain enabled in imx8dxl-evk.dts even though their codecs
-(wm8960_2 and wm8960_3) are disabled here. Their clock controllers (sai2_lp=
-cg
-and sai3_lpcg in imx8-ss-audio.dtsi) take parent clocks from acm; with acm
-disabled, of_clk_parent_fill() in imx_lpcg_parse_clks_from_dt() fails to
-resolve the parent clock, causing LPCG probe to fail with -ENODEV and leavi=
-ng
-sai2 and sai3 stuck in -EPROBE_DEFER.
-
-3. The root sound card nodes in imx8dxl-evk.dts (sound-bt-sco, sound-wm8960=
--1,
-sound-wm8960-2, and sound-wm8960-3) remain enabled while referencing the
-disabled CPU, codec, and ASRC nodes, leaving all four sound card devices
-permanently in -EPROBE_DEFER.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261023-dxl_lcdif-=
-v4-0-4ae8395a4b23@nxp.com?part=3D7
+>
+> The connector nexus makes the GPIOs independent of the routing, but an
+> overlay still has to name the connector, bus and receiver it uses. One
+> overlay for either connector would need the target to be chosen when it
+> is applied, which is what the DT connector/addon work is about, so sadly
+> we have to wait for that to make things more generic.
+>
+> What is left in common is a few constant sensor properties, so I would
+> like to keep the two files.
+>
+> Thanks for your input and best regards,
+> Ernest
+>
