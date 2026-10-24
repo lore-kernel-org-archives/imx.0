@@ -1,104 +1,90 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.162.37
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792787006;
-	b=L12Q6kFt3CKdAReLp9Ns/D6rtAsjgfGf4x1mw8FA+TmtReowx9L+JVzwrmFdtEu9dS9t
-	 ZoshZTO/czzQKMeh6vwlhe0Xwqf+nx3+XUvcxms6NTVBDk1SGp5zdfqsC/hHL6ZeSNpoL
-	 oA1A1AK4tGKnfZycrD4ExCXj5NCllwvH/xu+mERjx+Sg4wtdRyM2wuzIqukeyHk3C+3s9
-	 9S7BMBn7ohV+qbumclbIoLCj2/SHo3K4V1DXEYyd1aDlhVJs8VkXvssbSf8OGuLsDpKXU
-	 ybaTZIbt9XoSIYJ8vdxVUWCV3M3hQs83aaCheJSxtNyts1HJlywAqz2IA2hgtGJYbwA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792787006;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:Content-Type:Content-Disposition:
-	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-LD-Processed:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=jLIWgfQRXqIhXta1NfslHWfBc295tPLuV452mZ0pJ/8=;
-	b=HH3EiAhFa+KaTvvTv7M9hdR4JBl10X7jthplHoUpIGT9boZMV0rff2l1QE1WxvBtgnY0
-	 ddCiOf8DKhJ6Uq81UYcLqlTZO/je+QriIyIom2y8MxqkhKUgTSf8CasPgDyQ0ZV/0a5R0
-	 RuW0BmJahhpjF+HY54qy3LPxvT9wL8uDjFhXx/i0D8WEhGwl8uMv2UOdbpmcafPzsfx+l
-	 P5thd9mlUtlB+p2FZ+/EIYCe4M7ihtGBnTRZuuGhn9WX4o39ohptyZxBR3V5RMJzvB2+x
-	 yQSK0rM4zn0GKwNClM/ULjT6YsCmtite148Da2F1q/YepFczHb6rhR/4VjkRTnRBmQg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.nxp.com;
-	spf=pass smtp.mailfrom=oss.nxp.com;
-	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=SkccTX7Y;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.162.37
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013037.outbound.protection.outlook.com [40.107.162.37])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.171
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792824050;
+	b=f7dGENuqrbd73jFTNMIEh2iKK1bmua354jpH1V9GFriP15p+AE/IjTCupHkZdfSs+6p/
+	 0wyoZGv3j1dO+WH/SuWISIFcOZ8wHKg1nuSN3HeWmQRGKipIdLZvydvvi57x5YzOdk1q7
+	 HK4+W0DuLJAMwQN2LTM+X3tFRe41h8p9tL4B5aHeufeUZ1AEvI2NqeuhefxGtJ5khLZUW
+	 dPXOLspnE0AUeRDS3k0deDC9OfvzrDVi5m+BJOIwsXekNL9bvX14CGj3/XMtBwYHfiDNC
+	 UBFZfkfahjfmVFt8FhPqHVPzzqCe3KFKhhGlUVGupXHlL56uyWmmjgKT5zRnu08sQTw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792824050;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:Subject:Date:Message-Id:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer;
+	bh=edz22Fq6n7hqO7w64D56fVejxYtfF3v+LcW93z688tQ=;
+	b=pXwjAmf60X00kW99ifXskRSjx//5XAjp4urh+y7/M7FYyPHu7tJ1jFggwKsTs48PuV4+
+	 77v3GhbbnLY61D8TURJ/DPrGWsKUk+co2WkxdHUyhBr2MF22MNdAWZv0lKq5o5/9FOREs
+	 g0zIADPHXkeat5D4bs3FuG+asJJsnLYAsZEOTkNfYRJgEEOEQuz3mJZP50yyGa8wKditG
+	 MeJl2umz7kmTFmginSjw2OIQ6Svp+jRytUDW1GZgorbsB4lWNMUevKxTgtwFK+j1JbJjz
+	 WixNA7NrtjgXkmQNx9rrjG6NoLK36L2Tndik2uG6IM9rBJLdEv7kGJx+RqhXb8nwn8w==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=c4KGOawY;
+	arc=none smtp.remote-ip=209.85.167.171
+Received: from mail-oi1-f171.google.com (mail-oi1-f171.google.com [209.85.167.171])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1C79606A31D
-	for <imx@lists.linux.dev>; Fri, 23 Oct 2026 20:23:25 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D1C79606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37AF4606A31B
+	for <imx@lists.linux.dev>; Sat, 24 Oct 2026 06:40:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 37AF4606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=SkccTX7Y
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ynFT0b+G7kUtFrSzsgS3/QTBIKuZuNv0b4Zwj0Sgy30BbJQVd62iPCyPg0BoXCjAcvosM8bc11dYFVFgAltKMSnyGigtuqpry6UzGsBQ8UWFoiEcCRORCK8UvvL9KiXdwWx8atoSvc0scyC1/9AvrxJATAX6fvXpAO6BI57qbNYeLvsJGMOGZqpVioHbhZQXcdjjke7jCmPMy5EbykbfEbJ7JAnVbfVTX6FI2b8/iZKdMa+muDp3IREgmcSUiaOZ8Yi6EFNayh0jN8SzdVRcDJr76jx41/HImJSx4eHXm/kdcqgugDsvrA98qqsMkw4Yc4DwsbhvmVqAnXik4j4/Xg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jLIWgfQRXqIhXta1NfslHWfBc295tPLuV452mZ0pJ/8=;
- b=OE/UJIyggwwEtHpFRsc0GWZRdzmGoSJq+u9b7K/fBPBAODZIe+S28ZEySYBj1dh5N0Z5B6e+1J9Uu5Xjz885w3f7vI+vSAMqflS28wK0nid5JyTa+vjF/VaANmSb/BI/XsUcY8ympDP8x6xQtIvMdnTJ7xitor0R7pF3CQKsecQqKEd43dZiFwzOUng4PdeU00pwGxOGM9yIYzxDpnbm7UpDtG3gD+QHy91E7wdJ7+eiliRgjUcQzShFF2/DVlMb2ZfQrM5dMnB8NUzlnEeCXqp7YkN8QUA0JqgFGikj40dyLkdrADR7aiT/EYVHEalZZ0QPsDnNM68p3gM9u+7K6A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jLIWgfQRXqIhXta1NfslHWfBc295tPLuV452mZ0pJ/8=;
- b=SkccTX7YqCnnlEj8u3QTZAcTB5VC5cD6e2LHZn4qERNQ2nEYeN9CCaXXTiGALWKiM2PCYyVXOsgYkkufCYqFmQ6FxipVthKZRY7B/nZJ3Ct1tbDlD87PyWpVH3SIp0BGWuJRHNvpWK3ICfoITuqkyBjwff2rG5TEZdFqtp+aBG8Cex5Xqr+LUubw/XGNYyn1CUjzrUSnoM8jN61HyWBcrhK0PF1k3PASgRIRKDqlG8ryLhtdaMG2yKkvvKIhK4XPy4kQkdT2ua1m/zOdy+Gi9A6VQOlNSWdOBGbRDjjFiDyr9cbwgRtD//XPaCRWM1GavsFD96LuIh2O9szlz+bIkg==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from MI3PR04MB12438.eurprd04.prod.outlook.com (2603:10a6:290:76::14)
- by AM6PPF2AB6264CA.eurprd04.prod.outlook.com (2603:10a6:20f:fff1::a87) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.20; Fri, 23 Oct
- 2026 20:23:22 +0000
-Received: from MI3PR04MB12438.eurprd04.prod.outlook.com
- ([fe80::c715:c32:8bb1:b70b]) by MI3PR04MB12438.eurprd04.prod.outlook.com
- ([fe80::c715:c32:8bb1:b70b%6]) with mapi id 15.21.0546.012; Fri, 23 Oct 2026
- 20:23:22 +0000
-Date: Fri, 23 Oct 2026 15:23:12 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: Ernest Van Hoecke <ernestvanhoecke@gmail.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Kieran Bingham <kieran.bingham@ideasonboard.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
-Subject: Re: [PATCH v3 4/4] arm64: dts: freescale: imx8mp-verdin: Add
- mezzanine OV5640 overlays
-Message-ID: <atvCMGUsLXImGhxZ@SMW015318>
-References: <20261022-verdin-imx8mp-hmp-camera-ready-v3-0-90a30b0b0d55@toradex.com>
- <20261022-verdin-imx8mp-hmp-camera-ready-v3-4-90a30b0b0d55@toradex.com>
- <atp-MEqHMT7F75qn@lizhi-Precision-Tower-5810>
- <zv4gir4qrx62cwyl47cypuk57q7ci4l2piml5cgchhiys2hyli@ubzeh3nw4itu>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <zv4gir4qrx62cwyl47cypuk57q7ci4l2piml5cgchhiys2hyli@ubzeh3nw4itu>
-X-ClientProxiedBy: PH7P221CA0026.NAMP221.PROD.OUTLOOK.COM
- (2603:10b6:510:32a::21) To MI3PR04MB12438.eurprd04.prod.outlook.com
- (2603:10a6:290:76::14)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=c4KGOawY
+Received: by mail-oi1-f171.google.com with SMTP id 5614622812f47-53dda625f63so900283b6e.1
+        for <imx@lists.linux.dev>; Fri, 23 Oct 2026 23:40:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792824049; x=1793428849; darn=lists.linux.dev;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=edz22Fq6n7hqO7w64D56fVejxYtfF3v+LcW93z688tQ=;
+        b=c4KGOawYgUB76TcTwZ+3tkjXB93sAxqBWUI8KkjB8eAhv0nI7splz/BhAiNX5aNEtj
+         G+2W258J3PKOa15sMJakdOVMpLY/AfSbrW4Hd7p3VnDD92+oDwDMeeoW4bN8kyGtTOkB
+         5zIoE554gmxbvGIg33YtWk0IDdYmTVCXRZHXNDqMNNVE2IfU6c024HdiekldMrHodH47
+         M31OOgtxnFnPEK2Mryi5Iyw8kN8fXUn6YopNxol16n6U/GuZKJ4iD+WNc9Gsi7TLaB1n
+         u5QI1VwcNIhpusmubaPobciyM3N6EbytMqbwsCDup8rmJPjjEE/dfQAUrKOtJNm9+0lh
+         G4oA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792824049; x=1793428849;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=edz22Fq6n7hqO7w64D56fVejxYtfF3v+LcW93z688tQ=;
+        b=ut5ugPoN/sB8YCk+pvgoaue2wdFGl+ruf9WkEMugrwaGxqyivlbS9VvywGwzf3WV7b
+         if9TW5xQxQh+NqtkSAtwpYFgfrzTovdan0stuJH1eAojim7agOv+EfXxysaWPcLxZqm7
+         CXUxucHIngMhwE996s/EFpYhTaG9SIk8dmrmBphuQXMZ5NG6Wm2ifQMmXW7T+/Re+cd7
+         ILa7Z8Mp5UOA/TgXzzadHo7Vm8ja6zfYZcA5NUe3jEx0dp5LMn6x333dYETtJnpP3+zC
+         tFtklOUnJgc+vCZlTu4HHcTy2S+AWnH5gseHgcpoBrK9x5sLKKqMLvfJFERPO1RpcBhi
+         85sA==
+X-Forwarded-Encrypted: i=1; AKwUvBxj51MKEaP6zcsB7Bb0n6QqcakFtFvMxshA7cfrcypzoWHPIuvUiR2BJ/kmIS9rr+8fPbI=@lists.linux.dev
+X-Gm-Message-State: AFq9FYLk1GPy90/aMJCe73GJdSye4dIl6KWGLrbBMae7KPgBA/36oWD9
+	79CNSPrTeWNpXx+o6JJPdhA73GCQ6PZZmFr1sL35CMnlJoU4abg6A1k0Qj9kVUQU
+X-Gm-Gg: AYBFou15i4WYT289EsIIMSr+zoQCXaK91U5zASkpuI60HxDOu/VpzcjpLuXGhfhgc9p
+	Jnr+9wLSJZystSKDJ+ELzCYuXwHdbVLyet0LvkzcUQweSnFWVjtMAi+LT+labHrnVy7wGzwt2Lj
+	5gtJneR7ODNrui4fGzz8ZS55Qgu/b8gIKMY2v/89ceEch89IrxHwQIvNRfxolg0Y15IJWq+FAEG
+	J+XQAtL2RSDv0vOahD6WJCHPLctnJG9OLW37AMlM2zfRJXT+FnGTArgNlSn0n+WNMt0ewJrnL+2
+	+c0ToCF61go6o0Jwnct3yGYKRe7A27Su5UC7Iv3ju4cCOuTI+pyQg6EAf6cMKuj67iTHcI7S0T8
+	RGFNb/KPUCN0pOqCR4+d60mTUxekN0RJbvS8VCWgv1xjMdavCsa4chw8GefUqTG1z6PCCATxnUP
+	R2XOh/5ZC66IPK8v/oZsFyWWy5lPnjK9ZiGemGOTNp7+dFqOl6IZFTwAl6xcwR0h2FLSJDz6IIy
+	uUKdgxjqanXC5Axe60iMS256dF9l6lzEAEGETyzMOPaarzp2s466FUmH1yVJFdShogWDYIq5q+Q
+	HT4y0xCbxF/SuDjUYzFyHbCX1javBzaNS4579Naw5AmVtpOse9y27EepDv0VpZjmM0CRcWgWXWA
+	Q/QR1mrdfUF7wBpLNWhfALkkYxfuenJopseJsjCAn5x0t9cjMTtDbKPkByAJkvd52C+Qebg0md0
+	c5tA==
+X-Received: by 2002:a05:6808:1798:b0:525:184c:7952 with SMTP id 5614622812f47-55c0026231bmr837705b6e.16.1792824048956;
+        Fri, 23 Oct 2026 23:40:48 -0700 (PDT)
+Received: from [127.0.1.1] (174-29-1-49.hlrn.qwest.net. [174.29.1.49])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-55c0429c56asm864633b6e.9.2026.10.23.23.40.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 23 Oct 2026 23:40:48 -0700 (PDT)
+From: James Hilliard <james.hilliard1@gmail.com>
+Subject: [PATCH v5 0/5] serial: 8250: serialize DMA cancellation with
+ buffer reuse
+Date: Sat, 24 Oct 2026 00:40:39 -0600
+Message-Id: <20261024-submit-serial-8250-dma-cancel-v1-v5-0-9e52968928d2@gmail.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -108,131 +94,209 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|AM6PPF2AB6264CA:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2662818a-9a78-4178-1b6b-08df31437c1d
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|1800799024|376014|19092799006|23010399003|56012099006|11063799006|4143699003|261009223027099003|261021121427099003|261022105027099003|261022075727099003|10067099003|18002099003|22082099003|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	+tlK3Jjr+y696Yco7a9rVO3UGQDVJipSEEvCsPJtSaC9tVkf+f8fO1OGnanDxqifDk4KV1iQT1Gy6l06VyR7t3HjGeqkuO646q8uFr2IXFmKSIOs50iOzVqx1ujRFeTmXkhflktcxp2Ev/TLn5J+mxyNddBg8C/wK66dTzyQHE12CsE3snbwMDglUADhM+pWTofpfuhYlskICC2hMegvTGc8mAZKT0WtXS6oj7tTpKsTzqbuEKrU3JFSc1EDVXejVe4iMOMUmPlO1tTcRrc0S891DAcgBIt3Zb4BA4efPxyWEGdoa77pLU5RNGD2ChBE5/CCRKHEKW9ptVxsmULR1lx0NpghHk2d7TN6MlB35QemJ6oSJSD/8MdrhcA+4FCOwHqjHEzl0tG4SMIR5Cb9d+LBpQXn4luTNkTC0RWuAsGvbLUyipJEEJelwOcw2b2l5oSB2Lpo2S9KptxHNrOMgJamz9F6xfsGo82XCrLGDqd4/Gum1BVGZFu2ho1yz2SaPJcC+ucZVveFpSkUAEbYPQcjzeFBDkpk6DGWwarm6c6gtKdXjMTFpLkbzajOQxHYVsWxzdrZWRwK76kIJBUUnAOPfHi7rJamKp/Q0kYidhw=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(1800799024)(376014)(19092799006)(23010399003)(56012099006)(11063799006)(4143699003)(261009223027099003)(261021121427099003)(261022105027099003)(261022075727099003)(10067099003)(18002099003)(22082099003)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?EqtF7EJGf6upf58ZS4loszTV8Uco0oD4tTAQY7fzuEhPA9kqgT1wlhI8qZ73?=
- =?us-ascii?Q?rgn7cbLobx9oRUvuXZ5sOXXMFnrbfJjtZH8L6KuQIc7u2RolA+IOHj+6Tx2+?=
- =?us-ascii?Q?zsxv7WMtT0D/BZ4HfGwMaOld7iXz5w9aYPCd/JCvvSHcIoecVhweuKpBEUU0?=
- =?us-ascii?Q?vonQ58Gd2Tcq4y7lPF7w4yiYAfWwxzfjjxceh/Mb438h1PriMoovbG/68h62?=
- =?us-ascii?Q?OK4iXbkz7UOVdkVyYzB2RwCHCHSkElkMBmfnprDYIV3CnC/ldXVEsZRW+wEE?=
- =?us-ascii?Q?EtcTUTsMjtRxUXu9AOu67TAD9Hhbf0fp9guox/Us/7B6s+LlJJACUtlLzw3p?=
- =?us-ascii?Q?Fru3la59ADHoe59H3jdGr8VSfwWVdLvqMjXKeI0BueEOqeJqb+2Wr26/KaYZ?=
- =?us-ascii?Q?yNM7Dty8eV0Z0Arj6wDsoArqiVF9LosYuh3+kbOUPsWVD/2f9LyULrjqltzT?=
- =?us-ascii?Q?xhwJtGqrJtjUVmuEDFj6kmjVNn6cibCl7HZy/mVRhSmZWolvtZylnx+qWqnh?=
- =?us-ascii?Q?To8MsCkXpp0tzBpzqhPJgRti7ZQtImfOQSkdGi23Xbl8JCCijRwkvYerbAUI?=
- =?us-ascii?Q?G9ST/pkwHFXvvnpiuvAQFRnZHRPzxdifYR54M2KdaGmRaDcL0I5Mtdi6ZPiN?=
- =?us-ascii?Q?uBAyewUFuEJvvwt+dvCzy6uzerPlcfzanREMFROhi6mxMQKTaQMLFb0t1DI9?=
- =?us-ascii?Q?BofDUTEeA/cA8jrgue+uFOM6ypu3PYz8+yZnruGKyN2lkp7OFzRonxadsW4x?=
- =?us-ascii?Q?Uf0i2CYSycgGOw7sZbyHJv85o3OsH4ZYqjV0X81zAFzqaOYDBEG3p0ybVRZu?=
- =?us-ascii?Q?7stdMcsRA1amZfDP09V01FqAvwYhb04Yycki5Yqyi4k42w0phE0PnfR+i4XA?=
- =?us-ascii?Q?p6Ju7Ke/BtTdKzXqiQL3BTLz1jOuN7mj8uOmgiidNLwu5B+f67WZqFxn/XfL?=
- =?us-ascii?Q?1j76bs1ouBN09WsXdbkQNH2BIAUKKMbAvLqwhNLCMkh3VKghfopRDg1Ule/F?=
- =?us-ascii?Q?4fx4pepocovMV91kBcLSyEUvjHBfcLHoOry16bQe3k4PkAcTbrfahf5E8wID?=
- =?us-ascii?Q?X3ur9RzQjFC3vg3lcSMJbUvAgW47BlXvOLEOGLOscYobZT9oJg4Ecg/MdT9N?=
- =?us-ascii?Q?OKk+05ID5CE/3nWbRbZNCcFBGqImDys2U88GCjy1vzEd+pmoKabdJePQavY1?=
- =?us-ascii?Q?ivWTiqCLlGZElUnxngaNcOuAQwS43k2tfWHdnP0WyOoEA8EVFqwVGKv7/4yI?=
- =?us-ascii?Q?TmWetlxROO1Qckf6AcQ+jeGB68Et0u2iwlMTCT1hCWXcR38KS/kJCBbaSrfR?=
- =?us-ascii?Q?FENRtjqrHO02mXqehUUK6u+NFsAuY10CsB8YTnxm6O3APlQQGQT1DbcC1vcc?=
- =?us-ascii?Q?fKk3xyxTHRZ0hSgYvs82bJosr2mEZ0JA+kB8lLm/LeDmOmD4fJWUxJ2s6kwx?=
- =?us-ascii?Q?xXoNlj0AlGEVrAWNYCP88vnKydkTBqkb6+HZkWeP7SGP6Rfx75lFx30Z4/9B?=
- =?us-ascii?Q?K3CBhlX43y0S3fQBeu3Pirn/aDyA8CxXWjDsAsMCS+s2ZjvGCrfHQYw3wncl?=
- =?us-ascii?Q?2va71Jwp21XLXEKwolpNpsk4xuFruSZvXLGVrzj9Jy5NoClVr6RBR/rYz++b?=
- =?us-ascii?Q?mVmidRB7QuHY1JSXRFEYwzp/y9kCS3kp8xDv42WJ7ZuXmEFjKUu623A76q5g?=
- =?us-ascii?Q?2jy+HLJx9ABpSybwLhRh9t9IMB3YnLKRM2jsxL8Kl3TNQs5QmrrYRPl+l51C?=
- =?us-ascii?Q?8UUF+qiT3t8olQvkTe9fFaIX97J+tCGahDLRvLrShB+/3FsjCgvX?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2662818a-9a78-4178-1b6b-08df31437c1d
-X-MS-Exchange-CrossTenant-AuthSource: MI3PR04MB12438.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Oct 2026 20:23:22.6990
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4sakzegnpIEo2L444FNchRt+cWvMWl3XTqH8uUz6Js0G0azY5iGkX8pInuuLx7MM/Q3hYnyA1Hn6iBbmo4t/4vGAbV/+irnFoJze97DlmTtJONTJpW7TCL2KpxZr3uS0
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM6PPF2AB6264CA
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/5WS3WobQQyFX8Xsdbcdaf6kXPU9Si80M1K8JXZS2
+ zEtIe9erdOL2FBIYVnQovMdHa1epqMeFj1Od5uX6aDn5bg87r3InzZT38r+XudleD1hwAIBYT4
+ +t91ymleZPMyEOcxjJ3OXfdeH+Qxzw0BGSYk7TI55Oqgtvy4W376/1c74of20cteOJked28EJ2
+ /WTNxz055d/OeS/UO959nFPb+Q3SH/c+XB3GwBKRlWxclAS46YRoFgJNFCptFQZRx0XlJz61lP
+ ebWIJqZlIFOgIibkOBQMXYiOQlBOIZWnXqspjBI5mLWbFnNQ9h1dEVM37oZVknOq1ioLkUGBQ6
+ iFnKanX4ism06YDKvdCtTHbjddoLfmQYmBUgAm7FUmt5jwid9OeEyHGa1UKRO4EgrV5NvEkGKK
+ 7gKf0vIbAtRa6UaVctFWjEHrLIwepoROTlpFXglQLrUu6ViHVIkCBNZsi+xYws2uj/4oiaj4H5
+ ZBvVIlKdoVatOx7rHUEzwQWKIYehqbCjAX7tB7QdjmeHg+/Lyd7hsvP//h1+hNm9dEasWEM8ev
+ 9TpaHz345F/gZ3wPxA0B0oC9YJYNGYrgFxvfA+AFgdOCoZKypJ454C0z/C0xr5JrZr5miv98DX
+ 19f/wCQKuFMBAQAAA==
+X-Change-ID: 20261021-submit-serial-8250-dma-cancel-v1-b208f84e89c1
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Jiri Slaby <jirislaby@kernel.org>, Raul E Rangel <rrangel@chromium.org>, 
+ =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+ Tony Lindgren <tony@atomide.com>, 
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+ Richard Genoud <richard.genoud@bootlin.com>, 
+ Nicolas Ferre <nicolas.ferre@microchip.com>, 
+ Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+ Jacky Huang <ychuang3@nuvoton.com>, Shan-Chun Hung <schung@nuvoton.com>, 
+ =?utf-8?q?Pali_Roh=C3=A1r?= <pali@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, "Maciej W. Rozycki" <macro@orcam.me.uk>, 
+ Timur Tabi <timur@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
+ linuxppc-dev@lists.ozlabs.org, James Hilliard <james.hilliard1@gmail.com>
+X-Mailer: b4 0.15.2
 
-On Fri, Oct 23, 2026 at 03:51:17PM +0200, Ernest Van Hoecke wrote:
-> On Thu, Oct 22, 2026 at 05:20:48PM -0400, Frank Li wrote:
-> > On Thu, Oct 22, 2026 at 04:31:28PM +0200, Ernest Van Hoecke wrote:
-> > > From: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
-> > >
-> > > The Verdin iMX8M Plus exposes its second MIPI CSI-2 interface through the
-> > > Verdin iMX8M Plus Mezzanine. Add overlays for using a Toradex OV5640 camera
-> > > on this interface.
-> > >
-> > > The mezzanine can route the camera control signals through two jumper
-> > > configurations. Describe each configuration as a GPIO nexus mapping so the
-> > > camera description remains independent of the physical routing.
-> > >
-> > > The default positions share the native CSI_1 GPIOs and are intended for a
-> > > single camera. The alternate positions permit simultaneous native and
-> > > mezzanine cameras, but conflict with the Atmel MXT touchscreen GPIO.
-> > >
-> > > The current camera set uses a 27 MHz on-board oscillator. The legacy camera
-> > > module uses 24 MHz, so provide variants for both.
-> > >
-> > > Link: https://developer.toradex.com/hardware/verdin-som-family/add-ons/verdin-imx8m-plus-mezzanine/
-> > > Link: https://developer.toradex.com/hardware/accessories/cameras/csi-camera-module-5mp-ov5640-arducam
-> > > Link: https://developer.toradex.com/hardware/legacy-products/other/csi-camera-module-5mp-ov5640/
-> > > Signed-off-by: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
-> > > ---
-> > >  arch/arm64/boot/dts/freescale/Makefile             | 19 ++++++
-> > >  ...-verdin-mezzanine-ov5640-24mhz-alt-jumpers.dtso | 19 ++++++
-> > >  ...din-mezzanine-ov5640-24mhz-default-jumpers.dtso | 18 +++++
-> > >  ...imx8mp-verdin-mezzanine-ov5640-alt-jumpers.dtso | 38 +++++++++++
-> > >  ...mp-verdin-mezzanine-ov5640-default-jumpers.dtso | 42 ++++++++++++
-> > >  .../freescale/imx8mp-verdin-mezzanine-ov5640.dtsi  | 78 ++++++++++++++++++++++
-> >
-> > why not share with imx8m-verdin-ov5640.dtsi, which is almost the same.
-> >
-> > Frank
->
-> Hi Frank,
->
-> Both camera modules have their own oscillator, and the native and
-> Mezzanine connectors have their own supply, so each overlay describes its
-> own clock and regulator nodes. They also use a different I2C bus, CSI
-> receiver and connector. Both overlays are applied together for two
-> cameras (imx8mp-verdin-wifi-dev-dual-ov5640),
+Reserve canceled transmit and receive storage until DMA and its completion
+callbacks have retired. Serial-core write backpressure protects a flushed
+TX FIFO while normal transfers continue to DMA directly from that FIFO.
 
-Okay, I see share one imx8m-verdin-ov5640.dtso
+The series separates OMAP's locked completion processing and serializes
+asynchronous write wakeups with the port lock before adding the serial-core
+reservation helpers and applying them to 8250 TX. Flushing
+empties the logical queue immediately. While the old transfer owns its
+storage, write_room() reports zero and write-ready notifications wait for
+retirement. Failed termination retains the reservation until normal
+completion, without advancing the reset FIFO. DMA retirement releases the
+reservation independently of port readiness. Serial core keeps writes and
+wakeups gated during shutdown until successful startup or resume.
 
-> so their node names and
-> labels must be unique, and a single .dtsi cannot be included twice.
+RX delivers paused data before the PIO fallback and retires callbacks in
+process context. Track FIFO access separately from buffer retirement so
+PIO and the DesignWare empty-FIFO timeout handling can run once DMA has
+released the FIFO. On failure, retain the requested interrupt enables in
+the existing IER shadow and mask receive interrupts in hardware until DMA
+has stopped. Recovery then leaves RX on PIO until reopen. Shutdown excludes
+new retirement work before releasing the channels.
 
-mezzanine actually connect by another connectors ? so it need new one files
-because current nexus node's limitation.
+Based on tty-next with the posted shutdown guard [0], channel
+configuration error handling [1], RX TTY accounting fix [2], RZ/N1
+transfer-length fix [3], transmit-PM shutdown fix [4], serport
+write-wakeup deferral [5], DesignWare BUSY-safe fractional-divisor
+programming [6], and Intel MID RX DMA timeout locking [7]. The serport fix
+is needed before serializing the remaining write-wakeup callers with the
+port lock.
 
-Can you make imx8mp-verdin-mezzanine-ov5640.dtsi also standardize, like
-use unified camera_i2c_2, camera_connector2, compre to imx8m-verdin-ov5640.dtso
+[0] https://lore.kernel.org/r/20261021-submit-serial-8250-dma-shutdown-v1-v1-1-3d3ce383c614@gmail.com
+[1] https://lore.kernel.org/r/20261021-submit-serial-8250-dma-config-errors-v1-v1-1-c067587d1ef2@gmail.com
+[2] https://lore.kernel.org/r/20261021-submit-serial-8250-dma-rx-accounting-v1-v1-1-c11795914ab4@gmail.com
+[3] https://lore.kernel.org/r/20261023-submit-serial-8250-dma-tx-length-v1-v2-1-c3106ef4d2df@gmail.com
+[4] https://lore.kernel.org/r/20261022-submit-serial-8250-tx-pm-shutdown-v1-v1-1-0e894afa3bb8@gmail.com
+[5] https://lore.kernel.org/r/20261023-submit-serport-write-wakeup-v1-v1-1-74e7311638a2@gmail.com
+[6] https://lore.kernel.org/r/20261023-submit-serial-8250-dw-divisor-v1-v1-1-f452d4bb1b1f@gmail.com
+[7] https://lore.kernel.org/r/20261024-submit-serial-8250-mid-rx-lock-v1-v1-1-2b9afdf869d7@gmail.com
 
-And avoid dtso include dtso file.  Now perfer only include dtsi file.
+Assisted-by: Codex:gpt-6-astra
+Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
+---
+Changes in v5:
+- Add the posted serport write-wakeup deferral as a prerequisite for the
+  caller-locking preparation.
+- Add a preparatory patch serializing asynchronous write-wakeup callers
+  with the port lock, including indirect CTS and transmit-helper calls.
+  Keep sleeping register accesses outside the lock and defer SCCNXP
+  notifications until its controller lock is released.
+- Use the separately posted DesignWare BUSY-safe fractional-divisor fix
+  and Intel MID RX DMA timeout locking fix as prerequisites, leaving five
+  patches in this series.
+- Separate serial-core write readiness from DMA storage reservations. Record
+  retirement during startup and shutdown while keeping writes and wakeups
+  gated until the port is ready.
+- Wake deferred writers after successful startup or resume, including when
+  reopening with a retained FIFO, and restart any retained queued output.
+- Keep the write-ready notification pending while retained output is at or
+  above the normal wakeup threshold, until TX completion drains it.
+- Publish resume readiness under the TX restart lock without releasing a
+  reservation that may belong to a newly flushed transfer.
+- Release 8250's TX reservation after shutdown has stopped DMA and unmapped
+  the source; serial core retains control of write readiness.
+- Link to v4: https://patch.msgid.link/20261023-submit-serial-8250-dma-cancel-v1-v4-0-e759de1839de@gmail.com
 
-Frank
+Changes in v4:
+- Retain flushed TX reservations through shutdown and failed resume. Release
+  them after successful resume, or when allocating a new FIFO on reopen,
+  so retirement cannot wake writers into a closing port.
+- Treat RX flush as complete once the channel is inactive, and clear the
+  shutdown guard before startup configures the UART and tests interrupts.
+- Check completion after a failed pause so a transfer that finished before
+  its callback acquired the port lock is delivered and retired normally.
+- Keep DesignWare's BUSY-safe divisor setter after fractional-divisor
+  discovery, writing DLF and DLL/DLH only after confirming DLAB.
+- Link to v3: https://patch.msgid.link/20261023-submit-serial-8250-dma-cancel-v1-v3-0-d78f9e4c4932@gmail.com
 
->
-> The connector nexus makes the GPIOs independent of the routing, but an
-> overlay still has to name the connector, bus and receiver it uses. One
-> overlay for either connector would need the target to be chosen when it
-> is applied, which is what the DT connector/addon work is about, so sadly
-> we have to wait for that to make things more generic.
->
-> What is left in common is a few constant sensor properties, so I would
-> like to keep the two files.
->
-> Thanks for your input and best regards,
-> Ernest
->
+Changes in v3:
+- Defer write-ready wakeups while flushed TX storage is reserved, and
+  serialize the flush wakeup with the reservation under the port lock.
+- Suppress ordinary TX starts during the reservation while preserving
+  high-priority flow-control characters, which use separate storage.
+- Separate RX FIFO access from callback retirement, allowing PIO and the
+  DesignWare empty-FIFO timeout workaround after a successful pause and
+  termination while keeping the receive buffer reserved.
+- Use the existing IER shadow for requested enables and a shared register
+  writer to keep receive interrupts masked throughout DMA error recovery,
+  including termios, RS485, modem-status and overrun-backoff updates.
+- Preserve the timeout-enable bit across stop_rx(), exclude late shutdown
+  interrupts from PIO, and avoid FIFO resets during RX DMA recovery.
+- Preserve the completion-path LSR read after stop_rx(), while gating DMA
+  resubmission on the receive interrupt enable.
+- Pack the cancellation flags after moving all their accesses under the
+  port lock, including the recovery worker's snapshot and initialization.
+- Apply the early-return, shared-helper and line-wrapping cleanups.
+- Link to v2: https://patch.msgid.link/20261022-submit-serial-8250-dma-cancel-v1-v2-0-088ea51e3891@gmail.com
+
+Changes in v2:
+- Add serial-core helpers to reserve flushed transmit storage until DMA
+  retirement. Apply write backpressure during that interval and keep normal
+  TX using the FIFO directly, replacing the private transmit buffer in v1.
+- Document the flush callback's reservation, writer backpressure and
+  retirement requirements, including release before shutdown returns.
+- Split the OMAP completion refactor into a preparatory patch and move
+  the RZ/N1 preparation-order and shutdown PM fixes to independent
+  submissions, keeping four patches in this series.
+- Take runtime PM references around worker UART accesses, and leave normal
+  RX retirement to release ownership without reading LSR or restarting DMA.
+- Synchronize the queued TX ranges before preparing the descriptor and
+  return the mapping to CPU ownership before releasing the reservation.
+- Keep the TX transfer length separate from FIFO cancellation, so a failed
+  termination can account completion without advancing the reset FIFO.
+- Exclude late RX flush work during shutdown, including Intel MID DMA
+  timeout interrupts which are independent of UART_IER.
+- Accept DMA_IN_PROGRESS after successful pause, and recover from failed
+  pause, termination or DMA_ERROR before handing the receiver to PIO.
+- Preserve stop_rx() and shutdown across recovery, and retain the
+  DesignWare empty-FIFO timeout workaround when receiving through PIO.
+- Apply the requested guard spacing and container_of() formatting.
+- Link to v1: https://patch.msgid.link/20261021-submit-serial-8250-dma-cancel-v1-v1-0-efe2b89f2303@gmail.com
+
+---
+James Hilliard (5):
+      serial: 8250_omap: separate locked TX DMA completion processing
+      serial: serialize asynchronous write wakeups with the port lock
+      serial: core: allow drivers to reserve flushed transmit storage
+      serial: 8250: drain canceled TX DMA before reusing its buffer
+      serial: 8250: retire canceled RX DMA before reusing the receive buffer
+
+ drivers/tty/serial/21285.c          |   2 +
+ drivers/tty/serial/8250/8250.h      |  59 +++++++-
+ drivers/tty/serial/8250/8250_core.c |   2 +-
+ drivers/tty/serial/8250/8250_dma.c  | 284 +++++++++++++++++++++++++++---------
+ drivers/tty/serial/8250/8250_dw.c   |  27 +++-
+ drivers/tty/serial/8250/8250_omap.c |  38 +++--
+ drivers/tty/serial/8250/8250_port.c |  31 ++--
+ drivers/tty/serial/atmel_serial.c   |   2 +
+ drivers/tty/serial/clps711x.c       |   6 +-
+ drivers/tty/serial/cpm_uart.c       |   2 +
+ drivers/tty/serial/fsl_lpuart.c     |   2 +-
+ drivers/tty/serial/jsm/jsm_cls.c    |   3 +-
+ drivers/tty/serial/jsm/jsm_neo.c    |   9 +-
+ drivers/tty/serial/lantiq.c         |   3 +-
+ drivers/tty/serial/ma35d1_serial.c  |   6 +-
+ drivers/tty/serial/max3100.c        |   6 +-
+ drivers/tty/serial/max310x.c        |   9 +-
+ drivers/tty/serial/mux.c            |  13 +-
+ drivers/tty/serial/mvebu-uart.c     |   2 +
+ drivers/tty/serial/mxs-auart.c      |   2 +
+ drivers/tty/serial/sb1250-duart.c   |  10 +-
+ drivers/tty/serial/sccnxp.c         |  45 ++++--
+ drivers/tty/serial/serial_core.c    | 100 +++++++++++--
+ drivers/tty/serial/ucc_uart.c       |   6 +-
+ include/linux/serial_core.h         |  18 ++-
+ 25 files changed, 532 insertions(+), 155 deletions(-)
+---
+base-commit: 1184f87e2790e8af9be3116f608d2e86b4792d7d
+change-id: 20261021-submit-serial-8250-dma-cancel-v1-b208f84e89c1
+prerequisite-patch-id: 3604bfaa3a1c214997de1f11162b81a4541af5ab
+prerequisite-patch-id: 79dd093ffb35e254e790dffb8887faf51b64f947
+prerequisite-patch-id: 80a5061d84c055a64c760268febed179c687b99f
+prerequisite-patch-id: 7dbb404baf1f861982cf6a4b755d39cfec548223
+prerequisite-patch-id: 40881d81a27b3a1aa45203d171214faaf2197768
+prerequisite-patch-id: 4456eb7f800cb5d50a70c898e6d5a452a7f0bca4
+prerequisite-patch-id: 2876a1809e5fe29b8825950a32796aef1d885054
+prerequisite-patch-id: 48659e5ef3f5fb377d0b751f0830c0de4699262c
+
+Best regards,
+--  
+James Hilliard <james.hilliard1@gmail.com>
+
