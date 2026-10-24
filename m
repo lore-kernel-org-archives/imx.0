@@ -1,57 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792824632;
-	b=InXZ1GXWgVLSt00VYShny5o/u9Ihwia5g6gp7/tpCkJh3MAomSJ2cPz6qd4L32dPq+ps
-	 00bmMLmnt1DnJepNUcdHWbUv1yo2fqdB1V52Ax/1BGfqBsAD3eBW8W3CDoIMsvtOdAC/e
-	 we0jcP9Sdp9Jx7UQABVFlSfHMKq2CG9cvV82Jg9X02SmZVp9/a694+joDYVXM91Lfuit5
-	 eEygs8ZBZtc0KV3R0dpUw4kMZXY6EiXP4siOTkYH86qObsO34CWLcXsq7l+FNGDlEYWvj
-	 zzYiHWL73DVNKqyCTSkjdbE9ER7RhHBe6wWEuUQtOp7dvbfTjm9UeYU4x/0oNqeshpQ==
+	t=1792826697;
+	b=Icd4Lxu1FPBh+XpNOU3HEXbAb5p9ryQtJHjIrxZmImAxmNVFefONGlYeuaEbC6xSsnfO
+	 9rDZyh0xb1OkSyhTs755BB7eetXBc8ev+vydVF4CGAnbflMyC5K/mZw7mCvDZqluKqshr
+	 VrOFmRM5I4shH69fSaxY3I21VoA3gwyghyCmUDEtEZRLXGg1uQNqj2RU47V7BHZjDDmH4
+	 pNGdYW7epXXxPM6wLfvWeCHxeS7pNdem7gdcZrBXrgu/O2W69mkMAx2+Ha/0S89qardGV
+	 Icpzcb7DZ1A0onZ1OWOzVcaMjatWHhOO43VRD92+FSt4Dp5o7x3FI6C+ZmjIis/FKyg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792824632;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792826697;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=U7lkWM1icUBok0mW0cdkmYyTSqtjf9+7YVfQCQ/6Bro=;
-	b=IKICRIuqeuqC/5UBxnwTK7j7HLVudWbjviang2ZJvAM6VIkMGBtoS5L66ebW6aLAFCsS
-	 kOb3xUsHOlo1Jn6PoxEj8UYypxg5jvG5IOWid4Uug6piluN4sDxe+AXRrR4qIuiQaMuMq
-	 nukiaZMPo8d8bmEuPdq+fyEfUrRvTwmLPsK5g6giCTCA6FsgHAqElmdcVwAD98vKE6ATT
-	 egweMqYwJTUfToThpA4AXfJccbtmqd7uQiEcefLKJi8GvXfQxC8sITiNBBIcedv2Pc5Mr
-	 ASC6Bz7XaaJ/4tCYL5kyByIa7m07f3z9NysoFiSHhnlZ6oFCe0n5iK8uzbkDBWWOPrg==
+	bh=mliuCbsxIb8acnPuAlhgKMxCC9FokkYb16aWtaL9rEs=;
+	b=cItkChnWrhRj5dGYq1uqJM5a/zVOJ0y1PNRmFMyIV9M/zxAQsKqkLKHebopJJQ1Dq58/
+	 nTSSRj8TszglIVdQZDoKyxrhhdvm+xnyD45JzHJ7BUfMURrGrwO2J3KycdOBv8O4caJzh
+	 R9/ESsBrGe+pm39W5F5aS6l5V1+ahHcgAMZ2elltS57yKy6VwuOdFd5WoLKsYogu9B84l
+	 iUokDi2miDLvfayQChmk6+sefa7lX7rz0BV17fXBe7D2G+66qp6Vvhe8ETxAi5MUYXvKY
+	 ZX2MLIFEYsR/1PGLpjAv2RWCD0zF7m/E+zFgBH8XUfgIw4RcfDmWfK0l1HV5VwStI/g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=d1bDNlKv;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BGIB90Je;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5FE4606A31A;
-	Sat, 24 Oct 2026 06:50:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2789F606A31A;
+	Sat, 24 Oct 2026 07:24:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=d1bDNlKv
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BF121F01825;
-	Sat, 24 Oct 2026 06:50:31 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BGIB90Je
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B43C1F01825;
+	Sat, 24 Oct 2026 07:24:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792824631;
-	bh=U7lkWM1icUBok0mW0cdkmYyTSqtjf9+7YVfQCQ/6Bro=;
+	s=k20260515; t=1792826696;
+	bh=mliuCbsxIb8acnPuAlhgKMxCC9FokkYb16aWtaL9rEs=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=d1bDNlKvLO1wnTd4A6+6/yItsAANhcrCheZzS2NVRM1oR3P4rHQqOFO8AHXgy+H5X
-	 brGOtwPf7wDorTIPfHe9mOSKfmG7kKPvDCjklmHHamXkZSPynrpq0ffFxJr6Vv8ahF
-	 nEYQu1vyXytUJmHuBzvdjf/e9kmWUB0hCl1+sXUrg6VW/IreA803GbhdA5nL+XIeXe
-	 qzSMplrNaEgO9bxKYfeRq2BVEzbXXiuyXR8abMRwmgo0ORsaAFUuLOqHNy/a/LmKz2
-	 PMPNHygqDtaJt1hwoa4GHK0q+5Mq0UDk4pmtug6enAXUMbSLDBl2tcgFQFfUgd7/Xl
-	 uXF4AJ925vmkA==
-Message-ID: <sashiko-outbox-183574@kernel.org>
+	b=BGIB90JexS2jS9DC6JJy9FlgGotdfXGY6Zwktb+OnmwSTV03CShtX0RpCy5EcfUCz
+	 e5zJi5vqG4/hl7zYL8YWBgl97J3i5ZxkcDVteLOCtSJHR0hxNToc7w1P1nmKZcAFdw
+	 vtEGKIw9VZSzts/05AN4v95gXF+YsS+Ky8rk2cJKF9KKBlRbbL+EYcFdRli1SoJ5cS
+	 U30z7CxKGGOfwvhM6r1CXq/GA9JVUKjFJGmnMcQIdzlLGfMO8pVfm4a6Gx2b4ElurG
+	 fLDM2baeY57PyBfeXsZhuc0YANC6yfAk8CdrnpfHFRzREcj39jX3ZBUJ2j0iWDB81q
+	 eBPkpQac6qzCA==
+Message-ID: <sashiko-outbox-183582@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 2/5] serial: serialize asynchronous write wakeups
- with the port lock
+Subject: Re: [PATCH v5 5/5] serial: 8250: retire canceled RX DMA before
+ reusing the receive buffer
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "James Hilliard" <james.hilliard1@gmail.com>
 Cc: linux-serial@vger.kernel.org, imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20261024-submit-serial-8250-dma-cancel-v1-v5-2-9e52968928d2@gmail.com>
+In-Reply-To: <20261024-submit-serial-8250-dma-cancel-v1-v5-5-9e52968928d2@gmail.com>
 References: <20261024-submit-serial-8250-dma-cancel-v1-v5-0-9e52968928d2@gmail.com>
- <20261024-submit-serial-8250-dma-cancel-v1-v5-2-9e52968928d2@gmail.com>
+ <20261024-submit-serial-8250-dma-cancel-v1-v5-5-9e52968928d2@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 24 Oct 2026 06:50:30 +0000
+Date: Sat, 24 Oct 2026 07:24:56 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -63,59 +63,119 @@ Precedence: list
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] serial: clps711x: deadlock between uart_clps711x_int_tx() and stop=
-_tx()
+- [High] serial: 8250_dma: dev_warn() called under port lock in serial8250_=
+rx_dma_flush_work()
 --
 
-commit dc0a2d4e309be9916a0d844a2a8caf7397942a8f
+commit 0ccef758673ba1627cbc368a7ea2a4a045241f8f
 Author: James Hilliard <james.hilliard1@gmail.com>
 
-serial: serialize asynchronous write wakeups with the port lock
+serial: 8250: retire canceled RX DMA before reusing the receive buffer
 
-This commit acquires the UART port lock around asynchronous write wakeups
-and transmit helpers in several serial drivers so that uart_write_wakeup()
-is serialized with port-locked serial-core state changes.
+This commit reserves the RX DMA buffer until a worker has drained canceled
+callbacks and falls back to PIO via a recovery worker if pausing, querying
+status, or terminating the RX DMA channel fails.
 
-> diff --git a/drivers/tty/serial/clps711x.c b/drivers/tty/serial/clps711x.c
-> index 83186bf500027..054b9d8359de2 100644
-> --- a/drivers/tty/serial/clps711x.c
-> +++ b/drivers/tty/serial/clps711x.c
-> @@ -174,8 +174,10 @@ static irqreturn_t uart_clps711x_int_tx(int irq, voi=
-d *dev_id)
->  			break;
->  	}
-> =20
-> -	if (kfifo_len(&tport->xmit_fifo) < WAKEUP_CHARS)
-> -		uart_write_wakeup(port);
-> +	scoped_guard(uart_port_lock_irqsave, port) {
-> +		if (kfifo_len(&tport->xmit_fifo) < WAKEUP_CHARS)
-> +			uart_write_wakeup(port);
+> diff --git a/drivers/tty/serial/8250/8250_dma.c b/drivers/tty/serial/8250=
+/8250_dma.c
+> index 1a070967bf571..801221baded0a 100644
+> --- a/drivers/tty/serial/8250/8250_dma.c
+> +++ b/drivers/tty/serial/8250/8250_dma.c
+> @@ -86,53 +86,96 @@ void serial8250_tx_dma_sync_buffer(struct uart_8250_p=
+ort *p,
+[ ... ]
+> +static void serial8250_rx_dma_flush_work(struct work_struct *work)
+> +{
+> +	struct uart_8250_dma *dma =3D container_of(work, struct uart_8250_dma, =
+rx_flush_work);
+> +	struct uart_8250_port *p =3D dma->port;
+> +	bool recover;
+> +	int ret;
+> +
+> +	/* All packed flags share the port lock, including this worker snapshot=
+. */
+> +	scoped_guard(uart_port_lock_irqsave, &p->port)
+> +		recover =3D dma->rx_err;
+> +
+> +	if (recover) {
+> +		ret =3D dmaengine_terminate_sync(dma->rxchan);
+> +		if (ret) {
+> +			/* Retain ownership and keep RX masked if DMA cannot be stopped. */
+> +			dev_err(p->port.dev, "failed to stop RX DMA: %d\n", ret);
+> +			return;
+> +		}
+> +	} else {
+> +		dmaengine_synchronize(dma->rxchan);
 > +	}
+> +
+> +	guard(serial8250_rpm)(p);
+> =20
+> -	uart_port_lock_irqsave(&p->port, &flags);
+> +	guard(uart_port_lock_irqsave)(&p->port);
+> +
+> +	dma->rx_terminating =3D false;
+> +	dma->rx_running =3D 0;
+>  	if (dma->shutting_down)
+> -		goto out;
+> -	if (dma->rx_running)
+> -		__dma_rx_complete(p);
+> +		return;
+> =20
+> -	/*
+> -	 * Cannot be combined with the previous check because __dma_rx_complete=
+()
+> -	 * changes dma->rx_running.
+> -	 */
+> -	if (!dma->rx_running && (serial_lsr_in(p) & UART_LSR_DR))
+> -		p->dma->rx_dma(p);
+> -out:
+> -	uart_port_unlock_irqrestore(&p->port, flags);
+> +	if (!recover)
+> +		return;
+> +
+> +	/* Apply the current enables, including any intervening stop_rx(). */
+> +	serial8250_out_IER(p, p->ier);
+> +	dev_warn(p->port.dev, "RX DMA failed, using PIO\n");
 
 [Severity: High]
-Can acquiring port->lock in uart_clps711x_int_tx() deadlock with
-uart_clps711x_stop_tx()?
+Does calling dev_warn() while holding p->port.lock with interrupts disabled=
+ in
+serial8250_rx_dma_flush_work() violate the printk and serial console locking
+hierarchy?
 
-The serial core invokes uart_ops->stop_tx() (uart_clps711x_stop_tx()) with
-port->lock held, for example during uart_stop(), uart_flush_buffer(), or
-uart_port_shutdown(). Inside uart_clps711x_stop_tx(), it calls synchronous
-disable_irq(port->irq) while holding port->lock:
+When RX DMA recovery is triggered via dma_rx_complete() or
+serial8250_rx_dma_flush() -> serial8250_rx_dma_recover(),
+serial8250_rx_dma_flush_work() takes guard(uart_port_lock_irqsave)(&p->port)
+for the remainder of the function and calls dev_warn() under p->port.lock.
 
-drivers/tty/serial/clps711x.c:uart_clps711x_stop_tx() {
-	struct clps711x_port *s =3D dev_get_drvdata(port->dev);
+In drivers/tty/serial/serial_core.c, uart_port_spin_lock_init() assigns eve=
+ry
+uart_port->lock the shared lockdep class port_lock_key:
 
-	if (s->tx_enabled) {
-		disable_irq(port->irq);
-		s->tx_enabled =3D 0;
-	}
-}
+  static void uart_port_spin_lock_init(struct uart_port *port)
+  {
+          spin_lock_init(&port->lock);
+          lockdep_set_class(&port->lock, &port_lock_key);
+  }
 
-If uart_clps711x_int_tx() is running concurrently (on another CPU or in a
-threaded interrupt handler) and attempts to acquire port->lock while
-uart_clps711x_stop_tx() holds port->lock and waits inside
-disable_irq(port->irq) for the interrupt handler to complete, won't both
-contexts deadlock waiting on each other?
+Normal console paths acquire console_lock_dep_map and console_owner_dep_map
+outside port_lock_key. Calling dev_warn() while holding p->port.lock enters:
+
+  vprintk_emit()
+    -> console_trylock_spinning()
+       -> console_flush_all()
+          -> console_emit_next_record()
+             -> console_lock_spinning_enable()
+
+which acquires console_owner_dep_map inside port_lock_key and invokes legacy
+serial console write callbacks that also acquire port_lock_key, risking loc=
+kdep
+splats or a console-owner spin deadlock.
+
+Should the port lock use scoped_guard(uart_port_lock_irqsave, &p->port) so
+that p->port.lock is released after serial8250_out_IER(p, p->ier) and before
+dev_warn() is called?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261024-submit-ser=
-ial-8250-dma-cancel-v1-v5-0-9e52968928d2@gmail.com?part=3D2
+ial-8250-dma-cancel-v1-v5-0-9e52968928d2@gmail.com?part=3D5
