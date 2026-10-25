@@ -1,95 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792941256;
-	b=NqKwecKECC9czquCPJga5v7KcwkdFf+AH6nHHGJxijItYWaeMlmcyJaCkAjBGQLNrWFr
-	 n+OwhMbQHHkHH7j8C53pfTqPWnwnj18ye614PAxBQ+j+aCfpAlTirNWyfXMLU4h/y/rsM
-	 kr8GCyahX8yCQiD8RlvRY+HUrp1ttgO42Na3kxyHHVxLahA/YuFlnnUxEfhCyz6vgL59k
-	 nMerr04+XalSFEQ5KvgwJwpTWYluYzh+JzdDr37bIy9SQ5BuCsqaB3Led/QHY5H+VMbNn
-	 YUfHAUcBeiANs365DChgza2wnIH9nfTFRnH9AwH/29bRByICf2c4EW+VybwiT61RipQ==
+	t=1792941667;
+	b=aVQCo7R6hvHep3+kB8FHDlRcnmy1yqPKATVlMPmJxH7cYQrUwTt9IRxzgIjxHZ1s4wLD
+	 MMasjDbgmz00ap1U4U+7zqcPpXLT1x4ER3cBI/qdXp5xUugL5c82/OusStcNOT63dK8ub
+	 lT1xPUfXmp8cxvYZMUimuvDbf0/t9ZQ0xayaGMXnd57r9Tcg0wmTxqSs1qyhSxXEpIxvR
+	 q8a1PNMJtOJvN4tBWM9+V9tSU6rWHe74ylJimkYB3DWG3LtBBm1IDH12n4Q6IU9VYEDP4
+	 gsq88LoHuk/Lz/oREvArgZK6GINcMrkRPNto8nWMTXtbq9RHRqSytwMqVYyYSsTLSBA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792941256;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To:Organization;
-	bh=EanEzITabyL5hHZuLfjLX/O3m0p6a+JE+WfvVu35z0A=;
-	b=lGxO89vtRqfjD2w1iO8oRCixNBZyBbayUeSY+7j5sNYaH0l/0CrrsRrNxMhdhFd3Z1Ms
-	 F2aZ/16U1pVqf/uWdgi53hENLirFhe0mZ9v27dGf11he6v196ZyM/BmD+QwDbWQmDTsHY
-	 wbJKitH25ftQSIf6qb12pLd5DZ4I1u74zicMw2jxhlhK0D6aWHCE/zgu083LdyickESvt
-	 hapnkd1i/YNiB2s0ZFJahcV4QVFXIly5JJAH576Isn+u5z46/2x9cwzw7n2xrAmjgof4E
-	 9ERKGJV2NGz6KWivxcENtCtHNNbvsBQwK94rgCZk9tHIh9PW/6o3ymP198llqrgqqJw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792941667;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=6y15YznhDxcZTrtrKKtB+LdYBgrQlEuNtSxEVoQpc9E=;
+	b=hmUeJImS8mA3VVgrAkIcZSitr4mRAfWLikDBoKJoqiTO2X3+v+qAzy75iUffKidcGG8N
+	 ewjyC4uJXr/4xJWZe7L/1C5SArwpCHhuJhiwIrq6cfmZW6lOR5ohNNEniHY9SEERBZToa
+	 +rxiqUGka0qXq0Bfnfkmq3Gn2dHGUqhSF2S4OKcutee8/F/P33HCFVkiJcuXmSZWmcDEH
+	 YgnrFSLPX3tYyr4zkv6752zMLawgVxOFChPlbZQ2JqjXntjEtqOAhkNex9Ig8/eCM/ZAK
+	 fqVf/DxElIE64tONvWMeSqAu9LeF3MLWnQ019bjqapO7rkxluPQvqcM7JMwvqg+ZosA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=jli6RjVw;
-	arc=none smtp.remote-ip=198.175.65.15
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jFuFvAd1;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F60F606A31D
-	for <imx@lists.linux.dev>; Sun, 25 Oct 2026 15:14:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7F60F606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D331F606A31A;
+	Sun, 25 Oct 2026 15:21:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=jli6RjVw
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1792941256; x=1824477256;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=nMuoICu3+/kegamQPU1fMK0Jut2zai+WN1izIEFxGgY=;
-  b=jli6RjVwxBfHfVzLeHvQlcXhkHfDc9zxsDXob9pSOVSJaBPFj3IkOxL8
-   9Cd2fEEXoax15GLgHP1OKWBe893y+MBDIxJcaveBu16J8BKXHWtX9L5hw
-   WW71dFlveddzeCqkLgtk4DIxSlgvzbOe2Rea1MAKQZp4FS1c4jw8sKAUw
-   RWvvEfTpH1HTs/cyYP7BxBYykph2TmOvXdNzioZlu4My1dN0BLhRgAjDK
-   3K4nonHQP8rl8T00X2wH5WTRqOMfiR+qK4cXEGfhlkDLZ2blJxYqRoSiG
-   QBR0t8Y3mDZE4fVylzxACsqV4ugwTl2qU9rHXPy19152kg79prijOnH3t
-   Q==;
-X-CSE-ConnectionGUID: pENja2uPTDa+JJh/nK8dlg==
-X-CSE-MsgGUID: 4R4pllJRTbSMW58lDrcrww==
-X-IronPort-AV: E=McAfee;i="6800,10657,11946"; a="1623522"
-X-IronPort-AV: E=Sophos;i="6.27,178,1787036400"; 
-   d="scan'208";a="1623522"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Oct 2026 08:14:15 -0700
-X-CSE-ConnectionGUID: RDohAcVYTJKTr0jTExw2+A==
-X-CSE-MsgGUID: leqgv13GQjy/DN5fHtD87A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,178,1787036400"; 
-   d="scan'208";a="4188329"
-Received: from hrotuna-mobl2.ger.corp.intel.com (HELO localhost) ([10.245.245.10])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Oct 2026 08:14:09 -0700
-Date: Sun, 25 Oct 2026 17:14:06 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: James Hilliard <james.hilliard1@gmail.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Raul E Rangel <rrangel@chromium.org>,
-	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Tony Lindgren <tony@atomide.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Richard Genoud <richard.genoud@bootlin.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Jacky Huang <ychuang3@nuvoton.com>,
-	Shan-Chun Hung <schung@nuvoton.com>,
-	Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Timur Tabi <timur@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-serial@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v6 2/5] serial: serialize asynchronous write wakeups with
- the port lock
-Message-ID: <at4cvnsjHndzY5o3@ashevche-desk.local>
-References: <20261024-submit-serial-8250-dma-cancel-v1-v6-0-6f366591f566@gmail.com>
- <20261024-submit-serial-8250-dma-cancel-v1-v6-2-6f366591f566@gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jFuFvAd1
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9DB81F031E3;
+	Sun, 25 Oct 2026 15:21:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792941666;
+	bh=6y15YznhDxcZTrtrKKtB+LdYBgrQlEuNtSxEVoQpc9E=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=jFuFvAd1evS69wCmC85jrvFRPXmKAhl3Gz/smDC8tkOXdbSWz+eL6iDDSAuUguD5l
+	 SIrgxpGfqCfk8kvPNyYG5CWEHzI/c39A22Y6EQZVfQGDKQDD669JRNnkd004f0TiL/
+	 4XO8IheatwqZRTnEonYDJIREdDpL2YY7jryZsS2y8FZqKhdfez/APS+AzTBOBON747
+	 D463TMQVmSaxH97sztHYfwcnVv7g7ASx+wdOnpHMKuuyg4udhAVxroyaQjjtFwaxuH
+	 7QPsOmbx8Wuczkce3CVilJ9CTc3dQsSk0rAZsb1AmSaSAs/gnRo+TEj471KdT8gKjP
+	 Ukk99Cpy1I9lg==
+Subject: Re: [PATCH v5 net 1/4] net: enetc: reserve VLAN extension BDs for
+ software TSO
+From: netdev-bot+sashiko@kernel.org
+To: vladimir.oltean@nxp.com
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, claudiu.manoil@nxp.com, wei.fang@nxp.com,
+ xiaoning.wang@nxp.com, ioana.ciornei@nxp.com, zefir.kurtisi@westermo.com,
+ zefir.kurtisi@gmail.com, david.laight.linux@gmail.com, netdev@vger.kernel.org,
+ imx@lists.linux.dev, linux-kernel@vger.kernel.org
+Date: Sun, 25 Oct 2026 15:21:05 +0000
+Message-ID: <179294166520.3134.18097439321876673016@kernel.org>
+In-Reply-To: <20261021145314.1435049-2-vladimir.oltean@nxp.com>
+References: <20261021145314.1435049-2-vladimir.oltean@nxp.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -99,105 +65,201 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261024-submit-serial-8250-dma-cancel-v1-v6-2-6f366591f566@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Sat, Oct 24, 2026 at 02:52:27PM -0600, James Hilliard wrote:
-> uart_write_wakeup() expects the UART port lock to be held. Several worker,
-> DMA completion and interrupt paths call it without that lock, including
-> indirect calls from uart_handle_cts_change() and the transmit helpers.
-> 
-> Take the port lock around these notifications or their transmit helper.
-> Keep sleeping SPI and regmap accesses outside the locked region, and keep
-> the FSL LPUART completion lock held through its wakeup. Acquire the port
-> lock after releasing private channel locks to preserve the ordering used
-> by UART callbacks. In the MUX timer, publish available FIFO space under
-> the port lock and keep the hardware FIFO-drain wait outside it.
-> 
-> Use IRQ-safe locking in the Atmel RX and TX tasklets and SB1250 termios
-> path, since their interrupt handlers now acquire the same port lock.
-> Preserve the caller's interrupt state when releasing those locks.
-> 
-> Serialize CLPS711x TX servicing and its interrupt-enable state with the
-> port lock. Disable TX interrupts without waiting in stop_tx(), since a
-> threaded handler may need that same lock. Have an already queued handler
-> leave stopped output untouched, and drain it outside the lock during
-> shutdown before the transmit FIFO can be released.
-> 
-> SCCNXP handles interrupts under a controller lock which its UART callbacks
-> acquire with the port lock already held. Collect the ports needing wakeups
-> while servicing the controller, then release that lock before taking each
-> port lock and rechecking the wakeup threshold. Removal drains the IRQ or
-> timer before unregistering the ports.
-> 
-> This serializes write notifications with port-locked serial-core state
-> changes, allowing readiness and transmit-storage reservations to gate the
-> notification without a check-versus-shutdown race.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-...
+Critical: 0 · High: 1 (2) · Medium: 0 · Low: 0
 
-> -static void sccnxp_handle_events(struct sccnxp_port *s)
-> +static unsigned int sccnxp_handle_events(struct sccnxp_port *s)
->  {
-> +	unsigned int wakeup = 0;
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-unsigned long
+- [High] The fix stops the ring overrun, but VLAN-tagged TSO skbs that
+  can never fit now stall the TX queue for good.
 
->  	int i;
->  	u8 isr;
+Pre-existing issues:
+- [High] This problem wasn't introduced by this patch, but the BUSY path
+  the patch changes can lose a wakeup.
+- [High] This problem wasn't introduced by this patch, but
+  enetc_map_tx_tso_buffs() copies the whole L2+L3+L4 header into a fixed…
 
-> @@ -491,20 +491,43 @@ static void sccnxp_handle_events(struct sccnxp_port *s)
->  		for (i = 0; i < s->uart.nr; i++) {
->  			if (s->opened[i] && (isr & ISR_RXRDY(i)))
->  				sccnxp_handle_rx(&s->port[i]);
-> -			if (s->opened[i] && (isr & ISR_TXRDY(i)))
-> -				sccnxp_handle_tx(&s->port[i]);
-> +			if (s->opened[i] && (isr & ISR_TXRDY(i)) &&
-> +			    sccnxp_handle_tx(&s->port[i]))
-> +				wakeup |= BIT(i);
->  		}
->  	} while (1);
+--
+
+net: enetc: reserve VLAN extension BDs for software TSO
+
+This commit adds enetc_tso_count_descs(). It extends tso_count_descs()
+with one extension BD per segment when the skb carries a VLAN tag.
+enetc_start_xmit() now uses it for the free BD check on the software TSO
+path.
+
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
+> index 80f0082f6c633..ab4bfefda6c8f 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+> @@ -688,6 +688,17 @@ static int enetc_lso_count_descs(const struct sk_buff *skb)
+>  	return skb_shinfo(skb)->nr_frags + 4;
+>  }
+>  
+> +static int enetc_tso_count_descs(const struct sk_buff *skb)
+> +{
+> +	int count = tso_count_descs(skb);
 > +
-> +	return wakeup;
+> +	/* Each segment also needs an extension BD for VLAN insertion */
+> +	if (skb_vlan_tag_present(skb))
+> +		count += skb_shinfo(skb)->gso_segs;
+
+[Severity: High]
+
+Can this estimate exceed what the TX ring can ever provide? If so, the
+queue would stop permanently instead of overrunning.
+
+For a VLAN skb this returns 3 * gso_segs + nr_frags. The TX ring is
+fixed at ENETC_TX_RING_DEFAULT_SIZE (2048) and there is no
+set_ringparam. So enetc_bd_unused() returns at most 2047, even on an
+empty ring.
+
+The driver does not limit the segment count anywhere. There is no
+netif_set_tso_max_segs(), no gso_max_segs and no ndo_features_check.
+
+Take a 64KB TSO skb with an MSS of about 96 or less (gso_segs of roughly
+683 or more). enetc_start_xmit() takes this path on every attempt:
+
+	if (enetc_bd_unused(tx_ring) < enetc_tso_count_descs(skb)) {
+		netif_stop_subqueue(ndev, tx_ring->index);
+		return NETDEV_TX_BUSY;
+	}
+
+The qdisc requeues the same skb. The only runtime wake is in
+enetc_clean_tx_ring():
+
+	if (unlikely(tx_frm_cnt && netif_carrier_ok(ndev) &&
+		     __netif_subqueue_stopped(ndev, tx_ring->index) &&
+		     ...
+		netif_wake_subqueue(ndev, tx_ring->index);
+
+Once the ring drains, tx_frm_cnt stays 0. There is also no
+ndo_tx_timeout, so nothing restarts the queue.
+
+This can be triggered by a TCP sender on a VLAN on top of enetc using
+the software TSO path. A remote peer can force a small MSS through its
+SYN (down to tcp_min_snd_mss), and a local user can use TCP_MAXSEG.
+
+Before this patch, most of these skbs overran the ring. Now they hang
+the queue instead.
+
+The same stall already existed for non-VLAN skbs above about 1016
+segments. This change moves VLAN skbs with about 683 to 1015 segments
+into it.
+
+The estimate is a worst case, so some VLAN skbs that really fit are also
+rejected forever. For example, gso_segs=680 with 17 segment-aligned
+frags needs 2040 BDs, but the estimate is 2057.
+
+The padding patch in this series ("net: enetc: do not rely on mEMAC
+hardware frame padding") adds another gso_segs to the estimate. That
+lowers the threshold to about 508 segments with VLAN and about 677
+without.
+
+Would it make sense to cap the segment count to what the ring can hold?
+For example:
+
+	netif_set_tso_max_segs(ndev, (bd_count - 1 - MAX_SKB_FRAGS) /
+			       per_seg_bds);
+
+Another option is an ndo_features_check that clears GSO when the count
+exceeds bd_count - 1, so the core falls back to software GSO.
+
+> +
+> +	return count;
 > +}
 > +
-> +static void sccnxp_write_wakeup(struct sccnxp_port *s, unsigned int wakeup)
 
-unsigned long
+[ ... ]
 
-> +{
+> @@ -1032,7 +1043,7 @@ static netdev_tx_t enetc_start_xmit(struct sk_buff *skb,
+>  
+>  			count = enetc_lso_hw_offload(tx_ring, skb);
+>  		} else {
+> -			if (enetc_bd_unused(tx_ring) < tso_count_descs(skb)) {
+> +			if (enetc_bd_unused(tx_ring) < enetc_tso_count_descs(skb)) {
+>  				netif_stop_subqueue(ndev, tx_ring->index);
+>  				return NETDEV_TX_BUSY;
+>  			}
 
-> +	int i;
+[Severity: High]
 
-Why is 'i' signed?
+This is a pre-existing issue, not one introduced by this patch. Can
+this stop path lose a wakeup?
 
-> +	/* UART callbacks take s->lock with the port lock already held. */
+enetc_bd_unused() reads tx_ring->next_to_clean without a lock. The
+queue is then stopped with no smp_mb() and no re-check of free space.
 
-> +	for (i = 0; i < s->uart.nr; i++) {
-> +		struct uart_port *port = &s->port[i];
-> +
-> +		if (!(wakeup & BIT(i)))
-> +			continue;
+On another CPU, enetc_clean_tx_ring() updates next_to_clean. It wakes
+the queue only if it already sees the queue stopped and tx_frm_cnt is
+non-zero:
 
-NIH [1] for_each_set_bit()
+CPU0 (enetc_start_xmit)              CPU1 (enetc_clean_tx_ring)
+enetc_bd_unused() reads stale
+next_to_clean, not enough room
+                                     cleans the last in-flight frames
+                                     tx_ring->next_to_clean = i;
+                                     __netif_subqueue_stopped() is false,
+                                     no wake
+netif_stop_subqueue()
+return NETDEV_TX_BUSY
 
-> +		scoped_guard(uart_port_lock_irqsave, port) {
-> +			if (kfifo_len(&port->state->port.xmit_fifo) < WAKEUP_CHARS)
-> +				uart_write_wakeup(port);
-> +		}
-> +	}
->  }
+At that point the ring has plenty of room, but no BDs are in flight. No
+completion will call netif_wake_subqueue().
 
-NIH syndrome is one of the weakest points of AI, please, read and study
-the code you are changing.
+The only other wake is netif_tx_start_all_queues() on open, and there
+is no ndo_tx_timeout.
 
-[1]: https://en.wikipedia.org/wiki/Not_invented_here
+The same pattern is present at the LSO, non-GSO and post-xmit stop
+sites. This patch raises the BD requirement for VLAN TSO skbs, so this
+path now runs more often, including when only a few short frames are in
+flight.
+
+Would netif_txq_maybe_stop() / netif_txq_completed_wake() fit here?
+Alternatively, an smp_mb() plus a re-check after stopping could be
+paired with an smp_mb() in the cleaner before it tests the stopped bit.
+
+[Severity: High]
+
+This isn't a bug introduced by this patch, but it is in the same
+software TSO path. Can enetc_map_tx_tso_buffs() write past its
+tx_ring->tso_headers slot when the headers are longer than
+TSO_HEADER_SIZE?
+
+	hdr = tx_ring->tso_headers + i * TSO_HEADER_SIZE;
+	tso_build_hdr(skb, hdr, &tso, data_len, total_len == 0);
+
+tso_build_hdr() copies hdr_len bytes, where hdr_len comes from
+tso_start() and covers the full L2+L3+L4 header. Nothing compares it
+against TSO_HEADER_SIZE (256).
+
+enetc_lso_map_hdr() does the same:
+
+	hdr = tx_ring->tso_headers + *i * TSO_HEADER_SIZE;
+	memcpy(hdr, skb->data, lso->hdr_len);
+
+enetc_alloc_tx_resource() allocates exactly bd_count * TSO_HEADER_SIZE
+bytes for this buffer. An oversized header therefore spills into the
+next slot. For the last ring index, it writes past the end of the
+dma_alloc_coherent() allocation.
+
+One possible trigger is an IPv6 TCP socket with a sticky IPV6_RTHDR
+type-4 SRH, which doesn't need CAP_NET_RAW. With 11 or more segments,
+the header is 14 + 40 + 184 + 32 = 270 bytes.
+
+The IPv6 setsockopt and net/core/tso.c side hasn't been fully traced in
+this tree, so the trigger may still need confirming.
+
+Should skbs with hdr_len > TSO_HEADER_SIZE fall back to software
+segmentation or be dropped? Clearing GSO for them in ndo_features_check
+would be another option.
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261021145314.1435049-1-vladimir.oltean%40nxp.com
