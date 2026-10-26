@@ -1,20 +1,20 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.72.53
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.83.43
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793026449;
-	b=akZ7vn/ghliXps1d2Yc15GX1VAkklmfo8YcRlPRZShHjPEmf+xqqa1IZaiOk+u1cwnel
-	 Jdupo0wvNdkzORzfS2EiqllfZCH5D47ICDCW8mDdX2pcN3BGFwuiL2lS2ByA/s4kyB8S1
-	 NXsfBRu77bCNai9keiMAjsvmcqEqOscNQ+Lq5sw7swfjvOZHgjz87hK+INnCtFIxIrbQz
-	 cTB8wwRFNafjOVjEcBo1pNL8oPXbM0EbuI0jnakvFUVCts3tgA0p9Ncsw9fKpNtUz70Qs
-	 g1U1eMCfzqifX6lxw12xvPZrb3IceFrsCm2jJNWRbzkD4OQYYBS56BYLnVb0bc3KQFA==
+	t=1793026735;
+	b=GtvuK07E8WS/kJMQ3Yfp+pQKJAzrtklc0m9rdvkMVYRiLD0AdABHFDldZ2Z/OlJoEbWW
+	 7veTujva3XZ6EWPoJHVNdJrmxFaux97BEsSIeZJnhsc0OK1PUt4JlnfGNS3zlZLHcJzo7
+	 igibw63FgN5ZPXgnEOjNgEJ3dZ+1Qw9kUKaQh5eghNqc3ets0VVUnHBRTUg/SaSAhH30o
+	 MWeaSyE+Go2VgHvYNBg49D0aGVC4yLYJH+GA6woinJtgbmVKTdbXc2nD7vseg9Y6gquVG
+	 iDJNrS+LxftPN+9xubIA4TiiUkyEBYe0//dDwvGZIw90FI/ayz1q5L7jUUexEoNhdcA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793026449;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793026735;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
 	 Subject:Message-ID:References:Content-Type:Content-Disposition:
 	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
 	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-LD-Processed:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
 	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
 	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
 	 X-MS-Exchange-CrossTenant-Network-Message-Id:
@@ -24,81 +24,92 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
 	 X-MS-Exchange-CrossTenant-UserPrincipalName:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=uB4hN/ju40U9NfHsoL2r3sOggHEF6GA4+yAwxRKbkbU=;
-	b=Gl4n23qVUDi4GkkumY/VuAbYjOpyfc3TJ7YPMpVDCR1jL+VXfe3mh+wY7lA1KoHr05Fn
-	 4af/9gvTmY9gngkssJsEuGxX9+HO0qu6TA++YA6O2KWmnuqf1U70UvM4nHSOhcmsI7YiI
-	 MmAC0gOXC+3DhfAv8Oqps419V4ok13uFXCLqc2A/ldfRgX1jT23WslxOIYJU/4fig8j8g
-	 YERlzsxc3nGRZ9ir4JGaOgI/x+y9ZWbGqhXk2SiCQ0TkQ4fyjBkFu+yym1lYMuexwByU2
-	 CaB+AQzNfM9Gni7sKWdVatdkRBO31clLPqMl5nBb/aqiLGVKLTXR66FRbCrnuwjzhFg==
+	bh=QSmOZrIpRY65/d5vWIFXFZ1Wq5EMAjQ6Og4Ui6Xnkoo=;
+	b=2r/y5tSeH/cO5ES4cn7FZQFrPMAe+ccAAUFoduOQEblhI3CkmwFYexSpVbJZjHby1vGb
+	 cm544Jdx2R/wgqOCQd66ddOuEAdw54j/DJEWN3eypTd3bCjIzG5dvSqCWfjaFkYpabLyb
+	 cQhNn5NVcXWBsfkenwXk3bHRcNvAZQrtcIxgTwsFYNY0mSlbiff1ZpNKA904x/lvD3FdX
+	 SOTd0CLdok2hBVdxx32ME86g21lHUDWJ8B5VMBV5XaDor+MNlP2euqEKg7DSPuldBt0w5
+	 Geh5op+BzHxEeVKVGEyPEwfC46DLAtj5khWp7SDwuXUrSb5O11/uiAPK0gbeo6nKgTA==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=oss.nxp.com;
 	spf=pass smtp.mailfrom=oss.nxp.com;
-	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=TLjPVf0P;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.72.53
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013053.outbound.protection.outlook.com [52.101.72.53])
+	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=HaOnoQFq;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.83.43
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013043.outbound.protection.outlook.com [52.101.83.43])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 603D3606A31D
-	for <imx@lists.linux.dev>; Mon, 26 Oct 2026 14:54:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 603D3606A31D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F26F606A31D
+	for <imx@lists.linux.dev>; Mon, 26 Oct 2026 14:58:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8F26F606A31D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=TLjPVf0P
+	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=HaOnoQFq
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mzxeUN2DExM3/qSC3mwcSRIbtQ+C5JtvY4/7k2A1ByZAFAeJOi34R2J1LOlJqmx1IN8GF2MOFX9LOW/EOmhKfOehzhy1/A0lHM85TIsonADlFMmti9JvqYA94XOyra8LqUqTh8wv19fagEUSQ/BtQ98Ew9yrqR7Bp//lXvk9qCMhKGSycTGx7bBv0osh+xDykNaPhzskoslIJoZpzieppyFOqqUepgRMD2/x6GgJQuSfnA+vZf8Tim8B3DwcEvavKr1fiy1P7aheH72THCdkb/Elz8EuA2JSeTpTmS4a2ssZK/hdplStl09PUc8sSr8VNMCwRKgn8aamurR6809wCA==
+ b=UMmJ8i7MQYrgznJ5pScjKOLFjJ4PT5tmm4jN/ScCHUXwdzaejSmOim3UGV7mb2dgStvuAjGqELIg81c9fvE/hHKMtiwX322AzlIPljHBAdj5Dur3QDTFsZqo+pV+3vkHEEaiykv8hX7Kh+1A5wZ0sdzFYe7wC/F++6B9cwoCDKMbW8/Ae/BCHoHIUDiKVx8DuS36yVF9vrcuyYYib4rGCHsyHyP43LwEgUdKehsiG6b1O1fkb8D++dD/I16UyiZDDhIpnTQhFbX16UD+dmbcR6EYk2iitCO0nJ0fw+gCF36dg36Vu4/GMlpg8ukj7GbtxUgw1rlC8Ve38GH3MTubyg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uB4hN/ju40U9NfHsoL2r3sOggHEF6GA4+yAwxRKbkbU=;
- b=cskT5l5cf497yCDxQ0IQjwvwvYxMUpVqgNdJjA9jTBbIQ2RxfEwFj8SMXecT/ILq7+MOFOXUi0l1Rq2pljg/m5exdeO3fYDqGTGCAAxfXRn4h13C0mSmF1mTu8qW48tkphRKXgYZVa8DOBBIRfkfgM1y8rvS1MXmjdDUD0WnGOy4edN7AGwOk9zfcdglhaTMXr5LVgMrYBYlgDoLtsk10NDc87R5RRwNfjcwWjGlJiypyKy2MqaCfezXYvGozGEe0L4DOC6FVdneLuWZUGtqTroMLY3iC78klQgo40tKyPZwbAi9ZbA5/FfSb5Vz7vbfZGgBVz0kzegX/KK0ajLDdg==
+ bh=QSmOZrIpRY65/d5vWIFXFZ1Wq5EMAjQ6Og4Ui6Xnkoo=;
+ b=r7GJsFLCJx9el/4O/ulWK4ulFVCQOTVKiCM8ACXhYfED3hiCs1oyltljxLmgerBMNnRbxY0L+/qSURtUDECs72iWYmWqXP0xPHuhpWrinyqwxJghZ53WFlLnDRyxi2grWNEnwv58baF8Ax4zTukW1Z9tr3OOgB+FkCQm0a7Vmcp1clgVvyBU3tGoD1/I+nMDY+MiAuC2AfGmbcYrqc5LW6OacjywIK48bJZpin8Wf9th1IppUEJvouRFfkzHq1SABy04NNgyCr/duHbQhOHvKSC0tbdBZi+/RafUI65OO00GnmKjAmyT4x1kH7W8oPJTD8bav1fZzIbNWhGU7izoag==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uB4hN/ju40U9NfHsoL2r3sOggHEF6GA4+yAwxRKbkbU=;
- b=TLjPVf0PpxDtUL3Dyf9Jv6A1QSCMBYoSjy6D/z/2vBPWn+DxmxP6t+M60RaeYRPCw7S0v5j0v0cHxv3mP9u7t46N6g6aayik1+fBzJq0M/UcmJLzT31yYfhQ5BTAqgeHuHiZ5XV7AoNiAXMH+PmI8TC/eLrkCMUjU/bcUerSJmDbea+mhNNQ6uYOh4Cw8aiiKHFD4QPkv9tsIyb0Ms4p57ql9Z6IrzKGDGWgf3kTvU+vczKl1PoSXVWM6PmaKUTLi0teme6VXG40dAl5t6ORCV0a+PuuEd7tDWwo1yM4QOtTf8Q6Y+udLszP7IvPy2aCjhv5jq99wNNQ/6tH1oTRqA==
+ bh=QSmOZrIpRY65/d5vWIFXFZ1Wq5EMAjQ6Og4Ui6Xnkoo=;
+ b=HaOnoQFq8lGPJuieI9gNNGjxQdnmbdNqC3w7n0SxXa5MSzEX/78RQ7h1VNgX8B2B2BeWBpAbliyYUICpIawgjKveY8e4XDiV59iLnOJj6HCe0pXdYU4Xrjf/sRdoT5FsREjoDIyTBJjzItmHwUc52p76nu/iY51Pqa1QxAXnMu43nB6ksEcdNJvkZqvOEJ0YjVqyh5Hfbqmvm/5UawA5Qe70TIqO3HS2ffZaMk7NENoQo7fy8D3ib9/PYwa9J2DzTJpunJuHOXeg+ntvkLR9gBMBNydUoBZ4mLY0tM68/YV5YcZiku7Hci+0K6EUCD27p47hcVv+002wOmk7ad44rw==
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
 Received: from MI3PR04MB12438.eurprd04.prod.outlook.com (2603:10a6:290:76::14)
- by BR0PR04MB944139.eurprd04.prod.outlook.com (2603:10a6:2c8:46::9) with
+ by AM0PR04MB662462.eurprd04.prod.outlook.com (2603:10a6:20b:7fb::24) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Mon, 26 Oct
- 2026 14:54:05 +0000
+ 2026 14:58:50 +0000
 Received: from MI3PR04MB12438.eurprd04.prod.outlook.com
  ([fe80::c715:c32:8bb1:b70b]) by MI3PR04MB12438.eurprd04.prod.outlook.com
  ([fe80::c715:c32:8bb1:b70b%6]) with mapi id 15.21.0546.021; Mon, 26 Oct 2026
- 14:54:05 +0000
-Date: Mon, 26 Oct 2026 09:53:54 -0500
+ 14:58:50 +0000
+Date: Mon, 26 Oct 2026 09:58:38 -0500
 From: Frank Li <Frank.li@oss.nxp.com>
 To: Francesco Dolcini <francesco@dolcini.it>
-Cc: Leonardo Costa <leoreis.costa@gmail.com>, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, Frank.Li@nxp.com,
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-	francesco.dolcini@toradex.com, leonardo.costa@toradex.com,
-	hvilleneuve@dimonoff.com, marex@nabladev.com,
-	stefano.r@variscite.com, devicetree@vger.kernel.org,
+Cc: Leonardo Costa <leoreis.costa@gmail.com>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Robert Foss <rfoss@kernel.org>,
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, dri-devel@lists.freedesktop.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
 	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/7] ARM: dts: imx6q-apalis: Add Toradex Capacitive Touch
- Display 10.1" LVDS
-Message-ID: <at9pgvFmDPI9oLrS@SMW015318>
-References: <20261001155412.3177428-1-leoreis.costa@gmail.com>
- <20261001155412.3177428-4-leoreis.costa@gmail.com>
- <ar6JnZp1jBvlc8bx@SMW015318>
- <20261002081824.GA7222@francesco-nb>
- <ar_bsQbD-IbvUf86@SMW015318>
- <20261005075319.GA7692@francesco-nb>
- <ateZGwrFGfD1j-i3@lizhi-Precision-Tower-5810>
- <20261026111149.GA46946@francesco-nb>
+	Leonardo Costa <leonardo.costa@toradex.com>
+Subject: Re: [PATCH v2 3/3] ARM: dts: imx6q-apalis: Add VGA overlay
+Message-ID: <at9qnn_njux-hwj2@SMW015318>
+References: <20261019-v2-apalis-imx6-enable-vga-v2-0-ef6a3a780472@toradex.com>
+ <20261019-v2-apalis-imx6-enable-vga-v2-3-ef6a3a780472@toradex.com>
+ <atZxhWaUWthEHkti@SMW015318>
+ <lozimedmt3h7v6odvp4svvmatvk7726a4ztn3j7ft44oto7p5p@dmrudrmzyz3s>
+ <ateQWqoTtXSBSBvm@SMW015318>
+ <wancrsxcem5uep5oy5pnw5prewefqah7drmhiu5wrq3ctykltl@akwvtqbebblb>
+ <20261026124328.GA82443@francesco-nb>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261026111149.GA46946@francesco-nb>
-X-ClientProxiedBy: PH0PR07CA0012.namprd07.prod.outlook.com
- (2603:10b6:510:5::17) To MI3PR04MB12438.eurprd04.prod.outlook.com
+In-Reply-To: <20261026124328.GA82443@francesco-nb>
+X-ClientProxiedBy: DS7PR03CA0296.namprd03.prod.outlook.com
+ (2603:10b6:5:3ad::31) To MI3PR04MB12438.eurprd04.prod.outlook.com
  (2603:10a6:290:76::14)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -110,202 +121,123 @@ List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|BR0PR04MB944139:EE_
-X-MS-Office365-Filtering-Correlation-Id: 18e39276-fe45-4035-0a9d-08df3370fb39
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|AM0PR04MB662462:EE_
+X-MS-Office365-Filtering-Correlation-Id: a2809a36-084d-4543-b8ae-08df3371a53b
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|366016|23010399003|1800799024|7416014|376014|261009223027099003|261021123027099003|261021121427099003|261021135927099003|261022105027099003|261022075727099003|10067099003|56012099006|3023799007|18002099003|22082099003|11063799006|4143699003|261026140227099002|261026121527099002;
+	BCL:0;ARA:13230040|376014|7416014|19092799006|23010399003|366016|1800799024|261026140227099002|261026121527099002|4143699003|11063799006|56012099006|261021121427099003|261022105027099003|261009223027099003|10067099003|18002099003|22082099003|6133799003|3023799007;
 X-Microsoft-Antispam-Message-Info:
-	gOgpMVAe5yWTOQOP+4lJagxfmbkd+M/Azxy8E988FMRJkXoUrvlNpuAqQeG/rs5FbLuGCTlanEU02IlRwOQKbobEoMic+pxn5R0KvS58DGJOIBEGLigaGWpOBSCokTQH4T/PdDFW5CH1q0WGg8jXlX75nQqAXsS+wVbe8jt8NX/+jHhLPzm/902SFYNbQLzXBmWMulebH5D/M8e8oqUE/rn5lyQAhwwGo3ktSKaNyBwB4hP4XVZmnOJaLIojZV6zKoMaC2S90DjxdiTfR6mNgX/Mk6L2CXX4Ih3H9QvkXu3lNdfDggN3a2XpOU3Bs/WLV56lGTlGHERuTr9khjPPZULG6ep6R6lZKZzMVPP3hePdxh5txrWZxZGP6/GIqa7i2xvPfBfw520lli5SkBhPM3AMIElnneZseax7BoyHuRNlvAIONwnTlgbK/G2hvvH7kQQyKln60ipvF6ocm8dUUPcauw1Dga0mWECIaX8aaRDPIHysCRPCc1EYa2Fz4q3LWjGPRVSi65+utcmxE+LdCKp/N1puvLAEiwcGCK5fOGjZQ0q8OBoJVKIxN7PUtFm0G4hrCZTwmVTTv8KyqPDigRua2sHBjMZE9n1Ie5qjjp52FiE420hY/YPOnGa8JRsO
+	yXqFxykwJji3vXgxki86xjKpVDHjKJtd8T5BafR4Gkm6VSBQQ7iOMoC9AARo+AZOCoRJXNDshbGA3D7KoZd3I2pcc92SHn2TJXVshu2I4j/lQU2rYa5ntlpgjCV36leX5ndOu4PrXayP+urNieVrmt14IC8gWEeJnjlRZ9gYZnHuEMCz+rnHvzlprOfk6WgDPNjRHHoBlfiuzTLJkqIOddCg8BAklOXK7zy0B8hQninGEREI2x+f11l7EcFJmTrV5eEr/JfUrdcOE8HE/i7r6WMvOJUGs8z+R9SOZUCzjszzkI3Us6zY2paGtC8BnpvT7os6lmTQed1yp+6iIRYjQBPYYYPLguJNVgXYp73XetIG4DcAwEzdaHxUxlzFkz+QDWY6wOZZCoHPqmHnQaq2zHZ5hcKRu5iE+kSCLzdCjP77z1FICH3kZJsoFC9LfRQrO4JrZ6mplTOzOiWH8ii7kqK1sJPTHwTibyldARFnqA8NKW7Wg43j5LA9+Y8Uzw1XviRLPKky12VXkT0VvMrNnO9y/+noWtCv/47f5/1hAbsHIXGERL+kMIu9sFEDEJIJ05hQxGhrRGgE5vMUuibApF1tmOAQcwkdjh8c0rgx/78a/K6F3fYQVd/bkgGxT17a
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(23010399003)(1800799024)(7416014)(376014)(261009223027099003)(261021123027099003)(261021121427099003)(261021135927099003)(261022105027099003)(261022075727099003)(10067099003)(56012099006)(3023799007)(18002099003)(22082099003)(11063799006)(4143699003)(261026140227099002)(261026121527099002);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(19092799006)(23010399003)(366016)(1800799024)(261026140227099002)(261026121527099002)(4143699003)(11063799006)(56012099006)(261021121427099003)(261022105027099003)(261009223027099003)(10067099003)(18002099003)(22082099003)(6133799003)(3023799007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?+E9KQusI5zDsyWKxC7KtAblRTJQczSaOgeAAGJ6ktoS++itv2MVdD81ku5/y?=
- =?us-ascii?Q?bk5SHMLPdmeNKdkHqv+zruCh9fQBZzqTXTDsK0bohkmA+VOfJ7ux0IKDEjhm?=
- =?us-ascii?Q?HFGi00vW3LH6FxiA9SCr7sjGBtI2SxiEIuT6oRZysySnbAyXcyhZTEBZ7/jp?=
- =?us-ascii?Q?krQhX5urfqjgU81UZCixlVG9y51tcO11oOL1U90sdeHC7VZtX+1+tP0kk9/x?=
- =?us-ascii?Q?aQGdccy7kEAqsHbSe0GLH2mmcVohqmU19SiiDvt9wCO8PCGG/1YY0OsJ5hZK?=
- =?us-ascii?Q?H1eTJ3+pJVmP0lcS4nnKvQfUZA1Vql6APtGkWAcIl2UNDZdMZssH9eNL7meF?=
- =?us-ascii?Q?cvcXl9YgHPqFRqJCINJBncQaf3ph00RoTH08gyxxFUjHOlsTR+Puk35/xMcG?=
- =?us-ascii?Q?F2e2nyltzs3u9T1X4F7rm20XTeMkh9pPYZ90j98NWxOPJqnYGXjvR55HiME9?=
- =?us-ascii?Q?3NPdIWJFRX6VFDWfqDDS/nRXHFvApax98DKFcLLn8prN33sDYV4B1Rey8nEi?=
- =?us-ascii?Q?FDTD5kUeYoIKaMYm9kmqAaaffuOlYHyKab8tgKzJ8MVkP7XY+vNVxvS6ga8y?=
- =?us-ascii?Q?Hdvw0rcpEnVjdehXW5W2SkEiaYW6ejjIQbH//xbZSTV5NzX+72wSsP5K3uCL?=
- =?us-ascii?Q?YVaiK+h3DqYb15VQVsAiNrFgJoed35inbyrbzgSXJbGaELykelmDcNG/xJoU?=
- =?us-ascii?Q?Tntopz9V/2ulNHhromOTz8eQrr7w6x0bmC/94Y16PVMqFiG2jIqr1fmlXo63?=
- =?us-ascii?Q?QKyrQNAFQv3c3XuN+OHbA0h4Z4cu+bhdJ+qPoU8TWXlPiVSxLj5a7lUIvBYE?=
- =?us-ascii?Q?3leD8+xPNYmqTpAQB8uRJwiWOQeJWKCSkBsXskHzY7hSued1E65PNoMtxSRp?=
- =?us-ascii?Q?4qLoyNCxh9zLEPTJi1dHzcXG8YTDblIUVN3S8YAfg6lNJxT93255LB8aI0TZ?=
- =?us-ascii?Q?aYvWxgsgK0CAHhhXwDnNH0EZYeyLRL7zTGy/S2V98flqr4AqMC/VHSYTk4bt?=
- =?us-ascii?Q?B81CM8+5QlewkBn+GTFusd6fPx5DycCi+hy4/02Ma7/XBmJ30ET4axHyScIv?=
- =?us-ascii?Q?ycvzWA7x6TWkJnCGbCud3FPMA3f1Es5HPIJWt0uw53CYDgZxg+csk6zD7Sy8?=
- =?us-ascii?Q?awEX6Dyj1YPXZFbBMaOY0LRHYqA1CZtQthNLgGt6wWmxxwvWfMDFpNo08exv?=
- =?us-ascii?Q?vOn6lUdu7GVfi8U7gDFI5upieE+dDA+7P8AlGHqtlCnaUDwmwEvFfecbU4Ys?=
- =?us-ascii?Q?vQ4l4uSncDI42Wo9sJ2kUJVHlogeLKbV85oQf9TzdvX2UpWducllV9pXzNB3?=
- =?us-ascii?Q?LBZgGZVVQMOyzHWHk6TNXSZuE8otUDV3GvKJF9Pqe9fLx2TuQDJ2MWTUzb6x?=
- =?us-ascii?Q?Zt63RnraXNJS8hJ2Occ74QX113PhfpdOIeg/D82nFdRmNNr99QyVW11xb31W?=
- =?us-ascii?Q?DrQjPPCc2AJIZEtQ0RiIpjVJ/XGusBk27YYx0B2ACHjmVYROvvXLeD4mvNMr?=
- =?us-ascii?Q?/DEX9bIBINcEcRDKUGNW4rs3pN9uYpd7Cs+qlbbSDRrt8HvCwYc53JFsiPVw?=
- =?us-ascii?Q?nwLgGgNQJ4T5/NWHcvO0hATAzEVdQm7s68w8Oyv6FrvyMjtiOA/XG9VbUzVa?=
- =?us-ascii?Q?HRl/pIragJW3jhdY8jv5SvEJJd+N6Z/GUs90yhgmxwucKjKJknIwy77v5KhS?=
- =?us-ascii?Q?WbedeA1ZcM4e5A4EzLbXus7JssUlxbm/aLabV4a8pN/veHEI3kinF4aswNsH?=
- =?us-ascii?Q?b16Tl3szxNnzn70URHJOjj6JhKj1h6qCC7/nWjmy0D8svh40GhTX?=
+	=?us-ascii?Q?ujRAjjNxBonV26zJ8am51G3tm9XDLDcx4lGXt11Ir4yvl+viksWDyAUOMkiF?=
+ =?us-ascii?Q?tdXrusU/HSDsEBa/i6J8eMtZAbLAghi9ootYf88kAMs2bqPrMcuPElgGvT2D?=
+ =?us-ascii?Q?5Bfd1JIGT6kk6w7w2C0EBI1hlXDB2picoqKQ90xXD4peJ2GO130ZradGNpDF?=
+ =?us-ascii?Q?AfZWdTs4ul7mBx/f9G2AGu22QtlJSaeca4xLhb9zS8OXPJPpSgH6xIX7emuj?=
+ =?us-ascii?Q?zoTnT48DzHg4WSsps/pYdP0/3EuOsbi2vjDVkJxT+zWY8dBauwVpYRwQ4WAK?=
+ =?us-ascii?Q?1Hi6msNIITKWCRXQJFcEPwKtloFPoxtR7Jj0DGgBUI2tf1Pu/0isY+pi4dkG?=
+ =?us-ascii?Q?gQ9FBAaSwTMnRSj6kLyfRvqz39gQmVtfcP3lFHhmBPLwcKov9MsxqBUQOuI2?=
+ =?us-ascii?Q?t4caScUZmWxyV5n071FnqLdtrHthcBohvW/edSXBmXpUYvR3thgKS5o7w9bn?=
+ =?us-ascii?Q?8XdlxndC6jJ9Me+LQCCxiwI+W1aumA30K2VBCnyBp6LmCXL2pK+9UbpXOpBk?=
+ =?us-ascii?Q?t8vnKAWinOYjLXnngYa6o/rwkwUZpZH9xnruHml8Nr7eBCR7E8Y/EkcQNtEP?=
+ =?us-ascii?Q?L1vKugOGEZzN09+Xg/qOQ+D8megSWwEDVHd3E9OLp5U+zVlwEo+4Cce1At91?=
+ =?us-ascii?Q?rOjwK1o5KDU0nlGxPfyxBFoMMH/XDu3SgBf/5auhLZBE2gNt2ecQIQvNpyg2?=
+ =?us-ascii?Q?CdH15m7Db28iAwilTJsxdmCUzGRbYwwLb0zY2DdoC6D0IA0sUD1EA5OgkJLD?=
+ =?us-ascii?Q?Bj81OQxrk/sKCuJpQqpbfY+E22YAkfpnybe3K2Zvnntl5mriT1D7IIT7i8Rw?=
+ =?us-ascii?Q?Aq/eIf57sP3dAx8QBJeL3DWAwQ4Vec1cXHW5ZHwhVfv2sfDtekX9xv2smj1r?=
+ =?us-ascii?Q?sxPHvXpcZ676MJtho3jluyWxtcZtypfbuAJ1CSO9xdf4YV0yh0DVXSnaFXd3?=
+ =?us-ascii?Q?dU2lN+YtQlDy3NhzEDB1HadUQu4Fm38BqSz3zGwPbJmBI0aGTgRNfDzIiwNg?=
+ =?us-ascii?Q?v++cKlepFsiyX2aNKqjdUVAXorOt4oqzRm0GS7ZIhtrmOqpaq4mCauoTi689?=
+ =?us-ascii?Q?iCSru8qqWocg8NQxIjUHDn8+r6Mim7GJaQhXNAN6FTGN/57VrgmvKKdI2kF/?=
+ =?us-ascii?Q?mkC1zD2lEPKRhk/AC/imaALezY9QY4d5yrcfIEeza6KFGt/cDPKounvbUEvQ?=
+ =?us-ascii?Q?vf/iFlL5cfM+q748LhuxQwAMWBBGJZGTPm1i2+qWAkF5hRGtBJpfZDDQ9v5d?=
+ =?us-ascii?Q?o1GGAnjOzoqXtcuRR33Z/WCu2xfkiqIQ7gw+szicUWFcW53OZbzKkwNoLEGV?=
+ =?us-ascii?Q?q0A3XOUq13IaqxfCXT4lbzmli2wcUEQZhfTKjCAVHqgHXVrrSi3ioZx+F0NA?=
+ =?us-ascii?Q?QJbBASihQgMBpqSYHAcj1U7jnga9jZh3rux/ZGidemBSn27CLEiQSRXzZJpG?=
+ =?us-ascii?Q?rNbfmvdq2OEzf12XJVtSnsVtQ6Et/IFSGDvmysmdNLKUDk8y947nwAJeiCsE?=
+ =?us-ascii?Q?9m3E/ihybFX12Wsg4PVly74UOohG7ehpsMbEbxvdX080zzEpyB8or5R/DPpu?=
+ =?us-ascii?Q?9hnkhw39dhMORzZqHOufVLySSL2DqaXp8U0U5usH8wJGrAZIkyLVEtx3GkjS?=
+ =?us-ascii?Q?YKmRaOzpVUBudrgLQNDa/hrTkzslVkn1jAn/3gcf+/INoz/N4vBmIZr4xsFq?=
+ =?us-ascii?Q?ezzQZXdXLm1VxkLHav1PDDJDzjJzrPpbNYXPF/QUpZt47VqApQ60V41lgK7S?=
+ =?us-ascii?Q?El29u+Z27z9s14oF+JMhDQAikpnT7e0p5NDFUVLon6l25QroFjWf?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 18e39276-fe45-4035-0a9d-08df3370fb39
+X-MS-Exchange-CrossTenant-Network-Message-Id: a2809a36-084d-4543-b8ae-08df3371a53b
 X-MS-Exchange-CrossTenant-AuthSource: MI3PR04MB12438.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Oct 2026 14:54:05.6242
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Oct 2026 14:58:50.8279
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: kQJ5MrsF5APFP0ooYC5kSN4Tv0HaM7Sgx7Jy5NCuwsW+F4pun0U2ESQZFmDXdtE7J7tlcm7hqhvyMdGhI6MEPdMh9uA+VFrJ7ciuyKSSNwktkCzsKQ7bAEvRlgvjfQEP
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BR0PR04MB944139
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3UpClUqnueZ3CjW1B+NgrgJ1hrSnS/NA2lSNYF1O/4l6vTFhCj+TiBOConBzsrAINggtAE9liaMS2+H5oiD6ZRhwpk47+ah//TdqNjEGDo02/sgneYkspK/auflsiXb5
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB662462
 
-On Mon, Oct 26, 2026 at 12:11:49PM +0100, Francesco Dolcini wrote:
-> Hello Frank,
->
-> On Tue, Oct 20, 2026 at 12:38:51PM -0400, Frank Li wrote:
-> > On Mon, Oct 05, 2026 at 09:53:19AM +0200, Francesco Dolcini wrote:
-> > > Hello Frank,
-> > >
-> > > On Fri, Oct 02, 2026 at 11:28:33AM -0500, Frank Li wrote:
-> > > > On Fri, Oct 02, 2026 at 10:18:24AM +0200, Francesco Dolcini wrote:
-> > > > > On Thu, Oct 01, 2026 at 11:26:05AM -0500, Frank Li wrote:
-> > > > > > On Thu, Oct 01, 2026 at 12:52:53PM -0300, Leonardo Costa wrote:
-> > > > > > > From: Leonardo Costa <leonardo.costa@toradex.com>
-> > > > > > >
-> > > > > > > Add a device tree overlay for the Toradex Capacitive Touch Display 10.1"
-> > > > > > > LVDS connected via the Apalis iMX6 LDB.
-> > > > > > >
-> > > > > > > The panel is a LogicTechno LT170410-2WHC 10.1" WXGA IPS LCD and the
-> > > > > > > touch input is provided by an Atmel MaxTouch capacitive touch
-> > > > > > > controller.
-> > > > > > >
-> > > > > > > Remove the panel-lvds node from the Apalis iMX6 dtsi, as it is an
-> > > > > > > external component that does not exist at the SoM level.
-> > > > > > >
-> > > > > > > The overlay is also combined with the Apalis iMX6 V1.2 Ixora Carrier
-> > > > > > > Board V1.2 device tree to provide a ready-to-use DTB.
-> > > > > > >
-> > > > > > > Link: https://developer.toradex.com/hardware/accessories/displays/capacitive-touch-display-101inch-lvds
-> > > > > > > Signed-off-by: Leonardo Costa <leonardo.costa@toradex.com>
-> > > > > > > ---
-> > > > > > >  arch/arm/boot/dts/nxp/imx/Makefile            |  6 +++
-> > > > > > >  ...6q-apalis-panel-cap-touch-10inch-lvds.dtso | 53 +++++++++++++++++++
-> > > > > > >  arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi | 13 -----
-> > > > > > >  3 files changed, 59 insertions(+), 13 deletions(-)
-> > > > > > >  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6q-apalis-panel-cap-touch-10inch-lvds.dtso
+On Mon, Oct 26, 2026 at 01:43:28PM +0100, Francesco Dolcini wrote:
+> On Mon, Oct 26, 2026 at 09:25:20AM -0300, Leonardo Costa wrote:
+> > Hi Frank,
+> >
+> > On Tue, Oct 20, 2026 at 11:01:30AM -0500, Frank Li wrote:
+> > > On Tue, Oct 20, 2026 at 07:33:10AM -0300, Leonardo Costa wrote:
+> > > > On Mon, Oct 19, 2026 at 02:37:41PM -0500, Frank Li wrote:
+> > > > > On Mon, Oct 19, 2026 at 07:17:16AM -0300, Leonardo Costa wrote:
+> > > > > > From: Leonardo Costa <leonardo.costa@toradex.com>
 > > > > > >
-> > > > > > similar 7" case, add panel module name in file
+> > > > > > Add a device tree overlay for the VGA output available on the Apalis
+> > > > > > Evaluation Board, which is driven from a parallel RGB interface passing
+> > > > > > through a non-programmable video DAC to a VGA connector, without VESA
+> > > > > > DDC I2C signals.
 > > > > > >
-> > > > > > imx6q-apalis-lvds-panel-lt170410.dtso
+> > > > > > The non-programmable video DAC consists of a simple resistor ladder that
+> > > > > > converts the digital 16-bit RGB signal to VGA. The VGA output is gated by
+> > > > > > an active-low data-enable signal.
+> > > > > >
+> > > > > > The overlay is also combined with the various Apalis Evaluation Board
+> > > > > > device trees to provide ready-to-use DTBs.
+> > > > > >
+> > > > > > Signed-off-by: Leonardo Costa <leonardo.costa@toradex.com>
+> > > > > > ---
+> > > > > >  arch/arm/boot/dts/nxp/imx/Makefile                 | 21 ++++++
+> > > > > >  .../boot/dts/nxp/imx/imx6q-apalis-eval-vga.dtso    | 80 ++++++++++++++++++++++
 > > > > >
-> > > > > This does not work, sorry, the current name is the correct one, for
-> > > > > various reasons:
+> > > > > what's difference with
 > > > > >
-> > > > >  - the product is a display made with a specific connector, touch
-> > > > >    controller and display and more. The actual panel is just part of it
-> > > > >  - the current name wholly describe the product, it's a public product
-> > > > >    with an official name, all of that is clearly linked in the commit
-> > > > >    message and comments. there is no ambiguity.
-> > > > >  - the same toradex accessories are not module specific, they are used
-> > > > >    across multiple families/carrier board. It is a whole ecosystem that is
-> > > > >    building on top of standardized interfaces and connectors. The same
-> > > > >    overlay file is available for multiple boards and in multiple SoC
-> > > > >    vendor directory (as of now TI and NXP, soon we are going to have
-> > > > >    also QCOM). Having a consistent naming scheme is important, we cannot
-> > > > >    call the same things differently every time.
-> > > > >  - there was a situation in which we did a new product revision of a
-> > > > >    display, specifically the "Toradex Capacitive Touch Display 10.1"
-> > > > >    LVDS" there are two versions. The official product name is the same,
-> > > > >    apart an additional version number, one is version1, the other is
-> > > > >    version2. They have differences, and it's not just the panel, more
-> > > > >    stuff changed, so having the panel name in the filename will not
-> > > > >    help. v2 support is already in [1], for reference.
-> > > > >  - the toradex naming scheme is not encoding the actual part number used
-> > > > >    in the product name, for example we have apalis imx6 v1.2 that uses a
-> > > > >    different touch/adc than previous apalis imx v1.1. The product has a
-> > > > >    different schematics, different BoM and so on
+> > > > > https://lore.kernel.org/imx/20261019-colibri-imx6-overlays-v1-5-e4d028727382@toradex.com/T/#u
+> > > > >
+> > > > > Is it possible share one dtso also?
+> > > > >
+> > > > > Frank
 > > > >
-> > > > Do you have schematics number to identify it?
+> > > > Hi Frank,
+> > > >
+> > > > The Apalis iMX6 one needs to set up the connection between the IPU the
+> > > > LCD interface (endpoints ipu2_di0_disp0 and vga_display_in), and the
+> > > > Colibri iMX6 one uses a DVI connector instead of a VGA one. Most of all,
+> > > > the bridge on the Colibri iMX6 doesn't have any control signals, while
+> > > > this one on the Apalis iMX6 has an active-low data-enable signal
 > > >
-> > > Why do you ask specifically about schematics? We have schematics and we
-> > > have a way to identify a product to the related schematic. The way we
-> > > identify schematics, whatever is a number, a string, or anything else
-> > > seems not relevant to me.
-> > >
-> > > But yes, answering you question, we do have schematics and a unique
-> > > way to identify them, and it's not using "numbers".
-> > >
-> > > What matters here, is that Toradex products have a unique number,
-> > > and we have a way to trace product revisions.
-> > >
-> > > So, for each product we have
-> > >
-> > > <product name> <pid>
-> > >
-> > > and <pid> is 8 digits, the first 4 digits is the end customer product
-> > > definition, and it matches with the product name, and the last 4 digits
-> > > is the product revision.
-> > >
-> > > All of that is documented, see https://developer.toradex.com/hardware/hardware-resources/general-product-information/ordering-information-and-product-identification-pid-pid4-and-pid8/,
-> > > and this is what is used for any kind of product traceability.
-> > >
-> > > Staying on our LVDS 10inch panel example
-> > >
-> > > Capacitive Touch Display 10.1" LVDS | PID4: 1212 | PID8: 12121000 | (version 1)
-> > > Capacitive Touch Display 10.1" LVDS | PID4: 1212 | PID8: 12122000 | (version 2)
+> > > This make sense to use difference dtso to cover it. Is it use name
+> > > imx6q-ipu-di0-vga.dtso, because this dtso have not boards specific part,
+> > > which can reuse for other similar hardware? Or we can rename it when reuse
+> > > happen.
 > >
-> > include  12121000 in your file names.
->
-> That would result in filenames such as:
->
->   imx6q-apalis-tdx-panel-cap-touch-10inch-lvds-12121000.dtbo
->   imx6q-apalis-tdx-panel-cap-touch-10inch-lvds-12122000.dtbo
->
-> While technically correct, this creates a usability problem. PID8
-> ("12121000" is what is called a PID8 in Toradex product naming/number
-> scheme) tracks hardware revisions, including changes that do not affect
-> the DT, such as passive components or mechanical changes.
->
-> A user with PID8 12122001 would not know which overlay to use, and
-> duplicating identical overlays for every hardware revision makes no sense.
->
-> I therefore propose:
->
-> imx6q-apalis-tdx-panel-cap-touch-10inch-lvds-v1.dtbo
-> imx6q-apalis-tdx-panel-cap-touch-10inch-lvds-v2.dtbo
+> > I think the overlay should be kept as imx6q-apalis-eval-vga.dtso. As it
+> > currently is, it's easy to identify the hardware it may be used with. If
+> > another board is added which uses the same interface in this same way,
+> > we can evaluate if it's adequate to change names for reusability.
 
-It is okay.
-
-> >
-...
-> > Ideally, rpi-display-2-7in.dtso should reused for all boards, which use
-> > rpi defined connectors. Now exsiting these combinations reason is current
-> > nexus node is not good enough. but we face to this directions.
-> >
-> > And anyway, rpi-display-2-7in is not good name because rpi many produce
-> > difference 2-7in panels in future.
->
-> This is an existing upstream naming convention, already reviewed and
-> accepted by multiple maintainers.
-
-
-The existing doesn't means good enough. That's reason why there are hundreds
-patches each days.
-
-Our goal is making thing better.
+Okay, we can rename at that time.
 
 Frank
 
 >
-> Product naming and versioning are the responsibility of the manufacturer
-> (whatever is raspberrypi or toradex).  I do not think we should
-> second-guess those decisions without a concrete technical issue.
+> 2 more cents. There is no such other board in the toradex portfolio and
+> it's very unlikely we are going to build any new board with an old VGA
+> interface.
 >
 > Francesco
+>
+>
 >
