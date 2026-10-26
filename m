@@ -1,97 +1,106 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.162.57
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793033260;
-	b=OINkvamHIuG0gawm2gu5colikZsDdUgXe65BnFMcJ1Ta2ysTpejXFxpoIWv0rqFpevqs
-	 wUSmOKCq7+uH7xmqMA1JVhmGxPlUZh6Vf2NsreqoU3LprfwRo/b3CbpCDDHMPomRohqQo
-	 FHdbwXfCc+o1VoD4YsEmGq98GPJke2n7oVNqCh6+gGCxNC0WmRZ9mF0LR0VXJQSGoeaQM
-	 21v+M6LDcxbISduJ4+UPbMZrNnuCRxN/MXMT6f0Sco87fhcGg2JVAsbQiWXVxsZyTrnVi
-	 YCngzv4O9nlWiivh0vp08I9pFeZclxpfWzbx4Th4qv80TgtKuDUJM2aio65P/nFmbGg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793033260;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:Content-Type:Content-Disposition:
-	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=F2NYMcfm886OZe+D8sPU4LJaiFIUUSrBGz780bUDdX4=;
-	b=NRMhEn6seI+PupAdOaZbUNii3Q2pQ9Wjn1vYKN6sJRbFzy/GwSErp9HnEOhsSdywNa4V
-	 3KzQmOLVULgwy1ZBPx0h1rj78iAnDVEeOgnNV6UN6djuKH6EtBTNPF2U+HNool8djcohn
-	 +LxWVLNnMRTwplLZ5NjPTwxgfvJPXVp2tqZHTHNckwVlQs9fgKLGCQdXd3Wp8wofxc8Cv
-	 903nt9RaULDtZhHLQXzz6zlUrnGlgXj5D3tgH8XLZx5ZvjAnK2ls/LYXOgniAxeJ9xr4I
-	 nprXXOI6pJh77I59GQIHQ8xY80CRFxCXRs86rkudznmEBKs1JSCbMm5/3f8b8aMLa/A==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.nxp.com;
-	spf=pass smtp.mailfrom=oss.nxp.com;
-	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=E+m5FobF;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.162.57
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013057.outbound.protection.outlook.com [40.107.162.57])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.41
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793033993;
+	b=TCA0uY/lcKvIfDc021q2wP2DBpS4VlSCeTEQtqwvlEcUwEjelQ3klsHaMF8vO6K/Q0E0
+	 U1v2VYn8VAgy0cdlVtNlTrc0i7prY/xfqnIIZBeJg2B3CN12hFyUuGJNQ9CybrqGi25hN
+	 Lt6OU6NliN7Vbh41RvG0lv1UUCfTBH8F1ZG2DDuvfZdULvnKoKRxMb8P6lzgJbNV2tMWl
+	 MbiiOCehC48QA7OnRV7qITp4hmrLzGEeUczPSkbS00upa84cfyMyMq6QRm5PCMfzlXkIT
+	 lJXw9chjklhhNDW0ugQHuHqlCLGIXKiEoYcbnbrd0GYE3hcS93dmqma5Zq0aGlFU15A==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793033993;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=BBemIOG3KuKqxJ/h5u8qdNoWNATVBlUDjRGyS3stVBE=;
+	b=3goZofyG61vW5wVdixzxuQA4Mcjb+y5CnHWK3EuKzbIuFarZuYE8IERq1RrxToeKN4jg
+	 tWCU7POzdu7rQVPdrHf9ZbZcGzKvbl0nWSwtAkFQq0W1giajrROPkQeS+LP/4BSjTQkVW
+	 WnytD21nrWYdaWUGvIcCUXFrC4WK2hU+rc4A0Cd1l9ZU3/yk1uyzQ0zFjp5rUnfVtsAX4
+	 s34GmhAe2lC693xRNKLAB2BN2Jtf1ZUxieEKEnpesX7H8f4NI3kAys2tJSC7gua3str0D
+	 jMHGh6Kp9VsyvKRqa0yh0tPwSXc48ivKihbpWzygcziYZxv1m5qzooJSAt9s6hpY2uA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=LsT0rVBu;
+	arc=none smtp.remote-ip=209.85.221.41
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BF8D606A31E
-	for <imx@lists.linux.dev>; Mon, 26 Oct 2026 16:47:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1BF8D606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B1B6606A31A
+	for <imx@lists.linux.dev>; Mon, 26 Oct 2026 16:59:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0B1B6606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=E+m5FobF
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rcvc7BegtHbbRcGF9wEcdJ5jVHUdg0U8tGvwrZS/E+WDQzmNM0sPTpMhb86AKIBGN3fBNCVn80PcntjmWpUxcX2sS0UMTj/iRPGl20Rtfq2qL2GzcoAe9OSyKSMlLjJalCJ3wDeLQGm2m8YbBcZHCGy/i5fZCm5BKKjlInkdlcf6IXVZ6qtOikWz6IXxARFAu0Uhj2FHp+vfAlLb06pst3DgpZKQYO2maefriAW0mMBMBO553vDFqspCBPI0Lmk5j/+hBjy0pAuc1vPRqqzYh2eEgEGT/PL48T/c4fobgvoaqRmoZw9OBn2UTK7wC+Yp+sU7CY16HaPg6HkRzB4V1A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=F2NYMcfm886OZe+D8sPU4LJaiFIUUSrBGz780bUDdX4=;
- b=XPcz4rGdUifRXZebj9COk0aXaHAOal17BMEIokv79vJ3G2s1Uf1AFQyUmJA1hxi/8BGd0u8/3d2qGp6196hPB4H/V8U6p6NoaC+XDhv3G+zPKOYPDQURaC44kpz4wmRo/Lo2hE2tpUpArOK+CAVBRgX6iN4NUMejgeLg2/Z87OL0ve5BOM6rKqbs5zRgwVID3ksh+ov/WLoroL6fZaCgT7rMlu9yGh9RRDvyAv6RvmbmHp1pgNqwTYe/kVVBV6CCj1cw6m7+6z8RMA6u7X7n1xG/AdGLO2S1aCNMKn2k1DVEdvCLzhxdBncdQfeZjrQvTewSV2VmaWlXK8HwQ7DYiw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=F2NYMcfm886OZe+D8sPU4LJaiFIUUSrBGz780bUDdX4=;
- b=E+m5FobFSBRkvan/rGw1cqg5F4EnH2eCLu6+RpKpDJ5VzD3j8PdAOB8AkLwkCXrEHQBPo4sc9/JTWtblDBnPN9lg66ho4J3CweWB+KiskPLNJLRoBfD3+p7zgdQ1600SCW18xI4FjD3DnnhuJNCumvnS7V1pz3U7l1s3D0TxbmSlGlmLPE510A4DYNW7yZmxBlyc45uJsQxRZYlFkJxkO67rDk4V+gsAB+nofCKK1NXdM7uIROnUESGj6ZBxoeBFwdS9XnDQJ/rnJpOPHGMmJ5jFtN9ekLeW7EazG55dJnoEzLTn7kwYzLZxO7/EUtPf58QQmwaJvb9P3+1EgNy/Gg==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from MI3PR04MB12438.eurprd04.prod.outlook.com (2603:10a6:290:76::14)
- by DU4PR04MB10340.eurprd04.prod.outlook.com (2603:10a6:10:564::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Mon, 26 Oct
- 2026 16:47:34 +0000
-Received: from MI3PR04MB12438.eurprd04.prod.outlook.com
- ([fe80::c715:c32:8bb1:b70b]) by MI3PR04MB12438.eurprd04.prod.outlook.com
- ([fe80::c715:c32:8bb1:b70b%6]) with mapi id 15.21.0546.021; Mon, 26 Oct 2026
- 16:47:34 +0000
-Date: Mon, 26 Oct 2026 11:47:25 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: Xiaolei Wang <xiaoleiwangxiaolei@gmail.com>
-Cc: aisheng.dong@nxp.com, festevam@gmail.com, Frank.Li@nxp.com,
-	ping.bai@nxp.com, kernel@pengutronix.de, s32@nxp.com,
-	linusw@kernel.org, s.hauer@pengutronix.de, sudeep.holla@kernel.org,
-	cristian.marussi@arm.com, peng.fan@nxp.com,
-	linux-gpio@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] pinctrl: imx: scmi: replace custom dt_free_map with
- pinctrl_utils_free_map
-Message-ID: <at-EHbO9KntKl7jY@SMW015318>
-References: <20261026040230.22338-1-xiaoleiwangxiaolei@gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261026040230.22338-1-xiaoleiwangxiaolei@gmail.com>
-X-ClientProxiedBy: DS1PR03CA0024.namprd03.prod.outlook.com
- (2603:10b6:8:233::19) To MI3PR04MB12438.eurprd04.prod.outlook.com
- (2603:10a6:290:76::14)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=LsT0rVBu
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-48bbb06e746so1675413f8f.3
+        for <imx@lists.linux.dev>; Mon, 26 Oct 2026 09:59:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1793033991; x=1793638791; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=BBemIOG3KuKqxJ/h5u8qdNoWNATVBlUDjRGyS3stVBE=;
+        b=LsT0rVBuzuKdk4SSRhROXXnKs9day3uFvMwtz5gPuKi6VEtc+0nZ9i/fejmp83C4rA
+         Eib9tsUKxkujQu9z+IgCWAV6u1X4ixUDKhaQMsowlxZaRxJ/+afgZJ5Bq/rYYPYvLdRA
+         xlYey+8ySgPwMxOwK/e2ogdhrU9YCecAfxtIQ3M0x6lZLONmz2Dce3kBLevLY6b6j0z5
+         SwBSRUsJRvUB68M0MP1VKgrKzEUHzTqRJ5QBAKATvvAeRMn+r/7+pa9MgaNTeUtCFEYx
+         pThtrXYwENfYmfKAJ9hhOFMi619LnPuNWU28SA6vcuC+AbxId/6RmMjde2R6b0EYril4
+         0kXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793033991; x=1793638791;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=BBemIOG3KuKqxJ/h5u8qdNoWNATVBlUDjRGyS3stVBE=;
+        b=GjG4HLViYJRcTEYdD7vlJmCC3gE3dYD9F0VuLQaArEEjWjY+Wc+PpNgCwGmvI/OlVl
+         DjPDATRLAz/vtY6mhvyOAWYWQl7/Flzg2MLVHq2TvNj4s2o5SpxM/6KEbrrIufgD20NH
+         S+DPpTY91fCY8kMB6oFigIt5MbtVvmSCtnrtiToEhrArXMJAuVfsQqrSFgePZwMK4Z3M
+         CCNU8MEP9oKeCSorZ13jZ06P/eKWpw2GZt4Q+1VqS4zL3+XgjC4vrG7TFs6lrOt2xkg8
+         8oJCMoycdo2/G/3gft/9vuT60/8WC0DTG2OaOoJAgpeRIrw9x55LrLVp88Hiu1jOABG/
+         2bGQ==
+X-Forwarded-Encrypted: i=1; AKwUvByHbQMO6meQ0AEZRC05C2SD/WmQcwUqvRTArVYyafXLmg9JMugcZF8yt1TA/tIe4DwdF7U=@lists.linux.dev
+X-Gm-Message-State: AFq9FYLcETNWErG3lIPogf3JiA8ZVkU+lW37bXctP8c3pIfp7C10csB4
+	MbYu1R38p9/2BbXy/oWddk8YzMoiZDqpPzP6lA6PU17eGb4b7MvIiTnj
+X-Gm-Gg: AYBFou0ipDfpow2phfbQztezJLKhl/qxpWQRJxmIqYT8ELOpJ+UZH1RNY7YcheIK1ag
+	bpgBivgBN7iYRH++URWMDQZW4kPVS+oxr+B/hT44UpAgsNx6Mxr/TKuRS8HfoISw4m649DIrUjD
+	bqtEt/wG7ZUsEJrpP4viD5tVCmoi6IE5ow/CWLy6qTbhvkQ5UrzOn6vRP0sWUtqRI5jzAqWfZAd
+	FFVFx5GA09gQoxZbr1uG7jx3MCfh/oUC3xUrFGME3Th+oNyvAPFcGlxVehfBhs48CetHkQhhT9n
+	59cyhR6+PQM4ZSlpm0uoOIjrDM317owcSU0zRJYNq8b802QT+X6brDsl66CjrHyExlgMBctCg9v
+	vxUaw9HFz77iq2UHnxaKP/AFoDEpln+rp0vJubkTdD0P89Upa3FO3Domir4VJPNEwMIoF361DrO
+	aUbDlXUhP8SkzFO2+IvJU10rVXm0fIqqNiQANGZ6C1zgKeXpVsFlj3cB8E4ml2yPmxbVtwanP2Q
+	7y6mxMYLoCL67b0EWtUGVtwrmi97xKDzzPBP00g8P22XX12mg1vSGOPayUHUPyGd9TogmAuQKCZ
+	0lmSLcPOCzqdmGCc0zhFf7kRuKRFYbPGTIrhx/qpwlDNLsIE2HXfBuSG5fLY4D2g3V+TxALFx+F
+	YwCtd7Q==
+X-Received: by 2002:a05:6000:4021:b0:486:f42f:6860 with SMTP id ffacd0b85a97d-48e3eba4d70mr13645153f8f.56.1793033991164;
+        Mon, 26 Oct 2026 09:59:51 -0700 (PDT)
+Received: from GLaDOS.station ([187.13.216.220])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e3ebd4bc5sm17405886f8f.34.2026.10.26.09.59.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Oct 2026 09:59:50 -0700 (PDT)
+Date: Mon, 26 Oct 2026 17:59:47 +0100
+From: Stefano Radaelli <stefano.radaelli21@gmail.com>
+To: Frank Li <Frank.li@oss.nxp.com>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
+	Stefano Radaelli <stefano.r@variscite.com>,
+	linux-arm-kernel@lists.infradead.org, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	pierluigi.p@variscite.com, Nate.D@variscite.com,
+	Peng Fan <peng.fan@nxp.com>, Shawn Guo <shawnguo@kernel.org>
+Subject: Re: [RFC] arm64: dts: freescale: Supporting Variscite SoM and
+ carrier revisions
+Message-ID: <at-HA7K_cWub_arR@GLaDOS.station>
+References: <20261023115242.11197-1-stefano.r@variscite.com>
+ <att6GNZAVv64Rlnv@SMW015318>
+ <at8Pc9jDy0dX8Sr9@GLaDOS.station>
+ <at-BsPCwPGlpnuJ5@SMW015318>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -101,116 +110,50 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|DU4PR04MB10340:EE_
-X-MS-Office365-Filtering-Correlation-Id: dc9b8227-87c4-4ca0-fe45-08df3380d5e4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|1800799024|7416014|376014|19092799006|366016|261026140227099003|11063799006|56012099006|261009223027099003|261021123027099003|261022075727099003|261022105027099003|261021121427099003|10067099003|261026121527099003|22082099003|18002099003|3023799007;
-X-Microsoft-Antispam-Message-Info:
-	fAZABalk+SJZXBsvAgpm3IPYZLs0ylVrAoURAelFZmZv1nyz1Ni7KWkbAWV4XNU3v07GlepN/rhbSMg3BmzOzfms2B91XHKbmAfOuCQ167Nex9jfCPjqhv/tPW0bK/cx0VFlx60I85dqtNTaZSabLlnBb7Qt236oEt0NqbwKEP5OJ5j3YMrCqgUMA/KpE52IUuhI+DKwFjc7rWGQX2TfkkuDZXxTvin6MJG5WR2gTn3do8E+era7KYaJ+exfngKVhZ+GVV9Coqdj2rRW4ZOJqv8G/G46kHcywS9OQ5HbVywZcWBUHXFKCpnE0t6IK+kLboMwSICHroLF/03ukX8ozRNKwGN6FqqnMml9WMZS1msdl5zEwovrBbbvNv87aHmlo5AxERC4EzVlZ5EIVUT9K/2NqFsGV4nyOyez3rRdvqYnvSBv+XUnECs+jrWQJgiKNGuX+0eci9DgJ0VLF9FQ+D2MPrrfO1HjAtvuuE3XVznLX7N6p4bVL8mnEDeEIfmQDtgqlf2rsAxn59Nw3clikvDMqhxT+hUre1PPtDK/Hs6jfeNZj1aks562u2t+sqpVmmVcQQst+sXeKQW3gxlH8lLX7sWFls/AUZcnKJO0dPBLRkuUEVwzKMjzhK8N/0WBYkR8jVurbNeYRwj6kjDHHcAkXmBYyh5BUCcS6l0kyOc=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(7416014)(376014)(19092799006)(366016)(261026140227099003)(11063799006)(56012099006)(261009223027099003)(261021123027099003)(261022075727099003)(261022105027099003)(261021121427099003)(10067099003)(261026121527099003)(22082099003)(18002099003)(3023799007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?zO/9n/cXX/OfkCX265xx7AY+1VXN3YciEBPvxQkmL9i4yuRAcucMDLQQbbTa?=
- =?us-ascii?Q?PIoroq+kw+x5x7UXbNedSTPak7X7JVBLKPtiB6b38HsRYFGgGj7OjzaAfSbm?=
- =?us-ascii?Q?eAC2L+gbLCOzz6ybecW8LvPE4XBQC5Qw70jsrfuRdn5W448zyTJjdqSkBZPe?=
- =?us-ascii?Q?Uf27qLHyBSyT0X6uxFtCzPe6IYMmT7p6m8poPqOHu+qEnACbvE/2QrEJZBYb?=
- =?us-ascii?Q?GCdJfCBtXxYY1cL0QTkiresxlaAjb7wWgfs27Wadl3GpsVfUdeze0LnSWDK9?=
- =?us-ascii?Q?F1JgEYByLb5eKPb8BSpGuN4TsFAquCu8flOJcrzKhDZx9ZyZeudJ7jBKjp4c?=
- =?us-ascii?Q?ZZjWfCbP5qlKdGAMEMtQt6YABR5AtHh4ywqta2J1/NOyO+X7rxvPOi+wIWAI?=
- =?us-ascii?Q?7L7/H2bN2cBJNOhW59UnQyJN6j8AFXppXSx5Y4cW1EuM6rBy+hByGdLb/Egw?=
- =?us-ascii?Q?f7yR6IKOg0R1QlzE6AbwfeGDJzRDOjA0CUlgqsyAsTtYOrOWuaj3Kc1i0WQs?=
- =?us-ascii?Q?2aGkRTxzdSUeHASsurJhCpAB76I8pDzwpGPFNqCTt43Rf6IHnGQyqDj2bOtp?=
- =?us-ascii?Q?JsXXXPPDuYwe/9dDwzzD8IFj7aI6bBFFxpXG1WEtI2Nk3rQQZJX471cUfhtu?=
- =?us-ascii?Q?EYDdvpOPejDgSHD8LxfiO3swS9pP139uJkg6Niypi0HEK9s7eI+w0OXbqyib?=
- =?us-ascii?Q?lMq+HfQ1kRXbZOR/qkNvHT5YYCXZihrSPdpMP2kDz9P8epfIHVZhKUnOKDK4?=
- =?us-ascii?Q?FDEt0k2o0WR+wbTcBIGnsTUaDAYRPK2C0RFYLbRwOrhkZ2I6mbaJF2ZmiKFn?=
- =?us-ascii?Q?Iwk3D85OcT40N92adLFm7sofYFgWeusZMGZQNeF8lH75ERe/sOMpiEp6OBDA?=
- =?us-ascii?Q?WPUVq0v2v7onTr20jufzwSvcIvsBzHuCHmMCe5x/50SQfLy2oGuZ+mCkWUOP?=
- =?us-ascii?Q?wgxM9uMe25xHwR7GfOXjKbeQ4+B6h8LwJXPsEAf5duVaNU8mW/2BYNpx/MY6?=
- =?us-ascii?Q?7bwPPSF1X4Mecw2NGuoQWCEClM23kemtiIZXIZPaE0f4lV8YXhuD1NxacYE5?=
- =?us-ascii?Q?8zZlYi/KXbe4j530D8oV0rYk3L0ShK869KhVi+FSYQKGMwx4F8WPcSjIO8Gd?=
- =?us-ascii?Q?KnkOF7xaKTqTbDHUjdFamk/rXmO1nMEbwt0VHzxqp8CsGL3x8E9QOtdMuFkk?=
- =?us-ascii?Q?BUh19RqfD1vB7YM5DR/SDhJ9gp3ljVj5NeusG1jN67AYEUVOeqgzLEdsxd1J?=
- =?us-ascii?Q?OI0dEFa2OtlMJeEnRxGpxbRqD163aawxIrq8zCxKkuCTH7aqwwrEwsnRpHOm?=
- =?us-ascii?Q?hCf38zqUQTrowD3xIt964VZbBZZ2KyjLvvV4b9LD4EaB6yhTNXYfgW+PaKVo?=
- =?us-ascii?Q?G3gbxSl37CIKk9vo1dQbfMEqbSQcPwOOyymLCFpjG9dcrTJQsbRY+9NEeGJO?=
- =?us-ascii?Q?/5e8gIA2PHL4XoTQ2Nnh/5DEB9IlWKQN4AiG4BzbnmPgEjlk0fqnDOZCxdK6?=
- =?us-ascii?Q?tEGAmlyrrVIdwvXoecUBEsarh6w6DPQZVJcnFsDPpYDRKSqvcOfgTbbA0ULF?=
- =?us-ascii?Q?rN8UwmgtsKHpc9Xe/MuBMhCA4Sjp4yjbaVANcFlg0aRsl7F7ixprfz0MRNxy?=
- =?us-ascii?Q?Qn4d9CLm1PPHvn+eXG78X+TyLjQSSlZ2L6dxa75GhJR2+44gsOHToM/D7jaQ?=
- =?us-ascii?Q?QHPWUoP6EurmKPxC06B1e5FJUAOLJbM6od8B4pqz/BktkLJyaN3h/IXukB4n?=
- =?us-ascii?Q?UaiRq+KpVPTJ/GA8WI2mal7XQEAZrkXgUyvLm9eO7yGUDzkEHM9N?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: dc9b8227-87c4-4ca0-fe45-08df3380d5e4
-X-MS-Exchange-CrossTenant-AuthSource: MI3PR04MB12438.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Oct 2026 16:47:34.9064
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: lLSgN8Z/eqvEx1V/hGYL9g0HmekuUrYqJG+EhnJUN07af8tHlm2m9dEtqtLx5/2M/1jJ6N0KnWRlVXm5pKtfoTyZ0pzMVdxmnrZzUGPuqQWjjvOIRbSI/Hb6yr8kzD0o
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB10340
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <at-BsPCwPGlpnuJ5@SMW015318>
 
-On Mon, Oct 26, 2026 at 12:02:30PM +0800, Xiaolei Wang wrote:
-> [You don't often get email from xiaoleiwangxiaolei@gmail.com. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
->
-> From: Wang Xiaolei <xiaoleiwangxiaolei@gmail.com>
->
-> pinctrl_scmi_imx_dt_node_to_map() kmemdup_array()s the pinctrl configs
-> of every pin into map[i].data.configs.configs, but the driver's own
-> pinctrl_scmi_imx_dt_free_map() only frees the map array itself. The
-> pinctrl core releases maps through pinctrl_dt_free_maps(), which calls
-> dt_free_map(); the duplicated configs are therefore never freed and leak
-> every time the DT node is parsed, e.g. on each (deferred) probe attempt.
->
-> Replace the custom dt_free_map with the core helper
-> pinctrl_utils_free_map(), which frees the configs of each
-> PIN_MAP_TYPE_CONFIGS_* map before freeing the map itself. Its
-> signature matches pinctrl_ops.dt_free_map(), so the driver-specific
-> implementation can be dropped entirely.
->
-> Detected with kmemleak on an i.MX95 board (FRDM-IMX95).
->
-> Fixes: b755521fd6eb ("pinctrl: imx: support SCMI pinctrl protocol for i.MX95")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Wang Xiaolei <xiaoleiwangxiaolei@gmail.com>
-> ---
+On Mon, Oct 26, 2026 at 11:37:04AM -0500, Frank Li wrote:
+> 
+> Is it for created dtb file? We generally doesn't finial results.
+> 
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+I meant the source .dts filenames committed to the kernel tree,
+as well as the resulting .dtb filenames.
 
->  drivers/pinctrl/freescale/pinctrl-imx-scmi.c | 8 +-------
->  1 file changed, 1 insertion(+), 7 deletions(-)
->
-> diff --git a/drivers/pinctrl/freescale/pinctrl-imx-scmi.c b/drivers/pinctrl/freescale/pinctrl-imx-scmi.c
-> index 613552e35070..8cbd66950848 100644
-> --- a/drivers/pinctrl/freescale/pinctrl-imx-scmi.c
-> +++ b/drivers/pinctrl/freescale/pinctrl-imx-scmi.c
-> @@ -153,18 +153,12 @@ static int pinctrl_scmi_imx_dt_node_to_map(struct pinctrl_dev *pctldev,
->         return 0;
->  }
->
-> -static void pinctrl_scmi_imx_dt_free_map(struct pinctrl_dev *pctldev,
-> -                                        struct pinctrl_map *map, unsigned int num_maps)
-> -{
-> -       kfree(map);
-> -}
-> -
->  static const struct pinctrl_ops pinctrl_scmi_imx_pinctrl_ops = {
->         .get_groups_count = pinctrl_generic_get_group_count,
->         .get_group_name = pinctrl_generic_get_group_name,
->         .get_group_pins = pinctrl_generic_get_group_pins,
->         .dt_node_to_map = pinctrl_scmi_imx_dt_node_to_map,
-> -       .dt_free_map = pinctrl_scmi_imx_dt_free_map,
-> +       .dt_free_map = pinctrl_utils_free_map,
->  };
->
->  static int pinctrl_scmi_imx_func_set_mux(struct pinctrl_dev *pctldev,
-> --
-> 2.34.1
->
->
+Would a name such as imx8mm-var-dart-2.0-sonata-1.0.dts be acceptable
+upstream, including both the SoM and carrier hardware revisions?
+We would keep that filename unchanged when later compatible
+revisions can use the same description.
+
+> 
+> It should be fine only if dts can be shared. It is okay to generate differe
+> combination dtb file by using makefile.
+> 
+
+Thanks. Our proposed approach is to share the common and
+revision-specific descriptions through .dtsi files, with small
+top-level .dts files selecting the appropriate SoM/carrier
+combination through includes. We would then list the corresponding
+.dtb targets in the Makefile and compile them into complete DTBs
+that the bootloader can load directly.
+
+> 
+> Yes, need revision-specific compatible string.
+> 
+> compatible = "SoM2.1-carrier-0.1", "SoMv2.0-carrier-0.2", ....
+> 
+
+Understood. When a new revision can share the existing description,
+we would add its revision-specific compatible to the same DTS,
+retain the existing strings, and update the corresponding binding.
+
+For example, if SoM v2.1 on Sonata v1.0 can use the same description
+as SoM v2.0 on Sonata v1.0, we would add the new compatible to the
+existing DTS. The resulting DTB would continue to serve both
+revisions under the same filename, provided that the description
+and all declared compatibilities remain correct for both.
+
+Thanks,
+Stefano
