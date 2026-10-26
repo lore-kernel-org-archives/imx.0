@@ -1,101 +1,105 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.9
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793007233;
-	b=Yes+GbiLiE2EWAugDHuvFoq90QdB4TNXtEXhXJHS8hFRHNURkcB+HE01p9DuVRr0NVET
-	 jtg/Dfe1p9EEuim1SaSWH1cEk3Vrg8eg6Q8QZ/lw0WTTyf2WrMoIp321e7/h7+F22X7GG
-	 7Ul+guqUgf6n1GjO0bjGmPLYvroToxrxLbJRpyGc/iN+H7aFR8oIlgg3pJiC6aHQnEuF1
-	 TMUHoWUukCyaMMJhwMtHCwyfszCPkVpb1VT+UGUxRah7MZyccfOvC+o6dZGMo/6O70fSz
-	 xgf0s0C+siPLrcdbnQQUZQhxT5E3ulU3//aRU85feUIE1Q8/UC+dtunA28sLg7INl3A==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793007233;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:Content-Transfer-Encoding:In-Reply-To:
-	 Organization;
-	bh=0WRy0PlXijTVPaZN+8guL59byar3K3OLJbxaZMhuvdo=;
-	b=ZetZg366xLF6DmYtlOTB7QmVpr7ygJqTzYPuJ5xkV+JhSoI5iDE0M6xdApdNpu7ZIxxe
-	 wjKztDKyFcsVty9Uttkg2VdobWBpesHK7Rk7zU51lZjwPYq1p6pCu6Y5MY1WdbPPYCPCY
-	 hEErs5t8/+IvzHaA/x6LBiTCYNyZ9Im4JY5EiR8oAgEp2L2zYoARpfpfopASY4CJus7VA
-	 NUNpMxq5W//3wLW4u/k2qA6Xx0udj5vQ49OMRHY2j2HjAsuqDlIeBya5LENPTtDzER5B4
-	 9q5vidOkTrcq9BipCVW852M1hDU7x350bQpNqS9RaTVnECaNCf/qlWaLjFsyJYdGPpQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ZQe2ijxF;
-	arc=none smtp.remote-ip=198.175.65.9
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.72.9
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793007376;
+	b=i6D44BkBIoaQFiQ+nm38dhFZGcllwPRJEFu/8vzlTGNl/OFaul/H3erd+3ExepidxvIO
+	 TVbJWrtcvW4PlTv+FKajNNH3HDT1GzYaSU9cxBodpLBv2jMsTcliiWyKMqDVv4d337AoV
+	 EF6FjVJdRIUWHZ3HYh+XjXc+ZgzeullQZu2nCy9fvzym5q1B2fx/NUafaJIckgamnLZAW
+	 2kvlLyDoPquNIoHpSIwRnYVcljPoao2DbYWjmuEu/hLPOCoguI6jdH8s2bebBBcqK9Xbh
+	 3otauezoIMWAlxTIGvkoyhOFdtqPrqLhMR3x/1mxipKvf0e98sfJOyI/U+YJ/DiS9hA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793007376;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:Content-Type:Content-Disposition:
+	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=9crnHvk+Msuoo1SOz47Zy5HKLqjz1md5BXrkLxW8pwQ=;
+	b=45TtW49SHa2TGxGjVaDl/frd6yg4gRiH/AkD/K/kHVbSZ2BoQ4IDPp3251uthdynca7D
+	 egP2MSNvlITHheGNuLLIOP2cdNL+uQ03W8tnFrR9TUUyCWT+zxlJj8a02c4rcc0zYvHAo
+	 Kav2TZt0kjZilKCmzdA8l5Jnfj69rGTgpDApPGQXW1AohsE3L8C2ToWFI/sQvIpUXtpW+
+	 mneyrL+zFHiDs1cSJFxbTg0T6eAGHhCZNiNAFcu6FHe3JDrTqQjoR3LnNj/Q7HO3ztH+h
+	 HXLxI0szGOzD4ezaM3jwT/ssCj7crQ1vz9Xc0I6sNCDlOUf3ZgspmNakuBjiOSgEsbw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nxp.com;
+	spf=pass smtp.mailfrom=nxp.com;
+	dkim=pass header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=S3mffKzx;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.72.9
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013009.outbound.protection.outlook.com [52.101.72.9])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6FEF606A31A
-	for <imx@lists.linux.dev>; Mon, 26 Oct 2026 09:33:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D6FEF606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E260606A31D
+	for <imx@lists.linux.dev>; Mon, 26 Oct 2026 09:36:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8E260606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ZQe2ijxF
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793007234; x=1824543234;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=f84sV62ooKOvjIhQKXtEC/TuKGIbIDblS98potdMs0c=;
-  b=ZQe2ijxFuR9wM1a3qrmGobGQm7HTNiGEN1ja9VDRGDQfyu9nCUXFeweY
-   NfYUy9CZR2BG4Xkw6/sLA1lv5pDIEh1eGcYb1t5zSPvuam7dmhluSCJDA
-   o/LcuUWjZdoUxaNVkuzMssT18boQdDcmfDJEwUnxs4e+xgOWKHUCFXq4o
-   Qgf9P8eNhLYAaYmiePIssrPU8CDeXaNSorV+waujs5tXSah9C9VCc3F4k
-   7zn5/0NUtar5RBLbiq40I5M/Xeg31dwDCPLH3uAm1umGaElbrvL5bXH6p
-   U71NfIG3oMwYEE8xXuijjq3R53m1/ed+n9HJ2Xu/UD3KTrXVBneS7ns6t
-   g==;
-X-CSE-ConnectionGUID: bo1P3rYVTBqRwRGg40tcnw==
-X-CSE-MsgGUID: yGR5sY3sTGuNRUyyOu8+8w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11946"; a="1546606"
-X-IronPort-AV: E=Sophos;i="6.27,179,1787036400"; 
-   d="scan'208";a="1546606"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2026 02:33:53 -0700
-X-CSE-ConnectionGUID: fVvhHvtoSG2AkfgtDxVUUQ==
-X-CSE-MsgGUID: OqFYijmUSTSItatMUaeiwA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,179,1787036400"; 
-   d="scan'208";a="4200056"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.245.93])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2026 02:31:59 -0700
-Date: Mon, 26 Oct 2026 11:31:56 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: James Hilliard <james.hilliard1@gmail.com>
-Cc: "Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Raul E Rangel <rrangel@chromium.org>,
-	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Tony Lindgren <tony@atomide.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Richard Genoud <richard.genoud@bootlin.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Jacky Huang <ychuang3@nuvoton.com>,
-	Shan-Chun Hung <schung@nuvoton.com>,
-	Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	dkim=pass (2048-bit key, unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=S3mffKzx
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=nUwDlbIz9kloYIDcidggRyK0ceBjV/Zlg/mCPxcbpxurLDjlUl8J5mqZdujoNUzRrHatFHPyuZILjVMb6J0Hy+VOxS476JrPbsH8bTCFngf6O7Ag4iWeyDYoPwoSg7FV8tjLfqbhIdIPc4UdbUH1HeEilAKPMBxQUJgixxd0FKRaPY+pMvxPQ7i1MSSDg8Hz7a+glQPcCimJU1zntiYvM/2OMS2N/wDTOLnVh7OMgMFqLEMROBaI1/iOq1gmCHBDlMqjmKQi2z51PaIefQpAhsBTWV8vRu92Qe4er1bTVOUMNxbc6qQfyYMmnJK62xD0JyiRLaZeXk1/E15S8NtOqw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=9crnHvk+Msuoo1SOz47Zy5HKLqjz1md5BXrkLxW8pwQ=;
+ b=GpN/tBZ3yFArOY29fPPZStEjG4maUBpYsL7c7uiMCpjfwibnJn8Bn4RvHs/yFQ9O/ndBLd2PuMCPjPGslJOKHq3uj1nZL2ywFZazmGyb5QgKlISCQRwiTJuHsByc259aNlItZ9F4mKknoG8OIeHqVoZAhzIC3IxjrjZaZ7m0WExqCYJ3/w82CstjLA1hpUoLKqeON0lzNrXCkGW1St2uBeTZVgjoSATo2XLwIZrRFM9fcF7dkY1P0UTbGiFMEWk+CJYrsaluaQvdfOad/+ZUepDoCPVgdG4wR0CY472k/7hkyP9VZ17Xz9LsCVSJLmHxf58mGgcOdMCLqivocnvwDw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=9crnHvk+Msuoo1SOz47Zy5HKLqjz1md5BXrkLxW8pwQ=;
+ b=S3mffKzxdlhkLO6xZY5Jxjjy7+Zr4zSW/j1QC4X8U1sk6vfR740qucrqFFs/l21w2lus5dw1Z9NFaxne0qcyH0lfGaHfKC/5aSp5p7Bu2Te1k0dzCd8kFnlbmt2e0jH6ElcKVK+qMVsLFC0tSNpe3Eo8RyyZ3uCTaBzZSdacZU1Xnu9q2us7Oas9Xv8LWacZyDSU36iOEXOCgwkgg+7yIVurjlnfjcqe+PUabZmvznd1ZRyzNobRgdkXlX2GhXEteQRoYjA1HID460h3jpVRE1Ku0NSHr/OiB9VDMrYCQI8/gNrf6CATHBu/rJS2XY9pGv00oZmdIv9kUwb9jX6ltg==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from MI9PR04MB350878.eurprd04.prod.outlook.com (2603:10a6:290:c0::7)
+ by PAWPR04MB11707.eurprd04.prod.outlook.com (2603:10a6:102:509::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Mon, 26 Oct
+ 2026 09:36:12 +0000
+Received: from MI9PR04MB350878.eurprd04.prod.outlook.com
+ ([fe80::8537:1cdd:6c49:6151]) by MI9PR04MB350878.eurprd04.prod.outlook.com
+ ([fe80::8537:1cdd:6c49:6151%6]) with mapi id 15.21.0546.021; Mon, 26 Oct 2026
+ 09:36:11 +0000
+Date: Mon, 26 Oct 2026 17:37:45 +0800
+From: Liu Ying <victor.liu@nxp.com>
+To: Maxime Ripard <mripard@kernel.org>
+Cc: Philipp Zabel <p.zabel@pengutronix.de>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Timur Tabi <timur@kernel.org>,
-	linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v5 2/5] serial: serialize asynchronous write wakeups with
- the port lock
-Message-ID: <at8eDFj2WNaXDaot@ashevche-desk.local>
-References: <20261024-submit-serial-8250-dma-cancel-v1-v5-0-9e52968928d2@gmail.com>
- <20261024-submit-serial-8250-dma-cancel-v1-v5-2-9e52968928d2@gmail.com>
- <alpine.DEB.2.21.2610250459200.42255@angie.orcam.me.uk>
- <at4bw-G8czG-G7Wl@ashevche-desk.local>
- <CADvTj4psJcY2T1PG9H8_hJWjz62R7unj3PPgv3FrVquUMFVhGg@mail.gmail.com>
- <at5qKehogAjTa-fA@ashevche-desk.local>
- <CADvTj4qSgE6Rc--mWuqAcc8HTqN9EFOS_JM8Hp8e_=ka_ZLa6w@mail.gmail.com>
+	Fabio Estevam <festevam@gmail.com>,
+	Dmitry Baryshkov <lumag@kernel.org>,
+	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, Marek Vasut <marek.vasut@mailbox.org>,
+	Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH v6 07/13] drm/imx: dc: Use TCON operation mode
+Message-ID: <at8faVUk6GOXVjmX@raspi>
+References: <20260904-imx8-dc-prefetch-v6-0-26643e3f6cb7@nxp.com>
+ <20260904-imx8-dc-prefetch-v6-7-26643e3f6cb7@nxp.com>
+ <apqBoxjblzSIuG36@houat>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <apqBoxjblzSIuG36@houat>
+X-ClientProxiedBy: SI2PR01CA0026.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:192::16) To MI9PR04MB350878.eurprd04.prod.outlook.com
+ (2603:10a6:290:c0::7)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -105,60 +109,106 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CADvTj4qSgE6Rc--mWuqAcc8HTqN9EFOS_JM8Hp8e_=ka_ZLa6w@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MI9PR04MB350878:EE_|PAWPR04MB11707:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5cc04cd6-f047-4cfb-d82b-08df3344927b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|376014|7416014|366016|19092799006|1800799024|261009223027099003|261022075727099003|261022105027099003|261021121427099003|10067099003|56012099006|6133799003|22082099003|18002099003|18092099006|4143699003|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	jhdPx4+J6kwpx4hw8B8+l3qKQU2rHD0XwVyaLH0YdTHTqDYBSUixd5lTfAQeS2+00xlfLmYsspeuheWHOa5OYSkD18RwsDU2rgztuVJO4eVjnSx1CtKkwl0yYGKAq7K8C8x094ULHGM8CX4bhdH3DLRAhI66hE4rFm7jPVMaAIkvFvXaAfUqHAvgzkgAh7fvBWXznIuedE2apwB9Dm2XaWeV20CzrNOLnnBHrisKabgvWaMCmnsEQBmLjF7j04AmCNQRDodNh0CdIoy6DQBjqqB/TruGnegay0yTsYDx+rHH1fkv8UcCxpS8oa3U9FhDexs09O1q+gR5DX5kQfCs/J0O2UQoGQzl1GvKh11+HGg/LOV1r5Jk7CrSIRUREhFhTZoC5Bnv/ov/P+msdawdD1AXdyO9JU+A5sVJ5rA87IDFZsfb1vMgmWx8gdSxRa10QHAMHzObZ+tdjCLTHozz2DzUktw7NsSdykr/gVz2y8QZtrZ22uimUW1gbsqV1uDj44uGa2TCBq9jKa0jEJhBokR7Y630xpLcR20+yEdsUB/Ii03IA3TsF+X6DOk4pF5j7VEOZ9dlcHAJTCePsc3ZgUbwi5YSUGXWSgoY++7kreNJUFDpBK2mu184UkMywMMdabb4erCBA4EFPYwmVqzNsdd0M/9M8pTt3LK9fSX/ffY=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI9PR04MB350878.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(366016)(19092799006)(1800799024)(261009223027099003)(261022075727099003)(261022105027099003)(261021121427099003)(10067099003)(56012099006)(6133799003)(22082099003)(18002099003)(18092099006)(4143699003)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?sHSvqQTBXw61k9KCfXmcQb1Y52vHWoGwiSjkhqGbk9IRRq/cudKtQSix+C2u?=
+ =?us-ascii?Q?mdEaq0nI/P9wkEv3tpxgI2sF1oxbTzcm74uu4dK7YnF8mYIBksWQJ7srVffh?=
+ =?us-ascii?Q?xp6bSXp3IxmQbKPslBsrhB6U0WjJA5uvqL/ogjMLjzOHWzCEYuzP10LeedwJ?=
+ =?us-ascii?Q?//qrF26U1uVirMtpjSWK3PgpEQqfLsBfSvCMr/sh8dAPZsYyp5QpDIM3NLd9?=
+ =?us-ascii?Q?g9zB5jxONLyKhblNGEzfBq+cg5SDKo5YX6mGDINSip0Cnac95TA5cQZWU1O5?=
+ =?us-ascii?Q?tceLDeofEMDfHGB2N28iKMDK/7G2fUdeoYNVIdNG813ZItTzxP+xkkAsaqU4?=
+ =?us-ascii?Q?vg+Ge6bqhpwSZg3UEO4K62PF4725ycwwQEsZwIpUJJ/YBCOXadaDgIiOaSif?=
+ =?us-ascii?Q?POLZqdUJ/8/kyoIOnNFGt50oQvMk7aZgIBELimLFAFBy42SSCvVBd703eNuA?=
+ =?us-ascii?Q?i1ourmU4thCaZEMoV3ebS6ZExgKFPs3+BBJvdcdvx355TBxEp6aEdz5ShvbT?=
+ =?us-ascii?Q?0zesX0jXhdYHnK8T33kGjM/O6sbKQaQysVZAIKTx0KVO2Mf3W3SWwQNfwXug?=
+ =?us-ascii?Q?fGYJGh41kTmUNCmMjYar/A8dpv9zLUXp08bqYlR67afU9/sWZIE/sutr52Nz?=
+ =?us-ascii?Q?1VeyWZQ4ozEwmE4GgjUlBY+oi93IHgKdlZ5DtdCg9a9gqPv9QQbsj4Q6BrXC?=
+ =?us-ascii?Q?v1IVO/rWWWXKSIQOYRhnpWyJ+g1/IZXhDgas5g55NdB2uxRixrZxrlT5RoU5?=
+ =?us-ascii?Q?2E5suAxSdBJPnWTZ3lOqd0Cq2fexvh3WztwvQf5CXhBSEwiamckhI4Py6QG6?=
+ =?us-ascii?Q?/NY01VVNREdjq8S2oaB1f5Pha45fCv0TTGH+9NyEzeezZfxf1hY650CckEGC?=
+ =?us-ascii?Q?V95s43QvbeeZSXDiUbk7ldtDld7aoqdYj4XX7610MsFQOvd4gQf+58CxH2fG?=
+ =?us-ascii?Q?rjuloyVmaHA/GPyBHkStL0EMzkeV5fdG7Ca0/OUokcjuI8OzlWxHj8nxxiQB?=
+ =?us-ascii?Q?dIbLeMtA/AbDb4ANajv17XpWIMX3TJvvHNz6hJ2xFn/artw0xdnNahdrqLc7?=
+ =?us-ascii?Q?CeROGQ8q5AtxS/GIqmTxSsoGGFr/VZd84OZ2VbH/MdA3dd+muMMmKJHGETkm?=
+ =?us-ascii?Q?+PT05LNsWHbU6fQTRYnDKOiXS1R0sCd9wEanQpykVPDhWenwzur+VsJeFrDo?=
+ =?us-ascii?Q?9+U7a8Quj4pPF/JqngSkM7PVpXmIN+zaR3ihgYjVUb4RjHZlxF/esJ6ssAnd?=
+ =?us-ascii?Q?wCkRBHw0ghrJoHb9PgaSeqHcgoXbkN5AnrSZi125GWHMTQSlscUhKneuDhAa?=
+ =?us-ascii?Q?XFdHXh3zGTQXVlwhPI8VIF3L3c8qUr6lv1B4/+X4VGkjd6paQ0pMpa1RGPWJ?=
+ =?us-ascii?Q?w2eUGRD0RtOlq/HgEQqF3l8BSKHHKBF1XSnnflIQpH5R74ckAXm5T79vBeau?=
+ =?us-ascii?Q?COEXKiscpGoWxnJe17PpbJd9vo0AGCCqFjjJ/4BWN1VEe0ENI/Yki9s4AHYh?=
+ =?us-ascii?Q?vmH9ABc0mEqDOiuJ5ntMXB4uVVTlzoMm/7TqD95OVMeaaYcyRI9q21tvQmzK?=
+ =?us-ascii?Q?IMUuqhtcuBZzwRkgke6qwuQbfn59O68QKAa6TIk/EwYWuw1mI/x4zcLMJlAK?=
+ =?us-ascii?Q?QUPBqebqZw1uOUcDUvDpmYa5WTawkeANDz/eX2SEHR56CcQ0U0bKWhjIzPWQ?=
+ =?us-ascii?Q?SkWNe0Xs8oqIBFKxZ4jsaUx8HIBo8/1Ou54v0AP+wgTUm0/NGHMHiZ+naGDR?=
+ =?us-ascii?Q?vcDw4twzOw=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5cc04cd6-f047-4cfb-d82b-08df3344927b
+X-MS-Exchange-CrossTenant-AuthSource: MI9PR04MB350878.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Oct 2026 09:36:11.8996
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 0aDYRvr/mVyI78ygSbbYLMN2z3rhY3OitwyQQliJU7QMf9/56q6rs/fKyspykTFgDto8w1e0EjSt042hY+uRrQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR04MB11707
 
-On Sun, Oct 25, 2026 at 04:11:08PM -0600, James Hilliard wrote:
-> On Sun, Oct 25, 2026 at 2:44 PM Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> wrote:
-> > On Sun, Oct 25, 2026 at 02:25:46PM -0600, James Hilliard wrote:
+On Fri, Sep 04, 2026 at 10:32:35AM +0200, Maxime Ripard wrote:
+> Hi,
 
-...
+Hi,
 
-> > Some people might want to test the stuff. And sending too often you actually
-> > will get the opposite results, people will be tired to even start reviewing
-> > and/or testing your code as it's changed way too quickly.
+Sorry for the late reply.
+
 > 
-> My thought process was that people wouldn't want to be testing code that
-> had known bugs flagged in Sashiko reviews.
-
-Sashiko reviews are not visible in my or any other mailbox. To see them I have
-to go to some URL and so on, meaning to waste time to see why on the earth the
-new version has been sent. It's better before addressing Sashiko comments,
-reply to all people involved and to Sashiko's original email, so it will be
-visible in the previous version why you issued (actually about to issue) the
-next version. And before even issuing it, wait for a while, people might
-disagree with Sashiko judgement or your replies on how to address that.
-
-TL;DR: this mailing list is *not* a playground with you and Sashiko, the whole
-community is behind it.
-
-> > Settle down first
-> > with something, put on the cover letter the answer why not all Sashiko's
-> > comments are being addressed (for example, due to amount of patches or the
-> > series being focused on a certain issue).
+> On Fri, Sep 04, 2026 at 03:54:57PM +0800, Liu Ying wrote:
+> > @@ -273,7 +285,22 @@ dc_crtc_atomic_enable(struct drm_crtc *crtc, struct drm_atomic_commit *state)
+> >  	dc_ed_pec_sync_trigger(dc_crtc->ed_cont);
+> >  	dc_ed_pec_sync_trigger(dc_crtc->ed_safe);
+> >  	dc_fg_shdtokgen(dc_crtc->fg);
+> > +
+> > +	/* Don't relinquish CPU until TCON is set to operation mode. */
+> > +	local_irq_save(flags);
+> > +	preempt_disable();
+> > +
+> >  	dc_fg_enable(dc_crtc->fg);
+> > +	/*
+> > +	 * Turn TCON into operation mode as soon as the first dumb
+> > +	 * frame is generated by DC(we don't relinquish CPU to ensure
+> > +	 * this).  This makes DPR/PRG be able to evade the frame.
+> > +	 */
+> > +	DC_CRTC_WAIT_FOR_FRAMEGEN_FRAME_INDEX_MOVING(dc_crtc->fg);
+> > +	dc_tc_set_operation_mode(dc_crtc->tc);
+> > +
+> > +	local_irq_restore(flags);
+> > +	preempt_enable();
 > 
-> So, in general I've been always attempting to resolve known Sashiko issues
-> in every subsequent re-spin, so that would be a bit tricky since I wouldn't be
-> aware of the Sashiko issues until after the series has already been sent.
-> 
-> Usually the subsequent issues that get flagged are new issues only discovered
-> after each new re-spin.
-> 
-> I do have a bunch of UART/DMA related patches that don't have flagged Sashiko
-> issues so it probably makes sense to try and review those first while the larger
-> series that have Sashiko flagged issues are still stabilizing.
+> That's really not great... Can you expand on why you need this, and is
+> there really no other way to do it?
 
-Yes.
+This is a sequence instructed by NXP/Freescale IP designer to ensure
+that the prefetch engine(DPRC + PRG) can be enabled reliably - TCON must
+be switched to operation mode from bypass mode as soon as FrameGen finishes
+generating the first frame(frame index moves).  This is the only way to
+do that, AFAIK.
 
-> > > [0] https://github.com/sashiko-dev/sashiko/pull/389
+I'll address Sashiko AI bot's comments about local irq disablement in
+next version.
+
+> 
+> Maxime
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
-
+Regards,
+Liu Ying
