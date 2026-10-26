@@ -1,56 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793014353;
-	b=YespZayIyI+jpi0Bwi64pXjMHuUP43MPyI9khcuSfjC6u8FpQ+uJ+QHz2R3U9rsTbQLf
-	 zdEWnZ1Tc4+NGOQ75XGy3wJwIJJGrPZIbiZ+VjpqT4+m2iA1Kr6cGFTZgADUPdC9tWb39
-	 IDPbbnh3YpoQUj65R1K00QfJVUl8pYIMHLoi19f/QMlrsfIV9V7AvIvsGtQ0f5zqAM5ZH
-	 F7DY2FbYUAqdN9nvKO1JokmrsiBzOJj5bmco1Srz6en1HjKeu8T+ql5Nmg4oTuplCRvpR
-	 dAuy8NNiflCVGDr3zRqG+rnkTN2aQlEmf0RAinYxpUDo+xJetrXC9/2daA/2k6dVnxA==
+	t=1793015551;
+	b=qNpRPsqnu5bfxMshd31c7Bk0yad3Ow7hj2qgO6/KsatRrtJf5/rktDWkmmL6nQAbCh9C
+	 PLYGnpW6SZnpYMyGzvcjBi/MESuZRL9KKUIo+j6R0Ro8KYyHX68UC7PsMl880Ia0AQ95K
+	 O/em9s+EK+uZgzfqtIvmAtBRXDTDA/u4dQSUs/PGht6e3KM+2E46k/Ch2z3T7xT9Cu64B
+	 O6B8kxxwDdVHBn07wG6hcr8JuvSrIe1CgVPiiSgoMdUd1MO7gUIBRyWJbzWc2P7p+GbsT
+	 fHpr4hHxruu4dN1QBXC0VJZjg99nmLPMkj2lacdoL2ALSqJbaIky3liJcV0oMNu9PWQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793014353;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793015551;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=X4zJQKfHNJb3WKUmtI/VFAvfPiwg26ts+eWXqEEJD+Q=;
-	b=b/Qvylh0tPzbhIQE2xO1/GlBTZTk547c/++FY9bP46lY5gwH+9Ni+EadLmEwVynpE/NE
-	 IK78RNRiEd/Wp3Ql/iQ3B46tIf0Dy1VWPS+wamxVA6BVQ2c0dqoXqjqSFrwJtIvQDA2wk
-	 04FXeLJs607fYnGTG9VJIHFIRWA5g0BgEVKXqfZoTbFzdGsPmAVoMBX9ldF7MRN9dYCrH
-	 w/YfETBULFf4Adntr88aivK09qiSsJzj1GHbYKU0V+mhecHXYzZDVMjVQkyl7DpvAYNcJ
-	 FXCY10bIqrsVje7WNqjCRgF0Przzxj2e/7kLjvjT39ce8UlJcfIS6iKkvnm/ruSE99Q==
+	bh=xiNiV3/Fn9pkCMcojVCfH4/GvX7RaJ2QCUCBSHpfmOI=;
+	b=o00H4NUBWXb4AxMNtuMfaHFWLe6h8hPz2qi7ckiVWLNZmoiq5weYCUNqvbzmMCd1yCqi
+	 Dzcsc3MrSu8syyNd1m+who+aAdj0iqi8NFJRkGxKdX+bPIELv8Wa8mH7bPu6OkMO27N8W
+	 OSFovPGKpjgc1tk9ZL6+X0RiF5tF9rg6wdosBXv1negAtD9ln3eizZSI4joY+gRJ/DeUD
+	 omK56wWi7IGOwkysYC9y/I9Z3c+DJLHVI3KDso/PFS8GWVglP2suoPmvtxtVWarOjj4Lk
+	 PuDHq7e72d6vh3jJkb671c+sPJNs2RblV6jY3yAFiiDpaxUaZEFbB4jpxxYC+8LAISw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ioW2gkQA;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=P5bSxxsP;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DAFE606A31D;
-	Mon, 26 Oct 2026 11:32:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF9A960A2608;
+	Mon, 26 Oct 2026 11:52:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ioW2gkQA
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 667A11F01825;
-	Mon, 26 Oct 2026 11:32:32 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=P5bSxxsP
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 307661F01829;
+	Mon, 26 Oct 2026 11:52:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793014352;
-	bh=X4zJQKfHNJb3WKUmtI/VFAvfPiwg26ts+eWXqEEJD+Q=;
+	s=k20260515; t=1793015550;
+	bh=xiNiV3/Fn9pkCMcojVCfH4/GvX7RaJ2QCUCBSHpfmOI=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ioW2gkQAXjeY5842F9NweSJQ48YEqcy3Fc9d1f5Cajr+1zgkNUDgaiivjK+J9RosS
-	 qFY1G2vgWbrZUn2YL/AjGo7BLYbjgBqF+ChkxXRkbfR6ptz8lTHHVT5l2u58N9Kmn2
-	 UHDQlYpfX1CPFAJqOj5J0e2oT53vDqIWZwwjBAJtsTZFn/rXhdtxRhJSLy7hXr9SyD
-	 THKH+xIi3ITkcU4CEdpw4CyN1qzGAPeKKmBIQuvq+vv+2bjPClBh8xHiR2l/sY82ff
-	 NIIcic7Gz3XnTN3/J57wN9Zahy8X74ZDQ6E1l2QQAzY/uKQKJYqWGXEysTV0LhOFLM
-	 YkK88NX8N86ng==
-Message-ID: <sashiko-outbox-185106@kernel.org>
+	b=P5bSxxsPGJgN7ZyvjqmxBVSzMAktsjoo8r9nLpm3yO1DCSmM5O1ql8i5PQq8xPxQ6
+	 xBT9377wo5bFJ7bPAeGXM8fF0pAs6DaLp2A6KgiGpsy8TD1gYbZIlnINgvPxuatwZb
+	 a3vz/SgkabTIkEF70SX9q7HC/zL05YEpq3LL2fvgjCj++beZiv2DnjCxayyRSI6vGX
+	 MXbAQjp4+Zh/vGumttIVIF8r2p0zEZ7MpjJGEdDD6vejc/DjlG705iyRe8/KpptzHa
+	 00uJxV59Ot/thD5RKeKGLpKHsE8St65V+j/7Ah4WT0n5Px8a5kDhIXKSzkBZiLJqi9
+	 yC7hrVvj1zrZA==
+Message-ID: <sashiko-outbox-185122@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v7 07/15] drm/imx: dc: Add PRG support
+Subject: Re: [PATCH v7 08/15] drm/imx: dc: Add DPR channel support
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Liu Ying" <victor.liu@nxp.com>
 Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20261026-imx8-dc-prefetch-v7-7-a0b50cc4fc65@nxp.com>
+In-Reply-To: <20261026-imx8-dc-prefetch-v7-8-a0b50cc4fc65@nxp.com>
 References: <20261026-imx8-dc-prefetch-v7-0-a0b50cc4fc65@nxp.com>
- <20261026-imx8-dc-prefetch-v7-7-a0b50cc4fc65@nxp.com>
+ <20261026-imx8-dc-prefetch-v7-8-a0b50cc4fc65@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 26 Oct 2026 11:32:32 +0000
+Date: Mon, 26 Oct 2026 11:52:29 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -60,102 +60,46 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+Thank you for your contribution! Sashiko AI review found 4 potential issue(=
 s) to consider:
-- [High] drm/imx: dc-prg: unclocked MMIO and RPM underflow on dc_prg_config=
-ure() error
-- [Medium] drm/imx: dc: signed shift overflow in dc_prg_burst_size_fixup()
-- [Medium] drm/imx: dc-prg: unchecked device_link_add() in dc_prg_lookup_by=
-_phandle()
+- [High] drm/imx: dc-dprc: unsafe runtime PM and IRQ sync in dc_dprc_wrap_i=
+rq_handler()
+- [High] drm/imx: dc: race between dc_dprc_ctrl_done_handle() and DPRC disa=
+ble
+- [Medium] drm/imx: dc: missing error handling and RPM cleanup in dc_dprc_c=
+onfigure()
+- [Medium] drm/imx: dc: unchecked device_link_add() and unbind race in dc_d=
+prc_get()
 --
 
-commit 7a29cff8d2e3466268f3191ce1679f0e57e395cf
+commit af166b9c0f4a6b977aa85b013620057bbb1169c8
 Author: Liu Ying <victor.liu@nxp.com>
 
-drm/imx: dc: Add PRG support
+drm/imx: dc: Add DPR channel support
 
-This commit adds a platform driver to support the Display Prefetch Resolve
-Gasket (PRG), which sits between a Display Prefetch Resolve Channel (DPRC)
-and a FetchUnit in the i.MX8 display controller prefetch engine.
+This commit adds a platform driver for the Display Prefetch Resolve Channel
+(DPRC) in the i.MX8 Display Controller, working alongside the PRG to fetch
+and transform display data into RTRAM.
 
-> diff --git a/drivers/gpu/drm/imx/dc/dc-prg.c b/drivers/gpu/drm/imx/dc/dc-=
-prg.c
+> diff --git a/drivers/gpu/drm/imx/dc/dc-dprc.c b/drivers/gpu/drm/imx/dc/dc=
+-dprc.c
 > new file mode 100644
-> index 0000000000000..43df5683b24d1
+> index 0000000000000..a8ddcd117a52b
 > --- /dev/null
-> +++ b/drivers/gpu/drm/imx/dc/dc-prg.c
-> @@ -0,0 +1,314 @@
+> +++ b/drivers/gpu/drm/imx/dc/dc-dprc.c
 
 [ ... ]
 
-> +void dc_prg_enable(struct dc_prg *prg)
+> +void dc_dprc_configure(struct dc_dprc *dprc, unsigned int stream_id,
+> +		       unsigned int width, unsigned int height,
+> +		       unsigned int stride,
+> +		       const struct drm_format_info *format,
+> +		       dma_addr_t baddr, bool start)
 > +{
-> +	regmap_write(prg->reg, PRG_CTRL + CLR, BYPASS);
-> +}
-> +
-> +void dc_prg_disable(struct dc_prg *prg)
-> +{
-> +	regmap_write(prg->reg, PRG_CTRL, BYPASS);
-> +
-> +	pm_runtime_put(prg->dev);
-> +}
-> +
-> +void dc_prg_disable_at_boot(struct dc_prg *prg)
-> +{
-> +	regmap_write(prg->reg, PRG_CTRL, BYPASS);
-> +
-> +	clk_bulk_disable_unprepare(prg->num_clks, prg->clks);
-> +}
-> +
-> +static unsigned int dc_prg_burst_size_fixup(dma_addr_t baddr)
-> +{
-> +	unsigned int burst_size;
-> +
-> +	if (baddr =3D=3D 0)
-> +		return 128U;
-> +
-> +	burst_size =3D 1 << __ffs(baddr);
-> +	burst_size =3D round_up(burst_size, 8);
-> +	burst_size =3D min(burst_size, 128U);
-> +
-> +	return burst_size;
-> +}
-
-[Severity: Medium]
-Can shifting 1 by __ffs(baddr) in dc_prg_burst_size_fixup() overflow a 32-b=
-it
-signed int when baddr has a high power-of-two alignment?
-
-__ffs(baddr) takes an unsigned long and returns a bit index up to 63 on
-arm64, while 1 is a 32-bit signed int. On i.MX8QXP and i.MX8QM where system
-DRAM starts at 0x80000000, a framebuffer allocated at 0x80000000 (or any odd
-multiple of 2 GiB) gives __ffs(baddr) =3D=3D 31, causing 1 << 31 to overflo=
-w a
-signed 32-bit int.
-
-If baddr is 4 GiB-aligned (so its lower 32 bits are zero and __ffs(baddr) is
-32 or greater), shifting a 32-bit int by >=3D 32 is undefined behavior and =
-on
-arm64 wraps the shift count modulo 32, producing a smaller burst_size (such
-as 8 instead of 128U) before min(burst_size, 128U) runs.
-
-Since burst_size is capped at 128U, would it make sense to bound the bit
-search before shifting (for example, using 1U << __ffs(baddr | 128U) or
-checking !(baddr & 0x7f))?
-
-> +static unsigned int
-> +dc_prg_stride_fixup(unsigned int stride, unsigned int burst_size)
-> +{
-> +	return round_up(stride, burst_size);
-> +}
-> +
-> +void dc_prg_configure(struct dc_prg *prg,
-> +		      unsigned int width, unsigned int height,
-> +		      unsigned int stride, unsigned int bits_per_pixel,
-> +		      dma_addr_t baddr, bool start)
-> +{
-> +	struct device *dev =3D prg->dev;
-> +	unsigned int burst_size;
+> +	unsigned int prg_stride =3D width * format->cpp[0];
+> +	unsigned int bpp =3D format->cpp[0] * 8;
+> +	struct device *dev =3D dprc->dev;
+> +	unsigned int p1_w, p1_h;
 > +	u32 val;
 > +	int ret;
 > +
@@ -165,44 +109,184 @@ checking !(baddr & 0x7f))?
 > +			dev_err(dev, "failed to get RPM: %d\n", ret);
 > +			return;
 > +		}
+> +
+> +		dc_dprc_set_stream_id(dprc, stream_id);
 > +	}
-
-[Severity: High]
-What happens in the caller if pm_runtime_resume_and_get() fails here when
-start is true?
-
-Because dc_prg_configure() returns void, callers cannot tell that runtime
-resume failed and that PRG clocks remain disabled. When called from the DPR
-channel path on initial plane enablement, the caller immediately proceeds to
-call dc_prg_enable() and dc_prg_reg_update() (and later
-dc_prg_shadow_enable()), performing MMIO writes to PRG_CTRL and
-PRG_REG_UPDATE while the PRG clocks and power domain are off.
-
-When the plane or CRTC is later disabled, dc_prg_disable() will also write
-PRG_CTRL while unclocked and call pm_runtime_put(prg->dev), underflowing the
-device runtime PM usage count.
-
-Should dc_prg_configure() return an error code or otherwise prevent
-subsequent register accesses and the unpaired pm_runtime_put()?
 
 [ ... ]
 
-> +struct dc_prg *
-> +dc_prg_lookup_by_phandle(struct device *dev, const char *name, int index)
+> +	switch (format->format) {
+> +	case DRM_FORMAT_XRGB8888:
+> +		/*
+> +		 * It turns out pixel components are mapped directly
+> +		 * without position change via DPR processing with
+> +		 * the following color component configurations.
+> +		 * Leave the pixel format to be handled by the
+> +		 * display controllers.
+> +		 */
+> +		val |=3D A_COMP_SEL(3) | R_COMP_SEL(2) |
+> +		       G_COMP_SEL(1) | B_COMP_SEL(0);
+> +		val |=3D PIX_SIZE_32BIT;
+> +		break;
+> +	default:
+> +		dev_err(dev, "unsupported format 0x%08x\n", format->format);
+> +		return;
+> +	}
+> +	regmap_write(dprc->reg, MODE_CTRL0, val);
+> +
+> +	if (start) {
+> +		/* software shadow load for the first frame */
+> +		val =3D SW_SHADOW_LOAD_SEL | SHADOW_LOAD_EN;
+> +		regmap_write(dprc->reg, SYSTEM_CTRL0, val);
+> +
+> +		/* and then, run... */
+> +		val |=3D RUN_EN | REPEAT_EN;
+> +		regmap_write(dprc->reg, SYSTEM_CTRL0, val);
+> +	}
+> +
+> +	dc_prg_configure(dprc->prg, width, height, prg_stride, bpp, baddr, star=
+t);
+> +
+> +	if (start)
+> +		dc_dprc_enable(dprc);
+> +
+> +	dc_dprc_reg_update(dprc);
+
+[Severity: Medium]
+Can dc_dprc_configure() leak the runtime PM reference on dprc->dev or perfo=
+rm
+unclocked register writes to dprc->prg->reg on error?
+
+When start is true, dc_dprc_configure() calls pm_runtime_resume_and_get(dev)
+before checking format->format. If the switch hits the default branch, it
+returns early without calling pm_runtime_put(dev) and before
+dc_prg_configure() acquires a matching runtime PM reference on dprc->prg->d=
+ev.
+
+In addition, dc_prg_configure() can fail in pm_runtime_resume_and_get() when
+start is true:
+
+drivers/gpu/drm/imx/dc/dc-prg.c:dc_prg_configure() {
+	if (start) {
+		ret =3D pm_runtime_resume_and_get(dev);
+		if (ret < 0) {
+			dev_err(dev, "failed to get RPM: %d\n", ret);
+			return;
+		}
+	}
+}
+
+Because dc_prg_configure() returns void, dc_dprc_configure() still proceeds=
+ to
+call dc_dprc_enable() -> dc_prg_enable() and dc_dprc_reg_update() ->
+dc_prg_reg_update(), writing to prg->reg while prg->dev remains suspended a=
+nd
+unclocked, and leaving the runtime PM reference counts unbalanced between
+dprc->dev and prg->dev.
+
+> +
+> +	if (start)
+> +		dc_dprc_enable_ctrl_done_irq(dprc);
+> +
+> +	dev_dbg(dev, "w: %u, h: %u, s: %u, fmt: 0x%08x\n",
+> +		width, height, stride, format->format);
+> +}
+> +
+> +void dc_dprc_disable_repeat_en(struct dc_dprc *dprc)
 > +{
-> +	struct device_node *prg_node __free(device_node) =3D
-> +				of_parse_phandle(dev->of_node, name, index);
-> +	struct dc_prg *prg;
+> +	regmap_write(dprc->reg, SYSTEM_CTRL0 + CLR, REPEAT_EN);
+> +	dev_dbg(dprc->dev, "disable REPEAT_EN\n");
+> +}
 > +
-> +	if (!prg_node)
-> +		return NULL;
+> +void dc_dprc_disable(struct dc_dprc *dprc)
+> +{
+> +	dc_prg_disable(dprc->prg);
 > +
-> +	guard(mutex)(&dc_prg_list_mutex);
-> +	list_for_each_entry(prg, &dc_prg_list, list) {
-> +		if (prg_node =3D=3D prg->dev->of_node) {
-> +			device_link_add(dev, prg->dev,
+> +	pm_runtime_put(dprc->dev);
+> +
+> +	dev_dbg(dprc->dev, "disable\n");
+> +}
+> +
+> +void dc_dprc_disable_at_boot(struct dc_dprc *dprc)
+> +{
+> +	dc_prg_disable_at_boot(dprc->prg);
+> +
+> +	clk_bulk_disable_unprepare(dprc->num_clks, dprc->clks);
+> +
+> +	dev_dbg(dprc->dev, "disable at boot\n");
+> +}
+> +
+> +static void dc_dprc_ctrl_done_handle(struct dc_dprc *dprc)
+> +{
+> +	regmap_write(dprc->reg, SYSTEM_CTRL0, REPEAT_EN);
+> +
+> +	dc_prg_shadow_enable(dprc->prg);
+> +
+> +	dev_dbg(dprc->dev, "CTRL done handle\n");
+> +}
+
+[Severity: High]
+What prevents dc_dprc_wrap_irq_handler() -> dc_dprc_ctrl_done_handle() from
+racing with dc_dprc_disable_repeat_en() and dc_dprc_disable()?
+
+When dc_dprc_configure() runs with start set to true, it unmasks the control
+done interrupt via dc_dprc_enable_ctrl_done_irq(). If the plane or CRTC is
+subsequently disabled, neither dc_dprc_disable_repeat_en() nor
+dc_dprc_disable() masks that interrupt or synchronizes with
+dc_dprc_wrap_irq_handler():
+
+1. dc_dprc_disable_repeat_en() clears repeat_en in system_ctrl0 with local
+   interrupts disabled, without taking dprc->lock or masking the control do=
+ne
+   interrupt. If the control done interrupt is already pending or running on
+   another CPU (or in an interrupt thread on preempt_rt),
+   dc_dprc_ctrl_done_handle() can run right after and write repeat_en back =
+to
+   system_ctrl0.
+
+2. dc_dprc_disable() calls dc_prg_disable(dprc->prg), which puts the PRG in=
+to
+   bypass mode and calls pm_runtime_put(prg->dev), and then calls asynchron=
+ous
+   pm_runtime_put(dprc->dev). While dprc->dev is still runtime-active or an
+   interrupt handler is in flight, dc_dprc_ctrl_done_handle() can call
+   dc_prg_shadow_enable(dprc->prg), writing to prg->reg after prg->dev has
+   already been disabled and had its runtime PM reference dropped.
+
+> +
+> +static irqreturn_t dc_dprc_wrap_irq_handler(int irq, void *data)
+> +{
+> +	struct dc_dprc *dprc =3D data;
+> +	struct device *dev =3D dprc->dev;
+> +	u32 mask =3D 0, status =3D 0;
+> +	irqreturn_t result;
+> +
+> +	pm_runtime_get_noresume(dev);
+> +	if (!pm_runtime_active(dev)) {
+> +		result =3D IRQ_NONE;
+> +		goto out;
+> +	}
+
+[ ... ]
+
+> +	result =3D IRQ_HANDLED;
+> +out:
+> +	pm_runtime_put_noidle(dev);
+> +	return result;
+> +}
+
+[ ... ]
+
+> +struct dc_dprc *dc_dprc_get(struct device *dev, struct dc_dprc *dprc)
+> +{
+> +	struct dc_dprc *iter;
+> +
+> +	guard(mutex)(&dc_dprc_list_mutex);
+> +	list_for_each_entry(iter, &dc_dprc_list, list) {
+> +		if (iter =3D=3D dprc) {
+> +			device_link_add(dev, dprc->dev,
 > +					DL_FLAG_AUTOREMOVE_CONSUMER);
-> +			return prg;
+> +			return dprc;
 > +		}
 > +	}
 > +
@@ -210,26 +294,108 @@ subsequent register accesses and the unpaired pm_runtime_put()?
 > +}
 
 [Severity: Medium]
-Should dc_prg_lookup_by_phandle() check the return value of
-device_link_add()?
+Should dc_dprc_get() (and dc_prg_lookup_by_phandle() when called from
+dc_dprc_probe()) check whether device_link_add() returns NULL, and can
+dc_dprc_get() race with driver unbind?
 
-If device_link_add() fails and returns NULL, dc_prg_lookup_by_phandle() sti=
-ll
-returns prg without establishing the DL_FLAG_AUTOREMOVE_CONSUMER link. If t=
-he
-PRG device is later unbound via dc_prg_remove():
+If device_link_add() fails and returns NULL, dc_dprc_get() and
+dc_prg_lookup_by_phandle() still return a valid pointer without establishing
+the consumer-supplier teardown link. Because dc_dprc_driver is registered
+before dc_prg_driver in dc_drivers[], platform_unregister_drivers() unbinds
+dc_prg_driver before dc_dprc_driver when no device link exists, so
+dc_dprc_remove() calling dc_prg_set_dprc(dprc->prg, NULL) would write to a
+freed dprc->prg.
 
-static void dc_prg_remove(struct platform_device *pdev)
-{
-	struct dc_prg *prg =3D dev_get_drvdata(&pdev->dev);
+Furthermore, during supplier unbind in __device_release_driver(),
+device_links_busy() runs before dc_dprc_remove() acquires dc_dprc_list_mutex
+and removes dprc->list from dc_dprc_list. If a consumer calls dc_dprc_get()
+during that window, dprc is still on dc_dprc_list, device_link_add() creates
+the link after device_links_busy() has already passed, and dc_dprc_get()
+returns dprc right as it is being unbound and freed.
 
-	guard(mutex)(&dc_prg_list_mutex);
-	list_del(&prg->list);
-}
+> +
+> +static int dc_dprc_probe(struct platform_device *pdev)
+> +{
 
-the consumer will not be unbound and can retain a dangling pointer to the
-devm-allocated struct dc_prg.
+[ ... ]
+
+> +	ret =3D devm_request_irq(dev, wrap_irq, dc_dprc_wrap_irq_handler,
+> +			       IRQF_SHARED, dev_name(dev), dprc);
+> +	if (ret < 0) {
+> +		dev_err(dev, "failed to request dpr_wrap IRQ(%d): %d\n",
+> +			wrap_irq, ret);
+> +		return ret;
+> +	}
+> +
+> +	dev_set_drvdata(dev, dprc);
+> +
+> +	ret =3D devm_pm_runtime_enable(dev);
+> +	if (ret)
+> +		return dev_err_probe(dev, ret, "failed to enable PM runtime\n");
+
+[ ... ]
+
+> +static int dc_dprc_runtime_suspend(struct device *dev)
+> +{
+> +	struct dc_dprc *dprc =3D dev_get_drvdata(dev);
+> +
+> +	clk_bulk_disable_unprepare(dprc->num_clks, dprc->clks);
+> +
+> +	return 0;
+> +}
+
+[Severity: High]
+Could dc_dprc_wrap_irq_handler() access unclocked registers or leak the
+runtime PM active state when using pm_runtime_get_noresume() and
+pm_runtime_active()?
+
+There appear to be three issues with how runtime PM and the shared wrap_irq
+interact across dc_dprc_wrap_irq_handler(), dc_dprc_probe(), and
+dc_dprc_runtime_suspend():
+
+1. In include/linux/pm_runtime.h, pm_runtime_active(dev) evaluates to true
+   whenever dev->power.disable_depth is non-zero:
+
+   static inline bool pm_runtime_active(struct device *dev)
+   {
+       return dev->power.runtime_status =3D=3D RPM_ACTIVE
+           || dev->power.disable_depth;
+   }
+
+   Because dc_dprc_probe() registers the shared interrupt with
+   devm_request_irq() before calling devm_pm_runtime_enable(dev),
+   disable_depth is non-zero while the handler is live during probe and
+   during reverse devres teardown (as well as during late system suspend). =
+If
+   another device sharing wrap_irq raises an interrupt during these windows,
+   pm_runtime_active(dev) returns true and dc_dprc_wrap_irq_handler() reads
+   dprc->reg while dprc->clks are disabled.
+
+2. Even when runtime PM is enabled, pm_runtime_get_noresume() and
+   pm_runtime_active() do not serialize with rpm_suspend() under
+   dev->power.lock, and dc_dprc_runtime_suspend() disables dprc->clks witho=
+ut
+   calling synchronize_irq(). An interrupt arriving after rpm_suspend() has
+   checked usage_count =3D=3D 0 can see runtime_status =3D=3D RPM_ACTIVE an=
+d access
+   MMIO registers while dc_dprc_runtime_suspend() turns off the clocks.
+
+3. If dc_dprc_wrap_irq_handler() increments usage_count from 1 to 2 via
+   pm_runtime_get_noresume() while dc_dprc_disable() concurrently calls
+   pm_runtime_put(dprc->dev), dc_dprc_disable() drops usage_count from 2 to=
+ 1
+   without triggering idle/suspend. When dc_dprc_wrap_irq_handler() then ex=
+its
+   via pm_runtime_put_noidle(dev), usage_count drops from 1 to 0 without
+   running rpm_idle(), leaving the device stuck active with its clocks left=
+ on.
+
+Would it be safer to call devm_pm_runtime_enable() before devm_request_irq()
+in dc_dprc_probe(), use pm_runtime_get_if_active() paired with
+pm_runtime_put() in dc_dprc_wrap_irq_handler(), and synchronize the interru=
+pt
+in dc_dprc_runtime_suspend()?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261026-imx8-dc-pr=
-efetch-v7-0-a0b50cc4fc65@nxp.com?part=3D7
+efetch-v7-0-a0b50cc4fc65@nxp.com?part=3D8
