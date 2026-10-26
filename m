@@ -1,136 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=52.101.84.61
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1793032755;
-	b=CFPZYDW3mWI8rcEo/KXZ1MAkq4J5qHxCKUdtzQB88qhhaMm4qo1DFz6uZXtdiohRCHxI
-	 CSA7SOL/COS7/UxpmnoLnUmDabwa2EZuzdUjG+Q92LwOBftCw0TPTLhq9NlFRFhwOSELf
-	 f+UYzMx7m3ZNIDSDyBO2obf9aOObLtGsAEQWXV0k6D2ekX88siOpM0n9DVlBF+4S5oQsx
-	 7r+2HAAa1MEl8DJ0vKEsRTIKSqL9o0rTUyPjm128gU76UjxcVKzkXnnJUVSC5fX6adrIE
-	 EkL39uPlRjIi892IE8yAOL4eCOl7e8FMzq4eSLmIBfUdNo99/gazADTZAKyqPBOr2ZQ==
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.48
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793033169;
+	b=U7zZ4uso/UmytX6GprdgflzWSXMLfsFg12+y0naGlTWckIzKidxgmKz52kdC6zPQJqlq
+	 imQp5+olHIrLIULbTJyBhhMZ8oGwRs+ONCQa4cbkQ9LM4dPrYsxjebuAOmdNioayB4b9z
+	 orlP7LChZ5ILR5LtU9/Xdrk4Mr3FggULVtsE/o/7Z4+81pukuA+7fVQrIMMMaO7WM5IyY
+	 K5BGbzKOE4nf8nt4aWrc2wlVDHdTsPNtRcY3Aswg7jhDzzphOs4p11y1D0w7VGwzitGz7
+	 PnDBCXPy9s/5pSrdZtjZC8NbiE1WFtAjpIwyTF3AsiHxOvY0+Wdeqx/wRuSj3bZhoow==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793032755;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=9PKdJ3OQLSbF2lvSnCOsCqkcmUMhO1Ixl9R/fYdUR4Q=;
-	b=SyE+jS1UDZhW07L8utd0LR6m3xOYP8uMM+W0na1xYPqn5SSqhm55QmUQMxgJJXqrKJQN
-	 i2bQGpzNH27Zx0HIMCbU+bJB9+0kTvptFMezQY4wmURY9h4OHrV4S8QFXRVqf5fgLjYZo
-	 UQ9pkGtE/iRRGR9j/ek7mtM2x8ZQCh0Hm03WqY2tByJT2sSXejZJylyQ4/gSTBUWgxSrp
-	 XB47vehnoOIpynMqeq2y79RHYsSvBlm74bWAQ1xMTAzGF0VLZR856LZ0HTYFGfRMNUUQ0
-	 MgpcBVr3FHbNQoSvFQfmxbjeeeW09n9RrMJAvZQr4Zh8qrXZHP0jr7IinTnReBotWMg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793033169;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=sbR6KDZ54pfKvX4mBD6E1CqiOyZSCDGH5Y/Tf8ZG/yY=;
+	b=avj+AmFIeYlmyYNMO6JqESBbzQr6G8RhE7z4KQQCzHEOqlYseguNSVRm7ELPsvsBLFmE
+	 1ISxq/nIcbOG1XJUB3DwvpEU+WuS54mRnO4LHeJhwfMKcjUJWwDfTyBs0LhW/GYzC/zoJ
+	 Im4T4XNM7KV+IYjXt18CeRKQAeJA6Zr+5qVDgJ78/kmuX0GA4KHqheClm8Su/wODCAnxI
+	 NyMSaPe/RKCdc/RnlrJHTmCYZ/YOn9Gq+v1nJhaMKCFW6FmQzNmOfwDz0e+eG7IdRdiBj
+	 D60JqIAtJxaFS0vsILbk949ARMj83bN7BItGZagQNMNZwlrurZcWv4shxQjxQa4Ojhg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.nxp.com;
-	spf=pass smtp.mailfrom=oss.nxp.com;
-	dkim=fail reason="signature verification failed" header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=PhMPCZKC;
-	arc=fail smtp.remote-ip=52.101.84.61
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010061.outbound.protection.outlook.com [52.101.84.61])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=ToYEH+hH;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.48
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42DA3606A31D;
-	Mon, 26 Oct 2026 16:39:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 42DA3606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82038606A31D
+	for <imx@lists.linux.dev>; Mon, 26 Oct 2026 16:46:09 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 82038606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=PhMPCZKC
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bnC5XS55QxBVUtdyD1OT/KgJyw9TppX3QWL9Ftwlx/N1JAwFysbaebzNGZ9WdQ8R2mHgzk0UDO7U+L4AnqBVX8QVolfU72N+Q0ad1GDs5jOqiayuW/kjh1QOqStNFJfrYaM1ImIPLVH5nXB6m7l5Q2SNS9KJJhbhqKe9m82XxZ9rAaDjV5wY8mrvvNhHCM1FnfaHPmaroTpyeprbFa3qXOHgiJX6hiC0SHg1FPIK1MHW4mq4Tq09F5g7DBGnKw0TGjpOoONgNu9YOu1MEXxnag5bfQzuZkL3JPWNOUcN3s+otjkzhPMx5dJajw0OU44NQs6J++TG84CviuZzdIvK8w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WxZSarhcF7uEiNtUsNT1QpnEdNvxeem7zxUA/WOdbWE=;
- b=rpc1nKvch8rcOjh1h2BcHMxJ4ZUcyu+k3kaMRb00VlhR3wL1URaQn+USzjkotm+9aI9A1Rp+JkkKjDckdox1GiV4IoRvbtSCvjVTbxXYOTtzRkWda7u0V7eihALDdNS33ldi+Rk0Io/oNKxVvEEdCL+ywESvZ5rjYCY5Q0fm50HV4HWd5iR0QFCOT1AhCrR4qoDaHA2zSBkZ2NTic8QFcGitNsRpJiuA6vdqW1lb8Kwkw8CdIxi997kKQS/uDY408OTUyjh7QO6aimCy68lVKkf6P1nQH0WqqqtCHYMV5yWlohPe3YDxWSSoyUHblTyDfQW9b2pGihHkew4YkyvIgA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WxZSarhcF7uEiNtUsNT1QpnEdNvxeem7zxUA/WOdbWE=;
- b=PhMPCZKCP6PZrQ17OMhfDwq7/A7gcsAP9FRIOn9wgzSIXgOanVxtjukfYvA5QHYYFbee8W+yA7un5erkdcMMzU5QZxy4/8wkQZsX5cYalrwHeJvfgXbJ8GaKerWd8ibRPxHNz2YuT75w14v+coBm0SIz/JqoDKlqBv2jZ0aBgBmBkNona1wKvmf0Kr/pm4zSyXItmDT+aXC3QBW2KIgSS9YRnPZJemXobo788GO3k1f5qRG/fY/7WHvtmqChdslRDU0JMfwfmve1HGOAWu6+hWBmRDkmlqJc/IdN8RRRvkwcNILgHW6GeKWNFL4x6uaXNgoAxNgb15BtPv1nHAGhdg==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from MI3PR04MB12438.eurprd04.prod.outlook.com (2603:10a6:290:76::14)
- by VI0PR04MB10140.eurprd04.prod.outlook.com (2603:10a6:800:246::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Mon, 26 Oct
- 2026 16:39:06 +0000
-Received: from MI3PR04MB12438.eurprd04.prod.outlook.com
- ([fe80::c715:c32:8bb1:b70b]) by MI3PR04MB12438.eurprd04.prod.outlook.com
- ([fe80::c715:c32:8bb1:b70b%6]) with mapi id 15.21.0546.021; Mon, 26 Oct 2026
- 16:39:06 +0000
-Date: Mon, 26 Oct 2026 11:38:49 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig_=28The_Capable_Hub=29?= <u.kleine-koenig@baylibre.com>
-Cc: Linus Walleij <linusw@kernel.org>,
-	Bartosz Golaszewski <brgl@kernel.org>,
-	Andy Shevchenko <andy@kernel.org>, linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Yang Shen <shenyang39@huawei.com>,
-	Lixu Zhang <lixu.zhang@intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Ray Jui <rjui@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Scott Branden <sbranden@broadcom.com>,
-	Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>,
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Imre Kaloz <kaloz@kernel.org>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Valentina Fernandez <valentina.fernandezalanis@microchip.com>,
-	Daire McNamara <daire.mcnamara@microchip.com>,
-	Daniel Palmer <daniel@thingy.jp>,
-	Romain Perier <romain.perier@gmail.com>,
-	Robert Jarzmik <robert.jarzmik@free.fr>, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-riscv@lists.infradead.org,
-	Hoan Tran <hoan@os.amperecomputing.com>,
-	Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>,
-	Mika Westerberg <westeri@kernel.org>,
-	Israel Cepeda <israel.a.cepeda.lopez@intel.com>,
-	Hans de Goede <hansg@kernel.org>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	"Enrico Weigelt, metux IT consult" <info@metux.net>,
-	Viresh Kumar <vireshk@kernel.org>, virtualization@lists.linux.dev,
-	Yinbo Zhu <zhuyinbo@loongson.cn>,
-	Thierry Reding <thierry.reding@kernel.org>,
-	Jonathan Hunter <jonathanh@nvidia.com>, linux-tegra@vger.kernel.org,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Srinivas Neeli <srinivas.neeli@amd.com>,
-	Michal Simek <michal.simek@amd.com>, linux-aspeed@lists.ozlabs.org,
-	asahi@lists.linux.dev, linux-mediatek@lists.infradead.org,
-	openbmc@lists.ozlabs.org, linux-omap@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org, linux-unisoc@lists.infradead.org,
-	linux-rockchip@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Michael Buesch <m@bues.ch>, William Breathitt Gray <wbg@kernel.org>,
-	Robert Richter <rric@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v3 00/22] gpio: Improvements around device-id arrays
-Message-ID: <at-CGVq5jVsMQief@SMW015318>
-References: <cover.1793030820.git.u.kleine-koenig@baylibre.com>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <cover.1793030820.git.u.kleine-koenig@baylibre.com>
-X-ClientProxiedBy: DS1PR03CA0015.namprd03.prod.outlook.com
- (2603:10b6:8:233::10) To MI3PR04MB12438.eurprd04.prod.outlook.com
- (2603:10a6:290:76::14)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=ToYEH+hH
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-6b429f71dbeso3226157a12.1
+        for <imx@lists.linux.dev>; Mon, 26 Oct 2026 09:46:09 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793033168; cv=none;
+        d=google.com; s=arc-20260327;
+        b=gT9fiQ3ywC1QrsfBKBro35rvS4D1Zdujt3nfPii61+YA7ZnW3PExPXr1q3eJx9LCwW
+         gQo9Di2A6X7EjG4scHJULXM0I3gaIYj8UzULKjlKzS0xFRDo2Lj8Z8GGbvbdveqC5rae
+         JctR+8g4b/Qbw9XQUa2300mV0aeSyIY9b6LyhV2XUISQWDvkm9ZIZxGKh1GvUKm8ZH2f
+         p3X0mc0dM6TDKrVi1ktityZ1fTHt36GzMRDD/qhnLmXZMlCm6yr/s5UeN0n3l0jRNKsi
+         5pEM05Bsdh2+lrxPBWwJNWtBf3VVh83bb5wRX4K/M/6a619AaDzOL8afqRf61lVyrWDL
+         HBbw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=sbR6KDZ54pfKvX4mBD6E1CqiOyZSCDGH5Y/Tf8ZG/yY=;
+        fh=mak5zRWE8Z3upFZP2iCtJdeuNm7+7gIaACFkZ+1ruQA=;
+        b=ZwqvfpEAA1cXb/0yA7CiBNPlxEyVXDEwhaAbW9br/9gySdx2KVJU0AsCAjcnr5ZUlo
+         bs0LLWApxtanjpDFk6UwkyFkF3Xz/NqS0lxLchf03HK9Xq/JSYQjMaOAxdRrwGW7v2m9
+         fDBlPnEx/xBvoExJLmrCoEKbISfQp3RsuViofDJHGt+Ri4ttUPC1QTk14mmTqmzxxXxl
+         /CKUO+4IUR/cUFUYIUi/s1LfiXKWfzELlgoeEA8qYRrfYsVT+LoDUYI9Lxis5Z5hfpeE
+         5UWI1w8SxKtiBX4ghepsCQZjpPOysA/ZhKWgFweFypCVou5K4paFQA4VASWGURQkRJNF
+         mPDQ==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1793033168; x=1793637968; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=sbR6KDZ54pfKvX4mBD6E1CqiOyZSCDGH5Y/Tf8ZG/yY=;
+        b=ToYEH+hHGN0XbDzLPHl6hP8eBEQujFcL1E/Lkw1QLWw+zLchEx4TJYLlfWe6TLsDLt
+         Jj37Dvso8UkuwZPVCcUSq3bkn7/inpDb0TbWJrGZf3XLGDcj89Pel1ZGG5/Dh9fSezti
+         XEWa67B0+2Q0Ro8LOJi+pQYsxFCQ9KI/DaPB2nt1782DLNKVYywT6I/DLqvvOwEjsejw
+         Pm9LhlYSonSsFSRxYnZIc/SR/CNXjPjx7pPngOiwWH29F8vwZAUJPzr7X1YI5BPYO5Bm
+         /ALU7lNbKacDLZSIB/5ixa4AAYUDzatIB4/gNtGbVkTfkI1RvPMseaHfaUx++FmVxA3B
+         3/Ew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793033168; x=1793637968;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=sbR6KDZ54pfKvX4mBD6E1CqiOyZSCDGH5Y/Tf8ZG/yY=;
+        b=XSmbFCTVmcnaq0qIzGVccWnu5CH4k7Xsu9aDK0pZOFurcXhycPS3JYFJkrvugigcEE
+         o8AQSF4rSc5E1LJUQvemGqYhcagzCdQkTAFR9yz6/Df94RkPuGBmtzfWC2g9Z1IGkIsg
+         lSmbxW2u435leuKR6CE/NndUoiqfGovDoFO4hh9BD8/zXasef75CQqWX4Ep7x+8+466Y
+         /4/8D7H8LypZt6upbNJVlkPMql0NdlRJb000mMyo9eDl97qsKujkshgvB6quMJZLpXxN
+         9uoslaTZoYrHPpqbKv5sUe0kX0sYLjvPQV8ikUcNPQEjdQymz8q7NqR5w9xvIErdwtXA
+         dhdA==
+X-Forwarded-Encrypted: i=1; AKwUvBwc1hedPk3ZboN4UmLI+6QjWv+rq2Qd6Sc6Dl5VAxwdJp7m1DeQe79wej56ZbpN2xnSCNk=@lists.linux.dev
+X-Gm-Message-State: AFq9FYJWfLdHmmHi2SL9mEsUiHSqGy3Nc4KUmxD0F7LzBtcjTdVnqRRZ
+	BB23Fu15KHbjjm7ulXv76vItt8vwCY1eo4hdcUhmTA7nd5ep95Mj3NXGm0mIE8e5ZEM10L8Ks9h
+	feCb/a+MfRBk5KWDkj8bouUa94mmsrBQ=
+X-Gm-Gg: AYBFou3nBJaJsvYXyeuhVmAhl+8j8EmI3f9sxTJXQql+vPqnsKUEDMWoSBH83wmucSA
+	XP1czh7+m0qnOHF9td6UEM2lnqQAhz1+0lbOLQxxEmxYWVYv2680MyUQywcW/99beOmdVFaEx4w
+	3+8Fpr5eO6vp3WZsoXgYP9ozbSU+G014vLJZQ2LyfJKq/G0lgoZYK9FaMFUteWO+6ClVPqKK+7N
+	75a/U7plWVo4dCaaHo1nzzUIxqTBsujbxxM8OZRCiLI8BaJVdG+3q+iNixtNW9pByElA0bS0sMJ
+	ldG2ZAhyCXOrQzDAzrC3Imial87jx49k0exWhnzXeUgHQ0DqcBytVoK5tKn1uN24ynAnQu1s/HH
+	rz5auJYXUaBbUzH3E/AGthrxzIzpWmM4581N5osU15kSwubw+jghCKBEQ2ZsKHg20cDXYvxpixm
+	LMDkRWcqtQrGj/H+Z1GfEPxqJt6COt8woyS5Oi+RI2cnJhkv7xZ0mgWpyTKGkaFJ/05AHMkTe8V
+	8W6k2ZSOFy23ZWsQ6QBOf4z0nHuyZRcCWmYisHLGPZ/b6n/9K4=
+X-Received: by 2002:aa7:ca44:0:b0:6b1:b611:a2af with SMTP id
+ 4fb4d7f45d1cf-6b442ff2fd3mr6024136a12.20.1793033167557; Mon, 26 Oct 2026
+ 09:46:07 -0700 (PDT)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -140,184 +106,130 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|VI0PR04MB10140:EE_
-X-MS-Office365-Filtering-Correlation-Id: cc32ed66-1b3c-496b-47e1-08df337fa6df
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|23010399003|376014|1800799024|19092799006|366016|261026140227099003|260925022911599003|260925021911599003|260925021311599003|56012099006|11063799006|5023799004|261009223027099003|261022075727099003|261021121427099003|261022105027099003|10067099003|261026121527099003|18002099003|22082099003|41080700001;
-X-Microsoft-Antispam-Message-Info:
-	TzsjTWC9ZLj+LVZmfIQKqr/h8gO8GiStteVQR5dMSF572EQcie+0+dkxU84Myl8P2ZEOSvfzB905POP9L7qs6y42KOMKNp1xAvfqJScgIyDlLSr/EZpaa9oywDXf38LsLoX8XxBO5FQ5bdco1XrhnMNfODeAXzmUIxfoHcSieUlhg4DkifiD7RSfOl0N0LTFM4EFt/q/eVDw4OV02DqVo9YyuvKLfaTg5ZhodOCJiGut5zxJ3ioAkwc8+En6KRG1sHIf0cr7g5bz82TC9ZsaorqlvTTG4obVs0JXpVfDgiWkFNSS3ezjFb++WrI3n8T37V6UaZdBZFm0ZvvStM5RLmF1p/JRcr2mr8EbTf7GnAe7UfDijfB7o1iuawpPAxDwqB86TAjrTDiRo5Y6f++g38S6Y/2y6tDrPHyKKWJ7NLncNy+fbykywyufoSyibicOU5JyhLy1lRRR2B8/LHH5QKYLoU3r6ljllXBXa3+MpzKFFaycB9QFtcnGJZ3cSxkt8gDR7uoZwJQZZ5WfCnsbpsiP18WQp0wtWBnvKmAuFzp88NSFSv3fQoswfeJdegBljE6MfhBlDyYxFu4SSAAnKzdPa4KqfNk243Al89wFMwW+CG/alF3X0ZH3KxWEkhksuXkuoT2rkg5xs7JFbAxSKxkt8vTNhZd6uqJhijf/KFM=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(23010399003)(376014)(1800799024)(19092799006)(366016)(261026140227099003)(260925022911599003)(260925021911599003)(260925021311599003)(56012099006)(11063799006)(5023799004)(261009223027099003)(261022075727099003)(261021121427099003)(261022105027099003)(10067099003)(261026121527099003)(18002099003)(22082099003)(41080700001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?kOxvwXleufIgI4BGstiJTXJoW7NhnFnGxjKALhwVd5w8ceBRLFqiAyEfy4?=
- =?iso-8859-1?Q?ZXi5r/f+v1+d7+sQUlkQYraFq4zBBxLaYjwgV0e1S4QtdAls4SnsADGX81?=
- =?iso-8859-1?Q?FV8G7Ylu+ODVWbkCHflkS/i6LZ5IoNuY3SeF88uC3H5EdezkW36tBMgNF0?=
- =?iso-8859-1?Q?TzKtPwel++0KIdTzH4Yzcew0sTaq3DwWxfT7doua+nQyWZ4iJzZAZw0BDy?=
- =?iso-8859-1?Q?5cxdxeOBjmDaYIWKSiuancWxofOPuKnor4skwYjFcI/vQRR2nSGIomoiJt?=
- =?iso-8859-1?Q?8mlOEITVC9N9t2C1nR7iPLIHJEI12mtuveYg0OOsBNPYwCPdaOvmmh5TDh?=
- =?iso-8859-1?Q?zp1eNAfX88IySSQTSOQ3Tt8PhoWnZXdbjcBEUejQnN6WgFKbUss0NoGI73?=
- =?iso-8859-1?Q?33TcJaPjgPdia6eyEzjYlI/pzW+F0Yen8oNq1TnBCdJZIXkZyTjU+bt1CM?=
- =?iso-8859-1?Q?Q3igtlMgnrz6z8DZjOiXL08W+gYZGfQzkN8S8aCzxPKpJoTYnkxlugSALG?=
- =?iso-8859-1?Q?BGPYjcAkwHO/dJqaAb0pOwqJQhUerKnfzmIC086LNIkD7Rap1cfsk+R7R9?=
- =?iso-8859-1?Q?mZwo+9zjB7/lTRd4ePKduwevLJvCaIc43MthnZvsbjbboiQWqGTfklJ//I?=
- =?iso-8859-1?Q?wecdzNgLaU94daPwLWOTj01KDvtJ2mUunpBO2Md+ZtyuryMBPL6/KOXF1e?=
- =?iso-8859-1?Q?oF1nSsDkJsA3Fr4D6AK9gAo7A+2LVpyI9Fc2aPpqo0oorkTRmXUXkO3iwb?=
- =?iso-8859-1?Q?23X4LW8wtX8KjxVw7tgIJ8dEYzL+4mg5dD82cdUS5STCvqgFzmEPwAYBM/?=
- =?iso-8859-1?Q?S/C1uvZmn6XKNcdgQBeBQZEOT1bcabb9KpQzFkJQETZbfchrxlvm99X/cZ?=
- =?iso-8859-1?Q?wwSnUhRo1TvD3Jqds0HVqfm1sDqVIheorLBAy/CwqtAJUv11q3NR5ufFYi?=
- =?iso-8859-1?Q?AgTKPtL8fF+nf3x+cRnAM10Cgdy6vjhUxvwHmWVKdz3zgJZgGAJFDURCFX?=
- =?iso-8859-1?Q?pdH5NTh2dkn7ztqePhlEs56Rf4dnh9ppluxc9fDDXa9bwJhlPXNf8vg8dp?=
- =?iso-8859-1?Q?M5s2LjTZ/kU+etUNXcqSh2+LYkWKJWowREJhVnugq1ATreJIOrkNhyYvo7?=
- =?iso-8859-1?Q?gWEHpi0cEcZ2Vrh7Zqvl/fa/lXDAF5CQQps5EZNJWLuzcTKR6Z+eo4R1us?=
- =?iso-8859-1?Q?mUzK5kA1dkVRz29aihUjxNFqgCCHeP0t7Yu6VCLACZS8fyAVMwnSMg/eOk?=
- =?iso-8859-1?Q?p19Nvn3DuNZrxixBw3VNk4Hx9IUcI3YagaYGx2tXQbilhZgsyz7FLOEwls?=
- =?iso-8859-1?Q?7vCAzW/Mqt6+5a4tjCGF+3Gsfy3PROC5GQ2DRi4aRwOJGaiQbFsCOAmJY2?=
- =?iso-8859-1?Q?D8YdS28x5GQD6g7N/+SQNDJTgOiR8NYXh24r+QQYC2I66oOXaNuGQDsU61?=
- =?iso-8859-1?Q?V//UNVD/u926Kp1F0tiobI3sjdYVr3yh/CvtVq1qdSd5gkTiHTNjgcqe0B?=
- =?iso-8859-1?Q?jzsAed7oCQI7hPZYgsCJcj/mFFYpEonh62VDtwAK25uF6nvIBnimMQM1Ht?=
- =?iso-8859-1?Q?hFSJpsuv4T73CoCCHB518q5xfVoBQLF2JyjHKzdCgMTP+UR+A2VEHo1W94?=
- =?iso-8859-1?Q?ZbnMVGtgKUd0FapU49yylpY48gmK/VeymrJfSQt/9d+zDIp85EJo8Q77fS?=
- =?iso-8859-1?Q?Et05YtXGiRkJ4QYCBfZHPr+panf9jYjJYht7lImY16F7nBEOYSz8/LNf4K?=
- =?iso-8859-1?Q?xcPRuuxNrHMXEtKg9DW+W+ys/NkiF56KezHwzM9CZm1MQbQYc+thlZGFme?=
- =?iso-8859-1?Q?0X3muI+J5uzt9XSVh6ZaRkekYLTGDgc7v07wSjKhFPZJi/TOwsn8?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cc32ed66-1b3c-496b-47e1-08df337fa6df
-X-MS-Exchange-CrossTenant-AuthSource: MI3PR04MB12438.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Oct 2026 16:39:06.5244
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6sZRTz0pVhFlSF7EBVyQ+dtCHOlp//kUVETNITxzHc+vCv1CCg0ehPm3leCM5D+UYUddqkWOot6igMD9LV/kAZaFgwYP/nx3hhdmAbPYpJniEz6DJle+GpjlcQoTee3g
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10140
+References: <20261024-submit-serial-8250-dma-cancel-v1-v5-0-9e52968928d2@gmail.com>
+ <20261024-submit-serial-8250-dma-cancel-v1-v5-2-9e52968928d2@gmail.com>
+ <alpine.DEB.2.21.2610250459200.42255@angie.orcam.me.uk> <at4bw-G8czG-G7Wl@ashevche-desk.local>
+ <CADvTj4psJcY2T1PG9H8_hJWjz62R7unj3PPgv3FrVquUMFVhGg@mail.gmail.com>
+ <at5qKehogAjTa-fA@ashevche-desk.local> <CADvTj4qSgE6Rc--mWuqAcc8HTqN9EFOS_JM8Hp8e_=ka_ZLa6w@mail.gmail.com>
+ <at8eDFj2WNaXDaot@ashevche-desk.local>
+In-Reply-To: <at8eDFj2WNaXDaot@ashevche-desk.local>
+From: James Hilliard <james.hilliard1@gmail.com>
+Date: Mon, 26 Oct 2026 10:45:54 -0600
+X-Gm-Features: AclHuK9i3gJhID1qYhY2EyC-ofDyvA_hJVRAckf-dNWT3ME93Ru8v8ikGWkk384
+Message-ID: <CADvTj4oNz-bnSZP+kfau-7wBSWLjLTP5jrr6nLfdCHNPo3pS6w@mail.gmail.com>
+Subject: Re: [PATCH v5 2/5] serial: serialize asynchronous write wakeups with
+ the port lock
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: "Maciej W. Rozycki" <macro@orcam.me.uk>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Jiri Slaby <jirislaby@kernel.org>, Raul E Rangel <rrangel@chromium.org>, 
+	=?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>, Tony Lindgren <tony@atomide.com>, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Richard Genoud <richard.genoud@bootlin.com>, 
+	Nicolas Ferre <nicolas.ferre@microchip.com>, 
+	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+	Jacky Huang <ychuang3@nuvoton.com>, Shan-Chun Hung <schung@nuvoton.com>, 
+	=?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Timur Tabi <timur@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-serial@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	imx@lists.linux.dev, linuxppc-dev@lists.ozlabs.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Oct 26, 2026 at 05:28:11PM +0100, Uwe Kleine-König (The Capable Hub) wrote:
-> Hello,
+On Mon, Oct 26, 2026 at 3:33=E2=80=AFAM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
 >
-> as with v1 and v2 the original motivation for this series are the
-> patches that convert the arrays to use named initializers, see
-> https://lore.kernel.org/all/cover.1780048925.git.u.kleine-koenig@baylibre.com/
-> for the idea behind it. Then by not closing the eyes for small issues
-> spotted while working on that, this series grew a bit.
+> On Sun, Oct 25, 2026 at 04:11:08PM -0600, James Hilliard wrote:
+> > On Sun, Oct 25, 2026 at 2:44=E2=80=AFPM Andy Shevchenko
+> > <andriy.shevchenko@linux.intel.com> wrote:
+> > > On Sun, Oct 25, 2026 at 02:25:46PM -0600, James Hilliard wrote:
 >
-> Changes since v2 (available at
-> https://lore.kernel.org/all/cover.1784133987.git.u.kleine-koenig@baylibre.com/)
+> ...
 >
->  - Rebase to current next/master (new changes to
->    drivers/gpio/gpio-mlxbf.c, drivers/gpio/gpio-mlxbf2.c,
->    drivers/gpio/gpio-74x164.c)
->  - Fix a few commit logs to reference the right *_device_id names
->  - Drop all tags for Andy
->  - Drop a questionable MODULE_DEVICE_TABLE(acpi, ...) for drivers/gpio/gpio-usbio.c
+> > > Some people might want to test the stuff. And sending too often you a=
+ctually
+> > > will get the opposite results, people will be tired to even start rev=
+iewing
+> > > and/or testing your code as it's changed way too quickly.
+> >
+> > My thought process was that people wouldn't want to be testing code tha=
+t
+> > had known bugs flagged in Sashiko reviews.
 >
-> Checkpatch only reports two undocumented device-tree compatibles:
->
-> 	WARNING: DT compatible string "apm,xgene-gpio-v2" appears un-documented -- check ./Documentation/devicetree/bindings/
-> 	WARNING: DT compatible string "marvell,pxa1928-gpio" appears un-documented -- check ./Documentation/devicetree/bindings/
->
-> I felt free to ignore these as this is a pre-existing issue and
-> out-of-context for this series.
->
-> Andy didn't like how this series is split into patches before, I do. I
-> think it's not possible to please everyone's opinion regarding minimal
-> changes per patch vs grouping similar changes in patches and about what
-> is considered churn. I'm happy about every patch in this series that
-> goes in, so feel free to apply patches that you like and that don't get
-> resistance even if other's do. If patches don't apply, just drop them,
-> I'll catch up on them eventually.
->
-> Best regards
-> Uwe
->
-> Uwe Kleine-König (The Capable Hub) (22):
->   gpio: Remove __maybe_unused annotations from acpi_device_id arrays
->   gpio: fxl6408: Remove __maybe_unused annotations from of_device_id
->     array
->   gpio: Drop unused assignment of acpi_device_id driver data
->   gpio: max7301: Drop unused assignment of spi_device_id driver data
->   gpio: mmio: Drop unused assignment of platform_device_id driver data
->   gpio: ljca: Drop unused assignment of auxiliary_device_id driver data
->   gpio: xgene: Add missing ACPI module annotation
->   gpio: sodaville: Add missing PCI module annotations
->   gpio: Add missing OF module annotations
->   gpio: pxa: Add missing platform module annotations
->   gpio: pl061: Use empty initializer for amba_id terminator
->   gpio: Use named initializers for acpi_device_id array
->   gpio: pcf857x: Use named initializers for of_device_id array
->   gpio: bd73800: Use named initializers for platform_device_id array
->   gpio: Use named initializers for spi_device_id array
->   gpio: virtio: Use a named initializer for virtio_device_id array
->   gpio: Unify style of acpi_device_id arrays
->   gpio: Unify style of of_device_id arrays
->   gpio: max77620: Unify style of platform_device_id array
->   gpio: Unify style of spi_device_id arrays
->   gpio: Unify style of pci_device_id arrays
->   gpio: Unify style of various *_device_id arrays
->
->  drivers/gpio/gpio-74x164.c          |  4 ++--
->  drivers/gpio/gpio-adnp.c            |  4 ++--
->  drivers/gpio/gpio-aggregator.c      |  2 +-
->  drivers/gpio/gpio-altera-a10sr.c    |  2 +-
->  drivers/gpio/gpio-altera.c          |  4 ++--
->  drivers/gpio/gpio-amd8111.c         |  2 +-
->  drivers/gpio/gpio-amdpt.c           |  8 ++++----
->  drivers/gpio/gpio-aspeed-sgpio.c    | 10 ++++-----
->  drivers/gpio/gpio-aspeed.c          | 10 ++++-----
->  drivers/gpio/gpio-ath79.c           |  2 +-
->  drivers/gpio/gpio-bcm-kona.c        |  1 +
->  drivers/gpio/gpio-bd73800.c         |  4 ++--
->  drivers/gpio/gpio-blzp1600.c        |  4 ++--
->  drivers/gpio/gpio-brcmstb.c         |  2 +-
->  drivers/gpio/gpio-bt8xx.c           |  2 +-
->  drivers/gpio/gpio-cadence.c         |  6 +++---
->  drivers/gpio/gpio-creg-snps.c       |  5 +++--
->  drivers/gpio/gpio-davinci.c         |  8 ++++----
->  drivers/gpio/gpio-dwapb.c           | 14 ++++++-------
->  drivers/gpio/gpio-em.c              |  4 ++--
->  drivers/gpio/gpio-ep93xx.c          |  1 +
->  drivers/gpio/gpio-ftgpio010.c       |  3 ++-
->  drivers/gpio/gpio-fxl6408.c         |  2 +-
->  drivers/gpio/gpio-graniterapids.c   |  4 ++--
->  drivers/gpio/gpio-grgpio.c          |  2 +-
->  drivers/gpio/gpio-gw-pld.c          |  4 ++--
->  drivers/gpio/gpio-hisi.c            |  6 +++---
->  drivers/gpio/gpio-hlwd.c            |  4 ++--
->  drivers/gpio/gpio-imx-scu.c         |  1 +
->  drivers/gpio/gpio-ixp4xx.c          |  4 ++--
->  drivers/gpio/gpio-ljca.c            |  4 ++--
->  drivers/gpio/gpio-loongson-64bit.c  |  4 ++--
->  drivers/gpio/gpio-lp3943.c          |  2 +-
->  drivers/gpio/gpio-lpc32xx.c         |  4 ++--
->  drivers/gpio/gpio-macsmc.c          |  4 ++--
->  drivers/gpio/gpio-max3191x.c        | 12 +++++------
->  drivers/gpio/gpio-max7301.c         |  2 +-
->  drivers/gpio/gpio-max7360.c         |  8 ++++----
->  drivers/gpio/gpio-max77620.c        |  4 ++--
->  drivers/gpio/gpio-max77759.c        |  2 +-
->  drivers/gpio/gpio-mb86s7x.c         |  2 +-
->  drivers/gpio/gpio-ml-ioh.c          |  2 +-
->  drivers/gpio/gpio-mlxbf.c           |  6 +++---
->  drivers/gpio/gpio-mlxbf2.c          |  6 +++---
->  drivers/gpio/gpio-mlxbf3.c          |  4 ++--
->  drivers/gpio/gpio-mm-lantiq.c       |  2 +-
->  drivers/gpio/gpio-mmio.c            |  3 +--
->  drivers/gpio/gpio-mockup.c          |  4 ++--
->  drivers/gpio/gpio-moxtet.c          |  4 ++--
->  drivers/gpio/gpio-mpc5200.c         |  9 ++++----
->  drivers/gpio/gpio-mpc8xxx.c         | 25 +++++++++++-----------
->  drivers/gpio/gpio-mpfs.c            |  1 +
->  drivers/gpio/gpio-mpsse.c           |  3 +--
->  drivers/gpio/gpio-msc313.c          |  1 +
->  drivers/gpio/gpio-mt7621.c          |  2 +-
->  drivers/gpio/gpio-mvebu.c           | 13 ++++++------
->  drivers/gpio/gpio-mxc.c             |  2 +-
->  drivers/gpio/gpio-mxs.c             |  4 ++--
+> Sashiko reviews are not visible in my or any other mailbox. To see them I=
+ have
+> to go to some URL and so on, meaning to waste time to see why on the eart=
+h the
+> new version has been sent.
 
-For all imx part:
+Maybe the Sashiko reviews are getting caught in spam filtering or something=
+?
+They are showing up for me and on the mailing list[0] so I'm a bit confused=
+ why
+you aren't seeing them. You shouldn't have to go to the web interface[1] to=
+ look
+up the reviews.
 
-Acked-by: Frank Li <Frank.Li@nxp.com>
+[0] https://lore.kernel.org/all/sashiko-outbox-183574@kernel.org/
+
+[1] https://sashiko.dev/
+
+> It's better before addressing Sashiko comments,
+> reply to all people involved and to Sashiko's original email, so it will =
+be
+> visible in the previous version why you issued (actually about to issue) =
+the
+> next version.
+
+Hmm, maybe it makes sense to enable recipients in the reply_to config[2]?
+
+[2] https://github.com/sashiko-dev/sashiko/blob/v.0.6.3/projects/linux/mail=
+ing_lists.toml#L290
+
+> And before even issuing it, wait for a while, people might
+> disagree with Sashiko judgement or your replies on how to address that.
+
+I was assuming everyone was seeing the Sashiko reviews getting posted to
+the mailing list already. The are ending up in lore so unless someone isn't
+subscribed to the list I'm not sure why they wouldn't be seeing those revie=
+ws
+already.
+
+>
+> TL;DR: this mailing list is *not* a playground with you and Sashiko, the =
+whole
+> community is behind it.
+>
+> > > Settle down first
+> > > with something, put on the cover letter the answer why not all Sashik=
+o's
+> > > comments are being addressed (for example, due to amount of patches o=
+r the
+> > > series being focused on a certain issue).
+> >
+> > So, in general I've been always attempting to resolve known Sashiko iss=
+ues
+> > in every subsequent re-spin, so that would be a bit tricky since I woul=
+dn't be
+> > aware of the Sashiko issues until after the series has already been sen=
+t.
+> >
+> > Usually the subsequent issues that get flagged are new issues only disc=
+overed
+> > after each new re-spin.
+> >
+> > I do have a bunch of UART/DMA related patches that don't have flagged S=
+ashiko
+> > issues so it probably makes sense to try and review those first while t=
+he larger
+> > series that have Sashiko flagged issues are still stabilizing.
+>
+> Yes.
+>
+> > > > [0] https://github.com/sashiko-dev/sashiko/pull/389
+>
+> --
+> With Best Regards,
+> Andy Shevchenko
+>
+>
