@@ -1,100 +1,104 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.175
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793002889;
-	b=jrq9oB3Ur81FSGxAmI8Ezae0uDA7F0KfmelxvQlK6sV47k4W/XmZPte2ibFzMvBIkLB2
-	 nCIrt87R7YJ1NOfqk1SBcGyoz4gqPVSUIdyvNUS1yAppHsFgpEvotPT1E94SuWMD1ao3K
-	 RIbAVLRVPOOZYejMVvHNF9Qcv0hywsMiiIT3auY+EW+R5eUYTo7SzL0lUib3XJIGSPnLU
-	 ckUqFNTjIAecWIf9Cxe4P/cHE2e3oiogytPl1KGji+uxBuJNxxq97wZzsvbe3hQVH0hQ2
-	 p+k7IBnRDFECJ87C/IVGdWGube6CpnH28fhHmzZWvfS+9vNjuujCrel1sct1rvbqJNA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793002889;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.51
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793003385;
+	b=BcBUi4BKtOGTgmfJREuRRfL0dYxmwEegar9aMmJFZ7/19jCSTvyqD1mVD+MRXGXiQotz
+	 wpFNd5GQyQrFDgY421q8HG0dKiFzA9vUcc7EbatVmB19P7NcOIF/QzwWUlFH4JEdlSctJ
+	 4ZtdFAhN6W2Py9eL21eu4sHz6l+SO4+Z4rxA3XJsXxQea68EoQo2RH8gaSwsg5NIwvc1U
+	 g2EJNZklOP0GSuoADmCef7w3aoZAvIx6zsA4P+NSJM4KibJfvJOgFC8aaKERMzPD0Rsum
+	 6lv7WtcIXRxSWQY2/6y81pql0AivkKhmEJYihXbKuQuhdEWmLaP49T39UVNxtj65oBg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793003385;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=x3YIRl+8jG3N04z3aAGjtNPDALZjVxEdDCHikUWgSTk=;
-	b=oTYtLqXF2tyw5tA9IE+wa+9uwplYb4UjyfpQaunSI4XozdaSrSQvjc8WUz72ad0vAW1F
-	 A/JIfMavS0y32i2e6SQxftKnmWdywZaRVwia0DffGNaP7LjeUsaDFBJPwFLnMWP566SAn
-	 EKJOZmigxpD6ptcRUoSNiakvxxG9cLw5dFRZc0HlpLS+F8qnYAXy3acKY2Jll7ZjXVgjT
-	 nto7LoSRkrbLhpEv+PsuxxjkyYC38zR3Xu6W8ezJ3zY9JFo1KwmjpG+2KvhEbBEG+HRWl
-	 AHsgaAT0XVuvBDVsH0qrbkRK+e3INr/iMWUZZkzHk/k7f2Q7Vq5Xr3XifYjo/dfyXHQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=diTjf1RR+6hk2NNUcDUFo32N0NHYnwNLtS5/2ivO+gA=;
+	b=Y/Ojp0f/BWP6oNaBRcu2RAgnFSe0H9ERYStw/ka2PHKGrBtPUu+UTU4sANiwbXAJ0Cdi
+	 RScE+bTQhpm/aXfyE/AvHihtLrcJ1au5SK54Yh0lQL9joU2XyftKoxFsPjdNrO3hN3RAK
+	 /a/pnshsO0vagLUJL6jUD/ufuTrnw5AF7OCyGo72xxxm5xf9QYTIRWdWg3zTy6uqjhAl3
+	 xEaPpTmKb3MbWnKk9ZLqe9g6aOw/EpOdGNc2xdFDwPBBuIAD9u4WniLgTMfOHp+PMbR8n
+	 UgAE4WB2ChWTwpuhDDMoBfTBYEBktzTEj2I2uVqjLEVvTGxGVTVgzG9qzZpny8cGiuQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=AFP+cbn8;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.175
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=Bdr0a268;
+	arc=none smtp.remote-ip=209.85.128.51
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7112606A31B
-	for <imx@lists.linux.dev>; Mon, 26 Oct 2026 08:21:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C7112606A31B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39EC260A3834
+	for <imx@lists.linux.dev>; Mon, 26 Oct 2026 08:29:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 39EC260A3834
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=AFP+cbn8
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-886e61fa30fso1045884b3a.1
-        for <imx@lists.linux.dev>; Mon, 26 Oct 2026 01:21:28 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793002888; cv=none;
-        d=google.com; s=arc-20260327;
-        b=RPTyyqXzJjE7p634OyGixepuR4cTO1uNqHbT5JGm00WKJ+SPWm/aZVzSx3jBh66bsS
-         DsT6WtS7fErD6hVwsEG+r9y0MYz8zlZNooATmwr5qvGxYQExTK5j2oc57mbQx96nOXW2
-         9LW6fuHzGqNnLOrfQ6NZRWE0A2vS6MB2lrXLUCaZlowVQpgLPnjLzr0xuEjrqLrOmDbZ
-         CTLL/q3+dGkFv3nyf0yrv0d8SVLAJijG8/R91i5zRzx2sVPWXinQndfX3gvCFIJMP0v+
-         72zpnvPHHwniOL7UDm5OWLfe6cXJtZKuOIB+YmQehphW5APl4MiV/mfWz38EdhLys6+X
-         C62A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=x3YIRl+8jG3N04z3aAGjtNPDALZjVxEdDCHikUWgSTk=;
-        fh=D5NlM7XvPtXmtioIelTQCCIFREqEewPOUXOo8fXzo7g=;
-        b=bYwQDRrFSSdaE4m2ISF476BszPrNT/PatDmzhsudvfJjVZPE47jzpCCeCtC/iKgTvI
-         ELd+i8+nArKJ0mU0kcC/jsstqW9263lifcRNn+9+o32n9UDkReIAySvreipoq5wxZJn2
-         Sh/CzhtnVF9gdAs5zX+PtjPgQvlWof/FvdpgaKok7hFrKYgvrQDpHx3Fp3JDaAkx967c
-         buakxTELiXVxnkOv86KMfzgu0xbW8CQiFIjuSAVY3rCzrK5ZvJm+J5hHA/JuIYrH8RT/
-         tB+ZUvvf+MsZKceGsrwr56GChMwLQrL6eq1F0Z0Jnww8i9mGcvNummjh3sSNTEpe6tYA
-         cS+g==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=Bdr0a268
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4a2000d5fb1so16922565e9.1
+        for <imx@lists.linux.dev>; Mon, 26 Oct 2026 01:29:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1793002888; x=1793607688; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+        d=gmail.com; s=20251104; t=1793003383; x=1793608183; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=x3YIRl+8jG3N04z3aAGjtNPDALZjVxEdDCHikUWgSTk=;
-        b=AFP+cbn84s2av4MCkNRl+cB/ZqP7j37Qwqp05sCxIexcXP9ZijIHaih+TCNR2/otzz
-         4YQD+xrTNgZUSp9bkpNcOgIgDYK2g+Qt9PGzHdPnGCdooEL6SjZ4ldtjGwnUC70tIw9t
-         UnK04J6sEO9sqZtqAtPCRMcJxtzQMo6pUpNtVdSsoDxRqQQ2ZCLnoS/8QGwH41j00+Z/
-         +VDx3p1jjYse4kBz9liy0JQRp62Qih6QDRbvZm825ibwhhhiGwu3OcxyJ22h7Iw/o3v4
-         9T/QxWb5Y7BgNXHwFawt+QuM5u3nsnutPPAPV+5jYj8HOH18RaEKqfY8CJiibt0tm5p+
-         ZbIQ==
+        bh=diTjf1RR+6hk2NNUcDUFo32N0NHYnwNLtS5/2ivO+gA=;
+        b=Bdr0a268yeBdpkDNW1GymIyWI8Wg1ru+L83+jxjLRlpxVBMh0+FNKkkJ+hpl6ZZx4Y
+         gSMoqWLPbo6nptt3rdTfEXej0PP8SBuWSVSECFFDhHdEzYbGfR61/Itn2/41F9JDfyrV
+         ynfbyZhG3sZBpwtA9ww44P/AlrxOrIVwWYW02dNoqCgUwtRLyG6jXOilXvj7x/72HmVI
+         vvk1SXRb0U7qBb3a8+xMt4WuEqTpS0bgc495uir5ps+UA++A/IRmaiYPE3g8h/H6Ya7N
+         e0Q7a4SYeaSPvB21p0Mqw/Vnu0GjXWop5lT4Zsn3gPw+IEOG3TUWwSfU9LU2Z1J9DCx1
+         5bfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793002888; x=1793607688;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1793003383; x=1793608183;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=x3YIRl+8jG3N04z3aAGjtNPDALZjVxEdDCHikUWgSTk=;
-        b=BqZED9JzxJ5rnM4aHlvhSiZhbiQWI11Iocjxrfmhu/QYLdg3N7koMZGa8TtZf+j+1X
-         iiQ51UiHN2qsRbPtQAHDU3MauO1vXz/R0/NJM4SV2TmRY9hr7iM4v2JPhcWOf3ATDShQ
-         E0AzzIi081E0FfmADQ0xYllTEr1kIs9/8NK/hzJPEDD7jb9owtYo7gW4jwXHkS32v7E/
-         SZVLw0UAZxFHG983a3BX1cNeffSpUMvwc1UmG9Eu9HEj+IA7UEDfUU0R1Ln9lxh3X5ff
-         m3FnCqIMIv69n6Pu5sAfo1eL8z/+jE9YxSh1J0lSnqa7uGXGd9PAaTEXDx4GLnllqpDh
-         pFqg==
-X-Forwarded-Encrypted: i=1; AKwUvBwlufKPY7y96LEPlbc5pOj4MIoTNYfFzfwSAWhzaClZYBxuBRvKItH471D8jnr12ZZcXsM=@lists.linux.dev
-X-Gm-Message-State: AFq9FYI7a/L7J090CjU62eXY941TXCPJF8LK0JsRhxkBZzSQd8gJqHa3
-	k3nHp8NkCkslpPMjKgBTafIcQ+Uyvb3ffX36i8a7X5U5OolfTF5ikdIYcYnnlnd4QVknXQ1xAQo
-	BNSXPKN9quhsKmrzWIjhHwFqAM8s9cZdxG4+S3ccERRb/
-X-Gm-Gg: AYBFou3CBLh7YIcyPQZOIeJ8NvliQRpDSsDrfTzQBzBRc0sovre3kx8nGu1pgQIOA9b
-	J64EqzD4urk9AiIVd0VbSNhFVqW+GlvwruWwoKO3Ru2yFvSuoLCLQTkGj1KjX+eRJAUuDLdNZSS
-	tQQ8g6mcRCCKRbtO+oZ4uJdl5Ia1AYesctL84bjzVucVsFzX4aTV+zTD5f77LorwAOKu/UTrYyF
-	n5vLG74522n5Jl3VRpqxfoLz+HzmLJnJ3WwXznytfs2ebg+odxXDy9dK7ZGxk05oH/KktlpLuYg
-	k+NeK/DKPP1ojteI/A/ZAPIg+NDKMIxyL8Xc7bL/kAHJNNVteZ3DiuvLLgySTFzQFUWgv9tFUZq
-	2BKFUYfNUARMDZwyfQma0G3TWa0D3gPpV31AbOacPFXcsc2UkqP1H
-X-Received: by 2002:a05:6a20:db8e:b0:3dd:85a8:cad3 with SMTP id
- adf61e73a8af0-3e7bfa95ca3mr4905748637.42.1793002888123; Mon, 26 Oct 2026
- 01:21:28 -0700 (PDT)
+        bh=diTjf1RR+6hk2NNUcDUFo32N0NHYnwNLtS5/2ivO+gA=;
+        b=mKKeodzttwbUvnAPYEMANaJdND1c2vbwKglPJxuj6DkEvrFynoznR2EBDau1Dc5sYk
+         Pu8x7eyko6BE5LBtk67lqHLQqQpiADJK5iuXAzqLoepGSsE4ATShgy5GpzbGZVDUEgJG
+         Zq4bpZOipG50rChD6KpK+v6s4ANCmSruqYsSy3bA8LB1affLlzWpkjsFWHw4rE3K5dHF
+         hTuBF5rkd4TfAzeLiNBbdy+lExSRzR8q8NLxIF+2qoEHlNw6fwBsdmoPCmqmwCBGnsF5
+         vYw/mN++FdRELsMYtGHIyQGVRs006ftRcjxyvbxDEeNm879g0K0VA9+AbmwZcYsxs68z
+         eNPA==
+X-Forwarded-Encrypted: i=1; AKwUvBzuRotv0TusPkXX9lp/GNZkCMSs3+frvs48UZiGT/E24xxjKOwRZOWhwJmA+Es7xApH6jE=@lists.linux.dev
+X-Gm-Message-State: AFq9FYLT7kjGykIid47FudUoj6rQUaXv+oHPA72eR8wcXeF7jsn2tBpD
+	RzIWZc/0Jfra3A335gHZ5ZNioqf3CRF1LIyukY+akC1Y0SGi58NpqgWe
+X-Gm-Gg: AYBFou2F//arnag11V6KO+KYdllSwkKlT5bfvobTzuso5Oh++ekbcgxAae/9jxmRZ4R
+	u2EjIwXEn2HXnTPSZFgwWTGZSOOukyfMwx42L6V2WEPMtEQ5ThVi45VpDMfVIVbsAYvmzlsbx7+
+	hYwrVNPwzUQZRT5xNy3VTo5HGRnKPXY9QyA5EuDb5FBPkXOacElyL6wNuumYZx7hq4Urklx1pM7
+	RERfkhlNKZLuKX6LPv/HLixrwrUJ5QI+Q658uGKQhzqc9uviEKnxJeedUqS4ac/t+w7rxQqTk5L
+	Rh3HM9+bFROgXCWkMAnGGSretzjFhbO20mycRmmttNRSknyT39oMnEqrlk6PbZhhI62GTypt2WB
+	aS9F4crEBEQfSe7Nz34Vesr/AZEuJGm3BqlsLnxpUEjNxOhY8RgMHBp0EB9NRy7BoGnCuuXkK3V
+	9kHyEUB/8NT3jYuWkS47XKp+JiKJLBH0OyrGh8zleqca/EUMz7CNCJ4N4i6UYMf9mqlWP8t0RbC
+	3ai1VrifCT82/9E3DYLeYSTOs6XLf3C2n9B87ccUaIJ9Wumg9I8wKxFnwdPluEGkwI19B0ltRv3
+	aWwDD6ZSaB9NBqAi+1T44dmhfRHPw4IGpbMKRX4pCsDlCjz2Xo3iOIGdO7hGuCyUBX8b2d1zBJA
+	u+2lO5v0=
+X-Received: by 2002:a05:600c:4f4f:b0:4a3:5a42:b29c with SMTP id 5b1f17b1804b1-4a35acbc00bmr116641935e9.26.1793003383367;
+        Mon, 26 Oct 2026 01:29:43 -0700 (PDT)
+Received: from GLaDOS.station ([187.13.216.220])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a35a30e22csm178673445e9.2.2026.10.26.01.29.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Oct 2026 01:29:42 -0700 (PDT)
+Date: Mon, 26 Oct 2026 09:29:39 +0100
+From: Stefano Radaelli <stefano.radaelli21@gmail.com>
+To: Frank Li <Frank.li@oss.nxp.com>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
+	Stefano Radaelli <stefano.r@variscite.com>,
+	linux-arm-kernel@lists.infradead.org, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	pierluigi.p@variscite.com, Nate.D@variscite.com,
+	Peng Fan <peng.fan@nxp.com>, Shawn Guo <shawnguo@kernel.org>
+Subject: Re: [RFC] arm64: dts: freescale: Supporting Variscite SoM and
+ carrier revisions
+Message-ID: <at8Pc9jDy0dX8Sr9@GLaDOS.station>
+References: <20261023115242.11197-1-stefano.r@variscite.com>
+ <att6GNZAVv64Rlnv@SMW015318>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -104,85 +108,51 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-References: <20261026003918.155321-1-pmazzini@gmail.com> <20261026003918.155321-2-pmazzini@gmail.com>
- <20261026083058.04173f10@kemnade.info>
-In-Reply-To: <20261026083058.04173f10@kemnade.info>
-From: Pablo Mazzini <pmazzini@gmail.com>
-Date: Mon, 26 Oct 2026 08:21:18 +0000
-X-Gm-Features: AclHuK-pzB2ukAo43D26PIOQvYip4LrlulkX87-Zh2YxM609r20rprIHYc6RIYc
-Message-ID: <CAAxh=jvGJVNTU6o9L-8-AeHDVHBcBwJDxwwoNZDwMN3tjRk1pg@mail.gmail.com>
-Subject: Re: [PATCH 1/7] ARM: dts: imx: keep the SY7636A VCOM on
-To: Andreas Kemnade <andreas@kemnade.info>
-Cc: Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Alistair Francis <alistair@alistair23.me>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <att6GNZAVv64Rlnv@SMW015318>
 
-Thanks, I will drop this patch in v2, so VCOM stays off until a consumer
-enables it.
+Hi Frank,
 
-On Mon, Oct 26, 2026 at 7:31=E2=80=AFAM Andreas Kemnade <andreas@kemnade.in=
-fo> wrote:
->
-> On Mon, 26 Oct 2026 00:39:12 +0000
-> Pablo Mazzini <pmazzini@gmail.com> wrote:
->
-> > The SY7636A hwmon driver turns VCOM on at probe. The reMarkable 2, Kobo
-> > Libra H2O and Tolino Vision 5 have had the rails on so far. Mark VCOM
-> > always-on before the driver stops doing it.
+On Fri, Oct 23, 2026 at 10:15:36AM -0500, Frank Li wrote:
 > >
-> > Signed-off-by: Pablo Mazzini <pmazzini@gmail.com>
-> > ---
-> >  arch/arm/boot/dts/nxp/imx/e70k02.dtsi           | 1 +
-> >  arch/arm/boot/dts/nxp/imx/imx7d-remarkable2.dts | 1 +
-> >  2 files changed, 2 insertions(+)
+> >   imx8mm-var-dart-2.2-sonata-1.4.dtb
+> >     DART-MX8M Mini v2.2 on Sonata v1.4
 > >
-> > diff --git a/arch/arm/boot/dts/nxp/imx/e70k02.dtsi b/arch/arm/boot/dts/=
-nxp/imx/e70k02.dtsi
-> > index dc7ff108aa85..bd9c6c6fa117 100644
-> > --- a/arch/arm/boot/dts/nxp/imx/e70k02.dtsi
-> > +++ b/arch/arm/boot/dts/nxp/imx/e70k02.dtsi
-> > @@ -154,6 +154,7 @@ sy7636: pmic@62 {
-> >               regulators {
-> >                       reg_epdpmic: vcom {
-> >                               regulator-name =3D "vcom";
-> > +                             regulator-always-on;
-> >                       };
-> >               };
-> >       };
-> No, please not. That regulator is in practice used with a not yet upstrea=
-med
-> driver for the EPDC on that platform used to deal with the current kernel=
-s
-> fp9931 / tps65185 drivers. So it is very welcome to have it not always tu=
-rned
-> on.
->
->
-> > diff --git a/arch/arm/boot/dts/nxp/imx/imx7d-remarkable2.dts b/arch/arm=
-/boot/dts/nxp/imx/imx7d-remarkable2.dts
-> > index ff9d50942884..6cf5603c0752 100644
-> > --- a/arch/arm/boot/dts/nxp/imx/imx7d-remarkable2.dts
-> > +++ b/arch/arm/boot/dts/nxp/imx/imx7d-remarkable2.dts
-> > @@ -327,6 +327,7 @@ sy7636a: pmic@62 {
-> >               regulators {
-> >                       reg_epdpmic: vcom {
-> >                               regulator-name =3D "vcom";
-> > +                             regulator-always-on;
-> >                               regulator-boot-on;
-> >                       };
-> >               };
->
->
-> Here the situation is a bit different. If I remember correctly, there
-> is some special EPD logic in userspace on top of some ordinary kernel
-> display driver. But thesse things are missing is devicetree?! But
-> that might need to learn to deal with regulator enabling/disabling.
->
-> Regulator always on is probably not desired here, either.
->
-> Regards,
-> Andreas
+> > These are proposed names, assuming that the same DT correctly describes
+> > all the hardware combinations covered by each entry.
+> 
+> If new boards 2.3 appear, do you plan change to
+> imx8mm-var-dart-2.2-sonata-1.4-2.3.dtb?
+> 
+> Rename affect addtional problem or efforts when back port.
+
+No, our intention is to keep the filename unchanged. For example,
+imx8mm-var-dart-2.0-sonata-1.0.dtb would retain that name even if it
+also supports later revisions, provided that the same description
+remains correct for all previously supported hardware.
+
+Regarding the filename itself, would it be acceptable to include both
+the SoM and carrier hardware revisions, as in the example above?
+Or is there a preferred upstream naming convention for distinguishing
+these combinations? I have not found a clear example to follow where
+both revisions are included in the filename.
+
+We would introduce a separate DTS/DTB only when the hardware requires
+a different description, sharing the common parts through .dtsi files.
+Our preference is to distribute complete DTBs that the bootloader
+can load directly.
+
+> How about use boards compatible string? You add new compatible for new
+> boards, so user know this dts cover which boards.
+
+Could you give an example of how you would handle the root compatible
+property when the same DTB is used unchanged on multiple revisions?
+
+For instance, if SoM v2.0 and v2.1 on the same carrier can share exactly
+the same DT, would you retain the existing board compatible, or
+introduce revision-specific strings? How would those be represented
+in the shared DTS?
+
+Thanks,
+Stefano
