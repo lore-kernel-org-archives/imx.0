@@ -1,82 +1,103 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.194.8.81
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793018616;
-	b=NAm5YFJPhx08m0ptQDKuYn9RGoS2CqkcXSrg70C7ez+e93jLIdWZCz4Jclw1yeQO2zZQ
-	 fmbQBZDXlKLgrBoY4pItqOVMno3YILUmdzYBEQpeO1U1f2lgk4ZmaCW3XE84WbhBhgl1i
-	 /oFg9WJnOzSI0RIP4UlAOHL9oWfz2mElgz6rBN+8qgekvP1V3FqHFfE1O11AiXdcypsNO
-	 +UbSa7ZV5uw2TSE24uLD1yISk4LxyUuzhLHqAOClL6hifcPpKCasQq1Aq2JJ4gdYNRQ1P
-	 3A86AX/APs39uALtP5RKZkSe00BhAvrINV83sbAzJRfwVYdEElaNX/34IrlI4sZmLIw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793018616;
-	h=DMARC-Filter:Received:DKIM-Signature:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=8Jq41rEZlW8dpYSa9haaT2V6LwzTgLLlt9p+Cr4IhUw=;
-	b=WNwyUQ5kR7YP0Qtsdz9t96u4fviNbKUY5GvSLQPswj+60D1Tc7K170OorO9ebgspAliO
-	 5BOCNwnqiEGjZEKMF5n6ezMcqu5qIqyOh21AZXrNVC5PWvWvzBZxF3ttgylOeopWLpXir
-	 OI+EM+coE+Sp33ztRt1dh91N8Cb7hl+Zud+OXYE46tjfuvGljt3gRh5la6/U/41UVdkjE
-	 4PrWTQ6O0E+13vqZY6O9EPFFrMtI+lf2jr7NX/dEPklXUNqhDBgOOI/g2z3UO8frdCUXC
-	 LvWcYzBzcuDA+iz3Ls1gMYJsLJ0w1yMVmtj+6tdP+obNYVP4JDXjeNHSxxcd1kbELCA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=dolcini.it;
-	spf=pass smtp.mailfrom=dolcini.it;
-	dkim=pass header.d=dolcini.it header.i=@dolcini.it header.a=rsa-sha256 header.s=default header.b=c0j25kco;
-	arc=none smtp.remote-ip=217.194.8.81
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.70.9
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793020504;
+	b=al5Bl5lJyYIcKHTUhf0ljYLKNubdH4YV+027EgjDhQ0ewUafgPAorZ5/8ygcQyNgjZBA
+	 EtlxK0/ak/SUm2nE2MOe5tvgmHq27fbPoP/F/fxoAAKSHz//yuM9xS48ylOjIQoQaLCHo
+	 j2l5UAbEI5Sr/3At7qCsyEGLA0UuDLjdvX65npfh5uB1a+xQdHYV1rPw+s5F5iwsbrkfi
+	 JTUJ6ClOeSYJjgsG6N5A8qOpmpD3ysBDdfkFn6OX9p6XHQrzeCfygiVDTGMTHvaumU2KL
+	 AnsBLDiHl5/Y5CjCwqlq5/Nae1toEdiTygvstZTlRKKMnD96DFC1/txwp+9sJk3bjiQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793020504;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
+	 X-MS-Exchange-MessageSentRepresentingType:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SharedMailbox-RoutingAgent-Processed:X-LD-Processed:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=J019MUa2l6jJEanI9xBrT4PAePFW06clJMJwNzErupc=;
+	b=EwVRgBWNv1jEY9RBdr+kNurY3YUSZhGnrARbKaAOeAdtRv1LKiv/IXabEPwfAe3Dla9a
+	 x+IYlg38Xq7FpjeyzozO/kpXTVQU2DMLeYvKzDNHs+hdXOO4nCou8iDfk8KEVq/g0370j
+	 CiXj2BcXIky5X4DmzmifWZq97MDJu5Yyj3SevvokG1dVMMXg6x3ZDt05PJEJj4bTR/TF/
+	 liDkqGUSxUCuwHIyjpDrDlZ8DBUcU3QQEfSnQlwfJsA8SUbzPz8fkHX5q7aijSvLByxQ4
+	 6CQ1r77qM29cHNh2IyM41pupDW9pl1aRkRtV85SxpGg9wkR0FXaB8yVRleHRGg0U/ew==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=oss.nxp.com;
+	spf=pass smtp.mailfrom=oss.nxp.com;
+	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=gEfjqo63;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.70.9
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011009.outbound.protection.outlook.com [52.101.70.9])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D008606A31D
-	for <imx@lists.linux.dev>; Mon, 26 Oct 2026 12:43:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6D008606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 689FD606A31D
+	for <imx@lists.linux.dev>; Mon, 26 Oct 2026 13:15:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 689FD606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=dolcini.it header.i=@dolcini.it header.a=rsa-sha256 header.s=default header.b=c0j25kco
-Received: from francesco-nb (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch [83.173.201.248])
-	by mail11.truemail.it (Postfix) with ESMTPA id C19941F973;
-	Mon, 26 Oct 2026 13:43:31 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1793018612;
-	bh=8Jq41rEZlW8dpYSa9haaT2V6LwzTgLLlt9p+Cr4IhUw=; h=From:To:Subject;
-	b=c0j25kcozqWxHZK8k4lBZiOqMKsEnvOVVj0qHrqrR5JU1hPOJdPXOnBp59eFFHruV
-	 7xPUxXwmDCu4kK4gP0UOBk0fNhZop+bAQKW6xBjFmAsIWAXfguyWbP/hYY9cKcb/oA
-	 jo6AqaoPi3wOtfZh2E9jY4j6/jBdwqEEAjBHhW07kuoP5L2zA2Jr2bCN6pbpmvv/8V
-	 vzt0BgOaUCSuqefPmlAOG/DIhcDrqoM27vAJecaG4SjGUW8EhswlMYUVhfHY+48mys
-	 yylU3vezcoKyrdCeUbqQ6Z6NeLulsM+7faYDOB4wt0RZffywk8+1CYXGilqIJQV2GB
-	 T4scWNfIGgZGA==
-Date: Mon, 26 Oct 2026 13:43:28 +0100
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Leonardo Costa <leoreis.costa@gmail.com>
-Cc: Frank Li <Frank.li@oss.nxp.com>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Robert Foss <rfoss@kernel.org>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, dri-devel@lists.freedesktop.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	Leonardo Costa <leonardo.costa@toradex.com>
-Subject: Re: [PATCH v2 3/3] ARM: dts: imx6q-apalis: Add VGA overlay
-Message-ID: <20261026124328.GA82443@francesco-nb>
-References: <20261019-v2-apalis-imx6-enable-vga-v2-0-ef6a3a780472@toradex.com>
- <20261019-v2-apalis-imx6-enable-vga-v2-3-ef6a3a780472@toradex.com>
- <atZxhWaUWthEHkti@SMW015318>
- <lozimedmt3h7v6odvp4svvmatvk7726a4ztn3j7ft44oto7p5p@dmrudrmzyz3s>
- <ateQWqoTtXSBSBvm@SMW015318>
- <wancrsxcem5uep5oy5pnw5prewefqah7drmhiu5wrq3ctykltl@akwvtqbebblb>
+	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=gEfjqo63
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=hWAc2bvXzu/VCIGjj573RaPpTh7eJ8w/2OFAWcR978oCR8BkYBpCvFrhMFtbnDj22AUNY/h/xbl03V4uP8/fFQALjNe6iqWwCYL0tS1PWuM91EGqFLfjcql/P4VEnPHypc9IoBlL51hyrPmj+W3L5KPZuR6/dCtc8NIoj0bIpVyOItTU5s5WbDRK1cuDwpjdB5ovMER0ehW4rCb853MRiDuQURFMUGjFc7BXy+UPCGniLAScCPaJx76YwgIsHMhYOqejeFigiuyiivj8US8n2LxICGMi1ccLtA5jaHNDS3XwfCICVvjXMcBRI4jFFCsB/l0UrtAcFGOd00kUrH8aQQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=J019MUa2l6jJEanI9xBrT4PAePFW06clJMJwNzErupc=;
+ b=kxaBmWiopSble3WZoqjgC5hdPt3ERyw4Qw1MJoW1Pqg9W2RrPqKDzxLT8Aqwa2VNYSEImIgyYck3R0WbYlPgyTDar5qkFTaK8TgKWnvMyY+eCALBqOB0U50AQ1I2GF+SGq4CstIou7WyEDwQ/YwirBjmI1pKRo4P2stwgog8Uh4MRoJBoOq/lhr3dpfAZ8HlHYIoKqdAfcrw9M5jfhvUSIJ3cie0xORNEXI9tZCbDvT+vtTqYWO3n00AuqdpRKaSzQREgq+cftln0rIq6g/SosXokvQvYImsqK6isVx0qxUdQniDe0xskmeEWtOk1woKK9HJMu9P32ZYkZTn8It4yw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=J019MUa2l6jJEanI9xBrT4PAePFW06clJMJwNzErupc=;
+ b=gEfjqo6355/6Bi7iy/iY5xEBg1aSMRLb4P3L09M9Bawmz8m3FQNYyxO4qqJZ5iRVtT1qzqRYg8WWyjXoVKmrSbkR6BkCEYO2TEQJP25FuqK5V5DvlVgyPtcz0BU3vr2RhSTup+os2efGAw72k7FC7b5ehAYQ0NhAHOB/Jt0UlZsh264WR1m4QTK4oyOfR2IaEvW3pujanku84tJnR6Q78yWlF028Zp6DfttW9z7h6pBveiBY5GLQmrYCzfj/3bUxptv2rpNWy7Z7f2GJIhJQ6hwX37zk2T5ZOgjrIC9lPsSqewfD6v8znVJJdjpS9hs9X1Iwqr0y0BVObYieTJGVjA==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GVXPR04MB12316.eurprd04.prod.outlook.com (2603:10a6:150:2c6::8)
+ by GVXPR04MB10827.eurprd04.prod.outlook.com (2603:10a6:150:219::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Mon, 26 Oct
+ 2026 13:14:55 +0000
+Received: from GVXPR04MB12316.eurprd04.prod.outlook.com
+ ([fe80::fc6e:ca22:f065:def4]) by GVXPR04MB12316.eurprd04.prod.outlook.com
+ ([fe80::fc6e:ca22:f065:def4%5]) with mapi id 15.21.0546.021; Mon, 26 Oct 2026
+ 13:14:55 +0000
+Message-ID: <b1ea7bd6-b923-43a7-8dae-33db83c54ba3@oss.nxp.com>
+Date: Mon, 26 Oct 2026 15:18:33 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 1/1] arm64: dts: freescale: imx8mm-var-dart-sonata: Fix
+ TPM reset polarity
+To: Stefano Radaelli <stefano.radaelli21@gmail.com>,
+ Frank Li <Frank.Li@nxp.com>, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org
+Cc: pierluigi.p@variscite.com, Stefano Radaelli <stefano.r@variscite.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ Luan Rafael Carneiro <luan.r@variscite.com>
+References: <20261026123505.48909-1-stefano.r@variscite.com>
+Content-Language: en-US
+From: Daniel Baluta <daniel.baluta@oss.nxp.com>
+In-Reply-To: <20261026123505.48909-1-stefano.r@variscite.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: AM9P192CA0013.EURP192.PROD.OUTLOOK.COM
+ (2603:10a6:20b:21d::18) To GVXPR04MB12316.eurprd04.prod.outlook.com
+ (2603:10a6:150:2c6::8)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -86,67 +107,106 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <wancrsxcem5uep5oy5pnw5prewefqah7drmhiu5wrq3ctykltl@akwvtqbebblb>
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GVXPR04MB12316:EE_|GVXPR04MB10827:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0fc73125-91c7-4bca-e48b-08df3363207e
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|23010399003|19092799006|366016|7416014|376014|1800799024|22082099003|18002099003|56012099006|11063799006|261021121427099003|261021123027099003|10067099003|261009223027099003;
+X-Microsoft-Antispam-Message-Info:
+ s1OmulL+DFuyjWyUwjuCr2lk4hrD0EQouxE+hzOcVyY5Xc3QV9GUZg2OoBMmNmbg2y6DtlF2j5loq1VOrdV1zRXug/jvEjzzGjdlfKrGAWTfo+ulcelrTg/6xuBgahdZBpXoqilbxW4QPPq8yOkC/jgP+UE8vam67Y0TzN6SX7h8b2AP1y+7qHN1Soz3sUVaSY6lUhM1WhsmXSBd+c/Uqbcg8/ZET4UmTOQ15cJCUZBKNtwTT9As/TKVjLG/iLN2rVpgDthf9Fn4f33PTVlQnnRMXSRP59aFdENM6chSBsAYpA8aB+cKRHyKgVLWJStxLitJGy5ZkqyZ4T4KIedjh/mw72OmPqNJvmTH0JEfrmc8lrgS9ACmm7TlRTY5s2dA8d8UY+pCNmktpHiMW1su8Uu2VY9T7Xw22roJRDEWf0fSVBkCxlvqLVpXxjTKR2vmPABDUE4GoYsf82QkRjfNDxJo+LPqXLdtzi3Dpbc3RM5hvBjrgxDf4i8+ZzwHAaPLsHztDWn83bD31vLO/eeaAjODoPYgIX3EWkcQpf7fsT5/lYpFhcMz6Om/gES20kJ3U3bYOCcjj8Jrw7sQ1fQRT0nm2Oj8dVFoE4F40SM3wj3ydvUvz1vawV3o4LHCbKU5yuZ6lcvleRwHBA4hBY4nIWbDkY7y2Vgnuk/N7MNrQy0=
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVXPR04MB12316.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(19092799006)(366016)(7416014)(376014)(1800799024)(22082099003)(18002099003)(56012099006)(11063799006)(261021121427099003)(261021123027099003)(10067099003)(261009223027099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?utf-8?B?OUZGU2hVOThSM0MrSXVBK3NwclpuNmhuWWoweUlkVHA5OWN5RXFiakxPU2hx?=
+ =?utf-8?B?MC95Ni9UVzhYS2x3RXg4eU41V0dPNEhndG5CWCt1b3JxOFVqZGk5NGJJaHNM?=
+ =?utf-8?B?eUV3MzZYRTlRM1FDaVcySlR6aDBEM1VrV3lQSjlKN2RaMmx5VGY4ZDFHMG1s?=
+ =?utf-8?B?RDVRZUxhbm14SjBQaEo1dUR2eWIvZXdoOFJ1VVgyNU5OUG05SDhISXhYSUkw?=
+ =?utf-8?B?MXEvMjBWT1d1cUw1UTJnVit4UGh2VXEwU3ZxeXhGcVpHTXVkVHJWME1BWGVn?=
+ =?utf-8?B?U1FGWk1UUkNXeGJTV000Q0xQd29HVllxN3FKRjQ4cXNOMmovN2NLaFFHaE1E?=
+ =?utf-8?B?QWZoUnZvVWR3eHNtbmtXNDRFY1ZsbHJyODRiOXdGNzRKZEJVUGc1L3VMM2Jq?=
+ =?utf-8?B?eFdFQ3Z1ZHF6OTI0VkFid2JtcC8vTGRVYi9LdWdpZmxtTDVKYUVuUGdqRGVo?=
+ =?utf-8?B?RUE0VTdINUlFbHlraW5RcXJTT21RLzlJZlBudGJVYjd3cWZHU1VNbmVjUWlL?=
+ =?utf-8?B?OEJ5TFR5b1pSYUhwQnliTThiTzRrVytrUWo2ZWk5Y1ljdlVtSTRySzFnSjlP?=
+ =?utf-8?B?MGNyYkpLckp6QjBLTURVLzd6aHlQUDV6L3RGdTlhQk9valdvUm1QcnB0cUpr?=
+ =?utf-8?B?ZkM2VWhmei9tdmNOa0E5cE9CWmI2aGhtUnVwKzZwUWFjc0dCdDFiQkpiQTVa?=
+ =?utf-8?B?NmJCSURlN2JXZitka1RlL3ZrTzlaOVhyb3RkZVc1aEs5YVIzTys1QzBUdWJR?=
+ =?utf-8?B?SUhXU05zS0dCVmE1WGRITk1OR2NVWVlQK2hpNTlNaGlHaEREWXJqbUt0Y2dk?=
+ =?utf-8?B?YlFXSGRtNFlFd0VPM201Z1ZhbWVoeFRkZUo0bkV6STFMSm1hajh6VkNNTGI1?=
+ =?utf-8?B?aXVLTDZYQkhCbm9pbnBUZDlYU0JVczJ1b0t0OWYxWGQrRmdxOUFGRW1acEpl?=
+ =?utf-8?B?VnQ0U0JsSmNPWFlpTFJXam1HcWdRSHcycktZcHRVeVFTZ3BONHpXTGZFWnVK?=
+ =?utf-8?B?OXhkS3hqQjQzbU03eHk4ZXkyRnYvWjRVV2hyNmluai9VWUxwaVAwVEdWaDNV?=
+ =?utf-8?B?c2htT1lZL1pXWkpQUHhKUkI3OWdUQkcwVExKdUt5SjVKUUdhZ0JBUXpWRE5N?=
+ =?utf-8?B?S2V6QWxHK1pCL2k5RkJ0MWVQRGRsNW9EMXI2cm1pWlpEYTJpU2xpQVlJR2d1?=
+ =?utf-8?B?cVY2enFBTnd3KzJvMURhV1BXcEZmc2hDalZGUlpwOXpHODBiNnRmRXEyY3c2?=
+ =?utf-8?B?U1BEQjA1WVdURGZsWU91Wm81ZVRFNUJxVEhQMW0zR0NWWlFJSWdDdG5OWUxu?=
+ =?utf-8?B?ZjgzcStMMStyVllPR01JcHVxNmpUZnhxVlYvLzcxcEJZVUNlVTRQQXROaUNx?=
+ =?utf-8?B?SnA3WWxMWE1HNmxTdngvdnNxQm03S2V2ektzeE05TlVzNHNiVC9HOG1STWhM?=
+ =?utf-8?B?L2NiWTJESUtrKzh5OU8xUWkxWjhmNnZIUDFwbmhKSmltKzYzMHZZaWFHYjZC?=
+ =?utf-8?B?UHo2VkdmeXVzbmRXeTFrc1haNFVZcFNoUVdWTkVWckRLUmZIeDNlOFlyam4w?=
+ =?utf-8?B?WGN4ck5ZVWh5WWpNV1plUDNuSzN0bmhFY3NKOHBvYkZKK3VWQTgwclhRS2Fj?=
+ =?utf-8?B?emNXQlRlUmZYODRKeHpOaXFxanVlS3pBNjVrYW9HQkhTZzJ0WlhCTnVEeHNY?=
+ =?utf-8?B?Y0VidWFxOEpaZGpSMTl2OE04cGlNNnlpSmFVNFB4TjZzUTZpU0FHUnJPZ0tk?=
+ =?utf-8?B?bE5VckpLZW9UUm15RVp3NFVIQWhPVkhEUDlkRFM2TkFMczY4cnNLOW1RWWt4?=
+ =?utf-8?B?TmR2bHR3cGU1b3haTjU2amZiMW50dUFBN044dUp5VDljSDNVRE9BOXRLM1Mv?=
+ =?utf-8?B?VGlzL1lOVmpNSkZhek0vdk5ld2xzd2J4aU43d29acUNzVFYxcVhsVVBiK3Iz?=
+ =?utf-8?B?ZDI0aVBxcjd5WTBHcjVkS2QxOUN1REJjcWd4cnJxNk1WT1VnNURCYU9oQy9B?=
+ =?utf-8?B?b2FYUVZDdUFLVThuMVFTTTlmZWxPblVNMHc4aWdHUTRyU0g2OTloRDNqcnFF?=
+ =?utf-8?B?SzBzRzRMZjFYZDkyZjdLYW91aHJJaWZFT2xka1p4NmxYYUh2OTh6MWJ0V29M?=
+ =?utf-8?B?c0FrYUNXZXZ6OVB6aDh1Ym1tTDJWMFN6QWxzWXBJOW80TnZhSmJlVUNlSWph?=
+ =?utf-8?B?UWVCVndMTC9CYm5peGlOcGVWS2NLeG5WV3p5dVRNU0VLSHJoRXMrVGg5VERi?=
+ =?utf-8?B?ZlRXS3BvWE1MMjBmV05YUXVyTzVycFQ0VFdxYTdnem5XZGFCWndISEFnOEx1?=
+ =?utf-8?B?RU9zdnNXOEJVSlc4Z3BQRWROT0lwRXVSTTlQN2R5T0ZuZllncnA4dz09?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0fc73125-91c7-4bca-e48b-08df3363207e
+X-MS-Exchange-CrossTenant-AuthSource: GVXPR04MB12316.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Oct 2026 13:14:55.1987
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: bx9j/rIPHbwNx0mSIe3W6vqpZZvcLE8tLJ4JyvaeXIqObqaVVfSrzxwj9KK7jAprS0cCRhSzVH+jjcwha8rVtg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10827
 
-On Mon, Oct 26, 2026 at 09:25:20AM -0300, Leonardo Costa wrote:
-> Hi Frank,
+On 10/26/26 14:35, Stefano Radaelli wrote:
+> From: Stefano Radaelli <stefano.r@variscite.com>
 > 
-> On Tue, Oct 20, 2026 at 11:01:30AM -0500, Frank Li wrote:
-> > On Tue, Oct 20, 2026 at 07:33:10AM -0300, Leonardo Costa wrote:
-> > > On Mon, Oct 19, 2026 at 02:37:41PM -0500, Frank Li wrote:
-> > > > On Mon, Oct 19, 2026 at 07:17:16AM -0300, Leonardo Costa wrote:
-> > > > > From: Leonardo Costa <leonardo.costa@toradex.com>
-> > > > >
-> > > > > Add a device tree overlay for the VGA output available on the Apalis
-> > > > > Evaluation Board, which is driven from a parallel RGB interface passing
-> > > > > through a non-programmable video DAC to a VGA connector, without VESA
-> > > > > DDC I2C signals.
-> > > > >
-> > > > > The non-programmable video DAC consists of a simple resistor ladder that
-> > > > > converts the digital 16-bit RGB signal to VGA. The VGA output is gated by
-> > > > > an active-low data-enable signal.
-> > > > >
-> > > > > The overlay is also combined with the various Apalis Evaluation Board
-> > > > > device trees to provide ready-to-use DTBs.
-> > > > >
-> > > > > Signed-off-by: Leonardo Costa <leonardo.costa@toradex.com>
-> > > > > ---
-> > > > >  arch/arm/boot/dts/nxp/imx/Makefile                 | 21 ++++++
-> > > > >  .../boot/dts/nxp/imx/imx6q-apalis-eval-vga.dtso    | 80 ++++++++++++++++++++++
-> > > >
-> > > > what's difference with
-> > > >
-> > > > https://lore.kernel.org/imx/20261019-colibri-imx6-overlays-v1-5-e4d028727382@toradex.com/T/#u
-> > > >
-> > > > Is it possible share one dtso also?
-> > > >
-> > > > Frank
-> > >
-> > > Hi Frank,
-> > >
-> > > The Apalis iMX6 one needs to set up the connection between the IPU the
-> > > LCD interface (endpoints ipu2_di0_disp0 and vga_display_in), and the
-> > > Colibri iMX6 one uses a DVI connector instead of a VGA one. Most of all,
-> > > the bridge on the Colibri iMX6 doesn't have any control signals, while
-> > > this one on the Apalis iMX6 has an active-low data-enable signal
-> > 
-> > This make sense to use difference dtso to cover it. Is it use name
-> > imx6q-ipu-di0-vga.dtso, because this dtso have not boards specific part,
-> > which can reuse for other similar hardware? Or we can rename it when reuse
-> > happen.
+> The reset input of the ST33KTPM on the Sonata carrier is active low,
+> but its reset-gpios property is declared GPIO_ACTIVE_HIGH. This
+> reverses the asserted and deasserted levels of the reset signal.
 > 
-> I think the overlay should be kept as imx6q-apalis-eval-vga.dtso. As it
-> currently is, it's easy to identify the hardware it may be used with. If
-> another board is added which uses the same interface in this same way,
-> we can evaluate if it's adequate to change names for reusability.
-
-2 more cents. There is no such other board in the toradex portfolio and
-it's very unlikely we are going to build any new board with an old VGA
-interface.
-
-Francesco
+> Use GPIO_ACTIVE_LOW to describe the reset polarity correctly. This
+> fixes the TPM not responding on I2C and the resulting absence of
+> /dev/tpm0.
+> 
+> Fixes: 770aba46ea0f ("arm64: dts: imx8mm-var-dart: Add support for Variscite Sonata board")
+> Co-developed-by: Luan Rafael Carneiro <luan.r@variscite.com>
+> Signed-off-by: Luan Rafael Carneiro <luan.r@variscite.com>
+> Signed-off-by: Stefano Radaelli <stefano.r@variscite.com>
 
 
+Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
+> ---
+>  arch/arm64/boot/dts/freescale/imx8mm-var-dart-sonata.dts | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mm-var-dart-sonata.dts b/arch/arm64/boot/dts/freescale/imx8mm-var-dart-sonata.dts
+> index 57d29a5c3821..2644b7c1239c 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8mm-var-dart-sonata.dts
+> +++ b/arch/arm64/boot/dts/freescale/imx8mm-var-dart-sonata.dts
+> @@ -259,7 +259,7 @@ st33ktpm2xi2c: tpm@2e {
+>  		compatible = "st,st33ktpm2xi2c", "tcg,tpm-tis-i2c";
+>  		reg = <0x2e>;
+>  		label = "tpm";
+> -		reset-gpios = <&pca9534 0 GPIO_ACTIVE_HIGH>;
+> +		reset-gpios = <&pca9534 0 GPIO_ACTIVE_LOW>;
+>  	};
+>  };
+>  
 
