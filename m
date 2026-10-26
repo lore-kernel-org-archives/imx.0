@@ -1,103 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.9
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793006951;
-	b=rRCp8sOK0C+WG4xB3TNxrs3Yl3WUmE853SPgf7dJtjf3zvduIQEimC3urmeWWZ66JKmJ
-	 x6WCGydORrgSeWMtVkwRASCHxNJpgYJBMepmwqlNJBiRo8zt3hhoZZpCHJFXvR7XCcb1E
-	 iCynnWlSZf4Sx4xmjPpkg6cYp4ofzs5jkaVJ2YWmZqCkRFrOPZUMT3qa2ESwgtxJxGPd7
-	 oUTnpJAFmWwQe3Xhe0QNdC3hg8a948FM16H2Pf0rVnpEXN/Fj/hGVqTukTVy3g/vrmo2+
-	 15eMqYoySq9hdkF84PFbLxQXX0K9/yhOF5F4dJYyOiMB2+HBAcZEEIeFbZxjv1is2eQ==
+	t=1793007233;
+	b=Yes+GbiLiE2EWAugDHuvFoq90QdB4TNXtEXhXJHS8hFRHNURkcB+HE01p9DuVRr0NVET
+	 jtg/Dfe1p9EEuim1SaSWH1cEk3Vrg8eg6Q8QZ/lw0WTTyf2WrMoIp321e7/h7+F22X7GG
+	 7Ul+guqUgf6n1GjO0bjGmPLYvroToxrxLbJRpyGc/iN+H7aFR8oIlgg3pJiC6aHQnEuF1
+	 TMUHoWUukCyaMMJhwMtHCwyfszCPkVpb1VT+UGUxRah7MZyccfOvC+o6dZGMo/6O70fSz
+	 xgf0s0C+siPLrcdbnQQUZQhxT5E3ulU3//aRU85feUIE1Q8/UC+dtunA28sLg7INl3A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793006951;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:X-Google-Original-From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=iHJl2Qh8Tnlk572C5kNHQyc3XqOREsPzi1FpNma4L3I=;
-	b=YQ9co67xiynvBtxXHzc2HiZta0FMl7mKJro4o6TSqcuV8aY1jtqBEy6ZiyeTALW5R68f
-	 WJQNISqQ+ZurXr7qihucZzMA8bscePrFTycsDnlu9ZlrW/WeDX/umnasG1TS8ej2iV3kB
-	 Gz7yyt/zWeeQuC9qe1Ca26TecD5htqUrwmxDW4rLtePoe4fJuXreFbXYvbYeznfk439hR
-	 5KNZ6orzqaANEVoFxy7AjS6uFWufivKI877CrpQTypoN41LPHFYwyKFw+5aLkYjA6tGvz
-	 /rIFpBQOpUx1qhFiIwm33IDtTodIxyDZEi6/Q7wSOo/jSNI2XVs4q6+MfQ+yEWL7b4Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793007233;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:Content-Transfer-Encoding:In-Reply-To:
+	 Organization;
+	bh=0WRy0PlXijTVPaZN+8guL59byar3K3OLJbxaZMhuvdo=;
+	b=ZetZg366xLF6DmYtlOTB7QmVpr7ygJqTzYPuJ5xkV+JhSoI5iDE0M6xdApdNpu7ZIxxe
+	 wjKztDKyFcsVty9Uttkg2VdobWBpesHK7Rk7zU51lZjwPYq1p6pCu6Y5MY1WdbPPYCPCY
+	 hEErs5t8/+IvzHaA/x6LBiTCYNyZ9Im4JY5EiR8oAgEp2L2zYoARpfpfopASY4CJus7VA
+	 NUNpMxq5W//3wLW4u/k2qA6Xx0udj5vQ49OMRHY2j2HjAsuqDlIeBya5LENPTtDzER5B4
+	 9q5vidOkTrcq9BipCVW852M1hDU7x350bQpNqS9RaTVnECaNCf/qlWaLjFsyJYdGPpQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=Voxj4o+P;
-	arc=none smtp.remote-ip=209.85.128.50
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ZQe2ijxF;
+	arc=none smtp.remote-ip=198.175.65.9
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EF0A606A332
-	for <imx@lists.linux.dev>; Mon, 26 Oct 2026 09:29:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9EF0A606A332
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6FEF606A31A
+	for <imx@lists.linux.dev>; Mon, 26 Oct 2026 09:33:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D6FEF606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=Voxj4o+P
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4a2d6cf958bso8660415e9.1
-        for <imx@lists.linux.dev>; Mon, 26 Oct 2026 02:29:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1793006949; x=1793611749; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=iHJl2Qh8Tnlk572C5kNHQyc3XqOREsPzi1FpNma4L3I=;
-        b=Voxj4o+PLSVI6a7dCPh4Uze9azZnUaHYrao2JqsLoEb+OQRWhhAl31FWFEaz38z+LM
-         9momdFTJfZiLd6hwseP5FKNKNh7YB9qpWE6IC2DIVq2meCjS3czs5GarCoBYPAzzuCOv
-         hxjzeqQuAX7VJWoAk+Im/n55lqbbaihrcdNBJ9ifD2Zd1/0iEPBMKczKwSGkmG/cp8Mu
-         5TqwBhw7gDLezi5xFzpd7CF2OC18MM02ci30c6RDz92yhIMX+NrKCER0n5Ow6v4IxAZB
-         HjtWB4DO+vyFZnVoyRK0eLajsKAWhdYBsWaxlF1emQ2mVUsRGBoTxa337zU5Hnxtetg9
-         TWXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793006949; x=1793611749;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=iHJl2Qh8Tnlk572C5kNHQyc3XqOREsPzi1FpNma4L3I=;
-        b=iJVAhA4WoyfawX/G4IJZTNQhflaG/x1Yy/kIy7xEUoXVMaiU4Rxzr50GSMUoHb8XOK
-         d/BqBRoI0MRyBHzFhWV+hAlS3N3tQGqszBG23AqcdIp7oNsQ1jXbmJhwRc9YMwhPCs2a
-         /loQiH9W/cDnlw6dfD3xXiuTj+KnBw08u5AxQFaBq760H0ucrD6WGIjR/KFkhhUF38dK
-         ab+KYjhzI6cXJwD12x+uY/H/YlyXIxYJ0gbbH6/lulRIhk05DSW3tE729tBF8ExmURz+
-         r6e4pEXyScYFEwMna0RfpiM/BcycW3UYIP1hCdBU0aIPsjDTBLg3BVEW6o4U0BQSR97m
-         aE+g==
-X-Forwarded-Encrypted: i=1; AKwUvBxvTKmKltBUG3B9Fmg7oBjzGEYJ1og/ZHM6AYwVjjrLnPMwgT7lgkux+x2/yzP6h9RldqI=@lists.linux.dev
-X-Gm-Message-State: AFq9FYL00SiQ7FmI2zZIF+0L2Ayc8q00454H2hIWhaMlwvI2wtGKUNuS
-	quosYK04uX/P6AhCuMiLT2ml81ijBK1oq5tQzE/KoFDb40FL67I8vpyj
-X-Gm-Gg: AYBFou0fTspf/W5uDOlt2Hr9/cM6sToATZmrEyoPuSklnMfVriNcPvFJS94e2cR4A6a
-	KxbSeEe392YYxDAn9/fUvmNcvHlmKzru5kS7G/tkNe1BFDxubrlePRw+U/3jR8qLnJIydYZntuk
-	cDlV/QbxIsF6jamXu5BadhLE1umB2UiWfnVDoK5ZjX2mKHUgNL9NFgnS7A4u32gCJsQd8rbFj+n
-	Uos/kcwBvMKX7tpN/PwlXPid5TfyPEG0PKxH6kzDHzv10DLAJss5QCF79Pj1jnsKe+M8WD7qYNB
-	NtoFoxOQjAdUC6FP4iSiwjxGv3TzK6nVOB9u4bnGDFNpFlE8WW5kOMkE+fasOv7tzrI+31n3QUy
-	SiDXmU/KygEoyAKCes+h8fwh3VgdfOldToqqW98T5NFnhVYBRstYeBPFWP0pTyYVJPzt9g4Vtqa
-	B+LgfeEvFgruRVd7lJLPb89ovq4GMWDEz9OWoS5uA7fw2wzysnUi1d5UM3AEIU2H2p6T5+BEUDN
-	uRxHetcsvlQ8mv7Sq8Wv7S1w2AmMTDP1YF+lJ7WfEz/tbMs/3G1FClZErmKMXseH2yR8qZFzdQl
-	ZUC3+nNdYvgqAXqy7SSQJ4hOiFrcw6KUBiYgIW46TXeld+gz/4k9XfQL/6oB3dWDyJYnh0IgDWg
-	=
-X-Received: by 2002:a05:600c:a04:b0:49f:fe39:5bc8 with SMTP id 5b1f17b1804b1-4a7555d89c5mr4396695e9.12.1793006948732;
-        Mon, 26 Oct 2026 02:29:08 -0700 (PDT)
-Received: from GLaDOS.station ([187.13.216.220])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a35a5822a7sm187356525e9.11.2026.10.26.02.29.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Oct 2026 02:29:08 -0700 (PDT)
-From: Stefano Radaelli <stefano.radaelli21@gmail.com>
-X-Google-Original-From: Stefano Radaelli <stefano.r@variscite.com>
-To: Frank Li <Frank.Li@nxp.com>,
-	linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Cc: pierluigi.p@variscite.com,
-	Stefano Radaelli <stefano.r@variscite.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ZQe2ijxF
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793007234; x=1824543234;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=f84sV62ooKOvjIhQKXtEC/TuKGIbIDblS98potdMs0c=;
+  b=ZQe2ijxFuR9wM1a3qrmGobGQm7HTNiGEN1ja9VDRGDQfyu9nCUXFeweY
+   NfYUy9CZR2BG4Xkw6/sLA1lv5pDIEh1eGcYb1t5zSPvuam7dmhluSCJDA
+   o/LcuUWjZdoUxaNVkuzMssT18boQdDcmfDJEwUnxs4e+xgOWKHUCFXq4o
+   Qgf9P8eNhLYAaYmiePIssrPU8CDeXaNSorV+waujs5tXSah9C9VCc3F4k
+   7zn5/0NUtar5RBLbiq40I5M/Xeg31dwDCPLH3uAm1umGaElbrvL5bXH6p
+   U71NfIG3oMwYEE8xXuijjq3R53m1/ed+n9HJ2Xu/UD3KTrXVBneS7ns6t
+   g==;
+X-CSE-ConnectionGUID: bo1P3rYVTBqRwRGg40tcnw==
+X-CSE-MsgGUID: yGR5sY3sTGuNRUyyOu8+8w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11946"; a="1546606"
+X-IronPort-AV: E=Sophos;i="6.27,179,1787036400"; 
+   d="scan'208";a="1546606"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2026 02:33:53 -0700
+X-CSE-ConnectionGUID: fVvhHvtoSG2AkfgtDxVUUQ==
+X-CSE-MsgGUID: OqFYijmUSTSItatMUaeiwA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,179,1787036400"; 
+   d="scan'208";a="4200056"
+Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.245.93])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2026 02:31:59 -0700
+Date: Mon, 26 Oct 2026 11:31:56 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: James Hilliard <james.hilliard1@gmail.com>
+Cc: "Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Raul E Rangel <rrangel@chromium.org>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Tony Lindgren <tony@atomide.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Richard Genoud <richard.genoud@bootlin.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Jacky Huang <ychuang3@nuvoton.com>,
+	Shan-Chun Hung <schung@nuvoton.com>,
+	Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Luan Rafael Carneiro <luan.r@variscite.com>
-Subject: [PATCH v1 1/1] arm64: dts: freescale: imx8mm-var-dart-sonata: Fix PCIe PHY init
-Date: Mon, 26 Oct 2026 10:28:58 +0100
-Message-ID: <20261026092858.10591-1-stefano.r@variscite.com>
-X-Mailer: git-send-email 2.47.3
+	Fabio Estevam <festevam@gmail.com>, Timur Tabi <timur@kernel.org>,
+	linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v5 2/5] serial: serialize asynchronous write wakeups with
+ the port lock
+Message-ID: <at8eDFj2WNaXDaot@ashevche-desk.local>
+References: <20261024-submit-serial-8250-dma-cancel-v1-v5-0-9e52968928d2@gmail.com>
+ <20261024-submit-serial-8250-dma-cancel-v1-v5-2-9e52968928d2@gmail.com>
+ <alpine.DEB.2.21.2610250459200.42255@angie.orcam.me.uk>
+ <at4bw-G8czG-G7Wl@ashevche-desk.local>
+ <CADvTj4psJcY2T1PG9H8_hJWjz62R7unj3PPgv3FrVquUMFVhGg@mail.gmail.com>
+ <at5qKehogAjTa-fA@ashevche-desk.local>
+ <CADvTj4qSgE6Rc--mWuqAcc8HTqN9EFOS_JM8Hp8e_=ka_ZLa6w@mail.gmail.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -107,37 +105,60 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CADvTj4qSgE6Rc--mWuqAcc8HTqN9EFOS_JM8Hp8e_=ka_ZLa6w@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-From: Stefano Radaelli <stefano.r@variscite.com>
+On Sun, Oct 25, 2026 at 04:11:08PM -0600, James Hilliard wrote:
+> On Sun, Oct 25, 2026 at 2:44 PM Andy Shevchenko
+> <andriy.shevchenko@linux.intel.com> wrote:
+> > On Sun, Oct 25, 2026 at 02:25:46PM -0600, James Hilliard wrote:
 
-The PCIe PHY times out during initialization on the DART-MX8M Mini
-with the Sonata carrier, preventing PCIe device enumeration.
+...
 
-Add fsl,clkreq-unsupported to configure the PHY for operation without
-CLKREQ# support. This makes the PHY driver clear AUX_EN_OVERRIDE,
-allowing PHY initialization to complete.
+> > Some people might want to test the stuff. And sending too often you actually
+> > will get the opposite results, people will be tired to even start reviewing
+> > and/or testing your code as it's changed way too quickly.
+> 
+> My thought process was that people wouldn't want to be testing code that
+> had known bugs flagged in Sashiko reviews.
 
-Fixes: 770aba46ea0f ("arm64: dts: imx8mm-var-dart: Add support for Variscite Sonata board")
-Co-developed-by: Luan Rafael Carneiro <luan.r@variscite.com>
-Signed-off-by: Luan Rafael Carneiro <luan.r@variscite.com>
-Signed-off-by: Stefano Radaelli <stefano.r@variscite.com>
----
- arch/arm64/boot/dts/freescale/imx8mm-var-dart-sonata.dts | 1 +
- 1 file changed, 1 insertion(+)
+Sashiko reviews are not visible in my or any other mailbox. To see them I have
+to go to some URL and so on, meaning to waste time to see why on the earth the
+new version has been sent. It's better before addressing Sashiko comments,
+reply to all people involved and to Sashiko's original email, so it will be
+visible in the previous version why you issued (actually about to issue) the
+next version. And before even issuing it, wait for a while, people might
+disagree with Sashiko judgement or your replies on how to address that.
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-var-dart-sonata.dts b/arch/arm64/boot/dts/freescale/imx8mm-var-dart-sonata.dts
-index 57d29a5c3821..ccc81e5b3d36 100644
---- a/arch/arm64/boot/dts/freescale/imx8mm-var-dart-sonata.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-var-dart-sonata.dts
-@@ -267,6 +267,7 @@ &pcie_phy {
- 	fsl,refclk-pad-mode = <IMX8_PCIE_REFCLK_PAD_INPUT>;
- 	fsl,tx-deemph-gen1 = <0x2d>;
- 	fsl,tx-deemph-gen2 = <0xf>;
-+	fsl,clkreq-unsupported;
- 	clocks = <&pcie0_refclk>;
- 	status = "okay";
- };
+TL;DR: this mailing list is *not* a playground with you and Sashiko, the whole
+community is behind it.
+
+> > Settle down first
+> > with something, put on the cover letter the answer why not all Sashiko's
+> > comments are being addressed (for example, due to amount of patches or the
+> > series being focused on a certain issue).
+> 
+> So, in general I've been always attempting to resolve known Sashiko issues
+> in every subsequent re-spin, so that would be a bit tricky since I wouldn't be
+> aware of the Sashiko issues until after the series has already been sent.
+> 
+> Usually the subsequent issues that get flagged are new issues only discovered
+> after each new re-spin.
+> 
+> I do have a bunch of UART/DMA related patches that don't have flagged Sashiko
+> issues so it probably makes sense to try and review those first while the larger
+> series that have Sashiko flagged issues are still stabilizing.
+
+Yes.
+
+> > > [0] https://github.com/sashiko-dev/sashiko/pull/389
+
 -- 
-2.47.3
+With Best Regards,
+Andy Shevchenko
+
 
