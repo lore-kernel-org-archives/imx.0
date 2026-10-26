@@ -1,72 +1,93 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.13
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793013124;
-	b=4+kEq2NMQYQbgNflRPWBAt+ct3MlbC6nAJ9BY8p3sjWKKqoOx95oj5YUAgSB4TfuHw/f
-	 o/tl1N//f76VbUoXT4cTwV3Eu8JYk6ol0AkFZ4fIsIkurCwOIOT7qtsm5kTnAVfokG9eQ
-	 IAEHjzDz3L8eqIkJsf7PJ9VOURM32aQ51GBrSS/bTD1/93YgmMYILHspF1iFjPMPQ73C5
-	 N+WbuYybp+PUhxUvFYtMJcEsDBLfSDzDupA5HYn20GcpV5j7zkEi2QsPzsIBtVNCOjutZ
-	 nHXMyiLVRQAGvhteZwRAZzavpPOxsRz2SJjWG0+TVKI+KCY0Bn/5NoeXD04uMrWepfg==
+	t=1793013370;
+	b=GwgERmI6RKV2Xkyg1xpYEqW1kY4+9tihGdGFPWKwPIbfFDMFpsrPotVbjctPqlfDiIta
+	 pqBiUgTYREqRlWK+zr0qA0UhZnqaMJWC7Y1mp53H/YkpWq0g1o78gW7i2p1x3QD1XMpda
+	 sF3UvFbuzOte9aDrxSCzyTUCYKti79cILuBNd292dTNVLfxYPKDbrDTugpXq3wMGyp55d
+	 WeqivDanSrqdKoYf/aYoIpw+nZi6hlTwkCK8LwGsnCauwm5UX5SyrqCOdr4bWpAwfm1Ph
+	 /NIwkwNlpCdq5tsPV9h/i2uuUp5kGawDNlpnMeCSPLLf36DFtz+eCMG4Mtgr2NWCWNA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793013124;
-	h=DMARC-Filter:Received:DKIM-Signature:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=Mir512ayQBk8Th19Wwa5fXkynn3PrVlhG4qwhGvgDug=;
-	b=N7QgBIU/Gz88qdM/BNkvq9dFG8/XX3wKswHqbHkbUlGhPlxVS0DPcbGBHqNSea/Ts1ih
-	 /kutCNmH2C9T/Ti0PC263ujZp0m4kvm4OJ0l8ZMv9fH6HdEURWEtX+Bt2+wnpcm8lm5kF
-	 G2P6CCaF0c/K0uDndTo2JeOVHkuRnJl85a1AEGXBTtWmBzOMpNUI6NNimJPMBGwoMLAms
-	 kbX+XQOVa8TgNhbY442AkojlUb/dHfX5/y6VwPCJYq+lFyZ6H23GbND7UBXR/BVXbUqrT
-	 sAI0y5YdTL8itFbZcsjx+mjkNHY09jEnBbT/r8Wlf4oDN3j6PDGF4KCtx9kcK8fA0cA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793013370;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:Date:To:cc:
+	 Subject:In-Reply-To:Message-ID:References:MIME-Version:Content-Type;
+	bh=LAzq4cyS54q1OMpA3stV0scLcFCff1wzup/apzkv5TY=;
+	b=JEhPZn1O5sysclDR4BE+b4QxECnrdDNBBYmTwVBiedwlyZ7pSVQkSQAkGURciZoDX/WN
+	 a5+/ZmwY7UoX4aTm+iWRoh4vZeH19dvUMGnNznaadAV0rPKCP/fbddX4ajpUZkqs62Tjk
+	 h9btej5iw+8VaRG+4Pa5NH7Usv/lw7VKJMJNBv6bSiabPZ1FtdDnwlFEgt7Hs8iAbh2+r
+	 WqWvyOsGznys2I/Pmtak+6/74FYwRB5MkssoUOa6tN7Pw0U92yga+RlVzAZMG24nK7zRE
+	 R8vg5xaHj8T9t7Upak/J4nH5AnQHbQiBW7orK3E99FEewai9K8vykfSFfWl0ioadl8A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=dolcini.it;
-	spf=pass smtp.mailfrom=dolcini.it;
-	dkim=pass header.d=dolcini.it header.i=@dolcini.it header.a=rsa-sha256 header.s=default header.b=bKSSUOyG;
-	arc=none smtp.remote-ip=217.194.8.81
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=aBNUT5N+;
+	arc=none smtp.remote-ip=192.198.163.13
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E992D606A96D
-	for <imx@lists.linux.dev>; Mon, 26 Oct 2026 11:12:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E992D606A96D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52C52606A320
+	for <imx@lists.linux.dev>; Mon, 26 Oct 2026 11:16:09 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 52C52606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=dolcini.it header.i=@dolcini.it header.a=rsa-sha256 header.s=default header.b=bKSSUOyG
-Received: from francesco-nb (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch [83.173.201.248])
-	by mail11.truemail.it (Postfix) with ESMTPA id 3901F1FAF1;
-	Mon, 26 Oct 2026 12:11:53 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1793013113;
-	bh=Mir512ayQBk8Th19Wwa5fXkynn3PrVlhG4qwhGvgDug=; h=From:To:Subject;
-	b=bKSSUOyG8ak3KUfWnDXAZgm8ls9GL+KDkr2Kcu3F0K3Su7qWrNK2tuXLVc40a18lz
-	 3xP99jb3Ax61iQdD7ai9swAlizqt+gDpVns32Z4N86fPoPxh3zOAhHyyuUKkzNmDM8
-	 A94PD5A28b/WT40GxCiVKIwdky4PGgW2VRuWIHPXwYx1dBagkxcyODPmMs1j3MZk/i
-	 kX1hPfZHkXK6VTAxdsj2+AliHH0pB9TWGIb5UngiBVBHNGDsWLATYQvqh8YYXDHhFg
-	 Kk+MxCaRODAN9XbK/QRxqBi7yWi9VoDsBQh/OwzvYjYqzqKHjsnEYCZvF1EoFcmE6k
-	 9EVYVW1blB0hw==
-Date: Mon, 26 Oct 2026 12:11:49 +0100
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Frank Li <Frank.li@oss.nxp.com>
-Cc: Francesco Dolcini <francesco@dolcini.it>,
-	Leonardo Costa <leoreis.costa@gmail.com>, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, Frank.Li@nxp.com,
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-	francesco.dolcini@toradex.com, leonardo.costa@toradex.com,
-	hvilleneuve@dimonoff.com, marex@nabladev.com,
-	stefano.r@variscite.com, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/7] ARM: dts: imx6q-apalis: Add Toradex Capacitive Touch
- Display 10.1" LVDS
-Message-ID: <20261026111149.GA46946@francesco-nb>
-References: <20261001155412.3177428-1-leoreis.costa@gmail.com>
- <20261001155412.3177428-4-leoreis.costa@gmail.com>
- <ar6JnZp1jBvlc8bx@SMW015318>
- <20261002081824.GA7222@francesco-nb>
- <ar_bsQbD-IbvUf86@SMW015318>
- <20261005075319.GA7692@francesco-nb>
- <ateZGwrFGfD1j-i3@lizhi-Precision-Tower-5810>
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=aBNUT5N+
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793013369; x=1824549369;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=AphQK58+g81EWzAi3VXX0VFnAVqOX1dQuy1qI7BOKMg=;
+  b=aBNUT5N+KHaeTEMAuOq939zIyfdDS3Enz9D4H5uM7TZE6MCg0MRExZxr
+   OkzzIQpHBc4D4j1Cch/jUJAT2edn001nuBn7XUZ4BuGkLrUcWXjrVeVM7
+   ajrJZPN0LHfGq4dOg3kquTg06Ud/Y6N+Ug0vafDDgpwcpa7OR8ZiK9AIs
+   zBUMD08auiUrSpO1WCAt8CKCwg/4q+/V/0+plFxsKNvS6gpa9O3yKokjq
+   u1uuYkQSEn5mg/1vtgwiNR1MiQSCBzy6HRfB72VzYjRBalvwcH+qTtqGB
+   RTlVxDFoRgm+7/d47nmnydUFLY7abgQiVQL6Mv1m0nmlTIoQ/beh/yVxl
+   g==;
+X-CSE-ConnectionGUID: 6xipk4KWQAC+qUHN8RZltQ==
+X-CSE-MsgGUID: m44w/HJjRHOW0cQByOrllQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11946"; a="1670453"
+X-IronPort-AV: E=Sophos;i="6.27,179,1787036400"; 
+   d="scan'208";a="1670453"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2026 04:16:08 -0700
+X-CSE-ConnectionGUID: iiWYMFKDTuWiIPMIP/jZVw==
+X-CSE-MsgGUID: +sweVC7nS1K/YdC9OecmNA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,179,1787036400"; 
+   d="scan'208";a="4635828"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.109])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2026 04:16:00 -0700
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Mon, 26 Oct 2026 13:15:55 +0200 (EET)
+To: James Hilliard <james.hilliard1@gmail.com>
+cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+    Jiri Slaby <jirislaby@kernel.org>, Raul E Rangel <rrangel@chromium.org>, 
+    Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+    Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+    Tony Lindgren <tony@atomide.com>, 
+    Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+    Richard Genoud <richard.genoud@bootlin.com>, 
+    Nicolas Ferre <nicolas.ferre@microchip.com>, 
+    Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+    Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+    Jacky Huang <ychuang3@nuvoton.com>, Shan-Chun Hung <schung@nuvoton.com>, 
+    =?ISO-8859-15?Q?Pali_Roh=E1r?= <pali@kernel.org>, 
+    Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+    Pengutronix Kernel Team <kernel@pengutronix.de>, 
+    Fabio Estevam <festevam@gmail.com>, 
+    "Maciej W. Rozycki" <macro@orcam.me.uk>, Timur Tabi <timur@kernel.org>, 
+    LKML <linux-kernel@vger.kernel.org>, 
+    linux-serial <linux-serial@vger.kernel.org>, 
+    linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
+    linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v6 0/5] serial: 8250: serialize DMA cancellation with
+ buffer reuse
+In-Reply-To: <20261024-submit-serial-8250-dma-cancel-v1-v6-0-6f366591f566@gmail.com>
+Message-ID: <a011174b-d64c-305b-7dab-62017fc885fa@linux.intel.com>
+References: <20261024-submit-serial-8250-dma-cancel-v1-v6-0-6f366591f566@gmail.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -76,210 +97,211 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ateZGwrFGfD1j-i3@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=US-ASCII
 
-Hello Frank,
+On Sat, 24 Oct 2026, James Hilliard wrote:
 
-On Tue, Oct 20, 2026 at 12:38:51PM -0400, Frank Li wrote:
-> On Mon, Oct 05, 2026 at 09:53:19AM +0200, Francesco Dolcini wrote:
-> > Hello Frank,
-> >
-> > On Fri, Oct 02, 2026 at 11:28:33AM -0500, Frank Li wrote:
-> > > On Fri, Oct 02, 2026 at 10:18:24AM +0200, Francesco Dolcini wrote:
-> > > > On Thu, Oct 01, 2026 at 11:26:05AM -0500, Frank Li wrote:
-> > > > > On Thu, Oct 01, 2026 at 12:52:53PM -0300, Leonardo Costa wrote:
-> > > > > > From: Leonardo Costa <leonardo.costa@toradex.com>
-> > > > > >
-> > > > > > Add a device tree overlay for the Toradex Capacitive Touch Display 10.1"
-> > > > > > LVDS connected via the Apalis iMX6 LDB.
-> > > > > >
-> > > > > > The panel is a LogicTechno LT170410-2WHC 10.1" WXGA IPS LCD and the
-> > > > > > touch input is provided by an Atmel MaxTouch capacitive touch
-> > > > > > controller.
-> > > > > >
-> > > > > > Remove the panel-lvds node from the Apalis iMX6 dtsi, as it is an
-> > > > > > external component that does not exist at the SoM level.
-> > > > > >
-> > > > > > The overlay is also combined with the Apalis iMX6 V1.2 Ixora Carrier
-> > > > > > Board V1.2 device tree to provide a ready-to-use DTB.
-> > > > > >
-> > > > > > Link: https://developer.toradex.com/hardware/accessories/displays/capacitive-touch-display-101inch-lvds
-> > > > > > Signed-off-by: Leonardo Costa <leonardo.costa@toradex.com>
-> > > > > > ---
-> > > > > >  arch/arm/boot/dts/nxp/imx/Makefile            |  6 +++
-> > > > > >  ...6q-apalis-panel-cap-touch-10inch-lvds.dtso | 53 +++++++++++++++++++
-> > > > > >  arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi | 13 -----
-> > > > > >  3 files changed, 59 insertions(+), 13 deletions(-)
-> > > > > >  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6q-apalis-panel-cap-touch-10inch-lvds.dtso
-> > > > >
-> > > > > similar 7" case, add panel module name in file
-> > > > >
-> > > > > imx6q-apalis-lvds-panel-lt170410.dtso
-> > > >
-> > > > This does not work, sorry, the current name is the correct one, for
-> > > > various reasons:
-> > > >
-> > > >  - the product is a display made with a specific connector, touch
-> > > >    controller and display and more. The actual panel is just part of it
-> > > >  - the current name wholly describe the product, it's a public product
-> > > >    with an official name, all of that is clearly linked in the commit
-> > > >    message and comments. there is no ambiguity.
-> > > >  - the same toradex accessories are not module specific, they are used
-> > > >    across multiple families/carrier board. It is a whole ecosystem that is
-> > > >    building on top of standardized interfaces and connectors. The same
-> > > >    overlay file is available for multiple boards and in multiple SoC
-> > > >    vendor directory (as of now TI and NXP, soon we are going to have
-> > > >    also QCOM). Having a consistent naming scheme is important, we cannot
-> > > >    call the same things differently every time.
-> > > >  - there was a situation in which we did a new product revision of a
-> > > >    display, specifically the "Toradex Capacitive Touch Display 10.1"
-> > > >    LVDS" there are two versions. The official product name is the same,
-> > > >    apart an additional version number, one is version1, the other is
-> > > >    version2. They have differences, and it's not just the panel, more
-> > > >    stuff changed, so having the panel name in the filename will not
-> > > >    help. v2 support is already in [1], for reference.
-> > > >  - the toradex naming scheme is not encoding the actual part number used
-> > > >    in the product name, for example we have apalis imx6 v1.2 that uses a
-> > > >    different touch/adc than previous apalis imx v1.1. The product has a
-> > > >    different schematics, different BoM and so on
-> > >
-> > > Do you have schematics number to identify it?
-> >
-> > Why do you ask specifically about schematics? We have schematics and we
-> > have a way to identify a product to the related schematic. The way we
-> > identify schematics, whatever is a number, a string, or anything else
-> > seems not relevant to me.
-> >
-> > But yes, answering you question, we do have schematics and a unique
-> > way to identify them, and it's not using "numbers".
-> >
-> > What matters here, is that Toradex products have a unique number,
-> > and we have a way to trace product revisions.
-> >
-> > So, for each product we have
-> >
-> > <product name> <pid>
-> >
-> > and <pid> is 8 digits, the first 4 digits is the end customer product
-> > definition, and it matches with the product name, and the last 4 digits
-> > is the product revision.
-> >
-> > All of that is documented, see https://developer.toradex.com/hardware/hardware-resources/general-product-information/ordering-information-and-product-identification-pid-pid4-and-pid8/,
-> > and this is what is used for any kind of product traceability.
-> >
-> > Staying on our LVDS 10inch panel example
-> >
-> > Capacitive Touch Display 10.1" LVDS | PID4: 1212 | PID8: 12121000 | (version 1)
-> > Capacitive Touch Display 10.1" LVDS | PID4: 1212 | PID8: 12122000 | (version 2)
+> Reserve canceled transmit and receive storage until DMA and its completion
+> callbacks have retired. Serial-core write backpressure protects a flushed
+> TX FIFO while normal transfers continue to DMA directly from that FIFO.
 > 
-> include  12121000 in your file names.
-
-That would result in filenames such as:
-
-  imx6q-apalis-tdx-panel-cap-touch-10inch-lvds-12121000.dtbo
-  imx6q-apalis-tdx-panel-cap-touch-10inch-lvds-12122000.dtbo
-
-While technically correct, this creates a usability problem. PID8
-("12121000" is what is called a PID8 in Toradex product naming/number
-scheme) tracks hardware revisions, including changes that do not affect
-the DT, such as passive components or mechanical changes.
-
-A user with PID8 12122001 would not know which overlay to use, and
-duplicating identical overlays for every hardware revision makes no sense.
-
-I therefore propose:
-
-imx6q-apalis-tdx-panel-cap-touch-10inch-lvds-v1.dtbo
-imx6q-apalis-tdx-panel-cap-touch-10inch-lvds-v2.dtbo
-
-These names match the product names and versions used in our ordering
-information, documentation and product labels. Users can easily identify
-the correct overlay.
-
-Toradex is responsible for tracking hardware revisions and their software
-requirements. If a revision requires a different DT, we can distinguish
-it with an additional suffix, and be sure that this suffix is something
-that clearly related to the specific product.
-
-> > > > , and there is no
-> > > >    reference of the difference touch/adc in the name. You can see this
-> > > >    information from the public documentation just looking at the
-> > > >    version. or you can check yourself comparing the two DTS in the linux
-> > > >    kernel tree.
-> > > >
-> > > > [1]
-> > > >  arch/arm64/boot/dts/ti/k3-am625-verdin-panel-cap-touch-10inch-lvds.dtso
-> > > >  arch/arm64/boot/dts/ti/k3-am625-verdin-panel-cap-touch-10inch-lvds-v2.dtso
-> > >
-> > > V2 is okay, but "panel-cap-touch-10inch-lvds" is too common. This may
-> > > cause naming pollution if we implement shared one panel dtso for all boards.
-> >
-> > This is the product name, what is missing is the vendor. Given the
-> > vendor (Toradex), the product is unique.
+> The series separates OMAP's locked completion processing and serializes
+> asynchronous write wakeups with the port lock before adding the serial-core
+> reservation helpers and applying them to 8250 TX. Flushing
+> empties the logical queue immediately. While the old transfer owns its
+> storage, write_room() reports zero and write-ready notifications wait for
+> retirement. Failed termination retains the reservation until normal
+> completion, without advancing the reset FIFO. DMA retirement releases the
+> reservation independently of port readiness. Serial core keeps writes and
+> wakeups gated during shutdown until successful startup or resume.
 > 
-> Generally, it is not unique. We met similar problem. LCD panel is EOL.
-> Need reply with new one. i.MX production life is longer than other external
-> componenets. You are still work on i.mx6, even i.mx28 still have some
-> customer use it.
-
-This is precisely why we have product versioning and traceability.
-Toradex owns and maintains its product definitions, including changes
-to internal components. The naming scheme has been designed to handle
-these situations consistently.
-
-> > We could rename all of our accessories dtbo adding a "tdx" prefix (when
-> > they are Toradex products, of course).
-> >
-> > So for example we could have
-> >
-> > k3-am625-verdin-tdx-panel-cap-touch-10inch-lvds.dtso
-> > k3-am625-verdin-tdx-panel-cap-touch-10inch-lvds-v2.dtso
+> RX delivers paused data before the PIO fallback and retires callbacks in
+> process context. Track FIFO access separately from buffer retirement so
+> PIO and the DesignWare empty-FIFO timeout handling can run once DMA has
+> released the FIFO. On failure, retain the requested interrupt enables in
+> the existing IER shadow and mask receive interrupts in hardware until DMA
+> has stopped. Recovery then leaves RX on PIO until reopen. Shutdown excludes
+> new retirement work before releasing the channels.
 > 
-> tdx is good. The problem is that "panel-cap-touch-10inch-lvds" is too
-> generally.
-
-It is the name of a specific Toradex product, not a generic description.
-Together with the vendor prefix and product version, it is unambiguous.
-
-Our DT filenames should reflect the actual products our customers use.
-
-> > This way your concern on name pollution is solved using the vendor
-> > ("tdx") as prefix in the accessory name.
+> Based on tty-next with the posted shutdown guard [0], channel
+> configuration error handling [1], RX TTY accounting fix [2], RZ/N1
+> transfer-length fix [3], transmit-PM shutdown fix [4], serport
+> write-wakeup deferral [5], DesignWare BUSY-safe fractional-divisor
+> programming [6], and Intel MID RX DMA timeout locking [7]. The serport fix
+> is needed before serializing the remaining write-wakeup callers with the
+> port lock.
 > 
-> pollution is just one problem. We need identify it quickly. if you create
-> imx7-xxx-panel-cap-touch-10inch-lvds.dtso, it is hard to know if it is
-> similar existing imx6's panel-cap-touch-10inch-lvds. even it may use for
-> other imx8 imx9's productions.
+> [0] https://lore.kernel.org/r/20261021-submit-serial-8250-dma-shutdown-v1-v1-1-3d3ce383c614@gmail.com
+> [1] https://lore.kernel.org/r/20261021-submit-serial-8250-dma-config-errors-v1-v1-1-c067587d1ef2@gmail.com
+> [2] https://lore.kernel.org/r/20261021-submit-serial-8250-dma-rx-accounting-v1-v1-1-c11795914ab4@gmail.com
+> [3] https://lore.kernel.org/r/20261023-submit-serial-8250-dma-tx-length-v1-v2-1-c3106ef4d2df@gmail.com
+> [4] https://lore.kernel.org/r/20261022-submit-serial-8250-tx-pm-shutdown-v1-v1-1-0e894afa3bb8@gmail.com
+> [5] https://lore.kernel.org/r/20261023-submit-serport-write-wakeup-v1-v1-1-74e7311638a2@gmail.com
+> [6] https://lore.kernel.org/r/20261024-submit-serial-8250-dw-divisor-v1-v2-1-032ca5338359@gmail.com
+> [7] https://lore.kernel.org/r/20261024-submit-serial-8250-mid-rx-lock-v1-v1-1-2b9afdf869d7@gmail.com
+>
+> Assisted-by: Codex:gpt-6-astra
+> Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
+> ---
+> Changes in v6:
 
-That is exactly why consistent naming matters. The same accessory can be
-used across different SoC families. Keeping its name consistent makes
-that relationship immediately recognizable.
+Hi,
 
-Internal component details belong in the DT description, not necessarily
-in the filename.
+This series is moving way too fast with new versions. Please slow down.
 
-> > When adding non-toradex accessory to a toradex board we make explicit
-> > the vendor of the accessory, see
-> >
-> > arch/arm64/boot/dts/ti/k3-am625-verdin-rpi-display-2-7in.dtso
-> >
-> > where we have the "rpi" prefix.
+We're not aiming to who manages to produce highest version counter for a 
+series. ;-)
+
+You're making non-trivial changes so please do expect human review to 
+take time. Cranking new versions almost back to back (or even every other 
+day) will just fill up inboxes.
+
+--
+ i.
+
+
+> - Use v2 of the DesignWare BUSY-safe fractional-divisor prerequisite.
+> - Serialize CLPS711x TX servicing and interrupt-enable state with the
+>   port lock. Use non-waiting IRQ disable in stop_tx(), skip queued TX
+>   interrupts after stopping, and drain the handler outside the lock
+>   during shutdown.
+> - Make the Atmel RX/TX tasklets and SB1250 termios locking IRQ-safe
+>   alongside their interrupt-handler locking, preserving the caller's
+>   interrupt state when releasing the port lock.
+> - Report RX DMA recovery after releasing the port lock, keeping the
+>   state changes and interrupt-enable restoration serialized.
+> - Link to v5: https://patch.msgid.link/20261024-submit-serial-8250-dma-cancel-v1-v5-0-9e52968928d2@gmail.com
 > 
-> Ideally, rpi-display-2-7in.dtso should reused for all boards, which use
-> rpi defined connectors. Now exsiting these combinations reason is current
-> nexus node is not good enough. but we face to this directions.
+> Changes in v5:
+> - Add the posted serport write-wakeup deferral as a prerequisite for the
+>   caller-locking preparation.
+> - Add a preparatory patch serializing asynchronous write-wakeup callers
+>   with the port lock, including indirect CTS and transmit-helper calls.
+>   Keep sleeping register accesses outside the lock and defer SCCNXP
+>   notifications until its controller lock is released.
+> - Use the separately posted DesignWare BUSY-safe fractional-divisor fix
+>   and Intel MID RX DMA timeout locking fix as prerequisites, leaving five
+>   patches in this series.
+> - Separate serial-core write readiness from DMA storage reservations. Record
+>   retirement during startup and shutdown while keeping writes and wakeups
+>   gated until the port is ready.
+> - Wake deferred writers after successful startup or resume, including when
+>   reopening with a retained FIFO, and restart any retained queued output.
+> - Keep the write-ready notification pending while retained output is at or
+>   above the normal wakeup threshold, until TX completion drains it.
+> - Publish resume readiness under the TX restart lock without releasing a
+>   reservation that may belong to a newly flushed transfer.
+> - Release 8250's TX reservation after shutdown has stopped DMA and unmapped
+>   the source; serial core retains control of write readiness.
+> - Link to v4: https://patch.msgid.link/20261023-submit-serial-8250-dma-cancel-v1-v4-0-e759de1839de@gmail.com
 > 
-> And anyway, rpi-display-2-7in is not good name because rpi many produce
-> difference 2-7in panels in future.
+> Changes in v4:
+> - Retain flushed TX reservations through shutdown and failed resume. Release
+>   them after successful resume, or when allocating a new FIFO on reopen,
+>   so retirement cannot wake writers into a closing port.
+> - Treat RX flush as complete once the channel is inactive, and clear the
+>   shutdown guard before startup configures the UART and tests interrupts.
+> - Check completion after a failed pause so a transfer that finished before
+>   its callback acquired the port lock is delivered and retired normally.
+> - Keep DesignWare's BUSY-safe divisor setter after fractional-divisor
+>   discovery, writing DLF and DLL/DLH only after confirming DLAB.
+> - Link to v3: https://patch.msgid.link/20261023-submit-serial-8250-dma-cancel-v1-v3-0-d78f9e4c4932@gmail.com
+> 
+> Changes in v3:
+> - Defer write-ready wakeups while flushed TX storage is reserved, and
+>   serialize the flush wakeup with the reservation under the port lock.
+> - Suppress ordinary TX starts during the reservation while preserving
+>   high-priority flow-control characters, which use separate storage.
+> - Separate RX FIFO access from callback retirement, allowing PIO and the
+>   DesignWare empty-FIFO timeout workaround after a successful pause and
+>   termination while keeping the receive buffer reserved.
+> - Use the existing IER shadow for requested enables and a shared register
+>   writer to keep receive interrupts masked throughout DMA error recovery,
+>   including termios, RS485, modem-status and overrun-backoff updates.
+> - Preserve the timeout-enable bit across stop_rx(), exclude late shutdown
+>   interrupts from PIO, and avoid FIFO resets during RX DMA recovery.
+> - Preserve the completion-path LSR read after stop_rx(), while gating DMA
+>   resubmission on the receive interrupt enable.
+> - Pack the cancellation flags after moving all their accesses under the
+>   port lock, including the recovery worker's snapshot and initialization.
+> - Apply the early-return, shared-helper and line-wrapping cleanups.
+> - Link to v2: https://patch.msgid.link/20261022-submit-serial-8250-dma-cancel-v1-v2-0-088ea51e3891@gmail.com
+> 
+> Changes in v2:
+> - Add serial-core helpers to reserve flushed transmit storage until DMA
+>   retirement. Apply write backpressure during that interval and keep normal
+>   TX using the FIFO directly, replacing the private transmit buffer in v1.
+> - Document the flush callback's reservation, writer backpressure and
+>   retirement requirements, including release before shutdown returns.
+> - Split the OMAP completion refactor into a preparatory patch and move
+>   the RZ/N1 preparation-order and shutdown PM fixes to independent
+>   submissions, keeping four patches in this series.
+> - Take runtime PM references around worker UART accesses, and leave normal
+>   RX retirement to release ownership without reading LSR or restarting DMA.
+> - Synchronize the queued TX ranges before preparing the descriptor and
+>   return the mapping to CPU ownership before releasing the reservation.
+> - Keep the TX transfer length separate from FIFO cancellation, so a failed
+>   termination can account completion without advancing the reset FIFO.
+> - Exclude late RX flush work during shutdown, including Intel MID DMA
+>   timeout interrupts which are independent of UART_IER.
+> - Accept DMA_IN_PROGRESS after successful pause, and recover from failed
+>   pause, termination or DMA_ERROR before handing the receiver to PIO.
+> - Preserve stop_rx() and shutdown across recovery, and retain the
+>   DesignWare empty-FIFO timeout workaround when receiving through PIO.
+> - Apply the requested guard spacing and container_of() formatting.
+> - Link to v1: https://patch.msgid.link/20261021-submit-serial-8250-dma-cancel-v1-v1-0-efe2b89f2303@gmail.com
+> 
+> ---
+> James Hilliard (5):
+>       serial: 8250_omap: separate locked TX DMA completion processing
+>       serial: serialize asynchronous write wakeups with the port lock
+>       serial: core: allow drivers to reserve flushed transmit storage
+>       serial: 8250: drain canceled TX DMA before reusing its buffer
+>       serial: 8250: retire canceled RX DMA before reusing the receive buffer
+> 
+>  drivers/tty/serial/21285.c          |   2 +
+>  drivers/tty/serial/8250/8250.h      |  59 +++++++-
+>  drivers/tty/serial/8250/8250_core.c |   2 +-
+>  drivers/tty/serial/8250/8250_dma.c  | 286 +++++++++++++++++++++++++++---------
+>  drivers/tty/serial/8250/8250_dw.c   |  27 +++-
+>  drivers/tty/serial/8250/8250_omap.c |  38 +++--
+>  drivers/tty/serial/8250/8250_port.c |  31 ++--
+>  drivers/tty/serial/atmel_serial.c   |  12 +-
+>  drivers/tty/serial/clps711x.c       |  23 ++-
+>  drivers/tty/serial/cpm_uart.c       |   2 +
+>  drivers/tty/serial/fsl_lpuart.c     |   2 +-
+>  drivers/tty/serial/jsm/jsm_cls.c    |   3 +-
+>  drivers/tty/serial/jsm/jsm_neo.c    |   9 +-
+>  drivers/tty/serial/lantiq.c         |   3 +-
+>  drivers/tty/serial/ma35d1_serial.c  |   6 +-
+>  drivers/tty/serial/max3100.c        |   6 +-
+>  drivers/tty/serial/max310x.c        |   9 +-
+>  drivers/tty/serial/mux.c            |  13 +-
+>  drivers/tty/serial/mvebu-uart.c     |   2 +
+>  drivers/tty/serial/mxs-auart.c      |   2 +
+>  drivers/tty/serial/sb1250-duart.c   |  14 +-
+>  drivers/tty/serial/sccnxp.c         |  45 ++++--
+>  drivers/tty/serial/serial_core.c    | 100 +++++++++++--
+>  drivers/tty/serial/ucc_uart.c       |   6 +-
+>  include/linux/serial_core.h         |  18 ++-
+>  25 files changed, 551 insertions(+), 169 deletions(-)
+> ---
+> base-commit: 1184f87e2790e8af9be3116f608d2e86b4792d7d
+> change-id: 20261021-submit-serial-8250-dma-cancel-v1-b208f84e89c1
+> prerequisite-patch-id: 3604bfaa3a1c214997de1f11162b81a4541af5ab
+> prerequisite-patch-id: 79dd093ffb35e254e790dffb8887faf51b64f947
+> prerequisite-patch-id: 80a5061d84c055a64c760268febed179c687b99f
+> prerequisite-patch-id: 7dbb404baf1f861982cf6a4b755d39cfec548223
+> prerequisite-patch-id: 40881d81a27b3a1aa45203d171214faaf2197768
+> prerequisite-patch-id: 4456eb7f800cb5d50a70c898e6d5a452a7f0bca4
+> prerequisite-patch-id: c3d8ac0d54d1bfe43657964c517cfa4c7fde11af
+> prerequisite-patch-id: 48659e5ef3f5fb377d0b751f0830c0de4699262c
+> 
+> Best regards,
+> --  
+> James Hilliard <james.hilliard1@gmail.com>
+> 
 
-This is an existing upstream naming convention, already reviewed and
-accepted by multiple maintainers.
-
-Product naming and versioning are the responsibility of the manufacturer
-(whatever is raspberrypi or toradex).  I do not think we should
-second-guess those decisions without a concrete technical issue.
-
-Francesco
+-- 
+ i.
 
