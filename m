@@ -1,96 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.52
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793037958;
-	b=4Xs1YJv6Zhe+sVgTsW5P3j3zqkpFSLnX3eWpcFcqwqW/OIaSfHFGJJkyZ5vk7OXhPuwy
-	 fiDonCoTHk2xjSyCzxVcaI3dtl5G9+ZTNDsSI1Ak258wUQ4sjLDjPLZpOkKcfwH99+nNJ
-	 31El2nL+BbTlMHyUF4IywZPYxN9QMcAADkhInU0HyhQkeS/XSGQJcYsZHWCcMXDDjP86Q
-	 3nltWjjyXpBszif6MAeQ4mITPTHuTjs6MGciLHO48Zxxu1Gd3vOTbiAsfmrkfUxfvEt9M
-	 uNLi3wel2ZFDc8IERmoDv76S1FSEUsPGDjPk7MA4eRkpDaUDOLASkEee1y15Jlh677A==
+	t=1793039456;
+	b=avb7aHQa1WbEErBR3REWnHO/dO6hEHv/3s2tMQ3TVAAgc/e87ZE2JAQG/jYsP8E/bqOl
+	 Z+Jiq4iMeT6Ct/YcGCE2N0TR+ZexjxMquXF4buFquLFocf8yan0zPBETIkt/J4wD05Lkn
+	 Cv7NLPRlXqWV/CBhr0KAMvgTKIh7SyBWaSdTBCVFQmE+jOqNALX3mPRVFvlCPTnMILQ+k
+	 AE4xeUB0JpjHM2NQ+0+AQNsh/BnQmEFQU39RKILwDxFYh8dNj5nth7D5g2honzDEHI5oI
+	 qg/1XyNUJXzc+koA9DqX/0+J58ObfSEXVIXAxrqkJxJySdpggvmh99NfKJJpwBNyJdg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793037958;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:Date:To:cc:
-	 Subject:In-Reply-To:Message-ID:References:MIME-Version:Content-Type:
-	 Content-ID;
-	bh=VP+SWOFadjsPgUdhl4fc+Bf9WWYdA81aKpsuWub6aN4=;
-	b=0YKo9D4ms6tYFmKBDdK7KYo9tpx+TagB2OMSfaozqN+rfRZLbyLT6hEKYusqVTzsw06C
-	 Y/pvaEcOs8bdH2zckVHduMFoyQ3ngrVQ+xZZxHVpxCPWqBlGMEVxUNgn9ysu5PyVi2GUg
-	 LNZsNZe3ICTwKHfmLGCfx291tXOQFGQ3EYWW8zWpdUIv5KCbs8nO+UthP4p+R2wEhbK44
-	 biY95MgdjPeFNH0Iuz0fzUr+rdeZZd1QjY3yQf6tzhagu1NEnWFcC4t6q0taJMPihCQHc
-	 +Rkx59pXupF5ilbj8+0Yp4Az5ZF0GB8kk1F2CkT7m8pArX+c5IdpSgBClsnZ6oK1XvQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793039456;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=hDzwNGKF3X9STRFxmJBhcRpaL+ED6BGdlNgUocMroeE=;
+	b=OZfEv4lycSn8wsBNFVRkG0obx6Me7+m7z6Ts3RKexEkbXmVQ9fwSGTaLFCNFNWbJ9KxY
+	 +usHvAcj2+tQFcbEQ7gxRQiluhPwjMsRuz8yK3nOXeXpRcOKta/wtGLfW7Ik3pmum3zCS
+	 /a3BuQXIk1kDeCFRaFxBKsygXjkEVKcOfsyIm4t4hebBgg+jHCDf43ZVBVHCqd+0XwonN
+	 6n+LAVte9qobpZH25rq9tXatzBPDevEa5550ifnKDdScrf+iLAgN381UEuM8Oq9bb6aNR
+	 VaA27HP1W2SEtiLYroHn85rnsZmjp/DvQZqG9qbT6DpYXd7Q1yn3pzU3mtSzJCinGMA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=eVOOvjOg;
-	arc=none smtp.remote-ip=192.198.163.9
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b="Cq19TS/T";
+	arc=none smtp.remote-ip=209.85.128.52
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A7B0606A324
-	for <imx@lists.linux.dev>; Mon, 26 Oct 2026 18:05:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3A7B0606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D480606A31E
+	for <imx@lists.linux.dev>; Mon, 26 Oct 2026 18:30:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9D480606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=eVOOvjOg
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793037959; x=1824573959;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version:content-id;
-  bh=/EXOvyLFl3MNKfQXtpK2SmkUPLhQq7Da43+mjsaKyVU=;
-  b=eVOOvjOgbmJKC9Ogns/dBEqOS6AEcKAKQU8Zs9VhS2rX0wJpaVJaZwTP
-   O9JKVVdJMzREMccvXkfckZ57M8IfsZ2V9ZAgwFGUc3HQYu/Lg9TeNy9t2
-   CGt0ij067e+tyyXz0vh/0JV9QHd4EMRuu4OLgvoGAjFdhKyYxV3nayw6Z
-   Nbt4tVA4CkxUoH15lVY2Xp0K8r0pK5egEf7vEJtBXXa5xZ09NzakoTS8r
-   x7ILJdOEY4Vf2rOZeO9rAiRR+a+t0tjDH9k3CvmH51l5fbv7GFSD6npiT
-   DtxGPJOhQHWz+03f9dSvtSPb1g11Nhm5EcH1a2fioHgy/23N7J2kl1UHb
-   Q==;
-X-CSE-ConnectionGUID: jmPfBA21Rqin9iP1JI2QfA==
-X-CSE-MsgGUID: IwjEHElvTfel8zqdWU4IzA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11947"; a="1604793"
-X-IronPort-AV: E=Sophos;i="6.27,179,1787036400"; 
-   d="scan'208";a="1604793"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2026 11:05:58 -0700
-X-CSE-ConnectionGUID: Um+KQiXwSyKJr5UNKyI/HQ==
-X-CSE-MsgGUID: mA5N0UOWRsq4zlA91tpg/g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,179,1787036400"; 
-   d="scan'208";a="4439637"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.109])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2026 11:05:48 -0700
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Mon, 26 Oct 2026 20:05:46 +0200 (EET)
-To: James Hilliard <james.hilliard1@gmail.com>
-cc: Raul Rangel <rrangel@chromium.org>, 
-    Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-    Jiri Slaby <jirislaby@kernel.org>, 
-    Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-    Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-    Tony Lindgren <tony@atomide.com>, 
-    Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
-    Richard Genoud <richard.genoud@bootlin.com>, 
-    Nicolas Ferre <nicolas.ferre@microchip.com>, 
-    Alexandre Belloni <alexandre.belloni@bootlin.com>, 
-    Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
-    Jacky Huang <ychuang3@nuvoton.com>, Shan-Chun Hung <schung@nuvoton.com>, 
-    =?ISO-8859-15?Q?Pali_Roh=E1r?= <pali@kernel.org>, 
-    Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
-    Pengutronix Kernel Team <kernel@pengutronix.de>, 
-    Fabio Estevam <festevam@gmail.com>, 
-    "Maciej W. Rozycki" <macro@orcam.me.uk>, Timur Tabi <timur@kernel.org>, 
-    LKML <linux-kernel@vger.kernel.org>, 
-    linux-serial <linux-serial@vger.kernel.org>, 
-    linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
-    linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v6 0/5] serial: 8250: serialize DMA cancellation with
- buffer reuse
-In-Reply-To: <CADvTj4okFSpw7Wo0e3DR4r4-1TDvOY1esoUDWftY27B7XwWAHA@mail.gmail.com>
-Message-ID: <d4ed2b29-5717-7522-24d2-a13a5aa2baf2@linux.intel.com>
-References: <20261024-submit-serial-8250-dma-cancel-v1-v6-0-6f366591f566@gmail.com> <a011174b-d64c-305b-7dab-62017fc885fa@linux.intel.com> <CAHQZ30AfcwMTXPpCgiWkhz1OFoxHJOqcVmur8Buz72M45Acuag@mail.gmail.com>
- <CADvTj4okFSpw7Wo0e3DR4r4-1TDvOY1esoUDWftY27B7XwWAHA@mail.gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=Cq19TS/T
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4a20a37703bso25776885e9.1
+        for <imx@lists.linux.dev>; Mon, 26 Oct 2026 11:30:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1793039454; x=1793644254; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=hDzwNGKF3X9STRFxmJBhcRpaL+ED6BGdlNgUocMroeE=;
+        b=Cq19TS/TKQ5aH+AsHJ2sZ30hH2CXH1EXHnS5MsSMAO2rB5M9KxFb6T9DmJzj1vku6m
+         OWZCmLeSO5LIOrDwhDUYp80hXk5WRRPu8oQ8yahDD9qL3a4iAFIVtGDxDDF6E/AJqq+A
+         Jwy7jZcnc5wo5bIEHyggp48kr9/UMH+vTayHNqYwpFpWiZd7UviOL/qzRkQKMPc9b6+U
+         wOdFnxRhKnuEdVZCHcEGTj5nXPDl6M1+WBJM6K+1Pp/PfSPy0aIlv3cc43TP8RxroPOP
+         Dsp4ISZSyc79Kch/eU8jLikEo8RZg3OaRD/3TkjsLVLnwZER5uIdg53uCZRLfkzC6jGZ
+         fJQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793039454; x=1793644254;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=hDzwNGKF3X9STRFxmJBhcRpaL+ED6BGdlNgUocMroeE=;
+        b=xEVPUH6kaH+y3hI8vDp0TKPjUIQjf/sTGTQVLaF+8AKOBymOuCkco5ERf2AmVcZsz0
+         qUnLN2dtLbuIUYiZY5pob3z81Y1p0FDfvsvDJ1FA4XDOzz4YPv/3nAldP+QpnKFCNqz6
+         aHDFtny/zaGtwVfU2SZX+0Nqr5/yAyWK48G3jhe+cLPw/MpZgxd1VK6mty1J+vhuMXqi
+         miv4hZE8QOqe4tl5US4BP8iD8vhBH+GdjUdOci1qMD8uQjuxZS9CV4Jx2z8dwCe6AqL5
+         cKY7aKppYE3EY9oXdnCVYQxQv4O9o4uD8mCoeHglPfgZ28ksXMMQwdOovpKsxJ7TtuP0
+         Ae+Q==
+X-Forwarded-Encrypted: i=1; AKwUvBwWEFPGWKoWvLCFIhs5LcDHMvT/q9BblGq+lWl9Jvi5FSoiijV/tSuQ+3hXPST3oAtk3AA=@lists.linux.dev
+X-Gm-Message-State: AFq9FYI3L5ans9tQ8R2/T3AIDnJFdiJuw/DfZbZOq0s+AoBuUQsIMQRQ
+	7wlu8Vp/ed4s8v16zbh8Cd5/u0HNsPcAqvOo+uUQTGmlurfnr6NVP6ff
+X-Gm-Gg: AYBFou35CG0JD5Mf/74p6MjbUEtFF3hitZGb6h+ldzBfCK9AgBTcpavD+Jl4Ud4JxpV
+	andUKpFLJTpIbF0lw0l6ZwroPbXskeHR0xqrszsOjnOEkb7RweJtcYqDYHBmivbsVltYk09wSWn
+	7Wy+JFmeZU5QhZv2XJ31/90uej7NqmFre5COTF+yPJ1adgLByH60bLmpSxDHk7UsqVwZSdgPc7o
+	CK8XiDFq/7LB9Ejz8MXzJJuVL43XdykAwDWOrsIYVQivjLA3wcZONMuIexAw/jH9SKaHzs43LYZ
+	aF5ofLsNePLDZE7b9JjrBhFqY84+QpVPt/0LbIG7TVOp2A0l3QCkhZlS9hbBu9rFMIE54klQssc
+	tmp4o2n4FZp/VCrZcK89kA6U8cD8IZMaQuGy9At3SSyaIYR6JcXvp2tv/xSU1JLsi/U5GJsAk01
+	VMBiTFwXWaUO2+DaO/iar4dz+82dT2r8n28hyEhdBo/Zx1TgT7tJyJJ5ecZo/hf8hko45DL3OU3
+	sTSpHJsVZyEaD8ZTZ3kUiMiO1P2IPTJZW7b21EuVmcR676j0+5mGl/vGK+aRYh+1gNEVx7Mj9w4
+	eN7imQ==
+X-Received: by 2002:a05:600c:3486:b0:49f:f099:6fb1 with SMTP id 5b1f17b1804b1-4a35ac95955mr122964795e9.15.1793039453713;
+        Mon, 26 Oct 2026 11:30:53 -0700 (PDT)
+Received: from SMW032656.wbi.nxp.com ([128.77.15.89])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a35a30e11bsm250727985e9.1.2026.10.26.11.30.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Oct 2026 11:30:53 -0700 (PDT)
+From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	elena.popa@nxp.com,
+	cosmin.stoica@nxp.com
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] arm64: dts: imx95-navq: add USB1/USB2 nodes
+Date: Mon, 26 Oct 2026 20:21:50 +0200
+Message-ID: <20261026182150.11330-1-laurentiumihalcea111@gmail.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -100,181 +104,170 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/mixed; BOUNDARY="8323328-629380202-1793035757=:1162"
-Content-ID: <4cc64621-9a33-4cc3-8a63-38ad870a4ec1@linux.intel.com>
+Content-Transfer-Encoding: 8bit
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 
---8323328-629380202-1793035757=:1162
-Content-Type: text/plain; CHARSET=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Content-ID: <65f07c57-a2fa-c2b7-465d-27f022b9966e@linux.intel.com>
+Add and enable the DT nodes for USB1 and USB2.
 
-On Mon, 26 Oct 2026, James Hilliard wrote:
+Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+---
+ arch/arm64/boot/dts/freescale/imx95-navq.dts | 121 +++++++++++++++++++
+ 1 file changed, 121 insertions(+)
 
-> On Mon, Oct 26, 2026 at 10:24=E2=80=AFAM Raul Rangel <rrangel@chromium.or=
-g> wrote:
-> >
-> > On Mon, Oct 26, 2026 at 5:16=E2=80=AFAM Ilpo J=C3=A4rvinen <ilpo.jarvin=
-en@linux.intel.com> wrote:
-> >>
-> >> On Sat, 24 Oct 2026, James Hilliard wrote:
-> >>
-> >> > Reserve canceled transmit and receive storage until DMA and its comp=
-letion
-> >> > callbacks have retired. Serial-core write backpressure protects a fl=
-ushed
-> >> > TX FIFO while normal transfers continue to DMA directly from that FI=
-FO.
-> >> >
-> >> > The series separates OMAP's locked completion processing and seriali=
-zes
-> >> > asynchronous write wakeups with the port lock before adding the seri=
-al-core
-> >> > reservation helpers and applying them to 8250 TX. Flushing
-> >> > empties the logical queue immediately. While the old transfer owns i=
-ts
-> >> > storage, write_room() reports zero and write-ready notifications wai=
-t for
-> >> > retirement. Failed termination retains the reservation until normal
-> >> > completion, without advancing the reset FIFO. DMA retirement release=
-s the
-> >> > reservation independently of port readiness. Serial core keeps write=
-s and
-> >> > wakeups gated during shutdown until successful startup or resume.
-> >> >
-> >> > RX delivers paused data before the PIO fallback and retires callback=
-s in
-> >> > process context. Track FIFO access separately from buffer retirement=
- so
-> >> > PIO and the DesignWare empty-FIFO timeout handling can run once DMA =
-has
-> >> > released the FIFO. On failure, retain the requested interrupt enable=
-s in
-> >> > the existing IER shadow and mask receive interrupts in hardware unti=
-l DMA
-> >> > has stopped. Recovery then leaves RX on PIO until reopen. Shutdown e=
-xcludes
-> >> > new retirement work before releasing the channels.
-> >> >
-> >> > Based on tty-next with the posted shutdown guard [0], channel
-> >> > configuration error handling [1], RX TTY accounting fix [2], RZ/N1
-> >> > transfer-length fix [3], transmit-PM shutdown fix [4], serport
-> >> > write-wakeup deferral [5], DesignWare BUSY-safe fractional-divisor
-> >> > programming [6], and Intel MID RX DMA timeout locking [7]. The serpo=
-rt fix
-> >> > is needed before serializing the remaining write-wakeup callers with=
- the
-> >> > port lock.
-> >> >
-> >> > [0] https://lore.kernel.org/r/20261021-submit-serial-8250-dma-shutdo=
-wn-v1-v1-1-3d3ce383c614@gmail.com
-> >> > [1] https://lore.kernel.org/r/20261021-submit-serial-8250-dma-config=
--errors-v1-v1-1-c067587d1ef2@gmail.com
-> >> > [2] https://lore.kernel.org/r/20261021-submit-serial-8250-dma-rx-acc=
-ounting-v1-v1-1-c11795914ab4@gmail.com
-> >> > [3] https://lore.kernel.org/r/20261023-submit-serial-8250-dma-tx-len=
-gth-v1-v2-1-c3106ef4d2df@gmail.com
-> >> > [4] https://lore.kernel.org/r/20261022-submit-serial-8250-tx-pm-shut=
-down-v1-v1-1-0e894afa3bb8@gmail.com
-> >> > [5] https://lore.kernel.org/r/20261023-submit-serport-write-wakeup-v=
-1-v1-1-74e7311638a2@gmail.com
-> >> > [6] https://lore.kernel.org/r/20261024-submit-serial-8250-dw-divisor=
--v1-v2-1-032ca5338359@gmail.com
-> >> > [7] https://lore.kernel.org/r/20261024-submit-serial-8250-mid-rx-loc=
-k-v1-v1-1-2b9afdf869d7@gmail.com
-> >> >
-> >> > Assisted-by: Codex:gpt-6-astra
-> >> > Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
-> >> > ---
-> >> > Changes in v6:
-> >>
-> >> Hi,
-> >
-> >
-> >>
-> >>
-> >>
-> >> This series is moving way too fast with new versions. Please slow down=
-=2E
-> >
-> >
-> > +1. I think you should have spent more time refining your patch set bef=
-ore submission, or sending individual patches that weren't interelated.
->=20
-> I was doing as much validation as I could locally already but often I
-> was missing
-> issues the Sashiko review bot was flagging. Since the Sashkio reviews app=
-eared
-> to be release issues I was doing respins to try and fix all those issues.
+diff --git a/arch/arm64/boot/dts/freescale/imx95-navq.dts b/arch/arm64/boot/dts/freescale/imx95-navq.dts
+index 7860c113e9e0..5fe245b62306 100644
+--- a/arch/arm64/boot/dts/freescale/imx95-navq.dts
++++ b/arch/arm64/boot/dts/freescale/imx95-navq.dts
+@@ -5,6 +5,8 @@
+ 
+ /dts-v1/;
+ 
++#include <dt-bindings/usb/pd.h>
++
+ #include "imx95.dtsi"
+ 
+ / {
+@@ -80,6 +82,72 @@ i2c3_gpio_expander_21: gpio-expander@21 {
+ 		pinctrl-0 = <&pinctrl_i2c3_gpio_expander_21>;
+ 		pinctrl-names = "default";
+ 	};
++
++	ptn5110_usb3: tcpc@50 {
++		compatible = "nxp,ptn5110", "tcpci";
++		reg = <0x50>;
++		interrupt-parent = <&gpio4>;
++		/* USB_PTN5110_ALERT_B - shared IRQ line with tcpc@51 */
++		interrupts = <25 IRQ_TYPE_LEVEL_LOW>;
++		pinctrl-0 = <&pinctrl_typec>;
++		pinctrl-names = "default";
++
++		/* no SINK circuit (EN_SINK1 tied to TP32) */
++		connector {
++			compatible = "usb-c-connector";
++			label = "USB1 3.0 Type C";
++			data-role = "dual";
++			power-role = "source";
++			self-powered;
++			source-pdos = <PDO_FIXED(5000, 3000, PDO_FIXED_USB_COMM)>;
++
++			ports {
++				#address-cells = <1>;
++				#size-cells = <0>;
++
++				port@0 {
++					reg = <0>;
++
++					typec1_con_hs: endpoint {
++						remote-endpoint = <&usb3_data_hs>;
++					};
++				};
++
++				port@1 {
++					reg = <1>;
++
++					typec1_con_ss: endpoint {
++						remote-endpoint = <&usb3_data_ss>;
++					};
++				};
++			};
++		};
++	};
++
++	ptn5110_usb2: tcpc@51 {
++		compatible = "nxp,ptn5110", "tcpci";
++		reg = <0x51>;
++		interrupt-parent = <&gpio4>;
++		interrupts = <25 IRQ_TYPE_LEVEL_LOW>;
++		pinctrl-0 = <&pinctrl_typec>;
++		pinctrl-names = "default";
++
++		/* no SINK circuit (EN_SINK1 tied to TP30) */
++		connector {
++			compatible = "usb-c-connector";
++			label = "USB2 2.0 Type C";
++			data-role = "dual";
++			power-role = "source";
++			self-powered;
++			source-pdos = <PDO_FIXED(5000, 3000, PDO_FIXED_USB_COMM)>;
++
++			port {
++				typec2_con_hs: endpoint {
++					remote-endpoint = <&usb2_data_hs>;
++				};
++			};
++		};
++	};
+ };
+ 
+ &lpuart1 {
+@@ -145,6 +213,10 @@ pinctrl_reg_usdhc2_vmmc: regusdhc2vmmcgrp {
+ 		fsl,pins = <IMX95_PAD_SD2_RESET_B__GPIO3_IO_BIT7			0x31e>;
+ 	};
+ 
++	pinctrl_typec: typecgrp {
++		fsl,pins = <IMX95_PAD_ENET2_RD1__GPIO4_IO_BIT25				0x31e>;
++	};
++
+ 	pinctrl_uart1: uart1grp {
+ 		bootph-pre-ram;
+ 		fsl,pins = <IMX95_PAD_UART1_RXD__AONMIX_TOP_LPUART1_RX			0x31e>,
+@@ -198,6 +270,55 @@ pinctrl_usdhc2: usdhc2grp {
+ 	};
+ };
+ 
++&usb2 {
++	disable-over-current;
++	dr_mode = "host";
++	usb-role-switch;
++
++	status = "okay";
++
++	port {
++		usb2_data_hs: endpoint {
++			remote-endpoint = <&typec2_con_hs>;
++		};
++	};
++};
++
++&usb3_dwc3 {
++	adp-disable;
++	dr_mode = "otg";
++	hnp-disable;
++	srp-disable;
++	usb-role-switch;
++	snps,dis-u1-entry-quirk;
++	snps,dis-u2-entry-quirk;
++
++	status = "okay";
++
++	port {
++		usb3_data_hs: endpoint {
++			remote-endpoint = <&typec1_con_hs>;
++		};
++	};
++};
++
++&usb3_phy {
++	orientation-switch;
++	fsl,phy-pcs-tx-deemph-3p5db-attenuation-db = <17>;
++	fsl,phy-pcs-tx-swing-full-percent = <100>;
++	fsl,phy-tx-preemp-amp-tune-microamp = <600>;
++	fsl,phy-tx-vboost-level-microvolt = <1156>;
++	fsl,phy-tx-vref-tune-percent = <100>;
++
++	status = "okay";
++
++	port {
++		usb3_data_ss: endpoint {
++			remote-endpoint = <&typec1_con_ss>;
++		};
++	};
++};
++
+ &usdhc1 {
+ 	bootph-pre-ram;
+ 	bus-width = <8>;
+-- 
+2.53.0
 
-Fixing an issue sashiko finds does not mandate you to send the fixed=20
-version out right away. And yes, definitely, fix those issues as soon as=20
-you want, no matter what's the source (sashiko, human reviewer, your own=20
-mind finding flaws when given time to process the code you've=20
-read/written), they'll then be in store for the time when it's time to=20
-send the next version.
-
-We do know this is a major problem with AI review that it pushes=20
-submitters to do rapid refresh cycle on the false pretence that reviewers=
-=20
-must always see the latest and shiniest code (despite often the corner=20
-cases sashiko find relate to a single obscure driver most reviewers would=
-=20
-have no opinion anyway) or that humans should only be bothered when AI bot=
-=20
-found nothing (yet they always have a huge cc lists and mailing lists with=
-=20
-hundreths if not thousands receipients so it doesn't add up with that=20
-excuse either!). Effectively such a patch sending loop ends up only=20
-feeding the AI review bot.
-
-> Apparently not everyone is seeing those reviews posted despite them showi=
-ng
-> up fine in lore for me.[0]
->=20
-> Is everyone here seeing those reviews or are they not showing up?
->=20
-> [0] https://lore.kernel.org/all/CADvTj4oNz-bnSZP+kfau-7wBSWLjLTP5jrr6nLfd=
-CHNPo3pS6w@mail.gmail.com/
-
-It's quite irrelevant to me whether I can see the reviews Sashiko gives=20
-(and I could look them up from https://sashiko.dev if I'd be interested=20
-and they do appear there).
-
-When I do review the patch series I'm not basing my review on top of=20
-sashiko's nor on top of other reviewer's. Sometimes I end up reviewing=20
-something that gets updated by a later version because of that but it also=
-=20
-makes me immune to false claims or fixations of others. But the number one=
-=20
-cause for me reviewing an older version is sender sending versions very=20
-close to each other, often during weekend (in how many cases the part of=20
-the code I commented on had changed, I don't have an estimate for you,=20
-sorry).
-
-At reaching v6 this fast, you've clearly done something wrong given=20
-multiple people are pointing out this to you, and yet all we get in=20
-response is that "I only did it because sashiko gave me things to fix".=20
-What is missing is a clear indication that you've understood the way=20
-you've behaved so far will not maintain good appearance in the eyes of=20
-many of the community. So please consider if it is really worth the few=20
-extra days waiting would require.
-
-I suggest you never do more than two versions per week on any non-trivial=
-=20
-series. I can understand sometimes a quick refresh (especially when=20
-at v1-v2) is warranted but to do it for many versions close to each other=
-=20
-is something that people don't want to see.
-
-
-And I do know how annoying it is to wait with patches and submit=20
-prerequisite fixes first, with all the annoying delay it comes with
-for the main patches one wants to get upstreamed, so I'm in no different
-boat than you when it comes to that part.
-
---=20
- i.
---8323328-629380202-1793035757=:1162--
