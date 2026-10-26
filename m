@@ -1,104 +1,69 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=161.97.139.27
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792987365;
-	b=QQL2cWeHnPwgD/eNzsfinYBAETK67yu2EnGS21JOBMyUjgtmevd1zEnkycoegj16jHRw
-	 pubx9drNEpdKLhAsvGT5fy3wTZ4eitdg24q1I8m+KhB/DrbVwDiUrN372l86VflEqUHlR
-	 xa4fdV76sxGoZT2NK9kH5bwC6iJ4aD/30cylVLUsO5VbumMV1vaohTXwkG43DsZBEdPW1
-	 KryotpYoNvDSw3Ac4HplYbu6MIEAM+SeIK+u2N656r4wbcQnmHk4aCbZNXELf+e6UB4t3
-	 vTv6Z/luHFN85byfn0iINqJJbhihgoeUtwAIke/nMSnPEaBa3W8z49JAN38Ch+QFReg==
+	t=1792999884;
+	b=x/Dikui249C+NGGtPWiicqTdfqukwdiklw81Qh8TADXGeEurNgX/yzwtc/BGTxLncT/0
+	 8oGkDcLobzgeoXbzy/aYzMH7kOLTdedQG4TuEND9PfB5aIJGNLOPY1TZE9PJSOnZ3w26p
+	 cIueUdGe3AV+ZdvXUrgXKgoWDPCrGKkLkQEv9yLZtGMmYE30VD8/pAmEfHnB/PTiLWYpw
+	 guEqGXiSmIPF6cZD8d5oSEmVSUQ1bzlSzNaCSFm++kgjKCPHwWeuGxpjnU+DrQ/1LHZ6k
+	 gx0vQZ8q36LeOnKGJptNfjlKUcau2weIZ/duCMY7SeoWgWwDC0gv+XtwX05I9FsWHsg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792987365;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	a=rsa-sha256; c=relaxed/relaxed; t=1792999884;
+	h=DMARC-Filter:Received:DKIM-Signature:Date:From:To:Cc:Subject:
+	 Message-ID:In-Reply-To:References:X-Mailer:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=K2jKhwM+YQiKdSr1TcQzqEzMoQpUEpx9bgQiDQX0OfY=;
-	b=yjsXCyocCnrF9FUdw2HpjPeVTYujIGZXpE1t2OlmXrGRnf9a246OGOnWiYMTssWvb1EC
-	 yhwtuTjJ2hve85D/BL1Hrl8sbiy/CdIelvKhdjr3Sgv/9NHeWe5Kp+5D/e8lvD2JrGRIM
-	 uv9wuVXBuYXPPgpL8Y4C2J5sOK/ieZP0qZle/6It2p2XwRHBOp45gXpSyitnbC8gmJ7Pr
-	 9kN7JtpIv/fx6AmoPOGr+7fgM0aTOyOBCyjrvfNrGn3xjOuAHZ6HY8g3G2Br5Lenr4LEa
-	 yMdAHArHzhHFC7Dcw17bfdkCUBHkLR4C9hYpJs+jTWqSLUsk3Ce+ofYn8vzCiGHBm2A==
+	bh=3k2gQfSx3BsVVF9yxHoO/WKzvaeGtbZNRBYzH/o7M2o=;
+	b=G/hjWvenOCRU0QUW2lfQ/nXwXsa/6GPXTM12ArHqyZ45VdfTPv+8O4XQuWIGAtlmhvqn
+	 6h/m9M9iI1n2h96ECPbJiS0zagbdHOv312tfsqOivoKlF9t1xW6MQxBIXW388YGHn6ks9
+	 sI6xtSHE1q18u/rv73U1WliMg2+7NeLUlrvA5L74kUQpUoWvUemdh2txWCV7jbBArKZbH
+	 rg3/ltIDybVeeql197Tn/CS0gqc6zof/Vjfin8uzHfL7stGyWx8UpCnlh9ZueML8/e/g+
+	 ntJ7/IuVWUUP+1DRGiylmlf9KfopyjFf0I+TjmGo+NJxa3si4vGc+dZJQgrt2jstjfw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=WPEcwfQo;
-	arc=none smtp.remote-ip=209.85.214.173
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=kemnade.info;
+	spf=pass smtp.mailfrom=kemnade.info;
+	dkim=pass header.d=kemnade.info header.i=@kemnade.info header.a=rsa-sha256 header.s=20220719 header.b=MfO+ce5I;
+	arc=none smtp.remote-ip=161.97.139.27
+Received: from mail2.andi.de1.cc (vmd64148.contaboserver.net [161.97.139.27])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54EC6606A31A
-	for <imx@lists.linux.dev>; Mon, 26 Oct 2026 04:02:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 54EC6606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88B63606A31A
+	for <imx@lists.linux.dev>; Mon, 26 Oct 2026 07:31:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 88B63606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=WPEcwfQo
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2e96502e447so21868215ad.1
-        for <imx@lists.linux.dev>; Sun, 25 Oct 2026 21:02:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792987365; x=1793592165; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=K2jKhwM+YQiKdSr1TcQzqEzMoQpUEpx9bgQiDQX0OfY=;
-        b=WPEcwfQoDQvtL29tHVZM9QKAtzIpBmvGf9hrpijIzTgYCuXaq78plIFNjXCFoO2N6j
-         2WQHzYGQU1DrwiTHO8KaQiDhYBXcJxjJB04jj1xhf8xK1QOkmfvmgKb4/866IiUQmOk9
-         R4yGmi58NAW5V9kk7pm24MchLBiso1sNEVpO4aLdGOhQbgBAfE+PFPdbJNVAbhBj+0LM
-         +MycDPwavdkeN9YKVlls8DlEVmlplSrfiUsdt6nvkuWFHJK9elLYsplS2zQcItJBRpgf
-         VCr+bFe+gno7J8PsZl6fyqSy3kty6To92P2q35jjFnhoTef5Yt6txASaEJJORYftA7Ae
-         KlFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792987365; x=1793592165;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=K2jKhwM+YQiKdSr1TcQzqEzMoQpUEpx9bgQiDQX0OfY=;
-        b=JfD0/mH57X3VOVGd0iv46lgiscFXRYXQg15YJc0zidTtZKZYZdCujIyjI3c9nQ0/A3
-         x0ht0kXdmNfeQdLmzJ+3hvlgXKjsiuyuprBSuDzOI5eMbnU2fPpAYqxEZD17qIjtSVPb
-         gEtcM5GFKAKmf/9WAZ1PLLQ1gegFF9NV40X+fLz9p9hHaP7PgL7oJfMtrUxrj/93y5ix
-         ceEHycLyTxl0YpP7EyRIdDVNnnYCVvNVFnjJMSJA6eRp4XzhTXzdd1puQUev6KZSDvzy
-         krn4xFA4WIJjuKbI+0H2tMXTjZ9nJIF3QU0S9esSubW9cRR6PmduiP3z+IQ2LvD/jvz8
-         ZTCg==
-X-Forwarded-Encrypted: i=1; AKwUvBxlMGTH3oXP/3slXzlJ+f2KYwqlSKwAPMflOLZmMMTLOUF0QCmHnT+EgOAm2taXHVG0uBM=@lists.linux.dev
-X-Gm-Message-State: AFq9FYK/4fT8zn8PZ0vQLI1/nMKZ27WVHuf1Y/0YHSCUvmMW0wzUaR00
-	hJNQnDEVajRxs0hCQADG8L6QM2a/fJALbTkCjeq079Svu8nDFk6z2gJU
-X-Gm-Gg: AYBFou3s49pA5RKIpMk2KylqqDZtKQGFaBUNVUfSbOaB4OYeTzVq11LIr4XSMtuxQfu
-	FWOhvJ/J8OXrg5xsDaUMvT8e8Rhy7AXNBKtkJadZdStkYxTrxPoqyWWz5oDBI6PDew0LF8e8SJY
-	sgcwXPf/4bKMU6CnWQYLK9FhcwATUJ8K3gKSSmwSzLQRp56Y8rCykUlRkHP4hImi64MJw/jZT8v
-	4U9iL1L18HYSF05VZ81t8M7K9DOpVilVQynuGpZgFrzB78M/cyby6clfTjOU5vTGYze5bddYEDm
-	5bsHV+4/skXGhg/SLaY0RPwQ90uFRdyYnmLnb2R2AGYrR/IEbGdTci71euZNMbJUn8uz47vVKlG
-	VzQicBN0alub/0lJFPUl3OqJQYpePQOzdrasWDiJKCnHz7OeieYJ5GYEkYF6WD31Q2c73SMkKJq
-	hRZ3Zit0pXiQeVDYeoq/EqzyZaFvQ7UEwa+pjFPnGtK+5FjMWtMfDNbnUZNJ5tpvBXtlIR6cd2a
-	8aO5Mh2cTt4f0XKV2NMR9jRfe8/7af/ZU/n4zhPtFBm9fyXm+P8JN4a49JETcaDUkIzIuv/OVNy
-	TOVSMt/aBIK/zpMSabU=
-X-Received: by 2002:a17:902:cf12:b0:2e9:73db:3c78 with SMTP id d9443c01a7336-2ea9c63efcamr46730195ad.17.1792987364597;
-        Sun, 25 Oct 2026 21:02:44 -0700 (PDT)
-Received: from xiaolei-VMware-Virtual-Platform ([219.142.21.190])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ea9b22416bsm10626705ad.72.2026.10.25.21.02.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 25 Oct 2026 21:02:43 -0700 (PDT)
-From: Xiaolei Wang <xiaoleiwangxiaolei@gmail.com>
-To: aisheng.dong@nxp.com,
-	festevam@gmail.com,
-	Frank.Li@nxp.com,
-	ping.bai@nxp.com,
-	kernel@pengutronix.de,
-	s32@nxp.com,
-	linusw@kernel.org,
-	s.hauer@pengutronix.de,
-	sudeep.holla@kernel.org,
-	cristian.marussi@arm.com,
-	peng.fan@nxp.com,
-	xiaoleiwangxiaolei@gmail.com
-Cc: linux-gpio@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] pinctrl: imx: scmi: replace custom dt_free_map with pinctrl_utils_free_map
-Date: Mon, 26 Oct 2026 12:02:30 +0800
-Message-ID: <20261026040230.22338-1-xiaoleiwangxiaolei@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key, unprotected) header.d=kemnade.info header.i=@kemnade.info header.a=rsa-sha256 header.s=20220719 header.b=MfO+ce5I
+Received: from mail.andi.de1.cc ([2a02:c205:3004:2154::1])
+	by mail2.andi.de1.cc with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <andreas@kemnade.info>)
+	id 1xLFAq-00000000iQa-055N
+	for imx@lists.linux.dev;
+	Mon, 26 Oct 2026 08:31:16 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=References:In-Reply-To:Subject:Cc:To:From:
+	Reply-To:Content-ID:Content-Description;
+	bh=3k2gQfSx3BsVVF9yxHoO/WKzvaeGtbZNRBYzH/o7M2o=; t=1792999876; x=1794209476; 
+	b=MfO+ce5IE8ZYeww2C8XZCprTmTqvcE2oaCU6S66hgYHTRThb+zG9yOxa9XZ2eRI2m8rCzN1+6kV
+	O78dJ50PPAa8VflKkcV5KUTo/mQuV4gt9P7rMbOLiHYEAJPpTTOJelZIc55hN7thqk/Lbi73i6s+4
+	hOyVeuT2a7hMelfgCw5ERClXLN4FSAT54SMqMKO2XZFqAKpEoyLfaooun1G7WgGKUmWY95ccFsbrP
+	o5MunfcI+9PitA2beAvRl82oTWI7q5CYd70FCPuMNjHh2WkPfpd1anYnJ56mbxvbvm06A1tSEshmu
+	BHY/18QniGDPLONSO9iHPQL6Kt7d6cVP4zAQ==;
+Date: Mon, 26 Oct 2026 08:30:58 +0100
+From: Andreas Kemnade <andreas@kemnade.info>
+To: Pablo Mazzini <pmazzini@gmail.com>
+Cc: Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, Rob
+ Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
+ Dooley <conor+dt@kernel.org>, Alistair Francis <alistair@alistair23.me>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
+ <festevam@gmail.com>, devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/7] ARM: dts: imx: keep the SY7636A VCOM on
+Message-ID: <20261026083058.04173f10@kemnade.info>
+In-Reply-To: <20261026003918.155321-2-pmazzini@gmail.com>
+References: <20261026003918.155321-1-pmazzini@gmail.com>
+	<20261026003918.155321-2-pmazzini@gmail.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; aarch64-unknown-linux-gnu)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -108,56 +73,60 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: Wang Xiaolei <xiaoleiwangxiaolei@gmail.com>
+On Mon, 26 Oct 2026 00:39:12 +0000
+Pablo Mazzini <pmazzini@gmail.com> wrote:
 
-pinctrl_scmi_imx_dt_node_to_map() kmemdup_array()s the pinctrl configs
-of every pin into map[i].data.configs.configs, but the driver's own
-pinctrl_scmi_imx_dt_free_map() only frees the map array itself. The
-pinctrl core releases maps through pinctrl_dt_free_maps(), which calls
-dt_free_map(); the duplicated configs are therefore never freed and leak
-every time the DT node is parsed, e.g. on each (deferred) probe attempt.
+> The SY7636A hwmon driver turns VCOM on at probe. The reMarkable 2, Kobo
+> Libra H2O and Tolino Vision 5 have had the rails on so far. Mark VCOM
+> always-on before the driver stops doing it.
+> 
+> Signed-off-by: Pablo Mazzini <pmazzini@gmail.com>
+> ---
+>  arch/arm/boot/dts/nxp/imx/e70k02.dtsi           | 1 +
+>  arch/arm/boot/dts/nxp/imx/imx7d-remarkable2.dts | 1 +
+>  2 files changed, 2 insertions(+)
+> 
+> diff --git a/arch/arm/boot/dts/nxp/imx/e70k02.dtsi b/arch/arm/boot/dts/nxp/imx/e70k02.dtsi
+> index dc7ff108aa85..bd9c6c6fa117 100644
+> --- a/arch/arm/boot/dts/nxp/imx/e70k02.dtsi
+> +++ b/arch/arm/boot/dts/nxp/imx/e70k02.dtsi
+> @@ -154,6 +154,7 @@ sy7636: pmic@62 {
+>  		regulators {
+>  			reg_epdpmic: vcom {
+>  				regulator-name = "vcom";
+> +				regulator-always-on;
+>  			};
+>  		};
+>  	};
+No, please not. That regulator is in practice used with a not yet upstreamed
+driver for the EPDC on that platform used to deal with the current kernels
+fp9931 / tps65185 drivers. So it is very welcome to have it not always turned
+on.
 
-Replace the custom dt_free_map with the core helper
-pinctrl_utils_free_map(), which frees the configs of each
-PIN_MAP_TYPE_CONFIGS_* map before freeing the map itself. Its
-signature matches pinctrl_ops.dt_free_map(), so the driver-specific
-implementation can be dropped entirely.
 
-Detected with kmemleak on an i.MX95 board (FRDM-IMX95).
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx7d-remarkable2.dts b/arch/arm/boot/dts/nxp/imx/imx7d-remarkable2.dts
+> index ff9d50942884..6cf5603c0752 100644
+> --- a/arch/arm/boot/dts/nxp/imx/imx7d-remarkable2.dts
+> +++ b/arch/arm/boot/dts/nxp/imx/imx7d-remarkable2.dts
+> @@ -327,6 +327,7 @@ sy7636a: pmic@62 {
+>  		regulators {
+>  			reg_epdpmic: vcom {
+>  				regulator-name = "vcom";
+> +				regulator-always-on;
+>  				regulator-boot-on;
+>  			};
+>  		};
 
-Fixes: b755521fd6eb ("pinctrl: imx: support SCMI pinctrl protocol for i.MX95")
-Cc: stable@vger.kernel.org
-Signed-off-by: Wang Xiaolei <xiaoleiwangxiaolei@gmail.com>
----
- drivers/pinctrl/freescale/pinctrl-imx-scmi.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/drivers/pinctrl/freescale/pinctrl-imx-scmi.c b/drivers/pinctrl/freescale/pinctrl-imx-scmi.c
-index 613552e35070..8cbd66950848 100644
---- a/drivers/pinctrl/freescale/pinctrl-imx-scmi.c
-+++ b/drivers/pinctrl/freescale/pinctrl-imx-scmi.c
-@@ -153,18 +153,12 @@ static int pinctrl_scmi_imx_dt_node_to_map(struct pinctrl_dev *pctldev,
- 	return 0;
- }
- 
--static void pinctrl_scmi_imx_dt_free_map(struct pinctrl_dev *pctldev,
--					 struct pinctrl_map *map, unsigned int num_maps)
--{
--	kfree(map);
--}
--
- static const struct pinctrl_ops pinctrl_scmi_imx_pinctrl_ops = {
- 	.get_groups_count = pinctrl_generic_get_group_count,
- 	.get_group_name = pinctrl_generic_get_group_name,
- 	.get_group_pins = pinctrl_generic_get_group_pins,
- 	.dt_node_to_map = pinctrl_scmi_imx_dt_node_to_map,
--	.dt_free_map = pinctrl_scmi_imx_dt_free_map,
-+	.dt_free_map = pinctrl_utils_free_map,
- };
- 
- static int pinctrl_scmi_imx_func_set_mux(struct pinctrl_dev *pctldev,
--- 
-2.34.1
+Here the situation is a bit different. If I remember correctly, there
+is some special EPD logic in userspace on top of some ordinary kernel
+display driver. But thesse things are missing is devicetree?! But
+that might need to learn to deal with regulator enabling/disabling.
 
+Regulator always on is probably not desired here, either.
+
+Regards,
+Andreas
