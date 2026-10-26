@@ -1,55 +1,103 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.11
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793040270;
-	b=U41ddSIaDn/5U2XCuPaBrjLrNeyttksADTNgdMMB7gWwRE3KvtdO10C3wD+5c3Nulk9x
-	 ApFI1d1xYsWRCLYq8rfuDHlLrWpUmGeEQMp2VLXHQFhKXEvcH9/w2NeYyfOAWwdoMkbCh
-	 BZnCJH5niAlhE0uMnG8w2rzzCwm2uWEFPP5IqFFYRpARNa3ItyysR0OHon9Ezu4M6fzMF
-	 96KF5Ru2QM8OorLpFQz4G/wQi/Ep1qcKEpFtvQg9sFjb7m2r8UP5BNDQ185xa/B/GICq4
-	 wv8RbzvX3J+EWuYSqZUiVXd/dDva/NzD/bSVYssd3c810Oq5KToWW9Zrhx6ZANovBNg==
+	t=1793044438;
+	b=0hwT32+IMeXRdHQe12uPwYdkNWxbh8HuNxNEcKfTMYqNjRqIR1e+R7AH1gz0XUIl6N47
+	 KYM/+IaailKZ7JTHrIH1Rim4vft6Fnt09h1zOBeDy6Q6FjCEvIRG70113BxzRIu2QMNpd
+	 /a3Z2YxW9qnOViAlX85gOvnOjrjgoH7D9I9oiHt7las5yhSiHmnxKwTA0uQu7+VsFx2/N
+	 m7HBOeorePJPCmVdVRbAdUscxfIeuVoEc0QwS+u+zp4X6Q1gWulFHAa//xPKR8U5qHQOZ
+	 US601GXcOeKhv9PwyGUdncYWk9UWZF/vKnQWFDDK9RehL/pP2e5uc8aIDojEZyU5IEw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793040270;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=8lBuZXiGsime6GuAhFzW7wfLDSihPi0qas0TmbLPKXc=;
-	b=ObAwvn8lzPm1XxtgBU/ng+9UYHdZJCcRDnTTuwZ/AE1elV8bAUgKIG0aa1/o+ZGZF585
-	 yf5F96eXjEcEMzZtWLTvrV2YFP610ngys5JyCvF8XxARAVRHVz9sJZbEW8B4IDHS/0Sht
-	 PEJ+u1z/i6crOrDuxrceCVOZYIIDGfv7rf1I585VzJNnZON/qxuKAurUMJYOJ8NqHQZsi
-	 Koj3MyrxFQAMWOPskz8WQ0okyjqAhcwu2q96voodVO4uG+ULFppdh7o09/CpZsW0WkUqx
-	 5IVh0Rbo3itGwS8qRYpl38sk6+kYO9pu60GjG3AkA9C61IXP55ipnkH4jVcNjGcqxMg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793044438;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:Content-Transfer-Encoding:In-Reply-To:
+	 Organization;
+	bh=i+NDmw4lwf3hRzODAHlKBNdsDK4Mb0dC93HrLNynbZA=;
+	b=fVRCgSGqwdGgfUd/h+AaCGjRMAXDKY4GCcrcf7y8lKS1aBUyOpSICDmaawsxeZ2HkkP0
+	 OUkFhMVohuwdz6aU4xSClGuxO3SiFddR/FeLtZXPqw/5wrSlFW7b0vKGX8kCROIT6WtPO
+	 jZ8Urg1oYXydN2D03n0ywzdMGrtUzFlQ0RK0CGfHiDUeU73achazsSF2/mr/eQ8nFd809
+	 tKpLqyagog9/vEToOoOaca6jD37E6qCzipkfvVrzPTxzynCP43A9JwK5kqk1/saZYmZNk
+	 Gs4QnyJJeunweC4jdtnJZNFhbvo6+v+Qlc8lUHeJiU2tm1Ijt208wE7ufsbjGTqw+Hg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JNyZOmP3;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=fuCkscBz;
+	arc=none smtp.remote-ip=198.175.65.11
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DE63606A31A;
-	Mon, 26 Oct 2026 18:44:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06559606A31D
+	for <imx@lists.linux.dev>; Mon, 26 Oct 2026 19:53:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 06559606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JNyZOmP3
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 554381F031E1;
-	Mon, 26 Oct 2026 18:44:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793040269;
-	bh=8lBuZXiGsime6GuAhFzW7wfLDSihPi0qas0TmbLPKXc=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=JNyZOmP3oY5pDBUzc5GCo7UBV6y3RTl740kmlokpMPCxeE//bDUJnwUbkOL0biwAi
-	 pk/uYjAmKk2i2YvdXbo3Ud12cPCXX6KVobEfV5MTqAAS2MJBXltmMFlarMicUB1LVx
-	 u1NbCr6hf77hNFyNNlO2dPzpz/2/BQqe+3YrW7R05kM20UzdEr9onaszvklhBCPaj/
-	 hDigjOoHo0MmtRk3HDG8/bvtbWOeBlt46DTt2j8ii/AWXwyrw8pWgHQHNT2mgEKhGg
-	 MlBUPwVmPtWmKWC93G/VmjeP3YvbVclV0i2+A1cMdLE0xpdtw4cQac6nG2XkTrVKx/
-	 2Ye2FbI1IKV+w==
-Message-ID: <sashiko-outbox-185636@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] arm64: dts: imx95-navq: add USB1/USB2 nodes
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Laurentiu Mihalcea" <laurentiumihalcea111@gmail.com>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20261026182150.11330-1-laurentiumihalcea111@gmail.com>
-References: <20261026182150.11330-1-laurentiumihalcea111@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 26 Oct 2026 18:44:28 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=fuCkscBz
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793044437; x=1824580437;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=FV51n/PiZWx6bvBfOkBqCKkoCYD8qfwCN0puYCkV0os=;
+  b=fuCkscBzQbTVNY03/4VvurII1xNwhuxUwdnhV1iBqjUlHI0jtcfZHshs
+   N4c8IsX/Wc0281aF/vZ/9zoK8y4584+ryk3ft2TBtH5WeE1xUnB+7FvyV
+   PAXGunK9yCl5IFzqQcEVNcHr+gTPc+w+AAvYOnWS1iJuK1EvsjUpmsqsh
+   u7Y8oUtRU5QmhUObzdkfHtH9HIe/0P/IWO42xTX8NXxwEuMFmlF5zv5RN
+   tMExyqbcAChm8VbvW5DfcIf/OC1s/xksGYQDa9bhXEVGbbMhXi3dL0+K5
+   4KmEwu9SV/Ry+r7O3DKCHyY6fqMlRSaYy82jnsO/koVG785cWi7kpNKXm
+   w==;
+X-CSE-ConnectionGUID: x3Mljv0BR8+vEGhjGpZMvQ==
+X-CSE-MsgGUID: qmw5CTZYR1moXCu8Xzy67g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11947"; a="1615444"
+X-IronPort-AV: E=Sophos;i="6.27,180,1787036400"; 
+   d="scan'208";a="1615444"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2026 12:53:55 -0700
+X-CSE-ConnectionGUID: Dj09to7/Sbe2r8g4P5Lwuw==
+X-CSE-MsgGUID: qCd0O6T5QDOWwhS++gg2Xg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,180,1787036400"; 
+   d="scan'208";a="4710651"
+Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.245.93])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2026 12:53:48 -0700
+Date: Mon, 26 Oct 2026 21:53:45 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: James Hilliard <james.hilliard1@gmail.com>
+Cc: "Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Raul E Rangel <rrangel@chromium.org>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Tony Lindgren <tony@atomide.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Richard Genoud <richard.genoud@bootlin.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Jacky Huang <ychuang3@nuvoton.com>,
+	Shan-Chun Hung <schung@nuvoton.com>,
+	Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Timur Tabi <timur@kernel.org>,
+	linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v5 2/5] serial: serialize asynchronous write wakeups with
+ the port lock
+Message-ID: <at-vyZ1sDhYPu0W5@ashevche-desk.local>
+References: <20261024-submit-serial-8250-dma-cancel-v1-v5-0-9e52968928d2@gmail.com>
+ <20261024-submit-serial-8250-dma-cancel-v1-v5-2-9e52968928d2@gmail.com>
+ <alpine.DEB.2.21.2610250459200.42255@angie.orcam.me.uk>
+ <at4bw-G8czG-G7Wl@ashevche-desk.local>
+ <CADvTj4psJcY2T1PG9H8_hJWjz62R7unj3PPgv3FrVquUMFVhGg@mail.gmail.com>
+ <at5qKehogAjTa-fA@ashevche-desk.local>
+ <CADvTj4qSgE6Rc--mWuqAcc8HTqN9EFOS_JM8Hp8e_=ka_ZLa6w@mail.gmail.com>
+ <at8eDFj2WNaXDaot@ashevche-desk.local>
+ <CADvTj4oNz-bnSZP+kfau-7wBSWLjLTP5jrr6nLfdCHNPo3pS6w@mail.gmail.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -58,119 +106,93 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CADvTj4oNz-bnSZP+kfau-7wBSWLjLTP5jrr6nLfdCHNPo3pS6w@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] arm64: dts: imx95-navq: usb2 dr_mode =3D host breaks usb-role-sw=
-itch
---
+On Mon, Oct 26, 2026 at 10:45:54AM -0600, James Hilliard wrote:
+> On Mon, Oct 26, 2026 at 3:33 AM Andy Shevchenko
+> <andriy.shevchenko@linux.intel.com> wrote:
+> > On Sun, Oct 25, 2026 at 04:11:08PM -0600, James Hilliard wrote:
+> > > On Sun, Oct 25, 2026 at 2:44 PM Andy Shevchenko
+> > > <andriy.shevchenko@linux.intel.com> wrote:
+> > > > On Sun, Oct 25, 2026 at 02:25:46PM -0600, James Hilliard wrote:
 
-commit 7aa413a1299c4bee8b5a2613c0acf6256cd30c16
-Author: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+...
 
-arm64: dts: imx95-navq: add USB1/USB2 nodes
+> > > > Some people might want to test the stuff. And sending too often you actually
+> > > > will get the opposite results, people will be tired to even start reviewing
+> > > > and/or testing your code as it's changed way too quickly.
+> > >
+> > > My thought process was that people wouldn't want to be testing code that
+> > > had known bugs flagged in Sashiko reviews.
+> >
+> > Sashiko reviews are not visible in my or any other mailbox. To see them I have
+> > to go to some URL and so on, meaning to waste time to see why on the earth the
+> > new version has been sent.
+> 
+> Maybe the Sashiko reviews are getting caught in spam filtering or something?
+> They are showing up for me and on the mailing list[0] so I'm a bit confused why
+> you aren't seeing them. You shouldn't have to go to the web interface[1] to look
+> up the reviews.
+> 
+> [0] https://lore.kernel.org/all/sashiko-outbox-183574@kernel.org/
+> 
+> [1] https://sashiko.dev/
+> 
+> > It's better before addressing Sashiko comments,
+> > reply to all people involved and to Sashiko's original email, so it will be
+> > visible in the previous version why you issued (actually about to issue) the
+> > next version.
+> 
+> Hmm, maybe it makes sense to enable recipients in the reply_to config[2]?
 
-This commit adds and enables the device tree nodes for the USB1 and USB2
-controllers and their Type-C port controllers on the imx95-navq board.
+It's up to the list owners / subsystem maintainers.
 
-> diff --git a/arch/arm64/boot/dts/freescale/imx95-navq.dts b/arch/arm64/bo=
-ot/dts/freescale/imx95-navq.dts
-> index 7860c113e9e02..5fe245b623068 100644
-> --- a/arch/arm64/boot/dts/freescale/imx95-navq.dts
-> +++ b/arch/arm64/boot/dts/freescale/imx95-navq.dts
+> [2] https://github.com/sashiko-dev/sashiko/blob/v.0.6.3/projects/linux/mailing_lists.toml#L290
+> 
+> > And before even issuing it, wait for a while, people might
+> > disagree with Sashiko judgement or your replies on how to address that.
+> 
+> I was assuming everyone was seeing the Sashiko reviews getting posted to
+> the mailing list already. The are ending up in lore so unless someone isn't
+> subscribed to the list I'm not sure why they wouldn't be seeing those reviews
+> already.
 
-[ ... ]
+I assume you already answered your Q. mailing list in this sense doesn't mean
+recipients. I think it simply goes to the mailing list without forwarding.
 
-> @@ -80,6 +82,72 @@ i2c3_gpio_expander_21: gpio-expander@21 {
+You can ask at helpdesk@ how this is configured on the kernel.org side.
 
-[ ... ]
+> > TL;DR: this mailing list is *not* a playground with you and Sashiko, the whole
+> > community is behind it.
 
-> +	ptn5110_usb2: tcpc@51 {
-> +		compatible =3D "nxp,ptn5110", "tcpci";
-> +		reg =3D <0x51>;
-> +		interrupt-parent =3D <&gpio4>;
-> +		interrupts =3D <25 IRQ_TYPE_LEVEL_LOW>;
-> +		pinctrl-0 =3D <&pinctrl_typec>;
-> +		pinctrl-names =3D "default";
-> +
-> +		/* no SINK circuit (EN_SINK1 tied to TP30) */
-> +		connector {
-> +			compatible =3D "usb-c-connector";
-> +			label =3D "USB2 2.0 Type C";
-> +			data-role =3D "dual";
-> +			power-role =3D "source";
-> +			self-powered;
-> +			source-pdos =3D <PDO_FIXED(5000, 3000, PDO_FIXED_USB_COMM)>;
-> +
-> +			port {
-> +				typec2_con_hs: endpoint {
-> +					remote-endpoint =3D <&usb2_data_hs>;
-> +				};
-> +			};
-> +		};
-> +	};
->  };
+> > > > Settle down first
+> > > > with something, put on the cover letter the answer why not all Sashiko's
+> > > > comments are being addressed (for example, due to amount of patches or the
+> > > > series being focused on a certain issue).
+> > >
+> > > So, in general I've been always attempting to resolve known Sashiko issues
+> > > in every subsequent re-spin, so that would be a bit tricky since I wouldn't be
+> > > aware of the Sashiko issues until after the series has already been sent.
+> > >
+> > > Usually the subsequent issues that get flagged are new issues only discovered
+> > > after each new re-spin.
+> > >
+> > > I do have a bunch of UART/DMA related patches that don't have flagged Sashiko
+> > > issues so it probably makes sense to try and review those first while the larger
+> > > series that have Sashiko flagged issues are still stabilizing.
+> >
+> > Yes.
+> >
+> > > > > [0] https://github.com/sashiko-dev/sashiko/pull/389
 
-[ ... ]
+-- 
+With Best Regards,
+Andy Shevchenko
 
-> @@ -198,6 +270,55 @@ pinctrl_usdhc2: usdhc2grp {
->  	};
->  };
-> =20
-> +&usb2 {
-> +	disable-over-current;
-> +	dr_mode =3D "host";
-> +	usb-role-switch;
-> +
-> +	status =3D "okay";
-> +
-> +	port {
-> +		usb2_data_hs: endpoint {
-> +			remote-endpoint =3D <&typec2_con_hs>;
-> +		};
-> +	};
-> +};
 
-[Severity: Medium]
-Should usb2 use dr_mode =3D "otg" here instead of "host" to match the
-usb-role-switch property and the connector's data-role =3D "dual" in
-ptn5110_usb2, or should ptn5110_usb2 use data-role =3D "host" without
-usb-role-switch on usb2?
-
-When dr_mode is set to "host", ci_hdrc_probe() in drivers/usb/chipidea/core=
-.c
-skips initializing the gadget role and OTG handling:
-
-	if (dr_mode =3D=3D USB_DR_MODE_OTG || dr_mode =3D=3D USB_DR_MODE_PERIPHERA=
-L) {
-		ret =3D ci_hdrc_gadget_init(ci);
-		...
-	}
-	...
-	if (ci->is_otg && ci->roles[CI_ROLE_GADGET]) {
-		ret =3D ci_hdrc_otg_init(ci);
-		...
-	}
-
-Because ci->roles[CI_ROLE_GADGET] remains NULL, ci_get_role() never enables
-OTGSC_IDIE:
-
-	if (ci->roles[CI_ROLE_HOST] && ci->roles[CI_ROLE_GADGET]) {
-		if (ci->is_otg) {
-			role =3D ci_otg_role(ci);
-			hw_write_otgsc(ci, OTGSC_IDIE, OTGSC_IDIE);
-		} else {
-
-As a result, id_extcon.enabled and vbus_extcon.enabled remain false. Althou=
-gh
-the Type-C port manager configures ptn5110_usb2 for dual-role data and acce=
-pts
-USB PD data role swaps, calls along usb_role_switch_set_role() ->
-ci_usb_role_switch_set() -> ci_irq() -> ci_irq_handler() will have OTGSC_ID=
-IE
-and OTGSC_BSVIE masked out by hw_read_otgsc(), leaving role switching
-non-functional and the controller permanently in host mode.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261026182150.1133=
-0-1-laurentiumihalcea111@gmail.com?part=3D1
