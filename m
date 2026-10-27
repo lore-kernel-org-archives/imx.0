@@ -1,55 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=79.135.106.113
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.70.43.171
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1793097248;
-	b=dyulvGxGXBeHmmJp4313ZgLW+umnVbAFfQ75UwG4h/WpXHZW8ouKBVJGmpYpCZZeqfh/
-	 Py9xtDqm45tUNpQhUc1zI8rriooAACGjVefq9k3Q6z42aWIf0ropa6kP3531tLv/i+F2Y
-	 sDGxR+rgYIELVtOnlNFN8yudmqpsEYX+wHZfh0njQpPDD4j/q1jGpqwCtmQJ7iJRzNG4z
-	 zlDpb0wAFL+MeMu9Du3axfmcAmgS/q0r1uFvrrtK9hSFKxEzDYBKDMySQajUwhkG3Xrar
-	 Rl4Y3hfXcsB1HwDznrTNBy15QUKDmmk6c+xD+5Z8zCoNBBDknAqgn/gUlRHuJYVvSpA==
+	b=oZTZ3InRQ2JWl0af2ZB66o4GOmUEmi6ynGlBy52QAjie0H4ajwGbr61FGOeUZboCSKuI
+	 SofH1i4qZAO5yTIkqcVb6uEXS7GYR53MPYfShne/WMqFNUvY6vUsQ9ECktWxeooFJtX2k
+	 xMoogSBAZ/3m/3fLnG8wyzV8dQ7vyYStl0hnl7gv+PN79nFNaRwWvzfvFfNtmgRAi346J
+	 ykSK0USfW1HrBMI8kCvTbsZ60146cUxzA/CrfY+oGbvXRkR1BMxXrLpL+j3liULXSUiPW
+	 YwQ9nFKoPaaDJGZzf2+qK/KT6uDGJcYZnRUI0BEIPvEAXZcLk5PvEiBHFEUbGWui1Vw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1793097248;
 	h=DMARC-Filter:DKIM-Signature:X-Pm-Submission-Id:From:Date:Subject:
 	 MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:
 	 References:In-Reply-To:To:Cc:X-Mailer:X-Developer-Signature:
 	 X-Developer-Key;
-	bh=us8BejSqm23f1XiVi6u4hYhzTsLDP4QrbvXIptfxO2Q=;
-	b=dJFsUxPybQe5BsQONVv3OM+kfwZKifKnfJlp4PfqNgdqcERV+OmsBrpFjMS6OsX4Sxw8
-	 BeZIzCj1eKcmp5FIhDHZf37nk4iZyhkUYaOR9jCMWJWO1pimmEsTJh+XSwtpeAl56oe9T
-	 qgCO5OeLCvJoGFABLauX6GFaa4nZUwMgjdSMOKaz00jb7HcxDEAemiNxV58skOq6PgMiB
-	 ZGUpp6RW2xF2c8VQEwXAcN8ixKHJargbor+khk9uSOTp/nk80/gEIT2HCBccdoRWR0oOA
-	 9xkXRWR7dJpdBIScqbttVWz6UeRTfRm+kQpzieQAsuBo0/ZbD/63h3Fu1s6a7+U2itw==
+	bh=T176+OvwvKvZgAEn2v+P3j6cUnFW/lZ5GLsddWW5L4U=;
+	b=lovo2CHgL3w+9zAubkK7K+OVonyySUJF6jI6L8A7Wj6EH6fFcKD6X8GAWe6TEvaJACHn
+	 oPhmSHc+W4rJfrG5VmaRcaMN1/JCAn0Ah+uCMmVxa9nTCuxrQ1w23NmsC8e61uTWMS4uy
+	 pFzH16XRynNGDCICpBTBl7sSc7c/UBwM2sWq4Vvo9jNC0KJWaAjcx29dY7kTPtdQy/dDC
+	 ICvtNQ+cjtOH0Wd1xwNeQL2GeNJ08PCs+jzYqE60zYZQASq0nejlfHKbzXAxorzipOJJJ
+	 ovYOTKa0YajrJRHGFqwmFte4PGs39I+OufCGeaSPGE6CqBDUNFG4L9/Y+kDRSgO7dvQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=geanix.com;
 	spf=pass smtp.mailfrom=geanix.com;
-	dkim=pass header.d=geanix.com header.i=@geanix.com header.a=rsa-sha256 header.s=protonmail header.b=j9ZZ6HDv;
-	arc=none smtp.remote-ip=79.135.106.113
-Received: from mail-106113.protonmail.ch (mail-106113.protonmail.ch [79.135.106.113])
+	dkim=pass header.d=geanix.com header.i=@geanix.com header.a=rsa-sha256 header.s=protonmail header.b=7itOupAM;
+	arc=none smtp.remote-ip=185.70.43.171
+Received: from mail-43171.protonmail.ch (mail-43171.protonmail.ch [185.70.43.171])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE9F2606A335
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D34A5606A337
 	for <imx@lists.linux.dev>; Tue, 27 Oct 2026 10:34:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BE9F2606A335
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D34A5606A337
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=geanix.com header.i=@geanix.com header.a=rsa-sha256 header.s=protonmail header.b=j9ZZ6HDv
+	dkim=pass (2048-bit key, unprotected) header.d=geanix.com header.i=@geanix.com header.a=rsa-sha256 header.s=protonmail header.b=7itOupAM
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=geanix.com;
-	s=protonmail; t=1793097243; x=1793356443;
-	bh=us8BejSqm23f1XiVi6u4hYhzTsLDP4QrbvXIptfxO2Q=;
+	s=protonmail; t=1793097245; x=1793356445;
+	bh=T176+OvwvKvZgAEn2v+P3j6cUnFW/lZ5GLsddWW5L4U=;
 	h=From:Date:Subject:Message-Id:References:In-Reply-To:To:Cc:From:To:
 	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=j9ZZ6HDvXwl1foSL69wYRexgjt/bNm3P3q6dvEn41zONgqUFMezB0DaUjbPKrIKiy
-	 X7x5mB9fAq1lNqI+T8vPOzK3cHHuImYU9OfZu86/JoDkR742wS5qpsIDQB+pb/NYqw
-	 tsUkLbvABUf2JZ5bRof3VoE+OcCkARnmdvPwABt1Hl4WIkHBqRN++4IOZM6f6usLSj
-	 HRV3uV/RRdqpZuJNkHv8M2YwCH0edfR35RlcY+7MjgN0t28CDNG207g3dGwO04RgU7
-	 kNyAgddDMU23vgFUCutpV86YPFyVKtelLZ/qewqj1SYlTh9nEb4ha6st0T70DX5+Qq
-	 vOgIAtc+bNfYg==
-X-Pm-Submission-Id: 4jDRgF01Krz1DDL5
+	b=7itOupAMUcxqkJILsYqoVzKT8KKx88ikEK1ji/LJotx2hhcKLQ7oL7NfSbeP+bTkd
+	 OJ7pmGMp8GjZAracMEkmIKhpzkRpJOu5S+/3Oz6mcguXQJidkRwn82Cmn71X41wFnV
+	 A+CPDpCKF2fFcaOkZ1wpLps5+bqH+MkdcT/mzycjlvZz5X22kRI28tSEfUIhpfQ4wH
+	 On4PrLNpkM4rIs3nHi0RUvn0UC8qT9R47PBOIOC8KD9hnjCjnzEfOzHCnJOmaSh9K1
+	 lgofgDQ+1KWYEKbBiDq0NU4u8WZdrT/fW4h2zPBygRVGEjIh9o3I8ci9OxGW3eoJ+e
+	 dT6JfJyvj13uA==
+X-Pm-Submission-Id: 4jDRgJ3HB8z1DDLJ
 From: Esben Haabendal <esben@geanix.com>
-Date: Tue, 27 Oct 2026 11:33:49 +0100
-Subject: [PATCH v5 1/4] drm/bridge: nwl-dsi: Cleanup endpoint mux control
- selection
+Date: Tue, 27 Oct 2026 11:33:51 +0100
+Subject: [PATCH v5 3/4] drm/bridge: nwl-dsi: Correct auto-insert EOTP
+ behavior
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -61,7 +61,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261027-nwl-dsi-fixes-v5-1-b6d1d3d2d356@geanix.com>
+Message-Id: <20261027-nwl-dsi-fixes-v5-3-b6d1d3d2d356@geanix.com>
 References: <20261027-nwl-dsi-fixes-v5-0-b6d1d3d2d356@geanix.com>
 In-Reply-To: <20261027-nwl-dsi-fixes-v5-0-b6d1d3d2d356@geanix.com>
 To: Andrzej Hajda <andrzej.hajda@intel.com>, 
@@ -77,73 +77,56 @@ To: Andrzej Hajda <andrzej.hajda@intel.com>,
  Sam Ravnborg <sam@ravnborg.org>, imx@lists.linux.dev
 Cc: Esben Haabendal <esben@geanix.com>, Frank.Li@kernel.org, 
  dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org
+ stable@vger.kernel.org, Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1793097237; l=2014;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1793097237; l=1590;
  i=esben@geanix.com; s=20240523; h=from:subject:message-id;
- bh=VnH57TThUBRrumoSPfKBCfwJnaCqBhJHzReWomjxIyg=;
- b=s9TGh/ZHoHRMHwymoA20d9octH3ejlqVZegcU3KUsBU8oHweo/2ifOA4E13qs5EmDh0a8xUzI
- RplCPUCCvn2BJSTpg5oL6JwWQnZJSN9u+ynxxVm1KSJoWthPMdBD2B8
+ bh=QlvLZtjTIgZL2y9CCm+bmOOwdBUYqFKSP3naY4aW3IU=;
+ b=bd3/w0z63fAKN8QGoZ/aazNwAx94N/dDnUKp9lmjrCeYbN0wS84fWTnFZF/aXxCxVkwlpnYs6
+ PfYNre8+4j3AYyWSH4brF6FQrUtMowhZZl/4hRlpQbvWcL3m7CdrBH2
 X-Developer-Key: i=esben@geanix.com; a=ed25519;
  pk=PbXoezm+CERhtgVeF/QAgXtEzSkDIahcWfC7RIXNdEk=
 
-Using the endpoint define values makes it more clear that the argument to
-mux_control_try_select() must be valid state integers, and not something
-that looks like a boolean.
+From: Robert Chiras <robert.chiras@nxp.com>
 
-The endpoint value is kept, as it will be used in a following patch that
-changes behavior slightly based on which endpoint is selected.
+In order to respect the DSI protocol, make sure that auto-insert EOTP is
+enabled according to the NO_EOT_PACKET flag instead of the
+CLOCK_NON_CONTINUOUS flag.
 
+Fixes: 44cfc6233447 ("drm/bridge: Add NWL MIPI DSI host controller support")
 Cc: stable@vger.kernel.org
 Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Signed-off-by: Esben Haabendal <esben@geanix.com>
+Cc: Robert Chiras <robert.chiras@nxp.com>
+Cc: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
 ---
  drivers/gpu/drm/bridge/nwl-dsi.c | 10 ++++++----
  1 file changed, 6 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/gpu/drm/bridge/nwl-dsi.c b/drivers/gpu/drm/bridge/nwl-dsi.c
-index 09992529f3d8..80e26a947ae6 100644
+index 1aab46e1a168..f3f4334136c0 100644
 --- a/drivers/gpu/drm/bridge/nwl-dsi.c
 +++ b/drivers/gpu/drm/bridge/nwl-dsi.c
-@@ -110,6 +110,8 @@ struct nwl_dsi {
- 	int error;
+@@ -222,13 +222,15 @@ static int nwl_dsi_config_host(struct nwl_dsi *dsi)
+ 	DRM_DEV_DEBUG_DRIVER(dsi->dev, "DSI Lanes %d\n", dsi->lanes);
+ 	nwl_dsi_write(dsi, NWL_DSI_CFG_NUM_LANES, dsi->lanes - 1);
  
- 	struct nwl_dsi_transfer *xfer;
+-	if (dsi->dsi_mode_flags & MIPI_DSI_CLOCK_NON_CONTINUOUS) {
++	if (dsi->dsi_mode_flags & MIPI_DSI_CLOCK_NON_CONTINUOUS)
+ 		nwl_dsi_write(dsi, NWL_DSI_CFG_NONCONTINUOUS_CLK, 0x01);
+-		nwl_dsi_write(dsi, NWL_DSI_CFG_AUTOINSERT_EOTP, 0x01);
+-	} else {
++	else
+ 		nwl_dsi_write(dsi, NWL_DSI_CFG_NONCONTINUOUS_CLK, 0x00);
 +
-+	unsigned int endpoint;
- };
++	if (dsi->dsi_mode_flags & MIPI_DSI_MODE_NO_EOT_PACKET)
+ 		nwl_dsi_write(dsi, NWL_DSI_CFG_AUTOINSERT_EOTP, 0x00);
+-	}
++	else
++		nwl_dsi_write(dsi, NWL_DSI_CFG_AUTOINSERT_EOTP, 0x01);
  
- static const struct regmap_config nwl_dsi_regmap_config = {
-@@ -1088,13 +1090,12 @@ static int nwl_dsi_parse_dt(struct nwl_dsi *dsi)
- static int nwl_dsi_select_input(struct nwl_dsi *dsi)
- {
- 	struct device_node *remote;
--	u32 use_dcss = 1;
- 	int ret;
- 
- 	remote = of_graph_get_remote_node(dsi->dev->of_node, 0,
- 					  NWL_DSI_ENDPOINT_LCDIF);
- 	if (remote) {
--		use_dcss = 0;
-+		dsi->endpoint = NWL_DSI_ENDPOINT_LCDIF;
- 	} else {
- 		remote = of_graph_get_remote_node(dsi->dev->of_node, 0,
- 						  NWL_DSI_ENDPOINT_DCSS);
-@@ -1103,11 +1104,12 @@ static int nwl_dsi_select_input(struct nwl_dsi *dsi)
- 				      "No valid input endpoint found\n");
- 			return -EINVAL;
- 		}
-+		dsi->endpoint = NWL_DSI_ENDPOINT_DCSS;
- 	}
- 
- 	DRM_DEV_INFO(dsi->dev, "Using %s as input source\n",
--		     (use_dcss) ? "DCSS" : "LCDIF");
--	ret = mux_control_try_select(dsi->mux, use_dcss);
-+		     (dsi->endpoint == NWL_DSI_ENDPOINT_DCSS) ? "DCSS" : "LCDIF");
-+	ret = mux_control_try_select(dsi->mux, dsi->endpoint);
- 	if (ret < 0)
- 		DRM_DEV_ERROR(dsi->dev, "Failed to select input: %d\n", ret);
- 
+ 	/* values in byte clock cycles */
+ 	cycles = ui2bc(cfg->clk_pre);
 
 -- 
 2.56.0
