@@ -1,81 +1,52 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=178.251.229.89
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793118969;
-	b=4QkJOIto/TKix422ZkyQbYjcdccM0SL9EgOdcgZNZWPcVjmsedn4EmKvyKZ7Ug9hP20n
-	 jIahPb/KDmIPWt8iMRLq0CWNmZe0tSFTthe8BzQYLPuqij1DrPN41cWMtgfeIoqWGc/va
-	 /Xk85RmMYAR+Q6d0avp39iH1d8Rb0bisiJIU4EpLWWuBtKyOn07v8Yhp3ltD7p1TFqQ4r
-	 lC6et3+/VZcLilJSSUUNkm+94S1dMfjy/wSrj+2LXyK6YZpzwcatQjv19X2YYpvOY8S2Y
-	 S+WM/PkY6WTGOt/8zeeP7APjxhqNem4cM0bvcO8yoOxtgyF1HCg/hyIfu5TWu5gE37g==
+	t=1793121494;
+	b=iVEDzJzYRa6P6Bacg8fRvmEpPIThajmiaEK6rvMLTDUCTrcQ8dJuPKnZbkvBfW7yMf75
+	 8r2UyQrmrU7mhw5j9IXY8s77N5+LyuaQXZf2Nf9WlqLXqWo54HDGpVj+zIATw8yopfnsg
+	 6L8WZLrT6vyBIwopDlxyJx14RQBQob9pYuCmhjg21QsHrsbiw+fIJl5/UH8M+LE0GLFpB
+	 I004j7CaS9JffiqJDsVVkHhsRvT7/8oj0By6L+fYUZyUmSATDKs5TrGkbGWkPDrDAkee9
+	 gmbH9qUJNcJVXdpT24PuV/TRlvaMuq9XjfoSk+oaUMo2OOJPU/vDvhbGRWkOHwDGEAQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793118969;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To:Organization;
-	bh=l+oxUfMJg5eV+CJD17FHu7pJx+SYawZ0ncZOWsVGuog=;
-	b=rCaSV7n8qMc1fRHRPtpIwsCeIeTZrU9IpNGK3ZEWBTJc1Rs7wF/bqMZK6ENZp3rSWQPm
-	 fshilxa6mbjLzMayc16qOWgqGcntYVMMmPOkTn/VSNfftJMdQgFSJajISHAxwsWqpd/In
-	 exaAh1L/d42sauPS0uheDv1lwU1DFCMtXmxcypUWad1Zt9WNE0/leT3qcUZELbor5Pfgs
-	 kamL7li7ITdb2Hwf4wqGCT+DF6kwEA6e3q7Lt6h9g6RJETX7SzwBMfkG6EVas+ezbbSmF
-	 zV+JgX96+0VoPMxtnCcq88MXEj23ElA7tXTPUZIKj9eCGXhEgaQos0Dj1gw1NOoCpUQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793121494;
+	h=DMARC-Filter:Received:DKIM-Signature:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-Last-TLS-Session-Version;
+	bh=2AhgxjpsSrdIp3v7Vm9/tI7GXfZBUU0A8emiVMRDe1Y=;
+	b=1CjPKOqBhsI2OE+tT60YT9GaZkL5CQ7l0boZfLQ1bsKFwhMMkAX8Z5eZLN2x6RzdMWP0
+	 83uNM+kKBFpFcw4fDdSGdSa3VgbItwRdVhLwyhR61mzlcGKeXQ2XoEmkfI/JV8RBBefK2
+	 DbeVlv2LnDDIrPEr1WJh1nt4qglPwuSbpKtEPTNwkfBcJyifalZoNun78aLlykc33mNVp
+	 DzAsEnS4O7yAoQMw8+DK+pmKIS4jNAa9ulTUP2l70Z/wfEtDvHKxtM3NkkrracJbL6h5M
+	 mo0XLSI7FPAvpXUh2H0RHnO9PadFddrQLMRkK0ARTjShDTwof1xvH/E25f0o/SWmg3Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=E99MNzy8;
-	arc=none smtp.remote-ip=198.175.65.13
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=nabladev.com;
+	spf=pass smtp.mailfrom=nabladev.com;
+	dkim=pass header.d=nabladev.com header.i=@nabladev.com header.a=rsa-sha256 header.s=dkim header.b=cuBwKMs9;
+	arc=none smtp.remote-ip=178.251.229.89
+Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D2EA606A31D
-	for <imx@lists.linux.dev>; Tue, 27 Oct 2026 16:36:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3D2EA606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0E04606A31D
+	for <imx@lists.linux.dev>; Tue, 27 Oct 2026 17:18:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C0E04606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=E99MNzy8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793118970; x=1824654970;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=0npx0Foow+/UEvoNo/yJRWIrCYEDXYV8oP9hRaaHqlQ=;
-  b=E99MNzy8Sub3bjggOPOOel1xizdcvO/T1tx09KRQxqcBw9B31F+z/d2/
-   rIRLJiOiUEXoY9lZR3KkMtxmyYzn69VChdebcjc1U1GRp6/R9bmAnJvpH
-   1yZdqmlFwU/7KBPjepDVvuYLwQOXERgt4pY2YtZWvyYf0kmQJjtO5kUeJ
-   L2lqm8DbfpiJUiabgz3l14fQgItZxNiYpgMYGzT4B0EUgNL9Jo3H0DTcP
-   51hqZ7jI8qZWsKSvz+rz4+U+E6NPBDByDE8SGeWUhuG9b+k0T3zTldFXc
-   7ktF+iyOJY9KKhNRm8AJB/Q31sXYsPRWsXXnCZzjeTeL+IIMQfdqhjKtV
-   Q==;
-X-CSE-ConnectionGUID: wcrpV1yATF6vOajyJdoiPQ==
-X-CSE-MsgGUID: bjrPh8GURX2Aueem/TOfuA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11948"; a="1701226"
-X-IronPort-AV: E=Sophos;i="6.27,181,1787036400"; 
-   d="scan'208";a="1701226"
-Received: from fmviesa011.fm.intel.com ([10.60.135.151])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2026 09:36:09 -0700
-X-CSE-ConnectionGUID: VoqCGL52RIG83ecyOWnq+g==
-X-CSE-MsgGUID: WN7IMjxQSviqS3YmeY8qTA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,181,1787036400"; 
-   d="scan'208";a="6461608"
-Received: from klitkey1-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.196])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2026 09:36:04 -0700
-Date: Tue, 27 Oct 2026 18:36:01 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Linus Walleij <linusw@kernel.org>,
-	Bartosz Golaszewski <brgl@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-kernel@vger.kernel.org,
-	linux-gpio@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH v7 03/12] gpio: mxc: use 'unsigned int' instead of bare
- 'unsigned'
-Message-ID: <auDS8cXSmKjW3sfJ@ashevche-desk.local>
-References: <20261027-gpio-mxc-cleanup-v7-4-v7-0-7b602d70c149@nxp.com>
- <20261027-gpio-mxc-cleanup-v7-4-v7-3-7b602d70c149@nxp.com>
+	dkim=pass (2048-bit key, unprotected) header.d=nabladev.com header.i=@nabladev.com header.a=rsa-sha256 header.s=dkim header.b=cuBwKMs9
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 04D35108D58;
+	Tue, 27 Oct 2026 18:18:03 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
+	s=dkim; t=1793121487;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=2AhgxjpsSrdIp3v7Vm9/tI7GXfZBUU0A8emiVMRDe1Y=;
+	b=cuBwKMs9MSlJwuxyuBzukuPRq4nyr+PD2+XAG+5Mrfpivg6CkaDvPJUaTlihGzEBVqPNPg
+	vp/Oef/DMqwsmFyYU6aHqdiJZx1f0Nc1FfJiBZjWTCo0aWhl9ukoNcs7O0h/aWzlO4yU4Q
+	SZwOhx58k3ejTwG9KwmU3rJ5rDgT3TD3pp3z0dLyVUieJv2gOL5b9BB7Qw5F8H4VK7MJGp
+	LRbL52txxSsxbZXYQgORwx4VIeVgWDCy0cTZysihyBMZDL55k115D0G4kAFJagj4K2EMLz
+	/llBrGMjsh5UBjbE50L8yvAm2mG7xRAnqp6GQh2dQjCol4QHB6msL4yN2cAP9g==
+Message-ID: <d8c3ca76-3d93-4abc-8a78-d23e0f018975@nabladev.com>
+Date: Tue, 27 Oct 2026 18:18:02 +0100
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -85,23 +56,68 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261027-gpio-mxc-cleanup-v7-4-v7-3-7b602d70c149@nxp.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 1/3] dt-bindings: phy: ti,tcan104x-can: Document
+ Microchip ATA6563
+To: linux-arm-kernel@lists.infradead.org, Vinod Koul <vkoul@kernel.org>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+ Aswath Govindraju <a-govindraju@ti.com>, Conor Dooley <conor+dt@kernel.org>,
+ Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Marc Kleine-Budde <mkl@pengutronix.de>, Rob Herring <robh@kernel.org>,
+ devicetree@vger.kernel.org, imx@lists.linux.dev, linux-can@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260930214729.809649-1-marex@nabladev.com>
+Content-Language: en-US
+From: Marek Vasut <marex@nabladev.com>
+In-Reply-To: <20260930214729.809649-1-marex@nabladev.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Tue, Oct 27, 2026 at 08:09:30PM +0800, Peng Fan (OSS) wrote:
+On 9/30/26 11:46 PM, Marek Vasut wrote:
+> Microchip ATA6563 is High-Speed CAN Transceiver with Standby Mode.
+> It is pin-compatible with TI TCAN1042 and has a compatible programming
+> model, therefore use ti,tcan1042 as fallback compatible.
 > 
-> The kernel coding style prefers 'unsigned int' over bare 'unsigned'.
-> Fix all instances in struct mxc_gpio_hwdata and mxc_gpio_to_irq().
+> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+> Signed-off-by: Marek Vasut <marex@nabladev.com>
+> ---
+> Cc: Aswath Govindraju <a-govindraju@ti.com>
+> Cc: Conor Dooley <conor+dt@kernel.org>
+> Cc: Fabio Estevam <festevam@gmail.com>
+> Cc: Frank Li <Frank.Li@nxp.com>
+> Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
+> Cc: Marc Kleine-Budde <mkl@pengutronix.de>
+> Cc: Rob Herring <robh@kernel.org>
+> Cc: devicetree@vger.kernel.org
+> Cc: imx@lists.linux.dev
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-can@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> ---
+> V2: No change
+> V3: No change
+> V4: No change
+> V5: Add RB from Krzysztof
+> V6: No change
+> ---
+>   Documentation/devicetree/bindings/phy/ti,tcan104x-can.yaml | 1 +
+>   1 file changed, 1 insertion(+)
 > 
-> No functional change.
+> diff --git a/Documentation/devicetree/bindings/phy/ti,tcan104x-can.yaml b/Documentation/devicetree/bindings/phy/ti,tcan104x-can.yaml
+> index 0cf5fa21106b6..e97b1bc0a2e45 100644
+> --- a/Documentation/devicetree/bindings/phy/ti,tcan104x-can.yaml
+> +++ b/Documentation/devicetree/bindings/phy/ti,tcan104x-can.yaml
+> @@ -18,6 +18,7 @@ properties:
+>         - items:
+>             - enum:
+>                 - microchip,ata6561
+> +              - microchip,ata6563
+>                 - ti,tcan1051
+>             - const: ti,tcan1042
+>         - items:
 
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
++CC Vinod, is this patch OK with you ?
 
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Thank you.
