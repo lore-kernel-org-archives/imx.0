@@ -1,55 +1,144 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=79.135.106.113
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.47
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793097253;
-	b=jXij9D5bSdggXQrw9RK8yFyXn24+ECjgSBZgb8CPQhNMiWRN2h8zP+4EBQ461pXGadnp
-	 NEGrxb8hGivuidoXtuZfhfEKRRMt5MXt+4Yboj+hKeKLCpWozKbq+9oJhYy/aTBhvArXF
-	 iRvsYULn8hGiCy+psKswPuuI8WCYy/mVn+xi2V3HKcWLcwNiKNBpi3Fv3jyR4wBA2oD/a
-	 OE34+LCtvoYWtHU9WST3FWNBaEEmcG7kaOko2v7/ZJy8DDTRX7VyH04KMBpNmpYh4ebqw
-	 GYEpkLyz7MuMirECfscqI98pkMpE/D+WP51aOzqifRk+pcTP8Iy5qj7kisdDYTrnhaA==
+	t=1793098219;
+	b=4V5+JaJOYamdhlRg6TtUTjVyglDahQAh6SNiZuFxcC2Sx0q1yPPcghux/O+ZeZuPtgfW
+	 W5HpDAHLptjkKAFPhm2cyeCph/hsvvXYNVu2fTl4OjkUpaYDKigLO8EW6VMDq8bQ+WgJl
+	 kT7+bKwCT7BdYHGLA9l37TrKXmuNjxUv500r5alLRUi0muwX6nSyLXlPX2N9i+pR6N+dJ
+	 yIyVZZtTxAmPqsimsMpqpLvefbt7BsCnxWzf8oiLJZHRR74cjL2ARxJyw+pSU/wIPFNjY
+	 HpDIxGeVTZ8+qzSgvF9z9UEN38xTNF37xpFThDH8wm+Ly9zNOfw/OC61Z7GiOWWIS/A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793097253;
-	h=DMARC-Filter:DKIM-Signature:X-Pm-Submission-Id:From:Date:Subject:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:
-	 References:In-Reply-To:To:Cc:X-Mailer:X-Developer-Signature:
-	 X-Developer-Key;
-	bh=lZWQDrAmoiw6SBLgex16MiXr1FeSMl0JItqbKleN6Mg=;
-	b=P4YdJ6Ac3mftHgNKa09AE7jD4wEiA4B6i0+hfpuFyvjrauksDKgy17F0lfP/pPFMYS/U
-	 ErExBqhQqamErQkv6hiDa1llCz2Nl1ifkcZtwNjUs88FMs1pRN4oxJLDXeq3PShRtG8fS
-	 DO8UFqg9BzyCPFnxJPo0FQcW5vUTm44WRKSQuVA0Mp4XW99FMpgI/so5qhGV9B/9GLGQB
-	 /eWv5GjjH8WqZwyPtd44cSiw0qFhdFgun75StoAO4OdYB5aijbQ5EWrlhC4nbLNfOYYBP
-	 Ka4Tyvm3qGk8mn9CRatHDS26H/OLbE82OUcAYTZAb4CFhHHQy0qi7Dj46C0YcG0TIyg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793098219;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:Content-Type:
+	 X-Developer-Signature:X-Developer-Key:Content-Transfer-Encoding;
+	bh=XFZzZHqRNst1BMPTvXE87RueOS4Ft9OJQfvt5VLbbcE=;
+	b=vv1AwtBIIru+V2nmOoZY7PKcGsmfViu5ZTC55Odg5f8JEHCRZJQWr1K58cIOu5+GaP2J
+	 yA4u5KtmtwccWdVQ7A+OfH+OeveojAB+82T8aMQleoKxciQ2p0HieymIvmZJ9ORs7ZIPZ
+	 F4jFUxsA9f1hzq2HtPZxXXwrPGbCDz88GaXXH2922HBxqaZIAKtUcxKuYAwTmEd3PDk4E
+	 GT8GZ4JuKOX0jLGe7Fvus1NZH4ZarbdYA7ahzz4KloGQXqcAMbnunZ3gIiY5vKcBCwYxg
+	 dcyMYZ4SGN2C9S9deQN5c4k2Gf3qmmQM0/cTuvO9UHH7gFzzb7r0d4okERj3Y1j+ZjA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=geanix.com;
-	spf=pass smtp.mailfrom=geanix.com;
-	dkim=pass header.d=geanix.com header.i=@geanix.com header.a=rsa-sha256 header.s=protonmail header.b=muHUo6CB;
-	arc=none smtp.remote-ip=79.135.106.113
-Received: from mail-106113.protonmail.ch (mail-106113.protonmail.ch [79.135.106.113])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=none header.from=baylibre.com;
+	spf=pass smtp.mailfrom=baylibre.com;
+	dkim=pass header.d=baylibre.com header.i=@baylibre.com header.a=rsa-sha256 header.s=google header.b=lvVUB54F;
+	arc=none smtp.remote-ip=209.85.221.47
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0D30606A32C
-	for <imx@lists.linux.dev>; Tue, 27 Oct 2026 10:34:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F0D30606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C3C960A2622
+	for <imx@lists.linux.dev>; Tue, 27 Oct 2026 10:50:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9C3C960A2622
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=geanix.com header.i=@geanix.com header.a=rsa-sha256 header.s=protonmail header.b=muHUo6CB
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=geanix.com;
-	s=protonmail; t=1793097249; x=1793356449;
-	bh=lZWQDrAmoiw6SBLgex16MiXr1FeSMl0JItqbKleN6Mg=;
-	h=From:Date:Subject:Message-Id:References:In-Reply-To:To:Cc:From:To:
-	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=muHUo6CBdB8jAn3g3QcV5Uvtkq9GAAmeasq7kZe2NHZY7/LADAnhT9fbgOi01JTpc
-	 hYD9xh/J78O+Pcsj+D+p32OnsRsgyoGhfvlApTR7aa9bQvG6to1mLedIAT+tm7kfRc
-	 hHp0lxEQD9sm8aiGtmFQ73v8isZtmEau5Gy+KOX9erHWZehCCguTCncLQqod6xb9eR
-	 YjePshm33kn2owlrZ0QPfzWapTk/o039NdGwJ7wiXuoLBRf7Q4VBpUBNsGg+S5Lsmi
-	 bHkCrfcmCRkzSdLjOhQId2QJkncRxKx7G+FtJcbnbyoYVJhBIpZB/nL5L8iNcHpfH7
-	 GgD2GNiZRdhAg==
-X-Pm-Submission-Id: 4jDRgL36l0z1DF5K
-From: Esben Haabendal <esben@geanix.com>
-Date: Tue, 27 Oct 2026 11:33:52 +0100
-Subject: [PATCH v5 4/4] drm/bridge: nwl-dsi: Correct MIPI DSI horizontal
- sync timing
+	dkim=pass (2048-bit key, unprotected) header.d=baylibre.com header.i=@baylibre.com header.a=rsa-sha256 header.s=google header.b=lvVUB54F
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-48dfaa3fa12so608341f8f.0
+        for <imx@lists.linux.dev>; Tue, 27 Oct 2026 03:50:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre.com; s=google; t=1793098216; x=1793703016; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=XFZzZHqRNst1BMPTvXE87RueOS4Ft9OJQfvt5VLbbcE=;
+        b=lvVUB54FX07PZbj8Rrjf0w6eN69IV+Y+8eU9FDv/u26hZ7rw+UhYvK5O7ciK0AE7SV
+         OJjJqH8c1ebC9BweY1p2ufe80cRdcmV2VDmsJFlXA3X2+0KgQpyZQ9zo+PqFhJqXifcn
+         ocj+9uOdKevfX+V+GHhsSmbDLcJboeVLVL8SUQ4CIi8uxhrQAzx4dG92ovECebzPswuo
+         8gKkRDuU9wNmSjEWC3F8n8LTWn9JhRxRGiJgrt17uNo3270+/B3AJ7H7r3WtkAeRFsXg
+         aOekhuTpGiCZHhmI+VPTbpZ39/AKnMax45NkqmKXm+TMDQS5KkZCNmMvuo/fSSFwrKnq
+         TrHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793098216; x=1793703016;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=XFZzZHqRNst1BMPTvXE87RueOS4Ft9OJQfvt5VLbbcE=;
+        b=UE/EImxDFluzK48c/SRXP8Fw1brKuH8CyFoioC2dJQg0pyhD7bvfu1WbiVh4H8g9qL
+         oEeZRELOnehi2LtgK50SiE3SjcFeYNv7oIaL+TbScVT3yCpJNx4EcZ94etCUTDmgzW0W
+         idYEFrsA1RLu8G7bTSYOTSDk1HJjBS2fZHN9by7CE9JmKC8cOCLPXb5UzrGQxqoJhuiu
+         d5s5mXQEbx7ar2FvaHxrAmyvKD6a+uWlNnj+l6XWXHS5R1ZOEK8QdhgsGU8sJ14oPdLt
+         XQYm4VnHj4d3B/sz9qz5H4Sq9aJyPa+Efm1YuXtTHyXZtnI5g45WKewGcO8P3FV3s9hA
+         pZOA==
+X-Forwarded-Encrypted: i=1; AKwUvBySoqR1LmEL0E4XI1ucJXTYycc2iYiLEeHqUqUbYIZc/It7L6RDUxXPGgCYRNQYtG40uhM=@lists.linux.dev
+X-Gm-Message-State: AFq9FYI7ccnvTyfziQiNjNexFiO8gEgCdNZLKVf237yPNkutfimwhzWq
+	LqvULM8h8GqUF1i1fjnvbXgipKG1hLra5GxFeyM7XWbZfGxvtco1xmb3XEPdcqZsldA=
+X-Gm-Gg: AYBFou1IC6ttlO/eS2QwXgR4Ty87Nq8GeSeTEaqaGyltLCZbND9MC4nEt1W0g9ZwHt0
+	l9rcphf9C/8XkT7O91OwCbFiKg0c/JVFoKkcQwe7C/bc7p8zEVSQfUk0nJkxTg/VuHxm8/nGf9m
+	uvlX+vWgXXXtop37XWF8kuoU3+RtxYGBKXd1RvHlwf7gBV9QP9TxOW4uV7MkhJWiM23EnVtktJM
+	w4o88AeqV0mCbAv+I9h5Vrbd06AcRNrzritk3Hhzcx2f0wRIC+IsDsVg7sMlCqbs8BwwQi/ll69
+	vNbaha7keJpTW012QKBSlWqitjwnbAJcfjedmu8ng+JIGpJn04KLfZCgTeDK8tQ23cZBui3lAsN
+	Fe/Dapd93R1wK0mth3Jj8d2RSXaA1IStDfyG21Xit66UJZKqe+n3FsSCqEK4NdUY9w1w3pxTcm0
+	/n5oxjavuUHV+vNoj9Gu1AZpE5iykB8P8JWbUcccqtKFcCmAwg0A35QAGafWyAgatR2IyRRIzdG
+	iIFQBDFySHKc0w/G+n0JsEWBWYulHw7nidwDS8wYF9zqSvxF4oUs7ZOc9s4A4jJdYGVsUbyMAWP
+	M/6SkZdrxArzY3a4X+jgaRkSOJDJsz0ZM7hwKcprcfE=
+X-Received: by 2002:a05:6000:438a:b0:48e:884:affb with SMTP id ffacd0b85a97d-48e55a51758mr5422454f8f.24.1793098215724;
+        Tue, 27 Oct 2026 03:50:15 -0700 (PDT)
+Received: from localhost (p200300f65f19a904240e81f1f32a429c.dip0.t-ipconnect.de. [2003:f6:5f19:a904:240e:81f1:f32a:429c])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-48e3ebd48e0sm22735578f8f.38.2026.10.27.03.50.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Oct 2026 03:50:15 -0700 (PDT)
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig=20=28The=20Capable=20Hub=29?= <u.kleine-koenig@baylibre.com>
+To: Linus Walleij <linusw@kernel.org>,
+	Bartosz Golaszewski <brgl@kernel.org>
+Cc: Andy Shevchenko <andy@kernel.org>,
+	linux-gpio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Lixu Zhang <lixu.zhang@intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Imre Kaloz <kaloz@kernel.org>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Valentina Fernandez <valentina.fernandezalanis@microchip.com>,
+	Daire McNamara <daire.mcnamara@microchip.com>,
+	Daniel Palmer <daniel@thingy.jp>,
+	Romain Perier <romain.perier@gmail.com>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-riscv@lists.infradead.org,
+	Hoan Tran <hoan@os.amperecomputing.com>,
+	Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>,
+	Mika Westerberg <westeri@kernel.org>,
+	Hans de Goede <hansg@kernel.org>,
+	=?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+	linux-hwmon@vger.kernel.org,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	"Enrico Weigelt, metux IT consult" <info@metux.net>,
+	Viresh Kumar <vireshk@kernel.org>,
+	virtualization@lists.linux.dev,
+	Yinbo Zhu <zhuyinbo@loongson.cn>,
+	Thierry Reding <thierry.reding@kernel.org>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	linux-tegra@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Srinivas Neeli <srinivas.neeli@amd.com>,
+	Michal Simek <michal.simek@amd.com>,
+	linux-aspeed@lists.ozlabs.org,
+	asahi@lists.linux.dev,
+	linux-mediatek@lists.infradead.org,
+	openbmc@lists.ozlabs.org,
+	linux-omap@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	linux-unisoc@lists.infradead.org,
+	linux-rockchip@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Michael Buesch <m@bues.ch>,
+	William Breathitt Gray <wbg@kernel.org>,
+	Robert Richter <rric@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	linux-acpi@vger.kernel.org
+Subject: [PATCH v4 00/23] gpio: Improvements around device-id arrays
+Date: Tue, 27 Oct 2026 11:48:37 +0100
+Message-ID: <cover.1793097104.git.u.kleine-koenig@baylibre.com>
+X-Mailer: git-send-email 2.56.0.rc1
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -59,151 +148,180 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261027-nwl-dsi-fixes-v5-4-b6d1d3d2d356@geanix.com>
-References: <20261027-nwl-dsi-fixes-v5-0-b6d1d3d2d356@geanix.com>
-In-Reply-To: <20261027-nwl-dsi-fixes-v5-0-b6d1d3d2d356@geanix.com>
-To: Andrzej Hajda <andrzej.hajda@intel.com>, 
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Luca Ceresoli <luca.ceresoli@bootlin.com>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- =?utf-8?q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>, 
- Fabio Estevam <festevam@gmail.com>, Robert Chiras <robert.chiras@nxp.com>, 
- Sam Ravnborg <sam@ravnborg.org>, imx@lists.linux.dev
-Cc: Esben Haabendal <esben@geanix.com>, Frank.Li@kernel.org, 
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
- "Oliver F. Brown" <oliver.brown@oss.nxp.com>, 
- Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>, 
- Liu Ying <victor.liu@nxp.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1793097237; l=4569;
- i=esben@geanix.com; s=20240523; h=from:subject:message-id;
- bh=BPl/W4P4TrdcCjFEm+Lx0MMHf20hrmW0utgAkepjgi4=;
- b=Ihcv8FGi4DIdFuSdBeE1cuHcHTTvyNGzsH8MCTHaJUVWuqTWFRhufbqlExjx2CYC1aeHPF27V
- 1cuYF2GVsacAbdAbUgnoRVsRDNj6FMXUeR/ZWg5+lW7bCY5NErsxumj
-X-Developer-Key: i=esben@geanix.com; a=ed25519;
- pk=PbXoezm+CERhtgVeF/QAgXtEzSkDIahcWfC7RIXNdEk=
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=8137; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=k1gONcl2UIxBepDw11jo8AHu6ai+O1G0nVgkSy8JdIE=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBq4IGGNXr36bKoBw2PaxVdVtkUGC9jXmJpRnHf2 Csas+gKAK2JATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCauCBhgAKCRCPgPtYfRL+ TniYCACv6CLczaP+IEWqqjNz0H2IDCNFuAhnXKDLb4106wpApOzW0y6gufg8fEnzsamxLLEBdjV dqq25XfWZfdmZg3FMHHPJqnBr5fh7Zg46EwNe1jZvPkIkqY78ho7ESao5AKRIVqqTbQRpIaZEgz NNeJQhmaiL16rAeAP+okNpbCcIyWa33O12ZEutJCFYTQrA6235nE9ZSMLfl07igU0+tu+iunwWQ mCsDqRmK3fija+zCgkc0dIt3ssbXfQa1/DrtcjbcwgL9Jsq5zWCdDhzr7Rb8pliP+Uu/VBJJxty 27ri9KePaXD/wGvqViL+tL8IZZtej2Vgp0hRAsZI/QNPpgp7
+X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
 
-The NWL MIPI Host controller registers specifies the horizontal front
-porch, sync pulse, and back porch in DSI packet payload size in bytes (ie.
-not in pixel clocks).
+Hello,
 
-The calculation for this is (mostly) described in section 13.6.3.5.1.2 of
-the i.MX 8M Dual/8M QuadLite/8M Quad Applications Processors Reference
-Manual (rev. 3.1). The formula shown there does not take packet header size
-into account though.
+the original motivation for this series are the patches that convert the
+arrays to use named initializers, see
+https://lore.kernel.org/all/cover.1780048925.git.u.kleine-koenig@baylibre.com/
+for the idea behind it. Looking left and right a bit while implementing
+that, the series grew a bit.
 
-The formula implemented here converts the hfp, hsa, and hbp to DSI packet
-bytes and then subtracts the number of packet header bytes.
+Changes since v3 (available at
+https://lore.kernel.org/all/cover.1793030820.git.u.kleine-koenig@baylibre.com):
 
-It is worth noting that these values only needs to match approximately,
-according to the reference manual.
+ - Picked up review tags (b4 even found some from v2)
+ - Add a 2nd MODULE_DEVICE_TABLE(of, ...) in drivers/gpio/gpio-mpc5200.c
+   (My grep didn't handle >1 driver per file well), noticed by Sashiko
+ - New patch to use named initializers for auxiliary_device_id arrays
+ - Fix code style of of_device_id array in drivers/gpio/gpio-grgpio.c
+   (My script doesn't handle of_device_id::name) and
+   drivers/gpio/gpio-ppc44x.c (didn't exist yet when I sent v2 and
+   failed to notice that for v3)
+ - Fix code style of auxiliary_device_id array in
+   drivers/gpio/gpio-shared-proxy.c, missed as I didn't have a script
+   for auxiliary_device_id before.
+ - Dropped a few broken email addresses from Cc:
 
-Based on commit in NXP vendor tree
-commit f2a61699749d ("LF-7981-4: drm/bridge: nwl-dsi: Correct MIPI DSI horizontal sync timing")
+Best regards
+Uwe
 
-Fixes: 44cfc6233447 ("drm/bridge: Add NWL MIPI DSI host controller support")
-Cc: Robert Chiras <robert.chiras@nxp.com>
-Cc: Oliver F. Brown <oliver.brown@oss.nxp.com>
-Tested-by: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
-Acked-by: Liu Ying <victor.liu@nxp.com>
-Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Signed-off-by: Esben Haabendal <esben@geanix.com>
----
- drivers/gpu/drm/bridge/nwl-dsi.c | 60 ++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 57 insertions(+), 3 deletions(-)
+Uwe Kleine-König (The Capable Hub) (23):
+  gpio: Remove __maybe_unused annotations from acpi_device_id arrays
+  gpio: fxl6408: Remove __maybe_unused annotations from of_device_id
+    array
+  gpio: Drop unused assignment of acpi_device_id driver data
+  gpio: max7301: Drop unused assignment of spi_device_id driver data
+  gpio: mmio: Drop unused assignment of platform_device_id driver data
+  gpio: ljca: Drop unused assignment of auxiliary_device_id driver data
+  gpio: xgene: Add missing ACPI module annotation
+  gpio: sodaville: Add missing PCI module annotations
+  gpio: Add missing OF module annotations
+  gpio: pxa: Add missing platform module annotations
+  gpio: pl061: Use empty initializer for amba_id terminator
+  gpio: Use named initializers for acpi_device_id array
+  gpio: Use named initializers for auxiliary_device_id arrays
+  gpio: pcf857x: Use named initializers for of_device_id array
+  gpio: bd73800: Use named initializers for platform_device_id array
+  gpio: Use named initializers for spi_device_id array
+  gpio: virtio: Use a named initializer for virtio_device_id array
+  gpio: Unify style of acpi_device_id arrays
+  gpio: Unify style of of_device_id arrays
+  gpio: max77620: Unify style of platform_device_id array
+  gpio: Unify style of spi_device_id arrays
+  gpio: Unify style of pci_device_id arrays
+  gpio: Unify style of various *_device_id arrays
 
-diff --git a/drivers/gpu/drm/bridge/nwl-dsi.c b/drivers/gpu/drm/bridge/nwl-dsi.c
-index f3f4334136c0..870a308589cd 100644
---- a/drivers/gpu/drm/bridge/nwl-dsi.c
-+++ b/drivers/gpu/drm/bridge/nwl-dsi.c
-@@ -13,6 +13,7 @@
- #include <linux/math64.h>
- #include <linux/mfd/syscon.h>
- #include <linux/media-bus-format.h>
-+#include <linux/math64.h>
- #include <linux/module.h>
- #include <linux/mux/consumer.h>
- #include <linux/of.h>
-@@ -264,6 +265,9 @@ static int nwl_dsi_config_dpi(struct nwl_dsi *dsi)
- 	bool burst_mode;
- 	int hfront_porch, hback_porch, vfront_porch, vback_porch;
- 	int hsync_len, vsync_len;
-+	int hfp, hbp, hsa;
-+	u64 hs_clk_rate, pclk_rate;
-+	int h_blank, pkt_hdr_len, pkt_len;
- 
- 	hfront_porch = dsi->mode.hsync_start - dsi->mode.hdisplay;
- 	hsync_len = dsi->mode.hsync_end - dsi->mode.hsync_start;
-@@ -317,9 +321,59 @@ static int nwl_dsi_config_dpi(struct nwl_dsi *dsi)
- 			      dsi->mode.hdisplay);
- 	}
- 
--	nwl_dsi_write(dsi, NWL_DSI_HFP, hfront_porch);
--	nwl_dsi_write(dsi, NWL_DSI_HBP, hback_porch);
--	nwl_dsi_write(dsi, NWL_DSI_HSA, hsync_len);
-+	hs_clk_rate = dsi->phy_cfg.mipi_dphy.hs_clk_rate;
-+	pclk_rate = (u64)dsi->mode.clock * 1000;
-+	DRM_DEV_DEBUG_DRIVER(dsi->dev, "hs_clk_rate: %llu Hz\n", hs_clk_rate);
-+
-+	/*
-+	 * Calculate the bytes needed, according to the RM formula:
-+	 * Time of DPI event = time to transmit x number of bytes on the DSI interface
-+	 * dpi_event_size * dpi_pclk_period = dsi_bytes * 8 * hs_bit_period / num_lanes
-+	 * ===>
-+	 * dsi_bytes = dpi_event_size * dpi_pclk_period * num_lanes / (8 * hs_bit_period)
-+	 * ===> (substituting period = 1 / rate)
-+	 * dsi_bytes = dpi_event_size * num_lanes * hs_clk_rate / (8 * dpi_pclk_rate)
-+	 */
-+	hfp = DIV64_U64_ROUND_UP((u64)hfront_porch * dsi->lanes * hs_clk_rate, 8 * pclk_rate);
-+	hbp = DIV64_U64_ROUND_UP((u64)hback_porch * dsi->lanes * hs_clk_rate, 8 * pclk_rate);
-+	hsa = DIV64_U64_ROUND_UP((u64)hsync_len * dsi->lanes * hs_clk_rate, 8 * pclk_rate);
-+
-+	/* Make sure horizontal blanking values are even numbers */
-+	hfp = roundup(hfp, 2);
-+	hbp = roundup(hbp, 2);
-+	hsa = roundup(hsa, 2);
-+
-+	/*
-+	 * We need to subtract the packet header length: 32
-+	 * In order to make sure we don't get negative values,
-+	 * subtract a proportional value to the total length of the
-+	 * horizontal blanking duration.
-+	 */
-+	h_blank = hfp + hbp + hsa;
-+
-+	if (h_blank) {
-+		pkt_len = min(hfp, roundup(((hfp * 100 / h_blank) * 32) / 100, 2));
-+		pkt_hdr_len = pkt_len;
-+		hfp -= pkt_len;
-+
-+		pkt_len = min(hbp, roundup(((hbp * 100 / h_blank) * 32) / 100, 2));
-+		pkt_hdr_len += pkt_len;
-+		hbp -= pkt_len;
-+
-+		pkt_len = min(hsa, 32 - pkt_hdr_len);
-+		pkt_hdr_len += pkt_len;
-+		hsa -= pkt_len;
-+		if (pkt_hdr_len != 32)
-+			dev_warn(dsi->dev,
-+				 "Unable to subtract packet header length fully: %d left\n",
-+				 32 - pkt_hdr_len);
-+	}
-+
-+	DRM_DEV_DEBUG_DRIVER(dsi->dev, "Register values: hfp=%d hbp=%d hsa=%d\n", hfp, hbp, hsa);
-+
-+	nwl_dsi_write(dsi, NWL_DSI_HFP, hfp);
-+	nwl_dsi_write(dsi, NWL_DSI_HBP, hbp);
-+	nwl_dsi_write(dsi, NWL_DSI_HSA, hsa);
- 
- 	nwl_dsi_write(dsi, NWL_DSI_ENABLE_MULT_PKTS, 0x0);
- 	nwl_dsi_write(dsi, NWL_DSI_BLLP_MODE, 0x1);
+ drivers/gpio/gpio-74x164.c          |  4 ++--
+ drivers/gpio/gpio-adnp.c            |  4 ++--
+ drivers/gpio/gpio-aggregator.c      |  2 +-
+ drivers/gpio/gpio-altera-a10sr.c    |  2 +-
+ drivers/gpio/gpio-altera.c          |  4 ++--
+ drivers/gpio/gpio-amd8111.c         |  2 +-
+ drivers/gpio/gpio-amdpt.c           |  8 ++++----
+ drivers/gpio/gpio-aspeed-sgpio.c    | 10 ++++-----
+ drivers/gpio/gpio-aspeed.c          | 10 ++++-----
+ drivers/gpio/gpio-ath79.c           |  2 +-
+ drivers/gpio/gpio-bcm-kona.c        |  1 +
+ drivers/gpio/gpio-bd73800.c         |  4 ++--
+ drivers/gpio/gpio-blzp1600.c        |  4 ++--
+ drivers/gpio/gpio-brcmstb.c         |  2 +-
+ drivers/gpio/gpio-bt8xx.c           |  2 +-
+ drivers/gpio/gpio-cadence.c         |  6 +++---
+ drivers/gpio/gpio-creg-snps.c       |  5 +++--
+ drivers/gpio/gpio-davinci.c         |  8 ++++----
+ drivers/gpio/gpio-dwapb.c           | 14 ++++++-------
+ drivers/gpio/gpio-elkhartlake.c     |  2 +-
+ drivers/gpio/gpio-em.c              |  4 ++--
+ drivers/gpio/gpio-ep93xx.c          |  1 +
+ drivers/gpio/gpio-ftgpio010.c       |  3 ++-
+ drivers/gpio/gpio-fxl6408.c         |  2 +-
+ drivers/gpio/gpio-graniterapids.c   |  4 ++--
+ drivers/gpio/gpio-grgpio.c          |  6 +++---
+ drivers/gpio/gpio-gw-pld.c          |  4 ++--
+ drivers/gpio/gpio-hisi.c            |  6 +++---
+ drivers/gpio/gpio-hlwd.c            |  4 ++--
+ drivers/gpio/gpio-imx-scu.c         |  1 +
+ drivers/gpio/gpio-ixp4xx.c          |  4 ++--
+ drivers/gpio/gpio-ljca.c            |  4 ++--
+ drivers/gpio/gpio-loongson-64bit.c  |  4 ++--
+ drivers/gpio/gpio-lp3943.c          |  2 +-
+ drivers/gpio/gpio-lpc32xx.c         |  4 ++--
+ drivers/gpio/gpio-ltc4283.c         |  2 +-
+ drivers/gpio/gpio-macsmc.c          |  4 ++--
+ drivers/gpio/gpio-max3191x.c        | 12 +++++------
+ drivers/gpio/gpio-max7301.c         |  2 +-
+ drivers/gpio/gpio-max7360.c         |  8 ++++----
+ drivers/gpio/gpio-max77620.c        |  4 ++--
+ drivers/gpio/gpio-max77759.c        |  2 +-
+ drivers/gpio/gpio-mb86s7x.c         |  2 +-
+ drivers/gpio/gpio-ml-ioh.c          |  2 +-
+ drivers/gpio/gpio-mlxbf.c           |  6 +++---
+ drivers/gpio/gpio-mlxbf2.c          |  6 +++---
+ drivers/gpio/gpio-mlxbf3.c          |  4 ++--
+ drivers/gpio/gpio-mm-lantiq.c       |  2 +-
+ drivers/gpio/gpio-mmio.c            |  3 +--
+ drivers/gpio/gpio-mockup.c          |  4 ++--
+ drivers/gpio/gpio-moxtet.c          |  4 ++--
+ drivers/gpio/gpio-mpc5200.c         | 10 +++++----
+ drivers/gpio/gpio-mpc8xxx.c         | 25 +++++++++++-----------
+ drivers/gpio/gpio-mpfs.c            |  1 +
+ drivers/gpio/gpio-mpsse.c           |  3 +--
+ drivers/gpio/gpio-msc313.c          |  1 +
+ drivers/gpio/gpio-mt7621.c          |  2 +-
+ drivers/gpio/gpio-mvebu.c           | 13 ++++++------
+ drivers/gpio/gpio-mxc.c             |  2 +-
+ drivers/gpio/gpio-mxs.c             |  4 ++--
+ drivers/gpio/gpio-nomadik.c         |  7 ++++---
+ drivers/gpio/gpio-novalake-events.c |  4 ++--
+ drivers/gpio/gpio-npcm-sgpio.c      |  6 +++---
+ drivers/gpio/gpio-octeon.c          |  2 +-
+ drivers/gpio/gpio-omap.c            |  2 +-
+ drivers/gpio/gpio-palmas.c          | 10 ++++-----
+ drivers/gpio/gpio-pca953x.c         |  4 ++--
+ drivers/gpio/gpio-pca9570.c         |  2 +-
+ drivers/gpio/gpio-pcf857x.c         | 26 +++++++++++------------
+ drivers/gpio/gpio-pci-idio-16.c     |  3 ++-
+ drivers/gpio/gpio-pcie-idio-24.c    |  8 +++++---
+ drivers/gpio/gpio-pisosr.c          |  4 ++--
+ drivers/gpio/gpio-pl061.c           |  2 +-
+ drivers/gpio/gpio-pmic-eic-sprd.c   |  2 +-
+ drivers/gpio/gpio-ppc44x.c          |  2 +-
+ drivers/gpio/gpio-pxa.c             | 20 ++++++++++--------
+ drivers/gpio/gpio-qixis-fpga.c      |  3 +--
+ drivers/gpio/gpio-rcar.c            |  2 +-
+ drivers/gpio/gpio-rda.c             |  2 +-
+ drivers/gpio/gpio-realtek-otto.c    |  2 +-
+ drivers/gpio/gpio-rockchip.c        |  4 ++--
+ drivers/gpio/gpio-sama5d2-piobu.c   |  2 +-
+ drivers/gpio/gpio-shared-proxy.c    |  2 +-
+ drivers/gpio/gpio-sifive.c          |  2 +-
+ drivers/gpio/gpio-sl28cpld.c        |  2 +-
+ drivers/gpio/gpio-sodaville.c       |  3 ++-
+ drivers/gpio/gpio-spear-spics.c     |  3 ++-
+ drivers/gpio/gpio-sprd.c            |  2 +-
+ drivers/gpio/gpio-stmpe.c           |  2 +-
+ drivers/gpio/gpio-stp-xway.c        |  2 +-
+ drivers/gpio/gpio-tc9563.c          |  2 +-
+ drivers/gpio/gpio-tegra.c           |  6 +++---
+ drivers/gpio/gpio-tegra186.c        | 32 ++++++++++++++---------------
+ drivers/gpio/gpio-thunderx.c        |  3 +--
+ drivers/gpio/gpio-tps65218.c        |  2 +-
+ drivers/gpio/gpio-ts4800.c          |  4 ++--
+ drivers/gpio/gpio-ts4900.c          |  2 +-
+ drivers/gpio/gpio-twl4030.c         |  4 ++--
+ drivers/gpio/gpio-usbio.c           | 14 ++++++-------
+ drivers/gpio/gpio-vf610.c           |  4 ++--
+ drivers/gpio/gpio-virtio.c          |  4 ++--
+ drivers/gpio/gpio-visconti.c        |  2 +-
+ drivers/gpio/gpio-waveshare-dsi.c   |  2 +-
+ drivers/gpio/gpio-xgene-sb.c        |  6 +++---
+ drivers/gpio/gpio-xgene.c           | 10 +++++----
+ drivers/gpio/gpio-xgs-iproc.c       |  2 +-
+ drivers/gpio/gpio-xilinx.c          |  4 ++--
+ drivers/gpio/gpio-xlp.c             |  6 +++---
+ drivers/gpio/gpio-xra1403.c         |  6 +++---
+ drivers/gpio/gpio-zevio.c           |  5 +++--
+ drivers/gpio/gpio-zynqmp-modepin.c  |  2 +-
+ drivers/gpio/gpiolib-acpi-quirks.c  |  2 +-
+ 112 files changed, 278 insertions(+), 260 deletions(-)
 
+
+base-commit: 20a33c6b6cbe7e4805dfb6cd68816937443aa148
 -- 
-2.56.0
+2.56.0.rc1
 
