@@ -1,86 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=203.205.221.192
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793124055;
-	b=U2FxbnUdO+96ktCDbkkzujIiBWNKCFV35xSVNy4dOc1mTUfBdFTRc12FjFX4aJFO4DDj
-	 x1TWNu3x0ub4opxDBVscx8EZJdkAzXHbcltW5aI+/wuP++xgbBQWLN4beTpkawgto1lA1
-	 jcpAxAeEaKrN+HaXM7r5Lt++c6O6yELVwG8jWEJUiFe/TuYKH6FoQqe9AADT8h1wF1Z+7
-	 9EE6kc7p+rKefEpuf6HqKx3C291jaBd8WncOrmRfM30N35h8iZYIZeIjSVDUxDrONhpny
-	 NlI27tYqTiJUA3j4mJ1higUXWoL0PlCC/UzDygnl+wLZ6uG4O1q9lWn9uE1262VRYCg==
+	t=1793125141;
+	b=Vth8piJA52FbGl/qZ1FcPcltHaSARbphoJNmLCEWxFXW12CbRh2lm18Ydh65ftCILZcE
+	 YgaSxzyQph/jDJru0O877E8EC2LKVrVww4X60oP9Wes9FITAudamCIKXqJ6HGMV30D3Vr
+	 wWN9RYGgzAS5rgwfC8DA5EQbPc/2DyhHEQfLWuryAx/bLvhhW5ddr9QU/sLnH0BSTAEwk
+	 6RXRA4w6V7uQk8x1x48As1W6Iowvi0+lomyZmbAENYJbd3OQ4rJnTsB1LyoJQLlcn6Fmu
+	 j5xNIVBBwm3h6SOueZf8yZ4v3qXSoUy7ijzx1e3U/i6dxSelJ1Q4T1kYwUXEhPBrHmw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793124055;
-	h=DMARC-Filter:DKIM-Signature:Received:X-QQ-mid:Message-ID:
-	 X-QQ-XMAILINFO:X-QQ-XMRINFO:From:To:Cc:Subject:Date:X-OQ-MSGID:
-	 X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=spM3KcIMCTj+Sev7DLll6n6wD3ZIu3g46O7rzTg5psQ=;
-	b=YbMPrNZK4ip764NMTtLWhZyehhGe6XvNAk+inUGHEajezluJ9ezc68pPjx7EgrdXnG5P
-	 8AGmo3ru+NzOAAR1340rd+wcz/Fu9h9cieS8oUGxk8m//Uo9JSOyegIsJ2mmMexBoKonB
-	 ibk+bOU6KPWfBCNDe1/DKthC0AZe8f0K7zZSENFnbncQ05bSKhH2MJ+WglhNf2BOlW1be
-	 haBf3iGQ8xeu2SdxzI9M9BMlBhITiHojD0wWz+lj0dbULoev6Ls6c+cvasoGfTivt+plp
-	 lCZE//jN0SSubVeVmlS8kf0RcjNsYuskKHVc0igHrvFjMlQgP3aNCmaw0jX1v/LOPAQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793125141;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=pzwE4136bPxhbecYAmodZrZXgOfxuMwE7vVB8kRl5og=;
+	b=XtMiitpVkAJrhUhgMuTvo3OeOeJ3hvc3fuawcpluH3DPn8Veb4TuDVzc9rPpZeXyKoux
+	 CsDFVLi9NZTLATRcskdxqTLsc+tEtd9WFt2EIs5ryeAEgAxMRDUTHJkI+CxrPKnxo1Zbu
+	 aIlsdSuBd1kMNINpVmZuORJqgm1qSdI5hQGEDOCKieupMXfc/VscP2Nn3PtNqJCtgKomy
+	 ZUiJJ6bkiPyr/+Jms5OspOpb3xvZwLLNSaedm1X9gp1OWVy5pWUQ3UkJqk5/ZUmM0Xiov
+	 FoYF9MTrflvEqV76OFIg28eNKFkNmj0kfhlgvHQXr1YG9PKUvsSMxieS0jbDHSayy1g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=foxmail.com;
-	spf=pass smtp.mailfrom=foxmail.com;
-	dkim=pass header.d=foxmail.com header.i=@foxmail.com header.a=rsa-sha256 header.s=s201512 header.b=qW5JV1G0;
-	arc=none smtp.remote-ip=203.205.221.192
-Received: from out203-205-221-192.mail.qq.com (out203-205-221-192.mail.qq.com [203.205.221.192])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mmZPw9L5;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C2C5606A31A
-	for <imx@lists.linux.dev>; Tue, 27 Oct 2026 18:00:53 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3C2C5606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCCB5606A31D
+	for <imx@lists.linux.dev>; Tue, 27 Oct 2026 18:19:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=foxmail.com header.i=@foxmail.com header.a=rsa-sha256 header.s=s201512 header.b=qW5JV1G0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1793124051;
-	bh=spM3KcIMCTj+Sev7DLll6n6wD3ZIu3g46O7rzTg5psQ=;
-	h=From:To:Cc:Subject:Date;
-	b=qW5JV1G0NwjaH8K2vvXH9SaH2apLWuFgqoN72y4/ij8hebgmpAyiCUnPgyl9CS2Oe
-	 EulW/NBiap5CVhNdzfogKXbjhg0LUzjt9xs7mjuZuxmGFR6r5T9r3h0Kp9JBNjCm/Q
-	 DN/5uju3KPgE8O7UPBLWFVZxLNZQcOEYc7Md4C1c=
-Received: from LAPTOP-TKBJAGN4.localdomain ([27.38.201.62])
-	by newxmesmtplogicsvrsza53-0.qq.com (NewEsmtp) with SMTP
-	id 3013632; Wed, 28 Oct 2026 02:00:48 +0800
-X-QQ-mid: xmsmtpt1793124048t1hi43pfb
-Message-ID: <tencent_877C99956190215D644EB959DF1663542A0A@qq.com>
-X-QQ-XMAILINFO: N6IfSeM/PG+tdCz5Cj1vhLmiuKazt8ArHwWiFVGNcpvZ35kcBBkkbT142hdYXb
-	 EwNVr9Toq0fjfi5FlkZBig7el4RHfpoBiUf8ha4CMdmo763I5EUJs2h2k6LkoK8URenxUj++4Ne0
-	 C83Snqx65b/nQdrLw7/snnIRj/2H3xIXAYseTejahOVm+o8fMNLhu8FaAxXOiJxr8pb8iJrycmWM
-	 f0cNcynccpVQEw5XNYH0PskUTwGiPxpJfMbcwWJttKumYlXtyx6uoRWbTE/e4OkV2BtR1rlRJ954
-	 dCLWXiTZ3y0bwHq4X4IejGyFALnc2+mF8dZizgzf4rON7QhaKQ5nT9OqLrb8Y3uYtSpIrxAu5nVw
-	 RpDji+FXBM2PeDY7dJY6JtpCxEz8XCWCacOnw9/AgMOeggSDVjkiO8eFSBpEFq0OGkgFfQr+3cqd
-	 XaAExW1nNfDisb61TngEmxk0v3j2m00VdvE574xY8Q5MdtJocsQDUI5LOabK6DnLcPWfg9exMbsI
-	 tO6/9NDQD+Gr1O54jRXnP3MX2ZhNLyg5JiGVWkl0ey7qBy53gB7Sk7Z4mKopr/UwbpfMKH0obLZQ
-	 2iKbY0x/oGpk0upeIxsL0P4rw4qXNDP7rvKdznRgPYnCFO16W171WT2kjbMSvevuquaFMUfZ2RT+
-	 eSgnmC8UcwxBagdfJG+r+TXvyCn+rgV+EwSQSJRTuoFMn118ycZDCXzHEavug5uLUtjDXjVNNv/X
-	 sYmrNr2+qznl18QQzow3faBjRIVBXTv6tvZIPoBiy9SbwvBa8L248VP/Wsu6zIfVfhgaYUGMSVtZ
-	 W/hl0K1AfY/fDdBwywZQCG/X710Ee3T11fA2lyMEJS+cee3R+yvFKfPBBB9jEF0Z1s8iWbx8X19N
-	 Gm3sstgB+ZJPpoPYv1O3LxbbbXsLiRoZQmwTHHv3f9i0NW6/xGic1wNcSlJHCxFlx+2GkvOpVUfO
-	 o7zn/UaJwGQIaYpb330ke20sroOgG00WiJ/vhHVycFx1kUDfp73AZ/NDVo1C3G7IIW9NNtA2RzLY
-	 au3nOddP9JVoNZFxky6yqWyRSXmtbp/W3Cy/sfd3+9/upNqv4mcPzJqGIoSMw/RAqvK/DG02AWQc
-	 NRbgX9S11aqJpHhAu727n3A754nd3m+CzHmxAHRMmjux3+moLX40wjaOBWFrkcmKM7Hb5em6+Lo/
-	 8hTEnPo+E0Ox9VqDebhzfsKOXrdaj/S2dDaxm7CSn+kJW3LQ==
-X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
-From: Haobin Jiang <lemonoutput@foxmail.com>
-To: Andi Shyti <andi.shyti@kernel.org>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	linux-i2c@vger.kernel.org
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Carlos Song <carlos.song@oss.nxp.com>,
-	Vincent Jardin <vjardin@free.fr>,
-	dillon.minfei@gmail.com,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Haobin Jiang <lemonoutput@foxmail.com>
-Subject: [PATCH v4] i2c: imx: honour I2C_M_IGNORE_NAK
-Date: Wed, 28 Oct 2026 02:00:44 +0800
-X-OQ-MSGID: <20261027180044.21532-1-lemonoutput@foxmail.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mmZPw9L5
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50F7B1F031E0;
+	Tue, 27 Oct 2026 18:19:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793125140;
+	bh=pzwE4136bPxhbecYAmodZrZXgOfxuMwE7vVB8kRl5og=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=mmZPw9L5MuvBJNODfLs8OgYpNPAXk1jrRbhYNb6r+HbUjGRteXv3oD6sYHGYW+qyk
+	 dDOCskS0a412GlTkIzMgs0CsthfNC1NSBVkbhV44RhQ3EUWYTni9nBKkno0OyRdiq3
+	 HFlg4n5cbQhPpxLdqEoqBUyMGje2cWPRglHB+Qc/72E1LMAK7BiNvvesbnZPMa33o+
+	 ak55Lb8Wfa0CajT5JuRtGZzS5cwRLZmIwe6fRceYH5u2s4D5ocADyJNVHY2Oq/Tnef
+	 jBLbSon3A5zdMZUmU9J5a9rq/sAFyKXfa/M8m3DI2xN9WumNLfPRTzycb5uVLVdepO
+	 3ZmEFs1hgiklg==
+Message-ID: <sashiko-outbox-187010@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v4] i2c: imx: honour I2C_M_IGNORE_NAK
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Haobin Jiang" <lemonoutput@foxmail.com>
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <tencent_877C99956190215D644EB959DF1663542A0A@qq.com>
+References: <tencent_877C99956190215D644EB959DF1663542A0A@qq.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 27 Oct 2026 18:18:59 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -89,161 +58,121 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-I2C_M_IGNORE_NAK is removed from the flags rejected by
-i2c_imx_check_msgs(), so the flag is honoured as documented.
-I2C_M_STOP stays unhandled: the controller emits a STOP after the
-final message and repeated STARTs between messages, so rejecting it
-would only break the existing ov2659/SCCB use case. I2C_M_NO_RD_ACK
-stays rejected: the controller always clocks the ninth acknowledge
-bit, so it cannot be implemented.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] i2c: imx: out-of-bounds write on zero-length read in i2c_imx_isr_r=
+ead()
+--
 
-This applies on top of Vincent Jardin's I2C_M_REV_DIR_ADDR and
-I2C_M_NOSTART support [1], merged as c2867bb0fa1d ("i2c: imx: add
-I2C_M_REV_DIR_ADDR and I2C_M_NOSTART").
+commit 9dd0c3d38f0968bb16ae7d2a6e9822f507de880e
+Author: Haobin Jiang <lemonoutput@foxmail.com>
 
-Tested on an ALIENTEK i.MX6ULL mini board (v6.6.44, equivalent
-backport) with a logic analyzer: with the flag, a 3-byte write to an
-unpopulated address clocks out every byte (each NAK'd) and returns 0;
-without the flag it aborts with -ENXIO after the address byte. A
-4-byte read with the flag completes and returns 0 as well. Waveforms
-and test logs: https://github.com/JHB11Hinson/i2c-imx-ignore-nak-test
+i2c: imx: honour I2C_M_IGNORE_NAK
 
-Note: part of the code was generated with the assistance
-of a generative AI tool (GLM 5.3) from the author's description of
-the problem, then reviewed and verified by the author.
+This commit honours I2C_M_IGNORE_NAK in the i.MX I2C controller driver by
+removing I2C_M_IGNORE_NAK and I2C_M_STOP from the unsupported protocol
+mangling flags and ignoring missing ACKs when I2C_M_IGNORE_NAK is set.
+Messages with I2C_M_IGNORE_NAK are also forced to use the non-DMA transfer
+path.
 
-Link: https://patch.msgid.link/20261023-for-upstream-i2c-imx-lx2160-reverse-v3-1-a07b249df381@free.fr # [1]
-Link: https://lore.kernel.org/linux-i2c/tencent_342A87BFCECA70C9982E68A79AAD878B6909@qq.com/ # [2]
+Link: https://patch.msgid.link/20261023-for-upstream-i2c-imx-lx2160-reverse=
+-v3-1-a07b249df381@free.fr # [1]
+Link: https://lore.kernel.org/linux-i2c/tencent_342A87BFCECA70C9982E68A79AA=
+D878B6909@qq.com/ # [2]
 
-Signed-off-by: Haobin Jiang <lemonoutput@foxmail.com>
+> diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
+> index ccf08cd63151f..8e422b45dc2bb 100644
+> --- a/drivers/i2c/busses/i2c-imx.c
+> +++ b/drivers/i2c/busses/i2c-imx.c
 
----
-v3 -> v4:
-	- Rebase onto i2c/i2c after Vincent Jardin's I2C_M_REV_DIR_ADDR
-	  and I2C_M_NOSTART series was merged as c2867bb0fa1d [1].
-	- Previous version: [2].
-	- No functional change from v3.
----
- drivers/i2c/busses/i2c-imx.c | 31 ++++++++++++++++++++++---------
- 1 file changed, 22 insertions(+), 9 deletions(-)
+[ ... ]
 
-diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
-index ccf08cd63..8e422b45d 100644
---- a/drivers/i2c/busses/i2c-imx.c
-+++ b/drivers/i2c/busses/i2c-imx.c
-@@ -612,9 +612,12 @@ static int i2c_imx_trx_complete(struct imx_i2c_struct *i2c_imx, bool atomic)
- 	return 0;
- }
- 
--static int i2c_imx_acked(struct imx_i2c_struct *i2c_imx)
-+static int i2c_imx_acked(struct imx_i2c_struct *i2c_imx, bool ignore_nak)
- {
- 	if (imx_i2c_read_reg(i2c_imx, IMX_I2C_I2SR) & I2SR_RXAK) {
-+		if (ignore_nak)
-+			return 0;
-+
- 		dev_dbg(&i2c_imx->adapter.dev, "<%s> No ACK\n", __func__);
- 		return -ENXIO;  /* No ACK */
- 	}
-@@ -971,11 +974,15 @@ static int i2c_imx_unreg_slave(struct i2c_client *client)
- 	return ret;
- }
- 
--static inline int i2c_imx_isr_acked(struct imx_i2c_struct *i2c_imx)
-+static inline int i2c_imx_isr_acked(struct imx_i2c_struct *i2c_imx,
-+				    bool ignore_nak)
- {
- 	i2c_imx->isr_result = 0;
- 
- 	if (imx_i2c_read_reg(i2c_imx, IMX_I2C_I2SR) & I2SR_RXAK) {
-+		if (ignore_nak)
-+			return 0;
-+
- 		i2c_imx->state = IMX_I2C_STATE_FAILED;
- 		i2c_imx->isr_result = -ENXIO;
- 		wake_up(&i2c_imx->queue);
-@@ -988,7 +995,7 @@ static inline int i2c_imx_isr_write(struct imx_i2c_struct *i2c_imx)
- {
- 	int result;
- 
--	result = i2c_imx_isr_acked(i2c_imx);
-+	result = i2c_imx_isr_acked(i2c_imx, i2c_imx->msg->flags & I2C_M_IGNORE_NAK);
- 	if (result)
- 		return result;
- 
-@@ -1017,7 +1024,7 @@ static inline int i2c_imx_isr_read(struct imx_i2c_struct *i2c_imx)
- {
- 	int result;
- 
--	result = i2c_imx_isr_acked(i2c_imx);
-+	result = i2c_imx_isr_acked(i2c_imx, i2c_imx->msg->flags & I2C_M_IGNORE_NAK);
- 	if (result)
- 		return result;
- 
-@@ -1249,7 +1256,8 @@ static int i2c_imx_dma_write(struct imx_i2c_struct *i2c_imx,
- 	if (result)
- 		return result;
- 
--	return i2c_imx_acked(i2c_imx);
-+	/* I2C_M_IGNORE_NAK messages never take the DMA path. */
-+	return i2c_imx_acked(i2c_imx, false);
- }
- 
- static int i2c_imx_prepare_read(struct imx_i2c_struct *i2c_imx,
-@@ -1268,7 +1276,7 @@ static int i2c_imx_prepare_read(struct imx_i2c_struct *i2c_imx,
- 		result = i2c_imx_trx_complete(i2c_imx, !use_dma);
- 		if (result)
- 			return result;
--		result = i2c_imx_acked(i2c_imx);
-+		result = i2c_imx_acked(i2c_imx, msgs->flags & I2C_M_IGNORE_NAK);
- 		if (result)
- 			return result;
- 	}
-@@ -1401,7 +1409,7 @@ static int i2c_imx_atomic_write(struct imx_i2c_struct *i2c_imx,
- 		result = i2c_imx_trx_complete(i2c_imx, true);
- 		if (result)
- 			return result;
--		result = i2c_imx_acked(i2c_imx);
-+		result = i2c_imx_acked(i2c_imx, msgs->flags & I2C_M_IGNORE_NAK);
- 		if (result)
- 			return result;
- 	}
-@@ -1416,7 +1424,7 @@ static int i2c_imx_atomic_write(struct imx_i2c_struct *i2c_imx,
- 		result = i2c_imx_trx_complete(i2c_imx, true);
- 		if (result)
- 			return result;
--		result = i2c_imx_acked(i2c_imx);
-+		result = i2c_imx_acked(i2c_imx, msgs->flags & I2C_M_IGNORE_NAK);
- 		if (result)
- 			return result;
- 	}
-@@ -1613,8 +1621,9 @@ static int i2c_imx_read(struct imx_i2c_struct *i2c_imx, struct i2c_msg *msgs,
- 	return ret;
- }
- 
-+/* I2C_M_STOP is the controller's native behaviour; don't reject it. */
- #define I2C_IMX_UNSUPPORTED_PROTOCOL_MANGLING_FLAGS \
--	(I2C_M_IGNORE_NAK | I2C_M_NO_RD_ACK | I2C_M_STOP)
-+	I2C_M_NO_RD_ACK
- 
- static int i2c_imx_check_msgs(struct i2c_msg *msgs, int num)
- {
-@@ -1712,6 +1721,10 @@ static int i2c_imx_xfer_common(struct i2c_adapter *adapter,
- 		use_dma = i2c_imx->dma && msgs[i].len >= DMA_THRESHOLD &&
- 			msgs[i].flags & I2C_M_DMA_SAFE &&
- 			!(msgs[i].flags & I2C_M_NOSTART);
-+
-+		/* A NAK'd byte may not generate a further DMA request. */
-+		if (msgs[i].flags & I2C_M_IGNORE_NAK)
-+			use_dma = false;
- 		if (msgs[i].flags & I2C_M_RD) {
- 			int block_data = msgs->flags & I2C_M_RECV_LEN;
- 
+> @@ -988,7 +995,7 @@ static inline int i2c_imx_isr_write(struct imx_i2c_st=
+ruct *i2c_imx)
+>  {
+>  	int result;
+> =20
+> -	result =3D i2c_imx_isr_acked(i2c_imx);
+> +	result =3D i2c_imx_isr_acked(i2c_imx, i2c_imx->msg->flags & I2C_M_IGNOR=
+E_NAK);
+>  	if (result)
+>  		return result;
+> =20
+> @@ -1017,7 +1024,7 @@ static inline int i2c_imx_isr_read(struct imx_i2c_s=
+truct *i2c_imx)
+>  {
+>  	int result;
+> =20
+> -	result =3D i2c_imx_isr_acked(i2c_imx);
+> +	result =3D i2c_imx_isr_acked(i2c_imx, i2c_imx->msg->flags & I2C_M_IGNOR=
+E_NAK);
+>  	if (result)
+>  		return result;
+> =20
 
-base-commit: 123cffeca4a33d770c29ff8d3f22453a5fd59c32
--- 
-2.34.1
+[Severity: High]
+What happens here if a zero-length read message (msg->len =3D=3D 0 with
+I2C_M_RD) is transferred, particularly now that I2C_M_IGNORE_NAK allows
+i2c_imx_isr_acked() to succeed even when no device ACKs the address byte?
 
+In i2c_imx_check_msgs(), zero-length messages are only rejected when
+I2C_M_NOSTART is set:
+
+drivers/i2c/busses/i2c-imx.c:i2c_imx_check_msgs() {
+	...
+		if (msgs[i].flags & I2C_M_NOSTART) {
+			if (i =3D=3D 0 || msgs[i].len =3D=3D 0)
+				return -EOPNOTSUPP;
+	...
+}
+
+Unlike i2c_imx_isr_write(), which checks whether i2c_imx->msg->len =3D=3D
+i2c_imx->msg_buf_idx after i2c_imx_isr_acked(), i2c_imx_isr_read()
+unconditionally calls i2c_imx_setup_read() and transitions the state machine
+in i2c_imx_master_isr() to IMX_I2C_STATE_READ_CONTINUE:
+
+drivers/i2c/busses/i2c-imx.c:i2c_imx_setup_read() {
+	...
+	temp =3D imx_i2c_read_reg(i2c_imx, IMX_I2C_I2CR);
+	temp &=3D ~I2CR_MTX;
+	if ((i2c_imx->msg->len - 1) || (i2c_imx->msg->flags & I2C_M_RECV_LEN))
+		temp &=3D ~I2CR_TXAK;
+
+	imx_i2c_write_reg(temp, i2c_imx, IMX_I2C_I2CR);
+	imx_i2c_read_reg(i2c_imx, IMX_I2C_I2DR); /* dummy read */
+}
+
+When msg->len is 0, (i2c_imx->msg->len - 1) is non-zero, so
+i2c_imx_setup_read() clears I2CR_MTX and I2CR_TXAK and performs a dummy read
+of IMX_I2C_I2DR, causing the controller to clock in a data byte. When that
+byte completes, i2c_imx_master_isr() -> i2c_imx_isr_read_continue() runs:
+
+drivers/i2c/busses/i2c-imx.c:i2c_imx_isr_read_continue() {
+	...
+	if ((i2c_imx->msg->len - 1) =3D=3D i2c_imx->msg_buf_idx) {
+		...
+	} else if (i2c_imx->msg_buf_idx =3D=3D (i2c_imx->msg->len - 2)) {
+		...
+	}
+
+	i2c_imx->msg->buf[i2c_imx->msg_buf_idx++] =3D imx_i2c_read_reg(i2c_imx, IM=
+X_I2C_I2DR);
+	return next_state;
+}
+
+Because msg->len is 0, neither (msg->len - 1) nor (msg->len - 2) matches
+msg_buf_idx, so i2c_imx_isr_read_continue() writes out of bounds into
+i2c_imx->msg->buf[i2c_imx->msg_buf_idx++] on every interrupt (dereferencing
+ZERO_SIZE_PTR when called via I2C_RDWR ioctl with len =3D=3D 0, or overflow=
+ing
+msgbuf0 on the stack during an emulated SMBus Quick Read). Similarly, in
+i2c_imx_atomic_read() -> i2c_imx_prepare_read(), the controller is switched
+to receive mode and performs a dummy read even when msgs->len is 0.
+
+Should zero-length reads be handled before calling i2c_imx_setup_read(), or
+rejected via adapter quirks / i2c_imx_check_msgs()?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/tencent_877C9995619=
+0215D644EB959DF1663542A0A@qq.com?part=3D1
