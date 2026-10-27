@@ -1,80 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793090772;
-	b=P1wIuB/6l5SCGLcpjgPVFQzjTdnRx99Q+d3CVJBMadPgYcVmVSkJsqNJa+Zqcmgu9XI1
-	 jtQ7/+Skve88InBXcTfQHxfNU7or4cag6ayK0dA+M3vpWy5NyPbDXLm++hiJl6jDGonyw
-	 dGcQ8/IFAWpm43ssWiRHebml3OBlGhVYWT4f3l+No/Q54FQfimk+VOGjXHlPoY4whD5Eh
-	 D6s8Tjhb38bB0qJkp9x+eoRUAUpkqoig0If3VvcyvLt7GFKkHb3N1BUfZ5U9ueWghToAa
-	 to5f0hVFkVdy/Fsk5yttMqC8zV0Je9sELg2Lw9wkRJsrz4SLHXaC+Tx1hagxPzxK32A==
+	t=1793091354;
+	b=rmavVW+GPFD4ddO774yFY7rNi6NU6wmXDp1ceVJnsJSu8Q/eM260afkvucQYN3cBq43h
+	 ArgGYogKwRPzcE+FMJNhlJqjimYyey9JXxfAS2vUNguINSDrC5XrVgiCPVCS7uT/3wk7s
+	 7OxPNknKkElyyOly82DG4dwFBrQ/N7Ph1+EEVLVr29i6N1QCYXj1QFx3J1ZBIinKiP5kn
+	 mAm4qFLu6vV2o/8YxsrlkUlrpDyXcOTvYW8CEHA82w0GYcmQlbUQbPeU/PqIrTBwKsgl9
+	 3pZ3bNn7byuersaH++zbKECYyLOFwagfG85LOWnitTRovOrr4EwyQ9J8EFPd+c7nf8A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793090772;
-	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:To:Cc:
-	 Subject:In-Reply-To:References:User-Agent:Date:Message-ID:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 X-Last-TLS-Session-Version;
-	bh=CSDnY2+EpC0A6qfUh4OJfRDawLSOsU0FBryWMPhro+0=;
-	b=ck4iQ1sfX8AxhkJne7FtZOgL5Xl/wtZMVEwechVw7grcXq1xVcAbhykHAoRWkuI0CwIw
-	 j9utAM7PuRWXP/lL0RXIDn1EYQxRoBq7WhcIYah/xUEXyxQdqQbkhQendny63UZ3Mjh99
-	 0Kt7MAOqbAHX+dpYud0oBPMHjcxhIsRAcivu4qt91sBmvuoydiya3P1VE2Wl/hx56YWmB
-	 0R4brq/c237Y8wNbE+pDeVwnXe2zuDIvx+hTEsY+wX+2MupI8la9ebnfOW7VwrZqTjHcD
-	 kkr0PNzJRVkdyc88qeYDx5NDLtd1K9HylMtpRANsPrniyaV3U4ytSX6jHhhFepYSS6g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793091354;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type;
+	bh=N+roS2hjC/wcKqOTe3oUy3DxdOVJ6Kmbylk65hYNNtk=;
+	b=LokflJB2DRw6l4SuoBIBkLDJVJ7OWM1lZppE/e58805toj0QLk33405jWR0n+rjrCAON
+	 VhP+JfoPgGPDGZa3PMnId9K2TtlfQuWo+Zlccg7WPPYkBtpWpffGStdmjUqlHG4+ejSH4
+	 8W0KVcSoKvMvO882y53C7xOUOOwcAn7atRAskXcWHWLgcm8mi/RcB0Ae2aQG3hWYPzQjB
+	 xrcXft6OLERv+yajdARoBAG5QiuoXNwEQ43nudtbnnkpfJSd+L7sn6iLgscWYuAeVFRg8
+	 AgVFy8V2t87hxygNRyAVn3160ysganK0LUdRqwckKPt666Yl90YElDlrYDmiZUnaHKw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=bootlin.com;
-	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b="DYY7/zi9";
-	arc=none smtp.remote-ip=185.171.202.116
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=X37gobev;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A9B0606A31D
-	for <imx@lists.linux.dev>; Tue, 27 Oct 2026 08:46:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6A9B0606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32377606A322
+	for <imx@lists.linux.dev>; Tue, 27 Oct 2026 08:55:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=DYY7/zi9
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 84341C79AAE;
-	Tue, 27 Oct 2026 08:47:04 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 08AEA603BD;
-	Tue, 27 Oct 2026 08:46:03 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8809E10329093;
-	Tue, 27 Oct 2026 09:45:56 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1793090761; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=CSDnY2+EpC0A6qfUh4OJfRDawLSOsU0FBryWMPhro+0=;
-	b=DYY7/zi9FjTqvNbno8coXmmIEmIhesBXCpG8qUPru3z5pRo5hRi1dUaJLen1HcpjdpMA1M
-	w8RKg8cdIdliJ/mhfVVwnmFj1wOqlnv2ImO+kQu1d/xi2nTnK9D51yIAEC0EDekKIOJsj8
-	FfSRtaMME+9eD+7Q0HpILdBuaPVOAQtPYd6Y5pTefrZHUzowe31/GDgVYck8FT18Olwu88
-	3hsR2BqT4AAwlzDfQRdlmggqn0beyfB3QeeUlH6jXprZEKGrxre79Qy6vqPgugAWIrbV20
-	G4hbikkfPlJYcDGCiJEuLs+F5W5iMwZmzRdIIslJI/wzm17/a04N0NV/h96cNw==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Jerome Brunet <jbrunet@baylibre.com>
-Cc: Brian Masney <bmasney@redhat.com>,  Stephen Boyd <sboyd@kernel.org>,
-  Abel Vesa <abelvesa@kernel.org>,  Peng Fan <peng.fan@nxp.com>,  Frank Li
- <Frank.Li@nxp.com>,  Sascha Hauer <s.hauer@pengutronix.de>,  Pengutronix
- Kernel Team <kernel@pengutronix.de>,  Fabio Estevam <festevam@gmail.com>,
-  Rob Herring <robh@kernel.org>,  Krzysztof Kozlowski <krzk+dt@kernel.org>,
-  Conor Dooley <conor+dt@kernel.org>,  Thomas Petazzoni
- <thomas.petazzoni@bootlin.com>,  Ian Ray <ian.ray@gehealthcare.com>,
-  =?utf-8?Q?Herv=C3=A9?= Codina <herve.codina@bootlin.com>,  Luca Ceresoli
- <luca.ceresoli@bootlin.com>,  linux-clk@vger.kernel.org,
-  linux-kernel@vger.kernel.org,  imx@lists.linux.dev,
-  linux-arm-kernel@lists.infradead.org,  devicetree@vger.kernel.org
-Subject: Re: [PATCH 0/5] clk: Use v2 rate calculation on i.MX8MP
-In-Reply-To: <1j8q3kkd8t.fsf@starbuckisacylon.baylibre.com> (Jerome Brunet's
-	message of "Mon, 26 Oct 2026 10:44:18 +0100")
-References: <20261021-ge-clk-lcm-v1-0-246cc35b5ffb@bootlin.com>
-	<atjIIHkoNwBVDO5b@redhat.com>
-	<1jtsmch5id.fsf@starbuckisacylon.baylibre.com>
-	<87h5icnzs9.fsf@bootlin.com>
-	<1j8q3kkd8t.fsf@starbuckisacylon.baylibre.com>
-User-Agent: mu4e 1.12.12; emacs 30.2
-Date: Tue, 27 Oct 2026 09:45:55 +0100
-Message-ID: <87cxsvh6po.fsf@bootlin.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=X37gobev
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E76941F031E8
+	for <imx@lists.linux.dev>; Tue, 27 Oct 2026 08:55:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793091352;
+	bh=N+roS2hjC/wcKqOTe3oUy3DxdOVJ6Kmbylk65hYNNtk=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=X37gobevIHgsMWSMYDxBeNnPo5a57h+FI8Gu2W/EisrKRqyvPj5y089nAShzkr4Se
+	 fTCv2Me9O0hWiOIYCwp5knFJKrY9A806+37t/WKQ4KGNLNtN08oFhrNH8/CojLQGGb
+	 ygJqjTkshmkxz7U1EgGHtwSkRVqbEc+76ei/qmgCktrhaOTjFGJRjqrQ31HHZys3N4
+	 35hWdiceB5b0NPpuerTYaP679FuQD6lIEo1thGQci0I+wRAykucHVaxv6Hq/codD7A
+	 4H0/enzB8NJAG6EDmgG6v9f19yzowMM9PT6tmJUHUTi970bkgicGXZp6QO6JxmMD4z
+	 RhhiCmpJWTRvw==
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6b2237b596cso5959855a12.0
+        for <imx@lists.linux.dev>; Tue, 27 Oct 2026 01:55:52 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBzns10Xd/ipl4q43HUO+a4i4exZHPodTxA0ACRdcWEmrV8feXrstylmmyzPX6lZGvOMU+w=@lists.linux.dev
+X-Gm-Message-State: AFq9FYJgJuzHDxm116mcSne7Bup6C1RpLrT1SnzS1zQF206BKmDR/Zm4
+	Rne1X5O6gzZwIK3g8cKJ9TGsdupqvWN84Z++6AivYYT6DzF2pB30SZhD6qjBJpltY6uoTGkBtiC
+	03MzpMJ58LW/prclcC9bzH0/yKqzGdsM=
+X-Received: by 2002:a17:906:c10b:b0:c46:5973:2a1c with SMTP id
+ a640c23a62f3a-c46bde8d652mr999291166b.37.1793091351751; Tue, 27 Oct 2026
+ 01:55:51 -0700 (PDT)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -84,123 +59,59 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
+References: <20261027065012.191348-1-chunyuzhiqiang@yinhe.ht>
+In-Reply-To: <20261027065012.191348-1-chunyuzhiqiang@yinhe.ht>
+From: Vincent Mailhol <mailhol@kernel.org>
+Date: Tue, 27 Oct 2026 09:55:40 +0100
+X-Gmail-Original-Message-ID: <CAMZ6RqJwMyaz_qO9grYU6JQcMQEr0vBJUngNHAqBuZP=Apk1nw@mail.gmail.com>
+X-Gm-Features: AclHuK_J4bDR70cIab0Sgh5kSlTN88NyIziCXhnpSwYOehbkWFZr8tbpcbD0YAc
+Message-ID: <CAMZ6RqJwMyaz_qO9grYU6JQcMQEr0vBJUngNHAqBuZP=Apk1nw@mail.gmail.com>
+Subject: Re: [PATCH v8 1/2] can: dev: can_fill_info(): don't wake up
+ controller if interface is down
+To: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
+Cc: netdev-bot+sinfo@kernel.org, netdev@vger.kernel.org, 
+	linux-can@vger.kernel.org, mkl@pengutronix.de, kernel@pengutronix.de, 
+	haibo.chen@oss.nxp.com, shawnguo@kernel.org, imx@lists.linux.dev, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Jerome,
-
->>> For rate negotiation, my suggestion would be to reuse what the
->>> framework already has: clock ranges, and re-running .determine_rate()
->>> on the children being dragged along, with the common ancestor's rate
->>> pinned. When that rate does not suit a sibling's range, other ancestor
->>> rates can be tried within the constraints, rather than giving up.
->>>
->>> clk_set_rate() is a best effort function. It tries to get as close to
->>> the request as possible, honoring the ranges of every clock along the
->>> path, and it is up to the consumer to decide whether the result is
->>> good enough. That decision is lost if the framework recomputes the
->>> rates of a sibling branch on its own. Ranges could help it decide:
->>> either "I'm fine with the new rate", or -EBUSY.
->>
->> I see an upside with this approach: we could keep one single rate
->> negotiation logic. But it still requires modifications to be done on a
->> per user basis to be enabled (but that is needed from your perspective).
->>
->> While I fully understand all the concerns expressed above, there has
->> been one minor point that arose while working on your series: it's
->> very hard to determine the tolerance beyond which the clock rate shall
->> be refused. Expect bikeshedding on a per driver basis.
+On Tue. 27 Oct. 2026 at 07:54, ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht> wrote:
+> If the interface is down, the CAN controller might be powered down and
+> its clocks gated. Don't call do_get_berr_counter() to read the bus error
+> counters if the interface is down, and adjust can_get_size() to match.
 >
-> This is my point exactly. Each consumer is going to need to do its own
-> thing and it is why I would prefer if the decision was not a core or
-> a provider thing.
+> This removes one trigger for a synchronous external abort seen on
+> i.MX8QXP when "ip link show" is run on a flexcan interface that was
+> never brought up. The underlying cause is platform-specific: on i.MX8QXP
+> the CAN clocks are gated through the SCU LPCG and the subsystem shares
+> the IMX_SC_R_CAN_0 power domain, and there is a window after
+> pm_runtime_resume_and_get() returns where the clock has not reached the
+> module yet. This patch avoids the netlink query path while the interface
+> is down, but does not root-cause the LPCG window itself.
 >
-> A decision must be made somewhere. I don't really see where else it
-> could be made than with the consumer. It is the only one which has
-> any idea what it is trying acheive.
-
-I agree, the consumer must make that choice. But I just wanted to warn
-against the risk of endless discussions about what this tolerance should
-be in each and every user. Myself, I didn't know what tolerance would be
-fine for my own case. 1% seems ok, it leaves enough room for the CCF to
-find a working set of dividers without risking a breaking choice, but
-maybe some day someone will come with a panel that cannot be supported
-with this limit, and maybe 1.5 or 2% would have been okay for
-them. Since that's a very empirical limit, expect some back and forth on
-those. "Back and forth" also means "more load on clk maintainers".
-
-> If the range is about HW capability (from the clock side I mean),
-> a range can be set from the provider. Some already do that and I
-> think it is fine for that purpose. In the experiment I've provided,
-> I did not enable the propagation logic in that case, on purpose.
-> It could constrain the clock tree for clock that are actually
-> unused. It still participate in the decision logic if a consumer
-> enable it however.
+> As a result, IFLA_CAN_BERR_COUNTER is no longer reported for down
+> interfaces. Userspace must treat the attribute as optional.
 >
->>
->>> What I'm suggesting is to treat any clock with a range as one that
->>> needs updating. Its consumer cared enough to tell us what it can and
->>> cannot cope with. That removes the need for a specific flag, and puts
->>> the rate policy in the consumer, which is where I'd prefer use case
->>> choices to live, rather than in the provider or the core. It would
->>> also fix clocks being dragged out of their range during an update.
->>> Presumably, a clock without a range does not care enough to give us a
->>> decider, so the framework has no basis to act on its behalf and keeps
->>> today's behavior. I think this behavior will keep on being good enough
->>> for the vast majority clocks out there and it is a lot lighter
->>> on the math side (which is already quite severe as it is)
->>
->> Well, yeah, I see we share conclusions :-)
->>
->>> I've been checking whether the idea is remotely feasible. It involves
->>> multiple planning stages and multiple tops. It is still very rough,
->>> but there is the beginning of something:
->>>
->>> https://github.com/jbrun3t/linux/commits/clk/clk-rate-range-update/
->>>
->>> Miquel, if you fancy trying it, please let me know whether it works
->>> for you. All you should need is to set a range on the clocks you care
->>> about.
->>
->> I managed to pull most of the clock patches in your branch and apply
->> them to my 7.2 branch (with a couple of tweaks). I then made the changes
->> to request a tolerance as you hinted (available below) in the two
->> relevant drivers: it worked as expected!
->>
->> While doing so, I realized the whole operation (set rate, set rate
->> range, get rate and verify) needs to be repeated almost identically in
->> every user of the "tolerance composition" logic, which probably
->> indicates that a core helper would be relevant instead. I had in mind
->> something like ~clk_set_rate_and_tolerance() which would do the
->> equivalent of my fsl_ldb_link_rate_set() and lcdif_pixel_rate_set()
->> helpers.
+> The issue was triggered on an i.MX8QXP board by running "ip link show"
+> without ever bringing the interface up:
 >
-> Indeed, I suppose an helper could be introduced for that if we don't
-> already have one. It does not even depend on the experiment presented
-> here. As long as there is a user for it, it would be fine IMO.
+>     Internal error: synchronous external abort: 0000000096000210
 >
-> Maybe something that takes a rate and a ratio, like the duty cycle API
-> ?
+>     pc : flexcan_read_le+0x0/0x18
+>     lr : flexcan_get_berr_counter+0x4c/0x8c
+>     Call trace:
+>      flexcan_read_le+0x0/0x18
+>      flexcan_get_berr_counter+0x4c/0x8c
+>      can_fill_info+0x1f8/0x434
+>      rtnl_fill_ifinfo+0x8fc/0xbb4
+>      rtnl_dump_ifinfo+0x364/0x448
+>
+> This is the same class of problem fixed for m_can in
+> commit 91a55c72a821 ("can: m_can: m_can_get_berr_counter(): don't
+> wake up controller if interface is down").
+>
+> Fixes: ec56acfef2af1 ("can: flexcan: flexcan_get_berr_counter(): switch on clocks before accessing ecr register")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
 
-Definitely.
-
->>> Sorry for this rather long explanation.
->>>
->>> Brian, your series is what got this discussion going, I know a lot of
->>> efforts have gone into it already. I'd be glad to work on this together.
->>
->> In case that is relevant, here is below the code snippet which I used to
->> get my panels working after removing the assigned rates from the DTS on
->> i.MX8MP.
-
-I'll let you two discuss about the direction you prefer taking. From my
-point of view there are good and bad sides on both, but they also both
-work in my case.
-
-Let me know once settled and I will post an adapted patch series on top
-of it to adopt the selected solution in the LDB and LCDIF cases (+ the
-core helper discussed above, if relevant).
-
-Thanks,
-Miqu=C3=A8l
+Reviewed-by: Vincent Mailhol <mailhol@kernel.org>
