@@ -1,48 +1,48 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.2
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=220.197.31.4
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793104144;
-	b=EgGodljgffFztRJLhOtK3S8ifmzRfz4g0pQGNnCHzZuYLJ/RdG7lwWOUSvql3mIr1gID
-	 gioA1zw0cn3WzbZ6Z6LSsZ0MvXKVvjYU3zbOawV9J+dwPM8b6BEc/B0ouhZMaoRzDXVdI
-	 V7stGquidpjBs+bFO2yBE5EFYDk6XGoOPJWE8Aep++HItfeoADfppp7Qr8/x1UhPqVeIw
-	 LcsM/82HmSaDYr3WScLe3rhrNum6H28DDTiP5kfUrQymsiyg/tRHevUhyVgjPce1LKZYE
-	 OMIRrksu/G/6TNLsAdljuTtBP3F1S7f+h6iQmIFH0CWXLYDwMAuy2nSnhv0lGXdIINg==
+	t=1793104146;
+	b=JF64aZ4XW8LLpx0xAWUmVLT2PxhR9yQVZ8bpQbd2RZpWCqipBdvicIsBE7v0oBIiyvgq
+	 fEPcgQNAwLZ46Ek/1cjCI9VVK342bdplVMBbOBOMTWPDmJ1yoyU435jtzOh96g6a4LwhX
+	 ba1SI1idMAnI8W0T0ZHnftPhP3cOaHyMK5qfoLF5BIa4wLLlQwK2jf6y7PvYm0RDsSZDT
+	 UvP0ihPBYqcAzFxgKcHT5EQJnC/mEzS7PUjNdtG/2RlivaK0DLlOmaKFAFlWpJs0chsQH
+	 OfxKafj7e/UQRmFIynOVA8n2vSjg0U+MzyI2zHGdWsdqiDAhmTxTsDsOsxd26XzircQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793104144;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793104146;
 	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:X-CM-TRANSID:X-Coremail-Antispam:
 	 X-CM-SenderInfo;
-	bh=WPNfxFDuxL3x7KswGwtOTGrsdyXt9tx1HriDed7EIQI=;
-	b=J39q17HOSVyhJgkvVGNfy9BW0UJ3st3xjjuHzQQxEJZrT9Jngtv4wY2t3c761hOW0x2X
-	 k+R6CwGCeqw6N71ASnTxcDKoMm3avDXTqPboaGJgjGIQXI2DCFLdddDy1xHotRoVAAUVp
-	 KpWzVqv0ZvYTUHa2au1DyyYPxOeKhchF/AbpI7xLeHECmvmfs3kRsSpQ4kYSmTl3OR7xk
-	 uorMgW6XSX2g3Tu8GZNDS+5hIb35rIOlGfqYgUnBuo9RasrNYccNd0evyd+nMMcpirZU5
-	 QJs6DGh22KCCJjRlhzJSX8BUp8u23GeqIPEaSeNMcOjEWls+IMGTeeeL5/Ps0KXimtg==
+	bh=TdYceE7RRPUM62LOVxn/fHgK36xYRy4qKZfZkYwC3NA=;
+	b=yKPquKUEeUeFJog1PDzn7QSvVrrrxXlD4rfbmOECuElLQCNQ81pJJ72VF/E62IpNCRAq
+	 n5AL0plLrDt3dMOZNbvfNs4VPm4EknQtm1hWbuQAYXqOcqYVBjfvipb5unRXGoXRATR1o
+	 CjM/ehoVcaSaBxXpS3X8DKvtVUVhmpX3G4g0HvBXxr/4L43Oao5JESrK1DoY/I+ysK3qL
+	 w+oUPVuQzthv5ZSX9N/EB0QNObX3mHk/diY0AsI2bTXqswsf8IwIaEiHZ4/XapYEuBMbn
+	 tYEIZnTzyRkaQ6EXAHEGnnA0bRafXRM2iDLHUIW3C/tFSLJsK2mNFNR4z2OTb2oo4Iw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=163.com;
 	spf=pass smtp.mailfrom=163.com;
-	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=f04X5bpo;
-	arc=none smtp.remote-ip=117.135.210.2
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=Ql3fsKVv;
+	arc=none smtp.remote-ip=220.197.31.4
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31541606A31E;
-	Tue, 27 Oct 2026 12:29:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 31541606A31E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95D9B60A2600;
+	Tue, 27 Oct 2026 12:29:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 95D9B60A2600
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=f04X5bpo
+	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=Ql3fsKVv
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=WP
-	NfxFDuxL3x7KswGwtOTGrsdyXt9tx1HriDed7EIQI=; b=f04X5bpobbdtpxh7tj
-	7SEi/GbLEoRJzH0rInUMxMkRZoc7CaAF9RYiFott9FqU3I7Y+autjdYoTMSMITUO
-	Y6g5ck/IBAUv33+qvFcgCYyDmsxfe3yJi/xM0ilZ8Mdw+rkiI6Uh6csviCPDgeq3
-	joCJo32U21xe3ioplgHkxW7V8=
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=Td
+	YceE7RRPUM62LOVxn/fHgK36xYRy4qKZfZkYwC3NA=; b=Ql3fsKVvhSIX7zUl8a
+	qzihG3hTfydNTdF9wLL01uUMT1FV8wHgK2mWad0l/ETDV9U0UQx/eW5/86NZHCQQ
+	1Eg3YQFEO91ulexQRqIUvmkBdlDFdJfrg7lFGqmkDXidKtizIFsgQ7mtGUSYxIQ8
+	nwvaR5/DeNw/y5Elc1plFAl7A=
 Received: from Precision-7960.. (unknown [])
-	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wD3Dz_umOBqUsqlCw--.64541S8;
-	Tue, 27 Oct 2026 20:28:37 +0800 (CST)
+	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wDnz2v5mOBqYaUSDA--.46182S6;
+	Tue, 27 Oct 2026 20:28:46 +0800 (CST)
 From: Hans Zhang <18255117159@163.com>
 To: bhelgaas@google.com,
 	lpieralisi@kernel.org,
@@ -61,9 +61,9 @@ Cc: imx@lists.linux.dev,
 	linux-pci@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Hans Zhang <18255117159@163.com>
-Subject: [PATCH v4 06/16] PCI: dwc: rockchip: Use cached PCIe capability offset
-Date: Tue, 27 Oct 2026 20:28:17 +0800
-Message-ID: <20261027122827.2725643-7-18255117159@163.com>
+Subject: [PATCH v4 12/16] PCI: dwc: sophgo: Use cached PCIe capability offset
+Date: Tue, 27 Oct 2026 20:28:23 +0800
+Message-ID: <20261027122827.2725643-13-18255117159@163.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261027122827.2725643-1-18255117159@163.com>
 References: <20261027122827.2725643-1-18255117159@163.com>
@@ -77,37 +77,39 @@ List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3Dz_umOBqUsqlCw--.64541S8
-X-Coremail-Antispam: 1Uf129KBjvdXoW7GrWrXr4xGF4kKFyDXw47Arb_yoWkGrgE93
-	4UWrsrZrWUGrZYka12v34fXFyqva47Wr1j9a9YvF9xZFn2vr10qr97Xa4DAF1DGrnrZr97
-	Kr1qvr4UGFW7JjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRNHq2PUUUUU==
-X-CM-SenderInfo: rpryjkyvrrlimvzbiqqrwthudrp/xtbC6xU22WrgmPUYOAAA3W
+X-CM-TRANSID:_____wDnz2v5mOBqYaUSDA--.46182S6
+X-Coremail-Antispam: 1Uf129KBjvdXoWrtFW8tFy8Cry5CF1DZr4DXFb_yoWDWFgE9r
+	9rCFZ7ArWUury5G3ZFyw4fXryqva47ZF1j9ay8tF90vFn7Zw18tr9rZrZ8A3W8Gr1DJF97
+	Jr1qyF1rAry7JjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRNuWltUUUUU==
+X-CM-SenderInfo: rpryjkyvrrlimvzbiqqrwthudrp/xtbC7B8422rgmP8aZQAA3C
 
-rockchip_pcie_enable_l0s() is called from rockchip_pcie_host_init(),
-i.e. from the .init callback, which runs after the controller clocks and
-resets have been enabled. Replace the capability search with
-dw_pcie_get_pcie_cap(), which reads and caches the offset at this very
-point.
+sophgo_pcie_disable_l0s_l1() runs from the .init callback with the
+controller already enabled. Replace the capability search with
+dw_pcie_get_pcie_cap() and store the offset in a u8.
 
 Signed-off-by: Hans Zhang <18255117159@163.com>
 ---
- drivers/pci/controller/dwc/pcie-dw-rockchip.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/controller/dwc/pcie-sophgo.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-dw-rockchip.c b/drivers/pci/controller/dwc/pcie-dw-rockchip.c
-index af26a07c0c9e..753606193855 100644
---- a/drivers/pci/controller/dwc/pcie-dw-rockchip.c
-+++ b/drivers/pci/controller/dwc/pcie-dw-rockchip.c
-@@ -373,7 +373,7 @@ static void rockchip_pcie_enable_l0s(struct dw_pcie *pci)
- 	u32 cap, lnkcap;
+diff --git a/drivers/pci/controller/dwc/pcie-sophgo.c b/drivers/pci/controller/dwc/pcie-sophgo.c
+index 044088898819..39703d2b7b5f 100644
+--- a/drivers/pci/controller/dwc/pcie-sophgo.c
++++ b/drivers/pci/controller/dwc/pcie-sophgo.c
+@@ -164,9 +164,10 @@ static void sophgo_pcie_msi_enable(struct dw_pcie_rp *pp)
+ static void sophgo_pcie_disable_l0s_l1(struct dw_pcie_rp *pp)
+ {
+ 	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+-	u32 offset, val;
++	u8 offset;
++	u32 val;
  
- 	/* Enable L0S capability for all SoCs */
--	cap = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
-+	cap = dw_pcie_get_pcie_cap(pci);
- 	if (cap) {
- 		lnkcap = dw_pcie_readl_dbi(pci, cap + PCI_EXP_LNKCAP);
- 		lnkcap |= PCI_EXP_LNKCAP_ASPM_L0S;
+-	offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
++	offset = dw_pcie_get_pcie_cap(pci);
+ 
+ 	dw_pcie_dbi_ro_wr_en(pci);
+ 
 -- 
 2.43.0
 
