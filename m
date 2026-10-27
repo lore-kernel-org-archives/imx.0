@@ -1,118 +1,86 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.119.170.32
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=203.205.221.192
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793123477;
-	b=ThBZJIcZ8YVsZHaeF8ckSUUHlO5zuvwFaDMw+LqpTKV/E7PYTMJzGzV/h9+8qUyk/5//
-	 KCvEA8gE5sdjBgnDRm5f45RgFs+tGVf8/BflRJ9O7kyHHQMfm11KvN4GtwmtbMlJXdXUk
-	 hamo6UQoakdus+v4gg8k39LhN+heFoqMAWMY5svu5xdBgbH29T9F9QkT0f/FYqL2Dlwpy
-	 jWKMQCG9htr0UnvhcS6fsZ1kjFdrQ5MDxkt/1/kNYU+FuUKUclhGtbF24c8L0oyVjYTky
-	 ulMcIhUjtSY1j2nkkiTu/dYeGIlXeLcnyxkbm9Avx4135bHcIDdbfoKGX57++K60LtA==
+	t=1793124055;
+	b=U2FxbnUdO+96ktCDbkkzujIiBWNKCFV35xSVNy4dOc1mTUfBdFTRc12FjFX4aJFO4DDj
+	 x1TWNu3x0ub4opxDBVscx8EZJdkAzXHbcltW5aI+/wuP++xgbBQWLN4beTpkawgto1lA1
+	 jcpAxAeEaKrN+HaXM7r5Lt++c6O6yELVwG8jWEJUiFe/TuYKH6FoQqe9AADT8h1wF1Z+7
+	 9EE6kc7p+rKefEpuf6HqKx3C291jaBd8WncOrmRfM30N35h8iZYIZeIjSVDUxDrONhpny
+	 NlI27tYqTiJUA3j4mJ1higUXWoL0PlCC/UzDygnl+wLZ6uG4O1q9lWn9uE1262VRYCg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793123477;
-	h=DMARC-Filter:Message-ID:Subject:From:To:Cc:Date:In-Reply-To:
-	 References:Autocrypt:Content-Type:Content-Transfer-Encoding:
-	 MIME-Version;
-	bh=M0+JEuJ8OIOjO1vhvMj0G5xuGrApLGUATURHEGMW734=;
-	b=1FyIMhRtm7d6lsmU//AZEQqEX0gF59dsDgGj0MlgZsuXLcTkbNzy8I731fA/Yv67scMT
-	 DK2S+ObiZsU7z9AHxMs1jNpiZE3kuR6PudiTQcAmXTJZa1laDTWZGFmuYKZSETGQFdg8J
-	 d3EXalKttpKasC10TH77bgfqRZVTrHrONR/NRwDy9LrS+6HDmSAYk3XBsZZa3B84gX9Wg
-	 6i3qFWNqBsw1jPA42uUa1BIACyjNPxQpOQENdC+uEXf17Qc2DXnxd19EY2pXSkU8i/9aU
-	 Dmz2U0S1PRsSFcYTDTfV4AYGgV25yzFovCRAbHWyLZMkq2ZprhtkKPo9DIbBE2xsAHA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793124055;
+	h=DMARC-Filter:DKIM-Signature:Received:X-QQ-mid:Message-ID:
+	 X-QQ-XMAILINFO:X-QQ-XMRINFO:From:To:Cc:Subject:Date:X-OQ-MSGID:
+	 X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=spM3KcIMCTj+Sev7DLll6n6wD3ZIu3g46O7rzTg5psQ=;
+	b=YbMPrNZK4ip764NMTtLWhZyehhGe6XvNAk+inUGHEajezluJ9ezc68pPjx7EgrdXnG5P
+	 8AGmo3ru+NzOAAR1340rd+wcz/Fu9h9cieS8oUGxk8m//Uo9JSOyegIsJ2mmMexBoKonB
+	 ibk+bOU6KPWfBCNDe1/DKthC0AZe8f0K7zZSENFnbncQ05bSKhH2MJ+WglhNf2BOlW1be
+	 haBf3iGQ8xeu2SdxzI9M9BMlBhITiHojD0wWz+lj0dbULoev6Ls6c+cvasoGfTivt+plp
+	 lCZE//jN0SSubVeVmlS8kf0RcjNsYuskKHVc0igHrvFjMlQgP3aNCmaw0jX1v/LOPAQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=crapouillou.net;
-	spf=pass smtp.mailfrom=crapouillou.net;
-	arc=none smtp.remote-ip=185.119.170.32
-Received: from aposti.net (aposti.net [185.119.170.32])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=foxmail.com;
+	spf=pass smtp.mailfrom=foxmail.com;
+	dkim=pass header.d=foxmail.com header.i=@foxmail.com header.a=rsa-sha256 header.s=s201512 header.b=qW5JV1G0;
+	arc=none smtp.remote-ip=203.205.221.192
+Received: from out203-205-221-192.mail.qq.com (out203-205-221-192.mail.qq.com [203.205.221.192])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27496606A31D;
-	Tue, 27 Oct 2026 17:51:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 27496606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=crapouillou.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crapouillou.net
-Message-ID: <763093e9d22390a36a53fa3f392b49c7b84d09ab.camel@crapouillou.net>
-Subject: Re: [PATCH 05/35] drm/ingenic: use devm_drm_panel_bridge_add()
-From: Paul Cercueil <paul@crapouillou.net>
-To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, Douglas Anderson	
- <dianders@chromium.org>, Neil Armstrong <neil.armstrong@linaro.org>,
- Jessica Zhang <jesszhan0024@gmail.com>, Maarten Lankhorst
- <maarten.lankhorst@linux.intel.com>,  Maxime Ripard <mripard@kernel.org>,
- Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
- Simona Vetter <simona@ffwll.ch>, Jyri Sarha <jyri.sarha@iki.fi>, Tomi
- Valkeinen	 <tomi.valkeinen@ideasonboard.com>, Andrzej Hajda
- <andrzej.hajda@intel.com>,  Robert Foss <rfoss@kernel.org>, Laurent
- Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman	
- <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, Luca Ceresoli
-	 <luca.ceresoli@bootlin.com>, Marek Vasut <marex@denx.de>, Stefan Agner	
- <stefan@agner.ch>, Frank Li <Frank.Li@nxp.com>, Sascha Hauer	
- <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Laurent Pinchart
- <laurent.pinchart+renesas@ideasonboard.com>, Tomi Valkeinen
- <tomi.valkeinen+renesas@ideasonboard.com>, Kieran Bingham	
- <kieran.bingham+renesas@ideasonboard.com>, Geert Uytterhoeven	
- <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, Biju Das	
- <biju.das.jz@bp.renesas.com>, Linus Walleij <linusw@kernel.org>, Sandy
- Huang	 <hjc@rock-chips.com>, Heiko =?ISO-8859-1?Q?St=FCbner?=
- <heiko@sntech.de>,  Andy Yan <andy.yan@rock-chips.com>, Jonathan Corbet
- <corbet@lwn.net>, Shuah Khan	 <skhan@linuxfoundation.org>, Randy Dunlap
- <rdunlap@infradead.org>, Inki Dae	 <inki.dae@samsung.com>, Seung-Woo Kim
- <sw0312.kim@samsung.com>, Kyungmin Park	 <kyungmin.park@samsung.com>,
- Krzysztof Kozlowski <krzk@kernel.org>, Peter Griffin
- <peter.griffin@linaro.org>, Alim Akhtar <alim.akhtar@samsung.com>, Alison
- Wang	 <alison.wang@nxp.com>, Paul Kocialkowski <paulk@sys-base.io>, Yannick
- Fertre	 <yannick.fertre@foss.st.com>, Raphael Gallais-Pou	
- <raphael.gallais-pou@foss.st.com>, Philippe Cornu
- <philippe.cornu@foss.st.com>,  Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>, Chen-Yu Tsai	
- <wens@kernel.org>, Samuel Holland <samuel@sholland.org>, Thierry Reding	
- <thierry.reding@kernel.org>, Mikko Perttunen <mperttunen@nvidia.com>, 
- Jonathan Hunter <jonathanh@nvidia.com>, Jagan Teki
- <jagan@amarulasolutions.com>, Ondrej Jirman <megi@xff.cz>,  Javier Martinez
- Canillas	 <javierm@redhat.com>, Igor Reznichenko <igor@reznichenko.net>,
- Michael Walle	 <mwalle@kernel.org>, Dario Binacchi
- <dario.binacchi@amarulasolutions.com>,  Jagan Teki <jagan@edgeble.ai>,
- Jianhua Lu <lujianhua000@gmail.com>, Guido =?ISO-8859-1?Q?G=FCnther?=	
- <agx@sigxcpu.org>, Purism Kernel Team <kernel@puri.sm>, Jerry Han	
- <hanxu5@huaqin.corp-partner.google.com>, Joel Selvaraj <jo@jsfamily.in>, 
- Icenowy Zheng <icenowy@aosc.io>, Michael Trimarchi
- <michael@amarulasolutions.com>, Sumit Semwal	 <sumit.semwal@linaro.org>,
- Casey Connolly <casey.connolly@linaro.org>,  Michael Tretter
- <m.tretter@pengutronix.de>, Cristian Cozzolino
- <cristian_ci@protonmail.com>, Junjie Cao	 <junjie.cao@linux.dev>, Ryan Brue
- <ryanbrue.dev@gmail.com>, Nickolay Goppen	 <setotau@mainlining.org>, Stefan
- Mavrodiev <stefan@olimex.com>, Florian Fainelli
- <florian.fainelli@broadcom.com>, Broadcom internal kernel review list	
- <bcm-kernel-feedback-list@broadcom.com>, Robert Chiras
- <robert.chiras@nxp.com>,  Alexander Koskovich	 <akoskovich@pm.me>, Markuss
- Broks <markuss.broks@gmail.com>, Artur Weber	 <aweber.kernel@gmail.com>,
- David Heidelberg <david@ixit.cz>, Dzmitry Sankouski	
- <dsankouski@gmail.com>, Yedaya Katsman <yedaya.ka@gmail.com>
-Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
-	linux-mips@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-renesas-soc@vger.kernel.org, 
-	linux-rockchip@lists.infradead.org, linux-doc@vger.kernel.org, 
-	linux-samsung-soc@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com, 	linux-sunxi@lists.linux.dev,
- linux-tegra@vger.kernel.org, 	linux-rpi-kernel@lists.infradead.org
-Date: Tue, 27 Oct 2026 18:50:55 +0100
-In-Reply-To: <20261026-drm-panel-funcs-v1-5-5e3070a3478f@oss.qualcomm.com>
-References: <20261026-drm-panel-funcs-v1-0-5e3070a3478f@oss.qualcomm.com>
-	 <20261026-drm-panel-funcs-v1-5-5e3070a3478f@oss.qualcomm.com>
-Autocrypt: addr=paul@crapouillou.net; prefer-encrypt=mutual;
- keydata=mQENBF0KhcEBCADkfmrzdTOp/gFOMQX0QwKE2WgeCJiHPWkpEuPH81/HB2dpjPZNW03ZM
- LQfECbbaEkdbN4YnPfXgcc1uBe5mwOAPV1MBlaZcEt4M67iYQwSNrP7maPS3IaQJ18ES8JJ5Uf5Uz
- FZaUawgH+oipYGW+v31cX6L3k+dGsPRM0Pyo0sQt52fsopNPZ9iag0iY7dGNuKenaEqkYNjwEgTtN
- z8dt6s3hMpHIKZFL3OhAGi88wF/21isv0zkF4J0wlf9gYUTEEY3Eulx80PTVqGIcHZzfavlWIdzhe
- +rxHTDGVwseR2Y1WjgFGQ2F+vXetAB8NEeygXee+i9nY5qt9c07m8mzjABEBAAG0JFBhdWwgQ2VyY
- 3VlaWwgPHBhdWxAY3JhcG91aWxsb3UubmV0PokBTgQTAQoAOBYhBNdHYd8OeCBwpMuVxnPua9InSr
- 1BBQJdCoXBAhsDBQsJCAcCBhUKCQgLAgQWAgMBAh4BAheAAAoJEHPua9InSr1BgvIH/0kLyrI3V0f
- 33a6D3BJwc1grbygPVYGuC5l5eMnAI+rDmLR19E2yvibRpgUc87NmPEQPpbbtAZt8On/2WZoE5OIP
- dlId/AHNpdgAtGXo0ZX4LGeVPjxjdkbrKVHxbcdcnY+zzaFglpbVSvp76pxqgVg8PgxkAAeeJV+ET
- 4t0823Gz2HzCL/6JZhvKAEtHVulOWoBh368SYdolp1TSfORWmHzvQiCCCA+j0cMkYVGzIQzEQhX7U
- rf9N/nhU5/SGLFEi9DcBfXoGzhyQyLXflhJtKm3XGB1K/pPulbKaPcKAl6rIDWPuFpHkSbmZ9r4KF
- lBwgAhlGy6nqP7O3u7q23hRU=
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C2C5606A31A
+	for <imx@lists.linux.dev>; Tue, 27 Oct 2026 18:00:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3C2C5606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key, unprotected) header.d=foxmail.com header.i=@foxmail.com header.a=rsa-sha256 header.s=s201512 header.b=qW5JV1G0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+	s=s201512; t=1793124051;
+	bh=spM3KcIMCTj+Sev7DLll6n6wD3ZIu3g46O7rzTg5psQ=;
+	h=From:To:Cc:Subject:Date;
+	b=qW5JV1G0NwjaH8K2vvXH9SaH2apLWuFgqoN72y4/ij8hebgmpAyiCUnPgyl9CS2Oe
+	 EulW/NBiap5CVhNdzfogKXbjhg0LUzjt9xs7mjuZuxmGFR6r5T9r3h0Kp9JBNjCm/Q
+	 DN/5uju3KPgE8O7UPBLWFVZxLNZQcOEYc7Md4C1c=
+Received: from LAPTOP-TKBJAGN4.localdomain ([27.38.201.62])
+	by newxmesmtplogicsvrsza53-0.qq.com (NewEsmtp) with SMTP
+	id 3013632; Wed, 28 Oct 2026 02:00:48 +0800
+X-QQ-mid: xmsmtpt1793124048t1hi43pfb
+Message-ID: <tencent_877C99956190215D644EB959DF1663542A0A@qq.com>
+X-QQ-XMAILINFO: N6IfSeM/PG+tdCz5Cj1vhLmiuKazt8ArHwWiFVGNcpvZ35kcBBkkbT142hdYXb
+	 EwNVr9Toq0fjfi5FlkZBig7el4RHfpoBiUf8ha4CMdmo763I5EUJs2h2k6LkoK8URenxUj++4Ne0
+	 C83Snqx65b/nQdrLw7/snnIRj/2H3xIXAYseTejahOVm+o8fMNLhu8FaAxXOiJxr8pb8iJrycmWM
+	 f0cNcynccpVQEw5XNYH0PskUTwGiPxpJfMbcwWJttKumYlXtyx6uoRWbTE/e4OkV2BtR1rlRJ954
+	 dCLWXiTZ3y0bwHq4X4IejGyFALnc2+mF8dZizgzf4rON7QhaKQ5nT9OqLrb8Y3uYtSpIrxAu5nVw
+	 RpDji+FXBM2PeDY7dJY6JtpCxEz8XCWCacOnw9/AgMOeggSDVjkiO8eFSBpEFq0OGkgFfQr+3cqd
+	 XaAExW1nNfDisb61TngEmxk0v3j2m00VdvE574xY8Q5MdtJocsQDUI5LOabK6DnLcPWfg9exMbsI
+	 tO6/9NDQD+Gr1O54jRXnP3MX2ZhNLyg5JiGVWkl0ey7qBy53gB7Sk7Z4mKopr/UwbpfMKH0obLZQ
+	 2iKbY0x/oGpk0upeIxsL0P4rw4qXNDP7rvKdznRgPYnCFO16W171WT2kjbMSvevuquaFMUfZ2RT+
+	 eSgnmC8UcwxBagdfJG+r+TXvyCn+rgV+EwSQSJRTuoFMn118ycZDCXzHEavug5uLUtjDXjVNNv/X
+	 sYmrNr2+qznl18QQzow3faBjRIVBXTv6tvZIPoBiy9SbwvBa8L248VP/Wsu6zIfVfhgaYUGMSVtZ
+	 W/hl0K1AfY/fDdBwywZQCG/X710Ee3T11fA2lyMEJS+cee3R+yvFKfPBBB9jEF0Z1s8iWbx8X19N
+	 Gm3sstgB+ZJPpoPYv1O3LxbbbXsLiRoZQmwTHHv3f9i0NW6/xGic1wNcSlJHCxFlx+2GkvOpVUfO
+	 o7zn/UaJwGQIaYpb330ke20sroOgG00WiJ/vhHVycFx1kUDfp73AZ/NDVo1C3G7IIW9NNtA2RzLY
+	 au3nOddP9JVoNZFxky6yqWyRSXmtbp/W3Cy/sfd3+9/upNqv4mcPzJqGIoSMw/RAqvK/DG02AWQc
+	 NRbgX9S11aqJpHhAu727n3A754nd3m+CzHmxAHRMmjux3+moLX40wjaOBWFrkcmKM7Hb5em6+Lo/
+	 8hTEnPo+E0Ox9VqDebhzfsKOXrdaj/S2dDaxm7CSn+kJW3LQ==
+X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
+From: Haobin Jiang <lemonoutput@foxmail.com>
+To: Andi Shyti <andi.shyti@kernel.org>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	linux-i2c@vger.kernel.org
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Carlos Song <carlos.song@oss.nxp.com>,
+	Vincent Jardin <vjardin@free.fr>,
+	dillon.minfei@gmail.com,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Haobin Jiang <lemonoutput@foxmail.com>
+Subject: [PATCH v4] i2c: imx: honour I2C_M_IGNORE_NAK
+Date: Wed, 28 Oct 2026 02:00:44 +0800
+X-OQ-MSGID: <20261027180044.21532-1-lemonoutput@foxmail.com>
+X-Mailer: git-send-email 2.34.1
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -122,45 +90,160 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Hi Dmitry,
+I2C_M_IGNORE_NAK is removed from the flags rejected by
+i2c_imx_check_msgs(), so the flag is honoured as documented.
+I2C_M_STOP stays unhandled: the controller emits a STOP after the
+final message and repeated STARTs between messages, so rejecting it
+would only break the existing ov2659/SCCB use case. I2C_M_NO_RD_ACK
+stays rejected: the controller always clocks the ninth acknowledge
+bit, so it cannot be implemented.
 
-Le lundi 26 octobre 2026 =C3=A0 13:09 +0200, Dmitry Baryshkov a =C3=A9crit=
-=C2=A0:
-> The connector type passed to devm_drm_panel_bridge_add_typed() has
-> been
-> ignored since commit b7797081ccfe ("drm/panel: embed a drm_bridge
-> into
-> every drm_panel"), the bridge always has the type of the panel.
->=20
-> Assisted-by: LLM
-> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+This applies on top of Vincent Jardin's I2C_M_REV_DIR_ADDR and
+I2C_M_NOSTART support [1], merged as c2867bb0fa1d ("i2c: imx: add
+I2C_M_REV_DIR_ADDR and I2C_M_NOSTART").
 
-Acked-by: Paul Cercueil <paul@crapouillou.net>
+Tested on an ALIENTEK i.MX6ULL mini board (v6.6.44, equivalent
+backport) with a logic analyzer: with the flag, a 3-byte write to an
+unpopulated address clocks out every byte (each NAK'd) and returns 0;
+without the flag it aborts with -ENXIO after the address byte. A
+4-byte read with the flag completes and returns 0 as well. Waveforms
+and test logs: https://github.com/JHB11Hinson/i2c-imx-ignore-nak-test
 
-Cheers,
--Paul
+Note: part of the code was generated with the assistance
+of a generative AI tool (GLM 5.3) from the author's description of
+the problem, then reviewed and verified by the author.
 
-> ---
-> =C2=A0drivers/gpu/drm/ingenic/ingenic-drm-drv.c | 3 +--
-> =C2=A01 file changed, 1 insertion(+), 2 deletions(-)
->=20
-> diff --git a/drivers/gpu/drm/ingenic/ingenic-drm-drv.c
-> b/drivers/gpu/drm/ingenic/ingenic-drm-drv.c
-> index 625ec76cf04d..cafadcd2b765 100644
-> --- a/drivers/gpu/drm/ingenic/ingenic-drm-drv.c
-> +++ b/drivers/gpu/drm/ingenic/ingenic-drm-drv.c
-> @@ -1298,8 +1298,7 @@ static int ingenic_drm_bind(struct device *dev,
-> bool has_components)
-> =C2=A0		}
-> =C2=A0
-> =C2=A0		if (panel) {
-> -			bridge =3D
-> devm_drm_panel_bridge_add_typed(dev, panel,
-> -							=09
-> DRM_MODE_CONNECTOR_DPI);
-> +			bridge =3D devm_drm_panel_bridge_add(dev,
-> panel);
-> =C2=A0			drm_panel_put(panel);
-> =C2=A0		}
-> =C2=A0
+Link: https://patch.msgid.link/20261023-for-upstream-i2c-imx-lx2160-reverse-v3-1-a07b249df381@free.fr # [1]
+Link: https://lore.kernel.org/linux-i2c/tencent_342A87BFCECA70C9982E68A79AAD878B6909@qq.com/ # [2]
+
+Signed-off-by: Haobin Jiang <lemonoutput@foxmail.com>
+
+---
+v3 -> v4:
+	- Rebase onto i2c/i2c after Vincent Jardin's I2C_M_REV_DIR_ADDR
+	  and I2C_M_NOSTART series was merged as c2867bb0fa1d [1].
+	- Previous version: [2].
+	- No functional change from v3.
+---
+ drivers/i2c/busses/i2c-imx.c | 31 ++++++++++++++++++++++---------
+ 1 file changed, 22 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
+index ccf08cd63..8e422b45d 100644
+--- a/drivers/i2c/busses/i2c-imx.c
++++ b/drivers/i2c/busses/i2c-imx.c
+@@ -612,9 +612,12 @@ static int i2c_imx_trx_complete(struct imx_i2c_struct *i2c_imx, bool atomic)
+ 	return 0;
+ }
+ 
+-static int i2c_imx_acked(struct imx_i2c_struct *i2c_imx)
++static int i2c_imx_acked(struct imx_i2c_struct *i2c_imx, bool ignore_nak)
+ {
+ 	if (imx_i2c_read_reg(i2c_imx, IMX_I2C_I2SR) & I2SR_RXAK) {
++		if (ignore_nak)
++			return 0;
++
+ 		dev_dbg(&i2c_imx->adapter.dev, "<%s> No ACK\n", __func__);
+ 		return -ENXIO;  /* No ACK */
+ 	}
+@@ -971,11 +974,15 @@ static int i2c_imx_unreg_slave(struct i2c_client *client)
+ 	return ret;
+ }
+ 
+-static inline int i2c_imx_isr_acked(struct imx_i2c_struct *i2c_imx)
++static inline int i2c_imx_isr_acked(struct imx_i2c_struct *i2c_imx,
++				    bool ignore_nak)
+ {
+ 	i2c_imx->isr_result = 0;
+ 
+ 	if (imx_i2c_read_reg(i2c_imx, IMX_I2C_I2SR) & I2SR_RXAK) {
++		if (ignore_nak)
++			return 0;
++
+ 		i2c_imx->state = IMX_I2C_STATE_FAILED;
+ 		i2c_imx->isr_result = -ENXIO;
+ 		wake_up(&i2c_imx->queue);
+@@ -988,7 +995,7 @@ static inline int i2c_imx_isr_write(struct imx_i2c_struct *i2c_imx)
+ {
+ 	int result;
+ 
+-	result = i2c_imx_isr_acked(i2c_imx);
++	result = i2c_imx_isr_acked(i2c_imx, i2c_imx->msg->flags & I2C_M_IGNORE_NAK);
+ 	if (result)
+ 		return result;
+ 
+@@ -1017,7 +1024,7 @@ static inline int i2c_imx_isr_read(struct imx_i2c_struct *i2c_imx)
+ {
+ 	int result;
+ 
+-	result = i2c_imx_isr_acked(i2c_imx);
++	result = i2c_imx_isr_acked(i2c_imx, i2c_imx->msg->flags & I2C_M_IGNORE_NAK);
+ 	if (result)
+ 		return result;
+ 
+@@ -1249,7 +1256,8 @@ static int i2c_imx_dma_write(struct imx_i2c_struct *i2c_imx,
+ 	if (result)
+ 		return result;
+ 
+-	return i2c_imx_acked(i2c_imx);
++	/* I2C_M_IGNORE_NAK messages never take the DMA path. */
++	return i2c_imx_acked(i2c_imx, false);
+ }
+ 
+ static int i2c_imx_prepare_read(struct imx_i2c_struct *i2c_imx,
+@@ -1268,7 +1276,7 @@ static int i2c_imx_prepare_read(struct imx_i2c_struct *i2c_imx,
+ 		result = i2c_imx_trx_complete(i2c_imx, !use_dma);
+ 		if (result)
+ 			return result;
+-		result = i2c_imx_acked(i2c_imx);
++		result = i2c_imx_acked(i2c_imx, msgs->flags & I2C_M_IGNORE_NAK);
+ 		if (result)
+ 			return result;
+ 	}
+@@ -1401,7 +1409,7 @@ static int i2c_imx_atomic_write(struct imx_i2c_struct *i2c_imx,
+ 		result = i2c_imx_trx_complete(i2c_imx, true);
+ 		if (result)
+ 			return result;
+-		result = i2c_imx_acked(i2c_imx);
++		result = i2c_imx_acked(i2c_imx, msgs->flags & I2C_M_IGNORE_NAK);
+ 		if (result)
+ 			return result;
+ 	}
+@@ -1416,7 +1424,7 @@ static int i2c_imx_atomic_write(struct imx_i2c_struct *i2c_imx,
+ 		result = i2c_imx_trx_complete(i2c_imx, true);
+ 		if (result)
+ 			return result;
+-		result = i2c_imx_acked(i2c_imx);
++		result = i2c_imx_acked(i2c_imx, msgs->flags & I2C_M_IGNORE_NAK);
+ 		if (result)
+ 			return result;
+ 	}
+@@ -1613,8 +1621,9 @@ static int i2c_imx_read(struct imx_i2c_struct *i2c_imx, struct i2c_msg *msgs,
+ 	return ret;
+ }
+ 
++/* I2C_M_STOP is the controller's native behaviour; don't reject it. */
+ #define I2C_IMX_UNSUPPORTED_PROTOCOL_MANGLING_FLAGS \
+-	(I2C_M_IGNORE_NAK | I2C_M_NO_RD_ACK | I2C_M_STOP)
++	I2C_M_NO_RD_ACK
+ 
+ static int i2c_imx_check_msgs(struct i2c_msg *msgs, int num)
+ {
+@@ -1712,6 +1721,10 @@ static int i2c_imx_xfer_common(struct i2c_adapter *adapter,
+ 		use_dma = i2c_imx->dma && msgs[i].len >= DMA_THRESHOLD &&
+ 			msgs[i].flags & I2C_M_DMA_SAFE &&
+ 			!(msgs[i].flags & I2C_M_NOSTART);
++
++		/* A NAK'd byte may not generate a further DMA request. */
++		if (msgs[i].flags & I2C_M_IGNORE_NAK)
++			use_dma = false;
+ 		if (msgs[i].flags & I2C_M_RD) {
+ 			int block_data = msgs->flags & I2C_M_RECV_LEN;
+ 
+
+base-commit: 123cffeca4a33d770c29ff8d3f22453a5fd59c32
+-- 
+2.34.1
+
