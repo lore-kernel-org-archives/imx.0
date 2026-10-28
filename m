@@ -1,55 +1,62 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793169967;
-	b=2OL4zQSUhQlGKN4ekMM5WU5sHaowRQ6x3+lL1ZT/qUYW6pwAHxq1QWhprQHiOngODtt7
-	 iAbmj7r17oDTM6/Xxk5bPNARJVOEG5pObk72G2esTWFi5dbtxirMAdqcfuWKA/5Hl5vVN
-	 j5skLUi9MViaOgEUZiEiqi1qRDcEzcxkMEsSA0qUUgWTg44xdwgEWS/zn0Q8j8G4i2BxE
-	 jc2L2N8E1lVStnJb7nXWXgTApPgI5VW7QET4+FExVvB+oM6xrg1M3wYUKEyrvvpWuUtIH
-	 rCvcyw6P3SJy02w0d7gFU9/2CZKKdKZv5LM2oRv1hp9nGmVVeMfhhjLOqh4EQIHrFxg==
+	t=1793170772;
+	b=P5emj71gI+6R3IJxH4vbaKj4oLT1C/ERpGzs0oZdMcPLJ1XMqalqh8lzlyYgEodXbWst
+	 xPFWv3xopFcePbuTGrlDy6Mvbij787NHT/ONa69X8g/w5XZkE/mu4TPgoXwZyRSko/O0R
+	 kEO9kkA4f7lbiY8bssEgaiebH/1fw1mnGtAdhKpnBfS+plUiJSFUrgyhtMITBrb1Oxyn+
+	 54Boj5NYe+ujFVkXpADKg3uzMvLQ0zPpYqyKCoh5BVAgavDkDdMzJBptciZiG2en5ovjd
+	 +p/RoS3y4KSsgQ2XOoriSNM9Ytt9VS3wGtvqxgPnM34XGFJ9emBNk6spXkO6iT2N1dA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793169967;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=W6XLz0Ntqlz7gVGMZKh6RPGCkC8eSIbHg1auwfTh/MM=;
-	b=m1uaILlxD78+ApdoetH+uUObBNQAX9VhOUxcMSRF0ijjy0pqmj1y69exxIyg3IsyEMhx
-	 j+zIYH07TXAzZ5EJBTD8jpy59HN0fxWbi/u/Mzbd0yODN4oUJZjDiD+0dgm1xSTJ0T2Ng
-	 UPx6doqDxySRyJqkC3/L7lfNGQPdf2ii1uXybtXoZjF+Y6VZFfn2aOlgSjZo/qQL0HvqO
-	 UIQqe6ALdEYe/nGdD61CXn7z2/q73uJ38FpxlnvMP2LeAZfyj9uA+le2t4oadnpP8jHOX
-	 ZZs+l6kQkGw7YisRhgycSZGay6SVMGf0n0xOdfp/u7qU+A8YfdfyGqxph+m/lJXCjYA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793170772;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=GVHE714RG7i9OtS3pCmu1vAiNQBVPuk8379998KPX34=;
+	b=qSpQjfEfoHi+jvXbgs4GlC1CIDvv2VpeZcRcAh1jZ2+6sI0Glv8wbZZNMjI9DFPEnqZJ
+	 fK+EDK2i30NmEu5PrwK8nK0zUT/beImq/JMuk+NxRR1d9LEOYSPhzOeWVGpOGytRCs24p
+	 HyvtC1qwALVtkpz1jZ+a1wocdI4CH7RgxxY6+HRkODLqcRMQOIS5pyqFCKAjRhggKPy6p
+	 MnqJZkzEosALqoms5E7kK/0P/IlsPniDlG+uI5Xpi8i/7CuWvvv08DJcBRTePxC5L4dzL
+	 wIG2/Fzn1iX9UUH6bG45q3YbNDxlBOCI6HT0B72D4TqJNQ0UPObnA52ajkAUBMqpD6A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=agQdJwiB;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Sp+93WvI;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62430606A326
-	for <imx@lists.linux.dev>; Wed, 28 Oct 2026 06:46:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F8E7606A31A;
+	Wed, 28 Oct 2026 06:59:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=agQdJwiB
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC4E41F01825;
-	Wed, 28 Oct 2026 06:46:06 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Sp+93WvI
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F24D1F01825;
+	Wed, 28 Oct 2026 06:59:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793169966;
-	bh=W6XLz0Ntqlz7gVGMZKh6RPGCkC8eSIbHg1auwfTh/MM=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=agQdJwiBOJkUqJHOxX5YDLqlsXjJeeNAkESSiybh9IETpbe99UWci/plZyyn8SknL
-	 xfWI5AwNyfya0Prnk6hWxyXXy/XHkPl43VRfrG9yciJSAl3iZOphR+XQJVgh6tzN93
-	 mHEW9ckw0AmB1oXKQGOpWUlTvS1yhvpReH/LYh7zrn7Pc+UMvN2j4pE3cpRyJxAKIV
-	 1BuxOP69NlPtxq4I/KX7KyMTS0lYkRA0l7kiZ7xF0CAIPzy66psnjhO7POliZXityc
-	 XzK6pjbotaPhmz1+ItXZK64BTIfUe7iAbrEwvTabQZ/R9hHOgZyBr+pfu74DC9uXh+
-	 qHW3jNGMJ+KRg==
-Message-ID: <sashiko-outbox-187567@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5] i2c: imx: honour I2C_M_IGNORE_NAK
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Haobin Jiang" <lemonoutput@foxmail.com>
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <tencent_E6D69775D91AD9FE45C994B3755CB1452506@qq.com>
-References: <tencent_E6D69775D91AD9FE45C994B3755CB1452506@qq.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 28 Oct 2026 06:46:06 +0000
+	s=k20260515; t=1793170772;
+	bh=GVHE714RG7i9OtS3pCmu1vAiNQBVPuk8379998KPX34=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Sp+93WvII8ZYXlCPlpMElqzLpKTJTarLzctoQWFyTwA7qi799Vp8Tf7L+ArRC38zk
+	 RKQdsbWBVcU8n3/LbKDraRTkNUKR0cLYrYsVVl1FCC7UgdsbOiBl+1UIBSp8tV6BHr
+	 XCS4b5c2FWUJ5qCnTuA0wNxjAgMaZaDUUH5GuwOzg+sD0EmyDWKFWyzBMp3y0pNT70
+	 bPslosLMNB/CpWw/wpZAoRtgqG3BSY9iSW9EMWnUfWcSAdZb9+NdKk61oO5og1YVmB
+	 IQZLH5rd2Cu7o3PgXznKQDSSjD4Q+/RbZ+yaujdcBwTu5C/ZtShCEo4l6x/BEE8LmJ
+	 D/uf5ZtkfTcpg==
+Date: Wed, 28 Oct 2026 12:29:27 +0530
+From: Vinod Koul <vkoul@kernel.org>
+To: Marek Vasut <marex@nabladev.com>
+Cc: linux-arm-kernel@lists.infradead.org,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+	Aswath Govindraju <a-govindraju@ti.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-can@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v6 1/3] dt-bindings: phy: ti,tcan104x-can: Document
+ Microchip ATA6563
+Message-ID: <auGdT2kdxwfbB_ol@parshuram>
+References: <20260930214729.809649-1-marex@nabladev.com>
+ <d8c3ca76-3d93-4abc-8a78-d23e0f018975@nabladev.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -58,82 +65,58 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d8c3ca76-3d93-4abc-8a78-d23e0f018975@nabladev.com>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] i2c: imx: I2C_M_STOP accepted on non-final messages in i2c_imx_c=
-heck_msgs()
---
+On 27-10-26, 18:18, Marek Vasut wrote:
+> On 9/30/26 11:46 PM, Marek Vasut wrote:
+> > Microchip ATA6563 is High-Speed CAN Transceiver with Standby Mode.
+> > It is pin-compatible with TI TCAN1042 and has a compatible programming
+> > model, therefore use ti,tcan1042 as fallback compatible.
+> > 
+> > Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+> > Signed-off-by: Marek Vasut <marex@nabladev.com>
+> > ---
+> > Cc: Aswath Govindraju <a-govindraju@ti.com>
+> > Cc: Conor Dooley <conor+dt@kernel.org>
+> > Cc: Fabio Estevam <festevam@gmail.com>
+> > Cc: Frank Li <Frank.Li@nxp.com>
+> > Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
+> > Cc: Marc Kleine-Budde <mkl@pengutronix.de>
+> > Cc: Rob Herring <robh@kernel.org>
+> > Cc: devicetree@vger.kernel.org
+> > Cc: imx@lists.linux.dev
+> > Cc: linux-arm-kernel@lists.infradead.org
+> > Cc: linux-can@vger.kernel.org
+> > Cc: linux-kernel@vger.kernel.org
+> > ---
+> > V2: No change
+> > V3: No change
+> > V4: No change
+> > V5: Add RB from Krzysztof
+> > V6: No change
+> > ---
+> >   Documentation/devicetree/bindings/phy/ti,tcan104x-can.yaml | 1 +
+> >   1 file changed, 1 insertion(+)
+> > 
+> > diff --git a/Documentation/devicetree/bindings/phy/ti,tcan104x-can.yaml b/Documentation/devicetree/bindings/phy/ti,tcan104x-can.yaml
+> > index 0cf5fa21106b6..e97b1bc0a2e45 100644
+> > --- a/Documentation/devicetree/bindings/phy/ti,tcan104x-can.yaml
+> > +++ b/Documentation/devicetree/bindings/phy/ti,tcan104x-can.yaml
+> > @@ -18,6 +18,7 @@ properties:
+> >         - items:
+> >             - enum:
+> >                 - microchip,ata6561
+> > +              - microchip,ata6563
+> >                 - ti,tcan1051
+> >             - const: ti,tcan1042
+> >         - items:
+> 
+> +CC Vinod, is this patch OK with you ?
 
-commit ab5cce0d9e41776730132143f819ba3662b29234
-Author: Haobin Jiang <lemonoutput@foxmail.com>
+Looks good to me, I will pick this after rc1 (monday)
 
-i2c: imx: honour I2C_M_IGNORE_NAK
-
-This commit adds support for I2C_M_IGNORE_NAK on PIO transfers in the i.MX
-I2C controller driver while keeping flagged messages out of the DMA path and
-rejecting zero-length reads with I2C_M_IGNORE_NAK.
-
-Link: https://lore.kernel.org/linux-i2c/tencent_877C99956190215D644EB959DF1=
-663542A0A@qq.com/ # [1]
-
-> diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
-> index ccf08cd63151f..1e2fd699f4fc6 100644
-> --- a/drivers/i2c/busses/i2c-imx.c
-> +++ b/drivers/i2c/busses/i2c-imx.c
-
-[ ... ]
-
-> @@ -1613,8 +1621,9 @@ static int i2c_imx_read(struct imx_i2c_struct *i2c_=
-imx, struct i2c_msg *msgs,
->  	return ret;
->  }
-> =20
-> +/* I2C_M_STOP is the controller's native behaviour; don't reject it. */
->  #define I2C_IMX_UNSUPPORTED_PROTOCOL_MANGLING_FLAGS \
-> -	(I2C_M_IGNORE_NAK | I2C_M_NO_RD_ACK | I2C_M_STOP)
-> +	I2C_M_NO_RD_ACK
-> =20
->  static int i2c_imx_check_msgs(struct i2c_msg *msgs, int num)
->  {
-> @@ -1625,6 +1634,12 @@ static int i2c_imx_check_msgs(struct i2c_msg *msgs=
-, int num)
->  		if (msgs[i].flags & I2C_IMX_UNSUPPORTED_PROTOCOL_MANGLING_FLAGS)
->  			return -EOPNOTSUPP;
-
-[Severity: Medium]
-Does removing I2C_M_STOP from I2C_IMX_UNSUPPORTED_PROTOCOL_MANGLING_FLAGS
-cause i2c_imx_check_msgs() to accept multi-message transfers that set
-I2C_M_STOP on a non-final message (i < num - 1) without actually generating
-an inter-message STOP condition?
-
-In i2c_imx_xfer_common(), is_lastmsg is only set when i =3D=3D num - 1, and
-i2c_imx_stop() is only called at the end of the entire transfer. For
-intermediate messages, the controller keeps I2CR_MSTA asserted and emits a
-repeated START on the next message:
-
-drivers/i2c/busses/i2c-imx.c:i2c_imx_xfer_common() {
-	for (i =3D 0; i < num; i++) {
-		if (i =3D=3D num - 1)
-			is_lastmsg =3D true;
-
-		if (i && !(msgs[i].flags & I2C_M_NOSTART)) {
-			...
-			temp =3D imx_i2c_read_reg(i2c_imx, IMX_I2C_I2CR);
-			temp |=3D I2CR_RSTA;
-			imx_i2c_write_reg(temp, i2c_imx, IMX_I2C_I2CR);
-			...
-		}
-}
-
-When callers such as SCCB client drivers (via I2C_CLIENT_SCCB in
-i2c_smbus_xfer_emulated(), which sets I2C_M_STOP | I2C_M_IGNORE_NAK on msg[=
-0]
-of a two-message read) or userspace I2C_RDWR ioctls pass I2C_M_STOP on an
-intermediate message, shouldn't i2c_imx_check_msgs() still reject I2C_M_STOP
-when i < num - 1 unless i2c_imx_xfer_common() emits a STOP followed by a new
-START between those messages?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/tencent_E6D69775D91=
-AD9FE45C994B3755CB1452506@qq.com?part=3D1
+-- 
+~Vinod
