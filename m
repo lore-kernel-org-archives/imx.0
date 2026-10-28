@@ -1,48 +1,48 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.3
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.2
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793156853;
-	b=xwEQFgXqe6Whg9rAQm1yKpM6tHClvjkk32+dGFaR/n3GKnbWUUJnwzNnQvY8biegBJRr
-	 bVvBDw9H7D6UKj0RvbajhysDc/XOMnu14xt6cqmbmxPwq3koNG2a00eT2ZZVHjYFROqlI
-	 GKMWEB5DN5RD3rBksrDVV3jsHTMmymXImX8D/0gmu/k7mTaH+aqHhWfS2Mt2hhO2uQe4U
-	 rcPj3q2ZfDEEQDPGnIoL1gKiuBm3guYxqTeR6627QpR0FvNmG1ohAiEDLCfmkYPDnxOox
-	 1tYcDtItIwVIqM5h7nUOYT62XRS/xNJowd2z3XrWos8XZUwNgpzJX4LcDQjhcUgMJhQ==
+	t=1793156854;
+	b=ypS+Dup5xjh8+JN8eYcGfcVzWiYVQkCMmCAyclwAWouTQ4DmDCp7PsDGE0PXnMEApwBe
+	 f0pNEA6i+u0qmxNlPuoRQhywVMfrakchcFa4T5FSjRBqVS8wBdi7fjQQrMGWPlAoQkTwE
+	 WIRc+g2qG/Sv9PLYWSiyv/i/HdYc9ZaPMZ3Gn6up3xfzoUjzRlkQljARr91RuuSonay6Y
+	 OT3Pwl0l/SKqAP71tDjFjtHnDIDVUaKdEjzK6awd1UrpA84whxVQV4c9X+jDQx73PmfLu
+	 BHxPBljIS8dFuRA6ehDWB8f26ASHA5OUCnxydiz+kUmCmmG2R/TjwuJvzrcFm1x+Qow==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793156853;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793156854;
 	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:X-CM-TRANSID:X-Coremail-Antispam:
 	 X-CM-SenderInfo;
-	bh=gvYgj8/VtDiXCuQH4R2FXsxKr1lVxn6Z5zkOXet1cl0=;
-	b=oEUjPCkk1JryXbJD8ojvMD2APTNlAj2vtiKb523yehVkzcNIzk8g1h5C2ISy2XJZv9cN
-	 BX9VFG02nY5TFrcBbcjQ381M9uPDyz17J8sGPyoxXPJ8CLnHcTn+E5g2ebVxhXHJvY3Kp
-	 D/cM/0G2ZFzm1CHQi12PvrBBtBfj1ws387s7nVNRIoYxKn+IQ5B257arZe5KzuCLG2vfi
-	 IAxqkHMPjpHjf0GxAOLYcJ30+ae7476YrDldnEeMi2aPWd0ZRadte16SbAT2nMs5zZk4j
-	 PM2EFCj1RYWq5SEcvLpqGAyqm2ycU6ZlwhxJuQ+tPFgChTYnsIz+kIgBNcOKx7tghXA==
+	bh=lAmxH5StbC92YG4VwJJRjtxwLxu+DmfhuOFV/GCQrHU=;
+	b=YBldY00Qkyw6tJYPKMRDXXm2CH8cLSBByLLGGrscD5v48VHeVz7lCJeFdm6Q9Sgkcyv3
+	 O76FaV5q5Ys1yNYU5tH8sfOcfRjAHIfff5CODi5AjNk1SGbgzeV7D2JlAOKJMKGz3wKNa
+	 VSsjqBWZIglStcpdoM+18YtBYi/v6addGx50wJyaT12rvCwrCF9r0E93M+UVYUa4ShGXg
+	 d3k1rB0W063xARHQKVWLNdd/toNzNFARacpkytF+HzH09XEnmQ+PS1iE51lmnknpa0oWu
+	 VAveyiOhgoMbMf/5QHGjVughDKNk3dkjkaiomIvPY8xf95QqjgUxbK6wPizYOsgQlMQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=163.com;
 	spf=pass smtp.mailfrom=163.com;
-	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=c+gpwuqz;
-	arc=none smtp.remote-ip=117.135.210.3
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=IQAGmgt4;
+	arc=none smtp.remote-ip=117.135.210.2
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6658606A31D;
-	Wed, 28 Oct 2026 03:07:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A6658606A31D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86D0A606A325;
+	Wed, 28 Oct 2026 03:07:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 86D0A606A325
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=c+gpwuqz
+	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=IQAGmgt4
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=gv
-	Ygj8/VtDiXCuQH4R2FXsxKr1lVxn6Z5zkOXet1cl0=; b=c+gpwuqzqtT532VjV9
-	nrjYgYtKt+9aGWJ1k+EHtUXPiGCZ7WmfxNid/58TcqDyFhiNTjHn2hY7oEeO51rt
-	D1XC4G/eKZLUOKBjAkgQstQDrFInvB0eO9yAcFOVgqxvdENWegJoEAq4rvdGNADf
-	XPXpXW/64fglaQv6JxiHFdbT0=
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=lA
+	mxH5StbC92YG4VwJJRjtxwLxu+DmfhuOFV/GCQrHU=; b=IQAGmgt4PNZWbso6+V
+	pffK2rsO3R0sJtHr69fYShXhUdAZQYnX+4I+/tJXe36UNjjKRCZS8pASyZkOJqZw
+	5wAgwiIxCroZtGVTERPriDLYCOVguaN84E1UpII75b3Y/1GlQdZMPZiBlolV1mrd
+	meokRbdBJrzjJFIhQr1h7lQwk=
 Received: from Precision-7960.. (unknown [])
-	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wDnVwncZuFqLzE4DA--.33198S3;
-	Wed, 28 Oct 2026 11:07:10 +0800 (CST)
+	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wDnVwncZuFqLzE4DA--.33198S8;
+	Wed, 28 Oct 2026 11:07:15 +0800 (CST)
 From: Hans Zhang <18255117159@163.com>
 To: bhelgaas@google.com,
 	lpieralisi@kernel.org,
@@ -61,9 +61,9 @@ Cc: imx@lists.linux.dev,
 	linux-pci@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Hans Zhang <18255117159@163.com>
-Subject: [PATCH v5 09/16] PCI: dwc: intel-gw: Use cached PCIe capability offset
-Date: Wed, 28 Oct 2026 11:06:45 +0800
-Message-ID: <20261028030652.2917756-10-18255117159@163.com>
+Subject: [PATCH v5 14/16] PCI: dwc: spear13xx: Use cached PCIe capability offset
+Date: Wed, 28 Oct 2026 11:06:50 +0800
+Message-ID: <20261028030652.2917756-15-18255117159@163.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261028030652.2917756-1-18255117159@163.com>
 References: <20261028030652.2917756-1-18255117159@163.com>
@@ -77,35 +77,35 @@ List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDnVwncZuFqLzE4DA--.33198S3
-X-Coremail-Antispam: 1Uf129KBjvdXoW7Wry8Zw4xKw15uw48KryrXrb_yoWDArbE9r
-	y5CrnrA3y5CFZ3CF12yw13AFy2ya42q3W09ayrtFZxZ3WxXw1vgws7ZFWDZ3W8Grs8Jr97
-	tr1DAF18J347JjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRNJPEtUUUUU==
-X-CM-SenderInfo: rpryjkyvrrlimvzbiqqrwthudrp/xtbC6x7jh2rhZt7GZQAA3B
+X-CM-TRANSID:_____wDnVwncZuFqLzE4DA--.33198S8
+X-Coremail-Antispam: 1Uf129KBjvdXoWruw17Zr17XFWkuFW5ZF47Jwb_yoWDCFXE93
+	s8WFnrAr4UGFy5GFnFyryrXryYva4fWw1jga9aqFZxAFn7Xw1kWr92qrZrAF95Cr1DXF97
+	Jr1qvF4rJ3y8KjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRM89NtUUUUU==
+X-CM-SenderInfo: rpryjkyvrrlimvzbiqqrwthudrp/xtbC7APkiGrhZuPTEwAA3N
 
-intel_pcie_link_setup() is called from intel_pcie_host_setup(), which
-runs from the .init callback after the controller resources have been
-enabled. Replace the capability search with dw_pcie_get_pcie_cap().
+spear13xx_pcie_host_init() runs from the .init callback with the
+controller already enabled. Replace the capability search with
+dw_pcie_get_pcie_cap() and store the offset in a u8.
 
 Signed-off-by: Hans Zhang <18255117159@163.com>
 ---
- drivers/pci/controller/dwc/pcie-intel-gw.c | 2 +-
+ drivers/pci/controller/dwc/pcie-spear13xx.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-intel-gw.c b/drivers/pci/controller/dwc/pcie-intel-gw.c
-index 348e579e683fa..a891c3f8eb012 100644
---- a/drivers/pci/controller/dwc/pcie-intel-gw.c
-+++ b/drivers/pci/controller/dwc/pcie-intel-gw.c
-@@ -119,7 +119,7 @@ static void intel_pcie_ltssm_disable(struct intel_pcie *pcie)
- static void intel_pcie_link_setup(struct intel_pcie *pcie)
+diff --git a/drivers/pci/controller/dwc/pcie-spear13xx.c b/drivers/pci/controller/dwc/pcie-spear13xx.c
+index 01794a9d3ad29..6e4c11b497d45 100644
+--- a/drivers/pci/controller/dwc/pcie-spear13xx.c
++++ b/drivers/pci/controller/dwc/pcie-spear13xx.c
+@@ -122,7 +122,7 @@ static int spear13xx_pcie_host_init(struct dw_pcie_rp *pp)
  {
+ 	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+ 	struct spear13xx_pcie *spear13xx_pcie = to_spear13xx_pcie(pci);
+-	u32 exp_cap_off = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
++	u8 exp_cap_off = dw_pcie_get_pcie_cap(pci);
  	u32 val;
--	u8 offset = dw_pcie_find_capability(&pcie->pci, PCI_CAP_ID_EXP);
-+	u8 offset = dw_pcie_get_pcie_cap(&pcie->pci);
  
- 	val = pcie_rc_cfg_rd(pcie, offset + PCI_EXP_LNKCTL);
- 
+ 	spear13xx_pcie->app_base = pci->dbi_base + 0x2000;
 -- 
 2.43.0
 
