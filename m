@@ -1,88 +1,115 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793187318;
-	b=pBCb3yo3wErtc7SDpv9LUDqnqghE7IAgsb7Pp0DScluvpfAE0H08qW1FoSyJQx7Av1o/
-	 c+PvUWHeCD3pvW9VCu7Krlj6J4YD6S8MzWR6YTIgq3/PkNiHU9SSAGxsbE0EHRtPDcWO/
-	 isEQg9VUWo5XONkPR9iB7zHxn2iLXJo7VaBJid5ZdPvo2wbsLXgclHhkBc/N6a2I6y8Dm
-	 kr8QhRlUwbfNO/efSAkE0tE8sOnm4IVnPKzjCs9/UqdaqqzlhQ25tdRYbXouiA+MRJLtT
-	 ANkYJRD7DuVpo6zKddycfVYz6+eD36MTvHAGoTuA0owM6LfNxTO1ihSen70IZ14HTnA==
+	t=1793188971;
+	b=cNPZfk4ytIGZnKvXYypAGfDA2D9YYbvcad1u8i8pOnlUM5G4i0lUgJQNaw+8hJC/JeH0
+	 g6CZ93/aDv38io5ghF22bcvbVFKkzkYMaa7F+ldQhcK3z6tDHtM3QrzeiLsCzV3KagGoc
+	 +bo5MP7nAw8et0FpR4F6dtfUMnQdNXEUB4T93C+XktpnVKlymgK+wxqbherBwhxhUAunQ
+	 NTQNAF18TXdHMUPcyedchKqkRZ+XP/SFLJhNsf+BmwjPsAC6/Xt6hbC84P3JDluHGdryx
+	 aGEyTdN/TKjG35ccuPpqK8L1TCoVq266ivt0YTvQS/4T8r652j6CuDmN5cmzoSTOxPA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793187318;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:Date:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer;
-	bh=kzgvlmTIhVHGThdIV5sswGrWTSAc2jljnSQn/BZ1riE=;
-	b=TX9L0rHlpZPqzVmtAaEWbaO4KDdp9O1dC8iTBH9QxRqYcdzwkodtZVJy/k6D2bm7WH7W
-	 F0TrgQ32QXhatcSZzDb5F61TJ8MD1slhGNEAIymf1JfeWaszEc1X874URXlveM1VlTWGV
-	 3pqj4CFqttMgbe/2HsKjyz+U8knu5A1xQnEP7oQKLHpPFVuSlw9vOdJUfXQ9N6CJGBkvZ
-	 DZGtM+oEywKkJKP+G5hiscU8aMWZIV5YF8csnk990tvNk/1l7ftxmumeDKMErctEdV0Uw
-	 axIEx6VWDfgwCgKidbQLMPk3VDzavE2wWJ1rfMqlvDpybiJ4K3RCSsUv6qHuBAgQQYw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793188971;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=dsnhxVyCRsDB7IzLyR1PYJXVzOdADR8u2HKSk2GZFPk=;
+	b=yHqMA3H2kbZfUubHTnuBN8TYtXQtDYxrb4/4JueMVF4hNtP8xhF5JgVP/ZE22+p9KhPQ
+	 /HSoOFwmWXl6gmylzFJSqgRkVZV2Qk0YPc+bH4HtfB1RxEoURZImuFyl9wv7uXx3bQNZ/
+	 rl/rqhlOF0YXdtMirafeW2azNa7GcFbSdmHd/3IVbeERgciA+yLjoDc401hoKPkvlBHVr
+	 FunhS0MUufvqTtAM43ZNnoij173Ldk8N8rJmugVmUqHCoj4ufSBcVskHIti5wF7GxbuB3
+	 qoau4ySoRCpm5HmtlWYMlLBmTvPiktuLv90M4A6iJb+X1ZLGCB29f9um1F0dOIJixaA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=K8KPdrgI;
-	arc=none smtp.remote-ip=209.85.221.42
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RRQVjpwH;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D24DA606A31C
-	for <imx@lists.linux.dev>; Wed, 28 Oct 2026 11:35:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D24DA606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CECC4606A324;
+	Wed, 28 Oct 2026 12:02:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=K8KPdrgI
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-48af4d4e61fso518106f8f.2
-        for <imx@lists.linux.dev>; Wed, 28 Oct 2026 04:35:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793187316; x=1793792116; darn=lists.linux.dev;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=kzgvlmTIhVHGThdIV5sswGrWTSAc2jljnSQn/BZ1riE=;
-        b=K8KPdrgID4C2xq/8N9y9Yx5K44nfvYeOIVuO4rx41kbflg0PB8v+4yJutcAQbCvhkw
-         muETvmD9naynav0sHhhymSCZoORfrkK2XjXm8DaMtOmQl8C+o4pgTzyXs64ySI04WTUL
-         wSqH2SIEy299m3If7MbL02jlRYO5I0NHbLLbUo5oD8UaP+MDgqB2mlkxeWJFc+VFI7z6
-         ubKcAJu604d8tDNnG47fn9SgYgB/t2Go4VIq/FgsVQ2jHN2r8+GoetVfs+tYjlbBC89A
-         eBPizyccvqaDLg14soSvWXOjCuDn/9AiPKClkyygBhAKmn3za/15tjdw6J7U0FPmh3oS
-         iI4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793187316; x=1793792116;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=kzgvlmTIhVHGThdIV5sswGrWTSAc2jljnSQn/BZ1riE=;
-        b=WTjTWtdEa9FZp/M9FpyXqX4hmjpZ7S/r4UDNquCT1FRFPwU9+8aW8cnPer3bRhxKAl
-         YIBp7MyU1taRUoz7aFjTYW/W3/7V2zzAyYcIvF5OwqEPWw3E12rTn+DpQ/h9sBYPD0MV
-         gtwPFXhUcmRIe0cRLp6VYxI2bYTBbGVyOc3YnYQ9TDvJovTXYBgZqqaipTASPfzv6min
-         IJihnHai6B7q6ol3a/CxsxzKThVqx2111EtL85p0mQZIBHlqRgPmnP8JnouG48IC6Elj
-         LdjdnCwy2wLsZuEdDh4zAw5F4ZQjT3n89GDjD+MR62gwMxYo2x2xXq940clfYhUzslvU
-         GMDQ==
-X-Forwarded-Encrypted: i=1; AKwUvBw8eVplvkBHX0gnEymGYMAdf5zBh4GY6Enl7ffxvP3Yfrur5bbXK0KdMpLTWCCtQhv1Bxs=@lists.linux.dev
-X-Gm-Message-State: AFq9FYJoFeux9jQ0cImktVMidfBg2jtOcJTYWGltsIN8Jtd3SdGhqxRs
-	qsPk/uCcEhd7FODskj+2mlUpSlu+9VFEdZQXaYK4l0dWjAXvwysCxwwa
-X-Gm-Gg: AYBFou2mdKmpgbceMTwxi6CXUXt/uMsbXVfk7IjQcEA8xavKT6MTy5WPj6ByNMM6rI+
-	8OXyyQp7a0JKagIkMoIEJSslV7kcGFQ1M+MsO1S2uIss6kQoO3xCLfQI5nS+o7Vzdc4TNZRDjMr
-	OfD1fm3lHsipMiE9dvs3yiCmcjQrEtmDWTUThv/E5LIC2TIHv/6zBsls0MbesQw6DlYSAkQRTdB
-	UdIbLklTce3xHIdYVp6s2hf0NJIrInlHHHZkF3LWcpgJW+qFh2TdbnMRKRkIywo7chYNQWO/aRG
-	DedTIAxmO0fwQ2NGCIWb58egKeynfDLKCs1RRevmi175R3235WFrVOhdGg7j4bntE+fc+w8sTUR
-	yuYBdNrvpqA/ymUygKufArnkUmkn90UHyFSf9rv1EkQtjJIuZ+1egYwADMbM7QKRSP9f/m1YeM/
-	gCnjcV7YZFRIo3aUB0oDOh3UTeeKDym2avrIh1bKmwYnLZLyoG78ju+I3unNqgPk7VRrEzo6nbV
-	Nf2Hd87eJqgnnH/7ZHIOCRW5YGb3ghPev9Dp0bnHEYtYoPxbtgH9vqiVrj/Jtl1FWTxhC3VRZk7
-	3zLsL2gpq56qOtwSPr+ZXWjAEHCOTB/5KU/r+ZMcDOr2mLu1OkrNpkz1RgqKvxNu+RZODtmrwKp
-	NIg71R4Je+PJ9Ts2N/nRbu0U4Rz1Adw==
-X-Received: by 2002:a05:6000:2207:b0:48e:5df2:fd24 with SMTP id ffacd0b85a97d-48e5df2feb5mr4476377f8f.32.1793187315926;
-        Wed, 28 Oct 2026 04:35:15 -0700 (PDT)
-Received: from ernest.hoecke-nb (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch. [83.173.201.248])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e3eb8f36asm28144706f8f.1.2026.10.28.04.35.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Oct 2026 04:35:15 -0700 (PDT)
-From: Ernest Van Hoecke <ernestvanhoecke@gmail.com>
-Date: Wed, 28 Oct 2026 12:35:09 +0100
-Subject: [PATCH v4] arm64: dts: freescale: imx8mp-verdin: Add Cortex-M7
- remoteproc
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RRQVjpwH
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 282771F01828;
+	Wed, 28 Oct 2026 12:02:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793188970;
+	bh=dsnhxVyCRsDB7IzLyR1PYJXVzOdADR8u2HKSk2GZFPk=;
+	h=From:To:Cc:Subject:Date;
+	b=RRQVjpwH4sY11i/17VHL7AM40KXNuiYJdRXnbyur+Nx1X6LRie4UMFncaXFYLvxoH
+	 vEMx+GQHbHaIzp/LF1pxgiZjCGpoM593FiSdoC0oumS9cQ+QXTG2jrhbH/rMsMGOc4
+	 ny46eU+ErXiBlXUO9wIGSiSWyJt1DtVl5MzqstZpNxbA3vh1urvuNEXUEs3XtTQKG5
+	 7Btj3/p7neZupn/jFjINQHb1iG9rUE+2UcStPVD07cRqNeLl1k7LTJk5b+1SSApV+8
+	 TQK2keKsYvQ1wZP6bUVcqP55KiyxGZ4p7tUPGT59f84Fh951p+6KXMENhtAVhM6LuI
+	 GcDn6NkyRpNOQ==
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Bjorn Andersson <andersson@kernel.org>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Brian Masney <bmasney+clk@redhat.com>,
+	Jerome Brunet <jbrunet+clk@baylibre.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Dmitry Baryshkov <lumag@kernel.org>,
+	Abhinav Kumar <abhinav.kumar@linux.dev>,
+	Jessica Zhang <jesszhan0024@gmail.com>,
+	Sean Paul <sean@poorly.run>,
+	Marijn Suijten <marijn.suijten@somainline.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Yinbo Zhu <zhuyinbo@loongson.cn>,
+	Linus Walleij <linusw@kernel.org>,
+	Bartosz Golaszewski <brgl@kernel.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Tiffany Lin <tiffany.lin@mediatek.com>,
+	Andrew-CT Chen <andrew-ct.chen@mediatek.com>,
+	Yunfei Dong <yunfei.dong@mediatek.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Ryder Lee <ryder.lee@mediatek.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Christian Marangi <ansuelsmth@gmail.com>,
+	Eric Anholt <eric@anholt.net>,
+	Kuogee Hsieh <quic_khsieh@quicinc.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Aakarsh Jain <aakarsh.jain@samsung.com>
+Cc: Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	linux-arm-msm@vger.kernel.org,
+	linux-clk@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linux-rpi-kernel@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
+	freedreno@lists.freedesktop.org,
+	imx@lists.linux.dev,
+	dmaengine@vger.kernel.org,
+	linux-gpio@vger.kernel.org,
+	linux-iio@vger.kernel.org,
+	linux-amlogic@lists.infradead.org,
+	linux-media@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	linux-mediatek@lists.infradead.org
+Subject: [PATCH] dt-bindings: Fix property name typos in if/then schemas
+Date: Wed, 28 Oct 2026 07:02:12 -0500
+Message-ID: <20261028120216.2657397-1-robh@kernel.org>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -92,112 +119,229 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261028-verdin-imx8mp-m7-v4-1-d4e23e62ebea@toradex.com>
-X-B4-Tracking: v=1; b=H4sIAOzd4WoC/4XPMW7DMAwF0KsEmstApBRb6tR7FB1Uia41yA7kQ
- nAQ+O5lPBRtMmT4wyfAR/CqFq6ZF/V6uKrKLS95nqTYl4OKY5i+GHKSrkhTh5o0NK4pT5DL6so
- ZSg+h80yd61xvUcnaufKQ1518/5A+5uV7rpf9QsPbdMe0x3tslMRQuAaoHNIFGoIGE72xnmP69
- MObSCHxeoxzUTe80S+IWuNTkATsExprBJQ8guYPSPT4bjOAEAZylsmdDKb/xLZtP0UfMshUAQA
- A
-X-Change-ID: 20261020-verdin-imx8mp-m7-a69e26868741
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
-X-Mailer: b4 0.16.0
+Content-Transfer-Encoding: 8bit
 
-From: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+Property names within if/then schemas currently go unchecked whether
+they have a type defined or match what's in the top-level schema. Adding
+a check finds a number of instances of typos. The typos result in the
+schema having no effect on constraints.
 
-Describe the Cortex-M7 remote processor available on the Verdin iMX8M
-Plus SoM.
+With this, fix the mediatek,vcodec-encoder 'clocks' count constraint
+exposed by the name correction.
 
-Signed-off-by: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 ---
-This patch was previously part of the Verdin iMX8M OV5640 series and is
-now sent separately, as requested on v2.
+ .../devicetree/bindings/clock/qcom,kpss-gcc.yaml     |  2 +-
+ .../bindings/display/brcm,bcm2711-hdmi.yaml          |  2 +-
+ .../bindings/display/msm/dp-controller.yaml          |  2 +-
+ .../devicetree/bindings/display/msm/hdmi.yaml        |  4 ++--
+ Documentation/devicetree/bindings/dma/fsl,edma.yaml  |  2 +-
+ .../devicetree/bindings/gpio/loongson,ls-gpio.yaml   |  2 +-
+ .../bindings/iio/adc/amlogic,meson-saradc.yaml       |  2 +-
+ .../bindings/media/mediatek,vcodec-encoder.yaml      | 12 ++++--------
+ .../devicetree/bindings/media/samsung,s5p-mfc.yaml   |  2 +-
+ .../devicetree/bindings/pci/mediatek-pcie.yaml       | 12 ++++++------
+ 10 files changed, 19 insertions(+), 23 deletions(-)
 
-I am away in November, replies may be delayed until December.
----
-Changes in v4:
-- Use IMX8MP_CLK_M7_CORE: IMX8MP_CLK_M7_DIV is not registered by the
-  i.MX8MP clock driver, so the remote processor got no clock (Sashiko, Frank)
-- Link to v3: https://lore.kernel.org/r/20261022-verdin-imx8mp-m7-v3-1-af284e28531d@toradex.com
-
-Changes in v3:
-- Split out of the Verdin iMX8M OV5640 series (Frank)
-- Move the UART_4 overlay to the shared Toradex Cortex-M UART series:
-  https://lore.kernel.org/r/20261022-v1-imx95-overlays-v2-0-c769d6eb54fd@toradex.com
-- Link to v2: https://lore.kernel.org/r/20261001-verdin-imx8mp-hmp-camera-ready-v2-0-7d1343ecd3ec@toradex.com
-
-Changes in v2:
-- Rebase
-- Link to v1: https://lore.kernel.org/r/20260910-verdin-imx8mp-hmp-camera-ready-v1-0-3c9349ecdb9f@toradex.com
----
- arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi | 33 ++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
-
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi
-index 9fee2cf9ef54..8bffa4a27776 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi
-@@ -77,6 +77,18 @@ key-wakeup {
- 		};
- 	};
+diff --git a/Documentation/devicetree/bindings/clock/qcom,kpss-gcc.yaml b/Documentation/devicetree/bindings/clock/qcom,kpss-gcc.yaml
+index 88b7672123a0..ed347096df46 100644
+--- a/Documentation/devicetree/bindings/clock/qcom,kpss-gcc.yaml
++++ b/Documentation/devicetree/bindings/clock/qcom,kpss-gcc.yaml
+@@ -62,7 +62,7 @@ then:
+     - '#clock-cells'
+ else:
+   properties:
+-    clock: false
++    clocks: false
+     clock-names: false
+     '#clock-cells': false
  
-+	imx8mp-cm7 {
-+		compatible = "fsl,imx8mp-cm7";
-+		clocks = <&clk IMX8MP_CLK_M7_CORE>;
-+		mbox-names = "tx", "rx", "rxdb";
-+		mboxes = <&mu 0 1
-+			  &mu 1 1
-+			  &mu 3 1>;
-+		memory-region = <&vdev0buffer>, <&vdev0vring0>, <&vdev0vring1>,
-+				<&rsc_table>;
-+		syscon = <&src>;
-+	};
-+
- 	sound_hdmi: sound-hdmi {
- 		compatible = "fsl,imx-audio-hdmi";
- 		model = "audio-hdmi";
-@@ -185,6 +197,27 @@ reserved-memory {
+diff --git a/Documentation/devicetree/bindings/display/brcm,bcm2711-hdmi.yaml b/Documentation/devicetree/bindings/display/brcm,bcm2711-hdmi.yaml
+index c1cefd547391..fd4d598f6ff8 100644
+--- a/Documentation/devicetree/bindings/display/brcm,bcm2711-hdmi.yaml
++++ b/Documentation/devicetree/bindings/display/brcm,bcm2711-hdmi.yaml
+@@ -145,7 +145,7 @@ allOf:
+             - description: CEC stuck at low interrupt
+             - description: Hotplug connected interrupt
+             - description: Hotplug removed interrupt
+-        interrupts-names:
++        interrupt-names:
+           items:
+             - const: cec-tx
+             - const: cec-rx
+diff --git a/Documentation/devicetree/bindings/display/msm/dp-controller.yaml b/Documentation/devicetree/bindings/display/msm/dp-controller.yaml
+index 094a6383bb77..f72d1b354007 100644
+--- a/Documentation/devicetree/bindings/display/msm/dp-controller.yaml
++++ b/Documentation/devicetree/bindings/display/msm/dp-controller.yaml
+@@ -304,7 +304,7 @@ allOf:
+         clocks:
+           minItems: 6
+           maxItems: 6
+-        clocks-names:
++        clock-names:
+           minItems: 6
+           maxItems: 6
  
- 		/* Use the kernel configuration settings instead */
- 		/delete-node/ linux,cma;
-+
-+		vdev0vring0: vdev0vring0@55000000 {
-+			reg = <0 0x55000000 0 0x8000>;
-+			no-map;
-+		};
-+
-+		vdev0vring1: vdev0vring1@55008000 {
-+			reg = <0 0x55008000 0 0x8000>;
-+			no-map;
-+		};
-+
-+		rsc_table: rsc-table@550ff000 {
-+			reg = <0 0x550ff000 0 0x1000>;
-+			no-map;
-+		};
-+
-+		vdev0buffer: vdev0buffer@55400000 {
-+			compatible = "shared-dma-pool";
-+			reg = <0 0x55400000 0 0x100000>;
-+			no-map;
-+		};
- 	};
- };
+diff --git a/Documentation/devicetree/bindings/display/msm/hdmi.yaml b/Documentation/devicetree/bindings/display/msm/hdmi.yaml
+index dfec6c3480f3..02d27ccad024 100644
+--- a/Documentation/devicetree/bindings/display/msm/hdmi.yaml
++++ b/Documentation/devicetree/bindings/display/msm/hdmi.yaml
+@@ -113,7 +113,7 @@ allOf:
+             - const: core
+             - const: master_iface
+             - const: slave_iface
+-        core-vcc-supplies: false
++        core-vcc-supply: false
  
-
----
-base-commit: 7f47e8eafbf55a2ad0697e5d28f5e6cff2fa42f9
-change-id: 20261020-verdin-imx8mp-m7-a69e26868741
-
-Best regards,
---  
-Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+   - if:
+       properties:
+@@ -136,7 +136,7 @@ allOf:
+             - const: core
+             - const: alt_iface
+             - const: extp
+-        hdmi-mux-supplies: false
++        hdmi-mux-supply: false
+ 
+   - if:
+       properties:
+diff --git a/Documentation/devicetree/bindings/dma/fsl,edma.yaml b/Documentation/devicetree/bindings/dma/fsl,edma.yaml
+index f609038e35ae..0260d177c7d0 100644
+--- a/Documentation/devicetree/bindings/dma/fsl,edma.yaml
++++ b/Documentation/devicetree/bindings/dma/fsl,edma.yaml
+@@ -172,7 +172,7 @@ allOf:
+             const: fsl,imx7ulp-edma
+     then:
+       properties:
+-        clock:
++        clocks:
+           minItems: 2
+           maxItems: 2
+         clock-names:
+diff --git a/Documentation/devicetree/bindings/gpio/loongson,ls-gpio.yaml b/Documentation/devicetree/bindings/gpio/loongson,ls-gpio.yaml
+index 69852444df23..07c8b233c6bd 100644
+--- a/Documentation/devicetree/bindings/gpio/loongson,ls-gpio.yaml
++++ b/Documentation/devicetree/bindings/gpio/loongson,ls-gpio.yaml
+@@ -80,7 +80,7 @@ allOf:
+         - resets
+     else:
+       properties:
+-        "#interrupts-cells": false
++        "#interrupt-cells": false
+         interrupt-controller: false
+         resets: false
+ 
+diff --git a/Documentation/devicetree/bindings/iio/adc/amlogic,meson-saradc.yaml b/Documentation/devicetree/bindings/iio/adc/amlogic,meson-saradc.yaml
+index 70ab4e140e71..535213ba0c5e 100644
+--- a/Documentation/devicetree/bindings/iio/adc/amlogic,meson-saradc.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/amlogic,meson-saradc.yaml
+@@ -92,7 +92,7 @@ allOf:
+     else:
+       properties:
+         nvmem-cells: false
+-        mvmem-cel-names: false
++        nvmem-cell-names: false
+         clocks:
+           minItems: 4
+         clock-names:
+diff --git a/Documentation/devicetree/bindings/media/mediatek,vcodec-encoder.yaml b/Documentation/devicetree/bindings/media/mediatek,vcodec-encoder.yaml
+index 4505e66876a2..52f471a070d5 100644
+--- a/Documentation/devicetree/bindings/media/mediatek,vcodec-encoder.yaml
++++ b/Documentation/devicetree/bindings/media/mediatek,vcodec-encoder.yaml
+@@ -110,19 +110,15 @@ allOf:
+ 
+     then:
+       properties:
+-        clock:
+-          items:
+-            minItems: 1
+-            maxItems: 1
++        clocks:
++          maxItems: 1
+         clock-names:
+           items:
+             - const: venc_lt_sel
+     else:
+       properties:
+-        clock:
+-          items:
+-            minItems: 1
+-            maxItems: 1
++        clocks:
++          maxItems: 1
+         clock-names:
+           items:
+             - const: venc_sel
+diff --git a/Documentation/devicetree/bindings/media/samsung,s5p-mfc.yaml b/Documentation/devicetree/bindings/media/samsung,s5p-mfc.yaml
+index b46cc780703c..4488d5ca9b9c 100644
+--- a/Documentation/devicetree/bindings/media/samsung,s5p-mfc.yaml
++++ b/Documentation/devicetree/bindings/media/samsung,s5p-mfc.yaml
+@@ -174,7 +174,7 @@ allOf:
+             - const: mfc
+         iommus:
+           maxItems: 2
+-        iommus-names: false
++        iommu-names: false
+ 
+ examples:
+   - |
+diff --git a/Documentation/devicetree/bindings/pci/mediatek-pcie.yaml b/Documentation/devicetree/bindings/pci/mediatek-pcie.yaml
+index c009a7a52bc6..7c40361f95ec 100644
+--- a/Documentation/devicetree/bindings/pci/mediatek-pcie.yaml
++++ b/Documentation/devicetree/bindings/pci/mediatek-pcie.yaml
+@@ -127,7 +127,7 @@ allOf:
+         phy-names:
+           const: pcie-phy1
+ 
+-        power-domain: false
++        power-domains: false
+ 
+       required:
+         - resets
+@@ -150,7 +150,7 @@ allOf:
+           minItems: 2
+           maxItems: 2
+ 
+-        reset: false
++        resets: false
+ 
+         reset-names: false
+ 
+@@ -171,7 +171,7 @@ allOf:
+         clocks:
+           minItems: 6
+ 
+-        reset: false
++        resets: false
+ 
+         reset-names: false
+ 
+@@ -193,7 +193,7 @@ allOf:
+         clocks:
+           minItems: 6
+ 
+-        reset: false
++        resets: false
+ 
+         reset-names: false
+ 
+@@ -215,7 +215,7 @@ allOf:
+         clock-names:
+           maxItems: 1
+ 
+-        reset: false
++        resets: false
+ 
+         reset-names: false
+ 
+@@ -223,7 +223,7 @@ allOf:
+ 
+         phy-names: false
+ 
+-        power-domain: false
++        power-domains: false
+ 
+         mediatek,pbus-csr: false
+ 
+-- 
+2.53.0
 
