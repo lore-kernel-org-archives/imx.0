@@ -1,115 +1,110 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.17
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793188971;
-	b=cNPZfk4ytIGZnKvXYypAGfDA2D9YYbvcad1u8i8pOnlUM5G4i0lUgJQNaw+8hJC/JeH0
-	 g6CZ93/aDv38io5ghF22bcvbVFKkzkYMaa7F+ldQhcK3z6tDHtM3QrzeiLsCzV3KagGoc
-	 +bo5MP7nAw8et0FpR4F6dtfUMnQdNXEUB4T93C+XktpnVKlymgK+wxqbherBwhxhUAunQ
-	 NTQNAF18TXdHMUPcyedchKqkRZ+XP/SFLJhNsf+BmwjPsAC6/Xt6hbC84P3JDluHGdryx
-	 aGEyTdN/TKjG35ccuPpqK8L1TCoVq266ivt0YTvQS/4T8r652j6CuDmN5cmzoSTOxPA==
+	t=1793195848;
+	b=KpAhVxmNxncnvmlDKR313BgycBZ2iAE6bKMmlXppgLeruisBmFS4yRviZiVhMx89fMtK
+	 6NaPO2a5tQsnbNHoNxdAjLI4mbg5NCq6cRSqUN9qPWO2I7PrErXn3FT+GDFtyA3uVzAdL
+	 e4GdnBFCiEasIJSYaL4CB87Lsc+wa1nF5xN/v8iSAkRtdx5U0SnpVxy81IyBIfaY2Y1gQ
+	 20rmuQP5dpUmpaHWzByiNq6Ykes37ka/Zc1IleR/yMqe++k7zbApCNsIYU48exzcHJ/at
+	 oVLJ2DgPbDOM+tUbgUP9keyBBGWOR4YtkSybQt6IzYBp9HoCOFxe+zyStq+sxjtQwXg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793188971;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=dsnhxVyCRsDB7IzLyR1PYJXVzOdADR8u2HKSk2GZFPk=;
-	b=yHqMA3H2kbZfUubHTnuBN8TYtXQtDYxrb4/4JueMVF4hNtP8xhF5JgVP/ZE22+p9KhPQ
-	 /HSoOFwmWXl6gmylzFJSqgRkVZV2Qk0YPc+bH4HtfB1RxEoURZImuFyl9wv7uXx3bQNZ/
-	 rl/rqhlOF0YXdtMirafeW2azNa7GcFbSdmHd/3IVbeERgciA+yLjoDc401hoKPkvlBHVr
-	 FunhS0MUufvqTtAM43ZNnoij173Ldk8N8rJmugVmUqHCoj4ufSBcVskHIti5wF7GxbuB3
-	 qoau4ySoRCpm5HmtlWYMlLBmTvPiktuLv90M4A6iJb+X1ZLGCB29f9um1F0dOIJixaA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793195848;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Subject:
+	 From:To:Cc:Date:In-Reply-To:References:Content-Type:
+	 Content-Transfer-Encoding:User-Agent:MIME-Version;
+	bh=kjoWncs6Ir+gA9d8rwO7aJw5Gvr2T1m9bpDOqJloaOw=;
+	b=xp3C+bhwv+VpQ5a0Vgn/tdU+lpIZXCFs9FiLZYSpk8hZgX3pPTw+K667Hbqn6pS0qMkK
+	 xJSsZ7Mm9UWZ76okTgQgu0TLnm9NGVCBf/aYa142vuz8jzH8CYuoCSBstyVHZNXWtrqNp
+	 w32ThCJrrtB4inSv/m00GXvhVMR9f1fMqHTGxDczs3uOKUfccMMj7M+PH9afgUFPOHKW5
+	 EPZ1GoJh69ebfX6CDTfey6NfB9mqFQtViSVi5SLrGnUAMnNku8mvTweZdDvF299WUaz3h
+	 yODhS5lTZNx3LPvJ4BH168HyOUPrB0eH0r1Pah3NuHb92KjbfTlOfYJ47WIDD/xTXvw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RRQVjpwH;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=hRZ2Qrnu;
+	arc=none smtp.remote-ip=192.198.163.17
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CECC4606A324;
-	Wed, 28 Oct 2026 12:02:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 170A2606A31D;
+	Wed, 28 Oct 2026 13:57:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 170A2606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RRQVjpwH
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 282771F01828;
-	Wed, 28 Oct 2026 12:02:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793188970;
-	bh=dsnhxVyCRsDB7IzLyR1PYJXVzOdADR8u2HKSk2GZFPk=;
-	h=From:To:Cc:Subject:Date;
-	b=RRQVjpwH4sY11i/17VHL7AM40KXNuiYJdRXnbyur+Nx1X6LRie4UMFncaXFYLvxoH
-	 vEMx+GQHbHaIzp/LF1pxgiZjCGpoM593FiSdoC0oumS9cQ+QXTG2jrhbH/rMsMGOc4
-	 ny46eU+ErXiBlXUO9wIGSiSWyJt1DtVl5MzqstZpNxbA3vh1urvuNEXUEs3XtTQKG5
-	 7Btj3/p7neZupn/jFjINQHb1iG9rUE+2UcStPVD07cRqNeLl1k7LTJk5b+1SSApV+8
-	 TQK2keKsYvQ1wZP6bUVcqP55KiyxGZ4p7tUPGT59f84Fh951p+6KXMENhtAVhM6LuI
-	 GcDn6NkyRpNOQ==
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Bjorn Andersson <andersson@kernel.org>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Brian Masney <bmasney+clk@redhat.com>,
-	Jerome Brunet <jbrunet+clk@baylibre.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
-	Dmitry Baryshkov <lumag@kernel.org>,
-	Abhinav Kumar <abhinav.kumar@linux.dev>,
-	Jessica Zhang <jesszhan0024@gmail.com>,
-	Sean Paul <sean@poorly.run>,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Yinbo Zhu <zhuyinbo@loongson.cn>,
-	Linus Walleij <linusw@kernel.org>,
-	Bartosz Golaszewski <brgl@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Tiffany Lin <tiffany.lin@mediatek.com>,
-	Andrew-CT Chen <andrew-ct.chen@mediatek.com>,
-	Yunfei Dong <yunfei.dong@mediatek.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Ryder Lee <ryder.lee@mediatek.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	Eric Anholt <eric@anholt.net>,
-	Kuogee Hsieh <quic_khsieh@quicinc.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Aakarsh Jain <aakarsh.jain@samsung.com>
-Cc: Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	linux-arm-msm@vger.kernel.org,
-	linux-clk@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	linux-rpi-kernel@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	freedreno@lists.freedesktop.org,
-	imx@lists.linux.dev,
-	dmaengine@vger.kernel.org,
-	linux-gpio@vger.kernel.org,
-	linux-iio@vger.kernel.org,
-	linux-amlogic@lists.infradead.org,
-	linux-media@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	linux-mediatek@lists.infradead.org
-Subject: [PATCH] dt-bindings: Fix property name typos in if/then schemas
-Date: Wed, 28 Oct 2026 07:02:12 -0500
-Message-ID: <20261028120216.2657397-1-robh@kernel.org>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=hRZ2Qrnu
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793195848; x=1824731848;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=kjoWncs6Ir+gA9d8rwO7aJw5Gvr2T1m9bpDOqJloaOw=;
+  b=hRZ2QrnuVN/zjB+c0CUaJNxA82va9SEU8IEttld+GKX0EYiyK8cUuJRy
+   +K2QD+Pgm5xvrxkNK7E6EPs5tVEZZwsfxlnvWVgtO2e4PY10Fruxa7sF+
+   +HLpiBQoFmp5SCuFdh8JUdHc+l0gFcairSUjK9rscwaxet8ovBhdMvFN5
+   O6UlI4QKyb71y8v9FBu51d6Cb/jEuEbKLWMYosv6Elrdh6Ac1wGUZ7PcT
+   +Khu+5iK6h8V1a2VmI7nymU8ADgNDd2zuh+y29vZc7xnweaaSPbjIxCyP
+   ygFdjycn4SNXOx/BnFvts0OW7dnIbszidAgfYh/6R0iZZ66SVewPVbHGD
+   w==;
+X-CSE-ConnectionGUID: 4vlQqz8JSL6WHxEciTh3Ug==
+X-CSE-MsgGUID: VYt3FZHVQOqzWcCYLxwG5A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11949"; a="1929826"
+X-IronPort-AV: E=Sophos;i="6.27,182,1787036400"; 
+   d="scan'208";a="1929826"
+Received: from fmviesa013.fm.intel.com ([10.60.135.153])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2026 06:57:27 -0700
+X-CSE-ConnectionGUID: XGvMYi6BQtyLHQWIIJ1jww==
+X-CSE-MsgGUID: zT8iJdk1T9Kr8hcOLr1FEw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,182,1787036400"; 
+   d="scan'208";a="6667408"
+Received: from ncintean-mobl1.ger.corp.intel.com ([10.245.244.235])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2026 06:57:14 -0700
+Message-ID: <733ef8df15abeeacea0ac12dd93ad1eba5755dbe.camel@linux.intel.com>
+Subject: Re: [PATCH v4 00/23] gpio: Improvements around device-id arrays
+From: Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>
+To: Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= "(The Capable Hub)"
+	 <u.kleine-koenig@baylibre.com>, Linus Walleij <linusw@kernel.org>, Bartosz
+ Golaszewski <brgl@kernel.org>
+Cc: Andy Shevchenko <andy@kernel.org>, linux-gpio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Lixu Zhang <lixu.zhang@intel.com>, Sakari
+ Ailus	 <sakari.ailus@linux.intel.com>, Broadcom internal kernel review list
+	 <bcm-kernel-feedback-list@broadcom.com>, Florian Fainelli	
+ <florian.fainelli@broadcom.com>, Eugeniy Paltsev
+ <Eugeniy.Paltsev@synopsys.com>,  Frank Li <Frank.Li@nxp.com>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team	 <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Imre Kaloz	 <kaloz@kernel.org>, Conor
+ Dooley <conor.dooley@microchip.com>, Valentina Fernandez
+ <valentina.fernandezalanis@microchip.com>, Daire McNamara
+ <daire.mcnamara@microchip.com>,  Daniel Palmer <daniel@thingy.jp>, Romain
+ Perier <romain.perier@gmail.com>, Robert Jarzmik	 <robert.jarzmik@free.fr>,
+ imx@lists.linux.dev, 	linux-arm-kernel@lists.infradead.org,
+ linux-riscv@lists.infradead.org, Hoan Tran	 <hoan@os.amperecomputing.com>,
+ Mika Westerberg <westeri@kernel.org>, Hans de Goede <hansg@kernel.org>,
+ Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>, 
+	linux-hwmon@vger.kernel.org, Matti Vaittinen <mazziesaccount@gmail.com>, 
+ "Enrico Weigelt, metux IT consult"	 <info@metux.net>, Viresh Kumar
+ <vireshk@kernel.org>, 	virtualization@lists.linux.dev, Yinbo Zhu
+ <zhuyinbo@loongson.cn>, Thierry Reding	 <thierry.reding@kernel.org>,
+ Jonathan Hunter <jonathanh@nvidia.com>, 	linux-tegra@vger.kernel.org, Geert
+ Uytterhoeven <geert+renesas@glider.be>,  AngeloGioacchino Del Regno
+ <angelogioacchino.delregno@collabora.com>, Srinivas Neeli
+ <srinivas.neeli@amd.com>, Michal Simek	 <michal.simek@amd.com>,
+ linux-aspeed@lists.ozlabs.org, asahi@lists.linux.dev, 
+	linux-mediatek@lists.infradead.org, openbmc@lists.ozlabs.org, 
+	linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
+	linux-unisoc@lists.infradead.org, linux-rockchip@lists.infradead.org, 
+	linux-stm32@st-md-mailman.stormreply.com, Michael Buesch <m@bues.ch>,
+ William Breathitt Gray	 <wbg@kernel.org>, Robert Richter <rric@kernel.org>,
+ Andy Shevchenko	 <andriy.shevchenko@linux.intel.com>,
+ linux-acpi@vger.kernel.org
+Date: Wed, 28 Oct 2026 14:57:11 +0100
+In-Reply-To: <cover.1793097104.git.u.kleine-koenig@baylibre.com>
+References: <cover.1793097104.git.u.kleine-koenig@baylibre.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2-9 
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -119,229 +114,61 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Property names within if/then schemas currently go unchecked whether
-they have a type defined or match what's in the top-level schema. Adding
-a check finds a number of instances of typos. The typos result in the
-schema having no effect on constraints.
+Hi,
 
-With this, fix the mediatek,vcodec-encoder 'clocks' count constraint
-exposed by the name correction.
+On Tue, 2026-10-27 at 11:48 +0100, Uwe Kleine-K=C3=B6nig (The Capable Hub)
+wrote:
+> Hello,
+>=20
+> the original motivation for this series are the patches that convert
+> the
+> arrays to use named initializers, see
+> https://lore.kernel.org/all/cover.1780048925.git.u.kleine-koenig@baylibre=
+.com/
+> for the idea behind it. Looking left and right a bit while
+> implementing
+> that, the series grew a bit.
+>=20
+> Changes since v3 (available at
+> https://lore.kernel.org/all/cover.1793030820.git.u.kleine-koenig@baylibre=
+.com
+> ):
+>=20
+> =C2=A0- Picked up review tags (b4 even found some from v2)
+> =C2=A0- Add a 2nd MODULE_DEVICE_TABLE(of, ...) in drivers/gpio/gpio-
+> mpc5200.c
+> =C2=A0=C2=A0 (My grep didn't handle >1 driver per file well), noticed by
+> Sashiko
+> =C2=A0- New patch to use named initializers for auxiliary_device_id array=
+s
+> =C2=A0- Fix code style of of_device_id array in drivers/gpio/gpio-grgpio.=
+c
+> =C2=A0=C2=A0 (My script doesn't handle of_device_id::name) and
+> =C2=A0=C2=A0 drivers/gpio/gpio-ppc44x.c (didn't exist yet when I sent v2 =
+and
+> =C2=A0=C2=A0 failed to notice that for v3)
+> =C2=A0- Fix code style of auxiliary_device_id array in
+> =C2=A0=C2=A0 drivers/gpio/gpio-shared-proxy.c, missed as I didn't have a =
+script
+> =C2=A0=C2=A0 for auxiliary_device_id before.
+> =C2=A0- Dropped a few broken email addresses from Cc:
+>=20
+> Best regards
+> Uwe
+>=20
+> Uwe Kleine-K=C3=B6nig (The Capable Hub) (23):
+> [...]
+> =C2=A0 gpio: Use named initializers for acpi_device_id array
+> [...]
+> =C2=A0 gpio: Unify style of acpi_device_id arrays
+> [...]
+>=20
+> [...]
+> =C2=A0drivers/gpio/gpio-novalake-events.c |=C2=A0 4 ++--
+> [...]
+>=20
 
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
----
- .../devicetree/bindings/clock/qcom,kpss-gcc.yaml     |  2 +-
- .../bindings/display/brcm,bcm2711-hdmi.yaml          |  2 +-
- .../bindings/display/msm/dp-controller.yaml          |  2 +-
- .../devicetree/bindings/display/msm/hdmi.yaml        |  4 ++--
- Documentation/devicetree/bindings/dma/fsl,edma.yaml  |  2 +-
- .../devicetree/bindings/gpio/loongson,ls-gpio.yaml   |  2 +-
- .../bindings/iio/adc/amlogic,meson-saradc.yaml       |  2 +-
- .../bindings/media/mediatek,vcodec-encoder.yaml      | 12 ++++--------
- .../devicetree/bindings/media/samsung,s5p-mfc.yaml   |  2 +-
- .../devicetree/bindings/pci/mediatek-pcie.yaml       | 12 ++++++------
- 10 files changed, 19 insertions(+), 23 deletions(-)
+For gpio-novalake-events
 
-diff --git a/Documentation/devicetree/bindings/clock/qcom,kpss-gcc.yaml b/Documentation/devicetree/bindings/clock/qcom,kpss-gcc.yaml
-index 88b7672123a0..ed347096df46 100644
---- a/Documentation/devicetree/bindings/clock/qcom,kpss-gcc.yaml
-+++ b/Documentation/devicetree/bindings/clock/qcom,kpss-gcc.yaml
-@@ -62,7 +62,7 @@ then:
-     - '#clock-cells'
- else:
-   properties:
--    clock: false
-+    clocks: false
-     clock-names: false
-     '#clock-cells': false
- 
-diff --git a/Documentation/devicetree/bindings/display/brcm,bcm2711-hdmi.yaml b/Documentation/devicetree/bindings/display/brcm,bcm2711-hdmi.yaml
-index c1cefd547391..fd4d598f6ff8 100644
---- a/Documentation/devicetree/bindings/display/brcm,bcm2711-hdmi.yaml
-+++ b/Documentation/devicetree/bindings/display/brcm,bcm2711-hdmi.yaml
-@@ -145,7 +145,7 @@ allOf:
-             - description: CEC stuck at low interrupt
-             - description: Hotplug connected interrupt
-             - description: Hotplug removed interrupt
--        interrupts-names:
-+        interrupt-names:
-           items:
-             - const: cec-tx
-             - const: cec-rx
-diff --git a/Documentation/devicetree/bindings/display/msm/dp-controller.yaml b/Documentation/devicetree/bindings/display/msm/dp-controller.yaml
-index 094a6383bb77..f72d1b354007 100644
---- a/Documentation/devicetree/bindings/display/msm/dp-controller.yaml
-+++ b/Documentation/devicetree/bindings/display/msm/dp-controller.yaml
-@@ -304,7 +304,7 @@ allOf:
-         clocks:
-           minItems: 6
-           maxItems: 6
--        clocks-names:
-+        clock-names:
-           minItems: 6
-           maxItems: 6
- 
-diff --git a/Documentation/devicetree/bindings/display/msm/hdmi.yaml b/Documentation/devicetree/bindings/display/msm/hdmi.yaml
-index dfec6c3480f3..02d27ccad024 100644
---- a/Documentation/devicetree/bindings/display/msm/hdmi.yaml
-+++ b/Documentation/devicetree/bindings/display/msm/hdmi.yaml
-@@ -113,7 +113,7 @@ allOf:
-             - const: core
-             - const: master_iface
-             - const: slave_iface
--        core-vcc-supplies: false
-+        core-vcc-supply: false
- 
-   - if:
-       properties:
-@@ -136,7 +136,7 @@ allOf:
-             - const: core
-             - const: alt_iface
-             - const: extp
--        hdmi-mux-supplies: false
-+        hdmi-mux-supply: false
- 
-   - if:
-       properties:
-diff --git a/Documentation/devicetree/bindings/dma/fsl,edma.yaml b/Documentation/devicetree/bindings/dma/fsl,edma.yaml
-index f609038e35ae..0260d177c7d0 100644
---- a/Documentation/devicetree/bindings/dma/fsl,edma.yaml
-+++ b/Documentation/devicetree/bindings/dma/fsl,edma.yaml
-@@ -172,7 +172,7 @@ allOf:
-             const: fsl,imx7ulp-edma
-     then:
-       properties:
--        clock:
-+        clocks:
-           minItems: 2
-           maxItems: 2
-         clock-names:
-diff --git a/Documentation/devicetree/bindings/gpio/loongson,ls-gpio.yaml b/Documentation/devicetree/bindings/gpio/loongson,ls-gpio.yaml
-index 69852444df23..07c8b233c6bd 100644
---- a/Documentation/devicetree/bindings/gpio/loongson,ls-gpio.yaml
-+++ b/Documentation/devicetree/bindings/gpio/loongson,ls-gpio.yaml
-@@ -80,7 +80,7 @@ allOf:
-         - resets
-     else:
-       properties:
--        "#interrupts-cells": false
-+        "#interrupt-cells": false
-         interrupt-controller: false
-         resets: false
- 
-diff --git a/Documentation/devicetree/bindings/iio/adc/amlogic,meson-saradc.yaml b/Documentation/devicetree/bindings/iio/adc/amlogic,meson-saradc.yaml
-index 70ab4e140e71..535213ba0c5e 100644
---- a/Documentation/devicetree/bindings/iio/adc/amlogic,meson-saradc.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/amlogic,meson-saradc.yaml
-@@ -92,7 +92,7 @@ allOf:
-     else:
-       properties:
-         nvmem-cells: false
--        mvmem-cel-names: false
-+        nvmem-cell-names: false
-         clocks:
-           minItems: 4
-         clock-names:
-diff --git a/Documentation/devicetree/bindings/media/mediatek,vcodec-encoder.yaml b/Documentation/devicetree/bindings/media/mediatek,vcodec-encoder.yaml
-index 4505e66876a2..52f471a070d5 100644
---- a/Documentation/devicetree/bindings/media/mediatek,vcodec-encoder.yaml
-+++ b/Documentation/devicetree/bindings/media/mediatek,vcodec-encoder.yaml
-@@ -110,19 +110,15 @@ allOf:
- 
-     then:
-       properties:
--        clock:
--          items:
--            minItems: 1
--            maxItems: 1
-+        clocks:
-+          maxItems: 1
-         clock-names:
-           items:
-             - const: venc_lt_sel
-     else:
-       properties:
--        clock:
--          items:
--            minItems: 1
--            maxItems: 1
-+        clocks:
-+          maxItems: 1
-         clock-names:
-           items:
-             - const: venc_sel
-diff --git a/Documentation/devicetree/bindings/media/samsung,s5p-mfc.yaml b/Documentation/devicetree/bindings/media/samsung,s5p-mfc.yaml
-index b46cc780703c..4488d5ca9b9c 100644
---- a/Documentation/devicetree/bindings/media/samsung,s5p-mfc.yaml
-+++ b/Documentation/devicetree/bindings/media/samsung,s5p-mfc.yaml
-@@ -174,7 +174,7 @@ allOf:
-             - const: mfc
-         iommus:
-           maxItems: 2
--        iommus-names: false
-+        iommu-names: false
- 
- examples:
-   - |
-diff --git a/Documentation/devicetree/bindings/pci/mediatek-pcie.yaml b/Documentation/devicetree/bindings/pci/mediatek-pcie.yaml
-index c009a7a52bc6..7c40361f95ec 100644
---- a/Documentation/devicetree/bindings/pci/mediatek-pcie.yaml
-+++ b/Documentation/devicetree/bindings/pci/mediatek-pcie.yaml
-@@ -127,7 +127,7 @@ allOf:
-         phy-names:
-           const: pcie-phy1
- 
--        power-domain: false
-+        power-domains: false
- 
-       required:
-         - resets
-@@ -150,7 +150,7 @@ allOf:
-           minItems: 2
-           maxItems: 2
- 
--        reset: false
-+        resets: false
- 
-         reset-names: false
- 
-@@ -171,7 +171,7 @@ allOf:
-         clocks:
-           minItems: 6
- 
--        reset: false
-+        resets: false
- 
-         reset-names: false
- 
-@@ -193,7 +193,7 @@ allOf:
-         clocks:
-           minItems: 6
- 
--        reset: false
-+        resets: false
- 
-         reset-names: false
- 
-@@ -215,7 +215,7 @@ allOf:
-         clock-names:
-           maxItems: 1
- 
--        reset: false
-+        resets: false
- 
-         reset-names: false
- 
-@@ -223,7 +223,7 @@ allOf:
- 
-         phy-names: false
- 
--        power-domain: false
-+        power-domains: false
- 
-         mediatek,pbus-csr: false
- 
--- 
-2.53.0
-
+Acked-by: Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>
