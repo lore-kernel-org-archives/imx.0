@@ -1,48 +1,48 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.2
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.4
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793156845;
-	b=NwtysVFVzSofRXrWr420bAsMY+4zYe36PHGL7fByzwNwO678N+Zqxant7aeb900vEkpe
-	 U12gN17X9Tst2bQj7DIh0IeyhzFHBKodZnHjmx/kF/Vt37/zf0XUedda9FoihbMt53/C0
-	 lrZj/ZEEIsWzOGiunSWi9f+QlNsnWRrVjd5/zGGj/hs7TiZ50Ku3QrY4is0TN10ov5Wi+
-	 /n3xCFPOuc9K9Px0u3/EX0yBdI8R/GClh6KkJz8r+bwJ4gVmRaDZS4mlAv7dTrXnaF2+N
-	 v3WglFR0S0tuWXcw5ym0cL9wjt0Xh/LY4pxEiGKIBYHkr+H9j1DgOHWEXycLkxNIPdw==
+	t=1793156846;
+	b=Jx2RdECsPilqomv9DUZ8QLuReyX0Gs8JDclmSLKhZE0nV/D5Sx2fEjA6w6A5skZj1ZXW
+	 9FXvePMuiyxkn3JibOXrICD6DTuegB1oJKRvdn83f4ZlBUXwYBwrKEfA3t5wVKU5qUlOe
+	 p/SOY91OSyD4P4dy4rOnvNL6/5ljsfnSkPGG9JEdxOH/KwQABMIwg5JUVn/PvI/Ihoi+c
+	 Ohh+xXZbC3duD64PpvS2s+6Y/ImNzFxiS+8DQIR7iZ15HrX/PaupoUv2gLIIaLioeGsVz
+	 ao51qaTTJB8yNs8EGCL9S5qC9IyV7ysH5qLG0pRWeLX0mhZMgj2wOH6z38V0BGpqsXQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793156845;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793156846;
 	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:X-CM-TRANSID:X-Coremail-Antispam:
 	 X-CM-SenderInfo;
-	bh=hFLHtyAEUbucyklnv273Nmookz4wD3SmGr8qXgopcSE=;
-	b=DdqnTh0Bwpczu0WfA3Ep1fYI2hOk1A/aeUt6JcFVS8aRZwU/qBpOjOOujHetDXOUmKqS
-	 Ui/7+VJk1+TDz5IevdT4GaQ/R+V6kJ5TMsyMbKZQG0BcbUNB5OusTAG9TNzeuZRQlDYDA
-	 +MIMaZr2pFPJCVPMwWwqoOmuFHEguSKgJtV4YrwDNQsjDLrvTv+kbqc7+3sd32bEta389
-	 I8AFOMnaYBDHpYF1glsa2ua32zhkI9Qv3MhVGb1HDkrO2t5D/jb/QR78bbLFEg3AVAXOM
-	 skusJ0MYUMhnz2Na4c423fSFyMPiOUcKQRmJV3ZBO6IVETqlgIKAFw4S8bSFNmaOcDA==
+	bh=tnof3xP7PItMivWd2BFSiA/M5yZlXFkryB98XPi7W/Q=;
+	b=2xvgcViBi8s2KurXjJEq/5YbYCzVi1NqnKdRCxOD850Mm7iwSYbmMa8I3IWU5WMBsHSl
+	 GbcTF3SHUZNd7wAXmtLBU9pbDmixSX1y3AfzF6qMT0jEnqlTwSmttg6Imlp9didYBZR1d
+	 kY6PMTZkbU40hr8Byma3aQ3ApIqPYz0x52e0Gm19L13obmmppXHbJDZqSclGb4hCKZ0Vg
+	 s7eptj7Kx04oLFfexMUH9qTqLkzijtASDIysQyWhzsvrDHqkaqnUYZamhbbXWbNPYM0LS
+	 U0cLvezDGRll+CptYXSx+aFNoeB3vmk2fn+xfMOBcdTNvGb/j8RzuCxasSGjCK/DPQw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=163.com;
 	spf=pass smtp.mailfrom=163.com;
-	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=g6BGph+W;
-	arc=none smtp.remote-ip=117.135.210.2
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=bIxsEJpf;
+	arc=none smtp.remote-ip=117.135.210.4
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37957606A320;
-	Wed, 28 Oct 2026 03:07:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 37957606A320
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD51C606A31A;
+	Wed, 28 Oct 2026 03:07:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AD51C606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=g6BGph+W
+	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=bIxsEJpf
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=hF
-	LHtyAEUbucyklnv273Nmookz4wD3SmGr8qXgopcSE=; b=g6BGph+Whp9fOSqPrP
-	uV/PKq/RbpyX101MLm4jpxdDC3R5aRquWyjZvCUmy7eM3i7B8v/w+RYzHxn3c5OU
-	kAuBV45nPuzwJlYwq4TZFSEQhxg5S25F/dUjffZpbM3wpC3j+BNePDaw4d0nJt4V
-	HRihUeKzIwntnvAvOqFGnCGe4=
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=tn
+	of3xP7PItMivWd2BFSiA/M5yZlXFkryB98XPi7W/Q=; b=bIxsEJpfxRkV2FpHly
+	U0V/n13hcy4H+VcXsozQLSJscEqHzeRDNeppX+qjrcGJCbh7yI8KnZss+KFFvylM
+	9UYtdi51n0Ci6fj2DZqcQL0YOgtVJpeyaTOjoYSs37QnxdNq5wh3rIa9hrBiAOL6
+	soQ9hKHVWath5V5n830zknt6k=
 Received: from Precision-7960.. (unknown [])
-	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wDnD07QZuFqZiY4DA--.60713S3;
-	Wed, 28 Oct 2026 11:06:59 +0800 (CST)
+	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wDnD07QZuFqZiY4DA--.60713S8;
+	Wed, 28 Oct 2026 11:07:03 +0800 (CST)
 From: Hans Zhang <18255117159@163.com>
 To: bhelgaas@google.com,
 	lpieralisi@kernel.org,
@@ -60,10 +60,11 @@ Cc: imx@lists.linux.dev,
 	linux-tegra@vger.kernel.org,
 	linux-pci@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Hans Zhang <18255117159@163.com>
-Subject: [PATCH v5 01/16] PCI: dwc: Add pcie_cap field and caching helper
-Date: Wed, 28 Oct 2026 11:06:37 +0800
-Message-ID: <20261028030652.2917756-2-18255117159@163.com>
+	Hans Zhang <18255117159@163.com>,
+	Shawn Lin <shawn.lin@rock-chips.com>
+Subject: [PATCH v5 06/16] PCI: dwc: rockchip: Use cached PCIe capability offset
+Date: Wed, 28 Oct 2026 11:06:42 +0800
+Message-ID: <20261028030652.2917756-7-18255117159@163.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261028030652.2917756-1-18255117159@163.com>
 References: <20261028030652.2917756-1-18255117159@163.com>
@@ -77,111 +78,38 @@ List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDnD07QZuFqZiY4DA--.60713S3
-X-Coremail-Antispam: 1Uf129KBjvJXoWxAF4xCr4UZFW3KFW7Zw17GFg_yoWrZr4rp3
-	9xJFWSyFs8Jr4SvFsxA3W09F13Aas3AFW7Ga93Gw1fZry3ur1UKFW0yFWjyF17Gr4Igr12
-	gr43ta48GFs8AFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zErgAOUUUUU=
-X-CM-SenderInfo: rpryjkyvrrlimvzbiqqrwthudrp/xtbC7BPghGrhZtPOwgAA3p
+X-CM-TRANSID:_____wDnD07QZuFqZiY4DA--.60713S8
+X-Coremail-Antispam: 1Uf129KBjvdXoW7GrWrXr4xGF4kKFyDXw47Arb_yoWkZrbE93
+	4UursrZrW8GrZYkan2y3yfXF98Za47ur1jga9YyF9xZFn2vr18Xr97X398AFn8GrnrZr97
+	Kr1qvr48GFW3JjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRNMa0PUUUUU==
+X-CM-SenderInfo: rpryjkyvrrlimvzbiqqrwthudrp/xtbC7BjihmrhZtjP5QAA3P
 
-The DWC PCIe core and its platform drivers repeatedly call
-dw_pcie_find_capability(pci, PCI_CAP_ID_EXP) to obtain the offset of the
-PCI Express Capability structure. Besides being verbose, that performs a
-DBI read every time, including in paths that run repeatedly such as link
-up polling, suspend/resume and interrupt handlers.
+rockchip_pcie_enable_l0s() is called from rockchip_pcie_host_init(),
+i.e. from the .init callback, which runs after the controller clocks and
+resets have been enabled. Replace the capability search with
+dw_pcie_get_pcie_cap(), which reads and caches the offset at this very
+point.
 
-Add a pcie_cap field to struct dw_pcie and a helper
-dw_pcie_get_pcie_cap() that performs the lookup on first use and caches
-the result for the subsequent calls.
-
-The lookup is deliberately done lazily, at the first place that needs the
-offset, instead of at a fixed point during controller initialization.
-This guarantees that the DBI read happens exactly when the open coded
-dw_pcie_find_capability() call it replaces used to happen, so the series
-does not introduce DBI accesses at points where the controller might not
-be accessible. This matters for endpoint controllers such as qcom-ep and
-tegra194, where DBI is only accessible after PERST# is deasserted, and it
-also means platform drivers do not have to call the helper from a
-specific callback at the right time.
-
-Reading DBI while the controller is inaccessible (clocks or power gated)
-is platform specific: some integrations hang, some return zero and some
-return garbage. dw_pcie_find_capability() already rejects offsets below
-the standard header, unaligned offsets and entries whose capability ID
-does not match, but a transient bogus read could still look valid. To
-prevent such a value from being cached for the rest of the lifetime of
-the controller, the offset is only cached after the capability ID has
-been read back at that offset. If it is not confirmed, the offset is
-still returned to the caller for this access but not cached, so the next
-call performs the lookup again, just like when the capability is not
-found.
-
-The cached value is accessed with READ_ONCE()/WRITE_ONCE(), because the
-first lookup may be triggered from different contexts, for example the
-qcom-ep global IRQ and PERST# IRQ handlers. A concurrent lookup stores
-the same value, so this race is benign.
-
+Reviewed-by: Shawn Lin <shawn.lin@rock-chips.com>
 Signed-off-by: Hans Zhang <18255117159@163.com>
 ---
- drivers/pci/controller/dwc/pcie-designware.h | 38 ++++++++++++++++++++
- 1 file changed, 38 insertions(+)
+ drivers/pci/controller/dwc/pcie-dw-rockchip.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
-index 6d788aa000117..dede6b3966585 100644
---- a/drivers/pci/controller/dwc/pcie-designware.h
-+++ b/drivers/pci/controller/dwc/pcie-designware.h
-@@ -594,6 +594,8 @@ struct dw_pcie {
- 	 * use_parent_dt_ranges to true to avoid this warning.
- 	 */
- 	bool			use_parent_dt_ranges;
-+
-+	u8			pcie_cap;	/* Offset of PCI_CAP_ID_EXP */
- };
+diff --git a/drivers/pci/controller/dwc/pcie-dw-rockchip.c b/drivers/pci/controller/dwc/pcie-dw-rockchip.c
+index bd86e32cc2b15..6d87da43cd6f0 100644
+--- a/drivers/pci/controller/dwc/pcie-dw-rockchip.c
++++ b/drivers/pci/controller/dwc/pcie-dw-rockchip.c
+@@ -374,7 +374,7 @@ static void rockchip_pcie_enable_l0s(struct dw_pcie *pci)
+ 	u32 cap, lnkcap;
  
- #define to_dw_pcie_from_pp(port) container_of((port), struct dw_pcie, pp)
-@@ -832,6 +834,42 @@ static inline void dw_pcie_dbi_ro_wr_dis(struct dw_pcie *pci)
- 	dw_pcie_writel_dbi(pci, reg, val);
- }
- 
-+/**
-+ * dw_pcie_get_pcie_cap() - Return the PCIe Capability offset
-+ * @pci: DWC instance
-+ *
-+ * The offset of the PCI Express Capability structure is read from the
-+ * DBI configuration space on the first call and cached in
-+ * @pci->pcie_cap for the subsequent ones.
-+ *
-+ * The lookup is done lazily at the first place that actually needs the
-+ * offset, so the DBI read happens exactly when it used to happen before
-+ * caching was introduced, i.e. never before the controller's clocks,
-+ * resets and power are enabled.
-+ *
-+ * A DBI read issued while the controller is not accessible returns
-+ * platform specific data, and a transient bogus value must not stick in
-+ * the cache.  The offset is therefore only cached once the capability
-+ * ID has been read back at that offset.  Both the not-found and the
-+ * not-confirmed cases leave the cache empty, so the lookup is simply
-+ * repeated on the next call.
-+ *
-+ * Return: the offset of the PCIe Capability, or 0 if it could not be
-+ * found or has not been confirmed yet.
-+ */
-+static inline u8 dw_pcie_get_pcie_cap(struct dw_pcie *pci)
-+{
-+	u8 cap = READ_ONCE(pci->pcie_cap);
-+
-+	if (!cap) {
-+		cap = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
-+		if (cap && dw_pcie_readb_dbi(pci, cap) == PCI_CAP_ID_EXP)
-+			WRITE_ONCE(pci->pcie_cap, cap);
-+	}
-+
-+	return cap;
-+}
-+
- static inline int dw_pcie_start_link(struct dw_pcie *pci)
- {
- 	if (pci->ops && pci->ops->start_link)
+ 	/* Enable L0S capability for all SoCs */
+-	cap = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
++	cap = dw_pcie_get_pcie_cap(pci);
+ 	if (cap) {
+ 		lnkcap = dw_pcie_readl_dbi(pci, cap + PCI_EXP_LNKCAP);
+ 		lnkcap |= PCI_EXP_LNKCAP_ASPM_L0S;
 -- 
 2.43.0
 
