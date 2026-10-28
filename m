@@ -1,60 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793217745;
-	b=WjPxGcaiPWWLtRQAJYEtm0UOh4bJee697v+YIOkyFtr61iz69cdfCl8i/GtAxXyBp90V
-	 Et8Xeg5X0tP6EDc0nECWs2tcuaFYpvTKDLbN5wRG19riy/bHUU55ICi20+/2mn5/CBTK+
-	 bnMwE0sfmR9FFeoK90MaFBk94CxWXWjLIEvL5JxQXtjRFoY4dv7nI9ZWdpC53GNnX6yK6
-	 87HqAHIg3oe5PU/c58z+yGOkKVBBuYcvYA3qmAn6OIB/IGeeDHVQCXdLYdSkV6GrWrhpt
-	 5uC2Jgz7FDhqYoaG/sUjvwbdnI4XB0MrbUw2qZDa5x0kmleK9WX4vRvRjV4XVqxULzw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793217745;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=eMGL/SfdPd4JTRR79GZx0ANHe3xXx+490kcRSCW/wB0=;
-	b=CvoyNUc32YkChVBGqtSLDuz/DS+fPYk3FdWjUi0T/Tf2byPq4JC7CJdUBv0rQAEDMnHr
-	 stCDuhLd2YHBOWk6tL5i+p4a/+hTOV6dvw0BYJP+ciZCU9Ri0uODhbNBG6sb84IiZbj4p
-	 PTM1rEcFe336BxgWO+5b1aYmgcn7gA7DVglWB3Av7lsKp/leQAinoTguciGeXjAoULaWB
-	 m/8u25eYqYSQAFkMUKwp2Vps9yJYBfYUMnAOG3tTsiRPWYK8VObtbzA6nuxKacxLc7/lq
-	 2NfhuiIp0xIpgEsT5RxLLf8Ew3L8aETOhO90pv5kwdnj3DadShf5B1HrsXXGWcqVIsw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oA079Fvs;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.83.18
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793218098;
+	b=fIKjSwEqVFQ74/tPMhNV2hr5nPAUHmsLjjCOTyRoBFpKHkuBxNSNKPjvoAa7QWjTpeXm
+	 HvWyDC1JDZzpIK+SumNS6e3tVz4dTocoOC21OFrdNjc47lgQtjp8QddBd2C8hpw5kdk6e
+	 bICoCWrMlf6yz0Yh3pyUG8kfvzRUpZP0EdMqpE0KYed+Tc/SH79cAjq5TDyBOlXHOlLkR
+	 vKqAnnrWHsoqb6FD48K7cBmdvgAyXb/Mgeh4cwUqXbDPNld2aRr+tbpAgE76Yk5aAmnuh
+	 Je8HAiZNGFxUXEQ3JHxB+rEtGSDViNEHf7bNaEODcgZO2KxfVm67QsJUdWvwCkBMGuA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793218098;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:Content-Type:Content-Disposition:
+	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-LD-Processed:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=fQpfJHQUGVmNEY/l4tCJAsSay2myXs3boj7FROnJUuI=;
+	b=BFb9QrlGI0l90UE7BYn5gPWObKxdRyj7xDmShGdoJIi0JfObRw+/YZNve0ZFJ1qwSEph
+	 5oJWB1U8BLMG6WCAQvZfoyci9cvoXOysSMVDtmZnu0KmFLFfvk3lKdpZ8ragN7KzFm5T5
+	 OBOIriqHQ411EAkT5PTK5lL98splxoVURA4PYC8oeoJ5r1o8MrYu0CjIrPszDCiGk9uUV
+	 U452Qvz7kU2WDdhYO5GiymLpdhtgCIWf8yPgVa0VNplwJuCeLRGhq5ZeLVbJFWCDahW9E
+	 CCiUk/KWRlTm0ZGxNN3xbcakmGf+3k2RnmQzVNwAEIfu0agJhU8ajtEGS5EAAxccYAw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=oss.nxp.com;
+	spf=pass smtp.mailfrom=oss.nxp.com;
+	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b="pw32fWz/";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.83.18
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013018.outbound.protection.outlook.com [52.101.83.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FDE4606A31A;
-	Wed, 28 Oct 2026 20:02:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7B6D606A31D;
+	Wed, 28 Oct 2026 20:08:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E7B6D606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oA079Fvs
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2812A1F01825;
-	Wed, 28 Oct 2026 20:02:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793217744;
-	bh=eMGL/SfdPd4JTRR79GZx0ANHe3xXx+490kcRSCW/wB0=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=oA079FvsZbwlsepEf+HHdspm11+1XJ8lfzgtz7lxfozsRQxpLIHBTboTQqPUrLGu2
-	 6ZF049Zhac13ByiMtXbzjwHnhQEOEA1yTXQYe352FhTpeOgkF7yBjDlCo3aBaEgVQc
-	 /PkAppdQd24ZfISs/BTQ2iY8vRciGvvWCzKTKwnByj8wDvEiV/XW0sqK1nQzfQ5yoO
-	 JryWv9gRGXMR95gIKLwj2rH2BycnDa15GDQRR1fNjDcDLHkblPLDS72OHmSqDxq2kb
-	 +5tR1GwnsHjYfv4A+TDA0o4/4682txschBMFIhTJgCw9tvK3jUXJAgLpDDgU7rUVqa
-	 8KSgwJHU3OwlQ==
-Subject: Re: [PATCH v8 2/2] can: dev: can_tdc_fill_info(): don't read
- automatic TDCV if interface is down
-From: netdev-bot+sashiko@kernel.org
-To: chunyuzhiqiang@yinhe.ht
-Cc: netdev-bot+sinfo@kernel.org, netdev@vger.kernel.org,
- linux-can@vger.kernel.org, mkl@pengutronix.de, mailhol@kernel.org,
- kernel@pengutronix.de, haibo.chen@oss.nxp.com, shawnguo@kernel.org,
- imx@lists.linux.dev, stable@vger.kernel.org, kuba@kernel.org
-Date: Wed, 28 Oct 2026 20:02:23 +0000
-Message-ID: <179321774368.3130.12586646136802755223@kernel.org>
-In-Reply-To: <20261027065012.191348-2-chunyuzhiqiang@yinhe.ht>
-References: <20261027065012.191348-2-chunyuzhiqiang@yinhe.ht>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=pw32fWz/
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=TIjxECSLiZIfqtoW+Qn6ESAnIOQXN1vsMlWrQfeEnhbwVjPLKHHNzIwimVcQ1C/VTUvNjMOsW+1EZiDHsaIX6LyhUEYvEIjT/tE3TYPN4kfk+jMw89uNpFa4PzVczlKKcB35Y2s6REYJA2Il28SWZFdVBwyNx5r5Ei39fgOlgWjxvUOZIX6H7TjmLm4/CnboZZcc7IX6C9dNCa7mDacHYzNYrQab/6WW6UrDBKQgBsUCmJKG/NOLeDDBUdGDFOch6KZJvF6nQtcnPUrhav6wYsgX7LQhm3j4Ys/WhI3Vx4wr5O5wNddGOzgNQhRrSlW2RZT9wFu3COZ9TPAsVJ21DA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=fQpfJHQUGVmNEY/l4tCJAsSay2myXs3boj7FROnJUuI=;
+ b=B2nXGJxxk8jtbt0MewcGqobMz+nb45CcCAJOcfiA8Ia8/qVCGyiKu7g1/JRCg0Ps8PA5sdXjlfHLp84SBXA0ucG3dmVWRAt/gEGe7V/jkNLBR4DzgpaFpOI4qCdHoIcm2NTAsZYza6T7hmGgGVrHiFmqicY+cWtDs9Tu3T3Sg3ojftvgxr2R90uM0/7SEZNuyOH1zmJqpzIr8X4+0wzmTebBuIyyHqxktPN1hXed08sgAsV/n0P7zcHYAgtkROwoxkIwmPuiZPdcbS3Z27EtsVO+vIb3P/B8kvpR+ceT1siF/PgDO1zJ/+4Kf4vCfFm1MGya3w1mv50NVojXcAYRFA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=fQpfJHQUGVmNEY/l4tCJAsSay2myXs3boj7FROnJUuI=;
+ b=pw32fWz/ydhQxjshOX9bfJvZMg+Up2sLCNgWMUbeBXFaTp6S5DOQOBgdTPDHAUJ3LnOoLb8f/jkuhuHzjk3I+g7TBw552AHu7sGVw7CCYRKHCL0eArVciXBgOV1hyZo+Glf3OVPspwlIYsCXRdIgRvmN7RPa1pmOW/wQEeaGXEhNXt2bb2RkFO05HqelRFcWiRHJ+MBnUK8cOJRnpIXd2fTjHvZhT6WsAk9Gqk+1tFW/m34lHbQrvJE+uWn9c7PrD9qHNn48igePj+1BkWvhLgrDLh9//hE+6FBhsd1ec1Zkqjn2pVxhMflpR/G1jCSZIsRzmLfSTu8KAqKy5ms5zA==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from MI3PR04MB12438.eurprd04.prod.outlook.com (2603:10a6:290:76::14)
+ by GVXPR04MB913469.eurprd04.prod.outlook.com (2603:10a6:150:393::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Wed, 28 Oct
+ 2026 20:08:11 +0000
+Received: from MI3PR04MB12438.eurprd04.prod.outlook.com
+ ([fe80::c715:c32:8bb1:b70b]) by MI3PR04MB12438.eurprd04.prod.outlook.com
+ ([fe80::c715:c32:8bb1:b70b%6]) with mapi id 15.21.0546.021; Wed, 28 Oct 2026
+ 20:08:11 +0000
+Date: Wed, 28 Oct 2026 16:08:03 -0400
+From: Frank Li <Frank.li@oss.nxp.com>
+To: Emanuele Ghidoli <ghidoliemanuele@gmail.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, Xu Yang <xu.yang_2@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	"regressions@lists.linux.dev" <regressions@lists.linux.dev>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>
+Subject: Re: [PATCH 1/2] arm64: dts: imx8qm-ss-conn: add usbotg3 iommu
+ information
+Message-ID: <auJWI1bqt4kX70pZ@lizhi-Precision-Tower-5810>
+References: <20260720-qm_smmu-v1-0-3689fbd8b516@nxp.com>
+ <20260720-qm_smmu-v1-1-3689fbd8b516@nxp.com>
+ <b911ff91-ce7b-462e-a7fb-f8c6d682c85b@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b911ff91-ce7b-462e-a7fb-f8c6d682c85b@gmail.com>
+X-ClientProxiedBy: DM6PR07CA0117.namprd07.prod.outlook.com
+ (2603:10b6:5:330::32) To MI3PR04MB12438.eurprd04.prod.outlook.com
+ (2603:10a6:290:76::14)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -64,188 +106,121 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|GVXPR04MB913469:EE_
+X-MS-Office365-Filtering-Correlation-Id: c785ebb1-d765-4d79-ee15-08df352f3140
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|19092799006|23010399003|261026121527099003|11063799006|4143699003|56012099006|261021121427099003|261009223027099003|261022075727099003|261022105027099003|10067099003|18002099003|3023799007|22082099003|261028144727099003|261026140227099003;
+X-Microsoft-Antispam-Message-Info:
+	PsrwILutSR4jkq0CaUTeWqLlYS5W5O/JzsIqoD0wIOMtdJddFYR1wrRem8yiXSwuD6/JxmAugAMhL++fekEoELeEq2b+SSMifUqBP9eYW9kU7LAHFHxQH/exRMk7mw5xXjW1Z9GhodMAcyvizlGlN6VrJFq0YkMe38+1hKonSogE3HoRnggR2UsrVlMj56ts8eFeldL4imdvp5KV0WAtTpuh/TtCV6CDOXLyTFcqS4upPVV8IJIoHlBV5gTLTT30ddrfgEHgdt/uVDdc7qicx9RF3psYnVf2hn0G8FqdFg5CNK8JeqgL4mqZwqlkFbNwDYMmDS8jTTOJU0mTE+2NH8KkMyddBQWWw0GZqiM/53HvnNB5//UOoBxzo0td8TiVKpdswXwehjttEpyOqVDqA3ndgRboZb1ouaey0ZpvMeTYnReRx48DOByNWUrSxdE1hBiRQxnrlRzDpkl01IEDd3rMw3aITFcmK51fCNDhUdG6lx/3ymyQW/aXwiKq0N2GNGvemV8iXUJreNTjaST2oXohPtB3bh1qUtTfhfDOQLP/2L15oSxcoZ0uD2OluOkiKtefYHAOyTj9F0zXG2PaudAcBo7YLEB5aY4kXstrrRMhsLiB1c5XHp7ccVRN/IE+DgwUOdAcV3pqs06HT9sGz6zEwI6ll3jMfuHaxdUQ7bg=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(19092799006)(23010399003)(261026121527099003)(11063799006)(4143699003)(56012099006)(261021121427099003)(261009223027099003)(261022075727099003)(261022105027099003)(10067099003)(18002099003)(3023799007)(22082099003)(261028144727099003)(261026140227099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?H292NMm9TteGo3S2y9fDlkjq/2BvkQyC4jeqrJcTbLyiRk8LKi3MvJsPAqcV?=
+ =?us-ascii?Q?mopVyYo7cGdtAxJupLxe4mR2qXtREgU/+iJud/0Dnu7ZXMFSo4/qrcfe5wEN?=
+ =?us-ascii?Q?OQO5mDACUQVhlJ1CiQQwGcdxiGADR01tFbMFT/SFDD68htHUMUpgdnJin4/U?=
+ =?us-ascii?Q?PiKXGj4qG9Q310iG9hmD77T3nG2k11msV1Z1dcDchPqQvvHum/8FzOmaprle?=
+ =?us-ascii?Q?NSBW9s7nyaFONf7JHkLBbpbBILyvknTz1+ppIzE2SuYhhUlFMGQJ8S09b5iY?=
+ =?us-ascii?Q?saRLCt8NuugN3DnySnvpb2tv9rV1v7dCgGQuhrK80MzXsGHl4/rgm3CJHO/o?=
+ =?us-ascii?Q?feCzngQyuU7u95pEOwNVmm5DW+YD6l4vl3Lij6RF2r2pSBUp3Jor8iSJ3/MA?=
+ =?us-ascii?Q?QF1oIg7qxQIN8jdQMrFQ+UGom4Ag06OLUAGLT+lh9u2h6wB3BLlg1te1lcXK?=
+ =?us-ascii?Q?ARfU+QS6OEfti4FaQz0wySrIO3tgtFZco8l8uxdSsbTDu4wGjnSwPbRVR2Ff?=
+ =?us-ascii?Q?eOugVLNsqus69bptLW/ws99QhdyAzR8/i3dSzSoEudw317vzC5ElWl6Lexh3?=
+ =?us-ascii?Q?/M/a4z6yZQvXtTcW1XjLnm+v1ED0p100ZDAMh3plmTL83ozzvVr7z9DmOOKx?=
+ =?us-ascii?Q?r/7qE6TNV12y9damD8mY0kuex8FvIlP8MjPY/WULdek0CIbafjBHzVJTndop?=
+ =?us-ascii?Q?A/4DMy190ClH+B1wxncZ/2j1htCb9FOU6pjC7ywpJVs+KhxA3KtdHxlNMNxV?=
+ =?us-ascii?Q?fNbGekgohccGh0HasMkA9IK4KlXUlahGRyIgDMvjsIkHn0ITUQ1gyKICDzDf?=
+ =?us-ascii?Q?VebaVvmh9bBE+OiGAk5q4Q/pmIvOJAHWRCxa1lGHhvTP6RfFDF7KpgWK8Cel?=
+ =?us-ascii?Q?ZcfSfbAfKSY9iAJ5KSFjSVTOjrpTmG6wNgx47KNajbsUIJbXk7ogM2LQtWnr?=
+ =?us-ascii?Q?wItGJLHBnonotkDbehVcpnr2NddPeWMMrAuQiavxUP9HqmQ+PQWfpAANLJV5?=
+ =?us-ascii?Q?TXFcHjJBJGQdcc6btHbTfVcJu/sF699Ux8G8NUbxeVDhcW3G+VKWGI66JY9Q?=
+ =?us-ascii?Q?EPfBW07+MIMKM5FQDOrmAJEf8Pl7Iy18d1rmaDuDN6ATMPT/F34oiUw0E1Uv?=
+ =?us-ascii?Q?iCrOCxdXhRYIPtkbUtgz+n5fHeTFnA4gS7r++dyoTPw8rIr+PDdhctlThkML?=
+ =?us-ascii?Q?R+T3neyTzRVTLIn4cSlPtu3mw7C3MyWDjPuKsENRe+ftd6YeQWcjng+54Eos?=
+ =?us-ascii?Q?PvmTN/JmrpQ5omCPYMeA3Yp8Lqjcas8ZQilN6On0R9S1wcpGS5vpbiUcdUeR?=
+ =?us-ascii?Q?cdMVKEafrpfjb23W/LMRtzRBp8VZ7eu37Ek8ibso36FU6g5wecrAA4im3DxC?=
+ =?us-ascii?Q?dsSAs8beR6/SwmXPQYfgDqIhKzvDZBgQczBC8fAC/MEYpKeVCydDO6D6XIlc?=
+ =?us-ascii?Q?JcO3pQCEp9vNiO1zQJ1SU3IaUfQMEVfMaazEBft5kI0Jz5MESxIgbF3UWV0k?=
+ =?us-ascii?Q?7jwMVucwx1FURw6aMZkX+AeYjQ+D2uOR7q7RDhFOBBQ8DFSz/rILHqYsW67A?=
+ =?us-ascii?Q?tg1Gg4fm3I7/tMlQZ/bPeB4qpzNL+TVR3VVXJXMH6xQ11jVrAlWjhKi+nK9e?=
+ =?us-ascii?Q?1SSPMu4uvc6MDgLOvaHg+NFoeTEGHhEGZXegVY9xgH0YdnxW25w4ypKsBoDl?=
+ =?us-ascii?Q?O0Eh4AMK4Qi1g4HMnGzS5w7/rXLMzogudx6sLTBoBRQJPelMffrbynnQHD+v?=
+ =?us-ascii?Q?3iSqT2M9SX9IK2A9IUdvyVnoQk7OeFwQPtwIKe3pto6yJ1Lgf9Yc?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c785ebb1-d765-4d79-ee15-08df352f3140
+X-MS-Exchange-CrossTenant-AuthSource: MI3PR04MB12438.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2026 20:08:11.7007
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: w78gQYTeCe5xbqPNUFhK00boLR7yfNhcz5ghA7Wn6Mv9oLt+KanYZI8H2l92+ELitboMy8xSCzOhAegAgkYqvZMQ/b4T9V7Uc5AVoF1mmOLDn4MnIUyZEXCKX2jn28Ji
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB913469
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
+On Wed, Oct 28, 2026 at 08:44:21PM +0100, Emanuele Ghidoli wrote:
+>
+>
+> On 7/20/26 23:10, Frank.Li@oss.nxp.com wrote:
+> > From: Frank Li <Frank.Li@nxp.com>
+> >
+> > Add usbotg3 iommu information.
+> >
+> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > ---
+> >  arch/arm64/boot/dts/freescale/imx8qm-ss-conn.dtsi | 4 ++++
+> >  1 file changed, 4 insertions(+)
+> >
+> > diff --git a/arch/arm64/boot/dts/freescale/imx8qm-ss-conn.dtsi b/arch/arm64/boot/dts/freescale/imx8qm-ss-conn.dtsi
+> > index ccf9f510e0f88..1370a571153a5 100644
+> > --- a/arch/arm64/boot/dts/freescale/imx8qm-ss-conn.dtsi
+> > +++ b/arch/arm64/boot/dts/freescale/imx8qm-ss-conn.dtsi
+> > @@ -32,3 +32,7 @@ &usdhc3 {
+> >  	compatible = "fsl,imx8qm-usdhc", "fsl,imx8qxp-usdhc", "fsl,imx7d-usdhc";
+> >  	iommus = <&smmu 0x11 0x7f80>;
+> >  };
+> > +
+> > +&usbotg3_cdns3 {
+> > +	iommus = <&smmu 0x4 0x7f80>;
+> > +};
+> >
+>
+> Hello Frank,
+>
+> this patch, now in mainline as 73c3b40e536d, breaks USB 3.0 on Apalis iMX8QM
+> (both on Ixora and on the Apalis Evaluation Board). Right after xHCI starts:
+>
+>   xhci-hcd xhci-hcd.1.auto: Host supports USB 3.0 SuperSpeed
+>   xhci-hcd xhci-hcd.1.auto: WARNING: Host System Error
+>   ...
+>   xhci-hcd xhci-hcd.1.auto: xHCI host controller not responding, assume dead
+>   xhci-hcd xhci-hcd.1.auto: HC died; cleaning up
+>
+> SuperSpeed devices no longer enumerate, and no SMMU fault is reported.
+> Reverting only this commit on top of current master fixes it. The other commit
+> seems fine.
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 1
+Does it only impact superspeed? High speed work?
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] The commit message calls this change "defensive hardening
-  based on code inspection" and has no Fixes: tag.
-- [Medium] netif_running() is used as a stand-in for "the controller is
-  clocked", but in xilinx_can it can be true while the clocks are gated.
-- [Low] The modified can_tdc_get_size() prototype in
-  drivers/net/can/dev/netlink.c (lines 723-725) has continuation lines…
-
---
-
-can: dev: can_tdc_fill_info(): don't read automatic TDCV if interface is down
-
-This commit makes can_tdc_fill_info() call do_get_auto_tdcv() only when
-netif_running() is true. Drivers such as xilinx_can then no longer read
-controller registers while the interface is down. can_tdc_get_size() and
-can_data_bittiming_get_size() now take the net_device, so IFLA_CAN_TDCV
-space is reserved only under the same condition.
-
-> This is a defensive hardening based on code inspection; the automatic
-> TDCV path has not been triggered on hardware.
-
-[Severity: Medium]
-Is "defensive hardening" an accurate description here? The path this patch
-closes looks reachable by an unprivileged user on current mainline and
-stable kernels.
-
-xcan_probe() ends with pm_runtime_put(). The controller then stays
-runtime-suspended, with bus_clk and can_clk disabled, until xcan_open()
-takes a reference. xcan_get_auto_tdcv() reads a register without taking a
-runtime PM reference:
-
-drivers/net/can/xilinx_can.c:xcan_get_auto_tdcv() {
-    ...
-	*tdcv = FIELD_GET(XCAN_SR_TDCV_MASK, priv->read_reg(priv, XCAN_SR_OFFSET));
-    ...
-}
-
-xcan_get_berr_counter(), by comparison, wraps its reads in
-pm_runtime_get_sync()/pm_runtime_put().
-
-TDC_AUTO also gets turned on while the interface is down.
-can_dbt_changelink() accepts data bittiming only when the device is not
-IFF_UP. It calls can_calc_tdco(), which sets TDC_AUTO whenever the data BRP
-is 1 or 2. Take the usual setup sequence:
-
-  ip link set canX type can bitrate ... dbitrate ... fd on
-  ip -d link show canX
-
-Before this patch, that sequence reaches the following path with the
-clocks gated:
-
-  rtnl_getlink()->can_fill_info()->can_tdc_fill_info()->xcan_get_auto_tdcv()
-
-The callback was added in commit 1010a8fa96086d ("can: xilinx_can: add
-Transmitter Delay Compensation (TDC) feature support"). Should this patch
-carry a Fixes: tag for that commit, plus Cc: stable?
-
-The companion patch "can: dev: can_fill_info(): don't wake up controller if
-interface is down" fixes the same kind of access, and it has both tags.
-
-The changelog note says:
-
-> Split out of the berr-counter patch so that the stable backport only
-> carries the hardware-tested change.
-
-Without a Fixes: tag, the stable tooling cannot tell that kernels
-containing 1010a8fa96086d also need this change.
-
-> diff --git a/drivers/net/can/dev/netlink.c b/drivers/net/can/dev/netlink.c
-> index b958c04d53db6..613beee9e9362 100644
-> --- a/drivers/net/can/dev/netlink.c
-> +++ b/drivers/net/can/dev/netlink.c
-> @@ -720,8 +720,9 @@ static int can_changelink(struct net_device *dev, struct nlattr *tb[],
->  	return 0;
->  }
->  
-> -static size_t can_tdc_get_size(struct data_bittiming_params *dbt_params,
-> -			       u32 tdc_flags)
-> +static size_t can_tdc_get_size(const struct net_device *dev,
-> +				 struct data_bittiming_params *dbt_params,
-> +			     u32 tdc_flags)
-
-[Severity: Low]
-This isn't a bug, but the continuation lines no longer line up with the
-open parenthesis. The dbt_params line is two columns to the right of it,
-and the tdc_flags line is two columns to the left. checkpatch --strict will
-report "Alignment should match open parenthesis".
-
-can_data_bittiming_get_size(), later in the same patch, is aligned
-correctly.
-
->  {
->  	bool tdc_manual = tdc_flags & CAN_CTRLMODE_TDC_MANUAL_MASK;
->  	size_t size;
-> @@ -742,7 +743,8 @@ static size_t can_tdc_get_size(struct data_bittiming_params *dbt_params,
->  	}
->  
->  	if (tdc_flags) {
-> -		if (tdc_manual || dbt_params->do_get_auto_tdcv)
-> +		if (tdc_manual ||
-> +		    (dbt_params->do_get_auto_tdcv && netif_running(dev)))
->  			size += nla_total_size(sizeof(u32));	/* IFLA_CAN_TDCV */
->  		size += nla_total_size(sizeof(u32));		/* IFLA_CAN_TDCO */
->  		if (dbt_params->tdc_const->tdcf_max)
-
-[ ... ]
-
-> @@ -910,7 +913,7 @@ static int can_tdc_fill_info(struct sk_buff *skb, const struct net_device *dev,
->  		if (tdc_manual) {
->  			tdcv = tdc->tdcv;
->  			err = 0;
-> -		} else if (dbt_params->do_get_auto_tdcv) {
-> +		} else if (dbt_params->do_get_auto_tdcv && netif_running(dev)) {
->  			err = dbt_params->do_get_auto_tdcv(dev, &tdcv);
->  		}
-
-[Severity: Medium]
-Can netif_running() be true while the xilinx_can clocks are still gated?
-If so, xcan_get_auto_tdcv() can still read XCAN_SR_OFFSET from unclocked
-hardware.
-
-xcan_suspend() stops and detaches a running interface, then calls
-pm_runtime_force_suspend(). That runs xcan_runtime_suspend(), which
-disables bus_clk and can_clk. __LINK_STATE_START stays set:
-
-drivers/net/can/xilinx_can.c:xcan_suspend() {
-    ...
-	if (netif_running(ndev)) {
-		netif_stop_queue(ndev);
-		netif_device_detach(ndev);
-		xcan_chip_stop(ndev);
-	}
-
-	return pm_runtime_force_suspend(dev);
-}
-
-If pm_runtime_force_resume() fails during resume, xcan_resume() returns
-early. This can happen, for example, when clk_prepare_enable() fails in
-xcan_runtime_resume():
-
-drivers/net/can/xilinx_can.c:xcan_resume() {
-    ...
-	ret = pm_runtime_force_resume(dev);
-	if (ret) {
-		dev_err(dev, "pm_runtime_force_resume failed on resume\n");
-		return ret;
-	}
-    ...
-}
-
-At that point the clocks are off, the netdev is still IFF_UP and detached,
-and netif_running() still returns true. An unprivileged
-"ip -d link show canX" then passes the new check in can_tdc_fill_info()
-and reads XCAN_SR_OFFSET in xcan_get_auto_tdcv().
-
-rcar_canfd looks similar. rcar_canfd_suspend() calls
-rcar_canfd_global_deinit(), which disables clkp and asserts reset. If
-rcar_canfd_global_init() then fails in rcar_canfd_resume(),
-rcar_canfd_get_auto_tdcv() reads cfdsts from a block that is unclocked or
-held in reset.
-
-Would it be more robust to take a runtime PM reference in
-xcan_get_auto_tdcv(), as xcan_get_berr_counter() does?
-
-Another option is to gate on netif_running(dev) && netif_device_present(dev).
-Both drivers call netif_device_attach() only after the hardware is back up.
-
-With either approach, can_tdc_get_size() needs the same condition so the
-size estimate stays consistent with can_tdc_fill_info().
-
->  		if (!err && nla_put_u32(skb, IFLA_CAN_TDC_TDCV, tdcv))
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261027065012.191348-1-chunyuzhiqiang%40yinhe.ht
+Frank
+>
+> Adding the same property to the parent as well, like the NXP downstream tree
+> does, also fixes it:
+>
+> &usbotg3 {
+> 	iommus = <&smmu 0x4 0x7f80>;
+> };
+>
+> With that, SuperSpeed devices enumerate again.
+>
+> Could you please take care of a fix? Otherwise I think we should revert this
+> patch.
+>
+> #regzbot introduced: 73c3b40e536d
+>
+> Thanks,
+> Emanuele
