@@ -1,103 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.72.41
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793285608;
-	b=fZKUtkSC+J1Tx+J4H4+VS2j9CtsveF32BuZA4zLWGj5jYuxRf7qcI4Lct32vk3oyEW3D
-	 2oJQnwIOvSDRkxqzpNLS7GCmTDMxkzxPlDgCtUHQ2KgzmMh8UzVXnO89HsOWzl1ZaXvtQ
-	 6TWmdfAl25W/T+Sr8bvG81BUrVFRXlB+dcaloaHpoThLp6gpalNaw4TkAGEWEZ0q+a03O
-	 6NZNLOa+NoyaCFFZdwNuwB3jHvxWh2cJwxLxPmrOu/TOsUFDB1beo5+o8r4wEpLKskVG1
-	 AfJ9dzwC9i5LuEB7NKgbQHfDFLsDFYc7t693XUi4rxOka58dJOVPvHFsGnXpppqDCIg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793285608;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:Content-Type:Content-Disposition:
-	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=wYUsB4+hm3A6rfk9DOMM01YLNvsCtI8yxVCbgVFMYkA=;
-	b=45TV40VFE9K3rZIuVEeuOHd6EAG/bGvEQ2bpJZUoAfCeCTiCucw5bkbDPh9GWp7d7dDO
-	 McS+acjo/pDJ31Si6YP+QfTvTeI/ZKbR3ty9CIB1SLauqIHty+BUFQ3VUxsLLNWb5HNr9
-	 cpN0nCh/Fe/HYLaWYiRVWByER3JhXtsW2hKwf06eMXpjeyN9jVxb/zkDkLpbJH9k12LKF
-	 t9PdrGJGieSMUyUNEqhQkCweQWo1sdTdhzkWqoUD1tRVe8/0qBobrWfwHKpczVQaClp0S
-	 jFx36sB0kOirsgSaX9S1YCtL3vF/Ct2ZdAWTc5MMOhZdKHJ1QUi2dAaOkoGQoCG7xzQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.nxp.com;
-	spf=pass smtp.mailfrom=oss.nxp.com;
-	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=jkTRjqS5;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.72.41
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013041.outbound.protection.outlook.com [52.101.72.41])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793285841;
+	b=j1WfAjzpGQV9/RI+fkK7J23YsiLIw3WaQ7RIUm3UwzrKXokoLpOEM2KmVla8DgwP/XTq
+	 voCEgRrKEOvgozbWqhBPgY9ZTf9wzNqvmQfz/h7pyuUlTjINmMVWqxBJyuXSgoPkXGyRR
+	 LeLvuCujfmthGyFQGZTjb+b2XOuRVMqjxidtHumzyr1X1QZcS4tJd/GrusbN5C1jfAXjv
+	 uRDXe3+fyETagfldkZD464hd8SCZcUyorHjoCkPMrDsV8//kECEiQQibVcuEb9WjGV8A1
+	 jkTAwauasIy2OmCwHo4zHweI+zJzuJ6bwBT1E36baQ32gxMle6r1KfWpN1hJNzWMNmQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793285841;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=U+2ydOmNxdFcp2uzdWp9Gv/U50gZkw/vvEZzNifIXlo=;
+	b=SHPyURPqzcME2qfxc+j85CVPvWg/jIqEiKQWwLrdUtn7m1JqSo5lIIvTABtGSA74GuEv
+	 nX7bC1mn/Q7ws9wIFDAqd7YVDVB94v1zI2TSLQ6cNEHyrb/VRZvSzgLim7KACb6L4Zi6A
+	 ddo6HtaojH5eKh4+eqiP6HWqXNuoPagsoACtLXU/yqETmFBmPA8wCJCRNEu3ae+VS+4zp
+	 svRJwAvQX2yBJLYzW9Xyt9AEZwAM+7cLDWa3AoyDZIu+B9YA5vJKEAY0+yKcQxily+gOr
+	 8OXhZt5k0Ph5aXu4rVfoPN11D1qM+kWlOQ1ZvSDDz1CqwYY8LktehX7pztyUcp1nZPA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=e87iFxTe;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82463606A31A
-	for <imx@lists.linux.dev>; Thu, 29 Oct 2026 14:53:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 82463606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76785606A31F;
+	Thu, 29 Oct 2026 14:57:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=jkTRjqS5
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=psTr5LDWyBWw/qtQYAxHyQN40n6YwHcA0CmA5i+zi/OfyFTLcSVOPFtqY+m9w/FyboH7DGs28qWm8d+/isk9g2tZ16407A8oQ3ps6sYlwcJRsOYvzxf3oG7y1K/EjsMxp3WtwiiBl02oEG0PHI/2KaXU81wuWjLYXzg5Qoam3DFcWU4gBQnprU7POvw3HW+tr1geftWcj3s022v4THg96xHUPKcTtoJRuf8yWFxsiEPHvYJ/kY4Z1pm2YtnBGpv1SwCzYgHhZ0NM1NmeW4tPd7WDNVRyUrrGl3YuKachZ9KLskiP6nhFxy/48A6dtZufwOasbHv5piEhts3ay90hHQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wYUsB4+hm3A6rfk9DOMM01YLNvsCtI8yxVCbgVFMYkA=;
- b=BwhvlqJCgUeZvl+7Yxuojhsif5HvYZMIZKMVRNZDrKEiAPDWYzWx8vGPcQ0nvH18FKoF421gMoaV6709RflCBF0kppJa5KxM+g9QaepVbUNUgktcuIi4u1AFhvyVrXxd7x3WEOc8ctUKQZFgo1CP5aSB6YNlGpBISAKykwpVAXA8/mpCPC35s5w0ofhp3YdXOyr8N8ijsEvqSYddcIw6RkmBnQ3V3Boy7clq4OMj+Pn/xbcc2nYCvxgGlHnzwC8HRKAE+UIl0pzE2j7h4l+LiYaku9c1dAeJLft7wnFXkRtiUXqxPLLY5cv8CdnVyEu3iSVoNAy3nbTZE90kRIGzLA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wYUsB4+hm3A6rfk9DOMM01YLNvsCtI8yxVCbgVFMYkA=;
- b=jkTRjqS5IWxZNlfqojxS38Xbm8TCcLP/bv2NEhxd1GXMffXMle0qdlugNjGSh5qACG+LaZG++OTz2yVptHeF9Mx39STkBwM0Z3Zk6SynVf3l+ayeViglddQC7qoMnERc/M/Ei0ngaaScTY3NreLphuEj9P+5AvCeYzRG1DtvNTcKsDRtNQHyhvszI/HdXjDc0oMRzJ27qTe4fuyq2vL3A/kagHBOd9eZ8fZULbpNO+UvJLh1JjVPU0LOnbqAEwTXRRfCveCpIL9MH3Ci2djeFlECWYfvvK8+snf2oTW7E1K5hbAgxutsrLia3soeHxPzGk1D+EJeFUrxBjZ/PzWo5w==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from MI3PR04MB12438.eurprd04.prod.outlook.com (2603:10a6:290:76::14)
- by DB9PR04MB11511.eurprd04.prod.outlook.com (2603:10a6:10:5df::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.8; Thu, 29 Oct
- 2026 14:53:24 +0000
-Received: from MI3PR04MB12438.eurprd04.prod.outlook.com
- ([fe80::c715:c32:8bb1:b70b]) by MI3PR04MB12438.eurprd04.prod.outlook.com
- ([fe80::c715:c32:8bb1:b70b%6]) with mapi id 15.21.0569.007; Thu, 29 Oct 2026
- 14:53:24 +0000
-Date: Thu, 29 Oct 2026 09:53:13 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Linus Walleij <linusw@kernel.org>,
-	Bartosz Golaszewski <brgl@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Stefan Agner <stefan@agner.ch>,
-	Dong Aisheng <aisheng.dong@nxp.com>, Jacky Bai <ping.bai@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Bartosz Golaszewski <brgl@bgdev.pl>, linux-gpio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH 06/11] gpio: vf610: drop unnecessary wrappers
-Message-ID: <auNd2TJQmCDzi9i1@SMW015318>
-References: <20261029-gpio-vf610-fixes-v1-0-45b484b4c434@nxp.com>
- <20261029-gpio-vf610-fixes-v1-6-45b484b4c434@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261029-gpio-vf610-fixes-v1-6-45b484b4c434@nxp.com>
-X-ClientProxiedBy: DS3P220CA0002.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:8:45f::16) To MI3PR04MB12438.eurprd04.prod.outlook.com
- (2603:10a6:290:76::14)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=e87iFxTe
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C0E81F01825;
+	Thu, 29 Oct 2026 14:57:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793285841;
+	bh=U+2ydOmNxdFcp2uzdWp9Gv/U50gZkw/vvEZzNifIXlo=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=e87iFxTeM3BaGTTSEFSGjZwq6NojB9gGZQIQHFRm/lUiarzF8f7u5ziby3ipkmH3Y
+	 F2tLvGlte0ZBRGWJ0C0aNjshFcEGEq4B2x1NiW/Pc0KuneJKkqCXRQA7iCjaBmnxTN
+	 Tuv2SnbRRzHp1MyZjVoe9q/C3x/yiZ0vTMHOEjp76V8nbR+Q42cY7DfU1SXc14BT0L
+	 ITtq/r8Vg0WlI8fY9DY/ing+vwy9Kc9kOFayWUp9zIeJCN2pNRhwMA5Y7dibeSPHn9
+	 Ok1ka4t6Y4J3B2YYtzhFZ3bzs8ppkZRJ5BMguHdebyD2LiyWt4ft+xWWaJVZEvmtkr
+	 8nya3YnjoPQLg==
+Message-ID: <sashiko-outbox-189560@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v9 4/4] watchdog: aaeon: Add watchdog driver for
+ SRG-IMX8P MCU
+Reply-To: sashiko-reviews@lists.linux.dev
+To: =?utf-8?b?VGhvbWFzIFBlcnJvdCAoU2NobmVpZGVyIEVsZWN0cmljKQ==?= <thomas.perrot@bootlin.com>
+Cc: devicetree@vger.kernel.org, linux-gpio@vger.kernel.org, imx@lists.linux.dev, linux-watchdog@vger.kernel.org, mfd@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org, lee@kernel.org
+In-Reply-To: <20261029-dev-b4-aaeon-mcu-driver-v9-4-f9b6d0cc180d@bootlin.com>
+References: <20261029-dev-b4-aaeon-mcu-driver-v9-0-f9b6d0cc180d@bootlin.com>
+ <20261029-dev-b4-aaeon-mcu-driver-v9-4-f9b6d0cc180d@bootlin.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 29 Oct 2026 14:57:20 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -106,159 +60,63 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|DB9PR04MB11511:EE_
-X-MS-Office365-Filtering-Correlation-Id: b4539405-c451-4cca-8e3f-08df35cc61a4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|7416014|376014|1800799024|366016|19092799006|4143699003|11063799006|56012099006|261009223027099003|261026121527099003|261026140227099003|261028144727099003|261021121427099003|261022075727099003|261021123027099003|261022105027099003|10067099003|22082099003|18002099003|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	zco5oZwItfJRDXt2QoeKnhMQyZJHkbdcMUd6iJ3BtwuxG6cPSXnZ8W9RqCjH3H/7iuPwc8006+0kYbg8OxHlbvm83g45o9QY2K81sDYeydFk39uMi51HxD5Ad69uf899EbgSUkCJvnOjA7Xhy85HpnUaYfDktQ1NjAi6qHA53W7bxe6PIlTBtRwqkGZJ7qpisEaochFb5z7WoL0cwaN2DXcT2OYGpRed35yBM6OfO3/3E5pyuPfssu03U5lMQROgS6jsfCYsGHpe1O048F9K4VKWqq8PlhWSfHkuey30rtDcApcsfx1HlbzJCP411S/Txf7nkhW/d5G23Fz9ydVXKnOtiGdXVKHOn/UKaW5adesp1qvSD93BLQEeblzKLRLDo3Iwyptuhbfd+kwtLu50+0l+ZAPeK0UHvNeLxO94cce0qeO1EFNyG1v0AA4f3bAEvqTN64A1Y8UDYF+I3QuFgkMKuz4S3ETdnrq+Z4FkzgWeHq8RHkTK1AonvXAl5rNtPI5ePJYr362Z2VUG94mCmHZcIYd5OftJt81yueufAXkNQ+o/bIyxndRyktOkNSMj7LtHYtdbBRrgXGkRyymDkJ3lwVPsGJxwNgHSbxEd1o16tHCm1a99XbP8gWnXVDm6w+HmjWW3bfh0UjQvjfiLKMwsz4AYNiRIB37Ky5XK8cc=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(1800799024)(366016)(19092799006)(4143699003)(11063799006)(56012099006)(261009223027099003)(261026121527099003)(261026140227099003)(261028144727099003)(261021121427099003)(261022075727099003)(261021123027099003)(261022105027099003)(10067099003)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?cqZej2hmuY2wo4kvshx7PexaMJzcmY7WlJyfpeI/qR1JRLDKDlC5D0dbBNdS?=
- =?us-ascii?Q?tZO2PaqFP9XQUe2qJyTLNbxOcxzuD+VKOM2gTC0mREBdYnGby47gOamWho1/?=
- =?us-ascii?Q?dnih0EGLOzeALp3IhYT6Z0CjKzk+06IhvPKIcv5dCtOoK2a56aDPUS/SKSsb?=
- =?us-ascii?Q?jpksAB0514QXi9mSrZbieMMjuq+T9vtijQoVRwRwIX1hJX7W6307ZT1OIGNX?=
- =?us-ascii?Q?MzvRAniTkbyi6sTMqKTbAVLokvFLT5BWsyjq8umzaxyCl5EcdnmBdRXNBelZ?=
- =?us-ascii?Q?b+QQDooPgS2aIZFebbrjO2qwLIYUAeEj11vnrtV0UMZ9M2CsmWE9wzB+ZV7S?=
- =?us-ascii?Q?fS8u3gGDkU5moZ2jSKwDWpdE1Lt5uIWJugQEIsszY5MQezZ5zvtRCcmkjimw?=
- =?us-ascii?Q?GA6kUGWcYR2tboW22O0qTHJguhRiaSTvqGPPdGsdAabW+xWvsaspNDL03Vjn?=
- =?us-ascii?Q?111vvFSXArm1PfOU/n/z/bot3fisPmNG1bFOLjnaZtySLUrJTwnIVmLMsxjf?=
- =?us-ascii?Q?IyG+dx7Hbyei4HFVoL6r7NKs9tTVUa1hl3Jw10BXykzn8wq/jELUzNtC7j0C?=
- =?us-ascii?Q?BYM9KqXPGW5FPuwTEimF4iiP+EGP9dNvpWrRbPuHXdbsSyd+HEj7iVI71Ymt?=
- =?us-ascii?Q?7r0MoLK07HDF7GvAcwdghZmZb1bZFENPQlc9agHpR9Hd/52fYIN3uR2SJYHX?=
- =?us-ascii?Q?B/69w0/ZqScGODqbFU5dLzK5lqx6QxAlBPBA4nCNCu+jNSIcBtoYU9dFv4PK?=
- =?us-ascii?Q?F3ZKf5p9l89CmcDwC7rF7go2TBEuk/PgXVefK3MBgGdMsbvowRUi1gHqHykm?=
- =?us-ascii?Q?BUMWq/FqKIpLT7pGJxbP1mzNKbsdXioHZm82vqKdJOf2OxJaphbCk03rSyCg?=
- =?us-ascii?Q?DkF3yGoDYM8pbGprl+LP1Og+LlS+64/cmSXFuUOHjGMC4VIchFjEioURwve0?=
- =?us-ascii?Q?e8WkPlHHP2573pRUB+wFXLNXQjBkxk8mhTBVy4KTPdiyC43eSDeDc1caCZOG?=
- =?us-ascii?Q?VSgEO9HuSXC7UeP8BKkLYgD+cKSPzZm+seOy1QnwE1ktzzij0z5MNHD6dmTe?=
- =?us-ascii?Q?BKitLaDpVJhdOT0nrrngASB7FjisbeCPbpoN+4xL1lXQonEuyK0VWLjzaGN8?=
- =?us-ascii?Q?9ElvPZR9vi3rskYyzRbqmX985iy9uV06ASlJFFzWVCvsZgih+w8KWSwbEUXm?=
- =?us-ascii?Q?9L7TBcEX5o4V0VG7C+qKqIsuiYQh60eTEi6OlIRyCHjqbWeJTlnNUo3lDFZj?=
- =?us-ascii?Q?ObrzGQmBC5PIyirLURtewz5yOwg62Hj99BRnxcn4EXioIyERJJjLRF0X2Yf7?=
- =?us-ascii?Q?Hc/qmwGQAsEuwPKwinkZpDs0IK4FtzX6rGciyzlFLVtO0FX3yRK4kVeE69t3?=
- =?us-ascii?Q?lyWRVH0V6BA7elKBIfY6ueVY9j5+FLD8S8WNg8eIZTyl7R4UVD9VNO/DDIqw?=
- =?us-ascii?Q?R5ECw+Orphf9zlbZwZAfblOxHcHaxtsXLtFvoO5rYxfNkhZiFXfodgKrQUsO?=
- =?us-ascii?Q?1bz70oxV3IULLswh77f4K7ePF0pLLmu7x39HYdl5iznFty9/ALbI5WSdsAOJ?=
- =?us-ascii?Q?PYpMgVh9wA/OzVbFKzVzbMhzG2OrF6jIrksK4b41Wj+Aidd8Qu0b1Vqbqzfx?=
- =?us-ascii?Q?A/hE3ZhCWuCQJBtWi/sHtzG0UXavofhzEMC7EMO8LTd+CT2gktO1vpWA6OWV?=
- =?us-ascii?Q?s5T/feQZz6QnPSklJqJmJye2sLnpQP9WL31cM1rcQCbkcMg47rS9Hqq+I4Dy?=
- =?us-ascii?Q?SlzOZY86mQmB5lA4QAG+9n3/ygFiTfGhhX+OkWNItuPxvYiiIbfE?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b4539405-c451-4cca-8e3f-08df35cc61a4
-X-MS-Exchange-CrossTenant-AuthSource: MI3PR04MB12438.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Oct 2026 14:53:23.9517
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: IHPnqNYggXkBnCg3X81E/JH4Cjlnu0knbbYXjK51Bnr3uOQE0RIo1CkGbLTxuo1jAyudkPikKMrG7s2dXC7U1t8sCS23NFaLp/8wy8xOoEIYTUu4ykTUNrmXYtAJRZG5
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB11511
 
-On Thu, Oct 29, 2026 at 09:42:30PM +0800, Peng Fan (OSS) wrote:
-> From: Peng Fan <peng.fan@nxp.com>
->
-> Remove trivial wrapper functions vf610_gpio_writel() and
-> vf610_gpio_readl() that just called the relaxed versions directly.
-> Replace their usage with direct calls to writel_relaxed() and
-> readl_relaxed().
->
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> ---
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Low] watchdog: aaeon: missing kernel-parameters.txt entry for timeout pa=
+ram
+--
 
-Some time use simple wrapers is for adding debug message for each
-register read and write when debugs.
+commit 56cdb5c8b2505a3a5bbfb7ace81364353e737628
+Author: Thomas Perrot (Schneider Electric) <thomas.perrot@bootlin.com>
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+watchdog: aaeon: Add watchdog driver for SRG-IMX8P MCU
 
->  drivers/gpio/gpio-vf610.c | 26 ++++++++------------------
->  1 file changed, 8 insertions(+), 18 deletions(-)
->
-> diff --git a/drivers/gpio/gpio-vf610.c b/drivers/gpio/gpio-vf610.c
-> index 4c46342bc66c..f6712bb45841 100644
-> --- a/drivers/gpio/gpio-vf610.c
-> +++ b/drivers/gpio/gpio-vf610.c
-> @@ -82,16 +82,6 @@ static const struct of_device_id vf610_gpio_dt_ids[] = {
->  };
->  MODULE_DEVICE_TABLE(of, vf610_gpio_dt_ids);
->
-> -static inline void vf610_gpio_writel(u32 val, void __iomem *reg)
-> -{
-> -	writel_relaxed(val, reg);
-> -}
-> -
-> -static inline u32 vf610_gpio_readl(void __iomem *reg)
-> -{
-> -	return readl_relaxed(reg);
-> -}
-> -
->  static void vf610_gpio_irq_handler(struct irq_desc *desc)
->  {
->  	struct vf610_gpio_port *port =
-> @@ -102,10 +92,10 @@ static void vf610_gpio_irq_handler(struct irq_desc *desc)
->
->  	chained_irq_enter(chip, desc);
->
-> -	irq_isfr = vf610_gpio_readl(port->base + PORT_ISFR);
-> +	irq_isfr = readl_relaxed(port->base + PORT_ISFR);
->
->  	for_each_set_bit(pin, &irq_isfr, VF610_GPIO_PER_PORT) {
-> -		vf610_gpio_writel(BIT(pin), port->base + PORT_ISFR);
-> +		writel_relaxed(BIT(pin), port->base + PORT_ISFR);
->
->  		generic_handle_domain_irq(port->chip.gc.irq.domain, pin);
->  	}
-> @@ -119,7 +109,7 @@ static void vf610_gpio_irq_ack(struct irq_data *d)
->  		gpiochip_get_data(irq_data_get_irq_chip_data(d));
->  	int gpio = d->hwirq;
->
-> -	vf610_gpio_writel(BIT(gpio), port->base + PORT_ISFR);
-> +	writel_relaxed(BIT(gpio), port->base + PORT_ISFR);
->  }
->
->  static int vf610_gpio_irq_set_type(struct irq_data *d, u32 type)
-> @@ -165,7 +155,7 @@ static void vf610_gpio_irq_mask(struct irq_data *d)
->  	irq_hw_number_t gpio_num = irqd_to_hwirq(d);
->  	void __iomem *pcr_base = port->base + PORT_PCR(gpio_num);
->
-> -	vf610_gpio_writel(0, pcr_base);
-> +	writel_relaxed(0, pcr_base);
->  	gpiochip_disable_irq(gc, gpio_num);
->  }
->
-> @@ -177,8 +167,8 @@ static void vf610_gpio_irq_unmask(struct irq_data *d)
->  	void __iomem *pcr_base = port->base + PORT_PCR(gpio_num);
->
->  	gpiochip_enable_irq(gc, gpio_num);
-> -	vf610_gpio_writel(port->irqc[gpio_num] << PORT_PCR_IRQC_OFFSET,
-> -			  pcr_base);
-> +	writel_relaxed(port->irqc[gpio_num] << PORT_PCR_IRQC_OFFSET,
-> +		       pcr_base);
->  }
->
->  static int vf610_gpio_irq_set_wake(struct irq_data *d, u32 enable)
-> @@ -290,10 +280,10 @@ static int vf610_gpio_probe(struct platform_device *pdev)
->
->  	/* Mask all GPIO interrupts */
->  	for (i = 0; i < gc->ngpio; i++)
-> -		vf610_gpio_writel(0, port->base + PORT_PCR(i));
-> +		writel_relaxed(0, port->base + PORT_PCR(i));
->
->  	/* Clear the interrupt status register for all GPIO's */
-> -	vf610_gpio_writel(~0, port->base + PORT_ISFR);
-> +	writel_relaxed(~0, port->base + PORT_ISFR);
->
->  	girq = &gc->irq;
->  	gpio_irq_chip_set_chip(girq, &vf610_irqchip);
->
-> --
-> 2.51.0
->
->
+This commit adds a watchdog driver for the Aaeon SRG-IMX8P onboard
+microcontroller, supporting configurable software timeouts via ioctl,
+Device Tree, or a module parameter.
+
+[ ... ]
+
+> diff --git a/drivers/watchdog/aaeon_mcu_wdt.c b/drivers/watchdog/aaeon_mc=
+u_wdt.c
+> new file mode 100644
+> index 0000000000000..beded3d6326fd
+> --- /dev/null
+> +++ b/drivers/watchdog/aaeon_mcu_wdt.c
+> @@ -0,0 +1,171 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +/*
+> + * Aaeon MCU Watchdog driver
+> + *
+> + * Copyright (C) 2026 Bootlin
+> + * Author: J=C3=A9r=C3=A9mie Dautheribes <jeremie.dautheribes@bootlin.co=
+m>
+> + * Author: Thomas Perrot <thomas.perrot@bootlin.com>
+> + */
+> +
+> +#include <linux/mfd/aaeon-mcu.h>
+> +#include <linux/module.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/regmap.h>
+> +#include <linux/watchdog.h>
+> +
+> +#define AAEON_MCU_PING_WDT		0x73
+> +
+> +#define AAEON_MCU_WDT_TIMEOUT		240
+> +#define AAEON_MCU_WDT_HEARTBEAT_MS	25000
+> +/* The MCU cannot expire earlier than its fixed heartbeat. */
+> +#define AAEON_MCU_WDT_MIN_TIMEOUT	(AAEON_MCU_WDT_HEARTBEAT_MS / 1000)
+> +
+> +static unsigned int timeout;
+> +module_param(timeout, uint, 0);
+> +MODULE_PARM_DESC(timeout, "Watchdog timeout in seconds");
+
+[Severity: Low]
+Should this new timeout module parameter (accessible on the kernel command
+line as aaeon_mcu_wdt.timeout) also be documented in
+Documentation/admin-guide/kernel-parameters.txt?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261029-dev-b4-aae=
+on-mcu-driver-v9-0-f9b6d0cc180d@bootlin.com?part=3D4
