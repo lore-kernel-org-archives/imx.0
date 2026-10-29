@@ -1,99 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.52
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.54
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793294050;
-	b=IeunokZnQO9b7CDi2tX18a3J4F2mXgTdHKdPVjUKfoIXCdjX/Ppg4pZ3XNXgHfze1U++
-	 6zAoYSAUQsUqW89QrwsTSHLYx2jztf117zQHW5JAi1hZsBk+BnDaRh8LKfzG+JI9S4ISo
-	 pcJQEQZ3278BQSxzOzgrKgzCC8YF3FcyN5biG2CSfGVeVmDaG6lOzvnoVz5iswIqhe5VL
-	 zKD5qVWqM4Z4Uo+35Xt5gVjwSh0RLylnnLzY7GBS7aT88Rjq4PIBY3LWVZl9u+mI/WA3T
-	 ZmW3NcevQYj714oA4lY3RCa3VmA0Ep65lrJkdF+76E12PWt4BgS3mAjuooBbtVh+CWQ==
+	t=1793294138;
+	b=hOoKU7GFtcmpCTWYIosHaMtOqERXKtNoHv1IY/GeKxFhivCoqrJsz7HI7tT+MNzd9mm0
+	 ngfLKsy7iHMeIQVqg/MQiIcapllAY1ymMmZT3tYR3MSsoizxHIu/1ZtgHspZB1PdihaMw
+	 mlGU7H8da+0clLIFvTMvvJ7DPSB8Q1o6WwDAcsxgV3XPJqlH2RTJp6+NAt68Rbzs8ad9g
+	 GJS9flA4jyr5pGu1wQquX8mMkaVPul+Qm3SSIW2YU/uxzrutlQndFv8ambaoxDG+A/NOP
+	 iGqaPkiobekakqEn4X3FMCupzAkc8QJo0c/nMP5xY6NgDReP1w58PnCLL9wvggc03Dg==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793294050;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793294138;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
 	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
 	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=FTbT3tgSxeUnwmRhmxtw1LLZfXKECJjTK/sp07zcT8c=;
-	b=BjPnSBghtuzC9+WzYUQ1S8BRXfyN3upajiIcPJnmLSjvruanuSCERi12U1BDLAoBENAY
-	 C6qXwfHzBHDkdCFE3XjOC4P0mvXvvmVmc9TJjTIMzs5+pUm4ezhGVTNcMM63keo2064OI
-	 3UuveR6NVGtPpuFAY+PDgO0Tacdn+CrUwFqyOk2JwEZhbKHpPAeiIVpK9/dGA3jylaHKm
-	 H3weV/UGgKx0ziXqDKD1yyT5Tthmy69ekDicPiYY0VjuGimdgTTiWLmU3W3FW81TetUfV
-	 Bi83KAFSo/GBz5Mjd8DAK45AlcX7/zbBWs09USeisgrAZjE2wgUJTQPTebFC3LSJu/Q==
+	bh=bfkoGr6eHduUtBaHwkrM0dSWX67wyi9EvMSHv231Bb8=;
+	b=JVfQGlr4RXnQmK/ZwS1skREEWI4Hl8vX5IEHfoBzM2tOsrD1UhHI0o7nxYZWauxhkoY+
+	 gpuFDtEcrZciNrb30or1m910Se4obufosGU+gLuSYtITBhDiiaX7fE9XDOu3V+e5c2Xvu
+	 O6SjHakefP3/Mssx0z0pr8sHg2El/BF7YuKBPPkffq1gX/aAwYuxIwwZq38N3QWoocKNB
+	 sdHLrfi951MBOI7HjZTy0M+sVn9V0Y8E+xu8QeSvUqOt/riFFZHnVYfOh9qGiM6UVFYy/
+	 0RayvC8IOtbwptRa25uqXogZV5XyNIyoSFzLHT8K/tmMz1esYNXC+k8v1UDEdv05bgQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.52
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=nfZc1PV6;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.54
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BC47606A320
-	for <imx@lists.linux.dev>; Thu, 29 Oct 2026 17:14:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5BC47606A320
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A0F5606A31A
+	for <imx@lists.linux.dev>; Thu, 29 Oct 2026 17:15:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8A0F5606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-6b413b0a974so3605329a12.2
-        for <imx@lists.linux.dev>; Thu, 29 Oct 2026 10:14:10 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793294049; cv=none;
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=nfZc1PV6
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-6b1dae0febeso3583326a12.2
+        for <imx@lists.linux.dev>; Thu, 29 Oct 2026 10:15:38 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793294137; cv=none;
         d=google.com; s=arc-20260327;
-        b=gSL377LrjAwNg9xgxde+m0LTxOu8LsacjOuvcNPKlIBSSATCQPUctnoO8swcoPrWCx
-         BnU5sZYFX7fSKFVr15vNxkm7L7YXxIwzZfEtTQ1DSdIaRYNl2ypiyokKdYIRhIhhNwh6
-         P4HYBjcsvWj8ncCML4GsqzVTNs1mItd7KGO3PxeimYypv/irgckRnehmtNv6Z5L/FZZf
-         2FiyakgM/RPqUG+GiHH5DZI4t00w9huDrM58OLP5bH2DkRy7j5rtBvEisteWzD/PoNSD
-         Var7Y2chv1rAeC3FdIdsA9LcryXMwK2olBKUWCvAkS1V5fIq/hiUpiJVcLN3s79XuwLl
-         me1g==
+        b=CSMI/NKF9QTArSRSUPRLQX4ytz0yTwFOVuy02kf/ZCpCz4wvLfSbGxzy/3jui8e0Ms
+         jOogPuUczQ9jbPuGzcOtAiVB6uo8oNYj3G7VrZC5ouwCbHdYFD18th7bmOw7NeTjUvLw
+         gLdA9xjze4atWyxm9UMhIkTZK+9S6jp9WPeqZIttId68bPCP4fubuT9jRAEwvC54cYTt
+         P/QiME9xGHHmpkkIFjJd49jp4vLVluJVIdEUVQcbxOWQbEeyq/1b279FgiGbKuESZ0Ej
+         +oAyofovN04Q3YPBQnsXP0Qp4kixxwfSHImxakx4Qj1LXxtleQ2qDolGqL8qXstg1q+e
+         aUNQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=FTbT3tgSxeUnwmRhmxtw1LLZfXKECJjTK/sp07zcT8c=;
-        fh=MGBq6AmqNbQwaUDTPNm0k9jLTyYdo0St9iWg+fUecu4=;
-        b=JfeiQtmeez0NJVPgxC1f9DwbqnO+h/ghbjfHvbq/gx/RyY8+UMVyx9zgosD/L1uuq6
-         Mk1Gdg89Ni7K89dM+NOEe0cHNhIkCXL7Wakk1GAcplwXId7+dQqnFhi+VHMirChlMA+i
-         Lw8qzAO2hsxhJ570iI43mLOI6SGOH8O+VyybtKV1sghQC/LFb843yzDWpVzge9Rli+2Y
-         Dka+95yfEvswGpgYOw8pymCq1BMAJYbhDTtdnWQn3wSrxAUXV/hZr3ZnvoB8+1PX6veM
-         +UZrvLndaaFi55OJH73WQlxLYo8MbiHCV7mU57cf4P+YFXgP/BKJRk3OFMBnPDljf4L0
-         2DVQ==;
+        bh=bfkoGr6eHduUtBaHwkrM0dSWX67wyi9EvMSHv231Bb8=;
+        fh=iQZLPT8lD/a89vJVH4b3L0LfxZbMkAtwO0ktr+Ubfdo=;
+        b=M7Ev8vGLmObIKemAf9WYqEoONKwzDjqb2c/YqtEGVdrBllLtmK7axhfq+a8L9S12Da
+         RLxrUillS2apIQgvUWUY/HPEOVVeV+i1W9KF0HyeSgBVwkYvUHOpfXQkwGFuvuTuM8v+
+         1xMtDBpctVadzfOzdiDj42HEbdWuI+Q/axuvIvtZQQnHyD+MXGAkn4BOtlbCD8fscqPA
+         55WCyd8+YTrjFkMJgvrNVdnuCElOtuDjDqS8/Q6Eu+W7mdPIKHEntxboO/J1FC/TGKYr
+         LHuCl5sBEmoGLdpM+Fvw+RKNO4f453rzMdyNElFS99lDFhNjPEVwqPNbJfnPpAQdfMPJ
+         LCFA==;
         darn=lists.linux.dev
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793294049; x=1793898849; darn=lists.linux.dev;
+        d=gmail.com; s=20260707; t=1793294137; x=1793898937; darn=lists.linux.dev;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=FTbT3tgSxeUnwmRhmxtw1LLZfXKECJjTK/sp07zcT8c=;
-        b=xAMdOlXnT+L4Ba9DCV2NgVKVTC9pGFdn/cr7RjPguegxEoqiyPHca04TxJxlGX6yfV
-         Br0LNxe6et0QFOMRWKX6T89oqBK8ST3FlgSpTx3o2fBMZQXKm+SNdZ43gGfD1ncDIO+O
-         MZX9vigg3qNZzBbLs9T53E02rBGVSQV68dhqzbAMHl0ArRQn7dXmbC6hKOLEiq86kRh+
-         Jh/EJkj8P94SrqdsjvWHFBfV4wcAX8AsPHuW3D7gwayYU/sPpblPntRWmABzp77TdDaj
-         HebON91zjXTZSgGBe+3+X8lMquldPW1PWVGma2+JTaTVXlGTvpc6JjxKFPaBlv5qjWaL
-         pu/A==
+        bh=bfkoGr6eHduUtBaHwkrM0dSWX67wyi9EvMSHv231Bb8=;
+        b=nfZc1PV6JOGnXWRbIqzV+83aKD6PlztnetsI6ssGRVeIay49wM3hTMAq37hOf3AjXh
+         IuPkZSMjn6cyVQVHOORTS3Ls5/pEsr04LuJ7RHqJ19Du6PUGjmvoqX0i7CLyEuSJGTqu
+         8zYXfn3maFKg7Ct6DNZ1XKpswUBMgbp0BREXrqrbwTZQppau66wsLp99xgZGRZHXNyi8
+         QI6ZKAJ9js73hu2mr+I86cHZkR8Mm1GVIEoqwjMQIxtEVyUSl7Y4XLbEZfjFMpalFck8
+         BCOnPXjWghlRyMrM7BYms2UcdHo7ew9+co5q9sUCPREfRWUX4kYLcSMwzEPnS5o8douZ
+         xdgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793294049; x=1793898849;
+        d=1e100.net; s=20260707; t=1793294137; x=1793898937;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=FTbT3tgSxeUnwmRhmxtw1LLZfXKECJjTK/sp07zcT8c=;
-        b=RQgGd7kvxYoz6KA3QasDsSMAH9cZf8GW01hJploT1a6y/RBrLkH69ULCeTtZbgp/nB
-         yKH13XQty6VoaX6qNSiJuSPslFeY359y+L/pvF7jMt2B4edYFrzgc7tmxO+AEjO2AEoK
-         hbV4XnC9ETdlgaROCt3mRqfN1WrA4KLzOLwdAf0pkD4rlnyWkFMjtJhx45jqRBcEEIx+
-         Bvgml4R7sZuy8nSbqC84tWdtBO2Q7fJJHQxL4JtkPS9S+BxrR6T3NdaLJZiiwh/3XA5r
-         xIZ5NQCI43KheBGbIDqUjMR+apGIO9kFnThvsdAuCSAmTmJHAXRKcGnLpqk922emC4Uu
-         Q+EA==
-X-Forwarded-Encrypted: i=1; AKwUvByoHeBubtJC04y2BnaUS9Ov0PQotRlutG/ZsdV7g4UK+P00/Sg7txWuQ4hvqPYH2gIWVNg=@lists.linux.dev
-X-Gm-Message-State: AFq9FYJzkP5ZLLvr5nG2lg0ydaeH9a17k040Ey9MQRjEGXuRLMxvJRIU
-	h2T65XI67woEQHu+EZU6FCwhjkjFHYSXmI7G+nFX0dTB0u7e3JXwDyQjD18zEUOaoLT8wNvEhFr
-	hT0DuDlL94p3n8a6inorPnbkPYuJh/If5JlmW
-X-Gm-Gg: AYBFou1uE5/z1Bqt4DT9YPWHy0hWtwVNmO3R27HgfiGAhykeW6xWL0QU0wHnchH0Qze
-	3uyzTTmMR8IrxSeiP9uO4/wmIkQZDuN3SsBAZ6FsAotLYGUN7IVOk9U68pmeagJCJ+yr0tcJKCJ
-	hUB6bo5wqDjOrYhdDOsEIqEbjMA84Egmg9/ZQoUjn2JLgtOwqniU+1ckvHWrGq80EKfkcEkEwOf
-	UNMu+YCGn05JlXT36Bq4SYjzjgWujHB5R0IwRZrd5DckMjudRoayxF/Y8/W7lW/o2sbOXujtFrF
-	ytgdO9ZNoOTqzgi6YmR0tvpwOdeU3ZJwpk4oeY/S3WRR5wZFVyTcTr9Gr0K2qM8XznXdJju0TnX
-	UDe6LEQbq2xKF6J+KLQTP0NT5JgfJE0Uie2RUhbPgeZwDuS4noTEgas+fmKf0mIbl3JFuxBs14s
-	xlaWw8EV+HsrHdklJCe59WQqfEgloUeshShjK3OZK+lZMHetndWZqQ4EUqmBj925+b0xEcxIc1j
-	ZXJrCDezeNqPsV3XMpTMx1h+ccR7w==
-X-Received: by 2002:a05:6402:1cc4:b0:6aa:9830:aa21 with SMTP id
- 4fb4d7f45d1cf-6b49cb8eabemr4436038a12.39.1793294048534; Thu, 29 Oct 2026
- 10:14:08 -0700 (PDT)
+        bh=bfkoGr6eHduUtBaHwkrM0dSWX67wyi9EvMSHv231Bb8=;
+        b=rHpX60VMldpeq1VeNGkTXSTdDAQWv+qSqu3vx4R8Ltr96u/2tOcJqYWfotRzaz8loC
+         miTzbLcWCIJy7PBVW3NEiL2IGmTgUvVRLSZZbrf7tK0auvfk9R6WDDRuMn57z8dFqSev
+         QjYHw+xniJFqdN8p3etMyKQfXPThkYCJSBs3SbXt1rSCFo6ASukzZVGXjo93m21/LEqa
+         651JsG8VeA71bOgj8xUxg2NSV0gFrU/2VVsCZ1/doXJh/U4uGMKaiJI/h3Vy6yMFjtD9
+         lWdcMBvt0al3m+1BsDgmHYp7tpKR4pLTXkI6uKBTHWIQk+tWF3YkFp3ittqFEfnkGFYI
+         qmVg==
+X-Forwarded-Encrypted: i=1; AKwUvByVIPMwYtFiOfX+g5mUgAm91wdBd2ymMiwtx2Ip1m19jLkD+jcuVE2drZPGV9s43nIFJUU=@lists.linux.dev
+X-Gm-Message-State: AFq9FYKlGA9D2lELI3U568O5uGo/92VMmAYdxDs9l5ziz/F9J2XFO0YK
+	TcuJWElFhyhcVbUcQK1SMO5QhrL5nwMXYbJy9DH0qNmtG/LWsSru6zV+eqb2ZR2JMy/4qljCFw9
+	04lJTYwq9HeoPDAAYeMp7XuwETDZwahI=
+X-Gm-Gg: AYBFou3JgMcfmaJ3s1H2b08lcULAqJNFAIdNFk2GcgzlvjBRI+ebSBi+mzAMbEh7ZLl
+	DurDS9mc+pnZUw6TZ4wvNuQeoOmEQbL4dEZ4fmNkIEc6Y5tYJhYJcG8lcUQcywiryjnHha3fZo0
+	QJifVO0CdcjTXQ6G+6EUa2EFivWG8txgakgl/qecMTfiDH3sUzWPiWwi8cgzMjersS9NfrH2u0d
+	sXD/FXd3daBcpgR6EYlZQCihQ+u0LFmG6zs1J7rSp4l724C9xXYAXyOdMBwrBPkzksmdcFuMQCn
+	gFK9ywzwQKYh9THItgx+/iZT6oOq7ly+G5poLZx1zjn8F+LRB0WecfogWUVB8wIVJ9FDQmyPNit
+	eYAtEAG6MzKrC9bLJFjmTm7ZF98ECrVz+zE7ryaJ35nkatUdc4JYCfboEhPMrV7j/2IpVL2emwB
+	UI7IGl70Kz0j+libvfO1lJuMfdv6lQP2ZALwQU4m2rOKsu43zaShB6VpjP9QiKSJsrdyqn2TRp1
+	/WUeD0yZRwGNB0pBYW8UmwkJpt51w==
+X-Received: by 2002:aa7:c687:0:b0:6b3:f840:59b5 with SMTP id
+ 4fb4d7f45d1cf-6b49cc019b3mr3067325a12.27.1793294136580; Thu, 29 Oct 2026
+ 10:15:36 -0700 (PDT)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -104,14 +107,14 @@ List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
 References: <20261029-submit-serial-8250-dma-cancel-v1-v8-0-3fd56ba352ed@gmail.com>
- <20261029-submit-serial-8250-dma-cancel-v1-v8-2-3fd56ba352ed@gmail.com> <auNVk_Y8iiAXyFa3@ashevche-desk.local>
-In-Reply-To: <auNVk_Y8iiAXyFa3@ashevche-desk.local>
+ <20261029-submit-serial-8250-dma-cancel-v1-v8-4-3fd56ba352ed@gmail.com> <auNV7Vco5O3vVwRH@ashevche-desk.local>
+In-Reply-To: <auNV7Vco5O3vVwRH@ashevche-desk.local>
 From: James Hilliard <james.hilliard1@gmail.com>
-Date: Thu, 29 Oct 2026 11:13:56 -0600
-X-Gm-Features: AclHuK8vSM1CWTDsGeWZ16QtCofwiUc2xcHxHUC_tVZ5DI3qrKZF21jWZD2zp04
-Message-ID: <CADvTj4pwVF7u-6z3RUiHWGyG3MZGFU2WkytMRh0G16pdFwaotQ@mail.gmail.com>
-Subject: Re: [PATCH v8 2/6] serial: serialize asynchronous write wakeups with
- the port lock
+Date: Thu, 29 Oct 2026 11:15:23 -0600
+X-Gm-Features: AclHuK8a3pNXQ_IsYXCQfDMZzFxdEUJPDH5qKP3q2TLb8CO-tQBpFEH7zYCUMxU
+Message-ID: <CADvTj4oi6dFzWkjFXie1U49A70Y7Mb=4exga-=2SmG7fN2pLrA@mail.gmail.com>
+Subject: Re: [PATCH v8 4/6] serial: 8250: drain canceled TX DMA before reusing
+ its buffer
 To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>, 
 	Raul E Rangel <rrangel@chromium.org>, =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
@@ -129,105 +132,83 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kerne
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 29, 2026 at 8:18=E2=80=AFAM Andy Shevchenko
+On Thu, Oct 29, 2026 at 8:19=E2=80=AFAM Andy Shevchenko
 <andriy.shevchenko@linux.intel.com> wrote:
 >
-> On Thu, Oct 29, 2026 at 01:36:58AM -0600, James Hilliard wrote:
-> > uart_write_wakeup() expects the UART port lock to be held. Several work=
-er,
-> > DMA completion and interrupt paths call it without that lock, including
-> > indirect calls from uart_handle_cts_change() and the transmit helpers.
-> >
-> > Take the port lock around these notifications or their transmit helper.
-> > Keep sleeping SPI and regmap accesses outside the locked region, and ke=
-ep
-> > the FSL LPUART completion lock held through its wakeup. Acquire the por=
-t
-> > lock after releasing private channel locks to preserve the ordering use=
-d
-> > by UART callbacks. In the MUX timer, publish available FIFO space under
-> > the port lock and keep the hardware FIFO-drain wait outside it.
-> >
-> > Use IRQ-safe locking in the Atmel RX and TX tasklets and SB1250 termios
-> > path, since their interrupt handlers now acquire the same port lock.
-> > Preserve the caller's interrupt state when releasing those locks.
-> >
-> > On SB1250, lock modem-state updates after reading and filtering the cha=
-nge
-> > status, and wake modem-status waiters after unlocking. Take the TX lock
-> > inside its service routine so RX-only interrupts need no acquisition.
-> > Keep that lock across x_char handling, FIFO consumption and the decisio=
-n
-> > to mask TX interrupts: a writer must not enqueue data and enable TX bet=
-ween
-> > the empty-FIFO check and the interrupt-mask write. Each TX invocation s=
-ends
-> > at most one character.
-> >
-> > Serialize CLPS711x TX servicing and its interrupt-enable state with the
-> > port lock. Disable TX interrupts without waiting in stop_tx(), since a
-> > threaded handler may need that same lock. Have an already queued handle=
-r
-> > leave stopped output untouched, and drain it outside the lock during
-> > shutdown before the transmit FIFO can be released.
-> >
-> > SCCNXP handles interrupts under a controller lock which its UART callba=
-cks
-> > acquire with the port lock already held. Collect the ports needing wake=
-ups
-> > in an unsigned long bitmap while servicing the controller, then release
-> > that lock before visiting the set bits, taking each port lock and
-> > rechecking the wakeup threshold. Removal drains the IRQ or timer before
-> > unregistering the ports.
-> >
-> > This serializes write notifications with port-locked serial-core state
-> > changes, allowing readiness and transmit-storage reservations to gate t=
+> On Thu, Oct 29, 2026 at 01:37:00AM -0600, James Hilliard wrote:
+> > uart_flush_buffer() resets the transmit kfifo before calling the driver=
+.
+> > serial8250_tx_dma_flush() terminates DMA asynchronously and clears
+> > tx_running, allowing a new write to replace tx_size while a detached
+> > callback has not yet run. That callback can then consume bytes
+> > from the new transmission. Reusing the reset kfifo can also overwrite t=
 he
-> > notification without a check-versus-shutdown race.
+> > source of a transfer that has not stopped yet.
 > >
-> > Cover DZ TX servicing and JSM Classic modem notifications as well. On
-> > DECstation ZS, acquire the port lock before the SCC lock and notify wri=
-ters
-> > after releasing the SCC lock. Defer normal TX restart after console out=
-put
-> > to a worker, since console output can already run under the port lock.
-> > Check transmitter readiness before consuming another character and drai=
+> > Reserve the flushed FIFO storage through serial core before returning
+> > from the flush callback. Keep tx_running set until a worker synchronize=
+s
+> > the terminated channel, suppressing old callbacks and new submissions
+> > during that interval. Return the mapping to CPU ownership before releas=
+ing
+> > the reservation and waking writers. Normal transfers continue to use th=
+e
+> > FIFO directly.
+> >
+> > Reuse the locked completion processing after retirement, including OMAP
+> > delayed register restoration and transmitter-empty handling. Take a run=
+time
+> > PM reference around worker UART accesses and drain the worker before
+> > releasing the channels. Shutdown releases the FIFO reservation after
+> > stopping DMA and unmapping its source. Serial core keeps writes and wak=
+eups
+> > gated until startup or resume makes the port ready again.
+> >
+> > Track a flushed FIFO separately from the transfer length. If terminatio=
 n
-> > the restart worker during shutdown and removal. Release Lantiq's hardwa=
-re
-> > lock through the transmit helper's completion hook before notifying the
-> > line discipline.
->
-> ...
->
-> > static irqreturn_t serial21285_tx_chars(int irq, void *dev_id)
->
-> >       struct uart_port *port =3D dev_id;
-> >       u8 ch;
+> > fails, retain the reservation until normal completion and account the
+> > completed bytes without advancing the reset FIFO. After successful
+> > cancellation, process a zero-length completion once callbacks have drai=
+ned.
 > >
-> > +     guard(uart_port_lock_irqsave)(port);
->
-> Why _irqsave?
-
-For serial21285_tx_chars(), a plain uart_port_lock guard is sufficient.
-It is only registered as an IRQ handler; saving and restoring the IRQ
-state adds no protection on the hard-IRQ path. The necessary change
-here is acquiring the port lock.
-
->
-> >       uart_port_tx_limited(port, ch, 256,
-> >               !(*CSR_UARTFLG & 0x20),
-> >               *CSR_UARTDR =3D ch,
+> > The race was found by inspecting cancellation and restart while prepari=
+ng
+> > H616 UART DMA support.
+> >
+> > Retain the tx_running check in both completion callbacks. Releasing the
+> > reservation relies on the DMA provider draining detached callbacks when
+> > dmaengine_synchronize() returns; provider callback-lifetime fixes suppl=
+y
+> > that guarantee for controllers which previously lacked it.
 >
 > ...
 >
-> Same Q everywhere (it might be legit in some cases,
-> it might be too strong in others).
+> > -     bool                    shutting_down;
+> > +     bool                    shutting_down:1;
+> > +     bool                    tx_terminating:1;
+> > +     bool                    tx_flushed:1;
+>
+> What is the meaning of bool XXX:1? Have you checked with `pahole` the res=
+ult?
 
-The other sites have different calling contexts. Workers and tasklets
-can share the lock with a hard IRQ, and some helpers have callers with
-different incoming IRQ states. Those need different treatment from
-hard-IRQ-only handlers.
+These are one-bit boolean fields, intended to pack the state flags
+into one byte.
+
+I've now compared layout probes using the kernel type definitions and
+saved build flags, changing only those bitfields to ordinary bools.
+For the complete v8 structure, including the RX flags, pahole reports:
+
+                            Bitfields   Plain bool
+    ARM32 / Clang               212         220
+    ARM64 / GCC                 368         376
+    ARM64 / GCC / PREEMPT_RT     368         376
+
+The sizes are in bytes. All six flags share one byte in the packed
+version. This saves eight bytes in each checked configuration.
+
+The packing is a layout choice, not an atomicity mechanism; updates
+still require the UART port lock. Given the measured saving, I'd keep
+it unless there is another concern with using bool bitfields here.
 
 >
 > --
