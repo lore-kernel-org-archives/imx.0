@@ -1,56 +1,95 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.8
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793282267;
-	b=0mYuZcukOmmDoey8kjoPAQNC2huOQQVMUQEcBf6NaeNR3j1znAi9QIwElgPYA1nCS80d
-	 IlY/Uvg1SChKNikpm0uWHpJ+6tK2DdAaqqtj5ZX2l1V197lAjrqMKSk8ftqmJ2Gu2OCDN
-	 4iePh6+ZXzc2sRIaiz12v/NHDjQoVT1wArvyBQbh/JhS1x1wAgRvwABNy1JCzoteqNHuW
-	 NhwyWJCKH1MP5cCi5jG+YrQ8HfL0fdYOLOPZTDAkZk44ZFQhD/sGEcLas6/rSg2pCSOx6
-	 pVHwHB7Hp/PHKzR7MRP73sMgUrgAtOmu+bWNstK1FrOk5ZCLbH4mM6LHHeoGg7CrChg==
+	t=1793283485;
+	b=MetnhCyEm7ewdEbESsXKiacyKCVUxCGwnzck+TsVCqlxO9U4ms7HgCntaEDLHpH3TORo
+	 WMyuuDwoRxIorL4qawbde0qtkhXQle+pQ4+ATOJLj23bahBDeJg8X/bPeqsdtYiJEW4P4
+	 JXfBL25npSmlT5ntMI+SfWRXteG7hMTsE2H1uROid0whqbXA6wkbe3d21Z4kmcrpRcql6
+	 kwIvurKzYwkF14ZQinZS1cIyqpsteelAAAvMHLCYZPAMUdtwUy/1q21FwTTINcPyljlCS
+	 MlzcjTPZu00F1/enS+rZHsL+/jkIaSUX6yoEJQrWg9NZyQTqisG2bI7a2+Amw7mXeCQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793282267;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=7wn9UzqCO9Eos88OM/bNaEjZ0zJDw3Jl5XXivCfKS9s=;
-	b=gYv5+6iECJiKqNrq4LC98NRURmEBTdnWPAjb4BXQ7lYUFbERrgnqJ1Pv7rDFZNSXs8Jk
-	 shHvHGr5pumEpLXtoe2sBHTJeusDlkaTE+AH4k8Dju+17o/YhYW/zREIvR/9c5OFm9T9M
-	 c0bQ4WZxeqMyl+qMm5/7SHUjXfUzLtT2pfuWC5FHc5FaQJyH9QaHyWjHkpijb6HvevTkG
-	 tWwet2HnndI5JZio5gxMAc4ZsvtYjD/9tyCqVIniUUajkBNyT6VPXjBvIWv409pX8pOS5
-	 GUHbU288QAhe8J2x79cCLNhf4JGgJNyG2tj9ghExPqCrMPUh+bsUb+R92VNWHIyLL0g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793283485;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To:Organization;
+	bh=sIAQApOwnlBHdqOEDUSf5m4YrfU7jMgmgx2VS57GmCE=;
+	b=EqrVYJDGqxWhST/qZv5Xv9SFZiT6GfqJlo5nwWnnrc2ucau0H52PCnh3KlBmlixvEuI5
+	 ZNpm0X3sbUikrMP/LkefrYajXAQtQ03B9bLQCvp+Tz3QGXjK1RcZ6kcAvccc0hgZI09Bg
+	 31xkK4XcvHU0Aj5/xWmAMezAa8ZLAreI9HkEzxoOUE7PThp1vQIJqa2w5isA3qbihHZhZ
+	 bGS04ARJeMqgg3IBFslL4jh6qqAgZDAGMJkoFHHqb16CIHhreazaXqGnZxl3VHLzFL07t
+	 sDS7B0VZhfWsnYLghCam+I3k8kAjhxQIwMMkAKW6cDC+mmDohZRwaywUZI5hDaIGwtA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bkTMIaB0;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=WnwBYyqL;
+	arc=none smtp.remote-ip=192.198.163.8
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26FDD606A31F;
-	Thu, 29 Oct 2026 13:57:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79247606A32C
+	for <imx@lists.linux.dev>; Thu, 29 Oct 2026 14:18:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 79247606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bkTMIaB0
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59E901F01825;
-	Thu, 29 Oct 2026 13:57:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793282266;
-	bh=7wn9UzqCO9Eos88OM/bNaEjZ0zJDw3Jl5XXivCfKS9s=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=bkTMIaB0RXdfBpRj0Rgv73ipqG5yF2rW0SX6l8/Vu2IUPEkMcCFw0tAga08IOnk10
-	 8YuzFnBXQTQyIYa3IJLthzbEj2S03kdsrdnsr9oPZFOFtWTfrbwj6MAeIFaEnetJsL
-	 glHhdedmSM5rKCzTIh/vJORaF30Y/YOXvnfuVFeCSf9vhRySfYvLngO0hbS5i9gY0T
-	 m+Ezci5S1BwEoySY8VoeZShMEvjwnDHkVxJFncdQcF01Uks45KQcotKDedl+WefS3y
-	 3eQ5dg6Ri4WY41UlvQRKv17bOAcu9kc+qX1YIEaxOZUmIbq2XIOX/mXVKLgiHZnAQv
-	 Nj4zn1JJ1o+Jw==
-Message-ID: <sashiko-outbox-189447@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 02/11] gpio: vf610: propagate return value to callers
-Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?UGVuZyBGYW4gKE9TUyk=?= <peng.fan@oss.nxp.com>
-Cc: linux-gpio@vger.kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20261029-gpio-vf610-fixes-v1-2-45b484b4c434@nxp.com>
-References: <20261029-gpio-vf610-fixes-v1-0-45b484b4c434@nxp.com>
- <20261029-gpio-vf610-fixes-v1-2-45b484b4c434@nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 29 Oct 2026 13:57:45 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=WnwBYyqL
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793283485; x=1824819485;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=iUgkTmbEVGLMzWydqtXX3ASQZZhoDtXfz4hj/j8HhZA=;
+  b=WnwBYyqLX6348L1TkZwaBhMJ+UFGQhAE7O7ry2Pugr4jcd/yMOLGj+W0
+   G8O1dlS7vJOq/0Kk8Z/WCuh5RhXarcD8ywzCvwSVmeMs+9qwsE/YV5faD
+   y5yqGYGDWkfXnX2XoNJzezMOIlgAAK28jMl2bgTIbnkCv6vwJQ3TSf58/
+   cJa0L//kYrk9QER5UcmAmKsHEG9yxIpUZ/PX/bohtFHO49gB10rmrwlwR
+   XngYIwQsm+ioU74E3rnLtHu+G70Rlkuyyd5ocpylI+Ij/J+z6e/ff64E0
+   EnXHUkE7a/MD71qXn4ZA1Midnh6NJN8RHrO8NU+vk/Dpt8fCoSHVqUmfs
+   Q==;
+X-CSE-ConnectionGUID: Ghrd7BdnSeq8Nlovq1dIsw==
+X-CSE-MsgGUID: +LNnoJiRRuSqOYv0+j57Cg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11949"; a="1920070"
+X-IronPort-AV: E=Sophos;i="6.27,184,1787036400"; 
+   d="scan'208";a="1920070"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2026 07:18:04 -0700
+X-CSE-ConnectionGUID: T8QAYLthTXiOO95NU/4lBA==
+X-CSE-MsgGUID: hFAuv5gvS4KywM5Cg6kQPw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,184,1787036400"; 
+   d="scan'208";a="5148330"
+Received: from ncintean-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.129])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2026 07:17:57 -0700
+Date: Thu, 29 Oct 2026 16:17:55 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: James Hilliard <james.hilliard1@gmail.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Raul E Rangel <rrangel@chromium.org>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Tony Lindgren <tony@atomide.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Richard Genoud <richard.genoud@bootlin.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Jacky Huang <ychuang3@nuvoton.com>,
+	Shan-Chun Hung <schung@nuvoton.com>,
+	Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Timur Tabi <timur@kernel.org>, linux-kernel@vger.kernel.org,
+	linux-serial@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v8 2/6] serial: serialize asynchronous write wakeups with
+ the port lock
+Message-ID: <auNVk_Y8iiAXyFa3@ashevche-desk.local>
+References: <20261029-submit-serial-8250-dma-cancel-v1-v8-0-3fd56ba352ed@gmail.com>
+ <20261029-submit-serial-8250-dma-cancel-v1-v8-2-3fd56ba352ed@gmail.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -59,109 +98,85 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261029-submit-serial-8250-dma-cancel-v1-v8-2-3fd56ba352ed@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] gpio: vf610: vf610_gpio_irq_set_wake() breaks GPIO wakeup on Vyb=
-rid SoCs
---
+On Thu, Oct 29, 2026 at 01:36:58AM -0600, James Hilliard wrote:
+> uart_write_wakeup() expects the UART port lock to be held. Several worker,
+> DMA completion and interrupt paths call it without that lock, including
+> indirect calls from uart_handle_cts_change() and the transmit helpers.
+> 
+> Take the port lock around these notifications or their transmit helper.
+> Keep sleeping SPI and regmap accesses outside the locked region, and keep
+> the FSL LPUART completion lock held through its wakeup. Acquire the port
+> lock after releasing private channel locks to preserve the ordering used
+> by UART callbacks. In the MUX timer, publish available FIFO space under
+> the port lock and keep the hardware FIFO-drain wait outside it.
+> 
+> Use IRQ-safe locking in the Atmel RX and TX tasklets and SB1250 termios
+> path, since their interrupt handlers now acquire the same port lock.
+> Preserve the caller's interrupt state when releasing those locks.
+> 
+> On SB1250, lock modem-state updates after reading and filtering the change
+> status, and wake modem-status waiters after unlocking. Take the TX lock
+> inside its service routine so RX-only interrupts need no acquisition.
+> Keep that lock across x_char handling, FIFO consumption and the decision
+> to mask TX interrupts: a writer must not enqueue data and enable TX between
+> the empty-FIFO check and the interrupt-mask write. Each TX invocation sends
+> at most one character.
+> 
+> Serialize CLPS711x TX servicing and its interrupt-enable state with the
+> port lock. Disable TX interrupts without waiting in stop_tx(), since a
+> threaded handler may need that same lock. Have an already queued handler
+> leave stopped output untouched, and drain it outside the lock during
+> shutdown before the transmit FIFO can be released.
+> 
+> SCCNXP handles interrupts under a controller lock which its UART callbacks
+> acquire with the port lock already held. Collect the ports needing wakeups
+> in an unsigned long bitmap while servicing the controller, then release
+> that lock before visiting the set bits, taking each port lock and
+> rechecking the wakeup threshold. Removal drains the IRQ or timer before
+> unregistering the ports.
+> 
+> This serializes write notifications with port-locked serial-core state
+> changes, allowing readiness and transmit-storage reservations to gate the
+> notification without a check-versus-shutdown race.
+> 
+> Cover DZ TX servicing and JSM Classic modem notifications as well. On
+> DECstation ZS, acquire the port lock before the SCC lock and notify writers
+> after releasing the SCC lock. Defer normal TX restart after console output
+> to a worker, since console output can already run under the port lock.
+> Check transmitter readiness before consuming another character and drain
+> the restart worker during shutdown and removal. Release Lantiq's hardware
+> lock through the transmit helper's completion hook before notifying the
+> line discipline.
 
-commit 4cb6078cbfdf301b9f65c4307b8d2ea1ba2ec0b8
-Author: Peng Fan <peng.fan@nxp.com>
+...
 
-gpio: vf610: propagate return value to callers
+> static irqreturn_t serial21285_tx_chars(int irq, void *dev_id)
 
-This commit updates vf610_gpio_irq_set_wake() to propagate the return value
-from enable_irq_wake() and disable_irq_wake() instead of unconditionally
-returning 0.
+>  	struct uart_port *port = dev_id;
+>  	u8 ch;
+>  
+> +	guard(uart_port_lock_irqsave)(port);
 
-> diff --git a/drivers/gpio/gpio-vf610.c b/drivers/gpio/gpio-vf610.c
-> index adfa2c2d5873d..44b846ff1b936 100644
-> --- a/drivers/gpio/gpio-vf610.c
-> +++ b/drivers/gpio/gpio-vf610.c
-> @@ -188,13 +188,14 @@ static int vf610_gpio_irq_set_wake(struct irq_data =
-*d, u32 enable)
->  {
->  	struct vf610_gpio_port *port =3D
->  		gpiochip_get_data(irq_data_get_irq_chip_data(d));
-> +	int ret;
-> =20
->  	if (enable)
-> -		enable_irq_wake(port->irq);
-> +		ret =3D enable_irq_wake(port->irq);
->  	else
-> -		disable_irq_wake(port->irq);
-> +		ret =3D disable_irq_wake(port->irq);
-> =20
-> -	return 0;
-> +	return ret;
+Why _irqsave?
 
-[Severity: Medium]
-Does propagating ret here break GPIO wakeup on Vybrid (VF500/VF610) SoCs?
+>  	uart_port_tx_limited(port, ch, 256,
+>  		!(*CSR_UARTFLG & 0x20),
+>  		*CSR_UARTDR = ch,
 
-On Vybrid platforms in arch/arm/boot/dts/nxp/vf/vfxxx.dtsi, all
-fsl,vf610-gpio controllers (gpio0 through gpio4) inherit mscm_ir as their
-interrupt parent:
+...
 
-arch/arm/boot/dts/nxp/vf/vfxxx.dtsi:
-	soc {
-		#address-cells =3D <1>;
-		#size-cells =3D <1>;
-		compatible =3D "simple-bus";
-		interrupt-parent =3D <&mscm_ir>;
-		ranges;
+Same Q everywhere (it might be legit in some cases,
+it might be too strong in others).
 
-In drivers/irqchip/irq-vf610-mscm-ir.c, vf610_mscm_ir_irq_chip sets neither
-.irq_set_wake nor IRQCHIP_SKIP_SET_WAKE:
+-- 
+With Best Regards,
+Andy Shevchenko
 
-drivers/irqchip/irq-vf610-mscm-ir.c:
-static struct irq_chip vf610_mscm_ir_irq_chip =3D {
-	.name			=3D "mscm-ir",
-	.irq_mask		=3D irq_chip_mask_parent,
-	.irq_unmask		=3D irq_chip_unmask_parent,
-	.irq_eoi		=3D irq_chip_eoi_parent,
-	.irq_enable		=3D vf610_mscm_ir_enable,
-	.irq_disable		=3D vf610_mscm_ir_disable,
-	.irq_retrigger		=3D irq_chip_retrigger_hierarchy,
-	.irq_set_affinity	=3D irq_chip_set_affinity_parent,
-};
 
-When a consumer calls enable_irq_wake() on a Vybrid GPIO interrupt, the call
-chain irq_set_irq_wake() -> set_irq_wake_real() -> vf610_gpio_irq_set_wake()
-calls enable_irq_wake(port->irq), which invokes set_irq_wake_real() on
-port->irq in kernel/irq/manage.c:
-
-static int set_irq_wake_real(unsigned int irq, unsigned int on)
-{
-	struct irq_desc *desc =3D irq_to_desc(irq);
-	int ret =3D -ENXIO;
-
-	if (irq_desc_get_chip(desc)->flags &  IRQCHIP_SKIP_SET_WAKE)
-		return 0;
-
-	if (desc->irq_data.chip->irq_set_wake)
-		ret =3D desc->irq_data.chip->irq_set_wake(&desc->irq_data, on);
-
-	return ret;
-}
-
-Because vf610_mscm_ir_irq_chip lacks both IRQCHIP_SKIP_SET_WAKE and
-.irq_set_wake, set_irq_wake_real(port->irq, 1) returns -ENXIO. Previously,
-vf610_gpio_irq_set_wake() ignored this and returned 0, allowing
-irq_set_irq_wake() on the child GPIO IRQ to set IRQD_WAKEUP_STATE so that
-suspend_device_irq() left the GPIO pin unmasked while port->irq remained
-active as a chained interrupt.
-
-With this change (and after the follow-up commit 614715b30c6f ("gpio: vf610:
-simplify with irq_set_irq_wake")), irq_set_irq_wake() on any Vybrid GPIO IRQ
-fails with -ENXIO, preventing IRQD_WAKEUP_STATE from being set and causing
-suspend_device_irq() to mask the wakeup GPIO interrupt in PORT_PCR(n) during
-system suspend.
-
-Should vf610_mscm_ir_irq_chip also be updated to set .irq_set_wake =3D
-irq_chip_set_wake_parent (or IRQCHIP_SKIP_SET_WAKE) before propagating this
-return value?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261029-gpio-vf610=
--fixes-v1-0-45b484b4c434@nxp.com?part=3D2
