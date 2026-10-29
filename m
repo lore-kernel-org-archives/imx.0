@@ -1,67 +1,67 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.10
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793283581;
-	b=sRJac4pN+oAUUqDqVDf4yfAYxzE9ljxfIfazfKIcgSzveV0dypzI4bCmmpdfJL8sCLuJ
-	 ZZtB4gVcZvnrwhJj8vXH1fSuqIxE19xJwXXO+3WROZvTFSkmibGesQmGri0FXdBth8R6e
-	 rcnWG3Cf5tBpLR20h/Yp2GJV6NQLDX+CG23Qkez7so1JTVQPMtxPP9Ml2nLzZnv5MPUPk
-	 e0Ik01tT23bWQySDOJO3SWfyDjEYvEW4QnMesX2IvmA1fxW3g2Wpwyw/M4RJpcxWPIFzB
-	 +9RQ6WK4iWj8OnAuUsxxCXc5kGUVZNEdEGN6+GKqtgHl9xC/v3rfkFciFz8VuJJJBww==
+	t=1793283744;
+	b=ih0w8LEhxOkXCLovXtLuoZ4C4QSo6rDeop8b+7LMJplrbNS7SPf2npYnJhdJaef7UWJO
+	 6I9/5zllnyhr7E26iPl2ihO/le8MKIXtTwf6QEt/NnIYnxEqzcQuvI/l5VlC2WjXILjzs
+	 8CDJR6+GY+xmC8odjQHQ6AxujvYg4/pi/UZ1H6ArWzw2emUuyORnfRGmC8jmoljrTzxW9
+	 29/6TX/J2ceuwBnFxn3om7C7fpgAh/h9h8R7SJ19pwrSk4vh+OvTRYgjiVmKUQjGnLSub
+	 m/nvPNftv/mHll8Xre4AC4wADtdEW1T4kl/PFsRcTLiDsb+lhUSBUGYadwJrYIm6ndA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793283581;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793283744;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
 	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
 	 Subject:Message-ID:References:MIME-Version:Content-Type:
 	 Content-Disposition:In-Reply-To:Organization;
-	bh=0t7g2WC+b9FztvwqiERlUGDT4mF51ROculYuxl9U52o=;
-	b=Qq5HyNPSMJuBVDR7SE2AAH8XJmzOvBZFNrlOBZqPdu7kDqENZLEI4czWfgTBy+IQsQK8
-	 u1Ud7EC/s6IJwX5rWFblyAUsX3yuLACG45SkFvlw4BwqYJa/l7EX5sopTuzJ8JLyUgP+N
-	 HIy9C7QZbkC2tY/Yzy5Ju4ttgps/l+A5HQof8x1Ez2PkNCYZfXG3QCjv72GQittbAeUJE
-	 Gdfj+uSXcX2++f3cOXBUskDWtdhb6P8wOp0xzGaVqPO+dYCzo3cJ7thNeUuEsUjxMLpL6
-	 1G5CMahBboKY0we6/jzO/aCz27otqUDRg3o94/R/ZaYSFlVzPmrXtm41eBEJYHLyqhg==
+	bh=EgkPHMHLTM0OJa/gTROG+9KF0iCc6Eu3UkCLei8s4MQ=;
+	b=Iy3CVHwgWwbU6TiYFZ7r8y8G9wOHvEF1INLRnAhOPIQKoWvf1NwKFoHehpFAJyHy9zFW
+	 eBdbNbq7FCu4mx6RmnmyLJEmM7DSJqmpGEbGXv/K+6YLXYhTVsllXRa5nNMqxbXJFdDMK
+	 eK/+k/SIRWEw85ICr8DxhzCutCX5DPD3dDZjsRridYkqCyQ/rZJkXY/P8xLflG0Y7c97l
+	 1dO2MlkoLDpQx8hi7TVEtIx1NWZysUeY+vw3hL5bC5qOt+1ry9YMAzK/r0jBqjBre7xuz
+	 /Cl7h/DtfOE3reWKFQhhY+Sy3rMDdTKm+rSWIrmcFfIsgh3Vwvgf9kby/SFhhv3l3rQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.intel.com;
 	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=IoDqCnzs;
-	arc=none smtp.remote-ip=192.198.163.10
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=h+dcdu2Y;
+	arc=none smtp.remote-ip=198.175.65.10
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80771606B6CC
-	for <imx@lists.linux.dev>; Thu, 29 Oct 2026 14:19:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 80771606B6CC
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 102E3606A910
+	for <imx@lists.linux.dev>; Thu, 29 Oct 2026 14:22:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 102E3606A910
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=IoDqCnzs
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=h+dcdu2Y
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793283580; x=1824819580;
+  t=1793283745; x=1824819745;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=Ks0QnF665NpX8S1B9/P4xaJFMSaRvnc+QpU5Vun1o38=;
-  b=IoDqCnzs5Ta+IEfZkgx/ek5NltrkDcYcJ3VQCGvY0M3L4UgD65O4xdhU
-   rwAimCszQa3sRsY/II53KWrfc7mJoQLdV0CNGbXxUvAmQ4r0IpCHKS2y1
-   c3a3kz9odCntcybB79B3IXhY38PlBILHkHhYW0FNPvbiHEim+EdiDjMRS
-   lQjftt6TKiVXjJBroOqNUgc2lAMtJ2Uy/yitsve7b07bWVt+ZZX5pdwhW
-   JQeARvH4/ATGcOPwriCSMKVB0iOgnonHaOUq6j33EXM+z+lCGv2o9RVFJ
-   ynNFlnFh3Ru0YVQbtvjKOYuSObdcCRfCenFa4/jMdTo3vqtPtasMjQv3h
+  bh=MgJL8MuqM9l4uyQAiqFvrF6SdMQF/UIm279xyhJToOY=;
+  b=h+dcdu2YZK6b5J6mUJwDTIAmyZORGmTPxOVuXwVp2uPf9gins7Smm3aC
+   BGB7wWArcaBJoCxMaFeZGS2I+ebdC9/a9fs3bYCnM3h9qKlHfufoEGN3R
+   SWP0X36IRWYCL2QXasrk6KK6PwdDo7syorcBSw3JSHC0oCmApmkm9IDvG
+   jkXMQiV2oVmKZZUj5SmVtIgq9SLFT34XOJNnS91hANwOcjyXqvKqciqRI
+   dF/uLqNqrjTKUYEAbp5JVP6IQG8/5sBnpZAN+IjwT0YPtLoeFEDPb+PQm
+   0nyQfwiMuIXUr7lWVF879TPgpUBECmKhzyIutsES4IgIyIrM8HEK0sAgk
    A==;
-X-CSE-ConnectionGUID: k5y99DqmSg+r/uqLICDFkQ==
-X-CSE-MsgGUID: 5LG4qnYUQee+/KJ/kiTxqw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11949"; a="1934272"
+X-CSE-ConnectionGUID: /eBuQILIT4mq6G2QVfeqnQ==
+X-CSE-MsgGUID: Q2It8+U1S8mtgR79XZwd6g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11949"; a="1925620"
 X-IronPort-AV: E=Sophos;i="6.27,184,1787036400"; 
-   d="scan'208";a="1934272"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2026 07:19:34 -0700
-X-CSE-ConnectionGUID: QyJOQ8qDTY+boqh3NJr+/A==
-X-CSE-MsgGUID: 7B3JJIPERS6eyiaI7RVCSw==
+   d="scan'208";a="1925620"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2026 07:22:24 -0700
+X-CSE-ConnectionGUID: yr/uZ8XsRG2FWMf2URIasA==
+X-CSE-MsgGUID: egHmc43mSROKoKZDsLbkbQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,184,1787036400"; 
-   d="scan'208";a="5119312"
+   d="scan'208";a="5261220"
 Received: from ncintean-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.129])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2026 07:19:28 -0700
-Date: Thu, 29 Oct 2026 16:19:25 +0200
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2026 07:22:16 -0700
+Date: Thu, 29 Oct 2026 16:22:15 +0200
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: James Hilliard <james.hilliard1@gmail.com>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -85,11 +85,11 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Timur Tabi <timur@kernel.org>, linux-kernel@vger.kernel.org,
 	linux-serial@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
 	imx@lists.linux.dev, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v8 4/6] serial: 8250: drain canceled TX DMA before
- reusing its buffer
-Message-ID: <auNV7Vco5O3vVwRH@ashevche-desk.local>
+Subject: Re: [PATCH v8 5/6] serial: 8250: retire canceled RX DMA before
+ reusing the receive buffer
+Message-ID: <auNWl_thBnE8JqBE@ashevche-desk.local>
 References: <20261029-submit-serial-8250-dma-cancel-v1-v8-0-3fd56ba352ed@gmail.com>
- <20261029-submit-serial-8250-dma-cancel-v1-v8-4-3fd56ba352ed@gmail.com>
+ <20261029-submit-serial-8250-dma-cancel-v1-v8-5-3fd56ba352ed@gmail.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -101,53 +101,90 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261029-submit-serial-8250-dma-cancel-v1-v8-4-3fd56ba352ed@gmail.com>
+In-Reply-To: <20261029-submit-serial-8250-dma-cancel-v1-v8-5-3fd56ba352ed@gmail.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Thu, Oct 29, 2026 at 01:37:00AM -0600, James Hilliard wrote:
-> uart_flush_buffer() resets the transmit kfifo before calling the driver.
-> serial8250_tx_dma_flush() terminates DMA asynchronously and clears
-> tx_running, allowing a new write to replace tx_size while a detached
-> callback has not yet run. That callback can then consume bytes
-> from the new transmission. Reusing the reset kfifo can also overwrite the
-> source of a transfer that has not stopped yet.
+On Thu, Oct 29, 2026 at 01:37:01AM -0600, James Hilliard wrote:
+> The generic RX timeout path pauses a transfer, copies its data and
+> terminates it asynchronously. Clearing rx_running at that point lets a
+> new receive reuse the buffer and cookie while the old callback has not
+> yet run. Inspecting the new cookie cannot distinguish that callback from
+> the completion of a new transfer.
 > 
-> Reserve the flushed FIFO storage through serial core before returning
-> from the flush callback. Keep tx_running set until a worker synchronizes
-> the terminated channel, suppressing old callbacks and new submissions
-> during that interval. Return the mapping to CPU ownership before releasing
-> the reservation and waking writers. Normal transfers continue to use the
-> FIFO directly.
+> Reserve the receive buffer until a worker has drained the canceled
+> callbacks. Keep FIFO access separate from callback retirement: after a
+> successful pause and termination, clear rx_running while rx_terminating
+> prevents another descriptor from reusing the buffer. Deliver the paused
+> data before allowing the interrupt handler to drain the FIFO through PIO.
+> Normal retirement only releases ownership and leaves subsequent receive
+> handling to the UART interrupt.
 > 
-> Reuse the locked completion processing after retirement, including OMAP
-> delayed register restoration and transmitter-empty handling. Take a runtime
-> PM reference around worker UART accesses and drain the worker before
-> releasing the channels. Shutdown releases the FIFO reservation after
-> stopping DMA and unmapping its source. Serial core keeps writes and wakeups
-> gated until startup or resume makes the port ready again.
+> Preserve the normal completion-path LSR read and gate DMA resubmission on
+> the receive interrupt enable, so stop_rx() prevents another transfer while
+> the status read retains its existing side effects.
 > 
-> Track a flushed FIFO separately from the transfer length. If termination
-> fails, retain the reservation until normal completion and account the
-> completed bytes without advancing the reset FIFO. After successful
-> cancellation, process a zero-length completion once callbacks have drained.
+> Reject new flush work and PIO receive handling during shutdown, including
+> late Intel MID DMA timeouts. Stop and drain retirement work before freeing
+> the channels and buffer. Once RX has stopped, allow the idle flush used by
+> DesignWare LCR recovery during shutdown. Clear the shutdown guard before
+> startup configures the UART and tests its interrupts.
 > 
-> The race was found by inspecting cancellation and restart while preparing
-> H616 UART DMA support.
+> Check pause failures before accessing the buffer. A successful pause is
+> the quiescence guarantee, even when a provider still reports IN_PROGRESS.
+> Also accept DMA_COMPLETE after a failed pause: completion can stop the
+> channel before its callback acquires the port lock, leaving nothing for
+> the provider to pause. Retire that completed transfer normally.
 > 
-> Retain the tx_running check in both completion callbacks. Releasing the
-> reservation relies on the DMA provider draining detached callbacks when
-> dmaengine_synchronize() returns; provider callback-lifetime fixes supply
-> that guarantee for controllers which previously lacked it.
+> A failed pause with an incomplete cookie is ambiguous: hardware may have
+> finished while its completion interrupt is still pending. Canceling that
+> descriptor can discard the entire completed receive buffer and switch
+> permanently to PIO. Retain the transfer and retry pause and status in the
+> worker, with receive interrupts masked to prevent a timeout interrupt
+> storm. The worker copies only after a successful pause or reported
+> completion, then terminates and drains the old callback before reuse.
+> The pending-pause guard keeps callbacks from copying or resubmitting the
+> transfer concurrently. Retries sleep outside the port lock and stop when
+> shutdown takes over. A provider which never pauses or completes retains
+> RX ownership until an error or shutdown; a timeout alone cannot establish
+> that discarding the buffer is safe.
+> 
+> On DMA_ERROR or termination failure, let the worker stop DMA before
+> handing the FIFO to PIO. Keep the requested enables in the existing IER
+> shadow and filter hardware writes during pause retries and recovery,
+> including termios, RS485 and overrun-backoff changes. Apply the current
+> enables after retirement so stop_rx() and shutdown remain effective.
+> Hold a runtime PM reference around worker register accesses and keep RX
+> on PIO until reopen after a confirmed error.
+> 
+> Abort the DesignWare idle sequence when RX cannot be stopped. Allow
+> the empty-FIFO timeout workaround once DMA has released the FIFO, including
+> while callbacks retire. Exclude FIFO resets during RX DMA recovery. If the
+> provider still cannot terminate the channel in process context, retain
+> its buffer and leave receive interrupts masked.
+> 
+> For OMAP, publish the shutdown gate under the port lock before the final
+> RX flush and interrupt masking. Take the RX DMA lock inside the port lock
+> in the completion callback, and serialize the runtime-suspend flush with
+> the same order. Drain the UART IRQ before releasing DMA state so an
+> in-flight handler cannot retain up->dma across its release.
+
+Can this patch be split to smaller logically isolated (to some extent) pieces?
 
 ...
 
-> -	bool			shutting_down;
-> +	bool			shutting_down:1;
-> +	bool			tx_terminating:1;
-> +	bool			tx_flushed:1;
+> +++ b/drivers/tty/serial/8250/8250_dma.c
 
-What is the meaning of bool XXX:1? Have you checked with `pahole` the result?
+>  #include <linux/tty_flip.h>
+>  #include <linux/serial_reg.h>
+>  #include <linux/dma-mapping.h>
+> +#include <linux/delay.h>
+
+When adding a new header to an unsorted block, try to squeeze it the way that
+you get the longest ordered chain (yes, interleaved with some unsorted
+elements, but still).
+
+>  #include "8250.h"
 
 -- 
 With Best Regards,
