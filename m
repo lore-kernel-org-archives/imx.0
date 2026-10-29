@@ -1,104 +1,126 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.47
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793289161;
-	b=UlNtAhpyJa8FgSO9T7cMcEOnFQ/TUIlAbDQ8wtpUze3GdAGnPn5vaU8ea8aEjASEM9bh
-	 xbq4/y+p8CrSP/nAlh7kN3QHST5jDB1nxNP5D38NstOOOOr3PIX00WNOOkEQ/kJ90SQG1
-	 O3w+sKPTMBBrrY2rsoDGVpg/hLBaLPxgRhjVBBdJK4vMiZDL63oxeiWY97GiWeLiQ3baw
-	 T6/CK1N64h5KmwEKBlz6qxnd7RJyksTZDQR6vglgxFyi9deH6JmJ0pdYgEgif4kYuM2UD
-	 1fQ6ExrpfdxeZBfm0Kbq1dcsGCEM++sj5pA1hyei23mugEBzeoJid3EAq/Ivypp+RLg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793289161;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=ErqmRoNtosEyKipfBKvwtNRAfh9+mgslrcK6rd69LR8=;
-	b=SKGvCEeyCD74A7rVo2VVAT756RyuBhDcLT5pCbLNMYOypN3d+/yOMb/X/2JIMlx6sR5y
-	 4MSHDIdtJTjR8p40XX37mzw0bh9+80XRYuVifYk+4cAyZIMlRyxRwJJjfxxaQLAkFPeO1
-	 Z7nP40HpJHKr+28WLnyjJROucf0GQYq0bKJm9nlGsXm9u7qGZg20HPG4tFMN9eXSc9jVu
-	 N3dA8EQ42iHtrpRG5xdkoUpAG2P4yOig0pL7K+TV0YjAjlb9Z9qPMijOImKaJ+tP9lj3+
-	 wCoUeZ0npdmASDD2pb81TVzs01w6iQ7tAKoRNYFi2RbQnS2YBpvEwYajl681pmU4uxA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=lNXzfe6y;
-	arc=none smtp.remote-ip=209.85.128.47
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.84.60
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793291468;
+	b=IK3ujYqAs8R9bcbGBmTVgSo+ZnydiUW7GNBlBKwzTGphuz91oL1sD+t/LphV8pgqyr9M
+	 mMtY2oWRI9shw5CELqM3qM1cpwznIrmV2lkqDmkovPjj8HdRG2+a5zOy1yAvfqk6JJUeg
+	 aR9NXSWabByAVsx3QBuHI9z0bJXtHAClVqaPqjb1r0cvKRwgODtOAgzTZB+q1cgjbWcSp
+	 i/Qqj0KHLC769vEgrxlho7orM5gOvlMTjuhg7sZSpFlad6D4174QesG5UOD9y3sxtD0i7
+	 gCFeJv6H2lTg2gCfFXzwuzM5hMPyNO36ZR1oqOikDxMlgEZXaGnMc2meJeC6xC+4N0w==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793291468;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:Content-Transfer-Encoding:Content-Type:
+	 X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=e9PNCwj/XIJLcmHgICx+5abEvtPA2lHup7xvhFuDMGQ=;
+	b=DQJzUOaajNfuFnuBIabUNH86GYpF+mWtidqC2aetSLfJyNWz1/PHm/0NFH9FypQnb1kM
+	 nVp7U08BB1/9g1wDGrqUlWedpETje0aeKDv/IS1j4eW/e159kFKPpXEOvHmX49svvIpNo
+	 vKnfDLj54XYGfOxhiYUTV+21brjqFgEE4QIX2Foq6+Zp5Zfg+See5jvaj6Lu8XA5XJvnb
+	 074RJOOH7Hcr/Z4BoKiVXZYPSolvPG3BzFq3dbM/6UUEiVA509X9FkXCW6PqZaRBa7DwN
+	 ysNtAYqZdZLNeZCXYCTkP0StaJaYB9gWs2hntntIitDKVZDurWwVpZdSoa3WqwkNGrA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=oss.nxp.com;
+	spf=pass smtp.mailfrom=oss.nxp.com;
+	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=JoarM11I;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.84.60
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010060.outbound.protection.outlook.com [52.101.84.60])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FD68606A31E
-	for <imx@lists.linux.dev>; Thu, 29 Oct 2026 15:52:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2FD68606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40E79606A31D;
+	Thu, 29 Oct 2026 16:31:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 40E79606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=lNXzfe6y
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4a5b2be99a8so19623825e9.2
-        for <imx@lists.linux.dev>; Thu, 29 Oct 2026 08:52:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793289158; x=1793893958; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ErqmRoNtosEyKipfBKvwtNRAfh9+mgslrcK6rd69LR8=;
-        b=lNXzfe6ykVVBqMT74FByt/wF+FyYVSZ2Cw2CWQqkIhLZ3xBu0Bpz1EL4F7kV3pzCVJ
-         tNpyJdjTTkQZaPxgfZPKon/CuDbLH9yZyNKKycdicibrJybp2d8LM7SKMbWzrghCXxqP
-         rT1kgHFMp9zAjDFofLWfbbh4yIWIn6561O2r6SwQ8E0n0JGBzxmEJGtbppVE0lni2t13
-         uSy6nQDwcOjhqFeqjfq3LA8+e3vvPSltW+Vm7fNBsJcP7hccsNd4rEGrGkvqOO7XhClv
-         nerzj2vidFBWpdFvz1jSWAgaNSKfXI+R771ov0dG5Wuw3SuOZRq/x+oEW3sOYTKHJYw/
-         C7+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793289158; x=1793893958;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ErqmRoNtosEyKipfBKvwtNRAfh9+mgslrcK6rd69LR8=;
-        b=h0ifU2oJvWk9IFlo/pzog//psKmbjy0fASPBu++5Wda4aWWYzmIDRVFCvJf1Vq9QGT
-         FvFdtzGnSJMfQ2NtLPdh20zSYrXlUKfI/XvR5vTdZhKnfB8RsECvV/9nc1N0B+EJ/61b
-         26H2IJg9BhjM+XIkRtfblqKWxHV6b/vVCkWr318NrYXlCdiV8NM1pEMLOwfsk+bC5ILd
-         tRy2V+O8n3Gu2FKj4xRbtCyVfewOvX7Fy3+cnSjuJDCEQOki0aVP7SQi5bwbOGp/dV/T
-         HiRt8EEBi8JJNy/yj5HNVpPiPc/ciSYxwmclyq6etz8FJd9mDXvBx36UifegEIahzwsM
-         iDgA==
-X-Forwarded-Encrypted: i=1; AKwUvBxy0+wKqArlJBCTO4ru0jRAGtuNUKUv0T75Rj/EY8r4/oOs/gABMfd0UgI/fwguH8tuTvc=@lists.linux.dev
-X-Gm-Message-State: AFq9FYJjGUkAq0wLuw/YuwwDTBZa3n6ZVeiuWI4ttZWg6R2sfWbzp2Wk
-	iY3eFHB34PVLAXXTLVa1qVtL9+WWZtmA9eRJSvoY0yfjfM/lnNlWyvcj
-X-Gm-Gg: AYBFou2da0kZ7F4Zh+oJX+61ppNuOG6B5b4HrJRLJ1RYwBYAQwx4uO7osg0g9+qT/Sc
-	pTg4Gq3q7zae1O/S4NCSLcLc992dQ9RIXgieU8fFrpFOtlWEc08iAQN+SUsudaVxLGpr1xEGJR1
-	rQm+H8TXqkvuZ9jNR2qly3lSHiGhJvGkWDWog17NVvP2yOhpiZwpekZ7SaUDwYeAHUWuAzHefxi
-	Oy4UYLxoV3FR0vVRCrqma3N67+vVLZLg5XtwJ6MGdhdXjIQPCGRpKzWiN9DIuCWowyXVqOvuWmy
-	IuFUkRb9gjlUiEZtA7HKQjZtxYUFC/NOtckp4a/xVlv3c6l58GdNto3Shdw64yGvRgKhC8bHcd0
-	18YZAjX4pKQmI2xSIPNPSt22eK/Dr9qhaPE9k8rUF501CQo1Slsj3UvyXeiNHK+nEw3mmJkXKgB
-	hFqiapf4mejee0fCtBDOj+wb64/lNqr8SS2Yi06vQU9BMCWWDYnHF73OI+yPE5pMyEwUnLgHfpG
-	bVJzgQUZ4YWCK2PWhu+PbpZjGRVSFK/0MueYrnxCLTPANlRcq7w299tIrOi4XGIZR4TGq0FM9w/
-	/lQTQKV/sQ4Vh4m1cEtC2n4I4diSKxYmTQRggCBtIAvykkH9rKmYLZp2bRBLSjiYP2ezPtkLUPk
-	ncYjXZ0xXH4aXsgaJLOsl5xPUrzTJLYVlH5Gao+C8c4FDqn65730UDQg=
-X-Received: by 2002:a05:600c:154d:b0:4a3:5a42:b2a4 with SMTP id 5b1f17b1804b1-4a96720266bmr144690445e9.12.1793289158295;
-        Thu, 29 Oct 2026 08:52:38 -0700 (PDT)
-Received: from ernest.hoecke-nb (static-2a02-1368-6200-2fbc-d3e8-e0a5-7e8a-a15c.cust.swissbackbone.net. [2a02:1368:6200:2fbc:d3e8:e0a5:7e8a:a15c])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e3ebd4d8dsm36538183f8f.36.2026.10.29.08.52.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Oct 2026 08:52:37 -0700 (PDT)
-Date: Thu, 29 Oct 2026 16:52:36 +0100
-From: Ernest Van Hoecke <ernestvanhoecke@gmail.com>
-To: Frank Li <Frank.li@oss.nxp.com>
-Cc: Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Kieran Bingham <kieran.bingham@ideasonboard.com>, 
-	Francesco Dolcini <francesco.dolcini@toradex.com>, Dave Stevenson <dave.stevenson@raspberrypi.com>, 
-	devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
-Subject: Re: [PATCH v3 4/4] arm64: dts: freescale: imx8mp-verdin: Add
- mezzanine OV5640 overlays
-Message-ID: <dmtpajvbw7cfrda4msnjvorjt67tycvu7qbsio4irvdydsbxny@mxxqqwht7mzu>
-References: <20261022-verdin-imx8mp-hmp-camera-ready-v3-0-90a30b0b0d55@toradex.com>
- <20261022-verdin-imx8mp-hmp-camera-ready-v3-4-90a30b0b0d55@toradex.com>
- <atp-MEqHMT7F75qn@lizhi-Precision-Tower-5810>
- <zv4gir4qrx62cwyl47cypuk57q7ci4l2piml5cgchhiys2hyli@ubzeh3nw4itu>
- <atvCMGUsLXImGhxZ@SMW015318>
- <ww6nhvo5agqub65eunynauzwkpi7lr2ntbnqhn7xm4nq4hirtf@yceeas6ulqy3>
+	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=JoarM11I
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=YFcGcdLuRilahGmHTOlVeUEven84WEpaLKZjo2LNz9SOqE3SStZeBe76YyQMHC5RPkCjkWxpzK1uzPKSySr49HD9kRL/gBgP+7j17DlIIofMQNXvgTh5Abyhbbk06eZ3LA8wEUJ+1jh2R2+gsfAVyk9BLVgR+fquMQXIC0vC3n3FOLaeobxHBxkUXZJGOVh41qtQwP0RaQlj8uKwJ6igjSxNrqiSjA/KpXpaeDqRBMTZylLb5r5BPwpMue0a9dy3yAp4BVuOnuQ2j2mb16RVgqaTzjOiX0FVEEVUsxjVrEi6LVV08c2ZKo4uqv8rBBLu3yfJe1UFZTDGuKUheS4pFQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=e9PNCwj/XIJLcmHgICx+5abEvtPA2lHup7xvhFuDMGQ=;
+ b=SU63X+xS8D/Ie1j8dzN+T5quKU/SVBY8eJS+YLuFWDtnvm5CDwN04wbhIjZlSBpLVrV7dGIk8/p6ISqWJfsIhoaaBflp7v4ykvpi6O7ktllkOlqjtbm8GMkwiZPWTzhcsxYNRhaUJA1OyXYfTh5UysPEfjuGgWEpwtsXb2qON6m6ODc7xRt40Mpaiizywmpy5tUZLi0iObRSfImmFKUqGeZ4sjS80VPIlm+QHdeNDZkPRReb9QsK4mlxLnZAJkopGv8TnUj2p17v6eZ+NWm1nKBgV8PRhaTJyeQ02yFdko7Ou3p+7yoS/cgEeacVy0H6aViYTfzmY0Mmoqop+1Y1Xw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=e9PNCwj/XIJLcmHgICx+5abEvtPA2lHup7xvhFuDMGQ=;
+ b=JoarM11IFtkri4Sq++PddiCrRY03RhdV/zQMTeqDPLm6SUiuwz24S5Rw0kSj23f9DhAFyAgl6xPiHz4zY61tjRozMO3zCE+b/WPkvpQiZNCwe+ZtKnspfU67ZmtVABc4PemYRh5D5MU7FZZjA/FNhd9LN8D5L/5mbKv2TSk6+rduQSEDgDS+lbRv1NuKEZHTF/pBcS1UhsR5iJtR2MBryLwYH8PuUFEbDVePfkVc05XvRmzjS/VZp8dRGjc/eVKPTjaHwHns9RjteYtCmR+1GrEjuEf9yWrHr6mTyuKlaNAuzMTqH3S+GvfflC4VWm9JiggKxUL0W6AGMJl9VYtTFw==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from MI3PR04MB12438.eurprd04.prod.outlook.com (2603:10a6:290:76::14)
+ by GVXPR04MB10046.eurprd04.prod.outlook.com (2603:10a6:150:112::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.9; Thu, 29 Oct
+ 2026 16:31:02 +0000
+Received: from MI3PR04MB12438.eurprd04.prod.outlook.com
+ ([fe80::c715:c32:8bb1:b70b]) by MI3PR04MB12438.eurprd04.prod.outlook.com
+ ([fe80::c715:c32:8bb1:b70b%6]) with mapi id 15.21.0569.007; Thu, 29 Oct 2026
+ 16:31:02 +0000
+From: Frank.Li@oss.nxp.com
+To:
+Cc: Frank Li <Frank.Li@nxp.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Andrzej Kacprowski <andrzej.kacprowski@linux.intel.com>,
+	Karol Wachowski <karol.wachowski@linux.intel.com>,
+	Oded Gabbay <ogabbay@kernel.org>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Matthew Brost <matthew.brost@intel.com>,
+	"Thomas Hellstrom" <thomas.hellstrom@linux.intel.com>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Alex Elder <elder@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	"Joerg Roedel" <joro@8bytes.org>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Guan-Yu Lin <guanyulin@google.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	linux-pm@vger.kernel.org,
+	linux-usb@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	intel-gfx@lists.freedesktop.org,
+	intel-xe@lists.freedesktop.org,
+	linux-hwmon@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	iommu@lists.linux.dev,
+	linux-arm-msm@vger.kernel.org,
+	linux-media@vger.kernel.org,
+	linux-staging@lists.linux.dev,
+	netdev@vger.kernel.org,
+	imx@lists.linux.dev,
+	Rob Herring <robh@kernel.org>
+Subject: [PATCH 1/1] PM: runtime: change stub pm_runtime_get_if_active() return 1 when !CONFIG_PM
+Date: Thu, 29 Oct 2026 12:30:37 -0400
+Message-ID: <20261029163044.3062958-1-Frank.Li@oss.nxp.com>
+X-Mailer: git-send-email 2.43.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SN7P222CA0013.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:806:124::11) To MI3PR04MB12438.eurprd04.prod.outlook.com
+ (2603:10a6:290:76::14)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -108,98 +130,172 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ww6nhvo5agqub65eunynauzwkpi7lr2ntbnqhn7xm4nq4hirtf@yceeas6ulqy3>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|GVXPR04MB10046:EE_
+X-MS-Office365-Filtering-Correlation-Id: c82e6468-2843-47df-01b8-08df35da0568
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|366016|23010399003|376014|1800799024|7416014|6133799003|18002099003|56012099006|11063799006|10067099003|261028144727099003|261021123027099003|261021121427099003|261009221727099003|261009223327099003|261009223027099003|261009221227099003|261009220027099003|261026140227099003|261022105027099003;
+X-Microsoft-Antispam-Message-Info:
+	4U2r5HKVzQxL9XoVisHoci6To+0AW9AAvXPaojbd7wtkEveOtxf4pRaYQIwfn1xXpbJc6gOcisQqX27DDe4CMklkRdDsWZjrdNZprBwHVrFQ33HHkopPOidj4bcDw3sT0ydVHaoGu4/hKHrxwH3RKJkGJyOAt8G6YNsjnL6KHaqieXiXyhoGwFwQGJ0clKfNp/AdTCVa5TopdTTBuxT0/Etm8UYbbHet6w+5OWcfntpNB58eWl7YMhs8zIWyDxoP7eM3xexTyWyhJrE34GP4s6y04oTsRzAW9C2yUAp7KAfEwNMD9STAlsoO6GdmkNHLkEDVLCE84NRjTJjDloQMVqiHTizUEqAnPnCdX7qMeZoul9GoeHs/W2y+WTlxeopdaPomwggu02vL3GA7B0UbXwe9RIlrdcopX84e5QU2m0DDCnpyghXpwht81sRKkC9gWJfopSp0kyrwNbYtJIlrMsJX9GWSvgwWInpC28DOMCNn/OV73S9VHhH768pkUAsQRJ2P/vjheDO7kZgYzH/iVQw58utlS+V2+PXjGMPmvvwCKOxqTjRt4chPSWhBU3TwNfFCnz8/2Usc9k3/x0hB45O7uOUinkM2ZX/uSGgrzc1NLxCSce7R4xVcZ77hsS3/rEjFAt5NiKylycDAToYA+PsVRaHYtML996XFcMvYhMA=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(23010399003)(376014)(1800799024)(7416014)(6133799003)(18002099003)(56012099006)(11063799006)(10067099003)(261028144727099003)(261021123027099003)(261021121427099003)(261009221727099003)(261009223327099003)(261009223027099003)(261009221227099003)(261009220027099003)(261026140227099003)(261022105027099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?PdUJudLuzgndgMBrstFMTSOSKKpy8Nv9mfyTLu/Ct4I2/N7BogkX0SQuHiCe?=
+ =?us-ascii?Q?sdK+ls8AzCcW8JSPERpAMGTLhp94FxhqfDCAQ+h0FL8aJKJIReQzuITFuutc?=
+ =?us-ascii?Q?/7rVdtx/srYC8EPf+d6GiINcU9tMWX/9BTgsVS8W3OwpkMPDZ1wBfPJuXElJ?=
+ =?us-ascii?Q?1inKHOdvwGo1pNYH1m3+Z58oRgPQXV8XmZzOiccVlqDltuk8mGHYjzD/6hf0?=
+ =?us-ascii?Q?DpMcfC7FpXLWqqcDRf8RTx6HnawVm0j8iJztdOgr8ONdxHOBQmstayKJPxjN?=
+ =?us-ascii?Q?+UNIJk/sLuR2aPmF+TFaCbz9q9oBIGu6uRYTjNrsQkWQVAwXcpkkXzVaZ69o?=
+ =?us-ascii?Q?efwg8TCmsLO1aYed++3xiVqZGgCta3aPTZg9q9zz8pbS0m1qmM5eEakhOAP8?=
+ =?us-ascii?Q?o5qyhSKL9FIcxYSFg7UqGz02J9RiBdFzSH9BX7yDvLleKKyxCQ5eWh78QeoQ?=
+ =?us-ascii?Q?bAdy8ZH041AruPGFhFBF9LxvP+JoWY/Y17LSHuyIewYb2RQ34MNMrBw/wIrV?=
+ =?us-ascii?Q?VI+m/loG/XMlgfjuiJBKsP7tffnbBCQSehTEzBTc55MisdSpmnNUANvoBkbW?=
+ =?us-ascii?Q?izu/hCPp50Ll0UjEYLEHKh+JlkmB/VV/FBgrQNETkTNZMkNGmXlo3fzp/hJd?=
+ =?us-ascii?Q?izAvijIr68Pqk7WaqaCIUxmXsj4p132Y75UUcQXqh2G4xoS7j+36aC5RBgjp?=
+ =?us-ascii?Q?Bx1io2OSvS9fHoauIFnjZ31noz3X16WVh2XLvEQyZSB62ms1UsTaxfmRb/a3?=
+ =?us-ascii?Q?UFRTm8pZFvzQ/H32VKDV7dNN8eyzx8uDiMPms3zXbDv8vSfGEM1iOdeZtAoK?=
+ =?us-ascii?Q?tuzTZ+ApH0xf/tIRxNL4WMT7JNHDk8cELtuiLaMP8NA1YHwHQ+1SWkK859tk?=
+ =?us-ascii?Q?pwja07/Frse7aXYlEelpiNLIXKSBF3k0qstUay4XDAHVjxqyFXboIFK0IVI/?=
+ =?us-ascii?Q?ysPSD3p9HKKx1wn++5OmKqC6kD4Dt+CCrlHsadHwAnh5G9WH+4Ta2+hNdg0H?=
+ =?us-ascii?Q?yY1/I4xuQ1eoXvT2L4jQQBObH69hj0N4Fy07GqvH8hX8CNRmERStA9g5WGJe?=
+ =?us-ascii?Q?efc7Qdt7W/eVEM21UTwUHJRO/tU/uGqtPvnrJmr9h6aBf+bxAy/rVaC7jFII?=
+ =?us-ascii?Q?60ljuUHzNTbVayW6VtOEjH99ytHMsKp1mRR7z1LcTbXSPLsK8PxkzsnMwctc?=
+ =?us-ascii?Q?eOBUNKWQDn1+kjdHjpFaRQ41NGd8IqAKmfFrJIfXrWgYWt0bASvt5xTLjcP1?=
+ =?us-ascii?Q?LC6KS2MfwSBk2J3frSJQFiY/Os1oJS5MM8/g8fZVkVWvMX/eFJQkTSXQk9R4?=
+ =?us-ascii?Q?Z9yTKW0JalgGrGVS3bvM1lIK4S3iuhz5Uo6gR0Eh+FdVpmNoPr6M6+pWek+9?=
+ =?us-ascii?Q?qpwVe9VRnnlGAZ8/NLRA0nvY+NOA8RAorRwBQLbRrd0ON/XlYYmOZKd33mLS?=
+ =?us-ascii?Q?tcM/QAy/T6ZYlEXPpAvb98cIN5I3YsRLBwNWFPIAb39p+LWC0UM0wTlNs5+r?=
+ =?us-ascii?Q?43WJXGSOhpgKAe8KBaxN5Sh93ZwTz43sjCVO+q4inHsL8MHhQnK9nwOkNnPW?=
+ =?us-ascii?Q?GkcYlJMciRMHazX9A7ogE12SHKvnb7e8nxU8vSuv/Lx7XoagLWbFrr3OekDb?=
+ =?us-ascii?Q?45orQ8AmnO1FqBCqjz43zTbDKQmK0+ar2a/x8WCvdbB4SUAfZjjDi/3BFWWG?=
+ =?us-ascii?Q?bCAldjIcqidzJfcjHbUbgpvQDDmHobX5ob1mTAQwftkR8zRNdpipPzgjJdkw?=
+ =?us-ascii?Q?vnwQ1/4N0n3hGXPYeisgy6DrEjdE9IbAU4TKgXTgq9WJI37x7YTq?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c82e6468-2843-47df-01b8-08df35da0568
+X-MS-Exchange-CrossTenant-AuthSource: MI3PR04MB12438.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Oct 2026 16:31:02.1238
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: oqehOsuVKGRBcXoZfzfOpv1Ig0XTNviKWlwjaqHGvQy2no2bqwL5nrI2LSSJN6k+G8jEN99CU+NyGuQZs0ytCHei8wRMnJbglZg8gCzHwHMYPCoHJYQHm2pkDi+WxWoQ
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10046
 
-On Sun, Oct 25, 2026 at 12:43:20PM +0100, Ernest Van Hoecke wrote:
-> Hi Frank,
-> 
-> On Fri, Oct 23, 2026 at 03:23:12PM -0500, Frank Li wrote:
-> > On Fri, Oct 23, 2026 at 03:51:17PM +0200, Ernest Van Hoecke wrote:
-> > > On Thu, Oct 22, 2026 at 05:20:48PM -0400, Frank Li wrote:
-> > > > On Thu, Oct 22, 2026 at 04:31:28PM +0200, Ernest Van Hoecke wrote:
-> > > > > From: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
-> > > > >
-> > > > > The Verdin iMX8M Plus exposes its second MIPI CSI-2 interface through the
-> > > > > Verdin iMX8M Plus Mezzanine. Add overlays for using a Toradex OV5640 camera
-> > > > > on this interface.
-> > > > >
-> > > > > The mezzanine can route the camera control signals through two jumper
-> > > > > configurations. Describe each configuration as a GPIO nexus mapping so the
-> > > > > camera description remains independent of the physical routing.
-> > > > >
-> > > > > The default positions share the native CSI_1 GPIOs and are intended for a
-> > > > > single camera. The alternate positions permit simultaneous native and
-> > > > > mezzanine cameras, but conflict with the Atmel MXT touchscreen GPIO.
-> > > > >
-> > > > > The current camera set uses a 27 MHz on-board oscillator. The legacy camera
-> > > > > module uses 24 MHz, so provide variants for both.
-> > > > >
-> > > > > Link: https://developer.toradex.com/hardware/verdin-som-family/add-ons/verdin-imx8m-plus-mezzanine/
-> > > > > Link: https://developer.toradex.com/hardware/accessories/cameras/csi-camera-module-5mp-ov5640-arducam
-> > > > > Link: https://developer.toradex.com/hardware/legacy-products/other/csi-camera-module-5mp-ov5640/
-> > > > > Signed-off-by: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
-> > > > > ---
-> > > > >  arch/arm64/boot/dts/freescale/Makefile             | 19 ++++++
-> > > > >  ...-verdin-mezzanine-ov5640-24mhz-alt-jumpers.dtso | 19 ++++++
-> > > > >  ...din-mezzanine-ov5640-24mhz-default-jumpers.dtso | 18 +++++
-> > > > >  ...imx8mp-verdin-mezzanine-ov5640-alt-jumpers.dtso | 38 +++++++++++
-> > > > >  ...mp-verdin-mezzanine-ov5640-default-jumpers.dtso | 42 ++++++++++++
-> > > > >  .../freescale/imx8mp-verdin-mezzanine-ov5640.dtsi  | 78 ++++++++++++++++++++++
-> > > >
-> > > > why not share with imx8m-verdin-ov5640.dtsi, which is almost the same.
-> > > >
-> > > > Frank
-> > >
-> > > Hi Frank,
-> > >
-> > > Both camera modules have their own oscillator, and the native and
-> > > Mezzanine connectors have their own supply, so each overlay describes its
-> > > own clock and regulator nodes. They also use a different I2C bus, CSI
-> > > receiver and connector. Both overlays are applied together for two
-> > > cameras (imx8mp-verdin-wifi-dev-dual-ov5640),
-> > 
-> > Okay, I see share one imx8m-verdin-ov5640.dtso
-> > 
-> > > so their node names and
-> > > labels must be unique, and a single .dtsi cannot be included twice.
-> > 
-> > mezzanine actually connect by another connectors ? so it need new one files
-> > because current nexus node's limitation.
-> >
-> 
-> Yes, the Mezzanine has its own camera connector, wired to the second
-> MIPI CSI-2 receiver of the i.MX8M Plus. Its GPIOs already go through a
-> connector nexus of their own, defined in the Mezzanine overlays.
->  
-> > Can you make imx8mp-verdin-mezzanine-ov5640.dtsi also standardize, like
-> > use unified camera_i2c_2, camera_connector2, compre to imx8m-verdin-ov5640.dtso
-> >
-> 
-> This is possible, but the labels used by imx8m-verdin-ov5640.dtso exist
-> because that overlay is shared by Verdin iMX8M Mini and Verdin iMX8M Plus.
-> The Mezzanine is specific to the Verdin iMX8M Plus and connects to its
-> module-specific pins, which another module could wire differently. New
-> labels in the SoM dtsi would become ABI with these overlays as their only
-> user, so I would rather not add them. If a future Verdin module shares
-> this connector, I will add the labels then.
->  
-> > And avoid dtso include dtso file.  Now perfer only include dtsi file.
-> > 
-> > Frank
-> 
-> Okay I will go back to only including dtsi in v4 of this series, and
-> also for the next SMARC series. Thanks.
-> 
-> Kind regards,
-> Ernest
+From: Frank Li <Frank.Li@nxp.com>
 
-Hi Frank,
+When CONFIG_PM is not enabled, all devices runtime PM state should be
+treated as active.
 
-Just a heads-up that I'll be off in November so you can expect these
-changes in December, together with v3 of SMARC iMX8MP camera series.
+__pm_runtime_resume() returns 1 (called by pm_runtime_get()).
+pm_runtime_get_if_active() is the try-and-get version of pm_runtime_get().
+stub pm_runtime_active() also returns true. So pm_runtime_get_if_active()
+should return the same value as the stub pm_runtime_get(), which is 1.
 
-Thanks,
-Ernest
+Analysis of all callers and their behavior with old (-EINVAL) vs new (1):
+
+Pattern A: if (!pm_runtime_get_if_active(dev)) -- no impact
+  Both -EINVAL and 1 are non-zero, so !ret is false in both cases.
+  Callers: drivers/accel/ethosu/ethosu_perfmon.c,
+           drivers/gpu/drm/msm/adreno/a6xx_gmu.c,
+           drivers/gpu/drm/msm/msm_perfcntr.c,
+           drivers/gpu/drm/v3d/v3d_mmu.c,
+           drivers/gpu/drm/v3d/v3d_perfmon.c (x4),
+           drivers/media/i2c/gc08a3.c gc05a2.c og0ve1b.c ov6211.c,
+           drivers/media/i2c/ccs/ccs-core.c s5kjn1.c lm3560.c (x2),
+           drivers/media/i2c/s5k3m5.c thp7312.c imx283.c ov64a40.c,
+           drivers/media/pci/intel/ipu6/ipu6-buttress.c,
+           sound/hda/core/device.c
+
+Pattern B: if (!ret) after get -- no impact
+  Both -EINVAL and 1 are non-zero, !ret is false in both cases.
+  drivers/gpu/drm/amd/pm/amdgpu_pm.c (comment says "allow access"
+    in kernels without CONFIG_PM), drivers/pci/pci.c
+
+Pattern C: ret > 0 / ret <= 0 / ret != 1 checks -- FIXED
+  drivers/usb/core/offload.c: checks (!= 1), old -EINVAL caused
+    -EBUSY even with !CONFIG_PM. Fixed: now returns 1, proceeds.
+  drivers/accel/ivpu/ivpu_job.c: drm_WARN_ON(<= 0), old -EINVAL
+    spuriously triggered WARN. Fixed: 1 > 0, no warn.
+  drivers/gpu/drm/i915/intel_runtime_pm.c: checks (<= 0), old
+    -EINVAL triggered error path. Fixed: 1 > 0, correct path.
+  drivers/accel/ivpu/ivpu_sysfs.c: (> 0), old skipped freq read.
+    Fixed: proceeds correctly without CONFIG_PM.
+  drivers/gpu/drm/xe/xe_pm.c: wraps (> 0), all xe callers
+    (xe_bo.c, xe_shrinker.c, xe_vsec.c, xe_ggtt.c, xe_guc_ct.c,
+    xe_pxp.c) now correctly treat !CONFIG_PM as active.
+  drivers/net/ipa/ipa_smp2p.c: power_on = (> 0), now correctly true.
+  drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c: (> 0), now correctly
+    executes stall register update.
+  drivers/staging/media/ipu7/ipu7-buttress.c: active (<= 0) early
+    return now skipped, correctly proceeds.
+
+Pattern D: explicit -EINVAL check
+  drivers/hwmon/prom21-xhci.c: checks (> 0) then (== -EINVAL).
+    Old: took -EINVAL fallback. New: takes (> 0) fast path.
+    Both succeed when CONFIG_PM is disabled; functionally equivalent.
+  drivers/hwmon/eic7700-pvt.c: call is guarded by IS_ENABLED(CONFIG_PM),
+    stub is never reached. No impact.
+
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Andrzej Kacprowski <andrzej.kacprowski@linux.intel.com>
+Cc: Karol Wachowski <karol.wachowski@linux.intel.com>
+Cc: Oded Gabbay <ogabbay@kernel.org>
+Cc: Jani Nikula <jani.nikula@linux.intel.com>
+Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Tvrtko Ursulin <tursulin@ursulin.net>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: "Thomas Hellstrom" <thomas.hellstrom@linux.intel.com>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Simona Vetter <simona@ffwll.ch>
+Cc: Alex Elder <elder@kernel.org>
+Cc: Will Deacon <will@kernel.org>
+Cc: Robin Murphy <robin.murphy@arm.com>
+Cc: "Joerg Roedel" <joro@8bytes.org>
+Cc: Rob Clark <robin.clark@oss.qualcomm.com>
+Cc: Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: Guenter Roeck <linux@roeck-us.net>
+Cc: Guan-Yu Lin <guanyulin@google.com>
+Cc: Mathias Nyman <mathias.nyman@linux.intel.com>
+Cc: linux-pm@vger.kernel.org
+Cc: linux-usb@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: intel-gfx@lists.freedesktop.org
+Cc: intel-xe@lists.freedesktop.org
+Cc: linux-hwmon@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: iommu@lists.linux.dev
+Cc: linux-arm-msm@vger.kernel.org
+Cc: linux-media@vger.kernel.org
+Cc: linux-staging@lists.linux.dev
+Cc: netdev@vger.kernel.org
+Cc: imx@lists.linux.dev
+Cc: Rob Herring (Arm) <robh@kernel.org>
+---
+ include/linux/pm_runtime.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/linux/pm_runtime.h b/include/linux/pm_runtime.h
+index 64921b10ac74f..de9e7518ecef2 100644
+--- a/include/linux/pm_runtime.h
++++ b/include/linux/pm_runtime.h
+@@ -280,7 +280,7 @@ static inline int pm_runtime_get_if_in_use(struct device *dev)
+ }
+ static inline int pm_runtime_get_if_active(struct device *dev)
+ {
+-	return -EINVAL;
++	return 1;
+ }
+ static inline int __pm_runtime_set_status(struct device *dev,
+ 					    unsigned int status) { return 0; }
+-- 
+2.43.0
 
