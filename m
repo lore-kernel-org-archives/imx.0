@@ -1,104 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.130.41
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.50
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793284269;
-	b=eI6U9eiiZ9POUHVT/z+lVy/G6qHh7r1vxggwLJtkw2bbqMXLKagH7/GvgaOgwd/7C1MY
-	 mzFqt38sS9EZDepeQJwgT3UfUVxnk+NixCa3DszwvClG3A6gepsksb4JwXBmf1YA5FQyl
-	 ELe/v4CjH7ICB7wnzrzBkmTkbGV/RLKx98Ero5rumIXwIYGTdjw6iNuGoLxRxMTtMujmw
-	 Fq2+Bieqe5gMJ/+FsKfznld+FISWrWxfvF1KMgImqnJIg3Gd6lrvNwlCpRu2QdeCJOAG1
-	 oQtmQyBGYRUH5V3ovFOj5nc7Ez4HxuUIGs2xKiNi0FbdOv8B6RPs/JOWKyH1QP20xAA==
+	t=1793284912;
+	b=bqx9HXzhTzKuS7fqtY0fQItoj5wffp1jWNw35vFlIrpYwoNh6x3VRKd14rbIOGBNQORg
+	 JTRmPxYswuLIIzkLYUXGKiwPjNtbXdRFiDg1QL40RWMNXDuT8MXZ1FKSNKpN4haNwt2CF
+	 TVgNj7lZQxXAxzI8aAJsZiFBD4o2dfHBXz75aljxQz9Pk2/a6IpH6mUUNsHQjJCnKK1lo
+	 e3HcM8j/mwY0tqTasqtihv2QJoj1FHWQw1kinWFEsn8Nv3h3xloTijlvqGUnp11CgHKJg
+	 y5QCAW6McRhlJzSmY0SrFaoXnVUhBZDsa5MQlu6ZSevDR1FmLDEJZbx2dCqqzNoG6Tg==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793284269;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:Content-Type:Content-Disposition:
-	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=2sqgxEPW5qkdPrz2kSZep+WB17RIwaV85YEKIvwD9ak=;
-	b=P8yX1DDvIIlBdOe+bC0dJYsiafHXqdUcuaxIBFHgIO92lFHcI6WjILba7Nvrmbpplky8
-	 QnoIYrskFoLa8PQcsW/6l8y/MrVIqv6EizdfNwuxXSW6/b8GChqLUZ8dxoAoCt2NP9H/V
-	 XdDlzA98mW4Eg5Pfx+7lSfs97z4zvy+C3rPt5nHQfNZ+v9lAnWQhNfMNJBHj3MoVEBWsG
-	 /f362a9mDaG7LMKxdoCq4dRHLVIKVB98cY4cCx3i/wGjw3Gr22Q0XG6U6DCgGvBN+/+lQ
-	 D1Dpjm/QqwEXw+khC52okPXe93EjL7wpe7p8yaVJO0NcWYI9u/CVsajPpibq4rHLJOg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793284912;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=vje8Css+WrS1hH7IK+aXX1zgPX6ZioiAALPyhZd+JTg=;
+	b=09+Sdx28SbUPsZR6GiTTRRXSS1QbS5446I1vKBjwP1QBEzxy2sY2aixf1W+4POjiSrP+
+	 zQF8M5OyyW2E+vLj11gcrhAs27kS4CNKgk2CNNE81+KPnAGMzOIUJJF/jVxIag0axqoC8
+	 tMONRci9GoqMfOgYkucIQDiy2cPIEue5ap2cvz5/1IeTaEpIJmFBpykuAoi5rSGw6HgMR
+	 oZjJsax/dubVt8U8BSsimlXibz+mfXA6e0kB9UVFACgH+yayv++DaIKV/oXWWCKArUxtK
+	 3nU+NgHY+Nq+bHQqF3XR6IskO2ov32w54UU7O8ZCHktgBJHuulKhsCnnVyc6ujmFYnw==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.nxp.com;
-	spf=pass smtp.mailfrom=oss.nxp.com;
-	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=VEszlmkl;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.130.41
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011041.outbound.protection.outlook.com [40.107.130.41])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=KmSQ+B5F;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.50
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A716606A31F
-	for <imx@lists.linux.dev>; Thu, 29 Oct 2026 14:31:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9A716606A31F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DE60606A31F
+	for <imx@lists.linux.dev>; Thu, 29 Oct 2026 14:41:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8DE60606A31F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=VEszlmkl
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=caYho6FVKLD+m3021tMMU71EJv44sioKc7vSj7AWulFku/5pVZz4EycxbypQpJo5Cnsozfjdm7ekctdB/O4T8nArkEwAK5NY/KJjrrThr9wcWFo2qYIFU2Iw+0a0G88mtECud4tq1sHcZ4ALm3DgTHIvAOJoBget0k/G5/Xzd9BfBC6Pui3jJX26dyw6RkpC4OWoAm2UJmSMBmqstCHlx6edi7fEIvwO+8i0nzf9/qPeH9pDA0mzyfUGyqhBR0TuO+ZGCavkjHzk8pVWmOBJXpbCjBCkNsMvvd2Ia+is142Wnb6hTCU/acoFvp381tq4+WzOgkYGJ+8FWocCeHfjXQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2sqgxEPW5qkdPrz2kSZep+WB17RIwaV85YEKIvwD9ak=;
- b=yEJnTH87G7IRgNUOzgYpjZsHHOHflEGX2/GQpu1KGxY1Dgd0ZrorePsMG69XtkUdH7vyPXfJowIdczY8/n/3mFSQg9PqEN9Jg5wqowA3Ag+9zuEiA1m9hF/2OgUTDd3s7RYKHvXDCFhkn8rmqu+dtRKmqlf9wSY7esc6BV4voGLgfloaoSeOaztcl2nFiLPzFZ82EVxPpxZNv+rK3TdKPxXAcXJSYx0brD5GcYSCLdQA6oxddl8FrMeTNf2Y0cUq0l32dGJ5F2xzso+kVmDYUoaheggVsv2eLmtWLC9A6RESEKzf3pFoiLL7dlmu0+3kvMrkuaJ24zgOPJpB+HQ2JQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2sqgxEPW5qkdPrz2kSZep+WB17RIwaV85YEKIvwD9ak=;
- b=VEszlmklQ8My7L3F8w4nY58quBqW4NsSixnfzgd+ouITH5NHMqZ5Xd+OSiqaCIlhVTWIDuK/ICkU/+4aaxY5VdIPoGSv7pUwHA2p8ul3sBviLzizNVR7C3rgbytNXEXuPB6geHWK7TduPbR60773MAk/e2Uv22GChKMGQ3J2wdTC1uh/Qo81CVN4uCMoS8hxbMJ1QjDFYibC8MOKzalkdz4mRW0qHE0qahwaRMWyymBmL30QmX9nIwB7NxlbP7UyzunAbQcUa0RzPMv79brGSrVVz63jv4fMPjuVRDTUT3uWw5f5L67xdf8d4eR/yP3J6deHQxt0fa4WFWpa3YtizQ==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from MI3PR04MB12438.eurprd04.prod.outlook.com (2603:10a6:290:76::14)
- by AM6PPFBCA68DFB8.eurprd04.prod.outlook.com (2603:10a6:20f:fff1::a92) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.8; Thu, 29 Oct
- 2026 14:31:05 +0000
-Received: from MI3PR04MB12438.eurprd04.prod.outlook.com
- ([fe80::c715:c32:8bb1:b70b]) by MI3PR04MB12438.eurprd04.prod.outlook.com
- ([fe80::c715:c32:8bb1:b70b%6]) with mapi id 15.21.0569.007; Thu, 29 Oct 2026
- 14:31:05 +0000
-Date: Thu, 29 Oct 2026 09:30:52 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Linus Walleij <linusw@kernel.org>,
-	Bartosz Golaszewski <brgl@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Stefan Agner <stefan@agner.ch>,
-	Dong Aisheng <aisheng.dong@nxp.com>, Jacky Bai <ping.bai@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Bartosz Golaszewski <brgl@bgdev.pl>, linux-gpio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH 01/11] dt-bindings: gpio: vf610: fix clock requirements
- per SoC
-Message-ID: <auNYnPKIHw22cnpe@SMW015318>
-References: <20261029-gpio-vf610-fixes-v1-0-45b484b4c434@nxp.com>
- <20261029-gpio-vf610-fixes-v1-1-45b484b4c434@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261029-gpio-vf610-fixes-v1-1-45b484b4c434@nxp.com>
-X-ClientProxiedBy: SN7PR18CA0001.namprd18.prod.outlook.com
- (2603:10b6:806:f3::15) To MI3PR04MB12438.eurprd04.prod.outlook.com
- (2603:10a6:290:76::14)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=KmSQ+B5F
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c46822eefb6so286773866b.2
+        for <imx@lists.linux.dev>; Thu, 29 Oct 2026 07:41:51 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793284910; cv=none;
+        d=google.com; s=arc-20260327;
+        b=BFdtXLuXIplMopQsdXTJMWwhcd9Jesy5XeeTmD/vv/lXzRH14femdmpbPQRLGedmT6
+         U7OaVi/JyWfi4EcfsNqgLNPft5+R8idiSyLEte2q9uWOg6OSuOkZnQmRga+JpJ7S0Pi4
+         97f2sSzA88IwcjYdXGs/T897PwqjjRAUJ8kaaNhTxXoVEk3mVo5ylQhuaFxHmaoC7Ke7
+         OpnrolVqMWWyIKTR32Dwg1X6PmLQi+49qrWi44ka11ytngjXVPYFaaf6UwCaaIR0muc5
+         FxPaRKJ09s7xab7v/ubUt5irBUSYczxQl3QqwZipsfRRYm/Q5fCcZsabCbrQ+yHQBYUP
+         187w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=vje8Css+WrS1hH7IK+aXX1zgPX6ZioiAALPyhZd+JTg=;
+        fh=oSQlARNfCzxYVbSSBC6ycGPL8rpm6/7kf0I1mYG74L4=;
+        b=hp9ABC+6qHfxy2WgKPqRgKPLvSSW7CEqYmWSqbVVseA6B3nkcAkEaiG5m+0c4dt2dS
+         omd1yGVcfo0iMl8eJAzjfdGWyUlsTflWY8Z8bbIJMOVlFRnKup55s7Ac8f8NfGxnVqTz
+         70BcZsid4PEUeG814oZ4Leev20+gxl60TneqcXp23xxN96f9r+3o4YmfmVHC06JDzWIh
+         UIZG4xIOlR+KEOVNbr2YC6SueGSHbs/WIWduGwJ0asj38ggnjS5S0SfPJeIi3HM/k48o
+         2la13sLt/V+M32omqihKnjLynT44VYX3/JGT4d1aA+tTHtDJIV9znG8YSzQ5yYlbGl/z
+         vkGw==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793284910; x=1793889710; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=vje8Css+WrS1hH7IK+aXX1zgPX6ZioiAALPyhZd+JTg=;
+        b=KmSQ+B5FBhUYMyoFO6EZlCyaf/YDc8GKqfLyI1IMxVYoHKOu7Tzz6vnE+8fPxJ9yj5
+         1Zsp+CAPo/w0Dp77R1nzwmMwqDFWGOfpCqwR/OAwfkFhKQ0A4afL+cdr5MB99TpXBqKo
+         5qAN3gXnc7EkUsqVlxh7y6oppGp4FocZa/BWXBfdKQwoz7TGDCnS2TGtabORZajOKSSW
+         0GkfuI4W51nsbv0BLIGw78Gy0AcZVSNB5lcepi0a2g8oOi50K99MNdsfu9ddoV+jkzP6
+         65eXbI9Sfua13XDte4ISKXYOPG9wYrk6blS/ION0MfIswixiX2uOHg2AF0cxjCgMnXxt
+         LhoQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793284910; x=1793889710;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=vje8Css+WrS1hH7IK+aXX1zgPX6ZioiAALPyhZd+JTg=;
+        b=Q8Ey9f77K/t2tnUKnyb/p2YT46BUEj4wm9+B8xUvdecmIm/M7Y5WUu93j4ezNj9qJY
+         FM6KCu+1ItteY9NbbEtlF/OjybTUwUHrWdFoIoGq/EBMa++rksGtPHqFVUDUIGTDTl4g
+         FsehAVVIE+MVcUb3FkfcZfDqglkuodDHP99WD/VB40q/58EIyL/MHj51/D9RpcF+Mhm+
+         UR/rAhdfZcNuJRNMJ22tz0USGDPbr2hQi4kTJCm6G23guq6VCsXIz+w5qatgy5gYfUTV
+         jjYvHVhA7n2bzicLI1yspbyYa+QNcZhwJjImWH5MQ8892i+0d6KeUK2IBHpiAtwwgf8+
+         nljg==
+X-Forwarded-Encrypted: i=1; AKwUvBzgzgJ+ym624bpiltKG6HSNNnemci3MvhRW48oaZ9UU55b4zSIgsrVD9y6QQru4QRGHx7U=@lists.linux.dev
+X-Gm-Message-State: AFq9FYLZHjRqSlEUnHpJxsTyMGD/JsAtzmHpALZk13chR0NddkZOy/Th
+	/QhjN44EX4fhfJIhiijJC/xuRbXNvMuMDEWesDIUjxnVhk/8h4vL2tvVN2crS4Uc99ki3bamRPH
+	cYk3DOyqkaLQzXkfkYbYTwqGi8Olj+go=
+X-Gm-Gg: AYBFou3XqcILSX5zgy2YxJdYS7WwVg197H0NzQRIg9lU+ul7yICn+zHTR/jFbyqc7Pg
+	2Wy1E22aMGpMNWpaEwkwMVdoERfEGGQQPNT+0MXKmtQbYlGxrWjsWJyEn/Ce3FnKZkVxzrBDWNh
+	JdY7ocjfNmUNkFigz6Sjs/QJjxLPQxIVFGITIHZbEkdcPkdNu5k40pG/rVKYLSk12jA2CrfwcHz
+	MJOo2k/JT8ocbPOVsK1RDyrqpn396OiQ3g36joj+PI7xxuM8sjrII6nWzPb8nwSvJ7dbF3cI6IV
+	1jntKJ3cd3iXg8SL8fwY1WVke1KIpDdUcKx8Iqr1F1f9reTg4iN4YsVkgA9PDYVlXTV2G+1Y61c
+	DOzVwCjhyYJxLdmnT367vjaKJsZvabwyzC0pT+tm0eNPuUucbJjIesx8sSa3MRlVgHqF5AvdlRx
+	Jmju5hgWfsCF4Ql9KZ6k86YOUIvcYdT2e+9/CNWPHv7czykGbm3uc=
+X-Received: by 2002:a17:907:a88e:b0:c46:6a50:40b7 with SMTP id
+ a640c23a62f3a-c49bdf25ef1mr512176766b.10.1793284909657; Thu, 29 Oct 2026
+ 07:41:49 -0700 (PDT)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -108,141 +105,34 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|AM6PPFBCA68DFB8:EE_
-X-MS-Office365-Filtering-Correlation-Id: 648fe470-ac51-4a76-339f-08df35c943a2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|7416014|366016|19092799006|1800799024|22082099003|18002099003|261028144727099003|4143699003|11063799006|56012099006|261022105027099003|261021121427099003|261026140227099003|261009223027099003|261026121527099003|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	oPc/0DPopV47Zwy0Uo3lHt/JNMGca0R28xrqqq7w9jPcFkXuuRr+QoxZDwp6KNWmGyLA8fgNIqin64mY8vOBagI7R67Saeu0yCYN+yWe3abbrlPMS9MKQ+LlcYsIdZgmYd+eRHvtFffKnzXAiFV66atmpsMoOvnbv4t9lSglh5ycl2yzTduLKBaSEhTFv5jkQK4w288PY8tAz/Kt7GdUzQncPxgtSRyEwz1DXSy6cTHTaeL3f5oSmy1dIA7mXXNI3CSgL6UInAkKfwp3r7TKGcdqLhNP4ahVV2+bERDPOvx4+NIA0enQJPMWbtf/OPyiYNQzsunB1f/o7w7faD9/+AcnolNKOzjpW0AhVI/8XX2043zSdE3TpHldH8iG2owQJDb19aux3VnDbmzwN81llEdERQQvZFvdI/O9qAQ8Gyf2teRDCGGknHbuXsviM7EZqHCVzAX6hmzHBNqZEFLAdNN2zGu6OHrZto60/HhQMWTfGPno5a+IJZo3IS7CpELQTrOoQUyJ7e0HBmr8CeymPFnlfSMsTFFdiJRfh5lpu3RystZ59QEMix23cOiSoo1VU2ZcYGLpWriGm5Pv6JFTWDdazS+mVsohn19Ax8Bqsrl3bSd9ZF5Wykh2QxcKpBpOzpgnM1MR5ul3nMjGevgz2UhiqSWlZ8czB8cN3Av7CFw=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(366016)(19092799006)(1800799024)(22082099003)(18002099003)(261028144727099003)(4143699003)(11063799006)(56012099006)(261022105027099003)(261021121427099003)(261026140227099003)(261009223027099003)(261026121527099003)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?f8JJQa4YFVLjnPxGioFxMW9yEO7zPlqGlupOiFJv/C2xnlhoK4HQV62pJUWz?=
- =?us-ascii?Q?4MJZVvJmpkszmmVlgKk8oxB4BEsPnhO6RGpLSvojSEYysBG93C1YhNpC1GN+?=
- =?us-ascii?Q?DyKYqbdBkXK+KGDc/VlL7b9Qd5XjaPIsAftUuuCV5X3hy0wnY37jQwWfB7TM?=
- =?us-ascii?Q?lNcPhUpZVZfpf5P0BvS5TdHW6OSs7K0CaeTsWQBcXQjBpHfP/VNHb8zMbEIo?=
- =?us-ascii?Q?5Dw8E4Yby67gwBLPdocq6McqzhSXH7yAN5Mrcz7SFq9ePb0tF5FOGF6KiMSz?=
- =?us-ascii?Q?h3zkYhT6yTkfW4H1k1YWgmPjAB95k8pePlw7Dpm49CMkJR4vyMmlZ/A+kLou?=
- =?us-ascii?Q?4MHr/S23xV/dLOYIqkQUjSN6w0Rbe9A17bof7Z7WD4CHWHZC6DX025N+AV60?=
- =?us-ascii?Q?2O9UQ8IiENZTWSt5/WD1Hym+lRRmJ/kyFqB+PA1Bs+7iiyVwZ9gKQa2pLXWF?=
- =?us-ascii?Q?uh6TOhDfluFpHLKHJnQbcFDdwLIMKtZDTGTGeinFB1LGG4ICw3dpLkKUuwS5?=
- =?us-ascii?Q?l8aW9jNR12zX8bha4VrL/on2tF0Wct8vjHxKtnrcVgrNmJe9NDFfzZ+TYJlh?=
- =?us-ascii?Q?j4wFQzoz/lo7w7YDn1MBisVR4RtYykevxHCp7dqrsdNPIE87PM09Dddj1B0S?=
- =?us-ascii?Q?HjbhBi52cxN87wvmOGVd/y2P+9FhrUolVFNsWOH+gHmWP6WVmiW/7KWf9OOP?=
- =?us-ascii?Q?XFDsplg+mzZEqyOjOwM4/pj2AtzJDer0ElbXRXPerpWy3GV9H3YU26hv8781?=
- =?us-ascii?Q?PxVK2OLNxhcFGs7W4T5Mmo27/4sFMmUAjsUM9xl4QrL63Ss8U58xqOtV3p/1?=
- =?us-ascii?Q?cAMJIuY+Z2HdKAnMYtscq5JrKXaH4qa9nCNA4uuw41Oqoc4muuYEHGltcC5D?=
- =?us-ascii?Q?VllzEw6ARfr9tPJbbxLX5F3eWRk83dDmEbBX3E9f1ARHO5+c3ypocjpqIhsJ?=
- =?us-ascii?Q?+6+B1g6hvAEUQ9eJrjlbeQJdDKZClSAj5aERXMTx4r+50J90zW5317Ppqn5+?=
- =?us-ascii?Q?Tg/Uuef8XSJvqu+ElzFpKO4PrTfdXqMO0Y4/y12oZSRFy5jku+lfJdyJMJqN?=
- =?us-ascii?Q?qCvP7+5GVzJJkEKZmoIGOPOHsWsMb9JqVsIba0R2UAxNHgW/v9P8jAANMEsC?=
- =?us-ascii?Q?84g5wMe55dD1t023ggj6JYMgjc7cwOkZiip2N9s/PVjBPu0E6sh/tN/lX9y1?=
- =?us-ascii?Q?0caqZyelKyLonGNvMeFJXH2Q7X8DfWgwvI3vhswh54eTvtZcUtlRNqy5AHwz?=
- =?us-ascii?Q?sZ3yi0zQ3j4vaR3vEISf8hY6nnFnRzOxvzkKY0so6TPhdKon3BczHaHl9IFL?=
- =?us-ascii?Q?KUhUHfMKu3tOTYFiWVBkbAAijmr2dRgHOf5rBG5dwtykR+r+xumMEPxqHq1/?=
- =?us-ascii?Q?z4N6Kx9HzVaIZLOjOzgqzCnNz+bEhvZ3jE5hT6faApZdm7/sip5NHpu5bkOu?=
- =?us-ascii?Q?FkYMiLvtEsmdHGitQGt4A8gcfVWmp6wKeviCkaKb4zxd23YGwkLezyfWGgD2?=
- =?us-ascii?Q?GvsISLgO14lAUcOwft4YhDBe5zQ2gMRPRCXPlhpjBn524aDbLIPCh2sY0HMd?=
- =?us-ascii?Q?qjfa4pz324x2b2fzChEyNNnIYwmY9TeTMzvKT68SxaUkJsA/5h4auNK6/eep?=
- =?us-ascii?Q?95MNnrwz6ljSQheDjSR6Gl7kgdwoZBF7xwEH5K054+jxC1l6gF2Zm8AzuY/6?=
- =?us-ascii?Q?HUMgRgRF7G7Z+zHaA0cDRCOKRumDDksW0yXxyczXXrg81j2DXxXxhfHonETq?=
- =?us-ascii?Q?x39UQdMFQ7J4hTFgx6SFR1YMaZQQb+GBiQYwY7WXwNgmBxO4naS1?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 648fe470-ac51-4a76-339f-08df35c943a2
-X-MS-Exchange-CrossTenant-AuthSource: MI3PR04MB12438.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Oct 2026 14:31:05.1509
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: VDYLRZ+B3JqxDPN0+g+UOMq64ZqIVM9qBCL1zq+dmFi3Q/TcT6/HzgdVSWek3uVXPxRLb4BOcZBbcowqCnBd6SoEW4Ee3DCE2Huo+2z+MkOTtQRa5kmbvLDC6hnUDED8
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM6PPFBCA68DFB8
+References: <20261029-gpio-vf610-fixes-v1-0-45b484b4c434@nxp.com> <20261029-gpio-vf610-fixes-v1-6-45b484b4c434@nxp.com>
+In-Reply-To: <20261029-gpio-vf610-fixes-v1-6-45b484b4c434@nxp.com>
+From: Daniel Baluta <daniel.baluta@gmail.com>
+Date: Thu, 29 Oct 2026 16:45:14 +0200
+X-Gm-Features: AclHuK8IDt-muCciisOmWbSe4tpMQXEP57E_Zd-8ek8gdIf0pEg9SXZFYjLfJ5w
+Message-ID: <CAEnQRZCT2ghW69zvZZHPb+GHVLGFO=2A2hGxjuM0Phqjve8xgQ@mail.gmail.com>
+Subject: Re: [PATCH 06/11] gpio: vf610: drop unnecessary wrappers
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Stefan Agner <stefan@agner.ch>, 
+	Dong Aisheng <aisheng.dong@nxp.com>, Jacky Bai <ping.bai@nxp.com>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Bartosz Golaszewski <brgl@bgdev.pl>, linux-gpio@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, Peng Fan <peng.fan@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 29, 2026 at 09:42:25PM +0800, Peng Fan (OSS) wrote:
+On Thu, Oct 29, 2026 at 3:52=E2=80=AFPM Peng Fan (OSS) <peng.fan@oss.nxp.co=
+m> wrote:
+>
 > From: Peng Fan <peng.fan@nxp.com>
 >
-> The i.MX7ULP GPIO controller needs both the GPIO and PORT clocks,
-> while the i.MX8ULP and its derivatives (i.MX93/94/95/952) only have
-> a single "gpio" clock. The vf610 controller has no gateable clocks,
-> so keep clocks optional there.
+> Remove trivial wrapper functions vf610_gpio_writel() and
+> vf610_gpio_readl() that just called the relaxed versions directly.
+> Replace their usage with direct calls to writel_relaxed() and
+> readl_relaxed().
 >
-> Describe the clock items with minItems/maxItems, require exactly two
-> clocks for i.MX7ULP, and require exactly one "gpio" clock for the
-> i.MX8ULP family.
->
-> Fixes: c61d8b5791ab ("dt-bindings: gpio: gpio-vf610: Add imx8ulp compatible string")
 > Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> ---
->  .../devicetree/bindings/gpio/gpio-vf610.yaml       | 32 ++++++++++++++++++++++
->  1 file changed, 32 insertions(+)
->
-> diff --git a/Documentation/devicetree/bindings/gpio/gpio-vf610.yaml b/Documentation/devicetree/bindings/gpio/gpio-vf610.yaml
-> index a31f64b6d40b..822fa11d18d9 100644
-> --- a/Documentation/devicetree/bindings/gpio/gpio-vf610.yaml
-> +++ b/Documentation/devicetree/bindings/gpio/gpio-vf610.yaml
-> @@ -57,11 +57,13 @@ properties:
->      maxItems: 32
->
->    clocks:
-> +    minItems: 1
->      items:
->        - description: SoC GPIO clock
->        - description: SoC PORT clock
->
->    clock-names:
-> +    minItems: 1
->      items:
->        - const: gpio
->        - const: port
-> @@ -116,6 +118,36 @@ allOf:
->          reg:
->            items:
->              - description: GPIO register base address
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            const: fsl,imx7ulp-gpio
-> +    then:
-> +      properties:
-> +        clocks:
-> +          minItems: 2
-> +          maxItems: 2
-> +        clock-names:
-> +          minItems: 2
-> +          maxItems: 2
 
-Needn't maxItems for both clocks and clock-names because top already
-restrict it.
-
-Frank
-> +      required:
-> +        - clocks
-> +        - clock-names
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            const: fsl,imx8ulp-gpio
-> +    then:
-> +      properties:
-> +        clocks:
-> +          maxItems: 1
-> +        clock-names:
-> +          maxItems: 1
-> +      required:
-> +        - clocks
-> +        - clock-names
->
->  additionalProperties: false
->
->
-> --
-> 2.51.0
->
->
+Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
