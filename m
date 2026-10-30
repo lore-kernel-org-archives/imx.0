@@ -1,88 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.49
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.44
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793381800;
-	b=Ws38QL0AAnBSW4C3ZdTeXdnYTjR/jAdya68icf2IDKMnYw3vzgcj/DuxYTl6B9hNTkXr
-	 oDoKK6jWJYxtsmB1sApe7kemc2MquC8q3JQtuhMoanDx/S2iIN6tncIMUTcDOgW8jh/iD
-	 gqwl7gpF46BxgQi3WkCSnzwAS7o+Iz0Vq8HtDDUURIX8k+GtGIVqBkh3IAOC+m7kdjMVY
-	 07cqdgGypFXiBxNxQXu79dpK2VaxueLGkOCUiqamgtt41NrSi29avc+7wET0Qp8HUvGF7
-	 HngSsXChD6+6IdBjfcPI6sDDrhE8Pl4EtMK4dv6eFh2DuLMogkOsSaPmy+zn+PEdegw==
+	t=1793381801;
+	b=LxljR+4OdYvO9gC24ORMCLeIB9ZGZXMCBnjblh1BjvvyWrB3PfoeQtChwf3uJusL/+gL
+	 EXffLbDKzKeZVMAJf9DZL+Qg0RzFMhVNaNkl/wU/qKEwLdsMEFMTCO6ohjxGMkeXKPW2E
+	 7cz4lD52zVnPzN2UPbsO8Zqf5USLV+NrfLBojUL+mp1+r36c1OHzbCAot775lKpXaCetU
+	 FlEihIGyxxyaVSqQOKdKu9wTZD5XArCbMgvQ7CLGxXZ6LnnRjHDPuZCaboD8n8c9iP51Y
+	 Vdz6fhX7xa32zxKU4P5/na+fHw24kwK8cK2JkQcNlCkg25vhHCOz/mGeog7vQkz7kJg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793381800;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793381801;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
 	 MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=r5fedtBZtI4w1DXYYWOd9TkcAOuj87FP9VlEYhTELuQ=;
-	b=Oy/98+77otIJ3vZvxTkC9Xl5VxQq3tXFWQXp2T4kmcOaMAL+k0dq0PrFkxtT5iNF9I03
-	 GZBcBUG4JGcmhiink/E0Vu/zi2ffHlEHcj53gwAUU6+uxJbMQSxSG3QO5wOPGCMnpN3hP
-	 FrFoiUBNhFAcwXuxnWQ+BlSxOL47eSRI1zczy1nSnXD5ulkLjwMC9GzyDfsrT9aWv5jHx
-	 eBIo2enHkGnh24/aYegGj1vcgehCyJnxcM5Iti8ev9z5jEcDaa890u6Rg1WYzmJc7azxl
-	 wiwM7CIB6WosiAyGNRtMQo3603imahWFj0ZiDI+BXmLAk9lP8/RjnrkZdJSsiaYRO7g==
+	bh=p+eb7dwaVi2e/2az0lhLRof2o3XdtzLR7+wZ1rytyEE=;
+	b=QT9hEcK/0den1Md6MigmmERdIMKyU5UT/g8gEaf70OsHj547oTXfgTSrXKCWxz9xtirb
+	 chqa+74aaGc+aJniWioTki2HocOUnPB6tX0Wr/P4LeO464jxyvQqv74H/QpG1NNjZKMWS
+	 dqkqYWkqKDr5sHKdTQU+O+W1Pa7wg6sq5ogvRnq/aupQy8tipDxkrgNwhO8XP5U5PksUk
+	 jz564YSPcEyNYH214Kx/pmYV2o0Zhhb6oUQSFEWyBVyc8eke7EzL1RmvI55xolICshfOo
+	 TTMTHnV2C/QHFRmgFQl4ozNDo5K/gM/cdGLPIu89f+uLLTb5xdkbB7Flddbthg38Thg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=chromium.org;
 	spf=pass smtp.mailfrom=chromium.org;
-	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=ohhCszky;
-	arc=none smtp.remote-ip=209.85.210.49
-Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
+	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b="Ud28B/vY";
+	arc=none smtp.remote-ip=209.85.210.44
+Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED3AB606A31F
-	for <imx@lists.linux.dev>; Fri, 30 Oct 2026 17:36:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org ED3AB606A31F
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B79F4606A31C
+	for <imx@lists.linux.dev>; Fri, 30 Oct 2026 17:36:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B79F4606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=ohhCszky
-Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-8470d7d430fso419113a34.3
-        for <imx@lists.linux.dev>; Fri, 30 Oct 2026 10:36:39 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=Ud28B/vY
+Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-844a8bf7e25so744036a34.1
+        for <imx@lists.linux.dev>; Fri, 30 Oct 2026 10:36:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1793381799; x=1793986599; darn=lists.linux.dev;
+        d=chromium.org; s=google; t=1793381800; x=1793986600; darn=lists.linux.dev;
         h=content-transfer-encoding:content-type:mime-version:references
          :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=r5fedtBZtI4w1DXYYWOd9TkcAOuj87FP9VlEYhTELuQ=;
-        b=ohhCszkyUJ543Kfbrsx7CcQGZ7hGpIrrYPUAuLB7HIe5QZBx9R+HmbdJefKT0MWeNT
-         hLJGNTaxSDpijzND5uGs6RjjVOntcMthgRG+6SecldPc4suUvYpV1NpRkzV7rVyIrlxD
-         4eMATB1URKJ/9mOHPizhxZkP/Z23vr7t5GSgA=
+        bh=p+eb7dwaVi2e/2az0lhLRof2o3XdtzLR7+wZ1rytyEE=;
+        b=Ud28B/vYi/LOa4OjzPsSLtHoVpVmJr2SzHrpjyZlv6bnv5mm8VybVsEyvxNHojl64Z
+         kqIuMtUs4bQlg9NR7GFgDi5/bH6Nrmp40JM69ysbgtMFg4a6cpPzrGEHNnlwfVnhe3XC
+         EpzLnfsIneClV+nLoV99gqZ7QXTrOOqwATpGs=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793381799; x=1793986599;
+        d=1e100.net; s=20260707; t=1793381800; x=1793986600;
         h=content-transfer-encoding:content-type:mime-version:references
          :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=r5fedtBZtI4w1DXYYWOd9TkcAOuj87FP9VlEYhTELuQ=;
-        b=FYOY32RobU4oS4TjUaZTy9tpBOtvmQUy3j3W0wFhbNz9K1R9TDLrLACmg1o6O+7gaJ
-         RFJ/W8cS/h1T8fvT98KWlKv6Mpzm41n5vcnj483ma6idbwO94bNUTieiQnyBBkf3GqwF
-         P79Iy0wAhnMd1Dy/Kbb90QOyjGGK2K1+pKtEEgBjkWHhNqQ5imYMuQPZxyzR2Df7X5Q+
-         cIUWkr+91Ev9Ns37PfVCXBjyd1iliSVf1o7MIL0Xza9xB7+ftjoMDgsOzh/kLNOtshwb
-         5SX7Hu/39SF9uBCZsFrCGVFK8V3ad1t064dbhbjMdD4LRae7CLY3z59oSp/bsq9wM0CX
-         DoqQ==
-X-Forwarded-Encrypted: i=1; AKwUvBySssr61HWHyPqDy8GVgwfKsYfiI8qxNwFyoGp4aE6b5vnJBMbfk0f3d1/HvyVJK2YRlJM=@lists.linux.dev
-X-Gm-Message-State: AFq9FYJrGXFIvBq/KnEvRGbgeU+vm4Oi/pRHas/tJ3gZeh9W7Cpil4Uj
-	oT1rP3+b7e2o184mmEz5aUypBt6W5h4vj+O/1AcFcb67NAFt1b/pyv5NXqv3OT+Lrg==
-X-Gm-Gg: AYBFou3tx9jPLKsZpAGVbC/Aii+0RIiBJ/jwEj8NJIUoabx5oUUryjroHHH3QPZNMxd
-	h7NtKGY2b9U/Jh3OtzMwAoL5c4pJC/kNFyA4AEZMopZfsta8th+sj+DJGHgIkL237k0fMBkIQb8
-	+Da7NQDOEvdjlvV95zG314srPl6S0wN75V3nWLpNfXOiSiQ2lHRRhRpHVFZHBUmvzz4kOT0jJ0r
-	E4lctHSOAGpXYAzQJ4X/vS/afUrWPdi4qGQnDBeOly8PMXxPf3k+W1uN4IvBXmjVCQavDgHlfr/
-	JL9OKUHBQVc2KzET4hojO3WfC4T3xl0O50l+smldzkz8ojoWjBZvj9FgmCwCMkbpKNJ2QkxNMbM
-	SJdbDJs4QdW19GyYPfQXmYfcwvzx6weVvYX0ItyZluARbsewlbPPPtNGZTfC42yWZ9+SFm/IZiT
-	gI5T4gGooN91rribv6sIApVhKhNlAkxw05pXCcotSwSbjx+Nww3A2npH0Gt6PZoY2BGCZSjknOZ
-	mlSmid1DLTvR3lOE9iNjsiochfQwQ9klhpWUbGbEpT5rt4xQq8g9uyzFuvyqhpQfTxl/fF1iXfw
-	Mk7jg/XYrKlvgSbipI3bZWXsf0iIfDrC8UHxwzzRao0bk+u/t86y4EzBFL68S1CWe6xOu0vS+qY
-	3EigmHbOmT5yqh8Y=
-X-Received: by 2002:a05:6820:625:b0:709:529a:4775 with SMTP id 006d021491bc7-714f6e7ffc6mr1212713eaf.50.1793381798577;
-        Fri, 30 Oct 2026 10:36:38 -0700 (PDT)
+        bh=p+eb7dwaVi2e/2az0lhLRof2o3XdtzLR7+wZ1rytyEE=;
+        b=W7nvhwKH/gDpA+fTPh/BtoFqrMdhvrtnJzV8QVFN2iAr+k8EKFXDrS3joQV/oN/3kZ
+         3gO3mxr01OTReC90px2TwtOW8RCwEGjs9tQVeL6WK32C7UEotjHpI86XlvQfNEv7Ekde
+         yLjs8Sg3bCThm+qArYDQbE9sHBQJcAlcqaSSSGu1NH6IXqTzG6bf6QcSFLMLQwHzKhlc
+         u5TDbKwg+i0vMQ2qGokbsmMP4Hi288NrWRPd8nXX+6j3bUfWd4ZKX8STXQcMbzibViYw
+         LWWZ3mEIm4EFAHLzdM5lxwDAeqZFQBbHgxnCA70cz1JLrTtYsHAzXQ9Fe4NcCxeeouMJ
+         L2yQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwDrg1yEwrQeqxp3dNYsiaUzTBcgQ2UxnjQwOSrCKCWJVYNJRLPL57dPCh2xdEaNqvo2Eo=@lists.linux.dev
+X-Gm-Message-State: AFq9FYKugvKPAeKn9jO3Zyf42OpCMrYIkvMsk1bmlKnrx6s79ZxVtgaj
+	ooXg/FlVnlOD90kowMSBSU/GHMEFwkUuze8spulKmI/wzU+da0fXyg/ZyO9E3DT+4A==
+X-Gm-Gg: AYBFou3WPu3qRWT2czL3GPnJTQwqbQ8L6GqyFbKyYBKoAIxINGlwzo0T0mI+5dwMUSy
+	2krKgZNnM/b0WOIxMoyX/wVWMPkaE+mz/v453T3eoDroqJh4egFa0orx/X66R27f9r3EJo2EXGA
+	vXFkJDAIHv+6l2ngLJaCpFF9iio9pHF9GTC98zGiVMefrwE2ZAoCl3cKbzXXFDps8f/W/FxM4xx
+	y9XIjbtGNWX0iBXYEO1xzpYHaVkD0ZvoWtocxW9Rf28ofImQyd0yxIiTeJyDBfDgAd6CzJqg5+E
+	34X+nscSpdshk1IxkxsgQmEH0aLSg8fWyZa2ESY5+3upwD9V8RI/kze8mnMTmxCxapggWk+N/oA
+	etIpnpEO7pcpQo4wiDKgJr/RBxhnAs6jJqW2wIOZaKpgEurhfryBiOjJkyXX+8EZX2UV1JGCvx4
+	lUyyitBc2aF5bPF8tbu/lSoSY1GYpUxEjYj5Qtwx3K6dFupUK8ReRMHOWy2NJ9zIx3PAJo07H1Q
+	nuGujruvLv2tPo+0MUAd6whfxYtLrar92Ne1RfIYhLgTua4PLhE1DK0MKosshRk3FppPfec/MsG
+	S42/A016tr4HGTpC3pSD4A6QACjxrDq89sXUGNYWjNXQdanFlB/glmrXpxyKTYD/O34iLJVRHRJ
+	F4AAPFG0c3w5SgKiM
+X-Received: by 2002:a05:6830:7181:b0:81b:ac9a:5681 with SMTP id 46e09a7af769-85d3649ebddmr2330039a34.29.1793381799663;
+        Fri, 30 Oct 2026 10:36:39 -0700 (PDT)
 Received: from rrangel.c.googlers.com.com (194.246.27.34.bc.googleusercontent.com. [34.27.246.194])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-85d354efebesm2497044a34.19.2026.10.30.10.36.37
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-85d354efebesm2497044a34.19.2026.10.30.10.36.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Oct 2026 10:36:37 -0700 (PDT)
+        Fri, 30 Oct 2026 10:36:39 -0700 (PDT)
 From: Raul E Rangel <rrangel@chromium.org>
-To: James Hilliard <james.hilliard1@gmail.com>
+To: James Hilliard <james.hilliard1@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Jiri Slaby <jirislaby@kernel.org>,
 	Ilpo =?UTF-8?Q?J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	Tony Lindgren <tony@atomide.com>,
 	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
@@ -104,12 +104,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	linux-arm-kernel@lists.infradead.org,
 	imx@lists.linux.dev,
 	linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v8 5/6] serial: 8250: retire canceled RX DMA before reusing the receive buffer
-Date: Fri, 30 Oct 2026 11:36:34 -0600
-Message-ID: <20261030173635.2186490-1-rrangel@chromium.org>
+Subject: Re: [PATCH v8 6/6] serial: 8250: retain DMA resources when termination fails
+Date: Fri, 30 Oct 2026 11:36:35 -0600
+Message-ID: <20261030173635.2186490-2-rrangel@chromium.org>
 X-Mailer: git-send-email 2.56.0.212.g129ede20d9-goog
-In-Reply-To: <CADvTj4qK-1SX_+YZW1jdW-e5JOZ2iz3vAK_8UvkyZWb0rAeyiQ@mail.gmail.com>
-References: <20261029-submit-serial-8250-dma-cancel-v1-v8-0-3fd56ba352ed@gmail.com> <20261029-submit-serial-8250-dma-cancel-v1-v8-5-3fd56ba352ed@gmail.com> <20261029222734.3086943-1-rrangel@chromium.org> <CADvTj4qK-1SX_+YZW1jdW-e5JOZ2iz3vAK_8UvkyZWb0rAeyiQ@mail.gmail.com>
+In-Reply-To: <CADvTj4rRtKyq_7yhpfwGQrbOA=k_jxQymTpZSvdVBB0A-xR-Rw@mail.gmail.com>
+References: <20261029-submit-serial-8250-dma-cancel-v1-v8-0-3fd56ba352ed@gmail.com> <20261029-submit-serial-8250-dma-cancel-v1-v8-6-3fd56ba352ed@gmail.com> <auNW_Oc-Ao5Iw-Gw@ashevche-desk.local> <CADvTj4pOg4w5LpFW_E3qzP7FZDnDgpB8LyR9xxhT_mZre21vFw@mail.gmail.com> <20261029222734.3086943-2-rrangel@chromium.org> <CADvTj4rRtKyq_7yhpfwGQrbOA=k_jxQymTpZSvdVBB0A-xR-Rw@mail.gmail.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -122,91 +122,108 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On Thu, Oct 29, 2026 at 6:32 PM James Hilliard <james.hilliard1@gmail.com> wrote:
-> With a persistent pause failure and an incomplete transfer, the
-> worker keeps retrying. RX remains masked and the runtime PM reference
-> is held until the condition resolves or shutdown takes over. There
-> is no receive-progress guarantee if the peer remains idle and pause
-> continues to fail.
+On Thu, Oct 29, 2026 at 6:35 PM James Hilliard <james.hilliard1@gmail.com> wrote:
+> That is the current behavior. Returning from shutdown allows serial
+> core to free the TX buffer and removal to release the callback
+> context. The retry loop prevents those releases, but a permanent
+> termination failure blocks teardown indefinitely
 ...
-> A failed pause with an incomplete cookie does not distinguish a
-> persistent hardware fault from completion that has not yet been
-> published. A fixed retry limit does not resolve that ambiguity.
+> Retaining the buffers and channels does not preserve the complete
+> callback context.
 >
-> Terminating after the limit may discard received data, including a
-> completed buffer whose completion is still unpublished. Successful
-> termination would make subsequent buffer reuse safe, but would not
-> recover those bytes. This would therefore be a potentially lossy
-> error-recovery policy rather than a lossless timeout flush.
-
-Checking the in-tree dmaengine providers shows why bounding the retry loop
-and escalating to recovery is necessary in practice:
-
-1. `serial8250_request_dma()` (`8250_dma.c:428`) checks `caps.cmd_pause`,
-   which `dma_get_slave_caps()` (`drivers/dma/dmaengine.c:614`) sets purely
-   from `!!device->device_pause`. However, `drivers/dma/tegra186-gpc-dma.c`
-   (lines 422-423, 1351, 1521) unconditionally assigns
-   `tdma->dma_dev.device_pause = tegra_dma_device_pause` (so
-   `caps.cmd_pause == true`), and then returns `-ENOSYS` at runtime on
-   Tegra186 where `tdc->tdma->chip_data->hw_support_pause` is false. And on
-   Tegra194/234/264 (`tegra186-gpc-dma.c:399-413`) and Tegra210
-   (`tegra210-adma.c:574-579`), `.device_pause()` polls a hardware busy bit
-   with an atomic timeout and returns `-ETIMEDOUT` or `-EBUSY` if an active
-   burst does not pause in time.
-
-2. In the in-tree providers where `.device_pause()` returns an error because
-   a transfer already completed—such as `drivers/dma/ti/edma.c:870, 1468-1469`
-   (returning `-EINVAL` when `!echan->edesc`) and
-   `drivers/dma/stm32/stm32-dma.c:751-753, 836, 1432` (returning `-EPERM`
-   when `chan->status != DMA_IN_PROGRESS`)—the DMA hardirq handler calls
-   `vchan_cookie_complete()` *before* clearing the active descriptor, so
-   `dmaengine_tx_status()` already reports `DMA_COMPLETE` on the very first
-   check in `serial8250_rx_dma_try_flush()`.
-
-   Even on a controller where hardware rejects `pause` the instant the 4096th
-   byte finishes while its completion hardirq is still masked by `port->lock`,
-   the only thing delaying `completed_cookie` publication is local IRQ masking
-   under `port->lock`. Once `serial8250_rx_dma_flush_work()` drops `port->lock`
-   (enabling local IRQs) and sleeps `usleep_range(1000, 2000)` in process
-   context, any pending DMA completion hardirq runs in microseconds. Across
-   5 retries (5-10 ms with `port->lock` released on each sleep), a completed
-   4 KB transfer will have published `DMA_COMPLETE`.
-
-   By contrast, leaving the `for (;;)` loop unbounded turns any persistent
-   `dmaengine_pause()` error (`-ENOSYS`, `-EINVAL`, `-EBUSY`, `-ETIMEDOUT`) on
-   a partial transfer into a guaranteed 100% loss of all current and future RX
-   data until `close()`, a 500-1000 Hz `system_percpu_wq` spin, a permanent
-   runtime-PM leak, and silently aborted `dw8250_set_divisor()` /
-   `dw8250_check_lcr()` calls (`-EAGAIN`). Escalating to recovery after a
-   bounded retry budget is strictly better than wedging the receiver forever.
-
-> That requires termination to succeed and callbacks to be drained.
-> If termination fails, the channel may still access the FIFO, so PIO
-> must remain excluded.
+> The callbacks carry a uart_8250_port pointer. For DW, the DMA state is
+> embedded in devm-managed private data, which can be freed after
+> unbind. The registered 8250 port slot can also be reused. Retaining
+> the DMA channel does not prevent either operation.
+...
+> Clearing up->dma does not stop hardware accesses. After unsuccessful
+> termination, the channel may still access the UART FIFO, so reopening
+> with PIO can introduce concurrent FIFO access.
 >
-> The recovery requirements depend on why the provider cannot pause.
+> A hardware-specific stop/reset sequence could establish quiescence,
+> but its implementation and effects on other channels depend on the
+> controller. If the channel cannot be stopped, quarantine also needs
+> to preserve callback-context lifetimes and prevent unsafe port reuse.
+...
+> The current callbacks fetch p->dma before acquiring the port lock.
+> A callback can therefore retain the old non-NULL pointer across the
+> assignment of NULL. Checking that cached pointer does not protect
+> its backing allocation from being freed.
+>
+> When termination returns an error, dmaengine_terminate_sync() also
+> returns without calling dmaengine_synchronize(), so callback draining
+> has not been established.
 
-Agreed—and `serial8250_rx_dma_flush_work()` in Patch 5/6 already enforces
-that when `serial8250_rx_dma_recover(p)` is called (`8250_dma.c:210-216`):
+Those are all good points. We added port reopen and a `NoConcurrentFifoAccess`
+invariant to `Serial8250TxDmaV8.tla`
+(`Serial8250TxDmaV8_QuarantinePioReopenHazard.cfg`), and TLC immediately
+confirmed your point on FIFO contention: clearing `up->dma = NULL` and
+falling back to PIO when reopening after a failed `dmaengine_terminate_sync()`
+violates `NoConcurrentFifoAccess` in 7 states because the un-terminated DMA
+descriptor can still access the hardware UART FIFO concurrently with PIO.
 
-	if (recover) {
-		ret = dmaengine_terminate_sync(dma->rxchan);
-		if (ret) {
-			/* Retain ownership and keep RX masked if DMA cannot be stopped. */
-			dev_err(p->port.dev, "failed to stop RX DMA: %d\n", ret);
-			return;
-		}
-	}
+We can satisfy all three constraints while still preventing normal `close()`,
+`hangup()`, and system `suspend()` from hanging forever in
+`TASK_UNINTERRUPTIBLE` under `port->mutex` across the three lifecycle edges:
 
-When `serial8250_rx_dma_recover(p)` sets `dma->rx_err = true` and
-`dma->rx_terminating = true`, the worker exits the retry loop and calls
-`dmaengine_terminate_sync(dma->rxchan)`. If `dmaengine_terminate_sync()`
-returns non-zero, the worker returns early at line 215 with
-`dma->rx_terminating == true` and `dma->rx_running == 1`, keeping RX
-interrupts masked in `IER` and keeping PIO excluded (`serial8250_rx_dma_flush()`
-continues returning `-EIO`). It only clears `dma->rx_running = 0` and unmasks
-`IER` for PIO fallback after `dmaengine_terminate_sync(dma->rxchan)` succeeds
-(`ret == 0`).
+1. **On `close()` / `hangup()` / `uart_suspend_port()` (`serial8250_release_dma()` & `uart_free_xmit_buf()`)**:
+   - Bound the retry loop in `serial8250_terminate_dma()` (with a short
+     backoff rather than an unbounded `msleep(100)`, guarding
+     `if (dma->rxchan)` / `if (dma->txchan)`) and release whichever
+     channel(s) terminated cleanly (`rx_ret == 0` or `tx_ret == 0`).
+   - If `rx_ret != 0` or `tx_ret != 0`, **keep `up->dma` intact** (do not set
+     `up->dma = NULL`, including in `8250_omap.c:omap_8250_shutdown()`), keep
+     `dma->shutting_down = true`, and retain the failed channel and its
+     buffer (`dma->rxchan` / `dma->rx_buf` when `rx_ret != 0`; `dma->txchan`
+     and mapped `dma->tx_addr` when `tx_ret != 0`).
+   - When `tx_ret != 0`, explicitly call `uart_xmit_block(&p->port)` under
+     `p->port.lock` (`state->xmit_blocked = true`, since `xmit_blocked` is
+     otherwise only set when `uart_flush_buffer()` ran prior to `close()`),
+     and in `serial_core.c:uart_free_xmit_buf()`, return early under
+     `uport->lock` if `state->xmit_blocked` is set (without clearing
+     `port->xmit_buf = NULL`, resetting `port->xmit_fifo`, or calling
+     `kfree(xmit_buf)`).
+   - Because `up->dma` is not cleared and `struct uart_8250_dma` /
+     `struct uart_8250_port` remain allocated on the bound device during
+     `close()`, `hangup()`, and `suspend()`, any callback that was not
+     drained by `dmaengine_terminate_sync()` safely loads a valid `p->dma`,
+     observes `dma->shutting_down == true` under `port->lock`, and returns
+     without UAF—while `close()`, `hangup()`, and system `suspend()` return
+     cleanly without hanging in `D` state or triggering `hung_task_panic`.
+
+2. **On subsequent `open()` (`serial8250_do_startup()` & `omap_8250_startup()`)**:
+   - At the very start of `serial8250_do_startup()` (`8250_port.c:2356`) and
+     `omap_8250_startup()` (`8250_omap.c:724`)—after acquiring runtime PM,
+     and **before** clearing `up->dma->shutting_down = false`, touching
+     `UART_FCR` / `UART_RX` / `UART_TX`, or setting up IRQs/timers—if
+     `up->dma && (up->dma->rxchan || up->dma->txchan)` is still non-NULL from
+     a prior failed termination, retry `serial8250_release_dma(up)` first:
+     - If `up->dma->rxchan || up->dma->txchan` is **still** non-NULL
+       (termination still failed), immediately return `-EIO` and **fail
+       `startup()`** (do *not* clear `up->dma = NULL` and do *not* fall back
+       to PIO while the wedged DMA channel may still touch the UART FIFO).
+     - If termination succeeded on retry (`rxchan == NULL && txchan == NULL`,
+       which also unblocked `state->xmit_blocked`), reset `xmit_fifo` and
+       proceed with normal startup and `serial8250_request_dma(up)`.
+
+3. **On driver unbind (`serial8250_unregister_port()` / `serial_core_remove_one_port()`)**:
+   - Driver removal is the *only* point where `devm`-allocated
+     `struct uart_8250_dma` and the `serial8250_ports[]` slot are about to be
+     freed/reused (note also that `serial_core_remove_one_port()` at
+     `serial_core.c:3336` only calls `uart_shutdown()` when
+     `tty_port_initialized(port)` is true, so if the port was already closed
+     with a quarantined channel, unbind must still drain/release it).
+   - Restricting blocking termination wait to driver unbind (when a channel is
+     still active/quarantined) prevents `close()`, `hangup()`, and system
+     `suspend()` from ever hanging the kernel in `msleep(100)`.
+
+We verified this quarantine + `-EIO` reopen contract in
+`Serial8250TxDmaV8_TerminateRetryHang_Fixed.cfg` (`AllowReopen = TRUE`,
+`ReopenFallbackToPio = FALSE`), which passes all safety and liveness
+properties (`NoUsersAtFree`, `BoundedTerminateRetries`,
+`NoConcurrentFifoAccess`, `QuarantineImpliesXmitBlocked`, `ShutdownProgress`)
+with 0 errors:
+https://github.com/ismell/linux-8250-dma-tla
 
 Thanks,
 Raul
