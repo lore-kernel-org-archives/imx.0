@@ -1,78 +1,81 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.137
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793358793;
-	b=iPrjDwo9cQtgGJsFpnZTWIEki4Kz1iiW3Jsr9axSu98ApyR6l4g9zFMvnVUd+Q9ZL2uk
-	 FRjMtpEAPxyD5j7cGFGbE1jVwj8RFQePTJVD0v4gMTY33JGPJrG+XSnj4tsC+7zFKHOVY
-	 kgOT3z0NS0iexfGkyKuEYWCF3znux/HfW5ZX/CmEaJxLmJFtOWnXoPfTtqS59tepdwC7i
-	 WH99ybshCzuXphEG1YQSiUPCE3dXbLvfqL9a7f8zMsHrKjii5WM3ky5CEH9PCxN/uhSQK
-	 1MTRQ/XXhEOOV10iG8oPugDbEiU9oAx4T4JvwrAcGEb5r5RTfFeNe2F99/FxHbFV1Ow==
+	t=1793360672;
+	b=c3lChteatUb+fYCoLZ6MvutcfB0Zaa3I2zHbnXPUUi5wkXqL1pjDVp9u7wGGtnKnrrRt
+	 eCeZzPcRmAcYAHRjD0f0Kszo68sM2H2zeRfH4A1rIbxD9QqZSS4Wcukm/EuB2fO4SWZJ6
+	 SAvsrlwX4GqH/r+qAx/EHDVG3o3PdB4yOLfk2NtwV6SMfR1HEUHpok4MW93a45iiJ6zgC
+	 I2b/F7GEz7fOoG+SVpJ5l2GHoHVG2ZWmAGvBoGM4xCMf3JrJQacaaWVNTS8za9nKyH5XL
+	 8ibEet+qL/GI+18VFJxQoQraoJfGnedfbwCcuq6Af7oCeyRHgYMYzY0n9tBDes7kliQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793358793;
-	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
-	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
-	 To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=lA6TJOaRxsa4Fs8ttaPCMuiOdnwDekD+hly6/8eGHww=;
-	b=zL4ZY6TzjgFrQEaW2RlwpU85bZ+HCtkemBkXcu+r/beUck2BjUSkmWec2X1YH30mG2at
-	 1hPJI/5nOB2K5Pku2+kZgnBSFCqq8Xc+m+3Jkw3eYwMW3ZEeJXMs4gBdnMjBUT8rLXoUR
-	 AQJJC81cRxGpIdr+8rLgjvfq0f1Hi+UxU7VGGl/C+mWEA0/Y+VeuuwIgJkNWYKXTqjO3H
-	 DpLJiodU6KKU73E8Nbe/kr73EJ9ERiMrLnqkRVWVf++h+aYo3haBc+fowBsU2JXAB3x5+
-	 4UbsQhQb3mxSL9dROF0eAweIslNwShi0wHBBkuWa/UVB0th0dbs6qOgunumEqygoVZw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793360672;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=u22L97/jeI13IB20ysbQZcY423yThcHnEYQlKHEzxLc=;
+	b=gS+kucei7Z6HMG27q7M5/Sl5rccD69VDEuloR30z8M2jdkfjA0STkSQkd1Eh43Otlxm2
+	 Nvi55IkfWFQtrsqwEbqP3mZREBSluMhvSoAjAyX6qfn0HGvl0C+4nAZHLP9Yrz/00d779
+	 QBPNxeaJeBJ5F2rwgsaP9jcesyp3+XyGb2eTFhknTMyWW7rtotv2/yF2AJL5f93kU8sW0
+	 Dl9AQMzk1CFqSZgtiGcO85XJ0jnhB7a/DsvMkanlw4tIuQi3GgiV+ip2h8m/sCCPbtwnY
+	 k6YAzGqPaSnX+vHUVbhdtTCGb8SZADCzxAGtPI8y/7c1zWkzXrkWkqffilswO36nRrQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cmss.chinamobile.com;
-	spf=pass smtp.mailfrom=cmss.chinamobile.com;
-	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=nFDu680s;
-	arc=none smtp.remote-ip=111.22.67.137
-Received: from cmccmta4.chinamobile.com (cmccmta4.chinamobile.com [111.22.67.137])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEA82606A31D
-	for <imx@lists.linux.dev>; Fri, 30 Oct 2026 11:13:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DEA82606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=POEHrrX+;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C84F8606A31A;
+	Fri, 30 Oct 2026 11:44:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=nFDu680s
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=cmss.chinamobile.com; s=default; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=nFDu680sWTPFHy4B3sLoILYc4GXFPEXQOnUHzZRCF31jhj38JpRrS62LE1t4+irWTmosP1frNFZYt
-	 k6RlXiZRanJlMCR/fcbNXWwTLu6KCJCwSTGM/J856hWHtGRAsnB9zKMo3jWrKmDcjySb+ISAKg2q3F
-	 KyIUzc06klWeWWIs=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app08-12008 (RichMail) with SMTP id 2ee86ae47bbe5ca-14eed;
-	Fri, 30 Oct 2026 19:13:07 +0800 (CST)
-X-RM-TRANSID:2ee86ae47bbe5ca-14eed
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from DESKTOP-3K8GUTQ (unknown[223.108.79.101])
-	by rmsmtp-syy-appsvr09-12009 (RichMail) with SMTP id 2ee96ae47bc0125-5c588;
-	Fri, 30 Oct 2026 19:13:07 +0800 (CST)
-X-RM-TRANSID:2ee96ae47bc0125-5c588
-From: laixiangwu <laixiangwu@cmss.chinamobile.com>
-To: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Lucas Stach <l.stach@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	dri-devel@lists.freedesktop.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	laixiangwu <laixiangwu@cmss.chinamobile.com>
-Subject: [PATCH v2] drm/imx/dcss: Fix clock leak on blkctl init failure
-Date: Fri, 30 Oct 2026 19:13:03 +0800
-Message-ID: <20261030111304.2205-1-laixiangwu@cmss.chinamobile.com>
-X-Mailer: git-send-email 2.50.1.windows.1
-In-Reply-To: <20261030083342.1531-1-laixiangwu@cmss.chinamobile.com>
-References: <20261030083342.1531-1-laixiangwu@cmss.chinamobile.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=POEHrrX+
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C4AD1F0093A;
+	Fri, 30 Oct 2026 11:44:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793360671;
+	bh=u22L97/jeI13IB20ysbQZcY423yThcHnEYQlKHEzxLc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=POEHrrX+sPBo41n1mG2oZ7jZsPptJNOYuklpaJCho15lUx/hky0vAto0IGN9wUGU6
+	 ND1CBDe5rZnFil1HZM1tjiLOFUAleLd3OoRXz2gYSIc3S0vbxzEcjwCfDh4zVMpSsf
+	 EQlNPouP+PVpC+k2CwhIb/KtciGpEkUOTO8XdOVMGJFbCRhD4vWJqa17k4GdbY1Vlc
+	 +22QWJSEiJS+ic6dfb3qVSAJmBMrYs3nndjOrrxn5UsvH0+zvXfwafKrObb+dlFg75
+	 QjOl3vEY9Q5kPpMymCryWXA4Z8a6csZvMkbqWCkAqIOAa8OUIZNXAetDK6xKKo0Mfo
+	 yZ+wl5iCt+jdg==
+Date: Fri, 30 Oct 2026 12:44:28 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Bjorn Andersson <andersson@kernel.org>, 
+	Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney+clk@redhat.com>, 
+	Jerome Brunet <jbrunet+clk@baylibre.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Florian Fainelli <florian.fainelli@broadcom.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Rob Clark <robin.clark@oss.qualcomm.com>, 
+	Dmitry Baryshkov <lumag@kernel.org>, Abhinav Kumar <abhinav.kumar@linux.dev>, 
+	Jessica Zhang <jesszhan0024@gmail.com>, Sean Paul <sean@poorly.run>, 
+	Marijn Suijten <marijn.suijten@somainline.org>, Frank Li <Frank.Li@nxp.com>, Vinod Koul <vkoul@kernel.org>, 
+	Yinbo Zhu <zhuyinbo@loongson.cn>, Linus Walleij <linusw@kernel.org>, 
+	Bartosz Golaszewski <brgl@kernel.org>, Jonathan Cameron <jic23@kernel.org>, 
+	David Lechner <dlechner@baylibre.com>, Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, 
+	Andy Shevchenko <andy@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	Kevin Hilman <khilman@baylibre.com>, Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
+	Tiffany Lin <tiffany.lin@mediatek.com>, Andrew-CT Chen <andrew-ct.chen@mediatek.com>, 
+	Yunfei Dong <yunfei.dong@mediatek.com>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, Andrzej Hajda <andrzej.hajda@intel.com>, 
+	Ryder Lee <ryder.lee@mediatek.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, Manivannan Sadhasivam <mani@kernel.org>, 
+	Bjorn Helgaas <bhelgaas@google.com>, Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Christian Marangi <ansuelsmth@gmail.com>, 
+	Eric Anholt <eric@anholt.net>, Kuogee Hsieh <quic_khsieh@quicinc.com>, 
+	Peng Fan <peng.fan@nxp.com>, Aakarsh Jain <aakarsh.jain@samsung.com>, 
+	Abhinav Kumar <quic_abhinavk@quicinc.com>, linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	linux-rpi-kernel@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+	freedreno@lists.freedesktop.org, imx@lists.linux.dev, dmaengine@vger.kernel.org, 
+	linux-gpio@vger.kernel.org, linux-iio@vger.kernel.org, linux-amlogic@lists.infradead.org, 
+	linux-media@vger.kernel.org, linux-pci@vger.kernel.org, linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH] dt-bindings: Fix property name typos in if/then schemas
+Message-ID: <20261030-musical-modest-butterfly-e7734f@quoll>
+References: <20261028120216.2657397-1-robh@kernel.org>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -82,96 +85,27 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261028120216.2657397-1-robh@kernel.org>
 
-dcss_submodules_init() enables the DCSS clocks before initializing the
-submodules, but if the first submodule (blkctl) fails to initialize the
-function returns directly, without disabling the clocks again. All the
-later error paths already jump to err_clocks, which calls
-dcss_clocks_disable().
+On Wed, Oct 28, 2026 at 07:02:12AM -0500, Rob Herring (Arm) wrote:
+> Property names within if/then schemas currently go unchecked whether
+> they have a type defined or match what's in the top-level schema. Adding
+> a check finds a number of instances of typos. The typos result in the
+> schema having no effect on constraints.
+> 
+> With this, fix the mediatek,vcodec-encoder 'clocks' count constraint
+> exposed by the name correction.
+> 
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+> ---
 
-Since the clocks are only devm-managed for their reference (devm_clk_get),
-a blkctl init failure leaves all five DCSS clocks prepared and enabled.
+I just git grepped kernel sources and weirdly no one made a typo in
+"clocks" of forgetting the second letter. We became way too polite :).
 
-Jump to err_clocks so the clocks are disabled like on the other error
-paths.
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
-Also rename the error labels of dcss_submodules_init() to the more
-common err_<x> style, which describes what is cleaned up from each
-label on, and update the gotos accordingly.
-
-Fixes: 9021c317b770 ("drm/imx: Add initial support for DCSS on iMX8MQ")
-Suggested-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
-Signed-off-by: laixiangwu <laixiangwu@cmss.chinamobile.com>
-
----
-V1 -> V2: Also rename the error labels of dcss_submodules_init() and
-update the gotos accordingly, as suggested in review.
----
- drivers/gpu/drm/imx/dcss/dcss-dev.c | 22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
-
-diff --git a/drivers/gpu/drm/imx/dcss/dcss-dev.c b/drivers/gpu/drm/imx/dcss/dcss-dev.c
-index 7fd0c4c14..206679d52 100644
---- a/drivers/gpu/drm/imx/dcss/dcss-dev.c
-+++ b/drivers/gpu/drm/imx/dcss/dcss-dev.c
-@@ -70,45 +70,45 @@ static int dcss_submodules_init(struct dcss_dev *dcss)
- 
- 	ret = dcss_blkctl_init(dcss, base_addr + devtype->blkctl_ofs);
- 	if (ret)
--		return ret;
-+		goto err_clocks;
- 
- 	ret = dcss_ctxld_init(dcss, base_addr + devtype->ctxld_ofs);
- 	if (ret)
--		goto ctxld_err;
-+		goto err_clocks;
- 
- 	ret = dcss_dtg_init(dcss, base_addr + devtype->dtg_ofs);
- 	if (ret)
--		goto dtg_err;
-+		goto err_ctxld;
- 
- 	ret = dcss_ss_init(dcss, base_addr + devtype->ss_ofs);
- 	if (ret)
--		goto ss_err;
-+		goto err_dtg;
- 
- 	ret = dcss_dpr_init(dcss, base_addr + devtype->dpr_ofs);
- 	if (ret)
--		goto dpr_err;
-+		goto err_ss;
- 
- 	ret = dcss_scaler_init(dcss, base_addr + devtype->scaler_ofs);
- 	if (ret)
--		goto scaler_err;
-+		goto err_dpr;
- 
- 	dcss_clocks_disable(dcss);
- 
- 	return 0;
- 
--scaler_err:
-+err_dpr:
- 	dcss_dpr_exit(dcss->dpr);
- 
--dpr_err:
-+err_ss:
- 	dcss_ss_exit(dcss->ss);
- 
--ss_err:
-+err_dtg:
- 	dcss_dtg_exit(dcss->dtg);
- 
--dtg_err:
-+err_ctxld:
- 	dcss_ctxld_exit(dcss->ctxld);
- 
--ctxld_err:
-+err_clocks:
- 	dcss_clocks_disable(dcss);
- 
- 	return ret;
-
-
+Best regards,
+Krzysztof
 
