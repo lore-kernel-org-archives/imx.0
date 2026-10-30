@@ -1,56 +1,85 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.175
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793367877;
-	b=ZH53KzShXcp8QsVEzE0bS0fnzgkff1cO2YlMPcY4cbhabXp+or8jZwk3he5mf40VK5BS
-	 Ri7s/yjea5idE8VpAPSTPTsJt8NXE2t7roqeJvAr5LKBTVAj0NhGiQpOuNpu7Sd7xwjXQ
-	 f2RLpHmCf7N0qjg6zJ1GO/OYSjoXBiMc4C63dAr7YVm6d4VQ/Z9/Tb/87oKsKlLDhkNda
-	 x/Tuml2jO6/9yCzEXcHoy0Z+PNGuBs/BArRVgIibFzyAclwx3pSeNRgIbDDY0ZZgRt7+v
-	 ahdM+UlGFMSts091WCxnOETSzZF6oY04m0S5j7FmqgEITqlEvvwwVB2axBJRaUWEC6Q==
+	t=1793367978;
+	b=lDyAGn1RvlbhtRz0DrSB5wqZLUX0/TUz18t/5hFboia9Vf+TkQjcJJxwXxSn3lQuSELP
+	 jzyyOTtZqMGyjbxZjcWz6Ptw9BDEjpWWEsgJ2uQDI5G4x1JOEYkKpmoIcvrLshyHBSrO1
+	 W+M+GCauVJ+G8P2QIiwqUOPpdS7oBiqeiaHt9ZINpsAW48INUHp6EjeqPdGdxVF42gwG0
+	 kLvByLxT8Oy88iKlwPi72PZJwcJnz68bEKAHBRbMYoddJHWfSG+0Q/SlRAlnrvFQIm5q2
+	 qF1mqaGYn8OAT2zX6Q7rqXS3cPYP6rSbdu11qrPwOGyrmu3BooesPdirDC5zFxN9kmg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793367877;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=9x2W01aRz4G6KbB8eeH8oE0Yjk/vl7mEqYf5cAkJXaI=;
-	b=UuRp+g0MG+darsBkxsoDoaDwhog4lNCGVGz2GGJc9gI1GE64zZRIAvoB4QpTnVDuA8H4
-	 twAC++yuqoj4g7uyTxO8EU96iVP9TOKUQVSOtOc7ewYxeXgKxRYqZ3iziZqHhUzg1zvOM
-	 e0V2v4iyO/vmfiTWRG1AYc6vNnlXw6HbiBZvx6+s4sWdGYPbYhx4Jl8ZSATezHXFBjmFZ
-	 NDwD5ZRSDMQnNcZLNa5iwubK3phIJPiQG1Y4iULWkUy8Uk60RZT5K0Cn5hnQZSYdg7JKm
-	 d53ZhS0yGEptatfHu2WL6mObTYfXM+5DmdmkphOqGwqzE8zsB4hw7yYjltVyreA9QKA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793367978;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:
+	 Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=Cel0vcm4G5w81qs6p/3zOaRkogZgkiMaq/fEg3zUQoI=;
+	b=Io/LYmFgdSeK1qfBa1yo81GmJDii6Oer3klx/QIseNPt5egI1wya49pHwRZNOuDWehLl
+	 WIdkoqgDtq6HGgWR6y7pgkPlj8lDS9Coz7vnqmspK/5N6UPqd/pKXK6T/tL7+RZRrHIG1
+	 sGDpMdTLmftSjYzLA2rZkSfvpoqt8ELtOTSOGux0tELMnHMMhKJwVOOPrHG1jN77kAmUM
+	 isfGk8BW6z118gQoopzLAla2sAFjhnzvqs4yj55XBxi3QBC/RTGhWmm1Abd2DuE0GrCj5
+	 RNlJNgORi6NUwRGLzySoQEWV0C3bORMdE4BAWZhAq9Fu6kwF4scdns2Z91GnEP2KB4Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=URmPcG2l;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=ieee.org;
+	spf=pass smtp.mailfrom=ieee.org;
+	dkim=pass header.d=ieee.org header.i=@ieee.org header.a=rsa-sha256 header.s=google header.b=anzOZR+H;
+	arc=none smtp.remote-ip=209.85.167.175
+Received: from mail-oi1-f175.google.com (mail-oi1-f175.google.com [209.85.167.175])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9900F606A31A;
-	Fri, 30 Oct 2026 13:44:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82B6E606A31E
+	for <imx@lists.linux.dev>; Fri, 30 Oct 2026 13:46:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 82B6E606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ieee.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ieee.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=URmPcG2l
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C83CE1F000C1;
-	Fri, 30 Oct 2026 13:44:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793367877;
-	bh=9x2W01aRz4G6KbB8eeH8oE0Yjk/vl7mEqYf5cAkJXaI=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=URmPcG2lmEjcnkTscGR8tXpP+QWBEwHSdsJRiQUc3mN95n76oQmh07oY5zRC3G7AI
-	 ZoP7AumKvH530rjd3xBhXd1cKlF6vvNRit9XX9ROPH9uRrlfiBdme8BQ/sVO4+x/VN
-	 Ph2ISViv3GoB5fFDmjD79PQEqrvNtcAec0k6Xv2fFT35afKd9CIljfil+0XATyfS7W
-	 BRlDZCh8uXVZS5MpZJc0oNdggguGYVKRtLjQncf3/8xY+jvcqvnRADQ9Ms1NTwmVn9
-	 4mhcg4i+vD0IQJ/GKotYGk7s8Tirh2k2olWxTcl2jOneM+VFEeus4yJ1qepe4OkWPy
-	 wdpCTfYE2EDWw==
-Message-ID: <sashiko-outbox-191079@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 3/5] dts: imx95-phyflex-libra-rdk: Add overlays
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Benjamin Hahn" <B.Hahn@phytec.de>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20261030-wip-bhahn-imx95_upstreaming-v1-3-1c1cebb5be99@phytec.de>
-References: <20261030-wip-bhahn-imx95_upstreaming-v1-0-1c1cebb5be99@phytec.de>
- <20261030-wip-bhahn-imx95_upstreaming-v1-3-1c1cebb5be99@phytec.de>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 30 Oct 2026 13:44:36 +0000
+	dkim=pass (1024-bit key, unprotected) header.d=ieee.org header.i=@ieee.org header.a=rsa-sha256 header.s=google header.b=anzOZR+H
+Received: by mail-oi1-f175.google.com with SMTP id 5614622812f47-55651e7de9bso445865b6e.0
+        for <imx@lists.linux.dev>; Fri, 30 Oct 2026 06:46:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ieee.org; s=google; t=1793367971; x=1793972771; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Cel0vcm4G5w81qs6p/3zOaRkogZgkiMaq/fEg3zUQoI=;
+        b=anzOZR+H+dK6ExDZEutUyPXQRiYAnmo7mWGvRaJRanil0/s1rT6oAu82jXDlQMTmY0
+         SihZTqD8Xlzk/p0H4U1zHuR29KMhMR1vM8tn86I7sYKRmO0d2X072tivdKtllDCvMPa7
+         ulmPmXYshDlvdv3WS9QGD/v/KGwid4H2TUP1g=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793367971; x=1793972771;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Cel0vcm4G5w81qs6p/3zOaRkogZgkiMaq/fEg3zUQoI=;
+        b=2W64W9m1j9UML06cCDSfgkNVo7iGaToPErqZWpJmSHuYqZUWy7frb/Q1HGYyUtEvSK
+         6EvLeYQmTIJnETCn1+jblyDPvQN1xtIUzgDisA05Z0EETPw0AP/RSzZXYVA0glKm00eR
+         qeHRsZZ4VdZSzffg5usTnFwjKgxFyruSv5OO4SKmeaqBs6FRLGZgXj0bDcuCb0UK6u/h
+         MMaZxQfUpt05KorrnVSRSh1kklozv+y4SmkyulH6WGHS8fJhL7ptIYTYl+nxnCGGdqxY
+         58XPjIyLuZlbY2yhInCqYK3LKovcy05BEWryQT9MPcGpHYa2JCwkH2eWolatw7K+pzSj
+         3WsQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzz8SMTdjzpPyBVqxgRln5YxCDxyla2HIc/8lXmwqLY8+lG3d2DMIi5xJ+fRspkXYZTLes=@lists.linux.dev
+X-Gm-Message-State: AFq9FYKbbKNWQh4Mcz0EWa2fCJfrkIgHZCfbQWya7XoMMlEnggpzbFZA
+	fT9/PmsdCKCWB43u94wOUsHNLb9n07AluLm88ZDRNS8VSEAUfj11jhzyvKIeWP+OjA==
+X-Gm-Gg: AYBFou1L0H5qb+LWNJqAU04dCwCFym7nJmzSXngQiHAO84qW+jrvKeP0mnT/HqOeKfz
+	kzmM4pHKzF69bSjct/r2+D8+q+busj/uD1FnD6cbP/spDL38xOhzHsW7DizXmXjdscrhwqArtFH
+	OuHAweSE5kNu74eU7NLy/b7ipjQA5aKoGpaeP73GiE90iBEc8Ut03pztfH0knSBlYWPL8wfKf6W
+	RePeTD9yDGZfD1OJ/EisuyGCadrNrplkQeJkUHi71ZUiwnldciEpVtUIH9mOfo+vYS9Ddk/TIik
+	Wy3SG2daXcaL0QLOFb+SIofq6uNTFtBM3upW3VvZxkuJTb5Z4e3je0iGtMapiYIIPOPW+qF8Bfc
+	73O/Y9KqeUaLOPzpwgbeHE73oOZAZs4UsHjLL8UcVYzE36Qknj1T0nNvw2SHbagLqhoTuxwI1Uo
+	fHoWPfPO0oQBKMEgdYngLR2k5f5DJRC079btyTqpyr0GTiAX4/5H7ndoqHvwwxxsnpIydO/29o6
+	CYdnjvOiPFM6RrFbP756KStfvtGqn+fHBEpmHONn/c1zin24qsaQWOAJdt9hcxtKyLOrA313QqH
+	J0tTE4guPPo3lpqpcqI7fHpB
+X-Received: by 2002:a05:6808:151f:b0:4c3:6d56:77c2 with SMTP id 5614622812f47-5640de7e3a9mr1613306b6e.41.1793367971178;
+        Fri, 30 Oct 2026 06:46:11 -0700 (PDT)
+Received: from [172.22.22.28] ([73.62.185.64])
+        by smtp.googlemail.com with ESMTPSA id 5614622812f47-5640fdcef5asm1492922b6e.9.2026.10.30.06.46.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 30 Oct 2026 06:46:10 -0700 (PDT)
+Message-ID: <9207a52e-2d42-4e10-b777-2988e84d7dbe@ieee.org>
+Date: Fri, 30 Oct 2026 08:46:07 -0500
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -59,82 +88,77 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] PM: runtime: change stub pm_runtime_get_if_active()
+ return 1 when !CONFIG_PM
+To: Sakari Ailus <sakari.ailus@linux.intel.com>, Frank.Li@oss.nxp.com
+Cc: Frank Li <Frank.Li@nxp.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Andrzej Kacprowski <andrzej.kacprowski@linux.intel.com>,
+ Karol Wachowski <karol.wachowski@linux.intel.com>,
+ Oded Gabbay <ogabbay@kernel.org>, Jani Nikula <jani.nikula@linux.intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
+ <tursulin@ursulin.net>, Matthew Brost <matthew.brost@intel.com>,
+ Thomas Hellstrom <thomas.hellstrom@linux.intel.com>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Alex Elder <elder@kernel.org>, Will Deacon <will@kernel.org>,
+ Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
+ Rob Clark <robin.clark@oss.qualcomm.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Guenter Roeck <linux@roeck-us.net>, Guan-Yu Lin <guanyulin@google.com>,
+ Mathias Nyman <mathias.nyman@linux.intel.com>, linux-pm@vger.kernel.org,
+ linux-usb@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
+ linux-hwmon@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ iommu@lists.linux.dev, linux-arm-msm@vger.kernel.org,
+ linux-media@vger.kernel.org, linux-staging@lists.linux.dev,
+ netdev@vger.kernel.org, imx@lists.linux.dev, Rob Herring <robh@kernel.org>
+References: <20261029163044.3062958-1-Frank.Li@oss.nxp.com>
+ <auRb_r8ZSSU-eHZA@kekkonen.localdomain>
+Content-Language: en-US
+From: Alex Elder <elder@ieee.org>
+In-Reply-To: <auRb_r8ZSSU-eHZA@kekkonen.localdomain>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] arm64: dts: imx95-phyflex-libra-rdk: missing OF graph link for M=
-.2 BT pwrseq
---
+On 10/30/26 3:57 AM, Sakari Ailus wrote:
+> Hi Frank,
+> 
+> Thanks for the patch.
+> 
+> On Thu, Oct 29, 2026 at 12:30:37PM -0400, Frank.Li@oss.nxp.com wrote:
+>> From: Frank Li <Frank.Li@nxp.com>
+>>
+>> When CONFIG_PM is not enabled, all devices runtime PM state should be
+>> treated as active.
+>>
+>> __pm_runtime_resume() returns 1 (called by pm_runtime_get()).
+>> pm_runtime_get_if_active() is the try-and-get version of pm_runtime_get().
+>> stub pm_runtime_active() also returns true. So pm_runtime_get_if_active()
+>> should return the same value as the stub pm_runtime_get(), which is 1.
+> 
+> Shouldn't the same change be done to pm_runtime_get_if_in_use()? It's
+> otherwise the same, except that it requires also the use count to be
+> non-zero.
+I think "yes."
 
-commit 214248ffcd9454f4e28fccad2971f5e7db77d114
-Author: Benjamin Hahn <B.Hahn@phytec.de>
+I think the logic for !CONFIG_PM should basically pretend runtime
+PM is enabled for all devices, and they're all ACTIVE and effectively
+in use.
 
-dts: imx95-phyflex-libra-rdk: Add overlays
+That implies:
+- disable_depth == 0, so usage accounting would (if enabled) be done
+- runtime_status == RPM_ACTIVE (power is on, no delay)
+- usage_count > 0
+- runtime_error == 0
+- Maybe ignore_children is false?
 
-This commit adds devicetree overlays for the SoM temperature sensors and
-for M.2 Key-E Wi-Fi/Bluetooth cards using the nxp,88w8987-bt compatible on
-imx95-phyflex-libra-rdk.
+This might not be complete (and could be wrong!).
 
-> diff --git a/arch/arm64/boot/dts/freescale/imx95-phyflex-libra-rdk-blueto=
-oth-88w8987.dtso b/arch/arm64/boot/dts/freescale/imx95-phyflex-libra-rdk-bl=
-uetooth-88w8987.dtso
-> new file mode 100644
-> index 0000000000000..1601e04b3940f
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx95-phyflex-libra-rdk-bluetooth-88w=
-8987.dtso
-> @@ -0,0 +1,24 @@
-> +// SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
-> +/*
-> + * Copyright (C) 2026 PHYTEC Messtechnik GmbH
-> + */
-> +/dts-v1/;
-> +/plugin/;
-> +
-> +#include <dt-bindings/gpio/gpio.h>
-> +
-> +&lpuart8 {
-> +	bluetooth {
-> +		compatible =3D "nxp,88w8987-bt";
-> +		fw-init-baudrate =3D <115200>;
-> +	};
-> +};
+Some of the other dev_pm_info flags could probably be assumed false,
+because they represent states in transition between ACTIVE and other
+states.
 
-[Severity: Medium]
-Does lpuart8 also need an OF graph link to the m2-key-e-connector node so
-that the M.2 Key-E Bluetooth power sequencer can deassert w-disable2-gpios?
-
-In arch/arm64/boot/dts/freescale/imx95-phyflex-libra-rdk.dts, the base
-board defines the M.2 connector without OF graph ports:
-
-	m2-key-e-connector {
-		compatible =3D "pcie-m2-e-connector";
-		...
-		w-disable1-gpios =3D <&gpio_expander1 9 GPIO_ACTIVE_LOW>;
-		w-disable2-gpios =3D <&gpio_expander1 10 GPIO_ACTIVE_LOW>;
-	};
-
-When CONFIG_POWER_SEQUENCING_PCIE_M2 is enabled, pwrseq_pcie_m2_probe() in
-drivers/power/sequencing/pwrseq-pcie-m2.c requests w-disable2-gpios with
-GPIOD_OUT_HIGH, asserting the active-low W_nDISABLE2 signal:
-
-	ctx->w_disable2_gpio =3D devm_gpiod_get_optional(dev, "w-disable2",
-						       GPIOD_OUT_HIGH);
-
-When nxp_serdev_probe() in drivers/bluetooth/btnxpuart.c probes the
-bluetooth child node under lpuart8, it checks for the M.2 connector via OF
-graph endpoints before acquiring and enabling the uart power sequencer
-target:
-
-	if (nxp_m2_connector_is_available(&serdev->ctrl->dev)) {
-		struct pwrseq_desc *pwrseq;
-
-		pwrseq =3D pwrseq_get(&serdev->ctrl->dev, "uart");
-
-Without OF graph endpoints connecting lpuart8 and port@3 of
-m2-key-e-connector, nxp_m2_connector_is_available() returns false, the uart
-pwrseq target is never enabled, and w-disable2-gpios remains asserted.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261030-wip-bhahn-=
-imx95_upstreaming-v1-0-1c1cebb5be99@phytec.de?part=3D3
+					-Alex
