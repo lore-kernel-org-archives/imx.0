@@ -1,97 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.224.54
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793345322;
-	b=BwYUVW1ULvblQFB5Q1o7d/t/X2AXu2uTGDudlOoRSiWUInAUqr0fKUGKIYUkdbRJrjVu
-	 RVNJd+tqUqRtS+erFNpDzaF7ruxjLm8EX1K4ODX3Lfuvhamq8SACPmtJhg7rhj6520Bkn
-	 iqSAbuezsk+1blCesNaLNg7wWmm72DoKbAvcLW7z2NmzZMxQULvB022m3G3/I1aIwIpGA
-	 Y5WLHmvhuseH/7lt4CUorENsEY4M8tb6T1ia+awkuyEmHuDMzpNK4z6cyHuU/Z11VsvF5
-	 kGBoAHy4wfYnHYktU11PicMLrcqu03N/BSxf8VEPIVZKJFJju4YwBKbpE1wDWyD4QDw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793345322;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=7PxPIeRuNsvElsGXImQTEuL1CpgybTHblbxvuB0DOLI=;
-	b=fWtkbrXGGRsHFsW0E15DOyAZhYEEDyU65L/fe1X6WlH61P/xikokcdw3Of3vpapQCkze
-	 zKZTb/TVQYmlvRf9n9su3GNbOKVqTnhLVzqt+WgOTwV5upDO2Q45AfyCD8AJHOyGWIIXA
-	 yeF84XmS7FfkZwbBfqlOTVkMttdeCA74dM1VVzUxxEvVT0p3Phmqj2AGrqnqn5VXEmRmT
-	 96HLyoklXGtkv4NP/PlA5vQM+bI8qrqfkUdsJ5xkNBycwyv54l5GO+x/0aSNEQOvi0pCY
-	 Rl28IHLd2KLCL49TUmi78PXcYr3Z9vHR3OMoZSONvNSifTYwcJC/HRws6QhqYdZv4Bg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=chromium.org;
-	spf=pass smtp.mailfrom=chromium.org;
-	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=e1u0VV6S;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.224.54
-Received: from mail-yx1-f54.google.com (mail-yx1-f54.google.com [74.125.224.54])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793345551;
+	b=FjhIe+IZBVno+X0OZdC6A2NR9aOzpMq9lJ0574qcVOmMyn+tJ8PVUwY8Qao/ANia85/7
+	 NClNWmPreOcMTUGdGTsppHdSRSx/Rrw8cpBXY6p30QdKo34qCLY2hlSg6mU5UW4t1D26j
+	 fEYogQgK3enbAzGhy1+nBZSS5OYplwzofMQc+Bb7vKwKMT1WcVSy+Yl3fEgjaZf+H8bAM
+	 zWBTkfS+DjJOyxCmXpHPgt5yWzqJ+cYT+SYTMwOYTwvp3M3R40eWqqHWIsTURRh7Dk9Y3
+	 XruyUVhDEPTmR1urwqp1m/ddZO0j8FXzUR0giy+GrgVOLRAMiZUA/td8MSWrgnv4kPw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793345551;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=kRyqcdXxJbUqcYKj5QrDTA1tbWLyEREzU9hHyreb+ms=;
+	b=YtoIYkDnQzjDoEd+1zbQ6kjazDt5f0wGt7+uzVm+2OnnfvyIuGfPmGl1gZ4U1QB64ajA
+	 ankd+tkul9qIDH9cVXuKTBKu6Um3CSf0XZZDycxoTsdMp/YmsfmY07bITvUcWGXuQP4wG
+	 wgsr43zwUGgO3ZYemcFXBPD6TStAhxgjfHJEvWY/wWoGiyymLYUwylh5NswNYltFFtSD6
+	 5Ma1i6KAmQDMemAvAJIi2Tov+BzHSIfJ2tXs2I3F1Ql1mM2PXGMy2G6sBa5JvrojSfNu0
+	 eOkeBhm7+DgCJOSjR6620StFwyBuGJ9rwGlKJN5kuHLN8Zq4+AESwH9aYX8CHPknN1Q==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=o2VJjC3p;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21281606A31C
-	for <imx@lists.linux.dev>; Fri, 30 Oct 2026 07:28:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 21281606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6421A606A31C;
+	Fri, 30 Oct 2026 07:32:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=e1u0VV6S
-Received: by mail-yx1-f54.google.com with SMTP id 956f58d0204a3-6798c43a3d6so258935d50.1
-        for <imx@lists.linux.dev>; Fri, 30 Oct 2026 00:28:40 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793345320; cv=none;
-        d=google.com; s=arc-20260327;
-        b=RPMq+A3ErqQXR0B4U6FL3c1U2te/Uh0IexFpl2o+WB5hN/f8SpyE6ZEDWUcuKMQkUm
-         9WYqdHlB6RdBQhTJjltXUqvVPnpDS5CbAF7/+IUUN9OLco6dZaNnP+x/0KZGubz7MrCX
-         E63kDUN+KMT+XDQWkV4tIH6N++hz6ZiDRscTK28B/USt5GfvTHfAFmDQhzlpiab7j0Q+
-         YV3qeI6SQW64Ys24d8O8NM+vgEDQufLOlEaBzIwXc57CUKiXgCgCiKYlzXTAFM4Gktzj
-         5SmuMWvcxvOhc+yRhHIRgOEmhYYiNEda/o0wLRpHAFH4jnVsqO/8CVrKC7lgLxuEkL2f
-         rPUg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=7PxPIeRuNsvElsGXImQTEuL1CpgybTHblbxvuB0DOLI=;
-        fh=z0w5ZQr5l0E1Om7T1rTrTjuGN66A9O/fg8DSKQ7W0xY=;
-        b=Gp/qGxTE9iThNu/ptMBEufB3oXSK3kun9mAGyPdnm2MS5FpfXHfJL/8W/4+nBEiD11
-         Yq9y30LwXi8sI5RrVbx1Zy8XVCQ6uVGznB3qG58KdNKHhaXe8+xi4H2niSNMTodpdACh
-         Md5xDgpr3W1RS0eyiy09zMjc+GYQ15MWetYA4LTTe9u1/qvtRIzwhJT2lgR8BATGlCER
-         svvXueUh4hlPJ+wHQXaokcn9J20g3zlRn3/mEZIlvUUuJy8tRN76j8MuNeCmtR/SLBN3
-         ocDerCSRcaK+KfeiQy0AohcaydyLwT6kn+EN0fjV9Ra8XxSmXWvi32gFNb1K2G3UW9L4
-         N4xA==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1793345320; x=1793950120; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=7PxPIeRuNsvElsGXImQTEuL1CpgybTHblbxvuB0DOLI=;
-        b=e1u0VV6SYYi6QwkU5B1SPm4uMgQEMGybYXZ9uSg3cTIQIrOR6jI7TRHyt8+RLRnsKu
-         SD28AoKJymf63U88/p2P/pBw49IVnR3k6iH77w6D/KNqfJEdAjs83tfIItQ3/9yT+UrP
-         M4DgrwOBWQRyivBSMu8N3pfkb6d3GyzHK98Zo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793345320; x=1793950120;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=7PxPIeRuNsvElsGXImQTEuL1CpgybTHblbxvuB0DOLI=;
-        b=Wojgz5UK06MjprNscKDIqbZ2VS0HrAo/UfSuWyYCaJnk064prIC0uqdBgJe36R9fw5
-         UIDsmQeG/5Aakdwq2GSGGV1qSe8YPF+hMaUFvkQJCs3Xa0KoDL2mg6uyXgzBUuQV2J71
-         a2r6aInbwZJXYPt170+S6x91uvJmv+4gjgQUWVZmuv+re9xhlDkN06i5mOKDR60mHYBe
-         /3K5JJhm8WESOl72lq6xoacCZWpS8PxaTYBfe9Ifbz0+eiE76vmBUiXkyB2eLWbVxT6+
-         xd+rlC9ptUWqBymGH9RczOrDlgMwzhqqQD/k3rGgOy/i6vV7pZy5sWJ/NJ53rBTLYp87
-         JVew==
-X-Forwarded-Encrypted: i=1; AKwUvBxKaI9ANwGMj7njEtACzQwzx2TWjCXi/z6HUMLNk3iLUZXFCVOQG1ESrf70gworL36Dt6k=@lists.linux.dev
-X-Gm-Message-State: AFq9FYKNWPRzOZO3GLiidRqRlQ+/+PjuVyIaS5ti8mGeFtdBl5rc4Gu2
-	q27Cn76X38rvbYqXNElMZ2wAk4n0JFMCOstQJFRg11Gh7/lu25qOF20ftVv1jKYDrluCzt1q+X2
-	24C7E82AFuqHXfdCHcPps4xbEzNFZMSRGk1x8COaK
-X-Gm-Gg: AYBFou3AlFE65rOnUzNZdnUxJpVDWhQGWUHrLH6+tejY5X0Bb0ogvTiGU/1WhzUhiqm
-	p141y7BeMqXk21OcX/lLbjMhTWf1fIKQUm/wCgmi82aL8s6pdnvlJnHx8qdGZtvCV5qnnymsOVf
-	iwOyGFlHYY7m52d3iPyYNdTVPaPPC0H+4vdmoy+OYWOmcV7WRUqq6Nfck+AMQmNg+rtCjKqVKJa
-	nelKxURK0WSgEqrZBh8NE9m2OETttHS2zsbyq+BaFLCYbWsgldSLeMjIbsFbjqCjT7Jx/aBwz55
-	8cgNmeAV8Hqod7c4Adt0UQYjMnoIBy1TrfUsmDUGOngkFlqt8eTocYP6QV9iaTvHp5vOzWLxdQ4
-	2qw61pdMMyA5p3XI88HZgOqBqD8DnTJc7pe10BNP2+TOYGM8Bh1nBPRS8L0oDz58hOXA=
-X-Received: by 2002:a53:ac8a:0:b0:679:9afd:c0c7 with SMTP id
- 956f58d0204a3-67ba508d24fmr864212d50.126.1793345320085; Fri, 30 Oct 2026
- 00:28:40 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=o2VJjC3p
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6C1D1F0093A;
+	Fri, 30 Oct 2026 07:32:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793345551;
+	bh=kRyqcdXxJbUqcYKj5QrDTA1tbWLyEREzU9hHyreb+ms=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=o2VJjC3p1nXXay2wxIp//mudg7YZR3pmBgxLNBaMaSb7GBN6WIFRMCKOFGLP3Cp8z
+	 tM6iYuDuK5NCyo0WXcFGFxXDKS/XMCJ1yMLmyUsJ4/i/M6YM7TJm9DPTkE9ai/tAXv
+	 rtIIDvMCng2Jgj6HjPNmB4C2LEUhd5BXRtLGCAbMQefepklzRywNWZvOGxwbigso+H
+	 5KjlRf34qAwsMNlhz46ZZTYQ9Il3jXolNSmO4MR33gyOY7ROrLGq3q6ydJPCleT0mK
+	 VYqK/k/y6U7gfaJ2yY9oJfZzHQH/0a8SY+/gmI8aWAyshUTmHW48ZmBcGpUlaT3/if
+	 AJ6nSDbLAHlqg==
+Message-ID: <sashiko-outbox-190647@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2] usb: chipidea: otg: fix fsm deadlock and B-device
+ gadget registration
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Xu Yang" <xu.yang_2@oss.nxp.com>
+Cc: linux-usb@vger.kernel.org, imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <20261030071921.276377-1-xu.yang_2@oss.nxp.com>
+References: <20261030071921.276377-1-xu.yang_2@oss.nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 30 Oct 2026 07:32:30 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -100,112 +59,243 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
-MIME-Version: 1.0
-References: <20261014082037.1774672-1-wenst@chromium.org> <20261014082037.1774672-3-wenst@chromium.org>
- <7020a7a6-332e-4fd0-a659-d82eb768614c@linaro.org> <CAGXv+5G1kgyumbj7wGf6rPFbg3spSO0zYmEkn-hZT4qUdJbytA@mail.gmail.com>
- <03375a31-0ac6-47a4-b0dc-6327080e1622@linaro.org> <b4c0761b-34f2-42ad-97e7-ab34ae776281@oss.qualcomm.com>
- <8d4d3ec2-3c97-4a46-97f8-048fdf81b853@linaro.org> <CAGXv+5G_ig=k-eH8Cp0ES70WxTHcBS2TVj9VmHaG9caROiAuQQ@mail.gmail.com>
- <8ceba969-91d2-4b43-81d0-b26e7139664b@oss.qualcomm.com>
-In-Reply-To: <8ceba969-91d2-4b43-81d0-b26e7139664b@oss.qualcomm.com>
-From: Chen-Yu Tsai <wenst@chromium.org>
-Date: Fri, 30 Oct 2026 15:28:28 +0800
-X-Gm-Features: AclHuK87PpF6mvOIXqHCbuY1WKimiNRH2tQGnceMsfo-UR5TI782gxdvYJm286Q
-Message-ID: <CAGXv+5GFogx_kS=N1t8-SFTp+HyxLtoHzhnL6t8Zn0GBiqMoKw@mail.gmail.com>
-Subject: Re: [PATCH 2/2] dt-bindings: usb: snps,dwc3: Fix downstream port numbering
-To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Felipe Balbi <balbi@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	linux-usb@vger.kernel.org, devicetree@vger.kernel.org, 
-	Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, Sven Peter <sven@kernel.org>, 
-	Janne Grunau <j@jannau.net>, Neal Gompa <neal@gompa.dev>, Joel Stanley <joel@jms.id.au>, 
-	Andrew Jeffery <andrew@codeconstruct.com.au>, Ryan Chen <ryan_chen@aspeedtech.com>, 
-	Billy Tsai <billy_tsai@aspeedtech.com>, Michal Simek <michal.simek@amd.com>, 
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Peter Griffin <peter.griffin@linaro.org>, =?UTF-8?Q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>, 
-	Tudor Ambarus <tudor.ambarus@linaro.org>, Heiko Stuebner <heiko@sntech.de>, 
-	Alim Akhtar <alim.akhtar@samsung.com>, Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Yixun Lan <dlan@kernel.org>, 
-	Troy Mitchell <troy.mitchell@linux.spacemit.com>, Minda Chen <minda.chen@starfivetech.com>, 
-	Shyam Pandey <radhey.shyam.pandey@amd.com>, Wei Yang <yangwei1@eswincomputing.com>, 
-	Senchuan Zhang <zhangsenchuan@eswincomputing.com>, Hang Cao <caohang@eswincomputing.com>, 
-	Li Jun <jun.li@nxp.com>, Peng Fan <peng.fan@nxp.com>, Roy Luo <royluo@google.com>, 
-	Yang Xiwen <forbidden405@foxmail.com>, 
-	Ahmad Zainie <wan.ahmad.zainie.wan.mohamad@intel.com>, 
-	Robert Marko <robert.marko@sartura.hr>, Xu Yang <xu.yang_2@nxp.com>, 
-	Wesley Cheng <quic_wcheng@quicinc.com>, Stanley Chang <stanley_chang@realtek.com>, 
-	Ze Huang <huang.ze@linux.dev>, Aswath Govindraju <a-govindraju@ti.com>, 
-	Roger Quadros <rogerq@kernel.org>, linux-arm-kernel@lists.infradead.org, 
-	linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	asahi@lists.linux.dev, linux-aspeed@lists.ozlabs.org, imx@lists.linux.dev, 
-	linux-samsung-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	linux-rockchip@lists.infradead.org, linux-riscv@lists.infradead.org, 
-	spacemit@lists.linux.dev, Mathias Nyman <mathias.nyman@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 21, 2026 at 5:44=E2=80=AFPM Konrad Dybcio
-<konrad.dybcio@oss.qualcomm.com> wrote:
->
-> On 10/15/26 11:00 AM, Chen-Yu Tsai wrote:
-> > (Cc-ed Mathias, the xHCI driver maintainer in case I misunderstood xHCI=
-.)
-> >
-> > On Thu, Oct 15, 2026 at 4:44=E2=80=AFPM Neil Armstrong
-> > <neil.armstrong@linaro.org> wrote:
-> >>
-> >> On 10/14/26 18:36, Konrad Dybcio wrote:
-> >>> On 10/14/26 11:44 AM, Neil Armstrong wrote:
-> >>>> On 10/14/26 11:29, Chen-Yu Tsai wrote:
-> >>>>> On Wed, Oct 14, 2026 at 5:28=E2=80=AFPM Neil Armstrong
-> >>>>> <neil.armstrong@linaro.org> wrote:
->
-> [...]
->
->
-> >> How about the USB4, does it use the USB3.0 port ?
-> >
-> > I'm not familiar with USB4. A quick search says that it can tunnel
-> > USB 3.x, DP, and PCIe, and it doesn't have its own USB HCI defined.
-> >
-> > So I'm thinking the USB4 controller would be more like a nexus node
-> > or multiplexing node, or perhaps like a USB C connector. It has input
-> > ports for all the protocols it can tunnel, connected to their respectiv=
-e
-> > controllers (XHCI, DP, PCIe). The binding probably would be very messy
-> > if one controller supported multiple outgoing ports, as each downstream
-> > port has a 3-to-1 relationship with its respective upstream protocol
-> > interfaces.
->
-> Yeah that is more or less it.
->
-> There needs to be a connection between the USB4 router and the native
-> (USB3 *port*, not hub | PCIe *port*, not RC | DPTX) protocol adapter
-> where the tunneled packets end up at to create a PM devlink between it
-> and the USB4 router.
->
-> ACPI does that by adding a `usb4-host-interface =3D &reference_to_router`
-> property, for DT that's still undecided:
->
-> https://github.com/devicetree-org/dt-schema/pull/196
->
-> As far as the Qualcomm implementation goes, I was hoping we could
-> go forward with base1 numbering as the DWC3 is an XHCI controller:
->
-> https://lore.kernel.org/linux-usb/20260929-topic-dwc3_tunneling_state-v4-=
-0-63e296346d57@oss.qualcomm.com/
+Thank you for your contribution! Sashiko AI review found 5 potential issue(=
+s) to consider:
+- [High] usb: chipidea: ci_role_start() in ci_hdrc_otg_fsm_init() zeroes ci=
+->gadget
+- [High] usb: chipidea: mutex_trylock() in ci_udc_stop_for_otg_fsm() drops =
+FSM reset
+- [High] usb: chipidea: ci_hdrc_otg_fsm_init() starts gadget before IRQ and=
+ PM setup
+- [Medium] usb: chipidea: ci_role_start() failure in ci_hdrc_otg_fsm_init()=
+ leaks wq
+- [Medium] usb: chipidea: ci_get_role() in ci_hdrc_probe() overwrites FSM c=
+i->role
+--
 
-I don't have DWC3 manuals, but assuming its internal numbering follows
-that of XHCI, you can't just use "udev->portnum - 1" in patch 4. That
-is the logical port number on the root hub.
+commit 654769b6450cc8234eb867172a8eeda3be413ebe
+Author: Xu Yang <xu.yang_2@nxp.com>
 
-Instead you need
+usb: chipidea: otg: fix fsm deadlock and B-device gadget registration
 
-    raw_port =3D usb_hcd_find_raw_port_number(bus_to_hcd(hub->bus), port1);
+This commit addresses two OTG FSM regressions from dynamic gadget support by
+using mutex_trylock() in ci_udc_stop_for_otg_fsm() to avoid a self-deadlock=
+ on
+ci->fsm.lock and by calling ci_role_start(ci, CI_ROLE_GADGET) in
+ci_hdrc_otg_fsm_init() when starting as a B-device.
 
-to get the 1-based port number for XHCI.
+> diff --git a/drivers/usb/chipidea/otg_fsm.c b/drivers/usb/chipidea/otg_fs=
+m.c
+> index 642729893cc20..6d6baea69b687 100644
+> --- a/drivers/usb/chipidea/otg_fsm.c
+> +++ b/drivers/usb/chipidea/otg_fsm.c
+> @@ -840,6 +840,12 @@ int ci_hdrc_otg_fsm_init(struct ci_hdrc *ci)
+>  			hw_read_otgsc(ci, OTGSC_BSV) ? 1 : 0;
+>  		/* Enable BSV irq */
+>  		hw_write_otgsc(ci, OTGSC_BSVIE, OTGSC_BSVIE);
+> +
+> +		retval =3D ci_role_start(ci, CI_ROLE_GADGET);
 
+[Severity: High]
+Does calling ci_role_start(ci, CI_ROLE_GADGET) here wipe out
+ci->gadget.hnp_polling_support?
 
-ChenYu
+Earlier in ci_hdrc_otg_fsm_init(), hnp_polling_support is initialized on
+ci->gadget:
+
+drivers/usb/chipidea/otg_fsm.c:ci_hdrc_otg_fsm_init() {
+	...
+	ci->fsm.ops =3D &ci_otg_ops;
+	ci->gadget.hnp_polling_support =3D 1;
+	ci->fsm.host_req_flag =3D devm_kzalloc(ci->dev, 1, GFP_KERNEL);
+	...
+}
+
+When ci_role_start(ci, CI_ROLE_GADGET) runs, it calls udc_start(), which
+zeroes the entire ci->gadget structure and does not restore
+hnp_polling_support:
+
+drivers/usb/chipidea/udc.c:udc_start() {
+	...
+	memset(&ci->gadget, 0, sizeof(ci->gadget));
+
+	ci->gadget.ops          =3D &usb_gadget_ops;
+	...
+}
+
+The same memset() in udc_start() also runs on host-to-gadget role switches =
+in
+ci_otg_start_host() -> ci_role_start(ci, CI_ROLE_GADGET), clearing both
+ci->gadget.hnp_polling_support and ci->gadget.is_a_peripheral, which causes
+composite_setup() to reject OTG_STS_SELECTOR status polling requests with
+-EOPNOTSUPP.
+
+[Severity: High]
+Can starting CI_ROLE_GADGET inside ci_hdrc_otg_fsm_init() also trigger OTG =
+FSM
+work before ci->irq and runtime PM are initialized in ci_hdrc_probe()?
+
+In ci_hdrc_probe(), ci_hdrc_otg_init() -> ci_hdrc_otg_fsm_init() runs before
+devm_request_irq() and pm_runtime_enable(). Calling
+ci_role_start(ci, CI_ROLE_GADGET) invokes udc_start() -> usb_add_gadget_udc=
+().
+If a gadget driver is already registered, it binds synchronously:
+
+usb_add_gadget_udc()
+  -> gadget_bind_driver()
+    -> ci_udc_start()
+      -> ci_hdrc_otg_fsm_start()
+        -> ci_otg_queue_work()
+
+Because ci->fsm.id is 1, ci_udc_start() immediately calls
+ci_hdrc_otg_fsm_start():
+
+drivers/usb/chipidea/udc.c:ci_udc_start() {
+	...
+	/* Start otg fsm for B-device */
+	if (ci_otg_is_fsm_mode(ci) && ci->fsm.id) {
+		ci_hdrc_otg_fsm_start(ci);
+		return retval;
+	}
+	...
+}
+
+ci_otg_queue_work() calls disable_irq_nosync(ci->irq) before ci->irq has be=
+en
+requested and queues ci_otg_work before runtime PM and extcon are set up. W=
+hen
+devm_request_irq() subsequently runs irq_startup(), the IRQ disable depth is
+reset to 0, causing the later enable_irq(ci->irq) in ci_otg_work() to warn =
+on
+an unbalanced IRQ enable.
+
+In addition, if usb_role_switch_register(), devm_request_irq(), or
+ci_extcon_register() fails in ci_hdrc_probe(), the error path runs deinit_o=
+tg
+(destroying ci->wq) before deinit_gadget, where ci_hdrc_gadget_destroy() ->
+udc_stop() -> ci_udc_stop_for_otg_fsm() can still touch the OTG FSM.
+
+[Severity: Medium]
+As reported by Sashiko on v1 [1], if ci_role_start() fails in
+ci_hdrc_otg_fsm_init(), does this error path leak ci->wq and leave OTGSC_AV=
+VIE
+and OTGSC_BSVIE enabled in hardware?
+
+ci_hdrc_otg_init() allocates ci->wq before calling ci_hdrc_otg_fsm_init():
+
+drivers/usb/chipidea/otg.c:ci_hdrc_otg_init() {
+	INIT_WORK(&ci->work, ci_otg_work);
+	ci->wq =3D create_freezable_workqueue("ci_otg");
+	if (!ci->wq) {
+		dev_err(ci->dev, "can't create workqueue\n");
+		return -ENODEV;
+	}
+
+	if (ci_otg_is_fsm_mode(ci))
+		return ci_hdrc_otg_fsm_init(ci);
+
+	return 0;
+}
+
+And in ci_hdrc_probe(), a failure from ci_hdrc_otg_init() jumps directly to
+deinit_gadget, bypassing deinit_otg where ci_hdrc_otg_destroy() would destr=
+oy
+ci->wq and disable the OTGSC interrupts:
+
+drivers/usb/chipidea/core.c:ci_hdrc_probe() {
+	...
+	if (ci->is_otg && ci->roles[CI_ROLE_GADGET]) {
+		ret =3D ci_hdrc_otg_init(ci);
+		if (ret) {
+			dev_err(dev, "init otg fails, ret =3D %d\n", ret);
+			goto deinit_gadget;
+		}
+	}
+	...
+}
+
+> +		if (retval < 0) {
+> +			sysfs_remove_group(&ci->dev->kobj, &inputs_attr_group);
+> +			return retval;
+> +		}
+>  	}
+
+[Severity: Medium]
+As reported by Sashiko on v1 [2], can ci->role become out of sync with the
+running role when ci_hdrc_probe() later calls ci_get_role(ci)?
+
+ci_role_start(ci, CI_ROLE_GADGET) sets ci->role =3D CI_ROLE_GADGET when
+ci->fsm.id is 1, but ci_hdrc_probe() subsequently overwrites ci->role by
+re-reading OTGSC_ID without starting or stopping roles in FSM mode:
+
+drivers/usb/chipidea/core.c:ci_hdrc_probe() {
+	...
+	ci->role =3D ci_get_role(ci);
+	if (!ci_otg_is_fsm_mode(ci)) {
+		ret =3D ci_role_start(ci, ci->role);
+	...
+}
+
+If the ID pin changes from 1 to 0 between ci_hdrc_otg_fsm_init() and
+ci_get_role(), ci->role is overwritten to CI_ROLE_HOST while CI_ROLE_GADGET
+remains active, so a subsequent ci_role_stop() will call host_stop() instead
+of udc_stop().
+
+> diff --git a/drivers/usb/chipidea/udc.c b/drivers/usb/chipidea/udc.c
+> index c29b2d0dcc7c8..1e0d295f5431a 100644
+> --- a/drivers/usb/chipidea/udc.c
+> +++ b/drivers/usb/chipidea/udc.c
+> @@ -2167,7 +2167,8 @@ static void ci_udc_stop_for_otg_fsm(struct ci_hdrc =
+*ci)
+>  	if (!ci_otg_is_fsm_mode(ci))
+>  		return;
+> =20
+> -	mutex_lock(&ci->fsm.lock);
+> +	if (!mutex_trylock(&ci->fsm.lock))
+> +		return;
+
+[Severity: High]
+As reported by Sashiko on v1 [3], what happens if a gadget driver is unbound
+from userspace while another thread holds ci->fsm.lock?
+
+For example, if userspace unbinds the gadget driver (gadget_unbind_driver()=
+ ->
+usb_gadget_udc_stop_locked() -> ci_udc_stop() -> ci_udc_stop_for_otg_fsm())
+at the same time another CPU holds ci->fsm.lock in an OTG sysfs store handl=
+er
+such as b_bus_req_store(), a_bus_req_store(), a_bus_drop_store(), or
+a_clr_err_store(), or in otg_statemachine() for an unrelated event,
+mutex_trylock() will fail and ci_udc_stop_for_otg_fsm() will return early:
+
+drivers/usb/chipidea/udc.c:ci_udc_stop_for_otg_fsm() {
+	if (!ci_otg_is_fsm_mode(ci))
+		return;
+
+	if (!mutex_trylock(&ci->fsm.lock))
+		return;
+	if (ci->fsm.otg->state =3D=3D OTG_STATE_A_PERIPHERAL) {
+		ci->fsm.a_bidl_adis_tmout =3D 1;
+		ci_hdrc_otg_fsm_start(ci);
+	} else if (ci->fsm.otg->state =3D=3D OTG_STATE_B_PERIPHERAL) {
+		ci->fsm.protocol =3D PROTO_UNDEF;
+		ci->fsm.otg->state =3D OTG_STATE_UNDEFINED;
+	}
+	mutex_unlock(&ci->fsm.lock);
+}
+
+In OTG_STATE_B_PERIPHERAL, skipping the reset leaves ci->fsm.protocol set to
+PROTO_GADGET and ci->fsm.otg->state set to OTG_STATE_B_PERIPHERAL after
+ci->driver is cleared, preventing a later gadget rebind from re-entering
+OTG_STATE_B_PERIPHERAL and enabling the pull-up. In OTG_STATE_A_PERIPHERAL,
+skipping a_bidl_adis_tmout =3D 1 and ci_hdrc_otg_fsm_start() leaves the A-d=
+evice
+stuck in OTG_STATE_A_PERIPHERAL without a bound gadget driver.
+
+[1] https://lore.kernel.org/r/20261015084140.61544-1-xu.yang_2@oss.nxp.com
+[2] https://lore.kernel.org/r/20261015084140.61544-1-xu.yang_2@oss.nxp.com
+[3] https://lore.kernel.org/r/20261015084140.61544-1-xu.yang_2@oss.nxp.com
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261030071921.2763=
+77-1-xu.yang_2@oss.nxp.com?part=3D1
