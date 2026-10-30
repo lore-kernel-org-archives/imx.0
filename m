@@ -1,68 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.17
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793352812;
-	b=nBXV0q9ySieRMNnT66yTEtVI9MhoB05+9JfS0wr7TrCdZDQV6YhpYMJqeUGK0912YyGM
-	 EfBykA8QTtKRN/OgohcwMU4zZBfjE55+tWbMzJ9EMXYRO9som+1+/hy+RbQJDSFX84uiy
-	 DMnVktRtM0jNMcyBBHfrsgYnKWLuRPfx//YpRnxGZVvohE3XrvW7UkkKZ940luzfIiXG3
-	 3qP/1eN2v72B6dvmKA912clXaaxQfhgXFCvwoEx+D6bitONLcU+oHCsMMcjHNE2b2l8f4
-	 m2/w8pNSf/0GmeQztmGfaTURlcbPEkRQmZNxEpt1C1OCVlBbH7e9W3aJNyUnVo8BSDA==
+	t=1793353216;
+	b=HbmVErzOdWQisXkI9byMrg6zh8rEUyZJQieCNpIa+b6+gFOyba9QihXBoVsxTjhB7qPt
+	 xAMtR2anlubFoEB0PgjGg5HulK5xh5+VPBEFtoAJ3qSjUzl4qbvAIUgYzonECpCUWo6Ri
+	 ND55GG5zdTo8hI4GK3oX+xydFGCi8G/tjjKmXZE6c7c30P6DLCNRvqdsedKJYrWMOVSk2
+	 1LNyUOwhCSbsDBfxf/PjTZv50hc79ELgLibr5+WoLZixTG1t/Igpk6I33b8r6AKIsGp1m
+	 ILRrqB6KHddhTMsy0w8b/qk1tpYKTGbWUsbJPEFj6uBTH5ZrGKeRcw3jOo0gugKCOlg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793352812;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793353216;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
 	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
 	 Subject:Message-ID:References:MIME-Version:Content-Type:
 	 Content-Disposition:Content-Transfer-Encoding:In-Reply-To:
 	 Organization;
-	bh=PCRyiewkbGG036lTwBa+174OovhhVRwZfC2vW3ZeNTQ=;
-	b=Ba5H4NoGa/ZIMbTunj4PDlKnvLLLNqobWyTQDX4k3cmJ/SO2sMlXqbBYn+C44lz0nMup
-	 V1hGNQ4KPutSpLlu62ioCM7+tGWIPp77bwXv4VDkOXCb7MZTuwCo6ngMkrWqPSfgh+awS
-	 lhkE0nMN13WKh2E0V3YV7DXhHrxAcY4Q0I8CMhYAX+gX86EYiD21iT6N3FB8zY3tPqsmH
-	 ebSgA6u9E7zMzlaMD5SJ0WgCphbXN5nobpHLg7g5GT23gM3dMv8vqFY/UFZUDO8vyaJOw
-	 rnfSsFAoFulBJNCEQ2RMcYvVcrYu8ucLmPZMJYoG47sMFZkcZvo8qor1kU9BGs2tnNw==
+	bh=OGxTx5VTRibU/s9XnjHXs/1x5TiFEbymfoF86VCpiMU=;
+	b=QFJ1d4DS8+X5QrVDPXQBA7CdTQyH17FfXxwkZCltRMslK9xO0BW7S7YhPPlbFoXnz6YM
+	 rIG18eyqwij6bXPbvsQp2/7uEbCML07ZRlB9i79M4MCB0nu0hwbMhaCNfSZrIKN4P16MF
+	 +bYqBr8PGh8WDAnf3ZKphJV+YcHZh6hnuBbMlJZ2M1rc7un4iYLKSrQuB7hf9EDQDMBua
+	 aaEpBt0NBxEJRiquD1ZM4UocswSXNNkCgrSNxnnAnO4WL35ukVhyzybwWLE6m7+Nn+nbp
+	 vgnzGl0wdvPQE5NqLXyxsWDzTZRVOdoCxuT8dA9PQ+ruOt4sHMO0U6c7r+qk1kYMJLw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.intel.com;
 	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=NBal4tnU;
-	arc=none smtp.remote-ip=198.175.65.9
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=S2JzZQkK;
+	arc=none smtp.remote-ip=198.175.65.17
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B417606A31C
-	for <imx@lists.linux.dev>; Fri, 30 Oct 2026 09:33:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7B417606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19394606A33F
+	for <imx@lists.linux.dev>; Fri, 30 Oct 2026 09:40:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 19394606A33F
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=NBal4tnU
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=S2JzZQkK
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793352812; x=1824888812;
+  t=1793353216; x=1824889216;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:content-transfer-encoding:in-reply-to;
-  bh=qrpI44bWZaGg8MfD8DnU+yqorhMutYP7dQKRrMv1F3w=;
-  b=NBal4tnUj5daNIubmburHT5z8glzJzepJxA3TJ/E7qM4G8rVHVOuTlME
-   boSa7+kRUnsgENwpkN5Zoodeg61N5pwjH+HW/xPjyDXjGNkvkHJrBwOeS
-   JbythcfsmLeU/Mtme8gq2xP7IWY26mgOvFu6YJaNKSdiE2idm+NGuxXuA
-   8sG+EVWYavhV6wLzwURNmnpfJHgqaOX3/uGkoujF7SDCUjGgUtQs2x7Lw
-   k+dRzfiD/b/QElX2I+xKVoodP0UveywG+XfWC0bAwB3O3CsuKulX4e+rd
-   EsTtLaN+/igl7TiSczvpXUWrTddrrig37ErEoWJNf3yzOxQY5Jen21BJK
+  bh=oih7GtI7xMzGahP76vQil5qWDbgK0U9SZz4iJvlgoJY=;
+  b=S2JzZQkKWyUEwFwu+DJ3E4HjsNmvZyXpNs8X/4IZ1uhh7KiDhkoOGDOx
+   ct+Spoizbd1PnBvqF8r0tnfTWKPkUy0y7wmjmtGCvAYuMFiWHv+ZYp0fR
+   Nbme4gLjPd5cWNr0lr3AyzRu3kfCSHDRmvTzi6hwiY5RQAeBNoD6ERcse
+   gPbIsmQA+JAn2DyfY00chJvvBuEqips4lVt34gvUpw7e0cSVXFAFDdUlp
+   EPbJGKrD0uwBlJ4Yp3FUgg+mFb7V0gD9xZcuHYp7AlI3ZFC23hDkaU61b
+   TddHsJ//xNZ7QR3/X8JvmUYpO8vzAHp8W+4A0LUjL9JfifggvY7IW34Fe
    Q==;
-X-CSE-ConnectionGUID: EWK5r8kySa2D9m4K94fv0Q==
-X-CSE-MsgGUID: fdv46k2ATZCS5w9JHRSAlA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11950"; a="1999336"
+X-CSE-ConnectionGUID: x3OIAmnHR6mQFF0SLnMayg==
+X-CSE-MsgGUID: TY03GODFTMmK/QODIk9/kQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11950"; a="2128795"
 X-IronPort-AV: E=Sophos;i="6.27,186,1787036400"; 
-   d="scan'208";a="1999336"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2026 02:33:31 -0700
-X-CSE-ConnectionGUID: qDHB30c7T6+C24I5cmm90w==
-X-CSE-MsgGUID: v4Xg4+SIQQa629rjFUEQMA==
+   d="scan'208";a="2128795"
+Received: from fmviesa012.fm.intel.com ([10.60.135.152])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2026 02:40:15 -0700
+X-CSE-ConnectionGUID: 4kQkNl98Qy6vjhZtyQi8Sw==
+X-CSE-MsgGUID: dJ/QkbhGQBS9LRHlVFiP0w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,186,1787036400"; 
-   d="scan'208";a="5926976"
+   d="scan'208";a="7184902"
 Received: from ettammin-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.245.247])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2026 02:33:25 -0700
-Date: Fri, 30 Oct 2026 11:33:23 +0200
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2026 02:40:10 -0700
+Date: Fri, 30 Oct 2026 11:40:07 +0200
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: James Hilliard <james.hilliard1@gmail.com>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -86,13 +86,13 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Timur Tabi <timur@kernel.org>, linux-kernel@vger.kernel.org,
 	linux-serial@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
 	imx@lists.linux.dev, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v8 4/6] serial: 8250: drain canceled TX DMA before
- reusing its buffer
-Message-ID: <auRkY2h-NJvFszQE@ashevche-desk.local>
+Subject: Re: [PATCH v8 6/6] serial: 8250: retain DMA resources when
+ termination fails
+Message-ID: <auRl9ztbav4nHi7U@ashevche-desk.local>
 References: <20261029-submit-serial-8250-dma-cancel-v1-v8-0-3fd56ba352ed@gmail.com>
- <20261029-submit-serial-8250-dma-cancel-v1-v8-4-3fd56ba352ed@gmail.com>
- <auNV7Vco5O3vVwRH@ashevche-desk.local>
- <CADvTj4oi6dFzWkjFXie1U49A70Y7Mb=4exga-=2SmG7fN2pLrA@mail.gmail.com>
+ <20261029-submit-serial-8250-dma-cancel-v1-v8-6-3fd56ba352ed@gmail.com>
+ <auNW_Oc-Ao5Iw-Gw@ashevche-desk.local>
+ <CADvTj4pOg4w5LpFW_E3qzP7FZDnDgpB8LyR9xxhT_mZre21vFw@mail.gmail.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -105,48 +105,59 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CADvTj4oi6dFzWkjFXie1U49A70Y7Mb=4exga-=2SmG7fN2pLrA@mail.gmail.com>
+In-Reply-To: <CADvTj4pOg4w5LpFW_E3qzP7FZDnDgpB8LyR9xxhT_mZre21vFw@mail.gmail.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Thu, Oct 29, 2026 at 11:15:23AM -0600, James Hilliard wrote:
-> On Thu, Oct 29, 2026 at 8:19 AM Andy Shevchenko
+On Thu, Oct 29, 2026 at 11:19:59AM -0600, James Hilliard wrote:
+> On Thu, Oct 29, 2026 at 8:24 AM Andy Shevchenko
 > <andriy.shevchenko@linux.intel.com> wrote:
-> > On Thu, Oct 29, 2026 at 01:37:00AM -0600, James Hilliard wrote:
+> > On Thu, Oct 29, 2026 at 01:37:02AM -0600, James Hilliard wrote:
 
 ...
 
-> > > -     bool                    shutting_down;
-> > > +     bool                    shutting_down:1;
-> > > +     bool                    tx_terminating:1;
-> > > +     bool                    tx_flushed:1;
+> > > +     while (rx_ret || tx_ret) {
+> > > +             dev_err_ratelimited(p->port.dev,
+> > > +                                 "DMA termination failed: RX %d, TX %d; retrying\n",
+> > > +                                 rx_ret, tx_ret);
 > >
-> > What is the meaning of bool XXX:1? Have you checked with `pahole` the result?
+> > > +             msleep(100);
+> >
+> > Huh?!
+> >
+> > > +             if (rx_ret)
+> > > +                     rx_ret = dmaengine_terminate_sync(dma->rxchan);
+> > > +             if (tx_ret)
+> > > +                     tx_ret = dmaengine_terminate_sync(dma->txchan);
+> > > +     }
+> >
+> > This is unacceptable. Sleeping is okay, but value should really match the
+> > baudspeed and other parameters of the transfer.
 > 
-> These are one-bit boolean fields, intended to pack the state flags
-> into one byte.
+> This sleep is backoff after dmaengine_terminate_sync() has returned
+> an error, rather than an estimate of UART transmission time. Each
+> retry asks the provider to stop the channel again; elapsed time is
+> never treated as evidence that the resources are safe to free.
 > 
-> I've now compared layout probes using the kernel type definitions and
-> saved build flags, changing only those bitfields to ordinary bools.
-> For the complete v8 structure, including the RX flags, pahole reports:
+> The particular 100 ms interval has no hardware-derived justification.
+> However, I don't yet see a sound way to derive the retry cadence from
+> baud rate either. RX can be waiting for input, TX can be held by flow
+> control, and callback retirement is a separate requirement from
+> moving bytes through the UART.
 > 
->                             Bitfields   Plain bool
->     ARM32 / Clang               212         220
->     ARM64 / GCC                 368         376
->     ARM64 / GCC / PREEMPT_RT     368         376
-> 
-> The sizes are in bytes. All six flags share one byte in the packed
-> version. This saves eight bytes in each checked configuration.
+> Do you have a particular provider failure mode in mind where retrying
+> termination should follow the serial transfer timing? I'd like to
+> base the interval on the condition that can make termination succeed,
+> rather than substitute a wire-time estimate for an arbitrary delay.
 
-Thanks for checking!
+Termination of DMA sometimes require to clean up internal FIFOs and other state
+machines. That's what happens on HW side. In the software waiting for too much
+may lead to the very big undesired latencies. The value of 100ms sounds insane
+to me for the HSUART cases (megabaud range of speed). Also note, not every PCB
+design uses HW flow control, so this may be even worse for them.
 
-> The packing is a layout choice, not an atomicity mechanism; updates
-> still require the UART port lock. Given the measured saving, I'd keep
-> it unless there is another concern with using bool bitfields here.
-
-I'm just worrying that bool bitfields are implementation defined and
-might have some side-effects. But I see elsewhere in the kernel similar
-approach, so I guess so far it didn't trigger any suspicious behaviour.
+> Regardless of the retry interval, shutdown cannot release the buffers
+> until the provider establishes that DMA and its callbacks have stopped.
 
 -- 
 With Best Regards,
