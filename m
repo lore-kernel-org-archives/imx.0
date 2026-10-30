@@ -1,55 +1,76 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.137
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793348997;
-	b=i+OHjfGnniGRglWRlOVQIy2Bf49JOjAS/bySzmv+T+5im5xbQUsBlzKbINBB86tkDb+2
-	 3MLKKVOVCap/ASPhVyr22bAdRMiJx/XpNK2rpJJdIVasZZaDyB6LubiqELDZmAzcVDvke
-	 ZY8a9pkUHzy2pWXOQDVTu8hbhy5Vop0HK/67Zx+wwgpxi27QsO88z/e+VKDohDQsthIWs
-	 DGjTXmqsG89VRhEg+i6a9FJrZkcKPKGhgeI+nUpNN0ok8z4Sgq91SgQchEbC1gR7HVbau
-	 ZAR+CD8+uEgHvD8iy70KuOCA6i42fSU6sWIX7ITfLfcy9wF8EDYRrnFAgUIzjqoJyig==
+	t=1793349237;
+	b=NEg2kBzfcgRUi5HErPshnnrC/XSmMcGqVgvmo4/XY43U9HcfDJ2O4vp66sMktO75Do7Q
+	 Limp+QjkDvmJJLWej1DDfN9emo1hRMIt/HptR4EgDt+lWa7j8UeAKXNXh58WZOnVkRXOe
+	 iMUdKlYT7QVz8MeKopzmZRuJuFZS0a0tClvZKV5a6pfsowkfrdni9Lsq3pGc2axdsJDJ0
+	 4Dyvjc/F37SrrUL98T4XHyhaA+Cn6f8R/hOQ33kmBgtavYR3n8fJg/k+HO41l/tTRoken
+	 T8qSO3FAo4Dlfa1TxeBvGjIV5m2NUDyh2f6W5OHBehMFfabGa0eT7folveUtSqGwGxQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793348997;
-	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:Subject:From:To:Cc:In-Reply-To:
-	 References:Date:Message-Id:X-Mailer:X-Last-TLS-Session-Version;
-	bh=E8LUU8/dAjJYoBx2cnVq2geueGnckzaBaZnZ1Jie+PA=;
-	b=1FRYeWd/fIy16tPa+WiJqFVStUxbNhgL0NhwGyiGTwZO6cIN01+O1DUFBhbl2PL6+DmO
-	 GauSSqZmT9jvIeiI2cyZvES1KYNHUJyiUD10OYFWbSRteR4EFpwodAeCYIEqtZ3XQ4LAW
-	 7M0zaxv+nMFBI9B6Bl3oF5Mj8/TCxp69EEb9E4cInQg7olr1Ip+svIFo6ZvtS72JZSKwJ
-	 dKvUuuBeZz07t6iGEU7cPblvyox/9DNqYSXljqUvXoB8vExdeUdWtegraOpw9InUmFi4c
-	 apk1JUbNY10J6vPSFPR7ER29NAwor49yCwwAD+dVjthj7gzMeIH8USDZxc6DZqVpGpQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793349237;
+	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
+	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
+	 To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=sPAT5BdNlhSR3TVHkk2zOI9YV8pl9pF9QIk48sjM/RA=;
+	b=vSAQWA19Kqakme0O4eRoTW7c0ChSvzCHJeHpC+Qf7cWmyIEHh9S6FU3CqtdnAMWDKfnX
+	 LgGwjy+LjaMU5YHyUBjDw0X3FUEuG3LF1H+/qPh6fePsdvEjFUELOKUg88/J/Azgl2u8a
+	 JoHGmerG3S3y6tI1GOOnVqir9onV5SOWjwm/CTrNoW3vwO34iFZunzwKT2QGdYM/XWXhq
+	 GV4zwuzBUw5pwaTFP/7AxVbd8LO9pP/j1yfZmIMBpYaoHO60rJdZ5MddBbOi4RrdY+XiP
+	 LjNPn8bHWiRWQTWuZ+rtKosL8Y2pLHhN5szMy/QR7zsOX5EWWBFe/sJmpkB+4TfHS/w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=bootlin.com;
-	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=rENntMUo;
-	arc=none smtp.remote-ip=185.246.85.4
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF337606A323
-	for <imx@lists.linux.dev>; Fri, 30 Oct 2026 08:29:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CF337606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	dmarc=pass header.from=cmss.chinamobile.com;
+	spf=pass smtp.mailfrom=cmss.chinamobile.com;
+	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=RuNNqWEj;
+	arc=none smtp.remote-ip=111.22.67.137
+Received: from cmccmta4.chinamobile.com (cmccmta4.chinamobile.com [111.22.67.137])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69876606A31C
+	for <imx@lists.linux.dev>; Fri, 30 Oct 2026 08:33:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 69876606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=rENntMUo
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 61F9B4E413A0;
-	Fri, 30 Oct 2026 08:29:54 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 322AB603C2;
-	Fri, 30 Oct 2026 08:29:54 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 51D1F103286AD;
-	Fri, 30 Oct 2026 09:29:49 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1793348993; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=E8LUU8/dAjJYoBx2cnVq2geueGnckzaBaZnZ1Jie+PA=;
-	b=rENntMUoZ3qOsQAg3It22RPHGFnouqYJz7QFfqZnoS2WiqPWuISOOfjeIG9Evj5WdcWOp3
-	LxRmulCD1HUTCMNEMbPfE861LUmoF3od9bwlM5mrs46+x6RpWTAzk2lvoRp2yC8GnQi6PN
-	CQLF0GS6hFar7uSXooTpAd2hBHjzeOCSSmkC2XSqip+XcSClJku2mh4eghjMTkPRy0ESRt
-	4igCVvnurQMFLx5SWNKkiuvNfngHfSSvHT0Nc0VWdpH8cDK3WBEelbcAZWjpIUvw1IN3ZZ
-	sUMrIsIeB/9M86Jetcp/dPwuaAaW72HdWljonF+Z0dPJ80cJmNO6v8FDHCXY7g==
+	dkim=pass (1024-bit key, unprotected) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=RuNNqWEj
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=cmss.chinamobile.com; s=default; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=RuNNqWEj6+XnzP+7lSLupdpDCajAdmybPNVly+fneDvgeY39ZyRTJxvtr1xuS42HaI9KimeGc43E6
+	 wQXFWpD1gyYQvA2eYXz9/4+MT0QrCCWfzMZo89XwyGf1NIJhNKFw1c1sDSG6P/VWJyeBT/1a+5DFtY
+	 KuIAgdRzL3NyIOXA=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app08-12008 (RichMail) with SMTP id 2ee86ae4566a3f2-12cef;
+	Fri, 30 Oct 2026 16:33:46 +0800 (CST)
+X-RM-TRANSID:2ee86ae4566a3f2-12cef
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from DESKTOP-3K8GUTQ (unknown[223.108.79.101])
+	by rmsmtp-syy-appsvr09-12009 (RichMail) with SMTP id 2ee96ae45668c95-55de9;
+	Fri, 30 Oct 2026 16:33:46 +0800 (CST)
+X-RM-TRANSID:2ee96ae45668c95-55de9
+From: laixiangwu <laixiangwu@cmss.chinamobile.com>
+To: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Lucas Stach <l.stach@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	dri-devel@lists.freedesktop.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	laixiangwu <laixiangwu@cmss.chinamobile.com>
+Subject: [PATCH] drm/imx/dcss: Fix clock leak on blkctl init failure
+Date: Fri, 30 Oct 2026 16:33:42 +0800
+Message-ID: <20261030083342.1531-1-laixiangwu@cmss.chinamobile.com>
+X-Mailer: git-send-email 2.50.1.windows.1
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -59,45 +80,38 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v10 3/9] drm/bridge: fsl-ldb: Add support for i.MX94
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-To: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
-Cc: Ying Liu <victor.liu@nxp.com>, Frank Li <frank.li@oss.nxp.com>, 
- Luca Ceresoli <luca.ceresoli@bootlin.com>, 
- Andrzej Hajda <andrzej.hajda@intel.com>, 
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- linux-clk@vger.kernel.org, imx@lists.linux.dev, devicetree@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- dri-devel@lists.freedesktop.org
-In-Reply-To: <20261006-dcif-upstreaming-v10-3-bcfb28de0aae@oss.nxp.com>
-References: <20261006-dcif-upstreaming-v10-0-bcfb28de0aae@oss.nxp.com>
- <20261006-dcif-upstreaming-v10-3-bcfb28de0aae@oss.nxp.com>
-Date: Fri, 30 Oct 2026 09:29:39 +0100
-Message-Id: <179334897995.680709.16225857559743446360.b4-review@b4>
-X-Mailer: b4 0.16.0
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
 
-On Tue, 06 Oct 2026 12:21:58 +0000, Laurentiu Palcu <laurentiu.palcu@oss.nxp.com> wrote:
-> i.MX94 series LDB controller shares the same LDB and LVDS control
-> registers as i.MX8MP and i.MX93 but supports a higher maximum clock
-> frequency.
-> 
-> Add a 'max_clk_khz' member to the fsl_ldb_devdata structure in order to
-> be able to set different max frequencies for other platforms.
-> 
-> [...]
+dcss_submodules_init() enables the DCSS clocks before initializing the
+submodules, but if the first submodule (blkctl) fails to initialize the
+function returns directly, without disabling the clocks again. All the
+later error paths already jump to ctxld_err, which calls
+dcss_clocks_disable().
 
-Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Since the clocks are only devm-managed for their reference (devm_clk_get),
+a blkctl init failure leaves all five DCSS clocks prepared and enabled.
 
--- 
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Jump to ctxld_err so the clocks are disabled like on the other error
+paths.
+
+Fixes: 9021c317b770 ("drm/imx: Add initial support for DCSS on iMX8MQ")
+Signed-off-by: laixiangwu <laixiangwu@cmss.chinamobile.com>
+---
+ drivers/gpu/drm/imx/dcss/dcss-dev.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/imx/dcss/dcss-dev.c b/drivers/gpu/drm/imx/dcss/dcss-dev.c
+index 7fd0c4c14..551786060 100644
+--- a/drivers/gpu/drm/imx/dcss/dcss-dev.c
++++ b/drivers/gpu/drm/imx/dcss/dcss-dev.c
+@@ -70,7 +70,7 @@ static int dcss_submodules_init(struct dcss_dev *dcss)
+ 
+ 	ret = dcss_blkctl_init(dcss, base_addr + devtype->blkctl_ofs);
+ 	if (ret)
+-		return ret;
++		goto ctxld_err;
+ 
+ 	ret = dcss_ctxld_init(dcss, base_addr + devtype->ctxld_ofs);
+ 	if (ret)
+
 
