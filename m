@@ -1,98 +1,71 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.162.61
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793371662;
-	b=pSpXB6E4Icf1XcflncTKt7x0+vgddrbkPDhq8KJBC8Zm1wA2HTyNocmrCQG2teQUEuA6
-	 eDcSvQY9tQI0QcejKNMG5CBRw/usXSUU0gqDZ7KEC3iRrzc9Q481pI1QHh6F86jTtMS7W
-	 QAlT/rIusjzkdW/P3NeO79nNh0CVlk+Hgmgbk8pP23ots5jxJcnkXqU47q1z3ni+99T7p
-	 9+w2ElnOaRu7U7OOZ44+bhX/q3oEYmcz+mlVV+1/hCKNHHAL+Qwlu9oWGr39KOFEKnn8j
-	 v8cJKNVnN4zkyHqNFaQE3qrZC9eJyt5wNRgVMyo0/eCRf7qeSK7D4aoKbxn6R8+wGRA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793371662;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
-	 Date:Message-Id:X-Mailer:Content-Transfer-Encoding:Content-Type:
-	 X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=Wii1bM2DmXt8anyyiJur5M4ikb+Kdg6ZYyMZSCzDZKY=;
-	b=QO4LDIUJ69joWfSnkEukm2pkrtQX7QMyYqQMFBcKL3gBzasZfRN+n9xOSIBievtlVnLW
-	 GeH3Eb1xB2JsVMWNN80tqxUdFnLp9qw4PYHncScgpfYHv8SXupPlRix++IdTgPTHnM14Z
-	 8+W+ekJsOw17WSX+LDmzyrakmA3BsnNl7X3L3+xsUkXhSo6LZZwv5u4cKGycJXqzFmj5W
-	 k52YiW+d02zFjRluoun3taRv9xmkci9T4N26XiqhUS45CQbiZ9CcdIBkMny3ray7bD3v4
-	 I/w2ZYp7mQBxEnstbrb3XAcEzDU7F0wcrmnGri/oq+pBPN++dO5Rv59/nALtgrUCpdg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.nxp.com;
-	spf=pass smtp.mailfrom=oss.nxp.com;
-	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=xDZDz5SO;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.162.61
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013061.outbound.protection.outlook.com [40.107.162.61])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 473C0606A329
-	for <imx@lists.linux.dev>; Fri, 30 Oct 2026 14:47:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 473C0606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793371859;
+	b=W+8sp4R8pQKL/Bg2muwsj97Q7V2XC8bzq0qNEBsiH3NjMDvgMcDUFB4pLMT/LylYOjk1
+	 69V72Pj0kLeL+5qBwIrfseVGckQ66zQ0iuCQDJC3jBElVyYCSK2H6Q/2TphVXPejUsPSA
+	 mBVwJ4245EsbEsoC4Gq0m8PUYtYXmcGXUa5S7lJh4iOSkq90IqSVITW42aEnZ/U7OHjgC
+	 szKaWAM1JfQakd2qcLs3e+yzPsdpoaqjJzXKFbTgAHY1H6flCLALjqkYwPx3osZk927jq
+	 aOuEAKWPEFZEcqOrn7dxPgSJy+tr4DbVu+2G0IJ4lPrn3tTzoc+2KpFTosNQikVaI/w==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793371859;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:Content-Transfer-Encoding:In-Reply-To;
+	bh=jGWtdlbWMHGNgloX7EqfHV279r2fDcsDj1Rd/d1NoRs=;
+	b=qecyZzHdfwuBd4OZy9fqNSEXQCrVsBTASx5D2cw8BapGQKI6qA7/eDnPEcf2+BXpY/gG
+	 fmfHGb8NW6AEsX26ZE3RYcNGYPzOrAKuwHthihPgg4AmZjkazGOfDorPSbeLt49CdkgB0
+	 swbd4RW5auOAHFHWZ2hUI5rm7d9hrFrAiBhML4kwmxknz7dSyv5CBD+JGkZJJonGBAe1P
+	 uhiuV2zbjlx1j/+B/p1TecajHz9xLYS8xTcEClWKtttjGW3u2qiMS+I0fqQXNgFdQI++l
+	 L8gSIA5efBjcUcTSaPwlg/1ks+TW4ZsjPpnFiK+Pbd2O7hfJAE/uwL1B1C2Hdwmdwkw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=dqCyjSn3;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA937606A325
+	for <imx@lists.linux.dev>; Fri, 30 Oct 2026 14:50:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EA937606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=xDZDz5SO
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nmTmL/UbaDZThS5IXxKEZYUx9LurfOulizS7tJQo4Iqu4IuyIE+Jkvzyz5qbdodRSWoDLupDtIMMFCn1Dm0fPTTxCFR6Zn6YRWk99JcBC/UeTp/ZwQVa+TSyvCQnyyFRNEnm8aiugNl6XeGdLKXp5ZvfhqIlsU0q0DMe6a8R9DIoyiX/cvle8rx7BJ062H8KxNNM+L53aWiapLocgWbbqAIQb90ldT7qMGG6eJdZmJ6AdFZyA1LlFiKdZk7M8sgoytAAxqZFs+W9AHW3CODsx8rcNpFKHpjkLrsOeeIw8tw0UhGJDYalxDqXfyGOt4shWzpeghjNqdOQ4ZZUTBVYng==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Wii1bM2DmXt8anyyiJur5M4ikb+Kdg6ZYyMZSCzDZKY=;
- b=cKQ4KL7UJEmfW6HahqWwkIrFkukKusmnCdi+5/XW0kpSA5yreK+8z41FYQ7u4FL33JLiJ9Vj4ib7gUNX5FzZZmKauS0XYgRyo/yQ6dUI91tCXDiaf0Ii6tPCkYSExZGJlHDWbEMOJSQnFjLBSbgJP0e5n+nCFk9u0PRjPKpd6XgUXBNjrg4GRh1w25fDOtOrFfcp9bV7YfLu+39YTU6xzRUjxvRzTDT+KCi94ZZWHgT9ak8x6MDkOx0J+MWfW4/igeV5+Jf5qxfhA1NzMR5iZqu6h6K/VxOI1Fi5eydAPHKicoIgNPp1GLNYUZQB8qJrfYZQwpkE2XmU++U7Q2eaUA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Wii1bM2DmXt8anyyiJur5M4ikb+Kdg6ZYyMZSCzDZKY=;
- b=xDZDz5SOfTllVuVKksvG0SHisIdd2WV1q6hpZwTFyOCy17cC3LKxMWwkbwQl17/5CAgNgNsfSxqrTFqc9dzhLuiKwGYSY8YnUspAwFVsUKKGmuEnNrHttt9sK0IDbxiXIvDkBJ31pXAYTYQY2JpRg3p1gYXBts4+t2lcNG3XiIpM+OXdrfvoviggg3KnPWYxHe21nrcAuijLNOLc56sro6hJgmBBleX8HWZ5CbEw1YM4TDAfrmFhA1onpqCTlb89tJmclHLSxBsBftqQvR8PLsz4nQbWexLnBhPUpfFl4k5V0UrAJw/Ra7ZIyV2EFXY2KxWVoWKgeNffrYTnTEUFhg==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from AM9PR04MB8114.eurprd04.prod.outlook.com (2603:10a6:20b:3b7::22)
- by AM0PR04MB7154.eurprd04.prod.outlook.com (2603:10a6:208:19f::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.9; Fri, 30 Oct
- 2026 14:47:38 +0000
-Received: from AM9PR04MB8114.eurprd04.prod.outlook.com
- ([fe80::cab0:e4b0:6be:b1d1]) by AM9PR04MB8114.eurprd04.prod.outlook.com
- ([fe80::cab0:e4b0:6be:b1d1%4]) with mapi id 15.21.0569.009; Fri, 30 Oct 2026
- 14:47:38 +0000
-From: alice.guo@oss.nxp.com
-To: robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	Frank.Li@nxp.com,
-	s.hauer@pengutronix.de,
-	festevam@gmail.com
-Cc: devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=dqCyjSn3
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5A0F91595
+	for <imx@lists.linux.dev>; Fri, 30 Oct 2026 07:50:55 -0700 (PDT)
+Received: from [192.168.0.1] (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 3D4FD3F673
+	for <imx@lists.linux.dev>; Fri, 30 Oct 2026 07:50:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1793371858; bh=ZS2k+FypBHiuo5+SFtfW7Gv767dr3RvQc3r5rKZYMBo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=dqCyjSn3iUoRwqJ+jPdm1SZWom2dSlRcxIHgzUQLl7qDPEqnuaioioEaT4gK/VWB7
+	 njtgT/HW5T+CBzCTDFXQsWDtfZNz5LJLvVcSIvnU0ErwxAspOC+dL1V2D7CkR+Rs4G
+	 8O9mqbY5SmcbCrJMwt5G1vhwO2R/3IRXtWtLjCYg=
+Date: Fri, 30 Oct 2026 14:50:35 +0000
+From: Liviu Dudau <liviu.dudau@arm.com>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Cc: Lee Jones <lee@kernel.org>, Chen-Yu Tsai <wens@kernel.org>,
+	Thomas Richard <thomas.richard@bootlin.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Andreas Werner <andreas.werner@men.de>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Sudeep Holla <sudeep.holla@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>, mfd@lists.linux.dev,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Alice Guo <alice.guo@nxp.com>
-Subject: [PATCH v1] arm64: dts: imx91: add U-Boot bootph properties
-Date: Fri, 30 Oct 2026 22:51:49 +0800
-Message-Id: <20261030145149.921308-1-alice.guo@oss.nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI1PR02CA0009.apcprd02.prod.outlook.com
- (2603:1096:4:1f7::10) To AM9PR04MB8114.eurprd04.prod.outlook.com
- (2603:10a6:20b:3b7::22)
+	linux-stm32@st-md-mailman.stormreply.com,
+	Charles Keepax <ckeepax@opensource.cirrus.com>
+Subject: Re: [PATCH v2 1/2] mfd: Constify mfd_cell arrays
+Message-ID: <auSuu45DB5QTQuUX@e142607>
+References: <20261030140240.211786-3-krzysztof.kozlowski@oss.qualcomm.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -102,357 +75,341 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM9PR04MB8114:EE_|AM0PR04MB7154:EE_
-X-MS-Office365-Filtering-Correlation-Id: 16e9d856-be0c-4776-a202-08df3694bdd0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|366016|23010399003|19092799006|1800799024|18002099003|3023799007|10067099003|11063799006|56012099006|261021121427099003|261022105027099003|261022075727099003|261026121527099003|261026140227099003|261028144727099003|261009223027099003;
-X-Microsoft-Antispam-Message-Info:
-	eBKdYtvbfIDjr/U9oY1/uPFaQ7OV7yWY8rKDcmHv2qmehkuAyL9dvA9yJOrwYx7JZjH0TIukrWTaIS24mzBimf30e9db4KJJDwnz9hJqDuE8wscE2dOQ3sU8eWijK9k1FHqaD3desOBKTflXeZXNJak5dWaat+wNkEbhgavKMktD+/5dszpDYJ63f+7jslb8M49pgw8Mqh8FV7ocFmNPJKLTQAAOTYnqwagzLNjlQN6Wfk+h23DQvmVGbNNov8QSIQF65Mm1+XS3SFNFhpDcXvZEuuW3yBKVDToE/aeIjh1mou59GT1q8LFsgv7AdjwkGn+NZju0wm1SiktcqYSyiWtCmyx+iRAvYfi81+PmAex98/Dbpo36MnsbzSbtC4sl52oeqRrH9qXpt1wf6/XdTe4Ro5gLUCczMxhVm2MUFgryrtQKAaZU6PjL98ERnn0IUNh+/dNZAZMW81VLR0WyfIvnD5e3TUToWwwqJguIelnMf4z8dOJkRCAdtodix4FMj71rM7w3W4PclvozimqOQND/egFz0Y4ScvVeXvQSofhulz0w2qGblF5NQ362BwBIhnAlnWDxcgw0AABX4jTjSwP4yk/jlCYe1eSDOF5DKzKi60xqiz2g5DH6YWhecgVzlkucFdE1tieQMl69j7R4OWlGzKkH43x9ri7kWIpDQoc=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8114.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(23010399003)(19092799006)(1800799024)(18002099003)(3023799007)(10067099003)(11063799006)(56012099006)(261021121427099003)(261022105027099003)(261022075727099003)(261026121527099003)(261026140227099003)(261028144727099003)(261009223027099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?wH9/pRuTfdBwDEsv4z3SNpuU2mqR2hWQHz2+AIDqcMbFrg/HcK0sa5Mv+L+v?=
- =?us-ascii?Q?oGtVFnZE6EyBtxNy10gAlHVDTY6n2VneLIhdCcsDskHq4VQaq5EDuyLI5tcx?=
- =?us-ascii?Q?M6YSmxfS22guezYn16pEG19A89tHCHgM+UJHoed5p75OVmeaDscIzQP1SaJL?=
- =?us-ascii?Q?iXIVHPk3sS237qgQ/v+Q7SAgCaeWMmsYggWLv0n3jZjCebtFh6g7KmjejGBb?=
- =?us-ascii?Q?fiXaVu4A9ZTA8wXIT3osWDM7c/krd0uNyApYqLj/aI5x8s1rhSCsHs/mnc72?=
- =?us-ascii?Q?2Ami9BsbVOKia2WYUBLQKUH8qGQ6U7lnOBUXfbmPD5wJ2y9e9NDrWH6IeW2q?=
- =?us-ascii?Q?RxrR4556KJ/mBZ+IT02Uy61winEZyrIH7LHpN9RxmFxqPumeZ/nrnDlHNUUz?=
- =?us-ascii?Q?6Nk61y7Mw7ZkgOoHZt6inRIrVXYU2/zELWWELckRL+lNmTYLqcDUOSVqbHJM?=
- =?us-ascii?Q?pBNrNlrhxylDxrEBNBhcu+2Q7ebf35oSLqJZFRSOvln9MnD56wUMCVE6bp4Y?=
- =?us-ascii?Q?6AM/KS8gwe0xMQkALyIZXk1I5C0MZ/gEVMz5igoOrg/un9M5T/2VqtJGmfmN?=
- =?us-ascii?Q?H0MsM8bONS5tRJPx05HCjfqppb1pyeO9TejZqmp4f1ogqcdIfcHmgsFbTQzm?=
- =?us-ascii?Q?lHgElr9YoVIEuf/hjF6I5rwPtsj9FNNuSoEgeOaf8Hhu9PGRR0pWkyQGO05D?=
- =?us-ascii?Q?oBx/7BHFR21ROoJ7lJYPeFPkmsQiCOMXeysefJ4ErWzR3MMwCRPCHKx77L56?=
- =?us-ascii?Q?io4PaZLlM3tpBBFnv0AosFmr9Ae+OphNVvN9vq1RrolS0RaesQQVNxKrEYGq?=
- =?us-ascii?Q?mimZcqePahdUN1INx5oGcOJH3YVqScavYzFjBJ0OMhnZwLdax/0LTrkLM182?=
- =?us-ascii?Q?odocdoqfY4dc+wiY4I7nECYAgJCCXdVEWBIQOBRAMN74l7EYpFl0I0iSxbtL?=
- =?us-ascii?Q?27nj5b6LGPGxklE9mwTL3ktSBPbfBujAJh3ZlgecNOk177wEsK62zpMZyVCQ?=
- =?us-ascii?Q?bsrXx1eSLZZ3RJvIIpcVtAOWpNWxjXk9uuyrbG51IW/HUmlW10iNKM+zCZ8C?=
- =?us-ascii?Q?qfsLF8bH1dnI2mj+fPT0N0xVXheK+glSgzB3P9RffP4GfkVu1E5cvpNewcbc?=
- =?us-ascii?Q?x7YR7DunkheV8fEBX7puqPTjx56sJCtUUzzyx7p/hepJv2+AlWQ9IJEElF9z?=
- =?us-ascii?Q?D4KQyuB07l1aTCHbffsfEqZxAbiclHNopnTTFScAeXri7jENnTxiRy83N27O?=
- =?us-ascii?Q?gwqcMdddDhcBoS/w0AIn2RiLQf/GaQ2cN5NIEHeRysVIoQHBZ5JZo2YzEaSC?=
- =?us-ascii?Q?tK6DyKjlyZZ54w3GsaMqV8zQbgd585LQ1EhcaoeNfBphOmdhLWaPkwlrOIPP?=
- =?us-ascii?Q?Vzl1kn45vUG32ivwNxD+pf2oNYIeQiLFXzJUc5Dk2KicYL3rjVvfzZvg5YTr?=
- =?us-ascii?Q?VcoiAAWiFtJyer5dYkHU+h+a6y+ZtO+uW5KON7ul8jzMTOlMO14DFBmLh+xS?=
- =?us-ascii?Q?Zo8nYWOS+XSJ9le56cnkoJYEhWWXkkqlnYXTr1h9NNZdV4rPE1AA/fM8mPFp?=
- =?us-ascii?Q?QsLb+cl1MNppaPVNQbRKDhXI7+Yo3ViIqogbijWE7Xwl2SysXZfBbFnuuDoH?=
- =?us-ascii?Q?YYOKg3JKUpX++h/jqwerIYDCCSn7ChGxyTy/NZH+XdSSvkp34k5Vvf+LKGlR?=
- =?us-ascii?Q?z3Eahk3W2GJfMllqfaEcWy4IfKU0J2fo+gA6pvYqX2kiEeFlLOppzpM8MTu9?=
- =?us-ascii?Q?e6k+LUfZiD5PTGUK6jNEQ2fHPoHbVtJCoTJNORO6ONKtYR8urN0G?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 16e9d856-be0c-4776-a202-08df3694bdd0
-X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8114.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Oct 2026 14:47:38.2688
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: MoXV9oo0lStoWAM5IjeAzMJFn9RfTUwZi1q6+EMZkMfnusXT+3UaKY298tZmXRCm81TBVqDjG8Cg39i70EXdLiwizbYBu0cow3RdkhLiiike2alt9fW9TvCHw484DyUN
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB7154
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20261030140240.211786-3-krzysztof.kozlowski@oss.qualcomm.com>
 
-From: Alice Guo <alice.guo@nxp.com>
+On Fri, Oct 30, 2026 at 03:02:41PM +0100, Krzysztof Kozlowski wrote:
+> mfd_add_devices() takes pointer to const, so 'struct mfd_cell' arrays
+> can be constified whenever driver does not modify it in the probe.
+> 
+> Acked-by: Chen-Yu Tsai <wens@kernel.org> # ac100 & axp20x
+> Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+> Acked-by: Thomas Richard (congatec GmbH) <thomas.richard@bootlin.com> # cgbc-core
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+> 
+> ---
+> 
+> Changes in v2:
+> 1. Add tags
+> 2. Drop wm97xx-core.c, it was not intended to be committed
+> ---
+>  drivers/mfd/ac100.c                   | 2 +-
+>  drivers/mfd/axp20x.c                  | 4 ++--
+>  drivers/mfd/cgbc-core.c               | 2 +-
+>  drivers/mfd/cs5535-mfd.c              | 2 +-
+>  drivers/mfd/intel_soc_pmic_bxtwc.c    | 2 +-
+>  drivers/mfd/intel_soc_pmic_chtdc_ti.c | 2 +-
+>  drivers/mfd/intel_soc_pmic_chtwc.c    | 2 +-
+>  drivers/mfd/intel_soc_pmic_crc.c      | 6 +++---
+>  drivers/mfd/max77705.c                | 2 +-
+>  drivers/mfd/menf21bmc.c               | 2 +-
+>  drivers/mfd/mxs-lradc.c               | 6 +++---
+>  drivers/mfd/rohm-bd718x7.c            | 6 +++---
+>  drivers/mfd/rsmu_core.c               | 8 ++++----
+>  drivers/mfd/stmfx.c                   | 2 +-
+>  drivers/mfd/vexpress-sysreg.c         | 2 +-
 
-Add bootph-pre-ram, bootph-some-ram and bootph-all properties needed by
-U-Boot for early boot DT processing.
+For the vexpress-sysreg.c:
 
-Place the properties in the Linux DT sources so they can be consumed
-directly by U-Boot when generating its device tree. SoC-level nodes are
-updated in imx91_93_common.dtsi, while board-specific nodes are updated
-in imx91-9x9-qsb.dts.
+Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
 
-The properties match the current requirements of the i.MX91 9x9 QSB
-platform and include the clocks, bus, GPIO, mailbox, USDHC, LPI2C, UART,
-PMIC and related pinctrl nodes used during early boot.
+Best regards,
+Liviu
 
-Signed-off-by: Alice Guo <alice.guo@nxp.com>
----
- .../boot/dts/freescale/imx91-9x9-qsb.dts      | 21 ++++++++++++++++++
- .../boot/dts/freescale/imx91_93_common.dtsi   | 22 +++++++++++++++++++
- 2 files changed, 43 insertions(+)
+>  15 files changed, 25 insertions(+), 25 deletions(-)
+> 
+> diff --git a/drivers/mfd/ac100.c b/drivers/mfd/ac100.c
+> index 8f47c392cbd1..51b4d468c51d 100644
+> --- a/drivers/mfd/ac100.c
+> +++ b/drivers/mfd/ac100.c
+> @@ -75,7 +75,7 @@ static const struct regmap_config ac100_regmap_config = {
+>  	.cache_type	= REGCACHE_MAPLE,
+>  };
+>  
+> -static struct mfd_cell ac100_cells[] = {
+> +static const struct mfd_cell ac100_cells[] = {
+>  	{
+>  		.name		= "ac100-codec",
+>  		.of_compatible	= "x-powers,ac100-codec",
+> diff --git a/drivers/mfd/axp20x.c b/drivers/mfd/axp20x.c
+> index 50df66de24e0..4d770e718716 100644
+> --- a/drivers/mfd/axp20x.c
+> +++ b/drivers/mfd/axp20x.c
+> @@ -1055,13 +1055,13 @@ static const struct mfd_cell axp152_cells[] = {
+>  	},
+>  };
+>  
+> -static struct mfd_cell axp313a_cells[] = {
+> +static const struct mfd_cell axp313a_cells[] = {
+>  	/* AXP323 is sometimes paired with AXP717 as sub-PMIC */
+>  	MFD_CELL_BASIC("axp20x-regulator", NULL, NULL, 0, 1),
+>  	MFD_CELL_RES("axp313a-pek", axp313a_pek_resources),
+>  };
+>  
+> -static struct mfd_cell axp717_cells[] = {
+> +static const struct mfd_cell axp717_cells[] = {
+>  	MFD_CELL_NAME("axp20x-regulator"),
+>  	MFD_CELL_RES("axp20x-pek", axp717_pek_resources),
+>  	MFD_CELL_OF("axp717-adc",
+> diff --git a/drivers/mfd/cgbc-core.c b/drivers/mfd/cgbc-core.c
+> index 2becaf797646..3460c50047ea 100644
+> --- a/drivers/mfd/cgbc-core.c
+> +++ b/drivers/mfd/cgbc-core.c
+> @@ -231,7 +231,7 @@ int cgbc_command(struct cgbc_device_data *cgbc, void *cmd, unsigned int cmd_size
+>  }
+>  EXPORT_SYMBOL_GPL(cgbc_command);
+>  
+> -static struct mfd_cell cgbc_devs[] = {
+> +static const struct mfd_cell cgbc_devs[] = {
+>  	{ .name = "cgbc-wdt"	},
+>  	{ .name = "cgbc-gpio"	},
+>  	{ .name = "cgbc-i2c", .id = 1 },
+> diff --git a/drivers/mfd/cs5535-mfd.c b/drivers/mfd/cs5535-mfd.c
+> index f3becbef19f5..d91d60dc5416 100644
+> --- a/drivers/mfd/cs5535-mfd.c
+> +++ b/drivers/mfd/cs5535-mfd.c
+> @@ -37,7 +37,7 @@ const struct software_node cs5535_gpio_swnode = {
+>  };
+>  EXPORT_SYMBOL_NS(cs5535_gpio_swnode, "CS5535");
+>  
+> -static struct mfd_cell cs5535_mfd_cells[] = {
+> +static const struct mfd_cell cs5535_mfd_cells[] = {
+>  	{
+>  		.name = "cs5535-smb",
+>  		.num_resources = 1,
+> diff --git a/drivers/mfd/intel_soc_pmic_bxtwc.c b/drivers/mfd/intel_soc_pmic_bxtwc.c
+> index 117517c171b5..5aa9e52401f0 100644
+> --- a/drivers/mfd/intel_soc_pmic_bxtwc.c
+> +++ b/drivers/mfd/intel_soc_pmic_bxtwc.c
+> @@ -245,7 +245,7 @@ static const struct resource tmu_resources[] = {
+>  	DEFINE_RES_IRQ_NAMED(BXTWC_TMU_IRQ, "TMU"),
+>  };
+>  
+> -static struct mfd_cell bxt_wc_dev[] = {
+> +static const struct mfd_cell bxt_wc_dev[] = {
+>  	{
+>  		.name = "bxt_wcove_thermal",
+>  		.num_resources = ARRAY_SIZE(thermal_resources),
+> diff --git a/drivers/mfd/intel_soc_pmic_chtdc_ti.c b/drivers/mfd/intel_soc_pmic_chtdc_ti.c
+> index 6daf33e07ea0..8412a25d37ff 100644
+> --- a/drivers/mfd/intel_soc_pmic_chtdc_ti.c
+> +++ b/drivers/mfd/intel_soc_pmic_chtdc_ti.c
+> @@ -53,7 +53,7 @@ static const struct resource battery_resources[] = {
+>  	DEFINE_RES_IRQ(CHTDC_TI_CCEOCAL),
+>  };
+>  
+> -static struct mfd_cell chtdc_ti_dev[] = {
+> +static const struct mfd_cell chtdc_ti_dev[] = {
+>  	{
+>  		.name = "chtdc_ti_pwrbtn",
+>  		.num_resources = ARRAY_SIZE(power_button_resources),
+> diff --git a/drivers/mfd/intel_soc_pmic_chtwc.c b/drivers/mfd/intel_soc_pmic_chtwc.c
+> index aa71a7d83fcd..f27985a58c87 100644
+> --- a/drivers/mfd/intel_soc_pmic_chtwc.c
+> +++ b/drivers/mfd/intel_soc_pmic_chtwc.c
+> @@ -50,7 +50,7 @@ static const struct resource cht_wc_ext_charger_resources[] = {
+>  	DEFINE_RES_IRQ(CHT_WC_EXT_CHGR_IRQ),
+>  };
+>  
+> -static struct mfd_cell cht_wc_dev[] = {
+> +static const struct mfd_cell cht_wc_dev[] = {
+>  	{
+>  		.name = "cht_wcove_pwrsrc",
+>  		.num_resources = ARRAY_SIZE(cht_wc_pwrsrc_resources),
+> diff --git a/drivers/mfd/intel_soc_pmic_crc.c b/drivers/mfd/intel_soc_pmic_crc.c
+> index 627a89334908..ce4c9ef59198 100644
+> --- a/drivers/mfd/intel_soc_pmic_crc.c
+> +++ b/drivers/mfd/intel_soc_pmic_crc.c
+> @@ -54,7 +54,7 @@ static const struct resource gpio_resources[] = {
+>  	DEFINE_RES_IRQ_NAMED(CRYSTAL_COVE_IRQ_GPIO, "GPIO"),
+>  };
+>  
+> -static struct mfd_cell crystal_cove_byt_dev[] = {
+> +static const struct mfd_cell crystal_cove_byt_dev[] = {
+>  	{
+>  		.name = "crystal_cove_pwrsrc",
+>  		.num_resources = ARRAY_SIZE(pwrsrc_resources),
+> @@ -93,7 +93,7 @@ static struct mfd_cell crystal_cove_byt_dev[] = {
+>  	},
+>  };
+>  
+> -static struct mfd_cell crystal_cove_cht_dev[] = {
+> +static const struct mfd_cell crystal_cove_cht_dev[] = {
+>  	{
+>  		.name = "crystal_cove_gpio",
+>  		.num_resources = ARRAY_SIZE(gpio_resources),
+> @@ -142,7 +142,7 @@ static struct pwm_lookup crc_pwm_lookup[] = {
+>  
+>  struct crystal_cove_config {
+>  	unsigned long irq_flags;
+> -	struct mfd_cell *cell_dev;
+> +	const struct mfd_cell *cell_dev;
+>  	int n_cell_devs;
+>  	const struct regmap_config *regmap_config;
+>  	const struct regmap_irq_chip *irq_chip;
+> diff --git a/drivers/mfd/max77705.c b/drivers/mfd/max77705.c
+> index 2e9b81f26414..771015c229c8 100644
+> --- a/drivers/mfd/max77705.c
+> +++ b/drivers/mfd/max77705.c
+> @@ -15,7 +15,7 @@
+>  #include <linux/regmap.h>
+>  #include <linux/of.h>
+>  
+> -static struct mfd_cell max77705_devs[] = {
+> +static const struct mfd_cell max77705_devs[] = {
+>  	MFD_CELL_OF("max77705-rgb", NULL, NULL, 0, 0, "maxim,max77705-rgb"),
+>  	MFD_CELL_OF("max77705-charger", NULL, NULL, 0, 0, "maxim,max77705-charger"),
+>  	MFD_CELL_OF("max77705-haptic", NULL, NULL, 0, 0, "maxim,max77705-haptic"),
+> diff --git a/drivers/mfd/menf21bmc.c b/drivers/mfd/menf21bmc.c
+> index 0f24de516d72..252d5c81db6b 100644
+> --- a/drivers/mfd/menf21bmc.c
+> +++ b/drivers/mfd/menf21bmc.c
+> @@ -17,7 +17,7 @@
+>  #define BMC_CMD_REV_MINOR	0x81
+>  #define BMC_CMD_REV_MAIN	0x82
+>  
+> -static struct mfd_cell menf21bmc_cell[] = {
+> +static const struct mfd_cell menf21bmc_cell[] = {
+>  	{ .name = "menf21bmc_wdt", },
+>  	{ .name = "menf21bmc_led", },
+>  	{ .name = "menf21bmc_hwmon", }
+> diff --git a/drivers/mfd/mxs-lradc.c b/drivers/mfd/mxs-lradc.c
+> index 64afc7631790..71ad5184f7e0 100644
+> --- a/drivers/mfd/mxs-lradc.c
+> +++ b/drivers/mfd/mxs-lradc.c
+> @@ -90,7 +90,7 @@ static struct resource mx28_touchscreen_resources[] = {
+>  	DEFINE_RES_IRQ_NAMED(MX28_LRADC_CH7_IRQ, "mxs-lradc-channel7"),
+>  };
+>  
+> -static struct mfd_cell mx23_cells[] = {
+> +static const struct mfd_cell mx23_cells[] = {
+>  	{
+>  		.name = "mxs-lradc-adc",
+>  		.resources = mx23_adc_resources,
+> @@ -103,7 +103,7 @@ static struct mfd_cell mx23_cells[] = {
+>  	},
+>  };
+>  
+> -static struct mfd_cell mx28_cells[] = {
+> +static const struct mfd_cell mx28_cells[] = {
+>  	{
+>  		.name = "mxs-lradc-adc",
+>  		.resources = mx28_adc_resources,
+> @@ -128,7 +128,7 @@ static int mxs_lradc_probe(struct platform_device *pdev)
+>  	struct device *dev = &pdev->dev;
+>  	struct device_node *node = dev->of_node;
+>  	struct mxs_lradc *lradc;
+> -	struct mfd_cell *cells = NULL;
+> +	const struct mfd_cell *cells = NULL;
+>  	struct resource *res;
+>  	int ret = 0;
+>  	u32 ts_wires = 0;
+> diff --git a/drivers/mfd/rohm-bd718x7.c b/drivers/mfd/rohm-bd718x7.c
+> index 0b0f8e27e329..bd087004dde8 100644
+> --- a/drivers/mfd/rohm-bd718x7.c
+> +++ b/drivers/mfd/rohm-bd718x7.c
+> @@ -19,12 +19,12 @@
+>  
+>  #include "rohm-pwrbutton.h"
+>  
+> -static struct mfd_cell bd71837_mfd_cells[] = {
+> +static const struct mfd_cell bd71837_mfd_cells[] = {
+>  	{ .name = "bd71837-clk", },
+>  	{ .name = "bd71837-pmic", },
+>  };
+>  
+> -static struct mfd_cell bd71847_mfd_cells[] = {
+> +static const struct mfd_cell bd71847_mfd_cells[] = {
+>  	{ .name = "bd71847-clk", },
+>  	{ .name = "bd71847-pmic", },
+>  };
+> @@ -113,7 +113,7 @@ static int bd718xx_i2c_probe(struct i2c_client *i2c)
+>  	struct irq_domain *irq_domain;
+>  	int ret;
+>  	unsigned int chip_type;
+> -	struct mfd_cell *mfd;
+> +	const struct mfd_cell *mfd;
+>  	int cells;
+>  
+>  	if (!i2c->irq) {
+> diff --git a/drivers/mfd/rsmu_core.c b/drivers/mfd/rsmu_core.c
+> index fd04a6e5dfa3..02bfb84653ae 100644
+> --- a/drivers/mfd/rsmu_core.c
+> +++ b/drivers/mfd/rsmu_core.c
+> @@ -22,7 +22,7 @@ enum {
+>  	RSMU_N_DEVS = 2,
+>  };
+>  
+> -static struct mfd_cell rsmu_cm_devs[] = {
+> +static const struct mfd_cell rsmu_cm_devs[] = {
+>  	[RSMU_PHC] = {
+>  		.name = "8a3400x-phc",
+>  	},
+> @@ -31,7 +31,7 @@ static struct mfd_cell rsmu_cm_devs[] = {
+>  	},
+>  };
+>  
+> -static struct mfd_cell rsmu_sabre_devs[] = {
+> +static const struct mfd_cell rsmu_sabre_devs[] = {
+>  	[RSMU_PHC] = {
+>  		.name = "82p33x1x-phc",
+>  	},
+> @@ -40,7 +40,7 @@ static struct mfd_cell rsmu_sabre_devs[] = {
+>  	},
+>  };
+>  
+> -static struct mfd_cell rsmu_sl_devs[] = {
+> +static const struct mfd_cell rsmu_sl_devs[] = {
+>  	[RSMU_PHC] = {
+>  		.name = "8v19n85x-phc",
+>  	},
+> @@ -51,7 +51,7 @@ static struct mfd_cell rsmu_sl_devs[] = {
+>  
+>  int rsmu_core_init(struct rsmu_ddata *rsmu)
+>  {
+> -	struct mfd_cell *cells;
+> +	const struct mfd_cell *cells;
+>  	int ret;
+>  
+>  	switch (rsmu->type) {
+> diff --git a/drivers/mfd/stmfx.c b/drivers/mfd/stmfx.c
+> index f683fdb6ece6..b0db33c0a7f2 100644
+> --- a/drivers/mfd/stmfx.c
+> +++ b/drivers/mfd/stmfx.c
+> @@ -73,7 +73,7 @@ static const struct resource stmfx_ts_resources[] = {
+>  	DEFINE_RES_IRQ(STMFX_REG_IRQ_SRC_EN_TS_OVF),
+>  };
+>  
+> -static struct mfd_cell stmfx_cells[] = {
+> +static const struct mfd_cell stmfx_cells[] = {
+>  	{
+>  		.of_compatible = "st,stmfx-0300-pinctrl",
+>  		.name = "stmfx-pinctrl",
+> diff --git a/drivers/mfd/vexpress-sysreg.c b/drivers/mfd/vexpress-sysreg.c
+> index f49cee91f71c..c5f375cd22ae 100644
+> --- a/drivers/mfd/vexpress-sysreg.c
+> +++ b/drivers/mfd/vexpress-sysreg.c
+> @@ -69,7 +69,7 @@ static const struct software_node vexpress_sysreg_sys_flash_swnode = {
+>  	.properties = vexpress_sysreg_sys_flash_props,
+>  };
+>  
+> -static struct mfd_cell vexpress_sysreg_cells[] = {
+> +static const struct mfd_cell vexpress_sysreg_cells[] = {
+>  	{
+>  		.name = "basic-mmio-gpio",
+>  		.of_compatible = "arm,vexpress-sysreg,sys_led",
+> -- 
+> 2.53.0
+> 
 
-diff --git a/arch/arm64/boot/dts/freescale/imx91-9x9-qsb.dts b/arch/arm64/boot/dts/freescale/imx91-9x9-qsb.dts
-index b7f0e39b867a..fbb7de8c0a12 100644
---- a/arch/arm64/boot/dts/freescale/imx91-9x9-qsb.dts
-+++ b/arch/arm64/boot/dts/freescale/imx91-9x9-qsb.dts
-@@ -172,6 +172,7 @@ reg_usdhc2_vmmc: regulator-usdhc2 {
- 		regulator-min-microvolt = <3300000>;
- 		gpio = <&gpio3 7 GPIO_ACTIVE_HIGH>;
- 		enable-active-high;
-+		bootph-pre-ram;
- 	};
- 
- 	reserved-memory {
-@@ -257,6 +258,7 @@ pinctrl_lpi2c1: lpi2c1grp {
- 			MX91_PAD_I2C1_SCL__LPI2C1_SCL                           0x40000b9e
- 			MX91_PAD_I2C1_SDA__LPI2C1_SDA                           0x40000b9e
- 		>;
-+		bootph-pre-ram;
- 	};
- 
- 	pinctrl_lpi2c2: lpi2c2grp {
-@@ -264,6 +266,7 @@ pinctrl_lpi2c2: lpi2c2grp {
- 			MX91_PAD_I2C2_SCL__LPI2C2_SCL                           0x40000b9e
- 			MX91_PAD_I2C2_SDA__LPI2C2_SDA                           0x40000b9e
- 		>;
-+		bootph-pre-ram;
- 	};
- 
- 	pinctrl_pcal6524: pcal6524grp {
-@@ -284,6 +287,7 @@ pinctrl_reg_usdhc2_vmmc: regusdhc2vmmcgrp {
- 		fsl,pins = <
- 			MX91_PAD_SD2_RESET_B__GPIO3_IO7                         0x31e
- 		>;
-+		bootph-pre-ram;
- 	};
- 
- 	pinctrl_sai1: sai1grp {
-@@ -300,6 +304,8 @@ pinctrl_uart1: uart1grp {
- 			MX91_PAD_UART1_RXD__LPUART1_RX                          0x31e
- 			MX91_PAD_UART1_TXD__LPUART1_TX                          0x31e
- 		>;
-+		bootph-pre-ram;
-+		bootph-some-ram;
- 	};
- 
- 	pinctrl_usdhc1: usdhc1grp {
-@@ -316,6 +322,7 @@ MX91_PAD_SD1_DATA6__USDHC1_DATA6                        0x1382
- 			MX91_PAD_SD1_DATA7__USDHC1_DATA7                        0x1382
- 			MX91_PAD_SD1_STROBE__USDHC1_STROBE                      0x1582
- 		>;
-+		bootph-pre-ram;
- 	};
- 
- 	pinctrl_usdhc1_100mhz: usdhc1-100mhzgrp {
-@@ -332,6 +339,7 @@ MX91_PAD_SD1_DATA6__USDHC1_DATA6                        0x138e
- 			MX91_PAD_SD1_DATA7__USDHC1_DATA7                        0x138e
- 			MX91_PAD_SD1_STROBE__USDHC1_STROBE                      0x158e
- 		>;
-+		bootph-pre-ram;
- 	};
- 
- 	pinctrl_usdhc1_200mhz: usdhc1-200mhzgrp {
-@@ -348,12 +356,14 @@ MX91_PAD_SD1_DATA6__USDHC1_DATA6                        0x13fe
- 			MX91_PAD_SD1_DATA7__USDHC1_DATA7                        0x13fe
- 			MX91_PAD_SD1_STROBE__USDHC1_STROBE                      0x15fe
- 		>;
-+		bootph-pre-ram;
- 	};
- 
- 	pinctrl_usdhc2_gpio: usdhc2gpiogrp {
- 		fsl,pins = <
- 			MX91_PAD_SD2_CD_B__GPIO3_IO0                            0x31e
- 		>;
-+		bootph-pre-ram;
- 	};
- 
- 	pinctrl_usdhc2: usdhc2grp {
-@@ -366,6 +376,7 @@ MX91_PAD_SD2_DATA2__USDHC2_DATA2                        0x1382
- 			MX91_PAD_SD2_DATA3__USDHC2_DATA3                        0x1382
- 			MX91_PAD_SD2_VSELECT__USDHC2_VSELECT                    0x51e
- 		>;
-+		bootph-pre-ram;
- 	};
- 
- 	pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {
-@@ -378,6 +389,7 @@ MX91_PAD_SD2_DATA2__USDHC2_DATA2                        0x138e
- 			MX91_PAD_SD2_DATA3__USDHC2_DATA3                        0x138e
- 			MX91_PAD_SD2_VSELECT__USDHC2_VSELECT                    0x51e
- 		>;
-+		bootph-pre-ram;
- 	};
- 
- 	pinctrl_usdhc2_200mhz: usdhc2-200mhzgrp {
-@@ -390,6 +402,7 @@ MX91_PAD_SD2_DATA2__USDHC2_DATA2                        0x13fe
- 			MX91_PAD_SD2_DATA3__USDHC2_DATA3                        0x13fe
- 			MX91_PAD_SD2_VSELECT__USDHC2_VSELECT                    0x51e
- 		>;
-+		bootph-pre-ram;
- 	};
- 
- 	pinctrl_wdog: wdoggrp {
-@@ -404,6 +417,7 @@ &lpi2c1 {
- 	pinctrl-0 = <&pinctrl_lpi2c1>;
- 	pinctrl-names = "default";
- 	status = "okay";
-+	bootph-pre-ram;
- 
- 	p3t1085: temperature-sensor@48 {
- 		compatible = "nxp,p3t1085";
-@@ -455,6 +469,7 @@ &lpi2c2 {
- 	pinctrl-0 = <&pinctrl_lpi2c2>;
- 	pinctrl-names = "default";
- 	status = "okay";
-+	bootph-pre-ram;
- 
- 	pcal6524: gpio@22 {
- 		compatible = "nxp,pcal6524";
-@@ -474,8 +489,10 @@ pmic@32 {
- 		reg = <0x32>;
- 		interrupt-parent = <&pcal6524>;
- 		interrupts = <11 IRQ_TYPE_EDGE_FALLING>;
-+		bootph-pre-ram;
- 
- 		regulators {
-+			bootph-pre-ram;
- 			buck1: BUCK1 {
- 				regulator-name = "BUCK1";
- 				regulator-always-on;
-@@ -540,6 +557,8 @@ &lpuart1 {
- 	pinctrl-0 = <&pinctrl_uart1>;
- 	pinctrl-names = "default";
- 	status = "okay";
-+	bootph-pre-ram;
-+	bootph-some-ram;
- };
- 
- &micfil {
-@@ -623,6 +642,7 @@ &usdhc1 {
- 	pinctrl-names = "default", "state_100mhz", "state_200mhz";
- 	fsl,tuning-step = <1>;
- 	status = "okay";
-+	bootph-pre-ram;
- };
- 
- &usdhc2 {
-@@ -637,6 +657,7 @@ &usdhc2 {
- 	vmmc-supply = <&reg_usdhc2_vmmc>;
- 	fsl,tuning-step = <1>;
- 	status = "okay";
-+	bootph-pre-ram;
- };
- 
- &wdog3 {
-diff --git a/arch/arm64/boot/dts/freescale/imx91_93_common.dtsi b/arch/arm64/boot/dts/freescale/imx91_93_common.dtsi
-index a68ffd04ee08..65e66309bc1d 100644
---- a/arch/arm64/boot/dts/freescale/imx91_93_common.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx91_93_common.dtsi
-@@ -51,6 +51,7 @@ osc_32k: clock-osc-32k {
- 		#clock-cells = <0>;
- 		clock-frequency = <32768>;
- 		clock-output-names = "osc_32k";
-+		bootph-all;
- 	};
- 
- 	osc_24m: clock-osc-24m {
-@@ -58,6 +59,7 @@ osc_24m: clock-osc-24m {
- 		#clock-cells = <0>;
- 		clock-frequency = <24000000>;
- 		clock-output-names = "osc_24m";
-+		bootph-all;
- 	};
- 
- 	clk_ext1: clock-ext1 {
-@@ -65,6 +67,7 @@ clk_ext1: clock-ext1 {
- 		#clock-cells = <0>;
- 		clock-frequency = <133000000>;
- 		clock-output-names = "clk_ext1";
-+		bootph-all;
- 	};
- 
- 	pmu {
-@@ -136,6 +139,7 @@ soc@0 {
- 		#size-cells = <1>;
- 		ranges = <0x0 0x0 0x0 0x80000000>,
- 			 <0x28000000 0x0 0x28000000 0x10000000>;
-+		bootph-all;
- 
- 		aips1: bus@44000000 {
- 			compatible = "fsl,aips-bus", "simple-bus";
-@@ -143,6 +147,7 @@ aips1: bus@44000000 {
- 			#address-cells = <1>;
- 			#size-cells = <1>;
- 			ranges;
-+			bootph-all;
- 
- 			edma1: dma-controller@44000000 {
- 				compatible = "fsl,imx93-edma3";
-@@ -357,6 +362,8 @@ iomuxc: pinctrl@443c0000 {
- 				compatible = "fsl,imx93-iomuxc";
- 				reg = <0x443c0000 0x10000>;
- 				status = "okay";
-+				bootph-pre-ram;
-+				bootph-some-ram;
- 			};
- 
- 			bbnsm: bbnsm@44440000 {
-@@ -384,6 +391,7 @@ clk: clock-controller@44450000 {
- 				assigned-clocks = <&clk IMX93_CLK_AUDIO_PLL>;
- 				assigned-clock-rates = <393216000>;
- 				status = "okay";
-+				bootph-all;
- 			};
- 
- 			src: system-controller@44460000 {
-@@ -444,6 +452,8 @@ aips2: bus@42000000 {
- 			#address-cells = <1>;
- 			#size-cells = <1>;
- 			ranges;
-+			bootph-pre-ram;
-+			bootph-some-ram;
- 
- 			edma2: dma-controller@42000000 {
- 				compatible = "fsl,imx93-edma4";
-@@ -919,6 +929,8 @@ aips3: bus@42800000 {
- 			#address-cells = <1>;
- 			#size-cells = <1>;
- 			ranges;
-+			bootph-pre-ram;
-+			bootph-some-ram;
- 
- 			usdhc1: mmc@42850000 {
- 				compatible = "fsl,imx93-usdhc", "fsl,imx8mm-usdhc";
-@@ -1039,6 +1051,8 @@ gpio2: gpio@43810000 {
- 			clock-names = "gpio", "port";
- 			gpio-ranges = <&iomuxc 0 4 30>;
- 			ngpios = <30>;
-+			bootph-pre-ram;
-+			bootph-some-ram;
- 		};
- 
- 		gpio3: gpio@43820000 {
-@@ -1056,6 +1070,8 @@ gpio3: gpio@43820000 {
- 			gpio-ranges = <&iomuxc 0 84 8>, <&iomuxc 8 66 18>,
- 				      <&iomuxc 26 34 2>, <&iomuxc 28 0 4>;
- 			ngpios = <32>;
-+			bootph-pre-ram;
-+			bootph-some-ram;
- 		};
- 
- 		gpio4: gpio@43830000 {
-@@ -1072,6 +1088,8 @@ gpio4: gpio@43830000 {
- 			clock-names = "gpio", "port";
- 			gpio-ranges = <&iomuxc 0 38 28>, <&iomuxc 28 36 2>;
- 			ngpios = <30>;
-+			bootph-pre-ram;
-+			bootph-some-ram;
- 		};
- 
- 		gpio1: gpio@47400000 {
-@@ -1088,6 +1106,8 @@ gpio1: gpio@47400000 {
- 			clock-names = "gpio", "port";
- 			gpio-ranges = <&iomuxc 0 92 16>;
- 			ngpios = <16>;
-+			bootph-pre-ram;
-+			bootph-some-ram;
- 		};
- 
- 		ocotp: efuse@47510000 {
-@@ -1113,6 +1133,8 @@ s4muap: mailbox@47520000 {
- 				     <GIC_SPI 30 IRQ_TYPE_LEVEL_HIGH>;
- 			interrupt-names = "tx", "rx";
- 			#mbox-cells = <2>;
-+			bootph-pre-ram;
-+			bootph-some-ram;
- 		};
- 
- 		media_blk_ctrl: system-controller@4ac10000 {
 -- 
-2.34.1
-
+====================
+| I would like to |
+| fix the world,  |
+| but they're not |
+| giving me the   |
+ \ source code!  /
+  ---------------
+    ¯\_(ツ)_/¯
