@@ -1,94 +1,69 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.159.9
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793372220;
-	b=g1CyMfJDCesPKo2hcMevwY269Gqf8q/AyX6SvONWt/wq7GDfYzWCo5JmUkVJdmcqlYDF
-	 I9dcFpmEIq8eEaVqVwqKt1kvRFRW1mjxN9QonpUYeahw78Ez+S/8ys3ND58wvSY2wiEKR
-	 8VYs0aJ7j9unCwPiQIIyuxGP3jfTBE5uD3o8e6oK6JUh8TCTLsRlW6Xnk61D+iwnf9ton
-	 TjxB5mNDEnNHWzfXgou6IvYsdjBHa0QDnIsMElR+QbZqDWhSrrNHWmputxPHBoi4a9ICk
-	 bDjCGPQffkmaYDHMrXaEQzywo7YUjPQK7ToW6DAttbaCB9T6uoD04Yd7A9C15BwNdOQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793372220;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:Content-Type:Content-Disposition:
-	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=4GiA4AvP6nLFyzEPwyp6Cif2UUoEWQ4mZJz8ZgDL7Gs=;
-	b=PqiG2C6Jz++ZFXeT/msXVtbM1urQ1R2EethQWbPPcB+alBBph/w2lXuXdr7Y9pOfMP1V
-	 rCgegXcJPJuxaQS0i2h2el7f7nuavz1ujYcHLmgIaDAEt4oOOwt0raH/y6e7IN/1tcVD0
-	 6QSQYu8Y4fW3FfKyQzo+NRMe3XbiB85WDFiMtILGeBJfv5vtUJ7RVha63xG6687Woww46
-	 q8gVPjmxrSf582pDNBoYrPNVNr5cl++myE5Z9xlOJA4UCdAdqQQhBZjZIiZxMPyFCuLXg
-	 PSRcAxBCe2X24HbaA9R6U8+ETC2ES/v99HqQgVR/iVKeK911eUTknmaSvU1a6LZ7N6Q==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.nxp.com;
-	spf=pass smtp.mailfrom=oss.nxp.com;
-	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=MoLOTZrj;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.159.9
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013009.outbound.protection.outlook.com [40.107.159.9])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793372436;
+	b=gvxSPHmrQ8gONLZ13ZEicaPXc8Czoikv10etxuWqpp4ft53BASSRTKy4ufoD0D0UhzxS
+	 FT+o7s2cefosWsEOm/WjwoL0MoJVrDgc7i0n/kqh1rR4AVNSjB6obV4aEAJ1MC3XPew3h
+	 /68XxDWFmAMGGTVBs92JqEPktCvai/D7lsXzBdBu802AR8jo/Yuvgri6yfXKwd+IuAhYN
+	 hqbtEC5vk12WEQyslD6ON30iKhZR44Bm/THZI/D+K+oZvR2h4Dvi7IAVwVN6sxJOL9vba
+	 6+OGVzUbZoARiW/u5vUuHJrq5ZRoNuC484JNfAxOLttZZopv9p1RY5ei/Lu+2a/f1Gg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793372436;
+	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:To:Cc:
+	 Subject:In-Reply-To:References:User-Agent:Date:Message-ID:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-Last-TLS-Session-Version;
+	bh=dDd4BvTxSR0uBUQSKnRsKxmPO1GwP0bmDkHq0sbZkg8=;
+	b=rfJSHweeeuN6ldndPhNIOmCCJCN4VB/iqzRPWNpLY81RMGpZTIRiUcu06dIZIoyJ76S+
+	 B1RzwlSg21tVJyqkxwGo2aNb5DfJbmvFBQXAKYoSf0zc57uP8YvhRA/9p9tBnvdoxJ75z
+	 dyrQp2ozkm3aN2T1oWOfV0CtPSPZWmWb8jPbp0T+p9e96+uibyzTir1/Z/LYp0M8U89YF
+	 ZYvv5W1T3DzntdCfB7n0LBAJ5HqIWrjErg+L3+lLmqW+porZBkVzJs7V3YXz8JhRCCMJZ
+	 ER5ftMknLryEkUE00cMMqSZEs5SPmyAyD5RATs13b9kg0hiaqbPffoSx0J3qBNgIa/Q==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=bootlin.com;
+	spf=pass smtp.mailfrom=bootlin.com;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b="tT/ippcm";
+	arc=none smtp.remote-ip=185.171.202.116
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35026606A31A
-	for <imx@lists.linux.dev>; Fri, 30 Oct 2026 14:56:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 35026606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0BEF606A31D
+	for <imx@lists.linux.dev>; Fri, 30 Oct 2026 15:00:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D0BEF606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=MoLOTZrj
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WLO3kIwZIL9BI+lCRr8wHoRQIqwx+uML6zYpMiE4Mj+ZrqFv7feNjfBbt6NTB7zoxV7lR2YuO8nDvrMOkhfyWNNxWpljlXA5HVAvmCT9marKiRxX1asP0HFB/gVgHdoiuokECzcKeuGEXOZ/phDgNol44M5TDnOy6xPLOsu2EDG+e4Acf/lQx8q9jdx/TKnzHtMcSTnPEJjBbDJpmnutUSRr/dKhtABTFJsGQZg7YW2ONP7a4MFlhytrcRjkydWq3V34wXUlHehu4rep+CQ6K4/a4jwCxghT9hAFHDkUGRKChUIMmCTMgSvrX8XN+f0x3Tfjpp26bCXIF63fZVwvFA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4GiA4AvP6nLFyzEPwyp6Cif2UUoEWQ4mZJz8ZgDL7Gs=;
- b=WwWZ81Nd243Mg6uiH3uF+GgO0+lLGvHxDcAbE8GqopFnYVjdv80Bj5bxqKIY3R2iwdnBq2d3PPLW0S/OF/nCEj03zybtok10KeFqVLo7U4va7Wo5IzoV/EZnO/arHtQiVhvU5anhYK8t8VHyVpOwBSjxEL9USfuTOZxAwuckLnmzCfJftcpG3Nv9hOBoi7rG+xEA+WSAzYgJ4hP7dpp64QuH68zNVT3tiYymp+D7wxzFiDVEO7tqsDdCtEWqDF7DgCiK2sQGIAdfufGX5Gb8eWzWzblv4WYJTedIxFEMRdM6ZmfEYwOx1EepaH9zQLimMNM72rplxjE0jO2JTsv6Lw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4GiA4AvP6nLFyzEPwyp6Cif2UUoEWQ4mZJz8ZgDL7Gs=;
- b=MoLOTZrjZMvf37MKoRNlKVUNG21IiX25XWKAkyXs+0DaRkoS3DvWYsu6p83aev6Gg3ZgTeo66epNSaOprt6+J5B/B+PI8lO9COsfUILZzru3gYuhfKbupdN8Sn78TWoZNwLreRoLmaYLujclvfg5ngOh2DHu3vBtffCFgYNgdg/9Q98axhYYlmPuCeOCUI+Nj7k5DmYqzamrucFdKNQyGZpATfjzIhZdapDaMzJZX4h20S4HbXK+irP+koqgHxjq5FaNmadyMxJl1T1iEaMaVzJ6eB75CkM77AjI9aZtA+d5WeiwCawl5shvEKTHZj/tUNInj7wIrPIFeXSgf0Xv1w==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from AMBPR04MB12445.eurprd04.prod.outlook.com
- (2603:10a6:20b:75e::21) by VI2PR04MB10224.eurprd04.prod.outlook.com
- (2603:10a6:800:228::5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.9; Fri, 30 Oct
- 2026 14:56:55 +0000
-Received: from AMBPR04MB12445.eurprd04.prod.outlook.com
- ([fe80::ba23:1fa4:ce58:ff06]) by AMBPR04MB12445.eurprd04.prod.outlook.com
- ([fe80::ba23:1fa4:ce58:ff06%3]) with mapi id 15.21.0569.008; Fri, 30 Oct 2026
- 14:56:55 +0000
-Date: Fri, 30 Oct 2026 09:56:46 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
+	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=tT/ippcm
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id A9C15C49F62;
+	Fri, 30 Oct 2026 15:01:34 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id AF7B1603C2;
+	Fri, 30 Oct 2026 15:00:31 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 58361103290E8;
+	Fri, 30 Oct 2026 16:00:24 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1793372427; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=dDd4BvTxSR0uBUQSKnRsKxmPO1GwP0bmDkHq0sbZkg8=;
+	b=tT/ippcmnCNVkD9eNIMcwRGmgxafKoPkU+RG3W6+YYfU0nD9mMZlbMUs0P4gsz6LrhbyMN
+	rYA8UPWtheXltmOKXmEF6gK1qBiKb4uPhX/DLGrTj/uG+Ha9tnYveuAort6dkWRxAmObGI
+	S8CViDNR6AaeTEc00Bdym1et9NikSbzEsgcWNXbbXByt+bPDDOIQWqiW2ZLJ5srVW0JIWQ
+	D9me8mITD7M33g+Yb9nT2LdtOsjjCIvkJyc3n85Z+9s/o2R0CBhfEcyNFWDzEJtxWlJWqd
+	g86fonp5h9z9byzlHsKwez18YWY3yojofoL2lmvdx9ujBCWwtZMljrWJT13saQ==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 To: Samarth Narang <samarth.colleges@gmail.com>
-Cc: Han Xu <han.xu@nxp.com>, Miquel Raynal <miquel.raynal@bootlin.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Richard Weinberger <richard@nod.at>, imx@lists.linux.dev,
-	linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org
+Cc: Han Xu <han.xu@nxp.com>,  Vignesh Raghavendra <vigneshr@ti.com>,
+  Richard Weinberger <richard@nod.at>,  imx@lists.linux.dev,
+  linux-mtd@lists.infradead.org,  linux-kernel@vger.kernel.org
 Subject: Re: [PATCH] mtd: rawnand: gpmi: terminate the DMA chain on
  completion timeout
-Message-ID: <auSwLrB2ewr2j-c2@SMW015318>
+In-Reply-To: <20261030143945.2923554-1-samarth.colleges@gmail.com> (Samarth
+	Narang's message of "Fri, 30 Oct 2026 14:39:45 +0000")
 References: <20261030143945.2923554-1-samarth.colleges@gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261030143945.2923554-1-samarth.colleges@gmail.com>
-X-ClientProxiedBy: DS7PR03CA0344.namprd03.prod.outlook.com
- (2603:10b6:8:55::28) To AMBPR04MB12445.eurprd04.prod.outlook.com
- (2603:10a6:20b:75e::21)
+User-Agent: mu4e 1.12.12; emacs 30.2
+Date: Fri, 30 Oct 2026 16:00:23 +0100
+Message-ID: <87zevvcjy0.fsf@bootlin.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -98,107 +73,33 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AMBPR04MB12445:EE_|VI2PR04MB10224:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3dd638c4-d5d6-4f82-241a-08df36960a1a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|23010399003|376014|1800799024|366016|6133799003|18002099003|22082099003|10067099003|56012099006|11063799006|261026140227099003|261021121427099003|261028144727099003|261022105027099003|261026121527099003|261022075727099003|261009223027099003;
-X-Microsoft-Antispam-Message-Info:
-	Cwb5jiPmAcmxYBNK2Ssv9EH/+tNqjbvUNFEf4w9Uh6NcgoNA5O51SsDaMRc2WaBGA0dddD5FJvfQ+tp67rWnwPm6HFZYP9u95dyOxUFCo9RBiC3R+F6QP3DaZPJJR+TZExPEi01a0AX6F9w6OT0WHoVddCrvpikdBtr6Wji/TqScovry99LKpMbwIDflQkJwIUqCV9wTbvjb7EQ/o3VgJFznia5lsl28EX1srXwhRgmoQ+I0ywTZFmmB45qGJ0h+lNdQlzGxEZH5IUPe63T5Fa2av4DXV6WFiYgaCP24UAcxQVn20Ea/ZxPton6O1TeghSEDLtbtaUHMH6gaNHUayNtXGpHyOZyAs/IcKYx6JRiY31x2cjLIhkfql8y+Us/Koea+M+JouvsWkKE1hzh9PNVk1GPlRfwWLu2wmI7kAqttZHvvRtyd+GJyiIPFjvtaY7GJKgRgA020uTzHrnIyOfPd5RfdQaJm8taUBYWp99sJXMpL8E/eMUz/pLJqLCDsANV2VdHGcBqr4aRyYd+Wp93l2fX9mOTk7udHg5w3QCer9MZJmcg5L72TokAo1Da8/y1E8Ng1frVjnwTCvMnephGs9FZgknB30aGmwwlZhFiNaWi8nUncfqnAUz2JV3GiXs2268cIBLy8sEk03ycwfqye6nX1MD+0iZmp+Co2lww=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AMBPR04MB12445.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(23010399003)(376014)(1800799024)(366016)(6133799003)(18002099003)(22082099003)(10067099003)(56012099006)(11063799006)(261026140227099003)(261021121427099003)(261028144727099003)(261022105027099003)(261026121527099003)(261022075727099003)(261009223027099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?HY8PNDbOaIm5DTJTZnR0HgcZrt1j5bChzyttpFVViA9s8We6fUEXyELGyrpn?=
- =?us-ascii?Q?NTdeEi4CV2EwiIRXiZR3X3qVUg7eBXf6IIcGhdiqVAa07uyjgUTgHYAo607m?=
- =?us-ascii?Q?rtaQ+WY5Q7EplC+N7rUFCyaO3OHIm/9EYnRGlg2vPvz7qH3hP0zQ+pPjzoRT?=
- =?us-ascii?Q?fPf+vdXv9174FHhHxDjpaQC0u7vg0FK45LL2XnfSKsRjS6u7opGXN8dRWA+R?=
- =?us-ascii?Q?sbg6d6cnrID/+0pQLaqrW9tmHl0W27Hj4G5YmwXOQ91c08gMEQVBkfqZPEHv?=
- =?us-ascii?Q?4WWxKFelBy0T3NW24szueKMEfn/RRKrvD3eiIac+EmhSuMMzkjlaU0nJ7E8T?=
- =?us-ascii?Q?EfM3U8n+CPb9eQuYlPf0q+3oLAglUTokNa4hfGo0fz8T3oBPH3xJMdign9R3?=
- =?us-ascii?Q?X6JVhBADVe+YWpGnNyy7hbaLvboa1BZxvYPZRRExo7rG0GaFazMc+dtKgkom?=
- =?us-ascii?Q?FOn3gcAq7FVmKTOpC6pC5jA6kGMxBXL/fBl76z17V6hwfCEzirdxqBRbpT56?=
- =?us-ascii?Q?dKEjqV64h179ZX2HaZideqIbFHTOOH3xK/rBUk0X0M/4MICfU0TZfUCto2DQ?=
- =?us-ascii?Q?L5WK4UG1a6u2bM02ptwLDFmTqE2CA/mpIW3vXJnmi3W+64QW2Ed6Y635w8Ni?=
- =?us-ascii?Q?iqPixIoDmtUCBiDwUto/mwlDT30eVtNnGpxvhAWk5VwjbAb+Rcj++9YN8lHw?=
- =?us-ascii?Q?DV3VBM7dSSPfa8pWD7FwU4UkNwgtOoZbvYYsS7JCZHnUPZjLi6mkZa2EEbL0?=
- =?us-ascii?Q?nXVrYJZlSI/HcwGil5b3myKENVg4yj188qo+9PWhR3I76ylkiAITL/WguxYe?=
- =?us-ascii?Q?+4xb5XihwqBvPKk2AOpuRhDIOrGvKyaGUapdFUMdeucnbQluD4fLlNOlLBMI?=
- =?us-ascii?Q?8ubGkTpGNG5Gby7Hz51Rfs9OzC/L/Gy25MvdIgjZx2sti4W5vYhsYT7H+uoI?=
- =?us-ascii?Q?wUIJQMMi90nzLQgJBU9O4aOwXVuB+fAyxH+bx1peTVnSS0KHs/QXNHypvG0E?=
- =?us-ascii?Q?jAnykjuTAQAEFwVVPyYojOopDtWBUQevMfPAZwS7g8egvrCqQXzIB85b+phe?=
- =?us-ascii?Q?BYuyP14kNYy55OqDuZVWhtroy1vFs7kEySiXIObeOjhvPiZ3XBe/aPSCfAhN?=
- =?us-ascii?Q?bkLlUUzm0FEjdC4HEoYZxu8dipSRItvQmXVYMvpRZ/TUWXiMOY1+0P3MK2ol?=
- =?us-ascii?Q?3u4YZOzQ3pGiybCZ354OwFsLcFeKXq/H2CiKXLFDEjPXg/aNZ+Fb2it2AJFE?=
- =?us-ascii?Q?e4c62cWkNd/1mPBV6gXY56pP0yeX7NiWvzAnxkmz5QbKjRvmrsftR21haDnH?=
- =?us-ascii?Q?BoIh4B03D+7QYF/y0VOMhL+kxGtohmWf3+NO5TrXFNgSqKrLauc0rO0926EV?=
- =?us-ascii?Q?MljlT/8eg4bD8dr0rUTuNAuNRUD1i9fWcr001YQZXckwhYdUgiLp1rNs046C?=
- =?us-ascii?Q?iMTGEKUrLyyDxL1RC2y8QQMN1h53Z/IvwYsX+NMmErsnquviJAt6QNyOwZaY?=
- =?us-ascii?Q?rU3Wi269IB3O60yVZNVDK/CMBSW6jZ9ZDbfBBOig07TPiWxjw+Q3c9wbQviP?=
- =?us-ascii?Q?kD+7i+TOV+Obpm0F5JzWqrxzZFHYrR33HMRJT2Dj6r6Uz5dCez5Kk7NrDWse?=
- =?us-ascii?Q?egQ4ZbHV87Ew2w67K8LSU/aESNixOnhi+DS9gFgFzwP4v7wvn2/ZMiEAG6qM?=
- =?us-ascii?Q?OWxhuvEKyu9w7SlUP+qA8NN/PyMT1jeDMm+9Phq4dvgnjeFl/oTE6wFfbhwa?=
- =?us-ascii?Q?OyNdO5U2tHFiJvNSOJILYKGYICv/sR3Bjpe1pAUpZODfvoKYqtfX?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3dd638c4-d5d6-4f82-241a-08df36960a1a
-X-MS-Exchange-CrossTenant-AuthSource: AMBPR04MB12445.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Oct 2026 14:56:55.4181
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4+gBRPVJx06nxQQ1H4MDnEGpgfBhYuQCGqu4KtYxeNNOxdlURfVCBquogy3/KegShP7Bw0yzL7YTTF31flJZcwCkSRxbKuO5D3kpKI8acLGV7PgbLOrMT26u3Nq4YeAx
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB10224
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Fri, Oct 30, 2026 at 02:39:45PM +0000, Samarth Narang wrote:
-> [You don't often get email from samarth.colleges@gmail.com. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
->
-> When DMA completion times out in gpmi_nfc_exec_op(), the driver unmaps
-> the operation's buffers and returns -ETIMEDOUT without stopping the APBH
-> DMA channel. Since mxs-dma leaves the channel in DMA_IN_PROGRESS, the
-> pending descriptor chain may resume after the timeout, while a
-> subsequent operation can append new descriptors to the stale chain and
-> cause the old DATA_IN transfer to execute again against an unmapped
-> buffer.
->
-> This can result in DMA writes to memory that has already been released,
-> including buffers freed after ONFI parameter page detection in
-> nand_onfi_detect().
->
-> Terminate the channel with dmaengine_terminate_sync() before unmapping
-> so that outstanding transfers are stopped and subsequent operations
-> begin with a fresh descriptor chain.
->
-> Fixes: ef347c0cfd61 ("mtd: rawnand: gpmi: Implement exec_op")
-> Assisted-by: LLM
-> Signed-off-by: Samarth Narang <samarth.colleges@gmail.com>
-> ---
+Hello,
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-
-> This issue was identified by a research static analyzer for DMA
-> lifecycle ordering and has not been validated on hardware.
-> Compile-tested only.
->
->  drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c |    2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c b/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
+> diff --git a/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c b/drivers/mtd/nan=
+d/raw/gpmi-nand/gpmi-nand.c
 > index 527165ccc..a8106de2c 100644
 > --- a/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
 > +++ b/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
 > @@ -2659,6 +2659,8 @@ static int gpmi_nfc_exec_op(struct nand_chip *chip,
->         if (!to) {
->                 dev_err(this->dev, "DMA timeout, last DMA\n");
->                 gpmi_dump_info(this);
-> +               /* Retire the APBH chain before its buffers are unmapped. */
-> +               dmaengine_terminate_sync(get_dma_chan(this));
->                 ret = -ETIMEDOUT;
->                 goto unmap;
->         }
+>  	if (!to) {
+>  		dev_err(this->dev, "DMA timeout, last DMA\n");
+>  		gpmi_dump_info(this);
+> +		/* Retire the APBH chain before its buffers are unmapped. */
+
+Please drop this comment.
+
+Otherwise fine.
+
+> +		dmaengine_terminate_sync(get_dma_chan(this));
+>  		ret =3D -ETIMEDOUT;
+>  		goto unmap;
+>  	}
 >
 > base-commit: 24a19b953e2a3d0ea5a8c4951a0ab8f32720c907
->
+
+Thanks,
+Miqu=C3=A8l
