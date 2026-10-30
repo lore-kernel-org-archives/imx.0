@@ -1,56 +1,103 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793355106;
-	b=p41G979R1G459ZhB/P30AIebHWupQ+4HTQYj4+SJqB/DHML757hJ11uuCvbFNs36vljY
-	 +ycRJP9UmRb66oJBrU36cIQj1Q21nq1ljR2+advqSD3K3LoHugtmkmb+TtDVFFt0KvIXE
-	 WdLSUPbPDjsejtwRUP61MerwbFPkW2/eJSIhtsg0L1GxpdI7KnMXSXQV0fgU+57mhy+JE
-	 zYNXZbIVIDNvNem16mXjwLdo/wsD9WCr6VsfKQO0qI22VrH5aad9i7sKBeWdwFrdslHWZ
-	 sYn0tJeVFcWJuF1Qku5qY2o5qKMUp4Aki2EJKBJBfB7GLqVF+nE5hZxT/umnLDgitBg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793355106;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=Keq8l/LaR55uxRtrq1C75Crik8bqjBF0WvmIWNJLZIQ=;
-	b=Bgw/nFNcgqb1oNm6HJCgaL/zQsfqqEVida4Q3LJj7oP5R4+c+qdUYk2nN/IeqymFxF9n
-	 w+KF6tBEWAhvYsNOx/6zOxaVW02vzOQevxN2yoI3I7GUqu7nFCrP240AjkeVEiq+CaSWk
-	 Yu7TC3hyAAS1QCW8aS8yvOIhqM+nwRu0d8ZRy8t9AozMePq1xwSkrJWK1rvXcbANOhWec
-	 6elHnfnX9LbTEDRSg5rhk6o13dangDaGnPPztSPtdhyExsspZ0y6BaWknZNcdn9GNCqWx
-	 3KgSqjQROqH/Ul7CNpI5TMudz7UmNrJ4kRLn39oEvYkIOblXlvM2TP2EuLs3D9E0Agg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hqBTXH67;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.162.34
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793355402;
+	b=PMvCbR3/Hw2D5tU1FMSSgnvdeUKmz5PQPreK9/rbxZMUurU3EOLvQoHqjpYYSXEGt1Nr
+	 ESYgrmgMBVS++yP2YMq/mHxtP3DaHN5k3ELKGL/AktUWJhAWXu4g63R+SyHqQln+PstAO
+	 H+68rdjsT6k1mXDR0Xjnr+/c61FWo8XEkrynkMvxZpzleUtYf8Q4yZmM7SLlSe3x4+gDd
+	 nAm9dGBaRIL0rF39VZBwZW2343K7HD8DakakNmblYT9TaepNSVCXKr4nJ69PZUWWffK18
+	 8V+6t6Ptbm6Zr9iXLtMXFbVUXQ6nn6ViYOPPCMDg7MyIc/ajde+1tqVNWOYIAul/pqg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793355402;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:Content-Type:Content-Disposition:
+	 In-Reply-To:X-ClientProxiedBy:MIME-Version:
+	 X-MS-Exchange-MessageSentRepresentingType:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SharedMailbox-RoutingAgent-Processed:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=jKKR4S9AQhJDStSbuwGW0EWdZumlZVGx3b3Yu5Euvig=;
+	b=FyzMtPQbjJd8x86rCDsBgD5U2jBvXPoWy8v6sI0R14C8psCAmS/pN39qBDWw14J3OlLT
+	 GF6wTEDQNkbWAyoEPRPLeyCjzgpjbtr72U8v09PPPPvUSE6Zm7GbtutnDhJXbe8AP2aN4
+	 dt9YqBhgdVoeRHveKSovtEVCqPlZ8xmHbpXtMSADPUI+TyWaVq3Mft5ISzqNEMMbNoXvn
+	 KxXn7h5ykoQv2w+FlqiZoVcXQNnhoQIAEbHMOyeHDkJJfSNdSiS2sxLfVvjKi1YKpciLG
+	 gCSRFBkQX7B4QAC3Kdf3c7B+uUHUttcJ/7ldvxCzs6mdirD34nqLf8uIbNFSl/hV8rg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=oss.nxp.com;
+	spf=pass smtp.mailfrom=oss.nxp.com;
+	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=qWMrOsrQ;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.162.34
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013034.outbound.protection.outlook.com [40.107.162.34])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28360606A31A;
-	Fri, 30 Oct 2026 10:11:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4F3E606A31C
+	for <imx@lists.linux.dev>; Fri, 30 Oct 2026 10:16:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E4F3E606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hqBTXH67
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 672E41F000C1;
-	Fri, 30 Oct 2026 10:11:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793355105;
-	bh=Keq8l/LaR55uxRtrq1C75Crik8bqjBF0WvmIWNJLZIQ=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=hqBTXH67i7iQ24Uc/YBdJStl1wi8ZtOxRofe2SSZh8GA0+NsUXkjLLKOOmUQKJ3Y9
-	 SCU4CKQuQuSTqMYodcL/eMBsFBcZ3EpFdt9VEyxy77mMrPiLjmQt36YhjqS1b3EAVT
-	 JL4QooYSk+1R1S2/7uxhcpZNN9oFefKO68NPnI1Vwa2GGHM8JqVOa31Z/y4CST6668
-	 CqKcldl6Eo+eUhkUTxlYtpOW8ZSbz8WIGi90YgYvLWotL+/+tqyWvkD/RdlQug5SMj
-	 3BANRx+og6T3vpJgFGbowZlfnXpQuMH0LBTYkgLRL9a795IZRDjQozUkoE716Ii7SG
-	 fC9tO9UftNHaQ==
-Message-ID: <sashiko-outbox-190814@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v8 06/15] drm/imx: dc-crtc: Disable at boot
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Liu Ying" <victor.liu@nxp.com>
-Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20261030-imx8-dc-prefetch-v8-6-c4f81afd4533@nxp.com>
-References: <20261030-imx8-dc-prefetch-v8-0-c4f81afd4533@nxp.com>
- <20261030-imx8-dc-prefetch-v8-6-c4f81afd4533@nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 30 Oct 2026 10:11:44 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=qWMrOsrQ
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=xgvKyHb6Ei/Z+OiKPd/kPj24frDpRo25dpw1FJMQ2iwPIKXPRrm9ACNiLV9hqbfKiL1vnfeqeSSQAegMKRGEO+1p8fBUlX1WAr2hGYlUuGeNVz6yKxNJ/gt4J2aJ1C8WyDCEQ8dM1YPU9MLQ3ch0hmM90oNelPw1e29Jxwv/kuMxhDe3nF0AghNMdhx3NSDiA02WO2awexUYxvWJ8TjbUM66qN5vC+RBGQtyUN0X6HZ01kJf1c0FYLr+1DG8vGedh0BDdKBa2nod7VcPTAGxrY4WXxAftF3BeyQYDUukSoOgeyGqWRiiYvZxocJ9Am35g1uMwHLA0QvS9VomBNt+sw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jKKR4S9AQhJDStSbuwGW0EWdZumlZVGx3b3Yu5Euvig=;
+ b=XdnC7oyZoawqZDhqku7mGzBBcguOjufpIm6yNCztT1bjAZCEtwZC08D1nFl3yf8D/0tlPQ14BMA9eYgiR6NZZD81diNZDzM+KTO2glhB/SEh4ZTKbnWqR9LAk9bjHHnEBeYU2glBcbpwRm1mizB4fpZnbCIDlJJutVnnQxk1+1+0mgvFiJCm9kS0AZH+62+hYWQ+d4seSDjTNgQBjnON1L4uObAQ0/lmXnkPZQWEzXuiFYK54sjxvT1p+Kc5p3AuaK+ghQQreHKCkkUX6yzroHDNKDI7Kfc37aLrqdNJIVtbzIAbDwWH0QswSwgHEXlJxqrXS+yXRVxzKKszSTmD9w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jKKR4S9AQhJDStSbuwGW0EWdZumlZVGx3b3Yu5Euvig=;
+ b=qWMrOsrQDRxIRB1M7AB2GJJUI9BVoFR8nvi9OblMHvKKGIT2xcjC0/jkoG9xcd2MtjIO1rPLCGVYeyKxjIrEumZ3tKQAamScFl/4Oj2fNwgnv5CoBmTJhfjoiMdNRACT/xwKzcO4umK5U2T3YJJ+h8HELud2OYghHY/gd7uyAm/QQWVsB0y78b5sNsWwyheaiuF76pKfebZ9gDNuIv48En+f1VfK+is9q6mtHWOcZcQL3XfEuR9GXGoglZObmfM0CIUQmnQZrQNDarqeJoc5jIVr1zrk6AGSA4YXq6jVqYlkIlwMqEX0a8v3t+9nslz4Ksy0eDpgPBO6zluZFOvKZw==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB12318.eurprd04.prod.outlook.com
+ (2603:10a6:150:32b::19) by VI0PR04MB12032.eurprd04.prod.outlook.com
+ (2603:10a6:800:311::18) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.9; Fri, 30 Oct
+ 2026 10:16:38 +0000
+Received: from GV2PR04MB12318.eurprd04.prod.outlook.com
+ ([fe80::a498:2b5a:cbdb:d6fa]) by GV2PR04MB12318.eurprd04.prod.outlook.com
+ ([fe80::a498:2b5a:cbdb:d6fa%3]) with mapi id 15.21.0569.008; Fri, 30 Oct 2026
+ 10:16:37 +0000
+Date: Fri, 30 Oct 2026 12:16:33 +0200
+From: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+To: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Cc: Ying Liu <victor.liu@nxp.com>, Frank Li <frank.li@oss.nxp.com>, 
+	Andrzej Hajda <andrzej.hajda@intel.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	Robert Foss <rfoss@kernel.org>, Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+	Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, linux-clk@vger.kernel.org, imx@lists.linux.dev, 
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH v10 2/9] drm/bridge: fsl-ldb: Get the next non-panel
+ bridge
+Message-ID: <auRsorXM4UQJzoWF@vm>
+References: <20261006-dcif-upstreaming-v10-0-bcfb28de0aae@oss.nxp.com>
+ <20261006-dcif-upstreaming-v10-2-bcfb28de0aae@oss.nxp.com>
+ <179334897994.680709.5849266352850173475.b4-review@b4>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <179334897994.680709.5849266352850173475.b4-review@b4>
+X-ClientProxiedBy: FR4P281CA0321.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:eb::13) To GV2PR04MB12318.eurprd04.prod.outlook.com
+ (2603:10a6:150:32b::19)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -59,112 +106,192 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB12318:EE_|VI0PR04MB12032:EE_
+X-MS-Office365-Filtering-Correlation-Id: 28724186-5cc2-4593-25f6-08df366ee1f3
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|23010399003|376014|7416014|1800799024|366016|6133799003|10067099003|22082099003|18002099003|56012099006|11063799006|4143699003|261026130827099003|261026140227099003|261026121527099003|261028144727099003|261021123027099003|261022075727099003|261021135927099003|261021130227099003|261022113327099003|261021121427099003|261022115727099003|261022105027099003|261009223027099003;
+X-Microsoft-Antispam-Message-Info:
+	svlBkGyq0gktqEMXwglYLJEd2zAT4S8N8OHx30T3ocD7m9eT80Ai8ztRuQArHGIx8+d2x0fx7ku3ybSKk7HkyoVWNK/WdlU7bq/qaNqB4mWJp/AxA83oLbKc3mMge4a2kgEow8AiZvN/a9eS4sbBD8MpHMr4k0Q1Cim6ubwmqOlV7E96MN2h0QC0NzfHEO/QpDltwKx4eTYU+RkXz7yuopawlf4artuih2wLM5fbL2Vy6HWUh6kcBA2rQcssQM4ZNjUnSlol3XlLNKd7BNEC+6vWwD6395AXh9j5OleB/c+lsZVlqZt15SyCp1KltoCcYvgxodUhOC0BCZ7+ULbYboey4xou6O7PHNddTcDqn+nD3bBBB2O1Uj9hIpKJ0cgYMu6qSqVPWSNYBATNlspoSesVjAaffNwTihxjGVLUDAThQz80SjSJ+spHTRbSXAU2ic4vTv8J18QFyp/NHVFfvezypvAvpsrcUmX+GuVVCBF2MbioFSurX8vI28A3+9QiAss+qJXTDid3YXRvdy3tdkeMcRByOtd7l9vaCR/LDghm6ffZu02ZgLhyWAu5QL3SDnhFA5enNjVYbbQgtJb6RcclgNFkEg/Q0a9ZN1SiBXo=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB12318.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(23010399003)(376014)(7416014)(1800799024)(366016)(6133799003)(10067099003)(22082099003)(18002099003)(56012099006)(11063799006)(4143699003)(261026130827099003)(261026140227099003)(261026121527099003)(261028144727099003)(261021123027099003)(261022075727099003)(261021135927099003)(261021130227099003)(261022113327099003)(261021121427099003)(261022115727099003)(261022105027099003)(261009223027099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?mkQ2BZemnFPd4RGFmY6oRcpMwlFCV3IJnN5vqdFXikWI4LtGCjPJglqWLQVx?=
+ =?us-ascii?Q?HBS0BEYtp12PsvBmdPZrDi6mCExfqFFCMeMVDTQyFEWuGkFheQdDAQFUTD/G?=
+ =?us-ascii?Q?qhE9TrAGCEP86ic3DPkHUMakOWGtJT/8sSsrNOS/YXwgJu6PHAizpu6rQlIL?=
+ =?us-ascii?Q?C+ridy24UVWnnSjXIrx8S1CVrX2D987ukNBBZNZ1Ku0PObBrAbfXBbdzt5Md?=
+ =?us-ascii?Q?1dk+4g2Xz+RkD9CxrShevOuHE0KDcm9J8m9V5Ft3gB1AQi5e792JcYTQQbrT?=
+ =?us-ascii?Q?PdEuGrNkpRoTtWcr7aGIUSTVt4d5ON2U2fnIWKcIgP78V7oo4o0sVVnmdvY5?=
+ =?us-ascii?Q?dhup4NNX2cjPm5dW8sDk4rL2Lu4yh9eMTfh/IR5EIeLJfmHURb65uDWiHm0v?=
+ =?us-ascii?Q?DNXtfTZIiX7bzfYb55FP5cAd+JaD+DeJokW3gDtSX22FN9IiQ4cwYRWQw6LE?=
+ =?us-ascii?Q?VyXOxs8GWFIKLSYJVWd+IR/1a3gjaxScXuaIayJEw+kJO7NVsg2dXWWdy4UK?=
+ =?us-ascii?Q?j7+Llk9n64/K6V/d7pYUfoZlZz0WfWBgHwLJu+BkwyviuXPbldre1uz9T2t8?=
+ =?us-ascii?Q?whn7SCUapcOEyDzDwQ3Iyy9xrvwJUZo5URHKOePlVhe3yJ+pa+nDK/WU3E8E?=
+ =?us-ascii?Q?5FpTSncUQrEBYB8UGGM53SuGZ7y/kAQHthL/C3EW5jpe5QS5Wj6EN1qVDARm?=
+ =?us-ascii?Q?uNy77+khyUEwzU9USDJKRmgBmVhdJGIrJTZfT5MuCmTG7017QxfxCAY/y0HR?=
+ =?us-ascii?Q?Ja7s4wgjoNMugcCWL/PRet63xo9Jqt+5qyAy5F+HtMeJ7U2knlVUfaxNXSRc?=
+ =?us-ascii?Q?uNnN2UwTTrlcKF7Rmaz66NJPmv8cQx0CXb7b9ZHBAbdtHOvPvr5yCq/TaX+M?=
+ =?us-ascii?Q?s8LieEbPKbqgtoBgYXinp7pc9fzpU1A8wDyTjas8WaDEr38J6rPfJbzwo4nr?=
+ =?us-ascii?Q?H1db44HsHiW08kpXUsmzWl2xZiCSxrGn5+CTHiQl5UCVsjD43zabk0DVQ+qz?=
+ =?us-ascii?Q?fqCVNe2S3XfnJhRhD3OgJTarnUj97PjUj2KulGu9rvbUMsi2XT/cUphvB1sc?=
+ =?us-ascii?Q?DPPHe5Tk0Tz1lW1cbc45zOBT5oAyLcitPGPWenTyfJ3yYFjHG7Pl6A40akUL?=
+ =?us-ascii?Q?R+7fY1C52CfkvsXMHtHfkaUBi1XjNudi7NvKhpqj1f6FeIgQDwp4wkLt+Wcl?=
+ =?us-ascii?Q?aCmniLmQpG0uaGliEqMwNeiUtvZdZwRkICERWsxwz2YAPzLssGntUmWMjrln?=
+ =?us-ascii?Q?M7/wvKQxio5LYl3d1OsFtFY7VyHpJAyy0WF5pRKablo5nwaGQbzWkkNI4Gpu?=
+ =?us-ascii?Q?3zTyj/By7+JZJ4E7DlObuc9Rrsi9/C2VCv1AlZ9FJOv4zkbiDoJi97CkNT6y?=
+ =?us-ascii?Q?3b3fcGmt4FPErO4YhJDYh5pZ4/FvGD6CI/OzXFVbgxBjDyxQgxfrr+vKY+7b?=
+ =?us-ascii?Q?Klw59qEYA7DZZCZ0CoWSqA2QouhKQEcU/TK2IUoTvJNB8pEQwGoLBfg/c00Q?=
+ =?us-ascii?Q?UsRlxZaDWbeDqF9OafoDHvF7aAp2VVv+gLsBmBZ1azAhayxuJtoweeUTy7Kw?=
+ =?us-ascii?Q?XAneBWxrxFV1L/6zeKfigifD6WiM8K07hJXabnywSJ0NxIRT2Of/oZIt6cm6?=
+ =?us-ascii?Q?dzwawba+hvFyWIFtioVv+GZq0Lob4bNOxsHCZMPyuuO/w+zRY4+ZLD0l9Cw/?=
+ =?us-ascii?Q?Rue+pn9af0fggcBg3USI5d9NxnrLG8tF3FLSatG7ecQdZ48yn8ffFWDdh4j+?=
+ =?us-ascii?Q?zTnt34g5IQ=3D=3D?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 28724186-5cc2-4593-25f6-08df366ee1f3
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB12318.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Oct 2026 10:16:37.7081
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: s3WsjzDIIYyL/XM1DLF375O/gNLQcy4Mugo/YLX9mpLpAXKa7DHFZIve31C5lY+2t/9VnXUwW3Rpd6QVYDLhug==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB12032
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] drm/imx: dc-crtc: premature clk_axi disable in dc_crtc_disable_a=
-t_boot()
---
+Hi Luca,
 
-commit e47c892a97b7a909d6fe7c57ba9a8454d386aea8
-Author: Liu Ying <victor.liu@nxp.com>
+Thanks for looking over this patch.
 
-drm/imx: dc-crtc: Disable at boot
+On Fri, Oct 30, 2026 at 09:29:39AM +0100, Luca Ceresoli wrote:
+> Hello Laurentiu,
+> 
+> > The next bridge in bridge chain could be a panel bridge or a non-panel
+> > bridge.  Use devm_drm_of_get_bridge() to replace the combination
+> > function calls of of_drm_find_panel() and devm_drm_panel_bridge_add()
+> > to get either a panel bridge or a non-panel bridge, instead of getting
+> > a panel bridge only.
+> 
+> Since commit b7797081ccfe ("drm/panel: embed a drm_bridge into every
+> drm_panel") there is no such thing as a panel_bridge. Now every panel just
+> embeds a bridge, and there is no reason to use the panel_bridge API. All
+> bridges/encoders/whoever needing to interact with "the next component, be
+> it a bridge or a panel" should just use the bridge API.
+> 
+> The old panel_bridge APIs are deprecated [0] and by now they are just
+> complicated wrappers to the bridge API.
+> 
+> I'm addressing the conversion to bridge API and eventual removal of the
+> deprecated panel_bridge API as time permits (but pathces would be
+> welcome). This driver has already been converted by commit 802372cf316a
+> ("drm/bridge: fsl-ldb: don't create a panel_bridge"), so this patch is
+> basically not changing anything: it's still getting a pointer to the next
+> bridge, but switches to a slightly more complicated implementation.
+> 
+> So I'd drop this patch.
 
-This commit adds dc_crtc_disable_at_boot() and calls it for each CRTC in
-dc_drm_bind() prior to drm_dev_register() to ensure CRTCs and their
-associated clocks left running across an unplug are disabled at boot.
+Agreed
 
-> diff --git a/drivers/gpu/drm/imx/dc/dc-crtc.c b/drivers/gpu/drm/imx/dc/dc=
--crtc.c
-> index 0d64186a99018..5bc952d6883e1 100644
-> --- a/drivers/gpu/drm/imx/dc/dc-crtc.c
-> +++ b/drivers/gpu/drm/imx/dc/dc-crtc.c
+> 
+> Still it's good to get rid of the obsolete "panel" wording because now we
+> don't interact with a panel aymore, see below.
 
-[ ... ]
+OK, I'll replace this patch with one addressing your comments below.
 
-> @@ -331,6 +341,48 @@ dc_crtc_atomic_disable(struct drm_crtc *crtc, struct=
- drm_atomic_commit *state)
->  	spin_unlock_irq(&crtc->dev->event_lock);
->  }
-> =20
-> +int dc_crtc_disable_at_boot(struct drm_crtc *crtc)
-> +{
-> +	struct dc_drm_device *dc_drm =3D to_dc_drm_device(crtc->dev);
-> +	struct dc_crtc *dc_crtc =3D to_dc_crtc(crtc);
-> +	int ret;
-> +
-> +	ret =3D pm_runtime_resume_and_get(dc_crtc->de->dev);
-> +	if (ret < 0) {
-> +		dc_crtc_err(crtc, "failed to get DC display engine RPM: %d\n",
-> +			    ret);
-> +		goto out1;
-> +	}
-> +
-> +	if (!dc_fg_wait_for_frame_index_moving(dc_crtc->fg)) {
-> +		dc_crtc_dbg(crtc, "FrameGen frame index isn't moving\n");
-> +		goto out2;
-> +	}
-> +
-> +	dc_crtc_dbg(crtc, "disabling FrameGen at boot\n");
-> +	__dc_crtc_disable_fg(crtc);
-> +
-> +	if (!dc_drv_crtc_is_enabled(dc_drm, drm_crtc_index(crtc)))
-> +		goto out2;
-> +
-> +	dc_crtc_dbg(crtc, "disabling clocks at boot\n");
-> +
-> +	dc_fg_disable_clock(dc_crtc->fg);
-> +
-> +	dc_drm->pe_clk_axi_needs_disable =3D true;
-> +
-> +	dc_drv_set_crtc_disable(dc_drm, drm_crtc_index(crtc));
-> +
-> +out2:
-> +	pm_runtime_put(dc_crtc->de->dev);
-> +out1:
-> +	/* Let CRTC(with index =3D=3D 1) disablement path disable AXI clock. */
-> +	if (dc_drm->pe_clk_axi_needs_disable && drm_crtc_index(crtc) =3D=3D 1)
-> +		clk_disable_unprepare(dc_drm->pe->clk_axi);
-> +
-> +	return ret;
-> +}
+> 
+> [0] https://gitlab.freedesktop.org/drm/misc/kernel/-/blob/drm-misc-next/Documentation/gpu/todo.rst#remove-panel_bridge-api-functions
+> 
+> >
+> > Signed-off-by: Liu Ying <victor.liu@nxp.com>
+> > Signed-off-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+> >
+> > diff --git a/drivers/gpu/drm/bridge/fsl-ldb.c b/drivers/gpu/drm/bridge/fsl-ldb.c
+> > index 7ec84c81cd78..52ae7f5b63c7 100644
+> > --- a/drivers/gpu/drm/bridge/fsl-ldb.c
+> > +++ b/drivers/gpu/drm/bridge/fsl-ldb.c
+> > @@ -294,8 +294,8 @@ static const struct drm_bridge_funcs funcs = {
+> >  static int fsl_ldb_probe(struct platform_device *pdev)
+> >  {
+> >  	struct device *dev = &pdev->dev;
+> > -	struct device_node *panel_node;
+> 
+> This could be renamed remote_bridge, or next_bridge_node, or the like.
+> 
+> >  	struct device_node *remote1, *remote2;
+> > +	struct drm_bridge *next_bridge;
+> >  	struct fsl_ldb *fsl_ldb;
+> >  	int dual_link;
+> >
+> > @@ -318,19 +318,16 @@ static int fsl_ldb_probe(struct platform_device *pdev)
+> >  	if (IS_ERR(fsl_ldb->regmap))
+> >  		return PTR_ERR(fsl_ldb->regmap);
+> >
+> > -	/* Locate the remote ports and the panel node */
+> > +	/* Locate the remote ports. */
+> 
+> This is OK.
+> 
+> >  	remote1 = of_graph_get_remote_node(dev->of_node, 1, 0);
+> >  	remote2 = of_graph_get_remote_node(dev->of_node, 2, 0);
+> >  	fsl_ldb->ch0_enabled = (remote1 != NULL);
+> >  	fsl_ldb->ch1_enabled = (remote2 != NULL);
+> > -	panel_node = of_node_get(remote1 ? remote1 : remote2);
+> 
+> I'd leave it as is, it's just less code (and more efficient FWIW)
+> than... see below (*)
+> 
+> >  	of_node_put(remote1);
+> >  	of_node_put(remote2);
+> >
+> > -	if (!fsl_ldb->ch0_enabled && !fsl_ldb->ch1_enabled) {
+> > -		of_node_put(panel_node);
+> > -		return dev_err_probe(dev, -ENXIO, "No panel node found");
+> > -	}
+> > +	if (!fsl_ldb->ch0_enabled && !fsl_ldb->ch1_enabled)
+> > +		return dev_err_probe(dev, -ENXIO, "No next bridge node found");
+> 
+> This can be simplified by using a clenaup action on panel_node (or whatever
+> the new name will be), so the of_node_put() would disappear. See for
+> example commit 23bc92902edd ("drm/mxsfb/lcdif: simplify ep pointer
+> management using __free").
+> 
+> 
+> > @@ -339,10 +336,14 @@ static int fsl_ldb_probe(struct platform_device *pdev)
+> >  	if (of_property_present(dev->of_node, "nxp,enable-termination-resistor"))
+> >  		fsl_ldb->use_termination_resistor = true;
+> >
+> > -	fsl_ldb->bridge.next_bridge = of_drm_find_and_get_bridge(panel_node);
+> > -	of_node_put(panel_node);
+> > -	if (!fsl_ldb->bridge.next_bridge)
+> > -		return -ENODEV;
+> > +	next_bridge = of_drm_get_bridge_by_endpoint(dev->of_node,
+> > +						    fsl_ldb->ch0_enabled ? 1 : 2,
+> > +						    0);
+> 
+> (*) ...this code.
+> 
+> > +	if (IS_ERR(next_bridge))
+> > +		return dev_err_probe(dev, PTR_ERR(next_bridge),
+> > +				     "failed to get next bridge\n");
+> > +
+> > +	fsl_ldb->bridge.next_bridge = next_bridge;
+> >
+> >  	if (fsl_ldb_is_dual(fsl_ldb)) {
+> >  		struct device_node *port1, *port2;
+> 
+> Luca
+> 
+> -- 
+> Luca Ceresoli, Bootlin
+> Embedded Linux and Kernel engineering
+> https://bootlin.com
+> 
 
-[Severity: Medium]
-In dc_crtc_disable_at_boot() in drivers/gpu/drm/imx/dc/dc-crtc.c, can jumpi=
-ng
-to out1 when pm_runtime_resume_and_get() fails on CRTC1 prematurely disable
-dc_drm->pe->clk_axi?
-
-When dc_drm_bind() iterates over CRTCs with drm_for_each_crtc():
-
-1. If CRTC0 was left enabled before unplug, dc_crtc_disable_at_boot() disab=
-les
-   CRTC0's FrameGen and pixel clock, sets dc_drm->pe_clk_axi_needs_disable =
-to
-   true, and clears CRTC_ENABLED(0).
-
-2. Next, dc_crtc_disable_at_boot() is called for CRTC1 (drm_crtc_index(crtc=
-) =3D=3D 1).
-   If pm_runtime_resume_and_get(dc_crtc->de->dev) fails, it jumps to out1
-   before stopping CRTC1's FrameGen or clearing CRTC_ENABLED(1).
-
-3. At out1, both dc_drm->pe_clk_axi_needs_disable and drm_crtc_index(crtc) =
-=3D=3D 1
-   are true, so clk_disable_unprepare(dc_drm->pe->clk_axi) is called even
-   though CRTC1 failed to disable.
-
-If CRTC1 was also active, this cuts the Pixel Engine AXI clock while CRTC1 =
-is
-still scanning out through the Pixel Engine, and leaves CRTC_ENABLED(1) set=
- so
-that a subsequent bind attempt would disable dc_drm->pe->clk_axi a second t=
-ime.
-
-Should the clk_disable_unprepare(dc_drm->pe->clk_axi) call happen before ou=
-t1
-(under out2), or only when ret =3D=3D 0?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261030-imx8-dc-pr=
-efetch-v8-0-c4f81afd4533@nxp.com?part=3D6
+-- 
+Thanks,
+Laurentiu
