@@ -1,56 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793355467;
-	b=h4G6zM+QKbT0bsUOCz5IXEg70zPvl1H4Gfj3zr2tGRFYV7gGsrq8DgckEbtlLctvPyfw
-	 IEAmbVTWizF3feTbSPjGLzwpBMfippqplBRA5CLdeeRjIHb/02zr3+yYB6fVSv6MqHr2S
-	 g4JlcdtdxZDKlr+ZdeDBlDpG2FrFV4KRp86Q+h1u4868llPG3z+x0qCTin+wJnPaYHAr6
-	 ic2bEvxnKA2Vbx9UGoAG9CMa1NI2XKsRJoMF68I5eMnbjtkmREhSPIVtD5MjKV/8S78E3
-	 tIq0MJdVvNPIBtqRTtozpO8ZclCOOGCSpUwt7eN6S2QsvUA/1kr501hDwYhah/rIq8A==
+	t=1793356015;
+	b=jU2hbGzqQtn3571KrkSm2zCl0Bk1cdMhyj+SD6n2pAG3indikPqenlf9GpgxNEOlW5rK
+	 zz1pCARQ0Ugytuv34DW6Z92lM4T82A8HH9PISufXsz/3TozbOgEMzTSP5EWEJcTwykmjZ
+	 lHiiKKHgT/rn9bk+/64no0ryHvfX4bZbWbruZok60gA96vDtZ1Z4D/R1Y1M7r0Is9lQP3
+	 eMRTeYLv5NFz3k/gMTfj+mxLZWRp0UgbpMh4tiHecESY6ze+ds/OU4YN65ShFdjwVD2Ap
+	 sKhzBVGoPmbz8ZGm43mwDnRCv7JZZ1QgyL/RSAdFLSCPHeiWbWQEkvfuuxcjkaweT6g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793355467;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=Xt99qhXmHcYgZJZPXoeAanVBQP2/tUhVYuVGBuL6NY4=;
-	b=dsAJUm70YynfHI3JCoAvKA2I/zc1Xn23Pho7nGn+6htWEUqYucYMkuJTcAS1bG+lWodk
-	 LegOqz2B36sZyKPiy4E/bvr0Tut+tg1YVg+YMin5kTTI4egSbmNXabbWyvkT5LhM5cynU
-	 ueAHDDGwFYDc24CsuiPBy7TuSZubOmX1WA966iAxQWmm6KivFT32fEhoTDfQOl9GNphSA
-	 WLwWUomOC+9gZGi3g69OwGTaiFiov1dSOz7JwnDz0LMsWCX1BmwqajJXWhPY4JBa1WILq
-	 XBm1GhKVlRkSzdTD6WRV1pAXqNGILDPwT77fsYxYPsiFPlVeDUOcaT18Bg0ttZLmbKQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793356015;
+	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:Subject:From:To:Cc:In-Reply-To:
+	 References:Date:Message-Id:X-Mailer:X-Last-TLS-Session-Version;
+	bh=RR1F54y5drcv+A4tIQHG4ZfpQR+6/k3IO0e9rn0QE3s=;
+	b=LtZnk9vKtty5sRc8cO9dQcF3rIAkaXmWi5JhT36O0GTk1Zhe9/Aw0+RjK6w4EqvZsAii
+	 5dfpLRDXlruLe1Cf5rpqOjO/IwE3Gre2lUAZZ6nwebAY85v4hLEK6EPmjOLvH4y+aG0Lc
+	 RlOwwj88CJNzhOchFqnSglTH4p5Dgloled5ntPNFpw97jj57DpKeL1V+vKuE8SbXShz8p
+	 KumzQomG3QTuUdMq5PFiH2LTVeAg6Lvt9g4BZnSAphm5JJhoxSmtLT88Cxla/lWKHCZyK
+	 /K8v8yh9AimZb0pXQoW00yfDf3T0eAhNfosNu22lGy5Y3cmHi8E7mShfg/RZohWPqkg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mBKfXyZs;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=bootlin.com;
+	spf=pass smtp.mailfrom=bootlin.com;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=vumznZ4o;
+	arc=none smtp.remote-ip=185.246.85.4
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2429606A329;
-	Fri, 30 Oct 2026 10:17:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A997606A320;
+	Fri, 30 Oct 2026 10:26:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8A997606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mBKfXyZs
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E752A1F000C1;
-	Fri, 30 Oct 2026 10:17:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793355466;
-	bh=Xt99qhXmHcYgZJZPXoeAanVBQP2/tUhVYuVGBuL6NY4=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=mBKfXyZsIIjr+qfR/Lnm8Va06KFfjZI8rA7kPJvyrpZi2p1T5IjPXWT17iEfsCUkv
-	 6n3LL0P6Fleem5q1GHLbZMJSxcvvqkSmRvV24+F7cqmcm6NWx8+ZqOCqIJg+Kruzvu
-	 JxbnjXX9Cw07CMEJVlOEQgewlFI1MfQErxqEI/XzFuE+lfOZVxDI9lBGlDsILXSivi
-	 uL4hPAFBMsFctXQUQ1Q6co3MfCA7rCgsw8wXyWD1FAGvAOZy/nMv4zBladLolMt4SD
-	 bNJM3JvIBp37wqOQeU/hgRShP4Y6x/BgTjBhw+A/lz2Y8aQK02xhL7voY2doHNbuaD
-	 0rZqgHSb5XdVg==
-Message-ID: <sashiko-outbox-190821@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v8 08/15] drm/imx: dc: Add DPR channel support
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Liu Ying" <victor.liu@nxp.com>
-Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20261030-imx8-dc-prefetch-v8-8-c4f81afd4533@nxp.com>
-References: <20261030-imx8-dc-prefetch-v8-0-c4f81afd4533@nxp.com>
- <20261030-imx8-dc-prefetch-v8-8-c4f81afd4533@nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 30 Oct 2026 10:17:45 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=vumznZ4o
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id D45464E41396;
+	Fri, 30 Oct 2026 10:26:52 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id A6731603C2;
+	Fri, 30 Oct 2026 10:26:52 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 75DD9103287DA;
+	Fri, 30 Oct 2026 11:26:43 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1793356011; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=RR1F54y5drcv+A4tIQHG4ZfpQR+6/k3IO0e9rn0QE3s=;
+	b=vumznZ4o/YhlDqvCPO6TgB6PpQPi7eFbzUumgVXbHN1PjGkAtHgef055JQtH86dxpVLhfV
+	RCWeW4I/yhu2/s5jt/rkUjJfqtmDgUbvSWx9e29C8twC9wB+IjKbno0jHm1/5gtiHuMJko
+	fmQYZW2y0sfgyTLpwEQt4zUcNAd7gsR59iOXSaLF9+tUs/PAloTCTYIWlQTpz/gv0BM6L0
+	HeZQ8SyncywSA7zRbQLI/i8pHhngmF/JL6std7clx3aA35WWkikJnZeyO4SwavDaby8pEX
+	jXKzceH6iEo5LXPNfqwuyfM64tMERtEbEb8NXhpfboohUqRyYg35c2NhIFLh8w==
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -59,308 +58,41 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 1/2] mfd: Constify mfd_cell arrays
+From: "Thomas Richard (congatec GmbH)" <thomas.richard@bootlin.com>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Cc: Lee Jones <lee@kernel.org>, Chen-Yu Tsai <wens@kernel.org>, 
+ Thomas Richard <thomas.richard@bootlin.com>, 
+ Andy Shevchenko <andy@kernel.org>, Chanwoo Choi <cw00.choi@samsung.com>, 
+ Krzysztof Kozlowski <krzk@kernel.org>, 
+ Andreas Werner <andreas.werner@men.de>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, 
+ Matti Vaittinen <mazziesaccount@gmail.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Liviu Dudau <liviu.dudau@arm.com>, Sudeep Holla <sudeep.holla@kernel.org>, 
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, mfd@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, 
+ linux-stm32@st-md-mailman.stormreply.com, patches@opensource.cirrus.com
+In-Reply-To: <20261030071137.100954-3-krzysztof.kozlowski@oss.qualcomm.com>
+References: <20261030071137.100954-3-krzysztof.kozlowski@oss.qualcomm.com>
+Date: Fri, 30 Oct 2026 11:26:32 +0100
+Message-Id: <179335599226.822489.13265784162305522111.b4-review@b4>
+X-Mailer: b4 0.16.0
+X-Last-TLS-Session-Version: TLSv1.3
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
-- [High] drm/imx: dc-dprc: deadlock and invalid lock type in dc_dprc_disabl=
-e_repeat_en()
-- [High] drm/imx: dc-dprc: runtime PM race and leak in dc_dprc_wrap_irq_han=
-dler()
-- [Medium] drm/imx: dc-dprc: RPM reference leak and PRG imbalance in dc_dpr=
-c_configure()
---
+> mfd_add_devices() takes pointer to const, so 'struct mfd_cell' arrays
+> can be constified whenever driver does not modify it in the probe.
 
-commit 0da98ec378c5f86195b2badbfc2867b3e806cb34
-Author: Liu Ying <victor.liu@nxp.com>
+Acked-by: Thomas Richard (congatec GmbH) <thomas.richard@bootlin.com> # cgbc-core
 
-drm/imx: dc: Add DPR channel support
+-- 
+Best Regards,
+Thomas Richard
 
-This commit adds a platform driver for the Display Prefetch Resolve
-Channel (DPRC), which fetches display data, transforms it to linear
-format, and stores it in RTRAM alongside its associated PRG.
-
-> diff --git a/drivers/gpu/drm/imx/dc/dc-dprc.c b/drivers/gpu/drm/imx/dc/dc=
--dprc.c
-> new file mode 100644
-> index 0000000000000..29188fa72a327
-> --- /dev/null
-> +++ b/drivers/gpu/drm/imx/dc/dc-dprc.c
-[ ... ]
-> +void dc_dprc_configure(struct dc_dprc *dprc, unsigned int stream_id,
-> +		       unsigned int width, unsigned int height,
-> +		       unsigned int stride,
-> +		       const struct drm_format_info *format,
-> +		       dma_addr_t baddr, bool start)
-> +{
-> +	unsigned int prg_stride =3D width * format->cpp[0];
-> +	unsigned int bpp =3D format->cpp[0] * 8;
-> +	struct device *dev =3D dprc->dev;
-> +	unsigned int p1_w, p1_h;
-> +	u32 val;
-> +	int ret;
-> +
-> +	if (start) {
-> +		ret =3D pm_runtime_resume_and_get(dev);
-> +		if (ret < 0) {
-> +			dev_err(dev, "failed to get RPM: %d\n", ret);
-> +			return;
-> +		}
-> +
-> +		dc_dprc_set_stream_id(dprc, stream_id);
-> +	}
-> +
-> +	p1_w =3D round_up(width, format->cpp[0] =3D=3D 2 ? 32 : 16);
-> +	p1_h =3D round_up(height, 4);
-> +
-> +	regmap_write(dprc->reg, FRAME_CTRL0, PITCH(stride));
-> +	regmap_write(dprc->reg, FRAME_1P_CTRL0, BYTE_1K);
-> +	regmap_write(dprc->reg, FRAME_1P_PIX_X_CTRL, NUM_X_PIX_WIDE(p1_w));
-> +	regmap_write(dprc->reg, FRAME_1P_PIX_Y_CTRL, NUM_Y_PIX_HIGH(p1_h));
-> +	regmap_write(dprc->reg, FRAME_1P_BASE_ADDR_CTRL0, baddr);
-> +	regmap_write(dprc->reg, FRAME_PIX_X_ULC_CTRL, CROP_ULC_X(0));
-> +	regmap_write(dprc->reg, FRAME_PIX_Y_ULC_CTRL, CROP_ULC_Y(0));
-> +
-> +	regmap_write(dprc->reg, RTRAM_CTRL0, THRES_LOW(3) | THRES_HIGH(7));
-> +
-> +	val =3D LINE4 | BUF2;
-> +	switch (format->format) {
-> +	case DRM_FORMAT_XRGB8888:
-> +		/*
-> +		 * It turns out pixel components are mapped directly
-> +		 * without position change via DPR processing with
-> +		 * the following color component configurations.
-> +		 * Leave the pixel format to be handled by the
-> +		 * display controllers.
-> +		 */
-> +		val |=3D A_COMP_SEL(3) | R_COMP_SEL(2) |
-> +		       G_COMP_SEL(1) | B_COMP_SEL(0);
-> +		val |=3D PIX_SIZE_32BIT;
-> +		break;
-> +	default:
-> +		dev_err(dev, "unsupported format 0x%08x\n", format->format);
-> +		return;
-> +	}
-> +	regmap_write(dprc->reg, MODE_CTRL0, val);
-> +
-> +	if (start) {
-> +		/* software shadow load for the first frame */
-> +		val =3D SW_SHADOW_LOAD_SEL | SHADOW_LOAD_EN;
-> +		regmap_write(dprc->reg, SYSTEM_CTRL0, val);
-> +
-> +		/* and then, run... */
-> +		val |=3D RUN_EN | REPEAT_EN;
-> +		regmap_write(dprc->reg, SYSTEM_CTRL0, val);
-> +	}
-> +
-> +	dc_prg_configure(dprc->prg, width, height, prg_stride, bpp, baddr, star=
-t);
-> +
-> +	if (start)
-> +		dc_dprc_enable(dprc);
-> +
-> +	dc_dprc_reg_update(dprc);
-
-[Severity: Medium]
-As reported by Sashiko on v7 [1], can dc_dprc_configure() leak the runtime
-PM reference on dprc->dev and leave dprc->prg->dev unbalanced or unclocked
-when start is true?
-
-In dc_dprc_configure(), pm_runtime_resume_and_get(dev) is called when start
-is true before checking format->format. If format->format hits the default
-case, the function returns early without calling pm_runtime_put(dev) and
-before calling dc_prg_configure(). That leaks the runtime PM reference on
-dprc->dev and leaves dprc->prg->dev runtime-suspended; a subsequent call to
-dc_dprc_disable() -> dc_prg_disable() will then write to prg->reg while
-unclocked and underflow prg->dev's runtime PM usage count.
-
-Similarly, when dc_dprc_configure() calls dc_prg_configure() with start
-set to true:
-
-drivers/gpu/drm/imx/dc/dc-prg.c:dc_prg_configure() {
-	if (start) {
-		ret =3D pm_runtime_resume_and_get(dev);
-		if (ret < 0) {
-			dev_err(dev, "failed to get RPM: %d\n", ret);
-			return;
-		}
-	}
-}
-
-Because dc_prg_configure() returns void on pm_runtime_resume_and_get()
-failure, dc_dprc_configure() proceeds unconditionally to dc_dprc_enable()
--> dc_prg_enable() and dc_dprc_reg_update() -> dc_prg_reg_update(), writing
-to prg->reg while prg->clks are disabled and leaving the runtime PM
-references between dprc->dev and prg->dev unbalanced.
-
-> +
-> +	if (start)
-> +		dc_dprc_enable_ctrl_done_irq(dprc);
-> +
-> +	dev_dbg(dev, "w: %u, h: %u, s: %u, fmt: 0x%08x\n",
-> +		width, height, stride, format->format);
-> +}
-> +
-> +void dc_dprc_disable_repeat_en(struct dc_dprc *dprc)
-> +{
-> +	guard(spinlock)(&dprc->lock);
-> +	regmap_write(dprc->reg, IRQ_MASK + SET, IRQ_DPR_CRTL_DONE);
-> +
-> +	synchronize_hardirq(dprc->wrap_irq);
-> +
-> +	regmap_write(dprc->reg, SYSTEM_CTRL0 + CLR, REPEAT_EN);
-> +	dev_dbg(dprc->dev, "disable REPEAT_EN\n");
-> +}
-
-[Severity: High]
-As reported by Sashiko on v7 [1], won't holding dprc->lock across
-synchronize_hardirq(dprc->wrap_irq) in dc_dprc_disable_repeat_en()
-deadlock if dc_dprc_wrap_irq_handler() is concurrently running?
-
-In dc_dprc_disable_repeat_en(), guard(spinlock)(&dprc->lock) holds
-dprc->lock for the entire function scope, including while waiting in
-synchronize_hardirq(dprc->wrap_irq). If wrap_irq fires on another CPU (eith=
-er
-from DPRC before IRQ_MASK + SET takes effect, or from another device sharing
-the IRQF_SHARED interrupt line) and enters dc_dprc_wrap_irq_handler(),
-IRQD_IRQ_INPROGRESS is set before dc_dprc_wrap_irq_handler() attempts to
-acquire dprc->lock:
-
-CPU 0                                  CPU 1 (hardirq wrap_irq)
-dc_dprc_disable_repeat_en()            handle_irq_event()
-  guard(spinlock)(&dprc->lock)           /* sets IRQD_IRQ_INPROGRESS */
-  ...                                    dc_dprc_wrap_irq_handler()
-  synchronize_hardirq(dprc->wrap_irq)      scoped_guard(spinlock, &dprc->lo=
-ck)
-    /* waits for IRQD_IRQ_INPROGRESS */      /* spins waiting for dprc->loc=
-k */
-
-Also, if dc_dprc_disable_repeat_en() is ever called with local IRQs enabled,
-guard(spinlock) does not disable local interrupts, so wrap_irq on the same
-CPU can preempt and self-deadlock on dprc->lock.
-
-In addition, as noted in the comment on dc_dprc_regmap_config,
-dc_dprc_disable_repeat_en() is called with local IRQs and preemption
-disabled. However, dprc->lock is declared as spinlock_t rather than
-raw_spinlock_t, and dc_dprc_wrap_irq_handler() -> dc_dprc_ctrl_done_handle()
--> dc_prg_shadow_enable() writes to prg->reg (whose dc_prg_regmap_config
-does not set use_raw_spinlock =3D true) from hardirq context. On PREEMPT_RT=
- or
-with CONFIG_PROVE_RAW_LOCK_NESTING enabled, acquiring a non-raw spinlock_t
-in hardirq context or with local IRQs/preemption disabled triggers an
-invalid wait-context splat.
-
-Finally, because devm_request_irq() is called without IRQF_NO_THREAD,
-dc_dprc_wrap_irq_handler() is force-threaded under PREEMPT_RT or threadirqs.
-In that configuration, synchronize_hardirq() does not wait for the IRQ
-thread to complete, so dc_dprc_ctrl_done_handle() can still run concurrently
-and write REPEAT_EN back to SYSTEM_CTRL0 and SHADOW_EN to prg->reg after
-dc_dprc_disable_repeat_en() and dc_dprc_disable().
-
-> +
-> +/*
-> + * dc_dprc_disable_repeat_en() must be called beforehand to mask
-> + * IRQ_DPR_CRTL_DONE and synchronize wrap_irq.
-> + */
-> +void dc_dprc_disable(struct dc_dprc *dprc)
-> +{
-> +	dc_prg_disable(dprc->prg);
-> +
-> +	pm_runtime_put(dprc->dev);
-> +
-> +	dev_dbg(dprc->dev, "disable\n");
-> +}
-[ ... ]
-> +static irqreturn_t dc_dprc_wrap_irq_handler(int irq, void *data)
-> +{
-> +	struct dc_dprc *dprc =3D data;
-> +	struct device *dev =3D dprc->dev;
-> +	u32 mask =3D 0, status =3D 0;
-> +	irqreturn_t result;
-> +
-> +	pm_runtime_get_noresume(dev);
-> +	if (!pm_runtime_active(dev)) {
-> +		result =3D IRQ_NONE;
-> +		goto out;
-> +	}
-> +
-> +	scoped_guard(spinlock, &dprc->lock) {
-> +		/* cache valid IRQ status */
-> +		regmap_read(dprc->reg, IRQ_MASK, &mask);
-> +		regmap_read(dprc->reg, IRQ_MASK_STATUS, &status);
-> +		status &=3D ~mask;
-> +
-> +		/* mask the IRQ(s) being handled */
-> +		regmap_write(dprc->reg, IRQ_MASK + SET, status);
-> +
-> +		/* clear status register */
-> +		regmap_write(dprc->reg, IRQ_MASK_STATUS, status);
-> +	}
-> +
-> +	if (status =3D=3D 0) {
-> +		result =3D IRQ_NONE;
-> +		goto out;
-> +	}
-> +
-> +	if (status & DPR2RTR_FIFO_LOAD_BUF_RDY_UV_ERROR)
-> +		dev_err(dev, "DPR to RTRAM FIFO load UV buffer ready error\n");
-> +
-> +	if (status & DPR2RTR_FIFO_LOAD_BUF_RDY_YRGB_ERROR)
-> +		dev_err(dev, "DPR to RTRAM FIFO load YRGB buffer ready error\n");
-> +
-> +	if (status & DPR2RTR_UV_FIFO_OVFL)
-> +		dev_err(dev, "DPR to RTRAM FIFO UV FIFO overflow\n");
-> +
-> +	if (status & DPR2RTR_YRGB_FIFO_OVFL)
-> +		dev_err(dev, "DPR to RTRAM FIFO YRGB FIFO overflow\n");
-> +
-> +	if (status & IRQ_AXI_READ_ERROR)
-> +		dev_err(dev, "AXI read error\n");
-> +
-> +	if (status & IRQ_DPR_CRTL_DONE)
-> +		dc_dprc_ctrl_done_handle(dprc);
-> +
-> +	result =3D IRQ_HANDLED;
-> +out:
-> +	pm_runtime_put_noidle(dev);
-> +	return result;
-> +}
-
-[Severity: High]
-As reported by Sashiko on v7 [1], can dc_dprc_wrap_irq_handler() still race
-with runtime suspend or leak the active runtime PM state when wrap_irq is
-shared?
-
-Because wrap_irq is requested with IRQF_SHARED, another DPRC instance can
-trigger dc_dprc_wrap_irq_handler() at any time:
-
-1. In rpm_suspend(), after rpm_check_suspend_allowed() verifies usage_count
-   is 0, it sets runtime_status to RPM_SUSPENDING and drops dev->power.lock
-   to invoke dc_dprc_runtime_suspend(), which disables dprc->clks. Because
-   pm_runtime_get_noresume(dev) and pm_runtime_active(dev) in
-   dc_dprc_wrap_irq_handler() do not synchronize with dev->power.lock or
-   in-flight suspend, if dc_dprc_wrap_irq_handler() runs right before
-   RPM_SUSPENDING is set, it passes the pm_runtime_active(dev) check and
-   reads IRQ_MASK and IRQ_MASK_STATUS from dprc->reg while
-   dc_dprc_runtime_suspend() concurrently disables dprc->clks.
-
-2. pm_runtime_active(dev) returns true whenever dev->power.disable_depth > =
-0,
-   even if the device is runtime-suspended with its clocks off (for example,
-   during late system suspend after __device_suspend_late() disables runtime
-   PM, during devres teardown on unbind, or when CONFIG_PM is disabled). Any
-   shared IRQ during those windows will read dprc->reg with clocks disabled.
-
-3. If dc_dprc_wrap_irq_handler() increments usage_count from 1 to 2 via
-   pm_runtime_get_noresume(dev) while dc_dprc_disable() concurrently calls
-   pm_runtime_put(dprc->dev), dc_dprc_disable() drops usage_count from 2 to
-   1 without scheduling idle/suspend. When dc_dprc_wrap_irq_handler() then
-   calls pm_runtime_put_noidle(dev), usage_count drops from 1 to 0 without
-   triggering rpm_idle() or rpm_suspend(), leaving dprc->dev permanently
-   active with its clocks enabled.
-
-[1] https://lore.kernel.org/r/20261026-imx8-dc-prefetch-v7-8-a0b50cc4fc65@n=
-xp.com
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261030-imx8-dc-pr=
-efetch-v8-0-c4f81afd4533@nxp.com?part=3D8
