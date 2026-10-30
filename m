@@ -1,55 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.224.50
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793329632;
-	b=x9cYDBnYSi2tKntZohXWluipXoOjzuPXs93tAt3Z35R41IisACDr3uzM1Cfk78Xg17Sm
-	 a3P/Bc3xfMTcWCJ+RaNnC/iV9WYJaAsO/cYZmyOMJK6oyGuu1Qw3rCcDBP3P0Uk8tZRWa
-	 s6AmkytUrIsQf0A64Z1cdJqGg1Bu07L0o4LoQnLKTRDRBoktaORAB43DiMS8bI9p5voVl
-	 c09tOT2gaV9bXpa/sph6mGrO7bbw5nAR+JWcP6Bx6QkJ0eJ+5kNYflWHMazx0dhtxJRXs
-	 wDIk89EmnRLEFNvoC1g+Xax4WI6kJB1JIXk1X2Xhm28AHh7XrtG4C8dKbxpUselpOsg==
+	t=1793341612;
+	b=NCi24aj7uGzF7cCiCgDZMA2PxtOIF2UPCJnQrSGGTS9BGyBxHm8ZrDIbX6JuEey2EZ0+
+	 ibkWi2ZGmiyu+FLO/IWjPmbgWfki0eTvJBVe8yIr0MLe/Z9aJ7ywXZk1OPrp7CA1V/BZn
+	 oFj5VI4RIubWKKK09XiNAO+toz8cJW+mznWVNPcxrfIobRlIAavYpsdU03GJlYlMQuJ4x
+	 Lf1k1PQmvQHGZUQWHjha8jftxA54Suw+3mtIz1ioV8fYngXrHxaAcKfB8ubO7QierN/VP
+	 +rANhF0ux3V4b3pWEZjtyR0T9/9fgssj6GvJRIJfkQ4zSMrLM1+m+QMz9KjVC5mogEA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793329632;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 Reply-To:From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=/uSzGTnG/yOJTh9JMU3hh2HWfIlei95qLPy/XlUKvmg=;
-	b=5q9AzbqGZ5wawxXarRmxHyvglAxBB5uEeAdwdQg5sCdETZlAo2mTyln7zZ0OEDuTm6qx
-	 jg4AVYyuZUFsmEZBog0G0jVV9DB0wvbBtUfUOCA94TGYx/WZpqh/3h8I1bgveWJAegsay
-	 4jGLTHJHaC8Y8hSM5fvWKDCdaSfH7jDzEJx1euY01jurN7xEb3FR8kvpH6u2Mz0d2GZbQ
-	 5jMdw8kHfGwt6adNm0db9shRHT6LbuA7MVjMag869MKe6U57j1oydZitAm7XwCyM9z8lA
-	 eZ3R7LHTyZf8LH1nlZTRSMSajNxjX+T2CB0ACi5KiDkeM4T/duTb1o1ZoRGg1hoh74A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793341612;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:
+	 Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=pVK6TxzyHxuUe79AJFfPFL423XDc/Tfw9WR4ND7xr+E=;
+	b=TIgxknNgEtQKO8GUKMUs9SRsVx5ey8hjgSx+n8etTGiFS/4D9DRF+6Wit690flN3sr7E
+	 Gyktxt/p+ICwfzQMSEg5gx8JNKrAjxbUmM/pg8ACPQ+95pp+3ygui1/XBpu6vXnqNhRJy
+	 cJ5p3W9dhtvX1qhM4omv6PCiFezqmxf+NnZr7wNg/jWWu1A2eRTblD2+hi/onk2eld2MI
+	 0vjQoWviA9mb8pVtkjYMXIyEw/LWBCuTtwKEYRNnr9MEkJ8xTguVzVM5q+fl4E0jIJlCz
+	 nYLm7L6hjDfDfFSFbaXrnDB5VkiCkpb0J3Qw5T0bKmh4XHZzyKY6P1p2FJQTpzHxZLw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cBckOE2b;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="Z/e1BG9F";
+	arc=none smtp.remote-ip=74.125.224.50
+Received: from mail-yx1-f50.google.com (mail-yx1-f50.google.com [74.125.224.50])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72CB4606A31F
-	for <imx@lists.linux.dev>; Fri, 30 Oct 2026 03:07:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E61FB606A321
+	for <imx@lists.linux.dev>; Fri, 30 Oct 2026 06:26:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E61FB606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cBckOE2b
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A8081F00A22
-	for <imx@lists.linux.dev>; Fri, 30 Oct 2026 03:07:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793329632;
-	bh=/uSzGTnG/yOJTh9JMU3hh2HWfIlei95qLPy/XlUKvmg=;
-	h=References:In-Reply-To:Reply-To:From:Date:Subject:To:Cc;
-	b=cBckOE2bzavNJb3OzybplOn3pG+5iDGHJaiUxI/i9aP9W3tywQtMo3uhdvorxzAfn
-	 Z6C99P2+noPuVauSJ7HGbjTPiZ/iOu1qZUEekhZ31VLbV7svgE/E4tj/AZ4sgUVd7S
-	 7qhi2kBdHp/Wa1CVvjO4UMwzh1q5zifIUkGi1VBnuyweIRh95Vtm0Gx2zArlDHRFNW
-	 MYIVWdndq6IjJlKJaWNaM0kAz2XRMjLq4FCmzCOkCdb0zraPU9EVB6DUwxWVEUdRbd
-	 ewf8UqC9zdUbIfEBjw4Qrej1m1gxB3A6Y2cJc3/od0qi+Sa8Gr/su2L735gyltgR2Y
-	 80jf8Zs2DshxQ==
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-3ab4c608a6dso2776731fa.1
-        for <imx@lists.linux.dev>; Thu, 29 Oct 2026 20:07:12 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBxu8lfXIX24Pb8iyfwx+L0S8nfiFbnCUomJl7SFuezgb2GTrasqKcvMrwsEZNP1iFpGZkc=@lists.linux.dev
-X-Gm-Message-State: AFq9FYK4sZHx9gW8lzQsILjcGqXmNYHslj+pB/eEP8uQjZOw17HN9gqr
-	TSZVPjWeJAxjJcSm6SBf594FZKPl0lYMF3ayMVWyOkppngvKMsxw39hzDqR7i2fF5zdQwRflqvk
-	5znUB3Tv2vW0lryVifynf8yOk4M/xagk=
-X-Received: by 2002:a05:651c:2120:b0:3aa:f617:5c85 with SMTP id
- 38308e7fff4ca-3acb7aa5561mr1702801fa.12.1793329629127; Thu, 29 Oct 2026
- 20:07:09 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Z/e1BG9F
+Received: by mail-yx1-f50.google.com with SMTP id 956f58d0204a3-679a2b540f3so290693d50.2
+        for <imx@lists.linux.dev>; Thu, 29 Oct 2026 23:26:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793341610; x=1793946410; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=pVK6TxzyHxuUe79AJFfPFL423XDc/Tfw9WR4ND7xr+E=;
+        b=Z/e1BG9FcmM0tGe7QuH2x7AbRxJ5ZO6kSstketwKQhZWVqVh7j624K3JGFf8FVRnPF
+         DV4p4nNjvQ+ZFwcafx8hcVsEo13dlvuPcVdQ68hdJ8d6u/mvGTfHoaXdVU1RsoSOymzC
+         /nsBsVjnx0DAsASf/K4JNFufotOg9tFAI8sYEQhIW95Dz579+vsUVtOQrXrNokCaEwAl
+         JDWr4Y0SeEJ3xaGXzge36bNKRXmseTcJvwFrYDBziGwzo7PUTVYvGZjmtTqsa8a7NESc
+         gmewq50b9vABJrkgFZ+UzFJtKKqlx55FUEFP/ux1gsm/KS33ziU4gDWdW0vaYo7JITxb
+         xZOQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793341610; x=1793946410;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=pVK6TxzyHxuUe79AJFfPFL423XDc/Tfw9WR4ND7xr+E=;
+        b=maDnEzljnq27j+131e31R4VJYpxmHi1+wSKU2ItxK91w+hqQhXK0FQ+RNgLC1Yg/di
+         AXvVo/wex1zk8iTSoBjRtVoAAb1p391WGY+ZkCOyoM4eRfn8FUqVn1AsEsLysBFCo/vN
+         d3RLG0jXH/c/CpSFaixrtkBrUy4DWLM+j0aVMGF8WaAszIxrUK1wMecvwniAJOkc6xTl
+         YfieWwkPU7rf5zkgvPtGEToV77Se10BG9MkHjJ4/SlsY/+0DF0bKyLdSGqJDR9QtUA/a
+         Cwf5Y7Eh+m5xs/pYxGkPKI+LxcO/cilwb1ZXpokaGpM6VFCNSPG8egcu+GhuAqex/cqL
+         8gDQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzEeydF9xJjrpWE62yIUN0mfwgQgqErLf7u9BTcHw7BMhFpmH21erhOCF/5fOjFjUQjhuY=@lists.linux.dev
+X-Gm-Message-State: AFq9FYJB9qF1duq8EJ9KenYczYcfDWabEAoZz24SnBuB9LLRA8bukUEw
+	cL/e19hl7tnszkyjxVG030r37OUgYZWgshUASAh1mh1YS3HY8y0pfCVx
+X-Gm-Gg: AYBFou0Q+/mmm2pqKlJRCfCjuFAAfRn0hOfm47b/JFDvd4I638ewNOJs9RTx/3pb0w6
+	C+xdZsrBKAmCtKcuZXnWaS8OJZPi+gK2LgQhTA24ATR5bFCyniPGqRHfzpFclPEHIRv7Yf8sRr4
+	W969wp0V7mmEKBCis5t+ibZM2ec5qkghb+H8uFx9FxpmwBODb+iKYSPz/yefb8j5hnR3a0ItKkb
+	Wc9EwOlpBK26e3ja1PcpQl5Vgyy4LuWx4njDOkXL33AJyJNwqzvDCkjbVYxHaTSIfBzccSAdxws
+	JnpuegvGZxdeBuw2yFYq4S0ehV8G+LliXnJu4KPlRHt9W3L2R2nyy175g9R63MxybNV064KTbB2
+	TsNzDQZeJST6qQbeyaKvwgfqPiQgnxAftgKJb9Hwh0Wm57I4SGDYVT4MXShAS05CeNwvQhjZzfk
+	ywuJC9MTr8W3xIk/348f9SSCFF2EK5Pq+ANVnPYJcBtoFMBz5RgPYq1Uolev4DcG0VAGtPdqngg
+	TCNOavJzzkXuO5vNKhgvbJ6HX5wflhMdg2IRKGlkCVqq6qBRS7xEQVh+cXDIo95ChaUk/cQ2E2L
+	sdgd/P4dNV9fQrfBxo9cb7tNcv2iAo27xXNi2RrwXHzrPtqnpaYocNoWDOa98ay0GcbhUsnelUN
+	R5/ksEzUw
+X-Received: by 2002:a05:690c:6d84:b0:8b0:e385:ed99 with SMTP id 00721157ae682-8b2b66c78a5mr7452207b3.30.1793341609736;
+        Thu, 29 Oct 2026 23:26:49 -0700 (PDT)
+Received: from [192.168.68.58] (104-12-136-65.lightspeed.irvnca.sbcglobal.net. [104.12.136.65])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b2b716d420sm4625317b3.33.2026.10.29.23.26.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 29 Oct 2026 23:26:48 -0700 (PDT)
+Message-ID: <dcd98f40-387d-4a64-a39d-9d1c7296ec7a@gmail.com>
+Date: Thu, 29 Oct 2026 23:26:46 -0700
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -59,119 +93,25 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-References: <20261026-drm-panel-funcs-v1-0-5e3070a3478f@oss.qualcomm.com> <20261026-drm-panel-funcs-v1-20-5e3070a3478f@oss.qualcomm.com>
-In-Reply-To: <20261026-drm-panel-funcs-v1-20-5e3070a3478f@oss.qualcomm.com>
-Reply-To: wens@kernel.org
-From: Chen-Yu Tsai <wens@kernel.org>
-Date: Fri, 30 Oct 2026 11:06:54 +0800
-X-Gmail-Original-Message-ID: <CAGb2v66GV0mu+iKHs2+mZPxJmbdgm60j8srtKLuux7BdAC9BZQ@mail.gmail.com>
-X-Gm-Features: AclHuK9xiSETdonY9_QkznCRV7eL1jeHCdIOBKyx8OeAMXLApY8qfRj6-NRV9No
-Message-ID: <CAGb2v66GV0mu+iKHs2+mZPxJmbdgm60j8srtKLuux7BdAC9BZQ@mail.gmail.com>
-Subject: Re: [PATCH 20/35] drm/sun4i: set the panel orientation on the connector
-To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Cc: Douglas Anderson <dianders@chromium.org>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Jessica Zhang <jesszhan0024@gmail.com>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Jyri Sarha <jyri.sarha@iki.fi>, Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, 
-	Andrzej Hajda <andrzej.hajda@intel.com>, Robert Foss <rfoss@kernel.org>, 
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
-	Paul Cercueil <paul@crapouillou.net>, Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>, 
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>, 
-	Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>, 
-	Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
-	Biju Das <biju.das.jz@bp.renesas.com>, Linus Walleij <linusw@kernel.org>, 
-	Sandy Huang <hjc@rock-chips.com>, =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>, 
-	Andy Yan <andy.yan@rock-chips.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, 
-	Inki Dae <inki.dae@samsung.com>, Seung-Woo Kim <sw0312.kim@samsung.com>, 
-	Kyungmin Park <kyungmin.park@samsung.com>, Krzysztof Kozlowski <krzk@kernel.org>, 
-	Peter Griffin <peter.griffin@linaro.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
-	Alison Wang <alison.wang@nxp.com>, Paul Kocialkowski <paulk@sys-base.io>, 
-	Yannick Fertre <yannick.fertre@foss.st.com>, 
-	Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>, 
-	Philippe Cornu <philippe.cornu@foss.st.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, Samuel Holland <samuel@sholland.org>, 
-	Thierry Reding <thierry.reding@kernel.org>, Mikko Perttunen <mperttunen@nvidia.com>, 
-	Jonathan Hunter <jonathanh@nvidia.com>, Jagan Teki <jagan@amarulasolutions.com>, 
-	Ondrej Jirman <megi@xff.cz>, Javier Martinez Canillas <javierm@redhat.com>, 
-	Igor Reznichenko <igor@reznichenko.net>, Michael Walle <mwalle@kernel.org>, 
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>, Jagan Teki <jagan@edgeble.ai>, 
-	Jianhua Lu <lujianhua000@gmail.com>, =?UTF-8?Q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>, 
-	Purism Kernel Team <kernel@puri.sm>, Jerry Han <hanxu5@huaqin.corp-partner.google.com>, 
-	Joel Selvaraj <jo@jsfamily.in>, Icenowy Zheng <icenowy@aosc.io>, 
-	Michael Trimarchi <michael@amarulasolutions.com>, Sumit Semwal <sumit.semwal@linaro.org>, 
-	Casey Connolly <casey.connolly@linaro.org>, Michael Tretter <m.tretter@pengutronix.de>, 
-	Cristian Cozzolino <cristian_ci@protonmail.com>, Junjie Cao <junjie.cao@linux.dev>, 
-	Ryan Brue <ryanbrue.dev@gmail.com>, Nickolay Goppen <setotau@mainlining.org>, 
-	Stefan Mavrodiev <stefan@olimex.com>, Florian Fainelli <florian.fainelli@broadcom.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
-	Robert Chiras <robert.chiras@nxp.com>, Alexander Koskovich <akoskovich@pm.me>, 
-	Markuss Broks <markuss.broks@gmail.com>, Artur Weber <aweber.kernel@gmail.com>, 
-	David Heidelberg <david@ixit.cz>, Dzmitry Sankouski <dsankouski@gmail.com>, 
-	Yedaya Katsman <yedaya.ka@gmail.com>, dri-devel@lists.freedesktop.org, 
-	linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-renesas-soc@vger.kernel.org, 
-	linux-rockchip@lists.infradead.org, linux-doc@vger.kernel.org, 
-	linux-samsung-soc@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org, 
-	linux-rpi-kernel@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] usb: chipidea: otg: fix fsm deadlock and B-device gadget
+ registration
+To: Thorsten Leemhuis <regressions@leemhuis.info>,
+ Xu Yang <xu.yang_2@oss.nxp.com>, peter.chen@kernel.org,
+ gregkh@linuxfoundation.org
+Cc: linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, jun.li@nxp.com,
+ Linux kernel regressions list <regressions@lists.linux.dev>
+References: <20261015084140.61544-1-xu.yang_2@oss.nxp.com>
+ <a4edbfec-7343-479b-8488-38bcc3f23ece@leemhuis.info>
+Content-Language: en-US
+From: Rudraksha Gupta <guptarud@gmail.com>
+In-Reply-To: <a4edbfec-7343-479b-8488-38bcc3f23ece@leemhuis.info>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Oct 26, 2026 at 7:11=E2=80=AFPM Dmitry Baryshkov
-<dmitry.baryshkov@oss.qualcomm.com> wrote:
->
-> The panel is used directly, without the panel bridge, so nothing sets
-> its orientation on the connector apart from the workaround in the
-> get_modes() of some panel drivers, which runs too late.
->
-> Assisted-by: LLM
-> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Finally had time to test, and it works. Thanks!
 
-Acked-by: Chen-Yu Tsai <wens@kernel.org>
 
-> ---
->  drivers/gpu/drm/sun4i/sun4i_lvds.c | 2 ++
->  drivers/gpu/drm/sun4i/sun4i_rgb.c  | 2 ++
->  2 files changed, 4 insertions(+)
->
-> diff --git a/drivers/gpu/drm/sun4i/sun4i_lvds.c b/drivers/gpu/drm/sun4i/s=
-un4i_lvds.c
-> index 6b98d20a8890..448e8a70b1aa 100644
-> --- a/drivers/gpu/drm/sun4i/sun4i_lvds.c
-> +++ b/drivers/gpu/drm/sun4i/sun4i_lvds.c
-> @@ -153,6 +153,8 @@ int sun4i_lvds_init(struct drm_device *drm, struct su=
-n4i_tcon *tcon)
->                         goto err_cleanup_connector;
->                 }
->
-> +               drm_connector_set_orientation_from_panel(&lvds->connector=
-,
-> +                                                        lvds->panel);
->                 drm_connector_attach_encoder(&lvds->connector,
->                                                   &lvds->encoder);
->         }
-> diff --git a/drivers/gpu/drm/sun4i/sun4i_rgb.c b/drivers/gpu/drm/sun4i/su=
-n4i_rgb.c
-> index 3da9a9283c6e..5414afcb10b5 100644
-> --- a/drivers/gpu/drm/sun4i/sun4i_rgb.c
-> +++ b/drivers/gpu/drm/sun4i/sun4i_rgb.c
-> @@ -245,6 +245,8 @@ int sun4i_rgb_init(struct drm_device *drm, struct sun=
-4i_tcon *tcon)
->                         goto err_cleanup_connector;
->                 }
->
-> +               drm_connector_set_orientation_from_panel(&rgb->connector,
-> +                                                        rgb->panel);
->                 drm_connector_attach_encoder(&rgb->connector,
->                                                   &rgb->encoder);
->         }
->
-> --
-> 2.47.3
->
+Tested-by: Rudraksha Gupta <guptarud@gmail.com>
+
