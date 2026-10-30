@@ -1,56 +1,110 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.180.131
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793345551;
-	b=FjhIe+IZBVno+X0OZdC6A2NR9aOzpMq9lJ0574qcVOmMyn+tJ8PVUwY8Qao/ANia85/7
-	 NClNWmPreOcMTUGdGTsppHdSRSx/Rrw8cpBXY6p30QdKo34qCLY2hlSg6mU5UW4t1D26j
-	 fEYogQgK3enbAzGhy1+nBZSS5OYplwzofMQc+Bb7vKwKMT1WcVSy+Yl3fEgjaZf+H8bAM
-	 zWBTkfS+DjJOyxCmXpHPgt5yWzqJ+cYT+SYTMwOYTwvp3M3R40eWqqHWIsTURRh7Dk9Y3
-	 XruyUVhDEPTmR1urwqp1m/ddZO0j8FXzUR0giy+GrgVOLRAMiZUA/td8MSWrgnv4kPw==
+	t=1793345630;
+	b=23zKJeoGbBBsWqGEcuxwGJnF2ffU8x/b/iOMoRTq/aB6R0/aQbT/XUvIXsPrkNPLZ0fZ
+	 f/1txgh/oBXd4aH6PIirH9u+sGdIEuHaVeF0jKd7S0tWsLXFj29JTHY8cT/+HaDkB6Dlz
+	 hhiOgSXEt2AhV7YvNlTL6FrzCV961x8Fjg5d2sK0WG7xjVqSq/ga7APtA6KCI2SnJkT1o
+	 UQW7T6yFSzfqBd/Kr0s/ln5AR2e9mNPoMJ28pRoPfemAYsss7tWoVuEJD6qvSsVPfpEu/
+	 M383tIXKGtYhXmR363k3uueZOOvW3ODyMOITQUpMOFFbfs1OvJu3dCXvokSsztVlWJA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793345551;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=kRyqcdXxJbUqcYKj5QrDTA1tbWLyEREzU9hHyreb+ms=;
-	b=YtoIYkDnQzjDoEd+1zbQ6kjazDt5f0wGt7+uzVm+2OnnfvyIuGfPmGl1gZ4U1QB64ajA
-	 ankd+tkul9qIDH9cVXuKTBKu6Um3CSf0XZZDycxoTsdMp/YmsfmY07bITvUcWGXuQP4wG
-	 wgsr43zwUGgO3ZYemcFXBPD6TStAhxgjfHJEvWY/wWoGiyymLYUwylh5NswNYltFFtSD6
-	 5Ma1i6KAmQDMemAvAJIi2Tov+BzHSIfJ2tXs2I3F1Ql1mM2PXGMy2G6sBa5JvrojSfNu0
-	 eOkeBhm7+DgCJOSjR6620StFwyBuGJ9rwGlKJN5kuHLN8Zq4+AESwH9aYX8CHPknN1Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793345630;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
+	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:Message-ID:
+	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Spam-Info:
+	 X-Proofpoint-ORIG-GUID:X-Proofpoint-GUID:X-Authority-Analysis:
+	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
+	bh=7XJIAhiidxeglvGcwqGX9Zevy6cLKtQ1yDQdXG6Swds=;
+	b=cuiI6EVWWc6/Y0eJTEcK5a6L2JRwp4faDmSIX9emMSXcj3zp6y0TbRhXsb9dvbkBfNuT
+	 nhR9ZbQx15alQmUnRiVF26nffkjweJGj79z1o7rVd82GjxA8BEQ4i84EpmEnqm2SRe2Zz
+	 GLXblQPmOFhTwHuHdcqvG+qLjX5j7GU6v6hRjqoTJG2LhXSLjRFFRwYNL2c1x1+0JBZqT
+	 WGyhhwrumYleRXKfK8+vAJwbEt5h156SQeJ6XodJ4RJnXNM0VzgtRnqKM9Daxu+QracfN
+	 NPMNnUHkgP+u8uCtpeCc/OTzQXVixFX7l+B5KvYhgIegHYNOqae/RBkhav/cne0v4wQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=o2VJjC3p;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=oss.qualcomm.com;
+	spf=pass smtp.mailfrom=oss.qualcomm.com;
+	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b="gY/6Mmo1";
+	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=MCHzqzjm;
+	arc=none smtp.remote-ip=205.220.180.131
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6421A606A31C;
-	Fri, 30 Oct 2026 07:32:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8E2D606A323
+	for <imx@lists.linux.dev>; Fri, 30 Oct 2026 07:33:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E8E2D606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=o2VJjC3p
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6C1D1F0093A;
-	Fri, 30 Oct 2026 07:32:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793345551;
-	bh=kRyqcdXxJbUqcYKj5QrDTA1tbWLyEREzU9hHyreb+ms=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=o2VJjC3p1nXXay2wxIp//mudg7YZR3pmBgxLNBaMaSb7GBN6WIFRMCKOFGLP3Cp8z
-	 tM6iYuDuK5NCyo0WXcFGFxXDKS/XMCJ1yMLmyUsJ4/i/M6YM7TJm9DPTkE9ai/tAXv
-	 rtIIDvMCng2Jgj6HjPNmB4C2LEUhd5BXRtLGCAbMQefepklzRywNWZvOGxwbigso+H
-	 5KjlRf34qAwsMNlhz46ZZTYQ9Il3jXolNSmO4MR33gyOY7ROrLGq3q6ydJPCleT0mK
-	 VYqK/k/y6U7gfaJ2yY9oJfZzHQH/0a8SY+/gmI8aWAyshUTmHW48ZmBcGpUlaT3/if
-	 AJ6nSDbLAHlqg==
-Message-ID: <sashiko-outbox-190647@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2] usb: chipidea: otg: fix fsm deadlock and B-device
- gadget registration
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Xu Yang" <xu.yang_2@oss.nxp.com>
-Cc: linux-usb@vger.kernel.org, imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20261030071921.276377-1-xu.yang_2@oss.nxp.com>
-References: <20261030071921.276377-1-xu.yang_2@oss.nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 30 Oct 2026 07:32:30 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=gY/6Mmo1;
+	dkim=pass (2048-bit key, unprotected) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=MCHzqzjm
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69U5F0il1266534
+	for <imx@lists.linux.dev>; Fri, 30 Oct 2026 07:33:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	7XJIAhiidxeglvGcwqGX9Zevy6cLKtQ1yDQdXG6Swds=; b=gY/6Mmo15swaovij
+	7QMQ3lMnOhPfkyE3bAzID94ZAShm6ILrwGaluc1tf9/fKPL5e+jOHUDCioCQKEUl
+	3rkgFh6uFVnz57nnnlpAObCIGHcHLAayL2VCxJRL0GL/5Y1Ob9seGONFIvjVUWnJ
+	eSkrfdjkHHaVKmCiixMu/NrrPm3uy5ryWZ4iAyAHtOr8VMefaRS0e+c7Bv3ULRic
+	Kat5L5TBjgA72YHB89NgDOVLUpBylOFiwJlVBl4XMZlAK/3Xye4+MwfzBztMtHtL
+	VsDHDYm1pwpPEiaOIc6s3JZOlm+w1KYtKq+PDQUGaTa/dYg2jnSBqAxXO/mtH4uo
+	JP+s7w==
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hme6p1uek-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <imx@lists.linux.dev>; Fri, 30 Oct 2026 07:33:48 +0000 (GMT)
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-93f1f2fafeaso46155385a.2
+        for <imx@lists.linux.dev>; Fri, 30 Oct 2026 00:33:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1793345628; x=1793950428; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=7XJIAhiidxeglvGcwqGX9Zevy6cLKtQ1yDQdXG6Swds=;
+        b=MCHzqzjm7nIuDhHIg8mb7+tx0abvPUgW4wjZ7+Lcl0RUVzZ1IftQNDwkciBGWEeb0L
+         tkfTZWzXNiLLa+oi/PumbjWTah3XZXc4MCctf5soq+GDPWeol+Ov9p/B1PDztumAODzh
+         ALxIlwu/hvL7Ok86yHqt2MpgtT/vmdy2HRZGpTEB+c8KYeYdXqn7FVsB8DOnEtLQNb+s
+         /YCCbq/5BIq4fGkPf2TxhFBFLC78F/ZASD8Eoc6uCuu5y43J2dqmqawVjKW3eGKAuCKh
+         GBUJGR4c8In9GWOisc1Q2ufYGDEYr/K1ZRgybuEAoNhiHgnCEKuwk9MoDysxAuV4teq1
+         FZrw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793345628; x=1793950428;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=7XJIAhiidxeglvGcwqGX9Zevy6cLKtQ1yDQdXG6Swds=;
+        b=Yg+GR5o0isgSw2RbD6wwc0uFsQrX3dqT4UrKBTPdLW0ahm7HCS/HSz/xdNLPrHxO7S
+         4tZfyLgI3z1jm5fUiZRtlZR4veS2qigXFJdGsqwztqHN+CB63iDC05cbSBE646QKrL1U
+         yL5/NWYqTu42nErUnLSKiLmkjP1JbDA6ZuHMk3gSi/GmuHrMKGlOg3tqqE4Ow75SA4Mk
+         2rzg6dONTyB/e4QVGOHlrKHhC2TuiEvRqEGQ3AMJSN9ehS1gP9p0KYzw1ZhgkBxtXLvX
+         YnZnsYTKHaFufd6ZGTA4NBwtuMaVQ/0N39Elq7r2DaJMRbrm12hzbZbnEVtp50C6m82Y
+         lVzg==
+X-Forwarded-Encrypted: i=1; AKwUvBzO0RZA4KyOVm/igL10EXbSVZeAKfMLRUV7EN3PfaddhCog/U5aEmtgPWzECsqiz8KCtYw=@lists.linux.dev
+X-Gm-Message-State: AFq9FYLrCPO65vxWZ8aXwcDBq335ce+JCRQzPPGiz3xN+SPLrbz+UfrW
+	TaXVIKGii2OURcTm91DODtS3o2yIAj/HDnc5ujOoTwIUwUKmlS/cg3fm2Tzdh3Q3nBtC2ajWPZA
+	y7c5DOQW+ic9EZ/VgooQ5qafm+eO7BH3W/2GbhwCMlv+gfnmGGzmnDmY=
+X-Gm-Gg: AYBFou3eS/9oYhaU6o1kSbq2mJJbCD3CFyua7FxbC0a7/RmH5SL3/2Wc9tSnxGZwzAg
+	ce30mmvPM1f/JEF56pIavoKxqCbfDE8l7/coJJuV9vDhQz33AqtzxdCwF+01roF+Zw26NLDbgb+
+	6z9ofAJqun2kVaDo2wnds9ktolYwURE7AwBUXM2ooIdJ37nlJV0n5VAm+P0kaMqsW1VxWxggofu
+	5Xqvb1V6SFHtZHev+0uJzrzR8Ej7z20cqBjSF8n//oph2RD+GRVDRKQ9MvvGCQQTUVU71UcgxfJ
+	zfRXoGeGF6BR5aYPYgAuWOIi3QbvXV/CuSi6lbs8Pimh4yMk0k8JZ3wBlPZ/g+mfJIpbJCkkkh9
+	s7wwwVOs03tORgoLwgBIUZtQWab46PIG0sPJ3kt66lzpAMUC9oC7Q10vcmvY2VStM8OaDVngCXX
+	Q=
+X-Received: by 2002:a05:620a:17a4:b0:92e:bc28:5479 with SMTP id af79cd13be357-944214d169fmr270107585a.2.1793345627977;
+        Fri, 30 Oct 2026 00:33:47 -0700 (PDT)
+X-Received: by 2002:a05:620a:17a4:b0:92e:bc28:5479 with SMTP id af79cd13be357-944214d169fmr270104985a.2.1793345627393;
+        Fri, 30 Oct 2026 00:33:47 -0700 (PDT)
+Received: from [192.168.1.110] ([178.197.218.7])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71baa1b3sm1652381f8f.56.2026.10.30.00.33.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 30 Oct 2026 00:33:46 -0700 (PDT)
+Message-ID: <89a22b1a-2c72-4415-b3b5-81acdd5dc171@oss.qualcomm.com>
+Date: Fri, 30 Oct 2026 08:33:45 +0100
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -59,243 +113,75 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] mfd: Constify mfd_cell arrays
+To: sashiko-reviews@lists.linux.dev, mfd@lists.linux.dev, imx@lists.linux.dev
+Cc: Frank.Li@kernel.org, lee@kernel.org
+References: <20261030071137.100954-3-krzysztof.kozlowski@oss.qualcomm.com>
+ <sashiko-outbox-190635@kernel.org>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Content-Language: en-US
+In-Reply-To: <sashiko-outbox-190635@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDMwMDAyOSBTYWx0ZWRfX5qm6GU3RhVQR
+ 5zELhDpHYs57K6InlIYcQ013ftczz36XqTlypOIWZhf0/nDfOWJC11u8vpAO/mvZI0iuRWFrosO
+ ph5dDbut3vzUM8AswmCXIuixeGz6jT80J5EeK6lqCgNHb85+TzHjNvY7Z2xiKjtWbS7xeQA1Wro
+ EY6dM+lTykXviUgqQey+ef408fN3s1D/Cqxh0jgsValnIyv444uJIxy9eZ3hLXjHIgPTLf1s/6d
+ MCvHYARgMWTJaitRnENdEYi+ter6bzbavkZg4S00pDryR2mKTEmIN6YiLB5uLROw2pM9IneGs/j
+ 0OklVZcSRAQsazG+ukhFsX5xFgY2hTZHeCPO7MR4g3L0tmekJosivur2gjwWBuLUrEJPG14KEGo
+ N+TZabgtCBVNUvpag7wNgzKJKDMIEB2GQBfCf2cS3YmotQFyVGEBLK7suJdHUEUkjPjqbAOoKxp
+ 5M3b8Lggc1yM1I6zZAw==
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDMwMDAyOSBTYWx0ZWRfX37G4dWvxX6A4
+ YwQVmeZ+b3F+jlun+j8IpZ+g+fZjbB+NkvrjJzslqL+c2oR1tRxRBvXoR+eaYc0S0sLsruW+IAk
+ MuoxJnXwLUn4i8HIP50ioscdY5B3uwo=
+X-Proofpoint-ORIG-GUID: Cex6hRJqg24ocOOCykJDy9OPv3L8X4P3
+X-Proofpoint-GUID: Cex6hRJqg24ocOOCykJDy9OPv3L8X4P3
+X-Authority-Analysis: v=2.4 cv=TL3Q2Fla c=1 sm=1 tr=0 ts=6ae4485c cx=c_pps
+ a=HLyN3IcIa5EE8TELMZ618Q==:117 a=uyPgTw0bjBTS2cVxpiNm5w==:17
+ a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yx91gb_oNiZeI1HMLzn7:22
+ a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=fELvzImDkAvHXwbp4t0A:9 a=QEXdDO2ut3YA:10
+ a=bTQJ7kPSJx9SKPbeHEYW:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-10-30_02,2026-10-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 lowpriorityscore=0 priorityscore=1501 clxscore=1015
+ adultscore=0 bulkscore=0 malwarescore=0 phishscore=0 suspectscore=0
+ spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2610190000
+ definitions=main-2610300029
 
-Thank you for your contribution! Sashiko AI review found 5 potential issue(=
-s) to consider:
-- [High] usb: chipidea: ci_role_start() in ci_hdrc_otg_fsm_init() zeroes ci=
-->gadget
-- [High] usb: chipidea: mutex_trylock() in ci_udc_stop_for_otg_fsm() drops =
-FSM reset
-- [High] usb: chipidea: ci_hdrc_otg_fsm_init() starts gadget before IRQ and=
- PM setup
-- [Medium] usb: chipidea: ci_role_start() failure in ci_hdrc_otg_fsm_init()=
- leaks wq
-- [Medium] usb: chipidea: ci_get_role() in ci_hdrc_probe() overwrites FSM c=
-i->role
---
+On 30/10/2026 08:17, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [High] mfd: wm97xx-core: rodata write and const discard in wm97xx_ac97_probe()
+> --
+> 
+> commit d1e87419971e113856988eb45a5e61c55d61ecd6
+> Author: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+> 
+> mfd: Constify mfd_cell arrays
+> 
+> This commit marks several struct mfd_cell arrays across drivers/mfd/ as
+> const so they can reside in read-only memory when passed to
+> mfd_add_devices().
+> 
+>> diff --git a/drivers/mfd/wm97xx-core.c b/drivers/mfd/wm97xx-core.c
+>> index 1566a9b04b6a0..c0ddcd5219b57 100644
+>> --- a/drivers/mfd/wm97xx-core.c
+>> +++ b/drivers/mfd/wm97xx-core.c
+>> @@ -104,7 +104,7 @@ static const struct regmap_config wm9705_regmap_config = {
+>>  	.writeable_reg = wm97xx_writeable_reg,
+>>  };
+>>  
+>> -static struct mfd_cell wm9705_cells[] = {
+>> +static const struct mfd_cell wm9705_cells[] = {
+>>  	{ .name = "wm9705-codec", },
+>>  	{ .name = "wm97xx-ts", },
 
-commit 654769b6450cc8234eb867172a8eeda3be413ebe
-Author: Xu Yang <xu.yang_2@nxp.com>
+That was not supposed to be committed, stale worktree. I will send v2.
 
-usb: chipidea: otg: fix fsm deadlock and B-device gadget registration
-
-This commit addresses two OTG FSM regressions from dynamic gadget support by
-using mutex_trylock() in ci_udc_stop_for_otg_fsm() to avoid a self-deadlock=
- on
-ci->fsm.lock and by calling ci_role_start(ci, CI_ROLE_GADGET) in
-ci_hdrc_otg_fsm_init() when starting as a B-device.
-
-> diff --git a/drivers/usb/chipidea/otg_fsm.c b/drivers/usb/chipidea/otg_fs=
-m.c
-> index 642729893cc20..6d6baea69b687 100644
-> --- a/drivers/usb/chipidea/otg_fsm.c
-> +++ b/drivers/usb/chipidea/otg_fsm.c
-> @@ -840,6 +840,12 @@ int ci_hdrc_otg_fsm_init(struct ci_hdrc *ci)
->  			hw_read_otgsc(ci, OTGSC_BSV) ? 1 : 0;
->  		/* Enable BSV irq */
->  		hw_write_otgsc(ci, OTGSC_BSVIE, OTGSC_BSVIE);
-> +
-> +		retval =3D ci_role_start(ci, CI_ROLE_GADGET);
-
-[Severity: High]
-Does calling ci_role_start(ci, CI_ROLE_GADGET) here wipe out
-ci->gadget.hnp_polling_support?
-
-Earlier in ci_hdrc_otg_fsm_init(), hnp_polling_support is initialized on
-ci->gadget:
-
-drivers/usb/chipidea/otg_fsm.c:ci_hdrc_otg_fsm_init() {
-	...
-	ci->fsm.ops =3D &ci_otg_ops;
-	ci->gadget.hnp_polling_support =3D 1;
-	ci->fsm.host_req_flag =3D devm_kzalloc(ci->dev, 1, GFP_KERNEL);
-	...
-}
-
-When ci_role_start(ci, CI_ROLE_GADGET) runs, it calls udc_start(), which
-zeroes the entire ci->gadget structure and does not restore
-hnp_polling_support:
-
-drivers/usb/chipidea/udc.c:udc_start() {
-	...
-	memset(&ci->gadget, 0, sizeof(ci->gadget));
-
-	ci->gadget.ops          =3D &usb_gadget_ops;
-	...
-}
-
-The same memset() in udc_start() also runs on host-to-gadget role switches =
-in
-ci_otg_start_host() -> ci_role_start(ci, CI_ROLE_GADGET), clearing both
-ci->gadget.hnp_polling_support and ci->gadget.is_a_peripheral, which causes
-composite_setup() to reject OTG_STS_SELECTOR status polling requests with
--EOPNOTSUPP.
-
-[Severity: High]
-Can starting CI_ROLE_GADGET inside ci_hdrc_otg_fsm_init() also trigger OTG =
-FSM
-work before ci->irq and runtime PM are initialized in ci_hdrc_probe()?
-
-In ci_hdrc_probe(), ci_hdrc_otg_init() -> ci_hdrc_otg_fsm_init() runs before
-devm_request_irq() and pm_runtime_enable(). Calling
-ci_role_start(ci, CI_ROLE_GADGET) invokes udc_start() -> usb_add_gadget_udc=
-().
-If a gadget driver is already registered, it binds synchronously:
-
-usb_add_gadget_udc()
-  -> gadget_bind_driver()
-    -> ci_udc_start()
-      -> ci_hdrc_otg_fsm_start()
-        -> ci_otg_queue_work()
-
-Because ci->fsm.id is 1, ci_udc_start() immediately calls
-ci_hdrc_otg_fsm_start():
-
-drivers/usb/chipidea/udc.c:ci_udc_start() {
-	...
-	/* Start otg fsm for B-device */
-	if (ci_otg_is_fsm_mode(ci) && ci->fsm.id) {
-		ci_hdrc_otg_fsm_start(ci);
-		return retval;
-	}
-	...
-}
-
-ci_otg_queue_work() calls disable_irq_nosync(ci->irq) before ci->irq has be=
-en
-requested and queues ci_otg_work before runtime PM and extcon are set up. W=
-hen
-devm_request_irq() subsequently runs irq_startup(), the IRQ disable depth is
-reset to 0, causing the later enable_irq(ci->irq) in ci_otg_work() to warn =
-on
-an unbalanced IRQ enable.
-
-In addition, if usb_role_switch_register(), devm_request_irq(), or
-ci_extcon_register() fails in ci_hdrc_probe(), the error path runs deinit_o=
-tg
-(destroying ci->wq) before deinit_gadget, where ci_hdrc_gadget_destroy() ->
-udc_stop() -> ci_udc_stop_for_otg_fsm() can still touch the OTG FSM.
-
-[Severity: Medium]
-As reported by Sashiko on v1 [1], if ci_role_start() fails in
-ci_hdrc_otg_fsm_init(), does this error path leak ci->wq and leave OTGSC_AV=
-VIE
-and OTGSC_BSVIE enabled in hardware?
-
-ci_hdrc_otg_init() allocates ci->wq before calling ci_hdrc_otg_fsm_init():
-
-drivers/usb/chipidea/otg.c:ci_hdrc_otg_init() {
-	INIT_WORK(&ci->work, ci_otg_work);
-	ci->wq =3D create_freezable_workqueue("ci_otg");
-	if (!ci->wq) {
-		dev_err(ci->dev, "can't create workqueue\n");
-		return -ENODEV;
-	}
-
-	if (ci_otg_is_fsm_mode(ci))
-		return ci_hdrc_otg_fsm_init(ci);
-
-	return 0;
-}
-
-And in ci_hdrc_probe(), a failure from ci_hdrc_otg_init() jumps directly to
-deinit_gadget, bypassing deinit_otg where ci_hdrc_otg_destroy() would destr=
-oy
-ci->wq and disable the OTGSC interrupts:
-
-drivers/usb/chipidea/core.c:ci_hdrc_probe() {
-	...
-	if (ci->is_otg && ci->roles[CI_ROLE_GADGET]) {
-		ret =3D ci_hdrc_otg_init(ci);
-		if (ret) {
-			dev_err(dev, "init otg fails, ret =3D %d\n", ret);
-			goto deinit_gadget;
-		}
-	}
-	...
-}
-
-> +		if (retval < 0) {
-> +			sysfs_remove_group(&ci->dev->kobj, &inputs_attr_group);
-> +			return retval;
-> +		}
->  	}
-
-[Severity: Medium]
-As reported by Sashiko on v1 [2], can ci->role become out of sync with the
-running role when ci_hdrc_probe() later calls ci_get_role(ci)?
-
-ci_role_start(ci, CI_ROLE_GADGET) sets ci->role =3D CI_ROLE_GADGET when
-ci->fsm.id is 1, but ci_hdrc_probe() subsequently overwrites ci->role by
-re-reading OTGSC_ID without starting or stopping roles in FSM mode:
-
-drivers/usb/chipidea/core.c:ci_hdrc_probe() {
-	...
-	ci->role =3D ci_get_role(ci);
-	if (!ci_otg_is_fsm_mode(ci)) {
-		ret =3D ci_role_start(ci, ci->role);
-	...
-}
-
-If the ID pin changes from 1 to 0 between ci_hdrc_otg_fsm_init() and
-ci_get_role(), ci->role is overwritten to CI_ROLE_HOST while CI_ROLE_GADGET
-remains active, so a subsequent ci_role_stop() will call host_stop() instead
-of udc_stop().
-
-> diff --git a/drivers/usb/chipidea/udc.c b/drivers/usb/chipidea/udc.c
-> index c29b2d0dcc7c8..1e0d295f5431a 100644
-> --- a/drivers/usb/chipidea/udc.c
-> +++ b/drivers/usb/chipidea/udc.c
-> @@ -2167,7 +2167,8 @@ static void ci_udc_stop_for_otg_fsm(struct ci_hdrc =
-*ci)
->  	if (!ci_otg_is_fsm_mode(ci))
->  		return;
-> =20
-> -	mutex_lock(&ci->fsm.lock);
-> +	if (!mutex_trylock(&ci->fsm.lock))
-> +		return;
-
-[Severity: High]
-As reported by Sashiko on v1 [3], what happens if a gadget driver is unbound
-from userspace while another thread holds ci->fsm.lock?
-
-For example, if userspace unbinds the gadget driver (gadget_unbind_driver()=
- ->
-usb_gadget_udc_stop_locked() -> ci_udc_stop() -> ci_udc_stop_for_otg_fsm())
-at the same time another CPU holds ci->fsm.lock in an OTG sysfs store handl=
-er
-such as b_bus_req_store(), a_bus_req_store(), a_bus_drop_store(), or
-a_clr_err_store(), or in otg_statemachine() for an unrelated event,
-mutex_trylock() will fail and ci_udc_stop_for_otg_fsm() will return early:
-
-drivers/usb/chipidea/udc.c:ci_udc_stop_for_otg_fsm() {
-	if (!ci_otg_is_fsm_mode(ci))
-		return;
-
-	if (!mutex_trylock(&ci->fsm.lock))
-		return;
-	if (ci->fsm.otg->state =3D=3D OTG_STATE_A_PERIPHERAL) {
-		ci->fsm.a_bidl_adis_tmout =3D 1;
-		ci_hdrc_otg_fsm_start(ci);
-	} else if (ci->fsm.otg->state =3D=3D OTG_STATE_B_PERIPHERAL) {
-		ci->fsm.protocol =3D PROTO_UNDEF;
-		ci->fsm.otg->state =3D OTG_STATE_UNDEFINED;
-	}
-	mutex_unlock(&ci->fsm.lock);
-}
-
-In OTG_STATE_B_PERIPHERAL, skipping the reset leaves ci->fsm.protocol set to
-PROTO_GADGET and ci->fsm.otg->state set to OTG_STATE_B_PERIPHERAL after
-ci->driver is cleared, preventing a later gadget rebind from re-entering
-OTG_STATE_B_PERIPHERAL and enabling the pull-up. In OTG_STATE_A_PERIPHERAL,
-skipping a_bidl_adis_tmout =3D 1 and ci_hdrc_otg_fsm_start() leaves the A-d=
-evice
-stuck in OTG_STATE_A_PERIPHERAL without a bound gadget driver.
-
-[1] https://lore.kernel.org/r/20261015084140.61544-1-xu.yang_2@oss.nxp.com
-[2] https://lore.kernel.org/r/20261015084140.61544-1-xu.yang_2@oss.nxp.com
-[3] https://lore.kernel.org/r/20261015084140.61544-1-xu.yang_2@oss.nxp.com
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261030071921.2763=
-77-1-xu.yang_2@oss.nxp.com?part=3D1
+Best regards,
+Krzysztof
