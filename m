@@ -1,103 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793378168;
-	b=umdVdyflvuVIw7RiUBGJeC2MMMsZ1GESlgZ4Z0ItpTuoWPbztu3sC1QZOcoE0WoUwNSE
-	 +sxO2HGnYCU63L+F4Kp2/0486WNvyGlI2yxYlWdCygsQ98UrnGhvipKdmGQOJOE3kgi2X
-	 97anWNWBp2jouYX0WtOo9lvnA7OCj8unZ5ubX6YBtR0n72rUFYLk8P5VJEvjP1ixz+xvD
-	 Wjy4YO3ZMQYhV6xvtna2/gJNKpOzzuKrn6uXavcBbrfcWOrLjHUgcbmwg0v0tx8jsqHHk
-	 Ab5rz1UELgCyhkk5xgOs8154EJU0QL12C630D0EIjxYwCVVTrwyuTZ7yq6CTN68IA+A==
+	t=1793378324;
+	b=WTpYUmqIlIDR4ejNG6woDdR1dPDDLLaepP3riRnHxuMs5rddDm66XL08b7SG80Kt6eYz
+	 Jv4SGswJL/73695s3xh1HYnoA43/E30DjQZ0hcAQD9OxLdqUxPBzGI2RFiJ7ND7k4JL60
+	 tn+g1lInf0djC4V7F236IW8ojA8ilm9zpHjuPG3Aq45AkjcJz3THZLEPJsbyxigbNSW+9
+	 bhdHJBZu1qo2lVZcPKJ+UT1zBExn0xgJca5ZIUr8mhvC6Jg+MXHnLBpmLlQKyoUL6huy9
+	 vYuAj+te62jtauvfLTLq6Ldh2mYTIO12Hgt2/YfeiaKqBUwNUa2LD/F/C0AfAPHoj8A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793378168;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=wfYGmQ2TsPCF1Aeg7POfMnuEwpwJrElHbkZ/EO4eVuo=;
-	b=JlSc5ujpKriGahuvScR6oFOK5DBzfhr8UZFJc9ocs/KAf02FqUGNX+A9bwM1iV+zFw7v
-	 TRtyA1tonz7V4SYhkHHq8LhjTtxlV6xC/hPALX4GDmOMVZwbkNf3RGCz+hsk5jkz9N/Ra
-	 xCf4/87pM+ZFzqRRQNRiZpXvI7RvOj62w69nQfEYqzFl8kW7UViFcnVzcYi4BogGhCTql
-	 +lfE2vpIaJB9oZS3W95JTMfbt3G72iW8AUXXortWkaYlYdO45v7LeEzMowWF25HKHl00Y
-	 ClSuot2+I55omUXEeQ/RgErmxLcWPjMuGV9fzhtIL47Y2gWe3eREpjRLpzmH6jIPmNA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793378324;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=G1z1qQ5j5lNTnrgJ1ozy8sWJ5465FP7J1myCkn91g50=;
+	b=SSGWET3rHAQdXsLObKTXrFIX+Hf7kKr+nt8uheWE4fJT4/fDl4YxfI9JSotJnesKoXtO
+	 8iE7WqejxKwqr4F/G2VCsxFtosFbsjPJd65LqTMfa8bEI6eKxVzlYB8zgU5f4e7p+qsSE
+	 p4Gf0SN4aq/yu2xLVqO7rWWMTEpoSbK8WHLvj3lzyMyHlSyInzsKZC2vwkaH1/2ce2bnm
+	 Lrn9f1X3/DCojzA18x8aDZVmSCepI1qN9fJb1JtMWAZgWrUkxjqhSPvkXONedcF49Xbdw
+	 S4Jw/62EwzavJTviIE6Jy0T8BJVGEcR98bvrVWCf3BQfY4WiPqcsG3jAD2/l/8OYTCg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=amarulasolutions.com;
-	spf=pass smtp.mailfrom=amarulasolutions.com;
-	dkim=pass header.d=amarulasolutions.com header.i=@amarulasolutions.com header.a=rsa-sha256 header.s=google header.b=HKo0iNA7;
-	arc=none smtp.remote-ip=209.85.128.50
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZPsv2H6k;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09E70606A333
-	for <imx@lists.linux.dev>; Fri, 30 Oct 2026 16:35:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 09E70606A333
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCB44606A31A
+	for <imx@lists.linux.dev>; Fri, 30 Oct 2026 16:38:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.a=rsa-sha256 header.s=google header.b=HKo0iNA7
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4a5087a5348so7432485e9.0
-        for <imx@lists.linux.dev>; Fri, 30 Oct 2026 09:35:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amarulasolutions.com; s=google; t=1793378157; x=1793982957; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=wfYGmQ2TsPCF1Aeg7POfMnuEwpwJrElHbkZ/EO4eVuo=;
-        b=HKo0iNA7IZe11rNv6Z3Yf2Qiml7byRVyvOA8CXvQR7z6umeEOUbEyItRZzUPlLqFLI
-         d9jSlz9tct99FZ7fD00/gfSh3HBr19vVyCJe6DWlXhplN3/Yox2aCDetokrs6f9iyqNJ
-         xJYc7f26/hAkrstfpfIuCqHC4nN/UA/e+amlg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793378157; x=1793982957;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=wfYGmQ2TsPCF1Aeg7POfMnuEwpwJrElHbkZ/EO4eVuo=;
-        b=YqnpjlNFsYVqAraC4K2G5uMZkDb5W4TxqJ3rb8GsJDTLi0NHMktVqqWB2XbtzLLH8i
-         tLV6auJPNg56xnHmC/DGvktGCFk/GxRz5njsVKDbwNhdb24xmsqWRVIFWWiT7xCfgJEq
-         Sc0nl7ORaJ7uHsIhQyyLVQ6W6N0KhgnO9DNt3P47VbH5TbQdzfd1acOCPqv2zyQQ2P6o
-         rh7nxrkWZTR5tk2Bv3Yk14UoWgArQ9YLqE0cAAETla5ENWTGVnM58UbxijKrmku+q5Nb
-         rRCxVCfoHj78/CZKMzCjCQn4mMm39SzdiHbLX0A90nZdflURj0OIe+IN6VXdzXKk2kiM
-         RBjw==
-X-Forwarded-Encrypted: i=1; AKwUvBxMYwZrVwy/RmQ/oBkB7EObyCuh7QIb3pZdXk2NVfBgzgZOfGEiQl5dA4tAyWIeNZNmrWs=@lists.linux.dev
-X-Gm-Message-State: AFq9FYIIbID4hn6DHFYKE03bT3SvPGW+yXnDlLQDQaFWQYrOrW9BQDBb
-	A6jnd5zutXDH+QYx7vca5FrdOnnbY+J7qjG/PvdwbvGQGQf4VddJ9g20Yu+VCEpkd8M=
-X-Gm-Gg: AYBFou18vqxbks3MnqO6cRT0S3XABZ4Lka4UyJWL462/fu8gHMXjM/Y745Gs5knzPu1
-	wcEqjQmhd1to4oh6Bz4iEzI3LGCy+3KwGnBbb2e+NwwA5eqF7Rr845UyzvXdKOp3+8yoBzLBfUD
-	fAn//1MB7IJ3h+ZwehKwcOQZclSjpeLC8uC6ATIjInNDYg588jlrRmH/qiZXwbZ4CRJJpaH7V47
-	Zhgck6IKbtdOPS9wrg9NUda0uWEqmwr39FjDMKw72mK2/CdxJUjaCX1/PmpGy6HlBqxttyH5TE+
-	gZLlk+atdVLPEILkiUrmjZDXqdPWHY48/r4/F2w3n3CSBVaApZ0ifoH77stDdErWE7gbAWbMlWC
-	Og8ldGievZTwaJFhAq0kSgqhoLLi61GBIWsxHGKtOsT6q5ppvsjzsrxZ7vHt76jqbfmHDWh+Yjb
-	mJkSRq8+Ox7PgxPl1ICHXDAvSXd4mHWxE2PUpz8nnjqCKmFKMUHVMGY7Howr7U4OcZlr5KdNLrN
-	lIc6RGUfSdlYTfmSv7G1Jt0I4B/Xed1GiqMj5AeGffVtkwB16oiRuaTMRg8ktFML09IOBCdcArQ
-	9PY7OxSXVaDA0hfehfPnAF5gXy0Nwb2VvvEkmzzhY91CuFZMS6DmSfbh6LVcKEmuwu0RzzTv2wP
-	qKP63aInzGBW53heovcLey9Hu/joiifjvNA2JXgBF4OkNqHENfvWEdqPoZBB+mVxwBiybWPovBb
-	qEMSSrSBnH/qOKjfIzeYpo4nYYNw==
-X-Received: by 2002:a05:600c:5249:b0:4a7:7f3f:6f8e with SMTP id 5b1f17b1804b1-4ac1228b5bfmr63214265e9.0.1793378157371;
-        Fri, 30 Oct 2026 09:35:57 -0700 (PDT)
-Received: from dario-ThinkPad-P14s-Gen-5.homenet.telecomitalia.it (host-79-14-29-58.business.telecomitalia.it. [79.14.29.58])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71b723fcsm4084806f8f.14.2026.10.30.09.35.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Oct 2026 09:35:56 -0700 (PDT)
-From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-To: linux-kernel@vger.kernel.org
-Cc: michael@amarulasolutions.com,
-	linux-amarula@amarulasolutions.com,
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH 3/5] arm64: dts: freescale: support Engicam i.Core MX8M Plus FE SoM
-Date: Fri, 30 Oct 2026 17:35:42 +0100
-Message-ID: <20261030163547.2682583-4-dario.binacchi@amarulasolutions.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261030163547.2682583-1-dario.binacchi@amarulasolutions.com>
-References: <20261030163547.2682583-1-dario.binacchi@amarulasolutions.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZPsv2H6k
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED2E21F000C1;
+	Fri, 30 Oct 2026 16:38:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793378323;
+	bh=G1z1qQ5j5lNTnrgJ1ozy8sWJ5465FP7J1myCkn91g50=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=ZPsv2H6k/k0SjrpXNvo8RttcSeHUgD6Ch28sWhL+hgzoujcDQJzK5QnlcyJgSQ0NP
+	 T3UF5basCThZiV3vwrx79uNOv4YJY70PD5BECbCgy43m+j/i41+mte7jqBprHXC62d
+	 pacnB2+4v2nKZp1hmcUkti1SJNScnz3TLYDqzNg/TRhB4H7PWyVhb+mr0+QWWOThlE
+	 sF6Pbj6SaAvPm6WMx5cIYYBmhd5ADrML6Ou3nUD62Cx0VGYQaEEmVf5+qNHGa0Kbqq
+	 uvucZOnV2N6KzeiqOh6GvP4LVe01PvETkSE/UHjfgyX41VadOd+Ycf6CzC9+HSG9H4
+	 o/s8o/2Rtcy+w==
+Message-ID: <sashiko-outbox-191272@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 5/6] mtd: rawnand: marvell: stop DMA before unmapping
+ on timeout
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Samarth Narang" <samarth.colleges@gmail.com>, "Miquel Raynal" <miquel.raynal@bootlin.com>, "Vignesh
+ Raghavendra" <vigneshr@ti.com>, "Han Xu" <han.xu@nxp.com>, "Manivannan
+ Sadhasivam" <mani@kernel.org>, "Maxime Coquelin" <mcoquelin.stm32@gmail.com>, "Alexandre
+ Torgue" <alexandre.torgue@foss.st.com>
+Cc: "Richard Weinberger" <richard@nod.at>, linux-mtd@lists.infradead.org, imx@lists.linux.dev, linux-stm32@st-md-mailman.stormreply.com, Frank.Li@kernel.org
+In-Reply-To: <20261030162041.2998170-6-samarth.colleges@gmail.com>
+References: <20261030162041.2998170-1-samarth.colleges@gmail.com>
+ <20261030162041.2998170-6-samarth.colleges@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 30 Oct 2026 16:38:42 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -106,88 +63,77 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Support Engicam i.Core MX8M Plus Fast Ethernet SoM, a variant of the
-i.Core MX8M Plus SoM which embeds a SMSC LAN8710 10/100 Ethernet PHY
-connected to the EQOS controller in RMII mode.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] mtd: rawnand: marvell: sleep in atomic context in marvell_nfc_xf=
+er_data_dma()
+--
 
-Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
----
+commit cbbe6eae8df4a34b02e625e64676a65024331f76
+Author: Samarth Narang <samarth.colleges@gmail.com>
 
- .../dts/freescale/imx8mp-icore-mx8mp-fe.dtsi  | 62 +++++++++++++++++++
- 1 file changed, 62 insertions(+)
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-icore-mx8mp-fe.dtsi
+mtd: rawnand: marvell: stop DMA before unmapping on timeout
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-icore-mx8mp-fe.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-icore-mx8mp-fe.dtsi
-new file mode 100644
-index 000000000000..1341de0ba4b5
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-icore-mx8mp-fe.dtsi
-@@ -0,0 +1,62 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Copyright (C) 2026 Amarula Solutions, Dario Binacchi <dario.binacchi@amarulasolutions.com>
-+ * Copyright (C) 2026 Engicam srl
-+ */
-+
-+#include "imx8mp-icore-mx8mp.dtsi"
-+
-+/ {
-+	compatible = "engicam,icore-mx8mp-fe", "fsl,imx8mp";
-+};
-+
-+&eqos {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_eqos>;
-+	phy-handle = <&ethphy0>;
-+	phy-mode = "rmii";
-+	snps,force_thresh_dma_mode;
-+	snps,rmii_refclk_ext;
-+	status = "okay";
-+
-+	mdio {
-+		compatible = "snps,dwmac-mdio";
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		ethphy0: ethernet-phy@0 {	/* SMSC LAN8710 */
-+			compatible = "ethernet-phy-ieee802.3-c22";
-+			reg = <0>;
-+			pinctrl-names = "default";
-+			pinctrl-0 = <&pinctrl_ethphy0>;
-+			reset-gpios = <&gpio1 29 GPIO_ACTIVE_LOW>;
-+			reset-assert-us = <500>;
-+			reset-deassert-us = <500>;
-+			smsc,disable-energy-detect;
-+		};
-+	};
-+};
-+
-+&iomuxc {
-+	pinctrl_eqos: eqosgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_ENET_MDC__ENET_QOS_MDC				0x3
-+			MX8MP_IOMUXC_ENET_MDIO__ENET_QOS_MDIO				0x3
-+			MX8MP_IOMUXC_ENET_TX_CTL__ENET_QOS_RGMII_TX_CTL			0x12
-+			MX8MP_IOMUXC_ENET_TD0__ENET_QOS_RGMII_TD0			0x12
-+			MX8MP_IOMUXC_ENET_TD1__ENET_QOS_RGMII_TD1			0x12
-+			/* RMII reference clock input, provided by the SoM */
-+			MX8MP_IOMUXC_ENET_TD2__CCM_ENET_QOS_CLOCK_GENERATE_REF_CLK	0x12
-+			MX8MP_IOMUXC_ENET_RX_CTL__ENET_QOS_RGMII_RX_CTL			0x1d0
-+			MX8MP_IOMUXC_ENET_RXC__ENET_QOS_RX_ER				0x91
-+			MX8MP_IOMUXC_ENET_RD0__ENET_QOS_RGMII_RD0			0x1d0
-+			MX8MP_IOMUXC_ENET_RD1__ENET_QOS_RGMII_RD1			0x1d0
-+		>;
-+	};
-+
-+	pinctrl_ethphy0: ethphy0grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_ENET_RD3__GPIO1_IO29	0x16
-+		>;
-+	};
-+};
--- 
-2.43.0
+This commit replaces dmaengine_terminate_all() with
+dmaengine_terminate_sync() and moves it before dma_unmap_sg() on the
+timeout path in marvell_nfc_xfer_data_dma() so the DMA transfer is
+stopped before unmapping the buffer.
 
+> diff --git a/drivers/mtd/nand/raw/marvell_nand.c b/drivers/mtd/nand/raw/m=
+arvell_nand.c
+> index 38b7eb5b992c8..a342a48e2a08c 100644
+> --- a/drivers/mtd/nand/raw/marvell_nand.c
+> +++ b/drivers/mtd/nand/raw/marvell_nand.c
+> @@ -900,14 +900,15 @@ static int marvell_nfc_xfer_data_dma(struct marvell=
+_nfc *nfc,
+> =20
+>  	dma_async_issue_pending(nfc->dma_chan);
+>  	ret =3D marvell_nfc_wait_cmdd(nfc->selected_chip);
+> -	dma_unmap_sg(nfc->dma_chan->device->dev, &sg, 1, direction);
+> -	marvell_nfc_disable_dma(nfc);
+>  	if (ret) {
+>  		dev_err(nfc->dev, "Timeout waiting for DMA (status: %d)\n",
+>  			dmaengine_tx_status(nfc->dma_chan, cookie, NULL));
+> -		dmaengine_terminate_all(nfc->dma_chan);
+> -		return -ETIMEDOUT;
+> +		dmaengine_terminate_sync(nfc->dma_chan);
+
+[Severity: Medium]
+Can calling dmaengine_terminate_sync() here sleep in atomic context during
+a panic write?
+
+This driver supports mtd->oops_panic_write by polling in
+marvell_nfc_wait_op() instead of sleeping:
+
+drivers/mtd/nand/raw/marvell_nand.c:marvell_nfc_wait_op() {
+	if (mtd->oops_panic_write) {
+		ret =3D marvell_nfc_poll_status(nfc, NDSR_RDY(0),
+					      NDSR_RDY(0),
+					      timeout_ms);
+	} else {
+		init_completion(&nfc->complete);
+		...
+}
+
+When nfc->use_dma is enabled on NFCv1, panic writes still go through
+marvell_nfc_xfer_data_dma():
+
+mtd_panic_write()
+  -> panic_nand_write()
+    -> nand_do_write_ops()
+      -> nand_write_page()
+        -> marvell_nfc_hw_ecc_hmg_write_page()
+          -> marvell_nfc_hw_ecc_hmg_do_write_page()
+            -> marvell_nfc_xfer_data_dma()
+
+Because mtd_panic_write() can be invoked with interrupts disabled or under
+a raw spinlock (such as pstore_dump()), and dmaengine_terminate_sync()
+calls dmaengine_synchronize() (which calls might_sleep(), wait_event() in
+pxad_synchronize(), and tasklet_kill() in vchan_synchronize()), wouldn't a
+DMA timeout during a panic write trigger a sleep-in-atomic bug or hang
+waiting for the DMA tasklet while softirqs are disabled?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261030162041.2998=
+170-1-samarth.colleges@gmail.com?part=3D5
