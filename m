@@ -1,82 +1,82 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.50
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793378162;
-	b=tp2ybh3xfxAYh8MPE0UdMXBbuxc875/AeiFClIe3CSX37g5mljRPIF8Gio6UY6kU4Osw
-	 cskoM4i2DQPFMjSFjTbecuVI3o9Z+h37vdqoGqDcmCgZagWCA1OcrwZm9RVJGCyJBcEOn
-	 yqaENHTMqTHyQO1eW9XF+glVjPqOBFu53f1zOtOEMnDaZwq/utUk5R/Hv4uR4lKb9kNWm
-	 8iW0wBkftcet8u1HUpbciysxHFC8mfBHKAR1U7psOMTEODHqw7BvAmfPt83C7UWiHDUR9
-	 eOMQZb7NPpWqHjYqO7cZeh1T96KHs5SZrARU5gySpYGlRuPJk6PyoMPG0kjmjaugjpg==
+	t=1793378168;
+	b=umdVdyflvuVIw7RiUBGJeC2MMMsZ1GESlgZ4Z0ItpTuoWPbztu3sC1QZOcoE0WoUwNSE
+	 +sxO2HGnYCU63L+F4Kp2/0486WNvyGlI2yxYlWdCygsQ98UrnGhvipKdmGQOJOE3kgi2X
+	 97anWNWBp2jouYX0WtOo9lvnA7OCj8unZ5ubX6YBtR0n72rUFYLk8P5VJEvjP1ixz+xvD
+	 Wjy4YO3ZMQYhV6xvtna2/gJNKpOzzuKrn6uXavcBbrfcWOrLjHUgcbmwg0v0tx8jsqHHk
+	 Ab5rz1UELgCyhkk5xgOs8154EJU0QL12C630D0EIjxYwCVVTrwyuTZ7yq6CTN68IA+A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793378162;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793378168;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding;
-	bh=gUs/X1k3020XOzDHuwUgAfsc42+/e4lW6AF2roewp0A=;
-	b=eYOe/n+8Xy+US8c+WxJzbUSIqZRZ8j7mQdKwwd2Y95jyLMTrLVVNU5k+gKea0uR7U4Nm
-	 W1JlOYiAWcq6ShKOHh0RVii7TgRMvhAtFY/krVKgiRLFGgpJtHwtlc6GeLIPM8SiojVWe
-	 ZM51xHGLhlK7DGWyPezMRRBGncP6EEWe662V4M6LFI525RHtSFc7K84aWmzqBhncO+6U3
-	 dog43i3HhGmVPq0sFe0hhC7hLupzaH+03QlJEAqzS1mnd04ODhHSlhWbBf27JYgWK6Xgc
-	 IXdsniZvNXlUEAWjcPmXyQ453tI/byGpl0pFlaVSES2go7EHJzHsjUmbP/+jMs1yb2Q==
+	bh=wfYGmQ2TsPCF1Aeg7POfMnuEwpwJrElHbkZ/EO4eVuo=;
+	b=JlSc5ujpKriGahuvScR6oFOK5DBzfhr8UZFJc9ocs/KAf02FqUGNX+A9bwM1iV+zFw7v
+	 TRtyA1tonz7V4SYhkHHq8LhjTtxlV6xC/hPALX4GDmOMVZwbkNf3RGCz+hsk5jkz9N/Ra
+	 xCf4/87pM+ZFzqRRQNRiZpXvI7RvOj62w69nQfEYqzFl8kW7UViFcnVzcYi4BogGhCTql
+	 +lfE2vpIaJB9oZS3W95JTMfbt3G72iW8AUXXortWkaYlYdO45v7LeEzMowWF25HKHl00Y
+	 ClSuot2+I55omUXEeQ/RgErmxLcWPjMuGV9fzhtIL47Y2gWe3eREpjRLpzmH6jIPmNA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=amarulasolutions.com;
 	spf=pass smtp.mailfrom=amarulasolutions.com;
-	dkim=pass header.d=amarulasolutions.com header.i=@amarulasolutions.com header.a=rsa-sha256 header.s=google header.b="pf99B/0H";
+	dkim=pass header.d=amarulasolutions.com header.i=@amarulasolutions.com header.a=rsa-sha256 header.s=google header.b=HKo0iNA7;
 	arc=none smtp.remote-ip=209.85.128.50
 Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0705B606A321
-	for <imx@lists.linux.dev>; Fri, 30 Oct 2026 16:36:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0705B606A321
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09E70606A333
+	for <imx@lists.linux.dev>; Fri, 30 Oct 2026 16:35:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 09E70606A333
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.a=rsa-sha256 header.s=google header.b=pf99B/0H
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4a140e7405dso9755725e9.3
-        for <imx@lists.linux.dev>; Fri, 30 Oct 2026 09:36:01 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.a=rsa-sha256 header.s=google header.b=HKo0iNA7
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4a5087a5348so7432485e9.0
+        for <imx@lists.linux.dev>; Fri, 30 Oct 2026 09:35:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amarulasolutions.com; s=google; t=1793378160; x=1793982960; darn=lists.linux.dev;
+        d=amarulasolutions.com; s=google; t=1793378157; x=1793982957; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=gUs/X1k3020XOzDHuwUgAfsc42+/e4lW6AF2roewp0A=;
-        b=pf99B/0HbphzyyGH4gnGleM6QdcUsjFk0ZW6hnY32gWgLexNan/qig+6MDLzsj3qt+
-         LwtCWxKv0sywIVEekD+6PpKmdiWBudr3/i77zN4qT/zNCPFajx1n0YhJB50Anm+QjRUc
-         1NA/gfJXxtujvGjCrJx0Pd37GXXq9IEUDWwr8=
+        bh=wfYGmQ2TsPCF1Aeg7POfMnuEwpwJrElHbkZ/EO4eVuo=;
+        b=HKo0iNA7IZe11rNv6Z3Yf2Qiml7byRVyvOA8CXvQR7z6umeEOUbEyItRZzUPlLqFLI
+         d9jSlz9tct99FZ7fD00/gfSh3HBr19vVyCJe6DWlXhplN3/Yox2aCDetokrs6f9iyqNJ
+         xJYc7f26/hAkrstfpfIuCqHC4nN/UA/e+amlg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793378160; x=1793982960;
+        d=1e100.net; s=20260707; t=1793378157; x=1793982957;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=gUs/X1k3020XOzDHuwUgAfsc42+/e4lW6AF2roewp0A=;
-        b=XK3QZ3yYT8G5RRsabQ1BaFKY51jhp6mfWrwSg83EiveVmxNPD8GxWx4rE5Y7a3GNVy
-         pvXgP/oRCT8f8W1Z74CONLqydNwb53nhxupicgsJd73GPis10mCpYcm+hNNwopw9yJfk
-         nM1ZdFiH5mLwtTEpFECbc14iPii2AMXvVnK4baZVxGJw9ct8fREV5TqS9j+gaAiDSgV/
-         LD4zFvCYoh1JOk2Mc2Bb/iRiiWdm6mKdZUof6Oqvt6gx1TbX2Fq+Ug+CCd/mLJPs93yH
-         zkOw0302xNJzv5phpcJPpvAp5RTdZ8xxQtXJTi7D7DXSjXDLhiag1nNdrjGiVC6mseSj
-         4geA==
-X-Forwarded-Encrypted: i=1; AKwUvBxwvP56uGly8bilxafmFEWL0pat+fo3YdUhIMTkDQNoK1y+1GlHgyq62btW+vOleGDboBk=@lists.linux.dev
-X-Gm-Message-State: AFq9FYJDeQwmtyZrbBgEGmmYeXj2IeElnaUibklzH+D9BQR+m2XQfcKx
-	vYpst3oqQ7ut+ZHSPdvWYkR5yMli/QTZITXYcNXd8T9SGt05dSZKz817g/QmFQz9mrE=
-X-Gm-Gg: AYBFou0A2GcTJ3poHUTh64UQzw1Rx4QZOJ54oYkB9HJ7Bx2SOvo+yA3XjgG2gbeuDtH
-	Bkm2xCaL2tbmjjW1MTIr/LXatsSemQ/or4R5xrZrdYQ1ab2LaPLFyAq/55pYCgEZE9TCrJoETgE
-	fb5MT0vRFpUwRT7wxQMSp0RR6J3xNWl/pj7gefG38zpin6KxLKrEpmC6gwgaMaSf+yjb0EbXPDu
-	anqHbV9CPGSGucV79RrpjmwnOFCuXhsQCnp2Eudq3oTZt9z/jB9GJFoV23UtTV1F+TpDPkMjDDx
-	IHzqnFRsrzo2bFxqqmZx6MIaGEzuTNbUpZ88/Gt+fvlPtKMrjkEqHmkK3W7BVYgunD/fbzzHehR
-	OCyKHYF3ZVipQdBYGo4hALyW2Mv+w3amEum45CtKQYYVVitp3h3TSQvC5u6vlK3uFffPrBlauby
-	YGla1FqM9YG+3cGZ8kAC0KacIlH8BXa6qfvRfSw8iHW3TjPcntHVFk6uiuHo+OLhog/HmqX6Cos
-	wzID5toMg9XnjX7pJnBPzHoeCWpxqrP7/Fz8U/DUrVKhWXDP6xfcS91kJT53kMBKgmXpXASXkkC
-	gMvuNHF1gHCuW6zs26bGUvSQCoKA3MmXeofFXfkBNQZUNRCGx2OzED5dI7whUNeVfQd7YY4q1u8
-	EKoeFdA5dIjdtgSitPwP3NtEiEtZpLxuY3mlaNH0v0F/Oh2k9EAx1xIkBhJ0iNEg/f77XUkYovk
-	u3rWYVhLrhR56ftUk/XfXsPzUspg==
-X-Received: by 2002:a05:600c:46ce:b0:4a6:7d6:821f with SMTP id 5b1f17b1804b1-4ac189928e9mr64953775e9.29.1793378160492;
-        Fri, 30 Oct 2026 09:36:00 -0700 (PDT)
+        bh=wfYGmQ2TsPCF1Aeg7POfMnuEwpwJrElHbkZ/EO4eVuo=;
+        b=YqnpjlNFsYVqAraC4K2G5uMZkDb5W4TxqJ3rb8GsJDTLi0NHMktVqqWB2XbtzLLH8i
+         tLV6auJPNg56xnHmC/DGvktGCFk/GxRz5njsVKDbwNhdb24xmsqWRVIFWWiT7xCfgJEq
+         Sc0nl7ORaJ7uHsIhQyyLVQ6W6N0KhgnO9DNt3P47VbH5TbQdzfd1acOCPqv2zyQQ2P6o
+         rh7nxrkWZTR5tk2Bv3Yk14UoWgArQ9YLqE0cAAETla5ENWTGVnM58UbxijKrmku+q5Nb
+         rRCxVCfoHj78/CZKMzCjCQn4mMm39SzdiHbLX0A90nZdflURj0OIe+IN6VXdzXKk2kiM
+         RBjw==
+X-Forwarded-Encrypted: i=1; AKwUvBxMYwZrVwy/RmQ/oBkB7EObyCuh7QIb3pZdXk2NVfBgzgZOfGEiQl5dA4tAyWIeNZNmrWs=@lists.linux.dev
+X-Gm-Message-State: AFq9FYIIbID4hn6DHFYKE03bT3SvPGW+yXnDlLQDQaFWQYrOrW9BQDBb
+	A6jnd5zutXDH+QYx7vca5FrdOnnbY+J7qjG/PvdwbvGQGQf4VddJ9g20Yu+VCEpkd8M=
+X-Gm-Gg: AYBFou18vqxbks3MnqO6cRT0S3XABZ4Lka4UyJWL462/fu8gHMXjM/Y745Gs5knzPu1
+	wcEqjQmhd1to4oh6Bz4iEzI3LGCy+3KwGnBbb2e+NwwA5eqF7Rr845UyzvXdKOp3+8yoBzLBfUD
+	fAn//1MB7IJ3h+ZwehKwcOQZclSjpeLC8uC6ATIjInNDYg588jlrRmH/qiZXwbZ4CRJJpaH7V47
+	Zhgck6IKbtdOPS9wrg9NUda0uWEqmwr39FjDMKw72mK2/CdxJUjaCX1/PmpGy6HlBqxttyH5TE+
+	gZLlk+atdVLPEILkiUrmjZDXqdPWHY48/r4/F2w3n3CSBVaApZ0ifoH77stDdErWE7gbAWbMlWC
+	Og8ldGievZTwaJFhAq0kSgqhoLLi61GBIWsxHGKtOsT6q5ppvsjzsrxZ7vHt76jqbfmHDWh+Yjb
+	mJkSRq8+Ox7PgxPl1ICHXDAvSXd4mHWxE2PUpz8nnjqCKmFKMUHVMGY7Howr7U4OcZlr5KdNLrN
+	lIc6RGUfSdlYTfmSv7G1Jt0I4B/Xed1GiqMj5AeGffVtkwB16oiRuaTMRg8ktFML09IOBCdcArQ
+	9PY7OxSXVaDA0hfehfPnAF5gXy0Nwb2VvvEkmzzhY91CuFZMS6DmSfbh6LVcKEmuwu0RzzTv2wP
+	qKP63aInzGBW53heovcLey9Hu/joiifjvNA2JXgBF4OkNqHENfvWEdqPoZBB+mVxwBiybWPovBb
+	qEMSSrSBnH/qOKjfIzeYpo4nYYNw==
+X-Received: by 2002:a05:600c:5249:b0:4a7:7f3f:6f8e with SMTP id 5b1f17b1804b1-4ac1228b5bfmr63214265e9.0.1793378157371;
+        Fri, 30 Oct 2026 09:35:57 -0700 (PDT)
 Received: from dario-ThinkPad-P14s-Gen-5.homenet.telecomitalia.it (host-79-14-29-58.business.telecomitalia.it. [79.14.29.58])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71b723fcsm4084806f8f.14.2026.10.30.09.35.59
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71b723fcsm4084806f8f.14.2026.10.30.09.35.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Oct 2026 09:36:00 -0700 (PDT)
+        Fri, 30 Oct 2026 09:35:56 -0700 (PDT)
 From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 To: linux-kernel@vger.kernel.org
 Cc: michael@amarulasolutions.com,
@@ -92,9 +92,9 @@ Cc: michael@amarulasolutions.com,
 	devicetree@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH 5/5] arm64: dts: freescale: add Engicam C.TOUCH 2.0 LVDS display overlay
-Date: Fri, 30 Oct 2026 17:35:44 +0100
-Message-ID: <20261030163547.2682583-6-dario.binacchi@amarulasolutions.com>
+Subject: [PATCH 3/5] arm64: dts: freescale: support Engicam i.Core MX8M Plus FE SoM
+Date: Fri, 30 Oct 2026 17:35:42 +0100
+Message-ID: <20261030163547.2682583-4-dario.binacchi@amarulasolutions.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261030163547.2682583-1-dario.binacchi@amarulasolutions.com>
 References: <20261030163547.2682583-1-dario.binacchi@amarulasolutions.com>
@@ -109,95 +109,83 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add an overlay for the C.TOUCH 2.0 carrier board fitted with the
-AM-1280800W8TZQW-T00H 10.1" 1280x800 LVDS panel (C.TOUCH 2.0 10.1"
-Open Frame). Its touchscreen is connected over USB, so there is no
-touchscreen node.
+Support Engicam i.Core MX8M Plus Fast Ethernet SoM, a variant of the
+i.Core MX8M Plus SoM which embeds a SMSC LAN8710 10/100 Ethernet PHY
+connected to the EQOS controller in RMII mode.
 
 Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-
 ---
 
- arch/arm64/boot/dts/freescale/Makefile        |  7 +++
- ...ctouch2-overlay-am-1280800w8tzqw-t00h.dtso | 53 +++++++++++++++++++
- 2 files changed, 60 insertions(+)
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-icore-mx8mp-ctouch2-overlay-am-1280800w8tzqw-t00h.dtso
+ .../dts/freescale/imx8mp-icore-mx8mp-fe.dtsi  | 62 +++++++++++++++++++
+ 1 file changed, 62 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-icore-mx8mp-fe.dtsi
 
-diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index bf324cdec879..a3dce3310fac 100644
---- a/arch/arm64/boot/dts/freescale/Makefile
-+++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -656,6 +656,13 @@ DTC_FLAGS_imx8mp-hummingboard-ripple := -@
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-hummingboard-ripple.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-icore-mx8mp-edimm2.2.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-icore-mx8mp-fe-ctouch2.dtb
-+
-+imx8mp-icore-mx8mp-fe-ctouch2-overlay-am-1280800w8tzqw-t00h-dtbs := \
-+	imx8mp-icore-mx8mp-fe-ctouch2.dtb \
-+	imx8mp-icore-mx8mp-ctouch2-overlay-am-1280800w8tzqw-t00h.dtbo
-+dtb-$(CONFIG_ARCH_MXC) += imx8mp-icore-mx8mp-ctouch2-overlay-am-1280800w8tzqw-t00h.dtbo \
-+	imx8mp-icore-mx8mp-fe-ctouch2-overlay-am-1280800w8tzqw-t00h.dtb
-+
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-iota2-lumpy.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-kontron-bl-osm-s.dtb
- 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-icore-mx8mp-ctouch2-overlay-am-1280800w8tzqw-t00h.dtso b/arch/arm64/boot/dts/freescale/imx8mp-icore-mx8mp-ctouch2-overlay-am-1280800w8tzqw-t00h.dtso
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-icore-mx8mp-fe.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-icore-mx8mp-fe.dtsi
 new file mode 100644
-index 000000000000..d5a5eb96101d
+index 000000000000..1341de0ba4b5
 --- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-icore-mx8mp-ctouch2-overlay-am-1280800w8tzqw-t00h.dtso
-@@ -0,0 +1,53 @@
++++ b/arch/arm64/boot/dts/freescale/imx8mp-icore-mx8mp-fe.dtsi
+@@ -0,0 +1,62 @@
 +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 +/*
 + * Copyright (C) 2026 Amarula Solutions, Dario Binacchi <dario.binacchi@amarulasolutions.com>
 + * Copyright (C) 2026 Engicam srl
-+ *
-+ * Ampire AM-1280800W8TZQW-T00H 10.1" 1280x800 LVDS panel. Its touchscreen
-+ * controller is connected over USB.
 + */
 +
-+/dts-v1/;
-+/plugin/;
++#include "imx8mp-icore-mx8mp.dtsi"
 +
-+#include <dt-bindings/clock/imx8mp-clock.h>
++/ {
++	compatible = "engicam,icore-mx8mp-fe", "fsl,imx8mp";
++};
 +
-+&{/} {
-+	panel-lvds {
-+		compatible = "ampire,am-1280800w8tzqw-t00h";
-+		backlight = <&backlight>;
-+		power-supply = <&reg_3v3>;
++&eqos {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_eqos>;
++	phy-handle = <&ethphy0>;
++	phy-mode = "rmii";
++	snps,force_thresh_dma_mode;
++	snps,rmii_refclk_ext;
++	status = "okay";
 +
-+		port {
-+			panel_in: endpoint {
-+				remote-endpoint = <&ldb_lvds_ch0>;
-+			};
++	mdio {
++		compatible = "snps,dwmac-mdio";
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		ethphy0: ethernet-phy@0 {	/* SMSC LAN8710 */
++			compatible = "ethernet-phy-ieee802.3-c22";
++			reg = <0>;
++			pinctrl-names = "default";
++			pinctrl-0 = <&pinctrl_ethphy0>;
++			reset-gpios = <&gpio1 29 GPIO_ACTIVE_LOW>;
++			reset-assert-us = <500>;
++			reset-deassert-us = <500>;
++			smsc,disable-energy-detect;
 +		};
 +	};
 +};
 +
-+&lcdif2 {
-+	status = "okay";
-+};
++&iomuxc {
++	pinctrl_eqos: eqosgrp {
++		fsl,pins = <
++			MX8MP_IOMUXC_ENET_MDC__ENET_QOS_MDC				0x3
++			MX8MP_IOMUXC_ENET_MDIO__ENET_QOS_MDIO				0x3
++			MX8MP_IOMUXC_ENET_TX_CTL__ENET_QOS_RGMII_TX_CTL			0x12
++			MX8MP_IOMUXC_ENET_TD0__ENET_QOS_RGMII_TD0			0x12
++			MX8MP_IOMUXC_ENET_TD1__ENET_QOS_RGMII_TD1			0x12
++			/* RMII reference clock input, provided by the SoM */
++			MX8MP_IOMUXC_ENET_TD2__CCM_ENET_QOS_CLOCK_GENERATE_REF_CLK	0x12
++			MX8MP_IOMUXC_ENET_RX_CTL__ENET_QOS_RGMII_RX_CTL			0x1d0
++			MX8MP_IOMUXC_ENET_RXC__ENET_QOS_RX_ER				0x91
++			MX8MP_IOMUXC_ENET_RD0__ENET_QOS_RGMII_RD0			0x1d0
++			MX8MP_IOMUXC_ENET_RD1__ENET_QOS_RGMII_RD1			0x1d0
++		>;
++	};
 +
-+&lvds_bridge {
-+	assigned-clocks = <&clk IMX8MP_CLK_MEDIA_LDB>,
-+			  <&clk IMX8MP_VIDEO_PLL1>;
-+	assigned-clock-parents = <&clk IMX8MP_VIDEO_PLL1_OUT>;
-+	/* IMX8MP_VIDEO_PLL1 = IMX8MP_CLK_MEDIA_DISP2_PIX * 2 * 7 */
-+	assigned-clock-rates = <0>, <1013600000>;
-+	status = "okay";
-+
-+	ports {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		port@1 {
-+			reg = <1>;
-+
-+			ldb_lvds_ch0: endpoint {
-+				remote-endpoint = <&panel_in>;
-+			};
-+		};
++	pinctrl_ethphy0: ethphy0grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_ENET_RD3__GPIO1_IO29	0x16
++		>;
 +	};
 +};
 -- 
