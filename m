@@ -1,106 +1,44 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.161.53
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=176.9.212.161
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793377287;
-	b=Vqo0PxPC2DTdDajJmGLVAaRjBlvE7UPWxhP+QnL5Kwv7gc/Hih7WhZ7Bo3HJVST1RiDj
-	 QrsI676mkiCCkyLq3OxxgxKNlrKFHBSCdC4z+IulqNTgn3K/aMaEn/r/O9eZVlMkCEIYK
-	 gyOeBdyTTFGV/vFyLKhPnG7Pkl2GERy9Kt/fJ+e0iTVpW/pqj0Gvud8y25OYIpMYHIjlD
-	 lJSAmNSAlZISjK3YtwkK5DPl+998xIF68MUdCqjetjKqapuQN/iv4Bgs6EhDteKAkN9RI
-	 o9jYpFqSwS+ew01LLaX98su2uXI9LfnlJOn+aO+KnfqQB4cDD17UP7nSo6Xaefi8DsA==
+	t=1793377851;
+	b=10Kp+oIrzAQBDDCPiAdVNoVzX5dwvHNvuoNTox/YYWUWxrDBaqegI0kvtWXKQ7yqdoCV
+	 iljg6phJ+l0nyA2/J4u1kpSqF/1srlwXdfKDCFborB0uneTa0NdMzLVr5fbP1Y83pVH4M
+	 NmlpTztQpCmDcG0+QL3Lb6DXDCU7aqkEsBMF2ceUJh0WlsKacuvSdsbm+hTS0sTtyH4hg
+	 CcrVGwffbOHIq8tZ+1NE+mvDLDC7JvVQ6LFVCOAEQtvS1iJxsIxs4/QU19rh2lKG0e7qz
+	 C9BHl7/KelvhSAK8Kd+nW/dab1mB0jqKQh3hvc07BNXtof9elbvL6N53x0fwfbyQM5w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793377287;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=rW+txSD0sfyruz1SXJMLcdacKGqqaqe7nAfUTotQ3Nc=;
-	b=JUa75MnNFmFwKqt+RCpwtWRqdBG5sXY5sICnqrDAWgHfCh6gSOBgnFXZelfIcs0Ordcp
-	 5VhX8cl9DE5/MB7tKPKmAlaPE8ibEmyBW696oc1D1GhPuBmsHkbEJgFptHFkD5h43j5Oq
-	 E8N6WG5ZSbY2S8XCxUh5nh49qT62sWaGtzn3PIYYgd8RzRUfYfwC4UvEx5sw3eBQJlcz4
-	 83/gG7/vxpi1/6lTYFZS0GINSyMQSlTiaHcwxNKZz8Fsigs+d6rYzL/QYmUX4lP1Vyb1q
-	 C4SnNgBMQQQukEFuaTADs/zdagOq77D/RsyHrzQmHtZPyMODN9QTUHsFGhAjSVNECkg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793377851;
+	h=DMARC-Filter:Received:X-Virus-Scanned:Received:Message-ID:Date:
+	 MIME-Version:Subject:To:Cc:References:Content-Language:From:Autocrypt:
+	 In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=ngPkicTSQqmNlFBWeMGaTVTCjHhdeKiw4JaqjSTS8/k=;
+	b=rXz1CBrVkbWroKa67kOE85dENEKbbHfYBFc8xA84OdlZ8YJmnJstjj05dTq8Ky0ahadU
+	 Epws4GLNpSHpYpnCJXH/KVD9pDHz7MazEVMuEaVYNP69h6zpstKdH/L3apDew7k5bsHk0
+	 scEh8/0LygPoKIAiTqb3ZsAoI0atOF7rNvpRXVON9W/q3TQzqupGr1cTK29F/CXlMPt9A
+	 hQA4Ugv28Rn66Ppiy3sdgt8dmr792pTJ8NuBYpR6ssThEwYcxgh/bp27+XSJ0uarW2ICc
+	 zFClpMRFXM3CukTFXrPF52f1XlnLC/VUmuI2ZgQbCXR9RG/trQddb1xSgY1dnvBS0ag==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=PHC06s97;
-	arc=none smtp.remote-ip=209.85.161.53
-Received: from mail-oo1-f53.google.com (mail-oo1-f53.google.com [209.85.161.53])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=none header.from=sysmocom.de;
+	spf=pass smtp.mailfrom=sysmocom.de;
+	arc=none smtp.remote-ip=176.9.212.161
+Received: from mail.sysmocom.de (mail.sysmocom.de [176.9.212.161])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD839606A31A
-	for <imx@lists.linux.dev>; Fri, 30 Oct 2026 16:21:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BD839606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=PHC06s97
-Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-6df5e315bd1so725019eaf.2
-        for <imx@lists.linux.dev>; Fri, 30 Oct 2026 09:21:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793377286; x=1793982086; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=rW+txSD0sfyruz1SXJMLcdacKGqqaqe7nAfUTotQ3Nc=;
-        b=PHC06s97JvW7uqvzelGz0DitBOtNuIgnF9P0kmb9F2yh84RLcPt/vtvj2yZnbhpfxo
-         hEqOJoGTOZce0EpawrQtzL6dyiHjHys71CkPPKGHrgJLLGpb6VED94G7TLAh4xIHypnI
-         RCdBqUvbPJ0iIk5jMcQnrHtmTor3G/opMwwfzesnxu0rS60hOa+4tl2O+lx20MHPvJZ2
-         Q4Y1+WwdkAmwxSUSl21bj2/0N5lMqxVL/LfY/tvDMJ7D4UKboPI0g9kRdhOyVbMtSZKM
-         A6V1mK+2DAQe/gDNy47ocQKY2iT9U07DMCrYx5rezTF2HFxSvdajGouwLdCmXA2xYSTk
-         MDMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793377286; x=1793982086;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=rW+txSD0sfyruz1SXJMLcdacKGqqaqe7nAfUTotQ3Nc=;
-        b=RIyueiUH3uTxZtZZUytHORNE/W+rYhFsVEBskD9/KQ7U6EahwjwwIhAc+qq4ZEAceU
-         4LXQAFc0/3JSvUhwdY3BUWoyU1NzH+0W8dzGH94sSbcXzfUBVhnPa/XAGGh5HW98obQD
-         AlbPpnlQ4JqiblzqF5Ulh4hvAFJFcT8OpNcetmRcN5ieRtUY8f5Zx5pi6HA833CFrGX5
-         ZawMBlsXKaXNjTqITJNQMiuA3u9KFNIQltvuiQFhAn24iQ+RpFuOv+blqPkw+DyVNCqn
-         cScDVbbmCJxi9m4HxSr1auc6sB+E3+BVTcO010Qi5MgnvfT+gUnhuFoMyTJ8Ymi1JE8U
-         i7Mw==
-X-Forwarded-Encrypted: i=1; AKwUvBxv2Xge/8WlgWQ0N3ChcODJCrrxCxlzB1Ee7Pe4a5GCVukakeytuPCLZhyhQYRgk8wqTCA=@lists.linux.dev
-X-Gm-Message-State: AFq9FYJiDrHTYXlCidwV68VdVEYcwRN3JbdnfzMWcSp58dMPI7CA2I9k
-	uPKWbvDSTv7lunmP1mijYtVO6I8MmgougLIBOBkpu06hMvYVgIfSv4GL
-X-Gm-Gg: AYBFou1IxFisNFkU+LfxXB0yTtMYE4ggCZ/H4oyXRsRQP9SMWDeRFoFBz5pAQOWFZAw
-	nYCOiFL+DU9hVVlkKPkYrpoWUgyc9oS4a37fH5Z9/lWVJpEMUN8EMJcHSUP1kLc2zpl+0VPpu0S
-	sa9EUZeMAzVTXMCLghKJeFKrRunt0HusaUUAKHITCsl/38CQKNz4L6/x5uiWPrsDkiW1hXpkfna
-	SMyoYLE3snfa7ipI9ot4XDcGDbp2OaECoSRaGDwP7BkzdIUa4UphZYKQU8E5sWSgt/slNrwf2Bw
-	Vgsy/4M2HADO5IhspvQW+AFqN8equ2Q5j9i4LUHUfEKpfBb4yC3PG5AcmmTYXN/6VWV7wmRey99
-	oC/GMLiKyRKGRsjbS4mia6SzFTf5PnasV+/23hfQvV8rRUZ6Rl47v0qADO/jwjDV86SQW+FT/AP
-	a/WDrB9jSMS2nwyjbqHlXLyo2ZIFtZkNesupIeKqdOaUQ3s9Jq88SMveiuepPDsR7nYajOgdlW8
-	p6HSCgavidGY/CfmCopdKhU6qU3TVuLdIeUWoKJRdxspNFeQ0uaBTcXTXt2qiriBX7nhGawtWXc
-	j54oBrIika1CTHNqSrVyT8F2Sql/F7YeznLkABM5jvvPdAKosHoSQ14Ois8u4+L6Qm1s645FiJ9
-	DpxWI3jA5G/s9M48L66LYZT/rJoy/ik1b5bqBKBap39agrZuirfkUjcdkgDT7oGlBJDczjnkJJV
-	z9GcyjunJDmMHPBajsr4N7JhgJUhSbh06iEDh9
-X-Received: by 2002:a05:6820:162a:b0:709:fa95:9929 with SMTP id 006d021491bc7-714f2552f3fmr1853395eaf.62.1793377285762;
-        Fri, 30 Oct 2026 09:21:25 -0700 (PDT)
-Received: from brev-9gdpyq8lp.ap-south-1.compute.internal (ec2-3-110-210-194.ap-south-1.compute.amazonaws.com. [3.110.210.194])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4a92167b03csm322536fac.2.2026.10.30.09.21.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Oct 2026 09:21:25 -0700 (PDT)
-From: Samarth Narang <samarth.colleges@gmail.com>
-To: Miquel Raynal <miquel.raynal@bootlin.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Han Xu <han.xu@nxp.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>
-Cc: Richard Weinberger <richard@nod.at>,
-	linux-mtd@lists.infradead.org,
-	imx@lists.linux.dev,
-	linux-arm-msm@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Samarth Narang <samarth.colleges@gmail.com>
-Subject: [PATCH v2 6/6] mtd: rawnand: sh_flctl: use dmaengine_terminate_sync() on DMA timeout
-Date: Fri, 30 Oct 2026 16:20:41 +0000
-Message-Id: <20261030162041.2998170-7-samarth.colleges@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20261030162041.2998170-1-samarth.colleges@gmail.com>
-References: <20261030162041.2998170-1-samarth.colleges@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 266F0606A31D
+	for <imx@lists.linux.dev>; Fri, 30 Oct 2026 16:30:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 266F0606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sysmocom.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sysmocom.de
+Received: from localhost (localhost [127.0.0.1])
+	by mail.sysmocom.de (Postfix) with ESMTP id 16A56C8021B;
+	Fri, 30 Oct 2026 16:30:47 +0000 (UTC)
+X-Virus-Scanned: Debian amavis at sysmocom.de
+Received: from mail.sysmocom.de ([127.0.0.1])
+ by localhost (mail.sysmocom.de [127.0.0.1]) (amavis, port 10024) with ESMTP
+ id brEJ78ZZl3By; Fri, 30 Oct 2026 16:30:46 +0000 (UTC)
+Message-ID: <c4e8595b-1dcc-4fa9-9a9f-b23be2d79462@sysmocom.de>
+Date: Fri, 30 Oct 2026 17:30:46 +0100
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -110,40 +48,123 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
+Subject: Re: No network for SolidRun LX2160A Clearfog CX with kernel 6.12.113
+To: Vincent Jardin <vjardin@free.fr>, Fabio Estevam <festevam@gmail.com>
+Cc: imx@lists.linux.dev
+References: <d074d5b8-7b86-454d-b948-83530fa82e97@sysmocom.de>
+ <CAOMZO5Arqfat5nO5Hi9Dq0TogvGAvmNLChE_8WrDGrNy1ha2Qg@mail.gmail.com>
+ <auSrssMDb33JZVN5@L30177.local>
+Content-Language: en-US
+From: Oliver Smith <osmith@sysmocom.de>
+Autocrypt: addr=osmith@sysmocom.de; keydata=
+ xjMEXqaMvBYJKwYBBAHaRw8BAQdAKlLfpb/UKvlUjGFwzzkDBT1fXdlqg+MaEG2+hTXDYUrN
+ IU9saXZlciBTbWl0aCA8b3NtaXRoQHN5c21vY29tLmRlPsKWBBMWCAA+AhsDBQsJCAcCBhUK
+ CQgLAgQWAgMBAh4BAheAFiEECfuANpg5IsWyQFcH6+DRJFm2BMUFAmDG9VIFCRTsa5YACgkQ
+ 6+DRJFm2BMUJ0wD+L0gpHABtBfkNQ7i0/qtMs5thoqt2yldxao6q31BBLAAA/iXUDIEYjQ0L
+ wsZRtiSdXNjbBfdT9boLdh4CY+TKwuYPzjgEXqaMvBIKKwYBBAGXVQEFAQEHQPGmG2/uQrDy
+ xalQoBnT1zdIbeg/xWLjl1AnOYGITnpEAwEIB8J4BBgWCAAgFiEECfuANpg5IsWyQFcH6+DR
+ JFm2BMUFAl6mjLwCGwwACgkQ6+DRJFm2BMXSRgD/f8twzpyQfpE+viVjtlOxsq0HCavXZqbW
+ VvIuvbyfSWQBAJhEIFF/fxmksu9r3FzixNQMOLc3EJgSwqvEYA28Db8O
+In-Reply-To: <auSrssMDb33JZVN5@L30177.local>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-When DMA completion times out in flctl_dma_fifo0_transfer(), the driver
-calls dmaengine_terminate_all() before unmapping the buffer. Since this
-does not guarantee that the transfer has stopped, the DMA engine may
-continue accessing memory after its mapping has been released.
+Hi Fabio,
+Hi Vincent,
 
-Replace dmaengine_terminate_all() with dmaengine_terminate_sync() to
-ensure that DMA has stopped before unmapping the buffer, which is safe
-because the function already sleeps while waiting for completion.
+thank you for the replies!
 
-Fixes: 83738d87e3a0 ("mtd: sh_flctl: Add DMA capabilty")
-Assisted-by: LLM
-Signed-off-by: Samarth Narang <samarth.colleges@gmail.com>
----
-This issue was identified by a research static analyzer for DMA
-lifecycle ordering and has not been validated on hardware.
+On 10/30/26 15:37, Vincent Jardin wrote:
+> Le 30/10/26 11:32, Fabio Estevam a écrit :
+>> Run git bisect between 6.12.101 and 6.12.113 to find the exact commit
+>> that caused the regression.
 
- drivers/mtd/nand/raw/sh_flctl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Sorry, but this is not a development machine and I don't have physical
+access to it, only a serial console. I can run some checks, but building
+multiple kernels for bisect and booting them sounds too risky and time
+intense unfortunately.
 
-diff --git a/drivers/mtd/nand/raw/sh_flctl.c b/drivers/mtd/nand/raw/sh_flctl.c
-index 97f733e48..8bf9ae7ce 100644
---- a/drivers/mtd/nand/raw/sh_flctl.c
-+++ b/drivers/mtd/nand/raw/sh_flctl.c
-@@ -430,7 +430,7 @@ static int flctl_dma_fifo0_transfer(struct sh_flctl *flctl, unsigned long *buf,
- 				msecs_to_jiffies(3000));
- 
- 	if (time_left == 0) {
--		dmaengine_terminate_all(chan);
-+		dmaengine_terminate_sync(chan);
- 		dev_err(&flctl->pdev->dev, "wait_for_completion_timeout\n");
- 		ret = -ETIMEDOUT;
- 	}
+On 10/30/26 15:37, Vincent Jardin wrote:
+> then, on the board, check, analyze and provide the outputs if needed of:
+> 
+> uname -r; cat /proc/device-tree/model; echo
+> ip -br link
+> dmesg | grep -i -e fsl-mc -e dpaa2 -e dpmac -e dprc
+> cat /sys/kernel/debug/devices_deferred
+> ls /sys/bus/fsl-mc/devices/
+> busybox devmem 0x08340008 32 # or equivalent for your Debian
+
+Old kernel:
+> root@lx2-1:~# uname -r; cat /proc/device-tree/model; echo
+> 6.12.101+deb13-arm64
+> SolidRun LX2160A Clearfog CX
+> root@lx2-1:~# ip -br link
+> lo               UNKNOWN        00:00:00:00:00:00 <LOOPBACK,UP,LOWER_UP>
+> eth0             UP             d0:63:b4:03:b4:f7 <BROADCAST,MULTICAST,UP,LOWER_UP>
+> br0              UP             52:a0:18:ae:7c:34 <BROADCAST,MULTICAST,UP,LOWER_UP>
+> lxcbr0           DOWN           10:66:6a:00:00:00 <NO-CARRIER,BROADCAST,MULTICAST,UP>
+> vethhEvvMx@if2   UP             fe:19:6b:c5:90:0e <BROADCAST,MULTICAST,UP,LOWER_UP>
+> veth5HPqsX@if2   UP             fe:de:f1:c5:ae:3a <BROADCAST,MULTICAST,UP,LOWER_UP>
+> vethFfnWAR@if2   UP             fe:ec:61:dc:5a:aa <BROADCAST,MULTICAST,UP,LOWER_UP>
+> root@lx2-1:~# dmesg | grep -i -e fsl-mc -e dpaa2 -e dpmac -e dprc
+> root@lx2-1:~# cat /sys/kernel/debug/devices_deferred
+> root@lx2-1:~# ls /sys/bus/fsl-mc/devices/
+> dpbp.0	  dpcon.12  dpcon.18  dpcon.23	dpcon.29  dpcon.6  dpio.10  dpio.2  dpio.8    dpmac.5  dpmcp.10  dpmcp.16  dpmcp.21  dpmcp.27  dpmcp.32  dpmcp.6  dprtc.0
+> dpbp.1	  dpcon.13  dpcon.19  dpcon.24	dpcon.3   dpcon.7  dpio.11  dpio.3  dpio.9    dpmac.6  dpmcp.11  dpmcp.17  dpmcp.22  dpmcp.28  dpmcp.33  dpmcp.7  dpseci.0
+> dpcon.0   dpcon.14  dpcon.2   dpcon.25	dpcon.30  dpcon.8  dpio.12  dpio.4  dpmac.10  dpmac.7  dpmcp.12  dpmcp.18  dpmcp.23  dpmcp.29  dpmcp.34  dpmcp.8
+> dpcon.1   dpcon.15  dpcon.20  dpcon.26	dpcon.31  dpcon.9  dpio.13  dpio.5  dpmac.17  dpmac.8  dpmcp.13  dpmcp.19  dpmcp.24  dpmcp.3   dpmcp.35  dpmcp.9
+> dpcon.10  dpcon.16  dpcon.21  dpcon.27	dpcon.4   dpio.0   dpio.14  dpio.6  dpmac.3   dpmac.9  dpmcp.14  dpmcp.2   dpmcp.25  dpmcp.30  dpmcp.4	 dpni.0
+> dpcon.11  dpcon.17  dpcon.22  dpcon.28	dpcon.5   dpio.1   dpio.15  dpio.7  dpmac.4   dpmcp.1  dpmcp.15  dpmcp.20  dpmcp.26  dpmcp.31  dpmcp.5	 dprc.1
+> root@lx2-1:~# busybox devmem 0x08340008 32
+> 0x0000003F
+
+New kernel:
+> root@lx2-1:~# uname -r; cat /proc/device-tree/model; echo
+> 6.12.113+deb13-arm64
+> SolidRun LX2160A Clearfog CX
+> root@lx2-1:~# ip -br link
+> lo               UNKNOWN        00:00:00:00:00:00 <LOOPBACK,UP,LOWER_UP>
+> br0              UP             52:a0:18:ae:7c:34 <BROADCAST,MULTICAST,UP,LOWER_UP>
+> lxcbr0           DOWN           10:66:6a:00:00:00 <NO-CARRIER,BROADCAST,MULTICAST,UP>
+> vethXFQUqu@if2   UP             fe:0a:7b:88:52:cd <BROADCAST,MULTICAST,UP,LOWER_UP>
+> vethUG8N9y@if2   UP             fe:ff:eb:09:16:a5 <BROADCAST,MULTICAST,UP,LOWER_UP>
+> vethoesNCY@if2   UP             fe:8e:29:91:43:6b <BROADCAST,MULTICAST,UP,LOWER_UP>
+> root@lx2-1:~# dmesg | grep -i -e fsl-mc -e dpaa2 -e dpmac -e dprc
+> [    0.008101] fsl-mc MSI: msi-controller@6020000 domain created
+> [    0.107175] fsl_mc_bus 80c000000.fsl-mc: fsl-mc: MC boot completed with error 0x3f
+> [    0.114747] fsl_mc_bus 80c000000.fsl-mc: probe with driver fsl_mc_bus failed with error -22
+> root@lx2-1:~# cat /sys/kernel/debug/devices_deferred
+> 8000000.crypto
+> root@lx2-1:~# ls /sys/bus/fsl-mc/devices/
+> root@lx2-1:~# busybox devmem 0x08340008 32
+> 0x0000003F
+
+On 10/30/26 15:37, Vincent Jardin wrote:
+> 
+>  From U-Boot, before it boots Linux:
+> 
+> md.l 0x08340008 1
+> printenv mcinitcmd bootcmd
+> 
+> 0x08340008 is the General Status Register (GSR) of the MC
+
+uboot:
+> => md.l 0x08340008 1
+> 08340008: 00000001                               ....
+> => printenv mcinitcmd bootcmd
+> mcinitcmd=mmc dev 1; mmc read 0x80a00000 0x5000 0x1200;mmc read 0x80e00000 0x7000 0x800;env exists secureboot && mmc read 0x80640000 0x3200 0x20 && mmc read 0x80680000 0x3400 0x20 && esbc_validate 0x80640000 && esbc_validate 0x80680000 ;fsl_mc start mc 0x80a00000 0x80e00000
+> bootcmd=mmc dev 1; env exists mcinitcmd && mmcinfo; mmc read 0x80d00000 0x6800 0x800; env exists mcinitcmd && env exists secureboot  && mmc read 0x806C0000 0x3600 0x20 && esbc_validate 0x806C0000;env exists mcinitcmd && fsl_mc lazyapply dpl 0x80d00000;run distro_bootcmd;run sd2_bootcmd;env exists secureboot && esbc_halt;
+> =>
+
+Best regards,
+Oliver
+
 -- 
-2.34.1
+- Oliver Smith <osmith@sysmocom.de>            https://www.sysmocom.de/
+=======================================================================
+* sysmocom - systems for mobile communications GmbH
+* Siemensstr. 26a
+* 10551 Berlin, Germany
+* Sitz / Registered office: Berlin, HRB 134158 B
+* Geschaeftsfuehrer / Managing Director: Harald Welte
 
