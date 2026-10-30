@@ -1,97 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.52
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793371192;
-	b=zuMhbFRZ84/UWX6GGVJahA3ULPOLo57jlq4AvIotK1yjHoA2hp5e6xq3FUWI4hSR7XDk
-	 7aJX+WB73tMa6LUX0IFAyl/tJ73AXb1zPkdnA55pFLVS6dQpxjK9kXKKRJb3VYizfAK/O
-	 lN1NrHYmpKvaPK5sx+6sIU82VJGJq80Wg8Vm2h9qsVAfh9hh1hYkgDJ/akZfwbL+P6AV1
-	 8Gt4dfghksb4D3gxLzKTuunEUCTsh2heEhrLrW2cm8gqXzdDb85zCbP0G/Dq4/YRP7gTR
-	 Vbx5VTPMATe09fDHCLCV61L8dnD8+j3VLJyikNa4C82L/vosyKnBXw8KXa28/VGJGIA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793371192;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-Id:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=R2HclnRmIvT2ikyO/43sxrVPfYW6Mo/iFT1div/Cdnc=;
-	b=ucTJ/nVIPXDpLATJEUgU6O+pH6fD1993wmXQYSfxdOmG3emebJyyg5MGUQH82aISHpW9
-	 ukLVSsyIO41cmtYSj9S4nbvNh4hMmmUtYhNtwbGZdwvPUzv+szcdQXfnCTlesRQarHCbm
-	 NStlo3NkVLs4Gpr5IZWxmRbuhly89By/8pgaYHFTJxetxjQLXnnwqlFUAmVZJQVOY0SRf
-	 6873zH0K7z5JLLHT2fgC1YaZJ4SjPCwfXItjFVsyi0QWj27eOHbUR7hr2Nie0yrD/qCPG
-	 u8bDaUwkywert3qsFw2XXPnSRNqZ6xF4v3CLl/Q5HV2JsMUbVfrtdcqzbniC1irPldQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=P0sux6uV;
-	arc=none smtp.remote-ip=74.125.82.52
-Received: from mail-dl1-f52.google.com (mail-dl1-f52.google.com [74.125.82.52])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.162.61
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793371662;
+	b=pSpXB6E4Icf1XcflncTKt7x0+vgddrbkPDhq8KJBC8Zm1wA2HTyNocmrCQG2teQUEuA6
+	 eDcSvQY9tQI0QcejKNMG5CBRw/usXSUU0gqDZ7KEC3iRrzc9Q481pI1QHh6F86jTtMS7W
+	 QAlT/rIusjzkdW/P3NeO79nNh0CVlk+Hgmgbk8pP23ots5jxJcnkXqU47q1z3ni+99T7p
+	 9+w2ElnOaRu7U7OOZ44+bhX/q3oEYmcz+mlVV+1/hCKNHHAL+Qwlu9oWGr39KOFEKnn8j
+	 v8cJKNVnN4zkyHqNFaQE3qrZC9eJyt5wNRgVMyo0/eCRf7qeSK7D4aoKbxn6R8+wGRA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793371662;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
+	 Date:Message-Id:X-Mailer:Content-Transfer-Encoding:Content-Type:
+	 X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=Wii1bM2DmXt8anyyiJur5M4ikb+Kdg6ZYyMZSCzDZKY=;
+	b=QO4LDIUJ69joWfSnkEukm2pkrtQX7QMyYqQMFBcKL3gBzasZfRN+n9xOSIBievtlVnLW
+	 GeH3Eb1xB2JsVMWNN80tqxUdFnLp9qw4PYHncScgpfYHv8SXupPlRix++IdTgPTHnM14Z
+	 8+W+ekJsOw17WSX+LDmzyrakmA3BsnNl7X3L3+xsUkXhSo6LZZwv5u4cKGycJXqzFmj5W
+	 k52YiW+d02zFjRluoun3taRv9xmkci9T4N26XiqhUS45CQbiZ9CcdIBkMny3ray7bD3v4
+	 I/w2ZYp7mQBxEnstbrb3XAcEzDU7F0wcrmnGri/oq+pBPN++dO5Rv59/nALtgrUCpdg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=oss.nxp.com;
+	spf=pass smtp.mailfrom=oss.nxp.com;
+	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=xDZDz5SO;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.162.61
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013061.outbound.protection.outlook.com [40.107.162.61])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E76C606A31F
-	for <imx@lists.linux.dev>; Fri, 30 Oct 2026 14:39:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4E76C606A31F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 473C0606A329
+	for <imx@lists.linux.dev>; Fri, 30 Oct 2026 14:47:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 473C0606A329
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=P0sux6uV
-Received: by mail-dl1-f52.google.com with SMTP id a92af1059eb24-170135e43c7so1157366c88.0
-        for <imx@lists.linux.dev>; Fri, 30 Oct 2026 07:39:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793371191; x=1793975991; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=R2HclnRmIvT2ikyO/43sxrVPfYW6Mo/iFT1div/Cdnc=;
-        b=P0sux6uVNhym7lm1s87DTt8BAE9m9JxWNIrJMLgaF2ze6WXrAy9sPeQFerf+8pPAPP
-         Ioh6Di2vb2G82JjW9j+O2iPv1jY/tOXlI3N0eHoLhddEzFYeSb14Hb7rvbQ3G+k9cCED
-         0f/gMkTjfgCKRcuLWO9u/1XpOpj2jgpZ8yyxwxTwtGY4S0zWlNN9RGQt9FN45GxcQ9+E
-         b+HcxcwWIcJZc+YRBJ4rF4HEXckSuYZRQaDulLoOySy0D1GtlAGpjSOI+e5zUa6Ecf+0
-         Nv+JgiCVvdJYsWjbmKe2lqlInMGWeSWJ/mFJOKsXTzBivn6JqUaYk2WAWRD2qMdIHy+2
-         B6LA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793371191; x=1793975991;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=R2HclnRmIvT2ikyO/43sxrVPfYW6Mo/iFT1div/Cdnc=;
-        b=F/8Kq5zK+H9OTFtfnF9y7bTJHx6svq6nowgl3zQ9jp0lGZ8XpztVJ/R1xYnh3v8lM0
-         6ww+1sz/2GtafEmCLF2uSBBUZ8NbZfbQaFRghvsjts/QtTakJdZTCivczlSViVdNUweC
-         z4183b8rRSoevDf4MNTZhj+DZI9q0V4vblwgEAW+4CuY2aJ099NeCDBjKUJXc9T8oLMB
-         gKt16L8P5pJnltLWr/GJ8JUosqWdK5APjQbAJ73r0aJLzYSneJGGrDbruo5L9ireHmA1
-         DS2rVkrrQEEgkuPRNk6B0wxWqVwnWpyUs6h3B/ODYi9VWS8M23RLa7Dj1vi8sm2b5tUG
-         koZw==
-X-Forwarded-Encrypted: i=1; AKwUvBzn5VU5JzIzeetPIIb5HX/RUT2rge5eGQXOkE6bUynKRN9YNS4T1KZdnYoysCQDFMERKA8=@lists.linux.dev
-X-Gm-Message-State: AFq9FYIK1GkPJh9OWxq1OuZ9um5yh4PcS+bm8bHVBACZYGzdn8MzhA+P
-	p+QdtyjEJwfw9X2b0k1QK85v0aJrNwdttQDMHEqGQ2qPIrpuDdt1euMS
-X-Gm-Gg: AYBFou1mksYqiCNZEqLwscVzueJQB5fginj7M69tsEf0sdU2+9WPWGHwTwt9fyXfoSw
-	t9dy4Z1bJxPivXTPAz/PMkv7ov/b+uHp2NWpHI2qtg0nO4SCsk1lb184Ec5M8UMlvrFt7CsOA0Q
-	Som1tSdadkrbrZWUKes83yAQQ1bMjsM7/AXjOQAW6Wt0uXKjFvZwzRekgMAEYWJTCJrXJXQ6icO
-	12B6qZYwj2zArFZNZu7U9MES5a3olVQmQBT7wRJleePWEfH54K433+iZ3i1vsqdKx5FBr7kZ/l7
-	n9MwHe2o0a8RTPRzoeqF19lmru7l7PBYUTaRWAgTzbSYNRBJb5Umuncgv4G87P82oRNUy6UAfey
-	xrqpEyhIICbAdmvrUCiVW2bv2Ce2SI4ObQnjF+QKqXdjhZjzTWZ2Z/ygy543EQj1VDEYMPLErEF
-	f+TY/8vZD9B9iztIubzCQxNJF4msCdWzNSM37M0XMMG5y+WVz5BxqSUUY0P+t6WSuCjLaJ3iPIj
-	09xjtEyOFlvcaN/nSPKS36cUnYHypc0LKIHGGhospSmiunTc7qIVxcO6WfSAylGgJ+1d5LW7dHJ
-	FGDR5Ozd4zcumo8VpgHBHZTvzK+i6ynZlDuzYVB9gmDe3YJ+zirMj0SiLgsqx+8W0KJNsGDZPR0
-	W3yilE+KwSitc/EQEL9kI63LAkyBnPo8194uf8gWU+eeX2ql+GmGuQD5q/yUkXQ0fSTyPUOg+x7
-	9szkL8olD7uD/0KQ==
-X-Received: by 2002:a05:701b:2411:b0:194:9e7a:3ba2 with SMTP id a92af1059eb24-1ac557770edmr3026667c88.2.1793371191299;
-        Fri, 30 Oct 2026 07:39:51 -0700 (PDT)
-Received: from brev-9gdpyq8lp.ap-south-1.compute.internal (ec2-3-110-210-194.ap-south-1.compute.amazonaws.com. [3.110.210.194])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1ac1845817csm7399020c88.5.2026.10.30.07.39.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Oct 2026 07:39:50 -0700 (PDT)
-From: Samarth Narang <samarth.colleges@gmail.com>
-To: Han Xu <han.xu@nxp.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>
-Cc: Richard Weinberger <richard@nod.at>,
+	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=xDZDz5SO
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=nmTmL/UbaDZThS5IXxKEZYUx9LurfOulizS7tJQo4Iqu4IuyIE+Jkvzyz5qbdodRSWoDLupDtIMMFCn1Dm0fPTTxCFR6Zn6YRWk99JcBC/UeTp/ZwQVa+TSyvCQnyyFRNEnm8aiugNl6XeGdLKXp5ZvfhqIlsU0q0DMe6a8R9DIoyiX/cvle8rx7BJ062H8KxNNM+L53aWiapLocgWbbqAIQb90ldT7qMGG6eJdZmJ6AdFZyA1LlFiKdZk7M8sgoytAAxqZFs+W9AHW3CODsx8rcNpFKHpjkLrsOeeIw8tw0UhGJDYalxDqXfyGOt4shWzpeghjNqdOQ4ZZUTBVYng==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Wii1bM2DmXt8anyyiJur5M4ikb+Kdg6ZYyMZSCzDZKY=;
+ b=cKQ4KL7UJEmfW6HahqWwkIrFkukKusmnCdi+5/XW0kpSA5yreK+8z41FYQ7u4FL33JLiJ9Vj4ib7gUNX5FzZZmKauS0XYgRyo/yQ6dUI91tCXDiaf0Ii6tPCkYSExZGJlHDWbEMOJSQnFjLBSbgJP0e5n+nCFk9u0PRjPKpd6XgUXBNjrg4GRh1w25fDOtOrFfcp9bV7YfLu+39YTU6xzRUjxvRzTDT+KCi94ZZWHgT9ak8x6MDkOx0J+MWfW4/igeV5+Jf5qxfhA1NzMR5iZqu6h6K/VxOI1Fi5eydAPHKicoIgNPp1GLNYUZQB8qJrfYZQwpkE2XmU++U7Q2eaUA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Wii1bM2DmXt8anyyiJur5M4ikb+Kdg6ZYyMZSCzDZKY=;
+ b=xDZDz5SOfTllVuVKksvG0SHisIdd2WV1q6hpZwTFyOCy17cC3LKxMWwkbwQl17/5CAgNgNsfSxqrTFqc9dzhLuiKwGYSY8YnUspAwFVsUKKGmuEnNrHttt9sK0IDbxiXIvDkBJ31pXAYTYQY2JpRg3p1gYXBts4+t2lcNG3XiIpM+OXdrfvoviggg3KnPWYxHe21nrcAuijLNOLc56sro6hJgmBBleX8HWZ5CbEw1YM4TDAfrmFhA1onpqCTlb89tJmclHLSxBsBftqQvR8PLsz4nQbWexLnBhPUpfFl4k5V0UrAJw/Ra7ZIyV2EFXY2KxWVoWKgeNffrYTnTEUFhg==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from AM9PR04MB8114.eurprd04.prod.outlook.com (2603:10a6:20b:3b7::22)
+ by AM0PR04MB7154.eurprd04.prod.outlook.com (2603:10a6:208:19f::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.9; Fri, 30 Oct
+ 2026 14:47:38 +0000
+Received: from AM9PR04MB8114.eurprd04.prod.outlook.com
+ ([fe80::cab0:e4b0:6be:b1d1]) by AM9PR04MB8114.eurprd04.prod.outlook.com
+ ([fe80::cab0:e4b0:6be:b1d1%4]) with mapi id 15.21.0569.009; Fri, 30 Oct 2026
+ 14:47:38 +0000
+From: alice.guo@oss.nxp.com
+To: robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	Frank.Li@nxp.com,
+	s.hauer@pengutronix.de,
+	festevam@gmail.com
+Cc: devicetree@vger.kernel.org,
 	imx@lists.linux.dev,
-	linux-mtd@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	Samarth Narang <samarth.colleges@gmail.com>
-Subject: [PATCH] mtd: rawnand: gpmi: terminate the DMA chain on completion timeout
-Date: Fri, 30 Oct 2026 14:39:45 +0000
-Message-Id: <20261030143945.2923554-1-samarth.colleges@gmail.com>
+	Alice Guo <alice.guo@nxp.com>
+Subject: [PATCH v1] arm64: dts: imx91: add U-Boot bootph properties
+Date: Fri, 30 Oct 2026 22:51:49 +0800
+Message-Id: <20261030145149.921308-1-alice.guo@oss.nxp.com>
 X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI1PR02CA0009.apcprd02.prod.outlook.com
+ (2603:1096:4:1f7::10) To AM9PR04MB8114.eurprd04.prod.outlook.com
+ (2603:10a6:20b:3b7::22)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -101,47 +102,357 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM9PR04MB8114:EE_|AM0PR04MB7154:EE_
+X-MS-Office365-Filtering-Correlation-Id: 16e9d856-be0c-4776-a202-08df3694bdd0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|366016|23010399003|19092799006|1800799024|18002099003|3023799007|10067099003|11063799006|56012099006|261021121427099003|261022105027099003|261022075727099003|261026121527099003|261026140227099003|261028144727099003|261009223027099003;
+X-Microsoft-Antispam-Message-Info:
+	eBKdYtvbfIDjr/U9oY1/uPFaQ7OV7yWY8rKDcmHv2qmehkuAyL9dvA9yJOrwYx7JZjH0TIukrWTaIS24mzBimf30e9db4KJJDwnz9hJqDuE8wscE2dOQ3sU8eWijK9k1FHqaD3desOBKTflXeZXNJak5dWaat+wNkEbhgavKMktD+/5dszpDYJ63f+7jslb8M49pgw8Mqh8FV7ocFmNPJKLTQAAOTYnqwagzLNjlQN6Wfk+h23DQvmVGbNNov8QSIQF65Mm1+XS3SFNFhpDcXvZEuuW3yBKVDToE/aeIjh1mou59GT1q8LFsgv7AdjwkGn+NZju0wm1SiktcqYSyiWtCmyx+iRAvYfi81+PmAex98/Dbpo36MnsbzSbtC4sl52oeqRrH9qXpt1wf6/XdTe4Ro5gLUCczMxhVm2MUFgryrtQKAaZU6PjL98ERnn0IUNh+/dNZAZMW81VLR0WyfIvnD5e3TUToWwwqJguIelnMf4z8dOJkRCAdtodix4FMj71rM7w3W4PclvozimqOQND/egFz0Y4ScvVeXvQSofhulz0w2qGblF5NQ362BwBIhnAlnWDxcgw0AABX4jTjSwP4yk/jlCYe1eSDOF5DKzKi60xqiz2g5DH6YWhecgVzlkucFdE1tieQMl69j7R4OWlGzKkH43x9ri7kWIpDQoc=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8114.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(23010399003)(19092799006)(1800799024)(18002099003)(3023799007)(10067099003)(11063799006)(56012099006)(261021121427099003)(261022105027099003)(261022075727099003)(261026121527099003)(261026140227099003)(261028144727099003)(261009223027099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?wH9/pRuTfdBwDEsv4z3SNpuU2mqR2hWQHz2+AIDqcMbFrg/HcK0sa5Mv+L+v?=
+ =?us-ascii?Q?oGtVFnZE6EyBtxNy10gAlHVDTY6n2VneLIhdCcsDskHq4VQaq5EDuyLI5tcx?=
+ =?us-ascii?Q?M6YSmxfS22guezYn16pEG19A89tHCHgM+UJHoed5p75OVmeaDscIzQP1SaJL?=
+ =?us-ascii?Q?iXIVHPk3sS237qgQ/v+Q7SAgCaeWMmsYggWLv0n3jZjCebtFh6g7KmjejGBb?=
+ =?us-ascii?Q?fiXaVu4A9ZTA8wXIT3osWDM7c/krd0uNyApYqLj/aI5x8s1rhSCsHs/mnc72?=
+ =?us-ascii?Q?2Ami9BsbVOKia2WYUBLQKUH8qGQ6U7lnOBUXfbmPD5wJ2y9e9NDrWH6IeW2q?=
+ =?us-ascii?Q?RxrR4556KJ/mBZ+IT02Uy61winEZyrIH7LHpN9RxmFxqPumeZ/nrnDlHNUUz?=
+ =?us-ascii?Q?6Nk61y7Mw7ZkgOoHZt6inRIrVXYU2/zELWWELckRL+lNmTYLqcDUOSVqbHJM?=
+ =?us-ascii?Q?pBNrNlrhxylDxrEBNBhcu+2Q7ebf35oSLqJZFRSOvln9MnD56wUMCVE6bp4Y?=
+ =?us-ascii?Q?6AM/KS8gwe0xMQkALyIZXk1I5C0MZ/gEVMz5igoOrg/un9M5T/2VqtJGmfmN?=
+ =?us-ascii?Q?H0MsM8bONS5tRJPx05HCjfqppb1pyeO9TejZqmp4f1ogqcdIfcHmgsFbTQzm?=
+ =?us-ascii?Q?lHgElr9YoVIEuf/hjF6I5rwPtsj9FNNuSoEgeOaf8Hhu9PGRR0pWkyQGO05D?=
+ =?us-ascii?Q?oBx/7BHFR21ROoJ7lJYPeFPkmsQiCOMXeysefJ4ErWzR3MMwCRPCHKx77L56?=
+ =?us-ascii?Q?io4PaZLlM3tpBBFnv0AosFmr9Ae+OphNVvN9vq1RrolS0RaesQQVNxKrEYGq?=
+ =?us-ascii?Q?mimZcqePahdUN1INx5oGcOJH3YVqScavYzFjBJ0OMhnZwLdax/0LTrkLM182?=
+ =?us-ascii?Q?odocdoqfY4dc+wiY4I7nECYAgJCCXdVEWBIQOBRAMN74l7EYpFl0I0iSxbtL?=
+ =?us-ascii?Q?27nj5b6LGPGxklE9mwTL3ktSBPbfBujAJh3ZlgecNOk177wEsK62zpMZyVCQ?=
+ =?us-ascii?Q?bsrXx1eSLZZ3RJvIIpcVtAOWpNWxjXk9uuyrbG51IW/HUmlW10iNKM+zCZ8C?=
+ =?us-ascii?Q?qfsLF8bH1dnI2mj+fPT0N0xVXheK+glSgzB3P9RffP4GfkVu1E5cvpNewcbc?=
+ =?us-ascii?Q?x7YR7DunkheV8fEBX7puqPTjx56sJCtUUzzyx7p/hepJv2+AlWQ9IJEElF9z?=
+ =?us-ascii?Q?D4KQyuB07l1aTCHbffsfEqZxAbiclHNopnTTFScAeXri7jENnTxiRy83N27O?=
+ =?us-ascii?Q?gwqcMdddDhcBoS/w0AIn2RiLQf/GaQ2cN5NIEHeRysVIoQHBZ5JZo2YzEaSC?=
+ =?us-ascii?Q?tK6DyKjlyZZ54w3GsaMqV8zQbgd585LQ1EhcaoeNfBphOmdhLWaPkwlrOIPP?=
+ =?us-ascii?Q?Vzl1kn45vUG32ivwNxD+pf2oNYIeQiLFXzJUc5Dk2KicYL3rjVvfzZvg5YTr?=
+ =?us-ascii?Q?VcoiAAWiFtJyer5dYkHU+h+a6y+ZtO+uW5KON7ul8jzMTOlMO14DFBmLh+xS?=
+ =?us-ascii?Q?Zo8nYWOS+XSJ9le56cnkoJYEhWWXkkqlnYXTr1h9NNZdV4rPE1AA/fM8mPFp?=
+ =?us-ascii?Q?QsLb+cl1MNppaPVNQbRKDhXI7+Yo3ViIqogbijWE7Xwl2SysXZfBbFnuuDoH?=
+ =?us-ascii?Q?YYOKg3JKUpX++h/jqwerIYDCCSn7ChGxyTy/NZH+XdSSvkp34k5Vvf+LKGlR?=
+ =?us-ascii?Q?z3Eahk3W2GJfMllqfaEcWy4IfKU0J2fo+gA6pvYqX2kiEeFlLOppzpM8MTu9?=
+ =?us-ascii?Q?e6k+LUfZiD5PTGUK6jNEQ2fHPoHbVtJCoTJNORO6ONKtYR8urN0G?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 16e9d856-be0c-4776-a202-08df3694bdd0
+X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8114.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Oct 2026 14:47:38.2688
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: MoXV9oo0lStoWAM5IjeAzMJFn9RfTUwZi1q6+EMZkMfnusXT+3UaKY298tZmXRCm81TBVqDjG8Cg39i70EXdLiwizbYBu0cow3RdkhLiiike2alt9fW9TvCHw484DyUN
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB7154
 
-When DMA completion times out in gpmi_nfc_exec_op(), the driver unmaps
-the operation's buffers and returns -ETIMEDOUT without stopping the APBH
-DMA channel. Since mxs-dma leaves the channel in DMA_IN_PROGRESS, the
-pending descriptor chain may resume after the timeout, while a
-subsequent operation can append new descriptors to the stale chain and
-cause the old DATA_IN transfer to execute again against an unmapped
-buffer.
+From: Alice Guo <alice.guo@nxp.com>
 
-This can result in DMA writes to memory that has already been released,
-including buffers freed after ONFI parameter page detection in
-nand_onfi_detect().
+Add bootph-pre-ram, bootph-some-ram and bootph-all properties needed by
+U-Boot for early boot DT processing.
 
-Terminate the channel with dmaengine_terminate_sync() before unmapping
-so that outstanding transfers are stopped and subsequent operations
-begin with a fresh descriptor chain.
+Place the properties in the Linux DT sources so they can be consumed
+directly by U-Boot when generating its device tree. SoC-level nodes are
+updated in imx91_93_common.dtsi, while board-specific nodes are updated
+in imx91-9x9-qsb.dts.
 
-Fixes: ef347c0cfd61 ("mtd: rawnand: gpmi: Implement exec_op")
-Assisted-by: LLM
-Signed-off-by: Samarth Narang <samarth.colleges@gmail.com>
+The properties match the current requirements of the i.MX91 9x9 QSB
+platform and include the clocks, bus, GPIO, mailbox, USDHC, LPI2C, UART,
+PMIC and related pinctrl nodes used during early boot.
+
+Signed-off-by: Alice Guo <alice.guo@nxp.com>
 ---
-This issue was identified by a research static analyzer for DMA
-lifecycle ordering and has not been validated on hardware.
-Compile-tested only.
+ .../boot/dts/freescale/imx91-9x9-qsb.dts      | 21 ++++++++++++++++++
+ .../boot/dts/freescale/imx91_93_common.dtsi   | 22 +++++++++++++++++++
+ 2 files changed, 43 insertions(+)
 
- drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c |    2 ++
- 1 file changed, 2 insertions(+)
+diff --git a/arch/arm64/boot/dts/freescale/imx91-9x9-qsb.dts b/arch/arm64/boot/dts/freescale/imx91-9x9-qsb.dts
+index b7f0e39b867a..fbb7de8c0a12 100644
+--- a/arch/arm64/boot/dts/freescale/imx91-9x9-qsb.dts
++++ b/arch/arm64/boot/dts/freescale/imx91-9x9-qsb.dts
+@@ -172,6 +172,7 @@ reg_usdhc2_vmmc: regulator-usdhc2 {
+ 		regulator-min-microvolt = <3300000>;
+ 		gpio = <&gpio3 7 GPIO_ACTIVE_HIGH>;
+ 		enable-active-high;
++		bootph-pre-ram;
+ 	};
+ 
+ 	reserved-memory {
+@@ -257,6 +258,7 @@ pinctrl_lpi2c1: lpi2c1grp {
+ 			MX91_PAD_I2C1_SCL__LPI2C1_SCL                           0x40000b9e
+ 			MX91_PAD_I2C1_SDA__LPI2C1_SDA                           0x40000b9e
+ 		>;
++		bootph-pre-ram;
+ 	};
+ 
+ 	pinctrl_lpi2c2: lpi2c2grp {
+@@ -264,6 +266,7 @@ pinctrl_lpi2c2: lpi2c2grp {
+ 			MX91_PAD_I2C2_SCL__LPI2C2_SCL                           0x40000b9e
+ 			MX91_PAD_I2C2_SDA__LPI2C2_SDA                           0x40000b9e
+ 		>;
++		bootph-pre-ram;
+ 	};
+ 
+ 	pinctrl_pcal6524: pcal6524grp {
+@@ -284,6 +287,7 @@ pinctrl_reg_usdhc2_vmmc: regusdhc2vmmcgrp {
+ 		fsl,pins = <
+ 			MX91_PAD_SD2_RESET_B__GPIO3_IO7                         0x31e
+ 		>;
++		bootph-pre-ram;
+ 	};
+ 
+ 	pinctrl_sai1: sai1grp {
+@@ -300,6 +304,8 @@ pinctrl_uart1: uart1grp {
+ 			MX91_PAD_UART1_RXD__LPUART1_RX                          0x31e
+ 			MX91_PAD_UART1_TXD__LPUART1_TX                          0x31e
+ 		>;
++		bootph-pre-ram;
++		bootph-some-ram;
+ 	};
+ 
+ 	pinctrl_usdhc1: usdhc1grp {
+@@ -316,6 +322,7 @@ MX91_PAD_SD1_DATA6__USDHC1_DATA6                        0x1382
+ 			MX91_PAD_SD1_DATA7__USDHC1_DATA7                        0x1382
+ 			MX91_PAD_SD1_STROBE__USDHC1_STROBE                      0x1582
+ 		>;
++		bootph-pre-ram;
+ 	};
+ 
+ 	pinctrl_usdhc1_100mhz: usdhc1-100mhzgrp {
+@@ -332,6 +339,7 @@ MX91_PAD_SD1_DATA6__USDHC1_DATA6                        0x138e
+ 			MX91_PAD_SD1_DATA7__USDHC1_DATA7                        0x138e
+ 			MX91_PAD_SD1_STROBE__USDHC1_STROBE                      0x158e
+ 		>;
++		bootph-pre-ram;
+ 	};
+ 
+ 	pinctrl_usdhc1_200mhz: usdhc1-200mhzgrp {
+@@ -348,12 +356,14 @@ MX91_PAD_SD1_DATA6__USDHC1_DATA6                        0x13fe
+ 			MX91_PAD_SD1_DATA7__USDHC1_DATA7                        0x13fe
+ 			MX91_PAD_SD1_STROBE__USDHC1_STROBE                      0x15fe
+ 		>;
++		bootph-pre-ram;
+ 	};
+ 
+ 	pinctrl_usdhc2_gpio: usdhc2gpiogrp {
+ 		fsl,pins = <
+ 			MX91_PAD_SD2_CD_B__GPIO3_IO0                            0x31e
+ 		>;
++		bootph-pre-ram;
+ 	};
+ 
+ 	pinctrl_usdhc2: usdhc2grp {
+@@ -366,6 +376,7 @@ MX91_PAD_SD2_DATA2__USDHC2_DATA2                        0x1382
+ 			MX91_PAD_SD2_DATA3__USDHC2_DATA3                        0x1382
+ 			MX91_PAD_SD2_VSELECT__USDHC2_VSELECT                    0x51e
+ 		>;
++		bootph-pre-ram;
+ 	};
+ 
+ 	pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {
+@@ -378,6 +389,7 @@ MX91_PAD_SD2_DATA2__USDHC2_DATA2                        0x138e
+ 			MX91_PAD_SD2_DATA3__USDHC2_DATA3                        0x138e
+ 			MX91_PAD_SD2_VSELECT__USDHC2_VSELECT                    0x51e
+ 		>;
++		bootph-pre-ram;
+ 	};
+ 
+ 	pinctrl_usdhc2_200mhz: usdhc2-200mhzgrp {
+@@ -390,6 +402,7 @@ MX91_PAD_SD2_DATA2__USDHC2_DATA2                        0x13fe
+ 			MX91_PAD_SD2_DATA3__USDHC2_DATA3                        0x13fe
+ 			MX91_PAD_SD2_VSELECT__USDHC2_VSELECT                    0x51e
+ 		>;
++		bootph-pre-ram;
+ 	};
+ 
+ 	pinctrl_wdog: wdoggrp {
+@@ -404,6 +417,7 @@ &lpi2c1 {
+ 	pinctrl-0 = <&pinctrl_lpi2c1>;
+ 	pinctrl-names = "default";
+ 	status = "okay";
++	bootph-pre-ram;
+ 
+ 	p3t1085: temperature-sensor@48 {
+ 		compatible = "nxp,p3t1085";
+@@ -455,6 +469,7 @@ &lpi2c2 {
+ 	pinctrl-0 = <&pinctrl_lpi2c2>;
+ 	pinctrl-names = "default";
+ 	status = "okay";
++	bootph-pre-ram;
+ 
+ 	pcal6524: gpio@22 {
+ 		compatible = "nxp,pcal6524";
+@@ -474,8 +489,10 @@ pmic@32 {
+ 		reg = <0x32>;
+ 		interrupt-parent = <&pcal6524>;
+ 		interrupts = <11 IRQ_TYPE_EDGE_FALLING>;
++		bootph-pre-ram;
+ 
+ 		regulators {
++			bootph-pre-ram;
+ 			buck1: BUCK1 {
+ 				regulator-name = "BUCK1";
+ 				regulator-always-on;
+@@ -540,6 +557,8 @@ &lpuart1 {
+ 	pinctrl-0 = <&pinctrl_uart1>;
+ 	pinctrl-names = "default";
+ 	status = "okay";
++	bootph-pre-ram;
++	bootph-some-ram;
+ };
+ 
+ &micfil {
+@@ -623,6 +642,7 @@ &usdhc1 {
+ 	pinctrl-names = "default", "state_100mhz", "state_200mhz";
+ 	fsl,tuning-step = <1>;
+ 	status = "okay";
++	bootph-pre-ram;
+ };
+ 
+ &usdhc2 {
+@@ -637,6 +657,7 @@ &usdhc2 {
+ 	vmmc-supply = <&reg_usdhc2_vmmc>;
+ 	fsl,tuning-step = <1>;
+ 	status = "okay";
++	bootph-pre-ram;
+ };
+ 
+ &wdog3 {
+diff --git a/arch/arm64/boot/dts/freescale/imx91_93_common.dtsi b/arch/arm64/boot/dts/freescale/imx91_93_common.dtsi
+index a68ffd04ee08..65e66309bc1d 100644
+--- a/arch/arm64/boot/dts/freescale/imx91_93_common.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx91_93_common.dtsi
+@@ -51,6 +51,7 @@ osc_32k: clock-osc-32k {
+ 		#clock-cells = <0>;
+ 		clock-frequency = <32768>;
+ 		clock-output-names = "osc_32k";
++		bootph-all;
+ 	};
+ 
+ 	osc_24m: clock-osc-24m {
+@@ -58,6 +59,7 @@ osc_24m: clock-osc-24m {
+ 		#clock-cells = <0>;
+ 		clock-frequency = <24000000>;
+ 		clock-output-names = "osc_24m";
++		bootph-all;
+ 	};
+ 
+ 	clk_ext1: clock-ext1 {
+@@ -65,6 +67,7 @@ clk_ext1: clock-ext1 {
+ 		#clock-cells = <0>;
+ 		clock-frequency = <133000000>;
+ 		clock-output-names = "clk_ext1";
++		bootph-all;
+ 	};
+ 
+ 	pmu {
+@@ -136,6 +139,7 @@ soc@0 {
+ 		#size-cells = <1>;
+ 		ranges = <0x0 0x0 0x0 0x80000000>,
+ 			 <0x28000000 0x0 0x28000000 0x10000000>;
++		bootph-all;
+ 
+ 		aips1: bus@44000000 {
+ 			compatible = "fsl,aips-bus", "simple-bus";
+@@ -143,6 +147,7 @@ aips1: bus@44000000 {
+ 			#address-cells = <1>;
+ 			#size-cells = <1>;
+ 			ranges;
++			bootph-all;
+ 
+ 			edma1: dma-controller@44000000 {
+ 				compatible = "fsl,imx93-edma3";
+@@ -357,6 +362,8 @@ iomuxc: pinctrl@443c0000 {
+ 				compatible = "fsl,imx93-iomuxc";
+ 				reg = <0x443c0000 0x10000>;
+ 				status = "okay";
++				bootph-pre-ram;
++				bootph-some-ram;
+ 			};
+ 
+ 			bbnsm: bbnsm@44440000 {
+@@ -384,6 +391,7 @@ clk: clock-controller@44450000 {
+ 				assigned-clocks = <&clk IMX93_CLK_AUDIO_PLL>;
+ 				assigned-clock-rates = <393216000>;
+ 				status = "okay";
++				bootph-all;
+ 			};
+ 
+ 			src: system-controller@44460000 {
+@@ -444,6 +452,8 @@ aips2: bus@42000000 {
+ 			#address-cells = <1>;
+ 			#size-cells = <1>;
+ 			ranges;
++			bootph-pre-ram;
++			bootph-some-ram;
+ 
+ 			edma2: dma-controller@42000000 {
+ 				compatible = "fsl,imx93-edma4";
+@@ -919,6 +929,8 @@ aips3: bus@42800000 {
+ 			#address-cells = <1>;
+ 			#size-cells = <1>;
+ 			ranges;
++			bootph-pre-ram;
++			bootph-some-ram;
+ 
+ 			usdhc1: mmc@42850000 {
+ 				compatible = "fsl,imx93-usdhc", "fsl,imx8mm-usdhc";
+@@ -1039,6 +1051,8 @@ gpio2: gpio@43810000 {
+ 			clock-names = "gpio", "port";
+ 			gpio-ranges = <&iomuxc 0 4 30>;
+ 			ngpios = <30>;
++			bootph-pre-ram;
++			bootph-some-ram;
+ 		};
+ 
+ 		gpio3: gpio@43820000 {
+@@ -1056,6 +1070,8 @@ gpio3: gpio@43820000 {
+ 			gpio-ranges = <&iomuxc 0 84 8>, <&iomuxc 8 66 18>,
+ 				      <&iomuxc 26 34 2>, <&iomuxc 28 0 4>;
+ 			ngpios = <32>;
++			bootph-pre-ram;
++			bootph-some-ram;
+ 		};
+ 
+ 		gpio4: gpio@43830000 {
+@@ -1072,6 +1088,8 @@ gpio4: gpio@43830000 {
+ 			clock-names = "gpio", "port";
+ 			gpio-ranges = <&iomuxc 0 38 28>, <&iomuxc 28 36 2>;
+ 			ngpios = <30>;
++			bootph-pre-ram;
++			bootph-some-ram;
+ 		};
+ 
+ 		gpio1: gpio@47400000 {
+@@ -1088,6 +1106,8 @@ gpio1: gpio@47400000 {
+ 			clock-names = "gpio", "port";
+ 			gpio-ranges = <&iomuxc 0 92 16>;
+ 			ngpios = <16>;
++			bootph-pre-ram;
++			bootph-some-ram;
+ 		};
+ 
+ 		ocotp: efuse@47510000 {
+@@ -1113,6 +1133,8 @@ s4muap: mailbox@47520000 {
+ 				     <GIC_SPI 30 IRQ_TYPE_LEVEL_HIGH>;
+ 			interrupt-names = "tx", "rx";
+ 			#mbox-cells = <2>;
++			bootph-pre-ram;
++			bootph-some-ram;
+ 		};
+ 
+ 		media_blk_ctrl: system-controller@4ac10000 {
+-- 
+2.34.1
 
-diff --git a/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c b/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
-index 527165ccc..a8106de2c 100644
---- a/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
-+++ b/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
-@@ -2659,6 +2659,8 @@ static int gpmi_nfc_exec_op(struct nand_chip *chip,
- 	if (!to) {
- 		dev_err(this->dev, "DMA timeout, last DMA\n");
- 		gpmi_dump_info(this);
-+		/* Retire the APBH chain before its buffers are unmapped. */
-+		dmaengine_terminate_sync(get_dma_chan(this));
- 		ret = -ETIMEDOUT;
- 		goto unmap;
- 	}
-
-base-commit: 24a19b953e2a3d0ea5a8c4951a0ab8f32720c907
