@@ -1,87 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.53
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793348668;
-	b=Fr9asFGNV50DMG+Lwjp2uO738r87+4dvzi4EYdjzkDAFJAEDX3ymL6yypelnPmnUadUJ
-	 VZ9BbFnwYn1qcpt9aUrv8DAr+1GVt1vSP+cQW4ZsNcLZ12JudVLBqzfZlJQuq0V/rsQn7
-	 CTr8qWL/gOE9mH/vNzhc6d/cqkPx2+HAGdkOQ2BkLMMViV6unRhOMcAVBUBDYrTlpqvLm
-	 OQ03ZfPnCBJO1mOY9jJiWLSpdaKCIEotIeUVzxTYOTtWbadp27ICh2xI5qovaZz3o/oiu
-	 kbAdCMy/StNv+8dO1d7HX76rdgOhDo4N6umOfc5Po/5A3KnDaGbW4mGFegAzKvE5tMA==
+	t=1793348994;
+	b=ZLLkjIWMTN56zH6m6nrvGNfzZMn0lwuKC5tp7mGVtpaCydRlQ3OjBIZgapwU3QJJwofx
+	 cZ2p9UnSxOIbSh98IQvCYakbCPUCP/tygubTzejowN8sMYc7JUHDo7clbhd4gts8x5+zC
+	 R6uEGSLJ+TTOt/PC2ts8d5pg6E5d3YRMJp5Jaw8Zm57yfd4uiZSnaCIcu9eFbFnGDM8cF
+	 yDpVrWPKgNVjp/pIWPH1WLnSWG7MYEg4Ad7eoI6jxzJBAAyEGuHcRP+mQ/8nxslDM1rz0
+	 WkUpIOnGz2VQYfOT+a3wUcGyGBrB7mhCgPx9nJCiZpE7vIaEbT9KwMuor9QORmzzpeg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793348668;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:References:
-	 Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=LBx5ZpxvL51kA/xA9AXMyCE/PWXYo3//2APXf/k3LmM=;
-	b=yM92v9/EDK5//LDQiY2XjYztNp5vTBI2q2Epu8KDZwHzgaDdpxNcGO19rG2CifZ+j6hI
-	 ghyHtrrsUoupdRa34vnIPsim5730pQDv801iYT2ivnw6qByJzbRAxr9kMvTlYM6Gt9BjE
-	 5e/Ry8Xac6mSxy0IIMdWVb77+cHZAeAuki0tHKXGdQlCG4YMbmruxWdlc4tDaR5ZwZKeK
-	 I/DKlXSK66qhl0qWFhzUkJaHhMi/DmH7pA255YHlgQ0U55SOH7KiN0hffbk11UqHbEg5q
-	 IxFBkxvV97HjAoLrcz5Jm2a9vEhdZSOddlrhHMXiTV1j742cctSv4ugHO2jHBhJl9sA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793348994;
+	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:Subject:From:To:Cc:In-Reply-To:
+	 References:Date:Message-Id:X-Mailer:X-Last-TLS-Session-Version;
+	bh=vn07bY4uFq8PBN9qP0CTPo9LlrFGbj9n/s2CEOTDmkk=;
+	b=CN0ZgbUmNecr/DVVgw6GZHUxP3JBC02dj33u9bjZ8nJRr2t+j7iIQ9LY3Hn+NF/8PSXp
+	 DKChRZJ2jFWJVhjmTDcem/p0nVV5kpy1kjTGvHYBvYgUT0CZc0RwH3E/vMgyqjOXlzLwE
+	 holxJz/1bdoPymx3OLC7smqprFKnjFsTspyYClc8PNqXkfiohSyi9swP+ZDkAndeC4emH
+	 1sio1l5S2UPiHeYfx/a+BIL9Fb278vLZfn5d22Vdb09iQmeWBKF6A8pys0yKYzN0BzBlS
+	 njKTkH64HqWhmiwPPqEa9Nx4LFLbRJWXP6rBbUf6n1/3QohxI5Q3xU2mKowNC2EVM2g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=xjO6yFIO;
-	arc=none smtp.remote-ip=209.85.167.53
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=bootlin.com;
+	spf=pass smtp.mailfrom=bootlin.com;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=1YVGmnIV;
+	arc=none smtp.remote-ip=185.171.202.116
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D62F2606A321
-	for <imx@lists.linux.dev>; Fri, 30 Oct 2026 08:24:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D62F2606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADFD3606A323
+	for <imx@lists.linux.dev>; Fri, 30 Oct 2026 08:29:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org ADFD3606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=xjO6yFIO
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5bcdae234ecso420061e87.3
-        for <imx@lists.linux.dev>; Fri, 30 Oct 2026 01:24:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793348666; x=1793953466; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=LBx5ZpxvL51kA/xA9AXMyCE/PWXYo3//2APXf/k3LmM=;
-        b=xjO6yFIOT7d4LyBkRvFgqzQ5xdAb/RNe6U71ZyIpfutzFgQvt6HXl6a8fKcyvnp3E1
-         lTTkwarsncuMlJsNVyOR9hhP3TX6msTFV8GvSexmsP+ocybcdGkqklkg8pJz6TDAkZlO
-         yWlNs3gBquW6qDEZYWc9zxLcWlS1tcjcIvoP2tut5zzm10cbp5rsiwvEOBLaSMzAuc77
-         O3if0XgK7ycO0+0Rgtb3bHNOwMFxAL4yT6RGHyrKO6w7VctUhtk6ECbwozRkjk39F/7Q
-         W6qZ13Uf9GAa7uSxKTF2sFaSwIfBja85JaNRsOP7j6GKb4vJaQOcsLM24pyr+ltDP05o
-         jX/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793348666; x=1793953466;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=LBx5ZpxvL51kA/xA9AXMyCE/PWXYo3//2APXf/k3LmM=;
-        b=BXfqm5bOe3+5Vzuaj2Sker655w+bIx8VUPFbstkBJM7KYmI32sQ9+0E8E/xdqz5P8z
-         SUOAnEqAVMo+GsrC15N7HzzGiAQ4Pgvt3h46S81UrnVqpwpue8vakJxFTQZH9Rv1Dnxs
-         ynxGCjRpNLF1YjEQb5kBWoiLsZoq5YkOJjas3UZRv+6IDtEHiIyH2kRlKAIJya2CMKKH
-         dPZMtIuN1NIFFO+Du0T00nICZEJm1sOm9ljCQIx5Of6Ed/uPLeUroY5oFaszAOfdaJuc
-         ZXnDi8fTzWBqz2ckEZP832VeSlqyfv+nIjvJ9J8LXUkMwLm/AqHZfppRnKPb9fjgZGpE
-         vEyQ==
-X-Forwarded-Encrypted: i=1; AKwUvBy/VtMqt2bVirME6A047qfPQsIvMJ+n+oRSmXP88fdsqHOOtwbwOTub5yWrj+8GOTInLl0=@lists.linux.dev
-X-Gm-Message-State: AFq9FYIF2A3B5oi1n1clcLod7dRxLcW6z9qV2zaE/pmya2hs04NJ4eQW
-	i/rWXZR/ZkwBHZm60Fgp9MRcNcjehPFSjBufqHpF2SOUlzeAL+EnPXnv
-X-Gm-Gg: AYBFou1E+blq+7LXeScorBu/tOU/zYyj/HoKvMjKw4Si5ExSc6NpnXsnGNCuM7RBi+6
-	SFrn9Q0mqEl1B2euspYE9ZvZ5uPy67Wf4PtaIsJ7Ta8bv7yHnH7GpGnBGnhiqXzVbxTZ2GVX2vQ
-	AiE4nTVl5cDvWmibCwCUqobJAbFx4BaECEJbpwFWwu+/agzBDrpdIJS9f4Y0EdhjxDQ8EBpHX0u
-	9fixdJp6M2A4hCxhLw959HM6R/A9gKNQCL3DKmtZ/ZaBZ1RKu6+GJKcD/eYXor7driJ//+zuXQp
-	QNOXGNyQ7P8/7MTgY4XoTtA6SmpTDXSLzyKQb/oNrIBvWBG3ycXa8bxtzQ68hqaYDa71YD+/1kp
-	AdRIlEP4mX1G75XfENL08WI7TW694MaAzXmeE8FCKQCr/dMsNLEn3jGCZmg8WNJr3CvL4uP1xEB
-	EuaT81E8xdnKuL/e/LzEb3JYkK+WiFmMmW54rQmjQPj5tI4O/GS9P/inmoD2jSeMGCEuwaC02QU
-	rChcO83gdMCHJCLD+kcngDd4CAxY4Vl1EY3mzt+O0wlr/k0LCMa9gt29T9n6LsaJkpi/Omvy+JB
-	gwO4IcQ9BQJGpTW6qecOtonZUEebgAgqpdkIEA==
-X-Received: by 2002:a05:651c:1a25:b0:3a9:a2fd:5932 with SMTP id 38308e7fff4ca-3acb7a651camr3189241fa.5.1793348665744;
-        Fri, 30 Oct 2026 01:24:25 -0700 (PDT)
-Received: from [10.38.18.54] ([213.255.186.37])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3acbbf3f762sm1753921fa.39.2026.10.30.01.24.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 30 Oct 2026 01:24:24 -0700 (PDT)
-Message-ID: <a83ade5b-b119-44a7-a5b3-3a7ef2d4eb2c@gmail.com>
-Date: Fri, 30 Oct 2026 10:24:23 +0200
+	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=1YVGmnIV
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id B19B0C49F5B;
+	Fri, 30 Oct 2026 08:30:53 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id C8F2C603C2;
+	Fri, 30 Oct 2026 08:29:50 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E481D103287DA;
+	Fri, 30 Oct 2026 09:29:42 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1793348988; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=vn07bY4uFq8PBN9qP0CTPo9LlrFGbj9n/s2CEOTDmkk=;
+	b=1YVGmnIVJ/VGw/8am2qtF4gVWmQOXXUdPRTBtWLffB2F4tD0J/gsCNEb2wgBpm+ERAjaCK
+	t7cxm0wENSDDmcaZLo7LYOaGIX7EzMua+cqumo/4wpKpuZe0eHkPcd4Y2q1Vsv1UaUUnJX
+	wGX8RAla0NvRuq1i2KuP36tDaSjiXtbW9DDMQKJmBVd/lwW3YFteIkrEZm5fv7sIqaecS/
+	p2fZ2e+YTh+AH+gvnY+FhqbWKlAm656hNCLl6m9VM+LQ9MiOmhJJu1iXxoIrzk0+b0GSaG
+	XuRcEa5Y8w4fDVljtFV7e2v7S3D7KkHe9jmn01+VA7LQRczCbylGL7n2nr2J8A==
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -91,59 +59,145 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] mfd: Constify mfd_cell arrays
-To: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
- Lee Jones <lee@kernel.org>, Chen-Yu Tsai <wens@kernel.org>,
- Thomas Richard <thomas.richard@bootlin.com>,
- Andy Shevchenko <andy@kernel.org>, Chanwoo Choi <cw00.choi@samsung.com>,
- Krzysztof Kozlowski <krzk@kernel.org>, Andreas Werner
- <andreas.werner@men.de>, Frank Li <Frank.Li@nxp.com>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Liviu Dudau <liviu.dudau@arm.com>, Sudeep Holla <sudeep.holla@kernel.org>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>, mfd@lists.linux.dev,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org,
- linux-stm32@st-md-mailman.stormreply.com, patches@opensource.cirrus.com
-References: <20261030071137.100954-3-krzysztof.kozlowski@oss.qualcomm.com>
-Content-Language: en-US, en-AU, en-GB, en-BW
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20261030071137.100954-3-krzysztof.kozlowski@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v10 2/9] drm/bridge: fsl-ldb: Get the next non-panel
+ bridge
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+To: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+Cc: Ying Liu <victor.liu@nxp.com>, Frank Li <frank.li@oss.nxp.com>, 
+ Luca Ceresoli <luca.ceresoli@bootlin.com>, 
+ Andrzej Hajda <andrzej.hajda@intel.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ linux-clk@vger.kernel.org, imx@lists.linux.dev, devicetree@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ dri-devel@lists.freedesktop.org
+In-Reply-To: <20261006-dcif-upstreaming-v10-2-bcfb28de0aae@oss.nxp.com>
+References: <20261006-dcif-upstreaming-v10-0-bcfb28de0aae@oss.nxp.com>
+ <20261006-dcif-upstreaming-v10-2-bcfb28de0aae@oss.nxp.com>
+Date: Fri, 30 Oct 2026 09:29:39 +0100
+Message-Id: <179334897994.680709.5849266352850173475.b4-review@b4>
+X-Mailer: b4 0.16.0
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 30/10/2026 09:11, Krzysztof Kozlowski wrote:
-> mfd_add_devices() takes pointer to const, so 'struct mfd_cell' arrays
-> can be constified whenever driver does not modify it in the probe.
-> 
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-> ---
->   drivers/mfd/ac100.c                   | 2 +-
->   drivers/mfd/axp20x.c                  | 4 ++--
->   drivers/mfd/cgbc-core.c               | 2 +-
->   drivers/mfd/cs5535-mfd.c              | 2 +-
->   drivers/mfd/intel_soc_pmic_bxtwc.c    | 2 +-
->   drivers/mfd/intel_soc_pmic_chtdc_ti.c | 2 +-
->   drivers/mfd/intel_soc_pmic_chtwc.c    | 2 +-
->   drivers/mfd/intel_soc_pmic_crc.c      | 6 +++---
->   drivers/mfd/max77705.c                | 2 +-
->   drivers/mfd/menf21bmc.c               | 2 +-
->   drivers/mfd/mxs-lradc.c               | 6 +++---
->   drivers/mfd/rohm-bd718x7.c            | 6 +++---
+Hello Laurentiu,
 
-Thanks Krzysztof!
+> The next bridge in bridge chain could be a panel bridge or a non-panel
+> bridge.  Use devm_drm_of_get_bridge() to replace the combination
+> function calls of of_drm_find_panel() and devm_drm_panel_bridge_add()
+> to get either a panel bridge or a non-panel bridge, instead of getting
+> a panel bridge only.
 
-Took a look at the ROHM stuff. Looks great to me.
+Since commit b7797081ccfe ("drm/panel: embed a drm_bridge into every
+drm_panel") there is no such thing as a panel_bridge. Now every panel just
+embeds a bridge, and there is no reason to use the panel_bridge API. All
+bridges/encoders/whoever needing to interact with "the next component, be
+it a bridge or a panel" should just use the bridge API.
 
--- Matti
+The old panel_bridge APIs are deprecated [0] and by now they are just
+complicated wrappers to the bridge API.
+
+I'm addressing the conversion to bridge API and eventual removal of the
+deprecated panel_bridge API as time permits (but pathces would be
+welcome). This driver has already been converted by commit 802372cf316a
+("drm/bridge: fsl-ldb: don't create a panel_bridge"), so this patch is
+basically not changing anything: it's still getting a pointer to the next
+bridge, but switches to a slightly more complicated implementation.
+
+So I'd drop this patch.
+
+Still it's good to get rid of the obsolete "panel" wording because now we
+don't interact with a panel aymore, see below.
+
+[0] https://gitlab.freedesktop.org/drm/misc/kernel/-/blob/drm-misc-next/Documentation/gpu/todo.rst#remove-panel_bridge-api-functions
+
+>
+> Signed-off-by: Liu Ying <victor.liu@nxp.com>
+> Signed-off-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+>
+> diff --git a/drivers/gpu/drm/bridge/fsl-ldb.c b/drivers/gpu/drm/bridge/fsl-ldb.c
+> index 7ec84c81cd78..52ae7f5b63c7 100644
+> --- a/drivers/gpu/drm/bridge/fsl-ldb.c
+> +++ b/drivers/gpu/drm/bridge/fsl-ldb.c
+> @@ -294,8 +294,8 @@ static const struct drm_bridge_funcs funcs = {
+>  static int fsl_ldb_probe(struct platform_device *pdev)
+>  {
+>  	struct device *dev = &pdev->dev;
+> -	struct device_node *panel_node;
+
+This could be renamed remote_bridge, or next_bridge_node, or the like.
+
+>  	struct device_node *remote1, *remote2;
+> +	struct drm_bridge *next_bridge;
+>  	struct fsl_ldb *fsl_ldb;
+>  	int dual_link;
+>
+> @@ -318,19 +318,16 @@ static int fsl_ldb_probe(struct platform_device *pdev)
+>  	if (IS_ERR(fsl_ldb->regmap))
+>  		return PTR_ERR(fsl_ldb->regmap);
+>
+> -	/* Locate the remote ports and the panel node */
+> +	/* Locate the remote ports. */
+
+This is OK.
+
+>  	remote1 = of_graph_get_remote_node(dev->of_node, 1, 0);
+>  	remote2 = of_graph_get_remote_node(dev->of_node, 2, 0);
+>  	fsl_ldb->ch0_enabled = (remote1 != NULL);
+>  	fsl_ldb->ch1_enabled = (remote2 != NULL);
+> -	panel_node = of_node_get(remote1 ? remote1 : remote2);
+
+I'd leave it as is, it's just less code (and more efficient FWIW)
+than... see below (*)
+
+>  	of_node_put(remote1);
+>  	of_node_put(remote2);
+>
+> -	if (!fsl_ldb->ch0_enabled && !fsl_ldb->ch1_enabled) {
+> -		of_node_put(panel_node);
+> -		return dev_err_probe(dev, -ENXIO, "No panel node found");
+> -	}
+> +	if (!fsl_ldb->ch0_enabled && !fsl_ldb->ch1_enabled)
+> +		return dev_err_probe(dev, -ENXIO, "No next bridge node found");
+
+This can be simplified by using a clenaup action on panel_node (or whatever
+the new name will be), so the of_node_put() would disappear. See for
+example commit 23bc92902edd ("drm/mxsfb/lcdif: simplify ep pointer
+management using __free").
+
+
+> @@ -339,10 +336,14 @@ static int fsl_ldb_probe(struct platform_device *pdev)
+>  	if (of_property_present(dev->of_node, "nxp,enable-termination-resistor"))
+>  		fsl_ldb->use_termination_resistor = true;
+>
+> -	fsl_ldb->bridge.next_bridge = of_drm_find_and_get_bridge(panel_node);
+> -	of_node_put(panel_node);
+> -	if (!fsl_ldb->bridge.next_bridge)
+> -		return -ENODEV;
+> +	next_bridge = of_drm_get_bridge_by_endpoint(dev->of_node,
+> +						    fsl_ldb->ch0_enabled ? 1 : 2,
+> +						    0);
+
+(*) ...this code.
+
+> +	if (IS_ERR(next_bridge))
+> +		return dev_err_probe(dev, PTR_ERR(next_bridge),
+> +				     "failed to get next bridge\n");
+> +
+> +	fsl_ldb->bridge.next_bridge = next_bridge;
+>
+>  	if (fsl_ldb_is_dual(fsl_ldb)) {
+>  		struct device_node *port1, *port2;
+
+Luca
 
 -- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
-~~ When things go utterly wrong vim users can always type :help! ~~
