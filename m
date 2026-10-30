@@ -1,55 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793354483;
-	b=5E9YFCbazKqgaWZRM7j1/e/nQzrhqtM5UnjKb1nU96JTzCikj450Pj+Lvria+YRzc/z5
-	 jlle6aKB+mwAcVHRUjKjjZ7yMO8EdPTTC8Y1jM2VUi5iEkXITErdL8e2G/Du51OLnS6sb
-	 yakoax0gMPTt/tUGskGUa3h3Gtgdcoo9zMH0KewnXEYNvnA5/bHKZZ8Xrbqcyay3/73KZ
-	 RfzEOw6LV3sXohN0PMMSmtLUwJR5L1IcUI+86sm0epqyJfwIJCj3FcM7S7SyD00Jv54rH
-	 jIJyfUlCKPjo2toeJGlxkOrDrwm7ak+WwS33svM3UPinJjDsCRktye8AQphWt94KLDA==
+	t=1793354815;
+	b=dtb3gB3L7DE4l7IWdazfSmVrAkr5cfrt3Za8nM1Hf1/frnkjzM5PJITBc9ECvFvMuKaa
+	 NRbp71/ayj+cKOYEVrrZpx1vJoCIF8dmJhsiApUPchDFCnLF62VpiLX8FblemPOJEqIpP
+	 kkE0S3L4CajcKS7/yqLtwUXm7sNvkOOsYNB9152cSTtZH8Zo/EgCwM8Gq5KLkf97g2n3O
+	 bhSt+lWrgGpfr6SHFdE7ddGQm5+U1Ipii2mvpbjxQ5MVvYXKajCYS1CgvLE8hV5V7Cg0+
+	 2u4khCT1MIWTbvvnLSVYHKxikbefHLq1mbUgXuItM6OL9gYjpHERoDcB/9NZ9hZzTYw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793354483;
-	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:Subject:From:To:Cc:In-Reply-To:
-	 References:Date:Message-Id:X-Mailer:X-Last-TLS-Session-Version;
-	bh=GL+scJfnHWYGcb5ZDCDZq1DsFM4XmLZLO7gXJFvI4SE=;
-	b=bGActbpJ85RkpzIw00PFPos9kiXw7IHq8E2oQEGIM2ZNQL1WVep07rODPtQoQUVjJL/P
-	 PcQSBc4SyErSC69aQ0r6mvKBNl8vq0sg9u5W1ay4b5YJD6dz5NKoXZLCb37jv/eUT132K
-	 5Pic8GCp9KPXFoRhbRM7N5FFzIMXwclG3YHeDLxUlQPb36rZ/3LiEe9W6s2CarmUDcx/o
-	 Lo1OBgTwPzypkmwViMf6BfiVPiZna2WvnMwhqjuakSD7oUv9nLlGuoJkAPYaUrcccx1y/
-	 x9NcHkCa6bRQGUCBv5nKMvzIGIfIEQPLhL8/aw7yS/fb2nCNfgm/oZBYVzGsoAufejA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793354815;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=/izgrK6v27WkW3THcSs7ChQLAe5vIDUskUWOQj+Numg=;
+	b=JNTH6jyNJK7+mk6A5xxh/t4ry8hwSGM/BtxadGKyO7v9eevjaHtBTvhQSGMWb2L5p0mP
+	 0Hf8TjSfUlTjBw51/eIIJubejxjLOsY4DM3xhss1idXluixc7QYqQby4WexhLZsJkpK9l
+	 QbcJUZqvNEwsb1l27mLKsUAPDJ+FNI6r7oqLDj38sIOAo8tU6lzIVVgfHVmjROqVTU+Lf
+	 8DfvWWAh7ox9VB+eQJC7/V+C719Zz5juzZalDlFuHWE6z/Zw5itfiAFtF6xl8PjIYTL/d
+	 WT4AB7JfQcRMoYF8VknJf92/uf877USaPTM1zYXvrOkesOcCOvRh0qtsAi8a3jc4wxA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=bootlin.com;
-	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=UL6qCozx;
-	arc=none smtp.remote-ip=185.246.85.4
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eXval44d;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAD08606A31E
-	for <imx@lists.linux.dev>; Fri, 30 Oct 2026 10:01:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EAD08606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3B50606A31D;
+	Fri, 30 Oct 2026 10:06:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=UL6qCozx
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id F35564E41396;
-	Fri, 30 Oct 2026 10:01:18 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id C4E19603C2;
-	Fri, 30 Oct 2026 10:01:18 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1BBD910328D09;
-	Fri, 30 Oct 2026 11:01:07 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1793354476; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=GL+scJfnHWYGcb5ZDCDZq1DsFM4XmLZLO7gXJFvI4SE=;
-	b=UL6qCozxlBY7caFOEQgPh5XeTPxe0uKsEO4bkWj9MyqY+iB6UMEjvRtH21o5vvUXcVKUI/
-	CcysYI7iXZOapAOxnIb6BQjZdAGx1qYjrMvBt0YRs7+E6O4aDVwGHjCk7OhzXkeZhDVO23
-	TQHECJhi0LcZgT1o+KpDTc7YN8L1J5L2EKzanWVej8oZEGJ6Vzsn4R5joPQ/BlfzljTve8
-	PmVSOem/IiDXooQmrkdr7+6vYj1l1oO978SJdcSMrim3K4XcjL2JGzD7Q4YBKbsHs433CU
-	FcHLSyrQvT1ygOs2bTiBRo350ax7+Z/O+9J+3YqY0rAvCHSzf0Ekv2GDiK8KUA==
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eXval44d
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F2BE1F000C1;
+	Fri, 30 Oct 2026 10:06:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793354814;
+	bh=/izgrK6v27WkW3THcSs7ChQLAe5vIDUskUWOQj+Numg=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=eXval44dP5XsXrc2cM3mZeVMEmZqjiiPmkq7bouFGbkdT+WNPKISCjaHiEUDx8E5J
+	 7mDlbh8N9jySURg6W67jqI58A233NupfRIPKGFqjnPb7eEUrQgY/i2MaKCyevuxVqg
+	 KP/KrA+LE9SFbYrIbV0uwKP6aVV7109EuuI83WLHRfSp/lNNklpsqJ6ADyAImnDhh9
+	 +PbiJceryXtQEnq3K8KhkChUIzTLiayqZim+MMgdD1hsxF+n3o63WYGyN+CXhy5iZJ
+	 USUKmP1pHZQEsxHCqTAxyG9lAQa8J9K0m+aIlgy92vyPSQ6I79+IULR+p0AXchzQeo
+	 gaiioEn4sMnHg==
+Message-ID: <sashiko-outbox-190806@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v8 07/15] drm/imx: dc: Add PRG support
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Liu Ying" <victor.liu@nxp.com>
+Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org
+In-Reply-To: <20261030-imx8-dc-prefetch-v8-7-c4f81afd4533@nxp.com>
+References: <20261030-imx8-dc-prefetch-v8-0-c4f81afd4533@nxp.com>
+ <20261030-imx8-dc-prefetch-v8-7-c4f81afd4533@nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 30 Oct 2026 10:06:53 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -58,58 +59,84 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 2/2] mfd: cgbc: Allow compile testing
-From: "Thomas Richard (congatec GmbH)" <thomas.richard@bootlin.com>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Cc: Lee Jones <lee@kernel.org>, Chen-Yu Tsai <wens@kernel.org>, 
- Thomas Richard <thomas.richard@bootlin.com>, 
- Andy Shevchenko <andy@kernel.org>, Chanwoo Choi <cw00.choi@samsung.com>, 
- Krzysztof Kozlowski <krzk@kernel.org>, 
- Andreas Werner <andreas.werner@men.de>, Frank Li <Frank.Li@nxp.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, 
- Matti Vaittinen <mazziesaccount@gmail.com>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Liviu Dudau <liviu.dudau@arm.com>, Sudeep Holla <sudeep.holla@kernel.org>, 
- Lorenzo Pieralisi <lpieralisi@kernel.org>, mfd@lists.linux.dev, 
- linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, 
- linux-stm32@st-md-mailman.stormreply.com, patches@opensource.cirrus.com
-In-Reply-To: <20261030071137.100954-4-krzysztof.kozlowski@oss.qualcomm.com>
-References: <20261030071137.100954-3-krzysztof.kozlowski@oss.qualcomm.com>
- <20261030071137.100954-4-krzysztof.kozlowski@oss.qualcomm.com>
-Date: Fri, 30 Oct 2026 11:00:48 +0100
-Message-Id: <179335444849.822489.8403085231738038338.b4-review@b4>
-X-Mailer: b4 0.16.0
-X-Last-TLS-Session-Version: TLSv1.3
 
-> cgbc-core.c driver does not use any X86-specific headers, so looks like
-> it can be build tested everywhere for increased build coverage.
-> 
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
->
-> diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
-> index 87ed55c155f0..de957f574056 100644
-> --- a/drivers/mfd/Kconfig
-> +++ b/drivers/mfd/Kconfig
-> @@ -255,7 +255,7 @@ config MFD_AXP20X_RSB
->  config MFD_CGBC
->  	tristate "Congatec Board Controller"
->  	select MFD_CORE
-> -	depends on X86
-> +	depends on X86 || COMPILE_TEST
->  	help
->  	  This is the core driver of the Board Controller found on some Congatec
->  	  SMARC modules. The Board Controller provides functions like watchdog,
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] drm/imx: dc-prg: unclocked MMIO and RPM underflow on dc_prg_config=
+ure() error
+--
 
-Reviewed-by: Thomas Richard (congatec GmbH) <thomas.richard@bootlin.com>
+commit dc9803b183fdde7606d3c14739f864581b99c2a3
+Author: Liu Ying <victor.liu@nxp.com>
 
--- 
-Best Regards,
-Thomas Richard
+drm/imx: dc: Add PRG support
 
+This commit adds a platform driver to support the Display Prefetch Resolve
+Gasket (PRG), which sits between a Display Prefetch Resolve Channel (DPRC)
+and a FetchUnit.
+
+> diff --git a/drivers/gpu/drm/imx/dc/dc-prg.c b/drivers/gpu/drm/imx/dc/dc-=
+prg.c
+> new file mode 100644
+> index 0000000000000..46108f7e09af3
+> --- /dev/null
+> +++ b/drivers/gpu/drm/imx/dc/dc-prg.c
+[ ... ]
+> +void dc_prg_enable(struct dc_prg *prg)
+> +{
+> +	regmap_write(prg->reg, PRG_CTRL + CLR, BYPASS);
+> +}
+> +
+> +void dc_prg_disable(struct dc_prg *prg)
+> +{
+> +	regmap_write(prg->reg, PRG_CTRL, BYPASS);
+> +
+> +	pm_runtime_put(prg->dev);
+> +}
+[ ... ]
+> +void dc_prg_configure(struct dc_prg *prg,
+> +		      unsigned int width, unsigned int height,
+> +		      unsigned int stride, unsigned int bits_per_pixel,
+> +		      dma_addr_t baddr, bool start)
+> +{
+> +	struct device *dev =3D prg->dev;
+> +	unsigned int burst_size;
+> +	u32 val;
+> +	int ret;
+> +
+> +	if (start) {
+> +		ret =3D pm_runtime_resume_and_get(dev);
+> +		if (ret < 0) {
+> +			dev_err(dev, "failed to get RPM: %d\n", ret);
+> +			return;
+> +		}
+> +	}
+
+[Severity: High]
+As reported by Sashiko on v7 [1], what happens if pm_runtime_resume_and_get=
+()
+fails in dc_prg_configure() in drivers/gpu/drm/imx/dc/dc-prg.c when start is
+true?
+
+Because dc_prg_configure() returns void, the caller is not notified that the
+PRG device remains runtime-suspended with its clocks disabled. Subsequent
+calls to dc_prg_enable(), dc_prg_reg_update(), dc_prg_shadow_enable(), or
+later dc_prg_configure() updates with start set to false will perform MMIO
+writes to PRG registers while the hardware is unclocked and unpowered, which
+can trigger a bus abort on i.MX8 SoCs.
+
+Additionally, when the plane or CRTC is later disabled, dc_prg_disable()
+writes to PRG_CTRL while unclocked and unconditionally calls
+pm_runtime_put(prg->dev), underflowing the runtime PM usage counter on
+prg->dev.
+
+Should dc_prg_configure() return an error code or track the active state so
+callers do not access unclocked registers or drop an unacquired runtime PM
+reference?
+
+[1] https://lore.kernel.org/r/20261026-imx8-dc-prefetch-v7-7-a0b50cc4fc65@n=
+xp.com
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261030-imx8-dc-pr=
+efetch-v8-0-c4f81afd4533@nxp.com?part=3D7
