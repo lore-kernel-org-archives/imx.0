@@ -1,55 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793381530;
-	b=o8ecOS1U5r0QVyhDIabz+0IIaI88CZDRYTJAyjgcV4/AXb3JM1h2XZ7AetXgm1AydG37
-	 kHTdolY7DTYSroPISk6MT4Drsz5C5oyv8OV+cC6D7jon4n+RTod8vlDLjNPphAbXJVo+e
-	 yIJ7MUmVGihYJVCJWZBBTg9BAcXjIzGl8j1g8clEiXAPoLZwDLbyI1x1R3rAXdxnszF6l
-	 VMTP+8yTWEt0vHtjxwZoqLDoOhWi3XoRWXCeFjmp9+YMNLw2YdItziZ4XfZK8Bf0akhvM
-	 nPaEcuf8ruzhUjcPPNdyRotq4USsdOKM/clyqF5P3M/PFeaCLd9zZwj7DjfFmNvxNpg==
+	t=1793381559;
+	b=LoIILg5mrf88YzN4DIcGA0PpcD4UX3HAAnVktZSd8KjazGKqdA/5nxDqqCKBDqwMD7Jb
+	 Fp+PSe539DZFEIQSCWWzwnuyV2GZ6yeXVQdr/+oI11emCzkOgCZzAPohulo+1uHI8Z+bH
+	 C21nD1t8pZRflGJKLmq14gp8h5VDwLD54R05VjjSTCZ4bjnpTAsmNwWiq+rocgudF6XaG
+	 WTWS68oLyL6ylv4mH9t3pFl67THOvpCohUVBL2lxZhpyd3DntXphYSHLccVBa6j665YXa
+	 tyoT0C1vsL6/WaEbHTEnk0w35VzL97MWaypkY1AxsbdfG1PIN4HlVvjwObSnvEngO0g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793381530;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793381559;
 	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:MIME-Version:
 	 Content-Type:Content-Transfer-Encoding:Subject:From:To:Cc:In-Reply-To:
 	 References:Date:Message-Id:X-Mailer:X-Last-TLS-Session-Version;
-	bh=wl3tccqjyZAmMMPbpROVr7CdyMoMxSM2WFhWZAg6gEQ=;
-	b=RDF/k/f/Vyk0mdSLEpUJwHfdgRo3QrpgoO43p0oArIxtGMp+o0vRHOKvfrV5KKfDKGyX
-	 IBdwI1Q5s9etMA2cITQQPGpZpCGk+MNafBza+cJVEGkIBUHQKRSZZmT+c6lLDusslxTBB
-	 FNPClegM1hT5fQ0BHPMF/LFCLtHDbsYpe9xHlBezgCbyIWWS6xPGPRCuczdDUye27dVPM
-	 HPiYxjOruUA5eZ9pSfWk5FFwE8I6Nn9WFHHaq+k97jfLzcgucdQ1sq+OAdW95kv7sfZ1N
-	 ThT+MBn371VOoJfwUiJ1P0+r+FakP5+/Q9y5fzbsYV2WnBm8l7/c6G+IOSR/spqKUzg==
+	bh=L0Lyn5rD4VfuyCWr/OCSR3OqZR2ZTeBIOKt42Xp4ov4=;
+	b=nlDu2YOZYRrfi2Q7NRxZf04qYQslYDK+7gyQ6UoQHnQWFvwJjzy/wRyw4+akx/dX1jwC
+	 +IyC6EP0fFFZX2kcwGSvi9pRYunI5tQ1bA9uxY63JcPjNC3u3mQNO2umvwzYA7JTH1uet
+	 AzH8frIap4vU6ynPh1xNSIm+tZnNFqhwe7G4/T8vB+D6wCxmXBth2xQ9waw9ZsY246H2e
+	 8jEsZpdXQFWGAR99N4r+lW6qlK5/mdfYKMD0eXDn+rox0kArh+fPaJe75SvAfrfhMOPjs
+	 6hHEmPI/UprceufmGKR6midvxeRKGl5Lg5U4bMEHqkQI0iQdwqciPpbY1s/VSYC/mqw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=bootlin.com;
 	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=E91ZtvJ0;
-	arc=none smtp.remote-ip=185.171.202.116
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=RDPZDsT2;
+	arc=none smtp.remote-ip=185.246.85.4
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E830A606A327
-	for <imx@lists.linux.dev>; Fri, 30 Oct 2026 17:32:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E830A606A327
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35D48606A31E;
+	Fri, 30 Oct 2026 17:32:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 35D48606A31E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=E91ZtvJ0
+	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=RDPZDsT2
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 40EA6C49F6F;
-	Fri, 30 Oct 2026 17:33:11 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id E42474E413A9;
+	Fri, 30 Oct 2026 17:32:36 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 579416076B;
-	Fri, 30 Oct 2026 17:32:08 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id AEA2E1032912F;
-	Fri, 30 Oct 2026 18:31:39 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id AD4C16076B;
+	Fri, 30 Oct 2026 17:32:36 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A3E7F1032909B;
+	Fri, 30 Oct 2026 18:32:02 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1793381521; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1793381546; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=wl3tccqjyZAmMMPbpROVr7CdyMoMxSM2WFhWZAg6gEQ=;
-	b=E91ZtvJ0OY9h6CnKZ0o8cu74pdteplvEprna4hC3mj8+Mbe0kdYXf9dHnagg5aePXPLpfL
-	ODRPPclJRL9g7DFHgoEUcIUsoEX0kLsqGgQ5L087Off2fCS7xWm8nZqW8GAkKvZZ6Xcqk6
-	LZG9lIfIst4FUGgkCLFLgFa7s0jgKrNzEG2GUpkAn1gE7kziI+kE0XpuIKZHRPLDbc4q33
-	UdtCAEGcZU7L+Aj9jGYydxJY319PIysno5WT2RzOOHWptIH5ZYv5GXydvQZyoXjGddPTAT
-	nUGmcCEyuqGR3qt070vRU6tiX23FGSkJDrbf/Ib7qr8iZWTL8/gIUzyjaV3B0A==
+	bh=L0Lyn5rD4VfuyCWr/OCSR3OqZR2ZTeBIOKt42Xp4ov4=;
+	b=RDPZDsT2P+HAgODrkbNzV4xwksOtPAko0j63SUjTiuecBN1kmyVoyxDPxho2b0AhWpGu3j
+	w6UkdX5mygXuamdg6jLFeL+Da/+RUZ+PrJd+5RIyC68QtCku0PryTLMGlpZiWH0MjUW54q
+	jovoW18iyHNuq0REdKyRfck2DShwmHZjfFYZs7b/mYy/sFUfF64HUASJ0bLgtUetRt/FoR
+	ineSGn1iLEfz4nk/hv/FtC/qBn/i8TKk1woDp1H0FykUsQsmTE/YWUibGoMtGYiqZsd7s6
+	QrNfrIiNmmj3jd3iRkDkLM8L/W3g+IQPoA3BStzZcXAjHlEFuQS/Cpl9g2RSwQ==
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -61,7 +61,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 08/35] drm: rz-du: use devm_drm_panel_bridge_add()
+Subject: Re: [PATCH 09/35] drm/mcde: use drm_panel_bridge_add()
 From: Luca Ceresoli <luca.ceresoli@bootlin.com>
 To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Cc: Douglas Anderson <dianders@chromium.org>, 
@@ -137,16 +137,16 @@ Cc: Douglas Anderson <dianders@chromium.org>,
  linux-doc@vger.kernel.org, linux-samsung-soc@vger.kernel.org, 
  linux-stm32@st-md-mailman.stormreply.com, linux-sunxi@lists.linux.dev, 
  linux-tegra@vger.kernel.org, linux-rpi-kernel@lists.infradead.org
-In-Reply-To: <20261026-drm-panel-funcs-v1-8-5e3070a3478f@oss.qualcomm.com>
+In-Reply-To: <20261026-drm-panel-funcs-v1-9-5e3070a3478f@oss.qualcomm.com>
 References: <20261026-drm-panel-funcs-v1-0-5e3070a3478f@oss.qualcomm.com>
- <20261026-drm-panel-funcs-v1-8-5e3070a3478f@oss.qualcomm.com>
+ <20261026-drm-panel-funcs-v1-9-5e3070a3478f@oss.qualcomm.com>
 Date: Fri, 30 Oct 2026 18:28:25 +0100
-Message-Id: <179338130517.3009485.5508081335662714308.b4-review@b4>
+Message-Id: <179338130519.3009485.12544573843792522294.b4-review@b4>
 X-Mailer: b4 0.16.0
 X-Last-TLS-Session-Version: TLSv1.3
 
-On Mon, 26 Oct 2026 13:09:57 +0200, Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com> wrote:
-> The connector type passed to devm_drm_panel_bridge_add_typed() has been
+On Mon, 26 Oct 2026 13:09:58 +0200, Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com> wrote:
+> The connector type passed to drm_panel_bridge_add_typed() has been
 > ignored since commit b7797081ccfe ("drm/panel: embed a drm_bridge into
 > every drm_panel"), the bridge always has the type of the panel.
 
