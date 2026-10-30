@@ -1,76 +1,103 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.13
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793350059;
-	b=0hyL9+TkRQhzpaXrSpMTqqGqBIQeeCPNu6dJ78kXYGOgucXAibkCL1gUhWmrgLFcELMw
-	 MJHDhXp17+dQlmYW07tCuYQvYrSUTZD/+4phSrpNkf/FkxF7ZzpXmg1tHF2pQkoJQUrTf
-	 tfHTzwLPOzqXd0XieB3TzHqKWhsKDKqyLxWsLCCWsdGRhx94VRGs9sQGCZkbv8ArSUxoV
-	 G7GWJNpw8GZRxCLVloRZVXI3dhAHYE4Ooe4LxQxAQXdkkKfaTaVp5fdRjq8/L0ji62xJf
-	 2t1FmHxLQQXWw4M631AY5kVVY6nSggVW0IfxrD8M3Oydr52akDOzpQ15vVnCxsLfKTA==
+	t=1793350664;
+	b=rPsYXDULb/+ndZ/oMWk1pHjJC6VHmXPPKh4yQy/xH0TzcPFQtLCsu2y8sicPfGarjrdb
+	 M4f05108GHuZnk94EUCx9ucYSWcY+kVNhco6t+vEyEQbsZ4ptm0kO2FsA1kuIW19xDhd3
+	 AA3haXMtqzn9dY1w6TBLVodyRapmsli6HqW//vtYe78JRElc6erXei05arxn5YgYqzVEC
+	 NnGEtzEoMRF3ffNsuWFQDIZlwNtDE+VRGFUblv9EYbawLjmOr131/QdcrznVnMYlWK1Q2
+	 pqG9USlGOKVmEuDtObtoDuJNA/b/NTaiWK6v0Pk1QaFiTo5voI0H8ZxZ1kLeKPHmlgg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793350059;
-	h=DMARC-Filter:Date:DKIM-Signature:DKIM-Signature:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=wd8M2mrvgKIMbQLm6ZpnJP2zgHswKwBxdG5VWq5IGPg=;
-	b=qdt40qqT/Vpmhg92bmPjwtQBkOwFO4bui4W7Ch/Z5QjE4Uv/f0sND+hjC8C49tBsmRey
-	 BLA6WFd9gzERlSDuQM5Nz+2cMNzS6bdrDyIflU2C5QpjhPRpADh710HW/Ku7YN/jm/JBG
-	 uZoJxyNldCVy5eaokaYKiVQAosA5CLMrBcN6xeDNt4itxuzo4Xgp6m9nfxjipUaZVkyct
-	 S/ihm+pS2b/a0r+MsqZAO6C4l+w1STwoj/73IJhNalUtLnxiziSPqmhpBboPLzwCzHdKc
-	 8vDFIlzEpTg/0YdnGLC4tsL03ZzCKcFFaRsKgdYAmJotrBCmo5s6JOCWuyn+VZzXCeg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793350664;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Date:
+	 Organization:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=eGH1sgh8fHcD1YzHQAXXHU+ICjz/GR3arUB8DIO7xaI=;
+	b=nEL/mDNkuct6zMAMU+2b5vyV1kKVQucQ0WYjMZ9ms9KPSIPNSQtmDWyJ7AAXrUySILqX
+	 Fe5p1n8ZDAuinAbK1W5iHIWNlVd2baa35mxZaLn3RwugYau13af8OqqGjqeQ172TIcvO9
+	 m5uSem95FgEjnoVmJNEOJN6UixhyP8inClZvCfoiJZ6Dp2Tn78hOeAsivoaZkSNNCs59c
+	 yliushIjwOlxf2JOlNZgqdkX13rNi8lUnbNrIN1I/7FRCg/pBz2c8Xn2DOQrqfWD/yy/m
+	 rGoHLU0lxSpN7x/6Tq7SFHzxhTnqpw++ca0UHD193YhDX0fG1cRnDeAzHoVf5YS5N2w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linutronix.de;
-	spf=pass smtp.mailfrom=linutronix.de;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=3PRgon8a;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=V1i+qmhh;
-	arc=none smtp.remote-ip=193.142.43.55
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=L79pU4vW;
+	arc=none smtp.remote-ip=198.175.65.13
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FEA2606A31C;
-	Fri, 30 Oct 2026 08:47:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9FEA2606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02E76606A31A;
+	Fri, 30 Oct 2026 08:57:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 02E76606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=3PRgon8a;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=V1i+qmhh
-Date: Fri, 30 Oct 2026 09:47:25 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1793350051;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wd8M2mrvgKIMbQLm6ZpnJP2zgHswKwBxdG5VWq5IGPg=;
-	b=3PRgon8aNCuEia+L337yySeBOYoXiX1nocIcfzo8bf7r6/lwSA2zavb6RRrScq+zUpBdUz
-	NkwmrrtSvlAoLQaD6lPx+2OIdlbN0TXn1oJl7IxepLVS7ollWLR8hZhMTv0k9xpHNy91o8
-	uawoZ4cn00pjckUE1tNcSgQkwRC2XxVT+Bm96/qipHvoIQpZLpUAFbQGWKbRhAnTGvHQgG
-	qm2ITcP81yIDIjpE7P3BmpPHsYPXaH8cFwInBaoF3GgcLwzFu7oVzSK36oy6MvanHvSJ3j
-	MqYkkctkeQ0s+o9Ygpnz6gU/P1HxhHw2hvAYHMe6ZeD6gctkq0OKghOTkuQSUg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1793350051;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wd8M2mrvgKIMbQLm6ZpnJP2zgHswKwBxdG5VWq5IGPg=;
-	b=V1i+qmhh5y+QG8SyPnmsY9EuillzshlgGOtJ5BASYlrGFsSBdcaH2/eKQmF5mLkbI5/Mm7
-	oHPG0462Ns3DaKCw==
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Cc: Lee Jones <lee@kernel.org>, Chen-Yu Tsai <wens@kernel.org>, 
-	Thomas Richard <thomas.richard@bootlin.com>, Andy Shevchenko <andy@kernel.org>, 
-	Chanwoo Choi <cw00.choi@samsung.com>, Krzysztof Kozlowski <krzk@kernel.org>, 
-	Andreas Werner <andreas.werner@men.de>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Matti Vaittinen <mazziesaccount@gmail.com>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	Liviu Dudau <liviu.dudau@arm.com>, Sudeep Holla <sudeep.holla@kernel.org>, 
-	Lorenzo Pieralisi <lpieralisi@kernel.org>, mfd@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-stm32@st-md-mailman.stormreply.com, patches@opensource.cirrus.com
-Subject: Re: [PATCH 1/2] mfd: Constify mfd_cell arrays
-Message-ID: <20261030094515-afbbbd16-d834-4ef6-8910-e936476ea018@linutronix.de>
-References: <20261030071137.100954-3-krzysztof.kozlowski@oss.qualcomm.com>
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=L79pU4vW
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793350664; x=1824886664;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=XC9L0N0lGS0WxoaPGxJtRF+Dcu7w/yLaO4BtytOzzuQ=;
+  b=L79pU4vW7uY7s26CgOQnkqh84RSv936RavEmcjrDTUnS4Siipvtjaxv9
+   niC/LQALmZglumppct7FEwQIro1Gz/w674bkYPVoPpUs7WdYYrKj8S4dh
+   pzbje3C7Tok8W3ejcrBifgXwizUFSAgAZknUyf1X1uEdKEqzYRhBhmM0u
+   VNlUIdPpedishVRl3xlDdhyqLpVcFReAGuJNt3+ZcVVbHXOZqNHIQYCE2
+   8QV4MERFL9+uvL8WvzD28keURSTx3+k6K3S4QyMJ7JQJlkHCDQlO1o6kH
+   qSxXemxc78C/HhTKxmdFwkZvq4LJevHZJxeCyUkDpo2OWXghEEAascIs9
+   w==;
+X-CSE-ConnectionGUID: DeHXts5hTC+4YzbLIjnQrw==
+X-CSE-MsgGUID: M3P7cvM8TYK1oHwf8iFO7Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11950"; a="1987136"
+X-IronPort-AV: E=Sophos;i="6.27,186,1787036400"; 
+   d="scan'208";a="1987136"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2026 01:57:43 -0700
+X-CSE-ConnectionGUID: 2ZQs9CufQJ2aI+tvMlBntg==
+X-CSE-MsgGUID: YTk54IPeRM2APeu2Ec1IKw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,186,1787036400"; 
+   d="scan'208";a="5265993"
+Received: from ettammin-mobl3.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.244.19])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2026 01:57:35 -0700
+Received: from kekkonen.localdomain (localhost [IPv6:::1])
+	by kekkonen.fi.intel.com (Postfix) with SMTP id 2CDB9121B77;
+	Fri, 30 Oct 2026 10:57:36 +0200 (EET)
+Date: Fri, 30 Oct 2026 10:57:34 +0200
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: Frank.Li@oss.nxp.com
+Cc: Frank Li <Frank.Li@nxp.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Andrzej Kacprowski <andrzej.kacprowski@linux.intel.com>,
+	Karol Wachowski <karol.wachowski@linux.intel.com>,
+	Oded Gabbay <ogabbay@kernel.org>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Thomas Hellstrom <thomas.hellstrom@linux.intel.com>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Alex Elder <elder@kernel.org>, Will Deacon <will@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Guan-Yu Lin <guanyulin@google.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	linux-pm@vger.kernel.org, linux-usb@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+	intel-xe@lists.freedesktop.org, linux-hwmon@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, iommu@lists.linux.dev,
+	linux-arm-msm@vger.kernel.org, linux-media@vger.kernel.org,
+	linux-staging@lists.linux.dev, netdev@vger.kernel.org,
+	imx@lists.linux.dev, Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH 1/1] PM: runtime: change stub pm_runtime_get_if_active()
+ return 1 when !CONFIG_PM
+Message-ID: <auRb_r8ZSSU-eHZA@kekkonen.localdomain>
+References: <20261029163044.3062958-1-Frank.Li@oss.nxp.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -82,14 +109,28 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261030071137.100954-3-krzysztof.kozlowski@oss.qualcomm.com>
+In-Reply-To: <20261029163044.3062958-1-Frank.Li@oss.nxp.com>
 
-On Fri, Oct 30, 2026 at 08:11:38AM +0100, Krzysztof Kozlowski wrote:
-> mfd_add_devices() takes pointer to const, so 'struct mfd_cell' arrays
-> can be constified whenever driver does not modify it in the probe.
+Hi Frank,
 
-Looks like a candidate for scripts/const_structs.checkpatch.
+Thanks for the patch.
 
-(...)
+On Thu, Oct 29, 2026 at 12:30:37PM -0400, Frank.Li@oss.nxp.com wrote:
+> From: Frank Li <Frank.Li@nxp.com>
+> 
+> When CONFIG_PM is not enabled, all devices runtime PM state should be
+> treated as active.
+> 
+> __pm_runtime_resume() returns 1 (called by pm_runtime_get()).
+> pm_runtime_get_if_active() is the try-and-get version of pm_runtime_get().
+> stub pm_runtime_active() also returns true. So pm_runtime_get_if_active()
+> should return the same value as the stub pm_runtime_get(), which is 1.
 
-Thomas
+Shouldn't the same change be done to pm_runtime_get_if_in_use()? It's
+otherwise the same, except that it requires also the use count to be
+non-zero.
+
+-- 
+Regards,
+
+Sakari Ailus
