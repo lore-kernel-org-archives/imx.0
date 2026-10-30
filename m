@@ -1,107 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793380761;
-	b=sULxDUYsuYWg6O6PDkAVTNw+yzlPDghGF8DD0wxWpCm++IBGL+VNwBA/HE7Ysc2j+/sA
-	 QlE6P+dcTROPejFmbLQNT1CY66TgfXd49Zey4IsZ/VTZoX7dwOiUKtbMR4xtkduPCMzEb
-	 NafAU/R5Jk1IFeFbPJIJrZgNr19SfG2HNjJPAiz5ZocWUR+1dm3zlhQ9rayeun5F6XI+j
-	 UMp9qL1FX+kdgH/MCYPvvQDGZMT4+mlEFDEKqjU7Y8ZRD4IooXUCCHsHpiNhkfOGHmnqb
-	 7zhQQrRJlAmNeLTwaKXzu5R35VDxbGiXYBIhkOjLdsMFgsimFEEIiyd1CP2l+xHiiJg==
+	t=1793381349;
+	b=fz56IdT4AvKgTevZcePWYnIMhsiDRGLg3RT4QHYwVc0wtyipvFtYQbKRzhaLUKA5voGA
+	 7OfByj1FyhxKlFnO/KfRR1rtbrco8dm0pbfH0r3a3LhY4Ve0ZUyNn5gvRDaW4f3m6rWpW
+	 Es2FFeCjRpWBEl30doI/AGI7u79QAcrSTZ9uKuE3lkRDWbJA5RtBHQS0ZAjwfMalpDb7/
+	 Sl23Gb/hxkx01ukC99wNy5Fr2mRNGZsSt8ZaOlUEA8zPZRPHKUNiEoe7AyOUb0f6RUbMT
+	 swvrr6sDqA+jBXgTxYyYghWsbKxH2j8/QfXrmUUvxZnzgV2Zl905qJlCiuVkgEsExyw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793380761;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=xNCuizie4/rA3iBJi7WKXbiS7VvUpnFkAzErMyUnySM=;
-	b=hh6fjSEVl9Q3ED2u4k9HD9Jnuq9oPaoWUlPHMAuE1KQ5PMDxyE3O2uv3Bk2I3S3UYVNU
-	 8r3lNNCANcBClEzE25uzYjZunau70+eyTgq2oukxEkTATQlDrZvrYB+XS1EdpFGmDhzjl
-	 mdJ4lfIVis/xBUU2iJU/1r4P4FhhN0afL6zE99kr5/giZb6CZVZDUCWQwoTWiW+/9OSmT
-	 UaOWWbTEhGt4DuJdiKNgLeBzIiISTL6aMY5ZC+H8/XihIHUft9NW0aiS2K9naIzCeEyPl
-	 +ZbCmjn1xWnDMe8/SM5427JbofOzIhW7DwV6iy/I7sDmH5jHVFtwlRtLiEWN98jr28g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793381349;
+	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:Subject:From:To:Cc:In-Reply-To:
+	 References:Date:Message-Id:X-Mailer:X-Last-TLS-Session-Version;
+	bh=EP5Qg4kA7YkpBNe+5FytJYCH0Xni6F9c0BjnYp2EtOk=;
+	b=RjSbE3wcWoxgN6gyVJns/3kg5dvUykAQaJWrXzL0gURIa7AV55ZC51LYJAp/oroBQ81R
+	 K4Dy171XveSGm1B6yERxdMAg1dm0a/MIKX2KmStDXKIsH5MpjR5uGfwfBzeMWN9iqsvjy
+	 myE2JDhE9VU1xn7a0UzQeeHweBYey14uBV9mZ6aywnyBfnj5A2QMNAOLGUU+jb3+LL33j
+	 OQQFsrMJWKcdzJNfit8E1QWiKu7J101FRAIy+S8C1ujuUzrSqUE7bvchuh4uvQjCC9C87
+	 hjoBqi9r67NbJX8Fb9GRh0mHjjj+cD6RxpDxvvbeUaRWA4LZVIua97CADnSgcJXrtnw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=amarulasolutions.com;
-	spf=pass smtp.mailfrom=amarulasolutions.com;
-	dkim=pass header.d=amarulasolutions.com header.i=@amarulasolutions.com header.a=rsa-sha256 header.s=google header.b=VHTQX2XS;
-	arc=none smtp.remote-ip=209.85.128.47
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=bootlin.com;
+	spf=pass smtp.mailfrom=bootlin.com;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=man1ZzCg;
+	arc=none smtp.remote-ip=185.246.85.4
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4E84606A31F
-	for <imx@lists.linux.dev>; Fri, 30 Oct 2026 17:19:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E4E84606A31F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A73606A31C
+	for <imx@lists.linux.dev>; Fri, 30 Oct 2026 17:29:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E6A73606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.a=rsa-sha256 header.s=google header.b=VHTQX2XS
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4a59100fa83so9040065e9.0
-        for <imx@lists.linux.dev>; Fri, 30 Oct 2026 10:19:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amarulasolutions.com; s=google; t=1793380759; x=1793985559; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=xNCuizie4/rA3iBJi7WKXbiS7VvUpnFkAzErMyUnySM=;
-        b=VHTQX2XSdpxofbIhXvrFO+YKWbmstA2jBFOSAts6oFLeXfZDEFPElG/SQnYX6TISoE
-         QtW9/Uu0KKHJPdx2gXqEl/YwePWdjDXKw0DTi3g3q7g3/JTOF60vvYozqzHZYCjl+9Ey
-         WiYh+QVHImWH/VLetLk7ygB1ripZhFCxlZqXk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793380759; x=1793985559;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=xNCuizie4/rA3iBJi7WKXbiS7VvUpnFkAzErMyUnySM=;
-        b=O4PASMGqIvU1pZx+/193pvV3tJ+fn1TerJ6hTWweaWedqWkOGJZ4y/VLmwxjd/Pzfb
-         pPU1oZ9aZ0NIg7axNL9i6BZP6dJqQUDUFDXTYwt7NeS/qcc3ENUenF9bMHBWkyUocG4N
-         mhzo8Wx8IjEuROYnD6+GgvHmdYMnbp/yS5xI/T96dS8YsNMII9WKahgnJWDW1/A1+Ho2
-         0+8Ety3K4rflcd/FabRuQq+aN6ep81zdjFzmzngVFtUircQDdDTKf+SswKivLq1aGpGD
-         /wKJ/13vyMGB/rDsD91Zy6pTQcM8DYiQ6C98kfO1JLxVZsPrOMOXvwUTZLkZw7y1UQ0D
-         09Ug==
-X-Forwarded-Encrypted: i=1; AKwUvBwj6RZB0P2iV/4CqJqgdBPMbZneQljVmrccHkDmZSLW8w0Tyc4/4qW62/Bbn+nX5apL6bA=@lists.linux.dev
-X-Gm-Message-State: AFq9FYJD4t2tsKhJLe+eXNfNw/8c+cCUiDJ0JNH9ccsZqtdwxnQOR20D
-	voULaPiCRsqhD4ZS9AQTGJ5F2bIb8IgAfLHRUui34sfk/I3DvPQcfMto0wop7ja7fZY=
-X-Gm-Gg: AYBFou3t3UyfD/RVvdGyf0B3WPwMiHW4AsiOMjSw36OW/tqXXgOSSwbdTqN2zj4ZTc9
-	h4VE2xZ4FEIs3Zsl27OAlHsiBK8DD7HIz3ZYSbwvV1uTqtts9T4EvpSPhmAYy1ViHaHbWItNTYv
-	Y4MLaE1ZLJKol6IBXm3a/NWF1J+eP83ilNHjxEFGck3sv6SUN1coO7mBBUD/TSJNQEV1lLzhnhz
-	K3D10OgUBGU089LKoep5hJGx3YRusxO5nbkAU+mZ8UqrzZOL1tF4KKonCO1syXV4F8X5NeMfvKv
-	cUznKXGWFJMs4CesQj7ifbHlNgq0WZkHp7WXVcIPVQH4iy5R5GVd3t6hT5mctrudOFcM1wLpXIE
-	jhhnvDi8g9zj+Zu79SwB+yrx1RlEMlp8OK2PiCi9BRLH500F1GqopMLOzABPk+1q4cupuDmc50i
-	OezfW2muOmKhzr/Nrc2loIdAgz9LllBlwA0EXDjlnH4ZzzXAkfh1tp8Vb4aQ4/pgJvowbP8mD3I
-	Et+dKpPl9Zwd7DRlBxfoXf8ztebL7E4CsUlPq6PlLk6TZ+JrnyYq74wPOsHHjXSLSAS1cYqdR2N
-	Tci4W4H2XFwrtU6LeP+UH+64LccycGs3eLGPVpWCu30+2DKMgQ57SSHhVfZ33QJaYc3RZXEuIu2
-	XmJYk4KFaNYDmORWPSMMI3ZYMemJE41Lhk6ELNc2PW+lrt/YK1Xs7vxayqPxDfiLIhpFyHvW5O+
-	5ob2OE8f3t6I4vrMeh1ytxD0hvPw==
-X-Received: by 2002:a05:600c:c4b8:b0:4a0:1b14:e283 with SMTP id 5b1f17b1804b1-4ac150b38dbmr70600135e9.1.1793380759329;
-        Fri, 30 Oct 2026 10:19:19 -0700 (PDT)
-Received: from dario-ThinkPad-P14s-Gen-5.homenet.telecomitalia.it (host-79-14-29-58.business.telecomitalia.it. [79.14.29.58])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4abf368bff7sm74252355e9.2.2026.10.30.10.19.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Oct 2026 10:19:18 -0700 (PDT)
-From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-To: Ulf Hansson <ulfh@kernel.org>
-Cc: dario.binacchi@amarulasolutions.com,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Sudeep Holla <sudeep.holla@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Daniel Lezcano <daniel.lezcano@kernel.org>,
-	Christian Loehle <christian.loehle@arm.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Mike Leach <mike.leach@arm.com>,
-	James Clark <james.clark@linaro.org>,
-	Leo Yan <leo.yan@arm.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	linux-pm@vger.kernel.org,
-	coresight@lists.linaro.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	regressions@lists.linux.dev
-Subject: [REGRESSION] cpuidle: psci: boot stall/hang on i.MX8MP
-Date: Fri, 30 Oct 2026 18:19:09 +0100
-Message-ID: <20261030171910.2822677-1-dario.binacchi@amarulasolutions.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=man1ZzCg
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 2BCB54E413A2;
+	Fri, 30 Oct 2026 17:29:06 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id C48FE6076B;
+	Fri, 30 Oct 2026 17:29:05 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7157410328D09;
+	Fri, 30 Oct 2026 18:28:28 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1793381338; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=EP5Qg4kA7YkpBNe+5FytJYCH0Xni6F9c0BjnYp2EtOk=;
+	b=man1ZzCgBezoTOgt0FHPVjh/CIVwcOSzEDfVqdfhmcK4lyIuelFADmw1OdPt5Qmi+L9xn0
+	CbkZ8EYJMp5JLvq/AZykdWTBgBeTt7DiIc1LhG2yPIm/xxPpNCPeErkzEYlmkfGT30bmNf
+	GDzXSWk/J6wiChEPIM6stPXccXq4t7C0yOvoLZrDuhGFLrNe8nUitRtHmv9x4einGaHDZz
+	4Lz3wuBOrycCH2vU23aZw+RDywbSEpy37zW3YNdOLz/fkVYP8D8kxmxBw9b/tPS/S09ij+
+	lIJDHXXRttC/Ko+7Yi7R3vEw3GWdoexeJWWH7ugbfvNNAyNxelvyrNXY+nXjpQ==
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -111,30 +59,102 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 01/35] drm/panel: remove the get_timings() callback
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Cc: Douglas Anderson <dianders@chromium.org>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, 
+ Jessica Zhang <jesszhan0024@gmail.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Jyri Sarha <jyri.sarha@iki.fi>, 
+ Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, 
+ Andrzej Hajda <andrzej.hajda@intel.com>, Robert Foss <rfoss@kernel.org>, 
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Luca Ceresoli <luca.ceresoli@bootlin.com>, 
+ Paul Cercueil <paul@crapouillou.net>, Marek Vasut <marex@denx.de>, 
+ Stefan Agner <stefan@agner.ch>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, 
+ Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>, 
+ Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>, 
+ Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>, 
+ Geert Uytterhoeven <geert+renesas@glider.be>, 
+ Magnus Damm <magnus.damm@gmail.com>, Biju Das <biju.das.jz@bp.renesas.com>, 
+ Linus Walleij <linusw@kernel.org>, Sandy Huang <hjc@rock-chips.com>, 
+ =?utf-8?q?Heiko_St=C3=BCbner?= <heiko@sntech.de>, 
+ Andy Yan <andy.yan@rock-chips.com>, Jonathan Corbet <corbet@lwn.net>, 
+ Shuah Khan <skhan@linuxfoundation.org>, 
+ Randy Dunlap <rdunlap@infradead.org>, Inki Dae <inki.dae@samsung.com>, 
+ Seung-Woo Kim <sw0312.kim@samsung.com>, 
+ Kyungmin Park <kyungmin.park@samsung.com>, 
+ Krzysztof Kozlowski <krzk@kernel.org>, 
+ Peter Griffin <peter.griffin@linaro.org>, 
+ Alim Akhtar <alim.akhtar@samsung.com>, Alison Wang <alison.wang@nxp.com>, 
+ Paul Kocialkowski <paulk@sys-base.io>, 
+ Yannick Fertre <yannick.fertre@foss.st.com>, 
+ Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>, 
+ Philippe Cornu <philippe.cornu@foss.st.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Chen-Yu Tsai <wens@kernel.org>, Samuel Holland <samuel@sholland.org>, 
+ Thierry Reding <thierry.reding@kernel.org>, 
+ Mikko Perttunen <mperttunen@nvidia.com>, 
+ Jonathan Hunter <jonathanh@nvidia.com>, 
+ Jagan Teki <jagan@amarulasolutions.com>, Ondrej Jirman <megi@xff.cz>, 
+ Javier Martinez Canillas <javierm@redhat.com>, 
+ Igor Reznichenko <igor@reznichenko.net>, Michael Walle <mwalle@kernel.org>, 
+ Dario Binacchi <dario.binacchi@amarulasolutions.com>, 
+ Jagan Teki <jagan@edgeble.ai>, Jianhua Lu <lujianhua000@gmail.com>, 
+ =?utf-8?q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>, 
+ Purism Kernel Team <kernel@puri.sm>, 
+ Jerry Han <hanxu5@huaqin.corp-partner.google.com>, 
+ Joel Selvaraj <jo@jsfamily.in>, Icenowy Zheng <icenowy@aosc.io>, 
+ Michael Trimarchi <michael@amarulasolutions.com>, 
+ Sumit Semwal <sumit.semwal@linaro.org>, 
+ Casey Connolly <casey.connolly@linaro.org>, 
+ Michael Tretter <m.tretter@pengutronix.de>, 
+ Cristian Cozzolino <cristian_ci@protonmail.com>, 
+ Junjie Cao <junjie.cao@linux.dev>, Ryan Brue <ryanbrue.dev@gmail.com>, 
+ Nickolay Goppen <setotau@mainlining.org>, 
+ Stefan Mavrodiev <stefan@olimex.com>, 
+ Florian Fainelli <florian.fainelli@broadcom.com>, 
+ Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
+ Robert Chiras <robert.chiras@nxp.com>, 
+ Alexander Koskovich <akoskovich@pm.me>, 
+ Markuss Broks <markuss.broks@gmail.com>, 
+ Artur Weber <aweber.kernel@gmail.com>, David Heidelberg <david@ixit.cz>, 
+ Dzmitry Sankouski <dsankouski@gmail.com>, 
+ Yedaya Katsman <yedaya.ka@gmail.com>, dri-devel@lists.freedesktop.org, 
+ linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org, 
+ linux-doc@vger.kernel.org, linux-samsung-soc@vger.kernel.org, 
+ linux-stm32@st-md-mailman.stormreply.com, linux-sunxi@lists.linux.dev, 
+ linux-tegra@vger.kernel.org, linux-rpi-kernel@lists.infradead.org
+In-Reply-To: <20261026-drm-panel-funcs-v1-1-5e3070a3478f@oss.qualcomm.com>
+References: <20261026-drm-panel-funcs-v1-0-5e3070a3478f@oss.qualcomm.com>
+ <20261026-drm-panel-funcs-v1-1-5e3070a3478f@oss.qualcomm.com>
+Date: Fri, 30 Oct 2026 18:28:25 +0100
+Message-Id: <179338130509.3009485.3123201175903177487.b4-review@b4>
+X-Mailer: b4 0.16.0
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Ulf,
+> Nothing has ever called get_timings() since it was introduced in commit
+> 2938931f3732 ("drm/panel: Add display timing support"). Remove it
+> together with its three implementations.
 
-on an i.MX8M Plus Dual board (Engicam i.Core MX8M Plus), mainline
-c339f4010dea sometimes stalls for ~0.9 s at boot, or hangs until the
-watchdog resets the board, right after:
+Ah, interesting!
 
-  [    0.806123] ledtrig-cpu: registered to indicate activity on CPUs
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-On a good boot the next message comes ~11 ms later.
+-- 
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
-About 1 boot out of 3 stalls or hangs. With cpuidle.off=1, or
-with commit 65705b18162b ("cpuidle: psci: Move initialization a bit
-earlier in the boot sequence") reverted, 10 out of 10 boots are fine.
-
-I haven't dug into it much. The stall seems to be in
-pl330_driver_init(), so my guess is that it is related to the AMBA bus
-reading the ID registers of the CoreSight ETMs while a CPU is already
-in cpu_pd_wait, but I may well be wrong.
-
-Any idea?
-
-#regzbot introduced: 65705b18162b
-
-Thanks,
-Dario
