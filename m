@@ -1,101 +1,94 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.43
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.178
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793408072;
-	b=ACWes3umQQfIFr+E5sWUCzCMwiRTIccjvDl2/QrIO18r5XYjRWjgFCThFM0LmDZKAynC
-	 1DQGwnj2OEcGr/4d99s4Cdx8D4+puuuuqsQxyi0rlsDkg9gLIW+gXlMHRHANFuQ/8alQV
-	 b+CLjJcqlP36THul0Pqn9IMLkZiOP/R0XqXLYhTsK+QDxYFrctjL9uNEKJ8z/ReEE6ReH
-	 DVTZ2km7O1Fcmg1jd1dXskZ7kZaG+pND8SFoNqyNJmt0vr+V6NxcK1Z7CSoRZPaTUTtKC
-	 ZYB3hwtOXajM7P6bjLQoW6eyyzbjqLkRXCXKugZYR7bbD+7712JelbaXbQNiPXWtOtg==
+	t=1793426629;
+	b=tB3MeX7AiMBAojAZT4SI/4p0if+EeHUZC5BCBqYZ5yckXnK/iEIo6ZzxqOaK+79jnjHC
+	 xp00orWQOG/RwoGgRR+ZivS5mO+xg5ROAAJPqufZxCSugD/eyDpY7euiyJcPRc3oHNm7j
+	 2+EUpVT3aUL7CljYVYB1YUvPWcfcg49j6bImn8YSYqcdlHKE6hX6Kvx+UJmnCSn+6qMRu
+	 31mEKv/6DU9qO7zF43ru0SFWL+TkGHRXQv3A6FKYM+iIZB5rwOAJ0yKNNAUsLMtno1gOZ
+	 ili1XDJls/tTMUiKFPkIiq/zuLd60Opx486mxXNVfdYn3Hbl5FT3Fv9K1XGpmL3LRwA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793408072;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793426629;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-Id:X-Mailer:MIME-Version:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=mnjjH1kwd237jiTTP+/EE2SALRkAPRbhV6DYx2q6Y98=;
-	b=uiSpMCc+tNShiMv/xBG4vKwjZkOQDdfbNs3xz49iDEMBwL9hr6RhULEzekhwDA3dwtU9
-	 Lw7EIdNL0XP3q2kXR36ncULTZppCrPmNIvlLN1TEYpdylStGse2sQcr4/alFAjOX+ly5E
-	 u+k+0y3yioLbjXUrSbum3p+gIJoxWxOQwowBz/DRJYg9y7D9u3lCJUgEi3ErMaVK6kNgE
-	 /TByfedSpfyAj7iqoUg4JvjMnv0McN0P3VhyE3bIQpo0S4nrjWfV+HWYyzh2wHUfN+u3k
-	 gYcQt59IwM5L+IGLfcasws+ujxcPl11pbsa5RZiBpMDfmYskD3qSUqFE14mkLik+Wcw==
+	bh=ZnHzpDNAsYwgZW+/BH7mx2GO7ajwWfSCvotHqaQHR4k=;
+	b=i61Nk5SDVj1ZfadCaMTbFo5cqjO3ifoxlTFz5kCplBK8BOng9+82Mi/B8ic+Tvy2FFRO
+	 RfFLAKvxxhXtvsOWPexTOcZuoqiQ+hZ1tT5eNTYulZUqTMkXs9A7bnFVOoR19dVOZygVm
+	 gJaa+pRGBxP9tIr4sDxndgvlGf+t0Sux4KtELF52WMYPtj9SPBoylKCHifiJ9mmAw8Bzp
+	 rmqt1OcXehDWb7iftcZDIko0ADRc8KOfXS0pBVtnJJLMCXuDfjUAm/jevdnlCKF4XWo0f
+	 ErWi7eGri9BZ1/YBCeAsdVzpevvi68GZTWfdwHLvJ9S7UhbUASHRtz2vHuLUuyGSDgA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=zZBBZNUI;
-	arc=none smtp.remote-ip=74.125.82.43
-Received: from mail-dl1-f43.google.com (mail-dl1-f43.google.com [74.125.82.43])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="ZhsH3//C";
+	arc=none smtp.remote-ip=74.125.82.178
+Received: from mail-dy1-f178.google.com (mail-dy1-f178.google.com [74.125.82.178])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64D5E606A31C
-	for <imx@lists.linux.dev>; Sat, 31 Oct 2026 00:54:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 64D5E606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C32CE606A31C
+	for <imx@lists.linux.dev>; Sat, 31 Oct 2026 06:03:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C32CE606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=zZBBZNUI
-Received: by mail-dl1-f43.google.com with SMTP id a92af1059eb24-1a8cc11ac42so1167735c88.0
-        for <imx@lists.linux.dev>; Fri, 30 Oct 2026 17:54:32 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ZhsH3//C
+Received: by mail-dy1-f178.google.com with SMTP id 5a478bee46e88-33fb4680717so859374eec.1
+        for <imx@lists.linux.dev>; Fri, 30 Oct 2026 23:03:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793408071; x=1794012871; darn=lists.linux.dev;
+        d=gmail.com; s=20260707; t=1793426628; x=1794031428; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=mnjjH1kwd237jiTTP+/EE2SALRkAPRbhV6DYx2q6Y98=;
-        b=zZBBZNUIHZ2LilsyQIGTNT10lqrHC45WFpRZJDvv7dNz+rIZ7Q/nXxauo341Fst7Dm
-         +NX0jqRby4w0XJkz2eYXuXRKSGAXF1z/8x8myTZCBmDv6pESw1krcfhNuUL/PIcovgSE
-         l7xIbbZnXZYLABcSfsiJxdgbY41aqI+ZO2oR/XHYa19u94UPNaOdfTaf4GrzCon3KSxh
-         zvUinLwHR/3Fn8sF+V1ZkWfljKkW3N6QnjjmH2+HsutlEozs5g3VZ+w2F8zs433ngqyU
-         YiEvi3iiPJtga/Zr75DLXsGrz78tF8g8jwB6AHGCXecfO1Buu0Ok9zbNDBEd1Tf90LVX
-         q6Gw==
+        bh=ZnHzpDNAsYwgZW+/BH7mx2GO7ajwWfSCvotHqaQHR4k=;
+        b=ZhsH3//C8RpavCEylb4y7EcUoASVqtL9RBB0mUx5j7PK/ZBGM4l4sVHwO13Veywa0q
+         4eaa2vrd1OgiU2pVwR2V6GAB6RH2lHC9BvgraXaOJIkoHoy7pn4SEXcRejgcO1fsNnfK
+         cXiSRJSinGzTGSQxx0ljz/Tb9JKoe+u+KurAeM1J6sSq40NLlhEvw5md2/5M2l5imkM7
+         WDhtR5dSgBrUQP/A+7YKDtakgr4ccdWJp+QRKzW2ADa+0CxyQgB/RaFwS2vjXjFxZS1d
+         dQtsR3w7NxWWQl4M7fDcrPyFkAbdxcpHyPN5Ki+BRik6+qb/XhKCyVFsohTApM8SJgUI
+         f84A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793408071; x=1794012871;
+        d=1e100.net; s=20260707; t=1793426628; x=1794031428;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=mnjjH1kwd237jiTTP+/EE2SALRkAPRbhV6DYx2q6Y98=;
-        b=X8S40DQyFagiM9hJgq1mY8mOkAln+94Y1u9E/K//PAGGSFJ8pmbLKUIR4MpQy1rUX7
-         itPv0Y9Cmz+a8WcsUC22CzhaUjln19JV20qQ6vq8lo83Ol4dJylQ/gu7D8OzuIJTfAGm
-         mXJAyepwr4BsbgYvf28kFlbRNiFGRNbnD9ky8tgkoJParHkSIQZ+/2c+qM1fKtkaDmE0
-         L8oXuhuv2VTV7fgLaxkR5FbCjPULqEFjuMdiI0g08a2JigXtUb9EFh6KegMWHUQzuGjt
-         nd/viDkf/TkQYONcYDw50NOuprqZeAms61ZJzn+zUAX6TZtGUtVaiFqt6c5CK0sr/Qrx
-         a7uw==
-X-Forwarded-Encrypted: i=1; AKwUvBzQqaxXoYGKgpLIuc34mlYf6AnFQ7z3dDu9vIzZc8MsMleRNQC+ragRgFHLVTD/TrsfjtE=@lists.linux.dev
-X-Gm-Message-State: AFq9FYI449AJViGEZN7Ywn9YYi+4ouITTF9GR9K71Ckyp3TDLbB26VWm
-	/jH2selshnuHY4NofHla/YhLtJFiP+VyYjASmXJzbBfkWnzITTw4iLe9
-X-Gm-Gg: AYBFou2LJKn0fgSVCSFAmdPbDNsj7xWGheODrTeByEQosFVHAeLU2OOnCKrU+MhXcyx
-	GaZKk5bLbdRsE/5x6J/8i9M4iMnhGSuoSp90kzXL8KkViVlgzpjGJdc8K0H55jt66kfAa6mHWBs
-	6v/DX9M9YaChbYEn0OrWePwo7HW4FHx6MFHnfuVTyl3CtJ9oT3+QBhE20Ak7gmI4Ss/6gjzxvCY
-	yX7/r4imokPHYQQ3+DnQ6qIhid0mmw3GZz2cg1ug4gEmfxJz+qdkWqLSL97bL4MqIgy2upoRFYX
-	rvg8iofWrhaeXXCvOe8mPPNSMjJIsB7JcZmDTZ/guhEKLeTCqbteD7vBzCeZVNS/QQoRAX2Pv7/
-	grqq4HZ1bR71QDW0kwePA7dhZpYiPhrMLiUJ39Zssuii92KmFCz0a0PChJXaGawZamxY1Yk+A2E
-	kP3GGOhj/0CfdGED22syj13Xhnwkr7A4EZY30NNv6/Qmg3MFk/evCwQhCatrFvBSs2DyxhOn+so
-	ICCgoAPZxqBFpYIO1875r/vnpOqKaOxtsaUMmqZzvwMpdvN4FdytDsu8MQMFnWwzleJ5/7x22oF
-	yiqdcLNBfRttXYw+2/Pu8VOKLuIEEgsQTQsIRoARsvx5T02xxL3f0zH15cd+FFyaqvLmKPx82Ef
-	gPHshY56EkeAm8s9vUkrprVNvA4mzVKUmu0NVmbD1Zgwy2iREFsF5hQKrtSJR/7SZn7T17B/Mnw
-	9ObT5/a7MS60gScqzpDYI21v1+/gONbB3PUpE=
-X-Received: by 2002:a05:701b:4187:10b0:16c:ff3a:d72e with SMTP id a92af1059eb24-1ac5e322fb7mr5663288c88.20.1793408071289;
-        Fri, 30 Oct 2026 17:54:31 -0700 (PDT)
-Received: from brev-9gdpyq8lp.ap-south-1.compute.internal (ec2-3-110-210-194.ap-south-1.compute.amazonaws.com. [3.110.210.194])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1aed79b3dfcsm1419862c88.12.2026.10.30.17.54.27
+        bh=ZnHzpDNAsYwgZW+/BH7mx2GO7ajwWfSCvotHqaQHR4k=;
+        b=zV6xO5FAuLdJ8eTdWgs0uwYcqfijqYxgY9Us4+KuM/wtdgh1JYectUeOGY0xByKrnr
+         pJB8nr+QLVigNHU1Dt6vQiDf235rngzEzvHm4NRVHbEV+Oczu6RwRNy8nM6Nol23dPxK
+         wfhVXyUGa/+8IKJZh3A2LzCoOd4Q3wXxSAGCqs3W4EnJ9PVcyD/dIUr6Pehm4UWMUG7i
+         gqvAvnQm0dfUpGj/DKwbNPhKs4Q2dn+aiKxI6e934WXKcVcUrn2CkA03D1qhwwDg0J7X
+         CjeKkzK/CLTr4XnVrTJtJt3q6yNj5uh04+dymuvpoUZ+JwVVkhhdv7gUKyvVAg57LNcH
+         UE0w==
+X-Forwarded-Encrypted: i=1; AKwUvBzJyHK9TjYJNBZ6agZB3HahbhpiJ3bGz7sX2fjElE4Mzs1byT9/+3DZdULkOPFgcCYB2x8=@lists.linux.dev
+X-Gm-Message-State: AFq9FYL6gkJ9HCrLr7r9Hj4CL+nkOXHxdqLqmW8XBk3C6EYVadFVDS+Q
+	c7mFd7zdehJXYEgqbbzMAYAbVYeeMfBA/d+/rNgtwCEM2q/mxl/1vMIW
+X-Gm-Gg: AYBFou1rq0lE0mEfbVeeS2gqauRrmExEWRyB8jCck3cRMJMbMQPhyEvYrhkJ3Xyj9kJ
+	SG4DIqqXKXcQWdsdLOjzYs0B/aL/86E1O2+1lXJdUEhEAgI3YIurwQrHKPRvLf9n4CkWNeDPH8x
+	bIa5A7d9Ea8bJ0884XPBffDTFSJfJ21kQ7tYtuXZiMIaj+V9j/Bo1v0SevkDhiSD8jO0VERHFE/
+	D/os5rqfx2Uj6coNdpq/BRemtcjFnbJggr2w07VnoYmlKqG1Vv6Qsr6/8/IW6r07w9YxIRRbpMP
+	76lRBCr95Rii7ZHbdljIbNrQx+xLg2W07hxBzCioEZB6UgL3f8v16wInhUPMwq4Qx9LrmQoVcLe
+	BFS4Ghs4TsXi5pKhyjQd1klXb5ewqg6SE4q5TPNLZF3730RiHpeEOAMZNLezLgzrapsCo2fiDTR
+	q78vjq2A1OdV9wHhCOeh6R9bf6rzc+OJ26GNVohogXv76Dbh56jkqzRXx+mjfaP5eeFD6HtX9VM
+	6R1goDJw0/38sJ4FFv175R2Er1DKAr7eOiDp5QDklwmKl0ImmJx1xsJuT2EuzG7rReYcpwZOstA
+	UA0e9k5KS8o/+7m0WJT/4IW0d0pi9nKZ5/rCU60onGUVGqrWTY82CjxOQmM/5ZxVLyI=
+X-Received: by 2002:a05:693c:65d0:b0:369:f7d2:d7a0 with SMTP id 5a478bee46e88-36a423c5d12mr6714625eec.25.1793426627830;
+        Fri, 30 Oct 2026 23:03:47 -0700 (PDT)
+Received: from asahi.tail4da9e3.ts.net ([218.48.198.193])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36a428af91bsm13254968eec.8.2026.10.30.23.03.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Oct 2026 17:54:30 -0700 (PDT)
-From: Samarth Narang <samarth.colleges@gmail.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>
-Cc: Samarth Narang <samarth.colleges@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
+        Fri, 30 Oct 2026 23:03:47 -0700 (PDT)
+From: "Baek Kyu, Kim" <pocj8ur4in@gmail.com>
+To: Mark Brown <broonie@kernel.org>
+Cc: "Baek Kyu, Kim" <pocj8ur4in@gmail.com>,
+	Carlos Song <carlos.song@nxp.com>,
 	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	linux-serial@vger.kernel.org,
+	linux-spi@vger.kernel.org,
 	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [BUG] serial: amba-pl011, imx, fsl_lpuart: ->flush_buffer() unmaps the TX DMA buffer before the transfer has stopped
-Date: Sat, 31 Oct 2026 00:54:25 +0000
-Message-Id: <20261031005425.3351240-1-samarth.colleges@gmail.com>
-X-Mailer: git-send-email 2.34.1
+Subject: [PATCH] spi: imx: Avoid PIO replay after a completed DMA package
+Date: Sat, 31 Oct 2026 15:03:44 +0900
+Message-ID: <20261031060344.94687-1-pocj8ur4in@gmail.com>
+X-Mailer: git-send-email 2.55.0
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -107,108 +100,45 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi,
+A transfer can span two DMA packages. If the first package completes but
+preparing the second one fails, the helper sets SPI_TRANS_FAIL_NO_START
+for the second package. The driver treats that flag as applying to the
+whole transfer and retries all of it through PIO, sending the completed
+prefix twice and reporting success.
 
-I found three serial drivers that unmap their TX DMA buffers in
-->flush_buffer() without first ensuring that the outstanding DMA
-transfer has stopped. Line numbers refer to mainline at 83f32c773255.
+Clear NO_START after a failed later package has been unmapped. The driver
+then returns the original error without replaying the transfer. A failure
+in the first package still takes the existing PIO fallback path.
 
-uart_flush_buffer() invokes ->flush_buffer() under the port lock.
-The path is reachable through TCFLSH(TCOFLUSH), hangup, and close, so a
-userspace process with access to the port can trigger it while TX DMA
-is active.
+Fixes: faa8e404ad8e ("spi: imx: support dynamic burst length for ECSPI DMA mode")
+Signed-off-by: Baek Kyu, Kim <pocj8ur4in@gmail.com>
+---
+In an arm64 QEMU/KVM kernel, the SPI core and spi-imx driver ran with
+modeled MMIO/FIFO and DMA provider callbacks. A 513-byte transfer
+completed its first 512-byte package; failing RX descriptor preparation
+for the second package made the original driver replay all 513 bytes
+through PIO and report success (1025 bytes in the modeled record). With
+this change it returned -EINVAL after the first 512 bytes and sent no
+PIO bytes. First-package fallback still completed through PIO. No
+physical ECSPI/SDMA device or external slave was tested.
 
-Because the port lock is held, the flush hook cannot use
-dmaengine_terminate_sync(). However, dmaengine_terminate_async() only
-requests termination; it does not guarantee that DMA has stopped or
-that its completion callback has finished. The DMAengine API requires
-synchronization before memory still accessible to the descriptor is
-released (include/linux/dmaengine.h and
-Documentation/driver-api/dmaengine/client.rst).
+ drivers/spi/spi-imx.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-I found the following cases:
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index 79a6c1a60b0a0..eed1936388aa8 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -1968,6 +1968,9 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
+ 		spi_imx_dma_unmap(spi_imx, &spi_imx->dma_data[i]);
+ 
+ 		if (ret < 0) {
++			/* Earlier packages have already been transferred. */
++			if (i)
++				transfer->error &= ~SPI_TRANS_FAIL_NO_START;
+ 			dev_dbg(spi_imx->dev, "DMA %d transfer not really finish\n", i);
+ 			break;
+ 		}
+-- 
+2.55.0
 
-1. amba-pl011
-
-pl011_dma_flush_buffer() (lines 858-877) calls
-dmaengine_terminate_async() and immediately unmaps dmatx.buf.
-
-The unmap can therefore occur before the DMA transfer and its callback
-have finished.
-
-2. imx
-
-imx_uart_flush_buffer() (lines 1716-1739) calls the deprecated
-dmaengine_terminate_all() and, when dma_is_txing is set, immediately
-unmaps tx_sgl at line 1729.
-
-The imx-sdma termination path disables the channel but defers descriptor
-cleanup to a worker that sleeps for 1-2 ms because the SDMA core may
-still be running. Consequently, termination does not establish that
-the controller has stopped accessing the mapping when the unmap occurs.
-
-There is also a separate callback race. imx_uart_dma_tx_callback()
-unconditionally unmaps tx_sgl at line 595. If the callback is already
-running when the flush begins, for example while waiting to acquire
-the port lock, it can subsequently unmap the same scatterlist again
-and may attempt to start another transfer.
-
-3. fsl_lpuart
-
-lpuart_flush_buffer() (lines 601-614) unmaps tx_sgl at line 609
-before calling dmaengine_terminate_async() at line 613.
-
-In this case, the mapping is released before termination has even
-been requested, while eDMA may still be reading the buffer.
-
-Potential consequences
-
-These paths can release a DMA mapping while the previous transfer
-may still retain read access to its backing storage.
-
-Without an IOMMU or SWIOTLB, a late read can race with subsequent
-modification or reuse of the buffer. With an IOMMU, an unmapped IOVA
-may subsequently be reassigned. With SWIOTLB bouncing, a released
-bounce slot may be reused by another mapping. If the old transfer
-continues reading after such reuse, data belonging to a different
-operation could be transmitted over the serial interface.
-
-LS1028A is one configuration worth examining for the SWIOTLB case:
-fsl-edma uses a 32-bit DMA mask without FSL_EDMA_DRV_TCD64, while
-supported systems may have RAM above 4 GiB. Whether the affected TX
-buffers actually use bouncing, and whether a late read occurs after
-slot reuse, still needs to be established.
-
-A related issue in qcom-geni was fixed by e3c04834ae1a
-("serial: qcom-geni: fix TX DMA buffer flush"), associated with
-CVE-2026-74655.
-
-Possible fix
-
-Since ->flush_buffer() runs under the port lock and cannot sleep,
-one approach would be to:
-
-- request asynchronous termination and mark the current TX operation
-  as flushing, without immediately unmapping its buffer;
-- defer synchronization and mapping teardown to a sleepable context;
-- ensure that a completion callback for the flushed operation cannot
-  unmap the buffer again, advance stale TX state, or restart DMA; and
-- ensure that shutdown, and suspend where applicable, drain the deferred
-  cleanup before releasing the associated resources.
-
-The callback and worker would need to coordinate ownership of the
-mapping, and any work draining would need to occur outside locks
-required by the callback.
-
-I have compile-tested candidate patches for amba-pl011 and
-fsl_lpuart using this general approach. I can send them for review,
-or adapt them if the maintainers prefer a different synchronization
-strategy.
-
-These cases were identified using a research static analyzer for DMA
-lifecycle ordering and subsequently reviewed against the driver
-source. They are source-level lifetime concerns, not demonstrated
-hardware exploits.
-
-Regards,
-Samarth Narang
