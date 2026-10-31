@@ -1,194 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.168.131
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793465058;
-	b=U9EFSg0J/rGcky1+c6+fJETpb1p8qrDNG607hdeXj2uMWW6w3dxb4xKdPDXLGcJRCHow
-	 ZAhyckJ6BT7qMscwlC+v4WXP5NiBk2N4yAmpa5yd5VajX+EmBneVSp9aYBnwlyW1Vl+JC
-	 P8L/aS+tOnwx+Of3TPhFlaLoZ6aoOeEnrdeMHctrlT6WoSvpJnls+apvsQCStcAQpWs/5
-	 GE7hjxEkRxCrWBwL2+UaWiEypA3juPt6ECvwtKRwocun2WVzsSWKPqujx8XpvWz+o0A4O
-	 KzQ5V57v1cv8tkofHfrGshTA1z/r1gnVU/aiwgYNCqoAz13gHuHc2jTew3bGHH9U3nA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793465058;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
-	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:Date:From:
-	 To:Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To:X-Proofpoint-Spam-Info:
-	 X-Authority-Analysis:X-Proofpoint-GUID:X-Proofpoint-ORIG-GUID:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details;
-	bh=AxPaqqR7JQ477yDdRMMPNaR6fhRM87wS+96sE2dqDu8=;
-	b=XPrCwBJbZcVsE2yGIT690178atttVIWx3atTQjYnMkwrSb58qdAxB3cPQwbDeM7+yKnB
-	 AX0q0pEoG3Td8mhgPIgDOECiAZqsMUZTg5OQIzVXqTqcrA1ihc1Pa5fzrMqVdF9JQc254
-	 VsSX7qnd+TTZ5hLXH+gP+OPm9lHLID+cCiIUqxHR3L0yAuFwVtUEckmLR+rlrPqinhH/d
-	 tEoLGy3RSv3oU9xzqmA47q6AxxfKATGcyNzMY/AV4QTfH7eLQ5+WPTnOMk4jnK88SEy2l
-	 SU1T2b12DwXh96t5RtBV0OdxfDQ708AaIQKXxjsdoi9d+jbJwg4K5exXVIIgRfyfWhA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.qualcomm.com;
-	spf=pass smtp.mailfrom=oss.qualcomm.com;
-	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=DdWMOV2z;
-	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=hgqfqcH1;
-	arc=none smtp.remote-ip=205.220.168.131
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.217.54
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793469665;
+	b=LgMLlTxW8Cqf9oT3DKwX+1gC5hfnI7yPerPjPj0Nf6SJcO3Nqa8Hqf7sIzPKRwnSmNbB
+	 bMRUjYrYG0ph1xLHlPUdGe4tmfT1sxx/SHvNy1NYEC9Vwvl+Evpict+Kjm+Ciy2vxbjEO
+	 UZ/sI3mBrfZILbtsosovW/z5oGeF6avBpVg5DhMEtdAIeGHv+aZw9Cd3dlsA4kK9lRKqA
+	 fTnTbRGZdFOlaXiaW11MbRpVZOm8/fOfPwYWxTdmb5iitSmkR6UaBQfmGC0V2/bp6ALXc
+	 HJbkAE/GyqfziWDvZJsLDss++wEM00HwAehyG+wqDGoNK8uOtcRzUt5/1YDXYVOwisg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793469665;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=ztiV5c0DfuFx8uDKCLiUp5o+ivOB8cWRN0pJNXnNfZU=;
+	b=bXFIwjYTSsUea9Xp/AQpbIL703DpkD/rH2sG/VDutlvO4p0CZ3RNg+5eHVWyOqBjzSNl
+	 7axMSmqAaK8TbZcLiGPi+lmF7RcA+AhnGOft69Wvh4UmC2TMBQFO9BZhJKifEln+VfvNI
+	 BDS9+PElteTGBG8D4/aKDIspsn1DL12tVy7XhftwmO7KqFzVBu3MqCSnx+ypBMPha9dom
+	 stx9NFlMV/NhrC0k3g0EDAw5nZf0t5gQX3gVd1g8waibM1zhwSvfYjTaakySxMcKRFY28
+	 6d4fV/TDbm37B0GmIS5/5/p8/neURnEi3AhZfMB6AbAZ+IOPC+LjREd+o01FcKn/kww==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=0It9zTfh;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.217.54
+Received: from mail-vs1-f54.google.com (mail-vs1-f54.google.com [209.85.217.54])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ABEA606A32A
-	for <imx@lists.linux.dev>; Sat, 31 Oct 2026 16:44:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1ABEA606A32A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87E45606A322
+	for <imx@lists.linux.dev>; Sat, 31 Oct 2026 18:01:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 87E45606A322
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=DdWMOV2z;
-	dkim=pass (2048-bit key, unprotected) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=hgqfqcH1
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69VGUNOY3605981
-	for <imx@lists.linux.dev>; Sat, 31 Oct 2026 16:44:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=AxPaqqR7JQ477yDdRMMPNaR6
-	fhRM87wS+96sE2dqDu8=; b=DdWMOV2zuAcTmxoxESfa0mRiVck5d3ot4T6wTvkn
-	yr7gIlkhDjxYophT68C9VCeg5uY00oW5ZoeSXPnEjEaqePR2Q8nbQW8Xa+qS0dig
-	wyFR8xvA/YcJsCQ/A2m8uQD+qG0Hq0Ph4zLv0/UvPovKUHRsiJQ3x8JrIjg+qvBy
-	8W7X80/OYoIl9M5BCR5yGjNYS27fpc7/yearZw2P4HVKmW6XIanjK9VlT6DPIKvW
-	bB3nWBjPKKrSOdO468EAHhmlrMPpgBDB6+LVkJ8UgH53hlHtXymHV6jhjq6sWWEq
-	tbexGPO0M/CWaqqzHd4e5fZObFGADZ/+RRPuvLLrJhF3Iw==
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hn61fswew-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Sat, 31 Oct 2026 16:44:16 +0000 (GMT)
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-93cb98809caso290847485a.1
-        for <imx@lists.linux.dev>; Sat, 31 Oct 2026 09:44:16 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=0It9zTfh
+Received: by mail-vs1-f54.google.com with SMTP id ada2fe7eead31-7c3cecbda48so377632137.3
+        for <imx@lists.linux.dev>; Sat, 31 Oct 2026 11:01:05 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793469664; cv=none;
+        d=google.com; s=arc-20260327;
+        b=mEdA2KJQDSlFiZWxeu+8HPeE8PXaHomIOnCBsXVtUTzrvulLf181JDiara7Fb5QG91
+         s1eVsQKWmVNgQLkmq8AU6Px8xNZuuuNpY6A7/zwBAy8eGOxA9l4iKZ/sAeqgnIvVVF+B
+         Pc5vvdrQZ1GrCvAZOx2x/ajCMuH+nRrvTkMtjl4x91Q2S9j+A+3WAkRfbE5Z8zX7O9y+
+         0wtG0FZKmq+678ceehBhHsm19dgu/JdTbLVU/AHCPTQp61Y5H46MzrXzhLXoU/X6/qPd
+         GZih/VyzSdDB5/Q0Vqehp07PgTdQ21yb/ZF36s48x+dsCti2sN+OFRjMAkqMjfunovgS
+         DqpQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ztiV5c0DfuFx8uDKCLiUp5o+ivOB8cWRN0pJNXnNfZU=;
+        fh=PBrnDWiIq2En9SZxZlGxT+6zW69M4Jg5UP2CMxpTUpY=;
+        b=hvFcWqCOhgtT/1FBnY1DhrpBv6DyFJ6TPfHYI8kFeL5a4hVePy8E8yjhgXHkm2gmSM
+         z7FZVX5vylNCWgQcn0WzGpoA5SGoulEQkGK/WGIVPW1TqzQK6Lns8IRD8wBW830sKy+h
+         +PqjF3WYQG+V2DrM86J9ncK6GUaBiD1ut93BV+lYhEWkQgwx8Wjr7kx0A5I5UzmIx0gg
+         RCXctQTUUqaQlrF3uerUWwDBWN9nK1336UJKEDfNwWf9iVyBzau7ShA9LDkbXtQFI8QL
+         /Jaz9c1+DmRuWgwaedO8yrpgWKiXTi6PcC0q9O7mXMZDohH2Dx14DRwWCi9mLWBG7CgJ
+         ZHQQ==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1793465056; x=1794069856; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+        d=gmail.com; s=20260707; t=1793469664; x=1794074464; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=AxPaqqR7JQ477yDdRMMPNaR6fhRM87wS+96sE2dqDu8=;
-        b=hgqfqcH1sBEey/KrdH9m435wl8zYCouc+/Cs00WZGXLeAA6aUVm4yGry9YN6ZGivvn
-         9zeFThw4OI0j2KNramkoPsySTYEBnDLPrU/Sd2OLK+ELbUTEy65X0tw5tZpXvExDMBl4
-         Hbii9GLwJpyQgbPp23QLowR3zv9T9l/2I11GwAT+ongRGnzE/MkhG1ZJd+E0pAU6LTLF
-         JHyKqGJkfc3w7HFCcGCYCjb/SpA+Wf0exiDMaHpgSjo27JIkBlh/QEm0UjH6QBbMAl02
-         hq9+Epq8z25uJRphFv7wSZx+MqiQccBKhj+2wiCVUJhrXi6vXMVnjCjNF8zKQnrAltSj
-         l8dg==
+        bh=ztiV5c0DfuFx8uDKCLiUp5o+ivOB8cWRN0pJNXnNfZU=;
+        b=0It9zTfhiJuHM+pVis4PI9jIz4XbVYXx29PzaC7nmgYUcHNBCNwm4VO1DByshiqYry
+         KsfbGbcxJN0O3pY1SoCacvCgIyLzGsheanRWHbCHXd1r4S/Qp+AHX29TfPdt98LmWboJ
+         TU5WDOEUwbPRKFte2PRP9bGEFieZ7M2mmJBw4aANvwEViKS2L+TtB+FKuOxciXXFOUdm
+         /u1j7Q5DtVGNKk9UqCkZ36Qxic0/aOHSvjcoo5XEIFO0hWGS2rtAjRQAFlYt5YARBl81
+         QTujstNrmqWyawqVbGG4w7FdqtfuBLZi1gR+VySCs0DMUisy3Y23MxHnVHhAz3ejSTsZ
+         OEyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793465056; x=1794069856;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20260707; t=1793469664; x=1794074464;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=AxPaqqR7JQ477yDdRMMPNaR6fhRM87wS+96sE2dqDu8=;
-        b=cuSZRyY50AACDXo/lvB4+JSxuAdwF3z+Yn5A8GyBb46+qu+tni8VFjtDBxuOtNGzZR
-         5Qfi9r4jhpNILZxNH3QANafsMMT1RZ29Oc+SSVPiChkyRdCN4pEO/tTZFchzivM/7NIJ
-         76+DENX5D8RGLNv72iMAIUDxVCEkNP5aue18wb0hz1YpAW37lmNcXt52UzBDpiFWaZfK
-         ZNigGtwwskUPp94BeaP6mk6VRDKl80Ei3WBRb0wQktMPFaAyG+graxcPvggUxGrnMn8o
-         mY0mVG0P/Qf1OIBazirIX/a05MGZucOdgtXmhU3I88YNgbpnMlfJxjjyRzcV/26v+r55
-         B/6A==
-X-Forwarded-Encrypted: i=1; AKwUvBygtxtHq4Aq4c+G92tm/tu2BKU5zmNGhCD9D+VAVO6c6DWYe6Mjtxk7IFteX7vZJDZBpqA=@lists.linux.dev
-X-Gm-Message-State: AFq9FYL3QRQeHfpfe2+9q7ERcDwaqnp9iXp8KjTTFhIGkTVynaalqPyD
-	cSu2jfowd9VoG/wnamCvLJ30HnVJJpLdRGn1ZHndsDw5ugvveLZ9FbyAQYXlRtZO2QapFrzLrrw
-	r3uUPTjtZbeA2HyWkaGhT+WAcHnHlreCrX/zmgzMBbT0d185RUaow6Q4=
-X-Gm-Gg: AYBFou0r9wq6wV445S7y9rwn0pavtl/0XWYp9fbAFIpCkRaJOXhwsOHIn+Do5PfHukC
-	Ubh/eXfeYg0a6ykWG4DlTb9TWrGX2vFKQ+HVx3av7z4zHXzv6vX3sIhHZHbp++hJHbP1w4djfs1
-	xV41ZNMAW9WLOfkWkx//oVgL/KmssJdFNKq/H/1MBPabK4Ub10ug2sEHn2LvAF7tLsy05HhwJ2a
-	m3gxPKRGWlN/Oi6HibFHQUoEGKQNqS7cGVVTehVK0/AK2NU+3VLgJeEWVQVF4N8d9V3cpCaBeef
-	3MWfB7rlJ2X7JAo6tQXDKsKnUP3QsyEIv8RFp0M2QPYRmQFhKxL6RhpvE8cj6Ii4QFY8m4JoyoL
-	MWFG0KNA+qORB7KAvmpT5YDUmL/vEEGknDEoVQrwT/DVLpKp6NF5MEHwATK3l+q1XbB4NlB4Sk9
-	tGK0mUMxUBbAIMVaMHp0qhWKhu2tm20B8Sq4QSDBg8BMLE4EiuGzOJ59v2YYpeKg==
-X-Received: by 2002:a05:620a:1a17:b0:93f:3120:6c82 with SMTP id af79cd13be357-9442186437cmr915820685a.78.1793465055877;
-        Sat, 31 Oct 2026 09:44:15 -0700 (PDT)
-X-Received: by 2002:a05:620a:1a17:b0:93f:3120:6c82 with SMTP id af79cd13be357-9442186437cmr915810385a.78.1793465055075;
-        Sat, 31 Oct 2026 09:44:15 -0700 (PDT)
-Received: from umbar.lan (2001-14ba-a073-af00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a073:af00:264b:feff:fe8b:be8a])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5bfe072d1a8sm660313e87.32.2026.10.31.09.44.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 31 Oct 2026 09:44:13 -0700 (PDT)
-Date: Sat, 31 Oct 2026 18:44:10 +0200
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-To: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Cc: Douglas Anderson <dianders@chromium.org>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Jessica Zhang <jesszhan0024@gmail.com>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-        Jyri Sarha <jyri.sarha@iki.fi>,
-        Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-        Andrzej Hajda <andrzej.hajda@intel.com>,
-        Robert Foss <rfoss@kernel.org>,
-        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-        Jonas Karlman <jonas@kwiboo.se>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Paul Cercueil <paul@crapouillou.net>, Marek Vasut <marex@denx.de>,
-        Stefan Agner <stefan@agner.ch>, Frank Li <Frank.Li@nxp.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-        Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>,
-        Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Biju Das <biju.das.jz@bp.renesas.com>,
-        Linus Walleij <linusw@kernel.org>, Sandy Huang <hjc@rock-chips.com>,
-        Heiko =?utf-8?Q?St=C3=BCbner?= <heiko@sntech.de>,
-        Andy Yan <andy.yan@rock-chips.com>, Jonathan Corbet <corbet@lwn.net>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        Randy Dunlap <rdunlap@infradead.org>, Inki Dae <inki.dae@samsung.com>,
-        Seung-Woo Kim <sw0312.kim@samsung.com>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Peter Griffin <peter.griffin@linaro.org>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Alison Wang <alison.wang@nxp.com>,
-        Paul Kocialkowski <paulk@sys-base.io>,
-        Yannick Fertre <yannick.fertre@foss.st.com>,
-        Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>,
-        Philippe Cornu <philippe.cornu@foss.st.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Chen-Yu Tsai <wens@kernel.org>, Samuel Holland <samuel@sholland.org>,
-        Thierry Reding <thierry.reding@kernel.org>,
-        Mikko Perttunen <mperttunen@nvidia.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Jagan Teki <jagan@amarulasolutions.com>, Ondrej Jirman <megi@xff.cz>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Igor Reznichenko <igor@reznichenko.net>,
-        Michael Walle <mwalle@kernel.org>,
-        Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-        Jagan Teki <jagan@edgeble.ai>, Jianhua Lu <lujianhua000@gmail.com>,
-        Guido =?utf-8?Q?G=C3=BCnther?= <agx@sigxcpu.org>,
-        Purism Kernel Team <kernel@puri.sm>,
-        Jerry Han <hanxu5@huaqin.corp-partner.google.com>,
-        Joel Selvaraj <jo@jsfamily.in>, Icenowy Zheng <icenowy@aosc.io>,
-        Michael Trimarchi <michael@amarulasolutions.com>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Casey Connolly <casey.connolly@linaro.org>,
-        Michael Tretter <m.tretter@pengutronix.de>,
-        Cristian Cozzolino <cristian_ci@protonmail.com>,
-        Junjie Cao <junjie.cao@linux.dev>, Ryan Brue <ryanbrue.dev@gmail.com>,
-        Nickolay Goppen <setotau@mainlining.org>,
-        Stefan Mavrodiev <stefan@olimex.com>,
-        Florian Fainelli <florian.fainelli@broadcom.com>,
-        Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-        Robert Chiras <robert.chiras@nxp.com>,
-        Alexander Koskovich <akoskovich@pm.me>,
-        Markuss Broks <markuss.broks@gmail.com>,
-        Artur Weber <aweber.kernel@gmail.com>,
-        David Heidelberg <david@ixit.cz>,
-        Dzmitry Sankouski <dsankouski@gmail.com>,
-        Yedaya Katsman <yedaya.ka@gmail.com>, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
-        imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-        linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org,
-        linux-doc@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com, linux-sunxi@lists.linux.dev,
-        linux-tegra@vger.kernel.org, linux-rpi-kernel@lists.infradead.org
-Subject: Re: [PATCH 00/35] drm/panel: let the panels use the atomic state
-Message-ID: <py3tch5wmx4g2zjpebzbgtpwji4ci3vk5obeuy44fbi4vw2em2@gpjmxyvwpimn>
-References: <20261026-drm-panel-funcs-v1-0-5e3070a3478f@oss.qualcomm.com>
- <cxsgo7u2hfb4jskscqcbeaaneiyfh7bdmlvku2wxwtduekwhxz@3vsizgxvekw7>
- <DMICO60J4G03.1QBH2T9SQ7XEZ@bootlin.com>
+        bh=ztiV5c0DfuFx8uDKCLiUp5o+ivOB8cWRN0pJNXnNfZU=;
+        b=injPvDVmG0OUzVfZfdoEqjqgfqHqVjq0HvL/7T6fkDQSTPWM7x8RAX1t9eJAtRNqlv
+         15SY0DDRBDFzBzgXmmZI/QUTIP6oO/uyIx7YSlYUeKIKsrtlFSZNPMhQlTRXVlUSezel
+         7HjTLVOD6osBA5ZKnpGCAjIu6wmTYb4NgRUNB1ZOOwHAFzvtDr61g8iFDxAzC3n3utz3
+         edgIAp/TJr+XDxgB1Oqa9bgBgNIUfK9wvMWW/EoWU068IRfOqrCBPnVyc6Kl+B2EnSbr
+         xWLJcUcxcyl9M7zN3flZ+HgTvlHnGuvfc9+CYOJSwLILncUSIqyHpbhXZre/xvYzEGHH
+         ReXg==
+X-Forwarded-Encrypted: i=1; AKwUvByOYOPRyK5arrGu0gDq+ujWrer269twL3d+mUoLtIHR4o5BOnUCEaUiqMAdvBVHSj6LmiA=@lists.linux.dev
+X-Gm-Message-State: AFq9FYLnEYSqfu7bCpBVA6wMs1WWYKq30wcYuTo0CgfmqZYlo/CJSULP
+	INAhN49JpEWPBI8H7Wp8paAiWUtkjr3wXFnNkh1LNcK2RXtw6HKTqsmR+DBRubEbGlHttExpeR4
+	woz9pJMwXs3eZ0zbqCoHObjMQjkvTj2k=
+X-Gm-Gg: AYBFou0npXbF5bb1Q2lLOldfQBW6Te34rgOf9ZRYeVqf0AqVNAp2PjjDGwwofEplUFQ
+	dgi9w0VcpzfTH1VJWv3Ldl9rYuPLYoVTqe575rfKcfOi8KA9eQ2UTpnye2jM5lyH33efEPUs94T
+	c8P2ynFuEfqe5jVgFlxIhGAGNpwXiXG/ciR0K8+Xs6kwrsnADgkpa4L3xvd7DGNuDWi96kB6Frm
+	epc1sAnX/wBGE5dbOugFaFGOWgx+3XG9Ie/5SRj6KFSu3+b87WCKGOpX5iwVqicj7bTDSg83ekH
+	h2RnWgSRy4KZ3atyAlWm/2uWHEOHhoLFbF/hs1hUB5MJX/qqIRvAs17pi/Tz1L6Q6cWnPXqrvfy
+	T5JDUEj7dIzn/8T7nrtUYFXR+NrgtWe/3mVDMGsZEFNfOlagQoNcJ5S4i0d1ChFW9b98CsY1bss
+	ROiY6vhgn84WdVVY+6J50MMSQosfpkVpODBibg0riUjyXi5JSluCCfFsFlrTCuMzVRVd3DpWerJ
+	DMlRcabdGpjBW6UQXSGFbCRNvawWQ==
+X-Received: by 2002:a05:6102:c4f:b0:7cc:3eb0:6ece with SMTP id
+ ada2fe7eead31-7d072d53fa3mr3076240137.33.1793469664332; Sat, 31 Oct 2026
+ 11:01:04 -0700 (PDT)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -198,134 +106,183 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DMICO60J4G03.1QBH2T9SQ7XEZ@bootlin.com>
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDMxMDA2NiBTYWx0ZWRfX/nOzk+sWWrYV
- HVO6QOWp85sG5rCWWlbP46G6Sm13SFDWd0CIzJ72AdcVYFxr+vZRhBNdRKR0q3+FFbCDl3U1WmX
- aTM9V25YbbQ6WVambO3WhRbgtTmBjLU=
-X-Authority-Analysis: v=2.4 cv=V/LoQuni c=1 sm=1 tr=0 ts=6ae61ae1 cx=c_pps
- a=HLyN3IcIa5EE8TELMZ618Q==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=660iZSQnnn4A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=eoimf2acIAo5FJnRuUoq:22 a=EUspDBNiAAAA:8
- a=0sqqXKTFXRObX0Cx7wsA:9 a=CjuIK1q_8ugA:10 a=bTQJ7kPSJx9SKPbeHEYW:22
-X-Proofpoint-GUID: 0frtWmbLbbH2TrN8T_h9GFEFIah0yy8d
-X-Proofpoint-ORIG-GUID: 0frtWmbLbbH2TrN8T_h9GFEFIah0yy8d
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDMxMDA2NiBTYWx0ZWRfX0Pko4rXAe1p+
- bB06BxrOUFXFtRevnmZax8vsy0sQt6TBtgQGLH+YSRTRGuK8gQ71zXXnf14rYjnt5HolsJsMrVS
- +MK8mU9fgQBaZV4Rjcz9lxCYYDxuiVCafxdlKyAlWFmpl9MgHvgE1RuUiuBgEejDFfN6YALFPbI
- RQHLq/TIQ4eUxUwwDJZHl+quiyFMtxVc64IUUHL2sXC4eqnDRvG6WhbnBkWXCczHcsKIqTcZk9L
- LJ7RfLXv4BAK3DYTCGOO4p1wZzyCO1OovzesyVoelp9EMn6+kqESx/DdIlXKOTUYCLAjw+H40Rb
- NCybhgIBMK1u4yTCwzXo2WIGMAvpd6AZslO3jW7QUXXdS9QFsIoiZzIekYSukXXSXsqJuVnylCT
- bUpa0V/5JV2xwt1MO9gpELB8Oy4rOBjsAuUr7JDIi+Vtad7kBNmPEi4O31w2IAdH3WhC5Ha1lYc
- Z9pGScVX8G1nGUI1vtQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-10-31_04,2026-10-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 impostorscore=0 priorityscore=1501 bulkscore=0 suspectscore=0
- phishscore=0 spamscore=0 lowpriorityscore=0 clxscore=1015 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2610300000 definitions=main-2610310066
+References: <20261029-submit-serial-8250-dma-cancel-v1-v8-0-3fd56ba352ed@gmail.com>
+ <20261029-submit-serial-8250-dma-cancel-v1-v8-6-3fd56ba352ed@gmail.com>
+ <auNW_Oc-Ao5Iw-Gw@ashevche-desk.local> <CADvTj4pOg4w5LpFW_E3qzP7FZDnDgpB8LyR9xxhT_mZre21vFw@mail.gmail.com>
+ <auRl9ztbav4nHi7U@ashevche-desk.local> <CADvTj4p8tjwdftg+H11ob0iaBZKxXrTdkSmhfZHjOYunm5tr9w@mail.gmail.com>
+ <auTZtteCFnuoMD3p@ashevche-desk.local> <CADvTj4rXXAEnTyu_AzpF41a2YSHHG1ANozCUSePBoH3QZYbBQg@mail.gmail.com>
+ <auWqUIBUs0_7bnGU@ashevche-desk.local>
+In-Reply-To: <auWqUIBUs0_7bnGU@ashevche-desk.local>
+From: James Hilliard <james.hilliard1@gmail.com>
+Date: Sat, 31 Oct 2026 12:00:51 -0600
+X-Gm-Features: AclHuK8CrIpMhatn91Js9Zu09dawz3gtrtGWd_ctbAp5jI12V9IMTbfHBekYVDc
+Message-ID: <CADvTj4rej-zOtwwN8CtchQ8A9L-fdG0dL_XwBb0zTFv5m=+j4Q@mail.gmail.com>
+Subject: Re: [PATCH v8 6/6] serial: 8250: retain DMA resources when
+ termination fails
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>, 
+	Raul E Rangel <rrangel@chromium.org>, =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>, Tony Lindgren <tony@atomide.com>, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Richard Genoud <richard.genoud@bootlin.com>, 
+	Nicolas Ferre <nicolas.ferre@microchip.com>, 
+	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+	Jacky Huang <ychuang3@nuvoton.com>, Shan-Chun Hung <schung@nuvoton.com>, 
+	=?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, "Maciej W. Rozycki" <macro@orcam.me.uk>, Timur Tabi <timur@kernel.org>, 
+	linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
+	linuxppc-dev@lists.ozlabs.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Oct 30, 2026 at 06:31:02PM +0100, Luca Ceresoli wrote:
-> Hi Dmitry,
-> 
-> On Tue Oct 27, 2026 at 1:02 PM CET, Dmitry Baryshkov wrote:
-> > On Mon, Oct 26, 2026 at 01:09:49PM +0200, Dmitry Baryshkov wrote:
-> >> The panel is the only element of the display pipeline which never sees
-> >> the atomic commit. Its prepare() and enable() callbacks get nothing but
-> >> the panel, so a panel which has to be programmed differently depending
-> >> on the mode can only guess it. The NT35950 driver, for example, saves
-> >> the connector in get_modes() and reads connector->state->crtc->state
-> >> while being prepared: without the locks, from the current state rather
-> >> than from the one being committed, and with no way to reject a mode it
-> >> doesn't know.
-> >>
-> >> Every panel has a struct drm_bridge embedded into it, and the bridge
-> >> already has all the missing parts: atomic_check(), a state object which
-> >> can be subclassed and the commit passed to the callbacks. Rather than
-> >> growing struct drm_panel_funcs into a copy of that, let the panel driver
-> >> provide struct drm_bridge_funcs for the embedded bridge. This is opt-in:
-> >> the panels which have no use for the atomic state keep using struct
-> >> drm_panel_funcs and are not touched by it.
-> >>
-> >> To get there the bridge callbacks become the entry point to the panel,
-> >> with drm_panel_prepare() and friends calling them rather than the other
-> >> way around. The panel core still has to track the panel state, notify
-> >> the panel followers and handle the backlight, so the driver doesn't fill
-> >> in the power callbacks directly, it wraps its functions with the macros
-> >> doing that part. NT35950 is converted as the first user.
-> >>
-> >> The bulk of the series is the cleanup of what the panel core and the
-> >> bridge need from the panel driver, so that a panel providing the bridge
-> >> callbacks doesn't need struct drm_panel_funcs for anything:
-> >>
-> >> - get_timings() had no callers.
-> >>
-> >> - The connector type was stored both in the panel and in its bridge, and
-> >>   the display drivers could override it while creating the panel bridge.
-> >>
-> >> - The orientation was read from the DT, stored and returned by nearly
-> >>   identical code in more than twenty panel drivers, and some of them
-> >>   also had to set it on the connector from get_modes(), with a TODO
-> >>   asking for a better place. The core reads it now. It is applied to the
-> >>   connector from the new connector_init() bridge callback, which is not
-> >>   specific to the panels: other bridges have properties to set up on the
-> >>   connector being created too (HDCP, DP link properties), and currently
-> >>   have nowhere to do it.
-> >>
-> >> - disable() and unprepare() returned an error which nobody could act on.
-> >>   Worse, a failed unprepare() left the panel marked as prepared, so it
-> >>   was never initialised again.
-> >>
-> >> Behaviour changes worth knowing about:
-> >>
-> >> - Panels with the rotation property whose driver ignored it now get the
-> >>   orientation property. In the tree this is the Motorola Mapphone panel
-> >>   (panel-dsi-cm).
-> >>
-> >> - sun6i_mipi_dsi, sti_dvo and the Tegra DSI get their panel after the
-> >>   DRM device has been registered, which is too late to create the
-> >>   property, so they lose the orientation which the panel drivers used to
-> >>   set from get_modes(). None of the rotated panels in the tree are used
-> >>   with them.
-> >>
-> >> - A panel implementing atomic_check() can only be driven through the
-> >>   bridge chain. The display drivers calling drm_panel_prepare() directly
-> >>   have no commit to pass.
-> >>
-> >> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-> >> ---
-> >> Dmitry Baryshkov (35):
-> >>       drm/panel: remove the get_timings() callback
-> >>       drm/panel: remove the unused struct panel_bridge
-> >>       drm/tidss: get the panel type from the embedded bridge
-> >>       drm/bridge: lvds-codec: use devm_drm_panel_bridge_add()
-> >>       drm/ingenic: use devm_drm_panel_bridge_add()
-> >>       drm: mxsfb: use devm_drm_panel_bridge_add()
-> >>       drm: rcar-du: use devm_drm_panel_bridge_add()
-> >>       drm: rz-du: use devm_drm_panel_bridge_add()
-> >>       drm/mcde: use drm_panel_bridge_add()
-> >>       drm/pl111: use drm_panel_bridge_add()
-> >>       drm/rockchip: lvds: use drm_panel_bridge_add()
-> >>       drm/rockchip: rgb: use drm_panel_bridge_add()
-> >>       drm/panel: remove the _typed() panel bridge functions
+On Sat, Oct 31, 2026 at 2:44=E2=80=AFAM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+>
+> On Fri, Oct 30, 2026 at 12:08:52PM -0600, James Hilliard wrote:
+> > On Fri, Oct 30, 2026 at 11:54=E2=80=AFAM Andy Shevchenko
+> > <andriy.shevchenko@linux.intel.com> wrote:
+> > > On Fri, Oct 30, 2026 at 11:09:53AM -0600, James Hilliard wrote:
+> > > > On Fri, Oct 30, 2026 at 3:40=E2=80=AFAM Andy Shevchenko
+> > > > <andriy.shevchenko@linux.intel.com> wrote:
+> > > > > On Thu, Oct 29, 2026 at 11:19:59AM -0600, James Hilliard wrote:
+> > > > > > On Thu, Oct 29, 2026 at 8:24=E2=80=AFAM Andy Shevchenko
+> > > > > > <andriy.shevchenko@linux.intel.com> wrote:
+> > > > > > > On Thu, Oct 29, 2026 at 01:37:02AM -0600, James Hilliard wrot=
+e:
+>
+> ...
+>
+> > > > > > > > +     while (rx_ret || tx_ret) {
+> > > > > > > > +             dev_err_ratelimited(p->port.dev,
+> > > > > > > > +                                 "DMA termination failed: =
+RX %d, TX %d; retrying\n",
+> > > > > > > > +                                 rx_ret, tx_ret);
+> > > > > > >
+> > > > > > > > +             msleep(100);
+> > > > > > >
+> > > > > > > Huh?!
+> > > > > > >
+> > > > > > > > +             if (rx_ret)
+> > > > > > > > +                     rx_ret =3D dmaengine_terminate_sync(d=
+ma->rxchan);
+> > > > > > > > +             if (tx_ret)
+> > > > > > > > +                     tx_ret =3D dmaengine_terminate_sync(d=
+ma->txchan);
+> > > > > > > > +     }
+> > > > > > >
+> > > > > > > This is unacceptable. Sleeping is okay, but value should real=
+ly match the
+> > > > > > > baudspeed and other parameters of the transfer.
+> > > > > >
+> > > > > > This sleep is backoff after dmaengine_terminate_sync() has retu=
+rned
+> > > > > > an error, rather than an estimate of UART transmission time. Ea=
+ch
+> > > > > > retry asks the provider to stop the channel again; elapsed time=
+ is
+> > > > > > never treated as evidence that the resources are safe to free.
+> > > > > >
+> > > > > > The particular 100 ms interval has no hardware-derived justific=
+ation.
+> > > > > > However, I don't yet see a sound way to derive the retry cadenc=
+e from
+> > > > > > baud rate either. RX can be waiting for input, TX can be held b=
+y flow
+> > > > > > control, and callback retirement is a separate requirement from
+> > > > > > moving bytes through the UART.
+> > > > > >
+> > > > > > Do you have a particular provider failure mode in mind where re=
+trying
+> > > > > > termination should follow the serial transfer timing? I'd like =
+to
+> > > > > > base the interval on the condition that can make termination su=
+cceed,
+> > > > > > rather than substitute a wire-time estimate for an arbitrary de=
+lay.
+> > > > >
+> > > > > Termination of DMA sometimes require to clean up internal FIFOs a=
+nd other state
+> > > > > machines. That's what happens on HW side. In the software waiting=
+ for too much
+> > > > > may lead to the very big undesired latencies. The value of 100ms =
+sounds insane
+> > > > > to me for the HSUART cases (megabaud range of speed). Also note, =
+not every PCB
+> > > > > design uses HW flow control, so this may be even worse for them.
+> > > >
+> > > > The 100 ms interval can add unnecessary teardown latency if a faile=
+d
+> > > > termination becomes retryable much sooner. There is no hardware-der=
+ived
+> > > > justification for that particular value.
+> > > >
+> > > > The FIFO/state-machine draining is part of the provider's stop sequ=
+ence.
+> > > > For example, DW performs its FIFO-empty polling inside
+> > > > dwc_terminate_all(). If termination succeeds, this patch proceeds w=
+ithout
+> > > > the retry sleep, regardless of baud rate. The sleep is only reached
+> > > > after an error during DMA release, not during normal RX delivery.
+> > > >
+> > > > Baud rate can influence how quickly a transmit FIFO drains, even wi=
+thout
+> > > > flow control. However, the termination error does not tell 8250 whe=
+ther
+> > > > that drain is still progressing, how much remains, or whether the
+> > > > controller needs a different recovery operation. That distinction m=
+atters
+> > > > when choosing a retry interval: a shorter interval reduces the adde=
+d
+> > > > latency, but does not establish that retrying can recover the chann=
+el.
+> > > >
+> > > > There is also a specific API detail here: dmaengine_terminate_sync(=
+)
+> > > > returns immediately if device_terminate_all() fails, without reachi=
+ng
+> > > > dmaengine_synchronize(). Consequently, an error leaves callback dra=
+ining
+> > > > unconfirmed as well. The retry cadence can change, but resource rel=
+ease
+> > > > still requires successful termination and synchronization.
+> > >
+> > > Most likely this is AI slop. I can't see the justification for 100ms.
+> > > Can you explain that?
 > >
-> > Gmail barked at me for sending too many emails for too many recipients
-> > in the middle of the series. I guess, I'll have to split the series into
-> > smaller parts. Please consider reviewing the posted patches, letting me
-> > split / land the series in parts.
-> 
-> The first 13~14 patches are nice and fairly independent cleanups. I guess
-> they can be sent separately, or just be applied. However I'd still want to
-> review patch 14 and do some testing next week before I consider them ready
-> for applying.
+> > 100 ms was an arbitrary backoff to avoid a tight retry loop if
+> > termination keeps failing. It was not derived from the baud rate,
+> > FIFO depth, or a DMA provider's recovery timing.
+> >
+> > That motivation explains sleeping between retries, but not choosing
+> > 100 ms. I don't have evidence supporting that particular interval.
+>
+> Yep. And that's what my point is about. Any big sleeps has to be explaine=
+d
+> and justified.
 
-Sounds like a plan. Would you ack the patch 14? I'll review and repost
-patches 15+.
+100 ms was an arbitrary backoff for what I expected to be a rarely
+exercised termination-error path. It avoids a tight retry loop, but
+neither that nor the expected rarity justifies the particular value.
+Successful termination on the first attempt adds no retry delay.
 
+The constraint is that failed termination does not establish that DMA
+and its callbacks have stopped. Returning from the current shutdown path
+would let the serial core free the TX buffer while DMA might still own
+it. Retrying preserves that ownership, but a permanently failing provider
+can block shutdown indefinitely.
 
--- 
-With best wishes
-Dmitry
+Would you suggest a different approach to handling termination failure
+here, or a better basis for choosing the retry interval?
+
+>
+> > > > > > Regardless of the retry interval, shutdown cannot release the b=
+uffers
+> > > > > > until the provider establishes that DMA and its callbacks have =
+stopped.
+>
+> --
+> With Best Regards,
+> Andy Shevchenko
+>
+>
