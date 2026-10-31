@@ -1,100 +1,91 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.48
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793454312;
-	b=FxswC4QZ4QwRyRezDcpxsHR++nMWikukBJek857BTOziF9Yt3JYrh/7hpqU50EFbuBsv
-	 qF3GSq4S8AnSR5mHql09OTY1zEdHSqKxk1fA7I/KL8yBITDwdEtJ4hBVyCmpN7rj57n4z
-	 dnpM/eig18QOZNXLzId3xDqjolqvO++fiF4O+OYogkZYzpC5DbqosJiIXSeL0zgB4nRtv
-	 DdCFsAxYj4b9rX318I25YraOQofbM63lpELiG9/eRaqPoTU9+Htg1I+05c5naIt4HII/k
-	 HeY6bKxO4HfWObcG1LfLLfxtWVql4jRb0nHIjPJRqXLVF49jTqiO6fPaEj/wzC0L+iQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793454312;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=Ydiuw2JFoGviRXfS/1qoEyS58uTjOZNZXXzHRdS4SA8=;
-	b=s1aSaEe85p1ZHp+Jugkqrau4EXS2YRqwhWyQdhAGziXpLDX6knAzmdtMrEFdy6IcBQyf
-	 x17INtb309eglLT+plqIx9puGIe7miDYA8WfQ8pe+A8Px+19S3yLqYpZJh8LvxBPejekB
-	 pJfqzsogiEbtPLkuEBIsHKuOHvKdN0ZrDpgAmS3kU3qKUhD0CW9xNiNpMb4so9PBLia2v
-	 BsC6GqlYYX8qhGrNJxAJ4bJEyYQPB9dpwobWo9CCY+2Rrq6zpRbTe6LEd70s94nIZ3+RD
-	 vWRDHpJrJPJgPf9q2bN8MNXDpBdS6L7CL+qM6TWA7Xx8iMfzlGzhPMhjykTIofr/JYA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ZE1O4HlH;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.48
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.19
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793457518;
+	b=dCLZgY0v3lK1s1DOCsQCLYEyQZt4znGIx1BcZSSSemEaayBQECel6C0W29UD/mIm4TXY
+	 tDmcgm9eMsgbLwfuXIjBCGfcEXtvwTHL0pAy0e3H2PtDA33nje/JaSTJ/YYPF57hkh8jj
+	 4gc0UDgpvUyX8UDy9wBxr011dkvSSaLB3v1TghWPUeBSqNwYKxGJpgQKMOjmXYIOgIdN7
+	 Y02PwoLo9LtcQvPeit22oMMyCrhcsB1DK4KSwUn2CrKMmYrLGxw+fLMwt6MXf5WDtq6lk
+	 ons1N+wjrYDnpalconDFFK+BwYH433G8v8QUXQdU57uJoyx9t1nZfs1iuRHNlMyKwMg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793457518;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To:Organization;
+	bh=bnsrfRvGRM2qgoxDq8KtlUhs37rsslMeY4OUYqDf+Pc=;
+	b=QHgRBOIpAJhY9ZpjYgTdc4+6aJ9yyUq9e2sfyA2WJ8PaAsg04BSMIiECebYB+UXnXUxi
+	 IRfCehpVCXpLEG5NMrrYr2L3WdN5Gvs1h7tgfrdlcQKUq5KcmTs4sbLjwXAW4qY2w5rpi
+	 LnHLEDq9Adv7iTRwstekbnhdFoyk+Iu0hGnRehuNzGH7npPEDAieogB38TvkFQzKdrjih
+	 0PwNIzzIye98oiE1SHo+JQUgfD55h9FWmVqWjbO81uD+p2XdswcVFBmSjqS/86T71sMzz
+	 weMD5VOWtL6caF/d57HiwiiOscNpPS67HVQJgOqBgT8yybNtObvCPTsNCMVrMk7eUXw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=IXWrpn6W;
+	arc=none smtp.remote-ip=192.198.163.19
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA536606A327
-	for <imx@lists.linux.dev>; Sat, 31 Oct 2026 13:45:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CA536606A327
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 140B8606A31A;
+	Sat, 31 Oct 2026 14:38:35 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 140B8606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ZE1O4HlH
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-6b3dd83e779so2761754a12.1
-        for <imx@lists.linux.dev>; Sat, 31 Oct 2026 06:45:11 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793454310; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ZUbJPiuMdbqt0DV7bibSxycl8uyBqnb1Nb6gUzJc/2sVY5AU01/6Z+x4qJotPToNRV
-         3qWnSBwbfrjcHftkjdtmlgPASODTp8hwr4ruOoows3S0HEBJ9VoDtnBf4jEwVjA/hUCc
-         +5yLOX1mnV7HDVFLyc8Qt3Z5oBrQzUGP+6qZNBKic/duG3dbR6IPjvoH1Bl8wNEHQP/o
-         AoShFu20ox7WI5Qdlngv5pqOaJNNY6oDon29MAmT4n+du8RNSZJrESINBELtap/0nVXV
-         iByqN0VeDmcVC+XO77kfEe7xHMW4kDTwLADlobm0aW6Qz7y8tST6FY8icu6pYdRplZd9
-         cNHg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Ydiuw2JFoGviRXfS/1qoEyS58uTjOZNZXXzHRdS4SA8=;
-        fh=OWhlz+7AmueT8y5nOqd/ZNaNnSo88HQoOxtz/o3S4h8=;
-        b=SYgpkh8ZEZge+aWkkLXm98VNnxplEMcKEcRKfzy8yWbtaWg+x4ymtATZVgpenNpLV+
-         qmRw0TqHLfUTrAN/kPGdT8fAtO3iT3V+uqeZ/ucTbqyYNEcD3oRWcRqk9yTJsCyLXD8q
-         vUGteeA/psHzIyGfzlxM+ydEmQLLXgAzw0zkpKY34cLvaJpA/WwWbOK9ZV3JbjyDmMMV
-         8ZD0UpkSTRXDyAtJwAEx86i7Ukqj/jFI71ln+aoaENY1ipH5/WPoKIqw3XR/f4LfzQhj
-         NoRIVMfCDF2dcYaJNdpvs2/H4dAWvWi9VVcai817PJz8kUN1ckvBC0LjiUZftvEPaCfD
-         0BMA==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793454310; x=1794059110; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Ydiuw2JFoGviRXfS/1qoEyS58uTjOZNZXXzHRdS4SA8=;
-        b=ZE1O4HlHHmekpmbiZer2D2dRx4wYm2X/EGjhuLBRbHWT5whLcHmXDsgokA5wDqMkDA
-         fREPKJTDrrRTeLv7L49mTMi9/1CGvruq3rWJrETpKZcA4ob5qmVxfTKTh0Ma99eI7Nqf
-         J9gcslOdH7Ckdv84x5UqpWl4m4uAJCqhQY6o8sY2M1nlE13URJ0n6khRg2CX61KKFiyJ
-         uXD2/ghIwV0cMqctsnLEOxkCvDoiun7k9oT82y7POkj0UbAtupO4sXSj5J+/ziK5+tM1
-         zWVlYhiB5lKqQCagUNmw454LHFZw8lLbmN9jDt85swKGhzqZsCmbay6f12NmPJJKahvN
-         UZnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793454310; x=1794059110;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Ydiuw2JFoGviRXfS/1qoEyS58uTjOZNZXXzHRdS4SA8=;
-        b=Isjv7dKbKj+g+i/UrHv28F4LmlGur59xht3TKD6ZWCP8JSaQPuHke9FtbBBjXJV56m
-         tN8Oosg8h/F/AJMnOfG0BAFd8ZxqtQZNulhgqBWcfhzVdM162s2t6yTLgd1gLqVp7YmG
-         2vf6hUn4p/7bI/xFYcx9KcbtDl05chdUvrsi5/VPod9I+jfK7mbeUxR885IgpuHHPhJn
-         CcL8sIsRel8xdqdm/vDOtdFrwGAxr9GoIx7h9PKSnwClCSlj0x/2pZ3c0bVcyMqDED4k
-         DMNdzBPgl4F+/7B7cWWla2Pz6nXtLA2VrOGpsWtsLrtxvVJWqEjAIOSQ+FkI2IOugHAB
-         Hh4A==
-X-Forwarded-Encrypted: i=1; AKwUvBy0Htbz9J+sfaYnpE8T3dT6yFRfK38VTWeE5eKUC0+Z2e629j7oOOiwgM1TRtyY/fuQEeo=@lists.linux.dev
-X-Gm-Message-State: AFq9FYLfHhHhtBLatsmh2zkz071ncVrWpYuH6xrt/1zhROUHJf7ca4I7
-	CgU2/T7i8KQ8BUHBSiRH383NGkAH5Qx68hn2kL70oiz318qKFkl13NVlnxRCRbpfKxDvGA/bvWY
-	tubcZgSOBWzORpmnmQ/cIalQnnpQ+FgM=
-X-Gm-Gg: AYBFou0KUJGasA69mSv8cUSSq5SPetN5WZWrAUK7GMibkFIHWCWuBH8ijYB3hqCxw8G
-	KWfpwDJ9q/XrK4I6S6iy7Eu0euOvwLMuJovw0sDjxPPdWUgI7JJcfZ/B4OuGrPd5yC0MDc0Gruk
-	V7nQWkOJQU5oVoEL0AYQLjngd2TiS9YSE9VSwBZzQKYE0CL+ntDwhUxyyCkEst4Edwe6rGkxeGh
-	EOGwETpiHEsgeT9X9eouwqY4igijb+WDmSM5Hls3x7HlRk6omlXKTUcLEvBkHf5ZP0VIMCp33z0
-	sAeZcr712VbTWeO0XAe6nUXOs4KWR8rZg+OtlBgffcX+ZdTEPUb/e0Ke0DjDxtsjZammCyEYAYW
-	K8BX1OcM5EYae+R9/FmnjqozS5cYcMNFP1phdg33UFrPBdgOHtR+nddJcPKZH+G+1HsHV4tk=
-X-Received: by 2002:a05:6402:1ecc:b0:6b3:d0e9:2e87 with SMTP id
- 4fb4d7f45d1cf-6b4ee0e1f24mr1392387a12.5.1793454309714; Sat, 31 Oct 2026
- 06:45:09 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=IXWrpn6W
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793457516; x=1824993516;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=mOGtJbZAYHQiSqbGrp4D+HVhIDhcTQHgl9gip1W8AZU=;
+  b=IXWrpn6W7vNkZUoDlbZc0O27qEc1ZdVgbafvBcP5vapVWbRy912/RwRZ
+   i8omSBIIdiGs+Y38J6g2SvGSGqG6hqfbKfLA5QgWHbA66ihLzLlbQhqtO
+   7tw4ciPhKbmqa8XAZmcNiHnxe28Lh3lXwMRqX8T5F+oTULYPHrFQEvFZB
+   7ySr/wvGeBXb5+s/uuZ6iJ4UvviVmu/vvFeqaYKTZQ6Idb3LtrhY0Bhvm
+   cbzTKqM07xgVXMLrbmoMJYj8UIy3G4frVws/pQbcC+X/uva8vruRzoub5
+   zNtShOKHr3j1BTlDKPpDRuXii/B9pgRGnmWRyFhLGmGmAyQhNPQP7wOQb
+   w==;
+X-CSE-ConnectionGUID: lfx0PIw3RIebcWvL04Zz8A==
+X-CSE-MsgGUID: 3hSXlQD8TQ6A/LAfi0Ak4Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11952"; a="2308908"
+X-IronPort-AV: E=Sophos;i="6.27,188,1787036400"; 
+   d="scan'208";a="2308908"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2026 07:38:35 -0700
+X-CSE-ConnectionGUID: EO4jmSpvTPKIPl3mo+BHxw==
+X-CSE-MsgGUID: VGkjYBofTQioetwaJ3ILPQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,188,1787036400"; 
+   d="scan'208";a="5759414"
+Received: from slindbla-desk.ger.corp.intel.com (HELO localhost) ([10.245.244.127])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2026 07:38:30 -0700
+Date: Sat, 31 Oct 2026 16:38:27 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Cc: Lee Jones <lee@kernel.org>, Chen-Yu Tsai <wens@kernel.org>,
+	Thomas Richard <thomas.richard@bootlin.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Andreas Werner <andreas.werner@men.de>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Liviu Dudau <liviu.dudau@arm.com>,
+	Sudeep Holla <sudeep.holla@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>, mfd@lists.linux.dev,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Charles Keepax <ckeepax@opensource.cirrus.com>
+Subject: Re: [PATCH v2 1/2] mfd: Constify mfd_cell arrays
+Message-ID: <auX9Yz0txOxbFSSf@ashevche-desk.local>
+References: <20261030140240.211786-3-krzysztof.kozlowski@oss.qualcomm.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -104,60 +95,99 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-References: <20261031005425.3351240-1-samarth.colleges@gmail.com>
- <20261031123749.3783352-1-samarth.colleges@gmail.com> <2026103143-alienate-subduing-50f6@gregkh>
-In-Reply-To: <2026103143-alienate-subduing-50f6@gregkh>
-From: Samarth Narang <samarth.colleges@gmail.com>
-Date: Sat, 31 Oct 2026 09:44:58 -0400
-X-Gm-Features: AclHuK_UZoL4ALbG8OiocStKAY43wgTppT1vPowuPmaCkqxwveQ1ulzoHGIddAk
-Message-ID: <CAAbz3fR3DxTL66-0MJVsoWq5-FhypwdDn6=A5iyLUKY_LyOD0A@mail.gmail.com>
-Subject: Re: [PATCH 0/2] serial: keep the flushed TX buffer mapped until DMA
- has stopped
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Jiri Slaby <jirislaby@kernel.org>, Russell King <linux@armlinux.org.uk>, 
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, linux-serial@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261030140240.211786-3-krzysztof.kozlowski@oss.qualcomm.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-Thanks Greg, I will address the findings Sashiko found, would
-appreciate someone with hardware giving a stamp of approval!
+On Fri, Oct 30, 2026 at 03:02:41PM +0100, Krzysztof Kozlowski wrote:
+> mfd_add_devices() takes pointer to const, so 'struct mfd_cell' arrays
+> can be constified whenever driver does not modify it in the probe.
 
-On Sat, Oct 31, 2026 at 9:00=E2=80=AFAM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> On Sat, Oct 31, 2026 at 12:37:47PM +0000, Samarth Narang wrote:
-> > This series addresses the DMA buffer lifetime issues in amba-pl011 and
-> > fsl_lpuart reported in the parent thread, where flush_buffer() unmaps
-> > the TX buffer before the terminated DMA transfer is guaranteed to have
-> > stopped accessing it. In fsl_lpuart, the buffer is unmapped even before
-> > termination is requested.
-> >
-> > Since flush_buffer() runs under the port lock and cannot wait for DMA
-> > termination, both patches request termination while holding the lock an=
-d
-> > defer unmapping to a work item that first calls dmaengine_synchronize()=
-.
-> > The TX completion callback leaves the cleanup of flushed transfers to
-> > this work item, while shutdown, and suspend in the case of fsl_lpuart,
-> > waits for the work to finish before releasing the TX DMA state.
-> >
-> > Both patches have only been compile-tested with arm64 defconfig, the
-> > relevant drivers enabled, and W=3D1, with no new warnings. I do not hav=
-e
-> > access to PL011 or LPUART hardware with DMA support, so testing by
-> > someone with suitable hardware would be appreciated.
-> >
-> > The imx driver also needs a fix for the issue reported in the same
-> > thread, but requires a different approach because its TX completion
-> > callback unmaps the scatterlist unconditionally. I will send that patch
-> > separately.
->
-> Again, these need to be tested on real hardware.  Not to mention the
-> bugs that sashiko just found in the changes as well.
->
-> thanks,
->
-> greg k-h
+...
+
+>  drivers/mfd/intel_soc_pmic_bxtwc.c    | 2 +-
+>  drivers/mfd/intel_soc_pmic_chtdc_ti.c | 2 +-
+>  drivers/mfd/intel_soc_pmic_chtwc.c    | 2 +-
+>  drivers/mfd/intel_soc_pmic_crc.c      | 6 +++---
+
+> --- a/drivers/mfd/intel_soc_pmic_bxtwc.c
+> +++ b/drivers/mfd/intel_soc_pmic_bxtwc.c
+> @@ -245,7 +245,7 @@ static const struct resource tmu_resources[] = {
+>  	DEFINE_RES_IRQ_NAMED(BXTWC_TMU_IRQ, "TMU"),
+>  };
+>  
+> -static struct mfd_cell bxt_wc_dev[] = {
+> +static const struct mfd_cell bxt_wc_dev[] = {
+>  	{
+>  		.name = "bxt_wcove_thermal",
+>  		.num_resources = ARRAY_SIZE(thermal_resources),
+> diff --git a/drivers/mfd/intel_soc_pmic_chtdc_ti.c b/drivers/mfd/intel_soc_pmic_chtdc_ti.c
+> index 6daf33e07ea0..8412a25d37ff 100644
+> --- a/drivers/mfd/intel_soc_pmic_chtdc_ti.c
+> +++ b/drivers/mfd/intel_soc_pmic_chtdc_ti.c
+> @@ -53,7 +53,7 @@ static const struct resource battery_resources[] = {
+>  	DEFINE_RES_IRQ(CHTDC_TI_CCEOCAL),
+>  };
+>  
+> -static struct mfd_cell chtdc_ti_dev[] = {
+> +static const struct mfd_cell chtdc_ti_dev[] = {
+>  	{
+>  		.name = "chtdc_ti_pwrbtn",
+>  		.num_resources = ARRAY_SIZE(power_button_resources),
+> diff --git a/drivers/mfd/intel_soc_pmic_chtwc.c b/drivers/mfd/intel_soc_pmic_chtwc.c
+> index aa71a7d83fcd..f27985a58c87 100644
+> --- a/drivers/mfd/intel_soc_pmic_chtwc.c
+> +++ b/drivers/mfd/intel_soc_pmic_chtwc.c
+> @@ -50,7 +50,7 @@ static const struct resource cht_wc_ext_charger_resources[] = {
+>  	DEFINE_RES_IRQ(CHT_WC_EXT_CHGR_IRQ),
+>  };
+>  
+> -static struct mfd_cell cht_wc_dev[] = {
+> +static const struct mfd_cell cht_wc_dev[] = {
+>  	{
+>  		.name = "cht_wcove_pwrsrc",
+>  		.num_resources = ARRAY_SIZE(cht_wc_pwrsrc_resources),
+> diff --git a/drivers/mfd/intel_soc_pmic_crc.c b/drivers/mfd/intel_soc_pmic_crc.c
+> index 627a89334908..ce4c9ef59198 100644
+> --- a/drivers/mfd/intel_soc_pmic_crc.c
+> +++ b/drivers/mfd/intel_soc_pmic_crc.c
+> @@ -54,7 +54,7 @@ static const struct resource gpio_resources[] = {
+>  	DEFINE_RES_IRQ_NAMED(CRYSTAL_COVE_IRQ_GPIO, "GPIO"),
+>  };
+>  
+> -static struct mfd_cell crystal_cove_byt_dev[] = {
+> +static const struct mfd_cell crystal_cove_byt_dev[] = {
+>  	{
+>  		.name = "crystal_cove_pwrsrc",
+>  		.num_resources = ARRAY_SIZE(pwrsrc_resources),
+> @@ -93,7 +93,7 @@ static struct mfd_cell crystal_cove_byt_dev[] = {
+>  	},
+>  };
+>  
+> -static struct mfd_cell crystal_cove_cht_dev[] = {
+> +static const struct mfd_cell crystal_cove_cht_dev[] = {
+>  	{
+>  		.name = "crystal_cove_gpio",
+>  		.num_resources = ARRAY_SIZE(gpio_resources),
+> @@ -142,7 +142,7 @@ static struct pwm_lookup crc_pwm_lookup[] = {
+>  
+>  struct crystal_cove_config {
+>  	unsigned long irq_flags;
+> -	struct mfd_cell *cell_dev;
+> +	const struct mfd_cell *cell_dev;
+>  	int n_cell_devs;
+>  	const struct regmap_config *regmap_config;
+>  	const struct regmap_irq_chip *irq_chip;
+
+I haven't compiled, but I checked the code in the actual drivers and my reading
+confirms that these structures may need to be marked with const qualifier.
+
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com> # Intel SoC PMIC drivers
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
