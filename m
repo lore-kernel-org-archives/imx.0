@@ -1,13 +1,13 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=185.56.87.3
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=185.56.87.10
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1793575644;
-	b=JuF2lIXd6d9BlZFsuCbFG3sO1f2OyLSRVT72eXS8pGPgcJkgMeY6VhUtD5uUKyGfUA/u
-	 yukYRumOqc8eINQjEA4UBKXchMg6JUg0VaecLohW3zAdXounf6RxtCfcYxXxlJkZTjWHL
-	 +cPYS8MVZTlpI/Mnn7ZYR4ehjoYDhFMPDNsmWmwQVxK+zVaRua1grrtQrWtpfQN+JFtGd
-	 +HDLFb3OqlYvHlOg1HCSZ9QCYQaOFNkA0yqVfUTEdh0bnpPJR60yFM89wtP6+XGYOCxmW
-	 8ReHd+UXqngBNvCIYSx1l4KR6Hvq0OQxQgqkiYrnbiwAYIQJOtBzPyDWrkxZ1a2Lx8g==
+	t=1793575640;
+	b=2UYRt9KgAD93OZsXUvWfox+RQbbbd75BblCOLtLztuqlxaLZOrOGnYnNrYMTD/L3SWQ0
+	 STgcyoVZb3dCU5aT/0s3zzJWjAy7u5hWTdJYxUBojzxeVqQJagHrNwbVN2yMAZl13q/ha
+	 3H9uq0zSFNOFRAZLVYw4rIpYeW0txeRSQXP8R+22sF8KVksdOBDoPcFSek+2MzFSLUiHM
+	 ovli0okbB3PHK6IdxpTiGOJGE8hwiZ1FuLttgnV5juFLAgO3RC2KgGrjLlQBCRGkkKOEY
+	 hJrNybl5jCUNNKjo4ww20mG867WKpkCg+3N+M6G4auoyxoi3Uuts7lEk2U5hF8xxfOA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793575644;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793575640;
 	h=DMARC-Filter:DKIM-Signature:Received:DKIM-Signature:Received:From:
 	 Date:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
@@ -15,80 +15,80 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-AntiAbuse:X-AntiAbuse:X-AntiAbuse:X-Source:X-Source-Args:
 	 X-Source-Dir:X-SGantispam-id:X-AntiAbuse:AntiSpam-DLS:AntiSpam-DLSP:
 	 AntiSpam-DLSRS:AntiSpam-TS:CFBL-Address:CFBL-Feedback-ID;
-	bh=FfwL6drZ99UrcF24Kp7YaRAGdi4Rekl9jNQ/vwE9JDo=;
-	b=vsubs7A896YI2ThNUZpFx9W072Oyx88wCVeSMsFFwyp8JTw4CB8MGfhZoXnxndtH535F
-	 WznTwQNXExL8fhn/YrKwnBj1ZlRnnpV3K2FEzWs9Vu6JZEAbWDL06CfatOPb4GIKeijFj
-	 GxUePnqymLQGTWzMINn9k22nc+37qTRi/dsnmoFCCCSgWj6QGhmJ8g9MBTuoQtXCxYC3G
-	 4LYoHA8l5ARIY4Z7bwI9JhFJpn0fXLHnMz4E1S80R8GmlToCnm4Olyv3BRVZye0dY1gpr
-	 iWQRfR42wgCsoYdPP0IWrpdiKoGx+eD8BSVManDh7K37h0XEnsd7ou5M8NzBV0VK0+Q==
+	bh=aNNfCoQazdT0MtZCzmoXCNf2o8qmZ8Ept3HPzeF2fxY=;
+	b=dN1CJsR/2cgZ0Lhe8/7SMHVNlpug4HtEb8/AwQW9ROTxJD3WRG4zI0cOGgOUyTmRN6f+
+	 y7/WlzDlCZhPEs1Oj4PMKtuIhJv8XPDbYqmswKvjPKkOTAv/XL5bZ4QEBJ9CJlMvEU6Aw
+	 I+KzOzhzLTGuFVDQHRIQa9GRCHtfIfZbUzA/+bUD9S20rIh5atuPWh7DHZMZE8A3qsck/
+	 BadfpKNm7oyvYzL7lKiBA2M71RNpNy4hbrhGW8RAqloA+74vqvJmSjntNReHuxNZaEncZ
+	 5/H/J64DuLL516Rq5rMzoJLnnLQ3TGx8oa+3tMTMphrK8dwoKXj2ndYwiGVHeBAJbqA==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=valla.it;
 	spf=pass smtp.mailfrom=valla.it;
-	dkim=pass header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.a=rsa-sha256 header.s=default header.b=HTjOJt+d;
-	dkim=pass header.d=valla.it header.i=@valla.it header.a=rsa-sha256 header.s=default header.b=grsQDMZy;
-	arc=fail smtp.remote-ip=185.56.87.3
-Received: from delivery.antispam.mailspamprotection.com (delivery.antispam.mailspamprotection.com [185.56.87.3])
+	dkim=pass header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.a=rsa-sha256 header.s=default header.b=eilzRLGx;
+	dkim=pass header.d=valla.it header.i=@valla.it header.a=rsa-sha256 header.s=default header.b=YupPTfRZ;
+	arc=fail smtp.remote-ip=185.56.87.10
+Received: from delivery.antispam.mailspamprotection.com (delivery.antispam.mailspamprotection.com [185.56.87.10])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F1D6606A331
-	for <imx@lists.linux.dev>; Sun,  1 Nov 2026 23:27:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6F1D6606A331
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AF7C60A261A
+	for <imx@lists.linux.dev>; Sun,  1 Nov 2026 23:27:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6AF7C60A261A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valla.it
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valla.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.a=rsa-sha256 header.s=default header.b=HTjOJt+d;
-	dkim=pass (1024-bit key, unprotected) header.d=valla.it header.i=@valla.it header.a=rsa-sha256 header.s=default header.b=grsQDMZy
-ARC-Seal: i=1; cv=none; a=rsa-sha256; d=outgoing.instance-europe-west4-0kln.prod.antispam.mailspamprotection.com; s=arckey; t=1793575643;
-	 b=Gaq6o3yOKYo2YEEUSyzvJAUBAKxWuBmilRHYH9u/J6eld79NwVEnMZhZDqww5kbm1SY/AJ+1Op
-	  STGyiMHEQO0YHSO7h+zg5MmqiXzlHPfgeo69BRSTi8iGjbEoqyvQ1aPBZULq41FwpSeUWwgPyi
-	  H/hmgk12ohCOoz+16LKrnWJ02t8fWKr+Wqpm8tzRE7asWzVvyZ7HN8w51avY3T0sApj/cODDAn
-	  n8cY2NDXYaqQj166ZGhHKNHA4sGA4V3UbctphIaPbVQqnf/7jrOleM1ZGauTaaqEF75XZJhxi8
-	  hE/mH2cPs4slJ0IbWLObUo3GofwT29QHJELccRbcm/mRLQ==;
-ARC-Authentication-Results: i=1; outgoing.instance-europe-west4-0kln.prod.antispam.mailspamprotection.com; smtp.remote-ip=35.214.173.214;
+	dkim=pass (1024-bit key, unprotected) header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.a=rsa-sha256 header.s=default header.b=eilzRLGx;
+	dkim=pass (1024-bit key, unprotected) header.d=valla.it header.i=@valla.it header.a=rsa-sha256 header.s=default header.b=YupPTfRZ
+ARC-Seal: i=1; cv=none; a=rsa-sha256; d=outgoing.instance-europe-west4-nzm1.prod.antispam.mailspamprotection.com; s=arckey; t=1793575639;
+	 b=EeX3smRLz5cFSg7ir1rAbHu8h3XkSvmZINh/TYVXB/NTzOj1koDa843+auDtNXTmy15vymorhN
+	  ULt/1Tt9HzIrv8Jl3R3EGc0YUfyMUM+ysasRmZu1xnIKdN2Yj6Y2+LqO49vhY6ecniQifL4OKo
+	  8yiwa9zYKRheVMWGgS4a+xOjz1fkD+2n8QgDMHmxGFJzEigVYuX32Db9BCSPEMSJ3CAb8K8ZFK
+	  SRwtxmllIsb39qCAzFP1DETzC0ucV4rWCtf7kVB/EZFLVCcSTY1LLFD6R9iebZVWRGJb/10aGA
+	  YHLxNxsinnNq4NsFAdMFgxySxO/ViZCaCH2FAT/HEk6lpQ==;
+ARC-Authentication-Results: i=1; outgoing.instance-europe-west4-nzm1.prod.antispam.mailspamprotection.com; smtp.remote-ip=35.214.173.214;
 	iprev=pass (214.173.214.35.bc.googleusercontent.com) smtp.remote-ip=35.214.173.214;
 	auth=pass (LOGIN) smtp.auth=esm19.siteground.biz;
 	dkim=pass header.d=valla.it header.s=default header.a=rsa-sha256;
 	arc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed; d=outgoing.instance-europe-west4-0kln.prod.antispam.mailspamprotection.com; s=arckey; t=1793575643;
-	bh=Rg3NHiv996Ou/uVsQGsnX1PIitVPLmwkUdij4t7Mly8=;
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed; d=outgoing.instance-europe-west4-nzm1.prod.antispam.mailspamprotection.com; s=arckey; t=1793575639;
+	bh=xatSadXWCSV3dUAsA50Tri4B+LJCWP78e+HrJZJMlOc=;
 	h=Cc:To:In-Reply-To:References:Message-ID:Content-Transfer-Encoding:
 	  Content-Type:MIME-Version:Subject:Date:From:DKIM-Signature:DKIM-Signature;
-	b=ug0g2c9WevhMNjT8CKldWM2Vr4DrRQdbLHS/2fQYZThd1oTN9HhHnBaewfOg7xI6C3NcRVFNvA
-	  EBEIcTK4cK3TUhfEc6zpIuSBwrR3+RziJ9Y7jM5NID5/jKJ4xvrPYqPROBaCapozpM1znZ4YrL
-	  z5KgLEl6NedqYAa51k2v5BEWGS0KkcorkjQlhp5i2R0iG4kT6bI+LSQ8/kriRboIONrDfzUYdo
-	  oeHd6rVK42TdYT1vuQaojy71DG4QKzNI6GHn6XV7E9tg3oDcB8D5PUWkT58KH5WLgFv9+PwhcW
-	  eBWvtbw84kfxbHE2R6VOa1WHBkKWcWdS8kTF9dzTt6W44g==;
+	b=bIr+J4RIcggvAnR2ktjWBPfcI0oOlWQZUq7bKl4dHjY+5ULvQaeCTLmzkCFmMm4yQtPdyVzB6S
+	  1Kit+b3R+ZIRVs10kGFtDDSj/zBMxMXQDfEsr88xHhGJefifln2859M2xhkbyRMha4E5TyaIPX
+	  k4AO0zAMe+nlwkejgWwaY5mOv6+jchJGuBeY2h/coWYJZBrTJILAsAPKTtrDvalzTblT/bjaE9
+	  Ew1sZjbBLeGqhPmVqKGWc7WPUOoMDoKa2cTWy6nVg4rL6yVRNwz+CfvNqWtjfu7HC2+HwNt+Sc
+	  CmQgpTbTylr1gnQuZ12Q1jP1mYuuZhItJPhnqZqeHgNVzw==;
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=antispam.mailspamprotection.com; s=default; h=CFBL-Feedback-ID:CFBL-Address
 	:Cc:To:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject
 	:Date:From:Reply-To:List-Unsubscribe;
-	bh=FfwL6drZ99UrcF24Kp7YaRAGdi4Rekl9jNQ/vwE9JDo=; b=HTjOJt+dptoDj2d2xNPpxQxwPF
-	0aqd9GeLuqQKwCs55rnyG1l7tF4wIlRh+xbZDYLl0rap7Bpwn6ecRHEezOtMB9FoqTXsudDFG/KVj
-	E/+BYarRHW4KxCiEPU+ReDr578DXCF6BUFnp8CwpVVc4En8yy1sOdpM8FvFaGGX8T2uU=;
+	bh=aNNfCoQazdT0MtZCzmoXCNf2o8qmZ8Ept3HPzeF2fxY=; b=eilzRLGxZzZA3OiB0tGZxhoK7X
+	JBFQocDK2Cv4m/QCkfthL6olHvBKE1WSaK6w4q8ld77pzM4+F8qx10MlV0a/ccbfm5n9VnRbmDSiX
+	t0puiylwDqGgjgdOpYUuiwIsOhqMom67Uscm/LyoiCs3k6fz2XPlfuB4QRFtmPOaoTOg=;
 Received: from 214.173.214.35.bc.googleusercontent.com ([35.214.173.214] helo=esm19.siteground.biz)
-	by instance-europe-west4-0kln.prod.antispam.mailspamprotection.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	by instance-europe-west4-nzm1.prod.antispam.mailspamprotection.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.100.1)
 	(envelope-from <francesco@valla.it>)
-	id 1xNexH-000000075eY-3t9M
+	id 1xNexI-00000007AsC-0t23
 	for imx@lists.linux.dev;
 	Sun, 01 Nov 2026 23:27:16 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=valla.it;
 	s=default; h=Cc:To:Subject:Date:From:list-help:list-unsubscribe:
 	list-subscribe:list-post:list-owner:list-archive;
-	bh=FfwL6drZ99UrcF24Kp7YaRAGdi4Rekl9jNQ/vwE9JDo=; b=grsQDMZyuo295cS/AatEIltcsZ
-	gIq+4tQBOR2b3XY4ay5NUD2sryA4SPrciSnrmRLl1SvX/f1oXFwddxnz1GKsLtWF0dJiec+my6YbD
-	R8lDFlJU0IUrMResVEwN4QIMrNPGaEZl9C2BeoSXpnDtuDgrYgPrubohfZ7iRhrLPE8c=;
+	bh=aNNfCoQazdT0MtZCzmoXCNf2o8qmZ8Ept3HPzeF2fxY=; b=YupPTfRZ+RXBcylV7y62J43u/r
+	jtVMXKCefGX0Bp6UYKCxbUG7izHxc4AVeJXOyIAeq0Ps4ogfZUB8svkGtEDbMX/7bgyrEfnMdczFM
+	lr83Imq0hB4ZxbF8RadKF4nXcoMIXt6bPi4cXEevvCI2tn1x05BD/PBYB3KVA8Q8mABM=;
 Received: from [79.17.15.196] (port=60226 helo=[192.168.178.175])
 	by esm19.siteground.biz with essmtpa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.100.1)
 	(envelope-from <francesco@valla.it>)
-	id 1xNewy-000000002I5-21Gt;
-	Sun, 01 Nov 2026 23:26:56 +0000
+	id 1xNewz-000000002I5-1OkY;
+	Sun, 01 Nov 2026 23:26:57 +0000
 From: Francesco Valla <francesco@valla.it>
-Date: Mon, 02 Nov 2026 00:26:40 +0100
-Subject: [PATCH RFC v2 03/11] remoteproc: virtio: support dynamic number of
- vrings
+Date: Mon, 02 Nov 2026 00:26:41 +0100
+Subject: [PATCH RFC v2 04/11] remoteproc: report VIRTIO_F_VERSION_1 for
+ non-rproc-specific vdevs
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -100,7 +100,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261102-remoteproc_virtio_map-v2-3-26b300e01c62@valla.it>
+Message-Id: <20261102-remoteproc_virtio_map-v2-4-26b300e01c62@valla.it>
 References: <20261102-remoteproc_virtio_map-v2-0-26b300e01c62@valla.it>
 In-Reply-To: <20261102-remoteproc_virtio_map-v2-0-26b300e01c62@valla.it>
 To: Bjorn Andersson <andersson@kernel.org>, 
@@ -118,12 +118,12 @@ Cc: Robin Murphy <robin.murphy@arm.com>, linux-remoteproc@vger.kernel.org,
  devicetree@vger.kernel.org, linux-doc@vger.kernel.org, imx@lists.linux.dev, 
  linux-arm-kernel@lists.infradead.org
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5391; i=francesco@valla.it;
- h=from:subject:message-id; bh=Rg3NHiv996Ou/uVsQGsnX1PIitVPLmwkUdij4t7Mly8=;
- b=owGbwMvMwCX2aH1OUIzHTgbG02pJDFnPT+2ZMD34aojLK7lNmbPPe/44Jvnj+Jb0L3YWT2s2N
- qneTTBT6yhlYRDjYpAVU2QJWXfj3p655t/SNjA+gpnDygQyhIGLUwAmotDI8E/d1Et59hybD+uW
- zv1sN+nfyjvprkVaRuuSTm1Y4Hzbfss5hn+mW//1xnokp6ziLZBuMI+afumjC/eMKFE588lFRwN
- LL3MBAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3487; i=francesco@valla.it;
+ h=from:subject:message-id; bh=xatSadXWCSV3dUAsA50Tri4B+LJCWP78e+HrJZJMlOc=;
+ b=owGbwMvMwCX2aH1OUIzHTgbG02pJDFnPT+1J1+2XTmBMtxPQPXLjdnWXpN1SDaHaoP3BW7b7q
+ R+/a1TfUcrCIMbFICumyBKy7sa9PXPNv6VtYHwEM4eVCWQIAxenAExEUJfhv2evXbr1pcW3L7J9
+ 6Z5wUyHsxf01s6Pnt20+fubZHqejbg8Y/hlxNW/Zu3Hvo40nPwfFbnvPLdnseO2LZHjN+u1cR6O
+ 3RXABAA==
 X-Developer-Key: i=francesco@valla.it; a=openpgp;
  fpr=CC70CBC9AA13257C6CCED8669601767CA07CA0EA
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -134,164 +134,108 @@ X-AntiAbuse: Sender Address Domain - valla.it
 X-Source: 
 X-Source-Args: 
 X-Source-Dir: 
-X-SGantispam-id: 2fb2978d0159efab04ff50c2c1527fc8
-X-AntiAbuse: ID - 2fb2978d0159efab04ff50c2c1527fc8
+X-SGantispam-id: bdb26ee757a38797c4df40192d65f58c
+X-AntiAbuse: ID - bdb26ee757a38797c4df40192d65f58c
 AntiSpam-DLS: false
 AntiSpam-DLSP: 
 AntiSpam-DLSRS: 
 AntiSpam-TS: 1.0
 CFBL-Address: feedback@antispam.mailspamprotection.com; report=arf
-CFBL-Feedback-ID: 1xNexH-000000075eY-3t9M-feedback@antispam.mailspamprotection.com
-Authentication-Results: outgoing.instance-europe-west4-0kln.prod.antispam.mailspamprotection.com;
+CFBL-Feedback-ID: 1xNexI-00000007AsC-0t23-feedback@antispam.mailspamprotection.com
+Authentication-Results: outgoing.instance-europe-west4-nzm1.prod.antispam.mailspamprotection.com;
 	iprev=pass (214.173.214.35.bc.googleusercontent.com) smtp.remote-ip=35.214.173.214;
 	auth=pass (LOGIN) smtp.auth=esm19.siteground.biz;
 	dkim=pass header.d=valla.it header.s=default header.a=rsa-sha256;
 	arc=none
 
-The number of vrings for each vdev has been fixed to 2 since the
-introduction of multi-vdev support [1]; this is completely fine for the
-rpmsg usecase, but can conflict with other virtio devices (CAN for
-example requires 3 virtqueues, entropy only 1, network a variable number
-and so on).
+There is currently no way to report the VIRTIO_F_VERSION_1 using the
+resource table alone, as the per-vdev feature array is limited to 32
+bits.
 
-Remove the static vring allocation, transforming it to a flex array that
-is allocated at vdev probe time; for the existing usecases (i.e.: mainly
-rpmsg) this leads to no functional change, except the additional memory
-used for the counter associated to the new array.
+Considering that the VIRTIO 1.0 specification is now ~10 years old,
+always report the VIRTIO_F_VERSION_1 feature for virtio devices that
+are not specific for remoteproc usage. These latter, which as of today
+are rpmsg and rproc-serial, are excluded to avoid impacting the existing
+usecases, since VIRTIO_F_VERSION_1 changes the semantics of the
+communication (e.g., the configuration space is assumed to be
+little-endian rather than follow the device's endianness).
 
-The maximum number of virtqueues is limited to 255 due to the u8 value
-used inside the resource table to indicate the number of vring to
-allocate; for this reason, no additional plausibility check is performed
-on the number of vrings indicated by the resource table.
-
-This also fixes the single virtqueue usecase, which was apparently
-supported also before but for which the remove action caused an error
-(because the remove action was trying to unmap also the second vring,
-which was in fact not mapped).
-
-[1] https://lore.kernel.org/all/1330589497-4139-5-git-send-email-ohad@wizery.com/
+While at it, replace BUG_ON() with WARN_ON() and return an appropriate
+error in case of features that would overflow the 32 bits limit.
 
 Signed-off-by: Francesco Valla <francesco@valla.it>
 ---
- drivers/remoteproc/remoteproc_core.c   |  7 -------
- drivers/remoteproc/remoteproc_virtio.c | 12 ++++++------
- include/linux/remoteproc.h             | 10 ++++------
- 3 files changed, 10 insertions(+), 19 deletions(-)
+ drivers/remoteproc/remoteproc_virtio.c | 28 +++++++++++++++++++++++++---
+ 1 file changed, 25 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/remoteproc/remoteproc_core.c b/drivers/remoteproc/remoteproc_core.c
-index 23f8539a99bd..c946ecd980a5 100644
---- a/drivers/remoteproc/remoteproc_core.c
-+++ b/drivers/remoteproc/remoteproc_core.c
-@@ -473,7 +473,6 @@ static int rproc_handle_vdev(struct rproc *rproc, void *ptr,
- {
- 	struct fw_rsc_vdev *rsc = ptr;
- 	struct device *dev = &rproc->dev;
--	struct rproc_vdev *rvdev;
- 	size_t rsc_size;
- 	struct rproc_vdev_data rvdev_data;
- 	struct platform_device *pdev;
-@@ -494,12 +493,6 @@ static int rproc_handle_vdev(struct rproc *rproc, void *ptr,
- 	dev_dbg(dev, "vdev rsc: id %d, dfeatures 0x%x, cfg len %d, %d vrings\n",
- 		rsc->id, rsc->dfeatures, rsc->config_len, rsc->num_of_vrings);
- 
--	/* we currently support only two vrings per rvdev */
--	if (rsc->num_of_vrings > ARRAY_SIZE(rvdev->vring)) {
--		dev_err(dev, "too many vrings: %d\n", rsc->num_of_vrings);
--		return -EINVAL;
--	}
--
- 	rvdev_data.id = rsc->id;
- 	rvdev_data.index = rproc->nb_vdev++;
- 	rvdev_data.rsc_offset = offset;
 diff --git a/drivers/remoteproc/remoteproc_virtio.c b/drivers/remoteproc/remoteproc_virtio.c
-index 29a3a4c18097..c56d3330adfe 100644
+index c56d3330adfe..f1b362158a9c 100644
 --- a/drivers/remoteproc/remoteproc_virtio.c
 +++ b/drivers/remoteproc/remoteproc_virtio.c
-@@ -135,8 +135,7 @@ static struct virtqueue *rp_find_vq(struct virtio_device *vdev,
- 	void *addr;
- 	int num, size;
+@@ -16,6 +16,7 @@
+ #include <linux/of_reserved_mem.h>
+ #include <linux/platform_device.h>
+ #include <linux/remoteproc.h>
++#include <linux/rsc_table.h>
+ #include <linux/virtio.h>
+ #include <linux/virtio_config.h>
+ #include <linux/virtio_ids.h>
+@@ -27,6 +28,11 @@
  
--	/* we're temporarily limited to two virtqueues per rvdev */
--	if (id >= ARRAY_SIZE(rvdev->vring))
-+	if (id >= rvdev->num_vrings)
- 		return ERR_PTR(-EINVAL);
+ #include "remoteproc_internal.h"
  
- 	if (!name)
-@@ -510,13 +509,16 @@ static int rproc_virtio_probe(struct platform_device *pdev)
- 	if (!rvdev_data)
- 		return -EINVAL;
- 
--	rvdev = devm_kzalloc(dev, sizeof(*rvdev), GFP_KERNEL);
-+	rsc = rvdev_data->rsc;
++static bool rproc_virtio_rsc_vdev_rproc_specific(struct fw_rsc_vdev *rsc)
++{
++	return (rsc->id == VIRTIO_ID_RPMSG || rsc->id == VIRTIO_ID_RPROC_SERIAL);
++}
 +
-+	rvdev = devm_kzalloc_flex(dev, *rvdev, vring, rsc->num_of_vrings);
- 	if (!rvdev)
- 		return -ENOMEM;
+ static int copy_dma_range_map(struct device *to, struct device *from)
+ {
+ 	const struct bus_dma_region *map = from->dma_range_map, *new_map, *r;
+@@ -268,8 +274,17 @@ static void rproc_virtio_synchronize_cbs(struct virtio_device *vdev)
+ static u64 rproc_virtio_get_features(struct virtio_device *vdev)
+ {
+ 	struct fw_rsc_vdev *rsc = vdev_to_rsc(vdev);
++	u64 features = (u64)rsc->dfeatures;
  
- 	rvdev->id = rvdev_data->id;
- 	rvdev->rproc = rproc;
- 	rvdev->index = rvdev_data->index;
-+	rvdev->num_vrings = rsc->num_of_vrings;
+-	return rsc->dfeatures;
++	/*
++	 * All non-remoteproc-specific virtio devices are assumed to be
++	 * compliant with virtio specifications 1.x; there is no other method
++	 * to transmit this capability from the remote processor to the host.
++	 */
++	if (!rproc_virtio_rsc_vdev_rproc_specific(rsc))
++		features |= (1ULL << VIRTIO_F_VERSION_1);
++
++	return features;
+ }
  
- 	ret = copy_dma_range_map(dev, rproc->dev.parent);
- 	if (ret)
-@@ -534,8 +536,6 @@ static int rproc_virtio_probe(struct platform_device *pdev)
- 	platform_set_drvdata(pdev, rvdev);
- 	rvdev->pdev = pdev;
+ static void rproc_transport_features(struct virtio_device *vdev)
+@@ -285,6 +300,7 @@ static void rproc_transport_features(struct virtio_device *vdev)
+ static int rproc_virtio_finalize_features(struct virtio_device *vdev)
+ {
+ 	struct fw_rsc_vdev *rsc = vdev_to_rsc(vdev);
++	u64 features;
  
--	rsc = rvdev_data->rsc;
--
- 	/* parse the vrings */
- 	for (i = 0; i < rsc->num_of_vrings; i++) {
- 		ret = rproc_parse_vring(rvdev, rsc, i);
-@@ -586,7 +586,7 @@ static void rproc_virtio_remove(struct platform_device *pdev)
- 	struct rproc_vring *rvring;
- 	int id;
+ 	/* Give virtio_ring a chance to accept features */
+ 	vring_transport_features(vdev);
+@@ -292,8 +308,14 @@ static int rproc_virtio_finalize_features(struct virtio_device *vdev)
+ 	/* Give virtio_rproc a chance to accept features. */
+ 	rproc_transport_features(vdev);
  
--	for (id = 0; id < ARRAY_SIZE(rvdev->vring); id++) {
-+	for (id = 0; id < rvdev->num_vrings; id++) {
- 		rvring = &rvdev->vring[id];
- 		rproc_free_vring(rvring);
- 	}
-diff --git a/include/linux/remoteproc.h b/include/linux/remoteproc.h
-index 00019b1895e6..52e1eccbe42e 100644
---- a/include/linux/remoteproc.h
-+++ b/include/linux/remoteproc.h
-@@ -322,10 +322,6 @@ struct rproc_subdev {
- 	void (*unprepare)(struct rproc_subdev *subdev);
- };
+-	/* Make sure we don't have any features > 32 bits! */
+-	BUG_ON((u32)vdev->features != vdev->features);
++	/* Make sure we don't have any features > 32 bits except the expected ones. */
++	features = vdev->features;
++
++	if (!rproc_virtio_rsc_vdev_rproc_specific(rsc))
++		features &= ~(1ULL << VIRTIO_F_VERSION_1);
++
++	if (WARN_ON((u32)vdev->features != features))
++		return -EINVAL;
  
--/* we currently support only two vrings per rvdev */
--
--#define RVDEV_NUM_VRINGS 2
--
- /**
-  * struct rproc_vring - remoteproc vring state
-  * @va:	virtual address
-@@ -353,9 +349,10 @@ struct rproc_vring {
-  * @id: virtio device id (as in virtio_ids.h)
-  * @node: list node
-  * @rproc: the rproc handle
-- * @vring: the vrings for this vdev
-  * @rsc_offset: offset of the vdev's resource entry
-  * @index: vdev position versus other vdev declared in resource table
-+ * @num_vrings: the number of vrings for this vdev
-+ * @vring: the vrings for this vdev
-  */
- struct rproc_vdev {
- 	struct rproc_subdev subdev;
-@@ -364,9 +361,10 @@ struct rproc_vdev {
- 	unsigned int id;
- 	struct list_head node;
- 	struct rproc *rproc;
--	struct rproc_vring vring[RVDEV_NUM_VRINGS];
- 	u32 rsc_offset;
- 	u32 index;
-+	unsigned int num_vrings;
-+	struct rproc_vring vring[] __counted_by(num_vrings);
- };
- 
- struct rproc *rproc_get_by_phandle(phandle phandle);
+ 	/*
+ 	 * Remember the finalized features of our vdev, and provide it
 
 -- 
 2.56.0
