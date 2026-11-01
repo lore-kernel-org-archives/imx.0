@@ -1,49 +1,103 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.45
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793571352;
-	b=gdvD1n1up4EcxCO7Pc7FLMECin1dEJCrQdN4GVAf6/EfLIy8jG6kWnOlUtqANmOVJg4m
-	 s2Pyqm0/db/39rbLHYyiPBS0YcE3S1flAb1FYV03gPxf3IYcIbqtVb6rtu/dwjaxleAU4
-	 M8/LOBfotZ1w6yY/TWFCPK3wYUBYpKKHkLk2uj3W8/zEtx6OpD0f58s6eEADzpGeiB5M/
-	 zhdRb3+VYtnzSrp92ZzkqXu7VikUFftOeDWibmVTBilvfwl51PuO6hZ0eHeQ71SifTfpl
-	 7BX9ghu/M2/gST9PgEshmuC5yx14dOCpHIUfK4Zjv6R5vZG8RVFXbsbGf/On4DqfkYA==
+	t=1793572302;
+	b=Kr2MwvrMndu/E/qdhEmajD3BViNDC7U1+vJlHjAhI2RW+n2bp5c4i5g2sS+OTn0QOVsJ
+	 kqv1kihaAq1I3iutOBltxOpfoRTPTl1DU1RaYSFVxB5e+5JsokCDQCEzlyJvIwCx2AiWn
+	 oAfiZD0SZfGzqNtQbP5flwiBsrQJVkZQOJwWJ/3Ali7xNZOPgaaUWxEIGOjr/5nUBxN9f
+	 83TFZbhLMm7rhBybwQOgGmyJ2nltXSSgCMvO3bNt8OiibZnEaL3YxdQLtVFN8sD7ESNkn
+	 pXkvNpgLFmmrEn4GSICPHICWQcOplSoFIDF7565DuqT3RrGzjPlLX6jwuH3O22nt/DQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793571352;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=FccY8w4XVKmL62rTrNsIiuAmg2iirAJ9NTvcPUeI7l0=;
-	b=LcCzOHw4GP/PgSh+vq3JXemzRqiyEDIRPY7UjryLRbtJKZ8cAanK7B9+xZNO+6tt2X9w
-	 ewe/M0RGRvN/mU+tq1iQPqCRCgiktSTehhC8zeep8QxQmd2MK2t6oDh28zckLTh83tYDu
-	 XXyV/mTo/S3eCv9IngCE5dv9dcc/WGJ29ObbS8JQIudYmWK30LnB4ap7DNLMH98cRLtWj
-	 NGl4Gs/RP7TO8AAQsfOgYTNXM/axEsQqGXVld1w+kIbzqrWYuZjWaR9R7CCE7Thw4+LMR
-	 TNlz2rCxswITgMzwSSPpa8wwL2jY4Y/NQKKlA1ZDk/G/ZwQaqkadYALhbAmPQjzAtpg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793572302;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=YleZPiS3GFEE1Ucc2aPYXMZVD+vgRoqW68GLZ8Ewqjo=;
+	b=mjjxSVPwltZ7IWrWlFvv+gvumGLejiec67+ERKdYlYCZt+W8vd1vOPBcfJZbopbr2j+A
+	 2azX+G86Br5QGXYFEVc8oVzPNA4+lSA16PX9+RK5LTsEp0I0zRKMJ5R1oe/qlsmLpa8Pm
+	 c23XYe6MbiP/KqZKBzZnVE57jeJJOqVHd1yApQxJkJQhQ+73yOCjh5ADPTbHl9JjFRUGd
+	 R0Yn2CNYYhSRhWl+fv31uaDFBE/H0ignw3NDEX0CdEbxL6ryKkVPRWh21vviFrVLtcxrq
+	 B+HRW69MCEkE2QiBx7SKp6lvf8Lo6gWbeFrLK4KLWunb9SVXkq+Q4SO5A90OXbk8XXw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=K+V9Dv3q;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="TRp/RIok";
+	arc=none smtp.remote-ip=209.85.221.45
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF5BA60A260E;
-	Sun,  1 Nov 2026 22:15:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36D18606A32C
+	for <imx@lists.linux.dev>; Sun,  1 Nov 2026 22:31:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 36D18606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=K+V9Dv3q
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B0951F00A23;
-	Sun,  1 Nov 2026 22:15:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793571351;
-	bh=FccY8w4XVKmL62rTrNsIiuAmg2iirAJ9NTvcPUeI7l0=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=K+V9Dv3qcTj5160hj+SlEd6bb36GPd0hfxFxqjLqYo66VpB8oCIm4PuHm9pjlid/h
-	 xICIzZcud0NUgf8UqhSDgZUnCOe+E4H24SE9jF1p7O4fFeppaF6xJ19c2x3GponAYK
-	 zBB0xnPMXK3KXJyJgXpeecppENU8uStUTuAYpN58z1zi5XdcZnpfMOTU/Sjz04mpNh
-	 EBDswN/2U3tv2zVNouRalxGVIPr45mrQWsWqgkUoAJAzcLHlFn+u4O5aPuxyp1V9hh
-	 nqI9MBjEMOeTC+Cpzk8pdEQbjpMVozvCH8kCeYtfZV/f7RAOqeoEUa4gaQ0O3fobrF
-	 9dSJrBw8PPsVQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7D3DF38003B8;
-	Sun,  1 Nov 2026 22:15:51 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=TRp/RIok
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-48dfdd0678dso1624859f8f.0
+        for <imx@lists.linux.dev>; Sun, 01 Nov 2026 14:31:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793572300; x=1794177100; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=YleZPiS3GFEE1Ucc2aPYXMZVD+vgRoqW68GLZ8Ewqjo=;
+        b=TRp/RIokMvoqBJwofCmuJcqtD112d8bwDhkwjZVFhQbv/bz8LW1U1t40wC5QgYl2OX
+         a3pBT8pkOB/HurkSkNf+VUEgE55rg5lihvXRk5dpzrtKqY0IRDu3KcYUY0/qoXIezriT
+         7ovKeXehuq8fN+8o7olEbnA3JD58excSrAwLnKDI30Gfjn3WMEAy9a7R4BjGCnxP3J+A
+         S3wJHn8XmisS0AuFqvOUVQ3DIwqhJPT0GfHffPGelw+rmb8PodJxuAgfDz/pl4+fyom/
+         TjiBDAbcYQilBEowEnJ++PiiACum46wERaJleUNXPaGGVSoQtF9fjn7nOMnNCm6hlD//
+         1uKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793572300; x=1794177100;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=YleZPiS3GFEE1Ucc2aPYXMZVD+vgRoqW68GLZ8Ewqjo=;
+        b=aQ7AUMqvKxT6V6Eew9DW9K1g8EiCuRug4MrObSLofym/6EtyBhCPWVOWkbxeOsWsYC
+         dF/NCQYcgmur0CTS3nnfe7sxctqmqA5IfXUnN/jKAv7nw3SgMgMAZN1gKXGhaeE9iyo0
+         i9TQvfnpcpV134m2+qDcjAZjLuMOeAqPjfokyv26RYBDOBX+tAmgbM8G0+GKDbNJMjgV
+         DtL6mOY5qKiYpH3SU01fmmZHHzuPWyNrW62kXK9bzx9/SFeUy+0FiJskYbHSVGWWshxL
+         45dRhjKNrDaAZ6nl87LQ/ybT7TiLglUz9AkDZO3BclrcrKHy65/6HOWQLGNgWigfGwx+
+         W7+A==
+X-Forwarded-Encrypted: i=1; AKwUvBx9h/5vifVPJJokTEA5C76vkJIpFDELLy6jNSo/0g04zcbjO0co8z3MYJzslRVYjghbM+g=@lists.linux.dev
+X-Gm-Message-State: APuU4Z91pcxVsWAuYeTI0BR6WwKyuvoBgdUAhPxlNfl5e9wUv3acfXn1
+	j1aMvMPvqJnZDNKBx7xGI/rDfcqobOBSf1g2HfFmzNkoVfDmZlt7eKjZ
+X-Gm-Gg: AYBFou2ALmRuIODc/I6xV55orwTVe5d1hRD2DjxqE5Gp9SfBa6HwI5Sv68UQL254JGp
+	a5FJ7MvX4Vh84ZRAIcQdi1V+wVNfXo/yk4KQpLZaadyH6G20jJp8XgUOM5zOTYXcadeAqpR3nec
+	zujcHvEfbdR5EzDf7unBMm0O1ESVzpEewHuk4dgw0u+WnfzA/EOSgZi1q0VV+klMJbqVGftZ/dd
+	ADQCVGU3iFgIdc2zFbkPMHa0DU1X821fO29ZdJEBO9W6EPHjsa7ea1YuuWcZeaCo5MH6mN1yMHc
+	ogsMXRsCOehPNDh5+yEvtViBPWnWGTI/vFBXRMEKtxrRVRbSwhg8rCeHd3Nx83BGT/7+goScTFn
+	f6Z9rdv1Sc9fVIhHxVZWQW1esVooEaiRFjyL+VNa+vFY3GIvIT7VbxGcPYYUJXNwd7epSs+ruAl
+	1RTzhnHz0s7+dp0F8D3dy7H+Q89RcL+tpQzwppxcIIneppmTvD7eU8OLfFB5RW42PeCcYjXcMAa
+	7qyAVCmhTbkstCjsxESy2kex/rDVWGdIacUAnyRdzjYdDhj72JmHCDdPoTLNNZHe1N316TVvYwt
+	a/ocT7HJPcBPNvMhwrjdHs29mg6yN5H00umu3TlsI9366mcSj2uIU2E2eq413ew=
+X-Received: by 2002:adf:e001:0:20b0:48e:d88:55f4 with SMTP id ffacd0b85a97d-48e6e2bc855mr15509231f8f.2.1793572300404;
+        Sun, 01 Nov 2026 14:31:40 -0800 (PST)
+Received: from debian (ip-78-137-176-146.broadband.digiweb.ie. [78.137.176.146])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71b78f95sm14904805f8f.28.2026.11.01.14.31.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 01 Nov 2026 14:31:38 -0800 (PST)
+From: Pablo Mazzini <pmazzini@gmail.com>
+To: Mark Brown <broonie@kernel.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Lee Jones <lee@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Pablo Mazzini <pmazzini@gmail.com>,
+	Alistair Francis <alistair@alistair23.me>,
+	Andreas Kemnade <andreas@kemnade.info>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	linux-hwmon@vger.kernel.org,
+	mfd@lists.linux.dev,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/7] sy7636a: power the panel only during updates
+Date: Sun,  1 Nov 2026 22:31:18 +0000
+Message-ID: <20261101223125.302001-1-pmazzini@gmail.com>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -54,72 +108,52 @@ List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v16 0/7] net: stmmac: qcom-ethqos: add support
- for
- SCMI power domains
-From: patchwork-bot+linux-riscv@kernel.org
-Message-Id: 
- <179357135004.2624073.6498267080189807632.git-patchwork-notify@kernel.org>
-Date: Sun, 01 Nov 2026 22:15:50 +0000
-References: <20261014-qcom-sa8255p-emac-v16-0-0266c2ead980@oss.qualcomm.com>
-In-Reply-To: <20261014-qcom-sa8255p-emac-v16-0-0266c2ead980@oss.qualcomm.com>
-To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Cc: linux-riscv@lists.infradead.org, andersson@kernel.org,
- konradybcio@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
- kuba@kernel.org, pabeni@redhat.com, mcoquelin.stm32@gmail.com,
- alexandre.torgue@foss.st.com, vkoul@kernel.org, peppe.cavallaro@st.com,
- wens@kernel.org, jernej.skrabec@gmail.com, neil.armstrong@linaro.org,
- khilman@baylibre.com, jbrunet@baylibre.com, shawnguo@kernel.org,
- festevam@gmail.com, jan.petrous@oss.nxp.com, s32@nxp.com,
- mohd.anwar@oss.qualcomm.com, romain.gantois@bootlin.com,
- geert+renesas@glider.be, magnus.damm@gmail.com, mripard@kernel.org,
- christophe.roullier@foss.st.com, brgl@kernel.org, edumazet@kernel.org,
- radu@rendec.net, linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, dfustini@tenstorrent.com,
- linux-sunxi@lists.linux.dev, linux-amlogic@lists.infradead.org,
- linux-mips@vger.kernel.org, imx@lists.linux.dev,
- linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org,
- sophgo@lists.linux.dev, bartosz.golaszewski@linaro.org,
- sashiko-bot@kernel.org, martin.blumenstingl@googlemail.com,
- krzysztof.kozlowski@oss.qualcomm.com, prabhakar.mahadev-lad.rj@bp.renesas.com
 
-Hello:
+The SY7636A hwmon driver keeps VCOM on from probe, so a display driver
+can not power the panel only during updates.
 
-This series was applied to riscv/linux.git (fixes)
-by Jakub Kicinski <kuba@kernel.org>:
+Read the temperature only while the rails are on instead, and bind the
+regulator to the I2C device directly, with the hwmon driver as its
+auxiliary driver. The regulator also gains VCOM voltage control and
+waits for power good on enable.
 
-On Wed, 14 Oct 2026 14:36:39 +0200 you wrote:
-> Add support for the firmware-managed variant of the DesignWare MAC on
-> the sa8255p platform. This series contains new DT bindings and driver
-> changes required to support the MAC in the STMMAC driver.
-> 
-> It also reorganizes the ethqos code quite a bit to make the introduction
-> of power domains into the driver a bit easier on the eye.
-> 
-> [...]
+Patch 6 depends on patches 1-5 and touches the regulator, hwmon and
+MFD drivers.
 
-Here is the summary with links:
-  - [net-next,v16,1/7] net: stmmac: dwmac4: don't program the 1us tick counter without a CSR clock
-    https://git.kernel.org/riscv/c/d09d7b8e86e5
-  - [net-next,v16,2/7] dt-bindings: net: qcom: document the ethqos device for SCMI-based systems
-    https://git.kernel.org/riscv/c/534198a05d92
-  - [net-next,v16,3/7] net: stmmac: qcom-ethqos: set serdes mode before powerup
-    https://git.kernel.org/riscv/c/7af44cb9e447
-  - [net-next,v16,4/7] net: stmmac: qcom-ethqos: update phy_mode to the resolved interface in mac_finish()
-    https://git.kernel.org/riscv/c/05b3ea7346e3
-  - [net-next,v16,5/7] net: stmmac: qcom-ethqos: reuse the address of ethqos_emac_driver_data
-    https://git.kernel.org/riscv/c/92719abd6378
-  - [net-next,v16,6/7] net: stmmac: qcom-ethqos: factor out linux-level setup into a separate function
-    https://git.kernel.org/riscv/c/acf1e3db9151
-  - [net-next,v16,7/7] net: stmmac: qcom-ethqos: add support for sa8255p
-    https://git.kernel.org/riscv/c/bb3183e1c938
+Tested on a PocketBook Verse (B288).
 
-You are awesome, thank you!
+v2:
+- drop the DT patch keeping VCOM always-on (Andreas)
+- patch 3: only wait for power good, VCOM_EN stays as it was (Andreas)
+- new patch 4: fix negative temperatures
+- keep the temperature in drivers/hwmon as an auxiliary driver of the
+  regulator, instead of moving it into the regulator driver (Guenter,
+  Andreas)
+- patch 5: no VCOM enable at probe, which also removes the probe race
+- patch 5: read power good and the temperature in one transfer (Andreas)
+
+Pablo Mazzini (7):
+  regulator: sy7636a: fix the chip name
+  regulator: sy7636a: add VCOM voltage control
+  regulator: sy7636a: wait for power good on enable
+  hwmon: sy7636a: fix negative temperatures
+  hwmon: sy7636a: read the temperature only while the rails are on
+  regulator: sy7636a: bind to the I2C device directly
+  ARM: imx_v6_v7_defconfig: drop the SY7636A MFD option
+
+ arch/arm/configs/imx_v6_v7_defconfig  |   1 -
+ drivers/hwmon/Kconfig                 |   2 +-
+ drivers/hwmon/sy7636a-hwmon.c         |  58 +++++----
+ drivers/mfd/Kconfig                   |  10 --
+ drivers/mfd/simple-mfd-i2c.c          |  11 --
+ drivers/regulator/Kconfig             |   6 +-
+ drivers/regulator/sy7636a-regulator.c | 163 ++++++++++++++++++++------
+ include/linux/mfd/sy7636a.h           |  34 ------
+ 8 files changed, 162 insertions(+), 123 deletions(-)
+ delete mode 100644 include/linux/mfd/sy7636a.h
+
+
+base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.52.0
 
