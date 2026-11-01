@@ -1,102 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.217.54
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793469665;
-	b=LgMLlTxW8Cqf9oT3DKwX+1gC5hfnI7yPerPjPj0Nf6SJcO3Nqa8Hqf7sIzPKRwnSmNbB
-	 bMRUjYrYG0ph1xLHlPUdGe4tmfT1sxx/SHvNy1NYEC9Vwvl+Evpict+Kjm+Ciy2vxbjEO
-	 UZ/sI3mBrfZILbtsosovW/z5oGeF6avBpVg5DhMEtdAIeGHv+aZw9Cd3dlsA4kK9lRKqA
-	 fTnTbRGZdFOlaXiaW11MbRpVZOm8/fOfPwYWxTdmb5iitSmkR6UaBQfmGC0V2/bp6ALXc
-	 HJbkAE/GyqfziWDvZJsLDss++wEM00HwAehyG+wqDGoNK8uOtcRzUt5/1YDXYVOwisg==
+	t=1793548798;
+	b=V4D+/7pok4gFZKiFSPxSytL8r8GFfM4zJ7bGXCRFmwEppJMwBLbzN/i4s50rT9zOekVY
+	 n22KlsRypJyWoirtVSpfA92lQqzl50M1Vuz9VnogkIrprgR7kgB/76dUVObn0uUq8UxhA
+	 2UT9y1n8QtxF13b8mMzdzCD6GEIEmizeM/gsOKK+aL0b+F7TBodeWuTbJ+0YArNhVmWkk
+	 phlhJycCVcT+00fMLZ3QFTatEvxOqWKo9ZxfN9g+U5ynTZuUcLfFOKbahMbxCAuv2xt7E
+	 CSUGv/rUd7997rBPzRzDjvgIRCszr5rdP2PqI1gMhussO/v5xxPQ024Ik6RLvs5/nLQ==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793469665;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=ztiV5c0DfuFx8uDKCLiUp5o+ivOB8cWRN0pJNXnNfZU=;
-	b=bXFIwjYTSsUea9Xp/AQpbIL703DpkD/rH2sG/VDutlvO4p0CZ3RNg+5eHVWyOqBjzSNl
-	 7axMSmqAaK8TbZcLiGPi+lmF7RcA+AhnGOft69Wvh4UmC2TMBQFO9BZhJKifEln+VfvNI
-	 BDS9+PElteTGBG8D4/aKDIspsn1DL12tVy7XhftwmO7KqFzVBu3MqCSnx+ypBMPha9dom
-	 stx9NFlMV/NhrC0k3g0EDAw5nZf0t5gQX3gVd1g8waibM1zhwSvfYjTaakySxMcKRFY28
-	 6d4fV/TDbm37B0GmIS5/5/p8/neURnEi3AhZfMB6AbAZ+IOPC+LjREd+o01FcKn/kww==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793548798;
+	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Message-Id:X-B4-Tracking:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=rSXU4MdQ526YDwpFQqmQayTOK2c15g71hi0jEnqqt1k=;
+	b=SF5rMknHQ/8rtn/Ipz10lLiTOiNJBEteBaXreSmYlHgO7dpRDOhAo0RgXA+no4szXOVo
+	 7wGvWMSYHn4E3bPOojbZ/apI0lUnChTKQBd9aQ/UzM2rmDq2j+a44dn6TpM3kMLK+cZmy
+	 teQz4SlXaWni33oXexuOGGi2cXM80bgBg7ATl0l+bnhK22VxeDn5gw5L2MtKdMLMzOrG5
+	 fsEiikRy8lTPcq5+P+N7z2yfAcsDQz7E1ffKCeQzZs8wO+mlCn1t7xeGFjl2XDcqLlTbO
+	 rJVj5R5Yhrb3WZyz4VNU7SsqRskakySeuARdGSMUgrkKxpiU7dyZzxr2cvEhW7d0ORA==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=0It9zTfh;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.217.54
-Received: from mail-vs1-f54.google.com (mail-vs1-f54.google.com [209.85.217.54])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JIltwHE7;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E2F0606A324;
+	Sun,  1 Nov 2026 15:59:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JIltwHE7
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1793548798;
+	b=Pk9196040DLrjqR/1GRCXe03ZYBu9/u663vs11Ux8KjjQ0xD4FgEfeBrn9m+6q6gavn/
+	 lUhdPNByOKY1VRx20lRciYVCJfM+EeT+y0TeNgyzkf8NSJxeKo69YU5myhN7AZmqWB8B0
+	 KbyFZgvYuKWt4hgfEawQ6e8i++lSGnqNeOHbdYU6r0VtsFNHE/zjEHdHAbnapwq2ilT0r
+	 wuHLy9jTd+G/IAXb7FZE5OHyTFyKQoXEsJGRl9CPztzUSjv7qGp6EaxWBvJvaWzfqikoZ
+	 bs3NvKJC3GFdX0Bl7uX5Jwu/3USwPySHL/O6hcdSDMd64ydZh3CKvVVprUDvQ32C9zw==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1793548798;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:X-B4-Tracking:To:Cc:X-Mailer:X-Developer-Signature:
+	 X-Developer-Key:X-Endpoint-Received:X-Original-From:Reply-To:
+	 Content-Transfer-Encoding;
+	bh=rSXU4MdQ526YDwpFQqmQayTOK2c15g71hi0jEnqqt1k=;
+	b=B/Y+BSKH6mSTDsBGjWgAY47rfP2h5EnGfIn6jXobnWwHY1DxuFy4W9eN+MSw2dzgKzpO
+	 9DDGqpjvwyGNAO/kIC6jA7C/3o9nhZ7oxZNOLNLZZcOz/q7r39FSNgCqbd5MOfDZNbsde
+	 HZCrvvXFynh7+1QjoNizvE/1a9EYgM7lK6Pl3V+RbfLgj5umNmvHORsdTdk6CkZcsbQdB
+	 50HuYq3sHuExy/7IJc86tJ8Lkji2N3mnyWnwp3/pNWyNYsRdCQqOpfIFc1G1oNLeULSLz
+	 vYk9lwImyfrEZzUJ2BfVcFWF5xt6+YDy31HlkAlUNMGGUWoVrcsrdt9XKpSbered14w==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87E45606A322
-	for <imx@lists.linux.dev>; Sat, 31 Oct 2026 18:01:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 87E45606A322
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=0It9zTfh
-Received: by mail-vs1-f54.google.com with SMTP id ada2fe7eead31-7c3cecbda48so377632137.3
-        for <imx@lists.linux.dev>; Sat, 31 Oct 2026 11:01:05 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793469664; cv=none;
-        d=google.com; s=arc-20260327;
-        b=mEdA2KJQDSlFiZWxeu+8HPeE8PXaHomIOnCBsXVtUTzrvulLf181JDiara7Fb5QG91
-         s1eVsQKWmVNgQLkmq8AU6Px8xNZuuuNpY6A7/zwBAy8eGOxA9l4iKZ/sAeqgnIvVVF+B
-         Pc5vvdrQZ1GrCvAZOx2x/ajCMuH+nRrvTkMtjl4x91Q2S9j+A+3WAkRfbE5Z8zX7O9y+
-         0wtG0FZKmq+678ceehBhHsm19dgu/JdTbLVU/AHCPTQp61Y5H46MzrXzhLXoU/X6/qPd
-         GZih/VyzSdDB5/Q0Vqehp07PgTdQ21yb/ZF36s48x+dsCti2sN+OFRjMAkqMjfunovgS
-         DqpQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ztiV5c0DfuFx8uDKCLiUp5o+ivOB8cWRN0pJNXnNfZU=;
-        fh=PBrnDWiIq2En9SZxZlGxT+6zW69M4Jg5UP2CMxpTUpY=;
-        b=hvFcWqCOhgtT/1FBnY1DhrpBv6DyFJ6TPfHYI8kFeL5a4hVePy8E8yjhgXHkm2gmSM
-         z7FZVX5vylNCWgQcn0WzGpoA5SGoulEQkGK/WGIVPW1TqzQK6Lns8IRD8wBW830sKy+h
-         +PqjF3WYQG+V2DrM86J9ncK6GUaBiD1ut93BV+lYhEWkQgwx8Wjr7kx0A5I5UzmIx0gg
-         RCXctQTUUqaQlrF3uerUWwDBWN9nK1336UJKEDfNwWf9iVyBzau7ShA9LDkbXtQFI8QL
-         /Jaz9c1+DmRuWgwaedO8yrpgWKiXTi6PcC0q9O7mXMZDohH2Dx14DRwWCi9mLWBG7CgJ
-         ZHQQ==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793469664; x=1794074464; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ztiV5c0DfuFx8uDKCLiUp5o+ivOB8cWRN0pJNXnNfZU=;
-        b=0It9zTfhiJuHM+pVis4PI9jIz4XbVYXx29PzaC7nmgYUcHNBCNwm4VO1DByshiqYry
-         KsfbGbcxJN0O3pY1SoCacvCgIyLzGsheanRWHbCHXd1r4S/Qp+AHX29TfPdt98LmWboJ
-         TU5WDOEUwbPRKFte2PRP9bGEFieZ7M2mmJBw4aANvwEViKS2L+TtB+FKuOxciXXFOUdm
-         /u1j7Q5DtVGNKk9UqCkZ36Qxic0/aOHSvjcoo5XEIFO0hWGS2rtAjRQAFlYt5YARBl81
-         QTujstNrmqWyawqVbGG4w7FdqtfuBLZi1gR+VySCs0DMUisy3Y23MxHnVHhAz3ejSTsZ
-         OEyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793469664; x=1794074464;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ztiV5c0DfuFx8uDKCLiUp5o+ivOB8cWRN0pJNXnNfZU=;
-        b=injPvDVmG0OUzVfZfdoEqjqgfqHqVjq0HvL/7T6fkDQSTPWM7x8RAX1t9eJAtRNqlv
-         15SY0DDRBDFzBzgXmmZI/QUTIP6oO/uyIx7YSlYUeKIKsrtlFSZNPMhQlTRXVlUSezel
-         7HjTLVOD6osBA5ZKnpGCAjIu6wmTYb4NgRUNB1ZOOwHAFzvtDr61g8iFDxAzC3n3utz3
-         edgIAp/TJr+XDxgB1Oqa9bgBgNIUfK9wvMWW/EoWU068IRfOqrCBPnVyc6Kl+B2EnSbr
-         xWLJcUcxcyl9M7zN3flZ+HgTvlHnGuvfc9+CYOJSwLILncUSIqyHpbhXZre/xvYzEGHH
-         ReXg==
-X-Forwarded-Encrypted: i=1; AKwUvByOYOPRyK5arrGu0gDq+ujWrer269twL3d+mUoLtIHR4o5BOnUCEaUiqMAdvBVHSj6LmiA=@lists.linux.dev
-X-Gm-Message-State: AFq9FYLnEYSqfu7bCpBVA6wMs1WWYKq30wcYuTo0CgfmqZYlo/CJSULP
-	INAhN49JpEWPBI8H7Wp8paAiWUtkjr3wXFnNkh1LNcK2RXtw6HKTqsmR+DBRubEbGlHttExpeR4
-	woz9pJMwXs3eZ0zbqCoHObjMQjkvTj2k=
-X-Gm-Gg: AYBFou0npXbF5bb1Q2lLOldfQBW6Te34rgOf9ZRYeVqf0AqVNAp2PjjDGwwofEplUFQ
-	dgi9w0VcpzfTH1VJWv3Ldl9rYuPLYoVTqe575rfKcfOi8KA9eQ2UTpnye2jM5lyH33efEPUs94T
-	c8P2ynFuEfqe5jVgFlxIhGAGNpwXiXG/ciR0K8+Xs6kwrsnADgkpa4L3xvd7DGNuDWi96kB6Frm
-	epc1sAnX/wBGE5dbOugFaFGOWgx+3XG9Ie/5SRj6KFSu3+b87WCKGOpX5iwVqicj7bTDSg83ekH
-	h2RnWgSRy4KZ3atyAlWm/2uWHEOHhoLFbF/hs1hUB5MJX/qqIRvAs17pi/Tz1L6Q6cWnPXqrvfy
-	T5JDUEj7dIzn/8T7nrtUYFXR+NrgtWe/3mVDMGsZEFNfOlagQoNcJ5S4i0d1ChFW9b98CsY1bss
-	ROiY6vhgn84WdVVY+6J50MMSQosfpkVpODBibg0riUjyXi5JSluCCfFsFlrTCuMzVRVd3DpWerJ
-	DMlRcabdGpjBW6UQXSGFbCRNvawWQ==
-X-Received: by 2002:a05:6102:c4f:b0:7cc:3eb0:6ece with SMTP id
- ada2fe7eead31-7d072d53fa3mr3076240137.33.1793469664332; Sat, 31 Oct 2026
- 11:01:04 -0700 (PDT)
+	by smtp.kernel.org (Postfix) with ESMTPS id 750931F000C1;
+	Sun,  1 Nov 2026 15:59:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793548797;
+	bh=rSXU4MdQ526YDwpFQqmQayTOK2c15g71hi0jEnqqt1k=;
+	h=From:Date:Subject:To:Cc:Reply-To;
+	b=JIltwHE7SI6ouhYgSjhCFz4VL7YEzP+uv0OB7CP2S6FJ2EqATSXMRX5X9nOH4VP0W
+	 iA+UpQNBb+u0JyMt6ze4eXIFn6XfjElXJ4mFueKRi2X6oAStGnok5L80QyIuc+AmhE
+	 uwrxDynhF/4Qw49bgTBDVp8Py9Avt7fDsMEadcXoMwAXTOSi24wXJgrnBnJEKU3dDY
+	 NGXI2IjaSKEhmKAtcXukoYuLpyiIqPFukk07ZLjQVDrzCFqowpS0XzKwWP6qxP1txb
+	 zZfPW1vomDrv+LYxbDDLlXMGIqrLc41hvMzFugWeGGDeWBrEg490Qw0vW77aRWTmeV
+	 rNMNGJiON6WRg==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id C5F14461D4;
+	Sun,  1 Nov 2026 15:59:56 +0000 (UTC)
+From: Vincent Jardin via B4 Relay <devnull+vjardin.free.fr@kernel.org>
+Date: Sun, 01 Nov 2026 16:59:41 +0100
+Subject: [PATCH] arm64: dts: freescale: lx2160a-nbxv3: fix 1588 and id line
+ names
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -106,183 +83,103 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-References: <20261029-submit-serial-8250-dma-cancel-v1-v8-0-3fd56ba352ed@gmail.com>
- <20261029-submit-serial-8250-dma-cancel-v1-v8-6-3fd56ba352ed@gmail.com>
- <auNW_Oc-Ao5Iw-Gw@ashevche-desk.local> <CADvTj4pOg4w5LpFW_E3qzP7FZDnDgpB8LyR9xxhT_mZre21vFw@mail.gmail.com>
- <auRl9ztbav4nHi7U@ashevche-desk.local> <CADvTj4p8tjwdftg+H11ob0iaBZKxXrTdkSmhfZHjOYunm5tr9w@mail.gmail.com>
- <auTZtteCFnuoMD3p@ashevche-desk.local> <CADvTj4rXXAEnTyu_AzpF41a2YSHHG1ANozCUSePBoH3QZYbBQg@mail.gmail.com>
- <auWqUIBUs0_7bnGU@ashevche-desk.local>
-In-Reply-To: <auWqUIBUs0_7bnGU@ashevche-desk.local>
-From: James Hilliard <james.hilliard1@gmail.com>
-Date: Sat, 31 Oct 2026 12:00:51 -0600
-X-Gm-Features: AclHuK8CrIpMhatn91Js9Zu09dawz3gtrtGWd_ctbAp5jI12V9IMTbfHBekYVDc
-Message-ID: <CADvTj4rej-zOtwwN8CtchQ8A9L-fdG0dL_XwBb0zTFv5m=+j4Q@mail.gmail.com>
-Subject: Re: [PATCH v8 6/6] serial: 8250: retain DMA resources when
- termination fails
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>, 
-	Raul E Rangel <rrangel@chromium.org>, =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>, Tony Lindgren <tony@atomide.com>, 
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Richard Genoud <richard.genoud@bootlin.com>, 
-	Nicolas Ferre <nicolas.ferre@microchip.com>, 
-	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
-	Jacky Huang <ychuang3@nuvoton.com>, Shan-Chun Hung <schung@nuvoton.com>, 
-	=?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, "Maciej W. Rozycki" <macro@orcam.me.uk>, Timur Tabi <timur@kernel.org>, 
-	linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
-	linuxppc-dev@lists.ozlabs.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <20261101-for-upstream-nbxv3-dts-line-names-v1-1-7c8eecb2da9f@free.fr>
+X-B4-Tracking: v=1; b=H4sIAOxh52oC/x3NQQqDQAxA0atI1g1MRivYq5QuZmqsAY2SWBHEu
+ 3fo8m3+P8HZhB0e1QnGu7gsWkC3Ct5j0g+j9MUQQ2yJAuGwGH5X34zTjJqPvcZ+c5xEGTXN7Nj
+ VmSKle26aAKWzGg9y/B/P13X9AHbiLQZzAAAA
+To: Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Vincent Jardin <vjardin@free.fr>
+Cc: imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1793548796; l=2193;
+ i=vjardin@free.fr; s=20260525; h=from:subject:message-id;
+ bh=ISKcvjfV02vWOp4oL9uUzMIK04tsXq8YeCeMJLgxIRQ=;
+ b=ZpoRWP4cOckBlkls/HAiGexv6R8q/Ujap61DCpqzW7toDGxkec9a0p0haztMsR1/0Wrm0qOy1
+ TMyw/wzpTv/Ds+8XHmoHyhh6EriJoQdy8mNOryfZrfYMnO+gR86BtjP
+X-Developer-Key: i=vjardin@free.fr; a=ed25519;
+ pk=hppgLeFpGpKOi7LNwGEZ4jOYofJCoGd4Jf1ltAabiLw=
+X-Endpoint-Received: by B4 Relay for vjardin@free.fr/20260525 with
+ auth_id=871
+X-Original-From: Vincent Jardin <vjardin@free.fr>
+Reply-To: vjardin@free.fr
+Content-Transfer-Encoding: 7bit
 
-On Sat, Oct 31, 2026 at 2:44=E2=80=AFAM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
->
-> On Fri, Oct 30, 2026 at 12:08:52PM -0600, James Hilliard wrote:
-> > On Fri, Oct 30, 2026 at 11:54=E2=80=AFAM Andy Shevchenko
-> > <andriy.shevchenko@linux.intel.com> wrote:
-> > > On Fri, Oct 30, 2026 at 11:09:53AM -0600, James Hilliard wrote:
-> > > > On Fri, Oct 30, 2026 at 3:40=E2=80=AFAM Andy Shevchenko
-> > > > <andriy.shevchenko@linux.intel.com> wrote:
-> > > > > On Thu, Oct 29, 2026 at 11:19:59AM -0600, James Hilliard wrote:
-> > > > > > On Thu, Oct 29, 2026 at 8:24=E2=80=AFAM Andy Shevchenko
-> > > > > > <andriy.shevchenko@linux.intel.com> wrote:
-> > > > > > > On Thu, Oct 29, 2026 at 01:37:02AM -0600, James Hilliard wrot=
-e:
->
-> ...
->
-> > > > > > > > +     while (rx_ret || tx_ret) {
-> > > > > > > > +             dev_err_ratelimited(p->port.dev,
-> > > > > > > > +                                 "DMA termination failed: =
-RX %d, TX %d; retrying\n",
-> > > > > > > > +                                 rx_ret, tx_ret);
-> > > > > > >
-> > > > > > > > +             msleep(100);
-> > > > > > >
-> > > > > > > Huh?!
-> > > > > > >
-> > > > > > > > +             if (rx_ret)
-> > > > > > > > +                     rx_ret =3D dmaengine_terminate_sync(d=
-ma->rxchan);
-> > > > > > > > +             if (tx_ret)
-> > > > > > > > +                     tx_ret =3D dmaengine_terminate_sync(d=
-ma->txchan);
-> > > > > > > > +     }
-> > > > > > >
-> > > > > > > This is unacceptable. Sleeping is okay, but value should real=
-ly match the
-> > > > > > > baudspeed and other parameters of the transfer.
-> > > > > >
-> > > > > > This sleep is backoff after dmaengine_terminate_sync() has retu=
-rned
-> > > > > > an error, rather than an estimate of UART transmission time. Ea=
-ch
-> > > > > > retry asks the provider to stop the channel again; elapsed time=
- is
-> > > > > > never treated as evidence that the resources are safe to free.
-> > > > > >
-> > > > > > The particular 100 ms interval has no hardware-derived justific=
-ation.
-> > > > > > However, I don't yet see a sound way to derive the retry cadenc=
-e from
-> > > > > > baud rate either. RX can be waiting for input, TX can be held b=
-y flow
-> > > > > > control, and callback retirement is a separate requirement from
-> > > > > > moving bytes through the UART.
-> > > > > >
-> > > > > > Do you have a particular provider failure mode in mind where re=
-trying
-> > > > > > termination should follow the serial transfer timing? I'd like =
-to
-> > > > > > base the interval on the condition that can make termination su=
-cceed,
-> > > > > > rather than substitute a wire-time estimate for an arbitrary de=
-lay.
-> > > > >
-> > > > > Termination of DMA sometimes require to clean up internal FIFOs a=
-nd other state
-> > > > > machines. That's what happens on HW side. In the software waiting=
- for too much
-> > > > > may lead to the very big undesired latencies. The value of 100ms =
-sounds insane
-> > > > > to me for the HSUART cases (megabaud range of speed). Also note, =
-not every PCB
-> > > > > design uses HW flow control, so this may be even worse for them.
-> > > >
-> > > > The 100 ms interval can add unnecessary teardown latency if a faile=
-d
-> > > > termination becomes retryable much sooner. There is no hardware-der=
-ived
-> > > > justification for that particular value.
-> > > >
-> > > > The FIFO/state-machine draining is part of the provider's stop sequ=
-ence.
-> > > > For example, DW performs its FIFO-empty polling inside
-> > > > dwc_terminate_all(). If termination succeeds, this patch proceeds w=
-ithout
-> > > > the retry sleep, regardless of baud rate. The sleep is only reached
-> > > > after an error during DMA release, not during normal RX delivery.
-> > > >
-> > > > Baud rate can influence how quickly a transmit FIFO drains, even wi=
-thout
-> > > > flow control. However, the termination error does not tell 8250 whe=
-ther
-> > > > that drain is still progressing, how much remains, or whether the
-> > > > controller needs a different recovery operation. That distinction m=
-atters
-> > > > when choosing a retry interval: a shorter interval reduces the adde=
-d
-> > > > latency, but does not establish that retrying can recover the chann=
-el.
-> > > >
-> > > > There is also a specific API detail here: dmaengine_terminate_sync(=
-)
-> > > > returns immediately if device_terminate_all() fails, without reachi=
-ng
-> > > > dmaengine_synchronize(). Consequently, an error leaves callback dra=
-ining
-> > > > unconfirmed as well. The retry cadence can change, but resource rel=
-ease
-> > > > still requires successful termination and synchronization.
-> > >
-> > > Most likely this is AI slop. I can't see the justification for 100ms.
-> > > Can you explain that?
-> >
-> > 100 ms was an arbitrary backoff to avoid a tight retry loop if
-> > termination keeps failing. It was not derived from the baud rate,
-> > FIFO depth, or a DMA provider's recovery timing.
-> >
-> > That motivation explains sleeping between retries, but not choosing
-> > 100 ms. I don't have evidence supporting that particular interval.
->
-> Yep. And that's what my point is about. Any big sleeps has to be explaine=
-d
-> and justified.
+From: Vincent Jardin <vjardin@free.fr>
 
-100 ms was an arbitrary backoff for what I expected to be a rarely
-exercised termination-error path. It avoids a tight retry loop, but
-neither that nor the expected rarity justifies the particular value.
-Successful termination on the first attempt adds no retry delay.
+Let's properly support 1588 on this board and fix the names.
 
-The constraint is that failed termination does not establish that DMA
-and its callbacks have stopped. Returning from the current shutdown path
-would let the serial core free the TX buffer while DMA might still own
-it. Retrying preserves that ownership, but a permanently failing provider
-can block shutdown indefinitely.
+Fixes: 565b6713a460 ("arm64: dts: freescale: add Nodebox v3 CPU Module")
+Signed-off-by: Vincent Jardin <vjardin@free.fr>
+---
+ .../boot/dts/freescale/fsl-lx2160a-nbxv3.dtsi      | 22 ++++++++++------------
+ 1 file changed, 10 insertions(+), 12 deletions(-)
 
-Would you suggest a different approach to handling termination failure
-here, or a better basis for choosing the retry interval?
+diff --git a/arch/arm64/boot/dts/freescale/fsl-lx2160a-nbxv3.dtsi b/arch/arm64/boot/dts/freescale/fsl-lx2160a-nbxv3.dtsi
+index 9c5588a75cdd..5591ae262707 100644
+--- a/arch/arm64/boot/dts/freescale/fsl-lx2160a-nbxv3.dtsi
++++ b/arch/arm64/boot/dts/freescale/fsl-lx2160a-nbxv3.dtsi
+@@ -169,7 +169,6 @@ &gpio1 {
+ 
+ 	status = "okay";
+ 
+-	/* Platform reset, no consumer node: released at boot */
+ 	pltrst-hog {
+ 		gpio-hog;
+ 		gpios = <29 GPIO_ACTIVE_LOW>;
+@@ -206,9 +205,9 @@ &gpio3 {
+ 		"altfn:ec1-rxd1", "altfn:ec1-rxd0",
+ 		"altfn:ec1-rx-clk", "altfn:ec1-rx-dv",
+ 		"", "",
+-		"ptp-refclk-in",
++		"altfn:tsec1588-clk-out",
+ 		"", "", "", "", "", "", "", "",
+-		"u1700-zl30733-pps-out",
++		"altfn:tsec1588-trig-in1",
+ 		"",
+ 		"ethsw-mdio-en",
+ 		"usb1-oc#",	/* USB1_PWRFAULT and USB2_PWRFAULT pads: one wired-OR net */
+@@ -247,21 +246,20 @@ eeprom@52 {
+ 		pagesize = <32>;
+ 	};
+ 
+-	/* Board ID straps */
+ 	gpio@74 {
+ 		compatible = "ti,tca9539";
+ 		reg = <0x74>;
+ 		#gpio-cells = <2>;
+ 		gpio-controller;
+ 		gpio-line-names =
+-			"boardid-0x0001", "boardid-0x0002",
+-			"boardid-0x0004", "boardid-0x0008",
+-			"boardid-0x0010", "boardid-0x0020",
+-			"boardid-0x0040", "boardid-0x0080",
+-			"boardid-0x0100", "boardid-0x0200",
+-			"boardid-0x0400", "boardid-0x0800",
+-			"boardid-0x1000", "boardid-0x2000",
+-			"boardid-0x4000", "boardid-0x8000";
++			"boardid-0x01", "boardid-0x02",
++			"boardid-0x04", "boardid-0x08",
++			"boardid-0x10", "boardid-0x20",
++			"boardid-0x40", "boardid-0x80",
++			"test-mode-tp1500",
++			"gnd-p11", "gnd-p12", "gnd-p13",
++			"gnd-p14", "gnd-p15", "gnd-p16",
++			"gnd-p17";
+ 	};
+ 
+ 	u800: gpio@75 {
 
->
-> > > > > > Regardless of the retry interval, shutdown cannot release the b=
-uffers
-> > > > > > until the provider establishes that DMA and its callbacks have =
-stopped.
->
-> --
-> With Best Regards,
-> Andy Shevchenko
->
->
+---
+base-commit: cbbddb6b08cc9900a87cccaa9b22bbe06aa4f50a
+change-id: 20261101-for-upstream-nbxv3-dts-line-names-93b121a5b440
+
+Best regards,
+-- 
+Vincent Jardin <vjardin@free.fr>
+
+
