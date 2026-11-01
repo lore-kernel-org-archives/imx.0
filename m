@@ -1,57 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793563719;
-	b=3spw/r8DC4GUP74Go9Knt+/gHTUJn9QbFlHH99XBBkD9vRc8DdXgPXDQF78UUdWALuyy
-	 8B3BjDlH7p/yM8O7Z1f+E43yfpXkfgsPew6hwTN/Ug9W+MTdJv1vyi9hGOEUTUC+BBWAm
-	 dGX9kLQP5OqHA2XtJqCpYCtTv8hyXDudWvjck75ceLyCVdt5shKP599DLCG4rbVlZ+dJz
-	 jjS+aMzCc9vC26aEO8+GKNRi4Jf5rxop2siaNywkfRt2yIPiJM1CBJf52wceFz6mw84P+
-	 r38oVThwlmZllb4rfb/1XULU4FlbgkLB5GJm6ucq9fbP/ylTV72ccLw12bunxf9FUKA==
+	t=1793564064;
+	b=CKpmfHN1GVQdsG1yntCyVXtXR/ndyfwviF19oNWqxxXBVIygdDI4IAtRc9GOePHvLeGD
+	 CW9VO8sxLV0T26s19m8SwN2ZsIcWbYYUozvw5OrMw+YSe+9I+82/Uvv/7rZit70hAAA4M
+	 UWHa9p2rC0B97sRlprJ0SNr7WsLYA+UQNEQdfDqqzNUOpLwkbUFpDZtCNdx3TG0MjGcfq
+	 03QajeI7mpQEmIdhu36cnoy9qiq2uvTbtFzgdE0D6kNzQJjRXiZQA5dRDYQafghLFvN2Z
+	 +18CgY0vZopX4eG5OacRxMNzZ7mzV/AdFeB8PcVcYBDrq1FUsVKwHZDf5yZwxuQrqoA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793563719;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793564064;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=NYVaKjDh3/Sf4yY346/762140hXFmaTiAFD9pdYslyc=;
-	b=LL6zP+2/U/jEIaHi26LnSe07O6VQTspsutvlFAijStWqhsXLbtS5M9R4NxboaybVCBj0
-	 sVOgNkMxvVBRaRNgUb3G9dB55/QbykguNnt2G3rOvjSuEcXpg6jFR0V5KTU12+NSBk5K1
-	 gSv6vr15+uGXYZSFlrA07K1gLiLb7DP743FJap+KS/LjTJFVgkqN4RCJUydqobriMJEHc
-	 d9RDKS62BkEpXkjH5I5nhPHNQQoK93qLH1+vxbFiuQU8FMoVKl9elQlrMb32BleKsPx/r
-	 YZDuFgJl+L7DUbWQTSeGHQcmq/wpqTpx4CocHLo1/YroruMg2m5ZvdD+b0IG8xC39vA==
+	bh=9+GVdAhEdjXXRYid6fC6vP9aoR38b/YU/ofPiDVHR9k=;
+	b=Q2tbflmdkUzWcSzY0KRuf4k7lMBhBDCpEVnbhT3HZcMja8WLPF2JCGSjwQklj8gHw6oP
+	 BM4cq4qpL8vdbikmZBQAStAxmBoMRqNRKAn2bG7mivLdBFqwJWnRzuWbnuBhjY135iCTX
+	 TIkC5FlfdCYf8Hjka8HdDKo0/nt2YSMmCgMEnxFOXPbVBAxBYd6VC9vUYT/n0lkbAzZtT
+	 FG4KcTctNjS1WqpTnrVrdf2L1tYWNK1b2Qm6Wx+ArVAh69/ptyL2XAi9SUqOfuuVyPcv1
+	 VeJ13+I4aZxoJJlLo+sKPperr4BG0bmAlPjYfistIoZZGcobSewhe5d06Jd3B4euHnw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=giWSnPR8;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="eblSQ/0R";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43436606A32D;
-	Sun,  1 Nov 2026 20:08:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14D1D606A324;
+	Sun,  1 Nov 2026 20:14:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=giWSnPR8
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FF761F000C1;
-	Sun,  1 Nov 2026 20:08:38 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eblSQ/0R
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85C811F000C1;
+	Sun,  1 Nov 2026 20:14:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793563718;
-	bh=NYVaKjDh3/Sf4yY346/762140hXFmaTiAFD9pdYslyc=;
+	s=k20260515; t=1793564063;
+	bh=9+GVdAhEdjXXRYid6fC6vP9aoR38b/YU/ofPiDVHR9k=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=giWSnPR8JfflU2updOn+2dFO+9kRnEWfMGRwrJZvGzTzLV7q6rCafY6eV/OuTwNrX
-	 igEeanp2i2240FOemHf/colqb8rZO59j8R7y1XBePtPqk9WNws2gL+cMLVnGPzljdK
-	 +8Da/Rh8osWuh/UoLrFdcVGqx+nL4HqM3PU/7KJ1/tQkjVLa6nv7q5tsbJD4o2D6Vn
-	 xuqhUIU+82J4EVbRXHb7OAawOILTNTfZoO1Rt4ZEob0Zj4ffNnShPrvN9fNi6zpdZn
-	 C5CTPNzZ4PAIyws8YaTyCTKYDkE9z5H9UuOexGBbk65nAiwIZzF+kzTxYR+2yljijl
-	 7o70qTkghmQjg==
-Message-ID: <sashiko-outbox-192652@kernel.org>
+	b=eblSQ/0RnfqJ26jn8DnKY7mDF6JS2n/omh9sNB72OY5JAc50FukfX9njw8HUArGgn
+	 Lyi676C8n96NaR1m7a1z3WiTGx+VofJp5Goj6cHg06qJLLAGB/uypoIud1Mm3iLm1L
+	 H8DdEEjxla2GjkNe5k0RpPsjbIFAoCwFmJdi5FB3S0XKTkbpJ2/3zKdWJsvO8MmnSS
+	 s8VlGuuyTbfwF36y6F3Xn8txndXxd9o2z38ZDpbzgwf/ky5uB9Mjlfhebq6PmR4jLD
+	 IwlLxx+sFsIMKvRN3QIHLw1HEuvdNTdYElu0crtOxDXbGV2sgUXPlN5k78ffdJ9P67
+	 HHkeykN/UmDnA==
+Message-ID: <sashiko-outbox-192658@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 1/3] dt-bindings: mfd: nxp,bbnsm: Add NVMEM for GP
- registers
+Subject: Re: [PATCH 2/3] nvmem: Add driver for i.MX BBNSM GP register
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Stefan Wahren" <wahrenst@gmx.net>
 Cc: mfd@lists.linux.dev, devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org, lee@kernel.org
-In-Reply-To: <20261101200140.141642-2-wahrenst@gmx.net>
+In-Reply-To: <20261101200140.141642-3-wahrenst@gmx.net>
 References: <20261101200140.141642-1-wahrenst@gmx.net>
- <20261101200140.141642-2-wahrenst@gmx.net>
+ <20261101200140.141642-3-wahrenst@gmx.net>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sun, 01 Nov 2026 20:08:37 +0000
+Date: Sun, 01 Nov 2026 20:14:23 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -63,67 +62,50 @@ Precedence: list
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Medium] dt-bindings: mfd: nxp,bbnsm: additionalProperties: false breaks =
-nvmem schema
+- [Low] nvmem: imx-bbnsm: missing MFD_SYSCON dependency in Kconfig
 --
 
-commit 9d4b26f677f71a4d6410c83a13726309dd8d81b5
+commit 72a81833b2595fcf0c62fe0c32408d53d3b1d63b
 Author: Stefan Wahren <wahrenst@gmx.net>
 
-dt-bindings: mfd: nxp,bbnsm: Add NVMEM for GP registers
+nvmem: Add driver for i.MX BBNSM GP register
 
-This commit documents the device tree bindings for the optional
-Battery-Backed Non-Secure Module general purpose registers available on
-i.MX9 SoCs.
+This commit adds an NVMEM provider driver to expose the general purpose
+registers in the Battery-Backed Non-Secure Module (BBNSM) on i.MX9 SoCs.
 
-> diff --git a/Documentation/devicetree/bindings/mfd/nxp,bbnsm.yaml b/Docum=
-entation/devicetree/bindings/mfd/nxp,bbnsm.yaml
-> index b1ade64a15541..4c4b7c3fff2a2 100644
-> --- a/Documentation/devicetree/bindings/mfd/nxp,bbnsm.yaml
-> +++ b/Documentation/devicetree/bindings/mfd/nxp,bbnsm.yaml
-> @@ -31,6 +31,20 @@ properties:
->    reg:
->      maxItems: 1
+> diff --git a/drivers/nvmem/Kconfig b/drivers/nvmem/Kconfig
+> index c36c2a4c2a0b7..8d492d05f1602 100644
+> --- a/drivers/nvmem/Kconfig
+> +++ b/drivers/nvmem/Kconfig
+> @@ -185,6 +185,18 @@ config NVMEM_BRCM_NVRAM
+>  	  This driver provides support for Broadcom's NVRAM that can be accessed
+>  	  using I/O mapping.
 > =20
-> +  nvmem:
-> +    type: object
-> +    $ref: /schemas/nvmem/nvmem.yaml#
-> +
-> +    properties:
-> +      compatible:
-> +        enum:
-> +          - nxp,imx93-bbnsm-nvmem
-> +
-> +    required:
-> +      - compatible
-> +
-> +    additionalProperties: false
-> +
->    rtc:
->      type: object
->      $ref: /schemas/rtc/rtc.yaml#
-> @@ -88,6 +102,12 @@ examples:
->          compatible =3D "nxp,imx93-bbnsm", "syscon", "simple-mfd";
->          reg =3D <0x44440000 0x10000>;
-> =20
-> +        nvmem {
-> +            compatible =3D "nxp,imx93-bbnsm-nvmem";
-> +            #address-cells =3D <1>;
-> +            #size-cells =3D <1>;
-> +        };
+> +config NVMEM_IMX_BBNSM
+> +	tristate "i.MX BBNSM general purpose register support"
+> +	depends on ARCH_MXC || COMPILE_TEST
+> +	depends on OF
+> +	select REGMAP_MMIO
 
-[Severity: Medium]
-Should the nvmem subnode schema use unevaluatedProperties: false instead
-of additionalProperties: false?
+[Severity: Low]
+Should NVMEM_IMX_BBNSM depend on or select MFD_SYSCON instead of selecting
+REGMAP_MMIO?
 
-Because nvmem references /schemas/nvmem/nvmem.yaml# via $ref and only
-defines compatible in its local properties block, additionalProperties:
-false rejects all properties inherited from nvmem.yaml#.
+In drivers/nvmem/imx-bbnsm.c, imx_bbnsm_probe() obtains its regmap via
+syscon_node_to_regmap(parent) rather than calling any regmap-mmio API
+directly:
 
-As a result, running dt_binding_check or dtbs_check fails on
-#address-cells and #size-cells in the example above, as well as on any
-device tree node using standard NVMEM provider properties.
+	priv->regmap =3D syscon_node_to_regmap(parent);
+	of_node_put(parent);
+	if (IS_ERR(priv->regmap))
+		return PTR_ERR(priv->regmap);
+
+On arm64, ARCH_MXC does not select MFD_SYSCON (unlike 32-bit ARCH_MXC). When
+CONFIG_MFD_SYSCON is disabled, syscon_node_to_regmap() in
+include/linux/mfd/syscon.h falls back to its inline stub returning
+ERR_PTR(-ENOTSUPP), causing imx_bbnsm_probe() to fail unconditionally at
+runtime. MFD_SYSCON also already selects REGMAP_MMIO.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261101200140.1416=
-42-1-wahrenst@gmx.net?part=3D1
+42-1-wahrenst@gmx.net?part=3D2
