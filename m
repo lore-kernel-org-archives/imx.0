@@ -1,13 +1,13 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.70.60
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.70.53
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793642590;
-	b=xdJzL+ebr3jw0jyCwZ3SjhXLuoVkv+3hrAhjc8QyxdAtWwY4nYc+m/mYOvq2EdrwwWSV
-	 lHGlEun9FdEzksg3iKGVi69SxBWwSpoobTHfxsgmW8IDrdBn2LRhw0Ypz7KvO2NVP1ufL
-	 rTgCL70d7exTYceonJJyaFXDpFCyx42+w3Zyl7yba4xl4crkk+aEIK/xOvx6bX66hTkPR
-	 oI1xX65Txi1ZKKvlTZS9gkftS6j5h7hhsPuXDZWcbs8r5OwKGdN2c4jWOn2UzlH/iQNVb
-	 UyCIWYZnDxZ5N9DkviNTMa7iC/U7D43LU91WBrdjz2x5yWoSdA7Zp3h5ZKmOzeICOZg==
+	t=1793642967;
+	b=ZoVIIuoJg56eFW+IYBNKG3K/uuTv0FQAvRp+VMWpe29qqz+kQ2fI3jHAhZJpNeYwPl5o
+	 qYB917UIdO+jMLT5FFxmjdMpcASWkOvbZbfmLPrqDUWEzoOLzah8JKEvtw9TS71tngQL+
+	 6is44RYRKUoh06900717DzyWAX7Z4388W0LOcepEhRqvKGxehuN2WGAJpc7uoLK36bKGS
+	 GjwdTTpmB4/nzwAU7awfnBRJEKRH/TY5kq1nxvm0qJgCuN4rwuhZG0dLmYEIZ+Hbgee+k
+	 UZ8JlTEGIgSy2SmdkjHkRgl2pHF000mk83cTNifpS8D1cJEMCXBBQY+B9j6HIO09+gA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793642590;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793642967;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:Content-Transfer-Encoding:Content-Type:
 	 X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
@@ -24,71 +24,95 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
 	 X-MS-Exchange-CrossTenant-UserPrincipalName:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=CzUj5aF2f2D7cjbJ54zhjl5b2vPMfNVNDc2tEIYLkEI=;
-	b=amY5Smhqo39QfEwoDRPZDo/eComCBi2mLx0sPTJvFDh8h5MpJxg5w1HsMtEannDz2XSV
-	 bB7ctCZG91EgCr9D9qpJJOc52aFcgOjN8H7qCvGRrXLAOUyCLAfTZ2SVX3cjma65WLfeb
-	 QdZvltQ+UUswXWBNqR3zWLWfpeWZbu7d5wipkEID9Gdb/6BjrBBz6JbLcR9as2VfI+YtW
-	 JWSCSreqKQwyGfOZIBiASdWcrJpN7dgqeeBtd5XvcsNC4p/i3EHXW8xLL2r52ZgAy5/EL
-	 1GJmjAT0c4XRXA2x26FWJf04mk1TgDrr68y/rjxdHreb64VQ4bQLE33faGnD8H4L1aQ==
+	bh=hiQeECdH2uRxntetH/OLHd3qrLA+fdBl+S4x/mF+g4U=;
+	b=J3LZcOTDwHib8YoUtpUwiW1hjwUK6EShwAu2xL6DhufNluAKIzNX4SxwPoAHzpqHbo9u
+	 7o9+0Q6mNGWLEkPYvSv3dvRUhZA7s6fONyROUKVhmtos70hPRMEGLVDtnmuH3x26jcFKc
+	 VyVN85+6bZZKPtz0C5n75TdgngkiOvoIX/JwT/MVxdz6s+yASP5r199d87cWXXUy7o6ec
+	 +ETNEs9SaYdTzqOvmlp+qQJuhcXxybcWpiURj4H3pRocz17PHbUUTrt+H9J6/fWwyDgQA
+	 dRUZ6AcVYzcIde0fxC2lhe9LyBlxwRZiXpAdd4pniw3Mi0FcrdCNGTHovQeOXXxRncg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=oss.nxp.com;
 	spf=pass smtp.mailfrom=oss.nxp.com;
-	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b="jt1yP/Ih";
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.70.60
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011060.outbound.protection.outlook.com [52.101.70.60])
+	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=WgzBv2q2;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.70.53
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011053.outbound.protection.outlook.com [52.101.70.53])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31137606A33C
-	for <imx@lists.linux.dev>; Mon,  2 Nov 2026 18:03:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 31137606A33C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7CFA606A324
+	for <imx@lists.linux.dev>; Mon,  2 Nov 2026 18:09:26 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E7CFA606A324
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=jt1yP/Ih
+	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=WgzBv2q2
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nH7Be30bxMA/RXfcxV9Y/2sYvOH0tZPpDEZ2fTyT6nhJuT9Lnlp9dowdm9fAk7pMHZjEMlhVrREcBWQfWMy5zP+Z30nptDXTXWflersFSLxtrMS3wZDu4kBGzO/FTsoQZlArsy3ihLMFct0yRUQgPPWQvTR6ALY5+JZhvaCZrE1yY29u69qNIQoU0Vmp1TmU51PZomq/plF4WfTTB6lmpbUcJWxEDMYiOkq0QCL5Vey6clNN2SN3qrh0ukt37NZH1sdnNUgv2p7OLbpFh/BMaJ6lSRgd0fORPVCKPWDNX58VMQaX1Du4Wjl56UMXwlfhBA5fEyxPd1Po5DiiAvk1jQ==
+ b=K1gg5DNK/G4nWnvSl0ImatAfKux3vQSyzboG9DvPVwIiUo+jJoEk35FNgcCJ5aAxM9YacjqkWifvH0IIas3HZlQddOxO77zXun1GXrnv0Birxj+zhEvH5zrLXFpl/aqpn1pFXuikwGhobgc5T9PnHYAq8Ng7jkOHgoN/prDXI5e2hWQT+f1vCLgCuJ6E8PvecHMQPY4muSXPcZ4qXj7WUx0c4basQRg4/jXhruNRkYwkKGNBvhrKbhnKcjvRUrR6f7lYE8tLOCxnoKF8jXn9icUIZbWczmhaBYOGuG3N6D6MBJE8PXYvY48Z5j3/ATBZHShJ6OjCua2fK0FdjqRIgg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CzUj5aF2f2D7cjbJ54zhjl5b2vPMfNVNDc2tEIYLkEI=;
- b=M/V1qGrT1/IJt1FYuRVsQcspp+PumA2ya1Rvjc2Bfx/90LbpBKTkp+FIcNxR5Il5qMRiBcVR5y0Dfhnssobf0TZTZeAX5DUvXJba3TBeatw+vE3AYZHFdPpbd943F/oCH2MGT0bkN/RUcnTGl+2eeME2djPLXnxkHDu53wfT1L9UjqGWYrnQpQ6rA3q092WOicxvsI8UlUFiLhwNExDttCCyvFZPVaYlT1VRy+DTOJANyFb1BOsFFhpfnuUO4AoyNS1injjV3XUXAkDJ/pf1lkrc2hVAZ9bNRu+PWw8+y9yVrE+k/9qp4axak4mVN0TxX69K2XBSTOIB1U6EGpLXoA==
+ bh=hiQeECdH2uRxntetH/OLHd3qrLA+fdBl+S4x/mF+g4U=;
+ b=QuMhi7oZCO4N2vMlUvLWhr8h3zHc5h+8dvBHgWpT7smtQIyVmDTFv9j9gm91OPephtucsprlgPgycWFGRD4ClCQZ5je3+fY3zwfD2kcGAYHuJySlHPspFQUOUn7a1m5XeMBai5Wy2NxXkfVJ34oo7j1q90TsS6GWGvWfaZUwH/lAr2Yq+d6Y5cv9JzMilw60CLRfRHnp2kqURhELiAs6jbFjrpyHJEms0cAqLHRqhCbEO7zslyeEygMEGuskHH0xu5cbV0nonTe9nrpzBMkrBiXqO5WVbBVJ6EfB9E0VpM3QauhYR3i0ZmDC7ORD4Pv/n70f8jc2HqDQB50VrKODkA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CzUj5aF2f2D7cjbJ54zhjl5b2vPMfNVNDc2tEIYLkEI=;
- b=jt1yP/IhyCu9xgZ57ge0qqpZx+K3nvbf7qhzRH6rulKCUg5bt+izrVvmLwjfHCEisiq3Y/jBprinqdcNXxJwZOWRXGhOkL28+N1g6WjOTKomj2JG5aGo/8f6yhAzcLLAbrzfOinsof1XlDkn1WUq+VSZh5U1JevVowQCkMlfSZjYDhNuk5zctlbnCAJbUPJ9QblDWwiBhXWTcZ3VDgPqKoIKiPPxyx69lW/BbYl57F0gnlhawmXL/8bVlMy/tp2XdooS31jDjT7hahc0Gq7RQ02GcfHbGulLKqM0DFz2AS/Zcq3Dz2VkFdDeX6LsJsPqf7HxyDb6Mj9onp/w0cS0og==
+ bh=hiQeECdH2uRxntetH/OLHd3qrLA+fdBl+S4x/mF+g4U=;
+ b=WgzBv2q26zh8XeamYM9RK0hXwOj0pMxj3mvYLQp1rZ5eNsnHtT1/mjUxntEuXkf0QysvfNyhA37yWcIwZFdl8ZksOnwjp8cGRpgOdeMSmGsPBYfgFSCDZxJ8NN6yhAkvZb+rUfvVAhx0h8IJ0Q0TH2FNHWX5hMohOSElO8XpZhLjvjCvJF6mh0wjUwtGH/9v88WIjqnDxkHIEfiECIHE8LSLusdk1EZvA6kaBUgx/kuDGU9fzeeiGzISmkZasYQ5oh8BRGv4RcaxPftf5B0OI6CHwdpZ+pLHk8KIZ0DtrewGs4LezTBn7l1i9pMY00s1SRCCsj+yJ0hAtfTjJStNFw==
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
 Received: from MI3PR04MB12438.eurprd04.prod.outlook.com (2603:10a6:290:76::14)
- by AM0PR04MB12073.eurprd04.prod.outlook.com (2603:10a6:20b:73f::6) with
+ by DBBPR04MB7772.eurprd04.prod.outlook.com (2603:10a6:10:1e3::8) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.12; Mon, 2 Nov
- 2026 18:03:07 +0000
+ 2026 18:09:23 +0000
 Received: from MI3PR04MB12438.eurprd04.prod.outlook.com
  ([fe80::c715:c32:8bb1:b70b]) by MI3PR04MB12438.eurprd04.prod.outlook.com
  ([fe80::c715:c32:8bb1:b70b%6]) with mapi id 15.21.0569.011; Mon, 2 Nov 2026
- 18:03:07 +0000
+ 18:09:23 +0000
 From: Frank.Li@oss.nxp.com
-To: Bin Liu <b-liu@ti.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+To: Lars-Peter Clausen <lars@metafoo.de>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Shengjiu Wang <shengjiu.wang@gmail.com>,
+	Xiubo Li <Xiubo.Lee@gmail.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Nicolin Chen <nicoleotsuka@gmail.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Orson Zhai <orsonzhai@gmail.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Chunyan Zhang <zhang.lyra@gmail.com>,
+	Olivier Moysan <olivier.moysan@foss.st.com>,
+	Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Kexin Sun <kexinsun@smail.nju.edu.cn>,
 	Frank Li <Frank.Li@nxp.com>,
-	linux-usb@vger.kernel.org (open list:MUSB MULTIPOINT HIGH SPEED DUAL-ROLE CONTROLLER),
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Tianchu Chen <flynnnchen@tencent.com>,
+	Liviu Dudau <liviu.dudau@arm.com>,
+	bui duc phuc <phucduc.bui@gmail.com>,
+	Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>,
+	linux-sound@vger.kernel.org (open list:SOUND),
 	linux-kernel@vger.kernel.org (open list),
-	linux-omap@vger.kernel.org (open list:OMAP USB SUPPORT)
+	linuxppc-dev@lists.ozlabs.org (open list:FREESCALE SOC SOUND DRIVERS),
+	linux-renesas-soc@vger.kernel.org (open list:RENESAS R-CAR & FSI AUDIO (ASoC) DRIVERS),
+	linux-stm32@st-md-mailman.stormreply.com (moderated list:ARM/STM32 ARCHITECTURE),
+	linux-arm-kernel@lists.infradead.org (moderated list:ARM/STM32 ARCHITECTURE)
 Cc: imx@lists.linux.dev,
 	vkoul@kernel.org
-Subject: [PATCH 1/1] usb: musb: use dmaengine_desc_set_callback()
-Date: Mon,  2 Nov 2026 13:02:56 -0500
-Message-ID: <20261102180300.3966399-1-Frank.Li@oss.nxp.com>
+Subject: [PATCH 1/1] ASoC/sound: use dmaengine_desc_set_callback()
+Date: Mon,  2 Nov 2026 13:09:08 -0500
+Message-ID: <20261102180915.3981805-1-Frank.Li@oss.nxp.com>
 X-Mailer: git-send-email 2.43.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: PH0P220CA0019.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:510:d3::32) To MI3PR04MB12438.eurprd04.prod.outlook.com
+X-ClientProxiedBy: PH0PR07CA0065.namprd07.prod.outlook.com
+ (2603:10b6:510:f::10) To MI3PR04MB12438.eurprd04.prod.outlook.com
  (2603:10a6:290:76::14)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -100,144 +124,207 @@ List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|AM0PR04MB12073:EE_
-X-MS-Office365-Filtering-Correlation-Id: dc3dc099-be05-4d09-fb9a-08df390b8c62
+X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|DBBPR04MB7772:EE_
+X-MS-Office365-Filtering-Correlation-Id: eafc58e2-6960-4863-0282-08df390c6c56
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|23010399003|376014|19092799006|261102123227099003|261021121427099003|11063799006|56012099006|261009223027099003|261021123027099003|261026121527099003|10067099003|18002099003;
+	BCL:0;ARA:13230040|366016|19092799006|376014|23010399003|7416014|1800799024|10067099003|261102123227099003|18002099003|921020|56012099006|11063799006|261022105027099003|261021121427099003|261026140227099003|261021123027099003|261009223027099003|261028144727099003;
 X-Microsoft-Antispam-Message-Info:
-	oOyuuMTJLxUV1lbfBSM2IL4+tIiZ04+z4Y8awfNlbDzMeYiz3Krhv4fiePJ3VFfkh4uswTze86Be3DT064SsR3osH8cMYgRpuMmmwVs7r7J9ejY8Ry2r/umn/10VU00UkcVltnTZdeVVM1s2doFlWFnI2Tiju39FikcWlZPF5LQuIc5z3i8m0WXJ1KEBWq13KoTzp5fepxUaNCtiNA/l9JjHOg7/HuW9vHLlaBlHpPZzUAj+Zpd8bgmvxG1q2QCm+zQAbpoHXaakhPGRthLXQYa7e1MXRseAdajKPHKnXScc8dL8cJvVYRMj5grt7XFkZFXSS/oN9jkyUS5bIPWUgGr+G/EZeH4CFxM2XVxmt7TZGtOAdFgJONNt9RV3zf9Mq3Bh6KpMsvkjnqwSK2B0ksp/JclLDQRKDUH3s3VxdytdXi1ubxJ1JVMRTYqnT6j5fNatbHAAlYL9pkMDgmvHBZ8TPeEW9ejBiqBJ9DW4dzgedLbO+5pwMwMf3lep9N2AXbJor6QXINRq7QVEub2rOTRkznSpe9kwNNW6oTKf7fryBqWdaC0X27Dtv85q4SF/XOrsMmh9JQUsgvaq2Eh3sWu9Ro0QOSV1Uh7gODB8gtR7yYIVZWHc5YteN7YIDA02jrMkE2MaFoxDa/MAWNN93QVY2cmEppFX0wTDLYf0AvI=
+	0d0aLwHrkRsLiOInjPkVbjaygVYo8Ru17wEu/XkArWZTL+7wk+yKJbYXZ2Hq8QZX5rlePQ628RHeauLSwTICNwMx9fJRyGFhyKk4XylIosd8lNeDhd5CmLwEg1bK0B1UFHny/teVxCfEeKLWZ1BoTJMn7N+xqb0hY/ZMaKOZtWzd0Q1mTaGDzC1i9j6iSyh7emcetIIz/YPu60L6sWCc6GGlEw/t5wbxkNzu/i1fsZ5rZPFmLKInYx2F8blEGk5Ynpr0KuvjsUkR1ccM4R6fDZAGRmxWBelYOw8bMDBbgxxtIy2B3+YBW4lPfHrT9g7aSTygKE6P//+KS79q9n04/DuHfeAtJeSh5h4VfsFy+/r9nOciCrgr9fCrAZOupTEPva+JhlSlqdDmQbrc0dgL15gdeNGJNeIyVY7CyDz5CZSKpQTg+DZJBKQmATIPaKkd10XYfj8K3Yu+EhQY19v2ElOeuASHcQzkiiUXYLWO04RuOATPG5LDgcAV5P43H843MSf319gz+gZfqnNIyFF/wD4KgfBzf1J9A09jhbb4ghT67FKU/u+0axo3Haa6uQh8/w11CJeQUz50kavz9d9YoY+3YhT/ZnpxeFBRrciKWQiDbZ3EJ7ySX3c5R/JdfGX/87e0NZ5TRP24kpWj3pDzB+xkM3EynMr0K1uyZ73pWFr3TVkLPIoqLiENWqSFMFJg/RCqeqVotNZ/h8YEnBYN3g==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(376014)(19092799006)(261102123227099003)(261021121427099003)(11063799006)(56012099006)(261009223027099003)(261021123027099003)(261026121527099003)(10067099003)(18002099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(376014)(23010399003)(7416014)(1800799024)(10067099003)(261102123227099003)(18002099003)(921020)(56012099006)(11063799006)(261022105027099003)(261021121427099003)(261026140227099003)(261021123027099003)(261009223027099003)(261028144727099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?pLN78iXfG3IzAdNu6I3kNtqCGsLqea+9Z1plcpFmu3tneYk+EhxNEQCPh9B1?=
- =?us-ascii?Q?rKnA8OTV3Z/fLg6ftFMLw01W45dNSKsmyZcMM4LC13fOlwaljXFKWgZhgkEY?=
- =?us-ascii?Q?YOMme0vwZZhA6wvfO+qdorUxb2OqjY+c6nUYUwuOLpklIHyMolGYaU3Ua1Oq?=
- =?us-ascii?Q?UU7aRqZ/p3FUzzfPR/VmQS6UN2/mfAsVAhjgX0lop6Yt99HPjnlAbkLInHVC?=
- =?us-ascii?Q?ZfDd6ZGDkgR65Eqzzyh1NJlqkIj9HFCYkOud85Dt9qayaW8Rrnl9pY56/IHc?=
- =?us-ascii?Q?A6Aor/aJLTPhqrZw6ONOATvXOtd203gLoKmYbavZLzlWeugeiPFPXV24uFl0?=
- =?us-ascii?Q?TxJZEniQYo168hH17KtC+DY1/aPj3pGfClrXlAP+gJlDfE6je/z6aMaJ2SkQ?=
- =?us-ascii?Q?sXEw/9fs+/CxyMor172OAx3XkpMn/IdR09x1mvIWYiY65qX+ufZGb+eC0hBO?=
- =?us-ascii?Q?OI5WnuPho4h9hNoE+4872WhXDjRO6107wXSUCgDKs61FyXKdaX2RJtl6M2tz?=
- =?us-ascii?Q?QNueI0A5uIZwR8LN9IYD53f3GzgMCuHoMRqCRvGZMUyJBxFdWfJxFzNygYJm?=
- =?us-ascii?Q?ycQoforW03kPj9nuhYPAMkHwL35BeLMQdqnw5z+HREV1jEpo8EY/IeHo8AJn?=
- =?us-ascii?Q?X5yXb8HewXAy1IHla1WedUHu3Rg+nhBHFI858vDSKUr9aR8HT/ZsNr2zUgIw?=
- =?us-ascii?Q?RT4udbWg/qTluI9wa8WaY9ZP37C/nBbGlAd/T/+1oQ6nJdx6HCsj2nBm+noo?=
- =?us-ascii?Q?sAjES8ry+a4jSLjgdX1DFZwLm+vG9LIfwWuJzCL39j4pmH8kdDvJ8WkoM4P1?=
- =?us-ascii?Q?ZbpGAjnt9Hi51f2mTZIo0jMLTGoBXS2VIHI/DrgBUZnlDrz3xw3hZCbwYGMK?=
- =?us-ascii?Q?PzFCMPQuOuAAgDlFL7DO0E1ZZNc1TYRvLFfMG5TvP6xIAjkCUZ8dLGaQxaus?=
- =?us-ascii?Q?rGeLdc9lQ+IXlpDqSsUAdi7FkF3/Dommvkx7IxebApBsshScL0XCWiOUpB28?=
- =?us-ascii?Q?kEj3RRJERVqHF/MtypcWhrfOxWxVt5quxPyQiCs27wiw3hBVz/l2GK4VX3QH?=
- =?us-ascii?Q?VJruDbQx99F/cIqJJtxuQVppPo64Y5TK+KqdnKvDzOcQjkgTHmM+TQq2lrgq?=
- =?us-ascii?Q?Immb9ReW0PsgUyiGyC585DP/xOJ7O0f1Ak+Kw65Y0MvjQJmHM4hP2PBiATEx?=
- =?us-ascii?Q?r61zl0AypQbUnKybATDkYTCWo2L9bs5+nCwaxjjvVphED0UBEhfFnele1aJk?=
- =?us-ascii?Q?uwbxAzGUfeSlRz81AXMfh6HpNDa1kqwEPZIUY9yFW9OcRWgYy9pnto308Kfj?=
- =?us-ascii?Q?9u6Q3T8zJRZGEJ39oqLjDd4OtCb8m85GeJRYxnVt2GIivZl6fowYiNF2LB1C?=
- =?us-ascii?Q?9zsgcfKlzRd6eQMFyZ4wTSajhcWW1YQ+CRWBiZIz11KfN2MX71fha/b7h/t6?=
- =?us-ascii?Q?fwvXX5VP3LXSsiLxapPQBSNDLpe5QKnAxR9dU0b+EU2d7kJtZz9WIDc4X+/f?=
- =?us-ascii?Q?8obTAmZXk7fIumAfe17mgFmp4wx+LQ6Xmrv54iBAaRP2TdqC3VMx8N/4NawJ?=
- =?us-ascii?Q?jXhAZY9/GJeNpzjWJNdGVVsy7r9yTbFvX+L81Ph3svqUoCjJLXFWRh5GUEM3?=
- =?us-ascii?Q?tWT0Jn3ublxZxSoEDHkR3MQU5OZxof2Qx2HfOVy0hIFFTeTE3wUXJOhh0UAl?=
- =?us-ascii?Q?wjZ2h9+ckL7jizYG0lPKhPBgkYddL8Vg+64rfWYmC5N1g6bxBETvFd3z1r3l?=
- =?us-ascii?Q?+aME9r4qj9hMqc3p4C58uPXj+jr3IZQHzfw+2shmlRbmQwpGZMvG?=
+	=?us-ascii?Q?75i0AYNNqMBZ9if+4lDiqlBv1epaXSv9qjbDIPt5n1ye2e7UuGwCNdRrWTq6?=
+ =?us-ascii?Q?3EWkw3EBZU7Jcg3RGGJH2cLfyTq2RHWELwGLNvto5sQAv5AyZbAh6YnopMsu?=
+ =?us-ascii?Q?5Aib0/mDYeUS5RGvN1E3X+6MbILib7cZ/66CosebJRhl2oHCswK7W8L1mQZi?=
+ =?us-ascii?Q?dQUoyzhRl+dH8r/+9uso0v5ukHDh+O34NjmrJDj/DvnR0Wy8ZSvXQLn4DlLF?=
+ =?us-ascii?Q?5y4Y5KJDt2TF33V1jKbtXa6Xw4COYVhZXCitz3l7S3YyWtW5u+UhZhy/L1Dj?=
+ =?us-ascii?Q?tbDwZuwY5fgZ5DveKpoW5JdGjk4wrvRaBocqe7OaJjVchyMgRybOEsUJ7Bxe?=
+ =?us-ascii?Q?zqZ9oYRSmkIu8duOu73iRJmF9OVA8yoKi7ZSsHYiSqah9VbiYoQ8VLlM2yal?=
+ =?us-ascii?Q?CucxEnjivhLjIU5RpFBKzSACZxSso9wvbMyfWAzYA3kxcbGLqOvYMzzBZsT4?=
+ =?us-ascii?Q?cnjpLjemA0Lk+JoAxui0eyLX63jxmuu1V3f9+dDwQ4ARzuZSt3DpX5YmCrVi?=
+ =?us-ascii?Q?5dOTJC5s2hhiBJc70jxZGElzFXY9EPF+V2w+EOO7xyGSnQDwnIjoV0ikLe+H?=
+ =?us-ascii?Q?qVv6P5GUamTX70QGOuRRuwC2VJXtcnUAkD1mnwW0QxOK7o0Q9OT0TSgu5Ho8?=
+ =?us-ascii?Q?BpFMh3JN0+UrGhJ8alk0ojX6GLjSmVuW15cBIW9C8OE/9sN65Rci9L7BF7DX?=
+ =?us-ascii?Q?7YkSjsOZ6F9FlfPbBO07YpaWaJjWUYRLSjdI7nIypmpJXvXxyi207adVUaMn?=
+ =?us-ascii?Q?26pM09l+FvNgrpffoMcTL6Svz0/8B+V3TjCTcrx4BnM4Zi70VmP9nuknqgqA?=
+ =?us-ascii?Q?SmSABZib9bbx85JiyohVP5Vy8lOxKJXTS3f5sZGH+IeCI7OBsKWxxPL/oBwn?=
+ =?us-ascii?Q?xBWiWde9aKwWbXKmk7KKn3XscAQs2a65BTIFh8IpkGOxbb096/pyhfc4tMGa?=
+ =?us-ascii?Q?p0TkG4Xry0UkxjAfDpnFsYVz5qzWiBBriJMMvDWB6SnmjnVhaRuao5zdxGgH?=
+ =?us-ascii?Q?ioNMyVOju4CQAymVVCrsT0L2a5sQ1XZ1GvhOpnW7pP2lt/a0RqKTrt2TkZs9?=
+ =?us-ascii?Q?+BrirRmnL2Gss/cemIUdP3wZj+/Za38t+4SLIZ6Or/vIoR1+dA9UbIyDTiH0?=
+ =?us-ascii?Q?wHYrQHvP1ZdzcFnUnDy7jm8lywqVS12xZY28Zmcl5esRC9RLWTUIn9EnhzV4?=
+ =?us-ascii?Q?ToZsRQ06bWQUTpV2gElSMew2mmHsFN3utoU7g3dNKb09f8J0evZY3+3Liw3T?=
+ =?us-ascii?Q?+73E7kOzDAPAY/4wwhXwFjXwGeGj8XgfkJiaH1Ba2/U/gLzLEe5HBeVXYxhq?=
+ =?us-ascii?Q?00cH+QJ7jB5H2qvR1YpkUVYDV1bWaYAT1Mv26bOygluXw3q8vEIiU1fnt8hQ?=
+ =?us-ascii?Q?pqo6BtZ9czgUgjGwIuMUUTOT0mV0DRgLNT1d3rRR9jaIjyRKFm1dOvTPWQsM?=
+ =?us-ascii?Q?Qa+Q/ani0i+jEzwg5VrwRbzVoZo+c/NNpgxOPx6NExzWhm0bWLKmePwNG8UY?=
+ =?us-ascii?Q?7DaanO/TAqw4h687JKx1Bld33P0YBu3XBiQUDo+hcHhVb3zYNs1MbEjFZeq5?=
+ =?us-ascii?Q?XeH1k9Ay0fHmEfKZzwVFPH9C6WnCY5RdzFoe6LhxjcJ6kg0iWBeuO8cKYxl8?=
+ =?us-ascii?Q?Sfj1+JTsgWMrYpw6iQuqFspaTHVhbvSPqNmri2OyYUOChVSBbM7HiY4VGbHU?=
+ =?us-ascii?Q?HTgMAuQaA3SbR9HqBniE4hwyjX5mD9YASIYh7+fJYNFK67BfKcDd4snMu4FK?=
+ =?us-ascii?Q?/V/YZgJNoR7FCIJ+NhqmufAyfITUF6iHST0nlXQSPcuGv4FUJ2PP?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: dc3dc099-be05-4d09-fb9a-08df390b8c62
+X-MS-Exchange-CrossTenant-Network-Message-Id: eafc58e2-6960-4863-0282-08df390c6c56
 X-MS-Exchange-CrossTenant-AuthSource: MI3PR04MB12438.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Nov 2026 18:03:07.4144
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Nov 2026 18:09:23.0499
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: z8Be/7CtGRYVyRB8sNjRyGG61yhH58iHcevKX+Z3EgFALKLD5ZNio/OkXZOynqMadWtU8oN5Y/8QegpnF+TbEWVjC9V4S7XPL8CL/lXfIxgvoQA5BQKkYOy6jLOhPOUA
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB12073
+X-MS-Exchange-CrossTenant-UserPrincipalName: j1/xqQxvBiSJDQRcrmZM3JjqpeGqnfI1bFjxetSHS9fDeDQ0vc939CIMYMRwhEZwVJ10Ix3rbmiCmQHNL4kDNQwi8/WTyFYXd+9j4aLKw80PHMFLCtvqwLWV2YSuWLT6
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7772
 
 From: Frank Li <Frank.Li@nxp.com>
 
-Replace open-coded assignments to callback, callback_result, and
-callback_param fields of struct dma_async_tx_descriptor with calls
-to the dmaengine_desc_set_callback() helper.
+Replace open-coded assignments to callback and callback_param fields
+of struct dma_async_tx_descriptor with calls to the
+dmaengine_desc_set_callback() helper across sound drivers.
 
 No functional change intended. Prepare to make struct
 dma_async_tx_descriptor private to the DMA engine.
 
 Signed-off-by: Frank Li <Frank.Li@nxp.com>
 ---
- drivers/usb/musb/musb_cppi41.c   | 7 +++----
- drivers/usb/musb/tusb6010_omap.c | 3 +--
- drivers/usb/musb/ux500_dma.c     | 3 +--
- drivers/usb/renesas_usbhs/fifo.c | 3 +--
- 4 files changed, 6 insertions(+), 10 deletions(-)
+ sound/core/pcm_dmaengine.c         | 3 +--
+ sound/soc/fsl/fsl_asrc_dma.c       | 3 +--
+ sound/soc/fsl/fsl_asrc_m2m.c       | 3 +--
+ sound/soc/renesas/fsi.c            | 3 +--
+ sound/soc/renesas/siu_pcm.c        | 6 ++----
+ sound/soc/sprd/sprd-pcm-compress.c | 5 +++--
+ sound/soc/sprd/sprd-pcm-dma.c      | 5 +++--
+ sound/soc/stm/stm32_spdifrx.c      | 3 +--
+ 8 files changed, 13 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/usb/musb/musb_cppi41.c b/drivers/usb/musb/musb_cppi41.c
-index 28e958fcc862c..dd77e7aba77ed 100644
---- a/drivers/usb/musb/musb_cppi41.c
-+++ b/drivers/usb/musb/musb_cppi41.c
-@@ -167,8 +167,8 @@ static void cppi41_trans_done(struct cppi41_dma_channel *cppi41_channel)
- 		if (WARN_ON(!dma_desc))
- 			return;
+diff --git a/sound/core/pcm_dmaengine.c b/sound/core/pcm_dmaengine.c
+index 1306b04be171a..41feb5312ffec 100644
+--- a/sound/core/pcm_dmaengine.c
++++ b/sound/core/pcm_dmaengine.c
+@@ -169,8 +169,7 @@ static int dmaengine_pcm_prepare_and_submit(struct snd_pcm_substream *substream)
+ 	if (!desc)
+ 		return -ENOMEM;
  
--		dma_desc->callback_result = cppi41_dma_callback;
--		dma_desc->callback_param = &cppi41_channel->channel;
-+		dmaengine_desc_set_callback(dma_desc, NULL, cppi41_dma_callback,
-+					    &cppi41_channel->channel);
- 		cppi41_channel->cookie = dma_desc->tx_submit(dma_desc);
- 		trace_musb_cppi41_cont(cppi41_channel);
- 		dma_async_issue_pending(dc);
-@@ -467,8 +467,7 @@ static bool cppi41_configure_channel(struct dma_channel *channel,
- 	if (!dma_desc)
- 		return false;
+-	desc->callback = dmaengine_pcm_dma_complete;
+-	desc->callback_param = substream;
++	dmaengine_desc_set_callback(desc, dmaengine_pcm_dma_complete, NULL, substream);
+ 	prtd->cookie = dmaengine_submit(desc);
  
--	dma_desc->callback_result = cppi41_dma_callback;
--	dma_desc->callback_param = channel;
-+	dmaengine_desc_set_callback(dma_desc, NULL, cppi41_dma_callback, channel);
- 	cppi41_channel->cookie = dma_desc->tx_submit(dma_desc);
- 	cppi41_channel->channel.rx_packet_done = false;
- 
-diff --git a/drivers/usb/musb/tusb6010_omap.c b/drivers/usb/musb/tusb6010_omap.c
-index 36ee61a52e7e6..eba54d1a5931b 100644
---- a/drivers/usb/musb/tusb6010_omap.c
-+++ b/drivers/usb/musb/tusb6010_omap.c
-@@ -308,8 +308,7 @@ static int tusb_omap_dma_program(struct dma_channel *channel, u16 packet_sz,
- 		return false;
+ 	return 0;
+diff --git a/sound/soc/fsl/fsl_asrc_dma.c b/sound/soc/fsl/fsl_asrc_dma.c
+index b417de6abebe4..cd3bf6340b650 100644
+--- a/sound/soc/fsl/fsl_asrc_dma.c
++++ b/sound/soc/fsl/fsl_asrc_dma.c
+@@ -76,8 +76,7 @@ static int fsl_asrc_dma_prepare_and_submit(struct snd_pcm_substream *substream,
+ 		return -ENOMEM;
  	}
  
--	dma_desc->callback = tusb_omap_dma_cb;
--	dma_desc->callback_param = channel;
-+	dmaengine_desc_set_callback(dma_desc, tusb_omap_dma_cb, NULL, channel);
- 	dmaengine_submit(dma_desc);
+-	pair->desc[!dir]->callback = fsl_asrc_dma_complete;
+-	pair->desc[!dir]->callback_param = substream;
++	dmaengine_desc_set_callback(pair->desc[!dir], fsl_asrc_dma_complete, NULL, substream);
  
- 	dev_dbg(musb->controller,
-diff --git a/drivers/usb/musb/ux500_dma.c b/drivers/usb/musb/ux500_dma.c
-index bbb4978c0cd5f..378fb57358b58 100644
---- a/drivers/usb/musb/ux500_dma.c
-+++ b/drivers/usb/musb/ux500_dma.c
-@@ -116,8 +116,7 @@ static bool ux500_configure_channel(struct dma_channel *channel,
- 	if (!dma_desc)
- 		return false;
+ 	dmaengine_submit(pair->desc[!dir]);
  
--	dma_desc->callback = ux500_dma_callback;
--	dma_desc->callback_param = channel;
-+	dmaengine_desc_set_callback(dma_desc, ux500_dma_callback, NULL, channel);
- 	ux500_channel->cookie = dma_desc->tx_submit(dma_desc);
+diff --git a/sound/soc/fsl/fsl_asrc_m2m.c b/sound/soc/fsl/fsl_asrc_m2m.c
+index 58101ce07c9f9..c6970a7e88f3f 100644
+--- a/sound/soc/fsl/fsl_asrc_m2m.c
++++ b/sound/soc/fsl/fsl_asrc_m2m.c
+@@ -176,8 +176,7 @@ static int asrc_dmaconfig(struct fsl_asrc_pair *pair,
+ 		return -EINVAL;
+ 	}
  
- 	dma_async_issue_pending(dma_chan);
-diff --git a/drivers/usb/renesas_usbhs/fifo.c b/drivers/usb/renesas_usbhs/fifo.c
-index bac6f8fd0055e..8111d9b02c7ba 100644
---- a/drivers/usb/renesas_usbhs/fifo.c
-+++ b/drivers/usb/renesas_usbhs/fifo.c
-@@ -839,8 +839,7 @@ static void usbhsf_dma_xfer_preparing(struct usbhs_pkt *pkt)
- 	if (!desc)
- 		return;
+-	pair->desc[dir]->callback = ASRC_xPUT_DMA_CALLBACK(dir);
+-	pair->desc[dir]->callback_param = pair;
++	dmaengine_desc_set_callback(pair->desc[dir], ASRC_xPUT_DMA_CALLBACK(dir), NULL, pair);
  
--	desc->callback_result	= usbhsf_dma_complete;
--	desc->callback_param	= pkt;
-+	dmaengine_desc_set_callback(desc, NULL, usbhsf_dma_complete, pkt);
+ 	return 0;
+ }
+diff --git a/sound/soc/renesas/fsi.c b/sound/soc/renesas/fsi.c
+index 74e2ea002fbb1..fa21cf47befff 100644
+--- a/sound/soc/renesas/fsi.c
++++ b/sound/soc/renesas/fsi.c
+@@ -1375,8 +1375,7 @@ static int fsi_dma_transfer(struct fsi_priv *fsi, struct fsi_stream *io)
+ 		goto fsi_dma_transfer_err;
+ 	}
  
+-	desc->callback		= fsi_dma_complete;
+-	desc->callback_param	= io;
++	dmaengine_desc_set_callback(desc, fsi_dma_complete, NULL, io);
+ 
+ 	if (dmaengine_submit(desc) < 0) {
+ 		dev_err(dai->dev, "tx_submit() fail\n");
+diff --git a/sound/soc/renesas/siu_pcm.c b/sound/soc/renesas/siu_pcm.c
+index fd5b20b469a4a..7208514e16a43 100644
+--- a/sound/soc/renesas/siu_pcm.c
++++ b/sound/soc/renesas/siu_pcm.c
+@@ -125,8 +125,7 @@ static int siu_pcm_wr_set(struct siu_port *port_info,
+ 		return -ENOMEM;
+ 	}
+ 
+-	desc->callback = siu_dma_tx_complete;
+-	desc->callback_param = siu_stream;
++	dmaengine_desc_set_callback(desc, siu_dma_tx_complete, NULL, siu_stream);
  	cookie = dmaengine_submit(desc);
  	if (cookie < 0) {
+ 		dev_err(dev, "Failed to submit a dma transfer\n");
+@@ -175,8 +174,7 @@ static int siu_pcm_rd_set(struct siu_port *port_info,
+ 		return -ENOMEM;
+ 	}
+ 
+-	desc->callback = siu_dma_tx_complete;
+-	desc->callback_param = siu_stream;
++	dmaengine_desc_set_callback(desc, siu_dma_tx_complete, NULL, siu_stream);
+ 	cookie = dmaengine_submit(desc);
+ 	if (cookie < 0) {
+ 		dev_err(dev, "Failed to submit dma descriptor\n");
+diff --git a/sound/soc/sprd/sprd-pcm-compress.c b/sound/soc/sprd/sprd-pcm-compress.c
+index f790b959cd4e4..a810c9c8a0b5b 100644
+--- a/sound/soc/sprd/sprd-pcm-compress.c
++++ b/sound/soc/sprd/sprd-pcm-compress.c
+@@ -247,8 +247,9 @@ static int sprd_platform_compr_dma_config(struct snd_soc_component *component,
+ 
+ 	/* Only channel 1 transfer can wake up the AP system. */
+ 	if (!params->no_wake_mode && channel == 1) {
+-		dma->desc->callback = sprd_platform_compr_dma_complete;
+-		dma->desc->callback_param = cstream;
++		dmaengine_desc_set_callback(dma->desc,
++					    sprd_platform_compr_dma_complete,
++					    NULL, cstream);
+ 	}
+ 
+ 	kfree(sg);
+diff --git a/sound/soc/sprd/sprd-pcm-dma.c b/sound/soc/sprd/sprd-pcm-dma.c
+index bbd7516f81954..968901ae4c335 100644
+--- a/sound/soc/sprd/sprd-pcm-dma.c
++++ b/sound/soc/sprd/sprd-pcm-dma.c
+@@ -287,8 +287,9 @@ static int sprd_pcm_hw_params(struct snd_soc_component *component,
+ 		}
+ 
+ 		if (!runtime->no_period_wakeup) {
+-			data->desc->callback = sprd_pcm_dma_complete;
+-			data->desc->callback_param = dma_private;
++			dmaengine_desc_set_callback(data->desc,
++						    sprd_pcm_dma_complete,
++						    NULL, dma_private);
+ 		}
+ 	}
+ 
+diff --git a/sound/soc/stm/stm32_spdifrx.c b/sound/soc/stm/stm32_spdifrx.c
+index 88863dbd05d9b..44467a25fb69a 100644
+--- a/sound/soc/stm/stm32_spdifrx.c
++++ b/sound/soc/stm/stm32_spdifrx.c
+@@ -302,8 +302,7 @@ static int stm32_spdifrx_dma_ctrl_start(struct stm32_spdifrx_data *spdifrx)
+ 	if (!spdifrx->desc)
+ 		return -EINVAL;
+ 
+-	spdifrx->desc->callback = stm32_spdifrx_dma_complete;
+-	spdifrx->desc->callback_param = spdifrx;
++	dmaengine_desc_set_callback(spdifrx->desc, stm32_spdifrx_dma_complete, NULL, spdifrx);
+ 	cookie = dmaengine_submit(spdifrx->desc);
+ 	err = dma_submit_error(cookie);
+ 	if (err)
 -- 
 2.43.0
 
