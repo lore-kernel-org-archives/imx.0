@@ -1,84 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.130.51
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793631008;
-	b=UD+wMG26osMmzPA1xpJpHpMbLVz5CeeV6gVXaX+uq+Z87igyXeoJfzxkkoKpAa8m58QR
-	 WNBV5O55XpN6QDXkahJ0X7ZL/5sFXj/vVkd2M7q2kejFHwq+SN9lXc37V+GsSqSIdQTp/
-	 WtYJGm/i5O9uvJDoyyITaiiFPbRNwoFQAhzxc2DgnFGHYlmtFmOIQ96oQIJWdzEDV4ulX
-	 7vDgIrUctIsKcwdOgL+Tgr93I09pncEfO5hNQB9sd9f7ugkIlEjC147+2avpj+doAqkkN
-	 /drbwJZGg17WApd2J6PvVu3bDkZ0CaK8OiUu8rhIXr+NqHHub3wGUemd697+Um5mwSw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793631008;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-Exchange-MessageSentRepresentingType:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SharedMailbox-RoutingAgent-Processed:X-LD-Processed:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=0X4mXGhKygq3SXERn4rL52v4k+NZABPwOT13QUOkoIA=;
-	b=VKJqrfvxk9+AWFpgyp/X+7axONJAtHeIJB/T/CAZfgf7tti7y/MiIRT37vSIMl3yVgrJ
-	 3+TZvnKetH/VAG5nOVVB2B0U2R+DBTuckZwU0d3T9blghlC3oQ6BOFaVGevaCzOnWGPQJ
-	 VqZ84nrHczrOK56p1Tugxn425Iz1fV3LZ5ljJlMe8JntWUPUQ1AMmkU1AdxG9nUcBzgTM
-	 drrpaclA59rShr3KjbEqe42CIdHoS7dMHunQFZ+8IvDSkdl+AbdZcYWCk7BOZOp8W2UP4
-	 5zi1UpFU7213SH7hKu0dj0zTnGo85klSRSXQ2+Nx6cBezReN1TZ3aLwhVKSfTQ5H4zw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.nxp.com;
-	spf=pass smtp.mailfrom=oss.nxp.com;
-	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=RoLKWotl;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.130.51
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011051.outbound.protection.outlook.com [40.107.130.51])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793631332;
+	b=KO1U9PFoNvhenbc6H078eegTJiLZ0fesz3jg4WZo5y7yRoM2ALv1h1fvbh4yBl6haS7a
+	 Bf2XGhkymjUdHU/589pXWchPj9Gscg4ufpOt4dXBpPw09L8Be5nE7u8hXWzHulDH0uJVD
+	 ifUb3xgH2WkHmiubXLol419nS4yJ5v8jGuykUaBHFWqz9UM522P+Py/LBDZVOJKUMTo8k
+	 tggqpqJaASSwAKaP/dMEGPr05mZSwHOjyBJLFtsYL2C9irJvhmqs/b3OaTnHwsDXbmTVO
+	 AOXGWtU6tpxvXvDC3lW+ee5m9spX6KdHZwgEdOIr8JMGz0vUfzoClJ1/vbYx1FwWAZA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793631332;
+	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:From:Content-Language:Autocrypt:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=heI/9Sdv9DP55tAOBIpE1yV9BQS049ybJ+Xgfo8fNy4=;
+	b=A+O4PWzkqtAhJn5gx1+Mnd+4ldn8UqFqQAY+aFVKhqcb2ujtntMQ++qAKauBcVht9fGg
+	 Pae3l3ptBF4l8ZC5GYa4VvOo3FFzkxFsASSM1PKPT8fvWxlIMbeRz9mHAyWHJFuLoHjAh
+	 1CUZZ/qCMj6qUZbAzATIJ51JDGhvskawkswUttprBzuXWI4n78JPq8EJLYXx0ehilsqon
+	 UtFYSqTg5cyIpAOiuqjvy1y7jjJtNcqGG2XVCUQ4iuD6eUKUF797iSOC+Ac/pIEfa2/VT
+	 A1U+L8uozeUENcYTRE5bt9arsLIUPCfFZ6uUGn10jnZqCldyX0a1tdb0F/rOuf0hnWA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XSx9nHvF;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EA82606BA42
-	for <imx@lists.linux.dev>; Mon,  2 Nov 2026 14:50:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5EA82606BA42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90812606E030;
+	Mon,  2 Nov 2026 14:55:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=RoLKWotl
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=US6yATeh3UOvhX8AAtu1guU6FP1XXL0YPYvJjFe8S1HewH6QY013iRIuVWFUym5VwXiQsK1Hash/PrJVffH1ItHAn0SptWpf83s33oCoRN6g5lMRkrkD+hdwB2gqC6G33hkI8gSzGPFNTvvbdkudmTI6jRtK7FmxUkvSMsExH7C5nLKUVN8/d8wAuzOjlhjT5NUMGghyxnghqPRtLQiSiuXLQNin8ntZXNi13TQLWreVdkNLgUqYguaMHrk8DiFhPljUoayZtRTJ7PVZlQ/K8iJDFKdC45l0ILZRr1sIUD5YUaoRAHVCXIenjsgKzgN2OxeODrGQLs0QxOPdXM0atA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0X4mXGhKygq3SXERn4rL52v4k+NZABPwOT13QUOkoIA=;
- b=lQ9Kvmt4Bi63Md+a3+gNi7hItIsCcZ8UzixHnIrNwjqBfJ0Sz55PZC+1IrJhIGlBV6HJ3UpUZxIN2INRJVWY8e4TxVzrxKClFqMp1CDT3ek/nxGKEu6zt+kBtHxA6ipHEoBZ0wHxV0SyL11MS6N1OH/lLqdTwiNSgsbeb7sgw3LkjyVLR5/4GWOr6WPokXL3STg5OjXzU17qoiof7VZSnTCCEM93X+836208t6V3qdldc7TFXKgvL+RZJBuQ8TxTDumiq2hhji2gT44ADk9AKqfr62OSuIk+hJ92NkgqnLD9Qt9fLjTcL8xOwO42xEw6fT4LPUp7/Cmg3O6rkqwRJA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0X4mXGhKygq3SXERn4rL52v4k+NZABPwOT13QUOkoIA=;
- b=RoLKWotlsY+BvznjtQxLYUS9/1JnF6CstrdbVM5iM/I0unrcNLEmJ/UuEpnQXKK+2jKH41pvFvXMw0djny+W0Y7YnQeTtATjoxCPIuNZmhKtJwMjjMvz6IQVKmnciSqMrYAOlxhoTnfzxCgrxfIfEetdviaDJyiw8mCjN21RotFSTYVeaRvKUlFjL3ZfwBZ92jhG4QZV/Eptz5coECxDxgW1ddstwtou4CFthfZgRiSMRrzDHb+1vTNZBhfIIk8CUve7wcmRrgCOxF5s9A6FqaNzxYNSSbAkWkhOX40ncMCUgFTxrpEQ8JcPuK3uaXnlikQCvMU0u3S7yvtY+TrZ5g==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from AM9PR04MB8179.eurprd04.prod.outlook.com (2603:10a6:20b:3b5::20)
- by GVXPR04MB10633.eurprd04.prod.outlook.com (2603:10a6:150:225::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.12; Mon, 2 Nov
- 2026 14:50:01 +0000
-Received: from AM9PR04MB8179.eurprd04.prod.outlook.com
- ([fe80::a551:cde0:6730:1d85]) by AM9PR04MB8179.eurprd04.prod.outlook.com
- ([fe80::a551:cde0:6730:1d85%5]) with mapi id 15.21.0569.011; Mon, 2 Nov 2026
- 14:50:01 +0000
-Message-ID: <1cb65dfc-78a7-4cdb-bb39-c40b980b2504@oss.nxp.com>
-Date: Mon, 2 Nov 2026 16:49:47 +0200
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XSx9nHvF
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 557041F00A1A;
+	Mon,  2 Nov 2026 14:55:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793631332;
+	bh=heI/9Sdv9DP55tAOBIpE1yV9BQS049ybJ+Xgfo8fNy4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=XSx9nHvFQfngNju4DjkSqrS3ANJ0GDdI8vjOquvlsX0I/Y5lbvt4YaWQ2WZSvq+Jq
+	 8cwloydf2MMB0f5Bd+1Bv/s4iSFIlE+8xUaViPZsrnTx3Kd7JIJWJdEdDcEG7eh8uQ
+	 yitziUb4tMKsD2/2kGmQrrmnIFvPrDgb4YuLa2rk1ZLvSOmBrHXFl8O5J6k6cqSLGo
+	 BeUzge4h5Zq+zjx0jJJAhRk7f4eWHQdvKglU1tUbK87qyfvGMPNWcxGl0FDtZDQRpj
+	 dKE9l/8i+xEBkoE2R7fXnmuXPTjyldAEELAp6R4xMfElO2xTfUu7MdZUKzpoVnGzlt
+	 n57uLFJuVbRKw==
+Message-ID: <e8add933-e918-40c9-afa7-d66fd589bb9d@kernel.org>
+Date: Mon, 2 Nov 2026 15:55:15 +0100
+X-Mailing-List: imx@lists.linux.dev
+List-Id: <imx.lists.linux.dev>
+List-Post: <mailto:imx@lists.linux.dev>
+List-Help: <mailto:imx+help@lists.linux.dev>
+List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
+List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+List-Owner: <mailto:imx+owner@lists.linux.dev>
+Precedence: list
+MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] arm64: defconfig: Enable PINCTRL_S32G2
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Khristine Andreea Barbulescu <khristineandreea.barbulescu@oss.nxp.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@bgdev.pl>,
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Conor Dooley <conor+dt@kernel.org>, Chester Lin <chester62515@gmail.com>,
@@ -98,127 +74,118 @@ Cc: Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@bgdev.pl>,
  Vincent Guittot <vincent.guittot@linaro.org>
 References: <20261102141635.3768024-1-khristineandreea.barbulescu@oss.nxp.com>
  <2026110233-unlocked-outclass-9584@gregkh>
+ <1cb65dfc-78a7-4cdb-bb39-c40b980b2504@oss.nxp.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
-From: Khristine Andreea Barbulescu <khristineandreea.barbulescu@oss.nxp.com>
-In-Reply-To: <2026110233-unlocked-outclass-9584@gregkh>
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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
+In-Reply-To: <1cb65dfc-78a7-4cdb-bb39-c40b980b2504@oss.nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR4P281CA0134.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:b9::8) To AM9PR04MB8179.eurprd04.prod.outlook.com
- (2603:10a6:20b:3b5::20)
-X-Mailing-List: imx@lists.linux.dev
-List-Id: <imx.lists.linux.dev>
-List-Post: <mailto:imx@lists.linux.dev>
-List-Help: <mailto:imx+help@lists.linux.dev>
-List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
-List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-List-Owner: <mailto:imx+owner@lists.linux.dev>
-Precedence: list
-MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM9PR04MB8179:EE_|GVXPR04MB10633:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3be45614-7dfa-4232-583f-08df38f09293
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|366016|1800799024|23010399003|376014|7416014|19092799006|11063799006|4143699003|56012099006|261009223027099003|261021121427099003|10067099003|18002099003|22082099003|261102123227099002;
-X-Microsoft-Antispam-Message-Info:
- fIIj0WBc1FJHNDbitwPSJrStR4SxEwA2RpMqdRBMZ2lLxrOGeUeeDYxuH8FKhvR7QaZT11BVoqdO8o9bxBqu+tHNHIVdW+jplMRMEnfZi01Qlo3UERB7EqFAt+/ouWhAwgJwC7+6uVsFxsWEfW+eLnMJGxAiH0T0OyWNPzRxv2xX5+w6gQSfBBbdV4qmoduqIy6vvUfj+9Zxl6H6k5KZ1f0reefxhwo5sJsaCSBSIrbaIWXspxo0/40l3ylcSnHK6yYRZmQOsHX4u88HaGSUAruUteR01JCkwW3MISkPSW6f22ffhK0eYk49fyotzZakCPVP1gSs+E+M3n6muTa/BG47Y7B+SCBtXMQvKGHz5qptfPExkNYHMc0sLyGz3LlX9e9HZhUexFJdlHvmkTUITx/p0pFF/CcJWo5EyXIWr4tEmZ2qSCyLz4PALgOJnHIA45dg5OdQWkcky+ORIaPCbELiZcldOGyCoqHxZR8+AUBOC4VmfkbRCVA/NuIEgFIX4wTDyC7YLe+joGz4XaL7rvSxgcVZf8vXemZXru6GpxPLPANTi5NcPEM9RAVH/rBy+agGwsTRS0SDugnWUkQL4zd6MGq3JN4P5pUYJtXvqZF6QzFu7jYTjo7Bt3ny2q2nt+aDGBcaYr4Eye3xRudZW58lOTdrEVfqzNVG23s+zxI=
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8179.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(376014)(7416014)(19092799006)(11063799006)(4143699003)(56012099006)(261009223027099003)(261021121427099003)(10067099003)(18002099003)(22082099003)(261102123227099002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?utf-8?B?eDRNM3hGWkNHaEFkNks0VEsvSFZFSVVmR2NDaHk1QTNNb1ZHN0FpaTcrK3lz?=
- =?utf-8?B?ZDNGakk1bDk5cUFoRUJkakJ6N0EzQWFiRUlwSUdRbXJwZXowUWFvN2ROd2dr?=
- =?utf-8?B?ekNiSFpJNDBOUFkza09MZ2trZ0gySWRoSTJIMG5SUzZhR3NVMW5DVjQwRlpH?=
- =?utf-8?B?Y3VJWHl2NGFBczBmckRPMkc1cVlDdDJvUkJ3OXc3MUdQY2VXUWZRdWh5dXlh?=
- =?utf-8?B?Ukl4M3FUNkI2L2d4NFBXK1FqSzUycUJQOTR4aVZKRTc4Y3d6Tm1lK1F2SkVY?=
- =?utf-8?B?RWdXSWZTN2psOXJWc05Ha25oL004TWhMMCtibE4xK0FzNjZiaE80aUpPdTVh?=
- =?utf-8?B?OXM5dG1ReEtmTWIzcFZzN3B5TG5mTzhidlNhREQzM0ViV09BOHZyMWNBYXFH?=
- =?utf-8?B?UDVINEpzVmVuWXcybHdOQkdydnFGZEh0UjB2bS9pVjIxbFh2dWlnWVVxQjl4?=
- =?utf-8?B?VzZVdHJHV1QwS1Q3WnBTaUF0WVM5SWFPMjFuWEFRRnQxM1lCQlhCQ1pXeGk5?=
- =?utf-8?B?QXZZcEdDVG92eUpTSXpNbzVDVmErUUNVVzk3TnRFd3VmNm53aFFtUlQxb2d0?=
- =?utf-8?B?V003MElRNm9GZWdqRDkxWTZiaUpQckRsY2kvSnArUkY5eHAwbjlmMFYxY1l4?=
- =?utf-8?B?aGU0eTIrSHZFKzk4NHhsNE1Ib0FxNUtHaU1iSEVjT3R1QzVmb3E4aXpCZlcy?=
- =?utf-8?B?aTZ1OWJvUVIwT1NmeEI1S2g3TVdFTHVBVUF4QU4vMzY5QjlkT2p2THhHbzBt?=
- =?utf-8?B?ZVpmMDRmd2x6YVVVTitIbkF2RGVwelRmTjZSUVVxbnhVc05CZE53TFJRdG1X?=
- =?utf-8?B?RDhqQ25VN1lxazlNSkVYdzBoajRvbVBnczc3L09OUHdYK0lxWUhrMW95OVNh?=
- =?utf-8?B?VmsvcXRPeTM2TS9BTWZvejNqZ3IxdERGQWJqbDRCNzJUUjlQUVgvSSs3bHhM?=
- =?utf-8?B?VXRGMU1rOHcvdkZkYU9QUjhEK0hEdlJQTk8wNUxjejBsbHdUVCszejc2eGZ6?=
- =?utf-8?B?Mm96RlA2N2NmOW03Y0h6akkwRE5RQmc3VWZmYXVGTWJmVWp2SjZYZTk2MkI3?=
- =?utf-8?B?MUF3TG5nL1VlL1VvZnhJSkZXbjdwSHoyWEpvZitGM0RTYjN3R3dXMjJmbjdZ?=
- =?utf-8?B?aTNWVVpkQVc5bE1mVmdRY1hNdmc0ZFFrR2pvRkxxeFJWbE9aK0tOSlRUNC9L?=
- =?utf-8?B?U1VlbTdkbmJ1Y1A1UDZxRytXUG1zdVU5VTNPemx4K0hCRHBOWGdFQmV4Z3M5?=
- =?utf-8?B?U2pqR081L3BMcUJsRjhCLzYrUWNmOTJFVDZaZzY4akhWMERSdHhsbVdubjd5?=
- =?utf-8?B?TGlYMWN6MzZaV2ZwWGpBbVRMTGUzeXBxUWNDa0hkSkpmTmU3TXEvZFVIYllF?=
- =?utf-8?B?NkprT3ZvMGRQN1VQLzR2VDd1eHVYZU8zNUJKSVRWVG9GVmZvK0pDamNVRi9u?=
- =?utf-8?B?S0FKTnlDUHlNQTJFVmtpYlc3eENYVFVwbmJZNFdYdWZCSThZTFpZZXNKQ3Rw?=
- =?utf-8?B?aGlRRkpVRndJWlFwa2RhK1dMdUhYWU9CM3JrRmMwcS9zZ2xaMXNwQ05HeXFS?=
- =?utf-8?B?OGhUSzJvN3NDTTFWZ1JTRG54TW9ETkxTL1Zicnc2RFVRN1BTK0t6YXJYaVVi?=
- =?utf-8?B?bmxrSEZFc2FaYlRLUmFZVmpIY1pOR1EzTFRXZXpqamVzdDYrZkc4Y0h5bXh0?=
- =?utf-8?B?WDUxdUZVV2taalRMNlVJRThEdnYyWmxUdEpRRkVqakRaNGFCRE51TVlJbUJV?=
- =?utf-8?B?UVQwZ25SaFJGRG1JUC9MQ0o4NFJxRWFuemFCTHczNkliNnBMWUNmYmFqdDVK?=
- =?utf-8?B?UnNHTGFEOS9DTXNtU29sWDl0cWM3K0tub3VMQ2xpOFlOZHFoVkJsaHc1ajNx?=
- =?utf-8?B?NWpFQ3c1WUJoVVFZdVh3ZVRiSzFKMUJsMUxoUWhnd0l3TzcrbkJjY2pMeGMv?=
- =?utf-8?B?V2lBYVpLcmpCR0p6cENucXA4eDl0WmhBcWJiWGhKT3NkOE1aQ1A0dlZPNS9N?=
- =?utf-8?B?MXE5SXE4SWhySVBWY1FMMDF4R2pxRW11VS9pZlhuM1NrU3ZrV0pCQzRnbHQv?=
- =?utf-8?B?MnZncGdlZks0RHdPV3Buc2NyOHlCdmdSQVRiblZQeWNXek9JYVhnTWM4Smhu?=
- =?utf-8?B?NExDUmZ0U3ZDS1RsWnRxdXpzWFhsZHFEQUZqSmE4aWpJaXYza1ZOWG4yL1JP?=
- =?utf-8?B?djl0ZWtqL1ZKV2d2bHQ0ZWFwZU5JR0pYMXZkeGhUYWVaclFNMURsRzIydnpK?=
- =?utf-8?B?TDJ1a1hwb1ZpMG1YSDI0UmhCb1ZjNFNBNXVEYlAvUFNpU3g0Smx2MXhPMWZI?=
- =?utf-8?B?RThKTXFBaGY1dFg4ODUvL3BZemhibW11dDZZcUExQ3Vwb3lMa2o4S0ZnVzFK?=
- =?utf-8?Q?mBzzjqqM9VwUM/KUkhiJLrGQPIMzkIi/Dl4zJ?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3be45614-7dfa-4232-583f-08df38f09293
-X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8179.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Nov 2026 14:50:01.4314
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: v4TFg04MLuhG8w7N+6ULfNcLcI/WxQk+gOHiiVM6nQYUy7/xt8YA83KDkd1ORtc1ec5/wt9/J13+QpFGtxBjSm/Q40i1woKni7ofK3DT72MW8Q+6mMJxWQfC5dAsjZG2
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10633
 
-On 11/2/2026 4:24 PM, Greg Kroah-Hartman wrote:
-> On Mon, Nov 02, 2026 at 03:16:35PM +0100, Khristine Andreea Barbulescu wrote:
->> Enable the NXP S32G2 pin controller driver in the arm64 defconfig so it
->> no longer requires a manual "make menuconfig" step. The symbol selects
->> PINCTRL_S32CC, pulling in the common S32 pin controller support used
->> across the S32G family.
+On 02/11/2026 15:49, Khristine Andreea Barbulescu wrote:
+> On 11/2/2026 4:24 PM, Greg Kroah-Hartman wrote:
+>> On Mon, Nov 02, 2026 at 03:16:35PM +0100, Khristine Andreea Barbulescu wrote:
+>>> Enable the NXP S32G2 pin controller driver in the arm64 defconfig so it
+>>> no longer requires a manual "make menuconfig" step. The symbol selects
+>>> PINCTRL_S32CC, pulling in the common S32 pin controller support used
+>>> across the S32G family.
+
+Well, my standard request - why would we want it? You need to list the
+upstream board(s) needing it. We do not develop defconfig for downstream.
+
+
+Also, odd CC-list, really random.
+
+Please use scripts/get_maintainers.pl to get a list of necessary people
+and lists to CC (and consider --no-git-fallback argument, so you will
+not CC people just because they made one commit years ago). It might
+happen, that command when run on an older kernel, gives you outdated
+entries. Therefore please be sure you base your patches on recent Linux
+kernel.
+
+Tools like b4 or scripts/get_maintainer.pl provide you proper list of
+people, so fix your workflow. Tools might also fail if you work on some
+ancient tree (don't, instead use mainline) or work on fork of kernel
+(don't, instead use mainline). Just use b4 and everything should be
+fine, although remember about `b4 prep --auto-to-cc` if you added new
+patches to the patchset.
+
+>>>
+>>> Signed-off-by: Khristine Andreea Barbulescu <khristineandreea.barbulescu@oss.nxp.com>
+>>> ---
+>>>  arch/arm64/configs/defconfig | 1 +
+>>>  1 file changed, 1 insertion(+)
+>>>
+>>> diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
+>>> index 7b4985b29b21..545a2b7db8a5 100644
+>>> --- a/arch/arm64/configs/defconfig
+>>> +++ b/arch/arm64/configs/defconfig
+>>> @@ -704,6 +704,7 @@ CONFIG_PINCTRL_BCM2712=y
+>>>  CONFIG_PINCTRL_SKY1=y
+>>>  CONFIG_PINCTRL_IMX_SCMI=y
+>>>  CONFIG_PINCTRL_IMX91=y
+>>> +CONFIG_PINCTRL_S32G2=y
 >>
->> Signed-off-by: Khristine Andreea Barbulescu <khristineandreea.barbulescu@oss.nxp.com>
->> ---
->>  arch/arm64/configs/defconfig | 1 +
->>  1 file changed, 1 insertion(+)
+>> Why?  Shouldn't the normal platform-specific defconfig work for this
+>> instead?  what defines the arm64 defconfig to require this now for all
+>> arm74 platforms?
 >>
->> diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
->> index 7b4985b29b21..545a2b7db8a5 100644
->> --- a/arch/arm64/configs/defconfig
->> +++ b/arch/arm64/configs/defconfig
->> @@ -704,6 +704,7 @@ CONFIG_PINCTRL_BCM2712=y
->>  CONFIG_PINCTRL_SKY1=y
->>  CONFIG_PINCTRL_IMX_SCMI=y
->>  CONFIG_PINCTRL_IMX91=y
->> +CONFIG_PINCTRL_S32G2=y
+>> thanks,
+>>
+>> greg k-h
 > 
-> Why?  Shouldn't the normal platform-specific defconfig work for this
-> instead?  what defines the arm64 defconfig to require this now for all
-> arm74 platforms?
+> Hello Greg,
 > 
-> thanks,
-> 
-> greg k-h
+> ARCH_S32 is already enabled in the arm64 defconfig, but the supported
+> S32G boards also depend on this pin controller for their pin muxing.
+> Without it, some peripherals never finish probing, so a defconfig kernel
+> cannot boot to rootfs on these boards.
 
-Hello Greg,
+Greg has valid point, you did not really address it. Explain why it
+should be user-selectable choice in the first place.
 
-ARCH_S32 is already enabled in the arm64 defconfig, but the supported
-S32G boards also depend on this pin controller for their pin muxing.
-Without it, some peripherals never finish probing, so a defconfig kernel
-cannot boot to rootfs on these boards.
 
-Regards,
-Khristine
+Best regards,
+Krzysztof
