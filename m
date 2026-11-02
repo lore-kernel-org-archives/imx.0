@@ -1,89 +1,105 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.49
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793625413;
-	b=izt1Coh3b35nlqeG0hvFiLX7q1ml7EACaaF8zl7eevBsQWbDoxDWOquzPTkfUo9HTLAW
-	 dAJNUeD+DvuZSAyDjQ4tnW24SHBC57CIH3hUkLWKE/1WJ8cls7lONwYwgp3NtQthhD/RU
-	 kkfFtEzrZvkw+2GzPQ/ibZ+Nsxy+ZeCquz8DgP4gNxzZxyHSqWNWjOXLMrCl1K2TTRLW2
-	 NV23J2OiZq2dZrl6J9JI053hXN4AfFquhT1maDjGCnlzdbu0xehJva1R58jndiSuY+RD7
-	 hEY3+/atX4Po3eizFvd96Q98yN6vsII8/FROIJHxQRie18d/owqOc9OrX6VBBXCDZAQ==
+	t=1793626840;
+	b=aoq6H/r/4LH1vNy2INN9CvuhmYGEgPn7Ia/EFCdM0xQgDBFfUOfNHVgriOQqzVb+cAFs
+	 WLcNp15X71gAPttFMAir471tZcKZP5T3zXupveOUG5cwGxf/NkdxJ+qpi0N0nxFGW0YEN
+	 9B3PZyRIVnrhZiCwHfwk4jM6vlGOtIBnUN/YYIJ7WR/KKvHLVpQctZZUH2aWQicLCGY5P
+	 nMjeM1yDUd7MFi0kUdPsHWgscdOyU+8arhOFCsvXovG0pPtYB/5Kx6MXKwgKeKGzpHoD8
+	 W3A0bdxRPAuQxkhEGl1PnyiNWkEzzZz8E6mZpR4U55le37yzklVGBikqV865MYnHn7A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793625413;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793626840;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Message-ID:Date:MIME-Version:User-Agent:From:Reply-To:Subject:To:Cc:
-	 References:Content-Language:Autocrypt:Organization:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=Nu0UBnRlzBjlTsD7Xnyon69xqlQ0MnOsBtNCGwjj4wU=;
-	b=IBtEo119PgKZAlDGdwGbIMxp9Tyh0ata8oCtOZO3Rky+5IaxedlMRzSxYujQGFn0qDv4
-	 AKNAtEsm4RPp9NjBoo8mmhW0kM7f7LevO4FPh89HowS/PJbjDifPApO1QXAgJBYLLmESM
-	 r9eQfhbGcGptWRDpnCy5MgMVetoVbmnGRdqKufb97bGfYG5umKyWsjsX74Snrd1RwBk1N
-	 dWmgY3O//lHO0CBF0/k/EkbwcbNXc1ziNlIrnU7rW2kempDfhtZ7Q7CeRy+o4g8Ts8yDl
-	 Z8tyzDPe8afenZytsrcb0HNdKfW0rgLiknn11S8hTZSAbS5v9dx/P1WRFpIQK2HsGqA==
+	 From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-Mailer;
+	bh=OwvQ1K/T5ntTIih2Uajc562qVZy7T1bItsBHgcFYO5c=;
+	b=m/wOas8UJVHi/wCnccHAr1rl8BaZAQlGKIY2XvvR/bP98rr00MihBnn95tWYvYL+RJ9n
+	 CcqAokZDjSkzVTESC9PsxjCCzkJeb8K5aDIFroEObzIL4EO/WPCrD+izjHrP9lnft6YcS
+	 ZFTc4avDmdE1dG0A6L7Hw6BRoBS/dYL+CsPodK90HNc3ELN2pxKzwdryFM4i6RsHpo50I
+	 5nyvBi0UPseaxD4LLi9FEEK4E+Bk85CfZHIU5JigVLRQQW5Yp1jvoWg77HiAaCE8qwR1n
+	 8GwDSUbpaFBssbXHyawB3Fdihw/hNc77X8SMKonxWaHDbmVNYA8Ra1axxmZmj8SHOIw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linaro.org;
 	spf=pass smtp.mailfrom=linaro.org;
-	dkim=pass header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=kH1oIHzt;
-	arc=none smtp.remote-ip=209.85.128.52
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	dkim=pass header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=yVSk7cDd;
+	arc=none smtp.remote-ip=209.85.128.49
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DFEE606A327
-	for <imx@lists.linux.dev>; Mon,  2 Nov 2026 13:16:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3DFEE606A327
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80DCD60A2622
+	for <imx@lists.linux.dev>; Mon,  2 Nov 2026 13:40:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 80DCD60A2622
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=kH1oIHzt
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4a2084d62cdso26510995e9.1
-        for <imx@lists.linux.dev>; Mon, 02 Nov 2026 05:16:52 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=yVSk7cDd
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4a35db1f202so32286095e9.3
+        for <imx@lists.linux.dev>; Mon, 02 Nov 2026 05:40:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1793625411; x=1794230211; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:in-reply-to:organization
-         :autocrypt:content-language:references:cc:to:subject:reply-to:from
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+        d=linaro.org; s=google; t=1793626839; x=1794231639; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:mime-version:date:message-id
+         :subject:references:in-reply-to:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Nu0UBnRlzBjlTsD7Xnyon69xqlQ0MnOsBtNCGwjj4wU=;
-        b=kH1oIHztDmoo3KvMRexRQbnLn2Cj5Ut1jcGxbCCGL6fLaSWbMHaNKJR8Fv98cyG/nw
-         9F+qkLTPgamxN/xQc2bYOeutHPZdoJRcmJbwjjwf34iXww05mY6dKfisY5zeuT5cTXLO
-         jfxu5kLvuZFmWnqFSsY2oP6vRgc3PAidMw4uN/lR0NsxSXQ2xJQeshJa8SAbzcOdbHz1
-         L9I+zrdwvHck/jVo7aA3wKOghCXNs+rbSEoKS0SgGuBBeyTmdVjYPILXXJmi76MLa0N9
-         BsFCbnrltVKJKxQoaFrW4HYPNp0kmYXl98UirKevPs3iJUxFgS2KCk8GqYm8L/xKl7Hm
-         dvxw==
+        bh=OwvQ1K/T5ntTIih2Uajc562qVZy7T1bItsBHgcFYO5c=;
+        b=yVSk7cDdyNuCuYn1UOwd5TgFG5fh1+8ILqblyL4AoErzVyo04psV+hrp6OYcGzoCT2
+         CHGyJQvkczncVfmyLzlIr0lWS3UcGb0Ye4xWX160b/Rto037h2eBIY7aZX1BVbSH7DzK
+         orF4m/M2LYMFW3Mi6iILpdEVPQd/a8H7Ux7Yzo49cTbOkjTG5LXlQqLiX9epYsOML1hB
+         6K3XDGJL7ZA4nwrM4dAF04PTUDzMuVQGUhozkhMh0IUngyF8NkqR3N6O2mjoS+GTa9+5
+         KBWBo25VwIy+LLfRHl4O7/QJqYpU7aU/ZT7mLT+HeOAn3pYQ0+oRvvk80Lnh3kErNiJz
+         53HA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793625411; x=1794230211;
-        h=content-transfer-encoding:content-type:in-reply-to:organization
-         :autocrypt:content-language:references:cc:to:subject:reply-to:from
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Nu0UBnRlzBjlTsD7Xnyon69xqlQ0MnOsBtNCGwjj4wU=;
-        b=Zlpi+9C8mnYRU+ODLyn1+w0AEna6SGdTZcdRh9Dx1tuMHPKyanrGegZiWHKwOb336t
-         ZMKPDaEzRP/DT3SxSWDLpJ9AodT+3YPjeEiffqjNfwKRN6Om98iZ9wZW6rVhgeJHaqWG
-         xZxmpvj1EbGCts2xo+vo2xZe+ojfIlY7NiHKM0ED68zLdhzM2EmKsCIG7xP+4Sg0x+04
-         KIx5uNNXVVZkjnxRbwmPTquG4L5IyZ1JJ+p2QxIacqOXvGiQvcYvwdFNiSxbMBg4RFGu
-         o/ogfpvmZ17BvJppI+hCjLGjzWoaSdIhw5UN6VYH8IvU4jTciRQLQqlVi/LZA0tYm5tp
-         GEAA==
-X-Forwarded-Encrypted: i=1; AKwUvBw5hgSmrbgamC9lKlY6FvLiiYuE2y2m5T+9HhOcu6ZkgR38Xk+b7WO7dagEU1SN8zS1KG8=@lists.linux.dev
-X-Gm-Message-State: AFq9FYKTBC1ygrc2fgBwpqODXBeavoRHh1eeCXRQySQTJkOUdizZWHKD
-	YZjsmQCe+xpnHClG+TqKBv4lnhJMlfGlSkBmLfMrahXIKuB+ojhyeSzAyKWZcAyvJII=
-X-Gm-Gg: AYBFou0DdlrQSxaMS46Zfmesv1cL3W9NQw2zzf2HK4v7tVwzgNZZoATDfhvdGx1i0ss
-	lTpbfy1+KH5cf09dgPcS8ISrrBzlPrPJZ3K5q4n7GOXuiP1W4HD4Lso8igydwJuW7KY+dfCGztN
-	hCLOFWFohjJPtWU0+kbHmHU5Ch2jzuPlW7iHBxgBbyvtZTgH9LnbHV0RDLkjQhBRXpOLMvnLE3w
-	MaO0Jm9ywq3H5Dcq+E9VMF8/RINclJJfQG9/wrfobnwns59bL5NlCe+rSXPiaJCnhFvZEeihrD9
-	d9TCgpiBJ4lgq/9r3ap5idh3K50I/conQiYcGYtJpLTMTZYSFRhwLvYNaoQHjjlnAw79+EvveXh
-	Pa2SenjfQ6Q6WzTjmbYbtblBjcsVcSk2iN1FgbYbgzS9N9Om9f0DZFyqfvTxgpiUsNj0YwMXsso
-	s1ZgWJd0dKjn0Gl1Xsx4opspOqhNZMQB4BG36tWhgnBrfzHUX95ckupKIUqGMj2oPZ+hBpiPEAO
-	UUlBeqj91Dp3Lxrg3sy8p84g38yai6C5bLiWo1MAZcrDUXlV3zKGYXG0IwKnrjj8l/ZFJJdv99W
-	lheCJ8JpXx8Eu5QgXOjI5cK34q4w85ccEmAaFLaYgMevCCXFBtpecMnna1l92RnovwfJKKR9PWx
-	XF3Y7Ug==
-X-Received: by 2002:a05:600c:8b0a:b0:4a1:777b:8a12 with SMTP id 5b1f17b1804b1-4ac1709ae4emr246187665e9.14.1793625410523;
-        Mon, 02 Nov 2026 05:16:50 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:106d:1080:9476:5165:3a16:262? ([2a01:e0a:106d:1080:9476:5165:3a16:262])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4aa7f322c46sm331607645e9.2.2026.11.02.05.16.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 02 Nov 2026 05:16:50 -0800 (PST)
-Message-ID: <fbf54a00-33c6-4b5f-a9d9-3f6c23744ae9@linaro.org>
-Date: Mon, 2 Nov 2026 14:16:49 +0100
+        d=1e100.net; s=20260707; t=1793626839; x=1794231639;
+        h=content-transfer-encoding:content-type:mime-version:date:message-id
+         :subject:references:in-reply-to:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=OwvQ1K/T5ntTIih2Uajc562qVZy7T1bItsBHgcFYO5c=;
+        b=QatznPXQbG237FN64yG9/dHYpHSZpZjlsz7+B2XawCfsmZhpCJv/xi1TuuUgXrli2M
+         GzUpUhEJE2B2Rwg8McuktmKYe0TarWhZm2iwjDKX4kYT8LR0qNwf+1CztUGnjP3HQEHI
+         8pnjj6ax+dkRFn+xbz1jOh3326uA14S907E9zD6agyMCEcgmZn0GSSdvAIDJSs3yjZER
+         AYasOcgD52JqJEPZSZ1KqX46HHHqPZFb2PLNlVoH8YJTZH5AIR8gOxaZQbykkJKaKqXY
+         T/1lBiDCvNqDtFoXsHT+RO8YR4yZRqcTYpql3q1X3q4W+3iUVAWqFAwU1DQI/Hi3YtYO
+         l2rQ==
+X-Forwarded-Encrypted: i=1; AKwUvByoGoiKCxGXYPBInmIWQ3KUolba/74FU0eQSiu6jtyxVW2XDOXpuR4GyWs0jMNTEBYnWfs=@lists.linux.dev
+X-Gm-Message-State: AFq9FYK/PgjMtuGaHiW2zju6d6n6qe74SPvag1ilSElaf7LDffWEBehn
+	St8BmQGBscLNjFTf1/rfE921xsMZjhNNZe68+wiqzXdhRmiFXohNCGyD8NpI1l5H39U=
+X-Gm-Gg: AYBFou257trWMe72xvsGuSVoYQJhmnAShSzgxAvBKlFTaPh8Fwrho2e52RL58oqQDm8
+	W3/sD9OJIo3bBC0F7Efq470+H6ix+WYX+eifIHsUlg99zDNxjCvVlsxJI7DZpuWxGB0jHvqrwry
+	O16Go5l/aqBzkNvOTenlkiWVY6xqZIC9JnzFC7Z7zuUW6NMgeAv/yatVyORiv11sXbD24xbBvPw
+	Gz82Jg9jhjRlfYMBokmEPaJYz/T64zsdwDNDRZAVWP7o/b7yaS9oby5jbmdV2w4uGoESHLFjjM8
+	0kLwqDY0/w4FXxDLsZsLNaUIrQquII6dq1pjd+eQ6qFmKmV/eAmxsHuBeUv87hBut6Y5ef32HT/
+	rinbs6kzaguTgcgkn8E0cRb0vVDiPIgvEm4dj41PHmXaaRdUWwgjd7mNr5tI20/DUcZDbYpHLUe
+	F1DnQwUslLqSayiDET5EBClHghZ8P8FJWM6RBrRg8CqVZgxjjlkWPKLoC2fqVd+ge1ngHMRlQ/k
+	HWJlAFyiDqqBCLYuzjNtTPHY6nmGYGsofFMESWKR984cucNJBvoIev5i4ZVzVfKe9vHl8JkUw/h
+	mQIMvDuXXAi+HDc2dGDgNfg2rMpJty7a+eBWmJq97pZCmPplbA==
+X-Received: by 2002:a05:600c:8b06:b0:4a2:d:5ccc with SMTP id 5b1f17b1804b1-4ac17b2bc63mr237869415e9.10.1793626838793;
+        Mon, 02 Nov 2026 05:40:38 -0800 (PST)
+Received: from arrakeen.starnux.net ([2a01:e0a:106d:1080:8261:5fff:fe11:bdda])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4abea533a1esm189194605e9.1.2026.11.02.05.40.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Nov 2026 05:40:38 -0800 (PST)
+From: Neil Armstrong <neil.armstrong@linaro.org>
+To: Jessica Zhang <jesszhan0024@gmail.com>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, 
+ Thierry Reding <thierry.reding@gmail.com>, Sam Ravnborg <sam@ravnborg.org>, 
+ Primoz Fiser <primoz.fiser@norik.com>
+Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, upstream@lists.phytec.de
+In-Reply-To: <20261008053850.2941955-1-primoz.fiser@norik.com>
+References: <20261008053850.2941955-1-primoz.fiser@norik.com>
+Subject: Re: (subset) [PATCH 1/2] dt-bindings: display: panel-simple: Allow
+ "data-mapping" for "auo,g104sn02"
+Message-Id: <179362683780.3310106.8889373164273856192.b4-ty@b4>
+Date: Mon, 02 Nov 2026 14:40:37 +0100
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -93,141 +109,29 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Neil Armstrong <neil.armstrong@linaro.org>
-Reply-To: Neil Armstrong <neil.armstrong@linaro.org>
-Subject: Re: [PATCH v5 3/7] drm/panel: simple: Add Waiken WKS101WX001-WCT
- panel support
-To: Frank.Li@oss.nxp.com, Marek Vasut <marex@denx.de>,
- Stefan Agner <stefan@agner.ch>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Jessica Zhang <jesszhan0024@gmail.com>,
- Thierry Reding <thierry.reding@gmail.com>, Sam Ravnborg <sam@ravnborg.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>
-Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, Robert Chiras <robert.chiras@nxp.com>,
- Liu Ying <victor.liu@nxp.com>, Frank Li <Frank.Li@nxp.com>
-References: <20261027-dxl_lcdif-v5-0-3a974e4b94b2@nxp.com>
- <20261027-dxl_lcdif-v5-3-3a974e4b94b2@nxp.com>
-Content-Language: en-US, fr
-Autocrypt: addr=neil.armstrong@linaro.org; keydata=
- xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
- GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
- BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
- qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
- 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
- AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
- OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
- Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
- YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
- GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
- UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
- GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
- yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
- QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
- SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
- 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
- Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
- oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
- M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
- 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
- KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
- 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
- QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
-Organization: Linaro
-In-Reply-To: <20261027-dxl_lcdif-v5-3-3a974e4b94b2@nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15.2
 
-On 10/27/26 16:00, Frank.Li@oss.nxp.com wrote:
-> From: Frank Li <Frank.Li@nxp.com>
-> 
-> Add support for the Waiken WKS101WX001-WCT, an industrial-grade 10.1-inch
-> IPS TFT LCD panel with a capacitive touchscreen.
-> 
-> Although the module advertises LVDS support, enabling LVDS operation
-> requires hardware modification, including the removal of several on-board
-> resistors. As there are currently no known users of the LVDS configuration,
-> only the default interface mode is supported.
-> 
-> Acked-by: Liu Ying <victor.liu@nxp.com>
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
-> change in v5
-> - drop "If LVDS..." in commit message (Liu ying).
-> 
-> change in v4
-> - s/LDB/DPI
-> - variable use 101wx001_wct
-> 
-> change in v3
-> - add wct surfix and change to use MEDIA_BUS_FMT_RGB888_1X24
-> - Add information about lvds support plan.
-> 
-> change in v2
-> - update height to 135 from 136 (sashiko)
-> ---
->   drivers/gpu/drm/panel/panel-simple.c | 31 +++++++++++++++++++++++++++++++
->   1 file changed, 31 insertions(+)
-> 
-> diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
-> index d7dbd7442919b..5ef6a79f0de95 100644
-> --- a/drivers/gpu/drm/panel/panel-simple.c
-> +++ b/drivers/gpu/drm/panel/panel-simple.c
-> @@ -5252,6 +5252,34 @@ static const struct panel_desc vl050_8048nt_c01 = {
->   	.bus_flags = DRM_BUS_FLAG_DE_HIGH | DRM_BUS_FLAG_PIXDATA_SAMPLE_NEGEDGE,
->   };
->   
-> +static const struct drm_display_mode waiken_101wx001_wct_mode = {
-> +	.clock = 71100,
-> +	.hdisplay = 1280,
-> +	.hsync_start = 1280 + 70,
-> +	.hsync_end = 1280 + 70 + 10,
-> +	.htotal = 1280 + 70 + 10 + 80,
-> +	.vdisplay = 800,
-> +	.vsync_start = 800 + 10,
-> +	.vsync_end = 800 + 10 + 3,
-> +	.vtotal = 800 + 10 + 3 + 10,
-> +	.width_mm = 217,
-> +	.height_mm = 135,
-> +	.flags = DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC,
-> +};
-> +
-> +static const struct panel_desc waiken_101wx001_wct_panel = {
-> +	.modes = &waiken_101wx001_wct_mode,
-> +	.num_modes = 1,
-> +	.bpc = 8,
-> +	.size = {
-> +		.width = 217,
-> +		.height = 135,
-> +	},
-> +	.bus_format = MEDIA_BUS_FMT_RGB888_1X24,
-> +	.connector_type = DRM_MODE_CONNECTOR_DPI,
-> +	.bus_flags = DRM_BUS_FLAG_DE_HIGH | DRM_BUS_FLAG_PIXDATA_DRIVE_NEGEDGE,
-> +};
-> +
->   static const struct drm_display_mode waveshare_28_lcd_mode = {
->   	.clock = 50000,
->   	.hdisplay = 480,
-> @@ -6248,6 +6276,9 @@ static const struct of_device_id platform_of_match[] = {
->   	}, {
->   		.compatible = "vxt,vl050-8048nt-c01",
->   		.data = &vl050_8048nt_c01,
-> +	}, {
-> +		.compatible = "waiken,101wx001-wct",
-> +		.data = &waiken_101wx001_wct_panel,
->   	}, {
->   		.compatible = "waveshare,2.8inch-panel",
->   		.data = &waveshare_28_lcd_panel
-> 
+Hi,
 
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+On Thu, 08 Oct 2026 07:38:49 +0200, Primoz Fiser wrote:
+> As per the AUO G104SN02 datasheet, section 6.4.1 "SEL68", this panel's
+> SEL68 pin selects between 6 bits (SEL68 low/NC) and 8 bits (SEL68 high)
+> per color over LVDS, i.e. an 18-bit or a 24-bit input format.
+> 
+> Currently, the auo_g104sn02 panel_desc only allows for the 24-bit
+> configuration by default. Boards wired for the 18-bit configuration need
+> the override introduced by commit 1cd3ea3e4b12 ("drm/panel-simple: allow
+> LVDS format override")) to describe that instead.
+> 
+> [...]
 
-Thanks,
+Thanks, Applied to https://gitlab.freedesktop.org/drm/misc/kernel.git (drm-misc-next)
+
+[1/2] dt-bindings: display: panel-simple: Allow "data-mapping" for "auo,g104sn02"
+      https://gitlab.freedesktop.org/drm/misc/kernel/-/commit/47459027812c73d4826f5f78bc8291cb59a5de3e
+
+-- 
 Neil
+
