@@ -1,94 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.56.87.5
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793576323;
-	b=hPk01I+vDf7RoaAA3bYhNS1nTWhFWgr2yBeTbVZI/MGemWxKUsGH8aziqQxFQC2nipcp
-	 AzZPe/JhZuXLGvMdbZUv4QRfGDLRPc/1Yc9DvoEArWsaAo4+dvWS+MurKAADafB+eeeth
-	 ilhJVWt7cATjBrP/o8NsmlQlezjJP9xrDvPrmMvGwh+HMDvz8izwtZrrvjvfTeQhReXlq
-	 ioYPHjcLoS2kLSCqghebPbBPZPA8WWNrEmQxzCd9O/R4DiL9vNSoA36FeKEtThNd/t74K
-	 4hcTGNEfxCyCzXHXTYo/2FPyCynmpqgWvWbzoOLVbAJhqxfAHuqQTY7nhiamNbHB43A==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793576323;
-	h=DMARC-Filter:DKIM-Signature:Received:DKIM-Signature:Received:From:
-	 Date:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-AntiAbuse:X-AntiAbuse:
-	 X-AntiAbuse:X-AntiAbuse:X-AntiAbuse:X-Source:X-Source-Args:
-	 X-Source-Dir:X-SGantispam-id:X-AntiAbuse:AntiSpam-DLS:AntiSpam-DLSP:
-	 AntiSpam-DLSRS:AntiSpam-TS:CFBL-Address:CFBL-Feedback-ID;
-	bh=18pDHMm0XqeCRNvNB8S0ooGOx5P4hUMuhrJSq5OimuA=;
-	b=yWZPUgfZz3gE+eC9ATWBQdF88eBJM84p5FZ19uv9ajK3urnbEkOweVv5HG3b5fvq7m5N
-	 U5VA5Z3n9QmIIZOetAaiWN1r1CjnkNr5f/sY2MtPPYYGzS4d4GmxwNRQlIpWh+g64QCyM
-	 X9UdSpSQ1rtGX2y/Kx63QpW35PhNnwdymXlMhU4XERzUW7d2yQ+l8bhJrS171d+MMTL5Q
-	 naxjhM6B7Dgcju2K2NMlAM3vhoye00/pZ1pZ3Vd7q6Omh3PS7Z5bhr151wxVqhjBkLES5
-	 JSyCwuZjAFtCNjR+mEQvQRt6wowGynGQqpQD82C1HnsaReMg6BQdSBk1ckA0BN+Hdfw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=valla.it;
-	spf=pass smtp.mailfrom=valla.it;
-	dkim=pass header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.a=rsa-sha256 header.s=default header.b=0trHFCyc;
-	dkim=pass header.d=valla.it header.i=@valla.it header.a=rsa-sha256 header.s=default header.b=G5XOvsID;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=185.56.87.5
-Received: from delivery.antispam.mailspamprotection.com (delivery.antispam.mailspamprotection.com [185.56.87.5])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793577778;
+	b=b6TC1ozFTJat+6rykIJ5JUlgbwZMwtlKFc564YFqlUywN5zfpOSxxJ3b8m6zoQdfE5v0
+	 j4icFbRZYPKUPc9EJCHQdjV8aABeNLZgaIUrncYdtEVsHFIeEBTRUD/d4IAdjMAks4NTj
+	 c13oze9xgxAgOum0aNBr2fb9DJHx7PXfzdjJhrX6C/hretwLPkykoc4M7MB39kXHy+NdD
+	 8bh0u5M2O7l8gHxrivgMjwLVjhK0hOL7rHvQNBDXOyff5AypNt+TPrZBRhyspyTM5g6pP
+	 rLh4esb0gOOQISxUP5v5kv0We271knwDuEGq0CDCvvZrVczNufSzOzS60+xlxqfiHkQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793577778;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=4qIby5wrhy/8mg9ZF5x0rKsJeZTzsj6O9jhH1+m5l/4=;
+	b=gClvtrXmP65sgRSAEzLUp2RkB+xKwsZOq8iwYCNmA5e/q13twT9PYwZVgaWuzQFKnFDN
+	 xypJGvcT8s668A5VLqtBPW6FUf+tn0sqmUIcw+lqGHOKl7UWuOmhwln83jNi4evGMnv0C
+	 WFizPHzH8keireecBOpE6hHO1dKmZqBRuVEEnvJ7AUC9CjHz5Xtd8EfSJVSbXXgMcxtqN
+	 DuuCtq6VLkXokRIDeS8E561dKeoLidGSgCcCFuJMezXpFBuE0yXX0q0bvHboFoDrns3h3
+	 IwI29OZrzsi4w/V51B55xKCmvJf/aigtl5MbBoAHx2Vn59Z4ar7FQgfkCN2hOja6cSQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Qn172Msh;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 846BA606A33A
-	for <imx@lists.linux.dev>; Sun,  1 Nov 2026 23:38:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 846BA606A33A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valla.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valla.it
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F2A7606A324;
+	Mon,  2 Nov 2026 00:02:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.a=rsa-sha256 header.s=default header.b=0trHFCyc;
-	dkim=pass (1024-bit key, unprotected) header.d=valla.it header.i=@valla.it header.a=rsa-sha256 header.s=default header.b=G5XOvsID
-ARC-Seal: i=1; cv=none; a=rsa-sha256; d=outgoing.instance-europe-west4-0kln.prod.antispam.mailspamprotection.com; s=arckey; t=1793576322;
-	 b=fV61Vzwxx/GZIxUZg3lhnSNuox42OFJarhgQwyvQMDRv2nuT6iGnEKHMwuMwBfvgx9k8hoshnF
-	  U+jXYW+isBhTyYoKhAjwSj5kGBFHieE6K+e1/SEpYWyu9Sb2mkAiUhl3XapvzXLbpM2X2SUccY
-	  16NIUwG4e39m3DYqAiFIxjdUk6px0pYbu1CSOD3MKUJBcO5zeiTy77zA8VYKOf/KoBInrwOd3C
-	  xmQ1zqSgwhbv7pxQFlubGkI68TN0xvL/oBF7l1a17/JxTw4gpF1BTHu08D1R4BzXT+ryHL0MIm
-	  SI/gMtoFc39Zhj9CjgRdYxVb7ngvDK/+sxqgeDRnyHQjcA==;
-ARC-Authentication-Results: i=1; outgoing.instance-europe-west4-0kln.prod.antispam.mailspamprotection.com; smtp.remote-ip=35.214.173.214;
-	iprev=pass (214.173.214.35.bc.googleusercontent.com) smtp.remote-ip=35.214.173.214;
-	auth=pass (LOGIN) smtp.auth=esm19.siteground.biz;
-	dkim=pass header.d=valla.it header.s=default header.a=rsa-sha256;
-	arc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed; d=outgoing.instance-europe-west4-0kln.prod.antispam.mailspamprotection.com; s=arckey; t=1793576322;
-	bh=7sSWwWaTdi8eub1qzTC0gPuMXFcGQ/27nlgu71hjiaU=;
-	h=Cc:To:In-Reply-To:References:Message-ID:Content-Transfer-Encoding:
-	  Content-Type:MIME-Version:Subject:Date:From:DKIM-Signature:DKIM-Signature;
-	b=isYGpVK6zQKcTS4x0GAvKwPIeGf7e7UmahExtz7Z7a+bHokx7LxW6uhBFh6PxY3Jt8LSo4hv5h
-	  oRLHujmop5OnvQqnZwQarwzBEVAsAHDUnqzcSvBgLhFhUv7Eg8hHqOumEh5Zp/unrd5yUbRBe/
-	  MDo1OJ1KHrPvDSmoXOxymLoHghhjamIf0oqs1YtWkYFfKZDjO40f1BoDboREDTSCRMAi9S58PJ
-	  kwY4LczCOZGhwgY7vU1sPX413t2Tg+/Tho/01bvvX9HxzoRRyVXA83x8AigufP9MrGYINOyVbS
-	  ItUAE+RNU7JxtDfCvYMF4osvJ/boo4ZlZ956Cv5R9wI07A==;
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=antispam.mailspamprotection.com; s=default; h=CFBL-Feedback-ID:CFBL-Address
-	:Cc:To:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject
-	:Date:From:Reply-To:List-Unsubscribe;
-	bh=18pDHMm0XqeCRNvNB8S0ooGOx5P4hUMuhrJSq5OimuA=; b=0trHFCyctqX/uACu6cLuPyLNXQ
-	sIs+rF2eQi2BmrYp5JP6EI82c599l89ZEVq60EwFE61CR1ldytlisVoVJQa6HyIkupB13GtAnihrc
-	7L60ixSdCu30tpi1Cu+EnFojsd5y8DQMNQC36QpVlA5wvFl6YWXRuI3YsHfi4fjwLp1c=;
-Received: from 214.173.214.35.bc.googleusercontent.com ([35.214.173.214] helo=esm19.siteground.biz)
-	by instance-europe-west4-0kln.prod.antispam.mailspamprotection.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.100.1)
-	(envelope-from <francesco@valla.it>)
-	id 1xNf8K-00000007DDi-0pN4
-	for imx@lists.linux.dev;
-	Sun, 01 Nov 2026 23:38:40 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=valla.it;
-	s=default; h=Cc:To:Subject:Date:From:list-help:list-unsubscribe:
-	list-subscribe:list-post:list-owner:list-archive;
-	bh=18pDHMm0XqeCRNvNB8S0ooGOx5P4hUMuhrJSq5OimuA=; b=G5XOvsID4NOflI9PqG6tJoz65d
-	CPoIHKRNxE0wJRiKaDQuuqn9GWbsPTeP+qeZOaH2dQbcnD4GKW8u2Y4Irpp70QlQ0M+lHH8Y95Ryk
-	lG1gsdql1owqhV535+itVZvb2xWwlsXLHVmy4qtzOwEIg9GN3D70N8jv23gRh3zEJgow=;
-Received: from [79.17.15.196] (port=60226 helo=[192.168.178.175])
-	by esm19.siteground.biz with essmtpa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.100.1)
-	(envelope-from <francesco@valla.it>)
-	id 1xNex5-000000002I5-12xV;
-	Sun, 01 Nov 2026 23:27:03 +0000
-From: Francesco Valla <francesco@valla.it>
-Date: Mon, 02 Nov 2026 00:26:48 +0100
-Subject: [PATCH RFC v2 11/11] PoC: arm64: dts: imx93-11x11-frdm: add
- multiple vdevs
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Qn172Msh
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EB2C1F000C1;
+	Mon,  2 Nov 2026 00:02:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793577778;
+	bh=4qIby5wrhy/8mg9ZF5x0rKsJeZTzsj6O9jhH1+m5l/4=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=Qn172MshRXn7NI03V33Y1dIQNDEnOrhuRGwH94rFrTciqbFDNDDTiPO0pn58Owx52
+	 Vc5GeGEVLcXM0fi6MC7onN6QzMmHpEqhlXddyiUARWYnDm9rvCcRb7JJf8X1kLWkCY
+	 EV3cfaVk/d7nw7pfHKSnxrhGSy8eMolIOTuxHYQVsCyg+ATOV1bfkHtPlh9eGRMH+b
+	 NPyezxJLVoxPGQMs5wDltL7QYS3gb/thSCYZWdwnl/6dODDFdM8T2Jx9s8CAaP4KcK
+	 fYj9oKxqD872bAbV4LjWz2iA2c9TEQdToAnpE4t3k2Gv/81dTPF02JjYuO2XcqGDXF
+	 b0W/YqrwGHrzA==
+Message-ID: <sashiko-outbox-192788@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH RFC v2 07/11] remoteproc: assign fwnode during vdev
+ registration
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Francesco Valla" <francesco@valla.it>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org
+In-Reply-To: <20261102-remoteproc_virtio_map-v2-7-26b300e01c62@valla.it>
+References: <20261102-remoteproc_virtio_map-v2-0-26b300e01c62@valla.it>
+ <20261102-remoteproc_virtio_map-v2-7-26b300e01c62@valla.it>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 02 Nov 2026 00:02:57 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -97,291 +60,158 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261102-remoteproc_virtio_map-v2-11-26b300e01c62@valla.it>
-References: <20261102-remoteproc_virtio_map-v2-0-26b300e01c62@valla.it>
-In-Reply-To: <20261102-remoteproc_virtio_map-v2-0-26b300e01c62@valla.it>
-To: Bjorn Andersson <andersson@kernel.org>, 
- Mathieu Poirier <mathieu.poirier@linaro.org>, Kees Cook <kees@kernel.org>, 
- "Gustavo A. R. Silva" <gustavoars@kernel.org>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Francesco Valla <francesco@valla.it>, 
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
- Randy Dunlap <rdunlap@infradead.org>, Frank Li <Frank.Li@nxp.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>
-Cc: Robin Murphy <robin.murphy@arm.com>, linux-remoteproc@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-doc@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org
-X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5433; i=francesco@valla.it;
- h=from:subject:message-id; bh=7sSWwWaTdi8eub1qzTC0gPuMXFcGQ/27nlgu71hjiaU=;
- b=owGbwMvMwCX2aH1OUIzHTgbG02pJDFnPT+3Zf6yTVVnmlPfLqdymm19lH6yJfiB9QiFRdeUrt
- S3P2d30O0pZGMS4GGTFFFlC1t24t2eu+be0DYyPYOawMoEMYeDiFICJ9Gox/NM5KtapZmmRzBvZ
- 8rt/Lp8c4z5Jhf1dwYYbQ1f9t2SfIcXIMOXAhi9lc16/mzFj+gLdDp61l/UY952N6FV7MrXojoy
- aITcA
-X-Developer-Key: i=francesco@valla.it; a=openpgp;
- fpr=CC70CBC9AA13257C6CCED8669601767CA07CA0EA
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - esm19.siteground.biz
-X-AntiAbuse: Original Domain - lists.linux.dev
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - valla.it
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-SGantispam-id: cf344b269b735ac7eb60c7ffb231ea3e
-X-AntiAbuse: ID - cf344b269b735ac7eb60c7ffb231ea3e
-AntiSpam-DLS: false
-AntiSpam-DLSP: 
-AntiSpam-DLSRS: 
-AntiSpam-TS: 1.0
-CFBL-Address: feedback@antispam.mailspamprotection.com; report=arf
-CFBL-Feedback-ID: 1xNf8K-00000007DDi-0pN4-feedback@antispam.mailspamprotection.com
-Authentication-Results: outgoing.instance-europe-west4-0kln.prod.antispam.mailspamprotection.com;
-	iprev=pass (214.173.214.35.bc.googleusercontent.com) smtp.remote-ip=35.214.173.214;
-	auth=pass (LOGIN) smtp.auth=esm19.siteground.biz;
-	dkim=pass header.d=valla.it header.s=default header.a=rsa-sha256;
-	arc=none
 
-Add rings and buffers for multiple virtio devices exposed by the
-firmware running on the Cortex-M33 processor which is part of the i.MX93.
-It is expected that such firmware exposes, through its resource table,
-the following vdevs:
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] remoteproc: unreleased reserved memory before register_virtio_devi=
+ce()
+--
 
-  - vdev0: rpmsg
-  - vdev1: entropy
-  - vdev2: gpio
-  - vdev3: i2c
-  - vdev4: spi
-  - vdev5: can
+commit 3f46613846e39fe7244229a8a47044d9f38bc9cb
+Author: Francesco Valla <francesco@valla.it>
 
-The order in which the devices are contained inside the resource table
-is critical, since it is used both to associate vrings and buffers to a
-vdev and to map additional dt nodes to them.
+remoteproc: assign fwnode during vdev registration
 
-All vdev buffers except the one for the rpmsg bus are declared as
-restricted-dma-pool, because the corresponding drivers need bounce
-buffering for the communication to work correctly.
+This commit looks up a child firmware node describing a virtio device
+during vdev registration and assigns it to the rproc-virtio platform
+device, using its memory-region when no parent carveout is provided.
 
-Nodes for the gpio and i2c vdevs with example children devices are
-included.
+> diff --git a/drivers/remoteproc/remoteproc_virtio.c b/drivers/remoteproc/=
+remoteproc_virtio.c
+> index 1496659ddff9e..950d65480be59 100644
+> --- a/drivers/remoteproc/remoteproc_virtio.c
+> +++ b/drivers/remoteproc/remoteproc_virtio.c
+[ ... ]
+> @@ -394,6 +396,23 @@ static void rproc_virtio_dev_release(struct device *=
+dev)
+>  	put_device(&rvdev->pdev->dev);
+>  }
+> =20
+> +/*
+> + * Attach the memory region declared inside the vdev's own devicetree no=
+de.
+> + *
+> + * A restricted-dma-pool region is attached by of_dma_configure() when t=
+he
+> + * platform device is probed, but it is released together with the virtio
+> + * device (see rproc_virtio_dev_release()); attach it again if needed, e=
+.g.
+> + * when the remote processor is restarted during a crash recovery.
+> + * Any other kind of region (e.g., shared-dma-pool) is attached only her=
+e.
+> + */
+> +static int rproc_virtio_init_vdev_mem(struct device *dev)
+> +{
+> +	if (is_swiotlb_for_alloc(dev))
+> +		return 0;
+> +
+> +	return of_reserved_mem_device_init_by_idx(dev, dev->of_node, 0);
+> +}
+> +
+>  /**
+>   * rproc_add_virtio_dev() - register an rproc-induced virtio device
+>   * @rvdev: the remote vdev
+> @@ -410,6 +429,7 @@ static int rproc_add_virtio_dev(struct rproc_vdev *rv=
+dev, int id)
+>  	struct device *dev =3D &rvdev->pdev->dev;
+>  	struct virtio_device *vdev;
+>  	struct rproc_mem_entry *mem;
+> +	bool has_mem_region;
+>  	int ret;
+> =20
+>  	if (rproc->ops->kick =3D=3D NULL) {
+> @@ -417,11 +437,24 @@ static int rproc_add_virtio_dev(struct rproc_vdev *=
+rvdev, int id)
+>  		return -EINVAL;
+>  	}
+> =20
+> +	has_mem_region =3D of_property_present(dev->of_node, "memory-region");
+> +
+>  	/* Try to find dedicated vdev buffer carveout */
+>  	mem =3D rproc_find_carveout_by_name(rproc, "vdev%dbuffer", rvdev->index=
+);
+>  	if (mem) {
+>  		phys_addr_t pa;
+> =20
+> +		if (has_mem_region) {
+> +			/*
+> +			 * The carveout takes precedence: drop the region that
+> +			 * of_dma_configure() might have attached at probe time.
+> +			 */
+> +			dev_warn(dev,
+> +				 "vdev%dbuffer carveout found, ignoring memory-region\n",
+> +				 rvdev->index);
+> +			of_reserved_mem_device_release(dev);
+> +		}
+> +
+>  		if (mem->of_resm_idx !=3D -1) {
+>  			struct device_node *np =3D rproc->dev.parent->of_node;
+> =20
+> @@ -451,6 +484,14 @@ static int rproc_add_virtio_dev(struct rproc_vdev *r=
+vdev, int id)
+>  				return ret;
+>  			}
+>  		}
+> +	} else if (has_mem_region) {
+> +		/* Use the memory region declared in the vdev's own node */
+> +		ret =3D rproc_virtio_init_vdev_mem(dev);
+> +		if (ret) {
+> +			dev_err(dev, "Can't associate vdev memory-region: %d\n",
+> +				ret);
+> +			return ret;
+> +		}
 
-NOTE: this is a Proof-Of-Concept, not meant to be integrated!
+[Severity: High]
+What happens to the reserved memory attached to &rvdev->pdev->dev if the
+virtio device is never registered?
 
-Signed-off-by: Francesco Valla <francesco@valla.it>
+When rproc_handle_vdev() sets pdev_info.fwnode and registers the platform
+device via platform_device_register_full(), a restricted-dma-pool region
+in the vdev node is attached during probe by:
 
----
+  really_probe()
+    -> platform_dma_configure()
+      -> of_dma_configure()
+        -> of_dma_configure_id()
+          -> of_dma_set_restricted_buffer()
+            -> of_reserved_mem_device_init_by_idx()
 
-Notable diff from RFC v1: the rsc-table node has been re-introduced to
-focus on the changes that are truly in scope for the series. I still
-believe something is off with the current implementation, but I'll
-tackle it separately.
----
- arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts | 188 +++++++++++++++++++++
- 1 file changed, 188 insertions(+)
+This allocates a struct rmem_assigned_device entry pointing to &pdev->dev
+and links it into the global of_rmem_assigned_device_list.
 
-diff --git a/arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts b/arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts
-index 6e8351d12016..84324b02c45d 100644
---- a/arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts
-+++ b/arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts
-@@ -137,3 +137,191 @@ MX93_PAD_SD3_DATA3__GPIO3_IO25		0x31e
- 		>;
- 	};
- };
-+
-+/* Multi-vdev PoC */
-+
-+#include <dt-bindings/input/linux-event-codes.h>
-+
-+/ {
-+	reserved-memory {
-+		rsc_table: rsc-table@2021e000 {
-+			reg = <0 0x2021e000 0 0x1000>;
-+			no-map;
-+		};
-+
-+		/* vdev0: rpmsg */
-+		vdev0vring0: vdev0vring0@a4000000 {
-+			reg = <0 0xa4000000 0 0x8000>;
-+			no-map;
-+		};
-+
-+		vdev0vring1: vdev0vring1@a4008000 {
-+			reg = <0 0xa4008000 0 0x8000>;
-+			no-map;
-+		};
-+
-+		vdev0buffer: vdev0buffer@a4020000 {
-+			compatible = "shared-dma-pool";
-+			reg = <0 0xa4020000 0 0x100000>;
-+			no-map;
-+		};
-+
-+		/* vdev1: entropy */
-+		vdev1vring0: vdev1vring0@a4010000 {
-+			reg = <0 0xa4010000 0 0x1000>;
-+			no-map;
-+		};
-+
-+		/delete-node/ vdev1vring1@a4018000;
-+
-+		vdev1buffer: vdev1buffer@a4120000 {
-+			compatible = "restricted-dma-pool";
-+			reg = <0 0xa4120000 0 0x10000>;
-+		};
-+
-+		/* vdev2: GPIO */
-+		vdev2vring0: vdev2vring0@a4011000 {
-+			reg = <0 0xa4011000 0 0x2000>;
-+			no-map;
-+		};
-+
-+		vdev2vring1: vdev2vring1@a4013000 {
-+			reg = <0 0xa4013000 0 0x2000>;
-+			no-map;
-+		};
-+
-+		vdev2buffer: vdev2buffer@a4130000 {
-+			compatible = "restricted-dma-pool";
-+			reg = <0 0xa4130000 0 0x20000>;
-+		};
-+
-+		/* vdev3: I2C */
-+		vdev3vring0: vdev3vring0@a4015000 {
-+			reg = <0 0xa4015000 0 0x2000>;
-+			no-map;
-+		};
-+
-+		vdev3buffer: vdev3buffer@a4150000 {
-+			compatible = "restricted-dma-pool";
-+			reg = <0 0xa4150000 0 0x20000>;
-+		};
-+
-+		/* vdev4: SPI */
-+		vdev4vring0: vdev4vring0@a4017000 {
-+			reg = <0 0xa4017000 0 0x4000>;
-+			no-map;
-+		};
-+
-+		vdev4buffer: vdev4buffer@a4170000 {
-+			compatible = "restricted-dma-pool";
-+			reg = <0 0xa4170000 0 0x90000>;
-+		};
-+
-+		/* vdev5: CAN */
-+		vdev5vring0: vdev5vring0@a401b000 {
-+			reg = <0 0xa401b000 0 0x2000>;
-+			no-map;
-+		};
-+
-+		vdev5vring1: vdev5vring1@a401d000 {
-+			reg = <0 0xa401d000 0 0x2000>;
-+			no-map;
-+		};
-+
-+		vdev5vring2: vdev5vring2@a401f000 {
-+			reg = <0 0xa401f000 0 0x1000>;
-+			no-map;
-+		};
-+
-+		vdev5buffer: vdev5buffer@a4200000 {
-+			compatible = "restricted-dma-pool";
-+			reg = <0 0xa4200000 0 0x80000>;
-+		};
-+	};
-+
-+	gpio-keys-virtio {
-+		compatible = "gpio-keys";
-+
-+		button-v1 {
-+			label = "Button V1";
-+			linux,code = <BTN_3>;
-+			gpios = <&v_gpio 23 GPIO_ACTIVE_LOW>;
-+		};
-+
-+		button-v2 {
-+			label = "Button V2";
-+			linux,code = <BTN_4>;
-+			gpios = <&v_gpio 24 GPIO_ACTIVE_LOW>;
-+		};
-+	};
-+
-+	leds {
-+		compatible = "gpio-leds";
-+
-+		led {
-+			gpios = <&v_gpio 18 GPIO_ACTIVE_HIGH>;
-+			label = "LED V";
-+		};
-+	};
-+};
-+
-+&cm33 {
-+	memory-region = <&vdev0buffer>, <&vdev0vring0>, <&vdev0vring1>,
-+			<&vdev1vring0>, <&vdev2vring0>, <&vdev2vring1>,
-+			<&vdev3vring0>, <&vdev4vring0>, <&vdev5vring0>,
-+			<&vdev5vring1>, <&vdev5vring2>, <&rsc_table>;
-+
-+	virtio {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		/* vdev1: entropy */
-+		vdev@1 {
-+			reg = <1>;
-+			memory-region = <&vdev1buffer>;
-+		};
-+
-+		/* vdev2: GPIO */
-+		vdev@2 {
-+			reg = <2>;
-+			memory-region = <&vdev2buffer>;
-+
-+			v_gpio: gpio {
-+				compatible = "virtio,device29";
-+				gpio-controller;
-+				#gpio-cells = <2>;
-+				interrupt-controller;
-+				#interrupt-cells = <2>;
-+			};
-+		};
-+
-+		/* vdev3: I2C */
-+		vdev@3 {
-+			reg = <3>;
-+			memory-region = <&vdev3buffer>;
-+
-+			i2c {
-+				compatible = "virtio,device22";
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+
-+				eeprom@50 {
-+					compatible = "atmel,24c1025";
-+					reg = <0x50>;
-+				};
-+			};
-+		};
-+
-+		/* vdev4: SPI */
-+		vdev@4 {
-+			reg = <4>;
-+			memory-region = <&vdev4buffer>;
-+		};
-+
-+		/* vdev5: CAN */
-+		vdev@5 {
-+			reg = <5>;
-+			memory-region = <&vdev5buffer>;
-+		};
-+	};
-+};
+Similarly, in rproc_add_virtio_dev(), rproc_virtio_init_vdev_mem() (or the
+carveout / parent fallback paths) attaches reserved or coherent memory to
+&rvdev->pdev->dev before vdev =3D kzalloc_obj(*vdev) is called:
 
--- 
-2.56.0
+  rproc_add_virtio_dev() {
+      ...
+      } else if (has_mem_region) {
+          ret =3D rproc_virtio_init_vdev_mem(dev);
+          ...
+      }
+      vdev =3D kzalloc_obj(*vdev);
+      if (!vdev)
+          return -ENOMEM;
+  }
 
+However, of_reserved_mem_device_release(&rvdev->pdev->dev) and
+dma_release_coherent_memory(&rvdev->pdev->dev) are only called in
+rproc_virtio_dev_release(), not in rproc_virtio_remove() or in the error
+paths of rproc_virtio_probe() and rproc_add_virtio_dev().
+
+If rproc_virtio_probe() fails, if rproc_fw_boot() or rproc_attach() fails
+after rproc_handle_vdev() (for example in rproc_alloc_registered_carveouts(=
+),
+rproc_load_segments(), rproc_prepare_subdevices(), or rproc->ops->start()),
+or if rproc_add_virtio_dev() fails when rproc->ops->kick is NULL or when
+kzalloc_obj(*vdev) returns NULL, rproc_virtio_dev_release() never runs.
+
+When rproc_resource_cleanup() then unregisters and frees rvdev->pdev,
+doesn't that leak the struct rmem_assigned_device entry on
+of_rmem_assigned_device_list with a dangling rd->dev pointer to the freed
+platform device (and leave the memory region attached across crash
+recovery attempts so dma_assign_coherent_memory() fails with -EBUSY)?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261102-remoteproc=
+_virtio_map-v2-0-26b300e01c62@valla.it?part=3D7
