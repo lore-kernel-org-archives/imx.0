@@ -1,57 +1,107 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793578580;
-	b=G/2pBMYrNghknRBoAFzOCWH74369E9qW7a9PthfOK3bpgcBcooYDd7SpkMwgpct/sBmI
-	 lpaQT2F5toK7ZnOfBRrviG388B1Cty4uhVRqa6sragnRI05Kmh1AYhHR4FOsyO+PdjdZI
-	 s3w+Nj9VYALjjfvcv4H5Agb6lvlWwRC8A3HP7vt+EW+lIyCxW6r4NGsznqLNSN1Eiqn8d
-	 /LeOQPbG3C8Z0YiDgK7ohSBwv1H3uHYPtw6TzfTTDw3dXs5t425h44AO1j9Q5ZjdO1MYP
-	 Tp6m1prtYvfLAI088UuuJyykdbc4zfIzdM4/8A1BbdGyFgdlZ1Qj9Ddgez42ZFGvYLg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793578580;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=CFTQ8i5kvLroXvvGM2N06o5LjB0QVRIRg4MJYZWDvE4=;
-	b=yDykSMgho9wPJcmsAoNL1gwwa/BXXAxBsRUG/hj1hVCPpDhelmKq9SI2JVafRUS2Nsg3
-	 q61SKp6AAWFg8HqTTarkzQEVPZwJ7rjPPedex3Dp0uTYQzVuESwSqSHwrFEisDBEhAeH5
-	 MkVd4TqT1eJlzuM/p56r0iKN/QDdaegM4SqWKkvPWYJREAMtWkhCBtZpj5udjHNNDn1B1
-	 /dHAJh1J2jcDjLXfKNLOg1Y751qetQce6v3jlZx/Heg5KEMm5P3jxeNYwzYpu07N1dS5o
-	 +EEAx8dVP0Amew4HQx0M0yrG+xzhWk+hvHLE0oy7Q8BYVUvRKPPOA57200VqIF+8Z4w==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Xb0c4kJi;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.66.57
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793585389;
+	b=T+uafx43fFKspUk/3wm4uURFVc/GCSDYX7+r0OHD/RvqxjGxhrhAeWJ3eMM461A4rs+c
+	 KSqSi3KO3Xdm0QGWVoslYw35ilMEgGp8jY6C26V+mNvSdCyyRwT7KJcftl/ylbUcgedab
+	 Ckjr+0Us0JYOGiuamdPjkCk21MmwCfR/hLjmPhQ2XDUMwCXMt+c0pzDagezNDi7hMOJqp
+	 Dr+imKobD0AAVFKfMtNNicHzV3aznrzLTHU58idG/a2MuiMr2/jDYasDkrDpDgMoJgk+7
+	 b8+ByGeimcHZxgIj1PAixUSpLqUaRhhqZA7Ib7R/Rw1sBRQV2jojqCvw/x2u+GXaMRg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793585389;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:Content-Type:Content-Disposition:
+	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=m8u5LARDAU4S+2COIAr4v1zU7mc+NcezcGi+X/Mp1Uo=;
+	b=19SIGA8OS3NMP/p5h3tPTF9r/I39HChCU2VxrQnuors+FMq8CB4jffDQVu4LIm4a/vCX
+	 BIiSqpOuGDAFNQzVVGTEAmFGVitb9bTW7pYVTwo8BTxaiwQEqxkIWVicIVUNRokFrrfEX
+	 BY0zLxjC3CnbNSg9pHwqdfJ+DL+vUGytAm9xFm231brnyIM2lucClzUh+wdZomfvyvKoo
+	 rOkdV2srrv15/SzrPk1818ThE7seMSzsUTUHjwrkontDAz1jEDWDDeuI5C7d3ExxyxE4v
+	 L4ZqdWm8nMgVh7Of+4RM+48e8mxacENxWTeHpHExKydYHNDO51s8U2Vw57mpaR1CnaA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nxp.com;
+	spf=pass smtp.mailfrom=nxp.com;
+	dkim=pass header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=CgP8uph2;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.66.57
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012057.outbound.protection.outlook.com [52.101.66.57])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7A1A606A324;
-	Mon,  2 Nov 2026 00:16:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74D73606A324
+	for <imx@lists.linux.dev>; Mon,  2 Nov 2026 02:09:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 74D73606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Xb0c4kJi
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 283CA1F000C1;
-	Mon,  2 Nov 2026 00:16:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793578579;
-	bh=CFTQ8i5kvLroXvvGM2N06o5LjB0QVRIRg4MJYZWDvE4=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Xb0c4kJi455KvrjSvErmDTORlon/LPBWd1IyQCzYT+YNG+o4QQUhwTxuArugsKm20
-	 mh3qXwzq+kzRs/IgBzDgY5dUfBxbmw7lYShsc66vj4hIweu6HQMS6xIZMqvw0Z8MIy
-	 uDzblAU38JXA98na7CbZqOQscxKlsPpGHEmQ7/tWSicULp7AVMQLiS1QeupC9Grrty
-	 AUN57A28FR1Kxp0/J1JrrDSzBs5eP5UgLy8z9iG19RJKeWOjUOiatQwiHaGIdbQXP6
-	 Epnsa6CH1hEpeBKl41e9sGh51fRDgk2SFRgwxCOlpKBbM684OsDu+abeKa4D08fpJ2
-	 ZvgQmX/83VX/w==
-Message-ID: <sashiko-outbox-192792@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC v2 11/11] PoC: arm64: dts: imx93-11x11-frdm: add
- multiple vdevs
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Francesco Valla" <francesco@valla.it>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20261102-remoteproc_virtio_map-v2-11-26b300e01c62@valla.it>
-References: <20261102-remoteproc_virtio_map-v2-0-26b300e01c62@valla.it>
- <20261102-remoteproc_virtio_map-v2-11-26b300e01c62@valla.it>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 02 Nov 2026 00:16:18 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=CgP8uph2
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=AEv3CEs19i2HeaVhQ/rn3qmvZxYBabfDfwuM+epR6qgyyRLgCOTgt8PW1xSSU7LtD3Yq6OFza6WA93VaYPCNBT0m2rVasO6KlNYVxy0TDdmQpG4ma5Ma8oDebLHWRadIsy9LtiYGgMp9aTBrgZNM4V10fJCumpL8nq5wsBkK2YY90kzL+KoDmKul5RvjpgHsdQ3VYVEiJT5hMmN5dU6H9+ttlesDpxma8D2y2DLsxG7lVh+SDe9GJyjSu8raBTb2/6zl0yQfhCZTicjyUwAiQB0sWR3ON2gOX/qoBJFesUimr8GCt5/lx/JR9P+uDOtCwDmntigXxiZ2ckZZGBKlCw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=m8u5LARDAU4S+2COIAr4v1zU7mc+NcezcGi+X/Mp1Uo=;
+ b=haq3MoAhb/rHZGECjsW5mVxHMPAO2JnwBDcpdm+SGSayjK1BEXgrmG1VhNt25E8iFefs1NV40we8IN1jbXsW9muMsPz42bcMjh7rVHUNwWTYaiRuTVWoPH+2xriaNLEgbscCY7+bWn7H4E0CKAEvNmJqtcB3uLizIfBGMf9J/OK1WnGjRQvT87QthRMZ65kDseljXVa+af/ekskr/d+v0jOQ+ADmU+LcZdUnRZkxaEtZRZE563DrDZMyEvSTFeP8E6jLr5wGklNQpSO7ZreEXUUJcx8X68Cs10KcPHOwRm2PrXSvvh5YVrVP9dn+Ma/Rg+z4XEkJeTsDG/1yR0yuIw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=m8u5LARDAU4S+2COIAr4v1zU7mc+NcezcGi+X/Mp1Uo=;
+ b=CgP8uph2QGEd2ofEULqEkwMTr6xxVw+B6H6FWR3kfrTi4aab141d8aa5J7QdwasRS1wGIYWHYjg0dzb3oxwF9waQqxWvXWU/k73KmhQ2IJ+f7X0jN71sAMIxNhzlEr4i9NIaX+5XX7WuiLIDJtW1sDPG7KYUgS10Qhn2wTwbpoymBF+rVAjOSY2/RX4BbCWx5md+twWjzbORrQLAVFr/T3T/IczbcSHzdk7CxP+NkLWd+0IA52wZEcHc+jwyDybEwdtAo2IIj2bMRoafwWXa1mSAZBrLlZCa4QClYJRV2f3Fi9Zw880zqtYhYFjncpSTuMmndWOhg9clh0e+ER7Wsg==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from MI9PR04MB350878.eurprd04.prod.outlook.com (2603:10a6:290:c0::7)
+ by PAXPR04MB9400.eurprd04.prod.outlook.com (2603:10a6:102:2b2::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.12; Mon, 2 Nov
+ 2026 02:09:45 +0000
+Received: from MI9PR04MB350878.eurprd04.prod.outlook.com
+ ([fe80::8537:1cdd:6c49:6151]) by MI9PR04MB350878.eurprd04.prod.outlook.com
+ ([fe80::8537:1cdd:6c49:6151%6]) with mapi id 15.21.0569.011; Mon, 2 Nov 2026
+ 02:09:45 +0000
+Date: Mon, 2 Nov 2026 10:11:22 +0800
+From: Liu Ying <victor.liu@nxp.com>
+To: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+Cc: Philipp Zabel <p.zabel@pengutronix.de>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Dmitry Baryshkov <lumag@kernel.org>,
+	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, Marek Vasut <marek.vasut@mailbox.org>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH v8 06/15] drm/imx: dc-crtc: Disable at boot
+Message-ID: <aufxSha2jzQJxjWu@raspi>
+References: <20261030-imx8-dc-prefetch-v8-0-c4f81afd4533@nxp.com>
+ <20261030-imx8-dc-prefetch-v8-6-c4f81afd4533@nxp.com>
+ <auR3zOdTi93AhWSS@vm>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <auR3zOdTi93AhWSS@vm>
+X-ClientProxiedBy: SI2PR02CA0029.apcprd02.prod.outlook.com
+ (2603:1096:4:195::6) To MI9PR04MB350878.eurprd04.prod.outlook.com
+ (2603:10a6:290:c0::7)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -60,237 +110,203 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MI9PR04MB350878:EE_|PAXPR04MB9400:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0c481ecf-b1b9-4bf8-0889-08df38865d33
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|23010399003|366016|376014|7416014|19092799006|4143699003|11063799006|56012099006|261009223027099003|261028144727099003|261021121427099003|261021123027099003|261026121527099003|261026140227099003|261022075727099003|261022105027099003|10067099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	3BjUOH6AMwC9JMU3Ivh+nIfx+gPzm+1iVoaZ3KPkMDX8nKEqsWd/cC09shzeArBsyzIrfB70gDg/YyPbfLLU+1dY6J4DLNUE6UT40KN81/ER5wS5HA76qn1lmwfBmn+HqxKIptKOpszj9MF9M2Zgd/1NySP58wOhePxwPm3aA7hlucvSeYieuJTESymDyyhfwXh2zO+wdUvN6eCAOsDEyRj+OwL1TTWAPSfB4JBbXVn7rQmBqSCun/SrietKfDtS2Ju/Eyh1O42jgVQEm9ydKDegFnsuufADcgBeh6v6XwcE1MATIw/Fo0mmCnJLZZ0KFd+FzC8z1TPf6uvuiF+2EeMWwCbaXzVgsukJ1GCw77zGPqxx1b2l7NFyUUiCKrqDdSjOPWP8yMzgTsSBTX5g8hMqrGLrnoytgYQqbN18VR0us9hnhwbms/8DnY69irAn0ejCn1kz+rSavmLzgoAT9HtduAFzZ/UFH2hYQNmZUCyewloqiim5l0M6bpejvjPboY3NIL8U7qpei3pHcHP2QQgA+HQFpFNv5642F5evLiTrxNq9YpF8l4p/KA7+OiaPFfDVrCIV5c7h4HQqPmwe2ieRIH+1iHI/Wa3lbfNzlvnEnBBcbFvlS/nKzBgO7RldPFmnmTat+UYK11whWKk4ETp6Yx6m3Kcp4E34GXtvw04=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI9PR04MB350878.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(366016)(376014)(7416014)(19092799006)(4143699003)(11063799006)(56012099006)(261009223027099003)(261028144727099003)(261021121427099003)(261021123027099003)(261026121527099003)(261026140227099003)(261022075727099003)(261022105027099003)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Ksbqc2sYlSGZWfOizkNvTvm2ZYdKBRjiMEgNiapwChh8JeAUPzRHEIJYBlxL?=
+ =?us-ascii?Q?0bYv7PKLFQXXE2ZRswkr1FSrhpD2jmcKKZ+EBDVoxLUdqNB8vzA4hItyRhYI?=
+ =?us-ascii?Q?whps46Djwtj1203Q3Cvd90syJseErE7x9lv81gZ1T+54A3IHLNQqZa40lRYC?=
+ =?us-ascii?Q?Z/sWnMrjtiBTO9WF7ckyRPE82tE7VYTOaZsqskPUkKQ2P156dD1eDRdZTKgz?=
+ =?us-ascii?Q?NkmiEwZLfXQ3198QKS32AR4i2Imn8A1D0LvqkVzSxS3jaHFYYqAZmySR5Dzh?=
+ =?us-ascii?Q?7XVQAzPmvsiW2AukUOgJuZbZ78Ryq5o7VB5ZUjK7+KccR9DGPEcE79PTcbKO?=
+ =?us-ascii?Q?hPZLAInacuL/viGVZNcPZDBF5RUulK8v5nbeHhCPGUCCKRER01tuH1R9EuCv?=
+ =?us-ascii?Q?EOBavf7D8ZHTsbK4V+P+O36+6wZqRsp4oh4olS+3tXXCKXkv5/+fqnouOQpP?=
+ =?us-ascii?Q?8w243fSClbcx89/h9GS2MEShLhL6P+lJvqgN7KnIGY+2tkSVn8fFFLyPjf5D?=
+ =?us-ascii?Q?xDrjinsvUswq6KhIGNSemCeIBKgS605bovp65RejRxQPdianS3mcmANQpbmg?=
+ =?us-ascii?Q?d/nmuZwsjnVgzKXTNPUZ0/WIK43hHK1Yov3U6WZDeQ985E84qobUo+Fe9O3R?=
+ =?us-ascii?Q?bCsGWIjB+HBw8atUY+qSf9EIAYX5arMTjzVXcZCevmWkQ9XcP2Ecj7TtpyuE?=
+ =?us-ascii?Q?PFwTkU1sjWs5VezY1xrPAVQbP5Z7fLJkReJaf2m3FIURH6XBORcliiBw6h7S?=
+ =?us-ascii?Q?PsE5uN2Jy8JBj/jm2KjkdyXadnsRJpdrHv5KrOuuxkAmfApEjafhe8pxXSag?=
+ =?us-ascii?Q?IckQdG2RO1qrWvyndcSMczyq2avsZrsuStYGapquFipo/i/uAJJaRgXszd4y?=
+ =?us-ascii?Q?hSD9owAbxx7mpiCD6mKzGpSS5x4Zd7lanv48MoTIXMCIb+TgsLKcXik2g8iJ?=
+ =?us-ascii?Q?2cKKXLD6/fhcVk7aLFa9UckTsshU5FS17ZWzAuefTahfabzo//M0OjVyPkdv?=
+ =?us-ascii?Q?LOY3Dp41s1bkhyJWTuAqvu1e7oG+9//C6arqVio7O77RnhQ7mnOWE4hdkIsH?=
+ =?us-ascii?Q?O9dqwhj8/HP4X1uiom/gQEkttJoFsuxTj3uPZ7BlxKNxfyE7zbV4GuUvCWG5?=
+ =?us-ascii?Q?MW9ZraUpsPeNvX1EEqQRXoQ7ZBim0zu/6ab/vycthXCQqtkpd3H1njB2XmFK?=
+ =?us-ascii?Q?83FZcGtk3XpCLfYM0V4gd6I/1LS/t0n8aIfC51fCcDMROBfVr+tpiR3z7nMH?=
+ =?us-ascii?Q?iUHW/7sOpsQyN0lIRl7A13FTMyfx3QiBMLPq3/A8zOwiEMzlFitHLAGUAE6W?=
+ =?us-ascii?Q?6BYPS16qfnpVLq+knW4v4QsfKqqhD4lYLPL0iEjRX5JERaXGNmI/PZKfdF/E?=
+ =?us-ascii?Q?3OWMBoUKMvKRB5Qvt1Z2cEF4TEAOlPwW7RoVBNtR/yHLCtTZGWayHe3Unb1V?=
+ =?us-ascii?Q?Lw0I84phvbpNnYXwx1x4trp/U7cUm2D8UHi0p1e7KCz7iBdBaSWhkPteGfqw?=
+ =?us-ascii?Q?Kpb8f+CwdqGxabYkiisT+e+cdRq1hgeusg9Az58J34rMij8QcbPP4dpTc7Bh?=
+ =?us-ascii?Q?8dfRLR9HQCJ0WO98jiuemTYt3M2xPlItqEmy3dofnxa0ibSI/Me9jQ/N3xB5?=
+ =?us-ascii?Q?b5uzOgxIK3KCOwVDML1Gq1FVts9COlgphkzh4lv4TZqQlrU5eqr33PbLXccN?=
+ =?us-ascii?Q?MYcseWWOM8fgYju5/0T/GQq9kPtqw7T8IVgVcwRmVkEqZ70lU2B0yTRAoSKB?=
+ =?us-ascii?Q?M84apOfOSA=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0c481ecf-b1b9-4bf8-0889-08df38865d33
+X-MS-Exchange-CrossTenant-AuthSource: MI9PR04MB350878.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Nov 2026 02:09:45.1114
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: lbWzMfMTHyFz2/o+Gowf8kcpdjodgRTvOyCFYGtON2p5Yb4WsAhkJ/8PDy1NlYQ+JshoEZcTZoHT6u8EEkGNPg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB9400
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
-s) to consider:
-- [High] remoteproc: virtio: unreleased reserved memory and dangling dev ptr
-- [Medium] arm64: dts: imx93-11x11-frdm: PoC multi-vdev changes not meant f=
-or integration
-- [Medium] remoteproc: missing dma_mask and dma_range_map leak on DT vdevs
-- [Medium] arm64: dts: imx93-11x11-frdm: fw_devlink moves v_gpio consumers =
-to cm33
---
+On Fri, Oct 30, 2026 at 03:05:14PM +0200, Laurentiu Palcu wrote:
+> On Fri, Oct 30, 2026 at 05:54:30PM +0800, Liu Ying wrote:
+> > CRTC(s) could still be running after the DRM device is unplugged by
+> > calling drm_dev_unplug(), because the CRTC disablement logic is
+> > protected and bypassed by the drm_dev_enter()/drm_dev_exit() pair.
+> > Hence, Pixel Engine's AXI clock use count(managed by Pixel Engine
+> > driver's runtime PM) and pixel clock use count could be inbalanced
+> > after removing and re-installing the driver module.  To fix this,
+> > add a helper dc_crtc_disable_at_boot() and call it to properly
+> > disable all CRTCs before advertising DRM device to user-space by
+> > calling drm_dev_register().
+> > 
+> > Fixes: 711a3b878366 ("drm/imx: Add i.MX8qxp Display Controller KMS")
+> > Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> > Signed-off-by: Liu Ying <victor.liu@nxp.com>
+> > ---
+> > v8:
+> > - Call dc_drv_set_crtc_disable() in dc_crtc_disable_at_boot() after CRTC
+> >   is disabled.  (Sashiko AI bot)
+> > - Make dc_crtc_disable_at_boot() return an integer instead of void.
+> >   (Laurentiu)
+> > - Postpone Pixel Engine AXI clock disablement at boot to the time point
+> >   where CRTC1(with index == 1) is being disabled at boot.
+> > 
+> > v7:
+> > - Check CRTC status to ensure that clocks were enabled by a previous boot
+> >   before disabling them in dc_crtc_disable_at_boot().  (Sashiko AI bot)
+> > - Modify debug message in dc_crtc_disable_at_boot().
+> > 
+> > v6:
+> > - Rebase onto the latest drm-misc-next and resolve conflicts.
+> > 
+> > v3:
+> > - Collect Frank's R-b tag.
+> > ---
+> >  drivers/gpu/drm/imx/dc/dc-crtc.c | 72 ++++++++++++++++++++++++++++++++++------
+> >  drivers/gpu/drm/imx/dc/dc-drv.c  | 11 ++++++
+> >  drivers/gpu/drm/imx/dc/dc-drv.h  |  3 ++
+> >  3 files changed, 76 insertions(+), 10 deletions(-)
+> > 
+> > diff --git a/drivers/gpu/drm/imx/dc/dc-crtc.c b/drivers/gpu/drm/imx/dc/dc-crtc.c
+> > index 0d64186a9901..5bc952d6883e 100644
+> > --- a/drivers/gpu/drm/imx/dc/dc-crtc.c
+> > +++ b/drivers/gpu/drm/imx/dc/dc-crtc.c
+> > @@ -227,6 +227,7 @@ dc_crtc_atomic_enable(struct drm_crtc *crtc, struct drm_atomic_commit *state)
+> >  	struct drm_crtc_state *new_crtc_state =
+> >  				drm_atomic_get_new_crtc_state(state, crtc);
+> >  	struct drm_display_mode *adj = &new_crtc_state->adjusted_mode;
+> > +	struct dc_drm_device *dc_drm = to_dc_drm_device(crtc->dev);
+> >  	struct dc_crtc *dc_crtc = to_dc_crtc(crtc);
+> >  	enum dc_link_id cf_link;
+> >  	int idx, ret;
+> > @@ -287,29 +288,37 @@ dc_crtc_atomic_enable(struct drm_crtc *crtc, struct drm_atomic_commit *state)
+> >  
+> >  	DC_CRTC_CHECK_FRAMEGEN_FIFO(dc_crtc->fg);
+> >  
+> > +	dc_drv_set_crtc_enable(dc_drm, drm_crtc_index(crtc));
+> > +
+> >  	drm_dev_exit(idx);
+> >  
+> >  out:
+> >  	dc_crtc_queue_state_event(new_crtc_state);
+> >  }
+> >  
+> > -static void
+> > -dc_crtc_atomic_disable(struct drm_crtc *crtc, struct drm_atomic_commit *state)
+> > +static inline void __dc_crtc_disable_fg(struct drm_crtc *crtc)
+> >  {
+> > -	struct drm_crtc_state *new_crtc_state =
+> > -				drm_atomic_get_new_crtc_state(state, crtc);
+> > -	struct dc_drm_device *dc_drm = to_dc_drm_device(crtc->dev);
+> >  	struct dc_crtc *dc_crtc = to_dc_crtc(crtc);
+> > -	int idx;
+> > -
+> > -	if (!drm_dev_enter(crtc->dev, &idx))
+> > -		goto out;
+> >  
+> >  	enable_irq(dc_crtc->irq_dec_seqcomplete);
+> >  	dc_fg_disable(dc_crtc->fg);
+> >  	DC_CRTC_WAIT_FOR_COMPLETION_TIMEOUT(dec_seqcomplete_done);
+> >  	disable_irq(dc_crtc->irq_dec_seqcomplete);
+> > +}
+> >  
+> > +static void
+> > +dc_crtc_atomic_disable(struct drm_crtc *crtc, struct drm_atomic_commit *state)
+> > +{
+> > +	struct drm_crtc_state *new_crtc_state =
+> > +				drm_atomic_get_new_crtc_state(state, crtc);
+> > +	struct dc_drm_device *dc_drm = to_dc_drm_device(crtc->dev);
+> > +	struct dc_crtc *dc_crtc = to_dc_crtc(crtc);
+> > +	int idx;
+> > +
+> > +	if (!drm_dev_enter(crtc->dev, &idx))
+> > +		goto out;
+> > +
+> > +	__dc_crtc_disable_fg(crtc);
+> >  	dc_fg_disable_clock(dc_crtc->fg);
+> >  
+> >  	/* request pixel engine power-off as plane is off too */
+> > @@ -318,8 +327,9 @@ dc_crtc_atomic_disable(struct drm_crtc *crtc, struct drm_atomic_commit *state)
+> >  	/* request display engine power-off when CRTC is disabled */
+> >  	pm_runtime_put(dc_crtc->de->dev);
+> >  
+> > -	drm_dev_exit(idx);
+> > +	dc_drv_set_crtc_disable(dc_drm, drm_crtc_index(crtc));
+> >  
+> > +	drm_dev_exit(idx);
+> >  out:
+> >  	drm_crtc_vblank_off(crtc);
+> >  
+> > @@ -331,6 +341,48 @@ dc_crtc_atomic_disable(struct drm_crtc *crtc, struct drm_atomic_commit *state)
+> >  	spin_unlock_irq(&crtc->dev->event_lock);
+> >  }
+> >  
+> > +int dc_crtc_disable_at_boot(struct drm_crtc *crtc)
+> > +{
+> > +	struct dc_drm_device *dc_drm = to_dc_drm_device(crtc->dev);
+> > +	struct dc_crtc *dc_crtc = to_dc_crtc(crtc);
+> > +	int ret;
+> > +
+> > +	ret = pm_runtime_resume_and_get(dc_crtc->de->dev);
+> > +	if (ret < 0) {
+> > +		dc_crtc_err(crtc, "failed to get DC display engine RPM: %d\n",
+> > +			    ret);
+> > +		goto out1;
+> > +	}
+> > +
+> > +	if (!dc_fg_wait_for_frame_index_moving(dc_crtc->fg)) {
+> > +		dc_crtc_dbg(crtc, "FrameGen frame index isn't moving\n");
+> 
+> Shouldn't you set 'ret' to something here? Otherwise you'd return the previous
+> ret value, which would be 0.
 
-commit 36664d55421d235cfeb718886d0f002fe5e55c01
-Author: Francesco Valla <francesco@valla.it>
+We take FrameGen frame index not moving as a normal case, which means
+the CRTC was not enabled before this boot, so returning 0 is fine.
 
-PoC: arm64: dts: imx93-11x11-frdm: add multiple vdevs
+> 
+> -- 
+> Thanks,
+> Laurentiu
 
-This commit adds reserved-memory regions and devicetree nodes to
-imx93-11x11-frdm.dts for a proof-of-concept multi-vdev Cortex-M33 firmware
-configuration exposing rpmsg, entropy, GPIO, I2C, SPI, and CAN virtio
-devices.
-
-> diff --git a/arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts b/arch/ar=
-m64/boot/dts/freescale/imx93-11x11-frdm.dts
-> index 6e8351d120160..84324b02c45dc 100644
-> --- a/arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts
-> +++ b/arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts
-> @@ -137,3 +137,191 @@ MX93_PAD_SD3_DATA3__GPIO3_IO25		0x31e
->  		>;
->  	};
->  };
-> +
-> +/* Multi-vdev PoC */
-> +
-> +#include <dt-bindings/input/linux-event-codes.h>
-> +
-> +/ {
-> +	reserved-memory {
-> +		rsc_table: rsc-table@2021e000 {
-> +			reg =3D <0 0x2021e000 0 0x1000>;
-> +			no-map;
-> +		};
-> +
-> +		/* vdev0: rpmsg */
-> +		vdev0vring0: vdev0vring0@a4000000 {
-> +			reg =3D <0 0xa4000000 0 0x8000>;
-> +			no-map;
-> +		};
-> +
-> +		vdev0vring1: vdev0vring1@a4008000 {
-> +			reg =3D <0 0xa4008000 0 0x8000>;
-> +			no-map;
-> +		};
-> +
-> +		vdev0buffer: vdev0buffer@a4020000 {
-> +			compatible =3D "shared-dma-pool";
-> +			reg =3D <0 0xa4020000 0 0x100000>;
-> +			no-map;
-> +		};
-> +
-> +		/* vdev1: entropy */
-> +		vdev1vring0: vdev1vring0@a4010000 {
-> +			reg =3D <0 0xa4010000 0 0x1000>;
-> +			no-map;
-> +		};
-> +
-> +		/delete-node/ vdev1vring1@a4018000;
-> +
-> +		vdev1buffer: vdev1buffer@a4120000 {
-> +			compatible =3D "restricted-dma-pool";
-> +			reg =3D <0 0xa4120000 0 0x10000>;
-> +		};
-
-[Severity: Medium]
-As reported by Sashiko on RFC [1], the commit message notes that this is a
-proof-of-concept not meant to be integrated, and applying it directly to
-arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts (which is also included =
-by
-imx93-11x11-frdm-pixpaper.dts) modifies the production board devicetree.
-
-In particular, this shrinks vdev1vring0@a4010000 from 0x8000 to 0x1000,
-deletes vdev1vring1@a4018000, repurposes 0xa4011000..0xa4020000 for
-vdev2..vdev5 vrings, duplicates rsc_table, vdev0vring0, vdev0vring1, and
-vdev0buffer from imx93-11x11-frdm-common.dtsi, carves out an extra 1.375 MiB
-of RAM (0xa4120000..0xa4280000) as non-reusable restricted-dma-pool regions,
-and adds board-level gpio-keys-virtio, leds, and eeprom@50 nodes tied to a
-specific Cortex-M33 firmware image.
-
-Would this break backwards compatibility with standard NXP MCUXpresso SDK
-Cortex-M33 RPMSG firmware if merged into the main board DTS?
-
-[ ... ]
-
-> +&cm33 {
-> +	memory-region =3D <&vdev0buffer>, <&vdev0vring0>, <&vdev0vring1>,
-> +			<&vdev1vring0>, <&vdev2vring0>, <&vdev2vring1>,
-> +			<&vdev3vring0>, <&vdev4vring0>, <&vdev5vring0>,
-> +			<&vdev5vring1>, <&vdev5vring2>, <&rsc_table>;
-> +
-> +	virtio {
-> +		#address-cells =3D <1>;
-> +		#size-cells =3D <0>;
-> +
-> +		/* vdev1: entropy */
-> +		vdev@1 {
-> +			reg =3D <1>;
-> +			memory-region =3D <&vdev1buffer>;
-> +		};
-
-[Severity: Medium]
-When vdev@1..vdev@5 are registered in rproc_handle_vdev(), pdev_info.fwnode
-is populated while pdev_info.dma_mask is left as 0:
-
-drivers/remoteproc/remoteproc_core.c:rproc_handle_vdev() {
-	struct platform_device_info pdev_info =3D {
-		.parent =3D dev,
-		.name =3D "rproc-virtio",
-		.id =3D PLATFORM_DEVID_AUTO,
-		.data =3D &rvdev_data,
-		.size_data =3D sizeof(rvdev_data),
-	};
-	...
-	fwnode =3D rproc_get_vdev_fwnode(dev->parent, rvdev_data.index);
-	pdev_info.fwnode =3D fwnode;
-	...
-	pdev =3D platform_device_register_full(&pdev_info);
-}
-
-Because pdev_info.dma_mask is 0, pdev->dev.dma_mask remains NULL when
-really_probe() -> platform_dma_configure() -> of_dma_configure() ->
-of_dma_configure_id() runs before rproc_virtio_probe(). In
-of_dma_configure_id(), !dev->dma_mask triggers dev_warn(dev, "DMA mask not
-set\n") for every vdev with a matching DT node.
-
-In addition, if an ancestor DT node defines dma-ranges, of_dma_configure_id=
-()
-allocates a struct bus_dma_region array via of_dma_get_range() and assigns =
-it
-to dev->dma_range_map, which rproc_virtio_probe() -> copy_dma_range_map()
-then overwrites without freeing:
-
-drivers/remoteproc/remoteproc_virtio.c:copy_dma_range_map() {
-	new_map =3D kmemdup_array(map, num_ranges + 1, sizeof(*map), GFP_KERNEL);
-	if (!new_map)
-		return -ENOMEM;
-
-	to->dma_range_map =3D new_map;
-}
-
-Does probing these DT-described vdevs trigger the "DMA mask not set" warning
-and leak the dev->dma_range_map array allocated by of_dma_configure_id()?
-
-[Severity: High]
-Because vdev@1..vdev@5 have an OF fwnode whose memory-region points to a
-restricted-dma-pool, really_probe() calls:
-
-  platform_dma_configure()
-    -> of_dma_configure_id()
-      -> of_dma_set_restricted_buffer()
-        -> of_reserved_mem_device_init_by_idx(&pdev->dev, of_node, i)
-
-before rproc_virtio_probe() runs, adding a struct rmem_assigned_device entry
-with rd->dev =3D &pdev->dev to the global of_rmem_assigned_device_list.
-
-However, of_reserved_mem_device_release(&rvdev->pdev->dev) and
-dma_release_coherent_memory(&rvdev->pdev->dev) are only called in
-rproc_virtio_dev_release() when the child struct virtio_device is released:
-
-drivers/remoteproc/remoteproc_virtio.c:rproc_virtio_dev_release() {
-	of_reserved_mem_device_release(&rvdev->pdev->dev);
-	dma_release_coherent_memory(&rvdev->pdev->dev);
-}
-
-Neither rproc_virtio_remove() nor the error paths in rproc_virtio_probe() a=
-nd
-rproc_add_virtio_dev() release the memory region attached to &pdev->dev.
-
-If rproc_virtio_probe() fails after platform_dma_configure(), if
-rproc_fw_boot() or rproc_attach() fails before rproc_start_subdevices()
-reaches this rvdev and cleans up via rproc_resource_cleanup() ->
-platform_device_unregister(rvdev->pdev) -> rproc_virtio_remove(), or if
-kzalloc_obj(*vdev) in rproc_add_virtio_dev() returns -ENOMEM after
-rproc_virtio_init_vdev_mem(), won't rvdev->pdev be freed while its
-rmem_assigned_device entry remains on of_rmem_assigned_device_list with a
-dangling rd->dev pointer?
-
-> +
-> +		/* vdev2: GPIO */
-> +		vdev@2 {
-> +			reg =3D <2>;
-> +			memory-region =3D <&vdev2buffer>;
-> +
-> +			v_gpio: gpio {
-> +				compatible =3D "virtio,device29";
-> +				gpio-controller;
-> +				#gpio-cells =3D <2>;
-> +				interrupt-controller;
-> +				#interrupt-cells =3D <2>;
-> +			};
-> +		};
-
-[Severity: Medium]
-Here v_gpio is placed under &cm33/virtio/vdev@2 and referenced by the
-top-level gpio-keys-virtio and leds consumer nodes.
-
-When imx_rproc_probe() finishes probing &cm33, devm_rproc_add() ->
-rproc_add() either schedules rproc->boot_work asynchronously or leaves the
-remoteproc offline if auto_boot is false, returning 0 before
-rproc_handle_vdev() or register_virtio_device() creates any child devices.
-
-When imx_rproc_probe() returns 0, really_probe() -> driver_bound() ->
-device_links_driver_bound(&pdev->dev) runs
-fw_devlink_pickup_dangling_consumers(&pdev->dev) on &cm33. Because the
-descendant fwnodes virtio, vdev@2, and gpio (v_gpio) all have
-fwnode->dev =3D=3D NULL at that point, __fw_devlink_pickup_dangling_consume=
-rs()
-marks them with FWNODE_FLAG_NOT_DEVICE and moves v_gpio's consumer links
-(gpio-keys-virtio and leds) onto &cm33.
-
-When the remote processor is later stopped via rproc_shutdown() or undergoes
-crash recovery via rproc_trigger_recovery(), &cm33 stays bound while
-rproc_vdev_do_stop() unregisters the virtio-gpio device and gpiochip_remove=
-()
-tears down the gpio_chip and frees active GPIO IRQs. Because gpio-keys-virt=
-io
-and leds only have a managed device_link to &cm33 rather than to the GPIO
-device, won't they remain bound to a dead gpio_device across remoteproc
-stop/restart cycles?
-
-[1] https://lore.kernel.org/r/20260916-remoteproc_virtio_map-v1-12-dac8c5eb=
-4aa9@valla.it
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261102-remoteproc=
-_virtio_map-v2-0-26b300e01c62@valla.it?part=3D11
+-- 
+Regards,
+Liu Ying
