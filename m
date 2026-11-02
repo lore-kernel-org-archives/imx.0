@@ -1,89 +1,69 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793640742;
-	b=iXuGwcLE2K/89DfVBjF0eRL520tRTaLIfPHIJa+KN2ONRXNeivzl5RK6H1AhyCqhKl5q
-	 XhlEkNCAxNrUgYCTueWRpMJ+6T7Bxku9WSE0vUfJOdms/eAkpDWHV6eJR81a4rIXa8Yns
-	 3En2NiEt0Kvr8JBgA4gGSMZ0PKWJLnB67o+dc4J7Xv9qkkhLugNE74xIAAHJPcWLpGDC5
-	 pfmMRilPBoyL4tDVlM1hmqhTpgQe1jghSePLF3dL7FXcPfyFsEIRnnqij4q7//AlyC1OA
-	 3UcvFtUMvaetbRB+d60BtUIE3RhTSoWuRrWwTRulv8ldrdMibbJYjNwW179/RGrELEw==
+	t=1793640855;
+	b=U30MNV6SFjnEcZ2mqDy1gOxWZjkwW13T8vuhQJCu6oGE9Ls85jrXW9aFLejMUyBTRqcp
+	 UllFCf92xzr7TxBMuhjhecEzo1F6bjrszH83mOkaIMCCvWaTsl6uhUvylcDLExcACEUty
+	 0hMQQALSI86hCcKdD4zdWU2UWOd3hhAV9LDAgP9Dk/1mjkipS7tJpf8K5OSbiH7FE8AKr
+	 4gVzS4i88beoQrWZq8pr1DrJ2Sj/WhKTJ51U4GgcKjKwZwNM6F7dFm3KFYiR+awlExQhc
+	 YJUphhFipOe7ByE9oEDxU8uzyw4Wx5h3+VT5zL6E6FxKGxaOKXIrb5nOyPL8qNFp1wg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793640742;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:
-	 Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=kq9Yzc8kYPuDZCKpCPFJzDuGUxfrJXPPIpmBSRkumE8=;
-	b=CVyHyLPmDvs8MWghpzk3Gh7RVZzY+dK71gSRPoppypSGO/gNgucyRNEVh4lOgz/7EV2x
-	 y1XAeE75JiemlPZKymwJhurVYtLHwf4Yg1ETuGYaey1VjeH8RUJQdSvFKKf0J9fSjfQcl
-	 nTM0squuomGoXUe1Z6S6ekOEHHbXHmhqVA8BiQk2DYGew5lo6cWXTfZQLmh6slridbAAe
-	 0EClhFm3wPHb7I0qIgIa9iuvcm9zJlOVInoTE2oBf0tUpZgOJ51LT//EaILR98awF+Sax
-	 hrB4b5TkqVezekGi3aAlxMZZWAKQUxkE5FFMsIeq7FiFAXN1ZVtAuTqNs9bi4m4qWzA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793640855;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=XSPCp+WIcHbdpqO5iyoSucAVoJTXBn3u+PbDuncVOEI=;
+	b=mlNLLqkSB/7ER61UcMasp2s4A1oE7sEj5bRWjHQbCnwLT1fWH/8FuC8jv/SPz4JgjZa6
+	 S05Kxb+vJaqKq77NaltJUSDKT5sMuzfyplvsRhAVu3SHPio/OtILRjg/OPLBh+9MYr2wr
+	 MeEsxnnN86+Ytn7klp2HR1f0wxUkf7O55wiD1PpwrxrfJvGJrC4foLbwxcDIJ4QYFasAS
+	 53nRSnN/a3/VlxosHlrr5BWtlbL65//WPD5jUrk1tW4Y3E/N6bK7pSfBZZcDPGooBKJhf
+	 gBhWl4LJ7eLt142d1KQrOYKWyygHk5DfbbSmoZfutoEbmP7ZhOblbt8fnAqYXomT8fA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=AfETbmFM;
-	arc=none smtp.remote-ip=209.85.221.49
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="boGGx8/S";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 275F7606A5B7
-	for <imx@lists.linux.dev>; Mon,  2 Nov 2026 17:32:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 275F7606A5B7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2593606C3FB;
+	Mon,  2 Nov 2026 17:34:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=AfETbmFM
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-48dfdd0678dso2306839f8f.0
-        for <imx@lists.linux.dev>; Mon, 02 Nov 2026 09:32:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793640740; x=1794245540; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=kq9Yzc8kYPuDZCKpCPFJzDuGUxfrJXPPIpmBSRkumE8=;
-        b=AfETbmFMCiXzJSEYhjpc/dfrJ7Kqytrb5xVCqbNb7jcLjAfpeSxAMviD2qPovZhsaJ
-         8zxTp570mYH2Y2RR/zAbqdZ+0NCLRS3XAEw63d1Konvr3Mmy8D8w9fo4t4MAElxk++AN
-         m84v57TJGjNx9wASFpMXDABB8BHA4M8G11EpmA2lOz4v+O/mhKDJUB6s0Y1PhyJMYnmz
-         cbJCupZ47/Mq5fgfb4+nBkmv7MnjhnTKHanCiwx1+FB0EAp1UpviPirYSpzmWf6IpvoJ
-         EgAxIbTUbONQzMWtTi4Y1ig1+c62UF/k5HITE+qAhGlyNowyrTk+T7pmcQJmZyDmnY1X
-         GCyw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793640740; x=1794245540;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=kq9Yzc8kYPuDZCKpCPFJzDuGUxfrJXPPIpmBSRkumE8=;
-        b=09XKiGsYV1siJCgmTvCerKYe7baG2crP9jK4KdMlLltD/v4RzWS7FgmjrPUv95P9Bu
-         8kSSRmacWCTLLH/TLbbsS6xIBbebEXl33Di20dJHwUxrpcFDvcTSb587a0cgn8eSU6j5
-         iQbZsHRW425RAl6NaKunPu2AXfI7K1n+foheyvZtxQYUPFJ5bFIh2TnLS1jIhmFOGm5+
-         1MA7KjbrP4Y3dfo8L0OhLrrfEogAOF7Fi4Im6gJF1USxmnwh/IKCczTj3eqH1+zAmehA
-         7o9sHwiqYWxkkdmH/O9tfXZMYQURN1wZVsTQ5xfK1RwWa5a3wa038SDPWbLievJiFF92
-         eKHA==
-X-Forwarded-Encrypted: i=1; AKwUvBwbU7u0iL80aJbUTIjsYwf7U7OcjVwSmeWC33Z7umzHIvU5GA5TF4yMYe5CRtXjR3WjcIc=@lists.linux.dev
-X-Gm-Message-State: AFq9FYI675IRgtBu6BHvAeMvbqUa9eQ98K7ZzzSHIBLF9d75NGw3Gsru
-	n/NqBkMIw0gbZwgOyxS9jdP+AeZcgf4OwkuN6q7lEwtgki84yA2SJtFl
-X-Gm-Gg: AYBFou15YjJ18VlEjf9wDn7lIlf2J5ydWxOc+AwF2LZt0JoGHTU0u4hWm1u3gRCoPXb
-	C6vNWThUckTIX7Le9dKBoOqlPJoeZ/aDVUCoYH+fSy39tIHjWG1loyEFVT80oAwKYUF/uQtBIVx
-	rf/wDe+J/E7FWjxLB1RWdyq350TnijguPP5+VjvfPltMWKPBpSOlmxKs/yIC2AD9Zn8ftcsrbiM
-	9+Grr+MyyGstAdddeBv3Ho1umd30MD/nsUVyhDfcb0XJtWR2LaQYGoORQkKzZG1LYLE2OUx7hfw
-	/xNO+8MnY/bwTKKFtHX1ZHzKdS3xnSwMo171YSRcUc0XRbc6Pw34bZgdH2rGEh9XbDykxIUuzQE
-	T24lpQ+AAvjBtSS7ElovJPqU87xVrOuqoBFIAX4L01hvIaIb7hZ3robepkPcDuUGK1Fuyrl83Af
-	IUOQLZfkjglHuUGi3PG2kes2YPUwEZyJTmnfZTT/pL5XHTVKi6LZ8e8Ymq1SLeLZ/i5NSo2C7km
-	oasmN1nbrU2rWplRUtwXtJsvETAkHP9uPBmYkRwVt25ik36iUsvtEJJm5LyUjvjNf80bdyI5OPZ
-	wV8sl+3TE/v2hEvnq1Ifu01h1I2WK6QKer/3jRx+C0ZFiApf+1Y54dlsW8rLbrZR/PsazXP1eh7
-	n16p85iSGXX0pO6ETCRg5
-X-Received: by 2002:a05:600c:1385:b0:4a3:5991:718 with SMTP id 5b1f17b1804b1-4ac182dc0a1mr263780855e9.16.1793640740359;
-        Mon, 02 Nov 2026 09:32:20 -0800 (PST)
-Received: from [10.0.1.67] (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch. [83.173.201.248])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b2ab3ea6a9sm2039345e9.15.2026.11.02.09.32.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 02 Nov 2026 09:32:19 -0800 (PST)
-Message-ID: <8abc611c-525e-4450-b924-87dcad57a578@gmail.com>
-Date: Mon, 2 Nov 2026 18:32:18 +0100
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=boGGx8/S
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E52571F00A16;
+	Mon,  2 Nov 2026 17:34:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793640854;
+	bh=XSPCp+WIcHbdpqO5iyoSucAVoJTXBn3u+PbDuncVOEI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=boGGx8/SSCrZHnJH6HokzRuuYeNmfCfWN6e7hNmfmHRo0cfCQb+W5zOEJ3PoC2dSy
+	 3wTaRM1IRiygAzVdUoIb+/L1wZ8lkaKAZ/gmNIuiKUePK8+6FOyfAvjbKJbWiUllct
+	 MvJTD4zwtcDkwREOWFWBk1rR4p6zrFov4skl6TlvbkTq6Bjepcx4FlkYFiyBQxzRtW
+	 vlUOgz1Zf5EH+chkGPr4uCb4oJTR+SizKci10BmQ09OR+ImPTrfLFdIJ4fckAJRXza
+	 UrnHrZTNXd9VS1+cQHSFFzBYFn8R27tGVDe4VhGU6SwuVqbuECKLhMaaC0B7xy8kYG
+	 XbY7HjMPxEzyg==
+Date: Mon, 2 Nov 2026 18:34:05 +0100
+From: Thorsten Blum <blum@kernel.org>
+To: Frank.Li@oss.nxp.com
+Cc: Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Bartosz Golaszewski <brgl@kernel.org>,
+	Jia Jie Ho <jiajie.ho@starfivetech.com>,
+	William Qiu <william.qiu@starfivetech.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	T Pratham <t-pratham@ti.com>, Frank Li <Frank.Li@nxp.com>,
+	Pan Chuang <panchuang@vivo.com>,
+	Maxime =?iso-8859-1?Q?M=E9r=E9?= <maxime.mere@foss.st.com>,
+	"open list:CRYPTO API" <linux-crypto@vger.kernel.org>,
+	"moderated list:ARM/Microchip (AT91) SoC support" <linux-arm-kernel@lists.infradead.org>,
+	open list <linux-kernel@vger.kernel.org>,
+	"open list:QUALCOMM CRYPTO DRIVERS" <linux-arm-msm@vger.kernel.org>,
+	"moderated list:ARM/STM32 ARCHITECTURE" <linux-stm32@st-md-mailman.stormreply.com>,
+	imx@lists.linux.dev, vkoul@kernel.org
+Subject: Re: [PATCH 1/1] crypto: use dmaengine_desc_set_callback()
+Message-ID: <aujJjW1ploEzmcZ4@kernel.org>
+References: <20261102164538.3834039-1-Frank.Li@oss.nxp.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -93,97 +73,40 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] arm64: dts: imx8qm-ss-conn: add usbotg3 iommu
- information
-To: Frank Li <Frank.li@oss.nxp.com>, "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Xu Yang <xu.yang_2@nxp.com>,
- Frank Li <Frank.Li@nxp.com>,
- "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
- Francesco Dolcini <francesco.dolcini@toradex.com>
-References: <20260720-qm_smmu-v1-0-3689fbd8b516@nxp.com>
- <20260720-qm_smmu-v1-1-3689fbd8b516@nxp.com>
- <b911ff91-ce7b-462e-a7fb-f8c6d682c85b@gmail.com>
- <auJWI1bqt4kX70pZ@lizhi-Precision-Tower-5810>
- <auJjlYWf2JCa22Ai@lizhi-Precision-Tower-5810>
- <2a1eb85c-8a30-4594-bdad-8a1dec17b141@gmail.com> <auTPTxt5ioBJrr27@SMW015318>
-Content-Language: en-US
-From: Emanuele Ghidoli <ghidoliemanuele@gmail.com>
-In-Reply-To: <auTPTxt5ioBJrr27@SMW015318>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-
-
-
-On 10/30/26 18:09, Frank Li wrote:
-> On Thu, Oct 29, 2026 at 07:55:41AM +0100, Emanuele Ghidoli wrote:
->>
->>
->> On 10/28/26 22:05, Frank Li wrote:
->>> Does it only impact superspeed? High speed work?
->>
->> No, it's not even enumerated, on the Dev board.
->>
->>>
->>> Thank you report this problem. Suppose below patch should fix this problem.
->>>
->>> I have not time to test it today.
->>>
->>>
->>> Frank
->>
->> Tested, it doesn't help.
->>
->> xhci-hcd.1.auto has no fwnode, so platform_dma_configure() never calls
->> of_dma_configure() and the new code in of_iommu_configure() is never
->> reached.
-> 
-> Finially, it is hack at uboot.
-> 
-> 592: static int config_smmu_fdt_device_sid(void *blob, int device_offset, int sid)
-> 601:     prop = fdt_getprop(blob, device_offset, "fsl,sc_rsrc_id", &proplen);
-> 618:     ret = fdtdec_parse_phandle_with_args(blob, device_offset,
-> 620:                                          "power-domains", ...
-> 578:     err = sc_rm_set_master_sid(-1, rsrc, sid);
-> 681:     prop = fdt_getprop(blob, offset, "iommus", &proplen);
-> 848:     if (is_imx8qm()) { ret = config_smmu_fdt(blob);
-> 
-> 
-> Need combine power-domains with iommus.
-> 
-> diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-conn.dtsi b/arch/arm64/boot/dts/freescale/imx8-ss-conn.dtsi
-> index 176e2e332f87c..cc2b9a212780f 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8-ss-conn.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8-ss-conn.dtsi
-> @@ -189,6 +189,7 @@ usbotg3_cdns3: usb@5b120000 {
->                         phys = <&usb3_phy>;
->                         phy-names = "cdns3,usb3-phy";
->                         cdns,on-chip-buff-size = /bits/ 16 <18>;
-> +                       power-domains = <&pd IMX_SC_R_USB_2>;
->                         status = "disabled";
->                 };
->         };
-> 
-> Frank
-> 
->>
->> Emanuele
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261102164538.3834039-1-Frank.Li@oss.nxp.com>
 
 Hi Frank,
 
-this works. xHCI comes up fine and SuperSpeed devices enumerate again, with no
-Host System Error and no SMMU faults. Tested on Apalis iMX8QM and iMX8QP on
-Ixora carrier board.
+On Mon, Nov 02, 2026 at 11:45:30AM -0500, Frank.Li@oss.nxp.com wrote:
+> From: Frank Li <Frank.Li@nxp.com>
+> 
+> Replace open-coded assignments to callback and callback_param fields
+> of struct dma_async_tx_descriptor with calls to the
+> dmaengine_desc_set_callback() helper across various crypto drivers.
+> 
+> No functional change intended. Prepare make to struct
+                                         ^^^^^^^ to make?
 
-A comment: imx8-ss-conn.dtsi is also included by i.MX8QXP and i.MX8DXL, which
-have no SMMU. I get if we should put the property in imx8qm-ss-conn.dtsi, next
-to the iommus property it goes with.
+> dma_async_tx_descriptor private to the DMA engine.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  drivers/crypto/atmel-aes.c            | 3 +--
+>  drivers/crypto/atmel-sha.c            | 6 ++----
+>  drivers/crypto/atmel-tdes.c           | 3 +--
+>  drivers/crypto/img-hash.c             | 3 +--
+>  drivers/crypto/omap-aes.c             | 8 +++-----
+>  drivers/crypto/omap-des.c             | 5 ++---
+>  drivers/crypto/omap-sham.c            | 3 +--
+>  drivers/crypto/qce/dma.c              | 3 +--
+>  drivers/crypto/sa2ul.c                | 3 +--
+>  drivers/crypto/starfive/jh7110-aes.c  | 3 +--
+>  drivers/crypto/starfive/jh7110-hash.c | 3 +--
+>  drivers/crypto/stm32/stm32-cryp.c     | 9 +++------
+>  drivers/crypto/stm32/stm32-hash.c     | 3 +--
+>  drivers/crypto/ti/dthev2-aes.c        | 9 +++------
+>  14 files changed, 22 insertions(+), 42 deletions(-)
 
-Thanks,
-Emanuele
-
+Reviewed-by: Thorsten Blum <blum@kernel.org>
