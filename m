@@ -1,106 +1,90 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.70.11
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793657428;
-	b=j0NU20umqDhJcCV2FFScS/RF26OQPB8fIv8NAARSYcyh+Dk8tnGlRhRBCqD20D4BIZOi
-	 7WYTOnJp5dLAdsRS3zulNkghglG8FwZo6FjJCM1XRTf+0EI+aBp25oM+MTOGDaVqYhxYf
-	 y4cgjNn+cnB6fEv1FEODKXY1rxW0J6jVPdFBg94G6RIhHH5KtoUwZbJ7vnkJkKXlrSfa5
-	 /g+Hye912Eq3pGVkA0pdll8nTowzzoxuXluihjs6sXJYMfoUciHAbIpXdOeCAW5cjlH0t
-	 zWI32f7LoHW0lfSK99el9h8oZ+K1QnV0VkChAIU1J2sB3j3cVtBwtib8L950VPr6IgA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793657428;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:Content-Type:Content-Disposition:
-	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=TDIvWnwDtKWjPBeSEijuQwbcWng7n4+0E+Frwtf0vvU=;
-	b=MEOj2It0nfaoAOOZ9hemZGfgaJG+C6VAAsjykdLfQzgtgCCkr2I4kpsqXyeK6X52iWOR
-	 B8CvmWw7lkNWtaj15eRkdmSaZ3GP7mtxLE0gSwAT0sP50Y3f98E/hQDxEum5T8Tq71c2b
-	 ng6o1akqU3t9NZl200+Ajt+vKP1YSkbqH8oQYUNuBFwCX1YDj/KUdb9NCVQO5J7VuDlsP
-	 H7N7SdIHdvNF5F4sIZx6MuTKEkLo3JvPyooISrezhcf0h8PkpdlAqVMSnX6kGExbiSDqI
-	 MVICXC3KknoJWTAzYlI9MzDlKDmeluSEjGq4SB/+E5Pm6ciYKMICr10CQ9i7W1Yh1KQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.nxp.com;
-	spf=pass smtp.mailfrom=oss.nxp.com;
-	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=aHFKuFA1;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.70.11
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011011.outbound.protection.outlook.com [52.101.70.11])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.161.41
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793661278;
+	b=3gWQeQ6E77kSzIZxNaBAaRV/9hpLrZmktNgYKZCNhkyGiJ98DmQX1WvwLPrWHi63FESM
+	 44KAWw29UHC2oYQnj9xPTFTkkbVhjZvqlA5Kq8KY3gVEKBwINtIKQPZgqKUN3ZpHXtVw6
+	 y3dWMNLMouvKHJnkF/rRL6GhTGSq+IqJJgurqj70SiBUwzUi1bJ1rk+ogaI+4nGfssAkD
+	 h9jwpsn6NTDSFH9OZO0tmHVhwnxxgcoGcPt9EdTcAXho8llTo2SJ4ra8JEvdtp/+JvMfk
+	 dWIMAIG0F0G1+AQiPxYN/UbXNb7e4aWq7wA+mkGHIPrpgFmzfm++k56gD5NZbGOhUaQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793661278;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:Subject:Date:Message-Id:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer;
+	bh=8ie4pbCN1ao35v2BouDGoB7zJuUvm/Ft3KnRznJEoYw=;
+	b=WdmEfMAAdhCOuunxH2vn30Kck4K2If0NA7mWs1ofW3T6+/SNMk7WExFjyxvKRuZCfLQQ
+	 7fFnDspoufkb9ma3Uk6VBhj49ujk0KzJKZ6GOb6TDlD+rPp3nKUiob/4M8wZEE/HzPfi8
+	 pVU39FR2qPUi/teNR1Ar6N3QNX0FqnEBWc3fcXnrDTUSS6Y0BjccPt/Hj4WGuoKDXITuW
+	 JVKY6bb+AtG7yfIYZAb1mgLlJy+1QOFU+AAvWfeO68n4TIzFJaFwQM+h3Vb1+mJDnVoU/
+	 h5P2NqEh8KycBItyuleLFqcfQBeeC3GUnEDVAyaGssD+umvjLJQ4JdMRRzxwtZTLtZQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=h+AaCWdz;
+	arc=none smtp.remote-ip=209.85.161.41
+Received: from mail-oo1-f41.google.com (mail-oo1-f41.google.com [209.85.161.41])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC01B606A334
-	for <imx@lists.linux.dev>; Mon,  2 Nov 2026 22:10:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EC01B606A334
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87525606D809
+	for <imx@lists.linux.dev>; Mon,  2 Nov 2026 23:14:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 87525606D809
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=aHFKuFA1
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vtaedo1MuCDyYftbVBp11tHahPhQsy/CDc35e81vtSXNtegBEoeg1UiInt91+vxVEMGOWkOW88x5zol/TI+mMvwWUUWLT7+gaPzZlwwDa9aj1XyzcVJpkPgwYVWje+rF1Vl/LIWOw6RdllMt2RX3n0KKLHkXWnwesLiJ5B6LNxqNT5p9pi9CMoysVOYJXkpUnTF05gNRqzXeUFZkWzVpiTAR42LqfOfF9BJNEowilRF+9R1KSuBFzzS4hL8YkiIxOL3owSJoDTxkU78ZImg4wB4vg3xv6pLjqHSaivJre91kUWQOHUMaclLqUKcQBiyYY/47rwh+l+hVuQ7TQ9GGBw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TDIvWnwDtKWjPBeSEijuQwbcWng7n4+0E+Frwtf0vvU=;
- b=Cb5vMnqHOKVArDkQDQlNZzgcxuS+tJthUmAWvqH57d71+yawD1VrQ+PQcDTVyIT+keFCnURxb9Aj2RtKpbNEOe4HXtBdzp8b80D92eX76leBpui0lYPBlXmgbZr2GPlE5KhgFtJVuOky3lvRKd1WykC9bk59H5Nl5BGHlqMY6HiLcms6Wk6rvl7Qn2XPaThlh50LLVmmx16MKjZ0CI9UmmUaGqD2yH7RPLuvnLfgtMH9VLjLgfBMjR3LpWuEuxVUqel6Quv8AV3WO8O8Jih1YActGxJwsSqFolGG2tu6rXOyMIx77L6+eUISva2KFnVGKDs/r6j26TBmY/o6/t/NyA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TDIvWnwDtKWjPBeSEijuQwbcWng7n4+0E+Frwtf0vvU=;
- b=aHFKuFA17Y6s4B7C4LR2cekP056CIIOaUSceHcDsYmd9ZL3qdT5/6Pgi9Sp5yflZiiaPqDitRHAXWc2fvHKzw3+LzrrLnBS2mucoDgGqScWZ9+IJX8VbhKxwj9OY9L/twFzBT7SI7RywAxX0P1yi2cUp97XU2RbjnEFMQpGCGQCXy7D9GcsfdyjWBt0ooOcUoyNtuXQtyL14qJipr9JdGfHJryx56sJKcUybxNGmAbt5qImP8e79ZcwK+H8UgX2UXkyFZAcRvBpWrEm/OQ+rNVhyd1bpMWAGuaiKx+/gNu/O+ZWjuEBpfSlSiSLrOGg1Z/KPvyjGZt4ldfFcKo066w==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from MI3PR04MB12438.eurprd04.prod.outlook.com (2603:10a6:290:76::14)
- by BR0PR04MB983609.eurprd04.prod.outlook.com (2603:10a6:2c8:60::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.12; Mon, 2 Nov
- 2026 22:10:24 +0000
-Received: from MI3PR04MB12438.eurprd04.prod.outlook.com
- ([fe80::c715:c32:8bb1:b70b]) by MI3PR04MB12438.eurprd04.prod.outlook.com
- ([fe80::c715:c32:8bb1:b70b%6]) with mapi id 15.21.0569.011; Mon, 2 Nov 2026
- 22:10:24 +0000
-Date: Mon, 2 Nov 2026 17:10:13 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: Junyi Zhao <junyi.zhao@amlogic.com>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Frank Li <Frank.Li@nxp.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	linux-i3c@lists.infradead.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-amlogic@lists.infradead.org, imx@lists.linux.dev,
-	linux-hardening@vger.kernel.org, xianwei.zhao@amlogic.com,
-	Kelvin.Zhang@amlogic.com
-Subject: Re: [PATCH v2 1/2] i3c: master: svc: Add amlogic a9 support
-Message-ID: <aukKRUYfEABgIruC@lizhi-Precision-Tower-5810>
-References: <20261102-a9_i3c-v2-0-0c474bfccffa@amlogic.com>
- <20261102-a9_i3c-v2-1-0c474bfccffa@amlogic.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261102-a9_i3c-v2-1-0c474bfccffa@amlogic.com>
-X-ClientProxiedBy: PH7P223CA0010.NAMP223.PROD.OUTLOOK.COM
- (2603:10b6:510:338::19) To MI3PR04MB12438.eurprd04.prod.outlook.com
- (2603:10a6:290:76::14)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=h+AaCWdz
+Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-705cb6ceebaso2315301eaf.3
+        for <imx@lists.linux.dev>; Mon, 02 Nov 2026 15:14:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793661276; x=1794266076; darn=lists.linux.dev;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=8ie4pbCN1ao35v2BouDGoB7zJuUvm/Ft3KnRznJEoYw=;
+        b=h+AaCWdz5DK8MSpnHyQSc+T6m2ULmFO4xk3lI6j3zXMapuk9rvykNQI6wKZRtX9pQe
+         zBINVOAEWXggQJdqzXCsL1U261sGviggCaGJg/8DagmGouefPMYhxI0ld4xgI5u4hZAi
+         Gv/LPS9XeVk00dVVclY2u2aBlUysEAEyhR4wKXYvu8eSYNEX6iikKX4yxzeAY0yWAGl8
+         1sYSvDLLxQNNNZiq1oHUWERoz92OCIwKKf6jhGdKn79X5JHtJ4EGedA1DB57nvAdDTlC
+         ayqh9nBBirllnU8aTvX8j2opYTzG7Bb6+paEx/ZFGKst//ZUPezwXvVSfXof54q7Xqyx
+         EPTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793661276; x=1794266076;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=8ie4pbCN1ao35v2BouDGoB7zJuUvm/Ft3KnRznJEoYw=;
+        b=gzFiCju8N3jY9MyiMHwupBDgTuIzqM6MqFnziWsPKuqMMSNt6ZlhL0otM6j48gyvza
+         mlv/V/fubrCTsFxS1rH2/Xff+qz/IKaZBhN3t+MLtXoCrScpWRHPTVFmR+td0gORH2o9
+         ybQ29UJYByC+Ecr93rGNQz8v7J+hHE9x8To0X99lJAa17Djmgzv18aPg12frrFuQv7OI
+         eKK750eDDRH+Q7zrNkewC5NAGcSpmq801y11PlI/xw7CfITXywtQvQH7VN4FDQDO2/LY
+         tUNOJaMVeNKtGBbadI6ux5TL027Dp10eT4Bw442CseFlpzavrrkphFLu+W5D105utKqI
+         +0/w==
+X-Forwarded-Encrypted: i=1; AKwUvBxQjafBKkyMiPPt3gOnZpHvpqsz80f/RStEcjb0xvMfBnqVTntpA9OPLUHRvrwgGO/U8fU=@lists.linux.dev
+X-Gm-Message-State: AFq9FYIfTYKQhdGx3o62Jtrp/uaty9bDa0sPQeaNBYXRmhT3frdcFxqi
+	DUIe2FB/7MCIfsZHnD8QPWFz/NzqooE23dc44dXze6BzYiYz+SCAhXEk
+X-Gm-Gg: AYBFou1SBRS67ykSQS5DqxZRkVIK+wb4zuVuKXA1xll2twPg4kC9I//cwI3iGKWbPVq
+	jtKptYOsqaoow5IvMdiP/nJ8sDPNkJA6JsSPM7snmhzV4AFAB+aLQ6zL9oUom4H45n9zl6hDhlx
+	yTeF1OhQn3aQdJr+SlwMd5ikJv6EPv2AckLonUjNYcKronHwt/XqoS7oXX+g3dWTLRhTvw5zqri
+	ICuqTgmrJyPcv5DuHGdeXD84REDKVCMQ+2I+PQl3+tHnpGYzVaUDRAq4tKDbXmfHFAOvAv1cDHs
+	8P3IeOVCMtyPPaHMZJQVs+XivGFv1M05a4M54nzejJSBlQVdF1PeijhHvGaFmN8C43duwPmdvtN
+	/OkTctPL2R0R1kPch3izuyRN9Uzi1jpHWKBuP3YnqOjW1HDPdCzvJ6IkdjlipSmgkxQxtU0UkcX
+	HikYKtPAtDmaKjaoqIYeW6+A9TrFgp93yWAlrErmPpJfLJnph8J9NXO8fq/7tsjYeXsk3+L8jo0
+	Kqfku9DqCxKOVKUankCmvYiCur2sHntrgOVYixGXPI0mxQ75WkQoXPlkwU1S7B2sraInO8QuuXR
+	8UmrfGHAI4tyk3IcWVJBCCd374VYxn0M9qVERD1eNNJHG8GJBS4UZ1Kn69WIozv0Bb0cx66Ut6y
+	Fp1esxZeFHoyrDcRg12KVrheX2We7T2zTPjyWsKfxDWFu9OJyN+fMZ8IGUXQkeKXt8PxzBqkz7j
+	qSmjsig3UkEgTGtaRLKuqpoQNlB/CTN2LgX2LLkbUyRE+7ZS9g3HY=
+X-Received: by 2002:a05:6820:1354:b0:6e0:8fc2:84b2 with SMTP id 006d021491bc7-714f23f630amr5925156eaf.20.1793661276175;
+        Mon, 02 Nov 2026 15:14:36 -0800 (PST)
+Received: from [127.0.1.1] (174-29-1-49.hlrn.qwest.net. [174.29.1.49])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-714f2ce869asm10134463eaf.4.2026.11.02.15.14.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Nov 2026 15:14:35 -0800 (PST)
+From: James Hilliard <james.hilliard1@gmail.com>
+Subject: [PATCH v9 0/8] serial: 8250: serialize DMA cancellation with
+ buffer reuse
+Date: Mon, 02 Nov 2026 16:14:27 -0700
+Message-Id: <20261102-submit-serial-8250-dma-cancel-v1-v9-0-9159caade148@gmail.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -110,390 +94,329 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|BR0PR04MB983609:EE_
-X-MS-Office365-Filtering-Correlation-Id: 435c2e1b-9bf2-4e0a-e205-08df392e17bb
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|23010399003|19092799006|366016|261102123227099003|261021133027099003|56012099006|4143699003|11063799006|261021123027099003|261026135527099003|261009223027099003|261009221227099003|261021135927099003|261028144727099003|261022113327099003|261022075727099003|261021130227099003|261022105027099003|261026140227099003|261026130827099003|261022115727099003|261026121527099003|261021121427099003|10067099003|18002099003|22082099003|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	c5Uo9WFT2eH9jRlSei8WRsMyrpxbpMWeUPwKj8AubSFzWSjc7E5e49UTrcjvqlK02pF14leeaxh4m+B3jfV4ZTUNZlt36zIHYDNDB3CEVxwFYj5OBX8cwv0yT6r0K56v066VG5aqTpaY4Q0q4q+mkVnmahXpfuYxYGxDLNMOhoXxxcY777CnCBRoTWxmCwxO0w6XjRSOwXfjPPVB713spsK/uNNUEgDy/YQ027bd2T6tapqQ0z+dsz8WnFV/9bh8yM78V/oJaqT82gYbc7/XyEK/bcco6BEHRNldAWeHz/0cvU5Kx0bkREFmcJYFg6wJkUJjn3Ih53+Hgwdd2bSilZXegNt+8Ttv65SdYpGXnTb/9iC9EQXNRbfSv75DNmY+gHjnr94wEQt+Au9cYa+CbVvg6AwAeinthuzkihMa4HlR0b1+1NqSpHYy+ryfHUqjA2VgEzFjdknYjw/FsLp15pv7Bn4PLfhp+ZOpRv1p0VHi9UhROwIczML9lB5+lVjdUMuOBM+EueTucHIf8qW6gg/O278jT9lotaZFdHP/i2ZSxSNtE5VWfEVuh5Cl5XdFFuTVrSQLFNA8ipzLruSZXz07Nwm5c0HHIzHfPXa5f2c9fispIfUY4kJhylp0L+wJmz1dxBsVGBq6D4ATf7C2fpBjGMp7rmOQ6VqaUFANhQs=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(23010399003)(19092799006)(366016)(261102123227099003)(261021133027099003)(56012099006)(4143699003)(11063799006)(261021123027099003)(261026135527099003)(261009223027099003)(261009221227099003)(261021135927099003)(261028144727099003)(261022113327099003)(261022075727099003)(261021130227099003)(261022105027099003)(261026140227099003)(261026130827099003)(261022115727099003)(261026121527099003)(261021121427099003)(10067099003)(18002099003)(22082099003)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?hWR4Rw97bY5wFdAE4mfvclEewc1ZEx71vXPtSxs+8IzT7Bc8NmCWFXX5ZjQi?=
- =?us-ascii?Q?GFwIau9wn0hyPL9O8/sfhg5dR2mrY0Gh8TbKMOvtzQqlewa5WyHB5MptpLg/?=
- =?us-ascii?Q?xwyL8/rYvO67s8FKD0cF7YQRfbGTDmoMNSlgomko369IUyBJtYnBn9ECGfYW?=
- =?us-ascii?Q?cLGib2OSo+HudfEsADYZeP7HbSdt3wQUIkpVPShoRSDp6xNdy4iZVFW/xU+1?=
- =?us-ascii?Q?VDS8wdBAaqoGmwICz6iOdavTYkmxT3uMVDSkR9lCnXbDhjDDpUJCo1App77S?=
- =?us-ascii?Q?aDGdpCMk7F41tt/NI1v0YPeT+l/Fw3Jpo8gBmNoWRNCgRGEZDmEd2uHIoI5i?=
- =?us-ascii?Q?e9ux2PHa9h43SjFPS9WkbGlX1EZUWwqsYSEGjtecmJ7883d2eNRj8+5HSnHg?=
- =?us-ascii?Q?+taS9DuKpJ+pGgXJE0hdeTYizu6/a0E+4pedoyrNd9bx6EQI/NCv8qWyQ/D9?=
- =?us-ascii?Q?lGuFEw6VRpX3vpyC2aUL0BbYU2Bcp+p5aGcuJCTMBKc7GIbQ+LACtlJCOzFM?=
- =?us-ascii?Q?+9dMrppCZeswx9qGK01bWvhm1yDIoPL30yXNJ+3JqG7067YthzyhvRcmaK4c?=
- =?us-ascii?Q?MZf83CxawdS1q0l6J5ojQV/WkwLwF0vBfaFjg0fRmM+5BLsjq07+RGKEhpuV?=
- =?us-ascii?Q?gKOJYdH0w9fIm3krm5m9INJumfZSgEmBwjzRm34lskphlJvDw14mSW+EJD7P?=
- =?us-ascii?Q?KwInmGL6MnMIxG7WqMA3j+5Ts5VgJYoBY4snT7Rv1glzguYQvsVYVEA+h+2B?=
- =?us-ascii?Q?ctYxjOvTDyYb8WHWQDlhSjTwO5GkjZckGADR5smXxjAOrzA8ukX483o0fCnl?=
- =?us-ascii?Q?9ioMLLdJvkNVuf7FqavhiqS63CSAkTlcY2+z8ehWlI/z3Lw78M4GD/Vw/s3Y?=
- =?us-ascii?Q?SQiCEVrtcKh3xaywp8ZVrEhjDF2F9/xLTMnE79ENC4+QsRmDGwXAuHR4TWx0?=
- =?us-ascii?Q?D3cj9Z/HDgTfrFots7dprAAEp+bGVn6HXMadAOyx7IjKIlEDWCvMLX3lcDfZ?=
- =?us-ascii?Q?xJPMQVpi1HVHQlkVHZllbGoZqMe9dOMwzCwwqmhsLD3d/tKgPcuewq9/y1Y8?=
- =?us-ascii?Q?A/E5AYrLgZsIG7gnmFhBK5l1H7OgU6n1oYAZbxI8iuTOu/lXHknYoNHVMCtN?=
- =?us-ascii?Q?BuqLcZIeeQb4P0A3S091VznaD/O0arHklvQND9EQl1Mb5+DZCgBUWr49Gz4f?=
- =?us-ascii?Q?If+9lixfz5YnjhDFG712DdoTmMvENIjXQj8+vTpCB3q9++JHdOEBLe5G7sw7?=
- =?us-ascii?Q?KnF2f2hlQ4qw/D4wHCqJwDiN3JVECRFflL+3kSDto9aHThzftD3mTEJ6dEZ7?=
- =?us-ascii?Q?9kth8JaG2eRgcyXRNhjfduUb2OvB+59Fb7D8Z7CAp1RcGkTNJ1F2p+YKxLuR?=
- =?us-ascii?Q?cgE74f71aydcxnEVtUuKAu2Xzg0c1gs/UGJrOybSlfUdSCwt4XVmkHHx8jDB?=
- =?us-ascii?Q?rLYEPMc40qLnDWLxLwmhk5/hSMvRYYZd2KwibP9iAHMJ0Znm3R55PJFU7q0s?=
- =?us-ascii?Q?2Im0mrBl8UxivI2YEnkJL4s3XlyCIjmk6hmTNtWeGP3k0OGaWI4zbdvQ7ah0?=
- =?us-ascii?Q?SHE2e3DkDnILoq59EQpZQDyuKZfzCcjr+gn6MHFHi5Od91JBmvkvmHzewx6n?=
- =?us-ascii?Q?jmo6f0laPAsN7sDpYANxMi96YFPc3QzjEDin9q4uVQKh0XLWZeVRr87ddPXw?=
- =?us-ascii?Q?jF4XiBx/l8++TCatuWHeaiAD0BTjqt1ubcnnwTPK77nHFWfIiOAWWHUvlI78?=
- =?us-ascii?Q?4/Om9NgLMCqs+ZVm7llpNxJJlfWB9hBNI8MUHbzQXdI38iQDqlyz?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 435c2e1b-9bf2-4e0a-e205-08df392e17bb
-X-MS-Exchange-CrossTenant-AuthSource: MI3PR04MB12438.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Nov 2026 22:10:24.1529
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: tKwz5ZrcW9cQ+clH80lhcaIQGKKbC4gVaOutHLLbM/OibM8McKATTygGX795Z8pKJlwqrVO2SObBTHJGFDHBN4DHKG10XMHdx7LcfKlLegf2KrgruFoEiacMaSvEBDh/
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BR0PR04MB983609
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/5WT3W4TQQyFXyXKNQtjz5/dK94DceGZsZtFTQtJG
+ oGqvjvelIt0EVKQVivNyv7OOR7vy/aoh1mP27vNy/ag5/k4Pz36gT9stn0nj/c6zcPPWwxYICB
+ Mx+e2n0/T0iYPE2EO09jL1OWx68N0hqlhIKOkxB22jvl+UJt/XiS+fH07O+Ob9tPCXSqaHHVqB
+ yfslk9ecNAfn/6lQH+gXvPsdk9v5DdIf9q7ubtNaanlFE2Aaq7IVXrNRYpp0ZIsh9IqpSQXlJz
+ 6zlPebWIJqZlIFOgIibkOBQOAgo1AUk4glqW976o8RuBo1mJWzEkrh+EnIqrm9dBckVN930VB3
+ AUMSj3kLCX1WnzEZNp0QOVeqDZmW2mN1pKbFAOjAkzYrUhqNecRuZv2nAgxvu9KgciVQLA2zya
+ eBEN0FfCUntcQuNZCK63iBm1ww+jm3BpiNUugyeMSK6GjUlxpDXJYqREhDOmEI8qQliBXMkOrx
+ TIV7LxySCWzZrVo2edY6wieCSxQDD0MTYUZvW27LNBuPp6eDr8uK3uGy+Xfvp3+hElN/UbZMIb
+ 4+X4v88NH35wL/IzXQLwBiA70Aatk0EgMa2C8BsYbgNGBw8fFmnriiGtg+l9gWiLXzL7NFP29B
+ uZrYLoBmB3o14VciJHGXw7L/wKLA4vF4lsAlktZA+s1sN4ArItDyuIDav5/pDWQroF8A5AcGG3
+ k0iRm1HENfH19/Q2L0CUuSAUAAA==
+X-Change-ID: 20261021-submit-serial-8250-dma-cancel-v1-b208f84e89c1
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Jiri Slaby <jirislaby@kernel.org>, Raul E Rangel <rrangel@chromium.org>, 
+ =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+ Tony Lindgren <tony@atomide.com>, 
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+ Richard Genoud <richard.genoud@bootlin.com>, 
+ Nicolas Ferre <nicolas.ferre@microchip.com>, 
+ Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+ Jacky Huang <ychuang3@nuvoton.com>, Shan-Chun Hung <schung@nuvoton.com>, 
+ =?utf-8?q?Pali_Roh=C3=A1r?= <pali@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, "Maciej W. Rozycki" <macro@orcam.me.uk>, 
+ Timur Tabi <timur@kernel.org>, Peter Ujfalusi <peter.ujfalusi@ti.com>, 
+ Vignesh Raghavendra <vigneshr@ti.com>, 
+ Patrice Chotard <patrice.chotard@foss.st.com>
+Cc: linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
+ linuxppc-dev@lists.ozlabs.org, James Hilliard <james.hilliard1@gmail.com>
+X-Mailer: b4 0.15.2
 
-On Mon, Nov 02, 2026 at 07:05:39PM +0800, Junyi Zhao wrote:
-> Amlogic a9 SoCs integrate the Silvaco I3C IP, and their peripheral
-> clocks vary from the vanilla implementation:
->
->   - The EE-domain controller (amlogic,a9-i3c) takes two clocks,
->     "pclk" and "fast_clk", and the fast clock rate must be
->     programmed before the controller can be used.
->
->   - The AO-domain controller (amlogic,a9-ao-i3c) exposes only "pclk":
->     its bus clock is generated by an internal divider located in the
->     controller's own register space.
->
-> Add a vendor_init callback to handle this clock setup.
-> Add a vendor_quirks field to describe AO-specific behavior.
->
-> Signed-off-by: Junyi Zhao <junyi.zhao@amlogic.com>
-> ---
->  drivers/i3c/master/svc-i3c-master.c | 214 +++++++++++++++++++++++++++++++++++-
->  1 file changed, 209 insertions(+), 5 deletions(-)
->
-> diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
-> index e700392f0..98aa6eb0f 100644
-> --- a/drivers/i3c/master/svc-i3c-master.c
-> +++ b/drivers/i3c/master/svc-i3c-master.c
-> @@ -9,6 +9,7 @@
->
->  #include <linux/bitfield.h>
->  #include <linux/clk.h>
-> +#include <linux/clk-provider.h>
->  #include <linux/completion.h>
->  #include <linux/errno.h>
->  #include <linux/i3c/master.h>
-> @@ -166,6 +167,21 @@
->   */
->  #define SVC_I3C_QUIRK_DAA_CORRUPT	BIT(2)
->
-> +/* Amlogic specific registers */
-> +#define AML_AO_I3C_FCLK_DIV_CTRL		0x304
-> +#define AML_AO_I3C_FCLK_DIV_EN_SHIFT		8
-> +#define AML_AO_I3C_FCLK_DIV_SHIFT		0
-> +#define AML_AO_I3C_FCLK_DIV_WIDTH		8
-> +#define AML_AO_I3C_FCLK_EN_SHIFT		9
-> +
-> +/*
-> + * AML_I3C_QUIRK_AO:
-> + * AO is the Always-On domain on Amlogic SoCs (remains powered in suspend).
-> + * Its clock is generated by an internal divider located in the I3C
-> + * controller own register space.
-> + */
-> +#define AML_I3C_QUIRK_AO	BIT(0)
-> +
+Reserve canceled transmit and receive storage until DMA and its completion
+callbacks have retired. Serial-core write backpressure protects a flushed
+TX FIFO while normal transfers continue to DMA directly from that FIFO.
 
-There are not much quick now, just put after SVC_I3C_QUIRK_DAA_CORRUPT
+The preparatory patches separate OMAP's locked TX completion processing,
+serialize asynchronous write wakeups, and fix OMAP RX locking and shutdown
+ordering. Serial-core reservation helpers then protect 8250 TX storage.
+Flushing empties the logical queue immediately. While the old transfer owns its
+storage, write_room() reports zero and write-ready notifications wait for
+retirement. Failed termination retains the reservation until normal
+completion, without advancing the reset FIFO. DMA retirement releases the
+reservation independently of port readiness. Serial core keeps writes and
+write-ready notifications gated during shutdown until successful startup
+or resume. Flushes still notify threads waiting for the logical FIFO to
+empty, independently of whether its storage can be reused.
 
-#define AML_I3C_QUIRK_AO     BIT(3)
+RX delivers paused data before the PIO fallback and retires callbacks in
+process context. Track FIFO access separately from buffer retirement so
+PIO and the DesignWare empty-FIFO timeout handling can run once DMA has
+released the FIFO. Retry ambiguous pause failures until a successful pause
+or reported completion makes the buffer stable. Keep receive interrupts
+masked meanwhile, preserving the requested enables in the IER shadow.
+Back off pause retries from 1 ms to one second, with completion and shutdown
+waking the worker immediately. Report prolonged stalls while retaining the
+transfer, and reset the retry delay when the pending flush finishes.
+Confirmed DMA errors use synchronous recovery and leave RX on PIO until
+reopen. Shutdown excludes new retirement work before releasing the channels.
 
-use a unified quirk define.
+Final shutdown retains both channels and their storage until synchronous
+termination succeeds. Retry failed channels outside the port lock, starting
+with a 1 ms sleep and doubling it up to one second to limit sustained
+retries. Report the initial error, rate-limit subsequent failures with
+elapsed time, and report recovery once both channels have stopped and
+drained. A permanently failed DMA engine blocks teardown while retaining
+its storage and callback state.
 
->  struct svc_i3c_cmd {
->  	u8 addr;
->  	union {
-> @@ -195,10 +211,6 @@ struct svc_i3c_regs_save {
->  	u32 mdynaddr;
->  };
->
-> -struct svc_i3c_drvdata {
-> -	u32 quirks;
-> -};
-> -
->  /**
->   * struct svc_i3c_master - Silvaco I3C Master structure
->   * @base: I3C master controller
-> @@ -257,6 +269,12 @@ struct svc_i3c_master {
->  	u32 mctrl_config;
->  };
->
-> +struct svc_i3c_drvdata {
-> +	u32 quirks;
-> +	u32 vendor_quirks;
+DMA providers must supply the callback-drain guarantee of
+dmaengine_synchronize() before retirement releases storage. The related
+provider synchronization fixes are tracked separately and must precede
+these consumer changes on affected controllers.
 
-Needn't this, direct use quirks
+Based on tty-next at 6b4b543fa187 with the posted shutdown guard [0], channel
+configuration error handling [1], RX TTY accounting fix [2], RZ/N1
+transfer-length fix [3], transmit-PM shutdown fix [4], serport
+write-wakeup deferral v2 [5], DesignWare BUSY-safe fractional-divisor
+programming [6], and Intel MID RX DMA timeout locking [7]. The serport fix
+is needed before serializing the remaining write-wakeup callers with the
+port lock.
 
-> +	int (*vendor_init)(struct svc_i3c_master *master);
-> +};
-> +
+[0] https://lore.kernel.org/r/20261021-submit-serial-8250-dma-shutdown-v1-v1-1-3d3ce383c614@gmail.com
+[1] https://lore.kernel.org/r/20261021-submit-serial-8250-dma-config-errors-v1-v1-1-c067587d1ef2@gmail.com
+[2] https://lore.kernel.org/r/20261021-submit-serial-8250-dma-rx-accounting-v1-v1-1-c11795914ab4@gmail.com
+[3] https://lore.kernel.org/r/20261023-submit-serial-8250-dma-tx-length-v1-v2-1-c3106ef4d2df@gmail.com
+[4] https://lore.kernel.org/r/20261022-submit-serial-8250-tx-pm-shutdown-v1-v1-1-0e894afa3bb8@gmail.com
+[5] https://lore.kernel.org/r/20261028-submit-serport-write-wakeup-v1-v2-1-c05d96259985@gmail.com
+[6] https://lore.kernel.org/r/20261027-submit-serial-8250-dw-divisor-v1-v4-1-41714a75e15a@gmail.com
+[7] https://lore.kernel.org/r/20261024-submit-serial-8250-mid-rx-lock-v1-v1-1-2b9afdf869d7@gmail.com
 
-why need move this struct
+Assisted-by: Codex:gpt-6-astra
+Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
+---
+Changes in v9:
+- Back off pending RX pause retries from 1 ms to one second, wake the worker
+  on completion and shutdown, and report prolonged stalls once per flush
+  through a rate-limited warning. Reset the delay for each new flush.
+- Lock ST ASC startup's transmit servicing and RX interrupt enable after
+  requesting the IRQ, covering write wakeups from an empty FIFO as well.
+- Wake logical-FIFO drain waiters after a flush even while TX storage is
+  reserved or the port is not ready, keeping line-discipline write-ready
+  callbacks deferred until writes are allowed.
+- Use plain port locking where interrupt context or an enclosing IRQ-saving
+  lock already supplies the required exclusion, retaining IRQ-saving locks
+  in workers, tasklets and mixed-context callers.
+- Separate OMAP RX completion/flush locking and shutdown IRQ draining into
+  two preparatory fixes, with their own rationale and Fixes tags.
+- Place the new delay header before the existing include block.
+- Back off failed final DMA termination retries from 1 ms to a one-second
+  cap. Report the initial failure, rate-limit ongoing failures with elapsed
+  time and current RX/TX errors, and report successful recovery.
+- Link to v8: https://patch.msgid.link/20261029-submit-serial-8250-dma-cancel-v1-v8-0-3fd56ba352ed@gmail.com
 
->  /**
->   * struct svc_i3c_i2c_dev_data - Device specific data
->   * @index: Index in the master tables corresponding to this device
-> @@ -274,6 +292,11 @@ static inline bool svc_has_quirk(struct svc_i3c_master *master, u32 quirk)
->  	return (master->drvdata->quirks & quirk);
->  }
->
-> +static inline bool vendor_has_quirk(struct svc_i3c_master *master, u32 quirk)
-> +{
-> +	return (master->drvdata->vendor_quirks & quirk);
-> +}
-> +
+Changes in v8:
+- Retain RX transfers after ambiguous pause failures and retry in the worker
+  until pause succeeds or completion is reported, preserving delayed data
+  while masking RX interrupts and allowing shutdown to take over.
+- Retain both DMA channels and their storage during final shutdown until
+  synchronous termination succeeds, retrying failures outside the port lock.
+- Update the serport write-wakeup prerequisite to the posted v2.
+- Cover DZ transmit servicing, DECstation ZS TX/modem handling and
+  JSM Classic modem notifications with the port lock.
+- Defer ZS console-triggered TX restart to a worker, preserving the
+  port-before-SCC lock order and draining work during teardown.
+- Release Lantiq's private hardware lock before write-wakeup callbacks.
+- Assert the port-lock contract in uart_write_wakeup().
+- Retain the tx_running guard in generic and OMAP TX callbacks.
+- Publish OMAP's shutdown gate before the final RX flush, serialize
+  RX completion and runtime-suspend flushes with port and RX DMA locks,
+  and drain its UART interrupt before releasing DMA state.
+- Link to v7: https://patch.msgid.link/20261027-submit-serial-8250-dma-cancel-v1-v7-0-985a023ba4b4@gmail.com
 
-Needn't this one
+Changes in v7:
+- Rebase onto tty-next at 6b4b543fa187.
+- Use v4 of the DesignWare BUSY-safe fractional-divisor prerequisite.
+- Use an unsigned long bitmap and for_each_set_bit() for SCCNXP
+  deferred write wakeups, with unsigned port indices.
+- Narrow SB1250 modem-status locking to shared-state updates and
+  avoid taking the port lock for RX-only interrupts. Keep TX FIFO
+  consumption and interrupt masking serialized with writers.
+- Link to v6: https://lore.kernel.org/r/20261024-submit-serial-8250-dma-cancel-v1-v6-0-6f366591f566@gmail.com
 
->  static inline bool svc_has_daa_corrupt(struct svc_i3c_master *master)
->  {
->  	return ((master->drvdata->quirks & SVC_I3C_QUIRK_DAA_CORRUPT) &&
-> @@ -2011,6 +2034,7 @@ static int svc_i3c_master_probe(struct platform_device *pdev)
->  	if (!master->drvdata)
->  		return -EINVAL;
->
-> +	master->dev = dev;
->  	master->regs = devm_platform_ioremap_resource(pdev, 0);
->  	if (IS_ERR(master->regs))
->  		return PTR_ERR(master->regs);
-> @@ -2019,6 +2043,12 @@ static int svc_i3c_master_probe(struct platform_device *pdev)
->  	if (master->num_clks < 0)
->  		return dev_err_probe(dev, -EINVAL, "can't get I3C clocks\n");
->
-> +	if (master->drvdata->vendor_init) {
-> +		ret = master->drvdata->vendor_init(master);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
->  	for (i = 0; i < master->num_clks; i++) {
->  		if (!strcmp(master->clks[i].id, "fast_clk"))
->  			break;
-> @@ -2036,7 +2066,6 @@ static int svc_i3c_master_probe(struct platform_device *pdev)
->  	if (master->irq < 0)
->  		return master->irq;
->
-> -	master->dev = dev;
->  	ret = clk_bulk_prepare_enable(master->num_clks, master->clks);
->  	if (ret)
->  		return dev_err_probe(dev, ret, "can't enable I3C clocks\n");
-> @@ -2163,9 +2192,184 @@ static const struct svc_i3c_drvdata npcm845_drvdata = {
->
->  static const struct svc_i3c_drvdata svc_default_drvdata = {};
->
-> +/*
-> + * Container for the tail clocks of the AO domain variant. The clock HW
-> + * structures are registered with the clock framework and must stay alive
-> + * for the whole driver lifetime, so they are kept along with the shared
-> + * lock used by their gate/divider operations.
-> + */
-> +struct aml_i3c_ao_clk {
-> +	struct clk_gate div_en;
-> +	struct clk_divider div;
-> +	struct clk_gate gate;
-> +	spinlock_t lock;
-> +};
-> +
-> +/*
-> + * aml_ao_i3c_tail_clocks - register the internal divider chain that
-> + * produces the AO variant's fast_clk, and append it to the clk bulk
-> + * array as "fast_clk".  @parent must be "pclk", the only clock the AO
-> + * variant exposes (see silvaco,i3c-master.yaml).
-> + */
+Changes in v6:
+- Use v2 of the DesignWare BUSY-safe fractional-divisor prerequisite.
+- Serialize CLPS711x TX servicing and interrupt-enable state with the
+  port lock. Use non-waiting IRQ disable in stop_tx(), skip queued TX
+  interrupts after stopping, and drain the handler outside the lock
+  during shutdown.
+- Make the Atmel RX/TX tasklets and SB1250 termios locking IRQ-safe
+  alongside their interrupt-handler locking, preserving the caller's
+  interrupt state when releasing the port lock.
+- Report RX DMA recovery after releasing the port lock, keeping the
+  state changes and interrupt-enable restoration serialized.
+- Link to v5: https://patch.msgid.link/20261024-submit-serial-8250-dma-cancel-v1-v5-0-9e52968928d2@gmail.com
 
-use kernel doc format.
+Changes in v5:
+- Add the posted serport write-wakeup deferral as a prerequisite for the
+  caller-locking preparation.
+- Add a preparatory patch serializing asynchronous write-wakeup callers
+  with the port lock, including indirect CTS and transmit-helper calls.
+  Keep sleeping register accesses outside the lock and defer SCCNXP
+  notifications until its controller lock is released.
+- Use the separately posted DesignWare BUSY-safe fractional-divisor fix
+  and Intel MID RX DMA timeout locking fix as prerequisites, leaving five
+  patches in this series.
+- Separate serial-core write readiness from DMA storage reservations. Record
+  retirement during startup and shutdown while keeping writes and wakeups
+  gated until the port is ready.
+- Wake deferred writers after successful startup or resume, including when
+  reopening with a retained FIFO, and restart any retained queued output.
+- Keep the write-ready notification pending while retained output is at or
+  above the normal wakeup threshold, until TX completion drains it.
+- Publish resume readiness under the TX restart lock without releasing a
+  reservation that may belong to a newly flushed transfer.
+- Release 8250's TX reservation after shutdown has stopped DMA and unmapped
+  the source; serial core retains control of write readiness.
+- Link to v4: https://patch.msgid.link/20261023-submit-serial-8250-dma-cancel-v1-v4-0-e759de1839de@gmail.com
 
-> +static int aml_ao_i3c_tail_clocks(struct svc_i3c_master *master, struct clk *parent)
-> +{
-> +	struct device *dev = master->dev;
-> +	struct aml_i3c_ao_clk *ao;
-> +	struct clk_init_data init = {};
-> +	char name[64];
-> +	int ret;
-> +	struct clk_bulk_data *new_clks;
-> +	struct clk *fclk;
+Changes in v4:
+- Retain flushed TX reservations through shutdown and failed resume. Release
+  them after successful resume, or when allocating a new FIFO on reopen,
+  so retirement cannot wake writers into a closing port.
+- Treat RX flush as complete once the channel is inactive, and clear the
+  shutdown guard before startup configures the UART and tests interrupts.
+- Check completion after a failed pause so a transfer that finished before
+  its callback acquired the port lock is delivered and retired normally.
+- Keep DesignWare's BUSY-safe divisor setter after fractional-divisor
+  discovery, writing DLF and DLL/DLH only after confirming DLAB.
+- Link to v3: https://patch.msgid.link/20261023-submit-serial-8250-dma-cancel-v1-v3-0-d78f9e4c4932@gmail.com
 
-keep revise Chemistry order
+Changes in v3:
+- Defer write-ready wakeups while flushed TX storage is reserved, and
+  serialize the flush wakeup with the reservation under the port lock.
+- Suppress ordinary TX starts during the reservation while preserving
+  high-priority flow-control characters, which use separate storage.
+- Separate RX FIFO access from callback retirement, allowing PIO and the
+  DesignWare empty-FIFO timeout workaround after a successful pause and
+  termination while keeping the receive buffer reserved.
+- Use the existing IER shadow for requested enables and a shared register
+  writer to keep receive interrupts masked throughout DMA error recovery,
+  including termios, RS485, modem-status and overrun-backoff updates.
+- Preserve the timeout-enable bit across stop_rx(), exclude late shutdown
+  interrupts from PIO, and avoid FIFO resets during RX DMA recovery.
+- Preserve the completion-path LSR read after stop_rx(), while gating DMA
+  resubmission on the receive interrupt enable.
+- Pack the cancellation flags after moving all their accesses under the
+  port lock, including the recovery worker's snapshot and initialization.
+- Apply the early-return, shared-helper and line-wrapping cleanups.
+- Link to v2: https://patch.msgid.link/20261022-submit-serial-8250-dma-cancel-v1-v2-0-088ea51e3891@gmail.com
 
-Frank
+Changes in v2:
+- Add serial-core helpers to reserve flushed transmit storage until DMA
+  retirement. Apply write backpressure during that interval and keep normal
+  TX using the FIFO directly, replacing the private transmit buffer in v1.
+- Document the flush callback's reservation, writer backpressure and
+  retirement requirements, including release before shutdown returns.
+- Split the OMAP completion refactor into a preparatory patch and move
+  the RZ/N1 preparation-order and shutdown PM fixes to independent
+  submissions, keeping four patches in this series.
+- Take runtime PM references around worker UART accesses, and leave normal
+  RX retirement to release ownership without reading LSR or restarting DMA.
+- Synchronize the queued TX ranges before preparing the descriptor and
+  return the mapping to CPU ownership before releasing the reservation.
+- Keep the TX transfer length separate from FIFO cancellation, so a failed
+  termination can account completion without advancing the reset FIFO.
+- Exclude late RX flush work during shutdown, including Intel MID DMA
+  timeout interrupts which are independent of UART_IER.
+- Accept DMA_IN_PROGRESS after successful pause, and recover from failed
+  pause, termination or DMA_ERROR before handing the receiver to PIO.
+- Preserve stop_rx() and shutdown across recovery, and retain the
+  DesignWare empty-FIFO timeout workaround when receiving through PIO.
+- Apply the requested guard spacing and container_of() formatting.
+- Link to v1: https://patch.msgid.link/20261021-submit-serial-8250-dma-cancel-v1-v1-0-efe2b89f2303@gmail.com
 
-> +
-> +	ao = devm_kzalloc(dev, sizeof(*ao), GFP_KERNEL);
-> +	if (!ao)
-> +		return -ENOMEM;
-> +
-> +	spin_lock_init(&ao->lock);
-> +
-> +	snprintf(name, sizeof(name), "%s#div_en", dev_name(dev));
-> +	init.name = name;
-> +	init.ops = &clk_gate_ops;
-> +	init.flags = CLK_IGNORE_UNUSED;
-> +	init.parent_data = &(struct clk_parent_data) {
-> +		.index = -1,
-> +		.hw = __clk_get_hw(parent),
-> +	};
-> +	init.num_parents = 1;
-> +
-> +	ao->div_en.reg = master->regs + AML_AO_I3C_FCLK_DIV_CTRL;
-> +	ao->div_en.bit_idx = AML_AO_I3C_FCLK_DIV_EN_SHIFT;
-> +	ao->div_en.hw.init = &init;
-> +	ao->div_en.lock = &ao->lock;
-> +
-> +	ret = devm_clk_hw_register(dev, &ao->div_en.hw);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "failed to register %s\n", name);
-> +
-> +	snprintf(name, sizeof(name), "%s#div", dev_name(dev));
-> +	init.name = name;
-> +	init.ops = &clk_divider_ops;
-> +	init.flags = 0;
-> +	init.parent_data = &(struct clk_parent_data) {
-> +		.index = -1,
-> +		.hw = &ao->div_en.hw,
-> +	};
-> +	init.num_parents = 1;
-> +
-> +	ao->div.reg = master->regs + AML_AO_I3C_FCLK_DIV_CTRL;
-> +	ao->div.shift = AML_AO_I3C_FCLK_DIV_SHIFT;
-> +	ao->div.width = AML_AO_I3C_FCLK_DIV_WIDTH;
-> +	ao->div.hw.init = &init;
-> +	ao->div.lock = &ao->lock;
-> +
-> +	ret = devm_clk_hw_register(dev, &ao->div.hw);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "failed to register %s\n", name);
-> +
-> +	snprintf(name, sizeof(name), "%s#gate", dev_name(dev));
-> +	init.name = name;
-> +	init.ops = &clk_gate_ops;
-> +	init.flags = CLK_SET_RATE_PARENT | CLK_IGNORE_UNUSED;
-> +	init.parent_data = &(struct clk_parent_data) {
-> +		.index = -1,
-> +		.hw = &ao->div.hw,
-> +	};
-> +	init.num_parents = 1;
-> +
-> +	ao->gate.reg = master->regs + AML_AO_I3C_FCLK_DIV_CTRL;
-> +	ao->gate.bit_idx = AML_AO_I3C_FCLK_EN_SHIFT;
-> +	ao->gate.hw.init = &init;
-> +	ao->gate.lock = &ao->lock;
-> +
-> +	ret = devm_clk_hw_register(dev, &ao->gate.hw);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "failed to register %s\n", name);
-> +
-> +	fclk = devm_clk_hw_get_clk(dev, &ao->gate.hw, NULL);
-> +	if (IS_ERR(fclk))
-> +		return dev_err_probe(dev, PTR_ERR(fclk),
-> +				     "tail i3c fast clock failed\n");
-> +
-> +	new_clks = devm_kcalloc(dev,
-> +				master->num_clks + 1,
-> +				sizeof(*new_clks),
-> +				GFP_KERNEL);
-> +	memcpy(new_clks, master->clks,
-> +			master->num_clks * sizeof(*master->clks));
-> +	new_clks[master->num_clks].id = "fast_clk";
-> +	new_clks[master->num_clks].clk = fclk;
-> +	master->clks = new_clks;
-> +	master->num_clks++;
-> +
-> +	return 0;
-> +}
-> +
-> +static int aml_i3c_init(struct svc_i3c_master *master)
-> +{
-> +	struct device *dev = master->dev;
-> +	long fin_freq;
-> +	int ret, i;
-> +	struct clk *fclk;
-> +
-> +	if (vendor_has_quirk(master, AML_I3C_QUIRK_AO)) {
-> +		/*
-> +		 * clk_bulk_get_all() preserves the DT order, and the
-> +		 * binding restricts the AO variant to exactly one clock,
-> +		 * which is always "pclk".  So clks[0] is the input of the
-> +		 * internal divider chain.
-> +		 */
-> +		ret = aml_ao_i3c_tail_clocks(master, master->clks[0].clk);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	for (i = 0; i < master->num_clks; i++) {
-> +		if (!strcmp(master->clks[i].id, "fast_clk"))
-> +			break;
-> +	}
-> +
-> +	if (i == master->num_clks)
-> +		return dev_err_probe(dev, -EINVAL,
-> +				     "can't get I3C fast clock\n");
-> +
-> +	fclk = master->clks[i].clk;
-> +	if (IS_ERR(fclk))
-> +		return PTR_ERR(fclk);
-> +
-> +	fin_freq = clk_round_rate(fclk, 25000000);
-> +	if (fin_freq <= 0) {
-> +		dev_err(dev, "invalid fast_clk\n");
-> +		return fin_freq ? fin_freq : -EINVAL;
-> +	}
-> +
-> +	ret = clk_set_rate(fclk, fin_freq);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret,
-> +				     "setting fast_clk rate failed\n");
-> +
-> +	return 0;
-> +}
-> +
-> +static const struct svc_i3c_drvdata aml_a9_drvdata = {
-> +	.quirks = SVC_I3C_QUIRK_FIFO_EMPTY |
-> +		  SVC_I3C_QUIRK_FALSE_SLVSTART |
-> +		  SVC_I3C_QUIRK_DAA_CORRUPT,
-> +	.vendor_init = aml_i3c_init,
-> +};
-> +
-> +static const struct svc_i3c_drvdata aml_a9_ao_drvdata = {
-> +	.quirks = SVC_I3C_QUIRK_FIFO_EMPTY |
-> +		  SVC_I3C_QUIRK_FALSE_SLVSTART |
-> +		  SVC_I3C_QUIRK_DAA_CORRUPT,
-> +	.vendor_quirks = AML_I3C_QUIRK_AO,
-> +	.vendor_init = aml_i3c_init,
-> +};
-> +
->  static const struct of_device_id svc_i3c_master_of_match_tbl[] = {
->  	{ .compatible = "nuvoton,npcm845-i3c", .data = &npcm845_drvdata },
->  	{ .compatible = "silvaco,i3c-master-v1", .data = &svc_default_drvdata },
-> +	{ .compatible = "amlogic,a9-i3c", .data = &aml_a9_drvdata },
-> +	{ .compatible = "amlogic,a9-ao-i3c", .data = &aml_a9_ao_drvdata },
->  	{ /* sentinel */ },
->  };
->  MODULE_DEVICE_TABLE(of, svc_i3c_master_of_match_tbl);
->
-> --
-> 2.42.0
->
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Jiri Slaby <jirislaby@kernel.org>
+To: Richard Genoud <richard.genoud@bootlin.com>
+To: Nicolas Ferre <nicolas.ferre@microchip.com>
+To: Alexandre Belloni <alexandre.belloni@bootlin.com>
+To: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+To: "Maciej W. Rozycki" <macro@orcam.me.uk>
+To: Jacky Huang <ychuang3@nuvoton.com>
+To: Shan-Chun Hung <schung@nuvoton.com>
+To: Pali Rohár <pali@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Pengutronix Kernel Team <kernel@pengutronix.de>
+To: Fabio Estevam <festevam@gmail.com>
+To: Timur Tabi <timur@kernel.org>
+To: Peter Ujfalusi <peter.ujfalusi@ti.com>
+To: Vignesh Raghavendra <vigneshr@ti.com>
+To: Tony Lindgren <tony@atomide.com>
+To: Raul E Rangel <rrangel@chromium.org>
+To: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To: Patrice Chotard <patrice.chotard@foss.st.com>
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-serial@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: imx@lists.linux.dev
+Cc: linuxppc-dev@lists.ozlabs.org
+
+---
+James Hilliard (8):
+      serial: 8250_omap: separate locked TX DMA completion processing
+      serial: serialize asynchronous write wakeups with the port lock
+      serial: 8250_omap: serialize RX DMA completion and flushing
+      serial: 8250_omap: quiesce DMA IRQ handling before shutdown
+      serial: core: allow drivers to reserve flushed transmit storage
+      serial: 8250: drain canceled TX DMA before reusing its buffer
+      serial: 8250: retire canceled RX DMA before reusing the receive buffer
+      serial: 8250: retain DMA resources when termination fails
+
+ drivers/tty/serial/21285.c          |   2 +
+ drivers/tty/serial/8250/8250.h      |  66 +++++-
+ drivers/tty/serial/8250/8250_core.c |   2 +-
+ drivers/tty/serial/8250/8250_dma.c  | 395 +++++++++++++++++++++++++++++-------
+ drivers/tty/serial/8250/8250_dw.c   |  28 ++-
+ drivers/tty/serial/8250/8250_omap.c |  68 +++++--
+ drivers/tty/serial/8250/8250_port.c |  36 +++-
+ drivers/tty/serial/atmel_serial.c   |  12 +-
+ drivers/tty/serial/clps711x.c       |  23 ++-
+ drivers/tty/serial/cpm_uart.c       |   2 +
+ drivers/tty/serial/dz.c             |   9 +-
+ drivers/tty/serial/fsl_lpuart.c     |   2 +-
+ drivers/tty/serial/jsm/jsm_cls.c    |   6 +-
+ drivers/tty/serial/jsm/jsm_neo.c    |   9 +-
+ drivers/tty/serial/lantiq.c         |  12 +-
+ drivers/tty/serial/ma35d1_serial.c  |   6 +-
+ drivers/tty/serial/max3100.c        |   6 +-
+ drivers/tty/serial/max310x.c        |   9 +-
+ drivers/tty/serial/mux.c            |  13 +-
+ drivers/tty/serial/mvebu-uart.c     |   2 +
+ drivers/tty/serial/mxs-auart.c      |   2 +
+ drivers/tty/serial/sb1250-duart.c   |  25 ++-
+ drivers/tty/serial/sccnxp.c         |  45 +++-
+ drivers/tty/serial/serial_core.c    | 106 +++++++++-
+ drivers/tty/serial/st-asc.c         |   2 +
+ drivers/tty/serial/ucc_uart.c       |   6 +-
+ drivers/tty/serial/zs.c             |  94 ++++++---
+ drivers/tty/serial/zs.h             |   3 +
+ include/linux/serial_core.h         |  18 +-
+ 29 files changed, 790 insertions(+), 219 deletions(-)
+---
+base-commit: 6b4b543fa18757297ac756a6fe6e64f506b7844a
+change-id: 20261021-submit-serial-8250-dma-cancel-v1-b208f84e89c1
+prerequisite-patch-id: 3604bfaa3a1c214997de1f11162b81a4541af5ab
+prerequisite-patch-id: 79dd093ffb35e254e790dffb8887faf51b64f947
+prerequisite-patch-id: 80a5061d84c055a64c760268febed179c687b99f
+prerequisite-patch-id: 7dbb404baf1f861982cf6a4b755d39cfec548223
+prerequisite-patch-id: 40881d81a27b3a1aa45203d171214faaf2197768
+prerequisite-patch-id: 76506fd9b234c7268227ff41e4d0989e82a1a433
+prerequisite-patch-id: d8219673210dac82d3adab41578ff2f76f5862c9
+prerequisite-patch-id: 48659e5ef3f5fb377d0b751f0830c0de4699262c
+
+Best regards,
+--  
+James Hilliard <james.hilliard1@gmail.com>
+
