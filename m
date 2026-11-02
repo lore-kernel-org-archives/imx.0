@@ -1,45 +1,45 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793604524;
-	b=f56JDeeTKITpUVBaHx4qAzr7hOa4YcN/5v/UhBveH4xKiL+tZU64FEEkPAwbuZsro7m9
-	 tUk0tkQysqY0N3Mqa1imkVVlowb80eBg2T+wmDidePcMapTOhYGoNnPgCOwAPASHluVfl
-	 FuiGkp6XmymIoOFSF3UWkkkMSoBNdMFGKxEMDQsVrEe1Gl9I2eV7/PAWznVJDZch0ANYG
-	 yi1gHTtETMBseI01qSp5Y6WfxCOLfM6zvb0YgWkYv9OcfXuMQAdPDM0lpALaWTXEOutx9
-	 6HH5ON79L7H8nQ19BlA12ZUAV3NUcnEE8OUgo6spsTfx8NuFYSsahe65XjyHbHMmHfg==
+	t=1793604559;
+	b=xVeRod52VysetSlF/9oLXe6dZXliEBoH7YsX830WUGR/s3yGu/1taPdJMxhPiz1q+Yy/
+	 qs6iTGJMJ+5BTA1vP3UmClUp2fle09KmoZw0qf+gzOUWn/Jxj4p2iK33hcLB/zzPm529W
+	 8nwFUBFHEeruca7KReqeqCPdBhn1oh6YADc0gXG/8UWY0aiVHCWgP3qwf+5lGlsY7Dgyc
+	 s3+IUIWAGRI3BysctIecNriDW9qxX/dUVALrOUkasdtD9d3E6uepPvcyZqNCxD1Gmtmme
+	 4uK+ey84uKfOmnmycjTDyVdxof32/eYZSXuoVxIgCNaQPGZPcxOPOkkPVjee2mqEf9w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793604524;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793604559;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=nT6D34lVZPsVnqv1Mv6DEijDwSntrg/yw0RnHBOVLDg=;
-	b=0CDvGQqhMmaDU77E7AxSNN7Giy+kgBlDovGshncvcVruc5PUNxHGjW0EdYw6Jk/mhdfY
-	 L7f4HMzga0zvvDGQNVZ58H78rutUq+gUxWiyETWjZvXsbG8csudsBSIAI5KCMT2PBzyGB
-	 sdXgQut02SnboGmd+dfF4in/ii3J+vKULo6ggfJXQPjBMh9wQLsfdK2mKTp3fqXwoAPf4
-	 iFTO/3IKAD4Kz33U8PSpKzWYSaBB8K55rH66pkUgrcLZNBjboarhBBhCfi6ioJ8zNNHUE
-	 sat2KMlg1kFWqLDpRDkmv6m8d6ql8/d9/F8pUw7b3tneYWFGY1KfdSG8NE8Ga8CUqGA==
+	bh=wrYyDNg3E6ceVKYkD4AhtLlI1IklZP6+JsR2AFJMEr8=;
+	b=SVJCnc4LfEapdcFEw84fxBb5A6ARK/X63G4sfGvqQDkryUw6qc+PLC/OJPDGJQ22kZht
+	 6l/FEzdtv9f4oWJXX/i4G+6oWaODvE0xH7qYk0MyGRTqaJX4+qqaz8YGJFiv+PNIqOkMP
+	 4hq0R2sqsZHa86M2iX055EXJ0mhhRv6kI9BbM0UKy1mtrVF0HXtQv2Vw3gaBfzKocYMzx
+	 lK/CI3KW/W1ad3IrHMQUI11bks76SY1zzTyB6vjN+ptozRg332SAvFREa9ZXT7TAWz7PX
+	 i7pJzGi4y05S/EizYMnxNNHwD7l1b5qiGAqrojrkWAhIYE9JS+/YOKvl3BWFX0zHfCw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=M+DLjyfX;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hIaaFuO7;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E87C2606A32C;
-	Mon,  2 Nov 2026 07:28:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 175D8606A324;
+	Mon,  2 Nov 2026 07:29:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=M+DLjyfX
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CDD91F0093A;
-	Mon,  2 Nov 2026 07:28:42 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hIaaFuO7
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4ACF1F000C1;
+	Mon,  2 Nov 2026 07:29:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793604523;
-	bh=nT6D34lVZPsVnqv1Mv6DEijDwSntrg/yw0RnHBOVLDg=;
+	s=k20260515; t=1793604558;
+	bh=wrYyDNg3E6ceVKYkD4AhtLlI1IklZP6+JsR2AFJMEr8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=M+DLjyfXWAl3TaZNGPK/WK3ueOVhP76TGVIsMtlHiL0RZo/a/eOGecakll5qDIOyv
-	 MyWCqUbF4Lm88Ultvdq2DWrijIptk5w0MM+lj5p/dHrwXVCuFmIeDH2uiH3XmkLe0e
-	 eNTf4DmiURJRGNrNtoFjpIF/HpNtQz8ktbTXpWks4qVQLbUIbuhTosPchMAxIL7/vw
-	 K3tEAc6JiaGE+kxbpoSVjPbn2UpSoSnJ2AMW8gt/pGWmEtFXQJfg7cVZrwSEI1ZGgJ
-	 dlNi2GApENgDIeHb6o7CcxcahQ1Uq0xnm/zuIW9YnryQF6/ow7MB8qEnJjxmeMN2th
-	 /00cRKquLMfsg==
-Date: Mon, 2 Nov 2026 08:28:40 +0100
+	b=hIaaFuO7adR0AWoNO71qfdzfsgx90ShkTX/sGRTZvh+YTn8vu/bKl9BHEcCfZT0l4
+	 Rw/1iHKB9XZcAyHvA+xdRLCGcYADQ4CkxW5iK3W9tgvawMCDaMp6Sq3k0ZVGGdSS8H
+	 x9mttXzfVVEkY4nZJooZ/ndae42RrMgwURdraKuVSPDQ4tqhwtvuExJ/AMXIAl6GK3
+	 5DPXQtk738sGqZZynqkBN+3FQ/PwCwbD19w422aNAFhweajqiu633a/3gpGoLTcb/q
+	 rVpQxpEF6nFl5hC3Dd+10zVnljGsDxYO8N8+JBLghZdzDIcH0vqdMphpQLBiz7XM5u
+	 +yf6mTbtluYVw==
+Date: Mon, 2 Nov 2026 08:29:15 +0100
 From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Stefan Wahren <wahrenst@gmx.net>
 Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, 
@@ -47,11 +47,10 @@ Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>,
 	Srinivas Kandagatla <srini@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, kernel@pengutronix.de, 
 	Fabio Estevam <festevam@gmail.com>, Jacky Bai <ping.bai@nxp.com>, mfd@lists.linux.dev, 
 	devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 1/3] dt-bindings: mfd: nxp,bbnsm: Add NVMEM for GP
- registers
-Message-ID: <20261102-translucent-elated-pronghorn-cbb73b@quoll>
+Subject: Re: [PATCH 3/3] arm64: dts: imx91_93_common: Enable BBNSM NVMEM
+Message-ID: <20261102-nimble-amber-rat-4f8cff@quoll>
 References: <20261101200140.141642-1-wahrenst@gmx.net>
- <20261101200140.141642-2-wahrenst@gmx.net>
+ <20261101200140.141642-4-wahrenst@gmx.net>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -63,40 +62,30 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261101200140.141642-2-wahrenst@gmx.net>
+In-Reply-To: <20261101200140.141642-4-wahrenst@gmx.net>
 
-On Sun, Nov 01, 2026 at 09:01:38PM +0100, Stefan Wahren wrote:
-> +  nvmem:
-> +    type: object
-> +    $ref: /schemas/nvmem/nvmem.yaml#
-> +
-> +    properties:
-> +      compatible:
-> +        enum:
-> +          - nxp,imx93-bbnsm-nvmem
-> +
-> +    required:
-> +      - compatible
-> +
-> +    additionalProperties: false
-> +
->    rtc:
->      type: object
->      $ref: /schemas/rtc/rtc.yaml#
-> @@ -88,6 +102,12 @@ examples:
->          compatible = "nxp,imx93-bbnsm", "syscon", "simple-mfd";
->          reg = <0x44440000 0x10000>;
+On Sun, Nov 01, 2026 at 09:01:40PM +0100, Stefan Wahren wrote:
+> Enable the BBNSM NVMEM for all i.MX91/93 boards.
+> 
+> Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+> ---
+>  arch/arm64/boot/dts/freescale/imx91_93_common.dtsi | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/freescale/imx91_93_common.dtsi b/arch/arm64/boot/dts/freescale/imx91_93_common.dtsi
+> index a68ffd04ee08..c8bbf6f1bcf9 100644
+> --- a/arch/arm64/boot/dts/freescale/imx91_93_common.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx91_93_common.dtsi
+> @@ -363,6 +363,12 @@ bbnsm: bbnsm@44440000 {
+>  				compatible = "nxp,imx93-bbnsm", "syscon", "simple-mfd";
+>  				reg = <0x44440000 0x10000>;
 >  
-> +        nvmem {
-> +            compatible = "nxp,imx93-bbnsm-nvmem";
-> +            #address-cells = <1>;
-> +            #size-cells = <1>;
+> +				bbnsm_nvmem: nvmem {
+> +					compatible = "nxp,imx93-bbnsm-nvmem";
+> +					#address-cells = <1>;
+> +					#size-cells = <1>;
 
-I don't think you tested your changes. address/size cells are not
-allowed - see your binding.
-
-Anyway, empty node makes almost no sense, so fold the node into the
-parent.
+Pointless/redunadnt address/size cells. You have here DTC warnings.
 
 Best regards,
 Krzysztof
