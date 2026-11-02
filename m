@@ -1,57 +1,110 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.168.131
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793618299;
-	b=IeUE17QmDzgHU33P2SWxDC7gbbo6FjqX7I01DTqOns2zQtL4s9nPN3VGwkhJzLDPk8q8
-	 3eXoWdZQcjf5c80YiEGxL62QAPQVBYkyDrd9SCb6w+zoP8OnOO6GFbwKNIPdkZjAxh5y7
-	 9YMoBvVneZN7ymgGuswsBGECErvkx+bZu+r/Vh380DedsTUyaqI5OYBfyPv8/nap6qit/
-	 qtACTAVWpDfiBlwPZMSYYCUI9lwYaggFrg+t2QQi+22zFc3tJms8Vkz/0wXIqiFmz9cr8
-	 i4YZNNAviy1ZIwAxQsiZvR0o2+3ACRhSykbgmzJleDNShQrrij7W06chbrvMlq5QgRA==
+	t=1793620144;
+	b=ClKsvqrOPmzTLT+V1ixWhFO4+e+cCzmABKMeLM5Ltj2ChO6B9rgM7rlQrbaAeg8JGFRM
+	 gg2qnwtHhRLBtfufUOq8mIQAapSP7t3cLCDJDeOsVN8q3pVmgMFWHDzOTEZ8iEGDT4lX+
+	 8CkgCUU8j0FuWlslT2xfG7ylpQqgqvJYR8PT3vEOut/hCFaEw4swQWa2XsbC0rK74aeXr
+	 YadliALEyPgzgWcSuuiMQwkR0IxjRGcnMlgtAU1Zmj3TMeJBKdYqLZMiG2fqmudtzisqm
+	 2+W0KLXbqJvHTShfmBuwJd8cglK6U9UMhS5oUpD59TIgVByqCRO1fKLdOY1mVwo24gg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793618299;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=0wHbwkyIp2jpgTD4783b7gznc0vB6QVgAcGDjNYbaJE=;
-	b=un/Ht1djPZMEPCOMGMvmNN7tPYzqD2Yh1LBMVZlMLcUVnRC6ZBM2IXtpsNYV2yO8/+1q
-	 v+F09haVr8iFxHzKfUpp3+H9kPxtJ35KOXD0iLNuSkvJjZJb3qh+SP1zhGin4Ik1ZjEtN
-	 vHvFdLGIl1GaivBtho5x9/qtIgKI0e4UPOPkU2Q0alRAHMNgtbyIo7AXRBzEGOlovjWML
-	 NUNb0AbL7zRlna5nuqMRTszHyTvmdOdPdqWQLwhmM0JXbBIlETOiLxm2DnRCd+a2de+Gu
-	 Myn+6ToOybIz5VLqyk/jOgZ1GnIYUND44rO3cc7bSghqWgVAEKFdpT5OQzYC2Xwvolw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793620144;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
+	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:From:
+	 Subject:Date:Message-Id:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Authority-Analysis:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Spam-Info:
+	 X-Proofpoint-ORIG-GUID:X-Proofpoint-GUID:X-Proofpoint-Virus-Version:
+	 X-Proofpoint-Spam-Details;
+	bh=4mhjs5YiwohXXKlFzT3X2wnGvKV4qOEdncy1Sbc0n2k=;
+	b=xRAAPxkXyWKwrGhT7VTtOwS7EX+KwPjXQhbKOua0wM8W9N3UCjcrjbL2/hkXC1i5fMzP
+	 wUHdqeRP+tEErk17pYoVI0tpbLjAeRh4LNWw9gRlkmgpKPkYAbm+LzNy7s+k5XXNWNIoV
+	 Re0RoKvxFOs1gwOK2y8Ij0q3dm+GDngpvw1+EMzNWv5ZA4PPygxOMxem+gL6ebRZdGG6T
+	 z6GlwlpddSz9/+oPoiY4xBc8whZhc+8ApAkQ3mC3oSEgqw1BX1eAFA8E8hE+53xwjPpqI
+	 0HoS/CAcDFkkr/kMkF0zKMIZ1YMnwUFJrpxEbymp9ZQhBNeL/wP4iaesoY77kxeeURA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="l/XA7NAf";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=oss.qualcomm.com;
+	spf=pass smtp.mailfrom=oss.qualcomm.com;
+	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b="RtCLC0/X";
+	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=AW1LU1Re;
+	arc=none smtp.remote-ip=205.220.168.131
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D027760A2630;
-	Mon,  2 Nov 2026 11:18:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAAAD606A327
+	for <imx@lists.linux.dev>; Mon,  2 Nov 2026 11:49:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DAAAD606A327
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=l/XA7NAf
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C92A1F00A16;
-	Mon,  2 Nov 2026 11:18:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793618298;
-	bh=0wHbwkyIp2jpgTD4783b7gznc0vB6QVgAcGDjNYbaJE=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=l/XA7NAfKmmN5xqkQ96dray/l1fSKUCygTZyL6sBzth0z8yla5WWTlwsdwltBKExs
-	 gxtGJzSDS4nnoenKB1gR3+nJM4GA0/XNq/SO9J1r/EHR7HlD+lCaCNdvilmblK+ImD
-	 2waINuB01veg+1yD75pUXuwatNDDDN5mgubUEovfpAAdSx/zanwe9ZHGOR5T4oXKHn
-	 MUbT1uhVGlGhQrSDi/a2ZyHvCwCVsHfwJ6RE1GQPL8IiQJNwLDeOaIxCkM1v135nQa
-	 v2A8ikxWw/6RQ8/Drlgoglwd3ysor8fzavQnvw25vigIjV1TzbnTbXQjnW8CQhcIP7
-	 SqL+mE0xyaFGw==
-Message-ID: <sashiko-outbox-193327@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 1/2] i3c: master: svc: Add amlogic a9 support
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Junyi Zhao" <junyi.zhao@amlogic.com>
-Cc: linux-i3c@lists.infradead.org, devicetree@vger.kernel.org, linux-amlogic@lists.infradead.org, imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org, neil.armstrong@linaro.org, "Alexandre
- Belloni" <alexandre.belloni@bootlin.com>
-In-Reply-To: <20261102-a9_i3c-v2-1-0c474bfccffa@amlogic.com>
-References: <20261102-a9_i3c-v2-0-0c474bfccffa@amlogic.com>
- <20261102-a9_i3c-v2-1-0c474bfccffa@amlogic.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 02 Nov 2026 11:18:17 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=RtCLC0/X;
+	dkim=pass (2048-bit key, unprotected) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=AW1LU1Re
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A299w7U3402412
+	for <imx@lists.linux.dev>; Mon, 2 Nov 2026 11:49:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=4mhjs5YiwohXXKlFzT3X2w
+	nGvKV4qOEdncy1Sbc0n2k=; b=RtCLC0/XXANm8zGgprXI3f3T37+VgrKFe5r46H
+	2ljNLkoK2gazwDz7NG4AxsRSq0qth/tadAd4VDsMojwF2pGSEUNKi9wNX3hhGRlO
+	yCNISqG4tjDTkry06+9GHllYka1MBnhc2Z/Kg2sXl330PxZx0QCmUB0f0SBNKIkl
+	dFqhKQrm3GqGFBcrJMheFJx6PskKYLsq0gCymF6MS/+/Yc2qpsPErNsWmaVfvbMS
+	yKX6Ur3QsNaNjAdqW9jrufv1R55hkFZBEjzALI5VDh9QYFShvR7lOLvNoXcFRyVK
+	PXchsimmg9hLnqm2ZHsBtfmty7dCie4HQ14+KZ63xjIJk/Kg==
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hppfe8x7j-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <imx@lists.linux.dev>; Mon, 02 Nov 2026 11:49:03 +0000 (GMT)
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-93909014c85so589660785a.0
+        for <imx@lists.linux.dev>; Mon, 02 Nov 2026 03:49:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1793620142; x=1794224942; darn=lists.linux.dev;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=4mhjs5YiwohXXKlFzT3X2wnGvKV4qOEdncy1Sbc0n2k=;
+        b=AW1LU1ReHOeHBqYFqU0cBSSdjiKkh0341k+Qxjg/WNAIZ5Ow3W5Ufu9QHUx3gW/eXS
+         F+k+ngfZGomHGu4h8tx2swC9rQFwfyyDTu6Nue3H93GGmaSoyQLz5IPuqvNdx4YcobJ5
+         7bPhmXgeBXMmW7dJcZkIeTkl9kVbqUH2cK3ndScuyGRw0YRlxeBeV+S1MmbsW1fp7oVr
+         EqxiIM4zVAkS7YLbrS1YLIzjRXbmj/jib3sbCyS1+hnDBscoaRaAQvtTdFi6Apy+ldoB
+         I9mq/kw6Ton73hdRWTgJEaecnk4McbJ6Fe05IppK2b3iMOwvHDnHfC3kYAGym1cPhrjx
+         SCeg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793620142; x=1794224942;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=4mhjs5YiwohXXKlFzT3X2wnGvKV4qOEdncy1Sbc0n2k=;
+        b=sFFoU7Z1oTYDGXlk/CU46aYv94MGuAlwSoykSoSAaQbrJReKsHdXuuzEmsPS8uayfr
+         vUmupnph5ZQPHsuEojygwdFtFL3fNfbuKoqT/5YZ1eDoXDrhMyjLSsgEGNZ/kBy/lNrY
+         yj4Vga2/sebu86UWbdr5aS3G1YJ1li2tIyi/oO8h5VnxvlUG8ukRNj6kHSXA38k6QvpK
+         uuLoOnKLHk+a8fmS8SDONl0yFLP1N17raoElA51k+Nn8ejZJ6oeuWsyBq8UsaMOow6sD
+         /lSGgtkovORgQhx3N4ZTz1WZ2EfksyMkEliVZJOnOVKavL+oHpZoZ+cP4vhHzJYwmcke
+         ecrg==
+X-Forwarded-Encrypted: i=1; AKwUvBwsar6jkb22gj6t6Scdk+tXdvZOcwjk1mE3P/lMHUMV+Rf6PsUYe8yDpFg+4Y9+qBurgDc=@lists.linux.dev
+X-Gm-Message-State: AFq9FYJa27cbKECIm/D+HRhTwFBySqPbOP1px8ZdbVSiZIB20YImWwvE
+	JXbi0r8bp0IYrjZwPy5/rvMgtPp9HIpJeZbmRFJn4M1W93PUbudnrJ+rH+HWNXBG6ssZfMENa8m
+	wFzTiIZzMsWNGULlI3eHz+NMI9/7XYh4KMDU7Vxuc6YL02m4hdI6dhrg=
+X-Gm-Gg: AYBFou3mWc+gKY9DTL8CGuLw1AFgc510uV+0f9WrLlumeew5ew5Qwfj7ze/5vTQ5Sd8
+	1SO3ASIBPZyQh9VBlVbCWUOVX20YRPsw3ccpdEJtmOOwnL+d/zxA9Hikxk08t3E1JgGbcuZfu24
+	1oICvICpgsn6mjiTtwMMK+6bNFV4D6rJ/LoR8fe6j3Bsq3BPXmsGWjaJ72jkddzFeAiejL6lVhv
+	uep2DFEb/LU+XR2At/DzOktcQOcIQsjGRowvR9BzmECJlvsvLP/IC2k2besiLeV8Prr+u41Q1sn
+	taK/92MwppJY/vs0jdavbHK52zVYuJxvgG5JWljipShp8EFnmqa7Bl6LpeVDgOps4ZDW2rwv4Cf
+	v0UGMLDpwrmhcPtz6DfsE4ZlgdE4HCWT0y5dlKTbyuEHlcByyK28NPTt4jw==
+X-Received: by 2002:a05:620a:f04:b0:93e:6f65:de63 with SMTP id af79cd13be357-944217bd696mr1528698185a.47.1793620141913;
+        Mon, 02 Nov 2026 03:49:01 -0800 (PST)
+X-Received: by 2002:a05:620a:f04:b0:93e:6f65:de63 with SMTP id af79cd13be357-944217bd696mr1528693785a.47.1793620141284;
+        Mon, 02 Nov 2026 03:49:01 -0800 (PST)
+Received: from [127.0.1.1] ([188.27.161.77])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71b725b8sm19766031f8f.20.2026.11.02.03.48.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Nov 2026 03:49:00 -0800 (PST)
+From: Abel Vesa <abel.vesa@oss.qualcomm.com>
+Subject: [PATCH 0/3] clk: imx: imx8qxp-lpcg: Fix the clock-indices parsing
+Date: Mon, 02 Nov 2026 13:48:48 +0200
+Message-Id: <20261102-imx8qxp-lpcg-duplicate-clock-indices-v1-0-1c3fc3fe727c@oss.qualcomm.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -60,289 +113,95 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAKB46GoC/yXNQQ7CIBBA0as0s3YSwKQhXsW4KMO0jiJFaBuSp
+ ncXdfk2/+9QOAsXuHQ7ZN6kyBwb9KkDug9xYhTfDEaZXmtlUF7VvmvCkGhCv6YgNCyMFGZ6okQ
+ vxAWtsaMbmM+9U9BSKfMo9be53v4uq3swLd82HMcHLhc/CYgAAAA=
+X-Change-ID: 20261102-imx8qxp-lpcg-duplicate-clock-indices-828fbaee36b0
+To: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>,
+        Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney+clk@redhat.com>,
+        Jerome Brunet <jbrunet+clk@baylibre.com>, Frank Li <Frank.Li@nxp.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        Dong Aisheng <aisheng.dong@nxp.com>, Shawn Guo <shawnguo@kernel.org>
+Cc: linux-clk@vger.kernel.org, imx@lists.linux.dev,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Abel Vesa <abel.vesa@oss.qualcomm.com>, stable@vger.kernel.org,
+        Sashiko <sashiko-bot@kernel.org>
+X-Mailer: b4 0.15.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1078;
+ i=abel.vesa@oss.qualcomm.com; h=from:subject:message-id;
+ bh=/6v7L1X5u5rSAsDoUAMgtN8tzVeu21cN089Cbw+fzqA=;
+ b=owEBbQKS/ZANAwAKARtfRMkAlRVWAcsmYgBq6HinAXy6mtSVoB7DruBwJu7hXFE/BDIQ891NF
+ u9vdP09TiaJAjMEAAEKAB0WIQRO8+4RTnqPKsqn0bgbX0TJAJUVVgUCauh4pwAKCRAbX0TJAJUV
+ Vl6OEADNhE7z40I+qslePVWHxtl/AdsZugFLn4PuEOrHRPvc+jIF58nAojAp6nEX+iPYc4HxcrD
+ TS+2DK803oF/hvsPqM4EZiU3bQjccKgVC/q37aLailgAC5+/MqUjAa6hvi2hAuKKwr1HNGDJjdR
+ BiBOjNEWR0ThVntnnyDAGIfPloFr2/GFXq7MHVcWLe2H6T882hRefFWdTCDuSo4D2qOMFRFMTBA
+ wqVerxYDZeTrROZhsC1JgQ8FEkKoAQ0qzzyRx47Gyu1TN7k+Zj30ckCjT0G9gz0YcVzY1IdFyeu
+ WeGlSxfatmjQmVqZuIn1hL3LZD3FgSfhlASpoF3RzDpM5ihGWyxK70ReQkVWwnjOFa2Jy+Ygc10
+ +/6/k4I0XHsz1tiexy2vycLxkTQTrctIHVyKDTyB+pBofHmW6uGHyKBTmuXKwODdn9TilDFrOhU
+ bQvcegjwXTgp7s0thfBj2skwqHBdrw8xLEOUhoYMf+8+5PYtOSZ1YBD5lceTyF/pjHMhHP5tCa5
+ 9INk8Z+n+4vTm3e/2OnVsJzG1BU3knO5Cn7Ejn49R3GWm2uZ/MOr4FljAbh1D0Im08bXcxN5UrY
+ ZNOFF3Ak3PnXe+OlnJvcwzl89/GtpWH/OmSzwwtW3VsQD56FgwlmPscy+r8mjLoc6ob9076XF4J
+ 9u15AQqkp77QMZw==
+X-Developer-Key: i=abel.vesa@oss.qualcomm.com; a=openpgp;
+ fpr=6AFF162D57F4223A8770EF5AF7BF214136F41FAE
+X-Authority-Analysis: v=2.4 cv=SeZi5fRu c=1 sm=1 tr=0 ts=6ae878af cx=c_pps
+ a=HLyN3IcIa5EE8TELMZ618Q==:117 a=asF+/XNaGoxFafzDDLC1GQ==:17
+ a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yOCtJkima9RkubShWh1s:22
+ a=EUspDBNiAAAA:8 a=H-1XAVmeZCqmBwV_hRMA:9 a=QEXdDO2ut3YA:10
+ a=bTQJ7kPSJx9SKPbeHEYW:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTAyMDA0NiBTYWx0ZWRfX9OXKNd7ru9x6
+ aCeWznNMvp7E+pAXCLXlSmtJ+mzlsuU56BUEsTu/4/jtCqZBbeiCOyf+xaSKak6Knfg28rv0y3z
+ 7MfszhWq4Pj3b7W6nHfzJu4TLPok1xOb3/DwtifAG1N8jW6jN5RG7L+fZ1fyWwulxFtoOl6brSF
+ JVhGW6KFI4xT19pua5Ao5+zdQJFaRH51m6L68tnF92uArRmyJNpwzAxkfVLAajRxEh2G0SGaSrZ
+ POqwI3e28BdsAEGnwqGtrhQKkwsK2eTuS/Fzxsc3O+xf6uzny2Yu6BBFH4cT0DlMMZDTcjE/4Ks
+ L3uHqfOM7afEyeQTmmgHkaWkWrbJdRuyekNB4Q54fVZABV1qaGQhVZgDfqQ4Ol+nI5iZcXEQUTv
+ 9f5e3C5QtqhF2Uh5QMFW2B4vnu+km6V3nHd9GZaefEmtLUVFApYg5EYy4gRAZ4UcmZOy+F2qJny
+ AT3l//yc+eTOP5hUXeg==
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTAyMDA0NiBTYWx0ZWRfX1BmaaD65mcU0
+ QUOhducrUwUMhGwUtipNgehpQ9jm8XwVGQmbkXZS/BF/WINia/XtFJ8ynSSjKnVy/y2DfSJRdEE
+ BIIIsHCDhU0Vu00LbT1/0gw7EIaw8qM=
+X-Proofpoint-ORIG-GUID: pMG-98-l2B2Hb0ghOPbNOXlBFc8R4J2K
+X-Proofpoint-GUID: pMG-98-l2B2Hb0ghOPbNOXlBFc8R4J2K
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-02_03,2026-10-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 lowpriorityscore=0 adultscore=0 spamscore=0 bulkscore=0
+ suspectscore=0 priorityscore=1501 clxscore=1015 phishscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2610300000 definitions=main-2611020046
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
-- [High] i3c: master: svc: NULL dereference on unchecked devm_kcalloc() in =
-aml_ao_i3c_tail_clocks()
-- [High] i3c: master: svc: unclocked MMIO access to AML_AO_I3C_FCLK_DIV_CTR=
-L in aml_i3c_init()
-- [Low] i3c: master: svc: missing COMMON_CLK dependency for aml_ao_i3c_tail=
-_clocks()
---
+imx_lpcg_parse_clks_from_dt() trusts the clock-indices property of the
+LPCG node. Duplicate entries leak a clock and make the error path
+unregister another one twice, and more entries than an LPCG has clock
+outputs overflow the on-stack arrays the property and the related
+clock names are read into. The first two patches reject both. The last
+one makes a failure to read the parent names return an error code
+instead of the number of clocks.
 
-commit 5d539aa0589681cba0b31f37c581a2a552c6d504
-Author: Junyi Zhao <junyi.zhao@amlogic.com>
+Prepared with help from an LLM-based assistant.
 
-i3c: master: svc: Add amlogic a9 support
+Signed-off-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
+---
+Abel Vesa (3):
+      clk: imx: imx8qxp-lpcg: Reject duplicate clock indices
+      clk: imx: imx8qxp-lpcg: Fix stack overflow with too many clock indices
+      clk: imx: imx8qxp-lpcg: Return an error if the parent names cannot be read
 
-This commit adds support for the Silvaco I3C master controller on Amlogic
-a9 SoCs (both EE-domain and AO-domain variants). It introduces a
-vendor_init callback and vendor_quirks to register the AO-domain internal
-clock divider chain and configure the fast_clk rate during probe.
+ drivers/clk/imx/clk-imx8qxp-lpcg.c | 20 +++++++++++++++++++-
+ 1 file changed, 19 insertions(+), 1 deletion(-)
+---
+base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+change-id: 20261102-imx8qxp-lpcg-duplicate-clock-indices-828fbaee36b0
 
-> diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc=
--i3c-master.c
-> index e700392f0801f..98aa6eb0f49ca 100644
-> --- a/drivers/i3c/master/svc-i3c-master.c
-> +++ b/drivers/i3c/master/svc-i3c-master.c
-> @@ -9,6 +9,7 @@
-> =20
->  #include <linux/bitfield.h>
->  #include <linux/clk.h>
-> +#include <linux/clk-provider.h>
+Best regards,
+--  
 
-[ ... ]
+Abel
 
-> @@ -2019,6 +2043,12 @@ static int svc_i3c_master_probe(struct platform_de=
-vice *pdev)
->  	if (master->num_clks < 0)
->  		return dev_err_probe(dev, -EINVAL, "can't get I3C clocks\n");
-> =20
-> +	if (master->drvdata->vendor_init) {
-> +		ret =3D master->drvdata->vendor_init(master);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
->  	for (i =3D 0; i < master->num_clks; i++) {
->  		if (!strcmp(master->clks[i].id, "fast_clk"))
->  			break;
-> @@ -2036,7 +2066,6 @@ static int svc_i3c_master_probe(struct platform_dev=
-ice *pdev)
->  	if (master->irq < 0)
->  		return master->irq;
-> =20
-> -	master->dev =3D dev;
->  	ret =3D clk_bulk_prepare_enable(master->num_clks, master->clks);
->  	if (ret)
->  		return dev_err_probe(dev, ret, "can't enable I3C clocks\n");
-> @@ -2163,9 +2192,184 @@ static const struct svc_i3c_drvdata npcm845_drvda=
-ta =3D {
-> =20
->  static const struct svc_i3c_drvdata svc_default_drvdata =3D {};
-> =20
-> +/*
-> + * Container for the tail clocks of the AO domain variant. The clock HW
-> + * structures are registered with the clock framework and must stay alive
-> + * for the whole driver lifetime, so they are kept along with the shared
-> + * lock used by their gate/divider operations.
-> + */
-> +struct aml_i3c_ao_clk {
-> +	struct clk_gate div_en;
-> +	struct clk_divider div;
-> +	struct clk_gate gate;
-> +	spinlock_t lock;
-> +};
-> +
-> +/*
-> + * aml_ao_i3c_tail_clocks - register the internal divider chain that
-> + * produces the AO variant's fast_clk, and append it to the clk bulk
-> + * array as "fast_clk".  @parent must be "pclk", the only clock the AO
-> + * variant exposes (see silvaco,i3c-master.yaml).
-> + */
-> +static int aml_ao_i3c_tail_clocks(struct svc_i3c_master *master, struct =
-clk *parent)
-> +{
-> +	struct device *dev =3D master->dev;
-> +	struct aml_i3c_ao_clk *ao;
-> +	struct clk_init_data init =3D {};
-> +	char name[64];
-> +	int ret;
-> +	struct clk_bulk_data *new_clks;
-> +	struct clk *fclk;
-> +
-> +	ao =3D devm_kzalloc(dev, sizeof(*ao), GFP_KERNEL);
-> +	if (!ao)
-> +		return -ENOMEM;
-> +
-> +	spin_lock_init(&ao->lock);
-> +
-> +	snprintf(name, sizeof(name), "%s#div_en", dev_name(dev));
-> +	init.name =3D name;
-> +	init.ops =3D &clk_gate_ops;
-> +	init.flags =3D CLK_IGNORE_UNUSED;
-> +	init.parent_data =3D &(struct clk_parent_data) {
-> +		.index =3D -1,
-> +		.hw =3D __clk_get_hw(parent),
-> +	};
-> +	init.num_parents =3D 1;
-> +
-> +	ao->div_en.reg =3D master->regs + AML_AO_I3C_FCLK_DIV_CTRL;
-> +	ao->div_en.bit_idx =3D AML_AO_I3C_FCLK_DIV_EN_SHIFT;
-> +	ao->div_en.hw.init =3D &init;
-> +	ao->div_en.lock =3D &ao->lock;
-> +
-> +	ret =3D devm_clk_hw_register(dev, &ao->div_en.hw);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "failed to register %s\n", name);
-> +
-> +	snprintf(name, sizeof(name), "%s#div", dev_name(dev));
-> +	init.name =3D name;
-> +	init.ops =3D &clk_divider_ops;
-> +	init.flags =3D 0;
-> +	init.parent_data =3D &(struct clk_parent_data) {
-> +		.index =3D -1,
-> +		.hw =3D &ao->div_en.hw,
-> +	};
-> +	init.num_parents =3D 1;
-> +
-> +	ao->div.reg =3D master->regs + AML_AO_I3C_FCLK_DIV_CTRL;
-> +	ao->div.shift =3D AML_AO_I3C_FCLK_DIV_SHIFT;
-> +	ao->div.width =3D AML_AO_I3C_FCLK_DIV_WIDTH;
-> +	ao->div.hw.init =3D &init;
-> +	ao->div.lock =3D &ao->lock;
-> +
-> +	ret =3D devm_clk_hw_register(dev, &ao->div.hw);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "failed to register %s\n", name);
-> +
-> +	snprintf(name, sizeof(name), "%s#gate", dev_name(dev));
-> +	init.name =3D name;
-> +	init.ops =3D &clk_gate_ops;
-> +	init.flags =3D CLK_SET_RATE_PARENT | CLK_IGNORE_UNUSED;
-> +	init.parent_data =3D &(struct clk_parent_data) {
-> +		.index =3D -1,
-> +		.hw =3D &ao->div.hw,
-> +	};
-> +	init.num_parents =3D 1;
-> +
-> +	ao->gate.reg =3D master->regs + AML_AO_I3C_FCLK_DIV_CTRL;
-> +	ao->gate.bit_idx =3D AML_AO_I3C_FCLK_EN_SHIFT;
-> +	ao->gate.hw.init =3D &init;
-> +	ao->gate.lock =3D &ao->lock;
-> +
-> +	ret =3D devm_clk_hw_register(dev, &ao->gate.hw);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "failed to register %s\n", name);
-> +
-> +	fclk =3D devm_clk_hw_get_clk(dev, &ao->gate.hw, NULL);
-> +	if (IS_ERR(fclk))
-> +		return dev_err_probe(dev, PTR_ERR(fclk),
-> +				     "tail i3c fast clock failed\n");
-
-[Severity: Low]
-Will this fail to link when the common clock framework is disabled?
-
-aml_ao_i3c_tail_clocks() unconditionally references clk_gate_ops,
-clk_divider_ops, devm_clk_hw_register(), and devm_clk_hw_get_clk(), which do
-not have stub definitions in include/linux/clk-provider.h when common clock
-support is not enabled.
-
-In drivers/i3c/master/Kconfig, the driver currently has:
-
-    config SVC_I3C_MASTER
-        tristate "Silvaco I3C Dual-Role Master driver"
-        depends on HAS_IOMEM
-        depends on !(ALPHA || PARISC)
-
-Should the Kconfig entry also depend on common clock support?
-
-> +
-> +	new_clks =3D devm_kcalloc(dev,
-> +				master->num_clks + 1,
-> +				sizeof(*new_clks),
-> +				GFP_KERNEL);
-> +	memcpy(new_clks, master->clks,
-> +			master->num_clks * sizeof(*master->clks));
-> +	new_clks[master->num_clks].id =3D "fast_clk";
-> +	new_clks[master->num_clks].clk =3D fclk;
-
-[Severity: High]
-What happens if devm_kcalloc() returns null in aml_ao_i3c_tail_clocks()?
-
-new_clks is passed directly to memcpy() and dereferenced at
-new_clks[master->num_clks] without checking whether the allocation succeede=
-d.
-Should this return -ENOMEM if !new_clks?
-
-> +	master->clks =3D new_clks;
-> +	master->num_clks++;
-> +
-> +	return 0;
-> +}
-> +
-> +static int aml_i3c_init(struct svc_i3c_master *master)
-> +{
-> +	struct device *dev =3D master->dev;
-> +	long fin_freq;
-> +	int ret, i;
-> +	struct clk *fclk;
-> +
-> +	if (vendor_has_quirk(master, AML_I3C_QUIRK_AO)) {
-> +		/*
-> +		 * clk_bulk_get_all() preserves the DT order, and the
-> +		 * binding restricts the AO variant to exactly one clock,
-> +		 * which is always "pclk".  So clks[0] is the input of the
-> +		 * internal divider chain.
-> +		 */
-> +		ret =3D aml_ao_i3c_tail_clocks(master, master->clks[0].clk);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	for (i =3D 0; i < master->num_clks; i++) {
-> +		if (!strcmp(master->clks[i].id, "fast_clk"))
-> +			break;
-> +	}
-> +
-> +	if (i =3D=3D master->num_clks)
-> +		return dev_err_probe(dev, -EINVAL,
-> +				     "can't get I3C fast clock\n");
-> +
-> +	fclk =3D master->clks[i].clk;
-> +	if (IS_ERR(fclk))
-> +		return PTR_ERR(fclk);
-> +
-> +	fin_freq =3D clk_round_rate(fclk, 25000000);
-> +	if (fin_freq <=3D 0) {
-> +		dev_err(dev, "invalid fast_clk\n");
-> +		return fin_freq ? fin_freq : -EINVAL;
-> +	}
-> +
-> +	ret =3D clk_set_rate(fclk, fin_freq);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret,
-> +				     "setting fast_clk rate failed\n");
-
-[Severity: High]
-On the AO variant, is it safe to access master->regs + AML_AO_I3C_FCLK_DIV_=
-CTRL
-before pclk is prepared and enabled?
-
-In svc_i3c_master_probe(), master->drvdata->vendor_init(master) is called r=
-ight
-after devm_clk_bulk_get_all(), before clk_bulk_prepare_enable() enables pclk
-and before pm_runtime_enable() is called:
-
-    svc_i3c_master_probe()
-        devm_clk_bulk_get_all()
-        aml_i3c_init()
-            aml_ao_i3c_tail_clocks()
-                devm_clk_hw_register(&ao->div.hw)
-                    __clk_core_init()
-                        clk_divider_recalc_rate()
-            clk_set_rate(fclk, fin_freq)
-                clk_divider_set_rate()
-        ...
-        clk_bulk_prepare_enable()
-        ...
-        pm_runtime_enable()
-
-Both devm_clk_hw_register(&ao->div.hw) and clk_set_rate(fclk, fin_freq) read
-and write master->regs + AML_AO_I3C_FCLK_DIV_CTRL while pclk is still
-disabled, and none of the registered AO clocks set CLK_OPS_PARENT_ENABLE.
-
-In addition, because devm_clk_hw_register() runs before pm_runtime_enable(),
-runtime PM is not bound to the registered clocks, so reading debugfs
-clk_summary while the controller is runtime-suspended (and pclk is gated by
-svc_i3c_runtime_suspend()) will also read master->regs +
-AML_AO_I3C_FCLK_DIV_CTRL with pclk disabled.
-
-Should pclk be enabled before registering and programming the internal divi=
-der
-clocks (or should the AO clocks use CLK_OPS_PARENT_ENABLE / runtime PM)?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261102-a9_i3c-v2-=
-0-0c474bfccffa@amlogic.com?part=3D1
