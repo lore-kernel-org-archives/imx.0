@@ -1,94 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.65.34
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793641845;
-	b=k7f4cziVV46DDB0j3LOfh4fJy4qJAEOZodqcNDbi+txZMe5Y/ErRWt9U5MSodt3eOBM4
-	 Jg8dz7shu3uYaj1VOm+f8eFjMkZZ6YOVHmhIJtReQrfhaqKgeQyH+EVRSAUjEf6YoEz4q
-	 36RIH/3tzc7Fhk2fTKCnDN9DgFhdpY/R21tlGe5HAUJ7rDyWvmfT53nBhh6/wUJV0d/nu
-	 EzUt9QOsKcoFTB0kGxsPWe+OCQjOdK9nJY7l0tYKpIGGOm4zTYK1xRuxXNRJzisO+hlz+
-	 sJhvF3WTiJDbPURtiwPdyXi3gobzhJ6A+0d5XhZg1jkK9CTL35tTFidYBfD/nfR28FA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793641845;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:Content-Transfer-Encoding:Content-Type:
-	 X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=w6DqD+7S4w2N93TbZ0eFAw5qJOUPfLrfJDXy8sDxQMc=;
-	b=EBIfyTHG1kX7JAdx8Rsgj0hxc6fnK9tEhYm7BAn5jqxEoGzb4VXMjdA2BBZgoBelK99A
-	 tyJI32GTw5ptxQ4JYK1O7prXFx3dmiPFAMOXhJkBMZEHSEoQt+/WvEuVN5VBqqqe7dQLE
-	 M1cbwaR9oRMsvMdEJGCzA+fjeysY2luHyswT1kei6WxbscIc3hdS3xOuU99ZHr114wNk5
-	 WFv3PFbxpYPRA1RilczJGAok+BU1eCJATyJ4r5r8O3xKTcL1Q4t8oMdr+hzKLhF/zWJzu
-	 MXEl4nfMzJ6HVDOUanF6pCYX6yS39z9d8ljc/YCHvBAi96Q9ZLMhVJEuhICcrQ4Nt+g==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.nxp.com;
-	spf=pass smtp.mailfrom=oss.nxp.com;
-	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=t5nwlo06;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.65.34
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011034.outbound.protection.outlook.com [52.101.65.34])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793641937;
+	b=iXc6xWIOHGxjLyznZM/vFIA3+hS9uME5gXcgh2d6p1QpYFoYyWbXxYvhD6tqeUTYQsni
+	 2L7oyahjRmP+3uGsOGmuasnW86ynqfJiEIb5WXgh9Z3R/6aDoBsz5uUfCSJS3DdZeoo3r
+	 vbbe39qqQuMSqrqJUTVJxiKIfJh64zrsVfLUQByZ0pLjA241isF6xrK0iRiYPoRwF62pj
+	 WtBJkWPII51wUEANRBWQs+xYJHxn2ASQKa2N4dcIDE3YnVcH2HdSa4WlDvDQ2xckkU8cr
+	 v+112H8yOCZSIfzNOf73AQVGB9B9gXOyfx4vejXKMj79TqKcKrHG8HBye3MrHkISODA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793641937;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=o/zittl1YaBbUeV3E3PuKcS6YPYwR/ISGp2VfizEb0Q=;
+	b=ISR6iD2DZ2f4T6w/qbrhPLIVeQJRqyxmYYSsxnZz66vdiQykaURQZwhg0vTMph3CQEAR
+	 6dSsCT93rnSguekojlgpmwu9LsDha5uUDS9Nh4dJ+eq/KqYcGvSVyWdTcZLypFD9uHgar
+	 D6CgAWvnuUy/Qt/3PgqqR2LTqciNVJUMwJejUlFxMIqvtYbNtMpOASwy0X3fTFLtHJyjX
+	 JV58cTcqmDaTe+26iiK+z4+XoAJb+DbH/godrPzb6A2MDGe4cVWxlLuTqQT8U3F+Uocd5
+	 2NmWxlMbkCrwivsaASN8ybP92P9bvaJtZBK6ZWXC8fuMo4ztYdtSdkege/QJwYNQ2ng==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PN0fgx3A;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1430606AE83
-	for <imx@lists.linux.dev>; Mon,  2 Nov 2026 17:50:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E1430606AE83
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B19A606AE9F;
+	Mon,  2 Nov 2026 17:52:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=t5nwlo06
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=In3xMZkfG1IUXVbcM1/ZGkVyui8Bo7WMFhCbTis2yM9JIPbSCAjWV8P5OWntMZ50QvkSKOhbvNq/t3s9PH2ezx3dZ4GoU/CQNBPBVZ9FbK+uMODk9lKG7+gHV1fPLdbeXSDSqCpXJ3ztcNV+rP/ffH7t35RinB53vEskT59XWCKNBui0KvDR6c370hMJyeM5723DRjlp87bCpFyXFmpucsSe2KI5Ft9n2ObQQqQL2M5SyZAi/8+8gqUANB6RexCFJtGe1FrlQd6Z1sGVp9NAFjxN3+K7OCn/3jsT5mbGVptWmdFBQmeLLW5R4T0Uow0Pglcehj2GD1phbtG9WgLi/g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=w6DqD+7S4w2N93TbZ0eFAw5qJOUPfLrfJDXy8sDxQMc=;
- b=Lq3+C6qZ1u1HJC8cIhmJKJ4rAkvXyLDiyd/3OSh8SzZkfw1DEumUPzXCxpIo3sGVi8GYY3buI9eHQZw0UaFqJHHOGpwsA5HMYUUgoScHAwF03jRSY+6PNzlFCKf4IlOalO8gs38sn32r1Ir0n/VfHqLFkS84+e9S+iNic0zbKKcsZmzBsbhetAmdv3AYVEYAGWSc2+wgA6qG5nl3qlxxIKP+YHVV3u45gvKEl3gvCyfjMZ+8DPr10OWUcBHuevWdzxi6AZbgLZ9OMc8rdEJAFZjmsAjWwnvpkCpE+WfMc5fXTw6AYUd2NbhyXQzwqcKyUNR4gCyIy0soDkIIrTtZAQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=w6DqD+7S4w2N93TbZ0eFAw5qJOUPfLrfJDXy8sDxQMc=;
- b=t5nwlo06pojJFzdWoMhe5f1t1e1dJCxO+mDGJ+7SmfoJ1cCZ6k9LYCQGMplw8j63dUaDMsSBaICjkMgMAKbeX9/w0k27hKFC+5sO3BcR49FAadSnma9ZnsGmJz8mdFYqmzB+3PtySEsT0RmUOJU//lxpnwNJKJGVseXkSM89PwDyGSkFrtRY3DciwUXv2XcpgmWcUj0fRoX+MxfuHXohZ+7l22QNiKjeI/VCzW/IKTySqc77oLZiG/W7HFalKYSXwbhlHy25u4/zQrVDkhtn6n9o41xNn9vdMJX6Dbt7WrkwL98TGtQ1iIW6NyG7J8IWBs6uE0TcPY+Am9RZrz7jSw==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from MI3PR04MB12438.eurprd04.prod.outlook.com (2603:10a6:290:76::14)
- by PA2PR04MB10237.eurprd04.prod.outlook.com (2603:10a6:102:401::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.12; Mon, 2 Nov
- 2026 17:50:42 +0000
-Received: from MI3PR04MB12438.eurprd04.prod.outlook.com
- ([fe80::c715:c32:8bb1:b70b]) by MI3PR04MB12438.eurprd04.prod.outlook.com
- ([fe80::c715:c32:8bb1:b70b%6]) with mapi id 15.21.0569.011; Mon, 2 Nov 2026
- 17:50:40 +0000
-From: Frank.Li@oss.nxp.com
-To: Thierry Reding <thierry.reding@kernel.org>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	linux-tegra@vger.kernel.org (open list:TEGRA ARCHITECTURE SUPPORT),
-	linux-kernel@vger.kernel.org (open list)
-Cc: imx@lists.linux.dev,
-	vkoul@kernel.org
-Subject: [PATCH 1/1] soc: tegra: use dmaengine_desc_set_callback()
-Date: Mon,  2 Nov 2026 12:50:30 -0500
-Message-ID: <20261102175034.3944745-1-Frank.Li@oss.nxp.com>
-X-Mailer: git-send-email 2.43.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: PH5P220CA0002.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:510:34a::17) To MI3PR04MB12438.eurprd04.prod.outlook.com
- (2603:10a6:290:76::14)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PN0fgx3A
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A3251F00A2B;
+	Mon,  2 Nov 2026 17:52:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793641936;
+	bh=o/zittl1YaBbUeV3E3PuKcS6YPYwR/ISGp2VfizEb0Q=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=PN0fgx3AbKJTDfnZQkPYgs0OQuEvnycObdANFpmVxSuyUVDeDYktTbDL7R1LlKaJq
+	 OjeBydmfsaJMj+wjaed+neQQd8KFXELwKgy3Gpz+n9VGrkR40CIEhfRdlWSicIIpJO
+	 PF2Do5nSNTVFBRAXyG90lauXId/D2jR0TvASr5ABHEEOEbrCRiNSLOLb0Evz+Jw23w
+	 88uVRsxEOZ3gnf8aRj5hn0IToAOqS4xnM0FlvvLaGkqk0NXAasmiTG6RP7ubShyHE2
+	 cpMjWp+IEJFbjgdI/I6KuCatlgTyDwbuvTHWgOHW9MWNkw3jZNFhwKmox72YFJsrCm
+	 8vpaMihZW0p7Q==
+Message-ID: <sashiko-outbox-193875@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 1/1] mfd: stm32-timers: use
+ dmaengine_desc_set_callback()
+Reply-To: sashiko-reviews@lists.linux.dev
+To: Frank.Li@oss.nxp.com, =?utf-8?b?b3BlbiBsaXN0Ok1VTFRJRlVOQ1RJT04gREVW?=
+ =?utf-8?b?SUNFUyAoTUZEKQ==?= <mfd@lists.linux.dev>
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org, lee@kernel.org
+In-Reply-To: <20261102174656.3939832-1-Frank.Li@oss.nxp.com>
+References: <20261102174656.3939832-1-Frank.Li@oss.nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 02 Nov 2026 17:52:16 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -97,90 +60,81 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|PA2PR04MB10237:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7e89203c-10d8-49be-72db-08df3909cf59
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|19092799006|23010399003|376014|1800799024|10067099003|18002099003|261102123227099003|56012099006|11063799006|261022105027099003|261009223027099003|261026140227099003|261028144727099003|261021121427099003|261021123027099003;
-X-Microsoft-Antispam-Message-Info:
-	wOYcsdM4JFTAZV6+8y4Cqs8dKFIJZjyF0fgLjPQZGuEMmIeFCXvRIY/BJJOgRkbZy7NCHDW3EpEpgk9sQVsJup7eD+luZ0LkryY6sMGrZSpMwIXvFnAbZ7dn7dXHyE1HVcruMCYkunxm4mDjpBNH2w4hwnr2OrdZDPdxQnPJs1ZJ9QTNVPvdStkK9eXROErsS/nuLAit2mPnwx0E9iZJ1P3G1N6Rh+fDGNQMp0UN8sippONOfYj3DNDCx/AS+ZEQ2TiDX5vuSqLDrUeNkckdnJ3EUTkHJ6XLj1Iv1xrmXQGQq6id17si3YVhs4r998ixV4NLpWvgLH4tj3dCJvq1amovhe+tQMMpWvlGg9iv0LkBVcR3ae094Ts0x8C9QnnfllmW+G4LsaMa8BTNE4bFuFk/hXm6FS9qO0AUiqz+Y5EVxYevFyiqahIL+Xu16pxnAFK5jGJInLxlbFHgbix9cigKEAK7UZa/FPLyMeV73C5ipfkNrSgX/6/0ZFcm+y38jz8ZozH8PtK3UY/KgTu1SqDb7Q3FaoahKLCvIVBjzXYjhTZYu+sR0p0roPEWcQNcMG4i/b78lyNnoBqH5tVRVFkgFi4uhLKm6tr/mfEUzmXxoXV8X3OgVwj38QD9mhyUR3bojgd4+vQAzIbIXsqKP1B7YC59raNzPpj+MS5p8QE=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(23010399003)(376014)(1800799024)(10067099003)(18002099003)(261102123227099003)(56012099006)(11063799006)(261022105027099003)(261009223027099003)(261026140227099003)(261028144727099003)(261021121427099003)(261021123027099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?q+eZ0hrf5wyNfZDWiXrzi75WFU8aTZK9PVNZQFh5sjOmQLFMAmUiIXnaCwPI?=
- =?us-ascii?Q?+0MdU9FIyjeDzygfKqoXSGoI8XaN4OpZD1WG3zBOL47wJuStfpqadL/tAuSF?=
- =?us-ascii?Q?Qm90eDEbE8cEhijXb8bJTPKasV9bE0ph4pgC+TKFWG0GeOcbV1/yDz/38Lyu?=
- =?us-ascii?Q?EzuyT9SeX9Kevv4gMS53d1cMsnLjljUrgvVZui/I4xFpywuEpI3oit5j/4hG?=
- =?us-ascii?Q?OPwBAtpa0wr9TjJk9qcsdhcEU55AQAOZbvzcYLMTFnoxVh1NqdTVO1dMUkAK?=
- =?us-ascii?Q?nTYSBY96J1QHRL3iGyGmL85ioKGlGvdK+Pkgd/lKCBX2fOCl3eV2zql4ljCA?=
- =?us-ascii?Q?HxrAADQFZFzb379arJBfvUEfLuI1cfAuVjb9sG4iE4EfjJkcGUR/0769TX4v?=
- =?us-ascii?Q?bVVoy4OiMSeMqs5K1E2EK4H8XU6FjZE6QmvJvhhk8B32eOCvuZHUGX56Lm6+?=
- =?us-ascii?Q?5gZ3iN7AOAjbm8y/gDe/2euv4bups7jBBSWqBN9suQMmdvUo7iY+38m2aS5h?=
- =?us-ascii?Q?cGAy2m4H7c/7TF1nME1KREKfmj8R8/k7CuA4ydzG3rkt6z1fLMRrYaDQBTlQ?=
- =?us-ascii?Q?hr9c29TzbXOer8P0rRlxokJY+AKMksGMscuX9SwVjdTTA6ykM9wNijz+dF88?=
- =?us-ascii?Q?0fWlkRyTEbO7gQvQomku8rXSKgOa0EGksUQ9IAWvX1lhSoIgak94yOg+OxKB?=
- =?us-ascii?Q?wgo0qAmSMg1XW4z58yIxZC3R/3NkEaKpDOpgdKXW4j/7V4kyl/hIS31mumbT?=
- =?us-ascii?Q?UJRETJxUEMsKOGWkEo+TPHcqTHfP+7O7vK53sVbjr1+ckWiANEp8WD/BRY0f?=
- =?us-ascii?Q?RFjJ7TP3hvP8zP7trK1muGsVmvS+YnHEYdxxmhJRxvXGKCM5uGRvx1GXMeqE?=
- =?us-ascii?Q?9eFedGy1xlOldBKUKN2ZqgqB0UCtYv668xr2X9DmatpXvR1JRFOXIRn+7APw?=
- =?us-ascii?Q?wnyWnO9DNAQr/f1lkxZANdhVYXSEcO8XY4j5EMSQABqxmhrVcU5hZIQmCd46?=
- =?us-ascii?Q?3OoeFbTLvjRrd+YyOclO6t/ntTHCEdY9w8Lr77Bj6J/TUduon5nuRiSm93V8?=
- =?us-ascii?Q?gOPNKLvKlwIaONAytVyNXw+p8KFs8o8e/tsm22ze5xjs+p22XhNR6GeTDKl5?=
- =?us-ascii?Q?wl296X8YWnFOhkrbxvOoNznmf1X4wfM5KoPXDNY5o7G504ca/pUKWIblDRj4?=
- =?us-ascii?Q?66B6a6RTZZ7TCKoiJLwMcZt1XWGB0aoBTwzfAPIbvjFjxcJGluX6KG0+qLky?=
- =?us-ascii?Q?gvCwN3qEIEmVN2cXRG/DR1kx2+sr9VZzZvLX2zNo5GPd2ATV347yDUwvuH3t?=
- =?us-ascii?Q?gryEFpehNmIniDXQobLYe2JmWlCM0UdYzq7uuoIi6TmOx1caIGvIeGCheYtN?=
- =?us-ascii?Q?zfAe6GOjei6UIc5CeNtvm9P0EQ8RGCU1sFq4KsXtt7ZaftcBAgVtfnccGSmp?=
- =?us-ascii?Q?3ITSBV3Z6bAU03IkbudMQtyS4UQ5+SLBX2vwUCLGirQqfPxO6kSUJhWCnMrt?=
- =?us-ascii?Q?yK0d+6pTGoU6XxQXz4tihFufZWu+69CsaHpaR2+CQf7MnUkb0VR5JH/kfaFK?=
- =?us-ascii?Q?BYKTPnvT7aQoV6veHkhhaEMgN5b/q8zOGcsJJKhab8/8Z/zr5ilM8FlUAjT3?=
- =?us-ascii?Q?ePoAaEMdlWtECBKOxr9n5KqqxNmO1laYp0apw5Ogi4Mw9BgKucrzlZJoG6SO?=
- =?us-ascii?Q?c/8nlWAz0VYWRiF5P6q9EyjzSJiBMhhdCDP2uB4t4lN2Z0Z3TK8ZCcm+3BEH?=
- =?us-ascii?Q?uLo31hpM9a+QsMcTlggdWlUSo5jM+w3LXrfUXs6FiA8zLHB7/3dN?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7e89203c-10d8-49be-72db-08df3909cf59
-X-MS-Exchange-CrossTenant-AuthSource: MI3PR04MB12438.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Nov 2026 17:50:40.6772
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: lVzzznI19qEg5gd8ohxqen0A6DsAUZjy1tWeXEAVUYKjHxTq3Rksz5fvo8x3CdAzLc9DyZ0r1zv+3Dg9P82Oc1CwSZEt8rFlsiWg3jZbGkiloBu47flXvXe1m1OWzmcR
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA2PR04MB10237
 
-From: Frank Li <Frank.Li@nxp.com>
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [Low] mfd: stm32-timers: call to undeclared dmaengine_desc_set_callback()=
+ breaks build
+- [Low] mfd: stm32-timers: uncapitalized commit subject description after p=
+refix
+--
 
-Replace open-coded assignments to callback and callback_param fields
-of struct dma_async_tx_descriptor with a call to the
-dmaengine_desc_set_callback() helper.
+commit 90e59ce1010cceb53a7009d41c5cc59f1c853e30
+Author: Frank Li <Frank.Li@nxp.com>
 
-No functional change intended. Prepare make to struct
-dma_async_tx_descriptor private to the DMA engine.
+mfd: stm32-timers: use dmaengine_desc_set_callback()
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
- drivers/soc/tegra/fuse/fuse-tegra20.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+This commit replaces open-coded assignments to the callback and callback_pa=
+ram
+fields of struct dma_async_tx_descriptor in stm32_timers_dma_burst_read() w=
+ith
+a call to dmaengine_desc_set_callback().
 
-diff --git a/drivers/soc/tegra/fuse/fuse-tegra20.c b/drivers/soc/tegra/fuse/fuse-tegra20.c
-index fdecf7b7c2466..b98696f551ea8 100644
---- a/drivers/soc/tegra/fuse/fuse-tegra20.c
-+++ b/drivers/soc/tegra/fuse/fuse-tegra20.c
-@@ -66,8 +66,7 @@ static u32 tegra20_fuse_read(struct tegra_fuse *fuse, unsigned int offset)
- 	if (!dma_desc)
- 		goto out;
- 
--	dma_desc->callback = apb_dma_complete;
--	dma_desc->callback_param = fuse;
-+	dmaengine_desc_set_callback(dma_desc, apb_dma_complete, NULL, fuse);
- 
- 	reinit_completion(&fuse->apbdma.wait);
- 
--- 
-2.43.0
+>     mfd: stm32-timers: use dmaengine_desc_set_callback()
+>    =20
+>     Replace open-coded assignments to callback and callback_param fields
+>     of struct dma_async_tx_descriptor with a call to the
+>     dmaengine_desc_set_callback() helper.
+>    =20
+>     No functional change intended. Prepare make to struct
+>     dma_async_tx_descriptor private to the DMA engine.
+>    =20
+>     Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
+[Severity: Low]
+This isn't a bug, but MFD subsystem conventions expect the commit subject
+description after the prefix to be capitalized:
+
+    mfd: stm32-timers: Use dmaengine_desc_set_callback()
+
+> diff --git a/drivers/mfd/stm32-timers.c b/drivers/mfd/stm32-timers.c
+> index b3dbc02aaf798..4f344f2a5a26c 100644
+> --- a/drivers/mfd/stm32-timers.c
+> +++ b/drivers/mfd/stm32-timers.c
+> @@ -102,8 +102,7 @@ int stm32_timers_dma_burst_read(struct device *dev, u=
+32 *buf,
+>  		goto unmap;
+>  	}
+> =20
+> -	desc->callback =3D stm32_timers_dma_done;
+> -	desc->callback_param =3D dma;
+> +	dmaengine_desc_set_callback(desc, stm32_timers_dma_done, NULL, dma);
+
+[Severity: Low]
+Does this break the build when CONFIG_MFD_STM32_TIMERS is enabled?
+
+In drivers/mfd/stm32-timers.c, stm32_timers_dma_burst_read() calls
+dmaengine_desc_set_callback(), but include/linux/dmaengine.h does not decla=
+re
+or define dmaengine_desc_set_callback() in this tree:
+
+include/linux/dmaengine.h:
+struct dma_async_tx_descriptor {
+	dma_cookie_t cookie;
+	enum dma_ctrl_flags flags; /* not a 'long' to pack with cookie */
+	dma_addr_t phys;
+	struct dma_chan *chan;
+	dma_cookie_t (*tx_submit)(struct dma_async_tx_descriptor *tx);
+	int (*desc_free)(struct dma_async_tx_descriptor *tx);
+	dma_async_tx_callback callback;
+	dma_async_tx_callback_result callback_result;
+	void *callback_param;
+    ...
+};
+
+Is this patch missing a prerequisite commit that introduces the
+dmaengine_desc_set_callback() helper?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261102174656.3939=
+832-1-Frank.Li@oss.nxp.com?part=3D1
