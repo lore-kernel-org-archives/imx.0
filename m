@@ -1,57 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793603408;
-	b=2/SrTlMLvPwdXttdFisLRdeuSufh1Ys6RL+KWeiyf8mvxl2+WomS6KL4FL8k+L/ycDAb
-	 W4JxR9wQkSRa0jM2E5yMtUohy60xM++K/BdjWx9dTjwHLgG2RNUw87eRIrtyR4UfLODfM
-	 MWzkSlfRvquFiovupfFA6q0oNy6vF1V3fUFZSm8pDTO1L+jnY9E09qZBjK3QhEYtO/8M3
-	 X5mNImdSnRN8niv5kcjTnGyHgbeHO9EPrur510b077EFpRR2E6sdnz+/FJnRBCa+Sh4dF
-	 fBToKSV4TA1wwUZUpat1QHmr5hZ265LWfeHfOEqV59b7C6JzcRfsvvF7Fm/aJ0xvQAQ==
+	t=1793604524;
+	b=f56JDeeTKITpUVBaHx4qAzr7hOa4YcN/5v/UhBveH4xKiL+tZU64FEEkPAwbuZsro7m9
+	 tUk0tkQysqY0N3Mqa1imkVVlowb80eBg2T+wmDidePcMapTOhYGoNnPgCOwAPASHluVfl
+	 FuiGkp6XmymIoOFSF3UWkkkMSoBNdMFGKxEMDQsVrEe1Gl9I2eV7/PAWznVJDZch0ANYG
+	 yi1gHTtETMBseI01qSp5Y6WfxCOLfM6zvb0YgWkYv9OcfXuMQAdPDM0lpALaWTXEOutx9
+	 6HH5ON79L7H8nQ19BlA12ZUAV3NUcnEE8OUgo6spsTfx8NuFYSsahe65XjyHbHMmHfg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793603408;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=kU6IofXCn5PA/zOH+cWAXeqWn3DUsOgIFPE2GbgIRAI=;
-	b=vxfW3S53+wM4duHbgfxgCUoggG5mZAEXLzFXhah9BD0MCuYa9vOfnn+aTww/VWsdj268
-	 mZgWYHMSXcw4H39iPJcMBpHuvVVKIuOcrxCWyZnXKml6ibAX1u+GwP3JotnehuYaOERJA
-	 Sq5XNALUJd7RwzSa/tiy5UBBVAJj84tev/ecNIqcXwmHMLqRkkYKfH11mWb89LRTKMhhO
-	 OZSOblzURqFmMc3uC4xK1UiLHQvSJy3JT+/93zsMWwWr446nF0gTGgSx4O47Xhynhs/Ts
-	 6KzgLg+jtMaQ88ELfmHt+92MDGViSJ319dpalt5VPAdSjcAxyNv6YhKA5aOSqc6RXwA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793604524;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=nT6D34lVZPsVnqv1Mv6DEijDwSntrg/yw0RnHBOVLDg=;
+	b=0CDvGQqhMmaDU77E7AxSNN7Giy+kgBlDovGshncvcVruc5PUNxHGjW0EdYw6Jk/mhdfY
+	 L7f4HMzga0zvvDGQNVZ58H78rutUq+gUxWiyETWjZvXsbG8csudsBSIAI5KCMT2PBzyGB
+	 sdXgQut02SnboGmd+dfF4in/ii3J+vKULo6ggfJXQPjBMh9wQLsfdK2mKTp3fqXwoAPf4
+	 iFTO/3IKAD4Kz33U8PSpKzWYSaBB8K55rH66pkUgrcLZNBjboarhBBhCfi6ioJ8zNNHUE
+	 sat2KMlg1kFWqLDpRDkmv6m8d6ql8/d9/F8pUw7b3tneYWFGY1KfdSG8NE8Ga8CUqGA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=D7f8oJG1;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=M+DLjyfX;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EE8D606A32C;
-	Mon,  2 Nov 2026 07:10:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E87C2606A32C;
+	Mon,  2 Nov 2026 07:28:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=D7f8oJG1
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2BD21F0093A;
-	Mon,  2 Nov 2026 07:10:07 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=M+DLjyfX
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CDD91F0093A;
+	Mon,  2 Nov 2026 07:28:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793603408;
-	bh=kU6IofXCn5PA/zOH+cWAXeqWn3DUsOgIFPE2GbgIRAI=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=D7f8oJG1QsO3FGg77wjuEHGo2InHPla8LtEpCSmWwREtLQjus64/N0Iv/BoTm8Bje
-	 7i/5pKRriqwmlrpr3IAuXXffM3ZcnQ5TXrd1hDKYJuXHunpNRm9dVBkLFMCHn673jE
-	 WpTFp7Cxx8wdYwuicDZpPrU8RMPVQp/Gj5j6i10qW7VpXx5g465CWMWdB8lIZ8q2/7
-	 GrU+tQ/bmhMktTgXZGRqaLv3jwAO+dJF9mNTcOD14OokoySZb8LAYevUX9RTafu23H
-	 DNRjYDCcb4Y2Gw79zG8IipAS/MY9NUbqZsHa8u3PrAPHsHO6qR9SFdWFpJ7whp29eB
-	 JakdHVYTZul4g==
-Message-ID: <sashiko-outbox-193001@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 2/2] arm64: dts: imx95: Add ADLINK LEC-iMX95 board
- support
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Dinesh kumar v" <dineshkumarv85@gmail.com>
-Cc: imx@lists.linux.dev, devicetree@vger.kernel.org, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20261102065645.121046-3-dinesh.v@adlinktech.com>
-References: <20261102065645.121046-1-dinesh.v@adlinktech.com>
- <20261102065645.121046-3-dinesh.v@adlinktech.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 02 Nov 2026 07:10:07 +0000
+	s=k20260515; t=1793604523;
+	bh=nT6D34lVZPsVnqv1Mv6DEijDwSntrg/yw0RnHBOVLDg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=M+DLjyfXWAl3TaZNGPK/WK3ueOVhP76TGVIsMtlHiL0RZo/a/eOGecakll5qDIOyv
+	 MyWCqUbF4Lm88Ultvdq2DWrijIptk5w0MM+lj5p/dHrwXVCuFmIeDH2uiH3XmkLe0e
+	 eNTf4DmiURJRGNrNtoFjpIF/HpNtQz8ktbTXpWks4qVQLbUIbuhTosPchMAxIL7/vw
+	 K3tEAc6JiaGE+kxbpoSVjPbn2UpSoSnJ2AMW8gt/pGWmEtFXQJfg7cVZrwSEI1ZGgJ
+	 dlNi2GApENgDIeHb6o7CcxcahQ1Uq0xnm/zuIW9YnryQF6/ow7MB8qEnJjxmeMN2th
+	 /00cRKquLMfsg==
+Date: Mon, 2 Nov 2026 08:28:40 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Stefan Wahren <wahrenst@gmx.net>
+Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+	Srinivas Kandagatla <srini@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, kernel@pengutronix.de, 
+	Fabio Estevam <festevam@gmail.com>, Jacky Bai <ping.bai@nxp.com>, mfd@lists.linux.dev, 
+	devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 1/3] dt-bindings: mfd: nxp,bbnsm: Add NVMEM for GP
+ registers
+Message-ID: <20261102-translucent-elated-pronghorn-cbb73b@quoll>
+References: <20261101200140.141642-1-wahrenst@gmx.net>
+ <20261101200140.141642-2-wahrenst@gmx.net>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -60,102 +60,44 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261101200140.141642-2-wahrenst@gmx.net>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [Medium] arm64: dts: imx95: missing open-drain bit in pinctrl_lpi2c8 pad =
-config
-- [Low] arm64: dts: imx95: undocumented adlink vendor prefix in compatible
---
-
-commit 248f6e79db5b8ae0d4d8bd60d96acbf1ad1f767b
-Author: Dinesh kumar v <dineshkumarv85@gmail.com>
-
-arm64: dts: imx95: Add ADLINK LEC-iMX95 board support
-
-This commit adds device tree descriptions for the ADLINK LEC-iMX95 System on
-Module and the I-Pi SMARC Plus carrier board.
-
-> diff --git a/arch/arm64/boot/dts/freescale/imx95-lec-ipi-smarc.dts b/arch=
-/arm64/boot/dts/freescale/imx95-lec-ipi-smarc.dts
-> new file mode 100644
-> index 0000000000000..9a77bff42b225
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx95-lec-ipi-smarc.dts
-> @@ -0,0 +1,237 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
-> +/*
-> + * Copyright (C) 2026 ADLINK Technology Inc.
-> + *
-> + * https://www.adlinktech.com/products/Computer_on_Modules/SMARC/LEC-IMX=
-95
-> + * https://www.adlinktech.com/products/computer_on_modules/SMARCStarterK=
-its/I-Pi_SMARC_IMX95
-> + */
+On Sun, Nov 01, 2026 at 09:01:38PM +0100, Stefan Wahren wrote:
+> +  nvmem:
+> +    type: object
+> +    $ref: /schemas/nvmem/nvmem.yaml#
 > +
-> +/dts-v1/;
+> +    properties:
+> +      compatible:
+> +        enum:
+> +          - nxp,imx93-bbnsm-nvmem
 > +
-> +#include "imx95-lec.dtsi"
+> +    required:
+> +      - compatible
 > +
-> +/ {
-> +	model =3D "ADLINK LEC-iMX95 on I-Pi SMARC Plus Carrier Board";
-> +	compatible =3D "adlink,lec-imx95-ipi-smarc",
-> +		     "adlink,lec-imx95",
-> +		     "fsl,imx95";
-> +};
-
-[Severity: Low]
-The root node uses the "adlink" vendor prefix in its compatible property,
-along with the new board and module compatible strings, but "adlink" does
-not appear in Documentation/devicetree/bindings/vendor-prefixes.yaml and
-the compatible strings are not documented in
-Documentation/devicetree/bindings/arm/fsl.yaml.
-
-Should the vendor prefix and board compatible bindings be documented so
-dtbs_check and checkpatch.pl pass without undocumented DT string warnings?
-
-> diff --git a/arch/arm64/boot/dts/freescale/imx95-lec.dtsi b/arch/arm64/bo=
-ot/dts/freescale/imx95-lec.dtsi
-> new file mode 100644
-> index 0000000000000..5402cb360888a
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx95-lec.dtsi
-
-[ ... ]
-
-> +&scmi_iomuxc {
-
-[ ... ]
-
-> +	pinctrl_lpi2c2: lpi2c2grp {
-> +		fsl,pins =3D <IMX95_PAD_I2C2_SCL__AONMIX_TOP_LPI2C2_SCL		0x40000b9e>,
-> +			   <IMX95_PAD_I2C2_SDA__AONMIX_TOP_LPI2C2_SDA		0x40000b9e>;
-> +	};
+> +    additionalProperties: false
 > +
-> +	pinctrl_lpi2c3: lpi2c3grp {
-> +		fsl,pins =3D <IMX95_PAD_GPIO_IO28__LPI2C3_SDA			0x40000b9e>,
-> +			   <IMX95_PAD_GPIO_IO29__LPI2C3_SCL			0x40000b9e>;
-> +	};
-> +
-> +	pinctrl_lpi2c8: lpi2c8grp {
-> +		fsl,pins =3D <IMX95_PAD_GPIO_IO13__LPI2C8_SCL		0x4000007e>,
-> +			   <IMX95_PAD_GPIO_IO12__LPI2C8_SDA		0x4000007e>;
-> +	};
+>    rtc:
+>      type: object
+>      $ref: /schemas/rtc/rtc.yaml#
+> @@ -88,6 +102,12 @@ examples:
+>          compatible = "nxp,imx93-bbnsm", "syscon", "simple-mfd";
+>          reg = <0x44440000 0x10000>;
+>  
+> +        nvmem {
+> +            compatible = "nxp,imx93-bbnsm-nvmem";
+> +            #address-cells = <1>;
+> +            #size-cells = <1>;
 
-[Severity: Medium]
-In pinctrl_lpi2c8, IMX95_PAD_GPIO_IO13__LPI2C8_SCL and
-IMX95_PAD_GPIO_IO12__LPI2C8_SDA are configured with 0x4000007e rather than
-0x40000b9e as used in pinctrl_lpi2c2 and pinctrl_lpi2c3 above.
+I don't think you tested your changes. address/size cells are not
+allowed - see your binding.
 
-On i.MX95, bit 11 (0x800) of the IOMUXC pad control register enables
-open-drain output and bit 9 (0x200) enables the internal pull-up. With
-0x4000007e, both bits are cleared while lpi2c8 is enabled in
-imx95-lec-ipi-smarc.dts, driving the I2C8 SCL and SDA lines as push-pull
-outputs.
+Anyway, empty node makes almost no sense, so fold the node into the
+parent.
 
-Should pinctrl_lpi2c8 use 0x40000b9e so that open-drain mode is enabled on
-the I2C8 bus?
+Best regards,
+Krzysztof
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261102065645.1210=
-46-1-dinesh.v@adlinktech.com?part=3D2
