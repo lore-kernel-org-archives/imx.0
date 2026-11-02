@@ -1,100 +1,94 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.84.29
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793649480;
-	b=gYQhEmP4LBgDyMP2fXhACqIpDbx2kl4sXEGqZcVBaYRWQL1HPIy8LYxFwcyETxuDC10L
-	 J2C2L1O+mDCTLat9z8w9BDgvgxjOFO571MoWYz2WwVcnTMwHy7rXHLE+fMLlFssbI7t90
-	 P6oRHSTRobePCiCh6HvptglIkhSpMn6nYb135YNm4xvpbzQLwydm8DHx8ZScFB0Nv/Bi5
-	 KfT9b35fRToe19t5WAdKPNvG0k9RK4jJqohsdI3sG1OFMHz3HoAJwLfu4WDFaL0BIXps3
-	 bn05OjsLfioCxFq9PprlYTV46flodlVBJX8HV2HPJQv9bIuzCMYrq/7++rmliADT4Bw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793649480;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:Content-Transfer-Encoding:Content-Type:
-	 X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=MgWA+/BF/gC+z6m15lUgLousRtnTbEkzXh3LWzXxnl4=;
-	b=lApyTtSsa/FZZydb6acTtXBF4V7eWTrw57LRWjwveZtyttnCgj/QR3RjzdN4Z11k2Mvk
-	 FBsLUCDELjw8LlgWIfY/6566vD6RMstSegmdeCTegzip+cHlYC9Wvu68x7kmZ6UGlX5Mi
-	 ehUlrPG9WsiCApYh+iR/5WS83TT6v1DcBnZI1UFhaExqw/wAdA57tC0QPj75muspH0muO
-	 EKswFB6zxD7zjwKHZmgg91zJ1LKyv3D2zX+u1tsBumOKxA8KEv6hdiaULMQ6YM7SvsZxg
-	 00EfZeVxyeubLzxh9vx8LuuKOTOS1pGBhnyt/Hmqe0Emp3pohQeSpS3pyEAhk4AQYeA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.nxp.com;
-	spf=pass smtp.mailfrom=oss.nxp.com;
-	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=GEDccPwo;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.84.29
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010029.outbound.protection.outlook.com [52.101.84.29])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.251.105.195
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793651082;
+	b=TujE04sTGVgxv7jGeAZsK7E97nbFZfmRNKdVEQ10FitGyy5WsV8FHtY00uXi3F/4SQ3h
+	 odxWi0V7MI2ft6kQQm55SecIvY8HXDtUMCAw4/nqKaXLw9m13Wmn4N6FZpkyXhGcLUQAC
+	 ocndFbmY2J39JmBHsaoCUNnyLlX0DPPKvH+/c1X2zbddE5tYopBp111wFmZnwreTwL+aA
+	 fX4Yk35ybuf+Wa3tglKqYqxaAMfgfiFA3n+Blh1bg96Lk0EtDsRui6aISZ1yffNe5r/GI
+	 uIwyizK/3tznOXD5Iqy+bjD1FYcJwLufLU6rvKt0EFZAAwvpo2r9Zau3Eq1SCIlOVnA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793651082;
+	h=DMARC-Filter:DKIM-Signature:Received:Message-ID:Subject:From:To:Cc:
+	 Date:In-Reply-To:References:Autocrypt:Organization:Content-Type:
+	 User-Agent:MIME-Version;
+	bh=4h/8w18/xpPZlTxUCAm+TEIkzoVo/DLq9acXzygbFO8=;
+	b=bwQSIz3xxx5EBORZfIAJBI+1asVbFaNeWBX3uHmvQUuNVQa0AB7j6mPvXtCQbzzgLuQ5
+	 ef56fCl5VA7M42hxnI53nn0D7fBHJogOZun5s+MFZd+MbMDErjWBW6BQ8Z4J52TYwDoNo
+	 /1kMLytV1GDRp3O7AVHn2l/PsNhGxc6FdQckBew6TZGisskmN4ZAkm4b5eJtVYFTUfjnz
+	 NhAq4Bs8ywdQULQ23GVsC6pQeE3Jcu8xULiJFNYZ8gHfZQyTKz9PILpbc/kXm/1VlMoW0
+	 //KLTsBZSLKY16J5893C2GdWr7R1bpJEBSRhtfyy45Xu3cBJl5ZxY/DH2rwD2lRs/1A==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=collabora.com;
+	spf=pass smtp.mailfrom=collabora.com;
+	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=WyUfttul;
+	arc=none smtp.remote-ip=148.251.105.195
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C79CB606A324;
-	Mon,  2 Nov 2026 19:57:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C79CB606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C02BE606A324
+	for <imx@lists.linux.dev>; Mon,  2 Nov 2026 20:24:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C02BE606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=GEDccPwo
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Il2P+Eoo9rQPbhLJaL5wnI/75h9i6g1gMSQ2EHL18dYNhbNwbtZEL6uy4X8y4Ad/GepzZTkze1a0ocTfU+sgutE83n4sr7347QFGD0SGHSuAOuBFHXaYFPFX0W/WAChdYcKc5SDbge4zRwlUAC9143NU920d4dG2/I84ul8P17a1N9BUuh4pYtarpqOv62wdy9jOS+Utg9vxTyvg1NMIi0wWBgUsaLafbRORgdzYbMPc3IrFvm5fuO59oL3ZeLGjPzrRKfV2/GpBIo3pD37uEkBaNP+e3Ho2FIm1vUvvkDe20pt6tfiEAHcoo/OD4qzNb8gvV1wIbSxhKdDWlh8udQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MgWA+/BF/gC+z6m15lUgLousRtnTbEkzXh3LWzXxnl4=;
- b=fGrIgiP5tekjV8nGfvgOFufq4VrFm+T2s/rTkM7gQ4kCReZSS3ath3MCIb8yN4SruwGkWbUa3oL65xQmMvUNlPjhoUIqRTmzXg97xFlbr4r8K5ebVU+/60rXttp7nSVyKHp9zCd5V/GpgQ/Sx1dJbxEDBcNWBHG0QsPAPCmXqiRWCkfNvsU0zi2hwSd14h6+Yb94l9Q8hsATMhpu5GmoUJY5ALg119BRs/vEOuZbyIh2AGVCQ35vGbiMxkpgu63N1UXX2Xb/+1aZmCagQi72rVMUdNwE7pSJm/sBcMlfoPCJ50O0Jjl4KkKGxMmvO0HVFCpq4fIcySHE32a4xzUtaw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MgWA+/BF/gC+z6m15lUgLousRtnTbEkzXh3LWzXxnl4=;
- b=GEDccPwoZYFlQrmVDaX5IWzDWftlzolpGlBeVCIzdlsS21QtS4NW8fXsVnzYg8t+/jFkRx0xVy9af0J8+lTZKGzCEya5IF0edqRWdyS9LISULPVQOW+K53anO4QC3lhe0EvvTmqIpG85Pi1pbzY8Rv2b65+5LrYJVhHua43o+CYFlHlhDdH0RJv3e5uECuNqXkL1WDO7oKJRq1KPJt2m6+TZKWn7bD6V47R+1u5is5vQ5IZB2LTgrcdSKPfVhKrk44unIVb94JksUF0Wimp0/l4zcsGaHJ9OaXTauLjY6GMuNU8ukkImXjA8OyxZPEayYTnyNiWeGg2zkKbf8kYzLw==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from MI3PR04MB12438.eurprd04.prod.outlook.com (2603:10a6:290:76::14)
- by BR0PR04MB048570.eurprd04.prod.outlook.com (2603:10a6:2c8:50::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.12; Mon, 2 Nov
- 2026 19:57:56 +0000
-Received: from MI3PR04MB12438.eurprd04.prod.outlook.com
- ([fe80::c715:c32:8bb1:b70b]) by MI3PR04MB12438.eurprd04.prod.outlook.com
- ([fe80::c715:c32:8bb1:b70b%6]) with mapi id 15.21.0569.011; Mon, 2 Nov 2026
- 19:57:56 +0000
-From: Frank.Li@oss.nxp.com
-To: Jon Mason <jdmason@kudzu.us>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Allen Hubbe <allenbh@gmail.com>,
-	Matt Porter <mporter@kernel.crashing.org>,
-	Alexandre Bounine <alex.bou9@gmail.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	James Kim <james010kim@gmail.com>,
-	Dan Carpenter <error27@gmail.com>,
-	ntb@lists.linux.dev (open list:NTB DRIVER CORE),
-	linux-kernel@vger.kernel.org (open list)
-Cc: imx@lists.linux.dev,
-	vkoul@kernel.org
-Subject: [PATCH 1/1] ntb: use dmaengine_desc_set_callback()
-Date: Mon,  2 Nov 2026 14:57:41 -0500
-Message-ID: <20261102195748.4092882-1-Frank.Li@oss.nxp.com>
-X-Mailer: git-send-email 2.43.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: DS1P223CA0006.NAMP223.PROD.OUTLOOK.COM
- (2603:10b6:8:453::17) To MI3PR04MB12438.eurprd04.prod.outlook.com
- (2603:10a6:290:76::14)
+	dkim=pass (2048-bit key, unprotected) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=WyUfttul
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1793651080;
+	bh=tVX8mJhuzNtfo9g/5xEXvDCmN2Z7jHKsxkBBxY8oQbc=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=WyUfttulTPJ6Fh/j01ngHsPwaeyxRpYcX1h5r33505gb6QOhWQN73dI/+uiO7ZJSw
+	 cekbaMnqOpXdSjTN5+xp3wa4HPbYFtKML+7PmD72rzP3U23Mk05BSiZUtEMSdJcjiJ
+	 aMCceWOusvrTKibrCcCNhAaJRd2WpXEkKKXkikRjDkaKt7JKUV+92mlV0/ezYvsVl6
+	 9qGNvpA6jSRKumbeQqi2yihmYd84EPyyMBfor3ww1zg41xD0TJaVdmb7IsuomU3+XZ
+	 O4aboVzd3m9tJqoN0qqTih+O3+4FbGOe6vL+N+4+QvA5aTI0hzf0Iynf845YmRSd/n
+	 75KsPbxLsWJMw==
+Received: from [100.64.0.214] (unknown [100.64.0.214])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: nicolas)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 650FF17E0163;
+	Mon, 02 Nov 2026 21:24:37 +0100 (CET)
+Message-ID: <38f6a9abf37b06318bb6429ac04807941ca8d558.camel@collabora.com>
+Subject: Re: [PATCH v2 2/3] media: use dmaengine_desc_set_callback()
+From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+To: Frank.Li@oss.nxp.com, Martin Tuma <martin.tuma@digiteqautomotive.com>, 
+ Mauro Carvalho Chehab	 <mchehab@kernel.org>, Fabrizio Castro
+ <fabrizio.castro.jz@renesas.com>,  Geert Uytterhoeven
+ <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, Jai Luthra
+ <jai.luthra@linux.dev>,  Laurent Pinchart
+ <laurent.pinchart@ideasonboard.com>, Michal Simek <michal.simek@amd.com>,
+ Frank Li <Frank.Li@nxp.com>,  Sakari Ailus <sakari.ailus@linux.intel.com>,
+ Hans Verkuil <hverkuil+cisco@kernel.org>, Jacopo Mondi	
+ <jacopo.mondi@ideasonboard.com>, Vinod Koul <vkoul@kernel.org>, Xu Rao	
+ <raoxu@uniontech.com>, "open list:DIGITEQ AUTOMOTIVE MGB4 V4L2 DRIVER"	
+ <linux-media@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, 
+ "open list:MEDIA DRIVERS FOR RENESAS - DRIF"	
+ <linux-renesas-soc@vger.kernel.org>, "moderated list:ARM/ZYNQ ARCHITECTURE"
+	 <linux-arm-kernel@lists.infradead.org>
+Cc: imx@lists.linux.dev
+Date: Mon, 02 Nov 2026 15:24:35 -0500
+In-Reply-To: <20261102194700.4076807-2-Frank.Li@oss.nxp.com>
+References: <20261102194700.4076807-1-Frank.Li@oss.nxp.com>
+	 <20261102194700.4076807-2-Frank.Li@oss.nxp.com>
+Autocrypt: addr=nicolas.dufresne@collabora.com; prefer-encrypt=mutual;
+ keydata=mDMEaCN2ixYJKwYBBAHaRw8BAQdAM0EHepTful3JOIzcPv6ekHOenE1u0vDG1gdHFrChD
+ /e0J05pY29sYXMgRHVmcmVzbmUgPG5pY29sYXNAbmR1ZnJlc25lLmNhPoicBBMWCgBEAhsDBQsJCA
+ cCAiICBhUKCQgLAgQWAgMBAh4HAheABQkJZfd1FiEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrjo
+ CGQEACgkQ2UGUUSlgcvQlQwD/RjpU1SZYcKG6pnfnQ8ivgtTkGDRUJ8gP3fK7+XUjRNIA/iXfhXMN
+ abIWxO2oCXKf3TdD7aQ4070KO6zSxIcxgNQFtDFOaWNvbGFzIER1ZnJlc25lIDxuaWNvbGFzLmR1Z
+ nJlc25lQGNvbGxhYm9yYS5jb20+iJkEExYKAEECGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4
+ AWIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaCyyxgUJCWX3dQAKCRDZQZRRKWBy9ARJAP96pFmLffZ
+ smBUpkyVBfFAf+zq6BJt769R0al3kHvUKdgD9G7KAHuioxD2v6SX7idpIazjzx8b8rfzwTWyOQWHC
+ AAS0LU5pY29sYXMgRHVmcmVzbmUgPG5pY29sYXMuZHVmcmVzbmVAZ21haWwuY29tPoiZBBMWCgBBF
+ iEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrGYCGwMFCQll93UFCwkIBwICIgIGFQoJCAsCBBYCAw
+ ECHgcCF4AACgkQ2UGUUSlgcvRObgD/YnQjfi4+L8f4fI7p1pPMTwRTcaRdy6aqkKEmKsCArzQBAK8
+ bRLv9QjuqsE6oQZra/RB4widZPvphs78H0P6NmpIJ
+Organization: Collabora Canada
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-7jvVIZb33Hw0whxJbkGg"
+User-Agent: Evolution 3.60.2 (3.60.2-2.fc44) 
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -104,129 +98,207 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|BR0PR04MB048570:EE_
-X-MS-Office365-Filtering-Correlation-Id: 797752d5-9cf5-4a0c-b1a0-08df391b967d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|19092799006|376014|366016|1800799024|23010399003|10067099003|18002099003|921020|261102123227099003|56012099006|11063799006|261021123027099003|261022105027099003|261026140227099003|261026121527099003|261009223027099003|261028144727099003|261021121427099003;
-X-Microsoft-Antispam-Message-Info:
-	HnsriIeHjYsJqeHVcZEarhb6uK+ZHAMqGTWgtbWuN74tCwft2fMO566KZkYQK4gSdlt3BWb4Z1QMgVA0u1zQzdOvasXQLG61iI5Aanb5skfCjgbbpbN0n4++m5q6VCfk2HKd+JKNj1cknGU51kQi6irCbnPOrwbpU8JQQrBspr+IwFoGmdIMhMlZJ2nWZTxH9SOSknszk+ZdF9fXiwPlCe1O4XnCLYEpwX43+FwblzYzKClqLcZGUx/+4GkLrJI4XVXB3uu/JLP499DQ6Y/MhI1Kpn6Mcl7g9mvtu26ZV8BU5fw/h8oLc89+Rvw6qnzLOuFm9cVf/g/VGf8F9b5KoPdyQlDixMxAkjIy0KX6/DEMXGrF3KnfZS43+5VI4BY9gk72935k8acuarb0Dd1NbS/CuAAwvF/M4riTrSaXKSJIzfiY2bdyFss9FBqKrF2c0mdgb282h4OYD8pCv5+i+xwlg3RCPw4nYW6dtxlBu/280WOADxdJRHjk2Zj0sAXzbmVpwvtJOKDKdCHMPsS0kMKtm1xy6coJK63v8rkgaYlGlVyO1lj2rIzE4PKlVuBf+y1fkFdx4ij88RnwqXVjAwhHs3x4CJxB73az5/5/DjBp0+/wwOHlA2kiP8MMg1cCT9itxdQfcJPRipAh4dKqgI9Fzp7+ZCZkZeLzsS9PDNA70O3mzs6FQQLnNSIZKC1yqtBsGmyWb7tfSPh3M5F85Q==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(19092799006)(376014)(366016)(1800799024)(23010399003)(10067099003)(18002099003)(921020)(261102123227099003)(56012099006)(11063799006)(261021123027099003)(261022105027099003)(261026140227099003)(261026121527099003)(261009223027099003)(261028144727099003)(261021121427099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?YtKI0m9TLuydJdYVo2/U0kB6K+Et56f1X1mtygoGkdQtrMnOwoIcU6JIQ++y?=
- =?us-ascii?Q?3enDSuXUUkkarw8OTRJifRRWEeb6xJnRaH1m0Smkp4YfwAFB2MbZJ0x9Uv4s?=
- =?us-ascii?Q?MtFhMdFATJmRk5C+Ctm/U1pbZrYRx9RWTN3/xdV0jgS1HMRKx6pWdEbilUXK?=
- =?us-ascii?Q?c06w7q5a5lJC6d8uOp0PtqTWZfyLC/8+8Ie9QdwuOep8pWO5bSuHGdvKGOyi?=
- =?us-ascii?Q?6iqzKErpF+rDBKiErkbTDNlwvqSR04kN/R1ukLbzeWS4qa1OWYiQasZqbpmM?=
- =?us-ascii?Q?PzWu+BL4PfVtuV7tCM7/2E+JF09bwpGAGa6S96VeU5Z714I7NNwxdW6ViYQd?=
- =?us-ascii?Q?b+YFljdlrODpyHdV4VtVNNTGnizwk1zMZ+ILmfzlgotIcyNAiiMnDEZFHZ+3?=
- =?us-ascii?Q?q3Yrd6D7SQfBkrjWQiRq695V3Ynriu3X/bm4EnIyz7/REDRyPJZ/2JnbHW1P?=
- =?us-ascii?Q?CZ5LHjoYwW4oJamiqfvGjH8zCFenqHnWu4u+Os1QW4sqPeki4i6WyO5LzEvi?=
- =?us-ascii?Q?JiO6izx5h5h5WZbLaqcYpLD6VUSEwFxFOs7XmZuuU8hEQvoKNorUtHnp6ULD?=
- =?us-ascii?Q?MauReLvr/Gonu+k/FyvHMHAi14VyCd6gWab2rtdZN9xjIIIUEChVAAsNXcSt?=
- =?us-ascii?Q?A8bqWbnvxYdiITXct5MlssxXHnolxShDzuvuykbyb7BVxj112ad2wqq8Z4tl?=
- =?us-ascii?Q?2BbdvgKXcRf0yMmBlB9Y9P9tVX9VKltr4bAE7kfMCpS+8mR0tReAP9zlvjl1?=
- =?us-ascii?Q?VloFO+Q8L5B2jyfej4fFuTRccvCfqEO9iL8SXjYn0Km/S5dvqxy6qW4Zg+7y?=
- =?us-ascii?Q?EfK3/0bFPOGLpF6JRxIscHS83WlZr5Uva/7vcoruYUeE6+1ySecp7F4CAkyb?=
- =?us-ascii?Q?KlVy2WUuy3NOdZAagS94SB9jifuhRAUAEABAsfNIlBnFJuyzGuZy8s61GQcE?=
- =?us-ascii?Q?xeT0jdu6bY+ph8KsJSw860wWvUMTJtzW5FaApESB6ZKAXjq9jzuyHYm2LPuK?=
- =?us-ascii?Q?4yAGS7LKEp4n3xxXiipessWgl7v0PPmFgFZWonAWcpJX5czuaoq73cF3b8Kr?=
- =?us-ascii?Q?3ZerO7E7cM7I3z8ynQyJBpPKN2ELEWZ/YSNhE67cW//ahaRQLy+TC9lBkOl5?=
- =?us-ascii?Q?1H3eMO5TMhQFNVAbNbS+uG8iaE9oTra2DmCwnkYwr1GMNbfb9/Gl5fPdUyUt?=
- =?us-ascii?Q?akpVsCIR0gvR/HFzfpCXgLwO5W4mqiS+x2Z/xJtCPrQIqT+23PXDkk92un7d?=
- =?us-ascii?Q?SnTAOZUeML53NwMeDDaVytDGxr3wFh+IFze9/vxEmkmCOqKNMwhtet6pepVt?=
- =?us-ascii?Q?xgwGzIGe8xHedaxrng2826VSi+KAcKuqXu8G7yHjl93Lc7F+5dAscTNGrOLS?=
- =?us-ascii?Q?QgkTnLEMSwhF1dLFxRN60oYmEnfDYYSnx2OUFJ/7mal7RfbhnyytxHqYFq+h?=
- =?us-ascii?Q?KuP4qmFxzCK/WSIbyH5ecXOmkTQNUofG0LxCPBWHsT6awsa4NebNDk5lJvTT?=
- =?us-ascii?Q?StTyYcjrgaHq8k/rIDbF5omG0jvYNFgAp+vxywix12l+qEsyKgKrud8hiDhO?=
- =?us-ascii?Q?V5cf4uh0sA7YfdSoWwEcd6kscnluRcO5HRMukGja7UPccfYuscSy1Gjhltlz?=
- =?us-ascii?Q?fUI+OVlusuFkZAQDTtlJzfezPbGk4s74umujgj7aoiPWhYID0XMhj/VRxb+8?=
- =?us-ascii?Q?myoc2KzR1MOo5FsdvcnIkNk1f1aTHF4h6CArRmmAQHSeG7fhtxUbIqNovEgZ?=
- =?us-ascii?Q?AGbBWUpIE3XL5P7h7+umvfppQyiCfbmSjslXZ18riKn/PsPrhOSG?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 797752d5-9cf5-4a0c-b1a0-08df391b967d
-X-MS-Exchange-CrossTenant-AuthSource: MI3PR04MB12438.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Nov 2026 19:57:56.2218
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: iTUvRgMWUn4t9TCEv36vu+6BA2/IZSS/Y0lKCOv8GUc3C/mQSrgOdVlvwoKWJO1F/79ja3N1aHvT8ko+BGSiCl+XrKz+FKHxS8eSRuPVeDrUrpDmBMz6YQS2LsDf+6z5
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BR0PR04MB048570
 
-From: Frank Li <Frank.Li@nxp.com>
 
-Replace open-coded assignments to callback and callback_param fields
-of struct dma_async_tx_descriptor with calls to the
-dmaengine_desc_set_callback() helper across ntb drivers.
+--=-7jvVIZb33Hw0whxJbkGg
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-No functional change intended. Prepare to make struct
-dma_async_tx_descriptor private to the DMA engine.
+Hi Frank,
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
- drivers/ntb/ntb_transport.c              | 6 ++----
- drivers/ntb/test/ntb_perf.c              | 3 +--
- drivers/rapidio/devices/rio_mport_cdev.c | 3 +--
- 3 files changed, 4 insertions(+), 8 deletions(-)
+Le lundi 02 novembre 2026 =C3=A0 14:46 -0500, Frank.Li@oss.nxp.com a =C3=A9=
+crit=C2=A0:
+> From: Frank Li <Frank.Li@nxp.com>
+>=20
+> Replace open-coded assignments to callback and callback_param fields
+> of struct dma_async_tx_descriptor with calls to the
+> dmaengine_desc_set_callback() helper across media drivers.
+>=20
+> No functional change intended. Prepare to make struct
+> dma_async_tx_descriptor private to the DMA engine.
+>=20
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  drivers/media/pci/mgb4/mgb4_dma.c                     |  3 +--
+>  drivers/media/platform/intel/pxa_camera.c             | 10 ++++++----
+>  drivers/media/platform/m2m-deinterlace.c              |  3 +--
+>  drivers/media/platform/renesas/rcar_drif.c            |  3 +--
+>  drivers/media/platform/ti/j721e-csi2rx/j721e-csi2rx.c |  6 ++----
+>  drivers/media/platform/ti/omap/omap_vout_vrfb.c       |  3 +--
+>  drivers/media/platform/ti/omap3isp/isphist.c          |  3 +--
+>  drivers/media/platform/xilinx/xilinx-dma.c            |  3 +--
 
-diff --git a/drivers/ntb/ntb_transport.c b/drivers/ntb/ntb_transport.c
-index f9caa1a653c5b..370196ecf8f9d 100644
---- a/drivers/ntb/ntb_transport.c
-+++ b/drivers/ntb/ntb_transport.c
-@@ -1557,8 +1557,7 @@ static int ntb_async_rx_submit(struct ntb_queue_entry *entry, void *offset)
- 	if (!txd)
- 		goto err_get_unmap;
- 
--	txd->callback_result = ntb_rx_copy_callback;
--	txd->callback_param = entry;
-+	dmaengine_desc_set_callback(txd, NULL, ntb_rx_copy_callback, entry);
- 	dma_set_unmap(txd, unmap);
- 
- 	cookie = dmaengine_submit(txd);
-@@ -1889,8 +1888,7 @@ static int ntb_async_tx_submit(struct ntb_transport_qp *qp,
- 	if (!txd)
- 		goto err_get_unmap;
- 
--	txd->callback_result = ntb_tx_copy_callback;
--	txd->callback_param = entry;
-+	dmaengine_desc_set_callback(txd, NULL, ntb_tx_copy_callback, entry);
- 	dma_set_unmap(txd, unmap);
- 
- 	cookie = dmaengine_submit(txd);
-diff --git a/drivers/ntb/test/ntb_perf.c b/drivers/ntb/test/ntb_perf.c
-index dfd175f79e8f0..862b3dffa2b17 100644
---- a/drivers/ntb/test/ntb_perf.c
-+++ b/drivers/ntb/test/ntb_perf.c
-@@ -834,8 +834,7 @@ static int perf_copy_chunk(struct perf_thread *pthr,
- 		goto err_free_resource;
- 	}
- 
--	tx->callback = perf_dma_copy_callback;
--	tx->callback_param = pthr;
-+	dmaengine_desc_set_callback(tx, perf_dma_copy_callback, NULL, pthr);
- 	dma_set_unmap(tx, unmap);
- 
- 	ret = dma_submit_error(dmaengine_submit(tx));
-diff --git a/drivers/rapidio/devices/rio_mport_cdev.c b/drivers/rapidio/devices/rio_mport_cdev.c
-index 40d2953a9a7f9..585e3f9ff29ca 100644
---- a/drivers/rapidio/devices/rio_mport_cdev.c
-+++ b/drivers/rapidio/devices/rio_mport_cdev.c
-@@ -717,8 +717,7 @@ static int do_dma_request(struct mport_dma_req *req,
- 		goto err_out;
- 	}
- 
--	tx->callback = dma_xfer_callback;
--	tx->callback_param = req;
-+	dmaengine_desc_set_callback(tx, dma_xfer_callback, NULL, req);
- 
- 	req->status = DMA_IN_PROGRESS;
- 	kref_get(&req->refcount);
--- 
-2.43.0
+Sorry for the inconvenience here, but there is no single maintainer that ca=
+n
+provide an Rb here, you have to split these.
 
+Nicolas
+
+>  8 files changed, 14 insertions(+), 20 deletions(-)
+>=20
+> diff --git a/drivers/media/pci/mgb4/mgb4_dma.c b/drivers/media/pci/mgb4/m=
+gb4_dma.c
+> index cae888e6504b0..c9a15c625be65 100644
+> --- a/drivers/media/pci/mgb4/mgb4_dma.c
+> +++ b/drivers/media/pci/mgb4/mgb4_dma.c
+> @@ -55,8 +55,7 @@ int mgb4_dma_transfer(struct mgb4_dev *mgbdev, u32 chan=
+nel, bool write,
+>  		return -EIO;
+>  	}
+> =20
+> -	tx->callback =3D chan_irq;
+> -	tx->callback_param =3D chan;
+> +	dmaengine_desc_set_callback(tx, chan_irq, NULL, chan);
+> =20
+>  	ret =3D dma_submit_error(dmaengine_submit(tx));
+>  	if (ret) {
+> diff --git a/drivers/media/platform/intel/pxa_camera.c b/drivers/media/pl=
+atform/intel/pxa_camera.c
+> index 9e1fdd963b559..c9d57e4245181 100644
+> --- a/drivers/media/platform/intel/pxa_camera.c
+> +++ b/drivers/media/platform/intel/pxa_camera.c
+> @@ -832,16 +832,18 @@ static int pxa_init_dma_channel(struct pxa_camera_d=
+ev *pcdev,
+>  		goto fail;
+>  	}
+> =20
+> -	tx->callback_param =3D pcdev;
+>  	switch (channel) {
+>  	case 0:
+> -		tx->callback =3D pxa_camera_dma_irq_y;
+> +		dmaengine_desc_set_callback(tx, pxa_camera_dma_irq_y, NULL,
+> +					    pcdev);
+>  		break;
+>  	case 1:
+> -		tx->callback =3D pxa_camera_dma_irq_u;
+> +		dmaengine_desc_set_callback(tx, pxa_camera_dma_irq_u, NULL,
+> +					    pcdev);
+>  		break;
+>  	case 2:
+> -		tx->callback =3D pxa_camera_dma_irq_v;
+> +		dmaengine_desc_set_callback(tx, pxa_camera_dma_irq_v, NULL,
+> +					    pcdev);
+>  		break;
+>  	}
+> =20
+> diff --git a/drivers/media/platform/m2m-deinterlace.c b/drivers/media/pla=
+tform/m2m-deinterlace.c
+> index 6b07018614894..142b69eab47fe 100644
+> --- a/drivers/media/platform/m2m-deinterlace.c
+> +++ b/drivers/media/platform/m2m-deinterlace.c
+> @@ -336,8 +336,7 @@ static void deinterlace_issue_dma(struct deinterlace_=
+ctx *ctx, int op,
+>  	}
+> =20
+>  	if (do_callback) {
+> -		tx->callback =3D dma_callback;
+> -		tx->callback_param =3D ctx;
+> +		dmaengine_desc_set_callback(tx, dma_callback, NULL, ctx);
+>  	}
+> =20
+>  	ctx->cookie =3D dmaengine_submit(tx);
+> diff --git a/drivers/media/platform/renesas/rcar_drif.c b/drivers/media/p=
+latform/renesas/rcar_drif.c
+> index bd67e8e16f537..1e8cf71b52cae 100644
+> --- a/drivers/media/platform/renesas/rcar_drif.c
+> +++ b/drivers/media/platform/renesas/rcar_drif.c
+> @@ -610,8 +610,7 @@ static int rcar_drif_qbuf(struct rcar_drif *ch)
+>  	}
+> =20
+>  	/* Submit descriptor */
+> -	rxd->callback =3D rcar_drif_dma_complete;
+> -	rxd->callback_param =3D ch;
+> +	dmaengine_desc_set_callback(rxd, rcar_drif_dma_complete, NULL, ch);
+>  	cookie =3D dmaengine_submit(rxd);
+>  	if (dma_submit_error(cookie)) {
+>  		rdrif_err(sdr, "ch%u: dma submit failed\n", ch->num);
+> diff --git a/drivers/media/platform/ti/j721e-csi2rx/j721e-csi2rx.c b/driv=
+ers/media/platform/ti/j721e-csi2rx/j721e-csi2rx.c
+> index 022ea3d616c9e..998423fa2f330 100644
+> --- a/drivers/media/platform/ti/j721e-csi2rx/j721e-csi2rx.c
+> +++ b/drivers/media/platform/ti/j721e-csi2rx/j721e-csi2rx.c
+> @@ -692,8 +692,7 @@ static int ti_csi2rx_drain_dma(struct ti_csi2rx_ctx *=
+ctx)
+>  		goto out;
+>  	}
+> =20
+> -	desc->callback =3D ti_csi2rx_drain_callback;
+> -	desc->callback_param =3D ctx;
+> +	dmaengine_desc_set_callback(desc, ti_csi2rx_drain_callback, NULL, ctx);
+> =20
+>  	cookie =3D dmaengine_submit(desc);
+>  	ret =3D dma_submit_error(cookie);
+> @@ -782,8 +781,7 @@ static int ti_csi2rx_start_dma(struct ti_csi2rx_ctx *=
+ctx,
+>  	if (!desc)
+>  		return -EIO;
+> =20
+> -	desc->callback =3D ti_csi2rx_dma_callback;
+> -	desc->callback_param =3D buf;
+> +	dmaengine_desc_set_callback(desc, ti_csi2rx_dma_callback, NULL, buf);
+> =20
+>  	cookie =3D dmaengine_submit(desc);
+>  	ret =3D dma_submit_error(cookie);
+> diff --git a/drivers/media/platform/ti/omap/omap_vout_vrfb.c b/drivers/me=
+dia/platform/ti/omap/omap_vout_vrfb.c
+> index 0cfa0169875f0..006a4ae45a232 100644
+> --- a/drivers/media/platform/ti/omap/omap_vout_vrfb.c
+> +++ b/drivers/media/platform/ti/omap/omap_vout_vrfb.c
+> @@ -273,8 +273,7 @@ int omap_vout_prepare_vrfb(struct omap_vout_device *v=
+out,
+>  		return -EINVAL;
+>  	}
+> =20
+> -	tx->callback =3D omap_vout_vrfb_dma_tx_callback;
+> -	tx->callback_param =3D &vout->vrfb_dma_tx;
+> +	dmaengine_desc_set_callback(tx, omap_vout_vrfb_dma_tx_callback, NULL, &=
+vout->vrfb_dma_tx);
+> =20
+>  	cookie =3D dmaengine_submit(tx);
+>  	if (dma_submit_error(cookie)) {
+> diff --git a/drivers/media/platform/ti/omap3isp/isphist.c b/drivers/media=
+/platform/ti/omap3isp/isphist.c
+> index dc02f240ee89a..281bd0e3748e9 100644
+> --- a/drivers/media/platform/ti/omap3isp/isphist.c
+> +++ b/drivers/media/platform/ti/omap3isp/isphist.c
+> @@ -209,8 +209,7 @@ static int hist_buf_dma(struct ispstat *hist)
+>  		goto error;
+>  	}
+> =20
+> -	tx->callback =3D hist_dma_cb;
+> -	tx->callback_param =3D hist;
+> +	dmaengine_desc_set_callback(tx, hist_dma_cb, NULL, hist);
+>  	cookie =3D dmaengine_submit(tx);
+>  	if (dma_submit_error(cookie)) {
+>  		dev_dbg(hist->isp->dev, "hist: DMA submission failed\n");
+> diff --git a/drivers/media/platform/xilinx/xilinx-dma.c b/drivers/media/p=
+latform/xilinx/xilinx-dma.c
+> index fcfe0883aba5f..ece2116639fc0 100644
+> --- a/drivers/media/platform/xilinx/xilinx-dma.c
+> +++ b/drivers/media/platform/xilinx/xilinx-dma.c
+> @@ -358,8 +358,7 @@ static void xvip_dma_buffer_queue(struct vb2_buffer *=
+vb)
+>  		vb2_buffer_done(&buf->buf.vb2_buf, VB2_BUF_STATE_ERROR);
+>  		return;
+>  	}
+> -	desc->callback =3D xvip_dma_complete;
+> -	desc->callback_param =3D buf;
+> +	dmaengine_desc_set_callback(desc, xvip_dma_complete, NULL, buf);
+> =20
+>  	spin_lock_irq(&dma->queued_lock);
+>  	list_add_tail(&buf->queue, &dma->queued_bufs);
+
+--=-7jvVIZb33Hw0whxJbkGg
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaujxgwAKCRDZQZRRKWBy
+9L/MAP9nKDPd2CiiHevwzf9G9VZmZWWZ7YTIS8NSinPStG4lhQEA0DmVenStYpyu
+a6JwIBbvN1s2fcRVL2D2jJxqRsQ4bAs=
+=OQi2
+-----END PGP SIGNATURE-----
+
+--=-7jvVIZb33Hw0whxJbkGg--
