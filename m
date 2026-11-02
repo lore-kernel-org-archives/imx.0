@@ -1,13 +1,13 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.70.53
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.159.48
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793642967;
-	b=ZoVIIuoJg56eFW+IYBNKG3K/uuTv0FQAvRp+VMWpe29qqz+kQ2fI3jHAhZJpNeYwPl5o
-	 qYB917UIdO+jMLT5FFxmjdMpcASWkOvbZbfmLPrqDUWEzoOLzah8JKEvtw9TS71tngQL+
-	 6is44RYRKUoh06900717DzyWAX7Z4388W0LOcepEhRqvKGxehuN2WGAJpc7uoLK36bKGS
-	 GjwdTTpmB4/nzwAU7awfnBRJEKRH/TY5kq1nxvm0qJgCuN4rwuhZG0dLmYEIZ+Hbgee+k
-	 UZ8JlTEGIgSy2SmdkjHkRgl2pHF000mk83cTNifpS8D1cJEMCXBBQY+B9j6HIO09+gA==
+	t=1793643256;
+	b=Kj9KkXXaI/7lCzfKpLpP39gl6xvPDXVAP+yQB91MI2EVSlLVdYPK1B3L0F9gI+SDC37d
+	 jGhWvLpZ1zp4Zrn35hHfOuLpv8SBpK1iCcFguZ5IGnOk14EASA6Lj9ibDSnwXtwTM0FV9
+	 ypU9IObHsg6wOOC6qpwJkwDwS1MFYjutaoy+Ckfg22hURsqtq25UCSq0Z1TA5NDqxIXB1
+	 /rS4RVEB6y/Z0sG0aj8NZ3BxVpPpUmnJVLjJ8+gPwPLpwToRJh5p9kfjscC4TCK3SDcrL
+	 X/trnyc3z1lbTUI9fhfC39zWx9RNIVzg/nsedQjHC/ZtqgC0H9/dnxmPmVmKC9RIdMQ==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793642967;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793643256;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:Content-Transfer-Encoding:Content-Type:
 	 X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
@@ -24,95 +24,96 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
 	 X-MS-Exchange-CrossTenant-UserPrincipalName:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=hiQeECdH2uRxntetH/OLHd3qrLA+fdBl+S4x/mF+g4U=;
-	b=J3LZcOTDwHib8YoUtpUwiW1hjwUK6EShwAu2xL6DhufNluAKIzNX4SxwPoAHzpqHbo9u
-	 7o9+0Q6mNGWLEkPYvSv3dvRUhZA7s6fONyROUKVhmtos70hPRMEGLVDtnmuH3x26jcFKc
-	 VyVN85+6bZZKPtz0C5n75TdgngkiOvoIX/JwT/MVxdz6s+yASP5r199d87cWXXUy7o6ec
-	 +ETNEs9SaYdTzqOvmlp+qQJuhcXxybcWpiURj4H3pRocz17PHbUUTrt+H9J6/fWwyDgQA
-	 dRUZ6AcVYzcIde0fxC2lhe9LyBlxwRZiXpAdd4pniw3Mi0FcrdCNGTHovQeOXXxRncg==
+	bh=nQA36f9YUS1vMk6hJDcPYVnkMaOfqBEsahZNbSftY0M=;
+	b=qQCRG0ZxIvlfVzzuGmHYQ6Y6jmnsTbGpPyNq3HOH3eBlP8a8EMmC2zpj5sQnkZ6fONPA
+	 Skc20qvalRDDhz826krMM/QDmZVzqBAy2KG+CEImNpKoU6HJGUT9ki9KDf07NGRVq37Yb
+	 uz/YxrQarXsDqQK7rj9D1S0SnOQF3ewO3sm9fOJzpomlTiaut9K28Q7jnrxW7lPdTqV9Y
+	 m14G9A+4oUS0GJrKJDZfSJXFtLxvvpl3FwLfzo5IzUYgzi4xM9DrAsBrLklEMN7WYDxT3
+	 A5kDPdSMBS/gfUo4OFTgBv0gBYlNCkSzLQg7UdzobBi4u6/l31CPsh477z06Ti2Yb3A==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=oss.nxp.com;
 	spf=pass smtp.mailfrom=oss.nxp.com;
-	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=WgzBv2q2;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.70.53
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011053.outbound.protection.outlook.com [52.101.70.53])
+	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=AkDbAgLN;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.159.48
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013048.outbound.protection.outlook.com [40.107.159.48])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7CFA606A324
-	for <imx@lists.linux.dev>; Mon,  2 Nov 2026 18:09:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E7CFA606A324
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B101606A324
+	for <imx@lists.linux.dev>; Mon,  2 Nov 2026 18:14:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1B101606A324
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=WgzBv2q2
+	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=AkDbAgLN
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=K1gg5DNK/G4nWnvSl0ImatAfKux3vQSyzboG9DvPVwIiUo+jJoEk35FNgcCJ5aAxM9YacjqkWifvH0IIas3HZlQddOxO77zXun1GXrnv0Birxj+zhEvH5zrLXFpl/aqpn1pFXuikwGhobgc5T9PnHYAq8Ng7jkOHgoN/prDXI5e2hWQT+f1vCLgCuJ6E8PvecHMQPY4muSXPcZ4qXj7WUx0c4basQRg4/jXhruNRkYwkKGNBvhrKbhnKcjvRUrR6f7lYE8tLOCxnoKF8jXn9icUIZbWczmhaBYOGuG3N6D6MBJE8PXYvY48Z5j3/ATBZHShJ6OjCua2fK0FdjqRIgg==
+ b=B9t2gTtzpG2d4Etpgfmb8oGlpKc9jOcaWxR3C5JjiQlto4FgyMsZZ5tXZaHvoZBREbpYLfyA3C5UmGPcdFIu7E0iOL5ks78MMjd/LCYRb6HhESuUya/cFHPIs+s2p3nZ352XjV2gzZv07xBA6oVyf7P5LkC3wx0MXtpWpK/CS7TNRJ7gCPBuSn5PVziUVgYwXUHVpY3s2vbkRH8IaeIx59zxuSymxa6J2zdyFh+iaTcC3tufY7MuL4Bd3sq8J9C4W0TV680bbSFJx6OGiHnuRg+aLqc9239fyKComCQjvtad2+PMTE4yrAVglbLf5OfrZDxdD3s8zH8+9HMy8eGzlA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hiQeECdH2uRxntetH/OLHd3qrLA+fdBl+S4x/mF+g4U=;
- b=QuMhi7oZCO4N2vMlUvLWhr8h3zHc5h+8dvBHgWpT7smtQIyVmDTFv9j9gm91OPephtucsprlgPgycWFGRD4ClCQZ5je3+fY3zwfD2kcGAYHuJySlHPspFQUOUn7a1m5XeMBai5Wy2NxXkfVJ34oo7j1q90TsS6GWGvWfaZUwH/lAr2Yq+d6Y5cv9JzMilw60CLRfRHnp2kqURhELiAs6jbFjrpyHJEms0cAqLHRqhCbEO7zslyeEygMEGuskHH0xu5cbV0nonTe9nrpzBMkrBiXqO5WVbBVJ6EfB9E0VpM3QauhYR3i0ZmDC7ORD4Pv/n70f8jc2HqDQB50VrKODkA==
+ bh=nQA36f9YUS1vMk6hJDcPYVnkMaOfqBEsahZNbSftY0M=;
+ b=v5QO52leGGFkYJzucIoVg42YcDyPE3vkIegjlEvP2y9Me4zE7qx7h9zeJeXuPBa/8Gsu4V8Oeg/ois1+0XgfjpAxHLxKAQg+heyyhCeLLjKzYvET3mt37g8LKKAaUPT7siofGHgNPR3NSWauMyTpEOFFPFmkBOsOeK1ZOFXzXd0t2Cdr0jmEhgWgWbXO92HnSSftHWNBwCQarEpCJsSpJF82aodW2eTNCp6Wgs24/BMIgXbyK/GzKAVj9HdIWg+HSEiH95H8uDW3M2UqdA94dXjrVp5yGFrbMvrixuMGS8k3aphbxtkhSdlruq24sM/fATacCDukgH2mCUQdC3w4OA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hiQeECdH2uRxntetH/OLHd3qrLA+fdBl+S4x/mF+g4U=;
- b=WgzBv2q26zh8XeamYM9RK0hXwOj0pMxj3mvYLQp1rZ5eNsnHtT1/mjUxntEuXkf0QysvfNyhA37yWcIwZFdl8ZksOnwjp8cGRpgOdeMSmGsPBYfgFSCDZxJ8NN6yhAkvZb+rUfvVAhx0h8IJ0Q0TH2FNHWX5hMohOSElO8XpZhLjvjCvJF6mh0wjUwtGH/9v88WIjqnDxkHIEfiECIHE8LSLusdk1EZvA6kaBUgx/kuDGU9fzeeiGzISmkZasYQ5oh8BRGv4RcaxPftf5B0OI6CHwdpZ+pLHk8KIZ0DtrewGs4LezTBn7l1i9pMY00s1SRCCsj+yJ0hAtfTjJStNFw==
+ bh=nQA36f9YUS1vMk6hJDcPYVnkMaOfqBEsahZNbSftY0M=;
+ b=AkDbAgLN8L5479NTUM4NVh3BJ/sKgR5bchqslCUQpsBa7beMnJ3OE+LgTuY8zpYF41aNDXkyNiu9F+LkAhohvlSk9flH6yoH0sIHKav5Qjte0spVQrSYO1awecn3ogc7ADiWOPh27EtPLd1wdaPCw6Dc4N/irmbdJ4MM0HKV7RMxozfslRBEcjzvTlf7gse/UWwHINwbxnRIItDT85KkxWCUdPWBh3B5MNMtcf3WEHiy1wAyvD33vXEp216vq0HMY36w99nHKFIq3Z2MLnDBTMYo5ho1FQvSN8RTgpE7J8rex0bmLq2wir6Z/+iKMw7Y28G5khD5vYoJBlWT5qpESw==
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
 Received: from MI3PR04MB12438.eurprd04.prod.outlook.com (2603:10a6:290:76::14)
  by DBBPR04MB7772.eurprd04.prod.outlook.com (2603:10a6:10:1e3::8) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.12; Mon, 2 Nov
- 2026 18:09:23 +0000
+ 2026 18:14:13 +0000
 Received: from MI3PR04MB12438.eurprd04.prod.outlook.com
  ([fe80::c715:c32:8bb1:b70b]) by MI3PR04MB12438.eurprd04.prod.outlook.com
  ([fe80::c715:c32:8bb1:b70b%6]) with mapi id 15.21.0569.011; Mon, 2 Nov 2026
- 18:09:23 +0000
+ 18:14:13 +0000
 From: Frank.Li@oss.nxp.com
-To: Lars-Peter Clausen <lars@metafoo.de>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	Shengjiu Wang <shengjiu.wang@gmail.com>,
-	Xiubo Li <Xiubo.Lee@gmail.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Nicolin Chen <nicoleotsuka@gmail.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Orson Zhai <orsonzhai@gmail.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Chunyan Zhang <zhang.lyra@gmail.com>,
-	Olivier Moysan <olivier.moysan@foss.st.com>,
-	Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>,
+To: Vignesh Raghavendra <vigneshr@ti.com>,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Kyungmin Park <kyungmin.park@samsung.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Han Xu <han.xu@nxp.com>,
+	Keguang Zhang <keguang.zhang@gmail.com>,
+	Vladimir Zapolskiy <vz@mleia.com>,
+	Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>,
 	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
 	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Kexin Sun <kexinsun@smail.nju.edu.cn>,
+	Rosen Penev <rosenp@gmail.com>,
 	Frank Li <Frank.Li@nxp.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Tianchu Chen <flynnnchen@tencent.com>,
-	Liviu Dudau <liviu.dudau@arm.com>,
-	bui duc phuc <phucduc.bui@gmail.com>,
-	Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>,
-	linux-sound@vger.kernel.org (open list:SOUND),
+	Wentao Liang <vulab@iscas.ac.cn>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Chen Ni <nichen@iscas.ac.cn>,
+	Runyu Xiao <runyu.xiao@seu.edu.cn>,
+	Hemanth Selam <hemanth.selam@gmail.com>,
+	Pengpeng Hou <pengpeng@iscas.ac.cn>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig=20=28The=20Capable=20Hub=29?= <u.kleine-koenig@baylibre.com>,
+	Triet Hoang <triet.hoang.dev@gmail.com>,
+	linux-mtd@lists.infradead.org (open list:HYPERBUS SUPPORT),
 	linux-kernel@vger.kernel.org (open list),
-	linuxppc-dev@lists.ozlabs.org (open list:FREESCALE SOC SOUND DRIVERS),
-	linux-renesas-soc@vger.kernel.org (open list:RENESAS R-CAR & FSI AUDIO (ASoC) DRIVERS),
-	linux-stm32@st-md-mailman.stormreply.com (moderated list:ARM/STM32 ARCHITECTURE),
-	linux-arm-kernel@lists.infradead.org (moderated list:ARM/STM32 ARCHITECTURE)
+	linux-arm-kernel@lists.infradead.org (moderated list:ARM/Microchip (AT91) SoC support),
+	imx@lists.linux.dev (open list:FREESCALE GPMI NAND DRIVER),
+	linux-mips@vger.kernel.org (open list:MIPS/LOONGSON1 ARCHITECTURE),
+	linux-stm32@st-md-mailman.stormreply.com (moderated list:ARM/STM32 ARCHITECTURE)
 Cc: imx@lists.linux.dev,
 	vkoul@kernel.org
-Subject: [PATCH 1/1] ASoC/sound: use dmaengine_desc_set_callback()
-Date: Mon,  2 Nov 2026 13:09:08 -0500
-Message-ID: <20261102180915.3981805-1-Frank.Li@oss.nxp.com>
+Subject: [PATCH 1/1] mtd: use dmaengine_desc_set_callback()
+Date: Mon,  2 Nov 2026 13:13:41 -0500
+Message-ID: <20261102181406.3994422-1-Frank.Li@oss.nxp.com>
 X-Mailer: git-send-email 2.43.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: PH0PR07CA0065.namprd07.prod.outlook.com
- (2603:10b6:510:f::10) To MI3PR04MB12438.eurprd04.prod.outlook.com
+X-ClientProxiedBy: DS1P221CA0025.NAMP221.PROD.OUTLOOK.COM
+ (2603:10b6:8:242::16) To MI3PR04MB12438.eurprd04.prod.outlook.com
  (2603:10a6:290:76::14)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -125,57 +126,57 @@ Precedence: list
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|DBBPR04MB7772:EE_
-X-MS-Office365-Filtering-Correlation-Id: eafc58e2-6960-4863-0282-08df390c6c56
+X-MS-Office365-Filtering-Correlation-Id: 7566565d-1caf-4b02-b3e0-08df390d191f
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|19092799006|376014|23010399003|7416014|1800799024|10067099003|261102123227099003|18002099003|921020|56012099006|11063799006|261022105027099003|261021121427099003|261026140227099003|261021123027099003|261009223027099003|261028144727099003;
+	BCL:0;ARA:13230040|366016|19092799006|376014|23010399003|7416014|1800799024|10067099003|261102123227099003|18002099003|921020|56012099006|11063799006|261021121427099003|261021123027099003|261026121527099003|261009223027099003;
 X-Microsoft-Antispam-Message-Info:
-	0d0aLwHrkRsLiOInjPkVbjaygVYo8Ru17wEu/XkArWZTL+7wk+yKJbYXZ2Hq8QZX5rlePQ628RHeauLSwTICNwMx9fJRyGFhyKk4XylIosd8lNeDhd5CmLwEg1bK0B1UFHny/teVxCfEeKLWZ1BoTJMn7N+xqb0hY/ZMaKOZtWzd0Q1mTaGDzC1i9j6iSyh7emcetIIz/YPu60L6sWCc6GGlEw/t5wbxkNzu/i1fsZ5rZPFmLKInYx2F8blEGk5Ynpr0KuvjsUkR1ccM4R6fDZAGRmxWBelYOw8bMDBbgxxtIy2B3+YBW4lPfHrT9g7aSTygKE6P//+KS79q9n04/DuHfeAtJeSh5h4VfsFy+/r9nOciCrgr9fCrAZOupTEPva+JhlSlqdDmQbrc0dgL15gdeNGJNeIyVY7CyDz5CZSKpQTg+DZJBKQmATIPaKkd10XYfj8K3Yu+EhQY19v2ElOeuASHcQzkiiUXYLWO04RuOATPG5LDgcAV5P43H843MSf319gz+gZfqnNIyFF/wD4KgfBzf1J9A09jhbb4ghT67FKU/u+0axo3Haa6uQh8/w11CJeQUz50kavz9d9YoY+3YhT/ZnpxeFBRrciKWQiDbZ3EJ7ySX3c5R/JdfGX/87e0NZ5TRP24kpWj3pDzB+xkM3EynMr0K1uyZ73pWFr3TVkLPIoqLiENWqSFMFJg/RCqeqVotNZ/h8YEnBYN3g==
+	f6ZzAQDC1FUDoZM/b3SjyUqY20UXQkn3nYWacrpcX46EWK8vbeVvUkSCVqZHleLjeDeC27NkYl+48k1GIW8/osdzwAdwhQOJ2EBkdC+N3txj9qxft67YrqJEKeR3w1OCP7rfpU2VPcER+co4dtlZF7Yp9Q6+mkU6hhtvnTHAmv6jgsOBxQcbZs+GKzTFPMvzmveZtdzdRm6Wt3Qqn8kJdzekGIKNiUGTTa40geT9VPcx8W8a+iTLqzhLT/XFMdy2pu/BaviXNc2pLxNBZTU2NE0NiBM78adbXTIebk2CoeEo8AZ8N2qezLrgA7U6TuUvi0++hBGq5qCiJqmGk+5/RjLw+TB1/qepKjIibo8iKpOeUtVnnq4CogkZxI2998yxEIj4SFPxsbYo0T4t4sVjuQJtskWTYbkga/63Sp6LTDGzTjjnKW+lqHLlHIsd0K/BR0NpXwXFovnK2+GGfLu2gUr1t/OWx5gVbrkBrC7Hh/AvSA1DDPs7PwiazC03KS8bdUYmfpSvOacDVfDEfciI9TK3Kxt9U0NXalK/T1fckVgy2vpiiVRZ8O3CHAOfX0RBh6Plfy7SmmCqV6CORX+kKsNl1fjOnqnW4HaYDVmsvuizum5iNRKArSco1VAY4z3hteuVP6uLYhpH28XL3aHeL8GyyCtZ7D5m1CRaOnTOnsuQU2gs9VxvKrxt27tpQhexUwlmByyEPV1gOlNKMoFULA==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(376014)(23010399003)(7416014)(1800799024)(10067099003)(261102123227099003)(18002099003)(921020)(56012099006)(11063799006)(261022105027099003)(261021121427099003)(261026140227099003)(261021123027099003)(261009223027099003)(261028144727099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(376014)(23010399003)(7416014)(1800799024)(10067099003)(261102123227099003)(18002099003)(921020)(56012099006)(11063799006)(261021121427099003)(261021123027099003)(261026121527099003)(261009223027099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?75i0AYNNqMBZ9if+4lDiqlBv1epaXSv9qjbDIPt5n1ye2e7UuGwCNdRrWTq6?=
- =?us-ascii?Q?3EWkw3EBZU7Jcg3RGGJH2cLfyTq2RHWELwGLNvto5sQAv5AyZbAh6YnopMsu?=
- =?us-ascii?Q?5Aib0/mDYeUS5RGvN1E3X+6MbILib7cZ/66CosebJRhl2oHCswK7W8L1mQZi?=
- =?us-ascii?Q?dQUoyzhRl+dH8r/+9uso0v5ukHDh+O34NjmrJDj/DvnR0Wy8ZSvXQLn4DlLF?=
- =?us-ascii?Q?5y4Y5KJDt2TF33V1jKbtXa6Xw4COYVhZXCitz3l7S3YyWtW5u+UhZhy/L1Dj?=
- =?us-ascii?Q?tbDwZuwY5fgZ5DveKpoW5JdGjk4wrvRaBocqe7OaJjVchyMgRybOEsUJ7Bxe?=
- =?us-ascii?Q?zqZ9oYRSmkIu8duOu73iRJmF9OVA8yoKi7ZSsHYiSqah9VbiYoQ8VLlM2yal?=
- =?us-ascii?Q?CucxEnjivhLjIU5RpFBKzSACZxSso9wvbMyfWAzYA3kxcbGLqOvYMzzBZsT4?=
- =?us-ascii?Q?cnjpLjemA0Lk+JoAxui0eyLX63jxmuu1V3f9+dDwQ4ARzuZSt3DpX5YmCrVi?=
- =?us-ascii?Q?5dOTJC5s2hhiBJc70jxZGElzFXY9EPF+V2w+EOO7xyGSnQDwnIjoV0ikLe+H?=
- =?us-ascii?Q?qVv6P5GUamTX70QGOuRRuwC2VJXtcnUAkD1mnwW0QxOK7o0Q9OT0TSgu5Ho8?=
- =?us-ascii?Q?BpFMh3JN0+UrGhJ8alk0ojX6GLjSmVuW15cBIW9C8OE/9sN65Rci9L7BF7DX?=
- =?us-ascii?Q?7YkSjsOZ6F9FlfPbBO07YpaWaJjWUYRLSjdI7nIypmpJXvXxyi207adVUaMn?=
- =?us-ascii?Q?26pM09l+FvNgrpffoMcTL6Svz0/8B+V3TjCTcrx4BnM4Zi70VmP9nuknqgqA?=
- =?us-ascii?Q?SmSABZib9bbx85JiyohVP5Vy8lOxKJXTS3f5sZGH+IeCI7OBsKWxxPL/oBwn?=
- =?us-ascii?Q?xBWiWde9aKwWbXKmk7KKn3XscAQs2a65BTIFh8IpkGOxbb096/pyhfc4tMGa?=
- =?us-ascii?Q?p0TkG4Xry0UkxjAfDpnFsYVz5qzWiBBriJMMvDWB6SnmjnVhaRuao5zdxGgH?=
- =?us-ascii?Q?ioNMyVOju4CQAymVVCrsT0L2a5sQ1XZ1GvhOpnW7pP2lt/a0RqKTrt2TkZs9?=
- =?us-ascii?Q?+BrirRmnL2Gss/cemIUdP3wZj+/Za38t+4SLIZ6Or/vIoR1+dA9UbIyDTiH0?=
- =?us-ascii?Q?wHYrQHvP1ZdzcFnUnDy7jm8lywqVS12xZY28Zmcl5esRC9RLWTUIn9EnhzV4?=
- =?us-ascii?Q?ToZsRQ06bWQUTpV2gElSMew2mmHsFN3utoU7g3dNKb09f8J0evZY3+3Liw3T?=
- =?us-ascii?Q?+73E7kOzDAPAY/4wwhXwFjXwGeGj8XgfkJiaH1Ba2/U/gLzLEe5HBeVXYxhq?=
- =?us-ascii?Q?00cH+QJ7jB5H2qvR1YpkUVYDV1bWaYAT1Mv26bOygluXw3q8vEIiU1fnt8hQ?=
- =?us-ascii?Q?pqo6BtZ9czgUgjGwIuMUUTOT0mV0DRgLNT1d3rRR9jaIjyRKFm1dOvTPWQsM?=
- =?us-ascii?Q?Qa+Q/ani0i+jEzwg5VrwRbzVoZo+c/NNpgxOPx6NExzWhm0bWLKmePwNG8UY?=
- =?us-ascii?Q?7DaanO/TAqw4h687JKx1Bld33P0YBu3XBiQUDo+hcHhVb3zYNs1MbEjFZeq5?=
- =?us-ascii?Q?XeH1k9Ay0fHmEfKZzwVFPH9C6WnCY5RdzFoe6LhxjcJ6kg0iWBeuO8cKYxl8?=
- =?us-ascii?Q?Sfj1+JTsgWMrYpw6iQuqFspaTHVhbvSPqNmri2OyYUOChVSBbM7HiY4VGbHU?=
- =?us-ascii?Q?HTgMAuQaA3SbR9HqBniE4hwyjX5mD9YASIYh7+fJYNFK67BfKcDd4snMu4FK?=
- =?us-ascii?Q?/V/YZgJNoR7FCIJ+NhqmufAyfITUF6iHST0nlXQSPcuGv4FUJ2PP?=
+	=?us-ascii?Q?QsfL7PvGwKbv9m6XpfN32Z4cT/2YwfeXL6nXsD0HMuwzBOECNrIoCGfxUFOI?=
+ =?us-ascii?Q?aA4/WcMJLBkvNVwifqAc8mh1WrAEOFH/LkpV6sxGGB2e9RZks8ETrZEQEusr?=
+ =?us-ascii?Q?mChJrJcVHuBI4wRZILIiX0yzNSbF5bw0DLhoOen1PBGY3n0bicdHqt2bNcRz?=
+ =?us-ascii?Q?3ZXxyaGzFrjX9NlViADKLqsgnRh8II1VuOmH3ZJDMdMSUoLYR3N5gMr/AUBq?=
+ =?us-ascii?Q?wh+kiuGT8d4NyX+9dr6IjFjkAP7xj/1y/FVw5ZJnHf0SkBO+WPl8mzMHqG2W?=
+ =?us-ascii?Q?/MjzazQuaelxVSK2b+SXtPzKiPsiZaalE+sTnh0LF5emeJcp033vetZwbQRL?=
+ =?us-ascii?Q?wIpiChw8o1tD6D5BkY6oK38ETxSiYZY78PMY+kw6EiFiAFb6aLEjhChBYzR0?=
+ =?us-ascii?Q?cS54jsPnsyFasTFMGOWdz8uuXs7XpYFPmMdXLRj4zCm/cqJPovQgqkcWqqkZ?=
+ =?us-ascii?Q?XoYVTgQIyApsXQ5B1lZ0uzpGIDn1QR/3r2yNGFWSUYLNedrQnFjApadPfqeL?=
+ =?us-ascii?Q?cKHatVoxkAWSnPeJSFdJhJYaTDfoBKQphCwujXDLMC/dqf9UhSAMtfv/SdmL?=
+ =?us-ascii?Q?df6pIUNRPvugmNIZItBwcenbYMrQ/v5trolW8vD5WRW2Fmf0Czr6OHzwFDJO?=
+ =?us-ascii?Q?jpvGc+gk38Rm6buD7v/qpgboDnxWuQl3lBfUyIwFXAumTJSYYlHPDlVjf2uA?=
+ =?us-ascii?Q?8cKCSTFnTtcTSx0lHTFBT3KKp7NMD/wm+wmwTAvgOkjjExTYJlA04KKPFb+v?=
+ =?us-ascii?Q?YAYf1tqNfOCQ6nOKHEq3MsS17SMS+afYUay4HH1RsjTH8MAGwixfhQ3Hl6q2?=
+ =?us-ascii?Q?bY1npkvMMRV1gdM0Gcs5xGFXm6mEqMH0SuOJLJ46bhL/l546nIdQcTAoFYq7?=
+ =?us-ascii?Q?ng03nSp1sC4Qbv0Cyek/tloXdkfj5c1vUoO0N63DhUttZXwHDpARnrptKxRp?=
+ =?us-ascii?Q?Boc70aG62uZnnxeJcZS488A6abfZB7fPjyqk1Cn/pUu//WGQVRXBnwLbtm3X?=
+ =?us-ascii?Q?M+07CWheRI6el2wqsG0Lpilco/u8pVt4s7zU01gpjtedHBVTb29mDxGMdAUY?=
+ =?us-ascii?Q?PsqHTemQYjKoCHf5DT2WFwlhoJKXPVEZBRtfsQqLdmxCm2BVEegZ6hWx5YZw?=
+ =?us-ascii?Q?kICF0W5iUfJZ551UbIiA8xtKd5wIfcWVqvDJx7QIZ73xn8k5GgNLx1duUR6e?=
+ =?us-ascii?Q?EdKRp8kDx4HfBOfEuvKSiMd/t/C1nrsHQJXSh4QJDxPN2gr+EU+936r/K+fX?=
+ =?us-ascii?Q?FlcdDaVe+xmDQmw9WwF1ikR15AmuiWI0L5ky8LbD13RXu7JeqXcHqRjBD4LR?=
+ =?us-ascii?Q?dC8cRfjkTGs5Sc//CP2AokgGjiBavG0eOIFvtOvsF1zKavwgV93RaAFsW4dx?=
+ =?us-ascii?Q?Y9oxtFlpd7uu2rXFBY7RgkQXxQ5MPhslwFmp1ZG1oodYb9QSDuGhKoH5EU11?=
+ =?us-ascii?Q?tLZOAjDNHLU5lBUXk63DEN7Ht8jRTg6SAnPfy1dJNxDHYSNFTMZDMymFsmOi?=
+ =?us-ascii?Q?ivz4fPUg7G8BxJZ9NdZf3KCPeeOPuUCWybU/R70tO4vGS5p7j6BMnEQnqh4O?=
+ =?us-ascii?Q?n9Ng6xmQeu+f+AH0wimL8M8VbfXGuN3yMik2Aj11X/ZyJAv4SJYJxMJ648l3?=
+ =?us-ascii?Q?0a21dnXRnyY+sV1Z2GDUXXP3aFQm+WXaQ3SqYw2fbbo+b3tHc5dHhyb7Xbt+?=
+ =?us-ascii?Q?X4a+EQqWzmh05cIekJEqED1zMT1hzAkgvDMcGGbmekc38B1+NUCCs0OZ1pYG?=
+ =?us-ascii?Q?YaVlyjFs4T87O/bAJLHYrtPQTY0azmM4GKRnqPyd03VCBulcJOzb?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: eafc58e2-6960-4863-0282-08df390c6c56
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7566565d-1caf-4b02-b3e0-08df390d191f
 X-MS-Exchange-CrossTenant-AuthSource: MI3PR04MB12438.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Nov 2026 18:09:23.0499
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Nov 2026 18:14:12.9949
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: j1/xqQxvBiSJDQRcrmZM3JjqpeGqnfI1bFjxetSHS9fDeDQ0vc939CIMYMRwhEZwVJ10Ix3rbmiCmQHNL4kDNQwi8/WTyFYXd+9j4aLKw80PHMFLCtvqwLWV2YSuWLT6
+X-MS-Exchange-CrossTenant-UserPrincipalName: XXI92vXzjojEzI1qV/hRkYtlTLh7rst2DH7AktqE9mz402/nOUGQ0ot142X51yEP9pJE/9eMDq2iatx/NvZde2+w8EQTr0GYnLus0mQM03iXXEteFHjQv2JJ8sRYO3Mg
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7772
 
 From: Frank Li <Frank.Li@nxp.com>
@@ -189,142 +190,231 @@ dma_async_tx_descriptor private to the DMA engine.
 
 Signed-off-by: Frank Li <Frank.Li@nxp.com>
 ---
- sound/core/pcm_dmaengine.c         | 3 +--
- sound/soc/fsl/fsl_asrc_dma.c       | 3 +--
- sound/soc/fsl/fsl_asrc_m2m.c       | 3 +--
- sound/soc/renesas/fsi.c            | 3 +--
- sound/soc/renesas/siu_pcm.c        | 6 ++----
- sound/soc/sprd/sprd-pcm-compress.c | 5 +++--
- sound/soc/sprd/sprd-pcm-dma.c      | 5 +++--
- sound/soc/stm/stm32_spdifrx.c      | 3 +--
- 8 files changed, 13 insertions(+), 18 deletions(-)
+ drivers/mtd/hyperbus/hbmc-am654.c               | 3 +--
+ drivers/mtd/nand/onenand/onenand_omap2.c        | 3 +--
+ drivers/mtd/nand/qpic_common.c                  | 4 ++--
+ drivers/mtd/nand/raw/atmel/nand-controller.c    | 3 +--
+ drivers/mtd/nand/raw/cadence-nand-controller.c  | 3 +--
+ drivers/mtd/nand/raw/fsmc_nand.c                | 3 +--
+ drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c      | 3 +--
+ drivers/mtd/nand/raw/intel-nand-controller.c    | 3 +--
+ drivers/mtd/nand/raw/loongson-nand-controller.c | 3 +--
+ drivers/mtd/nand/raw/lpc32xx_mlc.c              | 3 +--
+ drivers/mtd/nand/raw/lpc32xx_slc.c              | 3 +--
+ drivers/mtd/nand/raw/omap2.c                    | 3 +--
+ drivers/mtd/nand/raw/sh_flctl.c                 | 3 +--
+ drivers/mtd/nand/raw/stm32_fmc2_nand.c          | 8 ++++----
+ 14 files changed, 18 insertions(+), 30 deletions(-)
 
-diff --git a/sound/core/pcm_dmaengine.c b/sound/core/pcm_dmaengine.c
-index 1306b04be171a..41feb5312ffec 100644
---- a/sound/core/pcm_dmaengine.c
-+++ b/sound/core/pcm_dmaengine.c
-@@ -169,8 +169,7 @@ static int dmaengine_pcm_prepare_and_submit(struct snd_pcm_substream *substream)
- 	if (!desc)
- 		return -ENOMEM;
- 
--	desc->callback = dmaengine_pcm_dma_complete;
--	desc->callback_param = substream;
-+	dmaengine_desc_set_callback(desc, dmaengine_pcm_dma_complete, NULL, substream);
- 	prtd->cookie = dmaengine_submit(desc);
- 
- 	return 0;
-diff --git a/sound/soc/fsl/fsl_asrc_dma.c b/sound/soc/fsl/fsl_asrc_dma.c
-index b417de6abebe4..cd3bf6340b650 100644
---- a/sound/soc/fsl/fsl_asrc_dma.c
-+++ b/sound/soc/fsl/fsl_asrc_dma.c
-@@ -76,8 +76,7 @@ static int fsl_asrc_dma_prepare_and_submit(struct snd_pcm_substream *substream,
- 		return -ENOMEM;
+diff --git a/drivers/mtd/hyperbus/hbmc-am654.c b/drivers/mtd/hyperbus/hbmc-am654.c
+index 8a14e908d0b53..56b265125c7e8 100644
+--- a/drivers/mtd/hyperbus/hbmc-am654.c
++++ b/drivers/mtd/hyperbus/hbmc-am654.c
+@@ -100,8 +100,7 @@ static int am654_hbmc_dma_read(struct am654_hbmc_device_priv *priv, void *to,
  	}
  
--	pair->desc[!dir]->callback = fsl_asrc_dma_complete;
--	pair->desc[!dir]->callback_param = substream;
-+	dmaengine_desc_set_callback(pair->desc[!dir], fsl_asrc_dma_complete, NULL, substream);
+ 	reinit_completion(&priv->rx_dma_complete);
+-	tx->callback = am654_hbmc_dma_callback;
+-	tx->callback_param = priv;
++	dmaengine_desc_set_callback(tx, am654_hbmc_dma_callback, NULL, priv);
+ 	cookie = dmaengine_submit(tx);
  
- 	dmaengine_submit(pair->desc[!dir]);
+ 	ret = dma_submit_error(cookie);
+diff --git a/drivers/mtd/nand/onenand/onenand_omap2.c b/drivers/mtd/nand/onenand/onenand_omap2.c
+index 644498187d8fa..5bd906cc02d82 100644
+--- a/drivers/mtd/nand/onenand/onenand_omap2.c
++++ b/drivers/mtd/nand/onenand/onenand_omap2.c
+@@ -337,8 +337,7 @@ static inline int omap2_onenand_dma_transfer(struct omap2_onenand *c,
  
-diff --git a/sound/soc/fsl/fsl_asrc_m2m.c b/sound/soc/fsl/fsl_asrc_m2m.c
-index 58101ce07c9f9..c6970a7e88f3f 100644
---- a/sound/soc/fsl/fsl_asrc_m2m.c
-+++ b/sound/soc/fsl/fsl_asrc_m2m.c
-@@ -176,8 +176,7 @@ static int asrc_dmaconfig(struct fsl_asrc_pair *pair,
- 		return -EINVAL;
+ 	reinit_completion(&c->dma_done);
+ 
+-	tx->callback = omap2_onenand_dma_complete_func;
+-	tx->callback_param = &c->dma_done;
++	dmaengine_desc_set_callback(tx, omap2_onenand_dma_complete_func, NULL, &c->dma_done);
+ 
+ 	cookie = dmaengine_submit(tx);
+ 	if (dma_submit_error(cookie)) {
+diff --git a/drivers/mtd/nand/qpic_common.c b/drivers/mtd/nand/qpic_common.c
+index 91ae970734f80..4d5d5edb63e99 100644
+--- a/drivers/mtd/nand/qpic_common.c
++++ b/drivers/mtd/nand/qpic_common.c
+@@ -584,8 +584,8 @@ int qcom_submit_descs(struct qcom_nand_controller *nandc)
+ 		cookie = dmaengine_submit(desc->dma_desc);
+ 
+ 	if (nandc->props->supports_bam) {
+-		bam_txn->last_cmd_desc->callback = qcom_qpic_bam_dma_done;
+-		bam_txn->last_cmd_desc->callback_param = bam_txn;
++		dmaengine_desc_set_callback(bam_txn->last_cmd_desc,
++					    qcom_qpic_bam_dma_done, NULL, bam_txn);
+ 
+ 		dma_async_issue_pending(nandc->tx_chan);
+ 		dma_async_issue_pending(nandc->rx_chan);
+diff --git a/drivers/mtd/nand/raw/atmel/nand-controller.c b/drivers/mtd/nand/raw/atmel/nand-controller.c
+index 0bdbcbb50d94c..45463b8d405ec 100644
+--- a/drivers/mtd/nand/raw/atmel/nand-controller.c
++++ b/drivers/mtd/nand/raw/atmel/nand-controller.c
+@@ -394,8 +394,7 @@ static int atmel_nand_dma_transfer(struct atmel_nand_controller *nc,
+ 		goto err_unmap;
  	}
  
--	pair->desc[dir]->callback = ASRC_xPUT_DMA_CALLBACK(dir);
--	pair->desc[dir]->callback_param = pair;
-+	dmaengine_desc_set_callback(pair->desc[dir], ASRC_xPUT_DMA_CALLBACK(dir), NULL, pair);
+-	tx->callback = atmel_nand_dma_transfer_finished;
+-	tx->callback_param = &finished;
++	dmaengine_desc_set_callback(tx, atmel_nand_dma_transfer_finished, NULL, &finished);
  
- 	return 0;
- }
-diff --git a/sound/soc/renesas/fsi.c b/sound/soc/renesas/fsi.c
-index 74e2ea002fbb1..fa21cf47befff 100644
---- a/sound/soc/renesas/fsi.c
-+++ b/sound/soc/renesas/fsi.c
-@@ -1375,8 +1375,7 @@ static int fsi_dma_transfer(struct fsi_priv *fsi, struct fsi_stream *io)
- 		goto fsi_dma_transfer_err;
+ 	cookie = dmaengine_submit(tx);
+ 	if (dma_submit_error(cookie)) {
+diff --git a/drivers/mtd/nand/raw/cadence-nand-controller.c b/drivers/mtd/nand/raw/cadence-nand-controller.c
+index 4f5e6d2b128c7..de9bcbb6df901 100644
+--- a/drivers/mtd/nand/raw/cadence-nand-controller.c
++++ b/drivers/mtd/nand/raw/cadence-nand-controller.c
+@@ -1902,8 +1902,7 @@ static int cadence_nand_slave_dma_transfer(struct cdns_nand_ctrl *cdns_ctrl,
+ 		goto err_unmap;
  	}
  
--	desc->callback		= fsi_dma_complete;
--	desc->callback_param	= io;
-+	dmaengine_desc_set_callback(desc, fsi_dma_complete, NULL, io);
+-	tx->callback = cadence_nand_slave_dma_transfer_finished;
+-	tx->callback_param = &finished;
++	dmaengine_desc_set_callback(tx, cadence_nand_slave_dma_transfer_finished, NULL, &finished);
  
- 	if (dmaengine_submit(desc) < 0) {
- 		dev_err(dai->dev, "tx_submit() fail\n");
-diff --git a/sound/soc/renesas/siu_pcm.c b/sound/soc/renesas/siu_pcm.c
-index fd5b20b469a4a..7208514e16a43 100644
---- a/sound/soc/renesas/siu_pcm.c
-+++ b/sound/soc/renesas/siu_pcm.c
-@@ -125,8 +125,7 @@ static int siu_pcm_wr_set(struct siu_port *port_info,
- 		return -ENOMEM;
+ 	cookie = dmaengine_submit(tx);
+ 	if (dma_submit_error(cookie)) {
+diff --git a/drivers/mtd/nand/raw/fsmc_nand.c b/drivers/mtd/nand/raw/fsmc_nand.c
+index 837c23c63aeb2..6f724819d2d95 100644
+--- a/drivers/mtd/nand/raw/fsmc_nand.c
++++ b/drivers/mtd/nand/raw/fsmc_nand.c
+@@ -522,8 +522,7 @@ static int dma_xfer(struct fsmc_nand_data *host, void *buffer, int len,
+ 		goto unmap_dma;
  	}
  
--	desc->callback = siu_dma_tx_complete;
--	desc->callback_param = siu_stream;
-+	dmaengine_desc_set_callback(desc, siu_dma_tx_complete, NULL, siu_stream);
- 	cookie = dmaengine_submit(desc);
- 	if (cookie < 0) {
- 		dev_err(dev, "Failed to submit a dma transfer\n");
-@@ -175,8 +174,7 @@ static int siu_pcm_rd_set(struct siu_port *port_info,
- 		return -ENOMEM;
+-	tx->callback = dma_complete;
+-	tx->callback_param = host;
++	dmaengine_desc_set_callback(tx, dma_complete, NULL, host);
+ 	cookie = dmaengine_submit(tx);
+ 
+ 	ret = dma_submit_error(cookie);
+diff --git a/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c b/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
+index 0f1528710a6a1..ef355ba00c929 100644
+--- a/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
++++ b/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
+@@ -2638,8 +2638,7 @@ static int gpmi_nfc_exec_op(struct nand_chip *chip,
+ 		       this->resources.bch_regs + HW_BCH_FLASH0LAYOUT1);
  	}
  
--	desc->callback = siu_dma_tx_complete;
--	desc->callback_param = siu_stream;
-+	dmaengine_desc_set_callback(desc, siu_dma_tx_complete, NULL, siu_stream);
- 	cookie = dmaengine_submit(desc);
- 	if (cookie < 0) {
- 		dev_err(dev, "Failed to submit dma descriptor\n");
-diff --git a/sound/soc/sprd/sprd-pcm-compress.c b/sound/soc/sprd/sprd-pcm-compress.c
-index f790b959cd4e4..a810c9c8a0b5b 100644
---- a/sound/soc/sprd/sprd-pcm-compress.c
-+++ b/sound/soc/sprd/sprd-pcm-compress.c
-@@ -247,8 +247,9 @@ static int sprd_platform_compr_dma_config(struct snd_soc_component *component,
+-	desc->callback = dma_irq_callback;
+-	desc->callback_param = this;
++	dmaengine_desc_set_callback(desc, dma_irq_callback, NULL, this);
+ 	dma_completion = &this->dma_done;
+ 	bch_completion = NULL;
  
- 	/* Only channel 1 transfer can wake up the AP system. */
- 	if (!params->no_wake_mode && channel == 1) {
--		dma->desc->callback = sprd_platform_compr_dma_complete;
--		dma->desc->callback_param = cstream;
-+		dmaengine_desc_set_callback(dma->desc,
-+					    sprd_platform_compr_dma_complete,
-+					    NULL, cstream);
+diff --git a/drivers/mtd/nand/raw/intel-nand-controller.c b/drivers/mtd/nand/raw/intel-nand-controller.c
+index 94d2161bf5a1a..4bada01c9b7d8 100644
+--- a/drivers/mtd/nand/raw/intel-nand-controller.c
++++ b/drivers/mtd/nand/raw/intel-nand-controller.c
+@@ -322,8 +322,7 @@ static int ebu_dma_start(struct ebu_nand_controller *ebu_host, u32 dir,
+ 		goto err_unmap;
  	}
  
- 	kfree(sg);
-diff --git a/sound/soc/sprd/sprd-pcm-dma.c b/sound/soc/sprd/sprd-pcm-dma.c
-index bbd7516f81954..968901ae4c335 100644
---- a/sound/soc/sprd/sprd-pcm-dma.c
-+++ b/sound/soc/sprd/sprd-pcm-dma.c
-@@ -287,8 +287,9 @@ static int sprd_pcm_hw_params(struct snd_soc_component *component,
+-	tx->callback = callback;
+-	tx->callback_param = ebu_host;
++	dmaengine_desc_set_callback(tx, callback, NULL, ebu_host);
+ 	cookie = dmaengine_submit(tx);
+ 
+ 	ret = dma_submit_error(cookie);
+diff --git a/drivers/mtd/nand/raw/loongson-nand-controller.c b/drivers/mtd/nand/raw/loongson-nand-controller.c
+index 935f66602de97..94caae1d8b390 100644
+--- a/drivers/mtd/nand/raw/loongson-nand-controller.c
++++ b/drivers/mtd/nand/raw/loongson-nand-controller.c
+@@ -438,8 +438,7 @@ static int loongson_nand_dma_transfer(struct loongson_nand_host *host, struct lo
+ 		ret = -ENOMEM;
+ 		goto err;
+ 	}
+-	desc->callback = loongson_nand_dma_callback;
+-	desc->callback_param = host;
++	dmaengine_desc_set_callback(desc, loongson_nand_dma_callback, NULL, host);
+ 
+ 	host->dma_cookie = dmaengine_submit(desc);
+ 	ret = dma_submit_error(host->dma_cookie);
+diff --git a/drivers/mtd/nand/raw/lpc32xx_mlc.c b/drivers/mtd/nand/raw/lpc32xx_mlc.c
+index d03486dc41150..dbeb2cbb93f42 100644
+--- a/drivers/mtd/nand/raw/lpc32xx_mlc.c
++++ b/drivers/mtd/nand/raw/lpc32xx_mlc.c
+@@ -414,8 +414,7 @@ static int lpc32xx_xmit_dma(struct mtd_info *mtd, void *mem, int len,
+ 	}
+ 
+ 	init_completion(&host->comp_dma);
+-	desc->callback = lpc32xx_dma_complete_func;
+-	desc->callback_param = &host->comp_dma;
++	dmaengine_desc_set_callback(desc, lpc32xx_dma_complete_func, NULL, &host->comp_dma);
+ 
+ 	dmaengine_submit(desc);
+ 	dma_async_issue_pending(host->dma_chan);
+diff --git a/drivers/mtd/nand/raw/lpc32xx_slc.c b/drivers/mtd/nand/raw/lpc32xx_slc.c
+index 638267d44360d..235e34b94b5df 100644
+--- a/drivers/mtd/nand/raw/lpc32xx_slc.c
++++ b/drivers/mtd/nand/raw/lpc32xx_slc.c
+@@ -460,8 +460,7 @@ static int lpc32xx_xmit_dma(struct mtd_info *mtd, dma_addr_t dma,
+ 	}
+ 
+ 	init_completion(&host->comp);
+-	desc->callback = lpc32xx_dma_complete_func;
+-	desc->callback_param = &host->comp;
++	dmaengine_desc_set_callback(desc, lpc32xx_dma_complete_func, NULL, &host->comp);
+ 
+ 	dmaengine_submit(desc);
+ 	dma_async_issue_pending(host->dma_chan);
+diff --git a/drivers/mtd/nand/raw/omap2.c b/drivers/mtd/nand/raw/omap2.c
+index 4fa89aee934eb..3c486b33c157b 100644
+--- a/drivers/mtd/nand/raw/omap2.c
++++ b/drivers/mtd/nand/raw/omap2.c
+@@ -405,8 +405,7 @@ static inline int omap_nand_dma_transfer(struct nand_chip *chip,
+ 	if (!tx)
+ 		goto out_copy_unmap;
+ 
+-	tx->callback = omap_nand_dma_callback;
+-	tx->callback_param = &info->comp;
++	dmaengine_desc_set_callback(tx, omap_nand_dma_callback, NULL, &info->comp);
+ 	dmaengine_submit(tx);
+ 
+ 	init_completion(&info->comp);
+diff --git a/drivers/mtd/nand/raw/sh_flctl.c b/drivers/mtd/nand/raw/sh_flctl.c
+index 0497801d7059f..5980fdac326dc 100644
+--- a/drivers/mtd/nand/raw/sh_flctl.c
++++ b/drivers/mtd/nand/raw/sh_flctl.c
+@@ -407,8 +407,7 @@ static int flctl_dma_fifo0_transfer(struct sh_flctl *flctl, unsigned long *buf,
+ 		reg |= DREQ0EN;
+ 		writel(reg, FLINTDMACR(flctl));
+ 
+-		desc->callback = flctl_dma_complete;
+-		desc->callback_param = flctl;
++		dmaengine_desc_set_callback(desc, flctl_dma_complete, NULL, flctl);
+ 		cookie = dmaengine_submit(desc);
+ 		if (dma_submit_error(cookie)) {
+ 			ret = dma_submit_error(cookie);
+diff --git a/drivers/mtd/nand/raw/stm32_fmc2_nand.c b/drivers/mtd/nand/raw/stm32_fmc2_nand.c
+index 9f42f8ab3212a..f2da3a4c2dd03 100644
+--- a/drivers/mtd/nand/raw/stm32_fmc2_nand.c
++++ b/drivers/mtd/nand/raw/stm32_fmc2_nand.c
+@@ -893,8 +893,8 @@ static int stm32_fmc2_nfc_xfer(struct nand_chip *chip, const u8 *buf,
+ 
+ 	reinit_completion(&nfc->dma_data_complete);
+ 	reinit_completion(&nfc->complete);
+-	desc_data->callback = stm32_fmc2_nfc_dma_callback;
+-	desc_data->callback_param = &nfc->dma_data_complete;
++	dmaengine_desc_set_callback(desc_data, stm32_fmc2_nfc_dma_callback,
++				    NULL, &nfc->dma_data_complete);
+ 	ret = dma_submit_error(dmaengine_submit(desc_data));
+ 	if (ret)
+ 		goto err_unmap_data;
+@@ -919,8 +919,8 @@ static int stm32_fmc2_nfc_xfer(struct nand_chip *chip, const u8 *buf,
  		}
  
- 		if (!runtime->no_period_wakeup) {
--			data->desc->callback = sprd_pcm_dma_complete;
--			data->desc->callback_param = dma_private;
-+			dmaengine_desc_set_callback(data->desc,
-+						    sprd_pcm_dma_complete,
-+						    NULL, dma_private);
- 		}
- 	}
- 
-diff --git a/sound/soc/stm/stm32_spdifrx.c b/sound/soc/stm/stm32_spdifrx.c
-index 88863dbd05d9b..44467a25fb69a 100644
---- a/sound/soc/stm/stm32_spdifrx.c
-+++ b/sound/soc/stm/stm32_spdifrx.c
-@@ -302,8 +302,7 @@ static int stm32_spdifrx_dma_ctrl_start(struct stm32_spdifrx_data *spdifrx)
- 	if (!spdifrx->desc)
- 		return -EINVAL;
- 
--	spdifrx->desc->callback = stm32_spdifrx_dma_complete;
--	spdifrx->desc->callback_param = spdifrx;
-+	dmaengine_desc_set_callback(spdifrx->desc, stm32_spdifrx_dma_complete, NULL, spdifrx);
- 	cookie = dmaengine_submit(spdifrx->desc);
- 	err = dma_submit_error(cookie);
- 	if (err)
+ 		reinit_completion(&nfc->dma_ecc_complete);
+-		desc_ecc->callback = stm32_fmc2_nfc_dma_callback;
+-		desc_ecc->callback_param = &nfc->dma_ecc_complete;
++		dmaengine_desc_set_callback(desc_ecc, stm32_fmc2_nfc_dma_callback,
++					    NULL, &nfc->dma_ecc_complete);
+ 		ret = dma_submit_error(dmaengine_submit(desc_ecc));
+ 		if (ret)
+ 			goto err_unmap_data;
 -- 
 2.43.0
 
