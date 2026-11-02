@@ -1,61 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793617551;
-	b=Ey9oIOB6TOMkyKZvOX64ZDMiIcnwpMPZGQ5F3wWO4BaHm4GQU0FFDl9zVHUZScK5a5bW
-	 SKVAhSW+b/6uWE75Wb24oeEfl0AIEYbOzFbdNLOdUZJqaiIG1F63DNjxG6v3kKcoYO6pd
-	 oz++Trp5ryXGwHSwTLEXKwu1zyd3dUFLGQeyLmZYJ7fKjcRP/K6J607BgJeKgUJsPzT6W
-	 Cgyj3jNmVovd94SNNNDkcXdeDznusXvMMEF3Pf9HiEx8Z+MHph9dUR54SUZuewwX6Kio8
-	 f9/Y6uZrqTVBGVZ8KcWpmIjMA7ZNL8ynFKLLgkX4Fz2C2p40DArJ4Dlg4UYbQibmNhA==
+	t=1793617572;
+	b=humTHKsHjwTBQlSvOygCTh3wGC8kc6V0TH5StqokG5iiL+s9RgWc+9wedj1jVVIe/I4e
+	 98yz40d7QqqWbJ0UwXo/L7dgE8CkhQ/GwIQnMJkbjwNe0oFF7CZBWTnlejtB2VeweWm21
+	 O/Db4nfqBe/xNc+Gd9LeqkEx092VJTAm8JM/hZO/7GPc4B4GfmpJm4IwgfvV+1SMVlc2W
+	 1IyHe+LaubbEcEfCgxgi+0FxDLCPOpNrEuPnrDaXEF5U1M1N+xeGW9oVGE5r91BnKysC4
+	 iOI3KHnr5nwHiy3NB497ybtTRni+AFoHlI2cyLZRFxQnOl/RwlpEESk1znzPiw45fEA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793617551;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=uoI5OQkevqDHuqhBB6Hv5D9gBFmBn4hBJoPApEO2DYk=;
-	b=bH4GBM+kvmFGxt3pRGxhQHA6CzXkPDzu3UrgobUWQArsD7ypJThjmqcrXy88RJeZTSf3
-	 w2NOIkHCT1Jaxxf18QRqIe9l+Swq8WS0begDYtOBLj7QFjxrGC9CUL8ANbzwXNKjGzRUB
-	 uMaFGkYB2PFSfJ+3XTQlc7sxYloM3An6meBYzzJCpxqYQLc8GImo+OhQQpA0pGG8Adalj
-	 Mci1CQEpNW9og+H5S4NoKRs7WlLTT5gO4lPGKel2bhocxuWG7UY/UaP5VEH7bE79ODMaa
-	 fiU3z55g4JrAz37pnr6YJaqnLMQoqv7HXQ+EP0oqivV/mpDFZf2UV6tpS4HrUq8OQDw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793617572;
+	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:To:Cc:
+	 In-Reply-To:References:Subject:Message-Id:Date:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-Mailer:
+	 X-Last-TLS-Session-Version;
+	bh=VRgul/3wnTrfhZ6WCGiExBHWwBt8I+pgNAsbFHTgI8M=;
+	b=IXVAzGmSDUMBzFM3IU1MFtVQnrjPNQwC6LZ6AifosAnWpmp7hKcsIOwt2TsEdCpF9pao
+	 wU4TGhHxEKOVm+AYHBYijd12phtEtXB5ShOy5oUCYpy0hOV9n0sL08QPaVtuiDc0qljSU
+	 o6ekm6Ikq3t/Bo3cAS9t8UMlPP0on7d8XCBoQTrIJojMAShRcLLAYgZBKIzMW0sbGQfsD
+	 3X9LH24asbpwCrC9dBBbA/Isz301wpo/UnL1rOb5aTTiuAtioBcgDAl5yfJYNg/rou7E1
+	 objk8lqGMOWxdH0Wepqx3UdhiTHhZt/WQmlHEEI/KINXFvikWjlwkoX0HK2kRFxYO9g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="N8zSC/tE";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=bootlin.com;
+	spf=pass smtp.mailfrom=bootlin.com;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=IjrBJiTZ;
+	arc=none smtp.remote-ip=185.246.84.56
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3250E606A326;
-	Mon,  2 Nov 2026 11:05:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D6F8606A326
+	for <imx@lists.linux.dev>; Mon,  2 Nov 2026 11:06:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4D6F8606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=N8zSC/tE
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C8E51F00A18;
-	Mon,  2 Nov 2026 11:05:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793617551;
-	bh=uoI5OQkevqDHuqhBB6Hv5D9gBFmBn4hBJoPApEO2DYk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=N8zSC/tEJ/LwvfSkEnktgwvfOS6uq1mYxPYqo3OfTFit0rNthFvz2lbST5fLJM623
-	 /6dsFq1DoFmMnrcYbyUFyNxycmjYflmJChbZh0M2+mJPAdeeok/ppGVbm8BLR2v+Qk
-	 opVeMmBhOkYW7+L0mUAAxilBemczZIwSHZZq822FfELbNR95/OF9N2On2WmclaL53Q
-	 LLC0kKIYwpXKy5TldBKbTwEs4X6VH5GmgeJDh2JvhMUlllGodwSL5ZQiedOpuSr8dB
-	 UGNgs+axYKwOwBAMk/0fgLQDZrBi159E3Va8CIRXhCYDaGLtARO8ZdkK2gBr8itqCV
-	 7vO8NdxSJjvVA==
-Date: Mon, 2 Nov 2026 12:05:47 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Linus Walleij <linusw@kernel.org>, 
-	Bartosz Golaszewski <brgl@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Stefan Agner <stefan@agner.ch>, Dong Aisheng <aisheng.dong@nxp.com>, 
-	Jacky Bai <ping.bai@nxp.com>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Bartosz Golaszewski <brgl@bgdev.pl>, linux-gpio@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH 01/11] dt-bindings: gpio: vf610: fix clock requirements
- per SoC
-Message-ID: <20261102-curious-economic-grouse-ccfd6b@quoll>
-References: <20261029-gpio-vf610-fixes-v1-0-45b484b4c434@nxp.com>
- <20261029-gpio-vf610-fixes-v1-1-45b484b4c434@nxp.com>
+	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=IjrBJiTZ
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 9C1641A140C;
+	Mon,  2 Nov 2026 11:06:08 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 2796B60750;
+	Mon,  2 Nov 2026 11:06:08 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 74D771032915E;
+	Mon,  2 Nov 2026 12:05:56 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1793617565; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=VRgul/3wnTrfhZ6WCGiExBHWwBt8I+pgNAsbFHTgI8M=;
+	b=IjrBJiTZgrOL1sPcxBV/JXRyLa1CSRDXNE2AffRAr9sHD2ILgDUWdC8v3Dc6lZGfcrMu72
+	UwOyn6QhWF2Ltnd1Kx+fpCz873sNREMY21FfHfkXcRH2CJXfx6q11kz3tclTAqeVOq9mpI
+	rUdZdLazEoOcrFSNSDe+LakKcOGwa8C1kCK/4qUhcOoXY126LkpZ/JARBKNrrZdKMIq5wJ
+	ARGcWCrk2SeMYjIH4Z+Q9nSM/QblqPlK8hUoWlJF/bsNkUdJrWV153YzBT/mzWC7j306vK
+	gi+BhrPcKgPnQEY77PBrKgR7RYcsNfFak1xsO7Sv7c/QoiEeWkoOTKXLQ1wqyw==
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, 
+ Paul Cercueil <paul.cercueil@bootlin.com>, 
+ Luca Ceresoli <luca.ceresoli@bootlin.com>
+Cc: Hui Pu <Hui.Pu@gehealthcare.com>, Ian Ray <ian.ray@gehealthcare.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ kernel test robot <lkp@intel.com>
+In-Reply-To: <20261007-drm-bridge-imx-lcdc-indentation-v1-1-3bcf98f3951e@bootlin.com>
+References: <20261007-drm-bridge-imx-lcdc-indentation-v1-1-3bcf98f3951e@bootlin.com>
+Subject: Re: [PATCH] drm/imx/lcdc: fix inconsistent indenting
+Message-Id: <179361755686.261447.18093822664278994585.b4-ty@b4>
+Date: Mon, 02 Nov 2026 12:05:56 +0100
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -65,23 +79,25 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20261029-gpio-vf610-fixes-v1-1-45b484b4c434@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.16.0
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Thu, Oct 29, 2026 at 09:42:25PM +0800, Peng Fan (OSS) wrote:
-> From: Peng Fan <peng.fan@nxp.com>
-> 
-> The i.MX7ULP GPIO controller needs both the GPIO and PORT clocks,
-> while the i.MX8ULP and its derivatives (i.MX93/94/95/952) only have
-> a single "gpio" clock. The vf610 controller has no gateable clocks,
 
-VF610
+On Wed, 07 Oct 2026 14:11:53 +0200, Luca Ceresoli wrote:
+> Fix incorrect indentation introduced by mistake while fixing patch
+> conflict.
 
-> so keep clocks optional there.
+Applied, thanks!
 
-You mention VF610, but I do not see corresponding change in the binding.
+[1/1] drm/imx/lcdc: fix inconsistent indenting
+      commit: f55606c5c095586de20124943e615d9ffc1be339
 
 Best regards,
-Krzysztof
+-- 
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
 
