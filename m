@@ -1,82 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793746470;
-	b=Kud3ekFueiB7tmld+NCQc8tO3b/Uv9yQVpi9Gk7+Yxt0qwDsd/sHb5ZeTfFHowWU+8dg
-	 cMhB2QS0pXHQ2hWvcJGHGfAIHIIOwxGZCUj9Z9CpdgXkd6Nz9DQ5PDQ+TwW7lCsKc4bCN
-	 BWM5jq42Nc2s6edvqOZIWRQvmHI14FBHtZuAreHPrpj9cXWtv8M4LFVPfN1Z9ZtH5g85A
-	 3eT+wJNsgWRww5to4HwX2XdcnmuXVjAToL2hokMexs/hF3EyNySmoC1uMEAjBC1+Gn/wa
-	 7aAagYvG9WhSf6a/7WIJRut41C/088S7HndgCRffaka7+L/MWvHYsDGP+DTXVVnX0xw==
+	t=1793746507;
+	b=FEOYuQO8juSa0pE23iB/qhNGCWtYKduEp9g0a1xHtegr0kcpNWeulkMtKlj2ibEiu16s
+	 6HWplkVD5aX4UZJ84qJVD+ZY6PGxgOTc57EOtZKhnFp5tB2hYwxmbaQE1IO08nWVI08bN
+	 qclcSZgnGJzRh4WPhJPa8Hhn5jyigi/GPDJr4Dnwb4c1Xv6q4iPXoT8Iyreoy78W83khH
+	 2uE9mwylNTTIqdSWngZsnjrQbQOizZ75po0HARNLD/PzVXim9wwMg2m8+io6jaOL5b1Nz
+	 +IiaYUvL5Td+RadXXA2sXz8RMLsW2WENGzGCfMmMRLvuLb86rQedVWNH8BvuDKpmeVg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793746470;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:Date:To:cc:
-	 Subject:In-Reply-To:Message-ID:References:MIME-Version:Content-Type;
-	bh=w3oiCq1SMVsjy0c0EBauveDiKsugH8sreTHeU8+sTtc=;
-	b=hgqxQcK+zzm1JCiCUZ3msODPKhFZ0/BPsLmSLFG3RYNWcbUZZjJ17RindfbLaV1TzR0Z
-	 nWYn35C/ceDy6G4meXef4OLcBkF2ZmK0r3fHS+EVWLB9fuW3U6Uf/iNpWS8dnXvWZD0Jq
-	 4KHL7xSi1iNcr2fRL/xQKBLaUq5cGmecsFPjq0dHnTrTddog3lTj4TExd8lNpMdFM1108
-	 V7j/BMaZDcuynpMBeVzwLlSbBWDLxsrQZ9U224/9vKCVGPWb4kVU3WEILsLWjCtCzNbK/
-	 c2SBvlI/spGhCIj+9xb07UE2Bk9X2GboESdCqMmE/duFxPqFxqEGJGTSU1mT2KJtL7w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793746507;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=oheIWokBfQkQ0F/QvYholTPqB5SpXrXrzxHjvxf/aZw=;
+	b=2IN6iGYJ1MyzGZ8xcbVQYyYf0p2DhTkUjA/PPSvk3v0YrGZAhnvYh4Iah8JizHtfMFEX
+	 ovUsnX8ZiwCx4g068dY534mIJujRwKrtBA1kplFcq2aoq7hVgjI0F6p6mDqs2n490gG6W
+	 3N3oox+9hJlbrp/1lDJGcD7cA02kNo3uW/tMpwVrmShpKUZ/42GYMxBJfGu9mIn51yE7c
+	 L6tOYM0jQGQv6x/ydVX85B/NGGfA6IQoBWK3g/MqIUSDDDG/qUIecV2lloyEFc4poUUIw
+	 RbQRC39t0BrdDkQzqrYexa+jtaSCTzhk/P1ExcjasOneE4fuWKV/O5AS/8S+aT+wJiA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=WwFee3lz;
-	arc=none smtp.remote-ip=192.198.163.16
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Le3uX6k9;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FA4C606A324
-	for <imx@lists.linux.dev>; Tue,  3 Nov 2026 22:54:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3FA4C606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38D35606A328;
+	Tue,  3 Nov 2026 22:55:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=WwFee3lz
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793746470; x=1825282470;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=nDnp/Y+a8TCuPERecuvexpWS6HE8WyH+EY6mbwysYp4=;
-  b=WwFee3lzgkQoL6NRYY31ofD/QM0t18b3HR/ieS412ePFFG1kut3PZE+r
-   mO9h/fE/j2HDcLlOmB9ZpgS2+oUFmsIuSI7jT6RbB+9ETLFvqUPap9J+Z
-   sSznszk/2Y2BYuWurlTTsW/hzWD7ZhGr6htPtgbPLgpCxitHYTCi86QJF
-   cdbQcYqWHTZz0AxtANfhyJkqoPQ6yPeWBVajbzYuc1zZNWtU3uROjrWHa
-   DSrO+/ccLN4tJejGcpIZOpMQX6792xpuUP9gthM+GsuoWeceVogd8u5Kd
-   eDHA+3LtPI/yGU4cx7cl0cJyXT3zMBMYv0rzRCeq+Wo/92JfB86SF78nQ
-   w==;
-X-CSE-ConnectionGUID: GFIhwSBMReWqzlHCBBqpaA==
-X-CSE-MsgGUID: QX8T49o8TJeig8p/UtVczg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11955"; a="2502798"
-X-IronPort-AV: E=Sophos;i="6.27,194,1787036400"; 
-   d="scan'208";a="2502798"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2026 14:54:29 -0800
-X-CSE-ConnectionGUID: mZVonL2WRzidEAnxKAtNbA==
-X-CSE-MsgGUID: bWBGoSvYR7KRBrNVQ8whbA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,194,1787036400"; 
-   d="scan'208";a="6877328"
-Received: from ettammin-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.245.225])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2026 14:54:25 -0800
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Wed, 4 Nov 2026 00:54:21 +0200 (EET)
-To: Frank.Li@oss.nxp.com
-cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-    Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-    Jiri Slaby <jirislaby@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
-    Haoxiang Li <haoxiang_li2024@163.com>, Zhaoyang Yu <2426767509@qq.com>, 
-    John Ogness <john.ogness@linutronix.de>, 
-    "Mike Rapoport (Microsoft)" <rppt@kernel.org>, 
-    "open list:TTY LAYER AND SERIAL DRIVERS" <linux-kernel@vger.kernel.org>, 
-    "open list:TTY LAYER AND SERIAL DRIVERS" <linux-serial@vger.kernel.org>, 
-    imx@lists.linux.dev, vkoul@kernel.org
-Subject: Re: [PATCH 1/1] tty: replace chan->device->dev with
- dmaengine_get_provider_device()
-In-Reply-To: <20261103215949.1827937-1-Frank.Li@oss.nxp.com>
-Message-ID: <4bf08ed3-724f-794a-93a5-87a20569768f@linux.intel.com>
-References: <20261103215949.1827937-1-Frank.Li@oss.nxp.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Le3uX6k9
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75C131F000C1;
+	Tue,  3 Nov 2026 22:55:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793746506;
+	bh=oheIWokBfQkQ0F/QvYholTPqB5SpXrXrzxHjvxf/aZw=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=Le3uX6k9FG/WH5rnnVXS5DU1STzyVxHdXb9ZXs53fCLYfMv1nlZ1fOU/BfThnvjGh
+	 SwwpSxg6BEtT9TLM3q3dMJIV0wPCUZWlSqmFmp4HJOGu9ABMKU7OBfDc27IVbL51RG
+	 0qolsq/Civag5bu8aP5ToL+3gKZKlCimUrFjbo+3fNNSEqPVaiUxZYv236zxFpihUn
+	 uN+rgWUKhn6ksZkpCyVzXYe6tRB/0DOonMj7oymJEN4or7m+Jv/vRDzthwFpneimoj
+	 kAwolz3lUPAAwqdDiLQuQQeh9vH//R8MU5VNc9wZg2EdilPqKDf9UUWIEtUKTjr4jl
+	 t4EdEdJs/YyIw==
+Message-ID: <sashiko-outbox-196161@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] dt-bindings: display: imx: Document fsl,pcr
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Fabio Estevam" <festevam@gmail.com>
+Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org
+In-Reply-To: <20261103224830.377009-1-festevam@gmail.com>
+References: <20261103224830.377009-1-festevam@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 03 Nov 2026 22:55:06 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -85,84 +58,66 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
 
-On Tue, 3 Nov 2026, Frank.Li@oss.nxp.com wrote:
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Low] dt-bindings: display: imx: fsl,pcr documented on controller node
+--
 
-> From: Frank Li <Frank.Li@nxp.com>
-> 
-> Use the dmaengine_get_provider_device() API instead of directly
-> accessing chan->device->dev to get the DMA provider device.
-> 
-> No functional change. Prepare make to struct dma_device private to the DMA
-> engine.
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  drivers/tty/serial/8250/8250_dw.c   | 2 +-
->  drivers/tty/serial/8250/8250_lpss.c | 2 +-
->  drivers/tty/serial/8250/8250_mid.c  | 2 +-
->  drivers/tty/serial/pch_uart.c       | 2 +-
+commit 135b52931f21eeadf62c2f0174408c4c3faaf98d
+Author: Fabio Estevam <festevam@gmail.com>
 
-Please split to 8250 and pch_uart.
+dt-bindings: display: imx: Document fsl,pcr
 
->  4 files changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/tty/serial/8250/8250_dw.c b/drivers/tty/serial/8250/8250_dw.c
-> index eca02e8bd6d13..9adaf5b5fbd56 100644
-> --- a/drivers/tty/serial/8250/8250_dw.c
-> +++ b/drivers/tty/serial/8250/8250_dw.c
-> @@ -530,7 +530,7 @@ static bool dw8250_fallback_dma_filter(struct dma_chan *chan, void *param)
->  
->  static bool dw8250_idma_filter(struct dma_chan *chan, void *param)
->  {
-> -	return param == chan->device->dev;
-> +	return param == dmaengine_get_provider_device(chan);
->  }
->  
->  static void dw8250_setup_dma_filter(struct uart_port *p, struct dw8250_data *data)
-> diff --git a/drivers/tty/serial/8250/8250_lpss.c b/drivers/tty/serial/8250/8250_lpss.c
-> index 7e88f2b793b5a..eed37e8b3e831 100644
-> --- a/drivers/tty/serial/8250/8250_lpss.c
-> +++ b/drivers/tty/serial/8250/8250_lpss.c
-> @@ -269,7 +269,7 @@ static bool lpss8250_dma_filter(struct dma_chan *chan, void *param)
->  {
->  	struct dw_dma_slave *dws = param;
->  
-> -	if (dws->dma_dev != chan->device->dev)
-> +	if (dws->dma_dev != dmaengine_get_provider_device(chan))
->  		return false;
->  
->  	chan->private = dws;
-> diff --git a/drivers/tty/serial/8250/8250_mid.c b/drivers/tty/serial/8250/8250_mid.c
-> index 44b43163df511..dfd2460983fab 100644
-> --- a/drivers/tty/serial/8250/8250_mid.c
-> +++ b/drivers/tty/serial/8250/8250_mid.c
-> @@ -252,7 +252,7 @@ static bool mid8250_dma_filter(struct dma_chan *chan, void *param)
->  {
->  	struct hsu_dma_slave *s = param;
->  
-> -	if (s->dma_dev != chan->device->dev || s->chan_id != chan->chan_id)
-> +	if (s->dma_dev != dmaengine_get_provider_device(chan) || s->chan_id != chan->chan_id)
->  		return false;
->  
->  	chan->private = s;
-> diff --git a/drivers/tty/serial/pch_uart.c b/drivers/tty/serial/pch_uart.c
-> index 9505d255f09c5..6d9a88149b407 100644
-> --- a/drivers/tty/serial/pch_uart.c
-> +++ b/drivers/tty/serial/pch_uart.c
-> @@ -656,7 +656,7 @@ static bool filter(struct dma_chan *chan, void *slave)
->  	struct pch_dma_slave *param = slave;
->  
->  	if ((chan->chan_id == param->chan_id) && (param->dma_dev ==
-> -						  chan->device->dev)) {
-> +						  dmaengine_get_provider_device(chan))) {
+This commit documents the fsl,pcr property in fsl,imx-lcdc.yaml to address
+dt-core.yaml validation warnings on i.MX25 and i.MX27 device trees.
 
-Did you even read this patch yourself? Probably not... :-(
+> diff --git a/Documentation/devicetree/bindings/display/imx/fsl,imx-lcdc.y=
+aml b/Documentation/devicetree/bindings/display/imx/fsl,imx-lcdc.yaml
+> index 84610b5690c49..f1931436a4d81 100644
+> --- a/Documentation/devicetree/bindings/display/imx/fsl,imx-lcdc.yaml
+> +++ b/Documentation/devicetree/bindings/display/imx/fsl,imx-lcdc.yaml
+> @@ -65,6 +65,12 @@ properties:
+>      description:
+>        LCDC Sharp Configuration Register value.
+> =20
+> +  fsl,pcr:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    description:
+> +      LCDC Panel Configuration Register value used in the display node
+> +      referenced by the display property.
 
-The line should be (very obviously) split at &&
+[Severity: Low]
+Should fsl,pcr be defined here under the top-level properties of
+fsl,imx-lcdc.yaml?
 
--- 
- i.
+In drivers/video/fbdev/imxfb.c, controller properties such as fsl,lpccr,
+fsl,lscr1, and fsl,dmacr are read from the LCD controller node in
+imxfb_init_fbinfo(), whereas imxfb_probe() resolves the display phandle
+and passes that separate node to imxfb_of_read_mode():
 
+drivers/video/fbdev/imxfb.c:imxfb_of_read_mode() {
+	...
+	ret =3D of_property_read_u32(np, "bits-per-pixel", &bpp);
+	ret |=3D of_property_read_u32(np, "fsl,pcr", &pcr);
+	...
+}
+
+As the description notes and as shown in the second example of
+fsl,imx-lcdc.yaml (display0), fsl,pcr is placed in the separate display node
+referenced by the display phandle rather than in the LCD controller node
+itself.
+
+Defining fsl,pcr in the top-level properties of fsl,imx-lcdc.yaml silences
+the dt-core.yaml type warning globally, but it also permits fsl,pcr on the
+LCD controller node where the driver never reads it. In addition, the allOf
+conditional for fsl,imx1-lcdc and fsl,imx21-lcdc disables display, fsl,dmac=
+r,
+fsl,lpccr, and fsl,lscr1, but does not set fsl,pcr: false.
+
+Would it be more accurate to document the display node schema separately (or
+disallow fsl,pcr on the controller node itself)?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261103224830.3770=
+09-1-festevam@gmail.com?part=3D1
