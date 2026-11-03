@@ -1,146 +1,141 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=194.117.254.33
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.53
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793731486;
-	b=knCuKispRox7ZggM0DdH+cDfxL3pG6j9gszv7J6Euz4zmjLAq9Q9U6eiZpAbsCmym6vH
-	 iaRkjksJfCN90HhJNa4XpuHLpyLXCQEmfTLbZieKKzUFE3J9Si9x/g1w1XvNx/e1XirpT
-	 8klnWJNa9EYv/K4T0L0Tkr1PFrlnSNNHC//Hm//3b6eRQkHD4rHhuE4JGHa55RB5yy6JF
-	 foKQhK5tyBwfphBjiVDKMzsPBW8b4ywnC5bTAPBm9EOk8NKgYUWcBAJ8MmzaQ0RSvjeBh
-	 69yZs6PTHGPbIQHpbJkfgy9qzZcv3yItKZanduT9z3ZpZHPvBgekjU1EB6Nx73n3yXw==
+	t=1793731742;
+	b=C9SzCWRhlHZ1HAD7fjO+bIqL/uv/gSpXYhEpL/MEpr5+iNOWedlSZjBuDTJ+SRCBrW/m
+	 OK1GcOrDzEGMwYgLPEKuPRA9ZFy52tY/NhlYWgymhCmUlMcxoZ023XvbqIaqKovPCtCmI
+	 Nan7cPlAb/SUZncTFi5xLVxyPK5y03sEVcWQPZ1Ki2SXUIAq2xKdNjgLC8YvDN3azfTIi
+	 mRtr2I29pieNfqxGuHMYYsm6l3/7s0JcHPjlbYwLLt5tzkOjPlR96PFoqB6AYnuonCdVL
+	 bH0TGvRLDceEwkbDcje1QEGOt8aVgJ3bmT11J4KgwyGMUnKc5L0cIrKfmpYcYULKVQA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793731486;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:X-UD-Smtp-Session:Date:
-	 From:To:Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=W6/JYFIS2gBbrryXL8wBsd9TWGVGmS+61AzczLDlVL8=;
-	b=i68kmHV2r3yEKEbFlSZkbZ8XsbeycYtN+DJsl6viOsWsofB5DgrZh+1z2ffdMMqZUXfr
-	 N81i10Izz3hWuskdyfpJb6QWevswdYhlLDCpRYqNXQh1j8jLmyV7BE1in1LGu+IlOiMXD
-	 jLeq9uNn7TDgRHWSOmxxJEkzBxTkA2RCiuCm1oQv71mYoEKx2NF9AlCfWtKD+LgXnX3gN
-	 6NH113Vu9nzNrRypJX3da/f9b92n2e+9BmhTZ5uUyekAw1eBnqTTCbKwb5Y6vqQgm9+5e
-	 M1zCta5eXs5iJ/QTIt5aRh08KHRwmR3mE26cbRCwgkCVYTiSqwq21570gKc0jDxPWCg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793731742;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:Mail-Followup-To:References:
+	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=gZOM3Lc0bVWMBjTHBnWLKucS3KUPQN4gjQNABudBe20=;
+	b=aPKZZUNauP5pDh4UTaclklePUq2gPCyysm2kUsxDLtWIGVUTJOyiHqSEbGQHxQDJEh42
+	 IBKUFBxscUsplr28QZJleIFdFgvzMiYQL1pr6Zzb9v1NPJV5KKJOGGBhAKw/8mMu/AWQ2
+	 kAKrn+KF2IaC5vFNwL8Q4QGK9sIBxWjzMOgwWlTvPQ8CPcCIL4XILdVxhdgAOJO1cKM2V
+	 Ooj7rodvvBPxfXfbmx41lBRVkCNyGuUDlS77e501hMOYCtUilAs9AufsJ7k7NUS9OKdeP
+	 /SdjdsbeZDA5Oe8UDOtuxc467LYCoJGE2IqngFOkylwCOeBwda4cI4Bhk3LIzhVkXZw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=sang-engineering.com;
-	spf=pass smtp.mailfrom=sang-engineering.com;
-	dkim=pass header.d=sang-engineering.com header.i=@sang-engineering.com header.a=rsa-sha256 header.s=k1 header.b="Bx4jN+/C";
-	arc=none smtp.remote-ip=194.117.254.33
-Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=none header.from=dama.to;
+	spf=none smtp.mailfrom=dama.to;
+	dkim=pass header.d=dama-to.20260707.gappssmtp.com header.i=@dama-to.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b="ZSC/+Am2";
+	arc=none smtp.remote-ip=209.85.216.53
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4B10606A32E
-	for <imx@lists.linux.dev>; Tue,  3 Nov 2026 18:44:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C4B10606A32E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 605EA606A333
+	for <imx@lists.linux.dev>; Tue,  3 Nov 2026 18:49:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 605EA606A333
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=sang-engineering.com header.i=@sang-engineering.com header.a=rsa-sha256 header.s=k1 header.b=Bx4jN+/C
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	sang-engineering.com; h=date:from:to:cc:subject:message-id
-	:references:mime-version:content-type:in-reply-to; s=k1; bh=W6/J
-	YFIS2gBbrryXL8wBsd9TWGVGmS+61AzczLDlVL8=; b=Bx4jN+/CUlNIFrFEfcZT
-	DWnp8D3KgQ3RUAi57jaWHne3umwEazqItZQTPk90jcrkdqvvhubVubpT5CCmNEfB
-	/g+w2DyTRdx1uo22fhbin0kux9Y9nu8VuHWZqX+a31npXbTs3OfVVmVnJi5o97lI
-	3cpudOMSylHj4AcWjU71IcIr+OL4GFnE1e72JJgFfMSTdKQ3jTL5Qwp9+KgvUy98
-	Vrughpyl3hyO1Y88CTAL/ng8Mz4lzYKHQi99Rat4dkK7EQx7ZMusfrnEfipTR9lZ
-	PIIjBVDl7Zwwkfvv018HuF4t98uVkT44kwuLhDn7IY0jseMG18KhPTggId27cesU
-	mA==
-Received: (qmail 389850 invoked from network); 3 Nov 2026 19:44:34 +0100
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 3 Nov 2026 19:44:34 +0100
-X-UD-Smtp-Session: l3s3148p1@KfVXp2NfZqnAwtcC
-Date: Tue, 3 Nov 2026 20:44:34 +0200
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
-To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Cc: Douglas Anderson <dianders@chromium.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Jessica Zhang <jesszhan0024@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Jyri Sarha <jyri.sarha@iki.fi>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Robert Foss <rfoss@kernel.org>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Paul Cercueil <paul@crapouillou.net>, Marek Vasut <marex@denx.de>,
-	Stefan Agner <stefan@agner.ch>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>,
-	Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Linus Walleij <linusw@kernel.org>, Sandy Huang <hjc@rock-chips.com>,
-	Heiko =?utf-8?Q?St=C3=BCbner?= <heiko@sntech.de>,
-	Andy Yan <andy.yan@rock-chips.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Inki Dae <inki.dae@samsung.com>,
-	Seung-Woo Kim <sw0312.kim@samsung.com>,
-	Kyungmin Park <kyungmin.park@samsung.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Peter Griffin <peter.griffin@linaro.org>,
-	Alim Akhtar <alim.akhtar@samsung.com>,
-	Alison Wang <alison.wang@nxp.com>,
-	Paul Kocialkowski <paulk@sys-base.io>,
-	Yannick Fertre <yannick.fertre@foss.st.com>,
-	Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>,
-	Philippe Cornu <philippe.cornu@foss.st.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	dkim=pass (2048-bit key, unprotected) header.d=dama-to.20260707.gappssmtp.com header.i=@dama-to.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=ZSC/+Am2
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-3ac6794fe45so3307604a91.0
+        for <imx@lists.linux.dev>; Tue, 03 Nov 2026 10:49:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dama-to.20260707.gappssmtp.com; s=20260707; t=1793731741; x=1794336541; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:mail-followup-to:message-id:subject:cc:to:from:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=gZOM3Lc0bVWMBjTHBnWLKucS3KUPQN4gjQNABudBe20=;
+        b=ZSC/+Am2PT2UaTy6KZt3zJ9e61U4k/naFZdoVXWj0xuHNnRWBSedUkDoQbqUvdOhv/
+         6oleIvoex9c0/0Uh3K2XKnqnEi9EQe509ofEH8YmIXuh1lanAjUmm+sZqpCVTP2lrxNl
+         AT14ynO9V0W3+0JOwzI5n8wgp19X+EcseqXUEB1GX+8ZzeKQSuHDn1kHDQ2I+TFbEJsh
+         pZ126t3Bwv2RkiKFhe+SRqXxUM3BMfCIIEGcRU/wmPwwKUOOIl4hoDyd0d7S3+U1+0d4
+         NxsVy0kAsarqkeKXpWIJKl+CyIICNgbGHw5ohP719qRyb+dC0Tuqc6bVoFmhMsSdkFKr
+         8cpw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793731741; x=1794336541;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=gZOM3Lc0bVWMBjTHBnWLKucS3KUPQN4gjQNABudBe20=;
+        b=jHWW1LAJVzOXuqRTGzhMEKRrtrFganFdztF3UEbTkI5a3w4IJ0uNiqWTbDhaS/njHe
+         +iCw8J2ey2T70HlAwRLOXpfDR110GWYRHi3s6htxqr5zZY1fjRaT96FlbCOPcs1HqlLx
+         C5/ahCYaVhod45KHECKrLhmMwuAgW2DQHFy6eu1Td/x2LP3aQIbUeg6TVUW/fT7IsSV1
+         gT8PooHmb1vgpm5BeHdMlKqGDar3r5NpgVsSMvKJApuY1INAbbM38F2fGC02zuZWbFfu
+         b6YoA4zy3Ek+fB00JtF1cQw+eghw+3ecStljmURvAXoG5/+2YbegCIVhFS+a2BF5wyE+
+         FPQA==
+X-Forwarded-Encrypted: i=1; AKwUvBzYcwNWDKRB8B2SVjJhbYlLG3Lz9ptM8nr+H7msAQXVWfx8VglTrnz3Mxdc0n+lKvOpT2c=@lists.linux.dev
+X-Gm-Message-State: APuU4Z/8Gr5lJwkLXt+u/qBHVGPehcqsTUaiclqrrL1+RQYYMZfkFiwF
+	/jwHSJcpyMvwmMmAXIYxn4Dy1iZWSSrlmgcNixlnM6z8V6VOfDnCGSeKO2IF0EoGtqM=
+X-Gm-Gg: AYBFou0kRcLL/nkC4H2TnwTc4O84Rw/pglilmen07tPnaYyO1qjw/6L2/HZFLZr/VfA
+	wPbEwyAeftLkdFw/tj92mjgSeczubrAbdYMeiow3lkj30a0z1EhCpnsz0lciP2jnUPXq8tablIN
+	2qAhxukeCF/n1203VwQqOtrFJl+4rFLpz06VN0DD+9JtaSs2Ld8+9DL1+X+3L6LGn1zyCNUv3a3
+	dVTMrgvNYYzYQH1dizLJaMRlHC3PqWQEx4XKuSaPxIzcBFygu4QIY8Z9KoWp+DwTgX0ytds26bH
+	BCTWb2IscmHxu+jrsLYFbgRdN8eTkDwwKqqhEmFlcChmyuKHEZEtEqvXvWQwhv11l9AcAeLdkc3
+	iT0R2XhjLwWLUjI4WlXDCDtpwqnmrtBqEhJzWuQYhqcJV0TBv4dQ2egoq1popHCI/rWs4e0VbCb
+	g7ks6iimQymfLNDUbcQ1Psea42clqfZUDaK54YGxSfyIA34HAUr0KdxmOp9f6lAfRv11w08grkN
+	B1MCMgmO0UcbFdWaLbZQmoNJOfM4rE69vwr+o0/mPNrBNCKGOr8XY3VTyiYgHp4fqpFSAUnvawP
+	abx3/BLbDYyfRtY3QBlpC0Zo0/6z15XcWrX+giOPvA==
+X-Received: by 2002:a17:90b:1d03:b0:3a8:49f2:8ddb with SMTP id 98e67ed59e1d1-3ae8984de33mr11985967a91.60.1793731740597;
+        Tue, 03 Nov 2026 10:49:00 -0800 (PST)
+Received: from localhost ([2a03:2880:2ff:49::])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b0944bd88bsm210133a91.12.2026.11.03.10.48.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Nov 2026 10:49:00 -0800 (PST)
+Date: Tue, 3 Nov 2026 10:48:59 -0800
+From: Joe Damato <joe@dama.to>
+To: Frank Li <Frank.li@oss.nxp.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
 	Chen-Yu Tsai <wens@kernel.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
 	Samuel Holland <samuel@sholland.org>,
-	Thierry Reding <thierry.reding@kernel.org>,
-	Mikko Perttunen <mperttunen@nvidia.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Jagan Teki <jagan@amarulasolutions.com>,
-	Ondrej Jirman <megi@xff.cz>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	Igor Reznichenko <igor@reznichenko.net>,
-	Michael Walle <mwalle@kernel.org>,
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Jagan Teki <jagan@edgeble.ai>, Jianhua Lu <lujianhua000@gmail.com>,
-	Guido =?utf-8?Q?G=C3=BCnther?= <agx@sigxcpu.org>,
-	Purism Kernel Team <kernel@puri.sm>,
-	Jerry Han <hanxu5@huaqin.corp-partner.google.com>,
-	Joel Selvaraj <jo@jsfamily.in>, Icenowy Zheng <icenowy@aosc.io>,
-	Michael Trimarchi <michael@amarulasolutions.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Casey Connolly <casey.connolly@linaro.org>,
-	Michael Tretter <m.tretter@pengutronix.de>,
-	Cristian Cozzolino <cristian_ci@protonmail.com>,
-	Junjie Cao <junjie.cao@linux.dev>,
-	Ryan Brue <ryanbrue.dev@gmail.com>,
-	Nickolay Goppen <setotau@mainlining.org>,
-	Stefan Mavrodiev <stefan@olimex.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Robert Chiras <robert.chiras@nxp.com>,
-	Alexander Koskovich <akoskovich@pm.me>,
-	Markuss Broks <markuss.broks@gmail.com>,
-	Artur Weber <aweber.kernel@gmail.com>,
-	David Heidelberg <david@ixit.cz>,
-	Dzmitry Sankouski <dsankouski@gmail.com>,
-	Yedaya Katsman <yedaya.ka@gmail.com>,
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-	linux-mips@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-renesas-soc@vger.kernel.org,
-	linux-rockchip@lists.infradead.org, linux-doc@vger.kernel.org,
-	linux-samsung-soc@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org,
-	linux-rpi-kernel@lists.infradead.org
-Subject: Re: [PATCH 08/35] drm: rz-du: use devm_drm_panel_bridge_add()
-Message-ID: <auorkq3_lHY-rc1D@shikoro>
-References: <20261026-drm-panel-funcs-v1-0-5e3070a3478f@oss.qualcomm.com>
- <20261026-drm-panel-funcs-v1-8-5e3070a3478f@oss.qualcomm.com>
+	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+	Michal Simek <michal.simek@amd.com>,
+	Stephan Gerhold <stephan@gerhold.net>,
+	Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	Sergey Ryazanov <ryazanov.s.a@gmail.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Frank Li <Frank.Li@nxp.com>,
+	Andre Przywara <andre.przywara@arm.com>,
+	Li Youhong <liyouhong@kylinos.cn>, Arnd Bergmann <arnd@arndb.de>,
+	bui duc phuc <phucduc.bui@gmail.com>,
+	Yicong Hui <yiconghui@gmail.com>, Simon Horman <horms@kernel.org>,
+	"open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
+	"moderated list:ARM/Allwinner sunXi SoC support" <linux-arm-kernel@lists.infradead.org>,
+	"open list:ARM/Allwinner sunXi SoC support" <linux-sunxi@lists.linux.dev>,
+	open list <linux-kernel@vger.kernel.org>,
+	"open list:ARM/QUALCOMM MAILING LIST" <linux-arm-msm@vger.kernel.org>,
+	imx@lists.linux.dev, vkoul@kernel.org
+Subject: Re: [PATCH] net: dma: use dmaengine_desc_set_callback()
+Message-ID: <auosm8mCULyafyny@devvm20253.cco0.facebook.com>
+Mail-Followup-To: Joe Damato <joe@dama.to>, Frank Li <Frank.li@oss.nxp.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Chen-Yu Tsai <wens@kernel.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>,
+	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+	Michal Simek <michal.simek@amd.com>,
+	Stephan Gerhold <stephan@gerhold.net>,
+	Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	Sergey Ryazanov <ryazanov.s.a@gmail.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Frank Li <Frank.Li@nxp.com>,
+	Andre Przywara <andre.przywara@arm.com>,
+	Li Youhong <liyouhong@kylinos.cn>, Arnd Bergmann <arnd@arndb.de>,
+	bui duc phuc <phucduc.bui@gmail.com>,
+	Yicong Hui <yiconghui@gmail.com>, Simon Horman <horms@kernel.org>,
+	"open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
+	"moderated list:ARM/Allwinner sunXi SoC support" <linux-arm-kernel@lists.infradead.org>,
+	"open list:ARM/Allwinner sunXi SoC support" <linux-sunxi@lists.linux.dev>,
+	open list <linux-kernel@vger.kernel.org>,
+	"open list:ARM/QUALCOMM MAILING LIST" <linux-arm-msm@vger.kernel.org>,
+	imx@lists.linux.dev, vkoul@kernel.org
+References: <20261102191922.4044912-1-Frank.Li@oss.nxp.com>
+ <aukcoWLVvSorX5a9@devvm20253.cco0.facebook.com>
+ <aun4W3dvmfWRDFeQ@SMW015318>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -152,15 +147,70 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261026-drm-panel-funcs-v1-8-5e3070a3478f@oss.qualcomm.com>
+In-Reply-To: <aun4W3dvmfWRDFeQ@SMW015318>
 
-On Mon, Oct 26, 2026 at 01:09:57PM +0200, Dmitry Baryshkov wrote:
-> The connector type passed to devm_drm_panel_bridge_add_typed() has been
-> ignored since commit b7797081ccfe ("drm/panel: embed a drm_bridge into
-> every drm_panel"), the bridge always has the type of the panel.
+On Tue, Nov 03, 2026 at 09:06:03AM -0600, Frank Li wrote:
+> On Mon, Nov 02, 2026 at 03:28:33PM -0800, Joe Damato wrote:
+> > On Mon, Nov 02, 2026 at 02:19:16PM -0500, Frank.Li@oss.nxp.com wrote:
+> > > From: Frank Li <Frank.Li@nxp.com>
+> > >
+> > > Replace open-coded assignments to callback and callback_param fields
+> > > of struct dma_async_tx_descriptor with calls to the
+> > > dmaengine_desc_set_callback() helper across net drivers.
+> > >
+> > > No functional change intended. Prepare to make struct
+> > > dma_async_tx_descriptor private to the DMA engine.
+> > >
+> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > > ---
+> > >  drivers/net/ethernet/allwinner/sun4i-emac.c       |  3 +--
+> > >  drivers/net/ethernet/micrel/ks8842.c              |  6 ++----
+> > >  drivers/net/ethernet/xilinx/xilinx_axienet_main.c |  6 ++----
+> > >  drivers/net/wwan/qcom_bam_dmux.c                  | 10 ++++------
+> > >  4 files changed, 9 insertions(+), 16 deletions(-)
+> >
+> > [...]
+> >
+> > > diff --git a/drivers/net/wwan/qcom_bam_dmux.c b/drivers/net/wwan/qcom_bam_dmux.c
+> > > index cc6ace8d64371..1479f8362e04e 100644
+> > > --- a/drivers/net/wwan/qcom_bam_dmux.c
+> > > +++ b/drivers/net/wwan/qcom_bam_dmux.c
+> > > @@ -195,9 +195,8 @@ static bool bam_dmux_skb_dma_submit_tx(struct bam_dmux_skb_dma *skb_dma)
+> > >  		return false;
+> > >  	}
+> > >
+> > > -	desc->callback = bam_dmux_tx_callback;
+> > > -	desc->callback_param = skb_dma;
+> > > -	desc->cookie = dmaengine_submit(desc);
+> > > +	dmaengine_desc_set_callback(desc, bam_dmux_tx_callback, NULL, skb_dma);
+> > > +	dmaengine_submit(desc);
+> > >  	return true;
+> > >  }
+> > >
+> > > @@ -477,9 +476,8 @@ static bool bam_dmux_skb_dma_submit_rx(struct bam_dmux_skb_dma *skb_dma)
+> > >  		return false;
+> > >  	}
+> > >
+> > > -	desc->callback = bam_dmux_rx_callback;
+> > > -	desc->callback_param = skb_dma;
+> > > -	desc->cookie = dmaengine_submit(desc);
+> > > +	dmaengine_desc_set_callback(desc, bam_dmux_rx_callback, NULL, skb_dma);
+> > > +	dmaengine_submit(desc);
+> >
+> > I noticed in the above that the return value of dmaengine_submit is discarded
+> > instead of stored.
+> >
+> > Is that intentional? I suppose it might be because AFAICT cookie is never
+> > used and the commit message says "no functional change intended".
 > 
-> Assisted-by: LLM
-> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+> dma_cookie_assign() already set desc->cookie in dmaengine_submit(). Of couse
+> it is not obvious. Do you need me update commit message to descript it.
 
-Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Ah, I see it now. In the tx_submit callback it looks like dma drivers set the
+cookie.
 
+So removing it here really is a no-op since it was getting set, as you said,
+during submit.
+
+My mistake. I don't think it's worth respinning just to fix the commit
+message just because I didn't dig deep enough :)
