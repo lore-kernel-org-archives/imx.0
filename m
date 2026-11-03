@@ -1,64 +1,67 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=212.27.42.3
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=78.133.224.34
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793737239;
-	b=AML+8hqqwl4tCxFtZSTO/to9NIi+3bzrRGMRbTLODEEdjQD9KksCDpJcxVaodAFz9xSK
-	 YfPy8fX1ITSnwLrcoDxxcLaG+VbvNDFm0WpaM2Lo1n5C5e/GtfO4rdEs6SS06tjcxFJkv
-	 BV9Dief0as7BRnu2WcAungM47d0qHva6Bo5DMP7oEhym9rDnDEN/ig9Cg7UPLjGC10RYG
-	 xVH6mC+ygeklxN3bBCD3/lxRIq1TzzEUBo7aHlfYYAeZw44wbJ9ehOO9pi+3PKuUpZ/KL
-	 uiFLaKRnRhKSzFHD0t/3bARTbHvPDsluEG8vgFCagbfb6NT+CWlDFOnhnIugIU1Q9Bw==
+	t=1793737535;
+	b=DO9mOSt50qoR2YdwKlfNyhPK8hMKJfNYXMKVagDsFeomouw/Y6YLcc6xvpKPTEjkBGz0
+	 NjzFezdaA2/tOQJVSDcM0So3RSQn3vDMvudNVXvnX9voBAVXAwVOhFBAFZIIx6NEbxZ2H
+	 8urx4yl+g4rEuQ7rIfKC8tWoWwnyZ5bJCsx4DhJ80yn4ucGBMYphEzDN0QM5hJ2/oH7ET
+	 Fg7uVPE/5B8gSAZzWmE0hrrbOW1NY/04OlrDBGIvtXnuEDo5tB6Npvj1RlS59H9M5hEQ5
+	 qpVqAl5haKRXGroX+C1xwsjZ0/t1uumRe+yhbukM118ALfR7m9TgyCH8h6LxQhsGTgw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793737239;
-	h=DMARC-Filter:Received:DKIM-Signature:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To;
-	bh=IUqvrTFx/K9gimEKml2NBPNOGsMG8AhbzuFakDXurYY=;
-	b=LIenYdnT4WqYlvy7uFiU0KCc7Mk4bXqNUm8zi+krFS0Sk3cmdfD6+bsHqEsKtzsHohK3
-	 mE6nWhvy3Qdqh+Uegj776AqaMPnDCoL+7wzdAYb26hZTOXqOQK+wE2oQedfDTKAoYIZ+o
-	 cvthNpY5o0BE4bMfAuymqu3IOg1EgrYCbScuIW7nvpz9nhC6yn2lQ6YuZeSK+sE/kCmWG
-	 ZC8Uf0Lh7JNV6Qc2eNPwPtq7AJEeeI+/l+9yrHvQkIQKX5l0Lab76w5wqNrN8jRLOoBGv
-	 zZm00jmRqeS3sdEz/SY8jb9StZXquDyD+xx8109tn+l3nyXG2HK5iN+woNahtlwsiHw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793737535;
+	h=DMARC-Filter:Received:Received:Date:From:To:cc:Subject:In-Reply-To:
+	 Message-ID:References:User-Agent:MIME-Version:Content-Type;
+	bh=hywMFMGWC22FCsnfeYWHg5SybWSfpDHUd/LvoxS7oLY=;
+	b=QlcsS7cYXJz5GeC3cYp413RrhEC7QmJHgsjqJT4d+zgeRRWgbedIdGhDinmNYALy5yj3
+	 Y3KODxv7NzElWGv/JijFYNz8OFTSCnmZ4urtJcINHVz0f6Y89+3FDtbZSbwHBik9IYYWv
+	 7AK9ZRIzRY+KsevKT4WQM2AmAxDfkLpY4JnXhrwiS8KwhUsfPbQ/s4SYCSSxQ+PruYCYX
+	 7PR5ih4HEjGxzw3yZJLROfkMQnnQ3824IUO619dcaSiTQAwvh17fOTKcXZCB5eWRmh8B/
+	 0CLWcqBAKLIs/ti1jkGTwVKeY8LGKELvTx8pyUswhPuTjGOKzTakGKWKedUz4TBFsJA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=free.fr;
-	spf=pass smtp.mailfrom=free.fr;
-	dkim=pass header.d=free.fr header.i=@free.fr header.a=rsa-sha256 header.s=smtp-20201208 header.b=M1WpxImR;
-	arc=none smtp.remote-ip=212.27.42.3
-Received: from smtp3-g21.free.fr (smtp3-g21.free.fr [212.27.42.3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2329A606A31B;
-	Tue,  3 Nov 2026 20:20:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2329A606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=free.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=free.fr
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=free.fr header.i=@free.fr header.a=rsa-sha256 header.s=smtp-20201208 header.b=M1WpxImR
-Received: from L30177.local (unknown [82.65.104.223])
-	(Authenticated sender: vjardin@free.fr)
-	by smtp3-g21.free.fr (Postfix) with ESMTPSA id 2315113F879;
-	Tue,  3 Nov 2026 21:20:22 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=free.fr;
-	s=smtp-20201208; t=1793737230;
-	bh=pWeUyM6RmTRIJwmZpWd83pWgMmzCsnHnooQuFRo17E4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=M1WpxImRjmom39Ius3QyNuflJtzxPVkktY45SdPzp5AfVrM2zR1QFBZ9+kOKroJpN
-	 fQ+FsbipAeSvkPm6++hiV6tDvNRbYbaKyI8rAi8OeKWPQo3bVgb6TePI0wRWC6Wci3
-	 CmBhEKN3neytI33DBcfdw6KEdR0nBjh/aPUKl3vFBPCTuFBVS7OHQrSLfDoz2zA1s5
-	 6qvj16NNh8s95DrL+1sHrXkJX1Z/tN0keyx/H08Mg/3DMllMZ3dQyH96vBh7xxPeUQ
-	 vPb9el4sU0QAtFIyfOuwHLEHsc631CnpLd5iRFJtm7g23SSZzPBuOjWS48Md/7Bghz
-	 /DCBEqK2p5hzg==
-Date: Tue, 3 Nov 2026 21:20:21 +0100
-From: Vincent Jardin <vjardin@free.fr>
-To: sashiko-reviews@lists.linux.dev
-Cc: linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org,
-	Frank.Li@kernel.org
-Subject: Re: [PATCH v2 1/5] dt-bindings: pinctrl: add the NXP LX2160A RCW pad
- mux
-Message-ID: <aupCBbNlYGFWc8Cq@L30177.local>
-References: <20261103-for-upstream-lx2160a-rcw-pinmux-v1-v2-0-3aad0860b984@free.fr>
- <20261103-for-upstream-lx2160a-rcw-pinmux-v1-v2-1-3aad0860b984@free.fr>
- <sashiko-outbox-195824@kernel.org>
+	dmarc=none header.from=orcam.me.uk;
+	spf=none smtp.mailfrom=orcam.me.uk;
+	arc=none smtp.remote-ip=78.133.224.34
+Received: from angie.orcam.me.uk (angie.orcam.me.uk [78.133.224.34])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7578E606A328
+	for <imx@lists.linux.dev>; Tue,  3 Nov 2026 20:25:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7578E606A328
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=orcam.me.uk
+Received: by angie.orcam.me.uk (Postfix, from userid 500)
+	id 38B0092009E; Tue,  3 Nov 2026 21:25:31 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by angie.orcam.me.uk (Postfix) with ESMTP id 321B692009B;
+	Tue,  3 Nov 2026 20:25:31 +0000 (GMT)
+Date: Tue, 3 Nov 2026 20:25:31 +0000 (GMT)
+From: "Maciej W. Rozycki" <macro@orcam.me.uk>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+    James Hilliard <james.hilliard1@gmail.com>
+cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+    Jiri Slaby <jirislaby@kernel.org>, Raul E Rangel <rrangel@chromium.org>, 
+    =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+    Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+    Tony Lindgren <tony@atomide.com>, 
+    Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+    Richard Genoud <richard.genoud@bootlin.com>, 
+    Nicolas Ferre <nicolas.ferre@microchip.com>, 
+    Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+    Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+    Jacky Huang <ychuang3@nuvoton.com>, Shan-Chun Hung <schung@nuvoton.com>, 
+    =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+    Sascha Hauer <s.hauer@pengutronix.de>, 
+    Pengutronix Kernel Team <kernel@pengutronix.de>, 
+    Fabio Estevam <festevam@gmail.com>, Timur Tabi <timur@kernel.org>, 
+    Peter Ujfalusi <peter.ujfalusi@ti.com>, 
+    Vignesh Raghavendra <vigneshr@ti.com>, 
+    Patrice Chotard <patrice.chotard@foss.st.com>, 
+    linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org, 
+    linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
+    linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v9 2/8] serial: serialize asynchronous write wakeups with
+ the port lock
+In-Reply-To: <auoUlkzXsl9WJG8B@ashevche-desk.local>
+Message-ID: <alpine.DEB.2.21.2611031947260.15685@angie.orcam.me.uk>
+References: <20261102-submit-serial-8250-dma-cancel-v1-v9-0-9159caade148@gmail.com> <20261102-submit-serial-8250-dma-cancel-v1-v9-2-9159caade148@gmail.com> <auoUlkzXsl9WJG8B@ashevche-desk.local>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -68,35 +71,43 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <sashiko-outbox-195824@kernel.org>
+Content-Type: text/plain; charset=US-ASCII
 
-Hi M. Bot,
+On Tue, 3 Nov 2026, Andy Shevchenko wrote:
 
-> > +          enum: [ iic1, iic2, iic3, iic4, iic5, iic6, xspi1-data74,
-> > +                  xspi1-data30, xspi1-base, sdhc1-base, sdhc1-dir,
-> > +                  sdhc2-data74, sdhc2-base, uart1-soutsin, uart1-rtscts,
-> > +                  uart2-soutsin, uart2-rtscts, irq11-8, irq7-4, irq3-0,
-> > +                  evt4-3, evt2-0, clk-out, asleep, reset-req ]
+> > +static unsigned long sccnxp_handle_events(struct sccnxp_port *s)
+> >  {
 > 
-> [Severity: Medium]
-> Should clk-out also be listed in the function enum (with a corresponding
-> if/then rule in allOf allowing the clk-out group)?
+> > -	int i;
+> > +	unsigned int i;
 > 
-> The other single-pad groups in RCWSR14 (asleep for ASLEEP_PMUX and
-> reset-req for RESET_REQ_PMUX) expose their encoding 0 primary functions
-> (asleep and reset-req) alongside their alternate functions.
-> 
-> For the clk-out group (CLK_OUT_PMUX in RCWSR14[5:3]), the schema permits
-> the gpio (0b001) and flextimer (0b010) functions in allOf, but omits the
-> primary clk-out (0b000) function, which prevents a board from selecting or
-> restoring the CLK_OUT function via pinctrl states without failing schema
-> validation.
+> This change seems unrelated to the patch. Again, slow down and READ what AI
+> produces before sending, please!
 
-No: the LX2160 doc states that CLK_OUT_PMUX 0b000 is reserved
-and then it seems it dropped its CLK_OUT section (per the revision history).
+ Indeed.  FWIW I've thrown v8 at hardware I look after, that is:
 
-> -- 
-> Sashiko AI review · https://sashiko.dev/#/patchset/20261103-for-upstream-lx2160a-rcw-pinmux-v1-v2-0-3aad0860b984@free.fr?part=1
+ drivers/tty/serial/dz.c            |  9 ++--
+ drivers/tty/serial/sb1250-duart.c  | 25 ++++++----
+ drivers/tty/serial/zs.c            | 94 ++++++++++++++++++++++++++++----------
+ drivers/tty/serial/zs.h            |  3 ++
+
+and that has caused no observable regressions in my simple verification as 
+direct terminal lines, both in the line mode and with ncurses.
+
+ I have no leased-line modem hardware to put this under stress with all 
+the signalling; I could see, and probably should, whether I can set up a 
+SLIP connection with a direct serial link and see how it performs, but 
+it'd take me more time than I can afford right now, especially as I'm 
+locally short of one PSU for the systems in question that is waiting for 
+parts to arrive for repair, and swapping the one working unit between 
+systems is quite involving (ones in the lab won't run SLIP owing to the 
+firmware limitation of the console servers they're wired to).
+
+ But I didn't have a chance to reply before v9 has been posted with more 
+updates, so I'll wait for things to settle before reviewing the changes in 
+detail.
+
+ Please consider this a NAK for the drivers listed above until the final 
+version of the patch has been posted and I've had a chance to verify it.
+
+  Maciej
