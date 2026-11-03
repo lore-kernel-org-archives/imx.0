@@ -1,101 +1,85 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.128.44
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793714625;
-	b=Jmy1F3qAesctGgysFbufEr9QvxCocaLW84zOeHGjRXoG7cp5cNbrOK4JvBnrNhphlwUJ
-	 m8rHpk1HT3x0rsmTvFzQ4ZsdjPfV8IdNVr0xLTrAkk1v61EMAO9HhlIqTtoT4/4DuOh4v
-	 kvlodO10g0NDs1GMNAyUt44rUU8TdvKxnZG8TAEPJAFACgE9W23RlrlHkgJeUeworIN0J
-	 qWdIjG1uatvkIwY3mJomOm/rnNZMHlPU0UQvE07WIbtzLRzbR5/T+TRr7B4ke72MyByz+
-	 h0NIfEuFErcGeWW0CLvXoaBpXBLd2aWHg2QwsrJOFjKfyb1KcrPuWsLuHwAA5imGVVw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793714625;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=0mpQqPcx/wO2M/JeyOkuY7Hd6GV1/TOLmZZItrx8K9I=;
-	b=YRvs7MvIrg7+4o2wy0LwpvgZHX0FpDjObNlEyMAZUWG74ik2R79/2YJ8DNNzMheapqMf
-	 appow2WVm92id7unAveIxX8UBFoplZmg5lWoyfjO6DW1oiwm2qIg2a6M6HPkZH/PEjwgK
-	 ypQPpFiuMABtdgL/8+bQ+KVIjoi7vEKxsb/aXM2qBFf4OTFAjOytL/FM1uON3mHVGEe99
-	 R8yO4K/AzPEdX49zsJe7+JuruAN2cPDPibz9aF39nTV7Y/dJa5UKfRtPDrqj/QcdOpL7b
-	 uvfodk4B+T17X36E2ukCzzMoLZfQZo6TulvNTlo0TLgUj2pglcw6hTEdRvLXfnu4c+g==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=AOA+32KB;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.128.44
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=92.121.32.55
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793714963;
+	b=WU507evxAwbMzqps3ogFx6Beyrg+2uFYDdI7Sri5Nx3QgRK3Gk++jvx73cXdH46SN22/
+	 bduwFXWEwCcUEEo2aNcn9reJK6FY/EN6lzq/Uf060CdTlyO5NJjdmID/ubjF76mlUBuRa
+	 zubBIhx6plTkbsd4FT/Mw/PXrZqZZzSKp7VnQsTPPoE6HAkRNe5ln9rJWe6Mu0T801OEX
+	 atwSZ2yeFqagsxcZcRc3kGo1x9cWqhggfrTaZof7ppm7HPMrqaP2oRZMygJN3rW58NxyF
+	 fyhhDgwd6Np/lU06WiuS8voAyvEEmIAkrO3xFIwAwPU45UPZKEojsRGXs59F+0LUglg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793714963;
+	h=DMARC-Filter:Received:X-Virus-Scanned:Received:Received:DKIM-Filter:
+	 DKIM-Signature:Received:From:To:Cc:Subject:Date:Message-Id:X-Mailer:
+	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
+	bh=Tjci9FahsWXbvTAjNSulqZBWW3Q1JTvC7kQWPLK/tWs=;
+	b=MLM3eIyZYQpY6BErUiTmspd/l0HmQOWOyS66J0JvBcrAOQDbma/HlSDklnkps0s8QwWV
+	 xm+a/K2wuWttHH6ftP+FZoIbxjM4jZZbBaKADWWhlBwQWW4PmR72DjTkSbVe94lSqiSu5
+	 bQzcGGk6+v6ZLa762MhY2XChvhCyYdmmU7t8t7+XeQ8k1P83B4nQ5ylIp2V6YzrRb4TbK
+	 btpNw/l7ONuTeoRiX0kH5Z47den6/CzuzPKlrKbvNy+Heyc1rjbiMQQp+ZtDrC9uGm20P
+	 m2eeX1DjpCFL/A7C3s/vp3DJvi525ws8p2deRtZR4+nn0og94aEBiMryHMtrQx5koig==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nxp.com;
+	spf=pass smtp.mailfrom=nxp.com;
+	dkim=pass header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=nselector2 header.b=GiV3bdZb;
+	arc=none smtp.remote-ip=92.121.32.55
+Received: from inva130.nxp.com (inva130.nxp.com [92.121.32.55])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB7D16071BD1
-	for <imx@lists.linux.dev>; Tue,  3 Nov 2026 14:03:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AB7D16071BD1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CC57606A332
+	for <imx@lists.linux.dev>; Tue,  3 Nov 2026 14:09:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1CC57606A332
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=AOA+32KB
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4a59100fa83so37938605e9.0
-        for <imx@lists.linux.dev>; Tue, 03 Nov 2026 06:03:44 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793714623; cv=none;
-        d=google.com; s=arc-20260327;
-        b=UjTTHZlWwMpoVrdtnLGXIsL2JQ8fu3DrOvm0KrN68CWgWrY1JsrorYvtDtfr8msOX4
-         vmPWMYaCKRe5WHrRJ0JRPrG/GffLvZoW/7u7HDkkrXgcHqtXhBbMMdnFVNhwr1UPeJSI
-         HnNu6anJkuR153GSk3cvaS41aQ1z2/6C/ox+Jr03XTmKaAfs+NZrZ/sCcLXGpXtWtEw8
-         zAiCGvzP6emWuaTyIyZrdSgEZ/4VMgyCKkpu2RcpQkmKFzUunbsrQD6AbNBDXwFgdKzQ
-         +IsGwx/jbBUskwGNvviwKhiomCVXt99swnzo8j+kICR76bxBb4A1wZXl6q4BZ0saXfBS
-         2qfQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=0mpQqPcx/wO2M/JeyOkuY7Hd6GV1/TOLmZZItrx8K9I=;
-        fh=NVkxb1IkfAIBWjYLgYRiFPQt95IDiVTheIjZR4+i9J4=;
-        b=kf4bUqqA82W5J+1ero2d/R1v5hiFXv1tw9Bng4W/rTHTfO9NY727eaz462+KWzjV54
-         wD/dXWAn5gP4ni84WOjBImLrA6u9nzEENRG1JtsmZpciG3r7dOgVZLF8TgmDJQEhmm2a
-         e5wvZVaNHFTzgY/KdpXGGAqDe1+/P/Fr0PCbphFf0pNGiKOxeF0alKR4fmMamdNEFgH8
-         3cB1KhzgfOZe+T8YGjhl4w8xeQ3vMUsnMffkkuIh/LLtABFN4dEFwUeoJyGLVTP+F7/X
-         JH5hz8LC6TIdRzclT3Vn4uJvyaJd/FwVcpOYSBgwY9S4MEB37+90NfYQzuZzuJm6Y51w
-         wYJw==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793714623; x=1794319423; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=0mpQqPcx/wO2M/JeyOkuY7Hd6GV1/TOLmZZItrx8K9I=;
-        b=AOA+32KBftXDOGzTH5izJ3PZvVkbsDTOwEwbbTwQwrEvpohE73xMoi9rPnWJpe2SEy
-         9ySXMl1V2Vr2uUKMoAxeLFfHz/uEi6zNfzv75VmybXnDykrpozSlnHp0e0nwbSZAippN
-         Z3dw+ocgiaRSNwo1umE8b9qKlHRo7EaCMAs6daX0HSl084mGIGUv2ZD6O37NciZn6myf
-         Z0HDQcMsXUPOTjzeC/AV9DwCoKtV8yYKLxfjZNmkykD7CAcGCLQ7LW6BekoKeMIqNAL5
-         hqkq6qQzjxEFZ9kFFXJkdh172lS+Cu4NtkgdOiXXiqIY9pCilxLl2YWt4593AOJAdRPd
-         kkXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793714623; x=1794319423;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=0mpQqPcx/wO2M/JeyOkuY7Hd6GV1/TOLmZZItrx8K9I=;
-        b=pUkjGbyoj+PEMByud1Y21Ffa03jgSs0a8Sidh0hUYpw87HRLNTQQbU+u3AQQfHqK26
-         Sqrbkq9imnIpS1UvSM6drSYgybAf+KnjBUsXhdvWnL6mxzaI/NH+ez2ePIRJTQvBKzi0
-         1Ywjor5qYFmqvYw6DJkUQptIijebQJWUQ+/dvRRxOTj0aT7Cs5T3XiS5rlVImYHxtIfN
-         +eD0exWtEsNycu/Ve02VKfBJoCbTfeh5pwifZDq7nMXx1+DTnd9XbCKP9pKCPA+3j7aP
-         e9ByUshQaTWwz/CNWl504uhekP1WigZKZW7CJ/KmOAV7sLNKe3d9SQhk4Q6vHPwgvyRN
-         L+cg==
-X-Forwarded-Encrypted: i=1; AKwUvBxVUMdlcf5BfxNGpyHPbjX7fibanrsg2/BwVciaQoQDblP5TraiYh7xxX7k9yFhsAeh7Zs=@lists.linux.dev
-X-Gm-Message-State: APuU4Z/F02XLuhU9XG5FoaMxS1wHX9nDe2aJb/2iSNZkAJBtSKGJEE2n
-	LSH7Np4imuI+wQcQFobK04oaPOmyBs1ygbfd0Wn/Yta9HebHJS8Jp7MDzrlAofiNrLJchNgX9J+
-	2v2LpFrdtieKWZq5KPGLSNaqQi2jEMfk=
-X-Gm-Gg: AYBFou3ak589HCwG7DphQwaahKcepxIGfn8bAnyWPiAihFmhWSwHphnS8rDW5vLnw8G
-	S9+ZFE5nOjj1ZbysppEeJQljj45ATZO0pTbH3w6wpTeiuLSWrBijb1g2sQAOhw5Uh80fB4VjBt1
-	AvZs1/Uyrt/ZuMogcWRDQcjWKFBF7NOAkaGwJd4Dd5RuqKS02+drzVSdDLliYPvlacgfqoyR8Fw
-	BYCbxeRI7B2VJqgeeFSbgBPJUGdDrD6p1PrZM59EiDak0MsJQH9f/12PE5LFAtgcbEIoQbSEZxw
-	TbVPqBrjt9/wLaGLIjCEtokThhKEMU057VLfxOLC1VA1lvpr4MdJVxJeXAiP6nGds/sjVIaWsl6
-	szKn4Is1CuSz+ZiP8NC6zKDXuG+Py35yDpX3wKRMA1T1ZuEF/NvtYdd3gtBw0Y4IqPe64Y7854A
-	Br5LQub1IZ4x3UuCLiVhZdmnSgSu6z6JHKyUh03iUirGDmJCgX+ZKYKeCD
-X-Received: by 2002:a05:600c:848c:b0:4a1:efd3:9862 with SMTP id
- 5b1f17b1804b1-4ac1765d977mr282488195e9.21.1793714622717; Tue, 03 Nov 2026
- 06:03:42 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=nselector2 header.b=GiV3bdZb
+Received: from localhost (localhost [127.0.0.1])
+	by inva130.nxp.com (Postfix) with ESMTP id AF2966000791;
+	Tue,  3 Nov 2026 15:09:15 +0100 (CET)
+X-Virus-Scanned: amavis at nxp.com
+Received: from inva130.nxp.com ([127.0.0.1])
+ by localhost (inva130.nxp.com [127.0.0.1]) (amavis, port 10024) with ESMTP
+ id GunDit03yl-B; Tue,  3 Nov 2026 15:09:15 +0100 (CET)
+Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
+	by inva130.nxp.com (Postfix) with ESMTP id E4C0B6000789;
+	Tue,  3 Nov 2026 15:09:14 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.11.0 inva130.nxp.com E4C0B6000789
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com;
+	s=nselector2; t=1793714954;
+	bh=Tjci9FahsWXbvTAjNSulqZBWW3Q1JTvC7kQWPLK/tWs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=GiV3bdZbWQ6szSJIM7wqBdiGsK2OoJ+IcmxP3BFVgS2+HG6Yead80qN0LqFBZy49y
+	 NNhDpDVHAN81Ee+0vI2UCXsZcNi02NqlzL8L1DLr3ozU9C/xL0fUfGJrH0Ua50gKSk
+	 ymCl+oqnc9y8OCPaemPQiuFLJFFCQum2T/mKtdE61rmTJfuSu/hsEhtA57PnWfRAH7
+	 oJdcBfi7cGF5FqHcT8fUmi76RI/NmDfINXwwYQq+voX5UQKG1tTRCFQHRVZfdl8tUk
+	 vldPLvwh/gC++ttsJyFmU/KxwTzcIALRROG8cyAoY9Ju+lb/E6PAkpIjzeX8zC0w8J
+	 8sF1RdgVIkrpg==
+Received: from lsv15141.swis.ro-buh01.nxp.com (lsv15141.swis.ro-buh01.nxp.com [10.162.246.138])
+	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id 0376A202AF;
+	Tue,  3 Nov 2026 15:09:13 +0100 (CET)
+From: Claudiu Manoil <claudiu.manoil@nxp.com>
+To: netdev@vger.kernel.org
+Cc: s32@nxp.com,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org
+Subject: [PATCH net-next v3 1/5] net: enetc: Add pseudo-MAC support for ENETCv4 Ports via a fixed-link node
+Date: Tue,  3 Nov 2026 16:09:07 +0200
+Message-Id: <5a135fdb2f4de0ee90f4c7e691fff34ccab29354.1793712309.git.claudiu.manoil@nxp.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <cover.1793712309.git.claudiu.manoil@nxp.com>
+References: <cover.1793712309.git.claudiu.manoil@nxp.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -105,183 +89,332 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-References: <20261102170911.3867389-1-Frank.Li@oss.nxp.com>
-In-Reply-To: <20261102170911.3867389-1-Frank.Li@oss.nxp.com>
-From: "Lad, Prabhakar" <prabhakar.csengg@gmail.com>
-Date: Tue, 3 Nov 2026 14:03:15 +0000
-X-Gm-Features: AclHuK9lTBNUFEhnmVUe-0bw9b56qg4kVZy5zFZ6xKayAE9tcP58fndIr_XiG0M
-Message-ID: <CA+V-a8t0bf_8hc1vd7c+OXBQfgBjp6EJjDALm8+myVYRNzy-Xw@mail.gmail.com>
-Subject: Re: [PATCH 1/1] iio: use dmaengine_desc_set_callback()
-To: Frank.Li@oss.nxp.com
-Cc: Eugen Hristev <ehristev@kernel.org>, Jonathan Cameron <jic23@kernel.org>, 
-	David Lechner <dlechner@baylibre.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Nicolas Ferre <nicolas.ferre@microchip.com>, 
-	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
-	Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	Daniel Lezcano <daniel.lezcano@kernel.org>, Stepan Ionichev <sozdayvek@gmail.com>, 
-	Felix Gu <ustc.gu@gmail.com>, Frank Li <Frank.Li@nxp.com>, 
-	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig_=28The_Capable_Hub=29?= <u.kleine-koenig@baylibre.com>, 
-	Shuvam Pandey <shuvampandey1@gmail.com>, Piyush Patle <piyushpatle228@gmail.com>, 
-	Fabrice Gasnier <fabrice.gasnier@foss.st.com>, Cheick Traore <cheick.traore-ext@st.com>, 
-	Giorgi Tchankvetadze <giorgitchankvetadze1997@gmail.com>, Vinod Koul <vkoul@kernel.org>, 
-	"Rob Herring (Arm)" <robh@kernel.org>, Shi Hao <i.shihao.999@gmail.com>, 
-	Kees Cook <kees+treewide@kernel.org>, Michael Hennerich <michael.hennerich@analog.com>, 
-	"open list:MICROCHIP SAMA5D2-COMPATIBLE ADC DRIVER" <linux-iio@vger.kernel.org>, 
-	"moderated list:ARM/Microchip (AT91) SoC support" <linux-arm-kernel@lists.infradead.org>, 
-	open list <linux-kernel@vger.kernel.org>, 
-	"open list:RENESAS RZ/T2H / RZ/N2H A/D DRIVER" <linux-renesas-soc@vger.kernel.org>, 
-	"moderated list:ARM/STM32 ARCHITECTURE" <linux-stm32@st-md-mailman.stormreply.com>, imx@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, Nov 2, 2026 at 8:55=E2=80=AFPM <Frank.Li@oss.nxp.com> wrote:
->
-> From: Frank Li <Frank.Li@nxp.com>
->
-> Replace open-coded assignments to callback and callback_param fields
-> of struct dma_async_tx_descriptor with calls to the
-> dmaengine_desc_set_callback() helper.
->
-> No functional change intended. Prepare make to struct
-> dma_async_tx_descriptor private to the DMA engine.
->
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  drivers/iio/adc/at91-sama5d2_adc.c                 | 3 +--
->  drivers/iio/adc/nxp-sar-adc.c                      | 3 +--
->  drivers/iio/adc/rzt2h_adc.c                        | 3 +--
-For the T2H changes,
+ENETCv4 has special internal links when connected to the on-chip NETC
+switch via internal switch ports, called pseudo-MAC links. These
+pseudo-MACs are proprietary, they don't implement any standard IEEE
+interface (like MII), and can be modeled as fixed links with the link
+speed determined at boot time by the Port PCR[PSPEED] register
+configuration.
 
-Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+We also need to be able to probe the ENETCv4 Ports featuring pseudo-MACs
+as pure PCI devices, i.e. without any "ethernet" DT node representation.
+The typical use case for this consists in a board with NETC connected
+via PCI to another host which probes the ENETC. Note that in this
+scenario, the pseudo-MAC ENETCs are connected internally to a NETC
+switch that is not owned by Linux.
 
-Cheers,
-Prabhakar
+Since such a port has no "ethernet" DT node, its fixed link has to be
+synthesized at probe time. Build the fixed-link subnode directly in C
+with an of_changeset: of_changeset_create_node() adds a "fixed-link"
+node onto the port's own OF node, and of_changeset_add_prop_*() populate
+its "speed" and "full-duplex" properties. The changeset is applied with
+of_changeset_apply(), so the fixed-link node is spliced onto the ENETC
+netdev's fwnode exactly as if it had come from static DT, and phylink
+picks it up through dev_fwnode().
 
->  drivers/iio/adc/stm32-adc.c                        | 3 +--
->  drivers/iio/adc/stm32-dfsdm-adc.c                  | 3 +--
->  drivers/iio/adc/ti_am335x_adc.c                    | 3 +--
->  drivers/iio/buffer/industrialio-buffer-dmaengine.c | 3 +--
->  7 files changed, 7 insertions(+), 14 deletions(-)
->
-> diff --git a/drivers/iio/adc/at91-sama5d2_adc.c b/drivers/iio/adc/at91-sa=
-ma5d2_adc.c
-> index 78081cbfde5e8..d479c9bc9b3e8 100644
-> --- a/drivers/iio/adc/at91-sama5d2_adc.c
-> +++ b/drivers/iio/adc/at91-sama5d2_adc.c
-> @@ -1240,8 +1240,7 @@ static int at91_adc_dma_start(struct iio_dev *indio=
-_dev)
->                 return -EBUSY;
->         }
->
-> -       desc->callback =3D at91_dma_buffer_done;
-> -       desc->callback_param =3D indio_dev;
-> +       dmaengine_desc_set_callback(desc, at91_dma_buffer_done, NULL, ind=
-io_dev);
->
->         cookie =3D dmaengine_submit(desc);
->         ret =3D dma_submit_error(cookie);
-> diff --git a/drivers/iio/adc/nxp-sar-adc.c b/drivers/iio/adc/nxp-sar-adc.=
-c
-> index 2f716a2f97b80..82d8d921b0293 100644
-> --- a/drivers/iio/adc/nxp-sar-adc.c
-> +++ b/drivers/iio/adc/nxp-sar-adc.c
-> @@ -696,8 +696,7 @@ static int nxp_sar_adc_start_cyclic_dma(struct iio_de=
-v *indio_dev)
->         if (!desc)
->                 return -EINVAL;
->
-> -       desc->callback =3D nxp_sar_adc_dma_cb;
-> -       desc->callback_param =3D indio_dev;
-> +       dmaengine_desc_set_callback(desc, nxp_sar_adc_dma_cb, NULL, indio=
-_dev);
->         info->cookie =3D dmaengine_submit(desc);
->         ret =3D dma_submit_error(info->cookie);
->         if (ret) {
-> diff --git a/drivers/iio/adc/rzt2h_adc.c b/drivers/iio/adc/rzt2h_adc.c
-> index 8ba7b0fde8a19..3e52b7d660dd3 100644
-> --- a/drivers/iio/adc/rzt2h_adc.c
-> +++ b/drivers/iio/adc/rzt2h_adc.c
-> @@ -394,8 +394,7 @@ static int rzt2h_adc_start_dma(struct iio_dev *indio_=
-dev)
->         if (!desc)
->                 return -EBUSY;
->
-> -       desc->callback =3D rzt2h_adc_dma_callback;
-> -       desc->callback_param =3D indio_dev;
-> +       dmaengine_desc_set_callback(desc, rzt2h_adc_dma_callback, NULL, i=
-ndio_dev);
->
->         cookie =3D dmaengine_submit(desc);
->         ret =3D dma_submit_error(cookie);
-> diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
-> index 600f975f1d7b5..fa2a781e37777 100644
-> --- a/drivers/iio/adc/stm32-adc.c
-> +++ b/drivers/iio/adc/stm32-adc.c
-> @@ -1901,8 +1901,7 @@ static int stm32_adc_dma_start(struct iio_dev *indi=
-o_dev)
->         if (!desc)
->                 return -EBUSY;
->
-> -       desc->callback =3D stm32_adc_dma_buffer_done;
-> -       desc->callback_param =3D indio_dev;
-> +       dmaengine_desc_set_callback(desc, stm32_adc_dma_buffer_done, NULL=
-, indio_dev);
->
->         cookie =3D dmaengine_submit(desc);
->         ret =3D dma_submit_error(cookie);
-> diff --git a/drivers/iio/adc/stm32-dfsdm-adc.c b/drivers/iio/adc/stm32-df=
-sdm-adc.c
-> index 674767da3ac37..f0239f5f30afe 100644
-> --- a/drivers/iio/adc/stm32-dfsdm-adc.c
-> +++ b/drivers/iio/adc/stm32-dfsdm-adc.c
-> @@ -1006,8 +1006,7 @@ static int stm32_dfsdm_adc_dma_start(struct iio_dev=
- *indio_dev)
->         if (!desc)
->                 return -EBUSY;
->
-> -       desc->callback =3D stm32_dfsdm_dma_buffer_done;
-> -       desc->callback_param =3D indio_dev;
-> +       dmaengine_desc_set_callback(desc, stm32_dfsdm_dma_buffer_done, NU=
-LL, indio_dev);
->
->         cookie =3D dmaengine_submit(desc);
->         ret =3D dma_submit_error(cookie);
-> diff --git a/drivers/iio/adc/ti_am335x_adc.c b/drivers/iio/adc/ti_am335x_=
-adc.c
-> index e53c839e87ef3..230f1c990317a 100644
-> --- a/drivers/iio/adc/ti_am335x_adc.c
-> +++ b/drivers/iio/adc/ti_am335x_adc.c
-> @@ -259,8 +259,7 @@ static int tiadc_start_dma(struct iio_dev *indio_dev)
->         if (!desc)
->                 return -EBUSY;
->
-> -       desc->callback =3D tiadc_dma_rx_complete;
-> -       desc->callback_param =3D indio_dev;
-> +       dmaengine_desc_set_callback(desc, tiadc_dma_rx_complete, NULL, in=
-dio_dev);
->
->         dma->cookie =3D dmaengine_submit(desc);
->
-> diff --git a/drivers/iio/buffer/industrialio-buffer-dmaengine.c b/drivers=
-/iio/buffer/industrialio-buffer-dmaengine.c
-> index b9f8b5b3aa6b6..7ecb9d875b8e8 100644
-> --- a/drivers/iio/buffer/industrialio-buffer-dmaengine.c
-> +++ b/drivers/iio/buffer/industrialio-buffer-dmaengine.c
-> @@ -160,8 +160,7 @@ static int iio_dmaengine_buffer_submit_block(struct i=
-io_dma_buffer_queue *queue,
->                 return -ENOMEM;
->
->         if (!block->cyclic) {
-> -               desc->callback_result =3D iio_dmaengine_buffer_block_done=
-;
-> -               desc->callback_param =3D block;
-> +               dmaengine_desc_set_callback(desc, NULL, iio_dmaengine_buf=
-fer_block_done, block);
->         }
->
->         cookie =3D dmaengine_submit(desc);
-> --
-> 2.43.0
->
->
+The operating speed written into the node is read from PCR[PSPEED] at
+probe time and mapped to a phylink-supported value, so the fixed link
+reflects the actual boot-time configuration, as long as it's a phylink
+supported value. Otherwise, PCR[PSPEED] will be updated to the closest
+rounded down supported value.
+
+The pseudo-MAC path is selected when the port has no OF node, or when it
+only has the empty PCI-synthesized node (OF_DYNAMIC), which carries no
+fixed-link description. Ports described by static DT take the regular
+of_get_phy_mode() path instead.
+
+The changeset is reverted and destroyed on teardown and on the probe
+error unwind. The node-less pseudo-MAC path has a runtime dependency on
+CONFIG_PCI_DYNAMIC_OF_NODES: that is what makes the PCI core synthesize
+the per-function OF node (of_pci_make_dev_node()) that the fixed-link
+node is attached onto. This is intentionally not a hard Kconfig
+dependency, since the ENETC4 driver also serves regular ports described
+by static DT; when PCI_DYNAMIC_OF_NODES is absent the PCI function has no
+of_node and the pseudo-MAC probe path fails gracefully with a clear
+-ENODEV error.
+
+Signed-off-by: Claudiu Manoil <claudiu.manoil@nxp.com>
+---
+v3:
+ - Fixed the CONFIG_OF_DYNAMIC dependency.
+ - Refactored enetc4_add_ppm_fixed_link(), as per Wei's feedback.
+ - Improved the commit message.
+
+v2:
+ - Switched from a DT overlay blob (of_overlay_fdt_apply() + a .dtso
+   compiled to .dtbo) to of_changeset_create_node(), per review
+   feedback. Drops the embedded overlay externs, the Makefile .dtbo
+   wrapping, and the OF_OVERLAY Kconfig dependency.
+ - Baked the operating speed directly into the changeset-created
+   fixed-link node (read once from PCR[PSPEED] at probe time); the
+   phylink get_fixed_state callback is no longer needed and was removed.
+
+ drivers/net/ethernet/freescale/enetc/Kconfig  |   1 +
+ .../net/ethernet/freescale/enetc/enetc4_pf.c  | 109 +++++++++++++++++-
+ .../net/ethernet/freescale/enetc/enetc_pf.h   |   2 +
+ .../freescale/enetc/enetc_pf_common.c         |  41 ++++++-
+ .../freescale/enetc/enetc_pf_common.h         |   1 +
+ 5 files changed, 145 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/net/ethernet/freescale/enetc/Kconfig b/drivers/net/ethernet/freescale/enetc/Kconfig
+index f425f82a6213a..c51d07db2c869 100644
+--- a/drivers/net/ethernet/freescale/enetc/Kconfig
++++ b/drivers/net/ethernet/freescale/enetc/Kconfig
+@@ -55,6 +55,7 @@ config NXP_ENETC4
+ 	select NXP_NTMP
+ 	select PHYLINK
+ 	select DIMLIB
++	select OF_DYNAMIC
+ 	help
+ 	  This driver supports NXP ENETC devices with major revision 4. ENETC is
+ 	  as the NIC functionality in NETC, it supports virtualization/isolation
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
+index 71c971618388b..b7e7201e6a71a 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
+@@ -1,8 +1,9 @@
+ // SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
+-/* Copyright 2024 NXP */
++/* Copyright 2024, 2026 NXP */
+ 
+ #include <linux/clk.h>
+ #include <linux/module.h>
++#include <linux/of.h>
+ #include <linux/of_net.h>
+ #include <linux/of_platform.h>
+ #include <linux/unaligned.h>
+@@ -932,6 +933,14 @@ static void enetc4_pl_mac_link_down(struct phylink_config *config,
+ 	enetc4_mac_tx_graceful_stop(pf);
+ }
+ 
++static void enetc4_get_pcr_speed(struct enetc_hw *hw, int *speed)
++{
++	u32 val = enetc_port_rd(hw, ENETC4_PCR);
++	int pspeed = FIELD_GET(PCR_PSPEED, val);
++
++	*speed = (pspeed + 1) * 10;
++}
++
+ static const struct phylink_mac_ops enetc_pl_mac_ops = {
+ 	.mac_select_pcs = enetc4_pl_mac_select_pcs,
+ 	.mac_config = enetc4_pl_mac_config,
+@@ -946,23 +955,108 @@ static void enetc4_pci_remove(void *data)
+ 	enetc_pci_remove(pdev);
+ }
+ 
++static void enetc4_put_ppm_fixed_link(struct enetc_pf *pf)
++{
++	if (!pf->ppm_ocs)
++		return;
++
++	of_changeset_revert(pf->ppm_ocs);
++	of_changeset_destroy(pf->ppm_ocs);
++	kfree(pf->ppm_ocs);
++	pf->ppm_ocs = NULL;
++}
++
++/* Pseudo-MAC ports have no real PHY; the link is fixed, with the operating
++ * speed set at probe time from PCR[PSPEED]. Describe this with a fixed-link
++ * subnode synthesized at runtime onto the port's own OF node, so phylink
++ * picks it up through dev_fwnode() exactly as if it came from static DT.
++ */
++static int enetc4_add_ppm_fixed_link(struct enetc_pf *pf,
++				     struct device_node *np)
++{
++	struct device_node *fixed_link;
++	struct of_changeset *ocs;
++	int speed, err;
++
++	enetc4_get_pcr_speed(&pf->si->hw, &speed);
++	speed = enetc_phylink_match_pseudo_mac_speed(speed);
++
++	ocs = kzalloc_obj(*ocs);
++	if (!ocs)
++		return -ENOMEM;
++
++	of_changeset_init(ocs);
++
++	fixed_link = of_changeset_create_node(ocs, np, "fixed-link");
++	if (!fixed_link) {
++		err = -ENOMEM;
++		goto err_destroy;
++	}
++
++	err = of_changeset_add_prop_u32(ocs, fixed_link, "speed", speed);
++	if (err)
++		goto err_put_node;
++
++	err = of_changeset_add_prop_bool(ocs, fixed_link, "full-duplex");
++	if (err)
++		goto err_put_node;
++
++	err = of_changeset_apply(ocs);
++	if (err)
++		goto err_put_node;
++
++	of_node_put(fixed_link);
++	pf->ppm_ocs = ocs;
++
++	return 0;
++
++err_put_node:
++	of_node_put(fixed_link);
++err_destroy:
++	of_changeset_destroy(ocs);
++	kfree(ocs);
++
++	return err;
++}
++
+ static int enetc4_link_init(struct enetc_ndev_priv *priv,
+ 			    struct device_node *node)
+ {
++	bool dynamic = node && of_node_check_flag(node, OF_DYNAMIC);
+ 	struct enetc_pf *pf = enetc_si_priv(priv->si);
+ 	struct device *dev = priv->dev;
+ 	int err;
+ 
+-	err = of_get_phy_mode(node, &pf->if_mode);
+-	if (err) {
+-		dev_err(dev, "Failed to get PHY mode\n");
+-		return err;
++	/* Pseudo-MAC ENETCs are described by a runtime-synthesized fixed-link
++	 * node rather than static DT. This covers both a missing OF node and a
++	 * PCI-synthesized (OF_DYNAMIC) node, which is an empty node created
++	 * by the PCI core and thus carries no fixed-link description.
++	 */
++	if (enetc_is_pseudo_mac(priv->si) && (!node || dynamic)) {
++		pf->if_mode = PHY_INTERFACE_MODE_INTERNAL;
++
++		if (!node) {
++			dev_err(dev, "Missing of_node for Pseudo-MAC port\n");
++			return -ENODEV;
++		}
++
++		err = enetc4_add_ppm_fixed_link(pf, node);
++		if (err) {
++			dev_err(dev, "Failed to add fixed-link node\n");
++			return err;
++		}
++	} else {
++		err = of_get_phy_mode(node, &pf->if_mode);
++		if (err) {
++			dev_err(dev, "Failed to get PHY mode\n");
++			return err;
++		}
+ 	}
+ 
+ 	err = enetc_mdiobus_create(pf, node);
+ 	if (err) {
+ 		dev_err(dev, "Failed to create MDIO bus\n");
+-		return err;
++		goto err_mdiobus_create;
+ 	}
+ 
+ 	err = enetc_phylink_create(priv, node, &enetc_pl_mac_ops);
+@@ -975,6 +1069,8 @@ static int enetc4_link_init(struct enetc_ndev_priv *priv,
+ 
+ err_phylink_create:
+ 	enetc_mdiobus_destroy(pf);
++err_mdiobus_create:
++	enetc4_put_ppm_fixed_link(pf);
+ 
+ 	return err;
+ }
+@@ -985,6 +1081,7 @@ static void enetc4_link_deinit(struct enetc_ndev_priv *priv)
+ 
+ 	enetc_phylink_destroy(priv);
+ 	enetc_mdiobus_destroy(pf);
++	enetc4_put_ppm_fixed_link(pf);
+ }
+ 
+ static void enetc4_pf_link_status_task(struct work_struct *work)
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf.h b/drivers/net/ethernet/freescale/enetc/enetc_pf.h
+index 1f92d16d8ca81..ab11e40cfdbbb 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc_pf.h
++++ b/drivers/net/ethernet/freescale/enetc/enetc_pf.h
+@@ -67,6 +67,8 @@ struct enetc_pf {
+ 	bool sriov_enabled;
+ 	bool link_up;
+ 	u16 link_status_ms_mask;
++
++	struct of_changeset *ppm_ocs; /* pseudo-MAC fixed-link changeset */
+ };
+ 
+ #define phylink_to_enetc_pf(config) \
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c b/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
+index 8206884294a47..3ba46c3a7670b 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
+@@ -436,6 +436,43 @@ void enetc_mdiobus_destroy(struct enetc_pf *pf)
+ }
+ EXPORT_SYMBOL_GPL(enetc_mdiobus_destroy);
+ 
++static struct {
++	unsigned long mac_cap;
++	int speed; /* descending order sorted  */
++} enetc_phylink_pseudo_mac_caps[] = {
++	{ MAC_25000FD,  SPEED_25000 },
++	{ MAC_20000FD,  SPEED_20000 },
++	{ MAC_10000FD,  SPEED_10000 },
++	{ MAC_5000FD,   SPEED_5000  },
++	{ MAC_2500FD,   SPEED_2500  },
++	{ MAC_1000FD,   SPEED_1000  },
++	{ MAC_100FD,    SPEED_100   },
++	{ MAC_10FD,     SPEED_10    },
++};
++
++static unsigned long enetc_phylink_get_pseudo_mac_caps(void)
++{
++	unsigned long mac_caps = 0;
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(enetc_phylink_pseudo_mac_caps); i++)
++		mac_caps |= enetc_phylink_pseudo_mac_caps[i].mac_cap;
++
++	return mac_caps;
++}
++
++int enetc_phylink_match_pseudo_mac_speed(int speed)
++{
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(enetc_phylink_pseudo_mac_caps); i++)
++		if (enetc_phylink_pseudo_mac_caps[i].speed <= speed)
++			return enetc_phylink_pseudo_mac_caps[i].speed;
++
++	return SPEED_UNKNOWN;
++}
++EXPORT_SYMBOL_GPL(enetc_phylink_match_pseudo_mac_speed);
++
+ int enetc_phylink_create(struct enetc_ndev_priv *priv, struct device_node *node,
+ 			 const struct phylink_mac_ops *ops)
+ {
+@@ -471,9 +508,7 @@ int enetc_phylink_create(struct enetc_ndev_priv *priv, struct device_node *node,
+ 
+ 		phy_interface_set_rgmii(pf->phylink_config.supported_interfaces);
+ 	} else {
+-		mac_caps |= MAC_10FD | MAC_100FD | MAC_1000FD | MAC_2500FD |
+-			    MAC_5000FD | MAC_10000FD | MAC_20000FD |
+-			    MAC_25000FD;
++		mac_caps |= enetc_phylink_get_pseudo_mac_caps();
+ 	}
+ 
+ 	pf->phylink_config.mac_capabilities = mac_caps;
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf_common.h b/drivers/net/ethernet/freescale/enetc/enetc_pf_common.h
+index c9eed879d5a3f..aede1aad63621 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc_pf_common.h
++++ b/drivers/net/ethernet/freescale/enetc/enetc_pf_common.h
+@@ -13,6 +13,7 @@ void enetc_mdiobus_destroy(struct enetc_pf *pf);
+ int enetc_phylink_create(struct enetc_ndev_priv *priv, struct device_node *node,
+ 			 const struct phylink_mac_ops *ops);
+ void enetc_phylink_destroy(struct enetc_ndev_priv *priv);
++int enetc_phylink_match_pseudo_mac_speed(int speed);
+ void enetc_set_default_rss_key(struct enetc_pf *pf);
+ int enetc_vlan_rx_add_vid(struct net_device *ndev, __be16 prot, u16 vid);
+ int enetc_vlan_rx_del_vid(struct net_device *ndev, __be16 prot, u16 vid);
+-- 
+2.34.1
+
