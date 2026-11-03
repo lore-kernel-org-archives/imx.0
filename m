@@ -1,57 +1,95 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.9
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793691138;
-	b=lFNYowxX67Rbz6XYhaXlcKBNyaZWT36HRSSnSVfNI4gXXAKh35g1azQpNncQQ1j91l2D
-	 j5B6SRwWhR9jD5E4FWEwzwjvF/uPViPjOQHqQEuVTKY5Vu0qivqTDGAw+WWLhRy/ACVAS
-	 Djs9eJk9WBhMzVklBXFPh2GDMiJSWefcg82kqGnH8PCDooACvJ2fJ7Yn4UdIg0e95EeWJ
-	 P++RtnMj6zir5g0vVYfRjyqbsN1t48hRxLwb2UCuk6GNAOQgQG8zwxh+uRF/AZFrj5GW9
-	 uLlZ4Uj8qzW3k3RWSCm0gYbgdNp+naUNzYHB60LWq8RNjG1epkTe0seUnUJddurY+jg==
+	t=1793694319;
+	b=mRsnCuFvIFrAanjvV3wtpsqHftI0j7k06ohPoP4Z3eY7J8+j2jbKARu4hadhFM9KCa41
+	 M/UEJpYf5BdsALA49jy3JUFOb4sbvkttMcRXbIQAOXU3t+H4CJMhFl2tiwQz1r146kitm
+	 ym0hp3Iw3PE/Tpd92HozdN7P6YogZOOz/JEpDBwEGpjEAznAh35j1hmDhHXf5gvqWYilN
+	 kVS6VZ5xO+W4UhpbQBIF/vMje0P1DA/x+UywmxOU8DjWjNJeGDQ8Df3IB1o660RGWw1Ag
+	 9rPsa0V+qLupmQVEBNcG1bfZEZPW6YlGt8fjNpItZ2MqQut0PriY+/NvAz2v4SoA1fQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793691138;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=esQ8k0v7tsfBVuC6wqFu1NmPFDJAHXXyD7IUsbcD7yg=;
-	b=Sj1Cu2ccNtMvi3TjGR9+CUspawLWNXXJzyjfZAYhSSUkgYPB8+9W23giecnHRZK7EyCZ
-	 gVpdgLrLZobIGDiVKmbeqUXd94DFGwvHyNTqADvE4rC8EQkHkRTzZzqx72jX2u7xaLQdZ
-	 Hl2v36vDBxcJ85y9ePlnHfwA4WbZAnB7rgBl3WPmwptlpcAoqm8iGKKj/4iyhCAG6VAIY
-	 SXSRyE85V+mSM8z70F6VS1DMird13CD2Ndw+b3tIum8mXwQs3V2X8541Lh1FjB1CbaSkE
-	 +OmPN+gXb4R2Ohn0y/PAUlCrOM/pqJ3i+mqpnhtmMQaDlw+xV2JYRw5ksUlA4NsY8Lw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793694319;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Date:From:To:
+	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=C/3oiEJrrgISDj6VHltYxSNS0bTbSGPe28QqrXWzDyw=;
+	b=URkqdCZCBi6zK0qKdjzkNZRtHK+qJb3zZV1DKsBr5+lh8tEBeMjOtc056bp/y3SlsqtZ
+	 xTlgjGiORQpg8P6IfbeTVOVr3UY1dOF2y2W623J7vNKrqpvHi4To+cbxuL5OSPdcQDsps
+	 5uvAOVTKTQF/ZUwnOItuGYCeD74lgnZIJloFUC+g8olI8zZzdSdM6iAzzAwKMW3ByMaeb
+	 aLoH6WcEdEEd+yQAGhXmuFGrJxiOsyefJLv0Kvg5Vr2mRMIKMoA4K4YQ7GNzEckDbzFbM
+	 vYSwhGZiXdmGpFuDZ6cQUEx9rEuLbESjEX3kZsn4hlrTDFnBQn/rlPdxABRtBnjuYzQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bmF8HHmF;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mxsWwFZ+;
+	arc=none smtp.remote-ip=192.198.163.9
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 013F5606A331;
-	Tue,  3 Nov 2026 07:32:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E05A606A331;
+	Tue,  3 Nov 2026 08:25:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5E05A606A331
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bmF8HHmF
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 501211F000C1;
-	Tue,  3 Nov 2026 07:32:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793691137;
-	bh=esQ8k0v7tsfBVuC6wqFu1NmPFDJAHXXyD7IUsbcD7yg=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=bmF8HHmFe23WCjDFO6jjaLHUgMgbSjRxX/tj8EE/RcrcBgcUC+PL5EsMOIJeDBRBb
-	 3+8MKcwoGk+9hnmlo+2Hgj1XQmu/SOJ1lMalCYgKSRJ9YqJyD0t0ivSQXM3GZ2JzoI
-	 7Cl+lRWMhtXNyCLAYs44O2klqnQ5nO2HS5bVXnuvh2aJvBsJSXrMv02RT6fluE+yWH
-	 IPfD+fx/Yw2UgfuzotRWiJk0bLrOy63KMOD3gjnXMKMfroDsj2aDBGrWRA9SvCAuYU
-	 hCKM1D24L/W6DvJMcR/Rwm/83N7/v7YcD/lBMv7mkwo5OTyvLhB+TGBnwl4ltt4vQk
-	 7j7igIBdPRZsQ==
-Message-ID: <sashiko-outbox-194715@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 1/4] dt-bindings: connector: Add fsl,aud-io-slot
- binding
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Chancel Liu" <chancel.liu@oss.nxp.com>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20261103070433.2307145-2-chancel.liu@oss.nxp.com>
-References: <20261103070433.2307145-1-chancel.liu@oss.nxp.com>
- <20261103070433.2307145-2-chancel.liu@oss.nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 03 Nov 2026 07:32:16 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mxsWwFZ+
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793694317; x=1825230317;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=UnGE9ewV3SGTBwGzdYg4KybWaWjSn9+eL7CYGNT63s8=;
+  b=mxsWwFZ+MA4sn0TcP2mJ2vMFigrF5jwawZ4pHwvQb+Rv5Y10hPwDRJFW
+   YUvvenKpLmN62ZGXyT0JFfDzYNXTUKcjORk4HHQdbVlr/fERbCY0AzDH1
+   HLQjceQ3k7UoGGdtOERFQ0ANUZvIgpex6TuxOB3OJaDj8CsUONVN6bNYd
+   tWa90wKfFMZ/IOdV0TjNPRCrOfVzUr+4o1lm6BAIcb6G+C6fKpztZudov
+   IjLeAZRVJWyNz+JuHXfwgBcqYJO2CVvBEX3kfpEIPN4Ah7YM8bgRjLz67
+   D+4I/sjrWQEsSxJoAjxG9xOARC/yRbU2F8XN1dc1fYgINWGJNlH8WwAWi
+   Q==;
+X-CSE-ConnectionGUID: NbIoqSwNQo67mAhymMhS7w==
+X-CSE-MsgGUID: iXa/LJ9sQHyOpH74zuOW6w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11954"; a="2287621"
+X-IronPort-AV: E=Sophos;i="6.27,192,1787036400"; 
+   d="scan'208";a="2287621"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2026 00:25:17 -0800
+X-CSE-ConnectionGUID: ZHqYrjrJRoCXZA6PU6ZdQg==
+X-CSE-MsgGUID: jrcaaq4rQHOdXmodazj03A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,192,1787036400"; 
+   d="scan'208";a="6740307"
+Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
+  by fmviesa007.fm.intel.com with ESMTP; 03 Nov 2026 00:25:12 -0800
+Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1xO9pN-00000000iUO-0oT5;
+	Tue, 03 Nov 2026 08:25:09 +0000
+Date: Tue, 3 Nov 2026 16:24:48 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>, Frank Li <Frank.Li@nxp.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	"Joerg Roedel (AMD)" <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+	Laxman Dewangan <ldewangan@nvidia.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	Thierry Reding <thierry.reding@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: oe-kbuild-all@lists.linux.dev,
+	Larisa IIeana Grigore <larisa.grigore@nxp.com>, imx@lists.linux.dev,
+	dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org,
+	iommu@lists.linux.dev, linux-tegra@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH v3 6/7] dmaengine: fsl-edma: support per-channel DT child
+ nodes
+Message-ID: <202611031650.EONIRpF4-lkp@intel.com>
+References: <20261102-edma-iommu-v3-v3-6-9d0e62a954eb@Example.Com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -60,189 +98,34 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261102-edma-iommu-v3-v3-6-9d0e62a954eb@Example.Com>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
-- [Medium] dt-bindings: connector: controller properties on passive nexus n=
-ode
-- [Low] dt-bindings: connector: reference to non-existent gpio-nexus-node.y=
-aml
-- [Low] dt-bindings: connector: 2-space indent and raw GPIO flag in example
+Hi Peng,
+
+kernel test robot noticed the following build errors:
+
+[auto build test ERROR on 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Peng-Fan-OSS/dmaengine-fsl-edma-unregister-channels-before-vchan-cleanup/20261102-144955
+base:   6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+patch link:    https://lore.kernel.org/r/20261102-edma-iommu-v3-v3-6-9d0e62a954eb%40Example.Com
+patch subject: [PATCH v3 6/7] dmaengine: fsl-edma: support per-channel DT child nodes
+config: i386-allmodconfig (https://download.01.org/0day-ci/archive/20261103/202611031650.EONIRpF4-lkp@intel.com/config)
+compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261103/202611031650.EONIRpF4-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202611031650.EONIRpF4-lkp@intel.com/
+
+All errors (new ones prefixed by >>, old ones prefixed by <<):
+
+>> ERROR: modpost: drivers/dma/fsl-edma.ko: symbol '__udivdi3' undefined!
+
 --
-
-commit e914717ab225094e8907a50041ee664ef2ac92f2
-Author: Chancel Liu <chancel.liu@nxp.com>
-
-dt-bindings: connector: Add fsl,aud-io-slot binding
-
-This patch adds a Device Tree binding schema for the NXP AUD-IO slot
-connector found on the i.MX95 19x19 EVK and i.MX952 EVK base boards. The
-connector acts as a nexus node that remaps GPIOs, clocks, and interrupts
-to base board providers for the IMX-AUD-IO expansion card.
-
-> diff --git a/Documentation/devicetree/bindings/connector/fsl,aud-io-slot.=
-yaml b/Documentation/devicetree/bindings/connector/fsl,aud-io-slot.yaml
-> new file mode 100644
-> index 0000000000000..fc3896d0fafab
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/connector/fsl,aud-io-slot.yaml
-> @@ -0,0 +1,106 @@
-
-[ ... ]
-
-> +  gpio-controller: true
-> +
-> +  '#gpio-cells':
-> +    const: 2
-> +
-> +  gpio-map:
-> +    minItems: 1
-> +    maxItems: 3
-> +
-> +  gpio-map-mask:
-> +    items:
-> +      - const: 0xf
-> +      - const: 0x0
-> +
-> +  gpio-map-pass-thru:
-> +    items:
-> +      - const: 0x0
-> +      - const: 0x1
-> +
-> +  '#clock-cells':
-> +    const: 1
-> +
-> +  clock-map:
-> +    minItems: 1
-> +    maxItems: 2
-> +
-> +  '#address-cells':
-> +    const: 0
-> +
-> +  interrupt-controller: true
-> +
-> +  '#interrupt-cells':
-> +    const: 2
-> +
-> +  interrupt-map:
-> +    minItems: 1
-> +    maxItems: 2
-> +
-> +  interrupt-map-mask:
-> +    items:
-> +      - const: 0xf
-> +      - const: 0x0
-> +
-> +allOf:
-> +  - $ref: /schemas/gpio/gpio-nexus-node.yaml#
-> +  - $ref: /schemas/clock/clock-nexus-node.yaml#
-
-[Severity: Low]
-Will this cause dt_binding_check to fail when resolving the allOf reference=
-s?
-
-There is no Documentation/devicetree/bindings/gpio/gpio-nexus-node.yaml in
-the kernel tree or in dtschema (where gpio-map, gpio-map-mask, and
-gpio-map-pass-thru are defined in schemas/gpio/gpio.yaml).
-
-Also, Documentation/devicetree/bindings/clock/clock-nexus-node.yaml defines
-select: true so it is applied globally by dtschema rather than being
-referenced via allOf in individual bindings. Should the allOf block be
-dropped here?
-
-> +
-> +required:
-> +  - compatible
-> +  - gpio-controller
-
-[Severity: Medium]
-Should a passive connector nexus node declare or require gpio-controller and
-interrupt-controller?
-
-The binding description notes that all actual hardware providers reside on
-the base board and the connector node only defines index-based mappings via
-gpio-map, clock-map, and interrupt-map. Per the Devicetree Specification, a
-nexus node that remaps specifiers is not itself a controller.
-
-In the kernel, gpio_shared_of_traverse() in drivers/gpio/gpiolib-shared.c
-calls of_parse_phandle_with_args() (which does not traverse gpio-map) and
-checks for gpio-controller to identify the backing hardware controller:
-
-drivers/gpio/gpiolib-shared.c:gpio_shared_of_traverse() {
-    ...
-    ret =3D of_parse_phandle_with_args(curr, prop->name,
-                                     "#gpio-cells", i,
-                                     &args);
-    if (ret)
-        continue;
-
-    np =3D args.np;
-
-    if (!of_property_present(np, "gpio-controller"))
-        continue;
-    ...
-}
-
-When gpio-controller is present on the connector node, gpiolib-shared
-records the passive connector node as the GPIO controller device instead of
-the actual GPIO controller on the base board.
-
-Similarly, in of_irq_parse_raw() in drivers/of/irq.c:
-
-drivers/of/irq.c:of_irq_parse_raw() {
-    ...
-    bool intc =3D of_property_read_bool(ipar, "interrupt-controller");
-
-    imap =3D of_get_property(ipar, "interrupt-map", &imaplen);
-    if (intc &&
-        (!imap || of_device_compatible_match(ipar, of_irq_imap_abusers))) {
-        pr_debug(" -> got it !\n");
-        return 0;
-    }
-    ...
-}
-
-If a node sets interrupt-controller without interrupt-map (which is optional
-in this schema), interrupt resolution stops at the passive connector node
-where no irq_domain exists.
-
-Could gpio-controller and interrupt-controller be removed from properties,
-required, and the example?
-
-> +  - '#gpio-cells'
-> +  - gpio-map
-> +  - gpio-map-mask
-> +  - gpio-map-pass-thru
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +
-> +    connector {
-> +      compatible =3D "fsl,imx95-19x19-evk-aud-io";
-> +      gpio-controller;
-> +      #gpio-cells =3D <2>;
-> +      gpio-map =3D <0 0 &gpio1 8 1>;
-> +      gpio-map-mask =3D <0xf 0x0>;
-> +      gpio-map-pass-thru =3D <0x0 0x1>;
-> +      #clock-cells =3D <1>;
-> +      clock-map =3D <0 &clk 1>;
-> +      #address-cells =3D <0>;
-> +      interrupt-controller;
-> +      #interrupt-cells =3D <2>;
-> +      interrupt-map-mask =3D <0xf 0x0>;
-> +      interrupt-map =3D <0 0 &gpio2 27 IRQ_TYPE_LEVEL_LOW>;
-> +    };
-
-[Severity: Low]
-This isn't a bug, but the properties inside the connector node in the
-example use 2-space indentation instead of 4-space indentation, which
-triggers a warning in scripts/dtc/dt-check-style --mode=3Dstrict. Also,
-could gpio-map include dt-bindings/gpio/gpio.h and use a symbolic GPIO flag
-macro instead of the raw integer 1?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261103070433.2307=
-145-1-chancel.liu@oss.nxp.com?part=3D1
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
