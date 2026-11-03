@@ -1,57 +1,143 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=194.117.254.33
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793730191;
-	b=uqjHc4qkxiqriFjllS5gxX2G6jTdGK3znzLC259+O6uSP1ZVFFoclmhWraJwsL2e2kuH
-	 Mmg9LWbcQ91eq2p1WV1uYnD19Af8cwdKnGRzGSsRoo2V/NmVP31MsC9EwngpEgUDYTMXp
-	 U2qqXph6mA75Y+wuBKnvmolmjCvpnLuWkfz1CspUKwc9nOLf1wH1ckXCiywKKA+h9ArEz
-	 Na3yX/Eq0CONFIOFyfKUaj60EJX43ma8Mydqhsuoryhp0vKK1Ht6hItzo0+u4iwJyZs+2
-	 6pAGVNRP+5+2WwQWVvGxZmsvpvwjlq3iyXHbK9+uLaM2l787RvpeGRjvR2qIFVgTWRg==
+	t=1793731472;
+	b=w+70lrFgpv11gmWTfdOTVWLpyxiwqEcE0v5X/SCW0j8a4gv2WZxzpolJ2qPFXiyGY3ch
+	 Y2V8PIBcDjf3DjeVTY+9RtV1918mrbdXwqyArVNLfVuPa6RhbiBGGyU0zhYd2LXKZq3M7
+	 92BNpS3LNKOO2OPEitkV4WKd+sCmYCEK3pWIcqQE7oL9GBteZQLt2QLj8alWLlhABtaVx
+	 wKBJu8Ioa2shd1dOjQS4/Xv5fmcdZdLg85lSbVlge8R/fvIllQORBVmpYVg9NqALxcDQ6
+	 pVx0ratxS93C2pJjQHg+kCHWBTkgF4oQD5GbXHcOGAKiROz6P5w/OOY8ilGjnWae6Fw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793730191;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=SLn9woxh8f9RGTdlsIbxZAdrYooqEJ954SXQjVmLUxA=;
-	b=BOY2FZS7mTG11cPbXCU0nWU8z09xlDtLWDA+snxMq0J39MIp52IEVExecv9ODOgIHg1X
-	 hnijEFa7dVIiHMJok6wpVpfNxsTalVV68F8fSkb4NEQ61NyHot0rcUO3ATvDbSuUqPmJZ
-	 a8bXQBfCYvK3O5gUooV/aIFVcSCgyBcrwyuRjXbnddIDdT5+MRZTxZx07vbzoztlKc0sM
-	 D628WZ8I9JBDh1YQ0Ztyv7McVnAuScDWaiq9XKPRHbRqVed+SVQ4P/gJjF3bZQAKCJMdZ
-	 GrS1OiJ4IHeX+LjAwGOtmu/S8Sjy7TeG3hbSNFLjclI/g82tbER6WyaxekMDNGl1okQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793731472;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:X-UD-Smtp-Session:Date:
+	 From:To:Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=WjL+BboDzTnCr05d4B3GVddTa6hoTsb2Q7/tMkgbEgE=;
+	b=RxysoaxsgoL4ysgIVkbg0dEJ4KAXdyvQbdP5MN6HmFhxChhYAM60K+c0pviVG4nV/edN
+	 O3jhsfHI86MOPzahgIgq4JIDDW23MGRL6Wv92jEw+0eVjTEy3JyivDXGZ/roOhNWebAmJ
+	 Y+V2/D4wrZNdVRyCEsWwkwhhI6sqJB+FYQ1cvAj230VkMi/jz2vk9yNQQt8WmWkurhEKT
+	 U/Kg9iShykhfMnt72Ji2mbQgyTLBUXAkDfPK9kjEu3b7wW0/pKH7mqxLL93eBW0cAhUsF
+	 CaW/E4e1NHZEUW2XlSg+M7InqMwrs98TTwgIppHPwqqq++U88WC/tyMNjqKwfgu8HIg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kD7HOXbb;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=none header.from=sang-engineering.com;
+	spf=pass smtp.mailfrom=sang-engineering.com;
+	arc=none smtp.remote-ip=194.117.254.33
+Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33277606A31B;
-	Tue,  3 Nov 2026 18:23:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kD7HOXbb
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6367A1F000C1;
-	Tue,  3 Nov 2026 18:23:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793730190;
-	bh=SLn9woxh8f9RGTdlsIbxZAdrYooqEJ954SXQjVmLUxA=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=kD7HOXbbXkTc+fu7AfV37n3kw/sAQbCSNA2+3hSAOZPPoWgvSzWAY3VIB9ANK3zl+
-	 f2l7nn2z42y9L0X7v9e2eYZcVrEK39i3NnDM5d92E6Kng7ZpuiO31vsFoowOuR8YCP
-	 0ZbYAOhja7sUE1cEHOUhEVwtusy8qpZO/iS8/qobSir5Gm3peCEAvA32/Fa6kxYNkf
-	 xC3xNQmWOz9y9EbBfXaZcnDUshUCCpXr4ZW5+BI6AQg/rgEO7ce7Td5pevI8osfkx8
-	 S9vhIqN4kcCkPXrRWUagp3oA7HGgkonZS5LFEFm7PWBG+AV1zLzB99VRuPdfdreIOa
-	 +s9i2BB65+WXQ==
-Message-ID: <sashiko-outbox-195824@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 1/5] dt-bindings: pinctrl: add the NXP LX2160A RCW
- pad mux
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Vincent Jardin" <vjardin@free.fr>
-Cc: linux-gpio@vger.kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20261103-for-upstream-lx2160a-rcw-pinmux-v1-v2-1-3aad0860b984@free.fr>
-References: <20261103-for-upstream-lx2160a-rcw-pinmux-v1-v2-0-3aad0860b984@free.fr>
- <20261103-for-upstream-lx2160a-rcw-pinmux-v1-v2-1-3aad0860b984@free.fr>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 03 Nov 2026 18:23:09 +0000
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48E4A606A32D
+	for <imx@lists.linux.dev>; Tue,  3 Nov 2026 18:44:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 48E4A606A32D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	sang-engineering.com; h=date:from:to:cc:subject:message-id
+	:references:mime-version:content-type:in-reply-to; s=k1; bh=WjL+
+	BboDzTnCr05d4B3GVddTa6hoTsb2Q7/tMkgbEgE=; b=k4/TTGvn6KawElXEg9Bb
+	qOZDns6dw9rlO8RAcyEW+R5LtiRWK3EUb1xjy1qv5PY7vclfnx0g2zpyRZVQHBQk
+	hS2cYY6dvAjl+vRiET3GcojY3mYknjggYIDCmsAOOODL5DWB24RiBNfTVe+sFXwA
+	ovDhC3fDMR0XK9MmSAXBVkPFBg3Z543a0Vc/+0kETuPaPFpyl6SYJO91d3WVkD9r
+	pcnEavNArnqZDMUAJXlOdMLBl2JLVqQbbmzKs9lmkKUVXbte2zMVrK+98TXCdCn4
+	V6761POK1dz1bRaU6iLEQZpFTg9RwZwQW5Ad0pqtUf4KdwYhnZT7/Jhg+CIIFitj
+	Ug==
+Received: (qmail 389364 invoked from network); 3 Nov 2026 19:44:13 +0100
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 3 Nov 2026 19:44:13 +0100
+X-UD-Smtp-Session: l3s3148p1@m+AWpmNfMLbAwtcC
+Date: Tue, 3 Nov 2026 20:44:13 +0200
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Cc: Douglas Anderson <dianders@chromium.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Jessica Zhang <jesszhan0024@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Jyri Sarha <jyri.sarha@iki.fi>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Robert Foss <rfoss@kernel.org>,
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Paul Cercueil <paul@crapouillou.net>, Marek Vasut <marex@denx.de>,
+	Stefan Agner <stefan@agner.ch>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>,
+	Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Linus Walleij <linusw@kernel.org>, Sandy Huang <hjc@rock-chips.com>,
+	Heiko =?utf-8?Q?St=C3=BCbner?= <heiko@sntech.de>,
+	Andy Yan <andy.yan@rock-chips.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Inki Dae <inki.dae@samsung.com>,
+	Seung-Woo Kim <sw0312.kim@samsung.com>,
+	Kyungmin Park <kyungmin.park@samsung.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Peter Griffin <peter.griffin@linaro.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Alison Wang <alison.wang@nxp.com>,
+	Paul Kocialkowski <paulk@sys-base.io>,
+	Yannick Fertre <yannick.fertre@foss.st.com>,
+	Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>,
+	Philippe Cornu <philippe.cornu@foss.st.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Chen-Yu Tsai <wens@kernel.org>,
+	Samuel Holland <samuel@sholland.org>,
+	Thierry Reding <thierry.reding@kernel.org>,
+	Mikko Perttunen <mperttunen@nvidia.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Jagan Teki <jagan@amarulasolutions.com>,
+	Ondrej Jirman <megi@xff.cz>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	Igor Reznichenko <igor@reznichenko.net>,
+	Michael Walle <mwalle@kernel.org>,
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Jagan Teki <jagan@edgeble.ai>, Jianhua Lu <lujianhua000@gmail.com>,
+	Guido =?utf-8?Q?G=C3=BCnther?= <agx@sigxcpu.org>,
+	Purism Kernel Team <kernel@puri.sm>,
+	Jerry Han <hanxu5@huaqin.corp-partner.google.com>,
+	Joel Selvaraj <jo@jsfamily.in>, Icenowy Zheng <icenowy@aosc.io>,
+	Michael Trimarchi <michael@amarulasolutions.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Casey Connolly <casey.connolly@linaro.org>,
+	Michael Tretter <m.tretter@pengutronix.de>,
+	Cristian Cozzolino <cristian_ci@protonmail.com>,
+	Junjie Cao <junjie.cao@linux.dev>,
+	Ryan Brue <ryanbrue.dev@gmail.com>,
+	Nickolay Goppen <setotau@mainlining.org>,
+	Stefan Mavrodiev <stefan@olimex.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Robert Chiras <robert.chiras@nxp.com>,
+	Alexander Koskovich <akoskovich@pm.me>,
+	Markuss Broks <markuss.broks@gmail.com>,
+	Artur Weber <aweber.kernel@gmail.com>,
+	David Heidelberg <david@ixit.cz>,
+	Dzmitry Sankouski <dsankouski@gmail.com>,
+	Yedaya Katsman <yedaya.ka@gmail.com>,
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+	linux-mips@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-renesas-soc@vger.kernel.org,
+	linux-rockchip@lists.infradead.org, linux-doc@vger.kernel.org,
+	linux-samsung-soc@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org,
+	linux-rpi-kernel@lists.infradead.org
+Subject: Re: [PATCH 07/35] drm: rcar-du: use devm_drm_panel_bridge_add()
+Message-ID: <auorffiFkpqbhotm@shikoro>
+References: <20261026-drm-panel-funcs-v1-0-5e3070a3478f@oss.qualcomm.com>
+ <20261026-drm-panel-funcs-v1-7-5e3070a3478f@oss.qualcomm.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -60,67 +146,18 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261026-drm-panel-funcs-v1-7-5e3070a3478f@oss.qualcomm.com>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] dt-bindings: pinctrl: lx2160a: missing clk-out function for clk-=
-out group
---
+On Mon, Oct 26, 2026 at 01:09:56PM +0200, Dmitry Baryshkov wrote:
+> The connector type passed to devm_drm_panel_bridge_add_typed() has been
+> ignored since commit b7797081ccfe ("drm/panel: embed a drm_bridge into
+> every drm_panel"), the bridge always has the type of the panel.
+> 
+> Assisted-by: LLM
+> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-commit 099426f7b054b7c6ba8ac26438539221c6367516
-Author: Vincent Jardin <vjardin@free.fr>
+Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-dt-bindings: pinctrl: add the NXP LX2160A RCW pad mux
-
-This commit adds the Device Tree binding schema for the NXP LX2160A RCW
-pad muxes, defining the valid pin groups and functions mapped to the
-RCWSR12..14 registers of DCFG.
-
-> diff --git a/Documentation/devicetree/bindings/pinctrl/fsl,lx2160a-rcw-pi=
-nmux.yaml b/Documentation/devicetree/bindings/pinctrl/fsl,lx2160a-rcw-pinmu=
-x.yaml
-> new file mode 100644
-> index 0000000000000..b1ccd153a43bb
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/pinctrl/fsl,lx2160a-rcw-pinmux.ya=
-ml
-> @@ -0,0 +1,262 @@
-[ ... ]
-> +patternProperties:
-> +  '-pins$':
-> +    type: object
-> +    $ref: pinmux-node.yaml#
-> +    additionalProperties: false
-> +
-> +    properties:
-> +      function:
-> +        enum: [ asleep, can, evt, flexspi, flextimer, gpio, i2c, irq,
-> +                reset-req, sdhc, sdhc-clk, sdhc-data, sdhc-data4, sdhc-s=
-pi,
-> +                spi, uart, uart3, uart4 ]
-> +
-> +      groups:
-> +        items:
-> +          enum: [ iic1, iic2, iic3, iic4, iic5, iic6, xspi1-data74,
-> +                  xspi1-data30, xspi1-base, sdhc1-base, sdhc1-dir,
-> +                  sdhc2-data74, sdhc2-base, uart1-soutsin, uart1-rtscts,
-> +                  uart2-soutsin, uart2-rtscts, irq11-8, irq7-4, irq3-0,
-> +                  evt4-3, evt2-0, clk-out, asleep, reset-req ]
-
-[Severity: Medium]
-Should clk-out also be listed in the function enum (with a corresponding
-if/then rule in allOf allowing the clk-out group)?
-
-The other single-pad groups in RCWSR14 (asleep for ASLEEP_PMUX and
-reset-req for RESET_REQ_PMUX) expose their encoding 0 primary functions
-(asleep and reset-req) alongside their alternate functions.
-
-For the clk-out group (CLK_OUT_PMUX in RCWSR14[5:3]), the schema permits
-the gpio (0b001) and flextimer (0b010) functions in allOf, but omits the
-primary clk-out (0b000) function, which prevents a board from selecting or
-restoring the CLK_OUT function via pinctrl states without failing schema
-validation.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261103-for-upstre=
-am-lx2160a-rcw-pinmux-v1-v2-0-3aad0860b984@free.fr?part=3D1
