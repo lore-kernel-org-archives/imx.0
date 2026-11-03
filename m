@@ -1,92 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793696767;
-	b=Pozdurcg535vjH+02tyhRk1e2UTRWSgGcroZ284JE406sC/kJL52tc9R0O3BqmAn8cbI
-	 TNehY1dggtLuKPNP9pKX3PseEHMy/8KuzwIUqV8edBkKhS6MJ3WXrcioduOzKulXn3+uB
-	 0VFHK7q29aB3q7Bz/4Fuecf/+TGaUeed1Y8SGN3TOhkkv4EH2t5EMMJEnAfYk8vZo1LU1
-	 SqycZL1NFAXdc+Kt2189KguoJNIXny1zjQg7kNr1b2/0viYDUDZhmDseup+acc/SjBi6b
-	 YZIXglBZAYnJHBCwAz13RQ4jEDDjvetXDdC9B5nW8JznihamsfxkiMMP0e1GVPQwZDQ==
+	t=1793699246;
+	b=xv0bhEBQgUXkteXlYWekRG333cE8+IY+G7LrFsspKu5uxbFFvTnAXfC9NhpBHq8MSwqG
+	 A+yfkir0X+afqD/VLtczsAga9inlKBkdErTSe4E/8Oqkiw/HUy5Ke2Qv9IdBhFWYxwrLS
+	 knMGT0wlzm+E54CfX2RwQXzmZ+sPstsVVpFDvSlLWN1Q6SV3ntpN1E9eXCnqkI2/+OCTe
+	 fUbMcHPdIeQWnybIsgOM3DW6rFSTIZ2kG5REInusYBmaywXIsp+Hk5Ju3tRtd3+3mCKOA
+	 EtIw+ZqUd8Phblj02iixfrH2x4OV2olqVMiDGIPbpXSx6C9VIxu3/MQ16FK9TuaztmQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793696767;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=/vrFL4kHP2eDGtJUZKQrjQzSBAgnCJvrdrlUYTMMEeA=;
-	b=sBmzypmCQMUV40Gg8fgRRi7qYkEKehTtJBWSWCuwSnH0eq6krdNl4qgTO0B8CkrtxnhS
-	 ZmjbbKsqLDj+2MpaBUpMUtd1uDX7iQ4jM9xMLCqL9q6Vylijd5k/ylORA0/Z/p+gBwPj3
-	 POIWP5TqNeaI1qBkvSFJedAqMNDkNDp8VJvY1BnkFrWgwCKH9UvWFlWZWn0qfPSeNsuil
-	 Ol+KmZ4LKUvgFvjNqxDdiDorp+rFqhlzPb2MvtxnnEe0etSOLp8+5Qa6rO+pfRg6XRJrC
-	 kF4Yr8mJR7U24MXZtXv8mmHHKGdxbSIwERIwyn0jwpSnzqWRJG1qqEDmTceSrqpzEdQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793699246;
+	h=Received:DKIM-Signature:From:To:Cc:In-Reply-To:References:Subject:
+	 Message-Id:Date:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-Mailer;
+	bh=FicnvFKxeSZZxDsqkATTizCSYcpguqKwirBa2ehbQWc=;
+	b=Ki3PkVaIx6ldzNZ/5vBz8YhR8tOxtCSaLMBbcS6+7dmh+E2XZxJ+khy5WR8aTbW9mv9l
+	 QZT23aO0wedusaVmS4/xbaLl2k2MYwV3CmPgH/xp/7ib9t0WoHJ4qioq2jX1Mcvz8aGr0
+	 hgOiMmdIx6iW2ho5qNCbwCMYNpyoZQucvpSQu9kWn4OcV3AYn3TFQyJ9Z6mwKW4poAOiA
+	 l3WuDnHmyBMn9GZhtDewSkbVNifsOU51meq6ZC9M6JZVsrCjPmiD8OxL3wZhk+pxvyu+2
+	 LczMVYocyfHl0KX+nnf6b0DckHf39yvPiSN3n7ig02zplziSalHkNYcKyVJIPlNlhZg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WbvQOE91;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Vqb4EMaI;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id 0A370606A324;
-	Tue,  3 Nov 2026 09:06:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8384E606D822;
+	Tue,  3 Nov 2026 09:47:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WbvQOE91
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id AD1DC1F000C1;
-	Tue,  3 Nov 2026 09:06:05 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Vqb4EMaI
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 998221F000C1;
+	Tue,  3 Nov 2026 09:47:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793696766;
-	bh=/vrFL4kHP2eDGtJUZKQrjQzSBAgnCJvrdrlUYTMMEeA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=WbvQOE91Giayv3gYkrmhqO5vJ0WQM4qO9mwZJnSz/8a3bL30Z4BHDdOJlgP4YvIg3
-	 RR58S8IKpAuzUQOF1QCyf1hydtyNga6de5toJbtka98Ry74X9X62Tcsl90HhW1U9K8
-	 drOO9aHMv/T/Duej2QQohkw6k/Ue1hU9/4ojMa9w9vIiNL+mkB40o9tP9Q8TRyDoOW
-	 eFoarQWHgGxyseGO9ThB75JrIM4cAj9QeeVPuZkRE1+If0ubkcjH388NIs8Gkl66lO
-	 zxQ02VuUF7xP22Myc+A5hgZIwV4Tlp3gC9tV30bGC8ybKy2UrOOrhUGWE99jlqYNJ7
-	 XFIt/QM1TVreQ==
-Date: Tue, 3 Nov 2026 10:05:58 +0100
-From: Bartosz Golaszewski <brgl@kernel.org>
-To: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>, Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>, 
-	Jiri Pirko <jiri@resnulli.us>, Ivan Vecera <ivecera@redhat.com>, 
-	Benson Leung <bleung@chromium.org>, Guenter Roeck <groeck@chromium.org>, 
-	Linus Walleij <linusw@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Jonathan Cameron <jic23@kernel.org>, 
-	David Lechner <dlechner@baylibre.com>, Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, Olivier Moysan <olivier.moysan@foss.st.com>, 
-	Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
-	Thierry Reding <thierry.reding@kernel.org>, Jonathan Hunter <jonathanh@nvidia.com>, 
-	Fabrice Gasnier <fabrice.gasnier@foss.st.com>, Lee Jones <lee@kernel.org>, 
-	Srinivas Kandagatla <srini@kernel.org>, Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>, 
-	Ulf Hansson <ulfh@kernel.org>, Hans Ulli Kroll <ulli.kroll@googlemail.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Vinod Koul <vkoul@kernel.org>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Manivannan Sadhasivam <mani@kernel.org>, 
-	Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, 
-	Mark Brown <broonie@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Daniel Lezcano <daniel.lezcano@kernel.org>, Zhang Rui <rui.zhang@intel.com>, 
-	Lukasz Luba <lukasz.luba@arm.com>, Orson Zhai <orsonzhai@gmail.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Chunyan Zhang <zhang.lyra@gmail.com>, 
-	Paul Kocialkowski <paul.kocialkowski@bootlin.com>, Shawn Guo <shawnguo@kernel.org>, 
-	Chanh Nguyen <chanh@os.amperecomputing.com>, Alistair Francis <alistair@alistair23.me>, 
-	Julius Werner <jwerner@chromium.org>, Paul Cercueil <paul@crapouillou.net>, 
-	Dmitry Osipenko <digetx@gmail.com>, Florian Fainelli <f.fainelli@gmail.com>, 
-	Thierry Reding <thierry.reding@gmail.com>, Ray Jui <ray.jui@broadcom.com>, 
-	Scott Branden <scott.branden@broadcom.com>, Krzysztof Kozlowski <krzk@kernel.org>, 
-	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	netdev@vger.kernel.org, chrome-platform@lists.linux.dev, linux-gpio@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org, 
-	linux-stm32@st-md-mailman.stormreply.com, linux-sound@vger.kernel.org, linux-input@vger.kernel.org, 
-	linux-tegra@vger.kernel.org, mfd@lists.linux.dev, linux-arm-msm@vger.kernel.org, 
-	linux-mmc@vger.kernel.org, linux-phy@lists.infradead.org, linux-pm@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: Use hex unit address patterns
-Message-ID: <f3sq3awr2byfetufiuuh47bi5qf5kqtthqxwopumwsfpx46cx4@uiq7dvmvutvh>
-References: <20261102135330.2493332-1-robh@kernel.org>
+	s=k20260515; t=1793699246;
+	bh=FicnvFKxeSZZxDsqkATTizCSYcpguqKwirBa2ehbQWc=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=Vqb4EMaIZjfRUOXG0g9LrY7EG6YCjSMm4DFAAOJh/vqHoJeVp8GTErtbqT0mfsg9f
+	 aV7DHYXxtw7KsFDULksJ7PW3Z8a9OAcaef9z1PV68ghzMbM1QgWjBYk498jLOnPUDj
+	 4PK/XoD7ZgeVAqnJpOj3/Rf7JRNsvEKz7qpb2VgHtfgpnlVyFCYr5dskbH5v2EMhcg
+	 pArk4KxjxJf5/KwWzEwXebwErJ5XUzvZyN3ODa1V+X5+v3y2kcK1w0Isgqf1c16NnV
+	 Dzyv1Z0aw7XT8ZzL66NiCbaKvNmi9e7+Y/gxTJzkYIpwQ85AkCqWv5Ky8UXDw90z7i
+	 iNaFbW4W55YVA==
+From: Niklas Cassel <cassel@kernel.org>
+To: Viresh Kumar <vireshk@kernel.org>, Damien Le Moal <dlemoal@kernel.org>, 
+ linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Frank.Li@oss.nxp.com
+Cc: imx@lists.linux.dev, vkoul@kernel.org, Frank Li <Frank.Li@nxp.com>
+In-Reply-To: <20261102163141.3812536-1-Frank.Li@oss.nxp.com>
+References: <20261102163141.3812536-1-Frank.Li@oss.nxp.com>
+Subject: Re: [PATCH 1/1] ata: use dmaengine_desc_set_callback()
+Message-Id: <179369924435.1823794.16997924682170944810.b4-ty@kernel.org>
+Date: Tue, 03 Nov 2026 10:47:24 +0100
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -96,21 +59,25 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261102135330.2493332-1-robh@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.3
 
-On Mon, Nov 02, 2026 at 07:53:22AM -0600, Rob Herring (Arm) wrote:
-> Unit-addresses by default (and most commonly) are hexadecimal. There's a
-> number of cases using decimal patterns. Fix all of them, limiting the
-> pattern to match the 'reg' limits if there are any.
+On Mon, 02 Nov 2026 11:31:40 -0500, Frank.Li@oss.nxp.com wrote:
+> Replace open-coded assignments to callback and callback_param fields
+> of struct dma_async_tx_descriptor with calls to the
+> dmaengine_desc_set_callback() helper.
 > 
-> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-> ---
->  .../bindings/display/xylon,logicvc-display.yaml      |  2 +-
->  .../devicetree/bindings/dpll/dpll-device.yaml        |  2 +-
->  .../bindings/embedded-controller/google,cros-ec.yaml |  4 ++--
->  .../intel,ixp4xx-network-processing-engine.yaml      |  2 +-
->  Documentation/devicetree/bindings/gpio/gpio-mxs.yaml |  4 ++--
+> No functional change intended. Prepare make to struct
+> dma_async_tx_descriptor private to the DMA engine.
+> 
+> [...]
 
-Acked-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Applied to libata/linux.git (for-7.5), thanks!
+
+[1/1] ata: use dmaengine_desc_set_callback()
+      https://git.kernel.org/libata/linux/c/6ba53556
+
+Kind regards,
+Niklas
+
