@@ -1,55 +1,66 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793705524;
-	b=ZftUwmuWgN7HAUc9hEWPVkJur6AR+rDyLozDtqEKGbYC1gB4TBmVrl7qecaHCyNXih74
-	 1L2+b1iVc6MgK/+x5rHOx4d+xCKzQCrX8QzslSpPDwSvXHDfwMX5AAnxqSMcaApFqnbHV
-	 j2NDUXxRR9bruH7KMG2Jh/v3CH+ytP1ICk8evWHBJwEyJmZEEEK+XIUPMcKeCbOjXNgL+
-	 loQ1LTP4pKUu0KyUn9TDSrzRCYRWHcLZPKJOAO1L+4IIP17UvuB3KdxWdFXUk2mEBKA0f
-	 /xZrU2bEbfeIx9NslxDtH3B8pVmJWzrUtacqvebIDkQPWOLrkMI7YiwQfJnH1iN2Z/g==
+	t=1793705735;
+	b=vkOHZTWEWfI9SHXupnH5NcegLw8FXzslKCFd42/l1Hvhsc1SL85CNmhOukU9B6+R9GgI
+	 LLOcdUYO8Y5ZVxFv9QbU43igFHtjW4ki7EaGE3wMVsOoHOAooDFUM1w38KG5d7+0X9LFI
+	 e4FAJD6P3jtITbpaLohCV9HxmOfCz+MCg58wg4z7/VjkunwwMsP9KvDoPabrIY9IJMX4p
+	 vSYSMQp9j3eGOWKJcFnXt+iVJt3xB+8NtW3rnaFJX0/dp53eOwgc8ygHPRu9A0dZI+y6U
+	 6JwGw8ft+mHDywSH+d15B8YDfuJao1iO5cjoVmhCgusFDEhLlscLhA1HVyXrVitX4dA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793705524;
-	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Mime-Version:
-	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:Subject:Cc:To:
-	 From:X-Mailer:References:In-Reply-To:X-Last-TLS-Session-Version;
-	bh=7GRooN83x6ErSEZ7eQlsuClOyGITM5JI8kEIIsp5Uws=;
-	b=t4u33z/63Ib/W+0sIWSiYUjMp9pEwxi989xP+OZjEU22eLyFl8wiaasLO12yWciZFnXW
-	 o5r3/lLwM5vd7sq8XGFccEhB4v7RUEahAHv6QjPm5dLtmuakqQxVesvqxTC7rcQ1yA1U8
-	 AhQSq8Q/TpJjX/+oA9r6Gs6Uc48gCtKARY3WAe5j2CcUi3yIXfzQSdav0HEQTRWShPP41
-	 TSMsUGf6Nm18NC1DNykV1FGDGZRKf0EJczCZoKgNfWW/M4jXiDk0QrWbWL9wPB2lO9G3v
-	 2/mH5LruXGjMmABSCrlKiOWhZaiMVJFO2K9yMRuqPY0ZIXTgGVGBOaGnrMIw6wxcc3g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793705735;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=LKUnUURPxCCQnn0/zAL5oUiqitujy5IJ59hG70436C8=;
+	b=Wm06G6XrH3740b4wQXj6PPUzyj10hKt3ChrFgYS5Bi4WRavXUY4ndWp+RL3KedoD1oEo
+	 7x5f6o2FkjYtik1KNUk3PBFaMA7kYFg7hcEveFauE1Xu0Z7GkWvte/ZKrZ/oyhSYdZ++M
+	 xfstvXfAYCQr+V+QNDBztUuHz3EQ774ck86/nlND2tH4DHYUwgk0Ue1X3cGjm5UXtawPy
+	 Wr4fpOPolyddpVdj5Lyq48y6Zi2pYmHkD+vbm7nmXi0RA3XR8qgTC4HAhWfsZXUe70IP1
+	 g5jWnzoaD0puSqmJNd6+n4+REqfvRkheKPnFjOhVZRSQomQrzSgeY+CoBdd/mvEhfVw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=bootlin.com;
-	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=MiijHqWN;
-	arc=none smtp.remote-ip=185.246.84.56
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=P1ECVZnz;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCA90606A829
-	for <imx@lists.linux.dev>; Tue,  3 Nov 2026 11:32:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DCA90606A829
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 732E5606A326;
+	Tue,  3 Nov 2026 11:35:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=MiijHqWN
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 4A7131A1430;
-	Tue,  3 Nov 2026 11:32:00 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 009816046C;
-	Tue,  3 Nov 2026 11:32:00 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 07D28103291C2;
-	Tue,  3 Nov 2026 12:31:49 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1793705518; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=7GRooN83x6ErSEZ7eQlsuClOyGITM5JI8kEIIsp5Uws=;
-	b=MiijHqWNjmPtcaT8Mf1Kow0VIwehEQcAdcTAs/LazBXh/jPLgJZRoltImdyXMMcMcubQ7X
-	9qYDQPMDci3n8J6dIyWh+YZvrvg8PyxYmVmQ+HLltmrNcJj0h66i9j/ZyZJdoxU7l4MbO7
-	khAFSdDhHQPb0spJn0euVAphvRrRRXvp2aH6RItyRKHOz5hA/qmqHR5WGdF830y+MlG5bh
-	wrRGcQ/q8vPovizKeldkWq2X/nKXlGa2GgYchfuBlSPMwDnAV0/cglzG7W23N64+hjSiVV
-	in2IkrAttpBdP2kYAhFvw6aNLDITULCtS7r5iIjDyHhtWNf9bR2QBfVjTIFu6g==
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=P1ECVZnz
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42D331F000C1;
+	Tue,  3 Nov 2026 11:35:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793705735;
+	bh=LKUnUURPxCCQnn0/zAL5oUiqitujy5IJ59hG70436C8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=P1ECVZnzr9CJFL5gouN5bcvYxOOKQPlPPcVZy6yYN1vQrUnSjQV3w6oMe1KVR5lEi
+	 zocpyAnPKFclr5Y04gMz3QqM/sKExagLeaV/dcZbYyiVNagXrDl3kRVRdsjUrjD3yj
+	 9P9GS07DfygIeKkwAAajwhGA/HIP7Rktz/VsP1R7w0yJMOyJbFlTVy6gDw+Z6pt2Az
+	 HLCuQtNXGvXVS3NLvljGFevVAQpDQQhgv4/bP0TKvE8iN1jFQytA36LhuJtgBd3D5d
+	 UwbjSctQFgA/TiaVKGxuhWjFpvm9+dkW+FmotioQU2Xv5ticgT3AHP3hd1DppRI4vG
+	 fLYY2cBR7ZATw==
+Date: Tue, 3 Nov 2026 12:35:31 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Frank.Li@oss.nxp.com
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Guido =?utf-8?Q?G=C3=BAnther?= <agx@sigxcpu.org>, Robert Chiras <robert.chiras@nxp.com>, 
+	Tim Harvey <tharvey@gateworks.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux@ew.tq-group.com, 
+	Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH v2 2/8] dt-bindings: embedded-controller: remove
+ #address-cells and #size-cells from required
+Message-ID: <20261103-poetic-comical-skua-defb5a@quoll>
+References: <20261022-cleanup_dtb_warning-v2-0-e9502fafec59@nxp.com>
+ <20261022-cleanup_dtb_warning-v2-2-e9502fafec59@nxp.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -58,77 +69,29 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 03 Nov 2026 12:31:49 +0100
-Message-Id: <DMLJJB5I34LD.2E1BV057SDSIZ@bootlin.com>
-Subject: Re: [PATCH v5 0/4] drm/bridge: nwl-dsi: Various fixes
-Cc: <Frank.Li@kernel.org>, <dri-devel@lists.freedesktop.org>,
- <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>, "Laurentiu Palcu"
- <laurentiu.palcu@oss.nxp.com>, "Oliver F. Brown"
- <oliver.brown@oss.nxp.com>, "Sebastian Krzyszkowiak"
- <sebastian.krzyszkowiak@puri.sm>, "Liu Ying" <victor.liu@nxp.com>
-To: "Esben Haabendal" <esben@geanix.com>, "Andrzej Hajda"
- <andrzej.hajda@intel.com>, "Neil Armstrong" <neil.armstrong@linaro.org>,
- "Robert Foss" <rfoss@kernel.org>, "Laurent Pinchart"
- <Laurent.pinchart@ideasonboard.com>, "Jonas Karlman" <jonas@kwiboo.se>,
- "Jernej Skrabec" <jernej.skrabec@gmail.com>, "Luca Ceresoli"
- <luca.ceresoli@bootlin.com>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
- "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>,
- =?utf-8?q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>, "Fabio Estevam"
- <festevam@gmail.com>, "Robert Chiras" <robert.chiras@nxp.com>, "Sam
- Ravnborg" <sam@ravnborg.org>, <imx@lists.linux.dev>
-From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-X-Mailer: aerc 0.22.0
-References: <20261027-nwl-dsi-fixes-v5-0-b6d1d3d2d356@geanix.com>
-In-Reply-To: <20261027-nwl-dsi-fixes-v5-0-b6d1d3d2d356@geanix.com>
-X-Last-TLS-Session-Version: TLSv1.3
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261022-cleanup_dtb_warning-v2-2-e9502fafec59@nxp.com>
 
-Hello Esben, Robert,
-
-On Tue Oct 27, 2026 at 11:33 AM CET, Esben Haabendal wrote:
-> This series brings a few patches fixing horizontal sync timing, EOTP pack=
-et
-> behavior and hsync/vsync polarity selection when using DCSS endpoint, as
-> well as a small fix to properly handle if/when nwl_dsi_mode_set() fails.
->
-> The 3rd commit ("Correct auto-insert EOTP behavior") is taken directly fr=
-om
-> NXP vendor tree, so I have kept Author unchanged, although I have modifie=
-d
-> the commit message. Let me know if I should change Author for that.
-
-I applied patches 1 and 2, but dim [0] reports a fatal error about patch 3:
-
-  dim: 72e5001e5c2b ("drm/bridge: nwl-dsi: Correct auto-insert EOTP behavio=
-r"): author Signed-off-by missing.
-
-[0] https://gitlab.freedesktop.org/drm/maintainer-tools/-/blob/master/dim?r=
-ef_type=3Dheads#L1071-1075
-
-@Robert, I think it's up to you to agree on having a SoB line in this
-patch.
-
-@Esben, can you help sorting this out? Also can you provide an URL of the
-original patch 3 in the vendor tree?
-
-Luca
-
-> Signed-off-by: Esben Haabendal <esben@geanix.com>
+On Thu, Oct 22, 2026 at 03:37:05PM -0400, Frank.Li@oss.nxp.com wrote:
+> From: Frank Li <Frank.Li@nxp.com>
+> 
+> The "^fan-controller@[0-9a-f]+$" child node is optional, so it is not
+> necessary to always have address-based child nodes.
+> 
+> "refer to the board hardware user manuals to see what features are present"
+> Means fan-controller is optional, which may not present at boards.
+> 
+> Remove '#address-cells' and '#size-cells' from the required list.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
-> Changes in v5:
-> - Add fixes tag.
-> - Sort header files alphabetically.
-> - Fixed speling mistake.
+> change at v2
+> - add descriptions about why fan-controller is optional.
 
-Funny typo here :-)
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
-Luca
+Best regards,
+Krzysztof
 
---
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
