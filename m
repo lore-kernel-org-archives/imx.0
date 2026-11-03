@@ -1,57 +1,92 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793720097;
-	b=5F06LbSYLVF/HWDkoweMb4f1b/y9U2Gm9i81svPf71OcVImvn9oZOGs94nJUsWGUulYq
-	 7c2MnBS28coSsY+AP3Bx8ZLoZojcaba790l89YjxuyFmrctyAGIfM9NQqBb0rmOMBsTDc
-	 qb5uPX70iJnzntBlppTk31nLe7oSgmw7eKDuh42lhup6LejK30yWM7aDbFuXBoM5yg9rX
-	 KsZE0O9XjYdKtLjBe281ED4fSLADRkAT9O6FdxElAVag9EJN5lLk/3Ud2Z86GbzEgDWy8
-	 miHhOZ0zi9J77QEAQiH4yCprLRWth5NkM42YEcqJlcdZr00Rd1rCvEo6vS6PqtL4/gQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793720097;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=qRKSJuJfdvaq4TPk0dH3fL/nV91BhjtYgBu71pUkKew=;
-	b=pKGPfUQUJS0x/qghNiKjCTus9bTqfcof0Er7V+4zm96nFsFT/SLaqoJ+RJYVsgORmleK
-	 u+lNkUy9QJqSvLDsw9MDjghQfSYWrkW/kzIJBqNws7skyZEJfhVdlWWemK0UrmGGq3x9L
-	 c4BvZBiIOF0rETT8l4yAaer+FOwhV/J+1Gx554xRqQpTtqWXzr7/E5KB6slIH9STTw28V
-	 CK0a2O/6XgIGrDI95fKuRJgnp9fIGO3ETQKj/IwZq71j1qnouaQDrWIvwsu0fwEZIOaS/
-	 UEJ6Ot9REGIOHjk9QsdYd97KywMJY6AW1D6fe9qveTuYmlvDyiG2SPMx4lIIHiMjgfA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MsRDJTGO;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.83.56
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793720254;
+	b=IrrAWgDgH6MJSHC5TYmGSB1jtQlkYJiBvvXsQ/Peg+BFyncQiQkypyfRQ14MaKpGhsjH
+	 d8INoP7FzQT9LdVWOPv2BAgvvC7mO/eeTJuLIb4AnpGmiizyPcQ3MqrdDRLg+bRq8FU7u
+	 4A1Yx/5I4a0HNgHFBHH+MMyGfvhhIqVzYxMzk8zAGoRq6SkEYk+39XAPcyQT2OaFmsxSO
+	 RxGbbAHi/rNLxZoaMxl0RXMRES99lU2lBxZTVC/vlG8Zavycz17C+cwzgHkHKA/1QH2Vy
+	 tO4gGXE87+qPHbSMrfRcBdallK2sn2PfESP9/4DNr4tWu/OIr2lPD8mNVi8LAXY1DoA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793720254;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:Content-Transfer-Encoding:Content-Type:
+	 X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=HCxTQZ2g0EYmSOEYl7K/ZQX7MemRxPvIzjIT8f9BWPo=;
+	b=hmRyxM9LzKzDN4VAp0Kj9H5TCOKcm3rq2r/xJ5LEKOagXzrzf3W9e/4OAN6LGayuSjly
+	 DoPb9iOF34yW6qrncrLnsUGrodRs1I28rve01UEQ//gE7fasR7GTSydJi88f+E8FXGQVK
+	 ORlFmJs1P9mBM+Lo69NJOwGa1BsSkcsVbtsCUCoY1fqeRi04bnV81SYlzzQFlIG//oAFu
+	 fz36wkRQXl4a6+bgxHo79f3NFQOB5sQDDgifi54FHXbQk2GYimlbZmrqtRgdDx2HWfpwC
+	 A1Zpc2rVA5mkcJto0k32cKQo3z9yQqzgSXrs0+w7itxns0Fhs591kIaF91REpKSCi8A==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=oss.nxp.com;
+	spf=pass smtp.mailfrom=oss.nxp.com;
+	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=jKfSMZDl;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.83.56
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013056.outbound.protection.outlook.com [52.101.83.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4971B606D803;
-	Tue,  3 Nov 2026 15:34:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 550B6606A32C
+	for <imx@lists.linux.dev>; Tue,  3 Nov 2026 15:37:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 550B6606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MsRDJTGO
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A7B71F00919;
-	Tue,  3 Nov 2026 15:34:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793720096;
-	bh=qRKSJuJfdvaq4TPk0dH3fL/nV91BhjtYgBu71pUkKew=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=MsRDJTGO+JDw7BOZcoDziAEdfhP8fQdTnjN6aL8/Jh7bmrVp0kIdXRKnIVTWgEnZI
-	 HCylapTJi4+ilie4mxin5myolbY3L5M85nmPt84za4mG+Hq75etdg8FR+llx0RwXoD
-	 Oj2+pLYl+TFrsI9ES+BePCyE57NEJV8Do3L5AeTA3PmBIde9EIyGI6AaiIdUbBdgVl
-	 UGBtY7pztDpiWOB7YPV+gzGaJbAyy+5gqaUbFbU1yrtFZaM98wJFzLIMBTauMJCAqY
-	 4thQ1jFfwyegc978Vg9d1Tol0mV+bNwLqSNcm0latThYWQulKHdKFyAXZusd9mODFW
-	 ReDmLbncjtYow==
-Message-ID: <sashiko-outbox-195623@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 6/7] dmaengine: fsl-edma: support per-channel DT
- child nodes
-Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?UGVuZyBGYW4gKE9TUyk=?= <peng.fan@oss.nxp.com>
-Cc: imx@lists.linux.dev, dmaengine@vger.kernel.org, devicetree@vger.kernel.org, robh@kernel.org, conor+dt@kernel.org, vkoul@kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20261103-edma-iommu-v3-v4-6-470415d418c5@Example.Com>
-References: <20261103-edma-iommu-v3-v4-0-470415d418c5@Example.Com>
- <20261103-edma-iommu-v3-v4-6-470415d418c5@Example.Com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 03 Nov 2026 15:34:56 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=jKfSMZDl
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=SdsLItqNsDzZgIVWXL3TOF8WzX853ub+HChIDSeEViw/y7pMng/F4Z4BW4eDXU5E8c/ovMUz137ObCDjeaIsx0If6ofAxLBB7H45C9da0hUwx3FQo3mqdtLfnJOu1BLI+6pCpSW72x30Kbj1jj8l7gF2yNmUtiVTIZaCRicKvjV4sLPNKgGHzHxMLA0hJGzhf/P9Ga4WFLNtlT1PGKCMTRJxP9KaUbR2bXo8PLwumkFHfBrw8AG6KSupWTtXnI56zTcjtvo/hbhz02yLaQPecw69KSJotqV8O1JMKZlrt/lTL5QYPm+IZJ+7l7Zf8Wv3MvlNgXNzJajM5/ZAcr3SJQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=HCxTQZ2g0EYmSOEYl7K/ZQX7MemRxPvIzjIT8f9BWPo=;
+ b=YvAywAyRmnz9pGJIZd0OBba4ZHdBhtKVuIUTW3LbPfDywP+bzZ2V6R4qT8ogpIM9hkUsqWSInc5HimMEM3s8VyTU7G5xAAF74Ud9tph9GorkZbn/1mvLKwJo/cJ7tqXbZJ6HqC9HcaeVo2U3R0XOjp/cNLHdyMhVgD3cpbcAG9u7joTS1TzQ07usrigWPsOMEOcNGIAtnjmM4v5pTIDuqRhYqj3uW+sHeZ5xoq/Z3SE+jQA+nClXIw6jde41zcs8mYhe9k375GhUziGcfqQLI/pkFPn0bdCv8mWLhhWZVeImpxhngoOSOW+vXY6GqjC6AvPCMBVyjtZSeduBGcBJnw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=HCxTQZ2g0EYmSOEYl7K/ZQX7MemRxPvIzjIT8f9BWPo=;
+ b=jKfSMZDltxYyZhYsUNB7i1xf0bfQ87xkijZcKbJkqjsjqUFo11ztHdEk80hnhzRWGft/OmgO1irFp7evJC/rPQ5Mu6PSFeDZqNU6lCj90/mfNjrP/19MG8MrtRAO3jxNOX8KGNr0L+5Y0Ejm752bPC061rVXrLvrU+W/PJeq4sFfSpxtICTuVLH7yT0FQGaPf4ZZI/kHWtWP5G2lDwOe+JKv2ixRkm/7Z1wt17RLhgRgp2/s4f78fnaW/9mXWnHG7aKp8zKqQeQ/CwThhAY6lx8Ja7ZdqqHXmpfiqUrtDlzAdWwUksVR9xU2KyMIl7AmfuKOIVSuEmKPRZAuLi7dVA==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from MI3PR04MB12438.eurprd04.prod.outlook.com (2603:10a6:290:76::14)
+ by AM0PR04MB6994.eurprd04.prod.outlook.com (2603:10a6:208:188::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.8; Tue, 3 Nov 2026
+ 15:37:28 +0000
+Received: from MI3PR04MB12438.eurprd04.prod.outlook.com
+ ([fe80::c715:c32:8bb1:b70b]) by MI3PR04MB12438.eurprd04.prod.outlook.com
+ ([fe80::c715:c32:8bb1:b70b%6]) with mapi id 15.21.0592.007; Tue, 3 Nov 2026
+ 15:37:28 +0000
+From: Frank.Li@oss.nxp.com
+To: Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	linux-media@vger.kernel.org (open list:MEDIA INPUT INFRASTRUCTURE (V4L/DVB)),
+	linux-kernel@vger.kernel.org (open list)
+Cc: imx@lists.linux.dev
+Subject: [PATCH v3 1/9] media: omap3isp: hist: use dmaengine_submit() instead of ->tx_submit()
+Date: Tue,  3 Nov 2026 10:37:01 -0500
+Message-ID: <20261103153721.1232488-1-Frank.Li@oss.nxp.com>
+X-Mailer: git-send-email 2.43.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: DS1PR02CA0013.namprd02.prod.outlook.com
+ (2603:10b6:8:452::8) To MI3PR04MB12438.eurprd04.prod.outlook.com
+ (2603:10a6:290:76::14)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -60,76 +95,92 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|AM0PR04MB6994:EE_
+X-MS-Office365-Filtering-Correlation-Id: 75f04b52-0219-4163-7833-08df39c05e10
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|376014|23010399003|1800799024|366016|10067099003|18002099003|56012099006|11063799006|261021123027099003|261021121427099003|261102123227099003|261026140227099003|261028144727099003|261009223027099003|261022105027099003;
+X-Microsoft-Antispam-Message-Info:
+	vcZ4UYMJS2MGngBnp764UT8oIrzp4EzT3C2nI5MpkxymT5h4oKTRaotyw2fmTH+/4xVPao2YSrciwM4pmX00HD6tpgXnwA5Tr7FYmYvM8pMmoyLZ/jcyAKagHRU/qUvcQG5Qp3YbVFijH2k8wmn8lfPETNAhwkM0+STSWeyJX6A/mVr+WXIPedVQdTLrhoTmNUnhBdsLzIePwmTtV9z4ukH2v/u1anRS1W/54DQfi3/JDZunlWj04RtYqy9ZqvF1RSi4yfmSfcdXXS3NLx7u3qH0rw8LwvbmMBy7DqTKHmDJ92EdSY/LgZw2EcwYtDtlan5zShcYDCEdkufjyT2MPeDKGVcS+liK61de0TRhSMG3WUQmyTjM2+e3u8Uj2NXcEQnELdnjejBcBwnujsAhJOyW5N4xnUyeUPj/q/0fYsCsSTBXBwf60HDZsZLTTFP18rBJwD93REGOJ5paVrvLrlouR98fUUPDJ0B8KfpgAgENZDgiq/JdMYCYmu2geLxE0fmqoNXaaQrG0G1hF8FMiA4a9rCWoxTtKuEL2sh6VBmnJvffK+ec7ukfovMtVYWzLueSPhG6zbhWm0+HDQdTai9G7iQYuWyYg2tfzsZP54h8Q2CxSYu+y2292F52Qr8CsUQS/a/A54WJKe9J4m87S09o9C5/N4PXKgOSCUwBFJk=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(376014)(23010399003)(1800799024)(366016)(10067099003)(18002099003)(56012099006)(11063799006)(261021123027099003)(261021121427099003)(261102123227099003)(261026140227099003)(261028144727099003)(261009223027099003)(261022105027099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?XUQ2ZN2ZTUGv3QNpXM0aTZpBLerVnYnMIAyf54up1L9L6SohyhRxWsBvF3VZ?=
+ =?us-ascii?Q?UId1BAU4R+2PdZ7sdxCKLWX77gurau6gE1gu0prMjMAJWdSg8z8LAEKM6Bps?=
+ =?us-ascii?Q?2awiQP/l1VD843SfGT92mfjT6J0uCRzuiTGm50GssawyjxC3idUGceWt/ICL?=
+ =?us-ascii?Q?P14m9nPEaFANOvOLMkIhnBWR3GooBAHO0dynYSNuGDmfZaDBw0yb/72dmfU7?=
+ =?us-ascii?Q?pjav+13Xk1J+dMSWkmyDKMZkk6tiRFWGZqrk52xmh6wo9++SmKFOKYQtTZRr?=
+ =?us-ascii?Q?RFx7rPaoPoPW6djSzY7ugMQpfVOFJrG9ABxJwTxz7L0YCWMgmSQSelCobW32?=
+ =?us-ascii?Q?LG9DdEbUNBueR3DVyFYX8st1aVksFCbkMxXeHeRt6u0lKbojLv1IDHrHU3tZ?=
+ =?us-ascii?Q?ZTZyTJ/sDJPGM6lEu2NdUt0iCnKqhWuYnhey1xhICK3ZtqPyAat9WbY4Mo2X?=
+ =?us-ascii?Q?VvgRMt/O3HJjAvXbWuGCHvwHSOBx7z86rSGsmiqBBNpgTr0ToFR3zvGwXd9X?=
+ =?us-ascii?Q?AA16vTzBH5+yOSE5/1BHP+NLppNq1g4yIecO8CxNVne4AJXOSOXER4LzWEqs?=
+ =?us-ascii?Q?M4tnwgUeUYiJlcMvjHLwUEh7US7ph6eSBmUyrGwHjmJT8i0/Pd3etITn8Ow8?=
+ =?us-ascii?Q?91FaBekZ9bYzW3ui88LiTi87PIxmJ123b/YnPS5qaJAJ+r325GqDsvmsu5FS?=
+ =?us-ascii?Q?wEyXQAhI5w7b/03Ut7BvT170KOVi8Rlesk5QX5C+Ta73X/t9gPvBE8JJN8jx?=
+ =?us-ascii?Q?+MiJ8X+wvSWvAvSSlrl/VPCj7Vkqhgie8KHQN6rVphZiT+2pphYUaRleRBnP?=
+ =?us-ascii?Q?9FTUc/eNMusF5RbZwglloK68w1A/OD21t9idKaWhsL3/g7/0/9mTs+eAYstq?=
+ =?us-ascii?Q?nzNUSCdLpeH9gC5FDHwxbk340R0jlISeW49pcago9QI+kZTco9yHtRluEdgI?=
+ =?us-ascii?Q?mjdwsL0wbowiHVeM7muVFvmdlllkxmw9qu+9zruCW+jVo55DmQu44HtU1Kte?=
+ =?us-ascii?Q?aymJdt1/HbdM8MMpW/udBN8gwYD07033H4G4k1FaGzhvdMI9P5IbdUccfJK4?=
+ =?us-ascii?Q?tuWhsG1MoYO0Wgp3eiH7WXtblKiDIbP5SYIkzkJeKWpx5xujiPuUlrjGQJBn?=
+ =?us-ascii?Q?YZ1KH55JT/+XYsgzGgaSIZQvKEAsVMbBlHez7ADaih3+gvI6KZzbYrIq26Lm?=
+ =?us-ascii?Q?W0RRaxDySdEoY358Iz8p3ZDVn4tPSFzhEFRDN161DVUOYTrcRkMGfSu7XxMh?=
+ =?us-ascii?Q?9vW6iEM3bTlKiBP9GBpK4SIp13jDjnwRx+XOvPwheVaITUYh/zfd6ThYqxCb?=
+ =?us-ascii?Q?Xbg7OSQLf57537RF//WvIN7cpeSYemRlzv1rE2o6HYw9tl2Qy+d17i055lFF?=
+ =?us-ascii?Q?xK/Jz45CxPHKIYpmd1qJOpSvIQcDG/AjMgFsUpwB/X9jdvhXP62e8VbCG9a0?=
+ =?us-ascii?Q?ZSv62vIlDSuaeJZpt5XgWA3utAquz/8C5NhPONr3ZSGpEFfjHjdxw+zxuAeP?=
+ =?us-ascii?Q?I/7ALzj2QRSwKDUYP6bjPUEAlGvDhidEEpIXvunaZFuttq0cJYt0DDwgmwIx?=
+ =?us-ascii?Q?TH8C7+5SyLqg/6oAFPzoxq4uQFkeM7NvzvaiWwv7ttsOxumrdeKUE4+NMDRT?=
+ =?us-ascii?Q?Oe/wNZzfz5/Cn1wscSvArBsiKZLHrbAC75PgGvUDHCxs9rmfm9+LLa2GZq53?=
+ =?us-ascii?Q?vJLzmrJSvMfhgjIQ3k8TmxV7Xwcf6Zv4XvE001Ed6mt/kWWvGQAAUjRSCXvC?=
+ =?us-ascii?Q?DzBYrXOIS+qogaSVHQLzr440aqP+2Mb0XRFUyT0QbUNxYQxjxgW8?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 75f04b52-0219-4163-7833-08df39c05e10
+X-MS-Exchange-CrossTenant-AuthSource: MI3PR04MB12438.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Nov 2026 15:37:28.5173
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: CIXqv2wkjC//sUR9lVYj9qJnVt+cJJHTT4r4X14iO9rMhCtWe05zNB/x3seo/BL5JMX9WlDbBLPdJv6SS91kHJfuLpUG2iQZKHJUHbK85QD3lKz0PlnqkQ/rSFVC1nOn
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB6994
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] dmaengine: fsl-edma: 64-bit modulo in fsl_edma_child_to_chan_id()
---
+From: Frank Li <Frank.Li@nxp.com>
 
-commit 76cf0654e1725c0e3aaa1017f35c2a7303b2f234
-Author: Peng Fan <peng.fan@nxp.com>
+Replace direct dma_async_tx_descriptor->tx_submit() call with the
+proper dmaengine_submit() API wrapper.
 
-dmaengine: fsl-edma: support per-channel DT child nodes
+Assisted-by: LLM
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+change in v3
+-none
+change in v2
+- rebase to v7.4-rc1
+- add more fix at following patches
+---
+ drivers/media/platform/ti/omap3isp/isphist.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-This commit adds support for parsing per-channel devicetree child nodes in
-the fsl-edma driver to configure per-channel interrupts and IOMMU mappings.
-It introduces helpers to derive the channel index from the child MMIO
-address, obtain child interrupts before IRQ setup, and configure per-channel
-IOMMUs after device registration.
+diff --git a/drivers/media/platform/ti/omap3isp/isphist.c b/drivers/media/platform/ti/omap3isp/isphist.c
+index fbfdcbfdb050a..dc02f240ee89a 100644
+--- a/drivers/media/platform/ti/omap3isp/isphist.c
++++ b/drivers/media/platform/ti/omap3isp/isphist.c
+@@ -211,7 +211,7 @@ static int hist_buf_dma(struct ispstat *hist)
+ 
+ 	tx->callback = hist_dma_cb;
+ 	tx->callback_param = hist;
+-	cookie = tx->tx_submit(tx);
++	cookie = dmaengine_submit(tx);
+ 	if (dma_submit_error(cookie)) {
+ 		dev_dbg(hist->isp->dev, "hist: DMA submission failed\n");
+ 		goto error;
+-- 
+2.43.0
 
-> diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-main.c
-> index 30d548a723462..8691676b3b692 100644
-> --- a/drivers/dma/fsl-edma-main.c
-> +++ b/drivers/dma/fsl-edma-main.c
-
-[ ... ]
-
-> @@ -703,6 +720,184 @@ static int fsl_edma3_attach_pd(struct platform_devi=
-ce *pdev, struct fsl_edma_eng
->  	return -EINVAL;
->  }
-> =20
-> +static int fsl_edma_child_to_chan_id(struct fsl_edma_engine *fsl_edma,
-> +				     struct device_node *child,
-> +				     struct resource *parent_res)
-> +{
-> +	const struct fsl_edma_drvdata *drvdata =3D fsl_edma->drvdata;
-> +	struct resource child_res;
-> +	u64 offset, ch_id;
-> +	int ret;
-> +
-> +	ret =3D of_address_to_resource(child, 0, &child_res);
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (!resource_contains(parent_res, &child_res))
-> +		return -EINVAL;
-> +
-> +	if (child_res.start < parent_res->start + drvdata->chreg_off)
-> +		return -EINVAL;
-> +
-> +	offset =3D child_res.start - parent_res->start - drvdata->chreg_off;
-> +	if (offset % drvdata->chreg_space_sz)
-> +		return -EINVAL;
-> +
-> +	ch_id =3D div_u64(offset, drvdata->chreg_space_sz);
-
-[Severity: Medium]
-As reported by kernel test robot on v3 [1], in fsl_edma_child_to_chan_id() =
-in
-drivers/dma/fsl-edma-main.c, offset is a u64 and drvdata->chreg_space_sz is=
- a
-u32. While the division uses div_u64(), evaluating offset %
-drvdata->chreg_space_sz directly above it promotes drvdata->chreg_space_sz =
-to
-u64 and emits a 64-bit modulo library call (__umoddi3 or __aeabi_uldivmod),
-which fails to link on 32-bit architectures when CONFIG_FSL_EDMA is enabled.
-
-Could this use div_u64_rem(offset, drvdata->chreg_space_sz, &rem) to compute
-both the alignment remainder and the channel ID quotient in a single step?
-
-[1] https://lore.kernel.org/r/202611031650.EONIRpF4-lkp@intel.com
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261103-edma-iommu=
--v3-v4-0-470415d418c5@Example.Com?part=3D6
