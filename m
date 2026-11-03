@@ -1,55 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793696284;
-	b=SEiTn1eDBBw3hG82j9BGWqE4tQBBS/D3meYEbuzxeo1eljh3rD7ly6jKvtn+R7je+6rS
-	 KG+5WtsKhKBLi9X3HbAJ4Ew9nEdSrwAnljRzVq/oa/D9KiYFZTEXywAWQDEcdXG3UIe61
-	 oXNb3QW5ljsEo50AIx+5r99ywNSlcVQKden5VogchIuynOAEWn0snK2CU5jkVQoPNsyn4
-	 X3QiKrONJymYpm+Dz019romHMG6G9FV+DE24v7r1BfuhRL4w0ypAmzYuVjBRii+v5cIhG
-	 5klqaMoHdr0UdDrtYSxEL2IhZjxiQKfuY0otuKT9oqtdv9LEFRRsV/K8aAaFh7Ghx5Q==
+	t=1793696382;
+	b=GNQeOIQikN7VG2jgKSr+Y3XKeUwKzXSCkTEyq5CUZSQ3AUbbOB6xjovQH1olzHZzTQQA
+	 jN7LWRYag+tyv8vPcwAdj6hNLI1Rgjz76VOZ9JE8UarL0HBVaCnygSCEb6+Z91A2XKiCW
+	 NYt9IK2v+R91xzQf86Hpd2DT0CMVBJxWr13rPYoymlGKN1hCtQlnySTcPrzFlRbjyJBiU
+	 ECkr7RfUiZnxttRJtOhMV8ZK62PbmipJihykTgwvmYmSJplg5LHD9wn/81FPI9IjqStN9
+	 /ScxKIHCz2Y9G6nWUbEsj70QLIuM+ym+IObvlb/776KuclNiKvogc0q5E1Hk8ZT3jZg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793696284;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=AUgj7ybzOrbdmhNXXkJnAoh6ZouzAZL90keqraEO3nw=;
-	b=UI6MXOuvp7t917+h/14qgsiIdOOEYVqQQmA4ZENbxiN2dmy32R2gWI6IgzYyJtQueejk
-	 ctLBuMz1RM9j+rDMGpsRaskk999EdGYmUNBWyQJXlMm3nzPPpjtAGYIpWyjNU7OnWI9tH
-	 ReB+ud/Ui68H6gPGziVDHqedevfvmSj4yhg5qGjARWJoqe5hJbz/GKHfyKFszeSwRrUnm
-	 Fs+VkWMw6zo2oljucNjjgc/ORoG7vgyyq18zGVK8yQdEaj8R/m/mnIrBgkDhOAknq/kL8
-	 IqXE8vCciUaWV+1XEoUW3h/s5U6lpxcACwDZweDsBvH2nInv060YaBOscqBWbwd/WtA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793696382;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding:In-Reply-To;
+	bh=bMSZL4dh788kj1Ij3zhdAk/RFep5+LgNTfn0MJBEZW4=;
+	b=3ZWdQJqh1s+QFsmvwa1o5cKd3yMU5qS6S3xRmn4U6nhptuLRGYLwvQSvQ7HLaZwvC+Du
+	 jZVjXTCs9EE6fsFI2Uw2JBPmeusGFmL93HdVmRH6zr0pDxNFYKpmqe0UurGm6BDjMTLGJ
+	 SVizXwrdJBQMMLc4E5JZltnyCrkfrBx5c1Z7wiay+b7R2fU4E7sjuNzrgexe7/6qXszj4
+	 79spvjXtSpTQ9WHbLG+VRBccU/9J+u3HcTuDqRAxyOxBS4SZ7+GsGv139epZuCj/B1PD3
+	 ygM3w8l+bXoZBx0RfOpr2djq//ghrhGT34Ltv//H7CbqX0wuO4JdZW0dCa8Na9Dl/Xg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JKH6l+Xc;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EKFRULxu;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A96C606A32E
-	for <imx@lists.linux.dev>; Tue,  3 Nov 2026 08:58:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8096606A324;
+	Tue,  3 Nov 2026 08:59:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JKH6l+Xc
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB2DA1F00A18
-	for <imx@lists.linux.dev>; Tue,  3 Nov 2026 08:58:03 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EKFRULxu
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 560A41F000C1;
+	Tue,  3 Nov 2026 08:59:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793696284;
-	bh=AUgj7ybzOrbdmhNXXkJnAoh6ZouzAZL90keqraEO3nw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=JKH6l+Xc19miNOkvdh6fwXKmZ/peo1JLSx8CpwB7AijrPFwQ5nMrSkiCTWGvwxYnV
-	 hmZms6pQ7UWI+F4lN0IqndsfmhgVlMBSc8TdwaDl8EmL3ndRDomC00sTJnD5ZPU3Fx
-	 CpI7jvnpjWuPFi1lqaZ3xY/95vrPjNcicxGk5InxLjv0XvTn3x1DPFYlEN/tpT9bVy
-	 HHXOI1+z4niVB+11bzLb/GPbjtm5Z8gExi689a+FQqGsFDyszprbcR9DXFG4T0eEPa
-	 aFQEmKpZSbWRCkVwkQgHv6wy6f2XGzk3YWJBctaYRCMrImJ+A9CCR+rH8d1FwSvjVp
-	 8qwcOpfV6jG/Q==
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-3aca0bf7fd0so32102821fa.0
-        for <imx@lists.linux.dev>; Tue, 03 Nov 2026 00:58:03 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AKwUvBxI0jixYP8JOdt8d8/RPPnSrgcx9ufUZ8ZjDGsrkmPg987fvnhBJpPqjTQ5ffQtik6Hj7w=@lists.linux.dev
-X-Gm-Message-State: APuU4Z+zM8FA7P63B0KGdJUtLs/afqpc4leHL8265r5XqUv0cyxfj8i2
-	+uojJLnGZbsFTTEcc/+E/EkGstHs3/5znQgiNyGbGGqN2osXIJ2EY4wQ7SMw/kJa28cFfoQ/5bA
-	7sgXoOwql+16UXbnBws/gnX5L91hjt+g=
-X-Received: by 2002:a05:6512:b84:b0:5bf:dc30:93a5 with SMTP id
- 2adb3069b0e04-5bfdc3094a3mr4560521e87.4.1793696282130; Tue, 03 Nov 2026
- 00:58:02 -0800 (PST)
+	s=k20260515; t=1793696381;
+	bh=bMSZL4dh788kj1Ij3zhdAk/RFep5+LgNTfn0MJBEZW4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=EKFRULxuEvrfwa5a1B5fBPNy9FTfqCZSjsz6vH2uMOV5fFUD2F9HsKeDSjWQvrGKh
+	 GVSvUbd1fq+mF0DVRo3VkBXRER/QcMFPEpYOeA2sAbDtwkfP4x7wnnhE9duFcrB9Uw
+	 ASYrgMRibIYVxdZc5TV5i3PqjPq5XNq2CT7QH7uZpuG5gCf3plq+rJO3Tv+su4Et5v
+	 wS3Dr+xcFqArD3X2xPEj7ZTAj9F1kmIdvk6JLxyGmO5lD30jd2zdB1GtHi3HGPz1FM
+	 BrUdT5BPDd1ll9wgfnbFZkdzMhzU+nbPZs/z/wnJ0VIQfMY5y7HK35dXw+8XucOo5z
+	 jhhBYM2ajD7PQ==
+Date: Tue, 3 Nov 2026 08:59:37 +0000
+From: Lee Jones <lee@kernel.org>
+To: sashiko-reviews@lists.linux.dev
+Cc: Frank.Li@oss.nxp.com,
+	"open list:MULTIFUNCTION DEVICES (MFD)" <mfd@lists.linux.dev>,
+	imx@lists.linux.dev, Frank.Li@kernel.org
+Subject: Re: [PATCH 1/1] mfd: stm32-timers: use dmaengine_desc_set_callback()
+Message-ID: <20261103085937.GE13023@google.com>
+References: <20261102174656.3939832-1-Frank.Li@oss.nxp.com>
+ <sashiko-outbox-193875@kernel.org>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -59,72 +59,86 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-References: <20261102135330.2493332-1-robh@kernel.org>
-In-Reply-To: <20261102135330.2493332-1-robh@kernel.org>
-From: Linus Walleij <linusw@kernel.org>
-Date: Tue, 3 Nov 2026 09:57:48 +0100
-X-Gmail-Original-Message-ID: <CAD++jL=DvHOGWpYYudhG-EhxTk3iUhtfz7OBS0mFgurvnCmb3g@mail.gmail.com>
-X-Gm-Features: AclHuK-LEcFutZHI-ID3nCMC-9st3AveCqqRSTzeXkI5ke3GTM3j4j9Kq1OFBKw
-Message-ID: <CAD++jL=DvHOGWpYYudhG-EhxTk3iUhtfz7OBS0mFgurvnCmb3g@mail.gmail.com>
-Subject: Re: [PATCH] dt-bindings: Use hex unit address patterns
-To: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>, 
-	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>, Jiri Pirko <jiri@resnulli.us>, 
-	Ivan Vecera <ivecera@redhat.com>, Benson Leung <bleung@chromium.org>, 
-	Guenter Roeck <groeck@chromium.org>, Bartosz Golaszewski <brgl@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Jonathan Cameron <jic23@kernel.org>, 
-	David Lechner <dlechner@baylibre.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, Olivier Moysan <olivier.moysan@foss.st.com>, 
-	Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
-	Thierry Reding <thierry.reding@kernel.org>, Jonathan Hunter <jonathanh@nvidia.com>, 
-	Fabrice Gasnier <fabrice.gasnier@foss.st.com>, Lee Jones <lee@kernel.org>, 
-	Srinivas Kandagatla <srini@kernel.org>, Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>, 
-	Ulf Hansson <ulfh@kernel.org>, Hans Ulli Kroll <ulli.kroll@googlemail.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Vinod Koul <vkoul@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Manivannan Sadhasivam <mani@kernel.org>, Ray Jui <rjui@broadcom.com>, 
-	Scott Branden <sbranden@broadcom.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Daniel Lezcano <daniel.lezcano@kernel.org>, 
-	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>, 
-	Orson Zhai <orsonzhai@gmail.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Chunyan Zhang <zhang.lyra@gmail.com>, Paul Kocialkowski <paul.kocialkowski@bootlin.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Chanh Nguyen <chanh@os.amperecomputing.com>, 
-	Alistair Francis <alistair@alistair23.me>, Julius Werner <jwerner@chromium.org>, 
-	Paul Cercueil <paul@crapouillou.net>, Dmitry Osipenko <digetx@gmail.com>, 
-	Florian Fainelli <f.fainelli@gmail.com>, Thierry Reding <thierry.reding@gmail.com>, 
-	Ray Jui <ray.jui@broadcom.com>, Scott Branden <scott.branden@broadcom.com>, 
-	Krzysztof Kozlowski <krzk@kernel.org>, dri-devel@lists.freedesktop.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	netdev@vger.kernel.org, chrome-platform@lists.linux.dev, 
-	linux-gpio@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-hwmon@vger.kernel.org, 
-	linux-iio@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-sound@vger.kernel.org, linux-input@vger.kernel.org, 
-	linux-tegra@vger.kernel.org, mfd@lists.linux.dev, 
-	linux-arm-msm@vger.kernel.org, linux-mmc@vger.kernel.org, 
-	linux-phy@lists.infradead.org, linux-pm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <sashiko-outbox-193875@kernel.org>
 
-On Mon, Nov 2, 2026 at 2:53=E2=80=AFPM Rob Herring (Arm) <robh@kernel.org> =
-wrote:
+Note that this is the first I've seen of this patch.
 
-> Unit-addresses by default (and most commonly) are hexadecimal. There's a
-> number of cases using decimal patterns. Fix all of them, limiting the
-> pattern to match the 'reg' limits if there are any.
->
-> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+You may need to [RESEND] it.
 
-Reviewed-by: Linus Walleij <linusw@kernel.org>
+On Mon, 02 Nov 2026, sashiko-bot@kernel.org wrote:
 
-Yours,
-Linus Walleij
+> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
+> - [Low] mfd: stm32-timers: call to undeclared dmaengine_desc_set_callback() breaks build
+> - [Low] mfd: stm32-timers: uncapitalized commit subject description after prefix
+> --
+> 
+> commit 90e59ce1010cceb53a7009d41c5cc59f1c853e30
+> Author: Frank Li <Frank.Li@nxp.com>
+> 
+> mfd: stm32-timers: use dmaengine_desc_set_callback()
+> 
+> This commit replaces open-coded assignments to the callback and callback_param
+> fields of struct dma_async_tx_descriptor in stm32_timers_dma_burst_read() with
+> a call to dmaengine_desc_set_callback().
+> 
+> >     mfd: stm32-timers: use dmaengine_desc_set_callback()
+> >     
+> >     Replace open-coded assignments to callback and callback_param fields
+> >     of struct dma_async_tx_descriptor with a call to the
+> >     dmaengine_desc_set_callback() helper.
+> >     
+> >     No functional change intended. Prepare make to struct
+> >     dma_async_tx_descriptor private to the DMA engine.
+> >     
+> >     Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> 
+> [Severity: Low]
+> This isn't a bug, but MFD subsystem conventions expect the commit subject
+> description after the prefix to be capitalized:
+> 
+>     mfd: stm32-timers: Use dmaengine_desc_set_callback()
+> 
+> > diff --git a/drivers/mfd/stm32-timers.c b/drivers/mfd/stm32-timers.c
+> > index b3dbc02aaf798..4f344f2a5a26c 100644
+> > --- a/drivers/mfd/stm32-timers.c
+> > +++ b/drivers/mfd/stm32-timers.c
+> > @@ -102,8 +102,7 @@ int stm32_timers_dma_burst_read(struct device *dev, u32 *buf,
+> >  		goto unmap;
+> >  	}
+> >  
+> > -	desc->callback = stm32_timers_dma_done;
+> > -	desc->callback_param = dma;
+> > +	dmaengine_desc_set_callback(desc, stm32_timers_dma_done, NULL, dma);
+> 
+> [Severity: Low]
+> Does this break the build when CONFIG_MFD_STM32_TIMERS is enabled?
+> 
+> In drivers/mfd/stm32-timers.c, stm32_timers_dma_burst_read() calls
+> dmaengine_desc_set_callback(), but include/linux/dmaengine.h does not declare
+> or define dmaengine_desc_set_callback() in this tree:
+> 
+> include/linux/dmaengine.h:
+> struct dma_async_tx_descriptor {
+> 	dma_cookie_t cookie;
+> 	enum dma_ctrl_flags flags; /* not a 'long' to pack with cookie */
+> 	dma_addr_t phys;
+> 	struct dma_chan *chan;
+> 	dma_cookie_t (*tx_submit)(struct dma_async_tx_descriptor *tx);
+> 	int (*desc_free)(struct dma_async_tx_descriptor *tx);
+> 	dma_async_tx_callback callback;
+> 	dma_async_tx_callback_result callback_result;
+> 	void *callback_param;
+>     ...
+> };
+> 
+> Is this patch missing a prerequisite commit that introduces the
+> dmaengine_desc_set_callback() helper?
+> 
+> -- 
+> Sashiko AI review · https://sashiko.dev/#/patchset/20261102174656.3939832-1-Frank.Li@oss.nxp.com?part=1
+
+-- 
+Lee Jones
