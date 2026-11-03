@@ -1,69 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793703215;
-	b=Aa99VroEMKoZq6vthGFevz6d+YkvAhZLWOjuc1ob3G1a7FYmIoQNgpNDWEtFCDEzUPLo
-	 P/0PB+n8eSc3vi798VmYWs4XtWiuyyoSyUHRY4EpfAgr4f8csaPlm11IZ+LYS2eVh6Oxu
-	 wFX3P5rftlgAkYQlgBJacpjnDOqmSyDk+y38hhEGJQRPFqzrgQ4v/biqwXeQKfwCrK5W2
-	 oZUMibpQvDFSlai0pyJ1aJKSmZjqIKJiVD6sCWl7DnDw9OBFffpQYx+ammnkOX1fllayj
-	 BEfXakCDgglVwgHMb7wcjlHwceW8l3fXLZJG9S7rL9bv7qWmFBpTSvHJKFJUjIVQo+A==
+	t=1793704961;
+	b=1ORqaCXP0vEg6ug+T1WcHsGKy12PmogrzMGswp5DmZimdlFog+xRMiMPfBs+foXDF0hp
+	 bRzTIBqaV43ojaM/J8gNy+6G8ncWQakv6LQCxEu3kwZBJe3XvHWL6jdr+/9P4PIrl9Cx8
+	 me84lNO9EhgWOGaFnnoWLuM+/irVr7Zy2avkI5jRLt6LIpXT3hfQxQraVKXhkTEdYM0ku
+	 6cSfbrQl5JWycSM8PFuz0A2EJiDqR3gd028uM7293xqsX1DZpZEfPeGzCxGMwdPKmguPI
+	 eWo1coDOR2dx0DZl07oTGAQDs9m/Dt+L4QLS9stCUAP98MIf2W1R/2fPlAtr1G0Yk8A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793703215;
-	h=DMARC-Filter:Received:DKIM-Signature:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=PucKNmxJ8X9KZkuPjiBnnnSe7Sz0Xqekz5/GdiUHsVA=;
-	b=1IxWR2cSVk/EjE60y3g8CU7yVnKsT88/R7Gc9Rs8p9mTyrfThxOlgYwaTABt8kcZZbyl
-	 4drDaPobH6rZnF8+i8sIEfWxTElPMgxggxRfWKjyN9cQH6U+gseZc38PJhrOHMJFSiZiE
-	 fe5gQRi6BVUWrR8AQFAbBxht00pd9HT+Aw5MXWNSA6J3A8Ufg19WYXiqwLqhzY0DghwSh
-	 YGlN13sSzbEKGOd9zYG/1iffwrZc9mukCP2T8lzbg+ewH8fPGjrn+2N2aAilUekqiDQh8
-	 75AyezaEjGXcIoqW4ztsCrdInC+sn1AtTDeYqcyds5qjBuZ+eOE//L9Yr08ci2pscqA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793704961;
+	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:To:Cc:
+	 In-Reply-To:References:Subject:Message-Id:Date:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-Mailer:
+	 X-Last-TLS-Session-Version;
+	bh=Im2hD/3RPp585O4FNz8w013aAEGmolE3drO5PuJAwxI=;
+	b=xbk9gJvg+Plx2x55to9MekLmvJVvpDEwJhhHtlybJvsgKr8ZHdhaFoqQAwGtk38zIMpB
+	 LNmz05tddPuZUHV6BV3cKxVr/HjhCJbQnpmZZBjZU53Y3wGvT6xUswYSGp92fJkMkRQYX
+	 94f4zSGF4bGPT8oapXDkchAuN0FMu1bFt79RuAlAMWGRBxRhfG0wlxAzfJ02/RqXq5KRx
+	 hoigPouSaN0dzHZ/icW13xJFwvNxjs60QHYBDAd9R1z2oT9z+5YCxf2IdYzKXBv9bc6/Z
+	 8YfGw+ohkQ4xRV6d15eiwZJwnv1YDbjVUS20p1VjquhBK/Zqon8jmnUEYHjjknkESQg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=dolcini.it;
-	spf=pass smtp.mailfrom=dolcini.it;
-	dkim=pass header.d=dolcini.it header.i=@dolcini.it header.a=rsa-sha256 header.s=default header.b=WEP8wv3l;
-	arc=none smtp.remote-ip=217.194.8.81
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	dmarc=pass header.from=bootlin.com;
+	spf=pass smtp.mailfrom=bootlin.com;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b="mpQ/H7qb";
+	arc=none smtp.remote-ip=185.246.85.4
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88F4C606BFBD
-	for <imx@lists.linux.dev>; Tue,  3 Nov 2026 10:53:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 88F4C606BFBD
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1CB0606C566
+	for <imx@lists.linux.dev>; Tue,  3 Nov 2026 11:22:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B1CB0606C566
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=dolcini.it header.i=@dolcini.it header.a=rsa-sha256 header.s=default header.b=WEP8wv3l
-Received: from francesco-nb.corp.toradex.com (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch [83.173.201.248])
-	by mail11.truemail.it (Postfix) with ESMTPA id 8EEEE1FAF9;
-	Tue,  3 Nov 2026 11:53:32 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1793703213;
-	bh=PucKNmxJ8X9KZkuPjiBnnnSe7Sz0Xqekz5/GdiUHsVA=; h=From:To:Subject;
-	b=WEP8wv3lFTmygkOzEkmDHEBLmlgoIuB8rpg9pTv7+LCG4jMd3E0ULkGhcE1YntdjL
-	 chSHcvrlHCaTXqDCH8+9sLMwDaHOpX7pyMcniFinvcOEAXMnhkCbD8C443t2EiqWNh
-	 dNRijXurmNvW0K2sTKivo6UENcEXQw6Xl17LXCg5gm8o/7yiKA+a1EbuKcllsAePph
-	 RiMDPxiIQLLDCYt0zl6UjzsQQtDxkiIJAY/4qF2ienx+PziAhDHOlbxkBqfEF9r7ap
-	 5OTiLDPiFkgDPVOHrdOFjb4OE4lnSqAnZk9ZhrOBgbeksBrMQvv2+dJYo3hgK2NjPa
-	 wLP29x2mGG+0A==
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v1 2/2] arm64: dts: freescale: imx95-aquila-clover: Keep DP_PWR always enabled
-Date: Tue,  3 Nov 2026 11:53:16 +0100
-Message-ID: <20261103105323.2394012-3-francesco@dolcini.it>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261103105323.2394012-1-francesco@dolcini.it>
-References: <20261103105323.2394012-1-francesco@dolcini.it>
+	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=mpQ/H7qb
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id A9A674E413E1;
+	Tue,  3 Nov 2026 11:22:37 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 685516046C;
+	Tue,  3 Nov 2026 11:22:37 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B9B9810328267;
+	Tue,  3 Nov 2026 12:22:23 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1793704951; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=Im2hD/3RPp585O4FNz8w013aAEGmolE3drO5PuJAwxI=;
+	b=mpQ/H7qbmCeJCsVUAv6mUbCuYfblkczMBNsSOQkUfNvgj759C8FjqB4FV+lT4PATF1vIUq
+	4gSGLJ7S4Z1H1wvRqHsb06gyBkHzGz7wj+bDgDmcQRQxL2sGXlkc1MQzoRlJzc0Vm+a+jF
+	rjEQ0zpOfvj8qLHi8CkxQ4RXb1VnIxD0LlikBV+nmA0Ljnt5KAiJTjxCTOrnigwxkYdp5W
+	2MYcQ6l4aAQpcWbPswrjdU1w2f+KW7/ZSvWbRyetHOSdeqBPXSuqMwTMfXn9JVL0sC27ow
+	OUPAfqhTxi4k2zVBP86GI1wEXclSlyrSARiuc9aZ9sjKDntfL09dICGY9ZwscA==
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+To: Andrzej Hajda <andrzej.hajda@intel.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ =?utf-8?q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>, 
+ Fabio Estevam <festevam@gmail.com>, Robert Chiras <robert.chiras@nxp.com>, 
+ Sam Ravnborg <sam@ravnborg.org>, imx@lists.linux.dev, 
+ Esben Haabendal <esben@geanix.com>
+Cc: Frank.Li@kernel.org, dri-devel@lists.freedesktop.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>, 
+ "Oliver F. Brown" <oliver.brown@oss.nxp.com>, 
+ Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>, 
+ Liu Ying <victor.liu@nxp.com>
+In-Reply-To: <20261027-nwl-dsi-fixes-v5-0-b6d1d3d2d356@geanix.com>
+References: <20261027-nwl-dsi-fixes-v5-0-b6d1d3d2d356@geanix.com>
+Subject: Re: (subset) [PATCH v5 0/4] drm/bridge: nwl-dsi: Various fixes
+Message-Id: <179370494317.651381.10938572686386767972.b4-ty@b4>
+Date: Tue, 03 Nov 2026 12:22:23 +0100
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -73,34 +83,34 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.16.0
+X-Last-TLS-Session-Version: TLSv1.3
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-DP_PWR on the DisplayPort connector powers active DP cables and
-adapters, which do not work without it. Keep it always enabled, and mark
-it boot-on so that the firmware, e.g. U-Boot, enables it at boot,
-whether or not a display driver is available.
+On Tue, 27 Oct 2026 11:33:48 +0100, Esben Haabendal wrote:
+> This series brings a few patches fixing horizontal sync timing, EOTP packet
+> behavior and hsync/vsync polarity selection when using DCSS endpoint, as
+> well as a small fix to properly handle if/when nwl_dsi_mode_set() fails.
+> 
+> The 3rd commit ("Correct auto-insert EOTP behavior") is taken directly from
+> NXP vendor tree, so I have kept Author unchanged, although I have modified
+> the commit message. Let me know if I should change Author for that.
+> 
+> [...]
 
-Fixes: 3f519121e120 ("arm64: dts: freescale: imx95-aquila: Add Clover carrier board")
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
----
- arch/arm64/boot/dts/freescale/imx95-aquila-clover.dts | 2 ++
- 1 file changed, 2 insertions(+)
+Applied, thanks!
 
-diff --git a/arch/arm64/boot/dts/freescale/imx95-aquila-clover.dts b/arch/arm64/boot/dts/freescale/imx95-aquila-clover.dts
-index 07bf53240958..37fa107c6fec 100644
---- a/arch/arm64/boot/dts/freescale/imx95-aquila-clover.dts
-+++ b/arch/arm64/boot/dts/freescale/imx95-aquila-clover.dts
-@@ -41,6 +41,8 @@ reg_dp_3p3v: regulator-dp-3p3v {
- 		/* Aquila GPIO_21_DP */
- 		gpios = <&gpio3 21 GPIO_ACTIVE_HIGH>;
- 		enable-active-high;
-+		regulator-always-on;
-+		regulator-boot-on;
- 		regulator-max-microvolt = <3300000>;
- 		regulator-min-microvolt = <3300000>;
- 		regulator-name = "DP_3V3";
+[1/4] drm/bridge: nwl-dsi: Cleanup endpoint mux control selection
+      commit: 8dad0ebd822f54102aadc6ca4f0f8777112d175d
+[2/4] drm/bridge: nwl-dsi: Limit LCDIF specific sync override
+      commit: 54a88d9afcca66221d14f438d0960472984968ec
+
+Best regards,
 -- 
-2.47.3
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
 
