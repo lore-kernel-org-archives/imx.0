@@ -1,56 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793689411;
-	b=i+Be0gz+hiMEfOBgQ0Yeg0go9vTOrq5Pj5K51z8NJBxx/VoqXgDHNBYTol7mxaCSa6fk
-	 2uDAhMhcydSPi2pYlrcaUKjsauo9GZhUYO75Bcj3GPMdTxpZ7qnVcpLFOu7Fh6xM8vk7r
-	 Ev8y7BB0sD1QiOsKSfVTToJSDa+AAsRs5CHQjK5mObagQ3JSQNe9ItC6+SPbv11Ny1wjd
-	 fv++nh2Vf5mixBieqPrjcvoJVvvHBtqrbpOAMKdrsX8rx3ULMr0ukS3qD+/dQGWct+Omy
-	 8hnocLbjMmZTiTRV6X7TnaAEXeZVGi2zTPQ/8IZmninlPWL2Y3cidMRPxbFxSRMVXlg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793689411;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=SUjNy9SR7ua9Vo77AP/voSXiWp6NltOgZNiX3xs8C+Q=;
-	b=AWtbEKcPHpNA4Fi1K4ihfRcEUnclS1R968zMFE3d3EZKZq+X3bEaylN+mpAbOzIu+EI/
-	 T7b4sUm9M3pOzIf/iPcRKvK7/YnFmUz5p/MDY4Bk+y5CxUqdt2h9UXTIXHej/bAA9/GHX
-	 4XHq1aXj8IoUlkRGMNLOR7wHNtvVaBd5wz9nFhvHrcU+HdgIR7GxCm71sp790E25efT2M
-	 G8TzmiqMCwH8QC0HRfMiLXVyFBBkWbTbsMvfD1ynyPnj2k6coumx2nMriVk2A2x1c3HFF
-	 3E6nS8S2285gAa3YxDu0LS/DMC1qb8DOapSLGYjNyDf7rtGomyxijmu4WImRZaAT5yA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TdNnNdVw;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.72.21
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793689487;
+	b=Pu55K7l9q9JOILGAEZuuFqbZCpgGalN+08s87mzP7J/+f/FYZTcAqZaXpPAFgyVOB0Ed
+	 bhc4OaoXW4VWJ1W0CTqWx4IQopQdKRvgJFCTsPy/KvQLgjEuimaNmrPQi/RIHFFUqqJF7
+	 a0sqau55eBAV5KpDxcFeVWDvxgJTT3HQpA6uurXXa/7W876WdTWJSAwlBPaW/OfTCIzyr
+	 trRLGoujRoX4EK975/PRxcCv+XbKTHblSBYRo6AWgv+/oUG5IY8gqyFNXPeq5ZPdb9eQT
+	 ujuWhC0v8lW/b+30g5PoAMpAyO0CA/7rGoo4yZcC9tKuYZfhKRhDlimBh/2ms9UVK8w==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793689487;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:Content-Transfer-Encoding:Content-Type:
+	 X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=zJHZP47/fhUXWqh9W2dDuVxmEaJSmnIlCvHcfwIx7aw=;
+	b=KEYkXKjx11aWjFoqQdGew4mqu2sncY+P4km3bRemz0fAeaShkjI1OevrCza+scwBrS4q
+	 +D3u2mOujUaCJckrykMcPwRWUKXvDuqC/ZMLkgs7olZN8vveh8HDG9x0fGNhl5GCOIoab
+	 SdajiamNbwHRAkQToQzotrz/DGHWtpMf4SQVqKHJsLdurEUSRcAnL4gGUBkqwDGZ2x5jB
+	 ZDgvcKCouvHzZK2MkKRnW/2NxSloe48jfuxPzVrcdU74TQLoiWDFTcCbWHsMFNB8h0vMF
+	 JBi8luepV/ee4K7zolJvHwf3Ap+Ft4u3hDIycA5tnqasASrbRGEcCZBcl8nhrs3AM4w==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=oss.nxp.com;
+	spf=pass smtp.mailfrom=oss.nxp.com;
+	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=rTxOBvCh;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.72.21
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013021.outbound.protection.outlook.com [52.101.72.21])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E0EF606A330;
-	Tue,  3 Nov 2026 07:03:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68C94606A333
+	for <imx@lists.linux.dev>; Tue,  3 Nov 2026 07:04:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 68C94606A333
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TdNnNdVw
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A1771F000C1;
-	Tue,  3 Nov 2026 07:03:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793689411;
-	bh=SUjNy9SR7ua9Vo77AP/voSXiWp6NltOgZNiX3xs8C+Q=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=TdNnNdVw/8LQro+nLdeOdi0pqsiAmo3nzo36Udw+M+aRplUPq10oqvA1jm/2FNvlk
-	 bTNNaZ1MGhOPJ/cWSmpQcdcmESleH4tTDTWpBOX1DA/1iB28fQsAQ7fQWzuqnLs5ZO
-	 CKesNu4o+udmvThxbe/yPxjXgm7slLFe91499AUOmGK1iRnI53Jt3VOXQjVRQ1LkkD
-	 j4D88t89Y3HsSs85StiIf4Z/xNN3n1MjOpX/c6RJ/6YFM6q7W4qu0c6KSIRqP0yHtQ
-	 PsEoZR7CR7bIL3xPVWpM65sWvKzV0FoVdVN3sxZEUnQcTqXcBZmwagDUeRAC1C522M
-	 GvAboO98ioClg==
-Message-ID: <sashiko-outbox-194690@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v9 16/16] drm/imx: dc: Use prefetch engine
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Liu Ying" <victor.liu@nxp.com>
-Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20261103-imx8-dc-prefetch-v9-16-3b985e7636e2@nxp.com>
-References: <20261103-imx8-dc-prefetch-v9-0-3b985e7636e2@nxp.com>
- <20261103-imx8-dc-prefetch-v9-16-3b985e7636e2@nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 03 Nov 2026 07:03:30 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=rTxOBvCh
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=tF64DjKDs46zgP+V9MH5GRmfReDUIa/O96dNtqohvDV/LM+EemdO7mzmS51XrWbHYYqJiQsV570/b5ZSEEUWHFVpsO1o4ZnoA93B9+9ifEia3J5cM1kzWPO8UZqE/1+kYHn5gpptsqSLYbmKAemBAHF3TmPjGZiLevBUApUXrXpYz5w3E0vABCSbX5m3NqxhrsXM22UuXxhmAbdFEppyv3GExgP8/qY89eMJbhXr2TfA9alCbsHOXWlLkXfzkFLe/IKRCzAJ8l19NE2LAa8mfKtKKmjfuv5D+JAnaJKHypewZMw21HXcilE4MffDLPnp7roQP9GPTNhxTCrMusEg3g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zJHZP47/fhUXWqh9W2dDuVxmEaJSmnIlCvHcfwIx7aw=;
+ b=OByb+9e6nAdSDAitWJtEGebkkuQCz/cltDZc2wFyR6wek6oBfC/1tybLd2QIUeju5bd3tZDwuiASmRpnELR+xiPIUgylpkj4j8kAhqysSgkpAF+hcFpJlI0/Klrt03S5YRjnirB5UI35x/ZtWdGuaG7eZ2+RtzOyiWqWUtd4Y/DFUtXzkWfHZMMZf5fslw6xUMmz/jdkC3Do91QiRRYXS/87d2UcXVT51VuzMW2DqpBHpe0bcuPuup2lkfFjWujsCyp4j0TBz4j+7gxjpcBl6myG/h8axPhT8K3jhyq/ug6zPYBWaR8hk0Xy8JcK38EPDDeMBCfivmkco/KviD4M8A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zJHZP47/fhUXWqh9W2dDuVxmEaJSmnIlCvHcfwIx7aw=;
+ b=rTxOBvChIL5581sCw1gssBPHdsb7nSUydFDNYh7FzG1nUJncvYAW7fdQgWwl9iR5cEwf73GoMwnIzwq4VhF3A3RUjHpHKdZ6PjBPnH+0zTENATnVuESicBiGFHhud7T7TBwr8NXmykTgeqTmSIIg5xjfeWG4Evy9vRvFOHduMOzDGbOa/rMNpaeHrlpzQC/dfjXIQxsGZZAZby4m3+Bw4UY5p0JHlKjt3FOyUmxSwR98vzGWXgvINzjaaeKKXHjHBjDDWFxvsSbbARqAgLS4zDZ50ap79OsJHIBpU7UemXiH65k8pzBT8FOovuhk0ff1tTcIJrU/JduGBPpBQVALug==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GVXPR04MB10021.eurprd04.prod.outlook.com
+ (2603:10a6:150:112::20) by MRWPR04MB11518.eurprd04.prod.outlook.com
+ (2603:10a6:501:74::22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.8; Tue, 3 Nov 2026
+ 07:04:42 +0000
+Received: from GVXPR04MB10021.eurprd04.prod.outlook.com
+ ([fe80::d247:853:3e16:1994]) by GVXPR04MB10021.eurprd04.prod.outlook.com
+ ([fe80::d247:853:3e16:1994%5]) with mapi id 15.21.0569.011; Tue, 3 Nov 2026
+ 07:04:42 +0000
+From: Chancel Liu <chancel.liu@oss.nxp.com>
+To: robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	Frank.Li@nxp.com,
+	s.hauer@pengutronix.de
+Cc: kernel@pengutronix.de,
+	festevam@gmail.com,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v3 0/4] arm64: dts: freescale: Add IMX-AUD-IO add-on board support
+Date: Tue,  3 Nov 2026 16:04:29 +0900
+Message-ID: <20261103070433.2307145-1-chancel.liu@oss.nxp.com>
+X-Mailer: git-send-email 2.50.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SEWP216CA0054.KORP216.PROD.OUTLOOK.COM
+ (2603:1096:101:2bd::14) To GVXPR04MB10021.eurprd04.prod.outlook.com
+ (2603:10a6:150:112::20)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -59,231 +101,131 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GVXPR04MB10021:EE_|MRWPR04MB11518:EE_
+X-MS-Office365-Filtering-Correlation-Id: 686cc6ac-1665-415f-b2e8-08df3978bbae
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|366016|376014|7416014|19092799006|1800799024|11063799006|56012099006|261009223027099003|261028144727099003|261102123227099003|261022105027099003|261022075727099003|261021121427099003|261021123027099003|261026121527099003|261026140227099003|10067099003|18002099003|6133799003|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	8n6Dr9Tok0zqurzLJP09bY4/218UimDpwM6iKTZHh1/c6O8+jnCLJMtYto9zXzuvA5dBS7Pgvt3bF9gEIDOqYTomsMELTQ83t9Ao9m4OIioKLVp1VsxyLz3selIXJhEyaMbUouALUlwpqn0PBWsknv+cOiz83eBlep9gFShWvVaqV/b/kb/6ciqiJVGrpKmauB5eOtHTdKH7ZIa0binUGF83evjy0zPeHIOnRUs/BxXT+REcKFgR+rqdMwwRvzAoye+gguMhfXbMd1HH06g6ftqWwK7NKtffbwoKlwg/pQaT59/5gQkGTDC6649gEAkzuJY4k2Tqi9oRIbjcUPCHG1e2+en2AeoV4CKnqGrTaoY918gqDy0Dh4qwNBThYEcJwXXG8U27Yn+VWxS5nBwU3dLVmeStOBC1aCLC2zZcWCu4DTEASq3gxgbIReK/yLIEFB0DAORDUgRNq5xc5WgsT6bYkcjUajkFbMh0DjCwUZw7P7/sK3RIBQ4PiRmxWq6OYGWe/xERftaVFjfukdXYbkRiMme4niumfYUXJ6jkHpTuMf8Cj4EGIPxr3qVoMY7HzxXMk38aRlql5scOQDSmKtBtSSAwLkwBD+EkZLsBewD9Wnh/s59y6Nww5koTY5UJ
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVXPR04MB10021.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(376014)(7416014)(19092799006)(1800799024)(11063799006)(56012099006)(261009223027099003)(261028144727099003)(261102123227099003)(261022105027099003)(261022075727099003)(261021121427099003)(261021123027099003)(261026121527099003)(261026140227099003)(10067099003)(18002099003)(6133799003)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?TtvtY3SPSEFw0aEZehtvneXTuzPhU4VBDWIaj47lQguF0KDeGE11cc9/9ZbT?=
+ =?us-ascii?Q?xLorLlIhSbPAprlXRLuziy/NVVPes5mL7TyClOx129Suwr9uiU4xU5uypKld?=
+ =?us-ascii?Q?YJDUqTP+y6l/2QmDE0mCl9epTE93WxCmg7x3xCoQp0ZX3gxgKjPBFRT3+0GV?=
+ =?us-ascii?Q?vfpiU6z4vLGtHKdapuuBj0EmDIczPwMg3QQx8Fi6fnZTlo2hOC5GIpyxgkAa?=
+ =?us-ascii?Q?049pXhjGjGYZxBaMYDcZa3aCmDdL6xKw24rzFOtO1+Hphw8c/tTtWI/Jei0L?=
+ =?us-ascii?Q?gfBJX1xKeTOIqJ2G4O7KJa3/AxDL+6lYdKAmR0uRmF175RT2JJuhm4YeWT4j?=
+ =?us-ascii?Q?VduIddIk7wb0mGDshh03r/tzJfKE1vhBD71XorgzmlMWFB+Hmy4E1Tiw+J+D?=
+ =?us-ascii?Q?Jds4HoKL95mYEriehKManAa4w6PsMzqalzXZItwQSvROv0vXIwoE93XNzCOG?=
+ =?us-ascii?Q?Z4MKHEcOxj/XG1b/dRuQe8Ysy1UFH5kA0jyTl1CFy5749/ZbZrK7y2yrnY4l?=
+ =?us-ascii?Q?dN6/wmZTWkxjKkTqEh/zw+dH2MfDHjRrQVdGefi8k/kAhDwCaUK+C8GJD+6d?=
+ =?us-ascii?Q?G0yV9CDI/+fgCEafmJWLc8fY89K+UWJAlMwHZS3Ce1TZqGwZixvBbRO5/To0?=
+ =?us-ascii?Q?2epvv40K0uLzbnDC6/Ojn1QawNDJMOJI8bMA95YplyISo11imql/ulCmbXqZ?=
+ =?us-ascii?Q?x4sS62Habf7QvJDuGSv66lcukOUEzNZTUmtqEVjqVGgnieUiMHD5o41gAfLJ?=
+ =?us-ascii?Q?dc2ORY8mZcDPq78Rzzdt/NqTQ/qC2pDPzVFcG056DfbCB5yI09snPzhVhRa1?=
+ =?us-ascii?Q?8jav8BKPaDJY/CBpPkpkIFUabZphDlWGiGgRP87FETOVDLboPmfh3Y3HP8e2?=
+ =?us-ascii?Q?tj2VBBEPe1qsLGnBbusSyazzbN6aw+XfeYwHV+iApdQfS3qIiY0aqBDjGv4T?=
+ =?us-ascii?Q?dzH08UkowOCNmX7hvOuZ1dVlDt7VIhzvIH4cdIFQlpe2oom2C1s4DfNeNcf4?=
+ =?us-ascii?Q?RwoH2QxeUrISSWQCypfOGDDBb3qhA9zWR+p2BJ8apCsp1Zq7zGsbsCbgSP/9?=
+ =?us-ascii?Q?FwFCQAbJ2z3pa4xBr74pR8Sw9MUD2MZXBbgJxgn9oOisYo0XP25laQciUZm6?=
+ =?us-ascii?Q?8NUJh/0sMbxeJjG3gTp+cZpKCrdDHhUgwf3unf8DizA+6pVPXZGc0+fSfb2i?=
+ =?us-ascii?Q?OLRf5U99XtagH+YPnAc7h01aH9/9nr700ElWwwdszDGtVSgbZbRGne6lAwB4?=
+ =?us-ascii?Q?BlgPjTBY2x8PJEsMjARBxZxXuZ9HqVQSwbyhUtIUy+vBZJ7Cf1WZTSuE8kj2?=
+ =?us-ascii?Q?q/yQeR+XpTzUGoSZWhmX2YFn0jXBabLepNNld/rUgNoaPSpt8qeZL1c2miQF?=
+ =?us-ascii?Q?KegrVAFrm13Jw6rY8+0RV6zD7iH0Yx/xNFyFJ2JFIiYwGMCBiL+KsUGAUGVA?=
+ =?us-ascii?Q?4zR1fL4OBrN0Zyay1GZo9B+9hCFK84bE2g3P1OdHbcSj48Icz84RA+4VVNF4?=
+ =?us-ascii?Q?wne3hUWVlTUp2Itn39nnDv89mefVPl3UIupskQ/0hbBCUmx3fBw/uTx3Q/1a?=
+ =?us-ascii?Q?m/rU9/d5K3BCLV2cOUbJzBahHe3a65TKeMtziZn+jvq30n+1/zE1gd8PjhL2?=
+ =?us-ascii?Q?f4g36SUAp+BqbimtSqmluqOU539u5amY24Vpqc3Fz+RwzjLKAJLh9Q1oBegH?=
+ =?us-ascii?Q?hV2y9TkVZQ8wFk2Dbh0npkK9MRJgtu0VLmJ4Rn6+g2tMHSvuXxu7lUAMlvt4?=
+ =?us-ascii?Q?WJ8Xt5N49zK4ZIEpNver0zINgTJgsIS3UjfFPM3kGpWVTkE9J4zO?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 686cc6ac-1665-415f-b2e8-08df3978bbae
+X-MS-Exchange-CrossTenant-AuthSource: GVXPR04MB10021.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Nov 2026 07:04:42.2553
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ikklte0qh7fl5h9epdqhYGm7jlPLZln8IoYJQvD3ZgwiWGJwEJCMXIsOP6IyadY7oRXVpyPv8QP2p3Q3VbelEebT2PsbQ6kAJypprwtI5H5qk0/CkYm4QrH1/JW1m+5q
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRWPR04MB11518
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
-- [High] drm/imx: dc: missing use_raw_spinlock in dc_prg_regmap_config
-- [Medium] drm/imx: dc: premature source checks in dc_crtc_disable_at_boot()
-- [Medium] drm/imx: dc: unbalanced DPRC and PRG runtime PM in dc_crtc_disab=
-le_at_boot()
+From: Chancel Liu <chancel.liu@nxp.com>
+
+This patch series adds support for the IMX-AUD-IO[1] audio expansion
+card on the i.MX95 19x19 EVK and i.MX952 EVK platforms.
+
+A connector is present on the base board to attach the IMX-AUD-IO card.
+This connector is described by the fsl,aud-io-slot binding. It acts as
+a nexus that exposes a constrained set of I/O resources, such as GPIOs,
+clocks and interrupts, through fixed electrical wiring. All actual
+hardware providers reside on the base board.
+
+Also update the EVK base Device Trees to describe the connector and
+required board-level resources. Add a DTS overlay to enable the
+IMX-AUD-IO board.
+
+The approach used here is inspired by the discussion[2] where a
+connector is described as a nexus mapping board-level resources. One
+important difference in this case is that the IMX-AUD-IO add-on board
+is not a hot-pluggable device. The board is connected to the connector
+before boot and remains present for the lifetime of the system. As a
+result, the connector is modeled to describe fixed, boot-time hardware
+wiring rather than runtime attachment or hot-plug handling.
+
+This series depends on the clock nexus support from Miquel Raynal[3],
+in particular the clock-nexus-node.yaml binding that defines clock-map,
+e.g. commit e0be7b4eedd3 ("dt-bindings: clock: Introduce nexus nodes").
+
+[1]https://www.nxp.com/part/IMX-AUD-IO
+[2]https://lore.kernel.org/linux-devicetree/20250902105710.00512c6d@booty/
+[3]https://lore.kernel.org/all/20260807-schneider-v7-2-rc1-eip201-upstream-v5-0-8785f9531cf0@bootlin.com/
+
+Changes in v3:
+- Drop unneeded clock-map-mask and clock-map-pass-thru from the binding.
+- Constrain gpio-map/clock-map/interrupt-map maxItems to the number of
+  signals the connector actually provides instead of a loose upper bound.
+- Narrow gpio-map-mask/interrupt-map-mask from 0xffff to 0xf.
+Link to v2: https://lore.kernel.org/r/20260629074734.3643227-1-chancel.liu@oss.nxp.com
+
+Changes in v2:
+- Drop [PATCH 1/5] clk: Add support for clock nexus dt bindings. Same
+  change is already present in Miquel Raynal's ongoing series
+- Drop PWM properties from binding. This connector carries no PWM signals
+- Rename compatible from fsl,io-connector to board-specific compatibles:
+  fsl,imx95-19x19-evk-aud-io and fsl,imx952-evk-aud-io. The i.MX952 EVK
+  uses fsl,imx95-19x19-evk-aud-io as fallback
+- Add property constraints instead of redefining common types
+- Fix inconsistent quote style for '#interrupt-cells' in binding
+- Add required GPIO nexus properties and reference gpio-nexus-node.yaml
+  and clock-nexus-node.yaml
+- Make gpio-map-pass-thru a const value to pass through only polarity
+  bit (bit 0)
+- Modify dts accordingly and some commit messages
+
+Chancel Liu (4):
+  dt-bindings: connector: Add fsl,aud-io-slot binding
+  arm64: dts: freescale: imx95-19x19-evk: Add IMX-AUD-IO board support
+  arm64: dts: freescale: imx952-evk: Add IMX-AUD-IO board support
+  arm64: dts: freescale: Add common DTS overlay for IMX-AUD-IO add-on
+    board
+
+ .../bindings/connector/fsl,aud-io-slot.yaml   | 106 ++++++++++++++++++
+ arch/arm64/boot/dts/freescale/Makefile        |   4 +
+ arch/arm64/boot/dts/freescale/imx-aud-io.dtso |  57 ++++++++++
+ .../boot/dts/freescale/imx95-19x19-evk.dts    |  54 ++++++++-
+ arch/arm64/boot/dts/freescale/imx952-evk.dts  |  69 +++++++++++-
+ 5 files changed, 286 insertions(+), 4 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/connector/fsl,aud-io-slot.yaml
+ create mode 100644 arch/arm64/boot/dts/freescale/imx-aud-io.dtso
+
 --
+2.50.1
 
-commit a0700a3c30143af37a2ae48e1eba7fde342cf2a1
-Author: Liu Ying <victor.liu@nxp.com>
-
-drm/imx: dc: Use prefetch engine
-
-This commit configures and disables prefetch engines (DPR channel and PRGs)
-alongside FetchUnits during atomic commits and boot-time cleanup, adapts
-FetchUnit burst size and stride fixups for PRG requirements, and enables
-use_raw_spinlock in the ExtDst PIXENGCFG regmap configuration.
-
-> diff --git a/drivers/gpu/drm/imx/dc/dc-crtc.c b/drivers/gpu/drm/imx/dc/dc=
--crtc.c
-> index d03246036d4a7..55c198db9644c 100644
-> --- a/drivers/gpu/drm/imx/dc/dc-crtc.c
-> +++ b/drivers/gpu/drm/imx/dc/dc-crtc.c
-
-[ ... ]
-
-> @@ -381,16 +464,71 @@ int dc_crtc_disable_at_boot(struct drm_crtc *crtc)
->  		goto out1;
->  	}
-> =20
-> +	crtc_is_enabled =3D dc_drv_crtc_is_enabled(dc_drm, drm_crtc_index(crtc)=
-);
-> +
-> +	ret =3D pm_runtime_resume_and_get(dc_drm->pe->dev);
-> +	if (ret) {
-> +		dc_crtc_err(crtc, "failed to get DC pixel engine RPM: %d\n",
-> +			    ret);
-> +		goto out2;
-> +	}
-> +
->  	if (!dc_fg_wait_for_frame_index_moving(dc_crtc->fg)) {
->  		dc_crtc_dbg(crtc, "FrameGen frame index isn't moving\n");
-> -		goto out2;
-> +		goto out3;
->  	}
-> =20
-> -	dc_crtc_dbg(crtc, "disabling FrameGen at boot\n");
-> -	__dc_crtc_disable_fg(crtc);
-> +	ret =3D dc_ed_pec_src_sel_get(dc_crtc->ed_cont, &ed_src);
-> +	if (ret || ed_src =3D=3D LINK_ID_NONE) {
-> +		dc_crtc_err(crtc, "failed to get content ExtDst's source\n");
-> +		if (ret =3D=3D 0)
-> +			ret =3D -EINVAL;
-> +		goto out3;
-> +	}
-> =20
-> -	if (!dc_drv_crtc_is_enabled(dc_drm, drm_crtc_index(crtc)))
-> -		goto out2;
-> +	if (ed_src =3D=3D LINK_ID_CONSTFRAME0 || ed_src =3D=3D LINK_ID_CONSTFRA=
-ME1)
-> +		goto disable;
-> +
-> +	ret =3D dc_lb_pec_dynamic_sec_sel_get(dc_plane->lb, &lb_sec);
-> +	if (ret || lb_sec =3D=3D LINK_ID_NONE) {
-> +		dc_crtc_err(crtc,
-> +			    "failed to get primary plane LayerBlend secondary source\n");
-> +		if (ret =3D=3D 0)
-> +			ret =3D -EINVAL;
-> +		goto out3;
-> +	}
-> +
-> +	/*
-> +	 * If CRTC was enabled by bootloader instead of this driver, we don't
-> +	 * know if DPRC was enabled or not.  In this case, enforcing DPRC
-> +	 * disablement potentially causes imbalanced clock enable count for
-> +	 * DPRC and PRG clocks.  So, we presume bootloader doesn't bother to
-> +	 * use prefetch engines.
-> +	 */
-> +	if (crtc_is_enabled)
-> +		disable_dprc =3D true;
-
-[Severity: Medium]
-As reported by Sashiko on v8 [1], when the display was enabled by the
-bootloader rather than a previous instance of this driver
-(!crtc_is_enabled), disable_dprc is never set and ed_src and lb_sec are
-not used anywhere else in dc_crtc_disable_at_boot().
-
-However, dc_ed_pec_src_sel_get() and dc_lb_pec_dynamic_sec_sel_get() are
-called unconditionally before checking crtc_is_enabled. If the bootloader
-enabled the display using only the safety stream (leaving ed_cont at its
-reset state), using LayerBlend in primary-only mode, or using a different
-LayerBlend or FetchUnit not in sec_sels[], dc_crtc_disable_at_boot()
-jumps to out3 without disabling FrameGen and returns an error that aborts
-driver probe in dc_drm_bind():
-
-drivers/gpu/drm/imx/dc/dc-drv.c:dc_drm_bind()
-	drm_for_each_crtc(crtc, drm) {
-		ret =3D dc_crtc_disable_at_boot(crtc);
-		if (ret) {
-			dev_err(dev, "failed to disable CRTC%u at boot: %d\n",
-				drm_crtc_index(crtc), ret);
-			goto err;
-		}
-	}
-
-Should dc_crtc_disable_at_boot() check !crtc_is_enabled and jump to
-disable before querying ed_src and lb_sec?
-
-> +
-> +disable:
-> +	enable_irq(dc_crtc->irq_dec_seqcomplete);
-> +
-> +	if (disable_dprc) {
-> +		dc_crtc_dbg(crtc, "disabling FrameGen along with DPRC REPEAT_EN at boo=
-t\n");
-> +		dc_crtc_disable_fg_along_with_dprc_repeat_en(crtc);
-> +	} else {
-> +		dc_crtc_dbg(crtc, "disabling FrameGen at boot\n");
-> +		dc_fg_disable(dc_crtc->fg);
-> +	}
-> +
-> +	DC_CRTC_WAIT_FOR_COMPLETION_TIMEOUT(dec_seqcomplete_done);
-> +	disable_irq(dc_crtc->irq_dec_seqcomplete);
-> +
-> +	if (!crtc_is_enabled)
-> +		goto out3;
-> +
-> +	if (disable_dprc) {
-> +		dc_crtc_dbg(crtc, "disabling DPRC at boot\n");
-> +		dc_dprc_disable_at_boot(dc_plane->fu->dprc);
-> +	}
-
-[Severity: Medium]
-When a plane is enabled, dc_dprc_configure() and dc_prg_configure() call
-pm_runtime_resume_and_get() on dprc->dev and prg->dev. If the driver is
-unbound or unloaded while the plane is active, dc_drm_unbind() calls
-drm_dev_unplug() before drm_atomic_helper_shutdown(), so
-dc_crtc_atomic_disable() exits early at drm_dev_enter() without calling
-dc_dprc_disable().
-
-Unlike de->dev and pe->dev, which are child devices created by
-devm_of_platform_populate() in dc_probe() and recreated on rebind,
-dprc->dev and prg->dev are top-level platform devices whose struct device
-and power.usage_count persist across unbind/rebind and module reload.
-
-When dc_crtc_disable_at_boot() subsequently runs on rebind or module
-reload, dc_dprc_disable_at_boot() and dc_prg_disable_at_boot() disable the
-clocks directly without balancing runtime PM:
-
-drivers/gpu/drm/imx/dc/dc-dprc.c:
-void dc_dprc_disable_at_boot(struct dc_dprc *dprc)
-{
-	dc_prg_disable_at_boot(dprc->prg);
-
-	clk_bulk_disable_unprepare(dprc->num_clks, dprc->clks);
-
-	dev_dbg(dprc->dev, "disable at boot\n");
-}
-
-drivers/gpu/drm/imx/dc/dc-prg.c:
-void dc_prg_disable_at_boot(struct dc_prg *prg)
-{
-	regmap_write(prg->reg, PRG_CTRL, BYPASS);
-
-	clk_bulk_disable_unprepare(prg->num_clks, prg->clks);
-}
-
-Won't this leave dprc->dev and prg->dev with an elevated runtime PM
-usage_count after module reload (preventing runtime suspend on future
-plane disablement), or leave them marked active with their clocks disabled
-across a sysfs unbind/rebind of the master device so that the next
-dc_dprc_configure() accesses unclocked registers?
-
-> diff --git a/drivers/gpu/drm/imx/dc/dc-plane.c b/drivers/gpu/drm/imx/dc/d=
-c-plane.c
-> index 42c0a46281cb1..ba20d35355155 100644
-> --- a/drivers/gpu/drm/imx/dc/dc-plane.c
-> +++ b/drivers/gpu/drm/imx/dc/dc-plane.c
-
-[ ... ]
-
-> @@ -193,6 +220,11 @@ dc_plane_atomic_update(struct drm_plane *plane, stru=
-ct drm_atomic_commit *state)
-> =20
->  	dc_plane_dbg(plane, "uses %s\n", fu_ops->get_name(fu));
-> =20
-> +	prefetch_start =3D needs_modeset || !old_state->fb ||
-> +			 (!old_state->visible && new_state->visible);
-> +	dc_dprc_configure(fu->dprc, new_state->crtc->index, src_w, src_h,
-> +			  fb->pitches[0], fb->format, baseaddr, prefetch_start);
-
-[Severity: High]
-When dc_plane_atomic_update() calls dc_dprc_configure() with
-prefetch_start set to true, dc_dprc_enable_ctrl_done_irq() unmasks the
-control done interrupt on dprc->wrap_irq.
-
-In dc_dprc_probe(), dprc->wrap_irq is requested with IRQF_NO_THREAD, so
-dc_dprc_wrap_irq_handler() runs in hardirq context and calls into PRG
-regmap:
-
-dc_dprc_wrap_irq_handler()
-  -> dc_dprc_ctrl_done_handle()
-    -> dc_prg_shadow_enable()
-      -> regmap_write(prg->reg, PRG_CTRL + SET, SHADOW_EN)
-
-However, dc_prg_regmap_config in drivers/gpu/drm/imx/dc/dc-prg.c does not
-set use_raw_spinlock:
-
-static const struct regmap_config dc_prg_regmap_config =3D {
-	.reg_bits =3D 32,
-	.reg_stride =3D 4,
-	.val_bits =3D 32,
-	.fast_io =3D true,
-	.max_register =3D PRG_WIDTH + TOG,
-};
-
-Without .use_raw_spinlock =3D true in dc_prg_regmap_config, won't
-regmap_write() on prg->reg acquire a sleeping spinlock_t inside hardirq
-context on preempt-rt kernels and trigger an invalid wait context warning
-under lockdep?
-
-[1] https://lore.kernel.org/r/20261030-imx8-dc-prefetch-v8-15-c4f81afd4533@=
-nxp.com
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261103-imx8-dc-pr=
-efetch-v9-0-3b985e7636e2@nxp.com?part=3D16
