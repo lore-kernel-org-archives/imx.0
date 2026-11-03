@@ -1,96 +1,77 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793706935;
-	b=rtQvciu3bpu+5MSnUW/t0jRiEgAXRU5UpokkHtlmRSHgVplYV2tcJCxAqYakBnB0ehBl
-	 2lA16oZ381PMAgU562UQyFJ+JNlHeLBe8e664qxItG/05T9KQbDlYE4hcbJ3Tfb87VG0z
-	 PRQILAAgHUENLQFWpxs+40ua2kZN1Sv8Z/EOukZNSRr4HglxGKvFEYgPbiTGDoK4+Fo7n
-	 AGIHLrtVOI1gyySgFghF59MEEDEVIJPQsH1xmKwpKy0/gGpKcOVCzm6S7Xp/fRqRnCUFr
-	 dq20a9ypPpyQi/dUjmkDIvkkEwMkgvoCJXXtcZUHsvxpCijLOInIg9p7+bprvI2tTaA==
+	t=1793708685;
+	b=fXr+R30FwqZG8SPbvzPVO1his1UrpHwMTMwWmsprkDo20lk4nhmud2rQxaSJjpp6ujue
+	 QinzGqmG7ybon0E7bt33lymyKV+0KNnfLEZO9xxm20F8Tdv73kil/GQz7Il/hgkUSrDyT
+	 i3ClIbOCBVDqBr9sm8c6pnhVDz1nGJrAhuP9M1qPQ4TcWXpkep3GDu7spkzcbM0DZFR4K
+	 FwRLivBjgO80Zr6/LnnXlsVT5etd+1R7M2YGRdL2kyfwdo5v2bkxBPI5qnIr82Grdpy1B
+	 HfBKB+aCOhQyuMb8/yF+xqd/g51VzGDYqIjN4aVEmufMD3mt1kWWKBAo5o3ULbnKOWg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793706935;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:Date:To:cc:
-	 Subject:In-Reply-To:Message-ID:References:MIME-Version:Content-Type;
-	bh=HCorhxQxJT3W15/Ol75aTGcFGkkBMt7oxlNw+Tltp1E=;
-	b=HJ7b4iYaolYa5pIb+fm2x8GzSMvF2SONTC5ZWqiP3Tc/4yMAeez0c/QQ4vPnl59kFwuH
-	 p5svuPyclcT9WCp5L7Xv2v/kIy2Ic0pY94m4LWn4FsBq0N2tJHHbi826Fr5DGS9AsF0iK
-	 V7Jbf55B9UhYfskZxwO80YNJRABoU1BzOSVvwIwLLrPxFTcsMY2m7ondiqN2UcxKQkZT5
-	 K5udCvVcE5d+gPsLuy+8raNgkmuy6F6e7NHs2PtUXWFPGqQ/A3iHMHUTVFiOOV1hoZNhQ
-	 /RE6tqC+qjNBLEJfb4H1xme8Zt11W4ZuaR0cZTngw2jw6GIVbKz5b+F61PRqOt1MWRg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793708685;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding:In-Reply-To;
+	bh=2DQ96R/0ulhMhCPuDty/w5YNIxZWO7PXWDO3bMU5BOI=;
+	b=Ip6E2j857ix97JXJu4uigVh4ksPNxv4W0fQllqJu6J6GMdOMsIbqzXrWkG1BIOk5emr9
+	 KIwEKwkgux6R2Fdt576scKlr8q+q5iruCa6J8DLtVZ454k6Z21cYcyFw43zVamwT1OCQt
+	 6qjPybwlsckujvLI6UNLzLa1Pr6szzIIIOBbXTMIqnOGTEn9heLtUm7cXxqtzdh09B35s
+	 5HwW/Df7c8OVRBvxztspJtA9dBATYv+6t0UmqT0biAMqIsVswMA2iB0jJw2cwJ36HWkmE
+	 GaHWe5UWRI9Xi2Y7XLDFG715H6Y2B9kGxUSZhucpeeiqXXrfM/2jMdOzDenUCNwCODQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b="T/zDPAgz";
-	arc=none smtp.remote-ip=192.198.163.18
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Y2DPOtoe;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F438606A327
-	for <imx@lists.linux.dev>; Tue,  3 Nov 2026 11:55:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0F438606A327
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id AEBFE606A326;
+	Tue,  3 Nov 2026 12:24:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=T/zDPAgz
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793706935; x=1825242935;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=NRlGTsFdID6TOhr7uHXdva//9pjtlPak/4evBt26tjw=;
-  b=T/zDPAgzuEFD59j2H+Sgu94i7H8U26fZpKFi/mkdTUOyCM8ppp+TE9Uk
-   ggfFDmdQJmH49gQB6KyhdPLznJdP+QU7zXzuJpc940liIvJgbwsb3ny2T
-   TxpxOTkUug8+kpvmxGMtkEB7LTlqfvnljcd+l7YQ72tDpU+STOpcyUT2b
-   j4dupaAr/mSPsjCZJtkgdLgPGL8hpSgL6ZxOg7EY6/VPWORl4EfM55+lc
-   ZMNVY72Tv2BFmqAHiUKLaL1QuH2NyP1A0mlibe5i6TEgenhysisX9+C7Q
-   /V8pMLtCKHcaWoJb+5U9zZVF0QQiC2veL/uyOEppPfXvtdt/ipM/H5Yum
-   g==;
-X-CSE-ConnectionGUID: fBYIaZJhQ8+9zOQfDrhNuQ==
-X-CSE-MsgGUID: jvoDSw9ORnm1cak7BPBmLQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11954"; a="2454749"
-X-IronPort-AV: E=Sophos;i="6.27,193,1787036400"; 
-   d="scan'208";a="2454749"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2026 03:55:34 -0800
-X-CSE-ConnectionGUID: UXG0LlmJSGON8WP14xs+zg==
-X-CSE-MsgGUID: /usHt9haTsq5iys1QJ0A4g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,193,1787036400"; 
-   d="scan'208";a="6265075"
-Received: from ijarvine-desk1.ger.corp.intel.com (HELO localhost) ([10.245.245.179])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2026 03:55:25 -0800
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Tue, 3 Nov 2026 13:55:20 +0200 (EET)
-To: James Hilliard <james.hilliard1@gmail.com>
-cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-    Jiri Slaby <jirislaby@kernel.org>, Raul E Rangel <rrangel@chromium.org>, 
-    Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-    Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-    Tony Lindgren <tony@atomide.com>, 
-    Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
-    Richard Genoud <richard.genoud@bootlin.com>, 
-    Nicolas Ferre <nicolas.ferre@microchip.com>, 
-    Alexandre Belloni <alexandre.belloni@bootlin.com>, 
-    Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
-    Jacky Huang <ychuang3@nuvoton.com>, Shan-Chun Hung <schung@nuvoton.com>, 
-    =?ISO-8859-15?Q?Pali_Roh=E1r?= <pali@kernel.org>, 
-    Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
-    Pengutronix Kernel Team <kernel@pengutronix.de>, 
-    Fabio Estevam <festevam@gmail.com>, 
-    "Maciej W. Rozycki" <macro@orcam.me.uk>, Timur Tabi <timur@kernel.org>, 
-    Peter Ujfalusi <peter.ujfalusi@ti.com>, 
-    Vignesh Raghavendra <vigneshr@ti.com>, 
-    Patrice Chotard <patrice.chotard@foss.st.com>, 
-    LKML <linux-kernel@vger.kernel.org>, 
-    linux-serial <linux-serial@vger.kernel.org>, 
-    linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
-    linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v9 3/8] serial: 8250_omap: serialize RX DMA completion
- and flushing
-In-Reply-To: <20261102-submit-serial-8250-dma-cancel-v1-v9-3-9159caade148@gmail.com>
-Message-ID: <a95c92c6-afe3-52e3-c320-6d7ccd357965@linux.intel.com>
-References: <20261102-submit-serial-8250-dma-cancel-v1-v9-0-9159caade148@gmail.com> <20261102-submit-serial-8250-dma-cancel-v1-v9-3-9159caade148@gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Y2DPOtoe
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 5D33F1F00919;
+	Tue,  3 Nov 2026 12:24:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793708684;
+	bh=2DQ96R/0ulhMhCPuDty/w5YNIxZWO7PXWDO3bMU5BOI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Y2DPOtoeBhQC9H3iDa32ycCqijeUsQyOWUtRGHIYLH0dXLxZUgEjv6SLfXFJy1+yx
+	 REGyvcQMfuo3sZnBFrDxClG/MkMaDIKnK90l7RtK0PDTXjGL6CaKqpsTGr1H383bgl
+	 4TyhCnpi2mmiJ18g5WO9YEH6HMlaMgnH5EIfxQ78ETdDfCbW0Nq7FnvPdbMq/lkRzu
+	 YVxjlkUTO+w5EzhvM5yynGpZ7GDn2zzh6C78NzGOnNAyoUN8QGMgJIfas682UgvcoY
+	 za6RIYThdNdxsriG9j3+KBkt/9fGZF5z8OM8R3azJs/Dg4hZMYuSZR8c3Kxw2uTAo8
+	 Un2lK6ZcYoQzw==
+Date: Tue, 3 Nov 2026 13:24:40 +0100
+From: Bartosz Golaszewski <brgl@kernel.org>
+To: Uwe =?utf-8?Q?Kleine-K=C3=B6nig_=28The_Capable_Hub=29?= <u.kleine-koenig@baylibre.com>
+Cc: Linus Walleij <linusw@kernel.org>, Andy Shevchenko <andy@kernel.org>, 
+	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, Lixu Zhang <lixu.zhang@intel.com>, 
+	Sakari Ailus <sakari.ailus@linux.intel.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Florian Fainelli <florian.fainelli@broadcom.com>, 
+	Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Imre Kaloz <kaloz@kernel.org>, 
+	Conor Dooley <conor.dooley@microchip.com>, Valentina Fernandez <valentina.fernandezalanis@microchip.com>, 
+	Daire McNamara <daire.mcnamara@microchip.com>, Daniel Palmer <daniel@thingy.jp>, 
+	Romain Perier <romain.perier@gmail.com>, Robert Jarzmik <robert.jarzmik@free.fr>, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-riscv@lists.infradead.org, 
+	Hoan Tran <hoan@os.amperecomputing.com>, Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>, 
+	Mika Westerberg <westeri@kernel.org>, Hans de Goede <hansg@kernel.org>, 
+	Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, linux-hwmon@vger.kernel.org, 
+	Matti Vaittinen <mazziesaccount@gmail.com>, "Enrico Weigelt, metux IT consult" <info@metux.net>, 
+	Viresh Kumar <vireshk@kernel.org>, virtualization@lists.linux.dev, Yinbo Zhu <zhuyinbo@loongson.cn>, 
+	Thierry Reding <thierry.reding@kernel.org>, Jonathan Hunter <jonathanh@nvidia.com>, 
+	linux-tegra@vger.kernel.org, Geert Uytterhoeven <geert+renesas@glider.be>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Srinivas Neeli <srinivas.neeli@amd.com>, 
+	Michal Simek <michal.simek@amd.com>, linux-aspeed@lists.ozlabs.org, asahi@lists.linux.dev, 
+	linux-mediatek@lists.infradead.org, openbmc@lists.ozlabs.org, linux-omap@vger.kernel.org, 
+	linux-renesas-soc@vger.kernel.org, linux-unisoc@lists.infradead.org, 
+	linux-rockchip@lists.infradead.org, linux-stm32@st-md-mailman.stormreply.com, 
+	Michael Buesch <m@bues.ch>, William Breathitt Gray <wbg@kernel.org>, 
+	Robert Richter <rric@kernel.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+	linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v4 00/23] gpio: Improvements around device-id arrays
+Message-ID: <oiwdi2r7fbay3dsghfaqzejpv7d5dpuerh5jy2vsw3kjyhvhdm@hyrpff5ytihz>
+References: <cover.1793097104.git.u.kleine-koenig@baylibre.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -100,102 +81,37 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <cover.1793097104.git.u.kleine-koenig@baylibre.com>
 
-On Mon, 2 Nov 2026, James Hilliard wrote:
-
-> Moving RX DMA locking out of __dma_rx_do_complete() left the DMA
-> completion callback calling it without rx_dma_lock. Shutdown and runtime
-> suspend flush RX under rx_dma_lock but without the port lock, allowing
-> these paths to overlap the callback's buffer accounting and flip-buffer
-> insertion. RX submission and UART interrupt handling also require the
-> port lock.
+On Tue, Oct 27, 2026 at 11:48:37AM +0100, Uwe Kleine-König (The Capable Hub) wrote:
+> Hello,
 > 
-> Take rx_dma_lock inside the port lock in the completion callback. Hold
-> the port lock around the shutdown and runtime-suspend flushes, matching
-> the existing interrupt-path lock order. Assert both locks in the common
-> completion helper and the port lock at the flush entry point.
+> the original motivation for this series are the patches that convert the
+> arrays to use named initializers, see
+> https://lore.kernel.org/all/cover.1780048925.git.u.kleine-koenig@baylibre.com/
+> for the idea behind it. Looking left and right a bit while implementing
+> that, the series grew a bit.
 > 
-> Fixes: 789898416749 ("serial: 8250: 8250_omap: Move locking out from __dma_rx_do_complete()")
-> Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
-> ---
->  drivers/tty/serial/8250/8250_omap.c | 18 ++++++++++++++----
->  1 file changed, 14 insertions(+), 4 deletions(-)
+> Changes since v3 (available at
+> https://lore.kernel.org/all/cover.1793030820.git.u.kleine-koenig@baylibre.com):
 > 
-> diff --git a/drivers/tty/serial/8250/8250_omap.c b/drivers/tty/serial/8250/8250_omap.c
-> index b6f108d34854..322403cec2de 100644
-> --- a/drivers/tty/serial/8250/8250_omap.c
-> +++ b/drivers/tty/serial/8250/8250_omap.c
-> @@ -771,8 +771,10 @@ static void omap_8250_shutdown(struct uart_port *port)
->  	guard(serial8250_rpm)(up);
->  
->  	flush_work(&priv->qos_work);
-> -	if (up->dma)
-> +	if (up->dma) {
-> +		guard(uart_port_lock_irq)(port);
->  		omap_8250_rx_dma_flush(up);
-> +	}
->  
->  	serial_out(up, UART_OMAP_WER, 0);
->  	if (priv->habit & UART_HAS_EFR2)
-> @@ -898,7 +900,7 @@ static int omap8250_rs485_config(struct uart_port *port,
->  #ifdef CONFIG_SERIAL_8250_DMA
->  static int omap_8250_rx_dma(struct uart_8250_port *p);
->  
-> -/* Must be called while priv->rx_dma_lock is held */
-> +/* Must be called with the port lock and priv->rx_dma_lock held. */
-
-Nit, following kerneldoc's style, this would start with Context: (you 
-don't need to make it full kerneldoc but it is useful to follow the kernel 
-doc style where possible).
-
->  static void __dma_rx_do_complete(struct uart_8250_port *p)
->  {
->  	struct uart_8250_dma    *dma = p->dma;
-> @@ -911,6 +913,9 @@ static void __dma_rx_do_complete(struct uart_8250_port *p)
->  	int			ret;
->  	u32			reg;
->  
-> +	lockdep_assert_held_once(&p->port.lock);
-> +	lockdep_assert_held_once(&priv->rx_dma_lock);
-> +
->  	if (!dma->rx_running)
->  		goto out;
->  
-> @@ -977,7 +982,8 @@ static void __dma_rx_complete(void *param)
->  	if (dmaengine_tx_status(dma->rxchan, dma->rx_cookie, &state) != DMA_COMPLETE)
->  		return;
->  
-> -	__dma_rx_do_complete(p);
-> +	scoped_guard(spinlock, &priv->rx_dma_lock)
-> +		__dma_rx_do_complete(p);
->  	if (priv->throttled)
->  		return;
->  
-> @@ -995,6 +1001,8 @@ static void omap_8250_rx_dma_flush(struct uart_8250_port *p)
->  	unsigned long		flags;
->  	int ret;
->  
-> +	lockdep_assert_held_once(&p->port.lock);
-> +
->  	spin_lock_irqsave(&priv->rx_dma_lock, flags);
->  
->  	if (!dma->rx_running) {
-> @@ -1811,8 +1819,10 @@ static int omap8250_runtime_suspend(struct device *dev)
->  		}
->  	}
->  
-> -	if (up && up->dma && up->dma->rxchan)
-> +	if (up && up->dma && up->dma->rxchan) {
-> +		guard(uart_port_lock_irqsave)(&up->port);
->  		omap_8250_rx_dma_flush(up);
-> +	}
->  
->  	priv->latency = PM_QOS_CPU_LATENCY_DEFAULT_VALUE;
->  	schedule_work(&priv->qos_work);
-> 
+>  - Picked up review tags (b4 even found some from v2)
+>  - Add a 2nd MODULE_DEVICE_TABLE(of, ...) in drivers/gpio/gpio-mpc5200.c
+>    (My grep didn't handle >1 driver per file well), noticed by Sashiko
+>  - New patch to use named initializers for auxiliary_device_id arrays
+>  - Fix code style of of_device_id array in drivers/gpio/gpio-grgpio.c
+>    (My script doesn't handle of_device_id::name) and
+>    drivers/gpio/gpio-ppc44x.c (didn't exist yet when I sent v2 and
+>    failed to notice that for v3)
+>  - Fix code style of auxiliary_device_id array in
+>    drivers/gpio/gpio-shared-proxy.c, missed as I didn't have a script
+>    for auxiliary_device_id before.
+>  - Dropped a few broken email addresses from Cc:
 > 
 
--- 
- i.
+If there are no objections, I'll queue it by the end of this week.
 
+Bart
