@@ -1,100 +1,111 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=194.117.254.33
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793724233;
-	b=YP0vosrijOUwyzBJjmNiTAFVn5QscCV/26i/GjWl+u7lvcnPzlCqpZEMuAFRF6KToWFP
-	 oSE8XuaL/7U3EuJdmhms1Iq+FuCsrmB5Vh7+8Zs6IBPse6sE0z71HC97Ftjy0fQUyptvX
-	 KHyP401mkTtmqM0eSfhpRstanCVJfPBpZuKPk/SZcCjw7EaRgUjW2gDkyDKHwe4az1a+r
-	 5K44TAujsaGPcL2ifk/aQzTuF25Vrab9GfMeR3g050SWf71Wtnf2QO1w3uQG4v/XtkTEt
-	 qqvkUWT7DUtG139suEhMu3LkvmrMse++61DoIA+WPwik/QqUBdo2zFhspd2WCPgKHTQ==
+	t=1793724562;
+	b=o0FfWWxAiO0VlOb6xZACa9e1YrJtHhANuFfgIkp1ewDXuUIqc+WKwwOBCu7jeUYqAH2d
+	 d0db1oOzW7kw2zENhyA+pN58fBoE/CjfNI7AMYqSA3Ojt5jsO734FpXAs2zaGahO6mw/2
+	 Qx9V+VYIgXC/Z55+es/Ssjfo7Hw22gcMpJmil50FWnBaFksejwtkUC2bjTpV9sAY8pZrS
+	 P/A3JlwiEun1fTZRywMHqjjr2rbH0zyBC6EwELH+hKSlKoNNxOblKTw3+8vwVaHC7MED2
+	 M1SO0jv3YfpDSTAIAIazVXwHY9WP1qAF5K9F8guD8mFbca0ztpqUNGDSN4a8Wlrfz5w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793724233;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793724562;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:X-UD-Smtp-Session:Date:
 	 From:To:Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
 	 Content-Disposition:In-Reply-To;
-	bh=W8xCoWoLLQfSq8i5Qi+fm11gUA6qTjPeDx6DMi+PVBo=;
-	b=Bn3yuTJxnZ6Zgsv5ztOUFE/wOTAtXnlvOyF+kaQzheewX154i2RML8IFxrpTf8I06xFl
-	 XdBn4mUIHe965IEFuXNNHsLj2+1eIMhNv8NdoEk+L4Td9LJHLoM2zW+8UOnERnWFSHmgz
-	 uDdYgRrjJOiVy2z/Ax2dRpGHBMwOLkqCTPn2IMXLY+Bq2wjewFNeefpme+JW4ZNA4u7zx
-	 NiPEgWTHngieuAtovfLCACcWi53M4rkOtz7VEr0v6VIyRju+s/sR95YqxvOToUxKrG3T5
-	 8B9a0TiO9UfgDgau9/mJyHc3fiUdEw9kVtNSPtMYARaGN6GbMW1JxwttPTLrA9WfPrw==
+	bh=R9Dy48Gg68z6JbCwXeGt+RTdvVH82Yt9FWqbgGzfrzY=;
+	b=I+qikIJpg5Bni/bJLoi3ah2MJvT0AAHFY8eawyQmfLSoxoNQKeZOl5QD6fyAvmOAIFgB
+	 823hzu0l28owZTfJOsiW3SnT8ErC1ywUQmpk36tCWloBlYY+pAFtiGFjQUC6rCJPsQxvr
+	 dbIlCokLNmqFeBTdbdDhUTXUyvEJUA/+xW61WUiSWGqgI8njb4XuOLeddaYCpEWAVzizp
+	 seOsTQK5z+dNgh0ctrnYgVmwpTuJOrWARBrWGPESK/LxlWaU3/FjLrqpJ58mGk8oJQ2B6
+	 D9PzOe2oNr2zRSXpYNkdOOmsC9ephYC3jT2bDyYYxijet8Mz7uChzQNvzskCRyPjlvw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=sang-engineering.com;
 	spf=pass smtp.mailfrom=sang-engineering.com;
-	dkim=pass header.d=sang-engineering.com header.i=@sang-engineering.com header.a=rsa-sha256 header.s=k1 header.b=Te7IK0u9;
+	dkim=pass header.d=sang-engineering.com header.i=@sang-engineering.com header.a=rsa-sha256 header.s=k1 header.b=BZKTqSfZ;
 	arc=none smtp.remote-ip=194.117.254.33
 Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 875F9606EE9E
-	for <imx@lists.linux.dev>; Tue,  3 Nov 2026 16:43:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 875F9606EE9E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D37FE606A329
+	for <imx@lists.linux.dev>; Tue,  3 Nov 2026 16:49:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D37FE606A329
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=sang-engineering.com header.i=@sang-engineering.com header.a=rsa-sha256 header.s=k1 header.b=Te7IK0u9
+	dkim=pass (2048-bit key, unprotected) header.d=sang-engineering.com header.i=@sang-engineering.com header.a=rsa-sha256 header.s=k1 header.b=BZKTqSfZ
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	sang-engineering.com; h=date:from:to:cc:subject:message-id
-	:references:mime-version:content-type:in-reply-to; s=k1; bh=W8xC
-	oWoLLQfSq8i5Qi+fm11gUA6qTjPeDx6DMi+PVBo=; b=Te7IK0u9c1h6hR0DRAlT
-	FHjZyxJ1laoT4G8FkfVwZjVlHMu50gT88cv110WjLlQ44adjFxv1ha0DI274kN6z
-	bS1xF6dxbHI7u9hB3i45B/hgOSt+hEJWF/fUt1hHfpJFts5v++IlTs+6EjKtcaiN
-	uE7bzFTOVNRxgPJwAe9ZU3K6YQVWbSTe8ewEv3cEEtQishyVYT6Ab37Z9wZfM3Oy
-	kzvQMMF3hxCxWoT28eo+kzdCZlJRLmFMLNvZVLYw9k6CmArdhYIShEIJuMDtLNyu
-	L0m3E/KJXnZ8MPGcWyUxMv0essagc9gDJ/MloPUwbiiNjFU2QN5WDBOpKChAvr0u
-	NA==
-Received: (qmail 357587 invoked from network); 3 Nov 2026 17:43:45 +0100
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 3 Nov 2026 17:43:45 +0100
-X-UD-Smtp-Session: l3s3148p1@jzFJ92FfgJTAwtcC
-Date: Tue, 3 Nov 2026 18:43:45 +0200
+	:references:mime-version:content-type:in-reply-to; s=k1; bh=R9Dy
+	48Gg68z6JbCwXeGt+RTdvVH82Yt9FWqbgGzfrzY=; b=BZKTqSfZwdhpx8MSBYyZ
+	Jo0+7Fl/Dx1uDGVAkHAD/aL4YecYKnQhkqybkL63HcTfBnn3ibTKAgC8Ql5eF5Xj
+	fO0qycxsw4HlTUjN4UtljRtDvzRjWUpn/tfMpkPdVgPb/kjLqRU7Ia0cnmAvk6/s
+	dQo9MXr4hUGWbA2mTi6yp60HqdkZrgPVJ5a5V6EF6WMxaaj5kwJro8DUMZy+AnNQ
+	CnB5dOjITMTMbb/uY/Q22pbBFaGDkDhUsjbTS8i8+h08eGNj+GDf2r4Wj/9vlL1a
+	v46nTWysCmgA9NVgarUwzYN9oPXQM1OtEQrfVxvSz43VgnKaEcOTk7cEEI3V3k/7
+	7g==
+Received: (qmail 359133 invoked from network); 3 Nov 2026 17:49:15 +0100
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 3 Nov 2026 17:49:15 +0100
+X-UD-Smtp-Session: l3s3148p1@DIfkCmJfcrTAwtcC
+Date: Tue, 3 Nov 2026 18:49:14 +0200
 From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 To: Frank.Li@oss.nxp.com
-Cc: Aubin Constans <aubin.constans@microchip.com>,
-	Ulf Hansson <ulfh@kernel.org>,
+Cc: Mark Brown <broonie@kernel.org>,
 	Nicolas Ferre <nicolas.ferre@microchip.com>,
 	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Radu Pirea <radu_nicolae.pirea@upb.ro>,
+	CL Wang <cl634@andestech.com>,
+	Ryan Wanner <ryan.wanner@microchip.com>,
 	Florian Fainelli <florian.fainelli@broadcom.com>,
 	Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
 	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Jaehoon Chung <jh80.chung@samsung.com>,
-	Shawn Lin <shawn.lin@rock-chips.com>, Frank Li <Frank.Li@nxp.com>,
+	Vladimir Oltean <olteanv@gmail.com>, Frank Li <Frank.Li@nxp.com>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Andreas =?utf-8?Q?F=C3=A4rber?= <afaerber@suse.de>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
+	Fabio Estevam <festevam@gmail.com>, Han Xu <han.xu@nxp.com>,
+	Haibo Chen <haibo.chen@nxp.com>, Linus Walleij <linusw@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Daniel Mack <daniel@zonque.org>,
+	Haojian Zhuang <haojian.zhuang@gmail.com>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Peter Griffin <peter.griffin@linaro.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>, Yixun Lan <dlan@kernel.org>,
+	Troy Mitchell <troy.mitchell@linux.spacemit.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Alain Volmat <alain.volmat@foss.st.com>,
+	Chen-Yu Tsai <wens@kernel.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>,
+	Laxman Dewangan <ldewangan@nvidia.com>,
+	Thierry Reding <thierry.reding@kernel.org>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Sowjanya Komatineni <skomatineni@nvidia.com>,
 	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
 	Masami Hiramatsu <mhiramat@kernel.org>,
-	Jesper Nilsson <jesper.nilsson@axis.com>,
-	Lars Persson <lars.persson@axis.com>,
-	John Garry <john.garry@linux.dev>,
-	Hemanth Selam <hemanth.selam@gmail.com>,
-	Pengpeng Hou <pengpeng@iscas.ac.cn>, Rosen Penev <rosenp@gmail.com>,
-	Fan Wu <fanwu01@zju.edu.cn>,
-	Marco Crivellari <marco.crivellari@suse.com>,
-	Pan Chuang <panchuang@vivo.com>,
-	Zhan Xusheng <zhanxusheng1024@gmail.com>,
-	Rakuram Eswaran <rakuram.e96@gmail.com>,
-	Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Runyu Xiao <runyu.xiao@seu.edu.cn>,
-	"open list:MULTIMEDIA CARD (MMC), SECURE DIGITAL (SD) AND..." <linux-mmc@vger.kernel.org>,
+	"open list:SPI SUBSYSTEM" <linux-spi@vger.kernel.org>,
 	"moderated list:ARM/Microchip (AT91) SoC support" <linux-arm-kernel@lists.infradead.org>,
 	open list <linux-kernel@vger.kernel.org>,
 	"moderated list:BROADCOM BCM2711/BCM2835 ARM ARCHITECTURE" <linux-rpi-kernel@lists.infradead.org>,
-	"open list:ARM/FREESCALE IMX / MXC / LAYERSCAPE ARM ARCHIT..." <imx@lists.linux.dev>,
-	"open list:OMAP MMC SUPPORT" <linux-omap@vger.kernel.org>,
-	"moderated list:ARM/ACTIONS SEMI ARCHITECTURE" <linux-actions@lists.infradead.org>,
-	"open list:TMIO/SDHI MMC DRIVER" <linux-renesas-soc@vger.kernel.org>,
-	"open list:ARM/ARTPEC MACHINE SUPPORT" <linux-arm-kernel@axis.com>,
+	"open list:FREESCALE DSPI DRIVER" <imx@lists.linux.dev>,
+	"open list:ARM/QUALCOMM MAILING LIST" <linux-arm-msm@vger.kernel.org>,
+	"open list:ARM/Rockchip SoC support" <linux-rockchip@lists.infradead.org>,
+	"open list:RENESAS RZ/V2H(P) RSPI DRIVER" <linux-renesas-soc@vger.kernel.org>,
+	"open list:SAMSUNG SPI DRIVERS" <linux-samsung-soc@vger.kernel.org>,
+	"open list:RISC-V SPACEMIT SoC Support" <linux-riscv@lists.infradead.org>,
+	"open list:RISC-V SPACEMIT SoC Support" <spacemit@lists.linux.dev>,
+	"moderated list:ARM/STM32 ARCHITECTURE" <linux-stm32@st-md-mailman.stormreply.com>,
+	"open list:ARM/Allwinner sunXi SoC support" <linux-sunxi@lists.linux.dev>,
+	"open list:TEGRA ARCHITECTURE SUPPORT" <linux-tegra@vger.kernel.org>,
 	vkoul@kernel.org
-Subject: Re: [PATCH 1/1] mmc: use dmaengine_desc_set_callback()
-Message-ID: <auoPQVa1LMvluoYM@shikoro>
-References: <20261102172126.3890568-1-Frank.Li@oss.nxp.com>
+Subject: Re: [PATCH 1/1] spi: use dmaengine_desc_set_callback()
+Message-ID: <auoQiuIm9FxdOrYl@shikoro>
+References: <20261102174005.3933649-1-Frank.Li@oss.nxp.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -106,16 +117,14 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261102172126.3890568-1-Frank.Li@oss.nxp.com>
+In-Reply-To: <20261102174005.3933649-1-Frank.Li@oss.nxp.com>
 
 
->  drivers/mmc/host/renesas_sdhi_sys_dmac.c | 6 ++----
->  drivers/mmc/host/sdhci.c                 | 3 +--
->  drivers/mmc/host/sh_mmcif.c              | 6 ++----
->  drivers/mmc/host/uniphier-sd.c           | 3 +--
->  drivers/mmc/host/usdhi6rol0.c            | 3 +--
+>  drivers/spi/spi-cadence-quadspi.c | 3 +--
+>  drivers/spi/spi-dw-dma.c          | 6 ++----
+>  drivers/spi/spi-sh-msiof.c        | 6 ++----
 
-For those:
+For these:
 
 Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com> # Renesas related drivers
 
