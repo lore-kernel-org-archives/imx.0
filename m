@@ -1,99 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.51
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793727354;
-	b=KLpTDnruzupxXX4rMOEc9rEBv3swbQDIJyKuQfEfvzy1Eo/TNv43YCSz1agswJIM84W3
-	 m/h537EKC1cWESxyKOf40dp9un3dYFd9HQbPy8VMK3n/kOkMKLXy9Un0SF0i5BwXcf2Mg
-	 oNb8ZTWslv3IeSZ3uikWjdx34CZKtSuFW5wd9dTG1vL5s9FO/kTYBANvplQUSGMTKrTcI
-	 WtZSO2j3LiNgKE8cKdQa+TN+X603NK0pogoO8Fke6G9mQYI6khC6OkytP2aaScKyVL8Tc
-	 kBnZjd3mcXYwgGp3koMozDCcOsQj/6fAjzwFnp+1NnVkHtKeU5F3IW1CHb9HzAGt7ug==
+	t=1793728204;
+	b=tvd93Ocv1RQzI1YqazZVaqi2FwCTbFq/0it3eU3XKbzRKYoxZ9URvpgQHaXwq3bqXqkK
+	 6baEzGOUXiahC0iejLa2GjKBA9Qk6c6E5TcySrOq/ciwciUKrNIJVappnlxllJAp8wC9e
+	 7vxNWYjY1+WkCp+DWEimgjhXY3eQBy+Bm3kC5Bfx9x1DHt/LWemb+GevZhiUzj6XEUIXY
+	 9x2TtXUvucxj9omds9f6BdNlt5yWXsgPeJw1RXo37Mhu/UZwM4UU8saI3GlDN8IK+6kxp
+	 Kwahw5nOEiZghkaM904LdYP1ZsMkRbSC8hqKjE9wAsGZY7XboOW4JUGX/jUFWYBPUvQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793727354;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To:Organization;
-	bh=OMTWKoka/WJZWYrKcZxYXVvF/9BfOI9GPrShvLim+Pk=;
-	b=VfrDtG4x2v9Ou21O4E3SqsAaphcxlYmuKBZ03Wo6VYi8jed+navSbqT9fQpjnzHoZwmL
-	 R9vinwoyofDrInoMGTEW9+CbNH3D8+35I3iIIFplQEs0ItMKPLg6fQi/9NbDVD7nr2V2G
-	 c9VSticX7Gtvx4xtH44CyQpMXNKqaTsfBoNB9lIlSkHj3hRHl7hQRkI+OH2vyCXoefE2H
-	 x/k8SW42aA0kqD7M83oCRd/1lYBYbE68wn4k6se8SFrleOMCSZ1sJu5rrHiX7fKwAbum2
-	 9pvOD4l5ILfsCDjZfhBKLOH3+s2rok8ySjYqgh2Aa6sQUdq82KNu0xaWf3tT4/KdzNw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793728204;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=EvBKZYbsyPjC/KbvTWeWl/x1jiG+4Pze5t2xnn/ZrCU=;
+	b=1Qe5+Gv0rGAfYvZIld1YrPx1i+xeEgoNtXBxs6XWGvjPS2OGR9pms+8AUsbSVDWqVCnY
+	 Jb6m9T0Goii29CJLr/E9pEWt1JFXNSAgoM5gmBGuyaczqYJJpM71uNTQt4/wqNt7auCNv
+	 BmeYnZ1cwqc7aaPubQ6b+AX0zynQ1RXGHnJ8ncxzxXDNfLho9IFqLIu8+LASedK0oi4RF
+	 TmvuZDGUA3PuNNQMrEcH+IZfGC33TDLi9yE4ujDuK43jZrI7KWG76Q1If0SEvo1sAqrdc
+	 rEICko+rewpTvSG+OFxphrPS16lC3xvkr8K/YSCWKjYsA3RfJgcvzKnStK79DvEIkww==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=B2RuYrMI;
-	arc=none smtp.remote-ip=198.175.65.21
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=none header.from=baylibre.com;
+	spf=pass smtp.mailfrom=baylibre.com;
+	dkim=pass header.d=baylibre.com header.i=@baylibre.com header.a=rsa-sha256 header.s=google header.b="UaX/aZf1";
+	arc=none smtp.remote-ip=209.85.128.51
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6251606A328
-	for <imx@lists.linux.dev>; Tue,  3 Nov 2026 17:35:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D6251606A328
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4B05606A32D
+	for <imx@lists.linux.dev>; Tue,  3 Nov 2026 17:50:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E4B05606A32D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=B2RuYrMI
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793727349; x=1825263349;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=fIwZFXRauHVGTvmkvF0p5ts2dhitRW5zxXOPkRVPeoQ=;
-  b=B2RuYrMIZTuWLlfJChn3dkhjwrUXTTZ5P1b+LHkokTmYjKnZ8WTkg3Yr
-   oekEyEgowAcVUVBzRpicgFFQA4BzZphHPq/2zjUBWu/bpBkrWi/gONKlX
-   R3sFSSGw91lkArejqTMxUcLwD5nNtfE7Q0Wr0hJRErEL1pvTHYXT+Wg1K
-   TAf1TEMOPU6pqXHLpPn7WwpmEGnIxjdJ9ZhP/GKm8/EwEbTH085RhAttb
-   F8KMpc3NsROvZZ65zmMa4V2QKbPRomh2O9Wn7Z4rsbhw0axBZl691WWV7
-   1h/mx76UeKQU1JrUmlc4BFRx21abtyd1v0jrgY2Eo11WtIEEpyNmBaYlP
-   A==;
-X-CSE-ConnectionGUID: DcAojPgpRf+uCT5liV+rGA==
-X-CSE-MsgGUID: Q6+Ynx/mSxKMIOs1steLyw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11955"; a="2554356"
-X-IronPort-AV: E=Sophos;i="6.27,193,1787036400"; 
-   d="scan'208";a="2554356"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2026 09:35:49 -0800
-X-CSE-ConnectionGUID: cOWXPWO/THODlghOQi+WaA==
-X-CSE-MsgGUID: yU58d79/R8mJ9+oiuIlMKg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,193,1787036400"; 
-   d="scan'208";a="6498070"
-Received: from ettammin-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.245.108])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2026 09:35:42 -0800
-Date: Tue, 3 Nov 2026 19:35:39 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: James Hilliard <james.hilliard1@gmail.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Raul E Rangel <rrangel@chromium.org>,
-	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Tony Lindgren <tony@atomide.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Richard Genoud <richard.genoud@bootlin.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Jacky Huang <ychuang3@nuvoton.com>,
-	Shan-Chun Hung <schung@nuvoton.com>,
-	Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Timur Tabi <timur@kernel.org>,
-	Peter Ujfalusi <peter.ujfalusi@ti.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Patrice Chotard <patrice.chotard@foss.st.com>,
-	linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v9 8/8] serial: 8250: retain DMA resources when
- termination fails
-Message-ID: <auoba7ZhfzaMTkzw@ashevche-desk.local>
-References: <20261102-submit-serial-8250-dma-cancel-v1-v9-0-9159caade148@gmail.com>
- <20261102-submit-serial-8250-dma-cancel-v1-v9-8-9159caade148@gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=baylibre.com header.i=@baylibre.com header.a=rsa-sha256 header.s=google header.b=UaX/aZf1
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4a35a60499eso41970995e9.0
+        for <imx@lists.linux.dev>; Tue, 03 Nov 2026 09:50:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre.com; s=google; t=1793728201; x=1794333001; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=EvBKZYbsyPjC/KbvTWeWl/x1jiG+4Pze5t2xnn/ZrCU=;
+        b=UaX/aZf12880GWli59/J0zjmp5UBa2TziSknod4Xz1Bv/xTs6G3+PsKVV1JMNJFv1Z
+         gSyF/1Dl17DxrYgEncdhDPfCsj+A2uveR4N1+rnWZu1up6+/X+xUNcSV68VltpOQ/OqH
+         tNPjvJQLoATJGrH31StJh+GAAZ2pNpM2KJFQjw6GL/+B1776k4qPBqIEWuu3LhDLMNP9
+         /aig10lj7HAjfLHn7jnAr/MPEXt8+arec5BHyuzRtdc6amAdTM4m1P5BcPQLnuQ8rc6Z
+         iOVIrZGIhYDu9+kI3qfEIb1mEFYZSsPlmqSPJ6WCOapSqMlecjG/wG85tqLvxswAhDpG
+         KDGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793728201; x=1794333001;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=EvBKZYbsyPjC/KbvTWeWl/x1jiG+4Pze5t2xnn/ZrCU=;
+        b=I3/B1ck+Ub46FaCNIkffEty7fg9gZ7Q/BgyHjo7ox1vuz4E43jV9i0k0gJG+XV2wqU
+         FxaarjqT/JjgCyPZ/8QCZoMf02TrVYXZUXUlN3z7w5G3pqWiRsGysz1kBXLHghEUCUvx
+         2MZvZwMFPCnf4Eilw4RQgCUSb9ehAHpQB1B6sxYRZpKUaytVqXYnQ5cw5AwRvTnku6Gr
+         a2tX2fO3+IBRp2rMqwSQ9QIJSb7tP6RLNBMDlWHVg8RxJj6NJjbLyyz36X4UZIMAaPH2
+         9/G0p/Ari9/ScenKM/2t/dNnPvY9X6R11aVlvfS1LzIo3z3o4AABFu2T5cq5uGe6xLnZ
+         n4nw==
+X-Forwarded-Encrypted: i=1; AKwUvBwiAYtv08ZtdxWlUkReJUHbF/2GldMKB6mCH1rSQEn7/c19su+0wcPDL/pvwOvV+Vf+kB0=@lists.linux.dev
+X-Gm-Message-State: APuU4Z+gxNRaS/uhd9NvzdbhEdW57Hh1M473X5FpNArdaH4KyC1fY5Dp
+	VW7lv9IrxSWtlkarTtXKq5GMVZQzJzmp3n0C/GcDhjxahYiOOlACZkcjQRhkcGwxCj0=
+X-Gm-Gg: AYBFou1Q3FAVHsOeK29+DWR4mF2ofKaQdcFA/m40KChIUiOmnrV1NFd0U6R4BP32eyL
+	t49MBxS0PEuCOdiqSrJxA74jZgXhS9uzQwnov/wm+TBk5+0ponivx9uM6pkrKuNjPnkfFiElFiK
+	UpQ6PaTLSLrqr+JkH1jmM90Hh+yunhxXJK36zB2gebrFaVzwcxoOlJXfaaMZztelud4fKx7rKCM
+	XFhdeVQPT4E5f7eG6O/5udDfRpSqxsQUP9d/a4TOhLZZy+FwEkxNeYMoWd8a96kyxUwPwtqbYVe
+	4/jd+WZn1TarnHs3gxqMD4oG2295z9IOFJpSL6b7yhlx46w/71odXHaDu/Q8e08++Yw3u2GLhxN
+	W+Djt4YIdbdqcpiZtf1bNDJsW1rwZiubr7i4rB4nZQXfYAud5EjkIutnYEnAdXHuhVQVZy9iDw0
+	oegDzcRCSUFzFFxFv9+lpWAmR2rnr+B/5CdV1EKcxIn8bbPN0tGcJIW2BF9J6aGD/UBECTft6wb
+	Uv71JCZC0/lLBAjsA9p/w3exddtHa1Ax3C3CAgbDLkv4Z8EoTmJxTssRdtKr99ATfQtaHl9Kg5O
+	m97vb3j4CoY+JycAho7hEPOKe+QpS1TFBefN4Pk9noVGEVD3Gfu7WEcwDTTCeS1poptFsWEFJFN
+	zoRY/hmkLWxVdzg==
+X-Received: by 2002:a05:600c:674a:b0:4a1:fb23:68f0 with SMTP id 5b1f17b1804b1-4ac14ec788emr319488995e9.3.1793728201219;
+        Tue, 03 Nov 2026 09:50:01 -0800 (PST)
+Received: from localhost (p200300f65f19a9048e0e65dd41210f6d.dip0.t-ipconnect.de. [2003:f6:5f19:a904:8e0e:65dd:4121:f6d])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-48e71b80333sm28497156f8f.32.2026.11.03.09.50.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Nov 2026 09:50:00 -0800 (PST)
+Date: Tue, 3 Nov 2026 18:49:59 +0100
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Mathieu Poirier <mathieu.poirier@linaro.org>
+Cc: Bjorn Andersson <andersson@kernel.org>, 
+	Wolfram Sang <wsa+renesas@sang-engineering.com>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, linux-remoteproc@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH v2 1/2] remoteproc: elf_loader: Create new callback for
+ copying segments to remote cpu
+Message-ID: <auod0uYPow76TEb8@monoceros>
+References: <cover.1793117996.git.u.kleine-koenig@baylibre.com>
+ <15d90126debc21c116c9e862a007afa4d81f704c.1793117996.git.u.kleine-koenig@baylibre.com>
+ <auoAZs66RA5OYjJo@p14s>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -103,92 +103,79 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="tqt42yzt45wmalce"
 Content-Disposition: inline
-In-Reply-To: <20261102-submit-serial-8250-dma-cancel-v1-v9-8-9159caade148@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
-
-On Mon, Nov 02, 2026 at 04:14:35PM -0700, James Hilliard wrote:
-> serial8250_release_dma() ignores the return from dmaengine_terminate_sync()
-> before freeing the coherent RX buffer, unmapping the TX FIFO and releasing
-> the channels. If the provider fails to stop a channel, the DMAengine
-> wrapper returns the error without synchronizing its callbacks. Hardware
-> or a detached callback can then access the released storage and state.
-> 
-> Checking the error and returning early would not preserve their lifetime:
-> serial core frees the TX FIFO after the driver's shutdown callback returns,
-> and port removal can then release the callback context as well.
-> 
-> Require successful synchronous termination of both channels before
-> releasing any DMA resources. Retry failed channels after a sleep outside
-> the port lock, leaving channels that have already stopped and drained
-> alone. Keep the shutdown gate and storage reservation in place throughout
-> the retries.
-> 
-> Start retries with a 1 ms sleep and double it up to one second. This
-> makes short-lived failures responsive while bounding sustained retry
-> activity; neither delay is a hardware timeout. Report the initial failure,
-> rate-limit ongoing failures with the elapsed time and current RX/TX error
-> codes, and report recovery once both channels have stopped and drained.
-> 
-> A permanently failed DMA engine blocks close or removal. This deliberately
-> retains the buffers, mappings, channels and callback context until the
-> provider can establish that they are no longer in use.
-
-...
-
-> +static void serial8250_terminate_dma(struct uart_8250_port *p)
-> +{
-> +	struct uart_8250_dma *dma = p->dma;
-> +	unsigned int delay_us = USEC_PER_MSEC;
-
-Don't use multipliers without a number, it's harder to read (when syntax
-highlighting is on) and follow in general.
-
-1 * USEC_PER_MSEC
-
-> +	ktime_t start;
-> +	int rx_ret, tx_ret;
-> +
-> +	rx_ret = dmaengine_terminate_sync(dma->rxchan);
-> +	tx_ret = dmaengine_terminate_sync(dma->txchan);
-> +	if (!rx_ret && !tx_ret)
-> +		return;
-> +
-> +	start = ktime_get();
-> +	dev_err(p->port.dev,
-> +		"DMA termination failed: RX %d, TX %d; teardown blocked\n",
-> +		rx_ret, tx_ret);
-> +
-> +	/*
-> +	 * Shutdown cannot return while DMA owns storage or callback state:
-> +	 * serial core frees the TX FIFO afterwards, and removal frees the port.
-> +	 * Retain both channels and retry outside the port lock. A permanently
-> +	 * failed DMA engine therefore prevents teardown from completing.
-> +	 */
-> +	while (rx_ret || tx_ret) {
-> +		fsleep(delay_us);
-> +		/* Retry promptly at first, then limit sustained retry activity. */
-> +		delay_us = min(delay_us * 2, USEC_PER_SEC);
-
-Ditto.
-
-> +		if (rx_ret)
-> +			rx_ret = dmaengine_terminate_sync(dma->rxchan);
-> +		if (tx_ret)
-> +			tx_ret = dmaengine_terminate_sync(dma->txchan);
-> +		if (rx_ret || tx_ret)
-> +			dev_err_ratelimited(p->port.dev,
-> +					    "DMA termination still failing after %lld ms: RX %d, TX %d\n",
-> +					    ktime_ms_delta(ktime_get(), start), rx_ret, tx_ret);
-> +	}
-> +	dev_info(p->port.dev, "DMA termination recovered after %lld ms\n",
-> +		 ktime_ms_delta(ktime_get(), start));
-> +}
-
--- 
-With Best Regards,
-Andy Shevchenko
+In-Reply-To: <auoAZs66RA5OYjJo@p14s>
 
 
+--tqt42yzt45wmalce
+Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v2 1/2] remoteproc: elf_loader: Create new callback for
+ copying segments to remote cpu
+MIME-Version: 1.0
+
+Hello Mathieu,
+
+On Tue, Nov 03, 2026 at 09:40:22AM -0600, Mathieu Poirier wrote:
+> On Tue, Oct 27, 2026 at 05:25:20PM +0100, Uwe Kleine-K=F6nig wrote:
+> > diff --git a/drivers/remoteproc/remoteproc_elf_loader.c b/drivers/remot=
+eproc/remoteproc_elf_loader.c
+> > index da3cddbe7d4c..3c749a39e5da 100644
+> > --- a/drivers/remoteproc/remoteproc_elf_loader.c
+> > +++ b/drivers/remoteproc/remoteproc_elf_loader.c
+> > @@ -227,35 +227,45 @@ int rproc_elf_load_segments(struct rproc *rproc, =
+const struct firmware *fw)
+> >  			break;
+> >  		}
+> > =20
+> > -		/* grab the kernel address for this device address */
+> > -		ptr =3D rproc_da_to_va(rproc, da, memsz, &is_iomem);
+> > -		if (!ptr) {
+> > -			dev_err(dev, "bad phdr da 0x%llx mem 0x%llx\n", da,
+> > -				memsz);
+> > -			ret =3D -EINVAL;
+> > -			break;
+> > -		}
+> > +		if (rproc->ops->memcpy_tova) {
+> > +			ret =3D rproc->ops->memcpy_tova(rproc, da, elf_data + offset, files=
+z, memsz);
+> > +			if (ret) {
+> > +				dev_err(dev, "Failed to copy segment %d to device address 0x%llx: =
+%pe\n",
+> > +					i, da, ERR_PTR(ret));
+> > +				break;
+> > +			}
+>=20
+> I really like your patch, but I'm wondering why you decided to move
+> rproc_da_to_va() in ops->memcpy_tova().  Right now it is called in both p=
+ath,
+> i.e with and without ops->memcpy_tova().  Wouldn't it be better to
+> unconditionally leave rproc_da_to_va() in rproc_elf_load_segments()?
+
+The reason is that on ADI's SC846 the memory for the remote processor
+isn't directly accessible by Linux. So there is no virtual address for
+the given device address and thus the implementation of .memcpy_tova()
+on that machine won't use rproc_da_to_va().=20
+
+Best regards
+Uwe
+
+--tqt42yzt45wmalce
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmrqHsQACgkQj4D7WH0S
+/k4sjAf/W9Wh/o2zfPqQyyyOgx0wwKDVNUCFZ3gnMmbmk4VZdCin6ZavZplg6T+x
+coNDAgnxOftZnuWR1SpiFa6XCTmAE5ZxvNLbwzw6DF+G4Bq+z2ifELs9uZh/U0eo
+HrJFd/MaHMCnZdw7Hr1emJPiegROrwq5psibMrjJItAbtrvyFUFKXQ+YKYY128Pi
+8945jUEVVmAFRQ3nCV50qJW8+KPt36ZWnBRt8TjZHMMaHWuhLDuXsqUsCiYDkFnf
+MeO9tFp+Aw2Nk78rkgmSg9kOauIt2+3ievOTOCN2haO43CYNx+In6f7GwLzSq2R2
+Iffz8Diu7OmLg5+j4A7mG6jW7l/4RQ==
+=MoF6
+-----END PGP SIGNATURE-----
+
+--tqt42yzt45wmalce--
