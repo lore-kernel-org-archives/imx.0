@@ -1,141 +1,132 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.53
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.180
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793731742;
-	b=C9SzCWRhlHZ1HAD7fjO+bIqL/uv/gSpXYhEpL/MEpr5+iNOWedlSZjBuDTJ+SRCBrW/m
-	 OK1GcOrDzEGMwYgLPEKuPRA9ZFy52tY/NhlYWgymhCmUlMcxoZ023XvbqIaqKovPCtCmI
-	 Nan7cPlAb/SUZncTFi5xLVxyPK5y03sEVcWQPZ1Ki2SXUIAq2xKdNjgLC8YvDN3azfTIi
-	 mRtr2I29pieNfqxGuHMYYsm6l3/7s0JcHPjlbYwLLt5tzkOjPlR96PFoqB6AYnuonCdVL
-	 bH0TGvRLDceEwkbDcje1QEGOt8aVgJ3bmT11J4KgwyGMUnKc5L0cIrKfmpYcYULKVQA==
+	t=1793732348;
+	b=caFxNQufmNGiObSR5qFIaHEq6TPQT/Wvwe1eyTCuIlvyJU4QFza/xFJGjP4V56wnbLgK
+	 g3Qgn03fYtFrDMVA/ru2+Xg3i1yZ6EwSJvj+6Q7yszJWV6ULKxiIRra5VhQLLFrovZ+Gd
+	 L1Ujm8O3R19ltoIluRfyGfKvv2EdM95sC4JreWCNpfAZjHeNNUuqfmiJ1XiK2ssvwCCFq
+	 g8KIJZd+pBIeghaY40agnwCgD5W4YpkkeqnzuS8lOiqlVN7GjYqR8Y/ftcFLOaJ+Q2M4X
+	 OuKXhvitZOIH1cQcXC2/dhnRRpkz+3n1TAOOaGH62fSfkkxXUkrYUuFPXXAzeB3W+GA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793731742;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793732348;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:Mail-Followup-To:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=gZOM3Lc0bVWMBjTHBnWLKucS3KUPQN4gjQNABudBe20=;
-	b=aPKZZUNauP5pDh4UTaclklePUq2gPCyysm2kUsxDLtWIGVUTJOyiHqSEbGQHxQDJEh42
-	 IBKUFBxscUsplr28QZJleIFdFgvzMiYQL1pr6Zzb9v1NPJV5KKJOGGBhAKw/8mMu/AWQ2
-	 kAKrn+KF2IaC5vFNwL8Q4QGK9sIBxWjzMOgwWlTvPQ8CPcCIL4XILdVxhdgAOJO1cKM2V
-	 Ooj7rodvvBPxfXfbmx41lBRVkCNyGuUDlS77e501hMOYCtUilAs9AufsJ7k7NUS9OKdeP
-	 /SdjdsbeZDA5Oe8UDOtuxc467LYCoJGE2IqngFOkylwCOeBwda4cI4Bhk3LIzhVkXZw==
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=J7X+N3b/Iozr8Iw7Q9vLqcq+wqZH/CWnHiKVeMbKEmo=;
+	b=bwRILyHLLtVUbpja9KfKZ8JRYNmzYApLwUZ8bDM0nmaSwDJxgeqjUrUjslgGBGitb9T2
+	 Ut93BmtyNX5+bnQ3+CF/Km/KMlWGM92yWAj3o2q1JuS5Xedto3SI3lynzrDT//OXocVVd
+	 6vMg7RusooJ6EjtcEkUUH+na3sH9i9f03VBJpQIUHR5AKlyTMp7azCVi4KjxdFTXo9uyF
+	 Fp2BXBxrVYxnVh+gXhcSNS1jAYUmeGSbWbEPOtj4UN+LoGGqNCrY7aGDAkJqr6HjJ472p
+	 rWc7TFgdW0vwwq+WxBb2xJZtjTV44oAYNhKKf5qxXD2O+5J4fwrXakWh4iwU7MvMyJA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=dama.to;
-	spf=none smtp.mailfrom=dama.to;
-	dkim=pass header.d=dama-to.20260707.gappssmtp.com header.i=@dama-to.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b="ZSC/+Am2";
-	arc=none smtp.remote-ip=209.85.216.53
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=YXYDOqR3;
+	arc=none smtp.remote-ip=74.125.82.180
+Received: from mail-dy1-f180.google.com (mail-dy1-f180.google.com [74.125.82.180])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 605EA606A333
-	for <imx@lists.linux.dev>; Tue,  3 Nov 2026 18:49:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 605EA606A333
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFE55606A31B
+	for <imx@lists.linux.dev>; Tue,  3 Nov 2026 18:59:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EFE55606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=dama-to.20260707.gappssmtp.com header.i=@dama-to.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=ZSC/+Am2
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-3ac6794fe45so3307604a91.0
-        for <imx@lists.linux.dev>; Tue, 03 Nov 2026 10:49:01 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=YXYDOqR3
+Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-3645f0f3fcdso7522331eec.0
+        for <imx@lists.linux.dev>; Tue, 03 Nov 2026 10:59:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dama-to.20260707.gappssmtp.com; s=20260707; t=1793731741; x=1794336541; darn=lists.linux.dev;
+        d=gmail.com; s=20260707; t=1793732347; x=1794337147; darn=lists.linux.dev;
         h=in-reply-to:content-disposition:content-type:mime-version
-         :references:mail-followup-to:message-id:subject:cc:to:from:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=gZOM3Lc0bVWMBjTHBnWLKucS3KUPQN4gjQNABudBe20=;
-        b=ZSC/+Am2PT2UaTy6KZt3zJ9e61U4k/naFZdoVXWj0xuHNnRWBSedUkDoQbqUvdOhv/
-         6oleIvoex9c0/0Uh3K2XKnqnEi9EQe509ofEH8YmIXuh1lanAjUmm+sZqpCVTP2lrxNl
-         AT14ynO9V0W3+0JOwzI5n8wgp19X+EcseqXUEB1GX+8ZzeKQSuHDn1kHDQ2I+TFbEJsh
-         pZ126t3Bwv2RkiKFhe+SRqXxUM3BMfCIIEGcRU/wmPwwKUOOIl4hoDyd0d7S3+U1+0d4
-         NxsVy0kAsarqkeKXpWIJKl+CyIICNgbGHw5ohP719qRyb+dC0Tuqc6bVoFmhMsSdkFKr
-         8cpw==
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=J7X+N3b/Iozr8Iw7Q9vLqcq+wqZH/CWnHiKVeMbKEmo=;
+        b=YXYDOqR3YTdWjVjMiPqhMmCqYc/01K0PVfuT0MGChqZe9l7AweO69fkSNMx/9KMTE3
+         KDn90CTQ8H/P3GB0Nw8wvWWu18E1L1kbeanSnVSOjen1TLCZGEfpt/8cCBR6DfejvXKD
+         y6syQk1Le3oFzhMwsJwPM5RHAosnmsomfnPRXyCKE06jn2LBpK++90DvFyqZLROXzyJI
+         FDBGusogPlLdXGGYNa0wxHPIenvxGmSJMLkQEV/Lf3Dlnp/Cg1MrDkjgdnVNYTf8f62N
+         OHWgJgqg2+c98A67ynn60QZve8Fwy9qy94fJMCSqRQTKf1aee9h77hegeiwBGwaIhAJb
+         Fnsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793731741; x=1794336541;
+        d=1e100.net; s=20260707; t=1793732347; x=1794337147;
         h=in-reply-to:content-disposition:content-type:mime-version
-         :references:mail-followup-to:message-id:subject:cc:to:from:date
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=gZOM3Lc0bVWMBjTHBnWLKucS3KUPQN4gjQNABudBe20=;
-        b=jHWW1LAJVzOXuqRTGzhMEKRrtrFganFdztF3UEbTkI5a3w4IJ0uNiqWTbDhaS/njHe
-         +iCw8J2ey2T70HlAwRLOXpfDR110GWYRHi3s6htxqr5zZY1fjRaT96FlbCOPcs1HqlLx
-         C5/ahCYaVhod45KHECKrLhmMwuAgW2DQHFy6eu1Td/x2LP3aQIbUeg6TVUW/fT7IsSV1
-         gT8PooHmb1vgpm5BeHdMlKqGDar3r5NpgVsSMvKJApuY1INAbbM38F2fGC02zuZWbFfu
-         b6YoA4zy3Ek+fB00JtF1cQw+eghw+3ecStljmURvAXoG5/+2YbegCIVhFS+a2BF5wyE+
-         FPQA==
-X-Forwarded-Encrypted: i=1; AKwUvBzYcwNWDKRB8B2SVjJhbYlLG3Lz9ptM8nr+H7msAQXVWfx8VglTrnz3Mxdc0n+lKvOpT2c=@lists.linux.dev
-X-Gm-Message-State: APuU4Z/8Gr5lJwkLXt+u/qBHVGPehcqsTUaiclqrrL1+RQYYMZfkFiwF
-	/jwHSJcpyMvwmMmAXIYxn4Dy1iZWSSrlmgcNixlnM6z8V6VOfDnCGSeKO2IF0EoGtqM=
-X-Gm-Gg: AYBFou0kRcLL/nkC4H2TnwTc4O84Rw/pglilmen07tPnaYyO1qjw/6L2/HZFLZr/VfA
-	wPbEwyAeftLkdFw/tj92mjgSeczubrAbdYMeiow3lkj30a0z1EhCpnsz0lciP2jnUPXq8tablIN
-	2qAhxukeCF/n1203VwQqOtrFJl+4rFLpz06VN0DD+9JtaSs2Ld8+9DL1+X+3L6LGn1zyCNUv3a3
-	dVTMrgvNYYzYQH1dizLJaMRlHC3PqWQEx4XKuSaPxIzcBFygu4QIY8Z9KoWp+DwTgX0ytds26bH
-	BCTWb2IscmHxu+jrsLYFbgRdN8eTkDwwKqqhEmFlcChmyuKHEZEtEqvXvWQwhv11l9AcAeLdkc3
-	iT0R2XhjLwWLUjI4WlXDCDtpwqnmrtBqEhJzWuQYhqcJV0TBv4dQ2egoq1popHCI/rWs4e0VbCb
-	g7ks6iimQymfLNDUbcQ1Psea42clqfZUDaK54YGxSfyIA34HAUr0KdxmOp9f6lAfRv11w08grkN
-	B1MCMgmO0UcbFdWaLbZQmoNJOfM4rE69vwr+o0/mPNrBNCKGOr8XY3VTyiYgHp4fqpFSAUnvawP
-	abx3/BLbDYyfRtY3QBlpC0Zo0/6z15XcWrX+giOPvA==
-X-Received: by 2002:a17:90b:1d03:b0:3a8:49f2:8ddb with SMTP id 98e67ed59e1d1-3ae8984de33mr11985967a91.60.1793731740597;
-        Tue, 03 Nov 2026 10:49:00 -0800 (PST)
-Received: from localhost ([2a03:2880:2ff:49::])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b0944bd88bsm210133a91.12.2026.11.03.10.48.59
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=J7X+N3b/Iozr8Iw7Q9vLqcq+wqZH/CWnHiKVeMbKEmo=;
+        b=jU2edUIvVJdPupyIjsCKTD7pG7CeLslpOFdwxJbY4fMiMgsMHlnKMXETAScls1uHAA
+         fICj9X+ZxoVM4I9Xpaj0So7eW3TBo8NIQ3qiQ1VpMOcsNDko6yMwK56lavV2q3Au0JwX
+         HgaSoaraYQ9XsMQ9GxLboH247cM8OdJHab169pR43VuW/J8at3kXSZEEH3FtUt8MOZtN
+         5b5sZ5wqTZK7rZS/uS6mKJznJAStseT22/m/eBrwptRHGggORbDTn5hpJ1dBAV+ulipY
+         b5wglaRsZv0TmGAYMX59clw22xHBTEhELxZ2FTg/CUzLF+BiUP1QTMi+0T0ZQwpn2mJI
+         dPKg==
+X-Forwarded-Encrypted: i=1; AKwUvBwLWr7xX+cOw3SsW5jVGFCBmPCVNCRfJKw+TA9rC8P0ynmmVjT2Fwtwv36mEqOkoIztvRA=@lists.linux.dev
+X-Gm-Message-State: APuU4Z/on7XnFf1Ic6eAczb6OnbpV/jG8N8tgXps5+CXm++Izj83uqRp
+	Iygh8UGHQTQxmJE0zLPCVVGhj8cxZ6W43evLTUMEWDYQwlpjh/n1NogV
+X-Gm-Gg: AYBFou33OSKvlFQdiPytdNSWVWMXoZa9WwaR1mGOaplhsdlnSC3oHEqBrJMm0KqpWjr
+	DKRQIa4EbCLKoczpc8lzInkefFcJEy8fmKhDbMQ71c4pR4q9KAUp8kw3VVtba0ovlzjMC0rXnWt
+	x2m86idQNlFVmLX9UuyMspiTTlPotpxSfg/YHJ5/gmFm63URrOBMmByyEamJro79QCqKxQTMfXQ
+	FkZQtIWFA0/Lyz9+2wSGLS4Vli3RVkijUVieuGoGL6AAnXKa1lS3+ukKWzIuBiONEUbMtMGKnN9
+	prMyGTTuiCSvsB5xFqv+HaoUVAPeyynTzhj25q5f8w6IM7N4mYfn8lsDmw6WP9FIKAYKp2UiC5N
+	XSFqfi0/gmPAWoCyVAEFXDb53fGtg5lADx4pA4zrNThGFAH0itJnyH98BMt0YfMPGdVXRRXSA+z
+	O7VrSBZ3PHinBGhFTdVbgakCdbdeYsIxTud7kyks7ThRlGekfmeIg/puzG2OSf5qfOh0Af3wx6j
+	7jYPSj33w3q/OkhPA1vwk0k0hs5imgpIyonaU1BH/R+U7kJcmMyghFTO4+eaNu/sRVhr7MByB44
+	AGnGVf38OMwRlZ3EbSmWvGE6ldH9kXxKQYEYdPS6bZWThf6zoDiYvMUjz/CbpEnYNQJA
+X-Received: by 2002:a05:7300:7b81:b0:351:7ec1:a92c with SMTP id 5a478bee46e88-36a42431768mr30787340eec.28.1793732346941;
+        Tue, 03 Nov 2026 10:59:06 -0800 (PST)
+Received: from google.com ([2a00:79e0:2ebe:8:88b4:22ec:d621:c1b])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36ca39b3b7esm49159eec.28.2026.11.03.10.59.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 10:49:00 -0800 (PST)
-Date: Tue, 3 Nov 2026 10:48:59 -0800
-From: Joe Damato <joe@dama.to>
-To: Frank Li <Frank.li@oss.nxp.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Chen-Yu Tsai <wens@kernel.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
-	Michal Simek <michal.simek@amd.com>,
-	Stephan Gerhold <stephan@gerhold.net>,
-	Loic Poulain <loic.poulain@oss.qualcomm.com>,
-	Sergey Ryazanov <ryazanov.s.a@gmail.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Frank Li <Frank.Li@nxp.com>,
-	Andre Przywara <andre.przywara@arm.com>,
-	Li Youhong <liyouhong@kylinos.cn>, Arnd Bergmann <arnd@arndb.de>,
-	bui duc phuc <phucduc.bui@gmail.com>,
-	Yicong Hui <yiconghui@gmail.com>, Simon Horman <horms@kernel.org>,
-	"open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
-	"moderated list:ARM/Allwinner sunXi SoC support" <linux-arm-kernel@lists.infradead.org>,
-	"open list:ARM/Allwinner sunXi SoC support" <linux-sunxi@lists.linux.dev>,
-	open list <linux-kernel@vger.kernel.org>,
-	"open list:ARM/QUALCOMM MAILING LIST" <linux-arm-msm@vger.kernel.org>,
-	imx@lists.linux.dev, vkoul@kernel.org
-Subject: Re: [PATCH] net: dma: use dmaengine_desc_set_callback()
-Message-ID: <auosm8mCULyafyny@devvm20253.cco0.facebook.com>
-Mail-Followup-To: Joe Damato <joe@dama.to>, Frank Li <Frank.li@oss.nxp.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Chen-Yu Tsai <wens@kernel.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
-	Michal Simek <michal.simek@amd.com>,
-	Stephan Gerhold <stephan@gerhold.net>,
-	Loic Poulain <loic.poulain@oss.qualcomm.com>,
-	Sergey Ryazanov <ryazanov.s.a@gmail.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Frank Li <Frank.Li@nxp.com>,
-	Andre Przywara <andre.przywara@arm.com>,
-	Li Youhong <liyouhong@kylinos.cn>, Arnd Bergmann <arnd@arndb.de>,
-	bui duc phuc <phucduc.bui@gmail.com>,
-	Yicong Hui <yiconghui@gmail.com>, Simon Horman <horms@kernel.org>,
-	"open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
-	"moderated list:ARM/Allwinner sunXi SoC support" <linux-arm-kernel@lists.infradead.org>,
-	"open list:ARM/Allwinner sunXi SoC support" <linux-sunxi@lists.linux.dev>,
-	open list <linux-kernel@vger.kernel.org>,
-	"open list:ARM/QUALCOMM MAILING LIST" <linux-arm-msm@vger.kernel.org>,
-	imx@lists.linux.dev, vkoul@kernel.org
-References: <20261102191922.4044912-1-Frank.Li@oss.nxp.com>
- <aukcoWLVvSorX5a9@devvm20253.cco0.facebook.com>
- <aun4W3dvmfWRDFeQ@SMW015318>
+        Tue, 03 Nov 2026 10:59:06 -0800 (PST)
+Date: Tue, 3 Nov 2026 10:58:59 -0800
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>, Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>, 
+	Jiri Pirko <jiri@resnulli.us>, Ivan Vecera <ivecera@redhat.com>, 
+	Benson Leung <bleung@chromium.org>, Guenter Roeck <groeck@chromium.org>, 
+	Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>, 
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
+	Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Olivier Moysan <olivier.moysan@foss.st.com>, Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>, 
+	Thierry Reding <thierry.reding@kernel.org>, Jonathan Hunter <jonathanh@nvidia.com>, 
+	Fabrice Gasnier <fabrice.gasnier@foss.st.com>, Lee Jones <lee@kernel.org>, 
+	Srinivas Kandagatla <srini@kernel.org>, Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>, 
+	Ulf Hansson <ulfh@kernel.org>, Hans Ulli Kroll <ulli.kroll@googlemail.com>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Vinod Koul <vkoul@kernel.org>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Manivannan Sadhasivam <mani@kernel.org>, 
+	Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, 
+	Mark Brown <broonie@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Daniel Lezcano <daniel.lezcano@kernel.org>, Zhang Rui <rui.zhang@intel.com>, 
+	Lukasz Luba <lukasz.luba@arm.com>, Orson Zhai <orsonzhai@gmail.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Chunyan Zhang <zhang.lyra@gmail.com>, 
+	Paul Kocialkowski <paul.kocialkowski@bootlin.com>, Shawn Guo <shawnguo@kernel.org>, 
+	Chanh Nguyen <chanh@os.amperecomputing.com>, Alistair Francis <alistair@alistair23.me>, 
+	Julius Werner <jwerner@chromium.org>, Paul Cercueil <paul@crapouillou.net>, 
+	Dmitry Osipenko <digetx@gmail.com>, Florian Fainelli <f.fainelli@gmail.com>, 
+	Thierry Reding <thierry.reding@gmail.com>, Ray Jui <ray.jui@broadcom.com>, 
+	Scott Branden <scott.branden@broadcom.com>, Krzysztof Kozlowski <krzk@kernel.org>, 
+	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, chrome-platform@lists.linux.dev, linux-gpio@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com, linux-sound@vger.kernel.org, linux-input@vger.kernel.org, 
+	linux-tegra@vger.kernel.org, mfd@lists.linux.dev, linux-arm-msm@vger.kernel.org, 
+	linux-mmc@vger.kernel.org, linux-phy@lists.infradead.org, linux-pm@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: Use hex unit address patterns
+Message-ID: <auou2CBiiR6zA0G0@google.com>
+References: <20261102135330.2493332-1-robh@kernel.org>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -147,70 +138,28 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aun4W3dvmfWRDFeQ@SMW015318>
+In-Reply-To: <20261102135330.2493332-1-robh@kernel.org>
 
-On Tue, Nov 03, 2026 at 09:06:03AM -0600, Frank Li wrote:
-> On Mon, Nov 02, 2026 at 03:28:33PM -0800, Joe Damato wrote:
-> > On Mon, Nov 02, 2026 at 02:19:16PM -0500, Frank.Li@oss.nxp.com wrote:
-> > > From: Frank Li <Frank.Li@nxp.com>
-> > >
-> > > Replace open-coded assignments to callback and callback_param fields
-> > > of struct dma_async_tx_descriptor with calls to the
-> > > dmaengine_desc_set_callback() helper across net drivers.
-> > >
-> > > No functional change intended. Prepare to make struct
-> > > dma_async_tx_descriptor private to the DMA engine.
-> > >
-> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > > ---
-> > >  drivers/net/ethernet/allwinner/sun4i-emac.c       |  3 +--
-> > >  drivers/net/ethernet/micrel/ks8842.c              |  6 ++----
-> > >  drivers/net/ethernet/xilinx/xilinx_axienet_main.c |  6 ++----
-> > >  drivers/net/wwan/qcom_bam_dmux.c                  | 10 ++++------
-> > >  4 files changed, 9 insertions(+), 16 deletions(-)
-> >
-> > [...]
-> >
-> > > diff --git a/drivers/net/wwan/qcom_bam_dmux.c b/drivers/net/wwan/qcom_bam_dmux.c
-> > > index cc6ace8d64371..1479f8362e04e 100644
-> > > --- a/drivers/net/wwan/qcom_bam_dmux.c
-> > > +++ b/drivers/net/wwan/qcom_bam_dmux.c
-> > > @@ -195,9 +195,8 @@ static bool bam_dmux_skb_dma_submit_tx(struct bam_dmux_skb_dma *skb_dma)
-> > >  		return false;
-> > >  	}
-> > >
-> > > -	desc->callback = bam_dmux_tx_callback;
-> > > -	desc->callback_param = skb_dma;
-> > > -	desc->cookie = dmaengine_submit(desc);
-> > > +	dmaengine_desc_set_callback(desc, bam_dmux_tx_callback, NULL, skb_dma);
-> > > +	dmaengine_submit(desc);
-> > >  	return true;
-> > >  }
-> > >
-> > > @@ -477,9 +476,8 @@ static bool bam_dmux_skb_dma_submit_rx(struct bam_dmux_skb_dma *skb_dma)
-> > >  		return false;
-> > >  	}
-> > >
-> > > -	desc->callback = bam_dmux_rx_callback;
-> > > -	desc->callback_param = skb_dma;
-> > > -	desc->cookie = dmaengine_submit(desc);
-> > > +	dmaengine_desc_set_callback(desc, bam_dmux_rx_callback, NULL, skb_dma);
-> > > +	dmaengine_submit(desc);
-> >
-> > I noticed in the above that the return value of dmaengine_submit is discarded
-> > instead of stored.
-> >
-> > Is that intentional? I suppose it might be because AFAICT cookie is never
-> > used and the commit message says "no functional change intended".
+On Mon, Nov 02, 2026 at 07:53:22AM -0600, Rob Herring (Arm) wrote:
+> Unit-addresses by default (and most commonly) are hexadecimal. There's a
+> number of cases using decimal patterns. Fix all of them, limiting the
+> pattern to match the 'reg' limits if there are any.
 > 
-> dma_cookie_assign() already set desc->cookie in dmaengine_submit(). Of couse
-> it is not obvious. Do you need me update commit message to descript it.
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+> ---
+>  .../bindings/display/xylon,logicvc-display.yaml      |  2 +-
+>  .../devicetree/bindings/dpll/dpll-device.yaml        |  2 +-
+>  .../bindings/embedded-controller/google,cros-ec.yaml |  4 ++--
+>  .../intel,ixp4xx-network-processing-engine.yaml      |  2 +-
+>  Documentation/devicetree/bindings/gpio/gpio-mxs.yaml |  4 ++--
+>  .../devicetree/bindings/hwmon/maxim,max31790.yaml    |  2 +-
+>  .../devicetree/bindings/iio/adc/st,stm32-adc.yaml    |  2 +-
+>  .../bindings/iio/adc/st,stm32-dfsdm-adc.yaml         |  6 +++---
+>  .../bindings/input/touchscreen/cypress,tt21000.yaml  |  2 +-
 
-Ah, I see it now. In the tx_submit callback it looks like dma drivers set the
-cookie.
+Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com> # for input
 
-So removing it here really is a no-op since it was getting set, as you said,
-during submit.
+Thanks.
 
-My mistake. I don't think it's worth respinning just to fix the commit
-message just because I didn't dig deep enough :)
+-- 
+Dmitry
