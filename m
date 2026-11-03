@@ -1,96 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.72.28
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793720324;
-	b=lmfWHRpY1VEZ4gT/9o3vjDNUH6XkP5X/vaHZ4uJ+bnDR6DesfGRd33NfBsoazRbV7JQc
-	 awOQH+8ZRC4tdfOVlS10erCatcG+rqjyf5kdtTuyqnKHLh4AP9tPTBnXBU9zwFd0tzK7h
-	 HbVczgSfKoKrBM5egjXzstX9RBt6eOFjxmMaKZMbXtw6kzC36oZhimpIGjRDyCobjcl7w
-	 n2nci8W3fmnYXQzloT1sdvj3PNmaeHA87yP666NljGSyvn4R7OGtw9QG/x3u8fOxvbsie
-	 Fb2J6PGdyyalVoFpYi8EachYw1SiJ5T+nlZ94bpfPc+8nkdhkGlunN34J59oV179deQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793720324;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 Content-Transfer-Encoding:Content-Type:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=67AnjI0FbYIenr3N4R2JFtylitU1GTsn7TbI7XgE8vA=;
-	b=I1EVpMaHOAK9E1v7IJjAzoE0Mhv5RlGynF+IlxHfPIrGN2A1wccLWOTuSw74/iQrxBMK
-	 F4Bygjn+9eoZsAfI1buI1rMY3mTVRkGgDFp3yIxf6fkibqGBom44Gvp/Tw5j0kuyvzIVu
-	 a6slHYCKB3D56pQAyYjAPxijpQRFcSVF1PwhmGAozgxqohR+/vERy0lNjudMYk8lgNq0l
-	 VbFD9eCmEGNJQsDy6A3SZR/T/d7arr6zPsYJK6cxFipUDghbvl/LeNgFjTAT3lO7eTm2F
-	 7siSzu0jX5Ws5iTLGivWlCKTV8iGX0MYcJGYWZfEJvlK28ZbtkLaMANQUfnOCaRJkEA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.nxp.com;
-	spf=pass smtp.mailfrom=oss.nxp.com;
-	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=kBejKpgk;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.72.28
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013028.outbound.protection.outlook.com [52.101.72.28])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.172
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793720428;
+	b=i15Fgze3em6St29j0lrgwDLs4wYsHFQyh8Z7QObJ72EUoZBfq3kZZrflv9dMagBldhhC
+	 67Fpgqase+4/eWSe3Pzr9Sh56JMU8cY6DAzToTfdUzGcaRQSzDn8bfHrAYERZHboNEr79
+	 VY35XNs8h4fex0AnzsMVjcSDEocy+r0gCfAXHsIEproQZL2Mz1FGOD/GcHTvTSJxoRLpy
+	 dEozgaXUedB7IKJWuidHMsG4RkvaXpFcnBIf/tplE0SjLcS5cHANU+EDL0ttVJwl17hP5
+	 +U1uZVUHTJFyziUuQiaKhQpfZr1XLGIwy21H+wjPVOG5dfJByRgisPOxVOUenQl3BDQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793720428;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:Content-Transfer-Encoding:
+	 In-Reply-To;
+	bh=EWOQO4/BUeLCAM60Oj14E4iA/D66uZxulDoNLysenrQ=;
+	b=qHR3NFnGrROQEvPfmIpvL4NQFxq9HwEORy4jkDVr9q5JumN6fzCGViOtZN50R+/WEAln
+	 4eWEmWnAht8JG5XHahEpACRo+FgUk8L6uSNtPoXCuNebY2qbVPbBRYHaECVZn/ULEW9j4
+	 SRzEAI0aXzhDKAgS7HaQA/iHbTqH+YHTrMudGD+LEU7Wms3UC9PQt0VDae4gVwNEcPSOr
+	 QgY0CuCYmwuwMxj4McaSp4wx7kg4O1vxK49TPkVPUSFtFllU+89bu0fHNwThQZOhVcKro
+	 Cn0qZ2vnMfprs3Af746qQ2thjOoKdsa5OvZNX5lhwnBERs/Eenny6oT5M78TZPM35KQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=linaro.org;
+	spf=pass smtp.mailfrom=linaro.org;
+	dkim=pass header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=LSHYy5Md;
+	arc=none smtp.remote-ip=209.85.210.172
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43810606A332
-	for <imx@lists.linux.dev>; Tue,  3 Nov 2026 15:38:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 43810606A332
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7D42606A327
+	for <imx@lists.linux.dev>; Tue,  3 Nov 2026 15:40:26 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B7D42606A327
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=kBejKpgk
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=cfXDZ3elASAt9/KHghhtwyavNGvXamW1MahkzoB8M58WHof5dwfgBtref+2YfMa5znP6lbuM/zlGegrch19B7M8H3J3u7fzSEyatLzEqbjqxPRMXfWxVqaTwakL+i+SQg25CZv6Uah8cS9YF7X79J3jHWcFTMExcdOWVxqGv6P5xU7/ZbDldDCT5/N7Wz4LpLQ9IAmSRZUbAzqPZlMaNKu+yPyUtwQBOwm84uuR04ecxlJRdSnfdQE0pYcP5dH1sRUpbOex4m3jlNfTgor7HrN6Ld79sB6X5RqYKKu4D3wqDECmVeht02oTZANgvrOnfJ/1CD55tvNB3h7NfDsyFjQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=67AnjI0FbYIenr3N4R2JFtylitU1GTsn7TbI7XgE8vA=;
- b=FLHGcZzIv4up3J3R2nzFZ6ppTqUVKM4dlFLOkSIy7rS9UwMcoMMuIJ6aoaVAOcbVRBW7YQO5t9FxCRdM60Z5BgVywB/cnaMezsXz9TGKVE5eTNm/zgxVOBBNK9ug3aZS1EHWI61PIaZss87MF5n/vZgsQ51aHPB2a7niV9Eg8iBu51MrnYSc+VwgG99YZsPAHnH1mfw5En6oaNPwGzuxEoQy5NvI6jrC5+ra5VnloUBLoF9chCrWclQv+XpnoiPatehOdFx0XgqHprRKxeAy+TR5X1MP27OkCyoA7oF3MeoSU0tUAwyOCzwMn62Dd4x/W4bUAxLyE85x3evCxIccSA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=67AnjI0FbYIenr3N4R2JFtylitU1GTsn7TbI7XgE8vA=;
- b=kBejKpgkeIBYKbZlOjD8fH4eywmmuFperveIEycaOa0JGtg1NiTpyrZ4JnmS+0xDI43rOvZ9RR5bHweitPjMDtLkjTG/VtzuAtQULPUxWIJCEQ0ZxA7wm85Dy0mzRzObnzGOVQDAGfUrAay50wBIiMTL0FSt9H9QoeElD2KjwbFE2T/DJma8jU1RI62nYUlDRJXR5MsQX88g735B9OJzbnKpSSCevHjvd2udoNGftN1myX8xmn5wA9nEUWpQxly+FjpcVq7Dhahnneu0Wr3i0eCaNplszJeugV7mXHfMuZzccHBpAK36bTpU1UjVSOjirtegYAaIFZrDV8XElz6jUg==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from MI3PR04MB12438.eurprd04.prod.outlook.com (2603:10a6:290:76::14)
- by AM0PR04MB6994.eurprd04.prod.outlook.com (2603:10a6:208:188::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.8; Tue, 3 Nov 2026
- 15:38:41 +0000
-Received: from MI3PR04MB12438.eurprd04.prod.outlook.com
- ([fe80::c715:c32:8bb1:b70b]) by MI3PR04MB12438.eurprd04.prod.outlook.com
- ([fe80::c715:c32:8bb1:b70b%6]) with mapi id 15.21.0592.007; Tue, 3 Nov 2026
- 15:38:41 +0000
-From: Frank.Li@oss.nxp.com
-To: Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	linux-media@vger.kernel.org (open list:MEDIA INPUT INFRASTRUCTURE (V4L/DVB)),
-	linux-kernel@vger.kernel.org (open list)
-Cc: imx@lists.linux.dev
-Subject: [PATCH v3 9/9] media: pxa_camera: use cookie returned by dmaengine_submit() for logging
-Date: Tue,  3 Nov 2026 10:37:09 -0500
-Message-ID: <20261103153721.1232488-9-Frank.Li@oss.nxp.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261103153721.1232488-1-Frank.Li@oss.nxp.com>
-References: <20261103153721.1232488-1-Frank.Li@oss.nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: PH7P222CA0026.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:510:33a::29) To MI3PR04MB12438.eurprd04.prod.outlook.com
- (2603:10a6:290:76::14)
+	dkim=pass (2048-bit key, unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=LSHYy5Md
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-8a052aff9e9so3148736b3a.0
+        for <imx@lists.linux.dev>; Tue, 03 Nov 2026 07:40:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1793720426; x=1794325226; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=EWOQO4/BUeLCAM60Oj14E4iA/D66uZxulDoNLysenrQ=;
+        b=LSHYy5Md6ANc9E/GezJlILsFzouBlHzl4p9s4w+rmYilEJoUQb/vze86xJDHIK/5Nu
+         4k7DPEtRPrRePAtbaptd1jdI3l8Wb5DZRShVX4ZoIt1JDarGwjs7GX5FjbUZL8Da49nv
+         n7WOFURejdHF+N6nJtKjwKJj1ZpM145LmDl4v5xfFCOF7ipIc+uHHEhFVNbVBqyz0PfM
+         jpeZ9lcAWJ8uz7v4lJU25zBrOc9N8SEmm80HbyLHftROyCgMEouruLAMjZDzEiggVG1a
+         nbXpaIAsY+cuhcNtQaOZ+yDvKtHa12EucRuL3aH6rDi6sVGHz+3+CzrXtaFQ4hH5oARp
+         XzbQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793720426; x=1794325226;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=EWOQO4/BUeLCAM60Oj14E4iA/D66uZxulDoNLysenrQ=;
+        b=fXNI8G4GkU9X0cyc0NY3qBgxdp5NHq/wKp4G0kpPaJ6POEkU+AYJtGVX0EQhBXEXxj
+         VfbjE2xbrJj+njBfVrSjqKoLyVtd0ON3RPGod+spUy7mVSfr+qvilChxWA0MlQxDOpwU
+         00r184ViJoSDLztWGteM06VIYOxlgNyL7Je0FsFT+FQJ7qWA0Zc4JYxaJI1h6nWuUeiQ
+         7Fv3JJn9yO8ugQgR/9fKXzUdOPMs1nuiPQkvn2zt9HnPL+UEs3c1w5mnTulPocJY7fKO
+         SAoofBjq6nD2TiGEA21FbWOsZ2vgc+EfElpAYVJRXaWvPvfkbdhEr0qfFBeRsf/nKIZB
+         FPDA==
+X-Forwarded-Encrypted: i=1; AKwUvBzTMLAmK2LWi8ZBKPgBuGVNA/y3qgj8HHnUAs5kwLBCgC7jmHx37BVkpEEOx4aME2/UVQc=@lists.linux.dev
+X-Gm-Message-State: APuU4Z9QxC+lKX+9FlcyAC7i/3ZECwwnQxbSLdTPE21xJ9t6Ds87W/Fr
+	zYuY/GjiJFXQs9kNY4NbUZyh2f/02yInq/O3jdRz3m/1EN6pK8cr9RMKSleHWlrMjPU=
+X-Gm-Gg: AYBFou2tSh8jCboQwllS5Aw43JihtjvxLCRk/ivGAq1Ozp982tmD3ylMq854z+x46WE
+	mM45BeoM+TdBI7fIHeFY2IUykx06gltBURtdlb+MZ5BCofremQChtLx6uJbBO5AsVttjYiJ90U0
+	H2njUtwVjYPdKDs6Ybb5VcTdU9ccdKRLxqBgQGSfCZ/LLbSN65dr6MRPHxHwgtoBLD0PCQYXEc0
+	+2Rh65OpScZVYQIHOR2X9G3UiRl3lQ3M2H/oO4qjxcA5lrWXtEb8FYokrr5HyiK8H7BwY92dRVh
+	almqbiEaHks5QEO2OWMK5aI8yTmZcQc6ftGvjtehGtsE3qbNXsgqZypv4JvlcjaUEANK3P3bOwu
+	LSLVxZeJf31Y2dHKtBjl9Tx8xOXrllh3OUSN5T3HpA9/DRKZNlwyw2g2DqHrOLUPZxWU7XDY2Q0
+	VbCCUypS4GAKgqR0qgFfF/9r3j1s+I02qXP9CKdVFUX4Zpq1N49tI/G3zl9LkZ9C6Bgwou3U9Ua
+	w+/bqO8WvbwgnsT6pCO28wlpVBk6MTzUknYmPZ/8nrqbszdwfQ4RZzHJOFkFxnR9QB5K6U/nESu
+	1rPfFqTCcM2tG2Pv7W/ZwYJ1UODW3g==
+X-Received: by 2002:a05:6a00:3992:b0:8a0:1acb:677a with SMTP id d2e1a72fcca58-8a9bffd381dmr11899872b3a.57.1793720425872;
+        Tue, 03 Nov 2026 07:40:25 -0800 (PST)
+Received: from p14s ([2604:3d09:148c:c800:9b3e:1037:bf8:ee7d])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8aada3d3603sm3345314b3a.37.2026.11.03.07.40.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Nov 2026 07:40:25 -0800 (PST)
+Date: Tue, 3 Nov 2026 09:40:22 -0600
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
+To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH v2 1/2] remoteproc: elf_loader: Create new callback for
+ copying segments to remote cpu
+Message-ID: <auoAZs66RA5OYjJo@p14s>
+References: <cover.1793117996.git.u.kleine-koenig@baylibre.com>
+ <15d90126debc21c116c9e862a007afa4d81f704c.1793117996.git.u.kleine-koenig@baylibre.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -100,94 +105,142 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|AM0PR04MB6994:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5613fc96-2424-476c-70b3-08df39c089c4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|376014|23010399003|1800799024|366016|10067099003|18002099003|22082099003|56012099006|11063799006|261021123027099003|261021121427099003|261102123227099003|261026140227099003|261028144727099003|261009223027099003|261022105027099003;
-X-Microsoft-Antispam-Message-Info:
-	GBs5X/UPKpIdzMLo/ep2ymzZPKKs9aLX4vopYXS6MiRHNP719390geUBOv5M3J8E1pBtvNaJbeTfwxp3cKazeBnSu4Os4DDIzsh6xb+ALihP+NK/sxPe5W5QjOCEldyth2Lpkr17HxAvW8MDEugOfQ/iTYcFrZswTJJ1p/KgPZJWGKjoHsDQh4ezXr/SRk2dkJ5eU81TDvPiqQaz3WCX4M1A7hmaxX+JfZFB3lpor+EKaW1E7kNVgBtqDEKPmH+KhbuI6L+D6bMKu00weNeLj8dHhan+xP9QIymXI93q8Qw0JzOrhzi8fb3G1Enw/5QU507N1cnOEaFWM+bFkPy21wDx9oX4VCDYIKlRXvHGiTAH2Azs/tO6QGmsjHXb/+JqiRrTUOTkDpRUCwmlyH5jkJbWnoxOE0nTBw4ITQF989fgx7VtbuQsHRC/AtA4YK3q66Nw4xuqhpordNEJQFTsnhulwQKINGnN0+pHPwPTueJd8pMvXXe5gX1TQL72AFCmxRIvz9mliKTkVZ2UGiREaO7Su6pFqnUacrLHpo0C7sNGcLLxpaTOrYR9PlRQhBwvTYhTn8/+4aQDUDWnpkdNCv8eGEHf3PEecLCCBT5ziTVqXThxuMX21w16POjDgPVW
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(376014)(23010399003)(1800799024)(366016)(10067099003)(18002099003)(22082099003)(56012099006)(11063799006)(261021123027099003)(261021121427099003)(261102123227099003)(261026140227099003)(261028144727099003)(261009223027099003)(261022105027099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Yz+QzXifM5+zLau2Lqo9WjVXgFJV57Zk82lyAwf0cnO7MahApOBEg2NndMPz?=
- =?us-ascii?Q?/6DnEvdjj42Ek1xudSqgNSReSDWZJgJ/xDd6gDJrFV4+1sDhMDzEMhqJn78Z?=
- =?us-ascii?Q?slPzzOgEbYZTxqtXqgQiliN2vjLeCnXySE7iOiHKOM3Bv2JSmWOjZjmc4KQZ?=
- =?us-ascii?Q?jGwQ0lJ3+Mh6FeyfwmGTXtALrYfiUZVctFwl52y25w3qt1xNYTAqlrDw0eI8?=
- =?us-ascii?Q?akByqolDDCP0YW8F0/5A+1wt/Fl4e8VcP1Npk7x1Gduwx4w+uT2mnmDhl/Lo?=
- =?us-ascii?Q?ge6TkofgQwQf0EAfiRQUrFCFEq2CELYX93tr1QEpYpMp/NkmMO3XAipUHx7J?=
- =?us-ascii?Q?IUM7n6+OzsahUxcsM9+TCtjsZmXxt6kQtSO4quusKKvnyVmWU+5uejthpkU9?=
- =?us-ascii?Q?C4kSFu33hXBl5eol8oljeL9GAMl2UtQan4juiNlfGmeXjLWvJvutCodAf5VE?=
- =?us-ascii?Q?Shqrs2srE7UKyybgIeFZJ+lD+LITSfiSzgdfsWdWoHs/bBggfb4IBuyi7lX/?=
- =?us-ascii?Q?YD+JmGSFVkc2S/ygGI4QOt+7d60qQMB7WjK8qEYgVp/+ppZsPErhpEdVQeyu?=
- =?us-ascii?Q?Z5sLk/FPmr88EzsaVzfMabndTNkVWWPYilrqVY8l13OEJrPcm+Zw1FYYpNsC?=
- =?us-ascii?Q?54mZ9/SOOMb8D/PoVb8MFN8sy9y4KhX+6mrI91gN8XhPC/YOPvX31zuWyLvu?=
- =?us-ascii?Q?all2hr1jNIn0wM1XJosx6KmZ/Onl4QsHccAyioYE9C8aeQg+AeCpTJMwDuOC?=
- =?us-ascii?Q?uzQh7juhA73T9yKGzvIwJi5ejbTEALJr+ejkW0a4m5e6IFj0GnC33VGZuam9?=
- =?us-ascii?Q?Q9uMQCRnH2Zj2LDPzId3YNCvt+h79FIZ4fsegA2AgIF/NrRkoVATe5iH4ygn?=
- =?us-ascii?Q?DTkJdjh/+iWPrPhEiOgcra8MTjEnWwsyYjD9QugEmJ8njk4NZ9TgrrC+2g0v?=
- =?us-ascii?Q?GfobciD1OGMdM9m60kxU2Q/iQQpfBKh5vnY8R9JrqLp0Nkrnn2Jt3OhAtzRS?=
- =?us-ascii?Q?gX4Tb9MZd0YQcB0xoCpmXZifSvrw1gMnsGP/70uR3w1QQeZGM8Ru+Wk+7vCq?=
- =?us-ascii?Q?Z4ijgegIVycVQ2XgLzsSSEzQ1bXngkLHw95OEtbv0szH8LRgkHRoHHa7cVVG?=
- =?us-ascii?Q?joPADeEEZLX0IhQsinuSnDBus4UwB+xKrWFV5uBPRs78bIr88dQFCw2omWg6?=
- =?us-ascii?Q?nzxFKrrugntEi0J0J0si5ipuA9yqxgXvRdCdgvxVIOjyIW+qTX0E/znD6OVy?=
- =?us-ascii?Q?NyScZEYFsJJek8nlfFSZzUSWy73k+7ilXCkBX+4gDkUspO9WT8LuBvh2Wtc7?=
- =?us-ascii?Q?oaTWrc6fJVHTuV/IPwmXAZXyxYxFtik8/7UQiPCbGV/eZn8s8ygkthkj/fSD?=
- =?us-ascii?Q?OQ0Lm0VXJIWApvnISfFSHLtXogic7SdMCu8DEzVHIOnmfHu0rL05fNhgCihf?=
- =?us-ascii?Q?qQC18UWJI4IBeWcjb1V10eoxxWamO/f7nvIoon26KJw8jdRgRENIS1fDdC6K?=
- =?us-ascii?Q?iyEyLOytzkXPFUuy4PwWnfHU4WlYJlk/2sDvIxZCNvQMf45XyVMCzy2DltjA?=
- =?us-ascii?Q?1a+Mw0yh5DhvAV0IMNOP7gb3cvXiqub+JXS32BjIlqy85WU2VYeWioKX6KPy?=
- =?us-ascii?Q?QcqJM2wwJ9GUXdWhmC3n/T2mkfkjBXpFj1305VJp6XqEkq2ZE1GxYTxU67mH?=
- =?us-ascii?Q?7XvzDfHug6katxMKHy5fGl4Ov79ZpRoMloRsOes/OxHLLrgp00AMMJTrJE2s?=
- =?us-ascii?Q?1UjLK0uQOtiKkSYMNB9KAZ0VAcEY+ngGLshb5RmosLe6ywvarx+U?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5613fc96-2424-476c-70b3-08df39c089c4
-X-MS-Exchange-CrossTenant-AuthSource: MI3PR04MB12438.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Nov 2026 15:38:41.8452
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: SKk16qmeCIrjAGWcC4YkrQLzR+8W2u+We+ctToKLXxTurVCTzkLEoqHoaHpDpZQcmSbzFoihWC5ubo1BsibtyPGgroezAPuLGGxv/WF8nGkzy9AUVUJp/mH5MOCkzPR6
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB6994
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <15d90126debc21c116c9e862a007afa4d81f704c.1793117996.git.u.kleine-koenig@baylibre.com>
 
-From: Frank Li <Frank.Li@nxp.com>
+Hi Uwe,
 
-The debug print in pxa_dma_add_tail_buf() was logging buf->descs[i]->cookie
-instead of buf->cookie[i].
+On Tue, Oct 27, 2026 at 05:25:20PM +0100, Uwe Kleine-König wrote:
+> Some devices have special needs about how an Elf segment is copied to
+> the remote cpu's memory space where the default implementation using
+> memcpy_toio/memcpy and memset_io/memset isn't suitable. An affected
+> mainline driver is imx-dsp-rproc which includes a near-copy of
+> rproc_elf_load_segments() just to handle the IRAM only allowing 32 bit
+> accesses. On (not-yet-mainline) ADI SC846 the respective memory isn't
+> directly accessible at all and DMA must be used to copy the data.
+> 
+> The new callback can be used to implement just the driver specific
+> memcpy + memset to increase code reuse.
+> 
+> The patch only appears big because of indentation changes.
+> 
+> Reviewed-by: Peng Fan <peng.fan@nxp.com>
+> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+> ---
+>  drivers/remoteproc/remoteproc_elf_loader.c | 64 +++++++++++++---------
+>  include/linux/remoteproc.h                 |  4 ++
+>  2 files changed, 41 insertions(+), 27 deletions(-)
+> 
+> diff --git a/drivers/remoteproc/remoteproc_elf_loader.c b/drivers/remoteproc/remoteproc_elf_loader.c
+> index da3cddbe7d4c..3c749a39e5da 100644
+> --- a/drivers/remoteproc/remoteproc_elf_loader.c
+> +++ b/drivers/remoteproc/remoteproc_elf_loader.c
+> @@ -227,35 +227,45 @@ int rproc_elf_load_segments(struct rproc *rproc, const struct firmware *fw)
+>  			break;
+>  		}
+>  
+> -		/* grab the kernel address for this device address */
+> -		ptr = rproc_da_to_va(rproc, da, memsz, &is_iomem);
+> -		if (!ptr) {
+> -			dev_err(dev, "bad phdr da 0x%llx mem 0x%llx\n", da,
+> -				memsz);
+> -			ret = -EINVAL;
+> -			break;
+> -		}
+> +		if (rproc->ops->memcpy_tova) {
+> +			ret = rproc->ops->memcpy_tova(rproc, da, elf_data + offset, filesz, memsz);
+> +			if (ret) {
+> +				dev_err(dev, "Failed to copy segment %d to device address 0x%llx: %pe\n",
+> +					i, da, ERR_PTR(ret));
+> +				break;
+> +			}
 
-dmaengine_submit() returns the cookie and it is stored in buf->cookie[i],
-so use that value in the dev_dbg() call to accurately reflect the submitted
-cookie.
+I really like your patch, but I'm wondering why you decided to move
+rproc_da_to_va() in ops->memcpy_tova().  Right now it is called in both path,
+i.e with and without ops->memcpy_tova().  Wouldn't it be better to
+unconditionally leave rproc_da_to_va() in rproc_elf_load_segments()?
 
-Prepare to make struct dma_async_tx_descriptor private to the DMA engine.
+Thanks,
+Mathieu
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
-change in v3
-- none
-v2: https://lore.kernel.org/imx/38f6a9abf37b06318bb6429ac04807941ca8d558.camel@collabora.com/
----
- drivers/media/platform/intel/pxa_camera.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/media/platform/intel/pxa_camera.c b/drivers/media/platform/intel/pxa_camera.c
-index c9d57e4245181..d41cca2b2d8c2 100644
---- a/drivers/media/platform/intel/pxa_camera.c
-+++ b/drivers/media/platform/intel/pxa_camera.c
-@@ -903,7 +903,7 @@ static void pxa_dma_add_tail_buf(struct pxa_camera_dev *pcdev,
- 		buf->cookie[i] = dmaengine_submit(buf->descs[i]);
- 		dev_dbg(pcdev_to_dev(pcdev),
- 			"%s (channel=%d) : submit vb=%p cookie=%d\n",
--			__func__, i, buf, buf->descs[i]->cookie);
-+			__func__, i, buf, buf->cookie[i]);
- 	}
- }
- 
--- 
-2.43.0
-
+> +		} else {
+> +			/* grab the kernel address for this device address */
+> +			ptr = rproc_da_to_va(rproc, da, memsz, &is_iomem);
+> +			if (!ptr) {
+> +				dev_err(dev, "bad phdr da 0x%llx mem 0x%llx\n", da,
+> +					memsz);
+> +				ret = -EINVAL;
+> +				break;
+> +			}
+>  
+> -		/* put the segment where the remote processor expects it */
+> -		if (filesz) {
+> -			if (is_iomem)
+> -				memcpy_toio((void __iomem *)ptr, elf_data + offset, filesz);
+> -			else
+> -				memcpy(ptr, elf_data + offset, filesz);
+> -		}
+> +			/* put the segment where the remote processor expects it */
+> +			if (filesz) {
+> +				if (is_iomem)
+> +					memcpy_toio((void __iomem *)ptr, elf_data + offset, filesz);
+> +				else
+> +					memcpy(ptr, elf_data + offset, filesz);
+> +			}
+>  
+> -		/*
+> -		 * Zero out remaining memory for this segment.
+> -		 *
+> -		 * This isn't strictly required since dma_alloc_coherent already
+> -		 * did this for us. albeit harmless, we may consider removing
+> -		 * this.
+> -		 */
+> -		if (memsz > filesz) {
+> -			if (is_iomem)
+> -				memset_io((void __iomem *)(ptr + filesz), 0, memsz - filesz);
+> -			else
+> -				memset(ptr + filesz, 0, memsz - filesz);
+> +			/*
+> +			 * Zero out remaining memory for this segment.
+> +			 *
+> +			 * This isn't strictly required since dma_alloc_coherent already
+> +			 * did this for us. albeit harmless, we may consider removing
+> +			 * this.
+> +			 */
+> +			if (memsz > filesz) {
+> +				if (is_iomem)
+> +					memset_io((void __iomem *)(ptr + filesz),
+> +						  0, memsz - filesz);
+> +				else
+> +					memset(ptr + filesz, 0, memsz - filesz);
+> +			}
+>  		}
+>  	}
+>  
+> diff --git a/include/linux/remoteproc.h b/include/linux/remoteproc.h
+> index 00019b1895e6..e750a127cbc4 100644
+> --- a/include/linux/remoteproc.h
+> +++ b/include/linux/remoteproc.h
+> @@ -75,6 +75,7 @@ enum rsc_handling_status {
+>   * @detach:	detach from a device, leaving it powered up
+>   * @kick:	kick a virtqueue (virtqueue id given as a parameter)
+>   * @da_to_va:	optional platform hook to perform address translations
+> + * @memcpy_tova:optional platform hook to copy data into remote memory range
+>   * @parse_fw:	parse firmware to extract information (e.g. resource table)
+>   * @handle_rsc:	optional platform hook to handle vendor resources. Should return
+>   *		RSC_HANDLED if resource was handled, RSC_IGNORED if not handled
+> @@ -99,6 +100,9 @@ struct rproc_ops {
+>  	int (*detach)(struct rproc *rproc);
+>  	void (*kick)(struct rproc *rproc, int vqid);
+>  	void * (*da_to_va)(struct rproc *rproc, u64 da, size_t len, bool *is_iomem);
+> +	int (*memcpy_tova)(struct rproc *rproc, u64 da, const void *src,
+> +			   size_t filesz, size_t memsz);
+> +
+>  	int (*parse_fw)(struct rproc *rproc, const struct firmware *fw);
+>  	int (*handle_rsc)(struct rproc *rproc, u32 rsc_type, void *rsc,
+>  			  int offset, int avail);
+> -- 
+> 2.47.3
+> 
