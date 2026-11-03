@@ -1,57 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793687957;
-	b=BFxhoAXv2KlJUqmcBkc6Cz57T20z7vzFoVOfpEwGTz5qClFb+Hqp6l0s37mims7sQCyY
-	 VrVWBk3ii1WHs7DXcR0qmcbKUcyll1TsMRrZ6BiunTfUyktBHMQ9UX6JUHcRbZRzI5tzv
-	 HBB3F8ybYedwpob32v3V0RsMVs3H8xRPKqNISaOyijCEqdk/hrV5XF2dVPKB78eWv+LXq
-	 VQx9DV6Q9thb5czCmwhAJMTyFLy2b3qdvKgOpuYybmNctSWuWdBy4Gjuoi/GIzf3eWIRL
-	 5kfmQVzO8vuMA+yPlo7ilONyTIj5ql7GFOOxhBbrXcZAUwwuK+I4J/ayMllXaOrLKZw==
+	t=1793688833;
+	b=4aQu300wyvThNPYrNqP0KiQI+0xIHEv+jVSjwaDXsTD1jJ/nv0kE7BashPS9mZq6SL3w
+	 qSd2qEJKzv1g4dt0QV+VXiS1RS1EyR1b0NFpXplsY9H3f2Tg4FpMiF0/cjElIM1z9nmqe
+	 syN03llaSVRhMkScJ8W8zyOfrCgE3HjgnZ1uElt2ifVtmuESO/4cUNi9ja5Q1kHJxljop
+	 VMgMMpleqlxy067/1lfImODLTxj/hQ6tIzZ7w0SCsaPXFe9YB5WjRlwf24J2+yun2MHaT
+	 0VlfRGKRAHbUM5HOVwZcl1xGMmMt1FKm/V6myR9t6MrZRkBF3gOK6Zi6gPYTW1/H1fA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793687957;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793688833;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=lSYvc//2evcuVvvfbgkvtGMf4hbeH9dEG3g0YeldfH8=;
-	b=zApoxyMDOvntR8T15LhmzOuSQcwK8u5mnvqjsiRzRE1nrGvtAsvq665XZWFfFmxgTlZl
-	 j7LVW00CawotJovjQAPixDjVMjGp75FCoGbGpBcfAiVxTHXytlOQBXSjRpH6tGlD5Tkud
-	 f4Sis3J/wj2I9gSe6bbKDt/Zjpsj/Nb/piFxx1Zc92jkWOjs/j+vtWYcPefz4inVS9z1J
-	 sWM/bWbQlyCim1maElacIBb+g+GJGaGiv6YIChulxXHG/lX2LMfF1JrkRQIJ/wzpe5iC6
-	 QDty1Y3hz+IfHlhrHA+RyQoMb9PsGQXLMNKL2S4h+B35UTrgLQ384dI2NlFScn8KJQQ==
+	bh=eNVA6uUa5l1vHwP6H2nnBnGA5vjq/AXUnUHfxocMenw=;
+	b=hFxmwqA+mCl04qK8uyl7BNN4HmUHWsVqF+z7nk731qUCowyaLGEIZlQ/ssp9/oCwXmED
+	 IScdU3AENHkSac8ji1Bh3iYeBrnAPfxEN3B727ucPmTSosFt+a3GoQTJ26U34JbPd9qJL
+	 smWz0bD5MZtyhBJj195KaybkFBqs5y/bclntwuVHcYwe/bkTiXkHIZ/cuQ9MSjtNYZdhx
+	 WX7IwejkL5pxaJz5tBMCN0xPURLMGiHlVdz/RGbvSlX1hpaMqNOm7n662LMtADXsVRapI
+	 23CGuamlwtw850817hX+Tf5o80usaP+TbjvDW8Y20fEfnxXYoKRnePtYG+juNStF9lA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JYuuwOrB;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OZJOy1fw;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32288606A324;
-	Tue,  3 Nov 2026 06:39:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97301606A329;
+	Tue,  3 Nov 2026 06:53:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JYuuwOrB
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67AE61F000C1;
-	Tue,  3 Nov 2026 06:39:16 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OZJOy1fw
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCF6D1F000C1;
+	Tue,  3 Nov 2026 06:53:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793687956;
-	bh=lSYvc//2evcuVvvfbgkvtGMf4hbeH9dEG3g0YeldfH8=;
+	s=k20260515; t=1793688833;
+	bh=eNVA6uUa5l1vHwP6H2nnBnGA5vjq/AXUnUHfxocMenw=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=JYuuwOrBIzz7fLQ67ZBuvME0tdnr7gVl0ZNb/E3fXqyFJGWYDAxE4SnCyIcTga8c1
-	 nKplLFcvCvy3Ah247q5rQrSoN9uOaoQX7UqIbyMpIuDycmsELciHNX4NJCq7WsVsyd
-	 miMIdtWz606jBZyrkZTrQSxEx5ZdiKjsBQo0OvxBVJ6W27ymZ5jNQ0vnzODm0qtlox
-	 75ySdzoh9D3EqdcDzSQERO5aTQBZvQWfSzSeMO+nq+a7vd6oqZgoU2sSWV2ageKFzf
-	 8yJ+h1nQHVT8xfDtJNVoo9sqeg4OE5dgvRDKDhuN67dTmgb473x24cxUFOGc5ncv0s
-	 embgxrFlB27xg==
-Message-ID: <sashiko-outbox-194651@kernel.org>
+	b=OZJOy1fwQMba+htFgTluXt510XkhuoochQD09CXpL0d9kABoNXA661ne5Y7Wm31it
+	 /JQ6nhEglRu6PTs3HfDQM6i0+PJerY8y/rIlla47GOKZqxbATOabD4AJo+0LuoksFz
+	 /14BSeKpblOjAa9mtoaf/pHP0ofdfw7xjPgm41jhIQoLIvREivqwsxUIqWrcjL6B47
+	 6s1ZrLX+m/BRVkkKYu7d+k3d0aiba8naDcWo9da+xEc9MfgW01CJV50Ep8eypxaelg
+	 VFXyHpneUpB6HDYHW7s+yLqLI5auqaOcoLEZ6CeAcbkhxTW3Yk/uC3u+BoA7lKwWtw
+	 B0LPMyBflzVkw==
+Message-ID: <sashiko-outbox-194676@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v9 04/16] drm/imx: dc-kms: Use driver specific
- .atomic_commit_tail callback
+Subject: Re: [PATCH v9 09/16] drm/imx: dc: Add DPR channel support
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Liu Ying" <victor.liu@nxp.com>
 Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20261103-imx8-dc-prefetch-v9-4-3b985e7636e2@nxp.com>
+In-Reply-To: <20261103-imx8-dc-prefetch-v9-9-3b985e7636e2@nxp.com>
 References: <20261103-imx8-dc-prefetch-v9-0-3b985e7636e2@nxp.com>
- <20261103-imx8-dc-prefetch-v9-4-3b985e7636e2@nxp.com>
+ <20261103-imx8-dc-prefetch-v9-9-3b985e7636e2@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 03 Nov 2026 06:39:15 +0000
+Date: Tue, 03 Nov 2026 06:53:52 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -61,129 +60,144 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 4 potential issue(=
 s) to consider:
-- [High] drm/imx: dc: plane disable skipped on modeset in dc_drm_atomic_com=
-mit_tail()
+- [High] drm/imx: dc-dprc: invalid wait context calling dc_prg_shadow_enabl=
+e() in IRQ
+- [High] drm/imx: dc-dprc: runtime PM race and leak in dc_dprc_wrap_irq_han=
+dler()
+- [Medium] drm/imx: dc-dprc: RPM reference leak and PRG imbalance in dc_dpr=
+c_configure()
+- [Medium] drm/imx: dc-dprc: error IRQs left masked on restart before runti=
+me suspend
 --
 
-commit ff022f683849ca82589cd00028c8fb7c412423dc
+commit cd34e5bff983d01a81bde212b10cde47c6bbe04b
 Author: Liu Ying <victor.liu@nxp.com>
 
-drm/imx: dc-kms: Use driver specific .atomic_commit_tail callback
+drm/imx: dc: Add DPR channel support
 
-This commit introduces a custom atomic_commit_tail callback for the i.MX8qxp
-Display Controller KMS driver that passes DRM_PLANE_COMMIT_ACTIVE_ONLY and
-DRM_PLANE_COMMIT_NO_DISABLE_AFTER_MODESET to drm_atomic_helper_commit_plane=
-s()
-to avoid accessing plane registers while clocks are disabled.
-
-> diff --git a/drivers/gpu/drm/imx/dc/dc-kms.c b/drivers/gpu/drm/imx/dc/dc-=
-kms.c
-> index 0e2ce6a425487..9ffa15ac43a25 100644
-> --- a/drivers/gpu/drm/imx/dc/dc-kms.c
-> +++ b/drivers/gpu/drm/imx/dc/dc-kms.c
-[ ... ]
-> @@ -30,6 +31,29 @@ static const struct drm_mode_config_funcs dc_drm_mode_=
-config_funcs =3D {
->  	.atomic_commit =3D drm_atomic_helper_commit,
->  };
-> =20
-> +static void dc_drm_atomic_commit_tail(struct drm_atomic_commit *state)
-> +{
-> +	struct drm_device *dev =3D state->dev;
-> +
-> +	drm_atomic_helper_commit_modeset_disables(dev, state);
-> +
-> +	drm_atomic_helper_commit_planes(dev, state,
-> +					DRM_PLANE_COMMIT_ACTIVE_ONLY |
-> +					DRM_PLANE_COMMIT_NO_DISABLE_AFTER_MODESET);
+This commit adds a platform driver for the Display Prefetch Resolve Channel
+(DPRC) in the i.MX8 Display Controller and links it with the PRG driver.
 
 [Severity: High]
-Could passing DRM_PLANE_COMMIT_NO_DISABLE_AFTER_MODESET (and
-DRM_PLANE_COMMIT_ACTIVE_ONLY) here leave the plane's FetchUnit source buffer
-and LayerBlend enabled in hardware after the old framebuffer is cleaned up?
+As reported by Sashiko on v8 [1], in drivers/gpu/drm/imx/dc/dc-dprc.c at
+line 243, can dc_dprc_configure() leak a runtime PM reference and leave PRG
+runtime PM unbalanced when given an unsupported format or when PRG runtime
+resume fails?
 
-In drm_atomic_helper_commit_planes(), DRM_PLANE_COMMIT_NO_DISABLE_AFTER_MOD=
-ESET
-skips calling funcs->atomic_disable() when the CRTC needs a modeset:
+When dc_dprc_configure() is called with start set to true, it calls
+pm_runtime_resume_and_get(dev) at line 207 and writes hardware registers
+before checking format->format in the switch statement at line 230. If the
+format hits the default branch at line 243, the function logs an error and
+returns early without calling pm_runtime_put(dev) and before calling
+dc_prg_configure(). That leaks the runtime PM reference on dprc->dev and
+leaves dprc->prg->dev without a matching reference if dc_dprc_disable() is
+later called.
 
-    if (disabling && funcs->atomic_disable) {
-        struct drm_crtc_state *crtc_state;
+Similarly, at line 259, dc_dprc_configure() calls dc_prg_configure(). In
+drivers/gpu/drm/imx/dc/dc-prg.c at line 137, if start is true and
+pm_runtime_resume_and_get() fails on prg->dev, dc_prg_configure() returns
+void without reporting the error. dc_dprc_configure() then unconditionally
+calls dc_dprc_enable() at line 262 and dc_dprc_reg_update() at line 264,
+which write to prg->reg while PRG clocks are still disabled.
 
-        crtc_state =3D old_plane_state->crtc->state;
+Could format validation be done before pm_runtime_resume_and_get(), and
+could dc_prg_configure() return an error code so dc_dprc_configure() can
+unwind the dprc->dev runtime PM reference on failure?
 
-        if (drm_atomic_crtc_needs_modeset(crtc_state) &&
-            no_disable)
-            continue;
+[Severity: Medium]
+In drivers/gpu/drm/imx/dc/dc-dprc.c at line 276, does
+dc_dprc_disable_repeat_en() leave the hardware error interrupts masked if
+the channel is restarted before runtime suspend runs?
 
-        funcs->atomic_disable(plane, state);
-    }
+In dc_dprc_runtime_resume() at line 507, the driver resets the hardware with
+dc_dprc_reset() and writes IRQ_CTRL_MASK to IRQ_MASK at line 511, which
+masks the three control interrupts while unmasking the five error interrupt=
+s.
 
-That flag is meant for drivers where the CRTC atomic_disable callback also
-disables the CRTC's planes. However, in drivers/gpu/drm/imx/dc/dc-crtc.c,
-dc_crtc_atomic_disable() only disables FrameGen and calls pm_runtime_put() =
-on
-the Display Engine and the shared Pixel Engine without disabling the planes:
+When stopping the channel, dc_dprc_disable_repeat_en() at line 276 sets
+IRQ_ALL_MASK in IRQ_MASK, masking both the control and error interrupts.
+Then dc_dprc_disable() at line 292 calls pm_runtime_put(dprc->dev), which
+schedules an asynchronous suspend on pm_wq.
 
-    enable_irq(dc_crtc->irq_dec_seqcomplete);
-    dc_fg_disable(dc_crtc->fg);
-    DC_CRTC_WAIT_FOR_COMPLETION_TIMEOUT(dec_seqcomplete_done);
-    disable_irq(dc_crtc->irq_dec_seqcomplete);
+If dc_dprc_configure() is called again with start set to true before the
+asynchronous runtime suspend callback executes, pm_runtime_resume_and_get()
+at line 207 sees the device is already active and returns immediately
+without running dc_dprc_runtime_resume(). Because dc_dprc_configure() only
+unmasks IRQ_DPR_CRTL_DONE via dc_dprc_enable_ctrl_done_irq() at line 190,
+won't the five error interrupts remain masked and dc_dprc_reset() be skipped
+for the new stream?
 
-    dc_fg_disable_clock(dc_crtc->fg);
+[Severity: High]
+As reported by Sashiko on v8 [2], in drivers/gpu/drm/imx/dc/dc-dprc.c at
+line 310, does calling dc_prg_shadow_enable() from
+dc_dprc_wrap_irq_handler() trigger an invalid wait context on PREEMPT_RT or
+lockdep?
 
-    /* request pixel engine power-off as plane is off too */
-    pm_runtime_put(dc_drm->pe->dev);
+In dc_dprc_probe() at line 463, devm_request_irq() requests wrap_irq with
+IRQF_SHARED | IRQF_NO_THREAD, so dc_dprc_wrap_irq_handler() always runs in
+hardirq context. When IRQ_DPR_CRTL_DONE is handled at line 362, the call
+chain dc_dprc_wrap_irq_handler() -> dc_dprc_ctrl_done_handle() ->
+dc_prg_shadow_enable() writes to prg->reg using regmap_write().
 
-And in drivers/gpu/drm/imx/dc/dc-plane.c, __dc_plane_atomic_disable() is wh=
-at
-actually disables the FetchUnit source buffer and LayerBlend:
+Unlike dc_dprc_regmap_config, dc_prg_regmap_config in
+drivers/gpu/drm/imx/dc/dc-prg.c at line 71 sets fast_io to true but does not
+set use_raw_spinlock to true. As a result, prg->reg uses a standard
+spinlock_t, which becomes a sleepable lock on PREEMPT_RT and violates
+lockdep's raw lock nesting rules when acquired from an IRQF_NO_THREAD hardi=
+rq
+handler (as well as from dc_dprc_configure() when called with local IRQs and
+preemption disabled). Should dc_prg_regmap_config also set use_raw_spinlock
+to true?
 
-    /* disable fetchunit in shadow */
-    fu_ops =3D dc_fu_get_ops(dplane->fu);
-    fu_ops->disable_src_buf(dplane->fu, DC_FETCHUNIT_FRAC0);
+[Severity: High]
+As reported by Sashiko on v8 [3], in drivers/gpu/drm/imx/dc/dc-dprc.c at
+line 322, can the runtime PM handling in dc_dprc_wrap_irq_handler() race
+with dc_dprc_disable() and dc_dprc_runtime_suspend()?
 
-    /* set ExtDst's source to ConstFrame */
-    dc_ed_pec_src_sel(dplane->ed, dc_cf_get_link_id(dplane->cf));
+Because wrap_irq is requested with IRQF_SHARED at line 463, another DPR
+channel sharing the interrupt line can invoke dc_dprc_wrap_irq_handler() at
+any time, even after this channel has masked its own interrupts in
+dc_dprc_disable_repeat_en(). This creates three issues with the
+pm_runtime_get_noresume() / pm_runtime_active() / pm_runtime_put_noidle()
+pattern at lines 322 and 366:
 
-When dc_crtc_atomic_enable() runs with new_crtc_state->plane_mask =3D=3D 0,=
- it
-switches ed_cont's source selection to cf_cont, but it does not call
-fu_ops->disable_src_buf():
+1. If a shared interrupt runs dc_dprc_wrap_irq_handler() and increments
+usage_count via pm_runtime_get_noresume() at line 322 while
+dc_dprc_disable() at line 292 calls pm_runtime_put() (or while the async
+runtime suspend worker is checking usage_count), the runtime PM core sees
+usage_count > 0 and aborts the idle/suspend transition. When the IRQ handler
+then drops its reference with pm_runtime_put_noidle() at line 366, no new
+idle or suspend request is queued, leaving dprc->dev active with its clocks
+enabled indefinitely.
 
-    /* show CRTC background if no plane is enabled */
-    if (new_crtc_state->plane_mask =3D=3D 0) {
-        /* constframe in content stream shows black frame */
-        dc_cf_constantcolor_black(dc_crtc->cf_cont);
+2. In rpm_suspend(), usage_count is checked before the status changes from
+RPM_ACTIVE to RPM_SUSPENDING and before dc_dprc_runtime_suspend() is called
+at line 487. If a shared interrupt fires on another CPU after the
+usage_count check passes, pm_runtime_get_noresume() does not stop the
+ongoing suspend and pm_runtime_active() still returns true until the status
+is updated, allowing the handler to read IRQ_MASK and IRQ_MASK_STATUS while
+dc_dprc_runtime_suspend() is disabling dprc->clks.
 
-        cf_link =3D dc_cf_get_link_id(dc_crtc->cf_cont);
-        dc_ed_pec_src_sel(dc_crtc->ed_cont, cf_link);
-    }
+3. pm_runtime_active(dev) returns true whenever dev->power.disable_depth is
+non-zero, even if the device is runtime-suspended with its clocks off (for
+example, during system suspend after __device_suspend_late() disables
+runtime PM and before noirq suspend disables interrupts). A shared interrupt
+during that window will see pm_runtime_active(dev) as true and read
+dprc->reg while clocks are disabled.
 
-If an active CRTC with an enabled primary plane undergoes a modeset while
-remaining active and disables its plane in the same commit,
-dc_crtc_atomic_disable() calls asynchronous pm_runtime_put(dc_drm->pe->dev)
-and dc_crtc_atomic_begin() immediately calls
-pm_runtime_resume_and_get(dc_drm->pe->dev) before runtime suspend runs (or =
-the
-second CRTC on the shared Pixel Engine keeps dc_drm->pe->dev active), so
-dc_pe_runtime_resume() does not reset the Pixel Engine hardware. Because
-drm_atomic_crtc_needs_modeset() is true, DRM_PLANE_COMMIT_NO_DISABLE_AFTER_=
-MODESET
-skips dc_plane_atomic_disable(), leaving SOURCEBUFFERENABLE and LayerBlend
-enabled after drm_atomic_helper_cleanup_planes() cleans up the framebuffer.
+Could the driver track whether clocks are enabled under dprc->lock in the
+runtime PM callbacks instead of relying on pm_runtime_get_noresume() and
+pm_runtime_active() in the hardirq handler?
 
-Similarly, because drm_atomic_helper_swap_state() swaps crtc->state before
-dc_drm_atomic_commit_tail() runs, plane_crtc_active(old_plane_state) evalua=
-tes
-to false whenever a CRTC is being disabled (new_crtc_state->active =3D=3D f=
-alse).
-With DRM_PLANE_COMMIT_ACTIVE_ONLY, disabling a CRTC and its plane while the
-second CRTC keeps the shared dc_drm->pe->dev powered on, followed by
-re-enabling the first CRTC with plane_mask =3D=3D 0, also skips
-dc_plane_atomic_disable() without ever calling fu_ops->disable_src_buf().
+[1] https://lore.kernel.org/r/20261030-imx8-dc-prefetch-v8-8-c4f81afd4533@n=
+xp.com
+[2] https://lore.kernel.org/r/20261030-imx8-dc-prefetch-v8-8-c4f81afd4533@n=
+xp.com
+[3] https://lore.kernel.org/r/20261030-imx8-dc-prefetch-v8-8-c4f81afd4533@n=
+xp.com
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261103-imx8-dc-pr=
-efetch-v9-0-3b985e7636e2@nxp.com?part=3D4
+efetch-v9-0-3b985e7636e2@nxp.com?part=3D9
