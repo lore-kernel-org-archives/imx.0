@@ -1,56 +1,86 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.15
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793779387;
-	b=ugoUIUrOF+BZCLqAIuNdPnSj8w0Y63j25bQGFuFGRoUOf/5cLK8YVYuZR6GrdjIyF/Ge
-	 pea4pGilVwmmJYDrs7i3EpBTlxzgQnJKRx1Z5T96uQjRnzHrAHniqEdKuUDRorOI0YPj7
-	 T5GOqUHqTOLn78R8AykJkBS1fuNJ7VReyoWqlkVTuQziRBDnPnpAkPpQAp1QBYG/PGqG0
-	 sMLvyUiib4eUzQ8/KchLFqYwPo85uRmG+4Eu6bu/Jfc/eGTJUtWMqLwvKpGAYFk6Jno2m
-	 oeKvgD7fzGxWtOt6KdV5RI5oxsldig1yEXfXNu5Srpm81ecBv80piPXmuXI7GBWsk7g==
+	t=1793781022;
+	b=lImWyvFomCyto7qPLr3DUizO93RDjffsiovatZPOvp6rByf+IdVxtdWWbyI30KvxExKC
+	 vFikIvGkyVKRAkCOB0PYKh+Km9UmwRqNC9garRxVM/JaVhsX4wdmzb4NePAOVZb+jmDQY
+	 kmTB2tAFe7/6VBV3oA+WCN0R3loWWQ7f4naHCmPCXzBlZoUfPyiNt0SnulatXkzfLR1bO
+	 z36nnGJi9/f5D6+J0Hr4zx9lkBdcGMItQvr+iWMO3/t6hQ9nbBOjQQReEgOC4pXIHV9yi
+	 SyObLmKn61eMqcrGfNsd9j9772wJq9AzctE7yQ9NFHsOT2cuTR5Q1x5FL+whniY+3Qw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793779387;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=E2/FCrEwTm7tw/V69sIUupNNwmMiN8JMgGcN8uo0UK0=;
-	b=VWH7TMdwyWpc38Rw8qs9vdfPvqkpL++l40S45UIe8gxhzYb9T+tI3inpkCZVd4+m4cWV
-	 uMkayKwsyBtLzpk98P/4ncw/F+GmvOGewyXpJtl9TnIkVDQuKqi14BFHu3vAMNE4Njo3A
-	 9zL0y2l1yHQ/h3FZTLsCx/HXZGfUpe1+rRnd7GEG+N+PJV/Cqy62fJXUDtyQbFv1W6pWI
-	 qiJYbnZ6C0IrqLyxatmJrJ4r/JRZ3PZvX6WYnLGRxKkf+PBJbAuYwSzxgfa60l9NXHKH0
-	 vEjXtY6xnnhSxiBTTyTuEXc2pkvJSY/J8WgS1QpaXSne7ps/g4lrbkqiojS6x3rybsg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793781022;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To:Organization;
+	bh=kSkN+y8opL5CBs5M/ciD6De9QJtjpJLB5HYNs+Lgc/o=;
+	b=xDNa/qKlCGNqrxZRlvcIBan78Ywrwbhbo1rfsBEcr4RVU4daONdJGr9rgOoLFytMl+S0
+	 +4yWesYf/utSXARxSOdIbONCjsOgYE3xO0CkUIeiuHX7QGnyweBWjM+giv4gVSV6aoYFB
+	 9k5/HK857K0elMHuqRINzsE1ggW0M84v4XKX2X8Ihd+EDD3B8f56k5ErkmpZcYfkVJsht
+	 xofdvDv0SrOy/uWxA1z6CWXBJjubhybe2A8M9AElWjt7mTHheUSsON+haVX3TDlTgsJ89
+	 COtfNNHrgHbUacEuhKLPynpAnRd6mYlJJaLnu1CUU26OZbT1rRQVYlYzouNKBMd4S0g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VvoHDmiQ;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=A9hySeRX;
+	arc=none smtp.remote-ip=192.198.163.15
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71E15606A328
-	for <imx@lists.linux.dev>; Wed,  4 Nov 2026 08:03:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7B1F606A31B;
+	Wed,  4 Nov 2026 08:30:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A7B1F606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VvoHDmiQ
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB7DC1F00919;
-	Wed,  4 Nov 2026 08:03:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793779387;
-	bh=E2/FCrEwTm7tw/V69sIUupNNwmMiN8JMgGcN8uo0UK0=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=VvoHDmiQOEP+pD2JRih3wPAXYWN+haFMXP6B85KbMCSK9sqo/H1UyNIkqWOVqdTid
-	 MgXfsnYckuJc532vcTV6J8JDj6jMn+9VKcPLBcZbtlBF6S8qZbx8Lz8wJIvl30TGcR
-	 j4e2IcSFtsj5ZEjSegyA5gF6EdEPd3qrZfYCuTc9mZYbnlZ/uDzwvv8QmcDcHLf1Bj
-	 ynKyVMXPcSr93HNgj+e7EM/FTWnaEWOOlUeO5U8O3k8fLaD+kmnigG0XSZKNJqKSjn
-	 eVUATGawsTpx+ADdj4w51YDR3GrdBeWeFET1xxWySUuOaAOGVekWa5k99KxDr62POC
-	 gAm0fOPblJq/A==
-Message-ID: <sashiko-outbox-196851@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v7 06/10] irqchip/imx-irqsteer: Let devres own the clock
-Reply-To: sashiko-reviews@lists.linux.dev
-To: Zhipeng.wang_1@oss.nxp.com
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20261104073759.386777-7-Zhipeng.wang_1@oss.nxp.com>
-References: <20261104073759.386777-1-Zhipeng.wang_1@oss.nxp.com>
- <20261104073759.386777-7-Zhipeng.wang_1@oss.nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 04 Nov 2026 08:03:06 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=A9hySeRX
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793781022; x=1825317022;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=lItRH7Z12dB6U4PsmR4/sPVPKYSFiWRTUv3Y5oFAozw=;
+  b=A9hySeRXZAdDOZ4UTlSXRvh8mYvZoyP5DSZKykn9A+j+o19PoHLzKVBa
+   3/PdWGD61CllYklqXK0G2WGZ1j8eyOgPApG6oJIFxUcBHWq1J0az+3I5A
+   E8RDkPtmw3q5nFflZEnTgsrYq75NVv2h/aIK2GavdTeD7MDPWpkBkJHiB
+   9Sy7iqXoRK7/EIK/bFNorkIy4ZhuQJ1hzH9DD5bETUR71f9Oz5IuyAKly
+   9wwoYxUGWjZaK/FM2+UmkNqk+kYSoYxdIkKECvcYYp1tD/F65uOdeSAXX
+   F9qAN+JiZuFqCDc4LyiprS7OGN3r6AkPrCey2qDnagyeWXiTgO2wZlv4q
+   g==;
+X-CSE-ConnectionGUID: 3ZByIvFPSHSg3BAsbxSymw==
+X-CSE-MsgGUID: hEwyDi+CRrys41dB9Xzphw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11955"; a="2524953"
+X-IronPort-AV: E=Sophos;i="6.27,194,1787036400"; 
+   d="scan'208";a="2524953"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2026 00:30:21 -0800
+X-CSE-ConnectionGUID: XmIZj721Sp63rCxB6AtQ1w==
+X-CSE-MsgGUID: dOoOk3kdQ5ytHJ1HQFa2Kg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,194,1787036400"; 
+   d="scan'208";a="6561184"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.24])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2026 00:30:17 -0800
+Date: Wed, 4 Nov 2026 10:30:14 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Frank.Li@oss.nxp.com
+Cc: Manivannan Sadhasivam <mani@kernel.org>,
+	Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Frank Li <Frank.Li@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Niklas Cassel <cassel@kernel.org>, Koichiro Den <den@valinux.co.jp>,
+	Christian Bruel <christian.bruel@foss.st.com>,
+	Marco Crivellari <marco.crivellari@suse.com>,
+	"open list:MHI BUS" <mhi@lists.linux.dev>,
+	"open list:MHI BUS" <linux-arm-msm@vger.kernel.org>,
+	"open list:PCI ENDPOINT SUBSYSTEM" <linux-pci@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev,
+	vkoul@kernel.org, Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH 1/1] PCI: replace chan->device->dev with
+ dmaengine_get_provider_device()
+Message-ID: <aurtFju8dyFbRROh@ashevche-desk.local>
+References: <20261103212924.1780217-1-Frank.Li@oss.nxp.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -59,186 +89,70 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261103212924.1780217-1-Frank.Li@oss.nxp.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [Medium] irqchip/imx-irqsteer: clk_disable() in suspend breaks power doma=
-in and SCMI clk
-- [Medium] irqchip/imx-irqsteer: clock disable underflow if resume fails in=
- remove()
---
+On Tue, Nov 03, 2026 at 04:29:20PM -0500, Frank.Li@oss.nxp.com wrote:
+> 
+> Use the dmaengine_get_provider_device() API instead of directly
+> accessing chan->device->dev to get the DMA provider device.
+> 
+> No functional change. Prepare make to struct dma_device private to the DMA
+> engine.
 
-commit a2f4167d93e3f08a9310e23ef0e119f1d5e5a194
-Author: Zhipeng Wang <zhipeng.wang_1@nxp.com>
+...
 
-irqchip/imx-irqsteer: Let devres own the clock
+>  Assisted-by: LLM
 
-This commit switches the imx-irqsteer driver to acquire ipg_clk using
-devm_clk_get_enabled() so that devres manages the clock's prepare and enable
-state across probe and unbind. It also updates the runtime PM callbacks to
-use clk_disable() and clk_enable() and resumes the device in remove() before
-devres releases the clock.
+It's an obsolete tag. Please, replace it in a free-form explanation how AI was
+used in the comment block, below '---' line.
 
-> diff --git a/drivers/irqchip/irq-imx-irqsteer.c b/drivers/irqchip/irq-imx=
--irqsteer.c
-> index 14fc56847a8c1..063a071ba1630 100644
-> --- a/drivers/irqchip/irq-imx-irqsteer.c
-> +++ b/drivers/irqchip/irq-imx-irqsteer.c
-> @@ -194,7 +194,7 @@ static int imx_irqsteer_probe(struct platform_device =
-*pdev)
->  		return PTR_ERR(data->regs);
->  	}
-> =20
-> -	data->ipg_clk =3D devm_clk_get(&pdev->dev, "ipg");
-> +	data->ipg_clk =3D devm_clk_get_enabled(&pdev->dev, "ipg");
->  	if (IS_ERR(data->ipg_clk))
->  		return dev_err_probe(&pdev->dev, PTR_ERR(data->ipg_clk),
->  				     "failed to get ipg clk\n");
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
 
-[ ... ]
+...
 
-> @@ -273,15 +266,23 @@ static int imx_irqsteer_probe(struct platform_devic=
-e *pdev)
->  	}
-> =20
->  	return 0;
-> -out:
-> -	clk_disable_unprepare(data->ipg_clk);
-> -	return ret;
->  }
-> =20
->  static void imx_irqsteer_remove(struct platform_device *pdev)
->  {
->  	struct irqsteer_data *irqsteer_data =3D platform_get_drvdata(pdev);
-> -	int i;
-> +	int i, ret;
-> +
-> +	/*
-> +	 * The device may be runtime-suspended here, in which case the runtime
-> +	 * suspend callback has already dropped the clock enable count. Resume
-> +	 * it so the devres clk_disable_unprepare(), which runs after remove(),
-> +	 * finds the clock enabled and stays balanced. On success drop the
-> +	 * usage count again with pm_runtime_put_noidle(): it must not trigger a
-> +	 * suspend (which would re-disable the clock) and must not leak to the
-> +	 * next probe of this persistent device.
-> +	 */
-> +	ret =3D pm_runtime_resume_and_get(&pdev->dev);
-> =20
->  	for (i =3D 0; i < irqsteer_data->irq_count; i++) {
->  		if (!irqsteer_data->irq[i])
-> @@ -294,8 +295,8 @@ static void imx_irqsteer_remove(struct platform_devic=
-e *pdev)
-> =20
->  	irq_domain_remove(irqsteer_data->domain);
-> =20
-> -	if (!pm_runtime_status_suspended(&pdev->dev))
-> -		clk_disable_unprepare(irqsteer_data->ipg_clk);
-> +	if (ret >=3D 0)
-> +		pm_runtime_put_noidle(&pdev->dev);
->  }
+> static bool pci_epf_mhi_filter(struct dma_chan *chan, void *node)
 
-[Severity: Medium]
-As reported by Sashiko on v6 [1], what happens in imx_irqsteer_remove() if
-the device is runtime-suspended and pm_runtime_resume_and_get() returns a
-negative error (for example due to a power domain or supplier resume failur=
-e,
-or clk_enable() failing in imx_irqsteer_resume())?
+>  	memset(&caps, 0, sizeof(caps));
+>  	dma_get_slave_caps(chan, &caps);
+>  
+> -	return chan->device->dev == filter->dev && filter->dma_mask &
+> +	return dmaengine_get_provider_device(chan) == filter->dev && filter->dma_mask &
+>  					caps.directions;
 
-When the device is runtime-suspended, imx_irqsteer_suspend() has already
-called clk_disable(irqsteer_data->ipg_clk). If pm_runtime_resume_and_get()
-fails, ipg_clk remains disabled when imx_irqsteer_remove() returns, but the
-devres action registered by devm_clk_get_enabled() in imx_irqsteer_probe()
-still runs unconditionally during device_unbind_cleanup() and calls
-clk_disable_unprepare() on ipg_clk.
+While at it, fix indentation:
 
-Wouldn't that underflow the clock enable count and trigger a warning in
-clk_core_disable(), or prematurely gate ipg_clk if it is shared with another
-active consumer?
+	return dmaengine_get_provider_device(chan) == filter->dev &&
+	       (filter->dma_mask & caps.directions);
 
->  #ifdef CONFIG_PM
-> @@ -325,7 +326,7 @@ static int imx_irqsteer_suspend(struct device *dev)
->  	struct irqsteer_data *irqsteer_data =3D dev_get_drvdata(dev);
-> =20
->  	imx_irqsteer_save_regs(irqsteer_data);
-> -	clk_disable_unprepare(irqsteer_data->ipg_clk);
-> +	clk_disable(irqsteer_data->ipg_clk);
-> =20
->  	return 0;
->  }
-> @@ -335,7 +336,7 @@ static int imx_irqsteer_resume(struct device *dev)
->  	struct irqsteer_data *irqsteer_data =3D dev_get_drvdata(dev);
->  	int ret;
-> =20
-> -	ret =3D clk_prepare_enable(irqsteer_data->ipg_clk);
-> +	ret =3D clk_enable(irqsteer_data->ipg_clk);
+...
 
-[Severity: Medium]
-Does replacing clk_disable_unprepare() and clk_prepare_enable() with
-clk_disable() and clk_enable() in imx_irqsteer_suspend() and
-imx_irqsteer_resume() cause power management regressions on i.MX8, i.MX94,
-and S32N79 platforms?
+> static bool epf_dma_filter_fn(struct dma_chan *chan, void *node)
 
-Because imx_irqsteer_probe() acquires ipg_clk via devm_clk_get_enabled(),
-only calling clk_disable() in imx_irqsteer_suspend() leaves core->prepare_c=
-ount
-at 1 while the device is runtime-suspended or in system sleep.
+>  	memset(&caps, 0, sizeof(caps));
+>  	dma_get_slave_caps(chan, &caps);
+>  
+> -	return chan->device->dev == filter->dev
+> +	return dmaengine_get_provider_device(chan) == filter->dev
+>  		&& (filter->dma_mask & caps.directions);
 
-In drivers/clk/clk.c, clk_core_unprepare() only drops the runtime PM
-reference on a runtime-PM-enabled clock provider device when prepare_count
-reaches 0:
+Ditto.
 
-drivers/clk/clk.c:clk_core_unprepare() {
-	...
-	trace_clk_unprepare_complete(core);
-	clk_core_unprepare(core->parent);
-	clk_pm_runtime_put(core);
-}
+	return dmaengine_get_provider_device(chan) == filter->dev &&
+	       (filter->dma_mask & caps.directions);
 
-On i.MX8QM and i.MX8QXP (such as irqsteer_lvds1 in
-arch/arm64/boot/dts/freescale/imx8-ss-lvds1.dtsi, as well as the LVDS0,
-MIPI0, and MIPI1 subsystems), the irqsteer node and its fsl,imx8qxp-lpcg
-clock controller share the same SCU power domain:
+...
 
-	clocks =3D <&lvds1_lis_lpcg IMX_LPCG_CLK_4>;
-	clock-names =3D "ipg";
-	power-domains =3D <&pd IMX_SC_R_LVDS_1>;
+Looking more at it, you probably want to deduplicate this code at some point.
 
-Since prepare_count never drops to 0 during runtime suspend,
-clk_pm_runtime_put() is never called on the LPCG clock provider (or its
-parent imx-scu-clk device), keeping the clock provider runtime-active and
-preventing the shared power domain from ever powering off.
 
-Additionally, on platforms where ipg_clk is provided by a non-atomic clock
-controller=E2=80=94such as i.MX94 (where a55_irqsteer uses an SCMI clock ov=
-er a
-non-atomic mailbox transport), S32N79 (when atomic SCMI SMC transport is not
-enabled), and i.MX8 SCU clocks=E2=80=94the clock provider only populates .p=
-repare and
-.unprepare and leaves .enable and .disable NULL:
+-- 
+With Best Regards,
+Andy Shevchenko
 
-drivers/clk/clk-scmi.c:scmi_clk_ops_alloc() {
-	if (feats_key & BIT(SCMI_CLK_STATE_CTRL_SUPPORTED)) {
-		if (feats_key & BIT(SCMI_CLK_ATOMIC_SUPPORTED)) {
-			ops->enable =3D scmi_clk_atomic_enable;
-			ops->disable =3D scmi_clk_atomic_disable;
-		} else {
-			ops->prepare =3D scmi_clk_enable;
-			ops->unprepare =3D scmi_clk_disable;
-		}
-	}
-}
 
-On those platforms, calling clk_disable() and clk_enable() in
-imx_irqsteer_suspend() and imx_irqsteer_resume() becomes a no-op and never
-gates ipg_clk during runtime suspend or system sleep.
-
-Since imx_irqsteer_suspend() and imx_irqsteer_resume() run in sleepable
-context, should they keep calling clk_disable_unprepare() and
-clk_prepare_enable()?
-
-[1] https://lore.kernel.org/r/20261008090231.796511-7-Zhipeng.wang_1@oss.nx=
-p.com
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261104073759.3867=
-77-1-Zhipeng.wang_1@oss.nxp.com?part=3D6
