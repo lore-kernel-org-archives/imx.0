@@ -1,80 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793793640;
-	b=P15x3TX18aZ3ey4fwxxJ8bF9YrVDigNmIPyj87NWwPiIleP59HddZVcVeFnaYFB1fFDq
-	 +fpXcLM/0MP4PROeyU/Nw/dxm/e36qf9qPL97lMXiKEMmnrTPRnYJe5Nl3rcpVeDUnmmD
-	 MFHQN+IO+XL2qMhPFGvVlAO1MUAmvBOrqcMQKwR5ozNPi5hHnDGMWnDOc1CblFkmy6NK4
-	 BjMF3iyyU/JPZtcOKHRA/HIsWSq0pg6SDb3rta6VZn4/py3jzFhc38yQoVWePmWefmzOd
-	 pTpblc4yi8e3J9cM5kB2bTTA8JIaJeMr/JCZq3a6Dv2QQtZAqU8sZR0ypzgNHMPVvqg==
+	t=1793794277;
+	b=dNO4341xbx0eKWq4k4+k6ULJ13fYrZ+4881NHth00ghqhzXAzvodm5P5og+8oaMQ6j+L
+	 9O39m9MdAyEHcPWLzRakFD/95MCHAt/VxkUJran8YeZIz/KoLFrA01hgCPKy3Cl5GL7oF
+	 BvB97etQP/0r5wD4jVy0bLMQbp+07XzlEcuDhbX3KIwISyE+Bh7HkH5rxvuTWGCqSOlN/
+	 DBJcjdqB4jHAw/bldvOwOtGSL7NXgLb22aBsHo46KNyS4HI1ZL3SORmnIZgBXHUZIQDVQ
+	 RrIVoSQAwyNd8ssU1pzvG2PkF7Yq2sxnTIirLLrSkvgXqkbjq+Yk21miDbbW0yCB5mg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793793640;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To:Organization;
-	bh=3TangyTQ+F1EF3tLxNBi9hzZtvBvVtmUOHm+mBgsEkw=;
-	b=TasIZEhxndnPjMFX6maeif7lmR94m60Md0i5UswgqXEMOksF6QJrVgIM0Dv7AXV4G6pJ
-	 GPCAWP5AeZa7jWQU6jGIpAnHmoDaTL2EPV88GTtapOAMK0kDRRImunChpMQItAM1YZ+1k
-	 2uA4VVOadpIlqtPBE7Rhd0Elw1qmmuY9Srh2rNYTL9V8DEgm+5f849NYSo455ZIToqIr1
-	 KSi+Ntcw3ZCYNDujHuc+iG6xT3nnq7U3ppFJYzPV123CMIU3Y66XEnCHZRN0pkmgeO67h
-	 f/GHcAus989GpQuYCu/i31AxkgKTZjtOzC08xrdQzLTuQ2xyTqSMvowJ/+SMW1qG+Kg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793794277;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=/f5A3hR3Bm+usn2244B9GDUzSk90oqC+oGYIPpnfKec=;
+	b=10hU2f9af6QZs/n8idyn7ditO9J62ifDwRExGkq9EIiDtSL6Mk4RFh/w7TAzjThNtUUS
+	 d4AHweX7WO4940UA6Vcs/wLDZxVHeCRRB5Nm3VnNWoCJIC3gO3pMGLaQl8RJtQSKaMVmn
+	 IX3vX0vhRAzpJGPUTcSe8iKFRv6Ic7jCg4mUXPaOM0RAx0Ivu7/21Y++jgjGS0PKDONXm
+	 C6vako8pX8RV4nVipha4gItxwCtejNeAfuf1IX2KXGeI7EuWkon77zlE3SGlAik9xu9eN
+	 KhlgRnQn0UwtM3sNFbqVLGvKOBkjHHh+j9OT0/KYK40E/4YtZBkliYlnOHVf9rd6x1A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=J67P1KE4;
-	arc=none smtp.remote-ip=198.175.65.13
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gndPHB8K;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FBB3606A329
-	for <imx@lists.linux.dev>; Wed,  4 Nov 2026 12:00:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2FBB3606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78C9D606A31B;
+	Wed,  4 Nov 2026 12:11:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=J67P1KE4
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793793639; x=1825329639;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=JrJIZS7mdC2DNBsFz30CB/vSL/nLJEAA4va9gpdgOXI=;
-  b=J67P1KE4ftpzcvv4GeJkTm4ru6w/M/3K+Tppo8OSsE/fIHo2X9HiBaS3
-   LE4jAWDrz9n+LHp7SWdXPHvNQ5X4NEfZNMQPw4jsa5vKpowg/Unnzv4sz
-   uJA+zPYJ8a7hDLG1JG0TPhFVLC+aOuCjJID7IyzIjAIj3kWTZNPUbWzBN
-   ZVkVaERoC/XF4h3sJsqYEk6UFEBkwMk/Jg4cOPL7V00DA6iHFXwX68R5Q
-   41t6GrGgBGycChWC849oN6aFHJghx775GFabbmseL+rxbIE5etLtGD+gv
-   ntQkvnEuH/MdUaHUHoCWq14YhnqdUIk9zNrM3o3i9uWPF89pWe0DpPFXZ
-   w==;
-X-CSE-ConnectionGUID: C94vL6+kQBeQwDzus18cIg==
-X-CSE-MsgGUID: TimHLWHjS86jQTktMFG+hw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11955"; a="2424974"
-X-IronPort-AV: E=Sophos;i="6.27,195,1787036400"; 
-   d="scan'208";a="2424974"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2026 04:00:38 -0800
-X-CSE-ConnectionGUID: UyX6S0NrR8Cn/t3ekVp3Kw==
-X-CSE-MsgGUID: RILWyBVVT9C9yvWe+V/zQg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,195,1787036400"; 
-   d="scan'208";a="7047392"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.24])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2026 04:00:35 -0800
-Date: Wed, 4 Nov 2026 14:00:33 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Ludovic Desroches <ludovic.desroches@microchip.com>,
-	Vinod Koul <vkoul@kernel.org>, Frank Li <Frank.Li@kernel.org>,
-	Paul Cercueil <paul@crapouillou.net>,
-	Viresh Kumar <vireshk@kernel.org>, Paul Walmsley <pjw@kernel.org>,
-	Samuel Holland <samuel.holland@sifive.com>,
-	linux-arm-kernel@lists.infradead.org, dmaengine@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
-	imx@lists.linux.dev, linux-riscv@lists.infradead.org
-Subject: Re: [PATCH] dmaengine: Convert to subsys_platform_driver()
-Message-ID: <auseYVGGYnxXMCUf@ashevche-desk.local>
-References: <20261104113302.1634102-1-peng.fan@oss.nxp.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gndPHB8K
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D1BF1F000C1;
+	Wed,  4 Nov 2026 12:11:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793794277;
+	bh=/f5A3hR3Bm+usn2244B9GDUzSk90oqC+oGYIPpnfKec=;
+	h=From:To:Cc:Subject:Date;
+	b=gndPHB8KuXtUVdAEjeHq+VK7vBVz5TBIJ0SP2svlUxclb5ES5qbzqlmr2ZqCGq+lS
+	 s8rNm70hl3s/OP6OBzTapLtBZcR1GLxIJ3+t5QnuavyviANZ9uqbxgW1KUwAugygoc
+	 EeI9K++Clc5XJVybgyEMJNCUQcvRZ0hmmp4bdqNJ7c3d11Wggq21aEaCulOdrILlev
+	 +IsUrOB4GY9Scq5tV2ler70t0aXDIskR6k4Ja8/ipzPaj14bpUU4IIEJ/BIuNvMcGF
+	 EvDJDODLhWn05YDlm1tVq4nNOpEm63CDOrVUZRRnyU3p03f2wJT4s4GKrIW7o/b4HN
+	 Q5L0kmWVX3/5A==
+From: Michael Walle <mwalle@kernel.org>
+To: Dong Aisheng <aisheng.dong@nxp.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: Carlos Song <carlos.song@nxp.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	linux-i2c@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Michael Walle <mwalle@kernel.org>
+Subject: [PATCH 1/2] i2c: imx-lpi2c: fix SMBus block read with PEC
+Date: Wed,  4 Nov 2026 13:10:35 +0100
+Message-ID: <20261104121108.659820-1-mwalle@kernel.org>
+X-Mailer: git-send-email 2.47.3
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -84,50 +66,52 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261104113302.1634102-1-peng.fan@oss.nxp.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Transfer-Encoding: 8bit
 
-On Wed, Nov 04, 2026 at 07:33:02PM +0800, Peng Fan (OSS) wrote:
+If PEC is enabled, the I2C core sets msgs->len to 2 instead of 1. The
+length calculation for the second receive command assumes it's always
+1. This will lead to a short read and eventually a timeout because the
+PEC byte is never received.
 
-> Replace the open-coded subsys_initcall()/module_exit() platform driver
-> registration with subsys_platform_driver().
-> 
-> No functional change.
+Take msgs->len into account when calculating the remaining bytes.
 
-Ah, good one!
+This was tested on a board which uses an IPMI SSIF BMC.
 
->  drivers/dma/dw/platform.c       | 13 +------------
+Fixes: efdc383d1cc2 ("i2c: imx-lpi2c: fix SMBus block read NACK after byte count")
+Signed-off-by: Michael Walle <mwalle@kernel.org>
+---
+ drivers/i2c/busses/i2c-imx-lpi2c.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-> --- a/drivers/dma/dw/platform.c
-> +++ b/drivers/dma/dw/platform.c
-> @@ -194,18 +194,7 @@ static struct platform_driver dw_driver = {
->  		.acpi_match_table = ACPI_PTR(dw_dma_acpi_id_table),
->  	},
->  };
-> -
-> -static int __init dw_init(void)
-> -{
-> -	return platform_driver_register(&dw_driver);
-> -}
-> -subsys_initcall(dw_init);
-> -
-> -static void __exit dw_exit(void)
-> -{
-> -	platform_driver_unregister(&dw_driver);
-> -}
-> -module_exit(dw_exit);
-> +subsys_platform_driver(dw_driver);
->  
->  MODULE_LICENSE("GPL v2");
->  MODULE_DESCRIPTION("Synopsys DesignWare DMA Controller platform driver");
-
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com> # dw
-
+diff --git a/drivers/i2c/busses/i2c-imx-lpi2c.c b/drivers/i2c/busses/i2c-imx-lpi2c.c
+index 7302464c371a..f57e800ac3b5 100644
+--- a/drivers/i2c/busses/i2c-imx-lpi2c.c
++++ b/drivers/i2c/busses/i2c-imx-lpi2c.c
+@@ -563,7 +563,7 @@ static unsigned int lpi2c_SMBus_block_read_length_byte(struct lpi2c_imx_struct *
+ static int lpi2c_imx_read_init(struct lpi2c_imx_struct *lpi2c_imx,
+ 			       struct i2c_msg *msgs)
+ {
+-	unsigned int temp, val, block_len;
++	unsigned int temp, val, block_len, remaining;
+ 	int ret;
+ 
+ 	lpi2c_imx->rx_buf = msgs->buf;
+@@ -612,9 +612,13 @@ static int lpi2c_imx_read_init(struct lpi2c_imx_struct *lpi2c_imx,
+ 		 * keep MTDR non-empty and ensuring continuous ACKs. Only update command register
+ 		 * here. All block bytes will be read out at IRQ handler or lpi2c_imx_read_atomic()
+ 		 * function.
++		 *
++		 * msgs->len is 1 - or if PEC enabled msgs->len is 2. Two bytes
++		 * have already been requested.
+ 		 */
+-		if (block_len > 1)
+-			writel((RECV_DATA << 8) | (block_len - 2), lpi2c_imx->base + LPI2C_MTDR);
++		remaining = msgs->len + block_len - 2;
++		if (remaining)
++			writel((RECV_DATA << 8) | (remaining - 1), lpi2c_imx->base + LPI2C_MTDR);
+ 
+ 		lpi2c_imx->msglen += block_len;
+ 		msgs->len += block_len;
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.47.3
 
