@@ -1,127 +1,85 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793825069;
-	b=5iReYhWRfr8tc9UZKNPMRZaE/N7vnyjruLjVd5hSXErzHoB/AvVNoNqVDX0/P+AlAILI
-	 pFRsyB8S1GzrEOqrEoSAeUw60TczvHRJQ1pUxNgiwrIaPASAXnKzvzlBXgwROROzVAd1G
-	 CnoFMNC6YQJDSAX4X/7AxLbmv/HHVCGbf7/ciQM5dwOtIEKLpSp81kuHMRNkFvE8AKmiC
-	 jAcldMVNxFcUvtrN4Xn1/QhPB8W5QKomlXIrM+w3ZGI6wlnch4zEA8qvm2RCdyPnXmKW9
-	 bGDUiUhWLMsbEjxl4C+HCerm1hfGqNJbeiz+axEXwRf82Ou/YzjRaC0+aaTW30D1euA==
+	t=1793825220;
+	b=J4L4HkPGdM49koQx/wMV2QiMnRaMiEoC7e0LTwTuGSzFHZOH8/KZ1WmlZ4mLba9ZzNTT
+	 629i5KS7+gkbtOOT2OfnN1t8aLMbpalpJoxsq5FB1wTAAG0exrzI22Qluwz0CPES8dZln
+	 yocneNiLbpla2xhLTYJcj9md43Nb1TgV64fzGBgqo9Br+ea76LXYhKOUrkZs207EjJZv6
+	 hM/Aq0+SGWgjarLbP7dRWyoh0hxGQoWbutB0V38y0EiEkxWKU/ve4Podii/nkDsrNiGBz
+	 fqo9iA51OlK9km8DMhR0wBPMSFfRum1j/hSnirRYbkKiVGF835u7VjiFubU/0gyTgcA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793825069;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793825220;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
 	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
 	 Subject:Message-ID:References:MIME-Version:Content-Type:
 	 Content-Disposition:In-Reply-To:Organization;
-	bh=Fu3Aq2hefSzjwRV+KYEz/CG5s0UvrmJ9SoczCNw172g=;
-	b=qDJ6ACEmQwOPC+M56vMdKXcSMvUVuCkB275UNtsoM/bKRlvL9Zxa7Ft9CQiUhcQKocGT
-	 gJ1xZ9h9nNzm3e6UgtEgNHD526Ajemrhk5JpXJ6Jfdr3JmLZTtFoNi0oLPfu49RUF5lsN
-	 Fah142f1fNAeGsFEGOVBD48R7BkSU+jjXkU1IWd5qG2OqcoBXBf4+ASNhlyXzYi+HD7lV
-	 H26Z0xcaP2jsYblEB3ejgJA9XgOtl+STbhto1ULt/AZb0j4FK3g/alD+sbZQDWmphQdr8
-	 4whFDKOmLMCMU20C90pazWd6DrCWCJQqYrABtJIFMfV1xPKQHlnRPVyf1OsuB0NLbDA==
+	bh=eRi8RhuRv2SJXOzZLsAPgv0589jsH/cmLNKcdsad3h0=;
+	b=nFcZ1upsRVF+QfG4Od+dsf2CWqJreKHt3UklNPBh317d+Of+/MIsMXnwM4ziC9I7aEVk
+	 aZqdqn6cZNMnWo29fzGx+kMkCpu0zS3DP35BkPpOffrDbbMXuIvBJm+Y+lmEqgigFOTBH
+	 lrdeH6FII34QejfppRH3LNsSWT40ZcM/gaTKbw9raolbSZarjdTQGR9GRntCSB7+bS127
+	 jWI0uJFJl+EWOfdfrxzaPkK7yiv/Up+t+JssN+1Le3rh/v/9hPQ+6IHx2lbjmscxO6Jsn
+	 eWunaLVIBqsKbu8OPoy/UiEOc8rnQwQ4ajTxoPv2POKNdh7KAeQlCrya1cTAY119GmA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.intel.com;
 	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=NRcZ9DVE;
-	arc=none smtp.remote-ip=192.198.163.18
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=YndeNSkr;
+	arc=none smtp.remote-ip=198.175.65.18
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87142606C471;
-	Wed,  4 Nov 2026 20:44:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 87142606C471
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36B0E6096917;
+	Wed,  4 Nov 2026 20:46:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 36B0E6096917
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=NRcZ9DVE
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=YndeNSkr
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793825069; x=1825361069;
+  t=1793825219; x=1825361219;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=5sRT5I+m6KfQYFE3k27dO5MxaZynzJhyPdFPDxcOiE4=;
-  b=NRcZ9DVEyB+z8PNUWWN1k1TwNJsHkHLB0RkIhXNi8OPPaumAbXwdBusb
-   XJ0tRswIwk/HAI3U08NCdw8gSsd3fdHfsZGvIoakFFNjw3AMbhwBsxdvZ
-   MF+IFI3N8G6s1cU9TZ6nu2D7Quh3Bd9w77S64rw1QFG76PE3tzcAH+cza
-   JCV/7ImeaR645m5dp2GIWnI4RcctcQ0zYSIyQaI33Sl40LNLVHUHPcJ9D
-   cTDOV5DlxtAWFgmxbMxz9PHoa3W0Xhp07+B1RPDbNL/WVi6i07ag3i3h7
-   qw4i8gPp7H9DXoutExRukI4yyUua1UoY5hgyDVfZhouA34dOrNySljHLr
+  bh=YjyWnrTrQVq7ZBX8abJyAkTK5/Ot0nUJj61/vlmOhkA=;
+  b=YndeNSkrgtoSw9czx398bMZ3UavEMb9dvokRy41tSUqg5qH7XnTDee4s
+   Tg6lypKTEmhkyN3fNZj4Q42Q/8t0OPiMcSPNPXfqDpeWUMc4yU8327WbJ
+   oxucXfpDAM9F/3nZBUADoVvVgEQzK6W5qatXhTPpSXBNUVfQ4afQtZJC3
+   mIEPmhMWRwM0QwI84RourKrCbdhME1g8UEb2XCUyYiE9ctH/wSj1/Kn8T
+   JlHvhyKbjc+8WYj4Uc1mt3KUHuazv8qPFvKVMjAvxPHfUOVe+Nf254EJ5
+   MHVMnKCw9C9+KJKJqxBnCwkA9r9tRQtFQ0ylMi06TUw1J1XqZz4YZvN6J
    A==;
-X-CSE-ConnectionGUID: NkNZdLhaT3eysPfzIT/amA==
-X-CSE-MsgGUID: EUMq4yy+RUeCSzBbPsUa5A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11956"; a="2635153"
+X-CSE-ConnectionGUID: crGXayLjTpqu2k78Qsidkw==
+X-CSE-MsgGUID: I26DQpBuRoKHpwoDrja9xA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11956"; a="2610686"
 X-IronPort-AV: E=Sophos;i="6.27,195,1787036400"; 
-   d="scan'208";a="2635153"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2026 12:44:28 -0800
-X-CSE-ConnectionGUID: EZ1+q8OlT/uYk59yq1HNAg==
-X-CSE-MsgGUID: icBbDpEQTOuZLO4D8LrQjw==
+   d="scan'208";a="2610686"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2026 12:46:58 -0800
+X-CSE-ConnectionGUID: QJnD8PsiRDG55Xn2Ee/n4w==
+X-CSE-MsgGUID: g9wohO3RRNmrTkNAfU1MxA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,195,1787036400"; 
-   d="scan'208";a="7215296"
+   d="scan'208";a="6942404"
 Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.24])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2026 12:44:16 -0800
-Date: Wed, 4 Nov 2026 22:44:13 +0200
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2026 12:46:55 -0800
+Date: Wed, 4 Nov 2026 22:46:52 +0200
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Frank.Li@oss.nxp.com, Mark Brown <broonie@kernel.org>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Radu Pirea <radu_nicolae.pirea@upb.ro>,
-	CL Wang <cl634@andestech.com>,
-	Ryan Wanner <ryan.wanner@microchip.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Vladimir Oltean <olteanv@gmail.com>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Han Xu <han.xu@nxp.com>,
-	Haibo Chen <haibo.chen@nxp.com>, Linus Walleij <linusw@kernel.org>,
-	Daniel Mack <daniel@zonque.org>,
-	Haojian Zhuang <haojian.zhuang@gmail.com>,
-	Robert Jarzmik <robert.jarzmik@free.fr>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Peter Griffin <peter.griffin@linaro.org>,
-	Alim Akhtar <alim.akhtar@samsung.com>, Yixun Lan <dlan@kernel.org>,
-	Troy Mitchell <troy.mitchell@linux.spacemit.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Alain Volmat <alain.volmat@foss.st.com>,
-	Chen-Yu Tsai <wens@kernel.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Laxman Dewangan <ldewangan@nvidia.com>,
-	Thierry Reding <thierry.reding@kernel.org>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Sowjanya Komatineni <skomatineni@nvidia.com>,
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	"open list:SPI SUBSYSTEM" <linux-spi@vger.kernel.org>,
-	"moderated list:ARM/Microchip (AT91) SoC support" <linux-arm-kernel@lists.infradead.org>,
-	open list <linux-kernel@vger.kernel.org>,
-	"moderated list:BROADCOM BCM2711/BCM2835 ARM ARCHITECTURE" <linux-rpi-kernel@lists.infradead.org>,
-	"open list:FREESCALE DSPI DRIVER" <imx@lists.linux.dev>,
-	"open list:ARM/QUALCOMM MAILING LIST" <linux-arm-msm@vger.kernel.org>,
-	"open list:ARM/Rockchip SoC support" <linux-rockchip@lists.infradead.org>,
-	"open list:RENESAS RZ/V2H(P) RSPI DRIVER" <linux-renesas-soc@vger.kernel.org>,
-	"open list:SAMSUNG SPI DRIVERS" <linux-samsung-soc@vger.kernel.org>,
-	"open list:RISC-V SPACEMIT SoC Support" <linux-riscv@lists.infradead.org>,
-	"open list:RISC-V SPACEMIT SoC Support" <spacemit@lists.linux.dev>,
-	"moderated list:ARM/STM32 ARCHITECTURE" <linux-stm32@st-md-mailman.stormreply.com>,
-	"open list:ARM/Allwinner sunXi SoC support" <linux-sunxi@lists.linux.dev>,
-	"open list:TEGRA ARCHITECTURE SUPPORT" <linux-tegra@vger.kernel.org>,
-	Mukesh Kumar Savaliya <mukesh.savaliya@oss.qualcomm.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Thierry Reding <treding@nvidia.com>
-Subject: Re: [PATCH v2 1/1] spi: use dmaengine_desc_set_callback()
-Message-ID: <auuZHTvr5UI9Q9Q4@ashevche-desk.local>
-References: <20261104152253.3279052-1-Frank.Li@oss.nxp.com>
- <b656861c-a087-4087-952e-91fd15fadd52@kernel.org>
+To: Frank.Li@oss.nxp.com
+Cc: Manivannan Sadhasivam <mani@kernel.org>,
+	Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Frank Li <Frank.Li@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Koichiro Den <den@valinux.co.jp>, Niklas Cassel <cassel@kernel.org>,
+	Christian Bruel <christian.bruel@foss.st.com>,
+	"open list:MHI BUS" <mhi@lists.linux.dev>,
+	"open list:MHI BUS" <linux-arm-msm@vger.kernel.org>,
+	"open list:PCI ENDPOINT SUBSYSTEM" <linux-pci@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev,
+	Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH v2 1/1] PCI: Replace chan->device->dev with
+ dmaengine_get_provider_device()
+Message-ID: <auuZvIjlTN_0AEch@ashevche-desk.local>
+References: <20261104150202.3224971-1-Frank.Li@oss.nxp.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -133,42 +91,25 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <b656861c-a087-4087-952e-91fd15fadd52@kernel.org>
+In-Reply-To: <20261104150202.3224971-1-Frank.Li@oss.nxp.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Wed, Nov 04, 2026 at 06:25:32PM +0100, Krzysztof Kozlowski wrote:
-> On 04/11/2026 16:22, Frank.Li@oss.nxp.com wrote:
-
-...
-
-> > diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
-> > index 762a3fb0fca81..de205e04a8600 100644
-> > --- a/drivers/spi/atmel-quadspi.c
-> > +++ b/drivers/spi/atmel-quadspi.c
-> > @@ -790,8 +790,7 @@ static int atmel_qspi_dma_xfer(struct atmel_qspi *aq, struct dma_chan *chan,
-> >  	}
-> >  
-> >  	reinit_completion(&aq->dma_completion);
-> > -	tx->callback = atmel_qspi_dma_callback;
-> > -	tx->callback_param = aq;
-> > +	dmaengine_desc_set_callback(tx, atmel_qspi_dma_callback, NULL, aq);
+On Wed, Nov 04, 2026 at 10:01:59AM -0500, Frank.Li@oss.nxp.com wrote:
 > 
-> Andy,
-> These three lines look correct.
+> Use the dmaengine_get_provider_device() API instead of directly
+> accessing chan->device->dev to get the DMA provider device.
 > 
-> LGTM:
-> 
-> Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
+> No functional change. Prepare make to struct dma_device private to the DMA
+> engine.
 
-As
+I would also make line lengths balanced
 
-  Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org> # atmel-quadspi
+  No functional change. Prepare make to struct dma_device private
+  to the DMA engine.
 
-Note, it's in your power to ask the author to split out what you maintain
-to a separate change. So, it's your choice what to do, Ack the full patch,
-give a partial Rb, ask for a split, ignore reviewing (often means silent
-agreement when maintainer just applies that kind of a patch)
+Either way,
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
 -- 
 With Best Regards,
