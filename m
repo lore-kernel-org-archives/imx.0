@@ -1,47 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793811747;
-	b=Wey9tgZLd5CAEpLL2UfYe07egr3MKMuAug8cprkxSktI7gwLrc9VBKy7lX4GS5RaYNBu
-	 nXLRHJuoUxk+Me+2bsI8NXB2NmiCFr2S/SfxfA7iG1OO8hc1pnMAgWgm+ZdmKzUrXmUTQ
-	 loGDyN6XxF9+KNweDOyqXJ09Lof+GUugJ7DxM502FVW1Lgmx3wtZx+tKp2P72/RPgs9rw
-	 C59cSfg9YW1f5r+g/YCaosoS60Zu8o+pIRAwYzLA/qXy6iOHE1hoHOJ9SPi7XUXy8IRlL
-	 hKWLhHPl60fp4n3SCO8HdmEF91j4bBYoLeRP4lH7Cv+JfA906Nxm5JJBu8pJGQeRxFg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793811747;
-	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:From:Content-Language:Autocrypt:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=ARdxYTQbPD+XkwuZEHGWJxQFTGvS5jllFLFq3PQ90d4=;
-	b=4+0tvMSGQ0sQHANNjqToa7uZqsmi33cdyPHN31LGC5kS5Rt/myOE9PuOIUd1jatsia4a
-	 KKNUolOm1eKfqe1D9dV0Qgod6IyoEI3T+dIMRVuKnUzWJtxoF8/uXfKao57/SNfZinMRw
-	 GpCtUwFEQJu5Mn+lX9zWMO3BneAnfPuEoH10xq0sOVRgi/Do/RPeWCmdkC8/eI+HJd7er
-	 SNNdLVq4D0wfJ1/AJ2QY7zdDNwGgGnZf5Ge/cjAlSMf+/vYDLVEgKeDKCx719R2Yirryq
-	 vo7fvyx056qBn9NRttyBdnKgJeMObdAOmPMeDNaUB4LhiTXn3LBizEtk3ojkJp63VxA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fQvoql1j;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.84.143
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793811777;
+	b=bPX4pmAfqGdZA85g2fgCih5fSjBSXBP4nmR2NsQUZd1SrYv+m2exBKZjuOVKc1fDTcqS
+	 HxXZoGcKdLy2k7wnRikUp2+7YNFWAhEEi93DECb3aSyJt9J9snTb+UUDu7zeTNhBZbP/G
+	 DXa7O0nxtJf6xcs6fMo8aRVcW739RQuGangQCrTsZU+RVMtLoZkVAHvLbsDTKYdwEUbgB
+	 FwFXsPANBsDY6OdrBkivfB4dXJLxr5YZdLiQAEbpSDc8ZlzA5CkgGC8G6hexh5qI7IjCc
+	 OtZoy8t20NLjWmYQLiFUZLNrvMaAm3rp0X5EbL2QXTxeUlAO7RVFgn2ju5wrwuSkXGA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793811777;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=uA1VfvAV5MRXPvJ+d/ZcWZAsZv+XbxSNxKa5uVfz+hg=;
+	b=DVFGq4HRx/sWTwIT5En89bOp+Ly5Ks1d5sSADM0Y7PLURkf1HvKRVrmHIbfAF6VH3Q7v
+	 vBHslq80jz+hWnxQOxazTpJfQJUmZRPZPWBpuJtZA0zaYdV4Db+dC0ZQoSsP7ON1K7Ah+
+	 KJ0BHYLoHFQ8AMIe7iYAkMciN+jgbupcAxTbdJZEKPRVwG24BOIsptUbb2MI8zXKNCwbU
+	 H9avo4vpMDNqBdYnH/us2WpuCtPsbyADF7X7nsL21fbGS8lC6jZeGmno/KyBqNBuVIPbX
+	 Mn/RCVt5jJBFmnADhrq3bxrCwZ58PBWgfmCc2NF35GFED/tdfTiGCzsEczuMbDP99OQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=phytec.de;
+	spf=pass smtp.mailfrom=phytec.de;
+	dkim=pass header.d=phytec.de header.i=@phytec.de header.a=rsa-sha256 header.s=selector2 header.b=F4aI6+Pa;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.84.143
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11020143.outbound.protection.outlook.com [52.101.84.143])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 984C7606A31B;
-	Wed,  4 Nov 2026 17:02:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8BA3606A31B;
+	Wed,  4 Nov 2026 17:02:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D8BA3606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=phytec.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phytec.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fQvoql1j
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3E8F1F00A16;
-	Wed,  4 Nov 2026 17:02:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793811746;
-	bh=ARdxYTQbPD+XkwuZEHGWJxQFTGvS5jllFLFq3PQ90d4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=fQvoql1j3bRRUqwZtw26La5wq7WfXYZIEkg/yGjqHi4ArGgiV9DpaFbYm9LkNfqrW
-	 ANkD6LQrd3t9ZK2AyZGxBWZOqP3GCCT8rGbJ+Ek3r8JxWKhe+f6BYFCj7JkDxtT5h0
-	 gNFtBmz3NAo8Jf0Vor2ysuSD9sKYdyXa0+XhMehbzQGpkdvgFhh/pFKvHqgMeqh/5D
-	 0w6cHe/vPt13UkC1sI3hlzCMBnEGhdrpqiMkL3RPw6AT/F0CzDc9hm+IH6DwSk0veQ
-	 /j+bS6knBh0WbKrR+9skCxKgQe2iKPfbMRlZvJmxrAhnOrXiEI2iTD+O+zuULy/nQI
-	 Zex6KpwpKi+0w==
-Message-ID: <7f96599b-681d-4963-bdda-1274371ac84f@kernel.org>
-Date: Wed, 4 Nov 2026 18:02:04 +0100
+	dkim=pass (2048-bit key, unprotected) header.d=phytec.de header.i=@phytec.de header.a=rsa-sha256 header.s=selector2 header.b=F4aI6+Pa
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=KEj0TUylMyl7AuJtrD2hiUWDynD6rnSHt5QW0L3r2mpNvTb/oq1rtrFuJzppPaoT7CGW/tIwpWHlSzfUR3yutmiJCiT4NlXdTCi1NIIxqPoook3wGDAFCtA2nKuKMpFk7be9CywXZZT5ckiQAKmOM8eotMikcF4Z1lmJ/7g9DhQACn1avkmVQmsHXYtTrZxXVssCD4KLUX3F/03E+fU6Vyqbn8Z2s+ettPS+v5LSDAts8bBEX3bVJxclonf50spiCkI48NASdjIN9MhMmVoaYi3+44PJ0wCEG90LFLG6rXWuXCYOpzmdVvKFj9xF1sAqt4NotkbvFMTZ5VxLbND2aQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=uA1VfvAV5MRXPvJ+d/ZcWZAsZv+XbxSNxKa5uVfz+hg=;
+ b=mDZcCVQOwfWRckQ7sj4BGVPSRjXnlvJVmgMgFMtVJOEYNQ3gn5C+WdsM5Y5yAUNYzIyovEtEhQUbQ5a39yKG/UsA7brb21XNy/QsheTvtMusbZvYO3vqBMZdgFTiCNd5ZYMsTpV6HdnSgDpHpp79TXBsRfm2Z+1xGztwwLlg+8MAwNF258vr0ckPD+1srHR7HUP1ryg2nqcto1y24Lrpv+510Fk1Gtj3kWI4DfxWsO8mgLpvkDGlwhQzU/ydikKdcf9Soj/JJ6TuLpUDqhG3y0ZFmJcRxPLZ9DqujEd5SbfHz8q+64Vg1wHH8VTqhXciEDYnG1MnmOHr7tDcHQPKaA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=phytec.de; dmarc=pass action=none header.from=phytec.de;
+ dkim=pass header.d=phytec.de; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=phytec.de;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=uA1VfvAV5MRXPvJ+d/ZcWZAsZv+XbxSNxKa5uVfz+hg=;
+ b=F4aI6+PaXaVaqneP1f12IfyMOL7gvjWDoSnYrBeXjeJ3GC4UuBFntTqStisnRfleJ1x8QR8c+XS1ijlR33bNyDMeZaQIaXto5vVVKPSeWRrsUHR3iNDsP/rflqKRJaKrBMzPTVeIfM30f+QefyhMcf08guKYgDqFB0Ha6I3JQp0EROIIqrkKijyBVzQIvQ+YVEZIzmhHvNywxy0Aqa73PWMn/AtemJoU6NipKMj9bQ7Jo1NGiPc5hWZDc6iorYrvSFgz0amgnuCrbauW8fT1cXm2zEhsqqCgIaLrf5RWI7qEG+R8a+yvSJEqx06/lUQDiPvz8leLur4Zr73oTOPOMQ==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=phytec.de;
+Received: from VI1P195MB0623.EURP195.PROD.OUTLOOK.COM (2603:10a6:800:159::10)
+ by DB9P195MB1730.EURP195.PROD.OUTLOOK.COM (2603:10a6:10:399::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.9; Wed, 4 Nov 2026
+ 17:02:53 +0000
+Received: from VI1P195MB0623.EURP195.PROD.OUTLOOK.COM
+ ([fe80::2f8:67bc:a785:6894]) by VI1P195MB0623.EURP195.PROD.OUTLOOK.COM
+ ([fe80::2f8:67bc:a785:6894%7]) with mapi id 15.21.0592.009; Wed, 4 Nov 2026
+ 17:02:53 +0000
+Message-ID: <a9504d96-7a1b-40b4-9dc2-37f8ce92d33e@phytec.de>
+Date: Wed, 4 Nov 2026 18:02:52 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/5] dts: imx95-phyflex-libra-rdk: Add dts for
+ phyFLEX-i.MX 95 Libra RDK
+To: sashiko-reviews@lists.linux.dev
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org,
+ conor+dt@kernel.org, Frank.Li@kernel.org
+References: <20261030-wip-bhahn-imx95_upstreaming-v1-0-1c1cebb5be99@phytec.de>
+ <20261030-wip-bhahn-imx95_upstreaming-v1-2-1c1cebb5be99@phytec.de>
+ <sashiko-outbox-191084@kernel.org>
+Content-Language: en-US
+From: Benjamin Hahn <B.Hahn@phytec.de>
+In-Reply-To: <sashiko-outbox-191084@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR2P281CA0041.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:92::12) To VI1P195MB0623.EURP195.PROD.OUTLOOK.COM
+ (2603:10a6:800:159::10)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -51,146 +100,370 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/1] spi: use dmaengine_desc_set_callback()
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Frank.Li@oss.nxp.com
-Cc: Mark Brown <broonie@kernel.org>,
- Nicolas Ferre <nicolas.ferre@microchip.com>,
- Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Claudiu Beznea <claudiu.beznea@tuxon.dev>,
- Radu Pirea <radu_nicolae.pirea@upb.ro>, CL Wang <cl634@andestech.com>,
- Ryan Wanner <ryan.wanner@microchip.com>,
- Florian Fainelli <florian.fainelli@broadcom.com>, Ray Jui
- <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
- Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>, Vladimir Oltean
- <olteanv@gmail.com>, Frank Li <Frank.Li@nxp.com>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Han Xu <han.xu@nxp.com>,
- Haibo Chen <haibo.chen@nxp.com>, Linus Walleij <linusw@kernel.org>,
- Daniel Mack <daniel@zonque.org>, Haojian Zhuang <haojian.zhuang@gmail.com>,
- Robert Jarzmik <robert.jarzmik@free.fr>, Heiko Stuebner <heiko@sntech.de>,
- Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
- Andi Shyti <andi.shyti@kernel.org>, Tudor Ambarus
- <tudor.ambarus@linaro.org>, Peter Griffin <peter.griffin@linaro.org>,
- Alim Akhtar <alim.akhtar@samsung.com>, Yixun Lan <dlan@kernel.org>,
- Troy Mitchell <troy.mitchell@linux.spacemit.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Alain Volmat <alain.volmat@foss.st.com>, Chen-Yu Tsai <wens@kernel.org>,
- Jernej Skrabec <jernej.skrabec@gmail.com>,
- Samuel Holland <samuel@sholland.org>, Laxman Dewangan
- <ldewangan@nvidia.com>, Thierry Reding <thierry.reding@kernel.org>,
- Jonathan Hunter <jonathanh@nvidia.com>,
- Sowjanya Komatineni <skomatineni@nvidia.com>,
- Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- "open list:SPI SUBSYSTEM" <linux-spi@vger.kernel.org>,
- "moderated list:ARM/Microchip (AT91) SoC support"
- <linux-arm-kernel@lists.infradead.org>,
- open list <linux-kernel@vger.kernel.org>,
- "moderated list:BROADCOM BCM2711/BCM2835 ARM ARCHITECTURE"
- <linux-rpi-kernel@lists.infradead.org>,
- "open list:FREESCALE DSPI DRIVER" <imx@lists.linux.dev>,
- "open list:ARM/QUALCOMM MAILING LIST" <linux-arm-msm@vger.kernel.org>,
- "open list:ARM/Rockchip SoC support" <linux-rockchip@lists.infradead.org>,
- "open list:RENESAS RZ/V2H(P) RSPI DRIVER"
- <linux-renesas-soc@vger.kernel.org>,
- "open list:SAMSUNG SPI DRIVERS" <linux-samsung-soc@vger.kernel.org>,
- "open list:RISC-V SPACEMIT SoC Support" <linux-riscv@lists.infradead.org>,
- "open list:RISC-V SPACEMIT SoC Support" <spacemit@lists.linux.dev>,
- "moderated list:ARM/STM32 ARCHITECTURE"
- <linux-stm32@st-md-mailman.stormreply.com>,
- "open list:ARM/Allwinner sunXi SoC support" <linux-sunxi@lists.linux.dev>,
- "open list:TEGRA ARCHITECTURE SUPPORT" <linux-tegra@vger.kernel.org>,
- Mukesh Kumar Savaliya <mukesh.savaliya@oss.qualcomm.com>,
- Wolfram Sang <wsa+renesas@sang-engineering.com>,
- Thierry Reding <treding@nvidia.com>
-References: <20261104152253.3279052-1-Frank.Li@oss.nxp.com>
- <autj6pr_bPaul3w0@ashevche-desk.local>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
- cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
- JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
- gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
- J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
- NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
- BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
- vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
- Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
- TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzSVLcnp5c3p0b2Yg
- S296bG93c2tpIDxrcnprQGtlcm5lbC5vcmc+wsGPBBMBCgA5AhsDBgsJCAcDAgYVCAIJCgsE
- FgIDAQIeAQIXgBYhBJvQfg4MUfjVlne3VBuTQ307QWKbBQJp2mE8AAoJEBuTQ307QWKbeaIP
- /ihHTkTW4KsN/DQ945JJbyu5tI0J80Wue7QyyLPglyKfhgb5cLLNPpOC8cCIJsc7+W3i2P38
- s2c1cOH6CYGE7E9ur3Vfme8NW2S2I/Z8VC7bZnzyS23wT17LrsdS/qCpx4o8U+pt/xdXDKph
- EGRYrIEmMpUWvyYzyYKGIe25FtaayIIKpq8eZYyFcp2f/sG5IkOW5uZzHPMPdcm87jU7fyuQ
- rAU2vx9r+ulUfQ/q9Z2roC/ode3l7t2pN7BCBCsUDp6JCrUyZrtT1e7EbA0ZRP3aOBNk2P2E
- DQOgJGjGdO5Yx2Y9LFtltu6JbsBJHi1syGRX3AtQYOMc4Y1WGoeZJmMlvKj2ZqqXNkcWi2DS
- IQEWB0uW6CqFsBBIMGDa+6OzdaVO/uAVXWDWml02Men3CILdI1MbVjoh8ECqYUY7OQ+JJvNN
- vnliuq5WM3Ghd3jg/LZZrxXjdIginRHFQCjIJYLKpLZWm1/iDFedcfzqRNYmTtqscdCNHW41
- oT3Z7BmO9xwdjuwBS6nmS6JJwkbf5Ot2QR4pB/DRU7ZwjT1qHe+9r9gF32wXVQatHNGK/VVu
- sfwOnkdxCWkp/qb2gdQRmZh+SedStWshigH6sNfuHBloF/q+hjMRc8b2m326OZdrbSHwY1Sz
- vti8Hn7n8NjdHO9LKB7BIdjkA9DA5WsqOuVCzsFNBFVDXDQBEADNkrQYSREUL4D3Gws46JEo
- Z9HEQOKtkrwjrzlw/tCmqVzERRPvz2Xg8n7+HRCrgqnodIYoUh5WsU84N03KlLueMNsWLJBv
- BaubYN4JuJIdRr4dS4oyF1/fQAQPHh8Thpiz0SAZFx6iWKB7Qrz3OrGCjTPcW6eiOMheesVS
- 5hxietSmlin+SilmIAPZHx7n242u6kdHOh+/SyLImKn/dh9RzatVpUKbv34eP1wAGldWsRxb
- f3WP9pFNObSzI/Bo3kA89Xx2rO2roC+Gq4LeHvo7ptzcLcrqaHUAcZ3CgFG88CnA6z6lBZn0
- WyewEcPOPdcUB2Q7D/NiUY+HDiV99rAYPJztjeTrBSTnHeSBPb+qn5ZZGQwIdUW9YegxWKvX
- XHTwB5eMzo/RB6vffwqcnHDoe0q7VgzRRZJwpi6aMIXLfeWZ5Wrwaw2zldFuO4Dt91pFzBSO
- IpeMtfgb/Pfe/a1WJ/GgaIRIBE+NUqckM+3zJHGmVPqJP/h2Iwv6nw8U+7Yyl6gUBLHFTg2h
- YnLFJI4Xjg+AX1hHFVKmvl3VBHIsBv0oDcsQWXqY+NaFahT0lRPjYtrTa1v3tem/JoFzZ4B0
- p27K+qQCF2R96hVvuEyjzBmdq2esyE6zIqftdo4MOJho8uctOiWbwNNq2U9pPWmu4vXVFBYI
- GmpyNPYzRm0QPwARAQABwsF2BBgBCgAgAhsMFiEEm9B+DgxR+NWWd7dUG5NDfTtBYpsFAmna
- YUkACgkQG5NDfTtBYptX+BAApg32CkxwNucNEi8WfWA8oKkW0y8YDuY6ORMo9FWNGiT/OTy0
- vyJrLocrpn86zwfjVp+eCrssPYh8eqJfnWqmYv6ACQtHPYzPZQ3mSo8H97Z01oUxITzCxpXm
- ZkLgPIqtDPcC2E3dPM/fVxcyowM8XsaMA9wcsaUYrta8toOq2b9tKcjleKMfMrm0gQ9u7wUc
- QbLkwj6TCLOwucb07GXzLTNF9PZmaDUpKAZjMjmrW+le+SFvQbhamx0rxLWPR0NWntXpbCn+
- +ACch03p/JyTBVktxFsFyCt7pTPE1kEaeuXBTe/a2D9iQvRxRW19LvuO2e59/u1wYUiH/orz
- wbIC2S4dBsPAPihL3ztOU1yE86GPyQtSE0kU+/7snnLt4QGi6PChf3t5gnNjAzjUUovO8rgI
- c+5yN5heq5loYHgK6OQ9OlHzsPHO9e9MOQcKlFycs1pyijFGzDwdNUm/SchK8iWT2QApTx4A
- K9bCVaboTA2T77QYkRcRJYSsO1alGX0ome/hMLD1daXlkrNUp1HWa3K4iytLRXjCSIorWiGs
- n+q3krnpXu3TFkA8qtOFZMdnIiFuiq1yLT8hptsV5xh1TA2nsVvSYiaCr3q4s4BKjS/KrLDb
- qoxzw8ISjdUp4pA85vb6YLCmb39NgidD+7PmAr65lBNveIFynTgsja1rRQ4=
-In-Reply-To: <autj6pr_bPaul3w0@ashevche-desk.local>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VI1P195MB0623:EE_|DB9P195MB1730:EE_
+X-MS-Office365-Filtering-Correlation-Id: 27ee0f1a-9227-422d-a20a-08df3a957751
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|1800799024|366016|376014|261022105027099003|261022075727099003|4143699003|11063799006|56012099006|261021121427099003|261009223027099003|261102123227099003|261028144727099003|261026140227099003|261026121527099003|10067099003|18002099003|22082099003|6133799003|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	bhrpsZsb8V2lLqLg+jXeQ+nFZVCfp5rVfwnaBRb7C918fBrNrCC29Ot4gF8kN3qYuhE8wcnuNsBuHsFqKFgD6CMNNkM2vIL3uaSYjdEKurRvTNZJYD8+nRVxAqs4rNHOlIjfcwpou2sa4q5E/IiQq2TT27vGbyaWOgYMzgVX3EU1DUSwGCb78O7MWmQxbtupNSxRrFywm19JT/ybZNm+S7i4mkjERJMIzW48/V1lXE6Q5LBf556U2qtGtToeWtbUN847hMFMtQodiCvfbmhO8C/q+2UQtkPRlh3MEyyLkg6s3LZ2RkX5Erq78w7gCd4jWBI5lDMO5Uo6d5Rm8Zl3xMy7JOGe/vSpULDpxYsbex4nH1vfQYO9m31X9tr4FcnEyZ750E4FGj9Cxkbdvc19QfIV/HmJLMZ5VkOKvjO+9cKTBukY96ugg/y4YN4MBW6Dp5O+WO/GDOZbjIyC00XOQNHOHcbmXj3f91j6QZwtdtxomKidwPsJzYXOD3MMP4W+Bfm73UrgmPqRL4HYLk6zgfKAuii40yHL0HktzapoWVqe2JVLkvFvvO2PJLL9AJwbrDabOOZu8m+CAuCudCkb5uznPN1eG4/49MEyjCXXjvmbindf50vqGJJxXahoWDiVIT4wbx+/8RptcN9I9XjOeoVKJ37CcgaCLfKrtsxf7Dk=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1P195MB0623.EURP195.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(366016)(376014)(261022105027099003)(261022075727099003)(4143699003)(11063799006)(56012099006)(261021121427099003)(261009223027099003)(261102123227099003)(261028144727099003)(261026140227099003)(261026121527099003)(10067099003)(18002099003)(22082099003)(6133799003)(3023799007);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?QUFzTFpYeTFMbHZiQUpPbHJudE5wQndkTFZaaWtPQjF5L0VhazRNNHd3QjVU?=
+ =?utf-8?B?WlZJRnpBRnY4SzZKUVhlbDFWMEM1WmJyNlVTWmw0YWZNMWxQbUFiMC9Kb2lQ?=
+ =?utf-8?B?eGFxdktDdGoxL1FxcW5rVGRCQ0dvMTlHbFBKNy9yNkI3OWxJTG1uMzFrbWRl?=
+ =?utf-8?B?UE9UcEVEdzdscnpmU0EwaVhGVkRUS3BVZTJMaGpkdG0rNi8zMVJranN0Rjl0?=
+ =?utf-8?B?WHNudmFGczFORjNjbGcySzZIaUh6UWwxcmdrUlNhOTQweEM2bGhES09Rdnk0?=
+ =?utf-8?B?WnJsbWRJM1NOTjFRZDZNSXM1OU5XYVZhRHNMTGZ1WGp6QldBWHVhUDJtdG12?=
+ =?utf-8?B?NEVJMGwzV2hBSlRKRHZ0VU5ydjNGUmZYL1ZvT3ptd2trVlhCUk9sU3h2SmY4?=
+ =?utf-8?B?VW9Nd09SemlJSzM2Mys2cUFrWFBzaFZWU0JTOWJuVk1tREdtcUxDQXFmajZQ?=
+ =?utf-8?B?VUtFdjRSVVFlR3l5SytucnhOemhuN3lMODJEdHloNEZRRVczd1dUNUI3ZHhR?=
+ =?utf-8?B?aWptQk5Wdk9BWitzcFJ3M0ZOc2llVWpocG11MjdidkNzQ3hua2hCSHhRMW95?=
+ =?utf-8?B?U3pZQmZ3c3JLVSttcGk3RUYrNHRkbEh2N0NwUGxuQklhOVdtT1F0WktRU21R?=
+ =?utf-8?B?RUVYWTg3cHI0RlJYTllNbFNra2tpc2liMEw1TEIvWUMyRWlLTFJoZG9aaTBM?=
+ =?utf-8?B?U2F6UFZKYjRqcFVKUTh5NXNXZHRUM1hDZ2NBUmNuMGpWdEY2THN6citLUkps?=
+ =?utf-8?B?QWttK3ZLb0lyYnd5bXNlTk5IU0tpci9jZjVzWjdwbmNPNTdhckFDVGdMWTFo?=
+ =?utf-8?B?dnplcGhvMlBTYU5vSlRQTzZZK3ZLWjAzNVpEaTFZK0x4R2FtWmplc0srTzcz?=
+ =?utf-8?B?Mm1nNldGeHMzRDIvbm9jTXhzMndkUHBMN0JEb0dQekFDdVZEL1pZWVdBNGpl?=
+ =?utf-8?B?L0o3bWZFUzE3aUJnVHJUaFJ6ZHN1M1VUL1hIQkI0eWUvc3RxZDdMTllqWlQ2?=
+ =?utf-8?B?NkZob29QOUtEeXNwYTBCRlhza3dlU3dOSmxwRzlRRWlYTUtzNTQyZE5XQTRG?=
+ =?utf-8?B?SFJMaVRMeFNZUVlmckVmQXh5UndHWE5LbUUvanJ4T0pEVUxZRHkzcnlsMHhw?=
+ =?utf-8?B?OUV0MTdRVUJXdDVMWG50OU5NSmVmTXNhOHp5OVBUalR1TFNnUGZ1dWZvMEFR?=
+ =?utf-8?B?YnBiTitFRy9LMzFVempreDlVRVZERkJvclM3RFFLM25PVVZKNWRnaHBCWkM5?=
+ =?utf-8?B?aWV4KzNURGZvVm5mT0t2Y2YralZhTS80OU5WZU5rSjg1d3RuK3JOUEJCNHF4?=
+ =?utf-8?B?UnU4MTBBWjg2SWZnN2I0TWtNR0lYVCt0K2QxNjJqMGxjRUM4bEJmbkVNUmRG?=
+ =?utf-8?B?Y0ppMENURk1OQVBqQkZwL1Brajl3YkxZS2dWUVB6ajZzUEorb3N6SnRhMy9q?=
+ =?utf-8?B?bE8vWlhpbnBpb3IzOEZ5VFRNdWZuZ0c5T3I2UkVOVzlKSElJTE1rRDZ6Szh0?=
+ =?utf-8?B?QnY5ZlJDREU2MjBtTWxmVkFhWE5peENXRmlwUUY3R08rNXZySlBnejI0ckJm?=
+ =?utf-8?B?Y1IzcGdBcEliWExxR2d3NVlKVTBRK0hubUhTUkREQWpOcGZyQU9Ob2ZjWXNP?=
+ =?utf-8?B?eldmc0ZGQm1DNXdPTUZsaVN1N1ZHZkRLV0lvQnQ3MGhWMTlHYmlCZXNoL2dq?=
+ =?utf-8?B?bmVCYTUvWUdPU2wrbVVIb1NIazBPUzhOU1c3UWN0VUlmNVFrUVVjRTk0S3Yw?=
+ =?utf-8?B?WHBGOXl3a1FvVzJ1OGNVc3NjM0hPalJiWWovVzZudklYVzJSWHZ6UUFqQUV5?=
+ =?utf-8?B?Q0dPUGJybk4rMm83OW52U3FBRVliQ1NHQ01hWS9kcmltMnIwVWVVM2ZvL0xR?=
+ =?utf-8?B?NDFlWExvZEtVRnNJNGFZWlJDMUxvMXBGZWp4bFdGRE91U3Zzbm9zTmNvby9N?=
+ =?utf-8?B?elVKMWtLelRBZDhqS25zR1BPZzVzQ0Q3L21PZStkaXpEalhwTEd3N3dzRlk0?=
+ =?utf-8?B?MDQ1emU1dnM3Wm9odUVldmMzdy82T2dBWnpNQUsxNjRhOUNhVmRocUd3UnFj?=
+ =?utf-8?B?cDNIU1JjbXA3S1NkYkkrb2lPb1BsM0Ywb0NMT0NtRW5NL0FiTEZwZ1Fid0Jj?=
+ =?utf-8?B?dWUwNzhodUtmQWhjc0dxb1RlRXM1UExOVlhJYldINjdrM29mZ3F5MGgvd2My?=
+ =?utf-8?B?dmEzaFZsR2tvRFFFVzMxUW5EQ1Q2R01IQm1UcEhDTzJpNkhXMElySWM3ODBm?=
+ =?utf-8?B?YWwzRWxwNFNvbTM1WE9GMEhqK2ZCZGhaczlDd2tkSHp6WTJKQlZSV0RLVGl5?=
+ =?utf-8?Q?RWeRy/7YPe51HXqDav?=
+X-OriginatorOrg: phytec.de
+X-MS-Exchange-CrossTenant-Network-Message-Id: 27ee0f1a-9227-422d-a20a-08df3a957751
+X-MS-Exchange-CrossTenant-AuthSource: VI1P195MB0623.EURP195.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Nov 2026 17:02:53.7398
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: e609157c-80e2-446d-9be3-9c99c2399d29
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: mmEMJqCMlDDJVOSdcZ1anO08JnW5r/D2RUG7EdFQJMYrF/REYK72g7P0PLi52e1x/on7htFOVlorc4lrV0rFTg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9P195MB1730
 
-On 04/11/2026 17:57, Andy Shevchenko wrote:
-> On Wed, Nov 04, 2026 at 10:22:45AM -0500, Frank.Li@oss.nxp.com wrote:
->>
->> Replace open-coded assignments to callback and callback_param fields
->> of struct dma_async_tx_descriptor with calls to the
->> dmaengine_desc_set_callback() helper across SPI bus drivers.
->>
->> No functional change intended. Prepare make to struct
->> dma_async_tx_descriptor private to the DMA engine.
-> 
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com> # dw, pxa2xx, topcliff-pch
-> 
-> (Note, you forgot to add the list of the drivers to the Rb trailers of other reviewers)
+Am 30.10.26 um 15:00 schrieb sashiko-bot@kernel.org:
+> Thank you for your contribution! Sashiko AI review found 5 potential issue(s) to consider:
+> - [High] arm64: dts: freescale: duplicate usdhc2-200mhzgrp node overwrites usdhc2 pins
+Thanks, will correct for v2.
+> - [High] arm64: dts: freescale: missing OF graph ports on M.2 connectors disables radios
+As already described in my other answer, lpuart8 is also used for 
+RS232/RS485 and specifiying the ports will lead to the interface not 
+beeing exposed as /dev/ttyLP1, so RS232/RS485 is no longer usable. That 
+is why the port is not specified.
+> - [High] arm64: dts: freescale: descending cooling-levels ending in 0 breaks pwm-fan
+The pwm-fan is tested and works as expected. The levels are inverted on 
+our hardware. 255 is fan off (if the hardware is cold enough). 0 is fan 
+on full speed.
+> - [Medium] arm64: dts: freescale: misplaced external-facing and wake-gpios on pcie0/pcie1
+> - [Medium] arm64: dts: freescale: stale gpio2 gpio-line-names collide with gpio_expander2
 
-These should be acks. RB creates false impression entire commit was
-reviewed. Our docs also clearly state entire commit:
+Will update/fix for v2.
 
-"Reviewed-by:, instead, indicates that the patch has been reviewed and
-found acceptable according to the Reviewer's Statemen"
+Benjamin
 
-(not patch or part of patch)
-
-"By offering my Reviewed-by: tag, I state that
-I have carried out a technical review of this patch to
-"
-
-(not patch or part of patch)
-
-When you accept only part of this code, you basically Ack. I really
-dislike these half-done reviews, which later appear in logs and tell you
-nothing. You could have clear security bug here, but 10 review tags. How
-useful tags...
-
-
-Best regards,
-Krzysztof
+> --
+>
+> commit 01cb871eca78a3c506a85dce8f3e949939c4a0cb
+> Author: Benjamin Hahn <B.Hahn@phytec.de>
+>
+> dts: imx95-phyflex-libra-rdk: Add dts for phyFLEX-i.MX 95 Libra RDK
+>
+> This commit adds the device tree source files for the PHYTEC phyFLEX Libra
+> RDK baseboard (revision 1618.2) and phyFLEX-i.MX 95 FPSC Gamma SoM (revision
+> 1620.3).
+>
+>> diff --git a/arch/arm64/boot/dts/freescale/imx95-phyflex-fpsc-g-som.dtsi b/arch/arm64/boot/dts/freescale/imx95-phyflex-fpsc-g-som.dtsi
+>> new file mode 100644
+>> index 0000000000000..4b37d76cced1b
+>> --- /dev/null
+>> +++ b/arch/arm64/boot/dts/freescale/imx95-phyflex-fpsc-g-som.dtsi
+>> @@ -0,0 +1,736 @@
+> [ ... ]
+>
+>> +&scmi_iomuxc {
+> [ ... ]
+>
+>> +	pinctrl_usdhc2_200mhz: usdhc2-200mhzgrp {
+>> +		fsl,pins = <
+>> +			IMX95_PAD_SD2_CD_B__USDHC2_CD_B		0x31e	/* CD */
+>> +			IMX95_PAD_SD2_CLK__USDHC2_CLK		0x158e	/* CLK */
+>> +			IMX95_PAD_SD2_CMD__USDHC2_CMD		0x138e	/* CMD */
+>> +			IMX95_PAD_SD2_DATA0__USDHC2_DATA0	0x138e	/* DATA0 */
+>> +			IMX95_PAD_SD2_DATA1__USDHC2_DATA1	0x138e	/* DATA1 */
+>> +			IMX95_PAD_SD2_DATA2__USDHC2_DATA2	0x138e	/* DATA2 */
+>> +			IMX95_PAD_SD2_DATA3__USDHC2_DATA3	0x138e	/* DATA3 */
+>> +			IMX95_PAD_SD2_VSELECT__USDHC2_VSELECT	0x51e
+>> +		>;
+>> +		bootph-all;
+>> +	};
+>> +
+>> +	pinctrl_usdhc3: usdhc3grp {
+>> +		fsl,pins = <
+>> +			IMX95_PAD_SD3_CLK__USDHC3_CLK		0x159e	/* SDIO_CLK */
+>> +			IMX95_PAD_SD3_CMD__USDHC3_CMD		0x139e	/* SDIO_CMD */
+>> +			IMX95_PAD_SD3_DATA0__USDHC3_DATA0	0x139e	/* SDIO_DATA0 */
+>> +			IMX95_PAD_SD3_DATA1__USDHC3_DATA1	0x139e	/* SDIO_DATA1 */
+>> +			IMX95_PAD_SD3_DATA2__USDHC3_DATA2	0x139e	/* SDIO_DATA2 */
+>> +			IMX95_PAD_SD3_DATA3__USDHC3_DATA3	0x139e	/* SDIO_DATA3 */
+>> +		>;
+>> +	};
+>> +
+>> +	pinctrl_usdhc3_100mhz: usdhc3-100mhzgrp {
+>> +		fsl,pins = <
+>> +			IMX95_PAD_SD3_CLK__USDHC3_CLK		0x159e	/* SDIO_CLK */
+>> +			IMX95_PAD_SD3_CMD__USDHC3_CMD		0x139e	/* SDIO_CMD */
+>> +			IMX95_PAD_SD3_DATA0__USDHC3_DATA0	0x139e	/* SDIO_DATA0 */
+>> +			IMX95_PAD_SD3_DATA1__USDHC3_DATA1	0x139e	/* SDIO_DATA1 */
+>> +			IMX95_PAD_SD3_DATA2__USDHC3_DATA2	0x139e	/* SDIO_DATA2 */
+>> +			IMX95_PAD_SD3_DATA3__USDHC3_DATA3	0x139e	/* SDIO_DATA3 */
+>> +		>;
+>> +	};
+>> +
+>> +	pinctrl_usdhc3_200mhz: usdhc2-200mhzgrp {
+>> +		fsl,pins = <
+>> +			IMX95_PAD_SD3_CLK__USDHC3_CLK		0x159e	/* SDIO_CLK */
+>> +			IMX95_PAD_SD3_CMD__USDHC3_CMD		0x139e	/* SDIO_CMD */
+>> +			IMX95_PAD_SD3_DATA0__USDHC3_DATA0	0x139e	/* SDIO_DATA0 */
+>> +			IMX95_PAD_SD3_DATA1__USDHC3_DATA1	0x139e	/* SDIO_DATA1 */
+>> +			IMX95_PAD_SD3_DATA2__USDHC3_DATA2	0x139e	/* SDIO_DATA2 */
+>> +			IMX95_PAD_SD3_DATA3__USDHC3_DATA3	0x139e	/* SDIO_DATA3 */
+>> +		>;
+>> +	};
+> [Severity: High]
+> Should pinctrl_usdhc3_200mhz be named usdhc3-200mhzgrp instead of
+> usdhc2-200mhzgrp?
+>
+> Because both pinctrl_usdhc2_200mhz and pinctrl_usdhc3_200mhz use the node
+> name usdhc2-200mhzgrp under &scmi_iomuxc, dtc merges them into a single
+> node and overwrites the SD2 fsl,pins array in pinctrl_usdhc2_200mhz with
+> the SD3 pins from pinctrl_usdhc3_200mhz.
+>
+> When usdhc2 (which has sd-uhs-sdr104 enabled) switches to its state_200mhz
+> pinctrl state, it will attempt to claim the SD3 pads instead of configuring
+> the SD2 pads, breaking 200MHz SD card operation and conflicting with usdhc3.
+>
+> Also, both pinctrl_usdhc2_200mhz and pinctrl_usdhc3_200mhz appear to use
+> 100MHz pad settings (0x158e/0x138e and 0x159e/0x139e) rather than 200MHz
+> slew rate settings (such as 0x15fe/0x13fe used in pinctrl_usdhc1_200mhz).
+>
+>> diff --git a/arch/arm64/boot/dts/freescale/imx95-phyflex-libra-rdk.dts b/arch/arm64/boot/dts/freescale/imx95-phyflex-libra-rdk.dts
+>> new file mode 100644
+>> index 0000000000000..55d49f8109567
+>> --- /dev/null
+>> +++ b/arch/arm64/boot/dts/freescale/imx95-phyflex-libra-rdk.dts
+>> @@ -0,0 +1,558 @@
+> [ ... ]
+>
+>> +	m2-key-m-connector {
+>> +		compatible = "pcie-m2-m-connector";
+>> +		clocks = <&rv3028>;
+>> +		i2c-parent = <&lpi2c5>;
+>> +		vpcie3v3-supply = <&reg_vdd_3v3>;
+>> +	};
+>> +
+>> +	m2-key-e-connector {
+>> +		compatible = "pcie-m2-e-connector";
+>> +		clocks = <&rv3028>;
+>> +		i2c-parent = <&lpi2c3>;
+>> +		sdio-reset-gpios = <&gpio_expander2 6 GPIO_ACTIVE_LOW>;
+>> +		sdio-wake-gpios = <&gpio_expander2 5 GPIO_ACTIVE_LOW>;
+>> +		uart-wake-gpios = <&gpio_expander1 13 GPIO_ACTIVE_LOW>;
+>> +		vpcie3v3-supply = <&reg_vdd_3v3>;
+>> +		w-disable1-gpios = <&gpio_expander1 9 GPIO_ACTIVE_LOW>;
+>> +		w-disable2-gpios = <&gpio_expander1 10 GPIO_ACTIVE_LOW>;
+>> +	};
+> [Severity: High]
+> Are the OF graph ports missing from m2-key-m-connector and
+> m2-key-e-connector?
+>
+> When pwrseq_pcie_m2_probe() in drivers/power/sequencing/pwrseq-pcie-m2.c
+> probes m2-key-e-connector, it requests w-disable1-gpios and w-disable2-gpios
+> with GPIOD_OUT_HIGH, asserting the active-low W_DISABLE1# and W_DISABLE2#
+> lines and disabling the M.2 module's Wi-Fi and Bluetooth radios:
+>
+> drivers/power/sequencing/pwrseq-pcie-m2.c:pwrseq_pcie_m2_probe() {
+> 	...
+> 	ctx->w_disable1_gpio = devm_gpiod_get_optional(dev, "w-disable1",
+> 						       GPIOD_OUT_HIGH);
+> 	...
+> 	ctx->w_disable2_gpio = devm_gpiod_get_optional(dev, "w-disable2",
+> 						       GPIOD_OUT_HIGH);
+> }
+>
+> Those lines are only deasserted when a consumer matches via
+> pwrseq_pcie_m2_match(), which walks the connector's OF graph endpoints via
+> for_each_endpoint_of_node(ctx->of_node, endpoint). Without the ports nodes
+> linking m2-key-e-connector and m2-key-m-connector to the PCIe Root Ports,
+> UART, and SDIO controller (which are also required by
+> pcie-m2-e-connector.yaml and pcie-m2-m-connector.yaml), no consumer can
+> match and the radios remain permanently disabled.
+>
+>> +	osc_mclk: oscillator-mclk {
+>> +		compatible = "fixed-clock";
+>> +		#clock-cells = <0>;
+>> +		clock-frequency = <19200000>;
+>> +		status = "disabled";
+>> +	};
+>> +
+>> +	osc_mclk_gated: oscillator-mclk-gated {
+>> +		compatible = "gpio-gate-clock";
+>> +		#clock-cells = <0>;
+>> +		clocks = <&osc_mclk>;
+>> +		enable-gpios = <&gpio_expander1 8 GPIO_ACTIVE_HIGH>;
+>> +		status = "disabled";
+>> +	};
+>> +
+>> +	fan: pwm-fan {
+>> +		compatible = "pwm-fan";
+>> +		interrupt-parent = <&gpio1>;
+>> +		interrupts = <4 IRQ_TYPE_EDGE_RISING>;
+>> +		#cooling-cells = <2>;
+>> +		/* startup 35%, duty cycle 30%-100%;
+>> +		 * polarity inversion does not appear to work
+>> +		 */
+>> +		cooling-levels = <255 166 96 0>;
+>> +		/* fan-supply = <&reg_vdd_5v0>;  probe fails with this set */
+>> +		pwms = <&tpm5 3 86958 0>;
+>> +		pulses-per-revolution = <2>;
+>> +	};
+> [Severity: High]
+> Will cooling-levels = <255 166 96 0> turn the fan off when the thermal zone
+> reaches its highest temperature trip point (trip4 at 75C)?
+>
+> In drivers/hwmon/pwm-fan.c, __set_pwm() treats a PWM value of 0 as fan
+> power-off rather than driving a 0% duty cycle:
+>
+> drivers/hwmon/pwm-fan.c:__set_pwm() {
+> 	...
+> 	if (pwm > 0) {
+> 		...
+> 		state->duty_cycle = DIV_ROUND_UP(pwm * (period - 1), MAX_PWM);
+> 		ret = pwm_apply_might_sleep(ctx->pwm, state);
+> 		if (ret)
+> 			return ret;
+> 		ret = pwm_fan_power_on(ctx);
+> 	} else {
+> 		ret = pwm_fan_power_off(ctx, false);
+> 	}
+> 	...
+> }
+>
+> When cooling state 3 selects cooling-levels[3] == 0, pwm_fan_power_off() sets
+> state->enabled = false. In drivers/pwm/pwm-imx-tpm.c, pwm_imx_tpm_apply_hw()
+> disables the TPM5_CH3 output driver when state->enabled is false, allowing the
+> pad pull-up on IMX95_PAD_GPIO_IO26__TPM5_CH3 (0x51e) to pull the inverted PWM
+> line high and stop the fan at 75C.
+>
+> Additionally, pwm_fan_probe() sets the initial state to
+> cooling_levels[pwm_fan_max_state] (0), so the PWM channel is not enabled at
+> boot, and pwm_fan_update_state() expects cooling-levels to be ordered in
+> ascending order. Using a non-zero minimum value (such as 1) or configuring
+> active-high/inverted PWM handling would avoid disabling the channel at state 3.
+>
+> [ ... ]
+>
+>> +&gpio2 {
+>> +	gpio-line-names = "", "", "", "", "",
+>> +			  "", "", "", "", "",
+>> +			  "", "", "", "", "",
+>> +			  "", "RGMII2_nINT", "GPIO4", "RTC_INT", "",
+>> +			  "LVDS1_BL_EN";
+>> +};
+>> +
+>> +&lpi2c1 {
+>> +	temperature-sensor@4f {
+>> +		compatible = "nxp,p3t1755";
+>> +		reg = <0x4f>;
+>> +		vs-supply = <&reg_vdd_1v8>;
+>> +	};
+>> +};
+>> +
+>> +&lpi2c3 {
+>> +	status = "okay";
+>> +
+>> +	gpio_expander2: gpio@21 {
+>> +		compatible = "ti,tcal6416";
+>> +		reg = <0x21>;
+>> +		interrupt-parent = <&gpio2>;
+>> +		interrupts = <17 IRQ_TYPE_LEVEL_LOW>;
+>> +		#interrupt-cells = <2>;
+>> +		gpio-controller;
+>> +		#gpio-cells = <2>;
+>> +		gpio-line-names = "CAN1_STBY", "CAN2_STBY", "NC",
+>> +				  "KEY-E_nALERT", "KEY-M_nALERT",
+>> +				  "SDIO_nWAKE", "SDIO_nRESET", "HDMI_EN",
+>> +				  "RTC_nINT", "LVDS1_BL_EN", "SFP_TX_FAULT",
+>> +				  "SFP_TX_DISABLE", "SFP_MOD_ABS", "SFP_RS0",
+>> +				  "SFP_RX_LOSS", "SFP_RS1";
+> [Severity: Medium]
+> Should the &gpio2 gpio-line-names override in imx95-phyflex-libra-rdk.dts be
+> dropped?
+>
+> On the SoM (imx95-phyflex-fpsc-g-som.dtsi), GPIO2 lines 18 and 20 are muxed to
+> SPI3_CS and SPI3_MOSI for lpspi4, while on the baseboard RTC_nINT and
+> LVDS1_BL_EN are on gpio_expander2 lines 8 and 9. Keeping "RTC_INT" and
+> "LVDS1_BL_EN" on &gpio2 duplicates the "LVDS1_BL_EN" line name and causes
+> userspace lookups by name to match gpio2 line 20 instead of gpio_expander2
+> line 9.
+>
+> [ ... ]
+>
+>> +/* M.2 Key-E PCIe */
+>> +&pcie0 {
+>> +	external-facing;
+>> +	supports-clkreq;
+>> +	wake-gpios = <&gpio_expander1 11 GPIO_ACTIVE_LOW>;
+>> +	status = "okay";
+>> +};
+>> +
+>> +&pcie0_port0 {
+>> +	reset-gpios = <&gpio1 10 GPIO_ACTIVE_LOW>;
+>> +	vpcie3v3-supply = <&reg_vdd_3v3>;
+>> +};
+>> +
+>> +/* M.2 Key-M PCIe */
+>> +&pcie1 {
+>> +	external-facing;
+>> +	supports-clkreq;
+>> +	wake-gpios = <&gpio_expander1 12 GPIO_ACTIVE_LOW>;
+>> +	status = "okay";
+>> +};
+>> +
+>> +&pcie1_port0 {
+>> +	reset-gpios = <&gpio1 14 GPIO_ACTIVE_LOW>;
+>> +	vpcie3v3-supply = <&reg_vdd_3v3>;
+>> +};
+> [Severity: Medium]
+> Should external-facing and wake-gpios be placed on &pcie0_port0 and
+> &pcie1_port0 rather than on &pcie0 and &pcie1?
+>
+> In drivers/pci/of.c, pci_set_bus_of_node() only checks external-facing when
+> bus->self is non-NULL (reading from the Root Port node rather than the host
+> bridge node), and pci_configure_of_wake_gpio() requests wake-gpios from the
+> enumerated pci_dev's OF node (&pcie0_port0 and &pcie1_port0). The
+> fsl,imx6q-pcie.yaml binding also only allows pci-pci-bridge.yaml properties
+> like external-facing and wake-gpios on the Root Port child node.
+>
