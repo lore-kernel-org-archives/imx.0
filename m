@@ -1,57 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1793801376;
-	b=yS/AW9yx1SJfV6Hr20ZWqUbWu/ZH6uxj0Ltc++W9KTZulHWXGGVX2sB4CQWejjA7oZZk
-	 ag8cNrLdLVoapbGrxycXbTTVYRUS4wDAhBIWf9FJX6/8r7RylheQ6AOs74xL0ny0+SLNL
-	 wL3Z33uwRb3+CEnuQ5wjRmFLiJJIas/tovIkVnGlj/0+giuA7Rj59ChtbV2wl1iYxSTco
-	 2jYNntZ6DTJUjonCrPcPkMAPtx73lYfvI+XL6GJw5g25Y8Owll2u/K6i0BNlE83r8n2Tl
-	 EjRQjKAfPVkZA7pKhljU2d8aKu8UEpZTF6o68pnBSukWfzm9KI9PiECONZKO4SiNyLg==
+	b=j5LsciHjQIIf87hF6pbR3D3UgQJiHp4X1h9PPgY4o529I2wuINk8scbvuiw2U6TJJ03s
+	 k8udRe88m6MdV0WJeCFtm6otMCpYhB6C8rk5Bp1764pgTDrsb2DVOWdlqOrrF8SMiJmC+
+	 440l5cDehotREChgAjvFUHj7BrhMeXzWm+gjzeCb0sjmBolPI18YW3oFW2Oe7oU0Z6Hzp
+	 IowPXVeuakZI6x2GAx48j/th00gTYRnyi5priuQhUHkFhwuF/7X/Ll3keESZ4QoIDpJ7P
+	 w9CWMYbSjdOjbAxMsEimvFg6yWqUcQVbfZALL2J8ti2MXVDznfCfVLQy4QGQ3Ai6tmg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1793801376;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=gRwCkUFdDx81Anhrc3DHgSdl+SIDn8+BVNO/7YeFIRM=;
-	b=v8yPrD0OV+2iUiBTgs0LR9bCRVSburSGXNUzyIh9I78fL5+0Qvs/Bf/1cw5PmmLMjz6X
-	 yF//odj/YCcSfJP5tS+YbzpBBVBbCcIKhBIdrIx4SYy+onnwaAUdQ40LoCJQ60iVD4OBn
-	 0rqW1KoA1sCVrvFlOLa8MvREUvjfCjSXRmYF41/N1q4pf01asz6kuaC5wMK3mijiCaDMq
-	 QhIdHA0ctq9jXww2sDHx8IOL6y9mvFa4lmMpy3gXkf+JfdSx1XcGYBjQ8MLv3FQiSPGp7
-	 9OXSiPujRRz0AhZtvjrYbPIgnrrsCDtO243APlDpSK/qIT2Rk9hdubiO0YrsI7PbE5g==
+	bh=Dis1N9ApaTjVUV06o6HKxwJ6K12hg4N/iyLNhWr2wbQ=;
+	b=5rV8QvuKXf7GpiV674UTKIf1ucQajlDxfUWvqHc0Zey1uUkkXE/y61HYm6CNoGzPLmWz
+	 PnC4nwAXvmrKpfjN9xshG47cIKaMxvHfODGf176/szWEPOmGWS9w5XsGqiuNZboSBlaLe
+	 QhrDnVF7Ag5/VlwqK8I3W/dBqd6KoNwybI5Ru2oF3ksJpmFrmvduIE/FDU6AxVqf4iaxC
+	 f0RPb8ERhiUMyKQHFawhjyXVi+vsQVuvUpH/StGtrIJGPE+T4Klz+/UgcQCiqBmJEFxUH
+	 SNHru2LJDKgdkqtC+gcqNS0cD59YbaU75eYuL5tznloXWTYcz44VKP87TAiJytFr2jQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EgTV2nfY;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=k9zz3iys;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB4C2606A326;
-	Wed,  4 Nov 2026 14:09:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82493606A330
+	for <imx@lists.linux.dev>; Wed,  4 Nov 2026 14:09:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EgTV2nfY
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5225B1F000C1;
-	Wed,  4 Nov 2026 14:09:35 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=k9zz3iys
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CDAF1F00A02;
+	Wed,  4 Nov 2026 14:09:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793801375;
-	bh=gRwCkUFdDx81Anhrc3DHgSdl+SIDn8+BVNO/7YeFIRM=;
+	s=k20260515; t=1793801376;
+	bh=Dis1N9ApaTjVUV06o6HKxwJ6K12hg4N/iyLNhWr2wbQ=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=EgTV2nfY3lXXbwuDJ8pvlIoNUB9qPdyBeXFU7TnAS1OICtYXVu0p4cNBRzA/KBVUp
-	 vchL+zrHwPPVYTx1+CzkkLi9TlpV2VmsjGIw7e2MBaDuAFIpxtuTGv+GZTgU5lWp27
-	 DLRb8uONynEs54T4reqmoVTUz19AIdPSZcOGfkSgHYkwek29mZCcAYN9cHJe82SiDp
-	 74Vnf+NY5FbYdx+Hv+hvpcvkGs44UJLUMabiE25JUQ7sEAJ4JE0+H2wFyx0i7PNs+A
-	 rYr0KNIEeh/lA5nuY+y0UAnwjKH5dcN6xHT/hA9MvC9U/k/x3vjeuz7EmIr1A0lA2g
-	 1ZqQ5t0xg9F7Q==
-Message-ID: <sashiko-outbox-197399@kernel.org>
+	b=k9zz3iysU0QL00Pd5UtADu0O6vwZA9MrbteCZnPupeF03DG9LoLPxyAgNpre+qUJo
+	 8HKieuczy0q9X30aqWeA/58is52CO0H0+IFe3X7mFLZrcPemyKejrCM1GCq/lC4E5k
+	 UgnG4hTQIMHFZTH1GJRuMNMGSvt9KAv3Kila4Th7Pgul8t4z77qC+JPVpHCqlLefU+
+	 uhE3bQxSbCnOB4B/IaAMRP0ZZ8Fyrh3OirBbUE5oLyiG9GJ9sn6KPSy6ppf5i8ZwGm
+	 3iaLUuCHe2LDKnIhdaDJKTEcedYR7bxXRjqNuUzvpvTcP/ZhlzEKCa6MLkgP2Fuf0J
+	 XZj7Z/uvbgBcw==
+Message-ID: <sashiko-outbox-197400@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH net-next v3 1/5] net: enetc: Add pseudo-MAC support for
- ENETCv4 Ports via a fixed-link node
+Subject: Re: [PATCH net-next v3 2/5] net: enetc: Enable probing of version
+ 4.4 devices
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Claudiu Manoil" <claudiu.manoil@nxp.com>
-Cc: imx@lists.linux.dev, devicetree@vger.kernel.org, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org
-In-Reply-To: <5a135fdb2f4de0ee90f4c7e691fff34ccab29354.1793712309.git.claudiu.manoil@nxp.com>
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <bf8effe9a06ba569b5e5a36cc1d1982b2e3fff53.1793712309.git.claudiu.manoil@nxp.com>
 References: <cover.1793712309.git.claudiu.manoil@nxp.com>
- <5a135fdb2f4de0ee90f4c7e691fff34ccab29354.1793712309.git.claudiu.manoil@nxp.com>
+ <bf8effe9a06ba569b5e5a36cc1d1982b2e3fff53.1793712309.git.claudiu.manoil@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 04 Nov 2026 14:09:34 +0000
+Date: Wed, 04 Nov 2026 14:09:35 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -61,151 +61,113 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Medium] net: enetc: NXP_ENETC4 selects OF_DYNAMIC without depending on OF
-- [Medium] net: enetc: enetc_phylink_match_pseudo_mac_speed() returns >10G =
-fixed-link
+- [Critical] net: enetc: out-of-bounds write to int_vector[] in enetc_int_v=
+ector_init()
 --
 
-commit 47b0c7dd1742d2d679a7876866a314bac673517d
+commit 6de2e15f2fb313f3ab9a84d0bfd5a867de11c72c
 Author: Claudiu Manoil <claudiu.manoil@nxp.com>
 
-net: enetc: Add pseudo-MAC support for ENETCv4 Ports via a fixed-link node
+net: enetc: Enable probing of version 4.4 devices
 
-This commit adds pseudo-MAC support for ENETCv4 ports by synthesizing a
-runtime fixed-link devicetree subnode via an of_changeset using the boot-ti=
-me
-speed read from the port PCR register.
+This commit adds driver data and platform info entries for ENETC v4.4 PF and
+VF devices on S32N79 SoCs with a 500 MHz system clock frequency.
 
-> diff --git a/drivers/net/ethernet/freescale/enetc/Kconfig b/drivers/net/e=
-thernet/freescale/enetc/Kconfig
-> index f425f82a6213a..c51d07db2c869 100644
-> --- a/drivers/net/ethernet/freescale/enetc/Kconfig
-> +++ b/drivers/net/ethernet/freescale/enetc/Kconfig
-> @@ -55,6 +55,7 @@ config NXP_ENETC4
->  	select NXP_NTMP
->  	select PHYLINK
->  	select DIMLIB
-> +	select OF_DYNAMIC
-
-[Severity: Medium]
-As reported by kernel test robot on v2 [1], does selecting OF_DYNAMIC here
-without depending on OF cause Kconfig unmet dependency warnings and link
-failures when CONFIG_OF is disabled?
-
-In drivers/of/Kconfig, OF_DYNAMIC (and OF_KOBJ, which it selects) is defined
-inside the if OF block:
-
-drivers/of/Kconfig:
-if OF
-...
-config OF_DYNAMIC
-	bool "Support for dynamic device trees" if OF_UNITTEST
-	select OF_KOBJ
-
-When building with CONFIG_OF=3Dn and CONFIG_NXP_ENETC4 enabled (for example,
-under CONFIG_COMPILE_TEST=3Dy on x86_64), selecting OF_DYNAMIC forces
-CONFIG_OF_DYNAMIC=3Dy while CONFIG_OF remains disabled.
-
-Because CONFIG_OF_DYNAMIC=3Dy is set, include/linux/of.h exposes extern
-declarations rather than inline stubs for the of_changeset_*() and
-of_node_put() helpers, while drivers/Makefile only descends into drivers/of/
-when CONFIG_OF is enabled. As a result, the calls to of_changeset_init(),
-of_changeset_create_node(), of_changeset_add_prop_u32(),
-of_changeset_add_prop_bool(), of_changeset_apply(), of_changeset_revert(),
-of_changeset_destroy(), and of_node_put() in enetc4_add_ppm_fixed_link() and
-enetc4_put_ppm_fixed_link() fail with undefined references at link time.
-
-Should NXP_ENETC4 depend on OF, or only select OF_DYNAMIC if OF (with the
-relevant calls or stubs guarded accordingly)?
-
-[ ... ]
-
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c b/dri=
-vers/net/ethernet/freescale/enetc/enetc_pf_common.c
-> index 8206884294a47..3ba46c3a7670b 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
-> @@ -436,6 +436,43 @@ void enetc_mdiobus_destroy(struct enetc_pf *pf)
->  }
->  EXPORT_SYMBOL_GPL(enetc_mdiobus_destroy);
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/e=
+thernet/freescale/enetc/enetc.c
+> index c6571b5cc8425..b989823859ff2 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+> @@ -3832,6 +3832,20 @@ static const struct enetc_drvdata enetc4_vf_data =
+=3D {
+>  	.eth_ops =3D &enetc_vf_ethtool_ops,
+>  };
 > =20
-> +static struct {
-> +	unsigned long mac_cap;
-> +	int speed; /* descending order sorted  */
-> +} enetc_phylink_pseudo_mac_caps[] =3D {
-> +	{ MAC_25000FD,  SPEED_25000 },
-> +	{ MAC_20000FD,  SPEED_20000 },
-> +	{ MAC_10000FD,  SPEED_10000 },
-> +	{ MAC_5000FD,   SPEED_5000  },
-> +	{ MAC_2500FD,   SPEED_2500  },
-> +	{ MAC_1000FD,   SPEED_1000  },
-> +	{ MAC_100FD,    SPEED_100   },
-> +	{ MAC_10FD,     SPEED_10    },
+> +static const struct enetc_drvdata enetc4_s32n79_ppm_data =3D {
+> +	.sysclk_freq =3D ENETC_CLK_500M,
+> +	.tx_csum =3D true,
+> +	.max_frags =3D ENETC4_MAX_SKB_FRAGS,
+> +	.eth_ops =3D &enetc4_ppm_ethtool_ops,
 > +};
 > +
-> +static unsigned long enetc_phylink_get_pseudo_mac_caps(void)
-> +{
-> +	unsigned long mac_caps =3D 0;
-> +	int i;
+> +static const struct enetc_drvdata enetc4_s32n79_vf_data =3D {
+> +	.sysclk_freq =3D ENETC_CLK_500M,
+> +	.tx_csum =3D true,
+> +	.max_frags =3D ENETC4_MAX_SKB_FRAGS,
+> +	.eth_ops =3D &enetc_vf_ethtool_ops,
+> +};
 > +
-> +	for (i =3D 0; i < ARRAY_SIZE(enetc_phylink_pseudo_mac_caps); i++)
-> +		mac_caps |=3D enetc_phylink_pseudo_mac_caps[i].mac_cap;
-> +
-> +	return mac_caps;
-> +}
-> +
-> +int enetc_phylink_match_pseudo_mac_speed(int speed)
-> +{
-> +	int i;
-> +
-> +	for (i =3D 0; i < ARRAY_SIZE(enetc_phylink_pseudo_mac_caps); i++)
-> +		if (enetc_phylink_pseudo_mac_caps[i].speed <=3D speed)
-> +			return enetc_phylink_pseudo_mac_caps[i].speed;
-> +
-> +	return SPEED_UNKNOWN;
-> +}
-> +EXPORT_SYMBOL_GPL(enetc_phylink_match_pseudo_mac_speed);
+>  static const struct enetc_platform_info enetc_info[] =3D {
+>  	{ .revision =3D ENETC_REV_1_0,
+>  	  .dev_id =3D ENETC_DEV_ID_PF,
+> @@ -3862,6 +3876,18 @@ static const struct enetc_platform_info enetc_info=
+[] =3D {
+>  	  .dev_id =3D NXP_ENETC_VF_DEV_ID,
+>  	  .data =3D &enetc4_vf_data,
+>  	},
+> +	{ .revision =3D ENETC_REV_4_4,
+> +	  .dev_id =3D NXP_ENETC_PPM_DEV_ID,
+> +	  .data =3D &enetc4_s32n79_ppm_data,
+> +	},
+> +	{ .revision =3D ENETC_REV_4_4,
+> +	  .dev_id =3D NXP_ENETC_PF_DEV_ID,
+> +	  .data =3D &enetc4_s32n79_ppm_data,
+> +	},
+> +	{ .revision =3D ENETC_REV_4_4,
+> +	  .dev_id =3D NXP_ENETC_VF_DEV_ID,
+> +	  .data =3D &enetc4_s32n79_vf_data,
+> +	},
 
-[Severity: Medium]
-What happens in phylink_parse_fixedlink() when an ENETCv4 pseudo-MAC port h=
-as
-PCR[PSPEED] configured for 20000 or 25000 Mbps at boot?
+[Severity: Critical]
+Can probing ENETC v4.4 on an 8-core S32N79 SoC overflow priv->int_vector[] =
+in
+enetc_int_vector_init()?
 
-In enetc4_link_init() -> enetc4_add_ppm_fixed_link(), the driver reads the
-hardware speed via enetc4_get_pcr_speed(), maps it through
-enetc_phylink_match_pseudo_mac_speed(), and writes the resulting speed
-(SPEED_20000 or SPEED_25000) into the synthesized fixed-link node's speed
-property before calling enetc_phylink_create() -> phylink_create().
+In drivers/net/ethernet/freescale/enetc/enetc.h, ENETC_MAX_BDR_INT is still
+defined as 6:
 
-However, in drivers/net/phy/phylink.c, phylink_parse_fixedlink() populates
-pl->supported using phylink_fill_fixedlink_supported(), which only sets link
-modes up to 10000baseT_Full:
+#define ENETC_MAX_BDR_INT	6 /* fixed to max # of available cpus */
+...
+struct enetc_ndev_priv {
+	...
+	int bdr_int_num; /* number of Rx/Tx ring interrupts */
+	struct enetc_int_vector *int_vector[ENETC_MAX_BDR_INT];
+	u16 num_rx_rings, num_tx_rings;
+	u16 rx_bd_count, tx_bd_count;
 
-drivers/net/phy/phylink.c:phylink_fill_fixedlink_supported() {
-    linkmode_set_bit(ETHTOOL_LINK_MODE_10baseT_Half_BIT, supported);
-    linkmode_set_bit(ETHTOOL_LINK_MODE_10baseT_Full_BIT, supported);
-    linkmode_set_bit(ETHTOOL_LINK_MODE_100baseT_Half_BIT, supported);
-    linkmode_set_bit(ETHTOOL_LINK_MODE_100baseT_Full_BIT, supported);
-    linkmode_set_bit(ETHTOOL_LINK_MODE_1000baseT_Half_BIT, supported);
-    linkmode_set_bit(ETHTOOL_LINK_MODE_1000baseT_Full_BIT, supported);
-    linkmode_set_bit(ETHTOOL_LINK_MODE_2500baseT_Full_BIT, supported);
-    linkmode_set_bit(ETHTOOL_LINK_MODE_5000baseT_Full_BIT, supported);
-    linkmode_set_bit(ETHTOOL_LINK_MODE_10000baseT_Full_BIT, supported);
-}
+Previously supported SoCs had at most 6 CPUs, whereas S32N79 has 8 CPUs and
+enetc4_default_rings_allocation() allocates up to ENETC_SI_MAX_RING_NUM (8)
+RX rings to the PF.
 
-Because pl->supported has no 20000 or 25000 Mbps link modes set,
-phy_caps_lookup() in phylink_parse_fixedlink() returns NULL for SPEED_20000
-and SPEED_25000, triggering:
+When enetc_init_si_rings_params() runs on an 8-CPU system with 7 or 8 RX
+rings:
 
-    phylink_warn(pl, "fixed link %s duplex %dMbps not recognised\n", ...);
+	int cpus =3D num_online_cpus();
+	...
+	priv->num_rx_rings =3D min_t(int, cpus, si->num_rx_rings);
+	priv->num_tx_rings =3D si->num_tx_rings;
+	priv->bdr_int_num =3D priv->num_rx_rings;
 
-and leaving pl->supported, pl->link_config.advertising, and
-pl->link_config.lp_advertising with no speed link modes set.
+priv->bdr_int_num becomes 7 or 8 without being clamped to ENETC_MAX_BDR_INT.
+Then enetc_alloc_msix() -> enetc_int_vector_init() writes past the end of
+priv->int_vector[]:
 
-[1] https://lore.kernel.org/r/202610151650.UHqL0Sb7-lkp@intel.com
+	for (i =3D 0; i < priv->bdr_int_num; i++) {
+		...
+		err =3D enetc_int_vector_init(priv, i, num_tx_rings);
+
+where enetc_int_vector_init() does:
+
+	priv->int_vector[i] =3D v;
+
+overwriting num_rx_rings, num_tx_rings, rx_bd_count, tx_bd_count, and
+subsequent fields in struct enetc_ndev_priv.
+
+Should ENETC_MAX_BDR_INT be increased (and/or priv->bdr_int_num bounded by
+ENETC_MAX_BDR_INT)?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1793712309.gi=
-t.claudiu.manoil@nxp.com?part=3D1
+t.claudiu.manoil@nxp.com?part=3D2
