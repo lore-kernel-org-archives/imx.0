@@ -1,102 +1,101 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.130.27
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793777888;
-	b=yPEjHTno9QTHoBGWUuUNNLTS0BACjvrDrv+GZST4nLJnkWG70Z3cy8jcCP32nMu4NjWN
-	 vbB73v3Udnp+WqHF8c6uvrws2GW4k/nVYO2kYfhooPCdqARXyxA3GDb+wkkJNSe6PkTTU
-	 Bk6vKwzp6NpsDz6SeKjmy+cUvFK9/XfAZcH1xs5exUyBSHH7OFmZAfnz3MH7RfaStnkRM
-	 OVEA1jgn49fufcwbzpy5vn2zshV09rdW2edTGrVOiitFdZk5bZAitAy4C/9sKinBu453O
-	 A0XGUPsvoZymsFyX4sRwyvTnF3cQSQ/XIWXpjfF1oxhEKvkR3l+MUjZz2C6PW9tgF3A==
+	t=1793777892;
+	b=AXCfiwK9WfmUtsqlrHE+vYNUJUM+MqLzd/JH5+PYUcEgSVnesEjxpVPDxYTuRbLCwlZf
+	 DanhovDf6xFNUOg4ub0FakY7HqUBVPp+ILHxsa3UwAN6qVAAeOZTEjqDpkIteIUlq32x0
+	 6egcZIzUp9uqANNSzYjAxRmJPQHn9DQkDXmfUjKIrqPj+bWfvhPSaOcTQCMuVTrqi88Xv
+	 8vNDluvCzPH8BsdEfLkNhBA1Z+hrr1np6UvDQcVZ3gzf2akeGaq0rlljM41YbFoRtrEwa
+	 r2g6Wz/srFHLL8iHGx3a8EXzh32zBeCfAg7vMV+6zaXz9Vym5ddvyr7Aip2fw6zmyRA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793777888;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
-	 Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-ID:References:In-Reply-To:To:CC:
-	 X-Mailer:X-Developer-Signature:X-Developer-Key:X-Originating-IP:
-	 X-EOPAttributedMessage:X-MS-PublicTrafficType:
+	a=rsa-sha256; c=relaxed/relaxed; t=1793777892;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
+	 Date:Message-Id:X-Mailer:Content-Transfer-Encoding:Content-Type:
+	 X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
 	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
 	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
 	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
 	 X-Forefront-Antispam-Report:
 	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-AntiSpam-MessageData-0:
+	 X-MS-Exchange-AntiSpam-MessageData-1:X-OriginatorOrg:
 	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
 	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
 	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=9LRTBk3nxs+e7fnAgKAYkOgo6rEo8igeJE8NdssqvBk=;
-	b=1WU05E0KldKfUjj2hNa2v1k8xKiqMY47OFaB2cqaoebSvd1U/uYKocmlnIjC9IeT964D
-	 x+vWPZoDxZuWB4jt7b7MkDhWdgahmrzHRNzFgPUf//EU14YNyfiiRbYw6WJ7bSvV6pwtR
-	 cHoK461XDbCy3zlt5Us09zhvQ4p3HAzzV8bZ8fmTKKq7LaEmNQ1ST2tNP5UJWX/9G87P3
-	 HJXh6HCuUFU4WAK+uqWqZO3aNnMyYyazjrzz6Wy4Q1I7asV2P+mvPdGHxVQkUnO6Wxz68
-	 XqPB/Q7kods4fyx+zoKaiEm11Fmhwy99gKm7LokkrJDHRVfYWheIkdkU98TtI8bTZEg==
+	bh=uytXwB7KXlLG6PtwwbswAmpgu8OKhREYcm/igIHgECo=;
+	b=ImPq/iQeSjW8H+9Ffq/WHP3xZyX7pP3QnHpIJ4JMP3YU6UlNxslfNQJDX4EVbGMkx0XC
+	 YBwypKGED+28GC41hm0gUlScYLcrlaKjkAYLqa/uxXNswQ1ReSsaE+hzcwCi20RpiqTPW
+	 qn0RZ6m5tm8u+9hJK6z+lrpl7tzn4Bz7GvHzGhWXy3rqXM5Sw5AC5r3jYFzBt15T0d7jU
+	 aZ6PakN6pnZbquz1l8JT5VIZx8hGTwtjnY0DPPJn8rtaJ3QPaXf6O4+uoaMu5J+Bjmtrb
+	 MY5X+MDQkyNiTDSzKnVYY8XQIFSOPRy0/ME1vUfsOaJItflUD3mFOHiihSp83PpuNAQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cn.bosch.com;
-	spf=pass smtp.mailfrom=cn.bosch.com;
-	dkim=pass header.d=cn.bosch.com header.i=@cn.bosch.com header.a=rsa-sha256 header.s=selector2 header.b=XMOQEMte;
+	dmarc=pass header.from=oss.nxp.com;
+	spf=pass smtp.mailfrom=oss.nxp.com;
+	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=yF2mpxId;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.130.27
 Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011027.outbound.protection.outlook.com [40.107.130.27])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 634F6606A32F
-	for <imx@lists.linux.dev>; Wed,  4 Nov 2026 07:38:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 634F6606A32F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cn.bosch.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cn.bosch.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23C49606A326
+	for <imx@lists.linux.dev>; Wed,  4 Nov 2026 07:38:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 23C49606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=cn.bosch.com header.i=@cn.bosch.com header.a=rsa-sha256 header.s=selector2 header.b=XMOQEMte
+	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=yF2mpxId
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=pgwyfKu2iZ/mM7NnW6kJaZfWZDwRg/gFJTb2t6qKeiB6cvDBy9cnYrWjmpQulcNh9VS4zOSZTpznlUXZ2Cb07LzVnqr6yrd1gSnD5inKfZSytjlkil2qOfMG0yOqJxwKbTACRnpWgnsw+9ZVXAq0UqXeRZcja2r3dPu9C1bbV8R2RH9yKl3qBlVXgpyfjhLYRJqxvoGMjEWebTKipHX0+Mo/6mve6C7V/L99aAEGkpDaHKvOP5mWLJuT2JMQEMR6t/6pArTxwnoQd2X9vBWZVAmbr5eiJhXPTibFCMjkV47foEWQicM4wIJI833RHENBb3L7soW+nNBo3zpHgUHmKg==
+ b=XdjIcEU84GF8xtzaF/oui89DmI6h8v0cUHoWU+JPEaqrTye38NBPSmY0O7YTixxyWRFZZx52K9rvxY1VYzoGFUdipNyaVT3I/vcPOlR8Slh9h/+Pp9V2fro36Az4+wPs3AboU6ctU33lsd4oAPBzuxxWmyUF8bzx6FAa/anfHBzGbn47l4xZZ6MelbFmWE/agl+TB3wGWx0DGzOBzHfPmyhnd2i5IZTJQZvzhG/diD46UoGvwj2VHgRcKLNR88y8m5RUwHSc2llXTkVCoh7yZUWmTNu06pNWc0s1DYBNnca/AV+IQ+8reyXcr7XVeZsquyHiOT521OBsMsUsekciaQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9LRTBk3nxs+e7fnAgKAYkOgo6rEo8igeJE8NdssqvBk=;
- b=hCbvScxClLhw9tTLiTR3wY9iyLrQiPT+8eOmvmkwsImN/JeT8sbckUaMOFZG+9vAqoFilh9i13vmL8/4meuJ2Mv+xc3tj+jnLl0A/PUlUNu1976WC+4PX9X2XdUcjoeo5VWkuRkNeYB+/5KZKyO+4Mvyzihe+18O6+6wkqAxrdL5BRE+i6AHsGOeUfNA5i3w1J6RtOzkrWDFptzIIkT6H9Jc8Ecu8rlY6U5An80Adk4u66HbIp+T+ym72M5jBum8AWkOf1mtbxLQt4ifgCxbLIUoj0RAxLa66ZgosFMb3E0n1q48mNNiUL/3g9fZjxsZspSaB/benlWLIwvPBQZltA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 139.15.153.205) smtp.rcpttodomain=pengutronix.de smtp.mailfrom=cn.bosch.com;
- dmarc=pass (p=reject sp=none pct=100) action=none header.from=cn.bosch.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cn.bosch.com;
- s=selector2;
+ bh=uytXwB7KXlLG6PtwwbswAmpgu8OKhREYcm/igIHgECo=;
+ b=xsFLqn4nVc23brO4kRPe3qtw3D0zbLQ4SkGSFkvyYzVy/3vX/1w2v4bKddrAnX2zNLQgSbRqIG+/X3GgzseG9TYLEvrmYpGeLheiu1iVqsahw4dpwXl7EYbdE6p8cP/M0rtw/TDDUmfT3KYRABrVyOxXMg0BlltwYLXPK56W2k68l5oTQ9A3pIBSc+k2i0dB5zQP4VuoJJEGUMyWU/xBSOpHntJwco6R+yZVhQKsFV6zHelXSm6gnTeEyJu1wfT0xq5d2zIhg3ddHS3q6qRzbyTMKOwv9QLbgUnTK+Bzk07+eClzZiWNYrTf0VlFBIDrQQmzbu/556kRsrA4jGTezA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9LRTBk3nxs+e7fnAgKAYkOgo6rEo8igeJE8NdssqvBk=;
- b=XMOQEMtezsrfsVrxPYY5OJUUtBcHHnER7BXo6xJUGiZnDK+VX89V/LKDa3EflT/i7C7j6zVIe2Y3mvc69G7GiuS9878Crl6F4bSwoRrF+6b6dwwnisnyHK2MmREuUu+3Ka49Kgej+0vNyOSAajFIe3RjrTML2Oz6mJsGMY4XkkXIiyUlNu5aUnmjAltpCIrMMy/5J9W2vaJGxiqorscMBQVWiQxU30t92ptdqCXjqCuBU+ZCZLtf7c6OvFst+4aXa+TIy9QhxyvddxoopA7Hjt/l+fbinfVV7nA57rC9aN355QL8Lurmb+u8ziONzk5eW555Mq9333tzL9ZYlPzL4g==
-Received: from DU2P251CA0027.EURP251.PROD.OUTLOOK.COM (2603:10a6:10:230::33)
- by AS4PR10MB5441.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:4bc::20) with
+ bh=uytXwB7KXlLG6PtwwbswAmpgu8OKhREYcm/igIHgECo=;
+ b=yF2mpxIdj7yAxmXWyrGE7TO8f4nMuhdpBPaABnNtFcmVQPZSX8Z3kC7sF932GiPIMYppk2tEV3CFMooRyeVbbDA0c4zf5Gvm1HCHAFpb9m60HnnvIU5IlrEfd0afxKQErv0SdTF2T629TFCn3wNnDNEjhVhAlISQVtKGl0H4nEl+dpLRNTlObE6fDFpI4nd9gCn04qlTAnwXYldeZuiz5OH7hTLT0fVfy13MHM5rfw51VynBj0fRobSW/lfbnEFXC2yAjGULZQTayLbzQifyru2ofE/zJx15btTbjHShShwHEeN82U1M/Dn2/n6P8MpIGIG4uq29GNfSflRr8eRCCA==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from AM0PR04MB6849.eurprd04.prod.outlook.com (2603:10a6:208:181::7)
+ by PAXPR04MB8733.eurprd04.prod.outlook.com (2603:10a6:102:21d::7) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.9; Wed, 4 Nov 2026
- 07:38:02 +0000
-Received: from DB1PEPF000509F3.eurprd02.prod.outlook.com
- (2603:10a6:10:230:cafe::b) by DU2P251CA0027.outlook.office365.com
- (2603:10a6:10:230::33) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.592.10 via Frontend Transport; Wed, 4
- Nov 2026 07:38:02 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 139.15.153.205) smtp.mailfrom=cn.bosch.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=cn.bosch.com;
-Received-SPF: Pass (protection.outlook.com: domain of cn.bosch.com designates
- 139.15.153.205 as permitted sender) receiver=protection.outlook.com;
- client-ip=139.15.153.205; helo=eop.bosch-org.com; pr=C
-Received: from eop.bosch-org.com (139.15.153.205) by
- DB1PEPF000509F3.mail.protection.outlook.com (10.167.242.149) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.592.5 via Frontend Transport; Wed, 4 Nov 2026 07:38:02 +0000
-Received: from RNGMBX3002.de.bosch.com (10.124.11.207) by eop.bosch-org.com
- (139.15.153.205) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Wed, 4 Nov
- 2026 08:37:53 +0100
-Received: from WX8-V-0008J.wx.apac.bosch.com (10.190.167.205) by
- smtp.app.bosch.com (10.124.11.207) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Wed, 4 Nov 2026 08:37:49 +0100
-From: Haoning Cheng <Haoning.CHENG@cn.bosch.com>
-Date: Wed, 4 Nov 2026 15:35:49 +0800
-Subject: [PATCH 09/10] dts: imx: Enable USB OTG mode on BSH SMM-M2 and
- SMM-S2
+ 07:38:08 +0000
+Received: from AM0PR04MB6849.eurprd04.prod.outlook.com
+ ([fe80::5935:a7b7:baf6:6c65]) by AM0PR04MB6849.eurprd04.prod.outlook.com
+ ([fe80::5935:a7b7:baf6:6c65%4]) with mapi id 15.21.0592.009; Wed, 4 Nov 2026
+ 07:38:08 +0000
+From: Zhipeng.wang_1@oss.nxp.com
+To: Thomas Gleixner <tglx@kernel.org>,
+	Marc Zyngier <maz@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>
+Cc: Radu Rendec <radu@rendec.net>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Fabio Estevam <festevam@nabladev.com>,
+	Jindong Yue <jindong.yue@nxp.com>,
+	xuegang.liu@nxp.com,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v7 00/10] irqchip/imx-irqsteer: Allow building as module
+Date: Wed,  4 Nov 2026 16:37:48 +0900
+Message-Id: <20261104073759.386777-1-Zhipeng.wang_1@oss.nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI2PR02CA0051.apcprd02.prod.outlook.com
+ (2603:1096:4:196::10) To AM0PR04MB6849.eurprd04.prod.outlook.com
+ (2603:10a6:208:181::7)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -106,100 +105,144 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20261104-add-bsh-smm-m2-v1-9-369f0a77e021@cn.bosch.com>
-References: <20261104-add-bsh-smm-m2-v1-0-369f0a77e021@cn.bosch.com>
-In-Reply-To: <20261104-add-bsh-smm-m2-v1-0-369f0a77e021@cn.bosch.com>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Frank Li
-	<Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, "Pengutronix
- Kernel Team" <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>
-CC: <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>, Haoning Cheng
-	<Haoning.CHENG@cn.bosch.com>, Florian Ager <florian.ager@bshg.com>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1451;
- i=Haoning.CHENG@cn.bosch.com; h=from:subject:message-id;
- bh=SLub8BvIrVVZkzU1nd2t6PII+l/eIn6L6Q+eSGIuDs4=;
- b=owGbwMvMwCV2Lz9jvnXEsVWMp9WSGLJePVjB+0EovHbd/1dpnbWaB/u+bDBWfe8oXGM2dd6H3
- g+B858u7ihlYRDjYpAVU2RRTfA+K3k1wHTazGq4OaxMIEMYuDgFYCJVBowMl7b27g08wPlrZpjZ
- miYtrfna7Odzk/l1VxQEyMWskKwNZ2SYm5cp9KqgVkhE96Hvzeesc2cXp6tdvty4fy/v7w2ix7b
- zAQA=
-X-Developer-Key: i=Haoning.CHENG@cn.bosch.com; a=openpgp;
- fpr=25604BCD19D5503596997B16DE6F689F3B58C6AA
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB1PEPF000509F3:EE_|AS4PR10MB5441:EE_
-X-MS-Office365-Filtering-Correlation-Id: d77bde37-c0cf-4bbd-4720-08df3a468e94
+X-MS-TrafficTypeDiagnostic: AM0PR04MB6849:EE_|PAXPR04MB8733:EE_
+X-MS-Office365-Filtering-Correlation-Id: f1e4b225-07bf-4f0e-3488-08df3a4691d3
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|23010399003|376014|7416014|36860700016|82310400026|11063799006|56012099006|261021123027099003|261102123227099003|261021121427099003|261009223027099003|261022075727099003|10067099003|18002099003|22082099003|6133799003;
+	BCL:0;ARA:13230040|7416014|376014|19092799006|366016|23010399003|1800799024|10067099003|18002099003|261102123227099003|11063799006|261026121527099003|261022075727099003|261028144727099003|261026140227099003|261022105027099003|261021121427099003|56012099006|261009223027099003|261021123027099003;
 X-Microsoft-Antispam-Message-Info:
-	XQJ5ezUqLMAFrs7hwG7esATKXEis31cIUyhIKJcxtPO6GdSDXDl9rzeOGymhgfpHI49tWWQkQENeJ3kqTMxn3tglTpV1xpacNiCFqOU1d6wYRlXaxe+y+4+zG701Sj5J9FHnpbwELuNSq5bja3iJNaTOSbicaXRZfEgXsEHcEXpud2LIRtS1H1zN9HjsfBwBxc5gmMy9trvPkSuPQtjKn39gszfy+g0fE4MaOwqeeFZXY5P3IqT8MlqCvu5bBE5RmKVkAXGSsY7dpBdUTDMGBOxdEywJ/1G8LCfZUFN/m6JxGnXJG/29/gMb3yCIjZ4hUOCwKCrKXP4HicP5xT1MyWWd665TwU6upYeU++eeoOTDzYWVcSIhiV+vrJhgkQpZM5ENL1sUkkCWVX0rS41JJfr/Rpjb7eG8E0GRRIa6JaWivceYTNNdfgwYb6jm+j9wLUFA/xuHcsSuB9SBI+ikX+h6d9eEuXcays6jfkwE5fesL7t/yQrd/mly0rJCn7U609Nk33o2dOHeEddtNEtiRZX3W0BiLFGKKqN5dPDQ91VcJkFQR3i1wLAIxWziCMGE3JN6hLbhZ9IuS6gsfsgT2+Ogte5QwptpCsDGKcqHvT1q9HHxLWrgDiu9H4kQlaAMkaKJI0htbqrMOCsXD9b4YQRHmAIUsfYAJCebyCW/Vk+Hs1cGNGUW3PVGfXG/B8M4/NY67XY7XWcZ0uFM7gDXYA==
+	UAwyu9PO4iS3u4SUzwiChQ0zZ5lc70hRgWibC3hj+PlqEKmfSuKYSG0CbUcyVN8IZKl60IZoX+qzPXkPdtNHYHsRb0TGDLbc9La9Q7ZG21sbjA2jXDNjtA4gikgFd8yczRTKlF/vrBs4YNr3M/ZDdRv+i/EeOuFav6akTBYMPoBH3uYLHecmQ0V5onVpLgZxWJ+t9+W4ylW6QYsH4MghJF81f8CkrpK8sbmv1tUKIVLzjflaXKxRPNQjpiq9u1Rjh3PpQ/8ocEbMQv49+F6zl1a42qXgL5wwdAlfIp+6zKIXKSq/iYhYTZVb/5syyNX8ZHjaZc5KPd5AbimqMSWJZMWJteOAdKRxqjxOzaKWeF8c4bYAARFHBVSjmXOhFwTL1LGaPR34C5udCdGC40HxhK3W7KXQDRUuv48SaQOX2WGOUeQWy/9iXFhfIU/piP7WhlFtAey6Fj7gzzpeNE3AcjgV5uEIMLzwNjXkb81Ki5ug6tA0OqVfkGALHAt01gmPmevZpHr4OHQRhze61LTBFzaqGZ5MG8HCL9GJXgK2XM0LrYozbbnayoeqIBd/SGB0NTNjHbfWU3j1oFf4L6jZdY4vlhz6Z3supCJreQ/kwhc+4k1bwNxdDuE3OnUUoU+H
 X-Forefront-Antispam-Report:
-	CIP:139.15.153.205;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(376014)(7416014)(36860700016)(82310400026)(11063799006)(56012099006)(261021123027099003)(261102123227099003)(261021121427099003)(261009223027099003)(261022075727099003)(10067099003)(18002099003)(22082099003)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB6849.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(19092799006)(366016)(23010399003)(1800799024)(10067099003)(18002099003)(261102123227099003)(11063799006)(261026121527099003)(261022075727099003)(261028144727099003)(261026140227099003)(261022105027099003)(261021121427099003)(56012099006)(261009223027099003)(261021123027099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
 X-MS-Exchange-AntiSpam-MessageData-0:
-	A2Z4rx39VD0Qya7zr/dxGNUQG4jRWLIgoYw/kLDRp8hSf7J+CPn8XcqswajQAfJ7D4KllMOh16WfvvtWuvBR7XFzVjt8WT3JCd9Dl41DFi30s6pYfw3lv9kBhJCGVjNsTaNnCd6PQzxboxDYd96MgCLSMY1UNtrrFO3oJyMHI2DrRuGJombaKQe//1wP5j4QeS9j4UcZBhrLXQAcFp7U0Lh0kJcBOErfUS/xOYLGA24dXFUohoQJ7X5sYGk41byqBtoqxDxuLNcFARyLoGsuLVTI0Vq5JZNMyOCcNYF5WbDHqdrr8/zht2MNLV8InAUjlghXYxXt5jcEJHv7ZKGXU5c2/u/nwDiLNd43FCbjEqVnBAqejV0aJ+cyEKg5JiEDzgMZq5GEflBspob5zQR81ERWe7ZjURu7EYdns6Ly0ieaUJz+GWAyeyVz8utik5vB
-X-OriginatorOrg: cn.bosch.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Nov 2026 07:38:02.3071
+	=?us-ascii?Q?J6UhJmX9oG91sDzhqYJwyioF1k8nCcejoQXvh5Ld5+vo13x/B0aedRNJSPRJ?=
+ =?us-ascii?Q?vlpaWixOsN/piG6TsFa7RqpZ4A83H1+FIDHvnMuAyCUPAVLSEiuQp/G+piyE?=
+ =?us-ascii?Q?KKRb3100bvizvTG7y0ly+no9HB+iv0JNpUa2x7CGPLYDx5o9EN4MiRFCmxIZ?=
+ =?us-ascii?Q?diXmeQtFoOXmp0MHbgcoQYxkGOkfcHPybh+YJw0GmGn4boCk62nkB+UTqRs3?=
+ =?us-ascii?Q?zzuetjB4/ruaZDJte9M82HVBrql3unyIMtsxEYqxTnCFEteoHdHACGpuZUR5?=
+ =?us-ascii?Q?KhCjFO/C5RUUbV5imDcd7UMcmQHNxjW6A5mYWT3I5GJX9w4FAJRSkS0qobLc?=
+ =?us-ascii?Q?Ntu3niSgybCRhpTShndauDWGAMNsZv8BZLAYAY4pNu4fnIk1VanuaRsBQi6Y?=
+ =?us-ascii?Q?bk/yd+gdn3uTK9bpP2qVZTRx+wFjSKWYXgH0D2FzSQwqEoLiGSyspi4GPgat?=
+ =?us-ascii?Q?gSqxSmGtxA9J+sdHisxRLQJBf+oqADbKXv/laCOZy3a6YUSJhUHv3mWmIeSn?=
+ =?us-ascii?Q?cJxFgpYz6OPwxD+g7tmWf2Y06VnzaPU2on8OQ2QlO3hsn8N4/hJ0/wOHe9Vz?=
+ =?us-ascii?Q?UI9/HComlGudpeDahA5RfCfZ2E40idMvOeArcxH1muNTqNZS6CnQdqCCUdwh?=
+ =?us-ascii?Q?dHmx1DXuYDceRflbA8MRqH3km06tciTsmsQbQEfM2r6kNv9PArjgrLOxtvmi?=
+ =?us-ascii?Q?rtRxJ8dUxjmvVQMwDdxK4Sefls1CuFrntUe3BatdalcLtRMLII0mhxnZva+U?=
+ =?us-ascii?Q?k63BXCJEBqDtkS71kvkKiJWgRE92un8FsQYzcKE5FK6Aj5j7HZbf7PLPW/57?=
+ =?us-ascii?Q?PEkKwnNQwlkgWkqjB7OSeH8k4vsxUsD43w6AnqqBXfv/DIUH3nHIi+DqNlWj?=
+ =?us-ascii?Q?rZ+jLWOdhC6FNEXq4S7p6omONtXeikixOnglBZiVJ/UpSYxAugDC18GNuhy+?=
+ =?us-ascii?Q?+CMuBlHe/QznFlV90FQX8Zg2Ywqvnn/zWrAdMrzribdWaL1rmsVeF1Psxkua?=
+ =?us-ascii?Q?g9FrcKXD4PJ3/LdzcU8HxvhzI/0dxKBJvT7WnMEjen45DhTinN05mFrJchIG?=
+ =?us-ascii?Q?tdXusVFfw2ekwmDUBxQUTXUtlOi2x7d32R8hlyYV/+1f1hlLtaVknkPTxRWr?=
+ =?us-ascii?Q?CAciTfKm3CQ2+Ap37wbsV4vVIE05cRBO/9kauth7zBJv3sQz5wtgJ+iFjpFY?=
+ =?us-ascii?Q?nIlKU9oVh/yHJyykMp8YRXqGQpdgQ9jd9QZhHlJY9ob9+IqbPaP0gVIQQYDa?=
+ =?us-ascii?Q?iNmpltiCTvNxWbrph5ijSVqULjDZ7M4SEtHQSsPLsNLOTPN9GXFVAAjlyPUi?=
+ =?us-ascii?Q?CY4QxcyZgPFNPwxwLqDFhwMjraumBiYgWea0CkLhHZN2c+rziXfR1HozMETq?=
+ =?us-ascii?Q?tM1jdmtzOmoWY9fJglDV8Ssy8soNy5S+rabxjcTa9PvVURW/pGB3oesUV7iJ?=
+ =?us-ascii?Q?n1PiHfGJK7M4Q6COmUNTAq7pLTG6YlLX1wb7vCjo9C837+c9LyAw8XCLhCVi?=
+ =?us-ascii?Q?AIQz+i/a4/YtTYL2Rh14l0Sxi6jlCPoZ1+gZxxliN52OaTgPOdtgHSTsqBB6?=
+ =?us-ascii?Q?mH3YZyPsJlqdu0IIqzL/16mWXmf4wQw/rDSN9EvESabZzfCabsxl9Zz76j1g?=
+ =?us-ascii?Q?CoCwIarSFLnhCXiTogv6Ytke3RAd1g/EoqnmVgX9lbMUZL6zBIhFt993EToT?=
+ =?us-ascii?Q?P7Es80yQCkfAdHywIfm942mx+6pkZcQhhO8p2kSPG362PX4YTgXQwEj8nyPK?=
+ =?us-ascii?Q?uHtjx/Ibt/AzKOuhbNWKpV1DTABfxEY/hZjEEEIYug8qbD613h1LZdgaH5Uw?=
+X-MS-Exchange-AntiSpam-MessageData-1: 7Y8GCTjQOVJXKg==
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f1e4b225-07bf-4f0e-3488-08df3a4691d3
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB6849.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Nov 2026 07:38:08.3819
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: d77bde37-c0cf-4bbd-4720-08df3a468e94
-X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.205];Helo=[eop.bosch-org.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DB1PEPF000509F3.eurprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR10MB5441
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: oN8Q6/SvOzNMP2MUAuBe2oSmHrgBtudB0dXXxcp0Pmq2+HARuQ7ITUPrEtwwohLHRUpC+l3JMpcrOAmK5DtizSkKGUKOhsrvoEtrpOiy8X2VTJDqfSjSvz4+/z+WmJSC
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8733
 
-From: Florian Ager <florian.ager@bshg.com>
+From: Zhipeng Wang <zhipeng.wang_1@nxp.com>
 
-Configure USB OTG1 in OTG mode instead of peripheral-only mode
-on the BSH SMM-M2 and SMM-S2 board variants.
+This series makes the i.MX IRQSTEER driver buildable as a module, along
+with the pre-existing bug fixes that become reachable once the driver
+can be unbound and reloaded.
 
-Remove the SRP, HNP and ADP disable properties from the SMM-M2
-configuration.
+The fixes come first so they can be picked up (and backported) on their
+own, followed by the runtime-PM/clock rework, the module conversion and
+the irqdomain helper cleanup:
 
-Signed-off-by: Florian Ager <florian.ager@bshg.com>
-Signed-off-by: Haoning Cheng <Haoning.CHENG@cn.bosch.com>
----
- arch/arm/boot/dts/nxp/imx/imx6ulz-bsh-smm-m2-common.dtsi    | 5 +----
- arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2-common.dtsi | 2 +-
- 2 files changed, 2 insertions(+), 5 deletions(-)
+ 1. Call chained_irq_exit() on the handler error path.
+ 2. Validate IRQ count before creating the domain (Fabio).
+ 3. Dispose of the parent IRQ mappings in remove().
+ 4. Convert to devm_pm_runtime_set_active_enabled() - fixes the
+    "Unbalanced pm_runtime_enable!" on unbind, with a Fixes tag so it can
+    be backported to stable (e.g. 6.18).
+ 5. Let devres own the clock.
+ 6. Mask all interrupts in probe().
+ 7. Allow building as module.
+ 8. Dispose of child IRQ mappings in remove()
+ 9. genirq/irqdomain: add devm_irq_domain_create_linear().
+ 10. Use devm_irq_domain_create_linear() in the driver.
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ulz-bsh-smm-m2-common.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ulz-bsh-smm-m2-common.dtsi
-index 93d662ec875f..cc6b53268043 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6ulz-bsh-smm-m2-common.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ulz-bsh-smm-m2-common.dtsi
-@@ -46,10 +46,7 @@ &uart4 {
- };
- 
- &usbotg1 {
--	dr_mode = "peripheral";
--	srp-disable;
--	hnp-disable;
--	adp-disable;
-+	dr_mode = "otg";
- 	status = "okay";
- };
- 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2-common.dtsi b/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2-common.dtsi
-index d20393c2d901..7a121459f95c 100644
---- a/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2-common.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2-common.dtsi
-@@ -248,7 +248,7 @@ &uart4 {
- };
- 
- &usbotg1 {
--	dr_mode = "peripheral";
-+	dr_mode = "otg";
- 	disable-over-current;
- 	status = "okay";
- };
+Changes in v7:
+ - Call platform_set_drvdata() before enabling runtime PM, so the runtime
+   suspend callback always sees valid drvdata (Sashiko AI, Frank Li).
+ - Fix the patch 9 commit message to describe the actual change
+   (irq_domain_create_linear() -> devm_irq_domain_create_linear(),
+   dropping irq_domain_remove() in remove()) (Frank Li).
+ - Dispose of child IRQ mappings in remove() (Sashiko AI, Radu Rendec).
 
+Changes in v6:
+ - Split the runtime-PM fix out of the devres rework into its own patch
+   (patch 4) with Fixes: 4730d2233311, so the "Unbalanced
+   pm_runtime_enable!" fix can be backported to stable independently of
+   the clock rework (Fabio Estevam). devm_pm_runtime_set_active_enabled()
+   is set up before the IRQ domain is created, so its error path just
+   bails out and no err_irq unwind is needed.
+ - Drop the err_irq and out labels in probe(); each failure path now
+   returns directly (Radu Rendec).
+ - In remove(), drop the runtime-PM reference taken by
+   pm_runtime_resume_and_get() with pm_runtime_put_noidle() (guarded by
+   the return value), so the usage count is not leaked and autosuspend
+   keeps working across module reload (Sashiko AI).
+ - Reorder so the Fixes-tagged patches come before the rework/cleanup.
+ - Rebased onto the current irq/core.
+
+Changes in v5:
+ - Consolidate the three previously-scattered series/patches into one
+   coherent series (Thomas Gleixner).
+
+v6: https://lore.kernel.org/r/20261008090231.796511-1-Zhipeng.wang_1@oss.nxp.com
+v5: https://lore.kernel.org/r/20260821101039.4037925-1-Zhipeng.wang_1@oss.nxp.com
+v4: https://lore.kernel.org/r/20260819090543.585131-1-Zhipeng.wang_1@oss.nxp.com
+v3: https://lore.kernel.org/r/20260807072346.1222389-1-Zhipeng.wang_1@oss.nxp.com
+v2: https://lore.kernel.org/r/20260728092219.525449-1-Zhipeng.wang_1@oss.nxp.com
+v1: https://lore.kernel.org/r/20260724090136.3595894-1-Zhipeng.wang_1@oss.nxp.com
+
+Fabio Estevam (1):
+  irqchip/imx-irqsteer: Validate IRQ count before creating domain
+
+Jindong Yue (1):
+  irqchip/imx-irqsteer: Allow building as module
+
+Zhipeng Wang (8):
+  irqchip/imx-irqsteer: Call chained_irq_exit() on the handler error
+    path
+  irqchip/imx-irqsteer: Dispose of parent IRQ mappings in remove()
+  irqchip/imx-irqsteer: Convert to devm_pm_runtime_set_active_enabled()
+  irqchip/imx-irqsteer: Mask all interrupts in probe()
+  irqchip/imx-irqsteer: Let devres own the clock
+  irqchip/imx-irqsteer: Dispose of child IRQ mappings in remove()
+  genirq/irqdomain: Add devm_irq_domain_create_linear()
+  irqchip/imx-irqsteer: Use devm_irq_domain_create_linear()
+
+ drivers/irqchip/Kconfig            |  2 +-
+ drivers/irqchip/irq-imx-irqsteer.c | 80 ++++++++++++++++++------------
+ include/linux/irqdomain.h          | 30 +++++++++++
+ 3 files changed, 80 insertions(+), 32 deletions(-)
+
+
+base-commit: e74798f2f8e1562f2bbd2fed8d81929eeef39ffc
 -- 
-2.43.0
+2.34.1
 
