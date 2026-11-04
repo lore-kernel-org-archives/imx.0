@@ -1,57 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793807688;
-	b=ctgJ6YLGt1Ao5BGgD5ABY9CoS+KXsppMdkbaqXCRKjX2ECs2f1slTF2eND9jTnj3dg6r
-	 4GK8ICPKOgK3yJFKmjf40qVAxpw9PtiXyPdh1ayx9F9mtXNb+7A7kXDwfSN8vHaFhvpNK
-	 qRhTXImvASdQ1y3P43HksTpGQQABJtNvj7Sk88FZOPwnBFTvYJHsi9pJ6PtF7E/6xkHTz
-	 cdkyWN+k3DGV2ZVrXxW0WOTDmDZ64A4B89Yu5oMceVowzzKLTTeIYAqyan0NVjwxtPn7F
-	 UgKKIYBBix+qRVKue01uDa/Rg1mIDxLMG0FMGCjSPuk810F/M1O3k4NPj5vZuMIQTPg==
+	t=1793808460;
+	b=CGmjfgr5scXmXdxCy5b6yBGZpIIqSXLmI0zP1ErG3OZzY801gk/6c0gHj/Cs/Iiyk4+p
+	 F2Ejm7de8jtPKOaW8BJyZrP9LWzqVXUfLqdYhw6DIy9iiku0Cb89HlfiCQWOZQVcvvowN
+	 yT+wic9X7XAz94n7bxTMDZ0w/V6nbTHD5gGAtPTN/0/k5d5vYmLKnR2Oe6VG1fpMZkWUg
+	 P+fJxy5USlIcf1UdmO7/9QiqA+uHQIV4u/JY8vQr2jo9/57sGV4bZxbJARaBUuLpjFRxZ
+	 3hdlzDWxP0z9rzzWlYBNazNrC4E+vffHZMOkhDqO1AZUb3vmoZFYY8DiVKkGfVS3pJw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793807688;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793808460;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=W3sPLxs/2FYKtV7RaEcipLq50eZ4Fy1Gqkk+n6jgi0c=;
-	b=0hxjJ1n4g+OArS3DdpJt97RNW1oMRygT49nCGcO0R3lVTclPZOi5HcrVKh1OhJEL/jS/
-	 Yu4uOURxgP8oj2idJgPCV/6GHE1NdpgrR1l6EevjBQE+G2Y12ULrCsyRekuYJgJoVoXP2
-	 YlBfaYpIauKCjYxUVXQX5eCgSvEzkDWlomFXdVxJKvHTmS4Dmu5tEYJwqUmCEgSBAMDOL
-	 AnMGqR5wJn4M25mVv8OzH/uoMfPmvnsOqrW7LpJk7lmensgW7IokzEejftFNFRCJ3PkZg
-	 mrxZuJU4ZlE76Rlgnu4K2awHCUfbs6lkHPfmXgqU3bkqzCN7FZTpc+m+nKdgZTIsOZg==
+	bh=jAQE6XsGNYs4FRrRUOdVXVIOk2qnYo6/djLUL1uif54=;
+	b=ORlADLDbcFjaV7PeszvkK9+i4Tkn8mVuVVNSrJV9VUXGSnBEZNYcZAkKEwTZvfARJcX7
+	 qOUu2rvtjKbuYYDNpJd8gyBe1fI6Xn0lEsgcilDALIVdFbFPpKjH8MBOSPf+G6qUk8Gew
+	 ptiDTe8m1HHAQ24SnqZwLe5AvqgKsPNy7743qKg14kEoYnp273UULqaV55ixWf2C8+1yK
+	 u96wM5gH6vBFGVVQxb38l8ht8ddVJZHLhdhyl9v3AzyTdCxvBCmFcisZqsxG4WvPlTPwL
+	 aA2VSJkPG0T8dkBSSD73Tbh6Bxc2cl+nYNk+fluCTWktMB8HF+tm91amWMeBg7F7dxQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TUse1VAC;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Jtpbcmbm;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68B8E606A31B
-	for <imx@lists.linux.dev>; Wed,  4 Nov 2026 15:54:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B97A1606A31B
+	for <imx@lists.linux.dev>; Wed,  4 Nov 2026 16:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TUse1VAC
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D8D11F000C1;
-	Wed,  4 Nov 2026 15:54:48 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Jtpbcmbm
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 351241F000C1;
+	Wed,  4 Nov 2026 16:07:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793807688;
-	bh=W3sPLxs/2FYKtV7RaEcipLq50eZ4Fy1Gqkk+n6jgi0c=;
+	s=k20260515; t=1793808459;
+	bh=jAQE6XsGNYs4FRrRUOdVXVIOk2qnYo6/djLUL1uif54=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=TUse1VACS/FTTvKUwIM7W9xSHRNUUFK5M3OpDIR+0PxlQOHVIBJse2lC0pjtRFn5s
-	 +LOZ0YPxrjyA2qOXkiXOPmZTK46GWF6KnVJ85WR0ZEr8p3wVGqqq3EAvQpjurkN4Oc
-	 byRL/JjAU0HJhHj8R9Ic20/kWyKQ50XVaGMPNkXYmEkNWPUSA2oNPvqYEpUiq8Kwzo
-	 11ygecGMkQn3+6TvdWH4aTNZk02zhe2FO8U5hxyeghob2+bHgBkXMXNw3ib7D1AsXc
-	 ifA7+DsKQjcDwrE10UOF+9gECwKQh6xsmSOvzrWUfCXD/Ji/VKLV6ncCU4cVvj0MpM
-	 2sbpTnnsfpV1g==
-Message-ID: <sashiko-outbox-197554@kernel.org>
+	b=JtpbcmbmFpOB9+9KnsfGyq8bWt+Nw1MfGMJYN00bFBXw+ZRE/yJaxWsVkqzd8Rt3/
+	 4d2PayILvz+VIaL4WVG2SMrB+fn5HlOHyh3DLAGYbkjzogyOOO6LAtv1n9IJomKmsS
+	 6VhsD5pY0cHcom3nfzzcGF6h+ccGbFMn2zqj+6oPe9SkPpmRd6zXaZFTicbqAUcB/G
+	 D1kxhv5nnwqUmlfx7HpwxFyZJmXzk9ZpiuG3Zycme7jNNHvvx+4NSGRUCti46aK3Tq
+	 WnrcRuvZat/Fgm2H34tKHv/wqWR8UpIjR977s/WXvEt3MiwPKvW02IOZrtfR0pEBWA
+	 eFLJnvdTcQs+Q==
+Message-ID: <sashiko-outbox-197571@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 1/4] software node: do not resurrect swnode being
- released
+Subject: Re: [PATCH 2/4] software node: use kobject_get_unless_zero() in
+ software_node_find_by_name()
 Reply-To: sashiko-reviews@lists.linux.dev
 To: =?utf-8?b?UGVuZyBGYW4gKE9TUyk=?= <peng.fan@oss.nxp.com>
 Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20261104-swnode-race-v1-v1-1-9406a67e25be@nxp.com>
+In-Reply-To: <20261104-swnode-race-v1-v1-2-9406a67e25be@nxp.com>
 References: <20261104-swnode-race-v1-v1-0-9406a67e25be@nxp.com>
- <20261104-swnode-race-v1-v1-1-9406a67e25be@nxp.com>
+ <20261104-swnode-race-v1-v1-2-9406a67e25be@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 04 Nov 2026 15:54:47 +0000
+Date: Wed, 04 Nov 2026 16:07:38 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -63,185 +63,100 @@ Precedence: list
 
 Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [High] software node: transient ref in software_node_to_swnode() risks UAF
-- [Medium] software node: re-registering named or parent node hits -EEXIST
+- [High] software node: use-after-free on swnode->node in software_node_fin=
+d_by_name()
+- [Low] software node: wrong Fixes tag for software_node_find_by_name()
 --
 
-commit d02f059d143a3e75e357a6d906b17afb37852f09
+commit e919f34826aef89486e543d4a209837a0357d8a1
 Author: Peng Fan <peng.fan@nxp.com>
 
-software node: do not resurrect swnode being released
+software node: use kobject_get_unless_zero() in software_node_find_by_name()
 
-This commit updates software node lookup in drivers/base/swnode.c to use
-kobject_get_unless_zero() so that zero-reference swnodes awaiting release on
-swnode_kset->list are skipped rather than resurrected. It introduces
-software_node_to_swnode_get() and software_node_register_node() for callers
-that acquire a reference, while keeping software_node_to_swnode() as a
-wrapper that drops the reference before returning.
+This commit updates software_node_find_by_name() to use
+kobject_get_unless_zero() instead of swnode_get() so that it skips entries =
+in
+swnode_kset->list whose reference count has already dropped to zero.
 
->     software node: do not resurrect swnode being released
+>     software node: use kobject_get_unless_zero() in software_node_find_by=
+_name()
 >    =20
->     software_node_to_swnode() walks the kset list under list_lock, but the
->     last kobject_put() drops the reference count to zero before
->     kobject_cleanup() removes the object from the list. A lookup can
->     therefore find a zero-ref swnode and call kobject_get() on it, which
->     triggers refcount warnings and a use-after-free.
+>     software_node_find_by_name() also walks the swnode kset list and take=
+s a
+>     reference with swnode_get(). Like the pointer-based lookup, it can
+>     encounter an entry whose refcount has already reached zero but which =
+is
+>     still linked until its delayed release callback runs.
 >    =20
->     One way to hit this is the dwc3-imx driver on i.MX95: when
->     dwc3_core_probe() returns -EPROBE_DEFER, dwc3_imx_probe() removes the
->     static software node from the device, and the deferred probe retry
->     immediately adds the same node again. The previous swnode is still
->     waiting for its release callback, and CONFIG_DEBUG_KOBJECT_RELEASE ma=
-kes
->     the window large and deterministic.
->    =20
->     Fix the lookup by acquiring references with kobject_get_unless_zero()
->     and skipping objects that are already in their release path. Use a
->     reference-returning variant for callers that keep the node (register,
->     unregister and device_add_software_node()) and keep a borrowed-pointer
->     variant for software_node_fwnode().
->    =20
->     To avoid looking the node up again after registration,
->     software_node_register() now uses an internal helper that returns the
->     newly created swnode reference, and device_add_software_node() consum=
-es
->     that reference directly.
+>     Use kobject_get_unless_zero() and continue scanning when the entry is
+>     already dying.
 >    =20
 >     Fixes: 80488a6b1d3c ("software node: Add support for static node desc=
 riptors")
 >     Signed-off-by: Peng Fan <peng.fan@nxp.com>
->=20
+
+[Severity: Low]
+Commit 80488a6b1d3c ("software node: Add support for static node
+descriptors") introduced software_node_to_swnode(), while
+software_node_find_by_name() was added later. Should the Fixes tag instead
+reference the commit that introduced software_node_find_by_name()?
+
+  Fixes: 1666faedb567 ("software node: Add software_node_find_by_name()")
+
 > diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
-> index 84a77ffa3dc4b..19a4153f3fac1 100644
+> index 19a4153f3fac1..9095d50ba146f 100644
 > --- a/drivers/base/swnode.c
 > +++ b/drivers/base/swnode.c
-
-[ ... ]
-
-> @@ -98,6 +124,21 @@ software_node_to_swnode(const struct software_node *n=
-ode)
->  	return swnode;
->  }
-> =20
-> +/*
-> + * Borrowed-pointer variant of software_node_to_swnode_get().  The calle=
-r must
-> + * guarantee the lifetime of @node by other means.
-> + */
-> +static struct swnode *
-> +software_node_to_swnode(const struct software_node *node)
-> +{
-> +	struct swnode *swnode =3D software_node_to_swnode_get(node);
-> +
-> +	if (swnode)
-> +		swnode_put(swnode);
-> +
-> +	return swnode;
-> +}
+> @@ -831,8 +831,8 @@ software_node_find_by_name(const struct software_node=
+ *parent, const char *name)
+>  		swnode =3D kobj_to_swnode(k);
+>  		if (parent =3D=3D swnode->node->parent && swnode->node->name &&
+>  		    !strcmp(name, swnode->node->name)) {
+> -			swnode_get(swnode);
+> -			break;
+> +			if (kobject_get_unless_zero(k))
+> +				break;
+>  		}
 
 [Severity: High]
-Can calling swnode_put(swnode) here drop the final reference and free swnode
-before returning it?
+Can dereferencing swnode->node->parent and swnode->node->name before calling
+kobject_get_unless_zero(k) cause a use-after-free when scanning past a dying
+swnode?
 
-In software_node_to_swnode(), software_node_to_swnode_get(node) acquires
-swnode_kset->list_lock, increments candidate->kobj.kref (for example from 1
-to 2) via kobject_get_unless_zero(), and releases list_lock.
+When a software node is registered via software_node_register(),
+software_node_register_node_group(), or device_add_software_node(),
+swnode->allocated is 0 and swnode->node points directly to caller-owned
+memory rather than an internal copy freed in software_node_release():
 
-If the owner of the swnode drops its final reference (via
-device_remove_software_node(), software_node_unregister(), or
-fwnode_remove_software_node()) before software_node_to_swnode() runs
-swnode_put(swnode), the owner's kobject_put() only decrements kref from 2 to
-1 instead of releasing the object:
-
-1. If the owner immediately re-registers or re-adds the software_node during
-   that window, software_node_to_swnode_get() sees the dying swnode with
-   kref =3D=3D 1 and either fails software_node_register() with -EEXIST or
-   reattaches the dying swnode in device_add_software_node().
-
-2. When software_node_to_swnode() then calls swnode_put(swnode), it drops
-   kref from 1 to 0, invoking kobject_release() -> kobject_cleanup() ->
-   software_node_release() -> kfree(swnode), and returns a dangling swnode
-   pointer to its caller.
-
-This is reachable through software_node_fwnode() when resolving referenced
-supplier or remote nodes (whose lifetimes are not pinned by the caller) in
-software_node_get_reference_args(), software_node_graph_get_remote_endpoint=
-(),
-and software_node_add_links(), as well as through software_node_unregister(=
-):
-
-drivers/base/swnode.c:software_node_unregister() {
-	struct swnode *swnode;
-
-	swnode =3D software_node_to_swnode(node);
-	if (swnode)
-		fwnode_remove_software_node(&swnode->fwnode);
+drivers/base/swnode.c:software_node_release() {
+    ...
+	if (swnode->allocated)
+		software_node_free(swnode->node);
+    ...
 }
 
-Also, the commit message mentions using the reference-returning variant for
-unregister ("Use a reference-returning variant for callers that keep the no=
-de
-(register, unregister and device_add_software_node())"), but
-software_node_unregister() still calls software_node_to_swnode(node).
+Once software_node_unregister() drops swnode->kobj.kref to zero and returns,
+the caller can immediately free or unmap the backing struct software_node
+while the dying swnode remains on swnode_kset->list awaiting kobject cleanup
+(for example when CONFIG_DEBUG_KOBJECT_RELEASE delays release, or before
+kset_leave() acquires swnode_kset->list_lock).
 
-[ ... ]
+For instance, ipu_bridge_init() in drivers/media/pci/intel/ipu-bridge.c
+unregisters a heap-allocated node and immediately frees it:
 
-> @@ -977,21 +1006,39 @@ void software_node_unregister_node_group(const str=
-uct software_node * const *nod
->  }
->  EXPORT_SYMBOL_GPL(software_node_unregister_node_group);
-> =20
-> +static struct swnode *
-> +software_node_register_node(const struct software_node *node)
-> +{
-> +	struct swnode *parent, *swnode;
-> +	struct fwnode_handle *fwnode;
-> +
-> +	swnode =3D software_node_to_swnode_get(node);
-> +	if (swnode) {
-> +		swnode_put(swnode);
-> +		return ERR_PTR(-EEXIST);
-> +	}
-> +
-> +	parent =3D software_node_to_swnode_get(node->parent);
-> +	if (node->parent && !parent)
-> +		return ERR_PTR(-EINVAL);
-> +
-> +	fwnode =3D swnode_register(node, parent, 0);
+err_unregister_ipu:
+	software_node_unregister(&bridge->ipu_hid_node);
+err_free_bridge:
+	kfree(bridge);
 
-[Severity: Medium]
-What happens if a named static software_node (node->name !=3D NULL) or a
-parent/child software_node group is removed on -EPROBE_DEFER and
-re-registered before kobject_cleanup() runs?
+Similarly, fwnode_pointer() in lib/tests/printf_kunit.c registers
+stack-allocated software_node structures and unregisters them right before
+returning from the stack frame.
 
-When the last reference to an swnode is dropped via swnode_put() ->
-kobject_put(), __kobject_del() (which removes the sysfs directory) and
-kobject_put(parent) only run inside kobject_cleanup(), which is delayed by
-1-4 seconds on a workqueue when CONFIG_DEBUG_KOBJECT_RELEASE=3Dy.
-
-For unnamed nodes (node->name =3D=3D NULL, such as dwc3_imx_swnode),
-swnode_register() allocates a fresh IDA ID and creates "node1" while "node0"
-is still waiting to be cleaned up. However, when node->name is set:
-
-drivers/base/swnode.c:swnode_register() {
-	...
-	if (node->name)
-		ret =3D kobject_init_and_add(&swnode->kobj, &software_node_type,
-					   parent ? &parent->kobj : NULL,
-					   "%s", node->name);
-}
-
-kobject_init_and_add() attempts to create a sysfs directory with the same
-name as the dying swnode that is still present in sysfs, failing in
-sysfs_create_dir_ns() with -EEXIST and a sysfs_warn_dup() warning.
-
-Similarly, when a node group is unregistered via
-software_node_unregister_node_group(), the dying child kobject holds its
-reference on parent->kobj until kobject_cleanup() finishes; the parent's
-refcount therefore stays non-zero during the delayed release window, and
-re-registering the parent in software_node_register_node() still fails with
--EEXIST.
+Should software_node_find_by_name() acquire the reference via
+kobject_get_unless_zero(k) before dereferencing swnode->node, and drop that
+reference if the parent or name does not match?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261104-swnode-rac=
-e-v1-v1-0-9406a67e25be@nxp.com?part=3D1
+e-v1-v1-0-9406a67e25be@nxp.com?part=3D2
