@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793814681;
-	b=c2cCMtLSJONPoSLhq53se+jj8WKGz5Ropk/OQlKwSeD9yz9RX5Tgvfldh6ozXoSGBOa1
-	 fKqTIdY64Qp9sixKqNJx73zmQ5tQ/279OzUjdXTSuapfcVPunno2wvQ3oODLBdT5GSoep
-	 mtBu03Ak130YsXh2JIwtjZgoL4TDQPXAx7p6+wgOor7kS2FoVNAr+PvrltUIJOjVzydJ1
-	 67bpterV7s8nLJozy+3vOJLqQEV2QyNI0WhgHMmhx6NDPAviABeDkS1nUcGilzYd3jj4q
-	 vvlN06U3S05kiI1dA2ouqojyAx7rzMRs3y5WcDyrYzT9wGxeCZRhM98ASUTdmzF5FnQ==
+	t=1793814706;
+	b=FisxqfxH+4Y06HAJwHbaNm9mvOtDUsKenCUMdbdgL4qTq6Z9hDFCMRRf6N3Y5Re+Kdh7
+	 oc5+H9HvqYRTQi+fp28gMEEItr2jtVVGiig7dOywoLrvpNp8eGxXRIE7XWVfAikZGG+qO
+	 YslTESz22Hgrr70rSvNEM9gAAL5oSR1T8SOZZn6xSICiKdmBep1XcATpZ6S301p7MiiNj
+	 4aiqB0pHBNzl0WGetT7Rb2fV8ReVay5AjxlyJD09LneEGbePV5HM7MMFzj15Lj1GPVjD2
+	 iXNTuv+SAptDitIBNXjiHDQ++H2yLAsVuCg5Qy8k1OUXa+WSuMELjEJ3mri7dFdOwgw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793814681;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793814706;
 	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
 	 Subject:To:Cc:References:From:Content-Language:Autocrypt:In-Reply-To:
 	 Content-Type:Content-Transfer-Encoding;
-	bh=d5VQc0NVFmwQmNrNgit0f6JDQ4FL4SdVcOTRhJBmZU0=;
-	b=r06EWv7UQ1OX27OgDiRIV7efg11BRrVP7u5j7WKCax3pAwTXaQhFZvmzLVd1/EdWhqDG
-	 K9RJapW3EhoytFSLZGNCWxykk8HniJRzpmZnsPsm92y/CKRMeWmTp7dMAcVKbWUJz3r6w
-	 CxEq6KzzbE6+TRMLDns/O5j8jrb2F63XcJXNZjWDeVIrf1PeI0ZAa+uBqGxV+v5YChSPS
-	 WEpwCIoUyP+kLNIkWLlzcuIy5oZf9exKSqsw7QcZ/zWfIZg356PUKwBQKLB/UA5G1TSl4
-	 9zA35ex91NZEFGY2MaV0+2aXWiuS+jZlaN/7sfAdplx1QLry1ZmHDU4LuKKN37hXeMQ==
+	bh=A2v9GeUo2W4EM1gpd/U1rl6KHpsuA7uJV9yQiEUmX00=;
+	b=1Pq55RlbAEP7SFy1aWNVuLUpRVIPShZdRQmGwoJ4OfHPBUInUj/V7pLPp85tuN+3m6sn
+	 zSO9dEcfqMAXPvXwvhureGr4FZM7kXb5efuKMRx+DjqqD2xdcPj7uoTHDL2ISu+E/Zvb6
+	 PMncB2jmzfvkYTpUGoPbkZcPI9uGBP9ukPRXm8DK/J6pEk3yrAdd2OI+ZzW+9woMa0mWV
+	 g6etOocCQLwcLoOjItGhacZBBJEpxgSR2xituERHb6TGgdQb5TgRcJ2ilixzoYoZyZcRc
+	 7E12z9BY7XwTeKb1z1wWKuE+W22QwMsXAvE+s3Y56FYiU38cPUtYolm238iHJ35wdUA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dCLagkxm;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JoexoK86;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18DD9606A68D;
-	Wed,  4 Nov 2026 17:51:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7996E60A6F5E;
+	Wed,  4 Nov 2026 17:51:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dCLagkxm
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AB281F000C1;
-	Wed,  4 Nov 2026 17:51:13 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JoexoK86
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A5B71F00919;
+	Wed,  4 Nov 2026 17:51:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793814681;
-	bh=d5VQc0NVFmwQmNrNgit0f6JDQ4FL4SdVcOTRhJBmZU0=;
+	s=k20260515; t=1793814705;
+	bh=A2v9GeUo2W4EM1gpd/U1rl6KHpsuA7uJV9yQiEUmX00=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=dCLagkxmbIiyQGkMFzHs2oA8HlsKSAEJaJgVuwRlOocY030r7PqqFX3dkeMyvO3QN
-	 qX0NTOgKw+QgB3nagHSQpZ4EaTADuqeNdSvV5C+1qY5yaM5/vHtK+M4bzdQ/+2xoUw
-	 2q24Wkv0uvhKpkSzpaudI8n9BNlYEulgt2ubBJyxtPsk3APA4fQeWe485Ih6Kai230
-	 OwWVx83G3fcgygwH6WSC/Dn5qg8PF1rRzHX9WDqHksPLHzQ8Mgx6sj7ks3dtQQ8kyK
-	 Dar7lTXCYLGHAE8GzVImwxRqNQebyXdlO7UBR6CNJgE2H9+wfnCaPvw3J3NW+6uoTx
-	 jkNNN/jBvlWCA==
-Message-ID: <7b476c24-3185-49ff-9a72-fbd865dc0d65@kernel.org>
-Date: Wed, 4 Nov 2026 18:51:10 +0100
+	b=JoexoK864DHM8olT3WFGz135Ahi/t4v7InmqQfEmPEsG/M6x9wOr+6jfphBSKLauB
+	 oynxa8LRE+7TneQwCv2cC6BPi+ijjbK+a1Cgy3j0fPXDCNPAczqPju4+IcjT09YTcD
+	 87iRBFSyJHGzbA0bIM4mIub94PdooMXj7pZ1ch4roE00/pjvsgU29cWV67HdRUX4CV
+	 Eu+aLkXiNm/fng8eChWwMJPdwP44K5d/awXFbnrImXzKjwJ575K6EfXgSpGxsSTVni
+	 jGdlBRi7XIfzucgEpC6/OknLtDnXkBCWDzXbIUnPmt0GL7qT77JQzI7ASRbERwYfng
+	 ErkjkZxsfeDQg==
+Message-ID: <cbb58043-cc33-437d-8b59-eb4b6e729ed5@kernel.org>
+Date: Wed, 4 Nov 2026 18:51:39 +0100
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -52,30 +52,13 @@ List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] crypto: use dmaengine_desc_set_callback()
-To: Frank.Li@oss.nxp.com, Herbert Xu <herbert@gondor.apana.org.au>,
- "David S. Miller" <davem@davemloft.net>,
- Nicolas Ferre <nicolas.ferre@microchip.com>,
- Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Claudiu Beznea <claudiu.beznea@tuxon.dev>,
- Bartosz Golaszewski <brgl@kernel.org>,
- Jia Jie Ho <jiajie.ho@starfivetech.com>,
- William Qiu <william.qiu@starfivetech.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>, T Pratham
- <t-pratham@ti.com>, Thorsten Blum <blum@kernel.org>,
- Frank Li <Frank.Li@nxp.com>, Pan Chuang <panchuang@vivo.com>,
- =?UTF-8?B?TWF4aW1lIE3DqXLDqQ==?= <maxime.mere@foss.st.com>,
- "open list:CRYPTO API" <linux-crypto@vger.kernel.org>,
- "moderated list:ARM/Microchip (AT91) SoC support"
- <linux-arm-kernel@lists.infradead.org>,
- open list <linux-kernel@vger.kernel.org>,
- "open list:QUALCOMM CRYPTO DRIVERS" <linux-arm-msm@vger.kernel.org>,
- "moderated list:ARM/STM32 ARCHITECTURE"
- <linux-stm32@st-md-mailman.stormreply.com>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: imx@lists.linux.dev, vkoul@kernel.org
-References: <20261102164538.3834039-1-Frank.Li@oss.nxp.com>
+Subject: Re: [PATCH 1/1] slimbus: use dmaengine_desc_set_callback()
+To: Frank.Li@oss.nxp.com, Srinivas Kandagatla <srini@kernel.org>,
+ "open list:ARM/QUALCOMM MAILING LIST" <linux-arm-msm@vger.kernel.org>,
+ "open list:SERIAL LOW-POWER INTER-CHIP MEDIA BUS (SLIMbus)"
+ <linux-sound@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
+Cc: imx@lists.linux.dev, vkoul@kernel.org, Frank Li <Frank.Li@nxp.com>
+References: <20261102174818.3941639-1-Frank.Li@oss.nxp.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -121,48 +104,28 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  K9bCVaboTA2T77QYkRcRJYSsO1alGX0ome/hMLD1daXlkrNUp1HWa3K4iytLRXjCSIorWiGs
  n+q3krnpXu3TFkA8qtOFZMdnIiFuiq1yLT8hptsV5xh1TA2nsVvSYiaCr3q4s4BKjS/KrLDb
  qoxzw8ISjdUp4pA85vb6YLCmb39NgidD+7PmAr65lBNveIFynTgsja1rRQ4=
-In-Reply-To: <20261102164538.3834039-1-Frank.Li@oss.nxp.com>
+In-Reply-To: <20261102174818.3941639-1-Frank.Li@oss.nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 02/11/2026 17:45, Frank.Li@oss.nxp.com wrote:
-> ---
->  drivers/crypto/atmel-aes.c            | 3 +--
->  drivers/crypto/atmel-sha.c            | 6 ++----
->  drivers/crypto/atmel-tdes.c           | 3 +--
->  drivers/crypto/img-hash.c             | 3 +--
->  drivers/crypto/omap-aes.c             | 8 +++-----
->  drivers/crypto/omap-des.c             | 5 ++---
->  drivers/crypto/omap-sham.c            | 3 +--
->  drivers/crypto/qce/dma.c              | 3 +--
->  drivers/crypto/sa2ul.c                | 3 +--
->  drivers/crypto/starfive/jh7110-aes.c  | 3 +--
->  drivers/crypto/starfive/jh7110-hash.c | 3 +--
->  drivers/crypto/stm32/stm32-cryp.c     | 9 +++------
->  drivers/crypto/stm32/stm32-hash.c     | 3 +--
->  drivers/crypto/ti/dthev2-aes.c        | 9 +++------
->  14 files changed, 22 insertions(+), 42 deletions(-)
+On 02/11/2026 18:48, Frank.Li@oss.nxp.com wrote:
+> From: Frank Li <Frank.Li@nxp.com>
 > 
-> diff --git a/drivers/crypto/atmel-aes.c b/drivers/crypto/atmel-aes.c
-> index 84392411b98d8..49f1bf19747d8 100644
-> --- a/drivers/crypto/atmel-aes.c
-> +++ b/drivers/crypto/atmel-aes.c
-> @@ -824,8 +824,7 @@ static int atmel_aes_dma_transfer_start(struct atmel_aes_dev *dd,
->  	if (!desc)
->  		return -ENOMEM;
->  
-> -	desc->callback = callback;
-> -	desc->callback_param = dd;
-> +	dmaengine_desc_set_callback(desc, callback, NULL, dd);
->  	dmaengine_submit(desc);
->  	dma_async_issue_pending(dma->chan);
->  
+> Replace open-coded assignments to callback and callback_param fields
+> of struct dma_async_tx_descriptor with calls to the
+> dmaengine_desc_set_callback() helper.
+> 
+> No functional change intended. Prepare make to struct
+> dma_async_tx_descriptor private to the DMA engine.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  drivers/slimbus/qcom-ngd-ctrl.c | 9 +++------
+>  1 file changed, 3 insertions(+), 6 deletions(-)
+> 
 
-Apparently reviewing only a few lines of entire patch is still reviewing:
-https://lore.kernel.org/all/9e39502a-dd17-4fa2-98a3-9019523cb5e8@kernel.org/
 
-Therefore:
-Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
 Best regards,
 Krzysztof
