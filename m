@@ -1,58 +1,44 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=160.236.53.8
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793759289;
-	b=re8wqSe4p7GPlqaO8/DBDY2wV4W5PrOTFntL/03orl59ICuaCIDiGPYReQXo2kzT9K2L
-	 YPZAJwHMlBFUV2poDW7/YAZf7Tckf4s/LDs5rUb+cn9E1XHEWaMWJ6PBh4foJhjrYiWz7
-	 vERdGPZeTXC60VKqoAJduvSKnmJqLQhM0xXDZSJ8j6Ydc9NAENVbtHsmL9wC+iOzhbfx0
-	 eyjdunfImsg7c0aBCnwkbrCFsv7EF9mC5rYIxa5zK+oMJKmOVVrTj4KLEokWdW1S1zGGT
-	 tMbyJEhhR74Z8dvYicuxIFQFV414Xz+Rhc1cyKpvMwmNvt8BltnV4IFRo8zYBQYz0vQ==
+	t=1793760017;
+	b=Hu8IxR7OvoYP0w5IJa5cS2lAbyDQ+hmxz1abARvi5PZtCUaC3TiHOBjw7lLT4KVa53uf
+	 ToytdFdgSzP7/mYX2VGhDJDVeB4BMSHi5RMHmpP09RkN5q/4pBoFcdYQne6V1IMee7l6z
+	 qNvgjFZSZ9IhzLwKVNkABZtSW26pflF8QDb+BaskS5PfcFWKUb9UjvPF3WqzcTv+//+qk
+	 nvqShBfTpF6BwU1+KIYsUsS5Ujsjet6IabWbdhSZpZFT8XwQRbo4Jkp8cL+D3jjQxgnHg
+	 jWYDR/wv7sxHF5cTeUK3HRzG2k4IN8GoLkyKB5d0nH0MNMPYlfJeIDbfn36Y35ON35Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793759289;
-	h=DMARC-Filter:Received:From:To:Cc:Subject:Date:Message-Id:X-Mailer:
-	 MIME-Version:Content-Transfer-Encoding:X-CM-TRANSID:
-	 X-Coremail-Antispam:X-Originating-IP:X-CM-SenderInfo;
-	bh=i58akWjzUYm8bTHH/RbasE8Ou8t+HVevZjRVQ3Fujhg=;
-	b=fm26UYz/K8UWEozUs7uzd/U6TSuOIVyemjngLexpM069YNcHdUYDjAWD5EOVVNakfitX
-	 AZ/PiBvO48oUWvUcnMhe8j/fz1PWkSbNGxdrxp6wj6pFiL1L0Ad32QKMPM7lZnIGjV9c9
-	 KPx+KWF9L1nsTlvqeyR2X/eKrmwt9R12bG+FhpaA6DNfn11nDFkllZTgMOGjSZLGlnpDo
-	 tok/YQKXuIBL8gGFGnDZjrEzDR98q8x7KebAVAYR4n+QxvKmXq2Mofou/kY0FT7j1v6PT
-	 xboOE6jrt9FQx12q+ROurdKe8ZkwiuC28n6Qny4zAyWvSGlw/oe7zTJhULKUWC7Nl/w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793760017;
+	h=DMARC-Filter:Received:Message-ID:Date:MIME-Version:User-Agent:Cc:
+	 Subject:To:References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:X-HM-Tid:X-HM-MType:X-HM-Spam-Status:
+	 DKIM-Signature;
+	bh=2xE1Al8wj2vlLQSBshL2OcXzRsXJVItNZxoz+0qsrmw=;
+	b=SsnwVWxjZEYQwJDp1KP0AZShvfc2GQWxEJLNUP9H98V+jWMSVsd8hV+cxckixiF2noh7
+	 tpk2P44hBtLMXTcWkY6qwogSFdOesfzGXBjBvTyCFOC9qJaFmnwGDGq/vb2K3Q5i18iI0
+	 02KiEK7pTRCCv7/r3G2Uj3I17bj83AeDdVkaI7wP3mkIKXWGU+CdCFa8bPkCuKk5gszQO
+	 XOebnGVuw4xp8IvIFtsANgFP0eP/QQGhp7MTKlDHRNFkU+TroS8/j2petfWxwxZrQIz1s
+	 iZ8eTXnYQTqudMeV4TVttqC6ovpxW5oylWtnf+rUlep3Vp/dgGPkSGxVoLMb1cTMNSA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=iscas.ac.cn;
-	spf=pass smtp.mailfrom=iscas.ac.cn;
-	arc=none smtp.remote-ip=159.226.251.21
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	dmarc=pass header.from=rock-chips.com;
+	spf=pass smtp.mailfrom=rock-chips.com;
+	dkim=pass header.d=rock-chips.com header.i=@rock-chips.com header.a=rsa-sha256 header.s=default header.b=Biti4XDN;
+	arc=none smtp.remote-ip=160.236.53.8
+Received: from mail-m160236538.xmail.ntesmail.com (mail-m160236538.xmail.ntesmail.com [160.236.53.8])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 699BC606A339
-	for <imx@lists.linux.dev>; Wed,  4 Nov 2026 02:28:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 699BC606A339
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from dfae2b116770.home.arpa (unknown [36.110.52.2])
-	by APP-01 (Coremail) with SMTP id qwCowABnVf82mOpq2Js+AA--.27325S2;
-	Wed, 04 Nov 2026 10:28:06 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: Shengjiu Wang <shengjiu.wang@gmail.com>,
-	Xiubo Li <Xiubo.Lee@gmail.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Nicolin Chen <nicoleotsuka@gmail.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>
-Cc: linux-sound@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH] ASoC: fsl: imx-sgtl5000: drop codec device reference after probe
-Date: Wed,  4 Nov 2026 02:28:15 +0000
-Message-Id: <20261104022815.1484320-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.34.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47385606A326
+	for <imx@lists.linux.dev>; Wed,  4 Nov 2026 02:40:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 47385606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key, unprotected) header.d=rock-chips.com header.i=@rock-chips.com header.a=rsa-sha256 header.s=default header.b=Biti4XDN
+Received: from [172.16.12.48] (unknown [61.154.14.86])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 5368a9cf8;
+	Wed, 4 Nov 2026 10:40:01 +0800 (GMT+08:00)
+Message-ID: <55255451-4778-4bf0-83bf-eac4176947d6@rock-chips.com>
+Date: Wed, 4 Nov 2026 10:40:01 +0800
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -62,54 +48,82 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Cc: shawn.lin@rock-chips.com, vkoul@kernel.org
+Subject: Re: [PATCH 1/1] mmc: use dmaengine_desc_set_callback()
+To: Frank.Li@oss.nxp.com, Aubin Constans <aubin.constans@microchip.com>,
+ Ulf Hansson <ulfh@kernel.org>, Nicolas Ferre <nicolas.ferre@microchip.com>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+ Florian Fainelli <florian.fainelli@broadcom.com>, Ray Jui
+ <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>,
+ Jaehoon Chung <jh80.chung@samsung.com>, Frank Li <Frank.Li@nxp.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Aaro Koskinen <aaro.koskinen@iki.fi>,
+ =?UTF-8?Q?Andreas_F=C3=A4rber?= <afaerber@suse.de>,
+ Manivannan Sadhasivam <mani@kernel.org>,
+ Wolfram Sang <wsa+renesas@sang-engineering.com>,
+ Adrian Hunter <adrian.hunter@intel.com>,
+ Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Jesper Nilsson <jesper.nilsson@axis.com>,
+ Lars Persson <lars.persson@axis.com>, John Garry <john.garry@linux.dev>,
+ Hemanth Selam <hemanth.selam@gmail.com>, Pengpeng Hou
+ <pengpeng@iscas.ac.cn>, Rosen Penev <rosenp@gmail.com>,
+ Fan Wu <fanwu01@zju.edu.cn>, Marco Crivellari <marco.crivellari@suse.com>,
+ Pan Chuang <panchuang@vivo.com>, Zhan Xusheng <zhanxusheng1024@gmail.com>,
+ Rakuram Eswaran <rakuram.e96@gmail.com>,
+ =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+ Ethan Nelson-Moore <enelsonmoore@gmail.com>,
+ Bjorn Helgaas <bhelgaas@google.com>, Runyu Xiao <runyu.xiao@seu.edu.cn>,
+ "open list:MULTIMEDIA CARD (MMC), SECURE DIGITAL (SD) AND..."
+ <linux-mmc@vger.kernel.org>,
+ "moderated list:ARM/Microchip (AT91) SoC support"
+ <linux-arm-kernel@lists.infradead.org>,
+ open list <linux-kernel@vger.kernel.org>,
+ "moderated list:BROADCOM BCM2711/BCM2835 ARM ARCHITECTURE"
+ <linux-rpi-kernel@lists.infradead.org>,
+ "open list:ARM/FREESCALE IMX / MXC / LAYERSCAPE ARM ARCHIT..."
+ <imx@lists.linux.dev>,
+ "open list:OMAP MMC SUPPORT" <linux-omap@vger.kernel.org>,
+ "moderated list:ARM/ACTIONS SEMI ARCHITECTURE"
+ <linux-actions@lists.infradead.org>,
+ "open list:TMIO/SDHI MMC DRIVER" <linux-renesas-soc@vger.kernel.org>,
+ "open list:ARM/ARTPEC MACHINE SUPPORT" <linux-arm-kernel@axis.com>
+References: <20261102172126.3890568-1-Frank.Li@oss.nxp.com>
+From: Shawn Lin <shawn.lin@rock-chips.com>
+In-Reply-To: <20261102172126.3890568-1-Frank.Li@oss.nxp.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowABnVf82mOpq2Js+AA--.27325S2
-X-Coremail-Antispam: 1UD129KBjvdXoWrZw48Gw1furyUWw1kurW7Arb_yoWDGwbEk3
-	48Wa4kZryrGr9rKF1DZr47Zrs7WFnrWFW7Jr4IyF4DW3s8tFWrXry5Gr45uF1DXw4rCrs5
-	A3WUZFWFgr1S9jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbfxYjsxI4VWkKwAYFVCjjxCrM7CY07I20VC2zVCF04k26cxKx2IY
-	s7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4
-	kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_
-	Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI
-	0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2Wl
-	Yx0E2Ix0cI8IcVAFwI0_ZF0_GryDMcIj6I8E87Iv67AKxVW8Jr0_Cr1UMcvjeVCFs4IE7x
-	kEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kK
-	e7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCF04k20xvE74AGY7Cv6cx26r48ZrWUJr1UMx
-	C20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAF
-	wI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20x
-	vE14v26F1j6w1UMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UMIIF0xvE42xK8VAv
-	wI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWxJVW8Jr1lIxAIcVC2z280aVCY1x0267
-	AKxVW8Jr0_Cr1UYxBIdaVFxhVjvjDU0xZFpf9x07bz5lnUUUUU=
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCRMBA2rqY-nHZQAAsg
+X-HM-Tid: 0aa1a46d7f6503a4kunmc8d4954b6d561
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDGEodVk9OHRpIHU9IHRhOSlYVFA
+	kWGhdVEwETFhoSFyQUDg9ZV1kYEgtZQVlNSlVKTk9VSk9VQ01ZV1kWGg8SFR0UWUFZT0tIVUpLSE
+	pKQkxVSktLVUpCS0tZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=Biti4XDNFXbuvNogqfGaU5N4HArvWpfvwOVNjSodcEYv0t0phcptB4QduFrWcRexuRTe/knwUsf0/yDB30GVNwoaPgfz++UAZ3rVuwD1APwWBcw7naO/XxLk837m4FMy4g/Fg85oMG9NPSG7H74raei5DBJ4+UegYTt0XNgCFTg=; c=relaxed/relaxed; s=default; d=rock-chips.com; v=1;
+	bh=2xE1Al8wj2vlLQSBshL2OcXzRsXJVItNZxoz+0qsrmw=;
+	h=date:mime-version:subject:message-id:from;
 
-imx_sgtl5000_probe() takes a reference on the codec i2c device, but the
-successful probe path returns without releasing it. Only the error
-paths drop the reference, so every successful probe leaks the i2c
-client device.
+在 2026/11/03 星期二 1:21, Frank.Li@oss.nxp.com 写道:
+> From: Frank Li <Frank.Li@nxp.com>
+> 
+> Replace open-coded assignments to callback and callback_param fields
+> of struct dma_async_tx_descriptor with calls to the
+> dmaengine_desc_set_callback() helper across MMC host drivers.
+> 
+> No functional change intended. Prepare make to struct
+> dma_async_tx_descriptor private to the DMA engine.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-Release the reference once the card has been registered.
+...
 
-Fixes: 81e8e4926167 ("ASoC: fsl: add sgtl5000 clock support for imx-sgtl5000")
-Cc: stable@vger.kernel.org
-Assisted-by: DeepSeek-V4.1-Flash and OpenAI Codex
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
----
- sound/soc/fsl/imx-sgtl5000.c | 2 ++
- 1 file changed, 2 insertions(+)
+>   drivers/mmc/host/dw_mmc.c                | 3 +--
+For dw_mmc.c,
 
-diff --git a/sound/soc/fsl/imx-sgtl5000.c b/sound/soc/fsl/imx-sgtl5000.c
-index 8bcf54ef709e..8ce333eb47fe 100644
---- a/sound/soc/fsl/imx-sgtl5000.c
-+++ b/sound/soc/fsl/imx-sgtl5000.c
-@@ -177,6 +177,8 @@ static int imx_sgtl5000_probe(struct platform_device *pdev)
- 		goto put_device;
- 	}
- 
-+	put_device(&codec_dev->dev);
-+
- 	of_node_put(ssi_np);
- 	of_node_put(codec_np);
- 
--- 
-2.34.1
-
+Reviewed-by: Shawn Lin <shawn.lin@rock-chips.com>
