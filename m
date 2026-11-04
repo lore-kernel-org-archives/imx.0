@@ -1,57 +1,66 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793801376;
-	b=j5LsciHjQIIf87hF6pbR3D3UgQJiHp4X1h9PPgY4o529I2wuINk8scbvuiw2U6TJJ03s
-	 k8udRe88m6MdV0WJeCFtm6otMCpYhB6C8rk5Bp1764pgTDrsb2DVOWdlqOrrF8SMiJmC+
-	 440l5cDehotREChgAjvFUHj7BrhMeXzWm+gjzeCb0sjmBolPI18YW3oFW2Oe7oU0Z6Hzp
-	 IowPXVeuakZI6x2GAx48j/th00gTYRnyi5priuQhUHkFhwuF/7X/Ll3keESZ4QoIDpJ7P
-	 w9CWMYbSjdOjbAxMsEimvFg6yWqUcQVbfZALL2J8ti2MXVDznfCfVLQy4QGQ3Ai6tmg==
+	t=1793801918;
+	b=Ob4DrBqqVd6i/Yg0tKlT5UidmLVBPRwZ+Dnx1mdaTJQt+tIJFjOV/bNGBNw6XL/0g4Qa
+	 oG6FHxx7dZdNAWJFojYiB5yvZELUViDX0GYav7EDADHxOHqrLGP4dhSvU3kx6WI4ca1Ft
+	 2Cx07Fg7U4f/ZS82TGlZgFSvZUoO12DcJ+b0PUxbdnq/WmnQBzZJjxJGI/YRqWW+BEyY7
+	 GmV9Wh/GYLPW9nBM3iVVv7SOJs/CfclHUNOXgCLyscXueqy1jtXRaudBnW0j5TffCMa9F
+	 PD39v1ilMTYToF9xlkC3xALrfdxHnLI8h5lrrgfqgR7/7KJTMnsC8vmFB7SL84KD45w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793801376;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=Dis1N9ApaTjVUV06o6HKxwJ6K12hg4N/iyLNhWr2wbQ=;
-	b=5rV8QvuKXf7GpiV674UTKIf1ucQajlDxfUWvqHc0Zey1uUkkXE/y61HYm6CNoGzPLmWz
-	 PnC4nwAXvmrKpfjN9xshG47cIKaMxvHfODGf176/szWEPOmGWS9w5XsGqiuNZboSBlaLe
-	 QhrDnVF7Ag5/VlwqK8I3W/dBqd6KoNwybI5Ru2oF3ksJpmFrmvduIE/FDU6AxVqf4iaxC
-	 f0RPb8ERhiUMyKQHFawhjyXVi+vsQVuvUpH/StGtrIJGPE+T4Klz+/UgcQCiqBmJEFxUH
-	 SNHru2LJDKgdkqtC+gcqNS0cD59YbaU75eYuL5tznloXWTYcz44VKP87TAiJytFr2jQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793801918;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=tIsim5wpkIICh192gsX8FGT+MKKG5Z56KVBTAyYasJg=;
+	b=yTE2YOIC+92iH2bjQTb3ooQWzJhJZ3FMlZKB5eiklSlSR9mNxXZTTztkeschRjlhDRe6
+	 f8TONV2UCGtXHIu7e8eNRNQF6ncT10Ciw3Hv3Xa6iOG6JWNiA1ozKn0hTnEv7fVBkTgrB
+	 J6Bb6uFftSiHrqe+c39Cg3EwrLXY4dggd6Fhd8ua8dJUuCfk5zLDvlLpZS4TeLMjt9St0
+	 7OiS24C1EwO+yCMWv7wBgBIWBBqv9ObuH+eIhT2YSNR+at7GO7pfpCT2sC49sdN9w2ZrL
+	 thKUyHvKGu4VForUdrmsMFoicGJs33DSlNYhMWPjUlTNXHpJcFRBxjrEI6RquFNj0KA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=k9zz3iys;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nEBFhzWR;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82493606A330
-	for <imx@lists.linux.dev>; Wed,  4 Nov 2026 14:09:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id F1D64606A326;
+	Wed,  4 Nov 2026 14:18:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=k9zz3iys
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CDAF1F00A02;
-	Wed,  4 Nov 2026 14:09:36 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nEBFhzWR
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 6513B1F000C1;
+	Wed,  4 Nov 2026 14:18:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793801376;
-	bh=Dis1N9ApaTjVUV06o6HKxwJ6K12hg4N/iyLNhWr2wbQ=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=k9zz3iysU0QL00Pd5UtADu0O6vwZA9MrbteCZnPupeF03DG9LoLPxyAgNpre+qUJo
-	 8HKieuczy0q9X30aqWeA/58is52CO0H0+IFe3X7mFLZrcPemyKejrCM1GCq/lC4E5k
-	 UgnG4hTQIMHFZTH1GJRuMNMGSvt9KAv3Kila4Th7Pgul8t4z77qC+JPVpHCqlLefU+
-	 uhE3bQxSbCnOB4B/IaAMRP0ZZ8Fyrh3OirBbUE5oLyiG9GJ9sn6KPSy6ppf5i8ZwGm
-	 3iaLUuCHe2LDKnIhdaDJKTEcedYR7bxXRjqNuUzvpvTcP/ZhlzEKCa6MLkgP2Fuf0J
-	 XZj7Z/uvbgBcw==
-Message-ID: <sashiko-outbox-197400@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH net-next v3 2/5] net: enetc: Enable probing of version
- 4.4 devices
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Claudiu Manoil" <claudiu.manoil@nxp.com>
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <bf8effe9a06ba569b5e5a36cc1d1982b2e3fff53.1793712309.git.claudiu.manoil@nxp.com>
-References: <cover.1793712309.git.claudiu.manoil@nxp.com>
- <bf8effe9a06ba569b5e5a36cc1d1982b2e3fff53.1793712309.git.claudiu.manoil@nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 04 Nov 2026 14:09:35 +0000
+	s=k20260515; t=1793801917;
+	bh=tIsim5wpkIICh192gsX8FGT+MKKG5Z56KVBTAyYasJg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=nEBFhzWRIks+RPRMz6B9YBuEcxelF78jOoxhaGbQlrGOIEOF3j0r4ZN3AsSw82HWM
+	 PfVd37jaJHJA+9usuXZNPgGRYSimbNDnYfzEwcjLVi5tPC1p2ENsIUifco3Hk2uHSN
+	 P/0XtOlU/mMN6xk3YzmiKARg901Rn0WgDEBbY4JlDVbPe2swPcY88Z1iwTzkQCWHhv
+	 c+SQFgiIZzd+Pr4Baa+2NRTAiI8nBCg1miIKasAnUU3Bp3toOaQJe1MOLo/AwjY39B
+	 7KmrsqnOjGE0Cvdu5GFOyqlkNWPdX6oqfaiJmVQdZ+RhaBXHtAonVyvJLCZIenqIm2
+	 dkqzeViYeSr+Q==
+Date: Wed, 4 Nov 2026 15:18:33 +0100
+From: Bartosz Golaszewski <brgl@kernel.org>
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: Codrin Ciubotariu <codrin.ciubotariu@microchip.com>, 
+	Andi Shyti <andi.shyti@kernel.org>, Nicolas Ferre <nicolas.ferre@microchip.com>, 
+	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+	Mika Westerberg <mika.westerberg@linux.intel.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+	Oleksij Rempel <o.rempel@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Vignesh R <vigneshr@ti.com>, 
+	Aaro Koskinen <aaro.koskinen@iki.fi>, Janusz Krzysztofik <jmkrzyszt@gmail.com>, 
+	Tony Lindgren <tony@atomide.com>, Andreas Kemnade <andreas@kemnade.info>, 
+	Kevin Hilman <khilman@baylibre.com>, Roger Quadros <rogerq@kernel.org>, 
+	Vladimir Zapolskiy <vz@mleia.com>, Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>, 
+	Krzysztof Kozlowski <krzk@kernel.org>, Peter Griffin <peter.griffin@linaro.org>, 
+	Alim Akhtar <alim.akhtar@samsung.com>, Wolfram Sang <wsa+renesas@sang-engineering.com>, 
+	Linus Walleij <linusw@kernel.org>, linux-i2c@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev, linux-omap@vger.kernel.org, 
+	linux-samsung-soc@vger.kernel.org, linux-renesas-soc@vger.kernel.org
+Subject: Re: [PATCH] i2c: Convert to subsys_platform_driver()
+Message-ID: <ef6ce6fqyefm6ywoaym2f4ww5nclotp7i7ohmqnaikb2lb5dsm@lcrmzg2z7v7n>
+References: <20261104113316.1634141-1-peng.fan@oss.nxp.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -60,114 +69,20 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261104113316.1634141-1-peng.fan@oss.nxp.com>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Critical] net: enetc: out-of-bounds write to int_vector[] in enetc_int_v=
-ector_init()
---
+On Wed, Nov 04, 2026 at 07:33:16PM +0800, Peng Fan (OSS) wrote:
+> From: Peng Fan <peng.fan@nxp.com>
+> 
+> Replace the open-coded subsys_initcall()/module_exit() platform driver
+> registration with subsys_platform_driver().
+> 
+> No functional change.
+> 
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> ---
 
-commit 6de2e15f2fb313f3ab9a84d0bfd5a867de11c72c
-Author: Claudiu Manoil <claudiu.manoil@nxp.com>
-
-net: enetc: Enable probing of version 4.4 devices
-
-This commit adds driver data and platform info entries for ENETC v4.4 PF and
-VF devices on S32N79 SoCs with a 500 MHz system clock frequency.
-
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/e=
-thernet/freescale/enetc/enetc.c
-> index c6571b5cc8425..b989823859ff2 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-> @@ -3832,6 +3832,20 @@ static const struct enetc_drvdata enetc4_vf_data =
-=3D {
->  	.eth_ops =3D &enetc_vf_ethtool_ops,
->  };
-> =20
-> +static const struct enetc_drvdata enetc4_s32n79_ppm_data =3D {
-> +	.sysclk_freq =3D ENETC_CLK_500M,
-> +	.tx_csum =3D true,
-> +	.max_frags =3D ENETC4_MAX_SKB_FRAGS,
-> +	.eth_ops =3D &enetc4_ppm_ethtool_ops,
-> +};
-> +
-> +static const struct enetc_drvdata enetc4_s32n79_vf_data =3D {
-> +	.sysclk_freq =3D ENETC_CLK_500M,
-> +	.tx_csum =3D true,
-> +	.max_frags =3D ENETC4_MAX_SKB_FRAGS,
-> +	.eth_ops =3D &enetc_vf_ethtool_ops,
-> +};
-> +
->  static const struct enetc_platform_info enetc_info[] =3D {
->  	{ .revision =3D ENETC_REV_1_0,
->  	  .dev_id =3D ENETC_DEV_ID_PF,
-> @@ -3862,6 +3876,18 @@ static const struct enetc_platform_info enetc_info=
-[] =3D {
->  	  .dev_id =3D NXP_ENETC_VF_DEV_ID,
->  	  .data =3D &enetc4_vf_data,
->  	},
-> +	{ .revision =3D ENETC_REV_4_4,
-> +	  .dev_id =3D NXP_ENETC_PPM_DEV_ID,
-> +	  .data =3D &enetc4_s32n79_ppm_data,
-> +	},
-> +	{ .revision =3D ENETC_REV_4_4,
-> +	  .dev_id =3D NXP_ENETC_PF_DEV_ID,
-> +	  .data =3D &enetc4_s32n79_ppm_data,
-> +	},
-> +	{ .revision =3D ENETC_REV_4_4,
-> +	  .dev_id =3D NXP_ENETC_VF_DEV_ID,
-> +	  .data =3D &enetc4_s32n79_vf_data,
-> +	},
-
-[Severity: Critical]
-Can probing ENETC v4.4 on an 8-core S32N79 SoC overflow priv->int_vector[] =
-in
-enetc_int_vector_init()?
-
-In drivers/net/ethernet/freescale/enetc/enetc.h, ENETC_MAX_BDR_INT is still
-defined as 6:
-
-#define ENETC_MAX_BDR_INT	6 /* fixed to max # of available cpus */
-...
-struct enetc_ndev_priv {
-	...
-	int bdr_int_num; /* number of Rx/Tx ring interrupts */
-	struct enetc_int_vector *int_vector[ENETC_MAX_BDR_INT];
-	u16 num_rx_rings, num_tx_rings;
-	u16 rx_bd_count, tx_bd_count;
-
-Previously supported SoCs had at most 6 CPUs, whereas S32N79 has 8 CPUs and
-enetc4_default_rings_allocation() allocates up to ENETC_SI_MAX_RING_NUM (8)
-RX rings to the PF.
-
-When enetc_init_si_rings_params() runs on an 8-CPU system with 7 or 8 RX
-rings:
-
-	int cpus =3D num_online_cpus();
-	...
-	priv->num_rx_rings =3D min_t(int, cpus, si->num_rx_rings);
-	priv->num_tx_rings =3D si->num_tx_rings;
-	priv->bdr_int_num =3D priv->num_rx_rings;
-
-priv->bdr_int_num becomes 7 or 8 without being clamped to ENETC_MAX_BDR_INT.
-Then enetc_alloc_msix() -> enetc_int_vector_init() writes past the end of
-priv->int_vector[]:
-
-	for (i =3D 0; i < priv->bdr_int_num; i++) {
-		...
-		err =3D enetc_int_vector_init(priv, i, num_tx_rings);
-
-where enetc_int_vector_init() does:
-
-	priv->int_vector[i] =3D v;
-
-overwriting num_rx_rings, num_tx_rings, rx_bd_count, tx_bd_count, and
-subsequent fields in struct enetc_ndev_priv.
-
-Should ENETC_MAX_BDR_INT be increased (and/or priv->bdr_int_num bounded by
-ENETC_MAX_BDR_INT)?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1793712309.gi=
-t.claudiu.manoil@nxp.com?part=3D2
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com> 
