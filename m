@@ -1,44 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=160.236.53.8
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=159.226.251.21
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793760017;
-	b=Hu8IxR7OvoYP0w5IJa5cS2lAbyDQ+hmxz1abARvi5PZtCUaC3TiHOBjw7lLT4KVa53uf
-	 ToytdFdgSzP7/mYX2VGhDJDVeB4BMSHi5RMHmpP09RkN5q/4pBoFcdYQne6V1IMee7l6z
-	 qNvgjFZSZ9IhzLwKVNkABZtSW26pflF8QDb+BaskS5PfcFWKUb9UjvPF3WqzcTv+//+qk
-	 nvqShBfTpF6BwU1+KIYsUsS5Ujsjet6IabWbdhSZpZFT8XwQRbo4Jkp8cL+D3jjQxgnHg
-	 jWYDR/wv7sxHF5cTeUK3HRzG2k4IN8GoLkyKB5d0nH0MNMPYlfJeIDbfn36Y35ON35Q==
+	t=1793760040;
+	b=VaUh27oGixWinVS2OExocUZy18J6DkbbKte7HVPurqJK43BkA93P904sEITxANApZoey
+	 Ri1mYllX9SmHzYn8mjcAb/8NLv8HxJBfKHwI7XYyGfLhJNJXSwsM/ani2oa2oqaUDLask
+	 0VCrjHVZ2XRifIbuBO33PmzS5UDPt25XV2+ALcFPyxdiwMO8kPqQ1FuuKnlKaaJaKx5uF
+	 fG3wMCHBwA9ZfMUJLsT1b0sUIDKYLCD1RgBSu/fI76pWRffLgoN4WpXX1IqqN9Tsc0YJF
+	 H5tF2ZaosvfNpp92eyfeU7C2MJgWzGk/5dqjrCaOO0K1/eqkdv7Z2MpQ03pXUgugrxg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793760017;
-	h=DMARC-Filter:Received:Message-ID:Date:MIME-Version:User-Agent:Cc:
-	 Subject:To:References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-HM-Tid:X-HM-MType:X-HM-Spam-Status:
-	 DKIM-Signature;
-	bh=2xE1Al8wj2vlLQSBshL2OcXzRsXJVItNZxoz+0qsrmw=;
-	b=SsnwVWxjZEYQwJDp1KP0AZShvfc2GQWxEJLNUP9H98V+jWMSVsd8hV+cxckixiF2noh7
-	 tpk2P44hBtLMXTcWkY6qwogSFdOesfzGXBjBvTyCFOC9qJaFmnwGDGq/vb2K3Q5i18iI0
-	 02KiEK7pTRCCv7/r3G2Uj3I17bj83AeDdVkaI7wP3mkIKXWGU+CdCFa8bPkCuKk5gszQO
-	 XOebnGVuw4xp8IvIFtsANgFP0eP/QQGhp7MTKlDHRNFkU+TroS8/j2petfWxwxZrQIz1s
-	 iZ8eTXnYQTqudMeV4TVttqC6ovpxW5oylWtnf+rUlep3Vp/dgGPkSGxVoLMb1cTMNSA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793760040;
+	h=DMARC-Filter:Received:From:To:Cc:Subject:Date:Message-Id:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding:X-CM-TRANSID:
+	 X-Coremail-Antispam:X-Originating-IP:X-CM-SenderInfo;
+	bh=4su+3Bl8vVam/9rCmV8G+HuWhRUmzj07h5fXyjgVyto=;
+	b=bWhvbsevKUn7KSBB5yGLXw/lzrTGc0TllY8jj1misY8v5Cjp/RVl/HfS1wsrOD+WAAeu
+	 TR/BbUWFp00EFibstSyK8HmpY6nu0OENOhu/ZfmBsg9rS3VcdRC5nOK6AXWEBFsEBGusf
+	 HPKGhkcp5FJb12c5YcnKrZ0mPKnFHuKEjrpzjTMRdObiyhoZJi2n99Ikrwm1CT+Y+N4Nx
+	 JF1pghOSEv39eaNRYAnR2HX3CY4nkKofOkCsXkG6EK2HVbLyNY8Z2vRQ17gToV1NOPn9E
+	 3ZK5Zyl5ZPVm9XHo8qMSEBa6aQgfokkf2LThNdaC9bY3GJtwf70xitjE2pk4a1BcWfw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=rock-chips.com;
-	spf=pass smtp.mailfrom=rock-chips.com;
-	dkim=pass header.d=rock-chips.com header.i=@rock-chips.com header.a=rsa-sha256 header.s=default header.b=Biti4XDN;
-	arc=none smtp.remote-ip=160.236.53.8
-Received: from mail-m160236538.xmail.ntesmail.com (mail-m160236538.xmail.ntesmail.com [160.236.53.8])
+	dmarc=none header.from=iscas.ac.cn;
+	spf=pass smtp.mailfrom=iscas.ac.cn;
+	arc=none smtp.remote-ip=159.226.251.21
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47385606A326
-	for <imx@lists.linux.dev>; Wed,  4 Nov 2026 02:40:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 47385606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=rock-chips.com header.i=@rock-chips.com header.a=rsa-sha256 header.s=default header.b=Biti4XDN
-Received: from [172.16.12.48] (unknown [61.154.14.86])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 5368a9cf8;
-	Wed, 4 Nov 2026 10:40:01 +0800 (GMT+08:00)
-Message-ID: <55255451-4778-4bf0-83bf-eac4176947d6@rock-chips.com>
-Date: Wed, 4 Nov 2026 10:40:01 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B265606D806
+	for <imx@lists.linux.dev>; Wed,  4 Nov 2026 02:40:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0B265606D806
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from dfae2b116770.home.arpa (unknown [36.110.52.2])
+	by APP-01 (Coremail) with SMTP id qwCowADXxf8km+pqJ7k+AA--.9867S2;
+	Wed, 04 Nov 2026 10:40:36 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: Shengjiu Wang <shengjiu.wang@gmail.com>,
+	Xiubo Li <Xiubo.Lee@gmail.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Nicolin Chen <nicoleotsuka@gmail.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>
+Cc: linux-sound@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH] ASoC: fsl: imx-audio-rpmsg: unregister platform devices on probe failure
+Date: Wed,  4 Nov 2026 02:40:45 +0000
+Message-Id: <20261104024045.1508542-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.34.1
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -48,82 +62,73 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: shawn.lin@rock-chips.com, vkoul@kernel.org
-Subject: Re: [PATCH 1/1] mmc: use dmaengine_desc_set_callback()
-To: Frank.Li@oss.nxp.com, Aubin Constans <aubin.constans@microchip.com>,
- Ulf Hansson <ulfh@kernel.org>, Nicolas Ferre <nicolas.ferre@microchip.com>,
- Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Claudiu Beznea <claudiu.beznea@tuxon.dev>,
- Florian Fainelli <florian.fainelli@broadcom.com>, Ray Jui
- <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
- Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>,
- Jaehoon Chung <jh80.chung@samsung.com>, Frank Li <Frank.Li@nxp.com>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Aaro Koskinen <aaro.koskinen@iki.fi>,
- =?UTF-8?Q?Andreas_F=C3=A4rber?= <afaerber@suse.de>,
- Manivannan Sadhasivam <mani@kernel.org>,
- Wolfram Sang <wsa+renesas@sang-engineering.com>,
- Adrian Hunter <adrian.hunter@intel.com>,
- Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Jesper Nilsson <jesper.nilsson@axis.com>,
- Lars Persson <lars.persson@axis.com>, John Garry <john.garry@linux.dev>,
- Hemanth Selam <hemanth.selam@gmail.com>, Pengpeng Hou
- <pengpeng@iscas.ac.cn>, Rosen Penev <rosenp@gmail.com>,
- Fan Wu <fanwu01@zju.edu.cn>, Marco Crivellari <marco.crivellari@suse.com>,
- Pan Chuang <panchuang@vivo.com>, Zhan Xusheng <zhanxusheng1024@gmail.com>,
- Rakuram Eswaran <rakuram.e96@gmail.com>,
- =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
- Ethan Nelson-Moore <enelsonmoore@gmail.com>,
- Bjorn Helgaas <bhelgaas@google.com>, Runyu Xiao <runyu.xiao@seu.edu.cn>,
- "open list:MULTIMEDIA CARD (MMC), SECURE DIGITAL (SD) AND..."
- <linux-mmc@vger.kernel.org>,
- "moderated list:ARM/Microchip (AT91) SoC support"
- <linux-arm-kernel@lists.infradead.org>,
- open list <linux-kernel@vger.kernel.org>,
- "moderated list:BROADCOM BCM2711/BCM2835 ARM ARCHITECTURE"
- <linux-rpi-kernel@lists.infradead.org>,
- "open list:ARM/FREESCALE IMX / MXC / LAYERSCAPE ARM ARCHIT..."
- <imx@lists.linux.dev>,
- "open list:OMAP MMC SUPPORT" <linux-omap@vger.kernel.org>,
- "moderated list:ARM/ACTIONS SEMI ARCHITECTURE"
- <linux-actions@lists.infradead.org>,
- "open list:TMIO/SDHI MMC DRIVER" <linux-renesas-soc@vger.kernel.org>,
- "open list:ARM/ARTPEC MACHINE SUPPORT" <linux-arm-kernel@axis.com>
-References: <20261102172126.3890568-1-Frank.Li@oss.nxp.com>
-From: Shawn Lin <shawn.lin@rock-chips.com>
-In-Reply-To: <20261102172126.3890568-1-Frank.Li@oss.nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0aa1a46d7f6503a4kunmc8d4954b6d561
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDGEodVk9OHRpIHU9IHRhOSlYVFA
-	kWGhdVEwETFhoSFyQUDg9ZV1kYEgtZQVlNSlVKTk9VSk9VQ01ZV1kWGg8SFR0UWUFZT0tIVUpLSE
-	pKQkxVSktLVUpCS0tZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=Biti4XDNFXbuvNogqfGaU5N4HArvWpfvwOVNjSodcEYv0t0phcptB4QduFrWcRexuRTe/knwUsf0/yDB30GVNwoaPgfz++UAZ3rVuwD1APwWBcw7naO/XxLk837m4FMy4g/Fg85oMG9NPSG7H74raei5DBJ4+UegYTt0XNgCFTg=; c=relaxed/relaxed; s=default; d=rock-chips.com; v=1;
-	bh=2xE1Al8wj2vlLQSBshL2OcXzRsXJVItNZxoz+0qsrmw=;
-	h=date:mime-version:subject:message-id:from;
+X-CM-TRANSID:qwCowADXxf8km+pqJ7k+AA--.9867S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxJr18Zw47GF1rArW3KF1Utrb_yoW8Zr4xpw
+	4DGa95Wry5K39FkF4UXr1xAas8Ca4xuw4rZw48Aw17Ka90gryku3yrXa4UJFW7trW8Ga15
+	tr4UWrW5Cr4ayr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUBjb7Iv0xC_Kw4lb4IE77IF4wAFc2x0x2IEx4CE42xK8VAvwI8I
+	cIk0rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2
+	AK021l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v2
+	6r4UJVWxJr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14
+	v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xf
+	McIj6xIIjxv20xvE14v26r1q6rW5McIj6I8E87Iv67AKxVW8Jr0_Cr1UMcvjeVCFs4IE7x
+	kEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kK
+	e7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCF04k20xvE74AGY7Cv6cx26r48ZrWUJr1UMx
+	C20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAF
+	wI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20x
+	vE14v26r4j6ryUMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UMIIF0xvE42xK8VAv
+	wI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWxJVW8Jr1lIxAIcVC2z280aVCY1x0267
+	AKxVW8Jr0_Cr1UYxBIdaVFxhVjvjDU0xZFpf9x07befHbUUUUU=
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiDAABA2rqY+TXGwABsE
 
-在 2026/11/03 星期二 1:21, Frank.Li@oss.nxp.com 写道:
-> From: Frank Li <Frank.Li@nxp.com>
-> 
-> Replace open-coded assignments to callback and callback_param fields
-> of struct dma_async_tx_descriptor with calls to the
-> dmaengine_desc_set_callback() helper across MMC host drivers.
-> 
-> No functional change intended. Prepare make to struct
-> dma_async_tx_descriptor private to the DMA engine.
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+imx_audio_rpmsg_probe() registers the rpmsg platform device and the card
+platform device, but when a registration fails it only records the error
+code and continues to the next step. The rpmsg core does not call remove
+for a probe that failed, so a card device registered after the rpmsg
+device registration failed stays registered forever. The reverse case is
+just as bad: if the card registration fails, the already registered
+rpmsg device is never unregistered.
 
-...
+Return immediately when the rpmsg device cannot be registered, and
+unregister that device before returning when the card device cannot be
+registered.
 
->   drivers/mmc/host/dw_mmc.c                | 3 +--
-For dw_mmc.c,
+Fixes: c73524768e9e ("ASoC: fsl: Let imx-audio-rpmsg register platform device for card")
+Cc: stable@vger.kernel.org
+Assisted-by: DeepSeek-V4.1-Flash and OpenAI Codex
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+---
+ sound/soc/fsl/imx-audio-rpmsg.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-Reviewed-by: Shawn Lin <shawn.lin@rock-chips.com>
+diff --git a/sound/soc/fsl/imx-audio-rpmsg.c b/sound/soc/fsl/imx-audio-rpmsg.c
+index b55dfbdb4502..950bf9e5b648 100644
+--- a/sound/soc/fsl/imx-audio-rpmsg.c
++++ b/sound/soc/fsl/imx-audio-rpmsg.c
+@@ -92,7 +92,7 @@ static int imx_audio_rpmsg_probe(struct rpmsg_device *rpdev)
+ 							 NULL, 0);
+ 	if (IS_ERR(data->rpmsg_pdev)) {
+ 		dev_err(&rpdev->dev, "failed to register rpmsg platform.\n");
+-		ret = PTR_ERR(data->rpmsg_pdev);
++		return PTR_ERR(data->rpmsg_pdev);
+ 	}
+ 
+ 	data->card_pdev = platform_device_register_data(&rpdev->dev,
+@@ -103,9 +103,12 @@ static int imx_audio_rpmsg_probe(struct rpmsg_device *rpdev)
+ 	if (IS_ERR(data->card_pdev)) {
+ 		dev_err(&rpdev->dev, "failed to register rpmsg card.\n");
+ 		ret = PTR_ERR(data->card_pdev);
++		platform_device_unregister(data->rpmsg_pdev);
++		data->rpmsg_pdev = NULL;
++		return ret;
+ 	}
+ 
+-	return ret;
++	return 0;
+ }
+ 
+ static void imx_audio_rpmsg_remove(struct rpmsg_device *rpdev)
+-- 
+2.34.1
+
