@@ -1,70 +1,69 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.10
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793825385;
-	b=EsE2CP1WdPjO18FjOoMUHIDHTXqgHSAqXNKZkbmAv0gOKlZO80ZEPmqzs69ksS8q4KXS
-	 hlCGQQ+BYZICiZJR9kGSMUT055/me7EQLXJhhwpXokf1OV9dDRQ1EFxLFNhEFEeBs5Yno
-	 e5Mjbdd/BQ8FV/ScOnq1YoTKkPmAVotCh49iKoz2Cl02uXDQrTT24PL8nqi4Z5UH9Jmip
-	 gELdUD6BECWfeERo/f38C+qk50+zImz2sx1EXdfHISz4jsbz9lkD6Jld3SYLNZosP3Be5
-	 j/ltG2pl9IU0A6AQ5Dz3IhIiBgnn3fYiLsMqscA5ZqcNPkXAbyZFLi8McwrYxWseEag==
+	t=1793825459;
+	b=kHq9z22mLJ/sXyTvaoDmzIYi31Sca4L7WQ5mOKmp8CcQftm/0k3XeiUZ+o0v9ROOdFxG
+	 jjgGuYRUJRUbtufOIyTSlEfi+ydMN0HS7QKUv0BodKcgx2hREcqVMwzF9MUoWJR/UIHeU
+	 nBPe/dtqZ7zk6r58C/ppqDDDDiw+Yh2lbQLZCTQES2Ng5veM2ocd5/i88c4o5JoZtOxYX
+	 eBG2GCZWmSv2rfxxR6Xl1TM5u8gPsYzmDneADazR8rsr+2XZoQcOHWk/QBRdmDV7Y/ART
+	 H0AUSzsFiosUFKverTw+KifkvAVvN2RZfw0nLrPfK0MM5Icoq0h8WKHQvhJPaWsQT+Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793825385;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793825459;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
 	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
 	 Subject:Message-ID:References:MIME-Version:Content-Type:
 	 Content-Disposition:In-Reply-To:Organization;
-	bh=UMblCDkeaLJ4fgfQ6iI8HG5CBwVvaHr3bsDOTNNKxfs=;
-	b=tNZUpGoy82+arS5lvys9hn4qJci7txC0O8Ot6J/USCbPRyRs+7OHHy4dj+dakXDwDsQ+
-	 llAwFBwm3djHyRwx+G/mvDthBtb+s5X5lIVe2ZpIw2mmEap28As8TM6n/ducd2DBXrAZu
-	 4h0liPci/Jf3OKmbXDTAgwq4RF9bgx+as3tJ/TjNHyKSiwWmkIk9IWaFuAisVX2H+0gzD
-	 UPHaE6Grfd6fyOJRYzegbOBY1hD7TJEjyBeegZJrik7rwJpl7oyVKPxe6zFFoJqBwyjbP
-	 DtAUTsS0UUZ4CJQyPxgG6CdIFfGYiDIt73F3dFENQtlzkzHlJukWa/KZNuY/1Tt8LNg==
+	bh=SzDYjlN/1fmf+R4Ld7BlWsMG6VMrX/udiUQllvw7PDQ=;
+	b=2EIa2FfKPBnY4yU1h2wFj6t/Ul0QfpatUoHPvf1/q4OQ+lvVZuyF8nmjcRRMk9PmZCei
+	 MciuLzHDqwL5W0xaAaPNVtRwXpQhwSbmSYfiyGrAzbDBGFexHXcRKppwwGCoT0LTzs58P
+	 X+s7sExjXPhMJtdndFHn9ZPQdgXpI077kQCiBtCrt0ien/Tol525hBVXjtXEugx9S4hLV
+	 8DjWVKegmhmPvv/+XDMIRNPp6Rbx3CCS5jVwWNmYGsBsp9od0fp/YhFyCLeG2jFiOkRnK
+	 T3zieorOv+MzlobJtyP4HVAAezMpnRya6DdejqzRUhJJDfnf2Hysci05BKDMETBacwQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.intel.com;
 	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=BmTArU4P;
-	arc=none smtp.remote-ip=192.198.163.18
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=UCdSn5Wv;
+	arc=none smtp.remote-ip=192.198.163.10
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D945D606CA09
-	for <imx@lists.linux.dev>; Wed,  4 Nov 2026 20:49:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D945D606CA09
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6BAB606BA2E
+	for <imx@lists.linux.dev>; Wed,  4 Nov 2026 20:50:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C6BAB606BA2E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=BmTArU4P
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=UCdSn5Wv
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793825385; x=1825361385;
+  t=1793825459; x=1825361459;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=JTdqZrMRPi6WcLGmJnwa/CJMl4RUCZus4mIGMek1G50=;
-  b=BmTArU4PLciQsuQaWsj83LMbIlvlugcIi/qan22ZNk4144OEvVJ3s0aQ
-   zua/n0ChL0NXCRh7fomWDWJipXWH8Ec/gps/7dk8wYihZlf8Fu0djxPpM
-   85Ld71j/HpPlSSpNikhcaotx5Ick1Sb7WjSIivuM3lh1nFyCioZo9KoKO
-   sJBj3aGYXAkUcjnNQFWvnxSm5LI54S4YX/cbyj7AtwSLVKMkoFLk0ZHhF
-   NXIa2tnFKb6Xuo8uWFmoZq+/+dhkOvZs0nBJUhL+HZ1BUnECsZjL2Tjqz
-   wx36QzrSeZ+q8QV2QeMxMuLGoyBhA1DUiVj5gpMV2oR82c6RWQADWrrHZ
-   Q==;
-X-CSE-ConnectionGUID: XPYPnNCYQi+4o8QIOiNIow==
-X-CSE-MsgGUID: bm62ljWaSbaGScHkarHKig==
-X-IronPort-AV: E=McAfee;i="6800,10657,11956"; a="2635594"
+  bh=AUcOYkNi8p4zno7vK1wmZulX0t70u9NV7Xu5zTUi8Xs=;
+  b=UCdSn5WvvCNZM+BgJJ3N2COSw1r2vy6hcjm/Xab0ZYOl4KoZ0D3u3agJ
+   2LKy1quAat8u44OtDhNPTbHEs4IIDRXB76TA0JWVvtjLgSERnb/VCqUlt
+   v+Tub9bYNeXZR26i0cpK//mxaRqMXzmIbjJ4SGXYMy4qkiy6Yumtbcr0j
+   uZJrSViqXnvmcBdQHlJy5JCVRJ+GQ+178LfRe7n/Qt2xC54wZsBYSqjZ5
+   j8EImCzasyC8Ko6k1vbRAGdeCaUWWkJMIkBcN4GbJ96+o6tSb26dmHOE3
+   PzYbjblTYcl74JSkHkrJExyH91c2A1nhDB80TDRzRTevV7joxXTUh1gL0
+   A==;
+X-CSE-ConnectionGUID: N24jxkLPQW6vXVoeOHkIZQ==
+X-CSE-MsgGUID: GFwVi3/gRw2aPOeqRoLMLQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11956"; a="2496206"
 X-IronPort-AV: E=Sophos;i="6.27,195,1787036400"; 
-   d="scan'208";a="2635594"
-Received: from fmviesa013.fm.intel.com ([10.60.135.153])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2026 12:49:45 -0800
-X-CSE-ConnectionGUID: OcTARpEbSGOe3Qh4k5qXIQ==
-X-CSE-MsgGUID: TWlF8PfzSsqQNcZHM0fkZg==
+   d="scan'208";a="2496206"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2026 12:50:59 -0800
+X-CSE-ConnectionGUID: nAWtiO3+RGuHQfrolZcIsw==
+X-CSE-MsgGUID: e+LGNCzdTAa8pjppG5+1cg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,195,1787036400"; 
-   d="scan'208";a="8676414"
+   d="scan'208";a="6818364"
 Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.24])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2026 12:49:42 -0800
-Date: Wed, 4 Nov 2026 22:49:39 +0200
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2026 12:50:56 -0800
+Date: Wed, 4 Nov 2026 22:50:53 +0200
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Frank.Li@oss.nxp.com,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+To: Frank.Li@oss.nxp.com
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Jiri Slaby <jirislaby@kernel.org>, Frank Li <Frank.Li@nxp.com>,
 	John Ogness <john.ogness@linutronix.de>,
@@ -76,7 +75,7 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	imx@lists.linux.dev
 Subject: Re: [PATCH v2 1/2] tty: serial: pch_uart: replace chan->device->dev
  with dmaengine_get_provider_device()
-Message-ID: <auuaYxoZm2T25cU5@ashevche-desk.local>
+Message-ID: <auuarQPdDEnqq1th@ashevche-desk.local>
 References: <20261104145211.3209669-1-Frank.Li@oss.nxp.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -94,17 +93,14 @@ Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs, Bertel Jungin Aukio 5, 02600 Espoo
 
 On Wed, Nov 04, 2026 at 09:52:06AM -0500, Frank.Li@oss.nxp.com wrote:
-> 
+
 > Use the dmaengine_get_provider_device() API instead of directly
 > accessing chan->device->dev to get the DMA provider device.
 > 
 > No functional change. Prepare make to struct dma_device private to the DMA
 > engine.
 
-Krzysztof, this patch was a split from the bundle by a reviewer request (not me
-FWIW), and author obeyed. So, you can do the same in cases when you got something
-you want to review independently on other content which most likely is a noise
-(to you).
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
 -- 
 With Best Regards,
