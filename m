@@ -1,101 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.159.9
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793806737;
-	b=rZZyKjvb3b7dqmex/FrdonWUAvfeMk5cO/bVq65gkXf2otCY8shf+FTIXMjXsXuh79VE
-	 QWvKvZdRbuLzvFyUGSskxNyro9abZNshfnivnwXRF7cZEUqpvsO7tG1p3rRcnLXj2uUbn
-	 OR6wNkUVv1W0K52kkaSQngcr1OgJSltSDVDyEUu6cmS8mzDPG+S7Pyiq3kn2Sonx4XkiK
-	 pfPRMGEVt/FzWcI1heT+u3OLJE5u/4HWkxDaboS6K65qZTGYS1caMFcxtK8NMZ50CTL3B
-	 U3IBnjNgPmpywQq5DsUI1OpdYIYvU8WWBVhgCMCJ3d5V+tKvt4JOF+l7OJRE9fFEgWw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793806737;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:From:Date:Subject:
-	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
-	 In-Reply-To:To:Cc:X-Mailer:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=NNAz+1hEr67PeLtPRXXLOLc27j+aONXqEV/TdCQjQs8=;
-	b=UPIYNYXvfPF3PtSURrR7r7IML9XAj88iAuUCDOPXjijvgI8klL2pudxRZ8MhsWT+lxYm
-	 zJh4aOeq/3dEbNVeMuijKnpty/KEU22li0QX1wriYi98kfk79G8cRqBCSezByCE5bT9Uk
-	 O7mImbHQpn492cICMIc6SR97528HoCwhpfCLDHPZ3d3NS9e4PB4okxIArDMigw06bDy1+
-	 S8PbLKDpCfXjqNRIqtphziMfct46+M8RzcqJ3ZLLTW+jBNes4OtwcDwCrcjaJ/LketFBl
-	 uwfTQM9clN9ne7gb8LRc+q72I/c2vak99gzq/4Lj5CtoGR7L0mIxDieZ0rOYDFwGv0g==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.nxp.com;
-	spf=pass smtp.mailfrom=oss.nxp.com;
-	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=Uhk1wDY5;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.159.9
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013009.outbound.protection.outlook.com [40.107.159.9])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793807688;
+	b=ctgJ6YLGt1Ao5BGgD5ABY9CoS+KXsppMdkbaqXCRKjX2ECs2f1slTF2eND9jTnj3dg6r
+	 4GK8ICPKOgK3yJFKmjf40qVAxpw9PtiXyPdh1ayx9F9mtXNb+7A7kXDwfSN8vHaFhvpNK
+	 qRhTXImvASdQ1y3P43HksTpGQQABJtNvj7Sk88FZOPwnBFTvYJHsi9pJ6PtF7E/6xkHTz
+	 cdkyWN+k3DGV2ZVrXxW0WOTDmDZ64A4B89Yu5oMceVowzzKLTTeIYAqyan0NVjwxtPn7F
+	 UgKKIYBBix+qRVKue01uDa/Rg1mIDxLMG0FMGCjSPuk810F/M1O3k4NPj5vZuMIQTPg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793807688;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=W3sPLxs/2FYKtV7RaEcipLq50eZ4Fy1Gqkk+n6jgi0c=;
+	b=0hxjJ1n4g+OArS3DdpJt97RNW1oMRygT49nCGcO0R3lVTclPZOi5HcrVKh1OhJEL/jS/
+	 Yu4uOURxgP8oj2idJgPCV/6GHE1NdpgrR1l6EevjBQE+G2Y12ULrCsyRekuYJgJoVoXP2
+	 YlBfaYpIauKCjYxUVXQX5eCgSvEzkDWlomFXdVxJKvHTmS4Dmu5tEYJwqUmCEgSBAMDOL
+	 AnMGqR5wJn4M25mVv8OzH/uoMfPmvnsOqrW7LpJk7lmensgW7IokzEejftFNFRCJ3PkZg
+	 mrxZuJU4ZlE76Rlgnu4K2awHCUfbs6lkHPfmXgqU3bkqzCN7FZTpc+m+nKdgZTIsOZg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TUse1VAC;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE44860A2618;
-	Wed,  4 Nov 2026 15:38:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DE44860A2618
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68B8E606A31B
+	for <imx@lists.linux.dev>; Wed,  4 Nov 2026 15:54:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=Uhk1wDY5
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XjrgDZl2uwRhOxsQfcDLQZajRVbbIgzwMkKXbEKglWW6KwGk+1kIihzqcVq9DgpD98AH3rOWIVs6Qn8JqTuUvam9yeHVrU3sj8V1eY1rxWTFEkvT0ItFOHWDW4gJQOTEU1BMJBDrCe39U8A+svsPdCaTGwTGN+mnaEypEHfXvRUWUqfFn1uusCyqAUw3Nnxmfmu9h2bXVjaK34FOEgEKCf8nWfvT/j45y7+8jsdD4kaG1skGMxmkXOxERGPgalN8FKEydiH5skMOBLjkrZ3IUlofix9Bw0OyW3F6VUwvEeOM5kajOXX1ky4TBlLFZCHMzlPyu+4KVXsLJJRasi9UTQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NNAz+1hEr67PeLtPRXXLOLc27j+aONXqEV/TdCQjQs8=;
- b=R05wlGNrWwFy/b0+bjAHC0nIaoicEyQ2EnlSbGtejosKqvY/TJAZwJXFAu7zF7OmimIdkUl098SwNBxmDMWLK/zu8gdiHlaEThqLNGp19STwhbUV40+RbIuG2h6Ncx7bcIyTZPDb3LzX3UtsPMerQ0t4l03M1bgyCKnW4rPtiDzjlrvRzK738kmZNhu2vMYCq878bgUqSTmGFBlpZQbP+HqB+7pGuoPtAXBoUUrsKPTyKXFrfY/Pmpzv2Q3vHDqbWqZXm4TDx38zUkOes4btjbYn96STjwj5RMfuDnIvU9sfp1LmlQMlw5QUc88BC9nlY9EMSPe6/+9dfTJhKepEXg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NNAz+1hEr67PeLtPRXXLOLc27j+aONXqEV/TdCQjQs8=;
- b=Uhk1wDY5vSHZDuvGNr4+ANZWuPa6/JnJx+GOs1PpA93bpcFxZJzVAuCFtCeXk9UC4FQk8jiwBynicdcv9K3xJZt/UJMLz/rJ02YBQllb5LS4LviWXsj/PoGepxeZ+5zOscllT1DMzllsLqeHTf4dru1g9ScFeOs67rYnaJ868S09kZT3QRAFHqBaNTpe2EdyjZJi/BZap0sEYafd7gX1iCicNGrKh2kL0fQWalZuYYy49dqBMOwrxIhKLIZnLWQ1vqpbFTnMwqUMEeVmv0h2N5dOLPUkQNXkfHMKi1hJrzWkVSw38+yfF2ImzzPenqhuK1VMjrzORogGrz/kWROTMw==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from AM8PR04MB7874.eurprd04.prod.outlook.com (2603:10a6:20b:24d::9)
- by DBBPR04MB7564.eurprd04.prod.outlook.com (2603:10a6:10:1f7::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.9; Wed, 4 Nov 2026
- 15:38:54 +0000
-Received: from AM8PR04MB7874.eurprd04.prod.outlook.com
- ([fe80::ac38:1699:6f18:c5d9]) by AM8PR04MB7874.eurprd04.prod.outlook.com
- ([fe80::ac38:1699:6f18:c5d9%6]) with mapi id 15.21.0592.007; Wed, 4 Nov 2026
- 15:38:53 +0000
-From: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Date: Wed, 04 Nov 2026 23:43:16 +0800
-Subject: [PATCH 4/4] software node: skip dying children during traversal
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261104-swnode-race-v1-v1-4-9406a67e25be@nxp.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TUse1VAC
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D8D11F000C1;
+	Wed,  4 Nov 2026 15:54:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793807688;
+	bh=W3sPLxs/2FYKtV7RaEcipLq50eZ4Fy1Gqkk+n6jgi0c=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=TUse1VACS/FTTvKUwIM7W9xSHRNUUFK5M3OpDIR+0PxlQOHVIBJse2lC0pjtRFn5s
+	 +LOZ0YPxrjyA2qOXkiXOPmZTK46GWF6KnVJ85WR0ZEr8p3wVGqqq3EAvQpjurkN4Oc
+	 byRL/JjAU0HJhHj8R9Ic20/kWyKQ50XVaGMPNkXYmEkNWPUSA2oNPvqYEpUiq8Kwzo
+	 11ygecGMkQn3+6TvdWH4aTNZk02zhe2FO8U5hxyeghob2+bHgBkXMXNw3ib7D1AsXc
+	 ifA7+DsKQjcDwrE10UOF+9gECwKQh6xsmSOvzrWUfCXD/Ji/VKLV6ncCU4cVvj0MpM
+	 2sbpTnnsfpV1g==
+Message-ID: <sashiko-outbox-197554@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 1/4] software node: do not resurrect swnode being
+ released
+Reply-To: sashiko-reviews@lists.linux.dev
+To: =?utf-8?b?UGVuZyBGYW4gKE9TUyk=?= <peng.fan@oss.nxp.com>
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <20261104-swnode-race-v1-v1-1-9406a67e25be@nxp.com>
 References: <20261104-swnode-race-v1-v1-0-9406a67e25be@nxp.com>
-In-Reply-To: <20261104-swnode-race-v1-v1-0-9406a67e25be@nxp.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
- Daniel Scally <djrscally@gmail.com>, 
- Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
- Sakari Ailus <sakari.ailus@linux.intel.com>, 
- Bartosz Golaszewski <brgl@kernel.org>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
- Johan Hovold <johan@kernel.org>
-Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, 
- linux-acpi@vger.kernel.org, driver-core@lists.linux.dev, 
- linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
- Peng Fan <peng.fan@nxp.com>
-X-Mailer: b4 0.16-dev-7bc12
-X-ClientProxiedBy: SI2PR02CA0049.apcprd02.prod.outlook.com
- (2603:1096:4:196::7) To AM8PR04MB7874.eurprd04.prod.outlook.com
- (2603:10a6:20b:24d::9)
+ <20261104-swnode-race-v1-v1-1-9406a67e25be@nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 04 Nov 2026 15:54:47 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -104,127 +60,188 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM8PR04MB7874:EE_|DBBPR04MB7564:EE_
-X-MS-Office365-Filtering-Correlation-Id: 67ce8aac-77cf-4f16-07a6-08df3a89bb4c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|19092799006|7416014|376014|23010399003|1800799024|10067099003|18002099003|22082099003|56012099006|11063799006|261102123227099003|261021123027099003|261021121427099003|261009223027099003|260925021311599003|260925022911599003|260925021911599003;
-X-Microsoft-Antispam-Message-Info:
-	Uxi0MB8V7kwI88yTRJuIUpwNmPqsyWGqHyQQg4+YUKIGOAkuEzDAfCPAp7zV+m2uqQmLMc6YDAKz0GTvd+aByTYFWRXhQtAeiV+G3MtEI2HjU5q5wvCTzZP4hWJ/DSa6xdvwhLC3aYhV7Lo2X/hU1jYY2BtEf2KnTyLjLoSVzXs1K62o1GWC7AV09xGC20ucs58SFe+IkmBp4O9S1xkvxbSoE155EuAZ8Mgq1NufFtEZbUqzX5oNYYJXqZKUMq1he8YMUetTN0GCi1mlOvrZdNhpyi0zPQIrVrmROZ30b7vCABGUaHXZhXIYIn9ywEC+ChqhWxbKVKAc/l1t1xR7guKT3HhmR8+a+oHAVUzFqIGUMuCGKKtqhw/3Tq8LeFm9ynf8XGTkBNypxX5idxLj8V+7dP4T5D1aAsOJot6lteI8W00rtdh0kGP8bowTS2Fmhb/VcLzGJpURp4upKv4DWaM7zKU7iC2YVysQVRP7TcpbyAc3WxS5BvW5PxF3sg9lWduNCgg2k7CPf2igmGXnOq0ndOW46tXR4HLqKhh9r6qy6A3Z5V1gSMtHUmHz+muWaPSsmO/qFQbwSMrQfDmTUd+zmm4PLgNEX+lmcRRJdaiKSSFdYjOeqKjKcwZ1sFXhomfFY9XIpx8tSKdngnjOU0ZTC5gXBl3s6sZ6nmf/TWw=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7874.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(7416014)(376014)(23010399003)(1800799024)(10067099003)(18002099003)(22082099003)(56012099006)(11063799006)(261102123227099003)(261021123027099003)(261021121427099003)(261009223027099003)(260925021311599003)(260925022911599003)(260925021911599003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?SG9HcnJJZFM1ODdHWDh0bnR4Y0laOWU0L1RDdStNTWg1MnBZenl1RVJYQnNG?=
- =?utf-8?B?ZGh6Y1lDWkJ6RnV6NmRma0U1ZVZBZ05RVGFZNFhVSkNhTEllNEZpaTZHL2RI?=
- =?utf-8?B?Qlcvczg1ZGg5UnFLWUR5U2tWUGpDN1RwRXlvYXhoQzFQQ25IM3ZSUHBCNFdk?=
- =?utf-8?B?cTI2c21ncGxuRzRkUjhLOUlzaW9HcGRvWHFUU3c2Q2sxQlUybTZmUG1IU3or?=
- =?utf-8?B?S0ZKN2JXS3lneG1lSFlra3ljemo1cWxvbmh2czhzTUJVYVhxVnAxT3czNFhV?=
- =?utf-8?B?S2tQVWhoNTUrSWlhODFVTnRFNW5UbkpBdXlRWDBiN2JjOTVpaTRjZ1A0cVov?=
- =?utf-8?B?Q3N2WGlzRWlQSWZnc3ZNekhNNWZtUGRSZDFCeWV5WkhySjVGOEk5KzBOUGM2?=
- =?utf-8?B?V211ZjZsalVwQUJPbXhSbFdub0kzK3VDWjJCYkFjOHYwUEhiSHpHTGwrSDQy?=
- =?utf-8?B?ak1BdXJnM0g4Ulk2Qm0zeElJR0EycUNmK3o1UXFpUTNiemJxTlZ0em5LeXUz?=
- =?utf-8?B?Y2hmNUhwUFJkVXdNdGQ3UXl1SDl2NjhZM1pwdFVrZHNNZUR2UUxLYXRXdzds?=
- =?utf-8?B?OURjenZBdGhXSkNQNTNhTFRONGpGUDF3SitHM25vTTREdSs5L3UxcTJzaUZN?=
- =?utf-8?B?bU5OTFNvc3c5K3VQZFpCOGRXMGx2cndUQjVlYWZjT3V2cTZ2WWFHQmd3cHlF?=
- =?utf-8?B?TWMrWUsydE9xRDNDTmtzYWxnbU5TcUx2WE5SNkx2a1JoNHBXaXdXeUdzVzBr?=
- =?utf-8?B?OXUyUUp2VStSWWNEajJKUGRWMlVoL0IwakJUT3BuYlRsbU5iMDhlUk9QckVI?=
- =?utf-8?B?bnJtNHAvOVBDZXI1S096VHRyQTQzNmxXUzc2SkFsMmhpcFRzSldxRE1yb0Zj?=
- =?utf-8?B?aXZveXVRQWU0SUoxcitORHA3WWorNzVCN2NHRXZ3eXdJeDVpandyaHZWVDc1?=
- =?utf-8?B?QnlxQkF6SGp0ZlkvMVJUOXg5RWZzeG15cWgvZ1VYdmZJd1FiWmZ3cnUrZ0ZE?=
- =?utf-8?B?dmxQeGFHaXYyWEVxL0pHVFNxQVRmMDdWaUlROXdiZFlyVkd0SGc0K0wyTy9x?=
- =?utf-8?B?WE5TMmZMWk9IOGg2b1lYRVhyNHJYak0xR0RheGpsbDl6WU1iNG9HQ1grQXVZ?=
- =?utf-8?B?cEhRVC9TcE5IamRFZkovSVFKd0l2YkEwcWo5eGNnVS91U2dGM2hiUkQvT2Vs?=
- =?utf-8?B?YVp4dVJBcEgzOE90Y2Z1YzVjaDZtU1VZc0Faa1VXZENjMWxoZmdSa1lBekVH?=
- =?utf-8?B?VlhqbXdDOXpycWp4YlM2RE9Bd2FHNzVBSXZmbEFDM0RwZUplRWJDSjFneWdl?=
- =?utf-8?B?RmhQd3ZlNENBeTJ0L2U3Tnp5Tm56WktSZEJEeGJSQ0V5R0dYai9PMXlhNU9i?=
- =?utf-8?B?N3VPdlMzZU04TXB1S3pHL085Um1FSjg0d1BhMHNZYVZFd3JuZEtwWUhNZDA5?=
- =?utf-8?B?ZnphQ211R01tbHlKc0NUUElVemZvT05BdFE1emZ6V3U0SGFlaGw4dTZNUjZp?=
- =?utf-8?B?NERlUkpaNkI4SXBWcFdrVTdPeUorODcybWZsejRmNE41NDU1Z0ZDMTdJYmJj?=
- =?utf-8?B?T0QxTmFuS1V6cE96QzJveU1lTVU1Yy9OYTB0OFY1M2pUQ2hxa2VFSi9manRE?=
- =?utf-8?B?YzEvMStzRlNlb1ZtTDhkTEFva1pDMSt3WkI1RFU0K3N5aVhGclJHamtJbTZE?=
- =?utf-8?B?MnFqSGEvOTRleXRockNURXpTUVJ2TDc3NEFrRStaR0tJWkJ1N1hDYzIvV216?=
- =?utf-8?B?dEsvV28wS09oUUdEUzJlYnZmeW9DNGlzMmJqVUErc3NKelhiellqQVhmdVN2?=
- =?utf-8?B?UUhYN0R3VHN3ZXhCQUxpL1BKYUR2VWhvTEVyNm9FOGQ0QnNsRGVNVjFuYmhJ?=
- =?utf-8?B?VjFsd2ZhRlNSTUxXMmRJUUdXMjFUNkxrTmkrSFluSS94UWpzRDVTUmREV0Ja?=
- =?utf-8?B?RHdWY2h0azVsZ0tXc2pOUGNKV1Azanh5MlJQVkZZNzFXMHNOZlFxajE0N2Zj?=
- =?utf-8?B?bk9vWFUxUjk2UEVKeU5BZURhb09zZ0RXejJmWm40cSt3L3lSaS9VZzg1UldB?=
- =?utf-8?B?TEwxWnJ6YlozTkZFZWhEVW5Eekg2czlTcUtDVmk4SWhnY1daMitxYUNjZE1C?=
- =?utf-8?B?bWpoVUpvSHkwWE9QTlFQdmhaOVpMZ2JGNUk3NXRIUzR3T0pOSU1paitkTUtU?=
- =?utf-8?B?RE5WbzJYUktUK0Iyak5xNnk5RWJxVGZFRG1qRFFwaXNiZ1dzNit6ME9mWUl6?=
- =?utf-8?B?R0FjMzg4cXJJdjJRZzhkY0UyWkY2VEF1ZXBtc2NWczZuUVdvcU5EaE5PTkpU?=
- =?utf-8?B?b2ZBKytKSkg3TW5XWE5iTmJwUDU5S3BncVh5andJaUs2ZWN1QTBLRHk0aU1Y?=
- =?utf-8?Q?u+YAUuCSUykhf3SfM91P+vFmO2wIYdUe9LHeY?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 67ce8aac-77cf-4f16-07a6-08df3a89bb4c
-X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7874.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Nov 2026 15:38:53.9498
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: SXyotE0mOmylrKC59XNB7H0cGQ9yZ2f4Zf8csrCramBFOaArhxFRrFtlhFli1PmVfPItSK/nUuWBql7bWgzc/l9OXGiiiGC2zeahRWiwkuVkW9CV5w9PCRtm2FD/6Neh
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7564
 
-From: Peng Fan <peng.fan@nxp.com>
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [High] software node: transient ref in software_node_to_swnode() risks UAF
+- [Medium] software node: re-registering named or parent node hits -EEXIST
+--
 
-A child swnode is removed from its parent's children list in
-software_node_release(), which runs after its kobject refcount has
-already reached zero. The fwnode child traversal helpers can therefore
-find an entry that is in its release path and call kobject_get() on a
-zero refcount.
+commit d02f059d143a3e75e357a6d906b17afb37852f09
+Author: Peng Fan <peng.fan@nxp.com>
 
-Use kobject_get_unless_zero() in software_node_get_next_child() and
-software_node_get_named_child_node() and keep scanning until a live
-child is found or the list ends.
+software node: do not resurrect swnode being released
 
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
----
- drivers/base/swnode.c | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+This commit updates software node lookup in drivers/base/swnode.c to use
+kobject_get_unless_zero() so that zero-reference swnodes awaiting release on
+swnode_kset->list are skipped rather than resurrected. It introduces
+software_node_to_swnode_get() and software_node_register_node() for callers
+that acquire a reference, while keeping software_node_to_swnode() as a
+wrapper that drops the reference before returning.
 
-diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
-index 4d95a59a27f0a..1354447069e10 100644
---- a/drivers/base/swnode.c
-+++ b/drivers/base/swnode.c
-@@ -515,7 +515,18 @@ software_node_get_next_child(const struct fwnode_handle *fwnode,
- 		c = list_first_entry(&p->children, struct swnode, entry);
- 
- 	fwnode_handle_put(child);
--	return fwnode_handle_get(&c->fwnode);
-+
-+	for (;;) {
-+		if (kobject_get_unless_zero(&c->kobj))
-+			return &c->fwnode;
-+
-+		if (list_is_last(&c->entry, &p->children))
-+			break;
-+
-+		c = list_next_entry(c, entry);
-+	}
-+
-+	return NULL;
- }
- 
- static struct fwnode_handle *
-@@ -529,10 +540,9 @@ software_node_get_named_child_node(const struct fwnode_handle *fwnode,
- 		return NULL;
- 
- 	list_for_each_entry(child, &swnode->children, entry) {
--		if (!strcmp(childname, kobject_name(&child->kobj))) {
--			swnode_get(child);
-+		if (!strcmp(childname, kobject_name(&child->kobj)) &&
-+		    kobject_get_unless_zero(&child->kobj))
- 			return &child->fwnode;
--		}
- 	}
- 	return NULL;
- }
+>     software node: do not resurrect swnode being released
+>    =20
+>     software_node_to_swnode() walks the kset list under list_lock, but the
+>     last kobject_put() drops the reference count to zero before
+>     kobject_cleanup() removes the object from the list. A lookup can
+>     therefore find a zero-ref swnode and call kobject_get() on it, which
+>     triggers refcount warnings and a use-after-free.
+>    =20
+>     One way to hit this is the dwc3-imx driver on i.MX95: when
+>     dwc3_core_probe() returns -EPROBE_DEFER, dwc3_imx_probe() removes the
+>     static software node from the device, and the deferred probe retry
+>     immediately adds the same node again. The previous swnode is still
+>     waiting for its release callback, and CONFIG_DEBUG_KOBJECT_RELEASE ma=
+kes
+>     the window large and deterministic.
+>    =20
+>     Fix the lookup by acquiring references with kobject_get_unless_zero()
+>     and skipping objects that are already in their release path. Use a
+>     reference-returning variant for callers that keep the node (register,
+>     unregister and device_add_software_node()) and keep a borrowed-pointer
+>     variant for software_node_fwnode().
+>    =20
+>     To avoid looking the node up again after registration,
+>     software_node_register() now uses an internal helper that returns the
+>     newly created swnode reference, and device_add_software_node() consum=
+es
+>     that reference directly.
+>    =20
+>     Fixes: 80488a6b1d3c ("software node: Add support for static node desc=
+riptors")
+>     Signed-off-by: Peng Fan <peng.fan@nxp.com>
+>=20
+> diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
+> index 84a77ffa3dc4b..19a4153f3fac1 100644
+> --- a/drivers/base/swnode.c
+> +++ b/drivers/base/swnode.c
 
--- 
-2.34.1
+[ ... ]
 
+> @@ -98,6 +124,21 @@ software_node_to_swnode(const struct software_node *n=
+ode)
+>  	return swnode;
+>  }
+> =20
+> +/*
+> + * Borrowed-pointer variant of software_node_to_swnode_get().  The calle=
+r must
+> + * guarantee the lifetime of @node by other means.
+> + */
+> +static struct swnode *
+> +software_node_to_swnode(const struct software_node *node)
+> +{
+> +	struct swnode *swnode =3D software_node_to_swnode_get(node);
+> +
+> +	if (swnode)
+> +		swnode_put(swnode);
+> +
+> +	return swnode;
+> +}
+
+[Severity: High]
+Can calling swnode_put(swnode) here drop the final reference and free swnode
+before returning it?
+
+In software_node_to_swnode(), software_node_to_swnode_get(node) acquires
+swnode_kset->list_lock, increments candidate->kobj.kref (for example from 1
+to 2) via kobject_get_unless_zero(), and releases list_lock.
+
+If the owner of the swnode drops its final reference (via
+device_remove_software_node(), software_node_unregister(), or
+fwnode_remove_software_node()) before software_node_to_swnode() runs
+swnode_put(swnode), the owner's kobject_put() only decrements kref from 2 to
+1 instead of releasing the object:
+
+1. If the owner immediately re-registers or re-adds the software_node during
+   that window, software_node_to_swnode_get() sees the dying swnode with
+   kref =3D=3D 1 and either fails software_node_register() with -EEXIST or
+   reattaches the dying swnode in device_add_software_node().
+
+2. When software_node_to_swnode() then calls swnode_put(swnode), it drops
+   kref from 1 to 0, invoking kobject_release() -> kobject_cleanup() ->
+   software_node_release() -> kfree(swnode), and returns a dangling swnode
+   pointer to its caller.
+
+This is reachable through software_node_fwnode() when resolving referenced
+supplier or remote nodes (whose lifetimes are not pinned by the caller) in
+software_node_get_reference_args(), software_node_graph_get_remote_endpoint=
+(),
+and software_node_add_links(), as well as through software_node_unregister(=
+):
+
+drivers/base/swnode.c:software_node_unregister() {
+	struct swnode *swnode;
+
+	swnode =3D software_node_to_swnode(node);
+	if (swnode)
+		fwnode_remove_software_node(&swnode->fwnode);
+}
+
+Also, the commit message mentions using the reference-returning variant for
+unregister ("Use a reference-returning variant for callers that keep the no=
+de
+(register, unregister and device_add_software_node())"), but
+software_node_unregister() still calls software_node_to_swnode(node).
+
+[ ... ]
+
+> @@ -977,21 +1006,39 @@ void software_node_unregister_node_group(const str=
+uct software_node * const *nod
+>  }
+>  EXPORT_SYMBOL_GPL(software_node_unregister_node_group);
+> =20
+> +static struct swnode *
+> +software_node_register_node(const struct software_node *node)
+> +{
+> +	struct swnode *parent, *swnode;
+> +	struct fwnode_handle *fwnode;
+> +
+> +	swnode =3D software_node_to_swnode_get(node);
+> +	if (swnode) {
+> +		swnode_put(swnode);
+> +		return ERR_PTR(-EEXIST);
+> +	}
+> +
+> +	parent =3D software_node_to_swnode_get(node->parent);
+> +	if (node->parent && !parent)
+> +		return ERR_PTR(-EINVAL);
+> +
+> +	fwnode =3D swnode_register(node, parent, 0);
+
+[Severity: Medium]
+What happens if a named static software_node (node->name !=3D NULL) or a
+parent/child software_node group is removed on -EPROBE_DEFER and
+re-registered before kobject_cleanup() runs?
+
+When the last reference to an swnode is dropped via swnode_put() ->
+kobject_put(), __kobject_del() (which removes the sysfs directory) and
+kobject_put(parent) only run inside kobject_cleanup(), which is delayed by
+1-4 seconds on a workqueue when CONFIG_DEBUG_KOBJECT_RELEASE=3Dy.
+
+For unnamed nodes (node->name =3D=3D NULL, such as dwc3_imx_swnode),
+swnode_register() allocates a fresh IDA ID and creates "node1" while "node0"
+is still waiting to be cleaned up. However, when node->name is set:
+
+drivers/base/swnode.c:swnode_register() {
+	...
+	if (node->name)
+		ret =3D kobject_init_and_add(&swnode->kobj, &software_node_type,
+					   parent ? &parent->kobj : NULL,
+					   "%s", node->name);
+}
+
+kobject_init_and_add() attempts to create a sysfs directory with the same
+name as the dying swnode that is still present in sysfs, failing in
+sysfs_create_dir_ns() with -EEXIST and a sysfs_warn_dup() warning.
+
+Similarly, when a node group is unregistered via
+software_node_unregister_node_group(), the dying child kobject holds its
+reference on parent->kobj until kobject_cleanup() finishes; the parent's
+refcount therefore stays non-zero during the delayed release window, and
+re-registering the parent in software_node_register_node() still fails with
+-EEXIST.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261104-swnode-rac=
+e-v1-v1-0-9406a67e25be@nxp.com?part=3D1
