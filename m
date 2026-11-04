@@ -1,13 +1,13 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.159.9
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.84.71
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793792220;
-	b=fqpAzksklSowNdDvmqJpvg7DIYJ7A39uewA3ZqaDasgNveWdJ6WndSWsMv1LF+JDbCNw
-	 0txoFkwNI5GYsMDybebFYbHt2VSEdq5Ap+IXO+2pX/khXzY3uTFmelL1NJbtnB1Ma1Ywe
-	 YnSGABNKKio2f1M1Sw8AietYNEeMfRcm0DfYver+OdhfyhbbwUdE8aB+spcHWM3DST8il
-	 7t8ldWYTFk6+h/AGP8fh2NLNzGDyXzQoY+b3qVplhCs2IhV9m8Y09rBKVrsP4CJDPg6Fi
-	 Ral3VLKZKNePAjAYLrcCUU7ha7g/o0D0m9rt3su19sjtL8WJuSflOfrsFpILIf07DNg==
+	t=1793792225;
+	b=15bbQXb62YNKi1R44zP/O9klZYAUJi7pcUmu2aH4QGM1CmeLDj2rnQL2PaIre3Ru4DiZ
+	 XKU6/gpKkrQl1uCS4yAEFz3QggmR1QoD4OFQdLtaMqGT5oismKfAgGSrP2bZwhT67x7VW
+	 FLnRymKJIr2WxT8dCMcu5Pw2gF6RCJJ9W2+H05qIdxbebsMf9YA0A5f8UB8u4iRxdkRkT
+	 MWenL+hKDzFe3WI340Oi4dAUG8P/VpqAkgzZaxBzgD01rLxYRVmK9o2oY+BW/YniYwpOL
+	 ACoA4TXjMFu2h7KVMd1M5eNV7LXYyNAVCdQsekflPQAeEJI3wx5Senpewx0tAN46uKA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793792220;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793792225;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:Content-Transfer-Encoding:Content-Type:
 	 X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
@@ -24,77 +24,97 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
 	 X-MS-Exchange-CrossTenant-UserPrincipalName:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=QtVfgqLf/FC1enRJUxfRRYjCBo1KOa0huSd7vZP6Rjc=;
-	b=CrnV39HspJVTRqxJL+XQ27muOJ9Whz5p2A+hd7r7ffIjooM4a47/2cfmds7iVTdmysGf
-	 L/n9RP3CxZoCtKZ20WsE1jco3P8b+vEjXia/JQLnjj/SolqvU8SgaLU50WhUKR3Vh3Vf9
-	 C3dfdcXzk0L44Ef7b5ZMd/DHdmIsPezU/moxTX/DUDWq5lUliYlkVlArEXikzO05nJ3rl
-	 pUv0tZNTyDdMUoAjbxGNYl6LS4bH/4yqSOqyb/HIC+69/CSHxrSuDIMc8g9FX7WeyIkT2
-	 ZRkz6XdQNLe5KMSdXUhSj3yEahSEUcGWtPdyQb8jPOfAEpbA2xa9QC9RD5yWKuTj3VA==
+	bh=LFH7gsM6hB49EpgMrwzu6ChfzNsOO+s+lYp+Wy8rFEQ=;
+	b=5TXFikmvPDgjUKCuLPJvUWvYV5sc/36BUQfUqoqRwjl4RF8+4rFQcP9U0xchMpxAZE8G
+	 r4nQm39ItRUThzVQCvPDuJL/uSeHBNkeK7tE0rq9YU+Sff6oPXq/4mxsUQWUaRDBds3RK
+	 kFErFZO1hDr+80UdTwOffXaQ8X2kUw7TNun2LIGhRbQkywKz2kVFKejtY6Cb95K1z0vy/
+	 v+s9rJpfIMBNHxNM2u2GNetxLL8mpFV6+1DggLHzl7MXhmreJl8pxktV3WpjHMeYoHD/t
+	 poDphUHNpZiVrUqed2zzNlLWGNXExsrdhNsFfX7qeiqa8VSWNwAYngy1FoPecwj0JMg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=oss.nxp.com;
 	spf=pass smtp.mailfrom=oss.nxp.com;
-	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=JhPYiiDR;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.159.9
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013009.outbound.protection.outlook.com [40.107.159.9])
+	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=SZHJFGhP;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.84.71
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010071.outbound.protection.outlook.com [52.101.84.71])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42B7F606A31B
-	for <imx@lists.linux.dev>; Wed,  4 Nov 2026 11:36:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 42B7F606A31B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3C49606A328
+	for <imx@lists.linux.dev>; Wed,  4 Nov 2026 11:37:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A3C49606A328
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=JhPYiiDR
+	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=SZHJFGhP
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wpZTaepZhOkh3V8yZ5YaCkVMeNE2F0dBfVQckMV7E+qYD7I8Malo47C6oEeAqre8MHtLrjDQT+igtLCbepoI3l9oXMMuB8Hp/Ovvt4YCU/hp4CLckXES56Y1xNWHYS17N5IcASW6i9RrGfKRDtHgRf/WaaGjvYH7GwpT7VssBDibRJIozVMAcQb6A+xBtKBHHUpRSW9B5YVgDjsqVbhPpMZY3B12ZfL0sJHvEJOp/4UkN4qhVL3X0041pUQmnMM49Dv68MKFna6Rx5VDArxbsV5BqMJausTCaHMZNZaeVrMEK3fqasay574h8FDY59VlQJCL2N950xjkyg5AYyZEyA==
+ b=tVgQlB7HrMsQVoocw7vax7Hnm9y8JvWRT4nTl5K5C37CDuPkssBbIg55ukktvw+J6R4kbcAuN5j78PkUm6rSrUT9a1yubAVtkAldi6zvT2Ka7oW5WHQEQBL3gLDC+z/CGjPpkZzhKaA2zXpr7rr09j4w+EFJECKwSKl/hd07j8ewkRY79PEbB+09z0WC+TF4dSJoCZ09+oDcwhb1tVe1ZIBfBDyRMJBs4xbm7Pu2ECMovoWsxSG0rW/0IK+3XEjmvAR1Q52MXll205b4yLMTWY1KUfzDhmrYe/ZMMvQGGiNC9JYHkJqshhoHR4W8Bc08abXxCjv9rfgWd1GK2i8/IA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QtVfgqLf/FC1enRJUxfRRYjCBo1KOa0huSd7vZP6Rjc=;
- b=ANl0cLL8OCAdlvGSU9RbCNL63Jyinrhn/I7GH+Rsmxv8Idt4E78rk4EMxsM0lu/8UnjT4Z9aJjDBatpjT/zD4JeahIa0hFLxQSg9cPvecgXl3b04U5p4SB8T8/CGUORv93XyJ6gh6/jZ4E31zkfCnWwBOBGZNyHZI6O/5oYYKJ4hxha9vcJrvjrpvOYpSXjBejZFjbYllJnxFDChFjZWkiJOwdNnPuO/QjefrWwczrwFdMs8CTMaxfbRSZaG4M6EfJjdiUWCoQF2M52Q+3GiRU0+CfSQuXm6EnxcDaDdvDM+i7Y6re8lv/UFePzQReeZIuQLsqkgBW+YjuN/SaWKXA==
+ bh=LFH7gsM6hB49EpgMrwzu6ChfzNsOO+s+lYp+Wy8rFEQ=;
+ b=wakb6kT52//pLlXiStmOTNtkXiFQCJjuax8E9fpX8OCtShxVvc3tJrRSgadcU9fUTWpMQnitxfWC77H+xMkbmLJxhk24mkcIzSl2/wZUKpzwWPaVIu39HsY/+qU41Ke1VW62VZVYpfZeVS0UMEd+GtkMAEdr4Es1UdySk8MLlXOOs9f7l+SUTKi9gFongyXENrj5ZfTpqHMkjH4QeIhcD95Ss2wLu+nL02+ygO3uH6OfREMly7xf9CHHTMQcT4p8/LtsVdI0rnxToOYj1fl+O/rZ+2sfKe1gvMz/vZKeSDJBMehxhDyBU/pls43Lt8GvWRNW3uriiKP/zBvP+V4/9A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QtVfgqLf/FC1enRJUxfRRYjCBo1KOa0huSd7vZP6Rjc=;
- b=JhPYiiDRg3Bs1ZYCwPsDKNWPUZTBGqsXhdeSOOb3nmIR5D2/CMrwf/jFJ1+CMB9owGExJBn83u47/LsbYcmsRX87FWiNOtsvHEIYPNjVYx7Fc3NxymuhJDTlvBLUWm/2ArhxMqEqq/M0ayAzrHWzg0RrjRFwivdRZQmj7z6HqkDINbrSiJlTyPN34yKibJSqA3xdM0nUwfZsTQUU1AMbmGrvmGRKFlafcmZxMgm2nItgdqR1sBsHheZOmdU84n+i150kHwgAH73HoNLUnUNsFgrEf5e18bEP/bChPVBNgPxDxgFxWr41HtPNTaISNR1daT3ae5DxbcpCaC8HTNDK7w==
+ bh=LFH7gsM6hB49EpgMrwzu6ChfzNsOO+s+lYp+Wy8rFEQ=;
+ b=SZHJFGhPpX3CE97i9+yPy1DkQAyBQFJjJRVstTvheMPaDQsAnAGxu8l1QCWmLjgyyO9AAncK7sAarpAONaWaAWfqplZuu3NED4kRh/rDg7b9GWW+lBgrcBMRhCZ+B6u/CYHQIFv+QKwVeU8N52J2nQogdAZPdruAAfmHSPrgaNu9qRByMgw6bMgF2SSAYY3IuXwordNQtTpi6A7nb/uTqSOQq6t2Yr4EYc1kU8bv4d3wV1JrcUbD60codgBM7X+0Eq98pwlK6NSrShwbrBm/SD1YSZdGJYxTyhV1GWKgggUWwisl3+PN0D9TJF/qBFjlZdzNTH7Pm2cU3E3CtxuRBA==
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
 Received: from AM8PR04MB7874.eurprd04.prod.outlook.com (2603:10a6:20b:24d::9)
  by AS1PR04MB9264.eurprd04.prod.outlook.com (2603:10a6:20b:4c4::14) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.8; Wed, 4 Nov 2026
- 11:36:51 +0000
+ 11:36:54 +0000
 Received: from AM8PR04MB7874.eurprd04.prod.outlook.com
  ([fe80::ac38:1699:6f18:c5d9]) by AM8PR04MB7874.eurprd04.prod.outlook.com
  ([fe80::ac38:1699:6f18:c5d9%6]) with mapi id 15.21.0592.007; Wed, 4 Nov 2026
- 11:36:51 +0000
+ 11:36:54 +0000
 From: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-To: Ludovic Desroches <ludovic.desroches@microchip.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Frank Li <Frank.Li@kernel.org>,
-	Paul Cercueil <paul@crapouillou.net>,
-	Viresh Kumar <vireshk@kernel.org>,
+To: Codrin Ciubotariu <codrin.ciubotariu@microchip.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Bartosz Golaszewski <brgl@kernel.org>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
 	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Paul Walmsley <pjw@kernel.org>,
-	Samuel Holland <samuel.holland@sifive.com>
-Cc: linux-arm-kernel@lists.infradead.org,
-	dmaengine@vger.kernel.org,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Vignesh R <vigneshr@ti.com>,
+	Aaro Koskinen <aaro.koskinen@iki.fi>,
+	Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+	Tony Lindgren <tony@atomide.com>,
+	Andreas Kemnade <andreas@kemnade.info>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	Vladimir Zapolskiy <vz@mleia.com>,
+	Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Peter Griffin <peter.griffin@linaro.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Linus Walleij <linusw@kernel.org>
+Cc: linux-i2c@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	linux-mips@vger.kernel.org,
 	imx@lists.linux.dev,
-	linux-riscv@lists.infradead.org
-Subject: [PATCH] dmaengine: Convert to subsys_platform_driver()
-Date: Wed,  4 Nov 2026 19:33:02 +0800
-Message-ID: <20261104113302.1634102-1-peng.fan@oss.nxp.com>
+	linux-omap@vger.kernel.org,
+	linux-samsung-soc@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org
+Subject: [PATCH] i2c: Convert to subsys_platform_driver()
+Date: Wed,  4 Nov 2026 19:33:16 +0800
+Message-ID: <20261104113316.1634141-1-peng.fan@oss.nxp.com>
 X-Mailer: git-send-email 2.51.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: SI3PR01CA0005.apcprd01.prod.exchangelabs.com
- (2603:1096:4:296::13) To AM8PR04MB7874.eurprd04.prod.outlook.com
+X-ClientProxiedBy: SI1PR02CA0036.apcprd02.prod.outlook.com
+ (2603:1096:4:1f6::20) To AM8PR04MB7874.eurprd04.prod.outlook.com
  (2603:10a6:20b:24d::9)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -107,57 +127,57 @@ Precedence: list
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: AM8PR04MB7874:EE_|AS1PR04MB9264:EE_
-X-MS-Office365-Filtering-Correlation-Id: 05f480b9-bc30-43fc-21d4-08df3a67d8bc
+X-MS-Office365-Filtering-Correlation-Id: 194a3014-1696-4f15-cbf0-08df3a67e1af
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|19092799006|7416014|1800799024|23010399003|376014|10067099003|18002099003|56012099006|11063799006|261021135927099003|261022105027099003|261009223027099003|261102130727099003|261022075727099003|261026121527099003|261028144727099003|261021123027099003|261026140227099003|261021121427099003|261102123227099003;
+	BCL:0;ARA:13230040|366016|19092799006|7416014|1800799024|23010399003|376014|10067099003|18002099003|3023799007|921020|56012099006|11063799006|261009223027099003|261022075727099003|261026121527099003|261021123027099003|261009221727099003|261009220027099003|261009221227099003|261009223327099003|261022115727099003|261021121427099003|261102123227099003;
 X-Microsoft-Antispam-Message-Info:
-	wZ6QM4ShJnWZS5n4LDH4I6ev2Kns2yQpQlZ1k6BXjhw4UuZnjZ07eG76OKIMwn4EXzRHjbyw+rYX5s4Kr8yH3LGnMGrq2XRXV4Xg2V4R8MhGbUfBpvPWEQo7igPzOJe9tRK+20mumDGGIbtyseyPrtbaGl5IDg8Vd/vTJ53PdWWTjMILGuRZcXKdxhaqbbu+pJiEIOYdsjkilC5ocsEVcSf2aKXuHbZA+q0I68fOdiLmIVcTe0YsZJzDr7OmoM/yrNYT8LLJ0tOGyG7gTK4nhba2hkT89Q84xeTHe6P8sgrF42vpKWHx5weswBEu3rwZlqFCdgw10GqUt5Y3n3ccc3xetaohRw5kLPQQUKM42VH8tV6uQ1dD9M+2kolbaw8kE7ZAzERtE0fuT2gnBpY/df11DSD3QvM922p3+0Z6owLU0gNKSWiIAe/GOD02Lv/T504/p5qwdFRr08/Ow5vIXBQubO3Ra+BEE3UlLrBGAxeydZhrxtL9fVqxepvsloRUqvT18dkmUly/SSYeaOrFvkPi4pFBVkV91enBGcpiCbrKVEEvO8FL/QkChzfgZW7Fk0LEQXZu5WLlU0YG2anqeteHGDvQu9k4/rOe/G1XnXUXM3F0Kmf6GbV5SVgBhMrXUiH94F7m2YtJkPfXtk5Id5bagUfJ6ELgmrBn8LOdwKE=
+	CLspK8VdkUqX5sqrTkjQm5v3VZBEvmzn554GNHp10p+EmWKWjVr6bQGsIP/lCLAuYGEtaR06iVY+XHS7q2cIl7S8O0IveRQFyzNqKzk2zLhPixLQAv81UTnHvTSphyqL9UUTrxm7HgjgC+RMnDDyH8MtdZxuoTIyuVcp5DGmMIVX4luj1A+gHKGzXwJzskoBzCmyarA1NDQZzIwKGXzzkj3o3EJOKUjQvC4zX5Z0i9ijGF8IRVN/OsHMYaANK3dGKecx2wGRSdrQLsvTB1jNNJqkO5uardSMc/us5iQAP/9unNzCvIX8pJZcbEIkzOkxxLv54WbgZJZypmltc8F6C6Pd18IPV8zho2JjekqBJrW5zpTo/YASwWlYZROLCi9jplEnZqwfHm78Y5jRF+K400ozY4uuGKnfsy9JXtu4LQvYrWOiNeBg8XE0Q81tFncrQw8pcqOfdJLljAhTdDrtwYzqWO9q1o3+GMcSKTzhmAaADZD7zqffp2VLQ8IEHFbj4HsMMbe65mg16nF3pDYoYGcWSPKi59T+Gc55sSS0zI+4nBd8RiVUQJXbRoAG1pA77Jfsb+NIMxa0LHNrzy4dr8OwefBUhcuozyjtH4c27jfonVslnaeZBNsmJk8/zp5WQXU+TB9ou2FB1gSDsCBuc4aqueXFdJ5Uh5zaqzNqhkPwkE4iC65bTg8PylUWHPqnEc7XGs+QyBrzfLHn9dCmfA==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7874.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(7416014)(1800799024)(23010399003)(376014)(10067099003)(18002099003)(56012099006)(11063799006)(261021135927099003)(261022105027099003)(261009223027099003)(261102130727099003)(261022075727099003)(261026121527099003)(261028144727099003)(261021123027099003)(261026140227099003)(261021121427099003)(261102123227099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7874.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(7416014)(1800799024)(23010399003)(376014)(10067099003)(18002099003)(3023799007)(921020)(56012099006)(11063799006)(261009223027099003)(261022075727099003)(261026121527099003)(261021123027099003)(261009221727099003)(261009220027099003)(261009221227099003)(261009223327099003)(261022115727099003)(261021121427099003)(261102123227099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?DbQPaK9hnQ+AEjcUgKtrOPC4Gre7Ka4Bmk0iOYpFJArqsgry86jvFJY1F9Jt?=
- =?us-ascii?Q?A3QQCHjKAaxWBK0XfUlPAqAtP0ILH93hx7SBf0qfdfACbtx5vKLNmll1oiWU?=
- =?us-ascii?Q?nWJFiQFepsuL2mZxzE3xtkkaFeYgumwyCekgpT7ARcsCPXZyGPACyn45CtbU?=
- =?us-ascii?Q?Njnfq1PdLAa89iMClSXyF3EwuZNg3Lheh0U28o0jeYu7izSvLZJU+ZyyqewP?=
- =?us-ascii?Q?AqMJ4Ve48m45G2Dv/Mc9sh+lu7UvlLpSLO6LLltA/bL9QYdXL1cSwCn7R/6D?=
- =?us-ascii?Q?jb1nED7NV4ntungbnisXLB+BCw2IRq9JtJnNoUohXzdeT6wiY5QvxVov26N8?=
- =?us-ascii?Q?KyEAeejrahNisLJjD2km/qLPdoYmiJtbQ96q15PqQrE28UICm0t2boXhbUtt?=
- =?us-ascii?Q?NYHUxmk4F38SOE5MRHfDrNnrXfhHdWi2bRcrhW2qHHvCEj0Dvaj053OShLvS?=
- =?us-ascii?Q?Fee3K1Y7jhJByPcjPSdnaGlawm9K0KZYSZXQnXSsn2D5BlP3qXdViG3BPDPZ?=
- =?us-ascii?Q?cLB8K9XgSi/oKFZddb0C1v+S3GyRy37f/1lMaHsVdKmeeqM/G2Gtjl7/1nQf?=
- =?us-ascii?Q?VEylFLO8HFDfbkFEilCVCdEJ1J5jrEHpSBL6b79eNiMaEfcWpBMP5gTEUjeJ?=
- =?us-ascii?Q?qzTMAlb280riJVvnfk4S8Bg9BUDn+/9mla9R4EslsZvaNsm7IlIQ3qtg/z0u?=
- =?us-ascii?Q?7+KiVOMJY7DC0ObqgA8aPP7QqTq3pKMAPDXL0DagMPfXzXaozVzdltg8TzKn?=
- =?us-ascii?Q?5OTDeF37AhVRghnaA0BlaZZITkEItrlGhtuRz2yuKLeAaFCQvjvuf1mbGB2q?=
- =?us-ascii?Q?GuDUXaY1aG/e11NEUnjy1wJKgYTKs7G0hLuE8hzyz5fHvjdhSh8mGLOzTF4J?=
- =?us-ascii?Q?YtaAJlJvAm8bHye+DeWGYiWU+w5gGDDGUH1kEksBHGogY+CXHykNJ6myB0DU?=
- =?us-ascii?Q?DYNl9TsPBNOX2TrqgqRdGCcqyYP5B01DSmWv9qtb16mgx17RG0j8ZNaP9GOm?=
- =?us-ascii?Q?LX3oUdbBvR9K4zKoif5BK+7qgdak/j8vmID+AdWVEYMcLjg7+EsvlemlBk/s?=
- =?us-ascii?Q?Slt7wcbRCDAalkIdtrbvK0CiLiGVU+E/g58AJWwVkZ+wuWzPW+eZXicDAi2A?=
- =?us-ascii?Q?9J+7x+yjoKp4GXdbtyXHCTz5GC0Jkh0ug86iKfbV0r20ljiCFxRfESCntrK0?=
- =?us-ascii?Q?Sw8hZvFbbZ5ZFZ93hEAHgVERn1XHM77djP+xosN3g767Y4K/TZ2tDcJSnCPh?=
- =?us-ascii?Q?TrXebq3gPL3xYO6Viiw0JIjXWDkz5tYZeB/vhGQUuBBe+YL97tHtf2wUSVVh?=
- =?us-ascii?Q?Pxsvvu4EcHX3x0YZVL4TAX7AvcHc8QMIWs0MdvMfbbSCt14wctKDOb6XQiW2?=
- =?us-ascii?Q?6ZipSGG0vWBvboFuIv83YMQaq1GT75yejTN1f0J8I7eZ0GIiny1/NbCOZgAL?=
- =?us-ascii?Q?4s5q+4vbyJTgWrA21eZ3DIhE6IphWMbnCRIDX9PzB5cp87jCAJN5OKAPjumT?=
- =?us-ascii?Q?bj6ZGMwcBX1c53IAE2FcmxVZjWcr8N2vV/CHB6Qc4fphi+1LnQtDDZH0uCrT?=
- =?us-ascii?Q?ZKb/yf0ulBJHZHSPexush7GYWBc240o2R6ZQlFKerl7ZYRTa4ooO8awx1YMB?=
- =?us-ascii?Q?+nVh107Y56+p3rfWonizaEWvJCz1F8mAXRb1W9OAj13UP29GK4KSRp2Sq+/Y?=
- =?us-ascii?Q?eTqQfPBKmOc17zTfDnFDVt3ViURimXaHwxUprum6R7PK3g9Wzf2SGFVnFctq?=
- =?us-ascii?Q?+VlqTyu7zpQ3f5sJdXG9G+6p20W3YlaE+Wye9vsywdLn5wYSvuo8?=
+	=?us-ascii?Q?WxEbBunRf8DEdivPMlhQwic6OE0eWR+OB5TZx00aMsuL6adbgpqRBsTRASC3?=
+ =?us-ascii?Q?UiBqd6TygLmiTeyfm3vN5fShkqhBK/hr8QKXL3gj7ClE1aW194mU4LqVwvbL?=
+ =?us-ascii?Q?9SR//n7G6mvFuqG/oDwVjNNv3jTFYOE1fQKU4QKGYYU+0ZMuu3A6PQgxDtlG?=
+ =?us-ascii?Q?6qstF206JnZuwyW3Ggg/WxAvYGXTX7cWRlImM03oQWnaSiCWbUGrjF+qzfU5?=
+ =?us-ascii?Q?zgaQ45LIkADzcPYrrUVfQ9Y0cM/7dRK+tdHxrxZdJLiJWE62r8ii9zy4pzQA?=
+ =?us-ascii?Q?W/rfn/SloOTB56m1XOsng/mwgWOr50xcozkh0/tSoimwL1mjx/IDvmejKxWD?=
+ =?us-ascii?Q?BgXackvCLTy4cZvap5KBaROIKY2Jg3CCwkC/f3niH+6DvA87+p+miGSbbRs7?=
+ =?us-ascii?Q?G+pdlPQQfhzgKZb0u3ftsLjjaQ/VEAQtA5cEqLAkJuB9HerpdM2dFqy/ZSF3?=
+ =?us-ascii?Q?K65VYjc6aOWHTw9cbqjH7TrfU763U5Q9lXzlhuU8rywkBGSDCG6nKErH435i?=
+ =?us-ascii?Q?4d1tCiUcO0qanqThySyFCIcaAib579qQfMKKoSRV+dEaY0MXqlXpafR+yULg?=
+ =?us-ascii?Q?t4lSbA4Ui5UemhOMZhylePRlloDWtxTusv12LKyfDjym4Rw7wRPFPu6KJoE+?=
+ =?us-ascii?Q?GbqQxAhX4T8HDkRqCvTHllY8AUJ1gNK/nlpDVfnaA+AMtWMp6flXuHg3SOP9?=
+ =?us-ascii?Q?b/iNLZAFYKdlJmCfUasQAiqWc4fk4OGgtv0FsxvCrRO0e4hlNGhQ3zLSl1LT?=
+ =?us-ascii?Q?OcogKJXl02IxGFMibuVyntZsiI5N1UZNR48ljWH3DzFg8cZ42W5XcXuWESSZ?=
+ =?us-ascii?Q?GrCA0waq87ZuAxLa1kxaUjvSwSZeidMCZhH154kPc8SAc4MttbPilE7dB0Co?=
+ =?us-ascii?Q?D4mjMtdovKGjDG4zboDxFRFFVOIpxI6J/O5didMzkHBw77DpV+Br/WkBPASt?=
+ =?us-ascii?Q?um2KuEn5kNWi/D0rfLpMIYq+UHUjcZC60rIYHxVo5hRjLfmoRpXY5bxQo42c?=
+ =?us-ascii?Q?BBNY9JToDPDV88Y/Fnrfyb+zkRKjSl35/rYvcn0eYkUWFXH3erc6Ft7kM3yu?=
+ =?us-ascii?Q?Zs3dzZtZ/uQUnt+Cjk7/7O+lqd4IuXeJWVKkweqddE1jaiHwNEuhNUlCwZjS?=
+ =?us-ascii?Q?cCVHgpDwg1yf+rVwir8EccfyqPQw2KgieB2DOq4K/exp0tigBnefxlpTkybY?=
+ =?us-ascii?Q?FKWjb6YpsbzU02hmyUEigd7Zl/FZO0tq8wsV4KPUPTiVsIAGSU8NK0DRt4sE?=
+ =?us-ascii?Q?5VISOWY04LiAqYm0RBzRes8HpvPlZXxeaKyJxOy1UMrcGKlqMmHHPeO8dNve?=
+ =?us-ascii?Q?XUqTHJD6NVYduINRARkXDTgnjvchTk5gKBZFBqfgJBWYanSYbq9cIBNA7M0A?=
+ =?us-ascii?Q?SS4k8zPHD/cTEdikl0UMhAmpfafnTG2750HSSs5poURRfnsw93vTTCrTksKB?=
+ =?us-ascii?Q?MpPHM+Akp3Sx3w3/idRPaU3JgR5O50B2a2dsKsF9hVZV4Qq/CAV9DObxEV93?=
+ =?us-ascii?Q?Pm7hY38ZkCeLfCVi2LijsxXnSD5vI9pmtLbqMaC7eMOWbwIemSfj6T5+B8gF?=
+ =?us-ascii?Q?TuE/dJVMwQR5/vsFkrB0EVzPgjztDJtB3HEMBMRvr812qXmfDAJ+Al3B8T8h?=
+ =?us-ascii?Q?FJxxayL6X7wgb2pDmLY8evVnGLOUq2EhvDoITYR2llSo7MtF2rAkMX4KXgWb?=
+ =?us-ascii?Q?vOeA0RnIN83OShMj50D0KML6MzvVxy0kzbNOa+lVR8TrpUmTXEknRbPZrvLJ?=
+ =?us-ascii?Q?Aibw8tEUTyI1r9aHNrN+VUID3hTQlvPLU1BXbUzhCx/ksAtrbp2N?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 05f480b9-bc30-43fc-21d4-08df3a67d8bc
+X-MS-Exchange-CrossTenant-Network-Message-Id: 194a3014-1696-4f15-cbf0-08df3a67e1af
 X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7874.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Nov 2026 11:36:20.4858
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Nov 2026 11:36:35.4034
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: s1KWq1UZEvFoZdDCC7AJp3RNP0rWhC2UIYGQLE9uUasxMK9giBsHxcfaizI+BoTmwI5FbC0ONJ2r71iNZ+xciKxVs/IbgF12f0SGZrYtDVM3krbzsPOA+kJ2PG0Mhr7q
+X-MS-Exchange-CrossTenant-UserPrincipalName: FY2sKxUwOT1r9EUEH8XF+LEW6tYEUpCrqt5osbF/tsmS/l5TuZONNCThLvKIj1Knne7KQYhNN8s+k12QjJ2NZQ5ef4egfX9CLmZ4hZ+HR69Q+m6cEOzZsNH2rZvaiOQ5
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS1PR04MB9264
 
 From: Peng Fan <peng.fan@nxp.com>
@@ -169,219 +189,290 @@ No functional change.
 
 Signed-off-by: Peng Fan <peng.fan@nxp.com>
 ---
- drivers/dma/at_xdmac.c          | 13 +------------
- drivers/dma/bestcomm/bestcomm.c | 20 +-------------------
- drivers/dma/dma-jz4780.c        | 13 +------------
- drivers/dma/dw/platform.c       | 13 +------------
- drivers/dma/fsl-edma-main.c     | 13 +------------
- drivers/dma/mcf-edma-main.c     | 13 +------------
- drivers/dma/sa11x0-dma.c        | 13 +------------
- drivers/dma/sf-pdma/sf-pdma.c   | 13 +------------
- 8 files changed, 8 insertions(+), 103 deletions(-)
+ drivers/i2c/busses/i2c-at91-core.c          | 13 +------------
+ drivers/i2c/busses/i2c-davinci.c            | 14 +-------------
+ drivers/i2c/busses/i2c-designware-platdrv.c | 13 +------------
+ drivers/i2c/busses/i2c-imx.c                | 13 +------------
+ drivers/i2c/busses/i2c-mxs.c                | 13 +------------
+ drivers/i2c/busses/i2c-omap.c               | 15 +--------------
+ drivers/i2c/busses/i2c-pnx.c                | 13 +------------
+ drivers/i2c/busses/i2c-pxa.c                | 13 +------------
+ drivers/i2c/busses/i2c-s3c2410.c            | 13 +------------
+ drivers/i2c/busses/i2c-sh_mobile.c          | 13 +------------
+ drivers/i2c/busses/i2c-versatile.c          | 13 +------------
+ 11 files changed, 11 insertions(+), 135 deletions(-)
 
-diff --git a/drivers/dma/at_xdmac.c b/drivers/dma/at_xdmac.c
-index d40a8b40dddc..3e83883cc17d 100644
---- a/drivers/dma/at_xdmac.c
-+++ b/drivers/dma/at_xdmac.c
-@@ -2487,18 +2487,7 @@ static struct platform_driver at_xdmac_driver = {
- 		.pm		= pm_ptr(&atmel_xdmac_dev_pm_ops),
- 	}
- };
--
--static int __init at_xdmac_init(void)
--{
--	return platform_driver_register(&at_xdmac_driver);
--}
--subsys_initcall(at_xdmac_init);
--
--static void __exit at_xdmac_exit(void)
--{
--	platform_driver_unregister(&at_xdmac_driver);
--}
--module_exit(at_xdmac_exit);
-+subsys_platform_driver(at_xdmac_driver);
- 
- MODULE_DESCRIPTION("Atmel Extended DMA Controller driver");
- MODULE_AUTHOR("Ludovic Desroches <ludovic.desroches@atmel.com>");
-diff --git a/drivers/dma/bestcomm/bestcomm.c b/drivers/dma/bestcomm/bestcomm.c
-index 241a91936fe8..1ec700c2c996 100644
---- a/drivers/dma/bestcomm/bestcomm.c
-+++ b/drivers/dma/bestcomm/bestcomm.c
-@@ -469,28 +469,10 @@ static struct platform_driver mpc52xx_bcom_of_platform_driver = {
+diff --git a/drivers/i2c/busses/i2c-at91-core.c b/drivers/i2c/busses/i2c-at91-core.c
+index 8ca4556d9664..67727e7287ae 100644
+--- a/drivers/i2c/busses/i2c-at91-core.c
++++ b/drivers/i2c/busses/i2c-at91-core.c
+@@ -341,18 +341,7 @@ static struct platform_driver at91_twi_driver = {
  	},
  };
  
+-static int __init at91_twi_init(void)
+-{
+-	return platform_driver_register(&at91_twi_driver);
+-}
 -
--/* ======================================================================== */
--/* Module                                                                   */
--/* ======================================================================== */
+-static void __exit at91_twi_exit(void)
+-{
+-	platform_driver_unregister(&at91_twi_driver);
+-}
 -
+-subsys_initcall(at91_twi_init);
+-module_exit(at91_twi_exit);
++subsys_platform_driver(at91_twi_driver);
+ 
+ MODULE_AUTHOR("Nikolaus Voss <n.voss@weinmann.de>");
+ MODULE_DESCRIPTION("I2C (TWI) driver for Atmel AT91");
+diff --git a/drivers/i2c/busses/i2c-davinci.c b/drivers/i2c/busses/i2c-davinci.c
+index e15eef163a8f..b7afdf22fad5 100644
+--- a/drivers/i2c/busses/i2c-davinci.c
++++ b/drivers/i2c/busses/i2c-davinci.c
+@@ -896,19 +896,7 @@ static struct platform_driver davinci_i2c_driver = {
+ 		.of_match_table = davinci_i2c_of_match,
+ 	},
+ };
+-
+-/* I2C may be needed to bring up other drivers */
+-static int __init davinci_i2c_init_driver(void)
+-{
+-	return platform_driver_register(&davinci_i2c_driver);
+-}
+-subsys_initcall(davinci_i2c_init_driver);
+-
+-static void __exit davinci_i2c_exit_driver(void)
+-{
+-	platform_driver_unregister(&davinci_i2c_driver);
+-}
+-module_exit(davinci_i2c_exit_driver);
++subsys_platform_driver(davinci_i2c_driver);
+ 
+ MODULE_AUTHOR("Texas Instruments India");
+ MODULE_DESCRIPTION("TI DaVinci I2C bus adapter");
+diff --git a/drivers/i2c/busses/i2c-designware-platdrv.c b/drivers/i2c/busses/i2c-designware-platdrv.c
+index 1da6b0314b6a..0f7d564bd187 100644
+--- a/drivers/i2c/busses/i2c-designware-platdrv.c
++++ b/drivers/i2c/busses/i2c-designware-platdrv.c
+@@ -315,18 +315,7 @@ static struct platform_driver dw_i2c_driver = {
+ 	},
+ 	.id_table = dw_i2c_platform_ids,
+ };
+-
+-static int __init dw_i2c_init_driver(void)
+-{
+-	return platform_driver_register(&dw_i2c_driver);
+-}
+-subsys_initcall(dw_i2c_init_driver);
+-
+-static void __exit dw_i2c_exit_driver(void)
+-{
+-	platform_driver_unregister(&dw_i2c_driver);
+-}
+-module_exit(dw_i2c_exit_driver);
++subsys_platform_driver(dw_i2c_driver);
+ 
+ MODULE_AUTHOR("Baruch Siach <baruch@tkos.co.il>");
+ MODULE_DESCRIPTION("Synopsys DesignWare I2C bus adapter");
+diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
+index ccf08cd63151..fff31638cb8e 100644
+--- a/drivers/i2c/busses/i2c-imx.c
++++ b/drivers/i2c/busses/i2c-imx.c
+@@ -2126,18 +2126,7 @@ static struct platform_driver i2c_imx_driver = {
+ 	},
+ 	.id_table = imx_i2c_devtype,
+ };
+-
+-static int __init i2c_adap_imx_init(void)
+-{
+-	return platform_driver_register(&i2c_imx_driver);
+-}
+-subsys_initcall(i2c_adap_imx_init);
+-
+-static void __exit i2c_adap_imx_exit(void)
+-{
+-	platform_driver_unregister(&i2c_imx_driver);
+-}
+-module_exit(i2c_adap_imx_exit);
++subsys_platform_driver(i2c_imx_driver);
+ 
+ MODULE_LICENSE("GPL");
+ MODULE_AUTHOR("Darius Augulis");
+diff --git a/drivers/i2c/busses/i2c-mxs.c b/drivers/i2c/busses/i2c-mxs.c
+index eee4fdcd9df3..ad0b1e911dfe 100644
+--- a/drivers/i2c/busses/i2c-mxs.c
++++ b/drivers/i2c/busses/i2c-mxs.c
+@@ -888,18 +888,7 @@ static struct platform_driver mxs_i2c_driver = {
+ 	.probe = mxs_i2c_probe,
+ 	.remove = mxs_i2c_remove,
+ };
+-
+-static int __init mxs_i2c_init(void)
+-{
+-	return platform_driver_register(&mxs_i2c_driver);
+-}
+-subsys_initcall(mxs_i2c_init);
+-
+-static void __exit mxs_i2c_exit(void)
+-{
+-	platform_driver_unregister(&mxs_i2c_driver);
+-}
+-module_exit(mxs_i2c_exit);
++subsys_platform_driver(mxs_i2c_driver);
+ 
+ MODULE_AUTHOR("Marek Vasut <marex@denx.de>");
+ MODULE_AUTHOR("Wolfram Sang <kernel@pengutronix.de>");
+diff --git a/drivers/i2c/busses/i2c-omap.c b/drivers/i2c/busses/i2c-omap.c
+index bd659dfa702f..cd4d6d6b32c6 100644
+--- a/drivers/i2c/busses/i2c-omap.c
++++ b/drivers/i2c/busses/i2c-omap.c
+@@ -1611,20 +1611,7 @@ static struct platform_driver omap_i2c_driver = {
+ 		.of_match_table = of_match_ptr(omap_i2c_of_match),
+ 	},
+ };
+-
+-/* I2C may be needed to bring up other drivers */
 -static int __init
--mpc52xx_bcom_init(void)
+-omap_i2c_init_driver(void)
 -{
--	return platform_driver_register(&mpc52xx_bcom_of_platform_driver);
+-	return platform_driver_register(&omap_i2c_driver);
 -}
+-subsys_initcall(omap_i2c_init_driver);
 -
--static void __exit
--mpc52xx_bcom_exit(void)
+-static void __exit omap_i2c_exit_driver(void)
 -{
--	platform_driver_unregister(&mpc52xx_bcom_of_platform_driver);
+-	platform_driver_unregister(&omap_i2c_driver);
 -}
--
- /* If we're not a module, we must make sure everything is setup before  */
- /* anyone tries to use us ... that's why we use subsys_initcall instead */
- /* of module_init. */
--subsys_initcall(mpc52xx_bcom_init);
--module_exit(mpc52xx_bcom_exit);
-+subsys_platform_driver(mpc52xx_bcom_of_platform_driver);
+-module_exit(omap_i2c_exit_driver);
++subsys_platform_driver(omap_i2c_driver);
  
- MODULE_DESCRIPTION("Freescale MPC52xx BestComm DMA");
- MODULE_AUTHOR("Sylvain Munaut <tnt@246tNt.com>");
-diff --git a/drivers/dma/dma-jz4780.c b/drivers/dma/dma-jz4780.c
-index ac2094e65ecf..57ab0f621105 100644
---- a/drivers/dma/dma-jz4780.c
-+++ b/drivers/dma/dma-jz4780.c
-@@ -1128,18 +1128,7 @@ static struct platform_driver jz4780_dma_driver = {
- 		.of_match_table = jz4780_dma_dt_match,
+ MODULE_AUTHOR("MontaVista Software, Inc. (and others)");
+ MODULE_DESCRIPTION("TI OMAP I2C bus adapter");
+diff --git a/drivers/i2c/busses/i2c-pnx.c b/drivers/i2c/busses/i2c-pnx.c
+index e1cc2b2bd628..9a9a12b7e981 100644
+--- a/drivers/i2c/busses/i2c-pnx.c
++++ b/drivers/i2c/busses/i2c-pnx.c
+@@ -735,16 +735,6 @@ static struct platform_driver i2c_pnx_driver = {
+ 	.remove = i2c_pnx_remove,
+ };
+ 
+-static int __init i2c_adap_pnx_init(void)
+-{
+-	return platform_driver_register(&i2c_pnx_driver);
+-}
+-
+-static void __exit i2c_adap_pnx_exit(void)
+-{
+-	platform_driver_unregister(&i2c_pnx_driver);
+-}
+-
+ MODULE_AUTHOR("Vitaly Wool");
+ MODULE_AUTHOR("Dennis Kovalev <source@mvista.com>");
+ MODULE_DESCRIPTION("I2C driver for Philips IP3204-based I2C busses");
+@@ -752,5 +742,4 @@ MODULE_LICENSE("GPL");
+ MODULE_ALIAS("platform:pnx-i2c");
+ 
+ /* We need to make sure I2C is initialized before USB */
+-subsys_initcall(i2c_adap_pnx_init);
+-module_exit(i2c_adap_pnx_exit);
++subsys_platform_driver(i2c_pnx_driver);
+diff --git a/drivers/i2c/busses/i2c-pxa.c b/drivers/i2c/busses/i2c-pxa.c
+index c9927a389aaf..f045d0c2c54b 100644
+--- a/drivers/i2c/busses/i2c-pxa.c
++++ b/drivers/i2c/busses/i2c-pxa.c
+@@ -1607,18 +1607,7 @@ static struct platform_driver i2c_pxa_driver = {
+ 	.id_table	= i2c_pxa_id_table,
+ };
+ 
+-static int __init i2c_adap_pxa_init(void)
+-{
+-	return platform_driver_register(&i2c_pxa_driver);
+-}
+-
+-static void __exit i2c_adap_pxa_exit(void)
+-{
+-	platform_driver_unregister(&i2c_pxa_driver);
+-}
+-
+ MODULE_DESCRIPTION("Intel PXA2XX I2C adapter");
+ MODULE_LICENSE("GPL");
+ 
+-subsys_initcall(i2c_adap_pxa_init);
+-module_exit(i2c_adap_pxa_exit);
++subsys_platform_driver(i2c_pxa_driver);
+diff --git a/drivers/i2c/busses/i2c-s3c2410.c b/drivers/i2c/busses/i2c-s3c2410.c
+index 15e14a6fe6dc..dd1f6f854a32 100644
+--- a/drivers/i2c/busses/i2c-s3c2410.c
++++ b/drivers/i2c/busses/i2c-s3c2410.c
+@@ -1188,18 +1188,7 @@ static struct platform_driver s3c24xx_i2c_driver = {
+ 		.of_match_table = of_match_ptr(s3c24xx_i2c_match),
  	},
  };
 -
--static int __init jz4780_dma_init(void)
+-static int __init i2c_adap_s3c_init(void)
 -{
--	return platform_driver_register(&jz4780_dma_driver);
+-	return platform_driver_register(&s3c24xx_i2c_driver);
 -}
--subsys_initcall(jz4780_dma_init);
+-subsys_initcall(i2c_adap_s3c_init);
 -
--static void __exit jz4780_dma_exit(void)
+-static void __exit i2c_adap_s3c_exit(void)
 -{
--	platform_driver_unregister(&jz4780_dma_driver);
+-	platform_driver_unregister(&s3c24xx_i2c_driver);
 -}
--module_exit(jz4780_dma_exit);
-+subsys_platform_driver(jz4780_dma_driver);
+-module_exit(i2c_adap_s3c_exit);
++subsys_platform_driver(s3c24xx_i2c_driver);
  
- MODULE_AUTHOR("Alex Smith <alex@alex-smith.me.uk>");
- MODULE_DESCRIPTION("Ingenic JZ4780 DMA controller driver");
-diff --git a/drivers/dma/dw/platform.c b/drivers/dma/dw/platform.c
-index 5c1c97eb28a4..95a36af613e8 100644
---- a/drivers/dma/dw/platform.c
-+++ b/drivers/dma/dw/platform.c
-@@ -194,18 +194,7 @@ static struct platform_driver dw_driver = {
- 		.acpi_match_table = ACPI_PTR(dw_dma_acpi_id_table),
- 	},
+ MODULE_DESCRIPTION("S3C24XX I2C Bus driver");
+ MODULE_AUTHOR("Ben Dooks <ben@simtec.co.uk>");
+diff --git a/drivers/i2c/busses/i2c-sh_mobile.c b/drivers/i2c/busses/i2c-sh_mobile.c
+index 3a55f803e4f1..1ecf14890209 100644
+--- a/drivers/i2c/busses/i2c-sh_mobile.c
++++ b/drivers/i2c/busses/i2c-sh_mobile.c
+@@ -986,18 +986,7 @@ static struct platform_driver sh_mobile_i2c_driver = {
+ 	.probe		= sh_mobile_i2c_probe,
+ 	.remove		= sh_mobile_i2c_remove,
  };
 -
--static int __init dw_init(void)
+-static int __init sh_mobile_i2c_adap_init(void)
 -{
--	return platform_driver_register(&dw_driver);
+-	return platform_driver_register(&sh_mobile_i2c_driver);
 -}
--subsys_initcall(dw_init);
+-subsys_initcall(sh_mobile_i2c_adap_init);
 -
--static void __exit dw_exit(void)
+-static void __exit sh_mobile_i2c_adap_exit(void)
 -{
--	platform_driver_unregister(&dw_driver);
+-	platform_driver_unregister(&sh_mobile_i2c_driver);
 -}
--module_exit(dw_exit);
-+subsys_platform_driver(dw_driver);
+-module_exit(sh_mobile_i2c_adap_exit);
++subsys_platform_driver(sh_mobile_i2c_driver);
  
- MODULE_LICENSE("GPL v2");
- MODULE_DESCRIPTION("Synopsys DesignWare DMA Controller platform driver");
-diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-main.c
-index 630285c85482..0feb878a03ff 100644
---- a/drivers/dma/fsl-edma-main.c
-+++ b/drivers/dma/fsl-edma-main.c
-@@ -977,18 +977,7 @@ static struct platform_driver fsl_edma_driver = {
- 	.probe          = fsl_edma_probe,
- 	.remove		= fsl_edma_remove,
- };
--
--static int __init fsl_edma_init(void)
--{
--	return platform_driver_register(&fsl_edma_driver);
--}
--subsys_initcall(fsl_edma_init);
--
--static void __exit fsl_edma_exit(void)
--{
--	platform_driver_unregister(&fsl_edma_driver);
--}
--module_exit(fsl_edma_exit);
-+subsys_platform_driver(fsl_edma_driver);
- 
- MODULE_DESCRIPTION("Freescale eDMA engine driver");
- MODULE_LICENSE("GPL v2");
-diff --git a/drivers/dma/mcf-edma-main.c b/drivers/dma/mcf-edma-main.c
-index 9e1c6400c77b..5b72af393ec3 100644
---- a/drivers/dma/mcf-edma-main.c
-+++ b/drivers/dma/mcf-edma-main.c
-@@ -281,18 +281,7 @@ bool mcf_edma_filter_fn(struct dma_chan *chan, void *param)
- 	return false;
- }
- EXPORT_SYMBOL(mcf_edma_filter_fn);
--
--static int __init mcf_edma_init(void)
--{
--	return platform_driver_register(&mcf_edma_driver);
--}
--subsys_initcall(mcf_edma_init);
--
--static void __exit mcf_edma_exit(void)
--{
--	platform_driver_unregister(&mcf_edma_driver);
--}
--module_exit(mcf_edma_exit);
-+subsys_platform_driver(mcf_edma_driver);
- 
- MODULE_ALIAS("platform:mcf-edma");
- MODULE_DESCRIPTION("Freescale eDMA engine driver, ColdFire family");
-diff --git a/drivers/dma/sa11x0-dma.c b/drivers/dma/sa11x0-dma.c
-index a6fa431530e3..6a7a519910ec 100644
---- a/drivers/dma/sa11x0-dma.c
-+++ b/drivers/dma/sa11x0-dma.c
-@@ -1079,18 +1079,7 @@ static struct platform_driver sa11x0_dma_driver = {
- 	.probe		= sa11x0_dma_probe,
- 	.remove		= sa11x0_dma_remove,
- };
--
--static int __init sa11x0_dma_init(void)
--{
--	return platform_driver_register(&sa11x0_dma_driver);
--}
--subsys_initcall(sa11x0_dma_init);
--
--static void __exit sa11x0_dma_exit(void)
--{
--	platform_driver_unregister(&sa11x0_dma_driver);
--}
--module_exit(sa11x0_dma_exit);
-+subsys_platform_driver(sa11x0_dma_driver);
- 
- MODULE_AUTHOR("Russell King");
- MODULE_DESCRIPTION("SA-11x0 DMA driver");
-diff --git a/drivers/dma/sf-pdma/sf-pdma.c b/drivers/dma/sf-pdma/sf-pdma.c
-index 6f79cc28703e..c7d6774d0970 100644
---- a/drivers/dma/sf-pdma/sf-pdma.c
-+++ b/drivers/dma/sf-pdma/sf-pdma.c
-@@ -639,19 +639,8 @@ static struct platform_driver sf_pdma_driver = {
+ MODULE_DESCRIPTION("SuperH Mobile I2C Bus Controller driver");
+ MODULE_AUTHOR("Magnus Damm");
+diff --git a/drivers/i2c/busses/i2c-versatile.c b/drivers/i2c/busses/i2c-versatile.c
+index a1ab6ef6f071..152ab19f272a 100644
+--- a/drivers/i2c/busses/i2c-versatile.c
++++ b/drivers/i2c/busses/i2c-versatile.c
+@@ -116,18 +116,7 @@ static struct platform_driver i2c_versatile_driver = {
  	},
  };
  
--static int __init sf_pdma_init(void)
+-static int __init i2c_versatile_init(void)
 -{
--	return platform_driver_register(&sf_pdma_driver);
+-	return platform_driver_register(&i2c_versatile_driver);
 -}
 -
--static void __exit sf_pdma_exit(void)
+-static void __exit i2c_versatile_exit(void)
 -{
--	platform_driver_unregister(&sf_pdma_driver);
+-	platform_driver_unregister(&i2c_versatile_driver);
 -}
 -
- /* do early init */
--subsys_initcall(sf_pdma_init);
--module_exit(sf_pdma_exit);
-+subsys_platform_driver(sf_pdma_driver);
+-subsys_initcall(i2c_versatile_init);
+-module_exit(i2c_versatile_exit);
++subsys_platform_driver(i2c_versatile_driver);
  
- MODULE_LICENSE("GPL v2");
- MODULE_DESCRIPTION("SiFive Platform DMA driver");
+ MODULE_DESCRIPTION("ARM Versatile I2C bus driver");
+ MODULE_LICENSE("GPL");
 -- 
 2.51.0
 
