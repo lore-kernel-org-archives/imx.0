@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793814533;
-	b=j4KZCUthJMNbcMiZbAzoz29TxlIi1e92kmUCaQdD6PvvUAxnaxnIhNcR9mVJ4b3WyOiK
-	 Uzy/FnAplK6eDW65th8YOVHRt76E+DuWiMMjal5xl12okX/QataKBmGEaKVkP27N4mBQZ
-	 i8K9ANpsKQgGUhKV61V5+1FzZcoSGbSq1ojkQSO7RWW2vKxh/udEzxNxmFlXmAqdpfncj
-	 inSnG5XoPs9bdGFYIhj0RTExjO2X8m5IXmcRdjEoKWlnAN4bmZ23WbpS7F9ZAxpl8KCv+
-	 1SYMFgkDNt0x1DvnKwoV96MOk4FQpfSNUqxoxyNanSZeEDs8MIn4uAOq3rGJxo3TGQw==
+	t=1793814681;
+	b=c2cCMtLSJONPoSLhq53se+jj8WKGz5Ropk/OQlKwSeD9yz9RX5Tgvfldh6ozXoSGBOa1
+	 fKqTIdY64Qp9sixKqNJx73zmQ5tQ/279OzUjdXTSuapfcVPunno2wvQ3oODLBdT5GSoep
+	 mtBu03Ak130YsXh2JIwtjZgoL4TDQPXAx7p6+wgOor7kS2FoVNAr+PvrltUIJOjVzydJ1
+	 67bpterV7s8nLJozy+3vOJLqQEV2QyNI0WhgHMmhx6NDPAviABeDkS1nUcGilzYd3jj4q
+	 vvlN06U3S05kiI1dA2ouqojyAx7rzMRs3y5WcDyrYzT9wGxeCZRhM98ASUTdmzF5FnQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793814533;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793814681;
 	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
 	 Subject:To:Cc:References:From:Content-Language:Autocrypt:In-Reply-To:
 	 Content-Type:Content-Transfer-Encoding;
-	bh=bcezpuhf8jHaudjk12beSUxNoV1WoyCZJEHGgJ3QzvM=;
-	b=1L30uEuUoWbzFebALp4o8V7mjAZ67bpFp/D1D5A2hAqGxqeLSw0yvDQ/Xttcy+MZ1uOV
-	 xg7cGn64cnmFzMw6R7/j7b6nieJFqk1o7diKotq2T4lNLhxACDYpjVOvFzyQX1zHGNjIe
-	 ucPvBkOdtR4JfVK9N1y+cSw0+R4lbhS7GY8YoL2VdBzLNByZLdTPI40rJ3BEXQKtnSlfb
-	 AD2pMFgRbY/pD4djrA7dIioQ1q25VqUMYDoburxlzD2GsXdM02BkM28SOrv68Ef3slPZV
-	 yvIdBABMvw07/9iTZpyeHj11T3Wv1kZn+5muP8kWiHsfzcT4w6kE2p8FTq/58hDsCiQ==
+	bh=d5VQc0NVFmwQmNrNgit0f6JDQ4FL4SdVcOTRhJBmZU0=;
+	b=r06EWv7UQ1OX27OgDiRIV7efg11BRrVP7u5j7WKCax3pAwTXaQhFZvmzLVd1/EdWhqDG
+	 K9RJapW3EhoytFSLZGNCWxykk8HniJRzpmZnsPsm92y/CKRMeWmTp7dMAcVKbWUJz3r6w
+	 CxEq6KzzbE6+TRMLDns/O5j8jrb2F63XcJXNZjWDeVIrf1PeI0ZAa+uBqGxV+v5YChSPS
+	 WEpwCIoUyP+kLNIkWLlzcuIy5oZf9exKSqsw7QcZ/zWfIZg356PUKwBQKLB/UA5G1TSl4
+	 9zA35ex91NZEFGY2MaV0+2aXWiuS+jZlaN/7sfAdplx1QLry1ZmHDU4LuKKN37hXeMQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=b2p970Tn;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dCLagkxm;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A06F606D822;
-	Wed,  4 Nov 2026 17:48:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18DD9606A68D;
+	Wed,  4 Nov 2026 17:51:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=b2p970Tn
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 607D91F00A24;
-	Wed,  4 Nov 2026 17:48:42 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dCLagkxm
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AB281F000C1;
+	Wed,  4 Nov 2026 17:51:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793814532;
-	bh=bcezpuhf8jHaudjk12beSUxNoV1WoyCZJEHGgJ3QzvM=;
+	s=k20260515; t=1793814681;
+	bh=d5VQc0NVFmwQmNrNgit0f6JDQ4FL4SdVcOTRhJBmZU0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=b2p970TnxvWKRo+rE6NnJ4OIho+4QePGvqRNZHl6anFONN9yJPTchJWUc0qBmLKMP
-	 JvkxHL9Xpazk/Huej+TwCJZHgiPgiAyRo9RJRGihF/6a+/CNo/3BdMkurHq6+gg9B5
-	 a7MwrwVrAK3vZfdnArgG9/HYd6cBVLWThLJ1ioEA5wfTs9oBWECQl7eJJfmnDUQfDP
-	 LaHC4vtifmzxhjEohgwt44TW9vNrVW+cAwxBcO0ff1SXrqyqyzsGk2Fdw4CFpfKDPJ
-	 wACbdW1zKWYZ9fjPVS/3n6oGT0Y6gKZdHlMydG6AuKxv5l5faXWx4/bMgBdafPz6V5
-	 gY61Q398MrSwg==
-Message-ID: <aa0e757f-dfd5-416a-aefa-3639d7bdf629@kernel.org>
-Date: Wed, 4 Nov 2026 18:48:39 +0100
+	b=dCLagkxmbIiyQGkMFzHs2oA8HlsKSAEJaJgVuwRlOocY030r7PqqFX3dkeMyvO3QN
+	 qX0NTOgKw+QgB3nagHSQpZ4EaTADuqeNdSvV5C+1qY5yaM5/vHtK+M4bzdQ/+2xoUw
+	 2q24Wkv0uvhKpkSzpaudI8n9BNlYEulgt2ubBJyxtPsk3APA4fQeWe485Ih6Kai230
+	 OwWVx83G3fcgygwH6WSC/Dn5qg8PF1rRzHX9WDqHksPLHzQ8Mgx6sj7ks3dtQQ8kyK
+	 Dar7lTXCYLGHAE8GzVImwxRqNQebyXdlO7UBR6CNJgE2H9+wfnCaPvw3J3NW+6uoTx
+	 jkNNN/jBvlWCA==
+Message-ID: <7b476c24-3185-49ff-9a72-fbd865dc0d65@kernel.org>
+Date: Wed, 4 Nov 2026 18:51:10 +0100
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -52,25 +52,30 @@ List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/5] devfreq: Use %pe to print error pointers
- symbolically
-To: Sumeet Pawnikar <sumeet4linux@gmail.com>, rafael@kernel.org,
- amit.kachhap@gmail.com, daniel.lezcano@kernel.org, thara.gopinath@gmail.com,
- talel@amazon.com, hayashi.kunihiko@socionext.com, mhiramat@kernel.org,
- mmayer@broadcom.com, viresh.kumar@linaro.org, sumitg@nvidia.com,
- peter.griffin@linaro.org, myungjoo.ham@samsung.com,
- kyungmin.park@samsung.com, cw00.choi@samsung.com, Frank.Li@nxp.com,
- s.hauer@pengutronix.de, matthias.bgg@gmail.com,
- angelogioacchino.delregno@collabora.com, sven@kernel.org, j@jannau.net,
- marcan@marcan.st, casey.connolly@linaro.org, sre@kernel.org,
- wens@kernel.org, t.schramm@manjaro.org
-Cc: bcm-kernel-feedback-list@broadcom.com, linux-samsung-soc@vger.kernel.org,
- kernel@pengutronix.de, imx@lists.linux.dev,
- linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
- linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260912191156.185448-1-sumeet4linux@gmail.com>
- <20260912191156.185448-3-sumeet4linux@gmail.com>
+Subject: Re: [PATCH 1/1] crypto: use dmaengine_desc_set_callback()
+To: Frank.Li@oss.nxp.com, Herbert Xu <herbert@gondor.apana.org.au>,
+ "David S. Miller" <davem@davemloft.net>,
+ Nicolas Ferre <nicolas.ferre@microchip.com>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+ Bartosz Golaszewski <brgl@kernel.org>,
+ Jia Jie Ho <jiajie.ho@starfivetech.com>,
+ William Qiu <william.qiu@starfivetech.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, T Pratham
+ <t-pratham@ti.com>, Thorsten Blum <blum@kernel.org>,
+ Frank Li <Frank.Li@nxp.com>, Pan Chuang <panchuang@vivo.com>,
+ =?UTF-8?B?TWF4aW1lIE3DqXLDqQ==?= <maxime.mere@foss.st.com>,
+ "open list:CRYPTO API" <linux-crypto@vger.kernel.org>,
+ "moderated list:ARM/Microchip (AT91) SoC support"
+ <linux-arm-kernel@lists.infradead.org>,
+ open list <linux-kernel@vger.kernel.org>,
+ "open list:QUALCOMM CRYPTO DRIVERS" <linux-arm-msm@vger.kernel.org>,
+ "moderated list:ARM/STM32 ARCHITECTURE"
+ <linux-stm32@st-md-mailman.stormreply.com>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: imx@lists.linux.dev, vkoul@kernel.org
+References: <20261102164538.3834039-1-Frank.Li@oss.nxp.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -116,34 +121,49 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  K9bCVaboTA2T77QYkRcRJYSsO1alGX0ome/hMLD1daXlkrNUp1HWa3K4iytLRXjCSIorWiGs
  n+q3krnpXu3TFkA8qtOFZMdnIiFuiq1yLT8hptsV5xh1TA2nsVvSYiaCr3q4s4BKjS/KrLDb
  qoxzw8ISjdUp4pA85vb6YLCmb39NgidD+7PmAr65lBNveIFynTgsja1rRQ4=
-In-Reply-To: <20260912191156.185448-3-sumeet4linux@gmail.com>
+In-Reply-To: <20261102164538.3834039-1-Frank.Li@oss.nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 12/09/2026 21:11, Sumeet Pawnikar wrote:
-> diff --git a/drivers/devfreq/imx-bus.c b/drivers/devfreq/imx-bus.c
-> index 49798f542d68..dba76d8b9e5a 100644
-> --- a/drivers/devfreq/imx-bus.c
-> +++ b/drivers/devfreq/imx-bus.c
-> @@ -75,8 +75,8 @@ static int imx_bus_init_icc(struct device *dev)
->  	priv->icc_pdev = platform_device_register_data(
->  			dev, icc_driver_name, -1, NULL, 0);
->  	if (IS_ERR(priv->icc_pdev)) {
-> -		dev_err(dev, "failed to register icc provider %s: %ld\n",
-> -				icc_driver_name, PTR_ERR(priv->icc_pdev));
-> +		dev_err(dev, "failed to register icc provider %s: %pe\n",
-> +				icc_driver_name, priv->icc_pdev);
->  		return PTR_ERR(priv->icc_pdev);
->  	}
+On 02/11/2026 17:45, Frank.Li@oss.nxp.com wrote:
+> ---
+>  drivers/crypto/atmel-aes.c            | 3 +--
+>  drivers/crypto/atmel-sha.c            | 6 ++----
+>  drivers/crypto/atmel-tdes.c           | 3 +--
+>  drivers/crypto/img-hash.c             | 3 +--
+>  drivers/crypto/omap-aes.c             | 8 +++-----
+>  drivers/crypto/omap-des.c             | 5 ++---
+>  drivers/crypto/omap-sham.c            | 3 +--
+>  drivers/crypto/qce/dma.c              | 3 +--
+>  drivers/crypto/sa2ul.c                | 3 +--
+>  drivers/crypto/starfive/jh7110-aes.c  | 3 +--
+>  drivers/crypto/starfive/jh7110-hash.c | 3 +--
+>  drivers/crypto/stm32/stm32-cryp.c     | 9 +++------
+>  drivers/crypto/stm32/stm32-hash.c     | 3 +--
+>  drivers/crypto/ti/dthev2-aes.c        | 9 +++------
+>  14 files changed, 22 insertions(+), 42 deletions(-)
+> 
+> diff --git a/drivers/crypto/atmel-aes.c b/drivers/crypto/atmel-aes.c
+> index 84392411b98d8..49f1bf19747d8 100644
+> --- a/drivers/crypto/atmel-aes.c
+> +++ b/drivers/crypto/atmel-aes.c
+> @@ -824,8 +824,7 @@ static int atmel_aes_dma_transfer_start(struct atmel_aes_dev *dd,
+>  	if (!desc)
+>  		return -ENOMEM;
+>  
+> -	desc->callback = callback;
+> -	desc->callback_param = dd;
+> +	dmaengine_desc_set_callback(desc, callback, NULL, dd);
+>  	dmaengine_submit(desc);
+>  	dma_async_issue_pending(dma->chan);
+>  
 
 Apparently reviewing only a few lines of entire patch is still reviewing:
-
 https://lore.kernel.org/all/9e39502a-dd17-4fa2-98a3-9019523cb5e8@kernel.org/
 
 Therefore:
-
 Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
-
 
 Best regards,
 Krzysztof
+
