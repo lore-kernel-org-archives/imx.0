@@ -1,40 +1,64 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=37.205.14.76
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=178.79.152.223
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793792624;
-	b=foJJzxhXVObGrEfvGO4+/NPm1n44UjBKJe6PLpF10a0E+V3z6kiEwq4i9/CUEZ+4Y9V7
-	 dabecgOdd95/TNqDg7emT0Mm1IJTHvN01GVrn0lmGN6ue2vQgCYzPp12o5rcoVu3Kpndg
-	 AbYEqn30uPOGxpIrSiJa0Ds/c68GK/eMmolvULIR3OCakwwU0IiSzOpYR2r7RoMDSUgYU
-	 iYxrIizCIi61zXLci0koHcSOAoi2YGxaJg7AZSvQg5Ff+r00QSxxDlmB+yA2WbEd44j4C
-	 hoLtJgiYSdJDYxOy8YFipvISdrn6ymED5PuEjvNdDDT5+esGH5s5qW+G7P3DtfQEgkA==
+	t=1793792715;
+	b=wje8y0YpZk52BzJeYN1EMA5S5UZbNZ9Ma/78QbxGcLj3Kk2wQVgbVU37G+KhJ/7wZGcE
+	 9JwP+IUApbr3mhBgTYwoWCjXYAjd04tDAnTtj/yYg0gu6GE38dzakKiIUiYmC2iXBJWgW
+	 wGc3UOiUahsxYgSuRxpGLozjj8s5ysqr20SfkPJcwGLps+4eMCHaukgvxirJKRVjRWUYc
+	 nuv2+u7yy3QjNXTbqqErcxQ1xeCCf/eNsCGAd7+tZieHlQoMxpPA53jVcvAOLRu/SdWkP
+	 ajyPpM5B+WV7FSa9GeL3oQ+XrWif0BD1ZVhWvFXP/3YzpOfiABGVtHQ7koz8IRQjWpg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793792624;
-	h=DMARC-Filter:Received:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=z9ysQ+XoG+foncX/3jtWkWh7mLG1px8yz8zNNyKH3rU=;
-	b=C59TghHoDHfbHXvUmzSsidrhMB5jFTDnm0W2g/G2m2i4U47sk+fV8x/HqBG7KzhtmwIk
-	 QgKnWveVMqnmCghTMrNHQTOZZQwJcbFj+TQIul7UvHjgLzzod2+V4KdDVjNWwKC5Tbu8t
-	 O++N8w5ywUifCFFtrCJcxt6kH8Z+mgFjrwqcHpgsLaBQl9XPu7q0VJLCIyBkPQVWTFRAl
-	 tc+KR2k7bo1UhcjKWAsvY8aSezfjIPi0KXym0mYdEQcPwNivhnH0bnRzhqIilgXp/b6Fm
-	 l1WCadVPvJa22FZ1QKqk1mU9/GIbqvkeCQZDsUtVrAB6KZBYGe7oYh9rpDGyRatY3Qw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793792715;
+	h=DMARC-Filter:DKIM-Signature:Received:DKIM-Signature:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-CRM114-Version:
+	 X-CRM114-CacheID:X-CRM114-Status:X-CRM114-Notice;
+	bh=QLyO54zaOTxAKKhIPvxsoMq4fEquUUXaIdWfMQwsWvU=;
+	b=o96n/14ZY9MibnRGYqsq31+2UridmBPLbjIDoFmyRvmTpDOGed6HJ8jqN75gzF+Opf3m
+	 k5LZeotduQB9qt97nxxfRrBZP6xVUlfMeJ0tLvQozT99WhJIQK/qCviMhgGD/6v30HSvb
+	 D7tC0YnNLcbjNRjQjdFkZLYEkQtWgg20jvriZdeuX8gLLlunUJeBOGBD7feaQit61vUHn
+	 HikxpsahlBlH5UGjdNaVnHOEyaIZ5TIzKnumTjwfIq3W0rJk4vu+Gy/7CBI7U9qfkQ0DY
+	 V/IK6t/IIIFPN0i0EvBvoAxSTL0KDk7f38jpzS0A5kiK73lprhNfxeYbr3M2d8pdp9g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=gpxsee.org;
-	spf=pass smtp.mailfrom=gpxsee.org;
-	arc=none smtp.remote-ip=37.205.14.76
-Received: from mx.gpxsee.org (mx.gpxsee.org [37.205.14.76])
+	dmarc=none header.from=mleia.com;
+	spf=none smtp.mailfrom=mleia.com;
+	dkim=pass header.d=mleia.com header.i=@mleia.com header.a=rsa-sha256 header.s=mail header.b=IbTbANt4;
+	dkim=pass header.d=mleia.com header.i=@mleia.com header.a=rsa-sha256 header.s=mail header.b=IbTbANt4;
+	arc=none smtp.remote-ip=178.79.152.223
+Received: from mail.mleia.com (mleia.com [178.79.152.223])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09B12606A328
-	for <imx@lists.linux.dev>; Wed,  4 Nov 2026 11:43:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 09B12606A328
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gpxsee.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gpxsee.org
-Received: from [192.168.4.18] (unknown [62.77.71.229])
-	by mx.gpxsee.org (Postfix) with ESMTPSA id 833DCA56A2;
-	Wed, 04 Nov 2026 12:43:32 +0100 (CET)
-Message-ID: <02af8699-0ac3-468c-913e-a374af1c8d63@gpxsee.org>
-Date: Wed, 4 Nov 2026 12:43:31 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29A08606A33F
+	for <imx@lists.linux.dev>; Wed,  4 Nov 2026 11:45:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 29A08606A33F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mleia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mleia.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=mleia.com header.i=@mleia.com header.a=rsa-sha256 header.s=mail header.b=IbTbANt4;
+	dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.a=rsa-sha256 header.s=mail header.b=IbTbANt4
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mleia.com; s=mail;
+	t=1793792706; bh=ebwSH394zYPUGs4q/CaA+jIBZjAqW6ZboyOen2iOpmM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=IbTbANt4V6mlhK1BXX5P+KA5FMS/4s9QpWEhFm3QbYFxDyV4eikpkxD2ht/VwYC+V
+	 txGjhk0AN0fQLNMCy7tz+jAO0NLJvZIDEZU206DyTwVbG2P6rzZjXhVE1aBmNw/Kbh
+	 7JDCWnUdfh5gbRQ9aXiqFs8OHx5Mr9OkHDKjdtFUYC/z0rZAnrNBFkvOFt9xkmp/vc
+	 kCGIhxJ+aVj/+S/kRtE8BVF4eBSGP5QXQwJW+WDjTX6E6f1gnez9EiSTlQDM78Nnh8
+	 cEWqc3GhUO9xvg2yLm2jj9hDYFfWA8eZOI0rBa+pohDffaPLWl9tFat1CFYQVNLEIx
+	 ygw2LwV0pp30Q==
+Received: from mail.mleia.com (localhost [127.0.0.1])
+	by mail.mleia.com (Postfix) with ESMTP id BA62E40A6E6;
+	Wed,  4 Nov 2026 11:45:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mleia.com; s=mail;
+	t=1793792706; bh=ebwSH394zYPUGs4q/CaA+jIBZjAqW6ZboyOen2iOpmM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=IbTbANt4V6mlhK1BXX5P+KA5FMS/4s9QpWEhFm3QbYFxDyV4eikpkxD2ht/VwYC+V
+	 txGjhk0AN0fQLNMCy7tz+jAO0NLJvZIDEZU206DyTwVbG2P6rzZjXhVE1aBmNw/Kbh
+	 7JDCWnUdfh5gbRQ9aXiqFs8OHx5Mr9OkHDKjdtFUYC/z0rZAnrNBFkvOFt9xkmp/vc
+	 kCGIhxJ+aVj/+S/kRtE8BVF4eBSGP5QXQwJW+WDjTX6E6f1gnez9EiSTlQDM78Nnh8
+	 cEWqc3GhUO9xvg2yLm2jj9hDYFfWA8eZOI0rBa+pohDffaPLWl9tFat1CFYQVNLEIx
+	 ygw2LwV0pp30Q==
+Message-ID: <5334e00c-67b6-4fbc-9090-17ff1c9d7494@mleia.com>
+Date: Wed, 4 Nov 2026 13:45:00 +0200
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -45,53 +69,52 @@ List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/9] media: mgb4: use dmaengine_desc_set_callback()
-To: Frank.Li@oss.nxp.com, Martin Tuma <martin.tuma@digiteqautomotive.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- "open list:DIGITEQ AUTOMOTIVE MGB4 V4L2 DRIVER"
- <linux-media@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
-Cc: imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>
-References: <20261103153721.1232488-1-Frank.Li@oss.nxp.com>
- <20261103153721.1232488-2-Frank.Li@oss.nxp.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Martin_T=C5=AFma?= <tumic@gpxsee.org>
-In-Reply-To: <20261103153721.1232488-2-Frank.Li@oss.nxp.com>
+Subject: Re: [PATCH] i2c: Convert to subsys_platform_driver()
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
+ Codrin Ciubotariu <codrin.ciubotariu@microchip.com>,
+ Andi Shyti <andi.shyti@kernel.org>,
+ Nicolas Ferre <nicolas.ferre@microchip.com>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+ Bartosz Golaszewski <brgl@kernel.org>,
+ Mika Westerberg <mika.westerberg@linux.intel.com>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Oleksij Rempel <o.rempel@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>, Frank Li
+ <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Vignesh R <vigneshr@ti.com>,
+ Aaro Koskinen <aaro.koskinen@iki.fi>,
+ Janusz Krzysztofik <jmkrzyszt@gmail.com>, Tony Lindgren <tony@atomide.com>,
+ Andreas Kemnade <andreas@kemnade.info>, Kevin Hilman <khilman@baylibre.com>,
+ Roger Quadros <rogerq@kernel.org>,
+ Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>,
+ Krzysztof Kozlowski <krzk@kernel.org>,
+ Peter Griffin <peter.griffin@linaro.org>,
+ Alim Akhtar <alim.akhtar@samsung.com>,
+ Wolfram Sang <wsa+renesas@sang-engineering.com>,
+ Linus Walleij <linusw@kernel.org>
+Cc: linux-i2c@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ linux-omap@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+ linux-renesas-soc@vger.kernel.org
+References: <20261104113316.1634141-1-peng.fan@oss.nxp.com>
+From: Vladimir Zapolskiy <vz@mleia.com>
+In-Reply-To: <20261104113316.1634141-1-peng.fan@oss.nxp.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-49551924 
+X-CRM114-CacheID: sfid-20261104_114506_797044_64DF58E1 
+X-CRM114-Status: UNSURE (   5.92  )
+X-CRM114-Notice: Please train this message. 
 
-On 11/3/26 4:37 PM, Frank.Li@oss.nxp.com wrote:
-> From: Frank Li <Frank.Li@nxp.com>
+On 11/4/26 13:33, Peng Fan (OSS) wrote:
+> From: Peng Fan <peng.fan@nxp.com>
 > 
-> Replace open-coded assignments to callback and callback_param fields
-> of struct dma_async_tx_descriptor with calls to the
-> dmaengine_desc_set_callback() helper.
+> Replace the open-coded subsys_initcall()/module_exit() platform driver
+> registration with subsys_platform_driver().
 > 
-> No functional change intended. Prepare to make struct
-> dma_async_tx_descriptor private to the DMA engine.
+> No functional change.
 > 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
-> change in v3
->    split to simple patch
-> https://lore.kernel.org/imx/38f6a9abf37b06318bb6429ac04807941ca8d558.camel@collabora.com/
-> ---
->   drivers/media/pci/mgb4/mgb4_dma.c | 3 +--
->   1 file changed, 1 insertion(+), 2 deletions(-)
-> 
-> diff --git a/drivers/media/pci/mgb4/mgb4_dma.c b/drivers/media/pci/mgb4/mgb4_dma.c
-> index cae888e6504b0..c9a15c625be65 100644
-> --- a/drivers/media/pci/mgb4/mgb4_dma.c
-> +++ b/drivers/media/pci/mgb4/mgb4_dma.c
-> @@ -55,8 +55,7 @@ int mgb4_dma_transfer(struct mgb4_dev *mgbdev, u32 channel, bool write,
->   		return -EIO;
->   	}
->   
-> -	tx->callback = chan_irq;
-> -	tx->callback_param = chan;
-> +	dmaengine_desc_set_callback(tx, chan_irq, NULL, chan);
->   
->   	ret = dma_submit_error(dmaengine_submit(tx));
->   	if (ret) {
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
 
-Acked-by: Martin Tůma <martin.tuma@digiteqautomotive.com>
-
+Reviewed-by: Vladimir Zapolskiy <vz@mleia.com> # I2C PNX
