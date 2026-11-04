@@ -1,22 +1,22 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=159.226.251.21
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793760040;
-	b=VaUh27oGixWinVS2OExocUZy18J6DkbbKte7HVPurqJK43BkA93P904sEITxANApZoey
-	 Ri1mYllX9SmHzYn8mjcAb/8NLv8HxJBfKHwI7XYyGfLhJNJXSwsM/ani2oa2oqaUDLask
-	 0VCrjHVZ2XRifIbuBO33PmzS5UDPt25XV2+ALcFPyxdiwMO8kPqQ1FuuKnlKaaJaKx5uF
-	 fG3wMCHBwA9ZfMUJLsT1b0sUIDKYLCD1RgBSu/fI76pWRffLgoN4WpXX1IqqN9Tsc0YJF
-	 H5tF2ZaosvfNpp92eyfeU7C2MJgWzGk/5dqjrCaOO0K1/eqkdv7Z2MpQ03pXUgugrxg==
+	t=1793760042;
+	b=mm4fNwuYyt2+cj7/7wUydt0xanPUbl9JLrHT48oZZznQVmB1+0q77Ugd89KO0gOC1OsL
+	 pP0Y2kvgei42e+O2fxHcf0D4QoJtWx05tiTSHpLQp4cGEIrpeyMWT4Ob3w7yC/uFrSR2U
+	 X8dPqoXZvmIQauPec37vjJs6s26IcGNTk8dwoHbUD+mDZ22x8+mJBm6uGe1T+AOIB0DfT
+	 G0WVNiQnjMajqzyYi7xfLM4ZIzrSrHmrwhnmnclXci9s7bBzDNLMGExEUdEmUY3jEY5qj
+	 5GNi4+Aa86lBY3mvd1KlXZhgqmA2N/48zcJqA6egZq/XQi6xrey51sueVOh+tIvtGew==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793760040;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793760042;
 	h=DMARC-Filter:Received:From:To:Cc:Subject:Date:Message-Id:X-Mailer:
 	 MIME-Version:Content-Transfer-Encoding:X-CM-TRANSID:
 	 X-Coremail-Antispam:X-Originating-IP:X-CM-SenderInfo;
-	bh=4su+3Bl8vVam/9rCmV8G+HuWhRUmzj07h5fXyjgVyto=;
-	b=bWhvbsevKUn7KSBB5yGLXw/lzrTGc0TllY8jj1misY8v5Cjp/RVl/HfS1wsrOD+WAAeu
-	 TR/BbUWFp00EFibstSyK8HmpY6nu0OENOhu/ZfmBsg9rS3VcdRC5nOK6AXWEBFsEBGusf
-	 HPKGhkcp5FJb12c5YcnKrZ0mPKnFHuKEjrpzjTMRdObiyhoZJi2n99Ikrwm1CT+Y+N4Nx
-	 JF1pghOSEv39eaNRYAnR2HX3CY4nkKofOkCsXkG6EK2HVbLyNY8Z2vRQ17gToV1NOPn9E
-	 3ZK5Zyl5ZPVm9XHo8qMSEBa6aQgfokkf2LThNdaC9bY3GJtwf70xitjE2pk4a1BcWfw==
+	bh=36Y5pL4NdH8kDIXYo87U2fescr4cMGf2b+Jv2gOIdXM=;
+	b=1ygEKY5Vzq3tBZtGVIUxGtAOnmuIELtQSDH0St6gLxybT7o5csUHp74UgJXpPwrOW6c9
+	 I5KA4kZsGEycKE4LC9tPGvGkGVcLEs7ctA6qMzwBdIi15TXqwdIE4+1OvYwU1s7DRx82U
+	 kgQhBFgMf0iw/3QyF7u/rde2dzjP8AlpwFhu30vApUXJaialVvNMwbkTymmbJvQuocnDT
+	 2a+bp1OB++yyWREu/Wr5vyJQkVlYoQrg1+V/IQ+Gyj7mFsuv7ukZKIUITnXo3CypPQMdV
+	 R04iwVxfPtOXnj5tZfWo5u4pwLcUMQsuavVYJU7vbcdC9EdMD3KJvaXPXC1Bh7l2+4A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=iscas.ac.cn;
 	spf=pass smtp.mailfrom=iscas.ac.cn;
@@ -25,33 +25,29 @@ Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B265606D806
-	for <imx@lists.linux.dev>; Wed,  4 Nov 2026 02:40:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0B265606D806
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 635C2606A338
+	for <imx@lists.linux.dev>; Wed,  4 Nov 2026 02:40:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 635C2606A338
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
 Received: from dfae2b116770.home.arpa (unknown [36.110.52.2])
-	by APP-01 (Coremail) with SMTP id qwCowADXxf8km+pqJ7k+AA--.9867S2;
-	Wed, 04 Nov 2026 10:40:36 +0800 (CST)
+	by APP-01 (Coremail) with SMTP id qwCowABXg_0nm+pqT7k+AA--.27763S2;
+	Wed, 04 Nov 2026 10:40:39 +0800 (CST)
 From: Wentao Liang <vulab@iscas.ac.cn>
-To: Shengjiu Wang <shengjiu.wang@gmail.com>,
-	Xiubo Li <Xiubo.Lee@gmail.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Nicolin Chen <nicoleotsuka@gmail.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
+To: Liam Girdwood <lgirdwood@gmail.com>,
 	Mark Brown <broonie@kernel.org>,
 	Jaroslav Kysela <perex@perex.cz>,
 	Takashi Iwai <tiwai@suse.com>,
 	Frank Li <Frank.Li@nxp.com>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
 Cc: linux-sound@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH] ASoC: fsl: imx-audio-rpmsg: unregister platform devices on probe failure
-Date: Wed,  4 Nov 2026 02:40:45 +0000
-Message-Id: <20261104024045.1508542-1-vulab@iscas.ac.cn>
+Subject: [PATCH] ASoC: mxs-saif: unregister the mclk if adding the provider fails
+Date: Wed,  4 Nov 2026 02:40:48 +0000
+Message-Id: <20261104024048.1508618-1-vulab@iscas.ac.cn>
 X-Mailer: git-send-email 2.34.1
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -63,72 +59,56 @@ List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowADXxf8km+pqJ7k+AA--.9867S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxJr18Zw47GF1rArW3KF1Utrb_yoW8Zr4xpw
-	4DGa95Wry5K39FkF4UXr1xAas8Ca4xuw4rZw48Aw17Ka90gryku3yrXa4UJFW7trW8Ga15
-	tr4UWrW5Cr4ayr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUBjb7Iv0xC_Kw4lb4IE77IF4wAFc2x0x2IEx4CE42xK8VAvwI8I
-	cIk0rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2
-	AK021l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v2
-	6r4UJVWxJr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14
-	v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xf
-	McIj6xIIjxv20xvE14v26r1q6rW5McIj6I8E87Iv67AKxVW8Jr0_Cr1UMcvjeVCFs4IE7x
-	kEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kK
-	e7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCF04k20xvE74AGY7Cv6cx26r48ZrWUJr1UMx
-	C20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAF
-	wI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20x
-	vE14v26r4j6ryUMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UMIIF0xvE42xK8VAv
-	wI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWxJVW8Jr1lIxAIcVC2z280aVCY1x0267
-	AKxVW8Jr0_Cr1UYxBIdaVFxhVjvjDU0xZFpf9x07befHbUUUUU=
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiDAABA2rqY+TXGwABsE
+X-CM-TRANSID:qwCowABXg_0nm+pqT7k+AA--.27763S2
+X-Coremail-Antispam: 1UD129KBjvdXoWrKw1rZF48tFykGrWDXw4ruFg_yoWDtrg_ta
+	yv93yqvryDCF1Fkw1DCws8ZryIgasrCw1rW34UKr43tFyxJFsIva4qyrZ8u3s8Zr1IgFy5
+	XryUZryfJ3y2kjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbf8YjsxI4VWkCwAYFVCjjxCrM7CY07I20VC2zVCF04k26cxKx2IY
+	s7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4
+	kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_
+	Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI
+	0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2Wl
+	Yx0E2Ix0cI8IcVAFwI0_Wrv_ZF1lYx0Ex4A2jsIE14v26r4UJVWxJr1lOx8S6xCaFVCjc4
+	AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
+	14v26r1q6r43MxAIw28IcxkI7VAKI48JMxAIw28IcVCjz48v1sIEY20_Gr43Wr1UJr1l4I
+	8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AK
+	xVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcV
+	AFwI0_Xr0_Ar1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4UJVWxJr1lIxAIcVCF04k26cxK
+	x2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26F4j6r4UJwCI42IY6I8E87Iv6xkF7I0E14
+	v26r4UJVWxJrUvcSsGvfC2KfnxnUUI43ZEXa7IU0c6pPUUUUU==
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCRMBA2rqY-nVXwAAsI
 
-imx_audio_rpmsg_probe() registers the rpmsg platform device and the card
-platform device, but when a registration fails it only records the error
-code and continues to the next step. The rpmsg core does not call remove
-for a probe that failed, so a card device registered after the rpmsg
-device registration failed stays registered forever. The reverse case is
-just as bad: if the card registration fails, the already registered
-rpmsg device is never unregistered.
+clk_register_divider() registers the mclk, while of_clk_add_provider() only
+stores it as the provider data. If of_clk_add_provider() fails, the clock
+stays registered but no provider refers to it, and the driver has no remove
+callback to release it, so the clock is leaked.
 
-Return immediately when the rpmsg device cannot be registered, and
-unregister that device before returning when the card device cannot be
-registered.
+Unregister the clock on this error path before returning.
 
-Fixes: c73524768e9e ("ASoC: fsl: Let imx-audio-rpmsg register platform device for card")
+Fixes: 7c9e6150f2e7 ("ASoC: mxs: register saif mclk to clock framework")
 Cc: stable@vger.kernel.org
 Assisted-by: DeepSeek-V4.1-Flash and OpenAI Codex
 Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
 ---
- sound/soc/fsl/imx-audio-rpmsg.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ sound/soc/mxs/mxs-saif.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/fsl/imx-audio-rpmsg.c b/sound/soc/fsl/imx-audio-rpmsg.c
-index b55dfbdb4502..950bf9e5b648 100644
---- a/sound/soc/fsl/imx-audio-rpmsg.c
-+++ b/sound/soc/fsl/imx-audio-rpmsg.c
-@@ -92,7 +92,7 @@ static int imx_audio_rpmsg_probe(struct rpmsg_device *rpdev)
- 							 NULL, 0);
- 	if (IS_ERR(data->rpmsg_pdev)) {
- 		dev_err(&rpdev->dev, "failed to register rpmsg platform.\n");
--		ret = PTR_ERR(data->rpmsg_pdev);
-+		return PTR_ERR(data->rpmsg_pdev);
+diff --git a/sound/soc/mxs/mxs-saif.c b/sound/soc/mxs/mxs-saif.c
+index e46896ac9669..aaf62f081b32 100644
+--- a/sound/soc/mxs/mxs-saif.c
++++ b/sound/soc/mxs/mxs-saif.c
+@@ -783,8 +783,10 @@ static int mxs_saif_mclk_init(struct platform_device *pdev)
  	}
  
- 	data->card_pdev = platform_device_register_data(&rpdev->dev,
-@@ -103,9 +103,12 @@ static int imx_audio_rpmsg_probe(struct rpmsg_device *rpdev)
- 	if (IS_ERR(data->card_pdev)) {
- 		dev_err(&rpdev->dev, "failed to register rpmsg card.\n");
- 		ret = PTR_ERR(data->card_pdev);
-+		platform_device_unregister(data->rpmsg_pdev);
-+		data->rpmsg_pdev = NULL;
-+		return ret;
- 	}
+ 	ret = of_clk_add_provider(np, of_clk_src_simple_get, clk);
+-	if (ret)
++	if (ret) {
++		clk_unregister(clk);
+ 		return ret;
++	}
  
--	return ret;
-+	return 0;
+ 	return 0;
  }
- 
- static void imx_audio_rpmsg_remove(struct rpmsg_device *rpdev)
 -- 
 2.34.1
 
