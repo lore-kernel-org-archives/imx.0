@@ -1,96 +1,127 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.65.92
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793811423;
-	b=u8iLN8oVsCTPAfyJ068h56pkAXx2pcfOtXrp/EpKfMLzAefg3kKvpfC+iqV3cnH+B234
-	 Eu/cY9T0McDHISFj757Aqg38AHpf76dlp9sTEJBqUoH1qfGYiYxgRu3gmlP+5idVePic2
-	 l6s8+VrRKgy6SOIEdDel6RajSWO3qMkBuISGQQe/eGAi7gSfOSf5yECKoakcKkxn06oFO
-	 hDhGcmOjC0NFxIlLdOZf/goH6DuMrmIm6Y81xLEAFfqJ+pUpMYrKIVhfGOsTcgKIkwPY0
-	 XOwQis7V1SC0523awRX9lKcSV1FQMr6JGkdeFBfUbeRv/zl2VwtFZQJ/8WjlC/042ug==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793811423;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=zp5NOqgLPhQYOmzP6/lTOtehqFXh1jWUd8b9Dyowwzg=;
-	b=DzRAdgTXPyCPdWTxTupcfYGdnCwOtWuwFifAk1RGxTzqE/WCVi5VPJ+wefLuOY9RLrbY
-	 Qux2Izxqm5HhMtoY3calPe6W54DM+BWFkAcQXsRGI1pD24fUJrn+pgZt5qE7Zb6UWRhes
-	 hr01iF4ZadNXYBKGo5Sma34Byvl/6fzYKYLRyedtBcwq0eMwf+wsCsGvMxRJ/7I+KYSJY
-	 Ilt0yKVRWOn9F2K7d1sKhTgYH1yo2tXyEbAJqphcpK5nsilQvFiRUSnoO0LOzJHLMXBn+
-	 z24nzrYCpvLKQKGPGaA5+YIZgPMD5wkdCrlEqFwx5VyU9D3jg94UP9/Nf9KqnF3a+7Q==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=phytec.de;
-	spf=pass smtp.mailfrom=phytec.de;
-	dkim=pass header.d=phytec.de header.i=@phytec.de header.a=rsa-sha256 header.s=selector2 header.b="E2/G4xW5";
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.65.92
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11021092.outbound.protection.outlook.com [52.101.65.92])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.13
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793811450;
+	b=WPC9oDEyR+/1ERoDm8KPpMh0FRLjjTWq2e2lj5u3m8e/rL3LaIJx1PiNFRH6MgEWnVk9
+	 7eAeJkKyNFE7RxRTFUk0AXhK8QO4yv+qdmtXOTITB79f9bZPG4GBK+cogJfpw8Pa0orR+
+	 kGwn6a9XUz2C6IisnwPuqNkKPfCiDtJ3VCGJImce9Hoo2kqf/vrnljAPY7u1ymNYhOzLg
+	 m/Z3BD8gJp7BPxJPUgXKoUVMLisV2dOwagawG6TSRTysPfJXVwBT8pFKpcz8NgJXL4gDC
+	 kLuzbSgFXwwg21PvvudFXxATWiQleRjt8QdzT8VtnQO50M/UuioBJqzgyoHGiqkQtlw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793811450;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To:Organization;
+	bh=8izICEiwnQYZgjlS2jA+WnZteNa4n7VbKpZ/O6pW3kg=;
+	b=wO9Mgn9tG5XQYy9xPe1pf6uVSnu9zl1+Im9EhHIYWKCrhCHbCHToesG+EPzIZz1Xx0hS
+	 L9h+YD2XHrI9GKFrxx2BTgLSP+w43h8qMEkDXlwjAhaHkTQNZDmH92UNA51MITnw8juK+
+	 6660Zwble90ZY5WumSRxT78s94U+6ncXg8IvXkwMPes3hrrRbxjEYR6+NEWWmnlojSt0U
+	 PKWjgel/LHLWC8481Iv0nnIf4G83kkKHPCxOMzrziPgxO6zJlQza+8OegDFn+GUPrcf14
+	 IYsI4HwYp/dmsz68oMZGayHVYlz5lqlQ9bNwYvoxV6GuzLfRMySzheyvehXQUDYIGdw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kFu+4Fcc;
+	arc=none smtp.remote-ip=198.175.65.13
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4FA0606D815;
-	Wed,  4 Nov 2026 16:57:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E4FA0606D815
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=phytec.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phytec.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AE9F606A329;
+	Wed,  4 Nov 2026 16:57:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3AE9F606A329
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=phytec.de header.i=@phytec.de header.a=rsa-sha256 header.s=selector2 header.b=E2/G4xW5
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=EQzcfmw5MiSZqzcn5cMEhCWzqNQhUoH/+BUDNJGAXVF4jqtr0rImEf0/MlKpp970MI6ug34+IJ4Ned17QL0MT22/teIEXd1JBAc6GYAdyq/OxuIhu1g5mOcgcBBtUY0WoO6EAUV5nd3tUi8FI4cv2RajOG6h6hrBYTLUIzTGEbP68YdFvdJeLCUjWN02JjAWomnb1osNFg1Sdcwbkiyf9VaS0/wwXokERIO3isN2TanbKXNyBbd7pJ0uNHjt/4fOgC66jwaKEWDCfqLdccg6yKyZ+sy1IzihdTEUQV8hSVtzIC34CVV8uYZ62VPEIE1sSPItXxtZNBOxTENvwg3hGg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zp5NOqgLPhQYOmzP6/lTOtehqFXh1jWUd8b9Dyowwzg=;
- b=IdPC7+HZPqWNUiag2+XpTQm5qhi8UsaRLVkp7PUt7n7drirpPnTNtkQOPPmdXkmzNvH+gWkVywurIwu83EQQ0nECwJNtwCjzhDQaHVAxb2VSVapc8kpjEX+3LL7OfwkGDRJWQWEUC32xQOfdqj561Bil+krBKPG5d7lRHsi/QAUhyvxG/i0Nc352S29mIrSc5rlc9MWD3jmV783PyiV/ynozrBtAmCCefMBW8ZYtmmxioso1M5ja9Y3yHozz30Nbb5EgTPBwSoC6sR0Iuooi6HAiny1yNwliBe+EljnChhUG2rpSgrLnLSlUlUMk/UflgH/kac93rQh2mJzBtVcHiA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=phytec.de; dmarc=pass action=none header.from=phytec.de;
- dkim=pass header.d=phytec.de; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=phytec.de;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zp5NOqgLPhQYOmzP6/lTOtehqFXh1jWUd8b9Dyowwzg=;
- b=E2/G4xW5CL6TYMOpNGN6S1A2/D/lxPL7au9KgZxwcVLuDkCeDLcKxrkdcgtuck/H2NtkdQcyyE7o/7Vm/jYcdf8ownsqsRX/R3ze5uzQ6uZyIiuoMLxlVr2Dh/0ZJHW6nztU+pzipCvb3uQiZ4s0Lgg2DTn0d6g0DqTWalDRYajZ2P9ht+0Bu1Ztsenzie3Aimgi9Vn4lV2Gr5mE/1knyvBZAJUYIg4ISnFk936EbTsvhk0ek1DLIzLcNCyZ8YPenQe4pWQFiC5zlo/cuDImIqbRhv2XIK8m+nLB+LUDExASHKvAekM8G5IUFsRMdRyNTvY8UP0eobifFRSOUXwjHw==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=phytec.de;
-Received: from VI1P195MB0623.EURP195.PROD.OUTLOOK.COM (2603:10a6:800:159::10)
- by DB9P195MB1730.EURP195.PROD.OUTLOOK.COM (2603:10a6:10:399::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.9; Wed, 4 Nov 2026
- 16:56:58 +0000
-Received: from VI1P195MB0623.EURP195.PROD.OUTLOOK.COM
- ([fe80::2f8:67bc:a785:6894]) by VI1P195MB0623.EURP195.PROD.OUTLOOK.COM
- ([fe80::2f8:67bc:a785:6894%7]) with mapi id 15.21.0592.009; Wed, 4 Nov 2026
- 16:56:52 +0000
-Message-ID: <cb8f678b-a173-4831-8d89-abed7b4497f2@phytec.de>
-Date: Wed, 4 Nov 2026 17:56:51 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/5] bindings: remove unused binding from old Libra
- version
-To: sashiko-reviews@lists.linux.dev
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org,
- conor+dt@kernel.org, Frank.Li@kernel.org
-References: <20261030-wip-bhahn-imx95_upstreaming-v1-0-1c1cebb5be99@phytec.de>
- <20261030-wip-bhahn-imx95_upstreaming-v1-5-1c1cebb5be99@phytec.de>
- <sashiko-outbox-191081@kernel.org>
-Content-Language: en-US
-From: Benjamin Hahn <B.Hahn@phytec.de>
-In-Reply-To: <sashiko-outbox-191081@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR2P281CA0046.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:92::20) To VI1P195MB0623.EURP195.PROD.OUTLOOK.COM
- (2603:10a6:800:159::10)
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kFu+4Fcc
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793811450; x=1825347450;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=kA+R8pE/sj6tJF3qdsiBNT3subr7oV44Dq41fpFh520=;
+  b=kFu+4FccF4mwUg+lujbS5S2z+QsSmjNhZ2VXE9pkRUGU5JFaHhAYGvqD
+   2m2d8WwUUduzhkv25AeyGq18y54cB2L2uwYz+0iORYVvJTVVqTvdzFX//
+   nY/LI7ZovPrR1J/Ai8kBe7wWWVYp/ULULxkbABr1DAiW55rj7hOf7G6gZ
+   WmDtFd7z6TbAA9Sx7emazezcXk6wyGhs6R9EPg4judjPYKUoCeL8ToSJa
+   3CitTzz5hVIteV4+ew2YrFRFmrpP9KOFL1SzmRjSdGs8owXQpa5mnZ86b
+   oA3jcPhvKxK5Rvl0dLUipiF0DGa6BFYUhPbp38L1Oxg0Ubz/xy5n/6N/x
+   g==;
+X-CSE-ConnectionGUID: xsLuKGdFQ4+Utplw9BM9gA==
+X-CSE-MsgGUID: FfH5cRaoSqacH2mxTLQ6rw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11956"; a="2455731"
+X-IronPort-AV: E=Sophos;i="6.27,195,1787036400"; 
+   d="scan'208";a="2455731"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2026 08:57:29 -0800
+X-CSE-ConnectionGUID: i6LkdCHBS8aHv+axP23p/Q==
+X-CSE-MsgGUID: bTVdwHnSQh2Pf9cSJkKNSQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,195,1787036400"; 
+   d="scan'208";a="7158496"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.24])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2026 08:57:16 -0800
+Date: Wed, 4 Nov 2026 18:57:14 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Frank.Li@oss.nxp.com
+Cc: Mark Brown <broonie@kernel.org>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Radu Pirea <radu_nicolae.pirea@upb.ro>,
+	CL Wang <cl634@andestech.com>,
+	Ryan Wanner <ryan.wanner@microchip.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Vladimir Oltean <olteanv@gmail.com>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Han Xu <han.xu@nxp.com>,
+	Haibo Chen <haibo.chen@nxp.com>, Linus Walleij <linusw@kernel.org>,
+	Daniel Mack <daniel@zonque.org>,
+	Haojian Zhuang <haojian.zhuang@gmail.com>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Peter Griffin <peter.griffin@linaro.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>, Yixun Lan <dlan@kernel.org>,
+	Troy Mitchell <troy.mitchell@linux.spacemit.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Alain Volmat <alain.volmat@foss.st.com>,
+	Chen-Yu Tsai <wens@kernel.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>,
+	Laxman Dewangan <ldewangan@nvidia.com>,
+	Thierry Reding <thierry.reding@kernel.org>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Sowjanya Komatineni <skomatineni@nvidia.com>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	"open list:SPI SUBSYSTEM" <linux-spi@vger.kernel.org>,
+	"moderated list:ARM/Microchip (AT91) SoC support" <linux-arm-kernel@lists.infradead.org>,
+	open list <linux-kernel@vger.kernel.org>,
+	"moderated list:BROADCOM BCM2711/BCM2835 ARM ARCHITECTURE" <linux-rpi-kernel@lists.infradead.org>,
+	"open list:FREESCALE DSPI DRIVER" <imx@lists.linux.dev>,
+	"open list:ARM/QUALCOMM MAILING LIST" <linux-arm-msm@vger.kernel.org>,
+	"open list:ARM/Rockchip SoC support" <linux-rockchip@lists.infradead.org>,
+	"open list:RENESAS RZ/V2H(P) RSPI DRIVER" <linux-renesas-soc@vger.kernel.org>,
+	"open list:SAMSUNG SPI DRIVERS" <linux-samsung-soc@vger.kernel.org>,
+	"open list:RISC-V SPACEMIT SoC Support" <linux-riscv@lists.infradead.org>,
+	"open list:RISC-V SPACEMIT SoC Support" <spacemit@lists.linux.dev>,
+	"moderated list:ARM/STM32 ARCHITECTURE" <linux-stm32@st-md-mailman.stormreply.com>,
+	"open list:ARM/Allwinner sunXi SoC support" <linux-sunxi@lists.linux.dev>,
+	"open list:TEGRA ARCHITECTURE SUPPORT" <linux-tegra@vger.kernel.org>,
+	Mukesh Kumar Savaliya <mukesh.savaliya@oss.qualcomm.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Thierry Reding <treding@nvidia.com>
+Subject: Re: [PATCH v2 1/1] spi: use dmaengine_desc_set_callback()
+Message-ID: <autj6pr_bPaul3w0@ashevche-desk.local>
+References: <20261104152253.3279052-1-Frank.Li@oss.nxp.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -100,133 +131,93 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: VI1P195MB0623:EE_|DB9P195MB1730:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2a3c6949-2610-4a7d-47ba-08df3a94a037
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|1800799024|366016|376014|261022105027099003|4143699003|11063799006|56012099006|261021121427099003|261009223027099003|261102123227099003|261028144727099003|261026140227099003|261026121527099003|10067099003|18002099003|22082099003|6133799003|3023799007;
-X-Microsoft-Antispam-Message-Info:
-	omuslpNiNTSsCkzLQ0W5NyXkqOKQVQgc9ytCGjVEd0hFHgb+QnIwNqXQm84ZLD+ZqLV3HTrymjhVE3WrDFVCaIwMmZMXAf1FMPUPG8Rv5xgDn+pL/abP4JbuKeMa1U7iHG1QecSO04+ajHGE8OUZYBFJKaj9wTH330uGZMjbtVAAw8oqWNNz8JL5t9/ECzkmbK+c5aJmXLX1P/UKXeqnLk2PscVS6R4REKbQoYfE9AiC5GmYQTmetUIKqDVyI1y6+d2zOaXZtCuC7El72bTURJYsAicfY6O0lQ9NWygz7e9BetVrSsWBZOguHtfaEMJl/89MZkENSIRnLLkh2RL8Hnf9U2okWe7zVNcMc9w5dMSiC9Gxs0qYFeYj9MIn5LzPWgNpCKAzqzBM7cOR5/kSPBPjgZVV7yCuUSBw5UZ7d9NRDBldM6fguRv9/jvO4y6nnnl8TAuz4npHyzb3da03ft9SMLS2cn7VzFQG3kdiRpj6jiw2vxJS58o741asEOB34iujqkGKxlg4qAyeCJNGPU4xnE9ORCeohTlcpSkWgsB7p0g4MEhQcrQW+/mrBR9aoZw0HbwpqTkz1pFjuK/jAzknNFZXx1sxFOWtEo/EBvT5KG3yfYnpTkck8Qyaj1D5nP6U/Q1CfudOpbkBw0N4IFGojDESV7k2eW4O/16APUc=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1P195MB0623.EURP195.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(366016)(376014)(261022105027099003)(4143699003)(11063799006)(56012099006)(261021121427099003)(261009223027099003)(261102123227099003)(261028144727099003)(261026140227099003)(261026121527099003)(10067099003)(18002099003)(22082099003)(6133799003)(3023799007);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cWNUR2t3UW1kZElTMGg4RU9OVFpHQTVTSjJwVTd3dHp2YmpralVlUmdYcmxT?=
- =?utf-8?B?MVJXS1JvZFVDb2NyYjBydTcxTXhDQ1dnK1JwYUFneUQvSk5nYzI5YzFhNFBM?=
- =?utf-8?B?SnRGY1pFOXBUWkJlMUE0K2MrbFA0c3dyS1dXT1N2T0NDQXlYK2t3emZ3Vmd5?=
- =?utf-8?B?dmhtdkZxSGc5UzhhcWFTemNGTEFXd1NadFNCYm53MXNoNmI2aGdBM0FDT0xv?=
- =?utf-8?B?ZkVkWjVrdlFHSjVWZy9aVURYRFhnOUlvaitaRUxDdk1iWm16THNEVzFUUTcr?=
- =?utf-8?B?dkY2cTZyUWJHaXd2aUNWc2tqMkRPQXRZZGlORytFdkNzZHNJUTdTbjVvcDRB?=
- =?utf-8?B?Ty9PWjRTRk4zcGxzZCtSZHhsdTA1ZkQvY0RNYkxRVklDQndiMW15QngvUEdW?=
- =?utf-8?B?VGtWak5ZeTdleEJGdlVJbnFmWlRJQXdocmFFZDRpcDhnaDZCblVJZ2hEdzNy?=
- =?utf-8?B?VG9KTVZOOEZlbDhlL1kvQkVveWxDTFhJaGIzbHoreHpHbEtSY1BnUVJMamg5?=
- =?utf-8?B?bWxxa0thVVFhWVp5eUlMZEhZWjlxcDBKZ1NRRGQ4NVpoMzkvSnRZb0hJelBH?=
- =?utf-8?B?dmVJQk1NUVgvZmZOVks4OHZhZlJ4OVI4REFuVFZzNTUzWUh3azM0dkFROEZx?=
- =?utf-8?B?cDJxaWlwU3p5UjdCam5BQyt5SnUyMTRMOG9zbHdCRVJ4L0I4SkZDdTEzdk95?=
- =?utf-8?B?Y1RHa0pkVkJSbVJCQ1lQZSsxTXpEandmWU9JNmFhL3lKYTcxWFdKTHRkNXJY?=
- =?utf-8?B?SU5zSmhET01ONXJoMUtKdHg1c3lkakVXSlRvYkovQjZlSTE3TzgwZVJST1ds?=
- =?utf-8?B?d3ZpeU5HN29oU0x3eGVrTkFHTU1WMktyeGZ6aUpveHNsTUVTV3R1eTB6MzJV?=
- =?utf-8?B?NmY3WGdnTHpybkgranlkK1dtTHRnZ1hxRzNRZkdNREorY3RxUys5MFJCcHN1?=
- =?utf-8?B?MW1JOHFOR0lCVS84djBvdzhxbmd0RzEwQVlvZUJqa3ZKbHc4bnhBeE00ZW5Q?=
- =?utf-8?B?cFNXUEFzMktacUk0K1JFQ1dtcytIUm1CRGNZYjVkQTFmY290ZTZoVjhJaEk3?=
- =?utf-8?B?UHpqaE92MTFMcHZ3dEJocmdMcTBsV3NyZlVBSzdnT2tpLzk2MHJyd1pNVms2?=
- =?utf-8?B?eHdZRUpIWU5mc2xjdklUcElpUG56ckd6SEtraHNBV1JBUStkait4TU9RbnFL?=
- =?utf-8?B?SFFkdVJiSzhpeVhPQVBxYmlVWnlUT0I1Z05qaDRibC9maUFDZitIUFZpTHVR?=
- =?utf-8?B?K1A4cWt4RitBRW14Y1FMbTZKQkFINytNdnFreU8rTHdYR1dtRGl4T2Jza2Jm?=
- =?utf-8?B?R2JEQ0d0MVBQOVl6dnh3YnRXYWxLWVVkNjVlZGhveXVXS3lNSkpLdVcrY0hP?=
- =?utf-8?B?dmVQWnVVa3J1eE5XeHFoY0RDUXBNeE8rMVlqazBmRVFreXlldzBncG9KcHZ1?=
- =?utf-8?B?WitTcm5hZ3ZKeUtuWHF0WDZ4ZkhVM084OGI0TS92R3RSaGVobXY3a2RPTFky?=
- =?utf-8?B?TXJucXdNK1piSVhPWWs1OEFqODl0VElKZFNnU21qeXlVUWlNZUhYOTFRVFN5?=
- =?utf-8?B?aXI2d0hDSmJPeGo3ZmZuY2pXVXAxa3IxZzJtWEhEbUdPVXJPWEtRUUJRRWxw?=
- =?utf-8?B?Mms3TjAzK1FMNVUzTE9rSEp5NU5DbkY0aS8rNW5HY2FDMHhuMk9ST0syRDFL?=
- =?utf-8?B?MjFDdXZHV2lxYk5LSFdvSHRUUHlsbGdPZE5DT2xMR2pLWk9CZWVNVS9VUjFM?=
- =?utf-8?B?V2prVXRIV3dOUVkrM0ZNTXZid3pOUEsrSGhGMSt0THh1KzJvY2c3cGpBa21I?=
- =?utf-8?B?aHBTRzg1Qmp1QW5BT1E3WTdXRk5zcmY1ODR0MmxMa0FidFpiVE1HSCtiNkFL?=
- =?utf-8?B?UXNxVjQwdXJZUTAzZE45d3VpS3AzbVk1TldIWnAxSUlDelYvTTl6K0o2S1FO?=
- =?utf-8?B?aHRVN2RrOE1xczFWWXk3UnBhaUY2eFFDL1g0OHJ2TXg4SFNpZitobnduRXhE?=
- =?utf-8?B?WEdmVDl2ejcveFVjMU81Zk9yZzZrNFlPc3Uwd0F2TzFkMzlXeFdzQ3d5Um05?=
- =?utf-8?B?TkpuUXR4d2h2bFpzeDMveW9GdUV4SWVQZnh6eWNOd2gweFJianhyN2EreHNK?=
- =?utf-8?B?OGRrK3lCQm5WdE03bDBtak1LRXNIaHdLc2o0S0hsWXE1TXkwa0hMNy9TME9Q?=
- =?utf-8?B?bEs0eElQSENIQnNucEVWejdKRUcyL1g1bGxqR2dTc3hjYmZEd0d5WXFTaVRt?=
- =?utf-8?B?b0dMOW5rTmkrOTJxaGFFd1ZDVGswQ2cwZXhTYVk5SStTcEl0U2FUdUlVc2Nz?=
- =?utf-8?Q?Vr5FWvP/nL9AJu0rFY?=
-X-OriginatorOrg: phytec.de
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2a3c6949-2610-4a7d-47ba-08df3a94a037
-X-MS-Exchange-CrossTenant-AuthSource: VI1P195MB0623.EURP195.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Nov 2026 16:56:52.8504
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: e609157c-80e2-446d-9be3-9c99c2399d29
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: LVfVOQIY93BYykugsrZJAD6j3N/s9nRUqaGPryGt1A3WtwHlY14ZHvJAU55Yk48qrypgo/T3w3W84gztT62fnw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9P195MB1730
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261104152253.3279052-1-Frank.Li@oss.nxp.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-Am 30.10.26 um 14:47 schrieb sashiko-bot@kernel.org:
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [Medium] dt-bindings: arm: fsl: missing ABI removal rationale in commit message
-> --
+On Wed, Nov 04, 2026 at 10:22:45AM -0500, Frank.Li@oss.nxp.com wrote:
+> 
+> Replace open-coded assignments to callback and callback_param fields
+> of struct dma_async_tx_descriptor with calls to the
+> dmaengine_desc_set_callback() helper across SPI bus drivers.
+> 
+> No functional change intended. Prepare make to struct
+> dma_async_tx_descriptor private to the DMA engine.
 
-Will update commit description with more detailed description for v2.
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com> # dw, pxa2xx, topcliff-pch
 
-Benjamin
+(Note, you forgot to add the list of the drivers to the Rb trailers of other reviewers)
 
->
-> commit 59deabe3729dc9f9716dfd3c6cfdb69f11310abd
-> Author: Benjamin Hahn <B.Hahn@phytec.de>
->
-> bindings: remove unused binding from old Libra version
->
-> This commit removes the PHYTEC i.MX 95 FPSC board and SoM compatible entries
-> from the Freescale/NXP arm devicetree binding schema.
->
->>      bindings: remove unused binding from old Libra version
->>      
->>      Remove unused devicetree binding from old Libra board version.
->>      
->>      Signed-off-by: Benjamin Hahn <B.Hahn@phytec.de>
->>
->> diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
->> index f917ae7202e96..dec6e22719b5d 100644
->> --- a/Documentation/devicetree/bindings/arm/fsl.yaml
->> +++ b/Documentation/devicetree/bindings/arm/fsl.yaml
->> @@ -1544,13 +1544,6 @@ properties:
->>                 - fsl,imx952-evk            # i.MX952 EVK Board
->>             - const: fsl,imx952
->>   
->> -      - description: PHYTEC i.MX 95 FPSC based Boards
->> -        items:
->> -          - enum:
->> -              - phytec,imx95-libra-rdk-fpsc   # Libra-i.MX 95 FPSC
->> -          - const: phytec,imx95-phycore-fpsc  # phyCORE-i.MX 95 FPSC
->> -          - const: fsl,imx95
->> -
->>         - description: PHYTEC phyFLEX-i.MX95 FPSC-Gamma SoM based boards
->>           items:
->>             - enum:
-> [Severity: Medium]
-> This isn't a bug in the schema syntax, but since devicetree bindings form an
-> external ABI (Documentation/devicetree/bindings/ABI.rst and
-> Documentation/devicetree/bindings/submitting-patches.rst section I.9), is
-> being unused in the kernel tree sufficient justification on its own for
-> removing phytec,imx95-libra-rdk-fpsc and phytec,imx95-phycore-fpsc from
-> properties.compatible in Documentation/devicetree/bindings/arm/fsl.yaml?
->
-> The current commit message only restates the subject line without explaining
-> why breaking or removing this binding ABI is acceptable. In the companion DTS
-> commits 4a096b093cf5 ("dts: imx95-libra-rdk-fpsc: remove devicetree for old
-> Libra") and 01cb871eca78, it is explained that the old baseboard (1618.0) and
-> SoM (1620.1) were alpha-only hardware based on i.MX95 silicon revision A1 that
-> are no longer available, built, or supported, and have been superseded by
-> hardware revisions 1618.2 and 1620.3 using phytec,imx95-phyflex-libra-rdk and
-> phytec,imx95-phyflex-fpsc-g.
->
-> Because devicetree binding patches and DTS patches are often reviewed and
-> applied through separate trees, could the commit message be expanded to
-> include this hardware rationale, mention both the i.MX95 SoC family context
-> (as fsl.yaml also documents phytec,imx8mp-libra-rdk-fpsc) and the removed
-> phytec,imx95-phycore-fpsc SoM compatible, and use the standard
-> "dt-bindings: arm: fsl:" subject prefix?
->
+>  drivers/spi/spi-dw-dma.c          | 6 ++----
+>  drivers/spi/spi-pxa2xx-dma.c      | 3 +--
+>  drivers/spi/spi-topcliff-pch.c    | 6 ++----
+
+> --- a/drivers/spi/spi-dw-dma.c
+> +++ b/drivers/spi/spi-dw-dma.c
+> @@ -397,8 +397,7 @@ static int dw_spi_dma_submit_tx(struct dw_spi *dws, struct scatterlist *sgl,
+>  	if (!txdesc)
+>  		return -ENOMEM;
+>  
+> -	txdesc->callback = dw_spi_dma_tx_done;
+> -	txdesc->callback_param = dws;
+> +	dmaengine_desc_set_callback(txdesc, dw_spi_dma_tx_done, NULL, dws);
+>  
+>  	cookie = dmaengine_submit(txdesc);
+>  	ret = dma_submit_error(cookie);
+> @@ -498,8 +497,7 @@ static int dw_spi_dma_submit_rx(struct dw_spi *dws, struct scatterlist *sgl,
+>  	if (!rxdesc)
+>  		return -ENOMEM;
+>  
+> -	rxdesc->callback = dw_spi_dma_rx_done;
+> -	rxdesc->callback_param = dws;
+> +	dmaengine_desc_set_callback(rxdesc, dw_spi_dma_rx_done, NULL, dws);
+>  
+>  	cookie = dmaengine_submit(rxdesc);
+>  	ret = dma_submit_error(cookie);
+
+> --- a/drivers/spi/spi-pxa2xx-dma.c
+> +++ b/drivers/spi/spi-pxa2xx-dma.c
+> @@ -154,8 +154,7 @@ int pxa2xx_spi_dma_prepare(struct driver_data *drv_data,
+>  	}
+>  
+>  	/* We are ready when RX completes */
+> -	rx_desc->callback = pxa2xx_spi_dma_callback;
+> -	rx_desc->callback_param = drv_data;
+> +	dmaengine_desc_set_callback(rx_desc, pxa2xx_spi_dma_callback, NULL, drv_data);
+>  
+>  	dmaengine_submit(rx_desc);
+>  	dmaengine_submit(tx_desc);
+
+> --- a/drivers/spi/spi-topcliff-pch.c
+> +++ b/drivers/spi/spi-topcliff-pch.c
+> @@ -1022,8 +1022,7 @@ static void pch_spi_handle_dma(struct pch_spi_data *data, int *bpw)
+>  		return;
+>  	}
+>  	dma_sync_sg_for_device(&data->host->dev, sg, num, DMA_FROM_DEVICE);
+> -	desc_rx->callback = pch_dma_rx_complete;
+> -	desc_rx->callback_param = data;
+> +	dmaengine_desc_set_callback(desc_rx, pch_dma_rx_complete, NULL, data);
+>  	dma->nent = num;
+>  	dma->desc_rx = desc_rx;
+>  
+> @@ -1084,8 +1083,7 @@ static void pch_spi_handle_dma(struct pch_spi_data *data, int *bpw)
+>  		return;
+>  	}
+>  	dma_sync_sg_for_device(&data->host->dev, sg, num, DMA_TO_DEVICE);
+> -	desc_tx->callback = NULL;
+> -	desc_tx->callback_param = data;
+> +	dmaengine_desc_set_callback(desc_tx, NULL, NULL, data);
+
+Yeah, data can be replaced by NULL as has been already mentioned.
+
+>  	dma->nent = num;
+>  	dma->desc_tx = desc_tx;
+>  
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
