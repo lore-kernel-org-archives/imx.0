@@ -1,56 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793778301;
-	b=JzCKKSr1vDFY3sHN52245Y8fN5pHEdQWZsZrTrjpuHpcwzx01U5PI/PrhEMK6HRc2hhr
-	 FunxT8toRf1cp7XOISQtwMYXm1ai+FOObeVZhVeq3ZkX2R8EtiDtebG+4/hG/UU4LK0kj
-	 pB+ZStYCLW5tBlzGLXEb+hf+7JA44AymZcdT3+gXJxwJOWDMNclQmNQx7iOGCnpo5i9UE
-	 SHZhcWRXiNlQchzMWEQvr9oAm1onNAaTaXm1HOjSCyM3xaC+y7N9iayvwhq0wBmImuIe4
-	 porvPrCQGAW43c89ywz0gRe8m+bSxR+gyU2+6ua4NncYnmdDoUXVJTS2KrX0j4803Ww==
+	t=1793778312;
+	b=TQA9wiQLmTbdBd6Y0aZBQ4NbXn+oUPpDhsBkQzYYj8+LfOctk2uCRnsUSIdiHqJKUTt1
+	 Iai09vS4IDKhyLbEQR3cUVcpWc5V2ktXdQ1Sx/+blVarfBZBdl+C5N2/SorMwnk3Vks6k
+	 fQBkiSzjTXXj2qkrSuE+3kZNLv5WNHipbNTTYYcXmXDTtDSb8rEjimAhwXwQW/t6sTg6e
+	 nIhO6htqyTXKngfckJASZe5R6hzh66Vs8Eq/jRt+StWKpnoFQhuCZcbMmfZ7bPaw1qsGh
+	 RmXZDHnvxKSedhSZUMcYf1R1wmjoZGtHen3fnwnRH913whsW0knSBTEMYjHjCUVx6/w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793778301;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793778312;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=4fuNnC1DDeWxJkYi31++QJKHXfqs82XVPOtJBjji4pg=;
-	b=VCz8btCWouChTu9GQRx/VnqRHUC5LDRcAdRxn6KBagPFnFYyKu8m93m4yGnC9EWX8b4X
-	 c+APxOA8GA9il6su1FqbfvY+j1zQobxq60GpPVu7jTFRLx+8V5xL+aa9Xms5bjAIs1+Xo
-	 WBj1bd/UWcVOheluTks+wk9Ym6I6uRMvtcG5S9tf+N3OjiCEAbI7ofvhVBtn/GKynZ+i7
-	 Yd/G2D11RwEiqiWkC0RV0cn36pIDeRLu0tpkwaZhgnlQfvWnxJ7tQCAtq8xyPl4m8+RPV
-	 VjKbSz6r24nIzYBlMeU3l8kXruqcXfHL7sgoWEFRIL4+MHUG9kyLT+3uZCXdcbFuWnQ==
+	bh=8y2kXXM0F18zXu60W4wtYhDmW88tNPQqKg6LXtsGAKM=;
+	b=jYHLW1FyUP4VfO2R9yJSY2ZKiNvVzMc3ZD4yG6Nt3kBHAGh7DMacPY5XfUiJDcjFslEp
+	 dbmT8LQZ5+WoZhjFoxHBnAFh3XgT9fJft97uYrflR1E22Vt+W1p4yS46Fbp2G3/PCD8SL
+	 TRJM6W0KZnIO3CbYc7Xxi73pPYL0LDClAVHju2jz0AZQbfQQPMSyRih0bcCK4rya9CYed
+	 CzXE046QU5aUe+OEgHx/TILE2UteP3pU5V77RRml8dMwdCS6q3qbKEO4EgiQVOpM09bia
+	 cYAu4FkIqyG2sw/sLdkkutvYaSyN7aptEan/F3nKRE7gIbUrlGeIHwYjfgb8n7Z7yEw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cs6Vuxv4;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gSIEm2w8;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2D74606A31B;
-	Wed,  4 Nov 2026 07:45:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2013B606A32D;
+	Wed,  4 Nov 2026 07:45:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cs6Vuxv4
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D41441F000C1;
-	Wed,  4 Nov 2026 07:44:59 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gSIEm2w8
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E4841F000C1;
+	Wed,  4 Nov 2026 07:45:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793778300;
-	bh=4fuNnC1DDeWxJkYi31++QJKHXfqs82XVPOtJBjji4pg=;
+	s=k20260515; t=1793778311;
+	bh=8y2kXXM0F18zXu60W4wtYhDmW88tNPQqKg6LXtsGAKM=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=cs6Vuxv4Z38+rWQqTs5IFczijnniUwFhK60EGd+Z1qNfF+fZf0bKdtvoKQ+LiaTW6
-	 lCgAHSaoW5kZHvp/S9ofYpQzs733HgR2GKs4keYOumOzv/zrLQzl+WybJa0esZ87sl
-	 jMC+vvq88yXQds0sMUMOzFHJa8EGBGiZ8sYtuMAHTjro7yIN3Q5VGQRq3xUfqpuaso
-	 6OM0kGxst0xrBWQtMOC7MULbRuU1uVvzLmCiod33ht/LRR44re+dSG2lIqgMAt3FRB
-	 +yADYljuHR6AIrol7LY95Q+aW+96WK42sjwxvWOy1n029hJAI69elsSbfmHcf8eoMG
-	 3gKnWsWxEdilA==
-Message-ID: <sashiko-outbox-196815@kernel.org>
+	b=gSIEm2w8f2RNTicp7R71VbVSmK34XAsUVtlOYji74g4QPS5B9t6PJMnBBsvZfasly
+	 xvDk1TGm+BaQyT2yETy7DTNV06lpPJctnulcsLn0x36v5Q21y4kNMmRDkEph/6fn7r
+	 18rS5ujedEOtVaJRr1InZMEbkmGyyL6O4XqNlIkvfrw+kOnLKjNAeiME8oGmVl3ylc
+	 iOakgPOOQ0jayWV+rSpX3CpfJHsCxBcBCTxHsQ5xLr+yDdD09VDfafS3HhMTivpdhw
+	 YUuBNQqpB5pwkOPWkkT6jeRXLMxaWf9yk55ngJeqv9TnHV1VztjSCoWbW1q7LHTbT8
+	 G1ON5hVs1T9eQ==
+Message-ID: <sashiko-outbox-196816@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 07/10] ARM: dts: imx6ulz: Add BSH SMM-M2B board support
+Subject: Re: [PATCH 03/10] ARM: dts: imx6ulz: Enable RNGB on BSH SMM-M2
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Haoning Cheng" <Haoning.CHENG@cn.bosch.com>
 Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20261104-add-bsh-smm-m2-v1-7-369f0a77e021@cn.bosch.com>
+In-Reply-To: <20261104-add-bsh-smm-m2-v1-3-369f0a77e021@cn.bosch.com>
 References: <20261104-add-bsh-smm-m2-v1-0-369f0a77e021@cn.bosch.com>
- <20261104-add-bsh-smm-m2-v1-7-369f0a77e021@cn.bosch.com>
+ <20261104-add-bsh-smm-m2-v1-3-369f0a77e021@cn.bosch.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 04 Nov 2026 07:44:59 +0000
+Date: Wed, 04 Nov 2026 07:45:10 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -62,79 +62,50 @@ Precedence: list
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Medium] ARM: dts: imx6ulz: orphaned usdhc2_pwrseq claims GPIO2_IO21 on S=
-MM-M2B
+- [Low] ARM: dts: imx6ulz: redundant status override on already-enabled rng=
+b node
 --
 
-commit c962f6331220298bd138ac7db3207348f699e289
-Author: Qiu Guochang <guochang.qiu@cn.bosch.com>
+commit b4e06771ac0019a530bbaccfe9a26a1cf41ddf74
+Author: Leonhard Hesse <leonhard.hesse@bshg.com>
 
-ARM: dts: imx6ulz: Add BSH SMM-M2B board support
+ARM: dts: imx6ulz: Enable RNGB on BSH SMM-M2
 
-This commit adds device tree support for the BSH SMM-M2B SystemMaster board=
- by
-including the common imx6ulz-bsh-smm-m2-common.dtsi definitions and setting
-the board model and compatible strings.
+This commit adds a status override to enable the rngb node in the BSH SMM-M2
+device tree.
 
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ulz-bsh-smm-m2b.dts b/arch/arm=
-/boot/dts/nxp/imx/imx6ulz-bsh-smm-m2b.dts
-> new file mode 100644
-> index 0000000000000..9dc92da6ace97
-> --- /dev/null
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6ulz-bsh-smm-m2b.dts
-> @@ -0,0 +1,13 @@
-> +// SPDX-License-Identifier: (GPL-2.0 OR MIT)
-> +/*
-> + * Copyright (C) 2021 BSH Hausgeraete GmbH
-> + */
-> +
-> +/dts-v1/;
-> +
-> +#include "imx6ulz-bsh-smm-m2-common.dtsi"
-> +
-> +/ {
-> +	model =3D "BSH SMM M2B";
-> +	compatible =3D "bsh,imx6ulz-bsh-smm-m2b", "fsl,imx6ull", "fsl,imx6ulz";
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ulz-bsh-smm-m2.dts b/arch/arm/=
+boot/dts/nxp/imx/imx6ulz-bsh-smm-m2.dts
+> index aac211a9f9ebd..39b7ee585860f 100644
+> --- a/arch/arm/boot/dts/nxp/imx/imx6ulz-bsh-smm-m2.dts
+> +++ b/arch/arm/boot/dts/nxp/imx/imx6ulz-bsh-smm-m2.dts
+> @@ -30,6 +30,10 @@ &gpmi {
+>  	status =3D "okay";
+>  };
+> =20
+> +&rngb {
+> +	status =3D "okay";
 > +};
 
-[Severity: Medium]
-Does including imx6ulz-bsh-smm-m2-common.dtsi leave an active usdhc2_pwrseq
-platform device on the BSH SMM-M2B that claims and drives GPIO2_IO21 even
-though usdhc2 and its pinmux are not present on this variant?
+[Severity: Low]
+Is this status override for &rngb in
+arch/arm/boot/dts/nxp/imx/imx6ulz-bsh-smm-m2.dts needed?
 
-In arch/arm/boot/dts/nxp/imx/imx6ulz-bsh-smm-m2-common.dtsi, the root node
-unconditionally defines:
+arch/arm/boot/dts/nxp/imx/imx6ulz-bsh-smm-m2.dts includes imx6ulz.dtsi,
+which in turn includes arch/arm/boot/dts/nxp/imx/imx6ull.dtsi where the
+rngb node is defined without a status property:
 
-	usdhc2_pwrseq: usdhc2-pwrseq {
-		compatible =3D "mmc-pwrseq-simple";
-		reset-gpios =3D <&gpio2 21 GPIO_ACTIVE_LOW>;
-	};
+    rngb: rng@2284000 {
+        compatible =3D "fsl,imx6ull-rngb", "fsl,imx25-rngb";
+        reg =3D <0x02284000 0x4000>;
+        interrupts =3D <GIC_SPI 6 IRQ_TYPE_LEVEL_HIGH>;
+        clocks =3D <&clks IMX6UL_CLK_DUMMY>;
+    };
 
-However, the consumer &usdhc2 node and the pinctrl_wlan group that muxes
-MX6UL_PAD_SD1_DATA3__GPIO2_IO21 only exist in
-arch/arm/boot/dts/nxp/imx/imx6ulz-bsh-smm-m2.dts:
-
-	pinctrl_wlan: wlangrp {
-		fsl,pins =3D <
-			...
-			/* WL_REG_ON */
-			MX6UL_PAD_SD1_DATA3__GPIO2_IO21		0x3029
-
-When booting with imx6ulz-bsh-smm-m2b.dtb, the platform bus still populates
-/usdhc2-pwrseq and drivers/mmc/core/pwrseq_simple.c:mmc_pwrseq_simple_probe=
-()
-executes:
-
-	pwrseq->reset_gpios =3D devm_gpiod_get_array(dev, "reset",
-						   GPIOD_OUT_HIGH);
-
-This requests GPIO2_IO21 and drives it low as an active-low reset output
-without its pad being muxed to GPIO2_IO21 and with no enabled usdhc2 consum=
-er.
-
-Should usdhc2_pwrseq be moved into imx6ulz-bsh-smm-m2.dts alongside &usdhc2
-and pinctrl_wlan, or disabled/deleted in imx6ulz-bsh-smm-m2b.dts?
+Because neither imx6ull.dtsi nor imx6ulz.dtsi sets status =3D "disabled" on
+rngb, __of_device_is_available() in drivers/of/base.c already treats the
+node as enabled by default, making this change a functional no-op.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261104-add-bsh-sm=
-m-m2-v1-0-369f0a77e021@cn.bosch.com?part=3D7
+m-m2-v1-0-369f0a77e021@cn.bosch.com?part=3D3
