@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793892679;
-	b=UTMdtn7ETfYTGXc4YBEG3gkW7Uw03seY9ZzawKyFvcOemfhHYIePjxgMINePycSCJatd
-	 hS1y4e5p3y/dEQTgCcE3FgVWlNIFzud7wZ3tgZd6K4eiBgvbUPx10KrgT6nCosxZUeTw4
-	 EG8DnnGp2Hse4e60HQ5LKi01yK6Q1yGhlWB1qyvHpa9XlnQ22o1VHrAah5BbcG9zy8DHt
-	 a5fH/w1dzcAaph2EBVwcDH3tmds0nN1L32wEAZeUZEfPqPL106aAInzWKhx7nBAsMBxBR
-	 zme8WFuqYogJX8RlVy/KyIoqz1N9VWJXy6WAp23ae+xCwCkMV040XragkOQcq2K5e1w==
+	t=1793892683;
+	b=nswAS/U7UuFkZKnPXhIyyk/hMIKV0eFTx5Dk0oGwKBmb8s5ydrt5nrGqGqPCQ7NpRya2
+	 ajvBW9k0gGbfaFY4EFgJiPXMF3xx0F7eDUNb3YED8bnhBeLWFMrW+rsKlL1/qvIjIQ2Vh
+	 HIxw2OrznTv6InFUD0UQuXSI8SXfg3Dn1nf6iv5RVaFKXmYX9nyjHuBTkWtoocENqNTEf
+	 LQwj3RfPrSFa+Ohu7yrirR7DSNdSp+Frc7a+PLBGIrXmzB9Pjq6C235wMGmBGNcNF+X1V
+	 A3T8NVOkugDUMK/nX42/F53NlejJ2n3JxFLZDS2vQ6Fi6LaG7w+E1FHCpTAm3QD3x1g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793892679;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793892683;
 	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
 	 X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=knwrJcvL7clG1HfpArVpNGWtATX6g5pA/gVZFr5kzV0=;
-	b=RoOSXw9T1s9pO+aMMLtibB1Be5wPZfj2XdN1OLz7baxMKvu9+qNrWYRXcr+NPshwxgh4
-	 9WPbFKQiWmRWMio4h0SfeejMAUfyNBjXGFZCc52B3S9PLY3Vuw/uHKubHr1ELw7tT9Qo9
-	 0fu7viXeLxjKc9CFPjp+EtZv+xby/NDmKJCrhhUx19AyPXVsv1ELmr7oKhbU/W1OfR+tF
-	 1LukPoCC1BczskYfbI2jZVOvag5hdHtbqwrAFE5syBfpKn/trwDb8scACRkLCeHQcODCM
-	 NPmeT37NRLbfhqK81tXumhwxDQIT0FTuumyecXirdt09l+snTvRi0Xjr8p6EmLLYuEg==
+	bh=k4rz680V7cIAb7iutGeH77t262DzHjpYVR2yTCZegGo=;
+	b=qx7Zcf80XssHVs03orIUNbm8bbWiAaZVvC8iWuQeNFG0wV1X513Rye6/Ft2nFO3Bz01m
+	 tCaUGDQMS092483fXhtZvXK8k/6BaHRaZyERYYBg8CVUmX8id5aWcDhIV7V34xB3H89Yw
+	 AVYw1sCK6osaXqcgnc03sIeuKCTLgb1FvQpPPy8C7av1qYxu5XS4nkicWAHTjnRaI71ML
+	 xrW0DUdhKvx1qISeM9UMJrkuNM4ZFGi+i6jO3KhgnAFoZ9+DX8BdW/1R8zvlIUMlCkwHc
+	 ONaYjcGLrAZT9xgaOwdX7hdf30GCyWlozJ1W26QRoGuWJbapUK4FbUFPWGydFsX8o9g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CyQbWkj8;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BB5Ic7JH;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2304C606D806
-	for <imx@lists.linux.dev>; Thu,  5 Nov 2026 15:31:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0783606D806
+	for <imx@lists.linux.dev>; Thu,  5 Nov 2026 15:31:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CyQbWkj8
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43CF41F00A17;
-	Thu,  5 Nov 2026 15:31:18 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BB5Ic7JH
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC4031F000C1;
+	Thu,  5 Nov 2026 15:31:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793892678;
-	bh=knwrJcvL7clG1HfpArVpNGWtATX6g5pA/gVZFr5kzV0=;
+	s=k20260515; t=1793892682;
+	bh=k4rz680V7cIAb7iutGeH77t262DzHjpYVR2yTCZegGo=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=CyQbWkj8ULAGkHywxZ7UqhJpS+/pxtvpjbeZqnh6/AT+0Ifj03IoKf0apH7espjDH
-	 856TOU026loq5w6GiPRIPTxT/NTw4Wr/LOq5GUMdx3GLSnx7slLU0n6orpzx2Qim95
-	 zDbG2iY+RojiH78yrAM+wppXSWF26pWfsDvHiH9lFL9HgBDMZiFo6st9jk770eNwYo
-	 V3M5Q1MTFBszLryCK9cYjs45RSCzEdM9D4UQ0rYz9cJnia+GfN1maIxFWCs7QTKF04
-	 NyqjhnQjOdvMYByguIrnSVXl5owOfvwwaXIYC1Qw7keU25stmBUGuaM9YwaTKTxJVo
-	 GEZm/T83PmDIg==
+	b=BB5Ic7JHgdYxxa7vuMlU5JnZYwORREKVBE2MT134haR7UF3zBhU6h8PbsR9M5TfXN
+	 cO9kBzT8+IztfWtDx2jOcHTGgf24yPDMKVYKvPSOMOSaNVvUSHRHZVOC1GYPwJYN5N
+	 R3TNbTdkfqf/A5zrXBdgN7M3G423IHfADSCMNK0fW9s0DE8zU7YU+iaVFehLQJ/R1v
+	 5lv73xrwqhzYk2zuvTOrVF+Ny9eYAsuSoz8aJ+THmAZ0mS5hZ/91YWAzHIF0v9fB0L
+	 M3TllWw6HqE5odMvbqDg+um+0VI96Gc+3aAIlqOICF4ZuoQT3AuLjRMQHJ21jX7i46
+	 lRWVrPmJLO0vQ==
 From: Maxime Ripard <mripard@kernel.org>
-Date: Thu, 05 Nov 2026 16:29:27 +0100
-Subject: [PATCH RESEND 18/83] drm/imx/dcss: Switch to
+Date: Thu, 05 Nov 2026 16:29:28 +0100
+Subject: [PATCH RESEND 19/83] drm/imx/ipuv3: Switch to
  drm_mode_config_create_initial_state
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -55,7 +55,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261105-drm-no-more-config-reset-v1-18-1f58d1e33380@kernel.org>
+Message-Id: <20261105-drm-no-more-config-reset-v1-19-1f58d1e33380@kernel.org>
 References: <20261105-drm-no-more-config-reset-v1-0-1f58d1e33380@kernel.org>
 In-Reply-To: <20261105-drm-no-more-config-reset-v1-0-1f58d1e33380@kernel.org>
 To: David Airlie <airlied@gmail.com>, 
@@ -63,17 +63,16 @@ To: David Airlie <airlied@gmail.com>,
  Simona Vetter <simona@ffwll.ch>, Thomas Zimmermann <tzimmermann@suse.de>
 Cc: Maxime Ripard <mripard@kernel.org>, dri-devel@lists.freedesktop.org, 
  Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>, 
- Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>, 
- Lucas Stach <l.stach@pengutronix.de>, 
  Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Philipp Zabel <p.zabel@pengutronix.de>, 
  Sascha Hauer <s.hauer@pengutronix.de>, imx@lists.linux.dev
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1407; i=mripard@kernel.org;
- h=from:subject:message-id; bh=gk//ZtUuN08aJvV+if2UwQNlLwY4QXiavgS+/Rit8uk=;
- b=owGbwMvMwCmsHn9OcpHtvjLG02pJDFlvFjz1qQya8HSbVrjRuRkiK/58PPaUI/tbwNmPpdrC3
- d1y2pOUOqayMAhzMsiKKbI8kQk7vbx9cZWD/cofMHNYmUCGMHBxCsBEeDUZ63NXvvzoyZNcGSFq
- u2KmVmyp8gWHkKeT/no/P8W7jaFL90z2TLFZP+VdK93d1uQXeitZMzYcEPswZX7Uj6A2v0V5U3e
- eDOVN/av1PoBx8qStTLYzZ2k23Vu8aLbIPJeIi+8WvWNcIRoJAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1328; i=mripard@kernel.org;
+ h=from:subject:message-id; bh=R1dioC/IosBGQUi4ZFDeC1cA3Y5gHU7STgC448dv8hY=;
+ b=owGbwMvMwCmsHn9OcpHtvjLG02pJDFlvFjzte7NHXXrOct7GrVJMVqy3ndZsn/FfcOqztRpX1
+ haI7Vq5qGMqC4MwJ4OsmCLLE5mw08vbF1c52K/8ATOHlQlkCAMXpwBM5FsJY33hs7DDsWH2x7bd
+ afmzUtvI80JbnKLhWY7J769xzFVo0eadIjh1RrtC0KJvXH0hdxwa/jM2/HrcnuGXsPp87FmG7sD
+ A1G3/eh8KTM1cGNyb//dnxkyJoiNrPxdeYLoq4bKw8knd0+veAA==
 X-Developer-Key: i=mripard@kernel.org; a=openpgp;
  fpr=BE5675C37E818C8B5764241C254BCFC56BF6CE8D
 
@@ -92,28 +91,27 @@ Signed-off-by: Maxime Ripard <mripard@kernel.org>
 ---
 Cc: Fabio Estevam <festevam@gmail.com>
 Cc: Frank Li <Frank.Li@nxp.com>
-Cc: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
-Cc: Lucas Stach <l.stach@pengutronix.de>
 Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+Cc: Philipp Zabel <p.zabel@pengutronix.de>
 Cc: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: imx@lists.linux.dev
 ---
- drivers/gpu/drm/imx/dcss/dcss-kms.c | 4 +++-
+ drivers/gpu/drm/imx/ipuv3/imx-drm-core.c | 4 +++-
  1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/imx/dcss/dcss-kms.c b/drivers/gpu/drm/imx/dcss/dcss-kms.c
-index 7c5a6e2bc89a..92ac29960e48 100644
---- a/drivers/gpu/drm/imx/dcss/dcss-kms.c
-+++ b/drivers/gpu/drm/imx/dcss/dcss-kms.c
-@@ -142,5 +142,7 @@ struct dcss_kms_dev *dcss_kms_attach(struct dcss_dev *dcss)
- 		goto cleanup_mode_config;
+diff --git a/drivers/gpu/drm/imx/ipuv3/imx-drm-core.c b/drivers/gpu/drm/imx/ipuv3/imx-drm-core.c
+index 51a0ec043248..b7b6ae8f9578 100644
+--- a/drivers/gpu/drm/imx/ipuv3/imx-drm-core.c
++++ b/drivers/gpu/drm/imx/ipuv3/imx-drm-core.c
+@@ -245,5 +245,7 @@ static int imx_drm_bind(struct device *dev)
+ 		goto err_kms;
  
 -	drm_mode_config_reset(drm);
 +	ret = drm_mode_config_create_initial_state(drm);
 +	if (ret)
-+		goto cleanup_crtc;
++		goto err_poll_fini;
  
- 	drm_kms_helper_poll_init(drm);
+ 	/*
 
 -- 
 2.55.0
