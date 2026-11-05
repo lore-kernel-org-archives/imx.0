@@ -1,65 +1,66 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793889551;
-	b=tC1qgM438Y74jbHRHMBMtLo8aAMdsDhCFpF/SOwOB6cxWFVPoMsqb4UkSXXFdXmPKdjA
-	 4kQWvxVg5BAn0yvOT/EoPFWWDazamVqy3vCfwmxKgG8b5kp+X2VSIEX8wRvwR+G4xvVLF
-	 yJLucFW5KX3nNDeowsL6StCyjMGL8BrfJoEb6P0QZ6NatLAmBH+GfmwLXaMHKPFB778Om
-	 Mg/sheA9Rwptl/OcRm/V6KsqArg+qzFsUAkAV7tlBBSqgM0q18aW+XfRBsrMGak4SB/HE
-	 PN4JUvo5uEgyxB0j1BMswihDPw07kV955s9NS4OSnPnLyzswwf1VzIii3xYTWIWLclw==
+	t=1793889718;
+	b=IPEDGJgnMHHRFeth4f3nxaLuLb9qNVeXLgVkh+dnkgSGfbaZmHNq4Do4abmpHbfXsaHQ
+	 CK+6pK8232pq5IsIsCqNBA7GgDEPF12Yof4ZaG0LCcxaSiMw+j/Y7tVw5gT2ACn1irI5W
+	 790tAfNdNXYc+l7X9aYS6RmwouNjFznMG84Jb+TaWQ7A0EHr/vhUKWCYubMpqrh2sjQfp
+	 ntruuMy5bclPa+CbsH/XvYMM9JH8/BTwQob5EouJ3vfRhdYNRPlO1EM8S3RhJ11fxggZE
+	 Yw1JAfTn24opxmkIzn2R85HIhEkcxTKF2+yaI1F+/wZ0rAv9Nz2t1GW1Ix8R3pPMaFA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793889551;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=Cz3hsHoABfHQJbIVOt0JnDILxbqus7gt6vD3k/2YVn0=;
-	b=bRDVLK7QRYuiNus8tLXafEqvJt9s+Oa/pmBbTam+zQmS5rEUimMTcWVlx5xCuqLOm7J1
-	 aoy5+EaFE2IwxRDECXV8AHwfAzYOGyND/np7OwkmVqCcJbnhONddqM4Q/3RDJ8lKniZvJ
-	 HO1a08msSrIGD8oraivmHsczTBhTpYvF7DpfBjslil/qfkgGcuKgyZPCloU6N77WA+YpG
-	 kNVvMIUGvJwyH+N6T43ooiFa4f4K2ucqVMNi0bsGNOH0PWboWTTXSRlo3cfAe9W1NZNPS
-	 PUXuULt1ZRtyqCZvOzRI7HQHwaToLZ9NCFL1YZYQ0UFltHsPTFi1CIB3u0Z3Eqrk5Vg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793889718;
+	h=Received:DKIM-Signature:Received:From:To:Cc:In-Reply-To:References:
+	 Subject:Message-Id:Date:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:X-Mailer:X-Developer-Signature:
+	 X-Developer-Key;
+	bh=FM0GXu6K3ywCewrFLfc/Mlz2IYTQV7GkWoeDvvAVApY=;
+	b=M2cllGuT5h2mkDk6TKRgrIGq3D/Z7mHrvq+xdEjEH66ETTN4d4FwxEVrM5BPI4uMR+4v
+	 YNiByqMF/xfaAn7g/GC8qNUKypeN7x1JHXUqzsIK35xVJXg9SysxEKzgQr0F5SDI3kfx6
+	 eZosH80n3PThiW+nMEereiBRVVC1V33jTWB/qH4hE20PtThu3082PyYoXmeXUaL2iegJ3
+	 NeRFtm7xN+9fqUJzwxP3QMGY2JaqDmWV7LC/svAalghcqZ6b0aUlLD0U71M9p4qz+NBAZ
+	 a3QAFxdKwmj0yByArYgxCv+d4CmOq1yx0aWfcu+y3ZE/n/s2oBVauBZgnK/kFsJlkCQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XkJA2VS0;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hr3V0onR;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B966606A326;
-	Thu,  5 Nov 2026 14:39:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C0BD606A31B;
+	Thu,  5 Nov 2026 14:41:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XkJA2VS0
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7BAC1F000C1;
-	Thu,  5 Nov 2026 14:39:08 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hr3V0onR
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5D741F00919;
+	Thu,  5 Nov 2026 14:41:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793889550;
-	bh=Cz3hsHoABfHQJbIVOt0JnDILxbqus7gt6vD3k/2YVn0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XkJA2VS0NGDGHcmyWZyMjjgyvEklZ5U1BDW2fKU3a1+2QSPj86fHovI4QOs9zcxuv
-	 D9YuSxDd4pnxPeZ7vHPemTMfX9KBgl4cHHcFtWHRR3D/VZmtQGks2SnEBFxWnV1wtI
-	 VtRf8W8NeLSeLanr7xxLQc82ys0XJmC49lx7c8bmQ/DXDAD+PtoN7BC4ElkabBQCBx
-	 d6Ujx9TZ8Esqq3LiKu9AagDPSv0DUkK2xJttIfJCbj1cT+zo4FAw/3f07TzqamQ5iQ
-	 1EcNjog8xQUTT1ftVXuAKMFi2Vip362txfvKI13PEHn+1XzueuE1Y3jo3kDPliB1PH
-	 ID013pdQxFHXA==
-From: Lee Jones <lee@kernel.org>
-To: lee@kernel.org,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Shawn Guo <shawn.guo@linaro.org>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	linux-pwm@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH 2/8] pwm: mxs: Return early when disabling and fix error-path clock leak
-Date: Thu,  5 Nov 2026 14:38:04 +0000
-Message-ID: <20261105143847.2559586-3-lee@kernel.org>
-X-Mailer: git-send-email 2.56.0.398.g882cbad275-goog
-In-Reply-To: <20261105143847.2559586-1-lee@kernel.org>
-References: <20261105143847.2559586-1-lee@kernel.org>
+	s=k20260515; t=1793889718;
+	bh=FM0GXu6K3ywCewrFLfc/Mlz2IYTQV7GkWoeDvvAVApY=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=hr3V0onRTktBtJzR21B6OPO3ER33IJufrxsPFAG8sRVMqmOCiXBqVEwwJV4mYFmrb
+	 csJXkI1xRPkFDlI2k732vjzz4WUQUSVwSBjQTfioNJS36BTkmymF0Vyjt1NsvqBTU4
+	 bppwtb37sSiq6LRK8pboFm7Ldr1cehSi2hGHkAUfPagiM3FWq8/fAj5Sig1tRMdAd3
+	 EfwDk46IBN/Ac7QzSb3WCoGhQZCdqLT/JXnM2cy9weebFW+tdUk2cTiAXOWrPJh7hZ
+	 G2AcL0I29/fuLkhmCzd2Zxlk/vRQClpRLmDXtZ9lpbVL7U7VRSntf5QYPhkDpdrChK
+	 4Pd10GbX06qPw==
+Received: from traversing.sirena.org.uk (localhost [IPv6:::1])
+	by traversing.sirena.org.uk (Postfix) with ESMTP id E139A2795E7B;
+	Thu, 05 Nov 2026 14:41:55 +0000 (GMT)
+From: Mark Brown <broonie@kernel.org>
+To: Shengjiu Wang <shengjiu.wang@gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>, 
+ Fabio Estevam <festevam@gmail.com>, Nicolin Chen <nicoleotsuka@gmail.com>, 
+ Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>, 
+ Takashi Iwai <tiwai@suse.com>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Valerio Setti <vsetti@baylibre.com>
+Cc: linux-sound@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20261104-imx-sgtl5000-cleanup-v1-1-62739fbb4a25@baylibre.com>
+References: <20261104-imx-sgtl5000-cleanup-v1-1-62739fbb4a25@baylibre.com>
+Subject: Re: [PATCH] ASoC: fsl: imx-sgtl5000: release codec clock right
+ after reading its rate
+Message-Id: <179388475372.2912885.15403731696986720392.b4-ty@b4>
+Date: Thu, 05 Nov 2026 13:19:13 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -69,94 +70,46 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1165; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=eKulEu67eFyz/ko+paAxBSfq+R8JXOGf+PgSzd22/sk=;
+ b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLLeTN1cv2BWZszG7LU3G+0+vzsn9DyYTd6Z8WAFr/fht
+ 7dnZ5182FHKwiDGxSArpsgSl8X9sr7k9Rq+gwvbYOawMoEMYeDiFICJqJ5h+Ge7aWFf+pdNaldP
+ inCx5FZ0cSc+Y9ixznK3pNQFyStudSmMDAfOrlilOztjJduNMz9CwmaencU7+dNqoSSDW7bRlSV
+ ccxkB
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-When disabling a PWM channel (!state->enabled), the PWM core permits
-state->period to be zero.  mxs_pwm_apply() currently falls through into
-the period and duty-cycle calculations even when !state->enabled,
-causing do_div(c, state->period) to divide by zero when state->period is
-zero.  In addition, if the requested period exceeds the maximum divider
-(div >= PERIOD_CDIV_MAX) while the PWM channel is currently disabled,
-mxs_pwm_apply() returns -EINVAL without disabling and unpreparing
-mxs->clk.
+On Wed, 04 Nov 2026 11:48:35 +0100, Valerio Setti wrote:
+> ASoC: fsl: imx-sgtl5000: release codec clock right after reading its rate
 
-Handle the !state->enabled path upfront and return early, and balance
-clk_prepare_enable() on the -EINVAL error path.
+Applied to
 
-Fixes: bf29c2ff82fd ("pwm: mxs: Implement ->apply()")
-Closes: https://sashiko.dev/#/bug/linux-710f863f-6964-4e4f-990a-e5043dbc1a87
-Cc: stable@vger.kernel.org
-Signed-off-by: Lee Jones <lee@kernel.org>
----
- drivers/pwm/pwm-mxs.c | 32 ++++++++++++++++++--------------
- 1 file changed, 18 insertions(+), 14 deletions(-)
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-7.5
 
-diff --git a/drivers/pwm/pwm-mxs.c b/drivers/pwm/pwm-mxs.c
-index e1a3df6549fc..16233764fd3c 100644
---- a/drivers/pwm/pwm-mxs.c
-+++ b/drivers/pwm/pwm-mxs.c
-@@ -56,6 +56,14 @@ static int mxs_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
- 	unsigned long long c;
- 	unsigned int pol_bits;
- 
-+	if (!state->enabled) {
-+		if (pwm_is_enabled(pwm)) {
-+			writel(1 << pwm->hwpwm, mxs->base + PWM_CTRL + CLR);
-+			clk_disable_unprepare(mxs->clk);
-+		}
-+		return 0;
-+	}
-+
- 	/*
- 	 * If the PWM channel is disabled, make sure to turn on the
- 	 * clock before calling clk_get_rate() and writing to the
-@@ -67,9 +75,6 @@ static int mxs_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
- 			return ret;
- 	}
- 
--	if (!state->enabled && pwm_is_enabled(pwm))
--		writel(1 << pwm->hwpwm, mxs->base + PWM_CTRL + CLR);
--
- 	rate = clk_get_rate(mxs->clk);
- 	while (1) {
- 		c = rate >> cdiv_shift[div];
-@@ -78,8 +83,11 @@ static int mxs_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
- 		if (c < PERIOD_PERIOD_MAX)
- 			break;
- 		div++;
--		if (div >= PERIOD_CDIV_MAX)
-+		if (div >= PERIOD_CDIV_MAX) {
-+			if (!pwm_is_enabled(pwm))
-+				clk_disable_unprepare(mxs->clk);
- 			return -EINVAL;
-+		}
- 	}
- 
- 	period_cycles = c;
-@@ -101,16 +109,12 @@ static int mxs_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
- 	writel(PERIOD_PERIOD(period_cycles) | pol_bits | PERIOD_CDIV(div),
- 	       mxs->base + PWM_PERIOD0 + pwm->hwpwm * 0x20);
- 
--	if (state->enabled) {
--		if (!pwm_is_enabled(pwm)) {
--			/*
--			 * The clock was enabled above. Just enable
--			 * the channel in the control register.
--			 */
--			writel(1 << pwm->hwpwm, mxs->base + PWM_CTRL + SET);
--		}
--	} else {
--		clk_disable_unprepare(mxs->clk);
-+	if (!pwm_is_enabled(pwm)) {
-+		/*
-+		 * The clock was enabled above. Just enable
-+		 * the channel in the control register.
-+		 */
-+		writel(1 << pwm->hwpwm, mxs->base + PWM_CTRL + SET);
- 	}
- 	return 0;
- }
-Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
--- 
-2.56.0.398.g882cbad275-goog
+Thanks!
+
+[1/1] ASoC: fsl: imx-sgtl5000: release codec clock right after reading its rate
+      https://git.kernel.org/broonie/sound/c/4ab9e4ccfaf7
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 
