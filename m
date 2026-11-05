@@ -1,64 +1,103 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=54.92.39.34
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793846397;
-	b=tzCFWETzYuAgpq/5e/tVkLRW4gcIpJYwCuZncd7Ed4ZgT2V8Vms0yyClgOKf1kBjbahl
-	 0YTjNHLfcGnSfzAHfwCVz2NY/gPwcAF3p16+9VKgRehHIta/ivQnS0s2gK6I/XlZezfVb
-	 lg7yYUH7lqOic2vvDh2ffy3hERnwIn13PWgNTQfnWWDtlY7lmLltPz3CcB+yBex97utJw
-	 EEqp4vaJvQIiI/dJw/a3FH9e6GtU7dCZIib+hTGsEK23+glb9sYEA7C6wGgJZGBUW1+Hs
-	 arhwMCvgFP2mESjGg70s5m0IR9czoMaFNHos2GbjBKFTi1bNiqBznrntXsymxF6H3AQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793846397;
-	h=DMARC-Filter:DKIM-Signature:X-QQ-mid:X-QQ-Originating-IP:Received:
-	 X-QQ-SSF:X-QQ-GoodBg:X-BIZMAIL-ID:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:X-QQ-SENDSIZE:Feedback-ID:X-QQ-XMAILINFO:
-	 X-QQ-XMRINFO:X-QQ-RECHKSPAM;
-	bh=8nHg2KK9YdUFsDyCN5OyhUk3RMp8EQBW/fDZ8x8OirA=;
-	b=pNxItIZ5XrmHTZGlotcjM4XSIZoOeD356yVrxD8er1zHxXHSt9FvWY+oGUzTgrrk0iPy
-	 qaPOXKrRDmC2WyGC1JjKpgD8VCs48DWxlJAJKxTX4A3G/NavmkHzLAf/X5FK9Czwro7qU
-	 z+RzU1AZYgsXzv53uXhVxfo8Wcx0zE6v9ABl6SbcPGhxI23D7m/dvy4mLnoazjB7nw+RK
-	 dqDwww4yUb6l1HJgC3YuwgCAKsizwM74+Dj9IuBe5vDvowqEqkxW+NFcVzhBtE08/eYGv
-	 KHYZn4nSbUj6TkYNIEUUgU3PYGnlqXv7FdfdWQPAlv+RoOtHsUIJvftfZr9ERxc2E4w==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=linux.spacemit.com;
-	spf=none smtp.mailfrom=linux.spacemit.com;
-	dkim=pass header.d=linux.spacemit.com header.i=@linux.spacemit.com header.a=rsa-sha256 header.s=mxsw2412 header.b=CQnGzt4E;
-	arc=none smtp.remote-ip=54.92.39.34
-Received: from smtpbgjp3.qq.com (smtpbgjp3.qq.com [54.92.39.34])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.84.15
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793846498;
+	b=ALYDJvNu8c+pt0jrIBVb7IcTbBs6HUCxy/Q4mOUW1/eWGPDi1rdhVdbwHYdTx1qk/ZoJ
+	 pK56LOD+U7R5wsd2KI2HdxyRzIC/hdIlqMY/43Ld9m8yJ+TT7oHoNdEWQqu+fZ+hmVu85
+	 rV7E4gof7oaU+UqK+xRQCZ0oTPRlZA9Bf19+4Y4/bXjenSvcsGrFmmXPniJYoa0vEG5IS
+	 IGPD9KMAvMG9LgmncDuWZOhwRDfFing98bqggYv3RqQCofjcQ/JVi+yN6Y0abxNQ0ELmS
+	 nHSyZM3iKmcj8ZVND03EvkvQ0zon23ECFeOE7QVj1dC7PFG9dZ6vUnO0/wsb3WuYQ8A==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793846498;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
+	 Received:From:Subject:Date:Message-ID:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:CC:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Originating-IP:
+	 X-EOPAttributedMessage:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-Id:
+	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=8K6IsdmJNISdrwx341yGj2Us2dqjc+r5wspgPkn0I9M=;
+	b=czQSA4M8L3fcNQ5XWCSZ6BZAvSre0VA3PwDIxNRgx287sjYD7xHgi3yC9Tdk+8GX4PS0
+	 dsTIJ3wOVnW6MqsSgd+frmr/Sek/K9PZFGN6w8Pj3XHJZm3y6rb9HW8aTW1cDkp9OvbNL
+	 mfGPsu2y29PSf4y8tSrT8bX2BWkdRi87Tuxp4ygSBGtkUw/gdeTtHkiLHG6gFZYS51vRZ
+	 DhnrJCu9KP4/bijcLQK6jp8MfILdb7MMr5wHy0npIZ4pznR8qnxXdcSUjoxNh0H/KKNJE
+	 9z6ZN34b2V7veF+ZmzBGuCFhW69p8jZ/1GXjcGC1u6IywBCAr5+wtaxYXR3WD09F2Dg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=cn.bosch.com;
+	spf=pass smtp.mailfrom=cn.bosch.com;
+	dkim=pass header.d=cn.bosch.com header.i=@cn.bosch.com header.a=rsa-sha256 header.s=selector2 header.b=dX3BE7LI;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.84.15
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010015.outbound.protection.outlook.com [52.101.84.15])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49A13606D80B
-	for <imx@lists.linux.dev>; Thu,  5 Nov 2026 02:39:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 49A13606D80B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux.spacemit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.spacemit.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF218606A31B
+	for <imx@lists.linux.dev>; Thu,  5 Nov 2026 02:41:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BF218606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cn.bosch.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cn.bosch.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.spacemit.com header.i=@linux.spacemit.com header.a=rsa-sha256 header.s=mxsw2412 header.b=CQnGzt4E
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.spacemit.com;
-	s=mxsw2412; t=1793846389;
-	bh=8nHg2KK9YdUFsDyCN5OyhUk3RMp8EQBW/fDZ8x8OirA=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To;
-	b=CQnGzt4EeAAhH/jwaRdpQJnd6r1AQ8SOk2uk93YTZ3teRIvNdW4uYlmwAXhG7wYFS
-	 d6IiLv4hUfLnFd02MWzgJjb2zGh1Wt6Sfa6yv9Uz/F9j7vK1vUB6thl64r+Ubn1laK
-	 jfuqPzwsb86Uc9U7Je2CFhCWkO4NNj2gj/+Rzc3w=
-X-QQ-mid: esmtpgz16t1793846385tcf6de6e0
-X-QQ-Originating-IP: PK2os6PPFPNyqxTSJT9OBm8Qujw5oGBV636VNlPfNMk=
-Received: from mail-pj1-f46.google.com ( [209.85.216.46])
-	by bizesmtp.qq.com (ESMTP) with SMTP id 0
-	for <imx@lists.linux.dev>; Thu, 05 Nov 2026 10:39:43 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 8205989073931256863
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-3acdcfa2bd3so1226788a91.3
-        for <imx@lists.linux.dev>; Wed, 04 Nov 2026 18:39:44 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AKwUvBzoKXFJLcco7QnddNMQ0BXCC+DWgOkvBpmMkKLQUIN35xTI0udrNXqIfxRJZslVq04T78Q=@lists.linux.dev
-X-Gm-Message-State: APuU4Z+gZFdO0qf5plr9PWb6rMIflg4XXhex+WUW1OOSulYrNTkuatFx
-	Fg1BEUlhaUFASLDbkerWAClBJOKdPqjgZnaNvIfi8O0U+52bzOsHRuT31uX6R8nVNacrhNDA8a+
-	t54myV1UNDbaTmREbX6OmPcknxkk1cAo=
-X-Received: by 2002:a17:90b:562d:b0:3ad:a462:f07f with SMTP id
- 98e67ed59e1d1-3ae8982c1ffmr16206466a91.45.1793846382617; Wed, 04 Nov 2026
- 18:39:42 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=cn.bosch.com header.i=@cn.bosch.com header.a=rsa-sha256 header.s=selector2 header.b=dX3BE7LI
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=DGusmVb4guHkR/jaE2lHdVOZfki26mWYqgDSupSLlB6jyor+c1p9p5KyAfVcRXlfhurBgA+NrSxsOuHFtgyswNBoKhnuHB36x7vDglGvVmpZoeSsjU6mmI2eD+19vHKNl/ZqsK1LPhWhdktpYObQXZL7f9811NBZZcJkrWo+JspM/rN5XoFswtSfDa/aPfVOmByCt/bRFHU2ziM6iPlK6y4cjGqlaEJl2LLHdf/lAmUIXuQiP0PCY4JrvlBX9feFjw2onsyfGd379ENKWPiPLyLNVx2+5nybwci/IjRcmqa88hi7Erq7vAHrNzdlbvHDxVmahRhZlRE+gF8NjOMtXQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8K6IsdmJNISdrwx341yGj2Us2dqjc+r5wspgPkn0I9M=;
+ b=tBHJP1yHefW9Bosc29fz9BGAw0N7bYEQcjcYdsuw0SKNmnvfdnPlmT49qDGRKjsryvL8nAEFK8yjOqdYCnSn5mrRsqhwOc9RYnqWnxywz6t1J/VeVgznmWFyoIJqSSN4d/BPLDJjV0LeiJIKqGhGRvw4V9gcRtJUI+1rrvrOahmF/yNVjIqT99FLMB/fyoeql0ToPiN8EuBhBBtQbxcJBEjxgHQ50r0FuVi+nfVcwr5QG2ko7cGTOFUIEOJTJhTj2cgBgCgTva/farkkHORQm8j2iiiSaTEorwEpSCZXjjcYlsGwVK8F4lV8JTNC9hAKrN6zoupNi83uQkzYQFU0Vw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 139.15.153.206) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=cn.bosch.com;
+ dmarc=pass (p=reject sp=none pct=100) action=none header.from=cn.bosch.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cn.bosch.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8K6IsdmJNISdrwx341yGj2Us2dqjc+r5wspgPkn0I9M=;
+ b=dX3BE7LIpYARvU20gzOHWshbID+xd6RIj/Y+OhQhyAkmSW7gNk9RFySKD+OY0UDZJNr+uTE7YcwaMy8BZohx+c0qP5Tc986KRl0LwP4+aQnuCSyb/bMgSyHU5sdVxV5AysLf4t4GnmOG+WZtUtGPjzJxd0lM2i6R/2dJZTYEGnIE77x0vzEfSh+CduhGH13V8KFeMFZSNEmTK6y4b99C6ABtnmYpNRGI0po2Jb7H3GsrbuPFrzbFzoX+LS5nvMZSN4Iuqjk9MvtsjHqTYMKM//wEd7FPlXS48ZqLnBCVkxxVfbce40KeaMhbWvgy2pu1Gz/9PSRpSDLkxgBW0ZwEfw==
+Received: from AM0PR02CA0134.eurprd02.prod.outlook.com (2603:10a6:20b:28c::31)
+ by BESPR10MB9293.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:b10:ef::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.10; Thu, 5 Nov
+ 2026 02:41:34 +0000
+Received: from CPH1EPF0000051F.eurprd04.prod.outlook.com
+ (2603:10a6:20b:28c:cafe::78) by AM0PR02CA0134.outlook.office365.com
+ (2603:10a6:20b:28c::31) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.592.8 via Frontend Transport; Thu, 5
+ Nov 2026 02:41:34 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 139.15.153.206) smtp.mailfrom=cn.bosch.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=cn.bosch.com;
+Received-SPF: Pass (protection.outlook.com: domain of cn.bosch.com designates
+ 139.15.153.206 as permitted sender) receiver=protection.outlook.com;
+ client-ip=139.15.153.206; helo=eop.bosch-org.com; pr=C
+Received: from eop.bosch-org.com (139.15.153.206) by
+ CPH1EPF0000051F.mail.protection.outlook.com (10.167.241.234) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.592.5 via Frontend Transport; Thu, 5 Nov 2026 02:41:33 +0000
+Received: from RNGMBX3003.de.bosch.com (10.124.11.208) by eop.bosch-org.com
+ (139.15.153.206) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Thu, 5 Nov
+ 2026 03:41:33 +0100
+Received: from WX8-V-0008J.wx.apac.bosch.com (10.190.167.205) by
+ smtp.app.bosch.com (10.124.11.208) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56; Thu, 5 Nov 2026 03:41:28 +0100
+From: Haoning Cheng <Haoning.CHENG@cn.bosch.com>
+Subject: [PATCH v2 0/8] Update BSH SystemMaster device trees and add
+ SMM-M2B support
+Date: Thu, 5 Nov 2026 10:41:14 +0800
+Message-ID: <20261105-add-bsh-smm-m2-v2-0-fb5ffc7da486@cn.bosch.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -68,104 +107,129 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-References: <20261102135330.2493332-1-robh@kernel.org>
-In-Reply-To: <20261102135330.2493332-1-robh@kernel.org>
-From: Chunyan Zhang <chunyan.zhang@linux.spacemit.com>
-Date: Thu, 5 Nov 2026 10:39:06 +0800
-X-Gmail-Original-Message-ID: <872B2B4EAE847E62+CAAfSe-uD=s0RpuqQ_h+_fErcEC+G=N_LA6e=p_sXJ=iG7jMc3Q@mail.gmail.com>
-X-Gm-Features: AclHuK-lEE7dv-iC1Lsio6aPGOufL5hgelB1hFojisk2-zoMsjC0hhsp9HraOXA
-Message-ID: <CAAfSe-uD=s0RpuqQ_h+_fErcEC+G=N_LA6e=p_sXJ=iG7jMc3Q@mail.gmail.com>
-Subject: Re: [PATCH] dt-bindings: Use hex unit address patterns
-To: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>, 
-	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>, Jiri Pirko <jiri@resnulli.us>, 
-	Ivan Vecera <ivecera@redhat.com>, Benson Leung <bleung@chromium.org>, 
-	Guenter Roeck <groeck@chromium.org>, Linus Walleij <linusw@kernel.org>, 
-	Bartosz Golaszewski <brgl@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Jonathan Cameron <jic23@kernel.org>, 
-	David Lechner <dlechner@baylibre.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, Olivier Moysan <olivier.moysan@foss.st.com>, 
-	Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
-	Thierry Reding <thierry.reding@kernel.org>, Jonathan Hunter <jonathanh@nvidia.com>, 
-	Fabrice Gasnier <fabrice.gasnier@foss.st.com>, Lee Jones <lee@kernel.org>, 
-	Srinivas Kandagatla <srini@kernel.org>, Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>, 
-	Ulf Hansson <ulfh@kernel.org>, Hans Ulli Kroll <ulli.kroll@googlemail.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Vinod Koul <vkoul@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Manivannan Sadhasivam <mani@kernel.org>, Ray Jui <rjui@broadcom.com>, 
-	Scott Branden <sbranden@broadcom.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Daniel Lezcano <daniel.lezcano@kernel.org>, 
-	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>, 
-	Orson Zhai <orsonzhai@gmail.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Paul Kocialkowski <paul.kocialkowski@bootlin.com>, Shawn Guo <shawnguo@kernel.org>, 
-	Chanh Nguyen <chanh@os.amperecomputing.com>, Alistair Francis <alistair@alistair23.me>, 
-	Julius Werner <jwerner@chromium.org>, Paul Cercueil <paul@crapouillou.net>, 
-	Dmitry Osipenko <digetx@gmail.com>, Florian Fainelli <f.fainelli@gmail.com>, 
-	Thierry Reding <thierry.reding@gmail.com>, Ray Jui <ray.jui@broadcom.com>, 
-	Scott Branden <scott.branden@broadcom.com>, Krzysztof Kozlowski <krzk@kernel.org>, 
-	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	chrome-platform@lists.linux.dev, linux-gpio@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org, 
-	linux-stm32@st-md-mailman.stormreply.com, linux-sound@vger.kernel.org, 
-	linux-input@vger.kernel.org, linux-tegra@vger.kernel.org, mfd@lists.linux.dev, 
-	linux-arm-msm@vger.kernel.org, linux-mmc@vger.kernel.org, 
-	linux-phy@lists.infradead.org, linux-pm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpgz:linux.spacemit.com:qybglogicsvrsz:qybglogicsvrsz3b-0
-X-QQ-XMAILINFO: MIv0RLIR86Aq5YS/uolFVjNlkPKMNwasrPyfO5e+4uD7pVxlWDzlFHjv
-	79CZIvPKLPyCtB2IKsWCHBMc3vrZtj9GU73/hw3HWcozIEPwsMNIpLoqP7Y91Tx0Y3aBigV
-	t0GIHlzeQ0oT7RhkWxE3yeU3uejR5O8EPrYyq+4mbPfyZrh1kZe21ZzPstmhjvgg4uhSPlx
-	74829sQOs7W7SxPHygIaF/uAGCT4NXAQer/Wac8SITl0XWYULToUIA8Dn8KodH3ECEICv47
-	DyU1nf8AnmRNBFn0Me5A7ACinTLbnM0Q5/YFtgNcCi7ePMueZQmIjo3XdNv0f/nMc7Wlmbz
-	ugArcqoDOib7klH1gfD4Ox0aMy6NvX0+fPvW0xJmLLM/WFshOCz6hzelI85O/+Lxh1qVn8s
-	6/ubCtDVQb0PrWKU7SsSSLWdiDGhlqYR7ZbB2wdVdWww1yuJle4xXO8t5WQKinUr3HGmD4N
-	Z1/8ur44Y/A9KyUR73FhgRTD9Qpw0JeeN2nLtOsZ4ug2HX9PqlR9YLTpvLYtKFM+K4ragD/
-	BdMe2V6tS9LgNFiyvxnLkPA23fXZUmI7hKkVdjxDH2TYmdWbCd4AvJ57+47C9uE+zKJEW8t
-	sRJFPbmDz5tPV3i/IBgoTNgVj/KfVQDrQ08Ex0+qKSR0SRX56/3RuMl98VTawcg/1NtWDKo
-	syhG/4h/yVVhWT48KjbpqWNbFuHZY+ew4cbo31YSFejWwjBheFbRiI8apzVC5VIXwbm8vS6
-	vgPl40ZQnsEVykVnGv/8pxzlLwBAFTFmofYeqzhx8Q6QYznyAhJqpisnq3TtOn6357OdUIc
-	0lUTBpOsdFNzHyEuBDYXh6RD4yMu3VOaVlOoXTaMpzdeqIo3168qVkkKjArQFMk//25ktYA
-	L6yNvQFaRJxg6vYoou0t2OytlPNipWLsl8f4tO5aT9QLK2Xk2Vw5VQF+t5SYTVldf5ZeYDe
-	xD4pcTX17h5ZSTJawX2EsgUHob6+BWgPMNWVP4CJWcJftBpWP9Ac2gCeFjUDkt+Xithcq+0
-	EZ1zQc1Ww679PghXYaJOgtHKdlM3qhty8EfO4cQ+AkewHyzLzU
-X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
-X-QQ-RECHKSPAM: 0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAMrs62oC/13MQQ6CMBCF4auQWTukHZWCK+9hWEA72C5KTccQD
+ eHuVty5/F/yvhWEc2CBS7VC5iVISHMJOlRg/TDfGYMrDaSo0YoMDs7hKB4lRoyEZ9Nqcp013Bo
+ op0fmKbx28NaX9kGeKb93f9Hf9UdpdfqnFo0Kj003qcEYVqSvdq7HJNbXNkXot237ACJP7/OvA
+ AAA
+X-Change-ID: 20261027-add-bsh-smm-m2-57812d9c7e87
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Frank Li
+	<Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, "Pengutronix
+ Kernel Team" <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>
+CC: <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>, Haoning Cheng
+	<Haoning.CHENG@cn.bosch.com>, Michael Trimarchi
+	<michael@amarulasolutions.com>, Leonhard Hesse <leonhard.hesse@bshg.com>,
+	=?utf-8?q?Roman_Smr=C5=BE?= <roman@amarulasolutions.com>, Qiu Guochang
+	<guochang.qiu@cn.bosch.com>, Akhil Narayanan <akhil.narayanan@in.bosch.com>,
+	Florian Ager <florian.ager@bshg.com>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2587;
+ i=Haoning.CHENG@cn.bosch.com; h=from:subject:message-id;
+ bh=v7dBm6C+31tysDHRfgXYY/gXkIG7ZyS1OpfOIzJ4GXk=;
+ b=owGbwMvMwCV2Lz9jvnXEsVWMp9WSGLJev7mx4oJyzBktpXCVZ/93iNicyjml0cql2WLiVP6tz
+ Vo3oY6vo5SFQYyLQVZMkUU1wfus5NUA02kzq+HmsDKBDGHg4hSAiaxawvDPcvLMiHi2798tLUuf
+ qHXaZG8Mcrty3+Gg6tvDSgalKveLGP5ZW1km7tQ44LT1sPn/iL++3qe6j7sd3xg4g3GtyqYt0r1
+ sAA==
+X-Developer-Key: i=Haoning.CHENG@cn.bosch.com; a=openpgp;
+ fpr=25604BCD19D5503596997B16DE6F689F3B58C6AA
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CPH1EPF0000051F:EE_|BESPR10MB9293:EE_
+X-MS-Office365-Filtering-Correlation-Id: ad40f575-e6f8-42ca-fa8a-08df3ae64e44
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|36860700016|1800799024|376014|23010399003|7416014|6133799003|18002099003|10067099003|13003099007|56012099006|11063799006|5023799004|261021123027099003|261026140227099003|261028144727099003|261026121527099003|261022075727099003|261102123227099003|261021121427099003|261009223027099003|261022105027099003;
+X-Microsoft-Antispam-Message-Info:
+	897kOdDhJN8R+xajfoY91B4kE2MFuZYME3yifBVemU4O81xs+IUx4znRMeLKKqWZOXQpZj1BKPL/OY3fsETSztsO4bhV1NkREgAv85AIfwUvtb6YBai2rXDQ4kvBEENT5P8Ub2MIfO7TSaXChUZxMEPDaBtzAqhikD6ejZ7PnRWazx9jjVUw+dA1S9ekz/yDiFOfqZrakZEAm2XMo+KeRXgz7pRS4v8Pb5+8iuOREalyZ8l/TBuouIZbITO5PQOiL4E1Fqn4E0gTQOfGzts216jhVZQAXl9P9iAqGYCc4flet4pZc23+/R62AvVQDqvnBK3M7ICEUuAErFzwmXEWLBhSJ95UL+mVHRMBuf3GRqWVRNnqnXA/LBlaMMATo1Qm7S9zeFu95zXwsyBcsF8XZ7CnGiQVckuN2i/1cHnsaiLb2c0euWwvIbOWJXIU3fokynlaMb9vtChy4HeA1jWF3NMtZtxxgYVoCl6FshD9+Kcid/EBzOMoinPJQqw/uTJH/4e8tVXzQ3MX/b9+5OWd7dIPMo8gwoD6oN1kqi88Boz2suVpMTWxqwwLZqppnWVJVScpdRYoCMuTF9OP5naN/1oxKCZc10gp5bexuKTUBaRfCLFUNWtYZTGI/O/vUlmTkMqteA8mEsJ2yzCL7C/dTkN18wWhMBfM2v1ud9bJqRQ=
+X-Forefront-Antispam-Report:
+	CIP:139.15.153.206;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700016)(1800799024)(376014)(23010399003)(7416014)(6133799003)(18002099003)(10067099003)(13003099007)(56012099006)(11063799006)(5023799004)(261021123027099003)(261026140227099003)(261028144727099003)(261026121527099003)(261022075727099003)(261102123227099003)(261021121427099003)(261009223027099003)(261022105027099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	jN7Qmy+WQemoDOedjZDhWEhyHzOk+UtT0OTkw0+JeK0AsaM3V2HFH3U3dIRH7ccNC057oNlFcHaDBZ+YLBy7bcdls396IhzkWeaf6VVNllmdQXyWalZLSSBfn4cBhNJ5ygutH1LPVaKZthZnKclsdnVjHFrU199VIK7mo4tvY5eTGythSskW0nQQ1FzgIe76857I62kSirW+oEp7dihVLala2On+rAIOAQPTb4dR7xMOtATJi3hd+sctmdpIbPUyjhY4aHU7zeyS2Y4ykd5pzzAg9rbiG3TIeeXF9TrelVF7CVFIxOUSYCB0Q7gO+EKXgpHZ7PgCak7DsrcOT+c8Pii8GuLSTJ+SWl7ZMay3YgLG0AAji1g/RYdhLV04NbCNKRakn/fI63YGLN5ekDhG6ulnp4nvBKv2DZ+tj0nLtBgxxzAzeUl+TiqU213D6yA9
+X-OriginatorOrg: cn.bosch.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Nov 2026 02:41:33.9126
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: ad40f575-e6f8-42ca-fa8a-08df3ae64e44
+X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.206];Helo=[eop.bosch-org.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CPH1EPF0000051F.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BESPR10MB9293
 
-On Mon, 2 Nov 2026 at 21:53, Rob Herring (Arm) <robh@kernel.org> wrote:
->
-> Unit-addresses by default (and most commonly) are hexadecimal. There's a
-> number of cases using decimal patterns. Fix all of them, limiting the
-> pattern to match the 'reg' limits if there are any.
->
-> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-> ---
+Add basic device tree support for the BSH SMM-M2B SystemMaster,
+a hardware variant of the BSH SMM-M2 equipped with an AIC Wi-Fi
+and Bluetooth chip.
 
-[snip]
+This series adds the SMM-M2B board compatible to the Freescale
+device tree bindings.
 
-> diff --git a/Documentation/devicetree/bindings/thermal/sprd-thermal.yaml b/Documentation/devicetree/bindings/thermal/sprd-thermal.yaml
-> index afa551f6185f..222d70baef1e 100644
-> --- a/Documentation/devicetree/bindings/thermal/sprd-thermal.yaml
-> +++ b/Documentation/devicetree/bindings/thermal/sprd-thermal.yaml
-> @@ -47,7 +47,7 @@ properties:
->      const: 0
->
->  patternProperties:
-> -  "^([a-z]*-)?sensor(-section)?@[0-9]+$":
-> +  "^([a-z]*-)?sensor(-section)?@[0-9a-f]+$":
+Configure the NAND controllers on the BSH SMM-M2 and SMM-S2 to
+use the minimum required ECC strength.
 
-Reviewed-by: Chunyan Zhang <zhang.lyra@gmail.com>
+Adjust the Wi-Fi and Bluetooth enable pin settings, configure the
+WLAN host wake pin with a pull-down, and remove the unused
+cap-sdio-irq property.
 
-Thanks,
-Chunyan
+Move the hardware definitions shared by the SMM-M2 variants into
+a common device tree include file to reduce duplication.
+
+Add the SMM-M2B board device tree and Makefile entry, reusing
+the common hardware definitions.
+
+Configure the UART2 pin multiplexing for the shared SMM-M2 hardware.
+
+Enable USB OTG mode on the BSH SMM-M2 and SMM-S2 board variants.
+
+Signed-off-by: Haoning Cheng <Haoning.CHENG@cn.bosch.com>
+---
+Changes in v2:
+- Drop the redundant RNGB enablement patch.
+- Keep the WLAN power sequence in the SMM-M2-specific DTS.
+- Move the SPI display and touchscreen overlay out of this series.
+- Link to v1: https://patch.msgid.link/20261104-add-bsh-smm-m2-v1-0-369f0a77e021@cn.bosch.com
+
+---
+Akhil Narayanan (1):
+      ARM: dts: imx6ulz: Configure UART2 pins on BSH SMM-M2 variants
+
+Florian Ager (1):
+      dts: imx: Enable USB OTG mode on BSH SMM-M2 and SMM-S2
+
+Haoning Cheng (1):
+      dt-bindings: arm: fsl: Add BSH SMM-M2B board
+
+Leonhard Hesse (1):
+      ARM: dts: imx6ulz: Adjust BSH SMM-M2 Wi-Fi and Bluetooth pin settings
+
+Michael Trimarchi (1):
+      dts: imx: Use minimum NAND ECC strength on BSH boards
+
+Qiu Guochang (2):
+      ARM: dts: imx6ulz: Factor out BSH SMM-M2 common device tree
+      ARM: dts: imx6ulz: Add BSH SMM-M2B board support
+
+Roman Smrž (1):
+      ARM: dts: imx6ulz: Fix BSH SMM-M2 WLAN host wake configuration
+
+ Documentation/devicetree/bindings/arm/fsl.yaml     |  1 +
+ arch/arm/boot/dts/nxp/imx/Makefile                 |  3 +-
+ .../dts/nxp/imx/imx6ulz-bsh-smm-m2-common.dtsi     | 86 ++++++++++++++++++++
+ arch/arm/boot/dts/nxp/imx/imx6ulz-bsh-smm-m2.dts   | 93 ++++------------------
+ arch/arm/boot/dts/nxp/imx/imx6ulz-bsh-smm-m2b.dts  | 13 +++
+ .../dts/freescale/imx8mn-bsh-smm-s2-common.dtsi    |  2 +-
+ .../arm64/boot/dts/freescale/imx8mn-bsh-smm-s2.dts |  1 +
+ 7 files changed, 119 insertions(+), 80 deletions(-)
+---
+base-commit: ec7b37c768d34107d06bd629d05cde0e2218ee9a
+change-id: 20261027-add-bsh-smm-m2-57812d9c7e87
+
+Best regards,
+--  
+Haoning Cheng <Haoning.CHENG@cn.bosch.com>
+
