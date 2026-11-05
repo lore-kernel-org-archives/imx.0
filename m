@@ -1,20 +1,20 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.66.7
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.83.1
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793860889;
-	b=z2TH4RcohvzVi4+RYRNpIVBYx4EiKrd1VQ8oiG8ZqKsJA+C6qGBS1u5dDqmyRb35tE7I
-	 QyHS5vzMUI/GwXBSbqlT7EgSNPz8X/jEsXNJENnIFqUdhWb0MhidOsMEfGePPRQEWEObs
-	 3sKTe2V6AIl6nDAiypwLeDhJkwXwvUcjunn8f6XEtw4Mb1lVO7YzCfOH+p5EeF1WLDJnc
-	 UvUfDrDlaf5YzmKIexOrIbyvAM17N+X0mlfJTl6CBQiNTpwtb8JaSDk9R0K+dTBio8rh+
-	 /pjkkFpAJNG2G8W9ECH71yeNVym5ipDu3eJ5//V8ecqFoiR3faaO679rz+SINh9dkcQ==
+	t=1793860898;
+	b=oyLuXT30N+lptqKctUcwAfUwlKBO0GVFV+4289cP6cpeWn4QpBN2C0pAoWZ6jDTZRqYM
+	 /On9jp3h/CBwlq1aT7y1PH12pnTBaEAmynk1Ued4IXFcLxsfCQlNPGX5lqpsjY9kCKKHt
+	 b7i4uqnSpk/RBDdeqvK6153BH3GPUUuq9ZLF+rS3NkBl3hQ6vCZXehhEHRL6c8RRfuEdl
+	 Cs98BkWJOa0T8/HKDb9nuXIUzUAnLg4xQCKNiv6JNNyf9JP9EbEFRSfPIGxrODSp5eWzH
+	 UITA1Ui9H7Ln1ZDBLJ6A94293ki3sOOVi2qSbbAj6er206X3C50kOR4RStVCOrYQ8bA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793860889;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793860898;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:Content-Transfer-Encoding:Content-Type:
-	 X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
+	 Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 Content-Transfer-Encoding:Content-Type:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
 	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
 	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
 	 X-MS-Exchange-CrossTenant-Network-Message-Id:
@@ -24,54 +24,54 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
 	 X-MS-Exchange-CrossTenant-UserPrincipalName:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=rr048qY3HNr3QsWAPMsxFmYMKWEuae4XAQPqDeEodXc=;
-	b=OWGSby+eLIEfxpJ17wwKAL0OPe8MRoiU9eazaQ0ZO5mihcxwrBmkKgmXLN1UHPjMwGdW
-	 5m+ZQmCZB+Qm86uJXZhKDHl/c2DUd3hK2SIgaTUSqvbtFFR0YAiN/LYBpA/1ksa/ZCJWp
-	 XA158yDCqR+aT7JknU+EWbudwPmYPL88izKCxX6ssR96dUZ8qeUdBojl+PNzP/LvSXKKS
-	 rYEP5HFw9YRMLfqpG4cFQdxJvWMqrsxqxUXwTDaSE0n9/ptZelMtkoapHQW/GKEqfOF/f
-	 vpjPGfBRLLrNUACVNxDXsyVpEU4ERiCGQdteqcayc+ulWIgUdwNJMndpcIFZm6g86vA==
+	bh=lP84x6jamEsQhmvAkar7pfpGsWrgb3M8UC8b8nLssoc=;
+	b=DDeDA/j0ZZ6QgYFXCqrVJruGq9Ijlhcircxt7MvOUDF0jlHCV8qPBPrbyc5BvCnnxgDL
+	 CLzjxDk+BXzu3JmThWurXrX6aiZsFmSAql7vMxQrwZkOU0MD2cLZ3gl2obV4GToHZrCPR
+	 Ll0VVLcg2ig3RENRMlywUuZbxAT/+Kc+Xk9uOTQk+mVl+/QTJMawjYy50+Hgxz1XSLEqD
+	 G1YQfW+1DSvaYEO0I1CQhT6runW8XurpnulWKrS/uM+AZFbQLqDXFyYt0HmRwP4b0UK6R
+	 ES/4njy5RcC0RXkVR0O2xuXaLHMrk0E8ZX7i6z80989QJ0X6E+cwTdbNjF8ASEdo1zQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=oss.nxp.com;
 	spf=pass smtp.mailfrom=oss.nxp.com;
-	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=J3JMI5oV;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.66.7
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012007.outbound.protection.outlook.com [52.101.66.7])
+	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=HGfEIAwt;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.83.1
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013001.outbound.protection.outlook.com [52.101.83.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBAB6606A32E
-	for <imx@lists.linux.dev>; Thu,  5 Nov 2026 06:41:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DBAB6606A32E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A39A606D80B
+	for <imx@lists.linux.dev>; Thu,  5 Nov 2026 06:41:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4A39A606D80B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=J3JMI5oV
+	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=HGfEIAwt
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nHIjzWpnFNF9vi2yFghMAt6cLND3iixSGeO6SPdHu/0DmeeVBMYIrpsfVr91q1hpiRt08HpO5nXozePQ1apyHH/ZCdwQL0hICJx+87FdIQIn0WEZPfR/LxQljymxvSlpPrXIHfFpKOKtjCfVHvae6AmK2DwNGcV1gGBiV6bWj7xGp2jCjNHxeOapBf00y1PWPUx3k23TddSo5mrAWATqdi9d8q1tywvImWe+wbOJscHgpGigMThgAZgwKBR3sbBMWLlf5P21NOYKglByrL3NZC5zIIwv2e21YQSlwVgfhwdlsiKFcZJiBlEO0Crf91MiMgXd/BmVcxisJmDpQGJScw==
+ b=yvjGLb2jgZ/AAkA/DlP79+f6ZWrHyABMpYfMIQr4vOE/EvuymMZUHsMEegDhSXZrGNLN7SalI+SObvqYILdFcbt6v32sFK2kX74WQfj9YLaanCvvZbNbFZvalYkJyknSYoEWg1VnWxJSe2nkR3ldcIFUqeHQFVPnblSwaC5ISJLTj4Da23nc61frRhOKsH3F8H0kDtYmu0iiCCF5bmGLVfsJFsz1gTiAd88Ll8FEQORXN3cPIzMBK9fVf77dfONmDQjGoQA5E0lucTQ52DIea+5T8w9asoM4keHxndqz0KfOi8xgzpeHc/UVE2h0jv9jX5ev7V0Go5IncAQhsFvUrA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rr048qY3HNr3QsWAPMsxFmYMKWEuae4XAQPqDeEodXc=;
- b=j8Vsctp3awcOpYEPPwHdgjU/d2UufZn9VW1tfAcYrP68nZ2k6lQzboEOaDuIQTLwS1NN9KG2FxaQMArdVr7uDtI9ztrrtCw5XMyqQSlr99N4fWbwtzrFt8FDJefaGkdyiMAbxH5PdzkZbKlYiC+iWZOyx/N5M/EUyf9i/PcpCoNbDM2MbOGy0WOHyl8olMNr4ZW1w+qOFUaQ6h0fiQ1uUKVJks0DdfxKmLQj5oY107PQdFQfbvu8hJFgMH5bUb8PAzKyKRqSoevWSxlW6dDXsFCJnAamXvIezn1P0lNz1VoVHXMMD0uxoJd4xPrhqJKpa+gmodZRkFey2yny6GEzaw==
+ bh=lP84x6jamEsQhmvAkar7pfpGsWrgb3M8UC8b8nLssoc=;
+ b=gFpgI10/eHcAMpwDbwxseuPjDMwI9s3Ve/Wjgz30qpdFAcf+gBoeDzYzJ+U//2qWSZ0R8SPWCdNGK3SlyA7EJqgAfm9Dfl5gUB6V6ktdbTdg+xfnletQ/1n+cmUr67624s56LXWkUE1cPRhK5ZkoesgKop3tZbkA55uZaWSxBHzpSUsd6ojfzvK+tTJLsZk/GzVtU1azwjej4JcHCUudhPoEnMm0vqO25z5FaXBXycG7EPzhk17c3LIZCg5p9KUxyS6rdxRUgwr+Lj9+dOhIDJqA35AwPmDgnICNYTC0MRqnFXVCo5SlrUbWbkf1ld7W8s0Xm8KIWUUTAtjgsliWSg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rr048qY3HNr3QsWAPMsxFmYMKWEuae4XAQPqDeEodXc=;
- b=J3JMI5oVW7GP3hebTbP2VMfGiHN1N8XICNAkGVkC8UoXnd0gBuVfXRZd4F+wkuCPlI20ArF1PA+V+XOSwBfY0iDHCmqvXGBLjt/mIinrzCblXByi405GJqj7ohK/IJqzzITUyjw8R5KYvbG3KgVH196LgOibFaMy1++BV6p98jWdwf5+Foe6hyIOJiJrJvKhUlaVpxNBcODC1Pg9GODBrZlSKTjTC1OIXRSicFPUP7hYzdGe8LD6mSts8vPCSZX6OKANeB2ega5fYaJwjw4iqmL8IigSfRDYz2J3zDjLudTnfGPQ/f5YVAsUCe1I0pTvLJPFMSEmLKIR85uZ/xwPVg==
+ bh=lP84x6jamEsQhmvAkar7pfpGsWrgb3M8UC8b8nLssoc=;
+ b=HGfEIAwtvS84TClLlSw1uIMlfA1NNSO0pnHl0pomC8nh+GT8qxyLK6+YC7FS+XluCe0iY5UWJ8PYJPLKxO2AlTXQr5LpFqf/CmVsSCwVGIkxcQNWuaqfncTkMqgTHs4hEgz2IFPHKM2MQ+saV+CzqZhii3CUTR2K7+9fZL2z/lSc3wYQ/rUY6AjzvrSfAnGhdLABZqjdnwTZ/u8ZcY00vklw/VDb8EbyJ9cR4+EXGQC7xGobYaimyGxBz+/ieNZXXrZH/i808Aavk8wpDtPrEy0OFz+54YvjffTilnpUPCNA+J8GKBF7LegkbBpQRbA6c6XaVUAa5TjRszPZFvrcyw==
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
 Received: from GVXPR04MB10021.eurprd04.prod.outlook.com
  (2603:10a6:150:112::20) by DBBPR04MB8026.eurprd04.prod.outlook.com
  (2603:10a6:10:1ed::6) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.10; Thu, 5 Nov
- 2026 06:41:26 +0000
+ 2026 06:41:35 +0000
 Received: from GVXPR04MB10021.eurprd04.prod.outlook.com
  ([fe80::d247:853:3e16:1994]) by GVXPR04MB10021.eurprd04.prod.outlook.com
  ([fe80::d247:853:3e16:1994%5]) with mapi id 15.21.0592.009; Thu, 5 Nov 2026
- 06:41:25 +0000
+ 06:41:35 +0000
 From: Chancel Liu <chancel.liu@oss.nxp.com>
 To: robh@kernel.org,
 	krzk+dt@kernel.org,
@@ -84,14 +84,16 @@ Cc: kernel@pengutronix.de,
 	linux-kernel@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v4 0/4] arm64: dts: freescale: Add IMX-AUD-IO add-on board support
-Date: Thu,  5 Nov 2026 15:41:13 +0900
-Message-ID: <20261105064117.277495-1-chancel.liu@oss.nxp.com>
+Subject: [PATCH v4 1/4] dt-bindings: connector: Add fsl,aud-io-slot binding
+Date: Thu,  5 Nov 2026 15:41:14 +0900
+Message-ID: <20261105064117.277495-2-chancel.liu@oss.nxp.com>
 X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20261105064117.277495-1-chancel.liu@oss.nxp.com>
+References: <20261105064117.277495-1-chancel.liu@oss.nxp.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: SL2P216CA0079.KORP216.PROD.OUTLOOK.COM
- (2603:1096:101:2::12) To GVXPR04MB10021.eurprd04.prod.outlook.com
+X-ClientProxiedBy: SL2P216CA0081.KORP216.PROD.OUTLOOK.COM
+ (2603:1096:101:2::14) To GVXPR04MB10021.eurprd04.prod.outlook.com
  (2603:10a6:150:112::20)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -104,143 +106,183 @@ Precedence: list
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: GVXPR04MB10021:EE_|DBBPR04MB8026:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1cfa246a-97c0-43f7-e5d7-08df3b07d038
+X-MS-Office365-Filtering-Correlation-Id: 2298d6e5-ffb0-4b7b-2e3c-08df3b07d5c6
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|19092799006|366016|376014|7416014|23010399003|18002099003|6133799003|10067099003|3023799007|56012099006|5023799004|11063799006|261026140227099003|261028144727099003|261026121527099003|261022075727099003|261021121427099003|261021123027099003|261102123227099003|261022105027099003|261009223027099003;
+	BCL:0;ARA:13230040|1800799024|19092799006|366016|376014|7416014|23010399003|22082099003|18002099003|6133799003|10067099003|3023799007|56012099006|11063799006|261026140227099003|261028144727099003|261026121527099003|261021121427099003|261102123227099003|261022105027099003|261009223027099003;
 X-Microsoft-Antispam-Message-Info:
-	+hHg0P2Kr4ycLlHvdUvfvDLJ5/HGXsXpJ/MtMYIoRUTf0C6gBNZoYPEmY9ZwTakcpNssUQanjL3ZsEsja97dTMeIsw4Y21YA6TDG+NjkAL2DyG4AwF4/J3vKf9Y/7h3aqGJ8ADZgXRVloNJ/5Pewsy8dwplmya/AKUF4kWSHJgpcOoQVRZ0MrN21yN5/xLunrBR2PUY/hWLcqHBXf3Aj57X5kI+vvaZoHRo1r4BdA4OUPfrHd4koYh0zI7PZ6YvUyT6TmaJHB3abX1xSXD29vkwZewLdFUJfN/walt+Q+VqPPBE1WnmvmaJzR1T5N+ojQYV6iiVonYm5rPKj+jKV64WyDIaXFuGBbHRapHZQGAUwV7yqsLjozWVfjoSgPfKy0MwUzt/bDeF4v9cKNQQ/uSqa8tLFTusZJYuMuITM5enleJKSbRDOM01b2ahRucV2sTErF3DLAJBZOwdCPWLebq6HLCv2434nOJoW7UWWeBihVDN7DsDjgzg1N9nXoidILpsSNUWj9aZ9XxZ9VJrLVP/NGShTWtGANpUHiXxyA9S48AHzENjKtUGD6+/j41rXiQ+5s+t+yHVOxloy74g/3qMO+eLYxUSZ6H/l4tcDgT/AOEitIEXnz8lbv5zQr6FM
+	MYDZcGraKBXwXfmnEcjK4rKTMDa57mS+D6w93QmdBsdROMLuOY/QkDlu8s+y/f5ei/ckGeODgh7Mdmp6fBsxSCflwcfOJcRF/5nHHY5+FT+xqBAVqZzMd+Py5UQyLLstlw1LIrSNoqyEb6BZU9gn9IPm1tX5MxI433Hw3v+vKvn6XcRHzAcNHe18YXDPrJQlZUyAIfZjoCL3M4/CuivuxQYopgvDZwGlS3T5+5ce1199QOIvHzWuKREHk1s/CtJAiuWdH/icjyjus8/mYYGgs+z6rybr+VHLD/j/52jVkp5fG5+9Wa5Q0iePGQBZ1qGjkD927pjX7yLFsUd7hnhCIPhNfIO0XhECsl86hT9n8zt5At1tyOjxwBODpNVnCnL3/oluRu8bUU/kpYgt1zXvFbhBdK09GMnDmszWqgB7op4e4XEpfzg1k9M6fSes4kxjvgm9oVQZx4pR/KrU/ADkLt37TcBvj/gzM43TDAOHYz+1urSuUSmEWd0z8BsZlBsNcyM4aYsc8DSKs1DBMEuP7WrPddTo48aL0cGQXkw8L16a9D5EqUoVEOmx9EF8GvrtN/T1neAfQgdIuUm8gI/WzLhi7NRxlyhCcGGS8oDru2ZyD7fFjMGEP5wKjZNsu+YA
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVXPR04MB10021.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(366016)(376014)(7416014)(23010399003)(18002099003)(6133799003)(10067099003)(3023799007)(56012099006)(5023799004)(11063799006)(261026140227099003)(261028144727099003)(261026121527099003)(261022075727099003)(261021121427099003)(261021123027099003)(261102123227099003)(261022105027099003)(261009223027099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVXPR04MB10021.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(366016)(376014)(7416014)(23010399003)(22082099003)(18002099003)(6133799003)(10067099003)(3023799007)(56012099006)(11063799006)(261026140227099003)(261028144727099003)(261026121527099003)(261021121427099003)(261102123227099003)(261022105027099003)(261009223027099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?JYX6YNXWvgS9ToFr8TtUiyE4HnPfuI7bstm9wnY/zh27GIOp/XQR+Cfzk50U?=
- =?us-ascii?Q?+FDOmVtmZSbcO1TpWpQaMi8yvwIjLSlGKucgRprB1Np0ABaNsCrFBKgibZy4?=
- =?us-ascii?Q?uL3KzfpWMG1tNB1Q8cNgK6g7757vKVye4lUi4JX4vNWn1X186D6eOU/+pqZm?=
- =?us-ascii?Q?jE4FRELCIUxuHhYYyoXGELcjhM8g6lLYdGxNvk7Q153ACkKkNGCiWXbOYmJG?=
- =?us-ascii?Q?/v9HfNGKECV41brW+5AoWQULD1n0FDlqGUF2mgAMDGwrCAlCd8k5mGjvDakn?=
- =?us-ascii?Q?YdZcIoXxKEJgeHZ3mOEnWOCVRgmpR02Wlqq/Xq5Po6CGnKt+PXtdeiMMeW92?=
- =?us-ascii?Q?/BiEwQzlbdwcraaJGuxEtAGenuWEcdCiWFN+DXONd7l23iVHcWuGr6l0glm+?=
- =?us-ascii?Q?O1tH6sxw44yDYquZPRqReNgYy7IIhPr/99c4y1MM1fdUfI3XvMRU/NvYGqhX?=
- =?us-ascii?Q?J/TO975JzVOreeOzyQ48cRVhfYFrLgARBEk01e2U8U2QMjeA4Ph4HOcPXr+0?=
- =?us-ascii?Q?35T12iKnSeMqcd1TN6LvRKll50cu/Qb/w5VkMYRjkTFYCbAnwSOzgVWNT/RY?=
- =?us-ascii?Q?osadso6UwMi3i8ceohdVT50JyCkjoDuR/f7J7jczL5ah4+NNofeIDW8Se2qh?=
- =?us-ascii?Q?6iExjKPds7yvhqoHUFtZg1hi1ICzA9N/ykBFB1bKiK0d8z40yWC1dDtTimQf?=
- =?us-ascii?Q?axSueO6Exie1ZuGxgfjheQPbe+yRrJkwnCl5Y6ejwiXOlqe1jOfhs/9xFYWA?=
- =?us-ascii?Q?HA+Z+R9mqBCxTk3bDVD5lT+2ZROtQkAv4sOVxTJY3A4bLYLcZ3N0hZ+yaEV0?=
- =?us-ascii?Q?rohcm5XNk9UUqW0GJ8bhwLIthz6R44VefeV/ZafYD/nSJ8OrIpHQrUge0KRb?=
- =?us-ascii?Q?82ukPUG2yMGpURGhIV/kRD3J3ZPt5IxWRTzKC9f8KXnappkCHEgtQ3ztKZH5?=
- =?us-ascii?Q?RnlebhmNB3MzHmNJryvfJAaz5eXyPnMtylcFPE4JlAw9K/hUz0dJhbB8R4zd?=
- =?us-ascii?Q?7+QhK6L+VQ8W1psGexnw02I9CEQkR6i5BtcwHe9cVBc7k/SWwMr64Wmn9Ahp?=
- =?us-ascii?Q?JpPComxhs+bN7oz0BBraXJZt2iTEUVphvbuKpnfSNwsera3nBO2niFzCiKSB?=
- =?us-ascii?Q?ahq0oLdHeCdWecJmMAc1/yG2S2F9hUo+TdbPOJxuIh9I2THwDrOCz141GyDf?=
- =?us-ascii?Q?Vezi0dIq57DO3Oc7tkCzOitwtjUw3ZNGViy6mdI+WhEhkovtQS1OgJ5zhhru?=
- =?us-ascii?Q?m1yLeji2n8Ql85riv9o6FlL7xZSIixfso4NP92JUdvBjyoG9aTdkacXRFzFc?=
- =?us-ascii?Q?T5OQuhSn7dLL9f5rI6tDWYKFoc0S7pgIrioIioZP/K+uS1x+guZWYpnSsma/?=
- =?us-ascii?Q?JyQYt2Qa9JzTp/xq4AyNSaDKD+tByu+9SkeHExQxYpy2k6UCSEopKuvSHzkn?=
- =?us-ascii?Q?e4GvGLiCcLD5KwNy3CeqIsGQYip3mHuAe2AHH1iw8ctChPSYluWLQvar+JRs?=
- =?us-ascii?Q?N7Myd/CsMofhfbu+o/EWs8G6Y0WW6WQAQK8h0tHbFGcqNQMSnI2GUU4ECcui?=
- =?us-ascii?Q?QZitgLBCXiBnzCaufMZUP06aw0O9K+PeqbXOETRyWodaLVyabAwSCpi3oCV+?=
- =?us-ascii?Q?pDOTr2Ao5w52hcttVR/5hDHXlp4jze83CVoqCcP1nBWBWcGY0U0uwriwxY4j?=
- =?us-ascii?Q?4UzsS4v2ATnQojE8ziCONqz7YmH/ebF1WzxOjLqgj46GnMXXP8CJkebFifOE?=
- =?us-ascii?Q?Vy87V6pgLXHC55xQmxMLX5UESQrJs8dEFVRBN9gqpEHIIShXtdeL?=
+	=?us-ascii?Q?gWG8i8sb1vsbO+LNjjtMb65XPvqU4+Uepvi/gu0w/YghvcPWSIhsbZ+qhD/n?=
+ =?us-ascii?Q?Lb1G+aYKQzP69GrSgw10jfv1PB8jFClQMpipC2ulkCVlQwVT5v3ECfg5B3P2?=
+ =?us-ascii?Q?kU+5VpGInIdyPjUq2itxhCtkgQ7HQYuFoqg+DI/80KR2eUMu1goVSDjybj0L?=
+ =?us-ascii?Q?CeTKAXDYTCJhzI8BQa2Q8NnlKp4eocvao5Y5EhFg0xxw8EXrKw9CHwS2WoDt?=
+ =?us-ascii?Q?JrKHozSoy0XfsQmP2tRlV/CEt+isiMczMJsL57BY4vt2h2WuBs3Yc1l7bG05?=
+ =?us-ascii?Q?4dJClebU2w5w+CUVFzzjAD+vw4O8GXXAMW39EWyBbesdZjJ8tUJFymSYSNke?=
+ =?us-ascii?Q?BjiaBEbCqgLqqDOKqALPxnbFwuz7oEYVa1nM6TKSuDWUvpK/16OhlQRiVZVR?=
+ =?us-ascii?Q?CXJ44csdfr55J1dPDnjVxIPmwNlr0QsoGU1ktzkSYZYxSnIgcVV7ekwk0PqD?=
+ =?us-ascii?Q?rRx30lCHdwN0OAeglGTo8MRYZ1wU0Zft0nXy2E0n5iGRA2Ia73Ax2Q7wW3Cs?=
+ =?us-ascii?Q?uHn6UoENDiLxVbulIgGMe0fP94h2L9+ljU1vv5jCx/ZWZhUaCgC8/PFOFqEs?=
+ =?us-ascii?Q?ZzTTesyB8n0WENzzgBjdBKTTXSmMjSA7XRwpXTfSGM4xak1GFGNrVxEIjTjN?=
+ =?us-ascii?Q?C0orBJ8Ev8B/cWBXkVAgjHfBKA2vIaF60Zt+SF+vwgBXR9/dhAeoEifXpSRU?=
+ =?us-ascii?Q?N1h/6cZ0dmQZuwuK0xv6fdt+98ZXyaNc+4KK2iqImnPaPuDD9cZdPHoap2H9?=
+ =?us-ascii?Q?x1Qim9jUaGEv6M/RSOdOr+S2eDIKknlaI51sgmmfelcFaxHY6LAkE72z68kZ?=
+ =?us-ascii?Q?q9VtrEml9WKX9xpw02Zr83RBzzEWfpRZJISwizmeSiNraMJ0Dd0Vp2R/VOXP?=
+ =?us-ascii?Q?OLWB6UpZpt/myrd1e+A4A0PmnBoMh3N+fZ3BCgf5pA4q5oP5gZiqqUniy/cz?=
+ =?us-ascii?Q?Lpk7iXdNHeM+aPJdLaBbOMOXaecMfMIIuMq9UuaiEUpjHeUDFQt00ktpX+Vi?=
+ =?us-ascii?Q?SuZQtS8II+Edg5gmY8vm++5MReteua2p2VZdHc/x6fuPdj0kQv1HGcY/Wsql?=
+ =?us-ascii?Q?+ucwYiw3hrnt7oMXa6LCUJNiIh9R8tKmBhtG2RG4t4eGkoJnBFaBA3q8AvFT?=
+ =?us-ascii?Q?njxwzGGZQ6P8P8OGqN+Xn1Y9Mgv4Kk42i0aCBWYfdDpJviQfr+WmufmUoPnC?=
+ =?us-ascii?Q?sRSOecQWr0kXiUZ6sW2nQooqy/05Nvi7bEL2DExR40pt0xEaDoXizb5JnlPg?=
+ =?us-ascii?Q?Lwbh/FCB6YHu+yrHhCEZAKL18YjWHoHbRZOmQxBL2LrbcVJvV7qvONKyISXx?=
+ =?us-ascii?Q?fxpn5mlJp8dRZ28d3qe3twBgEFe/RkwONSt6Zl3fufuwtjCAgBfLV7T+jIgj?=
+ =?us-ascii?Q?WyTW1Ku/thBJ+kEShlTpqOBCGit4DrEHsQpAT7bixt2xxZYjmh68mtXD+Ubd?=
+ =?us-ascii?Q?voVtSX8Z/11vNfJqpaULAGfdykDq5c+kwYUowayvEwnMjkYX8lBweA75y3Ti?=
+ =?us-ascii?Q?E9AguIKkPlr7sVzqQSpfywPpFSsOPSIADNGrhlSY8Tsj3fTYGbf/3on3aYFr?=
+ =?us-ascii?Q?N1p5qgPpMelhfdpLQQ8i4y+TcOr7iXI9IE2bngtdNyoh3zAT1WtLudgAIwFU?=
+ =?us-ascii?Q?s3QPEXecuCnrtrYsde6Qa6gMVCf8gfLf2M/xO6WpzE0qvQT2kkndQCP5wdvr?=
+ =?us-ascii?Q?s3BUfesHxKP9b7op4oJkP9ci37mQi+gY9G7u6Xh3dgf96LrCuHSWhyqGZ1ij?=
+ =?us-ascii?Q?CuAlydb3k2MPnNTd55/nh9HYxc7s/INXEs0mA9fC+bYbwrynSaTC?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1cfa246a-97c0-43f7-e5d7-08df3b07d038
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2298d6e5-ffb0-4b7b-2e3c-08df3b07d5c6
 X-MS-Exchange-CrossTenant-AuthSource: GVXPR04MB10021.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Nov 2026 06:41:25.8010
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Nov 2026 06:41:34.9120
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: iWReM7BhGlWjzPtTtwV/TWmAg2D7pdrMlWoYNpc4DcweTk6mvnoSbfmO9cW6srsPZXjqSK3VBhvsXssZ3qtc9hRYmJBAGgpczGyymXe91CQnNIqhxe2+T4GtyYc0CwcU
+X-MS-Exchange-CrossTenant-UserPrincipalName: qUD1oowliaMijbl6krj2CJ7gbqnVYZgReAp6+uHj7wVjDZH43IcjelutQdAnoOJI6nwDkmbG+ZMiUlbVMuIMuYWc8dzr5YN4dYSBQiuvAVDNQAaT+l1T+x1V9ph0UUQv
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB8026
 
 From: Chancel Liu <chancel.liu@nxp.com>
 
-This patch series adds support for the IMX-AUD-IO[1] audio expansion
-card on the i.MX95 19x19 EVK and i.MX952 EVK platforms.
+The NXP AUD-IO slot represents a physically present I/O connector on
+the base board. It acts as a nexus that exposes a constrained set of
+I/O resources, such as GPIOs, clocks and interrupts, through fixed
+electrical wiring. All actual hardware providers reside on the base
+board. The connector node only defines index-based mappings to those
+providers.
 
-A connector is present on the base board to attach the IMX-AUD-IO card.
-This connector is described by the fsl,aud-io-slot binding. It acts as
-a nexus that exposes a constrained set of I/O resources, such as GPIOs,
-clocks and interrupts, through fixed electrical wiring. All actual
-hardware providers reside on the base board.
-
-Also update the EVK base Device Trees to describe the connector and
-required board-level resources. Add a DTS overlay to enable the
-IMX-AUD-IO board.
-
-The approach used here is inspired by the discussion[2] where a
-connector is described as a nexus mapping board-level resources. One
-important difference in this case is that the IMX-AUD-IO add-on board
-is not a hot-pluggable device. The board is connected to the connector
-before boot and remains present for the lifetime of the system. As a
-result, the connector is modeled to describe fixed, boot-time hardware
-wiring rather than runtime attachment or hot-plug handling.
-
-This series depends on the clock nexus support from Miquel Raynal[3],
-in particular the clock-nexus-node.yaml binding that defines clock-map,
-e.g. commit e0be7b4eedd3 ("dt-bindings: clock: Introduce nexus nodes").
+This connector type is present on i.MX95 19x19 EVK and i.MX952 EVK,
+where it is used to attach the IMX-AUD-IO audio expansion card[1]. The
+same add-on board can be reused across different base boards that carry
+this connector.
 
 [1]https://www.nxp.com/part/IMX-AUD-IO
-[2]https://lore.kernel.org/linux-devicetree/20250902105710.00512c6d@booty/
-[3]https://lore.kernel.org/all/20260807-schneider-v7-2-rc1-eip201-upstream-v5-0-8785f9531cf0@bootlin.com/
 
-Changes in v4:
-- Switch the meta-schema from core.yaml to base.yaml to describe the
-  connector as a nexus without gpio-controller.
-- Drop gpio-controller and interrupt-controller.
-- Drop the explicit gpio-nexus-node.yaml and clock-nexus-node.yaml
-  references.
-- Use 0xffffffff in gpio-map-mask and interrupt-map-mask to match the
-  connector resource indices.
-- Use 0xffffffff in gpio-map-pass-thru to pass through the complete
-  GPIO flags cell.
-- Include dt-bindings/gpio/gpio.h and replace the raw GPIO flag value
-  with GPIO_ACTIVE_LOW.
-- Use four-space indentation in the example.
-Link to v3: https://lore.kernel.org/imx/20261103070433.2307145-1-chancel.liu@oss.nxp.com/
-
-Changes in v3:
-- Drop unneeded clock-map-mask and clock-map-pass-thru from the binding.
-- Constrain gpio-map/clock-map/interrupt-map maxItems to the number of
-  signals the connector actually provides instead of a loose upper bound.
-- Narrow gpio-map-mask/interrupt-map-mask from 0xffff to 0xf.
-Link to v2: https://lore.kernel.org/r/20260629074734.3643227-1-chancel.liu@oss.nxp.com
-
-Changes in v2:
-- Drop [PATCH 1/5] clk: Add support for clock nexus dt bindings. Same
-  change is already present in Miquel Raynal's ongoing series
-- Drop PWM properties from binding. This connector carries no PWM signals
-- Rename compatible from fsl,io-connector to board-specific compatibles:
-  fsl,imx95-19x19-evk-aud-io and fsl,imx952-evk-aud-io. The i.MX952 EVK
-  uses fsl,imx95-19x19-evk-aud-io as fallback
-- Add property constraints instead of redefining common types
-- Fix inconsistent quote style for '#interrupt-cells' in binding
-- Add required GPIO nexus properties and reference gpio-nexus-node.yaml
-  and clock-nexus-node.yaml
-- Make gpio-map-pass-thru a const value to pass through only polarity
-  bit (bit 0)
-- Modify dts accordingly and some commit messages
-
-Chancel Liu (4):
-  dt-bindings: connector: Add fsl,aud-io-slot binding
-  arm64: dts: freescale: imx95-19x19-evk: Add IMX-AUD-IO board support
-  arm64: dts: freescale: imx952-evk: Add IMX-AUD-IO board support
-  arm64: dts: freescale: Add common DTS overlay for IMX-AUD-IO add-on
-    board
-
+Signed-off-by: Chancel Liu <chancel.liu@nxp.com>
+---
  .../bindings/connector/fsl,aud-io-slot.yaml   | 96 +++++++++++++++++++
- arch/arm64/boot/dts/freescale/Makefile        |  4 +
- arch/arm64/boot/dts/freescale/imx-aud-io.dtso | 57 +++++++++++
- .../boot/dts/freescale/imx95-19x19-evk.dts    | 52 +++++++++-
- arch/arm64/boot/dts/freescale/imx952-evk.dts  | 67 ++++++++++++-
- 5 files changed, 272 insertions(+), 4 deletions(-)
+ 1 file changed, 96 insertions(+)
  create mode 100644 Documentation/devicetree/bindings/connector/fsl,aud-io-slot.yaml
- create mode 100644 arch/arm64/boot/dts/freescale/imx-aud-io.dtso
 
---
+diff --git a/Documentation/devicetree/bindings/connector/fsl,aud-io-slot.yaml b/Documentation/devicetree/bindings/connector/fsl,aud-io-slot.yaml
+new file mode 100644
+index 000000000000..6e1e3f1b6a33
+--- /dev/null
++++ b/Documentation/devicetree/bindings/connector/fsl,aud-io-slot.yaml
+@@ -0,0 +1,96 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/connector/fsl,aud-io-slot.yaml#
++$schema: http://devicetree.org/meta-schemas/base.yaml#
++
++title: NXP AUD-IO Slot
++
++maintainers:
++  - Frank Li <Frank.Li@nxp.com>
++  - Chancel Liu <chancel.liu@nxp.com>
++
++description:
++  The NXP AUD-IO slot represents a physically present I/O connector on
++  the base board. It acts as a nexus that exposes a constrained set of
++  I/O resources, such as GPIOs, clocks and interrupts, through fixed
++  electrical wiring. All actual hardware providers reside on the base
++  board. The connector node only defines index-based mappings to those
++  providers. This connector type is present on i.MX95 19x19 EVK and
++  i.MX952 EVK, where it is used to attach the IMX-AUD-IO expansion card.
++
++properties:
++  compatible:
++    oneOf:
++      - items:
++          - enum:
++              - fsl,imx952-evk-aud-io
++          - const: fsl,imx95-19x19-evk-aud-io
++      - const: fsl,imx95-19x19-evk-aud-io
++
++  '#gpio-cells':
++    const: 2
++
++  gpio-map:
++    minItems: 1
++    maxItems: 3
++
++  gpio-map-mask:
++    items:
++      - const: 0xffffffff
++      - const: 0x0
++
++  gpio-map-pass-thru:
++    items:
++      - const: 0x0
++      - const: 0xffffffff
++
++  '#clock-cells':
++    const: 1
++
++  clock-map:
++    minItems: 1
++    maxItems: 2
++
++  '#address-cells':
++    const: 0
++
++  '#interrupt-cells':
++    const: 2
++
++  interrupt-map:
++    minItems: 1
++    maxItems: 2
++
++  interrupt-map-mask:
++    items:
++      - const: 0xffffffff
++      - const: 0x0
++
++required:
++  - compatible
++  - '#gpio-cells'
++  - gpio-map
++  - gpio-map-mask
++  - gpio-map-pass-thru
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++    #include <dt-bindings/interrupt-controller/irq.h>
++
++    connector {
++        compatible = "fsl,imx95-19x19-evk-aud-io";
++        #gpio-cells = <2>;
++        gpio-map = <0 0 &gpio1 8 GPIO_ACTIVE_LOW>;
++        gpio-map-mask = <0xffffffff 0x0>;
++        gpio-map-pass-thru = <0x0 0xffffffff>;
++        #clock-cells = <1>;
++        clock-map = <0 &clk 1>;
++        #address-cells = <0>;
++        #interrupt-cells = <2>;
++        interrupt-map-mask = <0xffffffff 0x0>;
++        interrupt-map = <0 0 &gpio2 27 IRQ_TYPE_LEVEL_LOW>;
++    };
+-- 
 2.50.1
 
