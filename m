@@ -1,66 +1,60 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793889718;
-	b=IPEDGJgnMHHRFeth4f3nxaLuLb9qNVeXLgVkh+dnkgSGfbaZmHNq4Do4abmpHbfXsaHQ
-	 CK+6pK8232pq5IsIsCqNBA7GgDEPF12Yof4ZaG0LCcxaSiMw+j/Y7tVw5gT2ACn1irI5W
-	 790tAfNdNXYc+l7X9aYS6RmwouNjFznMG84Jb+TaWQ7A0EHr/vhUKWCYubMpqrh2sjQfp
-	 ntruuMy5bclPa+CbsH/XvYMM9JH8/BTwQob5EouJ3vfRhdYNRPlO1EM8S3RhJ11fxggZE
-	 Yw1JAfTn24opxmkIzn2R85HIhEkcxTKF2+yaI1F+/wZ0rAv9Nz2t1GW1Ix8R3pPMaFA==
+	t=1793890321;
+	b=OCZjhC7YosqGIbd8alQQVazl37mZbFSPipclPl1xeNmntKmCBVg3LxCTDHeAui0CFf7v
+	 7qd1cPyqwe0mWRdvy4mZHkoTGAF/jq1XqTNAVa15bVe5BYVDANvzCZ2DuipTtG2eqKMdR
+	 vj7UG60pV/7A2nF9NzGi2ibWxLk27Vy3ToZQYSQMTB5E5GzdlEuXdPNh08NiaMv411P31
+	 jokLxLVRPO7rR+xLgrOnrtK63E23hKn3YzUmZXRMmzPBJiKF+MCLBZR5FuZjNR7Xoh1oy
+	 5ep1F2J5x7fA4mHYSyM8ml2L+VMohLieBBEca1gun7pcyyEcyPdpmFsVOfyZQp8blDA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793889718;
-	h=Received:DKIM-Signature:Received:From:To:Cc:In-Reply-To:References:
-	 Subject:Message-Id:Date:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:X-Mailer:X-Developer-Signature:
-	 X-Developer-Key;
-	bh=FM0GXu6K3ywCewrFLfc/Mlz2IYTQV7GkWoeDvvAVApY=;
-	b=M2cllGuT5h2mkDk6TKRgrIGq3D/Z7mHrvq+xdEjEH66ETTN4d4FwxEVrM5BPI4uMR+4v
-	 YNiByqMF/xfaAn7g/GC8qNUKypeN7x1JHXUqzsIK35xVJXg9SysxEKzgQr0F5SDI3kfx6
-	 eZosH80n3PThiW+nMEereiBRVVC1V33jTWB/qH4hE20PtThu3082PyYoXmeXUaL2iegJ3
-	 NeRFtm7xN+9fqUJzwxP3QMGY2JaqDmWV7LC/svAalghcqZ6b0aUlLD0U71M9p4qz+NBAZ
-	 a3QAFxdKwmj0yByArYgxCv+d4CmOq1yx0aWfcu+y3ZE/n/s2oBVauBZgnK/kFsJlkCQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793890321;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=tFn6zikrEC2zlRMrakpJdg31GXuSzHcjKbCz7ZUJ270=;
+	b=pF5zf7reEZhp0Pgg9GOop1ZaP0sYV4hwgv1e1zJclqF06x+a/e6QKrAaDTvZurw4EmQM
+	 ab7Qb25MLTsx2c1oeLmXaG+ToiiVUylWsLI1/L+8XEV3TjVpC84iXI46RyOpcVCxo3pIX
+	 2GjFtvdgOWRI6GXu+Ixmqefc3Gd1pRYtbHEbOlLdPKGmpOIjI57Ys4IunceLU1wwuAoP/
+	 XSBfPO/OV8gDIG1DU/0nn1v/mzwAk/Q4t0sZs8XyL8XDYAnIjaP3sJjhoJ3BWLqdRVBPZ
+	 N17+z/NeuZ3BSPjQHSvCi2Itb/i9P140VziKuifTiq6YZuswqRm9sSk9CyF2P+IqjCQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hr3V0onR;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UAhtLQAF;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C0BD606A31B;
-	Thu,  5 Nov 2026 14:41:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03E9B606A328;
+	Thu,  5 Nov 2026 14:52:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hr3V0onR
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5D741F00919;
-	Thu,  5 Nov 2026 14:41:57 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UAhtLQAF
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CDC41F00919;
+	Thu,  5 Nov 2026 14:52:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793889718;
-	bh=FM0GXu6K3ywCewrFLfc/Mlz2IYTQV7GkWoeDvvAVApY=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=hr3V0onRTktBtJzR21B6OPO3ER33IJufrxsPFAG8sRVMqmOCiXBqVEwwJV4mYFmrb
-	 csJXkI1xRPkFDlI2k732vjzz4WUQUSVwSBjQTfioNJS36BTkmymF0Vyjt1NsvqBTU4
-	 bppwtb37sSiq6LRK8pboFm7Ldr1cehSi2hGHkAUfPagiM3FWq8/fAj5Sig1tRMdAd3
-	 EfwDk46IBN/Ac7QzSb3WCoGhQZCdqLT/JXnM2cy9weebFW+tdUk2cTiAXOWrPJh7hZ
-	 G2AcL0I29/fuLkhmCzd2Zxlk/vRQClpRLmDXtZ9lpbVL7U7VRSntf5QYPhkDpdrChK
-	 4Pd10GbX06qPw==
-Received: from traversing.sirena.org.uk (localhost [IPv6:::1])
-	by traversing.sirena.org.uk (Postfix) with ESMTP id E139A2795E7B;
-	Thu, 05 Nov 2026 14:41:55 +0000 (GMT)
-From: Mark Brown <broonie@kernel.org>
-To: Shengjiu Wang <shengjiu.wang@gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>, 
- Fabio Estevam <festevam@gmail.com>, Nicolin Chen <nicoleotsuka@gmail.com>, 
- Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>, 
- Takashi Iwai <tiwai@suse.com>, Frank Li <Frank.Li@nxp.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Valerio Setti <vsetti@baylibre.com>
-Cc: linux-sound@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- linux-kernel@vger.kernel.org
-In-Reply-To: <20261104-imx-sgtl5000-cleanup-v1-1-62739fbb4a25@baylibre.com>
-References: <20261104-imx-sgtl5000-cleanup-v1-1-62739fbb4a25@baylibre.com>
-Subject: Re: [PATCH] ASoC: fsl: imx-sgtl5000: release codec clock right
- after reading its rate
-Message-Id: <179388475372.2912885.15403731696986720392.b4-ty@b4>
-Date: Thu, 05 Nov 2026 13:19:13 +0000
+	s=k20260515; t=1793890320;
+	bh=tFn6zikrEC2zlRMrakpJdg31GXuSzHcjKbCz7ZUJ270=;
+	h=From:To:Cc:Subject:Date;
+	b=UAhtLQAF7ygLXbRm4nIp+VFu3Zsf5fwk2EQdIQK2d9V2i6A8PVlNuSObt9AuFKSXj
+	 SoKszMHuYAQBz+LdZhBnKMbqx2bco+KTDrCNSu7EmVIizM4XdbI/Qv2Ye3ZmaNpiCc
+	 Tjo9Ks58BNb3G0fzdGPjTZLLnVUtM8eLB95E5zD5rFCHJZm1FxBTQqK97ogSlDrbq2
+	 JAwRVjm+pu/CXuNGkxtY4vjLzvR6tW6+J+E6EOT5ovABUjdLXyjTkKYF+J0qPQ7Dq+
+	 iVZUmUg9YoyY0l96BX8hnLottoD2lgi48PqczKNKEBlmKMOB+r1Gyw+pWXBY8tost7
+	 iO97CRtnQYqjg==
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Marco Felsch <m.felsch@pengutronix.de>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] ARM: dts: nxp/imx6: Drop unused .dtsi
+Date: Thu,  5 Nov 2026 08:49:19 -0600
+Message-ID: <20261105144920.2796623-2-robh@kernel.org>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -70,46 +64,176 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1165; i=broonie@kernel.org;
- h=from:subject:message-id; bh=eKulEu67eFyz/ko+paAxBSfq+R8JXOGf+PgSzd22/sk=;
- b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLLeTN1cv2BWZszG7LU3G+0+vzsn9DyYTd6Z8WAFr/fht
- 7dnZ5182FHKwiDGxSArpsgSl8X9sr7k9Rq+gwvbYOawMoEMYeDiFICJqJ5h+Ge7aWFf+pdNaldP
- inCx5FZ0cSc+Y9ixznK3pNQFyStudSmMDAfOrlilOztjJduNMz9CwmaencU7+dNqoSSDW7bRlSV
- ccxkB
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+Content-Transfer-Encoding: 8bit
 
-On Wed, 04 Nov 2026 11:48:35 +0100, Valerio Setti wrote:
-> ASoC: fsl: imx-sgtl5000: release codec clock right after reading its rate
+These .dtsi files are not included anywhere in the tree and can't be
+tested.
 
-Applied to
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+---
+v2:
+ - Rebased
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-7.5
+It's been nearly a year and these are still orphans. There was a promise
+to upstream something for the kontron ones, but that hasn't happened.
 
-Thanks!
+ .../dts/nxp/imx/imx6dl-kontron-samx6i.dtsi    | 12 -----
+ .../dts/nxp/imx/imx6q-kontron-samx6i.dtsi     | 12 -----
+ .../boot/dts/nxp/imx/imx6qdl-pico-dwarf.dtsi  | 45 ----------------
+ .../boot/dts/nxp/imx/imx6qdl-pico-nymph.dtsi  | 54 -------------------
+ 4 files changed, 123 deletions(-)
+ delete mode 100644 arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i.dtsi
+ delete mode 100644 arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i.dtsi
+ delete mode 100644 arch/arm/boot/dts/nxp/imx/imx6qdl-pico-dwarf.dtsi
+ delete mode 100644 arch/arm/boot/dts/nxp/imx/imx6qdl-pico-nymph.dtsi
 
-[1/1] ASoC: fsl: imx-sgtl5000: release codec clock right after reading its rate
-      https://git.kernel.org/broonie/sound/c/4ab9e4ccfaf7
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i.dtsi b/arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i.dtsi
+deleted file mode 100644
+index 5a9b819d7ee8..000000000000
+--- a/arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i.dtsi
++++ /dev/null
+@@ -1,12 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0 OR X11
+-/*
+- * Copyright 2019 (C) Pengutronix, Marco Felsch <kernel@pengutronix.de>
+- */
+-
+-#include "imx6dl.dtsi"
+-#include "imx6qdl-kontron-samx6i.dtsi"
+-
+-/ {
+-	model = "Kontron SMARC-sAMX6i Dual-Lite/Solo";
+-	compatible = "kontron,imx6dl-samx6i", "fsl,imx6dl";
+-};
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i.dtsi b/arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i.dtsi
+deleted file mode 100644
+index e76963436079..000000000000
+--- a/arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i.dtsi
++++ /dev/null
+@@ -1,12 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0 OR X11
+-/*
+- * Copyright 2019 (C) Pengutronix, Marco Felsch <kernel@pengutronix.de>
+- */
+-
+-#include "imx6q.dtsi"
+-#include "imx6qdl-kontron-samx6i.dtsi"
+-
+-/ {
+-	model = "Kontron SMARC-sAMX6i Quad/Dual";
+-	compatible = "kontron,imx6q-samx6i", "fsl,imx6q";
+-};
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-pico-dwarf.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-pico-dwarf.dtsi
+deleted file mode 100644
+index 3a968782e854..000000000000
+--- a/arch/arm/boot/dts/nxp/imx/imx6qdl-pico-dwarf.dtsi
++++ /dev/null
+@@ -1,45 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0+ OR MIT
+-//
+-// Copyright 2017 NXP
+-
+-#include "imx6qdl-pico.dtsi"
+-
+-/ {
+-	leds {
+-		compatible = "gpio-leds";
+-		pinctrl-names = "default";
+-		pinctrl-0 = <&pinctrl_gpio_leds>;
+-
+-		led {
+-			label = "gpio-led";
+-			gpios = <&gpio5 31 GPIO_ACTIVE_HIGH>;
+-		};
+-	};
+-
+-};
+-
+-&i2c1 {
+-	mpl3115@60 {
+-		compatible = "fsl,mpl3115";
+-		reg = <0x60>;
+-	};
+-};
+-
+-&i2c2 {
+-	io-expander@25 {
+-		compatible = "nxp,pca9554";
+-		reg = <0x25>;
+-		gpio-controller;
+-		#gpio-cells = <2>;
+-		#interrupt-cells = <2>;
+-	};
+-
+-};
+-
+-&iomuxc {
+-	pinctrl_gpio_leds: gpioledsgrp {
+-		fsl,pins = <
+-			MX6QDL_PAD_CSI0_DAT13__GPIO5_IO31	0x1b0b0
+-		>;
+-	};
+-};
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-pico-nymph.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-pico-nymph.dtsi
+deleted file mode 100644
+index 3d56a4216448..000000000000
+--- a/arch/arm/boot/dts/nxp/imx/imx6qdl-pico-nymph.dtsi
++++ /dev/null
+@@ -1,54 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0+ OR MIT
+-
+-#include "imx6qdl-pico.dtsi"
+-
+-/ {
+-	leds {
+-		compatible = "gpio-leds";
+-		pinctrl-names = "default";
+-		pinctrl-0 = <&pinctrl_gpio_leds>;
+-
+-		led {
+-			label = "gpio-led";
+-			gpios = <&gpio5 31 GPIO_ACTIVE_HIGH>;
+-		};
+-	};
+-
+-};
+-
+-&i2c1 {
+-	adc@52 {
+-		compatible = "ti,adc081c";
+-		reg = <0x52>;
+-		vref-supply = <&reg_2p5v>;
+-	};
+-};
+-
+-&i2c2 {
+-	io-expander@25 {
+-		compatible = "nxp,pca9554";
+-		reg = <0x25>;
+-		gpio-controller;
+-		#gpio-cells = <2>;
+-		#interrupt-cells = <2>;
+-	};
+-};
+-
+-&i2c3 {
+-	rtc@68 {
+-		compatible = "dallas,ds1337";
+-		reg = <0x68>;
+-	};
+-};
+-
+-&pcie {
+-	status = "okay";
+-};
+-
+-&iomuxc {
+-	pinctrl_gpio_leds: gpioledsgrp {
+-		fsl,pins = <
+-			MX6QDL_PAD_CSI0_DAT13__GPIO5_IO31	0x1b0b0
+-		>;
+-	};
+-};
+-- 
+2.53.0
 
