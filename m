@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793892683;
-	b=nswAS/U7UuFkZKnPXhIyyk/hMIKV0eFTx5Dk0oGwKBmb8s5ydrt5nrGqGqPCQ7NpRya2
-	 ajvBW9k0gGbfaFY4EFgJiPXMF3xx0F7eDUNb3YED8bnhBeLWFMrW+rsKlL1/qvIjIQ2Vh
-	 HIxw2OrznTv6InFUD0UQuXSI8SXfg3Dn1nf6iv5RVaFKXmYX9nyjHuBTkWtoocENqNTEf
-	 LQwj3RfPrSFa+Ohu7yrirR7DSNdSp+Frc7a+PLBGIrXmzB9Pjq6C235wMGmBGNcNF+X1V
-	 A3T8NVOkugDUMK/nX42/F53NlejJ2n3JxFLZDS2vQ6Fi6LaG7w+E1FHCpTAm3QD3x1g==
+	t=1793892722;
+	b=WPjtt+nrwz5stWXJRY/t0/fFhnCq9wy0Qo8BAXA06Mc6exUzukGei22rrzNrX4YD/4Gm
+	 KpAIEUyoA3MQTrTVux6LYilRBCa4z9oizoi18H4sqJsv+dDx+UoKjm1rdf1JEXhnece6n
+	 tchfTvz6N9iYTxfWyCRPqIdM9yFhCTbMNQF0rLijvgw1Gq3wEueB6kpoo33XlCVqssPCW
+	 b5q9YdZe4HLL70s+6XRRsSE6t03fw0blgBYcWzREgnLedcYS6hj+ywenmZznXf7ieznZV
+	 hNYuCVkMSsbPpvLdz5mDK6Cb4XLJhXKq0p/3haRnGphnuLlu9dG90l1oQtvY69bqhGQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793892683;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793892722;
 	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
 	 X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=k4rz680V7cIAb7iutGeH77t262DzHjpYVR2yTCZegGo=;
-	b=qx7Zcf80XssHVs03orIUNbm8bbWiAaZVvC8iWuQeNFG0wV1X513Rye6/Ft2nFO3Bz01m
-	 tCaUGDQMS092483fXhtZvXK8k/6BaHRaZyERYYBg8CVUmX8id5aWcDhIV7V34xB3H89Yw
-	 AVYw1sCK6osaXqcgnc03sIeuKCTLgb1FvQpPPy8C7av1qYxu5XS4nkicWAHTjnRaI71ML
-	 xrW0DUdhKvx1qISeM9UMJrkuNM4ZFGi+i6jO3KhgnAFoZ9+DX8BdW/1R8zvlIUMlCkwHc
-	 ONaYjcGLrAZT9xgaOwdX7hdf30GCyWlozJ1W26QRoGuWJbapUK4FbUFPWGydFsX8o9g==
+	bh=FjXjIN+CBYyI+JYtTID5+LH5eyxhgdXC1OmWwVopoi4=;
+	b=R8+tul0xa1hr/yriiTa2jFDE7iJWMEhpvSzdLoVWrFnlL4HGNwEZJqXHHIsy1vXvBtE+
+	 CMeBGXeXAa9jKHmNjSM+A+/WWkizcgztzJFL6Y6R7AjGz/g3dckCiEt2zZUcL2AKWo+HC
+	 +23BM3WC87SKweiJBkuks0E2vvOS6SNxFnNkQZ9/O5jeqJBXHhMCtIso6Vl+oyxD9U1yt
+	 A2/qHZ7N/WFJAPg8fq5M3l+KvlIuWKqvSaEu9k8Al8tF8A5qgUoJMAPTD786GcZ3dCjOs
+	 a61L7KkuUy9tE3wOCRzYGmISqFACDWuNTSnwzrbwAtO1KVQmb7FbNOwBfAYagjKVI5Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BB5Ic7JH;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ok2xSvZN;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0783606D806
-	for <imx@lists.linux.dev>; Thu,  5 Nov 2026 15:31:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94913606D835
+	for <imx@lists.linux.dev>; Thu,  5 Nov 2026 15:32:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BB5Ic7JH
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC4031F000C1;
-	Thu,  5 Nov 2026 15:31:21 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ok2xSvZN
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E18741F0093A;
+	Thu,  5 Nov 2026 15:32:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793892682;
-	bh=k4rz680V7cIAb7iutGeH77t262DzHjpYVR2yTCZegGo=;
+	s=k20260515; t=1793892722;
+	bh=FjXjIN+CBYyI+JYtTID5+LH5eyxhgdXC1OmWwVopoi4=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=BB5Ic7JHgdYxxa7vuMlU5JnZYwORREKVBE2MT134haR7UF3zBhU6h8PbsR9M5TfXN
-	 cO9kBzT8+IztfWtDx2jOcHTGgf24yPDMKVYKvPSOMOSaNVvUSHRHZVOC1GYPwJYN5N
-	 R3TNbTdkfqf/A5zrXBdgN7M3G423IHfADSCMNK0fW9s0DE8zU7YU+iaVFehLQJ/R1v
-	 5lv73xrwqhzYk2zuvTOrVF+Ny9eYAsuSoz8aJ+THmAZ0mS5hZ/91YWAzHIF0v9fB0L
-	 M3TllWw6HqE5odMvbqDg+um+0VI96Gc+3aAIlqOICF4ZuoQT3AuLjRMQHJ21jX7i46
-	 lRWVrPmJLO0vQ==
+	b=ok2xSvZNuL73EMbNf/9IvmbypZehbtrFnFH4JGy0jpZ5HnB62IU7pndDXbbBn3eKp
+	 4LHws0C5FzI5zgt0Vv2862iGpPtWM64EOs0eVqifSO/xlvnTl2q2e1WqbwPO4nQIFP
+	 V0m7H4NedSXvwl/eRctb7g9wnyj6iE4Pz4t+m3gRkKa69ePWaEpQEFgDJXX/VoXeWL
+	 uWTz7SPmZHfofZS48hgJwFq5dOGRqz8Vj/jWn3iWxqwMza1ucP2CrRmFH1chhx07Lk
+	 /vglOlP4B6Hlauoh/FZdyWQL4tN0NKiSEuxzz2PAuAP0GX8lXi+dK3fAZZDCU/AzPw
+	 Wj/MbZP/IzkYg==
 From: Maxime Ripard <mripard@kernel.org>
-Date: Thu, 05 Nov 2026 16:29:28 +0100
-Subject: [PATCH RESEND 19/83] drm/imx/ipuv3: Switch to
+Date: Thu, 05 Nov 2026 16:29:39 +0100
+Subject: [PATCH RESEND 30/83] drm/mxsfb: Switch to
  drm_mode_config_create_initial_state
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -55,7 +55,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261105-drm-no-more-config-reset-v1-19-1f58d1e33380@kernel.org>
+Message-Id: <20261105-drm-no-more-config-reset-v1-30-1f58d1e33380@kernel.org>
 References: <20261105-drm-no-more-config-reset-v1-0-1f58d1e33380@kernel.org>
 In-Reply-To: <20261105-drm-no-more-config-reset-v1-0-1f58d1e33380@kernel.org>
 To: David Airlie <airlied@gmail.com>, 
@@ -63,16 +63,17 @@ To: David Airlie <airlied@gmail.com>,
  Simona Vetter <simona@ffwll.ch>, Thomas Zimmermann <tzimmermann@suse.de>
 Cc: Maxime Ripard <mripard@kernel.org>, dri-devel@lists.freedesktop.org, 
  Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>, 
+ Marek Vasut <marex@denx.de>, 
  Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Philipp Zabel <p.zabel@pengutronix.de>, 
- Sascha Hauer <s.hauer@pengutronix.de>, imx@lists.linux.dev
+ Sascha Hauer <s.hauer@pengutronix.de>, Stefan Agner <stefan@agner.ch>, 
+ imx@lists.linux.dev
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1328; i=mripard@kernel.org;
- h=from:subject:message-id; bh=R1dioC/IosBGQUi4ZFDeC1cA3Y5gHU7STgC448dv8hY=;
- b=owGbwMvMwCmsHn9OcpHtvjLG02pJDFlvFjzte7NHXXrOct7GrVJMVqy3ndZsn/FfcOqztRpX1
- haI7Vq5qGMqC4MwJ4OsmCLLE5mw08vbF1c52K/8ATOHlQlkCAMXpwBM5FsJY33hs7DDsWH2x7bd
- afmzUtvI80JbnKLhWY7J769xzFVo0eadIjh1RrtC0KJvXH0hdxwa/jM2/HrcnuGXsPp87FmG7sD
- A1G3/eh8KTM1cGNyb//dnxkyJoiNrPxdeYLoq4bKw8knd0+veAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1394; i=mripard@kernel.org;
+ h=from:subject:message-id; bh=zKNcy+U5lolJH7X+spEawzCpdBtBuTjQcaw2ZBlxBys=;
+ b=owGbwMvMwCmsHn9OcpHtvjLG02pJDFlvFrxKnbmzJn1t8oyvm27H7bsl1VrYc+D1zcqpXxp3X
+ M9/nHptXsdUFgZhTgZZMUWWJzJhp5e3L65ysF/5A2YOKxPIEAYuTgG4yAXGGp4X0lYXy5e5Bzp3
+ Tjn4+MfUCRz/hflSdrzIX9RqVtRg12JRd9hgV5LHNFkG/vbad9yJjA3zLnNPqetVnvayTOhcg/3
+ HCnlV83XX383y+bvVbkWIb4hX6rL2iw+MBc/c+7HzHsuXGm4A
 X-Developer-Key: i=mripard@kernel.org; a=openpgp;
  fpr=BE5675C37E818C8B5764241C254BCFC56BF6CE8D
 
@@ -91,27 +92,28 @@ Signed-off-by: Maxime Ripard <mripard@kernel.org>
 ---
 Cc: Fabio Estevam <festevam@gmail.com>
 Cc: Frank Li <Frank.Li@nxp.com>
+Cc: Marek Vasut <marex@denx.de>
 Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-Cc: Philipp Zabel <p.zabel@pengutronix.de>
 Cc: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Stefan Agner <stefan@agner.ch>
 Cc: imx@lists.linux.dev
 ---
- drivers/gpu/drm/imx/ipuv3/imx-drm-core.c | 4 +++-
+ drivers/gpu/drm/mxsfb/mxsfb_drv.c | 4 +++-
  1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/imx/ipuv3/imx-drm-core.c b/drivers/gpu/drm/imx/ipuv3/imx-drm-core.c
-index 51a0ec043248..b7b6ae8f9578 100644
---- a/drivers/gpu/drm/imx/ipuv3/imx-drm-core.c
-+++ b/drivers/gpu/drm/imx/ipuv3/imx-drm-core.c
-@@ -245,5 +245,7 @@ static int imx_drm_bind(struct device *dev)
- 		goto err_kms;
+diff --git a/drivers/gpu/drm/mxsfb/mxsfb_drv.c b/drivers/gpu/drm/mxsfb/mxsfb_drv.c
+index 641691fc92c8..04ac1c06f435 100644
+--- a/drivers/gpu/drm/mxsfb/mxsfb_drv.c
++++ b/drivers/gpu/drm/mxsfb/mxsfb_drv.c
+@@ -323,5 +323,7 @@ static int mxsfb_load(struct drm_device *drm,
+ 	drm->mode_config.helper_private	= &mxsfb_mode_config_helpers;
  
 -	drm_mode_config_reset(drm);
 +	ret = drm_mode_config_create_initial_state(drm);
 +	if (ret)
-+		goto err_poll_fini;
++		goto err_vblank;
  
- 	/*
+ 	ret = platform_get_irq(pdev, 0);
 
 -- 
 2.55.0
