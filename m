@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793887790;
-	b=LPdeuw1DpA6LnH4sjflbZg50nGFBRopN/klCNY4vFPO8XBesVVpNiVB3osLhnVoq8ssF
-	 izGYh1KdnFz21LnX2Y/XkfcypoF+/DGgLazP7jG3XmMab9qSFD8IT+aEaSEBX9+mgCFIk
-	 BKKQa2QYpKzjdknywJB1VYAzBxYBoBdvjB+nDhiqDmvkt/Uc1uioR1pvI1zqdOAK2Ak2F
-	 krfr4WQ6vI6JqWHxw+fwIEEzggz6FI1AM7xzApLqp0vLbSiC4L+vHJMwrPnE9XiNnWtz7
-	 LO6SKvedUYb3eaq7XLOXBvgs5R0EcMZrkIc/MwyxqgbyX/ZfhdG5IWDio49KiEGKcSw==
+	t=1793887793;
+	b=oc4SvTFSf2aYTpVnTTB6Ld+yBaPIBb4d4EehkQFb6x7DQ6ynFqnm/yObev5RoeQxhOm5
+	 u+xT0FKi0C2ClpxRP1EiggRTo11xtALiSzBzHhN3+gfktOiqNLhWTt6rp3rfkzO6T2GE3
+	 fdwHUthtqiFhYQ4/CbaKI0EdtxQqBtph65k1VPgFfoGgbeAZ9kV0dPsi9kDrwUVaK2O8W
+	 6dBoBGuUR41/oQ/ccYRZTKDTAuiXtNkeOcCOFrlD4K2+M/oFNuJ0sEAKmxmjS9bOTyT5C
+	 Li2iNI6Swk9BNy+3QtksCi/qTPewTcZQP5xn56VSCIWb0SruCnyAgXm/oLMwcdOSOtQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793887790;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793887793;
 	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
 	 X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=3LOFNckg5sV+t6d5ADNk4G1bEFmQfPz5mEWgPPfIzEU=;
-	b=P82hkqQT3ualW3ExKlvuKoDi9PwJcein9g0FrszUxHX4O2Wri8wMvoCttHbrClwX9HjV
-	 YkhWy7TIJe75uJVhYcXXP5szQvwLN7twzZia7zy9qCmXjN7D5qa/1mZX1H1FGVcxa7cZr
-	 0E0TZyXd/RGD9lioRcEZKaBFG2hQ3c3xRad8oQko/x3YQidyeEVv7h6eKkeCs+VJo/hzP
-	 j2PdX3tIMRCj32mS8WdyyA0L2iQ0kBqaITj3RD83ffpPXBfV6O8Wz+Yc/x4rWgklvG0dp
-	 YCLBbxoMUIEpDceEAXtfxjfFdsvi1OTw+NNAJ75HXlbNQpNUUOFNId7rArJV2oc/YmQ==
+	bh=FjXjIN+CBYyI+JYtTID5+LH5eyxhgdXC1OmWwVopoi4=;
+	b=pBH/Wnj8+7SIGskx2rXdNXPRcHf2WPWnziIF4vrooj/+cpMn5jfj8GfRb7fr60tAhDZy
+	 Uv1PfK0FhAsupa1jhIpwqbMw+VjwAGBg9C1R1uA3LlE+jzIN5im+IJLPg8X8N8diSrMkO
+	 3GigVum18QzGUjmvGAdlMBWAGdmu2C2OXHoKxQUazdHVSpxA4sKDEw7XOpFbZ9utXK+KM
+	 sNqrAVqpUHw5fIhse+ZUBDERCGWucEOTjESSwe/mIaG7xL8+a6XqCJE6YHdAMiVI5IrpA
+	 KMsB3ZSiC8S+b8OBBRG/07NgSQLlUZ2L3rIGpVkWK2yC76kEQ7rlsclfXeByleQwZUw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Vreu8oPD;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="OoVhhwu/";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA874606A31B
-	for <imx@lists.linux.dev>; Thu,  5 Nov 2026 14:09:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A865606A31B
+	for <imx@lists.linux.dev>; Thu,  5 Nov 2026 14:09:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Vreu8oPD
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33D271F00919;
-	Thu,  5 Nov 2026 14:09:49 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OoVhhwu/
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFE841F000C1;
+	Thu,  5 Nov 2026 14:09:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793887789;
-	bh=3LOFNckg5sV+t6d5ADNk4G1bEFmQfPz5mEWgPPfIzEU=;
+	s=k20260515; t=1793887793;
+	bh=FjXjIN+CBYyI+JYtTID5+LH5eyxhgdXC1OmWwVopoi4=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=Vreu8oPDBijOf1lHYQOC/8lVBiJnYcUDX/hKdYl7EBGGFR7HFsULbCvipGiYbCZPU
-	 5G4uHmsDdd7Gr389utC0AWco591SifU9AjBwSQXgUm8cvop6stEuCp4c/ivCyTWmQv
-	 l7QO83HBDnEEJrqJKobmg4kmP3LKX7yy6d7aHxjMfGZutWITEkpmt2UCzd3HtUOasg
-	 ZjBa/ntj1Zu5hWQn81B2v05VvpeXa5XNk6MUws2wYn74Xq1hjArgdzP0ifrcoVXIVV
-	 MOY022QDp0ElHZNqvCRhDEjPoZDcOzNVYQl/URgdvn1myF0K4lfD/Ul9Mo2GWDKClJ
-	 Isa6+IlYPKXdg==
+	b=OoVhhwu/pKMBX/H6nj9ZTyv3Gx/g7ZHnQZEGxYmVcKj5lKml2v0XbTRVdJCCjmHMq
+	 IjV9ysoMVIw60Usd53RdI2ENA7EURaNnmMkO6AXxY0gr3OXYJL3G1hJtRF6lY/mUtk
+	 +ucgmMugk7LtbRvmWyL3zP9jKwbcdaHgHmIVBMcH/FvZeXp8ljMQUBfhJISt5mNMKT
+	 naSF+CISouoD8M/9DZq+D7gq+5oLk044gVQIdlRTw1VXWiNO1gsOr/3/07iUjM0cBi
+	 z9mncVKU96ec2PD3FiQOdkPfxOYoGUfDmqWP7k3ly6NXb4Lmon3uNZ+AChylnYZCwo
+	 Lklh5uWhj41iw==
 From: Maxime Ripard <mripard@kernel.org>
-Date: Thu, 05 Nov 2026 15:07:46 +0100
-Subject: [PATCH 29/83] drm/lcdif: Switch to
+Date: Thu, 05 Nov 2026 15:07:47 +0100
+Subject: [PATCH 30/83] drm/mxsfb: Switch to
  drm_mode_config_create_initial_state
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -55,7 +55,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261105-drm-no-more-config-reset-v1-29-763560c2cc3f@kernel.org>
+Message-Id: <20261105-drm-no-more-config-reset-v1-30-763560c2cc3f@kernel.org>
 References: <20261105-drm-no-more-config-reset-v1-0-763560c2cc3f@kernel.org>
 In-Reply-To: <20261105-drm-no-more-config-reset-v1-0-763560c2cc3f@kernel.org>
 To: Maxime Ripard <mripard@kernel.org>
@@ -65,12 +65,12 @@ Cc: Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
  Sascha Hauer <s.hauer@pengutronix.de>, Stefan Agner <stefan@agner.ch>, 
  imx@lists.linux.dev
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1389; i=mripard@kernel.org;
- h=from:subject:message-id; bh=x/39Ikdb61ljdtuhzx4E9VDxd2EX/mjoQLPOSxbG91M=;
- b=owGbwMvMwCmsHn9OcpHtvjLG02pJDFlveld81rE1XPFk/amZW6bkXsj5qLtKveeFckJTnm29c
- kas4gHdjqksDMKcDLJiiixPZMJOL29fXOVgv/IHzBxWJpAhDFycAjCRtcWMDU1XTDM/nJlsuc58
- qhCDTGsdQ+3bKV1KLcLdPLtqvy75fmDljZo5n8Un3j5h7+DL+LxFlbFhWUfoiS5R5k8xcw9L3t/
- Iey416KPCppXdEZK8NXIeG3bFBmS33dUpk35z+pPTrsKdYhEA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1394; i=mripard@kernel.org;
+ h=from:subject:message-id; bh=zKNcy+U5lolJH7X+spEawzCpdBtBuTjQcaw2ZBlxBys=;
+ b=owGbwMvMwCmsHn9OcpHtvjLG02pJDFlvelcKF6eENLCoFywJdsuP86hXbP9qaamtJj5xmuOFt
+ YJl5q0dU1kYhDkZZMUUWZ7IhJ1e3r64ysF+5Q+YOaxMIEMYuDgFYCIVtox12stqJvHGRG5L4N+2
+ uTdnt4Ddoeo/IQ8lStWX2N9xm1Yq2q833eWR+8JDJyP6Pz+uD3ZmrI9dFzpJSZZJr3lZ1LVDJ62
+ Yb19cIlv4Jb9h2u0HN76+qVq0/9aPifYT51bfyjcuOb2AfwoA
 X-Developer-Key: i=mripard@kernel.org; a=openpgp;
  fpr=BE5675C37E818C8B5764241C254BCFC56BF6CE8D
 
@@ -95,20 +95,20 @@ Cc: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: Stefan Agner <stefan@agner.ch>
 Cc: imx@lists.linux.dev
 ---
- drivers/gpu/drm/mxsfb/lcdif_drv.c | 4 +++-
+ drivers/gpu/drm/mxsfb/mxsfb_drv.c | 4 +++-
  1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/mxsfb/lcdif_drv.c b/drivers/gpu/drm/mxsfb/lcdif_drv.c
-index e2173c4d6fc2..12d844b282dc 100644
---- a/drivers/gpu/drm/mxsfb/lcdif_drv.c
-+++ b/drivers/gpu/drm/mxsfb/lcdif_drv.c
-@@ -196,5 +196,7 @@ static int lcdif_load(struct drm_device *drm)
- 	drm->mode_config.helper_private	= &lcdif_mode_config_helpers;
+diff --git a/drivers/gpu/drm/mxsfb/mxsfb_drv.c b/drivers/gpu/drm/mxsfb/mxsfb_drv.c
+index 641691fc92c8..04ac1c06f435 100644
+--- a/drivers/gpu/drm/mxsfb/mxsfb_drv.c
++++ b/drivers/gpu/drm/mxsfb/mxsfb_drv.c
+@@ -323,5 +323,7 @@ static int mxsfb_load(struct drm_device *drm,
+ 	drm->mode_config.helper_private	= &mxsfb_mode_config_helpers;
  
 -	drm_mode_config_reset(drm);
 +	ret = drm_mode_config_create_initial_state(drm);
 +	if (ret)
-+		return ret;
++		goto err_vblank;
  
  	ret = platform_get_irq(pdev, 0);
 
