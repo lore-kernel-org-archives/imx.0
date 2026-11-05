@@ -1,57 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793851779;
-	b=zfRh86FGjFiYgmY3F6IcwOsEiBpW0i7VQiEFGSloM80596gQSd9VHMfHKKqJutWHeBzU
-	 MhoGpu2tF514Zp5xMGipqiSwbyT/gkfm8Z6w89ZkfGyungoaamlIxPPNn4M6+191okpgr
-	 mDQTnxK0wVMq954zL1SAAuulm5eQOZ8lzOdsfjv3/Ujoypp+OdwvbbaS4p3mHoNPE1yrs
-	 WtS4J6B3aR7LEWgP+OuKxBTmBhTY/4pMg8UUT+N1ox9il0C4DUZdUHBMqjmPRJiiBeb07
-	 QXKFiDhXtT6iHBS2T4ZkAE4181POX4vAQuMCvvnqEg9C9AFEXGZ6Vvynx+zmWqmUTRQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793851779;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=gILZcq9VEcz3UUom4qJ/yX8BZAhWIY+hh9gyo4CF+Yw=;
-	b=CTWMsIYHrg2xgenT1d6ukDGvYB89ezWsGyW47zNun7wrgFXCPC6Fst2wxPXUQCPoaaNz
-	 nyyAS8djYaNp5I3Bq915ZNpB86wFHmuMCiJrxuWKNsLbc6RQd73nWihF0LfI8MzUkFoG8
-	 nuq3+beQ8liED3EK7jkN78b4sZiR0ofDuOGGXT7YcfIO4XYrbV5RSfXNy01v0Le91k4g+
-	 xnC2P/ne5/5weM/PSP+Hz/qWU4fYmYn+JOUalA3Acy9fidXBwcoUr1QtmuVlRgaJ43Ph6
-	 cHpvBSR1LtcsTXmXkMMpukWy9DxKaYIXZsnQJFQZIZShqcJl+RbtM8lW/3Hi8d7uxEg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FL1ExOEL;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.66.7
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793860889;
+	b=z2TH4RcohvzVi4+RYRNpIVBYx4EiKrd1VQ8oiG8ZqKsJA+C6qGBS1u5dDqmyRb35tE7I
+	 QyHS5vzMUI/GwXBSbqlT7EgSNPz8X/jEsXNJENnIFqUdhWb0MhidOsMEfGePPRQEWEObs
+	 3sKTe2V6AIl6nDAiypwLeDhJkwXwvUcjunn8f6XEtw4Mb1lVO7YzCfOH+p5EeF1WLDJnc
+	 UvUfDrDlaf5YzmKIexOrIbyvAM17N+X0mlfJTl6CBQiNTpwtb8JaSDk9R0K+dTBio8rh+
+	 /pjkkFpAJNG2G8W9ECH71yeNVym5ipDu3eJ5//V8ecqFoiR3faaO679rz+SINh9dkcQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793860889;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:Content-Transfer-Encoding:Content-Type:
+	 X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=rr048qY3HNr3QsWAPMsxFmYMKWEuae4XAQPqDeEodXc=;
+	b=OWGSby+eLIEfxpJ17wwKAL0OPe8MRoiU9eazaQ0ZO5mihcxwrBmkKgmXLN1UHPjMwGdW
+	 5m+ZQmCZB+Qm86uJXZhKDHl/c2DUd3hK2SIgaTUSqvbtFFR0YAiN/LYBpA/1ksa/ZCJWp
+	 XA158yDCqR+aT7JknU+EWbudwPmYPL88izKCxX6ssR96dUZ8qeUdBojl+PNzP/LvSXKKS
+	 rYEP5HFw9YRMLfqpG4cFQdxJvWMqrsxqxUXwTDaSE0n9/ptZelMtkoapHQW/GKEqfOF/f
+	 vpjPGfBRLLrNUACVNxDXsyVpEU4ERiCGQdteqcayc+ulWIgUdwNJMndpcIFZm6g86vA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=oss.nxp.com;
+	spf=pass smtp.mailfrom=oss.nxp.com;
+	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=J3JMI5oV;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.66.7
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012007.outbound.protection.outlook.com [52.101.66.7])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14AD9606A326;
-	Thu,  5 Nov 2026 04:09:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBAB6606A32E
+	for <imx@lists.linux.dev>; Thu,  5 Nov 2026 06:41:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DBAB6606A32E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FL1ExOEL
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64D511F000C1;
-	Thu,  5 Nov 2026 04:09:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793851778;
-	bh=gILZcq9VEcz3UUom4qJ/yX8BZAhWIY+hh9gyo4CF+Yw=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=FL1ExOEL+gve6wWhxMpTqeBV+QlVI2GHgI0vuDRGndeiCnGT6PZ8JXYkFWsrePoCR
-	 z8kswVxNKcRSy1LZQqZONqqu2XZwr7R4LYEsft9PflEqxQvlFmEdkAVAFIymDYahbj
-	 lqYfMbY3Lo2PchQjQzqnBNzI5/5ih71KZL1YnlQpMJt3mKroYCpX3amzkHThUZKoS0
-	 C/tQ0RIE4SMuK1jGTTIFd0W9QbLuSAsjZ7nTnJ5AizKij0QCAXt2zEjiAiY8v43Nep
-	 9HtAvLW9tKxotMnpWhLeDSGL4rOrTI1XXVdJ2xpXKov/ab7PGUt1I12f20QCRa17gl
-	 Nfszu95pOwKhQ==
-Message-ID: <sashiko-outbox-198541@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 01/11] dt-bindings: gpio: vf610: fix clock
- requirements per SoC
-Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?UGVuZyBGYW4gKE9TUyk=?= <peng.fan@oss.nxp.com>
-Cc: linux-gpio@vger.kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20261105-gpio-vf610-fixes-v3-1-504e19de5ad5@nxp.com>
-References: <20261105-gpio-vf610-fixes-v3-0-504e19de5ad5@nxp.com>
- <20261105-gpio-vf610-fixes-v3-1-504e19de5ad5@nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 05 Nov 2026 04:09:37 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=J3JMI5oV
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=nHIjzWpnFNF9vi2yFghMAt6cLND3iixSGeO6SPdHu/0DmeeVBMYIrpsfVr91q1hpiRt08HpO5nXozePQ1apyHH/ZCdwQL0hICJx+87FdIQIn0WEZPfR/LxQljymxvSlpPrXIHfFpKOKtjCfVHvae6AmK2DwNGcV1gGBiV6bWj7xGp2jCjNHxeOapBf00y1PWPUx3k23TddSo5mrAWATqdi9d8q1tywvImWe+wbOJscHgpGigMThgAZgwKBR3sbBMWLlf5P21NOYKglByrL3NZC5zIIwv2e21YQSlwVgfhwdlsiKFcZJiBlEO0Crf91MiMgXd/BmVcxisJmDpQGJScw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=rr048qY3HNr3QsWAPMsxFmYMKWEuae4XAQPqDeEodXc=;
+ b=j8Vsctp3awcOpYEPPwHdgjU/d2UufZn9VW1tfAcYrP68nZ2k6lQzboEOaDuIQTLwS1NN9KG2FxaQMArdVr7uDtI9ztrrtCw5XMyqQSlr99N4fWbwtzrFt8FDJefaGkdyiMAbxH5PdzkZbKlYiC+iWZOyx/N5M/EUyf9i/PcpCoNbDM2MbOGy0WOHyl8olMNr4ZW1w+qOFUaQ6h0fiQ1uUKVJks0DdfxKmLQj5oY107PQdFQfbvu8hJFgMH5bUb8PAzKyKRqSoevWSxlW6dDXsFCJnAamXvIezn1P0lNz1VoVHXMMD0uxoJd4xPrhqJKpa+gmodZRkFey2yny6GEzaw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=rr048qY3HNr3QsWAPMsxFmYMKWEuae4XAQPqDeEodXc=;
+ b=J3JMI5oVW7GP3hebTbP2VMfGiHN1N8XICNAkGVkC8UoXnd0gBuVfXRZd4F+wkuCPlI20ArF1PA+V+XOSwBfY0iDHCmqvXGBLjt/mIinrzCblXByi405GJqj7ohK/IJqzzITUyjw8R5KYvbG3KgVH196LgOibFaMy1++BV6p98jWdwf5+Foe6hyIOJiJrJvKhUlaVpxNBcODC1Pg9GODBrZlSKTjTC1OIXRSicFPUP7hYzdGe8LD6mSts8vPCSZX6OKANeB2ega5fYaJwjw4iqmL8IigSfRDYz2J3zDjLudTnfGPQ/f5YVAsUCe1I0pTvLJPFMSEmLKIR85uZ/xwPVg==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GVXPR04MB10021.eurprd04.prod.outlook.com
+ (2603:10a6:150:112::20) by DBBPR04MB8026.eurprd04.prod.outlook.com
+ (2603:10a6:10:1ed::6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.10; Thu, 5 Nov
+ 2026 06:41:26 +0000
+Received: from GVXPR04MB10021.eurprd04.prod.outlook.com
+ ([fe80::d247:853:3e16:1994]) by GVXPR04MB10021.eurprd04.prod.outlook.com
+ ([fe80::d247:853:3e16:1994%5]) with mapi id 15.21.0592.009; Thu, 5 Nov 2026
+ 06:41:25 +0000
+From: Chancel Liu <chancel.liu@oss.nxp.com>
+To: robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	Frank.Li@nxp.com,
+	s.hauer@pengutronix.de
+Cc: kernel@pengutronix.de,
+	festevam@gmail.com,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v4 0/4] arm64: dts: freescale: Add IMX-AUD-IO add-on board support
+Date: Thu,  5 Nov 2026 15:41:13 +0900
+Message-ID: <20261105064117.277495-1-chancel.liu@oss.nxp.com>
+X-Mailer: git-send-email 2.50.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SL2P216CA0079.KORP216.PROD.OUTLOOK.COM
+ (2603:1096:101:2::12) To GVXPR04MB10021.eurprd04.prod.outlook.com
+ (2603:10a6:150:112::20)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -60,129 +101,146 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GVXPR04MB10021:EE_|DBBPR04MB8026:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1cfa246a-97c0-43f7-e5d7-08df3b07d038
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|19092799006|366016|376014|7416014|23010399003|18002099003|6133799003|10067099003|3023799007|56012099006|5023799004|11063799006|261026140227099003|261028144727099003|261026121527099003|261022075727099003|261021121427099003|261021123027099003|261102123227099003|261022105027099003|261009223027099003;
+X-Microsoft-Antispam-Message-Info:
+	+hHg0P2Kr4ycLlHvdUvfvDLJ5/HGXsXpJ/MtMYIoRUTf0C6gBNZoYPEmY9ZwTakcpNssUQanjL3ZsEsja97dTMeIsw4Y21YA6TDG+NjkAL2DyG4AwF4/J3vKf9Y/7h3aqGJ8ADZgXRVloNJ/5Pewsy8dwplmya/AKUF4kWSHJgpcOoQVRZ0MrN21yN5/xLunrBR2PUY/hWLcqHBXf3Aj57X5kI+vvaZoHRo1r4BdA4OUPfrHd4koYh0zI7PZ6YvUyT6TmaJHB3abX1xSXD29vkwZewLdFUJfN/walt+Q+VqPPBE1WnmvmaJzR1T5N+ojQYV6iiVonYm5rPKj+jKV64WyDIaXFuGBbHRapHZQGAUwV7yqsLjozWVfjoSgPfKy0MwUzt/bDeF4v9cKNQQ/uSqa8tLFTusZJYuMuITM5enleJKSbRDOM01b2ahRucV2sTErF3DLAJBZOwdCPWLebq6HLCv2434nOJoW7UWWeBihVDN7DsDjgzg1N9nXoidILpsSNUWj9aZ9XxZ9VJrLVP/NGShTWtGANpUHiXxyA9S48AHzENjKtUGD6+/j41rXiQ+5s+t+yHVOxloy74g/3qMO+eLYxUSZ6H/l4tcDgT/AOEitIEXnz8lbv5zQr6FM
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVXPR04MB10021.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(366016)(376014)(7416014)(23010399003)(18002099003)(6133799003)(10067099003)(3023799007)(56012099006)(5023799004)(11063799006)(261026140227099003)(261028144727099003)(261026121527099003)(261022075727099003)(261021121427099003)(261021123027099003)(261102123227099003)(261022105027099003)(261009223027099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?JYX6YNXWvgS9ToFr8TtUiyE4HnPfuI7bstm9wnY/zh27GIOp/XQR+Cfzk50U?=
+ =?us-ascii?Q?+FDOmVtmZSbcO1TpWpQaMi8yvwIjLSlGKucgRprB1Np0ABaNsCrFBKgibZy4?=
+ =?us-ascii?Q?uL3KzfpWMG1tNB1Q8cNgK6g7757vKVye4lUi4JX4vNWn1X186D6eOU/+pqZm?=
+ =?us-ascii?Q?jE4FRELCIUxuHhYYyoXGELcjhM8g6lLYdGxNvk7Q153ACkKkNGCiWXbOYmJG?=
+ =?us-ascii?Q?/v9HfNGKECV41brW+5AoWQULD1n0FDlqGUF2mgAMDGwrCAlCd8k5mGjvDakn?=
+ =?us-ascii?Q?YdZcIoXxKEJgeHZ3mOEnWOCVRgmpR02Wlqq/Xq5Po6CGnKt+PXtdeiMMeW92?=
+ =?us-ascii?Q?/BiEwQzlbdwcraaJGuxEtAGenuWEcdCiWFN+DXONd7l23iVHcWuGr6l0glm+?=
+ =?us-ascii?Q?O1tH6sxw44yDYquZPRqReNgYy7IIhPr/99c4y1MM1fdUfI3XvMRU/NvYGqhX?=
+ =?us-ascii?Q?J/TO975JzVOreeOzyQ48cRVhfYFrLgARBEk01e2U8U2QMjeA4Ph4HOcPXr+0?=
+ =?us-ascii?Q?35T12iKnSeMqcd1TN6LvRKll50cu/Qb/w5VkMYRjkTFYCbAnwSOzgVWNT/RY?=
+ =?us-ascii?Q?osadso6UwMi3i8ceohdVT50JyCkjoDuR/f7J7jczL5ah4+NNofeIDW8Se2qh?=
+ =?us-ascii?Q?6iExjKPds7yvhqoHUFtZg1hi1ICzA9N/ykBFB1bKiK0d8z40yWC1dDtTimQf?=
+ =?us-ascii?Q?axSueO6Exie1ZuGxgfjheQPbe+yRrJkwnCl5Y6ejwiXOlqe1jOfhs/9xFYWA?=
+ =?us-ascii?Q?HA+Z+R9mqBCxTk3bDVD5lT+2ZROtQkAv4sOVxTJY3A4bLYLcZ3N0hZ+yaEV0?=
+ =?us-ascii?Q?rohcm5XNk9UUqW0GJ8bhwLIthz6R44VefeV/ZafYD/nSJ8OrIpHQrUge0KRb?=
+ =?us-ascii?Q?82ukPUG2yMGpURGhIV/kRD3J3ZPt5IxWRTzKC9f8KXnappkCHEgtQ3ztKZH5?=
+ =?us-ascii?Q?RnlebhmNB3MzHmNJryvfJAaz5eXyPnMtylcFPE4JlAw9K/hUz0dJhbB8R4zd?=
+ =?us-ascii?Q?7+QhK6L+VQ8W1psGexnw02I9CEQkR6i5BtcwHe9cVBc7k/SWwMr64Wmn9Ahp?=
+ =?us-ascii?Q?JpPComxhs+bN7oz0BBraXJZt2iTEUVphvbuKpnfSNwsera3nBO2niFzCiKSB?=
+ =?us-ascii?Q?ahq0oLdHeCdWecJmMAc1/yG2S2F9hUo+TdbPOJxuIh9I2THwDrOCz141GyDf?=
+ =?us-ascii?Q?Vezi0dIq57DO3Oc7tkCzOitwtjUw3ZNGViy6mdI+WhEhkovtQS1OgJ5zhhru?=
+ =?us-ascii?Q?m1yLeji2n8Ql85riv9o6FlL7xZSIixfso4NP92JUdvBjyoG9aTdkacXRFzFc?=
+ =?us-ascii?Q?T5OQuhSn7dLL9f5rI6tDWYKFoc0S7pgIrioIioZP/K+uS1x+guZWYpnSsma/?=
+ =?us-ascii?Q?JyQYt2Qa9JzTp/xq4AyNSaDKD+tByu+9SkeHExQxYpy2k6UCSEopKuvSHzkn?=
+ =?us-ascii?Q?e4GvGLiCcLD5KwNy3CeqIsGQYip3mHuAe2AHH1iw8ctChPSYluWLQvar+JRs?=
+ =?us-ascii?Q?N7Myd/CsMofhfbu+o/EWs8G6Y0WW6WQAQK8h0tHbFGcqNQMSnI2GUU4ECcui?=
+ =?us-ascii?Q?QZitgLBCXiBnzCaufMZUP06aw0O9K+PeqbXOETRyWodaLVyabAwSCpi3oCV+?=
+ =?us-ascii?Q?pDOTr2Ao5w52hcttVR/5hDHXlp4jze83CVoqCcP1nBWBWcGY0U0uwriwxY4j?=
+ =?us-ascii?Q?4UzsS4v2ATnQojE8ziCONqz7YmH/ebF1WzxOjLqgj46GnMXXP8CJkebFifOE?=
+ =?us-ascii?Q?Vy87V6pgLXHC55xQmxMLX5UESQrJs8dEFVRBN9gqpEHIIShXtdeL?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1cfa246a-97c0-43f7-e5d7-08df3b07d038
+X-MS-Exchange-CrossTenant-AuthSource: GVXPR04MB10021.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Nov 2026 06:41:25.8010
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: iWReM7BhGlWjzPtTtwV/TWmAg2D7pdrMlWoYNpc4DcweTk6mvnoSbfmO9cW6srsPZXjqSK3VBhvsXssZ3qtc9hRYmJBAGgpczGyymXe91CQnNIqhxe2+T4GtyYc0CwcU
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB8026
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Low] dt-bindings: gpio: vf610: unwieldy per-compatible conditionals in s=
-chema
+From: Chancel Liu <chancel.liu@nxp.com>
+
+This patch series adds support for the IMX-AUD-IO[1] audio expansion
+card on the i.MX95 19x19 EVK and i.MX952 EVK platforms.
+
+A connector is present on the base board to attach the IMX-AUD-IO card.
+This connector is described by the fsl,aud-io-slot binding. It acts as
+a nexus that exposes a constrained set of I/O resources, such as GPIOs,
+clocks and interrupts, through fixed electrical wiring. All actual
+hardware providers reside on the base board.
+
+Also update the EVK base Device Trees to describe the connector and
+required board-level resources. Add a DTS overlay to enable the
+IMX-AUD-IO board.
+
+The approach used here is inspired by the discussion[2] where a
+connector is described as a nexus mapping board-level resources. One
+important difference in this case is that the IMX-AUD-IO add-on board
+is not a hot-pluggable device. The board is connected to the connector
+before boot and remains present for the lifetime of the system. As a
+result, the connector is modeled to describe fixed, boot-time hardware
+wiring rather than runtime attachment or hot-plug handling.
+
+This series depends on the clock nexus support from Miquel Raynal[3],
+in particular the clock-nexus-node.yaml binding that defines clock-map,
+e.g. commit e0be7b4eedd3 ("dt-bindings: clock: Introduce nexus nodes").
+
+[1]https://www.nxp.com/part/IMX-AUD-IO
+[2]https://lore.kernel.org/linux-devicetree/20250902105710.00512c6d@booty/
+[3]https://lore.kernel.org/all/20260807-schneider-v7-2-rc1-eip201-upstream-v5-0-8785f9531cf0@bootlin.com/
+
+Changes in v4:
+- Switch the meta-schema from core.yaml to base.yaml to describe the
+  connector as a nexus without gpio-controller.
+- Drop gpio-controller and interrupt-controller.
+- Drop the explicit gpio-nexus-node.yaml and clock-nexus-node.yaml
+  references.
+- Use 0xffffffff in gpio-map-mask and interrupt-map-mask to match the
+  connector resource indices.
+- Use 0xffffffff in gpio-map-pass-thru to pass through the complete
+  GPIO flags cell.
+- Include dt-bindings/gpio/gpio.h and replace the raw GPIO flag value
+  with GPIO_ACTIVE_LOW.
+- Use four-space indentation in the example.
+Link to v3: https://lore.kernel.org/imx/20261103070433.2307145-1-chancel.liu@oss.nxp.com/
+
+Changes in v3:
+- Drop unneeded clock-map-mask and clock-map-pass-thru from the binding.
+- Constrain gpio-map/clock-map/interrupt-map maxItems to the number of
+  signals the connector actually provides instead of a loose upper bound.
+- Narrow gpio-map-mask/interrupt-map-mask from 0xffff to 0xf.
+Link to v2: https://lore.kernel.org/r/20260629074734.3643227-1-chancel.liu@oss.nxp.com
+
+Changes in v2:
+- Drop [PATCH 1/5] clk: Add support for clock nexus dt bindings. Same
+  change is already present in Miquel Raynal's ongoing series
+- Drop PWM properties from binding. This connector carries no PWM signals
+- Rename compatible from fsl,io-connector to board-specific compatibles:
+  fsl,imx95-19x19-evk-aud-io and fsl,imx952-evk-aud-io. The i.MX952 EVK
+  uses fsl,imx95-19x19-evk-aud-io as fallback
+- Add property constraints instead of redefining common types
+- Fix inconsistent quote style for '#interrupt-cells' in binding
+- Add required GPIO nexus properties and reference gpio-nexus-node.yaml
+  and clock-nexus-node.yaml
+- Make gpio-map-pass-thru a const value to pass through only polarity
+  bit (bit 0)
+- Modify dts accordingly and some commit messages
+
+Chancel Liu (4):
+  dt-bindings: connector: Add fsl,aud-io-slot binding
+  arm64: dts: freescale: imx95-19x19-evk: Add IMX-AUD-IO board support
+  arm64: dts: freescale: imx952-evk: Add IMX-AUD-IO board support
+  arm64: dts: freescale: Add common DTS overlay for IMX-AUD-IO add-on
+    board
+
+ .../bindings/connector/fsl,aud-io-slot.yaml   | 96 +++++++++++++++++++
+ arch/arm64/boot/dts/freescale/Makefile        |  4 +
+ arch/arm64/boot/dts/freescale/imx-aud-io.dtso | 57 +++++++++++
+ .../boot/dts/freescale/imx95-19x19-evk.dts    | 52 +++++++++-
+ arch/arm64/boot/dts/freescale/imx952-evk.dts  | 67 ++++++++++++-
+ 5 files changed, 272 insertions(+), 4 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/connector/fsl,aud-io-slot.yaml
+ create mode 100644 arch/arm64/boot/dts/freescale/imx-aud-io.dtso
+
 --
+2.50.1
 
-commit ea7be1f0505474b900ce5dd27177e80fd2222683
-Author: Peng Fan <peng.fan@nxp.com>
-
-dt-bindings: gpio: vf610: fix clock requirements per SoC
-
-This commit updates the gpio-vf610 device tree binding schema to enforce
-SoC-specific clock requirements for VF610, i.MX7ULP, and i.MX8ULP (and its
-derivatives) via conditional blocks in allOf.
-
-> diff --git a/Documentation/devicetree/bindings/gpio/gpio-vf610.yaml b/Doc=
-umentation/devicetree/bindings/gpio/gpio-vf610.yaml
-> index a31f64b6d40b4..d1d5315ee1648 100644
-> --- a/Documentation/devicetree/bindings/gpio/gpio-vf610.yaml
-> +++ b/Documentation/devicetree/bindings/gpio/gpio-vf610.yaml
-> @@ -57,11 +57,13 @@ properties:
->      maxItems: 32
-> =20
->    clocks:
-> +    minItems: 1
->      items:
->        - description: SoC GPIO clock
->        - description: SoC PORT clock
-> =20
->    clock-names:
-> +    minItems: 1
->      items:
->        - const: gpio
->        - const: port
-> @@ -117,6 +119,45 @@ allOf:
->            items:
->              - description: GPIO register base address
-> =20
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          const: fsl,vf610-gpio
-> +    then:
-> +      properties:
-> +        clocks: false
-> +        clock-names: false
-> +
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            const: fsl,imx7ulp-gpio
-> +    then:
-> +      properties:
-> +        clocks:
-> +          minItems: 2
-> +        clock-names:
-> +          minItems: 2
-> +      required:
-> +        - clocks
-> +        - clock-names
-> +
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            const: fsl,imx8ulp-gpio
-> +    then:
-> +      properties:
-> +        clocks:
-> +          maxItems: 1
-> +        clock-names:
-> +          maxItems: 1
-> +      required:
-> +        - clocks
-> +        - clock-names
-
-[Severity: Low]
-As reported by Sashiko on v2 [1], this isn't a bug, but in
-Documentation/devicetree/bindings/gpio/gpio-vf610.yaml, the fsl,imx8ulp-gpio
-family (including fsl,imx93-gpio, fsl,imx94-gpio, and fsl,imx95-gpio) does
-not share a compatible fallback with fsl,vf610-gpio or fsl,imx7ulp-gpio, and
-almost every hardware resource property now differs across the variants:
-
-Documentation/devicetree/bindings/gpio/gpio-vf610.yaml:
-  - if:
-      properties:
-        compatible:
-          contains:
-            enum:
-              - fsl,vf610-gpio
-              - fsl,imx7ulp-gpio
-    then:
-      properties:
-        interrupts:
-          maxItems: 1
-        reg:
-          items:
-            - description: PORT register base address
-            - description: GPIO register base address
-    else:
-      properties:
-        interrupts:
-          minItems: 2
-        reg:
-          items:
-            - description: GPIO register base address
-
-Along with reg (2 items on VF610/i.MX7ULP vs 1 item on i.MX8ULP) and
-interrupts (1 item on VF610/i.MX7ULP vs 2 items on i.MX8ULP), clocks and
-clock-names are disallowed on VF610, require 2 items on i.MX7ULP, and requi=
-re
-1 item on i.MX8ULP.
-
-Rather than relaxing the top-level clocks and clock-names properties to
-minItems: 1 and adding three more per-compatible if-then blocks in allOf,
-would it be cleaner to split the fsl,imx8ulp-gpio binding into a separate
-schema document?
-
-[1] https://lore.kernel.org/r/20261103-gpio-vf610-fixes-v2-1-7c71fb36e184@n=
-xp.com
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261105-gpio-vf610=
--fixes-v3-0-504e19de5ad5@nxp.com?part=3D1
