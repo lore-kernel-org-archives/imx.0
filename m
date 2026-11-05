@@ -1,60 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793890321;
-	b=OCZjhC7YosqGIbd8alQQVazl37mZbFSPipclPl1xeNmntKmCBVg3LxCTDHeAui0CFf7v
-	 7qd1cPyqwe0mWRdvy4mZHkoTGAF/jq1XqTNAVa15bVe5BYVDANvzCZ2DuipTtG2eqKMdR
-	 vj7UG60pV/7A2nF9NzGi2ibWxLk27Vy3ToZQYSQMTB5E5GzdlEuXdPNh08NiaMv411P31
-	 jokLxLVRPO7rR+xLgrOnrtK63E23hKn3YzUmZXRMmzPBJiKF+MCLBZR5FuZjNR7Xoh1oy
-	 5ep1F2J5x7fA4mHYSyM8ml2L+VMohLieBBEca1gun7pcyyEcyPdpmFsVOfyZQp8blDA==
+	t=1793890747;
+	b=PY4PnhCZXazW9UkmU6NddkU4eEdJbFr46as34KVsjrwtHRQc2Lw88W7JBuDGhWLz2Hfb
+	 1mEXeoAFBXLw411RgbY6tR9+yfdHhTklVpHyeOLmEgWlWzQk5irT18kWFmROiKSl1dDX7
+	 MI0O2UMutHUeGN8TQyCQnk9kBC7Ww7tb6lMbZ5sX9YDUFzz0xDE5z9aydPdSvTUxLA0Hq
+	 MVknA4InBiu5KhS0c/gsQcBVCkq1pKygeTk1KaF3HqjYQ5/JeoXq9s/EHv5IXaPg1b6FL
+	 8Keow8euD4NcJJltY8ZF7yJWhnUhLkw7wGRxuLZdj2/wHjxM/VGSGsaCZ0VhcMezExg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793890321;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=tFn6zikrEC2zlRMrakpJdg31GXuSzHcjKbCz7ZUJ270=;
-	b=pF5zf7reEZhp0Pgg9GOop1ZaP0sYV4hwgv1e1zJclqF06x+a/e6QKrAaDTvZurw4EmQM
-	 ab7Qb25MLTsx2c1oeLmXaG+ToiiVUylWsLI1/L+8XEV3TjVpC84iXI46RyOpcVCxo3pIX
-	 2GjFtvdgOWRI6GXu+Ixmqefc3Gd1pRYtbHEbOlLdPKGmpOIjI57Ys4IunceLU1wwuAoP/
-	 XSBfPO/OV8gDIG1DU/0nn1v/mzwAk/Q4t0sZs8XyL8XDYAnIjaP3sJjhoJ3BWLqdRVBPZ
-	 N17+z/NeuZ3BSPjQHSvCi2Itb/i9P140VziKuifTiq6YZuswqRm9sSk9CyF2P+IqjCQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793890747;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=XerAQQRSevSE4QkhqKdUzETATECEoWdnGYMmCc1jtYI=;
+	b=EJ5eWF7ALMbHuqyjkrCYyN4Co8P8aCbK/OVFhbERzEeSQD4GO/TZIvgdc+1gfdZInSOH
+	 ikcGjDHJ8pl0mEhIPfXZtJF6Zr4O2BTHFI6Qp4JfV78mJ1bv/A9Pg36JqqMcrefCU7Zqj
+	 P5sGnp5wwgiqXykBOizW/SXReo6OyZO7sVr9qDWaf2UIoxCyh7vox6RzZLAXLTu36XCs8
+	 DIpqsINOWNsmcDmyGbSNUeyo9/I10+wQaH2q3iqG3GSbuJuxTEENAxT6cv67yFyeZoPtM
+	 pjvVmQ8XeifS+dx94zZ0/U+0MKb3qkvbPgM1Mr87dhBxpizn6HAJG1riwB++B4Raf2g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UAhtLQAF;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=i8xiE840;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03E9B606A328;
-	Thu,  5 Nov 2026 14:52:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A64BE606A331;
+	Thu,  5 Nov 2026 14:59:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UAhtLQAF
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CDC41F00919;
-	Thu,  5 Nov 2026 14:52:00 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=i8xiE840
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E27E31F000C1;
+	Thu,  5 Nov 2026 14:59:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793890320;
-	bh=tFn6zikrEC2zlRMrakpJdg31GXuSzHcjKbCz7ZUJ270=;
-	h=From:To:Cc:Subject:Date;
-	b=UAhtLQAF7ygLXbRm4nIp+VFu3Zsf5fwk2EQdIQK2d9V2i6A8PVlNuSObt9AuFKSXj
-	 SoKszMHuYAQBz+LdZhBnKMbqx2bco+KTDrCNSu7EmVIizM4XdbI/Qv2Ye3ZmaNpiCc
-	 Tjo9Ks58BNb3G0fzdGPjTZLLnVUtM8eLB95E5zD5rFCHJZm1FxBTQqK97ogSlDrbq2
-	 JAwRVjm+pu/CXuNGkxtY4vjLzvR6tW6+J+E6EOT5ovABUjdLXyjTkKYF+J0qPQ7Dq+
-	 iVZUmUg9YoyY0l96BX8hnLottoD2lgi48PqczKNKEBlmKMOB+r1Gyw+pWXBY8tost7
-	 iO97CRtnQYqjg==
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Marco Felsch <m.felsch@pengutronix.de>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] ARM: dts: nxp/imx6: Drop unused .dtsi
-Date: Thu,  5 Nov 2026 08:49:19 -0600
-Message-ID: <20261105144920.2796623-2-robh@kernel.org>
-X-Mailer: git-send-email 2.53.0
+	s=k20260515; t=1793890746;
+	bh=XerAQQRSevSE4QkhqKdUzETATECEoWdnGYMmCc1jtYI=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=i8xiE840FQLwyfQlkNIO1LoZf24MnCFPpe9VpEJ5SZTmI3JXUoDlT1aL3+9hFAPb4
+	 Ymk9yQBYhj0BZVGl0OmsqUM+v4QYh5g8wFVCClCNVxJtok3ZdO6py/PPzzp6ECeROn
+	 hnvrSMtxpHwYWvi6jVi4ADgbFIxUMl+Wrj8bv9auypbJJdqB1gjNRepBtq1xkhdpZd
+	 IoNvQeV/6evui9S6xUstZ12CirXjp9Mn8G493R+ss4Izs1ZjYz7bYorB9SUOYcgr7H
+	 LkqwOvJJ8kGApVtD3mv6BceV3DOkV8d6r1UUQtLtcuCLCtAy/t/yFtGPB496wCVs8Q
+	 85KLiGr8fYw+Q==
+Message-ID: <sashiko-outbox-199279@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2] ARM: dts: nxp/imx6: Drop unused .dtsi
+Reply-To: sashiko-reviews@lists.linux.dev
+To: =?utf-8?b?Um9iIEhlcnJpbmcgKEFybSk=?= <robh@kernel.org>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, conor+dt@kernel.org, Frank.Li@kernel.org
+In-Reply-To: <20261105144920.2796623-2-robh@kernel.org>
+References: <20261105144920.2796623-2-robh@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 05 Nov 2026 14:59:05 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -63,177 +58,94 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-These .dtsi files are not included anywhere in the tree and can't be
-tested.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] ARM: dts: imx6: Deleting Dwarf and Nymph .dtsi omitted by copy-p=
+aste in .dts
+--
 
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
----
-v2:
- - Rebased
+commit 22f4920daa7995325841819b6b25c37d2efd2b30
+Author: Rob Herring (Arm) <robh@kernel.org>
 
-It's been nearly a year and these are still orphans. There was a promise
-to upstream something for the kontron ones, but that hasn't happened.
+ARM: dts: nxp/imx6: Drop unused .dtsi
 
- .../dts/nxp/imx/imx6dl-kontron-samx6i.dtsi    | 12 -----
- .../dts/nxp/imx/imx6q-kontron-samx6i.dtsi     | 12 -----
- .../boot/dts/nxp/imx/imx6qdl-pico-dwarf.dtsi  | 45 ----------------
- .../boot/dts/nxp/imx/imx6qdl-pico-nymph.dtsi  | 54 -------------------
- 4 files changed, 123 deletions(-)
- delete mode 100644 arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i.dtsi
- delete mode 100644 arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i.dtsi
- delete mode 100644 arch/arm/boot/dts/nxp/imx/imx6qdl-pico-dwarf.dtsi
- delete mode 100644 arch/arm/boot/dts/nxp/imx/imx6qdl-pico-nymph.dtsi
+This commit removes four i.MX6 device tree include files that are not
+currently included by any in-tree device tree sources.
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i.dtsi b/arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i.dtsi
-deleted file mode 100644
-index 5a9b819d7ee8..000000000000
---- a/arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i.dtsi
-+++ /dev/null
-@@ -1,12 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0 OR X11
--/*
-- * Copyright 2019 (C) Pengutronix, Marco Felsch <kernel@pengutronix.de>
-- */
--
--#include "imx6dl.dtsi"
--#include "imx6qdl-kontron-samx6i.dtsi"
--
--/ {
--	model = "Kontron SMARC-sAMX6i Dual-Lite/Solo";
--	compatible = "kontron,imx6dl-samx6i", "fsl,imx6dl";
--};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i.dtsi b/arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i.dtsi
-deleted file mode 100644
-index e76963436079..000000000000
---- a/arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i.dtsi
-+++ /dev/null
-@@ -1,12 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0 OR X11
--/*
-- * Copyright 2019 (C) Pengutronix, Marco Felsch <kernel@pengutronix.de>
-- */
--
--#include "imx6q.dtsi"
--#include "imx6qdl-kontron-samx6i.dtsi"
--
--/ {
--	model = "Kontron SMARC-sAMX6i Quad/Dual";
--	compatible = "kontron,imx6q-samx6i", "fsl,imx6q";
--};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-pico-dwarf.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-pico-dwarf.dtsi
-deleted file mode 100644
-index 3a968782e854..000000000000
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-pico-dwarf.dtsi
-+++ /dev/null
-@@ -1,45 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0+ OR MIT
--//
--// Copyright 2017 NXP
--
--#include "imx6qdl-pico.dtsi"
--
--/ {
--	leds {
--		compatible = "gpio-leds";
--		pinctrl-names = "default";
--		pinctrl-0 = <&pinctrl_gpio_leds>;
--
--		led {
--			label = "gpio-led";
--			gpios = <&gpio5 31 GPIO_ACTIVE_HIGH>;
--		};
--	};
--
--};
--
--&i2c1 {
--	mpl3115@60 {
--		compatible = "fsl,mpl3115";
--		reg = <0x60>;
--	};
--};
--
--&i2c2 {
--	io-expander@25 {
--		compatible = "nxp,pca9554";
--		reg = <0x25>;
--		gpio-controller;
--		#gpio-cells = <2>;
--		#interrupt-cells = <2>;
--	};
--
--};
--
--&iomuxc {
--	pinctrl_gpio_leds: gpioledsgrp {
--		fsl,pins = <
--			MX6QDL_PAD_CSI0_DAT13__GPIO5_IO31	0x1b0b0
--		>;
--	};
--};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-pico-nymph.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-pico-nymph.dtsi
-deleted file mode 100644
-index 3d56a4216448..000000000000
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-pico-nymph.dtsi
-+++ /dev/null
-@@ -1,54 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0+ OR MIT
--
--#include "imx6qdl-pico.dtsi"
--
--/ {
--	leds {
--		compatible = "gpio-leds";
--		pinctrl-names = "default";
--		pinctrl-0 = <&pinctrl_gpio_leds>;
--
--		led {
--			label = "gpio-led";
--			gpios = <&gpio5 31 GPIO_ACTIVE_HIGH>;
--		};
--	};
--
--};
--
--&i2c1 {
--	adc@52 {
--		compatible = "ti,adc081c";
--		reg = <0x52>;
--		vref-supply = <&reg_2p5v>;
--	};
--};
--
--&i2c2 {
--	io-expander@25 {
--		compatible = "nxp,pca9554";
--		reg = <0x25>;
--		gpio-controller;
--		#gpio-cells = <2>;
--		#interrupt-cells = <2>;
--	};
--};
--
--&i2c3 {
--	rtc@68 {
--		compatible = "dallas,ds1337";
--		reg = <0x68>;
--	};
--};
--
--&pcie {
--	status = "okay";
--};
--
--&iomuxc {
--	pinctrl_gpio_leds: gpioledsgrp {
--		fsl,pins = <
--			MX6QDL_PAD_CSI0_DAT13__GPIO5_IO31	0x1b0b0
--		>;
--	};
--};
--- 
-2.53.0
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-pico-dwarf.dtsi b/arch/arm=
+/boot/dts/nxp/imx/imx6qdl-pico-dwarf.dtsi
+> deleted file mode 100644
+> index 3a968782e854b..0000000000000
+> --- a/arch/arm/boot/dts/nxp/imx/imx6qdl-pico-dwarf.dtsi
+> +++ /dev/null
+> @@ -1,45 +0,0 @@
+> -// SPDX-License-Identifier: GPL-2.0+ OR MIT
+> -//
+> -// Copyright 2017 NXP
+> -
+> -#include "imx6qdl-pico.dtsi"
 
+[ ... ]
+
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-pico-nymph.dtsi b/arch/arm=
+/boot/dts/nxp/imx/imx6qdl-pico-nymph.dtsi
+> deleted file mode 100644
+> index 3d56a42164482..0000000000000
+> --- a/arch/arm/boot/dts/nxp/imx/imx6qdl-pico-nymph.dtsi
+> +++ /dev/null
+> @@ -1,54 +0,0 @@
+> -// SPDX-License-Identifier: GPL-2.0+ OR MIT
+> -
+> -#include "imx6qdl-pico.dtsi"
+
+[Severity: Medium]
+Should imx6qdl-pico-dwarf.dtsi and imx6qdl-pico-nymph.dtsi be wired up to
+their existing board device trees instead of being deleted?
+
+Unlike the Kontron files, the corresponding board files for Dwarf and Nymph
+already exist in the tree and are built by arch/arm/boot/dts/nxp/imx/Makefi=
+le
+(imx6dl-pico-dwarf.dts, imx6q-pico-dwarf.dts, imx6dl-pico-nymph.dts, and
+imx6q-pico-nymph.dts).
+
+When commit 98670a0bb0ef ("ARM: dts: imx6qdl: Add imx6qdl-pico support")
+added support for the Dwarf, Hobbit, Nymph, and Pi baseboards, a copy-paste
+error left the Dwarf and Nymph .dts files including imx6qdl-pico-pi.dtsi:
+
+arch/arm/boot/dts/nxp/imx/imx6dl-pico-dwarf.dts:
+    #include "imx6dl.dtsi"
+    #include "imx6qdl-pico-pi.dtsi"
+
+    / {
+            model =3D "TechNexion PICO-IMX6 DualLite/Solo Board and Dwarf b=
+aseboard";
+            compatible =3D "technexion,imx6dl-pico-dwarf", "fsl,imx6dl";
+    };
+
+arch/arm/boot/dts/nxp/imx/imx6dl-pico-nymph.dts:
+    #include "imx6dl.dtsi"
+    #include "imx6qdl-pico-pi.dtsi"
+
+    / {
+            model =3D "TechNexion PICO-IMX6 DualLite/Solo Board and Nymph b=
+aseboard";
+            compatible =3D "technexion,imx6dl-pico-nymph", "fsl,imx6dl";
+    };
+
+(and similarly in imx6q-pico-dwarf.dts and imx6q-pico-nymph.dts).
+
+As a result, the Dwarf and Nymph board DTBs are currently built with the Pi
+baseboard description (which disables HDMI and routes the LED to GPIO5_IO18)
+rather than their own baseboard descriptions in imx6qdl-pico-dwarf.dtsi
+(GPIO5_IO31 LED, mpl3115@60 on i2c1, and pca9554 io-expander@25 on i2c2) and
+imx6qdl-pico-nymph.dtsi (GPIO5_IO31 LED, adc@52 on i2c1, pca9554
+io-expander@25 on i2c2, ds1337 rtc@68 on i2c3, and PCIe enabled).
+
+Would it make sense to keep imx6qdl-pico-dwarf.dtsi and
+imx6qdl-pico-nymph.dtsi and update the four Dwarf and Nymph .dts files to
+include them?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261105144920.2796=
+623-2-robh@kernel.org?part=3D1
