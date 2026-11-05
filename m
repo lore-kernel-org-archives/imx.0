@@ -1,76 +1,76 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.180
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.171
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793870418;
-	b=A380aAwQuNXFzGrTekpxMvWRRNof9fIgVzfQjdao1gBXmu7N69w22lBdXiEEZTK1NQmX
-	 EcVPeIuyT/SSDJ8CLJPrck8eYSRDA9zaNqNhKTnEWuoBrotp9AlLonnBcgUNSos2K6oL1
-	 sz++mRiWTUfr7lXtv55wEDXLaIiW5V1tlYo0M9s+gZY9YASzanRdCInMmC6gcc8WdEbZD
-	 nzvI2gzROtMwdf+G/hgjZntFJVP7a4zMbzX8t4DTjGINaRK3sMvmLzBbfVnsx86U3Zz8R
-	 pG8+iad/3gM4/4KQ21aPq/THbD7as5siUAYIUF5vhZPkuLj7uQmG0r9S4LbGOuTPDtQ==
+	t=1793870660;
+	b=MeRXeQywd611agUzh/cIQmlop1HUyC7RDmx0FYsotYf+q7jWvP/skh3xkzgJhavxcLlX
+	 8hP0as14SjUmKhxz9nSO2xaY2FaYN4I9R6njzhTlyNXI0vA0Y2m3qt+Pfhx8w+3VV9Ntj
+	 INuPxt90QnDwo+esIEXD0/TbSq7QU4QMtx7euJ4DqGLE1DURIuHqXIUCybSeV+OpSx2Jv
+	 5Ha71UNmGi9ZQM+w7O//ijghFUpn8GKUbeUuCg6Hdrzmw36H+K98Gl26C+FbxoTDxnxhK
+	 M/p+dfgnxikazlsD7ZuE/8YWTKGQhCIEGisGVg45Gsq6mPFXCJLqQgH8T1ljfMFPmaA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793870418;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793870660;
 	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Received:
 	 X-Forwarded-Encrypted:X-Received:MIME-Version:References:In-Reply-To:
 	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
 	 Subject:To:Cc:Content-Type;
-	bh=9pg1eAqFe+iTfmNTfa/GRPtY3M6bs2CHPsTRd5ndQTA=;
-	b=Z941R/0QOx1kPgnjCwNME/efoe4oVsly7xo6EjYaTw+ZHVXv+iIItCUnGKGI/+L7HgmL
-	 Nck/ZU2VbP5xfFDqiQgg8o3qbh4MoIS1CtSeVgBPiWQNH6Os3VFWgRoZ2nkUbFbblPmLa
-	 TTLjudHZ8xHn7lWlAW+g19fdGO6vAJj3F1T6W0z6KoDdue37WnFUX3Od6K/mTY7NFiR4j
-	 yZCNS8c2Mkv9RnMnSq10Mls67tuQKGsvzuaV/uaQmsrsFpyjJN/UFeBHZZMCd/ghKr+9r
-	 kHDTRdn5Rsqg7+7JTUrUaWOXN/gOJambkIYLre1meidg0HF93USWphnJhJMC09tvRrw==
+	bh=pdLSFARJtZZaOSy89wvFfnir+tkCHpND5r/hzAKJUn0=;
+	b=zgfiWiGbrqEYHAceBAbF/UmoEJ6HrSgsu2yDv76jA2PrtOrB/8zG0/Kd5afHTtBmSHtO
+	 yYJj3DU6yUqnR2GDaQs+LpH5/5ta8CIEUR8IHKF7de5GFULHk8QMBm1YOAqNRVzWipB92
+	 BpId7mLDtbUXiBP3xyGWYem1v5kzyLvhjHZSw4QLLNbqG1amlm28v1LstVPm2MJITnwXt
+	 HlCWaz/z+JNSk/R+jp+xvcvWP1oJt3kagnCkfVZsoB73P45VbtlNPzJfxGB19N8XuHV2M
+	 FLiPos/KcI7KaUA+Cw2U2K3+5srrIknA/texpbavWExm5VIMbH5LOTxovEMZwJFTIqA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=linux-m68k.org;
 	spf=pass smtp.mailfrom=gmail.com;
-	arc=none smtp.remote-ip=209.85.221.180
-Received: from mail-vk1-f180.google.com (mail-vk1-f180.google.com [209.85.221.180])
+	arc=none smtp.remote-ip=209.85.215.171
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60AB7606A326
-	for <imx@lists.linux.dev>; Thu,  5 Nov 2026 09:20:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 60AB7606A326
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39C91606A328
+	for <imx@lists.linux.dev>; Thu,  5 Nov 2026 09:24:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 39C91606A328
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f180.google.com with SMTP id 71dfb90a1353d-5eafaeb8684so498525e0c.3
-        for <imx@lists.linux.dev>; Thu, 05 Nov 2026 01:20:18 -0800 (PST)
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-cc758830601so1159364a12.2
+        for <imx@lists.linux.dev>; Thu, 05 Nov 2026 01:24:20 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793870417; x=1794475217;
+        d=1e100.net; s=20260707; t=1793870659; x=1794475459;
         h=content-type:cc:to:subject:message-id:date:from:in-reply-to
          :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=9pg1eAqFe+iTfmNTfa/GRPtY3M6bs2CHPsTRd5ndQTA=;
-        b=p7TAmRJ0NQEh8/Z9F0BIwwG/rFHXyhhOFZBwuUT3BUBYIp+q430EZLARIKQAcwrWAA
-         P45LTyQvaXPWCE/aI8Jeo0/JPohemIQdbUNEEkO8azyIicsOCQxxXQEK+JqCIeqeylVl
-         LffpfTDxuwxKiFtFy9btnfPdXQkBNIoIhcpaXmnM4h8qcFms3cPb3BRAaXJ93TkyaPjl
-         7uinC5y+pZupVqXSh24xtIy6rZzMSXUwKcRnBEzdyzZg4o1MELJJ9+tNeYWtD3a97OWA
-         ZBUg9HvgOjkE9unIi7SGpKexuHs3PKaILIAUTEJviK5A1DqlQ4CGZqEvjcArPQj7axfK
-         VCCQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxTcuQIteM8z3lDcaN0/7aZbRf2a5NJXaXqQIJZLEbdfeTnlxDwQ7VutSCku56ob6huBK8=@lists.linux.dev
-X-Gm-Message-State: APuU4Z8lVzuWsj5GkQr4APUJB44/Wv0vvVvlIZMeuphzaJP0Qx3tOox4
-	/z6oOwymeMHf59h/zkYMIhJ6bgBqok7ZR51Wjzuw4zC0kW+TQfgIOKbVlxr+o50sG6s=
-X-Gm-Gg: AYBFou1keoQYa9GQNRQI/BLUKQViTigtIgv+/quZ2zUP9FbgkybIi9FyoBVY0pwin5S
-	/xu7MQkjdw6zsr2mPWryrsYYmlYdxZaaj6yooRvgoYltM7hzFFJ2AAmRjl7tr9qbGwTR0zZYf7O
-	nJ/MsBG6BUQGXhT/IDKDmQHmW983qR3sroT4xi/xs+9owEeAuR6TWWy86/RoJyNlz/Si23MpRi3
-	pLHuXYf5W706SwgwZxZDjA5moqWmKiDR1TXoV/nG9z6Efb8xBNNjio1F0gIsxNxS550Dal/o69p
-	8xXkxbMVKqPMbFvvluoeEHBRbrwyifjghhBnfooNq2WAwhGL2QlD3Vbi/58JKbCi94wQX4B9lMC
-	fsPfMsHnbb2nJV61NFNVvu2surRpcn2aQAb/ykNkJmHTgxF24SDBX8CA3SdKlWSmODXtyhgz66h
-	iwdx4TGXdGH7pQNA8WP1PBZYUQtU0ZyVQe41tr4nv3Wvs+KmAKgK+3EFmQkU3jMvISeFkl0jh9o
-	Qt9DCGZrcLkGC1asIYWBQjGtSuXaKC2PEtao/ozFDFoMEAE1UsAA/iKAwKRxElJlqBz7hvxCO3/
-	yZAvaWgQrXngs9uz2HaLWTzKmR+H+4njTJs3rOvajjt8lnWixACckYiYboMthZeIxQ==
-X-Received: by 2002:a05:6122:3b86:b0:5ea:bea1:705e with SMTP id 71dfb90a1353d-5ec686ff139mr8326158e0c.7.1793870417237;
-        Thu, 05 Nov 2026 01:20:17 -0800 (PST)
-Received: from mail-ua1-f52.google.com (mail-ua1-f52.google.com. [209.85.222.52])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5eca8e0956csm3690096e0c.17.2026.11.05.01.20.15
+        bh=pdLSFARJtZZaOSy89wvFfnir+tkCHpND5r/hzAKJUn0=;
+        b=1LhjBBiOqlJzU7TF28TawApDUJP9+nIBPcDi6pjuK+IbDl291ZjEYh6K3KRbnu/moy
+         KvcNN5+O9JQyGZHzyZEp3Wp75NAqelFo8PBVR9FV20NX2Dv3sAG8WAKW4lMcsrPVc4cx
+         DxW/Llx0K84KLKcdNHeJIo8tAjKn+oNgi3HqB8nQUBLcgEG2Y+1aVG4ddYlLZrNJ2UwJ
+         29F4Xsh9iPeAN6gRqjboH7ba5G0txNEUziFewO16B9wG44/L2IhDeYNAYIAuTZwLwGwu
+         YA9qJZUaISAaFUsznqfHSsHUZg7oBxx6JornQpBG8/3BvssEgn1lY843raHIuC98OGCh
+         KdGQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwkkrT1pd+7lhwvXGM6z1fe3hEY1CxLM0wx+8uN+8dU3mx+LBeB6lCts06GdY0fvZYrK4o=@lists.linux.dev
+X-Gm-Message-State: APuU4Z8A6bWTusF6Fo2C2YeEVXrklkJF1bzsrC0LI0HNGFxOV33LOB0h
+	sckf6BXSVjxluXa9nqy78YtcGQfUtTA/U/8ZlW2wRVeoaRsf4cQHVQ1mhLhT7no6VVU=
+X-Gm-Gg: AYBFou33klDAvLeh2BdIZiDhCfpDOTgzfzv/pDI/RvdT/CifHAUp3o+OVf0rDcwbvlT
+	0hjTncqnr1b2M/TAJ0j5oNv7Iz8Y2WaSapWWXwFWmHGws4/1KjdVKm7atgwbcwPmlkn2Hl7eeZe
+	8kS7HkyaEclfybQhQC+DJ+WMTK33YGzUHSchG6qSxCAS9Rq0JXRTbwXbj7y6w0y+rGpHMlBuSR/
+	IMeGVrKaCKX7GDfAKmznegdDfYcb/B43CM2++Ycuv7yfD3Sm9F3UogpjUE7aU2nMdX5P1ZcV1I2
+	f0FuwzNqgufinrTiiWx88cufJsushEQ9dzhDW3aZyQ8YBxK4tStMu3TioNW1dIheor5eWxSCAix
+	I1hFkeb2Ju4dIOqPI7MNzaGtdS2QINi/KwvmTCZG4BJmADxXWTy5QJP3rvOnGv/yyys93/xvZMO
+	QCKzSNZwS/ekeFX3TNIQ7ytTRED+vjBs9EAk7aunVmtOuFP7QLa5mkWfQc7YI5vTpepQ4QOZhPO
+	6pRR1PTayynEh3NZYPegsaWgK+iEseUe1YzbBcEohbdHv2MAoAKQM1WznNldW6p7CRAFfQR3m25
+	1yVXkkOVJ9PcktiMCgSSTC8KZQlSjDBNgWYedciJNV3jniO7iLWpTudi21EoKArifMmH
+X-Received: by 2002:a17:90b:5147:b0:3ac:97bc:4c7b with SMTP id 98e67ed59e1d1-3ae897c7c28mr16909802a91.14.1793870659346;
+        Thu, 05 Nov 2026 01:24:19 -0800 (PST)
+Received: from mail-dy1-f176.google.com (mail-dy1-f176.google.com. [74.125.82.176])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b0b313c143sm3013107a91.2.2026.11.05.01.24.19
         for <imx@lists.linux.dev>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 05 Nov 2026 01:20:15 -0800 (PST)
-Received: by mail-ua1-f52.google.com with SMTP id a1e0cc1a2514c-9908c849564so441169241.3
-        for <imx@lists.linux.dev>; Thu, 05 Nov 2026 01:20:15 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AKwUvBwxk6NE8fJX4IIWL5Hf6/Ed5ajkCfobdvT8GHwYK9VzEcFKHUMQM5PDZMdI3qlIEzxCuXc=@lists.linux.dev
-X-Received: by 2002:a05:6102:e0b:b0:7cc:1045:610 with SMTP id
- ada2fe7eead31-7d072cc4a42mr6604019137.27.1793870415083; Thu, 05 Nov 2026
- 01:20:15 -0800 (PST)
+        Thu, 05 Nov 2026 01:24:19 -0800 (PST)
+Received: by mail-dy1-f176.google.com with SMTP id 5a478bee46e88-3282db206d3so3173620eec.0
+        for <imx@lists.linux.dev>; Thu, 05 Nov 2026 01:24:19 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AKwUvBwCOhR1sJpMk9nxrtLQ9vtCJrv9cxT2pZJ0F71vPPBGpfcJ5linulvLpJfPwJa23pkT2F4=@lists.linux.dev
+X-Received: by 2002:a05:6102:3711:b0:7c8:1fd5:82b5 with SMTP id
+ ada2fe7eead31-7d072695e4emr7033715137.14.1793870187629; Thu, 05 Nov 2026
+ 01:16:27 -0800 (PST)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -81,15 +81,20 @@ List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
 References: <20261104152253.3279052-1-Frank.Li@oss.nxp.com>
-In-Reply-To: <20261104152253.3279052-1-Frank.Li@oss.nxp.com>
+ <b656861c-a087-4087-952e-91fd15fadd52@kernel.org> <auuZHTvr5UI9Q9Q4@ashevche-desk.local>
+ <fbcb650d-0f60-468d-b1cc-255ea8a93db3@kernel.org> <auxF9RT5aljXkfh7@ashevche-desk.local>
+ <auxGdYgJvjq9EBu6@ashevche-desk.local>
+In-Reply-To: <auxGdYgJvjq9EBu6@ashevche-desk.local>
 From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Thu, 5 Nov 2026 10:20:03 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdUfYZmbf6ADFFoKSod6yhu7jQVt5CBNuQpmRUUWR3OZGw@mail.gmail.com>
-X-Gm-Features: AclHuK-9tAw2bAtaZucYUxK8rDds9GR808jJtyoj1R1Fxu-dNuDK-M2tP9yoLrk
-Message-ID: <CAMuHMdUfYZmbf6ADFFoKSod6yhu7jQVt5CBNuQpmRUUWR3OZGw@mail.gmail.com>
+Date: Thu, 5 Nov 2026 10:16:15 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdUkzXMsv_4KHP20qidmH1B4Ew3=VuTJ8jqfqvx4_+pm4Q@mail.gmail.com>
+X-Gm-Features: AclHuK9751j09IKd6_4EIkqyFvn0FA5bsvqOYkEgIDax6KzLeXviQYPveqzIsxk
+Message-ID: <CAMuHMdUkzXMsv_4KHP20qidmH1B4Ew3=VuTJ8jqfqvx4_+pm4Q@mail.gmail.com>
 Subject: Re: [PATCH v2 1/1] spi: use dmaengine_desc_set_callback()
-To: Frank.Li@oss.nxp.com
-Cc: Mark Brown <broonie@kernel.org>, Nicolas Ferre <nicolas.ferre@microchip.com>, 
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>, Konstantin Ryabitsev <mricon@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Frank.Li@oss.nxp.com, Mark Brown <broonie@kernel.org>, 
+	Nicolas Ferre <nicolas.ferre@microchip.com>, 
 	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
 	Radu Pirea <radu_nicolae.pirea@upb.ro>, CL Wang <cl634@andestech.com>, 
 	Ryan Wanner <ryan.wanner@microchip.com>, 
@@ -98,14 +103,12 @@ Cc: Mark Brown <broonie@kernel.org>, Nicolas Ferre <nicolas.ferre@microchip.com>
 	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Vladimir Oltean <olteanv@gmail.com>, 
 	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
 	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Han Xu <han.xu@nxp.com>, 
-	Haibo Chen <haibo.chen@nxp.com>, Linus Walleij <linusw@kernel.org>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Mack <daniel@zonque.org>, 
+	Haibo Chen <haibo.chen@nxp.com>, Linus Walleij <linusw@kernel.org>, Daniel Mack <daniel@zonque.org>, 
 	Haojian Zhuang <haojian.zhuang@gmail.com>, Robert Jarzmik <robert.jarzmik@free.fr>, 
 	Heiko Stuebner <heiko@sntech.de>, Fabrizio Castro <fabrizio.castro.jz@renesas.com>, 
 	Andi Shyti <andi.shyti@kernel.org>, Tudor Ambarus <tudor.ambarus@linaro.org>, 
-	Krzysztof Kozlowski <krzk@kernel.org>, Peter Griffin <peter.griffin@linaro.org>, 
-	Alim Akhtar <alim.akhtar@samsung.com>, Yixun Lan <dlan@kernel.org>, 
-	Troy Mitchell <troy.mitchell@linux.spacemit.com>, 
+	Peter Griffin <peter.griffin@linaro.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
+	Yixun Lan <dlan@kernel.org>, Troy Mitchell <troy.mitchell@linux.spacemit.com>, 
 	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
 	Alain Volmat <alain.volmat@foss.st.com>, Chen-Yu Tsai <wens@kernel.org>, 
 	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
@@ -130,43 +133,59 @@ Cc: Mark Brown <broonie@kernel.org>, Nicolas Ferre <nicolas.ferre@microchip.com>
 	Wolfram Sang <wsa+renesas@sang-engineering.com>, Thierry Reding <treding@nvidia.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Hi Frank,
-
-On Wed, 4 Nov 2026 at 16:30, <Frank.Li@oss.nxp.com> wrote:
-> From: Frank Li <Frank.Li@nxp.com>
+On Thu, 5 Nov 2026 at 10:04, Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+> On Thu, Nov 05, 2026 at 11:01:55AM +0200, Andy Shevchenko wrote:
+> > On Thu, Nov 05, 2026 at 12:02:21AM +0100, Krzysztof Kozlowski wrote:
+> > > On 04/11/2026 21:44, Andy Shevchenko wrote:
+> > > >> Andy,
+> > > >> These three lines look correct.
+> > > >>
+> > > >> LGTM:
+> > > >>
+> > > >> Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
+> > > >
+> > > > As
+> > > >
+> > > >   Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org> # atmel-quadspi
+> > > >
+> > > > Note, it's in your power to ask the author to split out what you maintain
+> > > > to a separate change. So, it's your choice what to do, Ack the full patch,
+> > > > give a partial Rb, ask for a split, ignore reviewing (often means silent
+> > > > agreement when maintainer just applies that kind of a patch)
+> > >
+> > > The "# note" after the tag solves the problem partially, if people were
+> > > actually using it. Solves people looking at the Git commit and being
+> > > mislead by partial review applying to entire commit. Does not solve
+> > > credits, because Rb for three lines is not the same as for 100.
+> > >
+> > > From v1 of this patch, four people (Alain, Lab, Troy, Kunihiko) did not
+> > > use it even though reviewing only part. Only Wolfram, so 20% of partial
+> > > reviews, used that syntax. Without that syntax, b4 will pick up Rb tag
+> > > like it was for entire commit.
+> > >
+> > > So I do repeat - if one does not want to use that syntax, then just Ack,
+> > > instead of creating false impression of reviewing everything.
+> >
+> > +Konstantin, then we need to teach `b4` not to break that or convert it to
+> > something like
+> >
+> >   [FirstName: reviewed only ...]
+> >   Reviewed-by: FirstName LastName <...>
 >
-> Replace open-coded assignments to callback and callback_param fields
-> of struct dma_async_tx_descriptor with calls to the
-> dmaengine_desc_set_callback() helper across SPI bus drivers.
->
-> No functional change intended. Prepare make to struct
-> dma_async_tx_descriptor private to the DMA engine.
->
-> Reviewed-by: Linus Walleij <linusw@kernel.org>
-> Reviewed-by: Mukesh Kumar Savaliya <mukesh.savaliya@oss.qualcomm.com>
-> Acked-by: Alain Volmat <alain.volmat@foss.st.com>
-> Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-> Reviewed-by: Troy Mitchell <troy.mitchell@linux.spacemit.com>
-> Reviewed-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-> Acked-by: Thierry Reding <treding@nvidia.com>
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
-> change in v2
-> - add missed set_callback in rspi_dma_transfer() (sashiko
-> - collect review by tags
-> - drop void *
+> And Ack is not the same as Rb, when I *reviewed* patch, I have *reviewed* it,
+> even if it was partial one.
 
-You have lost the "# Renesas related drivers" part from Wolfram's
-review?
-https://lore.kernel.org/all/auoQiuIm9FxdOrYl@shikoro/
+Exactly.
 
-
+Ab means I won't take it through my tree, please take it through a
+different tree.
 
 Gr{oetje,eeting}s,
 
                         Geert
 
---
+-- 
 Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
 In personal conversations with technical people, I call myself a hacker. But
