@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793887750;
-	b=NShA6y7L2kZhpjFeQ8t2alRp9B7DtFRqd94OKYuCF2TIJDtCWeuN8SPmwegv3XVWiFCa
-	 ZH5Yt0uPnLTjgl0Vj6aeo1YLtXsyGJYh/Q0gDLF4BO2Y2heJeam0Lt+K5iLmfxFq8zL36
-	 Efp77NV51Z0L7E1jp3eiq7QVwvTXtKz+zOgZfSEuI0thPDfX+yMQNacBr8KKC8bGv1JaA
-	 /3VpH3UqA6YcdW/HBrvu8tImclQ7M3wCdEo9SZ5WHhg7jl5beV2EJAtpF9PQ/1VVXmWkq
-	 TcRKdlVIXaxh3FhbasKwjEBoF5188ac6gR+Ov+FzyBHW4rYWPjVwbfb+xsI6fjmpXhw==
+	t=1793887754;
+	b=Hep3zXYrENdDOyqgtdwDVu+P9tHDmQ5d/wp+rjiBQrsGVQWjAgaX1oF0eyEl8xrRVOvq
+	 HwQ+lkt5DmeYWYIO4U++lcLf/VqOWVn4O01lA0ZbP5xuqVLDJdM57lphfcR68Ov4SLMYT
+	 tfjCRcm5zs7gnFcgRMTWSzC/ICeimjksy8OFYrSWb8kENrbTBjpRvWh6wZfnxgFDlvxI+
+	 5X8duc9Xc7LIcvLbaM7VQHDTsv4gA0K+eb11dfibY5+ywkwwxhvLFGTLaqH8McnmqR8tz
+	 0LDT+Rzm7mYAlWkb+YFpRb6WAiaebxyGXkZHiGBJiFA8s8T46MXnLUpPG1SMG3fzN3g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793887750;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793887754;
 	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
 	 X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=knwrJcvL7clG1HfpArVpNGWtATX6g5pA/gVZFr5kzV0=;
-	b=xZZCD4MH2D9CV7eXiiZh2usa30iYQLq3dB5GQ/hTUz7tOHquqMPQuqpXajZVk9rsTPTe
-	 JagBdXDTP3Ms2dKqryJSVbw5zL4UzT/AL4MCtvkSh8UsUrp6r1qcD39IeRBaobsmse0t2
-	 kbGSJcgcX0nHK58ocu/p66yu9gEewtV5ir866pIgf6NxVEhtSHxYLRVnJiM+zhT2BBAuW
-	 HRq5ArlyaYctIFfe7hW6qHtWAY81OYA13R46SoXR9gXm2P4zSeM2mfCp7SH1eptvVvecR
-	 DjLK7E0wpr/b3z5rAXN0/Vik0bcI44mtzEqh8m8OywlMnEq8xMh81xlQzhlftsPiRMw==
+	bh=k4rz680V7cIAb7iutGeH77t262DzHjpYVR2yTCZegGo=;
+	b=O+jPMQNlbVLwSK7HLrxIrSDuw4qTtTNKo6m/C+slrkeci7auoo3+NI0ghhVPHEbmvczS
+	 BDRYdigTBl10uCAuX+BqLhqyTHBp9vDTqwC2rJldDleRgYSnfkZGUFjmPRb8MX4anLHin
+	 0TbtPd0ZoekNKHD2fz+EPw/hW8pYXBss8/3mK+UjYHF/hVi6v9lkSBGj0/Y7QJDb/3Qzm
+	 OM4RTBeQeRX91stSI3fHgqjhVflE3m7WVv6be6S25ti00XuYykR3ZK0m5V1ul+R0PHtb9
+	 Ov+8+XDus8IKuGuahhhWjjPuruve1F6j4kt1HueVYr7YV+WY4SooatcQIlP6Jk/O+9Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TnVM74WZ;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nsfRItMq;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47367606A328
-	for <imx@lists.linux.dev>; Thu,  5 Nov 2026 14:09:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9520606A336
+	for <imx@lists.linux.dev>; Thu,  5 Nov 2026 14:09:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TnVM74WZ
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 506871F00A16;
-	Thu,  5 Nov 2026 14:09:09 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nsfRItMq
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDF391F00919;
+	Thu,  5 Nov 2026 14:09:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793887749;
-	bh=knwrJcvL7clG1HfpArVpNGWtATX6g5pA/gVZFr5kzV0=;
+	s=k20260515; t=1793887753;
+	bh=k4rz680V7cIAb7iutGeH77t262DzHjpYVR2yTCZegGo=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=TnVM74WZ5z0cRi9lqVWrwsBug1RZzfNMAieJVmytMx2vFL1m6L95aTNDvdlYLDs85
-	 vu381RZaDCeoeaZih/mf/HyqZwb0QKEBNG8C623+b9XXm0NwIiB0UE6VbPhR0HP26A
-	 opjk0IQr60vc0IAr0DopYJzxqeQTDVg4JiUyxT9b2VHs+82KpUTwn2+H8a8OJJNEbQ
-	 xtM/lxEFsTgKUW1ZkYd0Kbja0ONarT3fK5+EKD4FH6u32QrGpFOJRoyCO5yU4E2hi1
-	 OP8FqyBXGSX6AUfs5e6Di1OxeQ+pWt6fNK4TwaKFJqsvUQOmYIfXngPejK2mToxroS
-	 fPq+ad7xuyTbQ==
+	b=nsfRItMqXvK55z+CEeQqyVT8++3/Az6l5lW4AUQi4b19ycd1deaOOA1ZxL+psg0sD
+	 V2SZbyoEzxMSkij9gHOaX0BZ5it5O8m43tcqm3ROpBmhXe/V5Z9DHVo5tg2xFdL7f8
+	 YW8GzHNeVeSiny0XjR8S+rLaQMqVC2UDtv6SN2COdSod1z84VwIr/347rICn5W/7CB
+	 nYV94LkSeAkunrpEQdh7rTP1TbPVEwkdnX/VBd6YeIPYwEMyEVFLmzsNLbmqZz1TH4
+	 4uuJdnG+XvV2Mqg81O0NW1btW3QjJXA/cqsXDzw0wJElRe7lRHFLGPzDICjQmcva5w
+	 EkToq6qC8DC4w==
 From: Maxime Ripard <mripard@kernel.org>
-Date: Thu, 05 Nov 2026 15:07:35 +0100
-Subject: [PATCH 18/83] drm/imx/dcss: Switch to
+Date: Thu, 05 Nov 2026 15:07:36 +0100
+Subject: [PATCH 19/83] drm/imx/ipuv3: Switch to
  drm_mode_config_create_initial_state
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -55,22 +55,21 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261105-drm-no-more-config-reset-v1-18-763560c2cc3f@kernel.org>
+Message-Id: <20261105-drm-no-more-config-reset-v1-19-763560c2cc3f@kernel.org>
 References: <20261105-drm-no-more-config-reset-v1-0-763560c2cc3f@kernel.org>
 In-Reply-To: <20261105-drm-no-more-config-reset-v1-0-763560c2cc3f@kernel.org>
 To: Maxime Ripard <mripard@kernel.org>
 Cc: Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>, 
- Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>, 
- Lucas Stach <l.stach@pengutronix.de>, 
  Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Philipp Zabel <p.zabel@pengutronix.de>, 
  Sascha Hauer <s.hauer@pengutronix.de>, imx@lists.linux.dev
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1407; i=mripard@kernel.org;
- h=from:subject:message-id; bh=gk//ZtUuN08aJvV+if2UwQNlLwY4QXiavgS+/Rit8uk=;
- b=kA0DAAkTJ1/OGaI9vnYByyZiAGrsjaOh7unIjDmcoWNOEw1g+gRhgkZVbw5iFX2lpTC2K2Y7u
- YiVBAATCQAdFiEE5BxWy6eHo3pAP6n4J1/OGaI9vnYFAmrsjaMACgkQJ1/OGaI9vnYg2wF/c3sc
- KHJqi4jhk4M+oGFsmA6nzFfwXTQ9OnETVKieruZMxWLDBBic43pV2NudAum9AYCbB+YMKLiatVF
- Y9V0U/ayZC9vuTcGsxp4M09KeFrb8VsTZyNcUw5zA8v26mk1+Z2w=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1328; i=mripard@kernel.org;
+ h=from:subject:message-id; bh=R1dioC/IosBGQUi4ZFDeC1cA3Y5gHU7STgC448dv8hY=;
+ b=owGbwMvMwCmsHn9OcpHtvjLG02pJDFlvepcYHI3uFtq4+JnZn56ZSgWTpyy7vrN2Zvy3loWvg
+ 4O2vJiY0zGVhUGYk0FWTJHliUzY6eXti6sc7Ff+gJnDygQyhIGLUwAmErOasVa26Hbl9Fsn+1oK
+ /lRVfL9p+95R+HP9Ub/Cpg1/VD7KP5OolHkr1Gl8MODvVYZ57d5xkowNk5niz7xP0U2fN5d16rZ
+ 7sbcyJjSUXKhIOHkh5Ipg76EXt5lnGh/XYFlhtcwwOJCB8zcrAA==
 X-Developer-Key: i=mripard@kernel.org; a=openpgp;
  fpr=BE5675C37E818C8B5764241C254BCFC56BF6CE8D
 
@@ -89,28 +88,27 @@ Signed-off-by: Maxime Ripard <mripard@kernel.org>
 ---
 Cc: Fabio Estevam <festevam@gmail.com>
 Cc: Frank Li <Frank.Li@nxp.com>
-Cc: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
-Cc: Lucas Stach <l.stach@pengutronix.de>
 Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+Cc: Philipp Zabel <p.zabel@pengutronix.de>
 Cc: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: imx@lists.linux.dev
 ---
- drivers/gpu/drm/imx/dcss/dcss-kms.c | 4 +++-
+ drivers/gpu/drm/imx/ipuv3/imx-drm-core.c | 4 +++-
  1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/imx/dcss/dcss-kms.c b/drivers/gpu/drm/imx/dcss/dcss-kms.c
-index 7c5a6e2bc89a..92ac29960e48 100644
---- a/drivers/gpu/drm/imx/dcss/dcss-kms.c
-+++ b/drivers/gpu/drm/imx/dcss/dcss-kms.c
-@@ -142,5 +142,7 @@ struct dcss_kms_dev *dcss_kms_attach(struct dcss_dev *dcss)
- 		goto cleanup_mode_config;
+diff --git a/drivers/gpu/drm/imx/ipuv3/imx-drm-core.c b/drivers/gpu/drm/imx/ipuv3/imx-drm-core.c
+index 51a0ec043248..b7b6ae8f9578 100644
+--- a/drivers/gpu/drm/imx/ipuv3/imx-drm-core.c
++++ b/drivers/gpu/drm/imx/ipuv3/imx-drm-core.c
+@@ -245,5 +245,7 @@ static int imx_drm_bind(struct device *dev)
+ 		goto err_kms;
  
 -	drm_mode_config_reset(drm);
 +	ret = drm_mode_config_create_initial_state(drm);
 +	if (ret)
-+		goto cleanup_crtc;
++		goto err_poll_fini;
  
- 	drm_kms_helper_poll_init(drm);
+ 	/*
 
 -- 
 2.55.0
