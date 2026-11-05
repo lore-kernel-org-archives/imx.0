@@ -1,47 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793896560;
-	b=3MxJePvqET/rKF8sWWlCZX9rmV+WdUC1Ei6/fJ7fpu1ckNpGUgTqJf1P/ojunVFIfnp+
-	 XzGoDYCD1B0aqqN633mfkTYCkBPZcpbkfyXIDpEEJur61lQIxSy5u17Yx9aT8rrjIxK20
-	 PW9KMraFP9xlKN/GlTy7sRSJPIEOjxRg6H6E5NV8wmwcT/byD9GfLGYrzTTjOdIutvx94
-	 e3KXXN+rTe81gj/25AcZQY9Ttmlm9aXWC57oKIc9E7W3xXX1pJ9+8LNU5Q33STQHGfikn
-	 SFkw5iQ3A95NncLJniYBtw1zewO5lLc+k3ag776pfRCx1rBkbk9GQJha8r3FWtZglrA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793896560;
-	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=oaFEybmB3/LpRlTwU2ESXZoM0QOYsoH22CakPe6LiW0=;
-	b=WKUB0QkMDAn4Vx0wTnBZ7LmLyjIx4d4hxvqXsqBN8XLGM4b2Jld6Vsm6aIMWjYbJicMj
-	 JAu+fOlyxtr0fjWKmqdqJ8Liut5/DRaZ9nUMASWNenp8OV+CNBzSAyTJd5ObFDizc8PvI
-	 9VxYJehL+tuYpptGJwBatIC6vXTZSZZ4aJZ0u7gZ3f7WkoCU5dnjLGnmoh3bVAx7ONEAa
-	 2Q6O3+ILeX3aN+4QXNESuBl0J0op9azPpNDxLi8p9vODc52vRlO0rqmG6RRCQyzO2CvIN
-	 eMqbwT3T1XMjZQ6om2s//oqrnrB2N1Oru+yc9zth1iR9J+llMoq3oGyVJ2ADuOrSupQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="PpT8/D5z";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.130.19
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793896933;
+	b=MFpH1qaYjxLcKG7OP3bs0ilS2i/T9NgHfVR8lsvcmNQuAGg9fdQxKX7yDSU/iJOajEJH
+	 iAbgLpJsAcIsrk+zDC+XORXqeHbatDBmMQ/ej2uTTDSu3EAUtoKrwLpAXJxGhxRJDc+t5
+	 t4hM2Z/GkE66/Jasy+iOFcbkfzqqr4oHMbrqIcLpqILXMvtSOXWnvsOwAbXpYmJe+KzKE
+	 vmRfp+xeApV/0En7H+kl+W090uhF8ww6NhiMw0Kx5QD/nisWXV3ebfcUlXN8p1dHlAoJs
+	 4wzJGrNEnDhqn2Yl9sS1sgEMc1lEs9WqBIvmPmUQfayPhajTMYd4nlYUTWUp5w/JsOg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793896933;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding:In-Reply-To:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=TUEJjS/4xyIBIR2qg5puCqJFivV1WRmuxtyp7SKcCjE=;
+	b=rADTg3W8lR6sVCxzJ4Qf1Tptyd93iZeGfcvNp/5QrmX2rvTR49+isXacx9X9bON+Zwmx
+	 Qy5awxwC3fh+1KpPupBmbQgXyK3OIIGu+S1gqd3XBwswRSf8HA8TwMGU8bxv2yfAw4DMv
+	 KZIZuMTdZ+UOKP5LT5tugje87aVTMVJpSRjvIwhRjooxVMhCDdhRJmffUKKTKSMfJQe3X
+	 edtKl6t0Uwd5Fo1LyMuLQt012Y4AH3LwguTZ5KffwVyrQxa4/wf+PDrHo7HPJFaJOFMVr
+	 BEtJCR+tZqLkN48IQCCHXuTX/7OSFngb/nVIX2smvpFuYTp06TStWVz243ofTDQDs1A==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=oss.nxp.com;
+	spf=pass smtp.mailfrom=oss.nxp.com;
+	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b="q/FGiNPv";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.130.19
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011019.outbound.protection.outlook.com [40.107.130.19])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D52B606A33F;
-	Thu,  5 Nov 2026 16:35:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08413606EE9B
+	for <imx@lists.linux.dev>; Thu,  5 Nov 2026 16:42:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 08413606EE9B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PpT8/D5z
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10A1A1F000C1;
-	Thu,  5 Nov 2026 16:35:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793896559;
-	bh=oaFEybmB3/LpRlTwU2ESXZoM0QOYsoH22CakPe6LiW0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=PpT8/D5zeLlfhjXRHDS9Xn7yTDCLEhyyWpMkM0/IfblI9PMLXcKedSOlnoASybHch
-	 QMV8ab3TA2uSLtQsY231ygXHLK4E1dZjZWYTUyaq5EG+U+7SRxv/SC5EV5zIEGfbl+
-	 Anl6FvxIWk2bzbUyorgGwbK7QtWE0eneo9Vkb0oEtRPqNHIcsTwj/H9gaUxgdyQRKl
-	 9la8Ee4KQAzAUk3BDbj8WwQQ1UKgW36gLtWALpg8W7Mm455sUJQJK7b75HwOTlAxFH
-	 tWWXsXG7Et2NnPPdGnHQoyRFRfRXjPc/WvDrWcLkNmwuDZMfzvcAqJShtCN7KTNjC+
-	 ltbn1tD2mVL7w==
-Message-ID: <cf2e3292-d591-42a4-bf6e-76f4567604c6@kernel.org>
-Date: Thu, 5 Nov 2026 17:35:34 +0100
+	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=q/FGiNPv
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=LcOmM2yo40w5ZSmzW2Um6aKTw7m41jHWIIi+SX0dydWDCeRQUuuGKVoQonqlsiFyPBwkwZVHP4RPcew1XT7HV0/4rIJx7wYGspOpLRwy3at7f0QUrEphFO0kbKuHyTnqSuaaSXffn8r9Dn20G6D6Tr+cPtRVn7IIQql+KiPU1Jc45TFu03KQ22eDI6U0iV8EiwLn+dd8dev8hylIRb+LXBYi8FzXcjYk1WGxThV3/2MaQ2Y5eY+qdSRe6WfYW+kKuzgU3/1L9M+rj8t/AjXjoIf2rq3FOJPWVVo2nqwwY+g1Aoyd/KWvzIsk1n9chan8L/QESkTF3sgtAtpBh5TZeg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=TUEJjS/4xyIBIR2qg5puCqJFivV1WRmuxtyp7SKcCjE=;
+ b=pZReEnt2/6+K2YvyuD9uAS6fh7mA/k1Wu1s6niYX9q4J7E6ZwhjMWrA9l+hGdwWHzCQ6qlSJkOChEt9DG3HSXOsWqPT8ncgAYU8yADl8BLYLkf9Hhkvisi/3bjvVo+Aly6oUuMSzUlgISdgt+wh+6diFIHSzjC83m2iw2Ea3TJ2+xZ6Fa999E5kUAsLMq4wvocF8sbShU5qJ50KE6bFMdD/087px1YtI8gOudknnC2L8v3V1PJ7amIYIfZ/oSP06c3J7FHiZZ/ETe/Pr5/JJoF+2sDbKjw7+NqWPPkQn2a1DT5WEJykWciK2h09SqU9d3hlIAyob0W9LkfnBw7HB8g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=TUEJjS/4xyIBIR2qg5puCqJFivV1WRmuxtyp7SKcCjE=;
+ b=q/FGiNPv7CL+eN8FODeoU+E3YKWZbsVavof4Xvfpljo1InQ+MY008jP2/eOBFY7SZV1p9GoWBdZf662e+m1j/3h5AYjM4qtSzMGj+jHkLF1cFfs7bnBUTjGGqkHhGFcklSSjuzatm2jDd5a/cWBscUWVHGA5F+djnsJ3fY20tdB8iAvQyBUn/Zlonrp+OI7fx0WdxIKOqqi1qXlhXx8RUUYJY7YH/izFnjjZxFTJzUrCrk4oD+CLL6L5195Bc9wx5Mav4Lzx1Ec5ORLYBbaH5gPS7dV6GtDSUpEHNr0BlilFsqjK3aR16Pt+JL9P96d7knX7Ez/AHAumm5OFK14+VQ==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from MI3PR04MB12438.eurprd04.prod.outlook.com (2603:10a6:290:76::14)
+ by MA6PR04MB445650.eurprd04.prod.outlook.com (2603:10a6:250:58::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.10; Thu, 5 Nov
+ 2026 16:42:10 +0000
+Received: from MI3PR04MB12438.eurprd04.prod.outlook.com
+ ([fe80::c715:c32:8bb1:b70b]) by MI3PR04MB12438.eurprd04.prod.outlook.com
+ ([fe80::c715:c32:8bb1:b70b%6]) with mapi id 15.21.0592.007; Thu, 5 Nov 2026
+ 16:42:10 +0000
+Date: Thu, 5 Nov 2026 10:41:59 -0600
+From: Frank Li <Frank.li@oss.nxp.com>
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org,
+	Conor Dooley <conor+dt@kernel.org>, imx@lists.linux.dev,
+	Sascha Hauer <s.hauer@pengutronix.de>, Frank Li <Frank.Li@nxp.com>,
+	linux-kernel@vger.kernel.org,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v2] ARM: dts: nxp/imx6: Drop unused .dtsi
+Message-ID: <auyx155Caf3kwT4h@SMW015318>
+References: <20261105144920.2796623-2-robh@kernel.org>
+ <krvg6bwsueypasvt6fqszh7itqr3gu3qsqbji2ernqqy6g3t4c@b7hqenmaugik>
+ <CAL_JsqLETyrx7ew0zirS9r6+3=GEFaRE0g96OZHYwqjxMCZKcQ@mail.gmail.com>
+ <hvrfbvmyzsa6npzh6wpa6o3xxygslqc7g5ukt7ph7ty4povogh@wge2z4rejnf7>
+ <vvsd6rchs6wff2n7zxtcarxcvbnuxd7fx632xogm6hrcxxxqsl@dp5dvof3qa7c>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <vvsd6rchs6wff2n7zxtcarxcvbnuxd7fx632xogm6hrcxxxqsl@dp5dvof3qa7c>
+X-ClientProxiedBy: DS7PR05CA0029.namprd05.prod.outlook.com
+ (2603:10b6:5:3b9::34) To MI3PR04MB12438.eurprd04.prod.outlook.com
+ (2603:10a6:290:76::14)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -51,206 +106,123 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v1 0/5] net: deprecate skb->pp_recycle and
- skb_mark_for_recycle()
-To: Mina Almasry <almasrymina@google.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, virtualization@lists.linux.dev,
- linux-mm@kvack.org, bpf@vger.kernel.org, linux-wireless@vger.kernel.org,
- linux-doc@vger.kernel.org, bcm-kernel-feedback-list@broadcom.com,
- imx@lists.linux.dev, linux-rdma@vger.kernel.org,
- linux-hyperv@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
- linux-omap@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Steffen Klassert <steffen.klassert@secunet.com>,
- Herbert Xu <herbert@gondor.apana.org.au>,
- Willem de Bruijn <willemb@google.com>, Stanislav Fomichev <sdf@fomichev.me>,
- Pavel Begunkov <asml.silence@gmail.com>,
- Bobby Eshleman <bobbyeshleman@meta.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "Michael S. Tsirkin" <mst@redhat.com>,
- Jason Wang <jasowangio@gmail.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
- <eperezma@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>,
- Ilias Apalodimas <ilias.apalodimas@linaro.org>,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- John Fastabend <john.fastabend@gmail.com>,
- Sabrina Dubroca <sd@queasysnail.net>,
- Johannes Berg <johannes@sipsolutions.net>, Byungchul Park
- <byungchul@sk.com>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap
- <rdunlap@infradead.org>, Lorenzo Bianconi <lorenzo@kernel.org>,
- Wen Gu <guwen@linux.alibaba.com>, Philo Lu <lulie@linux.alibaba.com>,
- Justin Chen <justin.chen@broadcom.com>,
- Florian Fainelli <florian.fainelli@broadcom.com>,
- Vikas Gupta <vikas.gupta@broadcom.com>,
- Michael Chan <michael.chan@broadcom.com>,
- Pavan Chebbi <pavan.chebbi@broadcom.com>, Doug Berger <opendmb@gmail.com>,
- Nicolai Buchwitz <nb@tipi-net.de>, Satish Kharat <satishkh@cisco.com>,
- Wei Fang <wei.fang@nxp.com>, Frank Li <frank.li@nxp.com>,
- Shenwei Wang <shenwei.wang@nxp.com>, Joshua Washington
- <joshwash@google.com>, Harshitha Ramamurthy <hramamurthy@google.com>,
- Jijie Shao <shaojijie@huawei.com>, Jian Shen <shenjian15@huawei.com>,
- Fan Gong <gongfan1@huawei.com>, Tony Nguyen <anthony.l.nguyen@intel.com>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>,
- Marcin Wojtas <marcin.s.wojtas@gmail.com>,
- Russell King <linux@armlinux.org.uk>, Sunil Goutham <sgoutham@marvell.com>,
- Geetha sowjanya <gakula@marvell.com>, Ratheesh Kannoth
- <rkannoth@marvell.com>, Subbaraya Sundeep <sbhatta@marvell.com>,
- Bharat Bhushan <bbhushan2@marvell.com>, Felix Fietkau <nbd@nbd.name>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Tariq Toukan <tariqt@nvidia.com>, Saeed Mahameed <saeedm@nvidia.com>,
- Mark Bloch <mbloch@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
- Ido Schimmel <idosch@nvidia.com>, Petr Machata <petrm@nvidia.com>,
- Horatiu Vultur <horatiu.vultur@microchip.com>, UNGLinuxDriver@microchip.com,
- Daniel Machon <daniel.machon@microchip.com>,
- Steen Hegelund <Steen.Hegelund@microchip.com>,
- Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
- Dexuan Cui <decui@microsoft.com>, Yibo Dong <dong100@mucse.com>,
- Brett Creeley <brett.creeley@amd.com>, Justin Lai
- <justinlai0215@realtek.com>, Larry Chiu <larry.chiu@realtek.com>,
- =?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
- Paul Barker <paul@pbarker.dev>,
- Masahisa Kojima <kojima.masahisa@socionext.com>,
- Maxime Chevallier <maxime.chevallier@bootlin.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- FUJITA Tomonori <fujita.tomonori@gmail.com>,
- Siddharth Vadapalli <s-vadapalli@ti.com>, Roger Quadros <rogerq@kernel.org>,
- MD Danish Anwar <danishanwar@ti.com>, Jiawen Wu <jiawenwu@trustnetic.com>,
- Mengyuan Lou <mengyuanlou@net-swift.com>,
- Ronak Doshi <ronak.doshi@broadcom.com>, Ryder Lee <ryder.lee@mediatek.com>,
- Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>,
- Juergen Gross <jgross@suse.com>, Stefano Stabellini
- <sstabellini@kernel.org>,
- Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
- Jordan Rhee <jordanrhee@google.com>, Ankit Garg <nktgrg@google.com>,
- Tim Hostetler <thostet@google.com>,
- Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
- Eric Joyner <eric.joyner@amd.com>, Mohammad Heib <mheib@redhat.com>,
- Prabu Thayalan <prabu.ponrajthayalan@amd.com>,
- Chintan Vankar <c-vankar@ti.com>,
- Nora Schiffer <nora.schiffer@ew.tq-group.com>,
- Alexander Sverdlin <alex@sverdlin.org>, Kevin Hao <haokexin@gmail.com>,
- Karl Mehltretter <kmehltretter@gmail.com>,
- Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
- Meghana Malladi <m-malladi@ti.com>, Jacob Keller <jacob.e.keller@intel.com>,
- StanleyYP Wang <StanleyYP.Wang@mediatek.com>
-References: <20261103211424.127627-1-almasrymina@google.com>
-Content-Language: en-US
-From: Jesper Dangaard Brouer <hawk@kernel.org>
-In-Reply-To: <20261103211424.127627-1-almasrymina@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|MA6PR04MB445650:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2ca0eb13-5747-4760-f544-08df3b5bbc58
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|23010399003|376014|7416014|19092799006|261022105027099003|56012099006|11063799006|4143699003|261028144727099003|261009223027099003|261026140227099003|261026121527099003|10067099003|18002099003|10063799003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	A6025q7+/2C/sq6GaK3z3oa7u67j/GvgmN3TIJTiVDZKv7dUrawTgYAOCQwGLgxpIO14ZYQoU/dCXtQxtPTwiDT7csLhHOwt0zKCrY+lLDRtbYL+T22Ch6tNQlGmvHWGqc8AZxCFmXVyg+J/PtZHlJvagqwjK+g3AX3CYH9u6otryQ/v97fMnWdA5PZNn6iN/QkOiZJZZtxv0UBPGvnetmFI+Yis25tWxVSP1jDwqciI3/EbZ7waabnzLd7Us9caiW04n++qDUlJ/BKUQBaHxLnivlbFtqSbIblFxe58C4tJMZp4r4eMVkKbp/5ahb3RfmRhlfY0kzFV20+3JoxcY5V5iDbQ1bIOPQMQEwttol2Cjja6ViIx3kcDzphIn1rx3I+fM2iENM5l53kKyYsc7SWHHsMgTBpTnJNTueQin7N8LkdwWOw71s/5VoFmk7CRg5m23iDyX7IQ50+PXkrY1saFEB+AcFCOq/C/ZZ1Zk9t9k/0O/y4ImBjzC5rKEhUIQ9/tiGgY7/6osZwbd+QN7LaaBR9ZsYBbfyknIMZT/6KE6gns9ISgpKz3w9Eb8mG9okFTAS6P3HXeMf1L1NU6+qy757FjAkgAe9+r4uNonDQcGI8sVlf6G9ROxgD4g476JGdwgXBoq0R3+LAQuPNVt07/jM45m5Og96VFz4hO+8A=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(376014)(7416014)(19092799006)(261022105027099003)(56012099006)(11063799006)(4143699003)(261028144727099003)(261009223027099003)(261026140227099003)(261026121527099003)(10067099003)(18002099003)(10063799003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?eHNzY1dXRzNoQ0xnUHhGak1tZS9DNS9pNmpEN3JLSVR5bDIxSk5PR2dVNGFE?=
+ =?utf-8?B?NnNTY1ZJME5EN09XdmhIbWFQVzZ6Q2FMbE9PdEV0NmZsUVJSck9qT3RrVlEr?=
+ =?utf-8?B?bEVPb0ZZQkJzYkV6UkRwYks2NEdzeEQ0TXc4d3JGSGkyZUNnSjZFQ2w1Ly8r?=
+ =?utf-8?B?Um1sdUJmbTFEL05nWkJ1eWZXVzhVSCtvL0RZWWtSb2p0YkJsWjlZeFJxVjkw?=
+ =?utf-8?B?R2dnbVpNS2d0dExiRmJ1QkROVFkyQnB1L3FBdCtGZGF2WlpWRjQ4YjRsT1ZL?=
+ =?utf-8?B?SWRsTVFjaW1YYzdXdllwdGpRdHNQUmFWRms2S0R1SHlJUUZCc01KbGpJQmda?=
+ =?utf-8?B?MG1oTEhXVHJ0anhkN0F1NmNyR0gvQzZzZEN4RElJZ1FEdFM0TjVZVXpxckU2?=
+ =?utf-8?B?RFcrNnJRVzFseVMvTmFrNURDcU14dVorWmN4NGxCSE5UM0dRcGZkOFhIa2Ry?=
+ =?utf-8?B?RGJvazRDUThUR2haYXhSdzhiNWtXZElLTDNjUHpGS3grQm1mVmV3R3oxTXZH?=
+ =?utf-8?B?eWE1WVphbldKdStNWFlvQXBKK0tPazl4M004N1RMN3k5aFZvait3Ynk5eUc2?=
+ =?utf-8?B?c3J6S2lTRzQvVWIwMUxUSy9NYzE0QnU5TEZSZU83Sk9adWxtTHlwZkpBTFYz?=
+ =?utf-8?B?STB5WDB1eEc5VzNGWUtNNWZ1YkpkZFFaNVZ1aFpFbzZKOTNZbjQ1dWR1dUxj?=
+ =?utf-8?B?V2F0L1BKSDRhNkwxbWM0Mll0NDdzUkQ0QnNsTjh1R1VicjlDeWsxV3JteWhS?=
+ =?utf-8?B?OHFlaC9OdUJtK2t6RG5GczZGOEVPMnlJQXJhYlFRYUh2VEFUaVZ6VWZhZ1Rz?=
+ =?utf-8?B?ZjJVb2J1T2xPUmJlK2VMTVdWNDJUWG5jck5SYk02UlM3QTRNVnNQaGM5VDha?=
+ =?utf-8?B?cHRDdDlnZWtJU3V2RGNRMmYwcjQ5bHFaMlpnTENpU0pLc2lIbVQrV0F2V0ZJ?=
+ =?utf-8?B?Q3RRdkhQOHphMTZ4RFY1TDhsTWRqalZ1aE5SS1RyYVU1bGxGcDFEdEtvL0R0?=
+ =?utf-8?B?Tlo3aVgzczl3UWFKb0Z4MEtYQVJ6cWZ3d1dkZEdMQnJsVjlGa0xjZFRPTTJU?=
+ =?utf-8?B?R2V0SzhPYUsxQXNNdzFRakN6bGpNS1dLZFN4b1c4bkhYT3pkMGdPbGhkVDdF?=
+ =?utf-8?B?bmxRYnJhUmxTbkM4RXJTcFJSMXZUSVhENGxDdUh0M2RQOFc0UkZLMzlReVVT?=
+ =?utf-8?B?blUyK1B4TSsvSTFyZjVtUTAxNkFMZ2hXZTFjM0dZcjJXOU81NHVLS3I2Q2dS?=
+ =?utf-8?B?ZExpNElPZGRSNVF6WWE1ck9rNjFBeFdkYlUyaEgyN3lQaURBblc3WTlKOVh2?=
+ =?utf-8?B?a0dDWGNtaTlBUHVET0JGeVorM2tQM2xpWFlkM0xQazk3dE9GcWZCTkFpZ0ty?=
+ =?utf-8?B?eVBzWllxNUJCOWY1Z0hSbjNHRzBQdWFUVnlGd0V4ZUlCQ3hHeXNGT0VHYmxH?=
+ =?utf-8?B?Ui9CcGR6NXk4R05iWmQ0N21TNkprNHhxdUF4ZVF6TGwxZFpuL1A0RUhVaGdL?=
+ =?utf-8?B?QlE1UUtZUXRQaUNhbktDMnJSck9SNjNRSGR5OTZ0S3ZtT2E3ajBVK1p6OThV?=
+ =?utf-8?B?UlJNeEJ1NFNmTFdidE9UQlRyamdTSEx2Nk1ObHFwUjlLZ05aaXZBeHJxbWdX?=
+ =?utf-8?B?Tks5SEFoR0VGUVFLc0NaVXpqSTVBLzQ5cEl2WDhrempNczI0Y3lSbktsMjJx?=
+ =?utf-8?B?NlE0Wng2ZGhqcmhqbzFrUUVkOXJnMXhVMENwRE5odFNYTk0ySGwrY2JabDRx?=
+ =?utf-8?B?aUpmV2NlT0hMWEdydmZjN3dYNDRaQUhHbHgxZi9nRmN5RmpSMjlaSjI1VmJh?=
+ =?utf-8?B?SHg4SUtENVZnQTM4TGJNbUZaOS8wRkJDaDh6anFTRjBBTmZaQUtWMHpWT2tU?=
+ =?utf-8?B?amZtZDdLVUVsTmdlTkdmclR5akJXUUFrem9BUlZIY3FBeER4WWpwRkhvVm1N?=
+ =?utf-8?B?NWhlbkNoU0xWRytvWmZYYmV4RWhBQ3ZpazB5VkVTMXQ2NWlKUExldDlBNEhr?=
+ =?utf-8?B?eS9hK1haTmtmNkhoME9PMDkzdytyZ2VlV0pCejVZOSt6RVhPUkUveDlkZFhJ?=
+ =?utf-8?B?STZQZ1ZVVlNTeE9wd3pMUXA3WEVnaXcwR0Y1NElMdkxFT2ljT2RVcnQvTEdq?=
+ =?utf-8?B?ZEd4UjVhSkwyNitvK3k1Z0o5dk13RXJPa25vZkNDYS9xMHBUOW9oMk40Nkl2?=
+ =?utf-8?B?ZW5nenJDakdUREp4YVhuOFNteE85d2ZaQmFHMkZYT0NsNWpLRmRpWTdGN2hU?=
+ =?utf-8?B?TlA3dkUzWUc4VEJBd0VQRTVYVXRPRGppUGJUaC9SY202d0dER0l3NzQxeXcx?=
+ =?utf-8?B?WU9yS1NqSlJUQVVYVzU5WjNyR01pdGhkaDhKenJKVWFBcjFpcWlIQjlrbHlT?=
+ =?utf-8?Q?MI5nnhV8SGs67HVgIxeKQo0TVat+TNG2KgxWy?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2ca0eb13-5747-4760-f544-08df3b5bbc58
+X-MS-Exchange-CrossTenant-AuthSource: MI3PR04MB12438.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Nov 2026 16:42:10.0175
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: H0+szXKpCJ1Wiq3Q6XYczztqX9MM7Ow9OsbrT4PRdStOnL2a9pgxM4aEHUw4P2i9n/GKGTileP+G/eYdVRnE9KPpxGOyFtZxIUoSyxWiTLlML1+K/HUV3W7tMr/bsgW5
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MA6PR04MB445650
 
+On Thu, Nov 05, 2026 at 04:35:11PM +0100, Marco Felsch wrote:
+> On 26-11-05 16:09, Marco Felsch wrote:
+> > On 26-11-05 09:06, Rob Herring wrote:
+> > > On Thu, Nov 5, 2026 at 9:00 AM Marco Felsch <m.felsch@pengutronix.de> wrote:
+> > > >
+> > > > On 26-11-05 08:49, Rob Herring (Arm) wrote:
+> > > > > These .dtsi files are not included anywhere in the tree and can't be
+> > > > > tested.
+> > > > >
+> > > > > Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+> > > > > ---
+> > > > > v2:
+> > > > >  - Rebased
+> > > > >
+> > > > > It's been nearly a year and these are still orphans. There was a promise
+> > > > > to upstream something for the kontron ones, but that hasn't happened.
+> > > >
+> > > > That's unfortunate, but these includes are used at least by the barebox
+> > > > bootloader [1,2], dropping these would cause a DT regresssion.
+> > > >
+> > > > Would it help to upstream [1,2]?
+> > >
+> > > You said you were going to do that on v1:
+> >
+> > Unfortunate no Kontron dev was chiming in. Will do it now!
+>
+> Okay, after checking the current linux source tree I noticed that
+> Kontron did upstream the carrier board .dts files but in a different
+> manner:
+>
+>  * arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i-ads2.dts
+>  * arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i-ads2.dts
+>
+> This means that barebox would need to adapt the includes. Can you please
+> mention that the .dtsi are not used by linux mainline and instead a
+> different approach was used?
 
+So, Is it okay to pick this patch?
 
-On 11/3/26 22:14, Mina Almasry wrote:
-> Remove the per-SKB skb->pp_recycle bitfield and skb_mark_for_recycle()
-> helper, and reference-count netmems directly by their underlying type
-> via netmem_is_pp() inside netmem_inc_ref() and netmem_dec_ref().
-> 
-> This series simplifies SKB and netmem reference counting:
-> - Reclaims 1 bit from struct sk_buff (skb->pp_recycle).
-> - Unifies reference counting of SKB fragment netmems and regular netmems
->    under netmem_inc_ref() and netmem_dec_ref(), eliminating the separate
->    skb_netmem_ref(), skb_netmem_unref(), and skb_mark_for_recycle() APIs.
+Frank
 
-Part of the performance gain from page_pool was to completely avoid the
-atomic refcnt operation, when we can see that page refcnt==1.
-Are you removing this?
-
-
-> - Removes 110 net lines of non-test/doc code across 63 files (196
->    insertions, 306 deletions).
-> 
-> 1/5: net: skbuff: skip managed zerocopy frags in skb_frag_ref()
-> 2/5: net: skbuff: refcount spliced page_pool frags via skb_pipe_buf_ops
-> 3/5: net: datagram: refcount page_pool frags in zerocopy_fill_skb_from_iter()
-> 4/5: net: remove skb->pp_recycle and consolidate netmem refcounting
-> 5/5: net: remove skb_mark_for_recycle()
-> 
-> Mina Almasry (5):
->    net: skbuff: skip managed zerocopy frags in skb_frag_ref()
->    net: skbuff: refcount spliced page_pool frags via skb_pipe_buf_ops
->    net: datagram: refcount page_pool frags in
->      zerocopy_fill_skb_from_iter()
->    net: remove skb->pp_recycle and consolidate netmem refcounting
->    net: remove skb_mark_for_recycle()
-> 
->   Documentation/networking/page_pool.rst        |   1 -
->   drivers/net/ethernet/airoha/airoha_eth.c      |   1 -
->   drivers/net/ethernet/alibaba/eea/eea_rx.c     |   3 -
->   .../net/ethernet/broadcom/asp2/bcmasp_intf.c  |   1 -
->   .../net/ethernet/broadcom/bnge/bnge_txrx.c    |   5 -
->   drivers/net/ethernet/broadcom/bnxt/bnxt.c     |   8 -
->   .../net/ethernet/broadcom/genet/bcmgenet.c    |   2 -
->   drivers/net/ethernet/cisco/enic/enic_rq.c     |   1 -
->   drivers/net/ethernet/engleder/tsnep_main.c    |   2 -
->   drivers/net/ethernet/freescale/fec_main.c     |   1 -
->   drivers/net/ethernet/google/gve/gve_rx_dqo.c  |   9 -
->   .../net/ethernet/hisilicon/hibmcge/hbg_txrx.c |   1 -
->   .../net/ethernet/hisilicon/hns3/hns3_enet.c   |   6 -
->   .../net/ethernet/huawei/hinic3/hinic3_rx.c    |   1 -
->   drivers/net/ethernet/intel/iavf/iavf_txrx.c   |   2 -
->   drivers/net/ethernet/marvell/mvneta.c         |   2 -
->   .../net/ethernet/marvell/mvpp2/mvpp2_main.c   |   2 -
->   .../marvell/octeontx2/nic/otx2_txrx.c         |   1 -
->   drivers/net/ethernet/mediatek/mtk_eth_soc.c   |   1 -
->   drivers/net/ethernet/mellanox/mlx4/en_rx.c    |   1 -
->   .../net/ethernet/mellanox/mlx5/core/en_rx.c   |   8 -
->   drivers/net/ethernet/mellanox/mlxsw/pci.c     |   2 -
->   .../ethernet/microchip/lan966x/lan966x_fdma.c |   2 -
->   .../microchip/sparx5/lan969x/lan969x_fdma.c   |   1 -
->   drivers/net/ethernet/microsoft/mana/mana_en.c |   3 -
->   .../net/ethernet/mucse/rnpgbe/rnpgbe_lib.c    |   1 -
->   .../net/ethernet/pensando/ionic/ionic_txrx.c  |   2 -
->   .../net/ethernet/realtek/rtase/rtase_main.c   |   1 -
->   drivers/net/ethernet/renesas/ravb_main.c      |   2 -
->   drivers/net/ethernet/socionext/netsec.c       |   1 -
->   .../net/ethernet/stmicro/stmmac/stmmac_main.c |   1 -
->   drivers/net/ethernet/tehuti/tn40.c            |   1 -
->   drivers/net/ethernet/ti/am65-cpsw-nuss.c      |   1 -
->   drivers/net/ethernet/ti/cpsw.c                |   2 -
->   drivers/net/ethernet/ti/cpsw_new.c            |   2 -
->   drivers/net/ethernet/ti/icssg/icssg_common.c  |   1 -
->   drivers/net/ethernet/wangxun/libwx/wx_lib.c   |   2 -
->   drivers/net/veth.c                            |   3 +-
->   drivers/net/virtio_net.c                      |  16 +-
->   drivers/net/vmxnet3/vmxnet3_xdp.c             |   1 -
->   drivers/net/wireless/mediatek/mt76/dma.c      |   1 -
->   .../net/wireless/mediatek/mt76/mt7996/mac.c   |   1 -
->   drivers/net/wireless/mediatek/mt76/npu.c      |   1 -
->   drivers/net/wireless/mediatek/mt76/usb.c      |   1 -
->   drivers/net/xen-netfront.c                    |   1 -
->   include/linux/mm.h                            |   2 +-
->   include/linux/skbuff.h                        |  12 +-
->   include/linux/skbuff_ref.h                    |  60 +--
->   include/net/netmem.h                          |  39 +-
->   include/net/page_pool/helpers.h               |  46 ++-
->   net/core/datagram.c                           |   5 +
->   net/core/gro.c                                |   9 -
->   net/core/net_test.c                           | 369 +++++++++++-------
->   net/core/netmem_priv.h                        |  23 +-
->   net/core/page_pool.c                          |   8 +-
->   net/core/skbuff.c                             |  78 ++--
->   net/core/xdp.c                                |  13 +-
->   net/ipv4/esp4.c                               |  11 +-
->   net/ipv6/esp6.c                               |  11 +-
->   net/tls/tls_device.c                          |  14 +-
->   net/tls/tls_device_fallback.c                 |   6 +-
->   net/tls/tls_main.c                            |   4 +-
->   net/wireless/util.c                           |  31 +-
->   net/xfrm/trace_iptfs.h                        |   6 +-
->   net/xfrm/xfrm_iptfs.c                         |  16 +-
->   65 files changed, 418 insertions(+), 454 deletions(-)
-> 
-> 
-> base-commit: 7b6ab4dbc156e2f96419715130b3d5738a306c93
-
+>
+> Regards,
+>   Marco
+>
+>
+> >
+> > Regards,
+> >   Marco
+> >
+> > >
+> > > >> I will add the som.dts, please don't remove the kontron dtsi files yet.
+> >
+> >
+>
