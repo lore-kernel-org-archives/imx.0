@@ -1,88 +1,120 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=162.62.57.137
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=194.117.254.33
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793871667;
-	b=OtPb2Feh2nXWOZpTUjs8EQ2GmY3GYAxUclAXDIJfrTjTELu7zdAqGBUFzWtDYvLcChrY
-	 cCdFYI7vQdDAtJezSQZMniyKbBisgdOa38S+Db1EEatk2XiXLX65FFuWLiX8PsLusXZH0
-	 UjEbBKZaRwQLGf3bdVC9y3OA+68c/OS1DEKVQBtB/RK3jRLWAQhyRUIeFxk7CILgl9dHM
-	 w4QvzX0Su0nSibszXfztVBwAkcS4n7CxUVLmhzGWNe8LZ4Kr9RtSWMtLGLPJWLojzGWjX
-	 547aRpiTRUbAjtdwj6iOP1no9+SV5xwxTG/vtQ3GuKzVaP0HPPz0TLzBJIA17yFfDLw==
+	t=1793871964;
+	b=Y+CjG04OBudmpAx5uyaz8DdN3gl1znGHJ139VB7+qano10QTgq8bf/OHaRcQ9/TMH1fD
+	 xMyYjmHo/YTykhNE17L2E/Xht4+6jVrKsUAQiBV1ljNNPwxtL8puyCySfPC/H0UeUJYmM
+	 vMVy1flE6vK5N/niAOCYQnnm5brAsJhShB6I41xieT3ZxTXjT1MnVI4Zmfq6erBDaeVIG
+	 l0IzvZJGymPNm4lZlGyzgqo9XzyRS5OT+xYeCy00e5GzW9xDyEZtqclZOQUtoEv32OS7y
+	 UIrA/HCCq5LenSpTPxHdvIRCB/VtyKXtBAGftxBhNyzVCCmCC6CFFBAuELnO8+Dsa1g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793871667;
-	h=DMARC-Filter:DKIM-Signature:Received:X-QQ-mid:Message-ID:
-	 X-QQ-XMAILINFO:X-QQ-XMRINFO:From:To:Cc:Subject:Date:X-OQ-MSGID:
-	 X-Mailer:In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=eOhqa48dtTiB7ksGp6xxxSY9GgyF8VUpdic4WCjGsps=;
-	b=f6Y4CBwx+jBHWBzr+OD1dPzMSPbt+S/7nclTCil9LMfzzxg6U+pemF3DlcDyQ4yCmcib
-	 aMSyVpu+wc0gqtfnbkGekcf2CQ+BvWlRIyNqC7rDqldq0QMqDuTUBTnzTCbxOXh2R5JKE
-	 j6ZMHkeR03Rw61zAelCM3U324c5+OWDTV1J1nJIWfKOxRrbakDbrv4txlQoU7MdcvNezD
-	 2+toDASS4CISR8GAyuIiUrRuRhNvf1rbgcGs+m1L0Cq65IVW4L9U8UurzD3mavdUaXlw+
-	 aQKeT9hJxyvsC2kqiiqCMtikSHzhLJhLcTviuf+8qeelqZRngazhH3MgKmWR/skpcAg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793871964;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:X-UD-Smtp-Session:Date:
+	 From:To:Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=UGJviNUom/9cmp2FuiSup9JFaRpjsLnal6a9UIzq0Iw=;
+	b=qTsDodRQLth6YFxl9bJN6Ec+0HscQkh0yNue8Wl6ypzvW4KBhugxaBCghWPJQHREp6QG
+	 oBryE9dqpmwQEJC1leolfGu1eV9lsHWkx1eYRPewgZItPUpULGekj23Pq5Ig3XoNHFAH8
+	 1dETARg3x5J/5BBk49z+V/lLLpehRITKg+f+a8Ft/wJ2thdUE/Z4OgZYHFUsWiqLZgnIm
+	 +z2FF/DcrKJomuzw4Dte1kggCAfXX6XYoVgE+fGUiOqzQgPQjsjPjg+FW2MmJfXaJOH8Y
+	 444A8QQfPoufBr147FgcTu0sTS/z7SpJylSWG67ct0tRvRDttp3U5WSQY//FDN92aAQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=foxmail.com;
-	spf=pass smtp.mailfrom=foxmail.com;
-	dkim=pass header.d=foxmail.com header.i=@foxmail.com header.a=rsa-sha256 header.s=s201512 header.b=MFi0Itx8;
-	arc=none smtp.remote-ip=162.62.57.137
-Received: from out162-62-57-137.mail.qq.com (out162-62-57-137.mail.qq.com [162.62.57.137])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=none header.from=sang-engineering.com;
+	spf=pass smtp.mailfrom=sang-engineering.com;
+	dkim=pass header.d=sang-engineering.com header.i=@sang-engineering.com header.a=rsa-sha256 header.s=k1 header.b=dVQn1+33;
+	arc=none smtp.remote-ip=194.117.254.33
+Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 385EB606A31B
-	for <imx@lists.linux.dev>; Thu,  5 Nov 2026 09:40:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 385EB606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A620F606A32E
+	for <imx@lists.linux.dev>; Thu,  5 Nov 2026 09:46:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A620F606A32E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=foxmail.com header.i=@foxmail.com header.a=rsa-sha256 header.s=s201512 header.b=MFi0Itx8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1793871649;
-	bh=eOhqa48dtTiB7ksGp6xxxSY9GgyF8VUpdic4WCjGsps=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MFi0Itx8oaPUnsDeYVkQ3fCCa6BduDREuunWlJMAT6Xhfeb4xWK2/D22ZUzSmcWG3
-	 YvQgkfmSCOmYlbCALUQBFAPVSC/TnMVuPHmk/beeGAWQ3EuH/m/czGA3fyNaQv6Gn2
-	 t3v4D7XKYalpKfECoVRVYZyUh0cA6eJdG9kadfOc=
-Received: from LAPTOP-TKBJAGN4.localdomain ([27.38.177.45])
-	by newxmesmtplogicsvrszb51-0.qq.com (NewEsmtp) with SMTP
-	id A2805CD6; Thu, 05 Nov 2026 17:40:40 +0800
-X-QQ-mid: xmsmtpt1793871640tlh7jbj61
-Message-ID: <tencent_3D65EAC95AB758A272F0ABB30C86ECE2A205@qq.com>
-X-QQ-XMAILINFO: Npv5yIQT4nxMDZVNMNpPvnUCLCYe2yvr1BsQqzulHOgeFeXvm4sIboiwxfUQU2
-	 J/AZ3pDGmOmiAedfLd69Tfl8qBsdhhP65I8wPzQNT3VRjmbH4HR1Zz15AqF39cYJhVZbZbSOfb4z
-	 s2qZNaQsRgbtq2Ubi+HSqXkNZksmocMbsjC6x3iH+B+g5dnHYx3e39wXbWAcVl/mrBM1p215dsij
-	 Xj7PeT9ImWpD98AWR02uzXFHUHivlS9ZaEASENrr0ScoRM4eo8DkbdSNVbW7UuT0zmm9XMAIEUGq
-	 WlL5iYxx39JgAChMFgfAJozITWtRS5Et/9SE9LwncCCzL4TDSpN24amO2UT3KCkcrEcBRwkiFQaf
-	 XLToVnJ1X+uSsARK7YwM9nMumnDTp/6bpMhHEMhRpuc+XoItxa3XWdr8++8/YUcgoWJtxji65Z1P
-	 qwF17rlc45yDIwmbaRDfk9GtlCol11kzX4XEcc/dqWaZPdjudwg+E/A/0u9Dr1zPxv93e8m7jsA3
-	 /xM+m6h8CONtVNGdUssOfOnUwhBT8mTQesMdHKDoFxzx3MZOf6qnNQHQiiFe8/CiL4uM45ZvuYac
-	 OhmN/9q4oVO6JEZ4d9uLPEmTHNj8lQLBje+oOpAgsaNFj21yf0+ElgS1rNfwS1Gr8SoXHkY3THTQ
-	 5XOInxRIOjPcXxXi8CEjl3IjHAUyz04rMZQ9JgHsbDmWfzBAT4/okUvafk30VpAmXVKyaI6eR0sp
-	 8OjYd0OBHEMoPsBX4S87YIz3H995Tl3m73KeIKsDhczbCfXqa058RhxD4I1jQrW/RncYh8jzYRwB
-	 dLD0ZX78FvCg/FaOh8VVTAz1RHxRV1+yBT0h82DYgxfslIZInjM0/ECKebQ8O6Tp6ZReH8qMPx/J
-	 RaGECD6RrCVlAgG+JMdDCj6eLEmW5qvYrrRwuYDS7R9P9sucDS0uOLByn3BhPzNwBGNJA/DHVYU2
-	 yvkpoMC3zaqpBPM2zHuzc6tR/w/1xIWlWKarOY/hWKgHNSychtGMcwGDSFuc1qye0/19xC9O+njS
-	 OmwF70dpO46Rnp69ecfJGN6cBubSBZ4na6ystfH+AHvl3cgzZkvYKevfTRp1PtmiSIPe9Vis0Gsj
-	 ngKEK1yt79lcHBtZI=
-X-QQ-XMRINFO: Nq+8W0+stu50tPAe92KXseR0ZZmBTk3gLg==
-From: Haobin Jiang <lemonoutput@foxmail.com>
-To: carlos.song@oss.nxp.com
-Cc: Frank.Li@nxp.com,
-	andi.shyti@kernel.org,
-	dillon.minfei@gmail.com,
-	festevam@gmail.com,
-	imx@lists.linux.dev,
-	kernel@pengutronix.de,
-	lemonoutput@foxmail.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-i2c@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	o.rempel@pengutronix.de,
-	s.hauer@pengutronix.de,
-	vjardin@free.fr
-Subject: Re: [PATCH v5] i2c: imx: honour I2C_M_IGNORE_NAK
-Date: Thu,  5 Nov 2026 17:39:09 +0800
-X-OQ-MSGID: <20261105093909.4983-1-lemonoutput@foxmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <93667d47-794c-45d1-b72a-a463d5289a29@oss.nxp.com>
-References: <tencent_E6D69775D91AD9FE45C994B3755CB1452506@qq.com> <93667d47-794c-45d1-b72a-a463d5289a29@oss.nxp.com>
+	dkim=pass (2048-bit key, unprotected) header.d=sang-engineering.com header.i=@sang-engineering.com header.a=rsa-sha256 header.s=k1 header.b=dVQn1+33
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	sang-engineering.com; h=date:from:to:cc:subject:message-id
+	:references:mime-version:content-type:in-reply-to; s=k1; bh=UGJv
+	iNUom/9cmp2FuiSup9JFaRpjsLnal6a9UIzq0Iw=; b=dVQn1+33DAVyF+Mmc8wl
+	nZX74cBnZtcOaNxqwX+f2EN35vIuvwcCBbs5Y4Uif6xNJ6UewE1QVIpTltPVup50
+	MlRiuhMLiINXNw9vKnwwB0a1f/U65VvmL+iaby9q20fLvGJPiOfZ+xoYgRcT9/W9
+	d/g3k34Y1x5VkozWd1TK+b3NMoy//cW6D20URGPVMrKYNItPGgXDmf9IECVFTWMq
+	umAJwe4RBh71+/BSasOo1K7nwQ2OIVJXYAxg+XM2NraSzagEOqBo8lznHsahbQ4c
+	gdRePSo1a6sFJIyTdvhIEQ1S403xaUtPpDJZPJOWG87m0rLe4ikq13/1eQDnBRom
+	Ig==
+Received: (qmail 1094124 invoked from network); 5 Nov 2026 10:45:56 +0100
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 5 Nov 2026 10:45:56 +0100
+X-UD-Smtp-Session: l3s3148p1@k0qyXIRfQJzAwtcC
+Date: Thu, 5 Nov 2026 11:45:55 +0200
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>, Frank.Li@oss.nxp.com,
+	Mark Brown <broonie@kernel.org>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Radu Pirea <radu_nicolae.pirea@upb.ro>,
+	CL Wang <cl634@andestech.com>,
+	Ryan Wanner <ryan.wanner@microchip.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Vladimir Oltean <olteanv@gmail.com>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Han Xu <han.xu@nxp.com>,
+	Haibo Chen <haibo.chen@nxp.com>, Linus Walleij <linusw@kernel.org>,
+	Daniel Mack <daniel@zonque.org>,
+	Haojian Zhuang <haojian.zhuang@gmail.com>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Peter Griffin <peter.griffin@linaro.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>, Yixun Lan <dlan@kernel.org>,
+	Troy Mitchell <troy.mitchell@linux.spacemit.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Alain Volmat <alain.volmat@foss.st.com>,
+	Chen-Yu Tsai <wens@kernel.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>,
+	Laxman Dewangan <ldewangan@nvidia.com>,
+	Thierry Reding <thierry.reding@kernel.org>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Sowjanya Komatineni <skomatineni@nvidia.com>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	"open list:SPI SUBSYSTEM" <linux-spi@vger.kernel.org>,
+	"moderated list:ARM/Microchip (AT91) SoC support" <linux-arm-kernel@lists.infradead.org>,
+	open list <linux-kernel@vger.kernel.org>,
+	"moderated list:BROADCOM BCM2711/BCM2835 ARM ARCHITECTURE" <linux-rpi-kernel@lists.infradead.org>,
+	"open list:FREESCALE DSPI DRIVER" <imx@lists.linux.dev>,
+	"open list:ARM/QUALCOMM MAILING LIST" <linux-arm-msm@vger.kernel.org>,
+	"open list:ARM/Rockchip SoC support" <linux-rockchip@lists.infradead.org>,
+	"open list:RENESAS RZ/V2H(P) RSPI DRIVER" <linux-renesas-soc@vger.kernel.org>,
+	"open list:SAMSUNG SPI DRIVERS" <linux-samsung-soc@vger.kernel.org>,
+	"open list:RISC-V SPACEMIT SoC Support" <linux-riscv@lists.infradead.org>,
+	"open list:RISC-V SPACEMIT SoC Support" <spacemit@lists.linux.dev>,
+	"moderated list:ARM/STM32 ARCHITECTURE" <linux-stm32@st-md-mailman.stormreply.com>,
+	"open list:ARM/Allwinner sunXi SoC support" <linux-sunxi@lists.linux.dev>,
+	"open list:TEGRA ARCHITECTURE SUPPORT" <linux-tegra@vger.kernel.org>,
+	Mukesh Kumar Savaliya <mukesh.savaliya@oss.qualcomm.com>,
+	Thierry Reding <treding@nvidia.com>
+Subject: Re: [PATCH v2 1/1] spi: use dmaengine_desc_set_callback()
+Message-ID: <auxQU_PU4bwLJUch@shikoro>
+References: <7f96599b-681d-4963-bdda-1274371ac84f@kernel.org>
+ <f1fa853d-1703-411d-b2d2-0fb0b176c2fa@kernel.org>
+ <autqC143h7Qf1R9H@ashevche-desk.local>
+ <9e39502a-dd17-4fa2-98a3-9019523cb5e8@kernel.org>
+ <auuYcS7-YqJKcUbE@ashevche-desk.local>
+ <63c24437-4261-4a51-be7e-31ac0759a095@kernel.org>
+ <auxGom0XR-Hax9b3@ashevche-desk.local>
+ <00390a20-7630-4066-9779-06c8f915a176@kernel.org>
+ <auxH_WzaOLsQ4-go@shikoro>
+ <auxOFGTRAKb5bLXD@ashevche-desk.local>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -92,53 +124,13 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <auxOFGTRAKb5bLXD@ashevche-desk.local>
 
-Hi Carlos,
 
-> Why not follow community rule to make patch...?
+> Then I MUST started REQUIRING to split the patches in such cases to actually
+> review them?
 
-You are right, and thank you for taking the time to point it out.
-
-> At higher version, better commit log and put change to commit log bottom
-> with extra lines like your V3 patch[2].
-
-Agreed. When I prepared V5, I regenerated the log from the current diff
-and did not carry forward the problem description, the test evidence, or
-the review history from V2/V3/V4. That is my responsibility as the
-submitter.
-
-> I think V5 patch commit log should be better with shorter and clearer
-> problem description, reproduction, resolution, verification based on V2
-> patch[1] and V3 patch[2].
-
-I will rewrite it that way for V6. The commit log will cover the
-problem, the resolution, the reproduction/verification, and the review
-history with links to V1-V5. I will put the changelog below a single
-`---` line, like V3.
-
-> But abviously, this patch is generated by AI, and it dropped most commit
-> and discussion details from previous patches.
-
-That is a fair criticism of V5. The tool produced a shorter log; I should
-have caught that before sending. I will restore the AI-assistance note
-from V3/V4 and describe which parts were tool-assisted and how I verified
-them. I will not resend until the V6 log is self-contained and I have
-re-checked the new zero-length guard. I will state clearly what was and
-was not tested.
-
-One point I want to be explicit about: the V5 guard only rejects
-I2C_M_RD + I2C_M_IGNORE_NAK + len == 0. It does not fix the pre-existing
-unflagged zero-length read path. That scope is a deliberate choice, and
-I will document it in V6 rather than imply the general issue is fixed.
-
-> AI-generated patches should be subject to more rigorous review and
-> testing... humans must always remain in control in whole flow.
-
-Understood. I will keep the human review and test evidence in the
-changelog, and I will be the one accountable for the content.
-
-Thanks,
-Haobin
+Okay, this is a solution, too. Or requiring "# subparts"
 
