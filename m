@@ -1,120 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=194.117.254.33
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793869829;
-	b=X/WpbtZP4cELVg8PGK/AiT6MUiyxvJjYpAC8jFcf6Lwh82NLrp51HmamoAkG+veORlkF
-	 axHVEKjzAsC1DWUuYGrMSjdWHdHnkY/JV7axBFQ15gwkMhNDfkZBJuaDrLtbAuMLE8qy3
-	 yQFrTS+XUHjY7fONw5w5izbhc1H9GPbLGq4qQ0FLJS/z0ykYBKhhChSOwwJq5LE3ju89g
-	 nxzoiid0NPaq6rdTh5mlsa31AaSRxIlgYqQgnPqQtTWIHilJc7xju/mCnJQcF4oS1vC1U
-	 b24X0zOfV4kekRbpjtDViSmdFVQYdu81gOhY85Vw85Qw2ES9XHeTVCJH78nGoZW1mnA==
+	t=1793869831;
+	b=MkgUfqfD9mtRBL+Biq/rGnr8VFxMp++nrjzVxiu7b6q+Iz3DOJEoOzcyvuSaSCezYq98
+	 wiUdIT2WS92wKZaFkhK88lLpc4sH33qfx/ntNhN9sCFSUJrJnppvFqurxWVVLB3uNWp6h
+	 kVy8PRE7poZBUiQnNyYjKjYt+sOHjPuV2DGz0G3IJ3jIQMLjMCitn1Ruxwo4MQb0EiBj4
+	 0JHvqL0ATxrBRrMecXwpxprB1eiHyyOsqvMr3RFkiXtcsWtE+phpoh/BHxhuA3nEjjYmj
+	 c4frW1hASWWuPw7JJ8bHlJV7q+lY01/ncT+afFzkh1YYya4/RWkv+VMuxxC/ZyrOu0A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793869829;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:X-UD-Smtp-Session:Date:
-	 From:To:Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=lN4ECpQjtPYk5YCpT9PbCQCY0iBuhzgsWSuOM5NawH4=;
-	b=liIaQly5NvS4Bi5yiHLGSVrMZmN1gV8c8TG7LcHhra9lWwZmGwk3vjqqobvxshOWKy8/
-	 yPr1O/ZTE4i8FdyCB05VPFKb4Nk4skw0t8rIbgXP5d4zTH5xnGxly3HZOuSlXb8SOJTU8
-	 3NiPqRaN/p67nuS6iaF0ShdyjEZLoZqX+/vJhhSPIFE4XYRmSlUR+yhqXcM24GgA6abjc
-	 CMfuFO1SP76cSaCshLgh2qdSeLmBp55YtqsBRdwcxXiF0YFL4s/OCTcquN9LDmqJptDXC
-	 mU77OHZAQn5J2am+Jv1LAgu9tfSmc8LH2d4oL8Rg3O4FHEKxuEcrcX5EoWfdKG1vPkg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793869831;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=l8FVoARO3j3t6Swl/r4USV4n/IIP1DJGnmzvtDWkxwE=;
+	b=JmSjTTUxy7+/DPvWZjZ68Ti0psRPGeV18Xt6YO6yXfismUqCnP7CC8DyMZzHBVAbLaCQ
+	 chy6H0B4yOqZgcIhhILoKlyggiOzeX3W+yx165kapYttON6k6nddcTooQJsxGB40QBS71
+	 wQJaxH3DrAIXr28giu/RRhEBmv29GAQh+fRPqidX/CU6qq9LBZrjeHYRhrSuqr5N88+Tm
+	 jSeldR+AUcf00ksWWWf5c8UT0IUSsw7HBjZ5gP5n10Hdnj41vJpS2dkvuTJ9WY8Lmpu0z
+	 wE4vqDG3uHD0gQa5nu8mQ2l7xN0W5FV5Z9kxx8z1IqYNp05PiiDVCPKs8tRxKynYOlg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=sang-engineering.com;
-	spf=pass smtp.mailfrom=sang-engineering.com;
-	dkim=pass header.d=sang-engineering.com header.i=@sang-engineering.com header.a=rsa-sha256 header.s=k1 header.b=khLIHCgL;
-	arc=none smtp.remote-ip=194.117.254.33
-Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DAR24fhg;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AA9F606A32C
-	for <imx@lists.linux.dev>; Thu,  5 Nov 2026 09:10:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3AA9F606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C439E606A334
+	for <imx@lists.linux.dev>; Thu,  5 Nov 2026 09:10:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=sang-engineering.com header.i=@sang-engineering.com header.a=rsa-sha256 header.s=k1 header.b=khLIHCgL
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	sang-engineering.com; h=date:from:to:cc:subject:message-id
-	:references:mime-version:content-type:in-reply-to; s=k1; bh=lN4E
-	CpQjtPYk5YCpT9PbCQCY0iBuhzgsWSuOM5NawH4=; b=khLIHCgLpAYKXVm9ar3s
-	6uDsYa3Ux3tUADZPDcce06qJMtyAq9c6T3nRwNLf+Ndj1q5p87zncCKSzj+OCOKe
-	qlnEq6mSQiKWjZPASXat4Oi/E0zQluTPcIIXHm54nrkXeK28VwoPuG8O3jSqaJ61
-	IMAxyp6SSb1+ug/tx4/SkKOqMDtgEAodthumCXAAluUdS7LtpAg3CaJHYGNoagnT
-	72bfkmIGXx5U2e1+LTQmY62aXGl7IGN84U18r5EkrGk8MNsV2+qric3xGF+zJ2le
-	3IMJT253Iu6LQyLXpatQAYJEoT64yszIgDQJzYWzbASNqjMo8WTk1XTwRKMZ4R78
-	KQ==
-Received: (qmail 1082151 invoked from network); 5 Nov 2026 10:10:21 +0100
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 5 Nov 2026 10:10:21 +0100
-X-UD-Smtp-Session: l3s3148p1@7tJ13YNf9JjAwtcC
-Date: Thu, 5 Nov 2026 11:10:21 +0200
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Frank.Li@oss.nxp.com, Mark Brown <broonie@kernel.org>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Radu Pirea <radu_nicolae.pirea@upb.ro>,
-	CL Wang <cl634@andestech.com>,
-	Ryan Wanner <ryan.wanner@microchip.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Vladimir Oltean <olteanv@gmail.com>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Han Xu <han.xu@nxp.com>,
-	Haibo Chen <haibo.chen@nxp.com>, Linus Walleij <linusw@kernel.org>,
-	Daniel Mack <daniel@zonque.org>,
-	Haojian Zhuang <haojian.zhuang@gmail.com>,
-	Robert Jarzmik <robert.jarzmik@free.fr>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Peter Griffin <peter.griffin@linaro.org>,
-	Alim Akhtar <alim.akhtar@samsung.com>, Yixun Lan <dlan@kernel.org>,
-	Troy Mitchell <troy.mitchell@linux.spacemit.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Alain Volmat <alain.volmat@foss.st.com>,
-	Chen-Yu Tsai <wens@kernel.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Laxman Dewangan <ldewangan@nvidia.com>,
-	Thierry Reding <thierry.reding@kernel.org>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Sowjanya Komatineni <skomatineni@nvidia.com>,
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	"open list:SPI SUBSYSTEM" <linux-spi@vger.kernel.org>,
-	"moderated list:ARM/Microchip (AT91) SoC support" <linux-arm-kernel@lists.infradead.org>,
-	open list <linux-kernel@vger.kernel.org>,
-	"moderated list:BROADCOM BCM2711/BCM2835 ARM ARCHITECTURE" <linux-rpi-kernel@lists.infradead.org>,
-	"open list:FREESCALE DSPI DRIVER" <imx@lists.linux.dev>,
-	"open list:ARM/QUALCOMM MAILING LIST" <linux-arm-msm@vger.kernel.org>,
-	"open list:ARM/Rockchip SoC support" <linux-rockchip@lists.infradead.org>,
-	"open list:RENESAS RZ/V2H(P) RSPI DRIVER" <linux-renesas-soc@vger.kernel.org>,
-	"open list:SAMSUNG SPI DRIVERS" <linux-samsung-soc@vger.kernel.org>,
-	"open list:RISC-V SPACEMIT SoC Support" <linux-riscv@lists.infradead.org>,
-	"open list:RISC-V SPACEMIT SoC Support" <spacemit@lists.linux.dev>,
-	"moderated list:ARM/STM32 ARCHITECTURE" <linux-stm32@st-md-mailman.stormreply.com>,
-	"open list:ARM/Allwinner sunXi SoC support" <linux-sunxi@lists.linux.dev>,
-	"open list:TEGRA ARCHITECTURE SUPPORT" <linux-tegra@vger.kernel.org>,
-	Mukesh Kumar Savaliya <mukesh.savaliya@oss.qualcomm.com>,
-	Thierry Reding <treding@nvidia.com>
-Subject: Re: [PATCH v2 1/1] spi: use dmaengine_desc_set_callback()
-Message-ID: <auxH_WzaOLsQ4-go@shikoro>
-References: <20261104152253.3279052-1-Frank.Li@oss.nxp.com>
- <autj6pr_bPaul3w0@ashevche-desk.local>
- <7f96599b-681d-4963-bdda-1274371ac84f@kernel.org>
- <f1fa853d-1703-411d-b2d2-0fb0b176c2fa@kernel.org>
- <autqC143h7Qf1R9H@ashevche-desk.local>
- <9e39502a-dd17-4fa2-98a3-9019523cb5e8@kernel.org>
- <auuYcS7-YqJKcUbE@ashevche-desk.local>
- <63c24437-4261-4a51-be7e-31ac0759a095@kernel.org>
- <auxGom0XR-Hax9b3@ashevche-desk.local>
- <00390a20-7630-4066-9779-06c8f915a176@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DAR24fhg
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6355C1F00A18
+	for <imx@lists.linux.dev>; Thu,  5 Nov 2026 09:10:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793869830;
+	bh=l8FVoARO3j3t6Swl/r4USV4n/IIP1DJGnmzvtDWkxwE=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=DAR24fhg1o12QPYF8w+7b8HIwsxRutsHpEf4cTFEyfIe1ri9nazYsDIocFwx5ISJP
+	 /3zIPoK5gQ2uI+H1WEkOK0X8GhFfj+9hv4l19yz1q/DPecQzQz2d5wbU1n2ejd3hHg
+	 /zhtdfWlMuzov1tVk4nMgIA2qtMOnpO+yRJas9gvpgUs9txLGJr7ilihbpns5ihEDF
+	 4/2yV2xRNhSNdsLoCt6rVfexZqo5PI+2bh5Zb6srEz7QL1UDMhOmHpUYxCXABSTIqt
+	 wtkhqxb8Tr9xqccUmW68LmRoovBaE4sFySPUjEpNYZPRH5NW5iNUtVbG0K+6xqcnIW
+	 aiNZNsoA0p13Q==
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5ba36cc21cdso1598169e87.1
+        for <imx@lists.linux.dev>; Thu, 05 Nov 2026 01:10:30 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AKwUvByzemW+OSfneqMVbj8ToP6AmI4OCY1a7IqikM0GiDV8qp3mfwzCOXZg11/o2YHCTZonHho=@lists.linux.dev
+X-Gm-Message-State: APuU4Z83j9CU3YvP90BTr7J+w3zlx5U2dMA9zZ90SegwKFV/ZpW/Dsrk
+	qwDYqGptQbIlR5Etn7D4CKax1dcpiEFQj0DWMECEEw/HPYlKFZElUIcCBb1qtSJaTSOQK5PBO8U
+	rXysSHkItfLba/MAgSCVk90NqNvOCPgo=
+X-Received: by 2002:a05:6512:31ce:b0:5bf:be3c:6599 with SMTP id
+ 2adb3069b0e04-5bfd957cf17mr5726763e87.67.1793869829164; Thu, 05 Nov 2026
+ 01:10:29 -0800 (PST)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -124,15 +59,54 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <00390a20-7630-4066-9779-06c8f915a176@kernel.org>
+References: <20261103-for-upstream-lx2160a-rcw-pinmux-v1-v2-0-3aad0860b984@free.fr>
+ <20261103-for-upstream-lx2160a-rcw-pinmux-v1-v2-4-3aad0860b984@free.fr>
+In-Reply-To: <20261103-for-upstream-lx2160a-rcw-pinmux-v1-v2-4-3aad0860b984@free.fr>
+From: Linus Walleij <linusw@kernel.org>
+Date: Thu, 5 Nov 2026 10:10:16 +0100
+X-Gmail-Original-Message-ID: <CAD++jL=Np+_+wTkuLCiqjNY5EBqn5qq8zKTJB6F-=1G0R+7=Ww@mail.gmail.com>
+X-Gm-Features: AclHuK_7g7nY-8H8wprNfNKV8lgILSoOexV2IGLiXfskv9qSmIolBJEeTn_Fqx4
+Message-ID: <CAD++jL=Np+_+wTkuLCiqjNY5EBqn5qq8zKTJB6F-=1G0R+7=Ww@mail.gmail.com>
+Subject: Re: [PATCH v2 4/5] pinctrl: freescale: add the LX2160A RCW pad-mux driver
+To: vjardin@free.fr
+Cc: Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
+	Frank Li <Frank.Li@nxp.com>, Jacky Bai <ping.bai@nxp.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, NXP S32 Linux Team <s32@nxp.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, linux-gpio@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, 
+	imx@lists.linux.dev, Vladimir Oltean <vladimir.oltean@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Tue, Nov 3, 2026 at 7:12=E2=80=AFPM Vincent Jardin via B4 Relay
+<devnull+vjardin.free.fr@kernel.org> wrote:
 
-> > No, (partial) Rb != Ack.
-> 
-> It is, because there is no partial Rb tag.
+> From: Vincent Jardin <vjardin@free.fr>
+>
+> The LX2160A muxes its IIC, XSPI, SDHC, UART, IRQ and EVT pads from
+> fields of the RCW, read-only in RCWSR12..14 of DCFG and changed at
+> runtime through the same fields of the override registers in its DCSR
+> view, which read 0 until written.
+>
+> Since commit 8a1365c7bbc1 ("arm64: dts: lx2160a: add pinmux and i2c
+> gpio to support bus recovery") Linux drives them with pinctrl-single on
+> the override registers, so its first pin state clears every other field
+> of the word: a board whose RCW programs a non-zero pad mux loses those
+> pads at the first I2C probe.
+>
+> Add a driver for the pad mux as a child of the DCFG node: the fields
+> of RCWSR12..14 and their encoding.
+> Then pin states select them with the generic function and groups
+> properties, and every change goes through the RCW override
+> of fsl-guts, which reads the status register, writes the override and
+> waits for the status register to follow.
+>
+> Signed-off-by: Vincent Jardin <vjardin@free.fr>
 
-Heh, just what I wrote a minute ago in the workflows-thread. The clean
-solution is to introduce one. I'd vote for it.
+Can this be applied separately once reviewed?
 
+Yours,
+Linus Walleij
