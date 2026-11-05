@@ -1,106 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.11.138.130
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793872411;
-	b=UIijqkr37gagRI1krZ2aCk8UsA2r8HpZP0+WliNbnssWvuMcqgMZmZRkydC+s0C5evRs
-	 9uXd06ImX0vo6XCjBdj4i7mQoq//8Ps/u6i1B5dJ8OXcBUu4KVjDoJo1ruSEhNT55K2aO
-	 Q5RcNuS2d0Bejl46ubhIibDXpJ3+SsWlm+0jxEupSH5DjOCDer5BlznDaGC7Noc2w32Iv
-	 fxM3LE62naxxFcLiBswDSp2HCizsvx1U+Wq5aCm+F/srHscGO1oi0O/Ewrf021u9I7pf9
-	 bhWQxrkut/+AC4PomEvWTR6MPXAzldSUSyEUue7W5094TT6ya5Edg/I58Tk9Q7KJ2gQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793872411;
-	h=DMARC-Filter:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:
-	 Content-Type;
-	bh=MqP9VAl2M+HKyxx6eNykqH5O6VAgeEFbQ04dXIcL6Fo=;
-	b=be5ZUFDH4KOm7jD5rMVN9qrNMmQbKWHgT8BCQychXo+5BEWs3B5T/BW6wgy9uotwzNrp
-	 O9Ui310mhKkfkV75U7/TjQ1Z5pGjAqqmJkNppduHYljWi/nmK7m/qx70XVbAtFCawK3Nr
-	 dKHh3U/QulKrkPFvxiWeBUR/tCFmNUrGs7JddP94yYSiv4uTcF+VWkZBdjpPxEO8lZqPk
-	 jHLrs0iWFtilyd9z6ERBpajIksI2Qmbz2ybt0PB/w3a9/9R15brNdfFqTGq2JC3w2xeE2
-	 sAYc2Ky8YW3d008Shb6BQuaOSPv1e6BEJ8JanNHvG/5+8wMDGnAbRxOnqclFNHt7B4g==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=sntech.de;
-	spf=pass smtp.mailfrom=sntech.de;
-	dkim=pass header.d=sntech.de header.i=@sntech.de header.a=rsa-sha256 header.s=gloria202408 header.b=0M+GuEew;
-	arc=none smtp.remote-ip=185.11.138.130
-Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.130.56
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793872434;
+	b=ImgDx5UdnY48PwOpf7uzJm0hW9jiIVUZZYa6m4sf8m/jnCIuhtq5+446BHYX7SSz4EhP
+	 hVCu1CL12eNVXu4SWzPtP8jnEybVpkRxPSpm3SiNUFaMOMqZ6Ce43AXkgNjq5cj9cBU/Y
+	 CJQCn0b5Wmm/UFmCXMeivQ5KrXLRXjfODPrna3OlCaIPxep6K+8uM7/SN9KBxveXgNRAC
+	 5k+TJICMUw2zsX2NvxCp4z0cwhPCfFpVesWahZ0n5IZ2bpuLUqDac2n2Gn3P+npUdpQoT
+	 ze4hCqw/26gx6W52Vj6d5KOtELT4aERR0FtP62XtY9xxbvV2tkMrR//IdTG4k8dC6gA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793872434;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
+	 Date:Message-Id:X-Mailer:Content-Transfer-Encoding:Content-Type:
+	 X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=EW7m/0LlDXyV2ZgI0Ke/VVxSTYbwpEwTzrjloltdIDo=;
+	b=d8FRxLUGZKJDSZL1r57OS4Wc5RRjmCMUa+DdxjfsAJh19e8bhYpT5WPy6gPixWbmM13w
+	 L99L5dmIV5NScT96ZKKolOpkG7OPqbvKRca9KCjn0EUp25Ub5dieIzcmhpWeSUsasHvMu
+	 y9uI/867O4OIJFQRr0UMy1L7VTKiimKcZND9/nCCLXafyr8rUZQsl2oiKOKCCHk32qYgz
+	 QrbY6pFDpnG/k/uiNh2c9ILuXuTbah/N7Ieb8luQJXbiLU0/l2bJFCQNZG0b4ztjeC9H/
+	 YvkDufOD+OwKuBjbCNQdSZAWB39OkxuEm50OzwfYn7j1GEWpfhtMmZ6Af7CZe8GwaPA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nxp.com;
+	spf=pass smtp.mailfrom=nxp.com;
+	dkim=pass header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=LNjK3UPW;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.130.56
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011056.outbound.protection.outlook.com [40.107.130.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F17A606A329;
-	Thu,  5 Nov 2026 09:53:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6F17A606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=sntech.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D235E606A331
+	for <imx@lists.linux.dev>; Thu,  5 Nov 2026 09:53:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D235E606A331
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=sntech.de header.i=@sntech.de header.a=rsa-sha256 header.s=gloria202408 header.b=0M+GuEew
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
-	s=gloria202408; h=Content-Type:Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Reply-To;
-	bh=MqP9VAl2M+HKyxx6eNykqH5O6VAgeEFbQ04dXIcL6Fo=; b=0M+GuEewUIj5GPHIXeBPBAoW3i
-	zXgPfn+4LRyxdrZX5AnFP0236jDmDcidoXjDIeK5la4bnSWlwP/aZUzh9u1vohdQc4sRqo5M9FiTZ
-	XsKFcdvzK7qt8QEdsQSylM11AZnu4iPDITkQcjUn4zfIfcds/OLMyweROsbCE3fQAk1jwgK8PO7GC
-	r/MMyfZXSnibjvKjuIl8o5UMF1xPT+WnfymrPAY8YvXlVRSPCk8iEnYhtKgHuTwij4n4Cfw4THGOi
-	/JXgecGtiDWVrFC7I7GPBbxIJf/5GkIcvvbxDrRFBoSJ0R4DwsK1IZQlgJFaEAyXpaPB2c3cJR+sS
-	7ddGpAsA==;
-From: Heiko =?UTF-8?B?U3TDvGJuZXI=?= <heiko@sntech.de>
-To: Mark Brown <broonie@kernel.org>,
- Nicolas Ferre <nicolas.ferre@microchip.com>,
- Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Claudiu Beznea <claudiu.beznea@tuxon.dev>,
- Radu Pirea <radu_nicolae.pirea@upb.ro>, CL Wang <cl634@andestech.com>,
- Ryan Wanner <ryan.wanner@microchip.com>,
- Florian Fainelli <florian.fainelli@broadcom.com>,
- Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
- Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
- Vladimir Oltean <olteanv@gmail.com>, Frank Li <Frank.Li@nxp.com>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Han Xu <han.xu@nxp.com>,
- Haibo Chen <haibo.chen@nxp.com>, Linus Walleij <linusw@kernel.org>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Daniel Mack <daniel@zonque.org>, Haojian Zhuang <haojian.zhuang@gmail.com>,
- Robert Jarzmik <robert.jarzmik@free.fr>,
- Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
- Andi Shyti <andi.shyti@kernel.org>, Tudor Ambarus <tudor.ambarus@linaro.org>,
- Krzysztof Kozlowski <krzk@kernel.org>,
- Peter Griffin <peter.griffin@linaro.org>,
- Alim Akhtar <alim.akhtar@samsung.com>, Yixun Lan <dlan@kernel.org>,
- Troy Mitchell <troy.mitchell@linux.spacemit.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Alain Volmat <alain.volmat@foss.st.com>, Chen-Yu Tsai <wens@kernel.org>,
- Jernej Skrabec <jernej.skrabec@gmail.com>,
- Samuel Holland <samuel@sholland.org>, Laxman Dewangan <ldewangan@nvidia.com>,
- Thierry Reding <thierry.reding@kernel.org>,
- Jonathan Hunter <jonathanh@nvidia.com>,
- Sowjanya Komatineni <skomatineni@nvidia.com>,
- Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- "open list:SPI SUBSYSTEM" <linux-spi@vger.kernel.org>,
- "moderated list:ARM/Microchip (AT91) SoC support"
- <linux-arm-kernel@lists.infradead.org>,
- open list <linux-kernel@vger.kernel.org>,
- "moderated list:BROADCOM BCM2711/BCM2835 ARM ARCHITECTURE"
- <linux-rpi-kernel@lists.infradead.org>,
- "open list:FREESCALE DSPI DRIVER" <imx@lists.linux.dev>,
- "open list:ARM/QUALCOMM MAILING LIST" <linux-arm-msm@vger.kernel.org>,
- "open list:ARM/Rockchip SoC support" <linux-rockchip@lists.infradead.org>,
- "open list:RENESAS RZ/V2H(P) RSPI DRIVER"
- <linux-renesas-soc@vger.kernel.org>,
- "open list:SAMSUNG SPI DRIVERS" <linux-samsung-soc@vger.kernel.org>,
- "open list:RISC-V SPACEMIT SoC Support" <linux-riscv@lists.infradead.org>,
- "open list:RISC-V SPACEMIT SoC Support" <spacemit@lists.linux.dev>,
- "moderated list:ARM/STM32 ARCHITECTURE"
- <linux-stm32@st-md-mailman.stormreply.com>,
- "open list:ARM/Allwinner sunXi SoC support" <linux-sunxi@lists.linux.dev>,
- "open list:TEGRA ARCHITECTURE SUPPORT" <linux-tegra@vger.kernel.org>,
- Frank.Li@oss.nxp.com
-Cc: imx@lists.linux.dev, vkoul@kernel.org
-Subject: Re: [PATCH 1/1] spi: use dmaengine_desc_set_callback()
-Date: Thu, 05 Nov 2026 10:52:38 +0100
-Message-ID: <2154003.0S5aU1g85B@diego>
-In-Reply-To: <20261102174005.3933649-1-Frank.Li@oss.nxp.com>
-References: <20261102174005.3933649-1-Frank.Li@oss.nxp.com>
+	dkim=pass (2048-bit key, unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=LNjK3UPW
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=QWV+EEpuCsgUiJHt7aKPsQm53D26MqPTXJ43RJPWq0Qji/KYT0jGtQlPe7Rw0YMK7qxTfOHBLf/wcXO8CHIxWS6Nq2lxY9daqRk8KyAn8FKy/jYztufzCdKfo9q1GEG0bepx6zITtbxzvic1QS8BGqfUdTE3kBesEgCn43qcb1dUzmKTJEKLd533tytVYTq1dejn2i3vyP4qTi5d9f2IoYZo6XjVZq7gmkqkEa1mB7CmaJJ9CHjo6nev+MKZfq4tCAPsgj2rjSwY+tym2oAxP1YWHWEROFeMJ79BGiBbzlo8tGXwMr1g/ZLuzfUhVWUTDn1uk1Wrz6qwuplaU1uFuQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=EW7m/0LlDXyV2ZgI0Ke/VVxSTYbwpEwTzrjloltdIDo=;
+ b=Ff6HSJCWecGnVcvT8lPOFTgkKaA0jbJMONf915jnImWqvH3CUirln+kWNA3nIY2Ep2a+DKXMVRsXVY3qa0p+d6N0kHL+3gQ82g0am7Sra83/XiPo+IgOFKyPH4ubdWvWvFUsXu5hFRD0e5hN+GUDVu/+fQZvrT+tp8Z+gbMARlRtzWOii0C/yXaJ0Pa7Lcl4EPcXnyV7qSSOb8M8FVgFxSB3V6J4HM8jFl1LyJa2OAs3BKMRvlwDt6smNl+zCDYe9t3TcTjiqhFcadwF7kZLjFTq3SASdzevXsscLv2SSUaMJRU0C+BwRBdtIlyjWw1JPLyUT8MVDCyYVVRvmU9vqA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=EW7m/0LlDXyV2ZgI0Ke/VVxSTYbwpEwTzrjloltdIDo=;
+ b=LNjK3UPWSDdzFA816YQa6lZF9CbMKOC3gtsnSu1uxkRsuiV589LvUJ2LNUQ7VshQeTw1giFrW71kgmb86+l5h2AACxYizRBoamWQvGuP9s/jeZoUPWEafvOkVkXXpVoz0S+6SdmE4UwU6ygSsBhNGTxzSjyyNA6BIxnNqkX/Hj9bhvAgR7Vbh/Stc4Tv9TUN7o9lCuuQOSHrNiY/md3FtSvwWa01dpJO45C214I+C1+jSO/3Ni5j2Z8q7WG7sxzWFvcamKGWr9LqPHaJRzYXmeKJJ6GmRPmKAmv+NQbNjHBSfFl0BMysWzieTDRzq5cvvJvjQ6dL8qn/HsbLciC2NA==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DB7PR04MB4474.eurprd04.prod.outlook.com (2603:10a6:5:3c::17) by
+ DBBPR04MB7643.eurprd04.prod.outlook.com (2603:10a6:10:203::11) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.592.10; Thu, 5 Nov 2026 09:53:51 +0000
+Received: from DB7PR04MB4474.eurprd04.prod.outlook.com
+ ([fe80::c22a:1b5e:12e7:8b3e]) by DB7PR04MB4474.eurprd04.prod.outlook.com
+ ([fe80::c22a:1b5e:12e7:8b3e%4]) with mapi id 15.21.0592.009; Thu, 5 Nov 2026
+ 09:53:50 +0000
+From: Stefan Ghetu <stefan.ghetu@nxp.com>
+To: abelvesa@kernel.org,
+	peng.fan@nxp.com,
+	sboyd@kernel.org
+Cc: bmasney+clk@redhat.com,
+	jbrunet+clk@baylibre.com,
+	Frank.Li@nxp.com,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	linux-clk@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Florin Pavelescu <florin.pavelescu@nxp.com>,
+	Stefan Ghetu <stefan.ghetu@nxp.com>
+Subject: [PATCH] clk: imx: pll14xx: Fix potential integer overflow
+Date: Thu,  5 Nov 2026 11:46:32 +0200
+Message-Id: <20261105094632.159200-1-stefan.ghetu@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: FR4P281CA0208.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:e5::20) To DB7PR04MB4474.eurprd04.prod.outlook.com
+ (2603:10a6:5:3c::17)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -110,51 +104,87 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB7PR04MB4474:EE_|DBBPR04MB7643:EE_
+X-MS-Office365-Filtering-Correlation-Id: b5fc1b52-27d7-4b25-478f-08df3b22b1b8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|23010399003|7416014|376014|366016|1800799024|10067099003|18002099003|56012099006|11063799006|261026121527099003|261021123027099003|261009223027099003|261102123227099003|261021121427099003;
+X-Microsoft-Antispam-Message-Info:
+	dp5P7cZItx7YK2kNZr/cOJ6qjgJpplIhwjMBO8oUppq8tul/bvVAb4tjWHZveG4y2h1CPdS+i0PImj2hznNkfGIS3NSHbv/nso2BFbewg7IzdqGsSQoYG2Vn51X3zAAbHXnko4wenZNne5X9k7Mdp7oKG6Hog5QE1ieTHGezA74ST+U5dMIKYFme3iU2gPCkGNV5DVGCK8XU5FPV306jiRp6LtvmsFbRtWNu+8PxPrxug0/F8ve0vLjj4ZBCEVSS/cOLJZ9eBwrhoKA0kdQcUvdI+MEQX2BGaNWa6s/gm8D4v5t/xwgXZZTF0AJsSD4/255kuh7B5r/cfhe9OX0z2StcucdbNWGgbGnR2CrG0plpcNPoPRb8fXIJcXW3qzM14weBv1hTXEv3Af98MWaCxN33NFpMaI6MMcppJFfqN7g+P9q0/cDOM2E535kBEDzQye/LHJDSQsiv+fiWgbSMGwEywuY71hzjgFxxQ/h1oZIyg/5e6eTJwdx17zJ26VHCNlTsaa3hfKR5hpxPYAMME/VRUC0BRKt036awCpVog9rRMEbFtyH3vjt1vIQNLu+OORRhwEiags0lkLiXcCKPalseQ8zXWQmd7scC1fQ7tVgyoI22CTcik/5HSSBfpoD0WaMmj4mA0PuItiK5HaZIaz+YfUG6gnhMDuaytNsAQOU=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB7PR04MB4474.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(23010399003)(7416014)(376014)(366016)(1800799024)(10067099003)(18002099003)(56012099006)(11063799006)(261026121527099003)(261021123027099003)(261009223027099003)(261102123227099003)(261021121427099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Ide6jZRcPxxJCjQLowAtDssNTgeryIQR65j/GIoDXfljqA28WSw6J70x8wtE?=
+ =?us-ascii?Q?lh3DcAT4KKHoP2+zlEa/cQN74t4d4OZM0MKyDYc4jlLXOuy2dwTq5yPW1+Pf?=
+ =?us-ascii?Q?jlpfzR7zg6VVNEVoMSeAf7/1easx7ZSvAntscsr9WCOYGxbrKgZw9JIaI3Xm?=
+ =?us-ascii?Q?X4gv/fUXhWcJ+oQyQ0zZYnaZx83HI5g7/2cQh7mmrpCrrIb5BAJIG3/QG7vJ?=
+ =?us-ascii?Q?zrbvPaVJXD7F4G5mXcYH5cL+fh6ReScgAKZH55WDFM4RzNtXylQkZhoxncaF?=
+ =?us-ascii?Q?5PmjBUIopNtJH5aTzcXPzlxd3d0kQ3CserSXy0a7tNo1J7D6yb8HjGGEZCXa?=
+ =?us-ascii?Q?d6uF2T95+b+U63aTpdDW110ae8+8SJHRFsZqJqbeSJdk7Zk0LpTl0aallHme?=
+ =?us-ascii?Q?Cr92Y1pBdkWCpIKWixrBnmgnxW7M7dj0LpU0bRpXXXtFlANeOMZuJBjiWraE?=
+ =?us-ascii?Q?EiSiDMeLIqT9NDJmEWHJLFNgfYoZGsev+LffsZB7A4ZBrf0p9XihXRwmgqen?=
+ =?us-ascii?Q?jkYFWaGFjuD8Rf1angE1leFMAaIetKvvXa3ZTyqBVOLh1sSNJ2mJLCHQbE/U?=
+ =?us-ascii?Q?6Iy1m6vgUmYs6l2xLywW9PP5QHY0Xpck5p3yYEbn4iAFzveG8CbQ7cCQMNwD?=
+ =?us-ascii?Q?R+NYLMGzvIDLhlD0DzHVtUDrGiKN7R3wtB2ju3Cfo7zrBiKXgvE7/iGc779K?=
+ =?us-ascii?Q?10OuxKEKZ8yuNCgobVTrAuICle5f0LRJhkf4JXkzQQW/Z4lR/194XwrH9SPF?=
+ =?us-ascii?Q?XDuCn4ZEjTx560PovWKevtGx83ML52+3TA65egzTLmIgdSw5PTyIkfe2PX6m?=
+ =?us-ascii?Q?wBS5+VGvttTKg+w4r9C1wwJOrOjBdJERvlzS15J1uXcAadMaGTUFLVQFt6Ox?=
+ =?us-ascii?Q?3tSLHVa33RNEwx4LNq+Qui2vNssj0xlVKBxpfRp/Uif21nnhqUzQouvYnWJ9?=
+ =?us-ascii?Q?reiGtziudxHKLPcql7SJuA3YRlGMNzfHFugM3RvpZShS6TIdYOouAJFJf5w8?=
+ =?us-ascii?Q?unsWrTwtr7e90cpAA882Sbz3B5+dI6vi1wqDGXR/QeqjU9c92OJgjaznINeS?=
+ =?us-ascii?Q?jLF+GExkRAzIifUCO4l6vpSBUeDM3zTWIcm4XVXHJgChpbca1i6/0e1Wrcy6?=
+ =?us-ascii?Q?OyOvTcOFPEMTZHUQHajvS50IawDd2V//jzsVfz6tBgx79vqHaBwfNE8aYjdj?=
+ =?us-ascii?Q?Xcqg9BttmASoD5kZ7aGpDKD9SRrtZFhAhvJuAeafQdsKr6DCRJ+GCKxQGrJ+?=
+ =?us-ascii?Q?Rxh8k3Bzw+hkY96fE8rvKqB3fgC5BWZT4A2O4VGnUZjIeb7LE6rkJuk2tYba?=
+ =?us-ascii?Q?fg4zcEALIyvYXUSzBp085+D02X/BUw5drWs361xRocRxVBTeD7Kd+xSegKIV?=
+ =?us-ascii?Q?oAIAoKRX2JneWafQBu0W6IGXX3X7MnUs0zmwvXeZQR0jVmV5WrAg82kgb8Aq?=
+ =?us-ascii?Q?wBU18LjYC0lf4qNs+WuQDqKTw9HdQ5c9+rlE1TmnvVjLClySjDOpGIigmOTo?=
+ =?us-ascii?Q?qCd+7rT9oBC3cbuVWy0hRLH77h1oSGb2dwZD5w+eJcDsxSO/9KyVK3UJBphC?=
+ =?us-ascii?Q?Nfr7LRaFAp23AIWG16Luaeo9ct3ivv1HBTClAAgfQ6mluo8vMPZSK//+lqJR?=
+ =?us-ascii?Q?AhKid/5yDmiWnWXNVAGpVtbBafMRoWYpIusXTsONGpd83KKC0rMKqMghkEtx?=
+ =?us-ascii?Q?7Dl0sA83HWjnSugVMNVBNx6nQkMEhTwoXoyGuUcZCg6ArMhIVFUhgYV3Kqiz?=
+ =?us-ascii?Q?e9RsWNo9ng=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b5fc1b52-27d7-4b25-478f-08df3b22b1b8
+X-MS-Exchange-CrossTenant-AuthSource: DB7PR04MB4474.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Nov 2026 09:53:50.8340
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: tMJ7teK+1cjWiVY6suVIx4Re0avQe49dvf9ogHNi2GLFnYzUtqahlcaLMqCy2f9GaLyCJp/VMBvpgV9CsIR0HA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7643
 
-Am Montag, 2. November 2026, 18:39:58 Mitteleurop=C3=A4ische Normalzeit sch=
-rieb Frank.Li@oss.nxp.com:
-> From: Frank Li <Frank.Li@nxp.com>
->=20
-> Replace open-coded assignments to callback and callback_param fields
-> of struct dma_async_tx_descriptor with calls to the
-> dmaengine_desc_set_callback() helper across SPI bus drivers.
->=20
-> No functional change intended. Prepare make to struct
-> dma_async_tx_descriptor private to the DMA engine.
->=20
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+From: Florin Pavelescu <florin.pavelescu@nxp.com>
 
-[...]
+Cast to u64, so that multiplications and additions will be done
+in 64-bit arithmetic (and the results will also be 64-bit)
+and the possibility of integer overflow is eliminated.
 
-> diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-> index 1a81fd94b4396..f8d6cea2f3dad 100644
-> --- a/drivers/spi/spi-rockchip.c
-> +++ b/drivers/spi/spi-rockchip.c
-> @@ -475,8 +475,7 @@ static int rockchip_spi_prepare_dma(struct rockchip_s=
-pi *rs,
->  		if (!rxdesc)
->  			return -EINVAL;
-> =20
-> -		rxdesc->callback =3D rockchip_spi_dma_rxcb;
-> -		rxdesc->callback_param =3D ctlr;
-> +		dmaengine_desc_set_callback(rxdesc, rockchip_spi_dma_rxcb, NULL, ctlr);
->  	}
-> =20
->  	txdesc =3D NULL;
-> @@ -500,8 +499,7 @@ static int rockchip_spi_prepare_dma(struct rockchip_s=
-pi *rs,
->  			return -EINVAL;
->  		}
-> =20
-> -		txdesc->callback =3D rockchip_spi_dma_txcb;
-> -		txdesc->callback_param =3D ctlr;
-> +		dmaengine_desc_set_callback(txdesc, rockchip_spi_dma_txcb, NULL, ctlr);
->  	}
-> =20
->  	/* rx must be started before tx due to spi instinct */
+Fixes: 53990cf9d5b48 ("clk: imx: pll14xx: consolidate rate calculation")
+Signed-off-by: Florin Pavelescu <florin.pavelescu@nxp.com>
+Signed-off-by: Stefan Ghetu <stefan.ghetu@nxp.com>
+---
+ drivers/clk/imx/clk-pll14xx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
-
+diff --git a/drivers/clk/imx/clk-pll14xx.c b/drivers/clk/imx/clk-pll14xx.c
+index c6438144e507..08f9d3fbc75f 100644
+--- a/drivers/clk/imx/clk-pll14xx.c
++++ b/drivers/clk/imx/clk-pll14xx.c
+@@ -124,7 +124,7 @@ static long pll14xx_calc_rate(struct clk_pll14xx *pll, int mdiv, int pdiv,
+ 	u64 fout = prate;
+ 
+ 	/* fout = (m * 65536 + k) * Fin / (p * 65536) / (1 << sdiv) */
+-	fout *= (mdiv * 65536 + kdiv);
++	fout *= ((u64)mdiv * 65536 + (u64)kdiv);
+ 	pdiv *= 65536;
+ 
+ 	do_div(fout, pdiv << sdiv);
+-- 
+2.34.1
 
