@@ -1,105 +1,95 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.46
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793873887;
-	b=SyjwF8xEg++yK4HnNppcQzCyhX7xKfs2iFXMegu6bkXfO8e/UaVfv1GgcPuLOn7XMMhj
-	 YBfvTyFvKqcofa4yEx670Jxxt5vyN3pzzNn5SRci+GlqWssc2NqiYG1Hp3f0Bv2yWe6KT
-	 uk8beXizAuUWQcnq11lGZUC+nZvY65Ij2+JFmP5diIxWZ8KNHI/E8W2+BJgvc4ZnR7mWA
-	 5c18cfaSNBIdBMHFRafGg0j88r+eYFx08mhwjNn6y4g21HUV993Ew2eeQshU5sXhbzrGB
-	 76c3lau1Z5ilRqOK+kYtoPl/NNPsg6j68UMmHNO/FTOz6tRuhMVuf+oXwn/uhquD7Bw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793873887;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:X-Google-Original-From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=NgGSt8h/WNnYW96twK1QcR8mvYOaOPJ4mg8us3LTyWY=;
-	b=YY2p67WoIEW5uHi4JMoWT6lWJ54bEMY8ccFZVe8pd18m23dsWzY2omcbHyU8eaUmfEea
-	 KQAXekKrCbyGMxH8KkoWu39dzEK87oiuQQzWhXFnatqXetDYObxonhxPWNkaMSlrCzQg5
-	 /NONECPciCdWy1D4JhgbcD9vYsJCuBA1+uG7khYnRDoQR/P230uciVo3p0ub5pWsSS6TM
-	 GeYohNg6tCjkTevq1AI2Uiyr0n1RGMDcIvA7kEZV6RLWW/E4vmzFbPTRJrJlZPpGsr1YU
-	 G8UFtybKwuMmMkustYJutPS3I89nvY9UlVM8Jdo0f85LBjcpYZLz8W1EVkNWbdE+1Uw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=LgX4y3PN;
-	arc=none smtp.remote-ip=209.85.128.46
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.159.5
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793874857;
+	b=dkBg4IuBUoaMwBQaBOFzHjA/LUUMlfKwjOfJsTk/bwE5Fg1To22vKEnEyiCWH4PPbEu5
+	 a25fp2RPOAujrqFDOpWohG6jabVuUdYRBV3nuNv4EaM9yP+20f4kEDmlzsxaTgAg+l2Dh
+	 mhqqRDBHRHx1PxpADe+wFsrm4aBDlVMb5cn+NToPLO6CHc/eEdiOcUkJ8vrufE6TZMz7q
+	 BZagMGbwUqDRi3HHd5FxPxYjys5dM5uVG3k8lB6+GYRrrQBpffgip0A1lNyrqLihaIAXQ
+	 /1pObESqwhXoO5Z41sAiOUKk9FJxRvh7opL2e+EzlMVSDynT0ja6Z7KddH2J4urGjpQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793874857;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
+	 Date:Message-Id:X-Mailer:Content-Transfer-Encoding:Content-Type:
+	 X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=LGYeWZACCwLExDZvLoxltm3R3fMi81hCwisfqN8hC8s=;
+	b=KgnydEWv/WQyOM0nwwdrzrQIvYgvrarTyzzPsQTy4ucPplL0qkTQPXNaGKw0xpPWqbBc
+	 EpIgQslftsSHsOFgRsoQCLZRUuYe7wcmZY4uLy4FhndHd59nwPznyGqswA2S7oLblowWq
+	 V5Kl231RPMiNmB00Tdie0dzKxCahhJeQruol9iCsQvKPxWk54d1mhE4lP1Jv1zIqDqPvk
+	 VQ5oTWybkz6xefE3vhONoLv1x6Q5rXpbRiOOOhPQK+7sdmxXYbCcoqqqfpu3RaG1+onPH
+	 /XIlZihQ3zGqLmx4qOo7fwEm79e4vVxdF2BOZSRdBWdBC5EG/+v+j5lxmo6DK5iVXxg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nxp.com;
+	spf=pass smtp.mailfrom=nxp.com;
+	dkim=pass header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b="a/h82aik";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.159.5
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013005.outbound.protection.outlook.com [40.107.159.5])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFC9F606A337
-	for <imx@lists.linux.dev>; Thu,  5 Nov 2026 10:18:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DFC9F606A337
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4628606A328
+	for <imx@lists.linux.dev>; Thu,  5 Nov 2026 10:34:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E4628606A328
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=LgX4y3PN
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4a214af2076so11946415e9.0
-        for <imx@lists.linux.dev>; Thu, 05 Nov 2026 02:18:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793873885; x=1794478685; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=NgGSt8h/WNnYW96twK1QcR8mvYOaOPJ4mg8us3LTyWY=;
-        b=LgX4y3PNt5jk2iTaof3UboJZm0FA/kvjZIGPB1nfdUoLBitaOZrRW0XCor2/S8Mjp4
-         r16Mu5p1u8Z9pSq0HsT1MkbuI4RGpz3ZOJX0mBfkW4mc87XmYcYsgkLZgg/aBitQeGwM
-         BL3UIlc7HpM5e10CRlPCwzuMKPGTVlkVlkKci5mFmnXM/XLbPj2TiKD4+ac+ryRsZzLT
-         fVu25necDza8LgDjPj51/sW+s1bnSSnvxItEUN8NPLrlmClpdFKe8mGTMmNQ7GO6qYCK
-         xCf0TQMKlzMNvCBNDdXQix4OCkve9p4DSqB/UWAJAu7WCUNfAgFh6G/jnBahuoD53C2F
-         5hhw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793873885; x=1794478685;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=NgGSt8h/WNnYW96twK1QcR8mvYOaOPJ4mg8us3LTyWY=;
-        b=TTP+ClxeXV3iWa7BfuBg70l97A5fzjsfhF/ZozFBb4sBvn8K4i2GRdahTbBsuQf0S2
-         /USIjzWtpM8wlJs7jugDAs48WLeMR5q/RWFAkZJsKhRbHwol+ap8/fCTHq/WeLJtwB28
-         OoRwXrCHHhyDNG4fB5CaGq1mf5q1TEmY36uAEGgc49/jB44oaQ0fVPERbj3XIYDKJhQr
-         II9TQT8lxKNjvYrtFzCPEkk4Pa5A2FCAiFnX1M+9iOv6y/+eiP4ZQ8bU5zwUHSRvytbK
-         AAC9LFcpio2k6H++L+eUY2eK0HnoQ32BV46ek5Lj3x46srwXLh+/9ZzqO7PNK0rkWI6f
-         LWSA==
-X-Forwarded-Encrypted: i=1; AKwUvBxNmbRz/KNcY9lAUD+MX0S9YJ5ongJxwxL5Mo/BOBBx/baXgkG70KWUwp+ZikGZ/Qu+sTg=@lists.linux.dev
-X-Gm-Message-State: APuU4Z/me79zs3ULErNUNgUfccQndVMtef7DYdkfonhHuMOLv2aBl5Or
-	wZVeWmBRL4Fjv+QwmJ2NqOZ/lzJQKcUJgoJWo85vBBYQZvGRX5e3JJwj
-X-Gm-Gg: AYBFou2gDu2T1k1T7DVrJafnGGd3cSlFgmz5KmvpLYR+5tXi7BJjggoXusasM3az1zl
-	INcetYv4+pe1Y9+2B/2hehfXPLrtUVS8aSaVKQYqDvtsuN090H6zlU4WhjllkxKAnlJKttlpPKO
-	Ea1YGajb+gjuY+wyZh8ysbe0NOwrqjg2aDvrP+wpjzejf3B7VRrSNsjngmcK1AK9H/0aHiZBUD7
-	Zmo5PYXQhP3IO6dlFiushaS50Fg7mrtk3lNF6pI/gCJpdiEWkcrgjqsW/UXo8JJ5pcedsQLoy+i
-	K3jEReEWo4uCb4wXHlxouqwyXA+tBpGGhY42889oRC+/MUpSYdJIYzf+mT2oQ29cQZgyq7aXNH9
-	IUIilVTK+X58Nh8XnZrNyVpw1B8QcVif2sHWEMeiJBalOuzWRsFYnGfrOobwZtbivgGz06yQuVN
-	0T1mERUZ3akgj6rmR2LwOV5fU+Bh80wJQulbWSgQzWELIzCIW1X9adgoEeVchCW13I0Aaq2SVOT
-	4Dm9OuYiyskHasdttQBI0ufguG4DIfCBMMI7kz9Rq0Bka83iND9FDHMpXUOISN+hyWfPmSk4qtE
-	B/w9phXGDJTMBfKIc1uzYPuM+ktPu76CiUdnbSg1N8Xx1tqWdbe6FCMEX9nln34pPuOI0Qh6gs7
-	lG5YS7lHsIoBhLW7BdBxoae3hBmDXKWa5yYYCHVqQDl0oXmC5b1Gt
-X-Received: by 2002:a05:600c:4704:b0:4a3:12fb:1ef1 with SMTP id 5b1f17b1804b1-4ac18992a21mr374298825e9.29.1793873884933;
-        Thu, 05 Nov 2026 02:18:04 -0800 (PST)
-Received: from Lord-Beerus.station ([93.66.71.207])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b56f5e59d3sm59305215e9.10.2026.11.05.02.18.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Nov 2026 02:18:04 -0800 (PST)
-From: Stefano Radaelli <stefano.radaelli21@gmail.com>
-X-Google-Original-From: Stefano Radaelli <stefano.r@variscite.com>
-To: Frank Li <Frank.Li@nxp.com>,
-	linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org,
+	dkim=pass (2048-bit key, unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=a/h82aik
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Sm/rq5lr8+EOb+BWBzSUO4niD/hsujgqAIQTVLSGf1ZhjO5HAfqFaBJGnfMGSXoOsO3Xh7htwD7vctVaEq94LA1/bbtqeNfbaO58A14y9Z9md2CPk9usiijpZULC8F7575v1Ar8Y6x9F5mr9r4a4GgBJN3G0Aw3i5plp1n/TVYOu/7n9ytQH6GkaHnfiPjU39fTFiagB/D2VB+RSGQJtxa3W0Dd5KjLWSiIBz+se71KP72neC0NXEMh2c2lvh4R/NeXoj4/rU2I+fG9NnJj5TWZAfVUzxqjIv6Z0cDEvF0s6nrBsc+BktZuW6XK9h8NwJDSXzJ3wVZQkksECcEA0TQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=LGYeWZACCwLExDZvLoxltm3R3fMi81hCwisfqN8hC8s=;
+ b=KEvbD2tm707ELA7qtPdB2X6Of+n5bsZeovNfgzVhYghAvO8IZ4+QtFSIQVZ1fXoxWWmb05wuy66xNtmHwTMHaLgalaB84cJUlsDaWSil9bU8Mq3nHpRmLUms69LqDqDPu8txJ5Dd4R6lNVBGEOtApdbyi4ZvonhUvvGUUNcjDVOSukXLPf6G+U/avTFjx+ud+MEW48C3yWFRIY8CvvqJhNmQwe+umxkF0qlp6O6SXb1KRRHbDlLPy70FzWIsaz2fk4oH5yGhr/9UFB8Z9W0eHNbIjFJmt9WOgdNveTMsdEWhByUNrXfhxH5fXyqTWwpbfXYg42mtWH1smMo4LwTjLA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=LGYeWZACCwLExDZvLoxltm3R3fMi81hCwisfqN8hC8s=;
+ b=a/h82aikwYoAnPx9GdI+TdbFTPZ3TiJWTlBBmdpgG3Tdprre+ZlFopMfGMEkLYy22IgNlh5ZlT3uR8LUhIGSBaiCWWIlJrMgbMCiWRzzsE6Z1jvWNmTH4GG/IKkju4RCUw0gqoraS7VNUq7IxvUcNFRXj4/uYkADdgjGo1orYXuerGo8Uhku8ugjKNLjIEXx9L6I51ENrq54Wiq1rkMOCLBFJ7C1n6ad6ax2h+AFi6x5l6TOzUuwFzY4Fs0yfaYmM+bmLGZQPWVYpGZQAbJd9FGwqS6YnTbMleDGEVbgktII9VJIT1GWGibEjFvTFVXiEw1iZ8EI/o1rBdsrIZ8icQ==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DB7PR04MB4474.eurprd04.prod.outlook.com (2603:10a6:5:3c::17) by
+ AS8PR04MB7750.eurprd04.prod.outlook.com (2603:10a6:20b:2aa::5) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.592.10; Thu, 5 Nov 2026 10:34:14 +0000
+Received: from DB7PR04MB4474.eurprd04.prod.outlook.com
+ ([fe80::c22a:1b5e:12e7:8b3e]) by DB7PR04MB4474.eurprd04.prod.outlook.com
+ ([fe80::c22a:1b5e:12e7:8b3e%4]) with mapi id 15.21.0592.009; Thu, 5 Nov 2026
+ 10:34:14 +0000
+From: Stefan Ghetu <stefan.ghetu@nxp.com>
+To: han.xu@nxp.com,
+	miquel.raynal@bootlin.com
+Cc: richard@nod.at,
+	vigneshr@ti.com,
+	s.hauer@pengutronix.de,
 	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Cc: pierluigi.p@variscite.com,
-	Nate.D@variscite.com,
-	Stefano Radaelli <stefano.r@variscite.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Stefano Radaelli <stefano.radaelli21@gmail.com>
-Subject: [PATCH v1 1/1] arm64: dts: freescale: Move Variscite Ethernet LEDs to carrier boards
-Date: Thu,  5 Nov 2026 11:17:39 +0100
-Message-ID: <20261105101739.10614-1-stefano.r@variscite.com>
-X-Mailer: git-send-email 2.47.3
+	daniel.baluta@nxp.com,
+	linux-mtd@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Stefan Ghetu <stefan.ghetu@nxp.com>
+Subject: [PATCH] mtd: rawnand: gpmi: Fix possible NULL pointer dereference in gpmi_nfc_exec_op()
+Date: Thu,  5 Nov 2026 12:34:10 +0200
+Message-Id: <20261105103410.4424-1-stefan.ghetu@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: AS4P192CA0004.EURP192.PROD.OUTLOOK.COM
+ (2603:10a6:20b:5da::12) To DB7PR04MB4474.eurprd04.prod.outlook.com
+ (2603:10a6:5:3c::17)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -109,331 +99,97 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB7PR04MB4474:EE_|AS8PR04MB7750:EE_
+X-MS-Office365-Filtering-Correlation-Id: 096e3e36-ebac-4dbb-62f7-08df3b285617
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|1800799024|366016|23010399003|376014|18002099003|10067099003|56012099006|11063799006|261021121427099003|261026121527099003|261102123227099003|261021123027099003|261009223027099003;
+X-Microsoft-Antispam-Message-Info:
+	MH4D4tqtgBd4SKvbv0CN9h1tfcp6R70mZ/TMIGcdiCrpWexedubV2fkFTeQhFznFYup5Tsx9ra/IdyAj/BofvIHIyFZj5sXdcSrGCI4SPszYYSRcmSWg6Poxp4HoWYu+ZqKvnfhtcNHlG3nha885/5RgvWsdVP1q8AKHe/thI7V/it8CI5GWz6FUGMzPx1vFCIMl8WiyG9v9UaL5ehrCzd1cfsI+69RXZQKlNa1mOmMvqhegdu0hMrD0vx22F7OaM4b0v9ZQyyp37vgyYLDqPfntR31WAr9F3eqXnD22MectnW6ctw4xhLex2YixUX+eBrf5b3IPnXxUiAqa3eMSIy23dHU86tlw3WbrgsscJver3emPm8+tYm23Wg0LwwJAbFSBaHtqjKkTo+Et72tODkr3Kfa9SZoOSoD5DzWGm2B2ffi813p+qDYZ4N+OPIzOyR5ySSMMfPscilOs2Hcn0saGkkQjC1yA+x5urKfhLIGytqkUsBfUqnaOBK1mTXV0rnoFhth01byG47Q6gl1DQNUk9qlKsl/JGD1/1xpN7C4v/SfcKDf7br8FS9Uo/VX5BcPteoakmSxsNOGMcrtB5MMnDz8ukqa3ak/zmxrIl9EhXSKFvt8UtNiAAz9XflJm2M2pwfIwdVWEArlVWNe0C+ikVraQiOZ35kHdhQNCr50=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB7PR04MB4474.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(1800799024)(366016)(23010399003)(376014)(18002099003)(10067099003)(56012099006)(11063799006)(261021121427099003)(261026121527099003)(261102123227099003)(261021123027099003)(261009223027099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?EQ3W35kFa0/wc9v0R5UsyAm2ioG4jkhLRQZSG28vd1Ai2eSWl8bIdXHzZbDq?=
+ =?us-ascii?Q?HUbP5L8eASkO/fsqK1DPmZxsHX+Y/fQvzk5Kq0WFAOhOGQqYGsZ57T0g+twz?=
+ =?us-ascii?Q?gAxKb0BNrHSpoUezNPABcfeow/PMESQpbjoVDUJUuE8iWKZ7+TF23rult44L?=
+ =?us-ascii?Q?l166Dl/rWA+8kfqJA4M13JyTtcDM7ORWqQX70V3OtFITij9aI+lpc0w7E5nU?=
+ =?us-ascii?Q?voYnKg7WXCDfHAKN7TzCXxTquzUbimbm1vpClL0BF+dl3iLOkiu8+uGEvJlY?=
+ =?us-ascii?Q?pkxg2Qaij/3Z9jpPqLy0d2NubLC1kgTYhAGOT27q0CVcZ4HVIz2Ga+K1CPJp?=
+ =?us-ascii?Q?3QqbVJ4ph2HOgGexzznPnG8hqJ89jMDWXnoz4apWcMvxkjttTMiGGnxfq2+W?=
+ =?us-ascii?Q?qGNPfLLPRAlnYWOVYexpXUb8mH+1LEbRSz8Pl0qBorcErzKeyKQQfj+kCJ2W?=
+ =?us-ascii?Q?s9OYzYejjATSiVTMXdkuJb+Q5BRHbhGurE3ct7ZgSIgT30bQWVEsxkqI6Ib0?=
+ =?us-ascii?Q?npznGseyOjV7n9aBhN2EvD0YsySF59FK/os7ASInaNBxljU/d+CmXNRf+rvD?=
+ =?us-ascii?Q?4ePeEvpWMRtZxXFYOvV1d79wXDzN531Uepmt4P11h5wW9F/aNhuohyqSiQsB?=
+ =?us-ascii?Q?rgVu7d9hPLfv4v17bjxrS1qD0EOsoF0Mp+c7jlZWPr2HCIw8Zg7ItXiPMZec?=
+ =?us-ascii?Q?8MyZtGtAFTQWwKT1b+V/KeHaar+QGuuR4rF+AC2DoQ9+13TYQ6KTbaiLUuYL?=
+ =?us-ascii?Q?plkRUc5SQz4SHEXp0cXv24OvamBSJ4HFhbuA3IwBb2f2ER2qBGfZXnD/uzBA?=
+ =?us-ascii?Q?BOt8LHXEe9ULn8SdFXS+YXX6Vh52j9RXGe4NYRo63JXKSLsw6BYGCk3L0Pzo?=
+ =?us-ascii?Q?MiacYjeT+BkT0zzgQC3qoItEeUcQtZtAMcqIJluflglGhIqei+WP8ytwem4j?=
+ =?us-ascii?Q?xc7KLsZxpIzQUWDpzd4JHIYYabkRypDRsgw5hLwVOeQKtBnnM2vxTfmGzpVx?=
+ =?us-ascii?Q?oJgKfsFYfBs8076dhkZtSlWZ9Nm0f5ROYY/JYLtM4C6Rn8nd6jOct7+yHDuT?=
+ =?us-ascii?Q?FwVKUQ9CiG06Mx4/g5LfI3Hf8ysxRtX1cEL4zbe2pPkXh7iCkTG+IZxXfVK9?=
+ =?us-ascii?Q?n8DJxWZ1HKitfjNPgrYvd5Fw+clUD8WfjwlIofXFTPh4bIJQcQo+hJr3NyjS?=
+ =?us-ascii?Q?0H2ZhNNaf2Dn/X467SsfbjutNL/FmSMQ5m/yJVfNXt5iPLwDGMH4lsIu0pXg?=
+ =?us-ascii?Q?eA7UWt0GMZXDKgoz4mM4gb8UB6sA0haY+j6YlMaobvRFpKBm6Wpc4KNWsUtw?=
+ =?us-ascii?Q?Yty5vpsWgrIPeSyRUKMhD8U0G90+IAckt1F9iKoeh71gQarW7kP7/lEbsbBe?=
+ =?us-ascii?Q?ajhY32VM0PPNRnLt8HHcQ4PT7SqQj8mGej+Efc44a5A+TINxTOKTjmlg+aMe?=
+ =?us-ascii?Q?GfIsvUJvSMTEPL6oPT5ni9rJ1BJ8rV2jh5+TwD76zDkRpTVTzNciE7FAic1T?=
+ =?us-ascii?Q?C6vRdccfIwGFilcCxwsIKBx/Z14+drA7/bGIGqZN68SCqN424zKu18rkbiIU?=
+ =?us-ascii?Q?yDWIPqx0tYfjp9b/33nceaZTT02KQJjjex+lLDqe2mjowILNvlwXs5/2fZ4D?=
+ =?us-ascii?Q?vbZRltkAXD7AlDyC0WylqxdnC4BWHTzsGxgandzzNz+VYeXoTWB+33S7yB1n?=
+ =?us-ascii?Q?LD83fwPHKFiRQTWxAws2o5cl9Zm+BgsPdvSPPpxuoT8XbZccfsArgfh01c7/?=
+ =?us-ascii?Q?3fCKzhSPOg=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 096e3e36-ebac-4dbb-62f7-08df3b285617
+X-MS-Exchange-CrossTenant-AuthSource: DB7PR04MB4474.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Nov 2026 10:34:14.1050
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: vnnrUBaJhf+HMswhbqhVnhMAYY/2EbwxHG9l+2H5OTJ8xWf138vevd98f9LxlYQHScbxo4AoIlMLZLYsRABa9w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7750
 
-From: Stefano Radaelli <stefano.r@variscite.com>
+From: Han Xu <han.xu@nxp.com>
 
-The Ethernet LEDs are physically on the carrier boards, but the
-VAR-SOM-MX8MP, DART-MX91, VAR-SOM-MX93 and DART-MX95 module descriptions
-include their LED nodes. Other carriers therefore inherit LED definitions
-that may not match their wiring.
+In gpmi_nfc_exec_op(), the desc pointer is checked inside the loop, but
+that check is skipped when the loop continues in the NAND_OP_CMD_INSTR
+case. As a result, desc may still be NULL when it is dereferenced after
+the loop. Move the sanity check outside of the loop.
 
-Move the LED nodes to the Symphony and Sonata board descriptions through
-ethphy0 references, along with the LED binding includes where needed.
-Keep the existing LED properties unchanged.
+Reported by Coverity.
 
-Fixes: c277a3d535bb ("arm64: dts: freescale: imx8mp-var-som: Add EQoS support with MaxLinear PHY")
-Fixes: d3ad2ce2116f ("arm64: dts: freescale: Add support for Variscite DART-MX91")
-Fixes: 947771d00bdc ("arm64: dts: freescale: imx93-var-som: update eqos support for MaxLinear PHY")
-Fixes: bec2988b470e ("arm64: dts: freescale: Add support for Variscite DART-MX95")
-Signed-off-by: Stefano Radaelli <stefano.r@variscite.com>
+Fixes: ef347c0cfd61 ("mtd: rawnand: gpmi: Implement exec_op")
+Signed-off-by: Han Xu <han.xu@nxp.com>
+Signed-off-by: Stefan Ghetu <stefan.ghetu@nxp.com>
 ---
- .../dts/freescale/imx8mp-var-som-symphony.dts | 22 +++++++++++++++++++
- .../boot/dts/freescale/imx8mp-var-som.dtsi    | 20 -----------------
- .../dts/freescale/imx91-var-dart-sonata.dts   | 22 +++++++++++++++++++
- .../boot/dts/freescale/imx91-var-dart.dtsi    | 20 -----------------
- .../dts/freescale/imx93-var-som-symphony.dts  | 21 ++++++++++++++++++
- .../boot/dts/freescale/imx93-var-som.dtsi     | 19 ----------------
- .../dts/freescale/imx95-var-dart-sonata.dts   | 22 +++++++++++++++++++
- .../boot/dts/freescale/imx95-var-dart.dtsi    | 20 -----------------
- 8 files changed, 87 insertions(+), 79 deletions(-)
+ drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-var-som-symphony.dts b/arch/arm64/boot/dts/freescale/imx8mp-var-som-symphony.dts
-index e928a3d44b1d..49d20db7de5f 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-var-som-symphony.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-var-som-symphony.dts
-@@ -3,6 +3,7 @@
-  * Copyright 2024 Variscite Ltd.
-  */
+diff --git a/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c b/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
+index 0f1528710a6a..e876a19ee9da 100644
+--- a/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
++++ b/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
+@@ -2616,11 +2616,11 @@ static int gpmi_nfc_exec_op(struct nand_chip *chip,
+ 						   &direct);
+ 			break;
+ 		}
++	}
  
-+#include <dt-bindings/leds/common.h>
- #include "imx8mp-var-som.dtsi"
+-		if (!desc) {
+-			ret = -ENXIO;
+-			goto unmap;
+-		}
++	if (!desc) {
++		ret = -ENXIO;
++		goto unmap;
+ 	}
  
- / {
-@@ -129,6 +130,27 @@ ethphy1: ethernet-phy@5 {
- 	};
- };
- 
-+&ethphy0 {
-+	leds {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		led@0 {
-+			reg = <0>;
-+			color = <LED_COLOR_ID_YELLOW>;
-+			function = LED_FUNCTION_LAN;
-+			linux,default-trigger = "netdev";
-+		};
-+
-+		led@1 {
-+			reg = <1>;
-+			color = <LED_COLOR_ID_GREEN>;
-+			function = LED_FUNCTION_LAN;
-+			linux,default-trigger = "netdev";
-+		};
-+	};
-+};
-+
- &fec {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_fec>;
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-var-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-var-som.dtsi
-index 61786eee0e82..cbf58aed180a 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-var-som.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-var-som.dtsi
-@@ -8,7 +8,6 @@
- /dts-v1/;
- 
- #include <dt-bindings/phy/phy-imx8-pcie.h>
--#include <dt-bindings/leds/common.h>
- #include <dt-bindings/usb/pd.h>
- #include "imx8mp.dtsi"
- 
-@@ -155,25 +154,6 @@ ethphy0: ethernet-phy@4 {
- 			reset-assert-us = <10000>;
- 			reset-deassert-us = <100000>;
- 			vddio-supply = <&reg_phy_vddio>;
--
--			leds {
--				#address-cells = <1>;
--				#size-cells = <0>;
--
--				led@0 {
--					reg = <0>;
--					color = <LED_COLOR_ID_YELLOW>;
--					function = LED_FUNCTION_LAN;
--					linux,default-trigger = "netdev";
--				};
--
--				led@1 {
--					reg = <1>;
--					color = <LED_COLOR_ID_GREEN>;
--					function = LED_FUNCTION_LAN;
--					linux,default-trigger = "netdev";
--				};
--			};
- 		};
- 	};
- };
-diff --git a/arch/arm64/boot/dts/freescale/imx91-var-dart-sonata.dts b/arch/arm64/boot/dts/freescale/imx91-var-dart-sonata.dts
-index f7e32f9375f5..0f2be56ff7ca 100644
---- a/arch/arm64/boot/dts/freescale/imx91-var-dart-sonata.dts
-+++ b/arch/arm64/boot/dts/freescale/imx91-var-dart-sonata.dts
-@@ -10,6 +10,7 @@
- 
- /dts-v1/;
- 
-+#include <dt-bindings/leds/common.h>
- #include "imx91-var-dart.dtsi"
- 
- / {
-@@ -173,6 +174,27 @@ led@1 {
- 	};
- };
- 
-+&ethphy0 {
-+	leds {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		led@0 {
-+			reg = <0>;
-+			color = <LED_COLOR_ID_YELLOW>;
-+			function = LED_FUNCTION_LAN;
-+			linux,default-trigger = "netdev";
-+		};
-+
-+		led@1 {
-+			reg = <1>;
-+			color = <LED_COLOR_ID_GREEN>;
-+			function = LED_FUNCTION_LAN;
-+			linux,default-trigger = "netdev";
-+		};
-+	};
-+};
-+
- &fec {
- 	pinctrl-names = "default", "sleep";
- 	pinctrl-0 = <&pinctrl_fec>;
-diff --git a/arch/arm64/boot/dts/freescale/imx91-var-dart.dtsi b/arch/arm64/boot/dts/freescale/imx91-var-dart.dtsi
-index a9e44efad13f..ec65cd42c195 100644
---- a/arch/arm64/boot/dts/freescale/imx91-var-dart.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx91-var-dart.dtsi
-@@ -10,7 +10,6 @@
- 
- /dts-v1/;
- 
--#include <dt-bindings/leds/common.h>
- #include <dt-bindings/usb/pd.h>
- #include "imx91.dtsi"
- 
-@@ -81,25 +80,6 @@ ethphy0: ethernet-phy@0 {
- 			reset-gpios = <&gpio1 7 GPIO_ACTIVE_LOW>;
- 			reset-assert-us = <15000>;
- 			reset-deassert-us = <100000>;
--
--			leds {
--				#address-cells = <1>;
--				#size-cells = <0>;
--
--				led@0 {
--					reg = <0>;
--					color = <LED_COLOR_ID_YELLOW>;
--					function = LED_FUNCTION_LAN;
--					linux,default-trigger = "netdev";
--				};
--
--				led@1 {
--					reg = <1>;
--					color = <LED_COLOR_ID_GREEN>;
--					function = LED_FUNCTION_LAN;
--					linux,default-trigger = "netdev";
--				};
--			};
- 		};
- 	};
- };
-diff --git a/arch/arm64/boot/dts/freescale/imx93-var-som-symphony.dts b/arch/arm64/boot/dts/freescale/imx93-var-som-symphony.dts
-index 1f0954620195..477f31a4cf88 100644
---- a/arch/arm64/boot/dts/freescale/imx93-var-som-symphony.dts
-+++ b/arch/arm64/boot/dts/freescale/imx93-var-som-symphony.dts
-@@ -189,6 +189,27 @@ vddio1: vddio-regulator {
- 	};
- };
- 
-+&ethphy0 {
-+	leds {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		led@0 {
-+			reg = <0>;
-+			color = <LED_COLOR_ID_YELLOW>;
-+			function = LED_FUNCTION_LAN;
-+			linux,default-trigger = "netdev";
-+		};
-+
-+		led@1 {
-+			reg = <1>;
-+			color = <LED_COLOR_ID_GREEN>;
-+			function = LED_FUNCTION_LAN;
-+			linux,default-trigger = "netdev";
-+		};
-+	};
-+};
-+
- &fec {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_fec>;
-diff --git a/arch/arm64/boot/dts/freescale/imx93-var-som.dtsi b/arch/arm64/boot/dts/freescale/imx93-var-som.dtsi
-index b0ffcb534cb6..d9ecbc3e9a6d 100644
---- a/arch/arm64/boot/dts/freescale/imx93-var-som.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx93-var-som.dtsi
-@@ -75,25 +75,6 @@ ethphy0: ethernet-phy@0 {
- 			reset-gpios = <&gpio1 7 GPIO_ACTIVE_LOW>;
- 			reset-assert-us = <10000>;
- 			reset-deassert-us = <100000>;
--
--			leds {
--				#address-cells = <1>;
--				#size-cells = <0>;
--
--				led@0 {
--					reg = <0>;
--					color = <LED_COLOR_ID_YELLOW>;
--					function = LED_FUNCTION_LAN;
--					linux,default-trigger = "netdev";
--				};
--
--				led@1 {
--					reg = <1>;
--					color = <LED_COLOR_ID_GREEN>;
--					function = LED_FUNCTION_LAN;
--					linux,default-trigger = "netdev";
--				};
--			};
- 		};
- 	};
- };
-diff --git a/arch/arm64/boot/dts/freescale/imx95-var-dart-sonata.dts b/arch/arm64/boot/dts/freescale/imx95-var-dart-sonata.dts
-index 9344a0d99418..ed3e2e1b995c 100644
---- a/arch/arm64/boot/dts/freescale/imx95-var-dart-sonata.dts
-+++ b/arch/arm64/boot/dts/freescale/imx95-var-dart-sonata.dts
-@@ -8,6 +8,7 @@
-  *
-  */
- 
-+#include <dt-bindings/leds/common.h>
- #include "imx95-var-dart.dtsi"
- 
- / {
-@@ -163,6 +164,27 @@ &enetc_port2 {
- 	status = "okay";
- };
- 
-+&ethphy0 {
-+	leds {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		led@0 {
-+			reg = <0>;
-+			color = <LED_COLOR_ID_YELLOW>;
-+			function = LED_FUNCTION_LAN;
-+			linux,default-trigger = "netdev";
-+		};
-+
-+		led@1 {
-+			reg = <1>;
-+			color = <LED_COLOR_ID_GREEN>;
-+			function = LED_FUNCTION_LAN;
-+			linux,default-trigger = "netdev";
-+		};
-+	};
-+};
-+
- &flexcan1 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_flexcan1>;
-diff --git a/arch/arm64/boot/dts/freescale/imx95-var-dart.dtsi b/arch/arm64/boot/dts/freescale/imx95-var-dart.dtsi
-index b4c55bd33858..92ff09fe64a7 100644
---- a/arch/arm64/boot/dts/freescale/imx95-var-dart.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx95-var-dart.dtsi
-@@ -10,7 +10,6 @@
- 
- /dts-v1/;
- 
--#include <dt-bindings/leds/common.h>
- #include <dt-bindings/usb/pd.h>
- #include "imx95.dtsi"
- 
-@@ -193,25 +192,6 @@ ethphy0: ethernet-phy@0 {
- 		reset-gpios = <&gpio5 16 GPIO_ACTIVE_LOW>;
- 		reset-assert-us = <10000>;
- 		reset-deassert-us = <100000>;
--
--		leds {
--			#address-cells = <1>;
--			#size-cells = <0>;
--
--			led@0 {
--				reg = <0>;
--				color = <LED_COLOR_ID_YELLOW>;
--				function = LED_FUNCTION_LAN;
--				linux,default-trigger = "netdev";
--			};
--
--			led@1 {
--				reg = <1>;
--				color = <LED_COLOR_ID_GREEN>;
--				function = LED_FUNCTION_LAN;
--				linux,default-trigger = "netdev";
--			};
--		};
- 	};
- };
- 
+ 	dev_dbg(this->dev, "%s setup done\n", __func__);
 -- 
-2.47.3
+2.34.1
 
