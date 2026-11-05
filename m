@@ -1,44 +1,44 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793881048;
-	b=GdHjXYpbYCuWRtp6hjELDuIZtOUm/ypVJWBS/qzhfDQZiZa2NpHwoV84711hs6wDMG1Z
-	 MiU+uHM7wDm87EPU8wLDTxSjSr+LCF+sPgORXk9eUNHNXiZUyLBPFdQEF2WnABzm9NnLy
-	 Hvra5+1LUyNI6B/h8fbjFYfKRfv2vquVhc4T1gFutIMj+u74MYqRV9PNim0S/+6nr9LQO
-	 zyWSUwXEuvJXcLGZaKvdm8lUshnQn6HIFnVQ6i9PypEQ/qiCrE/05biWNssvr+qKOhv1o
-	 jpU4iqsMpVSnnedDSEM8iqHH2ooIh/wBBur4ncINH16ZXg/tP/pInSA/KonVx8rh5Pg==
+	t=1793881051;
+	b=ipFqYQejOKEuqsi5KQi7RNgJMSjQVb3or8gTd+ZLxMjStx3HEhOsCKmuTTBU1WsWVFvc
+	 6ssLslObgdExif05aIJB1TSc/Ckvut5SC0HWe1yZqzFAry71zWvllN6HeU5smN97dc6uw
+	 X22hwwWxdyh2hx0JKxTA12u1YOtTxKaYRFiRJ7RIKGvbH/Blk0aWGG5bp12jCuJNJWtWp
+	 tQ7yjKgIGtVs2ri7PBaTFoDPJ0Bqrt7OPwm1zswo1RMDAL8Y4Y2XweVb8q91l5M+beaH8
+	 OlKy2d0dIwlDcLaxwiyD3IHPwhu041fbGqsUg4QRaIydBy1lHwjOJS7s0MbKCIV2x6Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793881048;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793881051;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=i/6zR46dYGjFw0n/4PpbA5N+Te6DN9VonOFVqLNLWQs=;
-	b=jWsr/5YUzdzhnCiUSpVFcELOHQcRi80eQVesNh+9cQyDozZlBQ8wqaf5BZT4GXW1he+y
-	 2mrl5lqj97zFrCQwAVsGUJaik/3oYPQKqbZ2bYO+/6fCgUJoIVdFAcuKNTrqeROGpfFG8
-	 cSypCkgFm+N0jHAySVKlkYxJu3g/hxdhOHdUa2zPq0Y9Y54Ez7iCFB4qMfQ3VvvTdsjFi
-	 pOVx9zijCCmsClLGhOwiT1Xt/td2lQoHuAaFC1eKfiX9zN6i+KLc5wihcpvWlhALhe8Zz
-	 XlKVdCl8BvOXgE8zDxbTmn2zmadVjjYbkYj9VI6nCqiPZ+K4gIkdvOfwWFh/APQnkAw==
+	bh=QUHMmcOW+XDbVYGagQbDFPA+A/AMi6QA2veHRlPHrFw=;
+	b=FdseBCw82pi8OamYke5EDqmZu6nfCY4x/bMx1awifz8WnRBGQTBux9e0MlWiLzTMbzvM
+	 brPyZY+bowpq5eeZJCai24wxnR+V8c45HxSpnvPYHiywmysiYbXmSvYck3RuRIkzkUn0A
+	 CF/SeNURrhkEZOTvxgSXxfGfoVBJJXEnazKaT3jVgooMc9WrsmJug0DWMTtg+MsZjp0f2
+	 8PbqnGpENr6cfPRHu4qQZ5MNy+RnV5qxDr8JDtsBU/0nzTTMtxjG/jYo7TE/viLsVfE05
+	 nkG5sPUtaZthehkgjRIikWsqCVckuT6T5OxqOJquOd6mU6Z1xqCaMpapueDwsciHqyA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YUoirBPX;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IwHYYMQA;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CB09606A331;
-	Thu,  5 Nov 2026 12:17:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A656C606EE93;
+	Thu,  5 Nov 2026 12:17:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YUoirBPX
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91A3D1F00A15;
-	Thu,  5 Nov 2026 12:17:25 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IwHYYMQA
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96AAD1F00A1B;
+	Thu,  5 Nov 2026 12:17:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793881048;
-	bh=i/6zR46dYGjFw0n/4PpbA5N+Te6DN9VonOFVqLNLWQs=;
+	s=k20260515; t=1793881051;
+	bh=QUHMmcOW+XDbVYGagQbDFPA+A/AMi6QA2veHRlPHrFw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YUoirBPX+0MBci2wP+U5q5aEM9AZBSWaRXbCjqYXEtTEub3LEfepgLooGdhQhI8HB
-	 G6KpjHm22BaBjsXyFoPI4NzFlRVn+m2Rj7foza6gC9VXW41puhvwj9f/rJT/SNvy/7
-	 I6hlrpqYbqhsmTXsImuMB0hdRL4a4ZIZmvYtMLljiCnweArnarBv6n9tlg8oB7668r
-	 GE+sDUN0EEPUQybdh95fxKTQAiwrqbrJlVHXvzwYEgSLZMkc8cyjpJz+HiUAUTILoz
-	 UE7sDAUTOmeiO7zMC4WPSMoMaMmldy38v0NUwZjmhaho3ghEv756TW2tV4uJ3kMx1s
-	 B562/QtvZ3tIA==
+	b=IwHYYMQAUcTz0BPOF9YL5ylp7tRiBQ8L2QBWhjH8B6Z8wvbhFgukxk2ghxPFhbpDw
+	 Wp15i9YaLCSBRaU4WGZy5xUFlUL4hnJoSU4N/2OPH84eQ1h58AXcL1mLtJPdwFYCRl
+	 aRKZ6lbbcXnsF2HUrBzXe3ae04kFs7Qzz+erHrmK+NWe5D2qflKw17GNh5eK5uaBgq
+	 fvBCXF0KFCmclAtOAC5ptxN5MfinwC7mHv1v7T7HnoMVDv+fBVaKwPJQ5mJn2+2/tj
+	 tokI2+Ah2o+OGIfE7U7Kr5lsMZeJmYJy5VbDXWL4Y0YKiatf6jWDWW7R1mxshyGkP2
+	 s58VwXVwx0XVA==
 From: Joshua Crofts <crofts@kernel.org>
 To: Jonathan Cameron <jic23@kernel.org>,
 	David Lechner <dlechner@baylibre.com>,
@@ -57,9 +57,9 @@ Cc: linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	imx@lists.linux.dev
-Subject: [PATCH 09/10] iio: light: vncl4035: remove redundant pm_runtime_dont_use_autosuspend() call
-Date: Thu,  5 Nov 2026 12:16:34 +0000
-Message-ID: <20261105121635.1612-10-crofts@kernel.org>
+Subject: [PATCH 10/10] iio: magnetometer: bmc150_magn: remove redundant pm_runtime_dont_use_autosuspend() call
+Date: Thu,  5 Nov 2026 12:16:35 +0000
+Message-ID: <20261105121635.1612-11-crofts@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261105121635.1612-1-crofts@kernel.org>
 References: <20261105121635.1612-1-crofts@kernel.org>
@@ -82,21 +82,21 @@ Remove the redundant function call.
 
 Signed-off-by: Joshua Crofts <crofts@kernel.org>
 ---
- drivers/iio/light/vcnl4035.c | 1 -
+ drivers/iio/magnetometer/bmc150_magn.c | 1 -
  1 file changed, 1 deletion(-)
 
-diff --git a/drivers/iio/light/vcnl4035.c b/drivers/iio/light/vcnl4035.c
-index 23bd0d42363d..c34a2ab073a1 100644
---- a/drivers/iio/light/vcnl4035.c
-+++ b/drivers/iio/light/vcnl4035.c
-@@ -607,7 +607,6 @@ static void vcnl4035_remove(struct i2c_client *client)
- 	struct iio_dev *indio_dev = i2c_get_clientdata(client);
- 	int ret;
+diff --git a/drivers/iio/magnetometer/bmc150_magn.c b/drivers/iio/magnetometer/bmc150_magn.c
+index 32dff9cdd0f7..16b5c2451728 100644
+--- a/drivers/iio/magnetometer/bmc150_magn.c
++++ b/drivers/iio/magnetometer/bmc150_magn.c
+@@ -934,7 +934,6 @@ int bmc150_magn_probe(struct device *dev, struct regmap *regmap,
+ 	return 0;
  
--	pm_runtime_dont_use_autosuspend(&client->dev);
- 	pm_runtime_disable(&client->dev);
- 	iio_device_unregister(indio_dev);
- 	pm_runtime_set_suspended(&client->dev);
+ err_pm_cleanup:
+-	pm_runtime_dont_use_autosuspend(dev);
+ 	pm_runtime_disable(dev);
+ err_buffer_cleanup:
+ 	iio_triggered_buffer_cleanup(indio_dev);
 -- 
 2.47.3
 
