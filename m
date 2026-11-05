@@ -1,85 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.246
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793881730;
-	b=R2Dxk+jsMTJxnnE/CUAujzZznwn1dpbqnOGOJB6COFSk8suRrRWzUHzoNKOmXu1MPP0Q
-	 zTILGLj2433DvL1MGlqQscXXpFttY6ujk4Zk1wK28yE2RcEgPYS8StuNlXP2yN+k9llPA
-	 LTdxwNhTxm6bojEU3PS2aeFg1uZUrH8nr44JhzRIK0vDAr7gt3iEUQmOlan9zJ+WvDxqd
-	 /HCko26xjTCFKXdqa4eWirrBkfvIDgkaSnRRf6TS/La4aDQ4u7ZXEHBnyPP9+uNkhhAaR
-	 yYyDuIR0oMPyj40wi2WsxFhOfK9aRWjSLb/MpdaEizCbyDeYPT0CYXPvbPhtC3BGbIw==
+	t=1793881874;
+	b=3pFOPDvW2lGqkt9aqt5dlPkLRB57b61m49eoJxs2X12JFabyi/CIBkd3NeTfrpIR4py+
+	 CwgxKZjgmDk3+ZoLyxkXqD8jcBwS/KNzW+8AmwmH6nTZGXG/MSusoDFJEMePIrfe+Uyv3
+	 3A3VkFtifoC0O2wQFTxpm50G/rH7Qqj5XqZYOsa8gpSZBo4jJzjwgKtaCaABvMoV5aC1f
+	 I3AeRn+lm7sHbqEA27Yc2MqqHDvuc/6xibw15KBNqiO3s5kMdFCy97Yc1ZttdYlK+cYT0
+	 8OXZu/JiIu4YMb8SGIbDRNfHRv11U2Pn2pfJKTVHZcK7HETn/05IjgpznsmW5Xqh6Ug==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793881730;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	a=rsa-sha256; c=relaxed/relaxed; t=1793881874;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
 	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=FsZqO5FR4mq2gQTlk44IBTsOMir2UzDLRvKhXJMYJ80=;
-	b=MwkADVsrD8ehGzlUvpNFSIxdAtD5tPooiZzXTsJT6BzQtovEweXVf6XbvhdPZpvbv5GF
-	 rJqfZsmQvWt5LolWpVOQjarJGWoybBxhxokv6v+H/JMbSBU2cQcK8j3VkHseYvHJQ5/7T
-	 QbiLb9Dh0o6lAds/jp8jnxOekQAtGl37m+QVfzCGWrnobP5JloUUbB/hv4Xh4v7IwJFB2
-	 FPDL5dts64MwCv8DTve83ETz70Rimr2F1oHFepAH/ESTBHvDHBBB58hfrqnygdH7PizPw
-	 jduI/iVRcJIIyimXARet2aCzdvbDsc0Y3g1k5EFQsCF6oCmpDOrcthAAGANZ9H1Y+Nw==
+	bh=4/oRDqwhi3VDoXLgA5GrAWXdmPaS/aW4+VhU7F5t7uI=;
+	b=hKMmUN00iC+9dXKCV3Eom+Qq4PNCmDkd+x9rFdCgqdgHj4hP4qW5sOL9R8MrMsVI1Rzy
+	 bBr15KlA4by8NXvgnvuYhaovIehPW7dhN1RRxOuafMgqKYtS0TW8Tc7jDg9J/NoZzzeMU
+	 PUZggVwHl87mn8n1CVvIIFvBqlz2TiBq7I4EnCT0Hnfuo7uubMzC0+in4Rp4ra4rOQ4VJ
+	 O7kV7HOOdGuVsQLxYw+5Be9Fei0mTZSp19CiYSDe4nis3TbJtJDWt1JTBJSwW2ha9TPB3
+	 Xofbyyg+taLUpZy8A/DNa4CmiVe7G2kmd9zjjycawYtu4qqs4MJbuyISisPsuYPI6WA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Yz82hJKk;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b="ltIECy/C";
+	arc=none smtp.remote-ip=95.215.58.246
+Received: from mta1.migadu.com (out-246.mta1.migadu.com [95.215.58.246])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5F01606A331;
-	Thu,  5 Nov 2026 12:28:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E686606A329
+	for <imx@lists.linux.dev>; Thu,  5 Nov 2026 12:31:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8E686606A329
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Yz82hJKk
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE90C1F00919;
-	Thu,  5 Nov 2026 12:28:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793881729;
-	bh=FsZqO5FR4mq2gQTlk44IBTsOMir2UzDLRvKhXJMYJ80=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Yz82hJKkMymEJOScjv8sYjss2OQ1kINPiDdkaHg5ad9RyZEWOiGaO7o1lbpp8pQ4e
-	 9epzUzeGty9sRCXEfCTqC0fJFd/C1ie8YzBRyCUTfi3SMPvSHQFrQ9bQAMK8nD9/Kl
-	 myWGH8iuE8WJEibwJzc39kqDQnnaTND68Xynk1OcHrcs7ZIA4JjiJ8NbRuvXOf4gub
-	 c+dgetCSx67SZN1w9wXrmlf5ohPmNlEByvteNCZFdHa2+C65WPzFbhCkmz0/GXWZHr
-	 5XPvRBgsUc9cyKC805nfy5Nxa7Lc6dyz6auCKc3CEq1uAfCdSwc7NkApLxKvWmzHAh
-	 Ni5TNSAsINLPg==
-Date: Thu, 5 Nov 2026 13:28:46 +0100
-From: Thierry Reding <thierry.reding@kernel.org>
-To: Frank.Li@oss.nxp.com
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Jiri Slaby <jirislaby@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Russell King <linux@armlinux.org.uk>, 
-	Richard Genoud <richard.genoud@bootlin.com>, Nicolas Ferre <nicolas.ferre@microchip.com>, 
-	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Krzysztof Kozlowski <krzk@kernel.org>, Peter Griffin <peter.griffin@linaro.org>, 
-	Alim Akhtar <alim.akhtar@samsung.com>, Laxman Dewangan <ldewangan@nvidia.com>, 
-	Jonathan Hunter <jonathanh@nvidia.com>, Orson Zhai <orsonzhai@gmail.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Chunyan Zhang <zhang.lyra@gmail.com>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	Cunhao Lu <1579567540@qq.com>, Raul E Rangel <rrangel@chromium.org>, 
-	Yenchia Chen <yenchia.chen@mediatek.com>, Zhiyong Tao <zhiyong.tao@mediatek.com>, 
-	Carlo Caione <ccaione@baylibre.com>, Moteen Shah <m-shah@ti.com>, Kendall Willis <k-willis@ti.com>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Kartik Rajput <kkartik@nvidia.com>, Fan Wu <fanwu01@zju.edu.cn>, 
-	Nicolai Buchwitz <nb@tipi-net.de>, Karl Mehltretter <kmehltretter@gmail.com>, 
-	Stefan =?utf-8?B?RMO2c2luZ2Vy?= <stefandoesinger@gmail.com>, Shitalkumar Gandhi <shital.gandhi45@gmail.com>, 
-	Peng Fan <peng.fan@nxp.com>, Sherry Sun <sherry.sun@nxp.com>, 
-	John Ogness <john.ogness@linutronix.de>, Pan Chuang <panchuang@vivo.com>, Petr Mladek <pmladek@suse.com>, 
-	Robin Gong <yibin.gong@nxp.com>, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
-	Stephan Gerhold <stephan.gerhold@linaro.org>, Zhaoyang Yu <2426767509@qq.com>, 
-	"Nikola Z. Ivanov" <zlatistiv@gmail.com>, Haoxiang Li <haoxiang_li2024@163.com>, 
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>, Biju Das <biju.das.jz@bp.renesas.com>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Myeonghun Pak <mhun512@gmail.com>, 
-	Wenhua Lin <Wenhua.Lin@unisoc.com>, Cixi Geng <cixi.geng@linux.dev>, 
-	"open list:TTY LAYER AND SERIAL DRIVERS" <linux-kernel@vger.kernel.org>, 
-	"open list:TTY LAYER AND SERIAL DRIVERS" <linux-serial@vger.kernel.org>, 
-	"moderated list:ARM/Mediatek SoC support" <linux-arm-kernel@lists.infradead.org>, 
-	"moderated list:ARM/Mediatek SoC support" <linux-mediatek@lists.infradead.org>, 
-	"open list:ARM/FREESCALE IMX / MXC / LAYERSCAPE ARM ARCHIT..." <imx@lists.linux.dev>, 
-	"open list:ARM/QUALCOMM MAILING LIST" <linux-arm-msm@vger.kernel.org>, 
-	"open list:ARM/SAMSUNG S3C, S5P AND EXYNOS ARM ARCHITECTURES" <linux-samsung-soc@vger.kernel.org>, 
-	"open list:TEGRA ARCHITECTURE SUPPORT" <linux-tegra@vger.kernel.org>, 
-	"moderated list:ARM/STM32 ARCHITECTURE" <linux-stm32@st-md-mailman.stormreply.com>, vkoul@kernel.org
-Subject: Re: [PATCH 1/1] tty: serial: use dmaengine_desc_set_callback()
-Message-ID: <aux2VKHnVLwq_wzi@orome>
-References: <20261102175527.3957740-1-Frank.Li@oss.nxp.com>
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=ltIECy/C
+X-Envelope-To: imx@lists.linux.dev
+DKIM-Signature: a=rsa-sha256; bh=LNzXwPtAzajvtYxI6EotRBLZdeMB3u0+426q1DrZgGw=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793881870; v=1; x=1794486670;
+ b=ltIECy/C12jSt1vfpDBaziysHNbzvhXDjM0SL4WUcV6/RvEvEibbJ+kcmk6q2r8uYrsuz+YX
+ OF/lUGAO51ygILYxB9nzZF6HjSso7wZWtVhYvcIKzaX/U7JQ+VGvHoPplIFKplYi5LFXrmTZpaN
+ kqUnmhR7IZJ6X6UcziKra704=
+X-Envelope-To: imx@lists.linux.dev
+Received: by smtp.migadu.com with ESMTPS id 63e722beeefc127e;
+	Thu, 05 Nov 2026 12:31:08 +0000
+X-Mizu-Trace-ID: 63e722beeefc127e
+X-Migadu-Flow: FLOW_OUT
+Date: Thu, 5 Nov 2026 20:30:56 +0800
+From: Peng Fan <peng.fan@linux.dev>
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: Linus Walleij <linusw@kernel.org>,
+	Bartosz Golaszewski <brgl@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Stefan Agner <stefan@agner.ch>,
+	Dong Aisheng <aisheng.dong@nxp.com>, Jacky Bai <ping.bai@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Bartosz Golaszewski <brgl@bgdev.pl>, linux-gpio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH v3 01/11] dt-bindings: gpio: vf610: fix clock
+ requirements per SoC
+Message-ID: <aux3AIUFTEXUIbsN@fedora>
+References: <20261105-gpio-vf610-fixes-v3-0-504e19de5ad5@nxp.com>
+ <20261105-gpio-vf610-fixes-v3-1-504e19de5ad5@nxp.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -89,68 +76,107 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="i6ogfjkah26q6ktw"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261102175527.3957740-1-Frank.Li@oss.nxp.com>
+In-Reply-To: <20261105-gpio-vf610-fixes-v3-1-504e19de5ad5@nxp.com>
+
+On Thu, Nov 05, 2026 at 11:52:59AM +0800, Peng Fan (OSS) wrote:
+>From: Peng Fan <peng.fan@nxp.com>
+>
+>The i.MX7ULP GPIO controller needs both the GPIO and PORT clocks,
+>while the i.MX8ULP and its derivatives (i.MX93/94/95/952) only have
+>a single "gpio" clock. The VF610 controller has no gateable clocks,
+>so force clocks and clock-names false.
+
+Sashiko reported:
+
+[Severity: Low]
+As reported by Sashiko on v2 [1], this isn't a bug, but in
+Documentation/devicetree/bindings/gpio/gpio-vf610.yaml, the fsl,imx8ulp-gpio
+family (including fsl,imx93-gpio, fsl,imx94-gpio, and fsl,imx95-gpio) does
+not share a compatible fallback with fsl,vf610-gpio or fsl,imx7ulp-gpio, and
+almost every hardware resource property now differs across the variants:
 
 
---i6ogfjkah26q6ktw
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH 1/1] tty: serial: use dmaengine_desc_set_callback()
-MIME-Version: 1.0
+I prefer to keep the patch as it is since it has a fixes tag. But anyway
+if this is not welcomed, I could separate fsl,imx8ulp-gpio into a new dt-binding
+file.
 
-On Mon, Nov 02, 2026 at 12:54:48PM -0500, Frank.Li@oss.nxp.com wrote:
-> From: Frank Li <Frank.Li@nxp.com>
->=20
-> Replace open-coded assignments to callback and callback_param fields
-> of struct dma_async_tx_descriptor with calls to the
-> dmaengine_desc_set_callback() helper across serial drivers.
->=20
-> No functional change intended. Prepare to make struct
-> dma_async_tx_descriptor private to the DMA engine.
->=20
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  drivers/tty/serial/8250/8250_dma.c  | 6 ++----
->  drivers/tty/serial/8250/8250_mtk.c  | 3 +--
->  drivers/tty/serial/8250/8250_omap.c | 6 ++----
->  drivers/tty/serial/amba-pl011.c     | 6 ++----
->  drivers/tty/serial/atmel_serial.c   | 6 ++----
->  drivers/tty/serial/fsl_lpuart.c     | 6 ++----
->  drivers/tty/serial/imx.c            | 6 ++----
->  drivers/tty/serial/msm_serial.c     | 6 ++----
->  drivers/tty/serial/mxs-auart.c      | 6 ++----
->  drivers/tty/serial/pch_uart.c       | 6 ++----
->  drivers/tty/serial/samsung_tty.c    | 6 ++----
->  drivers/tty/serial/serial-tegra.c   | 6 ++----
->  drivers/tty/serial/sh-sci.c         | 9 +++------
->  drivers/tty/serial/sprd_serial.c    | 3 +--
->  drivers/tty/serial/stm32-usart.c    | 6 ++----
->  15 files changed, 29 insertions(+), 58 deletions(-)
+Thanks
+Peng
 
-Reviewed-by: Thierry Reding <treding@nvidia.com>
-
---i6ogfjkah26q6ktw
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmrsdnwACgkQ3SOs138+
-s6FFLRAAsArTl7ZnP2uWe8E8No/HaZXTw2qwzanL18HSrQ99Y5LTIiGMUG2lNlh4
-g4SVAB5ZpAe1Ji8Irltia/BRsUboLVvofPgbGh8AvBrhByWtDx75pNBJGwlxzDsn
-/oYyAQ6U+6BZob6VZ/1hVv5xt6UtjqRjcOQGM/Eebu+IsJ1bXUzcfwOt+p6oJuDe
-bipFPggDf4w54a/AdsicEctD3BZABAPpOkemtHUrKCZ0pq/Qcws/7tPdpV2NU6SD
-p3j35THe6Jr8VUMni10amNN28l476GcajsPWb53gIjQaxKdbNaiJunTLw3lbjuIw
-jH3LKXaKXy0mxXm70YGNdZfOKwsVxEClwBuxV3s+TD6hhCkf6Xi9GizuqgdtqLEZ
-AMAjAOH+7VKVIqAFeKXPlABN6RR7TVhJf1knWwm8FzFmFdfstBFjFIeeSptCQ+To
-r9+rxI4r4O6hD2u6IKFLHYBU4iZVd0x7osDD59Cjkwi1CQgp07bK+WcFtf4rjV+6
-oaROTq/FTtv1JlpaJ/LPiV97e0OxAs4aVGYO/PFsfVDFHPaeJAYdM2ZbwbOyNNZp
-mn8EhmbQatX8t4zSy4bCo46/VdBeOAIJYs+nCZBq/yZrxziIWbjxg6dKPrwre0Co
-iBi6BCt/mumt4uPdViNg3N5fwgBmPT/t1IxjJuOjXCR9B17XeKg=
-=NGc/
------END PGP SIGNATURE-----
-
---i6ogfjkah26q6ktw--
+>
+>Fixes: c61d8b5791ab ("dt-bindings: gpio: gpio-vf610: Add imx8ulp compatible string")
+>Signed-off-by: Peng Fan <peng.fan@nxp.com>
+>---
+> .../devicetree/bindings/gpio/gpio-vf610.yaml       | 41 ++++++++++++++++++++++
+> 1 file changed, 41 insertions(+)
+>
+>diff --git a/Documentation/devicetree/bindings/gpio/gpio-vf610.yaml b/Documentation/devicetree/bindings/gpio/gpio-vf610.yaml
+>index a31f64b6d40b..d1d5315ee164 100644
+>--- a/Documentation/devicetree/bindings/gpio/gpio-vf610.yaml
+>+++ b/Documentation/devicetree/bindings/gpio/gpio-vf610.yaml
+>@@ -57,11 +57,13 @@ properties:
+>     maxItems: 32
+> 
+>   clocks:
+>+    minItems: 1
+>     items:
+>       - description: SoC GPIO clock
+>       - description: SoC PORT clock
+> 
+>   clock-names:
+>+    minItems: 1
+>     items:
+>       - const: gpio
+>       - const: port
+>@@ -117,6 +119,45 @@ allOf:
+>           items:
+>             - description: GPIO register base address
+> 
+>+  - if:
+>+      properties:
+>+        compatible:
+>+          const: fsl,vf610-gpio
+>+    then:
+>+      properties:
+>+        clocks: false
+>+        clock-names: false
+>+
+>+  - if:
+>+      properties:
+>+        compatible:
+>+          contains:
+>+            const: fsl,imx7ulp-gpio
+>+    then:
+>+      properties:
+>+        clocks:
+>+          minItems: 2
+>+        clock-names:
+>+          minItems: 2
+>+      required:
+>+        - clocks
+>+        - clock-names
+>+
+>+  - if:
+>+      properties:
+>+        compatible:
+>+          contains:
+>+            const: fsl,imx8ulp-gpio
+>+    then:
+>+      properties:
+>+        clocks:
+>+          maxItems: 1
+>+        clock-names:
+>+          maxItems: 1
+>+      required:
+>+        - clocks
+>+        - clock-names
+>+
+> additionalProperties: false
+> 
+> examples:
+>
+>-- 
+>2.51.0
+>
