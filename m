@@ -1,57 +1,66 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793880606;
-	b=WBmyB8zX80azZa6HH5lsE2TTzaB6Lzrswcee7nSa4RX30GrEa8thA57yVIgk2m/vwanO
-	 5kjhTUVWSREqr5mSWC/EmzFzsKOQvCvXeObGWXOd9D0bgxc/zFcnV3rH1SPFMNMxa76aC
-	 V/Hp/52bgR2F14V+zP+zhacmGu51vppBj08UkmU/POoqjVUvjQ1X9yIlGAos4EfUB4f7E
-	 /ozgeXbSThrAA6axJA8Tmak+ypWfXvFd7F7MfeDMnWLEGjz2Itu39kkCMRIg8npjSlhTP
-	 nVL/KBQhGLrreAvp9R8PYJ8gvE37Ty/vP738B2AFkqsRIJWsenCG+NolWLB1zjcJLNw==
+	t=1793881021;
+	b=aF84TtpKxioFpCE3yWtV7rcJiDVSemSkIu9C3xN56lOOGcqFkPy9FjZKmdNh7PB0t4pl
+	 CHvJO00ts9tvnx9P94swjHZFucfW7x1wDNfd6jIxy5DuptLaMfhpQGwSH8p5CdnvkgKp4
+	 edVCC9wSzX9jVaVIjqtwP66V16k+4YmtbWJimgVgAvusUTeGBLVjvRS8V6YFup0EhIvgd
+	 9e9afavYtO+c240s43XQ2slt9kkjAeejhX2NYLFPI3ObBDUGvwmqJMBYk75z4tFVTakVY
+	 KMuG1D7eVpmpPMzN7JCgaX++75OvRvjIjVzhsbQbcIfvQuW3xpi5/zCnibHCMtmmirw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793880606;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=nUz4Io3obhOg4zcinYJ5zzDlQAYvsWYz128DP6cUtFI=;
-	b=HBrTtRMxfyvE99GGfYehQG50AMxDkK3CFHcTNz5fzEuxeISZnN0zcQWgj6qUIBg0e31m
-	 vn9QJXjQLUuSfT9Q8FuoHRstT2aQV7+/V/Y28v/lKFsk5xNyPOuFYIeV7b9tL21O3QcuJ
-	 eIGf/pjYhw3xPKCrcEuNZPSd09bK8DKasBrPwvJnzHbBJ4rbk5OZO3riidagmwdc4zcKo
-	 0y23giWrLUQaRMb1Mg6IAoCWVvlsPnxYR3m6S63l2DfcaTBKaFBzRn5tV1S9bC3UZB8jt
-	 GWzTkHJnjAIu7jHFREYEq5KZDvPVXqFbA3KVd5d2NmB8nXj1fAVaLAyqAg5rW1VLP2A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793881021;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=UVkIIXb/q2/cPaHeiRUhrvGFwLmJPG5MCpguu9J85vE=;
+	b=ME4DuApqCHMq14/cs0zavs0GQeSQsFJYeDJKrQfuRHgqVHSc47NoGK04zGo8+q2x4OJj
+	 XDxjrb9mKrEQehdqs/4g986DgjqlEi1Zdtj0XvZMySq1UBqYh5aK2ES26EoCH9volwq9Z
+	 r7F9Wv7dldu5SO3ksVB4RvfJR9T1KZiN64NuV+IpFALXLO0K2Wh6rnspMXPUxu4vbsKuE
+	 sAaIy60TZLXisJB6UGS0vgjUBC6M9L9VT3zdUMjgH4obHNFyuadBN/HJ+RwahWW4/Gvqh
+	 Xi0yhsi3M13Cd2eGvwccJ0BOohL3GJ1CuTr5A87mJOwbKM+E/WW1EGqwCsFiie1P4yQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Edacfga2;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="QdL/JfEY";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87EF0606EE82
-	for <imx@lists.linux.dev>; Thu,  5 Nov 2026 12:10:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62965606D839;
+	Thu,  5 Nov 2026 12:17:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Edacfga2
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 353F41F00A15;
-	Thu,  5 Nov 2026 12:10:06 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QdL/JfEY
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 585AB1F00A15;
+	Thu,  5 Nov 2026 12:16:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793880606;
-	bh=nUz4Io3obhOg4zcinYJ5zzDlQAYvsWYz128DP6cUtFI=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Edacfga2G8YFXeBqVoBwNSY0rMWOwonmGn6gw9fcU+XCznLPncDxMJsGh87Ylta4d
-	 lf3y4HBbAHnsRTtoGzpcpKJGcXLQYRFdBu9Kbqqpc+C7NNsZA7/bJFTJXWS8cqNzAu
-	 mdGWPG7iMh5edh/w8TBSx0+7A5vgVflHyH+fVzzS3TNOy6TfR1EjinI1yoj7xsEj/B
-	 FCmMk4rvkMNHRhQD35zKlUn3jC6PNLYLZX7dTEjQA5/6Dpa6nxflmUXNW1l64xDXcq
-	 JToAQtbeZuNndKy2WZTH3P9r6AUo6AXkOG2M6TycU0f1u26cb8g6eO9vHKRNDgxF+/
-	 WZNm/9p/1wKaQ==
-Message-ID: <sashiko-outbox-198999@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 1/2] remoteproc: elf_loader: Create new callback for
- copying segments to remote cpu
-Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?VXdlIEtsZWluZS1Lw7ZuaWc=?= <u.kleine-koenig@baylibre.com>
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <50647b7d731fa54fdc3e2869f02de2096acdcff2.1793879714.git.u.kleine-koenig@baylibre.com>
-References: <cover.1793879714.git.u.kleine-koenig@baylibre.com>
- <50647b7d731fa54fdc3e2869f02de2096acdcff2.1793879714.git.u.kleine-koenig@baylibre.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 05 Nov 2026 12:10:05 +0000
+	s=k20260515; t=1793881021;
+	bh=UVkIIXb/q2/cPaHeiRUhrvGFwLmJPG5MCpguu9J85vE=;
+	h=From:To:Cc:Subject:Date;
+	b=QdL/JfEYDKLa6NzBkN61MKh9VJbLFc1qgwKkrgJhPHH4mjmH2lUxQLh9Yk/AQhAac
+	 dNIs7RgRRk74I3rt7AlKwYN+eYOUSKM/vDcox8jDm70LVmPsVsKAH+ENRsbqtDV0/1
+	 CPb++Qylbu5JKhVxI0vQrq90JqMavGtnMOM3oXkS1Joi09wNcQxweUStVOugW7VYm4
+	 cLN6dWhU8TVkBMCGk6ySAXUEBAQ8t8qtfeqzTFx6+xSbjSH483ojnkusS2EavJ4RsC
+	 J/6IHsmPtNo2aXvmR6yehbtLvVN79i26k2xXprOOCh10yeMnKW0DWyr04cESwQ4ZCS
+	 Epby4mCiPf6LA==
+From: Joshua Crofts <crofts@kernel.org>
+To: Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Eugen Hristev <ehristev@kernel.org>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Haibo Chen <haibo.chen@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev
+Subject: [PATCH 00/10] iio: remove redundant pm_runtime_dont_use_autosuspend() calls
+Date: Thu,  5 Nov 2026 12:16:25 +0000
+Message-ID: <20261105121635.1612-1-crofts@kernel.org>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -60,117 +69,51 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Low] remoteproc: misleading memcpy_tova callback name and incomplete ker=
-nel-doc
---
+Since commit d1706f9da9f4 ("PM: runtime: call pm_runtime_dont_use_autosuspend() on reinit()"),
+driver core is now responsible for undoing any
+pm_runtime_use_autosuspend() calls on driver exit.
 
-commit 1f800d9eb3b123f9d100331894730d47e230cc68
-Author: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com>
+Remove the redundant function calls.
 
-remoteproc: elf_loader: Create new callback for copying segments to remote =
-cpu
+Joshua Crofts (10):
+  iio: accel: bmc150: remove redundant pm_runtime_dont_use_autosuspend()
+    call
+  iio: accel: kxcjk-1013: remove redundant
+    pm_runtime_dont_use_autosuspend() calls
+  iio: accel: mma9551: remove redundant
+    pm_runtime_dont_use_autosuspend() calls
+  iio: accel: mma9553: remove redundant
+    pm_runtime_dont_use_autosuspend() calls
+  iio: adc: at91-sama5d2_adc: remove reduntant
+    pm_runtime_dont_use_autosuspend() calls
+  iio: adc: imx93_adc: remove redundant
+    pm_runtime_dont_use_autosuspend() call
+  iio: gyro: bmg160: remove redundant pm_runtime_dont_use_autosuspend()
+    call
+  iio: imu: kmx61: remove redundant pm_runtime_dont_use_autosuspend()
+    call
+  iio: light: vncl4035: remove redundant
+    pm_runtime_dont_use_autosuspend() call
+  iio: magnetometer: bmc150_magn: remove redundant
+    pm_runtime_dont_use_autosuspend() call
 
-This commit introduces a new memcpy_tova callback in struct rproc_ops so
-platform drivers with special memory access requirements can override the
-default rproc_da_to_va() plus memcpy/memset sequence in
-rproc_elf_load_segments().
+ drivers/iio/accel/bmc150-accel-core.c  | 1 -
+ drivers/iio/accel/kxcjk-1013.c         | 2 --
+ drivers/iio/accel/mma9551.c            | 2 --
+ drivers/iio/accel/mma9553.c            | 2 --
+ drivers/iio/adc/at91-sama5d2_adc.c     | 2 --
+ drivers/iio/adc/imx93_adc.c            | 1 -
+ drivers/iio/gyro/bmg160_core.c         | 1 -
+ drivers/iio/imu/kmx61.c                | 1 -
+ drivers/iio/light/vcnl4035.c           | 1 -
+ drivers/iio/magnetometer/bmc150_magn.c | 1 -
+ 10 files changed, 14 deletions(-)
 
-> diff --git a/drivers/remoteproc/remoteproc_elf_loader.c b/drivers/remotep=
-roc/remoteproc_elf_loader.c
-> index da3cddbe7d4cb..3c749a39e5dad 100644
-> --- a/drivers/remoteproc/remoteproc_elf_loader.c
-> +++ b/drivers/remoteproc/remoteproc_elf_loader.c
-> @@ -227,35 +227,45 @@ int rproc_elf_load_segments(struct rproc *rproc, co=
-nst struct firmware *fw)
->  			break;
->  		}
-> =20
-> -		/* grab the kernel address for this device address */
-> -		ptr =3D rproc_da_to_va(rproc, da, memsz, &is_iomem);
-> -		if (!ptr) {
-> -			dev_err(dev, "bad phdr da 0x%llx mem 0x%llx\n", da,
-> -				memsz);
-> -			ret =3D -EINVAL;
-> -			break;
-> -		}
-> -
-> -		/* put the segment where the remote processor expects it */
-> -		if (filesz) {
-> -			if (is_iomem)
-> -				memcpy_toio((void __iomem *)ptr, elf_data + offset, filesz);
-> -			else
-> -				memcpy(ptr, elf_data + offset, filesz);
-> -		}
-> -
-> -		/*
-> -		 * Zero out remaining memory for this segment.
-> -		 *
-> -		 * This isn't strictly required since dma_alloc_coherent already
-> -		 * did this for us. albeit harmless, we may consider removing
-> -		 * this.
-> -		 */
-> -		if (memsz > filesz) {
-> -			if (is_iomem)
-> -				memset_io((void __iomem *)(ptr + filesz), 0, memsz - filesz);
-> -			else
-> -				memset(ptr + filesz, 0, memsz - filesz);
-> +		if (rproc->ops->memcpy_tova) {
-> +			ret =3D rproc->ops->memcpy_tova(rproc, da, elf_data + offset, filesz,=
- memsz);
-> +			if (ret) {
-> +				dev_err(dev, "Failed to copy segment %d to device address 0x%llx: %p=
-e\n",
-> +					i, da, ERR_PTR(ret));
-> +				break;
-> +			}
 
-[ ... ]
+base-commit: 1390ca4953a7400ca932cb49635f02c727f885a6
+-- 
+2.47.3
 
-> diff --git a/include/linux/remoteproc.h b/include/linux/remoteproc.h
-> index 00019b1895e6e..e750a127cbc4a 100644
-> --- a/include/linux/remoteproc.h
-> +++ b/include/linux/remoteproc.h
-> @@ -75,6 +75,7 @@ enum rsc_handling_status {
->   * @detach:	detach from a device, leaving it powered up
->   * @kick:	kick a virtqueue (virtqueue id given as a parameter)
->   * @da_to_va:	optional platform hook to perform address translations
-> + * @memcpy_tova:optional platform hook to copy data into remote memory r=
-ange
->   * @parse_fw:	parse firmware to extract information (e.g. resource table)
->   * @handle_rsc:	optional platform hook to handle vendor resources. Shoul=
-d return
->   *		RSC_HANDLED if resource was handled, RSC_IGNORED if not handled
-> @@ -99,6 +100,9 @@ struct rproc_ops {
->  	int (*detach)(struct rproc *rproc);
->  	void (*kick)(struct rproc *rproc, int vqid);
->  	void * (*da_to_va)(struct rproc *rproc, u64 da, size_t len, bool *is_io=
-mem);
-> +	int (*memcpy_tova)(struct rproc *rproc, u64 da, const void *src,
-> +			   size_t filesz, size_t memsz);
-
-[Severity: Low]
-This isn't a bug, but is memcpy_tova the best name for this callback in
-struct rproc_ops?
-
-Across the remoteproc subsystem (such as in struct rproc_mem_entry and
-ops->da_to_va), da denotes a remote processor device address while va denot=
-es
-a kernel virtual address. Since rproc_elf_load_segments() passes the
-untranslated device address da directly to this callback (including for
-devices where remote memory is not mapped into CPU virtual address space at
-all), calling it memcpy_tova seems somewhat misleading.
-
-In addition, when rproc->ops->memcpy_tova is provided,
-rproc_elf_load_segments() skips both the filesz copy and the trailing
-memsz - filesz zeroing step. Should the kernel-doc comment for @memcpy_tova=
- in
-include/linux/remoteproc.h document that implementations must copy filesz
-bytes to da and zero-fill the remaining memsz - filesz bytes when
-memsz > filesz?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1793879714.gi=
-t.u.kleine-koenig@baylibre.com?part=3D1
