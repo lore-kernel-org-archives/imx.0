@@ -1,94 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793899931;
-	b=s861ySKVZkXylVe2YdrdbXYQIIuGibkDa8ZDWlnAyTZIHJRFUk0bniDg2mPRVKNiOShl
-	 /IInb+8SZvZqTOS2XTi7N4FLJaVBY4/19DGoDZYmV5/PdRrFdNSjQ6zZkuLcPS8Ap7K/u
-	 J6Alp/71XLDvT/tQ9qQdp5Q2+IYX5HmYLMp2NIwdVe03yOaTQRDM016hMvo+I3olKsyBD
-	 zJ7XwQJIWlVr+I6tEQntUzT60h0DsmIvFec8ELHz9i0Hm1XylznUc275cTDF3tOwI1cfw
-	 WyXRIbVptKcLyKHViQP9BXe6qxMNIrznCEy8aGPuBDeWPrKoZu2hAkcjlpQOjiwss7A==
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=52.101.70.56
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
+	t=1793900106;
+	b=bgaZKRDbX+1wRrloA8DM09Gqc+B7ujNffixXLHe0/4ZJuFxTO7hy27WBL+VWKbBWRwfo
+	 2u2M0tP4tOmuAaffXno3h8zuNqAfBXVwF251oP9QYlzDQrutgWZpNqCy47jNwU1qlG/tc
+	 EcejviFbOcFmOBmPBvTUW8wNLDNM7MEGWDenTc2d8iHQRtg33SDAen1maj1aRcZHxPXLc
+	 BmhCyKMEh34uhtIk3QSffi+zWf7xIfKSjHqgOM1sANIjhe8HKAHR6Mh7uVuXlqKF2LZf5
+	 a9ZovriJKVTFvOQU4d9Y4JZGM2RZEuKsYICm8jzmuvC6FOZWnQhhyo0onAnlIs2kiKw==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793899931;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:Content-Transfer-Encoding:In-Reply-To;
-	bh=u8e5CcNv9oY6VuYoJpUdtWSR3IA6s9zG0LDKZaQi/Ss=;
-	b=ZmGgaAW8ds0edRnGj6zUyha8sOkPkKTn7N5HtvIg4lhkYv1QI3X1a46f37/cz7+Lu96G
-	 scJbR1/hEfl7TWwLFIzYBzq3iY+VFeqfiX5cB9Xggy7L2EVDf83GSjSi4vBnhD39lJQMM
-	 Dx87uZ+xZ4XfYXOFPLJmj/4isQzkU0GUT7dEhlIta30pGlsWOhOYBfEGP1K7qT32YWyNe
-	 w19z9azEOHzNErwAdb4jRZFPbQm+YCwsJmxw0NfQ+3vZ3mETW9vPrHGz2XiPh0SGHhK7/
-	 qKRrj82dydgpaQFKXZQQa+LQ3yvY8SCcXXPEC3tqk2Ii6l1yoh20kAwbcFyi6/GdotA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793900106;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:Content-Type:Content-Disposition:
+	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-LD-Processed:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=1DgMHIR2mFjIjK/g5iY+FS6IE43xTl91T2FOHt27/Qg=;
+	b=V9tu6OI7trTJrAzFQVFjWZHc8JH6Okvonus6Qcer38h5B1aJ7UXMNHZdh0tDH1wWHyyG
+	 J1WwBrNOewEUeahlsLNo7oMqofJV0t8Gkr0SBQNvQYNio6pVlUloVl0YlwdFF+CE+14+0
+	 bFwgJBsjttx/M3vmeSzDzeau5LlzEtMY3rh/7ECazcs+QgwZRaC6ULv1Y8L2yi/20lRSZ
+	 aEnzhWMAvQ16gsKY4ndjG+5zH5JAT28iPcZNvst7k12jDitdlM+XQG2W9UHCG+sDqxW9O
+	 S7ILJYSXt5rIZNhGMN8doy9DCraDNJaj6AfDZfrj4m/buaBZMx8GZfqaPe8GWYQoQvw==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=pengutronix.de;
-	spf=pass smtp.mailfrom=pengutronix.de;
-	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b="BcMOg/C7";
-	arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+	dmarc=pass header.from=oss.nxp.com;
+	spf=pass smtp.mailfrom=oss.nxp.com;
+	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=k69JB8DM;
+	arc=fail smtp.remote-ip=52.101.70.56
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011056.outbound.protection.outlook.com [52.101.70.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9842606A329
-	for <imx@lists.linux.dev>; Thu,  5 Nov 2026 17:32:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B9842606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16842606A32F
+	for <imx@lists.linux.dev>; Thu,  5 Nov 2026 17:35:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 16842606A32F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=BcMOg/C7
-Received: from ptx.office.stw.pengutronix.de (ptx.office.stw.pengutronix.de [IPv6:2a0a:edc0:0:900:1d::109])
-	(Authenticated sender: relay-from-ptx.office.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id C21582020B9;
-	Thu, 05 Nov 2026 18:32:03 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1793899923;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=u8e5CcNv9oY6VuYoJpUdtWSR3IA6s9zG0LDKZaQi/Ss=;
-	b=BcMOg/C7H7WJFt/S1JRxxIF9WXG/BXAjBQHBqve6ml8Ujh49lRId1pGfsFZ4vMJu8Z9qwc
-	0/DZyNltrHH1Ps6iYoVXg+cNr0Qh2X3Jzs5qOhP16WHOGbqwZCgpK8j/fNGhRN7lrA6HeP
-	PsD7itsZyec1TBKqY46nwajLrRVtCZANw/dGGvh3UO94YDMeDsVpjMj0UMdqMnH8ZxdZms
-	F02Oq6KqnH5Y+ic4+j8CnRt8F71FUnQv2aGbkOZI5DdBNzKsZxV9ifkqPBneBdePJxDY8E
-	V0TVF5Hh0hC7TkHM9m3FRTWTSi3xDPe02LwIBvW42PJaRmVisdVVHuwWdT3IPQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1793899923;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=u8e5CcNv9oY6VuYoJpUdtWSR3IA6s9zG0LDKZaQi/Ss=;
-	b=ECXZQbomhNek9IQFp2tpaR9wkgR6pt/GtdOnFIHMJgc8XCdtCgLkyoDCF/mH7SEwNqBFwQ
-	VgJdgcTShUDPjlaP1ByZCjcp8ui07ES+ZaqAz2LkvCDVnv/l8GVZk/nRbHWWi7Eh7Etqrq
-	2eo24gz8t3HgXvi3jIRe9BOZZxB0z8/rGg9JhDecAxGQglzBTfOKeBT3g+GMZGYuAGx9Kv
-	fB/vc9H+dM984DCX5ZNh7ZTGznbRWsMrS2DctNJ5rBdFBUSBHPvEEGCPUplqJZKtEkvxRm
-	2Jwkft+CLf4fmcfNvB2EKWFQ96DLq8C7PoKSviue0TrrxCXD8siCGZCUb+vI5g==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=relay-from-ptx.office.stw.pengutronix.de smtp.mailfrom=mfe@pengutronix.de
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1793899923; a=rsa-sha256;
-	cv=none;
-	b=Sk1CkR4+30LuOcX/BVLGSe504iIChL/PB43dkT4f65ElMCyQwzOD+FyGl29nWbe1UaUHeM
-	x4X1utkSJgR++hBrVh3nJYnbdlixn+IRJyFB5c50Ik/mgZZZRWeOogQw35JDKM/X0BO9h4
-	b32TUmda0A6s8cGaphKuGxPxy9tc7OWB+X9l2gzS2OXjq6wOS69oMWkwGgYl0BE2XJU0Bo
-	yH8DW3pW6i02huKHBT+Cmq62ei+z2Kkpwbnn5tTQadfxlPvM12DIcQHggLzH59teQmb10Z
-	ztRcOU30tcFP8duLG2F0RHFuvlIlyu5oexsV/fplq8oEtyhmfZJGgTCWKre23Q==
-Received: by ptx.office.stw.pengutronix.de (Postfix, from userid 1064)
-	id 9E0131BF678; Thu, 05 Nov 2026 18:32:03 +0100 (CET)
-Date: Thu, 5 Nov 2026 18:32:03 +0100
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Frank Li <Frank.li@oss.nxp.com>
-Cc: Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org, 
-	Conor Dooley <conor+dt@kernel.org>, imx@lists.linux.dev, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Frank Li <Frank.Li@nxp.com>, linux-kernel@vger.kernel.org, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Fabio Estevam <festevam@gmail.com>, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v2] ARM: dts: nxp/imx6: Drop unused .dtsi
-Message-ID: <vsnztvararyghlx4dh7kzfb7m4euztjacrzai5ucupcptncg4b@axurae5hrtfb>
-References: <20261105144920.2796623-2-robh@kernel.org>
- <krvg6bwsueypasvt6fqszh7itqr3gu3qsqbji2ernqqy6g3t4c@b7hqenmaugik>
- <CAL_JsqLETyrx7ew0zirS9r6+3=GEFaRE0g96OZHYwqjxMCZKcQ@mail.gmail.com>
- <hvrfbvmyzsa6npzh6wpa6o3xxygslqc7g5ukt7ph7ty4povogh@wge2z4rejnf7>
- <vvsd6rchs6wff2n7zxtcarxcvbnuxd7fx632xogm6hrcxxxqsl@dp5dvof3qa7c>
- <auyx155Caf3kwT4h@SMW015318>
+	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=k69JB8DM
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=HRBjVH38HOcGQaOTY5Ei37AF72IN14sF6zNdAHeHxwo48bl4ZUVPpb9Xzr/b0C45oP01QlhdyFoQlnm/P3025QslcOM7xDu9sIytrhdC7xnia5kwv8qdmoyGbZmE1UtxTD+JRK4NmQE1QNKMr9vbo0Vm+vCgUiwlRL9mXJeI7epIU7IdOrmIIJk9mm9/28TVZceYamTKcRgUgQUuldV7fiAu0jtJJhZkBXtX7M0fbbXql0p2WEK2quvvkpL+HbrEnstVKS70yAZN3Dc7Fozkc5P0FigX6sLdwVGApVRzy9i//4k2FJmnea37Vi1kBIRfZHIv5UOQoKSmrrTHH10mfQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1DgMHIR2mFjIjK/g5iY+FS6IE43xTl91T2FOHt27/Qg=;
+ b=MJNchjXBorHTRkdsn1Jj3ytF5A1JTXXMbtr2roU4jYDaI02CCbaQUEKmpSfE+ggJU5ZWqkWIm89+oXheLRo0y/z+X/GmmWI6iIa49aA2dN7xtdJlCPO8+GfboIgs2uvSAe65x32pIoRuYnN9VTjJDfGvEFZDdJmbNyjZ1wP++GsmHrMn11tykahF5ZD+f7g6sIik1IOk/yYGm5zNh7IGWA92uhx3iEXbdFIrHIxeA9C86rpk8qu2aXxSD+WADwYH36WKeCBM3grF/+sTcZRnEb1XC5o3+u9t8rcQM+VqayPe+1jFofPbyJJtZQDdIOqwHYc9wkH17uj3TSwx0Vw/rQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1DgMHIR2mFjIjK/g5iY+FS6IE43xTl91T2FOHt27/Qg=;
+ b=k69JB8DM+rPTlDVtNUlO9s4+NVMOmxi90Fbj5DzzozbbnOnzgDXTLay4SXbg3qD1kj7lOrGtpBKgEq8YMH69xnBUZ2aglifXvsvOrbDwvKDTalxPZaEKNCX587/p9hg4Wf6wySL576Bc5jf8u+k5Hj0AV4rqUY2uE1k+Ez1hek2zaFsz6OqLFoKDgcd2TULlJxAhmwxYrKz2S6GM6il61jOapxxrcCDseVMHu92cQt1dgBcasy65PZ4oLL067TizyZABTlDMFs1X4uDAHCN3jGJU8JJ4ITeDadaXr21H1wmFmzI3hoAuGMy44cEXk3xs49I6TLt4XVa/+3tqP24c9Q==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from MI3PR04MB12438.eurprd04.prod.outlook.com (2603:10a6:290:76::14)
+ by PAXPR04MB8158.eurprd04.prod.outlook.com (2603:10a6:102:1c3::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.10; Thu, 5 Nov
+ 2026 17:35:02 +0000
+Received: from MI3PR04MB12438.eurprd04.prod.outlook.com
+ ([fe80::c715:c32:8bb1:b70b]) by MI3PR04MB12438.eurprd04.prod.outlook.com
+ ([fe80::c715:c32:8bb1:b70b%6]) with mapi id 15.21.0592.007; Thu, 5 Nov 2026
+ 17:35:01 +0000
+Date: Thu, 5 Nov 2026 11:34:49 -0600
+From: Frank Li <Frank.li@oss.nxp.com>
+To: Stefano Radaelli <stefano.radaelli21@gmail.com>
+Cc: Frank Li <Frank.Li@nxp.com>, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, pierluigi.p@variscite.com,
+	Nate.D@variscite.com, Stefano Radaelli <stefano.r@variscite.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>
+Subject: Re: [PATCH v1 1/1] arm64: dts: freescale: Move Variscite Ethernet
+ LEDs to carrier boards
+Message-ID: <auy-OW_td7N8oHK_@SMW015318>
+References: <20261105101739.10614-1-stefano.r@variscite.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261105101739.10614-1-stefano.r@variscite.com>
+X-ClientProxiedBy: PH8PR22CA0002.namprd22.prod.outlook.com
+ (2603:10b6:510:2d1::26) To MI3PR04MB12438.eurprd04.prod.outlook.com
+ (2603:10a6:290:76::14)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -98,72 +104,70 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <auyx155Caf3kwT4h@SMW015318>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|PAXPR04MB8158:EE_
+X-MS-Office365-Filtering-Correlation-Id: faccd0dc-db34-4c0a-fb9b-08df3b631ef9
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|366016|1800799024|19092799006|23010399003|7416014|376014|18002099003|22082099003|10067099003|56012099006|11063799006|261022075727099003;
+X-Microsoft-Antispam-Message-Info:
+ a7vvkPMAoUKkHMZhlKV63P2AavtpQrEYaPvHbXbD+5OrIcSWs5OAa7CYu9JiyfevQVqU28rJrK8xcGwmDHEQxA2hD6jDCelEmiqNLYVf9GKJEKImwuC/xeSj1qI/tjjWr0ZJXemlWZc4ocCCUQo86zWc6GFUA0vW3LEPyJE1+U4sNoOK5TW95LVpcr3Ucqbfaud6dYcKTx7oOYpEuWSoCshenb28MTXZTfVjPqzk5XO2ykehJDuSy7Uxk3mmfM7eCSWuh+Nb4Y0woPpCy0ApG8e9tRbEBO6jgWgWFNf2Ep393t9k+wChuwbDZTZ9n36+epWeoee9o4NeEOfdqhP3SUk9Y7PxV23DuLPYnNmlY7698DAMDuEhchRIRZtMhhY303/XEzleLVKqSYU63wiv4TglQXQ22S4FvyZuvgYNiZe7ZJJQinSbSW1/0tInfnKHwli7pBiavAIWwLLBbL2HLW57kwM+/vBQYt/l6acGScx3+Ve8yp/cEc84Hzn6qOKhMU7n6eG5E/RpL21t4rLVkshUf+3Xcq0hlZbsIqEhQk3aFUt+3SjUZCpctWDnVyTgx08jGtZdN4MgZZDTSd5G0cCEqNFWT9IHuMdQOcDslZe8ud1eBOuAePCtz7Q+/0Uzf6236kTqxRcZmThOGWhvuwcGlG0izR0jxKvm37rIRDk=
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(19092799006)(23010399003)(7416014)(376014)(18002099003)(22082099003)(10067099003)(56012099006)(11063799006)(261022075727099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?us-ascii?Q?3GPFtHYGLJxTOvWuLT3uOTFawrVmcC+dA4ZXhMWjhLFCEklXnop7qRdQpS0q?=
+ =?us-ascii?Q?KLjiF76sbKmxKplB9ymU3NY9YL5jZB7KoufBfXN1grAFxWCti037mHch8tMi?=
+ =?us-ascii?Q?REm/P1U1/s0XVmGGC5R88kk2/W6ugsXiKqL47w5HvHq61R0fggMAiDSDeGpz?=
+ =?us-ascii?Q?feEW/GWyG4SALxYxpoNnBa667GBN2Xk55hCyeQJjxdByaXTeakOAhiaA8wRE?=
+ =?us-ascii?Q?OjuDXykrw/M/ngvdvnShL5FqkrLAuHmyuvTmtlC6u8XI+9nlPpEdNN08CNG5?=
+ =?us-ascii?Q?AaL+PdmTw5+TSX+1pNvp0D0JSObcQSPqomLDcZYTr3fQYUeUUnJOPYueTl0u?=
+ =?us-ascii?Q?M4/x/v/p/esp4WKThEO/G2Hd8Xbwbznu9ii9hhhaelF7xwMu3SM4Ei1c1lGL?=
+ =?us-ascii?Q?ghKBvi6yTm31FFIp6vBlA3S2gyEhlczApQ5C0H3C0GCDhxtNr94ZzX+c2SQI?=
+ =?us-ascii?Q?ujV9S3mqhBwU23GManw0PQfo8Zwuz72PzXsrIJnf/WB1mPh0NlUjMQdhKam1?=
+ =?us-ascii?Q?7yQwoQUl+3jv2pd+X7xy14InzE0dAHr2U82SxZFZ49ByWIXImpCPn0vmCThR?=
+ =?us-ascii?Q?tj8JO+qICu5DdQf0IYf9Crxksin++rPpcmG0iFFDI9U9AH9/ZXwWP91xo431?=
+ =?us-ascii?Q?8xtsYRlsyaYt+Knh9poDU/5mnIXEPv9W6JW15y8NcRTJJRvvpV1SFsguKgo7?=
+ =?us-ascii?Q?VPo9rc6mmhFTrZ1vukjuwlYb9UCDpUwpemcunT9C16UQ+AAzEu0g2YGX30Qg?=
+ =?us-ascii?Q?rNXrj4gBC4mZW5deJVEIjqErbva2Q/kzR0L/RBNwnvhHUspyTNtc2p0kKpKb?=
+ =?us-ascii?Q?B8eOMHxvfWv+YT6/0Lrz5lrQYXMBYxP+jvB/Q9OWp15LTbmV6dKNFxZ2EOV5?=
+ =?us-ascii?Q?0292fSxiHAK2Tq6P0PayetL7BJ/q4bVDvJOuMWQ8CttEp7ixT2KTY3qKRPBK?=
+ =?us-ascii?Q?uorNDZtkGDQATr+3U3p9OEC9pWPbXMMSKcXKZfZMJGvWCIFZ4/L7mBoAa6Wt?=
+ =?us-ascii?Q?EtXNw1vmL6BWohpX/zXv1RPBwedUdS2lvXUklD6LqfOhBWSeVfuAvqd/M5Av?=
+ =?us-ascii?Q?QDjMkuX5XsVlwDddbmRZYbsPYb6iQosSRx85guOlJz7T6qZuiy4oRprbupBk?=
+ =?us-ascii?Q?iHGqLlNqwNOQEUEbCylFkGdIqaSCdGD6ZlHLHDuFA2TR2Ised6RYN+yVv4nF?=
+ =?us-ascii?Q?1RzLyZTKq/Mj3liFvkl54tsPs+UxCKPJeHFBStRl0BRl45TdUCh2EElN3A+z?=
+ =?us-ascii?Q?tPTOR8E1/K6hPqygIL5SMHEc8yyfBJA3OsqaT1JYRyG2qtN2qdl+OkxjpmJF?=
+ =?us-ascii?Q?rLJOCwjzTTdtHBuyMHRTN2npsJOK/HpEzxl0YEFh4n/pXdU+TPbDVH0gNxST?=
+ =?us-ascii?Q?btVYwujELDnmaGzXC4m5vsafdgjcD+i8oJBIdg/Z936z8LFYscqGAOWMV9Sq?=
+ =?us-ascii?Q?zCh8En5t51WqYfDhTZMuDI+6fGNnr8e9Gv1NakOJY+vB6F6XQVPEHhBkmWkN?=
+ =?us-ascii?Q?MmLvGKNW9V1izNBd/ABBdygip59DtvXbvEyYJjs7wsz4/WjLS3S/R1Hg/Uyo?=
+ =?us-ascii?Q?nIrxRZP6s3o8BFKkxbtcMjtprokUOSS0ZhepE3AfJVughMD9ziGpXKtxwfGa?=
+ =?us-ascii?Q?AsgMElmx3JyZO0ZUI4p8T8Rg9dfbH2/Kpp0HhJnnLlMLdPZoAh623hXPHisr?=
+ =?us-ascii?Q?CjQW7EHEvcV00Okcffo6ywomFPa/9ymVCq/mwbFMw0O+PQUujfRxfYdTDY/D?=
+ =?us-ascii?Q?cIqwYquZNrhO6P8M2Hwz6guSMpGal5b8TCoN2DdL/i7cBySL63tP?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: faccd0dc-db34-4c0a-fb9b-08df3b631ef9
+X-MS-Exchange-CrossTenant-AuthSource: MI3PR04MB12438.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Nov 2026 17:35:01.8103
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: XDk07I0zb4XFE0fDcs/PPAnoHH26VOkt7I72aB06Gkoor0w10PVBmMD9ZQPCiTg3ekTS0xUOJU9lTNhnfsKN3kzJRaWhA2Wstxotetk4mBxHQdtAOxiBkMVivKnQZzoZ
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8158
 
-On 26-11-05 10:41, Frank Li wrote:
-> On Thu, Nov 05, 2026 at 04:35:11PM +0100, Marco Felsch wrote:
-> > On 26-11-05 16:09, Marco Felsch wrote:
-> > > On 26-11-05 09:06, Rob Herring wrote:
-> > > > On Thu, Nov 5, 2026 at 9:00 AM Marco Felsch <m.felsch@pengutronix.de> wrote:
-> > > > >
-> > > > > On 26-11-05 08:49, Rob Herring (Arm) wrote:
-> > > > > > These .dtsi files are not included anywhere in the tree and can't be
-> > > > > > tested.
-> > > > > >
-> > > > > > Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-> > > > > > ---
-> > > > > > v2:
-> > > > > >  - Rebased
-> > > > > >
-> > > > > > It's been nearly a year and these are still orphans. There was a promise
-> > > > > > to upstream something for the kontron ones, but that hasn't happened.
-> > > > >
-> > > > > That's unfortunate, but these includes are used at least by the barebox
-> > > > > bootloader [1,2], dropping these would cause a DT regresssion.
-> > > > >
-> > > > > Would it help to upstream [1,2]?
-> > > >
-> > > > You said you were going to do that on v1:
-> > >
-> > > Unfortunate no Kontron dev was chiming in. Will do it now!
-> >
-> > Okay, after checking the current linux source tree I noticed that
-> > Kontron did upstream the carrier board .dts files but in a different
-> > manner:
-> >
-> >  * arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i-ads2.dts
-> >  * arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i-ads2.dts
-> >
-> > This means that barebox would need to adapt the includes. Can you please
-> > mention that the .dtsi are not used by linux mainline and instead a
-> > different approach was used?
-> 
-> So, Is it okay to pick this patch?
+On Thu, Nov 05, 2026 at 11:17:39AM +0100, Stefano Radaelli wrote:
+> From: Stefano Radaelli <stefano.r@variscite.com>
+>
+> The Ethernet LEDs are physically on the carrier boards, but the
+> VAR-SOM-MX8MP, DART-MX91, VAR-SOM-MX93 and DART-MX95 module descriptions
+> include their LED nodes. Other carriers therefore inherit LED definitions
+> that may not match their wiring.
 
-Yes, if the commit message points out that the final linux devicetrees
-did land in a different way. This helps the other projects to adapt
-their devicetree ports.
+what's impact?
 
-Regards,
-  Marco
-
-> 
-> Frank
-> 
-> >
-> > Regards,
-> >   Marco
-> >
-> >
-> > >
-> > > Regards,
-> > >   Marco
-> > >
-> > > >
-> > > > >> I will add the som.dts, please don't remove the kontron dtsi files yet.
-> > >
-> > >
-> >
+Frank
