@@ -1,44 +1,104 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=176.9.212.161
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793979658;
-	b=dsGIy1rT2s7SOOdFi5qBDlXKwdmyny7Xz2XQrWEyHoY0wTuCatrEK8pDSZj56NZJ3q8G
-	 QJVa/7o9y8gEXmbijliZ+uDjwNht9T+efO73QSnO48QFCGp92pxbN1TIqbulTnWgCVzmy
-	 A5ZgD48F3EDzqtQPPAOcSExY1kmzdBwtGP+dn2d1A09C93z+54asg8tR+thDcOtraBPdK
-	 /G2Ujk8l1Ncl/EHtX0/+8CnupS8Fu3uzn+aNL15ALUtJOAGiDk3h2WIX9KBG8GQxMdxMx
-	 peDw2yxAWSgBuNYa1W3A0oUenk0ed4FGLWuFGVQGnSahIe5vNcM6f1nT7N24mY2O2bA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793979658;
-	h=DMARC-Filter:Received:X-Virus-Scanned:Received:Message-ID:Date:
-	 MIME-Version:From:Subject:To:Cc:References:Content-Language:Autocrypt:
-	 In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=JOcKtDdKrrrqnffrtBgnIbOUJXZ/mc0mCRVoyD/pkfU=;
-	b=h08mrPb3a0QO4VAnZV+JluHehzFYDyTFQZ38faRjeSCc9d6EJfEOPokziHWHS5jxGGFl
-	 k7dPi4oiUeGOSPF52awfzIN/H1k/jiESa1e2jx5297nq8l0GeohcGW88STsrcqMyk0jFH
-	 e6izNPwMBtvhV2u88j1t9GUkN/rx+LJRshiJwxMveuv0t4dY430t7i+SnQ0AElp20QJ+u
-	 ANs9k+5QwdM+U7E6tOyig/yheAP7b3ZxqkrTaPmcjiGH/g+fXcPOH6s16AQPJ5esHMgRw
-	 oXFZZeyJzpiJxQawbIGzMN+pmTvpFkS0Dcg8g0TVIYGGQGBfjBhQ2XuV4z9cw5rs9aA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=sysmocom.de;
-	spf=pass smtp.mailfrom=sysmocom.de;
-	arc=none smtp.remote-ip=176.9.212.161
-Received: from mail.sysmocom.de (mail.sysmocom.de [176.9.212.161])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.66.27
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793980043;
+	b=fal3ztcJehwaQK1jZW0LuJQmEoW0hoRO81lBgfVbTcyl45QOzvdyvw8uZHZ6IOe5vcdy
+	 EdvsH8ZrWxwpH9qGSTyq+959yQW9POoOfZcw3SUXMGlihnSdPqKHDB0q7TswrR1wAQdiw
+	 atKxPDCNRb7wN9VDW7+WEL+l6WE6oN2Xx1J5rxvUS3AzoncHhOxZxOewudx3fhsrJzgvP
+	 5r4jK2+UsWHXzyG/ulWr5QNN+07RXoyGa+OKc16BENtEDFHBs7BhAoRDKs3C9HxWrL/ex
+	 up1Afj3rEN5HukpIu4AW70Bg5dkJ1uPrqnoRDMZesWixQAB6sloa1fHwHccZn8OCzXw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793980043;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:In-Reply-To:References:Content-Type:
+	 Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=/P8EIqFlmLbGRTJqJd3d+LrH+ILJYwpDFOazE5gbLx4=;
+	b=XUQEP1oOvMK6aymuicVsB93k1Cca3zTgs2DQVGMWfidFZcuKdlOAOvGK4YdjOAP9dcGU
+	 wPRM6WJJ9WRULMgmXe3DFcAlRNugVC7wBb0ea+WeFOjRv52z14wqOAsGdk1DV+L9PKC1R
+	 KVUF0BBvDlKy5CzBqKZQK/ofDKQFP6ZcG/L0zYFl299uonVo88sJXJ0MW2LAHbWTktOMG
+	 L7MNNYYZ0M+XP88AOvjT8FzD/LQwCxA+kUft/4zcSE82/hm0d+XrvisVioyCvtDzFGdsd
+	 +zgPDZb180XsNTsNSbOO/AWNBnO9NWHdb8MXM/QvMn7OZ7mbrb0Wh0noTtXaJIC1AQQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=oss.nxp.com;
+	spf=pass smtp.mailfrom=oss.nxp.com;
+	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=WKY2COVw;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.66.27
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012027.outbound.protection.outlook.com [52.101.66.27])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B4A9606A329
-	for <imx@lists.linux.dev>; Fri,  6 Nov 2026 15:40:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0B4A9606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sysmocom.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sysmocom.de
-Received: from localhost (localhost [127.0.0.1])
-	by mail.sysmocom.de (Postfix) with ESMTP id E56BDC89EDC;
-	Fri, 06 Nov 2026 15:40:47 +0000 (UTC)
-X-Virus-Scanned: Debian amavis at sysmocom.de
-Received: from mail.sysmocom.de ([127.0.0.1])
- by localhost (mail.sysmocom.de [127.0.0.1]) (amavis, port 10024) with ESMTP
- id EUcLqndlVV2m; Fri,  6 Nov 2026 15:40:47 +0000 (UTC)
-Message-ID: <ab9967d8-0d44-4457-9cba-6d2913e17977@sysmocom.de>
-Date: Fri, 6 Nov 2026 16:40:46 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C095606A32E
+	for <imx@lists.linux.dev>; Fri,  6 Nov 2026 15:47:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7C095606A32E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=WKY2COVw
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=QVVqOQUuL9c4AWmEWMCqDm0Cv1rSyqP3wMn4u/ds40ERH3zhmNfiO8Ukt6ODZZ/vkvcF+cr0aWlrm9RKb54wgj+xLXhr/NN+bXjIFWfSFWdNfwU7GjlyUWl2nMrhp69heWLbeQmKwnhWOaGeEW91x6BjxblEgGOLn+wNY6aoAOUfb2QuZuASe3bmWgOiftlnU9tiEZoLQ8vx4MvaPlJi/3oerd4sOukLd+Gvj9JJytY5/LVFMCfZIclooVa+vYp8nobd+syaWhH40EYh3QFsJACKbuuqD/wgs/QyKN2pMWBaLzysqpCx8MZFhWy95rGlrEFiwz7K9Kbu59XemkCsDA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/P8EIqFlmLbGRTJqJd3d+LrH+ILJYwpDFOazE5gbLx4=;
+ b=EYRbzuCMkcaCPOoaL9tJocVV5CFNqm24cSp5vjhgHkwACMiIEA2TnxINmJPfBAs7GDyx0nHp1RWOBKR9kLHjnQDmNILkRJI8XUnLyHZcy5GrIYC26N4ynAG+ysDfbzWChj9q2ANHRCXCmiOsUNNYd6LJRGPzddCSDkxkawLLLYR7WaxITCWkzVLBIGDYiOzQc1uEfPT+R4Il/BzIE6GPIOVJms69Xj3xmFKm8NqOETPbUlnfObuhA42siIml7xD90TLBksWtK/0f3zJDo1eTkloOFmM16JUiviQn993MCId2VQCh3rm5BigbPR2ODpLU8O/Z/hw4TF1jRvj8HYoI5g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/P8EIqFlmLbGRTJqJd3d+LrH+ILJYwpDFOazE5gbLx4=;
+ b=WKY2COVw2F7Uu60T8SbiwfZ9DuS7KS91766/D3RqEKMXcn8fd69MQ4I5xsHIRsl/6iUKoV+f+hgZe1J2pDkXFoI0plQfEltX2XfK9Le5MjisH/x872juvh1RS3KKRAoI1ReOWLaegmCGBV+cW1IBk2AxjsrNFzOSUuywFueZ5E+yZpdiDUmkXM+8UM6hLqY+zgMfQDf3Sv9AXWgPgQEGZJ0iW99Itt9KdpNzXP6DCL11lPAlFtDuV6qtItvvR6kPQ+YxE1cn9HOxM+M4+XAq3DQ6tdJIzYjMvWn6VJnYpgs8yagpjhtOLBhteNu13ksQrpIEWmtKKksO4xSioUWJzw==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from MI3PR04MB12438.eurprd04.prod.outlook.com (2603:10a6:290:76::14)
+ by AS8PR04MB8401.eurprd04.prod.outlook.com (2603:10a6:20b:3f3::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.8; Fri, 6 Nov 2026
+ 15:47:19 +0000
+Received: from MI3PR04MB12438.eurprd04.prod.outlook.com
+ ([fe80::c715:c32:8bb1:b70b]) by MI3PR04MB12438.eurprd04.prod.outlook.com
+ ([fe80::c715:c32:8bb1:b70b%6]) with mapi id 15.21.0592.009; Fri, 6 Nov 2026
+ 15:47:19 +0000
+From: Frank.Li@oss.nxp.com
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	"Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: Frank Li <Frank.Li@nxp.com>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux@ew.tq-group.com,
+	Peng Fan <peng.fan@nxp.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>
+Subject: Re: [PATCH v2 0/2] arm64: dts: freescale: Re-enable A72 cluster on i.MX8QM boards
+Date: Fri,  6 Nov 2026 10:47:13 -0500
+Message-ID: <179398000821.3461841.11297879997237397092.b4-ty@b4>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261023-8qm-v2-0-a8812a888e3c@nxp.com>
+References: <20261023-8qm-v2-0-a8812a888e3c@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: DS7P220CA0060.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:8:224::25) To MI3PR04MB12438.eurprd04.prod.outlook.com
+ (2603:10a6:290:76::14)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -48,109 +108,94 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-From: Oliver Smith <osmith@sysmocom.de>
-Subject: Re: No network for SolidRun LX2160A Clearfog CX with kernel 6.12.113
-To: Ioana Ciornei <ioana.ciornei@nxp.com>, Vincent Jardin <vjardin@free.fr>
-Cc: Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev
-References: <d074d5b8-7b86-454d-b948-83530fa82e97@sysmocom.de>
- <CAOMZO5Arqfat5nO5Hi9Dq0TogvGAvmNLChE_8WrDGrNy1ha2Qg@mail.gmail.com>
- <auSrssMDb33JZVN5@L30177.local>
- <c4e8595b-1dcc-4fa9-9a9f-b23be2d79462@sysmocom.de>
- <auX-VA8xlqSwLYGj@L30177.local>
- <z2q7u34spdhyiqhrkem4b64fvdwnnbodgwzj4rynuepqyrym5q@nuy2zhhlqgpu>
-Content-Language: en-US
-Autocrypt: addr=osmith@sysmocom.de; keydata=
- xjMEXqaMvBYJKwYBBAHaRw8BAQdAKlLfpb/UKvlUjGFwzzkDBT1fXdlqg+MaEG2+hTXDYUrN
- IU9saXZlciBTbWl0aCA8b3NtaXRoQHN5c21vY29tLmRlPsKWBBMWCAA+AhsDBQsJCAcCBhUK
- CQgLAgQWAgMBAh4BAheAFiEECfuANpg5IsWyQFcH6+DRJFm2BMUFAmDG9VIFCRTsa5YACgkQ
- 6+DRJFm2BMUJ0wD+L0gpHABtBfkNQ7i0/qtMs5thoqt2yldxao6q31BBLAAA/iXUDIEYjQ0L
- wsZRtiSdXNjbBfdT9boLdh4CY+TKwuYPzjgEXqaMvBIKKwYBBAGXVQEFAQEHQPGmG2/uQrDy
- xalQoBnT1zdIbeg/xWLjl1AnOYGITnpEAwEIB8J4BBgWCAAgFiEECfuANpg5IsWyQFcH6+DR
- JFm2BMUFAl6mjLwCGwwACgkQ6+DRJFm2BMXSRgD/f8twzpyQfpE+viVjtlOxsq0HCavXZqbW
- VvIuvbyfSWQBAJhEIFF/fxmksu9r3FzixNQMOLc3EJgSwqvEYA28Db8O
-In-Reply-To: <z2q7u34spdhyiqhrkem4b64fvdwnnbodgwzj4rynuepqyrym5q@nuy2zhhlqgpu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|AS8PR04MB8401:EE_
+X-MS-Office365-Filtering-Correlation-Id: 05eb9e84-0c8d-4dce-7ae4-08df3c1d3d82
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|7416014|376014|1800799024|366016|19092799006|56012099006|260925022911599003|260925021311599003|260925021911599003|261022105027099003|11063799006|261009223027099003|261026140227099003|261028144727099003|18002099003|22082099003|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	iVBo85OXVacogQRg/4E7C+P7yFe8ggYzJacJI03X37dcl6LVulntTReiKNOsLDu6d4+Z/wm1ix28UJDo4K27zuD/Tqhd1NIcg44lriXfGkPFoGTg0x5vx66YdsqWoEBTLR5ui+TobTtBPrU4c9O0DmwrLOmrbZlrLH2m4ZymqYKIi2XK2YKea6Vg7ps+QaTT5AwywTkFro31Zkk91fqPnyg6bQ4TakW3J/EzPeHVVyQtrLfUH/SqECaqcDOemHnSN3IObCpeYCb481dgjshrgv3X77tt8YuNtQYYLRqPUJFq+hUOSGIitMF95k6gmiuiHzu+64fLTQvzZHGhTPWiKuVmfXKJwB3vQBQNPRr/0sHz4Q3A4/bjCwKF5YWVYZIgqj6LdFhyWp6V+/x0UI/kR9zbvSxJxCdihynw9NPTKGbEeRsSf0l0SrkOFxN0J4kHOt9Ob3XWaPQTvBs/pT/1y6MXpZmWNjHVWHnqtqC7+jHOU0HfiPNke3ox+uam/vekrBe4q4/Zjw4B7jZ2Gl0/e1cM9OmsyCMkBHfYHW3Ttwn0WWkYlqEs55WdXwmp5JBl7uLq7IlXVU8+MxnKGo+0uiWUNLjMwv+WIv4sOnOZ9L2lSXSYpRPTloMMlpp2602MAqZnSjcox7FigUI+M/TvPYXCE4n04S6gQBzmlORFw4U=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(1800799024)(366016)(19092799006)(56012099006)(260925022911599003)(260925021311599003)(260925021911599003)(261022105027099003)(11063799006)(261009223027099003)(261026140227099003)(261028144727099003)(18002099003)(22082099003)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?M1Y0Nm44alRpTDRaWmRqbUlMTnZWVnRIVWt1VGNremRnbytGTW5rT2NZckRQ?=
+ =?utf-8?B?TzFaT2ZmY0ZES3ZRNWR0L2FJNTJad2d6TnE5cDE3Y1ZleEIxNHRYcWFRb2pp?=
+ =?utf-8?B?VWJaSldIbVNCUUNPa0pCYmVRMFl4aUl0T2RYeUgzSXdHUEozN0dHRGpPS3VI?=
+ =?utf-8?B?YkNnNm5Ebk1YZTZ0T3RHZDJMUm00VTArcVJjRytyWVRRUXZ5d25uRkVZUGJm?=
+ =?utf-8?B?TGJoMXhiZEo3MVR3d0Vaa2tWS3FDZURGKzJJQ3AwWlh3ck56Z3VVT3NDZDYz?=
+ =?utf-8?B?dk1EblZ5MUU1eXVRdzhNTEJ1M2Nzck91dEVySi9VR1h2V2ZaM3BKTWo1d21z?=
+ =?utf-8?B?dThrUnZ6UTRkV20yR0c1MmdGY29GdnRlZHJSdXZ5eGJlUnhoOGZpNXVGdEpx?=
+ =?utf-8?B?NFA4OERaRGMwaU9UcDZIeW02WFROMzBOTUY3cHI5SG15dk1sTjIxYjlPQWpk?=
+ =?utf-8?B?N2ZrUWFYRW9LSytTVEY1L2g1S0tTMUJhUG1heFNvVGtibDRQU283Z2FOYXBy?=
+ =?utf-8?B?eVY3dmZxSThHTUE2cDJIdkZSOUx3b3MraDhqTTJWVFhZT0Z0S0RoYXZ3a25x?=
+ =?utf-8?B?VXVvbFpvb05ydVFVaDBrNUhGOGdmMVZmYVNoOVdrLy95MDdsbHhnaHg2QWtU?=
+ =?utf-8?B?K0hmOEtXZGN0ZWNVZGRYaGovYndUVWpGdVloU0NITWFnU01aQnhiQVRIMUxj?=
+ =?utf-8?B?Uzl4Zmx2UDFQUy9kL2hoNjB5eDZvL09BOElsTStKeFM0ci8wUGNCYkJxdlBB?=
+ =?utf-8?B?RE5RRkZGSklDcHRxa1JIaGttQlJHRjF0ZzhTUDV1dkNUdElRUFY2VWMxYnBi?=
+ =?utf-8?B?ZXA3ZnZUUlBFTnd6M0IvRWVnYnNpREtIUXdnYXlRcTc2WnlVeVdTVElJU1ps?=
+ =?utf-8?B?OG9uTnArcmRvZGdlN3owN2RQWkRyN0RpcTdnVVA4WFFTbGdZQ0VYbFNLeE44?=
+ =?utf-8?B?N0ZFSmFoNEJpS0NvVVlDUWNiS1pNZHNrT3BhaEZwVmttQ3VVTzdZRGgxU1h5?=
+ =?utf-8?B?QmVJa0JoSklUZ2M5ZmZiaDBhZU9STSt0eUhSY25oelJ3dmxZRjdWUXE3eUQ5?=
+ =?utf-8?B?cldsdER2MnFreW5ZaFcybTFSQUw3RFhMS1hvMDc0aGEySHZCUnNOWDBNOGEx?=
+ =?utf-8?B?QUh5WDdaY3B3UTk0dDJyeVE4dWpYRFJrVlQ0cjJrMkJTcW9iQ2VsTVFpUTlq?=
+ =?utf-8?B?SXpsWFNScGxYNUNZQk5yK2xodmhlQ041S01tKzcyZWY4RnVTbWI1YjdaMml3?=
+ =?utf-8?B?cnVNdGVhVzdqT2o4RE5SMVYzWFdZM0ZqdHR3TDRaTXVDcGlFYVcrNHNQc3U3?=
+ =?utf-8?B?OTU4czA5WjhNU01McUpoQzNFdVo3aGFwYUh5d3RFS2wyYmo5bGhiVGdhY3JO?=
+ =?utf-8?B?clVUNGtXWjB4S2ZpL2MxcEJCU2ZKajJjOHJ4Mm9CSWt1TXN1VFZUMzRXR21Z?=
+ =?utf-8?B?VmFmYi9XWi9CZkFGK1lZTTRpTWlXekgvMGgyamwwSHdTalJSV3BoV0pyY2Yy?=
+ =?utf-8?B?ZENUVnRzMllZRnhqbDRLUDlCa1hsRlhMYitsM3dJNE9rT25lakMyd1lrUVo3?=
+ =?utf-8?B?UXNnSUlBeW1HTmJDV2J5QVNVajRmUGxqNTNxRVFzaER6ZjVuS2twQ3RqaFZl?=
+ =?utf-8?B?UzZGN0dkOE1ZdHVta01qWTYvV2liTU5TUnNlU2Nrb1lrdUNwQzNLcEFmMUpj?=
+ =?utf-8?B?dDlaVUppcCtpUThNdkV2QXZUbVpBdXg1d0ErcVBycHBBMHl0Qnk4UmVZc05Y?=
+ =?utf-8?B?VFF6MUE5QmdoZnI0eEJZekFGbnc3Zmh5TmF6OE5NWDF4U3UyaHJrUFZ5UFd0?=
+ =?utf-8?B?NTk5VTV4V2N4ZkV6OU5HM2kva21hR3lIN3RxejJNRDc3VXJYM0ZMUnRaTVkr?=
+ =?utf-8?B?bDhYQ3VxS2VmdWYyT3JpK3VJaHZKVEMrakRXQU1sSENkNXdtVmgzQ1ZZRlNT?=
+ =?utf-8?B?cFZoUS9RRU5IdkxiSVBvZHhvYWdzT2VickZXaTVHMk1mcmdNTldsZlhHRGFq?=
+ =?utf-8?B?eC9COUYvMXMvK3Jib0ZHRUlFUEV5bmhaNE9oSFFGMzlpSU4yaVM0LzdaZnNF?=
+ =?utf-8?B?TUtTbFU4dmxUMmVEWVpuaWo4d2RLYmxTcWN6dlR3aG1rOFNaY2dyOXhzdjgz?=
+ =?utf-8?B?Z2t6S1k5NFZxUG9KeXRvTTJxdFY3ZEpJd1FkbmlUcTViOVczZHNuT3Y0Rmtu?=
+ =?utf-8?B?ZnpvVkZwcFlkbWVQTkZoMnNNVU1ZMC80ZzlyemljYkNHelpjdVhURDdDZVF3?=
+ =?utf-8?B?bnA2dmxtU25rcVR2aXVFU2hYeDdhdGpVdWVvYVZDUkQrMXhvQVVnSkJHU0pO?=
+ =?utf-8?B?SEdzL0xTdU5LNldUKy9odkgzR2hGRTBWTTh3NmFxTzdzUUxTbG1Ddm0yYjZ4?=
+ =?utf-8?Q?4KNKEGaq/1IMVGHD3uB/0ereoXNtHG+VxtU46?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 05eb9e84-0c8d-4dce-7ae4-08df3c1d3d82
+X-MS-Exchange-CrossTenant-AuthSource: MI3PR04MB12438.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Nov 2026 15:47:19.5885
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: yhkP9qZe3xRb1ja5DbLJi6KL9GVoXz8NQSjVaRQkDR0QMvJ00pPYRnu0SOT2G2QsQ5pCvhT9OA+lSMPOnLwRnwZQsirRUuHHEDXSrrvZPw+4nujoMbHr9r5HcXbEagbl
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8401
 
-Hi Iona,
-Hi Vincent,
+From: Frank Li <Frank.Li@nxp.com>
 
-On 11/2/26 15:20, Ioana Ciornei wrote:
-> On Sat, Oct 31, 2026 at 03:42:28PM +0100, Vincent Jardin wrote:
-  > […]
->> It seems to be related to the backport of:
->>    https://lore.kernel.org/all/20260401144508.3062019-1-ioana.ciornei@nxp.com/
-  > […]> The 0x3F value means "MC layout process error".
+
+On Fri, 23 Oct 2026 10:56:58 +0800, Peng Fan (OSS) wrote:
+> The ERR050104 cache coherency workaround for the NXP i.MX8QuadMax and
+> i.MX8QuadPlus SoCs has been merged upstream as commit d44e08dab27d
+> ("arm64: errata: Add NXP i.MX8QM/8QP workaround for A53 cache coherency
+> issue").
 > 
-> Please look into the MC firmware's log. It should help in determining
-> what exactly is not ok in the DPL file processing.
+> The workaround addresses a hardware defect where the upper address bits
+> of the ARADDR and ACADDR buses within the Cortex-A53 subsystem were
+> incorrectly connected, causing TLBI and IC maintenance operations
+> exchanged between the A53 and A72 clusters to be corrupted.
 > 
-> 	$ cat /dev/dpaa2_mc_console
+> [...]
 
-With both the old and the new kernel I get the exact same log:
-> root@lx2-1:~# cat /dev/dpaa2_mc_console
-> [W, PLATFORM]  UART print failed, all debug data will be printed to buffer.
-> [E, open_device:2371, DPMAC]  no device
-> [E, dpni_probe_cb_v1:4704, DPNI]  Can't create DPNI 0001
-> [E, subnode_process:155]  Probing module 'dpni' return error code -19. Continue dpl processing...
-> [E, open_device:2371, DPMAC]  no device
-> [E, dpni_probe_cb_v1:4704, DPNI]  Can't create DPNI 0002
-> [E, subnode_process:155]  Probing module 'dpni' return error code -19. Continue dpl processing...
-> [E, open_device:2371, DPMAC]  no device
-> [E, dpni_probe_cb_v1:4704, DPNI]  Can't create DPNI 0003
-> [E, subnode_process:155]  Probing module 'dpni' return error code -19. Continue dpl processing...
-> [E, open_device:2371, DPMAC]  no device
-> [E, dpni_probe_cb_v1:4704, DPNI]  Can't create DPNI 0004
-> [E, subnode_process:155]  Probing module 'dpni' return error code -19. Continue dpl processing...
-> [E, open_device:2371, DPMAC]  no device
-> [E, dpni_probe_cb_v1:4704, DPNI]  Can't create DPNI 0005
-> [E, subnode_process:155]  Probing module 'dpni' return error code -19. Continue dpl processing...
-> [E, open_device:2371, DPMAC]  no device
-> [E, dpni_probe_cb_v1:4704, DPNI]  Can't create DPNI 0006
-> [E, subnode_process:155]  Probing module 'dpni' return error code -19. Continue dpl processing...
-> [E, open_device:2371, DPMAC]  no device
-> [E, dpni_probe_cb_v1:4704, DPNI]  Can't create DPNI 0007
-> [E, subnode_process:155]  Probing module 'dpni' return error code -19. Continue dpl processing...
-> [E, open_device:2371, DPMAC]  no device
-> [E, dpni_probe_cb_v1:4704, DPNI]  Can't create DPNI 0008
-> [E, subnode_process:155]  Probing module 'dpni' return error code -19. Continue dpl processing...
-> [E, open_device:2371, DPMAC]  no device
-> [E, dpmac_probe_cb:766, DPMAC]  Can't create DPMAC 0002
-> [E, subnode_process:155]  Probing module 'dpmac' return error code -19. Continue dpl processing...
-> [E, open_device:2371, DPMAC]  no device
-> [E, dpmac_probe_cb:766, DPMAC]  Can't create DPMAC 0012
-> [E, subnode_process:155]  Probing module 'dpmac' return error code -19. Continue dpl processing...
-> [E, dpl_process:527]  Error while parsing 'connections'. Skip processing the rest of DPL.
-> [E, main:186]  DPL processing failed; continuing...
-> Running MC app, waiting for events ...
+Applied, thanks!
 
-I'm not familiar with the MC firmware, but all this explains what
-happens, there's the firmware error and then because of the mentioned
-patch, fsl_mc_bus_probe() aborts early and then I get no ethernet
-device.
-
-As mentioned earlier, dmesg also has:
->> [    0.107175] fsl_mc_bus 80c000000.fsl-mc: fsl-mc: MC boot completed with error 0x3f
->> [    0.114747] fsl_mc_bus 80c000000.fsl-mc: probe with driver fsl_mc_bus failed with error -22
-
-Could you give me a pointer for getting rid of the firmware errors?
-
-(And I do wonder how many other people may run into the same problem,
-maybe it would be better to just print a warning instead of aborting
-there...?)
-
-Thanks for all the help everybody!
+[1/2] arm64: dts: imx8qm-mek: Re-enable A72 cluster after ERR050104 workaround
+      commit: 38aecc5bf9de1e26dcc8fc0a5a6882593248b293
+[2/2] Revert "arm64: dts: imx8qm-tqma8qm-mba8x: Disable Cortex-A72 cluster"
+      commit: df30ccf2cf43dbe0f1766eb47fb84c46f6401ffe
 
 Best regards,
-Oliver
-
 -- 
-- Oliver Smith <osmith@sysmocom.de>            https://www.sysmocom.de/
-=======================================================================
-* sysmocom - systems for mobile communications GmbH
-* Siemensstr. 26a
-* 10551 Berlin, Germany
-* Sitz / Registered office: Berlin, HRB 134158 B
-* Geschaeftsfuehrer / Managing Director: Harald Welte
-
-
+Frank Li <Frank.Li@nxp.com>
