@@ -1,81 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=162.62.57.210
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793956882;
-	b=5NKdUpudNXMeJml5XHZdPU7IPypdscYOfDp8IRD3MA+wg2XRq2jZkUEN6izk9GpDdCkm
-	 YwiEXK2ZWVnE4QKiXXQbJcYRWEmJfVvSn0dxZrixkmqM24EcgoeCKIuyKXBWzUaAxgR/5
-	 wE0Ty7Eko1x3zXzoTSaw7k+lxrmjXu7BSBn9VVY8nVgDcx7qJjhMcRoTao98p5BpiJRpY
-	 dmSdDJoYmH9s5VVR53MKdwsRqBC59U/gLVUaMT7QZf1vO9A0clVAF/eGI30CU1lDLPqGo
-	 ekebvy3sFdozHMtUx71XmxfUVTnrCTkXTBrY02lmITaczfgbBMTySftk69yx+ccUxmw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793956882;
-	h=DMARC-Filter:DKIM-Signature:Received:X-QQ-mid:Message-ID:
-	 X-QQ-XMAILINFO:X-QQ-XMRINFO:From:To:Cc:Subject:Date:X-OQ-MSGID:
-	 X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=GvZBAEU8dxyAwu/EctxNWLT4xXzkZ6n1H29EGANwqog=;
-	b=pHqVPyRa+KWu51D5r38b/Rqvn0f4NweSjRfHiIH/kmqb5CBChfvXVJYMl2stCbfJW8pH
-	 YThnljrsWJkKYlksDpBJRardUlFzn0XiKpKugCOzOMEyYOQpEFUMFnn5l1pQD6LCLmSqc
-	 rkrRjl3ptoY5gbv01hJLXvguiryVQs3oZYIiXPC4w/nl1cfdfNeXFnwMl0IPH0iBLmAVr
-	 rwFFWIQBYvfQKxWPqOmea0t8UgZwDEBspSmY5oZcqgSRyy++2hWJnEXV+/8CI2LvabAn6
-	 ceAGX3OEg2VcqBu+TNiTZ/KrTdWLOC2NXvJ3RpqrR3w0g/7TamxasYsBH8WgtT23fjQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=foxmail.com;
-	spf=pass smtp.mailfrom=foxmail.com;
-	arc=none smtp.remote-ip=162.62.57.210
-Received: from out162-62-57-210.mail.qq.com (out162-62-57-210.mail.qq.com [162.62.57.210])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.66.28
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793963723;
+	b=JQ0xy1OysAQ3bTaCyAtKoAYGbqgIRDhD3ZuWory0mlMH9/RgGr0nCOi16MnO7Fnbxu+b
+	 J2zIeAHd3Nx8h2WYs2QwwSCwlpWbxzzKM4Bzw60btbNMguH+373BqMW8kceHuJJ/4t+Nl
+	 iQVXUZkmGUvZQLMjx53dTe8a3ughO6VqzOuhsw4LbdfvrApFF3o2VB8GqRlVOq4dB8Ps7
+	 Aw9PL6pyjhfrT6xd4OQ9QAqoPT75QcSrum0+KDXBo9nVNxGNjZTy0AQ3RWK68YXVwnnG9
+	 YLD/taeg+2aSctwu+Z8Lo0qh4Ya7NwTlKP8BKoUuIwBBsyWeJkHdeuME4SxPMf/SC0w==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793963723;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
+	 Date:Message-Id:X-Mailer:Content-Transfer-Encoding:Content-Type:
+	 X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=800eXqC+o8xtqEVAHX7pVkp40O7MHcE0wW7T5n+JMdg=;
+	b=pynSSY5EssdsJj/kpOwHlczBeE6yOh9K2fLH82M/UybspI1jnUoyD3+5/wlGRBjjMpyO
+	 7aPlJV96rcrvsV9wGJU8Dlev2avxDb6a68SfoATB2Y987O5hUbx9/IUHj7GZ+UKlTlKvS
+	 /CdKTDLGEHAokBYwMo7ITiOgDKcjKj0z6ZrL+Am7i52+ytNm2MOE370LF3Tkwz8DMPoTM
+	 pawnP78ama0LgW5A1tIv1L5qGzpjQKPtYVE7UfEhnmFpxb19oc/f2Gzf88W3y4WlDih8C
+	 MqUkEdaxxLxoBuNwgcP8JViFShgIDh7JKnKiQreHpEwr9kqBgeiJNENFb7vtpuh2LTA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=oss.nxp.com;
+	spf=pass smtp.mailfrom=oss.nxp.com;
+	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=gku9t9eH;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.66.28
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012028.outbound.protection.outlook.com [52.101.66.28])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 494BF606A337
-	for <imx@lists.linux.dev>; Fri,  6 Nov 2026 09:21:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 494BF606A337
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1793956867;
-	bh=GvZBAEU8dxyAwu/EctxNWLT4xXzkZ6n1H29EGANwqog=;
-	h=From:To:Cc:Subject:Date;
-	b=Q3pU2m0zVs2GZcAwN99ypsUbtIDQ7t8CZmoHzrovDoqsfl3GcejxUgoNO/r03bh6N
-	 DVFnTHYjlcC+FAFIqiQ0B7mt4M1y62HeyQCHf3b8SIkldwumAUsc6A/mKCMyPeEKjd
-	 wxSU6gLlci/Y5+W3IgQuq8+zcXknCepVcrqD04/E=
-Received: from LAPTOP-TKBJAGN4.localdomain ([27.38.177.45])
-	by newxmesmtplogicsvrsza73-0.qq.com (NewEsmtp) with SMTP
-	id 542216C5; Fri, 06 Nov 2026 17:21:02 +0800
-X-QQ-mid: xmsmtpt1793956862t3gymxzx9
-Message-ID: <tencent_D0E2628A4AA62FB8B265B2A28BBFA9566B07@qq.com>
-X-QQ-XMAILINFO: MRMtjO3A6C9X0IZDcDm4iVakmb6joYjsPsfTRE7OaZgQkREcxV9ZjKTDK00Hnm
-	 hUBgYvwsAcqgahNYVoGUN5rrbpBNdmeqUM3FTNkDBi2KC7N5km64977NdtCmPILdqWc6nooP6btY
-	 CivS+6lSDtGK9ezJIziIjfwiZSpXX9S+b8fQ+7YfAbvRQ5M0nYArCxdN2Wo79dl3rmtFRCRFY/j+
-	 tfY98g1CIi7L0E34fO8jh11ByxLJPFNAR6DE3Ufq9IWKXEbYlHoxx+ALZiZhGUoOoSHMqHXJ4FRg
-	 Pc5hk7UjXtvWdbdXa/f585Tq92Zh5BkdVg6QcjaUHqQsInior5KSRALTlfb0KCf6DSI0TditDp+S
-	 lMrOookH7OKE7MNBHSk8BwgTYv1tOqE+exqyyq6JN5m8Lglk8gGITK2vuFoDwRfuXoUwwjutz3D6
-	 vg+arRzZpQfNfQPHcRHRtUk1Nsu4szO44f9+qxozisg+2DKO5GkP2ecyJ6cqZLI1MXP+w8gv9S1C
-	 7TlyMcPGoUTjFFvGoPGrxQQ77YFkpamLJKHDIyuKTmUcIcAhof1r8XQoq9aBjCZyJUhgmG4yCfTt
-	 hPfMA/g3pySbH/i/tpadJaJkYZYcbbnOhDWlVY3Ae5yEE8Epe7L4jmuO1GwkU/k5IP4g2XcM97Kk
-	 kDWcy1OBhmISosN/cZsFTMieZIyUFT8ZXE1O7uFaZ7KYNxfLDH5DznVdpOAMSrAvjp/IYxIhzNWo
-	 TI2nnc6dou2jxm1ouL/T/dJP34qXMiOKopYh7Feyw1XUqm5DN9iw5XDP8l0LLs4ZnWiDE06EdqvC
-	 GWrEiesFuITSgFHbw4YhFTPJ3uzT26ZbkTxKLAbeGGDiQYvwnkU2avYA3SE/EI6d0GeuKFnbJ6mR
-	 WR7sOZ5iO+EHsmH/8kS6L2Hsr+UJxsRVB+0H5V6UxVDExjZmzpwExf2BDUoXbyBiyBuY1D3RNFio
-	 ivUkIkotXXd6/MVIlVs8LQr1FQAqM0ARvaicO762Z7GaMw8NWmX/zn0AYq48tjPgSCB0cNI2bnf6
-	 NOFgCeEIj+pW2wQ1NoaXJzvakC9qwDnSQ9XA2QLjpLkr1bD+O+1dGxKPwG3GI=
-X-QQ-XMRINFO: Nq+8W0+stu50tPAe92KXseR0ZZmBTk3gLg==
-From: Haobin Jiang <lemonoutput@foxmail.com>
-To: Andi Shyti <andi.shyti@kernel.org>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	linux-i2c@vger.kernel.org
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Carlos Song <carlos.song@oss.nxp.com>,
-	Vincent Jardin <vjardin@free.fr>,
-	dillon.minfei@gmail.com,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8C2160A263E
+	for <imx@lists.linux.dev>; Fri,  6 Nov 2026 11:15:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C8C2160A263E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=gku9t9eH
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=PjhkIgXYzEdXbeh6CLCth1S827JD/4SyMM5AO7mPCCRV7nPiNrn2mYEqxa1Urqf+gDZghaVJRNF8cT39wH9T34k9KmnZqKz5e/F19KfDjCrhnnsuy/IRZojN7wVlFOO5HM8p2PRe/XRTI8SIUyw/WXhTt+23fQT1SJf+tGsW0sKbxF8NXSA3djF7gNwFyuNFQkSku0bQNWz+RJ0jocZy6prLFh9ZZVBa97h0Hy5IPiD4pdiVFScnDP0n4qXkXpdJfzvJUgNCXLRxXEZd8RC2Ij4ZVdnxjHimPK1iY5LcotZ+BDotp5frAIGMXAwea/3Fy48n11WOyWEE09CEZDDyog==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=800eXqC+o8xtqEVAHX7pVkp40O7MHcE0wW7T5n+JMdg=;
+ b=R0e8h2xv+SjqkQHjw4ly2TAKL+vFvniNMjZYpSC/YIviID+lyh8OSu25mWABUVHKnpk2cKBeh2avG6BDSXZHe6l1cgtJjwkMgmjxMaXCF4e7dsSndYi0yWh0f7OCyiPOFy8NpVhKXihj8v+u6WiFPi4l9UtMj4m609iRbrTM3/gknPH+U83SGQMujtM9PK8rsmy3vkceuQ//w4y5Exu7CqR7xORLOp8YnDEu9/K5ygEVYtZdrPwUYo1BjWeMumcFIJZj1FyxCYNBaYpbF58QvTr6EvPEMnF6wNJKq5qURpz2ayR9szgNknwHDyupEA7RokCA8jfHUBNGKl03mwqvsg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=800eXqC+o8xtqEVAHX7pVkp40O7MHcE0wW7T5n+JMdg=;
+ b=gku9t9eHpKiOaiYQ5TDY9ElqVlS+5RZAsDmf8OU5BIO5Zxjl6lcvlQokGGGGYQqmSdm3Xn7VhbNdF5aEboe7Mx1xh50ppB8Mu1NxazLn1XE2HLE7WW4YgfvTJBGYjaTIcmHnWXlB1jQXjiXWesfgDFHi7RiZnCkktwipz3W/n2K2ZaafpbHjuwOSv+kKyaELWC/6ZpP7Q8a7cqvoF4CgB8i4oZPtO2MzaDx+wehNbUTCIzELJdW49MMhEH8+kT73FfpH4Xeik9gmkN9XdfRRBpwz3JGYSt+8rLDpjlCE0hnKqIsTyeilV9By//PCUVJ788vXj6a/LITXOW362aZ8Tw==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from PAXPR04MB9422.eurprd04.prod.outlook.com (2603:10a6:102:2b4::21)
+ by AS8PR04MB8231.eurprd04.prod.outlook.com (2603:10a6:20b:3ff::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.11; Fri, 6 Nov
+ 2026 11:15:19 +0000
+Received: from PAXPR04MB9422.eurprd04.prod.outlook.com
+ ([fe80::54e:28bf:aa85:d25d]) by PAXPR04MB9422.eurprd04.prod.outlook.com
+ ([fe80::54e:28bf:aa85:d25d%3]) with mapi id 15.21.0592.009; Fri, 6 Nov 2026
+ 11:15:18 +0000
+From: Xu Yang <xu.yang_2@oss.nxp.com>
+To: Thinh.Nguyen@synopsys.com,
+	gregkh@linuxfoundation.org
+Cc: Frank.Li@nxp.com,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	linux-usb@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	Haobin Jiang <lemonoutput@foxmail.com>
-Subject: [PATCH v6] i2c: imx: honour I2C_M_IGNORE_NAK
-Date: Fri,  6 Nov 2026 17:20:36 +0800
-X-OQ-MSGID: <20261106092036.4509-1-lemonoutput@foxmail.com>
+	jun.li@nxp.com
+Subject: [PATCH 0/2] usb: dwc3: recover USB3 link after controller power loss
+Date: Fri,  6 Nov 2026 19:19:41 +0800
+Message-Id: <20261106111943.2868733-1-xu.yang_2@oss.nxp.com>
 X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI2PR04CA0010.apcprd04.prod.outlook.com
+ (2603:1096:4:197::11) To PAXPR04MB9422.eurprd04.prod.outlook.com
+ (2603:10a6:102:2b4::21)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -85,204 +102,91 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9422:EE_|AS8PR04MB8231:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7bb68c68-39d0-42b3-f62b-08df3bf73d9c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|376014|1800799024|366016|19092799006|11063799006|56012099006|261021121427099003|261022105027099003|261022075727099003|261021123027099003|261009223027099003|261102123227099003|261026121527099003|261028144727099003|261026140227099003|10067099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	qS3L8IDPAJf9ubXXTgqOGjafP/ZwY8jriqFn4WeB9QcZrliBba7UqAMc00gFfyVmvdP6dfZSE2C0CZtjyoL7HCcCP0jrxLO7JostrY7fKo0uXrFTB408cZAVCxfefSOOWpJqSv15TCXAshRR1fMLUZio8l47vTNjy2tOFzMkfB8W3n5E5qSFGpRWHs7wO4IXtzdak1ELuzTOyFm6IryjJB+EtgiOwA0E0UiwtNT80cXDii2JwG0ZXG/6V/b3LhonfpEamMi7MENhiDAHHycDSFOJyB0ifmEKjBYX2bCY1j79wloJb+NVDTlYt60FSoXVHPNwWI1mJTqQfIKOKEWhzPk97xzafHQacRbVKg+LASmkQdj8aIO+2soTfHeAZW4v43Bp74QnCymmK8VjIoQEHR90PK4G7qnx0gzk2KtZ1BypSU6WC2ogcFnOoFwZ5wVSVvRZDmVEN5k8aYGrNY6QR1fty13mHI3RLTHE5LJxr06JLwkuB7wA+vwy5Ow3PTrjWKfO/SbVk6Hpk74Fh3jroF2kVplbFkHHI+qW5ukQVFjoM1k+y02YrMScrg/7Za8b36ukuI5E04FJ7vgzrsZVaVHvF3CzJQOTdiJHDUZUe4bakaipmol/lfF9ar5qEi9pmeCG9mNjQLRmwwuHyfzDiEKNVRC5xwkLvlnFNJ4lHwo=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9422.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(1800799024)(366016)(19092799006)(11063799006)(56012099006)(261021121427099003)(261022105027099003)(261022075727099003)(261021123027099003)(261009223027099003)(261102123227099003)(261026121527099003)(261028144727099003)(261026140227099003)(10067099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?v8weV36lwVAwRO+t21/RzRLGoL8MtojZGArf+TINCvhFUMOL2rx6UVQJVbpk?=
+ =?us-ascii?Q?xJxR7XKSH9A4g9FDSLz2D9SjWWXVMcw+xUuNhsGOYh9XUmEIDi0jU+ZQfWlU?=
+ =?us-ascii?Q?j7eLIn05ONRHYVQFDlbdHGISGc5ChlCjXr/xkeOv7GdvWIeGcYq7AozCA8f8?=
+ =?us-ascii?Q?iZRttuHVaE/k7BYU2E/KREgmjRMB0IzI25DeEGMd00vrFfbgkiIi1ngavhZ9?=
+ =?us-ascii?Q?JEm1jukvklZeV/CldkgyDa719O97W3Xqy2whiKsoIMdyBVFJobTj74DCyMLf?=
+ =?us-ascii?Q?wwQvyaclC8/AQJx8CXFIuqjgCXgD37Cuto27ZoCHi3N4YtanikeQzD8skTTy?=
+ =?us-ascii?Q?h7aLa41S9inF0s7Far2djOpSP9zp64RDJGu6X/VpNhgN1bBAwrZKUe4LfOPH?=
+ =?us-ascii?Q?TcaCExhfksvy5aCokh9+WG9b1wLj/UkFJMIflWS5oSK5QjPsO6z9Ye2iFhHM?=
+ =?us-ascii?Q?XH60KqC0SFv/B9llVngZ5LDTwkcEDKaEsCENU3rVsWoIB2J9rPpoVA427elm?=
+ =?us-ascii?Q?nMNqAukNxulhDgRqrDbbbdDt2Q7yasYr9TMW2rSukGyuGvf2Dq6oYkte7hAR?=
+ =?us-ascii?Q?2sNpoaiSYdtnJHEFkvqgorD5BrRzXGpDqujjtZbVDUAqB0YuIUkBuK1cI0Yo?=
+ =?us-ascii?Q?LRy12+qEBW7//n4hLJsVZLikUiAJCjT4mmIC/0GD3NqrukPgoCPU2YOhqBSp?=
+ =?us-ascii?Q?f1/qsBWDefAUljsaKpxOGAFaOJy8T+JCHyFXJc4+DY6q6JnNIo+Y7p6Lp/Q0?=
+ =?us-ascii?Q?8/1TXDzHDV98xNt9x0ctoo985oQMvJk7Xupbv9zRtJ9T7z/ypkWyfx5zlNCo?=
+ =?us-ascii?Q?Wk9ESmHbZYeDf7mn2xZNsn39ls3y2wwrbDvw87AZMMhrylAF4KNuUrxNBq9H?=
+ =?us-ascii?Q?1Rt71LlAlcB2FEJ/dK4Pa9GdFhlqoMCOfDu9XWbBmKprNWi71r2HS+jJsh71?=
+ =?us-ascii?Q?XLFOicY47XT6L/BlESoby4duV8ZCR+eKevhxrDwCC0aD/z3WJOkw7Jpme/B8?=
+ =?us-ascii?Q?59U+dIEaYtzhRJkAbysjLEL1i2bMBBVVSRIdUP5QRPu4GV4Zp/2c0q+5IL4G?=
+ =?us-ascii?Q?ERhFEMgP/eaW/eL51r/t4/GHl79KJPEuTnzBjObYbOmXU5mCshBhzBl/o9PA?=
+ =?us-ascii?Q?i7AHZoqHW0n724W3imCUyiGy+uYDTWZl2Nvl9Qbcx91s76oyFI1lGCzRk6xv?=
+ =?us-ascii?Q?Fl3kF6ToRSEgLw532KGkMXU115EjZe4aP46NIk8pCmlX3cafngQShjnF+yBh?=
+ =?us-ascii?Q?41+1DWBMQfLjw2nmuIGcdX+BH3Z8NNxYuUbLFqze7ZaMiTcVrSFA+0MSX+2o?=
+ =?us-ascii?Q?TOUPJ9vBOMs4sG6MmkippJuNBZ4xYA4aeszt0NGAEspUVOfyLU90ZrV/FHLD?=
+ =?us-ascii?Q?Y0wUv+q8pRSpjQSD6sKf/+V4f4XBcUEsEmjZpsXn0vGEyxDxx2LPXqBeX62/?=
+ =?us-ascii?Q?8jyU8Syj1wuEs/CKHY5xe/jx6CrMERfa36nWRlxRU9SVvGnf47BtMCJb2qGE?=
+ =?us-ascii?Q?CBKy/HHEMN9x3bzD/y6zDmhZCQ4oBXdVXTFQn2F//maemqY1kX+65jzgmPKi?=
+ =?us-ascii?Q?5LgaT9r/6tkn0ZltaLYxR4f9vOSIhSj/gDFf1kW0XRGveQ+JLR5b3mxlxghp?=
+ =?us-ascii?Q?R/jfD0+GaQY46rrXY2/hYJKczMMBMvnnnYCdl9qovA73iqXEX7Ire94T/RRb?=
+ =?us-ascii?Q?Pai1ydSkvauRjvPnpfyQbjzv26fpd8FpygwkbynG7ffPj0z0hixHbSJm15jy?=
+ =?us-ascii?Q?wZPe3f3BKDWxLXh3FKreKF51YYavAigQVMOI/u73DxRvtVi0/PP5?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7bb68c68-39d0-42b3-f62b-08df3bf73d9c
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9422.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Nov 2026 11:15:18.8681
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: RQ6xkNR2EI2d1ao3I5Ue/aGjEnsmGaehED7kj0/a5QGU4M7Opg6ZSFCKxxvgi1GmugUWnugr4Bn3jgexbuPtZ0kc85l8ZG1/PVtUY++VDoX0kCWjlVNNdKZHZuobDDAR
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8231
 
-The driver rejects I2C_M_IGNORE_NAK with -EOPNOTSUPP, preventing
-NAK-tolerant wake-token and SCCB transfers. Honour the flag in PIO
-ACK checks and force flagged messages to PIO to avoid DMA stalls.
+From: Xu Yang <xu.yang_2@nxp.com>
 
-Restore acceptance of I2C_M_STOP for ov2659/SCCB compatibility [1],
-without implementing STOP between messages.
+This series fixes a USB3 link recovery failure observed on an i.MX SoC
+when the DWC3 host controller loses power during system suspend.
 
-Following Sashiko's report [2], reject flagged zero-length reads before
-START with -EOPNOTSUPP to avoid an existing receive-path overrun.
-Unflagged zero-length reads are unchanged.
+After power is restored, the USB3 port starts in the Disconnected
+(RxDetect) state instead of retaining its previous Enabled (U3) state.
+Testing on the i.MX SoC shows that the port takes about 2 ms after host
+mode is restored to leave RxDetect and enter Polling.
 
-Tested on ALIENTEK i.MX6ULL mini with this patch on f7813d226107,
-using /dev/i2c-0 at 100 kHz and unpopulated address 0x60. The test
-kernel reports 7.3.0-gf7813d226107-dirty (patch applied but not
-committed). Logic analyzer CH0=SCL, CH1=SDA, sampled at 2 MHz.
+If xHCI is reset while the port is still in RxDetect, the port does not
+issue a Warm Reset. Since the USB3 device may still be in U3, the
+subsequent LFPS.Polling attempts time out and the controller eventually
+reports the device as disconnected.
 
-On the same patched kernel, an unflagged 3-byte write returns -ENXIO
-after the address NAK (9 clocks); with the flag it completes (36
-clocks). A flagged 4-byte read returns ff ff ff ff (45 clocks), and a
-flagged zero-length read returns -EOPNOTSUPP before START. Captures
-and serial logs are in [3].
+The first patch adds a DWC3 xHCI resume quirk that waits for the port to
+leave RxDetect before xHCI is reset. The second patch enables this quirk
+for the affected i.MX8MP platform by setting needs_full_reinit.
 
-AI assistance: GLM 5.3 assisted with driver code from the author's
-problem description; GPT-6.1Sol/Codex assisted with the test harness
-from my test plan and polished the submission text. I have reviewed
-the content.
+With this delay, xHCI is reset after the port can enter Polling, allowing
+a Warm Reset to be issued and the USB3 link to recover normally.
 
-Link: https://lore.kernel.org/linux-i2c/392c76a6-1ba5-4bc1-bfba-524025359042@oss.nxp.com/ # [1]
-Link: https://lore.kernel.org/imx/sashiko-outbox-187010@kernel.org/ # [2]
-Link: https://github.com/JHB11Hinson/i2c-imx-ignore-nak-test # [3]
+Xu Yang (2):
+  usb: dwc3: wait for the port to leave RxDetect before xHCI reset
+  usb: dwc3: imx8mp: set needs_full_reinit as true
 
-Signed-off-by: Haobin Jiang <lemonoutput@foxmail.com>
----
-Changes in v6:
-- Clarify the I2C_M_STOP comment; no functional change from v5.
-- Rebase onto f7813d226107; the base driver is unchanged from
-  123cffeca4a3.
-- Rework the commit message and review history following Carlos Song's
-  feedback, and document AI assistance.
-- Retest on an ALIENTEK i.MX6ULL mini board on the new base.
-- Link to v5: https://lore.kernel.org/linux-i2c/tencent_E6D69775D91AD9FE45C994B3755CB1452506@qq.com/
+ drivers/usb/dwc3/dwc3-imx8mp.c |  1 +
+ drivers/usb/dwc3/host.c        | 21 +++++++++++++++++++++
+ 2 files changed, 22 insertions(+)
 
-Changes in v5:
-- Reject zero-length reads carrying I2C_M_IGNORE_NAK before START,
-  following Sashiko's review of v4.
-- Link to v4: https://lore.kernel.org/linux-i2c/tencent_877C99956190215D644EB959DF1663542A0A@qq.com/
-
-Changes in v4:
-- Rebase onto i2c/i2c after Vincent Jardin's series was merged as
-  c2867bb0fa1d ("i2c: imx: add I2C_M_REV_DIR_ADDR and I2C_M_NOSTART").
-- No functional change from v3.
-- Link to v3: https://lore.kernel.org/linux-i2c/tencent_342A87BFCECA70C9982E68A79AAD878B6909@qq.com/
-
-Changes in v3:
-- Rebase onto Vincent Jardin's I2C_M_REV_DIR_ADDR and I2C_M_NOSTART
-  series; move flag checks to i2c_imx_check_msgs().
-- Keep ignore_nak=false in the DMA write ACK check and leave
-  I2C_M_STOP unhandled for compatibility, as agreed during review.
-- Fix spacing, disclose AI assistance and record v6.6.44 backport tests.
-- Link to v2: https://lore.kernel.org/linux-i2c/tencent_E6A52FBBB25132C90B8E296FEB96E2C8CA07@qq.com/
-
-Changes in v2:
-- Honour I2C_M_IGNORE_NAK on reads and force flagged messages to PIO.
-- Reject I2C_M_NO_RD_ACK; leave I2C_M_STOP unhandled for ov2659/SCCB.
-- Link to v1: https://lore.kernel.org/linux-i2c/tencent_0D2E46A782AC418BC52A1BBF04CA1AC98E09@qq.com/
-
- drivers/i2c/busses/i2c-imx.c | 37 +++++++++++++++++++++++++++---------
- 1 file changed, 28 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
-index ccf08cd63..623503dda 100644
---- a/drivers/i2c/busses/i2c-imx.c
-+++ b/drivers/i2c/busses/i2c-imx.c
-@@ -612,9 +612,12 @@ static int i2c_imx_trx_complete(struct imx_i2c_struct *i2c_imx, bool atomic)
- 	return 0;
- }
- 
--static int i2c_imx_acked(struct imx_i2c_struct *i2c_imx)
-+static int i2c_imx_acked(struct imx_i2c_struct *i2c_imx, bool ignore_nak)
- {
- 	if (imx_i2c_read_reg(i2c_imx, IMX_I2C_I2SR) & I2SR_RXAK) {
-+		if (ignore_nak)
-+			return 0;
-+
- 		dev_dbg(&i2c_imx->adapter.dev, "<%s> No ACK\n", __func__);
- 		return -ENXIO;  /* No ACK */
- 	}
-@@ -971,11 +974,15 @@ static int i2c_imx_unreg_slave(struct i2c_client *client)
- 	return ret;
- }
- 
--static inline int i2c_imx_isr_acked(struct imx_i2c_struct *i2c_imx)
-+static inline int i2c_imx_isr_acked(struct imx_i2c_struct *i2c_imx,
-+				    bool ignore_nak)
- {
- 	i2c_imx->isr_result = 0;
- 
- 	if (imx_i2c_read_reg(i2c_imx, IMX_I2C_I2SR) & I2SR_RXAK) {
-+		if (ignore_nak)
-+			return 0;
-+
- 		i2c_imx->state = IMX_I2C_STATE_FAILED;
- 		i2c_imx->isr_result = -ENXIO;
- 		wake_up(&i2c_imx->queue);
-@@ -988,7 +995,7 @@ static inline int i2c_imx_isr_write(struct imx_i2c_struct *i2c_imx)
- {
- 	int result;
- 
--	result = i2c_imx_isr_acked(i2c_imx);
-+	result = i2c_imx_isr_acked(i2c_imx, i2c_imx->msg->flags & I2C_M_IGNORE_NAK);
- 	if (result)
- 		return result;
- 
-@@ -1017,7 +1024,7 @@ static inline int i2c_imx_isr_read(struct imx_i2c_struct *i2c_imx)
- {
- 	int result;
- 
--	result = i2c_imx_isr_acked(i2c_imx);
-+	result = i2c_imx_isr_acked(i2c_imx, i2c_imx->msg->flags & I2C_M_IGNORE_NAK);
- 	if (result)
- 		return result;
- 
-@@ -1249,7 +1256,8 @@ static int i2c_imx_dma_write(struct imx_i2c_struct *i2c_imx,
- 	if (result)
- 		return result;
- 
--	return i2c_imx_acked(i2c_imx);
-+	/* I2C_M_IGNORE_NAK messages never take the DMA path. */
-+	return i2c_imx_acked(i2c_imx, false);
- }
- 
- static int i2c_imx_prepare_read(struct imx_i2c_struct *i2c_imx,
-@@ -1268,7 +1276,7 @@ static int i2c_imx_prepare_read(struct imx_i2c_struct *i2c_imx,
- 		result = i2c_imx_trx_complete(i2c_imx, !use_dma);
- 		if (result)
- 			return result;
--		result = i2c_imx_acked(i2c_imx);
-+		result = i2c_imx_acked(i2c_imx, msgs->flags & I2C_M_IGNORE_NAK);
- 		if (result)
- 			return result;
- 	}
-@@ -1401,7 +1409,7 @@ static int i2c_imx_atomic_write(struct imx_i2c_struct *i2c_imx,
- 		result = i2c_imx_trx_complete(i2c_imx, true);
- 		if (result)
- 			return result;
--		result = i2c_imx_acked(i2c_imx);
-+		result = i2c_imx_acked(i2c_imx, msgs->flags & I2C_M_IGNORE_NAK);
- 		if (result)
- 			return result;
- 	}
-@@ -1416,7 +1424,7 @@ static int i2c_imx_atomic_write(struct imx_i2c_struct *i2c_imx,
- 		result = i2c_imx_trx_complete(i2c_imx, true);
- 		if (result)
- 			return result;
--		result = i2c_imx_acked(i2c_imx);
-+		result = i2c_imx_acked(i2c_imx, msgs->flags & I2C_M_IGNORE_NAK);
- 		if (result)
- 			return result;
- 	}
-@@ -1613,8 +1621,9 @@ static int i2c_imx_read(struct imx_i2c_struct *i2c_imx, struct i2c_msg *msgs,
- 	return ret;
- }
- 
-+/* I2C_M_STOP is not implemented between messages; leave it unhandled. */
- #define I2C_IMX_UNSUPPORTED_PROTOCOL_MANGLING_FLAGS \
--	(I2C_M_IGNORE_NAK | I2C_M_NO_RD_ACK | I2C_M_STOP)
-+	I2C_M_NO_RD_ACK
- 
- static int i2c_imx_check_msgs(struct i2c_msg *msgs, int num)
- {
-@@ -1625,6 +1634,12 @@ static int i2c_imx_check_msgs(struct i2c_msg *msgs, int num)
- 		if (msgs[i].flags & I2C_IMX_UNSUPPORTED_PROTOCOL_MANGLING_FLAGS)
- 			return -EOPNOTSUPP;
- 
-+		/* The receive path cannot handle zero-length reads. */
-+		if ((msgs[i].flags & I2C_M_RD) &&
-+		    (msgs[i].flags & I2C_M_IGNORE_NAK) &&
-+		    msgs[i].len == 0)
-+			return -EOPNOTSUPP;
-+
- 		if (msgs[i].flags & I2C_M_NOSTART) {
- 			/*
- 			 * NOSTART continues an already open frame. The first
-@@ -1712,6 +1727,10 @@ static int i2c_imx_xfer_common(struct i2c_adapter *adapter,
- 		use_dma = i2c_imx->dma && msgs[i].len >= DMA_THRESHOLD &&
- 			msgs[i].flags & I2C_M_DMA_SAFE &&
- 			!(msgs[i].flags & I2C_M_NOSTART);
-+
-+		/* A NAK'd byte may not generate a further DMA request. */
-+		if (msgs[i].flags & I2C_M_IGNORE_NAK)
-+			use_dma = false;
- 		if (msgs[i].flags & I2C_M_RD) {
- 			int block_data = msgs->flags & I2C_M_RECV_LEN;
- 
-
-base-commit: f7813d226107618bac34f311bd613b658215f2c6
 -- 
 2.34.1
 
