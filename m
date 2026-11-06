@@ -1,90 +1,44 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=176.9.212.161
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793976969;
-	b=TUzhy6lm5B9aMeSMT7u5J4mr331toK42ghSUwTNsmJiKvC93qKOJ75ZApxn/wLx49GPD
-	 yWY6NtEe/TNfktamPNgtPoErpSwFOuwAIRT9dfwPrdBSphBx5ks8vYpU0L4w3io8QKeZ2
-	 hw6qvKYMlD05j01IyDfc66lI8GQXSXbjtj54YTlEsZ+QctzpLyAJIY3hG7vgmuR9RTnuP
-	 c4TkS6jRvaDRDgxORbjbMvLWyINaZRfrQHeuXxHvx662sXVxRUIU4tJ5C2oNqdUBjLRmz
-	 8IumtMEj+FVrkuPnOi0Fjkoxdefo2OANrGzEKg1nkGlZ1bF0aaYm7djj7HTXsNBkybw==
+	t=1793979658;
+	b=dsGIy1rT2s7SOOdFi5qBDlXKwdmyny7Xz2XQrWEyHoY0wTuCatrEK8pDSZj56NZJ3q8G
+	 QJVa/7o9y8gEXmbijliZ+uDjwNht9T+efO73QSnO48QFCGp92pxbN1TIqbulTnWgCVzmy
+	 A5ZgD48F3EDzqtQPPAOcSExY1kmzdBwtGP+dn2d1A09C93z+54asg8tR+thDcOtraBPdK
+	 /G2Ujk8l1Ncl/EHtX0/+8CnupS8Fu3uzn+aNL15ALUtJOAGiDk3h2WIX9KBG8GQxMdxMx
+	 peDw2yxAWSgBuNYa1W3A0oUenk0ed4FGLWuFGVQGnSahIe5vNcM6f1nT7N24mY2O2bA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793976969;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=OZO2+7G4k6RkoglmAS6YzLo/PJ0QFmsDlFGqO/wIKqU=;
-	b=nSY7RnORv1S3MfATLwSd7G3bsYMDebSwS07morBbn9ksgO5oOUFNkk3QUY1cXHIMIi/s
-	 pPQm0lCPkcQdhOGQmSqJqWi5IJUC4X3/FkQqEkxXF4PxFUpjUw3+PobmWHHoTcII8rc91
-	 U+LCHAirf4FuxFe2tuDlSurwsY8ZckARoLJB8M+CKQvKPTJUM5gBlgP+K4d3A9NGTT/Mr
-	 J/5kd21H9Nd1iDsoV0IFqcml7IjdHeRyShvzcESk0RkTiGfIszPRl5dktXc/xAfsyA7f8
-	 vUxKic+mleax+mQSX8fySHURmmVIKZ0UlptOh1DnZuWRxVtpP5TfnqDN/fE/Q3n7xkQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793979658;
+	h=DMARC-Filter:Received:X-Virus-Scanned:Received:Message-ID:Date:
+	 MIME-Version:From:Subject:To:Cc:References:Content-Language:Autocrypt:
+	 In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=JOcKtDdKrrrqnffrtBgnIbOUJXZ/mc0mCRVoyD/pkfU=;
+	b=h08mrPb3a0QO4VAnZV+JluHehzFYDyTFQZ38faRjeSCc9d6EJfEOPokziHWHS5jxGGFl
+	 k7dPi4oiUeGOSPF52awfzIN/H1k/jiESa1e2jx5297nq8l0GeohcGW88STsrcqMyk0jFH
+	 e6izNPwMBtvhV2u88j1t9GUkN/rx+LJRshiJwxMveuv0t4dY430t7i+SnQ0AElp20QJ+u
+	 ANs9k+5QwdM+U7E6tOyig/yheAP7b3ZxqkrTaPmcjiGH/g+fXcPOH6s16AQPJ5esHMgRw
+	 oXFZZeyJzpiJxQawbIGzMN+pmTvpFkS0Dcg8g0TVIYGGQGBfjBhQ2XuV4z9cw5rs9aA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FL3b2pjP;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=none header.from=sysmocom.de;
+	spf=pass smtp.mailfrom=sysmocom.de;
+	arc=none smtp.remote-ip=176.9.212.161
+Received: from mail.sysmocom.de (mail.sysmocom.de [176.9.212.161])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A96DC606A32E;
-	Fri,  6 Nov 2026 14:56:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FL3b2pjP
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93AA21F0089F;
-	Fri,  6 Nov 2026 14:56:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793976968;
-	bh=OZO2+7G4k6RkoglmAS6YzLo/PJ0QFmsDlFGqO/wIKqU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=FL3b2pjP4eHV1sse1FCUItCjs7WSyqKVQlm1eN2jCUmHu0R9vI4R5catcSy55jdyJ
-	 JOUKfCl2j58V/ngp7J5DauX+QE/lEYXrvqts2JBOm7zCiE1X3LgkaKAE4hwBf//qMh
-	 dMWv5mavfztWIVeEzCj2sM9tYiuUon4hwvojwAJ07py/MpMYaIBA5Abkkz7U6FYXMR
-	 kaIIcwxbF+YfCiXG0Us9PryUlZddR4DitWpuhShM//KfOmihsx7KrjcX2AOetsROPv
-	 9k2ftDAZJ4aZaUcuhuECQ2WHN4fMepu+0d3lVLCbAX/MLhswgxSzLpi2Pgypz/jY8z
-	 Go2SN7cDi4krA==
-Date: Fri, 6 Nov 2026 15:56:05 +0100
-From: Thierry Reding <thierry.reding@kernel.org>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, Frank.Li@oss.nxp.com, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>, 
-	Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Russell King <linux@armlinux.org.uk>, 
-	Richard Genoud <richard.genoud@bootlin.com>, Nicolas Ferre <nicolas.ferre@microchip.com>, 
-	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Peter Griffin <peter.griffin@linaro.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
-	Laxman Dewangan <ldewangan@nvidia.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
-	Orson Zhai <orsonzhai@gmail.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Chunyan Zhang <zhang.lyra@gmail.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, Cunhao Lu <1579567540@qq.com>, 
-	Raul E Rangel <rrangel@chromium.org>, Yenchia Chen <yenchia.chen@mediatek.com>, 
-	Zhiyong Tao <zhiyong.tao@mediatek.com>, Carlo Caione <ccaione@baylibre.com>, Moteen Shah <m-shah@ti.com>, 
-	Kendall Willis <k-willis@ti.com>, Kartik Rajput <kkartik@nvidia.com>, Fan Wu <fanwu01@zju.edu.cn>, 
-	Nicolai Buchwitz <nb@tipi-net.de>, Karl Mehltretter <kmehltretter@gmail.com>, 
-	Stefan =?utf-8?B?RMO2c2luZ2Vy?= <stefandoesinger@gmail.com>, Shitalkumar Gandhi <shital.gandhi45@gmail.com>, 
-	Peng Fan <peng.fan@nxp.com>, Sherry Sun <sherry.sun@nxp.com>, 
-	John Ogness <john.ogness@linutronix.de>, Pan Chuang <panchuang@vivo.com>, Petr Mladek <pmladek@suse.com>, 
-	Robin Gong <yibin.gong@nxp.com>, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
-	Stephan Gerhold <stephan.gerhold@linaro.org>, Zhaoyang Yu <2426767509@qq.com>, 
-	"Nikola Z. Ivanov" <zlatistiv@gmail.com>, Haoxiang Li <haoxiang_li2024@163.com>, 
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>, Biju Das <biju.das.jz@bp.renesas.com>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Myeonghun Pak <mhun512@gmail.com>, 
-	Wenhua Lin <Wenhua.Lin@unisoc.com>, Cixi Geng <cixi.geng@linux.dev>, 
-	"open list:TTY LAYER AND SERIAL DRIVERS" <linux-kernel@vger.kernel.org>, 
-	"open list:TTY LAYER AND SERIAL DRIVERS" <linux-serial@vger.kernel.org>, 
-	"moderated list:ARM/Mediatek SoC support" <linux-arm-kernel@lists.infradead.org>, 
-	"moderated list:ARM/Mediatek SoC support" <linux-mediatek@lists.infradead.org>, 
-	"open list:ARM/FREESCALE IMX / MXC / LAYERSCAPE ARM ARCHIT..." <imx@lists.linux.dev>, 
-	"open list:ARM/QUALCOMM MAILING LIST" <linux-arm-msm@vger.kernel.org>, 
-	"open list:ARM/SAMSUNG S3C, S5P AND EXYNOS ARM ARCHITECTURES" <linux-samsung-soc@vger.kernel.org>, 
-	"open list:TEGRA ARCHITECTURE SUPPORT" <linux-tegra@vger.kernel.org>, 
-	"moderated list:ARM/STM32 ARCHITECTURE" <linux-stm32@st-md-mailman.stormreply.com>, vkoul@kernel.org
-Subject: Re: [PATCH 1/1] tty: serial: use dmaengine_desc_set_callback()
-Message-ID: <au3nMfg8QzGtaH-i@orome>
-References: <20261102175527.3957740-1-Frank.Li@oss.nxp.com>
- <aux2VKHnVLwq_wzi@orome>
- <auyQEVmA2KeGu9DL@ashevche-desk.local>
- <2e12316d-d079-471f-9c29-ef5fb765216a@kernel.org>
- <auygwakavp_Uk52V@orome>
- <auyr2lqlSegIXFnc@ashevche-desk.local>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B4A9606A329
+	for <imx@lists.linux.dev>; Fri,  6 Nov 2026 15:40:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0B4A9606A329
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sysmocom.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sysmocom.de
+Received: from localhost (localhost [127.0.0.1])
+	by mail.sysmocom.de (Postfix) with ESMTP id E56BDC89EDC;
+	Fri, 06 Nov 2026 15:40:47 +0000 (UTC)
+X-Virus-Scanned: Debian amavis at sysmocom.de
+Received: from mail.sysmocom.de ([127.0.0.1])
+ by localhost (mail.sysmocom.de [127.0.0.1]) (amavis, port 10024) with ESMTP
+ id EUcLqndlVV2m; Fri,  6 Nov 2026 15:40:47 +0000 (UTC)
+Message-ID: <ab9967d8-0d44-4457-9cba-6d2913e17977@sysmocom.de>
+Date: Fri, 6 Nov 2026 16:40:46 +0100
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -94,142 +48,109 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="hyjsm6c5ofwknahy"
-Content-Disposition: inline
-In-Reply-To: <auyr2lqlSegIXFnc@ashevche-desk.local>
+From: Oliver Smith <osmith@sysmocom.de>
+Subject: Re: No network for SolidRun LX2160A Clearfog CX with kernel 6.12.113
+To: Ioana Ciornei <ioana.ciornei@nxp.com>, Vincent Jardin <vjardin@free.fr>
+Cc: Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev
+References: <d074d5b8-7b86-454d-b948-83530fa82e97@sysmocom.de>
+ <CAOMZO5Arqfat5nO5Hi9Dq0TogvGAvmNLChE_8WrDGrNy1ha2Qg@mail.gmail.com>
+ <auSrssMDb33JZVN5@L30177.local>
+ <c4e8595b-1dcc-4fa9-9a9f-b23be2d79462@sysmocom.de>
+ <auX-VA8xlqSwLYGj@L30177.local>
+ <z2q7u34spdhyiqhrkem4b64fvdwnnbodgwzj4rynuepqyrym5q@nuy2zhhlqgpu>
+Content-Language: en-US
+Autocrypt: addr=osmith@sysmocom.de; keydata=
+ xjMEXqaMvBYJKwYBBAHaRw8BAQdAKlLfpb/UKvlUjGFwzzkDBT1fXdlqg+MaEG2+hTXDYUrN
+ IU9saXZlciBTbWl0aCA8b3NtaXRoQHN5c21vY29tLmRlPsKWBBMWCAA+AhsDBQsJCAcCBhUK
+ CQgLAgQWAgMBAh4BAheAFiEECfuANpg5IsWyQFcH6+DRJFm2BMUFAmDG9VIFCRTsa5YACgkQ
+ 6+DRJFm2BMUJ0wD+L0gpHABtBfkNQ7i0/qtMs5thoqt2yldxao6q31BBLAAA/iXUDIEYjQ0L
+ wsZRtiSdXNjbBfdT9boLdh4CY+TKwuYPzjgEXqaMvBIKKwYBBAGXVQEFAQEHQPGmG2/uQrDy
+ xalQoBnT1zdIbeg/xWLjl1AnOYGITnpEAwEIB8J4BBgWCAAgFiEECfuANpg5IsWyQFcH6+DR
+ JFm2BMUFAl6mjLwCGwwACgkQ6+DRJFm2BMXSRgD/f8twzpyQfpE+viVjtlOxsq0HCavXZqbW
+ VvIuvbyfSWQBAJhEIFF/fxmksu9r3FzixNQMOLc3EJgSwqvEYA28Db8O
+In-Reply-To: <z2q7u34spdhyiqhrkem4b64fvdwnnbodgwzj4rynuepqyrym5q@nuy2zhhlqgpu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+
+Hi Iona,
+Hi Vincent,
+
+On 11/2/26 15:20, Ioana Ciornei wrote:
+> On Sat, Oct 31, 2026 at 03:42:28PM +0100, Vincent Jardin wrote:
+  > […]
+>> It seems to be related to the backport of:
+>>    https://lore.kernel.org/all/20260401144508.3062019-1-ioana.ciornei@nxp.com/
+  > […]> The 0x3F value means "MC layout process error".
+> 
+> Please look into the MC firmware's log. It should help in determining
+> what exactly is not ok in the DPL file processing.
+> 
+> 	$ cat /dev/dpaa2_mc_console
+
+With both the old and the new kernel I get the exact same log:
+> root@lx2-1:~# cat /dev/dpaa2_mc_console
+> [W, PLATFORM]  UART print failed, all debug data will be printed to buffer.
+> [E, open_device:2371, DPMAC]  no device
+> [E, dpni_probe_cb_v1:4704, DPNI]  Can't create DPNI 0001
+> [E, subnode_process:155]  Probing module 'dpni' return error code -19. Continue dpl processing...
+> [E, open_device:2371, DPMAC]  no device
+> [E, dpni_probe_cb_v1:4704, DPNI]  Can't create DPNI 0002
+> [E, subnode_process:155]  Probing module 'dpni' return error code -19. Continue dpl processing...
+> [E, open_device:2371, DPMAC]  no device
+> [E, dpni_probe_cb_v1:4704, DPNI]  Can't create DPNI 0003
+> [E, subnode_process:155]  Probing module 'dpni' return error code -19. Continue dpl processing...
+> [E, open_device:2371, DPMAC]  no device
+> [E, dpni_probe_cb_v1:4704, DPNI]  Can't create DPNI 0004
+> [E, subnode_process:155]  Probing module 'dpni' return error code -19. Continue dpl processing...
+> [E, open_device:2371, DPMAC]  no device
+> [E, dpni_probe_cb_v1:4704, DPNI]  Can't create DPNI 0005
+> [E, subnode_process:155]  Probing module 'dpni' return error code -19. Continue dpl processing...
+> [E, open_device:2371, DPMAC]  no device
+> [E, dpni_probe_cb_v1:4704, DPNI]  Can't create DPNI 0006
+> [E, subnode_process:155]  Probing module 'dpni' return error code -19. Continue dpl processing...
+> [E, open_device:2371, DPMAC]  no device
+> [E, dpni_probe_cb_v1:4704, DPNI]  Can't create DPNI 0007
+> [E, subnode_process:155]  Probing module 'dpni' return error code -19. Continue dpl processing...
+> [E, open_device:2371, DPMAC]  no device
+> [E, dpni_probe_cb_v1:4704, DPNI]  Can't create DPNI 0008
+> [E, subnode_process:155]  Probing module 'dpni' return error code -19. Continue dpl processing...
+> [E, open_device:2371, DPMAC]  no device
+> [E, dpmac_probe_cb:766, DPMAC]  Can't create DPMAC 0002
+> [E, subnode_process:155]  Probing module 'dpmac' return error code -19. Continue dpl processing...
+> [E, open_device:2371, DPMAC]  no device
+> [E, dpmac_probe_cb:766, DPMAC]  Can't create DPMAC 0012
+> [E, subnode_process:155]  Probing module 'dpmac' return error code -19. Continue dpl processing...
+> [E, dpl_process:527]  Error while parsing 'connections'. Skip processing the rest of DPL.
+> [E, main:186]  DPL processing failed; continuing...
+> Running MC app, waiting for events ...
+
+I'm not familiar with the MC firmware, but all this explains what
+happens, there's the firmware error and then because of the mentioned
+patch, fsl_mc_bus_probe() aborts early and then I get no ethernet
+device.
+
+As mentioned earlier, dmesg also has:
+>> [    0.107175] fsl_mc_bus 80c000000.fsl-mc: fsl-mc: MC boot completed with error 0x3f
+>> [    0.114747] fsl_mc_bus 80c000000.fsl-mc: probe with driver fsl_mc_bus failed with error -22
+
+Could you give me a pointer for getting rid of the firmware errors?
+
+(And I do wonder how many other people may run into the same problem,
+maybe it would be better to just print a warning instead of aborting
+there...?)
+
+Thanks for all the help everybody!
+
+Best regards,
+Oliver
+
+-- 
+- Oliver Smith <osmith@sysmocom.de>            https://www.sysmocom.de/
+=======================================================================
+* sysmocom - systems for mobile communications GmbH
+* Siemensstr. 26a
+* 10551 Berlin, Germany
+* Sitz / Registered office: Berlin, HRB 134158 B
+* Geschaeftsfuehrer / Managing Director: Harald Welte
 
 
---hyjsm6c5ofwknahy
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH 1/1] tty: serial: use dmaengine_desc_set_callback()
-MIME-Version: 1.0
-
-On Thu, Nov 05, 2026 at 06:16:26PM +0200, Andy Shevchenko wrote:
-> On Thu, Nov 05, 2026 at 04:34:15PM +0100, Thierry Reding wrote:
-> > On Thu, Nov 05, 2026 at 03:35:20PM +0100, Krzysztof Kozlowski wrote:
-> > > On 05/11/2026 15:17, Andy Shevchenko wrote:
-> > > >>> ---
-> > > >>>  drivers/tty/serial/8250/8250_dma.c  | 6 ++----
-> > > >>>  drivers/tty/serial/8250/8250_mtk.c  | 3 +--
-> > > >>>  drivers/tty/serial/8250/8250_omap.c | 6 ++----
-> > > >>>  drivers/tty/serial/amba-pl011.c     | 6 ++----
-> > > >>>  drivers/tty/serial/atmel_serial.c   | 6 ++----
-> > > >>>  drivers/tty/serial/fsl_lpuart.c     | 6 ++----
-> > > >>>  drivers/tty/serial/imx.c            | 6 ++----
-> > > >>>  drivers/tty/serial/msm_serial.c     | 6 ++----
-> > > >>>  drivers/tty/serial/mxs-auart.c      | 6 ++----
-> > > >>>  drivers/tty/serial/pch_uart.c       | 6 ++----
-> > > >>>  drivers/tty/serial/samsung_tty.c    | 6 ++----
-> > > >>>  drivers/tty/serial/serial-tegra.c   | 6 ++----
-> > > >>>  drivers/tty/serial/sh-sci.c         | 9 +++------
-> > > >>>  drivers/tty/serial/sprd_serial.c    | 3 +--
-> > > >>>  drivers/tty/serial/stm32-usart.c    | 6 ++----
-> > > >>>  15 files changed, 29 insertions(+), 58 deletions(-)
-> > > >>
-> > > >> Reviewed-by: Thierry Reding <treding@nvidia.com>
-> > > >=20
-> > > > Krzysztof, now look at this case. I would argue that this is even l=
-ess fit than
-> > > > # subpart(s) case, because it might imply anything. Again the probl=
-em is the
-> > > > bundle, and for such a case (when tons of independent changes are b=
-undled in
-> > > > the same stuff, *every* Rb tag has to be explained on what has been=
- reviewed!
-> > >=20
-> > > I think this case is obvious - Thierry reviewed this patch and gives =
-Rb
-> > > tag, according to reviewer's statement of oversight. I don't see a
-> > > problem here or what is questionable.
-> >=20
-> > Correct. I looked at this whole thing and approve of it.
->=20
-> for this type of bundles it's not obvious.
-
-I think it's obvious if you interpret the tag the way it's described in
-the process documentation. If everyone has their own interpretation of
-what it means we have a whole other set of problems.
-
-> > If I review only parts of something at most I'll give an Acked-by.
->=20
-> Which is strange, don't you find it? The review is not an acknowledgement.
-> These are two different operations.
-
-I think review is a stronger form of acknowledgement.
-
-> > I don't think I've ever done partial reviews. I don't think you can rea=
-sonably do
-> > that
-> > because if you don't know what other parts of a patch are doing, how can
-> > you say that a specific hunk does what it's supposed to.
-> >=20
-> > Patches are an atomic set of changes,
->=20
-> Of course, not always the case. This patch is a bundle of atomic changes
-> in a single drop.
-
-That seems like a slippery slope. It means we now need to interpret what
-atomic means. If a commit is not atomic, that to me is grounds for
-rejection. Maybe atomic is the wrong term here. The patch to me is still
-one logical change because it applies the same transformation to all
-these different drivers, and therefore it doesn't require to be split up
-explicitly.
-
-> > so I don't think it makes sense to review only parts of it. If you can'=
-t be
-> > bothered to look at the entirety, that's absolutely fine of course, but=
- in
-> > that case don't provide a Reviewed-by.
-> >=20
-> > Or, I suppose, you do and then you bear the consequences of lending
-> > credibility to something that you haven't looked at or understood.
->=20
-> No, I review *my* part, that I understand and I confirm.
-
-I think we need to distinguish between various levels of complexity. For
-this particular case there's not much to understand, it's purely a
-transformation, so you could very well review all the patch hunks
-without needing more context as to the drivers.
-
-If there were more complexity to this, then I would also argue that it'd
-be better to have separate patches per driver. Most of the time
-submitters tend to do that all by themselves because it's almost common
-sense. But like I said, I don't think that applies here.
-
-Also, I'd like to remind everyone that this is a community project and
-if everyone is only ever going to review *their* part, it's all going to
-deteriorate over time. Again, I sympathize with people not having time
-to extensively review everything. However, for cases like this once you
-already load enough context to review *your* part, you might as well
-spend the extra minute or two reviewing the other parts, which is all
-that's necessary to make this a full review.
-
-Of course it's a bit questionable that a full review is really needed
-here, in which case an Acked-by is really all you need.
-
-Thierry
-
---hyjsm6c5ofwknahy
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmrt6oIACgkQ3SOs138+
-s6FcVxAAv0rp5SLtEPRjUT//i58IZP/aVR/4ZYrRNo0F1Y3ECYjFQ94qa1m8tvTg
-X2/GMdlycFs5dgwdbVVhbHB8wK89n1ABMjH9gnkWFCvpDk6VJ4ux8FuzyI08tukU
-l6sfyAptqb6O97trV6Rzj1UYvvampY6H//QbmE1GAnMiujp5mx7qabeoL0dbrJjE
-WGY+IBsyqimxNJ/6A6ZcIzj53KzzqDnJQeMkiEFWjCZTjWk5CSOpKi/DFryfdatD
-O7mSJzUp0NYWzs9KPEYHxuiAlTBf4SD9tjiEGU5poqnwUqyWoinTCJJRGH5np4tM
-f1zGTtGY3XFKA9nBY3i7wODHqGdZNmn7G4+d60LV3C5uS96ooYS6T55asYun1vLO
-rpTeLmAC7ClIp2hVDTLziEFwayuQlz30TGVAPDJQr0ViyE5VIgNZQXHaYfqqMh8T
-vXBMJH6255KbTCjsv6Kc7fvGxoCOWZ6SSMWuOFakVKJkbgaDDBunkckjNJQh4lCk
-g4c8fwM+4J859WhpjGafYnSor+zhfOU6YRZWCcNOEXJqPof567IlKShI56Wt9tgr
-UzHb3L6+OzTEd+MKeNWdvD8RqSAAt1yv5Fks2TM69qH/rxD81y6ewIqQE3GryhmZ
-w5jNiIbDq4g1IsBNqnS0LXMC1pPNTZMY8IF0l//XMWnNwl0Z8Vg=
-=xdRj
------END PGP SIGNATURE-----
-
---hyjsm6c5ofwknahy--
