@@ -1,79 +1,47 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793949196;
-	b=ZzpHCyHi5MsT6mAe7Qg7bYLjM9/3po5ocJVO2/VekJiHEaHZDcFymWSzzJd0UC/wPeB0
-	 DmNSbv4pRnkfHlBqyyUF+RhBXfapXFlNBPi/NSEU4JLgSQMRm5tX4p/Pk8k9du1nFsvOB
-	 vDiuBeqnnSNJW+C6nTroamo+FwZHOK6mVWf67g/aqB27F4r5aLSP3dYQoqBbMmpZNacNo
-	 1lBRe2mzY90PN1+5LWleOe8J/DKam8OzEOCk8WHUX91zoRGy0LEI0EqFsnTc4a38chLAG
-	 6uNF1WXerGWo5EUZyC4YJewOORjc9/c3/q/ynNhm3a61NFb4D7nByN6w3+pLBLi7nbQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793949196;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=z/ZZ/v2ozrIFzFDjrSLFseMeWg/94kHqZgMwNJDg2q4=;
-	b=Tu7I/NviFQq6Bh7+KObi/nnhS+hbVMzenHmJXYkUeFSgN8MM+EONPW+ZJ3KWU/lGiOpN
-	 /dHqhkcqlxpyib0p6+o40mUNrBqQnh+2zopVcbtVil1lW8lDOaSwuCFULreWqIs2dC7VA
-	 vYCJZ+ZLainB0zUFqIhTzHKgxvU8TgcOxszx3Z8/vHzp2nvDNXaPegX8ASiImDaippbsz
-	 Bc2rcOvh/WhEM52+UhkZ4Sm8sa1aag9m2v88r1SmArmGe2zTHKXxF1p7v+/MlNNYt5LE0
-	 MoYQ7/2dGZBX44keakAmJUIPfUfuTBt9Yp3YvkicDwGXxVbBYcx2boHWFuVD/v71jaA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="Tj4eP/rS";
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793949657;
+	b=5lfroE6E7YPHsmLre9NCQxZffmGUCH1C6tmquw3UM049ARQ6xdEHK/saFQRFFaYy1rGP
+	 6PDH9RmAvUdlxbn2BPGef3+M7wV+yI2SPOTWSLSWfTFcT3DfvsF1SSed1tO4zVb6B1b96
+	 VjiDZlLKiJcapkrFDaX2l4StZiMgoI5OnmMMtm8UZdZpOqsHq+z8XDS53nlKNWNJdK7pe
+	 1sUW0ThxlEFPQMUJWOaOEdt1fl8GZ3Nx9tKr1Dcjv+cCqM0zBMabYt6wAz6x1sFH26DYY
+	 526r1GbjZdyRhfg6A3gSRnjm/lpv9g7VMEkRnj3cVfv0yIKaupMJFiRcCymayK3JpdA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793949657;
+	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:From:Content-Language:Autocrypt:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=TLxQ030grPqVQKle1I3f5ZVMbm7DkmL6NggJPeFwZYM=;
+	b=xxyAXaRa7kcWUMjQ8EcbAdeurJ4ZqJeCQM7otjot1ZL4x/LUDcfkdnbSwq1viY8PrkWS
+	 Of2aum2CUzxIx2W6JO0u3Tddz3eyBofqWnlykme4qKV8K3MAnZ0htLYyEN4gyr9UUhQol
+	 X01iLYqyX0ELR1uZbyHqlcmzHKvromwOIIcHQb7F13ptuTG1Y/0Zi/Tdy3ACs/Q5s4wqc
+	 FFhTy/7l4EyaUdDviK9R64Wzrhshvv+jTI1XK8zKpolCnBE4zJoNMjyFtW+mMuzAom1HC
+	 JGoNeDl1bX9Lf/xtes8lz2OtZUt8K9eUj/s8GoqDgeVJFwE408nRxufFxaM5lBdosoQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HnKlm1fk;
+	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1C83606A33B;
-	Fri,  6 Nov 2026 07:13:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9E37606A326;
+	Fri,  6 Nov 2026 07:20:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Tj4eP/rS
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1793949195;
-	b=MkQZ68AHze0Xfm1F/RbPek8pf33GX7SQVdWuViwlISyA4gxUsM4wM1xpiLwntkE5hhvw
-	 4NxubdzmfDu+KbL/JvdBDfuEBVy26tXKYG1G6v1aXMiDVoYraiyCkBD6MhEgcRVArUHCp
-	 +c4ruE0jFoKVRImEfzKyHT40UTzCQED6JASS6EXrjRXEU2cOOgOZ/xvDvRPwAWd+42gkw
-	 TQP7luBqmiEWRu5o9G+9pbJxKcPCeRJ2SY/dRXZXqgBENnUzF17PbGRGdcx8mH8Z7WF2q
-	 EA0gf2+cgw4O1/jUWtGHLVRhocQjm6r6RIdeb/pQXG+FfiptTOCLUQGpoCZGg2rBfCA==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1793949195;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=z/ZZ/v2ozrIFzFDjrSLFseMeWg/94kHqZgMwNJDg2q4=;
-	b=Xopdpj4VYGxioNFZqfIcj4ok1F7jTuq/ckUeJWJTHKoW4Tn3oDrpgKGu/1DhJGsqcjER
-	 U+POpKH2zLG9aGY4z9uQxnjDAmezV3VYdAmlQIXyb5+3iCHn5XoDZMVEgkedlaYvkn9Tj
-	 kqc0on2FytD8EAbY4+kokhFtoNaZaoKFI6qY1gtcKPDo2UiWoSmrC4RkYN2nBETDLWBhf
-	 Gn63rXYtTpLVoGLVnJbvxRZO1hN98NnVy/4iuYnIxOy4/STZvMhJZMVOTzj10hEUZuvSh
-	 7D0WWANQOSNyoN/jhtcJd2K4BWvihli1BidI/vMTIE/JfYGPEdIXpOgqjpS/kCLq9JQ==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 841861F008A3;
-	Fri,  6 Nov 2026 07:13:14 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HnKlm1fk
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1602D1F008A2;
+	Fri,  6 Nov 2026 07:20:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793949195;
-	bh=z/ZZ/v2ozrIFzFDjrSLFseMeWg/94kHqZgMwNJDg2q4=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=Tj4eP/rSdBUkUPuoM1W9YYwEfrRZJBBBzlJodJHuEK+LZQjWEVWjIRqvKTYIYRgET
-	 AKBM9GHVyKGn9q8ryheAE+VpvMrzNfOCIqpWfdhOnCkPGSZkHQl+rh4rKw4JJAIZWP
-	 ++rs853Vs2jpGu5x46/Ad5SLORAaA8XR+GnDaTCKoHfEaxtCadmHYdCu6siryECF0w
-	 oAo/F5LMYnpfJm+gaDSSfIxruCETRuIzs/QgIRux9k/eb+QtpF9gD696as/SuZravG
-	 VKRHRrq9+BHgejKyO/uaXock2tYqpG32hWATGvRNZQH+wh26q5QudokPGYhBZJaO7Z
-	 /b/LjQ9KOgv1Q==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 12C9545C3F;
-	Fri,  6 Nov 2026 07:13:14 +0000 (UTC)
-From: Junyi Zhao via B4 Relay <devnull+junyi.zhao.amlogic.com@kernel.org>
-Date: Fri, 06 Nov 2026 15:13:09 +0800
-Subject: [PATCH v3 2/2] dt-bindings: i3c: silvaco,i3c-master: Add Amlogic
- A9 support
+	s=k20260515; t=1793949656;
+	bh=TLxQ030grPqVQKle1I3f5ZVMbm7DkmL6NggJPeFwZYM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=HnKlm1fkWjrAd2obKBMx53zoZMhRB3reJtxSd9V8FiZ/qDbdBzew2qjqngXJWZodg
+	 ZrxL8hStLfApH9H911w7FToDUA1GpmMVoJkSsONj2M5bbysX+NtQIgHJzHcmaJAb9X
+	 g1AUmg/C5Qef9/gyECHRfnnZmqsa5alBldf4udVebxyN6XSFeWyQWwwSKBVFk9ezLU
+	 KYRd3em7KfwseIV6ZRtKI+zbb2t+4xk5CqnB2gFndThakx0XYJem3QIalRRGq2ziHl
+	 YTKDZLh6nQm00mY5EiNKU+gleL4bQZnec55Jt3mBu+cYrc+ImpggHYwgOOpIC2k5xG
+	 LMIFjqElzryXg==
+Message-ID: <3dc7277e-2f6b-44a6-9085-2e33d989c1c9@kernel.org>
+Date: Fri, 6 Nov 2026 08:20:33 +0100
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -83,132 +51,185 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261106-a9_i3c-v3-2-804b69b9095b@amlogic.com>
-References: <20261106-a9_i3c-v3-0-804b69b9095b@amlogic.com>
-In-Reply-To: <20261106-a9_i3c-v3-0-804b69b9095b@amlogic.com>
-To: Alexandre Belloni <alexandre.belloni@bootlin.com>, 
- Frank Li <Frank.Li@nxp.com>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Neil Armstrong <neil.armstrong@linaro.org>, 
- Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
- Miquel Raynal <miquel.raynal@bootlin.com>, Kees Cook <kees@kernel.org>, 
- "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc: linux-i3c@lists.infradead.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-amlogic@lists.infradead.org, imx@lists.linux.dev, 
- linux-hardening@vger.kernel.org, xianwei.zhao@amlogic.com, 
- Kelvin.Zhang@amlogic.com, Junyi Zhao <junyi.zhao@amlogic.com>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1793949192; l=3008;
- i=junyi.zhao@amlogic.com; s=20260924; h=from:subject:message-id;
- bh=EbBk034GgwE/lc2KD1CPaTtRovIqCoOmYzsKMI0uw94=;
- b=PL+f2g6aiQBoYwgwUjM03HWozXwwqI0y/oLp6OneE8FG5gPq4DZyr64D1ghA4gICEt8xHaQ1y
- 9pNv4KLHqkuDz3THgyulcyimgZl9v3xIkMzMNoMEjC8oF7YiQIRy8Ft
-X-Developer-Key: i=junyi.zhao@amlogic.com; a=ed25519;
- pk=hiL5PjGIksGFiWvEx9J3MhQqU/ro6vNbj72NIw4bbvA=
-X-Endpoint-Received: by B4 Relay for junyi.zhao@amlogic.com/20260924 with
- auth_id=1054
-X-Original-From: Junyi Zhao <junyi.zhao@amlogic.com>
-Reply-To: junyi.zhao@amlogic.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/1] spi: use dmaengine_desc_set_callback()
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Frank.Li@oss.nxp.com, Mark Brown <broonie@kernel.org>,
+ Nicolas Ferre <nicolas.ferre@microchip.com>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+ Radu Pirea <radu_nicolae.pirea@upb.ro>, CL Wang <cl634@andestech.com>,
+ Ryan Wanner <ryan.wanner@microchip.com>,
+ Florian Fainelli <florian.fainelli@broadcom.com>, Ray Jui
+ <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>, Vladimir Oltean
+ <olteanv@gmail.com>, Frank Li <Frank.Li@nxp.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Han Xu <han.xu@nxp.com>,
+ Haibo Chen <haibo.chen@nxp.com>, Linus Walleij <linusw@kernel.org>,
+ Daniel Mack <daniel@zonque.org>, Haojian Zhuang <haojian.zhuang@gmail.com>,
+ Robert Jarzmik <robert.jarzmik@free.fr>, Heiko Stuebner <heiko@sntech.de>,
+ Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
+ Andi Shyti <andi.shyti@kernel.org>, Tudor Ambarus
+ <tudor.ambarus@linaro.org>, Peter Griffin <peter.griffin@linaro.org>,
+ Alim Akhtar <alim.akhtar@samsung.com>, Yixun Lan <dlan@kernel.org>,
+ Troy Mitchell <troy.mitchell@linux.spacemit.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Alain Volmat <alain.volmat@foss.st.com>, Chen-Yu Tsai <wens@kernel.org>,
+ Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Samuel Holland <samuel@sholland.org>, Laxman Dewangan
+ <ldewangan@nvidia.com>, Thierry Reding <thierry.reding@kernel.org>,
+ Jonathan Hunter <jonathanh@nvidia.com>,
+ Sowjanya Komatineni <skomatineni@nvidia.com>,
+ Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ "open list:SPI SUBSYSTEM" <linux-spi@vger.kernel.org>,
+ "moderated list:ARM/Microchip (AT91) SoC support"
+ <linux-arm-kernel@lists.infradead.org>,
+ open list <linux-kernel@vger.kernel.org>,
+ "moderated list:BROADCOM BCM2711/BCM2835 ARM ARCHITECTURE"
+ <linux-rpi-kernel@lists.infradead.org>,
+ "open list:FREESCALE DSPI DRIVER" <imx@lists.linux.dev>,
+ "open list:ARM/QUALCOMM MAILING LIST" <linux-arm-msm@vger.kernel.org>,
+ "open list:ARM/Rockchip SoC support" <linux-rockchip@lists.infradead.org>,
+ "open list:RENESAS RZ/V2H(P) RSPI DRIVER"
+ <linux-renesas-soc@vger.kernel.org>,
+ "open list:SAMSUNG SPI DRIVERS" <linux-samsung-soc@vger.kernel.org>,
+ "open list:RISC-V SPACEMIT SoC Support" <linux-riscv@lists.infradead.org>,
+ "open list:RISC-V SPACEMIT SoC Support" <spacemit@lists.linux.dev>,
+ "moderated list:ARM/STM32 ARCHITECTURE"
+ <linux-stm32@st-md-mailman.stormreply.com>,
+ "open list:ARM/Allwinner sunXi SoC support" <linux-sunxi@lists.linux.dev>,
+ "open list:TEGRA ARCHITECTURE SUPPORT" <linux-tegra@vger.kernel.org>,
+ Mukesh Kumar Savaliya <mukesh.savaliya@oss.qualcomm.com>,
+ Wolfram Sang <wsa+renesas@sang-engineering.com>,
+ Thierry Reding <treding@nvidia.com>
+References: <20261104152253.3279052-1-Frank.Li@oss.nxp.com>
+ <autj6pr_bPaul3w0@ashevche-desk.local>
+ <7f96599b-681d-4963-bdda-1274371ac84f@kernel.org>
+ <f1fa853d-1703-411d-b2d2-0fb0b176c2fa@kernel.org>
+ <autqC143h7Qf1R9H@ashevche-desk.local>
+ <9e39502a-dd17-4fa2-98a3-9019523cb5e8@kernel.org>
+ <auuYcS7-YqJKcUbE@ashevche-desk.local>
+ <63c24437-4261-4a51-be7e-31ac0759a095@kernel.org>
+ <auxGom0XR-Hax9b3@ashevche-desk.local>
+ <00390a20-7630-4066-9779-06c8f915a176@kernel.org>
+ <auxNmE8yZVP-wL2e@ashevche-desk.local>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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
+In-Reply-To: <auxNmE8yZVP-wL2e@ashevche-desk.local>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-From: Junyi Zhao <junyi.zhao@amlogic.com>
+On 05/11/2026 10:34, Andy Shevchenko wrote:
+> On Thu, Nov 05, 2026 at 10:07:30AM +0100, Krzysztof Kozlowski wrote:
+>> On 05/11/2026 10:04, Andy Shevchenko wrote:
+>>> On Wed, Nov 04, 2026 at 11:54:56PM +0100, Krzysztof Kozlowski wrote:
+>>>> On 04/11/2026 21:41, Andy Shevchenko wrote:
+>>>>>>
+>>>>>> But sure, if we want to play such numbers game, I will be sending
+>>>>>> reviews for single lines.
+>>>>>
+>>>>> I'm not playing anything. The problem is that the patch unites the files that
+>>>>> have distinct maintainers and unrelated to each other code. That's why in the
+>>>>> subsystems I maintain, I almost always require to split on per-driver basis.
+>>>>> Yes, exceptions are possible, but has to be quite rare.
+>>>>
+>>>> That's independent problem. Patch could be split, but it was not. Since
+>>>> it was not, receiving end should act accordingly, e.g. when performing
+>>>> incomplete review of only part of the patch, do not call that entire
+>>>> patch was reviewed by giving the Rb tag, but give Ack tag.
+>>>
+>>> No, (partial) Rb != Ack.
+>>
+>> It is, because there is no partial Rb tag.
+>>
+>> There is partial review, but not partial Rb tag, please see exactly
+>> submitting patches. It repeats the same in three separate places:
+>>
+>> "Acked-by.... user may not have carried out a technical review of the
+>> patch,yet they may be satisfied ..."
+>>
+>> "Reviewed-by:, instead, indicates that the patch has been reviewed and
+>> found acceptable according to the Reviewer's Statement:"
+>>
+>> Above important: "THE PATCH"
+>>
+>> It is not "the patch or its parts"
+>>
+>> Further:
+>>
+>> "I state that:
+>> (a) I have carried out a technical review of *this* patch to evaluate
+>> its appropriateness and readiness for inclusion into  the mainline kernel."
+>>
+>> And further:
+>>
+>> "A Reviewed-by tag is a statement of opinion that *the patch* is an"
+>>
+>> In three places it is THIS or THE patch. Complete (exhaustive) list of
+>> options what can be reviewed to get the credit and give statement of
+>> oversight.
+>>
+>> Statement of oversight DOES NOT include "part of the patch".
+> 
+> So, it means I MUST from now on REQUIRE a split before reviewing.
+> Right?
 
-Amlogic A9 SoCs integrate the Silvaco I3C master IP in two domains:
-the EE-domain instance (amlogic,a9-i3c) takes "pclk" and "fast_clk"
-like the NXP integration, while the AO-domain instance
-(amlogic,a9-ao-i3c) lives in the Always-On domain and generates its
-bus clock from a divider inside the controller's own register space,
-so there is no external fast clock and only "pclk" is exposed.
+Why "from now on"? The reviewer's statement of oversight is worded like
+that since beginning? Also nothing stops you from reviewing parts. We
+discuss the statement of oversight and its result: giving Rb tag. The Rb
+tag is not output of some review, but agreement with statement of
+oversight and performing what is stated there.
 
-The two instances differ from the vanilla Silvaco/NXP integrations in
-clock topology and required init, so the driver matches them by
-dedicated compatibles instead of the "silvaco,i3c-master-v1"
-fallback: a fallback would bind the generic driver data, which
-neither programs the fast clock rate nor handles the AO internal
-divider, and the variant would then fail to work.
-
-Add both compatibles to the schema without the fallback, following
-nuvoton,npcm845-i3c, and use per-compatible if/then conditionals to
-enforce the clock counts: two clocks for the EE-domain instance and
-one clock for the AO-domain instance.
-
-Signed-off-by: Junyi Zhao <junyi.zhao@amlogic.com>
----
- .../bindings/i3c/silvaco,i3c-master.yaml           | 26 ++++++++++++++++++++--
- 1 file changed, 24 insertions(+), 2 deletions(-)
-
-diff --git a/Documentation/devicetree/bindings/i3c/silvaco,i3c-master.yaml b/Documentation/devicetree/bindings/i3c/silvaco,i3c-master.yaml
-index 853092f75..d892d42be 100644
---- a/Documentation/devicetree/bindings/i3c/silvaco,i3c-master.yaml
-+++ b/Documentation/devicetree/bindings/i3c/silvaco,i3c-master.yaml
-@@ -13,6 +13,8 @@ properties:
-   compatible:
-     oneOf:
-       - enum:
-+          - amlogic,a9-i3c
-+          - amlogic,a9-ao-i3c
-           - nuvoton,npcm845-i3c
-           - silvaco,i3c-master-v1
-       - items:
-@@ -28,14 +30,14 @@ properties:
-     maxItems: 1
- 
-   clocks:
--    minItems: 2
-+    minItems: 1
-     items:
-       - description: system clock
-       - description: bus clock
-       - description: other (slower) events clock
- 
-   clock-names:
--    minItems: 2
-+    minItems: 1
-     items:
-       - const: pclk
-       - const: fast_clk
-@@ -70,15 +72,35 @@ allOf:
-         compatible:
-           contains:
-             enum:
-+              - amlogic,a9-i3c
-               - nxp,imx94-i3c
-               - nxp,imx95-i3c
-     then:
-       properties:
-         clocks:
-+          minItems: 2
-           maxItems: 2
-         clock-names:
-+          minItems: 2
-           maxItems: 2
- 
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - amlogic,a9-ao-i3c
-+    then:
-+      properties:
-+        clocks:
-+          maxItems: 1
-+          description:
-+            The "ao" variant is the controller instance in the Always-On (AO)
-+            domain, which has no separate bus clock and derives the
-+            bus clock from an internal divider.
-+        clock-names:
-+          maxItems: 1
-+
- unevaluatedProperties: false
- 
- examples:
-
--- 
-2.42.0
+You can review parts, but you do not provide Rb tag.
 
 
+Best regards,
+Krzysztof
