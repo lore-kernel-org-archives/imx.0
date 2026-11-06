@@ -1,47 +1,71 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.209
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793952060;
-	b=TTkuIy8Ij1ntoFzNTWp4wZ/P44TE8lKPlzxsvSXZMIvW/piyIhH01eX7EFew8tpytJfP
-	 feEeXpHMNtl1XL0Xr+yCS0vxYxNlzC9mJdMcuT1jUaVB41ExVdhFcZugph6KCs0TbW8xn
-	 fD5qxSo4uvIwKYvCNCfq6OJ5GVe5nJ7uDz/ydpy9ekw1MDHbcG5D8b4Q7tBccgw4qCFK7
-	 LGYA/U8Pe3L7PR5dAq1jND8BKempZOjJm8oSPwvvEbzf1vVXihN8PwUQYzE80H0+RvKng
-	 jkb5EGvFIRKe34qhNicPCGdiopmIT2rTqezNi0GTlTfLhFOH66Z/bKVRPVUyxqoVL4g==
+	t=1793955449;
+	b=c2JzOvu12Vz+MMh/ifZofi6rNvlJQWGPs9LAjVLvIT9Yt+UP9u3l5DQ1I0oLNoJqLtNF
+	 +MWfHusEQbnYVcG91yTk5/hMmrjQJmBxvAg7t5ArH4xYtahwq5Sw4W6hZIuEd/Kguhbeb
+	 guT2f8TglVHCWiYwbb04uygtILJCbvdtV45zblTq0nCJgOK4VF4WiVEoe0FOdJPDhHLSv
+	 6cvoIHm4RO5iFw+59y9Rma+r3VDRk0DrIN7qHS7EhsMWyRy3SUbI0onzKC8ZMP737/71T
+	 +lfGliH1eBs7I0yPLtASc8F9+fwi1f1A73s05CJtmr4fmHUm+4K14eopGnLC3BbBRgA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793952060;
-	h=DMARC-Filter:Received:Subject:From:To:Cc:Date:Message-ID:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version:X-CM-TRANSID:
-	 X-Coremail-Antispam:X-Originating-IP:X-CM-SenderInfo;
-	bh=mKSuIXJLtZJlgvRY/t+P/ubAjU+hVN+y583sjkS57DM=;
-	b=PmrXYSaSRiC0rI5WVAf+kYKVDxGk/hewUhaoo40abcIdozLOjpC+4r/xDZC4sk1EfIPr
-	 c0TknOyV6iFJkwyLKtZrripBAfT2Q3EqevP0TrwZEwqCffaNoQly545hd8USXIAdwQTH3
-	 1KkogcLS8xOuKZ7DH04/8tPqpCC7+kV5qwR7HdWDCKRQsgMDWes5K7BwihiB7lMJjPjgB
-	 vSEpghI4Hxig2laU4YEo8I8GuBbgFuf9+3lT4FPdNWAQo9lXrRe3wAMOyodv/lBaUIXvN
-	 iOqaLf6fxaeE0dD2uqemwIiholnRNLsp5xtutsxQazu4zZWOgCsQfdT9BqGjSdJ1IxA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793955449;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=7tnDwOUyL+9+3EBd25a2jQS8D7TqqGxOJ/LMYNK67W8=;
+	b=1c9h2TCOeH9xsz+ZgfhzKQXqlhJH9vpxvS1L7i/6lNOkgaTMmJCoduq56dL9hY+3XDKb
+	 frGrjtjYORPoYOs+r5FejA9xyjYu06OJ1NPoHKsLBLyJtbekg8hEh3/UFuki4VOO2b0YU
+	 MfiwEOIJrbYfLx58Eh0ekAYP3A4ns69XvbPiycDb2vVuhH3rA+xfkvuK2wnSwz/ZCSZq4
+	 Nsbg6T6HX86J+I3Yd8CvFxdrwDwX4nk5Ag18jCMXLS8KSILjYYPh/n6u+lP7Qq60z0m/d
+	 vQpBhpBGL5fYOaL+80vdulv51rglwLrr4GjffGuBOjlkfIDklF0DFHcT16Yeck38wGQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=iscas.ac.cn;
-	spf=pass smtp.mailfrom=iscas.ac.cn;
-	arc=none smtp.remote-ip=159.226.251.81
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=HTJjrmFL;
+	arc=none smtp.remote-ip=95.215.58.209
+Received: from mta1.migadu.com (out-209.mta1.migadu.com [95.215.58.209])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9932B606D804
-	for <imx@lists.linux.dev>; Fri,  6 Nov 2026 08:00:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9932B606D804
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from [172.100.0.8] (unknown [36.110.52.2])
-	by APP-03 (Coremail) with SMTP id rQCowACntpc3ie1q8DdqAA--.5010S2;
-	Fri, 06 Nov 2026 16:00:55 +0800 (CST)
-Subject: [PATCH v2] dmaengine: fsl-edma: Fix channel leak in fsl_edma_xlate()
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: Frank Li <Frank.Li@nxp.com>, Vinod Koul <vkoul@kernel.org>
-Cc: dmaengine@vger.kernel.org, imx@lists.linux.dev,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, vulab@iscas.ac.cn
-Date: Fri, 06 Nov 2026 08:01:02 -0000
-Message-ID: <179395206206.2118334.5568431940571202082@iscas.ac.cn>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB735606A329
+	for <imx@lists.linux.dev>; Fri,  6 Nov 2026 08:57:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DB735606A329
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=HTJjrmFL
+X-Envelope-To: imx@lists.linux.dev
+DKIM-Signature: a=rsa-sha256; bh=d8226L5zRatr4QjzGAsxcF8uWP/1uGCbid94j82xW6U=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793955447; v=1; x=1794560247;
+ b=HTJjrmFLQVrV7kAs8EPK/OhwBG9oU0FEZ56DSo5LizGks/N4Tm2o7FRZ2BTqv7EL7HasxgUp
+ YDXL98vSgciL+0idIGV35kKUY8rX+bz0od0hhd/UuueCkz504dajqUN5PwgUU9gHCa7OdKJtHTP
+ lRy72Qc1D2NfHgSmvR276Q+c=
+X-Envelope-To: imx@lists.linux.dev
+Received: by smtp.migadu.com with ESMTPS id c5586882dd48232f;
+	Fri, 06 Nov 2026 08:57:26 +0000
+X-Mizu-Trace-ID: c5586882dd48232f
+X-Migadu-Flow: FLOW_OUT
+Date: Fri, 6 Nov 2026 16:57:14 +0800
+From: Peng Fan <peng.fan@linux.dev>
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Bartosz Golaszewski <brgl@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, Johan Hovold <johan@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Cc: linux-acpi@vger.kernel.org, driver-core@lists.linux.dev,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH v2 1/4] software node: do not resurrect swnode being
+ released
+Message-ID: <au2WakZdbqc6asKF@fedora>
+References: <20261106-swnode-race-v1-v2-0-f8bc7b14d578@nxp.com>
+ <20261106-swnode-race-v1-v2-1-f8bc7b14d578@nxp.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -51,78 +75,246 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-CM-TRANSID:rQCowACntpc3ie1q8DdqAA--.5010S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Kw1fCw43GrW7Kw45XF1xuFg_yoW8tr45pa
-	1ftFyF9asrta1FyF4DCw40vFy0kF4rt3y5KFWDt3sFk3srtrn3Z3s8Gw4F9ryUJrWfZF4S
-	ywnxtF95WFyUC3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvI1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AE
-	w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
-	IY67AKxVW5JVW7JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2
-	jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq3wAS0I0E0xvYzxvE52
-	x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUtVWr
-	XwAv7VC2z280aVAFwI0_Cr1j6rxdMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrw
-	ACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_JF0_Jw1l42xK82IYc2Ij64vI
-	r41l42xK82IY6x8ErcxFaVAv8VW8GFyrJr1UJwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s
-	026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_
-	JF0_Jw1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20x
-	vEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE
-	14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf
-	9x0JUMGQDUUUUU=
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBwMDA2rtTw3SfgAAst
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261106-swnode-race-v1-v2-1-f8bc7b14d578@nxp.com>
 
-fsl_edma_xlate() acquires a channel with dma_get_slave_channel() and only
-then validates the srcid taken from the device tree. When the srcid turns
-out to be invalid the function just returns NULL, leaving the channel
-with its client count elevated and marked private, so it can never be
-requested again.
+Hi All,
+On Fri, Nov 06, 2026 at 12:38:35PM +0800, Peng Fan (OSS) wrote:
+>From: Peng Fan <peng.fan@nxp.com>
+>
+>software_node_to_swnode() walks the kset list under list_lock, but the
+>last kobject_put() drops the reference count to zero before
+>kobject_cleanup() removes the object from the list. A lookup can
+>therefore find a zero-ref swnode and call kobject_get() on it, which
+>triggers refcount warnings and a use-after-free.
 
-Validate the srcid before any channel is acquired: reject a zero srcid
-and a srcid that is already in use up front. With that, no channel can be
-leaked on the error path and the release added in v1 is not needed.
+sashiko reported issue here:
+https://lore.kernel.org/all/sashiko-outbox-200773@kernel.org/
 
-Fixes: 6aa60f79e679 ("dmaengine: fsl-edma: add safety check for 'srcid'")
-Cc: stable@vger.kernel.org
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
----
-Changes in v2:
-- Check dma_spec->args[1] before dma_get_slave_channel() instead of
-  releasing the channel on the error path, as Frank Li suggested. The
-  zero-srcid test is folded into the existing fsl_edma_srcid_in_use()
-  check, so the code stays where it is.
-- Link to v1: https://lore.kernel.org/all/20260916092733.2002700-1-vulab@iscas.ac.cn/
-- Sorry for the very late reply to this review.
+But this is not a new issue introduced by this series. The series only fixes
+the zero-reference lookup on swnode_kset->list for unnamed static nodes such
+as dwc3_imx_swnode. Named-node and parent/child-group re-registration after
+delayed release is a pre-existing limitation and is out of scope of this patchset.
+The parent->children list also lacks synchronization between list_add_tail()
+in swnode_register(), list_del() in software_node_release(), and child
+traversal; that is why the child-traversal patch was dropped from this series.
+We plan to address both in a separate patchset that adds proper locking/lifetime
+handling for parent->children and parent/child-group reuse.
 
- drivers/dma/fsl-edma-main.c | 10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+I tend to not introduce uneccessary churn to this patchset, but if you perfer
+to have all the fixes ready, I could give a look to fix in v3.
 
-diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-main.c
-index 630285c85482..e2ef18ad1a3e 100644
---- a/drivers/dma/fsl-edma-main.c
-+++ b/drivers/dma/fsl-edma-main.c
-@@ -266,7 +266,8 @@ static struct dma_chan *fsl_edma_xlate(struct of_phandle_args *dma_spec,
- 		if (chan->client_count)
- 			continue;
- 
--		if (fsl_edma_srcid_in_use(fsl_edma, dma_spec->args[1]))
-+		if (!dma_spec->args[1] ||
-+		    fsl_edma_srcid_in_use(fsl_edma, dma_spec->args[1]))
- 			return NULL;
- 
- 		if ((chan->chan_id / chans_per_mux) == dma_spec->args[0]) {
-@@ -275,13 +276,6 @@ static struct dma_chan *fsl_edma_xlate(struct of_phandle_args *dma_spec,
- 				chan->device->privatecnt++;
- 				fsl_chan = to_fsl_edma_chan(chan);
- 				fsl_chan->srcid = dma_spec->args[1];
--
--				if (!fsl_chan->srcid) {
--					dev_err(&fsl_chan->pdev->dev, "Invalidate srcid %d\n",
--						fsl_chan->srcid);
--					return NULL;
--				}
--
- 				fsl_edma_chan_mux(fsl_chan, fsl_chan->srcid,
- 						true);
- 				return chan;
--- 
-2.34.1
+Thanks
+Peng
 
+>
+>One way to hit this is the dwc3-imx driver on i.MX95: when
+>dwc3_core_probe() returns -EPROBE_DEFER, dwc3_imx_probe() removes the
+>static software node from the device, and the deferred probe retry
+>immediately adds the same node again. The previous swnode is still
+>waiting for its release callback, and CONFIG_DEBUG_KOBJECT_RELEASE makes
+>the window large and deterministic.
+>
+>Fix the lookup by acquiring references with kobject_get_unless_zero()
+>and skipping objects that are already in their release path. Use a
+>reference-returning variant for callers that keep the node (register and
+>device_add_software_node()) and keep a borrowed-pointer variant for
+>software_node_fwnode() and software_node_unregister().
+>
+>To avoid looking the node up again after registration,
+>software_node_register() now uses an internal helper that returns the
+>newly created swnode reference, and device_add_software_node() consumes
+>that reference directly.
+>
+>Fixes: 80488a6b1d3c ("software node: Add support for static node descriptors")
+>Signed-off-by: Peng Fan <peng.fan@nxp.com>
+>---
+> drivers/base/swnode.c | 122 +++++++++++++++++++++++++++++++++++---------------
+> 1 file changed, 86 insertions(+), 36 deletions(-)
+>
+>diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
+>index 84a77ffa3dc4b..965e960156876 100644
+>--- a/drivers/base/swnode.c
+>+++ b/drivers/base/swnode.c
+>@@ -75,8 +75,36 @@ static inline struct swnode *dev_to_swnode(struct device *dev)
+> 	return to_swnode(fwnode);
+> }
+> 
+>+static struct swnode *swnode_get(struct swnode *swnode)
+>+{
+>+	kobject_get(&swnode->kobj);
+>+
+>+	return swnode;
+>+}
+>+
+>+static void swnode_put(struct swnode *swnode)
+>+{
+>+	kobject_put(&swnode->kobj);
+>+}
+>+
+>+static struct swnode *swnode_get_unless_zero(struct swnode *swnode)
+>+{
+>+	if (!kobject_get_unless_zero(&swnode->kobj))
+>+		return NULL;
+>+
+>+	return swnode;
+>+}
+>+
+>+/*
+>+ * Find the swnode registered for @node and return it with a new reference.
+>+ *
+>+ * A kobject remains on the kset list until its release callback runs, so an
+>+ * entry whose last reference has already been dropped can still be found
+>+ * here.  Use kobject_get_unless_zero() to skip such objects instead of
+>+ * resurrecting them.
+>+ */
+> static struct swnode *
+>-software_node_to_swnode(const struct software_node *node)
+>+software_node_to_swnode_get(const struct software_node *node)
+> {
+> 	struct swnode *swnode = NULL;
+> 	struct kobject *k;
+>@@ -87,10 +115,16 @@ software_node_to_swnode(const struct software_node *node)
+> 	spin_lock(&swnode_kset->list_lock);
+> 
+> 	list_for_each_entry(k, &swnode_kset->list, entry) {
+>-		swnode = kobj_to_swnode(k);
+>-		if (swnode->node == node)
+>-			break;
+>-		swnode = NULL;
+>+		struct swnode *candidate = kobj_to_swnode(k);
+>+
+>+		if (candidate->node != node)
+>+			continue;
+>+
+>+		if (!swnode_get_unless_zero(candidate))
+>+			continue;
+>+
+>+		swnode = candidate;
+>+		break;
+> 	}
+> 
+> 	spin_unlock(&swnode_kset->list_lock);
+>@@ -98,6 +132,21 @@ software_node_to_swnode(const struct software_node *node)
+> 	return swnode;
+> }
+> 
+>+/*
+>+ * Borrowed-pointer variant of software_node_to_swnode_get().  The caller must
+>+ * guarantee the lifetime of @node by other means.
+>+ */
+>+static struct swnode *
+>+software_node_to_swnode(const struct software_node *node)
+>+{
+>+	struct swnode *swnode = software_node_to_swnode_get(node);
+>+
+>+	if (swnode)
+>+		swnode_put(swnode);
+>+
+>+	return swnode;
+>+}
+>+
+> const struct software_node *to_software_node(const struct fwnode_handle *fwnode)
+> {
+> 	const struct swnode *swnode = to_swnode(fwnode);
+>@@ -374,18 +423,6 @@ EXPORT_SYMBOL_GPL(property_entries_free);
+> /* -------------------------------------------------------------------------- */
+> /* fwnode operations */
+> 
+>-static struct swnode *swnode_get(struct swnode *swnode)
+>-{
+>-	kobject_get(&swnode->kobj);
+>-
+>-	return swnode;
+>-}
+>-
+>-static void swnode_put(struct swnode *swnode)
+>-{
+>-	kobject_put(&swnode->kobj);
+>-}
+>-
+> static struct fwnode_handle *software_node_get(struct fwnode_handle *fwnode)
+> {
+> 	struct swnode *swnode = swnode_get(to_swnode(fwnode));
+>@@ -977,21 +1014,39 @@ void software_node_unregister_node_group(const struct software_node * const *nod
+> }
+> EXPORT_SYMBOL_GPL(software_node_unregister_node_group);
+> 
+>+static struct swnode *
+>+software_node_register_node(const struct software_node *node)
+>+{
+>+	struct swnode *parent, *swnode;
+>+	struct fwnode_handle *fwnode;
+>+
+>+	swnode = software_node_to_swnode_get(node);
+>+	if (swnode) {
+>+		swnode_put(swnode);
+>+		return ERR_PTR(-EEXIST);
+>+	}
+>+
+>+	parent = software_node_to_swnode_get(node->parent);
+>+	if (node->parent && !parent)
+>+		return ERR_PTR(-EINVAL);
+>+
+>+	fwnode = swnode_register(node, parent, 0);
+>+	if (parent)
+>+		swnode_put(parent);
+>+
+>+	if (IS_ERR(fwnode))
+>+		return ERR_CAST(fwnode);
+>+
+>+	return to_swnode(fwnode);
+>+}
+>+
+> /**
+>  * software_node_register - Register static software node
+>  * @node: The software node to be registered
+>  */
+> int software_node_register(const struct software_node *node)
+> {
+>-	struct swnode *parent = software_node_to_swnode(node->parent);
+>-
+>-	if (software_node_to_swnode(node))
+>-		return -EEXIST;
+>-
+>-	if (node->parent && !parent)
+>-		return -EINVAL;
+>-
+>-	return PTR_ERR_OR_ZERO(swnode_register(node, parent, 0));
+>+	return PTR_ERR_OR_ZERO(software_node_register_node(node));
+> }
+> EXPORT_SYMBOL_GPL(software_node_register);
+> 
+>@@ -1061,21 +1116,16 @@ EXPORT_SYMBOL_GPL(fwnode_remove_software_node);
+> int device_add_software_node(struct device *dev, const struct software_node *node)
+> {
+> 	struct swnode *swnode;
+>-	int ret;
+> 
+> 	/* Only one software node per device. */
+> 	if (dev_to_swnode(dev))
+> 		return -EBUSY;
+> 
+>-	swnode = software_node_to_swnode(node);
+>-	if (swnode) {
+>-		swnode_get(swnode);
+>-	} else {
+>-		ret = software_node_register(node);
+>-		if (ret)
+>-			return ret;
+>-
+>-		swnode = software_node_to_swnode(node);
+>+	swnode = software_node_to_swnode_get(node);
+>+	if (!swnode) {
+>+		swnode = software_node_register_node(node);
+>+		if (IS_ERR(swnode))
+>+			return PTR_ERR(swnode);
+> 	}
+> 
+> 	set_secondary_fwnode(dev, &swnode->fwnode);
+>
+>-- 
+>2.34.1
+>
+>
