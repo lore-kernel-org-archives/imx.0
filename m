@@ -1,96 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.83.84
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793974101;
-	b=JHW+hTTcn2oyI6OA8NktnCJpal6VY07L62lXdJoPjtUA/I9W7t2UDUtxm2Hg5ysbfBAZ
-	 IxBo10Ies2AVjZRqsFRUm31fzOIoYP7gRpwfWJmSKRGXZGyscQ66TXyPXsF/IXmKReahA
-	 g6Dsyc0rSxDLhtUc3kCLBvCFD5mV4WjO84yc6W72eYsLEgBTJwae5KttZuYPPxnJnEN5v
-	 I/Xh+NS66Zg7N9oqTDMHrL3xhQU/kHQJIfzsTNTdL5Lk3pTgw+3vM0uq/aFKQXih5H/ic
-	 hXxPKrobaWX6T9LJdNzD/oVw0bGPxRN8NsPteP4TqpxwvcASrZRou4e8nF0IzIH4NPA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793974101;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
-	 From:Date:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 Message-ID:References:In-Reply-To:To:CC:X-Mailer:X-Originating-IP:
-	 X-ClientProxiedBy:X-EOPAttributedMessage:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=Op6KfpUeeWzwK9z8FLWKm37+4oTkBnz/6pxiR59GP/I=;
-	b=NQd1bHqJoLkDEQ/2pRMgDpgv1X/7JLPjia8kgoqJmMdvzp3DgECuXFFl88MKnCMs4Zx6
-	 0cXf5sNXgThIEvhbL6Jj3rnsgI/5LAo4tz6xIA5FSKjV7ZoYP6ju1++AOkIoBFyxh1z+N
-	 UW6UTYlzDrz0j5VTiYPP2TUSzBnVakLUwM05qFHRJFCBsbB9Z8ldVt9EC/+6IQIRxCLtq
-	 6253GQf8rYgk2orWcgHm085ZaU9npVMhPt+DbDqptW2P3tSqvBI2vRrsupa8NplSqNVAA
-	 0dja6XG4eH5JNv9pTVEsFHFMJdv09YD62xo9iK8tQTTXmtkD9RhdMkgP6xSZcBAYYGw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=phytec.de;
-	spf=pass smtp.mailfrom=phytec.de;
-	dkim=pass header.d=phytec.de header.i=@phytec.de header.a=rsa-sha256 header.s=selector2 header.b=VqlCqGhJ;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.83.84
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11023084.outbound.protection.outlook.com [52.101.83.84])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793974329;
+	b=fmB/w35SUUdeqrJ8R3l5CoPWqunxCG/e8pLMn8iGwrquioOioxmq2ExnfXuRTpy1riAV
+	 BmFylu8axLDJmmv4ZAHFgj/mrKyLdQJv4NcxoRcAReA+d6tVVi6LnGn4MWhUZKHIPMF23
+	 ux8C1uAkCluFFyokqbn8lrx/09MLqO/LGbhgdaqShEAupUfqrWwnJW25QbapgHaENxxEN
+	 /CL6Xqm4PGtW2iq6puL3/eCm2B/kCm25DUA0ng8+YF2txetxSCgDWYTgfyUtkUgHtHj+B
+	 sGsujqKu73fJacDsnKVH1jDgptqzVTfVtMR6hoBF8HSWHp0ZCdnZXnfc6eedBbLXzOQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793974329;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=4XpFVS9+/GxWCtMg0s0kFGwjlbQ41jvzXZOYilphHuY=;
+	b=SAsZrcGNy9rh4ytsiRExPk6idFKNF5ZG2NmWAsxYAdayIl4od28ewVkNCSZqcG/xfE4L
+	 VC4ied+qv9ZyfyX4aUNx/G/9Cty+uzD/RPylVFCHMtZX1b4qEk7bG1cCVFEuepdvXDMSR
+	 i7qbdXQVJ9D1idOhjezXPGeIB5fwYDuDhDaQhV0IVO7+0UrDMtXyMKghz7ScfPGRsEpFl
+	 vpeJj8uNoM3GF4Hn3rsXu1/9T4jk6SxoOxFkeuQLvntVuubFEnz5fVAT6sefSmuF2ob+x
+	 N7Den5VVPow9H9Odmne+Zlp3L++9b8jN71rLdXcQ1xry8So+lJsYZ5L2+lZWE9tlX0Q==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eTECLWEu;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99D81606A339
-	for <imx@lists.linux.dev>; Fri,  6 Nov 2026 14:08:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 99D81606A339
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=phytec.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phytec.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62C06606A326;
+	Fri,  6 Nov 2026 14:12:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=phytec.de header.i=@phytec.de header.a=rsa-sha256 header.s=selector2 header.b=VqlCqGhJ
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=yVv5PMap7W1D1yJr9BhjMlMmNmxkt+6yvk3hKHssCn9tE9hyMmGO6O6QRGCW3pfBPhohxkyRKmmev+wKzAhn8RKANUs0FZBvqOE+yMr4hhxKvTH0woM41dMSNkExszokv+RwRCTk4XIEkjHhIgqw4PKYvqthjkSZPqoJWHrwM3fSvE6HeDwKfXTEt51tsfSQmLhE2Tfnl6S5C9LygH+ymeS1XpXdvnd8/u1CCiZhQxso5SN8cqyBoN0jAn/q48oLWtqZu6Zt6sXa/xW6inkfvVJeZjWnt5ctvybxiHE5e/cIvVvGdxeMY4oEkDl38U7edm9TNNXnjD3Qc6FWCPDUOA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Op6KfpUeeWzwK9z8FLWKm37+4oTkBnz/6pxiR59GP/I=;
- b=U6nGqWmClrIj2/VHfWzj85U5ltGDpJcPejgQL+mVDDAAz53oziBYUv4K1Gk3Rr9t8VjQm6k6M/BXOvNcVVu1CmRkii72o1eUJ1rqUkevP6c4OqLK1GdPdlyA2f+c+E6PDc3DWnzivBLmFOUt0eEt5LqyxVuubM5cUAyv9IEPFdKZxH5Qr2uY3dwTfplikgDC6gmOQszAQ2SMe2j9ATf9E3neqcxgUpgcZpVGff7N5r88n6SlsStzPGomblGfphiB9oq8DW/sOtjvyNebYvxl7evDocqC+DAHrZRUuITuq1D/h/iUjSbqnE1JPbaWZ7oKQAMl88Uyr6+0QLBIaAeB5w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
- 91.26.50.189) smtp.rcpttodomain=kernel.org smtp.mailfrom=phytec.de;
- dmarc=fail (p=quarantine sp=quarantine pct=100) action=quarantine
- header.from=phytec.de; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=phytec.de;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Op6KfpUeeWzwK9z8FLWKm37+4oTkBnz/6pxiR59GP/I=;
- b=VqlCqGhJI7Dp4hEsc/pwlWAAQgyOz+siIwuseafJ504BbxZmGx7dQ0IuTCgKSF8v9Q4/tQC76Uu5lDndn1N3bnnzfeYcJiE8fPvPiFW/9Mc73ja2szK4Cmrf2e62Z9gETpm8bCb4XKurJ2aTZZkITHCZomqA6pTz4WZgpoAsVlhiPuW5RomRjuX3VAxO9UFWkOEdrejHyLZqq7J0xvyr9DKzSdZQ5q3mWYbwvsCXDubNww2znfu8LDaxMyHu1O6r3RTazfPZ1/ZPyKcUTXSNAP4qB1PxOISausN4tg9YbyBiF8rfj538pa5zMd+uER1OCEn2ULmS/oCTV4TUv6fOAA==
-Received: from GVZP280CA0029.SWEP280.PROD.OUTLOOK.COM (2603:10a6:150:276::6)
- by DB9P195MB1370.EURP195.PROD.OUTLOOK.COM (2603:10a6:10:29f::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.9; Fri, 6 Nov 2026
- 14:08:11 +0000
-Received: from WA1PEPF000099D0.eurprd04.prod.outlook.com
- (2603:10a6:150:276:cafe::4b) by GVZP280CA0029.outlook.office365.com
- (2603:10a6:150:276::6) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.592.11 via Frontend Transport; Fri, 6
- Nov 2026 14:08:11 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=fail (sender IP
- is 91.26.50.189) smtp.mailfrom=phytec.de; dkim=none (message not signed)
- header.d=none;dmarc=fail action=quarantine header.from=phytec.de;
-Received-SPF: Fail (protection.outlook.com: domain of phytec.de does not
- designate 91.26.50.189 as permitted sender) receiver=protection.outlook.com;
- client-ip=91.26.50.189; helo=Postix.phytec.de;
-Received: from Postix.phytec.de (91.26.50.189) by
- WA1PEPF000099D0.mail.protection.outlook.com (10.167.242.24) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.615.4 via Frontend Transport; Fri, 6 Nov 2026 14:08:11 +0000
-Received: from llp-jremmet.phytec.de (172.25.39.81) by Postix.phytec.de
- (172.25.0.11) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Fri, 6 Nov
- 2026 15:08:09 +0100
-From: Jan Remmet <j.remmet@phytec.de>
-Date: Fri, 6 Nov 2026 15:08:03 +0100
-Subject: [PATCH 1/2] arm64: dts: imx8mp-phyboard-pollux: fix i2c3 gpios
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eTECLWEu
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97B801F0089F;
+	Fri,  6 Nov 2026 14:12:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793974328;
+	bh=4XpFVS9+/GxWCtMg0s0kFGwjlbQ41jvzXZOYilphHuY=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=eTECLWEu80D9BP+gqIwVQDdg4OSZ7TrQ+5iyd3rTlPf7eSCudagWHA53jCe5ricYG
+	 ep1aYCqN2IpP4eaQetRZLRBw0WOlDCQigVgSTNgFrxx5QGE+JGe8MRivcSiXL8x2tq
+	 tbFgL0TlyE3jdcSSbYmSUG+IJqOm4EQbOen5ftTWXAFrg63BfrcVlHnrxeXUgEaILZ
+	 Vb+sUBNted7G4Ec0QMRRlHXkh+uV9wqfJQ2A8zJazPOvUyzMivLkQuPtt7eA8SispX
+	 3uniTneE+Oj1klnPj/eT2hkdSLV84PYW4gr/U6jWPug3awq/Gaiy5Jn0jPdqSCj4E8
+	 SYWyiTwEYaZjQ==
+Message-ID: <sashiko-outbox-201547@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 1/2] arm64: dts: imx8mp-phyboard-pollux: fix i2c3 gpios
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Jan Remmet" <j.remmet@phytec.de>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org
+In-Reply-To: <20261106-wip-j-remmet-phytec-de-bspimx8m-4200_pollux_upstreaming-v1-1-aea3a86f3f57@phytec.de>
+References: <20261106-wip-j-remmet-phytec-de-bspimx8m-4200_pollux_upstreaming-v1-0-aea3a86f3f57@phytec.de>
+ <20261106-wip-j-remmet-phytec-de-bspimx8m-4200_pollux_upstreaming-v1-1-aea3a86f3f57@phytec.de>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 06 Nov 2026 14:12:08 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -99,76 +59,31 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20261106-wip-j-remmet-phytec-de-bspimx8m-4200_pollux_upstreaming-v1-1-aea3a86f3f57@phytec.de>
-References: <20261106-wip-j-remmet-phytec-de-bspimx8m-4200_pollux_upstreaming-v1-0-aea3a86f3f57@phytec.de>
-In-Reply-To: <20261106-wip-j-remmet-phytec-de-bspimx8m-4200_pollux_upstreaming-v1-0-aea3a86f3f57@phytec.de>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, Sascha Hauer
-	<s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-CC: <devicetree@vger.kernel.org>, <imx@lists.linux.dev>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>, "Jan
- Remmet" <j.remmet@phytec.de>, Yannic Moog <y.moog@phytec.de>
-X-Mailer: b4 0.16.0
-X-ClientProxiedBy: Postix.phytec.de (172.25.0.11) To Postix.phytec.de
- (172.25.0.11)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: WA1PEPF000099D0:EE_|DB9P195MB1370:EE_
-X-MS-Office365-Filtering-Correlation-Id: 973e6d43-f033-4d1c-7b4b-08df3c0f6411
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|23010399003|82310400026|376014|7416014|36860700016|261022105027099003|11063799006|56012099006|261009223027099003|261021121427099003|261021135927099003|261102123227099003|261028144727099003|261021123027099003|261026140227099003|10067099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	r2Z/dv3eVfS83e5Z+VKA1IAZcny7pXJpCbNABlYtqfr/xftDAC9KKSgSV0e5L0nhmTl/WKyN2Bhmz625JABVMFVciFqy5t9fZvA/iLL8uFZaGfz50X55fosUf6AKYOf5mRxAooH8Etm6tyevn2Tkrm+e4Lz4OAXjP4stZCtm7h0in3Vdmziot6Pv2OGn3EOpil+U1l3PD3pD/smfuRV/r1W4q+vedjk6nYtZ+RC2nxnSmWLOLmO1dTBrpTekqCBjuX5bjD1n3D40kAr6X1x+pYJbXhy6PWSuiTDuYAs17Ta5JaB4dOYb2AyBM7eTivDAaZ8MXuZhfNff/EmmIodDMtZhKjbZOPqKidq4AB+xS4VybYPk6U/gBJWZk4Tw04a3A9D9Lwo61wZYtzSlv7YgmNaQ1LrCVQ22ce7GDPq5qPt9EwLqCywgbjPSeZjz8kVCt3DnpL8gmOaoZ+rza/+aEa77iH8VkKJ1adIwR4zwc2qDBlwvzO8prJ+WdDro5o40YI6yYnGRosnRNl3E87bIqArsKGL01cQRMQIatgf7nO61WY3NAMPBWApp++NfPuvVQiZFNChkBPGxSCVjPStGztpFuJ+6QREY87fiIwY/unXYfSI+izHMTIUFDEoFXyEgJlLnvXh3yDAK0+tMqR50jNhfDG+LVyPbVhjIYVXQE4QuVZVNi8PAzWHR9Bdrc76c/MIJtUY2hy3vNkH2KYwVcw==
-X-Forefront-Antispam-Report:
-	CIP:91.26.50.189;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:Postix.phytec.de;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(82310400026)(376014)(7416014)(36860700016)(261022105027099003)(11063799006)(56012099006)(261009223027099003)(261021121427099003)(261021135927099003)(261102123227099003)(261028144727099003)(261021123027099003)(261026140227099003)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	9wBoDWjcuNA6t25/WwMWyvyAbQr31i/UD2wuhwWwXRF4ADJaoQwujPNYA189FCvpNrtqyKHFp7x/XBjoERVaCXFYzmxrMleOI9lW4xr9q6+9PKottnxYogS6QsGlCXLNnD/MgzsSqt0IiQtnCN3Re7biQrLm1V6vwzzNusUub+/3jNR+mXkG6Y9v5FuKxY19L+sRv0X7KZtW4h74FmoSArIMzNGTZY/TILU1hZ0WTJdgKbSHoirApk4caypYzxX39j84SMxbUqJZB0OxbvxQqzYOcamTgTNh5MaQ9ub+ZhNZ53P2t9cApsTz0ruCLU+7V0ZNvnTw7bFFTO7auij2erZUSM/Zeoivs5NmPc7tXXqYzL0YIdiGVCw4mMMPb/lubjMAgqmDNuxv7gIzKQ3VFfUCVVCfl+BVUSk2ZAYnGk5voge7fkv53O8PUsK7vrOe
-X-OriginatorOrg: phytec.de
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Nov 2026 14:08:11.0371
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 973e6d43-f033-4d1c-7b4b-08df3c0f6411
-X-MS-Exchange-CrossTenant-Id: e609157c-80e2-446d-9be3-9c99c2399d29
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e609157c-80e2-446d-9be3-9c99c2399d29;Ip=[91.26.50.189];Helo=[Postix.phytec.de]
-X-MS-Exchange-CrossTenant-AuthSource:
-	WA1PEPF000099D0.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9P195MB1370
 
-From: Yannic Moog <y.moog@phytec.de>
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Low] arm64: dts: imx8mp-phyboard-pollux: missing Fixes trailer for
+  i2c3 gpios fix
+--
 
-sda-gpios and scl-gpios were swapped.
-scl is GPIO5 18 and sda is GPIO5 19. Assign the correct GPIOs.
+commit 996d81256c2ca17742cc01729a7897a22eeec9c7
+Author: Yannic Moog <y.moog@phytec.de>
 
-Signed-off-by: Yannic Moog <y.moog@phytec.de>
-Signed-off-by: Jan Remmet <j.remmet@phytec.de>
----
- arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+> arm64: dts: imx8mp-phyboard-pollux: fix i2c3 gpios
+>
+> sda-gpios and scl-gpios were swapped.
+> scl is GPIO5 18 and sda is GPIO5 19. Assign the correct GPIOs.
+>
+> Signed-off-by: Yannic Moog <y.moog@phytec.de>
+> Signed-off-by: Jan Remmet <j.remmet@phytec.de>
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts b/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts
-index 4efdc6bdfe12..8bb2a8976df8 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts
-@@ -289,8 +289,8 @@ &i2c3 {
- 	pinctrl-names = "default", "gpio";
- 	pinctrl-0 = <&pinctrl_i2c3>;
- 	pinctrl-1 = <&pinctrl_i2c3_gpio>;
--	sda-gpios = <&gpio5 18 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
--	scl-gpios = <&gpio5 19 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-+	sda-gpios = <&gpio5 19 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-+	scl-gpios = <&gpio5 18 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
- };
- 
- &lcdif3 {
+[Severity: Low]
+Since this fixes the swapped I2C3 recovery GPIO assignments introduced when
+i2c3 was enabled, should the commit message include a Fixes tag?
 
--- 
-2.53.0
+  Fixes: 18c783cf09aa ("arm64: dts: imx8mp-phyboard-pollux: Enable i2c3")
 
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261106-wip-j-remm=
+et-phytec-de-bspimx8m-4200_pollux_upstreaming-v1-0-aea3a86f3f57@phytec.de?p=
+art=3D1
