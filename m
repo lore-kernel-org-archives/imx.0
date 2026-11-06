@@ -1,67 +1,47 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.28.145
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=159.226.251.81
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793951494;
-	b=Dia0Sh+JrG/lMXsaayOgcbR7gY485iNkW2yNVs16mlR2tNw7MQEuWZTz6aDZPqv6DMUu
-	 ngHsP4RsSO4gykotGwLOq25+HerZsuLxD2I0NOkR2/z1oND3ZY+0Ty4xmQ+oNadzeUiJ7
-	 qGKVB6y39YGBoX1IEz/Do4Cz4dslOPIxYlcWU06pHaS4gtbD/35EkaBKlAa54gtiKgKSH
-	 z0nMPLaGuXMBV9def3BVUxwqNBoNOnZP/edG/jlkVpMq5LKb44c/+S27YfNDtrJRKxtDA
-	 qrHy35or83BF5CueJpb14+jkwE1XFim3ogtVsI14uc/RDQKJKHJ2EQZTeFORllelBsQ==
+	t=1793952060;
+	b=TTkuIy8Ij1ntoFzNTWp4wZ/P44TE8lKPlzxsvSXZMIvW/piyIhH01eX7EFew8tpytJfP
+	 feEeXpHMNtl1XL0Xr+yCS0vxYxNlzC9mJdMcuT1jUaVB41ExVdhFcZugph6KCs0TbW8xn
+	 fD5qxSo4uvIwKYvCNCfq6OJ5GVe5nJ7uDz/ydpy9ekw1MDHbcG5D8b4Q7tBccgw4qCFK7
+	 LGYA/U8Pe3L7PR5dAq1jND8BKempZOjJm8oSPwvvEbzf1vVXihN8PwUQYzE80H0+RvKng
+	 jkb5EGvFIRKe34qhNicPCGdiopmIT2rTqezNi0GTlTfLhFOH66Z/bKVRPVUyxqoVL4g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793951494;
-	h=DMARC-Filter:DKIM-Signature:X-Alimail-AntiSpam:Received:From:To:Cc:
-	 Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=X3nxSXG+H2J8k8t3k6poogjxQFJaTHXAguqehE2TWiY=;
-	b=2BajMlJaji5NgAhVij+wc7n79S0m8qseUy2zPVHvXpicMRInDYwQX2QlJ0Moj+M202k5
-	 0vQmZ1fi2kC1rFp8qi23aQSuZmuILcKsJVHUKd2wiS1SLXIkrgJgNpXZY5/+/phy27VOL
-	 km/liUcEMI7i03BDHmPXrH7PkbUbscxJospQuTmDQboXre2io/3CS7N9h2q0Y/z3K8oSS
-	 WFkkmjNlFPOFP8r7E90O8dp1dePIO8qaFYbgmVtp7O/3elpm0LpP57xoU6RIwOjsxHl4v
-	 zEjjJ7EIpCc5cin2SMfssu6FA9jC0dIPc0Q5021K+qN29qGOXGitGeo5ZaHaZAEeyHQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793952060;
+	h=DMARC-Filter:Received:Subject:From:To:Cc:Date:Message-ID:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version:X-CM-TRANSID:
+	 X-Coremail-Antispam:X-Originating-IP:X-CM-SenderInfo;
+	bh=mKSuIXJLtZJlgvRY/t+P/ubAjU+hVN+y583sjkS57DM=;
+	b=PmrXYSaSRiC0rI5WVAf+kYKVDxGk/hewUhaoo40abcIdozLOjpC+4r/xDZC4sk1EfIPr
+	 c0TknOyV6iFJkwyLKtZrripBAfT2Q3EqevP0TrwZEwqCffaNoQly545hd8USXIAdwQTH3
+	 1KkogcLS8xOuKZ7DH04/8tPqpCC7+kV5qwR7HdWDCKRQsgMDWes5K7BwihiB7lMJjPjgB
+	 vSEpghI4Hxig2laU4YEo8I8GuBbgFuf9+3lT4FPdNWAQo9lXrRe3wAMOyodv/lBaUIXvN
+	 iOqaLf6fxaeE0dD2uqemwIiholnRNLsp5xtutsxQazu4zZWOgCsQfdT9BqGjSdJ1IxA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=xiaopeng.com;
-	spf=pass smtp.mailfrom=xiaopeng.com;
-	dkim=pass header.d=xiaopeng.com header.i=@xiaopeng.com header.a=rsa-sha256 header.s=default header.b=EdBOOO5d;
-	arc=none smtp.remote-ip=115.124.28.145
-Received: from out28-145.mail.aliyun.com (out28-145.mail.aliyun.com [115.124.28.145])
+	dmarc=none header.from=iscas.ac.cn;
+	spf=pass smtp.mailfrom=iscas.ac.cn;
+	arc=none smtp.remote-ip=159.226.251.81
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48226606A336
-	for <imx@lists.linux.dev>; Fri,  6 Nov 2026 07:51:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 48226606A336
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xiaopeng.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xiaopeng.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=xiaopeng.com header.i=@xiaopeng.com header.a=rsa-sha256 header.s=default header.b=EdBOOO5d
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=xiaopeng.com; s=default;
-	t=1793951489; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=X3nxSXG+H2J8k8t3k6poogjxQFJaTHXAguqehE2TWiY=;
-	b=EdBOOO5d/HlK/xdK+U63qbsCipbHTOjNjstrXi49twguHyNCSFWfk4udWTjT++l+gs7f4/JjR6BY1sbl1pNhGqsabFd7UqgnLXopyDkZIJKCx6lqYgei7RSKnt1Kbx0fYVrLo9zU5ulAIWNisZgvIILVcRMU1/NTFOLmymFqTVY=
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07707597|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_regular_dialog|0.003847-0.000952075-0.995201;FP=12758894924369871956|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037034254;MF=liuc63@xiaopeng.com;NM=1;PH=DS;RN=15;RT=15;SR=0;TI=SMTPD_---.jy77D-U_1793951487;
-Received: from localhost(mailfrom:liuc63@xiaopeng.com fp:SMTPD_---.jy77D-U_1793951487 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Fri, 06 Nov 2026 15:51:28 +0800
-From: Liu Chao <liuc63@xiaopeng.com>
-To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc: Markus Schneider-Pargmann <msp@baylibre.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Juergen Borleis <jbe@pengutronix.de>,
-	Denis Carikli <denis@eukrea.com>,
-	Lee Jones <lee@kernel.org>,
-	fangxy@xiaopeng.com,
-	linux-input@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] Input: mx25-tcq - clamp the FIFO sample count to the buffer size
-Date: Fri,  6 Nov 2026 15:51:27 +0800
-Message-ID: <20261106075127.3105907-1-liuc63@xiaopeng.com>
-X-Mailer: git-send-email 2.50.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9932B606D804
+	for <imx@lists.linux.dev>; Fri,  6 Nov 2026 08:00:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9932B606D804
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from [172.100.0.8] (unknown [36.110.52.2])
+	by APP-03 (Coremail) with SMTP id rQCowACntpc3ie1q8DdqAA--.5010S2;
+	Fri, 06 Nov 2026 16:00:55 +0800 (CST)
+Subject: [PATCH v2] dmaengine: fsl-edma: Fix channel leak in fsl_edma_xlate()
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: Frank Li <Frank.Li@nxp.com>, Vinod Koul <vkoul@kernel.org>
+Cc: dmaengine@vger.kernel.org, imx@lists.linux.dev,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, vulab@iscas.ac.cn
+Date: Fri, 06 Nov 2026 08:01:02 -0000
+Message-ID: <179395206206.2118334.5568431940571202082@iscas.ac.cn>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -71,35 +51,78 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowACntpc3ie1q8DdqAA--.5010S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Kw1fCw43GrW7Kw45XF1xuFg_yoW8tr45pa
+	1ftFyF9asrta1FyF4DCw40vFy0kF4rt3y5KFWDt3sFk3srtrn3Z3s8Gw4F9ryUJrWfZF4S
+	ywnxtF95WFyUC3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvI1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AE
+	w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
+	IY67AKxVW5JVW7JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2
+	jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq3wAS0I0E0xvYzxvE52
+	x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUtVWr
+	XwAv7VC2z280aVAFwI0_Cr1j6rxdMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrw
+	ACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_JF0_Jw1l42xK82IYc2Ij64vI
+	r41l42xK82IY6x8ErcxFaVAv8VW8GFyrJr1UJwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s
+	026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_
+	JF0_Jw1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20x
+	vEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE
+	14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf
+	9x0JUMGQDUUUUU=
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBwMDA2rtTw3SfgAAst
 
-MX25_ADCQ_SR_FDN() reports up to 31 pending samples.  The IRQ thread
-aligns the count down to a multiple of the sample count but never
-bounds it by the size of sample_buf, so a FIFO backlog larger than
-TSC_MAX_SAMPLES overruns the stack buffer.
+fsl_edma_xlate() acquires a channel with dma_get_slave_channel() and only
+then validates the srcid taken from the device tree. When the srcid turns
+out to be invalid the function just returns NULL, leaving the channel
+with its client count elevated and marked private, so it can never be
+requested again.
 
-Clamp the count before the alignment so that the result stays a
-multiple of sample_count.
+Validate the srcid before any channel is acquired: reject a zero srcid
+and a srcid that is already in use up front. With that, no channel can be
+leaked on the error path and the release added in v1 is not needed.
 
-Fixes: 4f7ed234f2a5 ("Input: touchscreen: Add imx25 TCQ driver")
+Fixes: 6aa60f79e679 ("dmaengine: fsl-edma: add safety check for 'srcid'")
 Cc: stable@vger.kernel.org
-Signed-off-by: Liu Chao <liuc63@xiaopeng.com>
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
 ---
- drivers/input/touchscreen/fsl-imx25-tcq.c | 1 +
- 1 file changed, 1 insertion(+)
+Changes in v2:
+- Check dma_spec->args[1] before dma_get_slave_channel() instead of
+  releasing the channel on the error path, as Frank Li suggested. The
+  zero-srcid test is folded into the existing fsl_edma_srcid_in_use()
+  check, so the code stays where it is.
+- Link to v1: https://lore.kernel.org/all/20260916092733.2002700-1-vulab@iscas.ac.cn/
+- Sorry for the very late reply to this review.
 
-diff --git a/drivers/input/touchscreen/fsl-imx25-tcq.c b/drivers/input/touchscreen/fsl-imx25-tcq.c
-index ff270b3b8572..fa8d8b736723 100644
---- a/drivers/input/touchscreen/fsl-imx25-tcq.c
-+++ b/drivers/input/touchscreen/fsl-imx25-tcq.c
-@@ -319,6 +319,7 @@ static irqreturn_t mx25_tcq_irq_thread(int irq, void *dev_id)
- 	 */
- 	regmap_read(priv->regs, MX25_ADCQ_SR, &stats);
- 	samples = MX25_ADCQ_SR_FDN(stats);
-+	samples = min_t(unsigned int, samples, TSC_MAX_SAMPLES);
- 	samples -= samples % priv->sample_count;
+ drivers/dma/fsl-edma-main.c | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-main.c
+index 630285c85482..e2ef18ad1a3e 100644
+--- a/drivers/dma/fsl-edma-main.c
++++ b/drivers/dma/fsl-edma-main.c
+@@ -266,7 +266,8 @@ static struct dma_chan *fsl_edma_xlate(struct of_phandle_args *dma_spec,
+ 		if (chan->client_count)
+ 			continue;
  
- 	if (!samples)
+-		if (fsl_edma_srcid_in_use(fsl_edma, dma_spec->args[1]))
++		if (!dma_spec->args[1] ||
++		    fsl_edma_srcid_in_use(fsl_edma, dma_spec->args[1]))
+ 			return NULL;
+ 
+ 		if ((chan->chan_id / chans_per_mux) == dma_spec->args[0]) {
+@@ -275,13 +276,6 @@ static struct dma_chan *fsl_edma_xlate(struct of_phandle_args *dma_spec,
+ 				chan->device->privatecnt++;
+ 				fsl_chan = to_fsl_edma_chan(chan);
+ 				fsl_chan->srcid = dma_spec->args[1];
+-
+-				if (!fsl_chan->srcid) {
+-					dev_err(&fsl_chan->pdev->dev, "Invalidate srcid %d\n",
+-						fsl_chan->srcid);
+-					return NULL;
+-				}
+-
+ 				fsl_edma_chan_mux(fsl_chan, fsl_chan->srcid,
+ 						true);
+ 				return chan;
 -- 
-2.50.1
+2.34.1
 
