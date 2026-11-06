@@ -1,168 +1,81 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.162.37
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793956804;
-	b=1jZc0gXDkLFivgE1q7dJ07MFlsqRyJTVlffgS4EQekMcB0L8UlX1vBwsdfdK3KdaNo7u
-	 HXaltEnlAkyqx1dfw18uSHcbmMKrL3BCqKxya9joNDY2iWoREJV0TRP9h2JrF+sWaqxLB
-	 PReGPUp1eb6SWLYmQSjqTiqS8OBHYT7Dss0C5QakLThJSZ9CDP4xOD8ELbFYBsfNAM7Md
-	 DnCJFnmpK2e1n4xVAbxclUYzFdKefBVFiKwMRJYgBj3mnIa6FeIsweOiLkjzz2C7jdBig
-	 32OmzFy/v5BD5odgxCI3js3BpJAfL4PSQ3cZCGZuK0tetv1F/Oh1DlxrZ+S1kcqM25A==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793956804;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:CC:Subject:
-	 Thread-Topic:Thread-Index:Date:Message-ID:References:In-Reply-To:
-	 Accept-Language:Content-Language:X-MS-Has-Attach:X-MS-TNEF-Correlator:
-	 msip_labels:x-ms-exchange-messagesentrepresentingtype:
-	 x-ms-publictraffictype:x-ms-traffictypediagnostic:
-	 x-ms-office365-filtering-correlation-id:
-	 x-ms-exchange-sharedmailbox-routingagent-processed:
-	 x-ms-exchange-senderadcheck:x-ms-exchange-antispam-relay:
-	 x-microsoft-antispam:x-microsoft-antispam-message-info:
-	 x-forefront-antispam-report:
-	 x-ms-exchange-antispam-messagedata-chunkcount:
-	 x-ms-exchange-antispam-messagedata-0:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-AuthAs:X-MS-Exchange-CrossTenant-AuthSource:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-originalarrivaltime:
-	 X-MS-Exchange-CrossTenant-fromentityheader:
-	 X-MS-Exchange-CrossTenant-id:X-MS-Exchange-CrossTenant-mailboxtype:
-	 X-MS-Exchange-CrossTenant-userprincipalname:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=D9XdajvFO6tAl8xfgibKdqUh65XFW5zZpKzSiWGedjQ=;
-	b=xBu48vcuhlVgJWAOs0fx5/cM8z1ae1mMn+A3Cu6AtX3WbITiSVN9l5rCeHPcPxUUo0pF
-	 ZSYmRDPwi2keQEDCzriXbR4bTMx6L/G/kUYqriNu97Isx5LzzZ1Bc91jk+6s9tahXl28k
-	 +iBrB3cCFiTEgUzROSIyK90fmNrDZTKfoKDEAsm40YPSZ1EntAHg4RFq4P+YLRCKWt8xI
-	 ajNRer8nVZeUm2Sp18FCXzEH+4ODxTT7cCskbomXTbWxolA90i23EjMakI4ZLy8QMCR3V
-	 YmvENXFSUqnPvzmmkrHEMt/XTWGQCxy8Kn6uwN5jjxrNNJqqGnHggtYLkw0YNIDdmqw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.nxp.com;
-	spf=pass smtp.mailfrom=oss.nxp.com;
-	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=JUYz+4NE;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.162.37
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013037.outbound.protection.outlook.com [40.107.162.37])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=162.62.57.210
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793956882;
+	b=5NKdUpudNXMeJml5XHZdPU7IPypdscYOfDp8IRD3MA+wg2XRq2jZkUEN6izk9GpDdCkm
+	 YwiEXK2ZWVnE4QKiXXQbJcYRWEmJfVvSn0dxZrixkmqM24EcgoeCKIuyKXBWzUaAxgR/5
+	 wE0Ty7Eko1x3zXzoTSaw7k+lxrmjXu7BSBn9VVY8nVgDcx7qJjhMcRoTao98p5BpiJRpY
+	 dmSdDJoYmH9s5VVR53MKdwsRqBC59U/gLVUaMT7QZf1vO9A0clVAF/eGI30CU1lDLPqGo
+	 ekebvy3sFdozHMtUx71XmxfUVTnrCTkXTBrY02lmITaczfgbBMTySftk69yx+ccUxmw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793956882;
+	h=DMARC-Filter:DKIM-Signature:Received:X-QQ-mid:Message-ID:
+	 X-QQ-XMAILINFO:X-QQ-XMRINFO:From:To:Cc:Subject:Date:X-OQ-MSGID:
+	 X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=GvZBAEU8dxyAwu/EctxNWLT4xXzkZ6n1H29EGANwqog=;
+	b=pHqVPyRa+KWu51D5r38b/Rqvn0f4NweSjRfHiIH/kmqb5CBChfvXVJYMl2stCbfJW8pH
+	 YThnljrsWJkKYlksDpBJRardUlFzn0XiKpKugCOzOMEyYOQpEFUMFnn5l1pQD6LCLmSqc
+	 rkrRjl3ptoY5gbv01hJLXvguiryVQs3oZYIiXPC4w/nl1cfdfNeXFnwMl0IPH0iBLmAVr
+	 rwFFWIQBYvfQKxWPqOmea0t8UgZwDEBspSmY5oZcqgSRyy++2hWJnEXV+/8CI2LvabAn6
+	 ceAGX3OEg2VcqBu+TNiTZ/KrTdWLOC2NXvJ3RpqrR3w0g/7TamxasYsBH8WgtT23fjQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=foxmail.com;
+	spf=pass smtp.mailfrom=foxmail.com;
+	arc=none smtp.remote-ip=162.62.57.210
+Received: from out162-62-57-210.mail.qq.com (out162-62-57-210.mail.qq.com [162.62.57.210])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86302606D80D
-	for <imx@lists.linux.dev>; Fri,  6 Nov 2026 09:20:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 86302606D80D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=JUYz+4NE
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=StSDKL1GMR7LKgrfwfcnAIc/zgzFVsFqQAVulIt0Kg6fPD7htrZKg94y9NvOPRbDso2Wot/n0582Y+5m9EoUztdHaruRZ96v3yMR9UnBk7+a8f0sWeWorCU5cYOrs92wwzWG25VI5a1YP2GxQPLpEhEMAOnHibLvc7KYA3svdmyQSVt3FXqgf09yGulb52no06c3NM1qpua2PJYgoOaQP26Z5ogrksLCPkDIiLXVOzXn/R+DAvvhi1XsuZNhclggOmQ9iaAs4t9DdjeQr9/PM9MvydDuLdspl7DyzMl/j9LBvvbmD4Ue3zVh8PNP29DPxZo1J8wmdFCJVYY3FOnoXQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=D9XdajvFO6tAl8xfgibKdqUh65XFW5zZpKzSiWGedjQ=;
- b=YzUqsHn5PE4mwApRWZR1CtT2YqiXbbz3uJBpKqe7v0JmM0m0Ni0ak6cZ3rNklXkyqI2J9UtixPHpLv9IIcq4KtfHlRciBXMXx7Dn0ZUZK/ON47wHqZ2Le6593Q9e7fOGGS+jZ2tUavASClpBsv6k+WG5phq6mfQgXE7VafHlLCtcv0PLIbNt4ZumvC/bzkawMDGX498rUTMGcqvTJpAz7vHww8qpXEiWMynVP/TbqvF8R9U4YWImsyuX8eSwdhWiOO834jwmRrb3tOABHSOR/v8MXlfgOwQ75/IoJHHw3hXSd+0lJjyKmPmE+beW3g6FotOy+EH5aEeW72gg+RORWA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=D9XdajvFO6tAl8xfgibKdqUh65XFW5zZpKzSiWGedjQ=;
- b=JUYz+4NEORf+LHKRw3AmEEVifmbSU8X2MF7QUmVO+vS30YxX+rkWAO74qiK99m5ojtrA0d/xr6kzrs11vuVVrovenurZqU4vxWIaX2cyu0ZQiTDMgqNT6xRvRzunKAXYShb4l1pPOJexYdcv1o9Q2kSjsrSiLm+RGpRsnqrWMldjDYuRJPmkbhh2a5KDyJGB+KRpK1BPYNoB3RzA9ElAaYYoLzkD0lLNnVz4p+sHR98fcKk3uNqkWa7JeMil4K6AIYTJ3R2TKyJFCAXT083vtNPqbIzMnSDYwJ8KENkVrSZ8KcEYeSk4jxc4ZVIw2JvlKMHqvC8rFgMdQGx3iiUV0A==
-Received: from ZR6PR04MB587880.eurprd04.prod.outlook.com
- (2603:10a6:910:e5::15) by GVSPR04MB157375.eurprd04.prod.outlook.com
- (2603:10a6:150:71d::7) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.11; Fri, 6 Nov
- 2026 09:19:58 +0000
-Received: from ZR6PR04MB587880.eurprd04.prod.outlook.com
- ([fe80::2452:9c28:cc23:daeb]) by ZR6PR04MB587880.eurprd04.prod.outlook.com
- ([fe80::2452:9c28:cc23:daeb%3]) with mapi id 15.21.0592.009; Fri, 6 Nov 2026
- 09:19:58 +0000
-From: "Clark Wang (OSS)" <xiaoning.wang@oss.nxp.com>
-To: "Daniel Baluta (OSS)" <daniel.baluta@oss.nxp.com>, "Clark Wang (OSS)"
-	<xiaoning.wang@oss.nxp.com>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>
-CC: Claudiu Manoil <claudiu.manoil@nxp.com>, Vladimir Oltean
-	<vladimir.oltean@nxp.com>, Wei Fang <wei.fang@nxp.com>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
-	<krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Richard Cochran
-	<richardcochran@gmail.com>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Clark Wang
-	<xiaoning.wang@nxp.com>
-Subject: RE: [PATCH net-next 4/4] ptp: netc: use 133MHz as the default
- reference clock rate for i.MX952
-Thread-Topic: [PATCH net-next 4/4] ptp: netc: use 133MHz as the default
- reference clock rate for i.MX952
-Thread-Index: AQHdbD6tWf0KyIuLg0+fdG7qoOeinLcdqU+AgAMeLCA=
-Date: Fri, 6 Nov 2026 09:19:58 +0000
-Message-ID:
- <ZR6PR04MB58788099B26D95DC32A967ACA3F3762@ZR6PR04MB587880.eurprd04.prod.outlook.com>
-References: <20261104092217.1730351-1-xiaoning.wang@oss.nxp.com>
- <20261104092217.1730351-5-xiaoning.wang@oss.nxp.com>
- <80a22fef-2ed7-405d-b48b-75ec4316f6fe@oss.nxp.com>
-In-Reply-To: <80a22fef-2ed7-405d-b48b-75ec4316f6fe@oss.nxp.com>
-Accept-Language: en-US, zh-CN
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: ZR6PR04MB587880:EE_|GVSPR04MB157375:EE_
-x-ms-office365-filtering-correlation-id: 80130aec-0047-4fea-3738-08df3be720a2
-x-ms-exchange-sharedmailbox-routingagent-processed: True
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|19092799006|23010399003|376014|7416014|366016|1800799024|18002099003|22082099003|10067099003|38070700021|4143699003|11063799006|56012099006|261009223027099003;
-x-microsoft-antispam-message-info:
- mHjVbFuPuDvXi6xB1N+K+kCUNl5wzJRgF74FazgxCv0SqVAoBdNwIdq2EGUketvRokNsoo5CUZQ7jLhUTCAcG+pGBrhBvl0WZ40lDBXIPFnT32vFKRdIkkqT3tqTSSr6VaPhQ22QZ+7pn3kY3ClRtdQiufGcMW+c22Ta8/FvIBljrsLVSMQXOWdtGuz5rOa7qbR4RMztoMh+NNovi2VsDA/wsrLo2C8zsq5BSE6I3pJ7y3hG83JIb0N9W50T3NX5RHktmbaDHixrQgV7p2EJCmgsbeEzBqzfP316p3RlOvBvc71NO8EFebZGPmq2eNG6Tie/RsLry3q467JyBFG+lGPPYZAqSZ/TeLw9G1klnLgCoraEAoUEAhcceb2gT2X1a8catucG9vsj+I0U/YoP9lEHAEDuCjwdk3CUEL1g5T0efeniarPJBoSXNcRwT8Nz0JZ0kRsKV3Jo36c+1pUsd3wC99Uc2PEnysdzUPMD09Cq4CV/eqngiyV/oTzlrKVYODMGnJ3RJD2xcgR93RWA+IMqY8y4uQHK8hRkEPcGqxwC5v76vsXYo7zQIgjTr12ZyEe1R6hV3FbDMzMgBECHYvNRaG52Fi6fyes6HUzDEkDpKTMmNNOvv/okDgyF6PC4EGiRg+XYIfAhajQcXw1md5bqpPCK52bFDGmGEmsKLcHDG+cyU3681MSPemYeJWxshnzsdjoMO74OFcd3vTw3le6okMkHVuH7A0kNt90TQd0=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ZR6PR04MB587880.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(23010399003)(376014)(7416014)(366016)(1800799024)(18002099003)(22082099003)(10067099003)(38070700021)(4143699003)(11063799006)(56012099006)(261009223027099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?RlVCMm0xaTdvWllHdk5RQjJUbmVHV3RlM3BQK1hvOE9qRHNvdjF6cVZGY0NN?=
- =?utf-8?B?R25QNVI4NFRPV1BFc0s0TUlzL0ViVVhhSmZrbGo0cEdUYWQzVTVCeTZmdUFo?=
- =?utf-8?B?WmFMRWpDMlkyNjhFdDZyOHFJT2pPMXJVc3NxMjNNN28wY1ZaOC9YMzhSZDZM?=
- =?utf-8?B?RHlHQkxyc0MrOWIrTllKUVlsbUZQdWNweExGMXJCdWlGZHA2dVM2aTV2eG9I?=
- =?utf-8?B?enNIQm0vY2kzQUR0aDdlamhjY1hwZUFZdzBsdW9xcnd0cGZUTER4cWhESi9W?=
- =?utf-8?B?cXhTVWtQYkVVVzFlMG5LUjVOR1hUNGdQc2lYRkNNc201Y3c2Nm4vWnkwajVY?=
- =?utf-8?B?R3h4NVFvNGpDVVNCV0ZsWG9lSyt0Z1JHeW5xcXhVSjJZL081MFp2anA4Wko0?=
- =?utf-8?B?ZEo4MytFeEtrUTVkcHpVS3cvWUZCOVBPcWNsZmN4NzQwWFU3T09qZkVyYkdO?=
- =?utf-8?B?OVRSdHdwYjlhZk1xeEFxT0lKTGd4ai9PWFROUElTVUtxNFRydU9IRFoxakNz?=
- =?utf-8?B?clh4TlYvM2ZFYU5FWnBUSVUxWHZUZW5WeDNkNm9BN0ZNTXUwYUI3WFMrOUNi?=
- =?utf-8?B?L0RWMTd0bC91WVUwUXc2YllseUVSSnpIZi9nU29hWTZsRWUza2IxbE1ZU1Vn?=
- =?utf-8?B?aG9COXd0UFZ2bDRIbG9ib2d6bGpxTTBvY1QvMHByTlhFT1AwT2ppZmgxYkla?=
- =?utf-8?B?WEs5M29rcFZFR2Z1MFp6RG8zUVJGWXhzWUhiR09NMnFjTTFMTFFDM2NFNTQx?=
- =?utf-8?B?TTlZUE9pNThYL0poV2ZOWVNKMkUvb085aVlOclFoNTdVYWdzdmcyRU1zRk53?=
- =?utf-8?B?SmloazBLRHBEWUMxRXNDZWFkYmRhVFM1T200WkxFR0pxUXk5cjlOcDNQNDN1?=
- =?utf-8?B?SW1hbWduYWlXNzdlRmR2Mm1udkVBdWxlQUp3ZExYN2FCeUplaXNkWTdWd2tD?=
- =?utf-8?B?VGtHQTlYUXNlejZQbnJ5cWEyYzhKdjNYTkJvdmxUQ1VXMGJJMlMzTXcvZk9C?=
- =?utf-8?B?c3dkVXMrbThDbm13c1liOTlZR1lyck9QOGlydVc5TTc5UU9peTN4MWJteXdO?=
- =?utf-8?B?UGlCbEZJakxTa3B4MWdIYjBsRGI1bHp0N3BkYUdpUGxTOTB0T0djZzBDakJw?=
- =?utf-8?B?ZjNGc2tnUWhtR0plbXN1c1VnbktIelNLZjBaOTI2OEhINUhOZTBTWGg3U3VL?=
- =?utf-8?B?ZWdMdmtUM3RUVTUvWU9MQkhiSmxzNWVMNS9hRWxNbm9LMUdRYkN6MUFET2x3?=
- =?utf-8?B?YWl3NmdMZUtWMHRMRGxTY2ROMzFIdnZnZU9udWsrUWMvR1U1SUl6aTh1cVdv?=
- =?utf-8?B?K09qWEFsNmdFb3MrUFJpS0FjSlpNLzFpL2VEVEdQd3N2Rmsra2syRCtMNzUz?=
- =?utf-8?B?VWVINXk1TkN4ejBqK0tjaWViZUhTVGJFalRQMndBSEw0R0tldWFrSXhTRThT?=
- =?utf-8?B?ajdTYklxdVEwY2tVQ3FMS0Y2QVFzMVNpMmFJZDN3cFRXYlNvNmcxVDFrRmdH?=
- =?utf-8?B?WER1NXpjZkk2TmhtTWhKaEIwbWp0azdGUE5sbkFGU3hYU2lBcWtLeWFGVUx0?=
- =?utf-8?B?ZVU3VW9SQTRBdjBTYkx4R3VFTFdZaVpFd2FWeTQzVkFxWXNhM2NHa2FYaG5a?=
- =?utf-8?B?VFdka2wrR1JKc1BYOXdMNUlOaDZZZlJvV1V1T0srYmNDTTlGZFBidnh3YVgy?=
- =?utf-8?B?MGEyTE9HbGpKUXdlZEtlTUdsR1RWTEVEenNSS2xVM2oza25rUVBRck5jVU1y?=
- =?utf-8?B?eTFqU0xMWmZKb0xOS3pwQTVUOEtHUTVDSWtFTTJ2VHlqZTRrTDJIRHdTR2JR?=
- =?utf-8?B?NDhZOU14Qi8yRFdabzN3THk4M2RVa0g0cTZQc20rMDJ6eW1ZenZaUGp3dUQx?=
- =?utf-8?B?cnIrSEF4K0xSN3lSWHBnK2p2OWJCM3V0SWE4YXdrWmhwYUhsMUtoQXh2THp2?=
- =?utf-8?B?TWhMV2JmWUxUdWo2dmVaRCtJaGlxNVlLTFhnU25FSDVwbm9MSnp6S0JuTlA0?=
- =?utf-8?B?QVVBcTgvdlhzOFZWT2FFYkpUbXg3TG5SdnBpbEZiQ2hWUndWa0pldUZ1Z3d2?=
- =?utf-8?B?SWpZOUxTd3BxKzRveHVHdDc3WDFTUTRrbmpadG9hRVcxbi8yK3NUL2RaTXgz?=
- =?utf-8?B?L0VLbldiUkwzQ1ROM2FNUEZGR3dKVXBxaE4zK2hYV2JObmJQdG1xVXkwUTEx?=
- =?utf-8?B?dHgzWnVyT3NOS0hLUGZueVpHSFBOWDZpTXJKUlV4S3lzOXBubDdlQm1uTkQ2?=
- =?utf-8?B?QWc1bTMyczZuckVaSEFqTXA1MndQMCtOWVQ2cVoxZm13NzVkQnlybFkvZ1Ba?=
- =?utf-8?B?Nk5oNVBQWjcwaVhNQVQ2blJRNHVwaTVTUmFrRzVqQWRSQzNjMWg0dz09?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 494BF606A337
+	for <imx@lists.linux.dev>; Fri,  6 Nov 2026 09:21:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 494BF606A337
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+	s=s201512; t=1793956867;
+	bh=GvZBAEU8dxyAwu/EctxNWLT4xXzkZ6n1H29EGANwqog=;
+	h=From:To:Cc:Subject:Date;
+	b=Q3pU2m0zVs2GZcAwN99ypsUbtIDQ7t8CZmoHzrovDoqsfl3GcejxUgoNO/r03bh6N
+	 DVFnTHYjlcC+FAFIqiQ0B7mt4M1y62HeyQCHf3b8SIkldwumAUsc6A/mKCMyPeEKjd
+	 wxSU6gLlci/Y5+W3IgQuq8+zcXknCepVcrqD04/E=
+Received: from LAPTOP-TKBJAGN4.localdomain ([27.38.177.45])
+	by newxmesmtplogicsvrsza73-0.qq.com (NewEsmtp) with SMTP
+	id 542216C5; Fri, 06 Nov 2026 17:21:02 +0800
+X-QQ-mid: xmsmtpt1793956862t3gymxzx9
+Message-ID: <tencent_D0E2628A4AA62FB8B265B2A28BBFA9566B07@qq.com>
+X-QQ-XMAILINFO: MRMtjO3A6C9X0IZDcDm4iVakmb6joYjsPsfTRE7OaZgQkREcxV9ZjKTDK00Hnm
+	 hUBgYvwsAcqgahNYVoGUN5rrbpBNdmeqUM3FTNkDBi2KC7N5km64977NdtCmPILdqWc6nooP6btY
+	 CivS+6lSDtGK9ezJIziIjfwiZSpXX9S+b8fQ+7YfAbvRQ5M0nYArCxdN2Wo79dl3rmtFRCRFY/j+
+	 tfY98g1CIi7L0E34fO8jh11ByxLJPFNAR6DE3Ufq9IWKXEbYlHoxx+ALZiZhGUoOoSHMqHXJ4FRg
+	 Pc5hk7UjXtvWdbdXa/f585Tq92Zh5BkdVg6QcjaUHqQsInior5KSRALTlfb0KCf6DSI0TditDp+S
+	 lMrOookH7OKE7MNBHSk8BwgTYv1tOqE+exqyyq6JN5m8Lglk8gGITK2vuFoDwRfuXoUwwjutz3D6
+	 vg+arRzZpQfNfQPHcRHRtUk1Nsu4szO44f9+qxozisg+2DKO5GkP2ecyJ6cqZLI1MXP+w8gv9S1C
+	 7TlyMcPGoUTjFFvGoPGrxQQ77YFkpamLJKHDIyuKTmUcIcAhof1r8XQoq9aBjCZyJUhgmG4yCfTt
+	 hPfMA/g3pySbH/i/tpadJaJkYZYcbbnOhDWlVY3Ae5yEE8Epe7L4jmuO1GwkU/k5IP4g2XcM97Kk
+	 kDWcy1OBhmISosN/cZsFTMieZIyUFT8ZXE1O7uFaZ7KYNxfLDH5DznVdpOAMSrAvjp/IYxIhzNWo
+	 TI2nnc6dou2jxm1ouL/T/dJP34qXMiOKopYh7Feyw1XUqm5DN9iw5XDP8l0LLs4ZnWiDE06EdqvC
+	 GWrEiesFuITSgFHbw4YhFTPJ3uzT26ZbkTxKLAbeGGDiQYvwnkU2avYA3SE/EI6d0GeuKFnbJ6mR
+	 WR7sOZ5iO+EHsmH/8kS6L2Hsr+UJxsRVB+0H5V6UxVDExjZmzpwExf2BDUoXbyBiyBuY1D3RNFio
+	 ivUkIkotXXd6/MVIlVs8LQr1FQAqM0ARvaicO762Z7GaMw8NWmX/zn0AYq48tjPgSCB0cNI2bnf6
+	 NOFgCeEIj+pW2wQ1NoaXJzvakC9qwDnSQ9XA2QLjpLkr1bD+O+1dGxKPwG3GI=
+X-QQ-XMRINFO: Nq+8W0+stu50tPAe92KXseR0ZZmBTk3gLg==
+From: Haobin Jiang <lemonoutput@foxmail.com>
+To: Andi Shyti <andi.shyti@kernel.org>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	linux-i2c@vger.kernel.org
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Carlos Song <carlos.song@oss.nxp.com>,
+	Vincent Jardin <vjardin@free.fr>,
+	dillon.minfei@gmail.com,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Haobin Jiang <lemonoutput@foxmail.com>
+Subject: [PATCH v6] i2c: imx: honour I2C_M_IGNORE_NAK
+Date: Fri,  6 Nov 2026 17:20:36 +0800
+X-OQ-MSGID: <20261106092036.4509-1-lemonoutput@foxmail.com>
+X-Mailer: git-send-email 2.34.1
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -172,25 +85,204 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: ZR6PR04MB587880.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 80130aec-0047-4fea-3738-08df3be720a2
-X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Nov 2026 09:19:58.0866
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 0I9E/YhVaSaLY+cwJwZ0RknxEeiIz/6hIvZsWXouSLiK4YUofI2qTINZVW5pGqdIJayPuszTZbgp9veELDn+kQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVSPR04MB157375
+Content-Transfer-Encoding: 7bit
 
-PiA+DQo+ID4gICNkZWZpbmUgTkVUQ19UTVJfRklQRVJfTlVNCQkzDQo+ID4gICNkZWZpbmUgTkVU
-Q19UTVJfSU5WQUxJRF9DSEFOTkVMCU5FVENfVE1SX0ZJUEVSX05VTQ0KPiA+IEBAIC04OCw2ICs4
-OSw3IEBADQo+ID4gICNkZWZpbmUgTkVUQ19UTVJfRVhUX09TQwkJMiAvKiB0bXJfMTU4OF9jbGss
-IGZyb20gSU8gcGlucyAqLw0KPiA+DQo+ID4gICNkZWZpbmUgTkVUQ19UTVJfU1lTQ0xLXzMzM00J
-CTMzMzMzMzMzM1UNCj4gPiArI2RlZmluZSBORVRDX1RNUl9TWVNDTEtfMTMzTQkJMTMzMzMzMzMz
-VQ0KPiA+DQo+IA0KPiBJIHdvbmRlciBpZiB5b3Ugd2FudCB0byBrZWVwIHRoaXMgc29ydGVkIHNv
-IHRoYXQgeW91IGFkZA0KPiBORVRDX1RNUl9TWVNDTEtfMTMzTSBiZWZvcmUgTkVUQ19UTVJfU1lT
-Q0xLXzMzM00NCg0KVGhhbmsgeW91IGZvciBwb2ludGluZyB0aGlzIG91dC4gSSB3aWxsIG1ha2Ug
-dGhlIGNoYW5nZXMgaW4gdGhlIG5leHQgdmVyc2lvbi4NCg0KQmVzdCByZWdhcmRzLA0KQ2xhcmsg
-V2FuZw0K
+The driver rejects I2C_M_IGNORE_NAK with -EOPNOTSUPP, preventing
+NAK-tolerant wake-token and SCCB transfers. Honour the flag in PIO
+ACK checks and force flagged messages to PIO to avoid DMA stalls.
+
+Restore acceptance of I2C_M_STOP for ov2659/SCCB compatibility [1],
+without implementing STOP between messages.
+
+Following Sashiko's report [2], reject flagged zero-length reads before
+START with -EOPNOTSUPP to avoid an existing receive-path overrun.
+Unflagged zero-length reads are unchanged.
+
+Tested on ALIENTEK i.MX6ULL mini with this patch on f7813d226107,
+using /dev/i2c-0 at 100 kHz and unpopulated address 0x60. The test
+kernel reports 7.3.0-gf7813d226107-dirty (patch applied but not
+committed). Logic analyzer CH0=SCL, CH1=SDA, sampled at 2 MHz.
+
+On the same patched kernel, an unflagged 3-byte write returns -ENXIO
+after the address NAK (9 clocks); with the flag it completes (36
+clocks). A flagged 4-byte read returns ff ff ff ff (45 clocks), and a
+flagged zero-length read returns -EOPNOTSUPP before START. Captures
+and serial logs are in [3].
+
+AI assistance: GLM 5.3 assisted with driver code from the author's
+problem description; GPT-6.1Sol/Codex assisted with the test harness
+from my test plan and polished the submission text. I have reviewed
+the content.
+
+Link: https://lore.kernel.org/linux-i2c/392c76a6-1ba5-4bc1-bfba-524025359042@oss.nxp.com/ # [1]
+Link: https://lore.kernel.org/imx/sashiko-outbox-187010@kernel.org/ # [2]
+Link: https://github.com/JHB11Hinson/i2c-imx-ignore-nak-test # [3]
+
+Signed-off-by: Haobin Jiang <lemonoutput@foxmail.com>
+---
+Changes in v6:
+- Clarify the I2C_M_STOP comment; no functional change from v5.
+- Rebase onto f7813d226107; the base driver is unchanged from
+  123cffeca4a3.
+- Rework the commit message and review history following Carlos Song's
+  feedback, and document AI assistance.
+- Retest on an ALIENTEK i.MX6ULL mini board on the new base.
+- Link to v5: https://lore.kernel.org/linux-i2c/tencent_E6D69775D91AD9FE45C994B3755CB1452506@qq.com/
+
+Changes in v5:
+- Reject zero-length reads carrying I2C_M_IGNORE_NAK before START,
+  following Sashiko's review of v4.
+- Link to v4: https://lore.kernel.org/linux-i2c/tencent_877C99956190215D644EB959DF1663542A0A@qq.com/
+
+Changes in v4:
+- Rebase onto i2c/i2c after Vincent Jardin's series was merged as
+  c2867bb0fa1d ("i2c: imx: add I2C_M_REV_DIR_ADDR and I2C_M_NOSTART").
+- No functional change from v3.
+- Link to v3: https://lore.kernel.org/linux-i2c/tencent_342A87BFCECA70C9982E68A79AAD878B6909@qq.com/
+
+Changes in v3:
+- Rebase onto Vincent Jardin's I2C_M_REV_DIR_ADDR and I2C_M_NOSTART
+  series; move flag checks to i2c_imx_check_msgs().
+- Keep ignore_nak=false in the DMA write ACK check and leave
+  I2C_M_STOP unhandled for compatibility, as agreed during review.
+- Fix spacing, disclose AI assistance and record v6.6.44 backport tests.
+- Link to v2: https://lore.kernel.org/linux-i2c/tencent_E6A52FBBB25132C90B8E296FEB96E2C8CA07@qq.com/
+
+Changes in v2:
+- Honour I2C_M_IGNORE_NAK on reads and force flagged messages to PIO.
+- Reject I2C_M_NO_RD_ACK; leave I2C_M_STOP unhandled for ov2659/SCCB.
+- Link to v1: https://lore.kernel.org/linux-i2c/tencent_0D2E46A782AC418BC52A1BBF04CA1AC98E09@qq.com/
+
+ drivers/i2c/busses/i2c-imx.c | 37 +++++++++++++++++++++++++++---------
+ 1 file changed, 28 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
+index ccf08cd63..623503dda 100644
+--- a/drivers/i2c/busses/i2c-imx.c
++++ b/drivers/i2c/busses/i2c-imx.c
+@@ -612,9 +612,12 @@ static int i2c_imx_trx_complete(struct imx_i2c_struct *i2c_imx, bool atomic)
+ 	return 0;
+ }
+ 
+-static int i2c_imx_acked(struct imx_i2c_struct *i2c_imx)
++static int i2c_imx_acked(struct imx_i2c_struct *i2c_imx, bool ignore_nak)
+ {
+ 	if (imx_i2c_read_reg(i2c_imx, IMX_I2C_I2SR) & I2SR_RXAK) {
++		if (ignore_nak)
++			return 0;
++
+ 		dev_dbg(&i2c_imx->adapter.dev, "<%s> No ACK\n", __func__);
+ 		return -ENXIO;  /* No ACK */
+ 	}
+@@ -971,11 +974,15 @@ static int i2c_imx_unreg_slave(struct i2c_client *client)
+ 	return ret;
+ }
+ 
+-static inline int i2c_imx_isr_acked(struct imx_i2c_struct *i2c_imx)
++static inline int i2c_imx_isr_acked(struct imx_i2c_struct *i2c_imx,
++				    bool ignore_nak)
+ {
+ 	i2c_imx->isr_result = 0;
+ 
+ 	if (imx_i2c_read_reg(i2c_imx, IMX_I2C_I2SR) & I2SR_RXAK) {
++		if (ignore_nak)
++			return 0;
++
+ 		i2c_imx->state = IMX_I2C_STATE_FAILED;
+ 		i2c_imx->isr_result = -ENXIO;
+ 		wake_up(&i2c_imx->queue);
+@@ -988,7 +995,7 @@ static inline int i2c_imx_isr_write(struct imx_i2c_struct *i2c_imx)
+ {
+ 	int result;
+ 
+-	result = i2c_imx_isr_acked(i2c_imx);
++	result = i2c_imx_isr_acked(i2c_imx, i2c_imx->msg->flags & I2C_M_IGNORE_NAK);
+ 	if (result)
+ 		return result;
+ 
+@@ -1017,7 +1024,7 @@ static inline int i2c_imx_isr_read(struct imx_i2c_struct *i2c_imx)
+ {
+ 	int result;
+ 
+-	result = i2c_imx_isr_acked(i2c_imx);
++	result = i2c_imx_isr_acked(i2c_imx, i2c_imx->msg->flags & I2C_M_IGNORE_NAK);
+ 	if (result)
+ 		return result;
+ 
+@@ -1249,7 +1256,8 @@ static int i2c_imx_dma_write(struct imx_i2c_struct *i2c_imx,
+ 	if (result)
+ 		return result;
+ 
+-	return i2c_imx_acked(i2c_imx);
++	/* I2C_M_IGNORE_NAK messages never take the DMA path. */
++	return i2c_imx_acked(i2c_imx, false);
+ }
+ 
+ static int i2c_imx_prepare_read(struct imx_i2c_struct *i2c_imx,
+@@ -1268,7 +1276,7 @@ static int i2c_imx_prepare_read(struct imx_i2c_struct *i2c_imx,
+ 		result = i2c_imx_trx_complete(i2c_imx, !use_dma);
+ 		if (result)
+ 			return result;
+-		result = i2c_imx_acked(i2c_imx);
++		result = i2c_imx_acked(i2c_imx, msgs->flags & I2C_M_IGNORE_NAK);
+ 		if (result)
+ 			return result;
+ 	}
+@@ -1401,7 +1409,7 @@ static int i2c_imx_atomic_write(struct imx_i2c_struct *i2c_imx,
+ 		result = i2c_imx_trx_complete(i2c_imx, true);
+ 		if (result)
+ 			return result;
+-		result = i2c_imx_acked(i2c_imx);
++		result = i2c_imx_acked(i2c_imx, msgs->flags & I2C_M_IGNORE_NAK);
+ 		if (result)
+ 			return result;
+ 	}
+@@ -1416,7 +1424,7 @@ static int i2c_imx_atomic_write(struct imx_i2c_struct *i2c_imx,
+ 		result = i2c_imx_trx_complete(i2c_imx, true);
+ 		if (result)
+ 			return result;
+-		result = i2c_imx_acked(i2c_imx);
++		result = i2c_imx_acked(i2c_imx, msgs->flags & I2C_M_IGNORE_NAK);
+ 		if (result)
+ 			return result;
+ 	}
+@@ -1613,8 +1621,9 @@ static int i2c_imx_read(struct imx_i2c_struct *i2c_imx, struct i2c_msg *msgs,
+ 	return ret;
+ }
+ 
++/* I2C_M_STOP is not implemented between messages; leave it unhandled. */
+ #define I2C_IMX_UNSUPPORTED_PROTOCOL_MANGLING_FLAGS \
+-	(I2C_M_IGNORE_NAK | I2C_M_NO_RD_ACK | I2C_M_STOP)
++	I2C_M_NO_RD_ACK
+ 
+ static int i2c_imx_check_msgs(struct i2c_msg *msgs, int num)
+ {
+@@ -1625,6 +1634,12 @@ static int i2c_imx_check_msgs(struct i2c_msg *msgs, int num)
+ 		if (msgs[i].flags & I2C_IMX_UNSUPPORTED_PROTOCOL_MANGLING_FLAGS)
+ 			return -EOPNOTSUPP;
+ 
++		/* The receive path cannot handle zero-length reads. */
++		if ((msgs[i].flags & I2C_M_RD) &&
++		    (msgs[i].flags & I2C_M_IGNORE_NAK) &&
++		    msgs[i].len == 0)
++			return -EOPNOTSUPP;
++
+ 		if (msgs[i].flags & I2C_M_NOSTART) {
+ 			/*
+ 			 * NOSTART continues an already open frame. The first
+@@ -1712,6 +1727,10 @@ static int i2c_imx_xfer_common(struct i2c_adapter *adapter,
+ 		use_dma = i2c_imx->dma && msgs[i].len >= DMA_THRESHOLD &&
+ 			msgs[i].flags & I2C_M_DMA_SAFE &&
+ 			!(msgs[i].flags & I2C_M_NOSTART);
++
++		/* A NAK'd byte may not generate a further DMA request. */
++		if (msgs[i].flags & I2C_M_IGNORE_NAK)
++			use_dma = false;
+ 		if (msgs[i].flags & I2C_M_RD) {
+ 			int block_data = msgs->flags & I2C_M_RECV_LEN;
+ 
+
+base-commit: f7813d226107618bac34f311bd613b658215f2c6
+-- 
+2.34.1
+
