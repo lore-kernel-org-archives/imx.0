@@ -1,100 +1,104 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=209.85.216.52
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1793935347;
-	b=q/3lXO0CF2YTOiTHZUaEngkOFSSoJIgg197XIEA4lDSg0sCTFtGOjnLKs6zHj/ejwF2U
-	 kJMCsHQRRXRmV1Zb8Di87Uj1+zKxhiKoNh6Qc8jHQYJBEL+qDhM2XKmjG2CcLSRWmkTHp
-	 6gpMI1g66QHM1Dt3LVF+79KylmScJFpPbQiGYbHujGnvz5RNvRkeeLp8FXQKnagIuxzd/
-	 4Q8fGMd0bPjb/UJpwxUg3jcewgSwnwanx7A0bGelDONMB690fV39OoieLLjlFdvZ6kDSq
-	 T07XyLC126og3zeZUHbXs3jyl/r/1UmhVcstpj1v+gX14KYu/N4LWDBGcB0kk6RLxig==
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.70.45
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793939630;
+	b=AUS2iIq70go0ya+o1OAmeC+wdf8tlJH9V85RrUU/bhKzsRmocNP5NmN2qidxe6p9LdHy
+	 JJpx3QGfFZ8/AuvuRetG/DGg8+O8ckXkz/Oa+sJU0N4rRCwy1UQ4YcHM1yL1o5NpxV1WG
+	 I4KHpnFdq2azUCo0gX5p/LGc4N2b9WRDRcKFu0FtriTHyCkr7AlKE/ER0dazavft26o29
+	 rGSu5OpCvboFQqfmbp4i0uwwvOCLwjPUTTd7kseKBSslr+5ouU3M3J3v8vRudRaWXUHy3
+	 UY+SCk5j4GejN3J6blZ4b5HilNzz81EuOdlK9gHQWHemzz2YbEpkMrerrS+PR80dQOw==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793935347;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=w32LmgqDCV1eew1K0IjeecQXsQlnn48/GdAJChQRoV0=;
-	b=N3FF0CPVpV8Y2S9b6vL3SIxU7n+t1QzzJnGemdrdFzKNtbFljwmNRAWCCgvgWPn1EbBo
-	 MY1XJY7sabeUQRXQtpJIaQsjXPxnzYPVRTNdZ70xBtB7nEkXvEnssJ4q4/HGScIDT1VMJ
-	 HIV/B9U/ZspeqbNrxj6H8OZLyC2ZnGkzY0ZxEzHr3uulP47IMcVg4X2lOt9F6IxqGI3yT
-	 y0QqntkkW++wcKPWNyEi4zEnNTB4WyHus00sd51ejapqDDJc5i061HsBcso0Vl2Qm9TuC
-	 sFZsyHxVuKeQ7kWYfOeCB0wtdt1nADkyLWXwRgmRaQUGKqhdagQF5ovASYw4P5mLXXw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793939630;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:Subject:Date:
+	 Message-Id:Content-Type:Content-Transfer-Encoding:X-B4-Tracking:
+	 X-Change-ID:To:Cc:X-Mailer:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=K25TqPh7z8AKTtPcUqryrp2c9om8IN8jQ14sMud28Oo=;
+	b=1iy1cTrh5P3hqHOSCz1J/JT4ZTLYwMxu/GIwUJ8AA0zk5KrQ8NBWhp065bxemRVoQQng
+	 hLWMfBe5FXcZSk7rdwxL1j0dOkWnRnYi3cCKR6cGhX/nnfkiXRMg9Uh9ve1YSLPxvBYFp
+	 decEKY7Wgy8Krgdorl8M3kBwPSJoRyaCQlqIUPV4lPnCv3ozkJQEqmjo61QLMJsE0D9cT
+	 9R3nJdBfqMY8OKslhcbCW6r3yJJqXu9No6cKKnRlevfKG3/kHO1NEs+5Nig0GdiRiSMIa
+	 izBdAvh1i1OEXHAp37gx0YCTEq7WM6YnHQohlcMECmJmFquhjX1OqvqiU9eOsjRb+nw==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=EwAwtTEj;
-	arc=fail smtp.remote-ip=209.85.216.52
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=oss.nxp.com;
+	spf=pass smtp.mailfrom=oss.nxp.com;
+	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=HRNDNxGj;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.70.45
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011045.outbound.protection.outlook.com [52.101.70.45])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0EF1606A32D
-	for <imx@lists.linux.dev>; Fri,  6 Nov 2026 03:22:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F0EF1606A32D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A568606A31B;
+	Fri,  6 Nov 2026 04:33:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5A568606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=EwAwtTEj
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-3b0d09df973so179476a91.0
-        for <imx@lists.linux.dev>; Thu, 05 Nov 2026 19:22:26 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793935346; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Yjh6nj0TeLSdVHpXYKHXvdNueMsPux01D/RF1ILj19dYqoKFly+Noavo/47SrzxUMo
-         PPy98x4m5L5kIpUlRCm8/hgiwDyvv8Ut/nzmSl12aaAjnaHDkU0BFf1hSLRV49VI+XHa
-         GvcaB4WOYVbSJBH8WIW7Ob7zVVUJ1Kn+eIQma+j/dYx91401299bFMZxi2mwO+JECUGu
-         Zz/CilTvqom+yC+W5YiM1zZphFCgcm31JZ+75ydDR66FTCn8yY93PDpxtqVVvFz0XXHl
-         lUYVIqOo+/cIJi7qfVtbfe/bD1fghu1oMZuHNj9xALw8za8q3pf9U9pj530rS5idAQA3
-         xwZA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=w32LmgqDCV1eew1K0IjeecQXsQlnn48/GdAJChQRoV0=;
-        fh=YXzmdTG+5Y3Zb9/G4ruYSj1sKn3WGtQFG/y9V3G1/sw=;
-        b=g3g8uVI0OOZCFNkkF1p6y6AGiyHkH6Bw8V/IzoJa9TeieLPpzj4K2jwx1LUQI7Ox/o
-         M2flfYSGJEVKLakIfQl4xq+TjTSePWYjGTNi3O+ukYTK6S7EJEiA1Xy8RdHOKpGAdV0C
-         vV7nf2qeW0tumx0FCIxukkzftY/Cga4jghSd8E3awkzv73hMIb4eChuSwcc+mMipHWGP
-         LE2BbbtNq5IeUWlBvNVbbHI+50M7+cQu1MBhAKQlHQVOCP3A9z+zBa3KYu5Xz7Ybjtls
-         aYZQHnad5fJYAuGB7MluwKFPVkC7x8rLq+vOIkKLJmpesRCf2gAUmP/yVG4v3iOqhkCo
-         yRpA==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793935346; x=1794540146; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=w32LmgqDCV1eew1K0IjeecQXsQlnn48/GdAJChQRoV0=;
-        b=EwAwtTEjl+17SBF7QGSv5SCSorfHscg6h2znXor/JsXRupf0K1wZ/sZLXNS8wL381r
-         9mGbU/WhOc5aWyIDUHX1n3BdqNPKD8I7bIlZIaV05fDWowPw8/fnWFOEUM81MJNOt1FO
-         rB/gUuJLAeziY2V7Cyt2i8H59s18ixRWheRyOlV75+zrcX9Zbu1nZ3A2kD1KOFuPiKFM
-         AsrZNFke9BVFlw9GbHRDHCVHjx6bhCuHL0yrvmBA73JweDaUyOSarAGUmcpesWXn2ZNc
-         m9F6/w1ZdH/qdUWsV9LUxPPkWEVJIC4mnZLmWng2i8TgIwOwjYPQgnJVPyQ61zFgh+c9
-         nBjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793935346; x=1794540146;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=w32LmgqDCV1eew1K0IjeecQXsQlnn48/GdAJChQRoV0=;
-        b=ZiWRWtTUGNlvCioYs1nhxwV1y7zjkZjdgrxIYQIzqmUwctsyPSwXqKQL5KFWcejWYR
-         aOkh7YfxwqF2JLi5QR9TNSe8lzg9tvP9KhGyO8Ao6SpQLJ9+fbVdHkHmn8FrQG36DUWK
-         nA3ciubon7/2rTKSlNAZd3CnI8SQTj5j1u97lPuqDgeo5LxDJ9/mh3QmF/xCwX+i45LF
-         +9A04muGOw81oWRf3qZlhVRrEKa2s29tWVXctx7RZ6Pt2avHeXtshgB0s0v4qAIjDdct
-         luSs+CmcixzAztadLqeXSwnEOmGEno4hRfbwCX7/XjBjw7g1Di0fioeM95q2uzlTzn1b
-         ALYw==
-X-Forwarded-Encrypted: i=1; AL+hErHioJsNrhMZYjcJoT0d6cUgkdBIECqqxCp6NTLY9CFrRSM2BXsoJVCpd61zgTe6CHWi+88=@lists.linux.dev
-X-Gm-Message-State: APuU4Z9zecb2E1ETnDZgL2OQte3O8svYmBkxoxKgKbH437vmfyxsaJ5D
-	djiSU1Wol2kAo84dd/whEyCuEAHOmPVdCcAPi5VITH+RMJOMXWx6vKEQg8iUQ533JGa78CxBpDb
-	FiT8cvl8+VAj3VTMJoDZ9RIVQMnJLrnw=
-X-Gm-Gg: AYBFou00rXIAFOJtfqG7+vzaEDxy4ePRrzpmImenu+vx2NuhunoRUumMazahzph5j4U
-	vDcC9agWODQAgAmAusHHSuDsKQYbAiwH8lJ3/CwKSVB9U3fRbq/Ol4Yq1/lnM8JZXEXe65i3bPB
-	XBUrmfwJEuI+zEJG0mZbOvrXburm2CzZhxb6Fjz7aquBp2JVknuH2Y3WVBAi8NIe5JeFirXDm1q
-	wLkeoifYGUCMLIiMRGZ1ul0D7Lice9NhXiHVIsaqiPJ35bE73SLtB1GsSFVXLI+QpUklQYAUagz
-	cNeQnhgkTGanfLcjoHMmSFyFkWLGjNFIkI1D+tOn+D3f2Xl1sKoQlwtVtB2OxBXpaClPnUQ83p1
-	1e4zFQT+/1vAMYXotxYsf99UdehBO0BPeY8ru
-X-Received: by 2002:a17:90b:4983:b0:3ac:9d26:551d with SMTP id
- 98e67ed59e1d1-3b0db6f11f7mr1320600a91.50.1793935346215; Thu, 05 Nov 2026
- 19:22:26 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=HRNDNxGj
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ho4Vq4AkQPjvOxxUQm1fLBeZQTl4LT97APxWmCzsE58GzSFsKUJiaM2v2lmbrTuxyPzSWH5parzPZSu4AZdA39rR4AIC9qnRXjV/A+KcR+S+au/h+key3C8FseXBn7L8VLFPTJjIne8N0gNaOYkKFFnMqQrdlhEQljhh2BE9PbhaUXMsFk4B0v0p0CcKPaZdhRYBDGrr+ddhQvTgN+CaezHKM8bORb60jBU3DRDwpSgy8wEG6P2mRkOjA8U1N5Gq1EY9uRfWkYj7SvIa8WOUFuDoL3QqO4BX60dXqNLM4zxNxewMFTc703FT0zyxCxazgNg22rkRYvopO6KDNp5lOA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=K25TqPh7z8AKTtPcUqryrp2c9om8IN8jQ14sMud28Oo=;
+ b=kqFSTe9iFnBJv77+e9wrHt5nAcEYoq2LPX+bPjHnDEk/jUJT29hrvaGGAS0dPxOS52AVzZzEFbUj0/3u2a1in/TR8wtaAsDqU4vxy4tzG7aUjWCK+/DMqxKT0iYjeEW2GRT/N2eB/C8ZK/vcHzsCH0jy/NnGEMFTc3LOXsyzjnQNpH5k8fTr+abZixs7wVgKKmvtS27wQ/X7t9uwgcPkSntvTlv/4b9kbQ0b0y25l4v1TZ/mx97lUcOtr4FYI7P3qfrkymhcE3G+Ag3Di0kFKD2sXrBMOqEi7PmaRqQcOsB7e+BOufqHyu8xLK3fMEOO9ztRoUOBWjVI0+jvcxIrqg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=K25TqPh7z8AKTtPcUqryrp2c9om8IN8jQ14sMud28Oo=;
+ b=HRNDNxGjrlYhu7ydklYlFlRFGxe81+PpznyAlbmzHUqekuvXmIRez9q79lAy7xMmYusG8UBHUOffGl/EO2ZST5qGbZwy1hiP1meF5LZ8KWJ7avxGeNJpJ7AqTgl3JyTjFDfqY5H3QtpqDjAwu9/huXLTaudBiKhXhgfwsNKrDA0u0HB4XwsU2TsH59qFzAG4Nac7FQY04U0G0f92N0ixIvvPoJUXeJgcDspufAcRlkX5CM/3XIx8LV1MSwA/jfirShzelklRkNi5j2P/AoZH3pPdRP4/qKt1fPdBCbxwd/6ljXBQwzWTSIcA/InLGZYeks4ir28mwwx14sI7EGU48A==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from AM8PR04MB7874.eurprd04.prod.outlook.com (2603:10a6:20b:24d::9)
+ by AM7PR04MB6902.eurprd04.prod.outlook.com (2603:10a6:20b:107::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.10; Fri, 6 Nov
+ 2026 04:33:45 +0000
+Received: from AM8PR04MB7874.eurprd04.prod.outlook.com
+ ([fe80::ac38:1699:6f18:c5d9]) by AM8PR04MB7874.eurprd04.prod.outlook.com
+ ([fe80::ac38:1699:6f18:c5d9%6]) with mapi id 15.21.0592.010; Fri, 6 Nov 2026
+ 04:33:44 +0000
+From: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Subject: [PATCH v2 0/4] software node: fix lookup of swnode in release path
+Date: Fri, 06 Nov 2026 12:38:34 +0800
+Message-Id: <20261106-swnode-race-v1-v2-0-f8bc7b14d578@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAMpZ7WoC/3WNQQ7CIBREr9L8tRggtFpX3sN0QT+/FhOhgYo1D
+ XeX1rXJbF4y82aFSMFShEu1QqBko/WugDxUgKN2d2LWFAbJZSMEVyy+nTfEgkZiSbC+HaRBbGu
+ FZyijKdBgl114634cX/2DcN4sW2O0cfbhsz8msfX+yks4axVvdHMiWfd0dct0RP+ELuf8BROCJ
+ DO8AAAA
+X-Change-ID: 20261104-swnode-race-v1-b9f2dcc954c8
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+ Daniel Scally <djrscally@gmail.com>, 
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+ Sakari Ailus <sakari.ailus@linux.intel.com>, 
+ Bartosz Golaszewski <brgl@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
+ Johan Hovold <johan@kernel.org>
+Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, 
+ linux-acpi@vger.kernel.org, driver-core@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+ Peng Fan <peng.fan@nxp.com>
+X-Mailer: b4 0.16-dev-7bc12
+X-ClientProxiedBy: SI3PR02CA0014.apcprd02.prod.outlook.com
+ (2603:1096:4:295::6) To AM8PR04MB7874.eurprd04.prod.outlook.com
+ (2603:10a6:20b:24d::9)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -104,206 +108,150 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-References: <20261102180915.3981805-1-Frank.Li@oss.nxp.com>
-In-Reply-To: <20261102180915.3981805-1-Frank.Li@oss.nxp.com>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Fri, 6 Nov 2026 11:21:57 +0800
-X-Gm-Features: AclHuK-h3hDpTZTCQrDXlURnXU4dNiye78ZL33OWRSh0a0w-nnzOWFYn2sw0Q-0
-Message-ID: <CAA+D8ANwEqFJYQ39h+1A3zXhcUfpFGzSvVjEzx2htoYxB4sLGg@mail.gmail.com>
-Subject: Re: [PATCH 1/1] ASoC/sound: use dmaengine_desc_set_callback()
-To: Frank.Li@oss.nxp.com
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
-	Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>, 
-	Nicolin Chen <nicoleotsuka@gmail.com>, Liam Girdwood <lgirdwood@gmail.com>, 
-	Mark Brown <broonie@kernel.org>, Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>, 
-	Orson Zhai <orsonzhai@gmail.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Chunyan Zhang <zhang.lyra@gmail.com>, Olivier Moysan <olivier.moysan@foss.st.com>, 
-	Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, Kexin Sun <kexinsun@smail.nju.edu.cn>, 
-	Frank Li <Frank.Li@nxp.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	Tianchu Chen <flynnnchen@tencent.com>, Liviu Dudau <liviu.dudau@arm.com>, 
-	bui duc phuc <phucduc.bui@gmail.com>, Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>, 
-	"open list:SOUND" <linux-sound@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, 
-	"open list:FREESCALE SOC SOUND DRIVERS" <linuxppc-dev@lists.ozlabs.org>, 
-	"open list:RENESAS R-CAR & FSI AUDIO (ASoC) DRIVERS" <linux-renesas-soc@vger.kernel.org>, 
-	"moderated list:ARM/STM32 ARCHITECTURE" <linux-stm32@st-md-mailman.stormreply.com>, 
-	"moderated list:ARM/STM32 ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>, imx@lists.linux.dev, 
-	vkoul@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM8PR04MB7874:EE_|AM7PR04MB6902:EE_
+X-MS-Office365-Filtering-Correlation-Id: f2bb5ce5-4fb4-4644-e6d5-08df3bbf244d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|19092799006|7416014|376014|23010399003|6133799003|10067099003|18002099003|56012099006|11063799006|261026121527099003|261026140227099003|261022105027099003|261028144727099003|261102123227099003|261021123027099003|261021121427099003|261009223027099003|261022075727099003;
+X-Microsoft-Antispam-Message-Info:
+	K5l0hEMRD6SBF0BtWkTdmuq2LuyZMyw3cj79MSCC81laAF5JwiobkwOw7udgzazxW1FiBpXfsZYLItNIiI6Xh/f2gtInvilOYNrvHMGo3mGXCb7OimALq+7JMC0up5ZKsaD10sQoMACrKBKTm5yDXGxIWEX3qbgQDvkRPH7pHE61tfnQiTGvt1tyTx11SZt8MEzCYURj/P32ZuMLuZXigSGF0Znc96atj4EG/+XaNfsiKuMaEct8dUFAJ56JxUKAjd+nuK82nkQHj7mgPTgGsYlPiaYP+ThvIjwf6q4Fo3MU5BILJEoICpEW2+j7Etar7wiPKsrLO6btHQfK0/VZV0pAULe4SxWUmtz8HsvQYkT8/Vc2UsuDh016E4M8NIZN8uhjVEWozcTj4FkCJmnV6f3CN+bENem9O/UiUJaKnY2VQ4YUXj0Bb4Gq2IWp3mT2Wgwho+V2diMkirh6tLii3PTcRzZWYzBNaDSiFerCH+IHE0AAQB3jyNGp1Rp/KpYP++lS6CTQxulcCK71jsRQ1ISkNq+nOrugalvT+xLsT2UYDCd+xCWyFZfPUGdigUsDHSxqVAyk4ujpHxRCgoZS6J+VIhFcx0Ax/KuXDjJCm3MrVGu8rre/U+sbaQvDOAEL
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7874.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(19092799006)(7416014)(376014)(23010399003)(6133799003)(10067099003)(18002099003)(56012099006)(11063799006)(261026121527099003)(261026140227099003)(261022105027099003)(261028144727099003)(261102123227099003)(261021123027099003)(261021121427099003)(261009223027099003)(261022075727099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?VjQwN202SWUxeUZWMDlOejRuSWFWNWd6dU1TNUJKVThLNjJlTmRXcHpJRWtF?=
+ =?utf-8?B?TnVTYTgrMHhQN1JtK20rQ25oOXFhY1dYdHRZM0FhN0YyZEJKOGw0WG9hSFNl?=
+ =?utf-8?B?Z3JuTXJna2E4ck45R1VEMGdWRzF0Qmdmd3J5ZEplNlE5R0pJV2FKSFp1S0R1?=
+ =?utf-8?B?ZFFuVTh3c3A1MjlUMXFWQ2lWZTRPU0JEOGxsN1ZUV2FlU2pOK0tQcUo4UGl5?=
+ =?utf-8?B?bFlWS1JMNzRJVE5JNU5LUGUyZHcyUU1IdHZROHc5R2JnVDBES3JMYjJBWXlQ?=
+ =?utf-8?B?VzdFd2lUUGJyWGsxSEZoVVBFKzRrUFVleFN3MDh6bGVudi8rOFRFZ0lXTlFB?=
+ =?utf-8?B?ODRmVFRyTExVSXZHU0VTR09VWHNxVWN1SzRreWMvYkdLa2pMOXpBcXg4Si9t?=
+ =?utf-8?B?cXF4R0lwWkhyVWdhekxYODdhNFppR2crVXVWTHhoZ0lwQ2cyOWtWS2FTVlBW?=
+ =?utf-8?B?ZXEyY2JjNnc1empBVjVoMk5xTXJWWW9qYTR4SFREVFNuTnNyaEN3WXhEVEdu?=
+ =?utf-8?B?Vnk1L0xHN1FWdUlpcXZEZEJUemdLeG8xdXFQN0JQM3lnOVJEUFNlaDQzZFFI?=
+ =?utf-8?B?Q1ZkNXluTHJzOHRCMkVySjBqYlZjNGhNMjdNbWlOUHRuSjZNRzZZT2lKd2VY?=
+ =?utf-8?B?T1pZam45cnhYb3VVbmprOFp3Tk1PaXhuZlBPd2ZFVzRhTFpuajVBWHh4UG5V?=
+ =?utf-8?B?QzBFTWx0VUtlbkl4VC9DdmJYVjc0clk0S3dELzdVK0d4MUJWK2QrUnhYeG9B?=
+ =?utf-8?B?UkNsK3RYNDhIVklTaTF6RXN3T2xFZGNXSTNUTERCSHFNK3NqdDRKSE9ZT3Jz?=
+ =?utf-8?B?amVWSlozREovV1VMZ1U2WW1vSm1VdmNWbUsrREt0bkdzSDdRNDlKQWNpZElG?=
+ =?utf-8?B?TGFVQWpETmtIMmk1RWJUVks5WThINGYzblN2WWRISkZHWERFR1NVWG5qQklV?=
+ =?utf-8?B?eTFTMzNOSGhBZFVJYXg5bitMMCtRSXpDeWtmaVZkejlaYWdqSUM4MURyWjdh?=
+ =?utf-8?B?Tk9zMncvaVc3NmRjVTMzcWp2SFpIVTZSYnd3OUZGc0kzVlhrZjlZSm54c3Rj?=
+ =?utf-8?B?cUkwU2lRR2VEdXN2WjBFaW1ScXBkY3RoK1BjQlE1NXE0d1NIM0ovcldvMGNZ?=
+ =?utf-8?B?MkZMWDl2MGZISld3MUIrazVmSFgxV3ovaW1uZzFiSnhLaVkxQzROZjVjT2pi?=
+ =?utf-8?B?cXhxc2lTaWlacnhNamJEbTZGdUQxbmpjWHV5VWI0TSs3dDRpczA1SlErMFhT?=
+ =?utf-8?B?T1BJN0tIT1IwM2JndTI1S2tFM2ZsUGZvbnd0UTdWeDBHSnQrT2k5RE51cTRl?=
+ =?utf-8?B?L0hENEJIZHExNlBkMTZlK3hjdkFadXZPblRNc3pOaGVHSXNuTG56WE5GYytm?=
+ =?utf-8?B?SDZTYmVMdmp4RmVyUnh5YmJ0Ylp5VW9GNXU2OTdLN0VkQnk5VDduT0pVMlB2?=
+ =?utf-8?B?OUx4b0R5YmplZ0x1U1lsTHVlL0d1NHNoZmNDa1RMTm02L2xFM1g5T1ZRU04y?=
+ =?utf-8?B?V3JTb2NTK2VRN29FKzJUb0tpRUpzY3ZmUVlBZVhNSktlQlJVK0hXdjNvdnV3?=
+ =?utf-8?B?VTFMQmhpWXI5VHQ5M2V5UVlFRkxsWDdtWGlWcnV0V3dudER0cUNMUjVNWlVw?=
+ =?utf-8?B?UU5IOE5HbTFoUVBXN21kcW8vRTl4d2dwS0U4NUliTFFtdjkxb2FLVm9QdU1a?=
+ =?utf-8?B?TVI1QWZjdWU4b0VLK2hZaWRJbzYrRjZ2RHQ4YlBEOVlTUzZ5MU52SHNSU2NF?=
+ =?utf-8?B?Unc0cUk4ZEJJUEZHTnFkRVlSYkpzb1Vuc2E0RGJtK2xybVFpaVd6U0ZPS04x?=
+ =?utf-8?B?NjZVSFdrS0ZMTlFqaUJoeU54Z056NHFEWFBSS1E1cExwZ251Y2dZWFFPa21K?=
+ =?utf-8?B?UEZ1Q2c1cVhEVUFTc1FyemlsdEMyWk4vd1V1Zmk2UkFMcTFQRlpIZ3E1Zzdu?=
+ =?utf-8?B?Vk9QVzdoVVdlM05FczF3WFRhM0lPS3QvK2xrdkkxWlFRQ21jQStRWmVCeGZU?=
+ =?utf-8?B?MWRlSThXMmxldnlYQmlUZE5Oby9QcU9TcURMYjNGYmFzT055aWxtbFJ4UWUv?=
+ =?utf-8?B?VGpXMnJ5aEh2SFlweE9tODMzQTVUcCtwRzVvcHV2RTVZNUE5YVR6QlVSM1pl?=
+ =?utf-8?B?ZG05WlRDdWE2NE5xUlBCeGg5THBqdHRZU1V0S0ZjVXpENzBPd3JwdW51V0J0?=
+ =?utf-8?B?c0FpVW53Q2FxQmhFd3hvV0RKM2VreGVGemJXb2U4VnJIeUllNlVyOTBGVEVC?=
+ =?utf-8?B?YWRHMlBiNXdCcHBzVndsWVdJVm94OEpyeWtYaHQ2WG12dzBobVM3cFg2dUNn?=
+ =?utf-8?B?SGJiVmtPQ1pVYVYwQmViSGE0WllCakRDeFlKREFweFRTbUNRdUpXVk5rMUZO?=
+ =?utf-8?Q?FZmBP/gFEOpuGO4zjFJQAfAM1ZyTCY8e24oaW?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f2bb5ce5-4fb4-4644-e6d5-08df3bbf244d
+X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7874.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Nov 2026 04:33:44.7821
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: TSx+KRrXaxZJU3Zlb4kQ9Ob64lvGzgyygSoLWcjt6NPzRtFDh2Q945BrllZAeH+LfkVboU45faHaLRtA1K0GfUENomc36A1VCAEAQonSXLvREX4cF+Z33DCZmjbYZxJa
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR04MB6902
 
-On Tue, Nov 3, 2026 at 2:09=E2=80=AFAM <Frank.Li@oss.nxp.com> wrote:
->
-> From: Frank Li <Frank.Li@nxp.com>
->
-> Replace open-coded assignments to callback and callback_param fields
-> of struct dma_async_tx_descriptor with calls to the
-> dmaengine_desc_set_callback() helper across sound drivers.
->
-> No functional change intended. Prepare to make struct
-> dma_async_tx_descriptor private to the DMA engine.
->
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+This series fixes a software node lifetime bug where a lookup can find an
+swnode whose kobject refcount has already reached zero.
 
-For fsl part
-Acked-by: Shengjiu Wang <shengjiu.wang@gmail.com>
+The kset list keeps an swnode linked until kobject_cleanup() calls
+kobj_kset_leave(), which happens after the last kobject_put() has already
+dropped the refcount to zero. A lookup that does not check whether the
+object is still referenceable can therefore call kobject_get() on a dead
+object, triggering:
 
-Best regards
-Shengjiu Wang
-> ---
->  sound/core/pcm_dmaengine.c         | 3 +--
->  sound/soc/fsl/fsl_asrc_dma.c       | 3 +--
->  sound/soc/fsl/fsl_asrc_m2m.c       | 3 +--
->  sound/soc/renesas/fsi.c            | 3 +--
->  sound/soc/renesas/siu_pcm.c        | 6 ++----
->  sound/soc/sprd/sprd-pcm-compress.c | 5 +++--
->  sound/soc/sprd/sprd-pcm-dma.c      | 5 +++--
->  sound/soc/stm/stm32_spdifrx.c      | 3 +--
->  8 files changed, 13 insertions(+), 18 deletions(-)
->
-> diff --git a/sound/core/pcm_dmaengine.c b/sound/core/pcm_dmaengine.c
-> index 1306b04be171a..41feb5312ffec 100644
-> --- a/sound/core/pcm_dmaengine.c
-> +++ b/sound/core/pcm_dmaengine.c
-> @@ -169,8 +169,7 @@ static int dmaengine_pcm_prepare_and_submit(struct sn=
-d_pcm_substream *substream)
->         if (!desc)
->                 return -ENOMEM;
->
-> -       desc->callback =3D dmaengine_pcm_dma_complete;
-> -       desc->callback_param =3D substream;
-> +       dmaengine_desc_set_callback(desc, dmaengine_pcm_dma_complete, NUL=
-L, substream);
->         prtd->cookie =3D dmaengine_submit(desc);
->
->         return 0;
-> diff --git a/sound/soc/fsl/fsl_asrc_dma.c b/sound/soc/fsl/fsl_asrc_dma.c
-> index b417de6abebe4..cd3bf6340b650 100644
-> --- a/sound/soc/fsl/fsl_asrc_dma.c
-> +++ b/sound/soc/fsl/fsl_asrc_dma.c
-> @@ -76,8 +76,7 @@ static int fsl_asrc_dma_prepare_and_submit(struct snd_p=
-cm_substream *substream,
->                 return -ENOMEM;
->         }
->
-> -       pair->desc[!dir]->callback =3D fsl_asrc_dma_complete;
-> -       pair->desc[!dir]->callback_param =3D substream;
-> +       dmaengine_desc_set_callback(pair->desc[!dir], fsl_asrc_dma_comple=
-te, NULL, substream);
->
->         dmaengine_submit(pair->desc[!dir]);
->
-> diff --git a/sound/soc/fsl/fsl_asrc_m2m.c b/sound/soc/fsl/fsl_asrc_m2m.c
-> index 58101ce07c9f9..c6970a7e88f3f 100644
-> --- a/sound/soc/fsl/fsl_asrc_m2m.c
-> +++ b/sound/soc/fsl/fsl_asrc_m2m.c
-> @@ -176,8 +176,7 @@ static int asrc_dmaconfig(struct fsl_asrc_pair *pair,
->                 return -EINVAL;
->         }
->
-> -       pair->desc[dir]->callback =3D ASRC_xPUT_DMA_CALLBACK(dir);
-> -       pair->desc[dir]->callback_param =3D pair;
-> +       dmaengine_desc_set_callback(pair->desc[dir], ASRC_xPUT_DMA_CALLBA=
-CK(dir), NULL, pair);
->
->         return 0;
->  }
-> diff --git a/sound/soc/renesas/fsi.c b/sound/soc/renesas/fsi.c
-> index 74e2ea002fbb1..fa21cf47befff 100644
-> --- a/sound/soc/renesas/fsi.c
-> +++ b/sound/soc/renesas/fsi.c
-> @@ -1375,8 +1375,7 @@ static int fsi_dma_transfer(struct fsi_priv *fsi, s=
-truct fsi_stream *io)
->                 goto fsi_dma_transfer_err;
->         }
->
-> -       desc->callback          =3D fsi_dma_complete;
-> -       desc->callback_param    =3D io;
-> +       dmaengine_desc_set_callback(desc, fsi_dma_complete, NULL, io);
->
->         if (dmaengine_submit(desc) < 0) {
->                 dev_err(dai->dev, "tx_submit() fail\n");
-> diff --git a/sound/soc/renesas/siu_pcm.c b/sound/soc/renesas/siu_pcm.c
-> index fd5b20b469a4a..7208514e16a43 100644
-> --- a/sound/soc/renesas/siu_pcm.c
-> +++ b/sound/soc/renesas/siu_pcm.c
-> @@ -125,8 +125,7 @@ static int siu_pcm_wr_set(struct siu_port *port_info,
->                 return -ENOMEM;
->         }
->
-> -       desc->callback =3D siu_dma_tx_complete;
-> -       desc->callback_param =3D siu_stream;
-> +       dmaengine_desc_set_callback(desc, siu_dma_tx_complete, NULL, siu_=
-stream);
->         cookie =3D dmaengine_submit(desc);
->         if (cookie < 0) {
->                 dev_err(dev, "Failed to submit a dma transfer\n");
-> @@ -175,8 +174,7 @@ static int siu_pcm_rd_set(struct siu_port *port_info,
->                 return -ENOMEM;
->         }
->
-> -       desc->callback =3D siu_dma_tx_complete;
-> -       desc->callback_param =3D siu_stream;
-> +       dmaengine_desc_set_callback(desc, siu_dma_tx_complete, NULL, siu_=
-stream);
->         cookie =3D dmaengine_submit(desc);
->         if (cookie < 0) {
->                 dev_err(dev, "Failed to submit dma descriptor\n");
-> diff --git a/sound/soc/sprd/sprd-pcm-compress.c b/sound/soc/sprd/sprd-pcm=
--compress.c
-> index f790b959cd4e4..a810c9c8a0b5b 100644
-> --- a/sound/soc/sprd/sprd-pcm-compress.c
-> +++ b/sound/soc/sprd/sprd-pcm-compress.c
-> @@ -247,8 +247,9 @@ static int sprd_platform_compr_dma_config(struct snd_=
-soc_component *component,
->
->         /* Only channel 1 transfer can wake up the AP system. */
->         if (!params->no_wake_mode && channel =3D=3D 1) {
-> -               dma->desc->callback =3D sprd_platform_compr_dma_complete;
-> -               dma->desc->callback_param =3D cstream;
-> +               dmaengine_desc_set_callback(dma->desc,
-> +                                           sprd_platform_compr_dma_compl=
-ete,
-> +                                           NULL, cstream);
->         }
->
->         kfree(sg);
-> diff --git a/sound/soc/sprd/sprd-pcm-dma.c b/sound/soc/sprd/sprd-pcm-dma.=
-c
-> index bbd7516f81954..968901ae4c335 100644
-> --- a/sound/soc/sprd/sprd-pcm-dma.c
-> +++ b/sound/soc/sprd/sprd-pcm-dma.c
-> @@ -287,8 +287,9 @@ static int sprd_pcm_hw_params(struct snd_soc_componen=
-t *component,
->                 }
->
->                 if (!runtime->no_period_wakeup) {
-> -                       data->desc->callback =3D sprd_pcm_dma_complete;
-> -                       data->desc->callback_param =3D dma_private;
-> +                       dmaengine_desc_set_callback(data->desc,
-> +                                                   sprd_pcm_dma_complete=
-,
-> +                                                   NULL, dma_private);
->                 }
->         }
->
-> diff --git a/sound/soc/stm/stm32_spdifrx.c b/sound/soc/stm/stm32_spdifrx.=
-c
-> index 88863dbd05d9b..44467a25fb69a 100644
-> --- a/sound/soc/stm/stm32_spdifrx.c
-> +++ b/sound/soc/stm/stm32_spdifrx.c
-> @@ -302,8 +302,7 @@ static int stm32_spdifrx_dma_ctrl_start(struct stm32_=
-spdifrx_data *spdifrx)
->         if (!spdifrx->desc)
->                 return -EINVAL;
->
-> -       spdifrx->desc->callback =3D stm32_spdifrx_dma_complete;
-> -       spdifrx->desc->callback_param =3D spdifrx;
-> +       dmaengine_desc_set_callback(spdifrx->desc, stm32_spdifrx_dma_comp=
-lete, NULL, spdifrx);
->         cookie =3D dmaengine_submit(spdifrx->desc);
->         err =3D dma_submit_error(cookie);
->         if (err)
-> --
-> 2.43.0
->
+  refcount_t: addition on 0; use-after-free
+  refcount_t: saturated; leaking memory
+  refcount_t: underflow; use-after-free
+
+The problem is easily reproduced on i.MX95 with dwc3-imx when
+dwc3_core_probe() returns -EPROBE_DEFER. dwc3_imx_probe() removes its
+static software node from the device and the deferred probe retry
+immediately adds the same node again. With
+CONFIG_DEBUG_KOBJECT_RELEASE the old swnode stays on the kset list for
+some time after its refcount reaches zero, so the retry reliably finds
+it.
+
+The first patch fixes the pointer-based kset lookup by using
+kobject_get_unless_zero() and skipping entries that are already in their
+release path. It also makes registration return the newly created swnode
+reference so that device_add_software_node() does not have to look the
+node up again after registering it. Reference-owning callers get a
+reference from the lookup, while software_node_fwnode() keeps its
+borrowed-pointer semantics by dropping the temporary lookup reference.
+
+The remaining patches harden related weak lookups for the same class of
+problem. The series is organized as follows:
+
+  1. Fix the pointer-based kset lookup and avoid the second lookup after
+     registration.
+  2. Harden software_node_find_by_name() against dying entries.
+  3. Check the result of software_node_fwnode() in the graph
+     remote-endpoint path.
+  4. Skip dying children when walking the parent's children list.
+
+Immediate re-registration of named software nodes, or parent/child groups,
+can still fail with `-EEXIST` while the previous release is pending.
+This series targets unnamed static nodes such as `dwc3_imx_swnode`.
+
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+---
+Changes in v2:
+- patch 1:
+  - Added `swnode_get_unless_zero()` and used it in the pointer-based lookup.
+  - Corrected the commit message: `software_node_unregister()` uses the
+    borrowed-pointer variant, not the reference-returning variant.
+  - No other change to the core reference model.
+- patch 2:
+  - No longer dereferences `swnode->node` before taking a reference.
+  - Matches using the swnode kobject name and parent link.
+  - Added a `named` bit to `struct swnode`, set from `node->name`.
+  - Takes the reference only after a match is found.
+  - Corrected the Fixes tag:
+- patch 3: new
+- patch 4:
+  - Replaced the borrowed `software_node_fwnode()` plus later
+  `software_node_get()` sequence.
+  - Uses `software_node_to_swnode_get()` directly and returns
+  `&remote->fwnode`, retaining the acquired reference.
+- Link to v1: https://patch.msgid.link/20261104-swnode-race-v1-v1-0-9406a67e25be@nxp.com
+
+---
+Peng Fan (4):
+      software node: do not resurrect swnode being released
+      software node: use kobject_get_unless_zero() in software_node_find_by_name()
+      software node: pin referenced swnodes while resolving them
+      software node: pin remote endpoint swnode
+
+ drivers/base/swnode.c | 209 +++++++++++++++++++++++++++++++++++---------------
+ 1 file changed, 148 insertions(+), 61 deletions(-)
+---
+base-commit: 2637bdec0535a2044cd830eba9a79363651d9043
+change-id: 20261104-swnode-race-v1-b9f2dcc954c8
+
+Best regards,
+--  
+Peng Fan <peng.fan@nxp.com>
+
