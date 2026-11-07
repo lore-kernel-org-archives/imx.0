@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794083493;
-	b=NSv0LrtyDiRBSrp/y9YChxwRmeyZujMIkwnwHvRmHypSuc/FGVL0PQnsdPg4Q6H8WHJt
-	 VzXLh1vHrSCXHLclIsWQX7nIi4zC7ROJPaHSleF7th8bn/ZtEjlLfUgSMhhW3zrUm4RJG
-	 9xjzYr5R0KJEZsbLdzxCV6i06Kd4SzwuEKJ1qmLF4UykxV08Tmtyk+BM0F7HEEJY4rDMt
-	 QOC0s4P84hLweNWcyZN8o1R9fv/MhTXxyT7kJFu4fFRpXheWP8cq34wPLinrIFeU0G4+j
-	 b/J/VPmY0uxPpW0XtTBv/DB29iF3ReDmSGrPiiRMO94T5MCcakRA54VkvzQHxY5Lgig==
+	t=1794083496;
+	b=n3XQBYJcq2ch03VFxq//DAO/tKJc/Ksg1V+7DYp4Tc+6F6BGD9B23Xrx1s+MeSYzp2K1
+	 S5liuZNkInsOZZsDFW5LqJOQwEpxaHhYdEpEbo5L8TmENkuuzs+T1D4LSYf+SOo95CYTB
+	 rI77rqhLSpqoz2M5G8VYY7WduTU1dRWQ9y3QfjsOsZhiR2teDYDXwXL6dpAZZ9ErBWGJq
+	 vFVTmSVmpEq0fl4U0ooYjkb/E3RshO6tTGZz9gsjYmr6PwxBoaDD0Gu10QV1YDhCskaLT
+	 tiDX8RlupnPRD8Fug29TDS24udM+tL3cMwPBi8rGKKI38qnKE0cDqdu3ye792wKX2qg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794083493;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794083496;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=KGb8SVWOFv1GGt7zAoqUc7R+seHi6woH5xUp6hhO/kw=;
-	b=NwuZGO6WCzEsX78tPj0e6MkC5JGmY4L2qWUE5nlIphu8AL+Y2nlltnma5eAggyoGGIdO
-	 HeZh77JPXAQsQso4B531I7qETzWP2Tluac/E+slXMMDj7Fsu86mPFKCwGbhtfsFrQ4ZGd
-	 qSVwLq7i6Pqla9CwauNx/PkoIO4uW6Dr7RSb+PYyH4PqCdXNILIR9St4uTiZoxljqmYI7
-	 cZ2O8x681PuDMIa77VlfsV8lr7CLwMkIvnjo7IVDMERCqGlbTDfgXjcsIBzjM9TZtvEyY
-	 qjrbd7h53rkp6APwSB8i5zj7sJYqT743FgRGkTUL2khz4LpZ5LrUkp/PFA1yxX1rv/g==
+	bh=uVfYL/crgHpwOKUheIhGq2v1ptnfI5IGAlA37cvNCeM=;
+	b=CMTKuI/sT/zXMQtg1OGHjDnAY1nGildOT36zA/DUAYkj8yum8gn8b1j7AChWZITFgcwF
+	 /S8k3JMp5zupZGJytIIdcBWDFjGXKt0pHArWOFMhsZoQDtmkN1Hcdii1vg2fU0Npr//Wc
+	 u58VVgAFvsNlY7HVex5yT9lUIwvCkZ1ecxwGy1DYshD7Fs1qF3zLDUzCBvGg42s6+mtEa
+	 sU/qKnTEqHXAvqH5CPfoA6ReEoDt9aky7rlNatP7TYJH15vP4e2O1IvIZielh2WTF1f+h
+	 lo6UiNBMT6dk9gFhTVMN0doqyUVIjeri2qItH0tHUx34lIyatGZnbN6BdDQuIOSYCqw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=C6kKbraB;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WQmQRM64;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D584606A32F;
-	Sat,  7 Nov 2026 20:31:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87017606A32D;
+	Sat,  7 Nov 2026 20:31:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=C6kKbraB
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 304411F008A3;
-	Sat,  7 Nov 2026 20:31:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WQmQRM64
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70A051F008BD;
+	Sat,  7 Nov 2026 20:31:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794083493;
-	bh=KGb8SVWOFv1GGt7zAoqUc7R+seHi6woH5xUp6hhO/kw=;
+	s=k20260515; t=1794083496;
+	bh=uVfYL/crgHpwOKUheIhGq2v1ptnfI5IGAlA37cvNCeM=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=C6kKbraBbSFZWfZop4ncnKX4ewSiAEope7D2MZkS9KsQt5e2x/eugwCKq8eF5/zqG
-	 kUhiNXMvB1zI4HGCCGU6xEnQT5/1scKIdFIsngP/vaO2swMuwWoPVY+4iNkDuCEbdt
-	 gPzuzyH+qBdQPa+1wfaTjb34fU4JWYZVxWQs9clHdjqwUQ+QuWMkqHQGBp3GoQbnSd
-	 Rxv/mPP9jqAqE7m3fvBLUu1ocWv151DLzwoIG6mZagbrC46hLbkDnoaO8GihCc+zgN
-	 TPfzFCv56oEPBelgLGrEOOqRbRbR/PF5n4PtHQ7Alyt0MCiKrJY9bd5eqFQopIU+Gj
-	 JgiMa2wrpHpDQ==
-Message-ID: <sashiko-outbox-203294@kernel.org>
+	b=WQmQRM64W6hKVHx476szHYttXvElu2yKjqim0wVAyHoli4626joyKYUgVYMqtaADH
+	 1QBuB/kEEowdmnTQc+aEdpRB38EG5zEeYEnfcjjnK3h9Nn8POX2ggl5NPn2bmDUfFJ
+	 SoUr1BE8TTsvuiEPz1w23DBvxmA0xMYYMZmD88gnv6xcMN+oM4IGs2lp1DRVin/FTu
+	 v4lQ2UV4OmH7jnotAuqn68sfH95q0tJtLTLaRVF3UnBagrJLfY9G0CKltXhi1JZNoh
+	 paXuaFhFVZ7wEAC9WDZyXIeFRTSqDGbPqzUSSNhOpCW+7IQSTaLXpD4AiVkgAPN7Hs
+	 PzVimKFWPkKiA==
+Message-ID: <sashiko-outbox-203295@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 18/58] mtd: rawnand: atmel: retain chips across
- controller removal
+Subject: Re: [PATCH 14/58] mtd: rawnand: intel: retain open-handle state on
+ removal
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "James Hilliard" <james.hilliard1@gmail.com>, "Miquel Raynal" <miquel.raynal@bootlin.com>, "Richard
  Weinberger" <richard@nod.at>, "Vignesh Raghavendra" <vigneshr@ti.com>, "Brian
@@ -75,12 +75,12 @@ To: "James Hilliard" <james.hilliard1@gmail.com>, "Miquel Raynal" <miquel.raynal
  Levitsky" <maximlevitsky@gmail.com>, "Michael Walle" <michael@walle.cc>, "Srinivas
  Kandagatla" <srini@kernel.org>
 Cc: "Tze Yee Ng" <tze.yee.ng@altera.com>, linux-mtd@lists.infradead.org, linux-sunxi@lists.linux.dev, imx@lists.linux.dev, linux-amlogic@lists.infradead.org, Frank.Li@kernel.org, wsa+renesas@sang-engineering.com
-In-Reply-To: <20261107-submit-rawnand-retained-handle-lifetime-v1-v1-18-0181ef0cc4c8@gmail.com>
+In-Reply-To: <20261107-submit-rawnand-retained-handle-lifetime-v1-v1-14-0181ef0cc4c8@gmail.com>
 References: <20261107-submit-rawnand-retained-handle-lifetime-v1-v1-0-0181ef0cc4c8@gmail.com>
- <20261107-submit-rawnand-retained-handle-lifetime-v1-v1-18-0181ef0cc4c8@gmail.com>
+ <20261107-submit-rawnand-retained-handle-lifetime-v1-v1-14-0181ef0cc4c8@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 07 Nov 2026 20:31:28 +0000
+Date: Sat, 07 Nov 2026 20:31:33 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -90,149 +90,57 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Low] mtd: rawnand: atmel: initialize __free(kfree) variables at
-  declaration
-It also noticed 1 related pre-existing issue this patch does not
+Thank you for your contribution! Sashiko AI review found no new issues
+in this patch, but noticed 1 related pre-existing issue it does not
 introduce:
-- [High] mtd: rawnand: atmel: unclocked register access in
-  atmel_nfc_interrupt() [1]
+- [Medium] mtd: rawnand: intel: missing hardware disable in
+  ebu_nand_probe() [1]
 --
 
-commit b77082ebe154b5b59053fa6c8fd897f19a5685b6
+commit 42115b2b815dc0a43fa249f1ae95d7eeefbb02a5
 Author: James Hilliard <james.hilliard1@gmail.com>
 
-mtd: rawnand: atmel: retain chips across controller removal
+mtd: rawnand: intel: retain open-handle state on removal
 
-This commit retains NAND chip and controller allocations until all MTD
-references are released and disconnects chips before tearing down controller
-resources.
+This commit disconnects NAND operations on removal and ties the lifetime of
+the Intel EBU NAND controller and chip state to the last MTD reference.
 
-> diff --git a/drivers/mtd/nand/raw/atmel/nand-controller.c b/drivers/mtd/n=
-and/raw/atmel/nand-controller.c
-> index 0bdbcbb50d94c..10b725fa61d86 100644
-> --- a/drivers/mtd/nand/raw/atmel/nand-controller.c
-> +++ b/drivers/mtd/nand/raw/atmel/nand-controller.c
-
-[ ... ]
-
-> @@ -1638,7 +1640,7 @@ static struct atmel_nand *atmel_nand_create(struct =
-atmel_nand_controller *nc,
->  					    struct device_node *np,
->  					    int reg_cells)
->  {
-> -	struct atmel_nand *nand;
-> +	struct atmel_nand *nand __free(kfree) =3D NULL;
->  	struct gpio_desc *gpio;
->  	int numcs, ret, i;
-> =20
-> @@ -1649,7 +1651,7 @@ static struct atmel_nand *atmel_nand_create(struct =
-atmel_nand_controller *nc,
->  		return ERR_PTR(-EINVAL);
->  	}
-> =20
-> -	nand =3D devm_kzalloc(nc->dev, struct_size(nand, cs, numcs), GFP_KERNEL=
-);
-> +	nand =3D kzalloc(struct_size(nand, cs, numcs), GFP_KERNEL);
->  	if (!nand)
->  		return ERR_PTR(-ENOMEM);
+> diff --git a/drivers/mtd/nand/raw/intel-nand-controller.c b/drivers/mtd/n=
+and/raw/intel-nand-controller.c
+> index 477a427dac1f0..e4a24e69ebbcf 100644
+> --- a/drivers/mtd/nand/raw/intel-nand-controller.c
+> +++ b/drivers/mtd/nand/raw/intel-nand-controller.c
 
 [ ... ]
 
-> @@ -1791,7 +1809,7 @@ atmel_nand_controller_legacy_add_nands(struct atmel=
-_nand_controller *nc)
->  {
->  	struct device *dev =3D nc->dev;
->  	struct platform_device *pdev =3D to_platform_device(dev);
-> -	struct atmel_nand *nand;
-> +	struct atmel_nand *nand __free(kfree) =3D NULL;
->  	struct gpio_desc *gpio;
->  	struct resource *res;
+> @@ -692,9 +699,15 @@ static int ebu_nand_probe(struct platform_device *pd=
+ev)
+>  	if (ret)
+>  		goto err_cleanup_dma;
 > =20
-> @@ -1799,7 +1817,7 @@ atmel_nand_controller_legacy_add_nands(struct atmel=
-_nand_controller *nc)
->  	 * Legacy bindings only allow connecting a single NAND with a unique CS
->  	 * line to the controller.
->  	 */
-> -	nand =3D devm_kzalloc(nc->dev, struct_size(nand, cs, 1), GFP_KERNEL);
-> +	nand =3D kzalloc(struct_size(nand, cs, 1), GFP_KERNEL);
->  	if (!nand)
->  		return -ENOMEM;
+> -	ret =3D mtd_device_register(mtd, NULL, 0);
+> +	ret =3D nand_set_release(nand, NULL);
+>  	if (ret)
+>  		goto err_clean_nand;
+> +	ret =3D mtd_device_register(mtd, NULL, 0);
+> +	if (ret) {
+> +		nand_disconnect(nand);
+> +		mtd_put_master(mtd);
+> +		goto err_cleanup_dma;
+> +	}
 
-[Severity: Low]
-This isn't a bug, but per the Cleanup API conventions in
-include/linux/cleanup.h, __free() variables should be defined and
-initialized in a single statement at their allocation point rather than
-declared as "=3D NULL" at the top of atmel_nand_create() and
-atmel_nand_controller_legacy_add_nands() and assigned later.
+[Severity: Medium]
+This problem wasn't introduced by this patch, but if probe fails during or
+after nand_scan() [1], doesn't jumping to err_clean_nand or
+err_cleanup_dma leave EBU_CON_NANDM_EN enabled in EBU_CON?
 
-[ ... ]
+nand_scan() runs ebu_nand_exec_op() -> ebu_select_chip(), which enables the
+controller in EBU_CON, but unlike ebu_nand_remove(), the probe error paths
+never call ebu_nand_disable(&ebu_host->chip) before cleaning up DMA and
+returning.
 
-> @@ -2349,6 +2366,11 @@ atmel_hsmc_nand_controller_remove(struct atmel_nan=
-d_controller *nc)
->  	return 0;
->  }
-> =20
-> +static void atmel_hsmc_nand_controller_release(struct nand_controller *c=
-ontroller)
-> +{
-> +	kfree(to_hsmc_nand_controller(controller));
-> +}
-> +
->  static int atmel_hsmc_nand_controller_probe(struct platform_device *pdev,
->  				const struct atmel_nand_controller_caps *caps)
->  {
-> @@ -2356,9 +2378,13 @@ static int atmel_hsmc_nand_controller_probe(struct=
- platform_device *pdev,
->  	struct atmel_hsmc_nand_controller *nc;
->  	int ret;
-> =20
-> -	nc =3D devm_kzalloc(dev, sizeof(*nc), GFP_KERNEL);
-> +	nc =3D kzalloc_obj(*nc);
->  	if (!nc)
->  		return -ENOMEM;
-> +	ret =3D devm_nand_controller_init(dev, &nc->base.base,
-> +					atmel_hsmc_nand_controller_release);
-> +	if (ret)
-> +		return ret;
-
-[Severity: High]
-This problem wasn't introduced by this patch, but can atmel_nfc_interrupt()
-perform an unclocked register read during teardown [1]?
-
-atmel_hsmc_nand_controller_probe() registers atmel_nfc_interrupt() with
-devm_request_irq(..., IRQF_SHARED, ...), while
-atmel_hsmc_nand_controller_remove() manually disables hsmc_nc->clk before
-devres releases the IRQ:
-
-drivers/mtd/nand/raw/atmel/nand-controller.c:atmel_hsmc_nand_controller_rem=
-ove() {
-    ...
-	if (hsmc_nc->clk) {
-		clk_disable_unprepare(hsmc_nc->clk);
-		clk_put(hsmc_nc->clk);
-	}
-    ...
-}
-
-CPU0                                    CPU1
-atmel_hsmc_nand_controller_remove()
-  clk_disable_unprepare(hsmc_nc->clk)
-                                        <shared IRQ fires>
-                                        atmel_nfc_interrupt()
-                                          regmap_read(..., ATMEL_HSMC_NFC_S=
-R, ...)
-                                            <-- unclocked register access
-<devres cleanup>
-  devm_irq_release()
-
-If another device on the shared IRQ line raises an interrupt before devres
-frees the handler, reading ATMEL_HSMC_NFC_SR with the clock disabled can
-trigger a synchronous external abort.
-
-[1] https://sashiko.dev/#/bug/linux-94d27cd6-f6fe-452a-863e-36cbb87e9adc
+[1] https://sashiko.dev/#/bug/linux-34984827-527c-4bf7-baa8-10dffee6916d
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261107-submit-raw=
-nand-retained-handle-lifetime-v1-v1-0-0181ef0cc4c8@gmail.com?part=3D18
+nand-retained-handle-lifetime-v1-v1-0-0181ef0cc4c8@gmail.com?part=3D14
