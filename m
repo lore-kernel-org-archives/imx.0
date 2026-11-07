@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794084754;
-	b=3qOApJm3P3320cC3w7XO3e9Dtgm20Q7WzDRQKXneyX+iFUUsx7Xv3bTLOM4QM3+4f0av
-	 Kxg5t6/ZadQifQ1+gKGpVGzXT8yhZQM8WGgVskasFBumT+blrQL90IoAOarmTnfPY/BqM
-	 6YzL8WzwU+k+jgT98tOXpsk7HRcpSlC25GFia1F9nIp7NFS7f8UrbcKD6lKHVPziQ1ZDX
-	 /eLu3f+vfkH0+H0r8w841boaJxjxdrRECliuaD77qarJsOBlBtP3zqPKxwFYB0ehTn9jX
-	 0yAgyCeeg/mv0uxJhExNFs5J5YOw7oXtI7MnP3KeOtXK6PjNDnKzgjHQpMNfP/PUuqQ==
+	t=1794085189;
+	b=VQBObQKDcBcEjhEg+ZqorD7MPfVUzi2qPXM+Jwdf9RwzAXXYcAEs+Figs9wWR8Qfver7
+	 E0tAN9Xl51tb7RxEV9Iqx8A6V5j/c41Vreq7VeAuOx3+XGuJhmoJ8OlD+DGR2tLUPQpbE
+	 AbO5Qa5jsIIne5DmftQraa4N4zZOe0AcRY+lNp75OW7J9Cu6lLn7jEDV4oWIb21HBu1Sg
+	 9gnUotra9MlPNjx+Qoaepej57iB8zP43U+fV0wNKWFrRiVGrD6zkwZS9GBVGgpxd0580n
+	 ZhTQyhSTI2OdpuZ+G+mCMY0HB+4XHZHINEiSLG6cM7u4OHZGY9Ns+qumfsxLe0jhREA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794084754;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794085189;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=5/yAbnSlT796zo6/LxI3k/ssH+kUZUnYtFmT5XnFCro=;
-	b=oiAgaZPtloTXcV41iEpNygFygtTT+ojL6en4njalcjil9MHba1ldBtG7ohc4alzuOkaG
-	 Kuwr5USO0EpE3T2YOc7tkBDoIlMemPKEtj6omHfgPwA/3FS3YXt//m/ad0wGy4UEgfDGb
-	 6PJLoEWfrwmPGjMnWInbEUzjyOX1Xi9Onzljzap/AZUhnVjIJd2MXm8kWNHu4b+BaNLQH
-	 QWrX+wYkCC4mEbv+PK2vqG6fZwFSMc2FKuUWSJ17HCapM4L5G0cuc+kQex1GmWt+p62Ji
-	 nsPzmEwkktr0H8/e0PSwqLLR4X+yBsdQuFtduv+/40rhnBqbzq2NHYfImwuI/JRnV2g==
+	bh=PThdQtpTeh/RmsXeafa5AkNFktPLGhBm7MYbB3f3O1g=;
+	b=PcUuirfZBtg27gzWO/gyaFLWk8U6+rGbmwjqs4YJfVGDOCcxNRu+VNwvHWRC2c+KhImu
+	 M1QSeVDUeYVybtkgaGQ1U7wCWU1gxi9Wy0hQ8NkbP3i3vKeUpZIrl8gTAKiXBmhwW2vbC
+	 rtY17T1VkeXQ6IYnWXDJa7w86H1lyd2dvOn1tmP7jYP83osl9I2u2GURdYCUCSKRmjON6
+	 PDnqT0pwFrxgdi2a5j4qaNHLlFg/AELAIOV2oeDv3kr7/49z39PmYIdFuRLEz941aDXw9
+	 hlNEU8KTDAHfSR0DwVtLnpAgtIE0Im+GwS2/ForPRwEIkgDtLINxxDLmBJa76eABA+A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fW9X6j0t;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DH7Yk5Kv;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B117606A326;
-	Sat,  7 Nov 2026 20:52:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09517606A32D;
+	Sat,  7 Nov 2026 20:59:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fW9X6j0t
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 967C51F0089F;
-	Sat,  7 Nov 2026 20:52:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DH7Yk5Kv
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36ED51F008A7;
+	Sat,  7 Nov 2026 20:59:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794084754;
-	bh=5/yAbnSlT796zo6/LxI3k/ssH+kUZUnYtFmT5XnFCro=;
+	s=k20260515; t=1794085188;
+	bh=PThdQtpTeh/RmsXeafa5AkNFktPLGhBm7MYbB3f3O1g=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=fW9X6j0t4J83x/radFZsJ5F/wcRHLrWKavr+S7Vr2Tl6udtBGD4FTMEyo281qdzbT
-	 xuHuBJNvCDn8S6NOmEvftEBZ3yCw7rAg19u1q96kk0JHcwtxeevlKZQBz7iKcpalxl
-	 rEPJhacWGxLQlE7FLGspZn9DmCyjZ7SSDXwB1fbq5XnvOm6V/R356z5n0J9Ym+cVYe
-	 Lbi8CKzokYJlV6wuETANH9A2rBzisWEYyOJTL4E2GDADjQWUg6k+aiA7vLncA0mlNW
-	 1s9RJJ41CUacldI2rQc/ielsN8oBmVxIhIAJ4bkS9d+Wxdsn1sTXW3UETxaKTBjG38
-	 X8ZdsldmBVFKA==
-Message-ID: <sashiko-outbox-203333@kernel.org>
+	b=DH7Yk5KvqaIsiO4Z+fB6WNNP1XnBSphUmIj8KBP0Q4jTYm6g/VBvbeNrbK7vdWU5D
+	 QbBtKx+vDKko1hC6Y9gDFOK7kt3ICwl/NhFPgfnBhvPF8o74K0PDNi8+SHrIJEEt89
+	 hKWXPwEqPLVQ6kxX90IHiJPyOHI9OgMcsL7+kDFVx8vRKrTsEjdf5wlJa/6W6up1II
+	 491L3DgUzuhD+GhgMXO3eWxkbt5mj0K1DB2igvc4Sh9r1rUIG7qiNrUBusoPSPURXy
+	 i6e4hcIBTHi2tTiPQTAB0MRMgvY6Z871gPn3/5kHmZwTBBhNjmOB0cBNSff6qovcxu
+	 wGSh9grqk9wLQ==
+Message-ID: <sashiko-outbox-203338@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 56/58] mtd: rawnand: nandsim: retain chip state across
+Subject: Re: [PATCH 55/58] mtd: rawnand: r852: retain chip state across
  removal
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "James Hilliard" <james.hilliard1@gmail.com>, "Miquel Raynal" <miquel.raynal@bootlin.com>, "Richard
@@ -75,12 +75,12 @@ To: "James Hilliard" <james.hilliard1@gmail.com>, "Miquel Raynal" <miquel.raynal
  Levitsky" <maximlevitsky@gmail.com>, "Michael Walle" <michael@walle.cc>, "Srinivas
  Kandagatla" <srini@kernel.org>
 Cc: "Tze Yee Ng" <tze.yee.ng@altera.com>, linux-mtd@lists.infradead.org, linux-sunxi@lists.linux.dev, imx@lists.linux.dev, linux-amlogic@lists.infradead.org, Frank.Li@kernel.org, wsa+renesas@sang-engineering.com
-In-Reply-To: <20261107-submit-rawnand-retained-handle-lifetime-v1-v1-56-0181ef0cc4c8@gmail.com>
+In-Reply-To: <20261107-submit-rawnand-retained-handle-lifetime-v1-v1-55-0181ef0cc4c8@gmail.com>
 References: <20261107-submit-rawnand-retained-handle-lifetime-v1-v1-0-0181ef0cc4c8@gmail.com>
- <20261107-submit-rawnand-retained-handle-lifetime-v1-v1-56-0181ef0cc4c8@gmail.com>
+ <20261107-submit-rawnand-retained-handle-lifetime-v1-v1-55-0181ef0cc4c8@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 07 Nov 2026 20:52:29 +0000
+Date: Sat, 07 Nov 2026 20:59:45 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -90,67 +90,104 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 
-Thank you for your contribution! Sashiko AI review found no new issues
-in this patch, but noticed 1 related pre-existing issue it does not
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Medium] mtd: rawnand: r852: r852_irq() mishandles card IRQs when
+  removing is set
+It also noticed 1 related pre-existing issue this patch does not
 introduce:
-- [High] mtd: rawnand: nandsim: shift-out-of-bounds in ns_init_module()
-  [1]
+- [High] mtd: rawnand: r852: work re-queue race condition in
+  r852_shutdown() [1]
 --
 
-commit c6f7998578d1a1c3b52ebeff5e9664c6e727de3e
+commit 85c05cbe4afe297d6f7e2a571f936dd2dc915c61
 Author: James Hilliard <james.hilliard1@gmail.com>
 
-mtd: rawnand: nandsim: retain chip state across removal
+mtd: rawnand: r852: retain chip state across removal
 
-This commit disconnects the NAND chip before freeing simulated media and
-retains the chip metadata until the final MTD reference is dropped.
+This commit allocates a separate nand_chip per card insertion, ties chip and
+controller lifetimes to MTD release callbacks, and stops card-detection work
+scheduling in r852_irq() during PCI removal.
 
-> diff --git a/drivers/mtd/nand/raw/nandsim.c b/drivers/mtd/nand/raw/nandsi=
-m.c
-> index fe968037f75a2..39fefd83cd850 100644
-> --- a/drivers/mtd/nand/raw/nandsim.c
-> +++ b/drivers/mtd/nand/raw/nandsim.c
+> diff --git a/drivers/mtd/nand/raw/r852.c b/drivers/mtd/nand/raw/r852.c
+> index 92c47d351c278..0fb320cd7b771 100644
+> --- a/drivers/mtd/nand/raw/r852.c
+> +++ b/drivers/mtd/nand/raw/r852.c
 [ ... ]
-> @@ -2376,6 +2382,10 @@ static int __init ns_init_module(void)
->  	ret =3D ns_parse_badblocks(ns, nsmtd);
->  	if (ret)
->  		goto free_ns_object;
-> +	ret =3D nand_set_release(chip, ns_chip_release);
-> +	if (ret)
-> +		goto free_ns_object;
-> +	retained =3D true;
+> @@ -734,7 +773,8 @@ static irqreturn_t r852_irq(int irq, void *data)
+>  	card_status =3D r852_read_reg(dev, R852_CARD_IRQ_STA);
+>  	r852_write_reg(dev, R852_CARD_IRQ_STA, card_status);
+> =20
+> -	if (card_status & (R852_CARD_IRQ_INSERT|R852_CARD_IRQ_REMOVE)) {
+> +	if (!dev->removing &&
+> +	    (card_status & (R852_CARD_IRQ_INSERT | R852_CARD_IRQ_REMOVE))) {
+> =20
+>  		ret =3D IRQ_HANDLED;
+>  		dev->card_detected =3D !!(card_status & R852_CARD_IRQ_INSERT);
+
+[Severity: Medium]
+Does checking !dev->removing on the outer condition cause r852_irq() to
+mishandle card interrupts that fire during r852_remove()?
+
+Hardware interrupts remain enabled while r852_remove() cancels the workqueue
+and runs r852_unregister_nand_device().  If a card insert or remove interru=
+pt
+arrives after dev->removing is set, r852_irq() clears R852_CARD_IRQ_STA in
+hardware but skips the handler block, returning IRQ_NONE on a shared IRQ li=
+ne
+and failing to set dev->card_unstable or call r852_disable_irqs() to abort
+in-flight I/O.  Should dev->removing only guard queue_delayed_work()?
+
+[ ... ]
+> @@ -976,6 +1003,11 @@ static int  r852_probe(struct pci_dev *pci_dev, con=
+st struct pci_device_id *id)
+>  static void r852_remove(struct pci_dev *pci_dev)
+>  {
+>  	struct r852_device *dev =3D pci_get_drvdata(pci_dev);
+> +	unsigned long flags;
+> +
+> +	spin_lock_irqsave(&dev->irqlock, flags);
+> +	dev->removing =3D true;
+> +	spin_unlock_irqrestore(&dev->irqlock, flags);
+> =20
+>  	/* Stop detect workqueue -
+>  		we are going to unregister the device anyway*/
 
 [Severity: High]
-This problem wasn't introduced by this patch, but can setting the
-overridesize module parameter to 31 or higher trigger a
-shift-out-of-bounds [1] earlier in ns_init_module()?
+This problem wasn't introduced by this patch, but can r852_irq() re-queue
+dev->card_detect_work during r852_shutdown() and r852_suspend() [1]?
 
-drivers/mtd/nand/raw/nandsim.c:ns_init_module() {
-	...
-	if (overridesize) {
-		uint64_t new_size =3D (uint64_t)nsmtd->erasesize << overridesize;
-		...
-		if (new_size >> overridesize !=3D nsmtd->erasesize) {
-			NS_ERR("overridesize is too big\n");
-			ret =3D -EINVAL;
-			goto cleanup_nand;
-		}
+Both functions call cancel_delayed_work_sync() before r852_disable_irqs()
+without setting dev->removing:
 
-		/* N.B. This relies on nand_scan not doing anything with the size before =
-we change it */
-		nsmtd->size =3D new_size;
-		memorg->eraseblocks_per_lun =3D 1 << overridesize;
-	...
+drivers/mtd/nand/raw/r852.c:r852_shutdown() {
+	struct r852_device *dev =3D pci_get_drvdata(pci_dev);
+
+	cancel_delayed_work_sync(&dev->card_detect_work);
+	r852_disable_irqs(dev);
+	synchronize_irq(dev->irq);
+	pci_disable_device(pci_dev);
 }
 
-Because new_size is 64-bit, the bounds check passes for overridesize
-values up to 63, while "1 << overridesize" shifts a 32-bit signed int.
-An overridesize of 31 or more overflows or invokes undefined behavior,
-leaving eraseblocks_per_lun zero or bogus and leading to a divide-by-zero
-during MTD I/O operations.
+An interrupt arriving between cancel_delayed_work_sync() and
+r852_disable_irqs() can re-queue card_detect_work:
 
-[1] https://sashiko.dev/#/bug/linux-85e29763-d721-4e3b-9253-7b65f9dada3a
+CPU0                              CPU1
+r852_shutdown()
+  cancel_delayed_work_sync()
+                                  r852_irq()
+                                    queue_delayed_work()
+  r852_disable_irqs()
+  synchronize_irq()
+  pci_disable_device()
+                                  r852_card_detect_work()
+                                    r852_read_reg()  <-- MMIO after disable
+
+When the delayed work runs after pci_disable_device(), it accesses disabled
+PCI MMIO space.
+
+[1] https://sashiko.dev/#/bug/linux-ce28ca2b-1bf1-4d27-8bcd-a0ec14b99281
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261107-submit-raw=
-nand-retained-handle-lifetime-v1-v1-0-0181ef0cc4c8@gmail.com?part=3D56
+nand-retained-handle-lifetime-v1-v1-0-0181ef0cc4c8@gmail.com?part=3D55
