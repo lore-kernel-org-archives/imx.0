@@ -1,74 +1,50 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=212.27.42.4
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=220.197.31.3
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794070854;
-	b=VMGUlbx3xhi33dqYE+/qACxWqo1Kt2AUkpxqmFdJ11Fwho3yCdrJ3NYw8JAwFXO+RUMr
-	 P5JEzzoSVxgWqluDHWzCNnnC/EFUyh/4/Uj9b4nSfJ7UHyJKDylpRv7x3W2ewIqSynv+f
-	 jVmN0dbqfrzjmVZFr63FRbemIvA3el3YIYJHyFoNt01QOW3MxSp/VQgSc31+ttz54n8q+
-	 Cwd/2yN/YRLHslETMGm38dJH/vuXhyevtN7qQEKmaD/emHyyBN6dnTFvWK6jrHs07PSOU
-	 O3defiIde3BgGAmr5HS668s7TuYMFicMmsP02m8dH9Zdrxh1DO3NXw/yUZhOgoQY/Lg==
+	t=1794073332;
+	b=ZgWx1M6M1Zr/fFXiC+TllC/5WHrj0N9HOnzVhW+TcP40kF8uV8n54KTrf4x4kCRDUnyt
+	 C6Gq/ked0/93ztkj66UZ1Fia5EpeuD7X+QIf4973ae4wxGHp5S63BfWWVN9JWaUQ8XLHS
+	 /BwhXMFjEMOpOaLkBgMT+kMXVv9sTAHNNtzjWOib5KdihJVNEGYa0B7AF8BDwr4qfsvpQ
+	 1yn5sdK1RDTso4lb09pFwjLwVAsUWufgotGz7w5BCD6pwMMhBtvL9UjRwMGdqxiV3XBl/
+	 TBmGfUl8WJgDHr7kmz1tFbuQZRoHwJI8Y95mW5FsrcD5EyQpXL34iZdpt76WfZzRthQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794070854;
-	h=DMARC-Filter:Received:DKIM-Signature:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=69YlIhpcdRp84o4ABpJJqYwv378wcIs9fm+ouT0CtWw=;
-	b=1OGUWB/rxUo+w8t5yHTiMIlFFK7/5jnyW+Ox+S/WBVU/wlj/2tzIqLXJ42kMkk7ZcdKG
-	 Al3gLUV5MlewLu1iAaDNvHJ3vlGWcYnQQeep8XxsiSh27/LkAoxqDTHKLOLpU+IkouIoX
-	 M+khcZhcvB6QSI48ZMsFsSSmuW5osZMxoylYVOZTY2X3xpmRqVRYLfYQDxKFn3UfNy/0a
-	 tLUvwB45G5Mp9ftlbhCkSeI5ZhFUo7Vtd2uP0wIrPuV8gOpGCpnv40kim04M0amL+DJS2
-	 OVfDsiKZ5u4DdeAw/PJotGZgPWtd7p7UUFasIST3RyWuWWoo27Jq9UpC3ZDJOP7pISA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794073332;
+	h=DMARC-Filter:DKIM-Signature:Received:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-CM-TRANSID:
+	 X-Coremail-Antispam:X-Originating-IP:X-CM-SenderInfo;
+	bh=T0TcPMhnJboefGjG0dX42ucxF+Z41m2N3+6Nxl59W/o=;
+	b=Ko7ojFOFFpeQEcGCbm8imvT29qrM4wOgksADi2e9zSF8OkJUb7oCZaGKurSEivXoq+DC
+	 US1niAnRidlmIw/AkCZmgd9bbM3Mrm5N6pTgjUEe8s8Mcj5oDWLs6aCj5zBYEnbbfpox4
+	 Nwdtd9229gvoa4UchPNFlOYdp6t8w6MS3xRY27fzUHPOIJ317dNty5EDHk5o8nAnr3crt
+	 k7UnoRC7bbrbcaOZvbcFn2KH5A0m447yMbemoBmPazURpqlKwdNK9bfz1uyQofbndjUNF
+	 If0tXEwDUC2Zr8P5GzL/k61gtSS/oDzv4/DHIG2wa6lizfJw4paIzwihHdz+hRpKW5w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=free.fr;
-	spf=pass smtp.mailfrom=free.fr;
-	dkim=pass header.d=free.fr header.i=@free.fr header.a=rsa-sha256 header.s=smtp-20201208 header.b=udgMF85L;
-	arc=none smtp.remote-ip=212.27.42.4
-Received: from smtp4-g21.free.fr (smtp4-g21.free.fr [212.27.42.4])
+	dmarc=pass header.from=163.com;
+	spf=pass smtp.mailfrom=163.com;
+	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=Fi221Vvl;
+	arc=none smtp.remote-ip=220.197.31.3
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AD7E606A326
-	for <imx@lists.linux.dev>; Sat,  7 Nov 2026 17:00:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3AD7E606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=free.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=free.fr
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E5BE606A33C;
+	Sat,  7 Nov 2026 17:42:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5E5BE606A33C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=free.fr header.i=@free.fr header.a=rsa-sha256 header.s=smtp-20201208 header.b=udgMF85L
-Received: from l3017727.home (unknown [IPv6:2a01:e0a:ac2:22b0:71d9:bc2b:4a47:20c2])
-	(Authenticated sender: vjardin@free.fr)
-	by smtp4-g21.free.fr (Postfix) with ESMTPSA id 763DE19F59C;
-	Sat,  7 Nov 2026 18:00:29 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=free.fr;
-	s=smtp-20201208; t=1794070850;
-	bh=syJyVGNndyaT76xcg3TviaWZJbrAimIaATWckjraIYA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=udgMF85LazaNU0ZXoRcnJhuQA21gmX/PlbKegAK+KxJJ1+kt3COSyM4r3yyBlo2SB
-	 joV2E0iybcwLRKiZcjGbvmlrcGxsmWSkcK2v5/e3MIhT5YCjV5e7ZldqYPSaac9n9a
-	 xDGJv45X/pXl86eCC/AxwhHdynJkl5q/tN3nuuWtCWd89D7XzGQadqvNz1rQU4IIzx
-	 7oFSepoRUUNROi/gKYXlhpl+FV/iEPGc2KDIJuBNR1uwt3vJ3451smaTQYDYSEU2NN
-	 ji35jqiD+doB8aTdWL2ARgfPqfFI/dNsp/9F49p4yxGEP/N5dm5LIH/1zxtb/bT6kR
-	 4lz15iEri2+Yg==
-Date: Sat, 7 Nov 2026 18:00:28 +0100
-From: Vincent Jardin <vjardin@free.fr>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>,
-	Frank Li <Frank.Li@nxp.com>, Jacky Bai <ping.bai@nxp.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	NXP S32 Linux Team <s32@nxp.com>, Linus Walleij <linusw@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>, linux-gpio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev, Vladimir Oltean <vladimir.oltean@nxp.com>
-Subject: Re: [PATCH v2 2/5] dt-bindings: soc: fsl: layerscape-dcfg: add the
- LX2160A pad-mux child
-Message-ID: <au9ZLBSJ_nTuMaVc@l3017727.home>
-References: <20261103-for-upstream-lx2160a-rcw-pinmux-v1-v2-0-3aad0860b984@free.fr>
- <20261103-for-upstream-lx2160a-rcw-pinmux-v1-v2-2-3aad0860b984@free.fr>
- <20261106-smiling-infrared-dugong-48ee5c@quoll>
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=Fi221Vvl
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
+	Content-Type; bh=T0TcPMhnJboefGjG0dX42ucxF+Z41m2N3+6Nxl59W/o=;
+	b=Fi221VvloIkNvZbdj3lKq+HdEGQPtgHh2/PWzntI6Mo1izjyXJ/McQnd04eCYp
+	o2csqEQI2t/NQWx37zq1bOGSzaay7/KWf4DsGH/z0mxkNGlwWn1R7g0tBzh6JUl+
+	jjOWCsqtGE3wci9D6Uv8uEGJn/w+SLk1nn1NzgnoJLxzo=
+Received: from [IPV6:240e:b8f:91b3:d000:dbd3:438:3de0:f148] (unknown [])
+	by gzsmtp3 (Coremail) with SMTP id PigvCgDHYznHYu9qSfN5Eg--.55065S2;
+	Sun, 08 Nov 2026 01:41:27 +0800 (CST)
+Message-ID: <5512a99d-9c72-4988-aa94-0826d098a09d@163.com>
+Date: Sun, 8 Nov 2026 01:41:27 +0800
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -78,32 +54,125 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20261106-smiling-infrared-dugong-48ee5c@quoll>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 01/16] PCI: dwc: Add pcie_cap field and caching helper
+To: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+Cc: sashiko-reviews@lists.linux.dev, imx@lists.linux.dev,
+ linux-amlogic@lists.infradead.org, linux-pci@vger.kernel.org,
+ Frank.Li@kernel.org, neil.armstrong@linaro.org
+References: <20261028030652.2917756-1-18255117159@163.com>
+ <20261028030652.2917756-2-18255117159@163.com>
+ <sashiko-outbox-187403@kernel.org>
+ <3773fc58-a6ab-4f8d-a9a1-c865217afe84@163.com>
+ <179399401605.55876.3520713514569261990.b4-reply@b4>
+Content-Language: en-US
+From: Hans Zhang <18255117159@163.com>
+In-Reply-To: <179399401605.55876.3520713514569261990.b4-reply@b4>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:PigvCgDHYznHYu9qSfN5Eg--.55065S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxuF43Cw48AFWfArWUCFy3Arb_yoWrGr18p3
+	9rJayYyF4DJr42vFnFv3WrXrnIyasxAFW7WwnrGrnIvr9Fyr17KF4ayFWjg3Z7GrWIkr1j
+	9rWaqr9ruFn8JFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jUzVbUUUUU=
+X-CM-SenderInfo: rpryjkyvrrlimvzbiqqrwthudrp/xtbC6wdgBGrvYsdbgQAA3y
 
-Hi,
 
-> > @@ -32,6 +32,7 @@ properties:
-> >        - items:
-> >            - enum:
-> >                - fsl,ls1028a-dcfg
-> > +              - fsl,lx2160a-dcfg
-> >            - const: syscon
-> >            - const: simple-mfd
-> >  
-> > @@ -62,6 +63,12 @@ properties:
-> >  
-> >    ranges: true
-> >  
-> > +  pinctrl:
-> > +    $ref: /schemas/pinctrl/fsl,lx2160a-rcw-pinmux.yaml#
+
+On 11/7/26 03:40, Manivannan Sadhasivam wrote:
+> On 2026-10-28 11:18 +0800, Hans Zhang wrote:
+>>
+>>
+>> On 10/28/26 11:15, sashiko-bot@kernel.org wrote:
+>>> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+>>> - [Medium] PCI: dwc: unconfirmed offset returned in dw_pcie_get_pcie_cap()
+>>> --
+>>>
+>>> commit c6fcd840cdb57dd351ea1787cae915ad3164fb13
+>>> Author: Hans Zhang <18255117159@163.com>
+>>>
+>>> PCI: dwc: Add pcie_cap field and caching helper
+>>>
+>>> This commit adds a pcie_cap field to struct dw_pcie and introduces a
+>>> dw_pcie_get_pcie_cap() helper that lazily looks up and caches the PCI
+>>> Express Capability offset on first use once confirmed via a DBI read-back.
+>>>
+>>>> diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
+>>>> index 6d788aa000117..dede6b3966585 100644
+>>>> --- a/drivers/pci/controller/dwc/pcie-designware.h
+>>>> +++ b/drivers/pci/controller/dwc/pcie-designware.h
+>>> [ ... ]
+>>>> @@ -832,6 +834,42 @@ static inline void dw_pcie_dbi_ro_wr_dis(struct dw_pcie *pci)
+>>>>    	dw_pcie_writel_dbi(pci, reg, val);
+>>>>    }
+>>>>    
+>>>> +/**
+>>>> + * dw_pcie_get_pcie_cap() - Return the PCIe Capability offset
+>>>> + * @pci: DWC instance
+>>>> + *
+>>> [ ... ]
+>>>> + * Return: the offset of the PCIe Capability, or 0 if it could not be
+>>>> + * found or has not been confirmed yet.
+>>>> + */
+>>>> +static inline u8 dw_pcie_get_pcie_cap(struct dw_pcie *pci)
+>>>> +{
+>>>> +	u8 cap = READ_ONCE(pci->pcie_cap);
+>>>> +
+>>>> +	if (!cap) {
+>>>> +		cap = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
+>>>> +		if (cap && dw_pcie_readb_dbi(pci, cap) == PCI_CAP_ID_EXP)
+>>>> +			WRITE_ONCE(pci->pcie_cap, cap);
+>>>> +	}
+>>>> +
+>>>> +	return cap;
+>>>> +}
+>>>
+>>> [Severity: Medium]
+>>> In drivers/pci/controller/dwc/pcie-designware.h, the kernel-doc for
+>>> dw_pcie_get_pcie_cap() states that it returns 0 if the capability could not
+>>> be found or has not been confirmed yet.
+>>>
+>>> However, when pci->pcie_cap is 0 and transient DBI data causes
+>>> dw_pcie_find_capability(pci, PCI_CAP_ID_EXP) to return a non-zero offset cap
+>>> while the confirmation check dw_pcie_readb_dbi(pci, cap) == PCI_CAP_ID_EXP
+>>> evaluates to false, pci->pcie_cap is left as 0, but the unconfirmed non-zero
+>>> cap is still returned to the caller.
+>>>
+>>> Callers that guard DBI writes on a non-zero return (such as
+>>> rockchip_pcie_enable_l0s()) or cache a non-zero return in driver state (such
+>>> as tegra_pcie_dw_host_init() setting pcie->pcie_cap_base when
+>>> !pcie->pcie_cap_base) will then consume or permanently store the unconfirmed
+>>> offset.
+>>>
+>>> Should dw_pcie_get_pcie_cap() return 0 when the confirmation read-back fails,
+>>> or should the kernel-doc comment be updated to match the implementation?
+>>>
+>>
+>> Hi,
+>>
+>> We have already replied to Bjorn before. According to the specification,
+>> the value of pcie_cap is not equal to 0.
+>>
 > 
-> Why other children are bus-addressed and this one not? Such mixing is
-> messy. Either this is a subdevice with its own addressing or not. Keep
-> bindings consistent.
+> Then please update the stale the kernel doc.
 
-ok, I'll provide a v3 accordingly.
+Hello Mani,
 
-thanks for this comment,
-  Vincent
+How about modifying it to "stale the kernel documentation"? If the 
+description below is valid, do I still need to send the v6 series patch?
+
+
++ * A DBI read issued while the controller is not accessible returns
++ * platform specific data, and a transient bogus value must not stick in
++ * the cache.  The offset is therefore only cached once the capability
++ * ID has been read back at that offset.  If the read-back does not
++ * confirm the capability, the offset is still returned for the current
++ * access but not cached, so the next call performs the lookup again.
++ *
++ * Return: the offset of the PCIe Capability, or 0 if it could not be
++ * found.
+
+
+Best regards,
+Hans
+
