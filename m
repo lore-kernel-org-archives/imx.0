@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794084453;
-	b=MB7rDDxlrKPKRCNlHfQKRHttpKvb6Ss04jS/PhE5RwV2nCdsDi7lsZS+9fH89VFGDmv5
-	 VRK+sJhhOAEPdKMjKAE5qcQTx+greOeq/I+MjnSEZSyh6B/Zu7mNKqAZFm36Gj/2qfwAW
-	 hYTgbQSZWOJ8IaR08rWDY4AdaOEpnYuUd6ZY4qKNKTPu8tf4dP+OT6SUwM/2tJ57yeY0q
-	 Q0v4RFbLq12eGE+mgx8OfBOX78QfsFpn24n06HYBzTeCw5Q+fY9ybvww3IvBNE5FoEMMJ
-	 RlE5YvFYFFjjfeD4Zbdpgl6CLRmNVGr4YCPThVsbPQoFRY8nBmgDyejWwyELmfdVSAA==
+	t=1794084490;
+	b=TMiy7+sCuvZ4VcjmBCuUFsmAFwAHaL8bFHvOb5LsPzwsIOvUBO1PJdMbfuCKaqMS76Tv
+	 /X4ewOUL2u3IDD2v7x44EnX0xw62m6xflO360ZxD4MPvx9yblH7SpoZB4V8Pu1T/cLBFW
+	 9SIHq+R6u+MR4IoHmXB8DLrUtFa8d0ZB/uaCFRCrdK5HUjVNCB29PEaCIcY7B8Cxg8UdD
+	 sxcU8Dkc556ErjvrmRg7KpThyEUJ0iwv32KU9Ylp/Ag+KR0Ve1iX78blKVUyIbxqGePgb
+	 dPcZ4/G8RgftW6N+fcUZ9puvUe7MmqQ/2p1Nyd/k+s1f2XJ1EbtvN3yxGRg5UW4BF2A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794084453;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794084490;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=0KebwVLYB2D2L6loP8NHGLZcG3tV/DtfHEbIAoU8RMc=;
-	b=Ru7ATrZFSWHHfCPswvcSYB1V57JxtSyaB488jNiqJUIssSryM98gxPTTmsPFGIk6/q6y
-	 JoGZuli2rZ/9RMq813I6dEkMmgZIt3cYysO110a232Awd5XTgK0qP5oJ4tpJljq4IcgLU
-	 kQTe0SFkDM2sBC1HhZuc+3NUeI4lbQfuVDC7fQ9ZWVMvqkPvMchgLCzbigdO3wiLtjJcj
-	 2ZOIUMkVHkJCXsCsk5D2d2FP9z+ilI7tXy3fmeXAzpcdiaxewENoWXRIFsRyODUV3BKl0
-	 6KSz5gilxA0BEcJpchQXcOakoulX6jlKpisBnw1H9/cbmUoMgvV6/DMTCXxC3pA1KnA==
+	bh=XiglxFtRswHRrbBgkGYgYBGQsVeSRteW99GaZhMNGiM=;
+	b=T0qFpJjgvXHFR1Xak4cHQOKLDD/eSyXknvB2pkAnG9DyncoY54aI31nK6vLr7USGoUYa
+	 mUOLHRuJ7tsYS3fv6I+GtF3M59jnNJXMP2shMfJwHYk4c04mXFKi5bCWGMDIP2HGuiWa/
+	 0B4rlj/cTdjYJb48reCEa4xzKELw12KycDiBjF9tnka3KpG0pnKCGeIU1l6FlMMFoj54u
+	 utfPTq9/yakEAnupgHDlhVqOcMwYAwAlTbsO0/aflCNS0LXUAvrNy94DMi4V68w0nt8a3
+	 zXg3E+tXE2o3kjss8Mu/wjfto1/R4qOgNyVQxG1WVaimM/rF6OtvZs46FIxZSE+wMrA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mYJoNCay;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="OWje3/2R";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2EE7606A326;
-	Sat,  7 Nov 2026 20:47:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F053606A326;
+	Sat,  7 Nov 2026 20:48:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mYJoNCay
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F67A1F0089F;
-	Sat,  7 Nov 2026 20:47:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OWje3/2R
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A4921F0089F;
+	Sat,  7 Nov 2026 20:48:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794084452;
-	bh=0KebwVLYB2D2L6loP8NHGLZcG3tV/DtfHEbIAoU8RMc=;
+	s=k20260515; t=1794084489;
+	bh=XiglxFtRswHRrbBgkGYgYBGQsVeSRteW99GaZhMNGiM=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=mYJoNCay27RFXMdep+ySASAN5VNIZ5d5/8bbraSiMJjesxQ+flhHAeeLo/POilJH2
-	 lIbg7gWtxKy6s4+kCBlSLvhOUVrHRg1Jq3BbQxeoK/1/2XADVNLSemos8qr1zxC7fr
-	 vGLU02y7h4gtXmMAnYBUOyIhoauo8XFi0M+ZYWH8Ng8lslGRXWOPjZM9/FyMbEMGCP
-	 TyUU1Ufy5fdqvIC2fOo28Ay1ouCYq+tdYUfbrQiaIGWnlvNwggEhVMfg9w+8ujfqn1
-	 48P7XWdSOEoigw7Ixq74Oq7cFltc9I6ySeDd27idLc3E0480Tb16dYYi6WDbq6IDvu
-	 rlQdAb4eXbmAg==
-Message-ID: <sashiko-outbox-203326@kernel.org>
+	b=OWje3/2Rv7EJDS7J7WAZQ3IaKVBQIPUWgb0tHrXervawYZQjOzVkhShNBwmS1w0Ly
+	 NYzny1weZVmROwiM5tWc21yb3MqfhlxLsSki4pBb95h2faR0TLPOt33oizxPzqU42L
+	 qsZAMTfit6cvC1nImdFlId31OFqnsXb9MkcVL1pKkpy87MdgH/XuAF4ToOXabjsXGQ
+	 cF/aE3/+3UYQmxXLqYrzTKwinwq0GAropZvrRS5tFQphZKCI/yA+kvKt9ycqpqbdvI
+	 D6yWmoFemZW3fA01bwPsJbXw+8gocEUHNOnaBHmmuHh9sUcO/vZWR56WTIzSTM9uOx
+	 J0JnvKin7eX3Q==
+Message-ID: <sashiko-outbox-203327@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 39/58] mtd: rawnand: qcom: retain open-handle state on
+Subject: Re: [PATCH 51/58] mtd: rawnand: mpc5121: retain chip state across
  removal
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "James Hilliard" <james.hilliard1@gmail.com>, "Miquel Raynal" <miquel.raynal@bootlin.com>, "Richard
@@ -75,12 +75,12 @@ To: "James Hilliard" <james.hilliard1@gmail.com>, "Miquel Raynal" <miquel.raynal
  Levitsky" <maximlevitsky@gmail.com>, "Michael Walle" <michael@walle.cc>, "Srinivas
  Kandagatla" <srini@kernel.org>
 Cc: "Tze Yee Ng" <tze.yee.ng@altera.com>, linux-mtd@lists.infradead.org, linux-sunxi@lists.linux.dev, imx@lists.linux.dev, linux-amlogic@lists.infradead.org, Frank.Li@kernel.org, wsa+renesas@sang-engineering.com
-In-Reply-To: <20261107-submit-rawnand-retained-handle-lifetime-v1-v1-39-0181ef0cc4c8@gmail.com>
+In-Reply-To: <20261107-submit-rawnand-retained-handle-lifetime-v1-v1-51-0181ef0cc4c8@gmail.com>
 References: <20261107-submit-rawnand-retained-handle-lifetime-v1-v1-0-0181ef0cc4c8@gmail.com>
- <20261107-submit-rawnand-retained-handle-lifetime-v1-v1-39-0181ef0cc4c8@gmail.com>
+ <20261107-submit-rawnand-retained-handle-lifetime-v1-v1-51-0181ef0cc4c8@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 07 Nov 2026 20:47:28 +0000
+Date: Sat, 07 Nov 2026 20:48:02 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -92,85 +92,30 @@ Precedence: list
 
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue to consider:
-- [Medium] mtd: rawnand: qcom: broken error handling in
-  qcom_probe_nand_devices()
+- [Low] mtd: rawnand: mpc5121: missing Fixes trailer for probe leak and
+  removal UAF
 --
 
-commit 0a9084cf5fec792ff4833fe6c2d5c8f9780c60a1
+commit 648cd21cc2eac3c4001033a11e9ac4de646c25b6
 Author: James Hilliard <james.hilliard1@gmail.com>
 
-mtd: rawnand: qcom: retain open-handle state on removal
+> mtd: rawnand: mpc5121: retain chip state across removal
+>
+> Drain NAND access before unmapping the external chip-select registers.
+> Keep the embedded chip and controller alive until the final MTD
+> reference, and unwind scanned NAND state on unsupported geometry and
+> publication failure.
+>
+> Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
 
-This commit ties the lifetime of qcom_nand_host and qcom_nand_controller to
-the MTD and NAND controller release callbacks, validates boot partitions
-before registering MTD devices, and adds cleanup of registered chips on
-probe failure and removal.
+[Severity: Low]
+This fixes a probe-time leak of nand_scan() allocations and a
+use-after-free on device removal while MTD handles remain open, both
+present since the driver was added.  Should it include a Fixes: tag?
 
-> diff --git a/drivers/mtd/nand/raw/qcom_nandc.c b/drivers/mtd/nand/raw/qco=
-m_nandc.c
-> index 2d98f79b492d6..f812de1d776fc 100644
-> --- a/drivers/mtd/nand/raw/qcom_nandc.c
-> +++ b/drivers/mtd/nand/raw/qcom_nandc.c
-
-[ ... ]
-
-> @@ -2077,15 +2091,13 @@ static int qcom_probe_nand_devices(struct qcom_na=
-nd_controller *nandc)
->  	int ret =3D -ENODEV;
-> =20
->  	for_each_available_child_of_node_scoped(dn, child) {
-> -		host =3D devm_kzalloc(dev, sizeof(*host), GFP_KERNEL);
-> +		host =3D kzalloc_obj(*host);
->  		if (!host)
->  			return -ENOMEM;
-> =20
->  		ret =3D qcom_nand_host_init_and_register(nandc, host, child);
-> -		if (ret) {
-> -			devm_kfree(dev, host);
-> +		if (ret)
->  			continue;
-> -		}
-> =20
->  		list_add_tail(&host->node, &nandc->host_list);
->  	}
-
-[Severity: Medium]
-Should qcom_probe_nand_devices() return ret instead of continuing when
-qcom_nand_host_init_and_register() fails?
-
-Continuing the loop means that if an earlier child node fails (for example
-with -EPROBE_DEFER or invalid boot partitions) and a later child succeeds,
-ret is overwritten with 0 and the partial probe is not unwound via
-err_setup.
-
-Worse, if the earlier child fails in qcom_nand_attach_chip() when
-qcom_alloc_bam_transaction() returns NULL after qcom_free_bam_transaction()
-freed nandc->bam_txn:
-
-drivers/mtd/nand/raw/qcom_nandc.c:qcom_nand_attach_chip() {
-    ...
-	if (nandc->props->supports_bam)
-		qcom_free_bam_transaction(nandc);
-
-	nandc->max_cwperpage =3D max_t(unsigned int, nandc->max_cwperpage,
-				     cwperpage);
-
-	/* Now allocate the BAM transaction based on updated max_cwperpage */
-	if (nandc->props->supports_bam) {
-		nandc->bam_txn =3D qcom_alloc_bam_transaction(nandc);
-		if (!nandc->bam_txn) {
-			dev_err(nandc->dev,
-				"failed to allocate bam transaction\n");
-			return -ENOMEM;
-		}
-	}
-    ...
-}
-
-continuing to the next child node calls nand_scan(), which runs
-qcom_clear_bam_transaction() and dereferences nandc->bam_txn while it is
-NULL.
+  Fixes: bb315f749f8c ("mtd: nand: Add MPC5121 NAND Flash Controller driver=
+")
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261107-submit-raw=
-nand-retained-handle-lifetime-v1-v1-0-0181ef0cc4c8@gmail.com?part=3D39
+nand-retained-handle-lifetime-v1-v1-0-0181ef0cc4c8@gmail.com?part=3D51
