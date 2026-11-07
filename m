@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794083496;
-	b=n3XQBYJcq2ch03VFxq//DAO/tKJc/Ksg1V+7DYp4Tc+6F6BGD9B23Xrx1s+MeSYzp2K1
-	 S5liuZNkInsOZZsDFW5LqJOQwEpxaHhYdEpEbo5L8TmENkuuzs+T1D4LSYf+SOo95CYTB
-	 rI77rqhLSpqoz2M5G8VYY7WduTU1dRWQ9y3QfjsOsZhiR2teDYDXwXL6dpAZZ9ErBWGJq
-	 vFVTmSVmpEq0fl4U0ooYjkb/E3RshO6tTGZz9gsjYmr6PwxBoaDD0Gu10QV1YDhCskaLT
-	 tiDX8RlupnPRD8Fug29TDS24udM+tL3cMwPBi8rGKKI38qnKE0cDqdu3ye792wKX2qg==
+	t=1794083535;
+	b=vSLpzHmtwj5JbjCnsdz9PBgTEJIxCyXjlNNeDGM+Y9mrwFyEA/3s+5ukz9UuAa84FLEQ
+	 jv11UMQIB+PM0xqaj4Hv8QVV3yW9KlZxLoJb/8hiIkvbpW+9AFPsVX8/QTninBbHizY21
+	 MFfpfDDssIvc+SRjrr4kZd7NabdJyOtMotsnupIIl5cLUkXF8BDSQbJ34hGnLBOl/BJti
+	 xWPbNpir1YS5KQ3zFb0k4wJRb/mv+LUnCYtvQrgUzeARTywyjtLosDpwF8Qs/TpAW7oTz
+	 8RUa9O1FBOSMEKPR2AKMFm7BAzh1njdMAUVrqMc5hfmak8NpTEU/v5OlI3So5BER2fw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794083496;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794083535;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=uVfYL/crgHpwOKUheIhGq2v1ptnfI5IGAlA37cvNCeM=;
-	b=CMTKuI/sT/zXMQtg1OGHjDnAY1nGildOT36zA/DUAYkj8yum8gn8b1j7AChWZITFgcwF
-	 /S8k3JMp5zupZGJytIIdcBWDFjGXKt0pHArWOFMhsZoQDtmkN1Hcdii1vg2fU0Npr//Wc
-	 u58VVgAFvsNlY7HVex5yT9lUIwvCkZ1ecxwGy1DYshD7Fs1qF3zLDUzCBvGg42s6+mtEa
-	 sU/qKnTEqHXAvqH5CPfoA6ReEoDt9aky7rlNatP7TYJH15vP4e2O1IvIZielh2WTF1f+h
-	 lo6UiNBMT6dk9gFhTVMN0doqyUVIjeri2qItH0tHUx34lIyatGZnbN6BdDQuIOSYCqw==
+	bh=ZLqHvanQhVbtqziyQ4DuDfUd8pXVp5/u5iaRuc3S1QM=;
+	b=rDK61/1I/aepqrKzfkJLEne9XIw81LS2GdbZVgaZ+qAZxQKO6nD41M6H0PpKIsQ21cXF
+	 n8RiIALK4FKsIpodLj35LwULD9uP5rzVQFqvlEWJW+zUSS8Sf6CGXQFh5QNs5CofTIUjt
+	 ZVKgke7KWmezHdYTO8fmS6KypQFqxRkcf0mHok/eW3NW9CowVyhzU4wccn4DRAg4SKt4K
+	 Up+sGWjLgilXdDFmtW3VrVJyMZFulLLpmqPg/WOjEtv1iBhUJAR8cPLzz4IFPJsjNk6T1
+	 doODKPiuEZ3pPYCLr8gy36HSj+OXZE8QPmOOLiVydy8P2OPkeamx82vgabr5SFPToxA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WQmQRM64;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="FRcMOH/H";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87017606A32D;
-	Sat,  7 Nov 2026 20:31:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA7E5606A326;
+	Sat,  7 Nov 2026 20:32:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WQmQRM64
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70A051F008BD;
-	Sat,  7 Nov 2026 20:31:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FRcMOH/H
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23F341F0089F;
+	Sat,  7 Nov 2026 20:32:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794083496;
-	bh=uVfYL/crgHpwOKUheIhGq2v1ptnfI5IGAlA37cvNCeM=;
+	s=k20260515; t=1794083534;
+	bh=ZLqHvanQhVbtqziyQ4DuDfUd8pXVp5/u5iaRuc3S1QM=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=WQmQRM64W6hKVHx476szHYttXvElu2yKjqim0wVAyHoli4626joyKYUgVYMqtaADH
-	 1QBuB/kEEowdmnTQc+aEdpRB38EG5zEeYEnfcjjnK3h9Nn8POX2ggl5NPn2bmDUfFJ
-	 SoUr1BE8TTsvuiEPz1w23DBvxmA0xMYYMZmD88gnv6xcMN+oM4IGs2lp1DRVin/FTu
-	 v4lQ2UV4OmH7jnotAuqn68sfH95q0tJtLTLaRVF3UnBagrJLfY9G0CKltXhi1JZNoh
-	 paXuaFhFVZ7wEAC9WDZyXIeFRTSqDGbPqzUSSNhOpCW+7IQSTaLXpD4AiVkgAPN7Hs
-	 PzVimKFWPkKiA==
-Message-ID: <sashiko-outbox-203295@kernel.org>
+	b=FRcMOH/HcA8S4LSqPnxPdStAt+Df/BqkpjzLIDhYQAiI/1GfOzIlac9ORMaQyLbNA
+	 VuoF+BeTKEOjkh7jBqby1Es+6xDTMFXnL2VER7ImjLLurwLu+2A662fl4dhYd8kTkP
+	 CEi0Q4g+Y6sLPpHvqZ97356XdG2mZN7IZtfOhiYTVmoTGxW5rL98DzVrIJTUTlIMGV
+	 Tcjrz39WFGD27FLWEeEpSMnBqd59kuEwbUMcf7EWV7ncmClaK++ErTkWKici3NBqr0
+	 EyxJNFYMqGIPYVaKpgmHhJfivVyQ/8csTug+v0S4xpDMrGfNhYV0VuNu4II6YXHfJU
+	 SJlOBKu3vXefA==
+Message-ID: <sashiko-outbox-203299@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 14/58] mtd: rawnand: intel: retain open-handle state on
+Subject: Re: [PATCH 15/58] mtd: rawnand: tegra: retain open-handle state on
  removal
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "James Hilliard" <james.hilliard1@gmail.com>, "Miquel Raynal" <miquel.raynal@bootlin.com>, "Richard
@@ -75,12 +75,12 @@ To: "James Hilliard" <james.hilliard1@gmail.com>, "Miquel Raynal" <miquel.raynal
  Levitsky" <maximlevitsky@gmail.com>, "Michael Walle" <michael@walle.cc>, "Srinivas
  Kandagatla" <srini@kernel.org>
 Cc: "Tze Yee Ng" <tze.yee.ng@altera.com>, linux-mtd@lists.infradead.org, linux-sunxi@lists.linux.dev, imx@lists.linux.dev, linux-amlogic@lists.infradead.org, Frank.Li@kernel.org, wsa+renesas@sang-engineering.com
-In-Reply-To: <20261107-submit-rawnand-retained-handle-lifetime-v1-v1-14-0181ef0cc4c8@gmail.com>
+In-Reply-To: <20261107-submit-rawnand-retained-handle-lifetime-v1-v1-15-0181ef0cc4c8@gmail.com>
 References: <20261107-submit-rawnand-retained-handle-lifetime-v1-v1-0-0181ef0cc4c8@gmail.com>
- <20261107-submit-rawnand-retained-handle-lifetime-v1-v1-14-0181ef0cc4c8@gmail.com>
+ <20261107-submit-rawnand-retained-handle-lifetime-v1-v1-15-0181ef0cc4c8@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 07 Nov 2026 20:31:33 +0000
+Date: Sat, 07 Nov 2026 20:32:11 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -93,54 +93,54 @@ Precedence: list
 Thank you for your contribution! Sashiko AI review found no new issues
 in this patch, but noticed 1 related pre-existing issue it does not
 introduce:
-- [Medium] mtd: rawnand: intel: missing hardware disable in
-  ebu_nand_probe() [1]
+- [High] mtd: rawnand: tegra: unclocked register access in
+  tegra_nand_irq() [1]
 --
 
-commit 42115b2b815dc0a43fa249f1ae95d7eeefbb02a5
+commit 6164eede324ed80f4bb2c1a0eea0f8635af28e57
 Author: James Hilliard <james.hilliard1@gmail.com>
 
-mtd: rawnand: intel: retain open-handle state on removal
+mtd: rawnand: tegra: retain open-handle state on removal
 
-This commit disconnects NAND operations on removal and ties the lifetime of
-the Intel EBU NAND controller and chip state to the last MTD reference.
+This commit switches the Tegra NAND chip and controller allocations to
+reference-counted release callbacks and disconnects the chip before
+suspending the controller on removal.
 
-> diff --git a/drivers/mtd/nand/raw/intel-nand-controller.c b/drivers/mtd/n=
-and/raw/intel-nand-controller.c
-> index 477a427dac1f0..e4a24e69ebbcf 100644
-> --- a/drivers/mtd/nand/raw/intel-nand-controller.c
-> +++ b/drivers/mtd/nand/raw/intel-nand-controller.c
+> diff --git a/drivers/mtd/nand/raw/tegra_nand.c b/drivers/mtd/nand/raw/teg=
+ra_nand.c
+> index 7f9eb5f042a7e..da7791741b9d4 100644
+> --- a/drivers/mtd/nand/raw/tegra_nand.c
+> +++ b/drivers/mtd/nand/raw/tegra_nand.c
 
 [ ... ]
 
-> @@ -692,9 +699,15 @@ static int ebu_nand_probe(struct platform_device *pd=
-ev)
->  	if (ret)
->  		goto err_cleanup_dma;
+> @@ -1232,10 +1254,11 @@ static void tegra_nand_remove(struct platform_dev=
+ice *pdev)
 > =20
-> -	ret =3D mtd_device_register(mtd, NULL, 0);
-> +	ret =3D nand_set_release(nand, NULL);
->  	if (ret)
->  		goto err_clean_nand;
-> +	ret =3D mtd_device_register(mtd, NULL, 0);
-> +	if (ret) {
-> +		nand_disconnect(nand);
-> +		mtd_put_master(mtd);
-> +		goto err_cleanup_dma;
-> +	}
+>  	WARN_ON(mtd_device_unregister(mtd));
+> =20
+> -	nand_cleanup(chip);
+> +	nand_disconnect(chip);
+> =20
+>  	pm_runtime_put_sync_suspend(ctrl->dev);
+>  	pm_runtime_force_suspend(ctrl->dev);
+> +	mtd_put_master(mtd);
+>  }
 
-[Severity: Medium]
-This problem wasn't introduced by this patch, but if probe fails during or
-after nand_scan() [1], doesn't jumping to err_clean_nand or
-err_cleanup_dma leave EBU_CON_NANDM_EN enabled in EBU_CON?
+[Severity: High]
+This problem wasn't introduced by this patch, but can tegra_nand_irq()
+access unclocked registers after pm_runtime_force_suspend() [1]?
 
-nand_scan() runs ebu_nand_exec_op() -> ebu_select_chip(), which enables the
-controller in EBU_CON, but unlike ebu_nand_remove(), the probe error paths
-never call ebu_nand_disable(&ebu_host->chip) before cleaning up DMA and
-returning.
+tegra_nand_probe() registers tegra_nand_irq() with devm_request_irq(), so
+the IRQ remains active until devres cleanup runs after tegra_nand_remove()
+(and after the err_put_pm path in tegra_nand_probe()) returns.  In the
+meantime, pm_runtime_force_suspend() disables ctrl->clk, and any pending or
+spurious interrupt before devres frees the IRQ causes tegra_nand_irq() to
+read ISR and DMA_MST_CTRL while the controller is unclocked, triggering an
+asynchronous external abort on Tegra.
 
-[1] https://sashiko.dev/#/bug/linux-34984827-527c-4bf7-baa8-10dffee6916d
+[1] https://sashiko.dev/#/bug/linux-ae385c5a-5cfb-462a-ab95-dd13d6f5e107
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261107-submit-raw=
-nand-retained-handle-lifetime-v1-v1-0-0181ef0cc4c8@gmail.com?part=3D14
+nand-retained-handle-lifetime-v1-v1-0-0181ef0cc4c8@gmail.com?part=3D15
