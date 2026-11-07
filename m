@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794084124;
-	b=eBayRGxYwzbUCGtxWZYYrho4ks5UY5lwHF93AjyA5FfEDxFxwYI4jOA65cs5B+aRQjSk
-	 DEF75j+B9Ju3tt3tYuv9fUOw4QGXHfIuudJSgwm0hxn4jW6I02qIcq5rQmdE5kL8D+Yyz
-	 EZkINFleH/YX7eWPWUhfNfLX6E7/8GDEkX1tPPLv1F4axSBW/aPHzJOf5xwRJANEV6mg+
-	 G8+5+9qNxu+ZG05dg1dej7aLDnP9K/HLw+Q3E7wPdRdcbwqzjC8lULduJAHdxax7wMCpI
-	 th6DvR6eZ+cYz7hcJqCrAKAT+A24UzOtutlTCvqp9kbBXRJZOHpP61H6pgw8j0DrXuw==
+	t=1794084280;
+	b=h8MSg23Sz/N+A8t/TZNMotxFubIqlYD5fFrazXN9mZR6u8AKrexbcFxbAm7g46I65ByT
+	 SUIz/BAxhZNv4goXs2mCv1tyAm5tILGuwPEEKs56hkYKe6zEw+G1GMEHMno0xrOI/senl
+	 rs42XOdOxktH6zcu3CD12HA2Ze/qRUIluKfa1Jmpp0k0WlcFWII6Fm6C8+RSiPuqyt8HP
+	 RMTCx4icHB41+fGJnNEfoZetbSftxKnbCf38kvD95xuZa7shKbv+WvXyoacIoYPNJAVXx
+	 0imnAgnNtZuKBg1ePNnHnxknCG1rpJ2TH6zRYcCPqYkIEd1VqKmEeP0iYkK6ojYdVvw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794084124;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794084280;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=lwuEsjh9q5gPbKhlJcGbl7FK+AeSWFGu+PnGUu+3vhc=;
-	b=bfUKHaT5ZUWFKJKewvcwHBCfuhCKlQ575Fh86Xsw4YoDbUlx0iA4Sz5CAueNLNcjIxZj
-	 DqwWsdVnVbO0d5TvSlQDX4L+P5trkqX18zyy7D6PiW/7q77vORL/ZTD1F1twgcnGw2wXx
-	 AmHrBlo1ScQ5JS5b0e4o5fje/vntRwIVH1T3YN2gcrDhsz+jd3/WJUeQn5IvNanqIjeoZ
-	 RzTSr8QQmGHqvZsfHVC56GfJDB4lGcuXevfnC5oSZhQ5DGp6kHrHBf1vRZbJAljZerTTq
-	 bt6vub7GC/BobRzqKTaldYw+g6BAtDGfBtOS9WmqoNV4fpFzsBrwSvrqeH4x+Oelgdg==
+	bh=IPm3mqNZ6e+qAhw2GbfDLGuo9LmeBSigrixHpfLPFj0=;
+	b=ykA196tbcbZUHOTg6JvJfhIaZAP4juGJVib/Tix4tGTVa2tRwv1b3i9N8W/4ndgVP+5b
+	 /6EGbn5uxggN1rK/i52aYfGcyHb8GKQ5Sk1/52cMd82y5cGasXOqwBa2ffzhCEaD2cJgC
+	 tKPYlJEE1MeSYddDJXx5OD03Iweuorb/DXO2ovgQOXlFQ+M7/eUGJ3W2k9qbxnC2h2Ggt
+	 Trjo8pUQpN/a6dag9f3yAsh2GlhGmf+Y4r08Z7oqD5ulYPegGzO5Xv4bgoaXgwJefdpOj
+	 QrxUiuZ/9fFdaaceDjLDBe4MZMgL5T7LHyTFhcd+NkI6LSoCkL4CI71FzcGD5voKx2A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HYEo0TeW;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VNWucWpk;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2145A606A32E;
-	Sat,  7 Nov 2026 20:42:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EDF6606A32E;
+	Sat,  7 Nov 2026 20:44:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HYEo0TeW
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACA301F0089F;
-	Sat,  7 Nov 2026 20:42:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VNWucWpk
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D03E61F0089F;
+	Sat,  7 Nov 2026 20:44:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794084123;
-	bh=lwuEsjh9q5gPbKhlJcGbl7FK+AeSWFGu+PnGUu+3vhc=;
+	s=k20260515; t=1794084279;
+	bh=IPm3mqNZ6e+qAhw2GbfDLGuo9LmeBSigrixHpfLPFj0=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=HYEo0TeWlYT8r1fdHC56Lgr3GMEibpbQNZUheFdun5BrOo095xOtsOOZ/ghwByI5N
-	 zawR+YyAvrI4RgGMXY0G3SRK2ogBlbTFCe13Hyk7RIwW+RXbg+x6ojFL1MnrWqFCso
-	 ZP/ZSxZOydWBDjrYq9IdzhcyFxcYMJyxm4kyOKp5XfojhupKlGP/qb7M+rla7KXA8p
-	 JoshuHDiQOMUC3h/J8WL3WNHL7rRJuwWgY2CMY8321RptAnnG3iKZxbTVxIJf53X0k
-	 84cDIMVugD4Wv30OcZqFvBpPO/zGF9NDRlQlnq6QKGQb9lBLNaljHsBzQ8mw8LRbll
-	 fkC5snZSFp51Q==
-Message-ID: <sashiko-outbox-203315@kernel.org>
+	b=VNWucWpkETSDTR5IVj0MisZFv0GDxKS9e9reNOmDtEGwhfwbNubu8DAnlJ6VTCNPK
+	 45oWTq3zRGDOr7iDTAKHk8GV1JXGXIb5rYS357JDhbWO9NBu+ar+0DDr/G9cEK0CSy
+	 sRu3bK93XQwk27CasNRLFSumWgE3MLcciQKMuRKbCozlhKxsy7k0PFuIvNij31raz3
+	 /8rTddyg7K4bWXBcfWQUjvcTzPdSUJAMjP76GPbDY0hlfxY1G5vt67uG8yFzWsqvB1
+	 3DpO5ufNY3vtWo198fVq/m7zy/iZmF8O/3Lv1pog/FCl6ht3+sO/orznDSweP9QKRf
+	 pKy71kcoVpFSg==
+Message-ID: <sashiko-outbox-203322@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 04/58] mtd: rawnand: separate hardware disconnection
- from cleanup
+Subject: Re: [PATCH 42/58] mtd: rawnand: au1550nd: retain chip state across
+ removal
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "James Hilliard" <james.hilliard1@gmail.com>, "Miquel Raynal" <miquel.raynal@bootlin.com>, "Richard
  Weinberger" <richard@nod.at>, "Vignesh Raghavendra" <vigneshr@ti.com>, "Brian
@@ -75,12 +75,12 @@ To: "James Hilliard" <james.hilliard1@gmail.com>, "Miquel Raynal" <miquel.raynal
  Levitsky" <maximlevitsky@gmail.com>, "Michael Walle" <michael@walle.cc>, "Srinivas
  Kandagatla" <srini@kernel.org>
 Cc: "Tze Yee Ng" <tze.yee.ng@altera.com>, linux-mtd@lists.infradead.org, linux-sunxi@lists.linux.dev, imx@lists.linux.dev, linux-amlogic@lists.infradead.org, Frank.Li@kernel.org, wsa+renesas@sang-engineering.com
-In-Reply-To: <20261107-submit-rawnand-retained-handle-lifetime-v1-v1-4-0181ef0cc4c8@gmail.com>
+In-Reply-To: <20261107-submit-rawnand-retained-handle-lifetime-v1-v1-42-0181ef0cc4c8@gmail.com>
 References: <20261107-submit-rawnand-retained-handle-lifetime-v1-v1-0-0181ef0cc4c8@gmail.com>
- <20261107-submit-rawnand-retained-handle-lifetime-v1-v1-4-0181ef0cc4c8@gmail.com>
+ <20261107-submit-rawnand-retained-handle-lifetime-v1-v1-42-0181ef0cc4c8@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 07 Nov 2026 20:42:00 +0000
+Date: Sat, 07 Nov 2026 20:44:36 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -90,104 +90,60 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issues to consider:
-- [High] mtd: rawnand: unlocked hardware access after nand_disconnect()
-  in write_bbt()
-- [Medium] mtd: rawnand: nand_suspend() returning -ENODEV aborts system
-  suspend
+Thank you for your contribution! Sashiko AI review found no new issues
+in this patch, but noticed 1 related pre-existing issue it does not
+introduce:
+- [High] mtd: rawnand: au1550nd: inverted request_mem_region check in
+  au1550nd_probe() [1]
 --
 
-commit 0d69828030d21f2e8c3f391544ee5a56406e7996
+commit be3bdca7aa37bf9e70e43be29b0b99a9af4bfa13
 Author: James Hilliard <james.hilliard1@gmail.com>
 
-mtd: rawnand: separate hardware disconnection from cleanup
+mtd: rawnand: au1550nd: retain chip state across removal
 
-This commit adds nand_disconnect() to mark a NAND chip as disconnected
-under the chip and controller locks and makes nand_get_device(),
-nand_suspend(), nand_resume(), and panic_nand_write() reject hardware
-access once disconnected.
+This commit switches the au1550nd driver to reference-counted NAND
+controller and chip lifetime management, disconnecting the chip before
+unmapping MMIO and checking mtd_device_register() errors.
 
-> diff --git a/drivers/mtd/nand/raw/nand_base.c b/drivers/mtd/nand/raw/nand=
-_base.c
-> index a5b278ab9384f..8f7d2571e8d9a 100644
-> --- a/drivers/mtd/nand/raw/nand_base.c
-> +++ b/drivers/mtd/nand/raw/nand_base.c
+> diff --git a/drivers/mtd/nand/raw/au1550nd.c b/drivers/mtd/nand/raw/au155=
+0nd.c
+> index f1e99197ab845..bd78bcc842822 100644
+> --- a/drivers/mtd/nand/raw/au1550nd.c
+> +++ b/drivers/mtd/nand/raw/au1550nd.c
 
 [ ... ]
 
-> @@ -581,7 +607,9 @@ static int nand_block_markbad_lowlevel(struct nand_ch=
-ip *chip, loff_t ofs)
->  		nand_erase_nand(chip, &einfo, 0);
-> =20
->  		/* Write bad block marker to OOB */
-> -		nand_get_device(chip);
-> +		ret =3D nand_get_device(chip);
-> +		if (ret)
-> +			return ret;
-> =20
->  		ret =3D nand_markbad_bbm(chip, ofs);
->  		nand_release_device(chip);
+> @@ -333,7 +350,6 @@ static int au1550nd_probe(struct platform_device *pde=
+v)
+>  out2:
+>  	release_mem_region(r->start, resource_size(r));
+>  out1:
+> -	kfree(ctx);
+>  	return ret;
+>  }
 
 [Severity: High]
-Can a concurrent nand_disconnect() cause write_bbt() to issue unlocked
-hardware operations on the disconnected controller when updating an
-on-flash BBT?
+This problem wasn't introduced by this patch, but isn't the
+request_mem_region() check in au1550nd_probe() inverted [1]?
 
-nand_block_markbad_lowlevel() releases the chip and controller locks
-before calling nand_markbad_bbt() -> nand_update_bbt() -> write_bbt().
-If nand_disconnect() runs before write_bbt() calls nand_erase_nand() or
-scan_write_bbt(), nand_get_device() returns -ENODEV, which write_bbt()
-treats as a bad BBT eraseblock:
-
-drivers/mtd/nand/raw/nand_bbt.c:write_bbt() {
-	...
-		res =3D nand_erase_nand(this, &einfo, 1);
-		if (res < 0) {
-			pr_warn("nand_bbt: error while erasing BBT block %d\n",
-				res);
-			mark_bbt_block_bad(this, td, chip, block);
-			continue;
-		}
-	...
+drivers/mtd/nand/raw/au1550nd.c:au1550nd_probe() {
+    ...
+	if (request_mem_region(r->start, resource_size(r), "au1550-nand")) {
+		dev_err(&pdev->dev, "cannot claim NAND memory area\n");
+		ret =3D -ENOMEM;
+		goto out1;
+	}
+    ...
 }
 
-mark_bbt_block_bad() then marks each reserved BBT block worn in memory
-and calls nand_markbad_bbm() -> nand_default_block_markbad() ->
-nand_do_write_oob() without calling nand_get_device(), accessing
-controller resources that have already been freed after
-nand_disconnect() returned.
+request_mem_region() returns a non-NULL pointer on success, so a
+successful reservation jumps to out1, fails probe with -ENOMEM, and leaks
+the claimed memory region. Conversely, a failed reservation proceeds to
+ioremap() unowned memory.
 
-[ ... ]
-
-> @@ -4688,10 +4728,14 @@ static int nand_suspend(struct mtd_info *mtd)
->  	int ret =3D 0;
-> =20
->  	mutex_lock(&chip->lock);
-> +	if (chip->disconnected) {
-> +		mutex_unlock(&chip->lock);
-> +		return -ENODEV;
-> +	}
->  	if (chip->ops.suspend)
->  		ret =3D chip->ops.suspend(chip);
->  	if (!ret)
-> -		chip->suspended =3D 1;
-> +		WRITE_ONCE(chip->suspended, true);
->  	mutex_unlock(&chip->lock);
-> =20
->  	return ret;
-
-[Severity: Medium]
-Does returning -ENODEV from nand_suspend() abort system suspend when an
-open MTD handle outlives controller unbind?
-
-While an MTD handle remains open after del_mtd_device() and
-nand_disconnect(), mtd->dev stays registered on dpm_list until the last
-reference is put in mtd_device_release().  During system suspend,
-mtd_cls_suspend() calls mtd_suspend() -> nand_suspend(), and returning
--ENODEV fails dpm_suspend() instead of treating the disconnected chip as
-a no-op like nand_resume() and nand_sync() do.
+[1] https://sashiko.dev/#/bug/linux-4e401697-4998-4e40-a7e4-60cc21983fb4
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261107-submit-raw=
-nand-retained-handle-lifetime-v1-v1-0-0181ef0cc4c8@gmail.com?part=3D4
+nand-retained-handle-lifetime-v1-v1-0-0181ef0cc4c8@gmail.com?part=3D42
