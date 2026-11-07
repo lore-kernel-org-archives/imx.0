@@ -1,55 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794056886;
-	b=fEMml+I5GZEVY8y4fVVyXKoe5cozo/LdInM5kxII66GXW4iKeHeD8CLzzxo0fn5CSZvP
-	 92lXVxW/JyAkIKcrM/eK8mJLM1T5nuKgx0iMjDg+GnyK51RS16CP8GSIFntMCQg7bLB0q
-	 aVBAF6hHtgLOM5ORWFv9nX4mHI37xJe8wJcfSKT5YZQDI0z03MAkB/4m12IQ5ueycGZak
-	 SeJl+Rdwi3aWe3KeTgPCc552SkrsU+e6uxUGkITUGSXME8/FnYBvDA+0DYX1NSrP7bINm
-	 +L8/oKWum/1HrUTkYSHJxZwIR2K+wt8RRy4gnGbc/pf9EDNbwYQgETZ3/N8BN37sTBQ==
+	t=1794066137;
+	b=3Fd02+3e6XXVO3sKrgh8aC0UAcrlGOTdR+3Sxzz4mQnY+OZ0Rf5WbxCr3blX0lh2T8mW
+	 qpFAr8lDzDpPJ5g/CgYfCdH3APpNHz9Zc13ZILoMbpXCWrc6LQaGLlKYkq9l/0j8Tixm8
+	 /j+8NFOElbJC2+fyegb9nRM3tdR+DlztV4aSLHbw69HYZIrVsPojPph1SVnxYZY4Cdon9
+	 oQtzJ83Bx+CnBZIFmn8MPapUECG6fLNGq+tcqy0sFyXlW9287x6ypk3XmvddvJUWy8aVU
+	 AL5CAoqOyTTI+Ah3WN3BaEnJX8I9Z4vQ8gR+t7rd9CC5Ag+/aNCezecjmXIkEi3iCzw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794056886;
-	h=Received:DKIM-Signature:From:To:Cc:In-Reply-To:References:Subject:
-	 Message-Id:Date:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 X-Mailer;
-	bh=V4b13mTAwk9r8eg/3JZ+gVEHGm1XSkxtcOvYy09AwVU=;
-	b=zE4eCr8HHjVWCpQwDdsQRZjNjLWOBOCYNErd5o3SDn5kjGhxEgqYKTu46Bb54kgPTBfb
-	 MT5XBy3BZk1lUTdTXB017X35Apxuc54ISuM6L5HoJmqYl3Qp5O9q5jkkQNftMYSzS3Ela
-	 ++/1r2v/SF832vN1KcoucQ41vZYCrDlFV9UVVfIT6YOzNB7RreGEiWLXpOWb+UbCvStHM
-	 BU5Q6d/x3juk6YINQxm972xXp2iNzFwwzfpOROCO8XDjfStYfxGcQPBXqZF70uRzLZawn
-	 6UwYznPoZRoSfv8q+2mSnCV1azkzFfBBDXlMg6HfwZkrXq6n8LFXdHQpvwkGquniI+w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794066137;
+	h=Received:DKIM-Signature:Received:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Subject:From:To:Cc:In-Reply-To:References:
+	 Date:Message-Id:X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=02RmMrYDuqe1ZwKJfkDpL+ozKnlBKLAvKi1f/ZPO+eM=;
+	b=4zeb2qcfUA8bR2QBG4HyxgJz67DTbSEGv+Dva0avL6vS6z0q1iKZ3/iiNLCm0qJivmyW
+	 T1bIY6eXgVDcJ6kqOuI2V8UbLYBNZBSCqpiMjnms9ecG/LX9GAg02nh8fwx8zB8n0F642
+	 K/iNCHwLq/gD/8WbV03NTe7ff/iwe4wHq7qJs12kZ47tmyt1TIIhNaqMbBKWkJVslnArG
+	 3ZRv2RE+8ikuTF+0166HSRg7jOhiyhHFnYJl0dqTN8luRnNb5jrrmoakrxZzN484raxMo
+	 Aqo4rhUnXYpwinbOMFl9xG2dYuIwQUmeMM5lAgzseNwE5pLW/RhytSA6JXS38AtGS4Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Vo4VN2V3;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bUpMjpsv;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22D25606A326;
-	Sat,  7 Nov 2026 13:08:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D992606A326;
+	Sat,  7 Nov 2026 15:42:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Vo4VN2V3
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B2F71F0089F;
-	Sat,  7 Nov 2026 13:08:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bUpMjpsv
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A45D91F0089F;
+	Sat,  7 Nov 2026 15:42:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794056885;
-	bh=V4b13mTAwk9r8eg/3JZ+gVEHGm1XSkxtcOvYy09AwVU=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=Vo4VN2V3Qt291nkFp95O7T03DmaSoAZ0XiJsJ7hdmPdktHBFFAe20Uq+ZGE/kTlJ5
-	 p+CZrB2fgsc2MYF103I0fVadgnmlKSKm+wDjiW1j/On+Q6f+Yn+O9fHm1aATuSLUzL
-	 HhfG7t7uLHikOSR3Z3NZo6rZJbBXv6SsqDoU0Qy2nCuGUSbRIGHm/QN8NPxJaBix9r
-	 WnwLaV5Jz2E+0Uxt2vxDjclZQmV3n5eE+08vpAvt5b4I86UfdZxd6c2S54DqhzHfG1
-	 1t3983xGKGVcidF+jGb/M/dsHrpqALuq+AW6wKR5My3ZgGRoNz24gA/GYhtxx9yNlL
-	 zd2cyWKP0Vlmg==
-From: Niklas Cassel <cassel@kernel.org>
-To: Damien Le Moal <dlemoal@kernel.org>, linux-ide@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Frank.Li@oss.nxp.com
-Cc: imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>
-In-Reply-To: <20261104150614.3231589-1-Frank.Li@oss.nxp.com>
-References: <20261104150614.3231589-1-Frank.Li@oss.nxp.com>
-Subject: Re: [PATCH v2 1/1] ata: sata_dwc_460ex: replace chan->device->dev
- with dmaengine_get_provider_device()
-Message-Id: <179405688421.943559.6118296661484264171.b4-ty@kernel.org>
-Date: Sat, 07 Nov 2026 14:08:04 +0100
+	s=k20260515; t=1794066137;
+	bh=02RmMrYDuqe1ZwKJfkDpL+ozKnlBKLAvKi1f/ZPO+eM=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date;
+	b=bUpMjpsvKy6zoWTeJK5ROw+PaPQev2GFzhG3yHzZ+c+NRw5wn4jz8dbWU0DOI7YkU
+	 vkDgeuO0hqY9h0Dn7fqZcEwDNmjRHvhRzA8de5jar+Sxa1cpRMt7oQzxRLqJDedr7p
+	 yeIvwL56z2nNP8Hu/WREF5NnHya6lMTWjVHF7GO2nGjIfH6IdUrg63Uye6iJdryNVC
+	 DbSTG3j6gKfD219c5PM1rTLkm7MeOlouNdbpd72L4o45WTRDx/ptmcDMaeSGqKgevF
+	 QnaRIEJWQ+DRS9b2EuHgV+oHHkwORNT7hAi0FXiuYFS+xMABbHvXwdhAZm5/9ksQqy
+	 A5la3nD6zn/WQ==
+Received: from traversing.sirena.org.uk (localhost [IPv6:::1])
+	by traversing.sirena.org.uk (Postfix) with ESMTP id D59B02AB3711;
+	Sat, 07 Nov 2026 15:42:13 +0000 (GMT)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -61,23 +54,63 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.3
+Subject: Re: [PATCH] ASoC: fsl: imx-card: fix DT node reference leak on
+ unbind
+From: Mark Brown <broonie@kernel.org>
+To: Wentao Liang <vulab@iscas.ac.cn>
+Cc: Shengjiu Wang <shengjiu.wang@gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>, 
+ Fabio Estevam <festevam@gmail.com>, Nicolin Chen <nicoleotsuka@gmail.com>, 
+ Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+ Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ linux-sound@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+In-Reply-To: <20261104024057.1508822-1-vulab@iscas.ac.cn>
+References: <20261104024057.1508822-1-vulab@iscas.ac.cn>
+Date: Sat, 07 Nov 2026 15:42:12 +0000
+Message-Id: <179406613243.3424803.16218252867759690236.b4-review@b4>
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1211; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=1l5Z1GoGtVhro8Tj5KzjbjIg1LqSe7tU5rSYeviWp0k=;
+ b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLLeu139dPVW4MyTcxTnNCwTn2b6qPHrnsR6VStB060lr
+ 8+JZ65L7ihlYRDjYpAVU2SJy+J+WV/yeg3fwYVtMHNYmUCGMHBxCsBE8rQZGQ7/SZw2MeB/+t6u
+ L0WmJ/pUZy9p1SuSdLxjdmrxZWHfx48Y/peZdad6n+6fez9KZz6b1eXj626Zv74UmVS0apHC1zK
+ DuwwA
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Wed, 04 Nov 2026 10:06:13 -0500, Frank.Li@oss.nxp.com wrote:
-> Use the dmaengine_get_provider_device() API instead of directly
-> accessing chan->device->dev to get the DMA provider device.
-> 
-> No functional change intended. Prepare make to struct dma_device private
-> to the DMA engine.
-> 
-> 
-> [...]
+> imx_card_parse_of() takes references on the CPU and codec device nodes
+> with snd_soc_of_get_dlc() and snd_soc_of_get_dai_link_codecs() and
+> stores them in the link's component arrays. The driver has no remove
+> callback and the ASoC core does not drop these references when the card
+> is unregistered, so unbinding the platform device or unloading the
+> module leaks one device node reference per CPU and codec.
 
-Applied to libata/linux.git (for-7.5), thanks!
+> +static void imx_card_remove(struct platform_device *pdev)
+> +{
+> +	struct snd_soc_card *card = dev_get_drvdata(&pdev->dev);
+> +	struct snd_soc_dai_link *link;
+> +	int i;
+> +
+> +	for_each_card_prelinks(card, i, link) {
+> +		snd_soc_of_put_dai_link_cpus(link);
+> +		snd_soc_of_put_dai_link_codecs(link);
+> +	}
+> +}
+> +
+>  static const struct of_device_id imx_card_dt_ids[] = {
+>  	{ .compatible = "fsl,imx-audio-card", },
+>  	{ },
+> @@ -940,6 +952,7 @@ static struct platform_driver imx_card_driver = {
+>  		.of_match_table = imx_card_dt_ids,
+>  	},
+>  	.probe = imx_card_probe,
+> +	.remove = imx_card_remove,
+>  };
 
-[1/1] ata: sata_dwc_460ex: replace chan->device->dev with dmaengine_get_provider_device()
-      https://git.kernel.org/libata/linux/c/8dbe4880
+This only runs on remove so we've got the same issue if anything goes
+wrong during probe (eg, deferral).
 
-Kind regards,
-Niklas
-
+-- 
+Mark Brown <broonie@kernel.org>
