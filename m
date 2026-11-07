@@ -1,86 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794085189;
-	b=VQBObQKDcBcEjhEg+ZqorD7MPfVUzi2qPXM+Jwdf9RwzAXXYcAEs+Figs9wWR8Qfver7
-	 E0tAN9Xl51tb7RxEV9Iqx8A6V5j/c41Vreq7VeAuOx3+XGuJhmoJ8OlD+DGR2tLUPQpbE
-	 AbO5Qa5jsIIne5DmftQraa4N4zZOe0AcRY+lNp75OW7J9Cu6lLn7jEDV4oWIb21HBu1Sg
-	 9gnUotra9MlPNjx+Qoaepej57iB8zP43U+fV0wNKWFrRiVGrD6zkwZS9GBVGgpxd0580n
-	 ZhTQyhSTI2OdpuZ+G+mCMY0HB+4XHZHINEiSLG6cM7u4OHZGY9Ns+qumfsxLe0jhREA==
+	t=1794091418;
+	b=Rer7v8eYkX5mTQFHFI8DUbSJTidanH4Ckc2GQ4P/aq2d3g9xasyIg53AyC+ATg8QVAH0
+	 LlbszJuN5ePiOo3ZBKvK+ZPxxcNFhPdxrmArnztoPkPkJPi2tTsz/QGea91WthseFsoUj
+	 jkyyAlEQECz23mFbjLaDDWNIxGO76ozML7Z6Img/UiRpw2evYfe05+B7Gz1e9tRDsRkmt
+	 8SRq/KJDuLqqbzqpPqsDBw1cWM/xYlQqGs3B6ZkcZQk/JBLHmvmswDjiN45emUAf9kSSi
+	 dboEdh1FqjWQtNnCtDLg1qbAVAfFngfy5XBx6fyRhgMx9rDjJ7IC6/EtU+ry4F3g4HA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794085189;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794091418;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=PThdQtpTeh/RmsXeafa5AkNFktPLGhBm7MYbB3f3O1g=;
-	b=PcUuirfZBtg27gzWO/gyaFLWk8U6+rGbmwjqs4YJfVGDOCcxNRu+VNwvHWRC2c+KhImu
-	 M1QSeVDUeYVybtkgaGQ1U7wCWU1gxi9Wy0hQ8NkbP3i3vKeUpZIrl8gTAKiXBmhwW2vbC
-	 rtY17T1VkeXQ6IYnWXDJa7w86H1lyd2dvOn1tmP7jYP83osl9I2u2GURdYCUCSKRmjON6
-	 PDnqT0pwFrxgdi2a5j4qaNHLlFg/AELAIOV2oeDv3kr7/49z39PmYIdFuRLEz941aDXw9
-	 hlNEU8KTDAHfSR0DwVtLnpAgtIE0Im+GwS2/ForPRwEIkgDtLINxxDLmBJa76eABA+A==
+	bh=+hcYI/bpAooFVE+vWiFApfOpXwGF4jtepx4NjpJ1tnQ=;
+	b=NBlV07xlOH1gocQJihCoYaATo6fmOmf5I3qhsId56JPy/vxsmmOxMSrWqxeTRWmgWWuv
+	 U/GW2zSLsD+OAFG1ou13tddk368HiN00gF3RcKFUhbrryxf5jfggnoTTzMJXWQtsB9E99
+	 RaB42i+RkVrqpB2xVobtEod/pAYMm2ZEHa7ltBpom5I4I6x6yUiZMOgVn9uqwu6C1pAHg
+	 SKptOfntkj1CP+ftUBYIhBIjpF+rQWOZIYjJf0mXGO2M6OeNR5w6kSH9k6O9i43H9Qm59
+	 1Qm3bHpipCCYkkKNR43+uzWTuReX6srV5OJ5etPgr5vuO5hd2omx0MAQmIcj8xlqj4g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DH7Yk5Kv;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Yo4DuOmw;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09517606A32D;
-	Sat,  7 Nov 2026 20:59:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F947606A326;
+	Sat,  7 Nov 2026 22:43:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DH7Yk5Kv
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36ED51F008A7;
-	Sat,  7 Nov 2026 20:59:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Yo4DuOmw
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9242A1F0089F;
+	Sat,  7 Nov 2026 22:43:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794085188;
-	bh=PThdQtpTeh/RmsXeafa5AkNFktPLGhBm7MYbB3f3O1g=;
+	s=k20260515; t=1794091417;
+	bh=+hcYI/bpAooFVE+vWiFApfOpXwGF4jtepx4NjpJ1tnQ=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=DH7Yk5KvqaIsiO4Z+fB6WNNP1XnBSphUmIj8KBP0Q4jTYm6g/VBvbeNrbK7vdWU5D
-	 QbBtKx+vDKko1hC6Y9gDFOK7kt3ICwl/NhFPgfnBhvPF8o74K0PDNi8+SHrIJEEt89
-	 hKWXPwEqPLVQ6kxX90IHiJPyOHI9OgMcsL7+kDFVx8vRKrTsEjdf5wlJa/6W6up1II
-	 491L3DgUzuhD+GhgMXO3eWxkbt5mj0K1DB2igvc4Sh9r1rUIG7qiNrUBusoPSPURXy
-	 i6e4hcIBTHi2tTiPQTAB0MRMgvY6Z871gPn3/5kHmZwTBBhNjmOB0cBNSff6qovcxu
-	 wGSh9grqk9wLQ==
-Message-ID: <sashiko-outbox-203338@kernel.org>
+	b=Yo4DuOmwOxE7M3b947MR03jhsVbuh1IMqH1ca/eyC5F0cUei0HY6wsiR0muI5uNzP
+	 QmqSVxpQ+RS6a0eR2Qd641eGCcquNTo4AtLxEIkYA6CeYsjpjLwXbImhB1AnesBDg6
+	 +tj4cXKaCYrKDXQ2ZtHBfXTCSSKH1u5+oyNx8fHlB1yB72+kRFJRwTuZHsnytt12Bn
+	 CcJ7bvAKE9WZwChjbzJIKCZjSQJUHF3pwiAh7Dg4zJjFuvqeqUdR4bMXT/kDuc+SLA
+	 OOmQO65Cw3fwnuKmZbVjFPRNfrKUhPq4fHvoGsOCK6j330/nCq9qkhCht2uCXacJ1B
+	 JD+sNFeozRZOA==
+Message-ID: <sashiko-outbox-203371@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 55/58] mtd: rawnand: r852: retain chip state across
- removal
+Subject: Re: [PATCH 2/3] net: xilinx: axienet: use
+ dmaengine_prep_slave_sg_context()
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "James Hilliard" <james.hilliard1@gmail.com>, "Miquel Raynal" <miquel.raynal@bootlin.com>, "Richard
- Weinberger" <richard@nod.at>, "Vignesh Raghavendra" <vigneshr@ti.com>, "Brian
- Norris" <computersforpeace@gmail.com>, "Boris Brezillon" <bbrezillon@kernel.org>, "Arseniy
- Krasnov" <AVKrasnov@sberdevices.ru>, "Chen-Yu Tsai" <wens@kernel.org>, "Jernej
- Skrabec" <jernej.skrabec@gmail.com>, "Samuel Holland" <samuel@sholland.org>, "Thomas
- Gleixner" <tglx@kernel.org>, "Vitaly Wool" <vitalywool@gmail.com>, "David
- Woodhouse" <dwmw2@infradead.org>, "Russell King" <rmk+kernel@arm.linux.org.uk>, "David
- Woodhouse" <David.Woodhouse@intel.com>, "Mike Rapoport" <rppt@kernel.org>, "Maxime
- Coquelin" <mcoquelin.stm32@gmail.com>, "Alexandre Torgue" <alexandre.torgue@foss.st.com>, "Christophe
- Kerello" <christophe.kerello@st.com>, "Jason Roberts" <jason.e.roberts@intel.com>, "Michal
- Simek" <michal.simek@amd.com>, "Boris Brezillon" <boris.brezillon@collabora.com>, "Mason
- Yang" <masonccyang@mxic.com.tw>, "Ramuthevar Vadivel Murugan" <vadivel.muruganx.ramuthevar@linux.intel.com>, "Stefan
- Agner" <stefan@agner.ch>, "Lucas Stach" <dev@lynxeye.de>, "Thierry Reding" <thierry.reding@kernel.org>, "Jonathan
- Hunter" <jonathanh@nvidia.com>, "Dmitry Osipenko" <digetx@gmail.com>, "Matthias
- Brugger" <matthias.bgg@gmail.com>, "AngeloGioacchino Del Regno" <angelogioacchino.delregno@collabora.com>, "Jorge
- Ramirez-Ortiz" <jorge.ramirez@oss.qualcomm.com>, "Heiko Stuebner" <heiko@sntech.de>, "Yifeng
- Zhao" <yifeng.zhao@rock-chips.com>, "Nicolas Ferre" <nicolas.ferre@microchip.com>, "Alexandre
- Belloni" <alexandre.belloni@bootlin.com>, "Claudiu Beznea" <claudiu.beznea@tuxon.dev>, "Keguang
- Zhang" <keguang.zhang@gmail.com>, "Jacky Huang" <ychuang3@nuvoton.com>, "Shan-Chun
- Hung" <schung@nuvoton.com>, "Frank Li" <Frank.Li@nxp.com>, "Sascha Hauer" <s.hauer@pengutronix.de>, "Pengutronix
- Kernel Team" <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>, "Han
- Xu" <han.xu@nxp.com>, "Liang Yang" <liang.yang@amlogic.com>, "Neil
- Armstrong" <neil.armstrong@linaro.org>, "Kevin Hilman" <khilman@baylibre.com>, "Jerome
- Brunet" <jbrunet@baylibre.com>, "Martin Blumenstingl" <martin.blumenstingl@googlemail.com>, "Manivannan
- Sadhasivam" <mani@kernel.org>, "Kamal Dasu" <kamal.dasu@broadcom.com>, "Broadcom
- internal kernel review list" <bcm-kernel-feedback-list@broadcom.com>, "Vladimir
- Zapolskiy" <vz@mleia.com>, "Piotr Wojtaszczyk" <piotr.wojtaszczyk@timesys.com>, "Paul
- Cercueil" <paul@crapouillou.net>, "Harvey Hunt" <harveyhuntnexus@gmail.com>, "Maxim
- Levitsky" <maximlevitsky@gmail.com>, "Michael Walle" <michael@walle.cc>, "Srinivas
- Kandagatla" <srini@kernel.org>
-Cc: "Tze Yee Ng" <tze.yee.ng@altera.com>, linux-mtd@lists.infradead.org, linux-sunxi@lists.linux.dev, imx@lists.linux.dev, linux-amlogic@lists.infradead.org, Frank.Li@kernel.org, wsa+renesas@sang-engineering.com
-In-Reply-To: <20261107-submit-rawnand-retained-handle-lifetime-v1-v1-55-0181ef0cc4c8@gmail.com>
-References: <20261107-submit-rawnand-retained-handle-lifetime-v1-v1-0-0181ef0cc4c8@gmail.com>
- <20261107-submit-rawnand-retained-handle-lifetime-v1-v1-55-0181ef0cc4c8@gmail.com>
+To: Frank.Li@oss.nxp.com
+Cc: dmaengine@vger.kernel.org, linux-sound@vger.kernel.org, imx@lists.linux.dev, vkoul@kernel.org, Frank.Li@kernel.org
+In-Reply-To: <20261106-rio_sg-v1-2-bc54b4bd8c95@nxp.com>
+References: <20261106-rio_sg-v1-0-bc54b4bd8c95@nxp.com>
+ <20261106-rio_sg-v1-2-bc54b4bd8c95@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 07 Nov 2026 20:59:45 +0000
+Date: Sat, 07 Nov 2026 22:43:37 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -92,102 +63,104 @@ Precedence: list
 
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue to consider:
-- [Medium] mtd: rawnand: r852: r852_irq() mishandles card IRQs when
-  removing is set
+- [Low] net: xilinx: axienet: unused dma_dev left in
+  axienet_start_xmit_dmaengine()
 It also noticed 1 related pre-existing issue this patch does not
 introduce:
-- [High] mtd: rawnand: r852: work re-queue race condition in
-  r852_shutdown() [1]
+- [Critical] net: axienet: use-after-free in axienet_stop() [1]
 --
 
-commit 85c05cbe4afe297d6f7e2a571f936dd2dc915c61
-Author: James Hilliard <james.hilliard1@gmail.com>
+commit b4bb968eb4c8d380631e7d9eb4acd99d61288c16
+Author: Frank Li <Frank.Li@nxp.com>
 
-mtd: rawnand: r852: retain chip state across removal
+net: xilinx: axienet: use dmaengine_prep_slave_sg_context()
 
-This commit allocates a separate nand_chip per card insertion, ties chip and
-controller lifetimes to MTD release callbacks, and stops card-detection work
-scheduling in r852_irq() during PCI removal.
+This commit replaces the direct call to dma_dev->device_prep_slave_sg() in
+axienet_start_xmit_dmaengine() with dmaengine_prep_slave_sg_context().
 
-> diff --git a/drivers/mtd/nand/raw/r852.c b/drivers/mtd/nand/raw/r852.c
-> index 92c47d351c278..0fb320cd7b771 100644
-> --- a/drivers/mtd/nand/raw/r852.c
-> +++ b/drivers/mtd/nand/raw/r852.c
-[ ... ]
-> @@ -734,7 +773,8 @@ static irqreturn_t r852_irq(int irq, void *data)
->  	card_status =3D r852_read_reg(dev, R852_CARD_IRQ_STA);
->  	r852_write_reg(dev, R852_CARD_IRQ_STA, card_status);
+> diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/=
+net/ethernet/xilinx/xilinx_axienet_main.c
+> index 8a50cad1c104f..fff3530d9359d 100644
+> --- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+> +++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+> @@ -1006,9 +1006,10 @@ axienet_start_xmit_dmaengine(struct sk_buff *skb, =
+struct net_device *ndev)
+>  		app_metadata[0] |=3D 2; /* Tx Full Checksum Offload Enabled */
+>  	}
 > =20
-> -	if (card_status & (R852_CARD_IRQ_INSERT|R852_CARD_IRQ_REMOVE)) {
-> +	if (!dev->removing &&
-> +	    (card_status & (R852_CARD_IRQ_INSERT | R852_CARD_IRQ_REMOVE))) {
-> =20
->  		ret =3D IRQ_HANDLED;
->  		dev->card_detected =3D !!(card_status & R852_CARD_IRQ_INSERT);
+> -	dma_tx_desc =3D dma_dev->device_prep_slave_sg(lp->tx_chan, skbuf_dma->s=
+gl,
+> -			sg_len, DMA_MEM_TO_DEV,
+> -			DMA_PREP_INTERRUPT, (void *)app_metadata);
+> +	dma_tx_desc =3D dmaengine_prep_slave_sg_context(lp->tx_chan, skbuf_dma-=
+>sgl,
+> +						      sg_len, DMA_MEM_TO_DEV,
+> +						      DMA_PREP_INTERRUPT,
+> +						      (void *)app_metadata);
+>  	if (!dma_tx_desc)
+>  		goto xmit_error_unmap_sg;
 
-[Severity: Medium]
-Does checking !dev->removing on the outer condition cause r852_irq() to
-mishandle card interrupts that fire during r852_remove()?
+[Severity: Low]
+Does replacing dma_dev->device_prep_slave_sg() leave dma_dev unused in
+axienet_start_xmit_dmaengine()?
 
-Hardware interrupts remain enabled while r852_remove() cancels the workqueue
-and runs r852_unregister_nand_device().  If a card insert or remove interru=
-pt
-arrives after dev->removing is set, r852_irq() clears R852_CARD_IRQ_STA in
-hardware but skips the handler block, returning IRQ_NONE on a shared IRQ li=
-ne
-and failing to set dev->card_unstable or call r852_disable_irqs() to abort
-in-flight I/O.  Should dev->removing only guard queue_delayed_work()?
+Earlier in axienet_start_xmit_dmaengine(), dma_dev is still declared and
+assigned from lp->tx_chan->device:
 
-[ ... ]
-> @@ -976,6 +1003,11 @@ static int  r852_probe(struct pci_dev *pci_dev, con=
-st struct pci_device_id *id)
->  static void r852_remove(struct pci_dev *pci_dev)
->  {
->  	struct r852_device *dev =3D pci_get_drvdata(pci_dev);
-> +	unsigned long flags;
-> +
-> +	spin_lock_irqsave(&dev->irqlock, flags);
-> +	dev->removing =3D true;
-> +	spin_unlock_irqrestore(&dev->irqlock, flags);
-> =20
->  	/* Stop detect workqueue -
->  		we are going to unregister the device anyway*/
-
-[Severity: High]
-This problem wasn't introduced by this patch, but can r852_irq() re-queue
-dev->card_detect_work during r852_shutdown() and r852_suspend() [1]?
-
-Both functions call cancel_delayed_work_sync() before r852_disable_irqs()
-without setting dev->removing:
-
-drivers/mtd/nand/raw/r852.c:r852_shutdown() {
-	struct r852_device *dev =3D pci_get_drvdata(pci_dev);
-
-	cancel_delayed_work_sync(&dev->card_detect_work);
-	r852_disable_irqs(dev);
-	synchronize_irq(dev->irq);
-	pci_disable_device(pci_dev);
+drivers/net/ethernet/xilinx/xilinx_axienet_main.c:axienet_start_xmit_dmaeng=
+ine() {
+	...
+	struct dma_device *dma_dev;
+	...
+	dma_dev =3D lp->tx_chan->device;
+	...
 }
 
-An interrupt arriving between cancel_delayed_work_sync() and
-r852_disable_irqs() can re-queue card_detect_work:
+With its only reader removed, this triggers a -Wunused-but-set-variable
+compiler warning and keeps a direct reference to struct dma_device and
+lp->tx_chan->device.
+
+[Severity: Critical]
+This problem wasn't introduced by this patch, but can axienet_stop() cause
+a use-after-free on lp->tx_skb_ring [1] while
+axienet_start_xmit_dmaengine() is running?
+
+When lp->use_dmaengine is enabled, axienet_stop() frees lp->tx_skb_ring and
+its entries without quiescing the transmit path:
+
+drivers/net/ethernet/xilinx/xilinx_axienet_main.c:axienet_stop() {
+	...
+	if (!lp->use_dmaengine) {
+		WRITE_ONCE(lp->stopping, true);
+		flush_work(&lp->dma_err_task);
+
+		napi_disable(&lp->napi_tx);
+		napi_disable(&lp->napi_rx);
+	}
+	...
+		for (i =3D 0; i < TX_BD_NUM_MAX; i++) {
+			skbuf_dma =3D lp->tx_skb_ring[i];
+			...
+			kfree(skbuf_dma);
+		}
+		kfree(lp->tx_skb_ring);
+	...
+}
 
 CPU0                              CPU1
-r852_shutdown()
-  cancel_delayed_work_sync()
-                                  r852_irq()
-                                    queue_delayed_work()
-  r852_disable_irqs()
-  synchronize_irq()
-  pci_disable_device()
-                                  r852_card_detect_work()
-                                    r852_read_reg()  <-- MMIO after disable
+axienet_stop()
+                                  axienet_start_xmit_dmaengine()
+  kfree(skbuf_dma)
+  kfree(lp->tx_skb_ring)
+                                    axienet_get_tx_desc()
+                                      <-- use-after-free
 
-When the delayed work runs after pci_disable_device(), it accesses disabled
-PCI MMIO space.
+A concurrent transmit on CPU1 can fetch and use a descriptor from
+lp->tx_skb_ring after CPU0 has freed it, corrupting memory or crashing the
+kernel.
 
-[1] https://sashiko.dev/#/bug/linux-ce28ca2b-1bf1-4d27-8bcd-a0ec14b99281
+[1] https://sashiko.dev/#/bug/linux-6b22a4e9-355d-4ab5-829f-c56ef38ce667
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261107-submit-raw=
-nand-retained-handle-lifetime-v1-v1-0-0181ef0cc4c8@gmail.com?part=3D55
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261106-rio_sg-v1-=
+0-bc54b4bd8c95@nxp.com?part=3D2
