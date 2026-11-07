@@ -1,58 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794054619;
-	b=VNf4kVsSiX8tcsIjdGY5MEogLMAnaoQvdZIoLTDHCGdJDkKtIyuluwLAX1ih4sF2ZaXy
-	 rp3JChWT5Zo2ymBA4nT+zE0l/HIwF4qCl8CVg3/WlCiMjtEFxubFqddLAPn9wN+jtdzpJ
-	 gA7rHoF/2lBIM08CDeMOIQFpHNiMSbbjHNHNxTFUcjTSw+wXf7yp12OnG6Wa/jo8MD1pS
-	 DwKvjnsVGXnEokI+K+qnzLk+wfALpL65tVwgePp28gwYc27gyTQ4/7ZMX/LHecWQ12N6I
-	 3XjnCDLUFi9XCxukwYTI+bsqJbucrUzOd8ugA2XXFOm/eZLmwFlb+DS85N6/vpNx+hg==
+	t=1794056886;
+	b=fEMml+I5GZEVY8y4fVVyXKoe5cozo/LdInM5kxII66GXW4iKeHeD8CLzzxo0fn5CSZvP
+	 92lXVxW/JyAkIKcrM/eK8mJLM1T5nuKgx0iMjDg+GnyK51RS16CP8GSIFntMCQg7bLB0q
+	 aVBAF6hHtgLOM5ORWFv9nX4mHI37xJe8wJcfSKT5YZQDI0z03MAkB/4m12IQ5ueycGZak
+	 SeJl+Rdwi3aWe3KeTgPCc552SkrsU+e6uxUGkITUGSXME8/FnYBvDA+0DYX1NSrP7bINm
+	 +L8/oKWum/1HrUTkYSHJxZwIR2K+wt8RRy4gnGbc/pf9EDNbwYQgETZ3/N8BN37sTBQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794054619;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 In-Reply-To:References:X-Mailer:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=nr1mAF9XQ5+YqnUwdfyqdWv+PVIL5wfF/9P1RpVYn7U=;
-	b=QhhT8NLBW2hdRENmdM7tbrvX2MP81CFc+6HyEcea6zHDK4yArPfvSWPU+8vzwskydGXa
-	 1y0ZCFzpHpqkS0afEkeXGdcHol+2Y7MkGRSc3mq6c3NLs+DeyGzGjLYOHIuDloUsD1+ZE
-	 vu8ebl43HH8YhF0vpPAOa3XRYBEW37GvRmD12Eg6hg3nvQKmtgSqzjaYA6QGwJ6TgN7JB
-	 cGE7jWSFHY9evqEivjm94QFPGsCdeB5AGGs70AdYy9IYpgymRULoL6d0lE7Cv0V0DO2kF
-	 sGz9/mnnLAQe/vdl6SouiNfk1RXTInGtEPyCoMTLtw2O/SGAaunQge9UmbfflWEP4eQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794056886;
+	h=Received:DKIM-Signature:From:To:Cc:In-Reply-To:References:Subject:
+	 Message-Id:Date:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-Mailer;
+	bh=V4b13mTAwk9r8eg/3JZ+gVEHGm1XSkxtcOvYy09AwVU=;
+	b=zE4eCr8HHjVWCpQwDdsQRZjNjLWOBOCYNErd5o3SDn5kjGhxEgqYKTu46Bb54kgPTBfb
+	 MT5XBy3BZk1lUTdTXB017X35Apxuc54ISuM6L5HoJmqYl3Qp5O9q5jkkQNftMYSzS3Ela
+	 ++/1r2v/SF832vN1KcoucQ41vZYCrDlFV9UVVfIT6YOzNB7RreGEiWLXpOWb+UbCvStHM
+	 BU5Q6d/x3juk6YINQxm972xXp2iNzFwwzfpOROCO8XDjfStYfxGcQPBXqZF70uRzLZawn
+	 6UwYznPoZRoSfv8q+2mSnCV1azkzFfBBDXlMg6HfwZkrXq6n8LFXdHQpvwkGquniI+w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Kh7MWo74;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Vo4VN2V3;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 393FB606A32E;
-	Sat,  7 Nov 2026 12:30:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22D25606A326;
+	Sat,  7 Nov 2026 13:08:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Kh7MWo74
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E15E1F0089F;
-	Sat,  7 Nov 2026 12:30:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Vo4VN2V3
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B2F71F0089F;
+	Sat,  7 Nov 2026 13:08:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794054618;
-	bh=nr1mAF9XQ5+YqnUwdfyqdWv+PVIL5wfF/9P1RpVYn7U=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Kh7MWo74gdG0A0nfGfPyzvK5EnkGwsd4FoKhligqwHB4eJAANeUEEzpNkM/pNqQmO
-	 0eicZzOsjU56DsuysVKysC58IOR0rh1DgTXdyR5sF03qA9UVWh9bkzdtyfS5IT/crc
-	 Jr2CV+25eTV0XUi8V9P/ZVa75Lq6pHVIlDqmteofre28QUPREB3xZQdOQS19rErt7W
-	 TDFgKG0Gk8Fqaj344Ewt9nunLqBy2JjNomBvuzHQT7/8/WjG+oym4MPLovqBMvZbUQ
-	 97Hr2gPBYUIrvq832nhXXpjUHszWU6FllOMOYkruUdXr4CJDT4DBwqnLeHd2JMBlGT
-	 SqbOx6gKKX9HA==
-Date: Sat, 7 Nov 2026 13:30:08 +0100
-From: Joshua Crofts <crofts@kernel.org>
-To: Alexandre Belloni <alexandre.belloni@bootlin.com>, Frank Li
- <Frank.Li@nxp.com>, Miquel Raynal <miquel.raynal@bootlin.com>
-Cc: linux-i3c@lists.infradead.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev
-Subject: Re: [PATCH 2/2] i3c: master: svc: remove redundant
- pm_runtime_dont_use_autosuspend() calls
-Message-ID: <20261107133008.7d8f0bb0@systembl0wer>
-In-Reply-To: <20261107-dont-use-autosuspend-i3c-v1-2-80a1546354ce@kernel.org>
-References: <20261107-dont-use-autosuspend-i3c-v1-0-80a1546354ce@kernel.org>
-	<20261107-dont-use-autosuspend-i3c-v1-2-80a1546354ce@kernel.org>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
+	s=k20260515; t=1794056885;
+	bh=V4b13mTAwk9r8eg/3JZ+gVEHGm1XSkxtcOvYy09AwVU=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=Vo4VN2V3Qt291nkFp95O7T03DmaSoAZ0XiJsJ7hdmPdktHBFFAe20Uq+ZGE/kTlJ5
+	 p+CZrB2fgsc2MYF103I0fVadgnmlKSKm+wDjiW1j/On+Q6f+Yn+O9fHm1aATuSLUzL
+	 HhfG7t7uLHikOSR3Z3NZo6rZJbBXv6SsqDoU0Qy2nCuGUSbRIGHm/QN8NPxJaBix9r
+	 WnwLaV5Jz2E+0Uxt2vxDjclZQmV3n5eE+08vpAvt5b4I86UfdZxd6c2S54DqhzHfG1
+	 1t3983xGKGVcidF+jGb/M/dsHrpqALuq+AW6wKR5My3ZgGRoNz24gA/GYhtxx9yNlL
+	 zd2cyWKP0Vlmg==
+From: Niklas Cassel <cassel@kernel.org>
+To: Damien Le Moal <dlemoal@kernel.org>, linux-ide@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Frank.Li@oss.nxp.com
+Cc: imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>
+In-Reply-To: <20261104150614.3231589-1-Frank.Li@oss.nxp.com>
+References: <20261104150614.3231589-1-Frank.Li@oss.nxp.com>
+Subject: Re: [PATCH v2 1/1] ata: sata_dwc_460ex: replace chan->device->dev
+ with dmaengine_get_provider_device()
+Message-Id: <179405688421.943559.6118296661484264171.b4-ty@kernel.org>
+Date: Sat, 07 Nov 2026 14:08:04 +0100
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -62,50 +59,25 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.3
 
-On Sat, 07 Nov 2026 12:06:24 +0100
-Joshua Crofts <crofts@kernel.org> wrote:
+On Wed, 04 Nov 2026 10:06:13 -0500, Frank.Li@oss.nxp.com wrote:
+> Use the dmaengine_get_provider_device() API instead of directly
+> accessing chan->device->dev to get the DMA provider device.
+> 
+> No functional change intended. Prepare make to struct dma_device private
+> to the DMA engine.
+> 
+> 
+> [...]
 
-> Since commit d1706f9da9f4 ("PM: runtime: call pm_runtime_dont_use_autosuspend() on reinit()"),
-> driver core is now responsible for undoing any
-> pm_runtime_use_autosuspend() calls on driver exit.
-> 
-> Remove the redundant function calls.
-> 
-> Signed-off-by: Joshua Crofts <crofts@kernel.org>
-> ---
->  drivers/i3c/master/svc-i3c-master.c | 2 --
->  1 file changed, 2 deletions(-)
-> 
-> diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
-> index e700392f0801..9b845b2955be 100644
-> --- a/drivers/i3c/master/svc-i3c-master.c
-> +++ b/drivers/i3c/master/svc-i3c-master.c
-> @@ -2084,7 +2084,6 @@ static int svc_i3c_master_probe(struct platform_device *pdev)
->  	return 0;
->  
->  rpm_disable:
-> -	pm_runtime_dont_use_autosuspend(&pdev->dev);
->  	pm_runtime_put_noidle(&pdev->dev);
->  	pm_runtime_disable(&pdev->dev);
->  	pm_runtime_set_suspended(&pdev->dev);
-> @@ -2101,7 +2100,6 @@ static void svc_i3c_master_remove(struct platform_device *pdev)
->  
->  	i3c_master_unregister(&master->base);
->  
-> -	pm_runtime_dont_use_autosuspend(&pdev->dev);
->  	pm_runtime_disable(&pdev->dev);
->  }
->  
-> 
+Applied to libata/linux.git (for-7.5), thanks!
 
-Okay, after reading Sashiko's review it seems that this patch won't
-be as straight forward as I thought. I'm thinking of manually
-suspending the device in the remove() function or just removing
-dont_use_autosuspend() from the probe error path. Any thoughts?
+[1/1] ata: sata_dwc_460ex: replace chan->device->dev with dmaengine_get_provider_device()
+      https://git.kernel.org/libata/linux/c/8dbe4880
 
---
 Kind regards,
-Joshua Crofts
+Niklas
+
