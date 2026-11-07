@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794083137;
-	b=KXW8ntYpecQZ8hlNoKZPXjycH414W/cfiWw+BJc1EYEIAKRBZNJSKXE62fAbSh/vcyNM
-	 CpN1zsBSV4ROuP7vbEMr2aMTbQhPLRPHeN1OHeF4NG95rK96WSKGrG1ydMohG5QNt8l6o
-	 aXpGp7JK9WK9+kVFXL+U5Xw4MpvIpkelXdxQcKRZFuN0uDfgiyRzFj8OwkM0mVrMa2cCb
-	 3budpMauAhFxmMxd0MsDrv7wvwIDhA/T7uQYmBhGzszCuUN5FbSBB1y53nbvFlSmpRJ6c
-	 kFyEFz/8SJL0jdleVBEGUeNYRbAuMehBLx8JKl0k/q49R/S+ulaVZgBDo2h3rbHH/jw==
+	t=1794083201;
+	b=qIzmNqifsKPixDPzmuT28hcyhF3UhX+JUM2+CKb0robfPT5qWE2KOlNixfg6g4Mb8eaS
+	 QY6Sblru7ypXO8iqaSjUapJ18jqIqogc0RxM6dqS8+VNyONfE9loozTW8VOBEqdUWnGE/
+	 qV+1ED6F63RvGC+hDLNvGE0dG++C9rVU0wzp6NK7c4yhW7odd+/u1dRUMXBaxjZjCzFGr
+	 roWzVPv5b0xIxuIxgXHG7DY8NsGyfepRbq6TC5VQHrf9Nt91OEKphZ4lsSM3baVNQCB6f
+	 U7YstaDHx51xUdHwTPhYVOqS7sGXVlVkWUGJpBNc0VCsd0Dz6XJzGwwiPpRJQu5rS2w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794083137;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794083201;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=D9/dBRPi0s88VvIK111ru1vQLcmn42LnKhUI0WPNA+c=;
-	b=t6nntdc3Qqt2VPcSnXsQ/J6hdEAV58K/+7g2gtmYG3ZkkECJtxmnmPQ9xEU1Z8sMMP+V
-	 9bs3rKe7I4Zw3t2c2DXMka+NDEvXngLWtq7F49K4MjI8j4Tyt9KtFTqsMmVKyTgASbC3A
-	 WUJsxkqcS6ZtLKalMD/6Dxty6gyyP+6YXKNrO8sZQfQpy2NQYRx8JdL3oj3PAIIwqshi9
-	 gXP9jDOfPuzzFG4vsC2myyPq4z6w6vT3KwJKlfv5LLxymIQlCXn97jbwjBiZZWxQDBt2B
-	 PUoxJBViNMotlcvVkE98RKAIxhzbCkP1IsdEluYpX/CJN/MrsXyMFpPEGC/Wd3b5Qjw==
+	bh=1AESFR6UyewtBByr3oB+241AGrsXkM0X6WiJV3LJUSE=;
+	b=GIN8DdtggYxQ8uFLfbEBVPYDUZoOeKfVbTkJVqQ+/Z9O31n6QKt0M2gSkUiKO6q7BckW
+	 VNqSxAWgzuAA2zRYGR+YC9h1fTWCGZhXa/lqWXdhnVjvBSA5q9BfuM0wYAGYNeQbdmRAk
+	 f3QqEIPQOn+aGz2T2fD1MzhCXsyt9Xy/cEcaIdKcmN/D6GIuR719A1Y/kkmwz+RkzPyKD
+	 WcKvXaEXZ7ya4x8HEux6C1vvncmHJnFhZXNzvzCyZgEWxNnzte/jKBg/zWYyE9wLi5uG6
+	 v4IQyU1NXO7NZzNpSa13GZojdkZhRr3esH5+IOOt76Xj3zaXNSMYH/DvAvJwjbgI5VQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="O/kxUGPN";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mWRuxx+j;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40F5A606A33E;
-	Sat,  7 Nov 2026 20:25:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C44A3606A32C;
+	Sat,  7 Nov 2026 20:26:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=O/kxUGPN
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7D5F1F008A4;
-	Sat,  7 Nov 2026 20:25:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mWRuxx+j
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED3551F0089F;
+	Sat,  7 Nov 2026 20:26:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794083136;
-	bh=D9/dBRPi0s88VvIK111ru1vQLcmn42LnKhUI0WPNA+c=;
+	s=k20260515; t=1794083200;
+	bh=1AESFR6UyewtBByr3oB+241AGrsXkM0X6WiJV3LJUSE=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=O/kxUGPNVjCLjTnQDqT+AKT7T/6AILEa8h6G3gx2eiR+DJhkd1geJFNP7FwFwz8YW
-	 CNVpG2Zgv4UtOzk71eZ+eWFYR8M48rGBhaDghuunpyV5bBwi3j5Dpzx+O5+YHd/KII
-	 IddzrvLIG5VFN0d+537tAPnpUnsnq3Gr1EF/CYVCvbqdXmzwoH1GEss7/tVcYrZLR5
-	 s5EEETtVJFPRYcWgeC4TjRPB5Ys0EKOMiWvYJp46O3Rt/SHRIHa2gnG9fS7uJ1Eubx
-	 YPS1iwU3ogN/2I/Rl76Hit53CJEcWTnHQgR/gAeiwUguzO49lzeAtLFRsqTlWD+p0X
-	 Me72AWvbwZDnA==
-Message-ID: <sashiko-outbox-203277@kernel.org>
+	b=mWRuxx+jjVJdW1MPvP4YUaHNMn04vZzAZb3YqyeAjy71jG2GLOYjy5HlGPqQfvd0p
+	 zcOuNu+MQiVsOBL61AOO55Hi75o0VScAOQzgcpGLve8bnaMaSR2WxXSHP5F+WAU0G5
+	 sZwi4JL8jNc85JZATzW3SWp3sYuR7zIkJ9FVRYO3MI1LrMdYwHeWyBzrkVlJOIc64E
+	 6guY3yV3+plltFj67HRkbuVJjk+K56GavhGzbJERhnTVqUWKKB9ZUq7pR6fhKYgnI6
+	 A915qqTTFcJztN0GrRclpa1aIJ+92+ReL0Bcdt5OzbQ5JEobwv6TQDvG7yZDCDgC1Y
+	 akBtDt6g8jPng==
+Message-ID: <sashiko-outbox-203279@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 11/58] mtd: rawnand: denali: retain chips across
- controller removal
+Subject: Re: [PATCH 02/58] nvmem: retain provider context through final
+ device release
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "James Hilliard" <james.hilliard1@gmail.com>, "Miquel Raynal" <miquel.raynal@bootlin.com>, "Richard
  Weinberger" <richard@nod.at>, "Vignesh Raghavendra" <vigneshr@ti.com>, "Brian
@@ -75,12 +75,12 @@ To: "James Hilliard" <james.hilliard1@gmail.com>, "Miquel Raynal" <miquel.raynal
  Levitsky" <maximlevitsky@gmail.com>, "Michael Walle" <michael@walle.cc>, "Srinivas
  Kandagatla" <srini@kernel.org>
 Cc: "Tze Yee Ng" <tze.yee.ng@altera.com>, linux-mtd@lists.infradead.org, linux-sunxi@lists.linux.dev, imx@lists.linux.dev, linux-amlogic@lists.infradead.org, Frank.Li@kernel.org, wsa+renesas@sang-engineering.com
-In-Reply-To: <20261107-submit-rawnand-retained-handle-lifetime-v1-v1-11-0181ef0cc4c8@gmail.com>
+In-Reply-To: <20261107-submit-rawnand-retained-handle-lifetime-v1-v1-2-0181ef0cc4c8@gmail.com>
 References: <20261107-submit-rawnand-retained-handle-lifetime-v1-v1-0-0181ef0cc4c8@gmail.com>
- <20261107-submit-rawnand-retained-handle-lifetime-v1-v1-11-0181ef0cc4c8@gmail.com>
+ <20261107-submit-rawnand-retained-handle-lifetime-v1-v1-2-0181ef0cc4c8@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 07 Nov 2026 20:25:33 +0000
+Date: Sat, 07 Nov 2026 20:26:37 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -92,48 +92,57 @@ Precedence: list
 
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue to consider:
-- [Low] mtd: rawnand: denali: separate __free(kfree) init in
-  denali_dt_chip_init()
+- [Medium] nvmem: unpinned module callback execution in nvmem_release()
 --
 
-commit 6e755ee59ce57be3f5cf80ff3dfee0f73764c61b
+commit 6223a607fc304676fa9e070c9a5930603931e0e7
 Author: James Hilliard <james.hilliard1@gmail.com>
 
-mtd: rawnand: denali: retain chips across controller removal
+nvmem: retain provider context through final device release
 
-This commit switches the Denali NAND controller and chip allocations from
-device-managed storage to reference-counted objects so that chips and their
-controller remain live until all MTD references are dropped.
+This commit adds optional priv_get() and priv_put() callbacks to struct
+nvmem_config so providers can retain their private context until final
+device release in nvmem_release().
 
-> diff --git a/drivers/mtd/nand/raw/denali_dt.c b/drivers/mtd/nand/raw/dena=
-li_dt.c
-> index 8c822eae72e78..8d813cc05d049 100644
-> --- a/drivers/mtd/nand/raw/denali_dt.c
-> +++ b/drivers/mtd/nand/raw/denali_dt.c
-[ ... ]
-> @@ -81,7 +82,7 @@ MODULE_DEVICE_TABLE(of, denali_nand_dt_ids);
->  static int denali_dt_chip_init(struct denali_controller *denali,
->  			       struct device_node *chip_np)
->  {
-> -	struct denali_chip *dchip;
-> +	struct denali_chip *dchip __free(kfree) =3D NULL;
->  	u32 bank;
->  	int nsels, i, ret;
+> diff --git a/drivers/nvmem/core.c b/drivers/nvmem/core.c
+> index 0556d140170a4..851fa5cabecb2 100644
+> --- a/drivers/nvmem/core.c
+> +++ b/drivers/nvmem/core.c
+> @@ -541,6 +541,8 @@ static void nvmem_release(struct device *dev)
 > =20
-> @@ -89,8 +90,7 @@ static int denali_dt_chip_init(struct denali_controller=
- *denali,
->  	if (nsels < 0)
->  		return nsels;
-> =20
-> -	dchip =3D devm_kzalloc(denali->dev, struct_size(dchip, sels, nsels),
-> -			     GFP_KERNEL);
-> +	dchip =3D kzalloc(struct_size(dchip, sels, nsels), GFP_KERNEL);
+>  	ida_free(&nvmem_ida, nvmem->id);
+>  	gpiod_put(nvmem->wp_gpio);
+> +	if (nvmem->ops->priv_put)
+> +		nvmem->ops->priv_put(nvmem->priv);
+>  	kfree(nvmem->ops);
+>  	kfree(nvmem);
+>  }
 
-[Severity: Low]
-This isn't a bug, but cleanup.h convention is to define and initialize
-__free() variables in a single statement at the allocation site rather than
-initializing dchip to NULL at the top of denali_dt_chip_init().
+[Severity: Medium]
+Can executing nvmem->ops->priv_put() here race with module unload and run
+unmapped module text?
+
+The kernel-doc note in include/linux/nvmem-provider.h states that the
+callbacks must retain any module needed to execute priv_put() until it
+returns, and commit "mtd: add opt-in lifetime ownership for backing
+objects" implements this by calling __module_get(THIS_MODULE) in
+mtd_otp_nvmem_get() and module_put(THIS_MODULE) in mtd_otp_nvmem_put().
+However, a callback in a loadable module cannot safely drop the last
+reference to its own module before returning:
+
+CPU0                              CPU1
+nvmem_release()
+  mtd_otp_nvmem_put()
+    module_put(THIS_MODULE)
+                                  delete_module()
+                                    free_module()
+    return;  <-- use-after-free
+
+nvmem->owner is only held by active consumers and is already dropped in
+nvmem_device_put() before nvmem_release() runs.  The NVMEM core should pin
+the module owning priv_put() in nvmem_register() and call module_put() in
+nvmem_release() after nvmem->ops->priv_put() returns.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261107-submit-raw=
-nand-retained-handle-lifetime-v1-v1-0-0181ef0cc4c8@gmail.com?part=3D11
+nand-retained-handle-lifetime-v1-v1-0-0181ef0cc4c8@gmail.com?part=3D2
