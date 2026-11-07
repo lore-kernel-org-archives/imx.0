@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794082906;
-	b=M/BrBaH1Ai/pdwcTTdbA0PI26Hk+T5TJUHwwv33qx4r0eQjpJ8k9o6cAr51W5Ed0dxCS
-	 kW453yYR2IfMtTpKuJgIwFMb5ZmOwltcy1QrFawkzHaQa4BIdO1/Q6NjZReIKUqaFwwgq
-	 ZKTCQtv+bIXplOU/Q+0xCky8uvFNUSIhhbqBSFj7/we9om164E5J0t2mq0dsh0TvTLHLk
-	 QsTKae4HMpNb8yx18XPovcu7dw1F8nxyAKBFEOJuG1Fu4ob3tpqeUgPKa9nlNKIjwuuL1
-	 3CahT0l86zQQ9kb3zdDxxeCQnwBr2fO90/fIzsjk8iqwCbI87WRax2t7x+G43uE4lZA==
+	t=1794083137;
+	b=KXW8ntYpecQZ8hlNoKZPXjycH414W/cfiWw+BJc1EYEIAKRBZNJSKXE62fAbSh/vcyNM
+	 CpN1zsBSV4ROuP7vbEMr2aMTbQhPLRPHeN1OHeF4NG95rK96WSKGrG1ydMohG5QNt8l6o
+	 aXpGp7JK9WK9+kVFXL+U5Xw4MpvIpkelXdxQcKRZFuN0uDfgiyRzFj8OwkM0mVrMa2cCb
+	 3budpMauAhFxmMxd0MsDrv7wvwIDhA/T7uQYmBhGzszCuUN5FbSBB1y53nbvFlSmpRJ6c
+	 kFyEFz/8SJL0jdleVBEGUeNYRbAuMehBLx8JKl0k/q49R/S+ulaVZgBDo2h3rbHH/jw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794082906;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794083137;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=y3e6ZmJgL3uEs1Y9Rb9f2LR0HYHtdMMlVxFZ0fnS0lk=;
-	b=i1xEbhiCeYtSzupXnGbVxflo/itxpMoObX4Xj5qIG9SqAAWf3tjOHD93ZJLXmf6EYEN/
-	 rLWWtWuWMz5hE1Jen4UUS058X6K+XRS15mrAGSImHyjISuWaoqPrp2h95XoqHWk1V+BH3
-	 5Aa1eJhRsE7BXbaWWkGCUgx2CCjGBbtx7xFWLtK/WE4c+5FJgp5vYuSV48an7zKGq0K2O
-	 CC4FrAvlKygTO97NSB3HH+fW4sVHBEMgx/XS663y1VJThyFGhrBI9OGhsoP65bRc/GfTq
-	 +yWVyTvXANtEszOO/oTqw6Lf/b63XEz34uO7Dxy1spusJwaXwfb5mcfH9cqpvC9Wsaw==
+	bh=D9/dBRPi0s88VvIK111ru1vQLcmn42LnKhUI0WPNA+c=;
+	b=t6nntdc3Qqt2VPcSnXsQ/J6hdEAV58K/+7g2gtmYG3ZkkECJtxmnmPQ9xEU1Z8sMMP+V
+	 9bs3rKe7I4Zw3t2c2DXMka+NDEvXngLWtq7F49K4MjI8j4Tyt9KtFTqsMmVKyTgASbC3A
+	 WUJsxkqcS6ZtLKalMD/6Dxty6gyyP+6YXKNrO8sZQfQpy2NQYRx8JdL3oj3PAIIwqshi9
+	 gXP9jDOfPuzzFG4vsC2myyPq4z6w6vT3KwJKlfv5LLxymIQlCXn97jbwjBiZZWxQDBt2B
+	 PUoxJBViNMotlcvVkE98RKAIxhzbCkP1IsdEluYpX/CJN/MrsXyMFpPEGC/Wd3b5Qjw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KnwRqj5r;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="O/kxUGPN";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72D6D606A32D;
-	Sat,  7 Nov 2026 20:21:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40F5A606A33E;
+	Sat,  7 Nov 2026 20:25:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KnwRqj5r
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48E2C1F0089F;
-	Sat,  7 Nov 2026 20:21:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=O/kxUGPN
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7D5F1F008A4;
+	Sat,  7 Nov 2026 20:25:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794082906;
-	bh=y3e6ZmJgL3uEs1Y9Rb9f2LR0HYHtdMMlVxFZ0fnS0lk=;
+	s=k20260515; t=1794083136;
+	bh=D9/dBRPi0s88VvIK111ru1vQLcmn42LnKhUI0WPNA+c=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=KnwRqj5rWofc7pbKfyK5Wnh57xzZLxXWfhfaZVzqzsEi0i0ZDYOC2V4cgyx+yEUwl
-	 LVN8cI9BR/IJQ58eioEirmvIn0nGNQ4OvzWBgb5X2UMpi12H7pk/CpIDwfP+C6Cfw2
-	 tbZ1aqwu9Hf1mUiGR2wFO94plCefFg+ad7skgtL1zEJHoU/WmcH/LhDWn14J8hcMss
-	 gUBiWgOkUglDJtlNGJpmSys2gt80lCk2Wt3en+0J9TMnMes03hBb4HVNxRIPCIMxPG
-	 22z+nxW/ASf0sjj/CF67qRkoSKpkC0qzFPH7E8jS2fVu7xDrlUMpEcwVY09SnVi1zF
-	 4cuXef9yD+GPw==
-Message-ID: <sashiko-outbox-203269@kernel.org>
+	b=O/kxUGPNVjCLjTnQDqT+AKT7T/6AILEa8h6G3gx2eiR+DJhkd1geJFNP7FwFwz8YW
+	 CNVpG2Zgv4UtOzk71eZ+eWFYR8M48rGBhaDghuunpyV5bBwi3j5Dpzx+O5+YHd/KII
+	 IddzrvLIG5VFN0d+537tAPnpUnsnq3Gr1EF/CYVCvbqdXmzwoH1GEss7/tVcYrZLR5
+	 s5EEETtVJFPRYcWgeC4TjRPB5Ys0EKOMiWvYJp46O3Rt/SHRIHa2gnG9fS7uJ1Eubx
+	 YPS1iwU3ogN/2I/Rl76Hit53CJEcWTnHQgR/gAeiwUguzO49lzeAtLFRsqTlWD+p0X
+	 Me72AWvbwZDnA==
+Message-ID: <sashiko-outbox-203277@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 01/58] mtd: clear OTP provider pointers after
- unregistering them
+Subject: Re: [PATCH 11/58] mtd: rawnand: denali: retain chips across
+ controller removal
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "James Hilliard" <james.hilliard1@gmail.com>, "Miquel Raynal" <miquel.raynal@bootlin.com>, "Richard
  Weinberger" <richard@nod.at>, "Vignesh Raghavendra" <vigneshr@ti.com>, "Brian
@@ -75,12 +75,12 @@ To: "James Hilliard" <james.hilliard1@gmail.com>, "Miquel Raynal" <miquel.raynal
  Levitsky" <maximlevitsky@gmail.com>, "Michael Walle" <michael@walle.cc>, "Srinivas
  Kandagatla" <srini@kernel.org>
 Cc: "Tze Yee Ng" <tze.yee.ng@altera.com>, linux-mtd@lists.infradead.org, linux-sunxi@lists.linux.dev, imx@lists.linux.dev, linux-amlogic@lists.infradead.org, Frank.Li@kernel.org, wsa+renesas@sang-engineering.com
-In-Reply-To: <20261107-submit-rawnand-retained-handle-lifetime-v1-v1-1-0181ef0cc4c8@gmail.com>
+In-Reply-To: <20261107-submit-rawnand-retained-handle-lifetime-v1-v1-11-0181ef0cc4c8@gmail.com>
 References: <20261107-submit-rawnand-retained-handle-lifetime-v1-v1-0-0181ef0cc4c8@gmail.com>
- <20261107-submit-rawnand-retained-handle-lifetime-v1-v1-1-0181ef0cc4c8@gmail.com>
+ <20261107-submit-rawnand-retained-handle-lifetime-v1-v1-11-0181ef0cc4c8@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 07 Nov 2026 20:21:42 +0000
+Date: Sat, 07 Nov 2026 20:25:33 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -90,69 +90,50 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 
-Thank you for your contribution! Sashiko AI review found no new issues
-in this patch, but noticed 1 related pre-existing issue it does not
-introduce:
-- [Critical] mtd: memory leak and use-after-free on
-  mtd_device_parse_register() failure [1]
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Low] mtd: rawnand: denali: separate __free(kfree) init in
+  denali_dt_chip_init()
 --
 
-commit d004139d8d5ef4bea351eaa0703331cff456a77d
+commit 6e755ee59ce57be3f5cf80ff3dfee0f73764c61b
 Author: James Hilliard <james.hilliard1@gmail.com>
 
-mtd: clear OTP provider pointers after unregistering them
+mtd: rawnand: denali: retain chips across controller removal
 
-This commit centralizes OTP nvmem provider removal into
-mtd_otp_nvmem_remove() and clears the provider pointers after
-unregistering them to prevent duplicate unregistrations on error and
-device teardown paths.
+This commit switches the Denali NAND controller and chip allocations from
+device-managed storage to reference-counted objects so that chips and their
+controller remain live until all MTD references are dropped.
 
-> diff --git a/drivers/mtd/mtdcore.c b/drivers/mtd/mtdcore.c
-> index 8efa2d88556e9..558a605ba7495 100644
-> --- a/drivers/mtd/mtdcore.c
-> +++ b/drivers/mtd/mtdcore.c
-
+> diff --git a/drivers/mtd/nand/raw/denali_dt.c b/drivers/mtd/nand/raw/dena=
+li_dt.c
+> index 8c822eae72e78..8d813cc05d049 100644
+> --- a/drivers/mtd/nand/raw/denali_dt.c
+> +++ b/drivers/mtd/nand/raw/denali_dt.c
 [ ... ]
-
-> @@ -1180,10 +1188,8 @@ int mtd_device_parse_register(struct mtd_info *mtd=
-, const char * const *types,
->  	}
+> @@ -81,7 +82,7 @@ MODULE_DEVICE_TABLE(of, denali_nand_dt_ids);
+>  static int denali_dt_chip_init(struct denali_controller *denali,
+>  			       struct device_node *chip_np)
+>  {
+> -	struct denali_chip *dchip;
+> +	struct denali_chip *dchip __free(kfree) =3D NULL;
+>  	u32 bank;
+>  	int nsels, i, ret;
 > =20
->  out:
-> -	if (ret) {
-> -		nvmem_unregister(mtd->otp_user_nvmem);
-> -		nvmem_unregister(mtd->otp_factory_nvmem);
-> -	}
-> +	if (ret)
-> +		mtd_otp_nvmem_remove(mtd);
+> @@ -89,8 +90,7 @@ static int denali_dt_chip_init(struct denali_controller=
+ *denali,
+>  	if (nsels < 0)
+>  		return nsels;
 > =20
->  	if (ret && device_is_registered(&mtd->dev)) {
->  		err =3D del_mtd_device(mtd);
+> -	dchip =3D devm_kzalloc(denali->dev, struct_size(dchip, sels, nsels),
+> -			     GFP_KERNEL);
+> +	dchip =3D kzalloc(struct_size(dchip, sels, nsels), GFP_KERNEL);
 
-[Severity: Critical]
-This problem wasn't introduced by this patch, but can a failure in
-mtd_virt_concat_create_join() leak partitions and leave dangling pointers
-in concat->subdev[] [1]?
-
-In mtd_device_parse_register(), parse_mtd_partitions() or
-add_mtd_partitions() runs before mtd_virt_concat_create_join(). When
-mtd_virt_concat_add() claims a child partition, it stores the pointer in
-concat->subdev[] and add_mtd_partitions() skips adding the child to
-parent->partitions.
-
-If mtd_virt_concat_create_join() then fails and jumps to out, this unwind
-path returns without calling mtd_virt_concat_destroy() or
-del_mtd_partitions(mtd). Because callers free the master mtd_info when
-mtd_device_parse_register() fails, registered partitions are leaked and
-concat->subdev[] retains partitions whose parent pointers reference the
-freed master mtd_info, causing a use-after-free via mtd_get_master() when
-a later device registration calls mtd_virt_concat_create_join(). (The
-err_del_partitions path in add_mtd_partitions() similarly calls only
-del_mtd_partitions(), leaving any partitions already claimed by
-mtd_virt_concat_add() in concat->subdev[].)
-
-[1] https://sashiko.dev/#/bug/linux-eb184d91-0c17-4015-99a4-10b54060a747
+[Severity: Low]
+This isn't a bug, but cleanup.h convention is to define and initialize
+__free() variables in a single statement at the allocation site rather than
+initializing dchip to NULL at the top of denali_dt_chip_init().
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261107-submit-raw=
-nand-retained-handle-lifetime-v1-v1-0-0181ef0cc4c8@gmail.com?part=3D1
+nand-retained-handle-lifetime-v1-v1-0-0181ef0cc4c8@gmail.com?part=3D11
