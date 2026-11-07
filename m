@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794083201;
-	b=qIzmNqifsKPixDPzmuT28hcyhF3UhX+JUM2+CKb0robfPT5qWE2KOlNixfg6g4Mb8eaS
-	 QY6Sblru7ypXO8iqaSjUapJ18jqIqogc0RxM6dqS8+VNyONfE9loozTW8VOBEqdUWnGE/
-	 qV+1ED6F63RvGC+hDLNvGE0dG++C9rVU0wzp6NK7c4yhW7odd+/u1dRUMXBaxjZjCzFGr
-	 roWzVPv5b0xIxuIxgXHG7DY8NsGyfepRbq6TC5VQHrf9Nt91OEKphZ4lsSM3baVNQCB6f
-	 U7YstaDHx51xUdHwTPhYVOqS7sGXVlVkWUGJpBNc0VCsd0Dz6XJzGwwiPpRJQu5rS2w==
+	t=1794083364;
+	b=uaGjmgvMuh3xZ/1dbdY3kTmaPvrHZ1EBx7LK4RbPc9L/UQ8GsaH+IeKelHZrOu/Pk6ru
+	 WwE/1IU2JjOHThFc3DBKasEYTzkFckUN7V7YraTUEWCvk1FCVLdUYYB2FD9VJw21aBl2R
+	 ggUOjoeZ0TXbQ7Oxw56JwaFH4/XBmGEbIVBzIo5V5U52pAmOCVeVgLGcSIlBTlVDfR/3E
+	 +ZUWdx3Kj7/as5oSHSjetdmyMb+OyT9iI8ds/lL1/hRnTBqDn9L3xVAVp6lrfgPxLS7Ri
+	 GXt0bc+F7WbFOMWvLtvCfqmryjzWFiTyVIkjFiXLw9kIyvw4hE148T/GPKsBg0neP8g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794083201;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794083364;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=1AESFR6UyewtBByr3oB+241AGrsXkM0X6WiJV3LJUSE=;
-	b=GIN8DdtggYxQ8uFLfbEBVPYDUZoOeKfVbTkJVqQ+/Z9O31n6QKt0M2gSkUiKO6q7BckW
-	 VNqSxAWgzuAA2zRYGR+YC9h1fTWCGZhXa/lqWXdhnVjvBSA5q9BfuM0wYAGYNeQbdmRAk
-	 f3QqEIPQOn+aGz2T2fD1MzhCXsyt9Xy/cEcaIdKcmN/D6GIuR719A1Y/kkmwz+RkzPyKD
-	 WcKvXaEXZ7ya4x8HEux6C1vvncmHJnFhZXNzvzCyZgEWxNnzte/jKBg/zWYyE9wLi5uG6
-	 v4IQyU1NXO7NZzNpSa13GZojdkZhRr3esH5+IOOt76Xj3zaXNSMYH/DvAvJwjbgI5VQ==
+	bh=1fsl7JZFQyXxjjK/JE+evV8C5FWEAhsAMXLZmVGmCpg=;
+	b=CvTdTfpCuTO2sMtSDLTugg3piI8d1xt65DX1zPL49g3Vhyk7/T5c9DMYtxuIrbcjQMhO
+	 BdcwClks7JYK2T0Xvap44qrN3Um+EkEW6tUbJYkA3TE5LLfUDH/uodt2nUrk4eAn7wp+B
+	 Z+/QzYBDjM6BuG+peIpwE6+dj1//Jw1Fhwa21KbifN1AVhQNHUBE08zYqBBSKDFWyqJfm
+	 kCZzHwcpKKN/P6BhVMjz3tN3uwZMrIKdLX+vDdIcD0Slq1k9DJQ1x4rMZqRgr7SFd4Qmx
+	 BIZhAPECRAZQ8D2lTBV0s/tLN5fMN6Yv3IQqYn8nnuujuswHSmCz2rtI7DAnkhqbH+g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mWRuxx+j;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nlH26Vkp;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C44A3606A32C;
-	Sat,  7 Nov 2026 20:26:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F311606A326;
+	Sat,  7 Nov 2026 20:29:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mWRuxx+j
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED3551F0089F;
-	Sat,  7 Nov 2026 20:26:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nlH26Vkp
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58E6C1F0089F;
+	Sat,  7 Nov 2026 20:29:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794083200;
-	bh=1AESFR6UyewtBByr3oB+241AGrsXkM0X6WiJV3LJUSE=;
+	s=k20260515; t=1794083364;
+	bh=1fsl7JZFQyXxjjK/JE+evV8C5FWEAhsAMXLZmVGmCpg=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=mWRuxx+jjVJdW1MPvP4YUaHNMn04vZzAZb3YqyeAjy71jG2GLOYjy5HlGPqQfvd0p
-	 zcOuNu+MQiVsOBL61AOO55Hi75o0VScAOQzgcpGLve8bnaMaSR2WxXSHP5F+WAU0G5
-	 sZwi4JL8jNc85JZATzW3SWp3sYuR7zIkJ9FVRYO3MI1LrMdYwHeWyBzrkVlJOIc64E
-	 6guY3yV3+plltFj67HRkbuVJjk+K56GavhGzbJERhnTVqUWKKB9ZUq7pR6fhKYgnI6
-	 A915qqTTFcJztN0GrRclpa1aIJ+92+ReL0Bcdt5OzbQ5JEobwv6TQDvG7yZDCDgC1Y
-	 akBtDt6g8jPng==
-Message-ID: <sashiko-outbox-203279@kernel.org>
+	b=nlH26Vkpn+Lby4qxfU9i9cpb9x2w9zz4rXIYGMpzjWzF7zLTTgjjzQsoKbdqC/qMY
+	 JsAu6C9nmcjeWt+JU8qdUIu1jrzXolJzXSsAS6Ld4+LYwxg9XlCpLd8wu3aqmiit+h
+	 WVO5XvrNrfHl182Qwyi9aokvmIBN7ntjxnJ1NpsT6svuBWzJKgQqyeEOKi8+dpVRZN
+	 jPYRQel82BUr9Y1mxI3J1H39f7Z6b8QT/iOlKSii2jvn+jn41zyBbnHv/Dy3i7tkAC
+	 JlXh4bUOZCUfBZrU9g922Ax2Q4SrbfNL6jwGt36BqcuLgKRBeH57gH5rjKC338H/+e
+	 rpn/3Nu0pYZBw==
+Message-ID: <sashiko-outbox-203286@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 02/58] nvmem: retain provider context through final
- device release
+Subject: Re: [PATCH 19/58] mtd: rawnand: orion: retain open-handle state on
+ removal
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "James Hilliard" <james.hilliard1@gmail.com>, "Miquel Raynal" <miquel.raynal@bootlin.com>, "Richard
  Weinberger" <richard@nod.at>, "Vignesh Raghavendra" <vigneshr@ti.com>, "Brian
@@ -75,12 +75,12 @@ To: "James Hilliard" <james.hilliard1@gmail.com>, "Miquel Raynal" <miquel.raynal
  Levitsky" <maximlevitsky@gmail.com>, "Michael Walle" <michael@walle.cc>, "Srinivas
  Kandagatla" <srini@kernel.org>
 Cc: "Tze Yee Ng" <tze.yee.ng@altera.com>, linux-mtd@lists.infradead.org, linux-sunxi@lists.linux.dev, imx@lists.linux.dev, linux-amlogic@lists.infradead.org, Frank.Li@kernel.org, wsa+renesas@sang-engineering.com
-In-Reply-To: <20261107-submit-rawnand-retained-handle-lifetime-v1-v1-2-0181ef0cc4c8@gmail.com>
+In-Reply-To: <20261107-submit-rawnand-retained-handle-lifetime-v1-v1-19-0181ef0cc4c8@gmail.com>
 References: <20261107-submit-rawnand-retained-handle-lifetime-v1-v1-0-0181ef0cc4c8@gmail.com>
- <20261107-submit-rawnand-retained-handle-lifetime-v1-v1-2-0181ef0cc4c8@gmail.com>
+ <20261107-submit-rawnand-retained-handle-lifetime-v1-v1-19-0181ef0cc4c8@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 07 Nov 2026 20:26:37 +0000
+Date: Sat, 07 Nov 2026 20:29:20 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -92,57 +92,31 @@ Precedence: list
 
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue to consider:
-- [Medium] nvmem: unpinned module callback execution in nvmem_release()
+- [Low] mtd: rawnand: orion: missing Fixes trailer for removal UAF fix
 --
 
-commit 6223a607fc304676fa9e070c9a5930603931e0e7
+commit 9465d514f949c22e40663ef5664153c0883e1d59
 Author: James Hilliard <james.hilliard1@gmail.com>
 
-nvmem: retain provider context through final device release
+> mtd: rawnand: orion: retain open-handle state on removal
+>
+> Keep chip metadata and controller storage alive until the final MTD
+> reference is released. Unregister and disconnect each published chip
+> before releasing the resources used by its hardware operations.
+>
+> Retain the embedded chip and its copied name through the shared
+> allocation.
+>
+> Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
 
-This commit adds optional priv_get() and priv_put() callbacks to struct
-nvmem_config so providers can retain their private context until final
-device release in nvmem_release().
+[Severity: Low]
+This fixes a use-after-free when the device is removed while MTD handles
+remain open, which has been present since the driver was introduced.
+Should it include a Fixes tag?
 
-> diff --git a/drivers/nvmem/core.c b/drivers/nvmem/core.c
-> index 0556d140170a4..851fa5cabecb2 100644
-> --- a/drivers/nvmem/core.c
-> +++ b/drivers/nvmem/core.c
-> @@ -541,6 +541,8 @@ static void nvmem_release(struct device *dev)
-> =20
->  	ida_free(&nvmem_ida, nvmem->id);
->  	gpiod_put(nvmem->wp_gpio);
-> +	if (nvmem->ops->priv_put)
-> +		nvmem->ops->priv_put(nvmem->priv);
->  	kfree(nvmem->ops);
->  	kfree(nvmem);
->  }
-
-[Severity: Medium]
-Can executing nvmem->ops->priv_put() here race with module unload and run
-unmapped module text?
-
-The kernel-doc note in include/linux/nvmem-provider.h states that the
-callbacks must retain any module needed to execute priv_put() until it
-returns, and commit "mtd: add opt-in lifetime ownership for backing
-objects" implements this by calling __module_get(THIS_MODULE) in
-mtd_otp_nvmem_get() and module_put(THIS_MODULE) in mtd_otp_nvmem_put().
-However, a callback in a loadable module cannot safely drop the last
-reference to its own module before returning:
-
-CPU0                              CPU1
-nvmem_release()
-  mtd_otp_nvmem_put()
-    module_put(THIS_MODULE)
-                                  delete_module()
-                                    free_module()
-    return;  <-- use-after-free
-
-nvmem->owner is only held by active consumers and is already dropped in
-nvmem_device_put() before nvmem_release() runs.  The NVMEM core should pin
-the module owning priv_put() in nvmem_register() and call module_put() in
-nvmem_release() after nvmem->ops->priv_put() returns.
+  Fixes: 2a1dba2931dc ("[MTD] [NAND] Marvell Orion device bus NAND controll=
+er")
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261107-submit-raw=
-nand-retained-handle-lifetime-v1-v1-0-0181ef0cc4c8@gmail.com?part=3D2
+nand-retained-handle-lifetime-v1-v1-0-0181ef0cc4c8@gmail.com?part=3D19
