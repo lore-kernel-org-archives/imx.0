@@ -1,56 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794035601;
-	b=bnjGGRC1kOgNm2eTOu3MFVK5V2QFAlc/ZKd81Xi44YamoslnJ+E8yTixZlEm5yajkD4F
-	 7sYZKHBZ7w1/AoSjjhqLSVZDLRoQ7ftpBIXTvYGH+vNYcUcIvLDYvUIahzG7KVyeSvOvi
-	 vgV7xssQzPARkv9mTIDb8PBL00iOuecAkzSskTn4m1e7D1paLWUP1rbcOiXMwwfZ7zIUn
-	 BJGMqdxJZ41wC0hdCtosy+beBMGPnD3+VL9ateA3/nPK9OH8PbYBVr+OMODkuuRYqu4QE
-	 PXka9CVnasxpzSbCg32Kx7xv54G+Byxgax4m0KxcuxyDQWpUqgRC0x4/7fwLbEERBCA==
+	t=1794035677;
+	b=C3I88lggzaBeBJWTnsRjNPHQiE2RiqsMS3zzd9oldHK0D2u8ydFGDWJBZPvjjZI8hKrb
+	 W8IddI0JwJX24UsemqnbtYT9eKAgJFEJTTEAlGpQVugm2msmGPejRfc2v+30dBcr5HLSX
+	 gYXpQYdHdWPZi3CRPts16bNQ5ACk9ROZJeTXkIOVb8TB4UOGGmuABw33TR2XlH8w74oC3
+	 8agLPuFhf4HFdeCLxotSQ7mKqQ3zeYjd+qQ+ef1q0aZ4O1zZnzWZWDmLdziEonn+qgfa0
+	 2Nf/cXVbHImQJQohW2YTn4g0ZkKcYZuFQvTsDwcR6C0eNtTHBZXAYlAedl8wHXSV3nw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794035601;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794035677;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=/xO/+kzareAl9cES+vJX1fp94o/yDo4PAJPX93oB9Eg=;
-	b=tUi1Dcymg5yOW1rHtJqMBkINPGZ26DPS5lcGHoHjpnFh+B+fjSku1JzRRJ4SzcyQODIx
-	 nTDOjY5M/lOiN1oJQonMEUkawaa38/I/ITuXbQqgXV8iAjsTWCiWK/mQIXrzNRtyyvM+I
-	 c5EHpsr75Rfax0gzY5IKp5CXJ6BP3u2uBY1Nx8hESfO3hrFlsr8K3i1gvKGpsCjM3YAX3
-	 K7KwZDMAU3ldXssh4NFoiQELBgP3uQU1cvfGvYlstt2n+V50cfj7+2ScQrtPeBaeDihhK
-	 Ssap9G++Gu4jWaM4cVh8yrvKms1I7dzYD6TVXk3OpDMfhii6fGOlDEvZXLhhapC5/0w==
+	bh=bHhbMciYbnf1mWbkuCnHRN+tBorW6GQteatRQLPBcn4=;
+	b=F3gyJ/4LHcIEMEABh6CDpmI5jnEUnw/EuPMFiwjH1xdVMOr780Dipv2L/TdCkegoWFLy
+	 B69zLWKzqt2JVGHZQWYgGA2WOzOSpii24PN4R+JwrT/y2AHxfVO8WemuTBTC6Yny3e+Tw
+	 eylXpM+kdTBc5N0gCM23dmHeX482MOSEjBUtJ34iPVnyyzhTaoh/qcgKdLCD/6QU7BBL2
+	 AZ189wCQlCcl2c8EFymx4jX/M2+/4LUmdZwAP8YxQivqTvpgPSR3NcDaXQrbZgC8oOz03
+	 YfEj81XRXP6y0ChZlOawpzVJ3q1Z5QoSsJp8LLXn3II3qqgks5Ypn0sUiBYQLKoJ4xQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Lnkkw+VV;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HJ1ra0NT;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 373D3606A326
-	for <imx@lists.linux.dev>; Sat,  7 Nov 2026 07:13:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DF5A606A326
+	for <imx@lists.linux.dev>; Sat,  7 Nov 2026 07:14:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Lnkkw+VV
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82CA21F0089F;
-	Sat,  7 Nov 2026 07:13:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HJ1ra0NT
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6876C1F0089F;
+	Sat,  7 Nov 2026 07:14:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794035600;
-	bh=/xO/+kzareAl9cES+vJX1fp94o/yDo4PAJPX93oB9Eg=;
+	s=k20260515; t=1794035676;
+	bh=bHhbMciYbnf1mWbkuCnHRN+tBorW6GQteatRQLPBcn4=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Lnkkw+VV9bMzb1ySYTeUuzrGJ99JokEyYB4lJSaQdk5ozfP9DfcsfuSc2ddCg5vQi
-	 hAzQuOGcvBM5xlq0VKQPHTDOJkr+16jNM05tB7+avVXe60H9oAJIb2GL6uTh2vhgoh
-	 VCJe9LBttSMwZbpHTxHjXUFa72dTUJTfhX7sEs4PZiVkIOfxBN+zzGx82Tdkk48P/W
-	 E27h0YNz2wBbcqy8Vx7rPijdKPcs3ekoIi6Zo8qxgmazD6TuSNwgJOVQ9qWsQuiZG7
-	 OXvuWHhQQJD2WO/awFxWhBI82iEIm3kSLPJbplS2uINCMSkOtTUpZQZ1PFbCHOXYex
-	 M6MQ2p8xzT/og==
-Message-ID: <sashiko-outbox-202678@kernel.org>
+	b=HJ1ra0NT8PKlDUlAP4vkpw4F7t8vapVDI9Uivv7fuO3lTXB5EVjYlTrqVvD2S2E+F
+	 vZ1o/AkOMlTVdKZPgrqM6s9znCpcREzqKsAr43vTi8VuDvBW5ShEmYn3W6bwFaVVzL
+	 nNCJCm2XwIA13MDOAFzxWYDzr3qaWk6n6yKo9uJvWQ7kG1zBm64+Oz5lMleRznKrxX
+	 eaX7k7dftu5HCorbwQTdSWTEzGDQirV6UCTGHFA0IR15QMAna4F9dSJerBC6Z85VRB
+	 t6eU6ezUpvt5kbMpaIXN6CXGblK13h7aNaLSQG1qhrWa/Ls3gq8i7MlxkniT3TJcrS
+	 G0j3S9m3WlIGw==
+Message-ID: <sashiko-outbox-202680@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] media: nxp: imx8-isi: Fix potential pipe leaks on
+Subject: Re: [PATCH] media: coda: Fix potential use-after-free after VDOA
  removal
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Guangshuo Li" <liguangshuo@mail.sdu.edu.cn>
 Cc: imx@lists.linux.dev, Frank.Li@kernel.org, media-ci@linuxtv.org
-In-Reply-To: <20261107-0d0c29e10a-media-imx8-isi-1@mail.sdu.edu.cn>
-References: <20261107-0d0c29e10a-media-imx8-isi-1@mail.sdu.edu.cn>
+In-Reply-To: <20261107-0d0c29e10a-media-coda-1@mail.sdu.edu.cn>
+References: <20261107-0d0c29e10a-media-coda-1@mail.sdu.edu.cn>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 07 Nov 2026 07:13:20 +0000
+Date: Sat, 07 Nov 2026 07:14:36 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -62,228 +62,107 @@ Precedence: list
 
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue to consider:
-- [Medium] media: nxp: imx8-isi: NULL deref on
-  media_device_register_entity() error
-It also noticed 2 related pre-existing issues this patch does not
+- [Medium] media: coda: unstopped DMA and job desync on timeout in
+  vdoa_stop()
+It also noticed 1 related pre-existing issue this patch does not
 introduce:
-- [Medium] media: nxp: imx8-isi: stateless device link leak in
-  mxc_isi_async_notifier_bound() [1]
-- [Critical] media: nxp: imx8-isi: unchecked dma_set_mask_and_coherent()
-  in mxc_isi_probe() [2]
+- [Medium] media: coda: resource leaks in coda_open() error paths [1]
 --
 
-commit 1c93ad5a0d826cfb633314a1db34b0975979e67c
+commit 641eafc2847290538ca328a1783a635a0c449aa1
 Author: Guangshuo Li <liguangshuo@mail.sdu.edu.cn>
 
-media: nxp: imx8-isi: Fix potential pipe leaks on removal
+media: coda: Fix potential use-after-free after VDOA removal
 
-This commit refcounts mxc_isi_dev so that pipe and V4L2 state stays alive
-until both device removal and the last V4L2 reference complete, while
-disconnecting capture and M2M queues during unregistration.
+This commit reference-counts VDOA driver data across CODA consumers and
+contexts, serializes VDOA hardware operations against driver removal, and
+destroys the VDOA context if coda_open() fails.
 
-> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c b/driver=
-s/media/platform/nxp/imx8-isi/imx8-isi-core.c
-> index 0ae5f35e017c6..bd046a0751b9f 100644
-> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
-> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
+> diff --git a/drivers/media/platform/chips-media/coda/coda-common.c b/driv=
+ers/media/platform/chips-media/coda/coda-common.c
+> index be37ea568bfe5..b519cf8541ded 100644
+> --- a/drivers/media/platform/chips-media/coda/coda-common.c
+> +++ b/drivers/media/platform/chips-media/coda/coda-common.c
 
 [ ... ]
 
-> @@ -211,33 +256,25 @@ static int mxc_isi_v4l2_init(struct mxc_isi_dev *is=
-i)
+> @@ -2721,6 +2719,8 @@ static int coda_open(struct file *file)
+>  err_clk_enable:
+>  	pm_runtime_put_sync(dev->dev);
+>  err_pm_get:
+> +	if (ctx->vdoa)
+> +		vdoa_context_destroy(ctx->vdoa);
+>  	v4l2_fh_del(&ctx->fh, file);
+>  	v4l2_fh_exit(&ctx->fh);
+>  err_coda_name_init:
+
+[Severity: Medium]
+This problem wasn't introduced by this patch, but does this error path
+still leak ctx->debugfs_entry and ctx->ctrls [1]?
+
+coda_open() creates ctx->debugfs_entry with debugfs_create_dir() before
+v4l2_fh_init() and initializes ctx->ctrls in coda_ctrls_setup(), but
+neither debugfs_remove() nor v4l2_ctrl_handler_free() is called during
+error unwind, leaving stale debugfs directories and leaked control handler
+memory when opening the device fails.
+
+[ ... ]
+
+> diff --git a/drivers/media/platform/chips-media/coda/imx-vdoa.c b/drivers=
+/media/platform/chips-media/coda/imx-vdoa.c
+> index cd085c1c73f42..d9249c943dfa2 100644
+> --- a/drivers/media/platform/chips-media/coda/imx-vdoa.c
+> +++ b/drivers/media/platform/chips-media/coda/imx-vdoa.c
+
+[ ... ]
+
+> @@ -142,17 +150,43 @@ int vdoa_wait_for_completion(struct vdoa_ctx *ctx)
+> =20
 >  	return 0;
-> =20
->  err_m2m:
-> -	mxc_isi_m2m_unregister(isi);
->  	v4l2_async_nf_cleanup(&isi->notifier);
->  err_v4l2:
-> +	mxc_isi_video_unregister_all(isi);
->  	v4l2_device_unregister(v4l2_dev);
-> +	media_device_unregister(media_dev);
-> +	v4l2_device_put(v4l2_dev);
->  err_media:
-> -	media_device_cleanup(media_dev);
->  	return ret;
 >  }
-> =20
->  static void mxc_isi_v4l2_cleanup(struct mxc_isi_dev *isi)
->  {
-> -	unsigned int i;
-> +	mxc_isi_video_unregister_all(isi);
-> =20
->  	v4l2_async_nf_unregister(&isi->notifier);
->  	v4l2_async_nf_cleanup(&isi->notifier);
-> -
->  	v4l2_device_unregister(&isi->v4l2_dev);
->  	media_device_unregister(&isi->media_dev);
-> -
-> -	mxc_isi_m2m_unregister(isi);
-> -
-> -	for (i =3D 0; i < isi->pdata->num_channels; ++i)
-> -		mxc_isi_pipe_unregister(&isi->pipes[i]);
-> -
-> -	mxc_isi_crossbar_unregister(&isi->crossbar);
-> -
-> -	media_device_cleanup(&isi->media_dev);
-> +	v4l2_device_put(&isi->v4l2_dev);
->  }
-
-[Severity: Medium]
-This problem wasn't introduced by this patch, but does the driver leak the
-stateless device link created in mxc_isi_async_notifier_bound() [1]?
-
-drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c:mxc_isi_async_notifier_=
-bound() {
-	...
-	link =3D device_link_add(isi->dev, sd->dev, DL_FLAG_STATELESS);
-	if (!link) {
-		dev_err(isi->dev,
-			"Failed to create device link to source %s\n", sd->name);
-		return -EINVAL;
-	}
-
-	return v4l2_create_fwnode_links_to_pad(sd, pad, link_flags);
-}
-
-Because DL_FLAG_STATELESS is used, the driver core does not remove the link
-automatically.  If v4l2_create_fwnode_links_to_pad() fails, or when a
-subdevice unbinds or the ISI driver is removed (since
-mxc_isi_async_notifier_ops has no .unbind callback and
-mxc_isi_v4l2_cleanup() does not delete the link), the device_link and its
-device references are leaked, and repeated subdevice unbind/rebind cycles
-increment the link's refcount indefinitely.
-
-> @@ -479,11 +516,15 @@ static int mxc_isi_probe(struct platform_device *pd=
-ev)
->  	unsigned int i;
->  	int ret =3D 0;
-> =20
-> -	isi =3D devm_kzalloc(dev, sizeof(*isi), GFP_KERNEL);
-> +	isi =3D kzalloc_obj(*isi);
->  	if (!isi)
->  		return -ENOMEM;
-> =20
-> -	isi->dev =3D dev;
-> +	isi->dev =3D get_device(dev);
-> +	kref_init(&isi->ref);
-> +	ret =3D devm_add_action_or_reset(dev, mxc_isi_put, isi);
-> +	if (ret)
-> +		return ret;
->  	platform_set_drvdata(pdev, isi);
-> =20
->  	isi->pdata =3D of_device_get_match_data(dev);
-> @@ -521,48 +562,35 @@ static int mxc_isi_probe(struct platform_device *pd=
-ev)
->  		return dev_err_probe(dev, ret,
->  				     "Failed to initialize crossbar\n");
-
-[Severity: Critical]
-This problem wasn't introduced by this patch, but should mxc_isi_probe()
-check the return value of dma_set_mask_and_coherent() [2]?
-
-drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c:mxc_isi_probe() {
-	...
-	dma_size =3D isi->pdata->has_36bit_dma ? 36 : 32;
-	dma_set_mask_and_coherent(dev, DMA_BIT_MASK(dma_size));
-
-	ret =3D devm_pm_runtime_enable(dev);
-	...
-}
-
-If setting the 32-bit or 36-bit DMA mask fails, probe continues with an
-invalid DMA configuration, which can truncate physical addresses during DMA
-transfers and cause memory corruption or IOMMU faults.
-
-[ ... ]
-
-> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c b/drivers=
-/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
-> index b729eecad0fef..5349e09e9b57a 100644
-> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
-> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
-
-[ ... ]
-
-> @@ -790,11 +801,11 @@ int mxc_isi_m2m_register(struct mxc_isi_dev *isi, s=
-truct v4l2_device *v4l2_dev)
->  	vdev->entity.function =3D MEDIA_ENT_F_IO_V4L;
->  	ret =3D media_entity_pads_init(&vdev->entity, 1, &m2m->pad);
->  	if (ret)
-> -		goto err_video;
-> +		goto err_unregister;
-> =20
->  	ret =3D media_device_register_entity(v4l2_dev->mdev, &vdev->entity);
->  	if (ret)
-> -		goto err_entity_cleanup;
-> +		goto err_unregister;
-
-[ ... ]
-
->  err_unregister:
-> +	mxc_isi_m2m_unregister(isi);
-> +err_return:
->  	return ret;
->  }
-> =20
-> @@ -849,13 +851,43 @@ int mxc_isi_m2m_unregister(struct mxc_isi_dev *isi)
->  {
->  	struct mxc_isi_m2m *m2m =3D &isi->m2m;
->  	struct video_device *vdev =3D &m2m->vdev;
-> +	struct mxc_isi_m2m_ctx *ctx;
-> =20
-> +	if (!video_is_registered(vdev))
-> +		return 0;
 > +
-> +	guard(mutex)(&m2m->contexts_lock);
->  	video_unregister_device(vdev);
-> +	v4l2_m2m_suspend(m2m->m2m_dev);
-> +	list_for_each_entry(ctx, &m2m->contexts, list) {
-> +		guard(mutex)(&ctx->vb2_lock);
-> +		vb2_queue_error(v4l2_m2m_get_src_vq(ctx->fh.m2m_ctx));
-> +		vb2_queue_error(v4l2_m2m_get_dst_vq(ctx->fh.m2m_ctx));
-> +		v4l2_m2m_streamoff(NULL, ctx->fh.m2m_ctx,
-> +				   V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE);
-> +		v4l2_m2m_streamoff(NULL, ctx->fh.m2m_ctx,
-> +				   V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE);
-> +	}
+> +int vdoa_wait_for_completion(struct vdoa_ctx *ctx)
+> +{
+> +	struct vdoa_data *vdoa =3D ctx->vdoa;
+> +	int ret;
+> +
+> +	mutex_lock(&vdoa->lock);
+> +	ret =3D vdoa->removed ? -ENODEV : vdoa_wait(ctx);
+> +	mutex_unlock(&vdoa->lock);
+> +
+> +	return ret;
+> +}
+>  EXPORT_SYMBOL(vdoa_wait_for_completion);
 > =20
-> -	v4l2_m2m_release(m2m->m2m_dev);
-> -	media_devnode_remove(m2m->intf);
-> -	media_entity_cleanup(&vdev->entity);
-> -	mutex_destroy(&m2m->lock);
-> +	if (m2m->intf) {
-> +		media_devnode_remove(m2m->intf);
-> +		m2m->intf =3D NULL;
-> +	}
-> +	media_device_unregister_entity(&vdev->entity);
+> +static void vdoa_stop(struct vdoa_data *vdoa)
+> +{
+> +	if (!vdoa->curr_ctx)
+> +		return;
+> +
+> +	if (vdoa_wait(vdoa->curr_ctx))
+> +		writel(VDOASRR_SWRST, vdoa->regs + VDOASRR);
+> +	writel(0, vdoa->regs + VDOAIE);
+> +	synchronize_irq(vdoa->irq);
+> +	vdoa->curr_ctx =3D NULL;
+> +}
 
 [Severity: Medium]
-Can jumping to err_unregister when media_device_register_entity() fails
-cause a NULL pointer dereference in media_device_unregister_entity()?
+When a transfer times out in vdoa_wait(), does vdoa_wait_for_completion()
+leave DMA running while vdoa_stop() leaves submitted_job and completed_job
+permanently out of sync?
 
-drivers/media/mc/mc-device.c:media_device_register_entity() {
-	...
-	entity->graph_obj.mdev =3D mdev;
-	INIT_LIST_HEAD(&entity->links);
-	entity->num_links =3D 0;
-	entity->num_backlinks =3D 0;
+When vdoa_wait_for_completion() returns -ETIMEDOUT to coda_finish_decode(),
+the caller immediately releases the internal source frame and returns
+dst_buf to videobuf2 without VDOASRR_SWRST or VDOAIE being written, so
+VDOA DMA can still write to the returned buffer.  Furthermore, because
+vdoa->curr_ctx is still set and completed_job is never updated to match
+submitted_job when resetting the hardware in vdoa_stop(), the next
+vdoa_stop() call waits another 300ms on the same timed-out transfer, and
+every subsequent job on that context sees submitted_job !=3D completed_job
+after completion and stalls for 300ms before resetting the hardware.
 
-	ret =3D ida_alloc_min(&mdev->entity_internal_idx, 1, GFP_KERNEL);
-	if (ret < 0)
-		return ret;
-	...
-}
-
-If ida_alloc_min() fails inside media_device_register_entity(),
-entity->graph_obj.mdev is already set, while entity->internal_idx is still 0
-and media_gobj_create() has not initialized entity->graph_obj.list.
-Calling mxc_isi_m2m_unregister() -> media_device_unregister_entity() on this
-partially initialized entity then calls ida_free() on index 0 and
-list_del(&gobj->list) on a zeroed list_head, dereferencing NULL.
-
-[1] https://sashiko.dev/#/bug/linux-feae4a20-e500-4215-90d3-b1654008ecd5
-[2] https://sashiko.dev/#/bug/linux-939c7345-a73b-4e71-844e-5708e3fa78c4
+[1] https://sashiko.dev/#/bug/linux-28a3755d-8800-42ad-8451-7f7421db4955
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261107-0d0c29e10a=
--media-imx8-isi-1@mail.sdu.edu.cn?part=3D1
+-media-coda-1@mail.sdu.edu.cn?part=3D1
