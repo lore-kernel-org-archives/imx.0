@@ -1,56 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=77.32.148.25
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794116131;
-	b=e6RZvk99ywgTqiFIGkX5f2aXLQrtY9YVCw6c2mGOd3qxUdvCCtEpzC5po0ZDHZWNAGpi
-	 hkwrMlVsI4ETyibGK7XR96mqm7fHaHM/XV6Fx/nCKd41e5+lSJdFKH9wJ4F7ZsCOWgYHq
-	 oScXw7n4wfBsmK+LwfMyr8756KOERy/5raw/jxRwUGzp36Qxhm6foQFOKmxtP7grISs37
-	 YvnyE1csvbYZbFopO1BILGG0hNw23g5MEuu00dRxrNjIVPN009ESbhgKPIl3YoSsV9qm9
-	 H0hE+VYFmeHWP4MSMaTZ6P8Ur8WY0SfHrTFHq0fPr8yyc5JZBbJZYm5zVSqVj8bXFKw==
+	t=1794117270;
+	b=bbm7smuKBeqp46tTRYcE1g+RGu5XYCegFnOfMgknWuf0GnHk1VlDgPcMqmnvyoT1lLsQ
+	 90I34P1a3z2ckvFPmKjEWEv0Ihv1JsLaoV+GrQi2w7iBhRKtuCJeN1w3jNlXXvyLHP3WI
+	 y0lv9m3AC/zM58R//KzuEhYKlONnxR1bnDHoGLYkH8rBuSIOSItgS3TolCbMYZGnX+3Ip
+	 OAjYB0j2kz0gY6xHEZiugpg4BJoQtmV8Htue5yheOXsTmuQdFscZcqFT0wv+GLg6PiukT
+	 DZyQEM5fqtFXHLp++n59dcpmZGwF6XsyrqLsR2FPL6GerRAnZZ10zzGMXuVl/yFROPg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794116131;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=EpvRHKSaGurB7+RpH1jAa7ngpGVSnL2fqGVB5eykYb8=;
-	b=y6Xup/+v8hzIIbREB/68fShFhLvnLyBOJ5kYOiLV5Q3cwNV7GrlXOby5Gm3OTJLECDya
-	 1KG06cw9Opiai349p3HLYvyQ+Q0aTC/qlR+QvkNPamnFYf/r32tgX5qikCV+FQlCR6NDW
-	 5/0bZcqCUACCQn4Ap4yVxkf8oUx94QfJNW1xwUk+VMl/lY9FRHw4zXxJmU5ZbYEtZiGOW
-	 9UQO7JwyZv1jVAaXieb/9zWvNPvah9/ZSV8pgXCgI3b5IuH5WcXAdTZsnUg7HiNk8bxHU
-	 0IYBnsV34oJQgcH5bNpIkWOyUlu02P5SaFQ0cGg4yo7duc01WF2IGCQGOg6Pnb5ByDg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794117270;
+	h=DMARC-Filter:DKIM-Signature:X-sib-id:Message-Id:Feedback-ID:From:
+	 X-Mailin-EID:Date:Cc:Origin-messageId:List-Unsubscribe-Post:
+	 List-Unsubscribe:X-CSA-Complaints:To:Subject:
+	 Content-Transfer-Encoding:In-Reply-To:Mime-Version:X-Mailer;
+	bh=68qAN3cxENFwAIBUF/JxoATn8PZjXEsg2lXjyDXyT2c=;
+	b=m0vWZxx4DUwIq1GvC2hRmnzBWyNOIYwgD2i8gh9XtEE3ypyw9PCifWcyN8xEeYmuxdS0
+	 cxjwx6TqQxT1HfDpIdY5zr/q/Z14RDHwT0oQUbQB8A2z4BbbeQnF0EHAxWiwR6HIv59Rw
+	 Qiv4P6xmvJbA0HZJRFXIZsCaOU3Wr81w0gxnZiDuBlETL3it97NShRirkFtFdU2VDurJ8
+	 CoLdpKwfpYxH+JBvdWFGbL8i8fNpmDWQtMVzQe4CDRIWUxRYEMf6RqzQYBcq0LfU4/ZPe
+	 MiUa+7y93Cpb9yseZyAhRAzTiUL/frFR9S1IZLXr2KD/GjbzHl1YUzpE1ZOYZNfMiKg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="nEjLWW/v";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=tubot.lat;
+	spf=pass smtp.mailfrom=gy.d.sender-sib.com;
+	dkim=pass header.d=tubot.lat header.i=@tubot.lat header.a=rsa-sha256 header.s=brevo1 header.b=FT0wYlGB;
+	arc=none smtp.remote-ip=77.32.148.25
+Received: from gy.d.sender-sib.com (gy.d.sender-sib.com [77.32.148.25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56BB2606A31A
-	for <imx@lists.linux.dev>; Sun,  8 Nov 2026 05:35:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4C87606D807
+	for <imx@lists.linux.dev>; Sun,  8 Nov 2026 05:54:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E4C87606D807
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tubot.lat
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gy.d.sender-sib.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nEjLWW/v
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD69B1F0089F;
-	Sun,  8 Nov 2026 05:35:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794116131;
-	bh=EpvRHKSaGurB7+RpH1jAa7ngpGVSnL2fqGVB5eykYb8=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=nEjLWW/vyJOZA96f4azbQWnhV2TPd3rummSL/9hCb9GXuZfTDyRMLVeKwolQoqtOu
-	 nLhX3jpS1puRUMkhBqyRCck1JcPlW6zszyN0DxgcuyoHnuIrM395rxjg+rUpsBlTmk
-	 rgkQew8WnrHoxA9AclftephhY+GKLN5Ghq3Dym8gHDiYaP4DRZu3XGEC2VaNt+1GLq
-	 FnPb6895ttIlnG3EBdAviCTM4tZljhMHbWeNFjAu8k5pyWOIqyVx1uAtQIoFf4UF9Z
-	 cTrQIbjbNNAhrlzN5/fASw7Wx30eNJl4w5Pt/zcLJV0gLENtCY5jKeNPkg5ZqgVGRW
-	 yn24bVb33jnLA==
-Message-ID: <sashiko-outbox-203585@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] staging: media: imx: ic-prpencvf: add FORMAT_TRY frame
- interval support
-Reply-To: sashiko-reviews@lists.linux.dev
-To: DelaySystem <DelaySystem@tubot.lat>
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org, media-ci@linuxtv.org
-In-Reply-To: <20261107-batch1-m2-prpencvf-try-v1-1-76bd9f505710@tubot.lat>
-References: <20261107-batch1-m2-prpencvf-try-v1-1-76bd9f505710@tubot.lat>
-Content-Type: text/plain; charset=utf-8
+	dkim=pass (2048-bit key, unprotected) header.d=tubot.lat header.i=@tubot.lat header.a=rsa-sha256 header.s=brevo1 header.b=FT0wYlGB
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tubot.lat;
+ q=dns/txt; s=brevo1; bh=68qAN3cxENFwAIBUF/JxoATn8PZjXEsg2lXjyDXyT2c=;
+ h=from:subject:date:to:cc:mime-version:content-transfer-encoding:in-reply-to:list-unsubscribe:x-csa-complaints:list-unsubscribe-post:message-id:x-sib-id:feedback-id;
+        b=FT0wYlGB4GaVEhqwtvJZv9uTPleLAp4A+W7cIIKdO8utk0hEsYPtKdUlTdIBBlt5l/VOyebHN2ti
+        mSQdbCyjhvICrUnxRNdzmeTHpKE4TPNP2pLmwS8RrhmCx1lflc9i2f3Fji3JSfYpw2TJ4aMPtF2k
+        s9bkRcHD9kP8/V9utX1OhmUR8NdSpJL/wjD2AawseKlyAQEQYVOe6f8d9A5Eg7PO2pYgYWfH2oo3
+        K7VSnX3Yl1dARptTPlmDnvh2cUylloH/Xu3CZtm2Icqp8z0xMdaOjZ8hpoTwhCWv2oEWbAietvn9
+        +hkltey+GaAWWn8r2ofe5frLHAyswGmxAVKbqA==
+X-sib-id: 11mRzEaehwg17yoSZ-6v9VYsGJI1VMiV9t8H-sOz2Vm8cAt20UKB94Ecyx6Z23MyMGPHf_1plp14rp_kmVcenR3-ZpsMMiERg26gz_vKQf6Q2ISizUN1sqRAIMGYUh5YaObKBWPcozQJQrlz-OUpexOwltks-PHlMJiqUW_AT5tNOA
+Message-Id: <20261108055421.301762-1-DelaySystem@tubot.lat>
+Feedback-ID: 77.32.148.25:11287567_-1:11287567:Sendinblue
+From: "DelaySystem" <DelaySystem@tubot.lat>
+X-Mailin-EID: NDczOTMwODc4fmlteEBsaXN0cy5saW51eC5kZXZ%2BPDIwMjYxMTA4MDU1NDIxLjMwMTc2Mi0xLURlbGF5U3lzdGVtQHR1Ym90LmxhdD5%2BZ3kuZC5zZW5kZXItc2liLmNvbQ%3D%3D
+Date: Sat,  7 Nov 2026 21:54:21 -0800
+Cc: "DelaySystem" <delaysystem@tubot.lat>,  <linux-kernel@vger.kernel.org>,  <gregkh@linuxfoundation.org>,  <vickramk.207@gmail.com>,  <linux-staging@lists.linux.dev>,  <linux-media@vger.kernel.org>,  <mchehab@kernel.org>,  <imx@lists.linux.dev>,  <p.zabel@pengutronix.de>
+Origin-messageId: <20261108055421.301762-1-DelaySystem@tubot.lat>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+X-CSA-Complaints: csa-complaints@eco.de
+To: <slongerbeam@gmail.com>
+Subject: Re: [PATCH] staging: media: imx: ic-prp: add FORMAT_TRY frame interval support
 Content-Transfer-Encoding: quoted-printable
-Date: Sun, 08 Nov 2026 05:35:30 +0000
+In-Reply-To: <20261107-batch1-m1-prp-try-v1-1-56a08f54791b@tubot.lat>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -59,105 +64,19 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.34.1
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Medium] staging: media: imx: unpropagated TRY interval in
-  prp_set_frame_interval()
---
 
-commit 39c074ccbb9c23c1bfb8a1a38f0cced39b190229
-Author: DelaySystem <DelaySystem@tubot.lat>
+Please disregard this patch.
 
-staging: media: imx: ic-prpencvf: add FORMAT_TRY frame interval support
+It was sent from my relay by accident: it copies a patch I did not
+write, review, or authorize, so my Signed-off-by on it is not valid,
+and I have no connection to the listed author, so I cannot vouch for
+this submission in any form.
 
-This commit adds V4L2_SUBDEV_FORMAT_TRY support to the frame interval
-callbacks in imx-ic-prpencvf by storing TRY intervals in the subdev state
-and initializing them from the default active interval in a new init_state
-callback.
+Apologies for the noise. If the actual author wishes to pursue this,
+it should come from them.
 
-> diff --git a/drivers/staging/media/imx/imx-ic-prpencvf.c b/drivers/stagin=
-g/media/imx/imx-ic-prpencvf.c
-> index 3430ddeac3569..fd70c9a36f7ee 100644
-> --- a/drivers/staging/media/imx/imx-ic-prpencvf.c
-> +++ b/drivers/staging/media/imx/imx-ic-prpencvf.c
-> @@ -795,6 +795,18 @@ __prp_get_fmt(struct prp_priv *priv, struct v4l2_sub=
-dev_state *sd_state,
->  		return &priv->format_mbus[pad];
->  }
-> =20
-> +static struct v4l2_fract *
-> +__prp_get_frame_interval(struct prp_priv *priv,
-> +			 struct v4l2_subdev_state *sd_state,
-> +			 unsigned int pad,
-> +			 enum v4l2_subdev_format_whence which)
-> +{
-> +	if (which =3D=3D V4L2_SUBDEV_FORMAT_TRY)
-> +		return v4l2_subdev_state_get_interval(sd_state, pad);
-> +
-> +	return &priv->frame_interval;
-> +}
-> +
+DelaySystem
 
-[ ... ]
-
-> @@ -1231,24 +1246,50 @@ static int prp_set_frame_interval(struct v4l2_sub=
-dev *sd,
->  				  struct v4l2_subdev_frame_interval *fi)
->  {
->  	struct prp_priv *priv =3D sd_to_priv(sd);
-> -
-> -	/*
-> -	 * FIXME: Implement support for V4L2_SUBDEV_FORMAT_TRY, using the V4L2
-> -	 * subdev active state API.
-> -	 */
-> -	if (fi->which !=3D V4L2_SUBDEV_FORMAT_ACTIVE)
-> -		return -EINVAL;
-> +	struct v4l2_fract *interval;
-> +	int ret =3D 0;
-> =20
->  	if (fi->pad >=3D PRPENCVF_NUM_PADS)
->  		return -EINVAL;
-> =20
->  	mutex_lock(&priv->lock);
-> +	interval =3D __prp_get_frame_interval(priv, sd_state, fi->pad,
-> +					    fi->which);
-> +	if (!interval) {
-> +		ret =3D -EINVAL;
-> +		goto out;
-> +	}
-> =20
->  	/* No limits on valid frame intervals */
->  	if (fi->interval.numerator =3D=3D 0 || fi->interval.denominator =3D=3D =
-0)
-> -		fi->interval =3D priv->frame_interval;
-> +		fi->interval =3D *interval;
->  	else
-> -		priv->frame_interval =3D fi->interval;
-> +		*interval =3D fi->interval;
-> +out:
->  	mutex_unlock(&priv->lock);
-> =20
-> -	return 0;
-> +	return ret;
-> +}
-
-[Severity: Medium]
-Should prp_set_frame_interval() keep the sink and source pad intervals in
-sync when fi->which is V4L2_SUBDEV_FORMAT_TRY?
-
-For V4L2_SUBDEV_FORMAT_ACTIVE, __prp_get_frame_interval() ignores pad and
-returns the single shared &priv->frame_interval because the IC preprocess
-task does not change the frame rate between PRPENCVF_SINK_PAD and
-PRPENCVF_SRC_PAD.  For V4L2_SUBDEV_FORMAT_TRY, v4l2_subdev_state_get_interv=
-al()
-returns a separate slot per pad, and prp_set_frame_interval() only updates
-fi->pad without propagating the interval to the other pad (unlike
-prp_set_fmt(), which propagates sink pad changes to PRPENCVF_SRC_PAD).
-Userspace negotiating TRY frame intervals on PRPENCVF_SINK_PAD will read a
-stale interval on PRPENCVF_SRC_PAD, or configure different TRY intervals on
-the two pads that the hardware and ACTIVE state cannot represent.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261107-batch1-m2-=
-prpencvf-try-v1-1-76bd9f505710@tubot.lat?part=3D1
