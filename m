@@ -1,61 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=77.32.148.25
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.71
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794117270;
-	b=bbm7smuKBeqp46tTRYcE1g+RGu5XYCegFnOfMgknWuf0GnHk1VlDgPcMqmnvyoT1lLsQ
-	 90I34P1a3z2ckvFPmKjEWEv0Ihv1JsLaoV+GrQi2w7iBhRKtuCJeN1w3jNlXXvyLHP3WI
-	 y0lv9m3AC/zM58R//KzuEhYKlONnxR1bnDHoGLYkH8rBuSIOSItgS3TolCbMYZGnX+3Ip
-	 OAjYB0j2kz0gY6xHEZiugpg4BJoQtmV8Htue5yheOXsTmuQdFscZcqFT0wv+GLg6PiukT
-	 DZyQEM5fqtFXHLp++n59dcpmZGwF6XsyrqLsR2FPL6GerRAnZZ10zzGMXuVl/yFROPg==
+	t=1794117624;
+	b=XRZhgXeFmusOuUc3mfh6k1tWTVnGB0G5JYhSR2ZF2T8PHUWVdUQGHl85UMHBC2pAS7NN
+	 j4vs78fjvs4ba59coSKsMx/lV9NFYbnRhqSoQO55EIONEMqk6Re7VVP7UNdq3Z0ZVEm7j
+	 67iAD1n9CfxOXg+BlkUpfQi2P+Cxqp83w/oOJGJomAxJ3n5L57BMwTVXM4eoFSZGMq7vs
+	 qxfHv5lKaGwDA1KQRUmDpBVzIqDjOd1BPlMBRBuY4yv7R9qKLVQUfdmZM9eMSoXVco5O0
+	 fkPQyXgIZfvl6dReYi2xzNCzngE6mPNJFI7jvG+XUlDf4YBHq43Xru1DgYDdE9xUluA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794117270;
-	h=DMARC-Filter:DKIM-Signature:X-sib-id:Message-Id:Feedback-ID:From:
-	 X-Mailin-EID:Date:Cc:Origin-messageId:List-Unsubscribe-Post:
-	 List-Unsubscribe:X-CSA-Complaints:To:Subject:
-	 Content-Transfer-Encoding:In-Reply-To:Mime-Version:X-Mailer;
-	bh=68qAN3cxENFwAIBUF/JxoATn8PZjXEsg2lXjyDXyT2c=;
-	b=m0vWZxx4DUwIq1GvC2hRmnzBWyNOIYwgD2i8gh9XtEE3ypyw9PCifWcyN8xEeYmuxdS0
-	 cxjwx6TqQxT1HfDpIdY5zr/q/Z14RDHwT0oQUbQB8A2z4BbbeQnF0EHAxWiwR6HIv59Rw
-	 Qiv4P6xmvJbA0HZJRFXIZsCaOU3Wr81w0gxnZiDuBlETL3it97NShRirkFtFdU2VDurJ8
-	 CoLdpKwfpYxH+JBvdWFGbL8i8fNpmDWQtMVzQe4CDRIWUxRYEMf6RqzQYBcq0LfU4/ZPe
-	 MiUa+7y93Cpb9yseZyAhRAzTiUL/frFR9S1IZLXr2KD/GjbzHl1YUzpE1ZOYZNfMiKg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794117624;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
+	 Content-Type;
+	bh=gFMZKE8rB1qHEs9YGj4+e/8ZQgkxp9yc4uMWlT943Dk=;
+	b=mjGdbD341MHqGmqA5bToG4oj04cuAHyWvILt9PpFN53E8SYd1LJ5JbnmGRzPuAW+okrB
+	 1LDv+1pDg5BCqlQ6x6BVvg1TQe+bAGH1/zRheXI0nJIdjCx/3EKsv3B+ADFauHMIGM1ww
+	 uweTtnKuNrqTggM7QBY4BneNBgZ10L35IVAjNzXDMuLmGXLlVKyW6sY2OeYzJOdK2BeqB
+	 COolW0Y+jYmBBYdPRNkDNbkIRkqdwktKPgTgueTsq84fa+0EyN/HMoC8UvCUWzFhQRNmm
+	 fRiAESC+3aveO9uw9MOuP4eqk11m6VmotK6sIHwh0JoUJxjKnpCyHl3MdLWiDuHE+VQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=tubot.lat;
-	spf=pass smtp.mailfrom=gy.d.sender-sib.com;
-	dkim=pass header.d=tubot.lat header.i=@tubot.lat header.a=rsa-sha256 header.s=brevo1 header.b=FT0wYlGB;
-	arc=none smtp.remote-ip=77.32.148.25
-Received: from gy.d.sender-sib.com (gy.d.sender-sib.com [77.32.148.25])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Bsy4UsJM;
+	arc=none smtp.remote-ip=74.125.82.71
+Received: from mail-dl1-f71.google.com (mail-dl1-f71.google.com [74.125.82.71])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4C87606D807
-	for <imx@lists.linux.dev>; Sun,  8 Nov 2026 05:54:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E4C87606D807
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tubot.lat
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gy.d.sender-sib.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C6C4606EE93
+	for <imx@lists.linux.dev>; Sun,  8 Nov 2026 06:00:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9C6C4606EE93
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=tubot.lat header.i=@tubot.lat header.a=rsa-sha256 header.s=brevo1 header.b=FT0wYlGB
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tubot.lat;
- q=dns/txt; s=brevo1; bh=68qAN3cxENFwAIBUF/JxoATn8PZjXEsg2lXjyDXyT2c=;
- h=from:subject:date:to:cc:mime-version:content-transfer-encoding:in-reply-to:list-unsubscribe:x-csa-complaints:list-unsubscribe-post:message-id:x-sib-id:feedback-id;
-        b=FT0wYlGB4GaVEhqwtvJZv9uTPleLAp4A+W7cIIKdO8utk0hEsYPtKdUlTdIBBlt5l/VOyebHN2ti
-        mSQdbCyjhvICrUnxRNdzmeTHpKE4TPNP2pLmwS8RrhmCx1lflc9i2f3Fji3JSfYpw2TJ4aMPtF2k
-        s9bkRcHD9kP8/V9utX1OhmUR8NdSpJL/wjD2AawseKlyAQEQYVOe6f8d9A5Eg7PO2pYgYWfH2oo3
-        K7VSnX3Yl1dARptTPlmDnvh2cUylloH/Xu3CZtm2Icqp8z0xMdaOjZ8hpoTwhCWv2oEWbAietvn9
-        +hkltey+GaAWWn8r2ofe5frLHAyswGmxAVKbqA==
-X-sib-id: 11mRzEaehwg17yoSZ-6v9VYsGJI1VMiV9t8H-sOz2Vm8cAt20UKB94Ecyx6Z23MyMGPHf_1plp14rp_kmVcenR3-ZpsMMiERg26gz_vKQf6Q2ISizUN1sqRAIMGYUh5YaObKBWPcozQJQrlz-OUpexOwltks-PHlMJiqUW_AT5tNOA
-Message-Id: <20261108055421.301762-1-DelaySystem@tubot.lat>
-Feedback-ID: 77.32.148.25:11287567_-1:11287567:Sendinblue
-From: "DelaySystem" <DelaySystem@tubot.lat>
-X-Mailin-EID: NDczOTMwODc4fmlteEBsaXN0cy5saW51eC5kZXZ%2BPDIwMjYxMTA4MDU1NDIxLjMwMTc2Mi0xLURlbGF5U3lzdGVtQHR1Ym90LmxhdD5%2BZ3kuZC5zZW5kZXItc2liLmNvbQ%3D%3D
-Date: Sat,  7 Nov 2026 21:54:21 -0800
-Cc: "DelaySystem" <delaysystem@tubot.lat>,  <linux-kernel@vger.kernel.org>,  <gregkh@linuxfoundation.org>,  <vickramk.207@gmail.com>,  <linux-staging@lists.linux.dev>,  <linux-media@vger.kernel.org>,  <mchehab@kernel.org>,  <imx@lists.linux.dev>,  <p.zabel@pengutronix.de>
-Origin-messageId: <20261108055421.301762-1-DelaySystem@tubot.lat>
-List-Unsubscribe-Post: List-Unsubscribe=One-Click
-X-CSA-Complaints: csa-complaints@eco.de
-To: <slongerbeam@gmail.com>
-Subject: Re: [PATCH] staging: media: imx: ic-prp: add FORMAT_TRY frame interval support
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20261107-batch1-m1-prp-try-v1-1-56a08f54791b@tubot.lat>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Bsy4UsJM
+Received: by mail-dl1-f71.google.com with SMTP id a92af1059eb24-1aa0fb7f157so277650c88.0
+        for <imx@lists.linux.dev>; Sat, 07 Nov 2026 22:00:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1794117623; x=1794722423; darn=lists.linux.dev;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=gFMZKE8rB1qHEs9YGj4+e/8ZQgkxp9yc4uMWlT943Dk=;
+        b=Bsy4UsJMq7zlUe5HGZdFPzjX9Q0uYms2SfyhyUX12Kwr0a6j/7SYD097l4ANXCGoat
+         bHDkRmH7tyJ30160InzOAj1S/nlSeyZsRyZqf3HjoRQHZ4igyblDW9e4gM0mUUJv/Yq2
+         TJ3mMQkm+eSPzaECM0u73AQtrrqq4UW1/Zmxa1RBIS1RPxx/+nYf9iDUMdAOFoj0wwe2
+         JrXaqffWj3TgDOpC2LCKzsuvXClABweBshGBfeTaI8qrPU5FB2fc3WQXWyuiOtlWRiv5
+         sTXnf0IoLReL2bqe0piDbRpl7rz0nK46VDqCScRCa4edKp1Oj/M2ASDrTowJXQmKgIL1
+         5/Jg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794117623; x=1794722423;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=gFMZKE8rB1qHEs9YGj4+e/8ZQgkxp9yc4uMWlT943Dk=;
+        b=Ms8IwPUyaRqXdTG8+5osczMqJwzfomgR88CWGtCu2Q5FAjUowwDyiqxVfFgzcF7Obw
+         yDL3SPn+01whxdzeQhPz068QkZQ3T+jfM856gp0tyHwldkU93UwS6Zay7GYV2J+nNJSu
+         s6vHrvQRlvNtW+ohhqM+dqpAdkXT5EvhIyB3h64PwwQ9llRXHeLRJ4NmtkMxr4VDIpO5
+         pau8fyc0tWrNX1rGozGaB3PCVS7bmZhSxnDkzAwoanDUfuNzMC9TTeHnSMZ9jhp8QhX7
+         s0cZD21SHtkM5+0IML0p5ps0qJvQlW57xwbvWmkUCBf6RaSgdebmRBjtOQ/F4wkjxN/N
+         4/zw==
+X-Forwarded-Encrypted: i=1; AKwUvBzcd10Bdf+e6z/uXYH6BIKHBNitqDDLlE24s9WP/Fk9QxIfVER4kYHRjaVJDEv/e5Z2tb4=@lists.linux.dev
+X-Gm-Message-State: APuU4Z9aN36eg+dSaW+UWoD8N+xeqUxX5MjLPTFX0DmC0p4zlsRJ9M/I
+	pg2W5rS5uAVE78OOl8nHrTl8798lgRq5S60Vx3SM2urOzWdpQA4+zWznm/bWx7ITcrl4hygCA9I
+	fBMEVyKjZ/X09P9Zn61Kc9L3fcw==
+X-Received: from dlev11.prod.google.com ([2002:a05:701b:464b:b0:189:931c:18ef])
+ (user=almasrymina job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:7022:e02:b0:191:3c:aae7 with SMTP id a92af1059eb24-1b39feec174mr1478394c88.26.1794117620448;
+ Sat, 07 Nov 2026 22:00:20 -0800 (PST)
+Date: Sun,  8 Nov 2026 06:00:13 +0000
+In-Reply-To: <20261108060016.2131509-1-almasrymina@google.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -65,18 +79,194 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 Mime-Version: 1.0
-X-Mailer: git-send-email 2.34.1
+References: <20261108060016.2131509-1-almasrymina@google.com>
+X-Mailer: git-send-email 2.56.0.455.g6c5a503b38-goog
+Message-ID: <20261108060016.2131509-3-almasrymina@google.com>
+Subject: [PATCH net-next v2 2/5] net: skbuff: refcount spliced page_pool frags
+ via skb_pipe_buf_ops
+From: Mina Almasry <almasrymina@google.com>
+To: netdev@vger.kernel.org
+Cc: Mina Almasry <almasrymina@google.com>, Jesper Dangaard Brouer <hawk@kernel.org>, 
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Neal Cardwell <ncardwell@google.com>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, Pavel Begunkov <asml.silence@gmail.com>, 
+	Bobby Eshleman <bobbyeshleman@meta.com>, Stanislav Fomichev <sdf@fomichev.me>, linux-kernel@vger.kernel.org, 
+	Steffen Klassert <steffen.klassert@secunet.com>, Herbert Xu <herbert@gondor.apana.org.au>, 
+	Willem de Bruijn <willemb@google.com>, John Fastabend <john.fastabend@gmail.com>, 
+	Sabrina Dubroca <sd@queasysnail.net>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>, 
+	"=?UTF-8?q?Eugenio=20P=C3=A9rez?=" <eperezma@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Johannes Berg <johannes@sipsolutions.net>, Byungchul Park <byungchul@sk.com>, Zi Yan <ziy@nvidia.com>, 
+	virtualization@lists.linux.dev, linux-mm@kvack.org, bpf@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, 
+	Lorenzo Bianconi <lorenzo@kernel.org>, Wen Gu <guwen@linux.alibaba.com>, 
+	Philo Lu <lulie@linux.alibaba.com>, Justin Chen <justin.chen@broadcom.com>, 
+	Florian Fainelli <florian.fainelli@broadcom.com>, Vikas Gupta <vikas.gupta@broadcom.com>, 
+	Michael Chan <michael.chan@broadcom.com>, Pavan Chebbi <pavan.chebbi@broadcom.com>, 
+	Doug Berger <opendmb@gmail.com>, Nicolai Buchwitz <nb@tipi-net.de>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Satish Kharat <satishkh@cisco.com>, 
+	Wei Fang <wei.fang@nxp.com>, Frank Li <frank.li@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, 
+	Joshua Washington <joshwash@google.com>, Harshitha Ramamurthy <hramamurthy@google.com>, 
+	Jijie Shao <shaojijie@huawei.com>, Jian Shen <shenjian15@huawei.com>, 
+	Fan Gong <gongfan1@huawei.com>, Tony Nguyen <anthony.l.nguyen@intel.com>, 
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>, Marcin Wojtas <marcin.s.wojtas@gmail.com>, 
+	Russell King <linux@armlinux.org.uk>, Sunil Goutham <sgoutham@marvell.com>, 
+	Geetha sowjanya <gakula@marvell.com>, Ratheesh Kannoth <rkannoth@marvell.com>, 
+	Subbaraya Sundeep <sbhatta@marvell.com>, Bharat Bhushan <bbhushan2@marvell.com>, 
+	Felix Fietkau <nbd@nbd.name>, Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Tariq Toukan <tariqt@nvidia.com>, 
+	Saeed Mahameed <saeedm@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, Leon Romanovsky <leon@kernel.org>, 
+	Ido Schimmel <idosch@nvidia.com>, Petr Machata <petrm@nvidia.com>, 
+	Horatiu Vultur <horatiu.vultur@microchip.com>, UNGLinuxDriver@microchip.com, 
+	Daniel Machon <daniel.machon@microchip.com>, Steen Hegelund <Steen.Hegelund@microchip.com>, 
+	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
+	Dexuan Cui <decui@microsoft.com>, Yibo Dong <dong100@mucse.com>, 
+	Brett Creeley <brett.creeley@amd.com>, Justin Lai <justinlai0215@realtek.com>, 
+	Larry Chiu <larry.chiu@realtek.com>, 
+	"=?UTF-8?q?Niklas=20S=C3=B6derlund?=" <niklas.soderlund@ragnatech.se>, Paul Barker <paul@pbarker.dev>, 
+	Masahisa Kojima <kojima.masahisa@socionext.com>, 
+	Maxime Chevallier <maxime.chevallier@bootlin.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+	Siddharth Vadapalli <s-vadapalli@ti.com>, Roger Quadros <rogerq@kernel.org>, 
+	MD Danish Anwar <danishanwar@ti.com>, Jiawen Wu <jiawenwu@trustnetic.com>, 
+	Mengyuan Lou <mengyuanlou@net-swift.com>, Ronak Doshi <ronak.doshi@broadcom.com>, 
+	Ryder Lee <ryder.lee@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>, 
+	Sean Wang <sean.wang@mediatek.com>, Juergen Gross <jgross@suse.com>, 
+	Stefano Stabellini <sstabellini@kernel.org>, 
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, Jordan Rhee <jordanrhee@google.com>, 
+	Ankit Garg <nktgrg@google.com>, Tim Hostetler <thostet@google.com>, 
+	Eric Joyner <eric.joyner@amd.com>, Prabu Thayalan <prabu.ponrajthayalan@amd.com>, 
+	"Nikhil P. Rao" <nikhil.rao@amd.com>, Chintan Vankar <c-vankar@ti.com>, 
+	Nora Schiffer <nora.schiffer@ew.tq-group.com>, Alexander Sverdlin <alex@sverdlin.org>, 
+	Kevin Hao <haokexin@gmail.com>, Karl Mehltretter <kmehltretter@gmail.com>, 
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>, Meghana Malladi <m-malladi@ti.com>, 
+	Jacob Keller <jacob.e.keller@intel.com>, StanleyYP Wang <StanleyYP.Wang@mediatek.com>, 
+	linux-doc@vger.kernel.org, imx@lists.linux.dev, linux-rdma@vger.kernel.org, 
+	linux-hyperv@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
+	linux-omap@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
+Update skb_splice_bits() (spd_fill_page(), sock_spd_release(), and
+skb_pipe_buf_ops) and skb_append_pagefrags() to acquire and release
+references via netmem_inc_ref(), netmem_dec_ref(), and skb_frag_ref()
+so page_pool RX fragments spliced into a pipe remain pinned in the pool
+while in the pipe and pair with skb_append_pagefrags() and
+skb_release_data() when spliced into a TX socket once netmem_inc_ref()
+and netmem_dec_ref() handle page_pool netmems.
 
-Please disregard this patch.
+In tls_push_data(), fall back to copying when MSG_SPLICE_PAGES
+encounters a page_pool page because kTLS device offload record->frags[]
+tracks pages via raw struct page references rather than pp_ref_count
+before handing them to tls_push_sg().
 
-It was sent from my relay by accident: it copies a patch I did not
-write, review, or authorize, so my Signed-off-by on it is not valid,
-and I have no connection to the listed author, so I cannot vouch for
-this submission in any form.
+Caveats:
+- Because pipe buffers created by skb_splice_bits() hold pp_ref_count
+  until released (including across tee()), user pipes holding
+  unconsumed spliced data keep those page_pool pages in-flight and
+  DMA-mapped in the pool (bounded by pipe capacity and RLIMIT_NOFILE
+  rather than sk_rcvbuf) until the pipe buffers are consumed or closed,
+  with page_pool_destroy() deferring pool release via its periodic
+  workqueue and page_pool_scrub() unmapping DMA.
 
-Apologies for the noise. If the actual author wishes to pursue this,
-it should come from them.
+Signed-off-by: Mina Almasry <almasrymina@google.com>
+---
+ net/core/skbuff.c    | 31 +++++++++++++++++++++++++++----
+ net/tls/tls_device.c |  6 ++++++
+ 2 files changed, 33 insertions(+), 4 deletions(-)
 
-DelaySystem
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index 48f6764117243..19d4ce347c41b 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -3114,9 +3114,32 @@ EXPORT_SYMBOL(skb_copy_bits);
+  */
+ static void sock_spd_release(struct splice_pipe_desc *spd, unsigned int i)
+ {
+-	put_page(spd->pages[i]);
++	netmem_dec_ref(page_to_netmem(spd->pages[i]));
+ }
+ 
++static void skb_pipe_buf_release(struct pipe_inode_info *pipe,
++				 struct pipe_buffer *buf)
++{
++	netmem_dec_ref(page_to_netmem(buf->page));
++}
++
++static bool skb_pipe_buf_get(struct pipe_inode_info *pipe,
++			     struct pipe_buffer *buf)
++{
++	struct page *page = compound_head(buf->page);
++
++	if (WARN_ON_ONCE(page_ref_count(page) <= 0))
++		return false;
++
++	netmem_inc_ref(page_to_netmem(page));
++	return true;
++}
++
++static const struct pipe_buf_operations skb_pipe_buf_ops = {
++	.release	= skb_pipe_buf_release,
++	.get		= skb_pipe_buf_get,
++};
++
+ static struct page *linear_to_page(struct page *page, unsigned int *len,
+ 				   unsigned int *offset,
+ 				   struct sock *sk)
+@@ -3165,7 +3188,7 @@ static bool spd_fill_page(struct splice_pipe_desc *spd, struct page *page,
+ 		spd->partial[spd->nr_pages - 1].len += *len;
+ 		return false;
+ 	}
+-	get_page(page);
++	netmem_inc_ref(page_to_netmem(page));
+ 	spd->pages[spd->nr_pages] = page;
+ 	spd->partial[spd->nr_pages].len = *len;
+ 	spd->partial[spd->nr_pages].offset = offset;
+@@ -3281,7 +3304,7 @@ int skb_splice_bits(struct sk_buff *skb, struct sock *sk, unsigned int offset,
+ 		.pages = pages,
+ 		.partial = partial,
+ 		.nr_pages_max = MAX_SKB_FRAGS,
+-		.ops = &nosteal_pipe_buf_ops,
++		.ops = &skb_pipe_buf_ops,
+ 		.spd_release = sock_spd_release,
+ 	};
+ 	int ret = 0;
+@@ -4692,8 +4715,8 @@ int skb_append_pagefrags(struct sk_buff *skb, struct page *page,
+ 		skb_frag_size_add(&skb_shinfo(skb)->frags[i - 1], size);
+ 	} else if (i < max_frags) {
+ 		skb_zcopy_downgrade_managed(skb);
+-		get_page(page);
+ 		skb_fill_page_desc_noacc(skb, i, page, offset, size);
++		skb_frag_ref(skb, i);
+ 	} else {
+ 		return -EMSGSIZE;
+ 	}
+diff --git a/net/tls/tls_device.c b/net/tls/tls_device.c
+index 4cdfbb57ecff0..05abf8e23f78a 100644
+--- a/net/tls/tls_device.c
++++ b/net/tls/tls_device.c
+@@ -513,10 +513,16 @@ static int tls_push_data(struct sock *sk,
+ 				goto handle_error;
+ 			}
+ 
++			if (page_pool_page_is_pp(compound_head(*pages))) {
++				iov_iter_revert(iter, copy);
++				goto copy_data;
++			}
++
+ 			zc_pfrag.offset = off;
+ 			zc_pfrag.size = copy;
+ 			tls_append_frag(record, &zc_pfrag, copy);
+ 		} else if (copy) {
++copy_data:
+ 			copy = min_t(size_t, copy, pfrag->size - pfrag->offset);
+ 
+ 			rc = tls_device_copy_data(page_address(pfrag->page) +
+-- 
+2.56.0.455.g6c5a503b38-goog
 
