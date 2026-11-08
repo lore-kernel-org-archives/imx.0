@@ -1,75 +1,103 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.197
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.42
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794117624;
-	b=hQS02WFkgM/maiL1qfZbuOtibjmSiCuIU4Fv4N9tiUCSrtL25Z5MxQnSSQVix70APhIN
-	 r2KxPTk/Sj7ZoAZH+jKpsqJi+PAbI5PMivWGSsPG6E+NSQ2a+/ausPYuzTtvl5ILYkpP2
-	 lFLWwqIOBJXzwaA5IfdBhvnT5fbdl7mSvpaVhvy2h0NWH/jY/S4SoLylla4FtH2fbP92P
-	 oLWhAQ/ZCwTAxp9FdOiFO2S9X4aP+5L6UHcUj9eGnyQT88LJqBs4Lz2KYNw7f2/7ewN0W
-	 4NrpO7CowuqsO4R106dTtw0UYRMMAvfti2MffaC/1O0sUdj/amDQgPBo/3JYpmcUvQA==
+	t=1794130589;
+	b=pg5ltqTCVDGB0FSrC7rJEOnOZyjHxZIzdXhVQwXfmI63VnnF7aGEqILcKeEgIz7V5X5E
+	 U1yNFyJW3WihQlcsqX9YxO5GLfJAo2k5ZgFs6rnoGcJ8bt2RuAiUnMOdyvmPyNxxAHh7P
+	 W1bnFC7ok+koPXoFDQZlOUwkqWysJLRsYNNb+yuNZrkNc5k5WE7d+ZvJt/2jk2nzc6O8D
+	 EnEqk2ADHiCoo0d7ooL4UFkcjWCt7sMVXjFDSPz0+tZlUa6OSTS8E8mgscvMQJqV0L5/T
+	 o3g4VOsgTip+EYpWw5KG81nG5TIoJGu/+bZqUqqLJMqSwbBTsaQThaZ4D5FYkN+vO/w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794117624;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794130589;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
-	 Content-Type;
-	bh=ls8Vsqz37bk9Lc/TUQk6BA8al47BcGIFX0n6D6YIHe4=;
-	b=1Ny2zVmqSfV/M5hATE+FFMWn0Q+zu8q+Yq3CQftj8dRh9i4qHAV9UJIT67a2x8ifGIg3
-	 UJ4k4nTCEsH4P23eDFIfaB3rY9YqP0h/9GnCXu8+eFq2NYN1fDe80ZH3TTfLSAXeZXiYU
-	 03wBhunhDqS7iUSmPr0PixA3Jod/N4azb6iQL/hMiFFOG4C3faPZTz2z8fUTBW78hDQab
-	 J2v+r9srMD3q99VOiJy+drVuxj1kBY6edAgbdWYBjnBBY5oWVoge2DC0wySUXDJi4R3iu
-	 a/KwEIDL2WPIoVltAqO6TXUbwIMw2vlvnLo11+AA/j4hiivOpayGcASoZlvXAfUFe1Q==
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=1gFuR1bxc5xsOK5qncGI4pXWKli3a5dtxlSmm79GBRM=;
+	b=Bhxmfd/TblvKNVFOG6xN9bnpm15vIVHgS5iMz0jhy6f3uNZkbLTSa5QouuFKPaqtVCwr
+	 7dl4qH1rhliXVGZsrmqtQYWmA061JOpoHIoRhHm1+5pHluCkXpUN7xNBQp3mzzt5R0Tnr
+	 tfflD4ynaDHXMWkoP/447OpMpmfqDExaQcSH6OIu0j6sY+ZeBeIO4xHB0NXS+3+EkjPMO
+	 NBmLs4aghRIvd8eLfdng5gT8Cg/0677PLDNjJ7aQiHIGEXruPoZfIskKlvqrHh0m/pUS2
+	 lIQrBUuPepUW8Sv6hVaTOFye0Cgeitr/9XBGET63ZmQjkZX4k8fV05xEdRhO+fEELxw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=oVuznaaA;
-	arc=none smtp.remote-ip=74.125.82.197
-Received: from mail-dy1-f197.google.com (mail-dy1-f197.google.com [74.125.82.197])
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=r7sEaTI6;
+	arc=none smtp.remote-ip=209.85.128.42
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F81D606EEB8
-	for <imx@lists.linux.dev>; Sun,  8 Nov 2026 06:00:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5F81D606EEB8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5BA4606A31C
+	for <imx@lists.linux.dev>; Sun,  8 Nov 2026 09:36:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D5BA4606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=oVuznaaA
-Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-30bcb065bfdso584204eec.0
-        for <imx@lists.linux.dev>; Sat, 07 Nov 2026 22:00:24 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=r7sEaTI6
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4a59100fa83so1793525e9.0
+        for <imx@lists.linux.dev>; Sun, 08 Nov 2026 01:36:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794117623; x=1794722423; darn=lists.linux.dev;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ls8Vsqz37bk9Lc/TUQk6BA8al47BcGIFX0n6D6YIHe4=;
-        b=oVuznaaAOUTmqJwjuIKWPGGcsfmhmwLa/RE/3UqndcD7bh5ZflenWTi3zDD3Lb83tm
-         j/1ulWzI4kgxceuUiSGLriEigyhngdxfqOarmdCiRSEbmn8Y+nb8MrkpwLGxOyK/KDxi
-         fxuhHN6OG1PxgNNsyyUi3jbVtW17mhnZ9TXUCfhJmLYLAu1TBNqhZZg7dT5YOwZ4a+rb
-         Y3rHtDzon0Uwr2G309vBWiHskAfjnEYTQgmWeOW6x/eMxb+zBe1oH5D28gZ271JSEoLx
-         +fYRjt8e2Py2g/cgxJQlfaTVlgyTgt6PHhoDnabsafytLAr8IzbY3iXO4xkA9jrsaS88
-         M7xg==
+        d=gmail.com; s=20260707; t=1794130587; x=1794735387; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=1gFuR1bxc5xsOK5qncGI4pXWKli3a5dtxlSmm79GBRM=;
+        b=r7sEaTI6nj1WpZw37FyHT2fHiR4Rem2J8RiR3rU8JYx16JNSPgUKuOTvnxMJhAK18E
+         8qQYwewcp81rSFD+iMGO7EB0rfXJlqPO/wXQiVeOzOu1O5hqs97EAbn1iZPCLBtFwXip
+         mQ/g7EWb6ti8J7cORn0GsbU+Mv6QOqGBo4R/nEaWt8kaf1YnKIZxUjKL88AXiWfRCRpO
+         Nz1BOPsR05Va+L/GEtHOTLlucdeiS9KeNCh+RasKydl2bZt0HgUPMd0yyWOBvTqG2WR1
+         sQ2utiB3cMQGf5gvkE8qYatCG189uhA6RBvMjypb3HfGN2eL0tu+YUUztVTMFZ2GU6qs
+         4jMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794117623; x=1794722423;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20260707; t=1794130587; x=1794735387;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=ls8Vsqz37bk9Lc/TUQk6BA8al47BcGIFX0n6D6YIHe4=;
-        b=hHf2McW6V7fStUow3mNrn4RkVR8pcQs075ymguV0t/O+QK0CMJHwEQQ1vqcyurw1nZ
-         qvQKIhfwUMH7bt1SQ51qS08NJhlC1gGt5+LQLq/1wGdpDdm1oOy+y1yjDoXpOMxNkDkC
-         rnMj+Xy57GU0RNiHmabrlH+RX24ZUBhp7IOCCFyv+t/lDksyx15zQ4n6ikDr34MlTG9P
-         DNGe8hxb3+qIbLpvhMf0pW8xmMuv3xynWnMFYy4a0JWbtjBDyLxlYRFLBIi48sUyvWcz
-         nei8IECq/J46ThFcmjUhzZSYZLJ+xvFvoQ8R53xCIMTMuLIe/a21VEZ9oCRo06wPCJkC
-         5T6Q==
-X-Forwarded-Encrypted: i=1; AKwUvBwS/FJ2hRbAV/dWBoUyqrtYpEQzUl/yZSzgneDtMuWQvV8JqxkF/6+5lphqjpAx62Xkz+k=@lists.linux.dev
-X-Gm-Message-State: APuU4Z8nHuu3dbXr3XUDwLjChF1WoM5Ya2iEBobXuWuNp1QAxLPIF0cu
-	vYiFetLGytBwzxW27/vLRyY3dV81ON0ovAGraRLxyaez0A4qlwIxyFeUkqiSCY6spWcgpF6yGZm
-	4noNLC7BCRpnHZMRjMELMatIllQ==
-X-Received: from dycmb13-n2.prod.google.com ([2002:a05:693c:20cd:20b0:36a:17c6:6824])
- (user=almasrymina job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:693c:6390:20b0:36c:9bc6:3ec with SMTP id 5a478bee46e88-37252f3042emr1787652eec.3.1794117622089;
- Sat, 07 Nov 2026 22:00:22 -0800 (PST)
-Date: Sun,  8 Nov 2026 06:00:14 +0000
-In-Reply-To: <20261108060016.2131509-1-almasrymina@google.com>
+        bh=1gFuR1bxc5xsOK5qncGI4pXWKli3a5dtxlSmm79GBRM=;
+        b=osKGAULRekxiGMUcKiQtBGdrb5r+tlEnuOJ0Y5vIeuxp1DqWwtfPUwmCeA9ChaFJSU
+         uRYGjmIxcSsvxurh4+aif1OY2TncgD8P6E40vEKCJctraeyXbAsN5ZcOucRUb7OCTifZ
+         fB6Cw18CBOYqxoAESqmSTcThqhR5MLDvxciiNB1zxHdevi7npNPd0nOS17xinJ1jKOYy
+         cIeRYg7UoTdmqd/JNSO0WQ5n1kWtaeBMLjMlYfZUhfj6tRZCqubcWThL+HKGhYzPVlCW
+         l5cWGD6XKJU5tlEDaedmlb+6yHzAlongkxqeZHbBy+BWWX1GhZ81zY+8FomEtgBpPC8p
+         ZXqA==
+X-Forwarded-Encrypted: i=1; AL+hErG/kvOgBa/tZ2NXzIiIbtYazRR6e4HoTbxukPpVsm9Sv7SnnzhCuw5/k9Hh2iq2kDju+LY=@lists.linux.dev
+X-Gm-Message-State: APuU4Z9pANfhUx0H1bUvN3NaEg1MxWBZWu38fKer72j3b/ZcjhtygsQb
+	MyYm5c6DGmk69ho+3S3/BEzHKAFmsp4Oqz5flqboPauBZHivGgHGXv1z
+X-Gm-Gg: AYBFou3M11rnRI8mbaJq7MaxZdo8hFi00vRZ8GADFW+Xb6yPBtl8fSySVYje+xUa4RT
+	DE+J/UQR4LrshUsh/CSmKxGUZUQ041NARCXKIo4CwxJPlamNneZ6Bc22PV8hXDjpPsXIZHDxLpz
+	mzuSakUHxBHEhDC/9xjFY18Wn/yQmB6eV5ueeAPjinQWp6VdW9xvOHwApUCRgEsPdk8tvNMmO89
+	kDt4a7mF15ZreU4BM1kin6cm1Xkt1ByRfRnPG0UiwD62G6r5uOapaASObSJt2zyW1Q8sCO+sjDq
+	J5eP64YZx4/Hvi6zy5SFijmrOS7Cl7qA5gm2CA+YViC6FzfO8wnDuT+PxwQ7kJvCqZjxpA372rB
+	M/ApSsPgSFdkY5O81fnRtj5opxZdT3rwyo1wkIOAWKbn0Yc3rJa+KiJeJh828Bz9949nrSWeH6k
+	34YUWFVAU2c8JEXWhO93GfX2VCvL/ncr2WynSs6CwQSWoCRsslupymeQGGVcZaKyhLwuRJifO2d
+	u/+JlqkqDBq0cDX2lCM8jNUrMeXuwsEVhLoMRT5De2bPTB4BKK6i6Eftda9RdKyJId8SQkvNL/d
+	cdLN2g57fjystT81Rmhvcx2/6UJxYe+NmLpqG14wp+nNIyvAl8JZAUTM1rv+6PI=
+X-Received: by 2002:a05:600c:1c0c:b0:49f:ce78:3562 with SMTP id 5b1f17b1804b1-4b963c69d23mr19923505e9.19.1794130587155;
+        Sun, 08 Nov 2026 01:36:27 -0800 (PST)
+Received: from debian (ip-78-137-176-146.broadband.digiweb.ie. [78.137.176.146])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b7e6eca30asm141650355e9.7.2026.11.08.01.36.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 08 Nov 2026 01:36:26 -0800 (PST)
+From: Pablo Mazzini <pmazzini@gmail.com>
+To: Mark Brown <broonie@kernel.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Lee Jones <lee@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Pablo Mazzini <pmazzini@gmail.com>,
+	Alistair Francis <alistair@alistair23.me>,
+	Andreas Kemnade <andreas@kemnade.info>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	linux-hwmon@vger.kernel.org,
+	mfd@lists.linux.dev,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3 0/5] sy7636a: power the panel only during updates
+Date: Sun,  8 Nov 2026 09:35:57 +0000
+Message-ID: <20261108093602.329554-1-pmazzini@gmail.com>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -78,247 +106,62 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
-Mime-Version: 1.0
-References: <20261108060016.2131509-1-almasrymina@google.com>
-X-Mailer: git-send-email 2.56.0.455.g6c5a503b38-goog
-Message-ID: <20261108060016.2131509-4-almasrymina@google.com>
-Subject: [PATCH net-next v2 3/5] tcp: detach page_pool pages before mapping in tcp_zerocopy_receive()
-From: Mina Almasry <almasrymina@google.com>
-To: netdev@vger.kernel.org
-Cc: Mina Almasry <almasrymina@google.com>, Jesper Dangaard Brouer <hawk@kernel.org>, 
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Neal Cardwell <ncardwell@google.com>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, Pavel Begunkov <asml.silence@gmail.com>, 
-	Bobby Eshleman <bobbyeshleman@meta.com>, Stanislav Fomichev <sdf@fomichev.me>, linux-kernel@vger.kernel.org, 
-	Steffen Klassert <steffen.klassert@secunet.com>, Herbert Xu <herbert@gondor.apana.org.au>, 
-	Willem de Bruijn <willemb@google.com>, John Fastabend <john.fastabend@gmail.com>, 
-	Sabrina Dubroca <sd@queasysnail.net>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>, 
-	"=?UTF-8?q?Eugenio=20P=C3=A9rez?=" <eperezma@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Johannes Berg <johannes@sipsolutions.net>, Byungchul Park <byungchul@sk.com>, Zi Yan <ziy@nvidia.com>, 
-	virtualization@lists.linux.dev, linux-mm@kvack.org, bpf@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, 
-	Lorenzo Bianconi <lorenzo@kernel.org>, Wen Gu <guwen@linux.alibaba.com>, 
-	Philo Lu <lulie@linux.alibaba.com>, Justin Chen <justin.chen@broadcom.com>, 
-	Florian Fainelli <florian.fainelli@broadcom.com>, Vikas Gupta <vikas.gupta@broadcom.com>, 
-	Michael Chan <michael.chan@broadcom.com>, Pavan Chebbi <pavan.chebbi@broadcom.com>, 
-	Doug Berger <opendmb@gmail.com>, Nicolai Buchwitz <nb@tipi-net.de>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Satish Kharat <satishkh@cisco.com>, 
-	Wei Fang <wei.fang@nxp.com>, Frank Li <frank.li@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, 
-	Joshua Washington <joshwash@google.com>, Harshitha Ramamurthy <hramamurthy@google.com>, 
-	Jijie Shao <shaojijie@huawei.com>, Jian Shen <shenjian15@huawei.com>, 
-	Fan Gong <gongfan1@huawei.com>, Tony Nguyen <anthony.l.nguyen@intel.com>, 
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>, Marcin Wojtas <marcin.s.wojtas@gmail.com>, 
-	Russell King <linux@armlinux.org.uk>, Sunil Goutham <sgoutham@marvell.com>, 
-	Geetha sowjanya <gakula@marvell.com>, Ratheesh Kannoth <rkannoth@marvell.com>, 
-	Subbaraya Sundeep <sbhatta@marvell.com>, Bharat Bhushan <bbhushan2@marvell.com>, 
-	Felix Fietkau <nbd@nbd.name>, Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Tariq Toukan <tariqt@nvidia.com>, 
-	Saeed Mahameed <saeedm@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, Leon Romanovsky <leon@kernel.org>, 
-	Ido Schimmel <idosch@nvidia.com>, Petr Machata <petrm@nvidia.com>, 
-	Horatiu Vultur <horatiu.vultur@microchip.com>, UNGLinuxDriver@microchip.com, 
-	Daniel Machon <daniel.machon@microchip.com>, Steen Hegelund <Steen.Hegelund@microchip.com>, 
-	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
-	Dexuan Cui <decui@microsoft.com>, Yibo Dong <dong100@mucse.com>, 
-	Brett Creeley <brett.creeley@amd.com>, Justin Lai <justinlai0215@realtek.com>, 
-	Larry Chiu <larry.chiu@realtek.com>, 
-	"=?UTF-8?q?Niklas=20S=C3=B6derlund?=" <niklas.soderlund@ragnatech.se>, Paul Barker <paul@pbarker.dev>, 
-	Masahisa Kojima <kojima.masahisa@socionext.com>, 
-	Maxime Chevallier <maxime.chevallier@bootlin.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
-	Siddharth Vadapalli <s-vadapalli@ti.com>, Roger Quadros <rogerq@kernel.org>, 
-	MD Danish Anwar <danishanwar@ti.com>, Jiawen Wu <jiawenwu@trustnetic.com>, 
-	Mengyuan Lou <mengyuanlou@net-swift.com>, Ronak Doshi <ronak.doshi@broadcom.com>, 
-	Ryder Lee <ryder.lee@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>, 
-	Sean Wang <sean.wang@mediatek.com>, Juergen Gross <jgross@suse.com>, 
-	Stefano Stabellini <sstabellini@kernel.org>, 
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, Jordan Rhee <jordanrhee@google.com>, 
-	Ankit Garg <nktgrg@google.com>, Tim Hostetler <thostet@google.com>, 
-	Eric Joyner <eric.joyner@amd.com>, Prabu Thayalan <prabu.ponrajthayalan@amd.com>, 
-	"Nikhil P. Rao" <nikhil.rao@amd.com>, Chintan Vankar <c-vankar@ti.com>, 
-	Nora Schiffer <nora.schiffer@ew.tq-group.com>, Alexander Sverdlin <alex@sverdlin.org>, 
-	Kevin Hao <haokexin@gmail.com>, Karl Mehltretter <kmehltretter@gmail.com>, 
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>, Meghana Malladi <m-malladi@ti.com>, 
-	Jacob Keller <jacob.e.keller@intel.com>, StanleyYP Wang <StanleyYP.Wang@mediatek.com>, 
-	linux-doc@vger.kernel.org, imx@lists.linux.dev, linux-rdma@vger.kernel.org, 
-	linux-hyperv@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
-	linux-omap@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Once tcp_zerocopy_receive() maps an order-0 RX fragment page into a
-userspace VMA via vm_insert_pages(), vm_insert_pages() increments
-page->_refcount, which prevents the page from being recycled back into
-its page_pool when the RX SKB is freed. However, while the RX SKB still
-holds its fragment reference, the page remains marked as a page_pool
-page (page_pool_page_is_pp(page) == true) inside the userspace VMA, so
-subsequent GUP callers such as sendmsg(MSG_ZEROCOPY) or vmsplice() can
-encounter a page_pool page while holding only a raw struct page
-reference.
+The SY7636A hwmon driver keeps VCOM on from probe, so a display driver
+can not power the panel only during updates.
 
-Establish the invariant that pp_ref_count is only incremented by callers
-that already hold an active pp_ref_count (>= 1) on that netmem, and a
-raw page_ref_count is never converted into a pp_ref_count:
-- In can_map_frag(), require !skb_cloned(skb), page_pool_ref_count == 1,
-  and page_ref_count == 1 for page_pool pages so the fragment being
-  mapped holds the sole reference to the page; cloned SKBs or page_pool
-  pages with additional references (including drivers holding an
-  undrained fragment bias) fall back to copying.
-- In tcp_zerocopy_receive(), convert the fragment's sole pp_ref_count
-  into a regular page reference and detach the page from its page_pool
-  via get_page(page) + napi_pp_put_page(page_to_netmem(page)) before
-  queueing the page for vm_insert_pages(). If vm_insert_pages()
-  subsequently fails, the detached page remains referenced by the RX SKB
-  via its regular page reference and is freed back to the page allocator
-  when the SKB is consumed.
+Read the temperature only while the rails are on instead, and bind the
+regulator to the I2C device directly, with the hwmon driver as its
+auxiliary driver.
 
-Signed-off-by: Mina Almasry <almasrymina@google.com>
----
- include/net/page_pool/helpers.h |  5 ++++
- net/core/datagram.c             |  2 ++
- net/ipv4/tcp.c                  | 44 ++++++++++++++++++++++++++++-----
- 3 files changed, 45 insertions(+), 6 deletions(-)
+v2 patches 1-3 are in regulator for-7.5, so this is based on it.
+Patch 3 touches the regulator, hwmon and MFD drivers and removes the
+MFD header, so the series should go through the regulator tree, with
+acks from Guenter and Lee.
 
-diff --git a/include/net/page_pool/helpers.h b/include/net/page_pool/helpers.h
-index 28635ce9454e8..c814ce95282eb 100644
---- a/include/net/page_pool/helpers.h
-+++ b/include/net/page_pool/helpers.h
-@@ -242,6 +242,11 @@ page_pool_get_dma_dir(const struct page_pool *pool)
- 	return pool->p.dma_dir;
- }
- 
-+static inline long page_pool_ref_count(netmem_ref netmem)
-+{
-+	return atomic_long_read(netmem_get_pp_ref_count_ref(netmem));
-+}
-+
- static inline void page_pool_fragment_netmem(netmem_ref netmem, long nr)
- {
- 	atomic_long_set(netmem_get_pp_ref_count_ref(netmem), nr);
-diff --git a/net/core/datagram.c b/net/core/datagram.c
-index ecc30a6f83023..808eda4f7efb5 100644
---- a/net/core/datagram.c
-+++ b/net/core/datagram.c
-@@ -34,6 +34,7 @@
-  *
-  */
- 
-+#include <kunit/visibility.h>
- #include <linux/module.h>
- #include <linux/types.h>
- #include <linux/kernel.h>
-@@ -702,6 +703,7 @@ int zerocopy_fill_skb_from_iter(struct sk_buff *skb,
- 	}
- 	return 0;
- }
-+EXPORT_SYMBOL_IF_KUNIT(zerocopy_fill_skb_from_iter);
- 
- static int
- zerocopy_fill_skb_from_devmem(struct sk_buff *skb, struct iov_iter *from,
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index b9de7c302ba83..a984e7e93e4c9 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -286,6 +286,7 @@
- #include <asm/ioctls.h>
- #include <net/busy_poll.h>
- #include <net/hotdata.h>
-+#include <net/page_pool/helpers.h>
- #include <trace/events/tcp.h>
- #include <net/rps.h>
- 
-@@ -1921,7 +1922,7 @@ static skb_frag_t *skb_advance_to_frag(struct sk_buff *skb, u32 offset_skb,
- 	return frag;
- }
- 
--static bool can_map_frag(const skb_frag_t *frag)
-+static bool can_map_frag(const struct sk_buff *skb, const skb_frag_t *frag)
- {
- 	struct page *page;
- 
-@@ -1935,18 +1936,32 @@ static bool can_map_frag(const skb_frag_t *frag)
- 	if (PageCompound(page) || page->mapping)
- 		return false;
- 
-+	/* Before mapping a page_pool page into userspace,
-+	 * tcp_zerocopy_receive() converts this fragment's pp_ref_count into a
-+	 * regular page reference and detaches the page from its page_pool via
-+	 * napi_pp_put_page(). Require this skb_frag_t to hold the sole
-+	 * reference to the page so no other fragment or SKB clone expects
-+	 * pp_ref_count on it after detachment.
-+	 */
-+	if (page_pool_page_is_pp(page) &&
-+	    (skb_cloned(skb) ||
-+	     page_pool_ref_count(page_to_netmem(page)) != 1 ||
-+	     page_ref_count(page) != 1))
-+		return false;
-+
- 	return true;
- }
- 
--static int find_next_mappable_frag(const skb_frag_t *frag,
-+static int find_next_mappable_frag(const struct sk_buff *skb,
-+				   const skb_frag_t *frag,
- 				   int remaining_in_skb)
- {
- 	int offset = 0;
- 
--	if (likely(can_map_frag(frag)))
-+	if (likely(can_map_frag(skb, frag)))
- 		return 0;
- 
--	while (offset < remaining_in_skb && !can_map_frag(frag)) {
-+	while (offset < remaining_in_skb && !can_map_frag(skb, frag)) {
- 		offset += skb_frag_size(frag);
- 		++frag;
- 	}
-@@ -1986,7 +2001,8 @@ static void tcp_zerocopy_set_hint_for_skb(struct sock *sk,
- 	 * mappable_offset: Bytes till next mappable frag, *not* counting bytes
- 	 * in partial_frag_remainder.
- 	 */
--	mappable_offset = find_next_mappable_frag(frag, zc->recv_skip_hint);
-+	mappable_offset = find_next_mappable_frag(skb, frag,
-+						  zc->recv_skip_hint);
- 	zc->recv_skip_hint = mappable_offset + partial_frag_remainder;
- }
- 
-@@ -2290,7 +2306,7 @@ static int tcp_zerocopy_receive(struct sock *sk,
- 				break;
- 		}
- 
--		mappable_offset = find_next_mappable_frag(frags,
-+		mappable_offset = find_next_mappable_frag(skb, frags,
- 							  zc->recv_skip_hint);
- 		if (mappable_offset) {
- 			zc->recv_skip_hint = mappable_offset;
-@@ -2300,6 +2316,22 @@ static int tcp_zerocopy_receive(struct sock *sk,
- 		if (WARN_ON_ONCE(!page))
- 			break;
- 
-+		/* Convert this fragment's sole pp_ref_count into a regular
-+		 * page reference and detach the page from its page_pool before
-+		 * mapping it into userspace. Once vm_insert_pages() elevates
-+		 * page_ref_count the page cannot be recycled into the
-+		 * page_pool anyway (and if vm_insert_pages() fails, the
-+		 * detached page is freed to the page allocator when the skb is
-+		 * consumed); detaching it up front ensures that a page_pool
-+		 * page is never mapped into a userspace VMA (where GUP callers
-+		 * such as MSG_ZEROCOPY or vmsplice() would otherwise observe a
-+		 * page_pool page while holding only a raw page_ref_count).
-+		 */
-+		if (page_pool_page_is_pp(page)) {
-+			get_page(page);
-+			napi_pp_put_page(page_to_netmem(page));
-+		}
-+
- 		prefetchw(page);
- 		pages[pages_to_map++] = page;
- 		length += PAGE_SIZE;
+Tested on a PocketBook Verse (B288).
+
+v3:
+- drop the applied patches 1-3
+- new patch 1: no wait when power good is already high (Mark)
+- move the I2C binding before the hwmon read change, so the hwmon driver
+  only probes once vin is on (Andreas)
+- patch 4: explain in a comment why power good gates the read, and its
+  limitation (Guenter, Andreas)
+
+v2:
+- drop the DT patch keeping VCOM always-on (Andreas)
+- only wait for power good, VCOM_EN stays as it was (Andreas)
+- new patch: fix negative temperatures
+- keep the temperature in drivers/hwmon as an auxiliary driver of the
+  regulator, instead of moving it into the regulator driver (Guenter,
+  Andreas)
+- no VCOM enable at probe, which also removes the probe race
+- read power good and the temperature in one transfer (Andreas)
+
+Pablo Mazzini (5):
+
+  regulator: sy7636a: don't wait for power good if already on
+  hwmon: sy7636a: fix negative temperatures
+  regulator: sy7636a: bind to the I2C device directly
+  hwmon: sy7636a: read the temperature only while the rails are on
+  ARM: imx_v6_v7_defconfig: drop the SY7636A MFD option
+
+ arch/arm/configs/imx_v6_v7_defconfig  |  1 -
+ drivers/hwmon/Kconfig                 |  2 +-
+ drivers/hwmon/sy7636a-hwmon.c         | 66 ++++++++++++--------
+ drivers/mfd/Kconfig                   | 10 ---
+ drivers/mfd/simple-mfd-i2c.c          | 11 ----
+ drivers/regulator/Kconfig             |  4 +-
+ drivers/regulator/sy7636a-regulator.c | 90 ++++++++++++++++-----------
+ include/linux/mfd/sy7636a.h           | 34 ----------
+ 8 files changed, 99 insertions(+), 119 deletions(-)
+ delete mode 100644 include/linux/mfd/sy7636a.h
+
+
+base-commit: 2a1984b30e9cfcb306a076cb4b9e68d71daeb45c
 -- 
-2.56.0.455.g6c5a503b38-goog
+2.52.0
 
