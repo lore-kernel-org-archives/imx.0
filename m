@@ -1,55 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=80.86.107.70
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794169498;
-	b=zDJ76yQETpmE9fYVYqXlZyQpfslPVi+Czls9K7BDHrxUnV47UBvnxIvZtFp1Z/IRg3Fl
-	 nUx64OAu1RZXJO2ss9WeplXPPXbaaxwMqcyM7GNPUFGb1htT/FImhSS2FWP8+C5sWubp1
-	 RZocAEta5ZNiZCXcfM2Bf7AWk9svE3CXNveVAsd6lSj5lABlN0k/HvPa9AQ2taB9Gc/6m
-	 g/YTM0Yhc+wSi49Dn5uLF0rkXgzAdVacviPF5P1RULTdGF3o10VDn5NrS6p/Ikrf+6euX
-	 x52NOA/S9r2yo2j1bxHtI8IwnDkQPLB0rSKI4zbuZ/ezVN5SD9wfQ1t6iJiEluI33lA==
+	t=1794169816;
+	b=hUJCTDz1rk5kDiu4ZDAb015qYPYl8JIlsOuAXhREXm/YKy5oPlyAeCfAwfL/50afvv2m
+	 GwRWmgbhQHgwJ9sjSa3oAkvetU0sQS53fm99qiGKgpHPjiUxgUExRVScaE6dQb0qMxQN2
+	 AWur3vzSguwplEzHHY0+NtDlQsZYLo3bSLD+bM1YCeTx0MoLIucaozKPnMCHkVhE9YPVF
+	 dRacxbuD10rdZYdHQVJGkdAl3iy7NL/TciDUrcDBuwQS0yxCMXzpidCDiLqZn/Xxi8eG7
+	 6XNsy6CPPJ3oIzQYiKkpxNDJs21Vs7phMVwTqwUWqc+G3Ve+9JFCFyCWWXybte1f6Mg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794169498;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794169816;
 	h=DMARC-Filter:Received:DKIM-Filter:DKIM-Signature:Message-ID:Subject:
 	 From:To:Cc:Date:In-Reply-To:References:Content-Type:
 	 Content-Transfer-Encoding:User-Agent:MIME-Version;
-	bh=R3v5E6SNCq7UvDHGsaVgQX7pHBfqmsknhHYIo4WDvV0=;
-	b=A9dFC7HQgef023lJSVCLxGfSNSMc9rfzrfNjFy6q/+VoevC+iOFkCV7Tx6xOUes+9mo9
-	 K10lgbDzxEWtK5s6wYrMxYC/yIbm/BPO7aq15yt6CCUcByGZVIG5yv8EAWOOOtuqpv5ze
-	 dwicVsUAw/rfQGf+OzUmjMvokZzApNsUb3mi0BMvp33VIz69ji9GIMl9nNThBCLqw9ZBG
-	 BdPT77CAfZCt13a478ywEkUaEtQsLYuRhmxEl1AnNLSxoyQBtL5WCCmuhiwObF3pjFlHw
-	 VA09liSv/ilfLKUVzxNgYHg+qg/EZ7H3d6uEkr62yWJuPyjg0XvWVaslilBCQ+tGaug==
+	bh=CLg0dkhkAHqwvH4NqaW3nQ9pKyM6DLsfJFXhxQWDQ00=;
+	b=18QRfh3aKmleUcrhn3cC0/uXYLFr4M9KiMudODzZSDM23L0CsciR1UExj3UOaZMazoOZ
+	 4bbFm5SGhp2ydqpj1lINL1E6bZM+lmoTVsEbeoSCcOPh/An45AG0ZSO49WfDsQd0BfijZ
+	 to5lqpeoMiZzqJHKmWT22ge9sO1CVCQlRVtmWHnWU+/EwiJJS8SdQWNcgrOxWRIvXRGhv
+	 br5xUWYUKy7ggg1k+EG2oFaOzHP4sjSed2uZH3lKr7TSNK8TI99xwqtQIVesrObEvk3Ui
+	 ykTfpgQTDdf+0YY+v+8jJB9LgNc3CAIN5CIHu6EKimbfpEgYWEte4u7E20vIaMF0a+A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=rendec.net;
 	spf=pass smtp.mailfrom=rendec.net;
-	dkim=pass header.d=rendec.net header.i=@rendec.net header.a=rsa-sha256 header.s=default header.b=aHzLZn9t;
+	dkim=pass header.d=rendec.net header.i=@rendec.net header.a=rsa-sha256 header.s=default header.b=i4poTfs6;
 	arc=none smtp.remote-ip=80.86.107.70
 Received: from mail.mindbit.ro (xs1.mindbit.ro [80.86.107.70])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFF9F606A9DB
-	for <imx@lists.linux.dev>; Sun,  8 Nov 2026 20:24:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DFF9F606A9DB
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 563E3606D80F
+	for <imx@lists.linux.dev>; Sun,  8 Nov 2026 20:30:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 563E3606D80F
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=rendec.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rendec.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rendec.net header.i=@rendec.net header.a=rsa-sha256 header.s=default header.b=aHzLZn9t
+	dkim=pass (2048-bit key) header.d=rendec.net header.i=@rendec.net header.a=rsa-sha256 header.s=default header.b=i4poTfs6
 Received: from dog.kanata.rendec.net (pool-174-112-193-187.cpe.net.cable.rogers.com [174.112.193.187])
-	by mail.mindbit.ro (Postfix) with ESMTPSA id 45131D4223;
-	Sun,  8 Nov 2026 22:24:45 +0200 (EET)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.mindbit.ro 45131D4223
+	by mail.mindbit.ro (Postfix) with ESMTPSA id 39EDFD4223;
+	Sun,  8 Nov 2026 22:30:11 +0200 (EET)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.mindbit.ro 39EDFD4223
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rendec.net;
-	s=default; t=1794169487;
-	bh=R3v5E6SNCq7UvDHGsaVgQX7pHBfqmsknhHYIo4WDvV0=;
+	s=default; t=1794169813;
+	bh=CLg0dkhkAHqwvH4NqaW3nQ9pKyM6DLsfJFXhxQWDQ00=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=aHzLZn9tkRvOVkfpnsUMQMHZiAQWh3Gzqp4ZTW8AszPuqSZvBpI0Wt/XRSEP6uq9l
-	 rehiNqgcnUGn6vf7uYXo70S+xjC+Kg3v42oYibC+BxZYcuJ8kJyVe0qXewWwRvbo6B
-	 g+uFZ5xMFpGDnuEF3aSewpeiRs5hsMHqS3fYLYCK7OalyRJcendJtETrh8nMznB+JF
-	 EntSpYa1g6snYfARIJYyWr3DdjcW9KaKMNDgG/eN79QbO1u1Jj3hzcRhMwdDxZlLKz
-	 zHoSOLZlxPgKQq39eBkpMq4AYkmL1b0NQkNJ0TO8iWcv0JmZUdrAd4BhWsAmWCQnIr
-	 9DVViC10ITaCA==
-Message-ID: <0df179e374de91aa3e671f0fe66b45bca716e095.camel@rendec.net>
-Subject: Re: [PATCH v7 08/10] irqchip/imx-irqsteer: Dispose of child IRQ
- mappings in remove()
+	b=i4poTfs6sLriei2b8QRGHlw6KjyTG6NLgwR+p3tAfmpwrNOONvb8J77ZkXxCA8CL3
+	 sYO03+q9Hfzuaklw4QWATFZIvjr3StGH5Q50CzVOxzMFbF0jO25m27QiCyuq5QTiIo
+	 DqnkQrOGyVI1Bh0WsAi9HAeCarhrfENIHg+m9apQdrXKKbA7pl5nkE23uIBulrv2lA
+	 M0XEpsFyWZgq+lAOtg0C7elFUGWh0nYDdws+3END/2OoNC/BZiN+1OQIA2qLVKFMxW
+	 SK25IMV8g6j2S6yZAWzU2V7ckPD/GigjTvfcIwYUU3nav3gxA33A7iWEKuRj9KId9k
+	 ChTKFNl9KelFw==
+Message-ID: <912bdd213166ff7d6c24580896b92bb0a3edea78.camel@rendec.net>
+Subject: Re: [PATCH v7 10/10] irqchip/imx-irqsteer: Use
+ devm_irq_domain_create_linear()
 From: Radu Rendec <radu@rendec.net>
 To: Zhipeng.wang_1@oss.nxp.com, Thomas Gleixner <tglx@kernel.org>, Marc
  Zyngier	 <maz@kernel.org>, Frank Li <Frank.Li@nxp.com>
@@ -58,10 +58,10 @@ Cc: Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
  <festevam@nabladev.com>, Jindong Yue <jindong.yue@nxp.com>,
  xuegang.liu@nxp.com, 	linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
 	linux-arm-kernel@lists.infradead.org
-Date: Sun, 08 Nov 2026 15:24:43 -0500
-In-Reply-To: <20261104073759.386777-9-Zhipeng.wang_1@oss.nxp.com>
+Date: Sun, 08 Nov 2026 15:30:09 -0500
+In-Reply-To: <20261104073759.386777-11-Zhipeng.wang_1@oss.nxp.com>
 References: <20261104073759.386777-1-Zhipeng.wang_1@oss.nxp.com>
-	 <20261104073759.386777-9-Zhipeng.wang_1@oss.nxp.com>
+	 <20261104073759.386777-11-Zhipeng.wang_1@oss.nxp.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.58.3 (3.58.3-2.fc43) 
@@ -78,49 +78,46 @@ MIME-Version: 1.0
 On Wed, 2026-11-04 at 16:37 +0900, Zhipeng.wang_1@oss.nxp.com wrote:
 > From: Zhipeng Wang <zhipeng.wang_1@nxp.com>
 >=20
-> Once the driver can be unloaded, the IRQ domain mappings handed out to
-> downstream consumers must be released on remove(), otherwise:
->=20
-> =C2=A0- a parent interrupt racing with the teardown can run the chained
-> =C2=A0=C2=A0 handler while irqsteer_data is freed (no synchronize_irq());
-> =C2=A0- downstream irq_descs keep dangling chip pointers into the unloade=
-d
-> =C2=A0=C2=A0 module.
->=20
-> Dispose of every child hwirq mapping in remove(). irq_dispose_mapping()
-> calls irq_domain_disassociate(), which runs synchronize_irq() and frees
-> the descriptor, closing both races.
+> Replace irq_domain_create_linear() with the new
+> devm_irq_domain_create_linear() helper, so the IRQ domain is released
+> automatically on unbind and remove() no longer has to call
+> irq_domain_remove(). No functional change.
 >=20
 > Signed-off-by: Zhipeng Wang <zhipeng.wang_1@nxp.com>
 > ---
-> =C2=A0drivers/irqchip/irq-imx-irqsteer.c | 4 ++++
-> =C2=A01 file changed, 4 insertions(+)
+> =C2=A0drivers/irqchip/irq-imx-irqsteer.c | 7 +++----
+> =C2=A01 file changed, 3 insertions(+), 4 deletions(-)
 >=20
 > diff --git a/drivers/irqchip/irq-imx-irqsteer.c b/drivers/irqchip/irq-imx=
 -irqsteer.c
-> index a14a8b80d60e..d15b806b278c 100644
+> index d15b806b278c..da6e8d1bbec1 100644
 > --- a/drivers/irqchip/irq-imx-irqsteer.c
 > +++ b/drivers/irqchip/irq-imx-irqsteer.c
-> @@ -272,6 +272,7 @@ static int imx_irqsteer_probe(struct platform_device =
+> @@ -248,8 +248,9 @@ static int imx_irqsteer_probe(struct platform_device =
 *pdev)
-> =C2=A0static void imx_irqsteer_remove(struct platform_device *pdev)
-> =C2=A0{
-> =C2=A0	struct irqsteer_data *irqsteer_data =3D platform_get_drvdata(pdev)=
-;
-> +	unsigned int hwirq;
-> =C2=A0	int i, ret;
+> =C2=A0	if (ret)
+> =C2=A0		return ret;
 > =C2=A0
-> =C2=A0	/*
-> @@ -294,6 +295,9 @@ static void imx_irqsteer_remove(struct platform_devic=
+> -	data->domain =3D irq_domain_create_linear(dev_fwnode(&pdev->dev), data-=
+>reg_num * 32,
+> -						&imx_irqsteer_domain_ops, data);
+> +	data->domain =3D devm_irq_domain_create_linear(&pdev->dev, dev_fwnode(&=
+pdev->dev),
+> +						=C2=A0=C2=A0=C2=A0=C2=A0 data->reg_num * 32,
+> +						=C2=A0=C2=A0=C2=A0=C2=A0 &imx_irqsteer_domain_ops, data);
+> =C2=A0	if (!data->domain) {
+> =C2=A0		dev_err(&pdev->dev, "failed to create IRQ domain\n");
+> =C2=A0		return -ENOMEM;
+> @@ -298,8 +299,6 @@ static void imx_irqsteer_remove(struct platform_devic=
 e *pdev)
-> =C2=A0		irq_dispose_mapping(irqsteer_data->irq[i]);
-> =C2=A0	}
+> =C2=A0	for (hwirq =3D 0; hwirq < irqsteer_data->reg_num * 32; hwirq++)
+> =C2=A0		irq_dispose_mapping(irq_find_mapping(irqsteer_data->domain, hwirq=
+));
 > =C2=A0
-> +	for (hwirq =3D 0; hwirq < irqsteer_data->reg_num * 32; hwirq++)
-> +		irq_dispose_mapping(irq_find_mapping(irqsteer_data->domain, hwirq));
-> +
-> =C2=A0	irq_domain_remove(irqsteer_data->domain);
-> =C2=A0
+> -	irq_domain_remove(irqsteer_data->domain);
+> -
 > =C2=A0	if (ret >=3D 0)
+> =C2=A0		pm_runtime_put_noidle(&pdev->dev);
+> =C2=A0}
 
 Reviewed-by: Radu Rendec <radu@rendec.net>
