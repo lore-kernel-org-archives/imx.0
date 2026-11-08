@@ -1,59 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794091516;
-	b=a3nwMfthz2P3h4MzZPmpokwTOD2zd3ruwrSE+5ZdIqKVTO1ve8UUDDdpzCAx8Pd1ngTa
-	 luJUDAepG2NsuMmEIAvMnIxQKVNaTIluC2VaPf/xdw+whwfzmxOt8Px9hk76nrveOhs5H
-	 Ruswk8YGFouKJoN2iRuQFh1psnsNyvatJoo1Qi5Sop9FhBzCNEHxTpNWmJETkOzpPap3q
-	 jUFdVwWtsJg0iMQcnLMtHc9KVMcNITGQ83luqvAL+T0V1qsz3G65OSPxcUhStntQx91YS
-	 BO/GLBszy53stfjhftnF02lsQ/2aXyqU7jZXx/qlBkEWG7RWYm9Gx+afnhafC/f3mIA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794091516;
-	h=Received:DKIM-Signature:From:To:Cc:In-Reply-To:References:Subject:
-	 Message-Id:Date:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 X-Mailer;
-	bh=5Sg/QYc64KGsYlE8LxgBfqmE1GMl4mLlfKRfIL2XKbk=;
-	b=TzMR85idSYNhM+wSMS7heG0h7qka7SxG38xRH6d6/UjOSzbSww1Nv4T7Bi9ypEfFgdQ1
-	 lzTF/JKlQam4Pg26dYvgceXva1QtvSbdDi9iyirpcg7giRoPZW6QSuhZ9YGhPKB9etHEU
-	 l7J84djR+n/C+92d4BJtfWNeOU9x+nu6ILYFLaLtkMpViKc5sQYz081iNQ3M4XWol42NB
-	 auvF/oAXPSHi0dHtkcywKC3F/3cX74UGZg/2YxmHqYx+VBE74btsWLZOMjqRYi1go9wk5
-	 pdYbbuqL8ILPTfIok+oxuRJMc7aZjUqujwhMR4FtMJ76O8k6BGX5OtrtzHHCBnCXyjg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WnnaW6MP;
-	arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794114973;
+	b=VEEugvMYahaHO70h4cv3jnziT8ktyN4FDogYOL4BNNGFohRM1Ixd2KadxnGDpW+i/Fk2
+	 59XsorgC4c+1DoO47fF9GXmdh1kHcvKwDy0r9/C6cm2ajB5c/IXd3vgv+rSNKdIxIjYg6
+	 DhEu/Ps8hrZbj1bm577cQd6N/hRG6nWmevBN87lgmROFUPuPJ7WEglejZc7ARCTg07wFB
+	 +DA3n45+4QOf+exDFMk3mvAlZCJJ615O2ae0dDJcsXX1PORfzG1EpNI7VzMhl84MM2kU8
+	 3JGKCZ3dmEKFR5YIlIy5uTEeaO9dRC8TZ/M2LjSL9d8nUurnoLuGns+5fQ5NfrIhc4g==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794114973;
+	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:Message-Id:X-B4-Tracking:
+	 X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
+	 X-Endpoint-Received:X-Original-From:Reply-To;
+	bh=GaJ0kJ7iGwr4NJdNnl3p/qA/RRPtTceFFlBooGp8kRY=;
+	b=Xz66yJtOiQzCVYhtxVebiFtauBHgWpqjJGKa9UBOEQpo0cceuE0+VLNWaxHTvoHmMC2p
+	 +1RL7lOwjx7Jzs0AO58FMxp/fmZ+OJWrdYZJO2GOMTv79wp+0YCmvDkxHMUfS6FnQFKQf
+	 +8sM5M8kXpniEYzzMXOc9XXgDE+oZszsbhGRqFdKspvW51mFJcAdF62XxsgJTsAJtLbx/
+	 giMUDUqu/OWB3QDXf1oAeI0aJqeyyVBp02nRWioT7hsVeiPhjV4BXvOnCbRT5FGhoYlB1
+	 ybbIJHwf5VH41xz/IJaZolq9eT/taKNcYx0roOQ941qz7FfkYvbvnx471xNOz6mqvLw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ee7vqJqb;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83E58606A32C;
-	Sat,  7 Nov 2026 22:45:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5996C606A31A;
+	Sun,  8 Nov 2026 05:16:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WnnaW6MP
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA4951F0089F;
-	Sat,  7 Nov 2026 22:45:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ee7vqJqb
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1794114972;
+	b=oL0FJ9NN6kD2oz6KZ7Te742CtBSLQavRBod0mI3N1fe0f/Duc/E62roypS2UWZQ1Vap7
+	 r7lH0bWSNTyTGWptPK3sEBNPmTzXCHsnSn82e3RvXqKZXGrp137+EGlXXnY1PUuCTAlbv
+	 UsVngdUQ+wEX4uciZcnkz+UonWYb6Tt0/HncZIwTGj2bcXtt7cQToH2aAjVlTbowk16b2
+	 jg/pCwy0GTeMD8EZwJ21ZMjWfw/MEmDAL0Pyvgni4T8mPAs+4G9VfpJ+pY0y1K2VPaZmx
+	 eTkd7QDUhKEd8RaHqBX4huFeHYG6AoO/mw6yT1qhYpkwQC2PqLg3JZRwI1V2Otg+jLg==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1794114972;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:
+	 X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To;
+	bh=GaJ0kJ7iGwr4NJdNnl3p/qA/RRPtTceFFlBooGp8kRY=;
+	b=dI08UNewVADlCq7KxMnXpkgJXsUspY8ZOuSKzIRiAO6P71L2SC8/cKMGV7jdR/R6ytUV
+	 OIfdSu6dvH+GkT8Z3WcAY0lDL7uNPj3EhMI5CooIUrA94TiIVCPwky6eDRL0mTJUDbLlJ
+	 6SbjxxAAK/qikYHSYwkUFO+CmPsYlPtTr965sqT8PEfXaMh8JsvpudaTUQCutsMOBnkmt
+	 a4x7AQG7dLpQuJnzG/0ZBv1/yLRJR9Ab287JTrNDuY7jFE/R9xcT26SBnaeKs7nLcVVsY
+	 hXAtaDKoJVhFCZVo2WPmMCpOpy80fUt//QNLlPYEE7MC/2NQ9aSEUMFnny3IZRYvJ1g==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.kernel.org (Postfix) with ESMTPS id D85BE1F0089F;
+	Sun,  8 Nov 2026 05:16:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794091516;
-	bh=5Sg/QYc64KGsYlE8LxgBfqmE1GMl4mLlfKRfIL2XKbk=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=WnnaW6MPIQMe5PP2NqlUxaetG2uBm1miygWQ2RwaFHPcW743Qpf4SaYmS2T1W61ye
-	 WtdLYYA4E71F2MSu+qlnK1gs3ILHqyGdT0fIPskWakrOfWSf75OrgTnIPXrPPbnDod
-	 RcpTsR04TFbydLjDDwd7MPCIYTKMNw0PRvfh2SaPORn7p1LhhCmIWA1+NUUJlmZax0
-	 E8mF6dwI4qrxmJn4dvjOc2AJqdOH8WXq9NMbU1SD6QAYbX5EaDHjYAttWMTX9DFOwC
-	 dipLk31/oxxl8oL8kBrRhFzBxfDn15PRVa46dzLqpqkiTQAsjbCkyMrtEWMXA1h5cP
-	 2SIHlV9PuGYRA==
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: bhelgaas@google.com, lpieralisi@kernel.org, kwilczynski@kernel.org, 
- jingoohan1@gmail.com, Hans Zhang <18255117159@163.com>
-Cc: imx@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
- linux-amlogic@lists.infradead.org, linux-rockchip@lists.infradead.org, 
- linux-arm-msm@vger.kernel.org, sophgo@lists.linux.dev, 
- linux-riscv@lists.infradead.org, spacemit@lists.linux.dev, 
- linux-tegra@vger.kernel.org, linux-pci@vger.kernel.org, 
- linux-kernel@vger.kernel.org
-In-Reply-To: <20261028030652.2917756-1-18255117159@163.com>
-References: <20261028030652.2917756-1-18255117159@163.com>
-Subject: Re: [PATCH v5 00/16] PCI: dwc: Cache PCIe capability offset
-Message-Id: <179409150473.143243.11323239293809371653.b4-ty@b4>
-Date: Sun, 08 Nov 2026 04:15:04 +0530
+	s=k20260515; t=1794114972;
+	bh=GaJ0kJ7iGwr4NJdNnl3p/qA/RRPtTceFFlBooGp8kRY=;
+	h=From:Date:Subject:To:Cc:Reply-To;
+	b=ee7vqJqbfoVpzwntvymbHhBetWeh4SBmLaPCjXyh4JvGWODgkrXTJmSmT8PAafYF7
+	 SRDZ6W6lAsjVFAvODwDe6cUcDx0eAZJjj7XoTzX0o8puqeUkFYBKGiYklIX1sjGIEG
+	 PcCmKcUUeYyZf64OCTxT13xtCj3d85Tpp74O/hhpsYAwFHAhW4ERWIRIDEH+U5/QqV
+	 91JRePqZJV/wO8iDMfUdbqmaZ3Vk33dVoaZnG6KRxiJRBQuGX1owO5Gfh3XPfMbuH/
+	 B7vrUW4+Aw11CkxEp74UlcC092+aJyCIJsvOdS2HrOFz6TVLui53uWB2deay4dD/SK
+	 fkBJMuwqx/n5Q==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id 539F447DF7;
+	Sun,  8 Nov 2026 05:16:11 +0000 (UTC)
+From: DelaySystem via B4 Relay <devnull+DelaySystem.tubot.lat@kernel.org>
+Date: Sat, 07 Nov 2026 21:16:11 -0800
+Subject: [PATCH] staging: media: imx: ic-prp: add FORMAT_TRY frame interval
+ support
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -64,60 +84,207 @@ List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261107-batch1-m1-prp-try-v1-1-56a08f54791b@tubot.lat>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMwQ6CMAyA4VchPdukRYTEVzEetlGlJOLSDYIhv
+ DtTj9/h/zdIYioJrtUGJosmfU8FfKogDG56CmpfDDXVLTN16F0OA+OLMVrEbB88d+ToQuKb3kP
+ poslD19/zdv87zX6UkL8j2PcDkrMvbnUAAAA=
+X-Change-ID: 20261107-batch1-m1-prp-try-370a050eb4db
+To: slongerbeam@gmail.com
+Cc: linux-kernel@vger.kernel.org, gregkh@linuxfoundation.org, 
+ vickramk.207@gmail.com, linux-staging@lists.linux.dev, 
+ linux-media@vger.kernel.org, mchehab@kernel.org, imx@lists.linux.dev, 
+ p.zabel@pengutronix.de, DelaySystem <DelaySystem@tubot.lat>
 X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5034;
+ i=DelaySystem@tubot.lat; h=from:subject:message-id;
+ bh=WVwUtRUjTKbxdRiEtnEo30aSNjX2ZGooES481TnxQgg=;
+ b=owGbwMvMwCH2SNl4+SzWXm/G02pJDFkfWGd9fOqwyWtq5BOrH5nv1DU/vb/7omYJ/+TszM3r1
+ mhZaXyX7ChlYRDjYJAVU2QRk+F5X39fJ87aas4JmDmsTCBDGLg4BWAij14yMmwO4DdmCFppdeZt
+ 3zWtkF+P/rv9OcNbaPl0Z+PTJUlKn34w/A94EjT/0BobpxkrN/Y+8Res3C9p1r7QOz2Rs/fG+YV
+ 1N5gB
+X-Developer-Key: i=DelaySystem@tubot.lat; a=openpgp;
+ fpr=161C0CEF7FDF2C5E3B3A9CC8E22333A79A058D4B
+X-Endpoint-Received: by B4 Relay for DelaySystem@tubot.lat/default with
+ auth_id=1447
+X-Original-From: DelaySystem <DelaySystem@tubot.lat>
+Reply-To: DelaySystem@tubot.lat
 
+From: Vickram Kapoor <vickramk.207@gmail.com>
 
-On Wed, 28 Oct 2026 11:06:36 +0800, Hans Zhang wrote:
-> The DWC PCIe core and its platform drivers repeatedly call
-> dw_pcie_find_capability(pci, PCI_CAP_ID_EXP) to obtain the offset of the
-> PCI Express Capability structure, including in paths that run more than
-> once such as link polling, suspend/resume and interrupt handlers.
-> 
-> Add a cached pcie_cap field to struct dw_pcie and a
-> dw_pcie_get_pcie_cap() helper that performs the lookup on first use and
-> caches the result, then convert the core and the 14 platform drivers
-> that use PCI_CAP_ID_EXP.
-> 
-> [...]
+Implement frame interval handling for V4L2_SUBDEV_FORMAT_TRY
+by storing and retrieving per-pad intervals from the subdev state.
+Also add a PRP-specific init_state callback to initialize TRY intervals
+from the active default, and move default interval initialization to
+prp_init().
 
-Applied, thanks!
+Link: https://lore.kernel.org/all/20260426002659.119625-1-vickramk.207@gmail.com/
+Signed-off-by: Vickram Kapoor <vickramk.207@gmail.com>
+Signed-off-by: DelaySystem <DelaySystem@tubot.lat>
+---
+Compile-tested only: x86_64, VIDEO_IMX_MEDIA=m via COMPILE_TEST, zero
+warnings. No i.MX hardware here for runtime testing; hardware testing
+by others is welcome.
+---
+ drivers/staging/media/imx/imx-ic-prp.c | 87 +++++++++++++++++++++++++---------
+ 1 file changed, 64 insertions(+), 23 deletions(-)
 
-[01/16] PCI: dwc: Add pcie_cap field and caching helper
-        commit: d018ff4be8961981828e75afd36eef90cc524cd8
-[02/16] PCI: dwc: Use cached PCIe capability offset in core
-        commit: f83a7b55517012496bd9539fbbdeeecf0d1e9ff9
-[03/16] PCI: dwc: imx6: Use cached PCIe capability offset
-        commit: 8472374576d300d36de20ad592fd1f39181b85a8
-[04/16] PCI: dwc: layerscape-ep: Use cached PCIe capability offset
-        commit: 87427cc9d7115088e92e8c92c282e28481c9b26b
-[05/16] PCI: dwc: meson: Use cached PCIe capability offset
-        commit: 53f9ed3d6807c6aa79944ed42b3362aa89192956
-[06/16] PCI: dwc: rockchip: Use cached PCIe capability offset
-        commit: bf5c3f4975010750c535b127cb3ab81951c7ffd0
-[07/16] PCI: dwc: eswin: Use cached PCIe capability offset
-        commit: 386b9fa49e26afbd76d934f136f68bc355791ce8
-[08/16] PCI: dwc: fu740: Use cached PCIe capability offset
-        commit: 6fba557b82f4996786d12676f554ad12e67e46d9
-[09/16] PCI: dwc: intel-gw: Use cached PCIe capability offset
-        commit: 02305ad3ad2f918ac009e8ae4c2df8c2b11dc0bc
-[10/16] PCI: dwc: qcom-ep: Use cached PCIe capability offset
-        commit: c489e1008df8a7456686ab637593582be63f14c9
-[11/16] PCI: dwc: qcom: Use cached PCIe capability offset
-        commit: 38af9eda49198b0b2e3d90324af6c5b00123d4ec
-[12/16] PCI: dwc: sophgo: Use cached PCIe capability offset
-        commit: 328c6d507696eb3b075efa6236cdc1c12a2a800c
-[13/16] PCI: dwc: spacemit-k1: Use cached PCIe capability offset
-        commit: ef2bc56f097aafdeee7fceb68d2ca9e4c6956dbf
-[14/16] PCI: dwc: spear13xx: Use cached PCIe capability offset
-        commit: ebd968f20c61b3d86165d9e1bc387044dcf73707
-[15/16] PCI: dwc: tegra194: Use cached PCIe capability offset
-        commit: 8078927bf27866ecc5251919ec6b41478ae620ac
-[16/16] PCI: dwc: ultrarisc: Use cached PCIe capability offset
-        commit: 64e2e54238dc1a63d4c8bd827d140bdffef05403
+diff --git a/drivers/staging/media/imx/imx-ic-prp.c b/drivers/staging/media/imx/imx-ic-prp.c
+index b2c648149964..3f1690d22483 100644
+--- a/drivers/staging/media/imx/imx-ic-prp.c
++++ b/drivers/staging/media/imx/imx-ic-prp.c
+@@ -87,6 +87,18 @@ __prp_get_fmt(struct prp_priv *priv, struct v4l2_subdev_state *sd_state,
+ 		return &priv->format_mbus;
+ }
+ 
++static struct v4l2_fract *
++__prp_get_frame_interval(struct prp_priv *priv,
++			 struct v4l2_subdev_state *sd_state,
++			 unsigned int pad,
++			 enum v4l2_subdev_format_whence which)
++{
++	if (which == V4L2_SUBDEV_FORMAT_TRY)
++		return v4l2_subdev_state_get_interval(sd_state, pad);
++
++	return &priv->frame_interval;
++}
++
+ /*
+  * V4L2 subdev operations.
+  */
+@@ -398,22 +410,25 @@ static int prp_get_frame_interval(struct v4l2_subdev *sd,
+ 				  struct v4l2_subdev_frame_interval *fi)
+ {
+ 	struct prp_priv *priv = sd_to_priv(sd);
+-
+-	/*
+-	 * FIXME: Implement support for V4L2_SUBDEV_FORMAT_TRY, using the V4L2
+-	 * subdev active state API.
+-	 */
+-	if (fi->which != V4L2_SUBDEV_FORMAT_ACTIVE)
+-		return -EINVAL;
++	struct v4l2_fract *interval;
++	int ret = 0;
+ 
+ 	if (fi->pad >= PRP_NUM_PADS)
+ 		return -EINVAL;
+ 
+ 	mutex_lock(&priv->lock);
+-	fi->interval = priv->frame_interval;
++	interval = __prp_get_frame_interval(priv, sd_state, fi->pad,
++					    fi->which);
++	if (!interval) {
++		ret = -EINVAL;
++		goto out;
++	}
++
++	fi->interval = *interval;
++out:
+ 	mutex_unlock(&priv->lock);
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ static int prp_set_frame_interval(struct v4l2_subdev *sd,
+@@ -421,24 +436,50 @@ static int prp_set_frame_interval(struct v4l2_subdev *sd,
+ 				  struct v4l2_subdev_frame_interval *fi)
+ {
+ 	struct prp_priv *priv = sd_to_priv(sd);
+-
+-	/*
+-	 * FIXME: Implement support for V4L2_SUBDEV_FORMAT_TRY, using the V4L2
+-	 * subdev active state API.
+-	 */
+-	if (fi->which != V4L2_SUBDEV_FORMAT_ACTIVE)
+-		return -EINVAL;
++	struct v4l2_fract *interval;
++	int ret = 0;
+ 
+ 	if (fi->pad >= PRP_NUM_PADS)
+ 		return -EINVAL;
+ 
+ 	mutex_lock(&priv->lock);
++	interval = __prp_get_frame_interval(priv, sd_state, fi->pad,
++					    fi->which);
++	if (!interval) {
++		ret = -EINVAL;
++		goto out;
++	}
+ 
+ 	/* No limits on valid frame intervals */
+ 	if (fi->interval.numerator == 0 || fi->interval.denominator == 0)
+-		fi->interval = priv->frame_interval;
++		fi->interval = *interval;
+ 	else
+-		priv->frame_interval = fi->interval;
++		*interval = fi->interval;
++out:
++	mutex_unlock(&priv->lock);
++
++	return ret;
++}
++
++static int prp_init_state(struct v4l2_subdev *sd,
++			  struct v4l2_subdev_state *sd_state)
++{
++	struct prp_priv *priv = sd_to_priv(sd);
++	struct v4l2_fract *interval;
++	unsigned int pad;
++	int ret;
++
++	ret = imx_media_init_state(sd, sd_state);
++	if (ret)
++		return ret;
++
++	mutex_lock(&priv->lock);
++
++	for (pad = 0; pad < PRP_NUM_PADS; pad++) {
++		interval = v4l2_subdev_state_get_interval(sd_state, pad);
++		if (interval)
++			*interval = priv->frame_interval;
++	}
+ 
+ 	mutex_unlock(&priv->lock);
+ 
+@@ -450,10 +491,6 @@ static int prp_registered(struct v4l2_subdev *sd)
+ 	struct prp_priv *priv = sd_to_priv(sd);
+ 	u32 code;
+ 
+-	/* init default frame interval */
+-	priv->frame_interval.numerator = 1;
+-	priv->frame_interval.denominator = 30;
+-
+ 	/* set a default mbus format  */
+ 	imx_media_enum_ipu_formats(&code, 0, PIXFMT_SEL_YUV);
+ 
+@@ -487,7 +524,7 @@ static const struct v4l2_subdev_ops prp_subdev_ops = {
+ };
+ 
+ static const struct v4l2_subdev_internal_ops prp_internal_ops = {
+-	.init_state = imx_media_init_state,
++	.init_state = prp_init_state,
+ 	.registered = prp_registered,
+ };
+ 
+@@ -504,6 +541,10 @@ static int prp_init(struct imx_ic_priv *ic_priv)
+ 	ic_priv->task_priv = priv;
+ 	priv->ic_priv = ic_priv;
+ 
++	/* init default frame interval */
++	priv->frame_interval.numerator = 1;
++	priv->frame_interval.denominator = 30;
++
+ 	for (i = 0; i < PRP_NUM_PADS; i++)
+ 		priv->pad[i].flags = (i == PRP_SINK_PAD) ?
+ 			MEDIA_PAD_FL_SINK : MEDIA_PAD_FL_SOURCE;
+
+---
+base-commit: fa4ad798f6f681031775266044ba1b0cf3c670bd
+change-id: 20261107-batch1-m1-prp-try-370a050eb4db
 
 Best regards,
--- 
-மணிவண்ணன் சதாசிவம்
+--  
+DelaySystem <DelaySystem@tubot.lat>
 
 
