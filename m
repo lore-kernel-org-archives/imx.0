@@ -1,56 +1,62 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794141452;
-	b=iRc0oC4EwCQiUgZMFiFIwoJd7VEXLo7TVQESHb3OjlrICBRuFvuAoyxnq0W9EGoBRPDV
-	 iiOB10eoLhJuPalX12TdcZyzMTRhWM4kPb1k0KotI/EyMIcAbua7h5rpxQplvA16oLwQT
-	 DvhgV/6+8nNUvKRAgumlA//7lfurT83aoAaHjPql1KsR8VOTTKRyOBkotgCZVj9hl0/wB
-	 0zhg3Ewc4tV/X4/xWYADdU2RTLPlDhQw/Scpmud63Hwx5pgaVszGJ9vAwjGLi9jaUPwog
-	 7CrfQkEYUS6ZdzrsXYUj+7eyuR/AQtEOeNe52a0Uu+PNdQy+ITSc1kKm4P0hcJhUGmg==
+	t=1794148446;
+	b=tFeUz9mef3YqpGM+XTR4tl5yVltJQoItGJmX0rVvHU/+uaRfL0hCEaG0J69cqqIAoY9p
+	 kf0ba35NP2RbcHZrY63mL9ulJpzMN3juL2bn7w3kUOh7hptmSaEKF2xW9pbXZ9Eg0vJ6d
+	 6bEqWyxxuiVjDxdN6IIFeec1lXWx75HKB9P2ZYqu8zTLkxRVnA/paSFmF40Ywql9k9Uvu
+	 83L4TPDoNZ19xz5k96w6gPS/KvYK+bRPKgMNu5pWwbfBh6rLCSz5Z6e3CK2QGV9DxeLlY
+	 bEVC+lBbOz/kuZcElyg/6I93Rj8ZXjIwG9bfLltsQ1Z0VCf22VYC7sShxWaWWBJjEJQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794141452;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=wtqhuCAhz0EmO+3zYRfVGhM8rJcwLvDnaKbqoAkLTQo=;
-	b=dem0sMcNH5Y6aJDMLxhFtiyAPv6/hpXFmJLqmCf3tnKTklcDWGAYu0XlVDo9QHVMqVj5
-	 KrdK70Bcfw3E/klSG3q3cvO03HMfs69GFXOTtMpTrd7x2IxAW+C7nfMIYtuFgOugHef3S
-	 gu9WuyOlhjRHgFPQBebkoR3VVzSN+Ye4G/VxdqiBgbIoIQ056m/pBrmKbrLfS+Mjk2AlR
-	 9IcNfZ7BTqozbeVuOlO4XUQ6PG0zANuNMgutaO8tXrbdcPyRHIGnLsKn0LzbEDhGkZLcD
-	 GC0kjokkPmvRUuwCcBMhZX1zeJMU4E0sROX2bD3dMi7bX4ZthpVOCDhBTkcUrlaElAQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794148446;
+	h=Received:DKIM-Signature:Received:From:To:Cc:In-Reply-To:References:
+	 Subject:Message-Id:Date:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:X-Mailer:X-Developer-Signature:
+	 X-Developer-Key;
+	bh=1//uqtjICj44uy7P8QVwmNqhHAj9tnbXTw/EVuTChBo=;
+	b=ZOGeoiGj33lISIBY+lf7VxQZ7+0IeMVPtBqNPY+B00XzujF7wVB/JLj+boud7IzuGJwQ
+	 yHvhwiO0ebX/0mEcH0AfL90afJYlS1BJcLKw2yzfoJW3SSoyzK5iu9krEVdL54qRbb455
+	 yynpscAwC3wz/WrcpXiITF2+FqvfSAOJLsavhoBgr6I7y9CMPq3F4xxs35peTlNNTOu9t
+	 Q8OZz07vUOfKTtf567jvt604R9xMkyWYG5cK0IdIL/uWQVG3nuDL0uwfuS0H3Of3p529m
+	 elgQ2IGQb09fHLOJUngPwH+MOCXzt/mr+9a0k1zQdDyeLpgEgOUeLjz7mxq7CsJVKKg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RHgWGgbI;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OPdw6PTY;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E52C606A31C
-	for <imx@lists.linux.dev>; Sun,  8 Nov 2026 12:37:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F7B8606A31C;
+	Sun,  8 Nov 2026 14:34:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RHgWGgbI
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5A4C1F0089F;
-	Sun,  8 Nov 2026 12:37:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OPdw6PTY
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC6071F0089F;
+	Sun,  8 Nov 2026 14:34:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794141451;
-	bh=wtqhuCAhz0EmO+3zYRfVGhM8rJcwLvDnaKbqoAkLTQo=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=RHgWGgbIdxmacCsuJgJIt5BIwjVmF+AIsRBkSW2uFI0d1Rk9KlRcnnWSqZGbS5Edm
-	 Q9yyQ4TDx/oVcjk9G1PR4ZSUH+7S8VmeO3L7/24Z3k/4WIFIztaitOqcWVXfxiKPz9
-	 wqnYx8ysxylB1tu5psbyO3Xx3K7cXxWsJjzEj/ekGLHIorUzd72Ui9DqzKeDxq7rqx
-	 2WLpxxrdg/9xh8ulndzSfeFcMkFaMNOUejEHMx3tgit8ixvZ9bkRyK28EqdEahO0vl
-	 pIShil5ShZ9EQSC24G396I8BINMLrQG2BtS21hh853CABrIQ93Zear68IHCGehw8bM
-	 05XPDx/qkmm9Q==
-Message-ID: <sashiko-outbox-203735@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] drm/mxsfb: Complete page flips only once the new buffer
- is latched
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Christian Gmeiner" <christian.gmeiner@gmail.com>
-Cc: dri-devel@lists.freedesktop.org, imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20261108-mxsfb-flip-latch-v1-1-ad816b23b646@igalia.com>
-References: <20261108-mxsfb-flip-latch-v1-1-ad816b23b646@igalia.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sun, 08 Nov 2026 12:37:30 +0000
+	s=k20260515; t=1794148446;
+	bh=1//uqtjICj44uy7P8QVwmNqhHAj9tnbXTw/EVuTChBo=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=OPdw6PTYjC/vej+V217u0ttIjMDcXqYAAyN/xnSVNFbGrzUKrAohfmnHQTHIaFnYW
+	 A81rXqrkwk+USIwXhm6DSxFNzEXSJ+nnsgQ4WWb7LbLUnWh+R8brP9MwJhXZr/VoiL
+	 E85dehNN/2m+sDjFygwRPFi2RzzUit8fHqRVlRi0ohNIT15fdFqZAB64OopONYDIFq
+	 GafPiNsCQvJBVJRwPeiATmj/AcROevTJ3yBlOIZpOJ3vW/+e1+fQsw5YGdcaOQw0wq
+	 gCw7ZmmXb+sBSe8XWE/YkAYPUldJD304Xf3BeRiacxT9MDV5QDWR7SWr4vOW2xrT6l
+	 DAn6IGdx4CM+w==
+Received: from traversing.sirena.org.uk (localhost [IPv6:::1])
+	by traversing.sirena.org.uk (Postfix) with ESMTP id E1B462C89DD1;
+	Sun, 08 Nov 2026 14:34:03 +0000 (GMT)
+From: Mark Brown <broonie@kernel.org>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+ Daniel Mack <daniel@zonque.org>, Haojian Zhuang <haojian.zhuang@gmail.com>, 
+ Robert Jarzmik <robert.jarzmik@free.fr>, linux-spi@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ Frank.Li@oss.nxp.com
+Cc: imx@lists.linux.dev, vkoul@kernel.org, Frank Li <Frank.Li@nxp.com>
+In-Reply-To: <20261103215824.1823272-1-Frank.Li@oss.nxp.com>
+References: <20261103215824.1823272-1-Frank.Li@oss.nxp.com>
+Subject: Re: [PATCH 1/1] spi: replace chan->device->dev with
+ dmaengine_get_provider_device()
+Message-Id: <179414106233.3630016.17157846219971798429.b4-ty@b4>
+Date: Sun, 08 Nov 2026 12:31:02 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -59,128 +65,47 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1156; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=TN/StEkvmSxlu5HCIHF37V2V9EC9a6Yj6ifjtAqTSRk=;
+ b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLI+dEQXNs1TObq3ademz713JpT0sTT2uEbtvKaw9ko5P
+ yNPdoBcRykLgxgXg6yYIktcFvfL+pLXa/gOLmyDmcPKBDKEgYtTACZi/Zfhv9MzjiAD//4DtY2P
+ cie9PlpsJOPzKlb3uv3Snjz78KwXbxkZpv1xEdmzmTPFxpaD577Stk12B4I/ZvflLVx2yM08/n0
+ iFwA=
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [High] drm/mxsfb: premature plane cleanup in
-  mxsfb_crtc_handle_vblank()
---
+On Tue, 03 Nov 2026 16:58:23 -0500, Frank.Li@oss.nxp.com wrote:
+> spi: replace chan->device->dev with dmaengine_get_provider_device()
 
-commit c09da195fd06536925306459ef31e61d236a956a
-Author: Christian Gmeiner <cgmeiner@igalia.com>
+Applied to
 
-drm/mxsfb: Complete page flips only once the new buffer is latched
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.5
 
-This commit holds the pending vblank event in mxsfb_drm_private and
-sends it from the vblank interrupt handler only once CUR_BUF matches
-NEXT_BUF (and AS_BUF matches AS_NEXT_BUF when the overlay is enabled).
+Thanks!
 
-> diff --git a/drivers/gpu/drm/mxsfb/mxsfb_kms.c b/drivers/gpu/drm/mxsfb/mx=
-sfb_kms.c
-> index bbc2a2df9f161..c7e516758a1ae 100644
-> --- a/drivers/gpu/drm/mxsfb/mxsfb_kms.c
-> +++ b/drivers/gpu/drm/mxsfb/mxsfb_kms.c
-> @@ -328,6 +328,7 @@ static int mxsfb_crtc_atomic_check(struct drm_crtc *c=
-rtc,
->  static void mxsfb_crtc_atomic_flush(struct drm_crtc *crtc,
->  				    struct drm_atomic_commit *state)
->  {
-> +	struct mxsfb_drm_private *mxsfb =3D to_mxsfb_drm_private(crtc->dev);
->  	struct drm_pending_vblank_event *event;
-> =20
->  	event =3D crtc->state->event;
-> @@ -338,12 +339,54 @@ static void mxsfb_crtc_atomic_flush(struct drm_crtc=
- *crtc,
-> =20
->  	spin_lock_irq(&crtc->dev->event_lock);
->  	if (drm_crtc_vblank_get(crtc) =3D=3D 0)
-> -		drm_crtc_arm_vblank_event(crtc, event);
-> +		mxsfb->event =3D event;
->  	else
->  		drm_crtc_send_vblank_event(crtc, event);
->  	spin_unlock_irq(&crtc->dev->event_lock);
->  }
-> =20
-> +static bool mxsfb_crtc_buffers_latched(struct mxsfb_drm_private *mxsfb)
-> +{
-> +	if (readl(mxsfb->base + mxsfb->devdata->cur_buf) !=3D
-> +	    readl(mxsfb->base + mxsfb->devdata->next_buf))
-> +		return false;
-> +
-> +	if (mxsfb->devdata->has_overlay &&
-> +	    (readl(mxsfb->base + LCDC_AS_CTRL) & AS_CTRL_AS_ENABLE) &&
-> +	    readl(mxsfb->base + LCDC_AS_BUF) !=3D readl(mxsfb->base + LCDC_AS_N=
-EXT_BUF))
-> +		return false;
-> +
-> +	return true;
-> +}
-> +
-> +static void mxsfb_crtc_finish_page_flip(struct mxsfb_drm_private *mxsfb)
-> +{
-> +	struct drm_crtc *crtc =3D &mxsfb->crtc;
-> +
-> +	drm_crtc_send_vblank_event(crtc, mxsfb->event);
-> +	drm_crtc_vblank_put(crtc);
-> +	mxsfb->event =3D NULL;
-> +}
-> +
-> +void mxsfb_crtc_handle_vblank(struct mxsfb_drm_private *mxsfb)
-> +{
-> +	struct drm_crtc *crtc =3D &mxsfb->crtc;
-> +
-> +	drm_crtc_handle_vblank(crtc);
-> +
-> +	/*
-> +	 * The controller copies NEXT_BUF to CUR_BUF at the end of a frame. If
-> +	 * the commit wrote NEXT_BUF after that point, the new buffer is only
-> +	 * scanned out from the next frame on. Complete the flip only once the
-> +	 * hardware has latched it, otherwise userspace gets back a buffer that
-> +	 * is still being scanned out.
-> +	 */
-> +	spin_lock(&crtc->dev->event_lock);
-> +	if (mxsfb->event && mxsfb_crtc_buffers_latched(mxsfb))
-> +		mxsfb_crtc_finish_page_flip(mxsfb);
-> +	spin_unlock(&crtc->dev->event_lock);
-> +}
+[1/1] spi: replace chan->device->dev with dmaengine_get_provider_device()
+      https://git.kernel.org/broonie/spi/c/12acfe305495
 
-[Severity: High]
-Can calling drm_crtc_handle_vblank() before the new buffer is latched
-cause drm_atomic_helper_commit_tail_rpm() to clean up the old framebuffer
-while it is still being scanned out?
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-mxsfb_mode_config_helpers uses drm_atomic_helper_commit_tail_rpm(), which
-waits via drm_atomic_helper_wait_for_vblanks() rather than
-drm_atomic_helper_wait_for_flip_done():
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-drivers/gpu/drm/drm_atomic_helper.c:drm_atomic_helper_commit_tail_rpm() {
-	...
-	drm_atomic_helper_commit_hw_done(state);
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-	drm_atomic_helper_wait_for_vblanks(dev, state);
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-	drm_atomic_helper_cleanup_planes(dev, state);
-}
+Thanks,
+Mark
 
-When a commit writes NEXT_BUF just after the end-of-frame copy, the next
-frame-done interrupt sees mxsfb_crtc_buffers_latched() =3D=3D false and def=
-ers
-mxsfb_crtc_finish_page_flip() (leaving commit->flip_done unsignaled).
-However, drm_crtc_handle_vblank() still increments the vblank count and
-wakes drm_atomic_helper_wait_for_vblanks() on that unlatched interrupt.
-
-commit_tail() then immediately runs drm_atomic_helper_cleanup_planes() and
-drops the old framebuffer reference while the LCDIF DMA engine is still
-scanning it out from CUR_BUF for another frame.  For a blocking commit, it
-also returns to userspace before commit->flip_done is signaled, causing an
-immediate follow-up non-blocking flip to fail with -EBUSY in
-stall_checks().
-
-A custom atomic_commit_tail that calls
-drm_atomic_helper_wait_for_flip_done() instead of
-drm_atomic_helper_wait_for_vblanks() would keep plane cleanup and commit
-completion synchronized with mxsfb_crtc_finish_page_flip().
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261108-mxsfb-flip=
--latch-v1-1-ad816b23b646@igalia.com?part=3D1
