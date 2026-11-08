@@ -1,100 +1,62 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794135846;
-	b=cthV1oz3fs8Uw8SpUSluwc3I/Syo2pk1A42cZXWP3ddCpcKEMUl+xTE9BiywXNVxjMEk
-	 q/LkKie6v/9Tz5HtvJhqKgVsDE8zaOfi8ovUAc7ojfvKIeUF960vpP7asM64qEVt7/Vcy
-	 5o9ooV0382A+iCstnzQNr9YNB2bFRExRAUNVopJNs3a7wNxaLfKAsEOqMwA3ISxdWuamc
-	 8aZwj1KcySI7lOdTMpoRrgHEiiW+g//2mrA63uGPZ5jrQf7OSEQIDQnru4F4ZVI3F/uad
-	 7j2z6h8yDZus1gWcbv2V8TjAYf5O1E0ZrwlPzu8VGquBB8txltnohBIsQ/q+NaiuABg==
+	t=1794139897;
+	b=dilR7BXl6jFCkNNrts0HTd95MpbnGnK+2Ew3+8jvEHrazFICp3mKWcqilCex4FK6i2cD
+	 n+8+N+v1IQYS218RjW35PwVFxcHBeh7029qp9akJkbfYoi5+96xsx/4Mex9MRSegx1+Sr
+	 hb2eG+rFYlPrWKZJmVz+Os2IbtIaeC3HuCeZLRfUWXEJdEyPQ0/Z2fd9OemZal6MLJQ1G
+	 aHxR/0VpnCsbeiFvFKuUWPO86XPn9MxWA7pRjkIyBxQdPnCB8bk6mlIbb1xVyid38juYK
+	 dybpdB9VRRErpNaWmf0wbYmeZCrY66CQI8+4n/0uX8XOTCtQw+nYuYvxSscx2ot48FA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794135846;
-	h=Received:DKIM-Signature:Received:From:To:Cc:In-Reply-To:References:
-	 Subject:Message-Id:Date:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:X-Mailer:X-Developer-Signature:
-	 X-Developer-Key;
-	bh=NOH9rvmKBnbMuVpOzvlihPh29ou5uq8gMNkmR0u8PDU=;
-	b=sGcu7YCa/ZO9YEPoG56SqT5imShmVn6F+MFDOdz7enJXtOr86wkkUs0ldf8hnojYuVyp
-	 PT0hsOMMATgbE7Xr37Aowi0wmwJXk7kszDVbWQggUmAAs1KAz4tOnglj72j52UBFlOkDm
-	 ynZu9WLuQJAFni0rpXC7rxPt0wRXIPh4FXOKrYlI6rJTxeCsEHqJNKY6oT/4nc3bdLzf6
-	 y5ot71nHy9dRd8daEDcHEmIdsYlOzSvfkrfzCDyoWl+FvMwnr6r2MJJFLAGXBSeC7qdWf
-	 6rfbNonID1toY6GNINrjpulW0NGxVyeLJp2Z+YorEInMBqi91JorMZlxvesGogblFPA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794139897;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=S53t+YVv3ElnijbCvjTcj9y1Ev0v2nk/Dmj5oB/Gyio=;
+	b=AniSZKZ+5FdolvprXdKCZcnT70wFlYULuWO4BFNwnA1KztDdtZ1llJGkmYmfvsp3IXZu
+	 SWcvrgQuETVu8ct3HxjBJG9iTY4BY/ASqwG2KbZ4UJZFaeYRYmT9/bFh3fMfIJG5WdYOk
+	 SZLYFWXvn9ZfhgseLkXtT57YccX4oBwd8IR5RicO2c/OuoOrViHYUErXNNuLP6Rvre35H
+	 29Nhwt6aA+eaHLDZ14LtpkZnBQYUAwyWOG6kUMlffz12x22txDBstHIfq07IV0nyOouzi
+	 lFuzUdwh1aJy0bd0h/aDmV0piIF7y/n675qmcYXr0Ys93Jh/J6qlscNjdDDYfFGDgeg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dEexgGVA;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nR5kpjUT;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B8BD606A331;
-	Sun,  8 Nov 2026 11:04:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F0E6606A31C;
+	Sun,  8 Nov 2026 12:11:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dEexgGVA
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 033291F008A1;
-	Sun,  8 Nov 2026 11:04:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nR5kpjUT
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB93E1F0089F;
+	Sun,  8 Nov 2026 12:11:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794135845;
-	bh=NOH9rvmKBnbMuVpOzvlihPh29ou5uq8gMNkmR0u8PDU=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=dEexgGVAuXucoF8ixDFMhBHOti4RPHfHMPBIu8ZrG+1LDuvZ9LNT/0RN5xd6p7PDy
-	 TDOp68Zoc6KEktnZCGJM+6nzB3TK8l49ElfnK0hEXRmmicbFYo4V8exj/LVm8A2YPS
-	 /0VuJACkvM3ROI5CssnA7MVw0H87HKQ3/2wCfWl5qvidILOFgZxUn04Nnq8yMKQxQ9
-	 HakXOca2pq4l/4Vpz2OMORvhzRalck+q+IbsiWfjqzktw3kdPX43rcc5LUK9ggcq/R
-	 hO0SJpX5J4xrGfiDv2fRvVkI/FevUQCm5mY44Ny4G7bh3St9+n070F650Ak2/vJUKU
-	 olkHcTdlwi3ow==
-Received: from traversing.sirena.org.uk (localhost [IPv6:::1])
-	by traversing.sirena.org.uk (Postfix) with ESMTP id 4426D2BF8D29;
-	Sun, 08 Nov 2026 11:04:03 +0000 (GMT)
-From: Mark Brown <broonie@kernel.org>
-To: Nicolas Ferre <nicolas.ferre@microchip.com>, 
- Alexandre Belloni <alexandre.belloni@bootlin.com>, 
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
- Radu Pirea <radu_nicolae.pirea@upb.ro>, CL Wang <cl634@andestech.com>, 
- Ryan Wanner <ryan.wanner@microchip.com>, 
- Florian Fainelli <florian.fainelli@broadcom.com>, 
- Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>, 
- Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
- Vladimir Oltean <olteanv@gmail.com>, Frank Li <Frank.Li@nxp.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Han Xu <han.xu@nxp.com>, 
- Haibo Chen <haibo.chen@nxp.com>, Linus Walleij <linusw@kernel.org>, 
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
- Daniel Mack <daniel@zonque.org>, Haojian Zhuang <haojian.zhuang@gmail.com>, 
- Robert Jarzmik <robert.jarzmik@free.fr>, Heiko Stuebner <heiko@sntech.de>, 
- Fabrizio Castro <fabrizio.castro.jz@renesas.com>, 
- Andi Shyti <andi.shyti@kernel.org>, 
- Tudor Ambarus <tudor.ambarus@linaro.org>, 
- Krzysztof Kozlowski <krzk@kernel.org>, 
- Peter Griffin <peter.griffin@linaro.org>, 
- Alim Akhtar <alim.akhtar@samsung.com>, Yixun Lan <dlan@kernel.org>, 
- Troy Mitchell <troy.mitchell@linux.spacemit.com>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Alain Volmat <alain.volmat@foss.st.com>, Chen-Yu Tsai <wens@kernel.org>, 
- Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Samuel Holland <samuel@sholland.org>, 
- Laxman Dewangan <ldewangan@nvidia.com>, 
- Thierry Reding <thierry.reding@kernel.org>, 
- Jonathan Hunter <jonathanh@nvidia.com>, 
- Sowjanya Komatineni <skomatineni@nvidia.com>, 
- Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, 
- Masami Hiramatsu <mhiramat@kernel.org>, linux-spi@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- linux-rpi-kernel@lists.infradead.org, imx@lists.linux.dev, 
- linux-arm-msm@vger.kernel.org, linux-rockchip@lists.infradead.org, 
- linux-renesas-soc@vger.kernel.org, linux-samsung-soc@vger.kernel.org, 
- linux-riscv@lists.infradead.org, spacemit@lists.linux.dev, 
- linux-stm32@st-md-mailman.stormreply.com, linux-sunxi@lists.linux.dev, 
- linux-tegra@vger.kernel.org, Frank.Li@oss.nxp.com
-Cc: imx@lists.linux.dev, 
- Mukesh Kumar Savaliya <mukesh.savaliya@oss.qualcomm.com>, 
- Wolfram Sang <wsa+renesas@sang-engineering.com>, 
- Thierry Reding <treding@nvidia.com>
-In-Reply-To: <20261104152253.3279052-1-Frank.Li@oss.nxp.com>
-References: <20261104152253.3279052-1-Frank.Li@oss.nxp.com>
-Subject: Re: [PATCH v2 1/1] spi: use dmaengine_desc_set_callback()
-Message-Id: <179406311622.3424803.2869752670970173307.b4-ty@b4>
-Date: Sat, 07 Nov 2026 14:51:56 +0000
+	s=k20260515; t=1794139897;
+	bh=S53t+YVv3ElnijbCvjTcj9y1Ev0v2nk/Dmj5oB/Gyio=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=nR5kpjUT4Wz2G43xQ1mhvZSmnOy/blyN/ZgcgtUTv0fvfpnkeB9l1bihpYRrBnqIN
+	 USRotrf/P2EZ3gn3upJextTqLcr4Wgen45hlWDHi9gqqQfRX6TqZUwR68EofUTEupk
+	 X1+mJMyXXU3+sB5szdefkIEjWMK8Fsxa3AA+3oA6lPAdo0/iEfedMfoBQgPiTZdN+o
+	 RNnVsvYw24rZWP0Rh59U2g/LuiT7umvllk0MVqLqC5JIGwPS9Qedi30L4hhTYdXT5U
+	 9AA/kiYT3LrD7CYre4bv9aB/M0WsYYWnWY8wvUzS9k+uxXRmHTktzYpKQiRyp4yjhH
+	 8wl9nRbpc1WiQ==
+Subject: Re: [PATCH 5/5] ARM: mxs: add EVAchargeSE board support
+From: netdev-bot+sashiko@kernel.org
+To: wahrenst@gmx.net
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ linusw@kernel.org, brgl@kernel.org, Frank.Li@nxp.com, vkoul@kernel.org,
+ mkl@pengutronix.de, neil.armstrong@linaro.org, mailhol@kernel.org,
+ s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+ mani@kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
+ linux-can@vger.kernel.org, linux-phy@lists.infradead.org, kuba@kernel.org
+Date: Sun, 08 Nov 2026 12:11:35 +0000
+Message-ID: <179413989528.488853.11075194967877927671@kernel.org>
+In-Reply-To: <20261106230746.21954-6-wahrenst@gmx.net>
+References: <20261106230746.21954-6-wahrenst@gmx.net>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -104,46 +66,154 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1098; i=broonie@kernel.org;
- h=from:subject:message-id; bh=e27pH1DOpyvi3Vl4RSGr4H2h6BdkO4/LpSXv3m1TiX4=;
- b=kA0DAAoWL+9zsLPQOIkByyZiAGrwVyOjdTCE9S9OBFZY60d2uXkflutXeLj+hAPbkWGUWWQYj
- Ih1BAAWCgAdFiEEXmoL6X9066wOwaGGL+9zsLPQOIkFAmrwVyMACgkQL+9zsLPQOInk9AEApusX
- E0SNmJSb6PhRBdjP0Qw+zpKfW7o8VMCTkcooCtUA/ith6wDGE8iMhCBn3VujoltYF1KmR9Xr6Al
- rgHg/wDwA
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Wed, 04 Nov 2026 10:22:45 -0500, Frank.Li@oss.nxp.com wrote:
-> spi: use dmaengine_desc_set_callback()
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-Applied to
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.5
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Thanks!
+- [Medium] The ethernet-phy@0 node in
+  arch/arm/boot/dts/nxp/mxs/imx28-evachargese.dts (an SMSC LAN87xx-class…
+- [Low] The patch only adds
+  arch/arm/boot/dts/nxp/mxs/imx28-evachargese.dts and a dtb entry in…
 
-[1/1] spi: use dmaengine_desc_set_callback()
-      https://git.kernel.org/broonie/spi/c/29fcd5d436c4
+--
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+ARM: mxs: add EVAchargeSE board support
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+This adds a devicetree for the chargebyte EVAcharge SE. It is an i.MX28
+based ISO 15118 controller for EV charging stations. The DTS enables eMMC,
+the debug UART, Ethernet, USB host, QCA7000 powerline over SPI, CAN and the
+board LEDs.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+Link: https://chargebyte.com/products/controllers-modules/evse-controllers/evacharge-se
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+> ARM: mxs: add EVAchargeSE board support
 
-Thanks,
-Mark
+[Severity: Low]
+This isn't a bug, but the patch only touches arch/arm/boot/dts/nxp/mxs/.
+Should the subject use the dts prefix, for example "ARM: dts: mxs: Add
+chargebyte EVAcharge SE board"? The previous patch in this series, "ARM:
+dts: imx28: add alternative pinmux for CAN1", already uses that form.
 
+The product name is also spelled three different ways:
+
+  subject:    "EVAchargeSE"
+  body:       "EVACharge SE is a ISO 15118 compliant controller ..."
+  DTS model:  model = "chargebyte EVAcharge SE";
+
+The dt-bindings patch "dt-bindings: arm: fsl: support chargebyte EVAcharge
+SE" uses "EVAcharge SE". Could the spelling be the same everywhere?
+
+> diff --git a/arch/arm/boot/dts/nxp/mxs/imx28-evachargese.dts b/arch/arm/boot/dts/nxp/mxs/imx28-evachargese.dts
+> new file mode 100644
+> index 0000000000000..75ddde2264936
+> --- /dev/null
+> +++ b/arch/arm/boot/dts/nxp/mxs/imx28-evachargese.dts
+> @@ -0,0 +1,294 @@
+
+[ ... ]
+
+> +&mac0 {
+> +	phy-handle = <&ethphy>;
+> +	phy-mode = "rmii";
+> +	phy-supply = <&reg_3p3v>;
+> +	pinctrl-0 = <&mac0_pins_a &mac0_phy_reset_pin>;
+> +	pinctrl-names = "default";
+> +
+> +	status = "okay";
+> +
+> +	mdio {
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +
+> +		ethphy: ethernet-phy@0 {
+> +			compatible = "ethernet-phy-ieee802.3-c22";
+> +			reg = <0>;
+> +			clocks = <&clks 64>; /* enet_out */
+> +			interrupt-parent = <&gpio4>;
+> +			interrupts = <5 IRQ_TYPE_EDGE_FALLING>;
+> +			max-speed = <100>;
+> +			pinctrl-0 = <&mac0_phy_int_pin>;
+> +			pinctrl-names = "default";
+> +			reset-assert-us = <500>;
+> +			reset-deassert-us = <500>;
+> +			reset-gpios = <&gpio4 13 GPIO_ACTIVE_LOW>;
+> +			smsc,disable-energy-detect;
+
+[Severity: Medium]
+Can the PHY ID be read here while the PHY is still held in reset?
+
+This node only has the generic c22 compatible, with no
+ethernet-phy-idXXXX.XXXX entry. So fwnode_mdiobus_register_phy() reads the
+ID over MDIO before phylib has requested the reset GPIO:
+
+drivers/net/mdio/fwnode_mdio.c:fwnode_mdiobus_register_phy() {
+    ...
+	if (is_c45 || fwnode_get_phy_id(child, &phy_id))
+		phy = get_phy_device(bus, addr, is_c45);
+	else
+		phy = phy_device_create(bus, addr, phy_id, 0, NULL);
+    ...
+}
+
+The reset-gpios line is requested only after that, through this path:
+
+phy_device_register()
+  mdiobus_register_device()
+    mdio_device_register_reset()
+
+The reset is deasserted later still, in phy_probe().
+
+If nRST is low during the scan, the ID reads as all ones and
+get_phy_device() returns -ENODEV. __of_mdiobus_parse_phys() then just
+prints "MDIO device at address 0 is missing". The phy-handle in mac0 points
+at a PHY that was never registered, so Ethernet doesn't come up.
+
+One way to hit this is to unbind and rebind the FEC driver, or to reload a
+modular fec. On removal, phy_remove() and phy_device_remove() assert the
+reset before the GPIO is released:
+
+drivers/net/phy/phy_device.c:phy_device_remove() {
+    ...
+	/* Assert the reset signal */
+	phy_device_reset(phydev, 1);
+
+	mdiobus_unregister_device(&phydev->mdio);
+    ...
+}
+
+mdio_device_unregister_reset() then calls gpiod_put(), but the pin keeps
+driving low. The next scan finds the PHY still in reset.
+
+The same failure could happen at first boot if the bootloader leaves
+GPIO4_13 low. This DTS muxes that pad as GPIO with MXS_PULL_DISABLE.
+
+Documentation/devicetree/bindings/net/ethernet-phy.yaml covers this case.
+It says that if a PHY needs a particular reset sequence before its ID
+registers can be read, the compatible list "must contain an entry with the
+correct PHY ID".
+
+imx28-btt3.dtsi also has a LAN8720 with reset-gpios, and it does this:
+
+	/* LAN8720Ai - PHY ID */
+	compatible = "ethernet-phy-id0007.c0f0","ethernet-phy-ieee802.3-c22";
+
+Could this node get an explicit ethernet-phy-id compatible too? The
+smsc,disable-energy-detect property suggests an SMSC PHY, and the ID would
+need to match the part fitted on this board.
+
+> +		};
+> +	};
+> +};
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261106230746.21954-1-wahrenst%40gmx.net
