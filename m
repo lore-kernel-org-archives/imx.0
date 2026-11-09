@@ -1,99 +1,71 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=213.167.242.64
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794265083;
-	b=0lDGa/EMf0YNBagI8LgX4gagjIXGHFaX1yVOFZtXOXciqFW0Qg363JaqlCruxhPKvdM5
-	 anrtR9w6o9PW6YGY9Nkc/9YrBUddvliKVzqHy6EDd99EaBbkbvHibHLN1RRM4NoukptbO
-	 U5psv6fWjrDLa3VW/fiRbRROFaG97msquW53PBj0yd1V8wYfQyXTULSkXFDXF8jyDzoFd
-	 dGo0JIEyClZSj8vw2iaqiWl/UYcPFAcu+XZjiajJfB2bw1CMY9Vf2iR/Dfdhgmbs5zQxI
-	 FG6Ft/i8CdKjW058Oif3o51daSsuCA8Ls/WLhqzhWdkESvwqlGokKLj9OWlKQ3x9cNw==
+	t=1794265567;
+	b=p8Sp/pLy9g6tKR/eR6ULLtQo3QS8A5tzUVXm71n+Q8tJfByMe4DCXioNM0h20JB8zz9r
+	 svX/OBgwbVzFRHE6MyQxNSOzj6vImAtZmVrr8MGLaYG9DGuzYfJMHPZX2T+DegwCKAeE1
+	 LWYQXAZAm+8BqvZPwg7ZJBkdRqxRbaRteEFuyhyffoXjVpmyW4P3EcinUhTXCot6viNMf
+	 BaeINwQ+PmcPuuHCbdMptVatzNFvIfh84Mf/4C3Q57WI7GYA90tx4HDLVZJvbH/2kot/F
+	 QG5vc+jcoCPzCaRNDubqNyK7Ypt+ah8pIYuUhEmiGP2kMveFBQCZ5MLXkM/pVQM4iAw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794265083;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To:Organization;
-	bh=APuVGr9Syfi20cMf1JwWjHvFw/aqU07E3GrFheF9DSw=;
-	b=4V9HQ45Vc6uY4l6yCKfDwoHRqPh+PEOR8hBlD6fA5wbYFdUSJBj3o2HnbYl9tNVux/6k
-	 oWcn0Q+I5XtY0dUtmrAakd/XMDMJS7F8htIwxi6oXyy89uBK1Qh6Qa3z54uWN4VKsgtOM
-	 LdPj0XJrTnsbc/lErMr3N0lXZY0WVr3dx6LsQwx+6B9+O2vbOXNTQo5Hksg2+WRYXZ1lx
-	 i3QXdX7m040eootNXCcTjIuzlTr6Ry6Jh2IEDNL/t1LO460g387EBQMcRP+USjRaxVS/B
-	 xoRrLrwnATDkQbijiVJVVGXYbwNDckWq0jZOKJ2P4L6S6FlluvLmkZ9Y1GJaFhJvodg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794265567;
+	h=DMARC-Filter:Received:DKIM-Signature:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding:In-Reply-To;
+	bh=U1SHI1w/RnQ/LW4m+0Hh+qVKQdWDnUn2TmXmHO+DxG0=;
+	b=1aIuSopRzbXjM28JfDaA7UiNaYKVqTpwFhpJyXMAeGJmiSfOU6gm8bPN2yId+j9keBFJ
+	 0kDxdqVNZF3OkPgsOf53Vkk1pJYoggqY4pG7WpTwEMqX1mzp4jle+u/U+GHO/rzej3lsO
+	 KqIr8j0BRv/1DXWi/fwzYp+926cV+Qm6lsAN5pwCpWEl8zyf7wj49Q4SB3q5Ik5k6yDGD
+	 a2dMOWtixsq2Aq4jilu1Hac22zFDLO4BDe1xpCdP7lBda5BEg0NorPHdVeMg61cKY4AE0
+	 jTVOWwewbt6kTfgNx/Im7drUORg5ePv8pZj325Ccr6RbBW6RWVGwPedwnJAMTr0cZqQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=P2o3myNT;
-	arc=none smtp.remote-ip=192.198.163.10
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=ideasonboard.com;
+	spf=pass smtp.mailfrom=ideasonboard.com;
+	dkim=pass header.d=ideasonboard.com header.i=@ideasonboard.com header.a=rsa-sha256 header.s=mail header.b=RpIWK9rt;
+	arc=none smtp.remote-ip=213.167.242.64
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2684606A31C
-	for <imx@lists.linux.dev>; Mon,  9 Nov 2026 22:58:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C2684606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0878C606A321
+	for <imx@lists.linux.dev>; Mon,  9 Nov 2026 23:06:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0878C606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=P2o3myNT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794265083; x=1825801083;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=gLk2yVe76ajtu1KrWCk+zmfgNuAUqzVJtyq7tY5vbag=;
-  b=P2o3myNTBMmgQCZWcFtsSLgSIu6plTgz4TwXfcWlrOzcv8TQwJ46cMgQ
-   qjrCqW9gh804hq+oqdxlEm276NGvCYukickQw83yR9S1lnbnZeMMFjtOD
-   z7cc2MJ2gLcAS0V5Zuz/bBAJcfsZZwKawd+9mva+C3CdpbEk+YdVn4QTF
-   B4Oyh0zNOuNOeu+fVBm4eQJAv4fw03EIvIzXl20QS5ZIH4JXenbr7S4yk
-   0mE0dOLZ4whIk6kPOwBWpHTfR7RTSxUlEVMEWLrZUGP6502r+VcANu+54
-   rZyAFgNedEN0fLy5YVzoosE1MYWpVSjysa/OXw5qeANcRGQEE1DV5JU+C
-   g==;
-X-CSE-ConnectionGUID: CSSKBT4aRaK84bu1DXJI+A==
-X-CSE-MsgGUID: yYlSkQVHSIS4CVD8wCK3Vw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11961"; a="2899339"
-X-IronPort-AV: E=Sophos;i="6.27,204,1787036400"; 
-   d="scan'208";a="2899339"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2026 14:58:02 -0800
-X-CSE-ConnectionGUID: T3RHJ0ZVRUiHpNbWBPbDdg==
-X-CSE-MsgGUID: /OnDlxXBTTKRLkahbt7bZw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,204,1787036400"; 
-   d="scan'208";a="7998415"
-Received: from amilburn-desk.amilburn-desk (HELO localhost) ([10.245.244.144])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2026 14:57:55 -0800
-Date: Tue, 10 Nov 2026 00:57:53 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: James Hilliard <james.hilliard1@gmail.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Raul E Rangel <rrangel@chromium.org>,
-	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Tony Lindgren <tony@atomide.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Richard Genoud <richard.genoud@bootlin.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Jacky Huang <ychuang3@nuvoton.com>,
-	Shan-Chun Hung <schung@nuvoton.com>,
-	Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	dkim=pass (1024-bit key, unprotected) header.d=ideasonboard.com header.i=@ideasonboard.com header.a=rsa-sha256 header.s=mail header.b=RpIWK9rt
+Received: from killaraus.ideasonboard.com (2001-14ba-7086-3000--a06.rev.dnainternet.fi [IPv6:2001:14ba:7086:3000::a06])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 2AE0133D;
+	Tue, 10 Nov 2026 00:03:36 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1794265416;
+	bh=5tzFgyfxwWQfocd3QLAWDXzBSro0If9o1QGzqiZw60s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=RpIWK9rtwJGOC0ctrtUrhBeLe3+/F/uhCIiE/9ea5dwmr51jHsadpm3WCtISeY2I0
+	 GHRsGtUsWSkTlaLKEVluCdcq4XOc2t1E22Ua8NQSzAYjRp9kjM9574GprQasw9AV9H
+	 U3A+L5SO+r2vAPhM95uVHiLrWghHPtWoRxq/1qqY=
+Date: Tue, 10 Nov 2026 01:05:56 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: "G.N. Zhou (OSS)" <guoniu.zhou@oss.nxp.com>
+Cc: Frank Li <frank.li@nxp.com>,
+	Martin Kepplinger-Novakovic <martink@posteo.de>,
+	Rui Miguel Silva <rmfrfs@gmail.com>,
+	Purism Kernel Team <kernel@puri.sm>,
+	Bryan O'Donoghue <bod@kernel.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Timur Tabi <timur@kernel.org>,
-	Peter Ujfalusi <peter.ujfalusi@ti.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Patrice Chotard <patrice.chotard@foss.st.com>,
-	linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v10 2/8] serial: serialize asynchronous write wakeups
- with the port lock
-Message-ID: <avJP8Sym_LQX9UVc@ashevche-desk.local>
-References: <20261108-submit-serial-8250-dma-cancel-v1-v10-0-e6227ddb95b1@gmail.com>
- <20261108-submit-serial-8250-dma-cancel-v1-v10-2-e6227ddb95b1@gmail.com>
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Alice Yuan <alice.yuan@nxp.com>
+Subject: Re: [PATCH] media: imx-mipi-csis: add support for
+ MEDIA_BUS_FMT_YUYV8_1X16
+Message-ID: <20261109230556.GA77654@killaraus.ideasonboard.com>
+References: <20261009-csis_sam-v1-1-81f2b0fb76ef@oss.nxp.com>
+ <20261014215606.GB283442@killaraus.ideasonboard.com>
+ <AMBPR04MB3355230D320B45E39F65B74126FA9C2@AMBPR04MB335523.eurprd04.prod.outlook.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -103,132 +75,76 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261108-submit-serial-8250-dma-cancel-v1-v10-2-e6227ddb95b1@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <AMBPR04MB3355230D320B45E39F65B74126FA9C2@AMBPR04MB335523.eurprd04.prod.outlook.com>
 
-On Sun, Nov 08, 2026 at 08:50:11PM -0700, James Hilliard wrote:
-> uart_write_wakeup() expects the UART port lock to be held. Several worker,
-> DMA completion and interrupt paths call it without that lock, including
-> indirect calls from uart_handle_cts_change() and the transmit helpers.
+On Thu, Oct 15, 2026 at 03:31:53AM +0000, G.N. Zhou (OSS) wrote:
+> On Thursday, October 15, 2026 5:56 AM, Laurent Pinchart wrote:
+> > On Fri, Oct 09, 2026 at 06:58:41PM +0800, guoniu.zhou@oss.nxp.com wrote:
+> > > From: Alice Yuan <alice.yuan@nxp.com>
+> > >
+> > > Add MEDIA_BUS_FMT_YUYV8_1X16 to the list of supported bus formats.
+> > >
+> > > The format uses the same CSI-2 YUV422 8-bit data type and 16-bit
+> > > parallel bus width as MEDIA_BUS_FMT_UYVY8_1X16, but with a different
+> > > component ordering. Supporting YUYV allows sensors and bridge devices
+> > > that output YUYV formatted YUV422 data to be used with the i.MX MIPI
+> > > CSIS driver without requiring format conversion.
+> >
+> > What sensor(s) do you have in mind ? CSI-2 does not support other component
+> > orderings, the YUV4222_8B data type specifies the ordering on the bus as [U1,
+> > Y1, V1, Y2], and V4L2 maps that to MEDIA_BUS_FMT_UYVY8_1X16.
 > 
-> Take the port lock around these notifications or their transmit helper.
-> Keep sleeping SPI and regmap accesses outside the locked region, and keep
-> the FSL LPUART completion lock held through its wakeup. Acquire the port
-> lock after releasing private channel locks to preserve the ordering used
-> by UART callbacks. In the MUX timer, publish available FIFO space under
-> the port lock and keep the hardware FIFO-drain wait outside it.
-> 
-> Use plain port locking in hard-IRQ handlers and in helpers whose callers
-> already mask interrupts. Atmel status handling is also called during
-> resume, where lock_suspended is acquired with interrupts disabled; JSM
-> interrupt processing holds its IRQ-saving board lock. Keep IRQ-saving
-> locking in workers, tasklets and other mixed-context paths.
-> 
-> Take the port lock after requesting the ST ASC interrupt and hold it
-> through startup's transmit servicing and RX interrupt enable. The transmit
-> helper can notify writers even when the FIFO is empty, and serial core
-> calls startup without holding the port spinlock.
-> 
-> Use IRQ-safe locking in the Atmel RX and TX tasklets and SB1250 termios
-> path, since their interrupt handlers now acquire the same port lock.
-> Preserve the caller's interrupt state when releasing those locks.
-> 
-> On SB1250, lock modem-state updates after reading and filtering the change
-> status, and wake modem-status waiters after unlocking. Take the TX lock
-> inside its service routine so RX-only interrupts need no acquisition.
-> Keep that lock across x_char handling, FIFO consumption and the decision
-> to mask TX interrupts: a writer must not enqueue data and enable TX between
-> the empty-FIFO check and the interrupt-mask write. Each TX invocation sends
-> at most one character.
-> 
-> Serialize CLPS711x TX servicing and its interrupt-enable state with the
-> port lock. Disable TX interrupts without waiting in stop_tx(), since a
-> threaded handler may need that same lock. Have an already queued handler
-> leave stopped output untouched, and drain it outside the lock during
-> shutdown before the transmit FIFO can be released.
-> 
-> SCCNXP handles interrupts under a controller lock which its UART callbacks
-> acquire with the port lock already held. Collect the ports needing wakeups
-> in an unsigned long bitmap while servicing the controller, then release
-> that lock before visiting the set bits, taking each port lock and
-> rechecking the wakeup threshold. Removal drains the IRQ or timer before
-> unregistering the ports.
-> 
-> This serializes write notifications with port-locked serial-core state
-> changes, allowing readiness and transmit-storage reservations to gate the
-> notification without a check-versus-shutdown race.
-> 
-> Cover DZ TX servicing and JSM Classic modem notifications as well. On
-> DECstation ZS, acquire the port lock before the SCC lock and notify writers
-> after releasing the SCC lock. Defer normal TX restart after console output
-> to a worker, since console output can already run under the port lock.
-> Check transmitter readiness before consuming another character and drain
-> the restart worker during shutdown and removal. Release Lantiq's hardware
-> lock through the transmit helper's completion hook before notifying the
-> line discipline.
+> The sensor is the OV5640. Its driver already advertises MEDIA_BUS_FMT_YUYV8_1X16
+> for CSI-2 mode in mainline (ov5640.c, ov5640_csi2_formats[]). According to datasheet,
+> ov5640 ISP reorders YUV components via register 0x4300 before transmitting over the
+> CSI-2 link using the YUV422_8B data type. The CSIS itself is a pass-through — it does not
+> interpret or reorder pixel data, it just forwards whatever the sensor sends. Without
+> YUYV8_1X16 in the CSIS format table, media link validation fails when using the OV5640
+> in YUYV mode.
 
-...
+That makes sense. Overall we may have been better off by not exposing
+MEDIA_BUS_FMT_YUYV8_1X16 in the ov5640 driver and relying on the DMA
+engine on the host side to handle different YUV formats, but as the
+driver exposes it, it makes sense to support it here too. I don't like
+that all CSI-2 receiver drivers would need to be patched to support
+this, but the number of YUV components ordering isn't as large as for
+CFA patterns, so we can live with it.
 
-> --- a/drivers/tty/serial/sb1250-duart.c
-> +++ b/drivers/tty/serial/sb1250-duart.c
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 
-> -	if (delta & (M_DUART_IN_PIN0_VAL << S_DUART_IN_PIN_CHNG))
-> -		uart_handle_cts_change(uport, !(delta & M_DUART_IN_PIN0_VAL));
-> +	if (!(delta & ((M_DUART_IN_PIN2_VAL | M_DUART_IN_PIN0_VAL) <<
-> +		       S_DUART_IN_PIN_CHNG)))
-
-Just keep it a single line.
-
-> +		return;
->  
-> -	if (delta & (M_DUART_IN_PIN2_VAL << S_DUART_IN_PIN_CHNG))
-> -		uport->icount.dsr++;
-> +	scoped_guard(uart_port_lock, uport) {
-> +		if (delta & (M_DUART_IN_PIN0_VAL << S_DUART_IN_PIN_CHNG))
-> +			uart_handle_cts_change(uport, !(delta & M_DUART_IN_PIN0_VAL));
->  
-> -	if (delta & ((M_DUART_IN_PIN2_VAL | M_DUART_IN_PIN0_VAL) <<
-> -		     S_DUART_IN_PIN_CHNG))
-> -		wake_up_interruptible(&uport->state->port.delta_msr_wait);
-> +		if (delta & (M_DUART_IN_PIN2_VAL << S_DUART_IN_PIN_CHNG))
-> +			uport->icount.dsr++;
-> +	}
-
-...
-
-> --- a/drivers/tty/serial/sccnxp.c
-> +++ b/drivers/tty/serial/sccnxp.c
-
-> -static void sccnxp_handle_events(struct sccnxp_port *s)
-> +static unsigned long sccnxp_handle_events(struct sccnxp_port *s)
->  {
-> +	unsigned long wakeup = 0;
->  	int i;
->  	u8 isr;
->  
-> @@ -491,20 +492,40 @@ static void sccnxp_handle_events(struct sccnxp_port *s)
->  		for (i = 0; i < s->uart.nr; i++) {
->  			if (s->opened[i] && (isr & ISR_RXRDY(i)))
->  				sccnxp_handle_rx(&s->port[i]);
-> -			if (s->opened[i] && (isr & ISR_TXRDY(i)))
-> -				sccnxp_handle_tx(&s->port[i]);
-> +			if (s->opened[i] && (isr & ISR_TXRDY(i)) &&
-> +			    sccnxp_handle_tx(&s->port[i]))
-> +				wakeup |= BIT(i);
-
-__set_bit()
-
->  		}
->  	} while (1);
-> +
-> +	return wakeup;
-> +}
+> > > Signed-off-by: Alice Yuan <alice.yuan@nxp.com>
+> > > Signed-off-by: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
+> > > ---
+> > >  drivers/media/platform/nxp/imx-mipi-csis.c | 5 +++++
+> > >  1 file changed, 5 insertions(+)
+> > >
+> > > diff --git a/drivers/media/platform/nxp/imx-mipi-csis.c
+> > > b/drivers/media/platform/nxp/imx-mipi-csis.c
+> > > index 5f9691d76434..14a00b9fcedf 100644
+> > > --- a/drivers/media/platform/nxp/imx-mipi-csis.c
+> > > +++ b/drivers/media/platform/nxp/imx-mipi-csis.c
+> > > @@ -382,6 +382,11 @@ static const struct csis_pix_format
+> > mipi_csis_formats[] = {
+> > >             .output = MEDIA_BUS_FMT_UYVY8_1X16,
+> > >             .data_type = MIPI_CSI2_DT_YUV422_8B,
+> > >             .width = 16,
+> > > +   }, {
+> > > +           .code = MEDIA_BUS_FMT_YUYV8_1X16,
+> > > +           .output = MEDIA_BUS_FMT_YUYV8_1X16,
+> > > +           .data_type = MIPI_CSI2_DT_YUV422_8B,
+> > > +           .width = 16,
+> > >     },
+> > >     /* RGB formats. */
+> > >     {
+> > >
+> > > ---
+> > > base-commit: b38d06ad1e13c32970d58039c154f009b81a3368
+> > > change-id: 20261009-csis_sam-c5c10ed12322
 
 -- 
-With Best Regards,
-Andy Shevchenko
+Regards,
 
-
+Laurent Pinchart
