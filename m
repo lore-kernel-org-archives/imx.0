@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794260538;
-	b=iBT1/CNog2P3CSKm183aXgWb48mOToorCurllMvpJGdAmXpGuzLbXNxjZliXsZoA/O0R
-	 eQXzmTVBo7BTeSah0VK9cl2G6GSPwvv9GY4uKb0F9Aq4oo2KfmYQlvLy0lD2emNZ0I9Kb
-	 5DpoTSsK8hqA+zNp2J8C84ZWQyKBmmRgr1jomPEVO+H2eQMG5SvFJThZ10Y8ljBuD2MJd
-	 DD3gc55RMsOoydRPYskpsHPSmeV3DH7Fcu0IDVICYEhrIAgdXDOCmoJwJ6fxdBGPK1CCO
-	 xXMm872EH1Wv64Y8Zx5NWHKDxtyfLkCLkyDORYe9qHyrPU0RQKPbatm35epuSz/F6/A==
+	t=1794262257;
+	b=xHF0TRcnhugKkqZ7psU96V94pwB8LezZBAkOOPdYTsKHCVIenSB6JEz+UcF1mNyvqerG
+	 hedoZXSLZMBvOLoBLfHqVg3gULs+e6Z4F+4MILjXZs1JovKV40BFGwZV6aFofDhSVKgvI
+	 2LS7/8j/9UwmrBx5/bgKGN1aZlW5ZN1QCg+XlyhKixGXFzXXjCLuNRk8Uz6joezvyIFnf
+	 QqoYpHAGYU6/GdY8zP48LHc+JMG6X9T6wHjVW6L52j9lef37cKbmoQpPzZbXKkZn5Acuf
+	 zTD+S8AXqWFoJB3rCfyxhgFVZzXGD8gXV/nwcubZ3VRl+72AK7dbSS7zLynY7WQBlYg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794260538;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794262257;
 	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
 	 Subject:To:Cc:References:From:Content-Language:Autocrypt:In-Reply-To:
 	 Content-Type:Content-Transfer-Encoding;
-	bh=Zy4UuoFBueAx92pWEU3ihUrngaeQDz2jIl4FOkbivHA=;
-	b=NjfNrX7/WLl2goSrtyfXY8qoeR5uTcM/IWz1kZ9O07nJSeNI73Ke2JfRsgPIo/N1/7A1
-	 +3TdopdxXnE/gF3xRyjX2DXB4//RNdSA/g/8Lu+SIVlMuBb/8eNd0F+D4Eovf8E9bm2ky
-	 wr+sSoj7SUYyLiMnGdYb0qUGafr6pzaqW0/BJy0IUWcq9BkHbMH9LQqyq4oxzq5AieFng
-	 xpLWs4brmFtOHawXI1pMCynDqpo1CzNbDAuBoALx6MwxQhRueUbdsumqr9soX35WE5SMK
-	 uXsW3vbb3IAjgGUBZ8FBnMMn8P1i7m9TwB/OWzM9TTPj1MTzwNIZ0k7t5O2yZMffTdw==
+	bh=Nq3uNwV5La5ApWi/9kLjTCydsVP84l6yDoi8+trNlgc=;
+	b=NpicOnjO0WRP39yW7Zrd/6cxBUEzP0a73CnCl5ncwhpWSOjPDNWOida2rMn29b0lnsGV
+	 9sU3R691CKS3WNFQZRASBeYX8cVztcVUEmjg4Wn4dcKKAqSZ+LpI+/ZEGB4Ae7Mk2Eyhh
+	 +3K6UYOHbRp9hM4uDA8j/+6Kao5eBrY0aPPNN8WP0f/VUvyoQsTaGbo+foe5CEuSteRhK
+	 UsWR9FqH/1ftfNOFClB5gQLZBw27F/HomgN6XVzC/BV//b64IbELNuQgIMnc3WIDciki0
+	 g9P70838eXS1BMEz+19XTDR4AnK6YxXy+ZUjrndqKWclwFdD9BluOjcy0JPVSXwn4HA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cq1I4j7p;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=T5sxpAIA;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE04B606A31C;
-	Mon,  9 Nov 2026 21:42:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64FD6606A321;
+	Mon,  9 Nov 2026 22:10:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cq1I4j7p
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95AFA1F0089F;
-	Mon,  9 Nov 2026 21:42:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=T5sxpAIA
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 566951F0089F;
+	Mon,  9 Nov 2026 22:10:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794260537;
-	bh=Zy4UuoFBueAx92pWEU3ihUrngaeQDz2jIl4FOkbivHA=;
+	s=k20260515; t=1794262257;
+	bh=Nq3uNwV5La5ApWi/9kLjTCydsVP84l6yDoi8+trNlgc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=cq1I4j7p9kn2a3YkfPnya0qAcRzUYH3PJ6quUDgY5Thpo4HrfbWUNZFercIbJM3dY
-	 +O/I8tXwzBowbOdunSKvOjdq7CwzyUQw+nL0zm2hkZSkSEnssbJhi5BEYzSqXD0/Ag
-	 xUWo2vXqPbl/AP7A9rJZeBsjls9/mfr+mHe7EFmydgvf4AIzjvdZKiToBpURj39c7Q
-	 mhJJWAeqvY2vBq3whLVINqrdv0pnE67vdtHGy08rMoxJEMbtJxH46OtYQNMYmmOsd5
-	 UqgOxhG09bFuq8oKAWLzfB8xq4twIxpBkGsIvD0RYupFYonKgbD5Y2BSqYLmQtW6Lt
-	 NuByUpgcET7qQ==
-Message-ID: <52f8c2d3-de0a-492e-89c0-f33487a97dc8@kernel.org>
-Date: Mon, 9 Nov 2026 22:42:07 +0100
+	b=T5sxpAIAXOI3ZDEQWopFV5OTdo4jzRfqLbQHFfT4UDpkr08xV0skJOcp0CpvWEOKb
+	 htUPjMvyLhkQzORb5F1K1ANGox/qUflDnmiU27cY3LP+jyjXzsudkNdjmRDWeTHeEi
+	 EmaLWTCkQzqTlpOlCjdj9Quxbz7HnTySxbRG7pCGa9i6jygQaGtx0owEffeEI9HStU
+	 e9/u/rywL/KMhT3uBfsOZ5h/oOofXNmQhMVq3OJ7olx7UODTLP6/IZ3jM0EqOOBfan
+	 oKV2rqE/73+kZ52d/5fG3uhiR06rR4MXBHgsHRadgGtWTjI8DELXBDdpM1h/ogH1G1
+	 Q7/3fWQZBjuaA==
+Message-ID: <78833267-f204-4387-9f8c-c7e0d5df59a5@kernel.org>
+Date: Mon, 9 Nov 2026 23:10:38 +0100
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -52,32 +52,72 @@ List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 08/11] dt-bindings: ufs: Add NXP S32N79 UFS host
- controller
-To: Larisa Ileana Grigore <larisa.grigore@oss.nxp.com>
-Cc: NXP S32 Linux Team <s32@nxp.com>, Alim Akhtar <alim.akhtar@samsung.com>,
- Bart Van Assche <bvanassche@acm.org>, Bean Huo <beanhuo@micron.com>,
- Stanley Jhu <stanleyjhu@google.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- "Martin K. Petersen" <mkp@kernel.org>,
- Sai Krishna Potthuri <sai.krishna.potthuri@amd.com>,
- Ajay Neeli <ajay.neeli@amd.com>, Manivannan Sadhasivam <mani@kernel.org>,
- Pedro Sousa <pedrom.sousa@synopsys.com>,
- Adrian Hunter <adrian.hunter@intel.com>, Can Guo <quic_cang@quicinc.com>,
- Asutosh Das <quic_asutoshd@quicinc.com>, imx@lists.linux.dev,
- linux-scsi@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- clizzi@redhat.com, aruizrui@redhat.com, eballetb@redhat.com,
- echanude@redhat.com, Frank Li <Frank.Li@nxp.com>
-References: <20261103133215.1385823-1-larisa.grigore@oss.nxp.com>
- <20261103133215.1385823-9-larisa.grigore@oss.nxp.com>
- <20261104-holistic-loon-of-agreement-db7b8f@quoll>
- <4e82a4bf-e2db-4a3b-bebd-9f9c473817a3@kernel.org>
- <17b24b80-c3bb-40a1-ad12-06242ca09c22@oss.nxp.com>
- <0820de78-679a-45c2-baf1-2905490ea926@kernel.org>
- <02fb96e2-391f-4fc3-8d41-ab8364a9b07b@oss.nxp.com>
+Subject: Re: [PATCH v2 1/1] spi: use dmaengine_desc_set_callback()
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Frank.Li@oss.nxp.com, Mark Brown <broonie@kernel.org>,
+ Nicolas Ferre <nicolas.ferre@microchip.com>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+ Radu Pirea <radu_nicolae.pirea@upb.ro>, CL Wang <cl634@andestech.com>,
+ Ryan Wanner <ryan.wanner@microchip.com>,
+ Florian Fainelli <florian.fainelli@broadcom.com>, Ray Jui
+ <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>, Vladimir Oltean
+ <olteanv@gmail.com>, Frank Li <Frank.Li@nxp.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Han Xu <han.xu@nxp.com>,
+ Haibo Chen <haibo.chen@nxp.com>, Linus Walleij <linusw@kernel.org>,
+ Daniel Mack <daniel@zonque.org>, Haojian Zhuang <haojian.zhuang@gmail.com>,
+ Robert Jarzmik <robert.jarzmik@free.fr>, Heiko Stuebner <heiko@sntech.de>,
+ Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
+ Andi Shyti <andi.shyti@kernel.org>, Tudor Ambarus
+ <tudor.ambarus@linaro.org>, Peter Griffin <peter.griffin@linaro.org>,
+ Alim Akhtar <alim.akhtar@samsung.com>, Yixun Lan <dlan@kernel.org>,
+ Troy Mitchell <troy.mitchell@linux.spacemit.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Alain Volmat <alain.volmat@foss.st.com>, Chen-Yu Tsai <wens@kernel.org>,
+ Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Samuel Holland <samuel@sholland.org>, Laxman Dewangan
+ <ldewangan@nvidia.com>, Thierry Reding <thierry.reding@kernel.org>,
+ Jonathan Hunter <jonathanh@nvidia.com>,
+ Sowjanya Komatineni <skomatineni@nvidia.com>,
+ Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ "open list:SPI SUBSYSTEM" <linux-spi@vger.kernel.org>,
+ "moderated list:ARM/Microchip (AT91) SoC support"
+ <linux-arm-kernel@lists.infradead.org>,
+ open list <linux-kernel@vger.kernel.org>,
+ "moderated list:BROADCOM BCM2711/BCM2835 ARM ARCHITECTURE"
+ <linux-rpi-kernel@lists.infradead.org>,
+ "open list:FREESCALE DSPI DRIVER" <imx@lists.linux.dev>,
+ "open list:ARM/QUALCOMM MAILING LIST" <linux-arm-msm@vger.kernel.org>,
+ "open list:ARM/Rockchip SoC support" <linux-rockchip@lists.infradead.org>,
+ "open list:RENESAS RZ/V2H(P) RSPI DRIVER"
+ <linux-renesas-soc@vger.kernel.org>,
+ "open list:SAMSUNG SPI DRIVERS" <linux-samsung-soc@vger.kernel.org>,
+ "open list:RISC-V SPACEMIT SoC Support" <linux-riscv@lists.infradead.org>,
+ "open list:RISC-V SPACEMIT SoC Support" <spacemit@lists.linux.dev>,
+ "moderated list:ARM/STM32 ARCHITECTURE"
+ <linux-stm32@st-md-mailman.stormreply.com>,
+ "open list:ARM/Allwinner sunXi SoC support" <linux-sunxi@lists.linux.dev>,
+ "open list:TEGRA ARCHITECTURE SUPPORT" <linux-tegra@vger.kernel.org>,
+ Mukesh Kumar Savaliya <mukesh.savaliya@oss.qualcomm.com>,
+ Wolfram Sang <wsa+renesas@sang-engineering.com>,
+ Thierry Reding <treding@nvidia.com>
+References: <7f96599b-681d-4963-bdda-1274371ac84f@kernel.org>
+ <f1fa853d-1703-411d-b2d2-0fb0b176c2fa@kernel.org>
+ <autqC143h7Qf1R9H@ashevche-desk.local>
+ <9e39502a-dd17-4fa2-98a3-9019523cb5e8@kernel.org>
+ <auuYcS7-YqJKcUbE@ashevche-desk.local>
+ <63c24437-4261-4a51-be7e-31ac0759a095@kernel.org>
+ <auxGom0XR-Hax9b3@ashevche-desk.local>
+ <00390a20-7630-4066-9779-06c8f915a176@kernel.org>
+ <auxNmE8yZVP-wL2e@ashevche-desk.local>
+ <3dc7277e-2f6b-44a6-9085-2e33d989c1c9@kernel.org>
+ <avIJhv7p2v30U8H9@ashevche-desk.local>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -123,49 +163,32 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  K9bCVaboTA2T77QYkRcRJYSsO1alGX0ome/hMLD1daXlkrNUp1HWa3K4iytLRXjCSIorWiGs
  n+q3krnpXu3TFkA8qtOFZMdnIiFuiq1yLT8hptsV5xh1TA2nsVvSYiaCr3q4s4BKjS/KrLDb
  qoxzw8ISjdUp4pA85vb6YLCmb39NgidD+7PmAr65lBNveIFynTgsja1rRQ4=
-In-Reply-To: <02fb96e2-391f-4fc3-8d41-ab8364a9b07b@oss.nxp.com>
+In-Reply-To: <avIJhv7p2v30U8H9@ashevche-desk.local>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 09/11/2026 21:47, Larisa Ileana Grigore wrote:
-> On 11/5/2026 8:28 PM, Krzysztof Kozlowski wrote:
->> On 04/11/2026 10:41, Larisa Ileana Grigore wrote:
->>> On 11/4/2026 10:40 AM, Krzysztof Kozlowski wrote:
->>> v8:
->>> https://lore.kernel.org/all/20261013103003.373156-1-larisa.grigore@oss.nxp.com/
->>> v9:
->>> https://lore.kernel.org/all/20261024122533.3609180-1-larisa.grigore@oss.nxp.com/
->>> v10:
->>> https://lore.kernel.org/all/20261103133215.1385823-1-larisa.grigore@oss.nxp.com
+On 09/11/2026 18:57, Andy Shevchenko wrote:
+> On Fri, Nov 06, 2026 at 08:20:33AM +0100, Krzysztof Kozlowski wrote:
+>>>>
+>>>> Statement of oversight DOES NOT include "part of the patch".
 >>>
->>> Regarding your comments on v9:
->>>
->>> Frank's Reviewed-by was given publicly on v8 [1]. The series only looked
->>> like a v1 because of the wrong version number.
->>> The tag ordering was changed in v10 since the patch was changed.
->>> The single 0 Hz OPP entry: as discussed on v8 [2][3], the clock rate is
->>> set outside Linux and is not scaled. The OPP table lets the UFS core
+>>> So, it means I MUST from now on REQUIRE a split before reviewing.
+>>> Right?
 >>
->> That is not the purpose of OPP table. OPP defines performance point.
->> Performance point of 0 makes no sense. You cannot use Linux limitations
->> as reason to add some DTS, because answer is simple: fix your Linux
->> limitations.
+>> Why "from now on"? The reviewer's statement of oversight is worded like
+>> that since beginning? Also nothing stops you from reviewing parts. We
+>> discuss the statement of oversight and its result: giving Rb tag. The Rb
+>> tag is not output of some review, but agreement with statement of
+>> oversight and performing what is stated there.
 >>
+>> You can review parts, but you do not provide Rb tag.
 > 
-> Hi Krzysztof,
-> 
-> Thanks for the clarification. I understand that an OPP table is not 
-> appropriate here.
-> 
-> Existing platform DTs, such as Hi3660 and MT8195, define freq-table-hz 
-> containing only <0 0> pairs. This allows the UFS core to manage clock 
-> enable/disable without setting their rates. With freq-table-hz 
-> deprecated, there seems to be a gap for this use case, beyond S32N.
-> 
+> No, I'm not going to review something that I may not put Rb tag on.
+> I can NAK or ignore (or Ack without viewing, but it equals to ignore to me).
 
-Instead of passing 0, properties should be rather missing and that would
-be hint for Linux. Is there a difference between missing properties and
-some non-valid state (like freq=0)?
+
+That's your call, but you put it on yourself, so do not blame us for "I
+MUST from now on REQUIRE"...
 
 
 Best regards,
