@@ -1,90 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.52
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794196290;
-	b=tuWOKtLex6oPQfE4PeNgC7s+0IRQ0eYsV8n05SB2SPS1dUD6D813lpnpCViEUt8cDFy9
-	 sPQHGPwmRFxN1kfLXHIfKEL9NrNjVgM8tuGnvtY2074+kmpjgbNof+tX7+9Yjonre4nHl
-	 b7wCTIrBVD1DBMbIHF4v+Mb83ZiFgQbqZ+wrlgOJX0G7KqqwSibD4Waq0CTTGNYmOogjT
-	 euLrgIJLAT/0w+OGoVb9sYyDyaDnnXIk7C3EoJVUteNeIdw6BLGRDBHrv3GAsf4eR7LH+
-	 VImjkMTdi9lUpxoyGwkD1DOGXq0Pa40Y4JJEZR69kKilSHkYO1OK7dWeZlOH5L7rLmw==
+	t=1794198154;
+	b=AULGRE4Qe7RvzJVVRoxpsm2cl5BbA9/AinrWT11ybDXse2yspJ5Y/R0+lO1geIZSCq2L
+	 10jvIHCnJ2G4MB4IToT+p660dfanQLQj7+vnsWU47Gm1uVs0krR4ccTxpOizTYLAbSHt4
+	 mgF8W4xGMTVUqIqnxKzGI1LYrqhAWP787yazeHi7FhXvlExs9Tw+of9ysIoz/ALtxfP8y
+	 wL5oNRoFxdCgERZhJhQbpN6PzdXUy9MNZrzgXqu6+Vq+Ukz56JwpV47G+YH705oi728YM
+	 7k4LqTf+vVVhSzCdVC1fYW39q1L5TBEWwnmEBYlwgHCoPHS+aZYw3CHy56PqTWtxMWQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794196290;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:Date:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer;
-	bh=XUfxuzZXIT5avg6gl1nxcM7YkzRMwGmAk1oGIMF99rQ=;
-	b=3mMY1H11w6SvQCo6mGskBc9Gt57m36gtv4+Vugr6stPR2DuiDuSgbFW7cs2xmfzpmy42
-	 BRFz/892j2GIMJj5XyaaUmrX9/Je5ReuRvKGllF3pKuHWOCezCtOIx9I9lL/mFWQoaTgl
-	 shr+butlcJHu6tcfN5iy0KGSGZ/pTV2Ty7P8NL42S8aUFygQKp86hCjGk0PI11xXCx52d
-	 dWN97hIzIMEDj2jvzf4oAZqLy3aBH5BlAVniX69blYEQ668EPCCx1hqqPbbYdAmoDemu1
-	 WdGL2FyC1ssBsaVlJeKnhy6+rR/6YmBzJs+5Q9hJaZ1bnYRdY8XfNLVmoWJguKu9qRw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794198154;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=s3A1JJTBzb6Sq/eGcNwFYBzXadSGZeqXhTCf8IODYaA=;
+	b=K+BUk5pxqonToACHc45iEDcWZ3Zek+N9duGKSd4WbnDMa4RlOnx/YAiDUq/kSH04bbTN
+	 7PjWhE0uCb5qT6fV8ITWfpTVu5hLZyzHqrvB8JHSlvYolzoqNIIHzDQ/+5wOJ+acfA2n0
+	 wINJ7lJ+rnqJcBMmJfKvyzfiT3MChhcPWNsNUpuSwKfJyAxlzO6WlXPO9UuyvkRaOB7Dc
+	 01vo6cRMhJXQD9mW8eGpMRKR7VcXrKkaAIL0p4To+2WKfb0zgcTHAXoijxDe9kT1ABgVy
+	 I+u1kWQom/AwbHIRj86ZLhVYKxE1OmfxuQ7SjFE+ugWr814/sm3UBM/VUpD9NLOhL8w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=L7oLMzSv;
-	arc=none smtp.remote-ip=209.85.210.52
-Received: from mail-ot1-f52.google.com (mail-ot1-f52.google.com [209.85.210.52])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="mivVR/Hk";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 045B6606A31C
-	for <imx@lists.linux.dev>; Mon,  9 Nov 2026 03:51:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 045B6606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFCC5606A31C;
+	Mon,  9 Nov 2026 04:22:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=L7oLMzSv
-Received: by mail-ot1-f52.google.com with SMTP id 46e09a7af769-8490a7d6696so210679a34.3
-        for <imx@lists.linux.dev>; Sun, 08 Nov 2026 19:51:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794196277; x=1794801077; darn=lists.linux.dev;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=XUfxuzZXIT5avg6gl1nxcM7YkzRMwGmAk1oGIMF99rQ=;
-        b=L7oLMzSvpsbz5oDR65R8DITUJXBS1yY2+SumH8BLulIuPasvdpAaUx6z3VDUywqugR
-         s6PLPZ3Q7QACRbpbDi7p/0Y9wiiE1fjisCUzXICPhw/sNFxBOXnj2FHwgXV3Cb7adkaP
-         Ji/owsBm29ov64tD7B0SOLHmdEWc7/6IQ1Go4+rHC9foKuvCfyUvqrpEBfgroJmXJYE7
-         rhwYAZYR1KuKydGvtXQikgNT52D80wXkG4wLleXMPCH82GQOLWcFIYs0CDqIlSBOuU7u
-         QXi+OfCKbVlvt4i6RPmSss/aK706J7orxvo3YoxnZGS7rlRv+7X6UrnIjwGYFGr0yKJo
-         EdWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794196277; x=1794801077;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=XUfxuzZXIT5avg6gl1nxcM7YkzRMwGmAk1oGIMF99rQ=;
-        b=BvLefPJJG3+iJChTE20MS4NJ20yBycxxSR05EBymxutYuHG+Ifd8gW1UdEqncgU9bH
-         EH+u+iiK3+1qucxdrMx2Gid5jVZYRxJSUUVvvN8OKxJtIk1pcKDDgr5i/DxBhrUF/OI+
-         GzF0+Z+qcl1ZHZbPBgcbHNlkjmfQcsjAEPKzJTyTsZRxGuuLD82x+b4lTD9j6U9qSDLt
-         45aLg97+/RGd5VtYyqXB8E0oS2xC30thurCtjB1TLW0MSm/VliXvR++sI8CsnHBpaosv
-         kZaDR4B1pTxfVteYRwRuxNv9YbFkGd8Wc/fDK4d2en1XKdPgBO2nuMfnakqg7F/J647A
-         jEaQ==
-X-Forwarded-Encrypted: i=1; AL+hErGLVMhfGocQMDDVBe/7A2Y+04t7rRRMJJAhMYV+02ttgzAwFTxJeWGcJycbOrU4XD34jF0=@lists.linux.dev
-X-Gm-Message-State: APuU4Z98mb7Bp6mhS4R7DqEHmbtRLwerTdlIXZxPGZvTVsjYo0a/HS7S
-	itFJ38C0TwKo7U/meOGQbMCoodBvF2hio7qq3i8BCbQ20KEGOy3PHf9J
-X-Gm-Gg: AYBFou2CSsdGahYzzIv3JFgoCHm8ZfSCdvHrQdA2RcX9tHNHUn4f74ok7WDXkA3otzc
-	GEB7WB86RQ54yA1No4FSbHY2tuWU1HVWMZZHTB15qKmzNDEOkk4zcx4ogU5W8y1Z8NYT9I+Pkoj
-	N/l27VhPyfYawc5x2Phded0RYLppe1BCZpvCWQN7wbn1Qpd4bKX0Onvj5sxjEYLK4Qp9wRYXJU9
-	RdEQH2O+cKRLVwnMDNZFu6V3KKI4Kp0wIjRwJ0WyVM3piry9Z9pkgI/WS0n8jeaLI2bcRuxpQv0
-	R5Dyw0VChIqHiPV2QlPadltSjb+g4Pbo/EgXc2m0gWih/n2ZMcl6B08/oR23jFnGajCjG9Ng6M0
-	2mCi9NDAKJj0JElOisJWiCFJlNiWQWBsLWRiXXng1uB1MLrwDSrPoE/iIZTPIrltpbmTeXG9qMX
-	YzUMu+eLBTYQCi9I3oLOZqkzjKtLIyAzSpiFW8YPAMEVudd7wVgjvFNPk9DsPyNdRB4xaqv+JEN
-	NDgPrSQSQlhdWYR/YSDW/apwxenE3dCm6AEke8tslPRk4uN8lhj1VdH5LgETUYbMR2dL7BgeRBG
-	CWeHnEiNjElGTJNrcwGD9zNU4DYu3cgszBHYMfMd+f4ajz7trR6jVTeMiSuEjVgkIWheyHdTHdc
-	sLJ7PbpcNXB8Acc4wixi5DmUGOIi08f8GMfUDRcsw1M/CeGhRGkLDbUhNidgBW0k1+LU7UziM3u
-	b4hACKFyQw1tB/a6fNayi4mu4CyKp0KQFMt5cnNaGfzhIQpiChvMdc6w==
-X-Received: by 2002:a05:6830:34a8:b0:85d:44ee:607d with SMTP id 46e09a7af769-85f501a3163mr2198462a34.0.1794196277001;
-        Sun, 08 Nov 2026 19:51:17 -0800 (PST)
-Received: from [127.0.1.1] (174-29-1-49.hlrn.qwest.net. [174.29.1.49])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-85f4fad32cdsm2800428a34.6.2026.11.08.19.51.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 08 Nov 2026 19:51:16 -0800 (PST)
-From: James Hilliard <james.hilliard1@gmail.com>
-Date: Sun, 08 Nov 2026 20:50:13 -0700
-Subject: [PATCH v10 4/8] serial: 8250_omap: quiesce DMA IRQ handling before
- shutdown
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mivVR/Hk
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0E031F0089F;
+	Mon,  9 Nov 2026 04:22:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794198153;
+	bh=s3A1JJTBzb6Sq/eGcNwFYBzXadSGZeqXhTCf8IODYaA=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=mivVR/HkR7ovdacg/P8CM70YeCmM1pBhio0vgOCG/252yc9Asd8SBGfYAg7/BOS3b
+	 0dVSQIb8BwOyFkW9GWhQwnvFX2AvpVZfR0Es/65HOL6+fBCoh0RluIhOYf569CQT8j
+	 uGGKj0FQ6xtTHNH1hCLFyfWzgZRmG78mSJF3tB4aizcqGjSYif26D9z0tXhuPM3iIR
+	 3/2RVKB4rHTdgwqQ7QjKkvGoTmn7vYpztE/ju5G7jJVAqFtDQr9IB6NQr0Us4wHY2b
+	 u+YUEuD4yQb87umw9dDvg15uiF2HA3dJM9h3luAXLdWhv6+rBeDLDtXKeybWdsn7u8
+	 5W1v7ND3GCjqg==
+Message-ID: <sashiko-outbox-204402@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v10 7/8] serial: 8250: retire canceled RX DMA before
+ reusing the receive buffer
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "James Hilliard" <james.hilliard1@gmail.com>
+Cc: linux-serial@vger.kernel.org, imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <20261108-submit-serial-8250-dma-cancel-v1-v10-7-e6227ddb95b1@gmail.com>
+References: <20261108-submit-serial-8250-dma-cancel-v1-v10-0-e6227ddb95b1@gmail.com>
+ <20261108-submit-serial-8250-dma-cancel-v1-v10-7-e6227ddb95b1@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 09 Nov 2026 04:22:32 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -93,105 +60,143 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261108-submit-serial-8250-dma-cancel-v1-v10-4-e6227ddb95b1@gmail.com>
-References: <20261108-submit-serial-8250-dma-cancel-v1-v10-0-e6227ddb95b1@gmail.com>
-In-Reply-To: <20261108-submit-serial-8250-dma-cancel-v1-v10-0-e6227ddb95b1@gmail.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Jiri Slaby <jirislaby@kernel.org>, Raul E Rangel <rrangel@chromium.org>, 
- =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
- Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
- Tony Lindgren <tony@atomide.com>, 
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
- Richard Genoud <richard.genoud@bootlin.com>, 
- Nicolas Ferre <nicolas.ferre@microchip.com>, 
- Alexandre Belloni <alexandre.belloni@bootlin.com>, 
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
- Jacky Huang <ychuang3@nuvoton.com>, Shan-Chun Hung <schung@nuvoton.com>, 
- =?utf-8?q?Pali_Roh=C3=A1r?= <pali@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, "Maciej W. Rozycki" <macro@orcam.me.uk>, 
- Timur Tabi <timur@kernel.org>, Peter Ujfalusi <peter.ujfalusi@ti.com>, 
- Vignesh Raghavendra <vigneshr@ti.com>, 
- Patrice Chotard <patrice.chotard@foss.st.com>
-Cc: linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
- linuxppc-dev@lists.ozlabs.org, James Hilliard <james.hilliard1@gmail.com>
-X-Mailer: b4 0.15.2
 
-disable_irq_nosync() masks the UART interrupt without waiting for a
-running handler. That handler can have observed up->dma and continue
-using it while shutdown releases the DMA channels and clears the pointer.
-Synchronizing the IRQ later in serial core does not protect those accesses.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [High] serial: 8250: unbounded pause retry loop in
+  serial8250_rx_dma_flush_work()
+--
 
-Publish the DMA shutdown gate under the port lock before the final RX
-flush and interrupt masking. Have DMA IRQ handling check the same gate
-under the lock, so a queued interrupt cannot restart receive processing
-after the final flush.
+commit 818afe206e7bf388666735a110a648d91146a4e7
+Author: James Hilliard <james.hilliard1@gmail.com>
 
-Drain the UART IRQ outside the port lock before releasing DMA state.
-The lock excludes competing RX processing during the flush, while
-disable_irq() also waits for a handler that observed up->dma before
-acquiring the lock.
+serial: 8250: retire canceled RX DMA before reusing the receive buffer
 
-Fixes: fef4f600319e ("serial: 8250: omap: Fix life cycle issues for interrupt handlers")
-Reviewed-by: Raul E Rangel <rrangel@chromium.org>
-Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
----
- drivers/tty/serial/8250/8250_omap.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+This commit defers reuse of a canceled RX DMA buffer until a worker has
+drained pending DMA callbacks, and retries failed pause attempts from
+process context before copying or recovering the channel.
 
-diff --git a/drivers/tty/serial/8250/8250_omap.c b/drivers/tty/serial/8250/8250_omap.c
-index 5e114dd8f9bf..51013dd2d851 100644
---- a/drivers/tty/serial/8250/8250_omap.c
-+++ b/drivers/tty/serial/8250/8250_omap.c
-@@ -771,10 +771,6 @@ static void omap_8250_shutdown(struct uart_port *port)
- 	guard(serial8250_rpm)(up);
- 
- 	flush_work(&priv->qos_work);
--	if (up->dma) {
--		guard(uart_port_lock_irq)(port);
--		omap_8250_rx_dma_flush(up);
--	}
- 
- 	serial_out(up, UART_OMAP_WER, 0);
- 	if (priv->habit & UART_HAS_EFR2)
-@@ -782,13 +778,16 @@ static void omap_8250_shutdown(struct uart_port *port)
- 
- 	/* Synchronize UART_IER access against the console. */
- 	scoped_guard(uart_port_lock_irq, port) {
--		if (up->dma)
-+		if (up->dma) {
- 			up->dma->shutting_down = true;
-+			omap_8250_rx_dma_flush(up);
-+		}
- 		up->ier = 0;
- 		serial_out(up, UART_IER, 0);
- 	}
- 
--	disable_irq_nosync(port->irq);
-+	/* An in-flight handler may still be using up->dma. */
-+	disable_irq(port->irq);
- 
- 	serial8250_release_dma(up);
- 	up->dma = NULL;
-@@ -1330,6 +1329,11 @@ static int omap_8250_dma_handle_irq(struct uart_port *port)
- 
- 	uart_port_lock(port);
- 
-+	if (up->dma->shutting_down) {
-+		uart_port_unlock(port);
-+		return IRQ_HANDLED;
-+	}
-+
- 	status = serial_port_in(port, UART_LSR);
- 
- 	if ((iir & 0x3f) != UART_IIR_THRI) {
+> diff --git a/drivers/tty/serial/8250/8250_dma.c b/drivers/tty/serial/8250=
+/8250_dma.c
+> index 739a8238e4dec..1ea22954150ca 100644
+> --- a/drivers/tty/serial/8250/8250_dma.c
+> +++ b/drivers/tty/serial/8250/8250_dma.c
+[ ... ]
+> +/* Try to obtain a stable residue before retiring the current descriptor=
+. */
+> +static int serial8250_rx_dma_try_flush(struct uart_8250_port *p)
+> +{
+> +	struct uart_8250_dma *dma =3D p->dma;
+> +	struct dma_tx_state state;
+> +	enum dma_status status;
+> +	int ret;
+> +
+> +	lockdep_assert_held_once(&p->port.lock);
+> +
+> +	ret =3D dmaengine_pause(dma->rxchan);
+> +	status =3D dmaengine_tx_status(dma->rxchan, dma->rx_cookie, &state);
+> +	if (status =3D=3D DMA_ERROR) {
+> +		ret =3D -EIO;
+> +		goto recover;
+> +	}
+> +	if (ret && status !=3D DMA_COMPLETE) {
+> +		/*
+> +		 * Hardware may be idle before the provider publishes completion.
+> +		 * Leave the descriptor alive and retry outside interrupt context;
+> +		 * neither copying its buffer nor canceling it is safe yet.
+> +		 */
+> +		dma->rx_pause_pending =3D true;
+> +		serial8250_out_IER(p, p->ier);
+> +		return ret;
+> +	}
+[ ... ]
+> +static void serial8250_rx_dma_flush_work(struct work_struct *work)
+> +{
+> +	struct uart_8250_dma *dma =3D container_of(work, struct uart_8250_dma, =
+rx_flush_work);
+> +	struct uart_8250_port *p =3D dma->port;
+> +	unsigned int delay_us =3D 1 * USEC_PER_MSEC;
+> +	ktime_t start =3D ktime_get();
+> +	bool recover, retry, restore_rx;
+> +	bool warned =3D false;
+> +	int ret;
+> +
+> +	guard(serial8250_rpm)(p);
+> +
+> +	for (;;) {
+> +		scoped_guard(uart_port_lock_irqsave, &p->port) {
+> +			/* Shutdown cancels this work and drains both DMA channels. */
+> +			if (dma->shutting_down)
+> +				return;
+> +			/* Serialize reset with completion and shutdown notifications. */
+> +			WRITE_ONCE(dma->rx_pause_wakeup, false);
+> +			retry =3D dma->rx_pause_pending && !dma->rx_terminating;
+> +			if (retry) {
+> +				ret =3D serial8250_rx_dma_try_flush(p);
+> +				retry =3D dma->rx_pause_pending && !dma->rx_terminating;
+> +			}
+> +			recover =3D dma->rx_err;
+> +		}
+> +		if (!retry)
+> +			break;
+> +		if (!warned && ktime_ms_delta(ktime_get(), start) >=3D 1 * MSEC_PER_SE=
+C) {
+> +			dev_warn(p->port.dev,
+> +				 "RX DMA pause stalled: %d; retaining transfer and retrying\n",
+> +				 ret);
+> +			warned =3D true;
+> +		}
+> +		/* Notifications also cover completion or shutdown before sleeping. */
+> +		wait_event_hrtimeout(dma->rx_pause_wait, READ_ONCE(dma->rx_pause_wakeu=
+p),
+> +				     ns_to_ktime(delay_us * NSEC_PER_USEC));
+> +		delay_us =3D min(delay_us * 2, 1 * USEC_PER_SEC);
+> +	}
 
--- 
-2.53.0
+[Severity: High]
+As reported by Raul E Rangel on v8 [1], can serial8250_rx_dma_flush_work()
+spin in its retry loop until the port is closed when dmaengine_pause() fails
+persistently on a partial transfer?
 
+Once p->port.lock and local IRQs have been released across a few sleeps, any
+pending completion hardirq for a finished transfer has already run. On a
+partial transfer that has not reached dma->rx_size, an in-tree provider such
+as dw-axi-dmac can time out waiting for DWAXIDMAC_IRQ_SUSPENDED in
+dma_chan_pause(), clear that status bit while leaving the hardware channel
+suspended, and return -EAGAIN on every subsequent retry:
+
+drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c:dma_chan_pause() {
+	...
+	do {
+		if (axi_chan_irq_read(chan) & DWAXIDMAC_IRQ_SUSPENDED)
+			break;
+
+		udelay(2);
+	} while (--timeout);
+
+	axi_chan_irq_clear(chan, DWAXIDMAC_IRQ_SUSPENDED);
+
+	chan->is_paused =3D true;
+
+	return timeout ? 0 : -EAGAIN;
+}
+
+Because the channel is suspended in hardware, it never receives more bytes =
+to
+reach DMA_COMPLETE, and every retry in serial8250_rx_dma_try_flush() keeps
+dma->rx_pause_pending set. That wedges RX on the port (with UART_IER_RDI,
+UART_IER_RLSI, and UART_IER_RTOIE masked and skip_rx forced in
+serial8250_handle_irq_locked()), holds the runtime PM reference in
+serial8250_rx_dma_flush_work(), and causes dw8250_idle_enter() to fail with
+-EAGAIN until shutdown(), which then discards dma->rx_buf without delivering
+the partial data anyway.
+
+Escalating to serial8250_rx_dma_recover(p) after a bounded retry budget (or
+immediately on -ENOSYS / -EOPNOTSUPP) would let dmaengine_terminate_sync()
+stop the channel and fall back to PIO.
+
+[1] https://lore.kernel.org/r/20261029222734.3086943-1-rrangel@chromium.org
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261108-submit-ser=
+ial-8250-dma-cancel-v1-v10-0-e6227ddb95b1@gmail.com?part=3D7
