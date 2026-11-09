@@ -1,60 +1,135 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.11
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794245826;
-	b=XzRmRwI6yh58SZ8BcWqjvgSxLPyQ2vTYnmrJSOTERCed1cwstyjqedAo9ft5cqujIQlJ
-	 BGCN0OQV85UWkNmnMFuinZxH5M/GUT6RefeJqy4TN/+RqF3ZSCyMJxSoPahez/D+K4r7c
-	 +eyXRYoC8B+uocTjvbKGa5MFUt5hz90xg2eq0UH3dlSpGSMQTDED8xbiSKVShXi+M9pmL
-	 vtuVKKfDYoDOevOX7GwDPvjlncJMkmhpzMjGOsnsP0JSRIqqfAUFGZw63pDII2n5X2FYe
-	 aFlv49ILaefzR5aRim6k6gGEbL/JW29hsQ21RUAPmwNLs29R614TuAJ19qdVx48XJNg==
+	t=1794247062;
+	b=hqXjzfdiomgQili6THUUbUkLXhgmLCOjwlmkMr91KkKe3zEX5ejW413j/SYHSoVla5R0
+	 BWD2t9IFsRdpjnPqH2LRUmXsCRWwoIKuHkkD+0+43E1NPZT3w3+PtIL89z6/DK2EAKg83
+	 oNhSXJZrSQaxAJuSgniwweX3VIJOxZOU+nx4qyYWPzrSSXwBXYNy/TqeqRfMnYOB3lCMv
+	 3JQsFaTIpmHGnUPfAMNklgzQHspmMhRyX8c8lRLqXNIvsxleadwmppDQYmCcwDS4YD+Nv
+	 pcztAeZ2NVjwIHajYGH+yFA74C/ytGU1VUFgA1DraSB1lJVU332BvOIgXMCQt6Qeqrw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794245826;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=i2dzBPk2KyCkXa9Ry/J6aPzwN7dFhy1J+ad3KFJSVCo=;
-	b=oGmDb123oQWzk1UE7uM2tAKu1jA4ErFsS3F38a0rpfx6Y+nktdzeSleEwZnX8uP0CDRA
-	 uIDSQlKu0SepCddEQ+kCkeD2RJxwl37sNUuNdq3pOcwJT9US12W1DQSnj9RgUKLNiSrti
-	 nH56zULlb3TFzWRMUugF0Bjyo6gWK28LsJoS1GIcFbFuZSxnHRCiFkodisf/YMdBILKUS
-	 9oGj8m7QlX0Vh+pG04B9cRGWgh2O2AdpCF4dL6ORAJ9hawAlnycZyRBHrB2VwLMrdFfEN
-	 3qbzDpguqXHc2cKGnR4UhQzipQz1rAnJ0xYUCKeFUJaO7qwXbORVmzjs+dOHiaKWRqg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794247062;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To:Organization;
+	bh=9Cc+2gtfN2/LHuRHGFLJjMnOZd72QDWhyPb9mjrBQIM=;
+	b=u7NP+7a2c1Yv020+YRdCd6aS03ng5WltSY4cHjjuSJy5k6sLOF0ekTL/7EorlcYBuHjo
+	 8zhJQluAN+uukUDCrIRb9pejzyMSBTQZuKz+wrOWNzZAaAIl4wk6tSKDVk9w7A3QOVsjh
+	 xdZVsluWDahXT3XNGuLOX9jNfRyiLJItb0AVSxImhQXclcHnTTy48BcoMT6JByM7JIQpE
+	 EgJcc7Mn1/qHMeZAZgK/H7pRJ7peqi0oOKLJMdxy5DbIK+Z1r6B7KX4MMDDWiG/1onbY7
+	 KWuTxfE2riKKbYOry6pfMXdhq1+7009fCNUqkdfb1vbH7AhFVlpohp86BqrZ3UFsCZQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UsLBoyzD;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=RYE80E4L;
+	arc=none smtp.remote-ip=198.175.65.11
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F9B7606A31C;
-	Mon,  9 Nov 2026 17:37:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B67F606A325;
+	Mon,  9 Nov 2026 17:57:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0B67F606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UsLBoyzD
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE5941F0089F;
-	Mon,  9 Nov 2026 17:37:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794245826;
-	bh=i2dzBPk2KyCkXa9Ry/J6aPzwN7dFhy1J+ad3KFJSVCo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=UsLBoyzDXclZURcLlAVnpfdx1bQX47+aMaIu6rOp9H65LGjgf7eEiLRbjPbVYr+HA
-	 kEaFFeNGf1wgD40VvhOA/k+XqiSxBf+fBaVvwpPYnBsjtJ1ZtocMWbfv7JrmME1zRu
-	 gQTXzYZbdjKTjXAwz0Au28t+KUBUAnkR/hCf8/I/2uueKXcCI1kd0gkTgoS9KqV/38
-	 X2f/VvdIVgU3/5I1f4ape5h/zdV175YODTDs8OeyrzmrGwoLdiuDqweNk2Hs2A6Ppc
-	 ugucn3KO1LtURaL9UI0pN8bHPKTIFqgV9Xx+Y84gaiUH9VEmMguMh6kiVJnTXDxLY1
-	 EWYrH2OSVJTrA==
-Date: Mon, 9 Nov 2026 17:37:01 +0000
-From: Simon Horman <horms@kernel.org>
-To: Claudiu Manoil <claudiu.manoil@nxp.com>
-Cc: netdev@vger.kernel.org, s32@nxp.com,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Wei Fang <wei.fang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v3 2/5] net: enetc: Enable probing of version
- 4.4 devices
-Message-ID: <20261109173701.GW18859@horms.kernel.org>
-References: <cover.1793712309.git.claudiu.manoil@nxp.com>
- <bf8effe9a06ba569b5e5a36cc1d1982b2e3fff53.1793712309.git.claudiu.manoil@nxp.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=RYE80E4L
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1794247062; x=1825783062;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=/GGAxNjyNSTAgb+4GsAIS07jSZ/uzkJHlCxb0K1tUUw=;
+  b=RYE80E4L4jf+eo3yiNmYGvjkREiK14P7tpe2VTbck8ZSyfp/TeAWS5he
+   Ydc1pMWVHQTvD6dqXwK2DCBMJREpZ2FA0BK5yRMiv3HT2aHyRUMQpt/ad
+   0YsiSK6ITcQ6TMxMbD0ojpZZtMh8nej1ULGVuNc4NOQje0LVgQI7V9k1n
+   RwbgmQ1f17yoZnD3BGGoXT+41rwyrOKWFwlc09/3aKQ3FWis09A6urYN1
+   he6mfWqzIbpzf4W+kESQ1CHyspmUeLnmkAMmd5Dc/Eo9K51umHnm+CxzA
+   Rrq7rC/Vq8QK2pdUWOp6cryd3vA2ccLYPwU43a/bRbqxyqnSiLqQvuerk
+   Q==;
+X-CSE-ConnectionGUID: ahWk49nvRkuczItyEQINHg==
+X-CSE-MsgGUID: ZlQDGFFaSG+kXM0E9n/tfA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11961"; a="2866560"
+X-IronPort-AV: E=Sophos;i="6.27,204,1787036400"; 
+   d="scan'208";a="2866560"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2026 09:57:41 -0800
+X-CSE-ConnectionGUID: wb2AMpMXSwWy17Y7mVRXlA==
+X-CSE-MsgGUID: AJ9NiomKQuqzRxE8oUxCRw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,204,1787036400"; 
+   d="scan'208";a="7927416"
+Received: from amilburn-desk.amilburn-desk (HELO localhost) ([10.245.244.144])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2026 09:57:29 -0800
+Date: Mon, 9 Nov 2026 19:57:26 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Frank.Li@oss.nxp.com, Mark Brown <broonie@kernel.org>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Radu Pirea <radu_nicolae.pirea@upb.ro>,
+	CL Wang <cl634@andestech.com>,
+	Ryan Wanner <ryan.wanner@microchip.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Vladimir Oltean <olteanv@gmail.com>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Han Xu <han.xu@nxp.com>,
+	Haibo Chen <haibo.chen@nxp.com>, Linus Walleij <linusw@kernel.org>,
+	Daniel Mack <daniel@zonque.org>,
+	Haojian Zhuang <haojian.zhuang@gmail.com>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Peter Griffin <peter.griffin@linaro.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>, Yixun Lan <dlan@kernel.org>,
+	Troy Mitchell <troy.mitchell@linux.spacemit.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Alain Volmat <alain.volmat@foss.st.com>,
+	Chen-Yu Tsai <wens@kernel.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>,
+	Laxman Dewangan <ldewangan@nvidia.com>,
+	Thierry Reding <thierry.reding@kernel.org>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Sowjanya Komatineni <skomatineni@nvidia.com>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	"open list:SPI SUBSYSTEM" <linux-spi@vger.kernel.org>,
+	"moderated list:ARM/Microchip (AT91) SoC support" <linux-arm-kernel@lists.infradead.org>,
+	open list <linux-kernel@vger.kernel.org>,
+	"moderated list:BROADCOM BCM2711/BCM2835 ARM ARCHITECTURE" <linux-rpi-kernel@lists.infradead.org>,
+	"open list:FREESCALE DSPI DRIVER" <imx@lists.linux.dev>,
+	"open list:ARM/QUALCOMM MAILING LIST" <linux-arm-msm@vger.kernel.org>,
+	"open list:ARM/Rockchip SoC support" <linux-rockchip@lists.infradead.org>,
+	"open list:RENESAS RZ/V2H(P) RSPI DRIVER" <linux-renesas-soc@vger.kernel.org>,
+	"open list:SAMSUNG SPI DRIVERS" <linux-samsung-soc@vger.kernel.org>,
+	"open list:RISC-V SPACEMIT SoC Support" <linux-riscv@lists.infradead.org>,
+	"open list:RISC-V SPACEMIT SoC Support" <spacemit@lists.linux.dev>,
+	"moderated list:ARM/STM32 ARCHITECTURE" <linux-stm32@st-md-mailman.stormreply.com>,
+	"open list:ARM/Allwinner sunXi SoC support" <linux-sunxi@lists.linux.dev>,
+	"open list:TEGRA ARCHITECTURE SUPPORT" <linux-tegra@vger.kernel.org>,
+	Mukesh Kumar Savaliya <mukesh.savaliya@oss.qualcomm.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Thierry Reding <treding@nvidia.com>
+Subject: Re: [PATCH v2 1/1] spi: use dmaengine_desc_set_callback()
+Message-ID: <avIJhv7p2v30U8H9@ashevche-desk.local>
+References: <7f96599b-681d-4963-bdda-1274371ac84f@kernel.org>
+ <f1fa853d-1703-411d-b2d2-0fb0b176c2fa@kernel.org>
+ <autqC143h7Qf1R9H@ashevche-desk.local>
+ <9e39502a-dd17-4fa2-98a3-9019523cb5e8@kernel.org>
+ <auuYcS7-YqJKcUbE@ashevche-desk.local>
+ <63c24437-4261-4a51-be7e-31ac0759a095@kernel.org>
+ <auxGom0XR-Hax9b3@ashevche-desk.local>
+ <00390a20-7630-4066-9779-06c8f915a176@kernel.org>
+ <auxNmE8yZVP-wL2e@ashevche-desk.local>
+ <3dc7277e-2f6b-44a6-9085-2e33d989c1c9@kernel.org>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -66,136 +141,79 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <bf8effe9a06ba569b5e5a36cc1d1982b2e3fff53.1793712309.git.claudiu.manoil@nxp.com>
+In-Reply-To: <3dc7277e-2f6b-44a6-9085-2e33d989c1c9@kernel.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Tue, Nov 03, 2026 at 04:09:08PM +0200, Claudiu Manoil wrote:
-> The ENETC v4.4 devices are present on S32N79 SoCs and feature only
-> Pseudo-MAC ENETC ports, whose PFs use either the 0xe101 or the 0xe110
-> PCI device ID, and the VFs answer to the usual device ID of 0xef00.
+On Fri, Nov 06, 2026 at 08:20:33AM +0100, Krzysztof Kozlowski wrote:
+> On 05/11/2026 10:34, Andy Shevchenko wrote:
+> > On Thu, Nov 05, 2026 at 10:07:30AM +0100, Krzysztof Kozlowski wrote:
+> >> On 05/11/2026 10:04, Andy Shevchenko wrote:
+> >>> On Wed, Nov 04, 2026 at 11:54:56PM +0100, Krzysztof Kozlowski wrote:
+> >>>> On 04/11/2026 21:41, Andy Shevchenko wrote:
+> >>>>>>
+> >>>>>> But sure, if we want to play such numbers game, I will be sending
+> >>>>>> reviews for single lines.
+> >>>>>
+> >>>>> I'm not playing anything. The problem is that the patch unites the files that
+> >>>>> have distinct maintainers and unrelated to each other code. That's why in the
+> >>>>> subsystems I maintain, I almost always require to split on per-driver basis.
+> >>>>> Yes, exceptions are possible, but has to be quite rare.
+> >>>>
+> >>>> That's independent problem. Patch could be split, but it was not. Since
+> >>>> it was not, receiving end should act accordingly, e.g. when performing
+> >>>> incomplete review of only part of the patch, do not call that entire
+> >>>> patch was reviewed by giving the Rb tag, but give Ack tag.
+> >>>
+> >>> No, (partial) Rb != Ack.
+> >>
+> >> It is, because there is no partial Rb tag.
+> >>
+> >> There is partial review, but not partial Rb tag, please see exactly
+> >> submitting patches. It repeats the same in three separate places:
+> >>
+> >> "Acked-by.... user may not have carried out a technical review of the
+> >> patch,yet they may be satisfied ..."
+> >>
+> >> "Reviewed-by:, instead, indicates that the patch has been reviewed and
+> >> found acceptable according to the Reviewer's Statement:"
+> >>
+> >> Above important: "THE PATCH"
+> >>
+> >> It is not "the patch or its parts"
+> >>
+> >> Further:
+> >>
+> >> "I state that:
+> >> (a) I have carried out a technical review of *this* patch to evaluate
+> >> its appropriateness and readiness for inclusion into  the mainline kernel."
+> >>
+> >> And further:
+> >>
+> >> "A Reviewed-by tag is a statement of opinion that *the patch* is an"
+> >>
+> >> In three places it is THIS or THE patch. Complete (exhaustive) list of
+> >> options what can be reviewed to get the credit and give statement of
+> >> oversight.
+> >>
+> >> Statement of oversight DOES NOT include "part of the patch".
+> > 
+> > So, it means I MUST from now on REQUIRE a split before reviewing.
+> > Right?
 > 
-> While the ENETC PF instances are usually designated by the 0xe101 ID,
-> in newer IP versions the 0xe110 ID was introduced to indicate the
-> power-on reset default NETC switch management interface. These IDs
-> do not indicate any functional difference between the designated
-> ENETC instances, and can be interchanged and re-assigned at boot time
-> (i.e. from firmware).
+> Why "from now on"? The reviewer's statement of oversight is worded like
+> that since beginning? Also nothing stops you from reviewing parts. We
+> discuss the statement of oversight and its result: giving Rb tag. The Rb
+> tag is not output of some review, but agreement with statement of
+> oversight and performing what is stated there.
 > 
-> Signed-off-by: Claudiu Manoil <claudiu.manoil@nxp.com>
-> ---
-> v3:
->  - Added sysclk_freq info for the v4.4 ENETC devices.
-> 
-> v2:
->  - Described why there are two ENETC PF IDs in the commit message, as per
->    review.
+> You can review parts, but you do not provide Rb tag.
 
-I realise this was forwarded somewhere by an automation, but it seems not
-to the full CC list, so I'm reproducing it here:
-
-  commit 6de2e15f2fb313f3ab9a84d0bfd5a867de11c72c
-  Author: Claudiu Manoil <claudiu.manoil@nxp.com>
-  
-  net: enetc: Enable probing of version 4.4 devices
-  
-  This commit adds driver data and platform info entries for ENETC v4.4 PF and
-  VF devices on S32N79 SoCs with a 500 MHz system clock frequency.
-  
-  > diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
-  > index c6571b5cc8425..b989823859ff2 100644
-  > --- a/drivers/net/ethernet/freescale/enetc/enetc.c
-  > +++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-  > @@ -3832,6 +3832,20 @@ static const struct enetc_drvdata enetc4_vf_data = {
-  >  	.eth_ops = &enetc_vf_ethtool_ops,
-  >  };
-  >
-  > +static const struct enetc_drvdata enetc4_s32n79_ppm_data = {
-  > +	.sysclk_freq = ENETC_CLK_500M,
-  > +	.tx_csum = true,
-  > +	.max_frags = ENETC4_MAX_SKB_FRAGS,
-  > +	.eth_ops = &enetc4_ppm_ethtool_ops,
-  > +};
-  > +
-  > +static const struct enetc_drvdata enetc4_s32n79_vf_data = {
-  > +	.sysclk_freq = ENETC_CLK_500M,
-  > +	.tx_csum = true,
-  > +	.max_frags = ENETC4_MAX_SKB_FRAGS,
-  > +	.eth_ops = &enetc_vf_ethtool_ops,
-  > +};
-  > +
-  >  static const struct enetc_platform_info enetc_info[] = {
-  >  	{ .revision = ENETC_REV_1_0,
-  >  	  .dev_id = ENETC_DEV_ID_PF,
-  > @@ -3862,6 +3876,18 @@ static const struct enetc_platform_info enetc_info[] = {
-  >  	  .dev_id = NXP_ENETC_VF_DEV_ID,
-  >  	  .data = &enetc4_vf_data,
-  >  	},
-  > +	{ .revision = ENETC_REV_4_4,
-  > +	  .dev_id = NXP_ENETC_PPM_DEV_ID,
-  > +	  .data = &enetc4_s32n79_ppm_data,
-  > +	},
-  > +	{ .revision = ENETC_REV_4_4,
-  > +	  .dev_id = NXP_ENETC_PF_DEV_ID,
-  > +	  .data = &enetc4_s32n79_ppm_data,
-  > +	},
-  > +	{ .revision = ENETC_REV_4_4,
-  > +	  .dev_id = NXP_ENETC_VF_DEV_ID,
-  > +	  .data = &enetc4_s32n79_vf_data,
-  > +	},
-  
-  Can probing ENETC v4.4 on an 8-core S32N79 SoC overflow priv->int_vector[] in
-  enetc_int_vector_init()?
-  
-  In drivers/net/ethernet/freescale/enetc/enetc.h, ENETC_MAX_BDR_INT is still
-  defined as 6:
-  
-  #define ENETC_MAX_BDR_INT	6 /* fixed to max # of available cpus */
-  ...
-  struct enetc_ndev_priv {
-  	...
-  	int bdr_int_num; /* number of Rx/Tx ring interrupts */
-  	struct enetc_int_vector *int_vector[ENETC_MAX_BDR_INT];
-  	u16 num_rx_rings, num_tx_rings;
-  	u16 rx_bd_count, tx_bd_count;
-  
-  Previously supported SoCs had at most 6 CPUs, whereas S32N79 has 8 CPUs and
-  enetc4_default_rings_allocation() allocates up to ENETC_SI_MAX_RING_NUM (8)
-  RX rings to the PF.
-  
-  When enetc_init_si_rings_params() runs on an 8-CPU system with 7 or 8 RX
-  rings:
-  
-  	int cpus = num_online_cpus();
-  	...
-  	priv->num_rx_rings = min_t(int, cpus, si->num_rx_rings);
-  	priv->num_tx_rings = si->num_tx_rings;
-  	priv->bdr_int_num = priv->num_rx_rings;
-  
-  priv->bdr_int_num becomes 7 or 8 without being clamped to ENETC_MAX_BDR_INT.
-  Then enetc_alloc_msix() -> enetc_int_vector_init() writes past the end of
-  priv->int_vector[]:
-  
-  	for (i = 0; i < priv->bdr_int_num; i++) {
-  		...
-  		err = enetc_int_vector_init(priv, i, num_tx_rings);
-  
-  where enetc_int_vector_init() does:
-  
-  	priv->int_vector[i] = v;
-  
-  overwriting num_rx_rings, num_tx_rings, rx_bd_count, tx_bd_count, and
-  subsequent fields in struct enetc_ndev_priv.
-  
-  Should ENETC_MAX_BDR_INT be increased (and/or priv->bdr_int_num bounded by
-  ENETC_MAX_BDR_INT)?
-
-Link: https://sashiko.dev/#/patchset/cover.1793712309.git.claudiu.manoil%40nxp.com?part=2
-
-This does seem to be a legitimate concern to me, and I think it warrants a v4.
-
-There is also a review of patch 1/5, here, which I think warrants
-investigation too.
-
-Link: https://sashiko.dev/#/patchset/cover.1793712309.git.claudiu.manoil%40nxp.com?part=1
+No, I'm not going to review something that I may not put Rb tag on.
+I can NAK or ignore (or Ack without viewing, but it equals to ignore to me).
 
 -- 
-pw-bot: changes-requested
+With Best Regards,
+Andy Shevchenko
+
+
