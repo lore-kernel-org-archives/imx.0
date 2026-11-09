@@ -1,101 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=209.85.167.41
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1794189793;
-	b=KUOJHEpClYWkECl7bCjuoCp7tws6YABqsr5M2OghDHCBkSAkIl+35tUVIWDIl09bB5/h
-	 1hWb9ISthdALBqxU7jqXM5KjL7GU2xsxwral7vJdbJ2Qm5n9vye/MSXMopIArPSOKi7DK
-	 HAnAPD7j3vIylfnA+knqknwECZSpQwb4qIpVDKplj4/6xnT9KnONUP0rpWTTUoznYr48g
-	 J1FgVPUXl3LQSOL2t9BSPmptMlpQ5IcavfKMNx+F7rKuZ7qz++moECIEA6LUn1qJKeNxz
-	 HNmGuycPMRYcLHsRTRH5Cp/Xsv6pc2Rcn/+U2Hde92Ab0URRvJNbYIqM6BnM+dLteMA==
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.69.13
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794190620;
+	b=xnkhKgSF9SxpQdEXgoqrKEzPRc6THoVS7VNVWKoEiLzfP7u5dGsjVLvjYoFXZCZaLPzJ
+	 skObbR5DZC8iQ8A0wxekwQ4PtVd/H9r3z39SZD21/YYVYbYr6Zl/vqowu3bGp+9FxKlzk
+	 QDrjRhUnan9gnN6rtpWI146vY3lSFB3G0SatWZ0+maNLL5MLBgzUWef1w1U3KYrFW9j2A
+	 qEx+7dTdPlgUKBnaEqRH5cqhuywiQObVT3bndwSB+Y2jyESUQCDnWHF1GHDlTQVgs5g5b
+	 /qCF6yLNaCU0YJbN4O/T4rIB7d/KxRg9kC/IvrJ7ipU816nEzYuPXME3f8Bi5TTKrbw==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794189793;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=JHVLOFSLCv9GVsq054d9bMCs6jEJnblXl1piTel5GUI=;
-	b=HoRZlRI9ESGjKGyhIRgvj6PIUudI7WzVxPDAzfAae/sJA4vNVpDjKRKXJ3g5LjhsCXqs
-	 qnRujAinmJlMAvBWl+HfwqDexLgf3atA4mmcGYaxbAZzZAS+rS31OhXUiDWB4t1mYc3S8
-	 X5wS0aHGSSEOfqUlqsaK4b/Ot/Az1ZfjcpndBOFuJRxXbh67hYOG7xVmklAEbSeZKKPwG
-	 135NYRa8C/F1ezEM4Y4HkKk766+dqpmljotHZzREdpjCD4ubq/hXoTIK1sXxUf6kCQJZe
-	 MlEx5pRLueme3PdpQtSy8MSnSrmKinQYNbKp1TJf7uKnKfdEbf+AgHzRPRGy358Ivug==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794190620;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
+	 Date:Message-Id:X-Mailer:Content-Transfer-Encoding:Content-Type:
+	 X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=En7vb0S5km5GJnk/P0b4DD+EHYGjR3uCY6/GG62654k=;
+	b=gGZnfopCu58jOQVD8/4cRzyHcyeTmb53+AlTj+pRUZA2Mj+xaVfuLwmDr0HS9EfPEhb7
+	 bxZZAr6B9+aqr6vK+Jlk4o+t9pViDTHsx+qZmNEhQv/Bw1igd5ofjfL9MF0UHbR6udYYB
+	 yq9MPQIe/OVjdaO3Zpxl2nsJih93PqUQCmIivO5bGtzf7x+QJX1Zkq8JnwOXFOwBJ71q8
+	 m0gviiBljBCRkVP/18VZa/mu4RzP6pk+nm7pmhA6a/2i25mvEfbSoJqa/VUwG6Wc9S/Jl
+	 XPplUq2RYEmv5OWGr88z+p9CyY8lIKlt8t+DWorPdaAJ2LyS8XLkIjhDXsWz4EVQcqA==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=y2yIaGm6;
-	arc=fail smtp.remote-ip=209.85.167.41
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=oss.nxp.com;
+	spf=pass smtp.mailfrom=oss.nxp.com;
+	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=XnqlTlES;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.69.13
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010013.outbound.protection.outlook.com [52.101.69.13])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67E39606A320
-	for <imx@lists.linux.dev>; Mon,  9 Nov 2026 02:03:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 67E39606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85AD7606A320
+	for <imx@lists.linux.dev>; Mon,  9 Nov 2026 02:16:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 85AD7606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=y2yIaGm6
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5c10dc41270so283461e87.2
-        for <imx@lists.linux.dev>; Sun, 08 Nov 2026 18:03:12 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794189791; cv=none;
-        d=google.com; s=arc-20260327;
-        b=FSs6tbvb/XQ96iR9PaPbPH9moOUVnNENy77A0/wXSth/w+OPD2dTxUMGErYl7IbSiw
-         AM+8VTiZsh4Tj+yeZgOQXwUmtqnrti+iDrvAveo2m2A7ibLcA3Lxe9xMqOiJTh7lsM7b
-         YGort/QbjgMOIQ5qMekKdcjlbvuKsU8qr+oaSAs+jzfRWzoBDaqTxlfQBF0ZPxm7A0sH
-         IdgErctDWrImLiEtitqZ8y2wrv456FSZLNdAMi0+fYptrhDjFekcjmcKcy3/BI41Y4Iy
-         Gh2L6F1gYhnjfsLrWJqQ7vgqUeGD+OCtRpbGPfUx6eGcuUr65Dq1dv5ZfajP6e2wGtMz
-         1a7Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=JHVLOFSLCv9GVsq054d9bMCs6jEJnblXl1piTel5GUI=;
-        fh=sFcm+S3+kaxUXp37MkePSd2gMs6m9BGg/cksDS0PhRA=;
-        b=c7/Gya4jKGBR3xg7jtIR25tv9Cfndku4xFX/K5wdOdQn30yrt9BD3nq9SEpYiz7xvw
-         on3lJMsMu1BlyON3kgyglWMqBfVkbnMe6YSLc8G+E6YUvYxhRybglAU4n/m2WdrA9OXA
-         59LsH1UpqJl7y9KeircedTSkQQ7qzccCa9+Xq1TYLwQkrcP2W6zGfoxKkVjAvR4z2BGY
-         4U07vNRy0p28VKrfwVcc45ucej13Vy/qrj38DolntPxI82CgcyrW0oRNVHEI/TRJVxVy
-         g9m7YNHrmML9O75/DIT26/z89c5tCUZNAekV1IRjR0Zceh0Si1LZYqHXqSUvxgk1ua4X
-         +2uA==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794189791; x=1794794591; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=JHVLOFSLCv9GVsq054d9bMCs6jEJnblXl1piTel5GUI=;
-        b=y2yIaGm6GUL0DVAZz3yCM4gy74XNV8/Wqf61Oi5pkfZQRezV9crVQL9gqw13CRHZi1
-         udvkbr2uVW4cYjLugPcaqYNLskk9a+phL5Yuc7i4ECHDoi0m5FW8o4jyauGx106oBpta
-         iGMnzMZSvVybdjfjybssI+VT3Gu5RBKqvTkBHpMa+H7QDjGl/9ZgTtjL/4Ys71HBZFOx
-         5smf/zi9VGNQ64tBeL4WFLShHgLAT0aUU8iSAS9suRfmQt6o0DtBUUyEni6BJfah13jU
-         Iul/mFMu7EVMWkEPY+VW4yeg25WAkjQxu7H5JUJUW8VZ90iG8PQz7mdnfJRROU0Cc/2s
-         9ppQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794189791; x=1794794591;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=JHVLOFSLCv9GVsq054d9bMCs6jEJnblXl1piTel5GUI=;
-        b=pgxQ/aV03aVdeTHuHlLtypTrY+hHnuf9Jg3rvL7jQaE1KYJXbKIJj9HJOuE6EOcUFZ
-         iqKWjRDDV3H3a/knLFaEVSkWSDDNBuPwjH5Q7fwnsLj4m9b3U/KkdB0wnbKMknsquIwM
-         9z2vqcImkTT4WYdPu0QN9LjW7HkRVcVN34Cy/MAJxC67eGWZ83VzaZYnYvHNzBuVb6bk
-         tHwSXjFkvzvDfnEU4Wpq9qS9WBw47QGqMEbV29AO5uaR+d2bMQ7jgix0J2PPBAHANwbo
-         r8KW0P1liz6b0WXni0lBNZWP66z8dmRLK15k7r+2lHGvuqNUWA92GkSMYCY4bg4vVGVW
-         B9Nw==
-X-Forwarded-Encrypted: i=1; AL+hErGSE0VuwDNyJmIqhtw+IjBSOo7WmygDBzg4tghBahNeSbRJXeX7KxHnvTRJtsvYJ6nwu0s=@lists.linux.dev
-X-Gm-Message-State: APuU4Z8NG9w3BmEaG5LP9qPMRCQ7C0eTaQhFlpCwEiZqh0PZb7PKE5/C
-	VygBujk2QkZ1fDnQPBGKYICSXPrjJD+qr8AoKSM4gjtRzT8x9BvhbBnD75F+kPCKxZxWmnt+wPi
-	be6GFqQfy56/ifP0+bpm09A0NpYKNIPM=
-X-Gm-Gg: AYBFou2S9abJYm6gH7qmVOacZ+XRbV8bUPHSiXMobvB4OxIvvcU5j/A6Cbyb0bl9zF2
-	JuZlf4Pf8B/MxleCJlK3B/zCja17+wkIwPwAH0veNym0f+7o6HJQibCLDA3x6NgvmtGCgzuuO9o
-	+6v7EdR7iCNRjOa8/T6nJN+/050mWsrfCBgKy5CsRwyWNhHN4kpCVRG9yVrbWOX55aiwd4U+XDm
-	DJI1PFMUdAxVnlEHaLEOISkalcB53xg/RIuOmB3XjjTUtb/gmSOuJw/Ke6PuXMw+2D4P/meD/rM
-	wkz53g5tTqlhETd5Lq8Ey/dbdsTaod24lCfURgM2odCLom0NTUfiKtE/QBq6EZdIVExMu8pEEfR
-	XFAAEj9M+l/2efwLHm7dludju9q/LHz7w0qQJdvyS0tJAjtOT3Ky99R3tFuryPTWywgxpAeCMQs
-	AD1oZ1IPfhLqXyV3iIjYh7LupMf6o=
-X-Received: by 2002:a05:6512:220e:b0:5bf:bbcb:509f with SMTP id
- 2adb3069b0e04-5c14c02e15emr627836e87.37.1794189790992; Sun, 08 Nov 2026
- 18:03:10 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=XnqlTlES
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ohx9V8JS7mVrD/kslCENt9sPnFGckVDIhJxhutor4HVTgLfeKOcnMs65a+Bg7FzJbQ2hBsRv2ZH0vYe3mkNdya3biRdw9hYbvlZqT8uk1aS3lE5TdjlfVgQ9lDxsQcNXNI9nJjvS0xTpzgjpzGW51Dn9dN4YQATmYpbZyxrxnSpjq8RYCuUORZIZHO7bjK4k5gV9KTCUBq57x1URvccUt0bMBGSDe+Fc0KpthNYmq9dBAty1wuIr/5Vbss+eH+kO8SghCgUyCSjvYlHXxLGcMiQ6vl2X2QqhQHj3ta0+JB1itJCGTLyHklfpDMtxybyGn26dR0iq/q9xNHscIFov/A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=En7vb0S5km5GJnk/P0b4DD+EHYGjR3uCY6/GG62654k=;
+ b=n8v31oxXof571FhSo7do9J4Xo77RR7cU6pI75K4PwbHcfe7dB4dOOi68ZzeV33fdKHTJjUcQBNm5gKGnowg/3t+Lw9pucNe+e+m0UvWQs5DjSrMtfYmZmUcpDPfzYOopwyO1j5IsVk0mlek4Cb++BW86GIEnbuW1YTkCaQIyM98rn2YAgDY6qYUXBx2pxxO5dHrpoR4CnKOf28zZJ81mKW/mpq75O6rzsmlkGZIZi+s05unms0v3jwIBUzuTb0vGZnjr2nqmsrCaVOXS2i71c6k/5Olw6mWowlaDf/wjGZoD8BFtVCRiyuJSBJWVqn/xIufvUPat6kxK63s0lxWgmw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=En7vb0S5km5GJnk/P0b4DD+EHYGjR3uCY6/GG62654k=;
+ b=XnqlTlESsHtC8juOP9ZkuGmZ02ozY5QKAczLsSKm/E9I0Quc8nRCFhco3KHmQPen6XAIKaJ6j68DJ5/MtsFU2djdmdYSR7Nj3GLWIFwDiKcQfmaaY0JjT0D0potIHNu74XqTucBVblbUXqTtC3F0FUhucKHx/aSpMPOR1+GJaFYbKBzbRImr/Vr+Utz+7TPi1274JDyh5Rnf5TbyUibZQb3hrRw+Vgi6vVX7ShRIt3ZqUZfd8PNirg3b9MZciWanTNp8we1bLQWAciyH/+QuONoUvgRs44OoQV291OUhRNqyfkbEk2ZztdP1+ykgCu09xuZ4zjW52sHffgY8ZYJ0og==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from PAXPR04MB8096.eurprd04.prod.outlook.com (2603:10a6:102:1c7::19)
+ by GVXPR04MB12343.eurprd04.prod.outlook.com (2603:10a6:150:2c7::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.12; Mon, 9 Nov
+ 2026 02:16:55 +0000
+Received: from PAXPR04MB8096.eurprd04.prod.outlook.com
+ ([fe80::68be:f721:5000:3f2d]) by PAXPR04MB8096.eurprd04.prod.outlook.com
+ ([fe80::68be:f721:5000:3f2d%6]) with mapi id 15.21.0592.010; Mon, 9 Nov 2026
+ 02:16:55 +0000
+From: hongxing.zhu@oss.nxp.com
+To: frank.li@oss.nxp.com,
+	jingoohan1@gmail.com,
+	l.stach@pengutronix.de,
+	lpieralisi@kernel.org,
+	kwilczynski@kernel.org,
+	mani@kernel.org,
+	robh@kernel.org,
+	bhelgaas@google.com,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com
+Cc: linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Richard Zhu <hongxing.zhu@nxp.com>
+Subject: [PATCH v2] PCI: imx6: Enable L1SS support when supports_clkreq is true
+Date: Mon,  9 Nov 2026 10:21:39 +0800
+Message-Id: <20261109022139.3226052-1-hongxing.zhu@oss.nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SG2P153CA0046.APCP153.PROD.OUTLOOK.COM (2603:1096:4:c6::15)
+ To PAXPR04MB8096.eurprd04.prod.outlook.com (2603:10a6:102:1c7::19)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -105,34 +106,98 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-References: <20261106090342.2601665-1-hongxing.zhu@oss.nxp.com>
- <CAOMZO5CQtcpb04Vp49Rg_+DHoozRpQthW3_YNAYQHqi=VOmpEg@mail.gmail.com> <GV2PR04MB120197A63428B4142714A8F148C732@GV2PR04MB12019.eurprd04.prod.outlook.com>
-In-Reply-To: <GV2PR04MB120197A63428B4142714A8F148C732@GV2PR04MB12019.eurprd04.prod.outlook.com>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Sun, 8 Nov 2026 23:02:59 -0300
-X-Gm-Features: AclHuK-L3h5gzP6mZBeJdIsXpM-rka8mrZeT_p3Ww2YWyi1VobDmgIX4-64aPE0
-Message-ID: <CAOMZO5BLAnXVRMQLz2pJuJfcGgDWiQcoZ+APfYkBd4UainfJrg@mail.gmail.com>
-Subject: Re: [PATCH v1] PCI: imx6: Enable L1SS support when supports_clkreq is true
-To: "Hongxing Zhu (OSS)" <hongxing.zhu@oss.nxp.com>
-Cc: "Frank Li (OSS)" <frank.li@oss.nxp.com>, "jingoohan1@gmail.com" <jingoohan1@gmail.com>, 
-	"l.stach@pengutronix.de" <l.stach@pengutronix.de>, "lpieralisi@kernel.org" <lpieralisi@kernel.org>, 
-	"kwilczynski@kernel.org" <kwilczynski@kernel.org>, "mani@kernel.org" <mani@kernel.org>, 
-	"robh@kernel.org" <robh@kernel.org>, "bhelgaas@google.com" <bhelgaas@google.com>, 
-	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, "kernel@pengutronix.de" <kernel@pengutronix.de>, 
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, 
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Hongxing Zhu <hongxing.zhu@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8096:EE_|GVXPR04MB12343:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8e5c1da9-0813-4490-91ee-08df3e078610
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|23010399003|19092799006|921020|10067099003|11063799006|56012099006|261021121427099003|261022075727099003|261009223027099003|261102123227099003|18002099003|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	DK7ptXIdF8zMvryG0odICP3BhuJjLe31mt3LwBrsxCZSsoYO0KftNKEptBZCeYXibEpKD2ahJ7ObAMMjREckusVTQMc/fOjm7NYrm5e3eqLLlg1ZAs1q6q2fcoV2J7d/towco9ZluHH0u8EvU12CJMGTcYd2fLh+vaHPShRW+rZ2sfHsg83vuBC2T76JJEWo38j/o2SdtyY9El3MFHWr2w/b+YUeynYPPMq6dwNt48YWJrwNyrAQzaBykLwB29PCSt6HWCdO2iA1U5FelBtBwBpqn5coj68cdFEX2mBAXb/QVxJYejoyJbslrIJGurOR1zbwqF/jpqQLz9Ez2Jsf3WLsvPoOmZhZTESmGfZCLrHP+FSVZyKsFV++mbdE/3XpaIKmjNMP2JiY87q4TugjL2wF2iqqDvb4DA4J1HPhOQjkxTHQzZ50kgzEd5rb2/ieK7gFsk1yllG2Qdyg1YOws98QEkl1fO02nmZ9WyPlIyD9KPiRThU4/jUkv4ymrU2UggyfeLVUq7L5IX1Tnw4heulHl46ZhKP3I55rwwhC7XNy0Y20P+Drh8SIKYu7z+6gyZOk+iiank4m6Cy3OufBLJamEnxFLD6OS9ueQgKG/01iFSgud/mCL71Y+FPU83egVaHSeYgw9Aam0/6SK99s/Le8K3fjYkzH9UETOzLL7RH4EECRTOHDneV/vyolN6yZIxgnvilNDI3xMu3XUnidOw==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8096.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(23010399003)(19092799006)(921020)(10067099003)(11063799006)(56012099006)(261021121427099003)(261022075727099003)(261009223027099003)(261102123227099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?HGwFnd72k/L7MMi85CgOWcJW0MhbbvtKr/DAB+NWStpkUceeWPy4CVeSgDR+?=
+ =?us-ascii?Q?emcjKjFYRwFF3yvwG69c9/TaDXIf/oDLqg4UsvdPUMKLXhwTa9PztqqYsQfN?=
+ =?us-ascii?Q?nqyzbBUFpa3VH/sZCA72eICOmGz15jleebr19DxRZUqfV1OYiuTZuzir3Owc?=
+ =?us-ascii?Q?G1qbcjc6+oagImBPu5eUWE+3X2LPumacLj/GDIlkV7GMpsDWKCKMKaOPphGT?=
+ =?us-ascii?Q?Q8wGu4uba4y8CS+47FdR2HOgwpEux1GdneJiZzlWapx7Eui04rjiak30jhIR?=
+ =?us-ascii?Q?6FQSkP5LCaq0P5MOCjjiax+Nho3cF0l7xzK6r33mfaptdm4A284BZQXImyhd?=
+ =?us-ascii?Q?liPdy75YjwgDYJtUui9oa1fFGHCv0P3ah/QWhs3wmDxZW17nAMu+g4aefTV5?=
+ =?us-ascii?Q?5WUZOUA54kDvYx7c3/SHoXBKO6SOUoLctaG8+2uT/YGz/6+Rn/Ld9rq6oNKL?=
+ =?us-ascii?Q?1fItMbIhYzxHacUHZFyC3XJ/O0cuePxLvrWf6TnYvvUrF42pOZMC+e6yKes7?=
+ =?us-ascii?Q?R+KRwsDujOec0eIkG2mlzKqvJ1QKhsWc2Idh8uANMFFQK50OG6AgPwkb9iUz?=
+ =?us-ascii?Q?FPEnHWUrqNpLfGT6jPFZ1ZIWzXVJJR51k55SPKx7q82DjFMULqBVOJvRwba7?=
+ =?us-ascii?Q?vXzqH7G0ePxwYwZATSx65OuAnubBkAaEDhyyCiAiRnAgv+ljoprnCph9GKzW?=
+ =?us-ascii?Q?pfBNtEfBtYK+pJhSpxMJ2aSEnpL3GHQUZizpaVI9AQ9uRcC39pamk6WpAsY0?=
+ =?us-ascii?Q?pMP7IdTbhLDF/I2+jFN0y/A9hvm4L4yq4l5svdf/jLEFkekh1wWssiXbPaNG?=
+ =?us-ascii?Q?Oi4Yoqojm/4OPzirF0YTYEwK043lUY6xxvCH5BGUUs90v78ohmLkYVEMcKe3?=
+ =?us-ascii?Q?H1ukZkFnSjLAL7eMyp7JK9abwn8BaD/zlL5kCgBtv4uStTVA2SZ+yRT/ILLv?=
+ =?us-ascii?Q?zbiMkZXUXmRFmAOp4PNY0dbXRlcT+UUbb2JvaJ94lTq98l/LZs9Ee1zlgnA8?=
+ =?us-ascii?Q?dMIHLZ+2uYFrkl9jeGlHNiebbe78qGQejVPuO74KpvfLeak6suOe8lI02pCA?=
+ =?us-ascii?Q?kP8Owd0tAM9omY5srlhNTkjKcOKxlGDR70A+9duNdjUEFeSWiOBHoeHj4VLd?=
+ =?us-ascii?Q?v3FCDXm04F+Kg0LYtBj6dJhbmXZgah92up7Foup6Tuw4b+5SzbnXvTA4Z+vb?=
+ =?us-ascii?Q?zu9BPRKb4gtrhdkYjeRBHN+nh7rUgnneECRf96yKV/btiVH+yp73Zsw62Sp4?=
+ =?us-ascii?Q?AuOiHaewG1JsVAtyk6/mu2KeLmUPAL4vNH0IOsQWTPGWkAiPX0mpF4KKls5d?=
+ =?us-ascii?Q?ltAFtSDlTGIyU6sn91kN6kjrWY4LGOm12yF2H03p1jMgJLtVsYBmHuJG8+y+?=
+ =?us-ascii?Q?HI9Qo6/7pVSXHO43L92g6c5VPntBxerw7l0NofiZhskCUA7aVcSUUlKXAq0/?=
+ =?us-ascii?Q?zAKRYkZpcTdA/8kTB5xQLPZDHBe4AVhlYnQTL75DgAYp1bMEiPXgPvtZOU9H?=
+ =?us-ascii?Q?O6oGT5LY3nmTMorMDyJEVXz5r19ObUD9ijs/HVvLjrD1JZV+xyWzJINFko78?=
+ =?us-ascii?Q?goUk9UelhxFBgwCt2RFjv41vSqvWYtVD/3NHH+JwEHeaDUDh/HPVXKa1hmSd?=
+ =?us-ascii?Q?woMY+WTezunvRwACpfkBiiJh8F8p1LzN0p8RFVx6MTvFehC7umhwZFuBJ2y1?=
+ =?us-ascii?Q?kt8miVeXqKaK91c1z0S8W2eUpvmdIxoPtuY152fL7Iizzrjibt99APlZ1HtQ?=
+ =?us-ascii?Q?Wle6vYc84b86E3eyqHfShG0uBfNgAlEMkec0/7VRs/PJ8vGJT7EJ?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8e5c1da9-0813-4490-91ee-08df3e078610
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8096.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Nov 2026 02:16:54.9640
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: dfN853sGxI2X1jhrAVj1iUxEOiWI8JyGg0C+uxMrs02NlhLY/UJFpxIubxetLMWtWACQyYTP1AKoMHWmrO/L3mEX8bzVXoc7BJezI1JsKqKwyYo885EQGuMPY+0bJfOK
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB12343
 
-Hi Richard,
+From: Richard Zhu <hongxing.zhu@nxp.com>
 
-On Sun, Nov 8, 2026 at 11:00=E2=80=AFPM Hongxing Zhu (OSS)
-<hongxing.zhu@oss.nxp.com> wrote:
+Enable L1SS for the i.MX6 PCIe controller when the `supports_clkreq` flag
+is set. This ensures that the PCIe endpoint can enter low-power states
+efficiently when the link is not in use.
 
-> How about to update the commit as below?
+The commit a00bba406b5a ("PCI: dwc: Advertise L1 PM Substates only if
+driver requests it") clears L1SS capabilities by default. However, the
+i.MX PCIe controller supports L1SS as indicated by the settings in the L1SS
+capabilities register. By setting `dw_pcie.l1ss_support` to true when
+`supports_clkreq` is true, enable proper utilization of L1SS for i.MX6 PCIe
+configurations.
 
-Yes, it looks much better. Please send a v2 with this explanation.
+Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+---
+Changes in v2:
+Updated the commit message to provide an explanation of why enabling L1SS
+support is necessary for the i.MX6 PCIe controller when the supports_clkreq
+flag is set.
+---
+ drivers/pci/controller/dwc/pci-imx6.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Thanks
+diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+index 83fbd998551d0..4eee02e135656 100644
+--- a/drivers/pci/controller/dwc/pci-imx6.c
++++ b/drivers/pci/controller/dwc/pci-imx6.c
+@@ -1501,6 +1501,9 @@ static int imx_pcie_host_init(struct dw_pcie_rp *pp)
+ 
+ 	imx_setup_phy_mpll(imx_pcie);
+ 
++	if (imx_pcie->supports_clkreq)
++		pci->l1ss_support = true;
++
+ 	return 0;
+ 
+ err_phy_off:
+-- 
+2.34.1
+
