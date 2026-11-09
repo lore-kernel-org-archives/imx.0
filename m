@@ -1,57 +1,117 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794198154;
-	b=AULGRE4Qe7RvzJVVRoxpsm2cl5BbA9/AinrWT11ybDXse2yspJ5Y/R0+lO1geIZSCq2L
-	 10jvIHCnJ2G4MB4IToT+p660dfanQLQj7+vnsWU47Gm1uVs0krR4ccTxpOizTYLAbSHt4
-	 mgF8W4xGMTVUqIqnxKzGI1LYrqhAWP787yazeHi7FhXvlExs9Tw+of9ysIoz/ALtxfP8y
-	 wL5oNRoFxdCgERZhJhQbpN6PzdXUy9MNZrzgXqu6+Vq+Ukz56JwpV47G+YH705oi728YM
-	 7k4LqTf+vVVhSzCdVC1fYW39q1L5TBEWwnmEBYlwgHCoPHS+aZYw3CHy56PqTWtxMWQ==
+	t=1794204041;
+	b=Fe/womsOYgs2GoX6qIQI1vaBeBjgn/p2mtGOP1326PeDGaXCwr0cFc4bQsKwaTzzNw5z
+	 /IrjIwl8OsKiRZwcpS4lSmDg3FdA3wSLr/b2XeNL8/m56RkXy0SWWj6feYtDa2fy8A3a5
+	 2rv0Z/eQvPcjWd14nXGxWWo3CE45w8exLNU+y7zePKZ3I8BALV2AXfSAeWFQMs8sgHANQ
+	 2/rhTkAQXONiMUh2aD1//lBVJM1CAdilpL8+j/0shj28re8K8fWFKcB/GtoqXOC8yILuz
+	 nYBfS1owv9ugG/dw/ZvHy2gxdXFGcLcc82lQHj9djjuBei2aBVgOQbdNffxDkdf2MsQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794198154;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794204041;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=s3A1JJTBzb6Sq/eGcNwFYBzXadSGZeqXhTCf8IODYaA=;
-	b=K+BUk5pxqonToACHc45iEDcWZ3Zek+N9duGKSd4WbnDMa4RlOnx/YAiDUq/kSH04bbTN
-	 7PjWhE0uCb5qT6fV8ITWfpTVu5hLZyzHqrvB8JHSlvYolzoqNIIHzDQ/+5wOJ+acfA2n0
-	 wINJ7lJ+rnqJcBMmJfKvyzfiT3MChhcPWNsNUpuSwKfJyAxlzO6WlXPO9UuyvkRaOB7Dc
-	 01vo6cRMhJXQD9mW8eGpMRKR7VcXrKkaAIL0p4To+2WKfb0zgcTHAXoijxDe9kT1ABgVy
-	 I+u1kWQom/AwbHIRj86ZLhVYKxE1OmfxuQ7SjFE+ugWr814/sm3UBM/VUpD9NLOhL8w==
+	bh=u7aSiRAyqUJJCYptUrQffwehB1VQ0X01AiRX22xwuyM=;
+	b=jpp1tGlpR6/d4lcDKP22/UaaEy+kT7w9I+kTFdT8i6NJWzHem0iy6B9tMuYMn6W4zNv/
+	 D1KIP8eitMikqYufNBPVc4NbHIvy2mEhegA7h1jNK5QsAjxUFgTPfAQOdJ2U3oue1p/vO
+	 ULiZjtN4OOkWQMIpeTf7v5JWb4gSFZO7f3yEwO2qzh/NHCKF/PRfdnxwiMnBehH6veETS
+	 Y7MJtW9dl6uM6OXj93bgKCT2lW8y0W+9sjTqHWIOKb189UcchZHodsvlWAtOUUx5sS/mE
+	 4HekgpBR4JxoUXYADnL4/+fC6DU/kHaqpth0TyfPaGivVW9McO0zuMtdKdg3H5pN1rg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="mivVR/Hk";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mhCpmFyH;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFCC5606A31C;
-	Mon,  9 Nov 2026 04:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A115606A321;
+	Mon,  9 Nov 2026 06:00:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mivVR/Hk
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0E031F0089F;
-	Mon,  9 Nov 2026 04:22:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mhCpmFyH
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ABB31F008A1;
+	Mon,  9 Nov 2026 06:00:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794198153;
-	bh=s3A1JJTBzb6Sq/eGcNwFYBzXadSGZeqXhTCf8IODYaA=;
+	s=k20260515; t=1794204041;
+	bh=u7aSiRAyqUJJCYptUrQffwehB1VQ0X01AiRX22xwuyM=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=mivVR/HkR7ovdacg/P8CM70YeCmM1pBhio0vgOCG/252yc9Asd8SBGfYAg7/BOS3b
-	 0dVSQIb8BwOyFkW9GWhQwnvFX2AvpVZfR0Es/65HOL6+fBCoh0RluIhOYf569CQT8j
-	 uGGKj0FQ6xtTHNH1hCLFyfWzgZRmG78mSJF3tB4aizcqGjSYif26D9z0tXhuPM3iIR
-	 3/2RVKB4rHTdgwqQ7QjKkvGoTmn7vYpztE/ju5G7jJVAqFtDQr9IB6NQr0Us4wHY2b
-	 u+YUEuD4yQb87umw9dDvg15uiF2HA3dJM9h3luAXLdWhv6+rBeDLDtXKeybWdsn7u8
-	 5W1v7ND3GCjqg==
-Message-ID: <sashiko-outbox-204402@kernel.org>
+	b=mhCpmFyH7SOmyvOcs7GgLvFo4llqJQLn3JD9Ni+eLlL44nVNxcNUeVegJZSzxSMdc
+	 4fJ85yE8c0ifBT0lCGnrINGc9IH004uFZD8R+b6P41elU0YmVXjixx42sa+uupOW5M
+	 t+DPMvcBgCziGhkh+DZuIoOOYMOLMaRbgFrBWnYpL64er4kcD3H71VgIaMyFEIbsWW
+	 7vjbN496UkeAwpsdLUdqap0gmN2SIES3Plx7MWAv3GZQm9V4/nH/Gg4fWSNVombPOQ
+	 WGcmvMqaVR+eRUutu7SCemogVHTSWAObX2YQSSs55qVnnpCNvnODqGljh3ZINFQgOv
+	 Pm6DPq60Ltkhw==
+Message-ID: <sashiko-outbox-204470@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v10 7/8] serial: 8250: retire canceled RX DMA before
- reusing the receive buffer
+Subject: Re: [PATCH net-next v2 1/5] net: skbuff: skip managed zerocopy
+ frags in skb_frag_ref()
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "James Hilliard" <james.hilliard1@gmail.com>
-Cc: linux-serial@vger.kernel.org, imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20261108-submit-serial-8250-dma-cancel-v1-v10-7-e6227ddb95b1@gmail.com>
-References: <20261108-submit-serial-8250-dma-cancel-v1-v10-0-e6227ddb95b1@gmail.com>
- <20261108-submit-serial-8250-dma-cancel-v1-v10-7-e6227ddb95b1@gmail.com>
+To: "Mina Almasry" <almasrymina@google.com>
+Cc: "Jesper Dangaard Brouer" <hawk@kernel.org>, "Ilias Apalodimas" <ilias.apalodimas@linaro.org>, "David
+ S. Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@kernel.org>, "Jakub
+ Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "Simon
+ Horman" <horms@kernel.org>, "Neal Cardwell" <ncardwell@google.com>, "Kuniyuki
+ Iwashima" <kuniyu@google.com>, "Pavel Begunkov" <asml.silence@gmail.com>, "Bobby
+ Eshleman" <bobbyeshleman@meta.com>, "Stanislav Fomichev" <sdf@fomichev.me>, "Steffen
+ Klassert" <steffen.klassert@secunet.com>, "Herbert Xu" <herbert@gondor.apana.org.au>, "Willem
+ de Bruijn" <willemb@google.com>, "John Fastabend" <john.fastabend@gmail.com>, "Sabrina
+ Dubroca" <sd@queasysnail.net>, "Andrew Lunn" <andrew+netdev@lunn.ch>, "Michael
+ S. Tsirkin" <mst@redhat.com>, "Jason Wang" <jasowangio@gmail.com>,
+ =?utf-8?b?RXVnZW5pbyBQw6lyZXo=?= <eperezma@redhat.com>, "Xuan Zhuo" <xuanzhuo@linux.alibaba.com>, "Andrew
+ Morton" <akpm@linux-foundation.org>, "David Hildenbrand" <david@kernel.org>, "Lorenzo
+ Stoakes" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, "Vlastimil
+ Babka" <vbabka@kernel.org>, "Mike Rapoport" <rppt@kernel.org>, "Suren
+ Baghdasaryan" <surenb@google.com>, "Michal Hocko" <mhocko@suse.com>, "Alexei
+ Starovoitov" <ast@kernel.org>, "Daniel Borkmann" <daniel@iogearbox.net>, "Johannes
+ Berg" <johannes@sipsolutions.net>, "Byungchul Park" <byungchul@sk.com>, "Zi
+ Yan" <ziy@nvidia.com>, virtualization@lists.linux.dev, linux-mm@kvack.org, bpf@vger.kernel.org, "Jonathan
+ Corbet" <corbet@lwn.net>, "Shuah Khan" <skhan@linuxfoundation.org>, "Randy
+ Dunlap" <rdunlap@infradead.org>, "Lorenzo Bianconi" <lorenzo@kernel.org>, "Wen
+ Gu" <guwen@linux.alibaba.com>, "Philo Lu" <lulie@linux.alibaba.com>, "Justin
+ Chen" <justin.chen@broadcom.com>, "Florian Fainelli" <florian.fainelli@broadcom.com>, "Vikas
+ Gupta" <vikas.gupta@broadcom.com>, "Michael Chan" <michael.chan@broadcom.com>, "Pavan
+ Chebbi" <pavan.chebbi@broadcom.com>, "Doug Berger" <opendmb@gmail.com>, "Nicolai
+ Buchwitz" <nb@tipi-net.de>, "Broadcom internal kernel review list" <bcm-kernel-feedback-list@broadcom.com>, "Satish
+ Kharat" <satishkh@cisco.com>, "Wei Fang" <wei.fang@nxp.com>, "Frank Li" <frank.li@nxp.com>, "Shenwei
+ Wang" <shenwei.wang@nxp.com>, "Joshua Washington" <joshwash@google.com>, "Harshitha
+ Ramamurthy" <hramamurthy@google.com>, "Jijie Shao" <shaojijie@huawei.com>, "Jian
+ Shen" <shenjian15@huawei.com>, "Fan Gong" <gongfan1@huawei.com>, "Tony
+ Nguyen" <anthony.l.nguyen@intel.com>, "Przemek Kitszel" <przemyslaw.kitszel@intel.com>, "Marcin
+ Wojtas" <marcin.s.wojtas@gmail.com>, "Russell King" <linux@armlinux.org.uk>, "Sunil
+ Goutham" <sgoutham@marvell.com>, "Geetha sowjanya" <gakula@marvell.com>, "Ratheesh
+ Kannoth" <rkannoth@marvell.com>, "Subbaraya Sundeep" <sbhatta@marvell.com>, "Bharat
+ Bhushan" <bbhushan2@marvell.com>, "Felix Fietkau" <nbd@nbd.name>, "Matthias
+ Brugger" <matthias.bgg@gmail.com>, "AngeloGioacchino Del Regno" <angelogioacchino.delregno@collabora.com>, "Tariq
+ Toukan" <tariqt@nvidia.com>, "Saeed Mahameed" <saeedm@nvidia.com>, "Mark
+ Bloch" <mbloch@nvidia.com>, "Leon Romanovsky" <leon@kernel.org>, "Ido
+ Schimmel" <idosch@nvidia.com>, "Petr Machata" <petrm@nvidia.com>, "Horatiu
+ Vultur" <horatiu.vultur@microchip.com>, UNGLinuxDriver@microchip.com, "Daniel
+ Machon" <daniel.machon@microchip.com>, "Steen Hegelund" <Steen.Hegelund@microchip.com>, "Haiyang
+ Zhang" <haiyangz@microsoft.com>, "Wei Liu" <wei.liu@kernel.org>, "Dexuan
+ Cui" <decui@microsoft.com>, "Yibo Dong" <dong100@mucse.com>, "Brett Creeley" <brett.creeley@amd.com>, "Justin
+ Lai" <justinlai0215@realtek.com>, "Larry Chiu" <larry.chiu@realtek.com>,
+ =?utf-8?b?TmlrbGFzIFPDtmRlcmx1bmQ=?= <niklas.soderlund@ragnatech.se>, "Paul
+ Barker" <paul@pbarker.dev>, "Masahisa Kojima" <kojima.masahisa@socionext.com>, "Maxime
+ Chevallier" <maxime.chevallier@bootlin.com>, "Maxime Coquelin" <mcoquelin.stm32@gmail.com>, "Alexandre
+ Torgue" <alexandre.torgue@foss.st.com>, "FUJITA Tomonori" <fujita.tomonori@gmail.com>, "Siddharth
+ Vadapalli" <s-vadapalli@ti.com>, "Roger Quadros" <rogerq@kernel.org>, "MD
+ Danish Anwar" <danishanwar@ti.com>, "Jiawen Wu" <jiawenwu@trustnetic.com>, "Mengyuan
+ Lou" <mengyuanlou@net-swift.com>, "Ronak Doshi" <ronak.doshi@broadcom.com>, "Ryder
+ Lee" <ryder.lee@mediatek.com>, "Shayne Chen" <shayne.chen@mediatek.com>, "Sean
+ Wang" <sean.wang@mediatek.com>, "Juergen Gross" <jgross@suse.com>, "Stefano
+ Stabellini" <sstabellini@kernel.org>, "Oleksandr Tyshchenko" <oleksandr_tyshchenko@epam.com>, "Jordan
+ Rhee" <jordanrhee@google.com>, "Ankit Garg" <nktgrg@google.com>, "Tim
+ Hostetler" <thostet@google.com>, "Eric Joyner" <eric.joyner@amd.com>, "Prabu
+ Thayalan" <prabu.ponrajthayalan@amd.com>, "Nikhil P. Rao" <nikhil.rao@amd.com>, "Chintan
+ Vankar" <c-vankar@ti.com>, "Nora Schiffer" <nora.schiffer@ew.tq-group.com>, "Alexander
+ Sverdlin" <alex@sverdlin.org>, "Kevin Hao" <haokexin@gmail.com>, "Karl
+ Mehltretter" <kmehltretter@gmail.com>, "Aleksandr Loktionov" <aleksandr.loktionov@intel.com>, "Meghana
+ Malladi" <m-malladi@ti.com>, "Jacob Keller" <jacob.e.keller@intel.com>, "StanleyYP
+ Wang" <StanleyYP.Wang@mediatek.com>, imx@lists.linux.dev, linux-rdma@vger.kernel.org, linux-hyperv@vger.kernel.org, Frank.Li@kernel.org, wsa+renesas@sang-engineering.com
+In-Reply-To: <20261108060016.2131509-2-almasrymina@google.com>
+References: <20261108060016.2131509-1-almasrymina@google.com>
+ <20261108060016.2131509-2-almasrymina@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 09 Nov 2026 04:22:32 +0000
+Date: Mon, 09 Nov 2026 06:00:34 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -63,140 +123,38 @@ Precedence: list
 
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue to consider:
-- [High] serial: 8250: unbounded pause retry loop in
-  serial8250_rx_dma_flush_work()
+- [Low] net: skbuff: missing Fixes trailers for skb_frag_ref() and iptfs
+  fixes
 --
 
-commit 818afe206e7bf388666735a110a648d91146a4e7
-Author: James Hilliard <james.hilliard1@gmail.com>
+commit 289785b15a220a700e7ce94d6b9993ab94b82d49
+Author: Mina Almasry <almasrymina@google.com>
 
-serial: 8250: retire canceled RX DMA before reusing the receive buffer
+> net: skbuff: skip managed zerocopy frags in skb_frag_ref()
+>
+> skb_frag_unref() and skb_release_data() skip releasing references on
+> managed zerocopy fragments (SKBFL_MANAGED_FRAG_REFS), whereas
+> skb_frag_ref() acquires a reference unconditionally. If skb_frag_ref()
+> is called on a managed zerocopy SKB, the acquired reference is never
+> released by skb_frag_unref() or skb_release_data().
+>
+> Skip acquiring a reference in skb_frag_ref() when skb_zcopy_managed(skb)
+> is true so skb_frag_ref() matches skb_frag_unref() and
+> skb_release_data(), and disable share_ok in iptfs_output_queued() when
+> skb_zcopy_managed(skb) is true so iptfs_consume_frags() does not append
+> unreferenced fragments into a managed zerocopy outer SKB.
+>
+> Signed-off-by: Mina Almasry <almasrymina@google.com>
 
-This commit defers reuse of a canceled RX DMA buffer until a worker has
-drained pending DMA callbacks, and retries failed pause attempts from
-process context before copying or recovering the channel.
+[Severity: Low]
+Since this fixes fragment reference accounting for SKBFL_MANAGED_FRAG_REFS =
+in
+skb_frag_ref() and fragment sharing in iptfs_output_queued(), should the
+commit message include:
 
-> diff --git a/drivers/tty/serial/8250/8250_dma.c b/drivers/tty/serial/8250=
-/8250_dma.c
-> index 739a8238e4dec..1ea22954150ca 100644
-> --- a/drivers/tty/serial/8250/8250_dma.c
-> +++ b/drivers/tty/serial/8250/8250_dma.c
-[ ... ]
-> +/* Try to obtain a stable residue before retiring the current descriptor=
-. */
-> +static int serial8250_rx_dma_try_flush(struct uart_8250_port *p)
-> +{
-> +	struct uart_8250_dma *dma =3D p->dma;
-> +	struct dma_tx_state state;
-> +	enum dma_status status;
-> +	int ret;
-> +
-> +	lockdep_assert_held_once(&p->port.lock);
-> +
-> +	ret =3D dmaengine_pause(dma->rxchan);
-> +	status =3D dmaengine_tx_status(dma->rxchan, dma->rx_cookie, &state);
-> +	if (status =3D=3D DMA_ERROR) {
-> +		ret =3D -EIO;
-> +		goto recover;
-> +	}
-> +	if (ret && status !=3D DMA_COMPLETE) {
-> +		/*
-> +		 * Hardware may be idle before the provider publishes completion.
-> +		 * Leave the descriptor alive and retry outside interrupt context;
-> +		 * neither copying its buffer nor canceling it is safe yet.
-> +		 */
-> +		dma->rx_pause_pending =3D true;
-> +		serial8250_out_IER(p, p->ier);
-> +		return ret;
-> +	}
-[ ... ]
-> +static void serial8250_rx_dma_flush_work(struct work_struct *work)
-> +{
-> +	struct uart_8250_dma *dma =3D container_of(work, struct uart_8250_dma, =
-rx_flush_work);
-> +	struct uart_8250_port *p =3D dma->port;
-> +	unsigned int delay_us =3D 1 * USEC_PER_MSEC;
-> +	ktime_t start =3D ktime_get();
-> +	bool recover, retry, restore_rx;
-> +	bool warned =3D false;
-> +	int ret;
-> +
-> +	guard(serial8250_rpm)(p);
-> +
-> +	for (;;) {
-> +		scoped_guard(uart_port_lock_irqsave, &p->port) {
-> +			/* Shutdown cancels this work and drains both DMA channels. */
-> +			if (dma->shutting_down)
-> +				return;
-> +			/* Serialize reset with completion and shutdown notifications. */
-> +			WRITE_ONCE(dma->rx_pause_wakeup, false);
-> +			retry =3D dma->rx_pause_pending && !dma->rx_terminating;
-> +			if (retry) {
-> +				ret =3D serial8250_rx_dma_try_flush(p);
-> +				retry =3D dma->rx_pause_pending && !dma->rx_terminating;
-> +			}
-> +			recover =3D dma->rx_err;
-> +		}
-> +		if (!retry)
-> +			break;
-> +		if (!warned && ktime_ms_delta(ktime_get(), start) >=3D 1 * MSEC_PER_SE=
-C) {
-> +			dev_warn(p->port.dev,
-> +				 "RX DMA pause stalled: %d; retaining transfer and retrying\n",
-> +				 ret);
-> +			warned =3D true;
-> +		}
-> +		/* Notifications also cover completion or shutdown before sleeping. */
-> +		wait_event_hrtimeout(dma->rx_pause_wait, READ_ONCE(dma->rx_pause_wakeu=
-p),
-> +				     ns_to_ktime(delay_us * NSEC_PER_USEC));
-> +		delay_us =3D min(delay_us * 2, 1 * USEC_PER_SEC);
-> +	}
-
-[Severity: High]
-As reported by Raul E Rangel on v8 [1], can serial8250_rx_dma_flush_work()
-spin in its retry loop until the port is closed when dmaengine_pause() fails
-persistently on a partial transfer?
-
-Once p->port.lock and local IRQs have been released across a few sleeps, any
-pending completion hardirq for a finished transfer has already run. On a
-partial transfer that has not reached dma->rx_size, an in-tree provider such
-as dw-axi-dmac can time out waiting for DWAXIDMAC_IRQ_SUSPENDED in
-dma_chan_pause(), clear that status bit while leaving the hardware channel
-suspended, and return -EAGAIN on every subsequent retry:
-
-drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c:dma_chan_pause() {
-	...
-	do {
-		if (axi_chan_irq_read(chan) & DWAXIDMAC_IRQ_SUSPENDED)
-			break;
-
-		udelay(2);
-	} while (--timeout);
-
-	axi_chan_irq_clear(chan, DWAXIDMAC_IRQ_SUSPENDED);
-
-	chan->is_paused =3D true;
-
-	return timeout ? 0 : -EAGAIN;
-}
-
-Because the channel is suspended in hardware, it never receives more bytes =
-to
-reach DMA_COMPLETE, and every retry in serial8250_rx_dma_try_flush() keeps
-dma->rx_pause_pending set. That wedges RX on the port (with UART_IER_RDI,
-UART_IER_RLSI, and UART_IER_RTOIE masked and skip_rx forced in
-serial8250_handle_irq_locked()), holds the runtime PM reference in
-serial8250_rx_dma_flush_work(), and causes dw8250_idle_enter() to fail with
--EAGAIN until shutdown(), which then discards dma->rx_buf without delivering
-the partial data anyway.
-
-Escalating to serial8250_rx_dma_recover(p) after a bounded retry budget (or
-immediately on -ENOSYS / -EOPNOTSUPP) would let dmaengine_terminate_sync()
-stop the channel and fall back to PIO.
-
-[1] https://lore.kernel.org/r/20261029222734.3086943-1-rrangel@chromium.org
+  Fixes: 753f1ca4e1e5 ("net: introduce managed frags infrastructure")
+  Fixes: b96ba312e21c ("xfrm: iptfs: share page fragments of inner packets")
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261108-submit-ser=
-ial-8250-dma-cancel-v1-v10-0-e6227ddb95b1@gmail.com?part=3D7
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261108060016.2131=
+509-1-almasrymina@google.com?part=3D1
