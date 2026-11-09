@@ -1,87 +1,119 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794241254;
-	b=ymXL+Ib8G/i1gX/oaj8dOQ7H/6hXFZlEtBRQ+HGtunENK71vy66XU9nrHwHNKNGnTzBG
-	 OOuivpcd0aYMYdvbeoEK9RxI61uMBxGgnslpi5MY5lctbW+36sgFjDi8abf+pMJcSN91b
-	 aexXdOhMniz9QMwZ8SDzISs0NoPfxWQrMlJmModX8J1iBcOt5iwfjwZHYMWF1j13umXRq
-	 l0bI/tug3JEqHYc3UlpthFfaMlkTv7p/Ifb7iBRdIZEHCzWfplrqAUD/XSBwPguOZohnp
-	 peRQa0Ga5Fr2eEoOXUJxXpwFi5xziuT2GO+2m2gNqjZzh9rL9UkBtqteom9fvrt8Zhw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794241254;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=3unQo8WlkCpFMzh/dOetPGuf+DaxLLVXBYgvviJEGVA=;
-	b=MpDcsug05WWyl/moc/Mvguzj4zkwXyW6H2ALXfyVn5nxaELry9y5FixrXg70P5UGnHHb
-	 a7P3aOZ9MPCyW7Zh+q+OFTMct3Vmv9zC1qChzWbhHrZ8WFMcQk8RbskL2lRzNd/8XK0+D
-	 mMNeCmteVTboTGcAlgzzexeizHdA7N8c6NwuuPzPgXepcGv0eEHijSAhTu1MKYDNwAQOX
-	 R/VeZ/AePnuxeP6cJYW9QSCm/L8mdScQFR83iAzTI21YZwhwuG2091/qkyx7P6WVXyEEq
-	 7nNAxo1X5XTzf+5VcQvU0+3jM5KDPS7EWoOpfm4qqk5x42eRbi/v9FRghhyiB4BEJMA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=pengutronix.de;
-	spf=pass smtp.mailfrom=pengutronix.de;
-	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=P9KcMmX6;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.182
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794241301;
+	b=2hlxCLZpDZLgPpnzhbaLSwRxYSV/u284IW8wGgmWD6KlQghtizy1PeZCt7wGRbsXG7uM
+	 t1dlzilfuM0+6K1V1nZtjiPNx5F3jKZqiS7ceuPpyEISXd5J+lKl60MUaw9JIwSFrQdwv
+	 gNG6cSlzrs2NeysuQt1qvt0yFYmCbysH8+yxz591oGrnUfkkCeSmn8nnszAsJWgBki6KY
+	 iKCo7cgsRu/8AJNxv0AzLPq2pH/S0izfGsAlLh5JXlg4t5W52Qnon1qKG9hY/sw3SigGs
+	 CjFZn5IXDI29mmYpLv0VRdF3WQD+/ycn0xYiRQb3H4VSP+ohjkfzgCU7bS/fMAQsITg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794241301;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=ATsD9Xu4uSt2b+wnr6JUehFjGprw+gnrB702q3SrL8o=;
+	b=fgjNGuvREWqbgklgbFMb9DfppcGEfPdIGTmZobIOjA77zSmM85wHIjo5IHoz6WnllYch
+	 8thgXP4wVsVr/6+JGbnb4tJnYeGJp+c6kj3bVqbYmAOEMuMuoE4dKnkJ7eaOobseP91g6
+	 IbC0oH2yBUC+MvJkxdR2CxO3thD6TYeMcKkXeFTxpvsdqs1JWKLEpyUZQrpg58o0batWr
+	 jURtwHtGxT/miK96+t0WtY26rJ2+Wjm7Y3zWkD12DvjMpRU6R+PlvwErJ9Nf4MFMC0Y/9
+	 4H7Rs3k4zWnK1E3PHbSxt6ABNy3RdxuDayTA3iqq/5WCVJPqVIFIm0XPjU1LIT8jlDQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=chromium.org;
+	spf=pass smtp.mailfrom=chromium.org;
+	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=PMYqxqqj;
+	arc=none smtp.remote-ip=209.85.167.182
+Received: from mail-oi1-f182.google.com (mail-oi1-f182.google.com [209.85.167.182])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CBA5606A32A
-	for <imx@lists.linux.dev>; Mon,  9 Nov 2026 16:20:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1CBA5606A32A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65032606A321
+	for <imx@lists.linux.dev>; Mon,  9 Nov 2026 16:21:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 65032606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=P9KcMmX6
-Received: from ptx.office.stw.pengutronix.de (ptx.office.stw.pengutronix.de [IPv6:2a0a:edc0:0:900:1d::109])
-	(Authenticated sender: relay-from-ptx.office.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id B196720062C;
-	Mon, 09 Nov 2026 17:20:45 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1794241245;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3unQo8WlkCpFMzh/dOetPGuf+DaxLLVXBYgvviJEGVA=;
-	b=P9KcMmX65ZjtvR9i/6ts0xQ4fBJR8NUyNsRGaAnLchg+oWiQnwyhtW4GCt04sOe6yalih6
-	LryAPynYC1gDKrDibmqe+D1jpH1bh3oIseStQkztYgq6D5djAa2nMw0C8WZ1RCCYPCWQPg
-	nXbZ3gxjxnUte3uNDBa3yZ1i8WrLvl/dSQ4T+dgMLXNNFCwOhF591K1+uMDI2A3s+wUumw
-	qVZzwPiW+xBWXcCFWlyvvcYq1RQvDCCOmfgUxHPyYujLGwn1L8tN9ijJFGV8T7zUcmF2Bc
-	d27ItT5AgmkUNOwJ+9zOh0aXVCkoqsNWxx6duzA9gPDQa084nHnrUmfNgb4MQA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1794241245;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3unQo8WlkCpFMzh/dOetPGuf+DaxLLVXBYgvviJEGVA=;
-	b=Pw1IIp3Z32rUuuXL2Sq/cW0/Fi9adMQA/hYp17pKFTQkswpnYtXBSvUlRyopHC2iBV+IHj
-	BYvUCmnKXPOd7TtRtNCrvfmOPmZXmdVKqtlRgrGw9rnk3cbDj76+PEdXeF/v16+me4RePC
-	W44+n/mcvg1DZ8W60lBv8x4d/poqqiR7piJ7YZwhLVPG8R45C5EFLKfNs9sZbecW2KVgpm
-	PK0RuAGYdrrA2k5MU80Yxh4uuTCs4MClKyopAA0Xqr092iulpn2Gij8TX0Wy6nnHs361lg
-	fsESRoITjU3TinZKIIdOZTezCWiAK2s83p7IfmmfGXGiMpaZNZXe8tr8qftjVA==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1794241245; a=rsa-sha256;
-	cv=none;
-	b=Zo9ReRp1D/g8eNY/8B5OdRpwZbO2YnZMWzUtnqrLN3rx9PYfX8Olh/7/jn6jL9oMFfUNZp
-	Ci1Jc/+35FaoDYse0tmRnc+1cpJ7g6VTw/xv143XkxjUpn+s/x5zWtGYoDhJFvLIqEKi6u
-	ap0347JwZZWKpDlSIQ2qLgVaRYjGVX1qPepzmInS6LAzoW7vyb6OAAXhnVVj8CfpYODdz0
-	i3BrxgpoI2buRW7umeWZ5HveSv64kgOheXErFQrKQQ7zeURq0yIeaBHA25IAnHrrVbXIBz
-	kE94w08E7EkS19wF4Jjn+LHtrcUKTlS96LHcpmARSSAc2clets5jY/7aCk+ghA==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=relay-from-ptx.office.stw.pengutronix.de smtp.mailfrom=mfe@pengutronix.de
-Received: by ptx.office.stw.pengutronix.de (Postfix, from userid 1064)
-	id 9A94E1BF632; Mon, 09 Nov 2026 17:20:45 +0100 (CET)
-Date: Mon, 9 Nov 2026 17:20:45 +0100
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] ARM: dts: nxp/imx6: Drop unused kontron-samx6i .dtsi
-Message-ID: <q5fzh5ay25uujgbhztuj4rhf6d2lypxqeqely6jx7uyt3mivg5@a7yxcdiubv4x>
-References: <20261109161713.3618477-1-robh@kernel.org>
+	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=PMYqxqqj
+Received: by mail-oi1-f182.google.com with SMTP id 5614622812f47-53c156ba662so501629b6e.1
+        for <imx@lists.linux.dev>; Mon, 09 Nov 2026 08:21:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1794241299; x=1794846099; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ATsD9Xu4uSt2b+wnr6JUehFjGprw+gnrB702q3SrL8o=;
+        b=PMYqxqqjJvV1N5L8F49ILzSCRALMiF/MOK5A5QZKEEHeSECPR8KhpE6f2UWN9J7I+b
+         5sGlLGP644ugDsTczwHIRr+T1Ls7KLv/yDZROMEw7FhBwszROA3Y0f04mFJEzrsCh3zD
+         5Jdb3BidMYuKoi80OryilvFcAxa+QyxLc3oXg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794241299; x=1794846099;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ATsD9Xu4uSt2b+wnr6JUehFjGprw+gnrB702q3SrL8o=;
+        b=sEwW23bexyQ2hAy6uP4ZRU6MPrnat9CiywKscjXkBs4mjK/wDz7gBN8A8sTMKINvgf
+         Y4lzE/U7uKvjJdF1A8xXGv7lY//tCOiBcY2Wpv6VcRXi7gnU9WTLdACuR5WV6AQh56wC
+         TmhpTz4ibLtuq7U+rEQf53NBrnNxS2mBXYNzShjikb6Fl2+i/dWeRi8cU8xeGSk7iWre
+         vsR4TyHpP5sn2xe9FxTd3rMVGKCxs96b6xl/KwD2Bwj/2kqkhekMGxiVhpiHdbIaQ1r+
+         M1WFM+jGWT4HXDbNdUBWiKiWX9v+LR+/0qpvMfm2IAdx+lrbSDtWAyJicWIA+zBjLU5u
+         6ALQ==
+X-Forwarded-Encrypted: i=1; AL+hErGgIcas7jShFLS0fUxy1nhRv/8Q2Ku7tm9BNy2lrkSGFP0x9N4YILjGrKwWvsPuDhkm2k4=@lists.linux.dev
+X-Gm-Message-State: APuU4Z86vOY5w2aTZVaKYUE6Ug6kCo1kGy/Q/DEjseSL1X7XaYXaZ3la
+	8jR8M6fKsl/vavhhzYW1lpLcU/ab0ily5YHZkt2hX7lvEUAfHYyJwnY3xRvaH1boQg==
+X-Gm-Gg: AYBFou2aE9IXE2RPk2KfJg+wiDQ+6yXNAgAEqV32MzBT7WWANiPuu/62ys/Abpgfn3r
+	MlRJWqnl19k9qZBt/OxB5MTJjlSnBrAzMI0O8F1pjBtJUdAj3W6K/1ayGjSW0rXiLoz1R8RQLaZ
+	qA4sB6l8uBTvtJgP9kCQTSQUCobqFm0mJgb5LHKJ60y/f5ZzhHRQqXlMoZJkW3nf8ZulSpiyvNL
+	qrxCfPw9844S1o+hucyYqvt3Z/RaQ2+dEO++l/UWf2ZokfKoeUkTptYDQWIcSAUUZbw1Qz9NSKp
+	9AZf1PBxfd29rMU1aFVSTsx3NCDCtMkBUwdKLfJ8k/8EpnS8CxAIN00PfEiH2dFHbzEreJcKdOG
+	Yc50ydiAh41HREYGp3tcFJk+sgrdLWLQtBkGJSfCGqlzAo1NJZAVKBcbt8cLthNf8qwagSmx8CO
+	NNDQMp3BZhtyJHEzSLfglcflxsYonDOnKIYvHjPBMRKE6uF0gkjo1/ul/Iz35xC/2LNdhLJwezx
+	Bqvh9f+re39/Q6pFbIMyGaCndin1M30+C6BvoJjOiDKwAv/QFYZX1Z4H6FJRj2Q3J2jS2W/5d9j
+	2vbv+zmheAwEYVqvfNHoY0S/IKH8lCQlJrPBaZx4SZQSDa9Pa2wSpAe0AM/TaGR/1f/y2iiaoKm
+	Leg/j+uHWL2Gdv2M=
+X-Received: by 2002:a05:6808:159f:b0:4d6:90f3:74a1 with SMTP id 5614622812f47-5683ccd209amr89819b6e.44.1794241299242;
+        Mon, 09 Nov 2026 08:21:39 -0800 (PST)
+Received: from rrangel.c.googlers.com.com (194.246.27.34.bc.googleusercontent.com. [34.27.246.194])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4ade694062csm5510676fac.8.2026.11.09.08.21.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Nov 2026 08:21:38 -0800 (PST)
+From: Raul E Rangel <rrangel@chromium.org>
+To: James Hilliard <james.hilliard1@gmail.com>
+Cc: Raul E Rangel <rrangel@chromium.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Tony Lindgren <tony@atomide.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Richard Genoud <richard.genoud@bootlin.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Jacky Huang <ychuang3@nuvoton.com>,
+	Shan-Chun Hung <schung@nuvoton.com>,
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Timur Tabi <timur@kernel.org>,
+	Peter Ujfalusi <peter.ujfalusi@ti.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Patrice Chotard <patrice.chotard@foss.st.com>,
+	linux-kernel@vger.kernel.org,
+	linux-serial@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev,
+	linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v10 7/8] serial: 8250: retire canceled RX DMA before reusing the receive buffer
+Date: Mon,  9 Nov 2026 09:21:34 -0700
+Message-ID: <20261109162135.906262-1-rrangel@chromium.org>
+X-Mailer: git-send-email 2.56.0.212.g129ede20d9-goog
+In-Reply-To: <20261108-submit-serial-8250-dma-cancel-v1-v10-7-e6227ddb95b1@gmail.com>
+References: <20261108-submit-serial-8250-dma-cancel-v1-v10-0-e6227ddb95b1@gmail.com> <20261108-submit-serial-8250-dma-cancel-v1-v10-7-e6227ddb95b1@gmail.com> <CADvTj4qXcOqS-wDrrN-x3sXUQr5BtFBeGzz_wqpW8WJ1DMPg+g@mail.gmail.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -91,16 +123,93 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261109161713.3618477-1-robh@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On 26-11-09 10:17, Rob Herring (Arm) wrote:
-> These 2 kontron-samx6i .dtsi files are not included anywhere in the tree
-> and can't be tested. The kontron-samx6i support is already in place in
-> the imx6(q|dl)-kontron-samx6i-ads2.dts files which just include all the
-> necessary .dtsi files directly.
-> 
-> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Hi James,
 
-Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
+Thanks for dropping the unused rx_pause_wakeup lines in omap_8250_shutdown()
+in v10. Following up here on your question from the v9 7/8 thread:
+
+On Tue, Nov 03, 2026 at 11:05:42AM -0700, James Hilliard wrote:
+> For pause-capable hardware, a recovery timeout does not have to prove
+> that the failure is permanent. The concern is what happens after that
+> timeout: the current recovery path discards the pending transfer and
+> leaves RX on PIO until reopen.
+>
+> Is there a recovery approach that avoids an indefinite RX stall
+> without turning a potentially temporary pause failure into loss of DMA
+> for the rest of the open session?
+
+Yes — the only reason the current recovery path disables RX DMA for the
+rest of the open session is that serial8250_rx_dma_recover() sets
+dma->rx_err = true and serial8250_rx_dma_flush_work() leaves it set
+after dmaengine_terminate_sync(dma->rxchan) succeeds, which causes
+serial8250_rx_dma() to return -EIO until reopen.
+
+Notice that struct uart_8250_dma already distinguishes a normal
+post-pause async termination from an unpaused transfer that needs
+synchronous termination:
+- When serial8250_rx_dma_try_flush() succeeds, it calls
+  dmaengine_terminate_async(dma->rxchan), sets dma->rx_terminating =
+  true, and clears dma->rx_running = 0.
+- When serial8250_rx_dma_try_flush() fails, dma->rx_running remains 1.
+
+So we can decouple bounded pause-timeout recovery from sticky PIO
+fallback without adding any new struct fields:
+
+1. In serial8250_rx_dma_flush_work(), if retry is still true when the
+   1-second retry budget expires (or immediately if ret == -ENOSYS ||
+   ret == -EOPNOTSUPP):
+   - If ret == -ENOSYS || ret == -EOPNOTSUPP (e.g. Tegra186 where
+     hw_support_pause is false), call serial8250_rx_dma_recover(p) so
+     dma->rx_err = true permanently falls back to PIO for the session.
+   - Otherwise (a pause timeout such as -EAGAIN, -EBUSY, or
+     -ETIMEDOUT), set dma->rx_terminating = true while keeping
+     dma->rx_running = 1, dma->rx_pause_pending = true, and
+     dma->rx_err = false, and set retry = false.
+
+2. Derive recover from persistent state under port->lock:
+
+     recover = dma->rx_err || (dma->rx_running && dma->rx_terminating);
+     fall_back_pio = dma->rx_err;
+
+   And in serial8250_rx_dma_recovering() (8250.h):
+
+     return up->dma &&
+            (up->dma->rx_pause_pending ||
+             ((up->dma->rx_err || up->dma->rx_running) &&
+              up->dma->rx_terminating));
+
+3. In if (recover), run ret = dmaengine_terminate_sync(dma->rxchan):
+   - While dmaengine_terminate_sync() runs outside port->lock,
+     serial8250_rx_dma_recovering() is true (keeping RX interrupts
+     masked in UART_IER and skip_rx = true) and dma->rx_terminating is
+     true (blocking dma_rx_complete() and serial8250_rx_dma()).
+   - If dmaengine_terminate_sync(dma->rxchan) fails (ret != 0), latch
+     dma->rx_err = true under port->lock and return early so RX stays
+     masked and the buffer stays owned by DMA.
+   - If dmaengine_terminate_sync(dma->rxchan) succeeds (ret == 0), the
+     existing post-sync cleanup block clears rx_pause_pending,
+     rx_terminating, and rx_running and restores UART_IER with
+     dma->rx_err == false.
+
+Because 8250 RX DMA is armed on-demand when rx_running == 0 and
+!rx_err, any trigger-tail bytes remaining in the UART RX FIFO below the
+RDI trigger level are drained via PIO on UART_IIR_RX_TIMEOUT, and the
+next UART_IIR_RDI interrupt submits a fresh RX DMA descriptor — so RX
+DMA remains active for the rest of the open session.
+
+(Regarding the dw-axi-dmac driver mentioned on v10 7/8:
+drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c has separate provider
+bugs where dw_axi_dma_interrupt() clears CH_INTSTATUS across all
+channels including DWAXIDMAC_IRQ_SUSPENDED, dma_chan_pause() leaves
+DMAC_CHSUSPREG and chan->is_paused = true set when returning -EAGAIN,
+and dma_chan_terminate_all() only clears DMAC_CHEN without clearing
+DMAC_CHSUSPREG or chan->is_paused. Those belong in a dw-axi-dmac
+driver fix, whereas the non-sticky pause-timeout recovery above ensures
+8250_dma.c never stalls RX indefinitely on a pause timeout while
+keeping RX DMA enabled for subsequent transfers.)
+
+Thanks,
+Raul
