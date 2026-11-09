@@ -1,65 +1,115 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794251395;
-	b=fyca46AZbPYXrQCzov8l9GLPxxpS/BDyEDvPrJIJUIRKsLCiXNfwVNJEfWfMcfNW8CcJ
-	 acEoC3vzNtmLSq2OaNZciEqfm3ZKGkps1JuCgfdPxmlj15pk+5HE56/ixKUdMmON3lyHw
-	 qERo6Lw74PxCjzxuDclyEgaDgP5tDRKBGqKPp0yt3CvNFD/q/nDYhikq0mxQFujHmVxZz
-	 zNzs4jZeCefJNyD9a1uWtnCXOGIqXa5yE3SH1ldLrC5hCpoHQwrdbX2ikOBtd/corTUCD
-	 3ryO3ikRgoTWPf2pvAz4lYzedqxrQzARXJdZ8zyNvi4u54C+Ikw+0kkJFGYC/Hlc4QQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794251395;
-	h=Received:DKIM-Signature:Received:From:To:Cc:In-Reply-To:References:
-	 Subject:Message-Id:Date:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:X-Mailer:X-Developer-Signature:
-	 X-Developer-Key;
-	bh=bXeo00zC+Fz/YIEVBhgtInz4Kk8T6T+8sTaeNUk6/H8=;
-	b=kZpu6CaYRIwyDl4Tb/wsRUMyuJE2b/ksZ9XI0yH2i+nfHEF4qsKja780C3Say3f8ZXgP
-	 7YNFKe88OL4Kv2tkh0fjPdFvVYbMmpeCy6bqJ4mjTxz9ObdC9zuzbhHwOcCPL+rHMTxjf
-	 dZD5hWswts6jdEI4aX/4xrI5WaJgYD3EbwNlXFoBvfYROQ7GnVONkmq2UFuWl87zk71/1
-	 3tJdQLoNzjMv5rjcT6QVHongxBUYVhJa6si4rZseXaNfV0+cymjPaLmlcMdiKqHAavb0g
-	 PDS8OXiioYTlqSVY1SxJ3H6c3LpODHlAzu4lIBuHDjAclUFWqI5icN8WS6YMrvtaLhw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FY2ih7k7;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.159.2
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794257255;
+	b=onD5SJjdILIJDT6BvVlBtYGmEqUPDUA+gz8Y5X5Vb8ObceXKcqgrezCY2qKFPXHuUhLA
+	 nMjb5YHDYgOwKE5qMw78qyuDl4HMkFY1NuJV5Dg3FJtIJH2XU3mLNTfY3sfpF+pvn9no8
+	 V9aUQKHTR9b7LnZWhz4sgC5Fcr/AhK4yuAAEhkdnw+MAiOyc85XcalZRdnbJ6MftmY0Ei
+	 Hfz0WBYjXryuzIKYfF16b36qwgNxiRQLnwdfjvlwRtvSa42D7prvivRpuvaE/MOheMw1V
+	 HLPQa134ZpnW2FrAICymR4/mH1TgTGW2ONSbPGy6/DBmffBFkXUYNIWWseS13Gzyh5g==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794257255;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
+	 X-MS-Exchange-MessageSentRepresentingType:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SharedMailbox-RoutingAgent-Processed:X-LD-Processed:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=3fktfSnbONW1pBYDfqxavVMcQZ0ONRl0Taf94gPS0KA=;
+	b=OIwwEIwE/RUBT3nfXAPSWAC1mB029qTvF5yU99+VUYZwHdJUUtaNKzqThEUztjXlePLC
+	 rUv5+uUwf3Ev5UiXewLhHH5kjTFlZr1UV0zRUx4YYlOge07+Y0Qodp4Q1ci85TZCCQmdU
+	 TjnTsa6DcfA8+uCLJuCdd4p2k65MrKulaiCq60QrYdvddtqDxESw/Xb4xUr9ve66CN08x
+	 HWlLPKrhSExJ0RnqKYjOnGaFFtul9IWZheYqiPl49Xis30uycDlU+I6t5MYBCInsBIoLy
+	 /6cJ2r3/MHs/4mlevOI7yyRpAinZq4H402FdrOQob27FNslNGHGYEY+V9kZIHipEp8A==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=oss.nxp.com;
+	spf=pass smtp.mailfrom=oss.nxp.com;
+	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=pxEyvftf;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.159.2
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013002.outbound.protection.outlook.com [40.107.159.2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7379606A31C;
-	Mon,  9 Nov 2026 19:09:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8168606A321
+	for <imx@lists.linux.dev>; Mon,  9 Nov 2026 20:47:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B8168606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FY2ih7k7
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 496461F0089F;
-	Mon,  9 Nov 2026 19:09:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794251394;
-	bh=bXeo00zC+Fz/YIEVBhgtInz4Kk8T6T+8sTaeNUk6/H8=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=FY2ih7k7jZW05Nq+r2TcqolJl5AWk95Qz+JIpGAwh4gjHH93hf+tWO82G9zEarTg9
-	 CCjmyPFKTLcrDsBVh9B2u800wiH4ryuUaWjJreMIsUSO8fRW8+nHFaUhzsq16KTUM+
-	 OevrxascLS29HAk8qeqx3hzYHOD2+Wm7OJ3yzdR4G2A3Fm7Y+7CeKnGYD5j3CGmme6
-	 bYrfFcqaHPkjUrB/k37cRkH8nep1sno3pAPpor1HpwJkkwYdJT9FlBXDEtEtEZur6B
-	 tzxsb/idzrgsrYbcmLgxpDVv33c/ppsF+Mz3gXiFnsdvC2v2D96zDhevo2FSyZApq6
-	 lJqWnOTfChSsg==
-Received: from traversing.sirena.org.uk (localhost [IPv6:::1])
-	by traversing.sirena.org.uk (Postfix) with ESMTP id 1B85B2F707A4;
-	Mon, 09 Nov 2026 19:09:41 +0000 (GMT)
-From: Mark Brown <broonie@kernel.org>
-To: Shengjiu Wang <shengjiu.wang@gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>, 
- Fabio Estevam <festevam@gmail.com>, Nicolin Chen <nicoleotsuka@gmail.com>, 
- Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>, 
- Takashi Iwai <tiwai@suse.com>, Frank Li <Frank.Li@nxp.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Wentao Liang <vulab@iscas.ac.cn>
-Cc: linux-sound@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-In-Reply-To: <20261104024045.1508542-1-vulab@iscas.ac.cn>
-References: <20261104024045.1508542-1-vulab@iscas.ac.cn>
-Subject: Re: [PATCH] ASoC: fsl: imx-audio-rpmsg: unregister platform
- devices on probe failure
-Message-Id: <179424330240.3711751.6306163881108747732.b4-ty@b4>
-Date: Mon, 09 Nov 2026 16:55:02 +0000
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=pxEyvftf
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=YUbnz7YvmUusT3Fzv7p+F2ahwgglotk+tDoHdPTfgYBxmpNjqZtUJJ+xkRy2sNjuKTG9l5wFBNRsicAHuY+yBi5uqK9pOJBANidM3bWZp6C3s2kbFBjqQFOXOYzbNwGfLIm8fLJOc/BL/wDRk3y5BTLwsaVTi/mz37TlJCDMd+FFxjWhWVXpuGgH5vawdE5YxA10crrJDA8gT+QBn02d1ehijRSilRHJqVxN0MHbaj+niVbDkE6rXAXUOYs/kuehNB1ggYWqR4HsYVTMbpTzPf2Yk5DgUiGTqlk7q4VsezRzkTVzALvRu2skQ+/fI5/a7b6V7L4jYaDFCxBFZcm1Og==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=3fktfSnbONW1pBYDfqxavVMcQZ0ONRl0Taf94gPS0KA=;
+ b=pCi6OzT4Donzf2qLOqsZ/aBVCZI7nUz3PcMZ4EqxTMhwKh2rCAMv2N6E8MyRIP//rn8hgSR2Ubik060BkUXgXH35u+fc5ZOL0wt1WQlAm9P5WTwT83OzgOedFDHZ3d3Inm/Nnu4hqi5QfGJCK/cJxNfyTtRRa4puXFR2GcY1qQmjTjHzPm0IrcUGeF+WavgVGT5NnH8oQN/Vxtt6lZBSGAm7oAF0sZfBt8KSrzTDE9mAQ8KOdBYAlacQBxj2jb2ShMSjO7tV6zsEcf63juJ38Z4sPqT6E7cf8627opT0iU8h12JCRcqL0/dVvDVHO+axmFCnvk4dedZepf2/PKAVAw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=3fktfSnbONW1pBYDfqxavVMcQZ0ONRl0Taf94gPS0KA=;
+ b=pxEyvftfyn6GMR1eDiegCTHi6/GdNRfpNiVN7RRSCXBhafv/sgpqVfQfVV5zoFSKXsB+pNJUzPEgfjgAV0iFTphmjzS3VBO4hdfjT9AdCD0+Dimlm29o6P0JOtKCy0NO4k+X4EfUDrsOLBBOked3IQWo99JQzMBQQzHn/kmkyLE91mCkN2nytvdwPY+y1wHMAg8xkZV5y5K5ra6V+7nxlfY2XGU/TkXbC9m8GlYFvGwE2/YzPctdcAPH8b17qE2kCmF4VEGLmjRk8+Pxru+HvUhnpsWHmwYgLtlhvWDbt3hqkXN/ZbGmLc29xRzW7dR1M4J7FpM0GRPJwks1pshY8A==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB12558.eurprd04.prod.outlook.com
+ (2603:10a6:150:368::10) by MA6PR04MB189634.eurprd04.prod.outlook.com
+ (2603:10a6:250:56::20) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.13; Mon, 9 Nov
+ 2026 20:47:28 +0000
+Received: from GV2PR04MB12558.eurprd04.prod.outlook.com
+ ([fe80::cd9f:102:ea58:4c49]) by GV2PR04MB12558.eurprd04.prod.outlook.com
+ ([fe80::cd9f:102:ea58:4c49%6]) with mapi id 15.21.0592.012; Mon, 9 Nov 2026
+ 20:47:27 +0000
+Message-ID: <02fb96e2-391f-4fc3-8d41-ab8364a9b07b@oss.nxp.com>
+Date: Mon, 9 Nov 2026 22:47:23 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 08/11] dt-bindings: ufs: Add NXP S32N79 UFS host
+ controller
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: NXP S32 Linux Team <s32@nxp.com>, Alim Akhtar <alim.akhtar@samsung.com>,
+ Bart Van Assche <bvanassche@acm.org>, Bean Huo <beanhuo@micron.com>,
+ Stanley Jhu <stanleyjhu@google.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ "Martin K. Petersen" <mkp@kernel.org>,
+ Sai Krishna Potthuri <sai.krishna.potthuri@amd.com>,
+ Ajay Neeli <ajay.neeli@amd.com>, Manivannan Sadhasivam <mani@kernel.org>,
+ Pedro Sousa <pedrom.sousa@synopsys.com>,
+ Adrian Hunter <adrian.hunter@intel.com>, Can Guo <quic_cang@quicinc.com>,
+ Asutosh Das <quic_asutoshd@quicinc.com>, imx@lists.linux.dev,
+ linux-scsi@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ clizzi@redhat.com, aruizrui@redhat.com, eballetb@redhat.com,
+ echanude@redhat.com, Frank Li <Frank.Li@nxp.com>
+References: <20261103133215.1385823-1-larisa.grigore@oss.nxp.com>
+ <20261103133215.1385823-9-larisa.grigore@oss.nxp.com>
+ <20261104-holistic-loon-of-agreement-db7b8f@quoll>
+ <4e82a4bf-e2db-4a3b-bebd-9f9c473817a3@kernel.org>
+ <17b24b80-c3bb-40a1-ad12-06242ca09c22@oss.nxp.com>
+ <0820de78-679a-45c2-baf1-2905490ea926@kernel.org>
+Content-Language: en-US
+From: Larisa Ileana Grigore <larisa.grigore@oss.nxp.com>
+In-Reply-To: <0820de78-679a-45c2-baf1-2905490ea926@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: AM8P251CA0008.EURP251.PROD.OUTLOOK.COM
+ (2603:10a6:20b:21b::13) To GV2PR04MB12558.eurprd04.prod.outlook.com
+ (2603:10a6:150:368::10)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -69,46 +119,117 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1162; i=broonie@kernel.org;
- h=from:subject:message-id; bh=jg+mpLiVJDLq2jsfv+zC4pV1nIIzTvOIydQhC3VcHjc=;
- b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLI+SZW8+H/+//4LLXvaLs3eKLxjEde+o+822z/YeC70S
- enkR071XzpKWRjEuBhkxRRZ4rK4X9aXvF7Dd3BhG8wcViaQIQxcnAIwkWN/GRnuPNW+UZ2+gG3T
- dk9JCTWG479KdZdJPUs48vPR/PuJ6nqxDP+T2coU70SdsJ7x8nXmtS6uJUtTt733SrtsKiauY8U
- pZccAAA==
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB12558:EE_|MA6PR04MB189634:EE_
+X-MS-Office365-Filtering-Correlation-Id: 419f214e-faa9-46db-ac42-08df3ea2aa1d
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|23010399003|376014|7416014|366016|1800799024|19092799006|10067099003|4143699003|11063799006|56012099006|261022105027099003|261026140227099003|261028144727099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+ HRlPz35wut3SPlMKUZs1nvIvQRt+egEPT97wgbubdW9sbk9WDkTe2baoWlaeaVIf3Fd4hTCJ3CIducDZ/h4iAfTL4s+IUTMoyQLsYB5SHNvP/lHAXrkyANN9+2JBiIOC41QWck4aht6n6ThybGc7KMETnsk7aKbgtrtmKWe+t/qBnpY49stB/1t6qi4+wJWVBOTduofI9I/fXhaaTg2qXhVY6+wWXiuBxEvY5wmMoNSRu8suojJBhPxc0+OAyQHBh7DeJy8r/nmkW+bE1NnImL0kAodWuCUdq3XhEf30TBpldCwpAfYSt0u4hEC9taBRA0mA0D7AcvvIa1QXKLjQC2NPYeopdfdZCa+mo4RDUt1vTJw9x2o6hOD5wxIEd3G/1yWmegykZrvfb+eqthZPVGtt1VTZ5MbMsL1F1uzWaVvQLFK9b4xK6oUDyeKWy3iQh4pY6KaoQhQjIvXnfuhdYbLPkk5Flidk49tIWkOn1Gr5ixCd4tAWtk3z5aLF98ejwIm9aW82O+Jz/WPHxD2TDEuPFqQaZtTGjqcHhaeplvXy7fSBB6Sw2ulu+8DqqGttC0ZAYMMAJYIcz+oTwM55fp0ErtZ5nYWe4pe9MBSy80jub1uSqxcVWc1k9mfd2tsX
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB12558.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(366016)(1800799024)(19092799006)(10067099003)(4143699003)(11063799006)(56012099006)(261022105027099003)(261026140227099003)(261028144727099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?utf-8?B?c3hpSGxuOVRQa3BYSnlWc2lNWDZkQnVlZmF2NVJSd2o2TTArYmlURkJtT0d1?=
+ =?utf-8?B?bmwzNkZyRlNWSFlGSzNCTE03eTNEV01QMVlEVmpjNjU2VGZieGF2QTIwTXhS?=
+ =?utf-8?B?cjJDckt5eUswaXNDZzZMblpvVVpXbVlGVDlYcURGZWhtZjVDa2FaZTV5czVq?=
+ =?utf-8?B?NXduYXVMcW1iZnZZSDE3R1h1YytKWEU0SjRtNUVhby9yMWVqelFpUFBrUmMy?=
+ =?utf-8?B?aE44Rk9CNm9ldS9PNXVlNnJ0bFRxclNFbFVBQ2pCUzdUcEp3TmFHaGs0SGVn?=
+ =?utf-8?B?NUovakZCeDhMdXJ5REdvcnduMW54dzhpSDhNamlWRy9OSlFtOHlRL29reDUy?=
+ =?utf-8?B?Z0ZCQnhuVFZiN1Z1WDhlY2ZBRHR2bWdkN2RRTjJ3TStZd3hXWU40T0VrUFkv?=
+ =?utf-8?B?NUMxUzV2Y290cHJ2bXdDQndrdWx4U0NjUXVYc2hvVXNXZDFXZisvMGhXL2JK?=
+ =?utf-8?B?ZldnTmNVOHJrb1cyMUI0WXV6Z1JHZFNIUzZVckZsVWwwWEYvUnpyYkd1SExC?=
+ =?utf-8?B?clpjR2hjOGZBT1Y1ektIekZ5YStkT3RBaEVBb0FsaDFWNU81MWpmSEQxU29I?=
+ =?utf-8?B?b2RvYUthQi93TUhvQXI3ZmhZY0llYlhqVDFHck95NXJKc2tyM0RJeDhVaUhB?=
+ =?utf-8?B?ekFnemhYeGxOWXhkUTNSYURHUXdKdytvaStOTC9vZTBFREU4V0VibkNoMTlJ?=
+ =?utf-8?B?akpad2tGK0V4U0x6ZUpQY0JGZk81bmh3WFc2ZzlSRzAvQjE0RVMrMDdxYlgr?=
+ =?utf-8?B?cDloVUN0dFl2bzJ2WkhZQm5mMzdtOVo0OGlFSkVTb3BGTzVGMzgvMTVYS3Z0?=
+ =?utf-8?B?ejhRMHUweDhKcVhuTUVzbXo1VU95NnNpU1Z6TWhLM1JzOThhd05OcjF5NEYx?=
+ =?utf-8?B?WTZ6RjhHYnF4V1Zacm1SUTlKTU9tWGk0Q2hjc1dCWERhTUtDVWZFLytCcnp5?=
+ =?utf-8?B?QzNPaEFKVDBhTGFBQ0pKcUp5SXBHc2hzRk5vT3NKRFYxTmFNbzhzV2hHdkN4?=
+ =?utf-8?B?RHlML2VaU1kwRnNFUndvaGRGbEUxTURzdDE1dlZhcFRnRzgrQytQNXZmVzh2?=
+ =?utf-8?B?YjArMTVHZEFJVkt4cnVaR1BiN1NIeit3VEFQTStWYkNySkQrbnNFQjhaN1h6?=
+ =?utf-8?B?dFM0dCtQRisyaUlMb25oTENGeG9RdlZLNGFXSHB5eWFJQzZnSWRsUEpIREN6?=
+ =?utf-8?B?RVRqenp4dnlNTnVIN2Y5QWtQZTFtRDZHZ3QvaDlFUk5PRHk2akV5Q3F5cDRF?=
+ =?utf-8?B?R3E3OWI4V0FQdk1NeEFidFpKdkR3enpvQW9VNE1ramNaN0RneThyR2VKTXpX?=
+ =?utf-8?B?NnZnemc5SkNlNzdTNVN5OFRBV1JDNXdydUF4cXFBWEZzekp3M1VNL2Q4WG9V?=
+ =?utf-8?B?NGtOQ3lzZC9qa0tmTm5reEVFSHdKc3ZScnNmWGxqR0gxS0FTbWswUCswZm5L?=
+ =?utf-8?B?eHRYZ0o5cmJicjlsS0s1TEttVDh5SlNhdkI5WHZIZVllR2czdVdxendhei9G?=
+ =?utf-8?B?elQrUHNqeVNLa2ZTd3ArNTN0Q0ZiSk5pZmZMcWZ4TXZBeHl6RThFdFJ0UzZI?=
+ =?utf-8?B?OUxIZlNoMmEwQmg1UzhiQ0ljNy9HZWVIOUJmMUdYVW9jUXBTOU1aaXJSZ28w?=
+ =?utf-8?B?RmE1MHpjWTV5YlIvYUVBSTY3Z1V4bzhPZGd5N3VlcmxJTVgrbTZqZk5vcncy?=
+ =?utf-8?B?cUNSKzVKSmczMERWV0xDMlAvdnhiZ3FURkVOWTdxVzJLajI5NDhtYWx0aFUv?=
+ =?utf-8?B?YjFhWDJTUXhhLzI1MDhGVHFQZktxeHkvcS9NTXhvK2xNYVRJL2ZWTW9ZNWY3?=
+ =?utf-8?B?VHdXbVhid01lYTVJV0s1SUU1aVhzNkRlR2U3Y3dWRzVVNFA4Q05mTWNpanZT?=
+ =?utf-8?B?TU9sRFNxbHFKM2U1Sk5SdFNhajBCcGt6RFFVUXVzaGVwUFRhYWJDQ2hqelQw?=
+ =?utf-8?B?S0VJV3hyUktGeW8xWEtjMTE0dEpQMXJQSWl6UE5IYlhPUVU1bnZNdDZPWGcw?=
+ =?utf-8?B?M3hBVml5L2dFUE4vaFJBNkFjVjVIZzhiRVpOekZxdC9yeXRHTzZ1RTNXeVE4?=
+ =?utf-8?B?NGNBcTNveXF4d3pENkZzcWpmU2xtaUFDaWVPbHY1K3RSUnZkK0dGdHBCZjAz?=
+ =?utf-8?B?aTBHZytKQUQra3JocndUZmUxSytqelJYTlJ2eFp1U1I1QVRMenV3QUliOE9n?=
+ =?utf-8?B?Zm9rYWFkVWtpZUpGcjBIanFha3hLY1VZOU1hQ2JWQ2gwYnhBdUlhUE50VE1N?=
+ =?utf-8?B?TW1QaXg5OXcrTzF3Y0JRTmpVNEtiLzUwM2gxSGlLNjRWRXdhcXR1QWh6amRT?=
+ =?utf-8?B?SURLVG1xVitkUERXczdaMDZBbHdFU2pxYlQ5YkxtRUhpT3RpZFpIUT09?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 419f214e-faa9-46db-ac42-08df3ea2aa1d
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB12558.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Nov 2026 20:47:27.4440
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: uHMQYUueGrzT3+HVaZ4duIAqmb+wxZlbTh2JTr6Uny3golWgDBIEemxCzDdxpN5EBYlO1/z2hYDWc23CSkXKJg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MA6PR04MB189634
 
-On Wed, 04 Nov 2026 02:40:45 +0000, Wentao Liang wrote:
-> ASoC: fsl: imx-audio-rpmsg: unregister platform devices on probe failure
+On 11/5/2026 8:28 PM, Krzysztof Kozlowski wrote:
+> On 04/11/2026 10:41, Larisa Ileana Grigore wrote:
+>> On 11/4/2026 10:40 AM, Krzysztof Kozlowski wrote:
+>> v8:
+>> https://lore.kernel.org/all/20261013103003.373156-1-larisa.grigore@oss.nxp.com/
+>> v9:
+>> https://lore.kernel.org/all/20261024122533.3609180-1-larisa.grigore@oss.nxp.com/
+>> v10:
+>> https://lore.kernel.org/all/20261103133215.1385823-1-larisa.grigore@oss.nxp.com
+>>
+>> Regarding your comments on v9:
+>>
+>> Frank's Reviewed-by was given publicly on v8 [1]. The series only looked
+>> like a v1 because of the wrong version number.
+>> The tag ordering was changed in v10 since the patch was changed.
+>> The single 0 Hz OPP entry: as discussed on v8 [2][3], the clock rate is
+>> set outside Linux and is not scaled. The OPP table lets the UFS core
+> 
+> That is not the purpose of OPP table. OPP defines performance point.
+> Performance point of 0 makes no sense. You cannot use Linux limitations
+> as reason to add some DTS, because answer is simple: fix your Linux
+> limitations.
+>
 
-Applied to
+Hi Krzysztof,
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-7.5
+Thanks for the clarification. I understand that an OPP table is not 
+appropriate here.
 
-Thanks!
+Existing platform DTs, such as Hi3660 and MT8195, define freq-table-hz 
+containing only <0 0> pairs. This allows the UFS core to manage clock 
+enable/disable without setting their rates. With freq-table-hz 
+deprecated, there seems to be a gap for this use case, beyond S32N.
 
-[1/1] ASoC: fsl: imx-audio-rpmsg: unregister platform devices on probe failure
-      https://git.kernel.org/broonie/sound/c/a3aa7ec56c14
+Could you please advise on the preferred way to address this?
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+Regards,
+Larisa
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+>> enable and gate the clock. As you suggested, v10 explains this in the
+>> commit message. Let me know if you would like more details there.
+> 
+> 
+> 
+> Best regards,
+> Krzysztof
 
