@@ -1,57 +1,85 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.11
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794257975;
-	b=eubrhxahmIKoZPPNvfwMt2E4vwjzc7opd2qsmh7C/y7m2I4HM/tphgUooBu/EdjvIjEz
-	 02ZJHhaQJCGqf4I4gl7SXRQwYBgykfQRb6w/z1cKSaF94Uly5K1gKXrJwblZ2mq5lloWD
-	 6qaz0Ca9Hjlc2t0VxCNomaVQHz1VDRiAW9mwJfBA3D86gBPQ4IhG4v8MmVJ4O+TsJP3gB
-	 OF8AWydAfttX0pKZGgCWwqUadjRYnsAshtWRzfUWcm/FS+WYUDms1ZDTB3pJQ04vs+rnz
-	 +FSqShfzmiJSGacbMFRNSQkVaCnJvJ9lA07wMmrPixBxreeITCzS/ig9epcQEwDq/iQ==
+	t=1794258823;
+	b=Ajxmm2jOwArv5Ig5/HeCAldBmIQK/4ya0+5AIPF6BWDKKVWPFBCzPJrWMftGe9UORmfQ
+	 uVhz/XlN0pj3n5U+IIUlA9XPLVMyrqKLp20dKu2rQP27XYKwjoHzeMDJK/JBoYzF6Wtci
+	 lN80iM5MZwKICFusSd3UvR8DRlNpZgXzTDsLRQR86dfOtdn5X+EhLbxVyXX0IDc7sjw0K
+	 qXHKdh9gG1Htac3sq5M5RfqcSkKPM70KIBAcujUGOLhUuht1fXSPNW65gwJP0yPdZv3/B
+	 phhzMZFf1XUfMQLycYe5B+tFMgfSVJInaVY3S/boRsKgIIanczmTggpFHSNKAt7noQA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794257975;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=0pNIpJ2XYUEiaROUBLiZw7MiKBMSmSE6udhiS67VKTM=;
-	b=FlOGFKwAOj0I9ujNSj/C9yNRANnegfTYUA00zL8Kxl3CHLlKrcFQwGtN59vk+sFB6nll
-	 v5auV3iaNL/5OfnSKhLvPVkiXjZ+usGflbU2ttbiX5LJGD6WF++73RnzBB9PnEQe0e7uq
-	 v7l14/2Jo8MXnazSm02Hd5vTwSUDqqi+0UrcDOYhYZigiktqB3ihiS8aOv91E7t/EGG3c
-	 jncufQyInij0qzISKAhpcGdzBIJ8enRfN4hh2HljsdbavjTm0Skc7LS7QgmrfQduiIY4V
-	 Rk//vMg6zQkiNGP1KYnes+gJuUsINE2KJ0ckLA2lpst/sibW99hIdZqQ+yYpHbMt7ZQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794258823;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To:Organization;
+	bh=V6S6ADLAOTA23gGkcqpm9vsCKsCWK50iy0cw18dDWEY=;
+	b=OkYsV9sEE2JpnY+5Z9l/TcJ63EoeRC9CFZbH/mPdg3QXd9cBc0S9cQJYLCx550mUlixE
+	 g1GTcl6EMnvKRyG5INYUngEJECqWDXuyzrTdA9nJ+LaNQ9Sm1+E7p0MUivxEwfwtPselx
+	 AD4EkTgmPfbi6KnkvVEsHIvfpnpqJBTqG3HR4kI3Cj5NMOnQ40w2jqvOTzVgCMy4V+CL9
+	 OeCTEKB/OorqDkcbDSfJLUsdIYxq73JNtB2/Aucv3DeAE+vomAuweMR1xQmnsQcetXxIH
+	 kHbcwNNGAhA3Fn9Z0g6N/PQ8dydG2aaFCpRYzBaYVUmBsrhB4XKWRD9Y18Fd0CTzIsQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hy04obhK;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=I7V4piKU;
+	arc=none smtp.remote-ip=198.175.65.11
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6F66606A31C
-	for <imx@lists.linux.dev>; Mon,  9 Nov 2026 20:59:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39650606A321;
+	Mon,  9 Nov 2026 21:13:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 39650606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hy04obhK
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E85961F008A1;
-	Mon,  9 Nov 2026 20:59:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794257974;
-	bh=0pNIpJ2XYUEiaROUBLiZw7MiKBMSmSE6udhiS67VKTM=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=hy04obhKeguCuR86/zrVfB7EwHSxJq8sDLDpxFRc6y0VxRbcnhj/Vu2au37SY/jz2
-	 nLnnQgG+BU83ySErQWx1L4NbdEoOty1Jhjf+SkB1NooGfDOBo7cQMkb1l1dvnIdNA+
-	 m9DNCXV5lKRuydNaviGknx5DbHsWbliLXdF/A/ZJ9u9tE3ErFJzMym1myguN7CmO9F
-	 VqSAFtNPQuDwmLlVkVqOKafHfUo5cmEAFccbqKn2Zt6JCCEIZf/fP3ublyJXixYOni
-	 kP9glwyyHrebbsSmLJxkJp4ynjswN3igfAHgw8eUB9wekH5b+YRC8RAjMSSYJcp6u5
-	 nXHK/jJ0g/vgw==
-Message-ID: <sashiko-outbox-205622@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 6/6] i2c: xiic: remove redundant
- pm_runtime_dont_use_autosuspend() calls
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Joshua Crofts" <crofts@kernel.org>
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org, wsa+renesas@sang-engineering.com
-In-Reply-To: <20261109-i2c-remove-dont-use-autosuspend-v1-6-49a08b8daf36@kernel.org>
-References: <20261109-i2c-remove-dont-use-autosuspend-v1-0-49a08b8daf36@kernel.org>
- <20261109-i2c-remove-dont-use-autosuspend-v1-6-49a08b8daf36@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 09 Nov 2026 20:59:33 +0000
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=I7V4piKU
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1794258824; x=1825794824;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=bUFL1VnRt9/kwtxYQqI5cg6sG3sMLWSyuNPbrpq49Yo=;
+  b=I7V4piKUHrUdznyETcrOUv91Bxdfp3shi8VAKBOvpxD7vpIZGgNIeM7N
+   YRVb3o+qAKbT7xV1aJ1f+snsE76FDSsHdQATeGqLV1+nADvLmX0P8v8cR
+   7VTSXvzQo88pEW0bJ5+3gmsNEVXLI6IWUxz56KejTrJ9GvdJzH37oQWai
+   kNrvYBZolIXkuaMjXJ5DMr+u5xUy0HI3OB0SzQJGa+x3hjJze56F+t2mT
+   DqSfE/NFTR7Y+4m2D570HvLlYPkFu7VH2qbAlLLL3qawwylFedhu3DJ5e
+   aiGrEnwf/Um6BglK8yx6AjryYqDo/dFoX+SIRuCDK1TIcZ6LOJUpu+ZYN
+   w==;
+X-CSE-ConnectionGUID: izz8W32dT7+JG1vjEPU7Rw==
+X-CSE-MsgGUID: XC4c9puiQ9qDh/piVyGWYg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11961"; a="2881630"
+X-IronPort-AV: E=Sophos;i="6.27,204,1787036400"; 
+   d="scan'208";a="2881630"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2026 13:13:42 -0800
+X-CSE-ConnectionGUID: YxnrjC0TTP+9AzDlLTW0vA==
+X-CSE-MsgGUID: 4c+5US7AQQ+rz0DKt15Orw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,204,1787036400"; 
+   d="scan'208";a="7985628"
+Received: from amilburn-desk.amilburn-desk (HELO localhost) ([10.245.244.144])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2026 13:13:38 -0800
+Date: Mon, 9 Nov 2026 23:13:35 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Bartosz Golaszewski <brgl@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, Johan Hovold <johan@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	linux-acpi@vger.kernel.org, driver-core@lists.linux.dev,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH v2 3/4] software node: pin referenced swnodes while
+ resolving them
+Message-ID: <avI3f7ZK_qx_Rd7j@ashevche-desk.local>
+References: <20261106-swnode-race-v1-v2-0-f8bc7b14d578@nxp.com>
+ <20261106-swnode-race-v1-v2-3-f8bc7b14d578@nxp.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -60,73 +88,96 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261106-swnode-race-v1-v2-3-f8bc7b14d578@nxp.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-Thank you for your contribution! Sashiko AI review found no new issues
-in this patch, but noticed 1 related pre-existing issue it does not
-introduce:
-- [High] i2c: xiic: premature IRQ registration in xiic_i2c_probe() [1]
---
+On Fri, Nov 06, 2026 at 12:38:37PM +0800, Peng Fan (OSS) wrote:
 
-commit 188337d85ab0ac1fad4560f785b36f1dce4f451f
-Author: Joshua Crofts <crofts@kernel.org>
+> software_node_get_reference_args() and software_node_add_links() resolve
+> DEV_PROP_REF entries by calling software_node_fwnode(), which returns a
+> borrowed pointer. The referenced swnode can be unregistered and released
+> between the lookup and the fwnode reference or link operation.
+> 
+> Use software_node_to_swnode_get() for software node references and keep
+> the reference until the argument or link has been set up. For direct
+> fwnode references in software_node_add_links(), take a reference with
+> fwnode_handle_get() and release it after fwnode_link_add() completes.
 
-i2c: xiic: remove redundant pm_runtime_dont_use_autosuspend() calls
+...
 
-This commit removes redundant pm_runtime_dont_use_autosuspend() calls from
-the probe error path and remove callback in the xiic I2C driver.
+> -	if (ref->swnode)
+> -		refnode = software_node_fwnode(ref->swnode);
+> -	else if (ref->fwnode)
+> -		refnode = ref->fwnode;
+> -	else
+> -		return -EINVAL;
+> +	if (ref->swnode) {
+> +		struct swnode *remote = software_node_to_swnode_get(ref->swnode);
+>  
+> -	if (!refnode)
+> -		return -ENOTCONN;
+> +		if (!remote)
+> +			return -ENOTCONN;
 
-> diff --git a/drivers/i2c/busses/i2c-xiic.c b/drivers/i2c/busses/i2c-xiic.c
-> index ab7916745ad39..4e06fa4f73d77 100644
-> --- a/drivers/i2c/busses/i2c-xiic.c
-> +++ b/drivers/i2c/busses/i2c-xiic.c
-> @@ -1580,7 +1580,6 @@ static int xiic_i2c_probe(struct platform_device *p=
-dev)
->  err_pm_disable:
->  	pm_runtime_disable(dev);
->  	pm_runtime_set_suspended(dev);
-> -	pm_runtime_dont_use_autosuspend(dev);
-> =20
->  	return ret;
->  }
+It's always better to maintain when assignment is coupled with a validation
+check.
 
-[Severity: High]
-This problem wasn't introduced by this patch, but can registering the IRQ
-in xiic_i2c_probe() before detecting hardware endianness cause an
-interrupt storm [1]?
+		struct swnode *remote;
 
-drivers/i2c/busses/i2c-xiic.c:xiic_i2c_probe() {
-    ...
-	ret =3D request_threaded_irq(irq, NULL, xiic_process, IRQF_ONESHOT,
-				   pdev->name, i2c);
-	if (ret)
-		goto err_pm_disable;
+		remote = software_node_to_swnode_get(ref->swnode);
+		if (!remote)
+			return -ENOTCONN;
 
-	i2c->singlemaster =3D device_property_read_bool(dev, "single-master");
+> +		refnode = &remote->fwnode;
+> +	} else if (ref->fwnode) {
+> +		refnode = fwnode_handle_get(ref->fwnode);
+> +	} else {
+> +		return -EINVAL;
+> +	}
 
-	/*
-	 * Detect endianness
-	 * Try to reset the TX FIFO. Then check the EMPTY flag. If it is not
-	 * set, assume that the endianness was wrong and swap.
-	 */
-	i2c->endianness =3D LITTLE;
-	xiic_setreg32(i2c, XIIC_CR_REG_OFFSET, XIIC_CR_TX_FIFO_RESET_MASK);
-	/* Reset is cleared in xiic_reinit */
-	sr =3D xiic_getreg32(i2c, XIIC_SR_REG_OFFSET);
-	if (!(sr & XIIC_SR_TX_FIFO_EMPTY_MASK))
-		i2c->endianness =3D BIG;
-    ...
-}
+...
 
-If a pending interrupt remains from an earlier boot stage on a big-endian
-system, xiic_process() can fire immediately after request_threaded_irq()
-while i2c->endianness is still zero-initialized to LITTLE.  xiic_getreg32()
-and xiic_setreg32() then use little-endian accessors, failing to clear the
-interrupt and hanging the system in an unhandled IRQ storm.  Detecting
-endianness and running xiic_reinit() before requesting the IRQ would avoid
-this.
+> -			if (ref->swnode)
+> -				refnode = software_node_fwnode(ref->swnode);
+> -			else if (ref->fwnode)
+> -				refnode = ref->fwnode;
+> -			else
+> +			if (ref->swnode) {
+> +				struct swnode *remote;
 
-[1] https://sashiko.dev/#/bug/linux-6466439c-c62b-471e-ba38-0219e368df95
+> +				remote = software_node_to_swnode_get(ref->swnode);
+> +				if (!remote)
+> +					continue;
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261109-i2c-remove=
--dont-use-autosuspend-v1-0-49a08b8daf36@kernel.org?part=3D6
+Seems like a dup code, perhaps a helper?
+
+> +				refnode = &remote->fwnode;
+> +			} else if (ref->fwnode) {
+> +				refnode = fwnode_handle_get(ref->fwnode);
+> +			} else {
+>  				continue;
+> +			}
+>  
+>  			/* Supplier not registered yet, or self-reference. */
+> -			if (!refnode || refnode == &swnode->fwnode)
+
+> +			if (refnode == &swnode->fwnode) {
+> +				fwnode_handle_put(refnode);
+>  				continue;
+> +			}
+>  
+>  			fwnode_link_add(&swnode->fwnode, refnode, 0);
+> +			fwnode_handle_put(refnode);
+
+I don't see a context, but it looks like it continues in both cases.
+If so, the above may be refactored for that.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
