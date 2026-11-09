@@ -1,70 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=80.86.107.70
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794169816;
-	b=hUJCTDz1rk5kDiu4ZDAb015qYPYl8JIlsOuAXhREXm/YKy5oPlyAeCfAwfL/50afvv2m
-	 GwRWmgbhQHgwJ9sjSa3oAkvetU0sQS53fm99qiGKgpHPjiUxgUExRVScaE6dQb0qMxQN2
-	 AWur3vzSguwplEzHHY0+NtDlQsZYLo3bSLD+bM1YCeTx0MoLIucaozKPnMCHkVhE9YPVF
-	 dRacxbuD10rdZYdHQVJGkdAl3iy7NL/TciDUrcDBuwQS0yxCMXzpidCDiLqZn/Xxi8eG7
-	 6XNsy6CPPJ3oIzQYiKkpxNDJs21Vs7phMVwTqwUWqc+G3Ve+9JFCFyCWWXybte1f6Mg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794169816;
-	h=DMARC-Filter:Received:DKIM-Filter:DKIM-Signature:Message-ID:Subject:
-	 From:To:Cc:Date:In-Reply-To:References:Content-Type:
-	 Content-Transfer-Encoding:User-Agent:MIME-Version;
-	bh=CLg0dkhkAHqwvH4NqaW3nQ9pKyM6DLsfJFXhxQWDQ00=;
-	b=18QRfh3aKmleUcrhn3cC0/uXYLFr4M9KiMudODzZSDM23L0CsciR1UExj3UOaZMazoOZ
-	 4bbFm5SGhp2ydqpj1lINL1E6bZM+lmoTVsEbeoSCcOPh/An45AG0ZSO49WfDsQd0BfijZ
-	 to5lqpeoMiZzqJHKmWT22ge9sO1CVCQlRVtmWHnWU+/EwiJJS8SdQWNcgrOxWRIvXRGhv
-	 br5xUWYUKy7ggg1k+EG2oFaOzHP4sjSed2uZH3lKr7TSNK8TI99xwqtQIVesrObEvk3Ui
-	 ykTfpgQTDdf+0YY+v+8jJB9LgNc3CAIN5CIHu6EKimbfpEgYWEte4u7E20vIaMF0a+A==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=rendec.net;
-	spf=pass smtp.mailfrom=rendec.net;
-	dkim=pass header.d=rendec.net header.i=@rendec.net header.a=rsa-sha256 header.s=default header.b=i4poTfs6;
-	arc=none smtp.remote-ip=80.86.107.70
-Received: from mail.mindbit.ro (xs1.mindbit.ro [80.86.107.70])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.228.2
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794188370;
+	b=wyBZHsdQfCks/lq9JYe8tgNl2S8FCtybbYwOvX1zaace0UwVLu1zn8A3V83fVmmJgilU
+	 b+fIDzvPUfIQc3CznxzC2utsEtiIe5FGR66LLD0FdNauc5gJJY/2vHcx/5qlGIWF1VwPb
+	 5hTRr0zc9u26wlZpZFckE3RPtnqCoKm4urqMzVmXGG6/Us2JZzakRPX7kfZJwLHBEbldY
+	 dJgWkbsVZPAspe/5qrbmUu2TT+BKo/O4nqiw06lu5n7n01xbuYNQqGQ6MYGsKiF48VsAC
+	 c89DP+xAFe5qwyRInX5Grlfyhb7avn5upoZjzTWfVcnmgd0ss1DjnuSNtR5KG8VGnZQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794188370;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:From:To:Cc:
+	 Subject:In-Reply-To:References:User-Agent:Content-Type:Date:
+	 X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-LD-Processed:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=UK8FFw6cKcrOdzxm8cDlsKuP7lRmUbXTtYWqhin0FUg=;
+	b=N+OWFRnhhSQy4ZtKm3wH8aIbUhNUJ2ihRQV/OLUb0+3DROy+kopIvhrZwOMfH7Lwf2j4
+	 Jjvk8MeCeseTbV+uV8aq2npH4Bb+ovp1HXLpkAMqMxjOc1nyEBGOxqxsqNI0mPFx5Es7P
+	 cmE4EqniZtYI8J7HQ9qqipYtgSN+Zq/vRfL/pUDbMB2JEXaa5/h5HWhhCgEd/IXLo2uf7
+	 utbVOwfUCIF/kXDhnvPcwnKnKvcxeD3o5jXiBh3KZcgSSf9VeNz4r4YfPQmMGk4dxHPyC
+	 tQiOZmY/oj/+zjRtKd1+lt5V3kLz41zw/ojKZV4PVp9iliC8tqqA1Q6Q/s/XmjnG+MQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=renesas.com;
+	spf=pass smtp.mailfrom=renesas.com;
+	dkim=pass header.d=renesas.com header.i=@renesas.com header.a=rsa-sha256 header.s=selector1 header.b=Ckv6NKQK;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.228.2
+Received: from OS0P286CU011.outbound.protection.outlook.com (mail-japanwestazon11010002.outbound.protection.outlook.com [52.101.228.2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 563E3606D80F
-	for <imx@lists.linux.dev>; Sun,  8 Nov 2026 20:30:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 563E3606D80F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=rendec.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rendec.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55F63606A322;
+	Mon,  9 Nov 2026 01:39:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 55F63606A322
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rendec.net header.i=@rendec.net header.a=rsa-sha256 header.s=default header.b=i4poTfs6
-Received: from dog.kanata.rendec.net (pool-174-112-193-187.cpe.net.cable.rogers.com [174.112.193.187])
-	by mail.mindbit.ro (Postfix) with ESMTPSA id 39EDFD4223;
-	Sun,  8 Nov 2026 22:30:11 +0200 (EET)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.mindbit.ro 39EDFD4223
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rendec.net;
-	s=default; t=1794169813;
-	bh=CLg0dkhkAHqwvH4NqaW3nQ9pKyM6DLsfJFXhxQWDQ00=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=i4poTfs6sLriei2b8QRGHlw6KjyTG6NLgwR+p3tAfmpwrNOONvb8J77ZkXxCA8CL3
-	 sYO03+q9Hfzuaklw4QWATFZIvjr3StGH5Q50CzVOxzMFbF0jO25m27QiCyuq5QTiIo
-	 DqnkQrOGyVI1Bh0WsAi9HAeCarhrfENIHg+m9apQdrXKKbA7pl5nkE23uIBulrv2lA
-	 M0XEpsFyWZgq+lAOtg0C7elFUGWh0nYDdws+3END/2OoNC/BZiN+1OQIA2qLVKFMxW
-	 SK25IMV8g6j2S6yZAWzU2V7ckPD/GigjTvfcIwYUU3nav3gxA33A7iWEKuRj9KId9k
-	 ChTKFNl9KelFw==
-Message-ID: <912bdd213166ff7d6c24580896b92bb0a3edea78.camel@rendec.net>
-Subject: Re: [PATCH v7 10/10] irqchip/imx-irqsteer: Use
- devm_irq_domain_create_linear()
-From: Radu Rendec <radu@rendec.net>
-To: Zhipeng.wang_1@oss.nxp.com, Thomas Gleixner <tglx@kernel.org>, Marc
- Zyngier	 <maz@kernel.org>, Frank Li <Frank.Li@nxp.com>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team	
- <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Fabio Estevam	
- <festevam@nabladev.com>, Jindong Yue <jindong.yue@nxp.com>,
- xuegang.liu@nxp.com, 	linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org
-Date: Sun, 08 Nov 2026 15:30:09 -0500
-In-Reply-To: <20261104073759.386777-11-Zhipeng.wang_1@oss.nxp.com>
-References: <20261104073759.386777-1-Zhipeng.wang_1@oss.nxp.com>
-	 <20261104073759.386777-11-Zhipeng.wang_1@oss.nxp.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-2.fc43) 
+	dkim=pass (1024-bit key, unprotected) header.d=renesas.com header.i=@renesas.com header.a=rsa-sha256 header.s=selector1 header.b=Ckv6NKQK
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=fQi+QFxNRy38ZdvJVLzm4bG42PN21BGzdvDJXf/Liv6momyA8+N4EDuv01A4WvO5HhmL+n6OaT3RTRId5UiMFVB64oNwyXFwtwn9Ffsj8xp006u8cxTVQv9spq4KuOcULmSMjEOJGaZwI4R3kFFGP8AWkM4FliniHarlOFg4t/5qryCgBGIC1r7pdydrj229RaOHJdhdcqoqhnigPowSI/cos1s0zvdO0mLqGjvsZFH7mDURSgvTKpvYwsmRMnt1V/4XSu4CjciLoOYH4zpkFmc99xxqre3gkl4XRJVB+Fq0yhzPym+R3niETBz0raGBfzjMoFp5/wwoW2HZ9KVS5w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=UK8FFw6cKcrOdzxm8cDlsKuP7lRmUbXTtYWqhin0FUg=;
+ b=DCpta/1vYdiBxdXqIDgNmSGbQH4gSBDf0XYFWt9WMzjVOwrF5hc3DAQcIhxAwlGw0BALAmqa6C/LO0tqjs6enpMRFlnuLYpiP9DSpD4xs+LMJ61odPpACkFo/0RnVkOIEoNKdKgVoBVZ0GnwaMpz6v9y6U2hA5Marngy0/H6IQW7eu/qXkl1GiRcgxvO+W+8p8Cb1q3Rz8QAmC1H81rvy2bxvvYPAC3enrkXIx0GvoYw2mysIPc0RCIvsJpmSmcTkds7+jXwcBqxGl2fHrICpkH9/0hJzWwd9vP8nWKuyWYOCarw/SNpJ36wTrf7qVRS/KJivC8FQBA1S7jBDpn26w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
+ dkim=pass header.d=renesas.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=UK8FFw6cKcrOdzxm8cDlsKuP7lRmUbXTtYWqhin0FUg=;
+ b=Ckv6NKQKTWlXWZ0gr8mXisrV2lzalpdMkYP+yITUQeFbU5OrbQxr12FF/KYJc7nlrQHmXnhTJECOaxdgB1QxQ7pOZvJm3ydrnXXsmeptZAMhZrsXRtjZKqs95h6M9yTEFSgglAdZ70ZQhWoAl7SW/h6A1ZEV1RdSn8nGWRRK2iM=
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=renesas.com;
+Received: from TYYPR01MB15175.jpnprd01.prod.outlook.com (2603:1096:405:27d::8)
+ by OS9PR01MB17980.jpnprd01.prod.outlook.com (2603:1096:604:474::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.12; Mon, 9 Nov
+ 2026 01:39:25 +0000
+Received: from TYYPR01MB15175.jpnprd01.prod.outlook.com
+ ([fe80::9bfd:a110:68f1:134d]) by TYYPR01MB15175.jpnprd01.prod.outlook.com
+ ([fe80::9bfd:a110:68f1:134d%6]) with mapi id 15.21.0592.010; Mon, 9 Nov 2026
+ 01:39:24 +0000
+Message-ID: <87y0b2pyus.wl-kuninori.morimoto.gx@renesas.com>
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+To: Frank.Li@oss.nxp.com
+Cc: Martin =?ISO-8859-2?Q?Povi=B9er?= <povik+lin@cutebit.org>,	Liam Girdwood
+ <lgirdwood@gmail.com>,	Mark Brown <broonie@kernel.org>,	Jaroslav Kysela
+ <perex@perex.cz>,	Takashi Iwai <tiwai@suse.com>,	Shengjiu Wang
+ <shengjiu.wang@gmail.com>,	Xiubo Li <Xiubo.Lee@gmail.com>,	Fabio Estevam
+ <festevam@gmail.com>,	Nicolin Chen <nicoleotsuka@gmail.com>,	Geert
+ Uytterhoeven <geert+renesas@glider.be>,	Magnus Damm
+ <magnus.damm@gmail.com>,	Sen Wang <sen@ti.com>,	asahi@lists.linux.dev,
+	linux-sound@vger.kernel.org,	linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,	linux-renesas-soc@vger.kernel.org,
+	imx@lists.linux.dev,	vkoul@kernel.org,	Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH 3/4] ASoC: renesas: rcar: Use dmaengine_get_dma_device() instead of chan->device->dev
+In-Reply-To: <20261106-dma_sound_cleanup-v1-3-5eb8a7b81e87@nxp.com>
+References: <20261106-dma_sound_cleanup-v1-0-5eb8a7b81e87@nxp.com>
+	<20261106-dma_sound_cleanup-v1-3-5eb8a7b81e87@nxp.com>
+User-Agent: Wanderlust/2.15.9 Emacs/30.2 Mule/6.0
+Content-Type: text/plain; charset=US-ASCII
+Date: Mon, 9 Nov 2026 01:39:23 +0000
+X-ClientProxiedBy: OSTPR01CA0011.jpnprd01.prod.outlook.com
+ (2603:1096:604:220::8) To TYYPR01MB15175.jpnprd01.prod.outlook.com
+ (2603:1096:405:27d::8)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -74,50 +104,78 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TYYPR01MB15175:EE_|OS9PR01MB17980:EE_
+X-MS-Office365-Filtering-Correlation-Id: a7d556a8-6ca7-448a-89ca-08df3e0248ec
+X-LD-Processed: 53d82571-da19-47e4-9cb4-625a166a4a2a,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|23010399003|376014|1800799024|52116014|366016|38350700014|11063799006|4143699003|56012099006|261009223027099003|10067099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	qcgkK1A/WkrnLalyxKKgpYs1xlSc7iS74XzFDLq5pWLJWC/tjPvMtJkNkDoL5Q3VgJx3OIV6/wrC+u6XZjRtbeZ7bTmSj9t6Nue2QmbVBJ0ijlzDe70ad43PpdKzeYxTjtwTXxCktqGpnsO/J7uCnCG+d/DDgHA3Pk205h/JvRtOq5wR+5NTjJ2vG1OcC/iajHEWtY365RGKp6gifEHfygEXPXWf+PThpF679vInkiTW6wrN8gAf5HL/DkVx9wQx4fTrcLykN/AYtdvkrnBTNb3wz2jsG7VMLIn5JpW2d7HoamGbb+3oDLAYJDYbHmpD87Byp5shsmuRHoPu8i+B8B3jtIRPpOZ21w6qFVyFu5Zv4LgxcVySoTMstAzDS/R6YXaIrETXiUMJM0TFl84GM7ZOs9qmmVWHVowaOkL4EnOH/8ZKCrcrP+N/t1iRazJIlhIzQ3Oe85gaL6onzvYo1P7GmhAk5A/UlrzkpKsOonzk0cSIDL5UW7PMOmn80/sTs4hzb9rxLPXVrt+c62kSQWTJWzX/Blqv4/A0q40D1I1FnRiS8z7eCLgjh481V0Kcgxpx9/BX9U0GXPE4AfvBJ97ZZUobPqo0qa2H7Jv2HWQXD3HvS6MEfWaTc7Yq0K7Xx5rEI9f+aLYIwJwnhZfk60ZAbFMgCJWydbh/MEK3O6ypPSYdtKVupEJMSjt28X5Yedj1gAtv5KhYy5r5XSHCJ+QiR/Fr9acK424naNkzuXE=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYYPR01MB15175.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(23010399003)(376014)(1800799024)(52116014)(366016)(38350700014)(11063799006)(4143699003)(56012099006)(261009223027099003)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?zjZ38FYQ5X4mm1gbEnCW2iXPXtreeX7sR2Jy9jr5hDuNY1S35oPTiLVgWBF8?=
+ =?us-ascii?Q?Gs5KXX15afi+UlJJZfeAEkwLqtzSSv7U0zMcbQ7IapNSumBbcY71BftcIown?=
+ =?us-ascii?Q?3O96pzfXp4T3pLDmxm01qZyABhhraE7DZ6ktws/PAOZlRUKr0RA4DFBejd/o?=
+ =?us-ascii?Q?p722djVPogg4iAbSIGaD3r4GOq2rHqsBBrLm7OCJJ7+fEc/bg+JhT+pmXlKm?=
+ =?us-ascii?Q?WOVi92vo2dIPDw8OBYxzJ52kA38dNczl7V2eFDkeiepHjI8jcqVF9FK2/nj4?=
+ =?us-ascii?Q?cW3peZHa7xQZQ65d7KfFNzjx7qMSe4jYgUEFN3CCH3crMj7IY3IZBYh+JMO7?=
+ =?us-ascii?Q?1w/+PWVBEZIKi04vTJkCZF5kUjDoDHMQzmfxg3471eQ1diSqxQIS/NgmzVoj?=
+ =?us-ascii?Q?nRN75tUWyN3n/7IfH6VGdeJ9T/jwBWlUDUDQ57XWF8Npe1yeiYvZTpK92+1h?=
+ =?us-ascii?Q?waN27jlB/IsO+cD7hmjRrPWWy+SCASLEg5cQtzaelt6o1twB4NczFTRn9Ky+?=
+ =?us-ascii?Q?qCnMSK0wrLnZnyNu9EbeJpKCzKk2UgJvlpXXiDDG+xPHT6RixkkbcSmxmMJn?=
+ =?us-ascii?Q?SwoUIaDTI7LY1lJ8TAN3jRlih2ja5coylo4FUhoECZJ+YGVbhiFSn0DpbZZQ?=
+ =?us-ascii?Q?1ychgImulMH5agAr4SnYZXi8Xl01piASUE8DNxtm5f5osM46Sr6a+R0SbKFQ?=
+ =?us-ascii?Q?PGZsGE+3PXMUnqqYKTiYsEJGINo+JFgLUioJ/Cc0KD4zIfi3C5Y0ZFR6ZUyv?=
+ =?us-ascii?Q?mugKxwvmFv0igghuk7kAmBuCrpq9ouFWceeG2Dj7KPDu6ncc6CcIRxBHVz3f?=
+ =?us-ascii?Q?EUDysOeAEJqyWvScSuqvlwayGPKdQsYouz9lDuS0DNza+Vv5ktdiUAVyoKe/?=
+ =?us-ascii?Q?WQ3/Q0Ly4jX2kSCcVjAg2Bdhy+9i0U8dXy2M6duzRhnRLLxHVvugiH3EQ26b?=
+ =?us-ascii?Q?ZzAL92B9Leu8NWMtsqgpG49cQuiC1TuzuzL68xqWJTxJYV0ICQrsgVeKlNaO?=
+ =?us-ascii?Q?jzSkoc69wEFUKIKFTYbwm0hb7a64spsbQzNjeGY8y6KiooHAMm9HBiL2qce9?=
+ =?us-ascii?Q?5AVkJ87cQ1xgb17JMwYxHtFkPPxjTVC1fVi4cgN3IIrn2wRc+P8r09KRQh8G?=
+ =?us-ascii?Q?1nIyvE280N+wCbUstcw6mDQvl8ZvTMyGKtZVZgSXouTuqn7U8VbjE13KaBPL?=
+ =?us-ascii?Q?0Zm0hpG2IMoxHdQAR1lQRSyaeopYJhHPVI+mwiKgLzCCQPImFRcCojn1Vnfd?=
+ =?us-ascii?Q?lb0WuHmg4SzSnTgWXEN6VlGYyNmwhNk8bPcsc7LiP7YzseqTep1Jo6o+jZg7?=
+ =?us-ascii?Q?FBX1fy+jZYhHoVD3tcisqZTE4oTZVq+kGTrqJXYef9XanUinJeZSdw/rXbML?=
+ =?us-ascii?Q?adr88fFIkUCyLHPp3aOyqCEk4DC4B/FeCiiynXL2nWhRRXWcMXPFuXtUBiaN?=
+ =?us-ascii?Q?FwShyyVaw2C9YrBQDAFiRLmnW1na3jBir74pWXiy+1bnZJvheC6Ene7gBGrv?=
+ =?us-ascii?Q?o9M9vEScR41qoQwadyUFFyqKvptf2Syjd4YmljavdnTuFUHsA9x7kdron2nL?=
+ =?us-ascii?Q?z1oWklt0LXNX/JL3tVFyh9Wsyv+2DPlSzaT27vFpzZmpylgEzE6SRK2z4D68?=
+ =?us-ascii?Q?XhnwSVoL59b0IYL7bitTH92pKsaInpz71r81iYqgqbtFnXO2yB8k5UHTeZf3?=
+ =?us-ascii?Q?ee6aohDIWLH5iiRXDJajajg52pyDDl9oU8f3V4UJqDM14I1kN3QiIP05PxCM?=
+ =?us-ascii?Q?l47g3ugju1wCvBpHQMvhptlyDEtCQUQ=3D?=
+X-OriginatorOrg: renesas.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a7d556a8-6ca7-448a-89ca-08df3e0248ec
+X-MS-Exchange-CrossTenant-AuthSource: TYYPR01MB15175.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Nov 2026 01:39:24.5897
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ktcFgn7IbTYBB2t3TuNy3hiCNxsaMx54oNsU+yfHoSoL5Zwx8Hn7+nyg180WsjDDWF+VsbjegUCagFV+ozrILOhBSyyq6pD4u0+z7juzNbKIRHUvlmIACFsR+4UMbIfT
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS9PR01MB17980
 
-On Wed, 2026-11-04 at 16:37 +0900, Zhipeng.wang_1@oss.nxp.com wrote:
-> From: Zhipeng Wang <zhipeng.wang_1@nxp.com>
->=20
-> Replace irq_domain_create_linear() with the new
-> devm_irq_domain_create_linear() helper, so the IRQ domain is released
-> automatically on unbind and remove() no longer has to call
-> irq_domain_remove(). No functional change.
->=20
-> Signed-off-by: Zhipeng Wang <zhipeng.wang_1@nxp.com>
+
+Hi
+
+> Replace open-coded chan->device->dev with the accessor
+> dmaengine_get_dma_device() to avoid direct access to DMA engine
+> internals.
+> 
+> Prepare to make struct dma_device private.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
-> =C2=A0drivers/irqchip/irq-imx-irqsteer.c | 7 +++----
-> =C2=A01 file changed, 3 insertions(+), 4 deletions(-)
->=20
-> diff --git a/drivers/irqchip/irq-imx-irqsteer.c b/drivers/irqchip/irq-imx=
--irqsteer.c
-> index d15b806b278c..da6e8d1bbec1 100644
-> --- a/drivers/irqchip/irq-imx-irqsteer.c
-> +++ b/drivers/irqchip/irq-imx-irqsteer.c
-> @@ -248,8 +248,9 @@ static int imx_irqsteer_probe(struct platform_device =
-*pdev)
-> =C2=A0	if (ret)
-> =C2=A0		return ret;
-> =C2=A0
-> -	data->domain =3D irq_domain_create_linear(dev_fwnode(&pdev->dev), data-=
->reg_num * 32,
-> -						&imx_irqsteer_domain_ops, data);
-> +	data->domain =3D devm_irq_domain_create_linear(&pdev->dev, dev_fwnode(&=
-pdev->dev),
-> +						=C2=A0=C2=A0=C2=A0=C2=A0 data->reg_num * 32,
-> +						=C2=A0=C2=A0=C2=A0=C2=A0 &imx_irqsteer_domain_ops, data);
-> =C2=A0	if (!data->domain) {
-> =C2=A0		dev_err(&pdev->dev, "failed to create IRQ domain\n");
-> =C2=A0		return -ENOMEM;
-> @@ -298,8 +299,6 @@ static void imx_irqsteer_remove(struct platform_devic=
-e *pdev)
-> =C2=A0	for (hwirq =3D 0; hwirq < irqsteer_data->reg_num * 32; hwirq++)
-> =C2=A0		irq_dispose_mapping(irq_find_mapping(irqsteer_data->domain, hwirq=
-));
-> =C2=A0
-> -	irq_domain_remove(irqsteer_data->domain);
-> -
-> =C2=A0	if (ret >=3D 0)
-> =C2=A0		pm_runtime_put_noidle(&pdev->dev);
-> =C2=A0}
 
-Reviewed-by: Radu Rendec <radu@rendec.net>
+Acked-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+
+Thank you for your help !!
+
+Best regards
+---
+Kuninori Morimoto
