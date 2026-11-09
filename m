@@ -1,55 +1,60 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794243425;
-	b=GUettrtZTVW7Mb6jUA4u9fEqrH0MNnn8LA25Eptw7YFD/sHMx0dlNC/QsgqbZaMT5i5f
-	 Hh+aPMfrLR49uLr4XAwLjEqVqe0IDB3QoP398JixYD7kUh3WBU8x2VvPdNASqVZXYwFhm
-	 Rjoe3V9S6aCNefZ93xc7mVWXobJOpUT3Dx8YcK+dRpW0fUI52mI6K/1Ftjei9oJGyCDjO
-	 p2ehIl+iI0XnAyNo7IBv/rIOavGkmPUWC3XO7wNcE8WPv7FX8UOrhSkUxwlez+LjEkSgP
-	 Yu6PPcoB9lm3/ZoqYO53w4DlNw8/OPiQWKx343oKDMIi+++/IcavviRj1BhQlo58XqA==
+	t=1794245826;
+	b=XzRmRwI6yh58SZ8BcWqjvgSxLPyQ2vTYnmrJSOTERCed1cwstyjqedAo9ft5cqujIQlJ
+	 BGCN0OQV85UWkNmnMFuinZxH5M/GUT6RefeJqy4TN/+RqF3ZSCyMJxSoPahez/D+K4r7c
+	 +eyXRYoC8B+uocTjvbKGa5MFUt5hz90xg2eq0UH3dlSpGSMQTDED8xbiSKVShXi+M9pmL
+	 vtuVKKfDYoDOevOX7GwDPvjlncJMkmhpzMjGOsnsP0JSRIqqfAUFGZw63pDII2n5X2FYe
+	 aFlv49ILaefzR5aRim6k6gGEbL/JW29hsQ21RUAPmwNLs29R614TuAJ19qdVx48XJNg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794243425;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=urZYeWhibdtU/Zlp2oYCc0mLuov/V5TOYLzLDDHdsnc=;
-	b=YWOHNiUKWXx8teDGVkyAdJsS/D8gOggyFuY9ZzHKxCOCLd/6gab3myQhZNxDm/5QHCsh
-	 xZojThwX/M9UvAmXwC0qmRoKB/DydxoKM7aZdhqbAYOag2nyz88gqnEKgmH6W4gy3+YrG
-	 kKykSLyUvO3Mgn9Rr1P8NClkg5ntT8dv1cQf5MKE57McSQ9/m3w70ioQolQRLdlx/8iR8
-	 5a9ge8bCE2Yy/FByfScE06TGqh7UkoKE208w2U6SRzKtN4+odaKVww5e+q1OBZcJwuaOG
-	 ub0DwwqmLQSUNEakMfFMNdB5kmdf18tWWh2fP7jjStoGZPwDLZjiVNjUcuGGU7LadFA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794245826;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=i2dzBPk2KyCkXa9Ry/J6aPzwN7dFhy1J+ad3KFJSVCo=;
+	b=oGmDb123oQWzk1UE7uM2tAKu1jA4ErFsS3F38a0rpfx6Y+nktdzeSleEwZnX8uP0CDRA
+	 uIDSQlKu0SepCddEQ+kCkeD2RJxwl37sNUuNdq3pOcwJT9US12W1DQSnj9RgUKLNiSrti
+	 nH56zULlb3TFzWRMUugF0Bjyo6gWK28LsJoS1GIcFbFuZSxnHRCiFkodisf/YMdBILKUS
+	 9oGj8m7QlX0Vh+pG04B9cRGWgh2O2AdpCF4dL6ORAJ9hawAlnycZyRBHrB2VwLMrdFfEN
+	 3qbzDpguqXHc2cKGnR4UhQzipQz1rAnJ0xYUCKeFUJaO7qwXbORVmzjs+dOHiaKWRqg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IwolJh2y;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UsLBoyzD;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F432606A33C
-	for <imx@lists.linux.dev>; Mon,  9 Nov 2026 16:57:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F9B7606A31C;
+	Mon,  9 Nov 2026 17:37:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IwolJh2y
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 857931F008A2
-	for <imx@lists.linux.dev>; Mon,  9 Nov 2026 16:57:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UsLBoyzD
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE5941F0089F;
+	Mon,  9 Nov 2026 17:37:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794243423;
-	bh=urZYeWhibdtU/Zlp2oYCc0mLuov/V5TOYLzLDDHdsnc=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=IwolJh2yBbzb9ttEyaLXZsHmVdoj1UmISMMxmTj5K4898I4Up+SxG4VmKiIqNbtmx
-	 ukvlBxj/NQfWSI2PoFOiWGlGLwUEGRVKDQbpQxQulVC3trqXptb71t/jmUIo8cPPRQ
-	 oNmUJbptOozfgc6Gzs8mtd2RKJCJp0NBT+RHdIBzOqbPCEMBN0PWuc2N4Pr0dxqNYW
-	 7nwivTY8kP5bYLsud+PzZ7yneqq8VbV+3yosDmR2hKijX2eDE2+pqWKDn6LjGpORsw
-	 J5MXm+SXtjkrSLbQqkcFx5o3I05ZXa0nmspcXNh8zjhpBt72djkGqfudJ4EVUpLb+D
-	 qVb/yjHfO78uQ==
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-c4395d31228so149939566b.1
-        for <imx@lists.linux.dev>; Mon, 09 Nov 2026 08:57:03 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErGDnhd3ckCiGq1OhIPHzmz3KorEQpB+dQIawqYlr/wMyDmEJ39I4WIn+6NekdBxKJzoyaY=@lists.linux.dev
-X-Gm-Message-State: APuU4Z98vrHeMMcozJu/3jHbMUuOuThDH5VpF8ugGpQ69WDX5m+ZHVtY
-	zXtqeJ60q/ypHxei16BtMCe22j+3wavcjlXZHqUDuNsKyKxFQuKu9XpDvAUjVNrEvFUFTwsrqJ+
-	4Fa7poOsShgaUisKxtVuZPcWErmEHFg==
-X-Received: by 2002:a17:907:d8e:b0:c32:110d:682f with SMTP id
- a640c23a62f3a-c4d6db1ee0cmr361581266b.18.1794243422197; Mon, 09 Nov 2026
- 08:57:02 -0800 (PST)
+	s=k20260515; t=1794245826;
+	bh=i2dzBPk2KyCkXa9Ry/J6aPzwN7dFhy1J+ad3KFJSVCo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=UsLBoyzDXclZURcLlAVnpfdx1bQX47+aMaIu6rOp9H65LGjgf7eEiLRbjPbVYr+HA
+	 kEaFFeNGf1wgD40VvhOA/k+XqiSxBf+fBaVvwpPYnBsjtJ1ZtocMWbfv7JrmME1zRu
+	 gQTXzYZbdjKTjXAwz0Au28t+KUBUAnkR/hCf8/I/2uueKXcCI1kd0gkTgoS9KqV/38
+	 X2f/VvdIVgU3/5I1f4ape5h/zdV175YODTDs8OeyrzmrGwoLdiuDqweNk2Hs2A6Ppc
+	 ugucn3KO1LtURaL9UI0pN8bHPKTIFqgV9Xx+Y84gaiUH9VEmMguMh6kiVJnTXDxLY1
+	 EWYrH2OSVJTrA==
+Date: Mon, 9 Nov 2026 17:37:01 +0000
+From: Simon Horman <horms@kernel.org>
+To: Claudiu Manoil <claudiu.manoil@nxp.com>
+Cc: netdev@vger.kernel.org, s32@nxp.com,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Wei Fang <wei.fang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	imx@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v3 2/5] net: enetc: Enable probing of version
+ 4.4 devices
+Message-ID: <20261109173701.GW18859@horms.kernel.org>
+References: <cover.1793712309.git.claudiu.manoil@nxp.com>
+ <bf8effe9a06ba569b5e5a36cc1d1982b2e3fff53.1793712309.git.claudiu.manoil@nxp.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -59,112 +64,138 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-References: <20261109161812.3629546-1-robh@kernel.org> <sashiko-outbox-205230@kernel.org>
-In-Reply-To: <sashiko-outbox-205230@kernel.org>
-From: Rob Herring <robh@kernel.org>
-Date: Mon, 9 Nov 2026 10:56:50 -0600
-X-Gmail-Original-Message-ID: <CAL_Jsq+2GYF6YOjT4PcEA3sFXZ9nBWGfTFbJtMaxHOMD2pSweA@mail.gmail.com>
-X-Gm-Features: AclHuK-sQPk6w1BbAKz5ufpcVmOX4WI72SXQ6mekCEPL_UO_W0K8T6-3I822OgA
-Message-ID: <CAL_Jsq+2GYF6YOjT4PcEA3sFXZ9nBWGfTFbJtMaxHOMD2pSweA@mail.gmail.com>
-Subject: Re: [PATCH] ARM: dts: nxp/imx6: Fix imx6qdl pico dwarf and nymph includes
-To: sashiko-reviews@lists.linux.dev
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, conor+dt@kernel.org, 
-	Frank.Li@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <bf8effe9a06ba569b5e5a36cc1d1982b2e3fff53.1793712309.git.claudiu.manoil@nxp.com>
 
-On Mon, Nov 9, 2026 at 10:29=E2=80=AFAM <sashiko-bot@kernel.org> wrote:
->
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue to consider:
-> - [Medium] ARM: dts: imx6: pinmux hog and GPIO conflicts on pico-dwarf
->   and pico-nymph
-> --
->
-> commit 92feeab6397394da98e778808f51f6d2369101e3
-> Author: Rob Herring (Arm) <robh@kernel.org>
->
-> ARM: dts: nxp/imx6: Fix imx6qdl pico dwarf and nymph includes
->
-> This commit updates the imx6dl and imx6q pico-dwarf and pico-nymph board
-> device trees to include their respective baseboard .dtsi files instead of
-> imx6qdl-pico-pi.dtsi, and adds missing properties to satisfy DT schema
-> checks.
->
-> Link: https://lore.kernel.org/all/sashiko-outbox-199279@kernel.org
->
-> > diff --git a/arch/arm/boot/dts/nxp/imx/imx6dl-pico-dwarf.dts b/arch/arm=
-/boot/dts/nxp/imx/imx6dl-pico-dwarf.dts
-> > index d85b15a8c1272..dd8ce2df876c0 100644
-> > --- a/arch/arm/boot/dts/nxp/imx/imx6dl-pico-dwarf.dts
-> > +++ b/arch/arm/boot/dts/nxp/imx/imx6dl-pico-dwarf.dts
-> > @@ -9,7 +9,7 @@
-> >  /dts-v1/;
-> >
-> >  #include "imx6dl.dtsi"
-> > -#include "imx6qdl-pico-pi.dtsi"
-> > +#include "imx6qdl-pico-dwarf.dtsi"
-> >
-> >  / {
-> >       model =3D "TechNexion PICO-IMX6 DualLite/Solo Board and Dwarf bas=
-eboard";
-> > diff --git a/arch/arm/boot/dts/nxp/imx/imx6dl-pico-nymph.dts b/arch/arm=
-/boot/dts/nxp/imx/imx6dl-pico-nymph.dts
-> > index 32ccfc5d41cee..4ce0d0d0756c4 100644
-> > --- a/arch/arm/boot/dts/nxp/imx/imx6dl-pico-nymph.dts
-> > +++ b/arch/arm/boot/dts/nxp/imx/imx6dl-pico-nymph.dts
-> > @@ -9,7 +9,7 @@
-> >  /dts-v1/;
-> >
-> >  #include "imx6dl.dtsi"
-> > -#include "imx6qdl-pico-pi.dtsi"
-> > +#include "imx6qdl-pico-nymph.dtsi"
-> >
-> >  / {
-> >       model =3D "TechNexion PICO-IMX6 DualLite/Solo Board and Nymph bas=
-eboard";
->
-> [Severity: Medium]
-> Does including imx6qdl-pico-dwarf.dtsi and imx6qdl-pico-nymph.dtsi cause
-> pinctrl and GPIO conflicts with imx6qdl-pico.dtsi for /leds, &pcie, and
-> touchscreen@38?
->
-> In arch/arm/boot/dts/nxp/imx/imx6qdl-pico.dtsi, &iomuxc hogs both
-> MX6QDL_PAD_CSI0_VSYNC__GPIO5_IO21 and MX6QDL_PAD_CSI0_DAT13__GPIO5_IO31
-> via pinctrl-0 =3D <&pinctrl_hog>:
->
-> arch/arm/boot/dts/nxp/imx/imx6qdl-pico.dtsi:&iomuxc {
->         pinctrl-names =3D "default";
->         pinctrl-0 =3D <&pinctrl_hog>;
->
->         pinctrl_hog: hoggrp {
->                 fsl,pins =3D <
->                         ...
->                         MX6QDL_PAD_CSI0_VSYNC__GPIO5_IO21       0x4001b0b=
-5 /* PICO_P26 */
->                         ...
->                         MX6QDL_PAD_CSI0_DAT13__GPIO5_IO31       0x4001b0b=
-5 /* PICO_P44 */
->                 >;
->         };
-> };
->
-> However, both imx6qdl-pico-dwarf.dtsi and imx6qdl-pico-nymph.dtsi define =
-a
-> /leds node with pinctrl-0 =3D <&pinctrl_gpio_leds> claiming
-> MX6QDL_PAD_CSI0_DAT13__GPIO5_IO31, and imx6qdl-pico-nymph.dtsi enables
-> &pcie whose pinctrl-0 =3D <&pinctrl_pcie_reset> claims
-> MX6QDL_PAD_CSI0_VSYNC__GPIO5_IO21. Because imx_pmx_ops does not set
-> .function_is_gpio, pin_request() rejects a second device claiming a pin
-> already owned by iomuxc, causing pinctrl_bind_pins() to fail with -EINVAL
-> when probing /leds on Dwarf and Nymph and &pcie on Nymph.
->
-> In addition, /leds in both baseboard files requests <&gpio5 31
-> GPIO_ACTIVE_HIGH> as an output, while touchscreen@38 in
-> imx6qdl-pico.dtsi uses that same GPIO5_IO31 line as its interrupt input
-> (interrupt-parent =3D <&gpio5>; interrupts =3D <31 IRQ_TYPE_EDGE_FALLING>=
-;).
+On Tue, Nov 03, 2026 at 04:09:08PM +0200, Claudiu Manoil wrote:
+> The ENETC v4.4 devices are present on S32N79 SoCs and feature only
+> Pseudo-MAC ENETC ports, whose PFs use either the 0xe101 or the 0xe110
+> PCI device ID, and the VFs answer to the usual device ID of 0xef00.
+> 
+> While the ENETC PF instances are usually designated by the 0xe101 ID,
+> in newer IP versions the 0xe110 ID was introduced to indicate the
+> power-on reset default NETC switch management interface. These IDs
+> do not indicate any functional difference between the designated
+> ENETC instances, and can be interchanged and re-assigned at boot time
+> (i.e. from firmware).
+> 
+> Signed-off-by: Claudiu Manoil <claudiu.manoil@nxp.com>
+> ---
+> v3:
+>  - Added sysclk_freq info for the v4.4 ENETC devices.
+> 
+> v2:
+>  - Described why there are two ENETC PF IDs in the commit message, as per
+>    review.
 
-I give up...
+I realise this was forwarded somewhere by an automation, but it seems not
+to the full CC list, so I'm reproducing it here:
 
-Rob
+  commit 6de2e15f2fb313f3ab9a84d0bfd5a867de11c72c
+  Author: Claudiu Manoil <claudiu.manoil@nxp.com>
+  
+  net: enetc: Enable probing of version 4.4 devices
+  
+  This commit adds driver data and platform info entries for ENETC v4.4 PF and
+  VF devices on S32N79 SoCs with a 500 MHz system clock frequency.
+  
+  > diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
+  > index c6571b5cc8425..b989823859ff2 100644
+  > --- a/drivers/net/ethernet/freescale/enetc/enetc.c
+  > +++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+  > @@ -3832,6 +3832,20 @@ static const struct enetc_drvdata enetc4_vf_data = {
+  >  	.eth_ops = &enetc_vf_ethtool_ops,
+  >  };
+  >
+  > +static const struct enetc_drvdata enetc4_s32n79_ppm_data = {
+  > +	.sysclk_freq = ENETC_CLK_500M,
+  > +	.tx_csum = true,
+  > +	.max_frags = ENETC4_MAX_SKB_FRAGS,
+  > +	.eth_ops = &enetc4_ppm_ethtool_ops,
+  > +};
+  > +
+  > +static const struct enetc_drvdata enetc4_s32n79_vf_data = {
+  > +	.sysclk_freq = ENETC_CLK_500M,
+  > +	.tx_csum = true,
+  > +	.max_frags = ENETC4_MAX_SKB_FRAGS,
+  > +	.eth_ops = &enetc_vf_ethtool_ops,
+  > +};
+  > +
+  >  static const struct enetc_platform_info enetc_info[] = {
+  >  	{ .revision = ENETC_REV_1_0,
+  >  	  .dev_id = ENETC_DEV_ID_PF,
+  > @@ -3862,6 +3876,18 @@ static const struct enetc_platform_info enetc_info[] = {
+  >  	  .dev_id = NXP_ENETC_VF_DEV_ID,
+  >  	  .data = &enetc4_vf_data,
+  >  	},
+  > +	{ .revision = ENETC_REV_4_4,
+  > +	  .dev_id = NXP_ENETC_PPM_DEV_ID,
+  > +	  .data = &enetc4_s32n79_ppm_data,
+  > +	},
+  > +	{ .revision = ENETC_REV_4_4,
+  > +	  .dev_id = NXP_ENETC_PF_DEV_ID,
+  > +	  .data = &enetc4_s32n79_ppm_data,
+  > +	},
+  > +	{ .revision = ENETC_REV_4_4,
+  > +	  .dev_id = NXP_ENETC_VF_DEV_ID,
+  > +	  .data = &enetc4_s32n79_vf_data,
+  > +	},
+  
+  Can probing ENETC v4.4 on an 8-core S32N79 SoC overflow priv->int_vector[] in
+  enetc_int_vector_init()?
+  
+  In drivers/net/ethernet/freescale/enetc/enetc.h, ENETC_MAX_BDR_INT is still
+  defined as 6:
+  
+  #define ENETC_MAX_BDR_INT	6 /* fixed to max # of available cpus */
+  ...
+  struct enetc_ndev_priv {
+  	...
+  	int bdr_int_num; /* number of Rx/Tx ring interrupts */
+  	struct enetc_int_vector *int_vector[ENETC_MAX_BDR_INT];
+  	u16 num_rx_rings, num_tx_rings;
+  	u16 rx_bd_count, tx_bd_count;
+  
+  Previously supported SoCs had at most 6 CPUs, whereas S32N79 has 8 CPUs and
+  enetc4_default_rings_allocation() allocates up to ENETC_SI_MAX_RING_NUM (8)
+  RX rings to the PF.
+  
+  When enetc_init_si_rings_params() runs on an 8-CPU system with 7 or 8 RX
+  rings:
+  
+  	int cpus = num_online_cpus();
+  	...
+  	priv->num_rx_rings = min_t(int, cpus, si->num_rx_rings);
+  	priv->num_tx_rings = si->num_tx_rings;
+  	priv->bdr_int_num = priv->num_rx_rings;
+  
+  priv->bdr_int_num becomes 7 or 8 without being clamped to ENETC_MAX_BDR_INT.
+  Then enetc_alloc_msix() -> enetc_int_vector_init() writes past the end of
+  priv->int_vector[]:
+  
+  	for (i = 0; i < priv->bdr_int_num; i++) {
+  		...
+  		err = enetc_int_vector_init(priv, i, num_tx_rings);
+  
+  where enetc_int_vector_init() does:
+  
+  	priv->int_vector[i] = v;
+  
+  overwriting num_rx_rings, num_tx_rings, rx_bd_count, tx_bd_count, and
+  subsequent fields in struct enetc_ndev_priv.
+  
+  Should ENETC_MAX_BDR_INT be increased (and/or priv->bdr_int_num bounded by
+  ENETC_MAX_BDR_INT)?
+
+Link: https://sashiko.dev/#/patchset/cover.1793712309.git.claudiu.manoil%40nxp.com?part=2
+
+This does seem to be a legitimate concern to me, and I think it warrants a v4.
+
+There is also a review of patch 1/5, here, which I think warrants
+investigation too.
+
+Link: https://sashiko.dev/#/patchset/cover.1793712309.git.claudiu.manoil%40nxp.com?part=1
+
+-- 
+pw-bot: changes-requested
