@@ -1,119 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.52
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794241302;
-	b=AgdqMZQWPyQ/12naxOq0JAX9mvwvXE/RFaOz3kNBwg0u3Z3fvXtmOFRq7pccW3Rmss8q
-	 Ap6FLxiodmOAANurgNbyYCcjduw9X2DjpAjld575TER5AWcaKocFiF8tHFWlo1uT7qz0N
-	 u2Lbpxt++a8K6uDHGMmMrgF96vc8AT1eX8FOv+8T1d7KIypSofjEAZbG1JA0g9vAoyTbB
-	 I7u5aQlz9Q3jZV64E5EN4zGQOVv4DFMEMG7PAZ7+Ks52ibX5Su0R/BH1H8vrkrXf1JUSi
-	 cePztiJhhu9OMHclL6akXe6yIFrncSRRSm0yUq5AnvD62WlmCqMlGYEek5Je6TXIIqQ==
+	t=1794241785;
+	b=rNuVN5CZwvXhbX1OfD83BQsOVWXeM6ewboYFKDLwkVdUsDd6OiV3xAkqb5PW/lyONuNt
+	 Tu2LxTVO3GQVGvEE/T/B2c2DY30TqLZd4xNZ9y+CEaMKG+SY4xDZr6n9/7Xf5/DWpKa1A
+	 bWrqpip/iekRV8HhCeLAQbyYBaiZ0mvBvG81sYxRLAeEVVOUwuWJmxrRVQWk+zKfkCHZ3
+	 k2DAGDllo4opcAcJiVUvAvhaD11OwqBXGK6GC4MvXpxfSJIPAF/JuKat8ARPLIv21FGC8
+	 AcZYWySYb9bt8jrTIpqdiTHN4ZNp/FnXxJvlGHmsUAdcBBLyycMD/rj0RjciIBvIfUQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794241302;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=S9QmmCvTtJG0FWP5byFcRaRFelUpQGR0S1hSw8HKBvw=;
-	b=CdxY6uHpeiCkeRPzXO7bxmD63lFIsoowdqsHISeVNmCfqVoMkKZ8vAY/eP3qB4gcHtHB
-	 yTqKMYWLLUToJrDi2yPPt3D3+6Q1VXdFKV5Do5GuZ7rgTYV4X3UH5x+yk061wKGowr5wB
-	 w1aFADTTal5J+mwulWVCEM5VpkYKnxF2B6iPxVWnwY5tAjXwAMtC9VOGyTpMm3Kp4Aqu5
-	 /1yBhsC7fdYOHnvyZwS+11gc3jdLBG/AE9xu4Ny6SpPpe4OfYycup9JVfryCNKd31W+E1
-	 ab7J1kzVeFGe9VAg4e6BDBvZIMa0VAMEGVDF3ykdfbUKS1SWtLxEb9jHt4iuiPufWlA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794241785;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=r4d7OyBXnGvPNnBlX0wd7R8ip1I6qe36+Ws70bLtTCw=;
+	b=Khpsa29msFCDJO6KLLIytXC9qxXYPXBTuMuncjvUJwrFWFQZGBoD9ViZFgW6tmeJtOsG
+	 H0o390F+G5Uqj4+HKGT0EBkjvF9M/HX7k6JMatWhWBRaz1LK7m3eqzYMAyyzs5VhPdQ//
+	 by9p14JjKvYbjdBpxBsG2vm6qrqdmvWJC0mE6nTuI0H28an0OXYQRbYSwyJ9EpVuLVsCF
+	 Oz1Ddls08MT9ok+TgRjq+YPNmw6S4jz4M2p4JCIXjyt/0yT55ERih0mANokp9diiG7P/M
+	 i6h0dqv9R+qTTzhW1OihlUxTedEridhV3pw+gv6gOj2XyMTb+lHUsQr69w/tCWpryCg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=chromium.org;
-	spf=pass smtp.mailfrom=chromium.org;
-	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=RHsmYArA;
-	arc=none smtp.remote-ip=209.85.160.52
-Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com [209.85.160.52])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nT811PDk;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90471606A334
-	for <imx@lists.linux.dev>; Mon,  9 Nov 2026 16:21:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 90471606A334
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54A0A606A331;
+	Mon,  9 Nov 2026 16:29:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=RHsmYArA
-Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-4a85c656c58so727117fac.3
-        for <imx@lists.linux.dev>; Mon, 09 Nov 2026 08:21:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1794241300; x=1794846100; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=S9QmmCvTtJG0FWP5byFcRaRFelUpQGR0S1hSw8HKBvw=;
-        b=RHsmYArAV4NRLnLi0FWhGDF8hFM+72wwHVtYlJuAga33U/1S2Nfp1W6GpZEHTJSs2s
-         aZCze3+t2DaxVZ6/3t3Uj3HHfQngdc2Jx2wTfIz0NzPgILa61oUBoLjoCKaOP6a4W0gl
-         8OshTL7M6ttATUbyL+d8jyCorSn1Ez4QEd1Hc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794241300; x=1794846100;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=S9QmmCvTtJG0FWP5byFcRaRFelUpQGR0S1hSw8HKBvw=;
-        b=N6pRf24TwbEquBhgou6THGFE0HTQ2jT1Ribct+T0od0Yiva0GSi0WLFHq1ugSewmPQ
-         rDB8A9HB2zsQ5WqIDxeFIk8P4IYWm3ibNBngH5lKjFC+0q3k/yhmKggTG1xy7wyyBreZ
-         9mugrPILIWbnioCAUO0zyVDDp/bD5zVlcICFMRiPBhEFfqXUjIez04I5h6wv7UObu9cU
-         Sh75Nxd31dvKUll+Jy4mcWH+KtvObmvfhyOXlcgBJnNwiAdoVZr9JAzw6Dl7pfL/3QNG
-         yvRcIvArTvd77BUsPKuST1OZop09x9Y5bsBUaMwWonDtcFCuFJxEixtcjRG7n25SBD3o
-         NK2Q==
-X-Forwarded-Encrypted: i=1; AL+hErG42TO0l1Jnsu8j/8zTCzsdWNa+q3UqrAnsLheaFuq3mS4//oCs472IqX9Mf6GpVWx9i5E=@lists.linux.dev
-X-Gm-Message-State: APuU4Z+SwpHRky+56oNE/YK1YPZcwqkVEuEBPqk8/A/91YY2HPGuEyF2
-	kD/MryHhAIz2wu7GcuGtkxL4/Lh2krxeq7iTQqXDkDxQD0A64yKG6A4UeslePi2Zjg==
-X-Gm-Gg: AYBFou143EW7AuQEve/smLv/zrRJEm1AuPJt56+m0OHKdm2bh8ceCqq7RbD5wqAZXkf
-	b2OAOJqHcehQoZb4AMeVD2DCUC6ZrMgnYjM+ViU69mZ+Gy+4l7uZL+X0cHDt1dK+V/1/L4hw7o8
-	EKCcYXQOzwNIxwem43s/IhsD9j+iRGTKowaY07ghmHRfAotPlb/L8wsuzsKvPcEOULI9RsqN3ye
-	xe+JX6x1ptOthAdEdkVtlQf5ZhQrdxUgCbfCH81J39OLlfqtFp6wAEAhEyegFvAjmoQl91qYhSc
-	yXpLM3vwsyXiuOIBjSMiHvTTyTAuDb0ecqVGVHfeUFSiLeX6yukS31vSo46lyaimcAXPjhoXMtN
-	Hu1Mi+mjAsE+/oPoK39emjdi/T7JqZtGy6B2Z0hiQy+yG3CoWL/X3u5nkXzOavja5rjEZ/8n0gI
-	v/rmnsLnaFwR7Wr+u25u5nJS4r1GTsG+xU4R2KkcteYiV5Etl9p8ukmnuXaj5vADwyUJt62j/cN
-	J8hT7RUB7Xq/P3/NDpNbaqrHbKlLe4NH2meXZnjNvznnyhZp/YTO2A6WTRK0K7LZey1Js9AdM48
-	w2wjq5v6nHFbA5h/GMu36j+EUhWE0h8CWp7yEArvEWNeMwHOAt+9s6SENNOtIFbRyF5GTSdzeDc
-	oT0HKMiivkNtmt/m8JELHWVCfBLAAp4Kq5sl7
-X-Received: by 2002:a05:6871:3321:b0:4ad:2386:45ca with SMTP id 586e51a60fabf-4adecba6a5bmr2379052fac.55.1794241300604;
-        Mon, 09 Nov 2026 08:21:40 -0800 (PST)
-Received: from rrangel.c.googlers.com.com (194.246.27.34.bc.googleusercontent.com. [34.27.246.194])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4ade694062csm5510676fac.8.2026.11.09.08.21.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Nov 2026 08:21:39 -0800 (PST)
-From: Raul E Rangel <rrangel@chromium.org>
-To: James Hilliard <james.hilliard1@gmail.com>
-Cc: Raul E Rangel <rrangel@chromium.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Tony Lindgren <tony@atomide.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Richard Genoud <richard.genoud@bootlin.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Jacky Huang <ychuang3@nuvoton.com>,
-	Shan-Chun Hung <schung@nuvoton.com>,
-	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Timur Tabi <timur@kernel.org>,
-	Peter Ujfalusi <peter.ujfalusi@ti.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Patrice Chotard <patrice.chotard@foss.st.com>,
-	linux-kernel@vger.kernel.org,
-	linux-serial@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev,
-	linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v10 8/8] serial: 8250: retain DMA resources when termination fails
-Date: Mon,  9 Nov 2026 09:21:35 -0700
-Message-ID: <20261109162135.906262-2-rrangel@chromium.org>
-X-Mailer: git-send-email 2.56.0.212.g129ede20d9-goog
-In-Reply-To: <20261108-submit-serial-8250-dma-cancel-v1-v10-8-e6227ddb95b1@gmail.com>
-References: <20261108-submit-serial-8250-dma-cancel-v1-v10-0-e6227ddb95b1@gmail.com> <20261108-submit-serial-8250-dma-cancel-v1-v10-8-e6227ddb95b1@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nT811PDk
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7713E1F008A2;
+	Mon,  9 Nov 2026 16:29:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794241784;
+	bh=r4d7OyBXnGvPNnBlX0wd7R8ip1I6qe36+Ws70bLtTCw=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=nT811PDktyKv69Q0FZhJPUDvVFlYI5CSfGmEaX+SOevdn8rVDOpeoLQ6j6PnArsRX
+	 uU9tFqEGDuNX4nSrEbY2SZTqqQaP4WBG2H9xGBUt1nBfMjXrHWSYF6mwMVaP66M9qZ
+	 MiN/mi8zUZupA80r2rUcyqsyaXlcXyMmvcM0ibnOHth98LJgRJWdD6WpNViTUY+g1E
+	 mlJPkCDT8Uo/gYRUMn9ut2RCIdcX/8NGRSOD1QCSUlYhMRsdabTzofO5ac3fguk4rv
+	 84lUfarQzHwzTRxzgAsXoJD3PWfZzM1zqIL7x82U/6Ghs4RIHE8zy4d+/0goojwzXD
+	 M9H+13wG/7sag==
+Message-ID: <sashiko-outbox-205230@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] ARM: dts: nxp/imx6: Fix imx6qdl pico dwarf and nymph
+ includes
+Reply-To: sashiko-reviews@lists.linux.dev
+To: =?utf-8?b?Um9iIEhlcnJpbmcgKEFybSk=?= <robh@kernel.org>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, conor+dt@kernel.org, Frank.Li@kernel.org
+In-Reply-To: <20261109161812.3629546-1-robh@kernel.org>
+References: <20261109161812.3629546-1-robh@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 09 Nov 2026 16:29:44 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -122,8 +59,93 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 
-Reviewed-by: Raul E Rangel <rrangel@chromium.org>
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Medium] ARM: dts: imx6: pinmux hog and GPIO conflicts on pico-dwarf
+  and pico-nymph
+--
+
+commit 92feeab6397394da98e778808f51f6d2369101e3
+Author: Rob Herring (Arm) <robh@kernel.org>
+
+ARM: dts: nxp/imx6: Fix imx6qdl pico dwarf and nymph includes
+
+This commit updates the imx6dl and imx6q pico-dwarf and pico-nymph board
+device trees to include their respective baseboard .dtsi files instead of
+imx6qdl-pico-pi.dtsi, and adds missing properties to satisfy DT schema
+checks.
+
+Link: https://lore.kernel.org/all/sashiko-outbox-199279@kernel.org
+
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx6dl-pico-dwarf.dts b/arch/arm/b=
+oot/dts/nxp/imx/imx6dl-pico-dwarf.dts
+> index d85b15a8c1272..dd8ce2df876c0 100644
+> --- a/arch/arm/boot/dts/nxp/imx/imx6dl-pico-dwarf.dts
+> +++ b/arch/arm/boot/dts/nxp/imx/imx6dl-pico-dwarf.dts
+> @@ -9,7 +9,7 @@
+>  /dts-v1/;
+> =20
+>  #include "imx6dl.dtsi"
+> -#include "imx6qdl-pico-pi.dtsi"
+> +#include "imx6qdl-pico-dwarf.dtsi"
+> =20
+>  / {
+>  	model =3D "TechNexion PICO-IMX6 DualLite/Solo Board and Dwarf baseboard=
+";
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx6dl-pico-nymph.dts b/arch/arm/b=
+oot/dts/nxp/imx/imx6dl-pico-nymph.dts
+> index 32ccfc5d41cee..4ce0d0d0756c4 100644
+> --- a/arch/arm/boot/dts/nxp/imx/imx6dl-pico-nymph.dts
+> +++ b/arch/arm/boot/dts/nxp/imx/imx6dl-pico-nymph.dts
+> @@ -9,7 +9,7 @@
+>  /dts-v1/;
+> =20
+>  #include "imx6dl.dtsi"
+> -#include "imx6qdl-pico-pi.dtsi"
+> +#include "imx6qdl-pico-nymph.dtsi"
+> =20
+>  / {
+>  	model =3D "TechNexion PICO-IMX6 DualLite/Solo Board and Nymph baseboard=
+";
+
+[Severity: Medium]
+Does including imx6qdl-pico-dwarf.dtsi and imx6qdl-pico-nymph.dtsi cause
+pinctrl and GPIO conflicts with imx6qdl-pico.dtsi for /leds, &pcie, and
+touchscreen@38?
+
+In arch/arm/boot/dts/nxp/imx/imx6qdl-pico.dtsi, &iomuxc hogs both
+MX6QDL_PAD_CSI0_VSYNC__GPIO5_IO21 and MX6QDL_PAD_CSI0_DAT13__GPIO5_IO31
+via pinctrl-0 =3D <&pinctrl_hog>:
+
+arch/arm/boot/dts/nxp/imx/imx6qdl-pico.dtsi:&iomuxc {
+	pinctrl-names =3D "default";
+	pinctrl-0 =3D <&pinctrl_hog>;
+
+	pinctrl_hog: hoggrp {
+		fsl,pins =3D <
+			...
+			MX6QDL_PAD_CSI0_VSYNC__GPIO5_IO21	0x4001b0b5 /* PICO_P26 */
+			...
+			MX6QDL_PAD_CSI0_DAT13__GPIO5_IO31	0x4001b0b5 /* PICO_P44 */
+		>;
+	};
+};
+
+However, both imx6qdl-pico-dwarf.dtsi and imx6qdl-pico-nymph.dtsi define a
+/leds node with pinctrl-0 =3D <&pinctrl_gpio_leds> claiming
+MX6QDL_PAD_CSI0_DAT13__GPIO5_IO31, and imx6qdl-pico-nymph.dtsi enables
+&pcie whose pinctrl-0 =3D <&pinctrl_pcie_reset> claims
+MX6QDL_PAD_CSI0_VSYNC__GPIO5_IO21. Because imx_pmx_ops does not set
+.function_is_gpio, pin_request() rejects a second device claiming a pin
+already owned by iomuxc, causing pinctrl_bind_pins() to fail with -EINVAL
+when probing /leds on Dwarf and Nymph and &pcie on Nymph.
+
+In addition, /leds in both baseboard files requests <&gpio5 31
+GPIO_ACTIVE_HIGH> as an output, while touchscreen@38 in
+imx6qdl-pico.dtsi uses that same GPIO5_IO31 line as its interrupt input
+(interrupt-parent =3D <&gpio5>; interrupts =3D <31 IRQ_TYPE_EDGE_FALLING>;).
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261109161812.3629=
+546-1-robh@kernel.org?part=3D1
