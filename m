@@ -1,135 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.10
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794264090;
-	b=yedOUc2STfVKyFG++2LP+4pK5rBEM1BgnOEW8OYs4h7zdL/nZsTpDKHBC4EjTSqKscim
-	 UXSgoGJK2jF8ccNr+QrSqFvBJWwQY5uYanW2wuSxBhFYN/mLQvmcQo5LGDhrGwjZaYw+7
-	 tFkVLhOqRWgWh4MbwTq33I4hBwm8SSMmHZ+M2rpykjXN45af1UzynleYYYsNqN03t4mWD
-	 eSN1hVwOTOlhyv6bbG83sBkQklLF8YaY6XavkVuGfalmZ0WB8XXcBWh/IpUmcK96ZoOEz
-	 E/LaPNbycm9uyp4MSxMM+5NSNa2zSK1wwlUueYepNMlCLcLUnnRIwdp3Em3wI+SMzwA==
+	t=1794265083;
+	b=0lDGa/EMf0YNBagI8LgX4gagjIXGHFaX1yVOFZtXOXciqFW0Qg363JaqlCruxhPKvdM5
+	 anrtR9w6o9PW6YGY9Nkc/9YrBUddvliKVzqHy6EDd99EaBbkbvHibHLN1RRM4NoukptbO
+	 U5psv6fWjrDLa3VW/fiRbRROFaG97msquW53PBj0yd1V8wYfQyXTULSkXFDXF8jyDzoFd
+	 dGo0JIEyClZSj8vw2iaqiWl/UYcPFAcu+XZjiajJfB2bw1CMY9Vf2iR/Dfdhgmbs5zQxI
+	 FG6Ft/i8CdKjW058Oif3o51daSsuCA8Ls/WLhqzhWdkESvwqlGokKLj9OWlKQ3x9cNw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794264090;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794265083;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
 	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
 	 Subject:Message-ID:References:MIME-Version:Content-Type:
 	 Content-Disposition:In-Reply-To:Organization;
-	bh=vbe6nTsdDhg8Mlze/ClcUGDvjt9uDhFUXXWTuvVdSok=;
-	b=fQYM/FACeVpTTgXNVnFxQgb1O21w9KWGKcBdYcfEE6/Kzp/cQDnuaVJjPQ+ckI1RjL/r
-	 1Gtj61vYFqm6gWOn7QpDrmUkEm8tC6XrcWCILBuqBIK6ZBLK0MsMeoQlGrpMRHy5bEfBK
-	 J7aLUWPdqE4SEgW01m9xVhvlK5jsNAn6oZHusYBXHjAqcUDZjSr3DsKu/tI4oFiRoExUw
-	 6z+Wu6EWFO8BAmp+8M54buvnmYWNMUxuOT8UKS7q3JWT10wi8rw43JnGk0icc1tWTXRGU
-	 FcPR3+ySQGh3TZyEvx4hW7bZRbi+i/OThDmsrOVs0/9seKTm0VWHr8cMBxWF7lQiyww==
+	bh=APuVGr9Syfi20cMf1JwWjHvFw/aqU07E3GrFheF9DSw=;
+	b=4V9HQ45Vc6uY4l6yCKfDwoHRqPh+PEOR8hBlD6fA5wbYFdUSJBj3o2HnbYl9tNVux/6k
+	 oWcn0Q+I5XtY0dUtmrAakd/XMDMJS7F8htIwxi6oXyy89uBK1Qh6Qa3z54uWN4VKsgtOM
+	 LdPj0XJrTnsbc/lErMr3N0lXZY0WVr3dx6LsQwx+6B9+O2vbOXNTQo5Hksg2+WRYXZ1lx
+	 i3QXdX7m040eootNXCcTjIuzlTr6Ry6Jh2IEDNL/t1LO460g387EBQMcRP+USjRaxVS/B
+	 xoRrLrwnATDkQbijiVJVVGXYbwNDckWq0jZOKJ2P4L6S6FlluvLmkZ9Y1GJaFhJvodg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.intel.com;
 	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Rj0Rk2FE;
-	arc=none smtp.remote-ip=198.175.65.18
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=P2o3myNT;
+	arc=none smtp.remote-ip=192.198.163.10
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6097F606A321;
-	Mon,  9 Nov 2026 22:41:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6097F606A321
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2684606A31C
+	for <imx@lists.linux.dev>; Mon,  9 Nov 2026 22:58:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C2684606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Rj0Rk2FE
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=P2o3myNT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794264090; x=1825800090;
+  t=1794265083; x=1825801083;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=loGujMBTdlkfiQk5hWwMHTl07E+9259CEaRMomFVuEY=;
-  b=Rj0Rk2FE7T+NWrkWn326px4ZqLreSM+p93yD36ZR3CaYVpaLxPXFeour
-   y2eiuRXazbcjyLCun02quor2RULbeLyZ1aeraTrdb6K/nT1RvjJjrkC3I
-   duTukWNPQaksAkNBeXaPWF982oD19GHKymcaNdEjDoUxbhyu5hhB9f1E9
-   jjjjre5ptP8tSkT1LaqhXgTrhCafOs0RBQT715zqTlOnhqgwwbFBRoSpA
-   e9Gnc01Pnc16N1fuodfR1ZBduswE1Le0GrSxHj+N2MNaNyMlj6BGzjgUP
-   qIN9HRgizNypPLvyWtT+FNsSegTRYv4zT25jK/xJqzvP4xj5QC3Fb9Lux
-   A==;
-X-CSE-ConnectionGUID: WoZ6Sz0rRPapyP1wIlZFww==
-X-CSE-MsgGUID: ixCtJP7kTJCZyWM7aFsXDw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11961"; a="3012367"
+  bh=gLk2yVe76ajtu1KrWCk+zmfgNuAUqzVJtyq7tY5vbag=;
+  b=P2o3myNTBMmgQCZWcFtsSLgSIu6plTgz4TwXfcWlrOzcv8TQwJ46cMgQ
+   qjrCqW9gh804hq+oqdxlEm276NGvCYukickQw83yR9S1lnbnZeMMFjtOD
+   z7cc2MJ2gLcAS0V5Zuz/bBAJcfsZZwKawd+9mva+C3CdpbEk+YdVn4QTF
+   B4Oyh0zNOuNOeu+fVBm4eQJAv4fw03EIvIzXl20QS5ZIH4JXenbr7S4yk
+   0mE0dOLZ4whIk6kPOwBWpHTfR7RTSxUlEVMEWLrZUGP6502r+VcANu+54
+   rZyAFgNedEN0fLy5YVzoosE1MYWpVSjysa/OXw5qeANcRGQEE1DV5JU+C
+   g==;
+X-CSE-ConnectionGUID: CSSKBT4aRaK84bu1DXJI+A==
+X-CSE-MsgGUID: yYlSkQVHSIS4CVD8wCK3Vw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11961"; a="2899339"
 X-IronPort-AV: E=Sophos;i="6.27,204,1787036400"; 
-   d="scan'208";a="3012367"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2026 14:41:29 -0800
-X-CSE-ConnectionGUID: WiiU066RQsK4uk0B5ylzZQ==
-X-CSE-MsgGUID: 0Xjwhd9LQHC9A95XLjHjGw==
+   d="scan'208";a="2899339"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2026 14:58:02 -0800
+X-CSE-ConnectionGUID: T3RHJ0ZVRUiHpNbWBPbDdg==
+X-CSE-MsgGUID: /OnDlxXBTTKRLkahbt7bZw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,204,1787036400"; 
-   d="scan'208";a="8169672"
+   d="scan'208";a="7998415"
 Received: from amilburn-desk.amilburn-desk (HELO localhost) ([10.245.244.144])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2026 14:41:16 -0800
-Date: Tue, 10 Nov 2026 00:41:14 +0200
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2026 14:57:55 -0800
+Date: Tue, 10 Nov 2026 00:57:53 +0200
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Frank.Li@oss.nxp.com, Mark Brown <broonie@kernel.org>,
+To: James Hilliard <james.hilliard1@gmail.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Raul E Rangel <rrangel@chromium.org>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Tony Lindgren <tony@atomide.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Richard Genoud <richard.genoud@bootlin.com>,
 	Nicolas Ferre <nicolas.ferre@microchip.com>,
 	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Radu Pirea <radu_nicolae.pirea@upb.ro>,
-	CL Wang <cl634@andestech.com>,
-	Ryan Wanner <ryan.wanner@microchip.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Vladimir Oltean <olteanv@gmail.com>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
+	Jacky Huang <ychuang3@nuvoton.com>,
+	Shan-Chun Hung <schung@nuvoton.com>,
+	Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Han Xu <han.xu@nxp.com>,
-	Haibo Chen <haibo.chen@nxp.com>, Linus Walleij <linusw@kernel.org>,
-	Daniel Mack <daniel@zonque.org>,
-	Haojian Zhuang <haojian.zhuang@gmail.com>,
-	Robert Jarzmik <robert.jarzmik@free.fr>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Peter Griffin <peter.griffin@linaro.org>,
-	Alim Akhtar <alim.akhtar@samsung.com>, Yixun Lan <dlan@kernel.org>,
-	Troy Mitchell <troy.mitchell@linux.spacemit.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Alain Volmat <alain.volmat@foss.st.com>,
-	Chen-Yu Tsai <wens@kernel.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Laxman Dewangan <ldewangan@nvidia.com>,
-	Thierry Reding <thierry.reding@kernel.org>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Sowjanya Komatineni <skomatineni@nvidia.com>,
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	"open list:SPI SUBSYSTEM" <linux-spi@vger.kernel.org>,
-	"moderated list:ARM/Microchip (AT91) SoC support" <linux-arm-kernel@lists.infradead.org>,
-	open list <linux-kernel@vger.kernel.org>,
-	"moderated list:BROADCOM BCM2711/BCM2835 ARM ARCHITECTURE" <linux-rpi-kernel@lists.infradead.org>,
-	"open list:FREESCALE DSPI DRIVER" <imx@lists.linux.dev>,
-	"open list:ARM/QUALCOMM MAILING LIST" <linux-arm-msm@vger.kernel.org>,
-	"open list:ARM/Rockchip SoC support" <linux-rockchip@lists.infradead.org>,
-	"open list:RENESAS RZ/V2H(P) RSPI DRIVER" <linux-renesas-soc@vger.kernel.org>,
-	"open list:SAMSUNG SPI DRIVERS" <linux-samsung-soc@vger.kernel.org>,
-	"open list:RISC-V SPACEMIT SoC Support" <linux-riscv@lists.infradead.org>,
-	"open list:RISC-V SPACEMIT SoC Support" <spacemit@lists.linux.dev>,
-	"moderated list:ARM/STM32 ARCHITECTURE" <linux-stm32@st-md-mailman.stormreply.com>,
-	"open list:ARM/Allwinner sunXi SoC support" <linux-sunxi@lists.linux.dev>,
-	"open list:TEGRA ARCHITECTURE SUPPORT" <linux-tegra@vger.kernel.org>,
-	Mukesh Kumar Savaliya <mukesh.savaliya@oss.qualcomm.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Thierry Reding <treding@nvidia.com>
-Subject: Re: [PATCH v2 1/1] spi: use dmaengine_desc_set_callback()
-Message-ID: <avJMCrlbmV6uq9NK@ashevche-desk.local>
-References: <autqC143h7Qf1R9H@ashevche-desk.local>
- <9e39502a-dd17-4fa2-98a3-9019523cb5e8@kernel.org>
- <auuYcS7-YqJKcUbE@ashevche-desk.local>
- <63c24437-4261-4a51-be7e-31ac0759a095@kernel.org>
- <auxGom0XR-Hax9b3@ashevche-desk.local>
- <00390a20-7630-4066-9779-06c8f915a176@kernel.org>
- <auxNmE8yZVP-wL2e@ashevche-desk.local>
- <3dc7277e-2f6b-44a6-9085-2e33d989c1c9@kernel.org>
- <avIJhv7p2v30U8H9@ashevche-desk.local>
- <78833267-f204-4387-9f8c-c7e0d5df59a5@kernel.org>
+	Fabio Estevam <festevam@gmail.com>,
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Timur Tabi <timur@kernel.org>,
+	Peter Ujfalusi <peter.ujfalusi@ti.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Patrice Chotard <patrice.chotard@foss.st.com>,
+	linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v10 2/8] serial: serialize asynchronous write wakeups
+ with the port lock
+Message-ID: <avJP8Sym_LQX9UVc@ashevche-desk.local>
+References: <20261108-submit-serial-8250-dma-cancel-v1-v10-0-e6227ddb95b1@gmail.com>
+ <20261108-submit-serial-8250-dma-cancel-v1-v10-2-e6227ddb95b1@gmail.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -141,35 +105,127 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <78833267-f204-4387-9f8c-c7e0d5df59a5@kernel.org>
+In-Reply-To: <20261108-submit-serial-8250-dma-cancel-v1-v10-2-e6227ddb95b1@gmail.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Mon, Nov 09, 2026 at 11:10:38PM +0100, Krzysztof Kozlowski wrote:
-> On 09/11/2026 18:57, Andy Shevchenko wrote:
-> > On Fri, Nov 06, 2026 at 08:20:33AM +0100, Krzysztof Kozlowski wrote:
-> >>>>
-> >>>> Statement of oversight DOES NOT include "part of the patch".
-> >>>
-> >>> So, it means I MUST from now on REQUIRE a split before reviewing.
-> >>> Right?
-> >>
-> >> Why "from now on"? The reviewer's statement of oversight is worded like
-> >> that since beginning? Also nothing stops you from reviewing parts. We
-> >> discuss the statement of oversight and its result: giving Rb tag. The Rb
-> >> tag is not output of some review, but agreement with statement of
-> >> oversight and performing what is stated there.
-> >>
-> >> You can review parts, but you do not provide Rb tag.
-> > 
-> > No, I'm not going to review something that I may not put Rb tag on.
-> > I can NAK or ignore (or Ack without viewing, but it equals to ignore to me).
+On Sun, Nov 08, 2026 at 08:50:11PM -0700, James Hilliard wrote:
+> uart_write_wakeup() expects the UART port lock to be held. Several worker,
+> DMA completion and interrupt paths call it without that lock, including
+> indirect calls from uart_handle_cts_change() and the transmit helpers.
 > 
-> That's your call, but you put it on yourself, so do not blame us for "I
-> MUST from now on REQUIRE"...
+> Take the port lock around these notifications or their transmit helper.
+> Keep sleeping SPI and regmap accesses outside the locked region, and keep
+> the FSL LPUART completion lock held through its wakeup. Acquire the port
+> lock after releasing private channel locks to preserve the ordering used
+> by UART callbacks. In the MUX timer, publish available FIFO space under
+> the port lock and keep the hardware FIFO-drain wait outside it.
+> 
+> Use plain port locking in hard-IRQ handlers and in helpers whose callers
+> already mask interrupts. Atmel status handling is also called during
+> resume, where lock_suspended is acquired with interrupts disabled; JSM
+> interrupt processing holds its IRQ-saving board lock. Keep IRQ-saving
+> locking in workers, tasklets and other mixed-context paths.
+> 
+> Take the port lock after requesting the ST ASC interrupt and hold it
+> through startup's transmit servicing and RX interrupt enable. The transmit
+> helper can notify writers even when the FIFO is empty, and serial core
+> calls startup without holding the port spinlock.
+> 
+> Use IRQ-safe locking in the Atmel RX and TX tasklets and SB1250 termios
+> path, since their interrupt handlers now acquire the same port lock.
+> Preserve the caller's interrupt state when releasing those locks.
+> 
+> On SB1250, lock modem-state updates after reading and filtering the change
+> status, and wake modem-status waiters after unlocking. Take the TX lock
+> inside its service routine so RX-only interrupts need no acquisition.
+> Keep that lock across x_char handling, FIFO consumption and the decision
+> to mask TX interrupts: a writer must not enqueue data and enable TX between
+> the empty-FIFO check and the interrupt-mask write. Each TX invocation sends
+> at most one character.
+> 
+> Serialize CLPS711x TX servicing and its interrupt-enable state with the
+> port lock. Disable TX interrupts without waiting in stop_tx(), since a
+> threaded handler may need that same lock. Have an already queued handler
+> leave stopped output untouched, and drain it outside the lock during
+> shutdown before the transmit FIFO can be released.
+> 
+> SCCNXP handles interrupts under a controller lock which its UART callbacks
+> acquire with the port lock already held. Collect the ports needing wakeups
+> in an unsigned long bitmap while servicing the controller, then release
+> that lock before visiting the set bits, taking each port lock and
+> rechecking the wakeup threshold. Removal drains the IRQ or timer before
+> unregistering the ports.
+> 
+> This serializes write notifications with port-locked serial-core state
+> changes, allowing readiness and transmit-storage reservations to gate the
+> notification without a check-versus-shutdown race.
+> 
+> Cover DZ TX servicing and JSM Classic modem notifications as well. On
+> DECstation ZS, acquire the port lock before the SCC lock and notify writers
+> after releasing the SCC lock. Defer normal TX restart after console output
+> to a worker, since console output can already run under the port lock.
+> Check transmitter readiness before consuming another character and drain
+> the restart worker during shutdown and removal. Release Lantiq's hardware
+> lock through the transmit helper's completion hook before notifying the
+> line discipline.
 
-No, I don't blame you. It's purely documentation and terminology issue in my
-opinion.
+...
+
+> --- a/drivers/tty/serial/sb1250-duart.c
+> +++ b/drivers/tty/serial/sb1250-duart.c
+
+> -	if (delta & (M_DUART_IN_PIN0_VAL << S_DUART_IN_PIN_CHNG))
+> -		uart_handle_cts_change(uport, !(delta & M_DUART_IN_PIN0_VAL));
+> +	if (!(delta & ((M_DUART_IN_PIN2_VAL | M_DUART_IN_PIN0_VAL) <<
+> +		       S_DUART_IN_PIN_CHNG)))
+
+Just keep it a single line.
+
+> +		return;
+>  
+> -	if (delta & (M_DUART_IN_PIN2_VAL << S_DUART_IN_PIN_CHNG))
+> -		uport->icount.dsr++;
+> +	scoped_guard(uart_port_lock, uport) {
+> +		if (delta & (M_DUART_IN_PIN0_VAL << S_DUART_IN_PIN_CHNG))
+> +			uart_handle_cts_change(uport, !(delta & M_DUART_IN_PIN0_VAL));
+>  
+> -	if (delta & ((M_DUART_IN_PIN2_VAL | M_DUART_IN_PIN0_VAL) <<
+> -		     S_DUART_IN_PIN_CHNG))
+> -		wake_up_interruptible(&uport->state->port.delta_msr_wait);
+> +		if (delta & (M_DUART_IN_PIN2_VAL << S_DUART_IN_PIN_CHNG))
+> +			uport->icount.dsr++;
+> +	}
+
+...
+
+> --- a/drivers/tty/serial/sccnxp.c
+> +++ b/drivers/tty/serial/sccnxp.c
+
+> -static void sccnxp_handle_events(struct sccnxp_port *s)
+> +static unsigned long sccnxp_handle_events(struct sccnxp_port *s)
+>  {
+> +	unsigned long wakeup = 0;
+>  	int i;
+>  	u8 isr;
+>  
+> @@ -491,20 +492,40 @@ static void sccnxp_handle_events(struct sccnxp_port *s)
+>  		for (i = 0; i < s->uart.nr; i++) {
+>  			if (s->opened[i] && (isr & ISR_RXRDY(i)))
+>  				sccnxp_handle_rx(&s->port[i]);
+> -			if (s->opened[i] && (isr & ISR_TXRDY(i)))
+> -				sccnxp_handle_tx(&s->port[i]);
+> +			if (s->opened[i] && (isr & ISR_TXRDY(i)) &&
+> +			    sccnxp_handle_tx(&s->port[i]))
+> +				wakeup |= BIT(i);
+
+__set_bit()
+
+>  		}
+>  	} while (1);
+> +
+> +	return wakeup;
+> +}
 
 -- 
 With Best Regards,
