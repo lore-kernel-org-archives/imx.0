@@ -1,102 +1,44 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.84.40
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794231643;
-	b=saRok4KEwYtC5bQSAqfbQoHEt6Egj9TMS7ekt3Mr/Dvugevsn/gfhJrqZSrCySyEDwax
-	 li8QosWZA6KYxvbGFUoXsFjQpzFUyXbMbTl/4Y6IbXIq7sNUN864tCSWtD4TZ3f0a8iQ2
-	 8uwgfCMofjb5iiuQsxZtQ+AdBUCtgZ5+rlrDHeqYLT/xrOOql7b/I+IgDBM8sIth2qHPA
-	 jq7XhqDiUFbV/RgvUC1Z7Q1NIt2HamYUXAhOF+nmutv7/scdMKKFlnySLqk/52+7m1WD0
-	 xm4w6bGe8pWmNXq4eqVrR/VEh6m5aI3SRMWzmuMh7W2ucaLJLythVRVBuC5dK47uZ7Q==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794231643;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
-	 Date:Message-Id:X-Mailer:Content-Transfer-Encoding:Content-Type:
-	 X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=bn9NHdS/CTmoOGgHj55goULyo4+mxF6oHjiua5hxtq0=;
-	b=KZglSPmT4hvIJJT4m5I50r+jFjCHjj104q0mpam7iLyeywt6z6WlGeeNciZAuJvYO4/b
-	 v86QyEPsAD0iGWJmnHrFa0CtoeYkdA/nQ4/eokaYti+LksNphTzYfFi0y6mUV1ENtg37E
-	 qgdivN3nOFMOvuXAEkvROelJJI6niWPmWjM4FPWtJlTk8ZK2a52hqXQasryQjOB8zM9nM
-	 GaFOBGTrKIpYR5WI53LZ431QFeBe5uKzJDRsr8xKeQfXZtzatz5Ll1fUao7r+A4FbNZtk
-	 yvAxVwRpF50O/WUt2kOzFsXAiYWk1lRUlSbrvM5SALUtNbNE0juPct7SHeDVfSEpgjw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nxp.com;
-	spf=pass smtp.mailfrom=nxp.com;
-	dkim=pass header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=ZbCkqb7t;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.84.40
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010040.outbound.protection.outlook.com [52.101.84.40])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=176.9.212.161
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794233014;
+	b=dZgzgZr4oqDDF8CBpDNjS0c20D7nBgy36Hiaq3dZYen4DxSV5Kr7wCf4CI6cEwuE2gW+
+	 qa/tj7yLbcHEKANZBXsfVDlAqqSezzikv/AHbkuApr4k85jMvuPdZmDykjZl8JQDOhhj0
+	 NcAqpt9PWFzT2d8ZzrHGyG6Ip3LVL1/eMYwCrQBYxWyme/yNNmmzsjs073Jc5o3ALPHBa
+	 5E0/L13GRyRY5jq9wNRig0kXBSoNGbWp+YyTd1h1GQyXkQihyqSOL1mKqVgUCMPzfhSp5
+	 Hr9UdrCRXsXoCpLZVZXAzo76y9fJYM4w2pVh/Q36hXkHKZRJUuwfZ9Az/97QRbjDRLA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794233014;
+	h=DMARC-Filter:Received:X-Virus-Scanned:Received:Message-ID:Date:
+	 MIME-Version:Subject:To:Cc:References:Content-Language:From:Autocrypt:
+	 In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=YmMTVWpdq8xyF0utBKBMNMsTNhVUSn4oKM3y6/m6tWE=;
+	b=c0JxPnyVPmaJ75i7retQd+ZIxUA4jdvw3oo28a4BESlTBMb1JCmYkIY4gc201QmAMpV4
+	 8erEoUHHq/19nZsTp9y9ztztqxEa+/FOIzluPwi6Wc31RKPP2YTXZfh/atFtqnAbDd6Dr
+	 oK9kPyzcGe2yrlllpue/pi/m0KexXdz45K0I6vyL1+JlHuZEUVRlmPLGGGnsQY1CQu6u6
+	 JqsiGuNIPLSpsik8z8ghT4aU8SFey1Y69QBRFX9PUbJ0fTS76D3MAfOQzU+yeM3q1mdJY
+	 6ZGOGAkF4s8fJ/89RqV2dxtcPHbXRQHTZ8Wb5eQRaMQC9/XWQjZwsV2JF2m7cY+fPvw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=none header.from=sysmocom.de;
+	spf=pass smtp.mailfrom=sysmocom.de;
+	arc=none smtp.remote-ip=176.9.212.161
+Received: from mail.sysmocom.de (mail.sysmocom.de [176.9.212.161])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96E94606A323
-	for <imx@lists.linux.dev>; Mon,  9 Nov 2026 13:40:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 96E94606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=ZbCkqb7t
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jhWe19HcAzgESQhZynCX0ZueJpn/TLyXRhlzNf8oF8LjjRDSixvYiZsLeNCa4sx8TWDvPx8ViJKA2+MiXTrsXdnoET4pnLX7ELTjZEpwncmXeBfecLTLh0SKVDpjgZKKT6qSkB9sT5I2Sbyh6DRYZbsdMuFt2xrAGXlgXW2iogw+ivj+JnI17dvlsRkv0a83A77BcgAYik1ufpykhep0FVRfbUlRkgW661T9nMptfdk1GJxacoCK5aOUV6ex6E9LLc8wwlGlNvJ4XCCzcYYVIn5UL9/nOtqySkyM66Nnzjtj/Qc/9+DMDSBbJgFQCCeGveknaxttvKkXMMyv4UjfDQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bn9NHdS/CTmoOGgHj55goULyo4+mxF6oHjiua5hxtq0=;
- b=I0imiUKe7BpJGqa94cHMCiCeGpyeXAVp41bqWVlH01IRXnnxPEYbIDPGilQ9aZYZczcxz2/zQYNO0iRwHrEriC6zKPFWC7QeIBMtpeDD0PG3LBilS11a40KDNOx4XabS6ZtjNIUxiM+GlLQpb1/fr6OIC/0Vd6nkUnGwCZGQugcalTIbstY0tYc2JURyr3dch0Vs7bYM104RYpGZ43OzMtffbo9kTkArj/J9XsEbG3fKWxWFrxpXLkfiL4k8qb7vcCEwxBFlf2J93nYD6oaCAuj5LcpuZvAmqoRfL3RhMtzwCOQ5liDvlkwas3l3Jnkm6WfonRxnwyA49GKV6vsizA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bn9NHdS/CTmoOGgHj55goULyo4+mxF6oHjiua5hxtq0=;
- b=ZbCkqb7tsiQb0fb6dhKidp7YvPTq8Qzdej9n39T2WEUQWuqtCfD/yGBKvuaiOOpqBny9XxFHaKEOlNbSBQmpWFz7hOEn+w0LP0KTSauWU9kTFLNYmTeemG8ugQRAdBspa7cHRgozpaup30XkCT8QpBcsdFPA392oj7FmFpgC4lk0a6PwH54/p5mCplNBluYCMXCmHHDC5++muuF3tOGIxIAW0/dHKJ+qguPAuRon7KFE2Edxt6uQmoMYzqBz3Z6jhbAdIHUcMd9XXOnTVS9Xp+jm2HKGKTS6oh3eidtQrErjGsSOZft++uGQrzdWiretBGrCrB4WNgHFhG9tBq5tnw==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM6PR04MB4472.eurprd04.prod.outlook.com (2603:10a6:20b:23::20)
- by VI2PR04MB10546.eurprd04.prod.outlook.com (2603:10a6:800:274::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.12; Mon, 9 Nov
- 2026 13:40:39 +0000
-Received: from AM6PR04MB4472.eurprd04.prod.outlook.com
- ([fe80::aed9:e8b9:c352:9ba0]) by AM6PR04MB4472.eurprd04.prod.outlook.com
- ([fe80::aed9:e8b9:c352:9ba0%6]) with mapi id 15.21.0592.010; Mon, 9 Nov 2026
- 13:40:39 +0000
-From: Stefan Ghetu <stefan.ghetu@nxp.com>
-To: abelvesa@kernel.org,
-	peng.fan@nxp.com,
-	sboyd@kernel.org,
-	bmasney+clk@redhat.com,
-	jbrunet+clk@baylibre.com,
-	Frank.Li@nxp.com,
-	s.hauer@pengutronix.de,
-	daniel.baluta@nxp.com
-Cc: kernel@pengutronix.de,
-	festevam@gmail.com,
-	linux-clk@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Florin Pavelescu <florin.pavelescu@nxp.com>,
-	Stefan Ghetu <stefan.ghetu@nxp.com>
-Subject: [PATCH v3] clk: imx: pll14xx: Fix potential integer overflow
-Date: Mon,  9 Nov 2026 15:40:32 +0200
-Message-Id: <20261109134032.139050-1-stefan.ghetu@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: FR4P281CA0212.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:e4::11) To AM6PR04MB4472.eurprd04.prod.outlook.com
- (2603:10a6:20b:23::20)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 103F6606A325
+	for <imx@lists.linux.dev>; Mon,  9 Nov 2026 14:03:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 103F6606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sysmocom.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sysmocom.de
+Received: from localhost (localhost [127.0.0.1])
+	by mail.sysmocom.de (Postfix) with ESMTP id 76048C80320;
+	Mon, 09 Nov 2026 14:03:25 +0000 (UTC)
+X-Virus-Scanned: Debian amavis at sysmocom.de
+Received: from mail.sysmocom.de ([127.0.0.1])
+ by localhost (mail.sysmocom.de [127.0.0.1]) (amavis, port 10024) with ESMTP
+ id 9xvv-bClX57C; Mon,  9 Nov 2026 14:03:25 +0000 (UTC)
+Message-ID: <f7a51ade-18f9-4733-87e1-dfe885d93492@sysmocom.de>
+Date: Mon, 9 Nov 2026 15:03:24 +0100
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -106,93 +48,91 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM6PR04MB4472:EE_|VI2PR04MB10546:EE_
-X-MS-Office365-Filtering-Correlation-Id: c7499b1b-71ba-41e1-229b-08df3e670a8a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|19092799006|366016|376014|7416014|1800799024|18002099003|11063799006|56012099006|10067099003|261026121527099003|261102123227099003|261022075727099003|261021121427099003|261021123027099003|261009223027099003;
-X-Microsoft-Antispam-Message-Info:
-	p93w/amD+vfMBLIgw5vd8GAyjJdqtkWw/xZ050+gSm8eEj3l0M40bFJ64pfQdv4bmet/sivmxrDQlUa9+1V/cwTzg71zkSc5HBu4XLS5pfzM2G/NF22I6Ixi/n4qgSRMcfacz7LgCAgWXx3XPQGFFr9Zwm+OZg85PWD21Ur2B+WZpRvU8AAHRpbA3GfjWw+q0ORucjAn4vvlqElEQzMuhn3XMawX3x4TUk7II/mLOF9gZ2RvhQRTk/aDe9unTRN2oDANytUb3YzXdcqL2tuvNatb8ITJ9VbXNOXYbamo4H7KoMl18gbFTsbs1P6X3Ok3iDUx8iBEpvTDjNLwmGVTQtcN8+0NCthRfzc6CAfFXkSVlR3HwP4QgKUJKK/7fyZN9bm9q4dm0oCU3GTEfYMq7TlR+uBsMu/UQ0iUvZB24xxVK3Sf0O0nJr+iBY5zHshE6c1QtcyMsr+T7T0q8fUNkJvxp6mFRIMrdMWVtZwBLiMjmgHSPbIIAplWaqryakWUe2b4l+wDJcWU72jLXoCCX15qFg0prizO3iBjPgcnI8UPvfa3pbCr15N26lejaf6QTgvYumxeGY0EegrhZqOaUac6QnePw9LihJhjw47rsvSSQlK4UX1ImRA0m2Zkpt/hV3PhTA2PL4XTsunpFHnumddGfDaxpiPYJb0sQha0Cg4=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4472.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(19092799006)(366016)(376014)(7416014)(1800799024)(18002099003)(11063799006)(56012099006)(10067099003)(261026121527099003)(261102123227099003)(261022075727099003)(261021121427099003)(261021123027099003)(261009223027099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?NDsvpyuWOaivuZMXU4xKkKUF6ACIxDD1/eweJ+1r42UhvEcKJ+i4UtJkAxAI?=
- =?us-ascii?Q?UYYiVLZQHzxxL1whFPap/4mFknREC+GiyG7MfZDHs8sGPMAE7EZNoBGZW/ly?=
- =?us-ascii?Q?jRsRSoL4dX+/Vd7UaCExurhQhSXUB7OS/n6fOoYsFEXYozdDpxQatP9eVSpe?=
- =?us-ascii?Q?h/rRXef7UHuPalfxtSZCk4jnSK2s6xX+0CGt7f/dgzp8m5DzgS0pV6MAr77+?=
- =?us-ascii?Q?xc3VmgJJ+bqYIOOUGl1cBIpXHgsoaDg8O4ddjRLBcwVmkorfd5fui6uG8c6r?=
- =?us-ascii?Q?1iLF58uNlPxKg3+eyW79lqQBsqgr6AwS6cHFtBBnX1Xh6HdWT73kCAnEgjxc?=
- =?us-ascii?Q?Yy0xlnq9fg+IAvSCZHCi57FUalxgysnVruQGwZmiFOgEVKnYOIlrb8QOUWX3?=
- =?us-ascii?Q?xJJh58fW7JRINgiEE5NVOSujk6pq8mOJOrue1D3sW4B+r1oR9BQG9Wa2pL/y?=
- =?us-ascii?Q?QG8pdpQbciYg+VoGkdSQKRPbjNvCgsNNh+hkdV7F6Dlr7eqLnLYKr8XixSJ+?=
- =?us-ascii?Q?akK4gvEoOgCH9sSDkhpTGrF/qEgd4HHeUDmi5z/LZK51iNhzzyNupO2KUV0x?=
- =?us-ascii?Q?ynrJIsQZHktxtBosAzWHzh5fKZiT5A2/OBTHvoDKYO237wMtJn+2dt06sTAq?=
- =?us-ascii?Q?gd9aLyQKG9saC2O7AuZ6YreOYysuTx9A7DhJiP5RyUk8UJsvhr8SyxSBOS2L?=
- =?us-ascii?Q?hKqvcRFOcorqUtSj06Ts/dUZY5kYlJg0T3GoVvh04gKpWQKFa9BV/2Hj2Nbu?=
- =?us-ascii?Q?OrWnNIqe9pXEQcqJNefehWGPfxgxJLlDdEa9465H9cR5bj2sr0Zyh6UOsnJq?=
- =?us-ascii?Q?BauhSBXBwoX3jFtiJHoKO7fn+PvmPF4WMInNs3oBQpEVdJhlvwcrpGOHZdCn?=
- =?us-ascii?Q?4ltnvBGjxmJ+XAbkaiEriJW9hTk/Si93Z0c+Uu3CGPuyVUgd0b7pcFAc5TMa?=
- =?us-ascii?Q?t9tCamEIur/9TXIKgUVoBuIeLOqWwKXBN5z0zR5yF5H38USbtHWuyit1HMC+?=
- =?us-ascii?Q?ofGP77NRoovw6bIpIaH40wl+++/bggWuITRSN1PQGRDULB9x0ehSWoxrkktX?=
- =?us-ascii?Q?Kjw46jW+7EZo6yUWt4SUGMeOMB0Zj+BGjSUuxfNr9MYsVjL8XH25FEPtB0SB?=
- =?us-ascii?Q?wXh/s4wxOr7NMeVyM1GtbfCZVWDfdjqTn4+Sga8fLbBy08ZKOfMI63tmtVGh?=
- =?us-ascii?Q?QIxkyx8mFvF/rZJ2i8vYvvi4if7Wf1y6W1pY7JOw7SvS/h46dOP0GhVR3ORO?=
- =?us-ascii?Q?gbVS1DMmy5X0CCrX1Eg41+GLR6vJZ4x3sNQVslkdIQzBJaY+cj1sxxgrkw67?=
- =?us-ascii?Q?1TAb9F5oO347z7Nsm4yZkFGE7OUVPiD/wPfbk2B4CSxtvYVT0e5ixYHYTw2H?=
- =?us-ascii?Q?8gNVLnM9wEuoVBTAomMPv2IemFq/0LIPgj29huGx91DBkIKeByWzNTVWfD/X?=
- =?us-ascii?Q?sCJQ5J3FhD+c2puHUSvBEweIyb4HC4n17Vx6C3nrDAwwW+ia7RCzUc2bHzo+?=
- =?us-ascii?Q?KNIcliss5KTXAGphcc6XByKr/+J5uVbTfM09l8DFpmd0j19BDx0G21zaWEjm?=
- =?us-ascii?Q?bMSv3RaBZlCUabCfwDj/iiMCn0gV/SVrHiSspF6M0J8mbhDppVsCV1XbTkCl?=
- =?us-ascii?Q?cNdLbjOdxyvCS0Uhk6TYvUaez83FYoO3d9u1P8d0rNYQtpupPs0hechjFfn9?=
- =?us-ascii?Q?EZx7lkPhwHGlI/8s7okUWJoeGURDKjkyb9nHYqUVSFYLXW4hZYcxfDVGaeg5?=
- =?us-ascii?Q?RQTRH9DGOA=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c7499b1b-71ba-41e1-229b-08df3e670a8a
-X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4472.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Nov 2026 13:40:39.1301
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: zy560qHlBkhIpKR2siniFzjR2Qu9pWPvToJduJe/kIMN+JMFrDzpB5IkIfyBlG/Z/ztfKnmVGUu9oCvuXDFDhA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB10546
+Subject: Re: No network for SolidRun LX2160A Clearfog CX with kernel 6.12.113
+To: Ioana Ciornei <ioana.ciornei@nxp.com>
+Cc: Vincent Jardin <vjardin@free.fr>, Fabio Estevam <festevam@gmail.com>,
+ imx@lists.linux.dev
+References: <d074d5b8-7b86-454d-b948-83530fa82e97@sysmocom.de>
+ <CAOMZO5Arqfat5nO5Hi9Dq0TogvGAvmNLChE_8WrDGrNy1ha2Qg@mail.gmail.com>
+ <auSrssMDb33JZVN5@L30177.local>
+ <c4e8595b-1dcc-4fa9-9a9f-b23be2d79462@sysmocom.de>
+ <auX-VA8xlqSwLYGj@L30177.local>
+ <z2q7u34spdhyiqhrkem4b64fvdwnnbodgwzj4rynuepqyrym5q@nuy2zhhlqgpu>
+ <ab9967d8-0d44-4457-9cba-6d2913e17977@sysmocom.de>
+ <ia74kefmqtcuvk6zvtbtxkxeqtfonm6alfqngincebps7l4vcy@b3ljfyzoedxj>
+Content-Language: en-US
+From: Oliver Smith <osmith@sysmocom.de>
+Autocrypt: addr=osmith@sysmocom.de; keydata=
+ xjMEXqaMvBYJKwYBBAHaRw8BAQdAKlLfpb/UKvlUjGFwzzkDBT1fXdlqg+MaEG2+hTXDYUrN
+ IU9saXZlciBTbWl0aCA8b3NtaXRoQHN5c21vY29tLmRlPsKWBBMWCAA+AhsDBQsJCAcCBhUK
+ CQgLAgQWAgMBAh4BAheAFiEECfuANpg5IsWyQFcH6+DRJFm2BMUFAmDG9VIFCRTsa5YACgkQ
+ 6+DRJFm2BMUJ0wD+L0gpHABtBfkNQ7i0/qtMs5thoqt2yldxao6q31BBLAAA/iXUDIEYjQ0L
+ wsZRtiSdXNjbBfdT9boLdh4CY+TKwuYPzjgEXqaMvBIKKwYBBAGXVQEFAQEHQPGmG2/uQrDy
+ xalQoBnT1zdIbeg/xWLjl1AnOYGITnpEAwEIB8J4BBgWCAAgFiEECfuANpg5IsWyQFcH6+DR
+ JFm2BMUFAl6mjLwCGwwACgkQ6+DRJFm2BMXSRgD/f8twzpyQfpE+viVjtlOxsq0HCavXZqbW
+ VvIuvbyfSWQBAJhEIFF/fxmksu9r3FzixNQMOLc3EJgSwqvEYA28Db8O
+In-Reply-To: <ia74kefmqtcuvk6zvtbtxkxeqtfonm6alfqngincebps7l4vcy@b3ljfyzoedxj>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Florin Pavelescu <florin.pavelescu@nxp.com>
+Hi Ioana,
 
-Cast to u64, so that multiplications and additions will be done
-in 64-bit arithmetic and the possibility of integer overflow is eliminated.
+On 11/9/26 10:39, Ioana Ciornei wrote:
+> I need to have a look at the DPL file used on your board. Have you built
+> it using Solidrun's lx2160a_build project (https://github.com/SolidRun/lx2160a_build)?
+> Can you get me a link to the source file?
 
-To silence the Coverity warning.
+This image was used in 2022:
+https://solid-run-images.sos-de-fra-1.exo.io/LX2k/lx2160a_build/lx2160acex7_2000_700_3200_8_5_2-f57e117.img.xz
 
-Signed-off-by: Florin Pavelescu <florin.pavelescu@nxp.com>
-Signed-off-by: Stefan Ghetu <stefan.ghetu@nxp.com>
----
-Changes in v2:
-- Drop the redundant (u64) cast on kdiv, as suggested by Frank Li.
-  Adding a 32-bit value to a u64 already promotes it to u64.
-Changes in v3:
-- Drop the Fixes tag
+It is now a dead link, but from the commit hash in the file, apparently
+it has been built from:
 
- drivers/clk/imx/clk-pll14xx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+https://github.com/SolidRun/lx2160a_build/tree/f57e11707eb4aa5df1908ff64ba52b9f6141ab1f
 
-diff --git a/drivers/clk/imx/clk-pll14xx.c b/drivers/clk/imx/clk-pll14xx.c
-index c6438144e507..ee9a9e4c392a 100644
---- a/drivers/clk/imx/clk-pll14xx.c
-+++ b/drivers/clk/imx/clk-pll14xx.c
-@@ -124,7 +124,7 @@ static long pll14xx_calc_rate(struct clk_pll14xx *pll, int mdiv, int pdiv,
- 	u64 fout = prate;
- 
- 	/* fout = (m * 65536 + k) * Fin / (p * 65536) / (1 << sdiv) */
--	fout *= (mdiv * 65536 + kdiv);
-+	fout *= ((u64)mdiv * 65536 + kdiv);
- 	pdiv *= 65536;
- 
- 	do_div(fout, pdiv << sdiv);
+> Otherwise you can dump it from u-boot by using fdt print before the
+> fsl_mc lazyapply command:
+> 
+> 	=> fdt addr <addr> && fdt print && fsl_mc lazyapply dpl <addr>;
+
+If the above is not useful: What address would I need to use here?
+
+> It would also help to know the RCW and the SerDes protocol combination
+> that you are using. You can find those in the u-boot log. I pasted an
+> example below:
+Reset Configuration Word (RCW):
+        00000000: 50838338 24500050 00000000 00000000
+        00000010: 00000000 0e010000 00000000 00000000
+        00000020: 10c001a0 00002580 00000000 00000000
+        00000030: 09240000 00000000 00000000 00000000
+        00000040: 00000000 00000000 00000000 00000000
+        00000050: 00000000 00000000 00000000 00000000
+        00000060: 00000000 00000000 00027000 00000000
+        00000070: 08a80001 00151020
+Model: SolidRun LX2160ACEX7 COM express type 7 based board
+Board: LX2160ACE Rev2.0-CEX7, eMMC
+SERDES1 Reference: Clock1 = 161.13MHz Clock2 = 100MHz
+SERDES2 Reference: Clock1 = 100MHz Clock2 = 100MHz
+SERDES3 Reference: Clock1 = 100MHz Clock2 = 100Hz
+DRAM:  63.9 GiB
+DDR    63.9 GiB (DDR4, 64-bit, CL=22, ECC off)
+        DDR Controller Interleaving Mode: 256B
+        DDR Chip-Select Interleaving Mode: CS0+CS1
+dev_get_priv: null device
+dev_get_priv: null device
+Using SERDES1 Protocol: 8 (0x8)
+Using SERDES2 Protocol: 5 (0x5)
+Using SERDES3 Protocol: 2 (0x2)
+
+Best regards,
+Oliver
+
 -- 
-2.34.1
+- Oliver Smith <osmith@sysmocom.de>            https://www.sysmocom.de/
+=======================================================================
+* sysmocom - systems for mobile communications GmbH
+* Siemensstr. 26a
+* 10551 Berlin, Germany
+* Sitz / Registered office: Berlin, HRB 134158 B
+* Geschaeftsfuehrer / Managing Director: Harald Welte
 
