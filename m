@@ -1,44 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=176.9.212.161
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794233014;
-	b=dZgzgZr4oqDDF8CBpDNjS0c20D7nBgy36Hiaq3dZYen4DxSV5Kr7wCf4CI6cEwuE2gW+
-	 qa/tj7yLbcHEKANZBXsfVDlAqqSezzikv/AHbkuApr4k85jMvuPdZmDykjZl8JQDOhhj0
-	 NcAqpt9PWFzT2d8ZzrHGyG6Ip3LVL1/eMYwCrQBYxWyme/yNNmmzsjs073Jc5o3ALPHBa
-	 5E0/L13GRyRY5jq9wNRig0kXBSoNGbWp+YyTd1h1GQyXkQihyqSOL1mKqVgUCMPzfhSp5
-	 Hr9UdrCRXsXoCpLZVZXAzo76y9fJYM4w2pVh/Q36hXkHKZRJUuwfZ9Az/97QRbjDRLA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794233014;
-	h=DMARC-Filter:Received:X-Virus-Scanned:Received:Message-ID:Date:
-	 MIME-Version:Subject:To:Cc:References:Content-Language:From:Autocrypt:
-	 In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=YmMTVWpdq8xyF0utBKBMNMsTNhVUSn4oKM3y6/m6tWE=;
-	b=c0JxPnyVPmaJ75i7retQd+ZIxUA4jdvw3oo28a4BESlTBMb1JCmYkIY4gc201QmAMpV4
-	 8erEoUHHq/19nZsTp9y9ztztqxEa+/FOIzluPwi6Wc31RKPP2YTXZfh/atFtqnAbDd6Dr
-	 oK9kPyzcGe2yrlllpue/pi/m0KexXdz45K0I6vyL1+JlHuZEUVRlmPLGGGnsQY1CQu6u6
-	 JqsiGuNIPLSpsik8z8ghT4aU8SFey1Y69QBRFX9PUbJ0fTS76D3MAfOQzU+yeM3q1mdJY
-	 6ZGOGAkF4s8fJ/89RqV2dxtcPHbXRQHTZ8Wb5eQRaMQC9/XWQjZwsV2JF2m7cY+fPvw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=sysmocom.de;
-	spf=pass smtp.mailfrom=sysmocom.de;
-	arc=none smtp.remote-ip=176.9.212.161
-Received: from mail.sysmocom.de (mail.sysmocom.de [176.9.212.161])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.84.13
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794233729;
+	b=rYiZPZgFfGA4a70wzzD/T+QlSlLoluKEAncJ2ievztfjOd9kQolG8QCT6Tx4JlhJ+vHI
+	 vrEKvFUlGPkgD1BryCxIwNz8UIOmz2NbQhsPKcoxDS2PF46bONatkQMPN/Uj2oz5xjna8
+	 BmZuIJp5ho6R1gcRHwsViCpqoqon1uImIbIUwMtubMKGV/HXMe6vP5wtVzZeCCLhstu3w
+	 YnrZuHcS5EVuKqsc0IVFS+CFjsXJEV0MC7xjU8RuRayPGoXVR/ae41qHB635zlG4Ipauu
+	 /WfM9yCbrrpb+BuWzrmzfta+vQmXo9NwKY553wCGLMBw3Ho5R6NbJ48oZp8T5ei6oFA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794233729;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:Content-Type:Content-Disposition:
+	 In-Reply-To:X-ClientProxiedBy:MIME-Version:
+	 X-MS-Exchange-MessageSentRepresentingType:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SharedMailbox-RoutingAgent-Processed:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=JXrh7wF6rf0fMrzGy59eKCj09C2ll32+H8+16PlXNCA=;
+	b=RI1Ench5X04emY2EER847NZPpzvp5ZaGHxsh6XLKqTDfVSVuX7myI2cRghXD93XAj9Z1
+	 QY5Zl1PzM3IN4hywY0b2sSyTGpeLhxfKm2DOw9fuJcuclDnkgdfcDV65ESfFHSryX93yR
+	 EIv7swwW+Y30jSmtS0OxEqJREcLII3nbbs6LVlhLNcX5eDtyzvvtgpaN7RaE3izjdhrV9
+	 mszUHq1DkyLKcR2Oa4r2MW6DVzeYEYRpkxV+gEfiNq4UbfjEaCCkpEHHohI1qMegaVRRg
+	 ZHKLHL1+8uXDlcGXsTVtrP/69Imbcq5jQxiHJwYc4ubkLz3cC6Pog4OJ0vMeBkUYrGg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=oss.nxp.com;
+	spf=pass smtp.mailfrom=oss.nxp.com;
+	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=W1n5Ac8d;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.84.13
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010013.outbound.protection.outlook.com [52.101.84.13])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 103F6606A325
-	for <imx@lists.linux.dev>; Mon,  9 Nov 2026 14:03:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 103F6606A325
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sysmocom.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sysmocom.de
-Received: from localhost (localhost [127.0.0.1])
-	by mail.sysmocom.de (Postfix) with ESMTP id 76048C80320;
-	Mon, 09 Nov 2026 14:03:25 +0000 (UTC)
-X-Virus-Scanned: Debian amavis at sysmocom.de
-Received: from mail.sysmocom.de ([127.0.0.1])
- by localhost (mail.sysmocom.de [127.0.0.1]) (amavis, port 10024) with ESMTP
- id 9xvv-bClX57C; Mon,  9 Nov 2026 14:03:25 +0000 (UTC)
-Message-ID: <f7a51ade-18f9-4733-87e1-dfe885d93492@sysmocom.de>
-Date: Mon, 9 Nov 2026 15:03:24 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5982C606A31C
+	for <imx@lists.linux.dev>; Mon,  9 Nov 2026 14:15:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5982C606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=W1n5Ac8d
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=KLgkqDmcaLC4sScKNFUQJbwbHOoc4rKvxXO84FLK30xCwrI73fSvFZ4RDjZIRnHJdcDsUIsUeM1zplkoUxIYt3aKjBbbwMMmq6QMzKKp3NVd54M5wugeR9pz/ywd15PcaU9CODvVX785CLnowSMznuwPjhQusMefTg3IeCRDDfuGQ61n+XpJhHEAWkLZKU4jCHSzC6fhanIuH0OXePCsOM2gN3kCEag3+sWPqG+aeI39zGwFcOqPHSLCIFBBrswFvwtTY67zOZXF1UrjbbEQ2DFIEj1cqEqt7bi4jxx+1aKovaJiT+/OBQg7LEr7ZpIrDtF7zfowyHiZCMTHK1ea4A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=JXrh7wF6rf0fMrzGy59eKCj09C2ll32+H8+16PlXNCA=;
+ b=bgRihssT9Kl1jaAvTAKVCRVgttXdyGLvlU1mZYOsKUl9G1bYAe3Emd5zTR/dVcL5dfNsT7QyrcCWOVQtFg5gWwdzkWqdjLSAsV1XBcJ5Hd07SIyoSwiqQz0Q7J/1P6DCaJFq03jClP9KB2I+YNmKGQQyYo5iCqq8nxkgJoGAMqeEtFx/g5Iz4Q7+eDqNJYyEM2mvbv/hkgsflgRKPA+eSz/a0VUX823poFduDd0aXRt89mVOQtcXbykt4/kXhShkr6KqW+quRjhlIakU7x9WUcF0erUL6DxRTsBeXpw87JeIFKePgRvC9sdqg4gTO+BsOxShYmeCa+KDDP2fSjWe6g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=JXrh7wF6rf0fMrzGy59eKCj09C2ll32+H8+16PlXNCA=;
+ b=W1n5Ac8dmTIA4W7/im+agyRA1kFDF9lTWLssrbf/6ka/TXxqjsT6kkbK3xjJlpJT0d2TdYGNYXR753RyadmGvzEaW16+RjofnTTBmtc/ssXcPNlkRuoB7X+3THTX3Nzaz/LUxrZTKuPdnxUW6bdXjSYL9mLG4AnEH21AnMmr8KmB67nQSRDbesZERMXuaPqrXGr+EED5NDSo1VaEMYC4eI+JDpEltbQK41jhN+69tSZOe48zQ9fekfRlGAzMG6ZPdlMHDkdpYEgEa63nNJUDm8TCjKTKh/4SD/fSeeULyBe0QChZI+3VMzcniuj2c9HSvwIb5+JqjIHjhLslIUQJDw==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB12318.eurprd04.prod.outlook.com
+ (2603:10a6:150:32b::19) by AM8PR04MB7922.eurprd04.prod.outlook.com
+ (2603:10a6:20b:249::11) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.13; Mon, 9 Nov
+ 2026 14:15:23 +0000
+Received: from GV2PR04MB12318.eurprd04.prod.outlook.com
+ ([fe80::a498:2b5a:cbdb:d6fa]) by GV2PR04MB12318.eurprd04.prod.outlook.com
+ ([fe80::a498:2b5a:cbdb:d6fa%3]) with mapi id 15.21.0592.010; Mon, 9 Nov 2026
+ 14:15:23 +0000
+Date: Mon, 9 Nov 2026 16:15:19 +0200
+From: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+To: Maxime Ripard <mripard@kernel.org>
+Cc: David Airlie <airlied@gmail.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Simona Vetter <simona@ffwll.ch>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, dri-devel@lists.freedesktop.org, 
+	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>, 
+	Lucas Stach <l.stach@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, imx@lists.linux.dev
+Subject: Re: [PATCH RESEND 18/83] drm/imx/dcss: Switch to
+ drm_mode_config_create_initial_state
+Message-ID: <avHU-iRdVAMnN_rF@vm>
+References: <20261105-drm-no-more-config-reset-v1-0-1f58d1e33380@kernel.org>
+ <20261105-drm-no-more-config-reset-v1-18-1f58d1e33380@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261105-drm-no-more-config-reset-v1-18-1f58d1e33380@kernel.org>
+X-ClientProxiedBy: AS4P192CA0035.EURP192.PROD.OUTLOOK.COM
+ (2603:10a6:20b:658::18) To GV2PR04MB12318.eurprd04.prod.outlook.com
+ (2603:10a6:150:32b::19)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -48,91 +103,111 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Subject: Re: No network for SolidRun LX2160A Clearfog CX with kernel 6.12.113
-To: Ioana Ciornei <ioana.ciornei@nxp.com>
-Cc: Vincent Jardin <vjardin@free.fr>, Fabio Estevam <festevam@gmail.com>,
- imx@lists.linux.dev
-References: <d074d5b8-7b86-454d-b948-83530fa82e97@sysmocom.de>
- <CAOMZO5Arqfat5nO5Hi9Dq0TogvGAvmNLChE_8WrDGrNy1ha2Qg@mail.gmail.com>
- <auSrssMDb33JZVN5@L30177.local>
- <c4e8595b-1dcc-4fa9-9a9f-b23be2d79462@sysmocom.de>
- <auX-VA8xlqSwLYGj@L30177.local>
- <z2q7u34spdhyiqhrkem4b64fvdwnnbodgwzj4rynuepqyrym5q@nuy2zhhlqgpu>
- <ab9967d8-0d44-4457-9cba-6d2913e17977@sysmocom.de>
- <ia74kefmqtcuvk6zvtbtxkxeqtfonm6alfqngincebps7l4vcy@b3ljfyzoedxj>
-Content-Language: en-US
-From: Oliver Smith <osmith@sysmocom.de>
-Autocrypt: addr=osmith@sysmocom.de; keydata=
- xjMEXqaMvBYJKwYBBAHaRw8BAQdAKlLfpb/UKvlUjGFwzzkDBT1fXdlqg+MaEG2+hTXDYUrN
- IU9saXZlciBTbWl0aCA8b3NtaXRoQHN5c21vY29tLmRlPsKWBBMWCAA+AhsDBQsJCAcCBhUK
- CQgLAgQWAgMBAh4BAheAFiEECfuANpg5IsWyQFcH6+DRJFm2BMUFAmDG9VIFCRTsa5YACgkQ
- 6+DRJFm2BMUJ0wD+L0gpHABtBfkNQ7i0/qtMs5thoqt2yldxao6q31BBLAAA/iXUDIEYjQ0L
- wsZRtiSdXNjbBfdT9boLdh4CY+TKwuYPzjgEXqaMvBIKKwYBBAGXVQEFAQEHQPGmG2/uQrDy
- xalQoBnT1zdIbeg/xWLjl1AnOYGITnpEAwEIB8J4BBgWCAAgFiEECfuANpg5IsWyQFcH6+DR
- JFm2BMUFAl6mjLwCGwwACgkQ6+DRJFm2BMXSRgD/f8twzpyQfpE+viVjtlOxsq0HCavXZqbW
- VvIuvbyfSWQBAJhEIFF/fxmksu9r3FzixNQMOLc3EJgSwqvEYA28Db8O
-In-Reply-To: <ia74kefmqtcuvk6zvtbtxkxeqtfonm6alfqngincebps7l4vcy@b3ljfyzoedxj>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB12318:EE_|AM8PR04MB7922:EE_
+X-MS-Office365-Filtering-Correlation-Id: 77e4c4b6-b9eb-4784-c859-08df3e6be4d8
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|23010399003|19092799006|11063799006|4143699003|56012099006|261021121427099003|261021123027099003|261022075727099003|261022105027099003|261009223027099003|261026140227099003|261028144727099003|261102123227099003|10067099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	9mkjuT+TbbmjHzT5AomuEe1WNhtoAzCoxhJIe7GjZTG0aQwE/+z7R41j0Q9qsJA/uY4C+YyuIfPlwoFY3WveAlYTWMl/BkTXU5ZyU+MyH6WXAq3EGjYARNEEWZ5/1iDqvB2RcF7joaMYws/1I+nBxmCy2oGRLWXoNbk5lJZHz+kAEhHr6/7mXz8Ywg6rXWOloMpdFi6TEcCrgjDFOuVXMx6pDxgbL0fBLaILCPHK3TBpBNCh9dY5VofRB5DPOvz2uCpXZU5rU75FrRvsi5cCJnYYunThBnz/zDcuwztD7r+gBjCbsZhzOtNqUFrTabqB88YUsC4YIplTKxyX0JBMZnu4wWMTPtEsdCMQCubtYUbY30boCWtyyyxSEAurGxujOIEi/K0Ti3AOuQz2sD1o0YEoDjvoDryJOJ/usbZi8Sm1wUjYc8TTSVtETC3zdPf0DU+afi+OkEjdYC5osRd433nH8rW70YJyxi5hIc+WvbeZlHCTniNpBzDzeGjPOLieiosF0bh2naS1ozs2h67Yg82vJFoVCDsI18y+YnabdpSVMDzkRDbf8/2fq6fVvmV5JFIwXFvxTP2UDHP3nmw8j5A/YdaCy8EcNTFfNSBEAmBrewbGUdOkmMWhAcAsa/y7/AY0EwH4ifcXiiR/sCb7oizPUpSEzXaqgzeuBPxjgaM=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB12318.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(23010399003)(19092799006)(11063799006)(4143699003)(56012099006)(261021121427099003)(261021123027099003)(261022075727099003)(261022105027099003)(261009223027099003)(261026140227099003)(261028144727099003)(261102123227099003)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Ge7Kxconenr+dQRjdbxS9WxFge+LLVFqDfZvXVTd25qDMjeAH02X53KWCt8l?=
+ =?us-ascii?Q?AK1GW/YZMpVZjc558ySd7bKUdycNoK2rnqE8WIa95SuqPp8BjeszvfvlTohH?=
+ =?us-ascii?Q?xHYxmYxyp1giwVjRU9VgUTtv+IQL0PBKLXPp+Ha+zRTRWoJAVBTqo3iiZCjd?=
+ =?us-ascii?Q?SQWAV4Kxwn4+JF/p86dQEZVh2/xZjorwvqOzOdV7+89wtZ8O14mD4dBFsuov?=
+ =?us-ascii?Q?y5+dFGEZ3KS67fvP9Zxh7jRnoQMP7cSG17Fy9unfepWx/HtNBXSnliWPWLEM?=
+ =?us-ascii?Q?HoGwEBSQMyh+VMiI7jL6YOJ3HWUeYOZFVj/pGT0mQ9f5v7VB5flkgEqisyQJ?=
+ =?us-ascii?Q?fqkKeSMGPXo0dhMPaYsmeNE3S9jE4/l85ci1X/Q8N7EsnN8LppnmZZFgiTOT?=
+ =?us-ascii?Q?85saziAN2gffkgU7+SgjKOJvlysdcbdmxG/snm2Zjx0lEb9N6EMd+FxNw68j?=
+ =?us-ascii?Q?SITgZ3Fb0K55OxpjdtK21K+WvSmc9NbhyV1gx4dhM1G9j3U1/0ZxNUSm8jT2?=
+ =?us-ascii?Q?7ILY0Z2HGEjdb5+XoUcBch3Y4zk80PdmcKGV+cSievakXn9gUHxgMV9YCASV?=
+ =?us-ascii?Q?sj+UlvDB5WemNJNUJx2tgJz9J7M3yLiMpG34X0W24ko8aAaeA+MlW9r+d8sN?=
+ =?us-ascii?Q?huQxA5vK47cAghE/b5rK8esdns/O/Us0ykeXwbbZcx5Q1jd8zJS3AqJLPZpK?=
+ =?us-ascii?Q?n0LTz/l4j1jh7hARkSYuCUZPvcUF5ojQzOsJYwfjQLaO1YLRPYojVYUxaza/?=
+ =?us-ascii?Q?iGOqtX1Qgmh8NHHTfTLz5nnl2QlkXwfG6CEykIX8mMI9MIFXQjGmYVpvygPK?=
+ =?us-ascii?Q?aTk92G2hIXDTBCmQh8o2V7rYclDuBwq6mprv2qrRwjbamMFcJNu+xgB3jVvw?=
+ =?us-ascii?Q?euSaDtHOZx7l+F6KiYHU+oQQMv6bKqEHDxjqItUC0K0e4WyRgBYCiNTB+9gB?=
+ =?us-ascii?Q?81I07O/htCUrkawW18PUvGvUBnjPFGzS37I2zE5p9QaRF6c0XTvkR3f6XMlo?=
+ =?us-ascii?Q?ce1rIekA/ch4e1SdgoWh5cp0B5ev2vVFiw8Vce3hbGmq6FxKolRVE+zCSTx2?=
+ =?us-ascii?Q?1hWo7XXDWSy/PJNFnOuPcUEJmGAFNHsvzxQGnNZD7SlhCJecbP/xnscBrFO0?=
+ =?us-ascii?Q?F7vXrBglkyoWP38gIrPwcIHeDYb6tN5pt2grUf+rvP4RbJ9lWp3kf4O5vVg/?=
+ =?us-ascii?Q?g7TY0rBlhf8Mrkjo7bnAiqkGDCXGOa9ufX7Y2rRr1+owaFRY2MoFMGSQ8xuB?=
+ =?us-ascii?Q?/aCSdia1wX4D6A5GFg6N2krB3qAor1ZqrUkkD49ORI5RWtTaibl+NCz+mWcW?=
+ =?us-ascii?Q?HhYQC2lPtbXlYFJ3dTpDcT+cgAAhXI6q/ITnAP5PQb2hxlBBOQp92TegRJkw?=
+ =?us-ascii?Q?YCxqzL+08kG8AoqGzrZih9f8IOLCmtHVISFEJBbKUL9J9Lxp7HoTMs4WQuEh?=
+ =?us-ascii?Q?lWVL+el4srUYRmZYcH0yDDIdwp0jir61nwnjomdurXJR57NRvOzq45ju9uJC?=
+ =?us-ascii?Q?7bOpBxW97oYjJsHvytK8LClsfoldP+m5bUi4ZiYIrpb3Z48wss8HxHRysVVn?=
+ =?us-ascii?Q?tfaoAV+XIOscI04n0kPIHydDXsOTmFn+b8WSnVNQdBthV8fEpoXamgTX1Fin?=
+ =?us-ascii?Q?Xi282K7Mszu3Ue2y4T2VZzOS9U/voXURr1wiD5vgm/xtmgF641+OaVTffJFz?=
+ =?us-ascii?Q?DvZMZ7zjS6dVkp/CB9dTb3ioUtkpXYkP+DbUpXMzrhIZJAxy8n8FhqlHu43i?=
+ =?us-ascii?Q?0jXdFfuI+eO2RljlAAr/UmM623gqBEs=3D?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 77e4c4b6-b9eb-4784-c859-08df3e6be4d8
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB12318.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Nov 2026 14:15:23.4421
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 5ARmSWdmT90GMMdYcyLcMB+KoLrElt/9wZx1zRZHdjSjMKvejE7gIel39DQRg8l2qG5gHDqFkmJxQYsoG65oQA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7922
 
-Hi Ioana,
-
-On 11/9/26 10:39, Ioana Ciornei wrote:
-> I need to have a look at the DPL file used on your board. Have you built
-> it using Solidrun's lx2160a_build project (https://github.com/SolidRun/lx2160a_build)?
-> Can you get me a link to the source file?
-
-This image was used in 2022:
-https://solid-run-images.sos-de-fra-1.exo.io/LX2k/lx2160a_build/lx2160acex7_2000_700_3200_8_5_2-f57e117.img.xz
-
-It is now a dead link, but from the commit hash in the file, apparently
-it has been built from:
-
-https://github.com/SolidRun/lx2160a_build/tree/f57e11707eb4aa5df1908ff64ba52b9f6141ab1f
-
-> Otherwise you can dump it from u-boot by using fdt print before the
-> fsl_mc lazyapply command:
+On Thu, Nov 05, 2026 at 04:29:27PM +0100, Maxime Ripard wrote:
+> drm_mode_config_reset() has a dual role: it creates the initial KMS
+> state at probe time, and resets hardware and software state during
+> suspend/resume cycles.
 > 
-> 	=> fdt addr <addr> && fdt print && fsl_mc lazyapply dpl <addr>;
+> Since the two roles need different behaviors (notably for objects like
+> drm_private_obj that must persist across suspend/resume),
+> drm_mode_config_create_initial_state() was introduced to handle only
+> the initial state creation at probe time.
+> 
+> Switch to drm_mode_config_create_initial_state().
+> 
+> Signed-off-by: Maxime Ripard <mripard@kernel.org>
 
-If the above is not useful: What address would I need to use here?
+I think I already gave my r-b tag on this before the resend... Anyway,
 
-> It would also help to know the RCW and the SerDes protocol combination
-> that you are using. You can find those in the u-boot log. I pasted an
-> example below:
-Reset Configuration Word (RCW):
-        00000000: 50838338 24500050 00000000 00000000
-        00000010: 00000000 0e010000 00000000 00000000
-        00000020: 10c001a0 00002580 00000000 00000000
-        00000030: 09240000 00000000 00000000 00000000
-        00000040: 00000000 00000000 00000000 00000000
-        00000050: 00000000 00000000 00000000 00000000
-        00000060: 00000000 00000000 00027000 00000000
-        00000070: 08a80001 00151020
-Model: SolidRun LX2160ACEX7 COM express type 7 based board
-Board: LX2160ACE Rev2.0-CEX7, eMMC
-SERDES1 Reference: Clock1 = 161.13MHz Clock2 = 100MHz
-SERDES2 Reference: Clock1 = 100MHz Clock2 = 100MHz
-SERDES3 Reference: Clock1 = 100MHz Clock2 = 100Hz
-DRAM:  63.9 GiB
-DDR    63.9 GiB (DDR4, 64-bit, CL=22, ECC off)
-        DDR Controller Interleaving Mode: 256B
-        DDR Chip-Select Interleaving Mode: CS0+CS1
-dev_get_priv: null device
-dev_get_priv: null device
-Using SERDES1 Protocol: 8 (0x8)
-Using SERDES2 Protocol: 5 (0x5)
-Using SERDES3 Protocol: 2 (0x2)
+Reviewed-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
 
-Best regards,
-Oliver
+> ---
+> Cc: Fabio Estevam <festevam@gmail.com>
+> Cc: Frank Li <Frank.Li@nxp.com>
+> Cc: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+> Cc: Lucas Stach <l.stach@pengutronix.de>
+> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+> Cc: Sascha Hauer <s.hauer@pengutronix.de>
+> Cc: imx@lists.linux.dev
+> ---
+>  drivers/gpu/drm/imx/dcss/dcss-kms.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/gpu/drm/imx/dcss/dcss-kms.c b/drivers/gpu/drm/imx/dcss/dcss-kms.c
+> index 7c5a6e2bc89a..92ac29960e48 100644
+> --- a/drivers/gpu/drm/imx/dcss/dcss-kms.c
+> +++ b/drivers/gpu/drm/imx/dcss/dcss-kms.c
+> @@ -142,5 +142,7 @@ struct dcss_kms_dev *dcss_kms_attach(struct dcss_dev *dcss)
+>  		goto cleanup_mode_config;
+>  
+> -	drm_mode_config_reset(drm);
+> +	ret = drm_mode_config_create_initial_state(drm);
+> +	if (ret)
+> +		goto cleanup_crtc;
+>  
+>  	drm_kms_helper_poll_init(drm);
+> 
+> -- 
+> 2.55.0
+> 
 
 -- 
-- Oliver Smith <osmith@sysmocom.de>            https://www.sysmocom.de/
-=======================================================================
-* sysmocom - systems for mobile communications GmbH
-* Siemensstr. 26a
-* 10551 Berlin, Germany
-* Sitz / Registered office: Berlin, HRB 134158 B
-* Geschaeftsfuehrer / Managing Director: Harald Welte
-
+Thanks,
+Laurentiu
