@@ -1,56 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.183
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794227296;
-	b=ame4M21x9BPCx20hA6Kbrohldsqx0Fuo8AJ1SD3EAXM0cbZgXJCb5Dgf8OhQ2sdaMkoK
-	 Yye2aH1B2vgfo/a2xcBPm+VzeE5eHJXjRFKJItpsOUUAPVe8bjFqomnv032inC7lfM4w0
-	 B3HRfO3zaXyIAg4sME9yjyZOYhd7F9Ss2IkTnGMLVqf5VBbyUGt1vBgVKU7nnHpj7PSyw
-	 EALoR6bKrRnhFJD+s6+OsnJ1kY/rsWiKGTP1RK7siQfD5U9OHH4nAg0h1qQpA2EN/ssNO
-	 zUrbsu+imkG4qz6r/LV/dXJa2YBBxDxpVPpNVt12fJoxzWgkudXqhfFsAJWgi+7oPYw==
+	t=1794227540;
+	b=KbJlEX6NDpPZekSVZCz0TKM2LFeV9GeU57G+mr/YlH8BAVii1YZOLIod4rj8nqYW9xSY
+	 g1o1g2/t00GXwzZ6+CPRg95dupqS7W1uguKoEZYCyPYIRM7TcH2E526KG5hi6OrmYYr+p
+	 aaf0X87Gu9YPUzWdYLChWbBQ7hFUAoFYbAVijmBZYENnECSv3UXVPIOrV2APnG6DjgC7f
+	 d5WJ1s6iEgsyAidwHRZmeWnzpAYm7YvaNr+3/VXIeABBgzYvhH2tJlqDBvxCz6+lXi3Mm
+	 PJj86rth0pCGuAi+slh24UsCzUgsciyrMLzY/hbd8vEpJHixsvwgv5dP2jXP61PIfaA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794227296;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:From:Date:Subject:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:Message-Id:X-B4-Tracking:
-	 X-Change-ID:To:Cc:X-Mailer;
-	bh=iS8GiYS6BEKZKYojShCn/PzarfE6Hwuxq2fwUTCgOqc=;
-	b=Ynz6SM6eIFED/ndR346D29IJ1hQKMGbCNVMhOnCswSIpzuNPD/e/4jJHa5OlS6xxxxiN
-	 ZhCPvfard5BL//Ux/Z4V2VIBHTsH1zb2uQ71Oe7mtuAx8S5mXP7KNalzDBvPl1PApYZj9
-	 2qnprT1i3+Uw8ZAxgV1tMIXyszGgTcUP8lFQjeDhHXxJowlIlPu+9wQi4vzuGiOs1BA1R
-	 UuzUpDWxHvqPwpuL/o9VKImr8CEfnpspvKWsnvyV2cdbrIqcGntl4XOrGa+MWEObZjCfF
-	 mcDWNkxmE324hzSGwHulJ+uczBVrjq/DLaXyXK3hean25WPChJV58c9w4T4CwmNZzZg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794227540;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=DrFt5XUY5K+Z4YSTzjPJFdoi+/yuZntIqQXWFqO8qN4=;
+	b=hEe3oI7DzgjcPLI94+DL0yE+REX4wOCcbXLPeuB/PO6RHjZyBi/w/Zqh++DdWwa4GXJL
+	 NZLtPRpfVQz9LuPNhlPmzCvg66kS/1VwMMCTnlhyrr1lt+DvXXDxlidnUp5ONgQIeXaCG
+	 1jt99ps+7oZ+gBE12Z5NuAxtuW8lWh4f/VPSqA0FaSV4k+uMtJdvzK3XD3GFWWiCzfqiG
+	 TExJwciOelkYYMb0JWJ4TU05VLOpFYfOo8ct6ZNJoXRF0INV/jVTGqjQVf6qxSygElNHM
+	 rpi7h/SRerNrpAq03UAjSiNbftvvThmUTeWY/K6Cgm3WBJ34DoQF5YHFAqsR2WPV4Xw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=GZnzTybZ;
-	arc=none smtp.remote-ip=91.218.175.183
-Received: from mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="nsOvPEh/";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C21A5606A322
-	for <imx@lists.linux.dev>; Mon,  9 Nov 2026 12:28:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C21A5606A322
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F22F606A334;
+	Mon,  9 Nov 2026 12:32:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=GZnzTybZ
-X-Envelope-To: imx@lists.linux.dev
-DKIM-Signature: a=rsa-sha256; bh=bqVtQ6P0h3fZuMSz5KkI6pN2g1Enr0aSOZ5UYfB26Bo=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794227292; v=1; x=1794832092;
- b=GZnzTybZAk36XLwLOZUCgUBKQNqi0dynVG15SJqCDyXUf03m3H6jFEiXgjKSNXYmXwpqCswp
- 59CKDDhBrk+D0PdbUj8WuvpGrIIUQf7kHOj2roieiDTs414HJagMP/CqEWe/KnBYp0l021gpjPK
- KxEZLDsToCLYkmglJ8wxclY4=
-X-Envelope-To: imx@lists.linux.dev
-Received: by smtp.migadu.com with ESMTPS id d1122df8eed1b4de;
-	Mon, 09 Nov 2026 12:28:12 +0000
-X-Mizu-Trace-ID: d1122df8eed1b4de
-X-Migadu-Flow: FLOW_OUT
-From: Peng Fan <peng.fan@linux.dev>
-Date: Mon, 09 Nov 2026 20:27:55 +0800
-Subject: [PATCH] pinctrl: pinconf-generic: widen the packed config argument
- to unsigned long
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nsOvPEh/
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5E371F008A3;
+	Mon,  9 Nov 2026 12:32:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794227540;
+	bh=DrFt5XUY5K+Z4YSTzjPJFdoi+/yuZntIqQXWFqO8qN4=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=nsOvPEh/a1Obx+RK4Q+xM1+BAeS34f4H7SqK1/nUp/OPUuPFIU3Fzw0bCiyVxehos
+	 m0i9ow/XPqrxyXqNx1nAM4P3g/MXaytVLrie4lX20B1Bc9rmIcq8QytWWl/e5HaFS9
+	 kQyqhhtMbepzUZ4jlCBMq4BzAXA4g30QUVJDIuNr/ACto54g4eLlh6n5Ey3oumRxGP
+	 GHCUJQFIv7eBLWjQpihC/C022EhgXg9Nww/i5RJOjw7RX5tLdzFeQ0cDHL7/tsTMob
+	 zoEbe55AaM+C+P5EvWBw97eTtXrj0cRdHr4dijUGAih4byxtZoZXg055nJNz5b7HUm
+	 vxzZqiud62WYQ==
+Message-ID: <sashiko-outbox-204955@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 1/5] dt-bindings: display: panel: ilitek,ili9806e: Add
+ Youritech ILI9806E
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Frank Obergfell" <frank.obergfell@bytesatwork.ch>
+Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org
+In-Reply-To: <20261109122250.720757-2-frank.obergfell@bytesatwork.ch>
+References: <20261109122250.720757-1-frank.obergfell@bytesatwork.ch>
+ <20261109122250.720757-2-frank.obergfell@bytesatwork.ch>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 09 Nov 2026 12:32:19 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -59,143 +60,54 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261109-pinconf-widen-v1-1-469726456c84@nxp.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MQQqAIBBA0avErBMcA8uuEi3ExprNJAoVhHdPW
- r7F/y8UykwF5u6FTBcXPqUB+w7C4WUnxVszGG0sonYqsYRTorp5I1F6nHCwbgjGR2hNyhT5+X/
- LWusHvh3KQl8AAAA=
-X-Change-ID: 20261109-pinconf-widen-07813693c2af
-To: Linus Walleij <linusw@kernel.org>, 
- Bartosz Golaszewski <brgl@kernel.org>
-Cc: linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- imx@lists.linux.dev, Peng Fan <peng.fan@nxp.com>
-X-Mailer: b4 0.14.3
 
-From: Peng Fan <peng.fan@nxp.com>
+Thank you for your contribution! Sashiko AI review found 2 potential
+issues to consider:
+- [Medium] dt-bindings: ilitek,ili9806e: non-specific youritech,ili9806e
+  compatible
+- [Low] dt-bindings: ilitek,ili9806e: incomplete commit message for
+  panel and vendor
+--
 
-The packed pin configuration stores the parameter in the lower 8 bits and
-the argument in the remaining bits of an unsigned long. However, the
-argument was limited to 24 bits: pinconf_to_config_argument() masked it
-with 0xffffff, and pinconf_to_config_packed() took a u32 argument, so even
-on 64-bit systems the left shift in PIN_CONF_PACKED() discarded the upper
-bits. For example, the pad configuration value 0x1080000 used by a new
-i.MX SoC was packed as 0x08000000 and read back as 0x80000.
+commit f808e27a7a6d1d461157c23c896bc2773caf8de9
+Author: Frank Obergfell <frank.obergfell@bytesatwork.ch>
 
-Allow the argument to use the full width of unsigned long so that such
-values survive the pack/unpack round trip. Cast the argument in
-PIN_CONF_PACKED() to unsigned long to keep direct users of the macro
-consistent with pinconf_to_config_packed(), and print the full argument
-in the debugfs dumps.
+> dt-bindings: display: panel: ilitek,ili9806e: Add Youritech ILI9806E
+>
+> Add youritech panel as a compatible
+>
+> Signed-off-by: Frank Obergfell <frank.obergfell@bytesatwork.ch>
 
-The packed argument only has BITS_PER_LONG - 8 bits available, so on
-32-bit systems values above 0xffffff still cannot be represented. Reject
-such firmware properties instead of silently truncating them.
+[Severity: Low]
+This isn't a bug, but the commit message omits any description of the
+panel hardware (such as the panel model, resolution, physical dimensions,
+and whether it uses MIPI-DSI or SPI) and does not mention the new
+youritech vendor prefix added to vendor-prefixes.yaml.
 
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
----
- drivers/pinctrl/pinconf-generic.c       | 16 +++++++++++-----
- include/linux/pinctrl/pinconf-generic.h | 13 ++++++++-----
- 2 files changed, 19 insertions(+), 10 deletions(-)
+> diff --git a/Documentation/devicetree/bindings/display/panel/ilitek,ili98=
+06e.yaml b/Documentation/devicetree/bindings/display/panel/ilitek,ili9806e.=
+yaml
+> index 2080d9e0ffac4..6f29ddc1fd090 100644
+> --- a/Documentation/devicetree/bindings/display/panel/ilitek,ili9806e.yaml
+> +++ b/Documentation/devicetree/bindings/display/panel/ilitek,ili9806e.yaml
+> @@ -19,6 +19,7 @@ properties:
+>            - densitron,dmt028vghmcmi-1d
+>            - ortustech,com35h3p70ulc
+>            - rocktech,rk050hr345-ct106a
+> +          - youritech,ili9806e
+>        - const: ilitek,ili9806e
 
-diff --git a/drivers/pinctrl/pinconf-generic.c b/drivers/pinctrl/pinconf-generic.c
-index 36845517984e..0876015a6575 100644
---- a/drivers/pinctrl/pinconf-generic.c
-+++ b/drivers/pinctrl/pinconf-generic.c
-@@ -95,12 +95,12 @@ static void pinconf_generic_dump_one(struct pinctrl_dev *pctldev,
- 		seq_puts(s, item->display);
- 		/* Print unit if available */
- 		if (item->has_arg) {
--			u32 val = pinconf_to_config_argument(config);
-+			unsigned long val = pinconf_to_config_argument(config);
- 
- 			if (item->format)
--				seq_printf(s, " (%u %s)", val, item->format);
-+				seq_printf(s, " (%lu %s)", val, item->format);
- 			else
--				seq_printf(s, " (0x%x)", val);
-+				seq_printf(s, " (0x%lx)", val);
- 
- 			if (item->values && item->num_values) {
- 				if (val < item->num_values)
-@@ -152,7 +152,7 @@ void pinconf_generic_dump_config(struct pinctrl_dev *pctldev,
- 	for (i = 0; i < ARRAY_SIZE(conf_items); i++) {
- 		if (pinconf_to_config_param(config) != conf_items[i].param)
- 			continue;
--		seq_printf(s, "%s: 0x%x", conf_items[i].display,
-+		seq_printf(s, "%s: 0x%lx", conf_items[i].display,
- 			   pinconf_to_config_argument(config));
- 	}
- 
-@@ -164,7 +164,7 @@ void pinconf_generic_dump_config(struct pinctrl_dev *pctldev,
- 		if (pinconf_to_config_param(config) !=
- 		    pctldev->desc->custom_conf_items[i].param)
- 			continue;
--		seq_printf(s, "%s: 0x%x",
-+		seq_printf(s, "%s: 0x%lx",
- 				pctldev->desc->custom_conf_items[i].display,
- 				pinconf_to_config_argument(config));
- 	}
-@@ -268,6 +268,12 @@ static int parse_fw_cfg(struct fwnode_handle *fwnode,
- 			}
- 		}
- 
-+		if (val & ~PIN_CONF_ARG_MASK) {
-+			pr_err("%pfw: value %#x for %s does not fit in the pinconf argument\n",
-+			       fwnode, val, par->property);
-+			return -EINVAL;
-+		}
-+
- 		pr_debug("found %s with value %u\n", par->property, val);
- 		cfg[*ncfg] = pinconf_to_config_packed(par->param, val);
- 		(*ncfg)++;
-diff --git a/include/linux/pinctrl/pinconf-generic.h b/include/linux/pinctrl/pinconf-generic.h
-index 1df63c732b99..9d28d4de1415 100644
---- a/include/linux/pinctrl/pinconf-generic.h
-+++ b/include/linux/pinctrl/pinconf-generic.h
-@@ -172,27 +172,30 @@ enum pin_config_param {
- /*
-  * Helpful configuration macro to be used in tables etc.
-  */
--#define PIN_CONF_PACKED(p, a) ((a << 8) | ((unsigned long) p & 0xffUL))
-+#define PIN_CONF_PACKED(p, a) \
-+	(((unsigned long) a << 8) | ((unsigned long) p & 0xffUL))
- 
- /*
-  * The following inlines stuffs a configuration parameter and data value
-  * into and out of an unsigned long argument, as used by the generic pin config
-  * system. We put the parameter in the lower 8 bits and the argument in the
-- * upper 24 bits.
-+ * upper BITS_PER_LONG - 8 bits.
-  */
- 
-+#define PIN_CONF_ARG_MASK	(~0UL >> 8)
-+
- static inline enum pin_config_param pinconf_to_config_param(unsigned long config)
- {
- 	return (enum pin_config_param) (config & 0xffUL);
- }
- 
--static inline u32 pinconf_to_config_argument(unsigned long config)
-+static inline unsigned long pinconf_to_config_argument(unsigned long config)
- {
--	return (u32) ((config >> 8) & 0xffffffUL);
-+	return (config >> 8) & PIN_CONF_ARG_MASK;
- }
- 
- static inline unsigned long pinconf_to_config_packed(enum pin_config_param param,
--						     u32 argument)
-+						     unsigned long argument)
- {
- 	return PIN_CONF_PACKED(param, argument);
- }
+[Severity: Medium]
+Should the compatible string use the specific Youritech panel part number
+rather than repeating the ili9806e controller IC name?
 
----
-base-commit: ddfe51b0a0f5dc9e415cc2c8ad8db17532dd426b
-change-id: 20261109-pinconf-widen-07813693c2af
+In this binding, ilitek,ili9806e already identifies the display controller
+IC as the fallback compatible, while the first entry identifies the panel
+model. Using youritech,ili9806e makes it impossible to distinguish between
+different Youritech panels built around the ILI9806E that have different
+resolutions, physical dimensions, bus interfaces, or panel-specific
+initialization sequences.
 
-Best regards,
--- 
-Peng Fan <peng.fan@nxp.com>
-
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261109122250.7207=
+57-1-frank.obergfell@bytesatwork.ch?part=3D1
