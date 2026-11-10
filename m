@@ -1,90 +1,90 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.181
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.161.43
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794296661;
-	b=ytd3p3SFxeuw3jRrHo/RG7alM60+elseRBgdu7WgdheBtoeB5odNpjAqUjHJCNS59ONh
-	 awEFMqPQg+L3WrxCp+uK3WkDuzj0mEnTARdUXbs9aDUP23j+ejFxVJ2ScA6RWVxvzl304
-	 UOOpOPKNnEA0gB6/8kf/ARyuCRWGM9L58tQ3O+wclWsLwmMbb8AuESn1a0QdOypzOo8tO
-	 uBqK0LwcuEovyMkvIN99t5SFSUZSkj+7Fr9BSvtPqewY6NZuZBJfF36kQkAlkF2CcOsGj
-	 awMUPRpkQpcHgHP0Zb3GWQ7cBlakJUFd6pXer9bLv0yCPyFQ7L/DFiM0b5rutuBQqkA==
+	t=1794296696;
+	b=iIU3+dipJaoB6hOz0BiqXAPfhNFjZRXQHKEAjmBOuMXt+uYsv00zbXUihspc1iUPFjXK
+	 XHkUHH8+fA9uMc05XZ/2KJ0D8CT9REgWAQKU7kkctyuQAzL+n78h0XJLoOXXoC09LR8PL
+	 bDk3YMfjckCVtK3DF+h3v+4DPWy5syoIhXXy90r+0rcNXsVpguCzVDGnJdVKPky1ofiq8
+	 tmGbqbKTGkRI/wMPNQgnOEfiAYcBGFCCqtWNGgaN1ZS8Ba9vliE2bO57nLV0vOP9X1DMV
+	 eyXOQhrXS82xZsFTLzlsxBmUgaT/WN1denauQ0WEtH07XjtImpf2XLEoouWF8MkEH7w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794296661;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794296696;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:Subject:Date:Message-Id:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer;
-	bh=AROSoZM6g0rhbo1ze6sPpGWI/yVIERU0vwNzW3aeH5k=;
-	b=5LMHo9lf5zD9lvK3wan5CB8u908+JuvfMipkVvosFzfpB9Jn5NYPrEjDwAlgoMzipw+L
-	 bINY5tQMCTU53agUiZiz2SdXjscX2kjFUd/SmdFLptO02+xFyL/1NtHK/1ZZoTJGNYYct
-	 YMDRAt3qe2PsTJwezwp3Kis4B5GsxF3n9uu4hnOdJa0BgaT0MuOiDvIhc5DMFb9AJMUm9
-	 jmVqbYaZ4fFnq2iiyW761ktLU+4mewM2Ce/6fdehFww9HdIRtNP2RmaFMq9o4mWKbumMz
-	 tuxecSjWD88nJqmWZt7/nRS6D8Suy9PtsDcRijDZhL5tVU9cQpNwPIh0+y76Yzs509A==
+	 From:Date:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer;
+	bh=Wbdgh15lLoRVXKPHuZMnVRIK8oPQOLAhA/ub2vbd0UQ=;
+	b=2Yjyssn/D1IlWDc4C4OIt4glg9mAvctc5YyD2tP8ya0ThCUjM9k7uyr6z2+hb609kDoQ
+	 8+5oUHZw+UsUNvskkFCsRPyvWzS6Jj1Ahs35vX6yKRpwFhpUeB6cFJNQpjmaK6sRL3Jv9
+	 dqdjTQ5MclcN0UuvQkhj1ky5D+hiyl+jjbz5idSU5mZUmUrlKCkua1G64Y3wwc2XYYsIF
+	 2UfJBOU7PptALfJKnwTiOwEKNsfTyjjeIwFCzliwI7OoCXg4ccu3dI5gvxMTp+3bwyq/l
+	 FXUJNmLn2Mv7DG0UvJ90IXfn3AwjYfbLCHpsSYDYYrTTGtsWA45p8Of6+wOMRbon6rw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=HfDbL1XC;
-	arc=none smtp.remote-ip=209.85.167.181
-Received: from mail-oi1-f181.google.com (mail-oi1-f181.google.com [209.85.167.181])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=F3k9czIg;
+	arc=none smtp.remote-ip=209.85.161.43
+Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com [209.85.161.43])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33972606A330
-	for <imx@lists.linux.dev>; Tue, 10 Nov 2026 07:44:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 33972606A330
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3D87606D297
+	for <imx@lists.linux.dev>; Tue, 10 Nov 2026 07:44:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C3D87606D297
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=HfDbL1XC
-Received: by mail-oi1-f181.google.com with SMTP id 5614622812f47-4b28d7c729fso1103127b6e.0
-        for <imx@lists.linux.dev>; Mon, 09 Nov 2026 23:44:21 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=F3k9czIg
+Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-70b875f6f13so1344106eaf.0
+        for <imx@lists.linux.dev>; Mon, 09 Nov 2026 23:44:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794296660; x=1794901460; darn=lists.linux.dev;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=AROSoZM6g0rhbo1ze6sPpGWI/yVIERU0vwNzW3aeH5k=;
-        b=HfDbL1XCVJaY5r/NMHkGT03jVHlmDSwcJ8l8ORZCoDT33gux+834oM75sqE1OSIAnf
-         e42wcIdgqe9CZ9rfbL5l8YE8z0g9SaE+Q1iAlb9uSQLOFX/IYXg9xemE3QoIeSD3pv89
-         PBQzfRo6e6wq8aS8AX4dp+fl0SZ8Rmr3rFMTf5enDac33ux4xfD3HZshld3ne6yHNBw4
-         ZIta5ilb93CmzAKXdzhnOKEqwgW1TI1X+ufkyQd2E9KSvnw4WsBd3E8w3jyzzG/v3o7x
-         WXWNKKwYReMb1CN6S+Dt0TgNgdrpVuoKAHKQZ+r9Ax2knhyQjfCnTy9lLiuKosXvMvun
-         M3vA==
+        d=gmail.com; s=20260707; t=1794296694; x=1794901494; darn=lists.linux.dev;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Wbdgh15lLoRVXKPHuZMnVRIK8oPQOLAhA/ub2vbd0UQ=;
+        b=F3k9czIgrmbOSoFTiWlOYdE2ygrneAOdHnMjZnkGoUGAOfAGehexPXotlrk/Gy1Z/t
+         ZGQ7pUBlkNDn9JM3uNJN96anw4ZfXGNQAF5h+I/Z5HcFReWZxflCNXGgbgqLlVMosxsM
+         GhUj2025LfQquB9VwSR9u9xdh0Ukd4ozfaXcVgrpZcQnaZhPlb5XycYlR2tuHID+Y7Wt
+         tIKoW3KAriHZ/ScaoKx9NMz7YUfEgHT95yZeGX9H2mmnkwDyM7L9hNF0B0xavyWVkc0J
+         ExiSBsmhYYDA/fxPLOqhyYU9TvgMqxf7m0V6iqk60QHvmfIrx+xRGcuuPQudUqpXNcGl
+         lHGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794296660; x=1794901460;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=AROSoZM6g0rhbo1ze6sPpGWI/yVIERU0vwNzW3aeH5k=;
-        b=GUsYl8SDMmKcHuZVchp0AjNEixJwTiR5SaD3uOxnftLrHh/Gl+vhv/SXiXCGI55XyI
-         PG7ZjLid2Kbb3ve2PGae4xQEpxTe/XybhpMDVYS09LROqG9HWiYshTTit3N5v4CpTk3J
-         fIgPQhhwECe/ZBQxuLi4GKYlU1dx+L+SG4Y6QgISefN61cVSGTnfjbBdUBhFP2Ot742c
-         mA6tm2l0maauiEnqAPQPp9SS9R1X/LH8DGfqsACRNyYbyXmDMRqWj2nkLfPHUS9Q//le
-         1cG2pJi77goUupQHiPPe7c9oCstceXUyz94/M+78PznXFyHQ1KOLC7Zbsd0uFuDQpEcZ
-         BHKw==
-X-Forwarded-Encrypted: i=1; AL+hErFmnMh6hiCFOcoPJ0WMqRToXztIxx9bGealaM9G6dytKHU7TsPP6m08LJaGyzOPtijbDoM=@lists.linux.dev
-X-Gm-Message-State: APuU4Z9y346W3Yh3OgIzcBojJDbwUhRVZeGipKd5+wsSj5EBvpLTxuSI
-	vi7aoMGjzytMVrGs9q6meFK8Uh8rBWeYKnqfiRLK7HPgbI9eenOBsrLw
-X-Gm-Gg: AYBFou1oRsjniZgrWOEuXb1EUZp0iDQaGmJ8xBf62hBiA+qqz94h+9UA9Ajfs6czPzL
-	UbweOvftIX8q1TRkZg4qEnJqSA0jSOD87e7FiasxSdugVxwRM4PZ9/+shZe4tQXKJAGH+QDqBIy
-	fUZZCvcFuGkys0z8o4X+7HkJ+a27a3yuXQr9JBn0YgaEMxmmqCetINiRBw/SaHxFhtB5HY3FB0U
-	HFCEphUsSsdtcSepPTmENiN6/55tZSUR6Dk3vO46gJberPUUH5WeUBQRcWA3b1i4uuAaCFW9DNf
-	g+xliBE5keLPV6jfDDaIah9Lvg321kaPnWUYRDXrGTBb7YGFCQBGBkuCE9fZR797mu6EmI2+NCY
-	i9+He7U782RR8XRMVECbCM97lBRleeyLteEnVpSo5BxZDs+m/TunBSri/C6oG1rgTyJabIUnmwc
-	beeCUJKy0WykpFc0SrMqL/xG8okNfrQVXnvfzhRrsXNWXNA9R1rw6YHGEyceWD7dr9BjeAuyCew
-	fynDAOLWasmJmnVSUe6jqpPuZxtGMIv7TmAhEzq0CIecpKA5mIbNWlnzA3jBUCrQVlud0IMu2ZL
-	1aXvO43rSrvjpi/4gHyniu3XRb5h5vtsNQvAQLzA9ZRYgXDQ9qkXb+HbkNnTkN0RUhDKl/rD8cR
-	73Q8zJVluahqwIOERjXki4TpaeNK6xsC7W/XZm0dX99wwnudnMM/X0oNDb/VUku83Ki/HVX/DTv
-	P7z6QpPcMYoCqKIETJXZlWn7UQE4ezrN5FLj99Yd0Yywr4Qqj8+kdHrisq+3mP7qi1wCdOX1qg
-X-Received: by 2002:a05:6808:e85:b0:4ec:4c7e:37b5 with SMTP id 5614622812f47-5683cc8615cmr1404459b6e.29.1794296659854;
-        Mon, 09 Nov 2026 23:44:19 -0800 (PST)
+        d=1e100.net; s=20260707; t=1794296694; x=1794901494;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Wbdgh15lLoRVXKPHuZMnVRIK8oPQOLAhA/ub2vbd0UQ=;
+        b=2VTGC5ybMha0FC8OCyMUt0pG9g2dqKN2/ieliJrvIHRUxoFJIYH565KpzpRXkwrqFC
+         0M4fPVGd5EmQTXOZ1SKc4quo11qwAmv5eZcJve7IaoXE3kZEttVchw190rz/MosYDnW4
+         trxjxl6J9q/cNCPcbo5ZFhmCacsVzryh7eMRoYhZhPwkbjmJLY5cbjRSwGhT5zFiCIDE
+         RYx6BLSkXmDFGntHTPEXhoZeE1i+aJ7fB5Lx9ZeYfHxNdMRbwy6KTEPTMRmUM+LAwXRg
+         ojh2F03AGkXhF9R4sUEnf54rIR5iq1EoXjGuiFjbBl4qOhjg8WcUiPOm7b3R0GM5RDvQ
+         SR+Q==
+X-Forwarded-Encrypted: i=1; AL+hErGqHvBGdZ0E9XOpnKYkmEbiuB8kSE4L30bbCsDFbq9vMKaictFJHfhKclqObk/KXOGkV1s=@lists.linux.dev
+X-Gm-Message-State: APuU4Z+cBJrp2xaHNfyA5b+C/3J1d+b4HTsAKV7jvrXahIrqvrQ4bM9T
+	Z8YRqhTaTUHskSXWA/3t/UfD90r2ngtDZBcx0iGbcehrWEwtaIM2aCUU
+X-Gm-Gg: AYBFou2u9YRs5dqSy1Z/XXlbPdudlJx+bdnxtAxHVCE1mkEEwAr/a0YJ5IeS/EVLXML
+	eCNcGGYs3OHi373/VO17S7BQs07qcETOX3nYU8XqwbfUrUDIBReMTEhH/f/amaemYHV9t1y82aO
+	NuQaCiFVs45x/ogfqQ5MphhGMzOWlC2aGCiEl88332dASTwuWy3ZviS2fffFR/01hA89AVcZLlw
+	z39sE9WOPdva/Ix7SWi9IkqYSXQrUhGgeavE37tEZElYxqOUdCsRUMFmMHT2OxfenPJD+9cRQ4B
+	fNDMmnK34Oicxb/AODXa7GOR6U7Q4bEU7r2YouFC9qnhd7l4TX6VVDtob1hVcICx1VIM2zsG5m2
+	2iwLH0mjTb58NvB7uyFkYxNqkU+02myN5Jd2uJeBfFBEXqaxbETHiRsPofC3LxQZ4Kye8DIebv9
+	oqDBLjzJf80WJfuZxK2GM5syUTGTiUZSFranc8W1VzJ3WDuOmvmhOoon39KdsS/lQakuXdi2eiJ
+	+liR+leI7HtcOLmvmUmGihufxiw4okMDQ0WlfG4S/Su0303I4qCN+YxnK9KLUsdo9pp4JHMbx/n
+	FIoJNR+6QMrkbsKtPDt3HAzAawJVjIO6pY9/xbKsEURrBcmOdvGDsQ8mcez7GlOkkwGwH/MI0eW
+	VhtZp98c6dHpyJCYAFrp3HzRI3FFH4mew0hox4wdAumu6/8dOImgNAqfr2i93/317ls0WwNBrlG
+	5nIGWPjoYCPzCaG57kNohYZYRJ3G4Y7PXPPz1PbaObnkQ4DH/eYRY=
+X-Received: by 2002:a05:6808:1713:b0:510:7dc8:5ff7 with SMTP id 5614622812f47-5683c945eb5mr1346257b6e.19.1794296694580;
+        Mon, 09 Nov 2026 23:44:54 -0800 (PST)
 Received: from [127.0.1.1] (174-29-1-49.hlrn.qwest.net. [174.29.1.49])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-5690504fdb5sm1522804b6e.3.2026.11.09.23.44.16
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-5690504fdb5sm1522804b6e.3.2026.11.09.23.44.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Nov 2026 23:44:19 -0800 (PST)
+        Mon, 09 Nov 2026 23:44:54 -0800 (PST)
 From: James Hilliard <james.hilliard1@gmail.com>
-Subject: [PATCH v2 00/58] mtd: rawnand: retain chip and controller state
- across removal
-Date: Tue, 10 Nov 2026 00:44:03 -0700
-Message-Id: <20261110-submit-rawnand-retained-handle-lifetime-v1-v2-0-9137d08f05df@gmail.com>
+Date: Tue, 10 Nov 2026 00:44:34 -0700
+Subject: [PATCH v2 31/58] mtd: rawnand: mxc: retain open-handle state on
+ removal
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -96,332 +96,99 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/5VUzW6cNwx8FWPP/QqKokTJp75HkYP4F3+FvU53N
- 26CwO9e7iYo4L0VOgngcIackX4czn7a/Xx4fPhxOPnbft5fj3nB3x4O+rSOn33bLe8HBOylAG3
- nr/KyX7bT+ue4jrad/LL2o9uWxfbs2/MeftlffHsrGwghNm/qIIds+OXksX+7kf356ec9u/3le
- rky/Ko4+d9fU8XlZ9nhy7roU2p4fFityFQhYC7QaM5Sq1Kp1obyMiw2uUodtz7/oaR2nmqLLKG
- pJMEoEY5m0LgLNrIgso8oYGnK4ETLZiuG4L4m8dA5wlZtrtybwkfUEl8NkNtEDK9tGqMmc25AF
- EsRIBFr/BHVmK86CkUI1FpqmQFIVDBypqQiXRNav1M4xVHWylFKQKsMhL2qkoDVGRhrUdDUjyi
- ty0brAKZj8tJaQJwa2LC1MJWHzOJ+x0XrhmmtmqmySVszGT0sdS0uah1r9HY/15wz90aLJs6s1
- rbarALgyaLGNVZpfucXJntZY1UMK8TW0CGmQeU2eqVZ0IaEx0dUocEWQ314VxrEJYxZmRjUZxo
- w0NKRu22ki+Kjx8RhU9NOCVTpkM62zsgwWimhdOey9uFTerO6Vuu9iOUmITCzZRqZmxYafpcNZ
- 4g8SkYVjEpfVytoSOWIZaVnFwu4y0au19RMtEEwNXfsBDIyTFEluC8sHEjzDpUzCC/pZXbgHhV
- ZZ8nANGcZIggtTS54Rck6+6avL/mmHx9SWSaqOmc4JF23KYzeBHR0s+6YYeYM0OH6ep/28+X19
- P32c7yV22P99Unw//kkrv/EBmUUz+0o6fjj88van39PTYdP7+/v/wKo39d0ogQAAA==
-X-Change-ID: 20261104-submit-rawnand-retained-handle-lifetime-v1-0b4225e5ce0b
+Message-Id: <20261110-submit-rawnand-retained-handle-lifetime-v1-v2-31-9137d08f05df@gmail.com>
+References: <20261110-submit-rawnand-retained-handle-lifetime-v1-v2-0-9137d08f05df@gmail.com>
+In-Reply-To: <20261110-submit-rawnand-retained-handle-lifetime-v1-v2-0-9137d08f05df@gmail.com>
 To: Miquel Raynal <miquel.raynal@bootlin.com>, 
  Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>
 Cc: linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org, 
  James Hilliard <james.hilliard1@gmail.com>, 
- Srinivas Kandagatla <srini@kernel.org>, Tze Yee Ng <tze.yee.ng@altera.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
- driver-core@lists.linux.dev, Yuqiang Sun <izaiahsun@gmail.com>, 
- Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>, 
- Luca Ceresoli <luca.ceresoli@bootlin.com>, 
- Bernhard Frauendienst <kernel@nospam.obeliks.de>, 
- "Gustavo A. R. Silva" <gustavoars@kernel.org>, Kees Cook <kees@kernel.org>, 
- linux-hardening@vger.kernel.org, Arseniy Krasnov <AVKrasnov@sberdevices.ru>, 
- Boris Brezillon <bbrezillon@kernel.org>, 
- Brian Norris <computersforpeace@gmail.com>, 
- Jernej Skrabec <jernej.skrabec@gmail.com>, 
- linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, 
- Samuel Holland <samuel@sholland.org>, Chen-Yu Tsai <wens@kernel.org>, 
- David Woodhouse <dwmw2@infradead.org>, Thomas Gleixner <tglx@kernel.org>, 
- Vitaly Wool <vitalywool@gmail.com>, 
- David Woodhouse <David.Woodhouse@intel.com>, 
- Russell King <rmk+kernel@arm.linux.org.uk>, Mike Rapoport <rppt@kernel.org>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Christophe Kerello <christophe.kerello@st.com>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Jason Roberts <jason.e.roberts@intel.com>, 
- Boris Brezillon <boris.brezillon@collabora.com>, 
- Michal Simek <michal.simek@amd.com>, Mason Yang <masonccyang@mxic.com.tw>, 
- Ramuthevar Vadivel Murugan <vadivel.muruganx.ramuthevar@linux.intel.com>, 
- Lucas Stach <dev@lynxeye.de>, Dmitry Osipenko <digetx@gmail.com>, 
- Jonathan Hunter <jonathanh@nvidia.com>, linux-tegra@vger.kernel.org, 
- Stefan Agner <stefan@agner.ch>, Thierry Reding <thierry.reding@kernel.org>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- Jorge Ramirez-Ortiz <jorge.ramirez@oss.qualcomm.com>, 
- linux-mediatek@lists.infradead.org, 
- Matthias Brugger <matthias.bgg@gmail.com>, Heiko Stuebner <heiko@sntech.de>, 
- linux-rockchip@lists.infradead.org, 
- Yifeng Zhao <yifeng.zhao@rock-chips.com>, 
- Alexandre Belloni <alexandre.belloni@bootlin.com>, 
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
- Nicolas Ferre <nicolas.ferre@microchip.com>, 
- Keguang Zhang <keguang.zhang@gmail.com>, linux-mips@vger.kernel.org, 
- Shan-Chun Hung <schung@nuvoton.com>, Jacky Huang <ychuang3@nuvoton.com>, 
  Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>, 
  imx@lists.linux.dev, Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Sascha Hauer <s.hauer@pengutronix.de>, Han Xu <han.xu@nxp.com>, 
- linux-renesas-soc@vger.kernel.org, Jerome Brunet <jbrunet@baylibre.com>, 
- Kevin Hilman <khilman@baylibre.com>, Liang Yang <liang.yang@amlogic.com>, 
- linux-amlogic@lists.infradead.org, 
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
- Neil Armstrong <neil.armstrong@linaro.org>, linux-arm-msm@vger.kernel.org, 
- Manivannan Sadhasivam <mani@kernel.org>, 
- Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
- Kamal Dasu <kamal.dasu@broadcom.com>, 
- Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>, 
- Vladimir Zapolskiy <vz@mleia.com>, Harvey Hunt <harveyhuntnexus@gmail.com>, 
- Paul Cercueil <paul@crapouillou.net>, 
- Maxim Levitsky <maximlevitsky@gmail.com>
+ linux-arm-kernel@lists.infradead.org, Sascha Hauer <s.hauer@pengutronix.de>
 X-Mailer: b4 0.15.2
 
-An MTD handle can outlive controller unbind. Its metadata and NAND locks
-must remain valid, including when a writable file closes and calls sync,
-while further hardware access must be rejected after disconnection.
+Keep chip metadata and controller storage alive until the final MTD
+reference is released. Unregister and disconnect each published chip
+before releasing the resources used by its hardware operations.
 
-This builds on earlier MTD removal-lifetime work. Commit 19bfa9ebebb5
-("mtd: use refcount to prevent corruption") added MTD reference counting
-[0], but retaining an MTD reference does not by itself retain the
-driver-owned allocation containing the master. The 2025 read/unbind
-discussion also covered raw NAND [1] and highlighted the need to drain
-active operations before releasing resources [2]. Tze Yee Ng's SPI-NOR
-series addresses the corresponding SPI-NOR paths [3]. This series adds
-shared backing-object ownership and applies it to raw-NAND drivers.
+Retain the embedded legacy controller and drain I/O before clock
+disable.
 
-Introduce an opt-in backing-object lifetime for MTD masters and separate
-raw-NAND hardware disconnection from final cleanup. Registered MTD nodes,
-device references and open handles retain the backing chip; nested
-partitions also retain their parent metadata. Removal notifiers can
-finish I/O before disconnection drains admitted operations. Hardware
-resources are then released without waiting for open files to close.
-
-Virtual concatenations retain their original hidden components and backing
-objects across removal. Serialize staging across controllers, publish in
-DT order after partition registration completes, and release incomplete
-registrations without disturbing another controller's components.
-
-OTP providers retain their callback context through final NVMEM device
-release while keeping their existing physical-device parent. Add opt-in
-NVMEM context references to support that ownership.
-
-Device release callbacks keep their module loaded until they return.
-Add an opt-in device-core owner reference so MTD can hand the final
-module put to built-in code after its callback finishes.
-
-Share the chip and controller ownership helpers and convert the raw-NAND
-controller drivers. Each driver conversion keeps metadata cleanup
-separate from hardware teardown, including partially published probes.
-Shared controllers remain allocated until their last retained chip is
-released. R852 allocates a new chip for each inserted card, and NDFC
-allocates controller state per binding, so old handles cannot refer to
-replacement media or a new binding.
-
-The series adds the common lifetime support and converts its driver
-users. It is based on NAND next at 30daaf3e7897 with Tze Yee Ng's
-module-reference ordering fix [4] and Karl Mehltretter's upstream OTP
-cleanup fix [6]. The separately posted MTD registration, NAND
-operation-locking and controller probe/teardown fixes are prerequisites
-as well; the prerequisite metadata identifies their posted versions.
-The master-open reference accounting fix is included in the MTD
-ownership patch because it overlaps the module-reference ordering
-prerequisite.
-
-TLA+ models of retained-handle, controller and OTP ownership, including
-their assumptions and coverage limits, are available in [5].
-
-[0] https://lore.kernel.org/r/20230620131905.648089-2-alexander.usyskin@intel.com
-[1] https://lore.kernel.org/r/CAND4H7dz94Gsi_tXSQmLNme9uROnouOUwuCX9BW_+RCc2ZFDqA@mail.gmail.com
-[2] https://lore.kernel.org/r/mafs0bjs73tbq.fsf@kernel.org
-[3] https://lore.kernel.org/r/20261022035352.52129-1-tze.yee.ng@altera.com
-[4] https://lore.kernel.org/r/20261022035352.52129-2-tze.yee.ng@altera.com
-[5] https://github.com/jameshilliard/linux-h616-nand-tla
-[6] https://lore.kernel.org/r/20260816163027.10044-1-kmehltretter@gmail.com
-
-Assisted-by: Codex:gpt-6-astra
+Cc: Fabio Estevam <festevam@gmail.com>
+Cc: Frank Li <Frank.Li@nxp.com>
+Cc: imx@lists.linux.dev
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
 Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
 ---
-Changes in v2:
-- Keep the MTD device callback owner pinned through callback return,
-  with the final module put performed by the device core.
-- Retain virtual-concat components across removal and rebind, serialize
-  staging/publication and unwind incomplete partition registrations.
-- Balance Tegra's probe-time child-node reference separately from the
-  reference retained for the chip lifetime.
-- Refresh the prerequisite stack to the separately posted fixes, using
-  the latest QCOM child-probe revision.
-- Keep the lifetime changes on top of those fixes: preserve QCOM scan
-  before publication, R852 per-card initialization and Intel probe
-  hardware shutdown.
-- Fold Macronix disconnection handling into the NAND disconnect patch;
-  its operation locking is supplied by the posted prerequisite.
-- Use Karl Mehltretter's posted OTP cleanup fix as a prerequisite in
-  place of the duplicate preparatory patch.
-- Keep the NVMEM context callback module pinned until its final callback
-  returns, independently of the provider's consumer owner.
-- Use the posted fixes for dynamic partition publication and partition-node
-  ownership. Keep master get/put accounting independent of
-  later master registration in the MTD ownership patch.
-- Propagate disconnection through BBT error recovery without marking
-  the eraseblock bad.
-- Make suspend of a disconnected, retained NAND device a no-op.
-- Handle R852 card events during removal while preventing new work from
-  being queued.
-- Initialize Denali and Atmel cleanup variables at allocation and add
-  the introducing-commit trailers for Orion and MPC5121.
-- Link to v1: https://patch.msgid.link/20261107-submit-rawnand-retained-handle-lifetime-v1-v1-0-0181ef0cc4c8@gmail.com
+ drivers/mtd/nand/raw/mxc_nand.c | 24 ++++++++++++++++++++----
+ 1 file changed, 20 insertions(+), 4 deletions(-)
 
----
-James Hilliard (58):
-      nvmem: retain provider context through final device release
-      driver core: retain the owner of device release callbacks
-      mtd: add opt-in lifetime ownership for backing objects
-      mtd: retain virtual concatenations across component removal
-      mtd: rawnand: separate hardware disconnection from cleanup
-      mtd: rawnand: share retained chip and controller ownership
-      mtd: rawnand: sunxi: retain chip state until the final MTD put
-      mtd: rawnand: plat_nand: retain open-handle state on removal
-      mtd: rawnand: gpio: retain open-handle state on removal
-      mtd: rawnand: stm32_fmc2: retain open-handle state on removal
-      mtd: rawnand: denali: retain chips across controller removal
-      mtd: rawnand: arasan: retain chips across controller removal
-      mtd: rawnand: mxic: retain open-handle state on removal
-      mtd: rawnand: intel: retain open-handle state on removal
-      mtd: rawnand: tegra: retain open-handle state on removal
-      mtd: rawnand: mtk: retain chips across controller removal
-      mtd: rawnand: rockchip: retain chips across controller removal
-      mtd: rawnand: atmel: retain chips across controller removal
-      mtd: rawnand: orion: retain open-handle state on removal
-      mtd: rawnand: socrates: retain open-handle state on removal
-      mtd: rawnand: fsl_upm: retain open-handle state on removal
-      mtd: rawnand: pasemi: retain open-handle state on removal
-      mtd: rawnand: ams-delta: retain open-handle state on removal
-      mtd: rawnand: xway: retain open-handle state on removal
-      mtd: rawnand: hisi504: retain open-handle state on removal
-      mtd: rawnand: vf610: retain open-handle state on removal
-      mtd: rawnand: technologic: retain open-handle state on removal
-      mtd: rawnand: loongson: retain open-handle state on removal
-      mtd: rawnand: ma35d1: retain open-handle state on removal
-      mtd: rawnand: pl35x: retain open-handle state on removal
-      mtd: rawnand: mxc: retain open-handle state on removal
-      mtd: rawnand: fsmc: retain open-handle state on removal
-      mtd: rawnand: gpmi: retain open-handle state on removal
-      mtd: rawnand: omap2: retain open-handle state on removal
-      mtd: rawnand: marvell: retain open-handle state on removal
-      mtd: rawnand: renesas: retain open-handle state on removal
-      mtd: rawnand: meson: retain open-handle state on removal
-      mtd: rawnand: cadence: retain open-handle state on removal
-      mtd: rawnand: qcom: retain open-handle state on removal
-      mtd: rawnand: cafe: retain open-handle state on removal
-      mtd: rawnand: brcmnand: retain open-handle state on removal
-      mtd: rawnand: au1550nd: retain chip state across removal
-      mtd: rawnand: sharpsl: retain chip state across removal
-      mtd: rawnand: davinci: retain chip state across removal
-      mtd: rawnand: sh_flctl: retain chip state across removal
-      mtd: rawnand: lpc32xx_slc: retain chip state across removal
-      mtd: rawnand: lpc32xx_mlc: retain chip state across removal
-      mtd: rawnand: ndfc: retain chip state across removal
-      mtd: rawnand: txx9ndfmc: retain chip state across removal
-      mtd: rawnand: ingenic: retain chip state across removal
-      mtd: rawnand: mpc5121: retain chip state across removal
-      mtd: rawnand: bcm47xxnflash: retain chip state across removal
-      mtd: rawnand: fsl_elbc: retain chip state across removal
-      mtd: rawnand: fsl_ifc: retain chip state across removal
-      mtd: rawnand: r852: retain chip state across removal
-      mtd: rawnand: nandsim: retain chip state across removal
-      mtd: rawnand: cs553x: retain chip state across removal
-      mtd: rawnand: diskonchip: retain chip state across removal
+diff --git a/drivers/mtd/nand/raw/mxc_nand.c b/drivers/mtd/nand/raw/mxc_nand.c
+index 4d8b92e7e672..d9f1e57c1ebf 100644
+--- a/drivers/mtd/nand/raw/mxc_nand.c
++++ b/drivers/mtd/nand/raw/mxc_nand.c
+@@ -1686,6 +1686,11 @@ static const struct nand_controller_ops mxcnd_controller_ops = {
+ 	.exec_op = mxcnd_exec_op,
+ };
+ 
++static void mxcnd_release(struct nand_controller *controller)
++{
++	kfree(container_of(controller, struct mxc_nand_host, nand.legacy.dummy_controller));
++}
++
+ static int mxcnd_probe(struct platform_device *pdev)
+ {
+ 	struct nand_chip *this;
+@@ -1694,10 +1699,14 @@ static int mxcnd_probe(struct platform_device *pdev)
+ 	int err = 0;
+ 
+ 	/* Allocate memory for MTD device structure and private data */
+-	host = devm_kzalloc(&pdev->dev, sizeof(struct mxc_nand_host),
+-			GFP_KERNEL);
++	host = kzalloc_obj(*host);
+ 	if (!host)
+ 		return -ENOMEM;
++	this = &host->nand;
++	this->controller = &this->legacy.dummy_controller;
++	err = devm_nand_controller_init(&pdev->dev, this->controller, mxcnd_release);
++	if (err)
++		return err;
+ 
+ 	/* allocate a temporary buffer for the nand_scan_ident() */
+ 	host->data_buf = devm_kzalloc(&pdev->dev, PAGE_SIZE, GFP_KERNEL);
+@@ -1796,9 +1805,15 @@ static int mxcnd_probe(struct platform_device *pdev)
+ 		goto escan;
+ 
+ 	/* Register the partitions */
+-	err = mtd_device_parse_register(mtd, part_probes, NULL, NULL, 0);
++	err = nand_set_release(this, NULL);
+ 	if (err)
+ 		goto cleanup_nand;
++	err = mtd_device_parse_register(mtd, part_probes, NULL, NULL, 0);
++	if (err) {
++		nand_disconnect(this);
++		mtd_put_master(mtd);
++		goto escan;
++	}
+ 
+ 	platform_set_drvdata(pdev, host);
+ 
+@@ -1821,9 +1836,10 @@ static void mxcnd_remove(struct platform_device *pdev)
+ 
+ 	ret = mtd_device_unregister(nand_to_mtd(chip));
+ 	WARN_ON(ret);
+-	nand_cleanup(chip);
++	nand_disconnect(chip);
+ 	if (host->clk_act)
+ 		clk_disable_unprepare(host->clk);
++	mtd_put_master(nand_to_mtd(chip));
+ }
+ 
+ static struct platform_driver mxcnd_driver = {
 
- drivers/base/core.c                                |   9 +
- drivers/mtd/mtd_virt_concat.c                      | 513 ++++++++++-----------
- drivers/mtd/mtdcore.c                              | 199 ++++++--
- drivers/mtd/mtdcore.h                              |   3 +
- drivers/mtd/mtdpart.c                              |  14 +-
- drivers/mtd/nand/raw/Makefile                      |   1 +
- drivers/mtd/nand/raw/ams-delta.c                   |  29 +-
- drivers/mtd/nand/raw/arasan-nand-controller.c      |  57 ++-
- drivers/mtd/nand/raw/atmel/nand-controller.c       |  59 ++-
- drivers/mtd/nand/raw/au1550nd.c                    |  26 +-
- drivers/mtd/nand/raw/bcm47xxnflash/main.c          |  23 +-
- drivers/mtd/nand/raw/brcmnand/brcmnand.c           |  72 ++-
- drivers/mtd/nand/raw/cadence-nand-controller.c     |  60 ++-
- drivers/mtd/nand/raw/cafe_nand.c                   |  37 +-
- drivers/mtd/nand/raw/cs553x_nand.c                 |  46 +-
- drivers/mtd/nand/raw/davinci_nand.c                |  29 +-
- drivers/mtd/nand/raw/denali.c                      |  31 +-
- drivers/mtd/nand/raw/denali_dt.c                   |  21 +-
- drivers/mtd/nand/raw/denali_pci.c                  |  15 +-
- drivers/mtd/nand/raw/diskonchip.c                  |  21 +-
- drivers/mtd/nand/raw/fsl_elbc_nand.c               |  68 ++-
- drivers/mtd/nand/raw/fsl_ifc_nand.c                |  58 ++-
- drivers/mtd/nand/raw/fsl_upm.c                     |  23 +-
- drivers/mtd/nand/raw/fsmc_nand.c                   |  22 +-
- drivers/mtd/nand/raw/gpio.c                        |  21 +-
- drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c         |  22 +-
- drivers/mtd/nand/raw/hisi504_nand.c                |  23 +-
- drivers/mtd/nand/raw/ingenic/ingenic_nand_drv.c    |  49 +-
- drivers/mtd/nand/raw/intel-nand-controller.c       |  23 +-
- drivers/mtd/nand/raw/internals.h                   |   2 +-
- drivers/mtd/nand/raw/loongson-nand-controller.c    |  23 +-
- drivers/mtd/nand/raw/lpc32xx_mlc.c                 |  26 +-
- drivers/mtd/nand/raw/lpc32xx_slc.c                 |  26 +-
- drivers/mtd/nand/raw/marvell_nand.c                |  54 ++-
- drivers/mtd/nand/raw/meson_nand.c                  |  55 ++-
- drivers/mtd/nand/raw/mpc5121_nfc.c                 |  29 +-
- drivers/mtd/nand/raw/mtk_nand.c                    |  44 +-
- drivers/mtd/nand/raw/mxc_nand.c                    |  24 +-
- drivers/mtd/nand/raw/mxic_nand.c                   |  26 +-
- drivers/mtd/nand/raw/nand_base.c                   |  76 ++-
- drivers/mtd/nand/raw/nand_bbt.c                    |  24 +-
- drivers/mtd/nand/raw/nand_lifetime.c               | 118 +++++
- drivers/mtd/nand/raw/nand_macronix.c               |   4 +-
- drivers/mtd/nand/raw/nandsim.c                     |  24 +-
- drivers/mtd/nand/raw/ndfc.c                        |  37 +-
- .../mtd/nand/raw/nuvoton-ma35d1-nand-controller.c  |  44 +-
- drivers/mtd/nand/raw/omap2.c                       |  45 +-
- drivers/mtd/nand/raw/orion_nand.c                  |  27 +-
- drivers/mtd/nand/raw/pasemi_nand.c                 |  25 +-
- drivers/mtd/nand/raw/pl35x-nand-controller.c       |  46 +-
- drivers/mtd/nand/raw/plat_nand.c                   |  24 +-
- drivers/mtd/nand/raw/qcom_nandc.c                  |  46 +-
- drivers/mtd/nand/raw/r852.c                        | 114 +++--
- drivers/mtd/nand/raw/r852.h                        |   1 +
- drivers/mtd/nand/raw/renesas-nand-controller.c     |  45 +-
- drivers/mtd/nand/raw/rockchip-nand-controller.c    |  49 +-
- drivers/mtd/nand/raw/sh_flctl.c                    |  25 +-
- drivers/mtd/nand/raw/sharpsl.c                     |  25 +-
- drivers/mtd/nand/raw/sm_common.c                   |  15 +-
- drivers/mtd/nand/raw/sm_common.h                   |   2 +-
- drivers/mtd/nand/raw/socrates_nand.c               |  22 +-
- drivers/mtd/nand/raw/stm32_fmc2_nand.c             |  22 +-
- drivers/mtd/nand/raw/sunxi_nand.c                  |  59 ++-
- drivers/mtd/nand/raw/technologic-nand-controller.c |  25 +-
- drivers/mtd/nand/raw/tegra_nand.c                  |  39 +-
- drivers/mtd/nand/raw/txx9ndfmc.c                   |  42 +-
- drivers/mtd/nand/raw/vf610_nfc.c                   |  22 +-
- drivers/mtd/nand/raw/xway_nand.c                   |  27 +-
- drivers/nvmem/core.c                               |  18 +-
- drivers/nvmem/internals.h                          |   2 +
- include/linux/device.h                             |   4 +
- include/linux/mtd/concat.h                         |  18 +-
- include/linux/mtd/mtd.h                            |  16 +
- include/linux/mtd/rawnand.h                        |  21 +-
- include/linux/nvmem-provider.h                     |  12 +
- 75 files changed, 2240 insertions(+), 808 deletions(-)
----
-base-commit: 30daaf3e7897b4a8d9b72e5b0c86dd6e2a4d7d85
-change-id: 20261104-submit-rawnand-retained-handle-lifetime-v1-0b4225e5ce0b
-prerequisite-patch-id: a51b9cb4077105499133c413d58c7ad21d973b38
-prerequisite-patch-id: b3679cda4dcb45ce7712bffe2dd0576b254df44d
-prerequisite-patch-id: 07b5c70e44ad951d20eea9478c98fda35ec765c0
-prerequisite-patch-id: abea50275922fe359d72ca4de5cbc211b04bbd57
-prerequisite-patch-id: 57776b214ffb0331319f024412f21d35e4ca9056
-prerequisite-patch-id: 09be2baaffe1f053704263cc4b0d39f2faa4f49c
-prerequisite-patch-id: c3ad85600dc897ac310be450d8daa2275fb91ee6
-prerequisite-patch-id: 4a85600553ddcc7db5a9537efd905a71cd623f65
-prerequisite-patch-id: 579990ee4a49297efc5a593b00efb9cd73fa15e8
-prerequisite-patch-id: 2ee61a8a32fd147d52e0f9d03758634912d8bfef
-prerequisite-patch-id: 1487df8ce8e6c48471fd77c7470ce9de582dfe3c
-prerequisite-patch-id: 5ecbe86f928d9c5c0bf2cb6065c5672708511fc4
-prerequisite-patch-id: ac68e9b65d3aa5661bd7ac0f2e77dcf5c75fcfe0
-prerequisite-patch-id: e70f0f0c4d430d416a3ad848b37ffad16bd7df07
-prerequisite-patch-id: 05adcddbc50f745ee2640b8c21f3bf76a217f249
-prerequisite-patch-id: 0b60b7ab6196076f327c919be5e7b8bb2051ee12
-
-Best regards,
---  
-James Hilliard <james.hilliard1@gmail.com>
+-- 
+2.53.0
 
