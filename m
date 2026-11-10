@@ -1,57 +1,131 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=103.168.172.148
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794284970;
-	b=APJ6acmDuiNm/8dnCclwuKShZ6waL/WL7MkbmlH7IOj/WZBynr0TLsCgIeZ4MRAO2Kb0
-	 w1/uS5j0vZ3buFq/s8aAZwLjZ0N6O8lkWsZoPBtopOhx5Vi+DKSlGYgOAb08fF1ma/b84
-	 /zqfxNvoAQ5C+qmH0WiyQ6hpC5XOzmy8G9eb6HxVaHaA6sR+VuyP754SN0rLZy4z1GLlg
-	 IAoRK3QqHEdnthjkV01nwCbLwqIIcUgb5qO+oGPnClYzttGWgJzXjOMy6hpd5J6oz4AzN
-	 F5C6xxweILsAE5PKym92tShXsY6xeHqYZ7cYrUqAv/lTBYM2tafmJ0IKqUjwGbLqPqw==
+	t=1794288192;
+	b=XyITHeGtg0c8397OHyySbCOeOaJSsgvxQivSUGs5WaI5rY2v1mnZ48ikOJgbDulk7BNR
+	 ZZU8RM4E87A+3m7XOU+SV6rn85ls5WcoOaXUZ14awGiSZIoYBely0C26ZCAKfNZM01mj/
+	 iHltBPdieLEDOrlrIReYpvly+9rwEprbHi1BC8ocaB0R6vknn7hIdapZz2Tu/Eedaup6j
+	 RblvLcRaM1zSw8UelBelOXqkhQLMJ142Gkx27STC7ChOpiKyOq/hmhUxNnxD00elythEd
+	 zcjfMWau8Z7oEnV+ElEcHp2a0otE7lxzMkFbPq/af4V+4M8r+w9qPDrLK314EcfJUsw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794284970;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=aRvyMRxi2YMN81Cd/v7vKPkrYP8524VjnRocSpFpqL0=;
-	b=nD0nQWOt3cefOuaoGF3Av9ScPQ4t9zjDN0WLIz3agmuZ58EHQWG6XjrokuoXyGUEXcRc
-	 BRJK9NRMdY4tZiLIQv72cuGCtKEWFFm3btf5U4QhjfZunHxGN+qxxC7r+7C53Km2czqHl
-	 nMsmPv8rXWAKuxjS98pFqUw6H/fAxvbQtDu+rbLImCdpbXEWle6nZe9P7UAckjeePSm+l
-	 L2SW8nRBcu7Z/L0tu1WPoZeF/I0clqpOaKe60tOwM+cCGubFr9s9+ia++dokathTg0G9T
-	 zF58jOe/7hb5ywc1eWjfQWKsvCBs7dgj9zq5SmIq4dcOdJzz2UK5DQj+5uEMDapZU6g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794288192;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
+	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
+	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
+	 Received:Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:Content-Transfer-Encoding:User-Agent:MIME-Version;
+	bh=T2nhlnktC6+vpOu5LGFXVvKIRUFvwweE0CgD5SaybwE=;
+	b=e3gJqoKGIvm27WHAiRK66RLJVnljAziKRynsCNOzxSRROpdoBIavbLeRthvln8LDctmN
+	 8LaKe/mq3lLFsxZdnip/lafKhOqlm7msm27Veev/Yut17+6jTSrLDcuON9Yzw6uAYnVac
+	 vM6bwrUHRz0wdF2q5E4J6BG40H+J/4IPBnr8Qh0BOlLxGxY1SW3rEyRYJc2zy0+vHquj9
+	 e4TyTjsJCgg6RPa5kVOwOntE494x5HFPij7zo3v1fWyyWipRUUpHR1aaHTbF1G1Ny2H5I
+	 fNtlw95GMUVO5H1RjNZI+kteWja5oQKvRYdskHDbmSLbouj6hXjmkBaTbShKCrg74aQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KD7Vseot;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=none header.from=alistair23.me;
+	spf=pass smtp.mailfrom=alistair23.me;
+	dkim=pass header.d=alistair23.me header.i=@alistair23.me header.a=rsa-sha256 header.s=fm3 header.b=KpDOjiBE;
+	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=spYI1GwE;
+	arc=none smtp.remote-ip=103.168.172.148
+Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0844F606A32A;
-	Tue, 10 Nov 2026 04:29:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5B59606A325
+	for <imx@lists.linux.dev>; Tue, 10 Nov 2026 05:23:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C5B59606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alistair23.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alistair23.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KD7Vseot
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55EDA1F008A3;
-	Tue, 10 Nov 2026 04:29:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794284969;
-	bh=aRvyMRxi2YMN81Cd/v7vKPkrYP8524VjnRocSpFpqL0=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=KD7Vseot308j5qW/a/Laq1MfPSxzPE4BOdQ0Fo/1diNwGk5eGW9u5KBD+W7dKbhg4
-	 W4JsDwUXDVreaajgQyHqZHerPiLBLIn/JLaO+yKM4CMd7V4YOwctbg2VzEjMMbwiy9
-	 reDNJiGr5xFkQiC039N9tD4cxSakmXq0H5WpcktJ3zdBUl1nimjuQW1MMavbUMPWsf
-	 GUXPVo6sDLFG4p2781K927w8OzHgg7vDcIXBc81HgZNusS+oHDfmDgRg9agdRAz8sA
-	 +6iXPlydzstx2DI+me9ebvYLnVJXkrj+rzRn416p2UcfLtEcx9sfmuePppWv+uSTB/
-	 dlJZuXfRrs76A==
-Message-ID: <sashiko-outbox-206203@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v11 4/8] serial: 8250_omap: quiesce DMA IRQ handling
- before shutdown
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "James Hilliard" <james.hilliard1@gmail.com>
-Cc: linux-serial@vger.kernel.org, imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20261109-submit-serial-8250-dma-cancel-v1-v11-4-6364edca63d6@gmail.com>
-References: <20261109-submit-serial-8250-dma-cancel-v1-v11-0-6364edca63d6@gmail.com>
- <20261109-submit-serial-8250-dma-cancel-v1-v11-4-6364edca63d6@gmail.com>
-Content-Type: text/plain; charset=utf-8
+	dkim=pass (2048-bit key, unprotected) header.d=alistair23.me header.i=@alistair23.me header.a=rsa-sha256 header.s=fm3 header.b=KpDOjiBE;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=spYI1GwE
+Received: from phl-compute-08.internal (phl-compute-08.internal [10.202.2.48])
+	by mailfout.phl.internal (Postfix) with ESMTP id EE386EC0584
+	for <imx@lists.linux.dev>; Tue, 10 Nov 2026 00:23:09 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-08.internal (MEProxy); Tue, 10 Nov 2026 00:23:09 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alistair23.me;
+	 h=cc:cc:content-transfer-encoding:content-type:content-type
+	:date:date:from:from:in-reply-to:in-reply-to:message-id
+	:mime-version:references:reply-to:subject:subject:to:to; s=fm3;
+	 t=1794288189; x=1794374589; bh=T2nhlnktC6+vpOu5LGFXVvKIRUFvwweE
+	0CgD5SaybwE=; b=KpDOjiBEiB7vsZmFL7JvlaPk6xFRjfR7mbmcnM17kwpF3ouI
+	zX1qon5dXBs9+KBoaA9bpajzXYdWX/ktCF6u3Zi2Hnv+VCYcFlhNKMkpxGy4N/Th
+	evd+PUpzSaxBkmHG9rZ2WYqLyw/Tgx9Qas1hCWKJMEP2qKS3FcmtxrHAh2x40l1L
+	uH6nWGelKjYAT7c1piGdODFwMcZPulYthymkxLoC1ApdYqeSsKvDrV4wqRJMrWFW
+	vY0waDVbebDFiwtc7d3vEpQhIoBnRAnNNTuDbT4NppzToF3VcuysnSeFUO6NWIV5
+	GUKPg8jiyBvIluzK71/CaJjVtbeXzf1Jr7NGLw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1794288189; x=
+	1794374589; bh=T2nhlnktC6+vpOu5LGFXVvKIRUFvwweE0CgD5SaybwE=; b=s
+	pYI1GwEwOjfIvH6g/LdRbVe+fcnLM6lx15N4bzckstQQg/2h36PH4J1mGRBbZ+MH
+	em9ZJTHc//jBsJu11QNfXZNIBec6iAiqEmymLkuCGe//JZeja362+hx8PFWRxjpF
+	eqwN3EgUKFD3FmKPz/aTbm+JCLGdCHsbDZPKztYEXQXMmvjrpZbhqeBX0s+O1Rdz
+	UYmuQI4y4hyD5gXYot6QPR1BsYBuhW67zAosW8M1sdKs2XT8waoFT6Da4yHbIe0j
+	KPv6dT0Ozk5S+BJXwx0L6cvlqlXfnCIPTbaPhxdgjNuv03UnzYSDj6PfVfPuWTm8
+	U6wcW9KOkN/VWim3JOrsg==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
+	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
+	action=sign d=alistair23.me a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1794288189; d=alistair23.me;
+	mf=PGFsaXN0YWlyQGFsaXN0YWlyMjMubWU+;
+	rt=PGlteEBsaXN0cy5saW51eC5kZXY+;
+	s=fm3:rsa-sha256:C0SGnaRDCFOwI9rdZPDhSCcdNSPtWLEwsgKpoALeLKPjllg
+	zbDqliqbnaG1bhaC4wqbPm9FBbhox078/UE5yUo2FOh1Nc3bBrAoMYzvsH4SycB0
+	9NA0ynL5vH+qxdPwJdCrtkF1AHDuyAgibmccLyVYYq+W2yHGAd7gzbPLBLkSqTsT
+	11eKrWRP70nX5jgXFUOLxICvps1tVlYi66OYAwJZLT8k/3u4Bpee021pwQBKbA2S
+	I4L1e2zP+Zoh9dTTOpZde4IcsSs95zb67SeZCkco0xv5W4ta+VX+cwGTrMOyz99J
+	7RU/2fJx8dYtV493LQVCLLcnscxr5+ll37XpX1Q==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
+	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
+	action=mi-m=1; hc=13;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to,
+	user-agent;
+Message-Instance: m=1; h=sha256:E9+F5HLFgZz19ViFV5KDWazPCgNCMAv0N6wh6U3+dn8=:T2nhlnktC6+vpOu5LGFXVvKIRUFvwweE0CgD5SaybwE=;
+X-ME-Sender: <xms:ParyalWRKmx3UJdOU-2UBPwUvO0Db-9bVZ75xtAGz2yf3PFZxHe9bQ>
+    <xme:Paryas2MhcRegoaQm7kJZ4IPMR09DJhXCmH59PphafexnRlFySd5A6hathStutdID
+    hS8wdpngmga-57FXGlvOBroyvx5plb3zrDxJYmS1rgN4BYAth6Zv2SL>
+X-ME-Received: <xmr:ParyasRo2Wx4VSHn9RZNkjYdflzznlmN_gzsGhPTQhHsdGL1ckZ9RC4fWrKC1u-r0GM92GEdSCtV_UjMCvSLl-6mP-g>
+X-ME-Proxy-Cause: dmFkZTGqBuX4sZN2nDVJ/px5UrVJdztRnTOsNRAZSLYCUlxw3NGhJBNfRM2geYvMl4kkOr
+    SaBD5eouIGLmXMXQy/gPLzuOSxSGKPMH1YTTkqzmjrV0L5Z2fwgFCkXmwhX6En2hzACDDF
+    Ttd3rLZMjjKFiMf2Su56kvxmJZIvBcwFxmrCmbfTQt424EpyDiIGluHPzJp0V38RE3hvao
+    3FPOFjU7AG74YWVlN6nZk0XV3VtKwHvHjSPw1Bl7G7BvgwodmfRWKfFBcT7oJisCRKTnwZ
+    u9rVSrscMMhvArtCLbp1XiZ2d786Y7p7DGwYj9omuiY1kohetrPilohm0iIepp7y+uuqSQ
+    zKfV4yP/etu6tdXXzwRm/nqWdER6Q5VkdoN5CKcsBPRsHBzYaWO9J3FwlEyhxNwnt9xF97
+    mJ4hySDnUwvWQtDQH+VCF36rsCF3yCVt88fdBvY8mLzT3CKTNuH6UlCVD8ySQppJFyoIZV
+    O+UrxuLxdGuuvp1UgBNWWhdy5u5PSfmqV1AgaeQ8UmV9LAfjTLgXRLfBiBVte2RnY6Kj3d
+    6sQ76rDsQj4ecOscz0xEDyiY+9kGFSCyRfLQx1cTF0gZvjlUjlpcblOV4feOdi/wpDx64V
+    7EKBJsWCRlXRFWZXh5iQpr7sR5Xe2cEh+ZaJzG/c5dE/LK4Q+CIhJPxMPg2g
+X-ME-Proxy: <xmx:ParyaoQ7zFijaKaqh1XsKAo3lbd6HRW2Gut8VpkSdSRxp4n47LjL0A>
+    <xmx:ParyalUuPEC9P7wrP2FHkiQd0Q2cUNOVXaKWMCO_wYbVCA_uLIp5bw>
+    <xmx:ParyaqKrF7qGEPi6sirlhozKynqY1acy2TxfH_y_3Ab6Y0lWQcTlvg>
+    <xmx:ParyaugfgHY0kyPTyO71B_ty4eg-VuXUV4Gq4UOnc8jJ_ziJ0dgHlA>
+    <xmx:ParyaiEoObQDdfoLeeGHeYlQRh_PSOqrQ0d1OcpHjZOJE0Vten1fXy2y>
+Feedback-ID: ifd214418:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 10 Nov 2026 00:23:05 -0500 (EST)
+Message-ID: <54130686e08db48928484e226f48dc31a8c5ee29.camel@alistair23.me>
+Subject: Re: [PATCH 1/7] ARM: dts: imx: keep the SY7636A VCOM on
+From: Alistair <alistair@alistair23.me>
+To: Andreas Kemnade <andreas@kemnade.info>, Pablo Mazzini
+ <pmazzini@gmail.com>
+Cc: Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, Rob
+ Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
+ Dooley	 <conor+dt@kernel.org>, Pengutronix Kernel Team
+ <kernel@pengutronix.de>,  Fabio Estevam <festevam@gmail.com>,
+ devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Date: Tue, 10 Nov 2026 15:23:03 +1000
+In-Reply-To: <20261026083058.04173f10@kemnade.info>
+References: <20261026003918.155321-1-pmazzini@gmail.com>
+		<20261026003918.155321-2-pmazzini@gmail.com>
+	 <20261026083058.04173f10@kemnade.info>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 10 Nov 2026 04:29:28 +0000
+User-Agent: Evolution 3.62.1 (by Flathub.org) 
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -60,81 +134,77 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
+MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Medium] serial: 8250_omap: UART_OMAP_EFR2 cleared before locked RX
-  DMA flush
---
+On Mon, 2026-10-26 at 08:30 +0100, Andreas Kemnade wrote:
+> On Mon, 26 Oct 2026 00:39:12 +0000
+> Pablo Mazzini <pmazzini@gmail.com> wrote:
+>=20
+> > The SY7636A hwmon driver turns VCOM on at probe. The reMarkable 2,
+> > Kobo
+> > Libra H2O and Tolino Vision 5 have had the rails on so far. Mark
+> > VCOM
+> > always-on before the driver stops doing it.
+> >=20
+> > Signed-off-by: Pablo Mazzini <pmazzini@gmail.com>
+> > ---
+> > =C2=A0arch/arm/boot/dts/nxp/imx/e70k02.dtsi=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 1 +
+> > =C2=A0arch/arm/boot/dts/nxp/imx/imx7d-remarkable2.dts | 1 +
+> > =C2=A02 files changed, 2 insertions(+)
+> >=20
+> > diff --git a/arch/arm/boot/dts/nxp/imx/e70k02.dtsi
+> > b/arch/arm/boot/dts/nxp/imx/e70k02.dtsi
+> > index dc7ff108aa85..bd9c6c6fa117 100644
+> > --- a/arch/arm/boot/dts/nxp/imx/e70k02.dtsi
+> > +++ b/arch/arm/boot/dts/nxp/imx/e70k02.dtsi
+> > @@ -154,6 +154,7 @@ sy7636: pmic@62 {
+> > =C2=A0=09=09regulators {
+> > =C2=A0=09=09=09reg_epdpmic: vcom {
+> > =C2=A0=09=09=09=09regulator-name =3D "vcom";
+> > +=09=09=09=09regulator-always-on;
+> > =C2=A0=09=09=09};
+> > =C2=A0=09=09};
+> > =C2=A0=09};
+> No, please not. That regulator is in practice used with a not yet
+> upstreamed
+> driver for the EPDC on that platform used to deal with the current
+> kernels
+> fp9931 / tps65185 drivers. So it is very welcome to have it not
+> always turned
+> on.
+>=20
+>=20
+> > diff --git a/arch/arm/boot/dts/nxp/imx/imx7d-remarkable2.dts
+> > b/arch/arm/boot/dts/nxp/imx/imx7d-remarkable2.dts
+> > index ff9d50942884..6cf5603c0752 100644
+> > --- a/arch/arm/boot/dts/nxp/imx/imx7d-remarkable2.dts
+> > +++ b/arch/arm/boot/dts/nxp/imx/imx7d-remarkable2.dts
+> > @@ -327,6 +327,7 @@ sy7636a: pmic@62 {
+> > =C2=A0=09=09regulators {
+> > =C2=A0=09=09=09reg_epdpmic: vcom {
+> > =C2=A0=09=09=09=09regulator-name =3D "vcom";
+> > +=09=09=09=09regulator-always-on;
+> > =C2=A0=09=09=09=09regulator-boot-on;
+> > =C2=A0=09=09=09};
+> > =C2=A0=09=09};
+>=20
+>=20
+> Here the situation is a bit different. If I remember correctly, there
+> is some special EPD logic in userspace on top of some ordinary kernel
+> display driver. But thesse things are missing is devicetree?! But
 
-commit 4f01158f98251ff9fc53053baff46ab365f1866d
-Author: James Hilliard <james.hilliard1@gmail.com>
+Yeah, the kernel just exposes a framebuffer and a special secret sauce
+userspace program writes to that.
 
-serial: 8250_omap: quiesce DMA IRQ handling before shutdown
+> that might need to learn to deal with regulator enabling/disabling.
+>=20
+> Regulator always on is probably not desired here, either.
 
-This commit gates DMA IRQ handling on up->dma->shutting_down under the
-port lock, moves the final RX DMA flush into that locked section, and
-switches omap_8250_shutdown() from disable_irq_nosync() to disable_irq()
-before releasing DMA resources.
+Yeah, I **think** we don't need that
 
-> diff --git a/drivers/tty/serial/8250/8250_omap.c b/drivers/tty/serial/825=
-0/8250_omap.c
-> index 5e114dd8f9bfb..51013dd2d8510 100644
-> --- a/drivers/tty/serial/8250/8250_omap.c
-> +++ b/drivers/tty/serial/8250/8250_omap.c
-> @@ -771,10 +771,6 @@ static void omap_8250_shutdown(struct uart_port *por=
-t)
->  	guard(serial8250_rpm)(up);
-> =20
->  	flush_work(&priv->qos_work);
-> -	if (up->dma) {
-> -		guard(uart_port_lock_irq)(port);
-> -		omap_8250_rx_dma_flush(up);
-> -	}
-> =20
->  	serial_out(up, UART_OMAP_WER, 0);
->  	if (priv->habit & UART_HAS_EFR2)
-> @@ -782,13 +778,16 @@ static void omap_8250_shutdown(struct uart_port *po=
-rt)
-> =20
->  	/* Synchronize UART_IER access against the console. */
->  	scoped_guard(uart_port_lock_irq, port) {
-> -		if (up->dma)
-> +		if (up->dma) {
->  			up->dma->shutting_down =3D true;
-> +			omap_8250_rx_dma_flush(up);
-> +		}
->  		up->ier =3D 0;
->  		serial_out(up, UART_IER, 0);
->  	}
+Alistair
 
-[Severity: Medium]
-Can clearing UART_OMAP_EFR2 before acquiring port->lock leave
-UART_OMAP_EFR2_TIMEOUT_BEHAVE set after shutdown?
-
-Moving omap_8250_rx_dma_flush() into the locked block places it after
-serial_out(up, UART_OMAP_EFR2, 0x0):
-
-CPU0                              CPU1
-omap_8250_shutdown()              omap_8250_dma_handle_irq()
-  serial_out(up, UART_OMAP_EFR2, 0x0)
-                                    uart_port_lock(port)
-                                    /* shutting_down is still false */
-                                    am654_8250_handle_rx_dma()
-                                      omap_8250_rx_dma(up)
-                                      serial_out(up, UART_OMAP_EFR2,
-                                        UART_OMAP_EFR2_TIMEOUT_BEHAVE)
-                                    uart_port_unlock(port)
-  uart_port_lock_irq(port)
-  up->dma->shutting_down =3D true
-  omap_8250_rx_dma_flush(up)      <-- EFR2 is not cleared again
-
-Neither omap_8250_startup() nor omap8250_restore_regs() resets
-UART_OMAP_EFR2, so UART_OMAP_EFR2_TIMEOUT_BEHAVE stays set across
-shutdown.  Clearing UART_OMAP_EFR2 inside the port->lock block after
-omap_8250_rx_dma_flush() would also match the flush-then-clear order in
-am654_8250_handle_rx_dma().
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261109-submit-ser=
-ial-8250-dma-cancel-v1-v11-0-6364edca63d6@gmail.com?part=3D4
+>=20
+> Regards,
+> Andreas
