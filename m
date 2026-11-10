@@ -1,56 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794323643;
-	b=f59NB9oXxfY0XBGkucLp0td1/WRSVEMECFEAuDfrd2uxUhcPy5QUElr5mUpnFj70L4Zu
-	 oaXFkhqwwJ+tOpOtqpBCYVGBsR/Qlvozgz9Yoj2EHhE4xej2w2CYS/si4LF9Y2OA1p66Y
-	 eaSpDeSSetvtXGgZKYUgvzdLKU8Bu8NPrK0k2UoA1TV1pgQIF19jTz4KW2fDMo2iMuaDE
-	 EZuekpOp6Ci4GkKcN9uyjR+BiZp/m0bU4GHKdoIGl0dfTMcceM/9fTGBdehjVKQyE9DvM
-	 Y2N5HTUKw5+c0Nw8IIzFA3Jk9M2SwToZGx6twDacaOWiPidUVnhhYcKEp4i7P/XPHaQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794323643;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=lhDDcg+XFL8juadnmK5nrRutOKs6R7LkB2wmeynZIlA=;
-	b=fqVLNl1w0WMHD0/TDjj3fQtK7PNk8Qnz9bf49Lb85ONPzP3Bv2TImafwzxbImmeoq+OQ
-	 qznh6PyAFV+PaOvSUIzgAz8dF+R97LEgT+cotGyYAoFK+u7Bg+3WZXdp4wigR5G5LNRNT
-	 f5GpuwkOjoQ+loFmURbVBf3Rk5pSYBjQaoNadPkDVwv1UhxesTVDyhKaX7hByjvtExH/4
-	 oAdm4XSEkVEzKA9WIdjCVBx7bDId1gFFlkDU+1/NGrS4fRgHyFHdQBYqysWgD1BKYyMQI
-	 ZcvQF4ixzS3jpi/8elFbWABVRH72HJycjM7/QiB5ajczQHIrykoIa9sSkK8wUv3KbMA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EPPLUWd5;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.66.14
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794323695;
+	b=AKe/nS3fSuHTYTvZ/nWMKp/wYt2VnM/alJzp3RNX+19KP68KuMf0tzIg+QOsLxxXbed+
+	 a9zsqZy/MRROs5q4KMRyOfeHhyakVvzZVvFK8qG/0htBFN8LLTMBur/I1v7dekg4dxe/o
+	 F8YajBlCQXdXzHmSWi7RjZduxNtjpLr2FNE19Wl7LjlpLOQtOSKoGJAREOR8d9zWYfjjQ
+	 xI7Jpj9OTzUZF1vKV4HFmM/kxfzupLFFEWrxzyUKlSH4IT8GSGNjddO8vQoMiBoY4Xj3i
+	 Yh3W8lgI6CrB3j24y5kYdFes+iKEYY/biASrndKe6IK7iEVQ/vB9HPDjv8YjFPFbIYg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794323695;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:Content-Type:Content-Disposition:
+	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=uSjAL93E3yJGenoOyrPC2KDPVIsqypHmHHFvbfTSyG8=;
+	b=vHxkCLSvd/BPbU8VMynA+5OcW09cRr79HzSKjVHKXcaVNnePDg3+0x9x96r/ewG1JtBC
+	 YXfVoDZzxTHyNSuPJzJgorU2Db6Ame9Ju5YhWVRpFfDBHno33six2ubFPioDRQrYd/Uy8
+	 nyqZ0y4HU0YjLU5sg9IkxlnMiCTfQ6DxEZwS3Fh/t3BdLEnf1Y9fOaI6bfeS1U0VYvBOk
+	 LVsDEVBJL1H7xm7d7P7Rnfl0wqqvFC3Dzo9dd0YZQo4rAYxj2cO1rC8yJ68bJKd+ZnRlg
+	 PMw0l09Q7gwEY+n+nVGRpC+S0cnlpWyI1zdxsTkX/oJYlUkwNCYkMluQIpCo0J3k2Ww==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=oss.nxp.com;
+	spf=pass smtp.mailfrom=oss.nxp.com;
+	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=yLrQB47U;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.66.14
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012014.outbound.protection.outlook.com [52.101.66.14])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0556606A320;
-	Tue, 10 Nov 2026 15:14:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20A2760A261B
+	for <imx@lists.linux.dev>; Tue, 10 Nov 2026 15:14:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 20A2760A261B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EPPLUWd5
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 252AD1F008A1;
-	Tue, 10 Nov 2026 15:14:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794323642;
-	bh=lhDDcg+XFL8juadnmK5nrRutOKs6R7LkB2wmeynZIlA=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=EPPLUWd5JT7h3t3vV/xFBpSL9MAB97x6x8A3vFz3mKyoFSPpOJq8Z2YK8aS72BU7P
-	 VAN0aXpya+XPZVLFwvHUNTSx3iaDLq+vGbNWHBFrEooRTpkiTyfyl/wHfOboiNyiE/
-	 emahqSZWmK+09JeAcQ4TLhSU84Vj/85mt/ptmQWZP+YmYNDAPxyrHJ2bVQDXktDh+h
-	 6psmQExmkrZjpkW5M8l5/Vxxat7gogo9godh4uaOYpF+E8r1/fFsvo6QWvFXt9oWXR
-	 v0TUZnXyliGoDnfRVLkSvG9+HAIZSS65G3zqIDQ7n952TjDXCmlK11nFb1rlP0UFvh
-	 lDUTzWfSi0FSw==
-Message-ID: <sashiko-outbox-207242@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v11 4/7] drm/imx: Add support for i.MX94 DCIF
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Laurentiu Palcu" <laurentiu.palcu@oss.nxp.com>
-Cc: linux-clk@vger.kernel.org, imx@lists.linux.dev, devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20261110-dcif-upstreaming-v11-4-9e13c85ae0d8@oss.nxp.com>
-References: <20261110-dcif-upstreaming-v11-0-9e13c85ae0d8@oss.nxp.com>
- <20261110-dcif-upstreaming-v11-4-9e13c85ae0d8@oss.nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 10 Nov 2026 15:14:01 +0000
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=yLrQB47U
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=l8zRPB/l3uuu9uRFgAOa2D5KS19Q3SItMIeE5jwGeWYoX9yVu+Hl86C08zW/6tufaIyHcUexqah9dZIrClvGKWqJVo0hw6eWhU1lFF+X4Iou7DRL9DUozVrOiE2CKphoLf8vvY0rqwnuHas87nodosJAxLQJp/7VeHxomjVdjMqwkqmT4NAirxskZ5Qo76yJgbpI6oMB4kDJT2OguEULI4xZfBSALM1No1F2JtwBYc38AUu2st7bm+MTmntkKlB4e/P0rrZO/hM+v7C2BFoV8hAJkhj6Ltjqk+PCWsElTHhfE6EkMf74cCtdMU5rhYd6NHH7v2MOW92HQOFVP+d5+w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=uSjAL93E3yJGenoOyrPC2KDPVIsqypHmHHFvbfTSyG8=;
+ b=syghrhsvcETe6/6yTFx1DQ9wgkk6p/BZV/iBZHPolQG40aNbZR3hiWOXUClsRmZqGO44q3lIf4PvQ35KQsjIzYxDfsOJGjhshW2cbFQBUw/kexf0VhXODTXxXw/PUYViuPhn57Uar1KHpErYszWVKk9H9t8vKIJBzAT4XYyZ+xhWUY31H1iTP9f/8UjjmtJvwubfwdyNIKgj1z+9zGQemkUKrq3kwXmdGFZKEJHvCY+nL/mn/jcZDJavFm8HTVn8nFiRtS0FCH+q/S9dbjMgX2cSMrvvIpJ59CUxTXia2ZSUqg+BMSMnfADHOH0eDzehAcP2U7aUlntvnUDzZn76ZQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=uSjAL93E3yJGenoOyrPC2KDPVIsqypHmHHFvbfTSyG8=;
+ b=yLrQB47UA0ZZqC2msVxPEczGGZn4AT5vSWUpEjv+opJAx9qJdJ9jKo0j7prE7PcEYVbv/wm9+MmRmXk+xLRoCGA7I3+SY45FrRMTsU6ZcU5OhvEga0qDnJZX8+Fzq15fwWITlxRYQ75BA1FKSrjISFQihSyaLNSQRQ0vlnCt8cUK7twadWNy890Rt7F3kgSra8KNeoMJvKITHk06lvLQSyTpDgS02l2Pd0j9EOk2xAVNoQlxjx2695YFplPBjxYpjR7VlLtSv6NHmdHtCKFGjPR1HOVI1HrjK5mn1AcItZx8ZRZOez34yoTZ1r2Ytt6w0Z7NU7ZkNsczRICz7G0HEA==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from MI3PR04MB12438.eurprd04.prod.outlook.com (2603:10a6:290:76::14)
+ by OSMPR04MB11293.eurprd04.prod.outlook.com (2603:10a6:e10:93::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.8; Tue, 10 Nov
+ 2026 15:14:50 +0000
+Received: from MI3PR04MB12438.eurprd04.prod.outlook.com
+ ([fe80::c715:c32:8bb1:b70b]) by MI3PR04MB12438.eurprd04.prod.outlook.com
+ ([fe80::c715:c32:8bb1:b70b%4]) with mapi id 15.21.0615.007; Tue, 10 Nov 2026
+ 15:14:50 +0000
+Date: Tue, 10 Nov 2026 09:14:39 -0600
+From: Frank Li <Frank.li@oss.nxp.com>
+To: Stefan Ghetu <stefan.ghetu@nxp.com>
+Cc: Vinod Koul <vkoul@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, daniel.baluta@nxp.com,
+	linux-phy@lists.infradead.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	"Oliver F. Brown" <oliver.brown@oss.nxp.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] phy: freescale: phy-fsl-imx8-mipi-dphy: Fix hs_zero
+ underflow
+Message-ID: <avM033EsUfTpNrw7@SMW015318>
+References: <20261110120546.6247-1-stefan.ghetu@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261110120546.6247-1-stefan.ghetu@nxp.com>
+X-ClientProxiedBy: QR2P297CA0005.MEXP297.PROD.OUTLOOK.COM
+ (2603:10b6:3d0:6a::8) To MI3PR04MB12438.eurprd04.prod.outlook.com
+ (2603:10a6:290:76::14)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -59,392 +102,117 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|OSMPR04MB11293:EE_
+X-MS-Office365-Filtering-Correlation-Id: e2172428-c9be-4be8-ae32-08df3f3d5d7f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|19092799006|1800799024|376014|7416014|23010399003|56012099006|22082099003|18002099003|11063799006|10067099003|261009223027099003|261026121527099003|261102123227099003|261021121427099003|261021123027099003;
+X-Microsoft-Antispam-Message-Info:
+	+UW8be1B6LfQ5FlhX0NjHwUMJpJiC5KxwdbhXIC0CZD6YqSuk36NeImgmBl37SbR07IXZmz2KAjvAO990KzzNFzQDFBwgDlPFNrOtJmJ0co64pD6TJROij6IyVCz+mL/qRBzt+E34WStcGqK7cxMP6QqvVl+jvdRr2hoaQQW+/WnYTWdvS1pHj5ppUrd4QDjgFfEohchu8PG/fzNLZzrhuvZPwfg1gDuypC8glA62GSWjpWvWlaaHqyHk++7FyF39wl2QXAyucXDlB4EhXqEXg2xlNUiasGWWPHQRrcaDlXZ9DUi8ZLFjC2wUanmgUaGtjh4n7x36fAyorPnt+yKAegGyI+kVtHhpRQuTp7/1dPUOKcQ836G1i0oFAGEcJBcupdNlLoe39jfOVo0pqP6mK3FkUFDwG/xrbSXsv5jZo8r5quOX1VgFEWPY5bfJBNKJ2GTF/4mA03uMeNXX+WErJEU+cxX1LNUObobj9bs6dBsjx02Ezvh3la4RkRQ6FFND4Hf1x26vO7fDhXeem6FPiFnvkkCjhg1jn/tHcg0BdvDzAJKDQBpa3j+oDbkg0gpKRKqXZR3QZBQ5vy78AzrYHbkiQFkmEgbscUAeQwS1oPAVpxLR5M3bPBLFw7qxLNN/VMjGXDv93Sf+XzDr1P6Ek/WPUSfpWDnDBeLHE1qSpQ=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(1800799024)(376014)(7416014)(23010399003)(56012099006)(22082099003)(18002099003)(11063799006)(10067099003)(261009223027099003)(261026121527099003)(261102123227099003)(261021121427099003)(261021123027099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?JtBDoLAwREhQPHqNb2XRxIOJhque8+V/mo+iRe6OyYLDom9IkFfUU5LnfXF/?=
+ =?us-ascii?Q?M3FJZlFaj/UpIYDNDnroGSqAA3g3pyVIdhTQdkW431Q7fybDY7yEDoc0US01?=
+ =?us-ascii?Q?B7cxnodErlQ0K3Lu7wWrFj4bicKijAozm6hVXkbXDJoaZyCLCtIU89lOxte2?=
+ =?us-ascii?Q?2BFj2uxLijTG00pbY96RWr087V6t3ifQ1offDCD/X+embSIa5DCfx9sw4sUi?=
+ =?us-ascii?Q?W/BvfxcwixKGpDHUWzTvUzY3AtIeLDSUm5/lna6PVGdoOhwRIB0TExOudvzd?=
+ =?us-ascii?Q?wEZSAGOd45txBJV01i9fkYXzILkmUD8BQJAF7j81mN7sbEc2a5bJXGOZX9Ui?=
+ =?us-ascii?Q?b95yuWwn3wOdsjvYF2OQB86yLA0JbpSsvGFGBodDQL+ZsaZo/WOosmZr2BV9?=
+ =?us-ascii?Q?qIDvr3PXr3c6CFg6Wu1g2eizWFSquW6lE98EYMyO859A/wc2EOi77fIIMPp3?=
+ =?us-ascii?Q?wSLOH8pbnkpqvrRgdGcPxXS54APjowDgshNih9lk7t1bFKXkcqgXhXFD6itz?=
+ =?us-ascii?Q?ndrBP9X+9+uZy6S0PI0LR29+MMSE5ujls8uYIerjIhcQDmq51euWwvnBp3ZM?=
+ =?us-ascii?Q?AAwSKGn1SkxmnVhuf7hJ0W1EKmsRucaxvscvUiIhSJMG4W31iW2K1GmwV2qW?=
+ =?us-ascii?Q?HCdElKfCbOmm0afgpfID1WEQk6t12mpqdiRFtrGqYVu24MBf4pVXGwVq4+2q?=
+ =?us-ascii?Q?xUTpzlUJwKdDIM+vlhG2u4iIc8i6Oe4KNPv4ajdc0CKeC154KBJWOzYTPhEu?=
+ =?us-ascii?Q?bHvK0PG3jenkicYwNse7L0UpHcO+s+Vnr0WuDZUq8bCT7x3fOYc21s7VGXOE?=
+ =?us-ascii?Q?Ynn6D7vcNyVV3lrDRBajVOMdPqhBrBk6emovbNtEkzgNiXoAdmTf10dxzOVh?=
+ =?us-ascii?Q?0IXNDuD3ZP0O3zxXtwcBPHthyAXbdkJg/r53El4lbaO4k1dBOeZDnAyriXwA?=
+ =?us-ascii?Q?DT3XfwUIqbFjukqslG95u7/fL7SAdXVgsZ+KBPZcUnolleEPbfIsr0C0ozyB?=
+ =?us-ascii?Q?H1nBVBMMETQ6I4PtR+SGH25OaZv/f6oBYOalapWlGojFU8qmosxk9xq2BCvy?=
+ =?us-ascii?Q?YZ3jt3nkTF3WI/dAsKL8TX63xZbJRT1LMS1fwkO4fg7CGe/6LMvRKs1mxA6/?=
+ =?us-ascii?Q?6T7nCZoAKC4H6MzPu6eZjDRJvo2oHNKVmzm8wGiCdY7W56xrUg3OOkNGBDzK?=
+ =?us-ascii?Q?uyjUuyBKm3WKhlovThJeStXB85MtTgzWYPfF1jrqEu26llZ4CRDG7bSm9APQ?=
+ =?us-ascii?Q?fE7tnuy0pZcVisMghLCeNtzLBYjNTBMxLZxMQcLPSQFsKTkKvS2a2ctkJ8ZB?=
+ =?us-ascii?Q?TtNzeCNqMCbVB4QWGvkghoTgqWJIt6pI1XQs3ce7vVTM6yHTOCZfiythnl0T?=
+ =?us-ascii?Q?4B1oHPx3StWvP3afwFk+vjQdd1VxtKGDH400ah4e37HhQzSlMs6ghGg9VMPV?=
+ =?us-ascii?Q?Lefiscu+3eDT+ZT2Ykk1Kd9gwVkQisZixnR9kmrso3EikoDvFL6cX34Ff2NF?=
+ =?us-ascii?Q?lRO7KUc2ouOUKE9P7D6BQIDlGQJyEBsdZ2CUVVO/5XiYKKj/YkI2MLcvFvgW?=
+ =?us-ascii?Q?pnACenvjteLfl5xhM2VvabXnYnacx1o4EXq/Q/hAoKXFl1+NLbvS5FBfeycC?=
+ =?us-ascii?Q?a5l8EnYHXsk0QiXHAEuidgX6rW0bKQD4/QIvHIF7nZj1FEi33Jh17aeQ9KG4?=
+ =?us-ascii?Q?gaCV1spq9AbeMd9SBI/YR2qi684mJZh7jqFM4XB/Wu4vQF8U8PmN3n5t9B6o?=
+ =?us-ascii?Q?DoWUq3iMRD1cjP111QKrIcJYQvUS4LI1nEpo6LTmt5ZsZlk21EGh?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e2172428-c9be-4be8-ae32-08df3f3d5d7f
+X-MS-Exchange-CrossTenant-AuthSource: MI3PR04MB12438.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Nov 2026 15:14:50.5513
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: RghfAP9KFuqiS61pbb8g/DxTm1tNCTeoqf46IaW+NczrxY5Th/seZRTYZpOAwY1b8Jz0ZJPX5htd+LSpQN5eo3mRd5tGp91NyJ8QpYYUkVkO+ZjSiDcXuZI+5BuDU8TZ
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: OSMPR04MB11293
 
-Thank you for your contribution! Sashiko AI review found 8 potential
-issues to consider:
-- [High] drm/imx/dcif: unclocked MMIO access when runtime PM resume
-  fails
-- [Medium] drm/imx: dcif: missing vblank reference in
-  dcif_crc_source_enable()
-- [Medium] drm/imx/dcif: unmasked interrupt status handling in
-  dcif_irq_handler()
-- [Medium] drm/imx: dcif: unchecked runtime PM resume in
-  dcif_hw_probe_init()
-- [Medium] drm/imx: dcif: unbalanced clock disable if
-  dcif_runtime_resume() fails
-- [Low] drm/imx: dcif: signed overflow in dcif_crc_source_parse() ROI
-  check
-- [Low] drm/imx/dcif: split __free() declaration in
-  dcif_crtc_query_output_bus_format()
-- [Low] drm/imx: dcif: missing fb->pitches[0] bounds check in
-  dcif_plane_atomic_check()
---
+On Tue, Nov 10, 2026 at 02:05:46PM +0200, Stefan Ghetu wrote:
+> From: "Oliver F. Brown" <oliver.brown@oss.nxp.com>
+>
+> The hs_zero timing is computed as
+>
+> 	n = (144 * (hs_clk_rate / 1000000) - 47500) / 10000;
+> 	cfg->m_prg_hs_zero = n < 1 ? 1 : n;
+>
+> hs_clk_rate is an unsigned long, so the subtraction is done unsigned and
+> wraps for any rate below about 330 MHz, where 144 * MHz < 47500. Because
+> n is a u32, the wrapped value is never seen as negative and the "n < 1"
+> clamp does not take effect. The garbage value is then truncated into the
+> 8-bit m_prg_hs_zero register field. At the minimum supported rate of
+> 80 MHz this programs 199 on 64-bit and 181 on 32-bit, instead of the
+> intended minimum of 1.
+>
+> Make n signed and do the arithmetic in int so the clamp works on both
+> 32-bit and 64-bit. The divided rate is at most 1500, so 144 * 1500 fits
+> easily in an int.
+>
+> Fixes: f4c8116e294b ("phy: Add driver for mixel mipi dphy found on NXP's i.MX8 SoCs")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Oliver F. Brown <oliver.brown@oss.nxp.com>
+> Signed-off-by: Stefan Ghetu <stefan.ghetu@nxp.com>
+> ---
 
-commit b9251fe09a901a215b6a40b8b790485d134d37e2
-Author: Sandor Yu <sandor.yu@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
-drm/imx: Add support for i.MX94 DCIF
-
-This commit adds DRM/KMS driver support for the NXP i.MX94 Display Control
-Interface (DCIF), including CRTC, primary and overlay planes, and CRC
-generation.
-
-> diff --git a/drivers/gpu/drm/imx/dcif/dcif-crc.c b/drivers/gpu/drm/imx/dc=
-if/dcif-crc.c
-> new file mode 100644
-> index 0000000000000..132e40d3f3d45
-> --- /dev/null
-> +++ b/drivers/gpu/drm/imx/dcif/dcif-crc.c
-[ ... ]
-> +void dcif_crc_source_enable(struct dcif_dev *dcif, enum dcif_crc_source =
-source,
-> +			    struct drm_rect *roi, int ncrc)
-> +{
-> +	if (ncrc >=3D MAX_DCIF_CRC_NUM)
-> +		return;
-> +
-> +	if (source =3D=3D DCIF_CRC_SRC_NONE)
-> +		return;
-> +
-> +	if (dcif->crc_is_enabled)
-> +		return;
-> +
-> +	dcif_crc_config(dcif, roi, ncrc);
-> +
-> +	regmap_set_bits(dcif->regmap, DCIF_CRC_CTRL,
-> +			DCIF_CRC_CTRL_CRC_MODE | DCIF_CRC_CTRL_CRC_SHADOW_LOAD_EN |
-> +			DCIF_CRC_CTRL_CRC_TRIG);
-> +
-> +	scoped_guard(spinlock_irqsave, &dcif->drm.event_lock)
-> +		dcif->crc_is_enabled =3D true;
-> +}
-> +
-> +void dcif_crc_source_disable(struct dcif_dev *dcif, int ncrc)
-> +{
-> +	if (!dcif->crc_is_enabled)
-> +		return;
-> +
-> +	if (ncrc >=3D MAX_DCIF_CRC_NUM)
-> +		return;
-> +
-> +	regmap_clear_bits(dcif->regmap, DCIF_CRC_CTRL, DCIF_CRC_CTRL_CRC_EN(ncr=
-c));
-> +
-> +	scoped_guard(spinlock_irqsave, &dcif->drm.event_lock)
-> +		dcif->crc_is_enabled =3D false;
-> +}
-
-[Severity: Medium]
-Should dcif_crc_source_enable() and dcif_crc_source_disable() acquire and
-release a vblank reference with drm_crtc_vblank_get() and
-drm_crtc_vblank_put()?
-
-dcif_irq_handler() only samples DCIF_CRC_VAL_R(0) and calls
-drm_crtc_add_crc_entry() when DCIF_INT0_VS_BLANK fires, and that interrupt
-is only unmasked while a vblank reference is held.  On a steady display
-without continuous page flips, the vblank disable timer will mask
-DCIF_INT0_VS_BLANK after the atomic commit that enables CRC finishes,
-causing reads from debugfs crc/data to block indefinitely.
-
-[ ... ]
-
-> +		while ((opt =3D strsep(&options, ",")) !=3D NULL) {
-> +			if (i > 3)
-> +				return -EINVAL;
-> +
-> +			ret =3D kstrtouint(opt, 10, &params[i]);
-> +			if (ret < 0)
-> +				return ret;
-> +
-> +			i++;
-> +		}
-> +
-> +		if (i !=3D 4)
-> +			return -EINVAL;
-> +
-> +		roi->x1 =3D params[0];
-> +		roi->y1 =3D params[1];
-> +		roi->x2 =3D params[2];
-> +		roi->y2 =3D params[3];
-> +
-> +		if (!drm_rect_visible(roi))
-> +			return -EINVAL;
-
-[Severity: Low]
-Can unsigned values in params[] wrap to negative ints in struct drm_rect
-and bypass the ROI bounds checks?
-
-For example, "roi:10,0,2147483648,10" sets roi->x1 =3D 10 and
-roi->x2 =3D INT_MIN, which wraps in drm_rect_visible() to a positive width
-and then passes dcif_crtc_check_crc_roi() because roi->x1 >=3D 0 and
-roi->x2 <=3D m->hdisplay, programming truncated 12-bit coordinates into
-DCIF_CRC_POS_R and DCIF_CRC_SIZE_R.
-
-> diff --git a/drivers/gpu/drm/imx/dcif/dcif-crtc.c b/drivers/gpu/drm/imx/d=
-cif/dcif-crtc.c
-> new file mode 100644
-> index 0000000000000..d5285105fa4df
-> --- /dev/null
-> +++ b/drivers/gpu/drm/imx/dcif/dcif-crtc.c
-[ ... ]
-> +static int dcif_crtc_query_output_bus_format(struct drm_crtc *crtc,
-> +					     struct drm_crtc_state *crtc_state)
-> +{
-> +	struct dcif_crtc_state *dcif_state =3D to_dcif_crtc_state(crtc_state);
-> +	struct drm_bridge *bridge __free(drm_bridge_put) =3D NULL;
-> +	struct drm_bridge_state *bridge_state;
-> +	u32 bus_format;
-> +
-> +	dcif_state->bus_format =3D MEDIA_BUS_FMT_RGB888_1X24;
-> +	dcif_state->bus_flags =3D 0;
-> +
-> +	bridge =3D dcif_crtc_get_bridge(crtc, crtc_state);
-
-[Severity: Low]
-This isn't a bug, but per Cleanup API conventions, bridge should be defined
-and initialized in a single statement rather than declared with
-__free(drm_bridge_put) =3D NULL at the top of the function and assigned
-later.
-
-[ ... ]
-
-> +static void dcif_crtc_atomic_enable(struct drm_crtc *crtc,
-> +				    struct drm_atomic_commit *state)
-> +{
-> +	struct drm_crtc_state *crtc_state =3D drm_atomic_get_new_crtc_state(sta=
-te, crtc);
-> +	struct dcif_crtc_state *dcif_crtc_state =3D to_dcif_crtc_state(crtc_sta=
-te);
-> +	struct drm_display_mode *adj =3D &crtc_state->adjusted_mode;
-> +	struct dcif_dev *dcif =3D crtc_to_dcif_dev(crtc);
-> +	struct drm_device *drm =3D crtc->dev;
-> +	int ret;
-> +
-> +	dev_dbg(drm->dev, "mode " DRM_MODE_FMT "\n", DRM_MODE_ARG(adj));
-> +
-> +	/* enable power when we start to set mode for CRTC */
-> +	ret =3D pm_runtime_resume_and_get(drm->dev);
-> +	if (ret < 0) {
-> +		drm_err(drm, "failed to resume DCIF, ret =3D %d\n", ret);
-> +		return;
-> +	}
-> +	dcif->crtc_pm_enabled =3D true;
-[ ... ]
-> +}
-> +
-> +static void dcif_crtc_atomic_disable(struct drm_crtc *crtc,
-> +				     struct drm_atomic_commit *state)
-> +{
-> +	struct drm_crtc_state *crtc_state =3D drm_atomic_get_new_crtc_state(sta=
-te, crtc);
-> +	struct dcif_crtc_state *dcif_crtc_state =3D to_dcif_crtc_state(crtc_sta=
-te);
-> +	struct dcif_dev *dcif =3D crtc_to_dcif_dev(crtc);
-> +	struct drm_device *drm =3D crtc->dev;
-> +
-> +	if (dcif->has_crc && dcif_crtc_state->crc.source !=3D DCIF_CRC_SRC_NONE)
-> +		dcif_crc_source_disable(dcif, 0);
-> +
-> +	dcif_disable_controller(dcif);
-> +	dcif_disable_plane_panic(dcif);
-> +
-> +	drm_crtc_vblank_off(crtc);
-> +
-> +	if (dcif->crtc_pm_enabled) {
-> +		dcif->crtc_pm_enabled =3D false;
-> +		pm_runtime_put_sync(drm->dev);
-> +	}
-
-[Severity: High]
-If pm_runtime_resume_and_get() fails in dcif_crtc_atomic_enable(), won't
-subsequent callbacks still access DCIF MMIO registers while the clocks and
-power domain are off?
-
-After dcif_crtc_atomic_enable() returns early with dcif->crtc_pm_enabled
-set to false, drm_atomic_helper_commit_tail_rpm() still runs
-drm_atomic_helper_commit_planes() because crtc_state->active is true,
-invoking dcif_plane_atomic_update() and dcif_crtc_atomic_flush() without
-checking dcif->crtc_pm_enabled.  Later, dcif_crtc_atomic_disable() also
-calls dcif_crc_source_disable(), dcif_disable_controller(), and
-dcif_disable_plane_panic() before checking dcif->crtc_pm_enabled, causing
-unclocked MMIO accesses and an external abort on ARM64.
-
-[ ... ]
-
-> +irqreturn_t dcif_irq_handler(int irq, void *data)
-> +{
-> +	struct drm_device *drm =3D data;
-> +	struct dcif_dev *dcif =3D to_dcif_dev(drm);
-> +	int domain =3D dcif->cpu_domain;
-> +	u32 stat0, stat1, crc;
-> +
-> +	regmap_read(dcif->regmap, DCIF_IS0(domain), &stat0);
-> +	regmap_read(dcif->regmap, DCIF_IS1(domain), &stat1);
-> +	regmap_write(dcif->regmap, DCIF_IS0(domain), stat0);
-> +	regmap_write(dcif->regmap, DCIF_IS1(domain), stat1);
-> +
-> +	if (stat0 & DCIF_INT0_VS_BLANK) {
-> +		drm_crtc_handle_vblank(&dcif->crtc);
-> +
-> +		scoped_guard(spinlock_irqsave, &drm->event_lock) {
-> +			if (dcif->crc_is_enabled) {
-> +				regmap_read(dcif->regmap, DCIF_CRC_VAL_R(0), &crc);
-> +				drm_crtc_add_crc_entry(&dcif->crtc, false, 0, &crc);
-> +				dev_dbg(drm->dev, "crc=3D0x%x\n",  crc);
-> +			}
-> +		}
-> +	}
-> +
-> +	if (stat1 & (DCIF_INT1_FIFO_PANIC0 | DCIF_INT1_FIFO_PANIC1)) {
-> +		u32 panic =3D stat1 & (DCIF_INT1_FIFO_PANIC0 | DCIF_INT1_FIFO_PANIC1);
-> +
-> +		dev_dbg_ratelimited(drm->dev, "FIFO panic on %s\n",
-> +				    panic =3D=3D (DCIF_INT1_FIFO_PANIC0 | DCIF_INT1_FIFO_PANIC1) ?
-> +				    "layers 0 & 1" : panic =3D=3D DCIF_INT1_FIFO_PANIC0 ? "layer 0" :
-> +				    "layer 1");
-> +	}
-> +
-> +	return IRQ_HANDLED;
-> +}
-
-[Severity: Medium]
-Should dcif_irq_handler() mask stat0 and stat1 with DCIF_IE0(domain) and
-DCIF_IE1(domain), and return IRQ_NONE when no enabled interrupt is
-pending?
-
-DCIF_IS0(domain) latches DCIF_INT0_VS_BLANK on every vertical blank even
-when it is masked in DCIF_IE0(domain), which is why
-dcif_crtc_enable_vblank() clears DCIF_IS0(domain) before enabling it.
-Because FIFO panic interrupts remain enabled in DCIF_IE1(domain) whenever
-the CRTC is active, a FIFO panic interrupt firing mid-frame while vblanks
-are disabled will see the latched DCIF_INT0_VS_BLANK bit in stat0 and
-spuriously call drm_crtc_handle_vblank() and drm_crtc_add_crc_entry().
-
-> diff --git a/drivers/gpu/drm/imx/dcif/dcif-drv.c b/drivers/gpu/drm/imx/dc=
-if/dcif-drv.c
-> new file mode 100644
-> index 0000000000000..3b1b9dbf0c6b0
-> --- /dev/null
-> +++ b/drivers/gpu/drm/imx/dcif/dcif-drv.c
-[ ... ]
-> +static void dcif_hw_probe_init(struct dcif_dev *dcif)
-> +{
-> +	struct drm_device *drm =3D &dcif->drm;
-> +	u32 val, vmin, vmaj;
-> +	int ret;
-> +
-> +	ret =3D pm_runtime_resume_and_get(drm->dev);
-> +	if (ret < 0) {
-> +		drm_err(drm, "failed to resume DCIF: %d\n", ret);
-> +		return;
-> +	}
-[ ... ]
-> +static int dcif_probe(struct platform_device *pdev)
-> +{
-[ ... ]
-> +	dcif_hw_probe_init(dcif);
-> +
-> +	ret =3D dcif_kms_prepare(dcif);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret =3D devm_request_irq(drm->dev, dcif->irq[dcif->cpu_domain],
-> +			       dcif_irq_handler, 0, drm->driver->name, drm);
-
-[Severity: Medium]
-Should dcif_hw_probe_init() return an error code so dcif_probe() can abort
-when pm_runtime_resume_and_get() fails?
-
-If runtime resume fails here, dcif_hw_probe_init() returns early without
-reading DCIF_VER, masking bootloader interrupts, or stopping the
-controller, and dcif_probe() continues on to request the IRQ and register
-the DRM device with uninitialized hardware state.  Also, calling
-dcif_hw_probe_init() before dcif_kms_prepare() powers on and disables the
-hardware before devm_drm_of_get_bridge() checks for probe deferral and
-before dcif_kms_link_suppliers() sets up the supplier device links.
-
-[ ... ]
-
-> +static int dcif_suspend(struct device *dev)
-> +{
-> +	struct dcif_dev *dcif =3D dev_get_drvdata(dev);
-> +	int ret;
-> +
-> +	ret =3D drm_mode_config_helper_suspend(&dcif->drm);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	if (pm_runtime_suspended(dev))
-> +		return 0;
-> +
-> +	return dcif_runtime_suspend(dev);
-> +}
-> +
-> +static int dcif_resume(struct device *dev)
-> +{
-> +	struct dcif_dev *dcif =3D dev_get_drvdata(dev);
-> +	int ret;
-> +
-> +	if (!pm_runtime_suspended(dev)) {
-> +		ret =3D dcif_runtime_resume(dev);
-> +		if (ret < 0)
-> +			return ret;
-> +	}
-> +
-> +	return drm_mode_config_helper_resume(&dcif->drm);
-> +}
-
-[Severity: Medium]
-If dcif_runtime_resume() fails in dcif_resume(), won't the runtime PM core
-call dcif_runtime_suspend() a second time on already disabled clocks?
-
-When the CRTC is active before system suspend, device_prepare() increments
-the runtime PM usage count so drm_mode_config_helper_suspend() ->
-pm_runtime_put_sync() leaves the device RPM_ACTIVE, and dcif_suspend()
-then calls dcif_runtime_suspend() directly without updating the runtime PM
-status.  If dcif_runtime_resume() fails during system resume, the clocks
-remain disabled while runtime_status is still RPM_ACTIVE, so
-device_complete() -> pm_runtime_put() will invoke dcif_runtime_suspend() ->
-clk_bulk_disable_unprepare() again.  Using pm_runtime_force_suspend() and
-pm_runtime_force_resume() would keep the runtime PM state in sync with the
-clocks.
-
-> diff --git a/drivers/gpu/drm/imx/dcif/dcif-plane.c b/drivers/gpu/drm/imx/=
-dcif/dcif-plane.c
-> new file mode 100644
-> index 0000000000000..9f54f1b2d8d17
-> --- /dev/null
-> +++ b/drivers/gpu/drm/imx/dcif/dcif-plane.c
-[ ... ]
-> +static int dcif_plane_atomic_check(struct drm_plane *plane, struct drm_a=
-tomic_commit *state)
-> +{
-> +	struct drm_plane_state *new_plane_state =3D drm_atomic_get_new_plane_st=
-ate(state, plane);
-> +	struct dcif_dev *dcif =3D plane_to_dcif_dev(plane);
-> +	struct drm_framebuffer *fb =3D new_plane_state->fb;
-> +	struct drm_crtc_state *crtc_state;
-> +	int ret;
-> +
-> +	if (!fb)
-> +		return 0;
-[ ... ]
-> +	if (new_plane_state->fb->format->has_alpha &&
-> +	    new_plane_state->pixel_blend_mode =3D=3D DRM_MODE_BLEND_COVERAGE &&
-> +	    new_plane_state->alpha !=3D DRM_BLEND_ALPHA_OPAQUE)
-> +		return -EINVAL;
-> +
-> +	return 0;
-> +}
-
-[Severity: Low]
-Should dcif_plane_atomic_check() reject framebuffers with
-fb->pitches[0] > 0xffff?
-
-DCIF_CTRLDESC3_PITCH() is a 16-bit field (GENMASK(15, 0)), so a
-framebuffer stride >=3D 65536 bytes is silently truncated in
-dcif_plane_atomic_update(), corrupting scanout.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261110-dcif-upstr=
-eaming-v11-0-9e13c85ae0d8@oss.nxp.com?part=3D4
+>  drivers/phy/freescale/phy-fsl-imx8-mipi-dphy.c | 5 ++---
+>  1 file changed, 2 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/phy/freescale/phy-fsl-imx8-mipi-dphy.c b/drivers/phy/freescale/phy-fsl-imx8-mipi-dphy.c
+> index 0928a526e2ab..84bd21aaf9e8 100644
+> --- a/drivers/phy/freescale/phy-fsl-imx8-mipi-dphy.c
+> +++ b/drivers/phy/freescale/phy-fsl-imx8-mipi-dphy.c
+> @@ -191,8 +191,7 @@ static int mixel_dphy_config_from_opts(struct phy *phy,
+>  	unsigned long ref_clk = clk_get_rate(priv->phy_ref_clk);
+>  	u32 lp_t, numerator, denominator;
+>  	unsigned long long tmp;
+> -	u32 n;
+> -	int i;
+> +	int n, i;
+>
+>  	if (dphy_opts->hs_clk_rate > DATA_RATE_MAX_SPEED ||
+>  	    dphy_opts->hs_clk_rate < DATA_RATE_MIN_SPEED)
+> @@ -276,7 +275,7 @@ static int mixel_dphy_config_from_opts(struct phy *phy,
+>  	cfg->mc_prg_hs_prepare = dphy_opts->clk_prepare > lp_t ? 1 : 0;
+>
+>  	/* hs_zero: formula from NXP BSP */
+> -	n = (144 * (dphy_opts->hs_clk_rate / 1000000) - 47500) / 10000;
+> +	n = (144 * (int)(dphy_opts->hs_clk_rate / 1000000) - 47500) / 10000;
+>  	cfg->m_prg_hs_zero = n < 1 ? 1 : n;
+>
+>  	/* clk_zero: formula from NXP BSP */
+> --
+> 2.34.1
+>
+>
