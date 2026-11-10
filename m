@@ -1,59 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=212.227.17.20
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794310379;
-	b=WP0rnpgMWpErZ4q9QnJzo1KZ0jiCbRYyoowvBi5JOSuSqffe/m7xC+r2dbe11h3Y2cdE
-	 cSoy70VaSTPAsT1TRKMZbu10KClQSI4RGhhsCiPeBoaWpu5DzuWjQ4AQ9ZlDqCy2tQOKQ
-	 zPX6psz1jxAlcSAVnve+iCo4ggqCL5pfVZwirPQv4cG7ZGt5HsHRfHz3xfhev09pXpgfB
-	 3gxJDx641y/MkupO8++1Tv9J3/y6QWArL0mMiJEyTMUjPDnZKLO7ko8n+9crLP8ZEN177
-	 zd0OqGuZZIYco3D9MINnURzNN/6x13hVNm3pRszWNSh8rBKk2cbtNMKuPDveMrAibcA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794310379;
-	h=DMARC-Filter:DKIM-Signature:X-UI-Sender-Class:Received:Message-ID:
-	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:
-	 Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-Provags-ID:X-Spam-Flag:UI-OutboundReport;
-	bh=BrQDFJiFpCVebk8ZCd0YutKlhOj46ZDSdePy9SVQvMI=;
-	b=C1F5lKWjsyzbO9HfWuwWIYQhBVu0RhzXV5x+YhAgkjPC82Yqb1RlcQDDwFif/ZDTlr32
-	 V2bj/aTXki6HyCZ2uGINHDK1fUlskVm+jlN0nRscpmM3/X7G3ttkDKP6o+fPvIEwwOFk2
-	 1PeeOuyNz6+LKCKcUDCMgk2VLsJEievPOvCx1c3LqEwzfrVFzlxZQ4dGWBizSHYJVjZOO
-	 xo2tR5BVS4qHZhSqB8II5GlmRbIG3VYWJM8ZkoLDf94sGqPyrjIQzmP/6JhYIk5pSyqWX
-	 SDZxhLkNhN6vJaae4qRA7b9iDCTmp7jNKyqjLZuGLf011Wtk0mnPYSRK0BHr9nd+8NA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmx.net;
-	spf=pass smtp.mailfrom=gmx.net;
-	dkim=pass header.d=gmx.net header.i=wahrenst@gmx.net header.a=rsa-sha256 header.s=s31663417 header.b=on755yiy;
-	arc=none smtp.remote-ip=212.227.17.20
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.219.47
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794310858;
+	b=tWgkoNXqhgA9VbvoDAUf3ghVsZjT84vJjtil1nwcj5XeqxyPuO0+pYqCOQkJo+8xN98Y
+	 Nl9Da4y5HKUwQ7M4ZF1O2SVdXfCwYvxtcdX4dzUADSNrkP7tXdrExZdG4ZeyOAFUlziZ3
+	 QR4VX8mzhyo9TgyRTy4l9r4ncHEAJalOblkM3XikFobhl9NUsIXTFr6zbtxvfpEYsrEbe
+	 u2RaVIZmaBcPuAliGHIwzoj1GQZoTFFLnl7g90vg5Qm6K+FW4UEnD9fMEa5XrGh1wax0F
+	 Wt044zSbjdyCsY1WkX19yVCATh9+DfLuDrcj+/RWX99ZTUOjruiduAB3IqHJSn8BuWw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794310858;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=yOns8afdH57msgp9zNnSSwBgpZ3DYVzL6nqt0tH+JOY=;
+	b=uYjkx2nhJVRvoMmamZVjvEC8OSPf4CON3UDHsvonRcYYEG4dY6hVytoFClMUsJ4fVacK
+	 1g4z+dWtO6UrD2I/5ZZ2LEL4JNoTCAeR0w+B0G0rq6nj9UoQQz1QizXEy88roJGHymw4e
+	 7jGbHYleeb7HMpRM8W5jbzxOC9j7cjcTNAhlePScO0qg6VBNb2xEs7UvrSMaR8MxEDP7b
+	 TAstESW5PaWH8LIl/+gi+ci9jKMXbppGrvuvH5hSQhqmRA1g5fgG4tKrzhtivXnV9yksa
+	 73ybtYuoVBy+ar6LMwgUgrk4Mr1fXMFUtP+IY0nCh/rhRAtryDfgB50GiMtI+0MkufA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=i3ACx4ou;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.219.47
+Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B280606A321
-	for <imx@lists.linux.dev>; Tue, 10 Nov 2026 11:32:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3B280606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4707D606A330
+	for <imx@lists.linux.dev>; Tue, 10 Nov 2026 11:40:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4707D606A330
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.a=rsa-sha256 header.s=s31663417 header.b=on755yiy
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
-	s=s31663417; t=1794310376; x=1794915176; i=wahrenst@gmx.net;
-	bh=BrQDFJiFpCVebk8ZCd0YutKlhOj46ZDSdePy9SVQvMI=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=on755yiyaANPYwQhK1P0BeElUHoE2tqHXRcjMO3wEkpxsSNK40MouyX3MtlwFpVW
-	 ki0SQeoJ7PTQkBl9KbeL3zEIPufbHis+OFPMOcA5vOa7pFqjRI6LvlKJzGMtlk/07
-	 UfW2MIagWTTbms2ZBxvEjgXgS64rN0TfMWC/ZCKrqViW8G/mpINOajCgi5uMd5Yji
-	 uW2uDoTWum/8JnE07EImWmSlkkxJXy5H2mPQf4KA9+BQ8uU4FSCZMJPlC2tXcAsDj
-	 GuNELF7X55Eo9YhWHAg8xb5icqmYyfZMPA+CkZvaq+plgu7ewh4czqP5O+BZ7CY3B
-	 JvsCzCnOD5I2EhfXCA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from client.hidden.invalid by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1M4s51-1xR1bk3H7f-006ist; Tue, 10
- Nov 2026 12:32:55 +0100
-Message-ID: <1b80fa9b-5af4-4ab8-b0fd-eb53eddd35a7@gmx.net>
-Date: Tue, 10 Nov 2026 12:32:52 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=i3ACx4ou
+Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-91ea5600c9cso24525896d6.1
+        for <imx@lists.linux.dev>; Tue, 10 Nov 2026 03:40:58 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794310857; cv=none;
+        d=google.com; s=arc-20260327;
+        b=dU784b5VoYYiFtLl0IlbavnEfQ768XO//JTW7ciYwamY2YZVq7K+WAcmoODmfJTmSR
+         7cEtuIeJH3Ku0IhSMXimLIN182XGUsHNad5BQ2UaoIigH6tpPOnQfwIwacvSnFvoWoFe
+         cuH1/DoDD2Qx59+5HDY1eE0xhJWBND0+NzSvxhiS7zcz/qjRcJ678zzXi4L3FMv9Lhv5
+         PaCaBTTi3/o3wAoDaFOVOyufD0qibE31NMEpn/HpwqhwsRPvGUvgTov3y3E6o1tHKAQY
+         pnkI0I9tg29iEiK1n83oPx0/IavFy27bRtxwKVXaUohEGYVocfOJrFiczJz2IsVvvRlv
+         6QbQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=yOns8afdH57msgp9zNnSSwBgpZ3DYVzL6nqt0tH+JOY=;
+        fh=LcgpHvf8Q9R5NlBSSEW9eNy+WcF5IoW3LDiZImP2iwU=;
+        b=TIFuEzxIk471sCGBR0rsNE+TtO01DRxIfGz6Wj3j9JpZZQgNeBoe9Gs2LiMc4eh47/
+         exp6+lA6zYR4OaxA72MRF7CUcGBBXe5aE5ENbvYsPwdouuDRrmae6I69VoyKkJMfQc/O
+         XISxJQohFDVBMV36Cr/N1DRYs2cgDPIds16vRt/a6fdT0yzERbnHTg3pV8FWj4/9SNvi
+         0Z6SwpfSsNs3RQWzguX4VXYIphaMqY6l0f8hFubAamLlU/ZqOUeKkr2XQ0NCLVh5EdFm
+         JbLxYsAz1vG4wIz8znzvmFoQDXrp9xUWeeVWfHvY0A0K6JAp0uv90YVNMBCFoiCXCf5R
+         O5wQ==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794310857; x=1794915657; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=yOns8afdH57msgp9zNnSSwBgpZ3DYVzL6nqt0tH+JOY=;
+        b=i3ACx4ou5VHF3dSvhmvRTUEA8hhZPnKlH3+IcLMnanLVtULaOKEO2Fdq3QlBxJ9gHE
+         oAjN4hTgUtdiALmWPehDq104TzxpGjVIyAwCjJ5Z0J2snwAhq2b58c+YxGvOZWzdKKh9
+         0vUuhHyLrqfxFsFNjy/Q8GsEkKmrkDCHtfoXw2d72KLHE8G21iTmO3BIstdiO/FRFRRy
+         KHsNvXKZ3Txr1cI83htRXYksE/SnqAUD6A6mOj3Mu5EzjhVnErTSECCMv34DW9Zwe3er
+         eIBThsQQpF0fo6cTEKSdxJsh0ccr0W9YxOsg9gnhsRmDNzXkRNvNTJGawiikOMIFNXeo
+         n5WA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794310857; x=1794915657;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=yOns8afdH57msgp9zNnSSwBgpZ3DYVzL6nqt0tH+JOY=;
+        b=HzuVUbtNida2mtByvVDaP3O+dzM8HVGEd4SDjStGCZetXS0UNFvX99lpWc9R+XZFe3
+         S/HIOVe5jcMtGoIqjLzREkTii3vMf/gYRlBnHaQVGC6CTIslgH/N7FwmfLXCgp265Epe
+         FJh+p5loLIR20tnJ09ZxX5TvLLICPLamumdIirw/4Oii5oz+CPiwRVnLD57k1xqf2U8m
+         nwv0qgOZcZwfEs4ObDKFpEivzn6NOvnamIOdBCxPi+3H1qChzkX6d40nvYzAkk/z5KHd
+         5wV30vj6W7GameKFrCoBi2VCADJDrHXl8QGND2O9t+QQhyTZrWO+NPCOncYk65fOZgAS
+         f/TQ==
+X-Gm-Message-State: APuU4Z8X1jW4J+uP4xHIYO2inJKs8IWthL7yhsV4zhFKX6W7lCGggsxw
+	OfcW27vEjokIPkLf2IbvaTR2nt/YLkN7nnr47TBenn67n/LxWibrbpDrUad3LNja/lfS7Jvc+gC
+	ArVFyUs85xvMMdQV9gNLicpUTx5TJgxI=
+X-Gm-Gg: AYBFou0qa9QWh7T+zhRV3pcql20AsHYeUxO4F4EmWyqELu0tnDNt1lrlRNeMsUnd1Fb
+	Z+7y3d8gBVjydGM/+iq9lKGri/DMKhPNb0+hu5pAcN/r6bdPGGxmcZkmoMttjQsbMinmCkSfwVM
+	MskigzjtsNlogRLaz0DeReGNhHjVuMqrHFPp9QyHMmnpp2J2sBHTcpeo59feJH74N8elmCwMvKO
+	IsLEwddOoerWLtP+4QGHDrt5lIE91OTawivQS7dTGWINpSfgKcfJA5+AsdRPT0Q7ObMfVaUPc05
+	XjL8LK2jG0ELtjGjRSESxoH8gXduju83lBseLJlrMrIfkWJStA6ahGXzEAo1ifgrn4CwCquvve6
+	Q91SkEA/NiPGR6U+EwBiskiWBvQbXh77KsyKtA8Mx+9B4SHcBzrA8BzjdflvoIk6FQj9Ff2noxm
+	F2TkZJAmUkdYqnxg==
+X-Received: by 2002:a05:6214:daf:b0:91c:144e:fb71 with SMTP id
+ 6a1803df08f44-91ef0255616mr33151936d6.24.1794310855984; Tue, 10 Nov 2026
+ 03:40:55 -0800 (PST)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -63,139 +104,158 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/5] ARM: dts: imx6ull-tarragon-common: Fix Ethernet
- regression
-To: Frank Li <Frank.li@oss.nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
- Manuel Traut <manuel.traut@mt.com>, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org
-References: <20261004140123.46461-1-wahrenst@gmx.net>
- <20261004140123.46461-2-wahrenst@gmx.net>
- <atpvdWuwnYeQ03Rm@lizhi-Precision-Tower-5810>
-Content-Language: en-US
-From: Stefan Wahren <wahrenst@gmx.net>
-In-Reply-To: <atpvdWuwnYeQ03Rm@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:bM+Q6nOjOcAIn2CFN5rsSIriN0zYh7gcWUBAanjP2/zWPQ221mw
- JAY+0ZzcDZT8QPpSn0eObq5Vt/SNCbX4LKXc+xr5t6Wn6cw0c/IZaIz1rXTo4wLuEiNAurV
- UMVo2c/qlGir/CSOvk6dNE0LOoe87cK9L4GpN3xFnRPOmk+UrkUfnCRD39qiVI1qKkDPgfk
- 7fHsh8JPkNFKonjFEKz0w==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:ERy4PKCR4LA=;kv2/qEoBOR/kOLfWRFZjw4HfRlH
- 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
- r5Mib4OXTLQAQ8jMJXof3hc
+References: <20261110105436.2487822-1-hj351016@gmail.com> <sashiko-outbox-206921@kernel.org>
+In-Reply-To: <sashiko-outbox-206921@kernel.org>
+From: khj <hj351016@gmail.com>
+Date: Tue, 10 Nov 2026 20:40:44 +0900
+X-Gm-Features: AclHuK95HtKLSfOqbTSyErDz1GpIXJGgGnTKcIi6bWHaVEa1K4fFqz8zx3nLc5E
+Message-ID: <CAGr5VtP-Sb3k9dT5zuJ0D=AQYVfsBN4igVE2ocArZ3=s050rNg@mail.gmail.com>
+Subject: Re: [PATCH] remoteproc: imx_dsp_rproc: drain the vq work before
+ freeing the mailbox
+To: sashiko-reviews@lists.linux.dev
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Frank,
+Thanks -- both are correct, and my patch is wrong.
 
-Am 22.10.26 um 22:17 schrieb Frank Li:
-> On Sun, Oct 04, 2026 at 04:01:19PM +0200, Stefan Wahren wrote:
->> The commit e2ba87c745ca ("ARM: dts: imx6ul: Set macaddress location in ocotp")
->> introduced a OTP to MAC address mapping on DT level. But the Tarragon
->> platform relies on a different MAC address mapping, which is provided by
->> U-Boot.
-> Is it possible update uboot to adapter OTP possition?
+[High] The AB-BA deadlock is real. imx_dsp_rproc_free_mbox() runs from the
+pm_runtime suspend path (__rproc_shutdown() -> rproc_unprepare_device() ->
+imx_dsp_rproc_unprepare() -> pm_runtime_put_sync() ->
+imx_dsp_runtime_suspend()),
+and __rproc_shutdown() holds rproc->lock across that. imx_dsp_rproc_vq_work=
+()
+also takes rproc->lock, so cancel_work_sync() there waits for the work whil=
+e the
+work waits for the lock -- a deadlock. The cancel must not run under
+rproc->lock,
+so it cannot live in free_mbox().
 
-I cannot speak for the U-Boot maintainer, but we will try.
+[Critical] You're right that the unbind path can skip free_mbox() entirely:
+devm_rproc_add() is registered before devm_pm_runtime_enable(), so on unbin=
+d
+devres disables runtime PM before devm_rproc_remove() runs rproc_del() /
+__rproc_shutdown(). pm_runtime_put_sync() then returns -EACCES without call=
+ing
+imx_dsp_runtime_suspend(), so free_mbox() never runs -- the mailbox channel=
+s and
+rproc_work stay live while the rproc / imx_dsp_rproc are freed (UAF + the c=
+lk
+leak you note). So my one-liner does not even fix the unbind UAF it targete=
+d.
 
-Best regards
+So this needs a teardown rework rather than a cancel in free_mbox(): e.g.
+reorder devm_pm_runtime_enable() before devm_rproc_add() so the suspend pat=
+h
+(and mailbox free) actually runs on unbind, and drain rproc_work from a con=
+text
+that does not hold rproc->lock. Since that touches the driver's probe/teard=
+own
+ordering, I'd rather not guess at the shape -- Mathieu, Frank, how would yo=
+u
+prefer this handled? I'm happy to send a v2 once the preferred
+direction is clear.
 
+Thanks,
+Hyunjung
+
+2026=EB=85=84 11=EC=9B=94 10=EC=9D=BC (=ED=99=94) =EC=98=A4=ED=9B=84 8:08, =
+<sashiko-bot@kernel.org>=EB=8B=98=EC=9D=B4 =EC=9E=91=EC=84=B1:
 >
-> Frank
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue to consider:
+> - [High] remoteproc: imx_dsp_rproc: AB-BA deadlock in
+>   imx_dsp_rproc_free_mbox()
+> It also noticed 1 related pre-existing issue this patch does not
+> introduce:
+> - [Critical] remoteproc: imx_dsp_rproc: use-after-free and resource
+>   leaks on unbind [1]
+> --
+>
+> commit 17e3fec9a8c6e436afd532f653405b5a78e316af
+> Author: Hyunjung Ko <hj351016@gmail.com>
+>
+> remoteproc: imx_dsp_rproc: drain the vq work before freeing the mailbox
+>
+> This commit calls cancel_work_sync(&priv->rproc_work) in
+> imx_dsp_rproc_free_mbox() after freeing the mailbox channels to drain any
+> pending virtqueue work item.
+>
+> > diff --git a/drivers/remoteproc/imx_dsp_rproc.c b/drivers/remoteproc/im=
+x_dsp_rproc.c
+> > index 96d619daf3f5b..89c72d916b1e4 100644
+> > --- a/drivers/remoteproc/imx_dsp_rproc.c
+> > +++ b/drivers/remoteproc/imx_dsp_rproc.c
+> > @@ -642,6 +642,13 @@ static void imx_dsp_rproc_free_mbox(struct imx_dsp=
+_rproc *priv)
+> >       mbox_free_channel(priv->tx_ch);
+> >       mbox_free_channel(priv->rx_ch);
+> >       mbox_free_channel(priv->rxdb_ch);
+> > +
+> > +     /*
+> > +      * The mailbox rx callback schedules rproc_work; the channels are=
+ now
+> > +      * freed, so no new work can be queued. Drain any pending work be=
+fore
+> > +      * the rproc (which the work dereferences) can be freed.
+> > +      */
+> > +     cancel_work_sync(&priv->rproc_work);
+> >  }
+>
+> [Severity: High]
+> Can calling cancel_work_sync(&priv->rproc_work) in imx_dsp_rproc_free_mbo=
+x()
+> cause an ABBA deadlock with rproc->lock?
+>
+> CPU0                              CPU1
+> ----                              ----
+> mutex_lock(&rproc->lock)
+>                                   imx_dsp_rproc_vq_work()
+> cancel_work_sync(&priv->rproc_work)
+>                                     mutex_lock(&rproc->lock)
+>
+>  *** DEADLOCK ***
+>
+> CPU0: __rproc_shutdown() -> rproc_unprepare_device() ->
+>       imx_dsp_rproc_unprepare() -> pm_runtime_put_sync() ->
+>       imx_dsp_runtime_suspend() -> imx_dsp_rproc_free_mbox()
+> CPU1: process_one_work() -> imx_dsp_rproc_vq_work()
+>
+> Because priv->rx_ch remains active until mbox_free_channel(priv->rx_ch) r=
+uns
+> inside imx_dsp_rproc_free_mbox(), an inbound mailbox interrupt before or
+> during shutdown can queue priv->rproc_work while __rproc_shutdown() holds
+> rproc->lock.  imx_dsp_rproc_vq_work() then blocks on rproc->lock while
+> imx_dsp_rproc_free_mbox() waits in cancel_work_sync(&priv->rproc_work).
+>
+> [Severity: Critical]
+> This problem wasn't introduced by this patch, but can unbinding an active
+> DSP remoteproc device skip imx_dsp_rproc_free_mbox() entirely [1] and
+> leave both the mailbox channels and priv->rproc_work active when the rpro=
+c is
+> freed?
+>
+> drivers/remoteproc/imx_dsp_rproc.c:imx_dsp_rproc_probe() {
+>         ...
+>         ret =3D devm_rproc_add(dev, rproc);
+>         if (ret)
+>                 return dev_err_probe(dev, ret, "rproc_add failed\n");
+>
+>         rproc_coredump_set_elf_info(rproc, ELFCLASS32, EM_XTENSA);
+>
+>         return devm_pm_runtime_enable(dev);
+> }
+>
+> Because devm_rproc_add() is registered before devm_pm_runtime_enable(),
+> devres teardown disables runtime PM before devm_rproc_remove() calls
+> rproc_del() and __rproc_shutdown().  When imx_dsp_rproc_unprepare() then
+> calls pm_runtime_put_sync(), rpm_suspend() fails with -EACCES without
+> calling imx_dsp_runtime_suspend() or imx_dsp_rproc_free_mbox(), leaving
+> priv->clks enabled and the mailbox channels and priv->rproc_work able to
+> dereference the freed rproc and imx_dsp_rproc structures.
+>
+> [1] https://sashiko.dev/#/bug/linux-a6e902ee-9958-4d44-96cc-d854c6256124
+>
+> --
+> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261110105436.24=
+87822-1-hj351016@gmail.com?part=3D1
