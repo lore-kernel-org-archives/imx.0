@@ -1,74 +1,71 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.244.194.184
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=161.97.139.27
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794301973;
-	b=2f8M94V5VtvreHIWpIMyLjrp8wrIGgp41ogYEtKP6einzlXbBNfcD2KFw2yiEa8pfH3t
-	 Cs8OSpVlHa5Xb2TlTZ0T4+c5W9Smks4YfN+X7dnqDf7WC+KLE8kRfUk0ahok0KsN/FGuU
-	 UT3vehx2U0UqdkvxJss7qlPGiLNMS8Cnki5eX1umR1LB7xeQPBFZYrPE40T31ZiarHzkA
-	 G34jrNbC3D2QeVsK1gNsmvO8DhwVz1OnS+SoM0dzJ5wfkLZ0ET430F1qpS7te3fyt0xlh
-	 bDiDwC3bFpgN373RoQd70AhoVHZwrSz219hjzhpKvmvwPjiBmmdBOoWz9HhzsnQwinA==
+	t=1794303298;
+	b=OvTujFp+9J9/TBGGx9cy2zbw1cB7Upj96kNIyJPWe8jP0VVH2kH39h7YI9zUSABX2bWE
+	 0sLeQB7eYCG/FL07CjIiJ0nVJB4Fy9uO1WqBoyUANXjr/z2KEa9fj+fJ8eANgBBAORFp2
+	 o2PPIA0nC5PKmkVVvW8cT7uvuatu3xFvJOwgdYhijoBpGl1uu91UTdXXnVG3nQOTlQzAh
+	 ia+TjonBd5KRzEtdjb9nGJTdJZ398eeqGTmknsNAgO8I4vr2gqPyTMcx6BgQzPMkEqrZv
+	 jkd37tjLfhDxRmNtDpgKtnA9sf9Q6Kpr/piNuP+Nn5F8/hCzSMMtrNScoJZMl5i7Oww==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794301973;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:X-Virus-Scanned:
-	 X-Spam-Flag:X-Spam-Score:X-Spam-Level:X-Spam-Status:Received:Received:
-	 Received-SPF:Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:
-	 References:From:Content-Language:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-PPP-Message-ID:X-NC-CID;
-	bh=P6SoTY/qPxSRsFVfVmHV701Duq3Pn8mi7sps2ssRpo0=;
-	b=OcKQ0MdQ5l8rhYbpHetZubYU46N144U4YeLdeAX8fxZo0KzUwkqdU2ktxjFt594/gtzh
-	 /GUk3wYWPGSb2ZXStqErUIRxjhkeqi/wzZbktjmWkYXF7MAiReEVv9DEKOCdGr1GVuG97
-	 q0UGon60/TpScyhT5OD3LPm/2YQUZbiVukoqRL6qYFrQWLp3hQSlsWmpXNHykjr5n3hO3
-	 TdmslhG/MhrqiFzR/CHbgVxp3FNWJI9hQT1lGqJ26aIwGxAg1CZI6DSEq+bMdLITxG9La
-	 8Tj1gZsprpufE5t99st0z+przghbKI0cCKvOOtr0LqAJx8xoXn3vwXZ/iQcbDR3NINg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794303298;
+	h=DMARC-Filter:Received:DKIM-Signature:Date:From:To:Cc:Subject:
+	 Message-ID:In-Reply-To:References:X-Mailer:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=5/I/TK2BRl2LnMysxk0s70GG7ZihlSvhoUVTH7m/jhE=;
+	b=UckJo8teqkjQ0zWpB6D2ZGd1466AKzrc5NXsNDy1YyITHaZVHKU6Xld2hpuxqL+lsePD
+	 4vYVqTGR8m4UqGqUfSn4KJnFAhvox+2pC3GVsCYA/fVuIWYNePxwEE3jYGl1+ZzRPXtm3
+	 8OFS4GKQKxb6UTMhlUl6WeVDKz9ghr3vCFItwxMER0StS3ekTWwi5IEk/c9fXeBCK1I1u
+	 ddngL2Ja3PVZN/lGh4sHGfClFkKoh2rAVN/an4VRoOodC9zHXkXMk9v7aD5vDYHnv9Wr0
+	 5xpavxM3klD0uoHVK2MwjLih06r32mEpkn0Jf2Qz2fsZHF+4DEpl39pn2Jikynerh3g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=leemhuis.info;
-	spf=pass smtp.mailfrom=leemhuis.info;
-	dkim=pass header.d=leemhuis.info header.i=@leemhuis.info header.a=rsa-sha256 header.s=key2 header.b=YOpMKtm7;
-	arc=none smtp.remote-ip=185.244.194.184
-Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [185.244.194.184])
+	dmarc=pass header.from=kemnade.info;
+	spf=pass smtp.mailfrom=kemnade.info;
+	dkim=pass header.d=kemnade.info header.i=@kemnade.info header.a=rsa-sha256 header.s=20220719 header.b=jAsrU0jx;
+	arc=none smtp.remote-ip=161.97.139.27
+Received: from mail2.andi.de1.cc (vmd64148.contaboserver.net [161.97.139.27])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E98B7606A321;
-	Tue, 10 Nov 2026 09:12:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E98B7606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C51EA606C66C
+	for <imx@lists.linux.dev>; Tue, 10 Nov 2026 09:34:57 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C51EA606C66C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=leemhuis.info header.i=@leemhuis.info header.a=rsa-sha256 header.s=key2 header.b=YOpMKtm7
-Received: from relay01-mors.netcup.net (localhost [127.0.0.1])
-	by relay01-mors.netcup.net (Postfix) with ESMTPS id 4jP1B65cV4z9VR8;
-	Tue, 10 Nov 2026 10:11:58 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
-	s=key2; t=1794301918;
-	bh=Uxfq+9SLLu4IfxwcONSpQNLgnskcylSEYAOSXGskFCU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=YOpMKtm7JwzGGfCu+MECFEV5sDtNm1BEiN+bHejH1gjrgt3h9oH5ZSmFAILGWzzJ9
-	 gvPRfPduHW6So2e0/PFgsZpunVb0DOB6Nxp7+bmJpOnoVIlBH2szvnEXV2olYK7iDU
-	 nfde6UVbD/PRqh+BD66cQ3Tar2rjvMXpBcB/dI3JnsNKky1sdLTxr2FI7vYCwCP1I/
-	 xb224RNw4kAXhSd7rPIBA83vLAtHpaagfisnl9hKwTB94f0i1hyEhDCWQ5DLXYA8z/
-	 BcovTzac3iLgylZazUzngZtDl/J1Xk6z1+BZN962esa16W5Iiu6XYu59rhnKOc190r
-	 m5A+ylD9rSs/A==
-Received: from policy01-mors.netcup.net (unknown [46.38.225.35])
-	by relay01-mors.netcup.net (Postfix) with ESMTPS id 4jP1B64vK8z8129;
-	Tue, 10 Nov 2026 10:11:58 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at policy01-mors.netcup.net
-X-Spam-Flag: NO
-X-Spam-Score: -2.901
-X-Spam-Level: 
-Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by policy01-mors.netcup.net (Postfix) with ESMTPS id 4jP1B35ZP6z8tgk;
-	Tue, 10 Nov 2026 10:11:55 +0100 (CET)
-Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
-	by mxe9fb.netcup.net (Postfix) with ESMTPSA id 3321B5FA5B;
-	Tue, 10 Nov 2026 10:11:34 +0100 (CET)
-Authentication-Results: mxe9fb;
-        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=regressions@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
-Received-SPF: pass (mxe9fb: connection is authenticated)
-Message-ID: <f5ddf27a-9771-4967-a9d0-13c09f588402@leemhuis.info>
-Date: Tue, 10 Nov 2026 10:11:31 +0100
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.a=rsa-sha256 header.s=20220719 header.b=jAsrU0jx
+Received: from mail.andi.de1.cc ([2a02:c205:3004:2154::1])
+	by mail2.andi.de1.cc with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <andreas@kemnade.info>)
+	id 1xQiFe-00000002sKi-0nVm
+	for imx@lists.linux.dev;
+	Tue, 10 Nov 2026 10:34:50 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=References:In-Reply-To:Subject:Cc:To:From:
+	Reply-To:Content-ID:Content-Description;
+	bh=5/I/TK2BRl2LnMysxk0s70GG7ZihlSvhoUVTH7m/jhE=; t=1794303290; x=1795512890; 
+	b=jAsrU0jxdT4bhi/7kOnKpXwLM2lKEBnWxAgbxAMqAtOai2IzRK+iFuKWUSqXJ8tp9Ddl2joSYt0
+	gz0xJdCt+YP7zAGoWTs12zApfKVGLGA9UPX/KiJSc8890Px/DAXYfhCx2d5EN3AIT++/s0WIu2BRz
+	awH74//H7JMUWGsL8P3Eht6ijOJXzeWpEho8sN5K0sCemmKXGNprrCTKfrHKnlsFDeP3/KZ9FWchs
+	et/IGUjG/8apqXfHT0DROwxc/3y7oqtPQAFGtR/5PeMWY/wxpioZhDpv1v/ssDWvT90QO5lZ7CMg4
+	XlF+NYRs+AD5FXGOha9XdV5sKc31R+4VNIyg==;
+Date: Tue, 10 Nov 2026 10:34:05 +0100
+From: Andreas Kemnade <andreas@kemnade.info>
+To: Alistair <alistair@alistair23.me>
+Cc: Pablo Mazzini <pmazzini@gmail.com>, Frank Li <Frank.Li@nxp.com>, Sascha
+ Hauer <s.hauer@pengutronix.de>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley	 <conor+dt@kernel.org>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
+ <festevam@gmail.com>, devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/7] ARM: dts: imx: keep the SY7636A VCOM on
+Message-ID: <20261110103405.5e0384bb@kemnade.info>
+In-Reply-To: <54130686e08db48928484e226f48dc31a8c5ee29.camel@alistair23.me>
+References: <20261026003918.155321-1-pmazzini@gmail.com>
+	<20261026003918.155321-2-pmazzini@gmail.com>
+	<20261026083058.04173f10@kemnade.info>
+	<54130686e08db48928484e226f48dc31a8c5ee29.camel@alistair23.me>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; aarch64-unknown-linux-gnu)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -78,63 +75,91 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] cpuidle: psci: boot stall/hang on i.MX8MP
-To: Dario Binacchi <dario.binacchi@amarulasolutions.com>,
- Ulf Hansson <ulfh@kernel.org>
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
- Sudeep Holla <sudeep.holla@kernel.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, Daniel Lezcano <daniel.lezcano@kernel.org>,
- Christian Loehle <christian.loehle@arm.com>,
- Russell King <linux@armlinux.org.uk>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Mike Leach <mike.leach@arm.com>,
- James Clark <james.clark@linaro.org>, Leo Yan <leo.yan@arm.com>,
- Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, linux-pm@vger.kernel.org,
- coresight@lists.linaro.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- regressions@lists.linux.dev
-References: <20261030171910.2822677-1-dario.binacchi@amarulasolutions.com>
-From: Thorsten Leemhuis <regressions@leemhuis.info>
-Content-Language: de-DE, en-US
-In-Reply-To: <20261030171910.2822677-1-dario.binacchi@amarulasolutions.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-PPP-Message-ID: <179430189496.738146.16548204213021020966@mxe9fb.netcup.net>
-X-NC-CID: nXaVOhT/l03j0ELJaOTQF9RW2is43Eqb5I+9yhoMdtaYrpVBfhs=
+Content-Transfer-Encoding: quoted-printable
 
-On 10/30/26 18:19, Dario Binacchi wrote:
-> Hi Ulf,
-> 
-> on an i.MX8M Plus Dual board (Engicam i.Core MX8M Plus), mainline
-> c339f4010dea sometimes stalls for ~0.9 s at boot, or hangs until the
-> watchdog resets the board, right after:
-> 
->   [    0.806123] ledtrig-cpu: registered to indicate activity on CPUs
-> 
-> On a good boot the next message comes ~11 ms later.
-> 
-> About 1 boot out of 3 stalls or hangs. With cpuidle.off=1, or
-> with commit 65705b18162b ("cpuidle: psci: Move initialization a bit
-> earlier in the boot sequence") reverted, 10 out of 10 boots are fine.
+On Tue, 10 Nov 2026 15:23:03 +1000
+Alistair <alistair@alistair23.me> wrote:
 
-Hmmm, nothing happened here. Might have fallen through the cracks, so
-maybe this mail will get thing rolling. If not, I'd suggest you submit a
-revert.
+> On Mon, 2026-10-26 at 08:30 +0100, Andreas Kemnade wrote:
+> > On Mon, 26 Oct 2026 00:39:12 +0000
+> > Pablo Mazzini <pmazzini@gmail.com> wrote:
+> >  =20
+> > > The SY7636A hwmon driver turns VCOM on at probe. The reMarkable 2,
+> > > Kobo
+> > > Libra H2O and Tolino Vision 5 have had the rails on so far. Mark
+> > > VCOM
+> > > always-on before the driver stops doing it.
+> > >=20
+> > > Signed-off-by: Pablo Mazzini <pmazzini@gmail.com>
+> > > ---
+> > > =C2=A0arch/arm/boot/dts/nxp/imx/e70k02.dtsi=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 1 +
+> > > =C2=A0arch/arm/boot/dts/nxp/imx/imx7d-remarkable2.dts | 1 +
+> > > =C2=A02 files changed, 2 insertions(+)
+> > >=20
+> > > diff --git a/arch/arm/boot/dts/nxp/imx/e70k02.dtsi
+> > > b/arch/arm/boot/dts/nxp/imx/e70k02.dtsi
+> > > index dc7ff108aa85..bd9c6c6fa117 100644
+> > > --- a/arch/arm/boot/dts/nxp/imx/e70k02.dtsi
+> > > +++ b/arch/arm/boot/dts/nxp/imx/e70k02.dtsi
+> > > @@ -154,6 +154,7 @@ sy7636: pmic@62 {
+> > > =C2=A0		regulators {
+> > > =C2=A0			reg_epdpmic: vcom {
+> > > =C2=A0				regulator-name =3D "vcom";
+> > > +				regulator-always-on;
+> > > =C2=A0			};
+> > > =C2=A0		};
+> > > =C2=A0	}; =20
+> > No, please not. That regulator is in practice used with a not yet
+> > upstreamed
+> > driver for the EPDC on that platform used to deal with the current
+> > kernels
+> > fp9931 / tps65185 drivers. So it is very welcome to have it not
+> > always turned
+> > on.
+> >=20
+> >  =20
+> > > diff --git a/arch/arm/boot/dts/nxp/imx/imx7d-remarkable2.dts
+> > > b/arch/arm/boot/dts/nxp/imx/imx7d-remarkable2.dts
+> > > index ff9d50942884..6cf5603c0752 100644
+> > > --- a/arch/arm/boot/dts/nxp/imx/imx7d-remarkable2.dts
+> > > +++ b/arch/arm/boot/dts/nxp/imx/imx7d-remarkable2.dts
+> > > @@ -327,6 +327,7 @@ sy7636a: pmic@62 {
+> > > =C2=A0		regulators {
+> > > =C2=A0			reg_epdpmic: vcom {
+> > > =C2=A0				regulator-name =3D "vcom";
+> > > +				regulator-always-on;
+> > > =C2=A0				regulator-boot-on;
+> > > =C2=A0			};
+> > > =C2=A0		}; =20
+> >=20
+> >=20
+> > Here the situation is a bit different. If I remember correctly, there
+> > is some special EPD logic in userspace on top of some ordinary kernel
+> > display driver. But thesse things are missing is devicetree?! But =20
+>=20
+> Yeah, the kernel just exposes a framebuffer and a special secret sauce
+> userspace program writes to that.
 
-Or was there progress or even a fix and I just missed it?
+Looking at that processor. It seems to have an EPDC like the i.MX6 has.
+Looking even further. The Kobo factory kernel for i.MX6SLL devices specifies
+fsl,imx7d-epdc as compatible for that.
+So if your display is just connected to that EPDC, then you could probably
+wire up things on top of my EPDC driver with DRM interface.
 
-Ciao, Thorsten
+So you still too need to run your own fork for the display?=20
 
-> I haven't dug into it much. The stall seems to be in
-> pl330_driver_init(), so my guess is that it is related to the AMBA bus
-> reading the ID registers of the CoreSight ETMs while a CPU is already
-> in cpu_pd_wait, but I may well be wrong.
-> 
-> Any idea?
-> 
-> #regzbot introduced: 65705b18162b
-> 
-> Thanks,
-> Dario
+>=20
+> > that might need to learn to deal with regulator enabling/disabling.
+> >=20
+> > Regulator always on is probably not desired here, either. =20
+>=20
+> Yeah, I **think** we don't need that
+>=20
+You just need to add logic to enable/disable the regulator (if it is not
+wired up yet). But it is nothing from the perspective of mainline to worry
+about.
 
+Regards,
+Andreas
