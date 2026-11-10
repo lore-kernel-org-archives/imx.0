@@ -1,89 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794308364;
-	b=4g7NSgYfUq/H2vzSHm7054yuCEXt/SGKEozNfJCtBhqy3l6TePxt2NtUcpSnZwZGn9kf
-	 531yjZgomFdOtJ0F6sLG8o8a76cCjAYP++vNv5uALSBfxs2QlLfUocA5nya88fgUJSDMt
-	 DOEjXI3Uf4bDt5BfzNwS7EAaQ8hjuakEgmYmRBP1SFsPNVy3LgTpP3d4Jj8knbsaEAtSa
-	 n1Tnby20T38xaL+AVzRTNrsnCUHiS6WzebR4RQKfdh2287VQGpQTlHTqB6QqmgrZopXLi
-	 LCEmJWlPnB84LFARIFrq9j1gp+vCe4ad4ey5vUXkEF7hMMVL5zkCC4Q2sgXvvLWSiXg==
+	t=1794308890;
+	b=i89ScRAqWxP1hBqQCMozGKmibMZGZG1j5Ok5V02Cw/fKxRYvHzA3G08/b56dFBGxZ5/Z
+	 VXd13g5YNY8G2CNUz9GzFoajE6sftE7y+C8ozjrecICYBiNxSIniG6KefbTrP+hUE+ez6
+	 SjKpcOdC0qNziN9vmDE9hCuiNxXHB20pEZlF7QVJEre9h0HB+ns0JaaiZ8YzOXHbgWg7F
+	 d8+yWCyGDNBGwOAyPD/hdahqxLKsYU6ijaJkWz5G57kbbVp4HObcBtCxQ4a6MAk0h+rFQ
+	 UhXNdeEtQZ72cYObWrCLGX0u77rhLkG+l7plhG6pWLXbD9XlB6my5B/1Bgx9BIlUWIQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794308364;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:Date:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key;
-	bh=pvF6QhKLZwUOSdpU5it2yFnQfDJc4l9yR6jPH+WNhbY=;
-	b=LF09S7HZoLa87saX5WEBfVqL0XQT+lOWVWUhDCWKC3LyEus4+49yxd4iL5JdOrskpwe9
-	 9jenIv/ANCy+Ev4mfNxvuqFkFtDqmWtFfjhnRUy+ixooytMxjtvLfYJTi4YGSbOnv+MOA
-	 4khve7rE9sWPGXzoFKv0QUDSl/uNHX+pXAqkTVpkTjX4NWBRGuSQtGyeAMr5PIpemMyKu
-	 QanfAox4PIcspx7W2K6rQXy8mlh6jV+Kuthed0G2DCGsCIZIhPdGQglW1k0Cdcu9lubRh
-	 jCv7WGs9AJ6U5TIPFkAyGE/r2he6BGksqRHbgTPd5VDQUeyX4XQVcAYUNV3Z+aJAwZw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794308890;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=WtMHmjUCEUwqqQ/+rWPbGLjO3wgktfNeslMON7EWwXs=;
+	b=oEPxC4J4NBMVCN88wS2B+QFo2/WJpAMn1jk06waILw3xpseq2IEMrvQcSotwiOgz6vJb
+	 BBK9JwCs0IRPOW32UKSdX+/En4C5x5ANQb4X875F5diPE0/wQRAU+v/QaokyK7xEBarOB
+	 RakrX9FHDsOSpzYl6jQ2pX0OLjMuSVdp0CrEVdAjnJceqv9ZTOglWkW4mM++0PFVvJd1l
+	 gkpdZYvpo0qCn0hrq8NFYQ+I2yn8uv7vmCLlQ8E9ljzGr8Juj/dhLtKLMtwRqvfpnIwi9
+	 /F80rr/I4ELc1waS/hX2ziy6hWgVRl+HSAMfhgVQ32j3gUJVXM69oNpiBLsNbvt5TZQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="SE/m63E4";
-	arc=none smtp.remote-ip=209.85.221.52
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=G3gATdQi;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36F3660A3817
-	for <imx@lists.linux.dev>; Tue, 10 Nov 2026 10:59:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 36F3660A3817
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21067606A321
+	for <imx@lists.linux.dev>; Tue, 10 Nov 2026 11:08:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=SE/m63E4
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-48dfc0421d9so1583110f8f.1
-        for <imx@lists.linux.dev>; Tue, 10 Nov 2026 02:59:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794308362; x=1794913162; darn=lists.linux.dev;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=pvF6QhKLZwUOSdpU5it2yFnQfDJc4l9yR6jPH+WNhbY=;
-        b=SE/m63E4hsgW22R0tb1i0hl8brBA1a3UZk/DiqOfm5mG3CPzZTKFNzlzJNFBY7htUK
-         dTysiV9bK9b12uzGs8P/dpejB3V+6uJKdoSmZ0W8wRovC/QlOKw/MTTuZboS856KMZnL
-         sxc+yw/e36EgQGqZbKFyvc4FBdRa3wytyl3qZymE7g6VaZ01s/faxvk4RqexGsaqkQLi
-         lh5eS6kXO6tJsCzToN2dP8dXSU7Ya1CDqlij5/KPQ4gURG8Z5cY1tlcV8E+4eRIS4q2m
-         ewY1c/w5IR4aaVok0JOI5+8oWEYAUumiBsZyrF4cSpKLdO+Iur2lcrc7U+zeuBF1PE7+
-         YtNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794308362; x=1794913162;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=pvF6QhKLZwUOSdpU5it2yFnQfDJc4l9yR6jPH+WNhbY=;
-        b=uKnQTm20WHKDcCmhyUF3yDKi/n0UOFOZq2hbR+3cP3I4ea6L9v7GUrEefHM5F/gr58
-         LTLGlA5PSNAaMnrlhooK5FOazWpTgJIn0/JQr/EdLQ8L4F/z0nWl2v1cKXjjwSaMjqzx
-         Fc6dt6nJZFjvdj6K5m3PTWIZ9puUEiYkiRJhb7mE/qBTZwoe5gHlYxp6+8FuL0YHEYLy
-         jMWPJ9K8nf+I7dK19cK5iePhB5TcPA88KJEHG7cuOcD/U6YOS184sCQmW+Z0Ka4a+PwC
-         nnh3Yq+o+9ssqH6DqiLU48Js4AtDFfGBOwEUUeEurNlrNSdKCuL554lBoi1mrwJE9CDg
-         md7Q==
-X-Forwarded-Encrypted: i=1; AL+hErGOsEl3YoAfnmJTTmYyARVqKt4UP2CONrNb2aQLLUXWmNvzFzphPouJMK/yHuZAMZ5bn/o=@lists.linux.dev
-X-Gm-Message-State: APuU4Z+lA1GtAZQMfFvQDhEdsx5zQb4W3KS5l4hayyqp5mjQNq2sspwC
-	DgselZIXB/jMs79U2rCT/H1URZARqYPeKiTHO1qoMDrd1CLfUwfW6GEA
-X-Gm-Gg: AYBFou07QFuYahgZPEwpjy+h3nBuAgyrtvPydrDi0OaIwknC5VBjxtokrPxyFuQvtej
-	96NWr9HJIhgsYRl4LzrYAh0vYtmuNIqKB3LnSF404qwNpecc/nrqlYqIBBD25dGhoUtE0761lzD
-	R/CH4uKiGMZUCAvusedcW9OD312I/RtuKK+KyFMd6/gGSJPMEQO8vBFsani/w7fOZBKxrEKhRpk
-	7WuEYtv0zS6hea6udh7ZpU5FzXQo4YccJU29iMry4O99xpJoRixXqSa+WtJ6oTY5CSRAP/X8TDK
-	Taopt4k9afGdDimGTNnw2t+Arvc9qDUVCctomK2QuzTpj+8pGOGoy0UZFgbDxMBdFXlDGSn5RKw
-	ZHovNISQz/ljt/RyGClIcokmsru9Yd1/VdzUQVkbZUi8OGxydMFWh278e4lZehTfdIc1oGyxQcM
-	VS7hUu4ZMmkzJVylXD6y2P0ynZ4b7u2FnMpbGMBV883kl4JFgHHF2oSI3Myo3W3cHL//lEW9U0g
-	Z6u/V0uMCTP2jXz9Z/Hlkog5iTc1bJtdgvfth+1p4H+h0rBAIGYyk7ONxL2lr4h3GkUYrf4otNY
-	/bM/G4Hqq7kpJc37XGIul9ohICfPSyhyOUqPoQNynJuMcnMl+Lw3YWqd7wp2E/BuUyOi00k5wJe
-	/URugYsgAFr6rceaHZXSb29fBbRSA4i+/CGm41qYMeYCMcDGUzZg=
-X-Received: by 2002:adf:e00b:0:20b0:491:273c:9649 with SMTP id ffacd0b85a97d-4982ecf6922mr2926241f8f.15.1794308362368;
-        Tue, 10 Nov 2026 02:59:22 -0800 (PST)
-Received: from [10.0.1.33] (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch. [83.173.201.248])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4988bdef64dsm2933551f8f.20.2026.11.10.02.59.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Nov 2026 02:59:21 -0800 (PST)
-From: Antoine Gouby <antoine.gouby@gmail.com>
-Date: Tue, 10 Nov 2026 11:59:18 +0100
-Subject: [PATCH v2 6/6] ARM: dts: imx6dl-colibri: Add VGA overlay
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=G3gATdQi
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85D711F0089F;
+	Tue, 10 Nov 2026 11:08:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794308889;
+	bh=WtMHmjUCEUwqqQ/+rWPbGLjO3wgktfNeslMON7EWwXs=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=G3gATdQikpVvlLlKsNx7hacoU7PY1J/FClL97pWFMAJt1J/EWTwU81GCcocbW9vz7
+	 mJFeuYUyF11kE7kYyQyli+eMhjtlRXkPc1z3jU/dMEzTSkKN7eXIsl+95j9nseovUK
+	 PZY3Ie9RqaJN4l6grTIj0I3r/xXSb84mUnXc+/n6u3VEoFv0zmBNu+pK6xvKkBYIjf
+	 iPj7+qsaf1j5osOqMQ5l3MSikVKo9LjPIvnP07GbFA9LHpAplggQxMT2UA251YN7rS
+	 jsgW1Yt6IdopNZhmw1lk8f8QUvBenHbto2PFYbSUx1Jm1PA9pglsbC0kmVN4Y39nW1
+	 FrPKa58pHuTMg==
+Message-ID: <sashiko-outbox-206921@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] remoteproc: imx_dsp_rproc: drain the vq work before
+ freeing the mailbox
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Hyunjung Ko" <hj351016@gmail.com>
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <20261110105436.2487822-1-hj351016@gmail.com>
+References: <20261110105436.2487822-1-hj351016@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 10 Nov 2026 11:08:09 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -92,190 +59,97 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261110-colibri-imx6-overlays-v2-6-9776c186d953@toradex.com>
-References: <20261110-colibri-imx6-overlays-v2-0-9776c186d953@toradex.com>
-In-Reply-To: <20261110-colibri-imx6-overlays-v2-0-9776c186d953@toradex.com>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, 
- Francesco Dolcini <francesco.dolcini@toradex.com>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Antoine Gouby <antoine.gouby@toradex.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4935;
- i=antoine.gouby@toradex.com; h=from:subject:message-id;
- bh=BTOXFn7FRMReU92cBtLstQ5vnpngA8gkkNTJbTILgmo=;
- b=owGbwMvMwCWm0rPo7MxLN2YynlZLYsj69JPZo//o0vZ5PDcNAx6brspzm/9t6edJf1f6+Gzfs
- PWJkfSuNR2lLAxiXAyyYoosGU9UBfkUQmQ9OJqTYeawMoEMYeDiFICJKEgyMnSkxU3lErp3ny+r
- IcJp+ezJG2qS4v+l1a379uVgXhXLztcM//Su3Xp7TElgf8qi1XJ+R7jXrJ6u2c+7TUo5/vgJi9B
- di/kB
-X-Developer-Key: i=antoine.gouby@toradex.com; a=openpgp;
- fpr=68E425110E20541D48088363248CA2CD99D2D899
 
-From: Antoine Gouby <antoine.gouby@toradex.com>
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [High] remoteproc: imx_dsp_rproc: AB-BA deadlock in
+  imx_dsp_rproc_free_mbox()
+It also noticed 1 related pre-existing issue this patch does not
+introduce:
+- [Critical] remoteproc: imx_dsp_rproc: use-after-free and resource
+  leaks on unbind [1]
+--
 
-Add a device tree overlay for the VGA output on the Colibri iMX6
-parallel RGB LCD interface. The VGA output is driven through a
-non-programmable video DAC without VESA DDC I2C signals to a DVI
-connector. The DAC power-save input is driven by the BL_ON signal on
-SODIMM 71, like on the Colibri iMX6ULL and Colibri iMX7.
+commit 17e3fec9a8c6e436afd532f653405b5a78e316af
+Author: Hyunjung Ko <hj351016@gmail.com>
 
-The overlay is also combined with the Colibri iMX6 V1.2 Aster,
-Evaluation Board v3, Iris and Iris v2 carrier board device trees to
-provide ready-to-use DTBs.
+remoteproc: imx_dsp_rproc: drain the vq work before freeing the mailbox
 
-Signed-off-by: Antoine Gouby <antoine.gouby@toradex.com>
----
- arch/arm/boot/dts/nxp/imx/Makefile                | 21 +++++++
- arch/arm/boot/dts/nxp/imx/imx6dl-colibri-vga.dtso | 67 +++++++++++++++++++++++
- 2 files changed, 88 insertions(+)
+This commit calls cancel_work_sync(&priv->rproc_work) in
+imx_dsp_rproc_free_mbox() after freeing the mailbox channels to drain any
+pending virtqueue work item.
 
-diff --git a/arch/arm/boot/dts/nxp/imx/Makefile b/arch/arm/boot/dts/nxp/imx/Makefile
-index c15b09c058eb..cd4c8062e678 100644
---- a/arch/arm/boot/dts/nxp/imx/Makefile
-+++ b/arch/arm/boot/dts/nxp/imx/Makefile
-@@ -84,6 +84,10 @@ imx6dl-colibri-v1.2-aster-tdx-panel-cap-touch-7inch-parallel-dtbs := \
- 	imx6dl-colibri-v1.2-aster.dtb \
- 	imx6dl-colibri-tdx-panel-cap-touch-7inch-parallel.dtbo
- 
-+imx6dl-colibri-v1.2-aster-vga-dtbs := \
-+	imx6dl-colibri-v1.2-aster.dtb \
-+	imx6dl-colibri-vga.dtbo
-+
- imx6dl-colibri-v1.2-eval-v3-hdmi-dtbs := \
- 	imx6dl-colibri-v1.2-eval-v3.dtb \
- 	imx-hdmi.dtbo
-@@ -96,10 +100,18 @@ imx6dl-colibri-v1.2-eval-v3-tdx-panel-res-touch-7inch-parallel-dtbs := \
- 	imx6dl-colibri-v1.2-eval-v3.dtb \
- 	imx6dl-colibri-tdx-panel-res-touch-7inch-parallel.dtbo
- 
-+imx6dl-colibri-v1.2-eval-v3-vga-dtbs := \
-+	imx6dl-colibri-v1.2-eval-v3.dtb \
-+	imx6dl-colibri-vga.dtbo
-+
- imx6dl-colibri-v1.2-iris-hdmi-dtbs := \
- 	imx6dl-colibri-v1.2-iris.dtb \
- 	imx-hdmi.dtbo
- 
-+imx6dl-colibri-v1.2-iris-vga-dtbs := \
-+	imx6dl-colibri-v1.2-iris.dtb \
-+	imx6dl-colibri-vga.dtbo
-+
- imx6dl-colibri-v1.2-iris-v2-hdmi-dtbs := \
- 	imx6dl-colibri-v1.2-iris-v2.dtb \
- 	imx-hdmi.dtbo
-@@ -108,6 +120,10 @@ imx6dl-colibri-v1.2-iris-v2-tdx-panel-cap-touch-7inch-parallel-dtbs := \
- 	imx6dl-colibri-v1.2-iris-v2.dtb \
- 	imx6dl-colibri-tdx-panel-cap-touch-7inch-parallel.dtbo
- 
-+imx6dl-colibri-v1.2-iris-v2-vga-dtbs := \
-+	imx6dl-colibri-v1.2-iris-v2.dtb \
-+	imx6dl-colibri-vga.dtbo
-+
- imx6qdl-dhcom-pdk2-overlay-497-200-x12-dtbs := \
- 	imx6q-dhcom-pdk2.dtb \
- 	imx6qdl-dhcom-pdk2-overlay-497-200-x12.dtbo
-@@ -154,15 +170,20 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
- 	imx6dl-colibri-v1.2-aster.dtb \
- 	imx6dl-colibri-v1.2-aster-hdmi.dtb \
- 	imx6dl-colibri-v1.2-aster-tdx-panel-cap-touch-7inch-parallel.dtb \
-+	imx6dl-colibri-v1.2-aster-vga.dtb \
- 	imx6dl-colibri-v1.2-eval-v3.dtb \
- 	imx6dl-colibri-v1.2-eval-v3-hdmi.dtb \
- 	imx6dl-colibri-v1.2-eval-v3-tdx-panel-cap-touch-7inch-parallel-touch-adapter.dtb \
- 	imx6dl-colibri-v1.2-eval-v3-tdx-panel-res-touch-7inch-parallel.dtb \
-+	imx6dl-colibri-v1.2-eval-v3-vga.dtb \
- 	imx6dl-colibri-v1.2-iris.dtb \
- 	imx6dl-colibri-v1.2-iris-hdmi.dtb \
-+	imx6dl-colibri-v1.2-iris-vga.dtb \
- 	imx6dl-colibri-v1.2-iris-v2.dtb \
- 	imx6dl-colibri-v1.2-iris-v2-hdmi.dtb \
- 	imx6dl-colibri-v1.2-iris-v2-tdx-panel-cap-touch-7inch-parallel.dtb \
-+	imx6dl-colibri-v1.2-iris-v2-vga.dtb \
-+	imx6dl-colibri-vga.dtbo \
- 	imx6dl-cubox-i.dtb \
- 	imx6dl-cubox-i-emmc-som-v15.dtb \
- 	imx6dl-cubox-i-som-v15.dtb \
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6dl-colibri-vga.dtso b/arch/arm/boot/dts/nxp/imx/imx6dl-colibri-vga.dtso
-new file mode 100644
-index 000000000000..f22f1969a6a8
---- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx6dl-colibri-vga.dtso
-@@ -0,0 +1,67 @@
-+// SPDX-License-Identifier: GPL-2.0-only OR MIT
-+/*
-+ * Copyright (c) Toradex
-+ *
-+ * VGA output connected to the Colibri parallel RGB LCD interface through a
-+ * non-programmable video DAC with a DVI connector.
-+ *
-+ * The VGA output is available on multiple carrier boards (including Iris,
-+ * Eval, Aster) without VESA DDC I2C signals.
-+ *
-+ * The DAC power-save input is driven by the BL_ON signal on SODIMM 71.
-+ */
-+
-+/dts-v1/;
-+/plugin/;
-+
-+#include <dt-bindings/gpio/gpio.h>
-+
-+&{/} {
-+	vga-encoder {
-+		compatible = "dumb-vga-dac";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_gpio_bl_on>;
-+		/* Colibri SODIMM 71 - BL_ON */
-+		enable-gpios = <&gpio3 26 GPIO_ACTIVE_HIGH>;
-+
-+		ports {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+
-+			port@0 {
-+				reg = <0>;
-+
-+				vga_enc_in: endpoint {
-+					remote-endpoint = <&lcd_display_out>;
-+				};
-+			};
-+
-+			port@1 {
-+				reg = <1>;
-+
-+				vga_enc_out: endpoint {
-+					remote-endpoint = <&dvi_connector_in>;
-+				};
-+			};
-+		};
-+	};
-+
-+	dvi-connector {
-+		compatible = "dvi-connector";
-+		analog;
-+
-+		port {
-+			dvi_connector_in: endpoint {
-+				remote-endpoint = <&vga_enc_out>;
-+			};
-+		};
-+	};
-+};
-+
-+&lcd_display {
-+	status = "okay";
-+};
-+
-+&lcd_display_out {
-+	remote-endpoint = <&vga_enc_in>;
-+};
+> diff --git a/drivers/remoteproc/imx_dsp_rproc.c b/drivers/remoteproc/imx_=
+dsp_rproc.c
+> index 96d619daf3f5b..89c72d916b1e4 100644
+> --- a/drivers/remoteproc/imx_dsp_rproc.c
+> +++ b/drivers/remoteproc/imx_dsp_rproc.c
+> @@ -642,6 +642,13 @@ static void imx_dsp_rproc_free_mbox(struct imx_dsp_r=
+proc *priv)
+>  	mbox_free_channel(priv->tx_ch);
+>  	mbox_free_channel(priv->rx_ch);
+>  	mbox_free_channel(priv->rxdb_ch);
+> +
+> +	/*
+> +	 * The mailbox rx callback schedules rproc_work; the channels are now
+> +	 * freed, so no new work can be queued. Drain any pending work before
+> +	 * the rproc (which the work dereferences) can be freed.
+> +	 */
+> +	cancel_work_sync(&priv->rproc_work);
+>  }
 
--- 
-2.55.0
+[Severity: High]
+Can calling cancel_work_sync(&priv->rproc_work) in imx_dsp_rproc_free_mbox()
+cause an ABBA deadlock with rproc->lock?
 
+CPU0                              CPU1
+----                              ----
+mutex_lock(&rproc->lock)
+                                  imx_dsp_rproc_vq_work()
+cancel_work_sync(&priv->rproc_work)
+                                    mutex_lock(&rproc->lock)
+
+ *** DEADLOCK ***
+
+CPU0: __rproc_shutdown() -> rproc_unprepare_device() ->
+      imx_dsp_rproc_unprepare() -> pm_runtime_put_sync() ->
+      imx_dsp_runtime_suspend() -> imx_dsp_rproc_free_mbox()
+CPU1: process_one_work() -> imx_dsp_rproc_vq_work()
+
+Because priv->rx_ch remains active until mbox_free_channel(priv->rx_ch) runs
+inside imx_dsp_rproc_free_mbox(), an inbound mailbox interrupt before or
+during shutdown can queue priv->rproc_work while __rproc_shutdown() holds
+rproc->lock.  imx_dsp_rproc_vq_work() then blocks on rproc->lock while
+imx_dsp_rproc_free_mbox() waits in cancel_work_sync(&priv->rproc_work).
+
+[Severity: Critical]
+This problem wasn't introduced by this patch, but can unbinding an active
+DSP remoteproc device skip imx_dsp_rproc_free_mbox() entirely [1] and
+leave both the mailbox channels and priv->rproc_work active when the rproc =
+is
+freed?
+
+drivers/remoteproc/imx_dsp_rproc.c:imx_dsp_rproc_probe() {
+	...
+	ret =3D devm_rproc_add(dev, rproc);
+	if (ret)
+		return dev_err_probe(dev, ret, "rproc_add failed\n");
+
+	rproc_coredump_set_elf_info(rproc, ELFCLASS32, EM_XTENSA);
+
+	return devm_pm_runtime_enable(dev);
+}
+
+Because devm_rproc_add() is registered before devm_pm_runtime_enable(),
+devres teardown disables runtime PM before devm_rproc_remove() calls
+rproc_del() and __rproc_shutdown().  When imx_dsp_rproc_unprepare() then
+calls pm_runtime_put_sync(), rpm_suspend() fails with -EACCES without
+calling imx_dsp_runtime_suspend() or imx_dsp_rproc_free_mbox(), leaving
+priv->clks enabled and the mailbox channels and priv->rproc_work able to
+dereference the freed rproc and imx_dsp_rproc structures.
+
+[1] https://sashiko.dev/#/bug/linux-a6e902ee-9958-4d44-96cc-d854c6256124
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261110105436.2487=
+822-1-hj351016@gmail.com?part=3D1
