@@ -1,57 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794321490;
-	b=cvzY1PfUivoEwU9iq6FuDvkfo73XhIP46KUMJfN9rgj8MWbB3eqyoG//vd45/eZk/kEK
-	 nhqY+3txFO642WeMyawmthgveIqyNb6c5uptv4RBVCmmFzCa6syAA7giT3QBGZubYW3im
-	 wi4zf4HR8sbk4RqvwdOZPXz5hEStTXJq7ahSsYpqJznP+Wnr83Ji616jDGfOcxsdIz8qS
-	 +/j6aynr70NMIz+vcNKBzh94vgTL2bJ717ic0XPtELJY4V98J+cCXtHZicc3aI6piVsZT
-	 YupZiBd6AXtEedxRKVUS9m+hZ9xyjzh0yXqHGiXxVw3bS0qb6+t2KZO3SMCdT790nvw==
+	t=1794321801;
+	b=MKKL+klHT8WO4nHszhEseJ+/hhL4n95kRSYyMitjBmyJw+tbUn6sLVvbXoEtmCLweove
+	 +VKjia7MvhkPub0b+dCLUI7cc/yeqnb7XAndXn7YpV87KRe8aUgu/6rRcsOMcatwnExcH
+	 hHaniYMTIkkwUB4XmNJhlKgIT/8yn2iIHqrV57p3Jffm53YKlkFKFR8IFwOAaL07hrpHZ
+	 c0+qjX2A7mzTi0E/ufJRFG9/cMDMKr59zbCMN0Qt45EniNFPYnUDmAgTkkbsjJg5rlWrq
+	 xxBb2JYDShvtoNH4xe4+ZDfgusuepWtmBZSWlpFk9okH2JvmXCj89rsEleOKDLCuWiQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794321490;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=XCQ4BpmbSEaUSr01Uk+YaKL7h9w454CVbTPcasGsk4k=;
-	b=W0htm9wCEDH4MV6GO4R9aScj19WwWnQMaXm39Z6N40CWy9ONW1ChI3tTHj6h6thBO00g
-	 gSnDTlwquqx+flvqx0f0gTUwGWFnIMG/cPqGT8ykc0Xv4UCjXiUOpIrHcVRRApclJq/SV
-	 GUGQCstCxiSIVt00chYPlOqmJbZ+OItcjlQ3Nq5WHxBZ6x22VdSm2ogKs9PheDnCMYVUC
-	 k2pzHuEYpJsXH/4TL0zaL1VlEN8jUb9tIxceELmDdVidqTX5NfaE/0YN6x3Joe1FRVshg
-	 LP4rk/gS2WXmPm/EbZTFZuUPFKD/dpRElkOtmvDVW5WlY9KcLyTvhy1KpXyIdcYRaDQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794321801;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=xy3xjpeII+ISxdGXftLppTbqcukaKKLwMFzsxm43o7w=;
+	b=T91VTfC4CLeP75YwPVgtD8FcYUNL/zjJw9mIJkJm4/kIzyv0xalrEnZFZK0ZmohM0Qbv
+	 7eleOzsoWXwGywYcwn4eMNAul/uQlwuFK5d1VcelAwrT/8/zq0NV99d40KQCjHEqMbYNz
+	 xNgqntsyiUunQKKCc6TgNsGKyBlMSB1GM3NK6h/gpkVqa7ez8ta4yo5D+pd5WFmPg9FpN
+	 RFj2COSeFRbj6d3/kKVq2iDVXpZar+KNiEahh9xP04/itq96C3W97ts8BDys4GuwwM06J
+	 k+K7P5JeBkdAfcmLr+sDC1inK/ykuna4D4SpF3FzAgfwzJ2khNueuC15UnSjlt1SO9w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Nu9TwdKD;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FD26606A326;
-	Tue, 10 Nov 2026 14:38:10 +0000 (UTC)
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=FnppE1Qb;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D53EB60A2639
+	for <imx@lists.linux.dev>; Tue, 10 Nov 2026 14:43:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D53EB60A2639
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Nu9TwdKD
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 206DC1F008A2;
-	Tue, 10 Nov 2026 14:38:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794321489;
-	bh=XCQ4BpmbSEaUSr01Uk+YaKL7h9w454CVbTPcasGsk4k=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Nu9TwdKDDj4ZLDpngm0UBd3cXjDCHagZoIYopSe/FcT85cn8osmuetduIBWlhcg8i
-	 y6gXzK4iSofa7BuQaZhgTOBLu+XJzIvAhDdhCq9Zj7BwIdtUyGnO0e/5nsm5BHv6M8
-	 VRgi2rV5oN5zYPdgRJrcbJ5dQtGp5ZQKNprky9aDehtwxHBceFUWM27ijWktWE613T
-	 ivcvLi7t3xxzR+Dmy4AEA+7XSd417AG0H+6z7J06/EV7Sg7jc3QOZfTamrupq/lrim
-	 OE/h6oh0ZF+39Cgk8iJ9SDP1upGQPD3KaYwGJcfW5l6J0JMCdtQG2vXu8kAG57e1Og
-	 5V94jXISgnHng==
-Message-ID: <sashiko-outbox-207200@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 2/2] mfd: mxs-lradc: Pass parent IRQs to child
- drivers
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Fabio Estevam" <festevam@gmail.com>
-Cc: linux-input@vger.kernel.org, mfd@lists.linux.dev, devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org, dmitry.torokhov@gmail.com, lee@kernel.org
-In-Reply-To: <20261110141934.42490-2-festevam@gmail.com>
-References: <20261110141934.42490-1-festevam@gmail.com>
- <20261110141934.42490-2-festevam@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 10 Nov 2026 14:38:06 +0000
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=FnppE1Qb
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 440DA1477;
+	Tue, 10 Nov 2026 06:43:17 -0800 (PST)
+Received: from pluto (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4E8AA3F632;
+	Tue, 10 Nov 2026 06:43:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1794321800; bh=vd5r4VdqjOBRM0Vqs8yo1BB1AiJgxUtyT/L7aP/x6IQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=FnppE1QbxEEUZLESdF1mATcmg3WUDOHbfMl1F3vRGImPAYpG4d57tCF5oZeuXZD2i
+	 MRyW0CUoTQ+gkYoDYJhVc6IgDD/4QRIwH7EUqb0QNLUnrKkAWZ+Xmoeae3UF/C9f7V
+	 qrs/WE8u86pOF8n5ikhqhiQJiKJB2FxpRQs7Ds6Y=
+Date: Tue, 10 Nov 2026 14:43:15 +0000
+From: Cristian Marussi <cristian.marussi@arm.com>
+To: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Cc: Sudeep Holla <sudeep.holla@kernel.org>,
+	Cristian Marussi <cristian.marussi@arm.com>, imx@lists.linux.dev,
+	Peng Fan <peng.fan@nxp.com>, linux-amarula@amarulasolutions.com,
+	arm-scmi@vger.kernel.org, michael@amarulasolutions.com,
+	Brian Masney <bmasney+clk@redhat.com>,
+	Jerome Brunet <jbrunet+clk@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, linux-clk@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v15 2/2] clk: scmi: reject SSC configuration out of the
+ OEM field range
+Message-ID: <avMtgxmGXTbTKG1t@pluto>
+References: <20261104103620.4054694-1-dario.binacchi@amarulasolutions.com>
+ <20261104103620.4054694-3-dario.binacchi@amarulasolutions.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -60,60 +66,32 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261104103620.4054694-3-dario.binacchi@amarulasolutions.com>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Low] mfd: mxs-lradc: Fixes trailer cites driver-core warning commit
---
+On Wed, Nov 04, 2026 at 11:36:03AM +0100, Dario Binacchi wrote:
+> The i.MX SCMI OEM extension stores the spread in an 8-bit field, in
+> tenths of a percent, and the modulation frequency in a 16-bit field.
+> 
+> FIELD_PREP() silently truncates values that do not fit in the target
+> field. Moreover, the conversion from permyriad to tenths of a percent
+> turns values below 10 permyriad into zero, which is then passed to the
+> firmware as no spread at all.
+> 
+> Reject these cases with a warning instead of silently programming a
+> configuration different from the requested one.
+> 
+> A request with no spread method disables SSC, so send a zeroed
+> configuration to the firmware in that case, without checking the
+> spread and the modulation frequency, which are meaningless then.
+> 
+> Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+> 
 
-commit fbb3c430756f909de04d8f2ea7a88e5473612cd3
-Author: Fabio Estevam <festevam@gmail.com>
+LGTM.
+From: Cristian Marussi <cristian.marussi@arm.com>
 
-> mfd: mxs-lradc: Pass parent IRQs to child drivers
->=20
-> The MFD driver stores raw DT interrupt indices in IRQ resources but
-> registers its child devices without an IRQ domain or IRQ base. The child
-> drivers consequently receive the indices as if they were mapped Linux
-> IRQ numbers. IRQ index 0 triggers the platform_get_irq_byname() warning:
->=20
->   0 is an invalid IRQ number
->=20
-> The children then try to recover the indices from their resources and
-> map them against the parent OF node. Besides duplicating IRQ names in
-> the parent and children, this relies on invalid platform IRQ resources
-> and fails when IRQ 0 is rejected.
->=20
-> Resolve the interrupts with platform_get_irq() in the MFD parent and
-> store the mapped IRQs in the shared LRADC data. Drop the child IRQ
-> resources and duplicated name arrays, and have both child drivers
-> request the mapped IRQs directly. Use the MFD memory base support to
-> translate a single relative memory resource shared by both cells.
->=20
-> Tested on an i.MX28 EVK. The mxs-lradc-ts driver probes successfully,
-> touch events are reported, and the touch-detect and LRADC channel 7
-> interrupt counters increase as expected.
->=20
-> Cc: stable@vger.kernel.org
-> Suggested-by: Lee Jones <lee@kernel.org>
-> Closes: https://lore.kernel.org/linux-input/CAOMZO5CgTzo6GuXptD4mFTN=3DUs=
-JJqpkixDW1Q64gqZGrij8+uQ@mail.gmail.com/
-> Fixes: a85a6c86c25b ("driver core: platform: Clarify that IRQ 0 is invali=
-d")
-> Signed-off-by: Fabio Estevam <festevam@gmail.com>
-
-[Severity: Low]
-Commit a85a6c86c25b ("driver core: platform: Clarify that IRQ 0 is
-invalid") only added a warning in the platform driver core when an
-IORESOURCE_IRQ resource has start =3D=3D 0.  The unmapped DT interrupt indi=
-ces
-in the MFD cell resources and the irq_of_parse_and_map() workaround in the
-child drivers were introduced when the driver was split in ead25133e935
-("mfd: mxs-lradc: Add support for mxs-lradc"), 6dd112b9f85e ("iio: adc:
-mxs-lradc: Add support for ADC driver"), and d81ca730e3e4 ("input:
-touchscreen: mxs-lradc: Add support for touchscreen").
-
-Should the Fixes: tag reference those commits instead?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261110141934.4249=
-0-1-festevam@gmail.com?part=3D2
+Thanks,
+Cristian
