@@ -1,152 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.65.62
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794300384;
-	b=EO2LdPXJoAA3N2fl39pt/Pk+9CzLIFUSke9OtVTGwL7I7NHzsCoayZx48/99izOPCxaU
-	 4PUwzodKElyd2ostLmL0QRFVbf+MoKRFv7dz2RBisF/75iaVT66yNKpW51m0CdZimsNHL
-	 Qc/Vjr+uBip/SChVfa3mSK97V9JiDr3eiG4s3p3uoZ5/M2dUR5m/amiiVHyBcjwCMhybV
-	 jy84Y2M9cB37uXJeuRygt+zStTJJf5woYC8eg95C5kZ51887NTCqm/ZjtfdlaAumqmrRV
-	 C1LjUixyiVMAs2T417GNX4/dMPwbqRsXwl5rGuN/4po2C+PzjDByKPIafcRCzxf/+3Q==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794300384;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:CC:Subject:
-	 Thread-Topic:Thread-Index:Date:Message-ID:References:In-Reply-To:
-	 Accept-Language:Content-Language:X-MS-Has-Attach:X-MS-TNEF-Correlator:
-	 msip_labels:x-ms-publictraffictype:x-ms-traffictypediagnostic:
-	 x-ms-office365-filtering-correlation-id:x-ms-exchange-senderadcheck:
-	 x-ms-exchange-antispam-relay:x-microsoft-antispam:
-	 x-microsoft-antispam-message-info:x-forefront-antispam-report:
-	 x-ms-exchange-antispam-messagedata-chunkcount:
-	 x-ms-exchange-antispam-messagedata-0:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-AuthAs:X-MS-Exchange-CrossTenant-AuthSource:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-originalarrivaltime:
-	 X-MS-Exchange-CrossTenant-fromentityheader:
-	 X-MS-Exchange-CrossTenant-id:X-MS-Exchange-CrossTenant-mailboxtype:
-	 X-MS-Exchange-CrossTenant-userprincipalname:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=AakoS8URjXe4KfYhkU7uhKWXv627gMWYPKeVg6j0H7g=;
-	b=gJUg4cs5qp+i7JaqPw9OcwjL7RjUzU7g5/ysuFL6xvLIQ7LAzUsgFt7n3B5RIqsVVzjk
-	 vjjHzQ8OIaZjKfXIqtxvWKDpUSxdO206p0tOsi/cVqz4PrLmAocEaYYkBIzOGwxEBnAhz
-	 sJhTlqx6pvOpzX8XXnnzGO/O152XKkP70yH/IkAtBoM5Og+4UjjYN19Mph9gzJRup/iB+
-	 BQoP27i+Eha8MH7gT3CavKb4qB4SitzVaHU6Xofwhp8dih33VdwK/IacpGpjh2VEIQTYy
-	 f2e0h7K2vnHKr0wH0fBe1fZKhy+YCiT4jGfPN2EDkdf4/3mDvTj+t8hAkWJkEhPBGRA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nxp.com;
-	spf=pass smtp.mailfrom=nxp.com;
-	dkim=pass header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=WMKlusXW;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.65.62
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011062.outbound.protection.outlook.com [52.101.65.62])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.244.194.184
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794301973;
+	b=2f8M94V5VtvreHIWpIMyLjrp8wrIGgp41ogYEtKP6einzlXbBNfcD2KFw2yiEa8pfH3t
+	 Cs8OSpVlHa5Xb2TlTZ0T4+c5W9Smks4YfN+X7dnqDf7WC+KLE8kRfUk0ahok0KsN/FGuU
+	 UT3vehx2U0UqdkvxJss7qlPGiLNMS8Cnki5eX1umR1LB7xeQPBFZYrPE40T31ZiarHzkA
+	 G34jrNbC3D2QeVsK1gNsmvO8DhwVz1OnS+SoM0dzJ5wfkLZ0ET430F1qpS7te3fyt0xlh
+	 bDiDwC3bFpgN373RoQd70AhoVHZwrSz219hjzhpKvmvwPjiBmmdBOoWz9HhzsnQwinA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794301973;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:X-Virus-Scanned:
+	 X-Spam-Flag:X-Spam-Score:X-Spam-Level:X-Spam-Status:Received:Received:
+	 Received-SPF:Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:
+	 References:From:Content-Language:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:X-PPP-Message-ID:X-NC-CID;
+	bh=P6SoTY/qPxSRsFVfVmHV701Duq3Pn8mi7sps2ssRpo0=;
+	b=OcKQ0MdQ5l8rhYbpHetZubYU46N144U4YeLdeAX8fxZo0KzUwkqdU2ktxjFt594/gtzh
+	 /GUk3wYWPGSb2ZXStqErUIRxjhkeqi/wzZbktjmWkYXF7MAiReEVv9DEKOCdGr1GVuG97
+	 q0UGon60/TpScyhT5OD3LPm/2YQUZbiVukoqRL6qYFrQWLp3hQSlsWmpXNHykjr5n3hO3
+	 TdmslhG/MhrqiFzR/CHbgVxp3FNWJI9hQT1lGqJ26aIwGxAg1CZI6DSEq+bMdLITxG9La
+	 8Tj1gZsprpufE5t99st0z+przghbKI0cCKvOOtr0LqAJx8xoXn3vwXZ/iQcbDR3NINg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=leemhuis.info;
+	spf=pass smtp.mailfrom=leemhuis.info;
+	dkim=pass header.d=leemhuis.info header.i=@leemhuis.info header.a=rsa-sha256 header.s=key2 header.b=YOpMKtm7;
+	arc=none smtp.remote-ip=185.244.194.184
+Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [185.244.194.184])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21F42606A325
-	for <imx@lists.linux.dev>; Tue, 10 Nov 2026 08:46:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 21F42606A325
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E98B7606A321;
+	Tue, 10 Nov 2026 09:12:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E98B7606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=WMKlusXW
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=g7QtENwmK6mU50nvTRHj+5gepYI7nu2deLB5LCONvt6UNIT4WZJOm46wcYmTVz5n0ochCu0OuTARdi+tb6S3/lq7XhnF0lvqgf6obcOghtvHHXNrhLDWLZP1fHlarZlfpkF/+xeK4uvP3dwJQoEgniMq1AVl93Jh6Ei6c/Vk+fFVhRLAZz+gvKRWAt6ZK7N4aHPeEZN6c21vrzeqRrpqWIGQ6CEbF61j+lFwc7Ok0bMy+BApQ7FeWNLa6KDk6UZW9UmiEmjdLk3aIdxM/elJ7Mxvu/Sa37nrLxYTWxGWSnHU1bntXCQBkDz99HJpCeE8GadFAknpV9uKrerphpabvA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AakoS8URjXe4KfYhkU7uhKWXv627gMWYPKeVg6j0H7g=;
- b=NX3AhUm3T+8a+1/b8HDRuRxrNlKy7M7wIPUKAro9ZLHH3vZ2dHGLe6+fgSTwQyYi72j1ovcNxA2es4E+zsmY24i555oW/W6U/DAJDbrSXVj7ASWD+L+fwrlLFHrWJEWg8KTVcDeqAep7No04PVT8hTGr5vxZdnbRkIpet6uvahB+VJK7ozlb79zcQI0qIcLZkMR0YprIby2qCl8ceAZ4yfRI6G2xL8wbhSsqnMk0SDGptivfGkiUaVdSd4L3x8ghASdDKIEy/q4lJzyNqarzRbwEifLm7EeoAbJUy33EjA6XjcjDjM4y5N8ODe0Be8NW4ZnzySbJNJoRALcoCJdNIQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AakoS8URjXe4KfYhkU7uhKWXv627gMWYPKeVg6j0H7g=;
- b=WMKlusXWuXdZy0XnYg56h+HwWS42G98lAlYan7Z0p+EbyFoKm31WibED9jkSYc3pkcHn0nR3WNAv7TfS6hKtBO/1yDUPOEDRg8BYfiuK771vMcPtIkGCv9tNwDeJsJ7g/NMnWRYZ3TZoJB5OiZMmX5yj0brEekA4BEbQwUQjAH//yglYHmDQZ2UiC7GmhHekyypcT+JbbXb57VK/pJzqBBJPxtnU9iDFBxyZ8blAdagz7Gn62rVQDs7E0Xo9mP9JJX1iSk3mGLdbSzlHiwl100ceVe0r5hGPWZZwAAhDfdNi50svNYtlVO8qNF68JYaKajtZ2Lk7ELT8iLkyKE6x0Q==
-Received: from AS4PR04MB9338.eurprd04.prod.outlook.com (2603:10a6:20b:4e6::17)
- by AS8PR04MB8851.eurprd04.prod.outlook.com (2603:10a6:20b:42e::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.10; Tue, 10 Nov
- 2026 08:46:20 +0000
-Received: from AS4PR04MB9338.eurprd04.prod.outlook.com
- ([fe80::7c4c:9c56:8552:f680]) by AS4PR04MB9338.eurprd04.prod.outlook.com
- ([fe80::7c4c:9c56:8552:f680%7]) with mapi id 15.21.0592.012; Tue, 10 Nov 2026
- 08:46:20 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: "Wei Fang (OSS)" <wei.fang@oss.nxp.com>, Clark Wang
-	<xiaoning.wang@nxp.com>, "andrew@lunn.ch" <andrew@lunn.ch>,
-	"olteanv@gmail.com" <olteanv@gmail.com>, "andrew+netdev@lunn.ch"
-	<andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
-	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	"horms@kernel.org" <horms@kernel.org>, "richardcochran@gmail.com"
-	<richardcochran@gmail.com>, "linusw@kernel.org" <linusw@kernel.org>
-CC: "imx@lists.linux.dev" <imx@lists.linux.dev>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linuxppc-dev@lists.ozlabs.org"
-	<linuxppc-dev@lists.ozlabs.org>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>
-Subject: RE: [PATCH v6 net-next 0/9] net: dsa: netc: add PTP support for NETC
- switch
-Thread-Topic: [PATCH v6 net-next 0/9] net: dsa: netc: add PTP support for NETC
- switch
-Thread-Index: AQHdazfZzWTjAGf+JkC6X61TwLJlT7cnCJ4A
-Date: Tue, 10 Nov 2026 08:46:20 +0000
-Message-ID:
- <AS4PR04MB9338322C1A3ADEDCE79D9F3188722@AS4PR04MB9338.eurprd04.prod.outlook.com>
-References: <20261103021024.3121936-1-wei.fang@oss.nxp.com>
-In-Reply-To: <20261103021024.3121936-1-wei.fang@oss.nxp.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
- MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_Enabled=True;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_SiteId=686ea1d3-bc2b-4c6f-a92c-d99c5c301635;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_SetDate=2026-11-10T08:43:15.0000000Z;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_Name=NXP
- Confidential;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_ContentBits=3;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_Method=Standard
-authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AS4PR04MB9338:EE_|AS8PR04MB8851:EE_
-x-ms-office365-filtering-correlation-id: d68afd5a-22e6-4c47-618d-08df3f071775
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|19092799006|376014|366016|7416014|23010399003|1800799024|6133799003|10067099003|18002099003|22082099003|38070700021|921020|261021121427099003|56012099006|261022105027099003|261026121527099003|261026140227099003|261028144727099003|261009223027099003|261102130727099003|11063799006|261102123227099003;
-x-microsoft-antispam-message-info:
- +AAeBiCIofBwdhYirJIyYa6b33qIj5EbmDwmjkdWcjT6Na0wLGAJ7S1xWJ4McYEuLaee56RcfaIAi5Tv50PoL4/sZSM7iWauHc2hGYiKWWBOH1ArUSqiv+s3opGDDXdBE4gkhDQffevvAJNHJsHhRtXyS4FojC9t61N/xOfp4p6QYmWBnLETG9zB5yaRvr7+7OVzREQ5HJmw8hpoAagBevdO89dMGgqZFcha/j8b5DoF5OOnoMgT7/OqeCwk+WZlTlEG7OMEqHxdnXH52aMNNX3Y6COgw90CfHgMJt9Shi+G+AvNDW27GmqOz+8QYzc2bUFTJY4Fer4O2YBULndrjMQQgWhZc3Dgkokx88tQ+KFEzse/K82ApYWlMlXIHU4j5tiopRZy32lEBTYxi7HuqqilmIxCqmYZSZuZBvYzZd4E8xxNNygj+Em7FqBvZTqWYIPn1pACBif871GviZf72mZ++GGWVfuSNypP9fSX9yDiCnxebdF77BZ44O/N2m3ajDskbtRacxTD1uRlIq7sfV/gi9jZH06Ux4ben4cMLciOlt7w8gUUOsUUSvzNBzhFo1Qvp9LpLW0wHxRuctZmpjzfyeQe7hD7NdX0p0Au7lsjRbqeXEtW4jv19SI4qjHEm3vv+GObksZ7kxdQaWo74ieVrD8yMxwcjpvuizMqCWzN8EGNtXbxFxHkrZ7GoYzP
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9338.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(376014)(366016)(7416014)(23010399003)(1800799024)(6133799003)(10067099003)(18002099003)(22082099003)(38070700021)(921020)(261021121427099003)(56012099006)(261022105027099003)(261026121527099003)(261026140227099003)(261028144727099003)(261009223027099003)(261102130727099003)(11063799006)(261102123227099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?4bDSI1tALlioVnLzxk4eD0fvnbIB5t7BMMPrptxwOEV2U6susj0nOG5IG/D3?=
- =?us-ascii?Q?ZS+ADcuU7/RHQ6QSPnugxpoixRp6A8U7a0DUEnQ18knKaFHVARRHPBR67WlV?=
- =?us-ascii?Q?nJilwDyewhx8kbf/GaQV6v9txMrIjCmDsH0NHbwTGQ/27C0jltw/QupkJl7Y?=
- =?us-ascii?Q?vZw/O7QdTulRP9pCBIozackzSP6WBkmkqOGDFIPpN6FAHNqG7A9r/6mKchlj?=
- =?us-ascii?Q?hoWuxlFVSexf5WGUo5In8g8Z79EJG8J2pGxrpWaumfGqrA9c3f4erFK/QEyW?=
- =?us-ascii?Q?ROMb+rSMrCyDgn2Nhl6ao5uxnQwMpXK75E/8G5fDmRUhgEqqWttc0AZJvQRx?=
- =?us-ascii?Q?rfChvSOvFDTPfhmRDGUg2gCNbAK6Vmn9p6hn8PfXJTNR/MKkjuiNMVJgjC97?=
- =?us-ascii?Q?QG8RuPcn3iGUcMWVEMrxfzAT+sbJulvN7U2r/vv9e/d8tXkhYch5eKn4W6O7?=
- =?us-ascii?Q?qAzHyyMu/T8+Wvw29RxXZ6M5FIt+6Oq6PZzLXDlLfg/akzy6ZChqwfUILwZL?=
- =?us-ascii?Q?+3mAST0mt9quSMavadrzQ2IcP5qZAqX0sbW18y65qetKlHi+ChIQxe4T9BW9?=
- =?us-ascii?Q?G1/2i+fsKG6GhlIk2pi45HrCNO3f0noz6+TTN2Q4E9rSaUGtzJdbOPn7Rx3B?=
- =?us-ascii?Q?CxEGawtNykX0HrC7t4iY1snkuxkNLSf+WMH4+crmBq1EKBZQwlKUoD0Aig7l?=
- =?us-ascii?Q?w6m8gjvqVKx8isW2EJQMcjH4Wk1AXF2ZEK91jvmnlsbsj7odc4PyUITOMMlE?=
- =?us-ascii?Q?L6UAg+163PztdpaSu8B7XdrdjgGx4ERLlniAhJ49DnoPvfDswybf65hd/1uG?=
- =?us-ascii?Q?+nnRjNX8pmNxsnHVHPquRGrSdCGR6texCUVQA/AUOIecuqBR2V6aofVa/RYv?=
- =?us-ascii?Q?CWdD2BcioiZGxTSTKFeNvGZLWZDIvviHCv0xjjKlj4EZ0Mr5NNPn7IBRTTlE?=
- =?us-ascii?Q?87J54PmPzlv6E7OUcltuROvdY5um5UFXRpJIZ9HnziHR1h+w5NYxJ3/s1ftK?=
- =?us-ascii?Q?SkkUudsaue0ZVOUONIHt4ECyUO5nbzrJRz2qwiZq7Svyvf9389nBfSfHQGZH?=
- =?us-ascii?Q?SbkEVDWbkL1FcIqe5SP8VI1gvFhb1SZrzcd5m28MQBK6ChNhcXbbdREh/9sH?=
- =?us-ascii?Q?2KFTzi+1ypPMmAQiEKkOO37F/2SR1XS5YVCaYdBvNER1HnqwcFgWmz3XTTzR?=
- =?us-ascii?Q?PRrwRT5AtFf5Hh36IeAJvvlTSIFq0nyYPZGjg/CG6NUKRpyn7iyBw6KVJuvs?=
- =?us-ascii?Q?LRg5bIqmXTCkEDeSqF/Z1yMXLEsgO+gc642jl9Lr2/unl/KN8xD6+dngJihz?=
- =?us-ascii?Q?NCq+sg1VCw6L8S7DqMtGE8L9RKwyXpMLrNvtxqmatSawTbpL37KTHlvFFyml?=
- =?us-ascii?Q?XTajP+6tQZYKzbNzkL51JfKLSc7HrmcXbBKpMF+Fa51n+JKX5ddiAbsB3PeW?=
- =?us-ascii?Q?jdNd8joQ8TSpjKVcV8xQHWLHu/5Oa6tiW4pHW7+xeTcbQhc2LW/FRVfMxFSZ?=
- =?us-ascii?Q?d/ScKrZLoTVhyYleZv+B7CZoqGNVJ3GOZLi+KVkwtFzbF09yH4TmBgMipwpY?=
- =?us-ascii?Q?ZwR6NsmlvK8KdugIovCwYNRPe6ByS9v/VL5WBDMxJsucbyPNiUx8TKD14lLU?=
- =?us-ascii?Q?Sug+LFoBvGPqt0qzLBem6dFUaKUISQnscU+Dklla5ohx3D8nsxBzrr3fWP+H?=
- =?us-ascii?Q?KcLAnoxVoG/y+4cby53tFbcxVoW720nvKd1Wp9+Fs/ADSaps?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key, unprotected) header.d=leemhuis.info header.i=@leemhuis.info header.a=rsa-sha256 header.s=key2 header.b=YOpMKtm7
+Received: from relay01-mors.netcup.net (localhost [127.0.0.1])
+	by relay01-mors.netcup.net (Postfix) with ESMTPS id 4jP1B65cV4z9VR8;
+	Tue, 10 Nov 2026 10:11:58 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
+	s=key2; t=1794301918;
+	bh=Uxfq+9SLLu4IfxwcONSpQNLgnskcylSEYAOSXGskFCU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=YOpMKtm7JwzGGfCu+MECFEV5sDtNm1BEiN+bHejH1gjrgt3h9oH5ZSmFAILGWzzJ9
+	 gvPRfPduHW6So2e0/PFgsZpunVb0DOB6Nxp7+bmJpOnoVIlBH2szvnEXV2olYK7iDU
+	 nfde6UVbD/PRqh+BD66cQ3Tar2rjvMXpBcB/dI3JnsNKky1sdLTxr2FI7vYCwCP1I/
+	 xb224RNw4kAXhSd7rPIBA83vLAtHpaagfisnl9hKwTB94f0i1hyEhDCWQ5DLXYA8z/
+	 BcovTzac3iLgylZazUzngZtDl/J1Xk6z1+BZN962esa16W5Iiu6XYu59rhnKOc190r
+	 m5A+ylD9rSs/A==
+Received: from policy01-mors.netcup.net (unknown [46.38.225.35])
+	by relay01-mors.netcup.net (Postfix) with ESMTPS id 4jP1B64vK8z8129;
+	Tue, 10 Nov 2026 10:11:58 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at policy01-mors.netcup.net
+X-Spam-Flag: NO
+X-Spam-Score: -2.901
+X-Spam-Level: 
+Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by policy01-mors.netcup.net (Postfix) with ESMTPS id 4jP1B35ZP6z8tgk;
+	Tue, 10 Nov 2026 10:11:55 +0100 (CET)
+Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
+	by mxe9fb.netcup.net (Postfix) with ESMTPSA id 3321B5FA5B;
+	Tue, 10 Nov 2026 10:11:34 +0100 (CET)
+Authentication-Results: mxe9fb;
+        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=regressions@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
+Received-SPF: pass (mxe9fb: connection is authenticated)
+Message-ID: <f5ddf27a-9771-4967-a9d0-13c09f588402@leemhuis.info>
+Date: Tue, 10 Nov 2026 10:11:31 +0100
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -156,56 +78,63 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AS4PR04MB9338.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d68afd5a-22e6-4c47-618d-08df3f071775
-X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Nov 2026 08:46:20.0362
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: tqAGki/DtAjMazJQMph0Oj7YZcpVbdCGYTWKWMLilxvzkbVOnahXTmXrtnuDGRO5C2yqbIBaPOFsQuZbLIA0gA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8851
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION] cpuidle: psci: boot stall/hang on i.MX8MP
+To: Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+ Ulf Hansson <ulfh@kernel.org>
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Sudeep Holla <sudeep.holla@kernel.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, Daniel Lezcano <daniel.lezcano@kernel.org>,
+ Christian Loehle <christian.loehle@arm.com>,
+ Russell King <linux@armlinux.org.uk>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Mike Leach <mike.leach@arm.com>,
+ James Clark <james.clark@linaro.org>, Leo Yan <leo.yan@arm.com>,
+ Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, linux-pm@vger.kernel.org,
+ coresight@lists.linaro.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ regressions@lists.linux.dev
+References: <20261030171910.2822677-1-dario.binacchi@amarulasolutions.com>
+From: Thorsten Leemhuis <regressions@leemhuis.info>
+Content-Language: de-DE, en-US
+In-Reply-To: <20261030171910.2822677-1-dario.binacchi@amarulasolutions.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-PPP-Message-ID: <179430189496.738146.16548204213021020966@mxe9fb.netcup.net>
+X-NC-CID: nXaVOhT/l03j0ELJaOTQF9RW2is43Eqb5I+9yhoMdtaYrpVBfhs=
 
-> This patch set adds PTP timestamping support to the NETC switch, so that
-> the switch ports can be used for IEEE 1588 PTP synchronization.
->
-> The NETC switch has no time registers of its own and instead shares the
-> PTP time of the NETC Timer, which is a separate PCIe function driven by
-> its own driver. The first 3 patches prepare the Timer driver for this
-> role: tidy up its 64-bit register access, drop an ineffective reset, and
-> export netc_timer_get_current_time() so the switch driver can read the
-> current PTP time across the driver boundary in a race-free way.
->
-> The switch redirects PTP frames to the CPU through the ingress port
-> filter table (IPFT). A few patches harden and simplify the existing IPFT
-> and host flood handling first, then enable the ingress port filtering
-> lookup by default so PTP filter rules take effect without extra software
-> tracking.
->
-> On top of that groundwork, the switch driver gains RX timestamping and
-> both flavours of TX timestamping. Timestamps are carried between the
-> hardware and the driver through dedicated switch tags: the ingress and
-> transmit timestamps ride in To_Host tags, and per-frame requests ride in
-> To_Port tags. Two-step TX matches a queued skb clone against the
-> timestamp response echoed back by the hardware. One-step TX defers the
-> Sync frame to a per-port work, where the driver reads a fresh PTP time
-> and writes it into the Sync frame's timestamp field, then programs the
-> single-step register and transmits the frame so the hardware can add the
-> residence time to the correction field on the wire.
->
-> Together these changes let standard user-space PTP stacks drive hardware
-> timestamping on the NETC switch ports.
+On 10/30/26 18:19, Dario Binacchi wrote:
+> Hi Ulf,
+> 
+> on an i.MX8M Plus Dual board (Engicam i.Core MX8M Plus), mainline
+> c339f4010dea sometimes stalls for ~0.9 s at boot, or hangs until the
+> watchdog resets the board, right after:
+> 
+>   [    0.806123] ledtrig-cpu: registered to indicate activity on CPUs
+> 
+> On a good boot the next message comes ~11 ms later.
+> 
+> About 1 boot out of 3 stalls or hangs. With cpuidle.off=1, or
+> with commit 65705b18162b ("cpuidle: psci: Move initialization a bit
+> earlier in the boot sequence") reverted, 10 out of 10 boots are fine.
 
-I saw netdev's Sashiko reported some issues [1], and I think some of them
-should be fixed or improved.
+Hmmm, nothing happened here. Might have fallen through the cracks, so
+maybe this mail will get thing rolling. If not, I'd suggest you submit a
+revert.
 
-[1] https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261103021024.3121=
-936-1-wei.fang%40oss.nxp.com
+Or was there progress or even a fix and I just missed it?
 
---
-pw-bot: cr
+Ciao, Thorsten
 
+> I haven't dug into it much. The stall seems to be in
+> pl330_driver_init(), so my guess is that it is related to the AMBA bus
+> reading the ID registers of the CoreSight ETMs while a CPU is already
+> in cpu_pd_wait, but I may well be wrong.
+> 
+> Any idea?
+> 
+> #regzbot introduced: 65705b18162b
+> 
+> Thanks,
+> Dario
 
-NXP Confidential
