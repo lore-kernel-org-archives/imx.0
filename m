@@ -1,91 +1,76 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.170
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.217.42
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794296699;
-	b=wFTi2poDEcFBPNH3OVK9QlB8LAS8LAEsC5Ce6kBytMHWc2ELa4qIc0FtCnAS61zRj9EU
-	 +8gnothW2TL8GC/pcjk3B9zc5K9zNaqD9Nv5mgDdIhRXxytje1IBmWP27UkiFI+/1OgXq
-	 KCodMI/S+e4i1qqY9rI+SNTJJyN1CwF6vjwuyoTWvXjKkUeuSf4R0knwXhbVnkFbHrAqT
-	 KeMbFthouw9HtU6D6XRZScO7KJv3SlwtWtS725kP8AGRaDPwcaDHrFwRw5dXGXQ/Nl3E/
-	 32goezRu13Ypz2Wlln6yQA9yR0l3IIG5x9AyOsEJMnYS5bS5yXvdFXiE0UpD2MkyFIg==
+	t=1794297475;
+	b=C4h8jxvpXirw9wTg6rErDdIuDtA7OtNHku5UFsxeAGOMmH8wGy8xmRFLeJBraJOJD+BC
+	 Up8iVtN/OAm1tjvlnuNlrAD6EtykUEB4AgFE3plV13XXyzl9YdTHo5COK2Gtqom0iY1G8
+	 UEZ7vgT1gkTn0suZ4qGMHcdne3680DWseonZZzAOI5YUJAM7GuW/YO1XHYqk18ksGMHiE
+	 /K4fXr7Mky+oTa5Q5b7YAw4Nb1rF6ZfafqOA9NcU82KJQ3PTN9GYxE51CoNUKt93qLPSB
+	 MkYL7KRo+BP0aSqhQCOHsr9pTY7Jf9t/pSfOJ7RNNWvWRkwU+F88woqk0RHghGavfEg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794296699;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:Date:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer;
-	bh=9ndynNB7A1QLb3sbkkLOkw0hbY7VB6UW33KXzWEUKxo=;
-	b=AzhnuQDLL/7ET+5i/kgodRE+Al49wWBmL2V0AmUOWrZ2Y2hUyn/Shf4EWFo4Z/tMEJWl
-	 krL0YET5Y6srZDPf+/zbITGVE6FUfjeVj3MtwAUWo04n3G0umgrHxNBAgojo5qwj8/z45
-	 S+Zgs+YjlcVXAm24wNuBoRGi9E3RqQ1zbvxBeH7IEdoRJEISC45gwE+55kcGdVnYmQz77
-	 mKI1yIBtRH90lQLmTQUdEzpugChoV3XPF8/SL8Gtv64D/9MN9LjgBeqsHni8ZzajRAQ8g
-	 //GuMmIJgB/zjB2Wk3a9WpnSMa7O6ud6AtT+y3EQkns5ufTEFmwYBpL8wo2BhbG8nTA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794297475;
+	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Received:
+	 X-Forwarded-Encrypted:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type;
+	bh=Bh9PLp3fsMYJMJTRrDf+gKXw1r5bvWitb4XoPWpFjfU=;
+	b=xMVn6FapLLAGKR3/13YBX9zw08aGRMdyFSpLxmHjYGMrNJvK6gEZN2RPWxKxIq0A/HP2
+	 g1Qb7K5vyRlTOvenyXoAZ8QxxalEZOWsWcD/4fBDwWOX9wnTizX/9SCf5Ro+Iwqccs95P
+	 no6fddKRDxdRaSjtfUwCwT+nT+wJcWKZPeBgJ0ntpcbR+/QVRm5Oj9ug2DwjHngAsxq4U
+	 3I3DigheMJtRhMGbsqAVjhgolqjiyx2vazx/QVmJrj4eLhx7IA2LkuCWaPkopl9KtqRYi
+	 ub3zu0q3qOi6hDTK+Awar0xLepdA7OfWhjfWAYxv8FLAAESgMfFM7SLVViZbLTWAvOw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
+	dmarc=none header.from=linux-m68k.org;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=KU41JNcN;
-	arc=none smtp.remote-ip=209.85.167.170
-Received: from mail-oi1-f170.google.com (mail-oi1-f170.google.com [209.85.167.170])
+	arc=none smtp.remote-ip=209.85.217.42
+Received: from mail-vs1-f42.google.com (mail-vs1-f42.google.com [209.85.217.42])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F39C460A2639
-	for <imx@lists.linux.dev>; Tue, 10 Nov 2026 07:44:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F39C460A2639
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7067A606A335
+	for <imx@lists.linux.dev>; Tue, 10 Nov 2026 07:57:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7067A606A335
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=KU41JNcN
-Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-4f699fe49b3so1177566b6e.3
-        for <imx@lists.linux.dev>; Mon, 09 Nov 2026 23:44:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794296697; x=1794901497; darn=lists.linux.dev;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=9ndynNB7A1QLb3sbkkLOkw0hbY7VB6UW33KXzWEUKxo=;
-        b=KU41JNcNJrF9xQuEDZjVCLrrQUgjndQnQxjzknALgHxY3+ZgM02Zhe0KXBIOP9Ij2Y
-         CU6c2XcvQbW1a5p/JgVaVuHwjk3zPL7h7IdlPyuG9Hrsr5SOpmup+XCWpFrwq75xVDTo
-         nmSl31HyNEjbOG7xNdGOitWYe73lV57aQRJ03k70EEqL81lRNZZBTf85z9GV69ISMiNd
-         R+mRypgIB4WAElT3jjrfqXmF0Pprvj2oznIBGXJ+MlIJDkq/fdxqu0+EuEIv3E+VYpNH
-         VK1RsbJ9L5BoSBjvCqCDlR5oNJ7F42Iz0Bxc6Mh7BBl9fSELQY3wYrRTywfnbKvFjE+O
-         57Kw==
+Received: by mail-vs1-f42.google.com with SMTP id ada2fe7eead31-7d2dbc0a8d4so616479137.1
+        for <imx@lists.linux.dev>; Mon, 09 Nov 2026 23:57:55 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794296697; x=1794901497;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=9ndynNB7A1QLb3sbkkLOkw0hbY7VB6UW33KXzWEUKxo=;
-        b=pKEVHxOpTfJUgHZGUL/HbsqXvQHxUwgaazXiemkmYOLlW13VL+75rajrmW6zzwbh30
-         osLgGEkx+QU+yF2UH0+GNVU194AijvaW+VW+1YLSMX5a3MFgO6qizWXVEZu5hWQaJgpE
-         37M0P3OknnnFmRRpS1x+3Lcpdcubx6HdIW88v7+SLfbtyXxm5tSQala5VOb5/+Z48r9R
-         DXZzzQXS66/Woa+q70xtW6vUmEuBOy7ANI36TgV6olDwhMn1vSwcc8EODHnCun/BZpND
-         gMA47LUjLa4LdyFj3kmdbc5sLHF/R3WkoZvKe/STC3UXly6BLvK9H3aTeyNHBzLHMT9s
-         H0ZQ==
-X-Forwarded-Encrypted: i=1; AL+hErEI3pjwzGLc5QgMBQ3uTSx4eIOwmgubUhwpUyOwjpN79WEtCaoZ6Bnm4kwxXRr0sfZNp1M=@lists.linux.dev
-X-Gm-Message-State: APuU4Z9HfgmsqAQKiD7ZXbJIRmZHbWhI6cGx99K5Pk+F2gyTzM8TkY69
-	oAqSrff34/y1r8yS3+nZlwKeGxRw5S9DxHOR9IIxWfpfBxkxvuHImb/w
-X-Gm-Gg: AYBFou3wxOkB4lIwhJZoHzycljyDN8OzDn2H84Y/8/bG83HDqVaGz9JmLqesaRiyhH2
-	YifDZihKKcpSufyd6fd7ts5nQusEFKk9+DC79FlkrIxME4bikpMKe89guPx97/H8Xu/RHGxHR2Q
-	amOkvQI+jiJO7SGhXYEMVR2ia1Og+W2uYGJQeXgS+BGhjv1qqnREAF5Fzk0iZm9oWPoAqJVfPoc
-	CsiwKnXgh9ACFMjDvshX2SpqBQB8pEt1k0ujhr6uoCkv32EE/SSHMYLowb81nHJfOQ1kR77r3uh
-	oLSkUSMJ7dncV1FfbH9waoZ6dOHFFH+MkzHlLxZUU2LvMh9rCdlMWkvuJ3Tfyyg2U5c8Mm0fXYa
-	TeG9G23K+82TcMGbhWQhiaO/Nci60KQjckIkZ6tHidQDLba2uhOAi8DWbz3boyhvlQAMP6v/7tT
-	Pu/I/WQtYyd/iF/uaLNQGnAueX36BKcfHTRvDDJrDpHm5PMb6KIsLcrNF89ZqcRHlk6k/Lifu8L
-	CPjMZHRX8y1JxaS93GZw5AFC7cVx9Mm8CHiHzlY8wjLcMj3lAPAoiwF+bxodX366Yq7B+fGqLtX
-	R1LTtBXtZjFVMFURoXSseRrrbL9kX+YEM1cZy7WgQdpygdJSKG2XvQmhwwR4RsxClD4vl8GOfy4
-	kUb3W7XhOV0gKclZO/ogonn0sDm4mIx0o33u0EDk2X8eI5cc/aYgX/gognVcBZ3ekoYd3w4EOfI
-	9o2SlDlCs8SImu82ztScalptvbnfkCUoEEwwtvrpqppMduf657wCNgOfrP1ExrZZAeNJerSms1k
-	g==
-X-Received: by 2002:a05:6808:c232:b0:539:c292:8b04 with SMTP id 5614622812f47-5683c9dfddcmr1448284b6e.8.1794296696889;
-        Mon, 09 Nov 2026 23:44:56 -0800 (PST)
-Received: from [127.0.1.1] (174-29-1-49.hlrn.qwest.net. [174.29.1.49])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-5690504fdb5sm1522804b6e.3.2026.11.09.23.44.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Nov 2026 23:44:56 -0800 (PST)
-From: James Hilliard <james.hilliard1@gmail.com>
-Date: Tue, 10 Nov 2026 00:44:36 -0700
-Subject: [PATCH v2 33/58] mtd: rawnand: gpmi: retain open-handle state on
- removal
+        d=1e100.net; s=20260707; t=1794297474; x=1794902274;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=Bh9PLp3fsMYJMJTRrDf+gKXw1r5bvWitb4XoPWpFjfU=;
+        b=RZKoWwMGTqJip+8gjBvL2Py9rhZSkQZ9oQtqdU0nZsQBrKALy1MXTJ8K3U8o586r2b
+         fd4VXsYvaFSD2zgNFVT8XJm8W1qaBH4iVu7Bv9TwFyetMsfE2nAfUCfnkvpT7j8o4ac1
+         iqGXYluPJOVaRXBgJlZkv2Gi7QRdYbiM32z5SnbIw26pikOTbAq7pYGQsSWOjPtlj7tt
+         B8JWxvzMuvvAHFweSc+MUeBEofanCqvzDsWfRZz98ZKCpfIncqXmurXQVBcGrUXBI9RD
+         X+tJg/5rGURUt3AxsU3AsLOPcJbiwfN1SVDXq88Cl0Il55VZ1i2Umgwur3dRwjz0K33m
+         peGw==
+X-Forwarded-Encrypted: i=1; AL+hErFeN1DK8Fks7hv/Ked8qEH1Mk1HKgC+CuH4MRMQQZ8psXDHMxH0LB84UHzPC2JTQOXPhNg=@lists.linux.dev
+X-Gm-Message-State: APuU4Z/T7hB8FzwDG5shNeBNjjnjchhNY6oHsk0H47oAIEEHrVad8zy0
+	oq24VK6DVXLYwnrwVxAc83NYNNADYGj+bPVNepgYxZlbONT0rs5I54MQ+VdTgV6tzQY=
+X-Gm-Gg: AYBFou30IuUqsv4hHbEH8JbcFpMecGQXZfGngmcMBKxEXJQTAi6mow+ICHcdJ1r6JtV
+	yVvVq5fySiBdC1uVVphUioZ5UPUNoLU75Q6v/y3OfNmnGHUrOoRcFIp4tkCvX/Wh+QTUdtH9czc
+	f2ebT4bpU5eL5xS2AApNC3DehBJ09u5mFO56twnL/rnE+KXQ6G81Q03Cs/rfdrnLT1Iqerbvzif
+	7kCchP3KUKpc6ou0zQhkbVbTvFIhVd08OHJvF7hcPVZh/YTddI1jDizzWbO+CCmQb7IQAk3LZKe
+	AL9JjSPHC+RX/8DvV9hG1rF8SDShUkh0c46sBvcUMj6QrgMImCprPemLjGawtlHOoSE9q9678GM
+	d8Dj1dRWHUo3VQO4D4A0FWhMGUWD9ElwXD+lsJc2QVRzGUQxJluhae6TKNUgrQJVXtBAQBFSoT6
+	Q5eoH6f+9gjj2lONj5OgWK+WWDiLo+yHfuGFzS/lBahm06NOpncuiE2sBJtNSJlAbq9CxxAjPMe
+	EAztryFYXClW19alC9UtRkBV3bcKLyGHZu2c99jk90cZ1sMzqC6lZ30tYPT8g2NvxlTEz17fNzW
+	5o0q/QUKLsllFRe+pzh4+hs4ZYgkbBZTH7d0izItKsZ2qsd6WRpiy9SEuoXGh/RdgWs=
+X-Received: by 2002:a05:6102:1487:b0:7d0:3ed0:c61c with SMTP id ada2fe7eead31-7d301bc9f5emr511160137.16.1794297473668;
+        Mon, 09 Nov 2026 23:57:53 -0800 (PST)
+Received: from mail-vs1-f41.google.com (mail-vs1-f41.google.com. [209.85.217.41])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-7d30223977dsm1218504137.1.2026.11.09.23.57.51
+        for <imx@lists.linux.dev>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 09 Nov 2026 23:57:52 -0800 (PST)
+Received: by mail-vs1-f41.google.com with SMTP id ada2fe7eead31-7cc91ddf447so719142137.2
+        for <imx@lists.linux.dev>; Mon, 09 Nov 2026 23:57:51 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AL+hErH5orcRNE4+jltwSGzqNSh/i3wPujDZct497cPD1EAfRM/LiqOpzfbIlNcRupHcklrM9bY=@lists.linux.dev
+X-Received: by 2002:a05:6102:4190:b0:7c3:2b19:6266 with SMTP id
+ ada2fe7eead31-7d301bfd9b1mr443049137.22.1794297471476; Mon, 09 Nov 2026
+ 23:57:51 -0800 (PST)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -95,102 +80,46 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261110-submit-rawnand-retained-handle-lifetime-v1-v2-33-9137d08f05df@gmail.com>
-References: <20261110-submit-rawnand-retained-handle-lifetime-v1-v2-0-9137d08f05df@gmail.com>
-In-Reply-To: <20261110-submit-rawnand-retained-handle-lifetime-v1-v2-0-9137d08f05df@gmail.com>
-To: Miquel Raynal <miquel.raynal@bootlin.com>, 
- Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>
-Cc: linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org, 
- James Hilliard <james.hilliard1@gmail.com>, Han Xu <han.xu@nxp.com>, 
- imx@lists.linux.dev
-X-Mailer: b4 0.15.2
+References: <20261109-i2c-remove-dont-use-autosuspend-v1-0-49a08b8daf36@kernel.org>
+ <20261109-i2c-remove-dont-use-autosuspend-v1-4-49a08b8daf36@kernel.org>
+In-Reply-To: <20261109-i2c-remove-dont-use-autosuspend-v1-4-49a08b8daf36@kernel.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Tue, 10 Nov 2026 08:57:40 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdV-2XT7Npksv2om+ZRxOAQJfc92VpLD4sPeoj8AgKUU=w@mail.gmail.com>
+X-Gm-Features: AclHuK9JsEgh5r73zJDHAyGi1UgY8FApv7iweIjEvmBZD0LvfpJpCmquM1eWYd8
+Message-ID: <CAMuHMdV-2XT7Npksv2om+ZRxOAQJfc92VpLD4sPeoj8AgKUU=w@mail.gmail.com>
+Subject: Re: [PATCH 4/6] i2c: riic: remove redundant pm_runtime_dont_use_autosuspend()
+ calls
+To: Joshua Crofts <crofts@kernel.org>
+Cc: Michal Simek <michal.simek@amd.com>, Andi Shyti <andi.shyti@kernel.org>, 
+	Oleksij Rempel <o.rempel@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Chris Brandt <chris.brandt@renesas.com>, 
+	Pierre-Yves MORDRET <pierre-yves.mordret@foss.st.com>, Alain Volmat <alain.volmat@foss.st.com>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	linux-arm-kernel@lists.infradead.org, linux-i2c@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+	linux-renesas-soc@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com
+Content-Type: text/plain; charset="UTF-8"
 
-Keep chip metadata and controller storage alive until the final MTD
-reference is released. Unregister and disconnect each published chip
-before releasing the resources used by its hardware operations.
+On Mon, 9 Nov 2026 at 21:51, Joshua Crofts <crofts@kernel.org> wrote:
+> Since commit d1706f9da9f4 ("PM: runtime: call pm_runtime_dont_use_autosuspend() on reinit()"),
+> driver core is now responsible for undoing any
+> pm_runtime_use_autosuspend() calls on driver exit.
+>
+> Remove the redundant function calls.
+>
+> Signed-off-by: Joshua Crofts <crofts@kernel.org>
 
-Keep geometry available after removal while releasing DMA and clocks.
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-Cc: Han Xu <han.xu@nxp.com>
-Cc: imx@lists.linux.dev
-Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
----
- drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c | 22 ++++++++++++++++++----
- 1 file changed, 18 insertions(+), 4 deletions(-)
+Gr{oetje,eeting}s,
 
-diff --git a/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c b/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
-index 527165ccc839..cda3bbdca928 100644
---- a/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
-+++ b/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
-@@ -2744,7 +2744,6 @@ static int gpmi_nand_init(struct gpmi_nand_data *this)
- 	if (ret)
- 		return ret;
- 
--	nand_controller_init(&this->base);
- 	this->base.ops = &gpmi_nand_controller_ops;
- 	chip->controller = &this->base;
- 
-@@ -2759,9 +2758,15 @@ static int gpmi_nand_init(struct gpmi_nand_data *this)
- 	if (ret)
- 		goto err_nand_cleanup;
- 
--	ret = mtd_device_register(mtd, NULL, 0);
-+	ret = nand_set_release(chip, NULL);
- 	if (ret)
- 		goto err_nand_cleanup;
-+	ret = mtd_device_register(mtd, NULL, 0);
-+	if (ret) {
-+		nand_disconnect(chip);
-+		mtd_put_master(mtd);
-+		goto err_out;
-+	}
- 	return 0;
- 
- err_nand_cleanup:
-@@ -2782,14 +2787,22 @@ static const struct of_device_id gpmi_nand_id_table[] = {
- };
- MODULE_DEVICE_TABLE(of, gpmi_nand_id_table);
- 
-+static void gpmi_nand_release(struct nand_controller *controller)
-+{
-+	kfree(container_of(controller, struct gpmi_nand_data, base));
-+}
-+
- static int gpmi_nand_probe(struct platform_device *pdev)
- {
- 	struct gpmi_nand_data *this;
- 	int ret;
- 
--	this = devm_kzalloc(&pdev->dev, sizeof(*this), GFP_KERNEL);
-+	this = kzalloc_obj(*this);
- 	if (!this)
- 		return -ENOMEM;
-+	ret = devm_nand_controller_init(&pdev->dev, &this->base, gpmi_nand_release);
-+	if (ret)
-+		return ret;
- 
- 	this->devdata = of_device_get_match_data(&pdev->dev);
- 	platform_set_drvdata(pdev, this);
-@@ -2838,7 +2851,7 @@ static void gpmi_nand_remove(struct platform_device *pdev)
- 
- 	ret = mtd_device_unregister(nand_to_mtd(chip));
- 	WARN_ON(ret);
--	nand_cleanup(chip);
-+	nand_disconnect(chip);
- 	gpmi_free_dma_buffer(this);
- 	release_resources(this);
- 	pm_runtime_dont_use_autosuspend(&pdev->dev);
-@@ -2846,6 +2859,7 @@ static void gpmi_nand_remove(struct platform_device *pdev)
- #ifndef CONFIG_PM
- 	gpmi_disable_clk(this);
- #endif
-+	mtd_put_master(nand_to_mtd(chip));
- }
- 
- static int gpmi_pm_suspend(struct device *dev)
+                        Geert
 
 -- 
-2.53.0
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
