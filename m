@@ -1,78 +1,119 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.161.50
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794344563;
-	b=iuvsKsUhZWG/OCR/U9Ocrs4CxJer/W94Olk5c2RuqkgiAHTNxxyHRIyOzpIHxusyCJaL
-	 8bDyLyX6m6NBqw8thAxIQn4lEcNYamfRx+2eMFRlB0ts1QRBb2ZrXcaSyrJMjtHwjAbPj
-	 VT+Ipj00tp8EOP29xtxAqeZbZVsKiUTTLDWpqYx+JMQVjR47Q60Upwl2r7MgHWneFjEEY
-	 EibrSn+0KpCGa+iIRIyip36y0H9l9rrm6NS4dWSuKtqtKTHsU3EXE4ipFmE1kQsY6x45x
-	 TYOevwjX5YSlwPNcWBdapvJBeimoSX+XfLmPPp88RG7kbMoROK1KPlocj6cJlY/FjyQ==
+	t=1794344721;
+	b=kQ8TcpgKGD+lZz/Rv+EkAmluZ9cXnR7iumVDfNNFQv4BcRdPEl+3VYztJXCbekxvWBGw
+	 /WWHybgi1QCSJbE+gv2+OBOOSraebxwCV4z2RwT6o9BCLdVr4pvUm8SnHPVXFP1CUklBo
+	 JQ8U+vADqFUPGDSFDFajH0NwDllCPaioMVNxC0v8fGFvONRwRxNhJUMW3CRrv7EbXAa0q
+	 N6q+2cL332yesgHjjsyuJTnCjocdmC/qY/2Mbh6zfoD/9E42PWLyEVjP6mih1XalRcMsw
+	 5QoYHlTndzeCwvteCn0S3jnBX/R8WC0ngzEDx2zRKWGMFifyvi2UVubIgS8WeRGAYXw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794344563;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To:Organization;
-	bh=hpKPnv6LQCf20/ZkdM8jFTGSWfWUSzTRAK+io33NZfg=;
-	b=tV/0EbQ8C4IFkfmbHd3A8oQfnn9w42oKgHsSM31jDSFnt3S+EO/EMUgN00OA6GNFkr4K
-	 ayHb+2MUurKe0m6rObMcid3b6aVu1MXry4f4C2Uiq2lz7kXDJbTzCku1YpdJ6CRg/L/6A
-	 HFEHDl6coQ7lQqJzr41BEBCTuL3aXgHZn2QZ1LepdySHeuF+RuVsXsOLSbUsLmRRPD9J3
-	 TW+pMubXjfdqco+aHe2258FyhDxxxG3fUMwbPAYlTwUmy89joD851KM2D+Y3OLnCSaPw3
-	 O6v7qoCSgXIbSlJVGaQxi2/zvXt2WqiCIQQEgbTv7ILXAukCWw/aBj18ccjKkI39RTQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794344721;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=r0F/G1/cCd6YtCyJox781fOcwZWIec41wc+ColCaqik=;
+	b=4cO2MdAGyniAGoU8Y/ECJHMn+g+jrDDABP0gV6SxrXNwaqh+9Rv/nvtYc4vE5vICAaRk
+	 J7j+MikTW2VuOGsxCT7h78a2fH0FffsxQujunI4niWpR8AW0oTfcAun7H3J/YP8yDh8+R
+	 7GNQbyjWekjdlwbensK/hixwET8SugId1TlvLoHNyjpF+PZ8/CvPkJAkhM17wnyzYPCkQ
+	 AUoxn/omtWkKNp6f+UfdlqTxRVjrZvdatLRxBOq/KeL3uytPdqTyNQGWSlr9RV31UL6sw
+	 OdSxxDfKPywu/CxZPWWW975I2r/CfxHVa4acIMqDPbM3RekfENt41I/FyJqvQxiM53A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=WzGIh2AN;
-	arc=none smtp.remote-ip=192.198.163.8
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=chromium.org;
+	spf=pass smtp.mailfrom=chromium.org;
+	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=ZqhDMb+U;
+	arc=none smtp.remote-ip=209.85.161.50
+Received: from mail-oo1-f50.google.com (mail-oo1-f50.google.com [209.85.161.50])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AB14606A325;
-	Tue, 10 Nov 2026 21:02:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5AB14606A325
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59273606A325
+	for <imx@lists.linux.dev>; Tue, 10 Nov 2026 21:05:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 59273606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=WzGIh2AN
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794344563; x=1825880563;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=63+0yrmJwzlPZjE6WYIeaX8J9iDrfSQT6kKOvmN1rCI=;
-  b=WzGIh2ANPuLt0Scv5LqbZRwbLXECnYcWyrAJ9DwOEhtbN8hsNjRJi1p1
-   q4MfIHetFght8zssiF4mC7KNEYJGr+Jk2FyJmttf7k6i9woMX5Kczvn3L
-   4b32OjU+nY5NbB3rK9LygiURAXK9omk9rSObxw4Oy/saA95HZ/12ZbVg3
-   7BuJfEtTgjOsVLLsmfzEcba8e7b87/cHpR+jxOSbyfK4MU4f7qLWat0Mu
-   GDEAgmAVq6denWVVRfi1ZCWno5wNCqemmN8B4IWC6hkwfYaNENhCjRwxR
-   hXngC1zUKVmPIrgD5xuN3u1HQ4MqUg5jS7tRtYTiOzDhw1D9wqkgCEyam
-   Q==;
-X-CSE-ConnectionGUID: eEE0Ia2iQ3CTaF9AiBS5zg==
-X-CSE-MsgGUID: 4djkMdHuSG+hSizQUVfIEA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11962"; a="2996547"
-X-IronPort-AV: E=Sophos;i="6.27,206,1787036400"; 
-   d="scan'208";a="2996547"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2026 13:02:42 -0800
-X-CSE-ConnectionGUID: CU/3jIPSSwCRObP1Fv88Wg==
-X-CSE-MsgGUID: hOiKvxcgTryr9vIsbA7O6A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,206,1787036400"; 
-   d="scan'208";a="8578905"
-Received: from hrotuna-mobl2.ger.corp.intel.com (HELO localhost) ([10.245.245.78])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2026 13:02:38 -0800
-Date: Tue, 10 Nov 2026 23:02:36 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Fabio Estevam <festevam@gmail.com>
-Cc: lee@kernel.org, maz@kernel.org, andy@kernel.org, jic23@kernel.org,
-	dmitry.torokhov@gmail.com, linux-input@vger.kernel.org,
-	mfd@lists.linux.dev, linux-iio@vger.kernel.org, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, stable@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] mfd: mxs-lradc: Pass parent IRQs to child drivers
-Message-ID: <avOGbAYDCQyuzd6Q@ashevche-desk.local>
-References: <20261110141934.42490-1-festevam@gmail.com>
- <20261110141934.42490-2-festevam@gmail.com>
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=ZqhDMb+U
+Received: by mail-oo1-f50.google.com with SMTP id 006d021491bc7-6fe4372c5f3so1399767eaf.3
+        for <imx@lists.linux.dev>; Tue, 10 Nov 2026 13:05:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1794344719; x=1794949519; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=r0F/G1/cCd6YtCyJox781fOcwZWIec41wc+ColCaqik=;
+        b=ZqhDMb+UTaaiDz6TYX4chkVfcif8myViDK1aM23IIDpDmdUE4ggRQVAwbkYO54tuDu
+         xoWbcy6txBDkoMqujorhr5MDPr6QLvooBVBip5qpXiLhoQVsbC5f2G4GeixU2tWnRaYx
+         5vzZwUAr4AOIDEk7z8G3GydA8ZKuQ4Inwl6pM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794344719; x=1794949519;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=r0F/G1/cCd6YtCyJox781fOcwZWIec41wc+ColCaqik=;
+        b=ZOafhtsU4cpzUS2PRG71OpatuBC2rJgMxnkddteL70gZw9NU9dfI1CDUj0vYeN8w+A
+         xBcPEC+WRQAxd7JSmUqa9/oSPoUrnVEDMEfYcH6wAmMEnuArBiF+SKuCTpSzCRvDzgUR
+         ZgcyO8cJpe5pHKQ7NESlEj900ijTdqMssBzBw0z22ZhOheytJZG7UrV2uSsyskn6Gxfu
+         hWEEkLd461P41MU3jKEyT1ITOdZF6mfJhb8RzetKI4RXmuoTZaioML7hfbmRHOh68eBM
+         4MeS2DZuNCwlL/9iqrq62V/f7yIC0Uq8VAcgOK4LRwRSOwuNOMBo6sF7dytqh5uAJjKn
+         /ohQ==
+X-Forwarded-Encrypted: i=1; AL+hErH2a8KVosMH9KsQaD0sMA7LKFs9SziNpfXfxV5phF9YJlR+X4j+7E/J6urrAVDht/slmnE=@lists.linux.dev
+X-Gm-Message-State: APuU4Z8N2KyqloLvqbYpxmIo1vBmue2q1IH+iZhMxNTWEgKGWsy+pXnC
+	9WJ/ksZExyh6dt1AnY8aIHBgEDp2P8k8bMRr5EZlLN86u3FXFQ/Rx8F7he68rib4DQ==
+X-Gm-Gg: AYBFou2um5MIbXVoG4QM/9XBImgTbuhxuv/03kf/N/e0Dj3NSuidP+vuwmpNNlTmivL
+	U12wHMWr1n3Igb2za4H8wNGKJ5YGIty2sbBl3HqzXnEChpPlGT9uh/TUqpJfqGauCp0hSlA9Ar/
+	kKBtyss3J/wQul5UhZWZHoBIi7+SgoHxO04Y3cI+BLH20CjKY6wJa9iRNvYcXOm82f8Cf92WO2l
+	+XN2ZU50NjKE2StzbYduxoNw17kH3zXMVz+WBhHI4IGCtP0HFThV6ij9E4Ii4SG/MulxaBiIeEU
+	fNa4kxQWnIkwYT8HrUZ7XhHGYOO5bEMuOStV9tMLj0rUDQPP6fkO06TRNE5mqMv9AkxFHl6XjrL
+	bWMXUUJaKN8YtOPmL2nMwVJ5YT1PTIs0D4IBiGY0N01E+TPn0cH314x+8UGrE/dXGRZnOodnfv4
+	vqFa3R9zYDA3EbjlFMMZ+pYnirNgzp6iofRFxJ89FNM/dP9/AamroBxmkmKfArqVY55LF5LX/e6
+	Io5emkEWjNcLbX9ZzSY0d3746Ii+3juDlg+VWs3/QrNenI07ThtisLTGS1CxT1TacjQ+Y68JMTp
+	/a+PR7jLwxYFqk3JiD5GCqN/y3tjcL6NkI5USUEYdlW/Degiocj1IeksRphrjzmRTXx4VCfCYq9
+	USJ3p0vpTrjPJMRvrWrg2GxXXc4a6Jll67K79Tw==
+X-Received: by 2002:a05:6820:c44a:20b0:6d9:979e:22ad with SMTP id 006d021491bc7-71917934e44mr119108eaf.54.1794344719257;
+        Tue, 10 Nov 2026 13:05:19 -0800 (PST)
+Received: from rrangel.c.googlers.com.com (57.128.170.34.bc.googleusercontent.com. [34.170.128.57])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-860dcb62443sm2856553a34.6.2026.11.10.13.05.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Nov 2026 13:05:17 -0800 (PST)
+From: Raul E Rangel <rrangel@chromium.org>
+To: James Hilliard <james.hilliard1@gmail.com>
+Cc: Raul E Rangel <rrangel@chromium.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Tony Lindgren <tony@atomide.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Richard Genoud <richard.genoud@bootlin.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Jacky Huang <ychuang3@nuvoton.com>,
+	Shan-Chun Hung <schung@nuvoton.com>,
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Timur Tabi <timur@kernel.org>,
+	Peter Ujfalusi <peter.ujfalusi@ti.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Patrice Chotard <patrice.chotard@foss.st.com>,
+	linux-kernel@vger.kernel.org,
+	linux-serial@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev,
+	linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v11 7/8] serial: 8250: retire canceled RX DMA before reusing the receive buffer
+Date: Tue, 10 Nov 2026 14:05:14 -0700
+Message-ID: <20261110210514.1091741-1-rrangel@chromium.org>
+X-Mailer: git-send-email 2.56.0.212.g129ede20d9-goog
+In-Reply-To: <20261109-submit-serial-8250-dma-cancel-v1-v11-7-6364edca63d6@gmail.com>
+References: <20261109-submit-serial-8250-dma-cancel-v1-v11-0-6364edca63d6@gmail.com> <20261109-submit-serial-8250-dma-cancel-v1-v11-7-6364edca63d6@gmail.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -82,69 +123,18 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261110141934.42490-2-festevam@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, Nov 10, 2026 at 11:19:34AM -0300, Fabio Estevam wrote:
-> The MFD driver stores raw DT interrupt indices in IRQ resources but
-> registers its child devices without an IRQ domain or IRQ base. The child
-> drivers consequently receive the indices as if they were mapped Linux
-> IRQ numbers. IRQ index 0 triggers the platform_get_irq_byname() warning:
-> 
->   0 is an invalid IRQ number
-> 
-> The children then try to recover the indices from their resources and
-> map them against the parent OF node. Besides duplicating IRQ names in
-> the parent and children, this relies on invalid platform IRQ resources
-> and fails when IRQ 0 is rejected.
-> 
-> Resolve the interrupts with platform_get_irq() in the MFD parent and
-> store the mapped IRQs in the shared LRADC data. Drop the child IRQ
-> resources and duplicated name arrays, and have both child drivers
-> request the mapped IRQs directly. Use the MFD memory base support to
-> translate a single relative memory resource shared by both cells.
-> 
-> Tested on an i.MX28 EVK. The mxs-lradc-ts driver probes successfully,
-> touch events are reported, and the touch-detect and LRADC channel 7
-> interrupt counters increase as expected.
-> 
-> Cc: stable@vger.kernel.org
-> Suggested-by: Lee Jones <lee@kernel.org>
-> Closes: https://lore.kernel.org/linux-input/CAOMZO5CgTzo6GuXptD4mFTN=UsJJqpkixDW1Q64gqZGrij8+uQ@mail.gmail.com/
+On Mon, Nov 09, 2026 at 09:00:22PM -0700, James Hilliard wrote:
+> After one second of unsuccessful pause retries, stop the transfer with
+> dmaengine_terminate_sync() outside the port lock. An indefinite wait could
+> otherwise leave a request/response peer waiting for data that is stuck in
+> a partial DMA buffer. Report that recovery discards the pending payload:
+> without a stable residue it cannot safely be copied. Keep rx_running,
+> rx_pause_pending and rx_terminating set until termination has stopped DMA
+> and drained its callbacks. Then restore receive handling and allow another
+> DMA descriptor, without latching a permanent PIO fallback for a pause
+> timeout. This trades the stalled transfer's data for continued reception.
 
-He-he, this rings a bell! I have still a copy of the mbox of this thread
-locally to maybe (likely never) look into that. So, I am so glad to see this
-being eventually addressed!
-
-> Fixes: a85a6c86c25b ("driver core: platform: Clarify that IRQ 0 is invalid")
-> Signed-off-by: Fabio Estevam <festevam@gmail.com>
-
-...
-
->  	struct device_node *node = dev->parent->of_node;
->  	struct mxs_lradc *lradc = dev_get_drvdata(dev->parent);
->  	struct mxs_lradc_ts *ts;
-> -	int ret, irq, virq, i;
-> +	int ret, i;
->  	u32 ts_wires = 0, adapt;
-
-Can we, while at it, kinda follow the reversed xmas tree order here?
-
-...
-
-> -	lradc->soc = (kernel_ulong_t)device_get_match_data(&pdev->dev);
-> +	data = device_get_match_data(dev);
-
-Is this driver affected by driver_override case? If so, this has to be checked
-against NULL and return -ENODATA.
-
-> +	lradc->soc = data->soc;
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Reviewed-by: Raul E Rangel <rrangel@chromium.org>
