@@ -1,65 +1,78 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.8
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794341235;
-	b=wR/CoCyfKShy26FZMK8Vi7uPv61mEhdJsPyZuHsllYEBP4Q67tp7Lgj1mor3oMvDo/I2
-	 v/vYf/H0G8OZSmR2h+jN+EJLUTOEKOPhbASJXUezcTyusE8Vga5ymfl4p7JnfIfuFnC+F
-	 rjGrdprSyLhHXSxbyvu4sS6Z9BEerv63C6ntKqESSYv/K1pE9L+onLspbWxeTG1/bhEkT
-	 4Q+Q7hm4j9S3dMyDR7wgBp3OXUOOxr6NSoDENsDJwnjPnK5MFMmwZbITX4NZhuMGo3yJ6
-	 3UKP5MxRdZTzOdeUaYbqNtNzIi6EDjE5K+xwDpcO9qJuLsQzCRqapvvceIalCk8I3jw==
+	t=1794344563;
+	b=iuvsKsUhZWG/OCR/U9Ocrs4CxJer/W94Olk5c2RuqkgiAHTNxxyHRIyOzpIHxusyCJaL
+	 8bDyLyX6m6NBqw8thAxIQn4lEcNYamfRx+2eMFRlB0ts1QRBb2ZrXcaSyrJMjtHwjAbPj
+	 VT+Ipj00tp8EOP29xtxAqeZbZVsKiUTTLDWpqYx+JMQVjR47Q60Upwl2r7MgHWneFjEEY
+	 EibrSn+0KpCGa+iIRIyip36y0H9l9rrm6NS4dWSuKtqtKTHsU3EXE4ipFmE1kQsY6x45x
+	 TYOevwjX5YSlwPNcWBdapvJBeimoSX+XfLmPPp88RG7kbMoROK1KPlocj6cJlY/FjyQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794341235;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=bq7gVJQHWBjqS6F+14wEEAlhv/2t/NZ6mUvTScCYERA=;
-	b=glrTyMlt95sQSGtBPhnjJ3KWAaehuS1pIhp95u4T9X8vh1HEzTeAcDXZGbILq3CaNi9m
-	 fgb+lH3s5FTzjHA9wZ/s6byj3Kf1qG5FK1GfE2lZSH6zWJ26c4nRVonpt0llY82Ws35KG
-	 V0XXvDJrTgbTBCEwhvPhEcNqojIlcINr9Y7skbEjKRGTM1VGcX5KNnbe8jVE5K+4V1P20
-	 tDV/qejhW8692CJaYGu5SJg+llfiJzD6CRFKqCNUN6DtHO1AWCAkO+ZFNnCw8BX6oU00j
-	 LoEmPYCZrSS4Nrlc/lEef/Q4y4qstT+wlbYKUQV286rQEyeTvWQfCxsXbb09yhhP6ig==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794344563;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To:Organization;
+	bh=hpKPnv6LQCf20/ZkdM8jFTGSWfWUSzTRAK+io33NZfg=;
+	b=tV/0EbQ8C4IFkfmbHd3A8oQfnn9w42oKgHsSM31jDSFnt3S+EO/EMUgN00OA6GNFkr4K
+	 ayHb+2MUurKe0m6rObMcid3b6aVu1MXry4f4C2Uiq2lz7kXDJbTzCku1YpdJ6CRg/L/6A
+	 HFEHDl6coQ7lQqJzr41BEBCTuL3aXgHZn2QZ1LepdySHeuF+RuVsXsOLSbUsLmRRPD9J3
+	 TW+pMubXjfdqco+aHe2258FyhDxxxG3fUMwbPAYlTwUmy89joD851KM2D+Y3OLnCSaPw3
+	 O6v7qoCSgXIbSlJVGaQxi2/zvXt2WqiCIQQEgbTv7ILXAukCWw/aBj18ccjKkI39RTQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aM0wUI8u;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=WzGIh2AN;
+	arc=none smtp.remote-ip=192.198.163.8
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF6F5606A31C;
-	Tue, 10 Nov 2026 20:07:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AB14606A325;
+	Tue, 10 Nov 2026 21:02:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5AB14606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aM0wUI8u
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 222D51F0089F;
-	Tue, 10 Nov 2026 20:07:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794341234;
-	bh=bq7gVJQHWBjqS6F+14wEEAlhv/2t/NZ6mUvTScCYERA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=aM0wUI8ukQcFIWwnLH7kYFVIKM+u4kUIHKxe4DFZeS86o3iCDvERJuhE2OHADygW/
-	 75SPx/TGsJ9wItILS7lR2s+wdJDBFA1vYLbDB1tuRS0ITTic6aJwf3Vne8kQpgD9RE
-	 nlf3NGZg0U2MGqQP0cBoxsFIDvfx8spTnN+wStxzXreehGhG7t6/heXQE+0rXgsdpv
-	 AorWslqjlAV5KmhH7KA8+n0X2A0B9nK2FZWh2ZKQ7JaJHKn2ZAon0ua8MQTbBz1ycz
-	 42GSHtDZBxbkixL1remC9DVOj2Xmisu2zF1pDrsBCJgH+k3/I0c4Cn8tvQ6r/tepXG
-	 uSDN3vQTI8m2Q==
-Date: Tue, 10 Nov 2026 14:07:10 -0600
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
-Cc: Jerome Brunet <jbrunet+clk@baylibre.com>,
-	Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev,
-	Stephen Boyd <sboyd@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Abel Vesa <abelvesa@kernel.org>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Frank Li <Frank.Li@nxp.com>, Peng Fan <peng.fan@nxp.com>,
-	linux-arm-kernel@lists.infradead.org,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-clk@vger.kernel.org, Brian Masney <bmasney+clk@redhat.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Conor Dooley <conor+dt@kernel.org>, dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH v11 5/7] dt-bindings: clock: nxp,imx95-blk-ctl: Add LDB
- bridge child node
-Message-ID: <179434122994.1702778.1936835522870745685.robh@kernel.org>
-References: <20261110-dcif-upstreaming-v11-0-9e13c85ae0d8@oss.nxp.com>
- <20261110-dcif-upstreaming-v11-5-9e13c85ae0d8@oss.nxp.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=WzGIh2AN
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1794344563; x=1825880563;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=63+0yrmJwzlPZjE6WYIeaX8J9iDrfSQT6kKOvmN1rCI=;
+  b=WzGIh2ANPuLt0Scv5LqbZRwbLXECnYcWyrAJ9DwOEhtbN8hsNjRJi1p1
+   q4MfIHetFght8zssiF4mC7KNEYJGr+Jk2FyJmttf7k6i9woMX5Kczvn3L
+   4b32OjU+nY5NbB3rK9LygiURAXK9omk9rSObxw4Oy/saA95HZ/12ZbVg3
+   7BuJfEtTgjOsVLLsmfzEcba8e7b87/cHpR+jxOSbyfK4MU4f7qLWat0Mu
+   GDEAgmAVq6denWVVRfi1ZCWno5wNCqemmN8B4IWC6hkwfYaNENhCjRwxR
+   hXngC1zUKVmPIrgD5xuN3u1HQ4MqUg5jS7tRtYTiOzDhw1D9wqkgCEyam
+   Q==;
+X-CSE-ConnectionGUID: eEE0Ia2iQ3CTaF9AiBS5zg==
+X-CSE-MsgGUID: 4djkMdHuSG+hSizQUVfIEA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11962"; a="2996547"
+X-IronPort-AV: E=Sophos;i="6.27,206,1787036400"; 
+   d="scan'208";a="2996547"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2026 13:02:42 -0800
+X-CSE-ConnectionGUID: CU/3jIPSSwCRObP1Fv88Wg==
+X-CSE-MsgGUID: hOiKvxcgTryr9vIsbA7O6A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,206,1787036400"; 
+   d="scan'208";a="8578905"
+Received: from hrotuna-mobl2.ger.corp.intel.com (HELO localhost) ([10.245.245.78])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2026 13:02:38 -0800
+Date: Tue, 10 Nov 2026 23:02:36 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Fabio Estevam <festevam@gmail.com>
+Cc: lee@kernel.org, maz@kernel.org, andy@kernel.org, jic23@kernel.org,
+	dmitry.torokhov@gmail.com, linux-input@vger.kernel.org,
+	mfd@lists.linux.dev, linux-iio@vger.kernel.org, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, stable@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] mfd: mxs-lradc: Pass parent IRQs to child drivers
+Message-ID: <avOGbAYDCQyuzd6Q@ashevche-desk.local>
+References: <20261110141934.42490-1-festevam@gmail.com>
+ <20261110141934.42490-2-festevam@gmail.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -71,19 +84,67 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261110-dcif-upstreaming-v11-5-9e13c85ae0d8@oss.nxp.com>
+In-Reply-To: <20261110141934.42490-2-festevam@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-
-On Tue, 10 Nov 2026 14:27:45 +0000, Laurentiu Palcu wrote:
-> Since the BLK CTL registers, like the LVDS CSR, can be used to control the
-> LVDS Display Bridge controllers, add a 'bridge' child node to handle
-> these use cases.
+On Tue, Nov 10, 2026 at 11:19:34AM -0300, Fabio Estevam wrote:
+> The MFD driver stores raw DT interrupt indices in IRQ resources but
+> registers its child devices without an IRQ domain or IRQ base. The child
+> drivers consequently receive the indices as if they were mapped Linux
+> IRQ numbers. IRQ index 0 triggers the platform_get_irq_byname() warning:
 > 
-> Signed-off-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
-> ---
->  .../bindings/clock/nxp,imx95-blk-ctl.yaml          | 24 +++++++++++++++++++++-
->  1 file changed, 23 insertions(+), 1 deletion(-)
+>   0 is an invalid IRQ number
 > 
+> The children then try to recover the indices from their resources and
+> map them against the parent OF node. Besides duplicating IRQ names in
+> the parent and children, this relies on invalid platform IRQ resources
+> and fails when IRQ 0 is rejected.
+> 
+> Resolve the interrupts with platform_get_irq() in the MFD parent and
+> store the mapped IRQs in the shared LRADC data. Drop the child IRQ
+> resources and duplicated name arrays, and have both child drivers
+> request the mapped IRQs directly. Use the MFD memory base support to
+> translate a single relative memory resource shared by both cells.
+> 
+> Tested on an i.MX28 EVK. The mxs-lradc-ts driver probes successfully,
+> touch events are reported, and the touch-detect and LRADC channel 7
+> interrupt counters increase as expected.
+> 
+> Cc: stable@vger.kernel.org
+> Suggested-by: Lee Jones <lee@kernel.org>
+> Closes: https://lore.kernel.org/linux-input/CAOMZO5CgTzo6GuXptD4mFTN=UsJJqpkixDW1Q64gqZGrij8+uQ@mail.gmail.com/
 
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+He-he, this rings a bell! I have still a copy of the mbox of this thread
+locally to maybe (likely never) look into that. So, I am so glad to see this
+being eventually addressed!
+
+> Fixes: a85a6c86c25b ("driver core: platform: Clarify that IRQ 0 is invalid")
+> Signed-off-by: Fabio Estevam <festevam@gmail.com>
+
+...
+
+>  	struct device_node *node = dev->parent->of_node;
+>  	struct mxs_lradc *lradc = dev_get_drvdata(dev->parent);
+>  	struct mxs_lradc_ts *ts;
+> -	int ret, irq, virq, i;
+> +	int ret, i;
+>  	u32 ts_wires = 0, adapt;
+
+Can we, while at it, kinda follow the reversed xmas tree order here?
+
+...
+
+> -	lradc->soc = (kernel_ulong_t)device_get_match_data(&pdev->dev);
+> +	data = device_get_match_data(dev);
+
+Is this driver affected by driver_override case? If so, this has to be checked
+against NULL and return -ENODATA.
+
+> +	lradc->soc = data->soc;
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
