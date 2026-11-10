@@ -1,99 +1,65 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.65.47
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794322455;
-	b=e5IAuGVy7G00ohbo5cMVgs9Uw0DbkCM1YEUqKT/FKXAhKtifYATv1LFaTPR7gIYZ6js+
-	 GO8Dd82yiOBIGb60WFHDojmOB/769Ssnm7ZzKuciQgF4kVyBk1BvpaxZ4vLmoC375rU35
-	 b1oH3ocjBAXstGwJ23AygcpMSuzQDQMEXxvFqme35RFdKr5dJpBGg4q6WzN2NbzmPpw4r
-	 rW2GnO38c9+tiVPD0+m+aPlCNQk8WXxRVV/7licDOOgfOwp2PpOANECZ/lV+WAwTgvf0Z
-	 y5sIMZR1ouyvvWA7e4OXtXIm17bKqKPkE1msqmfAbJSIDY8DBumQR9A+DWD5NHq0MYw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794322455;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:Content-Type:Content-Disposition:
-	 In-Reply-To:X-ClientProxiedBy:MIME-Version:
-	 X-MS-Exchange-MessageSentRepresentingType:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SharedMailbox-RoutingAgent-Processed:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=CAQuqKguyeinbg5856TB1/eMAX0D2CZXP6etwfqWzq8=;
-	b=CN6CcdUlpLXh1aZSZYqmeh/EUV1VZl5zDL4K2ahx3xSZqTAisgT+JiS3N7wL1EkO62jv
-	 /arudmBCNoWwG7e5OxYBCEQgx+RsisdJuMMuGm+va9kO7SZqdWVrkMIwdywe0/DV9CBru
-	 6zfnPpI3AoX0AwfL6tEUpVhUM03uAM7Rh5nE6naQdMg3MMVYlYiBXky2B2KvDI1Cv1c3u
-	 1mcno1nANYhPOGdxznbt75YlLi6Q8RN3eb1rgWTOjvcVI8f78/taMp5OHg/7ZObbzHdSH
-	 E2KPszznB8hjUpX1q+KUrno5sRBq02YRCViTJbrFWPZL0/o6vbLLn735gZ8LFQ7lXLA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.nxp.com;
-	spf=pass smtp.mailfrom=oss.nxp.com;
-	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=slG+UbJD;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.65.47
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011047.outbound.protection.outlook.com [52.101.65.47])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=178.251.229.89
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794323166;
+	b=nCbnE+/ynO0xesnMKvOKybMm/YA25/xN1RpQhmkH0QdlEMQPwxUT0dNeCT9dgyqzb3nh
+	 qpSsXFmFpHYaVpmRelMtuNdxGeNpojYnmwekxcUG0GwhexvtKHQIhyGTTZAtAj42loGJD
+	 CC0lD9aT5slfWBtfjlMQvAAKK0RvSl3wo0vLd9n+YyEiqgniQiHZykwJKpMb7MJy1vzn9
+	 ge4sCntjJn2+i5zWFJ7ZOxld1cyAvqf341dOm90AVPQaJYMbhMN+P/u126KRqfI/YBEUy
+	 Ny9/vqsY9HfBk2rBZMyGp5ocqaq7SYYW6bv5cSj4+V0oBPIqsLVwMxT0pNbjLGQ8ZQA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794323166;
+	h=DMARC-Filter:Received:DKIM-Signature:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 X-Last-TLS-Session-Version;
+	bh=iSIwcETXaOk9HvPYheDqqxRnUPDv9J3s1eNW0KSF/d8=;
+	b=T+DEUkBJF7lfTjaRpVubSHV0BxnN0oCW+LQdRFCksEFyv5lIBqyz/LnwHkt2K8k42OJN
+	 NOUAE5QC5gqcL5V91RbGQNfqIy8kbP200GD8YxiJCBCvwYI/YjsduR29jZyXxvUTHIs/6
+	 euFCwp6qImAz0LHIMrIpmsh9P/gPu9t0F4YAVYsS1iq6F1FafJcB/oanbyRw+Kn/7pUaR
+	 5rWGZDnCU9l6YoKAG25+7F4wQJ9KUCm2CX324wKquuVCIHHd/imh/7ZAYTA9m5+w1XjLp
+	 emfigNEqfoDg9NT+ITLQLL9AXnHwJ5phVOFNiffzSVBmBfEs0Xs3jNDOwSjej1vl+oQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nabladev.com;
+	spf=pass smtp.mailfrom=nabladev.com;
+	dkim=pass header.d=nabladev.com header.i=@nabladev.com header.a=rsa-sha256 header.s=dkim header.b=COrSHNtD;
+	arc=none smtp.remote-ip=178.251.229.89
+Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D21A1606A320
-	for <imx@lists.linux.dev>; Tue, 10 Nov 2026 14:54:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D21A1606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EBE1606AA5A
+	for <imx@lists.linux.dev>; Tue, 10 Nov 2026 15:06:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9EBE1606AA5A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=slG+UbJD
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wwRgl9pxKS0Yzg/IeWxuQyqf9E75+0234MExdHrMYk6d9Zw/j3Vx1lfUegG+t8aFE23pgjfvttmEUe3Ik0S3lgeaFLLTrYhmK0hnLnmK4NnGPTb2c9n22AW/6AX7YuvveGRuT/8NgeEhnKfIB/QJaXzweipIjXlifS/M84cVVWsDaD9NGt+wypD05YaiGTQuWobuAeEv8Fob1RIGBzhNJRUZ9xQOHtw/aFz3KVvFSLuX48SpuTvAi41QPOjknS6t3uAHELyWV414RQXBw4gQ3FFzQRPFBMdq2eCLqEGhrMAw4qDPWM08L/1kcJc6M3Y40HCiqKEbr20ewBpgU14JEg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CAQuqKguyeinbg5856TB1/eMAX0D2CZXP6etwfqWzq8=;
- b=IT4C+H+w01/pVXbm7lKXyH4VFNSGJBBkxxkrK7EK5k2UPpuIYFJWRsVQO5AVKHK9OFb4ReDJxiIe5OzqJgGbjB/vV4yfHGz9cdU7GzNstG6UpNHtYZ7hL0W8DavYmkVULizIhLBT7bdoBdiixQFo2t1wC1YuFGgEyg8lNOoEtNAdu5pZSQkdwj651MOKSH+CPVlXQ4iz1URGXjNYHdlPj3XzBhHlCVg3zaW+P1X4cSjxooN1aVqfWd7Pl8KeEuqW38azpWO213XgJD1FAXVsmX7Z1PF/fztx2Gb596z4pzEgHx/hz42OVHflwlYXMi6tCNFR9YhBgeWD6cf4wSueYQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CAQuqKguyeinbg5856TB1/eMAX0D2CZXP6etwfqWzq8=;
- b=slG+UbJDHplmjNCnaWYPR/6J299UPJV02FEFm9+PlSMBfZhR4/rStAvU6iwyf5CEq9rCxVoQPaIuILSP8tLzQvI21XUudH6i+P/1qRqR/PBOpGAlAqV+8Zq873EpFRDP/fLK3GdRCsk3pUtjtttwGz9W1UDxTuceNWwjZeQR1ZgWPF14E2QYkNuGhT8wTZzaK4EEgEBG74+ot6aYCnRcA9jFnf/G5XnnR7raYwNB/H+pewRK05Hu0s8m3gRJnGnR99vqPlBsLSDw54db1eos+lSaU9z+jOM8iMuvCHS+NjQQUSlrxfhbz7B9mWVBlhwZ9DB0Jz2tdY9NhxIfnFV+NQ==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB12318.eurprd04.prod.outlook.com
- (2603:10a6:150:32b::19) by VI0PR04MB11937.eurprd04.prod.outlook.com
- (2603:10a6:800:307::13) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.12; Tue, 10 Nov
- 2026 14:54:11 +0000
-Received: from GV2PR04MB12318.eurprd04.prod.outlook.com
- ([fe80::a498:2b5a:cbdb:d6fa]) by GV2PR04MB12318.eurprd04.prod.outlook.com
- ([fe80::a498:2b5a:cbdb:d6fa%3]) with mapi id 15.21.0592.012; Tue, 10 Nov 2026
- 14:54:08 +0000
-Date: Tue, 10 Nov 2026 16:54:04 +0200
-From: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
-To: Stefan Ghetu <stefan.ghetu@nxp.com>
-Cc: Vinod Koul <vkoul@kernel.org>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, daniel.baluta@nxp.com, linux-phy@lists.infradead.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, "Oliver F. Brown" <oliver.brown@oss.nxp.com>, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH] phy: freescale: phy-fsl-imx8-mipi-dphy: Fix hs_zero
- underflow
-Message-ID: <avMvxPmEftnmthB8@vm>
-References: <20261110120546.6247-1-stefan.ghetu@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261110120546.6247-1-stefan.ghetu@nxp.com>
-X-ClientProxiedBy: FR4P281CA0102.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:cb::9) To GV2PR04MB12318.eurprd04.prod.outlook.com
- (2603:10a6:150:32b::19)
+	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.a=rsa-sha256 header.s=dkim header.b=COrSHNtD
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id EEB7310DBB8;
+	Tue, 10 Nov 2026 16:05:56 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
+	s=dkim; t=1794323159; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=iSIwcETXaOk9HvPYheDqqxRnUPDv9J3s1eNW0KSF/d8=;
+	b=COrSHNtDuQZeydl2lSdOlQdbCfmGVHmKZqw0iSK0htY5DHM9EapY8dTL3jK01nNvTGIoYh
+	RDIS+iiA6XJXLrNF6Ne3GQnHpCMZqZ8bnRo3PkwHQYlzwKnCoZmy5S6hexK8msnPWSqLS8
+	+ysA9evteRk25vbtKiYVZTc7Ig8Ao0pkONr84DhhDRhU/L8/7q+1Djb5FCBhA9h87lY8is
+	AppysDCoDR2y+EytjnRlzxGe6j/435deZQVWeD/Sg+o27fWW1A+WUhmDo26xlpKlhaNszr
+	QXbtIMVxxfl7ALbVwhKjmBZAN2fjLVQY3taq3Z5Uv+kiS1+xu64lB4NzBwpZzw==
+From: Lukasz Majewski <lukma@nabladev.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Lukasz Majewski <lukma@nabladev.com>
+Subject: [PATCH] arm64: dts: freescale: Add device tree definition for Cloos CBASE with i.MX8MM
+Date: Tue, 10 Nov 2026 16:05:46 +0100
+Message-ID: <20261110150546.1535950-1-lukma@nabladev.com>
+X-Mailer: git-send-email 2.47.3
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -103,90 +69,601 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB12318:EE_|VI0PR04MB11937:EE_
-X-MS-Office365-Filtering-Correlation-Id: 521ecf40-d37f-4ebd-cf40-08df3f3a791a
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|23010399003|19092799006|11063799006|56012099006|10067099003|261026121527099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	HIqxf35yqt8XQ8KQu2lsU7RMKw2JwL21+IHDjgRW0vdGhE/paRHXZ/fUX+YsOIP42/9aotwQI5BIoVGVTqB3d37RpHOf0Oi7gCk6w6R7a52B8dXkAFABPyhqyAHJn3nbRpVCMwVmYiaLN+KBswRhiarQxrH1kaO7QsEqMgWAcZfJBMlMi4lcTiyKiQOcQR9/p0OtyNscAOErKoPnMMS/ODecEV/s7oxJVk21pos0ZdPsEU9t2rpw7htmVxxqjq8sMeaA2IncMgXV7AKdu2gpos+/pCzAnwDaaP8ps7Mb40z2WpoFg/wRgrDsK2EmEnGIDI/WqUW665lwKAnXv+tZEtf8UFQTBYOSrNqt/SVF6ZtYZwhDKl2Z1bUUnWj/e95VQvZZ4zh/Sd8vu6tMWCd7jUM9aaQFW9uoTYPBqGCMUlciKkX1Ms4M/SRDt7YjiFbLieZOZpDcsw4DycD7r6yy4DhR6fA2cvNVTYA9+lHevJ7l/qIb/6nZTHEDvaSJLigil7zu6wrTZRSBxd4Qd9xF2Nr3FqB95FU37z++O98lFO7Wrmwb06qgYhEI+yQsw85DXEba/LUtBvhPEL+niTbQVRTKo/NSS7JopnZbheHfF56BzaxzaOBstBhorSlS4U7AfiYKeeOEwrtY4k/lmD7u+9Aj0bdGuVKotHtjXOXLf5Y=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB12318.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(23010399003)(19092799006)(11063799006)(56012099006)(10067099003)(261026121527099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?ySC2BQOjpz+9ZZFU8bB9oqutrMOjqt8eXIm245LXWADq1DY7gyvfYylPA+i+?=
- =?us-ascii?Q?WFjLt2NSifn647CVTcu4O3Q4uBASxIvO0gyb4qnLEldWWs/4tjRkKEWj/O2/?=
- =?us-ascii?Q?mG4JTdsXJBe66EzqewzcmuYtOU1H8bmyeBqAm9Cv7kllDb4MLpZLqeJR7g/+?=
- =?us-ascii?Q?Fu3lJ5bi6RoBOS0jzlRrk3otoblVsUdNjFiVi7gyJJJW2gsp3Tk7PGwh3GiQ?=
- =?us-ascii?Q?WM16/lgiXbqsluAvWyZqnUAJ+HSRNMnKS4Myew8/HIe3Fi/hfyDICWBPvRzE?=
- =?us-ascii?Q?zX/XoNtJHPH3gULf4K/sUXuLnnTPRyDgptpqQnOeDX6sAQfMTjwBpYUN+dYF?=
- =?us-ascii?Q?tOCSg2GimNZeKqody9PKyYxcwGsNS8YrXeQrNbp6IaMsFRNWjAgLLxkbtoBa?=
- =?us-ascii?Q?ztxjTCoAVsDwszcUzb2+EiTr9sHcvxfW5mP4ZsG6+sjWDQsxSqG5DpVYXQmz?=
- =?us-ascii?Q?qN2V1oTQIxvzHenMKaUvj+d1+g6C1WzFoxK+2XCkKKGlnN51kq5FMotLzN2R?=
- =?us-ascii?Q?S6UNj8BbAjgqHqKAImI+sCWUpQzyeGtPCijYwMqcmkpvNPpn5QMv42YyQXJH?=
- =?us-ascii?Q?Stw4t6sLk2+lk3V1XDlfGj/o6CMz5RGi5TaknoFWzzt5sjwNlfw4eFFW8uv4?=
- =?us-ascii?Q?lmSfGpN70W6mX1JUcRcz35Ihnu9DDkCxqcR4e6xA0dDTa5295xxZocdSZmIL?=
- =?us-ascii?Q?LUvhkeiAQF2MO24cjD4xta83PIaJJJQYBYavzrqkVtHmGBeHT6yu0hHRmiyN?=
- =?us-ascii?Q?dC6Q/z60fVMKqHqm9Xhglga15sSaULYh6qWcAhlS6krAqGeDMTDd0edUWLYR?=
- =?us-ascii?Q?6XEhmyrI9K5fFuVbuRMBc1TuRb99ZQqz9dE+PxVjwjYeH3pEoZvNmB7qyja1?=
- =?us-ascii?Q?zsXZGtwRXAmlf6mCJj8pCraOF+2lRzZwQVzW2gK/71CumTKfI/pNmZOvIdWY?=
- =?us-ascii?Q?hNeBhGC0SdVcGwhO9npNxYqLoStqZdxaTyKOISD0D2z3Hm6JxbofQvyzU4yW?=
- =?us-ascii?Q?7N4hEtbH3krRG13fo6bVtDmhCwkijzxGrC0McUYXBGOyPFKgsjTKDOYj/IAD?=
- =?us-ascii?Q?LCNejSSxCSRGM2jidvNkGSUUDgzpF2iV5B9ii6RIhCJVuSgEwtQS2u50LeWN?=
- =?us-ascii?Q?Gtf1e7/l7XxFrS+yqJ432iGt5x0qNr3Td4Y5ibmbbWAEJ/jhdQXW3AhYkqUK?=
- =?us-ascii?Q?VI26rvUg5JS9gpKvGz6+axynGXqHAWI9cnOPL/eCo/WZBkXfgJCRB3bo00n6?=
- =?us-ascii?Q?tJIConQJxKVifDuhz2Gwv1H8QRerjhyTDdyghn6VG9ZcPSlhbv/aq5eHiwts?=
- =?us-ascii?Q?PRIOlDnP4wq+xHneZxISBauYED8G5CVMJzAg+22uXDaRPkgfiyGNDXSq5u3M?=
- =?us-ascii?Q?Rrg1VeAGxN6pK4xnjFyiHRJ7K2ycmx5zq8Fbo8Ml37R0JIGq8sqjzJSkL3N7?=
- =?us-ascii?Q?8c+fsd7SrFxR0izt3pFh4YWytGzOAFS+mStR1LUYnAo2Cv9wvmlkyoe5dsxZ?=
- =?us-ascii?Q?rr8THjF2xktWt3ct4wx+uMUu6F9E2q1COrfk1dcgoPFdj66bnfcPQmoLhbv8?=
- =?us-ascii?Q?86IUhfhPzFsNMAMeUbCTVw/r7eguMu7t64xYF6yf9y36rr+xAgEG74+yBM7P?=
- =?us-ascii?Q?8Bov23Jp+radrPoJBOTNXdlU987i8568gc8kGeVO0GMTnQZDvqlgLkmHRpr5?=
- =?us-ascii?Q?QD97924JM30LNMJHn+MHfIC50Jr6DDZcBfajams+ttWaQ7eYPSrQQk/BWXwa?=
- =?us-ascii?Q?UMpVxfTi4afLYu0Ar3fXXQP+Z28pfAA=3D?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 521ecf40-d37f-4ebd-cf40-08df3f3a791a
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB12318.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Nov 2026 14:54:08.4452
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: aCnVMs8h3TbHsy7QZbkfQOFb6ocMUOTqq7diNpIgtZVBS+8a9pILoFTKcX4aNJrHgD3/IxAcZjoCocseYetO3g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB11937
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Tue, Nov 10, 2026 at 02:05:46PM +0200, Stefan Ghetu wrote:
-> From: "Oliver F. Brown" <oliver.brown@oss.nxp.com>
-> 
-> The hs_zero timing is computed as
-> 
-> 	n = (144 * (hs_clk_rate / 1000000) - 47500) / 10000;
-> 	cfg->m_prg_hs_zero = n < 1 ? 1 : n;
-> 
-> hs_clk_rate is an unsigned long, so the subtraction is done unsigned and
-> wraps for any rate below about 330 MHz, where 144 * MHz < 47500. Because
-> n is a u32, the wrapped value is never seen as negative and the "n < 1"
-> clamp does not take effect. The garbage value is then truncated into the
-> 8-bit m_prg_hs_zero register field. At the minimum supported rate of
-> 80 MHz this programs 199 on 64-bit and 181 on 32-bit, instead of the
-> intended minimum of 1.
-> 
-> Make n signed and do the arithmetic in int so the clamp works on both
-> 32-bit and 64-bit. The divided rate is at most 1500, so 144 * 1500 fits
-> easily in an int.
-> 
-> Fixes: f4c8116e294b ("phy: Add driver for mixel mipi dphy found on NXP's i.MX8 SoCs")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Oliver F. Brown <oliver.brown@oss.nxp.com>
-> Signed-off-by: Stefan Ghetu <stefan.ghetu@nxp.com>
+This commit adds support for CBASE board, which incorporates the TQMa8MQML
+module.
 
-Reviewed-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+Signed-off-by: Lukasz Majewski <lukma@nabladev.com>
+---
+ .../arm64/boot/dts/freescale/imx8mm-cbase.dts | 577 ++++++++++++++++++
+ 1 file changed, 577 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-cbase.dts
 
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-cbase.dts b/arch/arm64/boot/dts/freescale/imx8mm-cbase.dts
+new file mode 100644
+index 000000000000..0bbd724f3aab
+--- /dev/null
++++ b/arch/arm64/boot/dts/freescale/imx8mm-cbase.dts
+@@ -0,0 +1,577 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++/*
++ * Copyright 2022 Fabio Estevam <festevam@denx.de>
++ * Copyright 2026 Lukasz Majewski <lukma@nabladev.com>
++ */
++
++/dts-v1/;
++
++#include "imx8mm-tqma8mqml.dtsi"
++
++/ {
++	model = "Cloos i.MX8MM CBASE board";
++	compatible = "cloos,imx8mm-cbase", "tq,imx8mm-tqma8mqml", "fsl,imx8mm";
++
++	aliases {
++		mmc0 = &usdhc3;
++		mmc1 = &usdhc2;
++	};
++
++	chosen {
++		stdout-path = &uart2;
++	};
++
++	leds {
++		compatible = "gpio-leds";
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_gpio_led>;
++
++		led-0 {
++			label = "status1";
++			gpios = <&gpio2 5 GPIO_ACTIVE_HIGH>;
++		};
++
++		led-1 {
++			label = "status2";
++			gpios = <&gpio2 6 GPIO_ACTIVE_HIGH>;
++		};
++
++		led-2 {
++			label = "status3";
++			gpios = <&gpio2 3 GPIO_ACTIVE_HIGH>;
++		};
++
++		led-3 {
++			label = "status4";
++			gpios = <&gpio2 4 GPIO_ACTIVE_HIGH>;
++		};
++
++		led-4 {
++			label = "error";
++			gpios = <&gpio2 1 GPIO_ACTIVE_HIGH>;
++		};
++
++		led-5 {
++			label = "run";
++			gpios = <&gpio2 0 GPIO_ACTIVE_HIGH>;
++		};
++	};
++
++	reg_usb_otg_vbus: regulator-usb-otg-vbus {
++		compatible = "regulator-fixed";
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_otg_vbus_ctrl>;
++		regulator-name = "usb_otg_vbus";
++		regulator-min-microvolt = <5000000>;
++		regulator-max-microvolt = <5000000>;
++		gpio = <&gpio2 2 GPIO_ACTIVE_HIGH>;
++		enable-active-high;
++	};
++
++	reg_usdhc2_vmmc: regulator-vmmc {
++		compatible = "regulator-fixed";
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_reg_usdhc2_vmmc>;
++		regulator-name = "VSD_3V3";
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++		gpio = <&gpio2 19 GPIO_ACTIVE_HIGH>;
++		enable-active-high;
++		startup-delay-us = <100>;
++		off-on-delay-us = <12000>;
++	};
++
++	clk_xtal40: clk-xtal40 {
++		compatible = "fixed-clock";
++		#clock-cells = <0>;
++		clock-frequency = <40000000>;
++	};
++
++	sfp_bot: sfp-bot {
++		compatible = "sff,sfp";
++		i2c-bus = <&i2c_sfp_bot>;
++		tx-fault-gpios = <&sfp_gpio 4 GPIO_ACTIVE_HIGH>;
++		tx-disable-gpios = <&sfp_gpio 5 GPIO_ACTIVE_HIGH>;
++		mod-def0-gpios = <&sfp_gpio 6 GPIO_ACTIVE_LOW>;
++		los-gpios = <&sfp_gpio 7 GPIO_ACTIVE_HIGH>;
++		maximum-power-milliwatt = <1000>;
++	};
++
++	sfp_top: sfp-top {
++		compatible = "sff,sfp";
++		i2c-bus = <&i2c_sfp_top>;
++		tx-fault-gpios = <&sfp_gpio 0 GPIO_ACTIVE_HIGH>;
++		tx-disable-gpios = <&sfp_gpio 1 GPIO_ACTIVE_HIGH>;
++		mod-def0-gpios = <&sfp_gpio 2 GPIO_ACTIVE_LOW>;
++		los-gpios = <&sfp_gpio 3 GPIO_ACTIVE_HIGH>;
++		maximum-power-milliwatt = <1000>;
++	};
++};
++
++&ddrc {
++	operating-points-v2 = <&ddrc_opp_table>;
++
++	ddrc_opp_table: opp-table {
++		compatible = "operating-points-v2";
++
++		opp-25000000 {
++			opp-hz = /bits/ 64 <25000000>;
++		};
++
++		opp-100000000 {
++			opp-hz = /bits/ 64 <100000000>;
++		};
++
++		opp-750000000 {
++			opp-hz = /bits/ 64 <750000000>;
++		};
++	};
++};
++
++&ecspi1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_ecspi1>;
++	cs-gpios = <&gpio5 9 GPIO_ACTIVE_LOW>,
++		   <&gpio1 1 GPIO_ACTIVE_LOW>,
++		   <&gpio1 12 GPIO_ACTIVE_LOW>,
++		   <&gpio1 13 GPIO_ACTIVE_LOW>;
++	status = "okay";
++
++	can@0 {
++		compatible = "microchip,mcp2518fd";
++		reg = <0>;
++		clocks = <&clk_xtal40>;
++		interrupt-parent = <&gpio1>;
++		interrupts = <3 IRQ_TYPE_EDGE_FALLING>;
++		spi-max-frequency = <4000000>;
++	};
++
++	can@1 {
++		compatible = "microchip,mcp2518fd";
++		reg = <1>;
++		clocks = <&clk_xtal40>;
++		interrupt-parent = <&gpio4>;
++		interrupts = <20 IRQ_TYPE_EDGE_FALLING>;
++		spi-max-frequency = <4000000>;
++	};
++};
++
++&ecspi2 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_ecspi2>;
++	cs-gpios = <&gpio5 13 GPIO_ACTIVE_LOW>;
++	status = "okay";
++};
++
++&fec1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_fec1>;
++	fsl,magic-packet;
++	phy-mode = "rgmii-id";
++	status = "okay";
++
++	fixed-link {
++		full-duplex;
++		pause;
++		speed = <1000>;
++	};
++
++	mdio {
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		managed_switch: switch@0  {
++			compatible = "marvell,mv88e6190";
++			#interrupt-cells = <2>;
++			interrupt-controller;
++			interrupt-parent = <&gpio1>;
++			interrupts = <0 IRQ_TYPE_LEVEL_LOW>;
++			pinctrl-0 = <&pinctrl_switch_interrupt>;
++			pinctrl-names = "default";
++			reg = <0>;
++			status = "okay";
++
++			mdio {
++				#address-cells = <1>;
++				#size-cells = <0>;
++
++				switch0phy1: ethernet-phy@1 {
++					reg = <0x1>;
++				};
++
++				switch0phy2: ethernet-phy@2 {
++					reg = <0x2>;
++				};
++
++				switch0phy3: ethernet-phy@3 {
++					reg = <0x3>;
++				};
++
++				switch0phy4: ethernet-phy@4 {
++					reg = <0x4>;
++				};
++
++				switch0phy5: ethernet-phy@5 {
++					reg = <0x5>;
++				};
++
++				switch0phy6: ethernet-phy@6 {
++					reg = <0x6>;
++				};
++
++				switch0phy7: ethernet-phy@7 {
++					reg = <0x7>;
++				};
++
++				switch0phy8: ethernet-phy@8 {
++					reg = <0x8>;
++				};
++			};
++
++			ports {
++				#address-cells = <1>;
++				#size-cells = <0>;
++
++				port@0 {
++					ethernet = <&fec1>;
++					phy-mode = "rgmii-id";
++					reg = <0>;
++
++					fixed-link {
++						full-duplex;
++						pause;
++						speed = <1000>;
++					};
++				};
++
++				port@1 {
++					label = "lan1";
++					phy-handle = <&switch0phy1>;
++					phy-mode = "internal";
++					reg = <1>;
++				};
++
++				port@2 {
++					label = "lan2";
++					phy-handle = <&switch0phy2>;
++					phy-mode = "internal";
++					reg = <2>;
++				};
++
++				port@3 {
++					label = "lan3";
++					phy-handle = <&switch0phy3>;
++					phy-mode = "internal";
++					reg = <3>;
++				};
++
++				port@4 {
++					label = "lan4";
++					phy-handle = <&switch0phy4>;
++					phy-mode = "internal";
++					reg = <4>;
++				};
++
++				port@5 {
++					label = "lan5";
++					phy-handle = <&switch0phy5>;
++					phy-mode = "internal";
++					reg = <5>;
++				};
++
++				port@6 {
++					label = "lan6";
++					phy-handle = <&switch0phy6>;
++					phy-mode = "internal";
++					reg = <6>;
++				};
++
++				port@7 {
++					label = "lan7";
++					phy-handle = <&switch0phy7>;
++					phy-mode = "internal";
++					reg = <7>;
++				};
++
++				port@8 {
++					label = "lan8";
++					phy-handle = <&switch0phy8>;
++					phy-mode = "internal";
++					reg = <8>;
++				};
++
++				port@9 {
++					reg = <9>;
++					label = "lan-sfp1";
++					phy-mode = "sgmii";
++					sfp = <&sfp_top>;
++					managed = "in-band-status";
++				};
++
++				port@10 {
++					reg = <10>;
++					label = "lan-sfp2";
++					phy-mode = "sgmii";
++					sfp = <&sfp_bot>;
++					managed = "in-band-status";
++				};
++			};
++		};
++	};
++};
++
++&i2c2 {
++	clock-frequency = <100000>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_i2c2>;
++	status = "okay";
++
++	onewire@18 {
++		compatible = "maxim,ds2484";
++		reg = <0x18>;
++	};
++
++	temp@49 {
++		compatible = "national,lm77";
++		reg = <0x49>;
++	};
++};
++
++&i2c3 {
++	clock-frequency = <100000>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_i2c3>;
++	status = "okay";
++
++	i2c-mux@70 {
++		compatible = "nxp,pca9543";
++		reg = <0x70>;
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		i2c_sfp_top: i2c@0 {
++			#address-cells = <1>;
++			#size-cells = <0>;
++			reg = <0>;
++		};
++		i2c_sfp_bot: i2c@1 {
++			#address-cells = <1>;
++			#size-cells = <0>;
++			reg = <1>;
++		};
++	};
++
++	sfp_gpio: gpio@38 {
++		compatible = "nxp,pca9554";
++		reg = <0x38>;
++		gpio-controller;
++		#gpio-cells = <2>;
++		gpio-line-names = "SFP_TXFI_T", "SFP_TXDIS_T",
++				  "SFP_MODPRES_T", "SFP_LOS_T",
++				  "SFP_TXFI_L", "SFP_TXDIS_L",
++				  "SFP_MODPRES_L", "SFP_LOS_L";
++	};
++};
++
++&lcdif {
++	status = "okay";
++};
++
++&uart1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_uart1>;
++	status = "okay";
++};
++
++&uart2 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_uart2>;
++	status = "okay";
++};
++
++&uart3 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_uart3>;
++	status = "okay";
++};
++
++&usbotg1 {
++	dr_mode = "host";
++	vbus-supply = <&reg_usb_otg_vbus>;
++	status = "okay";
++};
++
++&usbotg2 {
++	dr_mode = "host";
++	status = "okay";
++};
++
++&usbphynop1 {
++	power-domains = <&pgc_otg1>;
++};
++
++&usbphynop2 {
++	power-domains = <&pgc_otg2>;
++};
++
++&usdhc2 {
++	assigned-clocks = <&clk IMX8MM_CLK_USDHC2>;
++	assigned-clock-rates = <400000000>;
++	assigned-clock-parents = <&clk IMX8MM_SYS_PLL1_400M>;
++	pinctrl-names = "default", "state_100mhz", "state_200mhz";
++	pinctrl-0 = <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;
++	pinctrl-1 = <&pinctrl_usdhc2_100mhz>, <&pinctrl_usdhc2_gpio>;
++	pinctrl-2 = <&pinctrl_usdhc2_200mhz>, <&pinctrl_usdhc2_gpio>;
++	bus-width = <4>;
++	cd-gpios = <&gpio2 12 GPIO_ACTIVE_LOW>;
++	disable-wp;
++	no-mmc;
++	no-sdio;
++	sd-uhs-sdr104;
++	sd-uhs-ddr50;
++	vmmc-supply = <&reg_usdhc2_vmmc>;
++	status = "okay";
++};
++
++&iomuxc {
++	pinctrl_ecspi1: ecspi1grp {
++		fsl,pins = <
++			MX8MM_IOMUXC_ECSPI1_MISO_ECSPI1_MISO		0x82
++			MX8MM_IOMUXC_ECSPI1_MOSI_ECSPI1_MOSI		0x82
++			MX8MM_IOMUXC_ECSPI1_SCLK_ECSPI1_SCLK		0x82
++			MX8MM_IOMUXC_ECSPI1_SS0_GPIO5_IO9		0x19
++			MX8MM_IOMUXC_GPIO1_IO01_GPIO1_IO1		0x19
++			MX8MM_IOMUXC_GPIO1_IO03_GPIO1_IO3		0x19
++			MX8MM_IOMUXC_GPIO1_IO12_GPIO1_IO12		0x19
++			MX8MM_IOMUXC_GPIO1_IO13_GPIO1_IO13		0x19
++			MX8MM_IOMUXC_SAI1_MCLK_GPIO4_IO20		0x19
++		>;
++	};
++
++	pinctrl_ecspi2: ecspi2grp {
++		fsl,pins = <MX8MM_IOMUXC_ECSPI2_SCLK_ECSPI2_SCLK	0x00000006>,
++			   <MX8MM_IOMUXC_ECSPI2_MOSI_ECSPI2_MOSI	0x00000006>,
++			   <MX8MM_IOMUXC_ECSPI2_MISO_ECSPI2_MISO	0x00000006>,
++			   <MX8MM_IOMUXC_ECSPI2_SS0_GPIO5_IO13		0x00000006>;
++	};
++
++	pinctrl_fec1: fec1grp {
++		fsl,pins = <
++			MX8MM_IOMUXC_ENET_MDC_ENET1_MDC		0x40000002
++			MX8MM_IOMUXC_ENET_MDIO_ENET1_MDIO		0x40000002
++			MX8MM_IOMUXC_ENET_TD3_ENET1_RGMII_TD3		0x14
++			MX8MM_IOMUXC_ENET_TD2_ENET1_RGMII_TD2		0x14
++			MX8MM_IOMUXC_ENET_TD1_ENET1_RGMII_TD1		0x14
++			MX8MM_IOMUXC_ENET_TD0_ENET1_RGMII_TD0		0x14
++			MX8MM_IOMUXC_ENET_RD3_ENET1_RGMII_RD3		0x90
++			MX8MM_IOMUXC_ENET_RD2_ENET1_RGMII_RD2		0x90
++			MX8MM_IOMUXC_ENET_RD1_ENET1_RGMII_RD1		0x90
++			MX8MM_IOMUXC_ENET_RD0_ENET1_RGMII_RD0		0x90
++			MX8MM_IOMUXC_ENET_TXC_ENET1_RGMII_TXC		0x14
++			MX8MM_IOMUXC_ENET_RXC_ENET1_RGMII_RXC		0x90
++			MX8MM_IOMUXC_ENET_RX_CTL_ENET1_RGMII_RX_CTL	0x90
++			MX8MM_IOMUXC_ENET_TX_CTL_ENET1_RGMII_TX_CTL	0x14
++			MX8MM_IOMUXC_SAI2_RXC_GPIO4_IO22		0x10
++		>;
++	};
++
++	pinctrl_gpio_led: gpioledgrp {
++		fsl,pins = <
++			MX8MM_IOMUXC_SD1_CLK_GPIO2_IO0			0x19
++			MX8MM_IOMUXC_SD1_CMD_GPIO2_IO1			0x19
++			MX8MM_IOMUXC_SD1_DATA1_GPIO2_IO3		0x19
++			MX8MM_IOMUXC_SD1_DATA2_GPIO2_IO4		0x19
++			MX8MM_IOMUXC_SD1_DATA3_GPIO2_IO5		0x19
++			MX8MM_IOMUXC_SD1_DATA4_GPIO2_IO6		0x19
++		>;
++	};
++
++	pinctrl_i2c2: i2c2grp {
++		fsl,pins = <
++			MX8MM_IOMUXC_I2C2_SCL_I2C2_SCL		0x400001c3
++			MX8MM_IOMUXC_I2C2_SDA_I2C2_SDA		0x400001c3
++		>;
++	};
++
++	pinctrl_i2c3: i2c3grp {
++		fsl,pins = <
++			MX8MM_IOMUXC_I2C3_SCL_I2C3_SCL		0x400001c3
++			MX8MM_IOMUXC_I2C3_SDA_I2C3_SDA		0x400001c3
++		>;
++	};
++
++	pinctrl_otg_vbus_ctrl: otgvbusctrlgrp {
++		fsl,pins = <
++			MX8MM_IOMUXC_SD1_DATA0_GPIO2_IO2		0x119
++		>;
++	};
++
++	pinctrl_switch_interrupt: switchinterruptgrp {
++		fsl,pins = <
++			MX8MM_IOMUXC_GPIO1_IO00_GPIO1_IO0		0x19
++		>;
++	};
++
++	pinctrl_uart1: uart1grp {
++		fsl,pins = <
++			MX8MM_IOMUXC_UART1_RXD_UART1_DCE_RX		0x140
++			MX8MM_IOMUXC_UART1_TXD_UART1_DCE_TX		0x140
++		>;
++	};
++
++	pinctrl_uart2: uart2grp {
++		fsl,pins = <
++			MX8MM_IOMUXC_UART2_RXD_UART2_DCE_RX		0x140
++			MX8MM_IOMUXC_UART2_TXD_UART2_DCE_TX		0x140
++		>;
++	};
++
++	pinctrl_uart3: uart3grp {
++		fsl,pins = <
++			MX8MM_IOMUXC_UART3_RXD_UART3_DCE_RX		0x140
++			MX8MM_IOMUXC_UART3_TXD_UART3_DCE_TX		0x140
++		>;
++	};
++
++	pinctrl_usdhc2_gpio: usdhc2grpgpiogrp {
++		fsl,pins = <
++			MX8MM_IOMUXC_SD2_CD_B_GPIO2_IO12		0x1c4
++		>;
++	};
++
++	pinctrl_usdhc2: usdhc2grp {
++		fsl,pins = <
++			MX8MM_IOMUXC_SD2_CLK_USDHC2_CLK		0x190
++			MX8MM_IOMUXC_SD2_CMD_USDHC2_CMD		0x1d0
++			MX8MM_IOMUXC_SD2_DATA0_USDHC2_DATA0		0x1d0
++			MX8MM_IOMUXC_SD2_DATA1_USDHC2_DATA1		0x1d0
++			MX8MM_IOMUXC_SD2_DATA2_USDHC2_DATA2		0x1d0
++			MX8MM_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d0
++		>;
++	};
++
++	pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {
++		fsl,pins = <
++			MX8MM_IOMUXC_SD2_CLK_USDHC2_CLK		0x194
++			MX8MM_IOMUXC_SD2_CMD_USDHC2_CMD		0x1d4
++			MX8MM_IOMUXC_SD2_DATA0_USDHC2_DATA0		0x1d4
++			MX8MM_IOMUXC_SD2_DATA1_USDHC2_DATA1		0x1d4
++			MX8MM_IOMUXC_SD2_DATA2_USDHC2_DATA2		0x1d4
++			MX8MM_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d4
++		>;
++	};
++
++	pinctrl_usdhc2_200mhz: usdhc2-200mhzgrp {
++		fsl,pins = <
++			MX8MM_IOMUXC_SD2_CLK_USDHC2_CLK		0x196
++			MX8MM_IOMUXC_SD2_CMD_USDHC2_CMD		0x1d6
++			MX8MM_IOMUXC_SD2_DATA0_USDHC2_DATA0		0x1d6
++			MX8MM_IOMUXC_SD2_DATA1_USDHC2_DATA1		0x1d6
++			MX8MM_IOMUXC_SD2_DATA2_USDHC2_DATA2		0x1d6
++			MX8MM_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d6
++		>;
++	};
++};
++
++/* SPI-NOR memory is not mounted on the used SoM */
++/delete-node/ &flash0;
 -- 
-Thanks,
-Laurentiu
+2.39.5
+
