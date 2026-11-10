@@ -1,99 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.66.14
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794323695;
-	b=AKe/nS3fSuHTYTvZ/nWMKp/wYt2VnM/alJzp3RNX+19KP68KuMf0tzIg+QOsLxxXbed+
-	 a9zsqZy/MRROs5q4KMRyOfeHhyakVvzZVvFK8qG/0htBFN8LLTMBur/I1v7dekg4dxe/o
-	 F8YajBlCQXdXzHmSWi7RjZduxNtjpLr2FNE19Wl7LjlpLOQtOSKoGJAREOR8d9zWYfjjQ
-	 xI7Jpj9OTzUZF1vKV4HFmM/kxfzupLFFEWrxzyUKlSH4IT8GSGNjddO8vQoMiBoY4Xj3i
-	 Yh3W8lgI6CrB3j24y5kYdFes+iKEYY/biASrndKe6IK7iEVQ/vB9HPDjv8YjFPFbIYg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794323695;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:Content-Type:Content-Disposition:
-	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=uSjAL93E3yJGenoOyrPC2KDPVIsqypHmHHFvbfTSyG8=;
-	b=vHxkCLSvd/BPbU8VMynA+5OcW09cRr79HzSKjVHKXcaVNnePDg3+0x9x96r/ewG1JtBC
-	 YXfVoDZzxTHyNSuPJzJgorU2Db6Ame9Ju5YhWVRpFfDBHno33six2ubFPioDRQrYd/Uy8
-	 nyqZ0y4HU0YjLU5sg9IkxlnMiCTfQ6DxEZwS3Fh/t3BdLEnf1Y9fOaI6bfeS1U0VYvBOk
-	 LVsDEVBJL1H7xm7d7P7Rnfl0wqqvFC3Dzo9dd0YZQo4rAYxj2cO1rC8yJ68bJKd+ZnRlg
-	 PMw0l09Q7gwEY+n+nVGRpC+S0cnlpWyI1zdxsTkX/oJYlUkwNCYkMluQIpCo0J3k2Ww==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.nxp.com;
-	spf=pass smtp.mailfrom=oss.nxp.com;
-	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=yLrQB47U;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.66.14
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012014.outbound.protection.outlook.com [52.101.66.14])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794324474;
+	b=cr78omjL4CD7wMlebMmNJbNCqDrOjsWet6ZRvGGAQb9DPJZSC0heMdCAnbsG4KkWZ+o/
+	 JLJKqdhqcGFl6vUfh4qqHyA8cLLUgl9Fr6FEt8nLyBypeZD4trcAvdxxGQG6F2lmKPa+n
+	 L7NgilI36kdu/APZBTnl3DXLpZXWaKMd1SBgOwQNLTP/KyG+Oy8FIl4gDISS6GvWZyd/l
+	 32xi+nbwgcBteIpycCKlEnkk0Ai2UJjZ5nrkQqTBI3/lY1SGyiLV3k+NwYQ0Y/TZt1XyV
+	 srp/T11LNgKJ6gMLfc4s5ratF3pIkEnIUS59evkaTg26dI+R70D6zhBVfHkmAkJm07Q==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794324474;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=LLjq8kkWSwtU1FCYazl1WUTtOMw4z36xQzzMmhXmoKc=;
+	b=2G7L8LHHxrcjyshWfKZ6NFirnb64+G11EjOq+U+T4/n5WRssATDa2cRhysaV+o1GRwln
+	 caXVEdmOUXz/xZPK3GcdOnUIAzFziUUYu9wh9wKNelWTwx2jQqYh/5FF1dnXyqL8tYOHG
+	 RXqAFKhLX8g+/bEnFp0epcRN8D8pkClfHFV0gtgWAUi9grbEK6xNSk8FvongkIUvwFovz
+	 FdfSK5lsF3h48p4Iz1sNtD7Gqw98m7Lw2574QUYGSYHvAPrmIbb2+t8d3xuE6QBAmHweI
+	 xUKu+5ujnttYNej5BCfSYnAor7meGmZTUEKZaXXxZ2cIBhhIHkiajgtc7dny7fOo1dw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GjeuSyG1;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20A2760A261B
-	for <imx@lists.linux.dev>; Tue, 10 Nov 2026 15:14:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 20A2760A261B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85482606A321;
+	Tue, 10 Nov 2026 15:27:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=yLrQB47U
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=l8zRPB/l3uuu9uRFgAOa2D5KS19Q3SItMIeE5jwGeWYoX9yVu+Hl86C08zW/6tufaIyHcUexqah9dZIrClvGKWqJVo0hw6eWhU1lFF+X4Iou7DRL9DUozVrOiE2CKphoLf8vvY0rqwnuHas87nodosJAxLQJp/7VeHxomjVdjMqwkqmT4NAirxskZ5Qo76yJgbpI6oMB4kDJT2OguEULI4xZfBSALM1No1F2JtwBYc38AUu2st7bm+MTmntkKlB4e/P0rrZO/hM+v7C2BFoV8hAJkhj6Ltjqk+PCWsElTHhfE6EkMf74cCtdMU5rhYd6NHH7v2MOW92HQOFVP+d5+w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uSjAL93E3yJGenoOyrPC2KDPVIsqypHmHHFvbfTSyG8=;
- b=syghrhsvcETe6/6yTFx1DQ9wgkk6p/BZV/iBZHPolQG40aNbZR3hiWOXUClsRmZqGO44q3lIf4PvQ35KQsjIzYxDfsOJGjhshW2cbFQBUw/kexf0VhXODTXxXw/PUYViuPhn57Uar1KHpErYszWVKk9H9t8vKIJBzAT4XYyZ+xhWUY31H1iTP9f/8UjjmtJvwubfwdyNIKgj1z+9zGQemkUKrq3kwXmdGFZKEJHvCY+nL/mn/jcZDJavFm8HTVn8nFiRtS0FCH+q/S9dbjMgX2cSMrvvIpJ59CUxTXia2ZSUqg+BMSMnfADHOH0eDzehAcP2U7aUlntvnUDzZn76ZQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uSjAL93E3yJGenoOyrPC2KDPVIsqypHmHHFvbfTSyG8=;
- b=yLrQB47UA0ZZqC2msVxPEczGGZn4AT5vSWUpEjv+opJAx9qJdJ9jKo0j7prE7PcEYVbv/wm9+MmRmXk+xLRoCGA7I3+SY45FrRMTsU6ZcU5OhvEga0qDnJZX8+Fzq15fwWITlxRYQ75BA1FKSrjISFQihSyaLNSQRQ0vlnCt8cUK7twadWNy890Rt7F3kgSra8KNeoMJvKITHk06lvLQSyTpDgS02l2Pd0j9EOk2xAVNoQlxjx2695YFplPBjxYpjR7VlLtSv6NHmdHtCKFGjPR1HOVI1HrjK5mn1AcItZx8ZRZOez34yoTZ1r2Ytt6w0Z7NU7ZkNsczRICz7G0HEA==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from MI3PR04MB12438.eurprd04.prod.outlook.com (2603:10a6:290:76::14)
- by OSMPR04MB11293.eurprd04.prod.outlook.com (2603:10a6:e10:93::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.8; Tue, 10 Nov
- 2026 15:14:50 +0000
-Received: from MI3PR04MB12438.eurprd04.prod.outlook.com
- ([fe80::c715:c32:8bb1:b70b]) by MI3PR04MB12438.eurprd04.prod.outlook.com
- ([fe80::c715:c32:8bb1:b70b%4]) with mapi id 15.21.0615.007; Tue, 10 Nov 2026
- 15:14:50 +0000
-Date: Tue, 10 Nov 2026 09:14:39 -0600
-From: Frank Li <Frank.li@oss.nxp.com>
-To: Stefan Ghetu <stefan.ghetu@nxp.com>
-Cc: Vinod Koul <vkoul@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, daniel.baluta@nxp.com,
-	linux-phy@lists.infradead.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	"Oliver F. Brown" <oliver.brown@oss.nxp.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] phy: freescale: phy-fsl-imx8-mipi-dphy: Fix hs_zero
- underflow
-Message-ID: <avM033EsUfTpNrw7@SMW015318>
-References: <20261110120546.6247-1-stefan.ghetu@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261110120546.6247-1-stefan.ghetu@nxp.com>
-X-ClientProxiedBy: QR2P297CA0005.MEXP297.PROD.OUTLOOK.COM
- (2603:10b6:3d0:6a::8) To MI3PR04MB12438.eurprd04.prod.outlook.com
- (2603:10a6:290:76::14)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GjeuSyG1
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC7D21F0089F;
+	Tue, 10 Nov 2026 15:27:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794324474;
+	bh=LLjq8kkWSwtU1FCYazl1WUTtOMw4z36xQzzMmhXmoKc=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=GjeuSyG1MFRuzacta/bgFzyNVQPs9czbkmcdGc6xidREzitccUgWdIJyrtdPi1Ui8
+	 wJdw9O7UuQ/Tb9jQwtVD2UIa72Us64lAsQMOLsD+2XOvfCqDUpz8brnGluZXxDXuiT
+	 Q7jYh3IuG/b5tm3CYuclhEuRCkUrUitCPj9TWTBo9ppuiVzYQP5+iR/WZmWrPD2AlY
+	 mC9524RsNLKXvv22mile/8aTOUUKUhUYpiiUJBm3tj4CjxXhfb4tE1+oSQMCllWz+t
+	 J+La186w6VPE1vy56/7Ar7Jay7ZgCDRRg+K8ZskfSkVUrnDgRF3WvUKQJfWvimFEQi
+	 zR9uXIrcq8iZw==
+Message-ID: <sashiko-outbox-207264@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] arm64: dts: freescale: Add device tree definition for
+ Cloos CBASE with i.MX8MM
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Lukasz Majewski" <lukma@nabladev.com>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org
+In-Reply-To: <20261110150546.1535950-1-lukma@nabladev.com>
+References: <20261110150546.1535950-1-lukma@nabladev.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 10 Nov 2026 15:27:53 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -102,117 +59,181 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|OSMPR04MB11293:EE_
-X-MS-Office365-Filtering-Correlation-Id: e2172428-c9be-4be8-ae32-08df3f3d5d7f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|19092799006|1800799024|376014|7416014|23010399003|56012099006|22082099003|18002099003|11063799006|10067099003|261009223027099003|261026121527099003|261102123227099003|261021121427099003|261021123027099003;
-X-Microsoft-Antispam-Message-Info:
-	+UW8be1B6LfQ5FlhX0NjHwUMJpJiC5KxwdbhXIC0CZD6YqSuk36NeImgmBl37SbR07IXZmz2KAjvAO990KzzNFzQDFBwgDlPFNrOtJmJ0co64pD6TJROij6IyVCz+mL/qRBzt+E34WStcGqK7cxMP6QqvVl+jvdRr2hoaQQW+/WnYTWdvS1pHj5ppUrd4QDjgFfEohchu8PG/fzNLZzrhuvZPwfg1gDuypC8glA62GSWjpWvWlaaHqyHk++7FyF39wl2QXAyucXDlB4EhXqEXg2xlNUiasGWWPHQRrcaDlXZ9DUi8ZLFjC2wUanmgUaGtjh4n7x36fAyorPnt+yKAegGyI+kVtHhpRQuTp7/1dPUOKcQ836G1i0oFAGEcJBcupdNlLoe39jfOVo0pqP6mK3FkUFDwG/xrbSXsv5jZo8r5quOX1VgFEWPY5bfJBNKJ2GTF/4mA03uMeNXX+WErJEU+cxX1LNUObobj9bs6dBsjx02Ezvh3la4RkRQ6FFND4Hf1x26vO7fDhXeem6FPiFnvkkCjhg1jn/tHcg0BdvDzAJKDQBpa3j+oDbkg0gpKRKqXZR3QZBQ5vy78AzrYHbkiQFkmEgbscUAeQwS1oPAVpxLR5M3bPBLFw7qxLNN/VMjGXDv93Sf+XzDr1P6Ek/WPUSfpWDnDBeLHE1qSpQ=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(1800799024)(376014)(7416014)(23010399003)(56012099006)(22082099003)(18002099003)(11063799006)(10067099003)(261009223027099003)(261026121527099003)(261102123227099003)(261021121427099003)(261021123027099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?JtBDoLAwREhQPHqNb2XRxIOJhque8+V/mo+iRe6OyYLDom9IkFfUU5LnfXF/?=
- =?us-ascii?Q?M3FJZlFaj/UpIYDNDnroGSqAA3g3pyVIdhTQdkW431Q7fybDY7yEDoc0US01?=
- =?us-ascii?Q?B7cxnodErlQ0K3Lu7wWrFj4bicKijAozm6hVXkbXDJoaZyCLCtIU89lOxte2?=
- =?us-ascii?Q?2BFj2uxLijTG00pbY96RWr087V6t3ifQ1offDCD/X+embSIa5DCfx9sw4sUi?=
- =?us-ascii?Q?W/BvfxcwixKGpDHUWzTvUzY3AtIeLDSUm5/lna6PVGdoOhwRIB0TExOudvzd?=
- =?us-ascii?Q?wEZSAGOd45txBJV01i9fkYXzILkmUD8BQJAF7j81mN7sbEc2a5bJXGOZX9Ui?=
- =?us-ascii?Q?b95yuWwn3wOdsjvYF2OQB86yLA0JbpSsvGFGBodDQL+ZsaZo/WOosmZr2BV9?=
- =?us-ascii?Q?qIDvr3PXr3c6CFg6Wu1g2eizWFSquW6lE98EYMyO859A/wc2EOi77fIIMPp3?=
- =?us-ascii?Q?wSLOH8pbnkpqvrRgdGcPxXS54APjowDgshNih9lk7t1bFKXkcqgXhXFD6itz?=
- =?us-ascii?Q?ndrBP9X+9+uZy6S0PI0LR29+MMSE5ujls8uYIerjIhcQDmq51euWwvnBp3ZM?=
- =?us-ascii?Q?AAwSKGn1SkxmnVhuf7hJ0W1EKmsRucaxvscvUiIhSJMG4W31iW2K1GmwV2qW?=
- =?us-ascii?Q?HCdElKfCbOmm0afgpfID1WEQk6t12mpqdiRFtrGqYVu24MBf4pVXGwVq4+2q?=
- =?us-ascii?Q?xUTpzlUJwKdDIM+vlhG2u4iIc8i6Oe4KNPv4ajdc0CKeC154KBJWOzYTPhEu?=
- =?us-ascii?Q?bHvK0PG3jenkicYwNse7L0UpHcO+s+Vnr0WuDZUq8bCT7x3fOYc21s7VGXOE?=
- =?us-ascii?Q?Ynn6D7vcNyVV3lrDRBajVOMdPqhBrBk6emovbNtEkzgNiXoAdmTf10dxzOVh?=
- =?us-ascii?Q?0IXNDuD3ZP0O3zxXtwcBPHthyAXbdkJg/r53El4lbaO4k1dBOeZDnAyriXwA?=
- =?us-ascii?Q?DT3XfwUIqbFjukqslG95u7/fL7SAdXVgsZ+KBPZcUnolleEPbfIsr0C0ozyB?=
- =?us-ascii?Q?H1nBVBMMETQ6I4PtR+SGH25OaZv/f6oBYOalapWlGojFU8qmosxk9xq2BCvy?=
- =?us-ascii?Q?YZ3jt3nkTF3WI/dAsKL8TX63xZbJRT1LMS1fwkO4fg7CGe/6LMvRKs1mxA6/?=
- =?us-ascii?Q?6T7nCZoAKC4H6MzPu6eZjDRJvo2oHNKVmzm8wGiCdY7W56xrUg3OOkNGBDzK?=
- =?us-ascii?Q?uyjUuyBKm3WKhlovThJeStXB85MtTgzWYPfF1jrqEu26llZ4CRDG7bSm9APQ?=
- =?us-ascii?Q?fE7tnuy0pZcVisMghLCeNtzLBYjNTBMxLZxMQcLPSQFsKTkKvS2a2ctkJ8ZB?=
- =?us-ascii?Q?TtNzeCNqMCbVB4QWGvkghoTgqWJIt6pI1XQs3ce7vVTM6yHTOCZfiythnl0T?=
- =?us-ascii?Q?4B1oHPx3StWvP3afwFk+vjQdd1VxtKGDH400ah4e37HhQzSlMs6ghGg9VMPV?=
- =?us-ascii?Q?Lefiscu+3eDT+ZT2Ykk1Kd9gwVkQisZixnR9kmrso3EikoDvFL6cX34Ff2NF?=
- =?us-ascii?Q?lRO7KUc2ouOUKE9P7D6BQIDlGQJyEBsdZ2CUVVO/5XiYKKj/YkI2MLcvFvgW?=
- =?us-ascii?Q?pnACenvjteLfl5xhM2VvabXnYnacx1o4EXq/Q/hAoKXFl1+NLbvS5FBfeycC?=
- =?us-ascii?Q?a5l8EnYHXsk0QiXHAEuidgX6rW0bKQD4/QIvHIF7nZj1FEi33Jh17aeQ9KG4?=
- =?us-ascii?Q?gaCV1spq9AbeMd9SBI/YR2qi684mJZh7jqFM4XB/Wu4vQF8U8PmN3n5t9B6o?=
- =?us-ascii?Q?DoWUq3iMRD1cjP111QKrIcJYQvUS4LI1nEpo6LTmt5ZsZlk21EGh?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e2172428-c9be-4be8-ae32-08df3f3d5d7f
-X-MS-Exchange-CrossTenant-AuthSource: MI3PR04MB12438.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Nov 2026 15:14:50.5513
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: RghfAP9KFuqiS61pbb8g/DxTm1tNCTeoqf46IaW+NczrxY5Th/seZRTYZpOAwY1b8Jz0ZJPX5htd+LSpQN5eo3mRd5tGp91NyJ8QpYYUkVkO+ZjSiDcXuZI+5BuDU8TZ
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: OSMPR04MB11293
 
-On Tue, Nov 10, 2026 at 02:05:46PM +0200, Stefan Ghetu wrote:
-> From: "Oliver F. Brown" <oliver.brown@oss.nxp.com>
->
-> The hs_zero timing is computed as
->
-> 	n = (144 * (hs_clk_rate / 1000000) - 47500) / 10000;
-> 	cfg->m_prg_hs_zero = n < 1 ? 1 : n;
->
-> hs_clk_rate is an unsigned long, so the subtraction is done unsigned and
-> wraps for any rate below about 330 MHz, where 144 * MHz < 47500. Because
-> n is a u32, the wrapped value is never seen as negative and the "n < 1"
-> clamp does not take effect. The garbage value is then truncated into the
-> 8-bit m_prg_hs_zero register field. At the minimum supported rate of
-> 80 MHz this programs 199 on 64-bit and 181 on 32-bit, instead of the
-> intended minimum of 1.
->
-> Make n signed and do the arithmetic in int so the clamp works on both
-> 32-bit and 64-bit. The divided rate is at most 1500, so 144 * 1500 fits
-> easily in an int.
->
-> Fixes: f4c8116e294b ("phy: Add driver for mixel mipi dphy found on NXP's i.MX8 SoCs")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Oliver F. Brown <oliver.brown@oss.nxp.com>
-> Signed-off-by: Stefan Ghetu <stefan.ghetu@nxp.com>
-> ---
+Thank you for your contribution! Sashiko AI review found 6 potential
+issues to consider:
+- [High] arm64: dts: freescale: usdhc2 fails probe due to disabled
+  reg_usdhc2_vqmmc
+- [Medium] arm64: dts: freescale: missing Makefile entry for
+  imx8mm-cbase.dtb
+- [Medium] arm64: dts: freescale: lcdif enabled without mipi_dsi or
+  display bridge
+- [Medium] arm64: dts: freescale: undocumented compatibles and missing
+  lm77 OF table
+- [Low] arm64: dts: freescale: decimal unit-address port@10 for reg =3D
+  <10>
+- [Low] arm64: dts: freescale: flexspi left enabled after deleting
+  flash0 node
+--
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+commit ed8bce86f8c6ce432aef83c22f5cd48f6151d1c7
+Author: Lukasz Majewski <lukma@nabladev.com>
 
->  drivers/phy/freescale/phy-fsl-imx8-mipi-dphy.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/phy/freescale/phy-fsl-imx8-mipi-dphy.c b/drivers/phy/freescale/phy-fsl-imx8-mipi-dphy.c
-> index 0928a526e2ab..84bd21aaf9e8 100644
-> --- a/drivers/phy/freescale/phy-fsl-imx8-mipi-dphy.c
-> +++ b/drivers/phy/freescale/phy-fsl-imx8-mipi-dphy.c
-> @@ -191,8 +191,7 @@ static int mixel_dphy_config_from_opts(struct phy *phy,
->  	unsigned long ref_clk = clk_get_rate(priv->phy_ref_clk);
->  	u32 lp_t, numerator, denominator;
->  	unsigned long long tmp;
-> -	u32 n;
-> -	int i;
-> +	int n, i;
->
->  	if (dphy_opts->hs_clk_rate > DATA_RATE_MAX_SPEED ||
->  	    dphy_opts->hs_clk_rate < DATA_RATE_MIN_SPEED)
-> @@ -276,7 +275,7 @@ static int mixel_dphy_config_from_opts(struct phy *phy,
->  	cfg->mc_prg_hs_prepare = dphy_opts->clk_prepare > lp_t ? 1 : 0;
->
->  	/* hs_zero: formula from NXP BSP */
-> -	n = (144 * (dphy_opts->hs_clk_rate / 1000000) - 47500) / 10000;
-> +	n = (144 * (int)(dphy_opts->hs_clk_rate / 1000000) - 47500) / 10000;
->  	cfg->m_prg_hs_zero = n < 1 ? 1 : n;
->
->  	/* clk_zero: formula from NXP BSP */
-> --
-> 2.34.1
->
->
+arm64: dts: freescale: Add device tree definition for Cloos CBASE with i.MX=
+8MM
+
+This commit adds the device tree source for the Cloos CBASE board based on
+the i.MX8MM TQMa8MQML system-on-module.
+
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mm-cbase.dts b/arch/arm64/=
+boot/dts/freescale/imx8mm-cbase.dts
+> new file mode 100644
+> index 0000000000000..0bbd724f3aabc
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx8mm-cbase.dts
+> @@ -0,0 +1,577 @@
+> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+> +/*
+> + * Copyright 2022 Fabio Estevam <festevam@denx.de>
+> + * Copyright 2026 Lukasz Majewski <lukma@nabladev.com>
+> + */
+> +
+> +/dts-v1/;
+> +
+> +#include "imx8mm-tqma8mqml.dtsi"
+> +
+> +/ {
+> +	model =3D "Cloos i.MX8MM CBASE board";
+> +	compatible =3D "cloos,imx8mm-cbase", "tq,imx8mm-tqma8mqml", "fsl,imx8mm=
+";
+
+[Severity: Medium]
+Should arch/arm64/boot/dts/freescale/Makefile also add
+dtb-$(CONFIG_ARCH_MXC) +=3D imx8mm-cbase.dtb?  Without that entry, kbuild
+never compiles imx8mm-cbase.dts during make dtbs or make dtbs_check.
+
+[ ... ]
+
+> +				port@9 {
+> +					reg =3D <9>;
+> +					label =3D "lan-sfp1";
+> +					phy-mode =3D "sgmii";
+> +					sfp =3D <&sfp_top>;
+> +					managed =3D "in-band-status";
+> +				};
+> +
+> +				port@10 {
+> +					reg =3D <10>;
+> +					label =3D "lan-sfp2";
+> +					phy-mode =3D "sgmii";
+> +					sfp =3D <&sfp_bot>;
+> +					managed =3D "in-band-status";
+> +				};
+
+[Severity: Low]
+Should port@10 be named port@a to match reg =3D <10>?  Unit-addresses in no=
+de
+names are hexadecimal, so port@10 triggers a dtc unit_address_vs_reg warning
+and fails dtbs_check against ethernet-switch.yaml.
+
+[ ... ]
+
+> +&i2c2 {
+> +	clock-frequency =3D <100000>;
+> +	pinctrl-names =3D "default";
+> +	pinctrl-0 =3D <&pinctrl_i2c2>;
+> +	status =3D "okay";
+> +
+> +	onewire@18 {
+> +		compatible =3D "maxim,ds2484";
+> +		reg =3D <0x18>;
+> +	};
+> +
+> +	temp@49 {
+> +		compatible =3D "national,lm77";
+> +		reg =3D <0x49>;
+> +	};
+> +};
+
+[Severity: Medium]
+Will temp@49 fail module autoloading and schema validation?
+
+drivers/hwmon/lm77.c only defines an i2c_device_id table and has no
+of_device_id table, while i2c_device_uevent() emits an OF modalias for DT
+nodes, so the lm77 module will not autoload when CONFIG_SENSORS_LM77=3Dm.
+In addition, neither "national,lm77" (nor the node name temp@49 instead of
+temperature-sensor@49) nor the board compatible "cloos,imx8mm-cbase" is
+documented in the Devicetree bindings, which causes make dtbs_check to fail.
+
+[ ... ]
+
+> +&lcdif {
+> +	status =3D "okay";
+> +};
+
+[Severity: Medium]
+Why is lcdif enabled here when mipi_dsi remains disabled and no display
+bridge or panel is defined?
+
+In imx8mm.dtsi, lcdif's output endpoint connects to mipi_dsi, which defaults
+to status =3D "disabled".  During boot, mxsfb_probe() -> mxsfb_load() ->
+mxsfb_attach_bridge() fails to find an enabled remote bridge or panel and
+aborts probe with -ENODEV ("Cannot connect bridge").
+
+[ ... ]
+
+> +&usdhc2 {
+> +	assigned-clocks =3D <&clk IMX8MM_CLK_USDHC2>;
+> +	assigned-clock-rates =3D <400000000>;
+> +	assigned-clock-parents =3D <&clk IMX8MM_SYS_PLL1_400M>;
+> +	pinctrl-names =3D "default", "state_100mhz", "state_200mhz";
+> +	pinctrl-0 =3D <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;
+> +	pinctrl-1 =3D <&pinctrl_usdhc2_100mhz>, <&pinctrl_usdhc2_gpio>;
+> +	pinctrl-2 =3D <&pinctrl_usdhc2_200mhz>, <&pinctrl_usdhc2_gpio>;
+> +	bus-width =3D <4>;
+> +	cd-gpios =3D <&gpio2 12 GPIO_ACTIVE_LOW>;
+> +	disable-wp;
+> +	no-mmc;
+> +	no-sdio;
+> +	sd-uhs-sdr104;
+> +	sd-uhs-ddr50;
+> +	vmmc-supply =3D <&reg_usdhc2_vmmc>;
+> +	status =3D "okay";
+> +};
+
+[Severity: High]
+Does usdhc2 fail to probe because reg_usdhc2_vqmmc is left disabled?
+
+imx8mm-tqma8mqml.dtsi sets vqmmc-supply =3D <&reg_usdhc2_vqmmc> on usdhc2,
+where reg_usdhc2_vqmmc has status =3D "disabled":
+
+arch/arm64/boot/dts/freescale/imx8mm-tqma8mqml.dtsi:
+	reg_usdhc2_vqmmc: regulator-usdhc2-vqmmc {
+		compatible =3D "regulator-gpio";
+		...
+		vin-supply =3D <&ldo5_reg>;
+		status =3D "disabled";
+	};
+
+Because imx8mm-cbase.dts does not enable reg_usdhc2_vqmmc,
+sdhci_esdhc_imx_probe() -> mmc_regulator_get_supply() ->
+of_regulator_dev_lookup() finds the disabled DT node with no registered
+regulator device and returns -EPROBE_DEFER permanently, leaving the SD card
+slot unusable.
+
+[ ... ]
+
+> +/* SPI-NOR memory is not mounted on the used SoM */
+> +/delete-node/ &flash0;
+
+[Severity: Low]
+Should &flexspi be disabled instead of only deleting &flash0?
+
+imx8mm-tqma8mqml.dtsi sets status =3D "okay" on &flexspi, so deleting only =
+the
+child flash0 node leaves the FlexSPI controller enabled to claim its QSPI
+pins, IRQ, and clocks in nxp_fspi_probe() with no flash attached.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261110150546.1535=
+950-1-lukma@nabladev.com?part=3D1
