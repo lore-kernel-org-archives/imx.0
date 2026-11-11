@@ -1,89 +1,109 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.51
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794423898;
-	b=ll53tdIITtBw1ZAthTRTiSuTt505z5YlYLuR5pMgP/VkvCs540z90EWLGSJgTJPJYpbQ
-	 XubWY+k14ZBCZch4SLLpdnuUsCv74i3qjGqCIldWOrzPwMM7TlGa60KyKNIDvmN6XgcKM
-	 em/B+SMST40guDEkJZB/sUHa/nAHcM2xsQbOhA3Wy9xgP2ARroaHM9sG4V3ndGVeSAlJT
-	 Df2jSU+lSSS07eLrC0OS7B4rEdi+8yVCU5d9D0ct0R525WyeBIySzgPwHvYWQVeswlvf4
-	 l73BOKdFzv/10GxOsuknaZe6QC+fA2QTjwyYgZo/dGICklPG3EKF2l6PGo+HCX537VA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794423898;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:Date:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key;
-	bh=eZIEIN8efIigBkbOd6hBVcrdB9WVuz9I7UGw1PelOF4=;
-	b=eqUqDQ9yUESpfX2Px2Np9lqZAdsVoQkWpMBobwIbyIgs7jiAIDv6cgwClgCXVrDtLbgz
-	 A/DgigMXjn2Qf1sq9f+pATqwZ+N7tG09FbF0slRSf6ZYwdMAS8CkwE+DeQLw3LyQCep8f
-	 BOluQobPip7BSyBal+9cdKhwAECjln0LFbhfD4IB/aStSv/h0AGFqlugPtHfq2HtCgl3t
-	 WdwhwrtX1Y5/eNhb/8gO0L8nF9bZwwdNJsi83WN0EAwfaGdcP80ydJ00wTNrXmEVi7bOP
-	 np3cay5lwtYz0jEzIbHfCm9Gn1gU0rVH+dIhbSzqHsEFB4j4Wgf7m7x7q9804vxt/bQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=dRydQ0cq;
-	arc=none smtp.remote-ip=209.85.216.51
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.66.34
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794425798;
+	b=Yf1DTtWsf7g11Wvroar/MGL9diEUKn0/jGlm4Qe2Uod9+6jFTtcFjVNj45Wdu4xvCb5G
+	 bCVom5IWWO8jVkYASkdmu7vZ8r6Kn0sT55OiBO5Z4zLHFEAy4X7HZI3bemiwEvlBYm/FC
+	 7iTXsdbDEGJTHGF7uQRoxJd2+niQ9KalZq1PF/QkbqqBF6ZGgs1Ia2q7oW8ngxxaXGZV2
+	 awqAzRQIPSfQxfBkr47BaXEwQKJAIVSRpLYrmC6idKlab17DO1Fm6SfqHjWITxthX+m7f
+	 e3WI0bFM9VrDCjKVhimduyCP+KBEeLPodJ7LLLZ1hVG3MPrSUkovFrftrfZXWw27Hhw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794425798;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding:In-Reply-To:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=O2zSSZ3LgsR48s6DHy7cAhbbY3qEiRADsKkGUtubBNI=;
+	b=rC1bjTFQIlBeAoyFhAox0xwz4QamoCd7xqs4Oh+xDr8ITQ88By//iKI33/4ZfGhU4hLh
+	 EYwoebmKXWpFzGP1Qb8T5HBuJUGY8OraG3nIykKedu4ejhOz1Qs87+SvmFdKp5ICQ7JdY
+	 6fnnpNWcOzHmf7Y1rUn60EzoIGDipOvKDXBgUNXk04jWZzArjfohRVHl7vnjuBgBdJrEb
+	 FbzBZwfiihFlauaVIBBqdIhvSQPK0kOo0XGar1pHE1uShRAqYWQBuoiwRZUBGGSZ/i3wO
+	 vm1XqjMLf2ttueLzYLZmNXa9u7d+r8q9h1sdDd+ZTvrEcQ2eDWqJKh/9yCjN8lJtfTg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=oss.nxp.com;
+	spf=pass smtp.mailfrom=oss.nxp.com;
+	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=uz93G+e9;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.66.34
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012034.outbound.protection.outlook.com [52.101.66.34])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEFA6606A895
-	for <imx@lists.linux.dev>; Wed, 11 Nov 2026 19:04:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BEFA6606A895
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A13E4606A31C
+	for <imx@lists.linux.dev>; Wed, 11 Nov 2026 19:36:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A13E4606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=dRydQ0cq
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-3b0bbdeae06so2091443a91.1
-        for <imx@lists.linux.dev>; Wed, 11 Nov 2026 11:04:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794423897; x=1795028697; darn=lists.linux.dev;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=eZIEIN8efIigBkbOd6hBVcrdB9WVuz9I7UGw1PelOF4=;
-        b=dRydQ0cqjM5CTb4jMlB/XLqhJKfja1hmzLuDN8YqgIWtpR4Gj8p4RH985NG3x8q10O
-         6vyiGRIgcoyQ1qllTHikmlzLIBbZexcodGKE7qL8I/bL6zyAUOvQopdSdeApvILm2ztA
-         61xkdCMpiUAw3N4yC/8LPransRnDHLA1XowIeC2S4EAdw3dnrEITuXSMmra6nY4j4i6e
-         0FenQBOUiVMoRI/Hp5yGh0PUXxgela7778/Ap0rDDmiSiLWaaC7PhjY4C1Cpm8bcp46L
-         oUvePZjTmQrAJi9NMZue+QxdxJunXi6iiGyrVAzL5FYbvCUuuIluJZ4oqtiQ8hIknJR3
-         3buA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794423897; x=1795028697;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=eZIEIN8efIigBkbOd6hBVcrdB9WVuz9I7UGw1PelOF4=;
-        b=IgXM278VcxTsMX1k+fNSpQXX1PAJhkY97pPzCt8vvKAgwkvU/xnkoo465Px+fPT52C
-         dWR6yNvqIoAWe2PUhiNQqS81xqrpBuGh3uy5D7qgVwL9T1IFFYiRszjAGV5kxbnUdLPP
-         Nxwglrjk/LNGke16EIEYT0U1jcJHnCEYVdr1/VCh1A7A1zkRch11+AbGMJJ0UNGr5jfK
-         uOt0JBxJFWk9+7ctSC98Una6gOahCUSapnikEZsnxsIhQOsVOaK5SSAs+Zc362qD0WVL
-         qL//JWht4lFE0xeiIEcO5eC7YxSJN3FEw0JnSnivS89t2huBveIer97StY/TNqGFJ8Qt
-         M/Xg==
-X-Forwarded-Encrypted: i=1; AL+hErEcfuCQt8Lz5NoDt7WciJGBVabOrvJVdvnXpDD4x8wsFrwIcKhLrhPC8eAUx0itkJB0Kis=@lists.linux.dev
-X-Gm-Message-State: APuU4Z+PvE6JGkKGVE8tSXylmQTEbtuETyKAsXXbx8iOsWq0hYbtreYR
-	X4atKu/ulD/Gp4b5zB102aYYDHeWz7wBIJFuVZPhhHq+04tmwtlTLVR8
-X-Gm-Gg: AYBFou2KzzpU62xdRhGrjDP80lJf38sdDdleuvr2kJQBJfNKZ6MvtJ93oMpyZc0G/ud
-	+rwQeIFvFtPzg04bMEK9uSgkxHaZYpKJNgLgE+80iJE6XdvCZvHwH+gr5dWNWW1PMRDsDGanNUJ
-	JqIFR0j6RpXy31aiFX2zhZsq6BaYkFWIysq1gvR8d7vM1GeovLbB5QEJKqO/ySH50HRVQiHHP1G
-	nscufGu3/etXcDxl/+6Lo+WDtOOcMqTMbBPIhbAd2ylxc5m7Z9dBynHIPtLJb2982UrQRfICbAA
-	CbOC5R1oES897WdoKcJLsv2OzI2yexA7SYr5YEup0QlJzlwClfK7rrqbwbepu4vWkHyAtasgWde
-	Wr81/iYUcKChtvP0KgAPaiiJGKXJ9yrI9JkHpAomEhdIGRsWZYbrDZF0p0DHZ098g7YnfatM0sS
-	o6F6f6Aa8l09QjdPw6XlRmSCoYzkPC3ITNM63oWaZvYDwfcVg/3CI+rqzRFlU7T/gAv716hKyHK
-	h4h3azCvc2t+mCfo7zP9OVQoA8Mnpl6WgIzKQxxUwNzJgq7vNv2dAPvm+9FZalpUlxJvQZO0OZ/
-	I5/ADtfoJDDjYLhijbz79g3XsVsbANEvUA==
-X-Received: by 2002:a17:90b:37c3:b0:3ab:413:49bc with SMTP id 98e67ed59e1d1-3b182ee2462mr3383157a91.37.1794423897010;
-        Wed, 11 Nov 2026 11:04:57 -0800 (PST)
-Received: from [127.0.1.1] ([67.159.246.222])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b181f8fd59sm2727366a91.1.2026.11.11.11.04.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Nov 2026 11:04:56 -0800 (PST)
-From: Leonardo Costa <leoreis.costa@gmail.com>
-Date: Wed, 11 Nov 2026 16:04:03 -0300
-Subject: [PATCH v2 7/7] ARM: dts: imx6q-apalis: Add Toradex OV5640 CSI
- Cameras
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=uz93G+e9
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=XmSjV2YDJNxssXp+0FKmAZqYIr70jwJa/+of+P/uOKjKkACz01EVDzBKjektHkSV9iIBvTesEf3217fWFrj2QKiuABtGF42B17fhnoV2VYAYoiWsWVdvegxibPv+/wQ3HkvAT+8bulG4BQPtVzYwEUJapXprRLH9LrnEbfQyWG0NnFUHihv4IbjCtiEpAfaneNGKhV7YyipTfFeNOzwlcPII/4AW2FADiC0R1Q8fvwCLg8VRgFcx/vJkZCw2YDWGgUXU7oE6oRr+qjkQ4wU6437b/nBHdZ/sBUZgUc9RX/l8pIiMrBPktA1r4ut/vSDELKoJs+zNNC5qB+VcEUcxEA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=O2zSSZ3LgsR48s6DHy7cAhbbY3qEiRADsKkGUtubBNI=;
+ b=bUTIPgcP0KPkLnYu+KKrNe7ydEXXFMPFftlErqfwsa0zfsHMwhdR9jtQviHMRe50EfBvgYxlV+GHvFiMI7Pt0LtfvTwZOR+wqd6s5o4iNMJqQl5jUPcakxwpPFfGxc791GszDrBzr0vimI+LKJ0wo7vNSgQb5l1FemunNKJqrVCq+pOt6Gqa2U5kNUhxvrZsJ22gBDvxJ14fkRxvE7tOb6L3TcQImHKJnDrR7VONW7VYhkdQMyZPJC7V4zuAR2/2g02Qr+4RV7c1l/j81J0zevIp8wzgEtw2z6I+YYE8Da71iHyfT+0xXbe67m2D67c/NlBjqSWE+MXJzsC6w49ITg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=O2zSSZ3LgsR48s6DHy7cAhbbY3qEiRADsKkGUtubBNI=;
+ b=uz93G+e9xIZaOBwa9BLar81fEJUqofNP3073L75pNP33IPfRyIlBvfB0gWxWJVeVBRZKJ5UtwNGLBGTfB3eAM5LH6zM9klohNRwUKhCJrmKO3PtSsjHFbA42oJGQdaizBESLjJ7YcbnD9D4qu8h19XlfLu0HxtZNt+loUo41tGxTrczXNFIumyfGYvcu27uaLhkh3re96roR/PhkQBuY9DgwuPgA6y4afJWC+GjJpJOzsVD6YwdBjqttxt91o7noNtptbMn5UWYjQa2D4MpqJxEvUXOONBWySmXlTIxGBRSayYgxAzNPxoH1KiZBWdbjcUaTbrXRki5DZJe0B6hhzg==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from MI3PR04MB12438.eurprd04.prod.outlook.com (2603:10a6:290:76::14)
+ by PA1PR04MB11081.eurprd04.prod.outlook.com (2603:10a6:102:485::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.9; Wed, 11 Nov
+ 2026 19:36:34 +0000
+Received: from MI3PR04MB12438.eurprd04.prod.outlook.com
+ ([fe80::c715:c32:8bb1:b70b]) by MI3PR04MB12438.eurprd04.prod.outlook.com
+ ([fe80::c715:c32:8bb1:b70b%4]) with mapi id 15.21.0615.007; Wed, 11 Nov 2026
+ 19:36:33 +0000
+Date: Wed, 11 Nov 2026 14:36:24 -0500
+From: Frank Li <Frank.li@oss.nxp.com>
+To: Junyi Zhao <junyi.zhao@amlogic.com>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Frank Li <Frank.Li@nxp.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	linux-i3c@lists.infradead.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-amlogic@lists.infradead.org, imx@lists.linux.dev,
+	linux-hardening@vger.kernel.org, xianwei.zhao@amlogic.com,
+	Kelvin.Zhang@amlogic.com
+Subject: Re: [PATCH v3 1/2] i3c: master: svc: Add amlogic a9 support
+Message-ID: <avTDuCD1ipp81dwJ@lizhi-Precision-Tower-5810>
+References: <20261106-a9_i3c-v3-0-804b69b9095b@amlogic.com>
+ <20261106-a9_i3c-v3-1-804b69b9095b@amlogic.com>
+ <au4LN40LQAHsPYZ4@lizhi-Precision-Tower-5810>
+ <57c4941a-b944-4b32-83b2-4f37e3a840f1@amlogic.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <57c4941a-b944-4b32-83b2-4f37e3a840f1@amlogic.com>
+X-ClientProxiedBy: DS7P220CA0117.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:8:25f::16) To MI3PR04MB12438.eurprd04.prod.outlook.com
+ (2603:10a6:290:76::14)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -93,329 +113,495 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261111-b4-v2-apalis-imx6-overlays-v2-7-8129b21634c7@toradex.com>
-References: <20261111-b4-v2-apalis-imx6-overlays-v2-0-8129b21634c7@toradex.com>
-In-Reply-To: <20261111-b4-v2-apalis-imx6-overlays-v2-0-8129b21634c7@toradex.com>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, 
- Francesco Dolcini <francesco.dolcini@toradex.com>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- linux-bsp@toradex.com, Leonardo Costa <leonardo.costa@toradex.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794423849; l=9208;
- i=leonardo.costa@toradex.com; s=20261001; h=from:subject:message-id;
- bh=x1z10zXP1ksLFs1FWBKlLpD4vvdYJg4UXNaMofSb9Do=;
- b=S68AEzLKc6vFUBWjXAXqDy1fRragvHk6RDlg3Dvt+81hdBwAMn87RdCZWhEvtgmZmJAap0DVC
- CTRzpH2W7+DCGSSVS8zzWpOQO0SHxy5LBpIzyBGyb3Y0Z4dTFolVzKf
-X-Developer-Key: i=leonardo.costa@toradex.com; a=ed25519;
- pk=4xvoVLDt+NxIz9D8BJHhT0fD43Ig6XgSDw4jRN/gHzk=
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|PA1PR04MB11081:EE_
+X-MS-Office365-Filtering-Correlation-Id: 434b3052-aa87-4de0-1961-08df402b176b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|7416014|376014|366016|1800799024|19092799006|261028144727099003|10067099003|5023799004|11063799006|4143699003|56012099006|261022105027099003|261021135927099003|261021123027099003|261022115727099003|261021133027099003|261026121527099003|261026135527099003|261021121427099003|261021130227099003|261022075727099003|261026140227099003|261022113327099003|261026130827099003|261102123227099003|261009223027099003|261009221227099003|261009221727099003|261009223327099003|261009220027099003|22082099003|18002099003|6133799003|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	yUFq3tTPkp67Ba3IG7/InhrriJGRxJtwS6qfud5xRcg+ZdqeMcyQm0kaMIw3rbPQSdpDEZnMe4gbp5F56Fs8Y1pIEGfPjil1Rbqh/zPgtzox7kxy3UILJV7R3Rra++hfSzC0S3ILyblE40uV3HJHppYaGnW3ehm571pFYag285z+5TCzyMVjfWHIraG79RWp7Po7+gBZ01GfUw+UP/CU0j2118aZ5rBj0RMYhqudk62l+QC4/G/D4sicfMHFICrZ3OhSpNLTUd28V3OUDC8Ay47bCOjxzccekOyAkL+IKbceSo90tbncXPZLbnFd/R8AYAEZP/yuPd7osgsr7PXqvwHvyAdSnKMIZCWNwaCt4ZuS0JP55gONbvxU8D+6X5FD1xRtF9JWSz4Isk/dSR5aG73ScO6fzQq3MO7U3/wvG4EUvGD6crsTBykjgjhc8AwFzTcPiDpULzhD41k4jqUxrBNnRnMiBqpigbo6yiOtx5MgQNj4+eXMAyRY4FWii47ILXQTuY/NyjdXJ8VCUMFt2QR6kSnSbKgnqkO/C9rIWPUe4H1RPvrYnSQrHEqYlDuk5eaaKj0zyDtyTiwjCNiKRUzT5WRlsROrF9lSNwNxtmdxyJyLUaEq/GxefsQ45ln15Zuf6Qi5yZDaHUBwnvtPQy2O8GwpAR1y2hD7AHTqoxY=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(366016)(1800799024)(19092799006)(261028144727099003)(10067099003)(5023799004)(11063799006)(4143699003)(56012099006)(261022105027099003)(261021135927099003)(261021123027099003)(261022115727099003)(261021133027099003)(261026121527099003)(261026135527099003)(261021121427099003)(261021130227099003)(261022075727099003)(261026140227099003)(261022113327099003)(261026130827099003)(261102123227099003)(261009223027099003)(261009221227099003)(261009221727099003)(261009223327099003)(261009220027099003)(22082099003)(18002099003)(6133799003)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?OHZGT2RNZWVEMlFPMGxKZ0ZlODJnWFYrK1dGdU5EdUw5SEJjNFNPUTVhSVNU?=
+ =?utf-8?B?TGx2NHltWU9Md3BGY2dYUmlDNEUvRE9XWUpoaS9OaThacFlPcVhoY2FsSHJ5?=
+ =?utf-8?B?VUhrdzNDWW52YllKNncxR0dVZ2hWTzVheE1hZ2RCdWNiVHdseDBSR0xrMnNR?=
+ =?utf-8?B?ZnM0SktKWlVsMXlvcllQcGs0RUdQa0hJb3ZuZUM1YXNrY2hVM0lObDRnbXc3?=
+ =?utf-8?B?TmpTM1V1bUJ3QmFPZ1d6MmVWb2wxV0NjNDdtR1I2d1hadkJnemR1aVZmT2RO?=
+ =?utf-8?B?eVhYR0MwK0VFUTUxbnVTTW5BRGd4T2hsdWVzTkFyeUdFdHM2ekFWWWtMTExL?=
+ =?utf-8?B?ekRSQWlPODZUNytha1VpRVV2RTJ0cXA3WEVTNmYyeUtFVlhsODNQWUY2b3Zi?=
+ =?utf-8?B?ZTJsbjFJSzdWU1BpTUtwWXZpY3pUenJ1OC8rK2N0Q0JhdGdVd3hSdmdETENP?=
+ =?utf-8?B?OHQyVHgyUWFzQlBLVGlFU2lyUmRLcmoyaTJaSUdDTnBFQTIwc0g2VCtJMmFJ?=
+ =?utf-8?B?TzIvSjB0UmtialQwVXhseXhsNnBSY3VNcUxYODNSQ0hsUVY2azhzTk5zSDBh?=
+ =?utf-8?B?RGxCL1hSZTNTZ2sxb1kvRFcxdFlHWjBzMUZOY0N4SnRFZC9SZFNqZDRwTndE?=
+ =?utf-8?B?TFFpa1pqNi9acDZBYVRlZk8zcm5oeURYNGhZRHptVHhNRy9ldjJkYWtUVUpS?=
+ =?utf-8?B?cG9qWFVrM1lwb20xZGdyRnl1elFqNVUybzFqdmpYRHZRUGhCV21kVkRIOUlz?=
+ =?utf-8?B?YnliZVhkRFdieTNPcG5JeGpQVldVSUFEY2RlSWJsd0Jqd0gyeTJsRktpb3ha?=
+ =?utf-8?B?N1RRMlBrRWZpMHprWFZ1RW90TVBQSXVpUE0rT1VKUE9XM3dSSSs1YzZFeUdw?=
+ =?utf-8?B?c1FUOHNIMEFOYTlnUk5FNlVMOFV1a2FwbithYjNMUWdNeVVid1lEOXlGZGdV?=
+ =?utf-8?B?cGhobTFyaW5Yci9WQnBEMXRTWTdUZVUxVis1bmltOS9iY0M1anRPZ2Vza01i?=
+ =?utf-8?B?TTRxeitTSTE1VURDVGpNZEVzeW9jMWYrbWhqUlVYVFgvVmYzeTZXdUF4K0dP?=
+ =?utf-8?B?cFkva2JHVEtGcEVNWkE4Yll0TUVRd05ueEtoWndGOVQwN1JWSHBONDlvdlZS?=
+ =?utf-8?B?K0dZS2JFSzZtR01KN1J0RkllYTAvWDZraC80cklWekp5ZG1URmYydEJOSHRI?=
+ =?utf-8?B?WStNNnVLUkRaQ0RiWE5tR3lQNlZ2cjFlSnYrTE1pY0xnVElOU1J5Qk9xT3F1?=
+ =?utf-8?B?UDZoNFZ1NllxY2UyVld5WTdBTm9VSGlVT0cvMHBLS1BRQmpHVkhWS25vemt1?=
+ =?utf-8?B?SXJjeWpzSmdmaldkYkZyd1VRUHVQa1NhR1A5Z1l1cmIxQmIyQUowUFVFaTRF?=
+ =?utf-8?B?L1R0YVhNRkJ2aDRrbHUwdkMxdVFKVlNZeGtWRm1XQ2ZFWHpDY096ZDFaaDZy?=
+ =?utf-8?B?VUZoaDRoYUI3YUZlM3BDVjdycjFYRzg2YXZDb2h6cmFsWGNscW5ldzRWQ0la?=
+ =?utf-8?B?UXhPWlBVOUFSK1d2Z3I2dWtJaDBpVEJGUVQwdjc3aTRlVU05enhiSzRQNW44?=
+ =?utf-8?B?b1VaYSttMkR3cm1EOVZMc2tPVjd6QnFhamtlMmN5M3NYTmdJTDkvUlJKSlEy?=
+ =?utf-8?B?TUpDZ2ZoeUwydkJBaXNHTnFPNzlaNDl3aklJYzk1QjhjS0xSVUNvemRNdXFn?=
+ =?utf-8?B?UGRGcngxN1JDL2haSnVhdmJwRkptR203QjdOUEhybW16K0FEbHlTVWN2cHRS?=
+ =?utf-8?B?ZGFIN0wwZUhIUFBycWJ0S0NYMnVnaUpOWUhGSG1XRkRRT1JBR3RUbFRTWEVG?=
+ =?utf-8?B?VXV3M0RhaUMydmljTWVjTlA2b1Y3VkU3WVFmSTc4aUF1dGloOUVmZG9VZVNh?=
+ =?utf-8?B?NVJhYkNRUWRxT1F3bDllWWR5OGZFZkVjTzhGZGtBak1IMXd1d0tQVjVwckpV?=
+ =?utf-8?B?SkpWWkwxTEx4THpJMktGT2NwQnFZRnpQRFhLNkRPbEpUMDF2azlkV2x4OFMz?=
+ =?utf-8?B?czVENnp6Z2lkWHhsclQybjJ0Vmhrem5JZnhMcEloTXZHUlpzOWZpSTNQczRJ?=
+ =?utf-8?B?NWpDZWcrS1JMUEEvWWdpYnVTL0NpQXZzTFNleW1YYU9zK0xnSDNLU01Bc21q?=
+ =?utf-8?B?NjlNSVhJWG9URWFJK0ZFR1FMNkNUN0RqQSt6dkFiREZzVEN6RGdtVE00QnB4?=
+ =?utf-8?B?aVRoWnBQT3l4bWQxOVRmMXVxQkNiSk1nb2J4NWtNdzhVcDhnbjYreS8xNnJX?=
+ =?utf-8?B?TitONTgwaFI0SW1qem9VTDJQRlBGdUREdGhtem50Yi8zNTlzcmRVV21RMW9o?=
+ =?utf-8?B?QXlOa1VJb3hTak5wNGx2aXpQV0RjWEZmWDMwc01rK25sRFVaTkJGLzNCNkY4?=
+ =?utf-8?Q?JRs9ChlvjjfJh5VIf4dvrTEf7AVe6Hqxez17j?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 434b3052-aa87-4de0-1961-08df402b176b
+X-MS-Exchange-CrossTenant-AuthSource: MI3PR04MB12438.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Nov 2026 19:36:33.1451
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: HV9/cLZGegaCFA0N+/AadtUtvVxbcDzDRJ+2GmWW41Fa8SMlxJymFLYANXL6F1AcXiZnCiStDa3VYeIISVo0R2SJpz6W6E+nU99VQAwACE5Qb0OvOBRXJYGUYdxS4E37
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB11081
 
-From: Leonardo Costa <leonardo.costa@toradex.com>
+On Tue, Nov 10, 2026 at 01:23:23PM +0800, Junyi Zhao wrote:
+>
+> Hi frank，
+> 	thks for your review.
+> On 07/11/2026 01:15, Frank Li wrote:
+> > [ EXTERNAL EMAIL ]
+> >
+> > On Fri, Nov 06, 2026 at 03:13:08PM +0800, Junyi Zhao wrote:
+> > > Amlogic a9 SoCs integrate the Silvaco I3C IP, and their peripheral
+> > > clocks vary from the vanilla implementation:
+> > >
+> > >    - The EE-domain controller (amlogic,a9-i3c) takes two clocks,
+> > >      "pclk" and "fast_clk", and the fast clock rate must be programmed
+> > >      before the controller can be used.
+> > >
+> > >    - The AO-domain controller (amlogic,a9-ao-i3c) exposes only "pclk":
+> > >      its bus clock is generated by an internal divider located in the
+> > >      controller's own register space.
+> > >
+> > > Both variants need setup that the generic driver does not perform:
+> > > the fast clock rate must be rounded and set at probe time, and on the
+> > > AO variant the internal divider must be registered with the clock
+> > > framework so that "fast_clk" even exists. The divider registers sit
+> > > in the controller's own register space, so they can only be accessed
+> > > while pclk is running.
+> > >
+> > > Add a vendor_init callback, invoked from the probe with the clocks
+> > > enabled, to handle this. On the AO variant it registers the internal
+> > > divider chain (div_en -> div -> gate) with the common clock framework
+> > > and appends the resulting clock to the clk bulk array as "fast_clk";
+> > > for both variants it then rounds and sets the fast clock rate
+> > > (target 25 MHz). As vendor_init now runs after
+> > > clk_bulk_prepare_enable(), the probe error paths that follow disable
+> > > the clocks on failure.
+> > >
+> > > Extend the quirks bitmask with an Amlogic-specific bit
+> > > (AML_I3C_QUIRK_AO) marking the AO variant's internal-divider
+> > > behaviour. Since the driver now registers clocks through the common
+> > > clock framework, SVC_I3C_MASTER also depends on COMMON_CLK.
+> > >
+> > > Signed-off-by: Junyi Zhao <junyi.zhao@amlogic.com>
+> > > ---
+> > >   drivers/i3c/master/Kconfig          |   1 +
+> > >   drivers/i3c/master/svc-i3c-master.c | 274 ++++++++++++++++++++++++++++++++++--
+> > >   2 files changed, 263 insertions(+), 12 deletions(-)
+> > >
+> > > diff --git a/drivers/i3c/master/Kconfig b/drivers/i3c/master/Kconfig
+> > > index da96d2aaa..ac7d246c2 100644
+> > > --- a/drivers/i3c/master/Kconfig
+> > > +++ b/drivers/i3c/master/Kconfig
+> > > @@ -47,6 +47,7 @@ config AST2600_I3C_MASTER
+> > >
+> > >   config SVC_I3C_MASTER
+> > >        tristate "Silvaco I3C Dual-Role Master driver"
+> > > +     depends on COMMON_CLK
+> > >        depends on HAS_IOMEM
+> > >        depends on !(ALPHA || PARISC)
+> > >        help
+> > > diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
+> > > index e700392f0..aef56286e 100644
+> > > --- a/drivers/i3c/master/svc-i3c-master.c
+> > > +++ b/drivers/i3c/master/svc-i3c-master.c
+> > > @@ -9,6 +9,7 @@
+> > >
+> > >   #include <linux/bitfield.h>
+> > >   #include <linux/clk.h>
+> > > +#include <linux/clk-provider.h>
+> > >   #include <linux/completion.h>
+> > >   #include <linux/errno.h>
+> > >   #include <linux/i3c/master.h>
+> > > @@ -166,6 +167,31 @@
+> > >    */
+> > >   #define SVC_I3C_QUIRK_DAA_CORRUPT    BIT(2)
+> > >
+> > > +/*
+> > > + * AML_I3C_QUIRK_AO:
+> > > + * AO is the Always-On domain on Amlogic SoCs (remains powered in suspend).
+> > > + * Its clock is generated by an internal divider located in the I3C
+> > > + * controller's own register space.
+> > > + */
+> > > +#define AML_I3C_QUIRK_AO     BIT(3)
+> > > +
+> > > +/*
+> > > + * Quirks shared by all the Amlogic A9 I3C instances.
+> > > + */
+> > > +#define AML_A9_I3C_QUIRKS    (SVC_I3C_QUIRK_FIFO_EMPTY | \
+> > > +                              SVC_I3C_QUIRK_FALSE_SLVSTART | \
+> > > +                              SVC_I3C_QUIRK_DAA_CORRUPT)
+> > > +
+> > > +/* Amlogic specific registers */
+> > > +#define AML_AO_I3C_FCLK_DIV_CTRL             0x304
+> >
+> > Do you have other registers after 0x304? Is it possible create indivial
+> > clock driver for it, reg space is such as 0x300..0x400.
+> >
+> > I3C use 0..0x300
+> >
+> > So needn't distinguish w/o AO.
+> >
+>
+> e.g. I3C_AO_DEBUG_MODIFY at 0x308.
 
-Add device tree overlays for the Toradex OV5640 CSI Camera on Apalis
-iMX6 CSI.
+Does it use in I3C driver?
 
-The default overlay describes the current CSI Camera Set 5MP OV5640 with
-a 27 MHz on-board oscillator. Add a separate 24 MHz overlay for the
-legacy camera module.
+>
+> 0x300-0x400 is not a clean clock block.
+>
+> Its registers are only accessible while the controller's pclk is
+> running,
 
-Remove the ov5640_mipi node from the Apalis iMX6 dtsi, as it is an
-external component that does not exist at the SoM level. The camera
-modules have their own on-board oscillator, so the sensor xclk is now
-described as a fixed clock instead of the SoC CLKO2 output.
+You can set pclk as parent clock, so access's parent clock should be
+already enabled.
 
-The overlay is also combined with the Apalis iMX6 V1.2 Ixora Carrier
-Board V1.2 device tree to provide a ready-to-use DTB.
+Frank
 
-Link: https://www.toradex.com/accessories/csi-camera-ov5640
-Link: https://developer.toradex.com/hardware/accessories/cameras/csi-camera-module-5mp-ov5640-arducam/
-Link: https://developer.toradex.com/hardware/legacy-products/other/csi-camera-module-5mp-ov5640/
-Signed-off-by: Leonardo Costa <leonardo.costa@toradex.com>
----
- arch/arm/boot/dts/nxp/imx/Makefile                 | 12 ++++
- .../dts/nxp/imx/imx6q-apalis-ov5640-24mhz.dtso     | 17 +++++
- arch/arm/boot/dts/nxp/imx/imx6q-apalis-ov5640.dtsi | 68 ++++++++++++++++++++
- arch/arm/boot/dts/nxp/imx/imx6q-apalis-ov5640.dtso | 18 ++++++
- arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi      | 73 ----------------------
- 5 files changed, 115 insertions(+), 73 deletions(-)
-
-diff --git a/arch/arm/boot/dts/nxp/imx/Makefile b/arch/arm/boot/dts/nxp/imx/Makefile
-index fffcc54545b09..c3f42563dda97 100644
---- a/arch/arm/boot/dts/nxp/imx/Makefile
-+++ b/arch/arm/boot/dts/nxp/imx/Makefile
-@@ -168,6 +168,14 @@ imx6q-apalis-v1.2-ixora-v1.2-hdmi-dtbs := \
- 	imx6q-apalis-v1.2-ixora-v1.2.dtb \
- 	imx-hdmi.dtbo
- 
-+imx6q-apalis-v1.2-ixora-v1.2-ov5640-dtbs := \
-+	imx6q-apalis-v1.2-ixora-v1.2.dtb \
-+	imx6q-apalis-ov5640.dtbo
-+
-+imx6q-apalis-v1.2-ixora-v1.2-ov5640-24mhz-dtbs := \
-+	imx6q-apalis-v1.2-ixora-v1.2.dtb \
-+	imx6q-apalis-ov5640-24mhz.dtbo
-+
- imx6q-apalis-v1.2-ixora-v1.2-tdx-panel-cap-touch-10inch-lvds-v1-dtbs := \
- 	imx6q-apalis-v1.2-ixora-v1.2.dtb \
- 	imx6q-apalis-tdx-panel-cap-touch-10inch-lvds-v1.dtbo
-@@ -337,6 +345,8 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
- 	imx6q-apalis-ixora-v1.1-hdmi.dtb \
- 	imx6q-apalis-ixora-v1.2.dtb \
- 	imx6q-apalis-ixora-v1.2-hdmi.dtb \
-+	imx6q-apalis-ov5640.dtbo \
-+	imx6q-apalis-ov5640-24mhz.dtbo \
- 	imx6q-apalis-tdx-panel-cap-touch-10inch-lvds-v1.dtbo \
- 	imx6q-apalis-tdx-panel-cap-touch-7inch-parallel.dtbo \
- 	imx6q-apalis-tdx-panel-res-touch-7inch-parallel.dtbo \
-@@ -351,6 +361,8 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
- 	imx6q-apalis-v1.2-ixora-v1.1-hdmi.dtb \
- 	imx6q-apalis-v1.2-ixora-v1.2.dtb \
- 	imx6q-apalis-v1.2-ixora-v1.2-hdmi.dtb \
-+	imx6q-apalis-v1.2-ixora-v1.2-ov5640.dtb \
-+	imx6q-apalis-v1.2-ixora-v1.2-ov5640-24mhz.dtb \
- 	imx6q-apalis-v1.2-ixora-v1.2-tdx-panel-cap-touch-10inch-lvds-v1.dtb \
- 	imx6q-apalis-v1.2-ixora-v1.2-tdx-panel-cap-touch-7inch-parallel.dtb \
- 	imx6q-apalis-v1.2-ixora-v1.2-tdx-panel-res-touch-7inch-parallel.dtb \
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-apalis-ov5640-24mhz.dtso b/arch/arm/boot/dts/nxp/imx/imx6q-apalis-ov5640-24mhz.dtso
-new file mode 100644
-index 0000000000000..3e4bbb11ce203
---- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx6q-apalis-ov5640-24mhz.dtso
-@@ -0,0 +1,17 @@
-+// SPDX-License-Identifier: GPL-2.0-only OR MIT
-+/*
-+ * Copyright (c) Toradex
-+ *
-+ * Legacy Toradex CSI Camera Module 5MP OV5640 on Apalis iMX6 CSI.
-+ *
-+ * https://developer.toradex.com/hardware/legacy-products/other/csi-camera-module-5mp-ov5640
-+ */
-+
-+/dts-v1/;
-+/plugin/;
-+
-+#include "imx6q-apalis-ov5640.dtsi"
-+
-+&clock_camera {
-+	clock-frequency = <24000000>;
-+};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-apalis-ov5640.dtsi b/arch/arm/boot/dts/nxp/imx/imx6q-apalis-ov5640.dtsi
-new file mode 100644
-index 0000000000000..302f1ceb6a102
---- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx6q-apalis-ov5640.dtsi
-@@ -0,0 +1,68 @@
-+// SPDX-License-Identifier: GPL-2.0-only OR MIT
-+/*
-+ * Copyright (c) Toradex
-+ *
-+ * Common device tree include for Toradex OV5640 CSI camera on Apalis iMX6 CSI.
-+ */
-+
-+#include <dt-bindings/gpio/gpio.h>
-+
-+&{/} {
-+	clock_camera: clock-camera {
-+		compatible = "fixed-clock";
-+		#clock-cells = <0>;
-+	};
-+
-+	regulator_camera: regulator-camera {
-+		compatible = "regulator-fixed";
-+		/* Apalis GPIO4 - CSI Camera Connector pin 24 */
-+		gpio = <&gpio2 7 GPIO_ACTIVE_HIGH>;
-+		enable-active-high;
-+		regulator-name = "V_CSI";
-+		startup-delay-us = <5000>;
-+	};
-+};
-+
-+&i2c3 {
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+
-+	camera@3c {
-+		compatible = "ovti,ov5640";
-+		reg = <0x3c>;
-+		clocks = <&clock_camera>;
-+		clock-names = "xclk";
-+		AVDD-supply = <&regulator_camera>;
-+		DOVDD-supply = <&regulator_camera>;
-+		DVDD-supply = <&regulator_camera>;
-+		/* Apalis GPIO2 - CSI Camera Connector pin 22 */
-+		powerdown-gpios = <&gpio2 5 GPIO_ACTIVE_HIGH>;
-+		/* Apalis GPIO1 - CSI Camera Connector pin 11 */
-+		reset-gpios = <&gpio2 4 GPIO_ACTIVE_LOW>;
-+
-+		port {
-+			ov5640_to_mipi_csi2: endpoint {
-+				clock-lanes = <0>;
-+				data-lanes = <1 2>;
-+				remote-endpoint = <&imx6q_mipi_csi_in>;
-+			};
-+		};
-+	};
-+};
-+
-+&mipi_csi {
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+
-+	status = "okay";
-+
-+	port@0 {
-+		reg = <0>;
-+
-+		imx6q_mipi_csi_in: endpoint {
-+			clock-lanes = <0>;
-+			data-lanes = <1 2>;
-+			remote-endpoint = <&ov5640_to_mipi_csi2>;
-+		};
-+	};
-+};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-apalis-ov5640.dtso b/arch/arm/boot/dts/nxp/imx/imx6q-apalis-ov5640.dtso
-new file mode 100644
-index 0000000000000..9cf7587c263bf
---- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx6q-apalis-ov5640.dtso
-@@ -0,0 +1,18 @@
-+// SPDX-License-Identifier: GPL-2.0-only OR MIT
-+/*
-+ * Copyright (c) Toradex
-+ *
-+ * Toradex CSI Camera Set 5MP OV5640 on Apalis iMX6 CSI.
-+ *
-+ * https://developer.toradex.com/hardware/accessories/cameras/csi-camera-module-5mp-ov5640-arducam
-+ * https://www.toradex.com/accessories/csi-camera-ov5640
-+ */
-+
-+/dts-v1/;
-+/plugin/;
-+
-+#include "imx6q-apalis-ov5640.dtsi"
-+
-+&clock_camera {
-+	clock-frequency = <27000000>;
-+};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi
-index 8f5a9ab1f20fa..2a01480947910 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi
-@@ -36,12 +36,6 @@ backlight: backlight {
- 		status = "disabled";
- 	};
- 
--	clk_ov5640_osc: clk-ov5640-osc {
--		compatible = "fixed-clock";
--		#clock-cells = <0>;
--		clock-frequency = <24000000>;
--	};
--
- 	gpio-keys {
- 		compatible = "gpio-keys";
- 		pinctrl-names = "default";
-@@ -116,26 +110,6 @@ reg_module_3v3_audio: regulator-module-3v3-audio {
- 		regulator-name = "+V3.3_AUDIO";
- 	};
- 
--	reg_ov5640_1v8_d_o_vdd: regulator-ov5640-1v8-d-o-vdd {
--		compatible = "regulator-fixed";
--		regulator-always-on;
--		regulator-max-microvolt = <1800000>;
--		regulator-min-microvolt = <1800000>;
--		regulator-name = "DOVDD/DVDD_1.8V";
--		/* Note: The CSI module uses on-board 3.3V_SW supply */
--		vin-supply = <&reg_module_3v3>;
--	};
--
--	reg_ov5640_2v8_a_vdd: regulator-ov5640-2v8-a-vdd {
--		compatible = "regulator-fixed";
--		regulator-always-on;
--		regulator-max-microvolt = <2800000>;
--		regulator-min-microvolt = <2800000>;
--		regulator-name = "AVDD/AFVDD_2.8V";
--		/* Note: The CSI module uses on-board 3.3V_SW supply */
--		vin-supply = <&reg_module_3v3>;
--	};
--
- 	reg_usb_otg_vbus: regulator-usb-otg-vbus {
- 		compatible = "regulator-fixed";
- 		enable-active-high;
-@@ -687,30 +661,6 @@ adv7280_to_ipu1_csi0_mux: endpoint {
- 			};
- 		};
- 	};
--
--	ov5640_csi_cam: ov5640_mipi@3c {
--		compatible = "ovti,ov5640";
--		AVDD-supply = <&reg_ov5640_2v8_a_vdd>;
--		DOVDD-supply = <&reg_ov5640_1v8_d_o_vdd>;
--		DVDD-supply = <&reg_ov5640_1v8_d_o_vdd>;
--		clock-names = "xclk";
--		clocks = <&clks IMX6QDL_CLK_CKO2>;
--		pinctrl-names = "default";
--		pinctrl-0 = <&pinctrl_cam_mclk>;
--		/* These GPIOs are muxed with the iomuxc node */
--		powerdown-gpios = <&gpio2 5 GPIO_ACTIVE_HIGH>;
--		reg = <0x3c>;
--		reset-gpios = <&gpio2 4 GPIO_ACTIVE_LOW>;
--		status = "disabled";
--
--		port {
--			ov5640_to_mipi_csi2: endpoint {
--				clock-lanes = <0>;
--				data-lanes = <1 2>;
--				remote-endpoint = <&mipi_csi_from_ov5640>;
--			};
--		};
--	};
- };
- 
- &ipu1_di1_disp1 {
-@@ -740,22 +690,6 @@ lvds1_out: endpoint {
- 	};
- };
- 
--&mipi_csi {
--	#address-cells = <1>;
--	#size-cells = <0>;
--	status = "disabled";
--
--	port@0 {
--		reg = <0>;
--
--		mipi_csi_from_ov5640: endpoint {
--			clock-lanes = <0>;
--			data-lanes = <1 2>;
--			remote-endpoint = <&ov5640_to_mipi_csi2>;
--		};
--	};
--};
--
- &pwm1 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_pwm1>;
-@@ -930,13 +864,6 @@ MX6QDL_PAD_DISP0_DAT23__AUD4_RXD	0x130b0
- 		>;
- 	};
- 
--	pinctrl_cam_mclk: cammclkgrp {
--		fsl,pins = <
--			/* CAM sys_mclk */
--			MX6QDL_PAD_NANDF_CS2__CCM_CLKO2 0x00b0
--		>;
--	};
--
- 	pinctrl_ecspi1: ecspi1grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_CSI0_DAT6__ECSPI1_MISO 0x100b1
-
--- 
-2.43.0
-
+> so its state is tightly coupled to the controller's own
+> power/clock state.
+>
+>
+> > Frank
+> >
+> > > +#define AML_AO_I3C_FCLK_DIV_EN_SHIFT         8
+> > > +#define AML_AO_I3C_FCLK_DIV_SHIFT            0
+> > > +#define AML_AO_I3C_FCLK_DIV_WIDTH            8
+> > > +#define AML_AO_I3C_FCLK_EN_SHIFT             9
+> > > +
+> > > +/* Target fast clock rate of the Amlogic A9 I3C controllers, in Hz */
+> > > +#define AML_I3C_FAST_CLK_RATE                25000000
+> > > +
+> > >   struct svc_i3c_cmd {
+> > >        u8 addr;
+> > >        union {
+> > > @@ -195,8 +221,11 @@ struct svc_i3c_regs_save {
+> > >        u32 mdynaddr;
+> > >   };
+> > >
+> > > +struct svc_i3c_master;
+> > > +
+> > >   struct svc_i3c_drvdata {
+> > >        u32 quirks;
+> > > +     int (*vendor_init)(struct svc_i3c_master *master);
+> > >   };
+> > >
+> > >   /**
+> > > @@ -2011,6 +2040,7 @@ static int svc_i3c_master_probe(struct platform_device *pdev)
+> > >        if (!master->drvdata)
+> > >                return -EINVAL;
+> > >
+> > > +     master->dev = dev;
+> > >        master->regs = devm_platform_ioremap_resource(pdev, 0);
+> > >        if (IS_ERR(master->regs))
+> > >                return PTR_ERR(master->regs);
+> > > @@ -2019,27 +2049,43 @@ static int svc_i3c_master_probe(struct platform_device *pdev)
+> > >        if (master->num_clks < 0)
+> > >                return dev_err_probe(dev, -EINVAL, "can't get I3C clocks\n");
+> > >
+> > > +     ret = clk_bulk_prepare_enable(master->num_clks, master->clks);
+> > > +     if (ret)
+> > > +             return dev_err_probe(dev, ret, "can't enable I3C clocks\n");
+> > > +
+> > > +     /*
+> > > +      * Vendor specific setup may register additional clocks (e.g. the
+> > > +      * internal divider chain of the AO variant) and program clock rates,
+> > > +      * so it must run with the clocks enabled.
+> > > +      */
+> > > +     if (master->drvdata->vendor_init) {
+> > > +             ret = master->drvdata->vendor_init(master);
+> > > +             if (ret)
+> > > +                     goto err_disable_clks;
+> > > +     }
+> > > +
+> > >        for (i = 0; i < master->num_clks; i++) {
+> > >                if (!strcmp(master->clks[i].id, "fast_clk"))
+> > >                        break;
+> > >        }
+> > >
+> > > -     if (i == master->num_clks)
+> > > -             return dev_err_probe(dev, -EINVAL,
+> > > -                                  "can't get I3C peripheral clock\n");
+> > > +     if (i == master->num_clks) {
+> > > +             ret = dev_err_probe(dev, -EINVAL,
+> > > +                                 "can't get I3C peripheral clock\n");
+> > > +             goto err_disable_clks;
+> > > +     }
+> > >
+> > >        master->fclk = master->clks[i].clk;
+> > > -     if (IS_ERR(master->fclk))
+> > > -             return PTR_ERR(master->fclk);
+> > > +     if (IS_ERR(master->fclk)) {
+> > > +             ret = PTR_ERR(master->fclk);
+> > > +             goto err_disable_clks;
+> > > +     }
+> > >
+> > >        master->irq = platform_get_irq(pdev, 0);
+> > > -     if (master->irq < 0)
+> > > -             return master->irq;
+> > > -
+> > > -     master->dev = dev;
+> > > -     ret = clk_bulk_prepare_enable(master->num_clks, master->clks);
+> > > -     if (ret)
+> > > -             return dev_err_probe(dev, ret, "can't enable I3C clocks\n");
+> > > +     if (master->irq < 0) {
+> > > +             ret = master->irq;
+> > > +             goto err_disable_clks;
+> > > +     }
+> > >
+> > >        mutex_init(&master->lock);
+> > >
+> > > @@ -2163,9 +2209,213 @@ static const struct svc_i3c_drvdata npcm845_drvdata = {
+> > >
+> > >   static const struct svc_i3c_drvdata svc_default_drvdata = {};
+> > >
+> > > +/**
+> > > + * struct aml_i3c_ao_clk - container for the AO variant's internal fast clock
+> > > + * @div_en: enables the internal divider
+> > > + * @div: bus clock divider
+> > > + * @gate: output gate of the generated fast clock
+> > > + * @lock: spinlock shared by the gate and divider register operations
+> > > + *
+> > > + * The clock HW structures are registered with the clock framework and must
+> > > + * stay alive for the whole driver lifetime, so they are kept along with the
+> > > + * shared lock used by their gate/divider operations.
+> > > + */
+> > > +struct aml_i3c_ao_clk {
+> > > +     struct clk_gate div_en;
+> > > +     struct clk_divider div;
+> > > +     struct clk_gate gate;
+> > > +     spinlock_t lock;
+> > > +};
+> > > +
+> > > +/**
+> > > + * aml_ao_i3c_tail_clocks - register the AO variant's internal fast clock
+> > > + * @master: I3C master controller
+> > > + * @parent: parent clock of the internal divider chain; must be "pclk", the
+> > > + *          only clock the AO variant exposes (see silvaco,i3c-master.yaml)
+> > > + *
+> > > + * Register the internal divider chain that produces the AO variant's
+> > > + * fast_clk and append it to the clk bulk array as "fast_clk". The caller
+> > > + * must run with the clocks enabled since the divider registers are
+> > > + * accessed during registration. The appended clock is prepared and
+> > > + * enabled here as well, because clk_bulk_prepare_enable() already ran
+> > > + * in the probe with the original clock list.
+> > > + *
+> > > + * Return: 0 on success, or a negative error code.
+> > > + */
+> > > +static int aml_ao_i3c_tail_clocks(struct svc_i3c_master *master, struct clk *parent)
+> > > +{
+> > > +     struct device *dev = master->dev;
+> > > +     struct clk_bulk_data *new_clks;
+> > > +     struct clk_init_data init = {};
+> > > +     struct aml_i3c_ao_clk *ao;
+> > > +     struct clk *fclk;
+> > > +     char name[64];
+> > > +     int ret;
+> > > +
+> > > +     ao = devm_kzalloc(dev, sizeof(*ao), GFP_KERNEL);
+> > > +     if (!ao)
+> > > +             return -ENOMEM;
+> > > +
+> > > +     spin_lock_init(&ao->lock);
+> > > +
+> > > +     snprintf(name, sizeof(name), "%s#div_en", dev_name(dev));
+> > > +     init.name = name;
+> > > +     init.ops = &clk_gate_ops;
+> > > +     init.flags = CLK_IGNORE_UNUSED;
+> > > +     init.parent_data = &(struct clk_parent_data) {
+> > > +             .index = -1,
+> > > +             .hw = __clk_get_hw(parent),
+> > > +     };
+> > > +     init.num_parents = 1;
+> > > +
+> > > +     ao->div_en.reg = master->regs + AML_AO_I3C_FCLK_DIV_CTRL;
+> > > +     ao->div_en.bit_idx = AML_AO_I3C_FCLK_DIV_EN_SHIFT;
+> > > +     ao->div_en.hw.init = &init;
+> > > +     ao->div_en.lock = &ao->lock;
+> > > +
+> > > +     ret = devm_clk_hw_register(dev, &ao->div_en.hw);
+> > > +     if (ret)
+> > > +             return dev_err_probe(dev, ret, "failed to register %s\n", name);
+> > > +
+> > > +     snprintf(name, sizeof(name), "%s#div", dev_name(dev));
+> > > +     init.name = name;
+> > > +     init.ops = &clk_divider_ops;
+> > > +     init.flags = 0;
+> > > +     init.parent_data = &(struct clk_parent_data) {
+> > > +             .index = -1,
+> > > +             .hw = &ao->div_en.hw,
+> > > +     };
+> > > +     init.num_parents = 1;
+> > > +
+> > > +     ao->div.reg = master->regs + AML_AO_I3C_FCLK_DIV_CTRL;
+> > > +     ao->div.shift = AML_AO_I3C_FCLK_DIV_SHIFT;
+> > > +     ao->div.width = AML_AO_I3C_FCLK_DIV_WIDTH;
+> > > +     ao->div.hw.init = &init;
+> > > +     ao->div.lock = &ao->lock;
+> > > +
+> > > +     ret = devm_clk_hw_register(dev, &ao->div.hw);
+> > > +     if (ret)
+> > > +             return dev_err_probe(dev, ret, "failed to register %s\n", name);
+> > > +
+> > > +     snprintf(name, sizeof(name), "%s#gate", dev_name(dev));
+> > > +     init.name = name;
+> > > +     init.ops = &clk_gate_ops;
+> > > +     init.flags = CLK_SET_RATE_PARENT | CLK_IGNORE_UNUSED;
+> > > +     init.parent_data = &(struct clk_parent_data) {
+> > > +             .index = -1,
+> > > +             .hw = &ao->div.hw,
+> > > +     };
+> > > +     init.num_parents = 1;
+> > > +
+> > > +     ao->gate.reg = master->regs + AML_AO_I3C_FCLK_DIV_CTRL;
+> > > +     ao->gate.bit_idx = AML_AO_I3C_FCLK_EN_SHIFT;
+> > > +     ao->gate.hw.init = &init;
+> > > +     ao->gate.lock = &ao->lock;
+> > > +
+> > > +     ret = devm_clk_hw_register(dev, &ao->gate.hw);
+> > > +     if (ret)
+> > > +             return dev_err_probe(dev, ret, "failed to register %s\n", name);
+> > > +
+> > > +     fclk = devm_clk_hw_get_clk(dev, &ao->gate.hw, NULL);
+> > > +     if (IS_ERR(fclk))
+> > > +             return dev_err_probe(dev, PTR_ERR(fclk),
+> > > +                                  "tail i3c fast clock failed\n");
+> > > +
+> > > +     new_clks = devm_kcalloc(dev, master->num_clks + 1, sizeof(*new_clks),
+> > > +                             GFP_KERNEL);
+> > > +     if (!new_clks)
+> > > +             return -ENOMEM;
+> > > +
+> > > +     memcpy(new_clks, master->clks,
+> > > +            master->num_clks * sizeof(*master->clks));
+> > > +     new_clks[master->num_clks].id = "fast_clk";
+> > > +     new_clks[master->num_clks].clk = fclk;
+> > > +     master->clks = new_clks;
+> > > +     master->num_clks++;
+> > > +
+> > > +     /*
+> > > +      * Keep the clk bulk state balanced for the following
+> > > +      * clk_bulk_disable_unprepare() calls (error paths and runtime PM).
+> > > +      */
+> > > +     ret = clk_prepare_enable(fclk);
+> > > +     if (ret)
+> > > +             return dev_err_probe(dev, ret, "can't enable fast_clk\n");
+> > > +
+> > > +     return 0;
+> > > +}
+> > > +
+> > > +/**
+> > > + * aml_i3c_init - Amlogic A9 specific init, called with the clocks enabled
+> > > + * @master: I3C master controller
+> > > + *
+> > > + * Register the AO variant's internal divider chain and round/set the fast
+> > > + * clock rate for both variants.
+> > > + *
+> > > + * Return: 0 on success, or a negative error code.
+> > > + */
+> > > +static int aml_i3c_init(struct svc_i3c_master *master)
+> > > +{
+> > > +     struct device *dev = master->dev;
+> > > +     struct clk *fclk;
+> > > +     long fin_freq;
+> > > +     int ret, i;
+> > > +
+> > > +     if (svc_has_quirk(master, AML_I3C_QUIRK_AO)) {
+> > > +             /*
+> > > +              * clk_bulk_get_all() preserves the DT order, and the
+> > > +              * binding restricts the AO variant to exactly one clock,
+> > > +              * which is always "pclk".  So clks[0] is the input of the
+> > > +              * internal divider chain.
+> > > +              */
+> > > +             if (strcmp(master->clks[0].id, "pclk"))
+> > > +                     return dev_err_probe(dev, -EINVAL,
+> > > +                                          "invalid AO input clock\n");
+> > > +
+> > > +             ret = aml_ao_i3c_tail_clocks(master, master->clks[0].clk);
+> > > +             if (ret)
+> > > +                     return ret;
+> > > +     }
+> > > +
+> > > +     for (i = 0; i < master->num_clks; i++) {
+> > > +             if (!strcmp(master->clks[i].id, "fast_clk"))
+> > > +                     break;
+> > > +     }
+> > > +
+> > > +     if (i == master->num_clks)
+> > > +             return dev_err_probe(dev, -EINVAL,
+> > > +                                  "can't get I3C fast clock\n");
+> > > +
+> > > +     fclk = master->clks[i].clk;
+> > > +     if (IS_ERR(fclk))
+> > > +             return PTR_ERR(fclk);
+> > > +
+> > > +     fin_freq = clk_round_rate(fclk, AML_I3C_FAST_CLK_RATE);
+> > > +     if (fin_freq <= 0)
+> > > +             return dev_err_probe(dev, fin_freq ? fin_freq : -EINVAL,
+> > > +                                  "invalid fast_clk\n");
+> > > +
+> > > +     ret = clk_set_rate(fclk, fin_freq);
+> > > +     if (ret)
+> > > +             return dev_err_probe(dev, ret, "setting fast_clk rate failed\n");
+> > > +
+> > > +     return 0;
+> > > +}
+> > > +
+> > > +static const struct svc_i3c_drvdata aml_a9_drvdata = {
+> > > +     .quirks = AML_A9_I3C_QUIRKS,
+> > > +     .vendor_init = aml_i3c_init,
+> > > +};
+> > > +
+> > > +static const struct svc_i3c_drvdata aml_a9_ao_drvdata = {
+> > > +     .quirks = AML_A9_I3C_QUIRKS | AML_I3C_QUIRK_AO,
+> > > +     .vendor_init = aml_i3c_init,
+> > > +};
+> > > +
+> > >   static const struct of_device_id svc_i3c_master_of_match_tbl[] = {
+> > >        { .compatible = "nuvoton,npcm845-i3c", .data = &npcm845_drvdata },
+> > >        { .compatible = "silvaco,i3c-master-v1", .data = &svc_default_drvdata },
+> > > +     { .compatible = "amlogic,a9-i3c", .data = &aml_a9_drvdata },
+> > > +     { .compatible = "amlogic,a9-ao-i3c", .data = &aml_a9_ao_drvdata },
+> > >        { /* sentinel */ },
+> > >   };
+> > >   MODULE_DEVICE_TABLE(of, svc_i3c_master_of_match_tbl);
+> > >
+> > > --
+> > > 2.42.0
+> > >
+>
