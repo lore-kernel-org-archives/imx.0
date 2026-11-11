@@ -1,57 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794389671;
-	b=QGZ7Zw6FfNSCNk+QDaNaMvb9Z6CDodckVxa4zgBpzEWU/1DNx0W02voLRuAr2yOYMiCB
-	 xoPsNblkUf4ReW044Vgxj75fYDSkLAO7QoNdWQ8OQLyf03VSkw29HOoOsGxl/KWDVBnoS
-	 jd6Ff86nfJeTvj2TW2L/B9TxUchmGiUnJPxk//8FiPrLdZoSzzvPKxwiuFmU2B/4lF99O
-	 WBTHcxDvjuo5hy9zE4SsTovYQ9mHEmcU1B3WwvlORB/V+xIhuBhM9XrqI5jR8JOwzYhlQ
-	 /rUMDaJntq11rta0M97Vd/NFdPf9BcXtMDwcfrzWEexAnlQsU8nnwcYvVUvecHCFg0g==
+	t=1794389925;
+	b=yQpZ6njmdsnZ01gtqwjEjvo4OIlxDo6hre7oKCHnzsahQt9BsqlBmv7fBS0aacyQr08n
+	 zaGactsVmYnrx8kwaMdWtJ0kPkJDUQci/MK86MJHLC5v7etMgaWL3vTWEikK+NNJzESGl
+	 X8izxl1WpoFliZ/Sj4sne/1u6CWs20IHJj5M70Qb58RPDB3mcNrSSJwqU98+cPkxDO7At
+	 rzjTf2o03dNvRwPSdJINIyhEypsCPi94BP/pV9CSIzowXCcI1W7nJV0j4DIDnK/kTm1/F
+	 W4oDrztaAa36ALyfQX2R+XmV1vjT+4WS3lq/Lqr+kuK1sDaP7sdzZzO+Rxs+ZhKl4WA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794389671;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794389925;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=QuiDQeSR9u6ftynF8Z5U/T47obifglQ4Sq5IlfMSK+A=;
-	b=2g3BbCecljhp4AVftSD180wxcagMsLgBBe4iEkNmOvQPOwM0+0aEEoRWJtrG4bZNvwXs
-	 KMf7w1WGiYuUGrmnQsIN1MQA2AVBsRjFGRO1dlyP9IcMVL2eU+beVfUlM+ovPDw3EGLkQ
-	 OXRc5ZWpJAFl6oDAUaA5EEZe5tuQ4pUxbhnijlWURhoOBJbaJWlRLktyLVsFr4Bf94Krc
-	 6EefmFsHdN1ZOuwbOWvKXhkdsLVHAjMid1sFJmGe12d+CaFuWcnkHmmIavMClsDOUcd7R
-	 WZRv7ohU4So14EZITP2vzo+bNEQ486ZIK38pXTsyu2fBRMB+MLzxuHRNLHovdc1P79Q==
+	bh=evTFQd8KFFfK85qF/XVx3wpXRyON7mQEeVEtW4PbUkQ=;
+	b=bAIi2pmVokmAgeE982MpHaqdk2rEcu2FblcMDlDIkpdIZsELrezc7s/3uy/Fnc2RXE0y
+	 gBAi8//8qLjCNAoIZsRQ52wCOnVvA6s9DiDUxDxDOM3ZkL2DmCwi+EWifcr42cXSY1Nvp
+	 QBeuSuSBeIKHGWd72IkYXoghowjbNA3QAvHIh/um0yjU5jVuVdy7rSom/bHrQG+GeIecf
+	 di6046TwUqsyzRpdBL9VexvKWGVOF3GdjIksSkLV0ZZlKpPWsyf7vEq0dBDB6EQz3mEJP
+	 S44PKJZHli7ccGWNcHfxupAbAyEszkQx0w2mfITzUkSoZsKOZ8K2+CG/H6CjASMBJnw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="U+5/Uy+V";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FPHTJbxD;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D80F6606A32E;
-	Wed, 11 Nov 2026 09:34:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C52E60A2604;
+	Wed, 11 Nov 2026 09:38:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=U+5/Uy+V
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6D5E1F00A05;
-	Wed, 11 Nov 2026 09:34:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FPHTJbxD
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4B221F00A05;
+	Wed, 11 Nov 2026 09:38:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794389671;
-	bh=QuiDQeSR9u6ftynF8Z5U/T47obifglQ4Sq5IlfMSK+A=;
+	s=k20260515; t=1794389925;
+	bh=evTFQd8KFFfK85qF/XVx3wpXRyON7mQEeVEtW4PbUkQ=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=U+5/Uy+VZnqRt/j/Qa8ceKPIbexYaIDmjXZ9qYWtGrUaTm7V+MpCOIWiIhVlDb2Fj
-	 INCSNCIH+VpsT5j3GDLjCv0GKKdlvVo926zrv0EtVtq1nXH829mom1Y/7wwISS6E3w
-	 mOTGEU8Fxx9pwJaNNdrJNhfAHjADY+i7yKUccnPQYASyBV/h6IKq4A7k1ihzBVaPr2
-	 bYncOxQKElByqrw/YIlWbwvWXTincnnn9rjO2Pl914Msro00ly5QBF9TvQP9yNrAZ6
-	 35N4b8ebseHEZK5q/QEPw/zcwyvA/Ry66USIV7v3w4tFCAmCZiSY2pl5SsVIhGLSB2
-	 +cCf0qYAPy6TA==
-Message-ID: <sashiko-outbox-208704@kernel.org>
+	b=FPHTJbxD90J8ufz1Ax/ppdE1PrjUP7n8fcruVO/+RR7PvOwEjjVmUOtTlYsWgCKib
+	 5hwRA3j157G9w06xYd4auHKCVZSQmwPRacJ8jjGL3bM7V0BleGKxDBTtdwOSibMIpR
+	 g0wewuUvKL8TOohrM0IyHHriKliF9vve3HT9lR2dvrxCCc3zSGziItaa934EcbXm7q
+	 Ccno+ERhGcLV7XlOjII7gtq90PZucYpyI5eYe5Iv/Yl8zeATXXED+sTZKiRLypzQ48
+	 aN8FInxoGvKdQb3Gm7h1q5h58oiiW9/eh/4alD0Z+UukpNyxLZLThRNlXZCpa/m3/n
+	 TZRIkphodVV9Q==
+Message-ID: <sashiko-outbox-208708@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 4/8] ARM: dts: imx6ulz: Pull down BSH SMM-M2
- active-high WLAN IRQ
+Subject: Re: [PATCH v3 2/8] ARM: dts: imx: Use minimum NAND ECC strength on
+ BSH boards
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Haoning Cheng" <Haoning.CHENG@cn.bosch.com>
 Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20261111-add-bsh-smm-m2-v3-4-4abdf10e9a7f@cn.bosch.com>
+In-Reply-To: <20261111-add-bsh-smm-m2-v3-2-4abdf10e9a7f@cn.bosch.com>
 References: <20261111-add-bsh-smm-m2-v3-0-4abdf10e9a7f@cn.bosch.com>
- <20261111-add-bsh-smm-m2-v3-4-4abdf10e9a7f@cn.bosch.com>
+ <20261111-add-bsh-smm-m2-v3-2-4abdf10e9a7f@cn.bosch.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 11 Nov 2026 09:34:30 +0000
+Date: Wed, 11 Nov 2026 09:38:44 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -61,54 +61,65 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issues to consider:
-- [Low] ARM: dts: imx6ulz: unexplained removal of cap-sdio-irq from
-  usdhc2
-- [Low] ARM: dts: imx6ulz: missing Fixes trailer for WLAN IRQ pull-down
-  fix
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Medium] ARM: dts: imx: unjustified incompatible NAND ECC layout
+  change on BSH boards
 --
 
-commit 61c3fd2805764ab0c52e0d5e388368c4a4afb1cd
-Author: Roman Smr=C5=BE <roman@amarulasolutions.com>
+commit 1e6153dffd8fb43d1ff6ef7ef9b632628cf01234
+Author: Michael Trimarchi <michael@amarulasolutions.com>
 
-> ARM: dts: imx6ulz: Pull down BSH SMM-M2 active-high WLAN IRQ
->
-> The pin is active when high, so pull-up configuration can trigger
-> unwanted interrupts during module loading or unloading. Change the
-> configuration to pull-down to avoid crashes there.
->
-> Signed-off-by: Roman Smr=C5=BE <roman@amarulasolutions.com>
-> Signed-off-by: Haoning Cheng <Haoning.CHENG@cn.bosch.com>
+ARM: dts: imx: Use minimum NAND ECC strength on BSH boards
 
-[Severity: Low]
-This fixes the pull-up configuration on the active-high WLAN IRQ pin.  Shou=
-ld
-this include a Fixes tag?
-
-  Fixes: eb197dfe389a ("ARM: dts: imx6ulz-bsh-smm-m2: Add BSH SMM-M2 IMX6UL=
-Z SystemMaster")
+This commit enables the fsl,use-minimum-ecc property on the GPMI NAND
+controllers for the BSH SMM-M2 and SMM-S2 boards.
 
 > diff --git a/arch/arm/boot/dts/nxp/imx/imx6ulz-bsh-smm-m2.dts b/arch/arm/=
 boot/dts/nxp/imx/imx6ulz-bsh-smm-m2.dts
-> index dabe17222f139..91c76909c0867 100644
+> index 2d9f495660c9a..aac211a9f9ebd 100644
 > --- a/arch/arm/boot/dts/nxp/imx/imx6ulz-bsh-smm-m2.dts
 > +++ b/arch/arm/boot/dts/nxp/imx/imx6ulz-bsh-smm-m2.dts
-> @@ -81,7 +81,6 @@ &usdhc2 {
->  	non-removable;
->  	cap-power-off-card;
->  	keep-power-in-suspend;
-> -	cap-sdio-irq;
->  	mmc-pwrseq =3D <&usdhc2_pwrseq>;
+> @@ -26,6 +26,7 @@ &gpmi {
+>  	pinctrl-names =3D "default";
+>  	pinctrl-0 =3D <&pinctrl_gpmi_nand>;
+>  	nand-on-flash-bbt;
+> +	fsl,use-minimum-ecc;
 >  	status =3D "okay";
+>  };
+> =20
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2.dts b/arch/a=
+rm64/boot/dts/freescale/imx8mn-bsh-smm-s2.dts
+> index 11a1ba5bfdb7e..df11f81ac50c1 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2.dts
+> +++ b/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2.dts
+> @@ -21,6 +21,7 @@ memory@40000000 {
+>  &gpmi {
+>  	pinctrl-names =3D "default";
+>  	pinctrl-0 =3D <&pinctrl_gpmi_nand>;
+> +	fsl,use-minimum-ecc;
+>  	status =3D "okay";
+>  };
 
-[Severity: Low]
-Why is cap-sdio-irq removed from usdhc2 here?  The commit message only
-describes changing the MX6UL_PAD_UART1_CTS_B__GPIO1_IO18 pad configuration,
-and sdhci_setup_host() sets MMC_CAP_SDIO_IRQ unconditionally regardless of
-this property.  If dropping the redundant property is intentional, could it
-be mentioned in the commit message or split into a separate commit?
+[Severity: Medium]
+Does adding fsl,use-minimum-ecc to these existing boards break
+compatibility with NAND flash already formatted using the mainline device
+trees?
+
+In common_nfc_set_geometry(), enabling fsl,use-minimum-ecc switches the
+controller from legacy_set_geometry(), which maximizes ECC strength across
+the OOB area, to set_geometry_by_ecc_info() using the chip's minimum ECC
+requirements.  Because the GPMI BCH layout interleaves data and ECC parity
+bits across the page and derives the bad-block marker offsets from the ECC
+strength, this changes the physical on-flash layout and makes existing
+NAND partitions, UBI volumes, and on-flash bad block tables unreadable
+with -EBADMSG.
+
+If this change is intentional (for example, to match the ECC geometry used
+by the bootloader and flashing tools), could the commit message explain why
+the incompatible layout change is needed and how existing devices are
+affected?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261111-add-bsh-sm=
-m-m2-v3-0-4abdf10e9a7f@cn.bosch.com?part=3D4
+m-m2-v3-0-4abdf10e9a7f@cn.bosch.com?part=3D2
