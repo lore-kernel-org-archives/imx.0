@@ -1,56 +1,80 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=188.40.3.216
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794391587;
-	b=cUdvIjpNd6HTdgnaoiylZtAj8PD7heJ2i1LBG1yWrdTA6q7yUqgniRdV7u1/uxpLWF82
-	 7U/wnt3mBA4HHGZjEF8GEJ04YDdSiGBgjqE6nsSZ+QInUPzbCrdjKeEQEddhLDVzYmszs
-	 SDrvZd1+HsmxShArUkyhXYXprNYOyUcN6siEopTpclZ0XPEcm7WpfnrvM8h+wpubzl/Fa
-	 zVXI29RKkCrzvvfBEH3B7NiYXhR1mR6kdeD6iVPaGqUMOPJ7wqMdVB5gX5jxnX8m/wQw4
-	 jSgEIaZvHzxxPnk9WJFlU3mrb9wtcI4HL12LQp5HCGfHUVJ1yBBPF0Xblf3KCghNADg==
+	t=1794392384;
+	b=bN+ZPYgLhdsYOYKkq6pxbxVDcMY9zwu68YaUwElCyMcHxTZDu0LiHz+fZGdYeesTXQ99
+	 dZthICG677Q1Z/XVrrWbgCYNNB8+2lMXfZcCQEJvmgLfKK5aeyKyvPNQ1lLUe5P4xp4wO
+	 p0e7wB9s7w8xpGfCe66iKSLkRcNm3jrePrs15k8hisDiYuIqYEZ/YnwO43jXd5rhbbb+X
+	 wgYGMGtEWHNDVcfkHPlJadd0VuqWTY85qMIXFaPb+feqzg2993eZrj3p2La9wO9lJbm42
+	 ajukXIfcbIzgidon3XL4idLKKEo7VVqtp/rRL3zkk5wPJ/1cDkK/tMNzS9+lYEmv58w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794391587;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=1bDE7KDLu9jfAIQ9ef1xfs+m4nkgfIs7mnLLTujVMDI=;
-	b=lNN55LSH8PDLUq3mDQWpWPf462zA3pyEZDh94BiVTZEnDvKcRYU9fgaWbngM25ON20gK
-	 zFdEd3Jl1snK4FzHBQwkLo2zphbxJRowq2yeVhLW07OhcjCAzHTN9YaQxmJLio/kyBhNx
-	 soHRWy6wi4IY2fO37t/0vpY/KzImnIa0wKwTHrHlagaFkbr9lPg6VqSgdlTW/eRvawQEf
-	 atcX44xvjVApXNOLucM2JzhsKwCdUutpVjEZYkcFDcn3kken1IEALjlpvDxiAv08sixH0
-	 P8L6JH1TKqCNY1xVdp3eiN0UKip7JNBhA5np0uMcUb7b8CThi5mtOIxDjk9rb+IWvnQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794392384;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 X-Virus-Scanned;
+	bh=EuUZibU4Qx/Wwp5/9mignjaQTr9n5qcc+mnxg/CvI1M=;
+	b=lR3V5fjftp7p+Eg0zGRFYtJiIdb1W8OdY+MbpwQeyMYHogbESWas6ePY4K4giyaItw/b
+	 Px+6PU0kF2OzBNH/GlWUMZEgVkpyUw/fQaHSx/k5PCV+aClYKqUr3w5Yf7PsWBrhPBdDm
+	 yazPsw9R0WQ/MgCbNduZE24dwPrfHIvPUI0ulWtQxTGXOpnFD/spcwfznsJyOYURW3i9W
+	 8e11igUtCsdkic+9f9aOfLzOtc3T/4kOdQLfoccgCZKxSYm0DSr75KlnzeCfB1AxJLW6L
+	 yQg81kPlsgaM90Xe0qXPRe68qgU+glpVZ68pNzHzKm8U/RwX0PbdE6md//r4VUuFAqA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=frRWwhb2;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=ew.tq-group.com;
+	spf=pass smtp.mailfrom=ew.tq-group.com;
+	dkim=pass header.d=ew.tq-group.com header.i=@ew.tq-group.com header.a=rsa-sha256 header.s=default2602 header.b=CmpKbOGK;
+	arc=none smtp.remote-ip=188.40.3.216
+Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13C85606A321;
-	Wed, 11 Nov 2026 10:06:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F87C606A31C;
+	Wed, 11 Nov 2026 10:19:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5F87C606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=frRWwhb2
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58CCD1F00A05;
-	Wed, 11 Nov 2026 10:06:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794391586;
-	bh=1bDE7KDLu9jfAIQ9ef1xfs+m4nkgfIs7mnLLTujVMDI=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=frRWwhb2okTWpsgMzXcqSRKioSW871L2+LtLOIV9EDx0uYOz4job3FKbjYkkl23zN
-	 XLOgjiCpP07jReEH49a/O+1XZ5l7j9H5St3/11bNjQM5dZ9Pw9PZeL1NVJJEv+SePz
-	 Mmxiz2rIFtxePV2t3WfwCjvGJNjfEQAosBdcXU2pueMKRzoa7z0Q8my3P8yhdPRs0B
-	 YH7CUjJp543SroMtXZQo4w+7CWbU/2oWdfA5LLv2WhaNL3jo3GNaRE80203I7GXzT8
-	 NKTMMrx6BP3tFB0SBxu/khE1DYVA+cyeHwiHM0C9Z1K8mCHzwP3yKlLF88+KTRtEW4
-	 zUkejNcKKYRQA==
-Message-ID: <sashiko-outbox-208746@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] tty: serial: lpuart: Add port lock for registers read
- in lpuart32_set_termios()
-Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?U2hlcnJ5IFN1biAoT1NTKQ==?= <sherry.sun@oss.nxp.com>
-Cc: linux-serial@vger.kernel.org, imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20261111-lpuart_port_lock-v1-1-5d332c51edfe@nxp.com>
-References: <20261111-lpuart_port_lock-v1-1-5d332c51edfe@nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 11 Nov 2026 10:06:25 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.a=rsa-sha256 header.s=default2602 header.b=CmpKbOGK
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=ew.tq-group.com; s=default2602; h=Content-Transfer-Encoding:MIME-Version:
+	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References;
+	bh=EuUZibU4Qx/Wwp5/9mignjaQTr9n5qcc+mnxg/CvI1M=; b=CmpKbOGKH2DJbjdrQmybWLc9sN
+	99KGYDnMN9YDlZJXhGdLqySpk470lrbQ84q7Tuw7y5U9bpqAjG8rx0n7FAJ4DgH+9xRnmMtdavx5J
+	RjeTogd0n7jw8BRbbhsYwk0McPM+jC+Jzy0/RrEmjIJYKsRmBvO57oF15Hxjw4J8s4y+OSKCFNlXJ
+	MizBCnlcWWQ7lvx63ZWkzWLRQ5EWiLbGjdfS2NH66VQe/1ATqQkQDKLI0O8mTK+N8nD0+P7TL6fqM
+	t+BrMqq3JMAxGIg3rLuGO3qErIEz7XibnFagMviPLt+Kn/zS9RN/6Wz8Jxb66aQrcnrYLa0znZD8z
+	b2/G35Uw==;
+Received: from sslproxy02.your-server.de ([78.47.166.47])
+	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <alexander.stein@ew.tq-group.com>)
+	id 1xR5Qb-0006eu-2o;
+	Wed, 11 Nov 2026 11:19:41 +0100
+Received: from localhost ([127.0.0.1])
+	by sslproxy02.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <alexander.stein@ew.tq-group.com>)
+	id 1xR5Qb-000NjR-0I;
+	Wed, 11 Nov 2026 11:19:41 +0100
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: Markus Niebel <Markus.Niebel@ew.tq-group.com>,
+	linux@ew.tq-group.com,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Alexander Stein <alexander.stein@ew.tq-group.com>
+Subject: [PATCH 1/2] ARM: dts: imx6ul-tqma6ulx-common: add vref-supply for ADC
+Date: Wed, 11 Nov 2026 11:19:23 +0100
+Message-ID: <20261111101934.1216887-1-alexander.stein@ew.tq-group.com>
+X-Mailer: git-send-email 2.55.0
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -59,82 +83,37 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: Clear (ClamAV 1.4.6/28180/Wed Nov 11 07:24:27 2026)
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Medium] tty: serial: lpuart: split port->lock race in
-  lpuart32_set_termios()
---
+From: Markus Niebel <Markus.Niebel@ew.tq-group.com>
 
-commit c6586e620953933a073532d069075858d2abff60
-Author: Sherry Sun <sherry.sun@nxp.com>
+On MBa6ULx no ADC channel is available as the pads are muxed to different
+functions. Provide the correct reference voltage in case ADC is used on
+a different mainboard.
 
-tty: serial: lpuart: Add port lock for registers read in lpuart32_set_termi=
-os()
+Signed-off-by: Markus Niebel <Markus.Niebel@ew.tq-group.com>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+---
+ arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ulx-common.dtsi | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-This commit wraps the initial register reads of UARTCTRL, UARTBAUD, and
-UARTMODIR in lpuart32_set_termios() with uart_port_lock_irqsave() to avoid
-reading a stale UARTCTRL value while lpuart32_console_write() temporarily
-clears RIE.
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ulx-common.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ulx-common.dtsi
+index 5c90d0a3ee2e7..1cb1791f64a45 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ulx-common.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ulx-common.dtsi
+@@ -10,6 +10,10 @@
+  * - TQMa6ULLx
+  */
+ 
++&adc1 {
++	vref-supply = <&reg_sw2>;
++};
++
+ &m24c64_50 {
+ 	vcc-supply = <&reg_sw2>;
+ };
+-- 
+2.55.0
 
-> diff --git a/drivers/tty/serial/fsl_lpuart.c b/drivers/tty/serial/fsl_lpu=
-art.c
-> index cd2575a3aef74..7c249b9371ae8 100644
-> --- a/drivers/tty/serial/fsl_lpuart.c
-> +++ b/drivers/tty/serial/fsl_lpuart.c
-> @@ -2241,9 +2241,11 @@ lpuart32_set_termios(struct uart_port *port, struc=
-t ktermios *termios,
->  	unsigned int  baud;
->  	unsigned int old_csize =3D old ? old->c_cflag & CSIZE : CS8;
-> =20
-> +	uart_port_lock_irqsave(port, &flags);
->  	ctrl =3D old_ctrl =3D lpuart32_read(port, UARTCTRL);
->  	bd =3D lpuart32_read(port, UARTBAUD);
->  	modem =3D lpuart32_read(port, UARTMODIR);
-> +	uart_port_unlock_irqrestore(port, flags);
->  	sport->is_cs7 =3D false;
->  	/*
->  	 * only support CS8 and CS7
-
-[Severity: Medium]
-Does releasing port->lock right after reading UARTCTRL, UARTBAUD, and
-UARTMODIR still leave a window where ctrl and old_ctrl become stale before
-they are written back to hardware?
-
-CPU0                                  CPU1
-lpuart32_set_termios()
-  uart_port_lock_irqsave()
-  ctrl =3D old_ctrl =3D
-    lpuart32_read(UARTCTRL)
-    (UARTCTRL_TIE is 0)
-  uart_port_unlock_irqrestore()
-                                      uart_write()
-                                        lpuart32_start_tx()
-                                          uart_port_lock_irqsave()
-                                          lpuart32_write(ctrl | UARTCTRL_TI=
-E,
-                                                         UARTCTRL)
-                                          uart_port_unlock_irqrestore()
-  uart_get_baud_rate()
-  lpuart_dma_rx_free()
-  uart_port_lock_irqsave()
-  ...
-  lpuart32_write(ctrl, UARTCTRL)  <-- clears UARTCTRL_TIE, stalling TX
-
-Callers such as lpuart32_start_tx(), lpuart32_stop_tx(),
-lpuart32_stop_rx(), and lpuart32_set_mctrl() update UARTCTRL under
-port->lock without holding tty_port->mutex.  Any modification made during
-the unlocked window is overwritten when lpuart32_set_termios() re-acquires
-port->lock and writes old_ctrl and ctrl back to UARTCTRL.  Clearing
-sport->is_cs7 outside port->lock also races with lpuart32_rxint() and
-lpuart_copy_rx_to_tty().
-
-Since neither uart_get_baud_rate() nor lpuart_dma_rx_free() uses ctrl,
-old_ctrl, bd, or modem, the register reads and bit manipulations could be
-moved into the existing uart_port_lock_irqsave() critical section after
-lpuart_dma_rx_free() so the read-modify-write stays under a single lock
-acquisition.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261111-lpuart_por=
-t_lock-v1-1-5d332c51edfe@nxp.com?part=3D1
