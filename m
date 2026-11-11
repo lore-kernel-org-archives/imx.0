@@ -1,132 +1,129 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=103.168.172.145
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794354388;
-	b=Iefh/c50F/mA1+Wq9m42c12W/2rSJef29GSPJA+2ADFkf6LXtDZUPLtUtAX2HgUdrfgu
-	 RM1sQt3CrDRtvDTJWopFKLjxY9C0dR2ECNgMK1xjjbBYEqW+zKJn7CP6x5HqXT5eK/Bqv
-	 02sb4GtHQSnaTykL6GUBLqRRbDdKbrg/Ob6OLXom+gzRrsnovw27Z58mgyA3U+7DhKzBE
-	 v8Og8FGoble/5/yx95K11uAwg71pYIgdk1WYsjOvKIUD6ISeCkQLu0WybLmGLniVbbQuV
-	 fPUEuRpXCZRTEzBsCOf3QnZGybkCbAFlOOpdp8iNkm1ugK/2eIy3bfAbsTBne5wSaYQ==
+	t=1794359611;
+	b=Csb11CpuTncsW+6K+pba9pE+S7MSa5S+UOE8VbNkfwWscgZtp1nTNZxE2Ny3dTXG3vnP
+	 W+Jo0Hpsp59cPisxecOKfVcL/nvjZ0TsoqAN9tEnCtbNIYzBsyqHNC9kWbxIcrnDp2E1s
+	 7Sz3/qViVGAjMEzGxRS2pGdUYxt7qOPLgUNFWs7uSFZFbwOJsx3f3Ca1kymKZXJilg+9r
+	 bn2xZNETo5FPcM2abavCmLq5luTCr+k28Afj6GMIQtOHJt2Dpm0ucTbUuCwfGjn/7H94V
+	 w7VC9upkGTZh1mHTNaPdjOApmvfqV2iWAoTjZDFL0uXqppzEC5Cp8vSJzaDWCFZLUbw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794354388;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
-	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
-	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
-	 Received:Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:Content-Transfer-Encoding:User-Agent:MIME-Version;
-	bh=ZY2me7IpVMu0VOVk6MnkcMVwheYkAPTnm5Mdg+hRDNQ=;
-	b=Z0GqeMAEl6tqNDj5bKYcaXZkIMZErig2Y33ADr6UIIu0AaUqvJLZ4WZx9SzLxiP8srW3
-	 +HpQIPVFZxFdFGoJJt0h1u/3fPZysiMQ9vk5eqP+O/3JoCIlToLp04dSRPCPD1GmKWbDn
-	 /GShOdbqxDo3f12STVV76qnxIm5B2z6N2VTtYEMfYEBCdMibUT/JVCqQL7YJCaIEXr+Zw
-	 0GKtJRqciY6ybuSFL9C9j0aIiwcv2rePSiAjF5W//fwABQvhOSk4RyDhZMaRtRer7Tz+Z
-	 dIsWuK6b4eTIdFwcVyYezmDPLfI6/UaIY8v+XbJFmwcW6TaX85VceNrOGDbof1kFGEw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794359611;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=eAy59HGc3h2qnYXka7qm4BQesIQWi6V+JejjBFhpSZ0=;
+	b=hpjpBqNkbIrZ9oPlwjxeykpnKVPfiQErtoqXGrJ0bikaV9xlN5WTriYJrPw+fm+fKXH7
+	 tV8/3NvMLTDuDu/fL9Pw6F/YXkI3KDY+wvW/2Gsd0lC6kOmOMDqVgFK2SD67DxvUIVikN
+	 Az608cxzkb3rsCADdgLS9dvanR2TY6zyb31OtKHLKjQ7wYT/gquC7xFe9oU90adiaO44u
+	 4Li9P6eVCC3tBBglOuhX4etCidTtM0i5YYad9ZRhst2DQeOgdC7mDaAL0/Pbn9TuF29CC
+	 5+ZmXvZcTasisfucq+FEXktctTEBhWbEp4DZ+mIITMSqkUzFHldbeva5CPepp+0DCeg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=alistair23.me;
-	spf=pass smtp.mailfrom=alistair23.me;
-	dkim=pass header.d=alistair23.me header.i=@alistair23.me header.a=rsa-sha256 header.s=fm3 header.b=jk640Ehh;
-	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=lmtr+bbr;
-	arc=none smtp.remote-ip=103.168.172.145
-Received: from fout-a2-smtp.messagingengine.com (fout-a2-smtp.messagingengine.com [103.168.172.145])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Lu0OyRGM;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9C57606A321
-	for <imx@lists.linux.dev>; Tue, 10 Nov 2026 23:46:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C9C57606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alistair23.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alistair23.me
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 300E3606A320;
+	Wed, 11 Nov 2026 01:13:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=alistair23.me header.i=@alistair23.me header.a=rsa-sha256 header.s=fm3 header.b=jk640Ehh;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=lmtr+bbr
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfout.phl.internal (Postfix) with ESMTP id 053AEEC0606
-	for <imx@lists.linux.dev>; Tue, 10 Nov 2026 18:46:27 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Tue, 10 Nov 2026 18:46:27 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alistair23.me;
-	 h=cc:cc:content-transfer-encoding:content-type:content-type
-	:date:date:from:from:in-reply-to:in-reply-to:message-id
-	:mime-version:references:reply-to:subject:subject:to:to; s=fm3;
-	 t=1794354386; x=1794440786; bh=ZY2me7IpVMu0VOVk6MnkcMVwheYkAPTn
-	m5Mdg+hRDNQ=; b=jk640EhhOn6BUw/7ufZbyLIKl6+VvvxX52wTBFwV2tHnxDPJ
-	bNjdVbvtOEkejoZAfb7xi9PWHFexZeWIJOJ/QnTNDNPEuEMRX7yGMADwJogI1mdk
-	xPUFBu79/DGXK5HbdL3oCSttToR7SXAYPNiE0i/YVVQZV0L8qK8UXy8U9cX+pmhZ
-	+BFMnEaXY6/sxzsDVHl2+PruEwM+XRofoehZUCi4NVYDf9vAYtV6bxWlvNekKXPM
-	HnoHSvOkxCwjvjESST/WHw6sDETdpjqpJ9Bt2225H5QhG5yWfX1PbSjpIcN8dlNG
-	JrjBxvzgd9s7ubsxalnAXAqLQw/Apr+rHmy7xw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1794354386; x=
-	1794440786; bh=ZY2me7IpVMu0VOVk6MnkcMVwheYkAPTnm5Mdg+hRDNQ=; b=l
-	mtr+bbrpddw2sjZ2iDC0zd5tCSck1Bj/s+Lqf4Fojga18upa4H1K51jfqWcofpZJ
-	4ZDXsZFnE8Aq3GtOkOlPXQ2dzlkGZK/WnqugBQtyL8VZfaj4/ZOEegRIhPUoMGKD
-	EdLsAi/y3CQh8yu+DwsjX78uhxkSlYnZoxbWwgRi6pNIyAWOXL6lLCgo8WmUfwtA
-	UcOHEwZ/e9Bix4g2axl1S4NSLxN93ZWb59/CXKC1IBnA9iKTvfap0zlaxe8u8CWe
-	Ws+WBC/9nVg1CGEdCusyb9JNWrjZDaLZekT8i8/T8vDGV/ZwyjbwSxwt0iNggyzH
-	sqMHrChKxIWZHgSJobJrw==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=sign d=alistair23.me a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1794354386; d=alistair23.me;
-	mf=PGFsaXN0YWlyQGFsaXN0YWlyMjMubWU+;
-	rt=PGlteEBsaXN0cy5saW51eC5kZXY+;
-	s=fm3:rsa-sha256:GG5hfQLfLgEahVM5aTXXcYSnS5iVItb1DwMpmwi/wNeW12Q
-	/+FwZp4aUzmFrkcDdLV1Jlfq9TY/m2gYZewhb2b1d3z0aSw/qLFHraa3+V/SxZDQ
-	fVhsqHl6LSqSyEBAVw7U/3FxXE4enC+I2cIoJuF71tEVAjNR0R/AODuWdn2FYoUW
-	k89KtLMFtOBAWiQ280kXQzH5+RncyMfzC44ibK9wCb0ntOiTG/05ffqCRhDqVTRl
-	w0JPUmthPSJ3FgtwqnnvdwfHJY99PHxCn4f/1XZaY/1/8quhdqNarIMYOTGYem6L
-	yac/rM7Ub0tzFmBxxyfCCbrggV/lajiF9eI8tiA==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=mi-m=1; hc=13;
-	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,subject,to,
-	user-agent;
-Message-Instance: m=1; h=sha256:yPP5o9W0fBO30YwgA0F0JjRPXXCnTS3aB7uDWJvLydc=:ZY2me7IpVMu0VOVk6MnkcMVwheYkAPTnm5Mdg+hRDNQ=;
-X-ME-Sender: <xms:0qzzany6GxsHyC930g5fQYTXx6oCA4a5h0Dum7peRLAuV6Fedkz7Nw>
-    <xme:0qzzai_Cb4QMph3LXJZZbkaGXLpvbPqAXTuWvp2itaVFmU2n9sj2K5g0LlLbOCll1
-    2sjY5qCDxtsJb8xuUYWiIzXviKn1U42HOON4Bd-RTitlJCbQs0RaCgn>
-X-ME-Received: <xmr:0qzzap8111gQl_AuhacNRNykSqYf0T_pFG3yfCvixwaip9WDTvfzYuBbRhZpEN7H5Pj_Hrzw23ubLg0_WB-9>
-X-ME-Proxy-Cause: dmFkZTFACASdWw7/TKSrRhU+vyKUHE0wTEU3blEN/5RhWbn//aiGCLx0Kh/k1ulJ16CuUP
-    BP7EUxRg6kSnNbfU5v5KvMCMgqcluKMm4CjhYo9/fEjoK2BFQF5MxCs9vc+iN1MO22b7q+
-    bB3PfYt2kw4PrOXofzg/daiwrlA/mp7bW55wVQOkLCDq8CGP5opoSKyWvf7frRKr9thQ99
-    BT8/0CdteNiFz9UXzRZykaMdmPRKFUbz7XTgfNgfLwd0dVyIa/tuuZLLWg56SG2F6bybjC
-    Q8khudhNY/zpwo2IqJGXsMxvfUC5+UlbtCloBxmC+NPg1nyQFJyLU2LeEt3vjriLcejZex
-    50zvu8TF+2g94bAFCE3c10QTaic7zl6nr3XFCdw0jAvN7RbFTSxBB2kXL+VHCPGhWnWPWR
-    G9ciABlafCkL73l+02Q4m0vyGrgSTPxcbOvA0Sq5pO1MimoYWtyMFtLIT1ZUr/S6eb0WYc
-    RTy5ME/aD1zERn3xbdgWou2uP4nhboM4LKsE1oj7lFRzD2kNeDoLtO3xYY6xNMmEWdkJXz
-    99uZ08R4SI+a211Yl6GnKTpUZUYxroERVEOMbU+HbqRG/6rJ7EskLCTW3iIOTgCnwOTXHr
-    gNZ88nTCxaTztaBW1H0MLyJiUOGBfXa+qPu8IDAcUqsKowzj0h7FDJtUdHBA
-X-ME-Proxy: <xmx:0qzzai724q694-C_AKowocvyDvzAQoI-0vHncrE9fwDD1e77zBP8mw>
-    <xmx:0qzzaqatolX-p9SIU67hYHuFYMzUIPhuLmmZrHmh1rrGVoCG9nUi7Q>
-    <xmx:0qzzas9SbUW5S4r5SBtNN9oTznFgsfhqVkceRtBswxkKtX5MAiROyw>
-    <xmx:0qzzapTPQYNJ4GMWY60c4V0j8-7JV3oQzeT98_Nc7cIMhSExItQeaA>
-    <xmx:0qzzagP1YnW1WJkDqYo1qEy6OwTVnrvBnq1S-ji6xofCr4hT0RkgSLkB>
-Feedback-ID: ifd214418:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 10 Nov 2026 18:46:21 -0500 (EST)
-Message-ID: <055961e4d9ce7e0c78c12389f432e1d8732d83ec.camel@alistair23.me>
-Subject: Re: [PATCH 1/7] ARM: dts: imx: keep the SY7636A VCOM on
-From: Alistair <alistair@alistair23.me>
-To: Andreas Kemnade <andreas@kemnade.info>
-Cc: Pablo Mazzini <pmazzini@gmail.com>, Frank Li <Frank.Li@nxp.com>, Sascha
- Hauer <s.hauer@pengutronix.de>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski	 <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
- <festevam@gmail.com>, 	devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Date: Wed, 11 Nov 2026 09:46:18 +1000
-In-Reply-To: <20261110103405.5e0384bb@kemnade.info>
-References: <20261026003918.155321-1-pmazzini@gmail.com>
-		<20261026003918.155321-2-pmazzini@gmail.com>
-		<20261026083058.04173f10@kemnade.info>
-		<54130686e08db48928484e226f48dc31a8c5ee29.camel@alistair23.me>
-	 <20261110103405.5e0384bb@kemnade.info>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.62.1 (by Flathub.org) 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Lu0OyRGM
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E67E91F0093C;
+	Wed, 11 Nov 2026 01:13:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794359610;
+	bh=eAy59HGc3h2qnYXka7qm4BQesIQWi6V+JejjBFhpSZ0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=Lu0OyRGMAhxtwJ5taq70H4M5SCJMSqmxnPH4g9e6YGcbalyFKJoxQ6E48p7YVBvlt
+	 Suhmur7cZafjMQWQiUd5XKI9Kij9EFIkpRUZhhse9BYGvYGoKV79KN+ux9rV85zAAe
+	 3AXoKuvvUDma5q0/78UDxhILHSqouMX30ryLqWpK3q7MPpHgJud2NaTBJ8MzWiaC75
+	 7DzWoajuEqcuGckVyvDN1BsF/G9IO3t7OsMQOYqRooBBeE7yvFOxRn56GmNfcnhOlp
+	 sks4I+nisHShcV4eUvAEoSNFTVe5ZFqeclp7qDLeFG9IEgoTwIRl62XdSRqFLZ3V/H
+	 iul7mj2cMEmVw==
+Date: Tue, 10 Nov 2026 17:13:25 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Mina Almasry <almasrymina@google.com>
+Cc: netdev@vger.kernel.org, Jesper Dangaard Brouer <hawk@kernel.org>, Ilias
+ Apalodimas <ilias.apalodimas@linaro.org>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Neal Cardwell
+ <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, Pavel
+ Begunkov <asml.silence@gmail.com>, Bobby Eshleman <bobbyeshleman@meta.com>,
+ Stanislav Fomichev <sdf@fomichev.me>, linux-kernel@vger.kernel.org, Steffen
+ Klassert <steffen.klassert@secunet.com>, Herbert Xu
+ <herbert@gondor.apana.org.au>, Willem de Bruijn <willemb@google.com>, John
+ Fastabend <john.fastabend@gmail.com>, Sabrina Dubroca <sd@queasysnail.net>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Jason Wang <jasowangio@gmail.com>, "Eugenio =?UTF-8?B?UMOpcmV6?="
+ <eperezma@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Andrew
+ Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren
+ Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Alexei
+ Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Johannes Berg <johannes@sipsolutions.net>, Byungchul Park
+ <byungchul@sk.com>, Zi Yan <ziy@nvidia.com>,
+ virtualization@lists.linux.dev, linux-mm@kvack.org, bpf@vger.kernel.org,
+ linux-wireless@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, Shuah
+ Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>,
+ Lorenzo Bianconi <lorenzo@kernel.org>, Wen Gu <guwen@linux.alibaba.com>,
+ Philo Lu <lulie@linux.alibaba.com>, Justin Chen <justin.chen@broadcom.com>,
+ Florian Fainelli <florian.fainelli@broadcom.com>, Vikas Gupta
+ <vikas.gupta@broadcom.com>, Michael Chan <michael.chan@broadcom.com>, Pavan
+ Chebbi <pavan.chebbi@broadcom.com>, Doug Berger <opendmb@gmail.com>,
+ Nicolai Buchwitz <nb@tipi-net.de>, Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>, Satish Kharat
+ <satishkh@cisco.com>, Wei Fang <wei.fang@nxp.com>, Frank Li
+ <frank.li@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, Joshua Washington
+ <joshwash@google.com>, Harshitha Ramamurthy <hramamurthy@google.com>, Jijie
+ Shao <shaojijie@huawei.com>, Jian Shen <shenjian15@huawei.com>, Fan Gong
+ <gongfan1@huawei.com>, Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek
+ Kitszel <przemyslaw.kitszel@intel.com>, Marcin Wojtas
+ <marcin.s.wojtas@gmail.com>, Russell King <linux@armlinux.org.uk>, Sunil
+ Goutham <sgoutham@marvell.com>, Geetha sowjanya <gakula@marvell.com>,
+ Ratheesh Kannoth <rkannoth@marvell.com>, Subbaraya Sundeep
+ <sbhatta@marvell.com>, Bharat Bhushan <bbhushan2@marvell.com>, Felix
+ Fietkau <nbd@nbd.name>, Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Tariq
+ Toukan <tariqt@nvidia.com>, Saeed Mahameed <saeedm@nvidia.com>, Mark Bloch
+ <mbloch@nvidia.com>, Leon Romanovsky <leon@kernel.org>, Ido Schimmel
+ <idosch@nvidia.com>, Petr Machata <petrm@nvidia.com>, Horatiu Vultur
+ <horatiu.vultur@microchip.com>, UNGLinuxDriver@microchip.com, Daniel Machon
+ <daniel.machon@microchip.com>, Steen Hegelund
+ <Steen.Hegelund@microchip.com>, Haiyang Zhang <haiyangz@microsoft.com>, Wei
+ Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, Yibo Dong
+ <dong100@mucse.com>, Brett Creeley <brett.creeley@amd.com>, Justin Lai
+ <justinlai0215@realtek.com>, Larry Chiu <larry.chiu@realtek.com>, "Niklas
+ =?UTF-8?B?U8O2ZGVybHVuZA==?=" <niklas.soderlund@ragnatech.se>, Paul Barker
+ <paul@pbarker.dev>, Masahisa Kojima <kojima.masahisa@socionext.com>, Maxime
+ Chevallier <maxime.chevallier@bootlin.com>, Maxime Coquelin
+ <mcoquelin.stm32@gmail.com>, Alexandre Torgue
+ <alexandre.torgue@foss.st.com>, FUJITA Tomonori
+ <fujita.tomonori@gmail.com>, Siddharth Vadapalli <s-vadapalli@ti.com>,
+ Roger Quadros <rogerq@kernel.org>, MD Danish Anwar <danishanwar@ti.com>,
+ Jiawen Wu <jiawenwu@trustnetic.com>, Mengyuan Lou
+ <mengyuanlou@net-swift.com>, Ronak Doshi <ronak.doshi@broadcom.com>, Ryder
+ Lee <ryder.lee@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>, Sean
+ Wang <sean.wang@mediatek.com>, Juergen Gross <jgross@suse.com>, Stefano
+ Stabellini <sstabellini@kernel.org>, Oleksandr Tyshchenko
+ <oleksandr_tyshchenko@epam.com>, Jordan Rhee <jordanrhee@google.com>, Ankit
+ Garg <nktgrg@google.com>, Tim Hostetler <thostet@google.com>, Eric Joyner
+ <eric.joyner@amd.com>, Prabu Thayalan <prabu.ponrajthayalan@amd.com>,
+ "Nikhil P. Rao" <nikhil.rao@amd.com>, Chintan Vankar <c-vankar@ti.com>,
+ Nora Schiffer <nora.schiffer@ew.tq-group.com>, Alexander Sverdlin
+ <alex@sverdlin.org>, Kevin Hao <haokexin@gmail.com>, Karl Mehltretter
+ <kmehltretter@gmail.com>, Aleksandr Loktionov
+ <aleksandr.loktionov@intel.com>, Meghana Malladi <m-malladi@ti.com>, Jacob
+ Keller <jacob.e.keller@intel.com>, StanleyYP Wang
+ <StanleyYP.Wang@mediatek.com>, linux-doc@vger.kernel.org,
+ imx@lists.linux.dev, linux-rdma@vger.kernel.org,
+ linux-hyperv@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+ linux-omap@vger.kernel.org
+Subject: Re: [PATCH net-next v2 0/5] net: deprecate skb->pp_recycle and
+ skb_mark_for_recycle()
+Message-ID: <20261110171325.49624e2e@kernel.org>
+In-Reply-To: <20261108060016.2131509-1-almasrymina@google.com>
+References: <20261108060016.2131509-1-almasrymina@google.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -136,121 +133,15 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, 2026-11-10 at 10:34 +0100, Andreas Kemnade wrote:
-> On Tue, 10 Nov 2026 15:23:03 +1000
-> Alistair <alistair@alistair23.me> wrote:
->=20
-> > On Mon, 2026-10-26 at 08:30 +0100, Andreas Kemnade wrote:
-> > > On Mon, 26 Oct 2026 00:39:12 +0000
-> > > Pablo Mazzini <pmazzini@gmail.com> wrote:
-> > > =C2=A0=20
-> > > > The SY7636A hwmon driver turns VCOM on at probe. The reMarkable
-> > > > 2,
-> > > > Kobo
-> > > > Libra H2O and Tolino Vision 5 have had the rails on so far.
-> > > > Mark
-> > > > VCOM
-> > > > always-on before the driver stops doing it.
-> > > >=20
-> > > > Signed-off-by: Pablo Mazzini <pmazzini@gmail.com>
-> > > > ---
-> > > > =C2=A0arch/arm/boot/dts/nxp/imx/e70k02.dtsi=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 1 +
-> > > > =C2=A0arch/arm/boot/dts/nxp/imx/imx7d-remarkable2.dts | 1 +
-> > > > =C2=A02 files changed, 2 insertions(+)
-> > > >=20
-> > > > diff --git a/arch/arm/boot/dts/nxp/imx/e70k02.dtsi
-> > > > b/arch/arm/boot/dts/nxp/imx/e70k02.dtsi
-> > > > index dc7ff108aa85..bd9c6c6fa117 100644
-> > > > --- a/arch/arm/boot/dts/nxp/imx/e70k02.dtsi
-> > > > +++ b/arch/arm/boot/dts/nxp/imx/e70k02.dtsi
-> > > > @@ -154,6 +154,7 @@ sy7636: pmic@62 {
-> > > > =C2=A0=09=09regulators {
-> > > > =C2=A0=09=09=09reg_epdpmic: vcom {
-> > > > =C2=A0=09=09=09=09regulator-name =3D "vcom";
-> > > > +=09=09=09=09regulator-always-on;
-> > > > =C2=A0=09=09=09};
-> > > > =C2=A0=09=09};
-> > > > =C2=A0=09};=C2=A0=20
-> > > No, please not. That regulator is in practice used with a not yet
-> > > upstreamed
-> > > driver for the EPDC on that platform used to deal with the
-> > > current
-> > > kernels
-> > > fp9931 / tps65185 drivers. So it is very welcome to have it not
-> > > always turned
-> > > on.
-> > >=20
-> > > =C2=A0=20
-> > > > diff --git a/arch/arm/boot/dts/nxp/imx/imx7d-remarkable2.dts
-> > > > b/arch/arm/boot/dts/nxp/imx/imx7d-remarkable2.dts
-> > > > index ff9d50942884..6cf5603c0752 100644
-> > > > --- a/arch/arm/boot/dts/nxp/imx/imx7d-remarkable2.dts
-> > > > +++ b/arch/arm/boot/dts/nxp/imx/imx7d-remarkable2.dts
-> > > > @@ -327,6 +327,7 @@ sy7636a: pmic@62 {
-> > > > =C2=A0=09=09regulators {
-> > > > =C2=A0=09=09=09reg_epdpmic: vcom {
-> > > > =C2=A0=09=09=09=09regulator-name =3D "vcom";
-> > > > +=09=09=09=09regulator-always-on;
-> > > > =C2=A0=09=09=09=09regulator-boot-on;
-> > > > =C2=A0=09=09=09};
-> > > > =C2=A0=09=09};=C2=A0=20
-> > >=20
-> > >=20
-> > > Here the situation is a bit different. If I remember correctly,
-> > > there
-> > > is some special EPD logic in userspace on top of some ordinary
-> > > kernel
-> > > display driver. But thesse things are missing is devicetree?!
-> > > But=C2=A0=20
-> >=20
-> > Yeah, the kernel just exposes a framebuffer and a special secret
-> > sauce
-> > userspace program writes to that.
->=20
-> Looking at that processor. It seems to have an EPDC like the i.MX6
-> has.
+On Sun,  8 Nov 2026 06:00:11 +0000 Mina Almasry wrote:
+> Remove the per-SKB skb->pp_recycle bitfield and skb_mark_for_recycle()
+> helper, and reference-count netmems directly by their underlying type
+> via netmem_is_pp() inside netmem_inc_ref() and netmem_dec_ref().
 
-It has been awhile since I looked at this, but from memory the display
-isn't connected to the EPDC. It's connected like a normal (non-eInk)
-display. Which is why it needs special userspace software
-
-> Looking even further. The Kobo factory kernel for i.MX6SLL devices
-> specifies
-> fsl,imx7d-epdc as compatible for that.
-> So if your display is just connected to that EPDC, then you could
-> probably
-> wire up things on top of my EPDC driver with DRM interface.
-
-I remember that it isn't that simple
-
->=20
-> So you still too need to run your own fork for the display?=20
-
-Yep, it needs a custom kernel (with the FB display driver in the
-kernel) and then a custom userspace.
-
-At the time there didn't seem to be anyway around that. I haven't
-looked in a few years, but short of reverse engineering their userspace
-(which would be easier to do today) there isn't much to do.
-
-Alistair
-
->=20
-> >=20
-> > > that might need to learn to deal with regulator
-> > > enabling/disabling.
-> > >=20
-> > > Regulator always on is probably not desired here, either.=C2=A0=20
-> >=20
-> > Yeah, I **think** we don't need that
-> >=20
-> You just need to add logic to enable/disable the regulator (if it is
-> not
-> wired up yet). But it is nothing from the perspective of mainline to
-> worry
-> about.
->=20
-> Regards,
-> Andreas
+Series does not apply. I think there's too many fixes in this area
+in flight to be entertaining this sort of cleanups right now.
+-- 
+pw-bot: reject
