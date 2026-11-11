@@ -1,55 +1,104 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.182
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794363353;
-	b=OvaK/CrP17l+oXdMg0QidCnX9evz7B/yjQla5Ez4g5fS0T0lkRzskB53prjHVeyGMCY9
-	 HTHhYwWazQWdUj7siLHCRLwnxanv95rd9IaFPAbr5xM/nsArZgR9PO5Jw3aSrmxpUhWAi
-	 2dWF4fZt6TRVZPKnXDKGjJ9DRU7yBVHbZPd4a5UQ/MQeVD4lL3VH/GQrEFDBVjRSLYKy+
-	 T+jhalTu1hWw8yW+nFFaZkgLQ7xCwS1mGYmkpiE8lCQ4T6VRBiwi56c/+vq1v1GezKHJD
-	 5VbDoGqC0982+K/2I9IPkjGVx4xwPBpBPPgbwLQeog0FUhSwJDrCrtOzG87xVnqOg1A==
+	t=1794364138;
+	b=k9ue+4UhysZ3oDQHUy4KjypvvGZzl6ECKWydc8RAh+iivSo5sbzj3fKWJU0KP727ocUy
+	 7CPz1UM+s1EehfZuGhM5GAT7sopmwy+JdwP+b2ib0XZz6wy3cn0WOK5CrZvWoGf4fLJB2
+	 Uz10hueWNMabGVwj6K6KBrjWyHJGpYDpWoVEKvJXTdXtEDCxzlEgBHAmDvtyCEy3NRyjV
+	 Oi9rYY9CgpMJ66oY8AX8A993hpO6WimFvFUFHBIajrGtM7vXmRQInahfb2J02pBwcyuYm
+	 G3dMT4kiuyy8T56jB/DpsJFS53LQPj+3x2DsDrLNPsbBmgBybOpLdoKvY2ZJhYUk4qw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794363353;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 Reply-To:From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=lAhgMwbCGkquv8DnXUEthq+pkw17wZ1l1EuClqj5Zd0=;
-	b=2CHs1o6EEupSYkd+7/iOWTcJKWzdwN4Aw4aaGLdfrnJG9xI3VKC7ZA3eOuj3JRgmW4MR
-	 LkCrnYGwEwIRsCct/7ici96gDxDv7QWsKASgPxuNlGew09AHPLaQ1Dvv0lJeXWcgo/6H9
-	 7nivdLQ67QAr5k6nl9hZszmFVZoo5qJT8vudcXiE5vPQX7EhxWdzbH4RmBqogQQG5lsCW
-	 lQ/2xX4/MnBbmcXA39YeTlVpUQP7n0UtbdIkmNVIbeDpsG7o9Yvm8/GpWpUmQK3aLF6gz
-	 kAUmgW8ShZ21mYO/vR5FdiLpkNkpuVTJEvvBvha9sjh6P33cL7gJ03bl3kfH8JbpEoA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794364138;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=O32a4AiJGMwcCR/+4zjDOYox+W85VRB2HAzvlPxTqmU=;
+	b=h7+PlwN+ukOkIhrSpyJMeeU29evmlCkAv9Azljd75nNKYBDgpjXo4G/HfO95D6UdnmMm
+	 2OeAHzMQvYbkvTDlvW4EwB6hpOvJYjstd+97vOG1nC31zcn1ikLJsPrA6P4/RJDleYqZl
+	 K7GMj2GTioIh7W1NzpVembt13E4/8slDIwP7vuZ9yBYjNs1BR5WUMYqfSZo0GHBw5H9SX
+	 HEkdedoI2YzQOIjZfdDOh6pB4H2BTNQfFgaX86qsptFL2TEzrpre+tITM3XLfuAoLfgPa
+	 g+wlIJOFQrBvwp1ceHHXFlvXsLeJeMV+sBUqJ0SkmjgeLtrsybGzinm+8qM3O04ba0w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gpzNUmNy;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=c4bTQ0fM;
+	arc=none smtp.remote-ip=209.85.210.182
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEB86606A327
-	for <imx@lists.linux.dev>; Wed, 11 Nov 2026 02:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1767A606A333
+	for <imx@lists.linux.dev>; Wed, 11 Nov 2026 02:28:57 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1767A606A333
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gpzNUmNy
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 710E51F00A0E
-	for <imx@lists.linux.dev>; Wed, 11 Nov 2026 02:15:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794363353;
-	bh=lAhgMwbCGkquv8DnXUEthq+pkw17wZ1l1EuClqj5Zd0=;
-	h=References:In-Reply-To:Reply-To:From:Date:Subject:To:Cc;
-	b=gpzNUmNyq6qsEvzIL583I1WHX9XfM0jAP9xozMvrK3oKgjaJKM9HmydByn5NEIyRm
-	 FL9I8LN/cIEOLQxNJFqTpzUjJJ8FRmysOu6sSSlmR6wbnLmY2H/xJB0pOtjQEiIXbT
-	 ypTguvcmuTxGA4UbO/FrAsn8x4unTMCqWiFL3P3GD5T9auLrdw06/wvgIQn/Bdxh/B
-	 Vtbxsjuz93uLGRohSfPQSgdhBUp3YTnHVdyJwnyV/Whij4FUNwL1MAv4APvwxjS4gs
-	 yBjmoOTG1tb9pmFbBrbpF+3cdE4yQiSOCdPWnYQr027RTqovH7kZVDgHHcOJPfiodu
-	 juMmXw2VwYZUQ==
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5c14e307f29so2827519e87.1
-        for <imx@lists.linux.dev>; Tue, 10 Nov 2026 18:15:53 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErG9OQ0fKAbGv5VJAbuXte3vVXLdEi8gdfpu/bH/NbwWNeXWpRb3/K3VRjQ8Kn7/9bmI9zA=@lists.linux.dev
-X-Gm-Message-State: APuU4Z8H+8IIXZ9ymvv5DJDRQ0JXwgpTk4rZb0l8ME27VrJRQuKnnHLU
-	ddGByikRk7nYSGXppdWyBKIptkR2VLkxmrYAFx3gyGayAfsdw0DcoZQWvVKgnwWravNeNiKwiax
-	blWfGaIM0hF/s9FQjgDnHq+pblI9iCQ0=
-X-Received: by 2002:a2e:be8d:0:b0:3ac:429f:6d93 with SMTP id
- 38308e7fff4ca-3ae126c230bmr1415561fa.29.1794363351836; Tue, 10 Nov 2026
- 18:15:51 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=c4bTQ0fM
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-8b5efadd183so1279183b3a.1
+        for <imx@lists.linux.dev>; Tue, 10 Nov 2026 18:28:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794364137; x=1794968937; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=O32a4AiJGMwcCR/+4zjDOYox+W85VRB2HAzvlPxTqmU=;
+        b=c4bTQ0fMDOAs3TOjRsvW6OJgdb8mWj482CSUzcNNMneO83Tl2vuLWHoHPpDOfwSuOG
+         xkhsghhMlnx1PIgZQRjztYhlBZFq5G9cnGEoBn8q3KnSIii4UAJrQdgeTGaqRfyIk6B8
+         rFcrU/r7T7RBqju6F9R6WDj5PBxjdDLuT4J3/YxhbHACudTkDMirP4Ks8KMpgy3VDDT+
+         N+ddDW8CekTOKB5uIOVH+fOdLRtm/g3ceU/32qEDEZTPu/Tf7AHTqgbnfEMnOmPOsHa4
+         hRKqflQGUSnov61jc3QbmzNH3jn0V2FmZfz481M/TKUKyUj6CSc1fTvUZ396bcQuTHOW
+         z7zg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794364137; x=1794968937;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=O32a4AiJGMwcCR/+4zjDOYox+W85VRB2HAzvlPxTqmU=;
+        b=v2XX3HwO3kkOI/oyuGtYEHaQc/fk6Mk5U3O3dMJHjUPcNkJP89LCUMfTntoHwR67wd
+         XuSi8/jm6VbyMz/UsZ6Hhu/wwoup3xAom22zkN7rfWG4PlCeAtyDUnTm0gb8+uVfHj76
+         zbq0m2S5HTgm37iisMGP/N40msabs0WiE58qTjcTp0eAGkPfsOf7v6ZKReMVfA5WtuV2
+         TCTFgMWJnm6i8mf+nZeIxN4hSAZbnfDZt82cOonaQMvYww9AmkrBJx4vx9hCGoXLhZOn
+         KTX6dafT3FVucYMQVciIfoLZ5LWJEmkT99Tsi/1+ceMsJ/3Zlrx1KhsUT6l6zpzlUR6N
+         RKAA==
+X-Forwarded-Encrypted: i=1; AL+hErFV1lKGTyyq6gYPRf5nSZUrO9xXw1eeuHQwnPnao5cbS1EsuIstQajbaYgVQCcAUdMu0K0=@lists.linux.dev
+X-Gm-Message-State: APuU4Z8wiXLGKDPuIfLMxKAZFPG+/1UDdE2n1ukNTZY05Yxo51tsokOY
+	s7VJ46WdBs6MtbE7SjhaS0609+16QMbDbUWDGf5fDE8fKVMBKCXmZiez15OguQE3
+X-Gm-Gg: AYBFou0fTi5wqs13vWYYLeJr08pgL9GrGDlHmzPkMIqPBdJ09ia4l0hzgKEUzo0q169
+	xivDW8NEQL2PpG2BDUE9wrbekhj39WVFV4FPeXsYDVHR/Srp3P56Ni2p5tZjqMm5AQ9VQfYjLhn
+	MAynQkaMnlBfjSyIewVQcg0IJfv2PY+Xsc8kSSNvrbuyfPLK1NtseGM3OeFVeCPWEc730JZNVlz
+	nuAYkJP4kMEwpAymq8x42qgFw/kUryrExvHad0JdSKOlyGwdEsPSIwH6snSTLFC6Zh+lHFBdHXF
+	geqj9fG5B4NwokwAZmReyLC9wooI9Om5OAPEYO2s0B7iCti6bkmV44l0QdeDDBMGY+R0OroSjxn
+	+fdOfqhk42kwzGQRfZvdFI8RvoxhGE+eqOQz9aMJ5G9AJldDcqYnniHdu1TdzaxSlADfGpMNz4D
+	ssAVSsP6eO4xKyaEjr9A8Bk7D9mbH18f+ii5ZpGROiqyjBC6c6wp71FscJYA2a62QkhJht861Jo
+	L356TUkFE7IWKgu45q1c/r6ybmyAoCPtwyJLTpdmQN3MQCHQAgXlr+BqsL4yfkSg3+n0EXQv3qg
+	ltQtQ9SlWEra+XqORrLeOnarR+S48+yEECaPe9GI+XXfW9ujDzgNfnvDeB09kI6iLiG/k+vf8Bh
+	4RwRlE7Q9KHmGZpLfGF8drOkPN24/V7fGImlhOQUncdEmaieSNU8vO3fLW6nMDogsYIqIjpC/KU
+	93wA==
+X-Received: by 2002:a05:6a21:1391:b0:3e1:9071:acb2 with SMTP id adf61e73a8af0-3f2ff2e0b6cmr821227637.33.1794364137319;
+        Tue, 10 Nov 2026 18:28:57 -0800 (PST)
+Received: from ryzen.lan ([2601:644:8000:37f::e34])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8baaa86ce5fsm1603153b3a.21.2026.11.10.18.28.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Nov 2026 18:28:56 -0800 (PST)
+From: Rosen Penev <rosenp@gmail.com>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Dong Aisheng <aisheng.dong@nxp.com>,
+	Guoniu Zhou <guoniu.zhou@nxp.com>,
+	Jacopo Mondi <jacopo@jmondi.org>,
+	Stefan Riedmueller <s.riedmueller@phytec.de>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Christian Hemp <c.hemp@phytec.de>,
+	linux-media@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3] media: nxp: imx8-isi: remove kzalloc_objs
+Date: Tue, 10 Nov 2026 18:28:22 -0800
+Message-ID: <20261111022822.67474-1-rosenp@gmail.com>
+X-Mailer: git-send-email 2.56.0
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -59,98 +108,77 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-References: <cover.1794347059.git.u.kleine-koenig@baylibre.com> <2cd7c4695edff6b711f8c77ae468d295bb910cdb.1794347059.git.u.kleine-koenig@baylibre.com>
-In-Reply-To: <2cd7c4695edff6b711f8c77ae468d295bb910cdb.1794347059.git.u.kleine-koenig@baylibre.com>
-Reply-To: wens@kernel.org
-From: Chen-Yu Tsai <wens@kernel.org>
-Date: Wed, 11 Nov 2026 11:15:39 +0900
-X-Gmail-Original-Message-ID: <CAGb2v67xpAbsmez2qt7pypW5T8czE93PtU2QjcSPuQ4a7c7qoA@mail.gmail.com>
-X-Gm-Features: AclHuK-PEU8_Ju7uMZ7QoR2Wn0i8AsTrMLtFibJe7hATAjuodc-7gCHep5Ph93s
-Message-ID: <CAGb2v67xpAbsmez2qt7pypW5T8czE93PtU2QjcSPuQ4a7c7qoA@mail.gmail.com>
-Subject: Re: [PATCH v4 19/20] mfd: Unify style of of_device_id arrays
-To: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig_=28The_Capable_Hub=29?= <u.kleine-koenig@baylibre.com>
-Cc: Lee Jones <lee@kernel.org>, Linus Walleij <linusw@kernel.org>, 
-	Nicolas Ferre <nicolas.ferre@microchip.com>, 
-	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
-	Florian Fainelli <florian.fainelli@broadcom.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Ray Jui <rjui@broadcom.com>, 
-	Scott Branden <sbranden@broadcom.com>, Marek Vasut <marek.vasut+renesas@gmail.com>, 
-	James Ogletree <jogletre@opensource.cirrus.com>, Fred Treven <fred.treven@cirrus.com>, 
-	Ben Bright <ben.bright@cirrus.com>, David Rhodes <david.rhodes@cirrus.com>, 
-	Richard Fitzgerald <rf@opensource.cirrus.com>, 
-	Support Opensource <support.opensource@diasemi.com>, Krzysztof Kozlowski <krzk@kernel.org>, 
-	Peter Griffin <peter.griffin@linaro.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
-	Tim Harvey <tharvey@gateworks.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Charles Keepax <ckeepax@opensource.cirrus.com>, Sven Peter <sven@kernel.org>, 
-	Janne Grunau <j@jannau.net>, Neal Gompa <neal@gompa.dev>, Chanwoo Choi <cw00.choi@samsung.com>, 
-	Mathieu Dubois-Briand <mathieu.dubois-briand@bootlin.com>, 
-	Luca Ceresoli <luca.ceresoli@bootlin.com>, =?UTF-8?Q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>, 
-	Saravanan Sekar <sravanhome@gmail.com>, Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, =?UTF-8?Q?Jonathan_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>, 
-	Aaro Koskinen <aaro.koskinen@iki.fi>, Andreas Kemnade <andreas@kemnade.info>, 
-	Kevin Hilman <khilman@baylibre.com>, Roger Quadros <rogerq@kernel.org>, 
-	Tony Lindgren <tony@atomide.com>, Matti Vaittinen <mazziesaccount@gmail.com>, 
-	Orson Zhai <orsonzhai@gmail.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Chunyan Zhang <zhang.lyra@gmail.com>, Fabrice Gasnier <fabrice.gasnier@foss.st.com>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
-	Liviu Dudau <liviu.dudau@arm.com>, Sudeep Holla <sudeep.holla@kernel.org>, 
-	Lorenzo Pieralisi <lpieralisi@kernel.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Magnus Damm <magnus.damm@gmail.com>, Heiko Stuebner <heiko@sntech.de>, mfd@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	patches@opensource.cirrus.com, linux-rpi-kernel@lists.infradead.org, 
-	linux-renesas-soc@vger.kernel.org, linux-sound@vger.kernel.org, 
-	linux-samsung-soc@vger.kernel.org, linux-amlogic@lists.infradead.org, 
-	asahi@lists.linux.dev, linux-mediatek@lists.infradead.org, 
-	imx@lists.linux.dev, linux-omap@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-sunxi@lists.linux.dev, linux-rockchip@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Nov 11, 2026 at 6:56=E2=80=AFAM Uwe Kleine-K=C3=B6nig (The Capable =
-Hub)
-<u.kleine-koenig@baylibre.com> wrote:
->
-> These arrays already mostly match the most used and generally
-> recommended coding style. That is:
->
->  - no comma after the list terminator;
->  - a comma after an initializer if (and only if) the closing } is not
->    directly following;
->  - no explicit zeros in the list terminator;
->  - a space after an opening { and before a closing }, a single space in
->    the list terminator;
->
-> Adapt the offenders accordingly.
->
-> Reviewed-by: Andr=C3=A9 Draszik <andre.draszik@linaro.org> # for Maxim MA=
-X77759
-> Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-> Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be> # renesas
-> Reviewed-by: Mathieu Dubois-Briand <mathieu.dubois-briand@bootlin.com> # =
-max7360
-> Reviewed-by: Linus Walleij <linusw@kernel.org>
-> Signed-off-by: Uwe Kleine-K=C3=B6nig (The Capable Hub) <u.kleine-koenig@b=
-aylibre.com>
-> ---
->  drivers/mfd/88pm860x-core.c    |  4 ++--
->  drivers/mfd/ab8500-sysctrl.c   |  4 ++--
->  drivers/mfd/ac100.c            |  2 +-
->  drivers/mfd/act8945a.c         |  4 ++--
->  drivers/mfd/altera-a10sr.c     |  2 +-
->  drivers/mfd/altera-sysmgr.c    |  2 +-
->  drivers/mfd/arizona-i2c.c      |  2 +-
->  drivers/mfd/arizona-spi.c      |  2 +-
->  drivers/mfd/as3711.c           |  4 ++--
->  drivers/mfd/as3722.c           |  4 ++--
->  drivers/mfd/atmel-hlcdc.c      |  2 +-
->  drivers/mfd/atmel-smc.c        |  2 +-
+Use a flexible array member to combine allocations.
 
+It looks like pipes never gets freed anywhere. Meaning this effectively
+fixes a memory leak.
 
->  drivers/mfd/axp20x-i2c.c       |  2 +-
->  drivers/mfd/axp20x-rsb.c       |  2 +-
+Fixes: cf21f328fcaf ("media: nxp: Add i.MX8 ISI driver")
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+---
+ v3: use devm_kzalloc_flex
+ v2: add fixes tag, fix typo, and move pdata assignment to original
+ place.
+ drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c | 10 ++++------
+ drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h |  3 ++-
+ 2 files changed, 6 insertions(+), 7 deletions(-)
 
-Acked-by: Chen-Yu Tsai <wens@kernel.org> # axp20x
+diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
+index 2005584a1215..dcf6c25d7faa 100644
+--- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
++++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
+@@ -473,24 +473,22 @@ static const struct dev_pm_ops mxc_isi_pm_ops = {
+ 
+ static int mxc_isi_probe(struct platform_device *pdev)
+ {
++	const struct mxc_isi_plat_data *pdata;
+ 	struct device *dev = &pdev->dev;
+ 	struct mxc_isi_dev *isi;
+ 	unsigned int dma_size;
+ 	unsigned int i;
+ 	int ret = 0;
+ 
+-	isi = devm_kzalloc_obj(dev, *isi);
++	pdata = of_device_get_match_data(dev);
++	isi = devm_kzalloc_flex(dev, *isi, pipes, pdata->num_channels);
+ 	if (!isi)
+ 		return -ENOMEM;
+ 
+ 	isi->dev = dev;
+ 	platform_set_drvdata(pdev, isi);
+ 
+-	isi->pdata = of_device_get_match_data(dev);
+-
+-	isi->pipes = kzalloc_objs(isi->pipes[0], isi->pdata->num_channels);
+-	if (!isi->pipes)
+-		return -ENOMEM;
++	isi->pdata = pdata;
+ 
+ 	isi->num_clks = devm_clk_bulk_get_all(dev, &isi->clks);
+ 	if (isi->num_clks < 0)
+diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
+index 58b47335afc7..3165a65391c1 100644
+--- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
++++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
+@@ -297,7 +297,6 @@ struct mxc_isi_dev {
+ 	struct regmap			*gasket;
+ 
+ 	struct mxc_isi_crossbar		crossbar;
+-	struct mxc_isi_pipe		*pipes;
+ 	struct mxc_isi_m2m		m2m;
+ 
+ 	struct media_device		media_dev;
+@@ -305,6 +304,8 @@ struct mxc_isi_dev {
+ 	struct v4l2_async_notifier	notifier;
+ 
+ 	struct dentry			*debugfs_root;
++
++	struct mxc_isi_pipe		pipes[];
+ };
+ 
+ extern const struct mxc_gasket_ops mxc_imx8_gasket_ops;
+-- 
+2.56.0
+
