@@ -1,55 +1,104 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794376503;
-	b=sXDYA6ERl/ylGJqwN4AW6RKD2Cqlk86FVkvh98tX6PrTiSGf2dBq2NwO+AV9aYsq1WtA
-	 DvGhv2D4YDJDqrtZCEyM7BR7v8Y1rKIYFRSZWCRAqm1G31DJiOWWVthnjUi1nT+9rVvSI
-	 X0XzYXIieqMaCBcYOJTiovhg+5kI08uwjhus24wv8Ic+xbGnS2XcBw+EPUH/lT2cgX/aH
-	 ch0bkfFSN4HFRxdUqs/o7eZRws2qSHyhE8HV4wLBhwyVhZ+F40dicRN1uH9e84GmtHRux
-	 kKRiVogUpN/y6QmIVQKM9ofrgRgYg5qyup9wJUYQkhmRRjCWC8cbkX2wsArkWfnhHFQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794376503;
-	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Mime-Version:
-	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:Cc:To:From:
-	 Subject:X-Mailer:References:In-Reply-To:X-Last-TLS-Session-Version;
-	bh=pfbacooIO8f3wisdaRiyyaGqgo+54PzHGy2pQaUsY+c=;
-	b=J9b5g3+godVKcAeD4GoEjWEoVe9xsXrO7/Rx0v0EpH3EUjuLZKn13+BFTFQ3hAj2Nskr
-	 SgqkAFLYQDzmGNNBYd6GyI6+eW7g+dzx8HnZjkDxQHcx8Ee/3Fx4TD/wCgzFVnUBi6FQW
-	 clcC6jWxO1l1Pivs/+NCFzy0N9mYBzmTcg+u10Vmvhk2XtXEmmMbijbwEezs8Nfy/dRBu
-	 WD4CCbBSlRAsNXxS/gVo8HoAZlHxdAFvsGOUTjodCZY9tmIorhyuKq+ZtCo9ngbeLuSOk
-	 vxnI846qNpiHo9d4xT9/WWqhlW/GWCaJlb938wmVXcPGu1/rJY+i63l91OHOx/Uu1TQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=bootlin.com;
-	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=yNbP9gNq;
-	arc=none smtp.remote-ip=185.246.84.56
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.162.37
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794378187;
+	b=kP+ZvrK0gREyVYJYCeVyuyBfyQEr220t1cAFziabACEmWV3aOKLia78K+eQJWV8Lsf9c
+	 QJFIgKtHXSaIFWqmVHay+RqgWuhjJ9nVu8FEgxPKZmiKysDZxDVrJLZc110+Dy6oWOo5y
+	 /vTL+Oi7iQY0zWtDN6ciLizmwIb+dC4OPAFeL2+A3yYQEAwQ7Y+8YhH3AJGl5YKKcJp7u
+	 PR5hHUMAUDUPw7JNyhRdhSsXn+kDYZIHSK7L1FhsB5T0hz9Okpx91sJU22S8NgwOubBuZ
+	 OfFgOecEt2d7aqmQfAg+JF8WdwGGE7ii2ugAOAsimPpiCRrfPGVyz/31d7YWcUsiJYQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794378187;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
+	 Date:Message-Id:X-Mailer:Content-Transfer-Encoding:Content-Type:
+	 X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=0pnwXejhk1n8WCza1W3ydKGUAUIWhfGXOr70MqEVUkY=;
+	b=4u8BEkG1RdoIBd+aU3llFkfWQ0rLRmgqB7KSyHX9nlgQJz7OqLVqdoLJrpUHGXX5jPng
+	 8OH13yFhlw4RPG2veK4QyC9YENQ644m5VXnZF0aEg/t+Uvo63P35JN82CA5NV39rPmG8D
+	 hNaGlBrtH6PtxlfLNl6UDna2p8r+ZhirGUoPJjzmsnPTL5i57MZUa0qBU3XjKKk0Z6UjK
+	 GFkNUkLL8CVVp2BFWuPy96CMhpsTtm9YDWfneEIoDSF6qviwH8tswP0EcB2bbQUSBjPyK
+	 FqNCeVcvwI1QHAR7oOmC0JAj6uGg+Kx7VBN9DL7vYX24JNQF3VzTE+9DUBD/3IV6nFw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=oss.nxp.com;
+	spf=pass smtp.mailfrom=oss.nxp.com;
+	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=vcok2eOE;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.162.37
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013037.outbound.protection.outlook.com [40.107.162.37])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67A28606A33A
-	for <imx@lists.linux.dev>; Wed, 11 Nov 2026 05:55:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 67A28606A33A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BACA4606A320
+	for <imx@lists.linux.dev>; Wed, 11 Nov 2026 06:23:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BACA4606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=yNbP9gNq
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 061011A161B;
-	Wed, 11 Nov 2026 05:54:55 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id B7121601AD;
-	Wed, 11 Nov 2026 05:54:54 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id CA75111BC0758;
-	Wed, 11 Nov 2026 06:54:26 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1794376491; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=pfbacooIO8f3wisdaRiyyaGqgo+54PzHGy2pQaUsY+c=;
-	b=yNbP9gNqUTcBluDPTUGVBT9Sv+/GUwXc/OVvJz1InwCOkT3SDXmol6kIyZj6kX3Yq1NzGH
-	m+7vDJygTh4Aeo6ekK8CD2u9W7d6Fobhkef2pBoshtjxbvwZhaFK264cj/tLT7fgNV6x78
-	ZUPWtjg+/hKGnEpqW3ry2LwfenlL1Vnpfsx+Duk2T3/ZhtgEL63TIp90jEpCcqg3mwkQte
-	XvhXHpQreSW8ZhjjAEgEfPu3744zKJ6yYUnEtxerbgkrN+nhLUAP2VnK8ZqLwE40Hqa9Gw
-	2IyI3JXe2VizQhauO617rdUjCPI8djrehwuV7EPN2sl1qfiuh+n75Opl2PpZow==
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=vcok2eOE
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=y9EGbsjHqSXfhSfoUe9M6xDoeb30sAOyMO7wYexIt/2LnHyMmBDQqE5MULjxGU8OTAprBeMG31Vte3PqqFWOsqRjVmJ8o8ziy6PYF5XU5IG2wEZgnbYZ3ALTGvrI0HepcPxqZq5JBYcy9AZZQuRl0yAqlFuEFdgzmWt54C95OiZDAJFBNq4e74oPsWHSWJg07Hp7vfJQJSVGvgp/3AvVuUrMg1polvfp8augwpUy5WXscVHKOpMDBiwvsMAq+cDuAJBKfb9pSUGgi6Q0/1Yqwy1iiLTkSnvx4RSPiOqZ5YPRj2hyhb8T9rvi+keqqVNQh1JQn5DL3KMQtIVXnWC/Ew==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0pnwXejhk1n8WCza1W3ydKGUAUIWhfGXOr70MqEVUkY=;
+ b=ZXx4G3b7ISH/tjLhgTUDZGA6dNWTQEdIK+BeOFBzj52WolC3f2wRZ+NnO4zZyjhjdF5WsY0HBaL9EXY4WtLmcUfoVOSDS0kwnRRXOC/Dr20zrTSasq/h2Nfsw/z+LbrejliHMPOJ5xTqVIUdQqiQNMNGEnxehjDpr4EPn8XceghNZyHJp7SF6K7TVZ161I6DlvQLJD8I4COflXNeGXXOMtdKF1tpmLBLZ0oKpRSd2bBi6wbtZFWjqp9SmZP9IvVxWgaCAgJYaBm52tPmu8A8DvD9q+h9uHsl+rXlo3t4HKLDZWoMnHz7KsqcWU9zGKSRcpbC9m83uuqdYwq3BNj5uA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0pnwXejhk1n8WCza1W3ydKGUAUIWhfGXOr70MqEVUkY=;
+ b=vcok2eOEO4eKfX8cx15BW/CDZtbjoUSiwSbGg5N7/UbI098jtxAi5viE1cRcD2pGc3nqOaOvGKXDbN/cajy/AJ+oACLKQS7GbVJrsYjeB2IOBi3FEe7I/4iZ/hf9KTVdTM1dIMaHzZNG5usEiiL4HjLl4hDHENifjx9IDxU/ncjyOHEsBCORKxIO3qAim068188IPf2pYyCA6DDrWynnuje7Y2ORf0VQCz4B2X2HGcqLlcE10HDeSwGJRySNvOH/yv83lw6nIYyQFCcA1F59F+wz7Jh1Y3IQizVlH4sV6Eoed+QacDGn+NCH28RO4+SKiNPM1DGS4P9eWIwDxkPIow==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from VE1PR04MB7216.eurprd04.prod.outlook.com (2603:10a6:800:1b0::22)
+ by VI0PR04MB10543.eurprd04.prod.outlook.com (2603:10a6:800:25a::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.8; Wed, 11 Nov
+ 2026 06:23:01 +0000
+Received: from VE1PR04MB7216.eurprd04.prod.outlook.com
+ ([fe80::a9a5:cf83:dbe8:1f74]) by VE1PR04MB7216.eurprd04.prod.outlook.com
+ ([fe80::a9a5:cf83:dbe8:1f74%6]) with mapi id 15.21.0615.007; Wed, 11 Nov 2026
+ 06:23:01 +0000
+From: wei.fang@oss.nxp.com
+To: xiaoning.wang@nxp.com,
+	andrew@lunn.ch,
+	olteanv@gmail.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	richardcochran@gmail.com,
+	linusw@kernel.org,
+	linux@armlinux.org.uk
+Cc: wei.fang@nxp.com,
+	imx@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v7 net-next 0/9] net: dsa: netc: add PTP support for NETC switch
+Date: Wed, 11 Nov 2026 14:27:44 +0800
+Message-Id: <20261111062753.1397582-1-wei.fang@oss.nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SG2P153CA0013.APCP153.PROD.OUTLOOK.COM (2603:1096::23) To
+ VE1PR04MB7216.eurprd04.prod.outlook.com (2603:10a6:800:1b0::22)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -58,96 +107,140 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 11 Nov 2026 06:54:25 +0100
-Message-Id: <DMS5DC411M21.387583J8N08R0@bootlin.com>
-Cc: "Linus Walleij" <linusw@kernel.org>, "Nicolas Ferre"
- <nicolas.ferre@microchip.com>, "Alexandre Belloni"
- <alexandre.belloni@bootlin.com>, "Claudiu Beznea"
- <claudiu.beznea@tuxon.dev>, "Chen-Yu Tsai" <wens@kernel.org>, "Florian
- Fainelli" <florian.fainelli@broadcom.com>, "Broadcom internal kernel review
- list" <bcm-kernel-feedback-list@broadcom.com>, "Ray Jui"
- <rjui@broadcom.com>, "Scott Branden" <sbranden@broadcom.com>, "Marek Vasut"
- <marek.vasut+renesas@gmail.com>, "James Ogletree"
- <jogletre@opensource.cirrus.com>, "Fred Treven" <fred.treven@cirrus.com>,
- "Ben Bright" <ben.bright@cirrus.com>, "David Rhodes"
- <david.rhodes@cirrus.com>, "Richard Fitzgerald" <rf@opensource.cirrus.com>,
- "Support Opensource" <support.opensource@diasemi.com>, "Krzysztof
- Kozlowski" <krzk@kernel.org>, "Peter Griffin" <peter.griffin@linaro.org>,
- "Alim Akhtar" <alim.akhtar@samsung.com>, "Tim Harvey"
- <tharvey@gateworks.com>, "Neil Armstrong" <neil.armstrong@linaro.org>,
- "Charles Keepax" <ckeepax@opensource.cirrus.com>, "Sven Peter"
- <sven@kernel.org>, "Janne Grunau" <j@jannau.net>, "Neal Gompa"
- <neal@gompa.dev>, "Chanwoo Choi" <cw00.choi@samsung.com>, "Mathieu
- Dubois-Briand" <mathieu.dubois-briand@bootlin.com>, "Luca Ceresoli"
- <luca.ceresoli@bootlin.com>, =?utf-8?q?Andr=C3=A9_Draszik?=
- <andre.draszik@linaro.org>, "Saravanan Sekar" <sravanhome@gmail.com>,
- "Matthias Brugger" <matthias.bgg@gmail.com>, "AngeloGioacchino Del Regno"
- <angelogioacchino.delregno@collabora.com>, "Frank Li" <Frank.Li@nxp.com>,
- "Sascha Hauer" <s.hauer@pengutronix.de>, "Pengutronix Kernel Team"
- <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>,
- =?utf-8?q?Jonathan_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>, "Aaro
- Koskinen" <aaro.koskinen@iki.fi>, "Andreas Kemnade" <andreas@kemnade.info>,
- "Kevin Hilman" <khilman@baylibre.com>, "Roger Quadros" <rogerq@kernel.org>,
- "Tony Lindgren" <tony@atomide.com>, "Matti Vaittinen"
- <mazziesaccount@gmail.com>, "Orson Zhai" <orsonzhai@gmail.com>, "Baolin
- Wang" <baolin.wang@linux.alibaba.com>, "Chunyan Zhang"
- <zhang.lyra@gmail.com>, "Fabrice Gasnier" <fabrice.gasnier@foss.st.com>,
- "Maxime Coquelin" <mcoquelin.stm32@gmail.com>, "Alexandre Torgue"
- <alexandre.torgue@foss.st.com>, "Jernej Skrabec"
- <jernej.skrabec@gmail.com>, "Samuel Holland" <samuel@sholland.org>, "Liviu
- Dudau" <liviu.dudau@arm.com>, "Sudeep Holla" <sudeep.holla@kernel.org>,
- "Lorenzo Pieralisi" <lpieralisi@kernel.org>, "Geert Uytterhoeven"
- <geert+renesas@glider.be>, "Magnus Damm" <magnus.damm@gmail.com>, "Heiko
- Stuebner" <heiko@sntech.de>, <mfd@lists.linux.dev>,
- <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
- <patches@opensource.cirrus.com>, <linux-rpi-kernel@lists.infradead.org>,
- <linux-renesas-soc@vger.kernel.org>, <linux-sound@vger.kernel.org>,
- <linux-samsung-soc@vger.kernel.org>, <linux-amlogic@lists.infradead.org>,
- <asahi@lists.linux.dev>, <linux-mediatek@lists.infradead.org>,
- <imx@lists.linux.dev>, <linux-omap@vger.kernel.org>,
- <linux-arm-msm@vger.kernel.org>,
- <linux-stm32@st-md-mailman.stormreply.com>, <linux-sunxi@lists.linux.dev>,
- <linux-rockchip@lists.infradead.org>
-To: =?utf-8?b?VXdlIEtsZWluZS1Lw7ZuaWcgKFRoZSBDYXBhYmxlIEh1Yik=?=
- <u.kleine-koenig@baylibre.com>, "Lee Jones" <lee@kernel.org>
-From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-Subject: Re: [PATCH v4 19/20] mfd: Unify style of of_device_id arrays
-X-Mailer: aerc 0.22.0
-References: <cover.1794347059.git.u.kleine-koenig@baylibre.com>
- <2cd7c4695edff6b711f8c77ae468d295bb910cdb.1794347059.git.u.kleine-koenig@baylibre.com>
-In-Reply-To: <2cd7c4695edff6b711f8c77ae468d295bb910cdb.1794347059.git.u.kleine-koenig@baylibre.com>
-X-Last-TLS-Session-Version: TLSv1.3
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VE1PR04MB7216:EE_|VI0PR04MB10543:EE_
+X-MS-Office365-Filtering-Correlation-Id: be8ea51b-8042-499e-052b-08df3fbc3c2b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|7416014|376014|1800799024|366016|19092799006|921020|261026121527099003|11063799006|261026140227099003|261102123227099003|261021123027099003|261009223027099003|261021121427099003|261102130727099003|261022105027099003|261028144727099003|56012099006|10067099003|18002099003|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	G3EVO1SQwUOQbSvPPWvD79avjhEt5tJbYTW1yaJSYZ6opu9SMFDrdsZ+CLJP6gYJ7z5LFgC9JMyPfxBeDC1hz/VX+/sM+Zua1Ba5f3CX7YqaAN1qYSaYrtzsyMa3l4V7nmfx514L9eUAJBFGqsv5IA2lFHcEzSDUl3kmopIJONDV7vDH0pFs1XLONAKd4972pulW6gfZOmdmuObQamvLis58QypqZlvI1QMtBfmKx3Nx7Ji3rvBUo2+zqF7KjkaDyNmvxxxxSrsz3WT9Y80KmgYobH2qyIgKlN2t2rPrAXRsAhk5+5PAqpymoIC7zSUDTJOPyy/2OQs8XlBzZHKAGicOFRLdjY1fFxjqdFAzmVMyFtoTFFGk4ws8vvEuZpgEv4mpOs7NAolc5ryiURUHI4/8CwR4yIF9JMgpqS4hPDik+Tnjtk0DWio6ATb+PTo8CVDWbrN3/51qdW6sn5bzWuAQ/aCqZ39HdHrA4AW4UJo2oGtFFAhEro9rUYWmwg/yf7E7Z0Tjf0puVKIcxwCHblty5650iTUqbUsaq7+ogYMYpwtYYCzv55CVjNwDtLduzdltJ2jqSuA8vrqDcv+YFBeTqpJ0D4Wup0kQ5mDArgnzWPmQ+aoR6sEyldH3WLOj7nFidWRTmdn6Ep0wUKYBoSa0Kkybfn5R7Pnk8f6rCVA=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VE1PR04MB7216.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(1800799024)(366016)(19092799006)(921020)(261026121527099003)(11063799006)(261026140227099003)(261102123227099003)(261021123027099003)(261009223027099003)(261021121427099003)(261102130727099003)(261022105027099003)(261028144727099003)(56012099006)(10067099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?/xevy80/ZOm4uI2Mq8rI2ghYMonSK693bGKSewMp0O31+dZwgKHx9DhqUeiQ?=
+ =?us-ascii?Q?rmkpCuMXUR8zh6nUIe45o/pbjweyMxDtPdr0M3fkF7Dw4RTsCoFLkIqoPsOV?=
+ =?us-ascii?Q?qmznhSYxKT5JAUuBS4cdOFd3chMO4a+H7zyG033VQhBwM2Oo9dO+EMS1e70y?=
+ =?us-ascii?Q?+4tqqNH6khQ3ocaWV5tq06LGtbWvV90pZF/iWeR7d8ZJI7ArFgisjDKXT331?=
+ =?us-ascii?Q?l3VQ6V5iBbWyvIpXYaa2koUptk0D+P38wzRVU4gYNljRjRpeQYGBvZSbY0F/?=
+ =?us-ascii?Q?mLvtGTPLE9QBynHnngzPqWFSPFryURWzSp2lEnU1qtdJANuOXyKwwf4zUG1N?=
+ =?us-ascii?Q?eMYYomPLPj1kfiUopp7PlUEgGQf7+mkd9+Dto2TjarjWbpT03D/VeEq807BK?=
+ =?us-ascii?Q?SeCE9bIdXdlZurU4wACNCLmlbtFFhDET8nnwtqrAssTHZG8gZnIgqlf+yxBP?=
+ =?us-ascii?Q?DTKyXLwuP1wc1TustVrmtKm9NA2aMaqFA7/+Cz+H+bGprdMg6Lekey/TSXVU?=
+ =?us-ascii?Q?+Efuf641AeOKcWWvVOwb8M6MGscQX0VwkazRzqkntWKN54LwnyfuO+gmk8nw?=
+ =?us-ascii?Q?NzYaR/5GlBnc4wMzKZ2wQu1zifoWbBVNE6KQJhqDNQrOpstx8wz0YLN7SB2q?=
+ =?us-ascii?Q?zb5jrgaOit+Y5R8rnipwinEFMJnZQFzZOb7XddV8OvtHSxwkxxhqxtHTEgFA?=
+ =?us-ascii?Q?m9y7sSTkFLvXaMw40DBTVzws4gn1svoY2WF6uLBYXwCnsaVEw2P5d94i3Y69?=
+ =?us-ascii?Q?3UmZQQwyG1Gs8wO+6kMMKK2c/zO/eEBXWSMwXBzTwgRVamM5RYfASnfMS1Pp?=
+ =?us-ascii?Q?4WlfPCkNOhudf/SBNbUYRvm7v9ihJ+O9yyUeMzJ0L3QmtCh5BIv9PA1TKtJA?=
+ =?us-ascii?Q?tvjRFKAqXn83gGvm4JQScQPfLwmHlLgNurnU4jpUuQPySrprXrmAQ3/f11Yk?=
+ =?us-ascii?Q?6O+kfD9BYWigrIoJGjouRAAUg+V9LbtT8+1LW8DGaEnWyeqNoXfnJAeCNBwU?=
+ =?us-ascii?Q?DM2jppwMHZQPSzTlim7A8nMo+oTc8lDXpjqs3jyj++sFUnusa7xRXyzatzxj?=
+ =?us-ascii?Q?KHKi9CVaIHOpdtg/a7hlDL31T6yjLfTBa57Of07OvZzf/0bkYGMuNWmAHTNi?=
+ =?us-ascii?Q?yytYxv6inP7XfrMNgAKQ4O7hx1I3vCCx6AwXcC6tRZKEgcnQk3sfcEi4Hafb?=
+ =?us-ascii?Q?XF9Sjkf6/sIxvI2zlhubFHfhVbdyslzHsv50ygqkx2AQn1bDiqUhptxE8px5?=
+ =?us-ascii?Q?CdZ/Vwild0DX5phLvd3OSB9NMw3Smxixjzdxvo7xBGr/d4fMufp64/Ma+z4K?=
+ =?us-ascii?Q?lKM7B7X6z8q+JagaUAASXB0BRtg1uxp5rg3dE13xgDhGIhsshOXrTy4HXPUZ?=
+ =?us-ascii?Q?Opew80gHcs3TyC5EcMN2J1iKpKD1WIwVHu+9jw+G6WppAnYWUWP1r8CpE3Mt?=
+ =?us-ascii?Q?q16JM8zI21Phus+6oVNoKRxRUe98UoZ8KbFsNo9OISynrsrAvruJs5JbkR6S?=
+ =?us-ascii?Q?NbXB/sweF79aJ1duhVBCdSelEzNQ6h2zCq+1BFIgRgw1V82kjjldn02iadDq?=
+ =?us-ascii?Q?91bJk4NKgbHfaE0REnkKBeYJgCECZfie7uIuOgtuRt2SWkP8Jy7MFM+t8MWw?=
+ =?us-ascii?Q?Fo/uWIaD/zcYeAwuVlSG8aDEmynML2QH9oKunkY1kSk22K/OchfdgaqYT+hQ?=
+ =?us-ascii?Q?VxzFrIPT/St0uyPRgmwEGWDyXyCXhASIjJelxQZZaaQ0q1raCcq71ZUmEkpe?=
+ =?us-ascii?Q?xkMtFNaTQ69C5s9cpOHfMN4hIn6qhRdYcHlvmoyjcD+0XIJMd4/F?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: be8ea51b-8042-499e-052b-08df3fbc3c2b
+X-MS-Exchange-CrossTenant-AuthSource: VE1PR04MB7216.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Nov 2026 06:23:00.9545
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: fqf9vEjvuA2dizVdNXaK102H1H3r14Qy5P9GQNiZWpS+D6oUKQ1HXjNqhG+sixBTIqFxzdMg9zSc3MO0v+c520wmFUwTJUqGvXOipuv1X8tZ5Ut8ddmfth5U3+3GRKGN
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10543
 
-On Tue Nov 10, 2026 at 10:54 PM CET, Uwe Kleine-K=C3=B6nig (The Capable Hub=
-) wrote:
-> These arrays already mostly match the most used and generally
-> recommended coding style. That is:
->
->  - no comma after the list terminator;
->  - a comma after an initializer if (and only if) the closing } is not
->    directly following;
->  - no explicit zeros in the list terminator;
->  - a space after an opening { and before a closing }, a single space in
->    the list terminator;
->
-> Adapt the offenders accordingly.
->
-> Reviewed-by: Andr=C3=A9 Draszik <andre.draszik@linaro.org> # for Maxim MA=
-X77759
-> Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-> Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be> # renesas
-> Reviewed-by: Mathieu Dubois-Briand <mathieu.dubois-briand@bootlin.com> # =
-max7360
-> Reviewed-by: Linus Walleij <linusw@kernel.org>
-> Signed-off-by: Uwe Kleine-K=C3=B6nig (The Capable Hub) <u.kleine-koenig@b=
-aylibre.com>
+From: Wei Fang <wei.fang@nxp.com>
 
-Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com> # max*
+This patch set adds PTP timestamping support to the NETC switch, so that
+the switch ports can be used for IEEE 1588 PTP synchronization.
 
---
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+The NETC switch has no time registers of its own and instead shares the
+PTP time of the NETC Timer, which is a separate PCIe function driven by
+its own driver. The first 3 patches prepare the Timer driver for this
+role: tidy up its 64-bit register access, drop an ineffective reset, and
+export netc_timer_get_current_time() so the switch driver can read the
+current PTP time across the driver boundary in a race-free way.
+
+The switch redirects PTP frames to the CPU through the ingress port
+filter table (IPFT). A few patches harden and simplify the existing IPFT
+and host flood handling first, then enable the ingress port filtering
+lookup by default so PTP filter rules take effect without extra software
+tracking.
+
+On top of that groundwork, the switch driver gains RX timestamping and
+both flavours of TX timestamping. Timestamps are carried between the
+hardware and the driver through dedicated switch tags: the ingress and
+transmit timestamps ride in To_Host tags, and per-frame requests ride in
+To_Port tags. Two-step TX matches a queued skb clone against the
+timestamp response echoed back by the hardware. One-step TX defers the
+Sync frame to a per-port work, where the driver reads a fresh PTP time
+and writes it into the Sync frame's timestamp field, then programs the
+single-step register and transmits the frame so the hardware can add the
+residence time to the correction field on the wire.
+
+Together these changes let standard user-space PTP stacks drive hardware
+timestamping on the NETC switch ports.
+
+---
+v7 changes:
+1. Rename in_probe to configured in struct netc_switch
+2. ptp_ipft_eid[] is initialized for every port, next to ipft_hf_eid
+3. Return -EOPNOTSUPP when netc_get_phc_index() is negative in
+   netc_port_hwtstamp_get()
+4. Initialize onestep_state to NETC_ONESTEP_PORT_INACTIVE in
+   netc_port_ptp_init()
+5. Drop the netc_port_enable_onestep() call from netc_port_enable()
+6. When the frame is not known to be a one-step Sync, set *twostep to
+   true instead of dropping it
+v6 link: https://lore.kernel.org/imx/20261103021024.3121936-1-wei.fang@oss.nxp.com/
+v5 link: https://lore.kernel.org/imx/20261012095924.1129312-1-wei.fang@oss.nxp.com/
+v4 link: https://lore.kernel.org/imx/20260918072852.501420-1-wei.fang@oss.nxp.com/
+v3 link: https://lore.kernel.org/imx/20260831082335.1184605-1-wei.fang@oss.nxp.com/
+v2 link: https://lore.kernel.org/imx/20260808032146.2335723-1-wei.fang@oss.nxp.com/
+v1 link: https://lore.kernel.org/imx/20260728104548.3301214-1-wei.fang@oss.nxp.com/
+---
+
+Wei Fang (9):
+  ptp: netc: use ioread64_lo_hi/iowrite64_lo_hi for 64-bit register
+    access
+  ptp: netc: remove unnecessary pcie_flr() call in probe
+  ptp: netc: export netc_timer_get_current_time() for cross-driver use
+  net: dsa: netc: tie setup resources and reset to DSA setup/teardown
+  net: dsa: netc: use entry ID instead of pointer to track host flood
+    rule
+  net: dsa: netc: check return value of ntmp_ipft_delete_entry()
+  net: dsa: netc: enable ingress port filtering lookup by default
+  net: dsa: netc: add PTP two-step timestamping support
+  net: dsa: netc: add PTP one-step timestamping support
+
+ drivers/net/dsa/netc/Kconfig          |   2 +
+ drivers/net/dsa/netc/Makefile         |   3 +-
+ drivers/net/dsa/netc/netc_main.c      | 404 +++++++++---
+ drivers/net/dsa/netc/netc_platform.c  |   1 +
+ drivers/net/dsa/netc/netc_ptp.c       | 895 ++++++++++++++++++++++++++
+ drivers/net/dsa/netc/netc_switch.h    |  67 +-
+ drivers/net/dsa/netc/netc_switch_hw.h |   5 +
+ drivers/ptp/ptp_netc.c                | 136 ++--
+ include/linux/dsa/tag_netc.h          |  38 ++
+ include/linux/fsl/netc_global.h       |  10 +
+ net/dsa/tag_netc.c                    | 228 ++++++-
+ 11 files changed, 1619 insertions(+), 170 deletions(-)
+ create mode 100644 drivers/net/dsa/netc/netc_ptp.c
+
+-- 
+2.34.1
+
