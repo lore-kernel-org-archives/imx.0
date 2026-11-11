@@ -1,79 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794407534;
-	b=KSN0fo7LB4lMWwGqWxvzP/+cMW2P4utu1D4Ew3Kz+toLd8eAxIudlEYQi9Ef/k+Gg7bm
-	 /gb4DxCG9Sf6XMJtBGSWs3RjahwAnKTYL7LExd9HBu/PoqQXUnVzkTin3C98NoXhBtWkC
-	 rW//Y/HRNrcrFBsq1PAlxYXrfRL2aovyuhqo/x0ix8kXaZYpYgT8ujcz8ES2Ap0odHcBG
-	 4ixcUA3YdTacWgEgiV/fhBdizOhnQOL0QgkvyvJa5HEdy8kxREqV+3DMJUJzqz6bwFX1u
-	 efhUUWjtIUhcyvWtf2XY1l7OSHvdBfMUmW23XhAoYm5Tfbkq891up08dR0icNc8cDYw==
+	t=1794407719;
+	b=C/yk3nJY+gMi6YgH6IYgTe+6T6dA4BGbA1JvOqlLguGNSUuqG6WK8iuLI8Eb1q4eKD9m
+	 4q5DV6aOX+fTSVnV5kw+Yh8Ul1KuGJW3jruRgcUn5unZo8ozAEKVuPBHZNNmOlbIcOsWo
+	 udyjJQ6Usq/H35iin9SaAaJXcRAvLyXlnepqlqnOf8VaPYB9VQLCQc9LTFntO4zjhyGwm
+	 iKcCbLcdgHPtlhebCWNTKs66sKAO427RF2SkaV3AYeMSXtUX0Akoi1xbrl/7ab/ptya98
+	 O2y437rFnGlF0kBUFLnWnHYM58UCXJ87Tw7vaUWj86KUN/lb2VGEgVPw/sj9Tqxd5CQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794407534;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Date:From:To:
-	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=GxiFxtFc5yCbNRZFS/UnbYGoqZahGzZhAZClmh3XRHQ=;
-	b=aSCNwlRuvDSQUfjMyUZdYwVOyZYxmB8dvs7dVd7ddiiLsYFMXjFdC6/XgpGY6Eal5JSx
-	 XCu/JezsBW1eyLkfGC2uNLYBsYYNpaSQLymKmPLwrt35UQG6nXbxOkYIGyOTK7LbORjF6
-	 BxnP4Sd+7VSjFufzECR9KEXMmZjY3T9ALUkEjl6FCdnjYO/YV0JJ82K8dIz/DzUrAuQgD
-	 8C+ECJ0aLJvyaBd3PZCuyam9eB+3vocUV/Fyglu8sdFrH52XYe+J9Ha1/0oxpros1LKGr
-	 HysqTqbGrypiOfSZt0BjI5s/DPcI8Ka7TiWz8fYHCJxajzGUy4wvbSjB6wJWagBqIXw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794407719;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=9Q/hXxN4rvNs3UDQ3MT+UG0UyPwYQt/ekw3a+w3cLnQ=;
+	b=lmwhBeo1y8QB6xg9SuwbxHAsrbfyt3FdsOb0so3q4oe2DWuJmloXmp8Y4A1hpMlI/PKk
+	 7SKKjT4uMxWguIXGEFOQlpafH4/FUWx278Y1qzEY4kN9BSZd0yrDluz3Fa09qA7hyWxai
+	 TlS+zjtfox2zbHgL1yDtGgTfx3NslVUCvDLBK1dGAwDcPw2+rk/5gQI/PwYOEyXpgG8bx
+	 t6ijLqAgsSTi6bbfSavhjSlMF2Fr/qz/pEe7E10xg/itl+ceS+LESocQQptiJqwAEribX
+	 Q8JO8k0MuhqZP3+fPRYGEj8ShGQa6tMUyy3TEJk4aXSFOLZG6IfpSrU0DdEdg/3TgwA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=FPQEXQ59;
-	arc=none smtp.remote-ip=192.198.163.7
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=COU7FLQv;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82B18606A881
-	for <imx@lists.linux.dev>; Wed, 11 Nov 2026 14:32:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 82B18606A881
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 199C3606A888
+	for <imx@lists.linux.dev>; Wed, 11 Nov 2026 14:35:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=FPQEXQ59
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794407534; x=1825943534;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=JtVxkKTVgPD78NXQHLVs9qnh2GaoCFCwwjiS/QMXDQI=;
-  b=FPQEXQ59QZhGVBdoyYew2UDwGMtRx93A+94JTiKrbCvrIRG22nekAsGp
-   ZYdPXrSd8G0U1961spuQGXv65ct7BIgTTe4RCElWNj8wSI46rDgmPq1EE
-   HRPxc5Rz+45MvGzsJY0bnXrwicFU0ko9MAAmlNmBX5Ap3YMpdRdmCNFDk
-   YWFExAFcoHjFe/Msk6yCoKiKMwxoukCzzHXGBAxZOBkspu6jqeS63BNBW
-   6a7baFwoRivTWoSzW9yvRVXTOxg0XtymsHSKpNmjxfx3XudYqVbf7OBZS
-   qEQRcT+R3GyvHBCnWKuE8NFLEGBalRcgYEGVqb3VIkXGpt4kRqhrWn+nk
-   Q==;
-X-CSE-ConnectionGUID: Obs+NPbiT1WR2h9pl9Q61Q==
-X-CSE-MsgGUID: qdGVDQj3RDWnr0ftC1JNAw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11963"; a="3050561"
-X-IronPort-AV: E=Sophos;i="6.27,208,1787036400"; 
-   d="scan'208";a="3050561"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2026 06:32:13 -0800
-X-CSE-ConnectionGUID: Fj2Ke8c0R4q0DBfS09PbaQ==
-X-CSE-MsgGUID: SgSX0yhSR0GgxlllIKrOOw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,208,1787036400"; 
-   d="scan'208";a="8586158"
-Received: from black.igk.intel.com ([10.91.253.5])
-  by fmviesa003.fm.intel.com with ESMTP; 11 Nov 2026 06:32:10 -0800
-Received: by black.igk.intel.com (Postfix, from userid 1008)
-	id 8DBFB99; Wed, 11 Nov 2026 15:32:09 +0100 (CET)
-Date: Wed, 11 Nov 2026 15:32:09 +0100
-From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To: Daniel Baluta <daniel.baluta@nxp.com>
-Cc: badhri@google.com, gregkh@linuxfoundation.org,
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stefan.ghetu@nxp.com, imx@lists.linux.dev, Li Jun <jun.li@nxp.com>
-Subject: Re: [PATCH] usb: typec: tcpm: allow external charger detection to
- set USB_TYPE
-Message-ID: <avR8ad_Uo9hxYyAE@black.igk.intel.com>
-References: <20261106115742.730704-1-daniel.baluta@nxp.com>
- <avR2GnwIdOKSrTlE@black.igk.intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=COU7FLQv
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4FC81F00A06
+	for <imx@lists.linux.dev>; Wed, 11 Nov 2026 14:35:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794407718;
+	bh=9Q/hXxN4rvNs3UDQ3MT+UG0UyPwYQt/ekw3a+w3cLnQ=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=COU7FLQvxdhk4C8nYc21n25kqj3ApGY8GCwZq6s0xJauuPIzvmEZsSTUNbby9RBjS
+	 737QUOwawy0JypJGpH74Qt3ejgp9WnqFFCwg3JbLZ8R6dEj0z+iu9AqtvONsPWBuQa
+	 t+nxCMaD1bgwJM9ojt9FMcCURu5e5wEAXSlrVNBOCt/2Ilwevm+70BQ3MB25B6p9a2
+	 5G0PpDNjfsT0XXGNnc3A522PGjAAAvb64pVKhImXDLvRMWG9ArFTt9q4HrN6qpGCUl
+	 SohRAco0dyT2TpTdA2qaUTg5qkLs/v+ioCb3elCF5yprZtyYDUwW0y1ekXkEiwSOBf
+	 7+niM+gSCO13w==
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-6b7221c0f2cso2771995a12.3
+        for <imx@lists.linux.dev>; Wed, 11 Nov 2026 06:35:18 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AL+hErFlEp3RNuR2m6kp6ebo7MX+7X5dfwm4z4h9cmjOYvAUTEi4avq9kllDBviUnEVUwLCD1Ik=@lists.linux.dev
+X-Gm-Message-State: APuU4Z94TDmRA3SOsMNf+gxzzoER95IZodEblyyAYoVHVfhtBaiplKqi
+	tq8wi2JMTkO7KQ9H8F8z9+r0me8djfd9tIi01RZneFYgG4VFDKdCI2z3yppnRhYFGApKJk9FXZ+
+	sDNPQTCMzHj8U+MlaJwwXW1yORPI5qA==
+X-Received: by 2002:a05:6402:1d4e:b0:6b7:78e5:3fe2 with SMTP id
+ 4fb4d7f45d1cf-6b778e5412fmr1833663a12.8.1794407717277; Wed, 11 Nov 2026
+ 06:35:17 -0800 (PST)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -83,32 +59,140 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <avR2GnwIdOKSrTlE@black.igk.intel.com>
+References: <20261105-gpio-vf610-fixes-v3-0-504e19de5ad5@nxp.com> <20261105-gpio-vf610-fixes-v3-1-504e19de5ad5@nxp.com>
+In-Reply-To: <20261105-gpio-vf610-fixes-v3-1-504e19de5ad5@nxp.com>
+From: Rob Herring <robh@kernel.org>
+Date: Wed, 11 Nov 2026 08:35:04 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqJYx1TJA7aWUi=XR20Bn7ZqFZWG6jVT2b0+ZLe9RWoZMQ@mail.gmail.com>
+X-Gm-Features: AclHuK97dhZ8RDnOSi6eJDa7cXf78Q2-j_uGZ4_1m7mWgziIuwSZeAEy4jr55Z4
+Message-ID: <CAL_JsqJYx1TJA7aWUi=XR20Bn7ZqFZWG6jVT2b0+ZLe9RWoZMQ@mail.gmail.com>
+Subject: Re: [PATCH v3 01/11] dt-bindings: gpio: vf610: fix clock requirements
+ per SoC
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Stefan Agner <stefan@agner.ch>, 
+	Dong Aisheng <aisheng.dong@nxp.com>, Jacky Bai <ping.bai@nxp.com>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Bartosz Golaszewski <brgl@bgdev.pl>, linux-gpio@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, Peng Fan <peng.fan@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Nov 11, 2026 at 03:05:14PM +0100, Heikki Krogerus wrote:
-> On Fri, Nov 06, 2026 at 01:57:41PM +0200, Daniel Baluta wrote:
-> > From: Li Jun <jun.li@nxp.com>
-> > 
-> > Teach tcpm_psy_set_prop() to accept writes of
-> > POWER_SUPPLY_PROP_USB_TYPE and store the value in port->usb_type, and
-> > advertise the BC1.2 USB types (SDP/DCP/CDP/ACA) in
-> > psy_desc.usb_types so power_supply_set_property() callers are not
-> > rejected by power_supply_has_property().
-> > 
-> > This is a prerequisite for a follow-up PHY charger-detection driver
-> > that calls power_supply_set_property() on the tcpm-backed power
-> > supply once it determines the attached BC1.2 charger type.
-> > 
-> > Signed-off-by: Li Jun <jun.li@nxp.com>
-> > Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
-> 
-> Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+On Wed, Nov 4, 2026 at 9:56=E2=80=AFPM Peng Fan (OSS) <peng.fan@oss.nxp.com=
+> wrote:
+>
+> From: Peng Fan <peng.fan@nxp.com>
+>
+> The i.MX7ULP GPIO controller needs both the GPIO and PORT clocks,
+> while the i.MX8ULP and its derivatives (i.MX93/94/95/952) only have
+> a single "gpio" clock. The VF610 controller has no gateable clocks,
+> so force clocks and clock-names false.
+>
+> Fixes: c61d8b5791ab ("dt-bindings: gpio: gpio-vf610: Add imx8ulp compatib=
+le string")
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> ---
+>  .../devicetree/bindings/gpio/gpio-vf610.yaml       | 41 ++++++++++++++++=
+++++++
+>  1 file changed, 41 insertions(+)
 
-Ah, sorry. Sashiko found some issues with this it seems.
+Now a bunch of warnings in linux-next. Breaking binding changes like
+this need to be applied with the .dts changes.
 
-Thanks,
-
--- 
-heikki
+arch/arm64/boot/dts/freescale:952:50
+   Schema warnings:50
+     60 gpio@47400000 (fsl,imx93-gpio): clock-names: ["gpio","port"]
+has more than 1 item
+     60 gpio@43830000 (fsl,imx93-gpio): clock-names: ["gpio","port"]
+has more than 1 item
+     60 gpio@43820000 (fsl,imx93-gpio): clock-names: ["gpio","port"]
+has more than 1 item
+     60 gpio@43810000 (fsl,imx93-gpio): clock-names: ["gpio","port"]
+has more than 1 item
+     41 gpio@47400000 (fsl,imx93-gpio): clocks: [[6,116],[6,116]] has
+more than 1 item
+     41 gpio@43830000 (fsl,imx93-gpio): clocks: [[6,119],[6,119]] has
+more than 1 item
+     41 gpio@43820000 (fsl,imx93-gpio): clocks: [[6,118],[6,118]] has
+more than 1 item
+     41 gpio@43810000 (fsl,imx93-gpio): clocks: [[6,117],[6,117]] has
+more than 1 item
+     40 gpio@47400000 (fsl,imx95-gpio): clock-names: ["gpio","port"]
+has more than 1 item
+     40 gpio@43850000 (fsl,imx95-gpio): clock-names: ["gpio","port"]
+has more than 1 item
+     40 gpio@43840000 (fsl,imx95-gpio): clock-names: ["gpio","port"]
+has more than 1 item
+     40 gpio@43820000 (fsl,imx95-gpio): clock-names: ["gpio","port"]
+has more than 1 item
+     40 gpio@43810000 (fsl,imx95-gpio): clock-names: ["gpio","port"]
+has more than 1 item
+     34 gpio@47400000 (fsl,imx95-gpio): clocks: [[24,54],[24,54]] has
+more than 1 item
+     34 gpio@43850000 (fsl,imx95-gpio): clocks: [[24,119],[24,119]]
+has more than 1 item
+     34 gpio@43840000 (fsl,imx95-gpio): clocks: [[24,119],[24,119]]
+has more than 1 item
+     34 gpio@43820000 (fsl,imx95-gpio): clocks: [[24,119],[24,119]]
+has more than 1 item
+     34 gpio@43810000 (fsl,imx95-gpio): clocks: [[24,119],[24,119]]
+has more than 1 item
+     19 gpio@47400000 (fsl,imx93-gpio): clocks: [[3,116],[3,116]] has
+more than 1 item
+     19 gpio@43830000 (fsl,imx93-gpio): clocks: [[3,119],[3,119]] has
+more than 1 item
+     19 gpio@43820000 (fsl,imx93-gpio): clocks: [[3,118],[3,118]] has
+more than 1 item
+     19 gpio@43810000 (fsl,imx93-gpio): clocks: [[3,117],[3,117]] has
+more than 1 item
+      5 gpio@43870000 (fsl,imx94-gpio): "clocks" is a required property
+      5 gpio@43870000 (fsl,imx94-gpio): "clock-names" is a required propert=
+y
+      5 gpio@43860000 (fsl,imx94-gpio): "clocks" is a required property
+      5 gpio@43860000 (fsl,imx94-gpio): "clock-names" is a required propert=
+y
+      5 gpio@43850000 (fsl,imx94-gpio): "clocks" is a required property
+      5 gpio@43850000 (fsl,imx94-gpio): "clock-names" is a required propert=
+y
+      5 gpio@43840000 (fsl,imx94-gpio): "clocks" is a required property
+      5 gpio@43840000 (fsl,imx94-gpio): "clock-names" is a required propert=
+y
+      5 gpio@43820000 (fsl,imx94-gpio): "clocks" is a required property
+      5 gpio@43820000 (fsl,imx94-gpio): "clock-names" is a required propert=
+y
+      5 gpio@43810000 (fsl,imx94-gpio): "clocks" is a required property
+      5 gpio@43810000 (fsl,imx94-gpio): "clock-names" is a required propert=
+y
+      3 gpio@47400000 (fsl,imx95-gpio): clocks: [[25,54],[25,54]] has
+more than 1 item
+      3 gpio@47400000 (fsl,imx95-gpio): clocks: [[2,54],[2,54]] has
+more than 1 item
+      3 gpio@43850000 (fsl,imx95-gpio): clocks: [[25,119],[25,119]]
+has more than 1 item
+      3 gpio@43850000 (fsl,imx95-gpio): clocks: [[2,119],[2,119]] has
+more than 1 item
+      3 gpio@43840000 (fsl,imx95-gpio): clocks: [[25,119],[25,119]]
+has more than 1 item
+      3 gpio@43840000 (fsl,imx95-gpio): clocks: [[2,119],[2,119]] has
+more than 1 item
+      3 gpio@43820000 (fsl,imx95-gpio): clocks: [[25,119],[25,119]]
+has more than 1 item
+      3 gpio@43820000 (fsl,imx95-gpio): clocks: [[2,119],[2,119]] has
+more than 1 item
+      3 gpio@43810000 (fsl,imx95-gpio): clocks: [[25,119],[25,119]]
+has more than 1 item
+      3 gpio@43810000 (fsl,imx95-gpio): clocks: [[2,119],[2,119]] has
+more than 1 item
+      2 gpio@2e200000 (fsl,imx8ulp-gpio): clocks: [[41,18],[41,18]]
+has more than 1 item
+      2 gpio@2e200000 (fsl,imx8ulp-gpio): clock-names: ["gpio","port"]
+has more than 1 item
+      2 gpio@2d010000 (fsl,imx8ulp-gpio): clocks: [[19,22],[19,10]]
+has more than 1 item
+      2 gpio@2d010000 (fsl,imx8ulp-gpio): clock-names: ["gpio","port"]
+has more than 1 item
+      2 gpio@2d000000 (fsl,imx8ulp-gpio): clocks: [[19,21],[19,9]] has
+more than 1 item
+      2 gpio@2d000000 (fsl,imx8ulp-gpio): clock-names: ["gpio","port"]
+has more than 1 item
