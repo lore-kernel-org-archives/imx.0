@@ -1,90 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=161.97.139.27
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794395990;
-	b=LuDxAexaYCrPEhhH5L/3hfGL7h50V0AKUsKKOgpyd4vUTDhP+RNlIW6VhvSh4Vo2K96B
-	 f03hEBhiuzKoz4Aw2ujPToyAxQBQWndwWqLe7IltWL45GtlkswCxStTWSSwjZMBhSTfRE
-	 rIL9wZvvLHeLN0cdw4xzHGlvyVVev97wxXGOLgZnWU21INUHMJyGoj8tg6VyHlu3q4s2h
-	 Zyti+53jLowArcyOVrjiZJK3+qgEGLN4fIbmOANoS6fHhFu+NaLabWJAaFtqflq8ffoCq
-	 ADuGXrrhO9GKz62fHnjnrRqTp9X6HvnVfz0SdiyWfpeiDye1KmHyMG59ZnDk/PPoHhQ==
+	t=1794396070;
+	b=nVuBnCflK7c6VSqffD/MyzvFCgkW9jz5paxCUKGpc3If+TLmqiXQznzfPi//tHIBApdq
+	 XtZjE6TWIfVifPhaSxW2Q+53I/3kbSGzdfRwx4ZcOHum4o2vrQpmdiROfI3Qc0hilK3tY
+	 lA4Ghvk3KDWafFF8BB5eYjSoVAPZsh534ek8yRFv/GGCH5u/c373/cGFHGHOjRrguPvvJ
+	 Bh+Rn0EpqmcSEXn0drfwNv147MBnoxE6IZJH3QwETGe3MoAfJvtI3iq+n7hhu+OClreik
+	 sXk8gGfYtKyCouwYNbNU7Zarlj382z+3ekA3GXSNIpEfVwpdeVomSJ6HJ7bf9mWN3pg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794395990;
-	h=DMARC-Filter:Received:DKIM-Signature:Date:From:To:Cc:Subject:
-	 Message-ID:In-Reply-To:References:X-Mailer:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=UGGOSnoQOa8uQR6vbajtQptujNdknjBUZcDCmSIDNdo=;
-	b=mR+beo2GdpT+2eMxUqM34/2MmBxGRrk4J44oURbXthCFokGgxFK2PJknk0IAyq6KXRE+
-	 yy4sr4PACI0FRu31HeHsIydKnAulEZHctRDZHnzLCDH2eRY0niQno8ruYamEWhjqvWLsI
-	 flU+z3MaHQccCi4YHoD5or4YPEYbOVNuU3QngIF6swavnYLW0O5OUZ9TRDD8ka/0DHrwe
-	 0onUXl8UV0b2pLwlk/dBFDtgF1GJ35HeecYfdY5bJQj5hFT5EOVSSE0p0ubjU+pkbQU1V
-	 XMk+1Vi6iZ6VsbAhMMHX42FZ6DHmCAVy6eMwlZQs4o00i0n/Yu/pCnEi+fQbXQrnnQQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794396070;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=n9eMp4Ks0FZCltmngYBV5QRXUSvr6ha96eXxZ61XSW8=;
+	b=B3ysep6StGbp80HdbhTjFQxrWmANO7xRAY6gQdgB2LHiCb/fxJxPzotbWK92pe5XxJNO
+	 /YhWXHbBmZt/00digwjSIr76yytXVI1d+XXxI1hOKdgQAHHy2xwcjvNyrhMzff8chJf5x
+	 +GFHZoOL9kmkdfoUc8yWvwXoeyFiNbGSubeTZ4iQoZxFPRiMFB/Id23GVNWUTJJfMDxhW
+	 kV+E9Ojm/99zEtZ66hM5QyZ+yOH/FFQPjzKgTRvzdVH5Utt4DrJP10QywVCWFKKFNqT25
+	 KdKwfhWlBFE1tJTr6/BYUD/UUobSp3GU3VnMqfNwQvp8i46Z6zilrOoyGwm6ia/ZNbg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=kemnade.info;
-	spf=pass smtp.mailfrom=kemnade.info;
-	dkim=pass header.d=kemnade.info header.i=@kemnade.info header.a=rsa-sha256 header.s=20220719 header.b=bquDp06d;
-	arc=none smtp.remote-ip=161.97.139.27
-Received: from mail2.andi.de1.cc (vmd64148.contaboserver.net [161.97.139.27])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nq9s8uUi;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD8FA606A33A;
-	Wed, 11 Nov 2026 11:19:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DD8FA606A33A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23761606A324;
+	Wed, 11 Nov 2026 11:21:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.a=rsa-sha256 header.s=20220719 header.b=bquDp06d
-Received: from mail.andi.de1.cc ([2a02:c205:3004:2154::1])
-	by mail2.andi.de1.cc with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <andreas@kemnade.info>)
-	id 1xR6Mf-00000002vn5-2w6M;
-	Wed, 11 Nov 2026 12:19:41 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kemnade.info; s=20220719; h=References:In-Reply-To:Subject:Cc:To:From:
-	Reply-To:Content-ID:Content-Description;
-	bh=UGGOSnoQOa8uQR6vbajtQptujNdknjBUZcDCmSIDNdo=; t=1794395981; x=1795605581; 
-	b=bquDp06dHW1ZMSIK2ffoFMQ1OgFcV/zUCzmPwJmuPs+2SVrWWx3pyC8hBomQmbGHts3rYqdsFEb
-	bxjtlbN6J9gQH4tivWURgkvPxLTIpocOkwBx77Yr9I9biE3SqDkkxdDtYYyaWVcWR/vmwzrgzo/EF
-	FCwu8wh0c2RhtyJtVy4P4k26cAXzRmqPfGsyJk2pxeXFwl/CG6yelBQCQaGqLlay74yWDjd9ZYHP5
-	iMBGEwdSgowQWQJ1jVicT/nwBVmw6e/lpDe4Y1FtL5heS7ka/RD3k2UtXLbXjEmLCU6pg5iT/V7t/
-	+9CXzdIGa26ZEKCFyU6XTdtH3yu8p+RqYIDQ==;
-Date: Wed, 11 Nov 2026 12:19:24 +0100
-From: Andreas Kemnade <andreas@kemnade.info>
-To: Luca Ceresoli <luca.ceresoli@bootlin.com>,
- tomi.valkeinen@ideasonboard.com
-Cc: Andrzej Hajda <andrzej.hajda@intel.com>, Neil Armstrong
- <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, Laurent
- Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman
- <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, Maarten
- Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
- <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
- <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Jessica Zhang
- <jesszhan0024@gmail.com>, Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>,
- Lucas Stach <l.stach@pengutronix.de>, Frank Li <Frank.Li@nxp.com>, Sascha
- Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
- <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Paul Cercueil
- <paul@crapouillou.net>, Paul Kocialkowski <paulk@sys-base.io>, Linus
- Walleij <linusw@kernel.org>, Inki Dae <inki.dae@samsung.com>, Jagan Teki
- <jagan@amarulasolutions.com>, Marek Szyprowski <m.szyprowski@samsung.com>,
- Sean Paul <sean@poorly.run>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan
- <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, Albert
- Esteve <aesteve@redhat.com>, Anusha Srivatsa <asrivats@redhat.com>, Dmitry
- Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, Hui Pu
- <Hui.Pu@gehealthcare.com>, Ian Ray <ian.ray@gehealthcare.com>, Thomas
- Petazzoni <thomas.petazzoni@bootlin.com>, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
- linux-rockchip@lists.infradead.org,
- linux-stm32@st-md-mailman.stormreply.com, asahi@lists.linux.dev,
- linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
- linux-tegra@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-samsung-soc@vger.kernel.org
-Subject: Re: [PATCH v3 17/19] drm/omap: dss: don't create a panel_bridge
-Message-ID: <20261111121924.0e54e7e8@kemnade.info>
-In-Reply-To: <20260916-drm-bridge-every-panel-v3-17-83afb4f1a707@bootlin.com>
-References: <20260916-drm-bridge-every-panel-v3-0-83afb4f1a707@bootlin.com>
-	<20260916-drm-bridge-every-panel-v3-17-83afb4f1a707@bootlin.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; aarch64-unknown-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nq9s8uUi
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 641541F00A05;
+	Wed, 11 Nov 2026 11:21:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794396069;
+	bh=n9eMp4Ks0FZCltmngYBV5QRXUSvr6ha96eXxZ61XSW8=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=nq9s8uUiajv1IuSAJLt7CugwEflNVQaHq8pv0a5qZDdLjh5muesftq64zRDtM4n+l
+	 J6sug2e++k4OLqgjijNR7/ZbA8X9lklhxIRoF4pW9vaGmrKIzJgiK4hyC5efq/J2Ug
+	 HeqOfvxxo0Yh9uNR5sUMXWXn5tWnZ954CsDbTMXFQs9Zk8L1cvP9vzKVB96ehDJQLg
+	 tXp1C74486sd1xrFi6bZ+farNlcPBKz2+50WzxGUrQP0SdzIhVnZPO1ogQQqHGhn9I
+	 8AVl8XBQ34c30kl4crq+pw7F7/yskOGQvhZSbmZ7KTWkqM/LWBWcFcajhvqd0/YriB
+	 WDpmHqZBu9oEA==
+Message-ID: <sashiko-outbox-208862@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] clk: imx: clk-imx95-blk-ctl: fix error unwinding in
+ probe
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Manush Prajwal" <manushprajwal555@gmail.com>
+Cc: linux-clk@vger.kernel.org, imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <6af44b5c.67914289.fe7ab.6559@mx.google.com>
+References: <6af44b5c.67914289.fe7ab.6559@mx.google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 11 Nov 2026 11:21:08 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -93,133 +59,70 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
 
-On Wed, 16 Sep 2026 15:45:41 +0200
-Luca Ceresoli <luca.ceresoli@bootlin.com> wrote:
+Thank you for your contribution! Sashiko AI review found no new issues
+in this patch, but noticed 1 related pre-existing issue it does not
+introduce:
+- [High] clk: imx: uninitialized register overwrite in
+  imx95_bc_runtime_resume() [1]
+--
 
-> Now a panel_bridge is automatically created for every drm_panel and the
-> panel-bridge API is just a deprecated wrapper to access it.
-> 
-> Update and simplify the code by just getting a reference to the
-> already-existing bridge using of_drm_get_bridge_by_endpoint().
-> 
-> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+commit 19a6efb010aee7e2b721c30ed7ad173ca7b7d1df
+Author: Manush Prajwal <manushprajwal555@gmail.com>
 
-This breaks the display on GTA04/OMAPDRM.
+clk: imx: clk-imx95-blk-ctl: fix error unwinding in probe
 
-Panel is panel-tpo-td028ttec1 attached via DPI, controlled
-via spi_gpio.
+This commit fixes error handling in imx95_bc_probe() by checking runtime PM
+return values, dropping the runtime PM reference on failure, and disabling
+bc->clk_apb on error paths.
 
-I get
-[   12.050201] omapdrm omapdrm.0: [drm] No compatible format found
-[   12.050231] omapdrm omapdrm.0: [drm] Cannot find any crtc or sizes
+> diff --git a/drivers/clk/imx/clk-imx95-blk-ctl.c b/drivers/clk/imx/clk-im=
+x95-blk-ctl.c
+> index bc6957299ceca..ad386a48ec2bb 100644
+> --- a/drivers/clk/imx/clk-imx95-blk-ctl.c
+> +++ b/drivers/clk/imx/clk-imx95-blk-ctl.c
+> @@ -394,17 +394,29 @@ static int imx95_bc_probe(struct platform_device *p=
+dev)
 
-Workaround:
-rmmod omapdrm
-modprobe omapdrm
+[ ... ]
 
-Regards,
-Andreas
-
-> ---
->  drivers/gpu/drm/omapdrm/dss/omapdss.h |  1 -
->  drivers/gpu/drm/omapdrm/dss/output.c  | 42 ++++-------------------------------
->  2 files changed, 4 insertions(+), 39 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/omapdrm/dss/omapdss.h b/drivers/gpu/drm/omapdrm/dss/omapdss.h
-> index 4c22c09c93d5..e3e685c931f1 100644
-> --- a/drivers/gpu/drm/omapdrm/dss/omapdss.h
-> +++ b/drivers/gpu/drm/omapdrm/dss/omapdss.h
-> @@ -204,7 +204,6 @@ struct omap_dss_device {
->  	struct dss_device *dss;
->  	struct drm_bridge *bridge;
->  	struct drm_bridge *next_bridge;
-> -	struct drm_panel *panel;
->  
->  	struct list_head list;
->  
-> diff --git a/drivers/gpu/drm/omapdrm/dss/output.c b/drivers/gpu/drm/omapdrm/dss/output.c
-> index 6e9bc605ee22..36d37deac802 100644
-> --- a/drivers/gpu/drm/omapdrm/dss/output.c
-> +++ b/drivers/gpu/drm/omapdrm/dss/output.c
-> @@ -12,7 +12,6 @@
->  #include <linux/of_graph.h>
->  
->  #include <drm/drm_bridge.h>
-> -#include <drm/drm_panel.h>
->  
->  #include "dss.h"
->  #include "omapdss.h"
-> @@ -20,40 +19,16 @@
->  int omapdss_device_init_output(struct omap_dss_device *out,
->  			       struct drm_bridge *local_bridge)
->  {
-> -	struct device_node *remote_node;
-> +	struct drm_bridge *bridge;
->  	int ret;
->  
-> -	remote_node = of_graph_get_remote_node(out->dev->of_node,
-> -					       out->of_port, 0);
-> -	if (!remote_node) {
-> +	bridge = of_drm_get_bridge_by_endpoint(out->dev->of_node, out->of_port, 0);
-> +	if (IS_ERR(bridge)) {
->  		dev_dbg(out->dev, "failed to find video sink\n");
->  		return 0;
+>  	if (bc->pdata->rpm_enabled) {
+> -		devm_pm_runtime_enable(&pdev->dev);
+> -		pm_runtime_resume_and_get(&pdev->dev);
+> +		ret =3D devm_pm_runtime_enable(&pdev->dev);
+> +		if (ret)
+> +			goto err_clk_disable;
+> +
+> +		ret =3D pm_runtime_resume_and_get(&pdev->dev);
+> +		if (ret)
+> +			goto err_clk_disable;
 >  	}
->  
-> -	out->panel = of_drm_find_panel(remote_node);
-> -	if (IS_ERR(out->panel))
-> -		out->panel = NULL;
-> -
-> -	if (!out->panel)
-> -		out->bridge = of_drm_find_and_get_bridge(remote_node);
-> -
-> -	of_node_put(remote_node);
-> -
-> -	if (out->panel) {
-> -		struct drm_bridge *bridge;
-> -
-> -		bridge = drm_panel_bridge_add(out->panel);
-> -		drm_panel_put(out->panel);
-> -		if (IS_ERR(bridge)) {
-> -			dev_err(out->dev,
-> -				"unable to create panel bridge (%ld)\n",
-> -				PTR_ERR(bridge));
-> -			ret = PTR_ERR(bridge);
-> -			goto error;
-> -		}
-> -
-> -		out->bridge = drm_bridge_get(bridge);
-> -	}
-> +	out->bridge = bridge;
->  
->  	if (local_bridge) {
->  		if (!out->bridge) {
-> @@ -65,11 +40,6 @@ int omapdss_device_init_output(struct omap_dss_device *out,
->  		out->bridge = drm_bridge_get(local_bridge);
->  	}
->  
-> -	if (!out->bridge) {
-> -		ret = -EPROBE_DEFER;
-> -		goto error;
-> -	}
-> -
->  	return 0;
->  
->  error:
-> @@ -79,10 +49,6 @@ int omapdss_device_init_output(struct omap_dss_device *out,
->  
->  void omapdss_device_cleanup_output(struct omap_dss_device *out)
->  {
-> -	if (out->bridge && out->panel)
-> -		drm_panel_bridge_remove(out->next_bridge ?
-> -					out->next_bridge : out->bridge);
-> -
->  	drm_bridge_put(out->next_bridge);
->  	drm_bridge_put(out->bridge);
->  }
-> 
 
+[Severity: High]
+This problem wasn't introduced by this patch, but doesn't calling
+pm_runtime_resume_and_get() here [1] overwrite the hardware clock
+control register with zero before any state has been saved?
+
+bc is allocated with devm_kzalloc(), so bc->clk_reg_restore is initially
+0.  When pm_runtime_resume_and_get() runs during probe, it synchronously
+invokes imx95_bc_runtime_resume():
+
+drivers/clk/imx/clk-imx95-blk-ctl.c:imx95_bc_runtime_resume() {
+	...
+	writel(bc->clk_reg_restore, bc->base + bc->pdata->clk_reg_offset);
+
+	return 0;
+}
+
+Writing the uninitialized zero value clobbers the clock gate and mux
+settings configured by the bootloader, disabling active clocks and hanging
+dependent blocks such as display or LVDS.  Initializing
+bc->clk_reg_restore from the register before enabling runtime PM (or
+calling pm_runtime_set_active() before devm_pm_runtime_enable()) would
+preserve the hardware state.
+
+[1] https://sashiko.dev/#/bug/linux-2f2aa951-60e6-4afb-8098-949100502ab9
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/6af44b5c.67914289.f=
+e7ab.6559@mx.google.com?part=3D1
