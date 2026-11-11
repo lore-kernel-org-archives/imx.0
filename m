@@ -1,105 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794483605;
-	b=lJPol6QLsE+AextV7WHxbfqIdI+i7Y3Q752HEiZoTNMXUnCOF0oWNOPc4aEfuYnpiMZW
-	 j6plli1CKZnb4wdDK3gsgxald4inT+C4F4l5EuZ+AYqRNJWIZd901Nxy0oB5RyKbAc8yk
-	 9LAKVRdrlrOMzjltZBOo5vZj4h/kEl8uvIVbEP5iNl1bLAPKw4oinEVz/dF7wCjuQaROY
-	 xsywXUZB/xVhF3/HT9B7ECpTv9LLVXPoQOtuvAAyXEYvXh19vKnH+2A5w1kOyn9NKKsqK
-	 cFVCc3pHF0igxWJgjKLUC/AtOg7cRNmPEguYGaf5V1QXHUJuYKKBr6d2bF6xv6JxqZQ==
+	t=1794484183;
+	b=kz55Hp9aszLHoYcUGVnr+MBg2iFX9aQBzSaJRfobBJGPUOvNUIRVJU/usFTmOqUnlB8P
+	 qVDWchA07hi3m6fdxJPj7NYk7e4yr3oSvW7YvzV5Lj6m2+4hDULHep6vLhZgQMsArxPNt
+	 6xsjOC3hzPMNOKupJgjh/loReKO8DoZaKJOPat9/hh85zYzMduYPHMWm1d+fRnIvWRyXa
+	 k60SOaCpndIqV5zMmuoawfQv7qpftHuTwF0KiO2PQEvEOmqqu/LxLC8LVRkNevk9peghL
+	 E9RcWnT2J/QlrrxJliAgQLe+qxobsFcL8XepPjvBZP6CYJEmS4xCWBlnw79H0Ad3fQw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794483605;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Type:X-Developer-Signature:X-Developer-Key:
-	 Content-Transfer-Encoding;
-	bh=WZHCTs4f986cWxYB4Wn0WoeFqnSR+ysmF/iaTpKX2P0=;
-	b=qKKJVKy4uzItQLniLQgiLXv+q46dW3Uglh4TX5ewf52LbPIIgghn7ZhVUAI7tpuZAiee
-	 ayP0JDjAdx7oHfKplNF+sHMoGs2CaRwVPzGYCGAFLPFwTWWnTaZ06NaBItXiAgUjYNlJL
-	 yHCOQFQhJdl1knNIhuy19tkGzPBt3dlgg4jgswcT62/qSf1kOCr0vV3a22BuKx9NBI/uo
-	 1LqQpHQABki75K+1f90KMHGYXsE8EfwQalxpsSrQ6/YPNnwZhsuLSAZNNoHLxXujjdjzE
-	 0Hk8roIHWh3CN/JIYVCOBGp17zNzyFbYDWIXMeNsC8LGm1Rku9j1FW9AFzAlAl8S14Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794484183;
+	h=Received:DKIM-Signature:From:To:Cc:In-Reply-To:References:Subject:
+	 Message-Id:Date:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=kH63A4Q8NhJGmF9dCXy668pUMjIxPVBUhCn9NoDFJ2o=;
+	b=3yAVdRUn6crF/TPWsqYPNIeR4OM8B+Cl9TOnXDZ0Pe7/2BEnQxevavMPcGeGIpaYGub5
+	 hrvv7AEGsMHCh2UC1oE0R9jTPoMDXjBVIDd4KluCdykUcFINReIzdFLaNiScJjMvTsccs
+	 Kj0t9u0d6uLQVaKvImNuc5tPS6gAdmgH+NvbVhkvcgQ9Z8U//q5d4yoIyAnERqD+GM47R
+	 s5z34Liu/AYtl8tgDA5WOC4qlLbV4zPiGScyk0gjouj7vdCJyJjaywwWD4V2i4QSHhpPt
+	 ImymF0omiISF6MZylQP6TGpC7lzx4keFNys7CMQmPVKchwxp3kXzUTQgV+NK7TpBm+Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=baylibre.com;
-	spf=pass smtp.mailfrom=baylibre.com;
-	dkim=pass header.d=baylibre.com header.i=@baylibre.com header.a=rsa-sha256 header.s=google header.b=j5rQlhVQ;
-	arc=none smtp.remote-ip=209.85.221.42
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NQ3K80Qo;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83799606A8A3
-	for <imx@lists.linux.dev>; Thu, 12 Nov 2026 11:40:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 83799606A8A3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D02F606A31C;
+	Thu, 12 Nov 2026 11:49:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.a=rsa-sha256 header.s=google header.b=j5rQlhVQ
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-48fd2e38825so2494079f8f.2
-        for <imx@lists.linux.dev>; Thu, 12 Nov 2026 03:40:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre.com; s=google; t=1794483602; x=1795088402; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=WZHCTs4f986cWxYB4Wn0WoeFqnSR+ysmF/iaTpKX2P0=;
-        b=j5rQlhVQrtwE6WihkYcZpN+FnDv7AdXKfbxpoVcU/GtRfF9bmq+g7V1n1M9QDSngfr
-         xcKRNqBaPmjf8Q9gxoxfbGl3Dn/YUzwUYSdhLOf4GO3C2hSMauhflnN/Y45dfoEOZ3vd
-         y1UnWDIFhsiO4PlZZRoRmmDvDOY1rBARPnT2pqQ09W/oA88dOUAMDFUzBvWj2hdTJI5B
-         oLqAKSB0pvAb8kJLxAhmUNzpzbp56Rvbj6HoIhSNr0+/34Ea0F4IVh6rBFLDXPx2LwCr
-         /vI2wG8enXACvXDYUJjkc0ImH174CL98L9XhL4fo/CR9nkH16PNwNbEbl+o4yD6H6hwF
-         1BIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794483602; x=1795088402;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=WZHCTs4f986cWxYB4Wn0WoeFqnSR+ysmF/iaTpKX2P0=;
-        b=mutK2zqT/djT55HeFu8Mc1G1xgd4tiWiKincRS7UxCLHldtaPmXEU3/oOqG1ZecnOg
-         pnzEEz+ejHza2QC+HGhvY5gDv6f+z4xvwgYzl6NOW4mzitm16nfCieS+1Bd7TXT0vqut
-         KZwmLzdlIDgmeSz/T2BAxp6oNXwXYhlbgYjKRMGb8K1KxxWlp/+mtXoQSTVOEVOzDFwQ
-         auO+D/tpSdnmiCqcXEvDtXfnoJhnjv+ZSKeuT4ZQ/i5IR5zrhIl6jfEbsdefzOzCG/BT
-         Q6fnYUzQSR0fMVriLTiIbZHVZSw5FdmtyvH49bnGNBujjl98Jfy6aR+d3oFPGptCDJtH
-         gCdQ==
-X-Forwarded-Encrypted: i=1; AL+hErErzl0f5IwstwO2zEbR8ks4N49brtncxXit8K4Bcfe6eyQTH9JuRCPrVQ9/4Lync/MHjWg=@lists.linux.dev
-X-Gm-Message-State: APuU4Z+919yAw6oIhUGsccWe4rDWQoUYyOkLkisx2IfKQc9Gn7wrsgSi
-	ke+anzc4/5HKv13MJSaSODb+jfoUNz12grUmQ4oDjbbUJ3pY1YssY2vOnMuXdWZ9bzM=
-X-Gm-Gg: AYBFou0dv8EcDwatYB5pOIyMZh0ySfm+19pJ2vJydYD1ZjvVcFuKWRSQyuQPVEg0sQm
-	2Ex3p5+Ec5D9q189yiEk6IoVfHK8s7Q0DWTrVjP68JTA4yEzRXRVB5k07w26y4GBZV2wkKfy6sq
-	NQSu5p3f6a0MpjSFe1uftIIg6vWKNtIwNMIPfp2xECUKR2S40OoHRNCZxXu3WKF/AAqWPWQuszn
-	KfFMvApaMZYD6Jx6vmD8wwl4M/yABJOTdKIGNNZJEBDMK77wm4RH1dLn7GldkbdZGPxNV/MvX04
-	Yd2aLscSd8yGBvP5zY0039nb5bGcRmaWwYCkvN7cFZGM3IPltxlCd4Yiss3KDgt3uMa7yKlrSEr
-	HxexfbhsnQF7pleqUQ9OsJ7NanGwB4DQU+Agno2Pfuv92Ky5Z8kpAfAHISRL99mTz+2YUrL6sgz
-	P6Wqh++5UIaQ2Wna4OLI5rnpoFKcvPZ6JvM+9MR2OrcHqdwiwgeUFvSTdekGnPKnk+J7fVqLi4c
-	j2XM/u9zi799KAXVWNepjZrLdEgwB8+u99bqCZyRZEwIEnr2VM3Ue6Hni/2bc7z5opkZeWzsok1
-	9NJClbYzINk7llrItoHOrhoZQaCdb1u+Op02esMlgI64VrCatNjpEKtRteUkHXrUH7rUk5mN+QJ
-	7yVB+VpkQLVdsS569
-X-Received: by 2002:a05:6000:248a:b0:493:1477:cdd7 with SMTP id ffacd0b85a97d-499c7271d72mr9671131f8f.45.1794483602143;
-        Thu, 12 Nov 2026 03:40:02 -0800 (PST)
-Received: from localhost (p200300f65f19a904528996c8ea0fadad.dip0.t-ipconnect.de. [2003:f6:5f19:a904:5289:96c8:ea0f:adad])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-498366c43f4sm19115427f8f.47.2026.11.12.03.40.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2026 03:40:01 -0800 (PST)
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-To: Bjorn Andersson <andersson@kernel.org>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	linux-remoteproc@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Peng Fan <peng.fan@nxp.com>
-Subject: [PATCH v4 2/2] remoteproc: imx_dsp_rproc: Implement .memcpy_tova()
-Date: Thu, 12 Nov 2026 12:39:51 +0100
-Message-ID:  <922f685493e615b450c913b77cf33022c9cda8a3.1794483181.git.u.kleine-koenig@baylibre.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <cover.1794483181.git.u.kleine-koenig@baylibre.com>
-References: <cover.1794483181.git.u.kleine-koenig@baylibre.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NQ3K80Qo
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E76A1F00A0C;
+	Thu, 12 Nov 2026 11:49:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794484182;
+	bh=kH63A4Q8NhJGmF9dCXy668pUMjIxPVBUhCn9NoDFJ2o=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=NQ3K80Qo2q3BL07IZpeFRUivMoPaMOVcJYxjzGx0tcJcgm4EeEH9gcDfaqOxphkNG
+	 4+MxAWdn6B9irz24jPAXNdMZgvvfY9Mri6qErqmu3AGnL7j0gh0X/HkWISiJ77x/NM
+	 wcdmBa/hLp3GhTX76C1yEdSp4g2h3EBgYXqBfaElrfMw0iZAAW3E4dGW0KXI772XJE
+	 7QIGZfetbzPSgYuMCtQOp+9MDnU+GWsMwJ0I8ybv8J5YBXFpy+E1Rq638+Mbf4pleY
+	 e5c2eixsB8gfI7s3Prz/9CAG4EPzNONXb9s7DHQGbPIv6muRUVHMWCIVnE55pwwora
+	 OyznJ7ojj6RUg==
+From: Mark Brown <broonie@kernel.org>
+To: Liam Girdwood <lgirdwood@gmail.com>, Guenter Roeck <linux@roeck-us.net>, 
+ Lee Jones <lee@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, Pablo Mazzini <pmazzini@gmail.com>
+Cc: Alistair Francis <alistair@alistair23.me>, 
+ Andreas Kemnade <andreas@kemnade.info>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, linux-hwmon@vger.kernel.org, 
+ mfd@lists.linux.dev, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20261108093602.329554-1-pmazzini@gmail.com>
+References: <20261108093602.329554-1-pmazzini@gmail.com>
+Subject: Re: (subset) [PATCH v3 0/5] sy7636a: power the panel only during
+ updates
+Message-Id: <179441948592.393238.163548015139580869.b4-ty@b4>
+Date: Wed, 11 Nov 2026 17:51:25 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -109,179 +65,57 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5301; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=RohBdpkH8TSHsnslkd4R654KBrqmv882JRSoJjjuoBA=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBq9aV5PpSrVGWZ6id8gqP3pN3LFSP2HbKY5hyhn ejyAuxXlg2JATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCavWleQAKCRCPgPtYfRL+ TugHB/4zsoFIUiu1rOAe+sEMu7U7+oNyHE4Z35KbOqRblj73O+ECqOwmAw1N3/wOf3BVIlj3ntN eex6WkpCriW/JsOvPr8ZRnPIJhvy01Bv/J9xk2UsjjMSghOyUBT7sv5MrDbDezDI9F6eUgUrOR/ 3HafN1OrkN+mT6dTNMqyV71+ymkrO6T/2PAGgcZ1+7dMAt0lA/EeiXJ16jIma/ma/4jjQXeviOE 9LQc7EihvT1ZykXMQEV+hRqi9ADMe/Agq8a462/Xs2SHlzcpQXyS9jERrXgv3QGooTnaT9Po739 B9QXPhoILPe4UbTm8i4R6TN4eR8M1q5R5uAH0JKEW32fWVed
-X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1560; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=tAX4JPP5kVuvXSOIYyzrfdqHyXORq/eq+6a96LBatXo=;
+ b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLK+Lr/kpG5TctlIuGON9dnug+cdZdn2r5yv8u8uD+u/P
+ UIVCpJ1HaUsDGJcDLJiiixxWdwv60ter+E7uLANZg4rE8gQBi5OAZhI1xOGf7oO+4suV7VltqyV
+ WM/wbt7dvlchVRr7TXWOrDzf4PaGT56R4WiCdLdg4W51W4b/Ejt/xk/af+lqgsDUPVtnzNuZXNL
+ LwwUA
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-This callback allows to use the core's rproc_elf_load_segments()
-function instead of reimplementing it for very minor changes.
+On Sun, 08 Nov 2026 09:35:57 +0000, Pablo Mazzini wrote:
+> sy7636a: power the panel only during updates
+> 
+> The SY7636A hwmon driver keeps VCOM on from probe, so a display driver
+> can not power the panel only during updates.
+> 
+> Read the temperature only while the rails are on instead, and bind the
+> regulator to the I2C device directly, with the hwmon driver as its
+> auxiliary driver.
+> 
+> [...]
 
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
----
- drivers/remoteproc/imx_dsp_rproc.c | 120 ++++++++---------------------
- 1 file changed, 30 insertions(+), 90 deletions(-)
+Applied to
 
-diff --git a/drivers/remoteproc/imx_dsp_rproc.c b/drivers/remoteproc/imx_dsp_rproc.c
-index 96d619daf3f5..324c10f18507 100644
---- a/drivers/remoteproc/imx_dsp_rproc.c
-+++ b/drivers/remoteproc/imx_dsp_rproc.c
-@@ -864,97 +864,41 @@ static int imx_dsp_rproc_memset(void *addr, u8 value, size_t size)
- 	return 0;
- }
- 
--/*
-- * imx_dsp_rproc_elf_load_segments() - load firmware segments to memory
-- * @rproc: remote processor which will be booted using these fw segments
-- * @fw: the ELF firmware image
-- *
-- * This function loads the firmware segments to memory, where the remote
-- * processor expects them.
-- *
-- * Return: 0 on success and an appropriate error code otherwise
-- */
--static int imx_dsp_rproc_elf_load_segments(struct rproc *rproc, const struct firmware *fw)
-+static int imx_dsp_rproc_memcpy_tova(struct rproc *rproc, u64 da, const void *src,
-+				     size_t filesz, size_t memsz)
- {
- 	struct device *dev = &rproc->dev;
--	const void *ehdr, *phdr;
--	int i, ret = 0;
--	u16 phnum;
--	const u8 *elf_data = fw->data;
--	u8 class = fw_elf_get_class(fw);
--	u32 elf_phdr_get_size = elf_size_of_phdr(class);
-+	void *ptr;
-+	int ret;
- 
--	ehdr = elf_data;
--	phnum = elf_hdr_get_e_phnum(class, ehdr);
--	phdr = elf_data + elf_hdr_get_e_phoff(class, ehdr);
-+	/* grab the kernel address for this device address */
-+	ptr = rproc_da_to_va(rproc, da, memsz, NULL);
-+	if (!ptr) {
-+		dev_err(dev, "bad phdr da 0x%llx mem 0x%zx\n", da, memsz);
-+		return -EINVAL;
-+	}
- 
--	/* go through the available ELF segments */
--	for (i = 0; i < phnum; i++, phdr += elf_phdr_get_size) {
--		u64 da = elf_phdr_get_p_paddr(class, phdr);
--		u64 memsz = elf_phdr_get_p_memsz(class, phdr);
--		u64 filesz = elf_phdr_get_p_filesz(class, phdr);
--		u64 offset = elf_phdr_get_p_offset(class, phdr);
--		u32 type = elf_phdr_get_p_type(class, phdr);
--		void *ptr;
--
--		if (type != PT_LOAD || !memsz)
--			continue;
--
--		dev_dbg(dev, "phdr: type %d da 0x%llx memsz 0x%llx filesz 0x%llx\n",
--			type, da, memsz, filesz);
--
--		if (filesz > memsz) {
--			dev_err(dev, "bad phdr filesz 0x%llx memsz 0x%llx\n",
--				filesz, memsz);
--			ret = -EINVAL;
--			break;
--		}
--
--		if (offset + filesz > fw->size) {
--			dev_err(dev, "truncated fw: need 0x%llx avail 0x%zx\n",
--				offset + filesz, fw->size);
--			ret = -EINVAL;
--			break;
--		}
--
--		if (!rproc_u64_fit_in_size_t(memsz)) {
--			dev_err(dev, "size (%llx) does not fit in size_t type\n",
--				memsz);
--			ret = -EOVERFLOW;
--			break;
--		}
--
--		/* grab the kernel address for this device address */
--		ptr = rproc_da_to_va(rproc, da, memsz, NULL);
--		if (!ptr) {
--			dev_err(dev, "bad phdr da 0x%llx mem 0x%llx\n", da,
--				memsz);
--			ret = -EINVAL;
--			break;
--		}
--
--		/* put the segment where the remote processor expects it */
--		if (filesz) {
--			ret = imx_dsp_rproc_memcpy(ptr, elf_data + offset, filesz);
--			if (ret) {
--				dev_err(dev, "memory copy failed for da 0x%llx memsz 0x%llx\n",
--					da, memsz);
--				break;
--			}
--		}
--
--		/* zero out remaining memory for this segment */
--		if (memsz > filesz) {
--			ret = imx_dsp_rproc_memset(ptr + filesz, 0, memsz - filesz);
--			if (ret) {
--				dev_err(dev, "memset failed for da 0x%llx memsz 0x%llx\n",
--					da, memsz);
--				break;
--			}
-+	/* put the segment where the remote processor expects it */
-+	if (filesz) {
-+		ret = imx_dsp_rproc_memcpy(ptr, src, filesz);
-+		if (ret) {
-+			dev_err(dev, "memory copy failed for da 0x%llx memsz 0x%zx\n",
-+				da, memsz);
-+			return ret;
- 		}
- 	}
- 
--	return ret;
-+	/* zero out remaining memory for this segment */
-+	if (memsz > filesz) {
-+		ret = imx_dsp_rproc_memset(ptr + filesz, 0, memsz - filesz);
-+		if (ret) {
-+			dev_err(dev, "memset failed for da 0x%llx memsz 0x%zx\n",
-+				da, memsz);
-+			return ret;
-+		}
-+	}
-+
-+	return 0;
- }
- 
- static int imx_dsp_rproc_parse_fw(struct rproc *rproc, const struct firmware *fw)
-@@ -969,7 +913,6 @@ static int imx_dsp_rproc_load(struct rproc *rproc, const struct firmware *fw)
- 	struct imx_dsp_rproc *priv = rproc->priv;
- 	const struct imx_dsp_rproc_dcfg *dsp_dcfg = priv->dsp_dcfg;
- 	struct rproc_mem_entry *carveout;
--	int ret;
- 
- 	/* Reset DSP if needed */
- 	if (dsp_dcfg->reset)
-@@ -985,11 +928,7 @@ static int imx_dsp_rproc_load(struct rproc *rproc, const struct firmware *fw)
- 		}
- 	}
- 
--	ret = imx_dsp_rproc_elf_load_segments(rproc, fw);
--	if (ret)
--		return ret;
--
--	return 0;
-+	return rproc_elf_load_segments(rproc, fw);
- }
- 
- static const struct rproc_ops imx_dsp_rproc_ops = {
-@@ -998,6 +937,7 @@ static const struct rproc_ops imx_dsp_rproc_ops = {
- 	.start		= imx_dsp_rproc_start,
- 	.stop		= imx_dsp_rproc_stop,
- 	.kick		= imx_dsp_rproc_kick,
-+	.memcpy_tova	= imx_dsp_rproc_memcpy_tova,
- 	.load		= imx_dsp_rproc_load,
- 	.parse_fw	= imx_dsp_rproc_parse_fw,
- 	.handle_rsc	= imx_dsp_rproc_handle_rsc,
--- 
-2.56.0.rc1
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-7.5
+
+Thanks!
+
+[1/5] regulator: sy7636a: don't wait for power good if already on
+      https://git.kernel.org/broonie/regulator/c/7d9a62b7e554
+[3/5] regulator: sy7636a: bind to the I2C device directly
+      https://git.kernel.org/broonie/regulator/c/5f828ac25ef9
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 
