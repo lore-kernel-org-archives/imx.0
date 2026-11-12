@@ -1,88 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.217.47
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.43
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794494288;
-	b=J4QFZpLyS9tz6wVC+RQ/6Dmtsze0RcOuxvxksxOo+UYaS2WPYSfLuJS2Aif7FiKAFwdk
-	 yeC8gKPd4DbrVn2Yg8fBdoPaOsQgGrBhufBumW8JWvgR7duaWIq0oYX6id5rYmE95ViO8
-	 Stj13BYyIqeThcnwOKRrxuyBWYZrjN3N6Li8BsYUcJlvvzUtUhNCeNjMqp45y0AtmRqhP
-	 Jj6zetHkAiWmx1I4clGmKHwzjQYub2LOhHMbfExztgDYqZpkvKk+YoOWyGAzwgZUFvrm6
-	 TXcozod/pBK9k2yBHnu7LsBMliHm23gaPkfY3Txh8eXY7zJLgxIz3JqiSzrviI0MwAA==
+	t=1794494293;
+	b=qBHzo2KzI3LeJAPxxJi6YtVZD4LY7rUw2M+SBSUktMHFjUoQkghlOsNn6W775xDkMV61
+	 Q5/j7MNSARmDeENG5Iwp529tVvqiqggUNrYetP5IWv9TE1LTDnhPbpEz9WVUvo4jKaV52
+	 yXOiLvOxvAwxKhLpGRjumLORZptLrCgPzrQ7cGLePJBd/2JYw1a1ani79JbRJ0BxSae4M
+	 tB+fneneLgbuTQ0GY6aRAhYDfXGOKJx1QwazoREnMVCIV11v8tHgziWO4dBW9sTfI6bzE
+	 Jun0MTGbDMnRfHM6/0r63sgPlyy7qo3fI+q+xucdTwP9jdaZiKSf376p1L9ogBAQ/FA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794494288;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794494293;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:Subject:Date:Message-Id:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:X-B4-Tracking:To:Cc:X-Mailer:
+	 From:Date:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key;
-	bh=Y2IsT0Jg+TbimKFRjyF/8T2AxcX0fGduIv2EOCoI08Y=;
-	b=ndAKjGx7TuBiyE0xfsLFNBlHcWjKDobLIwUCw7GLJkgbnya9QyA4jrhNArUCy/BaBtYE
-	 O+9QAQJI8M56qfe2UFT8WjlJ+kK1Cpet68EDwmKRQjaWSBZtfQ2Y2SDPbzVubkJNm2XN7
-	 7Q7SBmq5m69lad+firxBmrReOstfPCrRqV7hgsQq67sjNKyfPePBF6BWSoC8Emfxms3sj
-	 Xhiz8+/536l+e53VySc0KT4t/2NdZOuw0N3p9Bw95ZIbQnU0WrK96L2gy7uixXh+apnF9
-	 fpCAdJd9G2C1FIY2JbR7aUcwO9K5gr9Yq8W43KStBQcC2H+DVYQRaibugGofXsnWyyA==
+	bh=wXDiU+g+Gn2HmoB14YGhZhK55PgFVMpz3YYljR0nTHk=;
+	b=u0vALjjJYejWl9bIDKe4SHu6gAuugZnWddBvX+hQMekhGCKmqhr1RIBtA9U23MkC94VV
+	 hmV9zCs02Lifi0WJ1EiMlmaWP/7IRgJnbG57jQj+DClzxE4cvjLVubf3vT2gsxJ+mNrR+
+	 O0iL4eSYpGb0uZjOL3rfO9DdLGM7oHW17WuGFkjtXMfmBw753ziphx/kP4R7caG3GHsHM
+	 CBfqMFQn4xNTF8baD5cvKDgDQInBF/zmIOvK0gPTlmb0nPrU15T72zs2OG2HOQylNBIbo
+	 Z4Vr7oMDdC17Ta+fWsCuV0ev3IZPFpa3qXS98CdEJSONCrnk5mfIWohVHePWX7Dylnw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=UCYw3QOh;
-	arc=none smtp.remote-ip=209.85.217.47
-Received: from mail-vs1-f47.google.com (mail-vs1-f47.google.com [209.85.217.47])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=IX90Pd0s;
+	arc=none smtp.remote-ip=209.85.222.43
+Received: from mail-ua1-f43.google.com (mail-ua1-f43.google.com [209.85.222.43])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F00D1606A327
-	for <imx@lists.linux.dev>; Thu, 12 Nov 2026 14:38:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F00D1606A327
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED592606A88D
+	for <imx@lists.linux.dev>; Thu, 12 Nov 2026 14:38:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org ED592606A88D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=UCYw3QOh
-Received: by mail-vs1-f47.google.com with SMTP id ada2fe7eead31-7d2dbe5c4b0so1465798137.0
-        for <imx@lists.linux.dev>; Thu, 12 Nov 2026 06:38:07 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=IX90Pd0s
+Received: by mail-ua1-f43.google.com with SMTP id a1e0cc1a2514c-998569550adso2434159241.2
+        for <imx@lists.linux.dev>; Thu, 12 Nov 2026 06:38:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794494287; x=1795099087; darn=lists.linux.dev;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=Y2IsT0Jg+TbimKFRjyF/8T2AxcX0fGduIv2EOCoI08Y=;
-        b=UCYw3QOh3E0W3bpkkEfl5LkGDXBGiNjSh87ZI9lCZo7AC/UUlxdOQ950XMCwd6NTlE
-         o7m6GICo2IJqru8Y+me63i5KXrWv8yM+z0VVLcV/eW9eJxaGcT3n8ksFvRG/wJt8X4dd
-         2BnRL61Qv1ApsylZNR5KoaQzMImbjBXQ3qXr0kCy9tSLDlj1qsyeFx6t+NEGJ3xb/LCp
-         zz3rXi7j1LaSJamzP03X6SbmQpvhPNSUQJW7INYbn1XViEKBYmg/dAryb1G8lOv1w4Uv
-         9UdZnvNt5H/mv4TJ/S3oVyQd2prHh+V4cR7LDn+FjnawieGwYD6cWrkwATFgoC3QZucO
-         RurA==
+        d=gmail.com; s=20260707; t=1794494292; x=1795099092; darn=lists.linux.dev;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=wXDiU+g+Gn2HmoB14YGhZhK55PgFVMpz3YYljR0nTHk=;
+        b=IX90Pd0sdQ0u9pzVK84YzAQ7EWbwv8mbhUoNm9eNhI9uDoE/7VbpoSKkw6/tVeaVEd
+         Vs28qmY3NOIAHMYhUbdNR7ZXE0IJVldIqalq0VzuFadbOwnrZ0CXzKUw7dEwLyyiD/SM
+         7oAqEwK7pY0uc5SHXLoKTnzibLJ192dfKi0hJ2VErPZ4aETKyQSWaJmpZAX+A2sx8a46
+         rMRB/LjrwXkkWDn78GBsoslvHHhMqz6hjxm1Z26oqOmneTv2DmedHhS9ySOGTPQV0dCw
+         r8fIs81lJLLigJwdiX3FS/GU28Gp4dexuJ5vAi9j5UtcIBOLtmDREs17Wai4OX+30If/
+         H4jg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794494287; x=1795099087;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=Y2IsT0Jg+TbimKFRjyF/8T2AxcX0fGduIv2EOCoI08Y=;
-        b=u0dc4oK1BOzc7ACCxf0MKXmWq8aM6jP6erejvqH+4x5KmkjV+m1+k5WD+f/luZUDH+
-         +GApv8GMDuRH5ux/0ej/0pCUVIKX/VIjbza+e2ms5kahc27BgnCeN779r0sPNvXRCfdn
-         e6AFWs0rbIvexvfvRa1OKTOq29p9aj6AAamf41EYNpnL/BW6w+z9vt129NCOc7KlVUKY
-         ewCfazjMl+58tK6qEp/ShSOXDDfQHNtES2k8PcQ4KhPJyFIR1l5VjvtfmC/OjkcTEzjm
-         IlWMQQTxniWLda3qpX0BzInq/rBY6FnqkX+GGuscuE0VRjYHPt7142of4Bcp87I0NuHC
-         Kq+w==
-X-Forwarded-Encrypted: i=1; AL+hErFNJucr8mxLjV6pg2W+NTS78Up7OlEAXGAh1qX+XGFJOLwSuBBSmwqHO3pn0WFIJdGlWec=@lists.linux.dev
-X-Gm-Message-State: APuU4Z/ZkMu4y1Fv0Y83zBbiAufyyYJJO2l/+dvZ5KgXO7zb4X1OhBWu
-	JYw1CERJYdIG7bNRwXGaZtdYyWbx76pnNDtifh0Kuw6u42K+ADkAMv+C
-X-Gm-Gg: AYBFou2PsCdYoV7lrBhXDTCE0dPzoz8zYQWxSzn++hRS1nMLFyue5eg/a7b6MfgQr6x
-	2pk8mLBMOi5FiKEa5FBHHEzc6eYJrJekFnx2Rq3qy3l2xU/Ip7jEoKQcokOFOp4+yV9jE7mIy0m
-	A9WXq4Nl/2OHFeHsABlKXJ81xpwlpeOsHEC4PEtgTUnTe6bsqCWJvI92RuzYLpOHqAp78BdsqAd
-	gaFDj6cd57F4lLCqwo8X7r+7/UfDxbCR0PMRh1/bXsafe1aN62E9E97vZfEIdorxAKLCzofCSbO
-	FRVStiASbUNFbtxmb2f7mdaqyiRXd7HebgEz2ZvCvo3yEke4usPZbP3AVLUHLAamQgfIg7qe5mT
-	lvdSuScsOjlctaXWD1TNX6WGUN+XwY82hJZpRDVZ+U6LajurHTVeunkzsvfV3ayVE2Sr1SaA4+j
-	+rK0hNT6uRooWnfdl4BUKH6lS83tRHWPXi83hlpWxgRXuM7rRu9zB/jiCo7dWmU9Arpz37H5OYX
-	mPhMIYMsQYp/eD+vAPmA28fsFVlhVQGhnpxakGkH5fe9yWl+TCiMZ8SgEn8fBMum0vmpQP2dI/z
-	UnECx41CoUbKYRqOmzsjDB0GnfW9hwv2Gg==
-X-Received: by 2002:a05:6102:149a:b0:7d2:d194:3de6 with SMTP id ada2fe7eead31-7d5061175femr2125294137.35.1794494286681;
-        Thu, 12 Nov 2026 06:38:06 -0800 (PST)
+        d=1e100.net; s=20260707; t=1794494292; x=1795099092;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=wXDiU+g+Gn2HmoB14YGhZhK55PgFVMpz3YYljR0nTHk=;
+        b=pb9fPhaLXZpr9x1oIhksjoOmoErR3/hiCM4Uej/5vvvSo/CyeyrTfGkurEewaRdyU+
+         JC1OGYeWF1I3m/QMA2dLn2EXlTYyhy/tD889yY0T0E+Fu0DAJwGnBxAKp7D+TkPkBpAV
+         uz8TWi+LTCrqeE2kYv28sDh51weQP4DsL2GpQsLb7eatZR9TZQQLEu5nuTeiF2WRwGSX
+         JjbHXJWyPhB0vI0zgq+i5L2WRnDvxzfaHF1TdCO09JyYXIgbyCwRto7f8vdnFTDeGMVn
+         lwFBNioaijZyEnmGvORh0uAFxgvIhHvEmMaxFG/wVwC9+fJ3XW0u10jRuFLnscv+6sIA
+         ngHQ==
+X-Forwarded-Encrypted: i=1; AL+hErFAVvzg1LeWyqTD0c2aYWBsRAvTlCF+hbh3MJWCYwJXAaeMcG9adfRv3Kup045/AK+3Rts=@lists.linux.dev
+X-Gm-Message-State: APuU4Z+Bn36sr+s+G4dV7zzb+rzKq4+XGsS4cGA4fnoXTcC9ZwU8WxGV
+	Ix6NqKS/nf9Sr8ObnrYOH5qXXQOwxE/WkUb83F4HBPnyQYj6kIMhW3A8
+X-Gm-Gg: AYBFou3EIsjMRfaFh513SfG++8knt4HBDkEuJHvxkuKyoMNvA6lp/xXnysAzXkwLZfv
+	N6mmTP3yjDrbUHdunmMOlu3ZrrrD6YT4l2mVEdaf+/Fc3QcmKBh4ZywIjCvRY6Ld0ZUQoac5Wca
+	kIEMKee04gBRBxzqQPxjb7Uj3LitB1fRvl8+W7DElRgPOEVZ58fr/YKmr1h1AAZ2eW3ObyV1mKn
+	/zeUMH6iIQUZ8inLPe55QpSiJ0kU8/axzH+RcYhuJWzqSomgMWZc1Xisv+1zeIM58t+qMIBOhft
+	Q1NeBAtFnZGa+Z03nH/mHm96tDA9pflfeH8aeTMYgiwAUcwJlUbMZlmt6pGSro82s4XZQehs9Qn
+	f7OZSimmPRU994QaDButn/xGbcaDzbk3MukxOQ2GpdSDiGhQspdNc5RObNiiC+DnWFdQ2u3CNAh
+	GdKjW6+BoGJripx1SVBQXSVIg7EHxdNQOQyA9AnMG9kPCtpY6BUjCSTfB08wrGmD1MiQvX9F6wV
+	pjZBEyyRcqtPMJDYfZuAYAAS4wFII4wukTDelrz3Oh28zTD+kw1GiMa0ES+ClGAdF8OBn/4vcU9
+	Bf0L7IGtphn7GNvL2MSpDTwGXZWOU/neyMi6RMhpxF1XOfRH3sjG5Yg=
+X-Received: by 2002:a05:6102:50a0:b0:7d0:6cf3:d8f6 with SMTP id ada2fe7eead31-7d5060e8bdamr2572164137.28.1794494291617;
+        Thu, 12 Nov 2026 06:38:11 -0800 (PST)
 Received: from [127.0.1.1] ([67.159.246.222])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-99c1fffe12dsm5177230241.5.2026.11.12.06.38.01
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-99c1fffe12dsm5177230241.5.2026.11.12.06.38.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2026 06:38:06 -0800 (PST)
+        Thu, 12 Nov 2026 06:38:11 -0800 (PST)
 From: Leonardo Costa <leoreis.costa@gmail.com>
-Subject: [PATCH 0/3] Add Lotus Carrier Board with Aquila iMX95
-Date: Thu, 12 Nov 2026 11:37:32 -0300
-Message-Id: <20261112-b4-v1-aquila-lotus-dtbs-v1-0-ca150bb4b0f9@toradex.com>
+Date: Thu, 12 Nov 2026 11:37:33 -0300
+Subject: [PATCH 1/3] dt-bindings: arm: fsl: Add Aquila iMX95 with Lotus
+ board
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -94,9 +95,9 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIACzP9WoC/x3MQQqEMAxA0atI1hNoSu3Cq8gsokYNFJ1pVITi3
- afM8i3+L2CSVQy6pkCWS033rYJeDYwrb4ugTtXgnY9ELuAQ8CLk76mJMe3HaTgdg6Fzo5fQMnG
- MUOtPllnv/7l/P88PWp6GYmkAAAA=
+Message-Id: <20261112-b4-v1-aquila-lotus-dtbs-v1-1-ca150bb4b0f9@toradex.com>
+References: <20261112-b4-v1-aquila-lotus-dtbs-v1-0-ca150bb4b0f9@toradex.com>
+In-Reply-To: <20261112-b4-v1-aquila-lotus-dtbs-v1-0-ca150bb4b0f9@toradex.com>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
  Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
  Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
@@ -106,58 +107,37 @@ Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
  Leonardo Costa <leonardo.costa@toradex.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794494281; l=1750;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794494281; l=979;
  i=leonardo.costa@toradex.com; s=20261001; h=from:subject:message-id;
- bh=Fyhoh2gvGk3Ft2hHZ7zQnpX2e5GJIorXgz24xXGeA8c=;
- b=wJ/LS0jpHT8LcyyR5TSXkc6mSkonP1SS8IhsBv4qtGJ5gdoAYFflJJigSL5SExYpGh6YgMZ1U
- yfhxpkJMDaqDqYK8caPbJ0/huMKaV14HbWGQ3RhMaeUGivztiMEcHxk
+ bh=w8xV5uoMa8cD2NlGBmwvt8C0f0XkYqYIH4XfKMrB858=;
+ b=fGueRKxvIo0asCUZ/33z0mlbmgMfn6W3MWKV8yD/ZkS8nSzPp6aaqZlzCeST6DLUIrWLorE9q
+ OB3V6+2IU4QAr5am7I8Qmrf8KBbMoeyEU8gkWEXU6B/a5GtEeX6VV9z
 X-Developer-Key: i=leonardo.costa@toradex.com; a=ed25519;
  pk=4xvoVLDt+NxIz9D8BJHhT0fD43Ig6XgSDw4jRN/gHzk=
 
-This patch series adds support for the Lotus Carrier Board with the
-Toradex Aquila iMX95 SoM. Lotus is a carrier board for the Aquila family
-featuring a small form factor (Nano-ITX 120mm x 120mm) and built for
-volume production.
+From: Leonardo Costa <leonardo.costa@toradex.com>
 
-The board features:
-
-- 1x 1Gbit/s Ethernet
-- 1x 10Gbit/s SFP+ cage
-- 2x RS-485 (Isolated and Non-Isolated)
-- 4x CAN (3x Non-Isolated, 1x Isolated)
-- 3x isolated digital I/O
-- 1x CSI
-- 1x DSI
-- 1x TPM 2.0 chip
-- 1x microSD slot
-- 1x USB-C DRP
-- 1x USB 3 hub
-- DisplayPort through a Mini DP connector
-- A mini PCIe slot with USB / SIM card connector for a modem
-
-Additionally, this series adds pinctrl groups to the Aquila iMX95 SoM
-dtsi, muxing the I2S_1 and PWM_4_DP pins to their GPIO functions. On
-Lotus, these pins carry the SFP+ low-speed control and status signals
-and the isolated digital I/O readback signals.
+Add the Lotus Carrier Board mated with the Toradex Aquila iMX95.
 
 Link: https://www.toradex.com/products/carrier-board/lotus
 Signed-off-by: Leonardo Costa <leonardo.costa@toradex.com>
 ---
-Leonardo Costa (3):
-      dt-bindings: arm: fsl: Add Aquila iMX95 with Lotus board
-      arm64: dts: freescale: imx95-aquila: Add GPIO pingroups for the Lotus Carrier Board
-      arm64: dts: freescale: imx95-aquila: Add Lotus Carrier Board
+ Documentation/devicetree/bindings/arm/fsl.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
- Documentation/devicetree/bindings/arm/fsl.yaml     |   1 +
- arch/arm64/boot/dts/freescale/Makefile             |   1 +
- .../boot/dts/freescale/imx95-aquila-lotus.dts      | 365 +++++++++++++++++++++
- arch/arm64/boot/dts/freescale/imx95-aquila.dtsi    |  61 +++-
- 4 files changed, 422 insertions(+), 6 deletions(-)
----
-base-commit: d6bcfc94eb4da6e089c5473970cd96727292fd97
-change-id: 20261104-b4-v1-aquila-lotus-dtbs-00c2e45a1a66
+diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
+index c8290a83205b6..392e019e7ffc8 100644
+--- a/Documentation/devicetree/bindings/arm/fsl.yaml
++++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+@@ -1607,6 +1607,7 @@ properties:
+           - enum:
+               - toradex,aquila-imx95-clover # Aquila iMX95 Module on Clover Board
+               - toradex,aquila-imx95-dev    # Aquila iMX95 Module on Aquila Development Board
++              - toradex,aquila-imx95-lotus  # Aquila iMX95 Module on Lotus Board
+           - const: toradex,aquila-imx95     # Aquila iMX95 Module
+           - const: fsl,imx95
+ 
 
-Best regards,
 -- 
-Leonardo Costa <leonardo.costa@toradex.com>
+2.43.0
 
