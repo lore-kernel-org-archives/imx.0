@@ -1,56 +1,66 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.194.8.81
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794477014;
-	b=t4Y2L9MgqqnHL07IpttwKw625u83TOVx6tS7873i1I6RzfUR/vFeaPckHrgHLsGiYXWp
-	 CsNaeL7fUZAOBdDucjlH4+G+EeEMqX3+l4+UOW2PiZpOnAJpHkQiN6n6H3kgYGIsi5BJq
-	 PqjLm4y+kGFlr8zlZOvyTUtK2ZxqngWXgv7y8XhCugLNZ2rLVuwFeFrQiInxAi6aI5m/l
-	 EJNEPU1HSn/3w4tQsglFUq/eKr7oRIOupMnpDR9abHV2AzSVNIyNVsSVs+ltFMeG8ox2w
-	 esS+4+lgZ0t+BshI3MtvUQgoKz8TJcSc04WX+jrwx5ccRNZnW/ee++3eYWxncHLcx2Q==
+	t=1794477895;
+	b=Z2M8s2NZO7Wveyq/GPDEhmxPEcDlHHNidWGFr6L1TiKzH2ih9vd+fjMNaBSw4GBvTLVc
+	 qlQJQ0/btj5rN3yOWrKU3Nt2Dpv+gLHHPNNoVzl4+9Yl4kW4R1z62HYeVG3CyDyaRO1kP
+	 aJTnldAHiqiZuDXuA5t2UGXCeCx7VAaJR783jr+f93oZZ8ExzCH8ImyYbx4KUlpqGARGL
+	 G9HBaZRzQmMEEO53wSuwBPLaoWhNiWSsLjoubEoxyfRn3c5DoFFcfkBt7LK5MET6R80MU
+	 i9agk2w6uMadCvbLW22lXCM+B9rqe7QWhiBzcZ8WhtxJqJuNks5nvO+5W+kdvAuzVXw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794477014;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=2CO4QFuVLJPX2iTRGvK9EBPG37mo7/9P+a1t8dz5rsw=;
-	b=fYdUgH2eEdkC+x/R3SomgzcnxgDHkl8saCu4yeNtlZD3QWNKAg0vQ0NqfEpVuGKyKr3A
-	 Ohlt8e6TNmlBNif71YJfZY9nD3Mly3cIF84bX/++4/1PqaVFNEbMcGOpL41gUUILzxX6L
-	 cLhxMeAxr7w2m45OdROLHLjgX61pvTFNWQ+95uQzFo9lF29xxOh7JkJDYhY3zrbkw56wL
-	 n9ueWZdVSxabKv6fgCmFEsVWiE7sb78ffaXbxp1i0KKyciGVN8N+Qyawvlpyv4eI8eZZa
-	 0WiNNU2qzQuFtDTD/d8CIL35crTjK0gfanMKXjvgiJr1s7HKuAfViIu0nCENSRuigEQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794477895;
+	h=DMARC-Filter:Received:DKIM-Signature:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=12FxQz40ZG0aBXbOpbg2g2yd/BGfhAmZAB/dUKb2ZeE=;
+	b=X31LnDwXAoZNB8Bp/rcvnIN6YzpqVKWUehPk2v5vEBYw2QeYGcCO4+noA7OYlmcgGM1g
+	 P2NeOtGOsP4Jx7zSOx6hKJLqSzmpv4ptlTJOWZb3W3NNhIjAiHidKhHkIQdsjvdSmXBLh
+	 dA5QXNxShk1JV7OVn6yIaI+bFzni9OuzC6i5htYYci49KmlKNAXxxth6uoOznD8jlu1qm
+	 iUWUe7sOHBKtDgeJ1cpL7aDVMJON72uwDQJoOkY2IHbItVrlGcZq1tM3iM92DhaCzksV2
+	 aduj4LSq4LpnuXqi9e57SOzI1Vh6BafKba7BaZf51Xa165gP3gFaJnq8a7nHSE1JwJw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=X9x41sYe;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=dolcini.it;
+	spf=pass smtp.mailfrom=dolcini.it;
+	dkim=pass header.d=dolcini.it header.i=@dolcini.it header.a=rsa-sha256 header.s=default header.b=EwVro4zd;
+	arc=none smtp.remote-ip=217.194.8.81
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 894F2606A32D;
-	Thu, 12 Nov 2026 09:50:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51807606A88C;
+	Thu, 12 Nov 2026 10:04:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 51807606A88C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=X9x41sYe
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D0881F00A05;
-	Thu, 12 Nov 2026 09:50:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794477014;
-	bh=2CO4QFuVLJPX2iTRGvK9EBPG37mo7/9P+a1t8dz5rsw=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=X9x41sYeRLEabC0tRnqW+fHdw7j3ehg1prAh0Vcntm6V8tjGh/rJ9BV6huBaK7LAx
-	 sgZRZJZRAloQ1jYDh4DT7pxttlsgcZMB+ay/dVEMx0grflifGXDK1FEL2eYgMqgG6N
-	 zUB0H3CUKU0KNwkU3tz8aOnu6rermSYjrEAYmIiQYX4G+FKtxKmIyTfXnEyj1PlJs3
-	 HbeKBeNIkSRH2d0ifWAUfoMw5u4NYGfmcpeWJVCxWnOaSzjvfSHShJ7Wd0Cfm2o2+a
-	 7dt2Kk/HpJwMszGG8nlBToLuvpscCuQSjeBdlTmSOx8dz/ASBP+FRUklTDDJe4eofz
-	 1snNVmYYt7bdw==
-Message-ID: <sashiko-outbox-210905@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] usb: chipidea: stop asynchronous work before destroying
- roles
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Xu Yang" <xu.yang_2@oss.nxp.com>
-Cc: linux-usb@vger.kernel.org, imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20261112092556.2747348-1-xu.yang_2@oss.nxp.com>
-References: <20261112092556.2747348-1-xu.yang_2@oss.nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 12 Nov 2026 09:50:13 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=dolcini.it header.i=@dolcini.it header.a=rsa-sha256 header.s=default header.b=EwVro4zd
+Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id 3F8C021447;
+	Thu, 12 Nov 2026 11:04:52 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1794477892;
+	bh=12FxQz40ZG0aBXbOpbg2g2yd/BGfhAmZAB/dUKb2ZeE=; h=From:To:Subject;
+	b=EwVro4zddjIo4VKA5LMoi5hY6WS6oYjLYIW3pLBAhZEtcrPJL7OG3Gw+6Mgi+ZdbM
+	 CH5ZI8CTi+aWldncyyeQd33H9WrPwKL0Z/bQUw9CL/Hw8viEiQwXMxqAuieEU2mWwv
+	 VoWZaGMdIjayD37MhMmpD9MI0w28sKu9+YHn6Ymboc4YeFLR84lDJHpzMdegGyAYIS
+	 tLm3szk1apuqKYfIlR1M6+611kM5Zi2IgLr8QViCXglUJpaN4jkCvgjYDgONsZMdz1
+	 Mg0Qp7Mv21oOhfYy0UXS10xuQv1Hd8DXOOyBuhENDdbp9z6e4bW1nmIoDkxgevwze7
+	 yq+t72XwHJAOA==
+Date: Thu, 12 Nov 2026 11:04:48 +0100
+From: Francesco Dolcini <francesco@dolcini.it>
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>, regressions@lists.linux.dev
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Saravana Kannan <saravanak@kernel.org>,
+	Sudeep Holla <sudeep.holla@kernel.org>,
+	Hans de Goede <johannes.goede@oss.qualcomm.com>,
+	driver-core@lists.linux.dev, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, Peng Fan <peng.fan@nxp.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] driver core: hand off fwnode ownership when shared
+ fwnode owner is rejected
+Message-ID: <20261112100448.GA53281@francesco-nb>
+References: <20260928-driver-core-v1-1-0846bb8e0f32@nxp.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -59,113 +69,80 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260928-driver-core-v1-1-0846bb8e0f32@nxp.com>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Medium] usb: chipidea: stale OTG event flags and teardown race in
-  ci_hdrc_otg_destroy()
-It also noticed 1 related pre-existing issue this patch does not
-introduce:
-- [Critical] usb: chipidea: uncanceled otg_fsm_hrtimer in
-  ci_hdrc_otg_destroy() [1]
---
++regression list
 
-commit b8def951ac8ca82d212a5f915b8e9c3017f3be77
-Author: Xu Yang <xu.yang_2@nxp.com>
+Hello,
 
-usb: chipidea: stop asynchronous work before destroying roles
+On Mon, Sep 28, 2026 at 07:49:01PM +0800, Peng Fan (OSS) wrote:
+> From: Peng Fan <peng.fan@nxp.com>
+> 
+> When multiple devices share the same fwnode (e.g. the SCMI bus creates
+> both "pinctrl" and "pinctrl-imx" devices for SCMI_PROTOCOL_PINCTRL), only
+> the first device registered becomes the fwnode owner (fwnode->dev, set in
+> device_add()). If that owner never binds -- for example its driver returns
+> -ENODEV because it is blocklisted on this SoC, or because its driver is
+> not compiled in at all -- then driver_bound() is never called for it, so
+> fwnode_links_purge_suppliers() and fw_devlink_pickup_dangling_consumers()
+> are never run for the fwnode. The child fwnode supplier links (pin group
+> nodes such as lpi2c3grp, uart5grp, ...) stay unsatisfied and every
+> consumer of those child nodes defers probe forever.
+> 
+> On i.MX95 this manifests as a complete boot failure: the generic "pinctrl"
+> SCMI device claims fwnode ownership but its driver returns -ENODEV, while
+> the vendor "pinctrl-imx" device binds successfully. Because
+> dev->fwnode->dev still points at the rejected "pinctrl" device,
+> driver_bound() of "pinctrl-imx" skips the supplier purge and dangling
+> consumer pickup, so all I2C buses, SPI, UART, MMC, USB and PCIe
+> controllers wait forever for their pinctrl suppliers.
+> 
+> Fix this in two places:
+> 
+> 1. In really_probe() failure path: when the driver definitively rejects
+>    a device (-ENODEV / -ENXIO), fw_devlink_release_shared_fwnode() is
+>    called. If the rejected device is the fwnode owner, it either
+>    transfers ownership to an already-bound sibling (and runs the
+>    purge/pickup on its behalf) or clears ownership so the next sibling
+>    to bind can re-acquire it.
+> 
+> 2. In device_links_driver_bound(): re-acquire the fwnode when it is
+>    unowned (!fwnode->dev) or when the current owner has no driver at
+>    all (!fwnode->dev->driver, meaning the driver was never compiled in
+>    or loaded as a module). This covers the case where probe rejection
+>    never happens because no driver ever matches.
+> 
+> fwnode->dev is not serialized by a lock; instead every writer only ever
+> touches a fwnode->dev it already owns (== dev, as device_del() does when
+> it clears ownership) or one that is currently unowned (== NULL, as
+> device_add() does when it claims ownership). This patch follows the same
+> discipline: fw_devlink_release_shared_fwnode() only writes fwnode->dev
+> when this device is the current owner; device_links_driver_bound() only
+> claims fwnode->dev when it is NULL or when the current owner has no
+> driver (and therefore cannot be in the process of binding).
+> 
+> Fixes: f9aa460672c9 ("driver core: Refactor fw_devlink feature")
+> Cc: stable@vger.kernel.org
+> Assisted-by: LLM
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> ---
+> This issue is triggered by 
+> aac4e67d6eb9 ("firmware: arm_scmi: Always create devices for standard protocols")
+> in linux-next next-20260925.
+> 
+> But I think this is a fix to
+> f9aa460672c9 ("driver core: Refactor fw_devlink feature")
+> 
+> Detailed information could be found in patch commit log.
 
-This commit reorders role and OTG teardown so that asynchronous work items,
-interrupts, and the OTG FSM are stopped before the gadget and host roles and
-workqueue are destroyed.
+Sudeep's series [1] fixes this in linux-next, but it is not yet in
+mainline. I'd like to have this tracked so that it is not lost.
 
-> diff --git a/drivers/usb/chipidea/otg.c b/drivers/usb/chipidea/otg.c
-> index fecc7d7e2f0d7..ec11056dddfaf 100644
-> --- a/drivers/usb/chipidea/otg.c
-> +++ b/drivers/usb/chipidea/otg.c
-> @@ -264,12 +264,21 @@ int ci_hdrc_otg_init(struct ci_hdrc *ci)
->   */
->  void ci_hdrc_otg_destroy(struct ci_hdrc *ci)
->  {
-> -	if (ci->wq)
-> -		destroy_workqueue(ci->wq);
-> +	disable_irq(ci->irq);
-> +	if (disable_work_sync(&ci->work)) {
-> +		ci->id_event =3D false;
-> +		ci->b_sess_valid_event =3D false;
-> +		/* Balance disable_irq_nosync() performed in ci_otg_queue_work() */
-> +		enable_irq(ci->irq);
-> +	}
-> +
-> +	if (ci_otg_is_fsm_mode(ci))
-> +		ci_hdrc_otg_fsm_remove(ci);
+#regzbot ^introduced: aac4e67d6eb9
+#regzbot title: arm_scmi: i.MX95 does not boot, all pinctrl consumers deferred
+#regzbot fix: pinctrl: imx: Match the standard SCMI pinctrl device
+#regzbot link: https://lore.kernel.org/all/20261005-scmi_bus_fixes-v3-0-d9bada32ed38@kernel.org/
 
-[Severity: Critical]
-This problem wasn't introduced by this patch, but can ci->otg_fsm_hrtimer
-fire after teardown [1] because neither ci_hdrc_otg_fsm_remove() nor
-ci_hdrc_otg_destroy() cancels it?
-
-In OTG FSM mode, ci_otg_add_timer() arms ci->otg_fsm_hrtimer with
-ci_otg_hrtimer_func(), while ci_hdrc_otg_fsm_remove() only removes the sysfs
-group.  If an armed timer expires during or after teardown,
-ci_otg_hrtimer_func() dereferences the freed struct ci_hdrc and queues work=
- on
-the destroyed ci->wq workqueue, causing a use-after-free.
-
->  	/* Disable all OTG irq and clear status */
->  	hw_write_otgsc(ci, OTGSC_INT_EN_BITS | OTGSC_INT_STATUS_BITS,
->  						OTGSC_INT_STATUS_BITS);
-> -	if (ci_otg_is_fsm_mode(ci))
-> -		ci_hdrc_otg_fsm_remove(ci);
-> +	if (ci->wq)
-> +		destroy_workqueue(ci->wq);
-> +	enable_irq(ci->irq);
->  }
-
-[Severity: Medium]
-Can leaving ci->id_event or ci->b_sess_valid_event set while ci->work is
-disabled cause an unhandled interrupt storm after enable_irq(ci->irq)?
-
-ci_hdrc_otg_destroy() only clears ci->id_event and ci->b_sess_valid_event w=
-hen
-disable_work_sync(&ci->work) cancels a pending work item, and it disables
-ci->work before hw_write_otgsc() clears cable->enabled.  An extcon event
-arriving via ci_cable_notifier() -> ci_irq() before hw_write_otgsc() runs
-(which disable_irq(ci->irq) does not block), or an earlier OTG FSM transiti=
-on
-past OTG_STATE_A_IDLE in ci_otg_fsm_work(), leaves ci->id_event or
-ci->b_sess_valid_event set with ci->work disabled:
-
-drivers/usb/chipidea/core.c:ci_irq_handler() {
-	if (ci->is_otg) {
-		...
-		if (ci->id_event || ci->b_sess_valid_event) {
-			ci_otg_queue_work(ci);
-			return IRQ_HANDLED;
-		}
-	}
-
-	/* Handle device/host interrupt */
-	if (ci->role !=3D CI_ROLE_END)
-		ret =3D ci_role(ci)->irq(ci);
-}
-
-Once enable_irq(ci->irq) runs at the end of ci_hdrc_otg_destroy(), any host=
- or
-gadget interrupt during role teardown takes that early return in
-ci_irq_handler().  Because ci->work is disabled, queue_work() in
-ci_otg_queue_work() returns false and immediately calls enable_irq(ci->irq)=
- in
-hardirq context without ever calling ci_role(ci)->irq(ci) to clear the
-hardware interrupt status.
-
-Disabling OTG interrupts with hw_write_otgsc() before disable_work_sync() a=
-nd
-unconditionally clearing ci->id_event and ci->b_sess_valid_event after
-disable_work_sync() would avoid this.
-
-[1] https://sashiko.dev/#/bug/linux-8569f327-701f-4376-8f59-b4c911b172bb
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261112092556.2747=
-348-1-xu.yang_2@oss.nxp.com?part=3D1
