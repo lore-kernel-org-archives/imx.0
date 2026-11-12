@@ -1,20 +1,22 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.127.124
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.65.23
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794455176;
-	b=Scpnz4gs4C77DrvtT3B6p9c3WPdGR+/fQSzDLMvZDmFYeX4mQ9FeWkQ15p98jVLXkFBx
-	 zrDMeaxPFuIu+i4eURniUtnO8upc1k+47NE1k6SznU+ErauxNl8mmKPPpwYHhQzlLq3vK
-	 VnwPo4oXDwQ+MFnHRZrhrEiWSRHtjGMpdL1VXNIYospPYSI+ZfOHJEpP8/12fcb7EK3IB
-	 8O15DEPcPHvLUsM5OpvsYoAh0I2tDJ64cH3q4AR4Lvbk/Bp758yucHm2Q6jmGWVN0uy/x
-	 N1GIHZIX227SN7oAjO3Vimif/ywabkXKT9s69+1cEaK5ZDzg3XK9vCZweX3TClK7UCg==
+	t=1794464544;
+	b=euhBO8EzTLRgVF0GU8WOfJk0tpkUcPuO5EVoRIqtlLVG09lYaKdDAaWn8Wauf2RagQF/
+	 tJJaJFPM5VUtUuosMbZI/dqBQlmMF43gao08gFapLyQxIUFMNsoRiTSSaOkF+HkLdmffI
+	 eOQ4WzSzSKZKcs3vYqOjIjSp0TI6Lf7MGSIrqYReqKCksRLyxmN0A/BQcJCT3kYcrvFWG
+	 bNs3CvHaoZzK6VChmalTaP+mnFluI3Q0LpE8oIFfClRKpJJ7csdl0eF9zMI32mQeQ5FDD
+	 zyzOUWkuN9BPMliPhOtjuaMDUNwSF1dch2zzebiRcO6f2eJHZK8y/rAiCMRsIrUmk2Q==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794455176;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794464544;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
 	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
 	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-MessageSentRepresentingType:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SharedMailbox-RoutingAgent-Processed:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
 	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
 	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
 	 X-MS-Exchange-CrossTenant-Network-Message-Id:
@@ -24,85 +26,73 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
 	 X-MS-Exchange-CrossTenant-UserPrincipalName:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=40zi+jwh27K2NMWM2sVw7clibz9WSNKfkbOmTfxHjv0=;
-	b=f1+Ocx3xmHsYxLIhQqdMWzKd0vJ3dlbyPJqKA7c4c0dZRxOxc3eRrzPx9H6zrdUILzGj
-	 hOUKvcWJpWAWtiH1jW2DWGexGgMvRM6S2mkd+M+bVTvJID/kfAbuu4W0J3TgqT79bz6zQ
-	 flIpOYut6NCx8yqNGOE8D7TAc8AiT/9/4yO8ZrTJmXYFWCkA/znKTLrYt8Q6RrSkbo1ia
-	 X+lAyoxfMlG2ky4/dpqXTOBWfeBBqBmj7j5S9Ky9+31jwPGX1SZs6tupLm6f1LBHRApnN
-	 eZjrTDDOecDW1kGOkD0rwEbSCMpGDyP/OWqAODYlQx/gPpessV24M7JCK9VaHYb2Q6Q==
+	bh=Pbw/4CdjCzWQvIzC26Fib2KO5DBmfYmvo/bL1AYhzxc=;
+	b=PQNKEA0Y1u97GvvWiz62oufa6RNeEkjb/8Aig3TDAyD0L1Qzg9ClzjZqOj0iWXUx3vbY
+	 nfwz9+JSfqgiCNSkssU4RgYzAJiBjiBpQ9cTLUTk+S3DdzWWWzhrFnNdEOUJ1C5SQ0e6M
+	 4TevyHpV+lsPj7zP8qt+wvpViNj9QVDW7RJstj4So/nzFVhTZwQF2Qfr+ZOUba0NjlI/q
+	 Me6nUxtLXlyNhtbfPErkUKe5RIDFnj2N+rVa81GNNVvRi0kJZMyxvzSHwyLiHaA87g6zU
+	 3afyAm1WbFqf2eq0pbAZBQ5Zcqe0WCv1RmunHrKFqNmiXPvVeuPXh92U0SKSNJO41UQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=amlogic.com;
-	spf=pass smtp.mailfrom=amlogic.com;
-	dkim=pass header.d=amlogic.com header.i=@amlogic.com header.a=rsa-sha256 header.s=selector1 header.b=iCzXuLLm;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.127.124
-Received: from TYDPR03CU002.outbound.protection.outlook.com (mail-japaneastazon11023124.outbound.protection.outlook.com [52.101.127.124])
+	dmarc=pass header.from=oss.nxp.com;
+	spf=pass smtp.mailfrom=oss.nxp.com;
+	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=hdUshBEM;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.65.23
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011023.outbound.protection.outlook.com [52.101.65.23])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00E5E606A323
-	for <imx@lists.linux.dev>; Thu, 12 Nov 2026 03:46:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 00E5E606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amlogic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amlogic.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C556606A8B6
+	for <imx@lists.linux.dev>; Thu, 12 Nov 2026 06:22:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0C556606A8B6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=amlogic.com header.i=@amlogic.com header.a=rsa-sha256 header.s=selector1 header.b=iCzXuLLm
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=hdUshBEM
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=BaUvgbxhhW3aFg6F4PJfzAYYbjJ+RAogZVZjDearsl3WdeReP1oDD+yTDDzPa7hRSeXAh7R8sl8qEDvCq4DL4ep7tXsShCkzKaFsALi5OSeU58NCeYQsiz+Pm1dkL+qpQWF3CQJN/vxf+dFEvlVSl3MgtRsG7ZE7+F4SbzIXaIWMZf+Y5WxxqX1hVgNAjmAGGxQLr3qd37/5J1p+wZNJSUzMj702COV+JxR5AzZQoV9ueB2lfwc6DjpUuyGtrp/4+QAk1F91tMAYB26ZJgKGtnAvEWXWBnjff7gnr15tKag+oV96sRRc270iV59Km0h+qtHAMm+NwTjIneeX6xYk6w==
+ b=OboiYahH6ISy7mNsNhP/GdHepUykfSGFGRlu4JLNhzDr63LeWbw3RYfSa1imMilXgeMBTzIt22zMWNA5qyO8UdDe/09fkhLYeenl1cGdAFGPZzW2X/RjtpNx4aMuVnjmJd0AFmqN35m+FwLSV+lwL8KoherOSxXCphC5dhGAMI5xKTPTu/J/ZXTFF4tWmunSFdy+r0K+fzOdjsVCBSKnnJe9Ly35dYA6pfQhDpJ+ZMd8e/jZUKwapx1yWlNMSoVTZPeba7b/Q6O8u6awbMImtMabpL3UvPZCAjjTyG+JWzbOiPY+QC7nhzEBZqxR5NB6IValwVEI+VF5o+4Bu212Sw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=40zi+jwh27K2NMWM2sVw7clibz9WSNKfkbOmTfxHjv0=;
- b=x85qhXehdu1hGGRu3fGaWZsW9iv8UKwZEzXEKSEIkVlz59Oq9sb6WIkuMwTE1MtjN5GahtJYMv+m5o3lWNj+OGOpDEgHfEe0Lw0xPdY7bxb1IlFo/uODmZS4ZtsgnOZVmKeMhzfRuKc3dePG3ker6e8Ye5PJcR42sWH5W62+JBGJI5EruAa6qJRZl7G6BjfCUPKN0HOzyIGRzFi5woLHlOG/yUoaQ84yVw63NTWkFNskzFxcNgSvMUgd74APbJrdhcCE82K1MQD66xmj3N4oiqpN0Z3YafvjURNzv53bOi/EtQmDVMDY+nmFxWC1DhxwM/HAwrY1G1fKxca0eQsu0g==
+ bh=Pbw/4CdjCzWQvIzC26Fib2KO5DBmfYmvo/bL1AYhzxc=;
+ b=f9CJHMWubY3gvS1WIrg9hJgxXk3HUe7QxdpzuAZ6lWCxcsMpC5RyVdB51YAIxPQCZ4ru59UWqL73a7+X8nLSJMRVk/sV5Oy654aJeII5tzhGKTt/C6GtBoQd8tYFay/+1Ryqpx8iPGpWzh85MISTH6hF/aP6C0qF+0FMuR6MrkW4D36yfHIQQ8cUsdWL0NG7lM9d+y748Y1zrqtWmApd+MC6sKHSbOQuk4T0BgTKQErZ4ASJXyxR8Fh4uA6K9jJc7u+QLyaeEic7OZV1S7FdQewb5z7nlFIMHIrODjhx42gyJp49HR2ARTNkVIAyFsDA7wNT0sLf3gfbabXppV967Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amlogic.com; dmarc=pass action=none header.from=amlogic.com;
- dkim=pass header.d=amlogic.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amlogic.com;
- s=selector1;
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=40zi+jwh27K2NMWM2sVw7clibz9WSNKfkbOmTfxHjv0=;
- b=iCzXuLLmh/w7exqGHfP+Fo16ENePvhHxI4BqgFSnjFtPDFTQnIKictSmdrkxSAnQhdp3H+H8eXvw4YrG9M4rZl7G+4/8tnQNuvLURiFsbDDC9isLIrZfOS6XemP+bK0TJe0qJzupYrmwW9G5Se992raGp3//nd6GHxTmMZcSQwgpTyyBDyxu0Aa57jWB2c1JrQyHqdE0F2vjoxEz20SEHsRP+zHFw6VVRAX1lz1T59coLOBPHrBj43kASN3w/PHi/7qHJ54dV7NZ+fy7MMXrlTPQsswsixhdUSPtUMv2S5btQjEr3JeZZapmSHM4unGiEzytoSxC+VmxWow1nx+hOQ==
+ bh=Pbw/4CdjCzWQvIzC26Fib2KO5DBmfYmvo/bL1AYhzxc=;
+ b=hdUshBEMucRTYrTCJG2QcoOGTo7lpgOqUuhQG3hn0WOm19jnRdscrh68S676qCQVv55cu1W3gGRih0Sv5cCC9o3I0ssZ1TuPv/X24v+oLrI9QiGrf5bm6cY5YAgBtNB28ANnkzMG8+88ljQCKIvGeN4pZQKdrsMBdMaCvcLZ1bUw2FX74FZpOJsbE0/RXL48onsME+IsB1YTQZFU0eiShux7NeRvkg9QamDb0JkWX5JySokN90OXtTtVGqD2wKejZ92sIoX7tiS0/lPrQabiLb98Hq5N7CJagLXX9Z787yRb01F6S/cYQH6bALIVbAYcRyPwElsDF/HCN8uuJgOgTQ==
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amlogic.com;
-Received: from TYZPR03MB5743.apcprd03.prod.outlook.com (2603:1096:400:74::7)
- by SEZPR03MB8813.apcprd03.prod.outlook.com (2603:1096:101:24d::14) with
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GVXPR04MB12316.eurprd04.prod.outlook.com (2603:10a6:150:2c6::8)
+ by AM0PR04MB12098.eurprd04.prod.outlook.com (2603:10a6:20b:743::16) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.12; Thu, 12 Nov
- 2026 03:46:08 +0000
-Received: from TYZPR03MB5743.apcprd03.prod.outlook.com
- ([fe80::7f51:5771:90c4:8c40]) by TYZPR03MB5743.apcprd03.prod.outlook.com
- ([fe80::7f51:5771:90c4:8c40%3]) with mapi id 15.21.0615.007; Thu, 12 Nov 2026
- 03:46:07 +0000
-Message-ID: <d64b9a46-ae22-4b4b-88e9-bb1c4eb79aab@amlogic.com>
-Date: Thu, 12 Nov 2026 11:46:03 +0800
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.10; Thu, 12 Nov
+ 2026 06:22:17 +0000
+Received: from GVXPR04MB12316.eurprd04.prod.outlook.com
+ ([fe80::fc6e:ca22:f065:def4]) by GVXPR04MB12316.eurprd04.prod.outlook.com
+ ([fe80::fc6e:ca22:f065:def4%5]) with mapi id 15.21.0592.012; Thu, 12 Nov 2026
+ 06:22:17 +0000
+Message-ID: <987f1008-bea2-4d02-a2e1-f4389a0ff3d5@oss.nxp.com>
+Date: Thu, 12 Nov 2026 08:26:01 +0200
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] i3c: master: svc: Add amlogic a9 support
-To: Frank Li <Frank.li@oss.nxp.com>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Frank Li <Frank.Li@nxp.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>,
- Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
- Miquel Raynal <miquel.raynal@bootlin.com>, Kees Cook <kees@kernel.org>,
- "Gustavo A. R. Silva" <gustavoars@kernel.org>,
- linux-i3c@lists.infradead.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-amlogic@lists.infradead.org, imx@lists.linux.dev,
- linux-hardening@vger.kernel.org, xianwei.zhao@amlogic.com,
- Kelvin.Zhang@amlogic.com
-References: <20261106-a9_i3c-v3-0-804b69b9095b@amlogic.com>
- <20261106-a9_i3c-v3-1-804b69b9095b@amlogic.com>
- <au4LN40LQAHsPYZ4@lizhi-Precision-Tower-5810>
- <57c4941a-b944-4b32-83b2-4f37e3a840f1@amlogic.com>
- <avTDuCD1ipp81dwJ@lizhi-Precision-Tower-5810>
-Content-Language: en-GB
-From: Junyi Zhao <junyi.zhao@amlogic.com>
-In-Reply-To: <avTDuCD1ipp81dwJ@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SE2P216CA0095.KORP216.PROD.OUTLOOK.COM
- (2603:1096:101:2c2::10) To TYZPR03MB5743.apcprd03.prod.outlook.com
- (2603:1096:400:74::7)
+Subject: Re: [PATCH v2] tty: serial: lpuart: Add port lock for registers read
+ in lpuart32_set_termios()
+To: "Sherry Sun (OSS)" <sherry.sun@oss.nxp.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Jiri Slaby <jirislaby@kernel.org>, Jingchang Lu <jingchang.lu@freescale.com>
+Cc: linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
+ imx@lists.linux.dev, sherry.sun@nxp.com
+References: <20261112-lpuart_port_lock-v2-1-e1d914e52660@nxp.com>
+Content-Language: en-US
+From: Daniel Baluta <daniel.baluta@oss.nxp.com>
+In-Reply-To: <20261112-lpuart_port_lock-v2-1-e1d914e52660@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR4P281CA0203.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:e5::6) To GVXPR04MB12316.eurprd04.prod.outlook.com
+ (2603:10a6:150:2c6::8)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -112,519 +102,160 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TYZPR03MB5743:EE_|SEZPR03MB8813:EE_
-X-MS-Office365-Filtering-Correlation-Id: 47d9f959-9739-45b0-2a43-08df406f7b5f
+X-MS-TrafficTypeDiagnostic: GVXPR04MB12316:EE_|AM0PR04MB12098:EE_
+X-MS-Office365-Filtering-Correlation-Id: 025ccd7a-2eb8-42f3-21a6-08df40854ca2
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|23010399003|22082099003|18002099003|6133799003|3023799007|10067099003|5023799004|4143699003|261021130227099003|11063799006|261009223027099003|261022075727099003|261021121427099003|261026140227099003|56012099006|261009221727099003|261021135927099003|261022105027099003|261021133027099003|261022113327099003|261009223327099003|261021123027099003|261022115727099003|261009220027099003|261026130827099003|261009221227099003|261028144727099003|261102123227099003|261026135527099003|261026121527099003;
+	BCL:0;ARA:13230040|23010399003|376014|19092799006|366016|1800799024|22082099003|18002099003|10067099003|11063799006|56012099006|261026140227099003|261102123227099003|261028144727099003|261009223027099003|261021123027099003|261026121527099003|261022105027099003|261009221227099003|261021121427099003;
 X-Microsoft-Antispam-Message-Info:
-	mNTcPkS4/j2HOQgfwFMnOVFgetP7OpeAQVi5w0OqpWALQHUevABTx8IM59NjR+AcMp6Hy2awYfOtkfdgCVxU9K27j3oH3x0qK4/61TCew8k2ydwhUycH5rdXILcP+KkZyn8PkUQTV8UvIMFpwGYHR8Fnysi3/kG+qthR0bWFdedXKTmzIHzIoxzxFepG4yQO8yz1vWHus1qg1zZjBYoDTDPJiTWO78gSEqTVMOxJ+nbozvq4zDCo/Uz1kZAq6IDSOd2zdHkRO2fiCcAe+nsv2LovD5mfrBA8E4ISfKfCgQFAjDl+wxSlEXPOC8hn6eQok0/jqzRIBYk8DH3g01XyeIcvnmYJBzu8s/2ez6tsz5+ZaaQ5H+R+rRIOe4HRWQfFMc99enzxKLd3vjlbRnJ9DwJ3r7IJFg5PFM9qGE1abdxJoFyGMOi0e/uiDu3jAtfOYI2En/ZJPjR8XgqhpWmW2Pn7H2xuuqgGMPuWGIXjqT7MQrVRh0EzM/M5dulwaS1u/lEYgDnrf60hxmAlewUXKDwkXF08G2MqLxToIKpMP+EMeJ6vG9N6g3Nyk7tgXYqJEX1Xe8PtPtdv3/i7oJ0u21PSRf5ve+Bxc/EM74t+AFZgsTEiWDAMfj7feX78JXx+eOSO9CykcAuG4uR4GBwff9K8lq5Kmawr4hJ/91a0+qQ=
+	5kPEXsn+ZfwJgoSIYN94LBLgXyLQJZDY9Ghy2kPMziCzd/4GatBBeRLcPeqbvf+3lyM0ZhffPMbfmiUZnzRtSdiF10RpxMQ4dw6oHNPttt3puj7Vz8gAkvzPDSuIr1GNUhtxsE/pRZBTgDXn+/YUeli2zBF9MALgGdDix4un+etsmApv0FWtbxeeVQdPHu/FU7DCcJ7hxZGXqBSlkLsuew+u5Q7luEflZJfXErrKEmv0IyQgBBDjGxDaXm1+hzrX/LxuDlFOBp/ncos93k+FqRGVTSzQV3S7STQXKpN7U9igex0KDbh3f9ERNeySJXDC3TYHMFn9dE/PzYoMuJ9N+ps+Ux51q4Y03TdoAvRxsBKjEl4ktyWLPvcDF++Gnk8iMW2Glg3nMB7Gq+wQAnTeLTajB/XyZO9rf6dBnGEGFwa4pMGveC0yAHUbNo4HCdqyge8jbe3myKIAMSgj8R5zZV0Nce+kMuviy1eCxNDSrJ2cjJGYmWuzKspAVjjDsQg0YROIJmT6LdTxpWBJdVJzofeuKselCs1Ch8xy8wwB9gM4ISbjHXBSREXJ1nR3ca0GrAigke9HAYcpzq0S+CLA8l6fYd45K8RHkf4EycE9+4bSNyPsIp83RtPbIRAmZsWa
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYZPR03MB5743.apcprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(23010399003)(22082099003)(18002099003)(6133799003)(3023799007)(10067099003)(5023799004)(4143699003)(261021130227099003)(11063799006)(261009223027099003)(261022075727099003)(261021121427099003)(261026140227099003)(56012099006)(261009221727099003)(261021135927099003)(261022105027099003)(261021133027099003)(261022113327099003)(261009223327099003)(261021123027099003)(261022115727099003)(261009220027099003)(261026130827099003)(261009221227099003)(261028144727099003)(261102123227099003)(261026135527099003)(261026121527099003);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVXPR04MB12316.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(19092799006)(366016)(1800799024)(22082099003)(18002099003)(10067099003)(11063799006)(56012099006)(261026140227099003)(261102123227099003)(261028144727099003)(261009223027099003)(261021123027099003)(261026121527099003)(261022105027099003)(261009221227099003)(261021121427099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RzBLT3NKN0hleWQxbjVSOGVwcllaNnlQYXZ4R3F1azgwelVWRy9OWU4wTHpP?=
- =?utf-8?B?Z0dvZFlJTmlXOXdJRi94dWp1Q2VYeFBOem81Qy9kZjczRU94dFQ2RXp0V0dy?=
- =?utf-8?B?N0NvbFFFRW1OQWloZ1dtRlkzeXVyQzVGaG1oMEZSTXRad0IyYzY3dlZJZkVh?=
- =?utf-8?B?OUZta0Vib1NJOCt1UzdNNE0vVkFXc2ZhaUgwejRiQkE4SWZtOTZDQk9BQ0l4?=
- =?utf-8?B?cDRIWElvVkFIb2tzcFVqQlYwMjBKa0xSNVVOYlFpck1PVzdncDlENEtMVk9n?=
- =?utf-8?B?RVFwdFV6NVducnBHNTZGTUdFcW8zY0wvQ2FQdWdudU9kNEJERHdsem40aUsr?=
- =?utf-8?B?K2JsNGtBTVFmbE1GTnozejFHSXpUZStRcHZsTGhPaWNjZ0dwNlNMYlBnRzNM?=
- =?utf-8?B?T2dEM0RXd3ViYWNJUjVvQmcxOVBUdG9kV1BFZUMvMGxMTkVwdjFWenkxenpJ?=
- =?utf-8?B?V2lSazdUaHRGRCtUVW1HUlo5L3dyZHkwZ09rOXk4RFZWRGZBcmtRaHk5Rlow?=
- =?utf-8?B?ZmRZTmFWL3dJUlN3dmllYVdMTnQzck9saVN2b1RDRzZtWThWd2F1MURmSk9n?=
- =?utf-8?B?SDloeEc0QzRpSWFxV25kb3BnRXd1d3k3M0NYNlVXY3RLZmhqQzVaSXpHVE9z?=
- =?utf-8?B?a3RNNngxS0FwUm9oU1VSNnBoSi9LbVZ2Y0FsZFZWeGZYcXYxa0tUeFlVNUZv?=
- =?utf-8?B?cjlZWXZJWnkxZVpDVk02K3BVODdpdzk3bFdvd0FoNmFweGJKNHdGU0FFZ2F4?=
- =?utf-8?B?V0xWbHlFa0w3Qk5jS21xQkk2VFRHWVExWnN4VWxqUkp2Vk9BSGhtMEZvd1NZ?=
- =?utf-8?B?cnE5ejJxNEROSWRCSHhWa0lYeDNVdUZ3bVc3WWVlYisyVGtQTms0T3JMWTJU?=
- =?utf-8?B?dmdqZG1USXVjeWZ5a29ockpycmxCSEV3ZFMrY3RuaWtQbGV6aWJXbHlWL0lm?=
- =?utf-8?B?OVhYdm9BQUNzb3hkTHZtUlVKZG4vRzRuMlpucGdBWXhZeHVxQWJhSEdRdFVs?=
- =?utf-8?B?L0ZHNGd6YWNMRjE2SWtpRHBwS1lYbEpLbzZkaEhvdStnU0FSWjkxREpEZDhq?=
- =?utf-8?B?eWJOOUFSNlFZa3ZJejZkMDhVdHZ1RDZuSmQyc3FmMGxESmpOQWpNQ0FuRDBX?=
- =?utf-8?B?ZmpEb1ExNXFqY3ZQeUgzMmZMQVhBbHhMclJERFV2R3UvWCtTSmJvUzV6YTZw?=
- =?utf-8?B?aTZkV2hldDBMOG1Valo1S3lOZUdISzl5S1kzd1kzMXFtRkRJYXJKTXIvSXRt?=
- =?utf-8?B?YkJCSkJsZU5YdkxHN050MGhFcEVDWmx2NGJ1MFVqbkNYeUhTc2pNOXFKTTQw?=
- =?utf-8?B?bkk4cVF1MUtSelFSR1VJblBPNzZhVmJ0ZVBBWnp2Sll2enpsWGVQeDJHUm9G?=
- =?utf-8?B?U3RTa3V2QmZIVVByejNPM2JKT1FRUnFtY3Z2OWRDZTV5a3dQd0hnSFlKMkh1?=
- =?utf-8?B?MmU0TFlMWlBYS0YwMTFBS1ZBcEdyYjdtaTRzQmcrVnFUQzJNTTg4VUlST2lT?=
- =?utf-8?B?amY0TlpMVExHc3NnTHhhbTNOekVPU29HM3o5ZXduODUxdGE3NktYblZSQkpM?=
- =?utf-8?B?QXUxTDhYbHF2VElCaXFUZFg2cjZ6cDdPcmZ5amtOeE12d0RvTlR0RGFTL0hs?=
- =?utf-8?B?QWRxU3d2Ti8zdXdWRzdEelduRExYclVxMG54bzZNQytNWTZHK0lEVGM4a296?=
- =?utf-8?B?NjI1S0h2by9MZGkwTGdKVFVoc1hham1aT1grTEtSMExRR0ZTZC93SE1ML2tR?=
- =?utf-8?B?UmZsSmc5TjFtcGpNbFI2RGk5RUhocVN4RmF2bE80a3NudENTSStob1ZsZWRG?=
- =?utf-8?B?cFBoNFgrdjYxdWcvWDhCUXdvTVZ4djFxZlFLemlOZElNNFdma3VONHQ1MXZN?=
- =?utf-8?B?SHlOaFJLT2FFeGhZYnhXTGpiOFZoOFVURWVFaU9PUWRaRFAraVFRSmRwMWFI?=
- =?utf-8?B?N3pOUTRSY3IvWnA5L1hEQktZOFNQaDdlNzF1R0dlRTEyN2drMXlKaG5ldUMr?=
- =?utf-8?B?SXVTZ1kxbjdtN3JPckxPSEpuTzl5YzY3em5IRHQ1eGhFMFNVcGMwandHTTJ0?=
- =?utf-8?B?NSthTEgzWlREUnBZQ1pkamlmODl0cHJSMDVVM0tNb05zSThsZzFRYkY4Y3NL?=
- =?utf-8?B?RklmNms5ZkNsVW5YZTJyQkpCZmZlSzRQWVYyU05aM0FDWGhrbU9qMWFnZE0w?=
- =?utf-8?B?a2pXZmorQVVNbDQxZ1hkVFF4QXZmbytERktaOUdwQXNuMktnNnNiZm9Kcjl4?=
- =?utf-8?B?THVoRkovU1Y2NE5ZdEJKL2czSmw5WlRoSGZyaktNSDUyV3BQQ1pnOWdDNnVE?=
- =?utf-8?B?cHR0TDJHZHJGTjFzL1hsZE9GaEVNazdnVThpWWxud3JXd3JuS3pIQT09?=
-X-OriginatorOrg: amlogic.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 47d9f959-9739-45b0-2a43-08df406f7b5f
-X-MS-Exchange-CrossTenant-AuthSource: TYZPR03MB5743.apcprd03.prod.outlook.com
+	=?utf-8?B?YklYQ3R6a2VlVGJCSE5ZRG9ua24yV2VhYVFaeDJhQWtaVjBVN3FoK1hPOExM?=
+ =?utf-8?B?c0NyT2tzN0hVeXdaeUlwUGQ0ZytnbUJITlV1NEl1V2VUdUl1Z1lwMHNSR3ZS?=
+ =?utf-8?B?ZHNKZU5ETmZtcWpjdGUxZy9FSFhkYTUwWFpYRWVpYXhkQ2c2NzRiVHM0ZDB6?=
+ =?utf-8?B?U2hhdEhSNWV3Rm54VmQrak5tc3lzRWFKanNpN3RkMXYvVUp0dDZneGFRRlRU?=
+ =?utf-8?B?SHc3emJyaFI2Ym1NdisxZmVuVFZSVFhSaTFITWkrUWRMZGdnaTZ5VXV0Vlha?=
+ =?utf-8?B?VGJvSzRtSUo0ank4YlRSRkxHWktiN2Q2L040UjNMQWhFNldTcGVHak15VEhi?=
+ =?utf-8?B?TXhKdFp3R3dBV1VYUDVjTGZmVGVOZUpkVTVUVGZNbFNDMTNOS0FDSFhmZWFE?=
+ =?utf-8?B?K1Fsb2pBTnZtcWNEakYydmo3YzkzUFNQUDZuRGVaZzBTejA3Nm40bVNzRjVJ?=
+ =?utf-8?B?cXU0cHZRMFdSUmljb2hyZVNqSGN5d05NL2RiTGlmNTBwbDJNY2gzUm9HYlhB?=
+ =?utf-8?B?Z3J2cVJweDN2a1BGRWx4SWl2MjR3SW1xdkQ2by8yc21CVkRIYkk3S2Z2ejVP?=
+ =?utf-8?B?amYzU2x6OUNaY1BUditBWUJaS1lweGpZZDA5SnU2TVA4QmxxVFMwdEVxbVE4?=
+ =?utf-8?B?RHZyZWRzS05abTZKRGM0cGFKMm1wdjl3WldLeHhIMElvcTRFVkJoVDFvQ0xM?=
+ =?utf-8?B?V3RodzYxckgxc1IvRldIY0dzYW1SbW1mdHAzUVN6dHpGamlhcTF6V3FyZWFQ?=
+ =?utf-8?B?WVFBUEdBSExyZXhSNmt1RUF0UmhzUnI4TDljY3QzOEpSQkc3cWtLOGpqcTMr?=
+ =?utf-8?B?anJaYVlsQmp0UnF2MWIwU2NoQ05mK2tWZHRJUTlRQWcvK3JQMHEvMW9yUE5V?=
+ =?utf-8?B?WVRMRmJ6QjZCekViUXdLYWtISFlsQzltdFl0eXRCMUhSYjBhbWE3TG03ZDR4?=
+ =?utf-8?B?dHJjbHptYytvTkZyZVhvMFFoTDFuQ3Q1MWtlT1FqZWVLTmlCWWw1U3ZHb1BL?=
+ =?utf-8?B?dy93d1ByNXMyeE9NTjRkVlVCOWE0dzRiN2xZOTR4bFNPM2tUUlJkWHhSbmJz?=
+ =?utf-8?B?azNvRHNPTlp6WnNQdjlqS3VLWmwram9WczM4ZVV0aHZxNmF6KzJOQnVhWFlT?=
+ =?utf-8?B?aXFOWFVMc1p0TmYrZmtQNElGUS9BRmlKZ0MzZktFaFpBK29LUW9RYTdselNm?=
+ =?utf-8?B?L0JTWm5kMGZIeEFQalJ6T2dsMmpqV2psNW1NUTUxblVtNXk0dy9IWFdsbzBo?=
+ =?utf-8?B?TW1udzQyK1FXVC9XbllkTjM3NmlUYmR0djAzQWlsYWVmVENpMWFjYjdJVTBY?=
+ =?utf-8?B?d1VOMStFaEdTL0VEZ01UbWxpaWdXSHRtblJOUCtFRnEyY1ZKWEVuZTB4cTNz?=
+ =?utf-8?B?aTg5NWRrcUJLMktpbWZlL2J3eVRCaEVxMmZ5ZVVJZEtaZXpyV1U4cDhxeE9B?=
+ =?utf-8?B?RGF2MFJnbjJGMEw2byt2NmtlU0NkSWNsSjJjRERBM2phSDV4cXUyUVo0TURD?=
+ =?utf-8?B?bldqQ1BZNGlZZ1pTcFY4QW85cnZjTWRDeWRBZzlpQU5oakxRT2JJcWJiYTdj?=
+ =?utf-8?B?Z1VjdDJxN0kzN3cwUEh0SkduLzdtZEVNMmNVUCs4bjNsVmdwTDNqeHo2TXVr?=
+ =?utf-8?B?bkF1UzF0UUh1MHg2dFRJZWhyeCtMUHpseHVGeHZhRUNhVDRVRDhlUkRRYmFT?=
+ =?utf-8?B?L09ZcWVOVE4rMkRvSXNpWU9tZkQ4WGMvS3I2dlUrYkNUbHNwZmozcDlQN3Zo?=
+ =?utf-8?B?clhyL1BKWVYrY3VQbzZmZTZuWTNGdWpIZkIvekZuZmVqV3JTblpISlAxVHA1?=
+ =?utf-8?B?VklKTzZXeUptRnJ5R3FNL3F5T1NyaEpjVVpVbG5oa0tKZE5obWhOazcyenl3?=
+ =?utf-8?B?S2FUcHdWNnlsMTJ6NzEyc3FtYnBxZ2dRWU8xcUlaUW80ZG51M3ZGQWdMNWo0?=
+ =?utf-8?B?UHN4RjZWekE4SFFhaHRaVFhHSzY2UUR4KzErQU94ZjVSWGNCbElYWEFrZ3ll?=
+ =?utf-8?B?NnhqYXl6UXQ5SnpwSmFQRHhGdGJjQW5jN2QyV0hOcHFwT0pyZStYak8zbUlI?=
+ =?utf-8?B?ek15VDNMMTIwaEsyRS8xY2o5WmFzNFFGdVRIdm15YTd3L2JyRzNpcVhja0ZV?=
+ =?utf-8?B?eFZHWGVjcU1QeUlidDltN2RWVGxLejk4WVZ1SHRNQjRBa3RLSk1lSy9sOUxz?=
+ =?utf-8?B?NlJ3MXRqVHVtVE96N2hDQnJra3VFeURob0ExSkc1d1lWNFlRWG0zM0xqUURT?=
+ =?utf-8?B?NUF4S3VwcGtpU1V0WVZRaVlJNE13WjhvL1I4bFpaSjNWekF4a0hRL1V3cFdw?=
+ =?utf-8?B?VFczK3M2YkNQMHlsS3M1cjFweUJZemJ5NWxLa0NMQU1waHIybXlTUT09?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 025ccd7a-2eb8-42f3-21a6-08df40854ca2
+X-MS-Exchange-CrossTenant-AuthSource: GVXPR04MB12316.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Nov 2026 03:46:07.1877
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Nov 2026 06:22:17.2688
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0df2add9-25ca-4b3a-acb4-c99ddf0b1114
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6OV7zjFqx2FMZATB/9xivHyi3YF7tDO4S/7OZOjJK4P9+xTgx3z+3KKM1r9xqKwG0b1EmR13ScVcfh9O0v4CKg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SEZPR03MB8813
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2NrRs1X5UUgxLIXu89thLITsKlN5wMSB4F9Kzrf6QCg6Xodw7Tm0EJhaTLLwHcouOTy6OXVkiYtEjo4328OybQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB12098
 
-Hi frank，
-     Thanks for the review.
-
-On 12/11/2026 03:36, Frank Li wrote:
-> [ EXTERNAL EMAIL ]
+On 11/12/26 05:19, Sherry Sun (OSS) wrote:
+> From: Sherry Sun <sherry.sun@nxp.com>
 > 
-> On Tue, Nov 10, 2026 at 01:23:23PM +0800, Junyi Zhao wrote:
->>
->> Hi frank，
->>        thks for your review.
->> On 07/11/2026 01:15, Frank Li wrote:
->>> [ EXTERNAL EMAIL ]
->>>
->>> On Fri, Nov 06, 2026 at 03:13:08PM +0800, Junyi Zhao wrote:
->>>> Amlogic a9 SoCs integrate the Silvaco I3C IP, and their peripheral
->>>> clocks vary from the vanilla implementation:
->>>>
->>>>     - The EE-domain controller (amlogic,a9-i3c) takes two clocks,
->>>>       "pclk" and "fast_clk", and the fast clock rate must be programmed
->>>>       before the controller can be used.
->>>>
->>>>     - The AO-domain controller (amlogic,a9-ao-i3c) exposes only "pclk":
->>>>       its bus clock is generated by an internal divider located in the
->>>>       controller's own register space.
->>>>
->>>> Both variants need setup that the generic driver does not perform:
->>>> the fast clock rate must be rounded and set at probe time, and on the
->>>> AO variant the internal divider must be registered with the clock
->>>> framework so that "fast_clk" even exists. The divider registers sit
->>>> in the controller's own register space, so they can only be accessed
->>>> while pclk is running.
->>>>
->>>> Add a vendor_init callback, invoked from the probe with the clocks
->>>> enabled, to handle this. On the AO variant it registers the internal
->>>> divider chain (div_en -> div -> gate) with the common clock framework
->>>> and appends the resulting clock to the clk bulk array as "fast_clk";
->>>> for both variants it then rounds and sets the fast clock rate
->>>> (target 25 MHz). As vendor_init now runs after
->>>> clk_bulk_prepare_enable(), the probe error paths that follow disable
->>>> the clocks on failure.
->>>>
->>>> Extend the quirks bitmask with an Amlogic-specific bit
->>>> (AML_I3C_QUIRK_AO) marking the AO variant's internal-divider
->>>> behaviour. Since the driver now registers clocks through the common
->>>> clock framework, SVC_I3C_MASTER also depends on COMMON_CLK.
->>>>
->>>> Signed-off-by: Junyi Zhao <junyi.zhao@amlogic.com>
->>>> ---
->>>>    drivers/i3c/master/Kconfig          |   1 +
->>>>    drivers/i3c/master/svc-i3c-master.c | 274 ++++++++++++++++++++++++++++++++++--
->>>>    2 files changed, 263 insertions(+), 12 deletions(-)
->>>>
->>>> diff --git a/drivers/i3c/master/Kconfig b/drivers/i3c/master/Kconfig
->>>> index da96d2aaa..ac7d246c2 100644
->>>> --- a/drivers/i3c/master/Kconfig
->>>> +++ b/drivers/i3c/master/Kconfig
->>>> @@ -47,6 +47,7 @@ config AST2600_I3C_MASTER
->>>>
->>>>    config SVC_I3C_MASTER
->>>>         tristate "Silvaco I3C Dual-Role Master driver"
->>>> +     depends on COMMON_CLK
->>>>         depends on HAS_IOMEM
->>>>         depends on !(ALPHA || PARISC)
->>>>         help
->>>> diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
->>>> index e700392f0..aef56286e 100644
->>>> --- a/drivers/i3c/master/svc-i3c-master.c
->>>> +++ b/drivers/i3c/master/svc-i3c-master.c
->>>> @@ -9,6 +9,7 @@
->>>>
->>>>    #include <linux/bitfield.h>
->>>>    #include <linux/clk.h>
->>>> +#include <linux/clk-provider.h>
->>>>    #include <linux/completion.h>
->>>>    #include <linux/errno.h>
->>>>    #include <linux/i3c/master.h>
->>>> @@ -166,6 +167,31 @@
->>>>     */
->>>>    #define SVC_I3C_QUIRK_DAA_CORRUPT    BIT(2)
->>>>
->>>> +/*
->>>> + * AML_I3C_QUIRK_AO:
->>>> + * AO is the Always-On domain on Amlogic SoCs (remains powered in suspend).
->>>> + * Its clock is generated by an internal divider located in the I3C
->>>> + * controller's own register space.
->>>> + */
->>>> +#define AML_I3C_QUIRK_AO     BIT(3)
->>>> +
->>>> +/*
->>>> + * Quirks shared by all the Amlogic A9 I3C instances.
->>>> + */
->>>> +#define AML_A9_I3C_QUIRKS    (SVC_I3C_QUIRK_FIFO_EMPTY | \
->>>> +                              SVC_I3C_QUIRK_FALSE_SLVSTART | \
->>>> +                              SVC_I3C_QUIRK_DAA_CORRUPT)
->>>> +
->>>> +/* Amlogic specific registers */
->>>> +#define AML_AO_I3C_FCLK_DIV_CTRL             0x304
->>>
->>> Do you have other registers after 0x304? Is it possible create indivial
->>> clock driver for it, reg space is such as 0x300..0x400.
->>>
->>> I3C use 0..0x300
->>>
->>> So needn't distinguish w/o AO.
->>>
->>
->> e.g. I3C_AO_DEBUG_MODIFY at 0x308.
+> lpuart32_set_termios() reads UARTCTRL at function entry without holding
+> the port lock. lpuart32_console_write() can run concurrently on another
+> CPU and temporarily clears the RIE (Receiver Interrupt Enable) bit while
+> it polls characters out. If the unlocked read in set_termios lands inside
+> that window, the stale snapshot is written back, permanently clearing
+> RIE. Once lost, no normal code path re-enables them, so the UART stops
+> receiving characters and becomes unresponsive.
 > 
-> Does it use in I3C driver?
+> Need to add port lock for the registers read in lpuart32_set_termios() to
+> avoid the unlocked snapshot captured. Since neither uart_get_baud_rate()
+> nor lpuart_dma_rx_free() uses ctrl, old_ctrl, bd, or modem, the register
+> reads and bit manipulations could be moved into the existing
+> uart_port_lock_irqsave() critical section after lpuart_dma_rx_free().
 > 
-
-Not by the current driver code. I3C_AO_DEBUG_MODIFY (0x308) is a debug 
-switch that bypasses the Amlogic-specific customizations integrated into 
-this controller instance. It can revert the block to the vanilla Silvaco 
-behaviour. That places it unambiguously in the I3C controller's own 
-register file, not in a clock block， So the 0x300-0x400 tail is better 
-described as the Amlogic integration registers of the I3C AO controller 
-(divider +debug/bypass switch), not a dedicated clock region.
-
-The debug/bypass switch in AO instance is exactly the kind of register a 
-future may need to touch. I would rather not carve the controller's own 
-integration registers away from the controller driver.
-
->>
->> 0x300-0x400 is not a clean clock block.
->>
->> Its registers are only accessible while the controller's pclk is
->> running,
+> Please note that this only fix the normal printk path, in the
+> oops_in_progress path of lpuart32_console_write(), when trylock fails,
+> RIE is cleared and old_cr restored without the port lock held, there is
+> still a risk of stale snapshot, but it's acceptable for the post-oops
+> state and the trylock-fail window.
 > 
-> You can set pclk as parent clock, so access's parent clock should be
-> already enabled.
+> Fixes: 380c966c093e ("tty: serial: fsl_lpuart: add 32-bit register interface support")
+> Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
+> ---
+> Changes in v2:
+> - As suggested by Sashiko, since neither uart_get_baud_rate() nor
+>   lpuart_dma_rx_free() uses ctrl, old_ctrl, bd, or modem, move the
+>   register reads and bit manipulations into the existing
+>   uart_port_lock_irqsave() critical section after lpuart_dma_rx_free().
+> - Link to v1: https://lore.kernel.org/r/20261111-lpuart_port_lock-v1-1-5d332c51edfe@nxp.com
+> ---
+>  drivers/tty/serial/fsl_lpuart.c | 29 ++++++++++++++---------------
+>  1 file changed, 14 insertions(+), 15 deletions(-)
 > 
+> diff --git a/drivers/tty/serial/fsl_lpuart.c b/drivers/tty/serial/fsl_lpuart.c
+> index cd2575a3aef7..074bd9d42f84 100644
+> --- a/drivers/tty/serial/fsl_lpuart.c
+> +++ b/drivers/tty/serial/fsl_lpuart.c
+> @@ -2241,6 +2241,20 @@ lpuart32_set_termios(struct uart_port *port, struct ktermios *termios,
+>  	unsigned int  baud;
+>  	unsigned int old_csize = old ? old->c_cflag & CSIZE : CS8;
+>  
+> +	/* ask the core to calculate the divisor */
+> +	baud = uart_get_baud_rate(port, termios, old, 50, port->uartclk / 4);
+> +
+> +	/*
+> +	 * Need to update the Ring buffer length according to the selected
+> +	 * baud rate and restart Rx DMA path.
 
-Agreed - CLK_OPS_PARENT_ENABLE , I will set that flag on the internally 
-registered clocks in v4 regardless (it also fixes the unclocked-MMIO 
-issue the bot reported).
-
-> Frank
+While you are here please fix the typo. s/acqures/acquires.> +	 *
+> +	 * Since timer function acqures port->lock, need to stop before
+> +	 * acquring same lock because otherwise timer_delete_sync() can deadlock.
+> +	 */
+> +	if (old && sport->lpuart_dma_rx_use)
+> +		lpuart_dma_rx_free(port);
+> +
+> +	uart_port_lock_irqsave(port, &flags);
+>  	ctrl = old_ctrl = lpuart32_read(port, UARTCTRL);
+>  	bd = lpuart32_read(port, UARTBAUD);
+>  	modem = lpuart32_read(port, UARTMODIR);
+> @@ -2320,21 +2334,6 @@ lpuart32_set_termios(struct uart_port *port, struct ktermios *termios,
+>  		ctrl &= ~UARTCTRL_PE;
+>  	}
+>  
+> -	/* ask the core to calculate the divisor */
+> -	baud = uart_get_baud_rate(port, termios, old, 50, port->uartclk / 4);
+> -
+> -	/*
+> -	 * Need to update the Ring buffer length according to the selected
+> -	 * baud rate and restart Rx DMA path.
+> -	 *
+> -	 * Since timer function acqures port->lock, need to stop before
+> -	 * acquring same lock because otherwise timer_delete_sync() can deadlock.
+> -	 */
+> -	if (old && sport->lpuart_dma_rx_use)
+> -		lpuart_dma_rx_free(port);
+> -
+> -	uart_port_lock_irqsave(port, &flags);
+> -
+>  	port->read_status_mask = 0;
+>  	if (termios->c_iflag & INPCK)
+>  		port->read_status_mask |= UARTSTAT_FE | UARTSTAT_PE;
 > 
->> so its state is tightly coupled to the controller's own
->> power/clock state.
->>
->>
->>> Frank
->>>
->>>> +#define AML_AO_I3C_FCLK_DIV_EN_SHIFT         8
->>>> +#define AML_AO_I3C_FCLK_DIV_SHIFT            0
->>>> +#define AML_AO_I3C_FCLK_DIV_WIDTH            8
->>>> +#define AML_AO_I3C_FCLK_EN_SHIFT             9
->>>> +
->>>> +/* Target fast clock rate of the Amlogic A9 I3C controllers, in Hz */
->>>> +#define AML_I3C_FAST_CLK_RATE                25000000
->>>> +
->>>>    struct svc_i3c_cmd {
->>>>         u8 addr;
->>>>         union {
->>>> @@ -195,8 +221,11 @@ struct svc_i3c_regs_save {
->>>>         u32 mdynaddr;
->>>>    };
->>>>
->>>> +struct svc_i3c_master;
->>>> +
->>>>    struct svc_i3c_drvdata {
->>>>         u32 quirks;
->>>> +     int (*vendor_init)(struct svc_i3c_master *master);
->>>>    };
->>>>
->>>>    /**
->>>> @@ -2011,6 +2040,7 @@ static int svc_i3c_master_probe(struct platform_device *pdev)
->>>>         if (!master->drvdata)
->>>>                 return -EINVAL;
->>>>
->>>> +     master->dev = dev;
->>>>         master->regs = devm_platform_ioremap_resource(pdev, 0);
->>>>         if (IS_ERR(master->regs))
->>>>                 return PTR_ERR(master->regs);
->>>> @@ -2019,27 +2049,43 @@ static int svc_i3c_master_probe(struct platform_device *pdev)
->>>>         if (master->num_clks < 0)
->>>>                 return dev_err_probe(dev, -EINVAL, "can't get I3C clocks\n");
->>>>
->>>> +     ret = clk_bulk_prepare_enable(master->num_clks, master->clks);
->>>> +     if (ret)
->>>> +             return dev_err_probe(dev, ret, "can't enable I3C clocks\n");
->>>> +
->>>> +     /*
->>>> +      * Vendor specific setup may register additional clocks (e.g. the
->>>> +      * internal divider chain of the AO variant) and program clock rates,
->>>> +      * so it must run with the clocks enabled.
->>>> +      */
->>>> +     if (master->drvdata->vendor_init) {
->>>> +             ret = master->drvdata->vendor_init(master);
->>>> +             if (ret)
->>>> +                     goto err_disable_clks;
->>>> +     }
->>>> +
->>>>         for (i = 0; i < master->num_clks; i++) {
->>>>                 if (!strcmp(master->clks[i].id, "fast_clk"))
->>>>                         break;
->>>>         }
->>>>
->>>> -     if (i == master->num_clks)
->>>> -             return dev_err_probe(dev, -EINVAL,
->>>> -                                  "can't get I3C peripheral clock\n");
->>>> +     if (i == master->num_clks) {
->>>> +             ret = dev_err_probe(dev, -EINVAL,
->>>> +                                 "can't get I3C peripheral clock\n");
->>>> +             goto err_disable_clks;
->>>> +     }
->>>>
->>>>         master->fclk = master->clks[i].clk;
->>>> -     if (IS_ERR(master->fclk))
->>>> -             return PTR_ERR(master->fclk);
->>>> +     if (IS_ERR(master->fclk)) {
->>>> +             ret = PTR_ERR(master->fclk);
->>>> +             goto err_disable_clks;
->>>> +     }
->>>>
->>>>         master->irq = platform_get_irq(pdev, 0);
->>>> -     if (master->irq < 0)
->>>> -             return master->irq;
->>>> -
->>>> -     master->dev = dev;
->>>> -     ret = clk_bulk_prepare_enable(master->num_clks, master->clks);
->>>> -     if (ret)
->>>> -             return dev_err_probe(dev, ret, "can't enable I3C clocks\n");
->>>> +     if (master->irq < 0) {
->>>> +             ret = master->irq;
->>>> +             goto err_disable_clks;
->>>> +     }
->>>>
->>>>         mutex_init(&master->lock);
->>>>
->>>> @@ -2163,9 +2209,213 @@ static const struct svc_i3c_drvdata npcm845_drvdata = {
->>>>
->>>>    static const struct svc_i3c_drvdata svc_default_drvdata = {};
->>>>
->>>> +/**
->>>> + * struct aml_i3c_ao_clk - container for the AO variant's internal fast clock
->>>> + * @div_en: enables the internal divider
->>>> + * @div: bus clock divider
->>>> + * @gate: output gate of the generated fast clock
->>>> + * @lock: spinlock shared by the gate and divider register operations
->>>> + *
->>>> + * The clock HW structures are registered with the clock framework and must
->>>> + * stay alive for the whole driver lifetime, so they are kept along with the
->>>> + * shared lock used by their gate/divider operations.
->>>> + */
->>>> +struct aml_i3c_ao_clk {
->>>> +     struct clk_gate div_en;
->>>> +     struct clk_divider div;
->>>> +     struct clk_gate gate;
->>>> +     spinlock_t lock;
->>>> +};
->>>> +
->>>> +/**
->>>> + * aml_ao_i3c_tail_clocks - register the AO variant's internal fast clock
->>>> + * @master: I3C master controller
->>>> + * @parent: parent clock of the internal divider chain; must be "pclk", the
->>>> + *          only clock the AO variant exposes (see silvaco,i3c-master.yaml)
->>>> + *
->>>> + * Register the internal divider chain that produces the AO variant's
->>>> + * fast_clk and append it to the clk bulk array as "fast_clk". The caller
->>>> + * must run with the clocks enabled since the divider registers are
->>>> + * accessed during registration. The appended clock is prepared and
->>>> + * enabled here as well, because clk_bulk_prepare_enable() already ran
->>>> + * in the probe with the original clock list.
->>>> + *
->>>> + * Return: 0 on success, or a negative error code.
->>>> + */
->>>> +static int aml_ao_i3c_tail_clocks(struct svc_i3c_master *master, struct clk *parent)
->>>> +{
->>>> +     struct device *dev = master->dev;
->>>> +     struct clk_bulk_data *new_clks;
->>>> +     struct clk_init_data init = {};
->>>> +     struct aml_i3c_ao_clk *ao;
->>>> +     struct clk *fclk;
->>>> +     char name[64];
->>>> +     int ret;
->>>> +
->>>> +     ao = devm_kzalloc(dev, sizeof(*ao), GFP_KERNEL);
->>>> +     if (!ao)
->>>> +             return -ENOMEM;
->>>> +
->>>> +     spin_lock_init(&ao->lock);
->>>> +
->>>> +     snprintf(name, sizeof(name), "%s#div_en", dev_name(dev));
->>>> +     init.name = name;
->>>> +     init.ops = &clk_gate_ops;
->>>> +     init.flags = CLK_IGNORE_UNUSED;
->>>> +     init.parent_data = &(struct clk_parent_data) {
->>>> +             .index = -1,
->>>> +             .hw = __clk_get_hw(parent),
->>>> +     };
->>>> +     init.num_parents = 1;
->>>> +
->>>> +     ao->div_en.reg = master->regs + AML_AO_I3C_FCLK_DIV_CTRL;
->>>> +     ao->div_en.bit_idx = AML_AO_I3C_FCLK_DIV_EN_SHIFT;
->>>> +     ao->div_en.hw.init = &init;
->>>> +     ao->div_en.lock = &ao->lock;
->>>> +
->>>> +     ret = devm_clk_hw_register(dev, &ao->div_en.hw);
->>>> +     if (ret)
->>>> +             return dev_err_probe(dev, ret, "failed to register %s\n", name);
->>>> +
->>>> +     snprintf(name, sizeof(name), "%s#div", dev_name(dev));
->>>> +     init.name = name;
->>>> +     init.ops = &clk_divider_ops;
->>>> +     init.flags = 0;
->>>> +     init.parent_data = &(struct clk_parent_data) {
->>>> +             .index = -1,
->>>> +             .hw = &ao->div_en.hw,
->>>> +     };
->>>> +     init.num_parents = 1;
->>>> +
->>>> +     ao->div.reg = master->regs + AML_AO_I3C_FCLK_DIV_CTRL;
->>>> +     ao->div.shift = AML_AO_I3C_FCLK_DIV_SHIFT;
->>>> +     ao->div.width = AML_AO_I3C_FCLK_DIV_WIDTH;
->>>> +     ao->div.hw.init = &init;
->>>> +     ao->div.lock = &ao->lock;
->>>> +
->>>> +     ret = devm_clk_hw_register(dev, &ao->div.hw);
->>>> +     if (ret)
->>>> +             return dev_err_probe(dev, ret, "failed to register %s\n", name);
->>>> +
->>>> +     snprintf(name, sizeof(name), "%s#gate", dev_name(dev));
->>>> +     init.name = name;
->>>> +     init.ops = &clk_gate_ops;
->>>> +     init.flags = CLK_SET_RATE_PARENT | CLK_IGNORE_UNUSED;
->>>> +     init.parent_data = &(struct clk_parent_data) {
->>>> +             .index = -1,
->>>> +             .hw = &ao->div.hw,
->>>> +     };
->>>> +     init.num_parents = 1;
->>>> +
->>>> +     ao->gate.reg = master->regs + AML_AO_I3C_FCLK_DIV_CTRL;
->>>> +     ao->gate.bit_idx = AML_AO_I3C_FCLK_EN_SHIFT;
->>>> +     ao->gate.hw.init = &init;
->>>> +     ao->gate.lock = &ao->lock;
->>>> +
->>>> +     ret = devm_clk_hw_register(dev, &ao->gate.hw);
->>>> +     if (ret)
->>>> +             return dev_err_probe(dev, ret, "failed to register %s\n", name);
->>>> +
->>>> +     fclk = devm_clk_hw_get_clk(dev, &ao->gate.hw, NULL);
->>>> +     if (IS_ERR(fclk))
->>>> +             return dev_err_probe(dev, PTR_ERR(fclk),
->>>> +                                  "tail i3c fast clock failed\n");
->>>> +
->>>> +     new_clks = devm_kcalloc(dev, master->num_clks + 1, sizeof(*new_clks),
->>>> +                             GFP_KERNEL);
->>>> +     if (!new_clks)
->>>> +             return -ENOMEM;
->>>> +
->>>> +     memcpy(new_clks, master->clks,
->>>> +            master->num_clks * sizeof(*master->clks));
->>>> +     new_clks[master->num_clks].id = "fast_clk";
->>>> +     new_clks[master->num_clks].clk = fclk;
->>>> +     master->clks = new_clks;
->>>> +     master->num_clks++;
->>>> +
->>>> +     /*
->>>> +      * Keep the clk bulk state balanced for the following
->>>> +      * clk_bulk_disable_unprepare() calls (error paths and runtime PM).
->>>> +      */
->>>> +     ret = clk_prepare_enable(fclk);
->>>> +     if (ret)
->>>> +             return dev_err_probe(dev, ret, "can't enable fast_clk\n");
->>>> +
->>>> +     return 0;
->>>> +}
->>>> +
->>>> +/**
->>>> + * aml_i3c_init - Amlogic A9 specific init, called with the clocks enabled
->>>> + * @master: I3C master controller
->>>> + *
->>>> + * Register the AO variant's internal divider chain and round/set the fast
->>>> + * clock rate for both variants.
->>>> + *
->>>> + * Return: 0 on success, or a negative error code.
->>>> + */
->>>> +static int aml_i3c_init(struct svc_i3c_master *master)
->>>> +{
->>>> +     struct device *dev = master->dev;
->>>> +     struct clk *fclk;
->>>> +     long fin_freq;
->>>> +     int ret, i;
->>>> +
->>>> +     if (svc_has_quirk(master, AML_I3C_QUIRK_AO)) {
->>>> +             /*
->>>> +              * clk_bulk_get_all() preserves the DT order, and the
->>>> +              * binding restricts the AO variant to exactly one clock,
->>>> +              * which is always "pclk".  So clks[0] is the input of the
->>>> +              * internal divider chain.
->>>> +              */
->>>> +             if (strcmp(master->clks[0].id, "pclk"))
->>>> +                     return dev_err_probe(dev, -EINVAL,
->>>> +                                          "invalid AO input clock\n");
->>>> +
->>>> +             ret = aml_ao_i3c_tail_clocks(master, master->clks[0].clk);
->>>> +             if (ret)
->>>> +                     return ret;
->>>> +     }
->>>> +
->>>> +     for (i = 0; i < master->num_clks; i++) {
->>>> +             if (!strcmp(master->clks[i].id, "fast_clk"))
->>>> +                     break;
->>>> +     }
->>>> +
->>>> +     if (i == master->num_clks)
->>>> +             return dev_err_probe(dev, -EINVAL,
->>>> +                                  "can't get I3C fast clock\n");
->>>> +
->>>> +     fclk = master->clks[i].clk;
->>>> +     if (IS_ERR(fclk))
->>>> +             return PTR_ERR(fclk);
->>>> +
->>>> +     fin_freq = clk_round_rate(fclk, AML_I3C_FAST_CLK_RATE);
->>>> +     if (fin_freq <= 0)
->>>> +             return dev_err_probe(dev, fin_freq ? fin_freq : -EINVAL,
->>>> +                                  "invalid fast_clk\n");
->>>> +
->>>> +     ret = clk_set_rate(fclk, fin_freq);
->>>> +     if (ret)
->>>> +             return dev_err_probe(dev, ret, "setting fast_clk rate failed\n");
->>>> +
->>>> +     return 0;
->>>> +}
->>>> +
->>>> +static const struct svc_i3c_drvdata aml_a9_drvdata = {
->>>> +     .quirks = AML_A9_I3C_QUIRKS,
->>>> +     .vendor_init = aml_i3c_init,
->>>> +};
->>>> +
->>>> +static const struct svc_i3c_drvdata aml_a9_ao_drvdata = {
->>>> +     .quirks = AML_A9_I3C_QUIRKS | AML_I3C_QUIRK_AO,
->>>> +     .vendor_init = aml_i3c_init,
->>>> +};
->>>> +
->>>>    static const struct of_device_id svc_i3c_master_of_match_tbl[] = {
->>>>         { .compatible = "nuvoton,npcm845-i3c", .data = &npcm845_drvdata },
->>>>         { .compatible = "silvaco,i3c-master-v1", .data = &svc_default_drvdata },
->>>> +     { .compatible = "amlogic,a9-i3c", .data = &aml_a9_drvdata },
->>>> +     { .compatible = "amlogic,a9-ao-i3c", .data = &aml_a9_ao_drvdata },
->>>>         { /* sentinel */ },
->>>>    };
->>>>    MODULE_DEVICE_TABLE(of, svc_i3c_master_of_match_tbl);
->>>>
->>>> --
->>>> 2.42.0
->>>>
->>
+> ---
+> base-commit: 793807ca13bf3072fc6d16ce6d90e9ab9beff2a5
+> change-id: 20261111-lpuart_port_lock-01f7deab451a
+> 
+> Best regards,
 
