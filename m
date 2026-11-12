@@ -1,52 +1,52 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=178.251.229.89
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794552253;
-	b=umT7H0EhBBXkn13RnxWrTSayAakS7Xk+rYORenrPZPwtORoxywIG3rF+xnSs67Nj9j2p
-	 O9Iune4fV/jQRgUn24y6A0zPepMfkIAQCJjY1fH1dvpM06JFQbwTIkT3xUsnBEzlRHTzI
-	 n1tExOOoXDTOq292GJzamRCxPL4Svh6VU1Y4QnkDDOQ6tvTj5MnGcOuJm/JxJVD/64df7
-	 4erM93difp2qwz8YXPipwncqni1H3u4dFymEBocBD7GxRbIrrPejEC+L4Jwzzzn6Nehdw
-	 +jKbNjGiSOmtGXzRTfPtxv2pT8mFJ5GdfNDnqaPbUAMb8U4iuN5B2FFG6qFNC06hMIQ==
+	t=1794552255;
+	b=UndDzgbp4pVJDmB5IZJiy0tWhPxuVa0OahxHnGO9mQAarM2C52eYt36YD8Mosj2M+SD4
+	 5MKgjgY35jkHN5KdeoxdAjR1MvZ4ryZHHpsuAzgGz+uhpes18b1bOtFcEnbpXAquEfXpK
+	 nh9lWGldCxVClY5mCleo5Rei6yd30M6SGAzxafpjNSNjPSRrGX1Ati9rqG8HVDreWA4XQ
+	 KGeQ7DbraDgbo5i3SgfYpxaLBRHbxaI8fWyT4/XL5i5+lh6H5PRDOO/vKtJ2vPFB8Q8JR
+	 XXT65njKB5SuiuXl55Jnnm6g3B6szA00C1ObWm8oXVH/WSyy5CJyMD7DuAA8zIu9SKg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794552253;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794552255;
 	h=DMARC-Filter:Received:DKIM-Signature:Message-ID:Date:MIME-Version:
 	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
 	 Content-Type:Content-Transfer-Encoding:X-Last-TLS-Session-Version;
-	bh=IcVw3g/JBjj6GtqZdIE2sYgdy1L6jP6M45BK0w8hcZ4=;
-	b=sB78H4I27cDoJLJIr7jtbO0+NCnl1lyiwX6VJcxR6jh6u1vR09ZR4VheYMiwjLrVk03+
-	 gMwCcp8+eG9zZqDzH3xaZv83oq1Trb1s9aDVnHXEJPQa3wkzja3qd1xUWmUAiXieELYmT
-	 6PoAOWIoes4ns9GwuYmo33R47QQcRtxeqkfQQ1DAaf1/YcJjHp6IiiUs1wKL9suaZeqsi
-	 jDvj9O9htGvwnC/tVBizVZ6bDl0Sn8qhFUTxVKSiSkAb5M5Byqzch4HJ8OXKgN4v39tdF
-	 NrybJjCQquOkIZMALRkHKoNjpXr/WyInnNP3codqzMmTkE8Fw7ndBXjgGSVTWSvxLjA==
+	bh=tVqWo4cVCxBufMJRq8N/ZAqWxdIZ0UAwob+ppyXcu3U=;
+	b=a46qP+tqiYoxQzFXYTaz1imVRE/KPNwTu127FLXt5MhygEIdSCod7FAOz62DsM3hhYxj
+	 PjSnJCehffV0XgH2UbHHMWUw/wDNqANPPDvh0QrdAVqCyDCH217Yiy8wbEekrhNLbOf+F
+	 VDZDHnPO/J4X/sNGdoRhgvRTszglQJp4Cva9gOqh4/LLzwpxSOvSx4UmrSoP8fU+BUkvY
+	 Ks5wO+vTYMOd9jtGDv+GGFRAiaLtuB/VIVFScSt3sIdQ/pcNzy4c6q509YgMpKwdcaFBO
+	 hOjqTncX6augVS0wk4zC4K1nqCFhg7GVz0cvKO1ilvGPh6ogybElcVe0owPrnXZaGhw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=nabladev.com;
 	spf=pass smtp.mailfrom=nabladev.com;
-	dkim=pass header.d=nabladev.com header.i=@nabladev.com header.a=rsa-sha256 header.s=dkim header.b=WC6QlWbz;
+	dkim=pass header.d=nabladev.com header.i=@nabladev.com header.a=rsa-sha256 header.s=dkim header.b=BJqKcKPQ;
 	arc=none smtp.remote-ip=178.251.229.89
 Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A9F5606A323
-	for <imx@lists.linux.dev>; Fri, 13 Nov 2026 06:44:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5A9F5606A323
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37D66606A8B8
+	for <imx@lists.linux.dev>; Fri, 13 Nov 2026 06:44:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 37D66606A8B8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.a=rsa-sha256 header.s=dkim header.b=WC6QlWbz
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id CF34310E5DE;
-	Fri, 13 Nov 2026 07:43:56 +0100 (CET)
+	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.a=rsa-sha256 header.s=dkim header.b=BJqKcKPQ
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BF69C10E6A8;
+	Fri, 13 Nov 2026 07:44:08 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1794552240;
+	s=dkim; t=1794552249;
 	h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=IcVw3g/JBjj6GtqZdIE2sYgdy1L6jP6M45BK0w8hcZ4=;
-	b=WC6QlWbzVFDK0TvsKdEBz/ON16SyDumh36HZf7TAzJQ6/KYt/ANF8PKz/46gaRMxDI9Ul9
-	uNvgEOfQStPaE4BVsZeDmndmomSEzu3Qp2WUulW1h6cMLdVzgqlw1jATr5L+3Bx/S6Ye11
-	oIIAr6MyZ81BZqaI48ryS+aRKaZ0076X46BImlWcwrnvFNxL1UVGPzcMMaRiwt3s6LNECp
-	HP3EFlnxc5JLZ4M44aZQAGzuBMsKdOYduFwnU8NNWTpOj80j2G0/Iz4FPzxMTmMCM9cznQ
-	oBu1C46pMDMJgL6yOOzAIqIzDEsjSosIodwD8vB46dx5MEVJI5p8uh+1KhJoqg==
-Message-ID: <077477f7-3b1e-4ed5-ac53-45ebc01c47d9@nabladev.com>
-Date: Thu, 12 Nov 2026 13:35:17 +0100
+	bh=tVqWo4cVCxBufMJRq8N/ZAqWxdIZ0UAwob+ppyXcu3U=;
+	b=BJqKcKPQIyZTHht8rnp6/wF4liFZJl+SeRXYchiuCNM0JlAXNdmnQ8QQAwxj1Xl/fh+dfA
+	UVlBqScY20LOgjyzSZltMux4qMdC6oWcMAb48KMaLFR6jlc4nnt4SSuhLJHo75/qhYCiar
+	w24XUFfKEw7tRLbY/dapb6u4EY5yi3j1oGua08eHOAxheFtmAhzzxsCupzsS5jkDebEHup
+	a4oALLWDRN+pOvhgRr/4TUUeg2QcasWfbxXt5jz3K6gHOmz3ISlBS5uHQ5Bt+9PSt0krTi
+	97pE7tLSUHuRHslkfSHhRVgDWKPoUgCFmMkviVzb/JH1kxCejXx331gy8g5YPw==
+Message-ID: <d218212f-191c-47cc-843a-d4587e478fc0@nabladev.com>
+Date: Thu, 12 Nov 2026 18:13:53 +0100
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -57,10 +57,11 @@ List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: (subset) [PATCH v6 1/3] dt-bindings: phy: ti,tcan104x-can:
- Document Microchip ATA6563
-To: Vinod Koul <vkoul@kernel.org>, linux-arm-kernel@lists.infradead.org
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+Subject: Re: [PATCH v6 1/3] dt-bindings: phy: ti,tcan104x-can: Document
+ Microchip ATA6563
+To: Vinod Koul <vkoul@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org,
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
  Aswath Govindraju <a-govindraju@ti.com>, Conor Dooley <conor+dt@kernel.org>,
  Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -68,27 +69,26 @@ Cc: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
  devicetree@vger.kernel.org, imx@lists.linux.dev, linux-can@vger.kernel.org,
  linux-kernel@vger.kernel.org
 References: <20260930214729.809649-1-marex@nabladev.com>
- <179447423905.428303.6835437411622016722.b4-ty@kernel.org>
+ <d8c3ca76-3d93-4abc-8a78-d23e0f018975@nabladev.com>
+ <auGdT2kdxwfbB_ol@parshuram>
+ <0865fe86-3ea1-4ebd-8ded-642eff159b97@nabladev.com>
+ <avXqWxBQBK2lKPMv@parshuram>
 Content-Language: en-US
 From: Marek Vasut <marex@nabladev.com>
-In-Reply-To: <179447423905.428303.6835437411622016722.b4-ty@kernel.org>
+In-Reply-To: <avXqWxBQBK2lKPMv@parshuram>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-On 11/12/26 10:03 AM, Vinod Koul wrote:
+On 11/12/26 5:33 PM, Vinod Koul wrote:
+> On 10-11-26, 14:59, Marek Vasut wrote:
+>> On 10/28/26 7:59 AM, Vinod Koul wrote:
 > 
-> On Wed, 30 Sep 2026 23:46:38 +0200, Marek Vasut wrote:
->> Microchip ATA6563 is High-Speed CAN Transceiver with Standby Mode.
->> It is pin-compatible with TI TCAN1042 and has a compatible programming
->> model, therefore use ti,tcan1042 as fallback compatible.
->>
->>
+>>>> +CC Vinod, is this patch OK with you ?
+>>>
+>>> Looks good to me, I will pick this after rc1 (monday)
+>> I would like to do a brief reminder here, so this won't get lost, since rc1
+>> is now out and I don't see this in dmaengine.git.
 > 
-> Applied, thanks!
-> 
-> [1/3] dt-bindings: phy: ti,tcan104x-can: Document Microchip ATA6563
->        commit: b338621a7e68bb9dc91d08e1774262deb0db50f6
-Thank you.
-
-Frank, I think you can now proceed with the rest ?
+> I have picked it up in phy tree...
+Thank you !
