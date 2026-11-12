@@ -1,109 +1,71 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.162.41
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794443785;
-	b=e8mnfoQ/ijDfC6yCQZGpM3bRQtQjtt5tGOsq32OkpxHCqxSsZB/vgFjwLKJQjcDU3IfZ
-	 3lHHci/mNJDEDptWxjQ0BDxdedD8hs8aO84o4q1JGxoQyB0QXEMSpbtB1Jenks0UJ4R+K
-	 yh1cSz1QTBgG547iNVuB//laK3wui4RivsJPFF+q6FLVin0AoFBTigGMLmv3HDdVZWWKP
-	 r7IiQ+u0seBD44gRKFo2CXscjotfttfoEHinSrUk6kHvRbD2dB3B7wzlzg2tB84JscD0z
-	 w+MTE3dh0V6mDDa4PSfVEJE2LwrCkfffXnn0ZjiF+c0jdgJtr1KdSLMwBvaVhXdo4MA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794443785;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:Content-Type:Content-Disposition:
-	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=TaXxoXg0t5nBttAZgYSVgg/xNz6zmOPdNTy9TP8GuJE=;
-	b=0fqFCraN7ajpbKvxP0dhjnQNulTvpjau0mZ7Si/DifN9TLCm9l+8g6PQXe8sS8Zjz4SV
-	 7cebKIV7G4W2sx//Z/snfnBriHRYng4eewKzlZ0NsdJ8PptetoGBlMoFDsqkL5OsTlSf5
-	 cGW2RZbMyDlUSPWu9rxm6PvUGZQvYQZjqaCjmSiMU1kCmWVA2YEcV/kj9Vlsn/raW6WcN
-	 w6GJjs+8pb/qB23jrWIEpLPIDAHBKFKSyxCqzLTChaBmBGmLpSyE1ILj0lSMFwyA1G5+B
-	 lwPKo1YGZUKU20tqLjHL+I1MPlbArMPxsIeafNESCORuy4he2xdggOeFBu8SqCa82Nw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.nxp.com;
-	spf=pass smtp.mailfrom=oss.nxp.com;
-	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=EYyHYXuN;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.162.41
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013041.outbound.protection.outlook.com [40.107.162.41])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=57.103.72.84
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794444434;
+	b=iU4h2/aUp7l8yHEjOb+DM912WICRlA+mdiMo+dpInA+VThBlfGrrSrX7mW83c6jjV95Y
+	 RJrwIttIZuZLQAspC+znoo+G5yBAb0y+lBrRRt3xuTQGk9MNDPA49cKsTW55Veg+fE2WN
+	 HwAFEzY8sqeX6GEE9FJMjgxS6SMkTXxTsFk7luik44PDWTNWMajbYhLdIdPubl52DDRBa
+	 LU7PxAiQUUmUW4zVc/+8Mg58jJVTgzf0qygP7/Uy1bO/PWqlqbQjvZTjhTDRXIrKXgtTE
+	 d4x3V0cDoWRLZhpWnAPCOQtsLTBzqjOkBS1KLtF+EkfIQy7eyqXppPED0R/pS14qvTQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794444434;
+	h=DMARC-Filter:Received:X-ICL-RepId:Dkim-Signature:Received:From:To:Cc:
+	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding:X-Proofpoint-GUID:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-Spam-Details-Enc:X-Authority-Info-Out:X-JNJ;
+	bh=6FnrMatbIm7w3exd0SYt59kCqIln8Ce3NVwV6c1+Ago=;
+	b=cA7vtgogQmCISihoQCl87DrEJ+km1TKUEIo+B1Vnv0Rf9R+G+AWoF1IcD/sfUrj6cSQ2
+	 MRuaiJUMi3NxhTJ610CYUfH8H0ZgYlso270v0TdL10Yf9nyjIo2IlrxE06Z4Ilcf1LLEK
+	 TeWvZsLh9LWCK+CwOMSxFfiHWOM9uomyBJC5FaYybOmSrkLoTNWkwKq/cKVucb9fRkViN
+	 Ya/mwzF/MTHaUKVEHedsal1Cz8ys4WR4qOws7wacdVieYl7a5fwHZUK6VtHKIkP4VpYvZ
+	 mI+rbpc+o/NRxZPqoz7AojMfcrZx9rllur9+l+yeH276jkCrHm2Tr1UpgsF1s6bVmPw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=icloud.com;
+	spf=pass smtp.mailfrom=icloud.com;
+	dkim=pass header.d=icloud.com header.i=@icloud.com header.a=rsa-sha256 header.s=1a1hai header.b=QEsCelNC;
+	arc=none smtp.remote-ip=57.103.72.84
+Received: from outbound.ms.icloud.com (ms-2005i-snip4-1.eps.apple.com [57.103.72.84])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3E94606A31C;
-	Thu, 12 Nov 2026 00:36:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F3E94606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54BF9606A887
+	for <imx@lists.linux.dev>; Thu, 12 Nov 2026 00:47:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 54BF9606A887
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=EYyHYXuN
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ZFZB72+lBCGwR6OkRs1sdwoyjK02z/InqyYieoI6Ur/d3Pur51rkWrWDvqOIY0U+F/H9UVuMiTQu4uYzOqieniSK057w32keCywj0gAamtn+52WoWBziEMC+aq2GtC1KRY8dXRk7c1SdbPw7bHz4kT1vFjpI7U70BGAWxcag6CSJyMrnh6XybpFuCcfTHjjBoFsMkNuzPE9aon/U44oACjKxanqx4JKdn2NSscdrkouFux4de3of0GiqcakK6lwRHaDVh+ors551oHqWoFZJnfHrRJxFpe1XmzmaVNbT5ZBSQH/8Rnc5058nYQNgvXwTIkkXigV/FAKWA43QnpkIig==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TaXxoXg0t5nBttAZgYSVgg/xNz6zmOPdNTy9TP8GuJE=;
- b=fGOTja5mK2214/yg84pun+j8SA9qUDFE6RyEI4NHBm0bfff2ehf5YQsMDO09os/D1ENjzR3oBNZKjbOfmQGeYG0BXLdlWNgqiBdmKRcPiWgId/z0OxQWoMbuCdXeuPoy9sa/zYrVoMJBbs54cUyUZm6JbOV2+mIsO2nUpxgPdyvZO9ldKhZPapE7p30LVENroxlawrW0DMo4AJeKzUdZyZBvJBJBBzQg4xawEx9gv2WdzYFim/kfyKL/E3OfbMwKnNBEtjQfGFu8V+5mG4CGykdT3DrF1DlD6uMV+YyT5MWaGIhEEVTGtBTcU4O91zz6nMeqIyt4/2ZsfAmTpxob7w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TaXxoXg0t5nBttAZgYSVgg/xNz6zmOPdNTy9TP8GuJE=;
- b=EYyHYXuNdFYFokPbJHDCKFkxM0E336MeRIegDw/qXs6C4DQ06qYWjG27nyhQNeSVgpAE7GnhWE5enn+zQ41+uwP8beaFpR4nxYmmJzSb+MF/2ffA1LctORF0yj84+7tCQvPkVC4zyUSlsEeMS+XHeFUrjnqFKkXZefKXRQBkKt9Prd34h3oxbH63rYSpk6leCl/+WzXPDi3HkHe64OBhD6gV2/IphdcVG78sm+M4Gs3pN/sZ7NHBTaP6n0LMsJfN4ernPNOK1dayc9HQzRWaHBA7edHlnCbVhXITpjz5bR1wzAC1qPYQg8TiJCjnfM9zXVKAcgXtrLkqWB+kqreYVw==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from AM8PR04MB7874.eurprd04.prod.outlook.com (2603:10a6:20b:24d::9)
- by AS8PR04MB8660.eurprd04.prod.outlook.com (2603:10a6:20b:42b::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.10; Thu, 12 Nov
- 2026 00:36:21 +0000
-Received: from AM8PR04MB7874.eurprd04.prod.outlook.com
- ([fe80::ac38:1699:6f18:c5d9]) by AM8PR04MB7874.eurprd04.prod.outlook.com
- ([fe80::ac38:1699:6f18:c5d9%5]) with mapi id 15.21.0615.008; Thu, 12 Nov 2026
- 00:36:21 +0000
-Date: Thu, 12 Nov 2026 08:41:16 +0800
-From: Peng Fan <peng.fan@oss.nxp.com>
-To: Frank Li <Frank.li@oss.nxp.com>
-Cc: Frank Li <Frank.Li@nxp.com>, Vinod Koul <vkoul@kernel.org>,
-	"Joerg Roedel (AMD)" <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	Laxman Dewangan <ldewangan@nvidia.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Thierry Reding <thierry.reding@kernel.org>,
+	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.a=rsa-sha256 header.s=1a1hai header.b=QEsCelNC
+Received: from outbound.ms.icloud.com (unknown [127.0.0.2])
+	by p00-icloudmta-asmtp-us-west-3a-20-percent-0 (Postfix) with ESMTPS id D9A5A1800340;
+	Thu, 12 Nov 2026 00:47:09 +0000 (UTC)
+X-ICL-RepId: 01a1cd39-09cd-769f-8328-3df42a1f331e
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1794444433; x=1825980433; bh=6FnrMatbIm7w3exd0SYt59kCqIln8Ce3NVwV6c1+Ago=; h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme; b=QEsCelNCQrdSjDD+nrgtKQXirtedyUqnXBJHp/e7RtMNMrOiF0c5jluHpcYBMY5hzSBD7GNJmYY9ktU9tnmwpMd6LTYQAnKZ3kLV14k12nkq46OS7qwfp2KEMqm4HRAG2JeVcTtRsJHpnPYUNpGmYf434n1uH8uKtrN9jUTrWWnlm0cQ9MjOLdTTVitdLQfvesBqADdjx2C1zUFyjYg7yZ2sm3X+I4CXNMHa7rmigUigfW5iVVJxWGNdffFe/MHtgFZl05byNUzoloMEvNTEETFhMfU24FLx2MguA7tMP2YMIVc20oGhCcDV3Aq2ldHWETueHqEHiVwskb8dcHQY6Q==
+Received: from bigre.tail98293.ts.net (unknown [17.156.208.39])
+	by p00-icloudmta-asmtp-us-west-3a-20-percent-0 (Postfix) with ESMTPSA id 8A992180049C;
+	Thu, 12 Nov 2026 00:47:07 +0000 (UTC)
+From: Vincent Cloutier <vincent.cloutier@icloud.com>
+To: linux-media@vger.kernel.org
+Cc: devicetree@vger.kernel.org,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@kernel.org>,
-	Larisa IIeana Grigore <larisa.grigore@nxp.com>, imx@lists.linux.dev,
-	dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org,
-	iommu@lists.linux.dev, linux-tegra@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH v5 6/7] dmaengine: fsl-edma: support per-channel DT child
- nodes
-Message-ID: <avULLAj1s5IRo80N@shlinux89>
-References: <20261111-edma-iommu-v3-v5-0-2537cebe6ca2@nxp.com>
- <20261111-edma-iommu-v3-v5-6-2537cebe6ca2@nxp.com>
- <avSsj0Ho_n6DL36_@SMW015318>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <avSsj0Ho_n6DL36_@SMW015318>
-X-ClientProxiedBy: SI2PR01CA0005.apcprd01.prod.exchangelabs.com
- (2603:1096:4:191::23) To AM8PR04MB7874.eurprd04.prod.outlook.com
- (2603:10a6:20b:24d::9)
+	Fabio Estevam <festevam@gmail.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Purism Kernel Team <kernel@puri.sm>,
+	Vincent Cloutier <vincent@cloutier.co>
+Subject: [PATCH v2 1/3] dt-bindings: media: i2c: Add Samsung S5K3L6 image sensor
+Date: Wed, 11 Nov 2026 19:46:34 -0500
+Message-ID: <20261112004636.739749-2-vincent.cloutier@icloud.com>
+X-Mailer: git-send-email 2.56.0
+In-Reply-To: <20261112004636.739749-1-vincent.cloutier@icloud.com>
+References: <20261112004636.739749-1-vincent.cloutier@icloud.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -113,170 +75,179 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM8PR04MB7874:EE_|AS8PR04MB8660:EE_
-X-MS-Office365-Filtering-Correlation-Id: acc5bd0d-99ff-42bf-d92b-08df4054f904
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|1800799024|366016|19092799006|7416014|261026121527099003|261028144727099003|261022075727099003|11063799006|56012099006|261021121427099003|261009223027099003|4143699003|261022105027099003|261102123227099003|261026140227099003|22082099003|18002099003|6133799003|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	x+CNt6Ncop+hA8z+6Z7GOWE48c9sU+cus4+Ao2b6dZUJ+5DhXYmYfWptx+5NbKO+tj7n2jOIIwxE7dU6sxjI0dZFC0l0KAUOOwdTHNxygfpPaAPJXwEIdT9NSmDc+KUff9twd6H9zNigl9lZ4OaD4Cj9JCrJGLbBQScxToc4gIgpBS4szsdbyvOEiBzjaXxY9p6MicLJbyk0DXoF4t/o6WxOolZCl038qz9pe35BvMRZDiHmzcIeAmg28QG0G2OWY4bpQmuf1IGZ0gmPLJ7D69xGYFdtMQlkQevm0cIknfh3xWStxzz3KA9W6pBEchFFzplLtNpplpmB7MTuOO+BIEVe+nYpj/pe9k0tm+X7VZ557G9Gf+lQnKwQ0y5WtkqaooO+MDpHo5p1xe5hFHsYNhMLWRHkv3nOtQV4yGfPTJy2/PwCe09/DlyJhndvj5DiQzg2ht7yKDmwxZVOJ1rWQ4peAkFGXS3NynTRmidArucExna8lX9nYvUsFdXUzxdqwxpoFsl50IdKs/GOwyWW3EtT0uYB7RzxV3ga0VJntqucNFzrYLsZuoCQJWlPc7t1ztRqI7vjfhZqKGZaBXOHytX9PzzQEDFvUf7EY8hIu20FIyZPSjmsS5i8RJCE9umAX0BHuof0epOlwUGPufczqAhV822defHR16+KcutG8kQ=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7874.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(1800799024)(366016)(19092799006)(7416014)(261026121527099003)(261028144727099003)(261022075727099003)(11063799006)(56012099006)(261021121427099003)(261009223027099003)(4143699003)(261022105027099003)(261102123227099003)(261026140227099003)(22082099003)(18002099003)(6133799003)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?8YbuMpDTyK/bpi0CLSL4ZaUNV7q8SCASQ4EJ/Xbij5wf2AJyzrh/8BF69qQZ?=
- =?us-ascii?Q?9/V4wQjOYBFEnwjkBFVS+ePAOuQHpCPRmgNMnect+ZW5z02gGuhUp3lvDp4q?=
- =?us-ascii?Q?vYoIG/w+lm9nXvIT0QNc1T9TwCAj5FTFbE8GsUpe5mzknUqgKeGBon0jGo5H?=
- =?us-ascii?Q?Of9sZ40kH9oEuk6eBVq8+xGqtUEAiUyW46p6GKu+tWi7j4aVuI+ksRI5Ex6+?=
- =?us-ascii?Q?pmbsBtoDhdesbeVBP8i10AeYzwQtRwDpY/95OEW0+jJfu95I/UjKeknlFqcX?=
- =?us-ascii?Q?wZTF34KkWlIwqdgbwBfDa0izf+kksPHlX3LJKGrFtAvA0I5UiTEC2bemV/ex?=
- =?us-ascii?Q?Zzh1qADjgxGSF7OaPdl7CjFolzPjNhk6sVHlaA0c4NI6bA/MCEXVsnnaXJoR?=
- =?us-ascii?Q?eimERI1FUFL74ZEvfaU8Ka3ciJSYxSSwLGLpGxdcEgmpfhwKJOVapGiF8GWf?=
- =?us-ascii?Q?8Ji9ZpNIQISGJa8B1+RcgYovmbUy7U5Y032Ou8h67OQ8r9gjarYhvBA6EVmB?=
- =?us-ascii?Q?+Z/9Q3xD8OsN2yaJkEVH0pi2vAvYofVEl3Cr3YtRexcZHBYqjcg1+lO9OzWU?=
- =?us-ascii?Q?FlrrXeYzObZpTqboPzZfWw1WeV3eP+F5OJSoRYHzlRXYHIlW+QweENcfDhi3?=
- =?us-ascii?Q?nopbNtPqWmYwfVwtD/gkv+mRSu+DnxS3AQp4ArG12Rey/2CAM1ktaTw6dnvB?=
- =?us-ascii?Q?GwsrGFjnCjoNxUangD6kfuwGi47WTJli07rRPeM3wTnWNa1QQD7edN/TKng7?=
- =?us-ascii?Q?Q2mjaQBWjC2OY+cL5xT+HXypr5JgcQJVBoQ4hWLMZceP/UAwSm0X59bDlCWF?=
- =?us-ascii?Q?EWDhbHR++8NneLD3SXKxwumuNPatHkTEWe/TTe9vUHU6P895xyX4dcKqPgYJ?=
- =?us-ascii?Q?u5mIrYui5CF182gQfNrUcRxjMh3XjUUdwoJLqOq+6hgshDf4KAlRcomGiSFl?=
- =?us-ascii?Q?CZIsb9kklT0nX5R7aYZCKaqs/XCJ5OHn8uFI8fzjJHJXwyTPDWn+bUkgFBUa?=
- =?us-ascii?Q?w/q9LqhZV1o2qriLMCO8eIWmJ7KRDqhEhPxK17k+Ej7YWmIZIkm8k4dQPHGD?=
- =?us-ascii?Q?6dx9vDa9cnv7tZTKGYBxaMpvNZtYpNRaHQMK02y9B448AJAnf9SwGEcksdVM?=
- =?us-ascii?Q?KNHwl0vwkE0Gl+6UnC6xgv/hHETeAW0MSBCZ2qyg+VReX2h7q1WSuyDqOcAs?=
- =?us-ascii?Q?iWc53PT36DtNR01fbtx2A3tllS1H31GvdqJXsfkEGteA5aOLbLtkcHU6e4w3?=
- =?us-ascii?Q?cawWaWWyWE55pGwWLI0+h2gdTaNIkibywlmBo3mWRXQcXVQFtEE5bD4enOcq?=
- =?us-ascii?Q?/VuacCebllXw2c0GW0MFqnBeQ1lQQ8/50EZrJECmiC0qKdNSum7a9fDq9S2A?=
- =?us-ascii?Q?XtYw9HM5Q/8TVf4izeTJqNYhj4N+WSY2E0FKD3FzhHbdVdBKMEk8zdympkdf?=
- =?us-ascii?Q?FElgX+CKypUo4pHU+xpy+wYPlKeZvpMX+Gh3gaM3TM5xk6lwfUxNDUu8fkV3?=
- =?us-ascii?Q?TBIvHv5hoDwItwcuWN2kdzNCjQ1/oiuYLxZywQCrYoJzHN20vc7JF9B728E3?=
- =?us-ascii?Q?pbUoZFvmbbs+k0d9YA9ENAkieXGNdReAZyn4p4FpFpN31uDeIl56kKj6DFVj?=
- =?us-ascii?Q?xb/Kq++A4nQulbCK3jn+agT4+cb/nU2IIaSdcsmh8/i2oTeJgn62OQAKpnFK?=
- =?us-ascii?Q?Xn6smxQokvtIoiwQF1B784sQ2drn45RuOAaaCwtZfHzGQDDodMWFYKrLV2gc?=
- =?us-ascii?Q?eLa+5xrtz60rdZwL4kHG138+OQkrjJ46E0dhbow+tTULXIqm43sK?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: acc5bd0d-99ff-42bf-d92b-08df4054f904
-X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7874.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Nov 2026 00:36:21.4024
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: dEMwNJLv5/6gg9ZoUY4LI2np12T+5Tum/VEm4ghS3ge3anvffTIhh6OUZeO+mEK7tEvfCK1RpTtCmro0nJ2BRhxGWeQ3LpExzRIBwqFm3pxFufGxhSGuy3Q+pjbwF3fQ
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8660
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-GUID: mCkIAs5iizF8qSrwxp7-xExqekHrwKfG
+X-Proofpoint-ORIG-GUID: mCkIAs5iizF8qSrwxp7-xExqekHrwKfG
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTEyMDAwMiBTYWx0ZWRfXyJBuCkS/WpMK
+ +AuHTlkLVAKu9hPL3T5qn/nGHhO0SulWVOovX1L2PZuXbgD/roc5/c5G+DhXdD+HQYhhdRRU0dp
+ bEPIPYwwiuK7N/LJNGGQjV5qTXz/+hNIyWpuI9Yw2LFNgW6mhCkdZoyzcIDxPUaO5JcQ593ECW5
+ j+k/98X8LPIMMta4eM1JwI6v9L7Y/IlZzJJfn+QdxTiSwHECF8Myo8fjDM1SBlywmrMnoHEzryd
+ XMTJ5s004My4KF7Dq6yW2Z13fHOEf6zkwS/NmgXwI4qBTMPrdjnXWb31lgzvOynsTyNJdovPgYU
+ H1slGuTc/ZqIwnmIcJBMozBKYH+Rt2LQYs6zfFZCEpM7+FaNU+RXKPt6V3gYDQ=
+X-Authority-Info-Out: v=2.4 cv=CKonnBrD c=1 sm=1 tr=0 ts=6af50c90
+ cx=c_apl:c_pps:t_out a=kRaGL2Q7qLiahLf3O6OaIA==:117
+ a=kRaGL2Q7qLiahLf3O6OaIA==:17 a=zJRp6_cAMcgA:10 a=x7bEGLp0ZPQA:10
+ a=5j__JWfIoqoA:10 a=VkNPw1HP01LnGYTKEx00:22 a=gEfo2CItAAAA:8
+ a=PATYgFbvzVY5AvWytYoA:9 a=sptkURWiP4Gy88Gu7hUp:22
+X-JNJ: AAAAAAABRrZqAteUHqI2jmCDYGTolY80O6enx2RfnqMv2dKoHsOZH17FkSi7/z+1Os9+5X
+ g3VPGd6PNhwgCTN2wjHyiNEXYZBIgVWD9qdhvbwJYVuVQjCRV5AiTgUiq1fDbPiRYV01sa
+ CQrjHhM711VzRL/4NbM9ztjcA+HC79Mu3l7l1EwuXv35mbQvBiruhZDgylimbKfSA9pN1X
+ PTqrTWxWR46nEwpahDrNmMl6wRF+xRIIQkRhyQuSrF0Dhrj6lPWFb5JEJYPTpxEsKI+rC/
+ 3crmDO8E68UWsVvGHcFR4t0mUtTLx64vj/sanDtEmiQhREXKWl2lu3O6hxlAg9l/+S94Bd
+ o1WxVV0d60gKM0A1muAZKcCZ8gLa35Kk0SlAPR7IVHKypHwXjwN49FStDBSeMFX/S0XERl
+ XnZ6FB7OoGq+Qqp6ZiUvejy4fx4zl3rOpNZPhsuZ4C3a3oN8Fgn/7fgrsH6MQU854s2aKK
+ DZ6TErzcIwSEWvGATQWuZTuXvuszECxM+k94D4sR/4BAhyYBEqP96xSqV4ScsEz39c0DZL
+ FayuBLqc2vAKVXlYN/WjxW7LxYZQsxgcST8Ramg8Pd/jRBUQL1QKzz28IQcI5/13ddjlWM
+ HcSYT/pInbSH57Q0ILA0/UQsuOe22LkTfAco1RS6mP/LHYJiPq6IassfuClBCqEJShKIXB
+ AseJuqVgNRfTij96sIXAJVswX7EVskVJZFSAhg6Q83SVJiar2yaJOda5Hh8Ykp6cNGaZFu
+ StKpWxjVhdIPSFGNV4Lg27CtmD9pxB8MpfAZksPzg2ULe6B6cYv5jeSu9T9tQ2Xv/3sxzx
+ H9+KyO6gvQjeIUVslNxj/b0x1vXmCAW64643M3MPqn2xIGrpxEWYb9SvK+9nXw9pT6r3NF
+ FuL9g9oDQXccxWLImOS0Gvkb/A6czNgHOHoiGFWQ+sE/UMEZWju0MW+YVd/pL2EmDQ1vsQ
+ Fg9BfQ==
 
-On Wed, Nov 11, 2026 at 11:57:35AM -0600, Frank Li wrote:
->On Wed, Nov 11, 2026 at 09:47:34PM +0800, Peng Fan (OSS) wrote:
->> From: Peng Fan <peng.fan@nxp.com>
->>
->> Add support for parsing per-channel child nodes from devicetree.
->> Each child node can carry its own interrupts and iommus properties.
->> Child power-domains are not handled here; power domains remain attached
->> at the parent level.
+From: Vincent Cloutier <vincent@cloutier.co>
 
-[...]
+Add a devicetree binding for the Samsung S5K3L6 13MP raw Bayer image
+sensor.
 
->>
->> - fsl_edma_configure_chan_iommu(): called after
->>   dmaenginem_async_device_register() to configure per-channel IOMMU
->>   by calling of_dma_configure() on each dma_chan_dev and setting
->>   chan_dma_dev so dmaengine_get_dma_device() returns the per-channel
->>   device.  Propagate the controller dma_parms to the per-channel device
->>   so the DMA segment size limit is preserved.
->
->Needn't detail for each funciton.
->
->The implementation is split into three functions:
->  - fsl_edma_child_to_chan_id()
->  - fsl_edma_configure_chan_from_dt()
->  - fsl_edma_configure_chan_iommu()
+Describe the validated two-lane MIPI CSI-2 configuration used by the
+Librem 5 rear camera, including its supplies, input clock, reset GPIO and
+three link frequencies. Require the endpoint and reset GPIO: the driver
+uses hardware reset to stop the sensor if an I2C standby write fails.
 
-Fix in v6.
+Signed-off-by: Vincent Cloutier <vincent@cloutier.co>
+Assisted-by: OpenCode:GPT-6.1 Sol
+---
+ .../bindings/media/i2c/samsung,s5k3l6.yaml    | 118 ++++++++++++++++++
+ 1 file changed, 118 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/media/i2c/samsung,s5k3l6.yaml
 
->
->>
->> Child nodes beyond the configured dma-channels are ignored, which allows
->> boards to reduce dma-channels without disabling every unused child node.
->> If child nodes are present, every unmasked channel must have a child node
->> with a valid interrupt; otherwise probe fails with an error asking for
->> dma-channel-mask.  In child-node mode fsl_edma3_irq_init() does not fall
->> back to the parent's flat interrupt array.
->>
->> The shared error IRQ remains a parent-node interrupt.  A child-node-only
->> DTS without that entry simply has no shared error IRQ.
+diff --git a/Documentation/devicetree/bindings/media/i2c/samsung,s5k3l6.yaml b/Documentation/devicetree/bindings/media/i2c/samsung,s5k3l6.yaml
+new file mode 100644
+index 000000000000..097593d74780
+--- /dev/null
++++ b/Documentation/devicetree/bindings/media/i2c/samsung,s5k3l6.yaml
+@@ -0,0 +1,118 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/media/i2c/samsung,s5k3l6.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Samsung S5K3L6 13MP MIPI CSI-2 image sensor
++
++maintainers:
++  - Vincent Cloutier <vincent@cloutier.co>
++
++description: |-
++  The Samsung S5K3L6 is a raw Bayer image sensor with a MIPI CSI-2 image
++  data interface and an I2C-compatible control bus.
++
++allOf:
++  - $ref: /schemas/media/video-interface-devices.yaml#
++
++properties:
++  compatible:
++    const: samsung,s5k3l6
++
++  reg:
++    maxItems: 1
++
++  clocks:
++    description: Reference to the sensor input clock.
++    maxItems: 1
++
++  reset-gpios:
++    description: Active-low reset GPIO, also used to recover from I2C errors.
++    maxItems: 1
++
++  vdda-supply:
++    description: Analog power supply.
++
++  vddd-supply:
++    description: Digital core power supply.
++
++  vddio-supply:
++    description: Digital I/O power supply.
++
++  port:
++    $ref: /schemas/graph.yaml#/$defs/port-base
++    unevaluatedProperties: false
++
++    properties:
++      endpoint:
++        $ref: /schemas/media/video-interfaces.yaml#
++        unevaluatedProperties: false
++
++        properties:
++          data-lanes:
++            items:
++              - const: 1
++              - const: 2
++
++          link-frequencies:
++            items:
++              - const: 537500000
++              - const: 600000000
++              - const: 625000000
++
++        required:
++          - data-lanes
++          - link-frequencies
++
++    required:
++      - endpoint
++
++required:
++  - compatible
++  - reg
++  - clocks
++  - reset-gpios
++  - vdda-supply
++  - vddd-supply
++  - vddio-supply
++  - port
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/clock/imx8mq-clock.h>
++    #include <dt-bindings/gpio/gpio.h>
++
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        camera@2d {
++            compatible = "samsung,s5k3l6";
++            reg = <0x2d>;
++
++            clocks = <&clk IMX8MQ_CLK_CLKO2>;
++            assigned-clocks = <&clk IMX8MQ_CLK_CLKO2>;
++            assigned-clock-rates = <25000000>;
++
++            reset-gpios = <&gpio1 26 GPIO_ACTIVE_LOW>;
++            vdda-supply = <&reg_camera_vdda>;
++            vddd-supply = <&reg_camera_vddd>;
++            vddio-supply = <&reg_camera_vddio>;
++
++            orientation = <1>;
++            rotation = <270>;
++
++            port {
++                camera_out: endpoint {
++                    data-lanes = <1 2>;
++                    link-frequencies = /bits/ 64
++                        <537500000 600000000 625000000>;
++                    remote-endpoint = <&mipi_csi2_in>;
++                };
++            };
++        };
++    };
++...
 
-[...]
+base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+-- 
+2.56.0
 
->>  	if (fsl_chan->dma_dir != DMA_NONE)
->> -		dma_unmap_resource(fsl_chan->vchan.chan.device->dev,
->> -				   fsl_chan->dma_dev_addr,
->> -				   fsl_chan->dma_dev_size,
->> +		dma_unmap_resource(dev, fsl_chan->dma_dev_addr, fsl_chan->dma_dev_size,
->>  				   fsl_chan->dma_dir, 0);
->
->Use dmaengine_get_dma_device() needs sperate patches.
-
-ok. I will add a new patch in this series to handle it.
-
->
->>  	fsl_chan->dma_dir = DMA_NONE;
->>  }
->> @@ -321,7 +321,7 @@ static void fsl_edma_unprep_slave_dma(struct fsl_edma_chan *fsl_chan)
->>  static bool fsl_edma_prep_slave_dma(struct fsl_edma_chan *fsl_chan,
->>  				    enum dma_transfer_direction dir)
->>  {
-
-[...]
->> @@ -397,15 +401,24 @@ static int fsl_edma3_irq_init(struct platform_device *pdev, struct fsl_edma_engi
->>
->>  		struct fsl_edma_chan *fsl_chan = &fsl_edma->chans[i];
->>
->> -		if (fsl_edma->chan_masked & BIT(i))
->> +		if (fsl_edma->chan_masked & BIT_ULL(i))
->>  			continue;
->
->
->This one need sperate patch to fix it.
-
-Fix in v6.
-
->
->>
->> -		/* request channel irq */
->> -		fsl_chan->txirq = platform_get_irq(pdev, i);
->> -		if (fsl_chan->txirq < 0)
->> -			return  -EINVAL;
->> +		if (fsl_chan->txirq <= 0) {
->> +		return ret;
-[...]
->> +
->> +	for_each_available_child_of_node(np, child) {
->
->for_each_available_child_of_node_scoped()
-
-Fix in v6.
-
->
->> +		struct fsl_edma_chan *fsl_chan;
->> +		int ch_id, irq;
->> +
->> +		has_children = true;
->> +
->> +
-[...]
->> +		list_for_each_entry(chan, &fsl_edma->dma_dev.channels,
->> +				    device_node) {
->> +			struct device *chdev;
->> +
->> +			if (to_fsl_edma_chan(chan) != fsl_chan)
->> +				continue;
->
->Can we avoid scan channel twice?
-
-yeah. Fix in v6.
-
-Thanks
-Peng
