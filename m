@@ -1,55 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794497030;
-	b=E1iXN8wVxGivXz77VJ7NkXFp6u6N7TLZSQgNF/zzivDE/cm9+ANVmN2rwzE9e/z2HgKT
-	 RWV+xt/iKlt9Xh7LEZfRByXsTypNwpi9fotbCpyVXyvhGoBQFfSpFex7hoceP1Dvab3fq
-	 J545HtNuKyCfT5ilnx/mk84fmnKs+6MBVEmbAPeSb22YaGwfC9w3+M+HiiDolresFvBZ0
-	 slxG3FVuMlmuAlVwbm6SfVxpLBObO/sQiXbkVx6STd0wiDPYTklzr0hBzfi4BikvU4dzh
-	 JDzXQnVDprZggJh0Q9IZE7/hdbtKdzbuOUyUEYW3/UFCX+ctojZcn/BSSlQvuaD8z4A==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794497030;
-	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:Subject:From:To:Cc:In-Reply-To:
-	 References:Date:Message-Id:X-Mailer:X-Last-TLS-Session-Version;
-	bh=4cdhS9H/Scvqwuce1Cg7h8YKsQsIO3wekg4L5Z7bkvw=;
-	b=0Ue6nO1kHymquoK4LpqjX8ZYsVbq1HgRDmfbdt3wwO8UpLqyTjRvOEATkGvxPlaMqEPx
-	 S6KalYWjmfl7Vah6NrkPULtiqOfI+Y4ROMi29/RJyquNUr+0QBcCU0jKhQ0gDNCsi5rKi
-	 3xHUV9N1eW05QdMMBsFpkvelCVrs4G7lzbuL4MMIM6yCb9cL8u7XE8No2wjtW0afEaX45
-	 fbO6FSFyFxO1m52dAmulA8PEdUEAwsPovpLvMV1E89nlf+yvln+WJP93aG2aJonX/KZle
-	 YPaT9GpCZDgVgc2XcDuWyMRB1NGnS/ESGoL8AahUvXEjzPVHnoTFLYu1erSUku32QUw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=bootlin.com;
-	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=f+HhI8VP;
-	arc=none smtp.remote-ip=185.246.85.4
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.159.51
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794498111;
+	b=iZqr7LyI724BuHbvSiNBtllX/sCfD/EO2WmjwDt+XapVshtvNb6NRwiiwrx9wMQ7a9RM
+	 IntTyhDaImDAATImci4Xz5w2i4oeDLSMuVUr8IQD98s33NWWT+4Fqkp1Zye6MBuxrc2+6
+	 NcC8n3p3U26MCSc8hI0ay0H4H++eCH/8+yJpTBDpapg/RgCEoTqvJe6w1x2h8P8iOTSMC
+	 fXobQP3Pa0GJq+Lp3IymaAUT/7SeR526eQiCLRyp7jP3rc1lUg4vY4ej07/TwSekTjnEM
+	 EPPgndJaChIGjTwgGe8vQCvJcU+ex2VZIneIUxoNi7ZyOSFc/e/oA/cLjTQ5rKkHeNQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794498111;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:Content-Type:Content-Disposition:
+	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-LD-Processed:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=0ZxCiTjqI99z+31RvYjXWlycXecIXu0k6MWQV8ev4wc=;
+	b=I1XJPalJMCKuhuwGzAj1aqEMM8LAyCtM7eH91K46ob5PrbrWjtTX8zy7SZ41Ia65oiAi
+	 dIBDeth7AWN6Bclo/b8jSZWQSMWrmcaHMkcZEPrUR8AMENv7rhEteZcaq7y8LaE+EdkuQ
+	 Tpi6hzVsKH0llnyUb+xORXUrGBfflZU0qHQ8oghdOYIdiPp4T60A8o+8utAIZIiHrFi81
+	 XOpFf05v1wzM14drLQgCPHPihPnxXvH8PqZ9WwP9YnGRiKS9LrYt329rVCRRkr8TLSGsM
+	 EXQj/rCdlD09vXGxUEHKsDkhz+Xkx3Ke1F8g07qNR5LQ3TqjvuQ1ezpoeZVRs8yBIDw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=oss.nxp.com;
+	spf=pass smtp.mailfrom=oss.nxp.com;
+	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=t4udxffN;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.159.51
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013051.outbound.protection.outlook.com [40.107.159.51])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72E1460A382B
-	for <imx@lists.linux.dev>; Thu, 12 Nov 2026 15:23:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 72E1460A382B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C61B606A327
+	for <imx@lists.linux.dev>; Thu, 12 Nov 2026 15:41:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8C61B606A327
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=f+HhI8VP
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 936B84E41593;
-	Thu, 12 Nov 2026 15:23:46 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 6058B5FF85;
-	Thu, 12 Nov 2026 15:23:46 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9C6CD11BC07CF;
-	Thu, 12 Nov 2026 16:23:40 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1794497025; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=4cdhS9H/Scvqwuce1Cg7h8YKsQsIO3wekg4L5Z7bkvw=;
-	b=f+HhI8VPkOBIjANjnGDhGowwywBgE+KjjI34rpXWHGwPYpj3DVKYp4PPKjSmy1ajfDFpNC
-	rVI5E2XPc8Vs3eu1qNaBXU1Ox6qME9KJX/zN+oMkYWCzqJMFnQn84CguQAdUyqNU8A+eeH
-	UznEayOaNkXiVUZAplZffPzN5tHuIQgO2D5Q7H7xAD2H3AIeYC+D7X3NUVPpRBfGRCXlPn
-	oAL3ae+pj/4I8HPAP54uKyiR7QuXYgMWmNvS66Z1y7UWNi0FUOkW1BC1M6EyBptInvgLZ1
-	n7l1GXatBWVjwgds9I8PEmjCVUMRm5KKx7WK5kMxpj+uvWU1IJu7i2D0AoCguA==
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=t4udxffN
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=EbyOSItZDkt0NwxfVVQCN95m2hQzJ3X0QnDCGhhgp/e25xhgnlh93ixw0Dup34m9JeTGdX/JT5dZjw08Dv3MJBfWYWB0f0+oQ2cJMvxPOkQrx7uZs9ofrPIWFBNQeD90MGxY9oqRC5LV6j/FotuQLFVq+yOIpW5+flR+E9GmXU42hSou+ZorRXFwmrcBfnd80acD3HxMIg+F8FrzitaFjHRYC+S2e7XfT5JWa3fPW0Znrdm5DTl857VzwTE1laZ3I7vtL8841GnPnIgkZLFNSyJqN+FYENlHjKY476hVShGpFzYxx7d4Tei5oR+E06rdC6v9SAAisGZJ54Gz2M/yWQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0ZxCiTjqI99z+31RvYjXWlycXecIXu0k6MWQV8ev4wc=;
+ b=WCZPh7NImHwJjbspevwXPp2UPFvxi79KLADVkNTOXa6c0BFdO0JZrYVOHgHrGDf0LMO5nreWsgWYqgsv0xVK6mOTvYTxmzYVJCAnhU8XoLiL2WbdYhCTKm4NDMi575SabdLrxylwY1RPCpWPM8Uiw1VOtnRxIBbp4Rj72QL/1q9FSMpZRzsnkSmwp4PIpcLGBNyrZ720ZiARTc5eM6ymF7WqNYSX4+SPUx0eQGj3w8SgP6sIDXKbBvsIkK/O9O7PJ0z9WmYvCJ5jvihiMtxm+yXw/yezg7Pp7+JgScHTHuCn2Gu2wbavhC96O+0+lVXBtc/Tf5iZC+Yf1ZZ+nmp5vQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0ZxCiTjqI99z+31RvYjXWlycXecIXu0k6MWQV8ev4wc=;
+ b=t4udxffNqL7HfEwZV0LHK/uFGwiPKSEQ2+zJ5pfqL57oHw4xRbl7RSrWkNFHYY7+nioAdjaj00rdzmFNzHnvMf53kOpymlo7vgwerafZdi1pj+NvV5a7Lf1LLDAksDLDztnKOKFN20EV7xGL6MeHrqZjtkr8k2Otw7KunQYX2p73cloPeW0Wmw77OewmiAJnOXm02dTi/FPGL5HOyI35gjigv+vMW9V9MJSG9AVWaMbX4v1KsN20tjwkw6LRoBx9MIb67eozpoL73PL0tMiQKmpSGJk81tBY5PwWw86ntbn6U+mgFCzg0/U2Qyn30N9NWfxegkjesRN4H37t97Si1w==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from MI3PR04MB12438.eurprd04.prod.outlook.com (2603:10a6:290:76::14)
+ by GVXPR04MB10431.eurprd04.prod.outlook.com (2603:10a6:150:1eb::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.8; Thu, 12 Nov
+ 2026 15:41:41 +0000
+Received: from MI3PR04MB12438.eurprd04.prod.outlook.com
+ ([fe80::c715:c32:8bb1:b70b]) by MI3PR04MB12438.eurprd04.prod.outlook.com
+ ([fe80::c715:c32:8bb1:b70b%4]) with mapi id 15.21.0615.009; Thu, 12 Nov 2026
+ 15:41:41 +0000
+Date: Thu, 12 Nov 2026 09:41:31 -0600
+From: Frank Li <Frank.li@oss.nxp.com>
+To: Francesco Dolcini <francesco@dolcini.it>
+Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, linux-bsp@toradex.com,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 01/11] arm64: dts: freescale: imx8mm-verdin: Add SPI
+ alias
+Message-ID: <avXeK-IRXbKqI-pc@SMW015318>
+References: <20261112150236.164850-1-francesco@dolcini.it>
+ <20261112150236.164850-2-francesco@dolcini.it>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261112150236.164850-2-francesco@dolcini.it>
+X-ClientProxiedBy: PH8P222CA0006.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:510:2d7::22) To MI3PR04MB12438.eurprd04.prod.outlook.com
+ (2603:10a6:290:76::14)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -59,145 +104,100 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v11 4/7] drm/imx: Add support for i.MX94 DCIF
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-To: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, 
- Luca Ceresoli <luca.ceresoli@bootlin.com>, linux-clk@vger.kernel.org, 
- imx@lists.linux.dev, devicetree@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- dri-devel@lists.freedesktop.org
-In-Reply-To: <20261110-dcif-upstreaming-v11-4-9e13c85ae0d8@oss.nxp.com>
-References: <20261110-dcif-upstreaming-v11-0-9e13c85ae0d8@oss.nxp.com>
- <20261110-dcif-upstreaming-v11-4-9e13c85ae0d8@oss.nxp.com>
-Date: Thu, 12 Nov 2026 16:23:36 +0100
-Message-Id: <179449701677.2030221.6593749298448668349.b4-review@b4>
-X-Mailer: b4 0.16.0
-X-Last-TLS-Session-Version: TLSv1.3
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|GVXPR04MB10431:EE_
+X-MS-Office365-Filtering-Correlation-Id: 15b3e0e8-1fbd-4507-20c1-08df40d37267
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|376014|23010399003|7416014|19092799006|261026121527099003|11063799006|4143699003|261026140227099003|261021121427099003|10067099003|261021123027099003|261009223027099003|261102123227099003|56012099006|261022105027099003|261028144727099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	/XoY8XWr7ewtd+VCSAUTi2vT/V1Nfdu+IqbtmQ8cGlPAfLlttCHct+TFoz9LUsG8My9n504gFZKPkq6F9PoCILcvZPKC4vLnFSqlCu6EL1dETpN4FzukOuh8iAXsV4Jy54UUEwLafWYV5WIr1AlEnVPdLNET0qCpnjfU60azRPx/3SspCEGFIKFA3717TbHgGiSjV7ug/OIr1779uNnMNzZqUlocno/EqIuScZZVmcB/pR6tAETA/xdTZ5h9Vf5AnqJzPaEvC2I7Zd/mbM/GP5AjT5PnLO4/SGvMU7kSAqP3sxbNz0w0LZfSRojAqMMMEV748yFwXx6DVKDCULlRILcTP9G3+LaldTiPELWfQ/kp9vuNPhhI+3ErI+6eFzLj55WRW4zNwpxhfMMA6UWA/3E29ETQ6kYK5ouV6fbtGN6uj7+LKezX8Hrh/43yZ1PBGnBezVVvcbN85D4ItxVMVooXhXDswWj68pBsNKLvH+EqZMjDmYoKdh0orpMLivkUO9Zup/e6W0o975+tdp2bk7N21Av4Zh/k0NfACW+brYyHliGuizyoof9ZgFJeDildysI+DsGqVqUh8rlZ/s4i8vOViHNa2L5sR0NGEhTbiHrkeOEYg/TwHzAC16ASnQ4ANxg6LGovtOAIyolL5Lx05hETye/a3JY5JLKFif6pkzw=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(23010399003)(7416014)(19092799006)(261026121527099003)(11063799006)(4143699003)(261026140227099003)(261021121427099003)(10067099003)(261021123027099003)(261009223027099003)(261102123227099003)(56012099006)(261022105027099003)(261028144727099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?IdpjwePp72vASqEj8XgLlHzBYF5RTaxBfXefdx0C1f238vmNK6PdbOQ2LjZZ?=
+ =?us-ascii?Q?yJXOARQ/fYbNca3DqYGYUY6cU3LIgNFRSu2BkLVj4rJnrLDYmzsXKb97Jr+e?=
+ =?us-ascii?Q?rnR32v3FlG9hHIO7j6lcK51JH8am0Hvb35LaCeddZMKXsP+yd+H1/f9XB5Jn?=
+ =?us-ascii?Q?kGBhzviKYzbZBdHCAGv4PUSYEEccvi1A76kEZsAJKx6WXOrPipyFbJ8C85LN?=
+ =?us-ascii?Q?lyljMRoVQ7mbOFvMv+EaVuWAShC3yk1d3HtuqLf+rwQon1+e6gNDrsvbQIZH?=
+ =?us-ascii?Q?iepisV4yGw4Msn15aiyu3Q9v2xRXEf1mV91N+tkNhvwZlZYjg6dogJswQVpX?=
+ =?us-ascii?Q?TFeB/iCNSci5ZerUZhuXfETiZ3R9NPVpiqJroNGQe2k1Xpx6YTLN2L9kWfmt?=
+ =?us-ascii?Q?QiuJw8VO9bxRlTTehYl6vOZ2aA8U9XcAANMXm/6ofpfx+5GZTGvDlpj17IK/?=
+ =?us-ascii?Q?sDP38e3prDIyhOlGpN5SNX9vYIbnIggIszfJY/S4f4ppYQ2ktHgG/ER+G53w?=
+ =?us-ascii?Q?JwagMuj7NOXeVwZb1A3xHMaMLAlpVc27nUGY6aKmnSopVvsPtlbrud3oHIZm?=
+ =?us-ascii?Q?hPASUvN+NTkIDceljLVs5BEPNOskwoLByKD63bq4uOayJUJSBCNOSxJ6DsAD?=
+ =?us-ascii?Q?j4MMawVD6HZeDegsxoXm32aYJQjQokXOw+w9SLEEIInV0pf2nrUJDDfX03Fv?=
+ =?us-ascii?Q?3X8qtwnBB0/Z1GC0aOr2lDgmRHIyo1ATz++BfDvgRQ7AM8DdGQSmRIsLpFg7?=
+ =?us-ascii?Q?qSmndJg8RuFhAz2bbguOQY8QNl21SE1P3rds5wydvP9AKP7Sc7zHRwf5YANQ?=
+ =?us-ascii?Q?no/WQT7vRFxJcIvcfWby4j1lxTVP06iTTPlJVuUPnkk8iKfpC9T+VRnH5jC6?=
+ =?us-ascii?Q?4qwMlRt8/AKN6yvBTzDU9Y/0oMpUFESoHLaBwQFgQOw7v4kQnEZImQcQjiRY?=
+ =?us-ascii?Q?uj+eAg9qzEFVwroIdAdqjOUOPviElkq72wnJIVycMdU6TcRpzwi8oLN+r0L2?=
+ =?us-ascii?Q?mv/Go2V53QSaT2pzd9S3rXvuY/tpgPgV6Q6vkS0zg91tkvGwWzuDGYSmJUqS?=
+ =?us-ascii?Q?efAPuELAnsDFS0913TVVrtZLcdliUQ9DaJEUpMoJ+y7lfQAlMJL8ajbt+Ekz?=
+ =?us-ascii?Q?0fz1IC6Ta5emNn3BtBhw+1otAvXug559MEGFUBGCK2z/8cOmk65+CvgEArd+?=
+ =?us-ascii?Q?Ja59pCgyVPH1vFsfWuYo06gFxm/1lPmfWvE8uBg1vptd4/vJ4pXA2eN/Te1R?=
+ =?us-ascii?Q?vtvFo7bKaKB1G5RJdw66RsalJRckjSaAs2XM24Lnd2gCDrP64JyLutDtILg2?=
+ =?us-ascii?Q?xcqodpB3YmV3HvpNtmfKMNXvHhOLXHE4LQklcUQWNIzecq1clk3PBDHQvdnv?=
+ =?us-ascii?Q?LIUfPLwRoAMTdK2wXMjXT7Y2wTOfELeoOZFosPzkDPwJSS7Y7GFTyQKaIZjL?=
+ =?us-ascii?Q?mOIVfrpvj+pAgvdHRmAU6A5fUlQB/Rj9Fn4bbdh4N2uagWCBzWsbGAM+ZXaZ?=
+ =?us-ascii?Q?8KLE1OCr2wlaDD8anmmalMxgwMvhrAK9ZcKJMK6WW947Xjwdt8wQIzgvgkvd?=
+ =?us-ascii?Q?GO7SRLHZewAVM7Sc3xJn/nJVQt42z4UNwChg+LvAX3nNkqO0FhKIX0h9YLvu?=
+ =?us-ascii?Q?xqnuPBtPR1rt22brH9ipO7qfLs42H405A6YE9x4hWkIZvGYlgtD0cuTXkbzT?=
+ =?us-ascii?Q?ygwR182EQON1fefqMVSJvt6NbxWnKaBunwKru4ZL6nZ3gR0auv+R5kozWDcv?=
+ =?us-ascii?Q?1JVwPjySnk7VRkBF3uz4/2xLFazCUjMdcZOGr08Nt2+ptUYZNoPv?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 15b3e0e8-1fbd-4507-20c1-08df40d37267
+X-MS-Exchange-CrossTenant-AuthSource: MI3PR04MB12438.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Nov 2026 15:41:41.3858
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6Uk7vIgf+zWohaw89nWPj84cUEdoa3W+s/UtDiXYe3IVIh1PEHb0ae9FIW7/64blxvNfp7h3C8H+Js7kWgd6JzR06f33PUJu34TjK/4ES8Cu/L4kSGxXBxpvHVd5BqKg
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10431
 
-Hello Laurentiu,
-
-> The i.MX94 Display Control Interface features:
->  * Up to maximum 3 layers of alpha blending:
->     - 1 background layer(Layer 0);
->     - 1 foreground layer(Layer 1);
->     - A programmable constant color behind the background layer;
->  * Each layer supports:
->     - programmable plane size;
->     - programmable background color;
->     - embedded alpha and global alpha;
->  * Data output with CRC checksum for 4 programmable regions;
+On Thu, Nov 12, 2026 at 04:02:23PM +0100, Francesco Dolcini wrote:
+> From: Francesco Dolcini <francesco.dolcini@toradex.com>
 >
-> Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com> # bridge refcounting
-> Signed-off-by: Sandor Yu <sandor.yu@nxp.com>
-> Co-developed-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
-> Signed-off-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+> The Verdin family pinout defines the SoM interfaces and their
+> numbering, SPI_1 being the SPI bus available to the carrier board,
+> implemented by ecspi2 on Verdin iMX8MM.
+>
+> imx8mm.dtsi numbers ecspi2 as spi1, so the Linux bus number in sysfs
+> and the spidev name do not match the Verdin interface. Add a spi0
+> alias in the SoM dtsi and delete the inherited spi1, so ecspi2 is
+> bus 0, zero-based with SPI_1 being spi0, and carries a single alias.
+> ecspi3, internal to the SoM with the CAN controller and the TPM, keeps
+> the spi2 alias inherited from the SoC.
+>
+> Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+> ---
+>  arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
+> index 1ac9d000d415..0369803a4d46 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
+> @@ -16,6 +16,8 @@ chosen {
+>  	aliases {
+>  		rtc0 = &rtc_i2c;
+>  		rtc1 = &snvs_rtc;
+> +		spi0 = &ecspi2;
+> +		/delete-property/ spi1;
 
-Looks OK, I just have a small remark and a few minor nitpicks, see below.
+Can you avoid delete property for new platform?
 
-> +++ b/drivers/gpu/drm/imx/dcif/Kconfig
-> @@ -0,0 +1,16 @@
-> +config DRM_IMX_DCIF
-> +	tristate "DRM support for NXP i.MX94 DCIF"
-> +	select DRM_KMS_HELPER
-> +	select DRM_GEM_DMA_HELPER
-> +	select DRM_DISPLAY_HELPER
-> +	select DRM_PANEL_BRIDGE
+Frank
 
-This should be unneeded now. As o fnow it is basically a complicated way to
-say 'select DRM_PANEL'. And you are (rightfully) not using the panel API,
-so this line should probably just be removed. Please double check by
-building multiple configs, including an allmodconfig.
-
-> +++ b/drivers/gpu/drm/imx/dcif/dcif-crc.c
-> @@ -0,0 +1,221 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +/*
-> + * Copyright 2025 NXP
-
-2026 I guess... v11, a long journey, hopefully it won't slip to 2027! :)
-
-> +++ b/drivers/gpu/drm/imx/dcif/dcif-crtc.c
-...
-> +static int dcif_crtc_query_output_bus_format(struct drm_crtc *crtc,
-> +					     struct drm_crtc_state *crtc_state)
-> +{
-> +	struct dcif_crtc_state *dcif_state = to_dcif_crtc_state(crtc_state);
-> +	struct drm_bridge *bridge __free(drm_bridge_put) = NULL;
-
-While this is OK, there is generally a preference to declare and assign in
-the same statement when using cleanup actions, so...
-
-> +	struct drm_bridge_state *bridge_state;
-> +	u32 bus_format;
-> +
-> +	dcif_state->bus_format = MEDIA_BUS_FMT_RGB888_1X24;
-> +	dcif_state->bus_flags = 0;
-> +
-> +	bridge = dcif_crtc_get_bridge(crtc, crtc_state);
-
-...it should all happen here, as:
-
-	struct drm_bridge *bridge __free(drm_bridge_put) =
-		dcif_crtc_get_bridge(crtc, crtc_state);
-
-> +++ b/drivers/gpu/drm/imx/dcif/dcif-kms.c
-> @@ -0,0 +1,168 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +/*
-> + * Copyright 2025 NXP
-> + */
-> +
-> +#include <linux/device.h>
-> +#include <linux/of.h>
-> +#include <linux/of_platform.h>
-> +#include <linux/platform_device.h>
-> +
-> +#include <drm/drm_atomic.h>
-> +#include <drm/drm_atomic_helper.h>
-> +#include <drm/drm_bridge.h>
-> +#include <drm/drm_bridge_connector.h>
-> +#include <drm/drm_gem_framebuffer_helper.h>
-> +#include <drm/drm_panel.h>
-
-Unused include?
-
-> +static int dcif_kms_init(struct dcif_dev *dcif)
-> +{
-> +	struct drm_device *drm = &dcif->drm;
-> +	struct device_node *np = drm->dev->of_node;
-> +	struct drm_connector *connector;
-> +	struct drm_bridge *bridge;
-> +	int ret;
-> +
-> +	ret = dcif_crtc_init(dcif);
-> +	if (ret)
-> +		return ret;
-> +
-> +	bridge = devm_drm_of_get_bridge(drm->dev, np, 0, 0);
-
-This function is deprecated. You can use of_drm_get_bridge_by_endpoint()
-instead, which returns a refcounted bridge pointer. And since the bridge
-pointer is a local variable you can just use a cleanup action to put it
-easily:
-
-  struct drm_bridge *bridge __free(drm_bridge_put) = of_drm_get_bridge_by_endpoint(...);
-
-Otherwise LGTM.
-
-Luca
-
--- 
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
+>  	};
+>
+>  	/* Fixed clock dedicated to SPI CAN controller */
+> --
+> 2.47.3
+>
+>
