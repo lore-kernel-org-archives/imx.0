@@ -1,49 +1,50 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.194.8.81
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1794495767;
-	b=ZGu0XGqFIbpp0DkudhHXB90E49rvP1J2yQtq58Fy2oeSB5Xj6L/25gVfQHRQTF6PlfsF
-	 l+yG804lDgUXNcSu/AkUMsXXTihcOzxqjPA0cm2SoX1p2jN9mgLxVhL39cMH8VUd3ezHb
-	 M5o7+TijbRIpCCBeaCrVe1VsEtIMki0IPcFHFncn6QbRRJnWdmUcYD+kgnNEgsSJm9VmW
-	 tNpvvE+borPpzpORnXW9d4hYmK84XU/W9NCgS7YaK/G5xLflbTRxvtpie9U6CmNX/EXl/
-	 1VVahu3uOaL9/Zgx6YYFN5NOdjZlanRNdv78FCXU0RN6M/juxiEfMeCJ2gn/KhIsaVA==
+	b=GZXfaEOBd6ztCHY1+AXK57Gyfw3rgnovI4qHo2XD1pC40O8KnL+Ntb+jh5kePpAz3nUY
+	 flaCnsJ+x6aRCvw4ssPSmn7V+ee+3mw18EzIPXQFt482WeIKJ0y1Uo9m8ahUqUMDOi9j0
+	 LCRR936ctrxocBM6CJgr3j0BDIzCZpoJ6CfHxMbTK7hcoji2KxnL1n4yxVoqc3cxcLZ+2
+	 3SEEJpUqkFmOVX2Bg0r8pgzf6vUvdfeoPJ7SLx/tjRKzMMqOWh3C7O4oDpzO4Tiw0u0tS
+	 pRH1r7B8hWDkNNjFiwm3k9ivqTPFrgeU04pQ2vCkkQdn4MBjGoExdo0twImibzvAC1Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1794495767;
 	h=DMARC-Filter:Received:DKIM-Signature:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=VmOEUIJPJDASl4ZFrq/9SlrqtTD/ZswAL2tmbUhdyxc=;
-	b=SwW3YQW616EWrnJnz2j/8Cw44Qa3VxnQ/td5+/vjN4bT67sMl6vbA6+sMr0O6OCXvXb3
-	 LuXq8sO35g7rO8i+sM8OkFn6a2hYMW+8OAJub1W1DuDxuyeWtLbOrX1ubiXy8ePvuIetB
-	 HqtL38UrB3QddqyclYkb6XVz9XRoTMR/6sdlK31UNqc7cnU4CS1zgtpfOX/11+ZOvwd2g
-	 WppeBwk4nERMhFyPKr7133dq17jwYZ3qsFW1XVGqF9ry13v6CTyhV9x/mSVMfNJEV0U9I
-	 m9O5nQzc6pvyYIQVv3x4Nf16oC/+TonIm5Nun8+u0OOmhQCeSJXSA6MNgcBkxHRV0PQ==
+	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=KXzbwVgeJe386h0gFNBUQkQpzvuQHCSy5uyOrGQ03aI=;
+	b=MGNL87v2Wg4Q8Gd+J9evQnPErfYDR5fMbzDfohu6FtMdDR7PVpETgE/iBKxR0TMvBYlE
+	 ojhm6pHO/6g10KmikFZp9vA1tTyICSAbxoI+MehJgkII4yWmd5Nwa62/R2CVgnWcS7BiB
+	 N57c3R/HrYos9O35Q6Qz0g51Mhun+fqYDL/540p5Xl+PzdRifHw+LDrYOfyPMiRuzVDX6
+	 cGQOV4m8zo1i6z5l7qt5EL3OwoqaqXarXjkis5voWTZl4WeJk8K5W+8IEi4AnN11iQneH
+	 j6PQzwrVxNj3I9736twKTWN/cIoufX0VFaz57BKtNgSXPXW0lePrw14Wr4Wb4pJTRPw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=dolcini.it;
 	spf=pass smtp.mailfrom=dolcini.it;
-	dkim=pass header.d=dolcini.it header.i=@dolcini.it header.a=rsa-sha256 header.s=default header.b=X7LVK5kk;
+	dkim=pass header.d=dolcini.it header.i=@dolcini.it header.a=rsa-sha256 header.s=default header.b=Xa5vaz5o;
 	arc=none smtp.remote-ip=217.194.8.81
 Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B42A0606A321
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E645A606A32A
 	for <imx@lists.linux.dev>; Thu, 12 Nov 2026 15:02:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B42A0606A321
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E645A606A32A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=dolcini.it header.i=@dolcini.it header.a=rsa-sha256 header.s=default header.b=X7LVK5kk
+	dkim=pass (2048-bit key, unprotected) header.d=dolcini.it header.i=@dolcini.it header.a=rsa-sha256 header.s=default header.b=Xa5vaz5o
 Received: from francesco-nb.. (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 5964523134;
-	Thu, 12 Nov 2026 16:02:42 +0100 (CET)
+	by mail11.truemail.it (Postfix) with ESMTPA id BF86623187;
+	Thu, 12 Nov 2026 16:02:43 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1794495762;
-	bh=VmOEUIJPJDASl4ZFrq/9SlrqtTD/ZswAL2tmbUhdyxc=; h=From:To:Subject;
-	b=X7LVK5kkEba8xp4QvzDBuhojZAndEQ8oFOJo4ksiuKn1rg1QnLjZODWtY6IpBMFeF
-	 Ii51fNppyR6A1HxUjzIsp23pJhZ4oJ8hJ7dtVZOiwjNg4oepVTq5X75SfkEND9h+Us
-	 scF7N4sEN/f2dUgDPtJjGxCNlV9EY2fa5WWARA5fwk+h99s7R74GH67zW0AlcS6nWA
-	 rs9TLh8KS7hBt3rnL53j753v9CAXo2S4SQzz48qiiOWSBNBczUCmLmP3f5EDhrNQDb
-	 PSBJs/tsKBqOlOXrHrj1e7saDBAMa4CpVryP7BbRVGFoABZERECp8wG3QL0GXdTOg/
-	 Rpnr1BH7EPlNw==
+	s=default; t=1794495764;
+	bh=KXzbwVgeJe386h0gFNBUQkQpzvuQHCSy5uyOrGQ03aI=; h=From:To:Subject;
+	b=Xa5vaz5o4BnRfPenmT3vg+cJX1NLnQzUelZqiGXuzAa0mDOhpl486CO/jn5ACJm36
+	 ckh9Xwu2wkXfb4rXNhUAuFxvUoCjMbPANjJE9BzMw9ow64BJ2TVf/F2e8EUvnDdU4d
+	 G0csLUWbTECM6asdYReLoBnFCj3jZyh7Iy75xEvmtbEav/8R6x3AoXZGO5mr5FkMaV
+	 j/1s7itwLghR9+AbDi30yIHzY7Qyo20MQOPuHDpEs4lgQCArKZmuX5HE1S7x5U7a5f
+	 djNNBwwC9UtaNtDDsQ/nN1E1XQu2hvlOBx9He1fLkSmxwxr+uM+DzoNmhRBrHGXjOR
+	 3FG/ozHiBUHAQ==
 From: Francesco Dolcini <francesco@dolcini.it>
 To: Francesco Dolcini <francesco.dolcini@toradex.com>,
 	Rob Herring <robh@kernel.org>,
@@ -58,10 +59,12 @@ Cc: linux-bsp@toradex.com,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v1 00/11] arm64: dts: freescale: Add SPI aliases to Toradex SoMs
-Date: Thu, 12 Nov 2026 16:02:22 +0100
-Message-ID: <20261112150236.164850-1-francesco@dolcini.it>
+Subject: [PATCH v1 02/11] arm64: dts: freescale: imx8mp-verdin: Add SPI alias
+Date: Thu, 12 Nov 2026 16:02:24 +0100
+Message-ID: <20261112150236.164850-3-francesco@dolcini.it>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261112150236.164850-1-francesco@dolcini.it>
+References: <20261112150236.164850-1-francesco@dolcini.it>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -75,49 +78,34 @@ Content-Transfer-Encoding: 8bit
 
 From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-Toradex SoM families (Verdin, Apalis, Colibri, Aquila, Lino) and the
-SMARC and OSM standards define the interfaces available to the carrier
-board and their numbering or naming as part of the module pinout. The
-Linux SPI bus number instead follows the SoC dtsi aliases where they
-exist (i.MX8MM, i.MX8MP, i.MX8QM, i.MX8QXP) or is assigned dynamically
-(i.MX91, i.MX93, i.MX95), so the bus number in sysfs and the spidev
-device name do not match the module interface.
+The Verdin family pinout defines the SoM interfaces and their
+numbering, SPI_1 being the SPI bus available to the carrier board,
+implemented by ecspi1 on Verdin iMX8MP.
 
-Add spiN aliases to the SoM dtsi files so the Linux bus number follows
-the module interface numbering, zero-based like the existing
-serial and can aliases: SPI_1 is spi0 and SPI_2 is spi1, SMARC SPI0 and
-SPI1 map directly, OSM SPI_A is spi0 and SPI_B is spi1, the single
-Colibri SPI is spi0. Where the SoC dtsi already gives the same
-controller another alias, that inherited alias is deleted so each
-controller carries a single one. SPI controllers that are not part of
-the module pinout get no alias of their own.
+Without an alias the Linux SPI bus number is assigned dynamically and
+can change with the carrier board or probe order. Add a spi0 alias so
+the bus number in sysfs and the spidev name follow the Verdin interface
+numbering, zero-based with SPI_1 being spi0. This replaces the spi0
+alias imx8mp.dtsi gives to flexspi, Verdin QSPI_1, which gets a
+dynamic bus number instead.
 
-Francesco Dolcini (11):
-  arm64: dts: freescale: imx8mm-verdin: Add SPI alias
-  arm64: dts: freescale: imx8mp-verdin: Add SPI alias
-  arm64: dts: freescale: imx95-verdin: Add SPI alias
-  arm64: dts: freescale: imx8x-colibri: Add SPI alias
-  arm64: dts: freescale: imx8mp-toradex-smarc: Add SPI aliases
-  arm64: dts: freescale: imx95-toradex-smarc: Add SPI aliases
-  arm64: dts: freescale: imx95-aquila: Add SPI aliases
-  arm64: dts: freescale: imx8-apalis: Add SPI aliases
-  arm64: dts: freescale: imx93-imx91-lino-common: Add SPI aliases
-  arm64: dts: freescale: imx93-imx91-toradex-osm-common: Add SPI aliases
-  arm64: dts: freescale: imx95-toradex-osm: Add SPI aliases
+Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+---
+ arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
- arch/arm64/boot/dts/freescale/imx8-apalis-v1.1.dtsi          | 3 +++
- arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi             | 2 ++
- arch/arm64/boot/dts/freescale/imx8mp-toradex-smarc.dtsi      | 2 ++
- arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi             | 1 +
- arch/arm64/boot/dts/freescale/imx8x-colibri.dtsi             | 5 +++++
- arch/arm64/boot/dts/freescale/imx93-imx91-lino-common.dtsi   | 2 ++
- .../boot/dts/freescale/imx93-imx91-toradex-osm-common.dtsi   | 2 ++
- arch/arm64/boot/dts/freescale/imx95-aquila.dtsi              | 2 ++
- arch/arm64/boot/dts/freescale/imx95-toradex-osm.dtsi         | 2 ++
- arch/arm64/boot/dts/freescale/imx95-toradex-smarc.dtsi       | 2 ++
- arch/arm64/boot/dts/freescale/imx95-verdin.dtsi              | 1 +
- 11 files changed, 24 insertions(+)
-
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi
+index 6887d5555d30..ae8aba856240 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi
+@@ -18,6 +18,7 @@ aliases {
+ 		ethernet1 = &fec;
+ 		rtc0 = &rtc_i2c;
+ 		rtc1 = &snvs_rtc;
++		spi0 = &ecspi1;
+ 	};
+ 
+ 	backlight: backlight {
 -- 
 2.47.3
 
