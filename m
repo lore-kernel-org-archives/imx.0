@@ -1,100 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.54
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794516790;
-	b=WvYHnPF2s8tHG2Uv9qQAzgjD+xVLh0ShA/0qptC3wNFIvC+IIKN6FZ3/HotzT4KJ5WkL
-	 pIdGuBfvKpAJhbbWn5NP2df6M/gSWj8C6niOsnjBlGdmxr9MvbNUY5vkqiIcovAcnCMb5
-	 O1IRm4egU0NALgHulUy3L4T2+/LR9b1bLa9GAIzsoDn9Lq8+limegm/YTItC/T/SU31CZ
-	 AO+VN20N2Y2S3V9QPMwBKYz5n+7SZ39CWpzgVVjwLVCmH/Ny7o44fXXwpcb/is7CoS/p2
-	 CNuRVD8aBMPAsXuZjM+SITbYABIv9jGhKB0MOxkn7toCiN+2f/aIhbHTwXiyapu4ySw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794516790;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=XRvRDso/7nPZytfvh9i/Caaj8XKSnRZSw/8wKdSxLLI=;
-	b=Mk/LWloIWCOLkjYyy2pc+pZrm2ePa8+UvnhpZuFE6XonDoNcwled3zeCzkbL3ojUKAGz
-	 ZVzqMlGDwmbnMIzNw1lJ71yBd0lr+8eeXbK5ojZsh9/Ha8q7XBYC7eAZR2VGeXyErUe3m
-	 +nQXngraKX4BOcXp2s1vbueZyHtGDDfHkgFGH7NVK8CZeJ38OditZ8ZKDOqWiOo0mYh02
-	 p6IsWqZDF3UNRaMfsIBDMfYN73qvQZYiOuXNLc/qeDX4C5I/Wf4kVMEEUttPZ9MSXM/RV
-	 ATj5MX3FpgcY54EnNJVDy6scmCSqrM/kvkVAGMO+Y8z3B+h44NJniPr1Alta/W39DkA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=UaZAsWj0;
-	arc=none smtp.remote-ip=209.85.128.54
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.65.38
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794517438;
+	b=q6Khgp3mR6V/xsnQSK7GrqavZJ5lofiSYEmeuu6BHg5BiUMB9eCt9Nl5/HQDUcWkCbSN
+	 /8803ibe6uhUV8h0H/rUF1PWC0t3JMR0+ZZlyB3NTC3XKRSBRDqEitI8YRR1PARd3xI67
+	 ieyo3qBhBZCPiENOKt+xFevKaNpN3iEugJebRmBdv+uRdN9fULtG3Gu+1e2NxDHFLlwg4
+	 b4u8c+s7mAc7uNwBNnavnE9TjU/nWkpfkTVtl+Qt6DSVRHOPDm0shw4CJ5mS+Ae9hfQlk
+	 SN5Y0sNq24MNfxwE3gyX3w7u6LHkH8jQR2KkBEenK+3NAOibKx64JQemoym68ebnyug==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794517438;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:Content-Type:Content-Disposition:
+	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=IYZBVQt2cpCHLIr5IDzlFgEVBIZ4QCoZS7uavLK58mA=;
+	b=ECPYNb2CLUrlfMaUEeCuXiwuMXanpUFfMwnU9Hkrf8JToIpxHpnBmQquzJ4VUd0nuPfq
+	 5T6Wsrgsc3X9jRZ17IKnPn5ZDGL4pNR5bwQWSugcB3g69c8OCCH2E87vHIvg8bECEipjL
+	 u8BUnnBP4IXBJcSOHDOOgo1b4fxm9p1xYpxH9+f1n2x8bPkp2lklbzK/vzbJ8uLHMQP7V
+	 4kwVTgFtm7E6vVqLxnXiCuMnfsIHEXpkTQtgecBG5JY/JZDQ2VqLTjWScPP4pm/Dat9hf
+	 pJtHhVI3fIo6X9hl366Dd6eQ2ujEK3Hgor08WHXlFYxmYUMGj4Tgf2O1Sfb4FXYi9ZQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=oss.nxp.com;
+	spf=pass smtp.mailfrom=oss.nxp.com;
+	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=CyX94klC;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.65.38
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011038.outbound.protection.outlook.com [52.101.65.38])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51F7C606A883
-	for <imx@lists.linux.dev>; Thu, 12 Nov 2026 20:53:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 51F7C606A883
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90AE3606A323
+	for <imx@lists.linux.dev>; Thu, 12 Nov 2026 21:03:57 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 90AE3606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=UaZAsWj0
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4a3517554f7so2807635e9.2
-        for <imx@lists.linux.dev>; Thu, 12 Nov 2026 12:53:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794516789; x=1795121589; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=XRvRDso/7nPZytfvh9i/Caaj8XKSnRZSw/8wKdSxLLI=;
-        b=UaZAsWj0N7XwaDksCWXvuuN+eGaY7BtBUPpDT3sCkU/XJ2Nb5DC+v9Fj1oFYUjnJwD
-         9pv4RjOrScrwPlqfywDg7TNCFYE63v7lxf08nFjZ2KQsZErzq2I3X7c/tzcPqp8/uAIq
-         3IwhSJGYnnx0WQa0BJha71N/cYtgth5TMKVKQxRRV7WrO9ZuQQ6h8er9w1bnCoOSM4s9
-         w10anssMrmt9h55LnebL27dEHbl/VfEANSVpywHXmvHWvOdBW9fhj8oFHDhEsDitrxSp
-         mscSXPRWfDb4U2M9h+SUtE2b0r5XRz1v1rMsvXsJK80tqa5eWsjCbWBWKifprheENVLa
-         ejYg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794516789; x=1795121589;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=XRvRDso/7nPZytfvh9i/Caaj8XKSnRZSw/8wKdSxLLI=;
-        b=Ke97F1w53eBxf2PZU6gw3NDUONfCzLOaXba1aCR07ABxuGX7qyQaoFQeQ5lM4twkOl
-         0ltTO4GpZuStfW8qvzFcJlhPwwdma5oNZiFyrNBF+5KVLneCphyiEM0mjgj0ETWHirxD
-         NxkA+L2cBJvM+VwAgnC++gWSxEVQmn/IAzV+AplTowSoYWhrmwFXPN193EkqQf8cropR
-         nE1Inxz6YXa0B7kUm2UY0eU5fo9IjQXUefyMJilknjyYGISYqFvf1ie37IB9XZxqBsEa
-         GvHtOFP9qRZHYRigNBgxc95bXgpKrA1qVUkdsWmzWT9dpuewVpsV4ose/8M5JStJVaf/
-         KujQ==
-X-Forwarded-Encrypted: i=1; AL+hErHq/4JGojwn/CZ/kjODlzh1dVASxTwpfl9GICQ2HM9p/GJISDfELXUs560qV7HsPu4Fwd4=@lists.linux.dev
-X-Gm-Message-State: APuU4Z9wBYT67wCQLy/BBpbsHNOkXJc+7TPMApbi4wSEnRwrUIlISjCz
-	+8P5MV/4KNCHUMWRzmUK0qDCmvKpBAljvu5DKQC9Ng92xhkl2GMJMQrr
-X-Gm-Gg: AYBFou36LSAvbuMXhJog7gFrw3JkoeRtv5YImYG6XLDWdf9TSRFYMJsmnqnXoPH/C6p
-	+U/GjAPErZUst2jPGl33aW+SsMWMXXnk9YQ+jj+GxDeDK5tXXTJWa0OlyAvGJLMU8lcDit2tZ2p
-	/j7ANGsmurNoJvTHbU47EyJZOzGd0UTrm88EdM1VFxIrq6YNG9XkC3KVNKABIh6zJJ7V54Vfvwn
-	jhRX4P3w4DIqsFxqMhPpVOJRUKpI0L4gM1M475JQdcgvglZDeSL5WvJgtgqJadcIrTmp+Q9V+4y
-	KRyfnyjqBi7YVy4mcN6QoGYC4lqv2s6xP9nCX6Lp7NohjetwuaYk0b8Az7Jc0lZiSB0S9rfk2Nb
-	Ru7xcXh1bxT/XeMCG5vSY8N8GMoYlPB9Ke66nOMMC8gxttm0DRIiQtxm/hZuhWAW1Dp7D0VVCeS
-	XQdFEjQr99U+dtDsQCtPEc8nSaLOSEeQkB+ggq5vWE7UkU3atKsk2a6zooZ/vb/t0CGL/JB/Dor
-	ut8kzdhXSrqmAfrurZrI8DxwTSugUelF9ZItaC5Jnh9yzg6w2LXggm9Xy5Ejys45lTVqbiAjk/l
-	NBpg4fXn15yJ2XYcDKHszE3wQYyF5IQcVWmPERYs93nDpCXRifBMnAAtYNGzJY8=
-X-Received: by 2002:a05:600c:1f96:b0:4a1:777b:8a12 with SMTP id 5b1f17b1804b1-4bb55a4ea81mr7826645e9.14.1794516788712;
-        Thu, 12 Nov 2026 12:53:08 -0800 (PST)
-Received: from debian (ip-78-137-176-146.broadband.digiweb.ie. [78.137.176.146])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb55ae501bsm8695655e9.10.2026.11.12.12.53.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2026 12:53:08 -0800 (PST)
-From: Pablo Mazzini <pmazzini@gmail.com>
-To: Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Pablo Mazzini <pmazzini@gmail.com>,
-	Alistair Francis <alistair@alistair23.me>,
-	Andreas Kemnade <andreas@kemnade.info>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v4 2/2] ARM: imx_v6_v7_defconfig: drop the SY7636A MFD option
-Date: Thu, 12 Nov 2026 20:52:28 +0000
-Message-ID: <20261112205228.42630-3-pmazzini@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261112205228.42630-1-pmazzini@gmail.com>
-References: <20261112205228.42630-1-pmazzini@gmail.com>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=CyX94klC
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=YNgC3/BrWlii+yiJmDwc8aHPgZCEXgWdfx24IEGRMI4s89vmCD1jlrS3hXtM3JegPe5YDy37kQG+EkdhYF1catylv3++CHM5OZhTuajCfYoRKeHcnIaOnUqiaiD7ANU0s1L2/txXpxVvznbfYdPNIzOp2eOjNZ2w5WlTX+acm5fOSZkiIvorpE+lq+bRhPz0fNQIz5ISoGKQCwXMgH8smwji3Z5UuzdoCci80/qlKZJAlH9yESKxkM7bEV2wgJd7qbau6YHM8pX2xKX7PXskcjPAD7U4Ww0cCZ8/sxx5v9DdJYmH+QfxG8p/onVaYj8d2dBBX20zOIObyIsOm+FhqQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=IYZBVQt2cpCHLIr5IDzlFgEVBIZ4QCoZS7uavLK58mA=;
+ b=Sfy2FFYeLHbxi3YSKCUaFC+EiEd6xWifM2k/MjM4BCwCVjeXoygw3pnUXOGCu5XdWlX6bEwo6+UFKxSzGrM5Bf1Pj0YEhdL95Orlxth0BDiGedvmjVBRLPPes90Ra4Yjb+R4R+3D72/xqLPuf9G8/o4P8jt6U9oi3WeuwRddM/GW3dDO3PjLAU/oBswg5qXFGBNUmaTYz3KEDI4Ha6nA8KK9Glmco8NBmLtwp3DQrLDYDjxOH58cqA0HF/nUUsNVB7OucqYlaIfOw3SCNKQLZsGNdXknYY2IjarfmBO66rs7DPwCZSdhKscbWL9rE2KOVkD0GKfUgHMCX0dtQ/cdGg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=IYZBVQt2cpCHLIr5IDzlFgEVBIZ4QCoZS7uavLK58mA=;
+ b=CyX94klC16tA02cvyjwP7qjR2jexXCtL27RQUkAE/a4nHtK/jIhpDVqCjV5V0THUfILd96fgz3BykPpzm+ZA9Xzo1d/bD/hEpiahpY5Ml1Ops2S40GL8htX/XUqwV1TbM5WZw+mm1d+wnPFxljJfQHKLwMkyPGcJel6yM1sMlDJTLHHW5h+k8FCHMYy0vJzJdYZXai/wZs0rCbxkJd4MR4hB4A9MbYfuoz7bSm2dJwy+WWLQkOwAFz8yM4ltwAEXL7/iC1HU7lRniHqOLrbF86gpc/3KIZeDuW/2Tc+bWU+sI4lVYDMrA+hwjIzzVYz1gkjYMkUnLu9jc/9myAtVBg==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from MI3PR04MB12438.eurprd04.prod.outlook.com (2603:10a6:290:76::14)
+ by BR0PR04MB715228.eurprd04.prod.outlook.com (2603:10a6:2c8:44::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.9; Thu, 12 Nov
+ 2026 21:03:55 +0000
+Received: from MI3PR04MB12438.eurprd04.prod.outlook.com
+ ([fe80::c715:c32:8bb1:b70b]) by MI3PR04MB12438.eurprd04.prod.outlook.com
+ ([fe80::c715:c32:8bb1:b70b%4]) with mapi id 15.21.0615.009; Thu, 12 Nov 2026
+ 21:03:55 +0000
+Date: Thu, 12 Nov 2026 15:03:38 -0600
+From: Frank Li <Frank.li@oss.nxp.com>
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: Ludovic Desroches <ludovic.desroches@microchip.com>,
+	Vinod Koul <vkoul@kernel.org>, Frank Li <Frank.Li@kernel.org>,
+	Paul Cercueil <paul@crapouillou.net>,
+	Viresh Kumar <vireshk@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Paul Walmsley <pjw@kernel.org>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	linux-arm-kernel@lists.infradead.org, dmaengine@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
+	imx@lists.linux.dev, linux-riscv@lists.infradead.org
+Subject: Re: [PATCH] dmaengine: Convert to subsys_platform_driver()
+Message-ID: <avYpkpoqf9NInTA6@SMW015318>
+References: <20261104113302.1634102-1-peng.fan@oss.nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261104113302.1634102-1-peng.fan@oss.nxp.com>
+X-ClientProxiedBy: VI1PR04CA0111.eurprd04.prod.outlook.com
+ (2603:10a6:803:64::46) To AMBPR04MB12445.eurprd04.prod.outlook.com
+ (2603:10a6:20b:75e::21)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -104,27 +103,287 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|BR0PR04MB715228:EE_
+X-MS-Office365-Filtering-Correlation-Id: 337b04f2-1dac-4d74-aa9f-08df410075c0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|19092799006|23010399003|7416014|376014|22082099003|18002099003|56012099006|10067099003|11063799006|261102130727099003|261028144727099003|261026121527099003|261026140227099003|261022105027099003|261021123027099003|261021135927099003|261009223027099003|261022075727099003|261021121427099003|261102123227099003;
+X-Microsoft-Antispam-Message-Info:
+	vhuOxMon8a4QdCncetJsnKE5ESdqzbKbfpy3Hq867EQOMCpfeKbQqWrcI5vjL99CS5LGG7MYauAppxBfkEC/i2U0+/CCNIM2VJ/DYEWnMdPtUK3ZX+gqP/5DZ9mxfq3ruRNFcb5bTo8Jpv/zuhug7T7C9FVRXhR5kjhQpWtVTwTQSj134Tpv/8BBcY2T0dK3QsCmjlpCqKm12AGwlt/eaj7veAQuv9QUQa8zSVGa/4YPDLBUQkU+7ZMNjOiZYto9cAmRmGZR9EnahYOK9bA6S3t2uBBwo3E41/CzDe0l+Hu+prrEtSsoU8wMqvd7tpVoxmQr/or9DRUhWAvI4Vca1esWaCqWInIAMLCoK95s8LKznkjGMHPWhtoYWvFFqb/foTuxi7bFQFuYzna0etd/pKGf3TJNIvIVXBtiLvE6rdgFjwV4P9vEyFxxoU9fthDkReGBtdt9vYSeaw4Qa/XqB7tY14UBWqrrUA6e/+YssobT29o2Y/dNuQgyE0SbVieIbQeg8ilvwvh6DjVpvH6jIA4Oicn2zFyMEphzDFnTWYRNSGlDp53oIT2fERlRfAXrXhdFyZPaXIB9YpOWu86b7AjyU2OY+CCbtSy32oFocny7qoE97COB7RUoqkYA9BvXM2ixujpmD8yVBNd9kx5EZgIysoirL0YgaB/Qu9nkBMo=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(19092799006)(23010399003)(7416014)(376014)(22082099003)(18002099003)(56012099006)(10067099003)(11063799006)(261102130727099003)(261028144727099003)(261026121527099003)(261026140227099003)(261022105027099003)(261021123027099003)(261021135927099003)(261009223027099003)(261022075727099003)(261021121427099003)(261102123227099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?lkm+qluc+7yw5OKn+s0Yh3U/oV/uOR6iKcsQgIBVBa+fgv9xLuS1AvK9FRLV?=
+ =?us-ascii?Q?AhBX8KIGX9nWr+G5rLxNjCp6loYHXAIJokzy7XUTXnkmwHe30XGXEc+KaFBo?=
+ =?us-ascii?Q?VMiFQOQSkOGGrGprWhV8tQWIiiU24v1LCl1yXCsQPKq9DAL6UPOpR3lT8Ng7?=
+ =?us-ascii?Q?TBBwYYVblEMomdqu4i0VjRYHpu6rd74F1phDF25AHrf5SjIcNkBekoIghgYp?=
+ =?us-ascii?Q?XU7x+gCNGUGVh/LU0nVfl32vW8oDZDFsAxgkfVCfXqM7nYBa7gb9q2IC7kFn?=
+ =?us-ascii?Q?OowQMasoInScnhm3FlippYaoRH8ZB5mA5zve52IixSK6CpbtT+GReyM4U6UL?=
+ =?us-ascii?Q?sPaz67anhK+ucox6bjvm+wqLPwTEmRJi80IL6OoN+uMEFjlA2l0o4q9RPAwr?=
+ =?us-ascii?Q?mMx+tZxjv6g7MDkHLrvrtWbvTWGek9EcrrWM4CaQi3hnqDxuWoYArdNlDkO7?=
+ =?us-ascii?Q?S7IGLK662UfE403yI0XJa6wMNmwBLlCSjhdiC6fmtRzXjaqBuqPyih3aFXrN?=
+ =?us-ascii?Q?3jyoQh6uaixYEZy7+hVElYE9/mBEoMzz2aBB9f9mNIehxLegfIQmD41oHrIK?=
+ =?us-ascii?Q?kcga1d1uIe6cGwW26hWKwtB7ry5fbT94UVG9iKkQ6+bRU6NU/y6YPzrvwm9r?=
+ =?us-ascii?Q?Xq5iJVl+queTLo2KmWJ+dfSuKxIijUNmTZiHJQPw7m2Y/ho3GdmyTt6hghn2?=
+ =?us-ascii?Q?qwIb4LJZ4svGEM1LcvL7RswcHSJnsT0HIYrTJiZo+GszeTim4eI+GXsek3jU?=
+ =?us-ascii?Q?9uw9gl2Qvuib0ywl3fVjtg15G1cNaNZ9VX/ZCkaN2bmeJyg1erVJCTJJudcD?=
+ =?us-ascii?Q?g3bmolkO7iXvobrlxTBlW5/RVSty/HL6PiUz44K9QHa4bp2jW1GiEPobAkBA?=
+ =?us-ascii?Q?dc0gxMnvGDqK3VWWscBvDOUJw8W4E+3FOAkWhXSe/8CQK5amjIQMkYvBqlOp?=
+ =?us-ascii?Q?5hWlmj6McuAiNhsBhhyptxzIPgDNb7R7HuUdwydgcV0u6s9/R0KnBfeGVR+6?=
+ =?us-ascii?Q?qq6Tkmg2dxCoPWfPRipsGeHt7NqTg62OqgIT36FtGp9itFaJMAVV4L8yG4so?=
+ =?us-ascii?Q?f9Mbo5DCs1LzqA3HernRgtxPWRBYNEOIr3kdU9enCDvOQLswWPPuib8qdh3t?=
+ =?us-ascii?Q?Q4J2pNBQeLbwpvH9MPqUcnaSe36VJgC5pWu9yZPdVKeDIOP9YBSdE7MqXgt5?=
+ =?us-ascii?Q?qKpzB9bLnM6xwY8frL9K7g3qb6elGxaB2rJLFPc4bo9a09JHlEQkTxEcbsfR?=
+ =?us-ascii?Q?9ZFXj8riKqntlCP5I03SYxY0WKURQVpX4bK1L8fwmMgs0BWy+l5DNqGqOacV?=
+ =?us-ascii?Q?o3jlYM6kJ6CaIeeNedMFyBOn5x4isDDzYEChW7mdrQsTyBdi/O8SohP4qRD1?=
+ =?us-ascii?Q?HO/fa85pSSq8KvDcbqyJq4BSj+dUxV5S5lo+JhDnWcA4GSWlDhtOLG4bx0Je?=
+ =?us-ascii?Q?PHDmx+n2tc4qoHjeUzYeRnEZOrKTdVQs+GJuEUwxMZwkkPPHgAwJjh8SnvmA?=
+ =?us-ascii?Q?ugeTTBmET8HIaaFbuNPs05ZIjb+vAXqoWoNDNbhfwHXTbp7OOChDW/Xr7H29?=
+ =?us-ascii?Q?jlH5qvpvMHZXcCd5Mz4P70iYtoDL74wUeNljXsbjto7bk/PgNXavQAPmkzuv?=
+ =?us-ascii?Q?HiMf3FdHkVbJ8MOZSYl1kGHO8XZ40P1QKBDJdJJmNfVGBEMDoH1Ac+tXeN1S?=
+ =?us-ascii?Q?CNwWME+bBYuGocI4hSeHCFToa6AMRjWTtbD8ByGudvn1MU/k6eDTlFtBJqq8?=
+ =?us-ascii?Q?LLIrbD8BuuuCU7SqvNW9v6u8YCsKN9Qto4oPg0OlVLHoMqp7jb2d?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 337b04f2-1dac-4d74-aa9f-08df410075c0
+X-MS-Exchange-CrossTenant-AuthSource: AMBPR04MB12445.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Nov 2026 21:03:54.9428
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3OZsGrz/vcViGpyqG4hUhrcTdDUl0p9xM6aqMMsXmveyfKpxsYnOJVf4ducCvTQgChHQ2iz7XS28Q5py3NCgeXVUdAKBe45gupHaO7nTCqTO7XBdhla8FGxNe2UCAazK
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BR0PR04MB715228
 
-The SY7636A is no longer bound through an MFD.
+On Wed, Nov 04, 2026 at 07:33:02PM +0800, Peng Fan (OSS) wrote:
+> From: Peng Fan <peng.fan@nxp.com>
+>
+> Replace the open-coded subsys_initcall()/module_exit() platform driver
+> registration with subsys_platform_driver().
+>
+> No functional change.
+>
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> ---
 
-Signed-off-by: Pablo Mazzini <pmazzini@gmail.com>
----
- arch/arm/configs/imx_v6_v7_defconfig | 1 -
- 1 file changed, 1 deletion(-)
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
-diff --git a/arch/arm/configs/imx_v6_v7_defconfig b/arch/arm/configs/imx_v6_v7_defconfig
-index ed588add8d31..f02b5605e533 100644
---- a/arch/arm/configs/imx_v6_v7_defconfig
-+++ b/arch/arm/configs/imx_v6_v7_defconfig
-@@ -239,7 +239,6 @@ CONFIG_MFD_DA9062=y
- CONFIG_MFD_DA9063=y
- CONFIG_MFD_MC13XXX_SPI=y
- CONFIG_MFD_MC13XXX_I2C=y
--CONFIG_MFD_SY7636A=y
- CONFIG_MFD_RN5T618=y
- CONFIG_MFD_STMPE=y
- CONFIG_MFD_ROHM_BD71828=y
--- 
-2.52.0
-
+>  drivers/dma/at_xdmac.c          | 13 +------------
+>  drivers/dma/bestcomm/bestcomm.c | 20 +-------------------
+>  drivers/dma/dma-jz4780.c        | 13 +------------
+>  drivers/dma/dw/platform.c       | 13 +------------
+>  drivers/dma/fsl-edma-main.c     | 13 +------------
+>  drivers/dma/mcf-edma-main.c     | 13 +------------
+>  drivers/dma/sa11x0-dma.c        | 13 +------------
+>  drivers/dma/sf-pdma/sf-pdma.c   | 13 +------------
+>  8 files changed, 8 insertions(+), 103 deletions(-)
+>
+> diff --git a/drivers/dma/at_xdmac.c b/drivers/dma/at_xdmac.c
+> index d40a8b40dddc..3e83883cc17d 100644
+> --- a/drivers/dma/at_xdmac.c
+> +++ b/drivers/dma/at_xdmac.c
+> @@ -2487,18 +2487,7 @@ static struct platform_driver at_xdmac_driver = {
+>  		.pm		= pm_ptr(&atmel_xdmac_dev_pm_ops),
+>  	}
+>  };
+> -
+> -static int __init at_xdmac_init(void)
+> -{
+> -	return platform_driver_register(&at_xdmac_driver);
+> -}
+> -subsys_initcall(at_xdmac_init);
+> -
+> -static void __exit at_xdmac_exit(void)
+> -{
+> -	platform_driver_unregister(&at_xdmac_driver);
+> -}
+> -module_exit(at_xdmac_exit);
+> +subsys_platform_driver(at_xdmac_driver);
+>
+>  MODULE_DESCRIPTION("Atmel Extended DMA Controller driver");
+>  MODULE_AUTHOR("Ludovic Desroches <ludovic.desroches@atmel.com>");
+> diff --git a/drivers/dma/bestcomm/bestcomm.c b/drivers/dma/bestcomm/bestcomm.c
+> index 241a91936fe8..1ec700c2c996 100644
+> --- a/drivers/dma/bestcomm/bestcomm.c
+> +++ b/drivers/dma/bestcomm/bestcomm.c
+> @@ -469,28 +469,10 @@ static struct platform_driver mpc52xx_bcom_of_platform_driver = {
+>  	},
+>  };
+>
+> -
+> -/* ======================================================================== */
+> -/* Module                                                                   */
+> -/* ======================================================================== */
+> -
+> -static int __init
+> -mpc52xx_bcom_init(void)
+> -{
+> -	return platform_driver_register(&mpc52xx_bcom_of_platform_driver);
+> -}
+> -
+> -static void __exit
+> -mpc52xx_bcom_exit(void)
+> -{
+> -	platform_driver_unregister(&mpc52xx_bcom_of_platform_driver);
+> -}
+> -
+>  /* If we're not a module, we must make sure everything is setup before  */
+>  /* anyone tries to use us ... that's why we use subsys_initcall instead */
+>  /* of module_init. */
+> -subsys_initcall(mpc52xx_bcom_init);
+> -module_exit(mpc52xx_bcom_exit);
+> +subsys_platform_driver(mpc52xx_bcom_of_platform_driver);
+>
+>  MODULE_DESCRIPTION("Freescale MPC52xx BestComm DMA");
+>  MODULE_AUTHOR("Sylvain Munaut <tnt@246tNt.com>");
+> diff --git a/drivers/dma/dma-jz4780.c b/drivers/dma/dma-jz4780.c
+> index ac2094e65ecf..57ab0f621105 100644
+> --- a/drivers/dma/dma-jz4780.c
+> +++ b/drivers/dma/dma-jz4780.c
+> @@ -1128,18 +1128,7 @@ static struct platform_driver jz4780_dma_driver = {
+>  		.of_match_table = jz4780_dma_dt_match,
+>  	},
+>  };
+> -
+> -static int __init jz4780_dma_init(void)
+> -{
+> -	return platform_driver_register(&jz4780_dma_driver);
+> -}
+> -subsys_initcall(jz4780_dma_init);
+> -
+> -static void __exit jz4780_dma_exit(void)
+> -{
+> -	platform_driver_unregister(&jz4780_dma_driver);
+> -}
+> -module_exit(jz4780_dma_exit);
+> +subsys_platform_driver(jz4780_dma_driver);
+>
+>  MODULE_AUTHOR("Alex Smith <alex@alex-smith.me.uk>");
+>  MODULE_DESCRIPTION("Ingenic JZ4780 DMA controller driver");
+> diff --git a/drivers/dma/dw/platform.c b/drivers/dma/dw/platform.c
+> index 5c1c97eb28a4..95a36af613e8 100644
+> --- a/drivers/dma/dw/platform.c
+> +++ b/drivers/dma/dw/platform.c
+> @@ -194,18 +194,7 @@ static struct platform_driver dw_driver = {
+>  		.acpi_match_table = ACPI_PTR(dw_dma_acpi_id_table),
+>  	},
+>  };
+> -
+> -static int __init dw_init(void)
+> -{
+> -	return platform_driver_register(&dw_driver);
+> -}
+> -subsys_initcall(dw_init);
+> -
+> -static void __exit dw_exit(void)
+> -{
+> -	platform_driver_unregister(&dw_driver);
+> -}
+> -module_exit(dw_exit);
+> +subsys_platform_driver(dw_driver);
+>
+>  MODULE_LICENSE("GPL v2");
+>  MODULE_DESCRIPTION("Synopsys DesignWare DMA Controller platform driver");
+> diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-main.c
+> index 630285c85482..0feb878a03ff 100644
+> --- a/drivers/dma/fsl-edma-main.c
+> +++ b/drivers/dma/fsl-edma-main.c
+> @@ -977,18 +977,7 @@ static struct platform_driver fsl_edma_driver = {
+>  	.probe          = fsl_edma_probe,
+>  	.remove		= fsl_edma_remove,
+>  };
+> -
+> -static int __init fsl_edma_init(void)
+> -{
+> -	return platform_driver_register(&fsl_edma_driver);
+> -}
+> -subsys_initcall(fsl_edma_init);
+> -
+> -static void __exit fsl_edma_exit(void)
+> -{
+> -	platform_driver_unregister(&fsl_edma_driver);
+> -}
+> -module_exit(fsl_edma_exit);
+> +subsys_platform_driver(fsl_edma_driver);
+>
+>  MODULE_DESCRIPTION("Freescale eDMA engine driver");
+>  MODULE_LICENSE("GPL v2");
+> diff --git a/drivers/dma/mcf-edma-main.c b/drivers/dma/mcf-edma-main.c
+> index 9e1c6400c77b..5b72af393ec3 100644
+> --- a/drivers/dma/mcf-edma-main.c
+> +++ b/drivers/dma/mcf-edma-main.c
+> @@ -281,18 +281,7 @@ bool mcf_edma_filter_fn(struct dma_chan *chan, void *param)
+>  	return false;
+>  }
+>  EXPORT_SYMBOL(mcf_edma_filter_fn);
+> -
+> -static int __init mcf_edma_init(void)
+> -{
+> -	return platform_driver_register(&mcf_edma_driver);
+> -}
+> -subsys_initcall(mcf_edma_init);
+> -
+> -static void __exit mcf_edma_exit(void)
+> -{
+> -	platform_driver_unregister(&mcf_edma_driver);
+> -}
+> -module_exit(mcf_edma_exit);
+> +subsys_platform_driver(mcf_edma_driver);
+>
+>  MODULE_ALIAS("platform:mcf-edma");
+>  MODULE_DESCRIPTION("Freescale eDMA engine driver, ColdFire family");
+> diff --git a/drivers/dma/sa11x0-dma.c b/drivers/dma/sa11x0-dma.c
+> index a6fa431530e3..6a7a519910ec 100644
+> --- a/drivers/dma/sa11x0-dma.c
+> +++ b/drivers/dma/sa11x0-dma.c
+> @@ -1079,18 +1079,7 @@ static struct platform_driver sa11x0_dma_driver = {
+>  	.probe		= sa11x0_dma_probe,
+>  	.remove		= sa11x0_dma_remove,
+>  };
+> -
+> -static int __init sa11x0_dma_init(void)
+> -{
+> -	return platform_driver_register(&sa11x0_dma_driver);
+> -}
+> -subsys_initcall(sa11x0_dma_init);
+> -
+> -static void __exit sa11x0_dma_exit(void)
+> -{
+> -	platform_driver_unregister(&sa11x0_dma_driver);
+> -}
+> -module_exit(sa11x0_dma_exit);
+> +subsys_platform_driver(sa11x0_dma_driver);
+>
+>  MODULE_AUTHOR("Russell King");
+>  MODULE_DESCRIPTION("SA-11x0 DMA driver");
+> diff --git a/drivers/dma/sf-pdma/sf-pdma.c b/drivers/dma/sf-pdma/sf-pdma.c
+> index 6f79cc28703e..c7d6774d0970 100644
+> --- a/drivers/dma/sf-pdma/sf-pdma.c
+> +++ b/drivers/dma/sf-pdma/sf-pdma.c
+> @@ -639,19 +639,8 @@ static struct platform_driver sf_pdma_driver = {
+>  	},
+>  };
+>
+> -static int __init sf_pdma_init(void)
+> -{
+> -	return platform_driver_register(&sf_pdma_driver);
+> -}
+> -
+> -static void __exit sf_pdma_exit(void)
+> -{
+> -	platform_driver_unregister(&sf_pdma_driver);
+> -}
+> -
+>  /* do early init */
+> -subsys_initcall(sf_pdma_init);
+> -module_exit(sf_pdma_exit);
+> +subsys_platform_driver(sf_pdma_driver);
+>
+>  MODULE_LICENSE("GPL v2");
+>  MODULE_DESCRIPTION("SiFive Platform DMA driver");
+> --
+> 2.51.0
+>
