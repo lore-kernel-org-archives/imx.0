@@ -1,108 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.65.34
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794499608;
-	b=enatZS/etWXzWi3/Y9bDWApvYqROS1DOBlED2fPT8eHWKpe5xloBnhzjvFQWIaNfLcxu
-	 ehCZU0ABrb28dXVK2LyNezy6mmJfSnApFyijbO9XL6ezWJ9s1UeUrGOXMkBqCQiuaN8ux
-	 MofkdfCWRhRuEh2q7kYBRJA6XQv5qs+wOXbmjzDH2tJiyzq2xh++0Qd3mvVcs/I+DJWhS
-	 YiZvcZKROUZXRQ6HsxqLyPvQhBOM7Dg87rao4OGZwQlZvbU2p65XUtkQblKpYaY7t25G5
-	 IChuQbOaU2KFbl+G29tEwyDA7WdBtvjL5v8ReP5A6NKtYVRH5XkjZdffglgbG84KqrQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794499608;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:Content-Type:Content-Disposition:
-	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=X/fOu0EIwP74iv4Y49vsqZtVCb4D018mu7v86BwRqIw=;
-	b=KMNi2hhTYHg6Wozv00UzYFyCpH0zUfkVRC02cx3rFqziAWNgwkA6/aV8gr3vO56daltA
-	 YUT/zCHGq0BSegvbfKBDet4BbfaQomgoPhnmt7ILF5AF/oHKdvYMDk5nuUmTVCcDHnOxX
-	 fFUIH8qBuThUHvMtHilNE1lgn3XBCcWboJSfgbvuGRjrAeN/YQR31KLBARDAdSvfUT11d
-	 UgXmdw6pqopvkynvqOeJWAv/zHjXmBa3IYk6yFJD2yl/gs5QiXxEoodSLjdfQ2zjuliHN
-	 Z1rr8yeNUQDUSyuz2wddMvojEXnMpOWOa3uz3JQv+x+bMYk2XBHXid+tH6w6WNJUEVQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.nxp.com;
-	spf=pass smtp.mailfrom=oss.nxp.com;
-	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=GE3p84jo;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.65.34
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011034.outbound.protection.outlook.com [52.101.65.34])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.19
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794499872;
+	b=PXSARzjJsXwxmJ4uMP3WUuWtCMStwUFuIiQMDLIrDOWRkP+R7OnIVBuIJBupKPG6m/k/
+	 CIMMoSKjQSoEnftYgKZW5ajaZkl3phLREL+GNY3OoqgGX9gvlrgKGQgIihS/Ch6fQUs+5
+	 Fmt5LOjC/3sMQzgOAB5GiL7xXNYlX8M+5il4sQAFAlQ/+6frg7qGQFauHu6wWtzAKqfM0
+	 Ibv3gQPJ4d8MMqyWn2lUSnYG+BI5G+dY0peThcrdHhBPjDeoFypvo0whmF3xGvcKP7738
+	 OwhEZUfgPB8vpCV2qb2W2a4vaQX37kEN4LSSl0D7bU/koDEbQmJo/iBCY7B+WIFuUaQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794499872;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To:Organization;
+	bh=wYw3PsXp2ITZe1gp5kAYVuoE8XjZzVKbPqIuhL3V96o=;
+	b=CTAzDb5Ha+DARPtq8xDMSrOK0pwE2s0+89ISgkRJQ6kiHwwDaOsln4HKKFJU57ReFZeS
+	 VyvlLFfVIHmnEHGfTujXtI3XYuS010wXUjV60Y8zuXTBGF6bRIT5dMt+/Id6f2riiGfMo
+	 +ZGXlFKBhvIqRdbMeld/rpmlQd0aDylnAtOuQdEBVdp2Pnz22mQGnMucV34pIVbfOkjAM
+	 MlOm/TmUtofLGCH+dO1/HKthHkJehOsjz5Br/j+YDYAVz6lHgxegMC8iSy9toxr09BSko
+	 ouI/m1p9MQBAX/RhrCi/142vDUFOeozcrDvZPzIYz4JeG3PQlymqooa/fpN/UqgG4Ow==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=cMYLfVHK;
+	arc=none smtp.remote-ip=192.198.163.19
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FF88606A331;
-	Thu, 12 Nov 2026 16:06:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2FF88606A331
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9526C606A323
+	for <imx@lists.linux.dev>; Thu, 12 Nov 2026 16:11:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9526C606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=GE3p84jo
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=djRQIKj0EMpXlVq/BZt3nW1bzolxPpa0rFgDdYhFL9t9n9bfLIEU9nrQRMbRGbl/dwODIjGK9pwM7NOrgSiNKXw09kRpxEIaVsczWVMhFDxL8bBtvHfbjpaEhu6mm+mvq1TYcVzgRTSvLmICxg8Zkliw2YyoV1cOfLVu5HlAYkEOrnhpm7vZVujSIU6AYacYWAD6EfrnY4o5DwL94B19REUL3fxL4ARHSAIQAm3k2S/oENVjlpf8Mn2wcVNUrqu00simF+x8aEkDKsrQHuXGhF9oSyRzUMVlWjj0INIS8CAQR9Nn4k5oTJ1R4KnvRqHS+siHLyTTb2sOet8LF2BCrA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=X/fOu0EIwP74iv4Y49vsqZtVCb4D018mu7v86BwRqIw=;
- b=u3SFcXAYmDczSposBvNzTat4tHhghasJ3FJRkqQI3eoufOrllKr+MwG7urzYU6zcpsO592SOUrCj64TDmMU83mPm5g5VKvaOfWVCWP/WivhNYe8U0XV0dlT0UisIMwaJhBhwsIJXGZaJ4cyo5ROx32liQ0HzOIDk4uCsB/oxBPdAoEbKvG9ZZ1Y+85JJluYkhE/pvuWlq+4fQxWkIdYpmguVlxhl2IVeWBKvfyCzg2bypPJclWOIwXpTMHqI21IS7Lmapx3lALmqO75b+aHsWRuTvCt47ng9oPFu2q02dIBZE8tyv9xPVHZ/dFz3Wb+pfCcK/w3Ejrb1DiT3MbmN9g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=X/fOu0EIwP74iv4Y49vsqZtVCb4D018mu7v86BwRqIw=;
- b=GE3p84joTBS/xJR5JN0mcKmchKt8lsy305o1aTegN+irSOGA77ZnFlBKq4sq84gpTVxgbhqP9o/xLzqUvmSYOfAqabzjKmKBd0+PcKbL4iBdO08Dikq4kcKSBsV4/tPjysrKLqqINSN5h8FZRvD1LvQJYBH+TEEErb34kijHv7e8nxnYcZHAT4pms529oApsyg4cN+nJR8GjZJwuOt0vZkr08xN7tBsWckMDFYSzyYcXVutjMhvg9MC1+3kHuMOuPmCFX+EuIlyHL8Opa28fGzyY1zLbl+E3ZtTvlgEBB56rkWitAijOfQx5V7hWvH25zmz6iJJ6Lv1mC8g9t4fTIQ==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from MI3PR04MB12438.eurprd04.prod.outlook.com (2603:10a6:290:76::14)
- by PAXPR04MB8911.eurprd04.prod.outlook.com (2603:10a6:102:20e::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.9; Thu, 12 Nov
- 2026 16:06:43 +0000
-Received: from MI3PR04MB12438.eurprd04.prod.outlook.com
- ([fe80::c715:c32:8bb1:b70b]) by MI3PR04MB12438.eurprd04.prod.outlook.com
- ([fe80::c715:c32:8bb1:b70b%4]) with mapi id 15.21.0615.009; Thu, 12 Nov 2026
- 16:06:43 +0000
-Date: Thu, 12 Nov 2026 10:06:31 -0600
-From: Frank Li <Frank.li@oss.nxp.com>
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Frank Li <Frank.Li@nxp.com>, Vinod Koul <vkoul@kernel.org>,
-	"Joerg Roedel (AMD)" <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	Laxman Dewangan <ldewangan@nvidia.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Thierry Reding <thierry.reding@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=cMYLfVHK
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1794499871; x=1826035871;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=KBEV1+wJUVkGmgDR8fswFDchKVGVUIlgzz8KWBVWUnM=;
+  b=cMYLfVHK9WPN2A+BuwPuIZKO6WwHhurVDDdEiHrw6NceT6VWuosz/oLH
+   WX/peTt7AFl59skSRGKT/4FuSdY42SiUbhIAhX67LFS+GGNpsPC6vVKku
+   9BaY2o2xDkJfGi8IwsXik4dM2Iv9zpiyN3BHcKDdjN0+RmnuOWvaDdBDD
+   vnATdeu8wd1mjyzyEFWjPXUbPAMYlwFHlHr9DMtig779lqyOeNE3ye9zt
+   QiQLTa+yJXB7oIIVFQS+Q/9YuJFN7v0tbXIG0uxK4CsI2a8Ko/vErAmm1
+   M9biIJ4b1qLaOjVUZham12Nr5MjiYB97j1klDhfyyoKNROO03iKTiEpkk
+   w==;
+X-CSE-ConnectionGUID: JN1qK3yHQRqtKv2uRYycqA==
+X-CSE-MsgGUID: STGvnVqDRHiAh1I4B2EnGg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11964"; a="3389978"
+X-IronPort-AV: E=Sophos;i="6.27,210,1787036400"; 
+   d="scan'208";a="3389978"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2026 08:11:10 -0800
+X-CSE-ConnectionGUID: Ar7wg5q8RPSLm90mcDK6lQ==
+X-CSE-MsgGUID: BqOUjxi1T12vvGwXG4HdSg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,210,1787036400"; 
+   d="scan'208";a="8860902"
+Received: from ettammin-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.244.6])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2026 08:11:04 -0800
+Date: Thu, 12 Nov 2026 18:11:02 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: James Hilliard <james.hilliard1@gmail.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Raul E Rangel <rrangel@chromium.org>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Tony Lindgren <tony@atomide.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Richard Genoud <richard.genoud@bootlin.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Jacky Huang <ychuang3@nuvoton.com>,
+	Shan-Chun Hung <schung@nuvoton.com>,
+	Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@kernel.org>,
-	Larisa IIeana Grigore <larisa.grigore@nxp.com>, imx@lists.linux.dev,
-	dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org,
-	iommu@lists.linux.dev, linux-tegra@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH v6 7/9] dmaengine: fsl-edma: use
- dmaengine_get_dma_device()
-Message-ID: <avXkB8apdBFfWt9e@SMW015318>
-References: <20261112-edma-iommu-v3-v6-0-b038edb8ce6f@nxp.com>
- <20261112-edma-iommu-v3-v6-7-b038edb8ce6f@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261112-edma-iommu-v3-v6-7-b038edb8ce6f@nxp.com>
-X-ClientProxiedBy: CYXP220CA0009.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:930:ee::17) To MI3PR04MB12438.eurprd04.prod.outlook.com
- (2603:10a6:290:76::14)
+	Fabio Estevam <festevam@gmail.com>,
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Timur Tabi <timur@kernel.org>,
+	Peter Ujfalusi <peter.ujfalusi@ti.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Patrice Chotard <patrice.chotard@foss.st.com>,
+	linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v12 2/8] serial: serialize asynchronous write wakeups
+ with the port lock
+Message-ID: <avXlFo0UJRGwWT2B@ashevche-desk.local>
+References: <20261111-submit-serial-8250-dma-cancel-v1-v12-0-9e3456bc2555@gmail.com>
+ <20261111-submit-serial-8250-dma-cancel-v1-v12-2-9e3456bc2555@gmail.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -112,114 +103,92 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|PAXPR04MB8911:EE_
-X-MS-Office365-Filtering-Correlation-Id: 90302ebf-4d16-4a3b-6bff-08df40d6f1af
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|23010399003|376014|1800799024|366016|19092799006|10067099003|11063799006|56012099006|261102123227099003|261009223027099003|261021121427099003|261021123027099003|4143699003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	UZJJc002611HpBFYe+ZZahmsDu+TC5NLvPGKiGNivjr6t++WQKCvu1m5dyMfY52IQZOHRkheL3ddExQ41QNLIIrXGNyrby461Fhy6vwnkva9e0h7Pi7CMsPC6hxsRSyJNJhLJod69QSuzXY7SOqhN+Hy0QPY4VGKkvCbn/+oMol21/ogbBYOWLRLbLPEEeW0ikJXIgwcBsT0A2WYqIunBDOVkr95YtGK+HwN4IGzMJhW+xbV1C7HBLBzqch7yPtEIBGWsZt7ubvKxme+sdDq6r7qi7NUN/zxPTjdDuVH97hQVN+T8+joPDAEbZJOU5/vhPr04CJBWWg6jQR4aPCg3AHI8WvYQ7Kem+hSjpMv1t+mfuo/AOF6lp/QIHV9M5HWGQxtcToW36O6DgSV3wTEU566NFkL4Zsz7M+zDLCfZC+LjiJwMBXG6dCftF4sLTP4iQxKvP0LBsqJVmnUEJGI3WukNvyJTWj2jmmRJoANUae30ZH28X33r36OdqqDuw2ovRyMU2h1R6hE5QrlMM3szRcYAx2uO0aqXoCeyKHB3LfEyK9YhG2HHwU2o76sRTcWuS/LgUcEXADx5yoVmSiSBq+oNHrmtw3lia02TmtqR6mn6h2EkAiuDq0CvHQNJKYY59UXtaNZbI3KWRsCujyLIzeRJQs1sFDt7UuDrKEdixQ=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(23010399003)(376014)(1800799024)(366016)(19092799006)(10067099003)(11063799006)(56012099006)(261102123227099003)(261009223027099003)(261021121427099003)(261021123027099003)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?e0Lwlqfc7TiD0Nn5jeunDVwu0C1XM4U3XGIM2f4hdSX49I91hJdGYRbg6k/Q?=
- =?us-ascii?Q?9fNgVukcus8lLXRvNti2/w7QzySpCS/cFvZfhuCM8/OrtAn5PyItfi3ijsFs?=
- =?us-ascii?Q?fjqMOSli012PptoOhRmT1E1jQO0Jy+ZlWtC3wejSkXA+vSjslRe43UpmrUQF?=
- =?us-ascii?Q?eDggVflgH5hE62rpRRlPPc9YYq5HQ4q8bCtd9arJPfvpy1l3zToaR/GyTy3h?=
- =?us-ascii?Q?KJMP9vHqufpeT207a2vmGZhUExr6svi3REZqY4bz4oRpnqxqkL4sB50dB1oC?=
- =?us-ascii?Q?RseVKe5j+O8oeu/0uGbzqOxgX7EKExSN6z+EzqAe5qYUEqOriGYiL+ukKx9b?=
- =?us-ascii?Q?LaJg4dRqsdsCUuBghUAlUp4r75Y3HOSMoN84k8ccEoxqD588BV0LLn1G4CA6?=
- =?us-ascii?Q?jtIuo0gJnGPg0l4BN31Mxdr9vMnYImmqyt1WdOEXREC34n0GiBQdCh47BYB+?=
- =?us-ascii?Q?lHG4JO2LpoQI4sNtwnN0D0Hli0q60FNmhwNgnaXiefn6xQNqqcf2Zpifa/6b?=
- =?us-ascii?Q?rL9VLQmV4RVyHe1NOrVAvSRUhVRpRnBHIq1d5EhL2IuwoX96Kcz1E/0F0QBB?=
- =?us-ascii?Q?ZX0nt6Ags93+hDLEs/gUMXAziVL4X+COVZTaPDOfwZoRAEhM/YLLoL8YttgG?=
- =?us-ascii?Q?rLeHrmcQYNg/N41ELUA8zcBc7fq3QyHdq97zkf4a437ShzAlxcV/T7h1Cqli?=
- =?us-ascii?Q?i9fcfu87Ow5iVGhliCSRSIE9Y8T/nfJ4stbf30Vh7FozvL0j5JdrAQsVUwp0?=
- =?us-ascii?Q?um88q3l0PDCcFcemvxaoLGk014B+akMY1cqILLXCF78YEn3FqzbSXFHHYwe8?=
- =?us-ascii?Q?4APHLMcQHC9nudpk0nJ5sthARkJacE0oejI9jGgL1wMInuBq6wVtGIJdUKie?=
- =?us-ascii?Q?zf0Hr5Jp873uQAGLYbXYiNYy/xvJADXrxMPtBdUaMAT91MnFxe3fin+EwbOy?=
- =?us-ascii?Q?N2xAz8HAxDBk9YWEjolnKH/n/LeF8uRbnQjhYYoBYUCAgRjYB38zB03DoFNk?=
- =?us-ascii?Q?NBo2Xi5Yx08wEYNkKqQ4W5UKcS8bnJ7dnsJMZWe42O/agFcqBU6xFb/q4Q/3?=
- =?us-ascii?Q?BWExPbuGOXYCcCb6z55hx7cpYFX3PEcxLB8WaUGPmJ9maFgNpYA+Gbr/Y1Mv?=
- =?us-ascii?Q?BRhLxhuiv5B0SmC2dUAzu3wZSvNYC8z66I4GqQBToJsWaeNSaL0RdglgVA7h?=
- =?us-ascii?Q?/1hM0SerfK9vC0Xz07oda2GAf2WRJwHk1ktPTtWJXvkzvQhtf6lkEmD287Z1?=
- =?us-ascii?Q?S94uctJSPxwJi0b73qwdk7kR8GEhdATXKjh5Dl4Mf1CZXCdzs2W4faZbnp5Y?=
- =?us-ascii?Q?TEu1AZ4ty5wH50AqWEy1cV/vaaoQaaV28djPkl44VSVSVXOg3k2SWQ2LAxvs?=
- =?us-ascii?Q?DHs3DJPLpXovzNZaSkkNiMte+rbTc+YYk4hSqOIHNf0AJ8VBjM2QzHgvOs/C?=
- =?us-ascii?Q?qb+VDpIMy8/uDpp6lrpq+l6fVxNKZ8xuxeCn8Bb5LLu/xOn6MJl+5WGIrxFG?=
- =?us-ascii?Q?vfvvugRm2pzcVpJQ7mM+cOC0a5iAnitFTXlt8lW5/870Q/WX2IkNWrCqiAMe?=
- =?us-ascii?Q?iawjmUdK+b7gbFJ+k+xhp4EXKixDJT6631RsrtiS+8F12YAI/TNDh+Wy2Kxg?=
- =?us-ascii?Q?tbw2elMM1hZi9swnUIV1uCSd7RmK5GIxPsXEUVdK/eRMY0UcuwlwT9rv1IdY?=
- =?us-ascii?Q?16BUFeJcQvdrSWCS/LJ/Cph+ecr1n2QmST63ehJQKGJpzaBMkk1KrLn61v6z?=
- =?us-ascii?Q?+3wJy9rdOjsvKCgRElgC/nwOSVN2L4+XRSmxZZv4+Uxvoedc0OsN?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 90302ebf-4d16-4a3b-6bff-08df40d6f1af
-X-MS-Exchange-CrossTenant-AuthSource: MI3PR04MB12438.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Nov 2026 16:06:43.3955
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: vdql28pmFR6A5zxhYyLA/FQrIAvIgaH21UzgkIWaexstBcA2XDvW1aXHFlP6jVSwR8GcgIOV14fU3ogO0OnHd6ReBp/+z1n1k0VV/VQoTlnvgDcKE0e2sBWEIC5BG+2w
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8911
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261111-submit-serial-8250-dma-cancel-v1-v12-2-9e3456bc2555@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Thu, Nov 12, 2026 at 03:53:10PM +0800, Peng Fan (OSS) wrote:
-> From: Peng Fan <peng.fan@nxp.com>
->
-> Use dmaengine_get_dma_device() instead of chan->device->dev when creating
-> the TCD pool and when mapping the slave resource. This lets the driver use
-> the per-channel device once per-channel IOMMU support enables it, without
-> changing behaviour for existing users.
->
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> ---
+On Wed, Nov 11, 2026 at 03:16:27PM -0700, James Hilliard wrote:
+> uart_write_wakeup() expects the UART port lock to be held. Several worker,
+> DMA completion and interrupt paths call it without that lock, including
+> indirect calls from uart_handle_cts_change() and the transmit helpers.
+> 
+> Take the port lock around these notifications or their transmit helper.
+> Keep sleeping SPI and regmap accesses outside the locked region, and keep
+> the FSL LPUART completion lock held through its wakeup. Acquire the port
+> lock after releasing private channel locks to preserve the ordering used
+> by UART callbacks. In the MUX timer, publish available FIFO space under
+> the port lock and keep the hardware FIFO-drain wait outside it.
+> 
+> Use plain port locking in hard-IRQ handlers and in helpers whose callers
+> already mask interrupts. Atmel status handling is also called during
+> resume, where lock_suspended is acquired with interrupts disabled; JSM
+> interrupt processing holds its IRQ-saving board lock. Keep IRQ-saving
+> locking in workers, tasklets and other mixed-context paths.
+> 
+> Take the port lock after requesting the ST ASC interrupt and hold it
+> through startup's transmit servicing and RX interrupt enable. The transmit
+> helper can notify writers even when the FIFO is empty, and serial core
+> calls startup without holding the port spinlock.
+> 
+> Use IRQ-safe locking in the Atmel RX and TX tasklets and SB1250 termios
+> path, since their interrupt handlers now acquire the same port lock.
+> Preserve the caller's interrupt state when releasing those locks.
+> 
+> On SB1250, lock modem-state updates after reading and filtering the change
+> status, and wake modem-status waiters after unlocking. Take the TX lock
+> inside its service routine so RX-only interrupts need no acquisition.
+> Keep that lock across x_char handling, FIFO consumption and the decision
+> to mask TX interrupts: a writer must not enqueue data and enable TX between
+> the empty-FIFO check and the interrupt-mask write. Each TX invocation sends
+> at most one character.
+> 
+> Serialize CLPS711x TX servicing and its interrupt-enable state with the
+> port lock. Disable TX interrupts without waiting in stop_tx(), since a
+> threaded handler may need that same lock. Have an already queued handler
+> leave stopped output untouched, and drain it outside the lock during
+> shutdown before the transmit FIFO can be released.
+> 
+> SCCNXP handles interrupts under a controller lock which its UART callbacks
+> acquire with the port lock already held. Collect the ports needing wakeups
+> in an unsigned long bitmap while servicing the controller, then release
+> that lock before visiting the set bits, taking each port lock and
+> rechecking the wakeup threshold. Removal drains the IRQ or timer before
+> unregistering the ports.
+> 
+> This serializes write notifications with port-locked serial-core state
+> changes, allowing readiness and transmit-storage reservations to gate the
+> notification without a check-versus-shutdown race.
+> 
+> Cover DZ TX servicing and JSM Classic modem notifications as well. On
+> DECstation ZS, acquire the port lock before the SCC lock and notify writers
+> after releasing the SCC lock. Defer normal TX restart after console output
+> to a worker, since console output can already run under the port lock.
+> Check transmitter readiness before consuming another character and drain
+> the restart worker during shutdown and removal. Release Lantiq's hardware
+> lock through the transmit helper's completion hook before notifying the
+> line discipline.
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+...
 
->  drivers/dma/fsl-edma-common.c | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
->
-> diff --git a/drivers/dma/fsl-edma-common.c b/drivers/dma/fsl-edma-common.c
-> index 513b0f4e5be2..62cd60179bc6 100644
-> --- a/drivers/dma/fsl-edma-common.c
-> +++ b/drivers/dma/fsl-edma-common.c
-> @@ -310,10 +310,10 @@ int fsl_edma_resume(struct dma_chan *chan)
->
->  static void fsl_edma_unprep_slave_dma(struct fsl_edma_chan *fsl_chan)
->  {
-> +	struct device *dev = dmaengine_get_dma_device(&fsl_chan->vchan.chan);
+> static inline void dz_transmit_chars(struct dz_mux *mux)
+
+>  	status = dz_in(dport, DZ_CSR);
+>  	dport = &mux->dport[LINE(status)];
+
++ blank line to make guard()() visible at a glance.
+
+(no need to resend just for this, though)
+
+> +	guard(uart_port_lock)(&dport->port);
 > +
->  	if (fsl_chan->dma_dir != DMA_NONE)
-> -		dma_unmap_resource(fsl_chan->vchan.chan.device->dev,
-> -				   fsl_chan->dma_dev_addr,
-> -				   fsl_chan->dma_dev_size,
-> +		dma_unmap_resource(dev, fsl_chan->dma_dev_addr, fsl_chan->dma_dev_size,
->  				   fsl_chan->dma_dir, 0);
->  	fsl_chan->dma_dir = DMA_NONE;
->  }
-> @@ -321,7 +321,7 @@ static void fsl_edma_unprep_slave_dma(struct fsl_edma_chan *fsl_chan)
->  static bool fsl_edma_prep_slave_dma(struct fsl_edma_chan *fsl_chan,
->  				    enum dma_transfer_direction dir)
->  {
-> -	struct device *dev = fsl_chan->vchan.chan.device->dev;
-> +	struct device *dev = dmaengine_get_dma_device(&fsl_chan->vchan.chan);
->  	enum dma_data_direction dma_dir;
->  	phys_addr_t addr = 0;
->  	u32 size = 0;
-> @@ -1090,7 +1090,7 @@ int fsl_edma_alloc_chan_resources(struct dma_chan *chan)
->  	if (fsl_edma_drvflags(fsl_chan) & FSL_EDMA_DRV_HAS_CHCLK)
->  		clk_prepare_enable(fsl_chan->clk);
->
-> -	fsl_chan->tcd_pool = dma_pool_create("tcd_pool", chan->device->dev,
-> +	fsl_chan->tcd_pool = dma_pool_create("tcd_pool", dmaengine_get_dma_device(chan),
->  				fsl_edma_drvflags(fsl_chan) & FSL_EDMA_DRV_TCD64 ?
->  				sizeof(struct fsl_edma_hw_tcd64) : sizeof(struct fsl_edma_hw_tcd),
->  				32, 0);
->
-> --
-> 2.34.1
->
+>  	tport = &dport->port.state->port;
+>  
+>  	if (dport->port.x_char) {		/* XON/XOFF chars */
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
