@@ -1,72 +1,81 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=178.251.229.89
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794501457;
-	b=Xtbw2woq+CmM2LBzWN1n4M/AyM6jPZPzCIqm9Xsbd+Ja4GJp3yNrUEfJQPRqBPD1rSAG
-	 GA/J5uiI/W3+9wL5ZPT9gACzAwMS8RZk5+NZ6W8KiNnKi7JP3m+4L8Zr2bNntsple6Ul4
-	 r5WpXjic+BQ1tkNXIwX4rFMzDjSJSxcSViTKZLGbxAPlltXnwUwR5mcNSedPOwULnDl5b
-	 FZKwX9exA0PJqVsEt+V0KQ5GEhYiikwO+yiPkSrvKzdf3LJ8PpPeKOi3bwYBlyF4i5MQT
-	 hzDCZVvRg9TQKbub3CSAGbm3ZTaXC7nFtbBTo8E3OL7S6nmDMQQokKiSDy6qbY8zWAQ==
+	t=1794501633;
+	b=sFoC23fQPKAlx3JKYEhi1BTg9ZYVJIrV/62kImHKPIvZB1dKnIY1U7G8FBmoRz1lwg6o
+	 a//iQCd7YUy9oYuoduBHGlu+bdnMrx7pkquiCbzKGXMZcHGjNXYcsZn5v1kKFi+yaKu1P
+	 tKRhskGLuJyz8gJ0nhDgnshjoh0DVO8r50kNfCoTfwGGTXPfMXP3rxfTxm/WQDVk6OpcG
+	 A78zV6PqOCB/YoGJFpFQF2gPgiKxGAo0oDs3oZi6CPK1TQtTCD25DAurnU/sP3gG74zjs
+	 chDYZ9pb/uobJYbx4BzB6lLi+wpocqD/5X9n175Jv5hWSOaFo72zRi4O04FmB4ZAVAA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794501457;
-	h=DMARC-Filter:Received:DKIM-Signature:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:X-Last-TLS-Session-Version;
-	bh=bmCCn+K3i4/sRd++OhLzk9C5bUxbF0z90HafwvK/dKg=;
-	b=U612tbzWwcJ/zGV7FImX+pKJrVAmH3mXeRASggL73fUV279J/wI12eSGmm51GMcoYfST
-	 JyNnm+PrOIkmvOJwmuTk+KM7Nay4dFwmcqGPin4stfK2A1RjwtZPWnaHRJgbz457ySfOp
-	 nKayraRc0T9kyc2t5mnCalIL0vjrKFARJ/J3o7f8jaugTcTB2jR4BjxnoC2FRsDgPLz5H
-	 ZtRS8Yl5t/oz4guMlXUjOrtVjG75ZSMcdwvLqicgfC+xph0QX4HHd98XpPEYEMsdkPnOU
-	 5s12F+mSxi7zfr1bctq6VbqVeOm0SavT/fTEP8imvkoZfDntZcErTL1QUaL1qHJ16yw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794501633;
+	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:To:Cc:
+	 In-Reply-To:References:Subject:Message-Id:Date:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-Mailer:
+	 X-Last-TLS-Session-Version;
+	bh=NPENMsmu3+BS94VMSAUvkedwRU3NJYclxTKT7IXQmWU=;
+	b=h99ptYnFQnnkZwEVzo7/tbu3tibu71KtAB5obC8hPVIXbUbo9VaInH48gFEZDDKqTCxH
+	 io/ZSNdZ9xNjS5wi/b1N/D64C/j3oFw7ih6vaVa9I27L+j0ebn4/NEgwSwLA/knm9qvTD
+	 v0JrT8R/MSr5RhxSUFeVkEjRFfb7VbcH0TIH2O+iGKR6D8uFyTM4fA0Le6v0TbJjwe4Wn
+	 d6oiCZpEfeWfxNm5ZdIkmpAlr7gSg2PRj2Q6Y0FjwB81UbNt7oGtme7zgAseGUBLyUO64
+	 IT9q8HiNKEg2/RAWFTHopo51CMnvtko4BG+e6T2gn7rkiXcyfoNhKfb69cVx9tlsW6g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nabladev.com;
-	spf=pass smtp.mailfrom=nabladev.com;
-	dkim=pass header.d=nabladev.com header.i=@nabladev.com header.a=rsa-sha256 header.s=dkim header.b="jzkHY/d+";
-	arc=none smtp.remote-ip=178.251.229.89
-Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
+	dmarc=pass header.from=bootlin.com;
+	spf=pass smtp.mailfrom=bootlin.com;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=blM14kIw;
+	arc=none smtp.remote-ip=185.246.84.56
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD2A4606A33E
-	for <imx@lists.linux.dev>; Thu, 12 Nov 2026 16:37:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AD2A4606A33E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6527B606A330
+	for <imx@lists.linux.dev>; Thu, 12 Nov 2026 16:40:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6527B606A330
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.a=rsa-sha256 header.s=dkim header.b=jzkHY/d+
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BCE8610BD79;
-	Thu, 12 Nov 2026 17:37:29 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1794501450; h=from:subject:date:message-id:to:cc:mime-version:
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=blM14kIw
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 78CE71A1636;
+	Thu, 12 Nov 2026 16:40:29 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 49C59601AD;
+	Thu, 12 Nov 2026 16:40:29 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A833611BC069D;
+	Thu, 12 Nov 2026 17:40:19 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1794501627; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=bmCCn+K3i4/sRd++OhLzk9C5bUxbF0z90HafwvK/dKg=;
-	b=jzkHY/d+OwS9nGQgkb5joC5/4v78HGQ43/bny3yCjdWnABV/4c/5lWTgAdNYVFtDjMezLw
-	ApAjk2/VESxczFLPLEQsG4izQfDbWuchlsjrJEHEr3vOlfHedJcmrREBQUq3S6UVswOgWd
-	AEDoRl3mMCHJkcc1/fIF29w4gn5YlFvHJcwVBIxmh5Dl6IJna2PWVm0/37LkPNMxauBkmZ
-	ozJFKprGrh42ilaVTIkeFdYQ2HCIjkyw1rqZ8ZkJPSoZQowIw9xCyqVlitSXDsvFmRXO/L
-	kg59Lu4arAvADgflGidEFoHeajQRMYCHRkRg+XYajblfZEreygEiF3YISQSxBQ==
-From: Lukasz Majewski <lukma@nabladev.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Lukasz Majewski <lukma@nabladev.com>
-Subject: [PATCH v2 3/3] arm64: dts: freescale: Add device tree definition for Cloos CBASE with i.MX8MM
-Date: Thu, 12 Nov 2026 17:37:03 +0100
-Message-ID: <20261112163703.3358164-3-lukma@nabladev.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261112163703.3358164-1-lukma@nabladev.com>
-References: <20261112163703.3358164-1-lukma@nabladev.com>
+	bh=NPENMsmu3+BS94VMSAUvkedwRU3NJYclxTKT7IXQmWU=;
+	b=blM14kIwqeQ+LdPhURV+QXNd9dZpWq5sYV4WTJ87Eu5fTOxUa5YrWkpHu6Ev2On3EhCpYs
+	a6QQSQ6U3HCTAOPcam5BeVKyeQWnOY812CEvxa9fuh/D0WKFpww623wzgt5Tehs2c/k6NW
+	xyXIDhVVkuRJAva6HSB6jdYXtvgLcxnSLFOmOxy2J+TMSGw0167tKKVH5Dv6CcFd7l7hJC
+	SsUw5YK+1pMes0fopVmk0rQxmX/khrgmE/tLc63Sm+CFM391EZh/0lOMDiz25cq7c9Qa1y
+	jk/1HZAI7H2UWASETSrz3GCkHqo9Rl1lnxV8yZf7LxN9LviYMtjPdNwSEPEaCw==
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+To: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>, 
+ Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney+clk@redhat.com>, 
+ Jerome Brunet <jbrunet+clk@baylibre.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Andrzej Hajda <andrzej.hajda@intel.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Philipp Zabel <p.zabel@pengutronix.de>, Marek Vasut <marex@denx.de>, 
+ Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+Cc: linux-clk@vger.kernel.org, imx@lists.linux.dev, 
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org
+In-Reply-To: <20261110-dcif-upstreaming-v11-0-9e13c85ae0d8@oss.nxp.com>
+References: <20261110-dcif-upstreaming-v11-0-9e13c85ae0d8@oss.nxp.com>
+Subject: Re: (subset) [PATCH v11 0/7] Add support for i.MX94 DCIF
+Message-Id: <179450161929.2117501.14949541716164131629.b4-ty@b4>
+Date: Thu, 12 Nov 2026 17:40:19 +0100
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -76,621 +85,35 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.16.0
 X-Last-TLS-Session-Version: TLSv1.3
 
-This commit adds support for CBASE board, which incorporates the TQMa8MQML
-module.
 
-Signed-off-by: Lukasz Majewski <lukma@nabladev.com>
----
-Changes for v2:
-- Fix the DTS according to the sashiko bot review (gemini/gemini-4-argon)
----
- arch/arm64/boot/dts/freescale/Makefile        |   1 +
- .../arm64/boot/dts/freescale/imx8mm-cbase.dts | 581 ++++++++++++++++++
- 2 files changed, 582 insertions(+)
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-cbase.dts
+On Tue, 10 Nov 2026 14:27:40 +0000, Laurentiu Palcu wrote:
+> This patch-set adds support for the i.MX94 Display Control Interface.
+> 
+> Also, included in the patch-set are patches that the DCIF driver depends on
+> for functioning properly:
+>  * 1/7 - 2/7 : add support for i.MX94 to fsl-ldb driver;
+> 
+> Thanks,
+> Laurentiu
+> 
+> [...]
 
-diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index a80cccf34eb5..c14e5ae2e4a0 100644
---- a/arch/arm64/boot/dts/freescale/Makefile
-+++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -121,6 +121,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx8dxl-hummingboard-telematics.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8dxp-tqma8xdp-mba8xx.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8dxp-tqma8xdps-mb-smarc-2.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mm-beacon-kit.dtb
-+dtb-$(CONFIG_ARCH_MXC) += imx8mm-cbase.dtb
- 
- imx8mm-data-modul-edm-sbc-overlay-cm4-dtbs := \
- 	imx8mm-data-modul-edm-sbc.dtb \
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-cbase.dts b/arch/arm64/boot/dts/freescale/imx8mm-cbase.dts
-new file mode 100644
-index 000000000000..029a637c9530
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-cbase.dts
-@@ -0,0 +1,581 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Copyright 2022 Fabio Estevam <festevam@denx.de>
-+ * Copyright 2026 Lukasz Majewski <lukma@nabladev.com>
-+ */
-+
-+/dts-v1/;
-+
-+#include "imx8mm-tqma8mqml.dtsi"
-+
-+/ {
-+	model = "Cloos i.MX8MM CBASE board";
-+	compatible = "cloos,imx8mm-cbase", "tq,imx8mm-tqma8mqml", "fsl,imx8mm";
-+
-+	aliases {
-+		mmc0 = &usdhc3;
-+		mmc1 = &usdhc2;
-+	};
-+
-+	chosen {
-+		stdout-path = &uart2;
-+	};
-+
-+	clk_xtal40: clk-xtal40 {
-+		compatible = "fixed-clock";
-+		#clock-cells = <0>;
-+		clock-frequency = <40000000>;
-+	};
-+
-+	leds {
-+		compatible = "gpio-leds";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_gpio_led>;
-+
-+		led-0 {
-+			label = "status1";
-+			gpios = <&gpio2 5 GPIO_ACTIVE_HIGH>;
-+		};
-+
-+		led-1 {
-+			label = "status2";
-+			gpios = <&gpio2 6 GPIO_ACTIVE_HIGH>;
-+		};
-+
-+		led-2 {
-+			label = "status3";
-+			gpios = <&gpio2 3 GPIO_ACTIVE_HIGH>;
-+		};
-+
-+		led-3 {
-+			label = "status4";
-+			gpios = <&gpio2 4 GPIO_ACTIVE_HIGH>;
-+		};
-+
-+		led-4 {
-+			label = "error";
-+			gpios = <&gpio2 1 GPIO_ACTIVE_HIGH>;
-+		};
-+
-+		led-5 {
-+			label = "run";
-+			gpios = <&gpio2 0 GPIO_ACTIVE_HIGH>;
-+		};
-+	};
-+
-+	reg_usb_otg_vbus: regulator-usb-otg-vbus {
-+		compatible = "regulator-fixed";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_otg_vbus_ctrl>;
-+		regulator-name = "usb_otg_vbus";
-+		regulator-min-microvolt = <5000000>;
-+		regulator-max-microvolt = <5000000>;
-+		gpio = <&gpio2 2 GPIO_ACTIVE_HIGH>;
-+		enable-active-high;
-+	};
-+
-+	reg_usdhc2_vmmc: regulator-vmmc {
-+		compatible = "regulator-fixed";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_reg_usdhc2_vmmc>;
-+		regulator-name = "VSD_3V3";
-+		regulator-min-microvolt = <3300000>;
-+		regulator-max-microvolt = <3300000>;
-+		gpio = <&gpio2 19 GPIO_ACTIVE_HIGH>;
-+		enable-active-high;
-+		startup-delay-us = <100>;
-+		off-on-delay-us = <12000>;
-+	};
-+
-+	sfp_bot: sfp-bot {
-+		compatible = "sff,sfp";
-+		i2c-bus = <&i2c_sfp_bot>;
-+		tx-fault-gpios = <&sfp_gpio 4 GPIO_ACTIVE_HIGH>;
-+		tx-disable-gpios = <&sfp_gpio 5 GPIO_ACTIVE_HIGH>;
-+		mod-def0-gpios = <&sfp_gpio 6 GPIO_ACTIVE_LOW>;
-+		los-gpios = <&sfp_gpio 7 GPIO_ACTIVE_HIGH>;
-+		maximum-power-milliwatt = <1000>;
-+	};
-+
-+	sfp_top: sfp-top {
-+		compatible = "sff,sfp";
-+		i2c-bus = <&i2c_sfp_top>;
-+		tx-fault-gpios = <&sfp_gpio 0 GPIO_ACTIVE_HIGH>;
-+		tx-disable-gpios = <&sfp_gpio 1 GPIO_ACTIVE_HIGH>;
-+		mod-def0-gpios = <&sfp_gpio 2 GPIO_ACTIVE_LOW>;
-+		los-gpios = <&sfp_gpio 3 GPIO_ACTIVE_HIGH>;
-+		maximum-power-milliwatt = <1000>;
-+	};
-+};
-+
-+&ddrc {
-+	operating-points-v2 = <&ddrc_opp_table>;
-+
-+	ddrc_opp_table: opp-table {
-+		compatible = "operating-points-v2";
-+
-+		opp-25000000 {
-+			opp-hz = /bits/ 64 <25000000>;
-+		};
-+
-+		opp-100000000 {
-+			opp-hz = /bits/ 64 <100000000>;
-+		};
-+
-+		opp-750000000 {
-+			opp-hz = /bits/ 64 <750000000>;
-+		};
-+	};
-+};
-+
-+&ecspi1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_ecspi1>;
-+	cs-gpios = <&gpio5 9 GPIO_ACTIVE_LOW>,
-+		   <&gpio1 1 GPIO_ACTIVE_LOW>,
-+		   <&gpio1 12 GPIO_ACTIVE_LOW>,
-+		   <&gpio1 13 GPIO_ACTIVE_LOW>;
-+	status = "okay";
-+
-+	can@0 {
-+		compatible = "microchip,mcp2518fd";
-+		reg = <0>;
-+		clocks = <&clk_xtal40>;
-+		interrupt-parent = <&gpio1>;
-+		interrupts = <3 IRQ_TYPE_EDGE_FALLING>;
-+		spi-max-frequency = <4000000>;
-+	};
-+
-+	can@1 {
-+		compatible = "microchip,mcp2518fd";
-+		reg = <1>;
-+		clocks = <&clk_xtal40>;
-+		interrupt-parent = <&gpio4>;
-+		interrupts = <20 IRQ_TYPE_EDGE_FALLING>;
-+		spi-max-frequency = <4000000>;
-+	};
-+};
-+
-+&ecspi2 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_ecspi2>;
-+	cs-gpios = <&gpio5 13 GPIO_ACTIVE_LOW>;
-+	status = "okay";
-+};
-+
-+&fec1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_fec1>;
-+	fsl,magic-packet;
-+	phy-mode = "rgmii-id";
-+	status = "okay";
-+
-+	fixed-link {
-+		full-duplex;
-+		pause;
-+		speed = <1000>;
-+	};
-+
-+	mdio {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		managed_switch: switch@0  {
-+			compatible = "marvell,mv88e6190";
-+			#interrupt-cells = <2>;
-+			interrupt-controller;
-+			interrupt-parent = <&gpio1>;
-+			interrupts = <0 IRQ_TYPE_LEVEL_LOW>;
-+			pinctrl-0 = <&pinctrl_switch_interrupt>;
-+			pinctrl-names = "default";
-+			reg = <0>;
-+			status = "okay";
-+
-+			mdio {
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+
-+				switch0phy1: ethernet-phy@1 {
-+					reg = <0x1>;
-+				};
-+
-+				switch0phy2: ethernet-phy@2 {
-+					reg = <0x2>;
-+				};
-+
-+				switch0phy3: ethernet-phy@3 {
-+					reg = <0x3>;
-+				};
-+
-+				switch0phy4: ethernet-phy@4 {
-+					reg = <0x4>;
-+				};
-+
-+				switch0phy5: ethernet-phy@5 {
-+					reg = <0x5>;
-+				};
-+
-+				switch0phy6: ethernet-phy@6 {
-+					reg = <0x6>;
-+				};
-+
-+				switch0phy7: ethernet-phy@7 {
-+					reg = <0x7>;
-+				};
-+
-+				switch0phy8: ethernet-phy@8 {
-+					reg = <0x8>;
-+				};
-+			};
-+
-+			ports {
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+
-+				port@0 {
-+					ethernet = <&fec1>;
-+					phy-mode = "rgmii-id";
-+					reg = <0>;
-+
-+					fixed-link {
-+						full-duplex;
-+						pause;
-+						speed = <1000>;
-+					};
-+				};
-+
-+				port@1 {
-+					label = "lan1";
-+					phy-handle = <&switch0phy1>;
-+					phy-mode = "internal";
-+					reg = <1>;
-+				};
-+
-+				port@2 {
-+					label = "lan2";
-+					phy-handle = <&switch0phy2>;
-+					phy-mode = "internal";
-+					reg = <2>;
-+				};
-+
-+				port@3 {
-+					label = "lan3";
-+					phy-handle = <&switch0phy3>;
-+					phy-mode = "internal";
-+					reg = <3>;
-+				};
-+
-+				port@4 {
-+					label = "lan4";
-+					phy-handle = <&switch0phy4>;
-+					phy-mode = "internal";
-+					reg = <4>;
-+				};
-+
-+				port@5 {
-+					label = "lan5";
-+					phy-handle = <&switch0phy5>;
-+					phy-mode = "internal";
-+					reg = <5>;
-+				};
-+
-+				port@6 {
-+					label = "lan6";
-+					phy-handle = <&switch0phy6>;
-+					phy-mode = "internal";
-+					reg = <6>;
-+				};
-+
-+				port@7 {
-+					label = "lan7";
-+					phy-handle = <&switch0phy7>;
-+					phy-mode = "internal";
-+					reg = <7>;
-+				};
-+
-+				port@8 {
-+					label = "lan8";
-+					phy-handle = <&switch0phy8>;
-+					phy-mode = "internal";
-+					reg = <8>;
-+				};
-+
-+				port@9 {
-+					reg = <9>;
-+					label = "lan-sfp1";
-+					phy-mode = "sgmii";
-+					sfp = <&sfp_top>;
-+					managed = "in-band-status";
-+				};
-+
-+				port@a {
-+					reg = <10>;
-+					label = "lan-sfp2";
-+					phy-mode = "sgmii";
-+					sfp = <&sfp_bot>;
-+					managed = "in-band-status";
-+				};
-+			};
-+		};
-+	};
-+};
-+
-+&flexspi {
-+	status = "disabled";
-+};
-+
-+&i2c2 {
-+	clock-frequency = <100000>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_i2c2>;
-+	status = "okay";
-+
-+	onewire@18 {
-+		compatible = "maxim,ds2484";
-+		reg = <0x18>;
-+	};
-+
-+	temperature-sensor@49 {
-+		compatible = "national,lm77";
-+		reg = <0x49>;
-+	};
-+};
-+
-+&i2c3 {
-+	clock-frequency = <100000>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_i2c3>;
-+	status = "okay";
-+
-+	i2c-mux@70 {
-+		compatible = "nxp,pca9543";
-+		reg = <0x70>;
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		i2c_sfp_top: i2c@0 {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			reg = <0>;
-+		};
-+		i2c_sfp_bot: i2c@1 {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			reg = <1>;
-+		};
-+	};
-+
-+	sfp_gpio: gpio@38 {
-+		compatible = "nxp,pca9554";
-+		reg = <0x38>;
-+		gpio-controller;
-+		#gpio-cells = <2>;
-+		gpio-line-names = "SFP_TXFI_T", "SFP_TXDIS_T",
-+				  "SFP_MODPRES_T", "SFP_LOS_T",
-+				  "SFP_TXFI_L", "SFP_TXDIS_L",
-+				  "SFP_MODPRES_L", "SFP_LOS_L";
-+	};
-+};
-+
-+&reg_usdhc2_vqmmc {
-+	status = "okay";
-+};
-+
-+&uart1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_uart1>;
-+	status = "okay";
-+};
-+
-+&uart2 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_uart2>;
-+	status = "okay";
-+};
-+
-+&uart3 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_uart3>;
-+	status = "okay";
-+};
-+
-+&usbotg1 {
-+	dr_mode = "host";
-+	vbus-supply = <&reg_usb_otg_vbus>;
-+	status = "okay";
-+};
-+
-+&usbotg2 {
-+	dr_mode = "host";
-+	status = "okay";
-+};
-+
-+&usbphynop1 {
-+	power-domains = <&pgc_otg1>;
-+};
-+
-+&usbphynop2 {
-+	power-domains = <&pgc_otg2>;
-+};
-+
-+&usdhc2 {
-+	assigned-clocks = <&clk IMX8MM_CLK_USDHC2>;
-+	assigned-clock-rates = <400000000>;
-+	assigned-clock-parents = <&clk IMX8MM_SYS_PLL1_400M>;
-+	pinctrl-names = "default", "state_100mhz", "state_200mhz";
-+	pinctrl-0 = <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;
-+	pinctrl-1 = <&pinctrl_usdhc2_100mhz>, <&pinctrl_usdhc2_gpio>;
-+	pinctrl-2 = <&pinctrl_usdhc2_200mhz>, <&pinctrl_usdhc2_gpio>;
-+	bus-width = <4>;
-+	cd-gpios = <&gpio2 12 GPIO_ACTIVE_LOW>;
-+	disable-wp;
-+	no-mmc;
-+	no-sdio;
-+	sd-uhs-sdr104;
-+	sd-uhs-ddr50;
-+	vmmc-supply = <&reg_usdhc2_vmmc>;
-+	status = "okay";
-+};
-+
-+&iomuxc {
-+	pinctrl_ecspi1: ecspi1grp {
-+		fsl,pins = <
-+			MX8MM_IOMUXC_ECSPI1_MISO_ECSPI1_MISO		0x82
-+			MX8MM_IOMUXC_ECSPI1_MOSI_ECSPI1_MOSI		0x82
-+			MX8MM_IOMUXC_ECSPI1_SCLK_ECSPI1_SCLK		0x82
-+			MX8MM_IOMUXC_ECSPI1_SS0_GPIO5_IO9		0x19
-+			MX8MM_IOMUXC_GPIO1_IO01_GPIO1_IO1		0x19
-+			MX8MM_IOMUXC_GPIO1_IO03_GPIO1_IO3		0x19
-+			MX8MM_IOMUXC_GPIO1_IO12_GPIO1_IO12		0x19
-+			MX8MM_IOMUXC_GPIO1_IO13_GPIO1_IO13		0x19
-+			MX8MM_IOMUXC_SAI1_MCLK_GPIO4_IO20		0x19
-+		>;
-+	};
-+
-+	pinctrl_ecspi2: ecspi2grp {
-+		fsl,pins = <MX8MM_IOMUXC_ECSPI2_SCLK_ECSPI2_SCLK	0x00000006>,
-+			   <MX8MM_IOMUXC_ECSPI2_MOSI_ECSPI2_MOSI	0x00000006>,
-+			   <MX8MM_IOMUXC_ECSPI2_MISO_ECSPI2_MISO	0x00000006>,
-+			   <MX8MM_IOMUXC_ECSPI2_SS0_GPIO5_IO13		0x00000006>;
-+	};
-+
-+	pinctrl_fec1: fec1grp {
-+		fsl,pins = <
-+			MX8MM_IOMUXC_ENET_MDC_ENET1_MDC		0x40000002
-+			MX8MM_IOMUXC_ENET_MDIO_ENET1_MDIO		0x40000002
-+			MX8MM_IOMUXC_ENET_TD3_ENET1_RGMII_TD3		0x14
-+			MX8MM_IOMUXC_ENET_TD2_ENET1_RGMII_TD2		0x14
-+			MX8MM_IOMUXC_ENET_TD1_ENET1_RGMII_TD1		0x14
-+			MX8MM_IOMUXC_ENET_TD0_ENET1_RGMII_TD0		0x14
-+			MX8MM_IOMUXC_ENET_RD3_ENET1_RGMII_RD3		0x90
-+			MX8MM_IOMUXC_ENET_RD2_ENET1_RGMII_RD2		0x90
-+			MX8MM_IOMUXC_ENET_RD1_ENET1_RGMII_RD1		0x90
-+			MX8MM_IOMUXC_ENET_RD0_ENET1_RGMII_RD0		0x90
-+			MX8MM_IOMUXC_ENET_TXC_ENET1_RGMII_TXC		0x14
-+			MX8MM_IOMUXC_ENET_RXC_ENET1_RGMII_RXC		0x90
-+			MX8MM_IOMUXC_ENET_RX_CTL_ENET1_RGMII_RX_CTL	0x90
-+			MX8MM_IOMUXC_ENET_TX_CTL_ENET1_RGMII_TX_CTL	0x14
-+			MX8MM_IOMUXC_SAI2_RXC_GPIO4_IO22		0x10
-+		>;
-+	};
-+
-+	pinctrl_gpio_led: gpioledgrp {
-+		fsl,pins = <
-+			MX8MM_IOMUXC_SD1_CLK_GPIO2_IO0			0x19
-+			MX8MM_IOMUXC_SD1_CMD_GPIO2_IO1			0x19
-+			MX8MM_IOMUXC_SD1_DATA1_GPIO2_IO3		0x19
-+			MX8MM_IOMUXC_SD1_DATA2_GPIO2_IO4		0x19
-+			MX8MM_IOMUXC_SD1_DATA3_GPIO2_IO5		0x19
-+			MX8MM_IOMUXC_SD1_DATA4_GPIO2_IO6		0x19
-+		>;
-+	};
-+
-+	pinctrl_i2c2: i2c2grp {
-+		fsl,pins = <
-+			MX8MM_IOMUXC_I2C2_SCL_I2C2_SCL		0x400001c3
-+			MX8MM_IOMUXC_I2C2_SDA_I2C2_SDA		0x400001c3
-+		>;
-+	};
-+
-+	pinctrl_i2c3: i2c3grp {
-+		fsl,pins = <
-+			MX8MM_IOMUXC_I2C3_SCL_I2C3_SCL		0x400001c3
-+			MX8MM_IOMUXC_I2C3_SDA_I2C3_SDA		0x400001c3
-+		>;
-+	};
-+
-+	pinctrl_otg_vbus_ctrl: otgvbusctrlgrp {
-+		fsl,pins = <
-+			MX8MM_IOMUXC_SD1_DATA0_GPIO2_IO2		0x119
-+		>;
-+	};
-+
-+	pinctrl_switch_interrupt: switchinterruptgrp {
-+		fsl,pins = <
-+			MX8MM_IOMUXC_GPIO1_IO00_GPIO1_IO0		0x19
-+		>;
-+	};
-+
-+	pinctrl_uart1: uart1grp {
-+		fsl,pins = <
-+			MX8MM_IOMUXC_UART1_RXD_UART1_DCE_RX		0x140
-+			MX8MM_IOMUXC_UART1_TXD_UART1_DCE_TX		0x140
-+		>;
-+	};
-+
-+	pinctrl_uart2: uart2grp {
-+		fsl,pins = <
-+			MX8MM_IOMUXC_UART2_RXD_UART2_DCE_RX		0x140
-+			MX8MM_IOMUXC_UART2_TXD_UART2_DCE_TX		0x140
-+		>;
-+	};
-+
-+	pinctrl_uart3: uart3grp {
-+		fsl,pins = <
-+			MX8MM_IOMUXC_UART3_RXD_UART3_DCE_RX		0x140
-+			MX8MM_IOMUXC_UART3_TXD_UART3_DCE_TX		0x140
-+		>;
-+	};
-+
-+	pinctrl_usdhc2_gpio: usdhc2grpgpiogrp {
-+		fsl,pins = <
-+			MX8MM_IOMUXC_SD2_CD_B_GPIO2_IO12		0x1c4
-+		>;
-+	};
-+
-+	pinctrl_usdhc2: usdhc2grp {
-+		fsl,pins = <
-+			MX8MM_IOMUXC_SD2_CLK_USDHC2_CLK		0x190
-+			MX8MM_IOMUXC_SD2_CMD_USDHC2_CMD		0x1d0
-+			MX8MM_IOMUXC_SD2_DATA0_USDHC2_DATA0		0x1d0
-+			MX8MM_IOMUXC_SD2_DATA1_USDHC2_DATA1		0x1d0
-+			MX8MM_IOMUXC_SD2_DATA2_USDHC2_DATA2		0x1d0
-+			MX8MM_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d0
-+		>;
-+	};
-+
-+	pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {
-+		fsl,pins = <
-+			MX8MM_IOMUXC_SD2_CLK_USDHC2_CLK		0x194
-+			MX8MM_IOMUXC_SD2_CMD_USDHC2_CMD		0x1d4
-+			MX8MM_IOMUXC_SD2_DATA0_USDHC2_DATA0		0x1d4
-+			MX8MM_IOMUXC_SD2_DATA1_USDHC2_DATA1		0x1d4
-+			MX8MM_IOMUXC_SD2_DATA2_USDHC2_DATA2		0x1d4
-+			MX8MM_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d4
-+		>;
-+	};
-+
-+	pinctrl_usdhc2_200mhz: usdhc2-200mhzgrp {
-+		fsl,pins = <
-+			MX8MM_IOMUXC_SD2_CLK_USDHC2_CLK		0x196
-+			MX8MM_IOMUXC_SD2_CMD_USDHC2_CMD		0x1d6
-+			MX8MM_IOMUXC_SD2_DATA0_USDHC2_DATA0		0x1d6
-+			MX8MM_IOMUXC_SD2_DATA1_USDHC2_DATA1		0x1d6
-+			MX8MM_IOMUXC_SD2_DATA2_USDHC2_DATA2		0x1d6
-+			MX8MM_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d6
-+		>;
-+	};
-+};
-+
-+/* SPI-NOR memory is not mounted on the used SoM */
-+/delete-node/ &flash0;
+Applied, thanks!
+
+[1/7] dt-bindings: display: fsl,ldb: Add i.MX94 LDB
+      commit: 35d189bdab8542d8eaecee4a39e15c1eb737f558
+[2/7] drm/bridge: fsl-ldb: Add support for i.MX94
+      commit: 7678b7f2d38b5575981b1a7c09139a4660b66826
+
+Best regards,
 -- 
-2.39.5
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
 
