@@ -1,50 +1,50 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.194.8.81
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794495767;
-	b=31UKc7lloCWxMxRvgvuup9s7AA0RMB1RcW/75L3OCX6QII6xi/m1Aa39qdisuLeYnmPv
-	 j5SrC2UXaswAOzxz79Ef9CMckpwPLgdZyw1vf63XYGXHAmPREqFl7ACskf+a984aPLr2N
-	 iCTQTQcj2n+WV3leqp36WlALIzIb0hkcX6dvJeBco1uWBFNeS9jo3wznIe2JsIOhA9ziP
-	 38QKfc67bufTeL4zs79bKK5Af3v3ldTspGYwombP4GJLBA+S/vHQT69Lnm+W3Mwt/w4Se
-	 0NpDfoBgsm99p05ZfhbU88IfqBcSyvjFDmQi5ZGUsCqyKFMORrVN9KKozHO1H1R0O3A==
+	t=1794495768;
+	b=alwaVcwPs5cIJUPyJZvkiGxdaNoi/m+QEWASS6+TMabEYp0jLz+FoBbllAPbZxrTGT5Y
+	 Xt0i8Jkt3y8iCXc3XafREndSYv2rQVOGlvyN3vQ9DS5LsiV5Io7HnX0W/ISdBGJEin782
+	 xhbna+d+cPuSi7BLgngvvHXWK6hsLat2uTl9Q0Y63mloAkZ7NDWPtWrzlCYf5eNFwsC/z
+	 uEZBFT0zyKm12FjAmdfrB1D1gsfFnP75v0BerCLPdEOaRM69h8aEf8ApiApau7m2mqNuz
+	 jO8CTj+Nn4CFBFCSVHELWQ+69vu/j76qvtfIRkTXJGScIofkRKfTL7OGo3deS/kTgHg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794495767;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794495768;
 	h=DMARC-Filter:Received:DKIM-Signature:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=0o7zFUtmx81DYiw+KDuH3A0I0uPdMX8JtapZZwc/7S4=;
-	b=5SFi4RxzrTFvLw0gEqNBQeGRuZMac5KyvI7Kg7OLLxODPPh3W1iI4Vm/HVkUVCwWWtyP
-	 FJPKdIXRzXjL9hulzDlbZXCn9sOaIYsLc6jXC/TjL/p0fFonNju2wgDNk0Tu3h+7O+B4C
-	 jvDca1Q2Uyew1mhllqXBsctfLNK7Cqw+rUESFSy61WXd4vo/jP994w6chHcN1KJ+bLxvb
-	 BkQc+CCpoDO0/VUiNQr5N4mWQmULfb/44yKe5sXxcXCrvsfzdLhqt1kgEsxeWsYwQdmCS
-	 oWi9zK/xUecidNvtlGp1zkx8qFV4na56wh1p1ZEGszekgHf6Nxyxn2zcjiNxnguUXMw==
+	bh=ZlolI9vENTEl6C1rNaluT0xNLPmhG2Q3ZnlKVC/ytPQ=;
+	b=ft01u2qgR+hANaI0rvmMABJgQImu5R1pcRBI3bBe53MN3i6A3+MTuA7fWkTbtIB1zPZh
+	 y7+K4e/gChkMRKpnI3qH/D6arp0/ft4Sh4sgmz2NSa6TPo79nBblePxKkNotQYTNbkMHJ
+	 NFHN8+kghJ7AwKwdefsLdvTknwsR4DOKh0yuQNbw55RipvaBAHnwhnkRpen4x3OUEq5bR
+	 tE1W5C8eIkgBgp1c1R3JZ0eYKfmmP/ZsCq70i0zPRb0ZMQOiX2qbvNp+ru1PG6mqKSbOj
+	 vzQh8LRdULgY1ukj4xI6J2CmnTbV+k+JlKK9GRoaxYxlaPCv+zkQcpS8tHSN9soSFxA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=dolcini.it;
 	spf=pass smtp.mailfrom=dolcini.it;
-	dkim=pass header.d=dolcini.it header.i=@dolcini.it header.a=rsa-sha256 header.s=default header.b=BL3AKPo9;
+	dkim=pass header.d=dolcini.it header.i=@dolcini.it header.a=rsa-sha256 header.s=default header.b=hf9VL5zH;
 	arc=none smtp.remote-ip=217.194.8.81
 Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B422E606A31C
-	for <imx@lists.linux.dev>; Thu, 12 Nov 2026 15:02:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B422E606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF4B6606A333
+	for <imx@lists.linux.dev>; Thu, 12 Nov 2026 15:02:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AF4B6606A333
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=dolcini.it header.i=@dolcini.it header.a=rsa-sha256 header.s=default header.b=BL3AKPo9
+	dkim=pass (2048-bit key, unprotected) header.d=dolcini.it header.i=@dolcini.it header.a=rsa-sha256 header.s=default header.b=hf9VL5zH
 Received: from francesco-nb.. (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 14D6523185;
-	Thu, 12 Nov 2026 16:02:43 +0100 (CET)
+	by mail11.truemail.it (Postfix) with ESMTPA id 50DDE2316A;
+	Thu, 12 Nov 2026 16:02:45 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1794495763;
-	bh=0o7zFUtmx81DYiw+KDuH3A0I0uPdMX8JtapZZwc/7S4=; h=From:To:Subject;
-	b=BL3AKPo9yMyryBCX5BhmzfxiCyir9kfaobAaCP6Amp0Pxm+qNowYw+erMJ/59z+O0
-	 rLSkJCbNhEOm3xca0cxc70ej/O0nihAygVT1pPKS/6bJONEWEx/2zCV8XDHWXRdlxh
-	 Wjz5Ocn+HyPRArQV4z0pUU4VM88tilo6FhSE8HVeMcU0R+hwfXClPqoGbwXYv88NWQ
-	 x7FJaMKST0ODaKsPfklZu6E5HfagLojO+xzOwgPHJML9oDcPRnnTc/QfoN+KEMeG6z
-	 BiyuLsst0dFc04/575NpLgUdEkkunEg8J14LPFRKhpMw1tAHCM/+yXmUDrXsPXcdh2
-	 N1xaS1nLN54uw==
+	s=default; t=1794495766;
+	bh=ZlolI9vENTEl6C1rNaluT0xNLPmhG2Q3ZnlKVC/ytPQ=; h=From:To:Subject;
+	b=hf9VL5zHqWKbkMYu073oF0sO54UDfRzqxdjbI+Oacu/1Fhk4IbojbcW5Lw93OZIJ6
+	 SF8qFUm5nXE3X9di6utHHX/xS7s5n1NhXkUl4fbEpLlyAyhX3w3ebpNPWmJikyMXaa
+	 WSQhdUk19Bsa5WeB3cvMAm4RMy5bohFgTliqFkFLGX2bJLyvVSr7F6aekWru3mxr2L
+	 IsCjQ3QcHvZzZGU+jZtnuLNwmnPfhu0fNFlnLXnQwqO/f+l7rIhOgNWaio/2kyirn5
+	 jS8YEtshE6dxqAnR4agZvytoVyHowV3uR4YiWA8Xrgr8jb6lAlAnrRvzfoQRT2ylKh
+	 Ym0/pxMC7D3vQ==
 From: Francesco Dolcini <francesco@dolcini.it>
 To: Francesco Dolcini <francesco.dolcini@toradex.com>,
 	Rob Herring <robh@kernel.org>,
@@ -59,9 +59,9 @@ Cc: linux-bsp@toradex.com,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v1 01/11] arm64: dts: freescale: imx8mm-verdin: Add SPI alias
-Date: Thu, 12 Nov 2026 16:02:23 +0100
-Message-ID: <20261112150236.164850-2-francesco@dolcini.it>
+Subject: [PATCH v1 04/11] arm64: dts: freescale: imx8x-colibri: Add SPI alias
+Date: Thu, 12 Nov 2026 16:02:26 +0100
+Message-ID: <20261112150236.164850-5-francesco@dolcini.it>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261112150236.164850-1-francesco@dolcini.it>
 References: <20261112150236.164850-1-francesco@dolcini.it>
@@ -78,35 +78,36 @@ Content-Transfer-Encoding: 8bit
 
 From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-The Verdin family pinout defines the SoM interfaces and their
-numbering, SPI_1 being the SPI bus available to the carrier board,
-implemented by ecspi2 on Verdin iMX8MM.
+The Colibri family pinout defines the SoM interfaces, SPI being the
+single SPI bus available to the carrier board, implemented by lpspi2
+on Colibri iMX8X.
 
-imx8mm.dtsi numbers ecspi2 as spi1, so the Linux bus number in sysfs
-and the spidev name do not match the Verdin interface. Add a spi0
-alias in the SoM dtsi and delete the inherited spi1, so ecspi2 is
-bus 0, zero-based with SPI_1 being spi0, and carries a single alias.
-ecspi3, internal to the SoM with the CAN controller and the TPM, keeps
-the spi2 alias inherited from the SoC.
+imx8qxp.dtsi numbers lpspi2 as spi2, so the Linux bus number in sysfs
+and the spidev name do not match the Colibri interface. Add a spi0
+alias in the SoM dtsi and delete the inherited spi2, so lpspi2 is
+bus 0 and carries a single alias.
 
 Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
 ---
- arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/boot/dts/freescale/imx8x-colibri.dtsi | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
-index 1ac9d000d415..0369803a4d46 100644
---- a/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
-@@ -16,6 +16,8 @@ chosen {
- 	aliases {
- 		rtc0 = &rtc_i2c;
- 		rtc1 = &snvs_rtc;
-+		spi0 = &ecspi2;
-+		/delete-property/ spi1;
- 	};
+diff --git a/arch/arm64/boot/dts/freescale/imx8x-colibri.dtsi b/arch/arm64/boot/dts/freescale/imx8x-colibri.dtsi
+index 2415487d3a5d..8f04bc3decda 100644
+--- a/arch/arm64/boot/dts/freescale/imx8x-colibri.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8x-colibri.dtsi
+@@ -6,6 +6,11 @@
+ #include "dt-bindings/pwm/pwm.h"
  
- 	/* Fixed clock dedicated to SPI CAN controller */
+ / {
++	aliases {
++		spi0 = &lpspi2;
++		/delete-property/ spi2;
++	};
++
+ 	backlight: backlight {
+ 		compatible = "pwm-backlight";
+ 		pinctrl-names = "default";
 -- 
 2.47.3
 
