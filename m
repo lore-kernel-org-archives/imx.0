@@ -1,98 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.65.23
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794464544;
-	b=euhBO8EzTLRgVF0GU8WOfJk0tpkUcPuO5EVoRIqtlLVG09lYaKdDAaWn8Wauf2RagQF/
-	 tJJaJFPM5VUtUuosMbZI/dqBQlmMF43gao08gFapLyQxIUFMNsoRiTSSaOkF+HkLdmffI
-	 eOQ4WzSzSKZKcs3vYqOjIjSp0TI6Lf7MGSIrqYReqKCksRLyxmN0A/BQcJCT3kYcrvFWG
-	 bNs3CvHaoZzK6VChmalTaP+mnFluI3Q0LpE8oIFfClRKpJJ7csdl0eF9zMI32mQeQ5FDD
-	 zyzOUWkuN9BPMliPhOtjuaMDUNwSF1dch2zzebiRcO6f2eJHZK8y/rAiCMRsIrUmk2Q==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794464544;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-Exchange-MessageSentRepresentingType:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SharedMailbox-RoutingAgent-Processed:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=Pbw/4CdjCzWQvIzC26Fib2KO5DBmfYmvo/bL1AYhzxc=;
-	b=PQNKEA0Y1u97GvvWiz62oufa6RNeEkjb/8Aig3TDAyD0L1Qzg9ClzjZqOj0iWXUx3vbY
-	 nfwz9+JSfqgiCNSkssU4RgYzAJiBjiBpQ9cTLUTk+S3DdzWWWzhrFnNdEOUJ1C5SQ0e6M
-	 4TevyHpV+lsPj7zP8qt+wvpViNj9QVDW7RJstj4So/nzFVhTZwQF2Qfr+ZOUba0NjlI/q
-	 Me6nUxtLXlyNhtbfPErkUKe5RIDFnj2N+rVa81GNNVvRi0kJZMyxvzSHwyLiHaA87g6zU
-	 3afyAm1WbFqf2eq0pbAZBQ5Zcqe0WCv1RmunHrKFqNmiXPvVeuPXh92U0SKSNJO41UQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.nxp.com;
-	spf=pass smtp.mailfrom=oss.nxp.com;
-	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=hdUshBEM;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.65.23
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011023.outbound.protection.outlook.com [52.101.65.23])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794464654;
+	b=AwXfsMa7gk4tGEJ7hKFdeN/uMpKQuFQ3mBoVY25U82AZTCmw6o0wY2drX5Gs9d5GVnRy
+	 mgWvElJBkz9IfIInWkQ6uP2IgCzyqtO1XWVj0bWBMMD6UU2WoLcTrsmyXnsVBpE/+1zME
+	 6GNp9ulv4bxgPcH1eg634KqixHpdrfoBg8bsxAsPVan820ZMmwIdG8CWQfYNpXUcIN8bf
+	 mzSw7mg+htxXHxP58C2cYBe29xhg7dYQqSZAojtKsZPb+g4x+aL6K+kwiZ/KU0UuZGkwe
+	 XY7f/93z59HSXWpttNAJ1K6DHfM7qYVMK8jhuB/WzRgCRpNzJvaMWMN5RVT3BU8Cj5Q==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794464654;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=WKifyA2oo/6HmDif6mlCfr5jQMlGgAqYcyLxi9doZZY=;
+	b=5LE/qN2EWv9qLJLvhDIVZkW+vcgeoEL3mrFXv0QATCYm5qEiNP+4Jlq7D1UsLrCYh6N2
+	 Wog13vbDknYCblsiag936DNiMlUHGa9cpmgYYX5EUNCy8cg61TLNdjS4bMDmj6SxMTtuL
+	 N2d4ZAtpdFYnEnvjvS3VPq5SSd4J74thMZjVp5wlxKCeWFPcRQ1LeD1qCMzRvN+XQ/JTy
+	 1pXdxYnP6h7cWDW3S1FDmRvWUHrxF0oSkWYaiPRrRNRAAOyyMk8kKHExZRR7FtRBmsmNC
+	 ywIGJQOTo8ESUlKnWltwqhtk7LdTxi09EA8P2bB68+AbM+J81QvFYv8iXbBV/ZZs+fA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hMU3exVv;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C556606A8B6
-	for <imx@lists.linux.dev>; Thu, 12 Nov 2026 06:22:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0C556606A8B6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1A18606A331
+	for <imx@lists.linux.dev>; Thu, 12 Nov 2026 06:24:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=hdUshBEM
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=OboiYahH6ISy7mNsNhP/GdHepUykfSGFGRlu4JLNhzDr63LeWbw3RYfSa1imMilXgeMBTzIt22zMWNA5qyO8UdDe/09fkhLYeenl1cGdAFGPZzW2X/RjtpNx4aMuVnjmJd0AFmqN35m+FwLSV+lwL8KoherOSxXCphC5dhGAMI5xKTPTu/J/ZXTFF4tWmunSFdy+r0K+fzOdjsVCBSKnnJe9Ly35dYA6pfQhDpJ+ZMd8e/jZUKwapx1yWlNMSoVTZPeba7b/Q6O8u6awbMImtMabpL3UvPZCAjjTyG+JWzbOiPY+QC7nhzEBZqxR5NB6IValwVEI+VF5o+4Bu212Sw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Pbw/4CdjCzWQvIzC26Fib2KO5DBmfYmvo/bL1AYhzxc=;
- b=f9CJHMWubY3gvS1WIrg9hJgxXk3HUe7QxdpzuAZ6lWCxcsMpC5RyVdB51YAIxPQCZ4ru59UWqL73a7+X8nLSJMRVk/sV5Oy654aJeII5tzhGKTt/C6GtBoQd8tYFay/+1Ryqpx8iPGpWzh85MISTH6hF/aP6C0qF+0FMuR6MrkW4D36yfHIQQ8cUsdWL0NG7lM9d+y748Y1zrqtWmApd+MC6sKHSbOQuk4T0BgTKQErZ4ASJXyxR8Fh4uA6K9jJc7u+QLyaeEic7OZV1S7FdQewb5z7nlFIMHIrODjhx42gyJp49HR2ARTNkVIAyFsDA7wNT0sLf3gfbabXppV967Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Pbw/4CdjCzWQvIzC26Fib2KO5DBmfYmvo/bL1AYhzxc=;
- b=hdUshBEMucRTYrTCJG2QcoOGTo7lpgOqUuhQG3hn0WOm19jnRdscrh68S676qCQVv55cu1W3gGRih0Sv5cCC9o3I0ssZ1TuPv/X24v+oLrI9QiGrf5bm6cY5YAgBtNB28ANnkzMG8+88ljQCKIvGeN4pZQKdrsMBdMaCvcLZ1bUw2FX74FZpOJsbE0/RXL48onsME+IsB1YTQZFU0eiShux7NeRvkg9QamDb0JkWX5JySokN90OXtTtVGqD2wKejZ92sIoX7tiS0/lPrQabiLb98Hq5N7CJagLXX9Z787yRb01F6S/cYQH6bALIVbAYcRyPwElsDF/HCN8uuJgOgTQ==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GVXPR04MB12316.eurprd04.prod.outlook.com (2603:10a6:150:2c6::8)
- by AM0PR04MB12098.eurprd04.prod.outlook.com (2603:10a6:20b:743::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.10; Thu, 12 Nov
- 2026 06:22:17 +0000
-Received: from GVXPR04MB12316.eurprd04.prod.outlook.com
- ([fe80::fc6e:ca22:f065:def4]) by GVXPR04MB12316.eurprd04.prod.outlook.com
- ([fe80::fc6e:ca22:f065:def4%5]) with mapi id 15.21.0592.012; Thu, 12 Nov 2026
- 06:22:17 +0000
-Message-ID: <987f1008-bea2-4d02-a2e1-f4389a0ff3d5@oss.nxp.com>
-Date: Thu, 12 Nov 2026 08:26:01 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] tty: serial: lpuart: Add port lock for registers read
- in lpuart32_set_termios()
-To: "Sherry Sun (OSS)" <sherry.sun@oss.nxp.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jiri Slaby <jirislaby@kernel.org>, Jingchang Lu <jingchang.lu@freescale.com>
-Cc: linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
- imx@lists.linux.dev, sherry.sun@nxp.com
-References: <20261112-lpuart_port_lock-v2-1-e1d914e52660@nxp.com>
-Content-Language: en-US
-From: Daniel Baluta <daniel.baluta@oss.nxp.com>
-In-Reply-To: <20261112-lpuart_port_lock-v2-1-e1d914e52660@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR4P281CA0203.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:e5::6) To GVXPR04MB12316.eurprd04.prod.outlook.com
- (2603:10a6:150:2c6::8)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hMU3exVv
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2155D1F00A06;
+	Thu, 12 Nov 2026 06:24:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794464654;
+	bh=WKifyA2oo/6HmDif6mlCfr5jQMlGgAqYcyLxi9doZZY=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=hMU3exVvcpY1QhYfX2Tegy0dFkCZXvOXBSKp4o6tQ03aua1qg7AkbRNZ4HzucOAKp
+	 0rfwLTThGawq7e7g4KwCYdg4QnXT600Z5Ry8bhLnBv/671TmNUsOFpJa09OLHf03D/
+	 W/dE/rKD1wUjcNjYo+E5lI8j7lZ1oh+8mJtrqgjKRP6OX62fEL+yA3DRVR91rv25aq
+	 KPJcDm9BzgLlWAELoJ+tdDh2y19xkoIPOXUV4F6Ho8FSlt1LFi6bHGR64OSjR/3dM8
+	 eE2d7KTVLjitN0oDm8z3jIRc8HUzyaA9qsu1dzOIiqj/dhqy5DXEfS4Pl3KLGdppvW
+	 QC9ltfic1e2BA==
+Message-ID: <sashiko-outbox-210520@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v7 net-next 8/9] net: dsa: netc: add PTP two-step
+ timestamping support
+Reply-To: sashiko-reviews@lists.linux.dev
+To: wei.fang@oss.nxp.com
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <20261111062753.1397582-9-wei.fang@oss.nxp.com>
+References: <20261111062753.1397582-1-wei.fang@oss.nxp.com>
+ <20261111062753.1397582-9-wei.fang@oss.nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 12 Nov 2026 06:24:13 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -101,161 +60,76 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
-MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GVXPR04MB12316:EE_|AM0PR04MB12098:EE_
-X-MS-Office365-Filtering-Correlation-Id: 025ccd7a-2eb8-42f3-21a6-08df40854ca2
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|19092799006|366016|1800799024|22082099003|18002099003|10067099003|11063799006|56012099006|261026140227099003|261102123227099003|261028144727099003|261009223027099003|261021123027099003|261026121527099003|261022105027099003|261009221227099003|261021121427099003;
-X-Microsoft-Antispam-Message-Info:
-	5kPEXsn+ZfwJgoSIYN94LBLgXyLQJZDY9Ghy2kPMziCzd/4GatBBeRLcPeqbvf+3lyM0ZhffPMbfmiUZnzRtSdiF10RpxMQ4dw6oHNPttt3puj7Vz8gAkvzPDSuIr1GNUhtxsE/pRZBTgDXn+/YUeli2zBF9MALgGdDix4un+etsmApv0FWtbxeeVQdPHu/FU7DCcJ7hxZGXqBSlkLsuew+u5Q7luEflZJfXErrKEmv0IyQgBBDjGxDaXm1+hzrX/LxuDlFOBp/ncos93k+FqRGVTSzQV3S7STQXKpN7U9igex0KDbh3f9ERNeySJXDC3TYHMFn9dE/PzYoMuJ9N+ps+Ux51q4Y03TdoAvRxsBKjEl4ktyWLPvcDF++Gnk8iMW2Glg3nMB7Gq+wQAnTeLTajB/XyZO9rf6dBnGEGFwa4pMGveC0yAHUbNo4HCdqyge8jbe3myKIAMSgj8R5zZV0Nce+kMuviy1eCxNDSrJ2cjJGYmWuzKspAVjjDsQg0YROIJmT6LdTxpWBJdVJzofeuKselCs1Ch8xy8wwB9gM4ISbjHXBSREXJ1nR3ca0GrAigke9HAYcpzq0S+CLA8l6fYd45K8RHkf4EycE9+4bSNyPsIp83RtPbIRAmZsWa
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVXPR04MB12316.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(19092799006)(366016)(1800799024)(22082099003)(18002099003)(10067099003)(11063799006)(56012099006)(261026140227099003)(261102123227099003)(261028144727099003)(261009223027099003)(261021123027099003)(261026121527099003)(261022105027099003)(261009221227099003)(261021121427099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?YklYQ3R6a2VlVGJCSE5ZRG9ua24yV2VhYVFaeDJhQWtaVjBVN3FoK1hPOExM?=
- =?utf-8?B?c0NyT2tzN0hVeXdaeUlwUGQ0ZytnbUJITlV1NEl1V2VUdUl1Z1lwMHNSR3ZS?=
- =?utf-8?B?ZHNKZU5ETmZtcWpjdGUxZy9FSFhkYTUwWFpYRWVpYXhkQ2c2NzRiVHM0ZDB6?=
- =?utf-8?B?U2hhdEhSNWV3Rm54VmQrak5tc3lzRWFKanNpN3RkMXYvVUp0dDZneGFRRlRU?=
- =?utf-8?B?SHc3emJyaFI2Ym1NdisxZmVuVFZSVFhSaTFITWkrUWRMZGdnaTZ5VXV0Vlha?=
- =?utf-8?B?VGJvSzRtSUo0ank4YlRSRkxHWktiN2Q2L040UjNMQWhFNldTcGVHak15VEhi?=
- =?utf-8?B?TXhKdFp3R3dBV1VYUDVjTGZmVGVOZUpkVTVUVGZNbFNDMTNOS0FDSFhmZWFE?=
- =?utf-8?B?K1Fsb2pBTnZtcWNEakYydmo3YzkzUFNQUDZuRGVaZzBTejA3Nm40bVNzRjVJ?=
- =?utf-8?B?cXU0cHZRMFdSUmljb2hyZVNqSGN5d05NL2RiTGlmNTBwbDJNY2gzUm9HYlhB?=
- =?utf-8?B?Z3J2cVJweDN2a1BGRWx4SWl2MjR3SW1xdkQ2by8yc21CVkRIYkk3S2Z2ejVP?=
- =?utf-8?B?amYzU2x6OUNaY1BUditBWUJaS1lweGpZZDA5SnU2TVA4QmxxVFMwdEVxbVE4?=
- =?utf-8?B?RHZyZWRzS05abTZKRGM0cGFKMm1wdjl3WldLeHhIMElvcTRFVkJoVDFvQ0xM?=
- =?utf-8?B?V3RodzYxckgxc1IvRldIY0dzYW1SbW1mdHAzUVN6dHpGamlhcTF6V3FyZWFQ?=
- =?utf-8?B?WVFBUEdBSExyZXhSNmt1RUF0UmhzUnI4TDljY3QzOEpSQkc3cWtLOGpqcTMr?=
- =?utf-8?B?anJaYVlsQmp0UnF2MWIwU2NoQ05mK2tWZHRJUTlRQWcvK3JQMHEvMW9yUE5V?=
- =?utf-8?B?WVRMRmJ6QjZCekViUXdLYWtISFlsQzltdFl0eXRCMUhSYjBhbWE3TG03ZDR4?=
- =?utf-8?B?dHJjbHptYytvTkZyZVhvMFFoTDFuQ3Q1MWtlT1FqZWVLTmlCWWw1U3ZHb1BL?=
- =?utf-8?B?dy93d1ByNXMyeE9NTjRkVlVCOWE0dzRiN2xZOTR4bFNPM2tUUlJkWHhSbmJz?=
- =?utf-8?B?azNvRHNPTlp6WnNQdjlqS3VLWmwram9WczM4ZVV0aHZxNmF6KzJOQnVhWFlT?=
- =?utf-8?B?aXFOWFVMc1p0TmYrZmtQNElGUS9BRmlKZ0MzZktFaFpBK29LUW9RYTdselNm?=
- =?utf-8?B?L0JTWm5kMGZIeEFQalJ6T2dsMmpqV2psNW1NUTUxblVtNXk0dy9IWFdsbzBo?=
- =?utf-8?B?TW1udzQyK1FXVC9XbllkTjM3NmlUYmR0djAzQWlsYWVmVENpMWFjYjdJVTBY?=
- =?utf-8?B?d1VOMStFaEdTL0VEZ01UbWxpaWdXSHRtblJOUCtFRnEyY1ZKWEVuZTB4cTNz?=
- =?utf-8?B?aTg5NWRrcUJLMktpbWZlL2J3eVRCaEVxMmZ5ZVVJZEtaZXpyV1U4cDhxeE9B?=
- =?utf-8?B?RGF2MFJnbjJGMEw2byt2NmtlU0NkSWNsSjJjRERBM2phSDV4cXUyUVo0TURD?=
- =?utf-8?B?bldqQ1BZNGlZZ1pTcFY4QW85cnZjTWRDeWRBZzlpQU5oakxRT2JJcWJiYTdj?=
- =?utf-8?B?Z1VjdDJxN0kzN3cwUEh0SkduLzdtZEVNMmNVUCs4bjNsVmdwTDNqeHo2TXVr?=
- =?utf-8?B?bkF1UzF0UUh1MHg2dFRJZWhyeCtMUHpseHVGeHZhRUNhVDRVRDhlUkRRYmFT?=
- =?utf-8?B?L09ZcWVOVE4rMkRvSXNpWU9tZkQ4WGMvS3I2dlUrYkNUbHNwZmozcDlQN3Zo?=
- =?utf-8?B?clhyL1BKWVYrY3VQbzZmZTZuWTNGdWpIZkIvekZuZmVqV3JTblpISlAxVHA1?=
- =?utf-8?B?VklKTzZXeUptRnJ5R3FNL3F5T1NyaEpjVVpVbG5oa0tKZE5obWhOazcyenl3?=
- =?utf-8?B?S2FUcHdWNnlsMTJ6NzEyc3FtYnBxZ2dRWU8xcUlaUW80ZG51M3ZGQWdMNWo0?=
- =?utf-8?B?UHN4RjZWekE4SFFhaHRaVFhHSzY2UUR4KzErQU94ZjVSWGNCbElYWEFrZ3ll?=
- =?utf-8?B?NnhqYXl6UXQ5SnpwSmFQRHhGdGJjQW5jN2QyV0hOcHFwT0pyZStYak8zbUlI?=
- =?utf-8?B?ek15VDNMMTIwaEsyRS8xY2o5WmFzNFFGdVRIdm15YTd3L2JyRzNpcVhja0ZV?=
- =?utf-8?B?eFZHWGVjcU1QeUlidDltN2RWVGxLejk4WVZ1SHRNQjRBa3RLSk1lSy9sOUxz?=
- =?utf-8?B?NlJ3MXRqVHVtVE96N2hDQnJra3VFeURob0ExSkc1d1lWNFlRWG0zM0xqUURT?=
- =?utf-8?B?NUF4S3VwcGtpU1V0WVZRaVlJNE13WjhvL1I4bFpaSjNWekF4a0hRL1V3cFdw?=
- =?utf-8?B?VFczK3M2YkNQMHlsS3M1cjFweUJZemJ5NWxLa0NMQU1waHIybXlTUT09?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 025ccd7a-2eb8-42f3-21a6-08df40854ca2
-X-MS-Exchange-CrossTenant-AuthSource: GVXPR04MB12316.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Nov 2026 06:22:17.2688
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2NrRs1X5UUgxLIXu89thLITsKlN5wMSB4F9Kzrf6QCg6Xodw7Tm0EJhaTLLwHcouOTy6OXVkiYtEjo4328OybQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB12098
 
-On 11/12/26 05:19, Sherry Sun (OSS) wrote:
-> From: Sherry Sun <sherry.sun@nxp.com>
-> 
-> lpuart32_set_termios() reads UARTCTRL at function entry without holding
-> the port lock. lpuart32_console_write() can run concurrently on another
-> CPU and temporarily clears the RIE (Receiver Interrupt Enable) bit while
-> it polls characters out. If the unlocked read in set_termios lands inside
-> that window, the stale snapshot is written back, permanently clearing
-> RIE. Once lost, no normal code path re-enables them, so the UART stops
-> receiving characters and becomes unresponsive.
-> 
-> Need to add port lock for the registers read in lpuart32_set_termios() to
-> avoid the unlocked snapshot captured. Since neither uart_get_baud_rate()
-> nor lpuart_dma_rx_free() uses ctrl, old_ctrl, bd, or modem, the register
-> reads and bit manipulations could be moved into the existing
-> uart_port_lock_irqsave() critical section after lpuart_dma_rx_free().
-> 
-> Please note that this only fix the normal printk path, in the
-> oops_in_progress path of lpuart32_console_write(), when trylock fails,
-> RIE is cleared and old_cr restored without the port lock held, there is
-> still a risk of stale snapshot, but it's acceptable for the post-oops
-> state and the trylock-fail window.
-> 
-> Fixes: 380c966c093e ("tty: serial: fsl_lpuart: add 32-bit register interface support")
-> Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
-> ---
-> Changes in v2:
-> - As suggested by Sashiko, since neither uart_get_baud_rate() nor
->   lpuart_dma_rx_free() uses ctrl, old_ctrl, bd, or modem, move the
->   register reads and bit manipulations into the existing
->   uart_port_lock_irqsave() critical section after lpuart_dma_rx_free().
-> - Link to v1: https://lore.kernel.org/r/20261111-lpuart_port_lock-v1-1-5d332c51edfe@nxp.com
-> ---
->  drivers/tty/serial/fsl_lpuart.c | 29 ++++++++++++++---------------
->  1 file changed, 14 insertions(+), 15 deletions(-)
-> 
-> diff --git a/drivers/tty/serial/fsl_lpuart.c b/drivers/tty/serial/fsl_lpuart.c
-> index cd2575a3aef7..074bd9d42f84 100644
-> --- a/drivers/tty/serial/fsl_lpuart.c
-> +++ b/drivers/tty/serial/fsl_lpuart.c
-> @@ -2241,6 +2241,20 @@ lpuart32_set_termios(struct uart_port *port, struct ktermios *termios,
->  	unsigned int  baud;
->  	unsigned int old_csize = old ? old->c_cflag & CSIZE : CS8;
->  
-> +	/* ask the core to calculate the divisor */
-> +	baud = uart_get_baud_rate(port, termios, old, 50, port->uartclk / 4);
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Low] net: dsa: netc: incomplete IPFT_FAF_L4_CODE mask in
+  netc_build_ptp_ipft_keye()
+--
+
+commit 3f2860d50cc9cac6dd4199f17906d6ee10ebd675
+Author: Wei Fang <wei.fang@nxp.com>
+
+net: dsa: netc: add PTP two-step timestamping support
+
+This commit adds RX hardware timestamping via ingress port filter table
+(IPFT) rules and two-step TX hardware timestamping support to the NXP NETC
+DSA switch driver and tagger.
+
+> diff --git a/drivers/net/dsa/netc/netc_ptp.c b/drivers/net/dsa/netc/netc_=
+ptp.c
+> new file mode 100644
+> index 0000000000000..0bcc01ebf01de
+> --- /dev/null
+> +++ b/drivers/net/dsa/netc/netc_ptp.c
+
+[ ... ]
+
+> +static int netc_build_ptp_ipft_keye(struct ipft_keye_data *keye, int por=
+t,
+> +				    enum netc_ptp_type type)
+> +{
+> +	u16 src_port, frm_attr_flags;
 > +
-> +	/*
-> +	 * Need to update the Ring buffer length according to the selected
-> +	 * baud rate and restart Rx DMA path.
-
-While you are here please fix the typo. s/acqures/acquires.> +	 *
-> +	 * Since timer function acqures port->lock, need to stop before
-> +	 * acquring same lock because otherwise timer_delete_sync() can deadlock.
-> +	 */
-> +	if (old && sport->lpuart_dma_rx_use)
-> +		lpuart_dma_rx_free(port);
+> +	keye->precedence =3D cpu_to_le16(NETC_IPFT_PTP_PRECEDENCE);
+> +	src_port =3D FIELD_PREP(IPFT_SRC_PORT, port);
+> +	src_port |=3D IPFT_SRC_PORT_MASK;
+> +	keye->src_port =3D cpu_to_le16(src_port);
 > +
-> +	uart_port_lock_irqsave(port, &flags);
->  	ctrl = old_ctrl = lpuart32_read(port, UARTCTRL);
->  	bd = lpuart32_read(port, UARTBAUD);
->  	modem = lpuart32_read(port, UARTMODIR);
-> @@ -2320,21 +2334,6 @@ lpuart32_set_termios(struct uart_port *port, struct ktermios *termios,
->  		ctrl &= ~UARTCTRL_PE;
->  	}
->  
-> -	/* ask the core to calculate the divisor */
-> -	baud = uart_get_baud_rate(port, termios, old, 50, port->uartclk / 4);
-> -
-> -	/*
-> -	 * Need to update the Ring buffer length according to the selected
-> -	 * baud rate and restart Rx DMA path.
-> -	 *
-> -	 * Since timer function acqures port->lock, need to stop before
-> -	 * acquring same lock because otherwise timer_delete_sync() can deadlock.
-> -	 */
-> -	if (old && sport->lpuart_dma_rx_use)
-> -		lpuart_dma_rx_free(port);
-> -
-> -	uart_port_lock_irqsave(port, &flags);
-> -
->  	port->read_status_mask = 0;
->  	if (termios->c_iflag & INPCK)
->  		port->read_status_mask |= UARTSTAT_FE | UARTSTAT_PE;
-> 
-> ---
-> base-commit: 793807ca13bf3072fc6d16ce6d90e9ab9beff2a5
-> change-id: 20261111-lpuart_port_lock-01f7deab451a
-> 
-> Best regards,
+> +	switch (type) {
+> +	case NETC_PTP_L2:
+> +		keye->ethertype =3D htons(ETH_P_1588);
+> +		keye->ethertype_mask =3D htons(0xffff);
+> +		break;
+> +	case NETC_PTP_L4_IPV4_EVENT:
+> +	case NETC_PTP_L4_IPV4_GENERAL:
+> +	case NETC_PTP_L4_IPV6_EVENT:
+> +	case NETC_PTP_L4_IPV6_GENERAL:
+> +		frm_attr_flags =3D IPFT_FAF_IP_HDR | FIELD_PREP(IPFT_FAF_L4_CODE,
+> +				 IPFT_FAF_UDP_HDR);
+> +		if (type =3D=3D NETC_PTP_L4_IPV6_EVENT ||
+> +		    type =3D=3D NETC_PTP_L4_IPV6_GENERAL)
+> +			frm_attr_flags |=3D IPFT_FAF_IP_VER6;
+> +
+> +		keye->frm_attr_flags =3D cpu_to_le16(frm_attr_flags);
+> +
+> +		/* Set IP version bit in flags_mask to match IPv4 or IPv6
+> +		 * packets
+> +		 */
+> +		frm_attr_flags |=3D IPFT_FAF_IP_VER6;
+> +		keye->frm_attr_flags_mask =3D cpu_to_le16(frm_attr_flags);
 
+[Severity: Low]
+Does reusing frm_attr_flags for keye->frm_attr_flags_mask leave the lower
+bit of IPFT_FAF_L4_CODE unmasked?
+
+In include/linux/fsl/ntmp.h, IPFT_FAF_L4_CODE is GENMASK(11, 10) and
+IPFT_FAF_UDP_HDR is 2, so FIELD_PREP(IPFT_FAF_L4_CODE, IPFT_FAF_UDP_HDR)
+only sets bit 11.  Without ORing IPFT_FAF_L4_CODE into frm_attr_flags_mask,
+bit 10 is left wildcarded in the frame attribute flags check (matching both
+IPFT_FAF_UDP_HDR and IPFT_FAF_SCTP_HDR, though keye->ip_protocol still
+restricts the rule to IPPROTO_UDP).
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261111062753.1397=
+582-1-wei.fang@oss.nxp.com?part=3D8
