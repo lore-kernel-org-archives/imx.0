@@ -1,98 +1,44 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.65.21
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794464680;
-	b=srVTGcOTBFVL+uZb2/odFvaCXNgwSrzRmOjzR0VyZaRb9K5YGrwGJNRTqZbYgNC5M/Hg
-	 XUGonPbVK05fYvvETQtow+I/bVnH2RacUVLyY1ZuYrRdO/dFvjhI4feJOKPrQ8AQzp0Rm
-	 zh1nFhELVfAqnaJNufLn4Sx59wB3H7ibLastkiqX7s93OmEAvr/w3Ts9CJyXBQYbuJwV1
-	 UeVbHcECKHol6h37OfV5BvH3buUNdeTvQy2XX1LhLvqahQ5JyjrC6IvuP0EHRit3GL44j
-	 95chZ00/cHnEbm3fRyRpsrd1P3CDrVhKHVKCLP9hlTzGIjX5+3b9vqNNygFxjlr4RKQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794464680;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-Exchange-MessageSentRepresentingType:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SharedMailbox-RoutingAgent-Processed:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=5UuI6LjTsqWQ873ohFICTa2mWw+5Cn5cuzzxV7FoFpE=;
-	b=Sy5TNqTvUKHLQDN6oQnqT32pq4v3YLzIFRTIRzmHscOPft5vQOorCOw1nUtlv+IA2Hgq
-	 cP5DIo1QSHQXu0IpP5IoomLodg4/+ZBC3A9MCdeOHXZiXbx4XDPMSaRsebSs7UNe7D98g
-	 3knrSsZfh5LhvoiQ0xJ4V0a1nLeiM7tUoAva/EnPSR892e9O2lybo4PxhOkaBUEKY8eel
-	 fWnafCHYSFCgyqLrywMWjVEmY78BFRF89yprWaJdrG66jIDVGXcmBVs8WOA2yq3aZfCaa
-	 y94rP9qHgUm8sMLuHv+sITOUDTAY1OBIZuvvURm+eSFeaS+U6Uj7p1RWRwj/EeVCgww==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.nxp.com;
-	spf=pass smtp.mailfrom=oss.nxp.com;
-	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b="k/NXUjlY";
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.65.21
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011021.outbound.protection.outlook.com [52.101.65.21])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=154.81.10.31
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794467392;
+	b=yh8xWglHXUYPEyCSHHOMTC/goyzaNasxKy76ysEwvkm2G1G12yo4PnwoxSqnOt8bcwc+
+	 dYDQhRMZb4mnGFDKwwPqFaHbm0hLQHrO95axc6RMOCb+uzti2BBJaMJQ+EGXCdAZ4qidl
+	 uUtL4rHvnmfmFuog8Abi1s9VDMlUIchlskzAGKJVN1yLGmg2n3CnGENkg9COXSGBRX6ZW
+	 cVzQgLwBHNO2+0U3R8U4VemKTZSpMPWya/Yy0HYvdjAifJ/dtLlxJZpwAQUUwzRCQEhYg
+	 DYKJ0h27S1dsvdCsQzIQZ8FrKjVNsQZMcGkUsS6AejBtcIFUgJLoZ0p3+UZk/17qyRA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794467392;
+	h=DMARC-Filter:Received:Message-ID:Date:MIME-Version:User-Agent:Cc:
+	 Subject:To:References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:X-HM-Tid:X-HM-MType:X-HM-Spam-Status:
+	 DKIM-Signature;
+	bh=8mucxYKJYBwqJKDbsfQpDDCpVs3/pBmp8Rts+MRAkyQ=;
+	b=efRnKwBIFPhTjP9o3sn5uhyl6tOCcZSDhERQLQLvTqmnj3gaznDq5j3BWhXCXq2tmKVN
+	 EhdCMek5XryxnVq2O3wLZGaeoRcGFDiWgl0J++6IyIYwLNBoNm9xeK7U82UkvR4SEmzlD
+	 BfqPLCtqd7X281iryIO7pdRXH6Ytzn36gVfvSU1S0cobPraGude/+1WJZd9K3VfkQrwng
+	 7+DHN13zb6uYo9pXRo4Vn+htNTZODKoK82PqR0dYYm2BhU74QqU/baiCiv3oqGkdO0SjC
+	 vCvvwMfhOG7LeslPMJTGo1y75TOCsKKuHxBJsCfYdu8fF86vN1u3Jd1j21O2ApslEKA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=rock-chips.com;
+	spf=pass smtp.mailfrom=rock-chips.com;
+	dkim=pass header.d=rock-chips.com header.i=@rock-chips.com header.a=rsa-sha256 header.s=default header.b="O/iMBATN";
+	arc=none smtp.remote-ip=154.81.10.31
+Received: from mail-m1031.netease.com (mail-m1031.netease.com [154.81.10.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF0BD606A321
-	for <imx@lists.linux.dev>; Thu, 12 Nov 2026 06:24:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AF0BD606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 364FB606A335
+	for <imx@lists.linux.dev>; Thu, 12 Nov 2026 07:09:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 364FB606A335
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=k/NXUjlY
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=cHLjZvhzw5mmO1LPhy72lcOoLuD+mVZYHEJGFqmDVU56qZhAgZY+LmpxOku5ZyPkqyUpvoxLzCCvZWH/3CjGj/74aV+qC5qwtfhSdB29py46hmsYGW7oW5ZDMYnvIL+NyUJh2gVaMTvpPdsLzEcawg2zgeHxlNfh/Sl659AHkBBkuML7Iv8KhJVatbWA6HVC5wunkCXnHuY2nCa8Quis4lwmnbOPGaKYGqS/e70Al3Lsf/o9kRTYuqQcNpWt/mMpvCPpln16UvjzMNmgn8bcBAX3eHH8xViBoNQVYzmsSBzWQPs9UXnr33/05HEDgCkog+m/OcPfpNLGgwx5W6q9tg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5UuI6LjTsqWQ873ohFICTa2mWw+5Cn5cuzzxV7FoFpE=;
- b=GYf93pU0XbU//wgtXSfU+Qcq8DzYlzLA/TnIunUcI5FyvkhCkdNp5Yhu+wgqvcQ8xh/aaqhBCmJTskLht7fpxpYjbaXNl4Jyd2kKbcqi6vhxlFy29FCwwctU9dQ89rp0ojPcdPN+tN3kE9VVCY3Jv6fFIqWZp6il2emtfTF8/h9/clUtAvmt9Vkg9cjAes1lE8wqSqgTvUEN8ICNRlOEUEdv2YkmOfbmbWLrdAXBvotfVv5wjVWp9p43EDbXncs+8qUE8PIeaH34QjAkx4ZMhh8psJ6k4uuGniBo47cXMBIOW/R8r1A1lIupqsfh3R9F/ivCZUkF57r2iCVwVAD5TA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5UuI6LjTsqWQ873ohFICTa2mWw+5Cn5cuzzxV7FoFpE=;
- b=k/NXUjlYjxKQ4YrB9oguxV6R9w0XHSAsF67HiNc0LqMzNbqXjH1rgz1x2YdlQh/vdDGF1CtRL4RwhiAYb4AuGyKHL1/NRgLe6oLeQU3fXbZKiMZJwK+1p9k5Xhx7nTyFtQOXLTPF5N5WghCbsn4duYFarIr2UZBaZzJCfyYki8YmHEizGHtA8PiDNXHo9rqgUSBlf8Y/766TdmMu+OYIsE/XIBOoboeQMms3DlrcrW0E14We4t+s5hzArChtzvPs+kGC64s1FJkclg3KiM03sHSlf8Wovswl1EadfgWEpOrk5pm+9UGKYIuN+GZrzl4ykRNUCKCiMmQoDixiBe0Jfw==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GVXPR04MB12316.eurprd04.prod.outlook.com (2603:10a6:150:2c6::8)
- by AM0PR04MB12098.eurprd04.prod.outlook.com (2603:10a6:20b:743::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.10; Thu, 12 Nov
- 2026 06:24:37 +0000
-Received: from GVXPR04MB12316.eurprd04.prod.outlook.com
- ([fe80::fc6e:ca22:f065:def4]) by GVXPR04MB12316.eurprd04.prod.outlook.com
- ([fe80::fc6e:ca22:f065:def4%5]) with mapi id 15.21.0592.012; Thu, 12 Nov 2026
- 06:24:37 +0000
-Message-ID: <d7745359-8c73-4ac3-a8e6-175ef80fdf4e@oss.nxp.com>
-Date: Thu, 12 Nov 2026 08:28:22 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] spi: nxp-xspi: use dmaengine_get_copy_align() API
-To: Frank.Li@oss.nxp.com, Han Xu <han.xu@nxp.com>,
- Haibo Chen <haibo.chen@nxp.com>, Mark Brown <broonie@kernel.org>,
- "open list:NXP XSPI DRIVER" <linux-spi@vger.kernel.org>,
- "open list:NXP XSPI DRIVER" <imx@lists.linux.dev>,
- open list <linux-kernel@vger.kernel.org>
-Cc: Frank Li <Frank.Li@nxp.com>
-References: <20261111202741.3866239-1-Frank.Li@oss.nxp.com>
-Content-Language: en-US
-From: Daniel Baluta <daniel.baluta@oss.nxp.com>
-In-Reply-To: <20261111202741.3866239-1-Frank.Li@oss.nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR4P281CA0210.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:e5::11) To GVXPR04MB12316.eurprd04.prod.outlook.com
- (2603:10a6:150:2c6::8)
+	dkim=pass (1024-bit key, unprotected) header.d=rock-chips.com header.i=@rock-chips.com header.a=rsa-sha256 header.s=default header.b=O/iMBATN
+Received: from [172.16.12.48] (unknown [61.154.14.86])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 546ae3693;
+	Thu, 12 Nov 2026 15:09:39 +0800 (GMT+08:00)
+Message-ID: <fc0d091f-2791-4078-a986-7626b239aa02@rock-chips.com>
+Date: Thu, 12 Nov 2026 15:09:38 +0800
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -102,82 +48,323 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GVXPR04MB12316:EE_|AM0PR04MB12098:EE_
-X-MS-Office365-Filtering-Correlation-Id: f9326936-bd61-420e-b311-08df4085a003
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|19092799006|366016|1800799024|22082099003|18002099003|10067099003|11063799006|56012099006|261026140227099003|261028144727099003|261009223027099003|261022105027099003;
-X-Microsoft-Antispam-Message-Info:
-	SMVch5Q5vITVTvcfgi5Zmd4SvCLXG+rZx/jZItR+MBMsDKHHDBlx8+vdnl0DCwqzbUd6zP6H/oBcwxZu62OqhTYuHc9c3otEf7faC9r5g+P1TPSzHYZr1PhrV3vTpn9nfJd3oqlWhiREH1ZqfjNL2wDtCEChLxMZRFUeiap635wsSgvCb5xbf4jPtYP2Pqp5JdZPO6nO3MLLmoWDxGKXCiBvEdSTcjv/Og4T0IWrU1l/ILbn3DveQT3oQmemThjOAVJSuLFqwpdfAHvYzqtaZC8G1f13hFIy3ImskaumIyY75Mr4Asq55XPdIxm/yaBK4HeGnzTXuaQH1x5C9zu5yA1c0l8hpGHeMIfLi3sOR9NZhzm4QuhCIgh1n3tdL6b23rnMRhrAp2uGz14bJly1F4gSyJcF8lKK2XKHmM+aIiCZbTaijpVOsjNVgUF8t1HXOVzq2jlX8dtqabKd43vL1gGKbQIz3inWorkrtkrUrUM19bIzK+G+KbYPBRsF6fmxZOxztMis7ZdEFpQDI0mRxEtJYc1w0LyiMZfpRs7igbT5AWYu7qoqvNacxPqov9D6ayn7pWVRNeaXn1/4p+3Z7QzfV2+nddRweROcHmpsNFWoZVPtMj4hNvSNQhtTj0rrVryEYJ9pwtp3yLtAsNSuqCQZ+d+JHdm7rDljZfFsmsY=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVXPR04MB12316.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(19092799006)(366016)(1800799024)(22082099003)(18002099003)(10067099003)(11063799006)(56012099006)(261026140227099003)(261028144727099003)(261009223027099003)(261022105027099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?NHRWOFBjcVZBcEo5WGVBcmFPNFlkY2dNUnBja2pTaWdENXVpYXBRU3ZYcmRL?=
- =?utf-8?B?cTlyOXdzRGF3ckZzem1zZ0NwZGdBTjRBYXdBSWtBMmZ0L0UwUGlEQlBBLzlI?=
- =?utf-8?B?a0d0d002bGhVMXh0Q2RqazE3dDg3TDVvTjJFaDJBdnJuOXZ1M2JTQlpnVFd5?=
- =?utf-8?B?ZGc5R0U0NXl5SUJCc21BcmFvVWZlTDVZWWIveWxkV29RTmtmcjNBUlFScngw?=
- =?utf-8?B?a2VWcHpjaGVUZnVTZ3JvN1cyNmFzWVFURng2dmZZNGJXNUE4d1BqMyttQkQr?=
- =?utf-8?B?TlA2QUw4K2tnc2ZmN2RuWHk2YmVJeEYvY2dOejU3UlpVZDU0OVFyUm9RZ25F?=
- =?utf-8?B?RTI5SzlIVFErZ1k2dVJhMTFmdWdDeEpnNVluN1FJUWhhUHN5TDlycGRRTXdI?=
- =?utf-8?B?QWxBRGxmYmwzbm9LdFRLNHAyZUpwUGppTlVXYmlUSUxGaGhLYnFPWDFlVUha?=
- =?utf-8?B?R0RLbXFlS1RrakpBZGR5UFk5eHNjOUZYYVRaMUdVUzhBcXRSR0J0aEZlTndU?=
- =?utf-8?B?eFp2MWhxSHN2ZlVTNE9EaGwrSS9aTFExYkZNK2F0aUZtQmUrVERLUlN4NDZZ?=
- =?utf-8?B?YkJleVpRRnE4dGhEZ3RmMGFnWXpXV2NzblNGcVBTM2xyWUJuNlQ2aVlxbmRV?=
- =?utf-8?B?TURmUFErKzVRRlFLV0xBYUlzeStpRWt5RVI1ZnZqb0xXeE1lNG44Y2pNUjRr?=
- =?utf-8?B?b0E5S1MxZFRGLzc4dHJpZGprV0hqVmhCbUpzVzFNRVVyWlJtb3kvS0pHeUlr?=
- =?utf-8?B?VWhicDVFTGgzcVNhb08yOWZmZGIxcjgyaGRRWExFamRJYlpoM1JyUDFvZ0VF?=
- =?utf-8?B?czZVcVhKcCtVUjVoV3JHYUhseHpiWnhHQVY4MUJtbXhadzlTS0p3ZjM3MjB2?=
- =?utf-8?B?T2JjVnhianRFMUJSeXRyM3Npb0FXVmFxYjNPR3BTZW9XVnBuczExQ2Z1QWhN?=
- =?utf-8?B?cGN0RnFheXNPa1RySXd6TDhMMGZOWEtkZUlnbnFmL0hSRUFJSVNtbnNvSU1U?=
- =?utf-8?B?clFnSFZlemtzeUhnR1hTK1R0blBRcjY4eGNIN3hNOVBzbVZMZU42UUd1QlM1?=
- =?utf-8?B?T0tYNWM2c1RVTEtrdXhYZmpJNEZHWkpMU2JEWDJnL0JzMDdSMWduRXJaZVVm?=
- =?utf-8?B?MW1naGdDSGNmQndjSEFzUENPRkhQTE1iTWlJUkl5ZGNwWkttM3RQUmRnTS80?=
- =?utf-8?B?U09HMERqelJRS0llQ3dYSlNSaS8yRDlOQUtETzdPM0F0SW1tNVhITnZpZmNy?=
- =?utf-8?B?bkN1eGdaR0JFRGRMdG9DTHBsdjFJanlMbENNemYyWEFuYVRQQ2FUYk4ybkxi?=
- =?utf-8?B?c1hqNXdNYTd3aExITWlyck5GdWRTY3FoUUpRQkRDb0x2ZHFJUHlIR1VGWTJ2?=
- =?utf-8?B?NHM3Vkpwc3ZqU1d1TDdBVUkvVUYyUW81cFJpMGNGZkRpUlh3NWFxUy9senJi?=
- =?utf-8?B?VlNMQnkvNHlUNnNPbjJwU1JYZE1rNU1qMkNaeXZ0cytFbGxHTk51dVgxVFhC?=
- =?utf-8?B?M0gzVGVpQlB1N0tBOElweHd6VlNhcUpFYjVMV2dscjBIUTBzMTM1Mm5abitO?=
- =?utf-8?B?WHNRUDdNc2lNdW9iKzUyWFFseFJMdDRpZTArSDNGbzcwVDVxWitTRmwvWThQ?=
- =?utf-8?B?eXRybWdsVTBHZHcydCtzNndNWXYxeXhHRGhrV2VDVWlxY2dsUU9FSGRDbzZx?=
- =?utf-8?B?YTA1clRRZk9QdjhyemxmN3pEdnZySDBOTk9JQWN6bUFyYzdsRnBFSVVzUEY3?=
- =?utf-8?B?UUNHdW5iSjFQbmhqTk5pWDFpaWh3bmxtYXlVVFk0M2FhREVFd2xLbTFPT01v?=
- =?utf-8?B?eEVkazNvV3MyWnhlMWxaTG8xQm5BbUtoRk4wR1RnbTc1WFRUbjEzYUZrWEd6?=
- =?utf-8?B?Kzg5YmtuTXVRdlptb2RWTyszMlI1TTVPZzhiK1g4bHBUS0U0dzNyb3hRRTFD?=
- =?utf-8?B?RDBaYi9rTWVKUkZwRVExeW5UeGdKZmU3eWZxQjU3dlIyaDB4UWVMc2pxOXdp?=
- =?utf-8?B?ekxnRTlrWmpPd3MxZEJ6N0xycllmL1BwY0VzWjJJbE9qWDE4LzVuMTVGa1Rx?=
- =?utf-8?B?R2NqTHdnVnk1aU5qY2M0TnlIc09pemNRS1IzMnM2TU4wUVNmZHB4Yk51QmIz?=
- =?utf-8?B?SmNqb202Uzl0dmRONUlReFJraDlyZHF4LzZOTzdnbk4zaEU1VTVYUkRvdmFl?=
- =?utf-8?B?R21UWHNkeE9BajB5NjJaeG8zRVVMdzFUa05BZ2xaam9LTGJ5MjZOV3krSmZW?=
- =?utf-8?B?SFZjUkpxcTFiR2U1VjFvYm5mN05DRmJzVG5tNDhOdEtGRmVXRWhPK2pwVEto?=
- =?utf-8?B?TlB4QUVxYmUwTlFoYmpuaTd0TFZKa1NJdFVTbTIyNURVNERmcHAzUT09?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f9326936-bd61-420e-b311-08df4085a003
-X-MS-Exchange-CrossTenant-AuthSource: GVXPR04MB12316.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Nov 2026 06:24:37.1008
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: XrADseA0cS5QYBuYvWoGeLsvFnZXEa3ZGo8QcI8IeYkzFhvBeFWbTmE5Lh/ctWKaV7if3tUvHT0cJWVql76f/Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB12098
+User-Agent: Mozilla Thunderbird
+Cc: shawn.lin@rock-chips.com, Bjorn Helgaas <bhelgaas@google.com>,
+ Manivannan Sadhasivam <mani@kernel.org>, linux-pci@vger.kernel.org,
+ imx@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
+ linux-rockchip@lists.infradead.org, linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH] PCI: dwc: Check the pme_turn_off callback return value
+To: Frank Li <Frank.li@oss.nxp.com>
+References: <20261111041821.2259326-1-shawn.lin@rock-chips.com>
+ <avUrzss_VTn5m3I3@SMW015318>
+From: Shawn Lin <shawn.lin@rock-chips.com>
+In-Reply-To: <avUrzss_VTn5m3I3@SMW015318>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0aa1ce973a4603a4kunm008730b691fe9
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkZTUtIVhkZGh4YQk9LSkMaGFYVFA
+	kWGhdVEwETFhoSFyQUDg9ZV1kYEgtZQVlNSlVKTk9VSk9VQ01ZV1kWGg8SFR0UWUFZT0tIVUJCSU
+	5LVUpLS1VKQktCWQY+
+DKIM-Signature: a=rsa-sha256;
+	b=O/iMBATNR672WEFrXS+ncZ9imNCdfGIxaQ34CelqumfvPexpznonCffikf7OW2vvBO6K8xRBVx4kK1Wluis08bXaXvQBF8HaQsGcXerDnmz/OwNGM6mv2z1HOpFPSZWy3Xcq67zWHeCcgxJfoPhqr3CP379U2OEZEcY2srx3MZQ=; s=default; c=relaxed/relaxed; d=rock-chips.com; v=1;
+	bh=8mucxYKJYBwqJKDbsfQpDDCpVs3/pBmp8Rts+MRAkyQ=;
+	h=date:mime-version:subject:message-id:from;
 
-On 11/11/26 22:27, Frank.Li@oss.nxp.com wrote:
-> From: Frank Li <Frank.Li@nxp.com>
-> 
-> Use the dmaengine_get_copy_align() API function instead of directly
-> accessing rx->device->copy_align.
-> 
-> No functional change and prepare to move struct dma_device to private.
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Hi Frank,
 
-Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
+在 2026/11/12 星期四 11:00, Frank Li 写道:
+> On Wed, Nov 11, 2026 at 12:18:21PM +0800, Shawn Lin wrote:
+>> dw_pcie_suspend_noirq() invokes the optional host ->pme_turn_off()
+>> callback but ignores its result, so a platform that fails to send
+>> PME_Turn_Off still has the link brought down as if the handshake had
+>> completed.
+>>
+>> Turn the callback into an int returning function and propagate its
+>> error from dw_pcie_suspend_noirq(), matching how the generic
+>> dw_pcie_pme_turn_off() path is already handled.
+>>
+>> All existing implementations return 0 except:
+>>    - the Layerscape PF LUT variant, which now returns -ETIMEDOUT when
+>>      the PME_Turn_Off handshake does not complete instead of only
+>>      logging it;
+>>    - the Rockchip host, which now returns an error only when
+>>      PME_Turn_Off could not be sent at all.
+> 
+> I remember first version it is return int.
+> 
+> How do you know PME_Turn_off have not sent out at all?  I remember spec
+> require continue after timeout.
+> 
 
+I don't know whether other dwc instances could check it, but there is a
+dedicated register for Rockchip one to know if the PME_Turn_off is sent
+successfully or not.
+
+Right, the spec does say to continue about a short 10ms timeout if no
+PME_TO_Ack was received from downstream port. So you could see rockchip
+driver also ignors PME_TO_Ack timeout to follow the generic path[1].
+
+[1] 
+https://elixir.bootlin.com/linux/v7.3/source/drivers/pci/controller/dwc/pcie-designware-host.c#L1262 
+
+
+> Frank
+> 
+>>   Its PME_TO_Ack and
+>>      L23-ready wait timeouts remain non-fatal and just log, consistent
+>>      with the generic path, which does not abort the suspend when an
+>>      endpoint fails to respond: such timeouts are an endpoint behaviour
+>>      and must not make the whole system suspend fail.
+>>
+>> Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
+>> ---
+>>
+>>   drivers/pci/controller/dwc/pci-imx6.c         |  4 +++-
+>>   drivers/pci/controller/dwc/pci-layerscape.c   | 22 +++++++++++++------
+>>   .../pci/controller/dwc/pcie-designware-host.c |  4 +++-
+>>   drivers/pci/controller/dwc/pcie-designware.h  |  2 +-
+>>   drivers/pci/controller/dwc/pcie-dw-rockchip.c | 16 ++++++++------
+>>   drivers/pci/controller/dwc/pcie-eswin.c       |  4 +++-
+>>   drivers/pci/controller/dwc/pcie-qcom.c        |  4 +++-
+>>   drivers/pci/controller/dwc/pcie-ultrarisc.c   |  3 ++-
+>>   8 files changed, 39 insertions(+), 20 deletions(-)
+>>
+>> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+>> index 38a59795f98f..643b591c789f 100644
+>> --- a/drivers/pci/controller/dwc/pci-imx6.c
+>> +++ b/drivers/pci/controller/dwc/pci-imx6.c
+>> @@ -1575,7 +1575,7 @@ static void imx_pcie_host_post_init(struct dw_pcie_rp *pp)
+>>    * register is reserved, so the generic DWC implementation of sending the
+>>    * PME_Turn_Off message using a dummy MMIO write cannot be used.
+>>    */
+>> -static void imx_pcie_pme_turn_off(struct dw_pcie_rp *pp)
+>> +static int imx_pcie_pme_turn_off(struct dw_pcie_rp *pp)
+>>   {
+>>   	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+>>   	struct imx_pcie *imx_pcie = to_imx_pcie(pci);
+>> @@ -1584,6 +1584,8 @@ static void imx_pcie_pme_turn_off(struct dw_pcie_rp *pp)
+>>   	regmap_clear_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR12, IMX6SX_GPR12_PCIE_PM_TURN_OFF);
+>>
+>>   	usleep_range(PCIE_PME_TO_L2_TIMEOUT_US/10, PCIE_PME_TO_L2_TIMEOUT_US);
+>> +
+>> +	return 0;
+>>   }
+>>
+>>   static const struct dw_pcie_host_ops imx_pcie_host_ops = {
+>> diff --git a/drivers/pci/controller/dwc/pci-layerscape.c b/drivers/pci/controller/dwc/pci-layerscape.c
+>> index 475aea3ef58a..8bd879226971 100644
+>> --- a/drivers/pci/controller/dwc/pci-layerscape.c
+>> +++ b/drivers/pci/controller/dwc/pci-layerscape.c
+>> @@ -117,7 +117,7 @@ static void ls_pcie_pf_lut_writel(struct ls_pcie *pcie, u32 off, u32 val)
+>>   		iowrite32(val, pcie->pf_lut_base + off);
+>>   }
+>>
+>> -static void ls_pcie_send_turnoff_msg(struct dw_pcie_rp *pp)
+>> +static int ls_pcie_send_turnoff_msg(struct dw_pcie_rp *pp)
+>>   {
+>>   	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+>>   	struct ls_pcie *pcie = to_ls_pcie(pci);
+>> @@ -132,8 +132,12 @@ static void ls_pcie_send_turnoff_msg(struct dw_pcie_rp *pp)
+>>   				 val, !(val & PF_MCR_PTOMR),
+>>   				 PCIE_PME_TO_L2_TIMEOUT_US/10,
+>>   				 PCIE_PME_TO_L2_TIMEOUT_US);
+>> -	if (ret)
+>> +	if (ret) {
+>>   		dev_err(pcie->pci->dev, "PME_Turn_off timeout\n");
+>> +		return ret;
+>> +	}
+>> +
+>> +	return 0;
+>>   }
+>>
+>>   static int ls_pcie_exit_from_l2(struct dw_pcie_rp *pp)
+>> @@ -179,7 +183,7 @@ static int ls_pcie_host_init(struct dw_pcie_rp *pp)
+>>   	return 0;
+>>   }
+>>
+>> -static void scfg_pcie_send_turnoff_msg(struct regmap *scfg, u32 reg, u32 mask)
+>> +static int scfg_pcie_send_turnoff_msg(struct regmap *scfg, u32 reg, u32 mask)
+>>   {
+>>   	/* Send PME_Turn_Off message */
+>>   	regmap_write_bits(scfg, reg, mask, mask);
+>> @@ -195,14 +199,17 @@ static void scfg_pcie_send_turnoff_msg(struct regmap *scfg, u32 reg, u32 mask)
+>>   	 * to complete the PME_Turn_Off handshake.
+>>   	 */
+>>   	regmap_write_bits(scfg, reg, mask, 0);
+>> +
+>> +	return 0;
+>>   }
+>>
+>> -static void ls1021a_pcie_send_turnoff_msg(struct dw_pcie_rp *pp)
+>> +static int ls1021a_pcie_send_turnoff_msg(struct dw_pcie_rp *pp)
+>>   {
+>>   	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+>>   	struct ls_pcie *pcie = to_ls_pcie(pci);
+>>
+>> -	scfg_pcie_send_turnoff_msg(pcie->scfg, SCFG_PEXPMWRCR(pcie->index), PMXMTTURNOFF);
+>> +	return scfg_pcie_send_turnoff_msg(pcie->scfg, SCFG_PEXPMWRCR(pcie->index),
+>> +					  PMXMTTURNOFF);
+>>   }
+>>
+>>   static int scfg_pcie_exit_from_l2(struct regmap *scfg, u32 reg, u32 mask)
+>> @@ -222,12 +229,13 @@ static int ls1021a_pcie_exit_from_l2(struct dw_pcie_rp *pp)
+>>   	return scfg_pcie_exit_from_l2(pcie->scfg, SCFG_PEXSFTRSTCR, PEXSR(pcie->index));
+>>   }
+>>
+>> -static void ls1043a_pcie_send_turnoff_msg(struct dw_pcie_rp *pp)
+>> +static int ls1043a_pcie_send_turnoff_msg(struct dw_pcie_rp *pp)
+>>   {
+>>   	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+>>   	struct ls_pcie *pcie = to_ls_pcie(pci);
+>>
+>> -	scfg_pcie_send_turnoff_msg(pcie->scfg, SCFG_PEXPMECR, PEXPME(pcie->index));
+>> +	return scfg_pcie_send_turnoff_msg(pcie->scfg, SCFG_PEXPMECR,
+>> +					  PEXPME(pcie->index));
+>>   }
+>>
+>>   static int ls1043a_pcie_exit_from_l2(struct dw_pcie_rp *pp)
+>> diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
+>> index f531c5b51b3c..eb11556aca72 100644
+>> --- a/drivers/pci/controller/dwc/pcie-designware-host.c
+>> +++ b/drivers/pci/controller/dwc/pcie-designware-host.c
+>> @@ -1249,7 +1249,9 @@ int dw_pcie_suspend_noirq(struct dw_pcie *pci)
+>>   		return 0;
+>>
+>>   	if (pci->pp.ops->pme_turn_off) {
+>> -		pci->pp.ops->pme_turn_off(&pci->pp);
+>> +		ret = pci->pp.ops->pme_turn_off(&pci->pp);
+>> +		if (ret)
+>> +			return ret;
+>>   	} else {
+>>   		ret = dw_pcie_pme_turn_off(pci);
+>>   		if (ret)
+>> diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
+>> index 0ece9c433229..9836ea9127bd 100644
+>> --- a/drivers/pci/controller/dwc/pcie-designware.h
+>> +++ b/drivers/pci/controller/dwc/pcie-designware.h
+>> @@ -440,7 +440,7 @@ struct dw_pcie_host_ops {
+>>   	void (*deinit)(struct dw_pcie_rp *pp);
+>>   	void (*post_init)(struct dw_pcie_rp *pp);
+>>   	int (*msi_init)(struct dw_pcie_rp *pp);
+>> -	void (*pme_turn_off)(struct dw_pcie_rp *pp);
+>> +	int (*pme_turn_off)(struct dw_pcie_rp *pp);
+>>   };
+>>
+>>   struct dw_pcie_rp {
+>> diff --git a/drivers/pci/controller/dwc/pcie-dw-rockchip.c b/drivers/pci/controller/dwc/pcie-dw-rockchip.c
+>> index 525a26ee1d07..ea7ef0be1214 100644
+>> --- a/drivers/pci/controller/dwc/pcie-dw-rockchip.c
+>> +++ b/drivers/pci/controller/dwc/pcie-dw-rockchip.c
+>> @@ -464,7 +464,7 @@ static void rockchip_pcie_host_post_init(struct dw_pcie_rp *pp)
+>>   	pp->bridge->broken_l1ss_resume = true;
+>>   }
+>>
+>> -static void rockchip_pcie_pme_turn_off(struct dw_pcie_rp *pp)
+>> +static int rockchip_pcie_pme_turn_off(struct dw_pcie_rp *pp)
+>>   {
+>>   	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+>>   	struct rockchip_pcie *rockchip = to_rockchip_pcie(pci);
+>> @@ -478,18 +478,16 @@ static void rockchip_pcie_pme_turn_off(struct dw_pcie_rp *pp)
+>>   				 status, !(status & BIT(4)), PCIE_PME_TO_L2_TIMEOUT_US / 10,
+>>   				 PCIE_PME_TO_L2_TIMEOUT_US);
+>>   	if (ret) {
+>> -		dev_warn(dev, "Failed to send PME_Turn_Off\n");
+>> -		return;
+>> +		dev_err(dev, "Failed to send PME_Turn_Off\n");
+>> +		return ret;
+>>   	}
+>>
+>>   	/* 2. Wait for PME_TO_Ack, bit 9 will be set once received */
+>>   	ret = readl_poll_timeout(rockchip->apb_base + PCIE_CLIENT_INTR_STATUS_MSG_RX,
+>>   				 status, status & BIT(9), PCIE_PME_TO_L2_TIMEOUT_US / 10,
+>>   				 PCIE_PME_TO_L2_TIMEOUT_US);
+>> -	if (ret) {
+>> +	if (ret)
+>>   		dev_warn(dev, "Failed to receive PME_TO_Ack\n");
+>> -		return;
+>> -	}
+>>
+>>   	/* 3. Clear PME_TO_Ack and Wait for ready to enter L23 message */
+>>   	rockchip_pcie_writel_apb(rockchip, PME_TO_ACK, PCIE_CLIENT_INTR_STATUS_MSG_RX);
+>> @@ -497,8 +495,12 @@ static void rockchip_pcie_pme_turn_off(struct dw_pcie_rp *pp)
+>>   				 status, status & PME_READY_ENTER_L23,
+>>   				 PCIE_PME_TO_L2_TIMEOUT_US / 10,
+>>   				 PCIE_PME_TO_L2_TIMEOUT_US);
+>> -	if (ret)
+>> +	if (ret) {
+>>   		dev_err(dev, "Failed to get ready to enter L23 message\n");
+>> +		ret = 0;
+>> +	}
+>> +
+>> +	return ret;
+>>   }
+>>
+>>   static const struct dw_pcie_host_ops rockchip_pcie_host_ops = {
+>> diff --git a/drivers/pci/controller/dwc/pcie-eswin.c b/drivers/pci/controller/dwc/pcie-eswin.c
+>> index 5639666d5148..ed498601312f 100644
+>> --- a/drivers/pci/controller/dwc/pcie-eswin.c
+>> +++ b/drivers/pci/controller/dwc/pcie-eswin.c
+>> @@ -269,7 +269,7 @@ static void eswin_pcie_host_deinit(struct dw_pcie_rp *pp)
+>>   	clk_bulk_disable_unprepare(pcie->num_clks, pcie->clks);
+>>   }
+>>
+>> -static void eswin_pcie_pme_turn_off(struct dw_pcie_rp *pp)
+>> +static int eswin_pcie_pme_turn_off(struct dw_pcie_rp *pp)
+>>   {
+>>   	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+>>   	struct eswin_pcie *pcie = to_eswin_pcie(pci);
+>> @@ -281,6 +281,8 @@ static void eswin_pcie_pme_turn_off(struct dw_pcie_rp *pp)
+>>   	 * the skip_l23_ready has been set.
+>>   	 */
+>>   	pp->skip_l23_ready = pcie->data->skip_l23;
+>> +
+>> +	return 0;
+>>   }
+>>
+>>   static const struct dw_pcie_host_ops eswin_pcie_host_ops = {
+>> diff --git a/drivers/pci/controller/dwc/pcie-qcom.c b/drivers/pci/controller/dwc/pcie-qcom.c
+>> index eba1b2cb30f0..9548c6568c82 100644
+>> --- a/drivers/pci/controller/dwc/pcie-qcom.c
+>> +++ b/drivers/pci/controller/dwc/pcie-qcom.c
+>> @@ -1594,11 +1594,13 @@ static void qcom_pcie_host_post_init(struct dw_pcie_rp *pp)
+>>   		pcie->cfg->ops->host_post_init(pcie);
+>>   }
+>>
+>> -static void qcom_pcie_host_pme_turn_off(struct dw_pcie_rp *pp)
+>> +static int qcom_pcie_host_pme_turn_off(struct dw_pcie_rp *pp)
+>>   {
+>>   	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+>>
+>>   	writel(ELBI_SYS_CTRL_PME_TURNOFF_MSG, pci->elbi_base + ELBI_SYS_CTRL);
+>> +
+>> +	return 0;
+>>   }
+>>
+>>   static const struct dw_pcie_host_ops qcom_pcie_dw_ops = {
+>> diff --git a/drivers/pci/controller/dwc/pcie-ultrarisc.c b/drivers/pci/controller/dwc/pcie-ultrarisc.c
+>> index ee844ff7ed55..493b6c68b42f 100644
+>> --- a/drivers/pci/controller/dwc/pcie-ultrarisc.c
+>> +++ b/drivers/pci/controller/dwc/pcie-ultrarisc.c
+>> @@ -77,12 +77,13 @@ static int ultrarisc_pcie_host_init(struct dw_pcie_rp *pp)
+>>   	return 0;
+>>   }
+>>
+>> -static void ultrarisc_pcie_pme_turn_off(struct dw_pcie_rp *pp)
+>> +static int ultrarisc_pcie_pme_turn_off(struct dw_pcie_rp *pp)
+>>   {
+>>   	/*
+>>   	 * DP1000 does not support sending PME_Turn_Off from the RC.
+>>   	 * Keep this callback empty to skip the generic MSG TLP path.
+>>   	 */
+>> +	return 0;
+>>   }
+>>
+>>   static const struct dw_pcie_host_ops ultrarisc_pcie_host_ops = {
+>> --
+>> 2.25.1
+>>
+>>
+> 
 
