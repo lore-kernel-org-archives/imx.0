@@ -1,71 +1,109 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=57.103.72.73
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794444437;
-	b=Amnb9WgjBHAbKhd2z83wLwDOMWfIjNXK2nZghx86htcVFF6thXgeNRWTQI7baz3eQjwM
-	 /p738WrNhXsamdPA4AOHRoXorkmVHR6UXXfHfSEuXY6jbylRYcYZmxLsfT/sRCamTlOdm
-	 ia7hFWF4HSzr8f9wZoINuh/Tvrb1ofGr72jcRjA12yOwLQsgcYBJomqc46zI+ixHsi1uC
-	 xufX0o7AdrF8aE7q+h9ivYC7RyLqPVjRHXzh7JglCveQf5qhh4DlpGKc42Z/xpESugCwE
-	 HqxQWxNmTVQ1kaZjLmUmk4RQfSQET0XtPcPSv6dASLvAD7BM8hoRlWcn+6+85ZQ+ncg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794444437;
-	h=DMARC-Filter:Received:X-ICL-RepId:Dkim-Signature:Received:From:To:Cc:
-	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:X-Proofpoint-ORIG-GUID:X-Authority-Info-Out:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-GUID:X-JNJ;
-	bh=w1MSemEJM1D/SKYXOB78QWPp3WbL5Fkt44BuJYa+ISY=;
-	b=dVd9R0fmjgus3aaR2E0Kyc3Xt/9PFjwy44lagWBZ6urC+h4tg+BT2LDRphfdWHl4rUOj
-	 6AlcCfWkjc04cjUIGinLLulQPet0Kmf/nMeeiVYAexNeFbrQJsbyKymTlN5M/H+4Y9RDi
-	 6aVBZ4OvgqAwLHObQOlcEstEKAYW/SGnC6ucaJdGR/NE0z12aFmU5t1jSnAMQEkhqSlnm
-	 BeaAzgesyYiifnqOMXzSqve/a9RkMjZys+BWKOX5b6Mj+eV8UAtQ7WbNoIxXA4lG8OxhQ
-	 5e9wMIk4SKcNi6bghrtXyxGT1dl+6iAwpU08igu8+27ton3tFZXQI9BQAi37ekuE3dw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=icloud.com;
-	spf=pass smtp.mailfrom=icloud.com;
-	dkim=pass header.d=icloud.com header.i=@icloud.com header.a=rsa-sha256 header.s=1a1hai header.b=kmKcYj5f;
-	arc=none smtp.remote-ip=57.103.72.73
-Received: from outbound.ms.icloud.com (ms-2005a-snip4-11.eps.apple.com [57.103.72.73])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.72.42
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794444749;
+	b=tvXHGKbZEUttfGtddAV/BziitPifKlys5VM6WsAXaX8kOMh8fHSSifOaZHi4gAWB4wpb
+	 H9fUBo1sI/ILD1GGD+R8SwDZ8UQYLXrATlL5MDLPW1Y7masB+XVlax/hSGgdhWw6c2bfq
+	 THpFmXrp1mliKM/0fjTSJk/ZAZCDUuZWaVv7ftTM9SqaX+3UFQaQhn9P9cuS2DrYrRaJL
+	 EsngdPBlRQq+LLyVQ8AE6nsq4EBvDgvEbKiPbMU0NoHhPV9ykHy4mrISZyzzgdkwS1NIz
+	 ECxipB+/DZ1ywhCyTelIUwuxK0kgM5imaXbPOdszauX0SSi9plfS340yBQGJthqCx9Q==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794444749;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:Content-Type:Content-Disposition:
+	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=c+2q7v4zk7sUEO3AP+fJXIMJIKsmq59pOCIkKtKvzIU=;
+	b=p59Ymw88dbArr7QW5f2FBW5YSSddhkstVIjt3OCMqWkQ2yr4bcL7f12AWhh+IDcDaudZ
+	 V1AmYLzk1tdAS8NCSibHYf8jmbj0gfEAuGkR+2Rx1V38N8difpSQ13KAd963keGyHl2b0
+	 iKP8cnsGbTox+vD3AUe0foQ7qpAUoP2ZBmWUAjV2S78s57ROD6ICqmzhVU7SANEtQPDIC
+	 HniqndvSld4fKB3UGVo2E4e79pi4+asLC2PfXzF9nv+5gT7Yd4DCMOCeLy9XzuA5J6NHQ
+	 fKOezX4g7KnB38hKYmkYzuu9vDtteFnhwFQQ7oQ/8qIdiNcCSf+wYHTHmOtS5l6bW1w==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=oss.nxp.com;
+	spf=pass smtp.mailfrom=oss.nxp.com;
+	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=LIPnamAG;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.72.42
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013042.outbound.protection.outlook.com [52.101.72.42])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F86E60A2604
-	for <imx@lists.linux.dev>; Thu, 12 Nov 2026 00:47:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1F86E60A2604
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7FC3606A330;
+	Thu, 12 Nov 2026 00:52:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E7FC3606A330
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.a=rsa-sha256 header.s=1a1hai header.b=kmKcYj5f
-Received: from outbound.ms.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-west-3a-20-percent-0 (Postfix) with ESMTPS id 35A611800111;
-	Thu, 12 Nov 2026 00:47:13 +0000 (UTC)
-X-ICL-RepId: 01a1cd39-16e1-7950-8021-524aa0ca467e
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1794444436; x=1825980436; bh=w1MSemEJM1D/SKYXOB78QWPp3WbL5Fkt44BuJYa+ISY=; h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme; b=kmKcYj5fXvMBhQHP6XnuMRQN+dESlVF7BUNKj35oA06sINDxWCNuxVU5EggWUVDZK/9eBvPtkc2wfLlr3+NuTWOLTDGEEU0F9bY7DK0E1KUUbExGRjU6xtpAk1Ip1V4izoz9h9RhXl5LpeD5HqHn1ptw+lPUTQZUq6XWCrHPRIKMGP0DDr1gxQFRIeht+gfEBle1uEyjvQI3pGFkFsB8nTvCG0E7BJjglnvfmE7hoZy5QOimGAWVyAhfd8R0zFhJvymWrtMczGlpeE/Eh3DDF6ywxsJYQjMDh6HyD/0npDKWDMLLBuTSuF6LVIETPPci3B3UhSe0bQbm03T/dFAL3w==
-Received: from bigre.tail98293.ts.net (unknown [17.156.208.39])
-	by p00-icloudmta-asmtp-us-west-3a-20-percent-0 (Postfix) with ESMTPSA id F275E18004AF;
-	Thu, 12 Nov 2026 00:47:10 +0000 (UTC)
-From: Vincent Cloutier <vincent.cloutier@icloud.com>
-To: linux-media@vger.kernel.org
-Cc: devicetree@vger.kernel.org,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=LIPnamAG
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=BgE6kSC/K7GMWKF4igQ31+Y1ACCt7vgXERMfw3tJuItPDUKf2m7jsHmjFiGX4s1hJ7KaKWMCS9q+FX+LCUVAdksm1xqHKtcgcDBFrrk1pAGQU7Fe1sRDQc+bXT1vN0R4d5Ukp58Ft7llWu7ksv056wm3kchg530/jz5Xzz1VPnPuqVeOqusA3HeG8dMuw0NCBu9n5+S1DB49sq29W4ns3dlGan3ndoTjtXsppFEw+X0I16fTbmeg5kHcVh9LF5KvdwEELQud51w5RMOV0oPXWLFhkt8hfLGm1ucdjWu8LWInMzg3iEPUr/RoHK3jnlTve1eQBshtSh8iEjd0ZmaNlg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=c+2q7v4zk7sUEO3AP+fJXIMJIKsmq59pOCIkKtKvzIU=;
+ b=UNK06VUqif+aAJjCifoZi0hMr+8wm04v0RLNde0ctXp2a2MyfZOWKDbEW1Kp1hfyOP/DWvDTapMROV8ylJANa38r0SCAL+QVXaPlFzNSc8iyYsOnhRvw9GC+ECPnWBi3hIkVuTYMFs6Dc5MJhw437W4Y6gd2naLb7eRzhK0rne5JEyUMMbE61Q+kmUuKeX/AGeqFVBzC/qRA4DEGWqqZmRu6OvrljxWLzNwTE0aBTVHQAnTlpVJses2/+kDSJU2aiDJmbVOoSCDwcXcAmvcHqOh7qYTN/BjM2qsJN8cJKJFme9T3r0PNQ19m1MorqI8gbA32TlLF3QhugwmJ4ha52w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=c+2q7v4zk7sUEO3AP+fJXIMJIKsmq59pOCIkKtKvzIU=;
+ b=LIPnamAGBpxU9n/8QYpzh0rkD4ZAQZStK/3eWM0MlDG7mFFk9mdFeu8EPX3QMve6TZ8BGEuLNSttb2IcAish4RHdE51887qxUoLVnb4UKL7e4HfHdGRZeeJsCUqcy2u4eBDT+90QLnvK5Pe4p07R1e4K0JfVd70qn/9Z86gPgHgj16tS7RxTE2PAL6DGvvsnnPXKVCwvIlGnTHDdYNqOh1cI7hfW0LkuOqLPGzr9B7dK7DHYZX7IbaihyksjVr3E3G1Xga+tLcr1vmHjNKx4YsEFCVxscaOMvf2OMunoYWzBH+BYAgcxHnOPQVFOOKHvg4iz199zTfCuO+r6v9omeg==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from AM8PR04MB7874.eurprd04.prod.outlook.com (2603:10a6:20b:24d::9)
+ by WA4PR04MB775339.eurprd04.prod.outlook.com (2603:10a6:1d0:2d::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.8; Thu, 12 Nov
+ 2026 00:52:25 +0000
+Received: from AM8PR04MB7874.eurprd04.prod.outlook.com
+ ([fe80::ac38:1699:6f18:c5d9]) by AM8PR04MB7874.eurprd04.prod.outlook.com
+ ([fe80::ac38:1699:6f18:c5d9%5]) with mapi id 15.21.0615.008; Thu, 12 Nov 2026
+ 00:52:24 +0000
+Date: Thu, 12 Nov 2026 08:57:20 +0800
+From: Peng Fan <peng.fan@oss.nxp.com>
+To: Frank Li <Frank.li@oss.nxp.com>
+Cc: Frank Li <Frank.Li@nxp.com>, Vinod Koul <vkoul@kernel.org>,
+	"Joerg Roedel (AMD)" <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+	Laxman Dewangan <ldewangan@nvidia.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	Thierry Reding <thierry.reding@kernel.org>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Purism Kernel Team <kernel@puri.sm>,
-	Vincent Cloutier <vincent@cloutier.co>
-Subject: [PATCH v2 3/3] arm64: dts: imx8mq-librem5: Add rear camera
-Date: Wed, 11 Nov 2026 19:46:36 -0500
-Message-ID: <20261112004636.739749-4-vincent.cloutier@icloud.com>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261112004636.739749-1-vincent.cloutier@icloud.com>
-References: <20261112004636.739749-1-vincent.cloutier@icloud.com>
+	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@kernel.org>,
+	Larisa IIeana Grigore <larisa.grigore@nxp.com>, imx@lists.linux.dev,
+	dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org,
+	iommu@lists.linux.dev, linux-tegra@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH v5 7/7] arm64: dts: imx95: convert eDMA to per-channel
+ child nodes
+Message-ID: <avUO8DSIP03qpTkS@shlinux89>
+References: <20261111-edma-iommu-v3-v5-0-2537cebe6ca2@nxp.com>
+ <20261111-edma-iommu-v3-v5-7-2537cebe6ca2@nxp.com>
+ <avStAcZcvCRfDinx@SMW015318>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <avStAcZcvCRfDinx@SMW015318>
+X-ClientProxiedBy: SG2PR04CA0216.apcprd04.prod.outlook.com
+ (2603:1096:4:187::18) To AM8PR04MB7874.eurprd04.prod.outlook.com
+ (2603:10a6:20b:24d::9)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -75,132 +113,116 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-ORIG-GUID: OCFqYr7Pjo1O7WVFNgRWk5-Ja6V15d8B
-X-Authority-Info-Out: v=2.4 cv=EOcLElZC c=1 sm=1 tr=0 ts=6af50c93
- cx=c_apl:c_pps:t_out a=kRaGL2Q7qLiahLf3O6OaIA==:117
- a=kRaGL2Q7qLiahLf3O6OaIA==:17 a=zJRp6_cAMcgA:10 a=x7bEGLp0ZPQA:10
- a=5j__JWfIoqoA:10 a=VkNPw1HP01LnGYTKEx00:22 a=44ESNHm707DTucqp3sAA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTEyMDAwMiBTYWx0ZWRfX8Y3k0/Cx0Vhb
- Inccjb37r6h2jFAvXC+1/3v0R+NkiA3XyhJmUqfT712fzny47j7oHVcwk+Vgjp75v9XNHDBpz7z
- W82zOr0Ry/pa9+ECowoAtLu+q39HxLDXVwezp6zes0NujzhjuKkxfgBI/6zAEPKnAb5nX0d/WXc
- 0QgvPpHQtmQqFKe03ltAlYTfVWm2mwAft0lQIS0ku1GtFWLLTk3yaEVn4UO+2bA+4Qi+l8S173W
- LAweMsRxKGSCw+82BOYVwuPJ6t2MIhfaXshbA6ZzIYx7Mj7LMvN2hm63Bd93XYXP51OH3P0C7gj
- 2bof0472kWkHnoQjIFlRbJDNyT0eM58Upf9oxB91A9ejHRXmAA2LwPUR8HPsyg=
-X-Proofpoint-GUID: OCFqYr7Pjo1O7WVFNgRWk5-Ja6V15d8B
-X-JNJ: AAAAAAABT0bWZgp92u068rDpBd1Os7N/dqlUxUsAYPTvb3Tenj77CpnC3vU+9EeHCXcFsC
- 6Y3JpWFPj1XVodEZb14XtghgH6qXCtQKF3gjzhVaW73rj5iiWTG0o25NuJqerOUodGGWfN
- k4nHVF/xP0mndIPb5kMoT6tDu0Gp89eVfUCu9PzEeihNU8hXI7EzwAf4q+8DYnDS6QARBW
- 7dKSK88xHPcleXYFRY9NgBdMKArd9MdE3n5KdyyV+lLdnjxOMP5J1h0LwVFI9nRDP0RKPe
- BQ4V4C4RVh/nhm6+hJ9rUSclaPWc0wjSSdpgsQUYCDwoIbp6zE6Xv9DrUzdFORpa84N/D3
- auLjHjlrJqne95GIw3PTZA/ReYXqK57p7roKGUiNKcXwPO0yORGbzN6Ul6qVXnftnWXXZ0
- coz75iwVXG8oKE+GYilGcfyQgkxnLRk80JNAPkcpBcz+jOsJGua4ZB+cPMXrAex02VcP+8
- 7PBEkmWrPB+m2BcZOY0Esq2KskSXiNEULeuy9h9iT9uG7VS1SDBIqvEBXRgTA+Q5FBJjz3
- VBRLSRxcRxAMefylufoGd1K5l74V+BvYC3gKrrpqacf5VcSWUwsW0HnKXpTBYe6F43a5So
- j5Q3RjqBLYqjLTCs5EfI5E3tmw5TI88Vaxwri7934nVaL5zn30ED/FFWRDsdRMlDpilrUA
- 09FXRoZc4XNsvqXOhaDuNVYwQwq81bk7nCtyDDgALq/nYhTELDU8YINpLASkgdjh5e9VVR
- Ew3z2NnXmKDXSxyGQUdc3ZDZ2/iJX8cA17Wl+LIJkYA8tQRvFKBAu7gWcKuskLR/kmplW2
- GUHFx/XEYHdJ1rISLhwx3c36APk8XDr2t4yqcUl9bGwtmjCyMR9MtIy5UGAN+6sxiymq14
- wNBB2F3kHJI3Nq2TSgMstHpC+zBw==
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM8PR04MB7874:EE_|WA4PR04MB775339:EE_
+X-MS-Office365-Filtering-Correlation-Id: f3ba3f1a-8d6f-466b-d610-08df40573772
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|1800799024|23010399003|376014|366016|7416014|18002099003|22082099003|11063799006|4143699003|261102123227099003|261021123027099003|261026140227099003|261028144727099003|261021121427099003|56012099006|261022105027099003|261009223027099003|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	up6I7xbTWMQb3eFgws04VpMxi1GEExFoBsciFNfvfuwFWYspCfXB5rKtyYp363qEi0NoR8fy7h1tkhTsw49HQK1ULSp7TjPt5Im0CukP2OYWON6iUupUQ4Rr8hSJ0z/JgzUsCa3MThuD3bK7VGsNiqRmbq4s4WiRlygKgXjpgLobdmelP7seDPuwy6coBU1QmwIkFl2t/6Dg4H5GHOuOGs4IddHsyOjyPFV9XzqLyIcI8tAXgxeC6+v+73tV5OVQ77xLGrNiN5Mu5yPooS0NEtUcCkJeZftov9Ah1+ZGxhMgP9Lc3N0J9wHkaze9gqSDNwhcSwFpQX2BbRUcK2ixREr1ZMOFtj/iryhk9uIq1AgInzHCTAF288+kiyWkXrMFOXOpP5UgKXl1AeT9Z/YbqYblVjWL6x3XJKR3HwEwV/BjEa6MZ9eWb+UiNLMJdB2fzJviKWRlgyWTquyRBN6k4iC5Vr32BCUo5umXfp0CckRC3LubHuqaeB/tXlAX9bWKd91B/YLkcX4W8ALkqUX7bAIDIQAxzd/II+5UL/U9bZhzCvUikvgaEeRqrxJx6ZHiKAnj+JiJvC0eVQDIZTfc4GmGg9kL5YocgwRDZoF8m+8=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7874.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(1800799024)(23010399003)(376014)(366016)(7416014)(18002099003)(22082099003)(11063799006)(4143699003)(261102123227099003)(261021123027099003)(261026140227099003)(261028144727099003)(261021121427099003)(56012099006)(261022105027099003)(261009223027099003)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?6eBHEWqh+Nc6uoMftBr+F6aIl3SnjLe5M8LcqAtoBna66btN8lcpZWjPVNzP?=
+ =?us-ascii?Q?8Uu6gJJpdAEfgaqm7eWTBiPFEOtgITRYOLrI2DA39WCuiIM7c7auMp/q6XA5?=
+ =?us-ascii?Q?UYVDqqSVI9ZvsL6dZPWQiaLPq6x1tbrYQVhCjAZ8IqFTx6Fx43ikyI6lIi6C?=
+ =?us-ascii?Q?fQcNK1ztgNw3234FuqTsFYvU9PAvOcVlCwZPLLVQ1JVMFRy/ZreGkamYdxNO?=
+ =?us-ascii?Q?xcY2iUisZdA3flLCPDFshG528Nn4kVPf/vNHGKrHAXktn1ZBdMTJBBUT1gsv?=
+ =?us-ascii?Q?cUvT4WxrWr4wqpKhwQrqHqVkWcyXX0DMX6HBwUWqf5jhfJaAn4Vw1GikLhpP?=
+ =?us-ascii?Q?feaxW5/q/zCazitr0CS9pKRzDP88XUIyNUDKNhLwpBGAX258Uo1iQM/6X0J7?=
+ =?us-ascii?Q?WF2gQzFryQ3oKoM0j8J5pAHy3iZ2J3jLBaUBI+8rCtI8kdo1KwWsHNPQZue/?=
+ =?us-ascii?Q?nQpqaTcJRwRWiibRuHxj8blsfJJjhaBFUFT8KBsLlNdjfSsJ7l/GGpq6DaKg?=
+ =?us-ascii?Q?1UVRVywvmIIOo0p23Xav2/Pqi9zQMphdhAREdQJtfmlcUttfSLXxDCXjTjCO?=
+ =?us-ascii?Q?2S/eTZzxN8ZJXhFaqqFqpGQj5MipwnGW234P3L12sonJ3RUZtfOzCDSFaY8J?=
+ =?us-ascii?Q?MVf05SmjxhyLyIjHyeR20YEJGh+bQA8v89syKjHaAdipHzmQ54nRsJyvpfJg?=
+ =?us-ascii?Q?MG5O6VfdCLxrogrvcyo2kTCxlSbD0Xej59KPx1s4JQhKQ23Nx2JnAt8jNbVD?=
+ =?us-ascii?Q?nv7tGw4p3LMgNwHJA6i3/+F59fQkopxm+GILKIotfk/YjVt8jDnCaZ+Tmrg/?=
+ =?us-ascii?Q?i3ESzYk1Zhp9z4C1bZAMYSNYqQyEMLnbIE/esgzw7hgtHBFYsFFgiYdubov0?=
+ =?us-ascii?Q?y95J1+tnCOYYLU13creeulGVm8KwU8Raz2lCnvWV/XfYzTsXPJeYw0BaK6GO?=
+ =?us-ascii?Q?yNzqV/Zv2nEpi4sKTfjp8LgmH/+Z57W9VwyWC32RiGX1+rpumg2Gm0EoNoxJ?=
+ =?us-ascii?Q?R4MgFvtONUmeQrppmIGajH8OgpAkxQUTJdTJv7TSpNkmqQ9xVxyfV8ymrCEn?=
+ =?us-ascii?Q?HNkhC+H9iofEej+WErdFeXZzK750HvWS5vMw6hcyevDnkEHQyHSZJV/Tzcdv?=
+ =?us-ascii?Q?M914ynwQBH4iQP+6wrx/8KcCMddCA+d2zTOBdIYc7eHjh7C8bp+NIYBNbRp7?=
+ =?us-ascii?Q?3peFLJVqRUjyPqH2cvzzz6mHemM8xxgQiEtgx9ZOYIU8Xud7oMV4HtgFY03n?=
+ =?us-ascii?Q?QNnKC07QCU9l/WSJNIkh3JEVMCuXH/haX6aBdyNHjYefJpcnj00CnP27oFXx?=
+ =?us-ascii?Q?/n4uGBAwNxRTtNKwHu3YbgGoluS/mNwuU2DTGO4d3GGKlbOOdgKGJ54HBcIt?=
+ =?us-ascii?Q?SCVgXeRA6eKAo8Blz+hH5eio0Nv7g2TK5VQSCYsojNUNiCulpVEma5OX+dMx?=
+ =?us-ascii?Q?SdCYWwRk48YIgNu78yoI9oTFHMZuk3fslloeVV7q9tjMUwaohMZGExYfyTcm?=
+ =?us-ascii?Q?i5O2MbvXR/j7DSdhCqYofxvpJkEAkZmV0a0GsJvi9ECkfxRBGBCk/TmekgSe?=
+ =?us-ascii?Q?xCz9zgbAtKdxE/kYcSkxHWJdLovHaGZUu8QvboC6BV+l4rWPs0haw3HW88Te?=
+ =?us-ascii?Q?z/OemyJG0TKSb1is68g6hBxtcJi6QK5c9ZPeIyHnSBEvPtjV0dZGL8T0kyjC?=
+ =?us-ascii?Q?0tDO258oNPXM35JiphGe4H01m/VG4JGYbCdFD2xLQp/ieekTYl+tv/fIoXsR?=
+ =?us-ascii?Q?1iG6jwa3NhsuqtgUddECubyvqBUm/rhrRhIK5lcyS+TGCgQ33Dva?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f3ba3f1a-8d6f-466b-d610-08df40573772
+X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7874.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Nov 2026 00:52:24.8066
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3lLwbt0nwBDPluuvC8sPeH1wFqNBZTUx4JttmvujYgjr4aXHlPhG2F83Kb4P7zsZgyHBXxR1ZYxN2Zn4+LPsQx8aTHgyiC2b5uhybExCnRy2EP7m8A7rvWWxIBxsymZM
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: WA4PR04MB775339
 
-From: Vincent Cloutier <vincent@cloutier.co>
+On Wed, Nov 11, 2026 at 11:59:29AM -0600, Frank Li wrote:
+>On Wed, Nov 11, 2026 at 09:47:35PM +0800, Peng Fan (OSS) wrote:
+>> From: Peng Fan <peng.fan@nxp.com>
+>>
+>> Convert edma2 and edma3 from flat interrupt arrays at the parent node
+>> to per-channel child nodes (dma-channel@<addr>). Each child carries
+>> its own reg (real per-channel MMIO region) and interrupts property.
+>>
+>> edma2 (64 channels at 0x42000000):
+>>   - Channel N at 0x42010000 + N * 0x8000 (size 0x8000)
+>>   - Paired interrupts: SPI 128-159, two channels per SPI
+>>
+>> edma3 (64 channels at 0x42210000):
+>>   - Channel N at 0x42220000 + N * 0x8000 (size 0x8000)
+>>   - Paired interrupts: SPI 256-287, two channels per SPI
+>>
+>> edma1 (imx93-edma3, 31 channels with 1:1 non-paired interrupts) is
+>> left unchanged as it uses a different interrupt scheme.
+>>
+>> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+>> ---
+>>  arch/arm64/boot/dts/freescale/imx95.dtsi | 774 ++++++++++++++++++++++++++-----
+>>  1 file changed, 646 insertions(+), 128 deletions(-)
+>>
+>...
+>> -					     <GIC_SPI 156 IRQ_TYPE_LEVEL_HIGH>,
+>> -					     <GIC_SPI 156 IRQ_TYPE_LEVEL_HIGH>,
+>> -					     <GIC_SPI 157 IRQ_TYPE_LEVEL_HIGH>,
+>> -					     <GIC_SPI 157 IRQ_TYPE_LEVEL_HIGH>,
+>> -					     <GIC_SPI 158 IRQ_TYPE_LEVEL_HIGH>,
+>> -					     <GIC_SPI 158 IRQ_TYPE_LEVEL_HIGH>,
+>> -					     <GIC_SPI 159 IRQ_TYPE_LEVEL_HIGH>,
+>> -					     <GIC_SPI 159 IRQ_TYPE_LEVEL_HIGH>;
+>>  				clocks = <&scmi_clk IMX95_CLK_BUSWAKEUP>;
+>>  				clock-names = "dma";
+>> +
+>> +				dma-channel@42010000 {
+>> +					reg = <0x42010000 0x8000>;
+>> +					interrupts = <GIC_SPI 128 IRQ_TYPE_LEVEL_HIGH>;
+>> +				};
+>
+>where iommu informaiton?
 
-Add the Librem 5 rear camera sensor node and enable the second CSI-2
-capture path that receives data from it.
+The shared stream id patchset [1] is still under reviewing, so not add iommus
+property.
 
-Describe the Samsung S5K3L6 sensor with the upstream binding property
-names, including reset-gpios and the link frequencies used by the initial
-two-lane RAW8/RAW10 driver modes.
+But the two patchsets are orthogonal. This patchset just needs [1] to test
+shared stream IDs, otherwise stream IDs will be exhausted.
 
-Signed-off-by: Vincent Cloutier <vincent@cloutier.co>
-Assisted-by: OpenCode:GPT-6.1 Sol
----
- .../boot/dts/freescale/imx8mq-librem5.dtsi    | 51 +++++++++++++++++++
- 1 file changed, 51 insertions(+)
+[1]https://lore.kernel.org/all/20261030-smmu-shared-sid-ver7-2026-10-26-v7-0-961726ebd6ab@Example.Com/
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-index a212c031d4c6..25e3e6736181 100644
---- a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-@@ -319,6 +319,10 @@ &csi1 {
- 	status = "okay";
- };
- 
-+&csi2 {
-+	status = "okay";
-+};
-+
- &ddrc {
- 	operating-points-v2 = <&ddrc_opp_table>;
- 	status = "okay";
-@@ -435,6 +439,13 @@ MX8MQ_IOMUXC_ENET_RXC_GPIO1_IO25	0x83
- 		>;
- 	};
- 
-+	pinctrl_csi2: csi2grp {
-+		fsl,pins = <
-+			/* CSI2_NRST */
-+			MX8MQ_IOMUXC_ENET_RD0_GPIO1_IO26	0x83
-+		>;
-+	};
-+
- 	pinctrl_charger_in: chargeringrp {
- 		fsl,pins = <
- 			/* CHRG_INT */
-@@ -1176,6 +1187,31 @@ vcm@c {
- 		vcc-supply = <&reg_csi_1v8>;
- 	};
- 
-+	camera_rear: camera@2d {
-+		compatible = "samsung,s5k3l6";
-+		reg = <0x2d>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_csi2>;
-+		clocks = <&clk IMX8MQ_CLK_CLKO2>;
-+		assigned-clocks = <&clk IMX8MQ_CLK_CLKO2>;
-+		assigned-clock-rates = <25000000>;
-+		reset-gpios = <&gpio1 26 GPIO_ACTIVE_LOW>;
-+		vdda-supply = <&reg_vcam_2v8>;
-+		vddd-supply = <&reg_vcam_1v2>;
-+		vddio-supply = <&reg_csi_1v8>;
-+		rotation = <270>;
-+		orientation = <1>;
-+
-+		port {
-+			camera2_ep: endpoint {
-+				data-lanes = <1 2>;
-+				link-frequencies = /bits/ 64
-+					<537500000 600000000 625000000>;
-+				remote-endpoint = <&mipi2_sensor_ep>;
-+			};
-+		};
-+	};
-+
- 	bat: fuel-gauge@36 {
- 		compatible = "maxim,max17055";
- 		reg = <0x36>;
-@@ -1227,6 +1263,21 @@ mipi1_sensor_ep: endpoint {
- 	};
- };
- 
-+&mipi_csi2 {
-+	status = "okay";
-+
-+	ports {
-+		port@0 {
-+			reg = <0>;
-+
-+			mipi2_sensor_ep: endpoint {
-+				remote-endpoint = <&camera2_ep>;
-+				data-lanes = <1 2>;
-+			};
-+		};
-+	};
-+};
-+
- &mipi_dsi {
- 	#address-cells = <1>;
- 	#size-cells = <0>;
--- 
-2.56.0
+Thanks
+Peng
 
+>
+>Frank
+>
+>
