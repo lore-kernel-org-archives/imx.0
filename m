@@ -1,52 +1,69 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=178.251.229.89
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.194.8.81
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794552255;
-	b=UndDzgbp4pVJDmB5IZJiy0tWhPxuVa0OahxHnGO9mQAarM2C52eYt36YD8Mosj2M+SD4
-	 5MKgjgY35jkHN5KdeoxdAjR1MvZ4ryZHHpsuAzgGz+uhpes18b1bOtFcEnbpXAquEfXpK
-	 nh9lWGldCxVClY5mCleo5Rei6yd30M6SGAzxafpjNSNjPSRrGX1Ati9rqG8HVDreWA4XQ
-	 KGeQ7DbraDgbo5i3SgfYpxaLBRHbxaI8fWyT4/XL5i5+lh6H5PRDOO/vKtJ2vPFB8Q8JR
-	 XXT65njKB5SuiuXl55Jnnm6g3B6szA00C1ObWm8oXVH/WSyy5CJyMD7DuAA8zIu9SKg==
+	t=1794555103;
+	b=LZcvViX7ix40fXZEBQnYFItN6R3qUFNzm4Wt+b6glbGSUnv/ylQxpAc/NaLPh6xiY7EJ
+	 2jjJa6bmYDIR6CB2fVHvkEXOmo3KERsEYMhXtFElmRVkKDny0nhtf26M4L0bx9wGDPW7B
+	 19HLNXFeziesSe+l4o7WD+mY7Ce2g+32CoHqNf/H22TjmBGW2jUwXdp6FpeDJj0YgI89S
+	 iv2bV78Cvo8vZdFyDwaMIdXGSPT1rjpHmpK0cg8yZLEyhCxu3XsCvG6/DmbDWytHH8b+2
+	 HKzE1E5vOSehowe4VTBXEoLipaZAuMr+qek4sdUfl8ssZrvX2g/3Vh3uMP8t1tg0/7A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794552255;
-	h=DMARC-Filter:Received:DKIM-Signature:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-Last-TLS-Session-Version;
-	bh=tVqWo4cVCxBufMJRq8N/ZAqWxdIZ0UAwob+ppyXcu3U=;
-	b=a46qP+tqiYoxQzFXYTaz1imVRE/KPNwTu127FLXt5MhygEIdSCod7FAOz62DsM3hhYxj
-	 PjSnJCehffV0XgH2UbHHMWUw/wDNqANPPDvh0QrdAVqCyDCH217Yiy8wbEekrhNLbOf+F
-	 VDZDHnPO/J4X/sNGdoRhgvRTszglQJp4Cva9gOqh4/LLzwpxSOvSx4UmrSoP8fU+BUkvY
-	 Ks5wO+vTYMOd9jtGDv+GGFRAiaLtuB/VIVFScSt3sIdQ/pcNzy4c6q509YgMpKwdcaFBO
-	 hOjqTncX6augVS0wk4zC4K1nqCFhg7GVz0cvKO1ilvGPh6ogybElcVe0owPrnXZaGhw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794555103;
+	h=DMARC-Filter:Received:DKIM-Signature:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=a8dwXPHMPfCbtdhYZUDcAPyhoTp0Li9Sm++J9+wQ2hg=;
+	b=PK08LxdjEWQnGY9f79sfQyAYiVZBtc5jvAO4pGORKH0izRhzBKOa+RB0tE0GvyxGQjjM
+	 1WbEUpspw6Zyh5enH+6NALv149XWk3gXJXAlH0ld9qnLfNpgZrwY+eq9lrYqakHswtZIb
+	 Mht+ZXi9mrwE1Ms9/5LhTMa+qxohspImhK7GjoWB4BvL5hIcwly0RHLNjUk/Uj0LjCdf2
+	 f2jGoG6H4P1IsUW+kg+33nFgsYfBU2GyLuzlXRqnmAp7X57ZACO5UAVk3yNc0OA8ZwRp+
+	 6b+D13bea6eRlMXcieUQAhJ3CiRy9dKVUgsW/Jh9p76mImj6FGOPSNGc0r66yLBhSKA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nabladev.com;
-	spf=pass smtp.mailfrom=nabladev.com;
-	dkim=pass header.d=nabladev.com header.i=@nabladev.com header.a=rsa-sha256 header.s=dkim header.b=BJqKcKPQ;
-	arc=none smtp.remote-ip=178.251.229.89
-Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
+	dmarc=pass header.from=dolcini.it;
+	spf=pass smtp.mailfrom=dolcini.it;
+	dkim=pass header.d=dolcini.it header.i=@dolcini.it header.a=rsa-sha256 header.s=default header.b=DY9VXQ9g;
+	arc=none smtp.remote-ip=217.194.8.81
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37D66606A8B8
-	for <imx@lists.linux.dev>; Fri, 13 Nov 2026 06:44:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 37D66606A8B8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FB50606A321
+	for <imx@lists.linux.dev>; Fri, 13 Nov 2026 07:31:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0FB50606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.a=rsa-sha256 header.s=dkim header.b=BJqKcKPQ
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BF69C10E6A8;
-	Fri, 13 Nov 2026 07:44:08 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1794552249;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=tVqWo4cVCxBufMJRq8N/ZAqWxdIZ0UAwob+ppyXcu3U=;
-	b=BJqKcKPQIyZTHht8rnp6/wF4liFZJl+SeRXYchiuCNM0JlAXNdmnQ8QQAwxj1Xl/fh+dfA
-	UVlBqScY20LOgjyzSZltMux4qMdC6oWcMAb48KMaLFR6jlc4nnt4SSuhLJHo75/qhYCiar
-	w24XUFfKEw7tRLbY/dapb6u4EY5yi3j1oGua08eHOAxheFtmAhzzxsCupzsS5jkDebEHup
-	a4oALLWDRN+pOvhgRr/4TUUeg2QcasWfbxXt5jz3K6gHOmz3ISlBS5uHQ5Bt+9PSt0krTi
-	97pE7tLSUHuRHslkfSHhRVgDWKPoUgCFmMkviVzb/JH1kxCejXx331gy8g5YPw==
-Message-ID: <d218212f-191c-47cc-843a-d4587e478fc0@nabladev.com>
-Date: Thu, 12 Nov 2026 18:13:53 +0100
+	dkim=pass (2048-bit key, unprotected) header.d=dolcini.it header.i=@dolcini.it header.a=rsa-sha256 header.s=default header.b=DY9VXQ9g
+Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id 26417227AD;
+	Fri, 13 Nov 2026 08:31:39 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1794555099;
+	bh=a8dwXPHMPfCbtdhYZUDcAPyhoTp0Li9Sm++J9+wQ2hg=; h=From:To:Subject;
+	b=DY9VXQ9goHKAVqWr8PfX1MtVIeeN2mOlbRRYpfI3rFmaWdvnuPGoEQb0j71qf65fQ
+	 SipdsSUlhQjaWUUYT8TVtx7rWSK6EMCaZYOjR2ELbcueb/lhIcNfrwTpyJnHnizRnn
+	 2HA+cxrkSuX9qVZkiVuq8MKRfAFY60DEvE9XIQJn5LFtd1/eniXZ3xQTmda6u1t/yg
+	 Aai5Cl8uCZ+qrWufRJY6pQV0vDtETVgQHTTgwX8C/0NirWv8Gadb7khoXz9kEw1gJP
+	 tvVb3QZK5Em9ZSCkXcd0mHQAhD6WSuEEtSef+BEZme2DxxX8T9h6mDDk6556WOgz1R
+	 QWBPZJehhQRlw==
+Date: Fri, 13 Nov 2026 08:31:35 +0100
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Frank Li <Frank.li@oss.nxp.com>
+Cc: Francesco Dolcini <francesco@dolcini.it>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, linux-bsp@toradex.com,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 01/11] arm64: dts: freescale: imx8mm-verdin: Add SPI
+ alias
+Message-ID: <20261113073135.GA8515@francesco-nb>
+References: <20261112150236.164850-1-francesco@dolcini.it>
+ <20261112150236.164850-2-francesco@dolcini.it>
+ <avXeK-IRXbKqI-pc@SMW015318>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -56,39 +73,67 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 1/3] dt-bindings: phy: ti,tcan104x-can: Document
- Microchip ATA6563
-To: Vinod Koul <vkoul@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org,
- Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
- Aswath Govindraju <a-govindraju@ti.com>, Conor Dooley <conor+dt@kernel.org>,
- Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Marc Kleine-Budde <mkl@pengutronix.de>, Rob Herring <robh@kernel.org>,
- devicetree@vger.kernel.org, imx@lists.linux.dev, linux-can@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260930214729.809649-1-marex@nabladev.com>
- <d8c3ca76-3d93-4abc-8a78-d23e0f018975@nabladev.com>
- <auGdT2kdxwfbB_ol@parshuram>
- <0865fe86-3ea1-4ebd-8ded-642eff159b97@nabladev.com>
- <avXqWxBQBK2lKPMv@parshuram>
-Content-Language: en-US
-From: Marek Vasut <marex@nabladev.com>
-In-Reply-To: <avXqWxBQBK2lKPMv@parshuram>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <avXeK-IRXbKqI-pc@SMW015318>
 
-On 11/12/26 5:33 PM, Vinod Koul wrote:
-> On 10-11-26, 14:59, Marek Vasut wrote:
->> On 10/28/26 7:59 AM, Vinod Koul wrote:
+Hello Frank,
+
+On Thu, Nov 12, 2026 at 09:41:31AM -0600, Frank Li wrote:
+> On Thu, Nov 12, 2026 at 04:02:23PM +0100, Francesco Dolcini wrote:
+> > From: Francesco Dolcini <francesco.dolcini@toradex.com>
+> >
+> > The Verdin family pinout defines the SoM interfaces and their
+> > numbering, SPI_1 being the SPI bus available to the carrier board,
+> > implemented by ecspi2 on Verdin iMX8MM.
+> >
+> > imx8mm.dtsi numbers ecspi2 as spi1, so the Linux bus number in sysfs
+> > and the spidev name do not match the Verdin interface. Add a spi0
+> > alias in the SoM dtsi and delete the inherited spi1, so ecspi2 is
+> > bus 0, zero-based with SPI_1 being spi0, and carries a single alias.
+> > ecspi3, internal to the SoM with the CAN controller and the TPM, keeps
+> > the spi2 alias inherited from the SoC.
+> >
+> > Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+> > ---
+> >  arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi | 2 ++
+> >  1 file changed, 2 insertions(+)
+> >
+> > diff --git a/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
+> > index 1ac9d000d415..0369803a4d46 100644
+> > --- a/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
+> > +++ b/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
+> > @@ -16,6 +16,8 @@ chosen {
+> >  	aliases {
+> >  		rtc0 = &rtc_i2c;
+> >  		rtc1 = &snvs_rtc;
+> > +		spi0 = &ecspi2;
+> > +		/delete-property/ spi1;
 > 
->>>> +CC Vinod, is this patch OK with you ?
->>>
->>> Looks good to me, I will pick this after rc1 (monday)
->> I would like to do a brief reminder here, so this won't get lost, since rc1
->> is now out and I don't see this in dmaengine.git.
-> 
-> I have picked it up in phy tree...
-Thank you !
+> Can you avoid delete property for new platform?
+
+Unfortunately this is needed. 
+
+The included imx8mm.dtsi has
+
+  spi1 = &ecspi2;
+
+so, without the /delete-property/ we will have both
+
+  spi0 = &ecspi2;
+  spi1 = &ecspi2;
+
+and what is happening with that is implementation dependent, and this
+would not be ok.
+
+The original issue is that imx8mm.dtsi should not define the aliases in
+the first place, unfortunately removing it now is no longer possible,
+it will introduce regressions everywhere [0][1].
+
+This issue, and the reason I have the delete-property, is already
+explained in the commit message.
+
+Francesco
+
+[0] https://lore.kernel.org/all/20250425-dts-imx-aliases-ethernet-v1-0-15b9d5cca611@linaro.org/
+[1] https://lore.kernel.org/all/aca3addbe510c58524af8d3fd069fe2ae4b1cd24.camel@pengutronix.de/
