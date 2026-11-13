@@ -1,75 +1,76 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=178.251.229.89
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=180.181.231.80
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794575040;
-	b=SNKI4RXf4c8WGBs6dAe30qAisf161ReJOmDfTOCG2ruwN5q4ZYO0hZIxT/qv+qze+Ric
-	 I4gAJoRAQrBr6HCgbBcPRlISMBTg6eqDeUdAEK8SiclJfmjJOKhEb+k2mf2zz+JFCFH2T
-	 6HavwPF4pppNDT0+HJ0cIcm2KbKcPCwDYzzmT3PP078We2wan67PLZmy6i+3j3ahm6MVY
-	 43nzLmoywX2VIF8qv3+UbtYDu+C2z5DAS6q3/o10RqleY/cY90+iONowqGxFGe/hCo/Lr
-	 Njc1nd8+fAFSdJNbhZ4sM/TwfN5jMZUFzNJ5Ot+ACtRwCJ7V/ayUfpXaNc6+G21Zz7A==
+	t=1794575112;
+	b=dpOP7LJ4wQG2sq5uAtdAPcK44GdFXT4+Ro0xS7bOAlYfgI8ymFhFzQ6l2PxFymqy6oDM
+	 6s37wgvP3VWPPbPjnVOqgLqx4GiJ16aM7z8kcyXis8Z5rW1Wk/kYTsxG6Jz9hf69qIT7L
+	 RoxHDB1MM5uuH3qJFO9lccHOSywUNWNymKEbMo43iaQkesMCYajJYhvAoM5U51AewbQhj
+	 f0Sn8zO+cBY2Me/u+kiRQbyiExkGNFPu+4/RJwEcnt64c9JVvt4j/gnG7o+TUXuEyKYyI
+	 XTa4Qti966gp9/bfdOhgvfwfUBHkaen/VnJm7BPYw4IxI2UAL/p1wo2JbomtHq9GmsA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794575040;
-	h=DMARC-Filter:Received:DKIM-Signature:Date:From:To:Cc:Subject:
-	 Message-ID:In-Reply-To:References:Organization:X-Mailer:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:X-Last-TLS-Session-Version;
-	bh=qM+JJUMO/DvUphb/pAgQlCfxP7Oeza0K3hU8lNMJhDU=;
-	b=1abxL+GzlwcCOThjTiiRY+P+vOZWDa+WYMhr9FTBwSBS5LPbWDro+55lPpcUO5GvxW73
-	 b0zjfqgvbzOHOCBIVLB8dkddI9khQEJEuqWzuv0qNba3JMYOJ/jKyScqpjoD7aV9fe4UV
-	 S+ikLFEwY0HHchXUpdR02kkEaTwsOzRRW4AEYsRsrvimtdnqKgTqpymLEfqUUGJb2XeQb
-	 zqlrZ5GCRyzjYMxYCJKmEtlkDMT2zLFYwFFoTjv2q0Apl+CUg3I2eX4loVUYH5Rb6bcR0
-	 zIb9uo6tXPesCSolC6osgvW9MIw4ed96LPKVInpQETktjcxCUjwSGKKB3l7b8Lcy7Fw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794575112;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=sBw3P7XEecuUSrnOX7EuT/qRSUKWDAXXiFgzDBf5980=;
+	b=ax4mn1jRqzxQkNGiwLOFyhQahZLWqtZGtWqDH5MqFJtWRHWJdxJu3VG6rD7xyLZJyI50
+	 Zy2Pg15DAPe25w1Ju7qFIJopGpt4/9Qgdh2IsvSV0nBtlqgNYC3/ktY1s/dQj5+QE0jUF
+	 ksm4baQlJBNu6B36mfe5tgLF3S0gstfj6p3CxwnIcb0damz7AhcAAw/2oDbObuNxdIeA2
+	 +412Dv/zGR1ZJTnlh4EhDdQVydZC3mWPnrEw6UHt9ri+O0zUaSo38toqnIArYV1HjCeip
+	 pOR4sEH4JX1lCZy+t5dFBvyFU9Q8/y8h+ONufWVHLKnFoCq/x9QnTcLzJoDvik9OtBg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nabladev.com;
-	spf=pass smtp.mailfrom=nabladev.com;
-	dkim=pass header.d=nabladev.com header.i=@nabladev.com header.a=rsa-sha256 header.s=dkim header.b=UvuVUa7c;
-	arc=none smtp.remote-ip=178.251.229.89
-Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
+	dmarc=pass header.from=gondor.apana.org.au;
+	spf=pass smtp.mailfrom=gondor.apana.org.au;
+	dkim=pass header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.a=rsa-sha256 header.s=h01 header.b=BG6GxORi;
+	arc=none smtp.remote-ip=180.181.231.80
+Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A201C606A32E
-	for <imx@lists.linux.dev>; Fri, 13 Nov 2026 13:03:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A201C606A32E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47819606A88F;
+	Fri, 13 Nov 2026 13:05:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 47819606A88F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.a=rsa-sha256 header.s=dkim header.b=UvuVUa7c
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 34D5810CF8A;
-	Fri, 13 Nov 2026 14:03:51 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1794575033;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=qM+JJUMO/DvUphb/pAgQlCfxP7Oeza0K3hU8lNMJhDU=;
-	b=UvuVUa7cmd3z5dqWVM+R3nfaphFNNfAHsr+yBVbsjouZ9UT6f18G+NOJTrT1OxSGC6fNsd
-	tWjClbnzcAJmjBolotlVRrW340sfSZzYfKIMSQ+ZOog0jm6cDAi3fkASbSG3eAGQsJN7fy
-	2Ilmw1M4y8/aQlE/VcLZU6oSvyJEnZereoovRu/MJTqTCWOB8Sm56zVe3DYsIUSyQN0uP2
-	4hoh4k8u0rcV+6rD8h2an7g9PqsMYTbY5ooLN5at+ACOnoiKl8kVcqx5jZ8jU9vERFaNOS
-	uYGl56ZtweWqSUxCFQ69v1iigjunoXl8QqbwcxyUI7L9pP78GuDOPm3fiOCvww==
-Date: Fri, 13 Nov 2026 14:03:50 +0100
-From: =?UTF-8?B?xYF1a2Fzeg==?= Majewski <lukma@nabladev.com>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, Sascha
- Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
- <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Shawn Guo
- <shawnguo@kernel.org>, Guenter Roeck <linux@roeck-us.net>, Daniel Baluta
- <daniel.baluta@nxp.com>, Jonathan Cameron
- <jonathan.cameron@oss.qualcomm.com>, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/3] dt-bindings: trivial-devices: Add National lm77
- temperature sensor
-Message-ID: <20261113140350.5c192ca4@wsk>
-In-Reply-To: <45881f93-3f30-49e4-98cb-677814b85664@kernel.org>
-References: <20261112163703.3358164-1-lukma@nabladev.com>
-	<20261112163703.3358164-2-lukma@nabladev.com>
-	<20261113-roaring-relaxed-oryx-5cfa1e@quoll>
-	<20261113120947.6c9fb820@wsk>
-	<c6095d41-09a4-4928-a55e-f4af7a5509da@kernel.org>
-	<20261113132231.631638ad@wsk>
-	<45881f93-3f30-49e4-98cb-677814b85664@kernel.org>
-Organization: Nabla
-X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key, unprotected) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.a=rsa-sha256 header.s=h01 header.b=BG6GxORi
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
+	from:content-type:reply-to; bh=sBw3P7XEecuUSrnOX7EuT/qRSUKWDAXXiFgzDBf5980=; 
+	b=BG6GxORi3Hgn6fmiF3iJoLXnALrcRu7/DWSuWkLSjwtM14z1LDCE9Pk+ohHHk7Rw3LKZ6mI6G9o
+	vLbHQV1Dg3af3NiYd5QQpUFvjTVoz+W9pHNiX8eA531UB4Gu4oxChZRqjaMrqpmYCFI9lDTIxa7i/
+	IDPl+d6U6zkc5sMVwafPfqRM4zeeqZIECnDDJ4gQIDsC/OcYv7Y29VsS4EWmtT3GYFgSQhLYQ9k7m
+	HTEhtyrfTmMVgrXiqaB5B9CpIkkf6E5oIvC79IjGm/g2jLc5gTFI9Q+lP7bZlY5EIYEBknZm4oCDK
+	jaICX6gwvaTmuWHOrMgW2evLXVqir8trjFwg==;
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.98.2 #2 (Debian))
+	id 1xRqxO-0000000EfDG-00ou;
+	Fri, 13 Nov 2026 21:04:43 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 13 Nov 2026 21:04:41 +0800
+Date: Fri, 13 Nov 2026 21:04:41 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Frank.Li@oss.nxp.com
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Bartosz Golaszewski <brgl@kernel.org>,
+	Jia Jie Ho <jiajie.ho@starfivetech.com>,
+	William Qiu <william.qiu@starfivetech.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	T Pratham <t-pratham@ti.com>, Thorsten Blum <blum@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>, Pan Chuang <panchuang@vivo.com>,
+	Maxime =?iso-8859-1?Q?M=E9r=E9?= <maxime.mere@foss.st.com>,
+	"open list:CRYPTO API" <linux-crypto@vger.kernel.org>,
+	"moderated list:ARM/Microchip (AT91) SoC support" <linux-arm-kernel@lists.infradead.org>,
+	open list <linux-kernel@vger.kernel.org>,
+	"open list:QUALCOMM CRYPTO DRIVERS" <linux-arm-msm@vger.kernel.org>,
+	"moderated list:ARM/STM32 ARCHITECTURE" <linux-stm32@st-md-mailman.stormreply.com>,
+	imx@lists.linux.dev, vkoul@kernel.org
+Subject: Re: [PATCH 1/1] crypto: use dmaengine_desc_set_callback()
+Message-ID: <avcK6e1eMqcyW66R@gondor.apana.org.au>
+References: <20261102164538.3834039-1-Frank.Li@oss.nxp.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -79,57 +80,40 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261102164538.3834039-1-Frank.Li@oss.nxp.com>
 
-Hi Krzysztof,
+On Mon, Nov 02, 2026 at 11:45:30AM -0500, Frank.Li@oss.nxp.com wrote:
+> From: Frank Li <Frank.Li@nxp.com>
+> 
+> Replace open-coded assignments to callback and callback_param fields
+> of struct dma_async_tx_descriptor with calls to the
+> dmaengine_desc_set_callback() helper across various crypto drivers.
+> 
+> No functional change intended. Prepare make to struct
+> dma_async_tx_descriptor private to the DMA engine.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  drivers/crypto/atmel-aes.c            | 3 +--
+>  drivers/crypto/atmel-sha.c            | 6 ++----
+>  drivers/crypto/atmel-tdes.c           | 3 +--
+>  drivers/crypto/img-hash.c             | 3 +--
+>  drivers/crypto/omap-aes.c             | 8 +++-----
+>  drivers/crypto/omap-des.c             | 5 ++---
+>  drivers/crypto/omap-sham.c            | 3 +--
+>  drivers/crypto/qce/dma.c              | 3 +--
+>  drivers/crypto/sa2ul.c                | 3 +--
+>  drivers/crypto/starfive/jh7110-aes.c  | 3 +--
+>  drivers/crypto/starfive/jh7110-hash.c | 3 +--
+>  drivers/crypto/stm32/stm32-cryp.c     | 9 +++------
+>  drivers/crypto/stm32/stm32-hash.c     | 3 +--
+>  drivers/crypto/ti/dthev2-aes.c        | 9 +++------
+>  14 files changed, 22 insertions(+), 42 deletions(-)
 
-> On 13/11/2026 13:22, =C5=81ukasz Majewski wrote:
-> > Hi Krzysztof,
-> >  =20
-> >> On 13/11/2026 12:09, =C5=81ukasz Majewski wrote: =20
-> >>> Hi Krzysztof,
-> >>>    =20
-> >>>> On Thu, Nov 12, 2026 at 05:37:02PM +0100, Lukasz Majewski wrote:
-> >>>>   =20
-> >>>>> Add "national,lm77" as compatible for the National (now TI) LM77
-> >>>>> digital I2C temperature sensor.     =20
-> >>>>
-> >>>> Are you sure this is a trivial device, not like LM75? No
-> >>>> interrupts, no VS supply? Datasheet disagrees.   =20
-> >>>
-> >>> In my case the T_CRIT_A and INT are not connected on the
-> >>> schematic. Moreover, the V+ is connected to board's 3V3.   =20
-> >>
-> >> But they are there and binding should be complete.
-> >> What's more,
-> >> existing lm75 binding does not require these so there is no issue
-> >> adding to the existing binding file. =20
-> >=20
-> > Please be aware that internal operation of lm77 is a different than
-> > lm75 and hence it has its own Linux driver.
-> >=20
-> > It seems like I cannot re-use the lm75.yaml and will need to add new
-> > national,lm77.yaml as lm77 has two interrupt outputs for hysteresis
-> > (lm75 has only one interrupt). =20
-> Can be a new binding file, "national,lm77.yaml". Indeed it looks like
-> it has two lines, unlike 75 variant.
->=20
-
-+1
-
-> Best regards,
-> Krzysztof
-
---=20
-Best regards,
-
-Lukasz Majewski
-
---
-Nabla Software Engineering GmbH
-HRB 40522 Augsburg
-Phone: +49 821 45592596
-E-Mail: office@nabladev.com
-Managing Director : Stefano Babic
+Patch applied.  Thanks.
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
