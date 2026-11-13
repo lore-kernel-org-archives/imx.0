@@ -1,20 +1,20 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.162.34
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.159.42
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794605390;
-	b=CW1eCO+yq03PLwVdUHmn+upwZNnNCJ4d8Vk1nJsQkHJmPEXf3+1pVRmnGprvrZG0tMeG
-	 BRPucdSeW77JodpS2kvQChYkQIVNHTzWZWU53Udo3CvgfG/xG7ri9ONJ6yx+EbeXkQyCA
-	 mLfisuMXzIQrwRwIilAQ62KOKbC1PW+zg9cZSrQSBz1JCTiq9sIxGcidkvWQYm0OqwY4v
-	 G89k3RjRzvqT3fIlR/+XoqUHM/tJ4r4BpTAYsUf0LT1WV+jAz+t4SAqA25QhK85DWpmaW
-	 8hoNzAVPT5k7278ddRCIkk9Rhp0/Xq8AZTx6P8jUn+WFcdgSowhy6JEwyyijaMdWhFw==
+	t=1794605715;
+	b=Gg0+wt/aXilBojKRFHHfWhQqdenFKUG12cyrrSL2Cowmpjx5ZUG9Zy9YkXZeOxKSmMLM
+	 PCG8NizD543CetjIFBgU7ARPuLqkilPprELcdol/YGkvsuV6W4wi2t5oi/tFoFxGCa1X3
+	 9G60XmQrwgzKkhfLpnDtHnt/RK/wOrDatj9xXMVm8h53Ef70vL1NDDsscAL340h2AIjlQ
+	 BkJj38A4jixn6SJry6FS2V6DifYaJHHKcsaExJIcQvdTwqwVXPD34j8G87JhMw6hSQM2M
+	 fd4ET6HcZ0tBxw8zlNcAOPKLOxO/C4bfAMzwCKvzD5+4+Ftj8GeFOLeDsQvc1jmHpjg==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794605390;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794605715;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
 	 Subject:Message-ID:References:Content-Type:Content-Disposition:
 	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
 	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
+	 X-LD-Processed:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
 	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
 	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
 	 X-MS-Exchange-CrossTenant-Network-Message-Id:
@@ -24,80 +24,80 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
 	 X-MS-Exchange-CrossTenant-UserPrincipalName:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=UPLlBhEFkzCKdx/9gg1lylf9okJBK3VnemYGQ3dag7k=;
-	b=nRZCJzf8/90EwoaxEdSI12tirkcb6xTCJWZ/CTxEZHwLoP5ht/rFwdLjUcVUHRltvQS/
-	 zRq1GX4GQY0GNVpnKA07IYvW94XAMuF2bDMIPRnYTRrE6Lq75GP/xh0o5958bHFEcJCEP
-	 uAWLVvRxQmhnz95nKYfyRLxbHrd7fPUhcoDxUUvdILzd96dLjVzltkNLC3ZS7BMYIySKA
-	 ntuqiHCjDWbWGdExW6E3VehclweklBfZDs3YAPQvLfp20lyj9uH76zT5ibMyQyrD8iYqZ
-	 A2Le8E8Oe6wXuQ49hbpP96BoGMR9vAqvcHSJZbhq0MfctGVNiI/eGuXUZiwpuEuKLwg==
+	bh=7f51RrK0Xch1FALUh6yAPpbQcgw6QlPQ9vVQJyETQfk=;
+	b=DTDeuFGq16AxDyZkqPxNUkxauJMPYtpTLyuBQMKvJz0uNllMszJkxERKKBMFxUKnCFsK
+	 pdlL7Sd+e+fivZEC8HKnRPyRt/JcZrnxKAbZeBPP69aO1VpAWP0lI8Q4YzYbrnkJZVbfb
+	 s7yZ+1W/Aux7usyDxK+Tm7VoOl1zjSrcfvH1cLecZa/O1ses6xu3KAbhWmEH/VWP+3VhA
+	 lOWG41L6sCbcMSw9/2H/t44ZzRw0By+d1gYCYqwYU0HD/kFgNDOvcVF+lSruLyoDbHgfo
+	 gXTHX5DmBVTZFQxLcrtKVdP+zgTy/NFTxvDTyu7FVgK/EcwJ1eiJTw1z3S1Q4HJDA2A==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=oss.nxp.com;
 	spf=pass smtp.mailfrom=oss.nxp.com;
-	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=DSj2pJOz;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.162.34
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013034.outbound.protection.outlook.com [40.107.162.34])
+	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=GDA5UbcD;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.159.42
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013042.outbound.protection.outlook.com [40.107.159.42])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EDD1606A334
-	for <imx@lists.linux.dev>; Fri, 13 Nov 2026 21:29:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7EDD1606A334
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72FAB606A331
+	for <imx@lists.linux.dev>; Fri, 13 Nov 2026 21:35:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 72FAB606A331
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=DSj2pJOz
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=GDA5UbcD
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=tV7JdjmPpe+GSvEDPw6GinjJIwBZh/L6VsMNATUdR0ZrP79JMwGtCTQ0aLACWdtKGzqTQeqoOjz0wFGkNbzPCKIy2REs/4tBmL69ueui56E4ukcZloZVrBQ67ImpQ6rL9VhOwklew9/eTk40AwIsq3GjRAGPhtPSyOEXvXje5gkZPEkMIaL3P26CKaazWkiZ5Ga4BmRFfKOsZNJFsfa1gnjZ9ADPdrU3n849bair9uVFPo0k3N0Ex5P6JiOjec7M/AucU+yPdm+ckkS78GZXRyZWob8ivJzyRzN9vWdP6p8g+eXYx8wCiKdXO1iu4NArS6GPB8zuCL3d8PRgTuup8w==
+ b=PHMgNO1qEzNAuikJfoI0X0xUijrOxg8b8gGpx7eU61Oq6Kbi1UIBubYgdrIqv+oq4YIUWOmmjqGWW7/lYZ0ydomTzuQnOElZxO/dL7TOSXns4cjL3BhUnO/cVy0oBcKiqprnRUn7EQVwHHpbfS8pLiAnuN3gG3V9ZdTaaavHemFu4peUaL5/WLguHjmlfjdjcDQI4FWjLBmOvo8DDSwANRTEw6kNxgTHSqn4x3bNJfyAcvd5dcyTRrPLd2dbc+Bu8mx3rj0DyiVvCkibpf/oa9jMR6dzn27jFiSLweULcEWxM5Gw3DLqF5T2GS+8KW1ehFgzFdNAAIKIwffozTJ7sg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UPLlBhEFkzCKdx/9gg1lylf9okJBK3VnemYGQ3dag7k=;
- b=Vkfn/ywlksmikcgVaERM2DJ50szSVysejiR6w/s6O/l+M8bqrGf3bL4N0w0T+Wt+dx7b4Ir9Z1xUbcJycS5a2T1zgAdMVWue/N3ujt0HKqepCEBC8N0xgLM0KFCGJbaNw2ED6SRyzttqM5hard4qge1MfFo5jrsisbj3UfIQWz8Xrd/EjEkO1D7gzjDn0BqkqKQ/BHYyR/VRzUU5j9CQr3zcGj6RBgrFWVb/epnMGuhzrQZQhYpDzqJgpkHWJSfKMCKcXuSmlrP57yCt24FhmalMl6Y8jLZ78BE6Ul+oSM7oaY1dQd52nEt5OyWGTQEAXktdc1dahGalrrFGDAcNKg==
+ bh=7f51RrK0Xch1FALUh6yAPpbQcgw6QlPQ9vVQJyETQfk=;
+ b=WvqCJ0eNV214ze0eyOEwdu7fqB7rruLx5IG4w+O8mMGuZep/evnWXeZcnv5hMP0oSnwWLt2oLCBL1Dj/aEknQhnj6AG3vc1/iJovuOrbLp0maYnZWOGAFi1zaa8XtaIuTLLsiG1TzTqPHmQkSJDBUce4yvkBCTYyUj03kBEwjLQSTrtPfdSTAqFoBxAudxR0mwQr+h4x0YUdXcDaGegpPy13VgOII1J1yUEmpT7scInihHplwPdh/FzgoEF0nhh8ckVGelmD9uvtekMtg882HGe+q4Hckfv5PZMjp1CVPD5vcNWVezUspPtOrOEpn53Q+WT6WVHkwpVMHwO/jHZLyg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UPLlBhEFkzCKdx/9gg1lylf9okJBK3VnemYGQ3dag7k=;
- b=DSj2pJOz31PAWsWUbUYIsPBXghyZAZAvJpvktziniubiBQMEbVjR81SXyOobq+NpJLlzxBcFkAmH6L/dLGWRdH8slQgWzzMYYp5SQn9UeILF2CWjzhrLmrCHXB1Ch9D3ta+3ulQJk7lgE4XrRVBDOn/epNAkEjd74dxvHmXc37IE2mj0Iz9XWbIUCataAKSO5MO6VPuoTKFI45QXwtCndC4CQHCXWZzM0p066RHN8paVJnzla3CtU19H/CUWFSmuNUbqYZT8YpQGSV9kXFi2vulp9YYFGplhkYG4nXC7pERl8kpIHPiPJiYzckB9UKjMQ879A+1KLCBO2qrGNODhPw==
+ bh=7f51RrK0Xch1FALUh6yAPpbQcgw6QlPQ9vVQJyETQfk=;
+ b=GDA5UbcDu/fXIrLN3tmF7nmd+qFB2Y/FFVYcZwNALlARsIBWJAgdw/cWZkfvsEO1CDzqCc5k5vJzgwF+IwXquJjlhBiguQJUTX+9nrpZQKa10FO5XRWUQLYjn87n7vugAgHkejSw61zkF2giybRhhnYwA+gvaOgiZfeYpaEPUG8OWSQd3NwtTghRweoN9HBVDB+Nzyk9oeZi5G+0vvtoq2YdrTo2EcDajn0CJCdW7keMIBgSi5Wywg9qpHeH8K9oaqxfwZDIGutM0SegYvIWe+XF3Uz3vpgkt+5cziTgMeML/FM3xlDNyikRZdIlRd4Bzz4FWjdirjipovr3+ixgMg==
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
 Received: from MI3PR04MB12438.eurprd04.prod.outlook.com (2603:10a6:290:76::14)
- by PAXPR04MB8655.eurprd04.prod.outlook.com (2603:10a6:102:21e::21) with
+ by PA6PR04MB11946.eurprd04.prod.outlook.com (2603:10a6:102:513::11) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.9; Fri, 13 Nov
- 2026 21:29:46 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.8; Fri, 13 Nov
+ 2026 21:35:10 +0000
 Received: from MI3PR04MB12438.eurprd04.prod.outlook.com
  ([fe80::c715:c32:8bb1:b70b]) by MI3PR04MB12438.eurprd04.prod.outlook.com
  ([fe80::c715:c32:8bb1:b70b%4]) with mapi id 15.21.0615.009; Fri, 13 Nov 2026
- 21:29:46 +0000
-Date: Fri, 13 Nov 2026 15:29:36 -0600
+ 21:35:10 +0000
+Date: Fri, 13 Nov 2026 15:35:02 -0600
 From: Frank Li <Frank.li@oss.nxp.com>
-To: vjardin@free.fr
-Cc: Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>,
-	Frank Li <Frank.Li@nxp.com>, Jacky Bai <ping.bai@nxp.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	NXP S32 Linux Team <s32@nxp.com>, Linus Walleij <linusw@kernel.org>,
+To: Francesco Dolcini <francesco@dolcini.it>
+Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>, linux-gpio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev, Vladimir Oltean <vladimir.oltean@nxp.com>
-Subject: Re: [PATCH v3 1/5] dt-bindings: pinctrl: add the NXP LX2160A RCW pad
- mux
-Message-ID: <aveBQPeyjvHV98ZH@SMW015318>
-References: <20261108-for-upstream-lx2160a-rcw-pinmux-v1-v3-0-5a0063f1da9e@free.fr>
- <20261108-for-upstream-lx2160a-rcw-pinmux-v1-v3-1-5a0063f1da9e@free.fr>
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, linux-bsp@toradex.com,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 01/11] arm64: dts: freescale: imx8mm-verdin: Add SPI
+ alias
+Message-ID: <aveChu8WqYM2JZcN@SMW015318>
+References: <20261112150236.164850-1-francesco@dolcini.it>
+ <20261112150236.164850-2-francesco@dolcini.it>
+ <avXeK-IRXbKqI-pc@SMW015318>
+ <20261113073135.GA8515@francesco-nb>
+ <avc2nzql-JV7a-JH@SMW015318>
+ <20261113171927.GA762258@francesco-nb>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261108-for-upstream-lx2160a-rcw-pinmux-v1-v3-1-5a0063f1da9e@free.fr>
-X-ClientProxiedBy: DM6PR06CA0085.namprd06.prod.outlook.com
- (2603:10b6:5:336::18) To MI3PR04MB12438.eurprd04.prod.outlook.com
+In-Reply-To: <20261113171927.GA762258@francesco-nb>
+X-ClientProxiedBy: DS1P222CA0024.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:8:44b::10) To MI3PR04MB12438.eurprd04.prod.outlook.com
  (2603:10a6:290:76::14)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -109,355 +109,126 @@ List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|PAXPR04MB8655:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3658702b-8c90-4f55-ba70-08df41cd3d3a
+X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|PA6PR04MB11946:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8412f754-da13-41e9-f7fe-08df41cdfe60
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|19092799006|366016|7416014|23010399003|376014|6133799003|22082099003|10067099003|18002099003|3023799007|11063799006|261028144727099003|56012099006|4143699003|261021121427099003|261026140227099003|261026121527099003|261009223027099003|261022105027099003|261102123227099003|41080700001|15866825006;
+	BCL:0;ARA:13230040|19092799006|366016|1800799024|7416014|376014|23010399003|261026140227099003|11063799006|4143699003|261021121427099003|10067099003|261102123227099003|261022075727099003|261009223027099003|261021123027099003|56012099006|261022105027099003|261026121527099003|261028144727099003|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	EojC4cjPh2TLQyVfDDukZvEhpr4THOOTIK3KrNxCw2Fo5Hvgtsv/6H22DYsDCB/DyMESUS0HrquFXATh4Re+rB7BW8ExyuTsyQrIxcKp/Jwpa3DCyMfNpLvtiEwFTZqxp49y8wK0IdFMvgQyHU2NuVF8IS9Nt59Gcbt9LYYk2fclKMdcb0q3yCHlPHdy2I95Mg12aQxoxIN/Ehyed6m4iOx4FbdVTO22sbR/ZwfJWbyVKFx2lzvGNwNhQeQcMcPUYuO9v2lm2BGpHQKOAB4kgaBqnnD4zPxScOl683tPZHC5BKAyqpJCKGj9rpDExl5hAwLwKaKN1Q/kxQghkDM8u/kDKn8Fzw7z5oFjm2kFZcE7SQeshNLqNSGyQ8hz06U4kIMXMO6KymUYsuUgbDtcQxLAAj0Aa/ZqwIp55iAzZglF2//QlOxCNHL44jfQh6fplpAUSci+rFD23I0XHMhBotKmOKOg2IzWIjamqNeRmiFY5/OalhbScLyzqFoYrm/tcZkhveZQL27b/DHM5BKXNvlJjXvc0w6hGudOgRmDv7MPqHbnzXlatfQZv+7D3otU8AppvA1GSdBjtMkrdvj0wkjbYXsP9bxjxZYWbnxOP1vCKfuwwmxj2QEF3GHqMAv0Kzx1rqkNDItUTiIANqAUqZnU4xKvr3QhrWCU78m6ltKW6rYWV08o3616IhOz7PYAa1HoP3aK1MWQ0gLW5olw9Q==
+	lViNJ8vv9wsuvFjTv4MgoTBOkJBJw8ioEKsy+uf4no4BhYxovHjEYB9SNpAmT6kcw1wbUEbFGlh7DdniS0vxzttBlixxB5Z0EiVwCse8Z6RQmsKKK9x2qVhFN0AVbaxw/9v50fGfGAknbaGOUrU9fBCSRKwvtFQXw5mAYoJrZHn4rt7418BCRU2ylFq/x0xf6MRmjJ6rxTU8GgtNXTxIEDptWryfrJOjV15m7YQiVGtJ9H8vUuQpgtj2icoLzGlhYyW1onEViiKMvDlONT14seKXw5mLRcjuSTYOxwQoSJmxtHNmkMRW/cwGc6GTtXIFuvnCMP6a6zAZkbQAm1xMoBJ/Riy7wIAyByyv8recdeR+mF8aNZoD7qCpZGmGQIprSK40isszi2IFH35YqJ2xWLZQIQsWgpsned3HsvTBLKY3j87FvsvAuW2YS1o0pv/ievHfhdy66xFRSKabWyxkZoF+4dRqyzTCsC87W+bwo94MapTcEYKiMW6VWWyYCpaD7hd8RZy9Lis01DUQCvrsv8fF8kF/20sATHJeNz66ap95UDYJ3mlnXwlpb0ueLKy3GFORRtDA2XOx3o87JMzWUyg4BCRWtwshM2LM1CDOt9gt/qFhaCBYaY7b9pPSKA1ozpllLsBMFZkFFDpld7/L4Pkx6EBQOMTlfAZ3SQfPQOw=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(366016)(7416014)(23010399003)(376014)(6133799003)(22082099003)(10067099003)(18002099003)(3023799007)(11063799006)(261028144727099003)(56012099006)(4143699003)(261021121427099003)(261026140227099003)(261026121527099003)(261009223027099003)(261022105027099003)(261102123227099003)(41080700001)(15866825006);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(1800799024)(7416014)(376014)(23010399003)(261026140227099003)(11063799006)(4143699003)(261021121427099003)(10067099003)(261102123227099003)(261022075727099003)(261009223027099003)(261021123027099003)(56012099006)(261022105027099003)(261026121527099003)(261028144727099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?sci7rZ5vLilHe1wVtn4M+a9gIIG8YA4jhlesdVzFfF/fJU+anEeijfiFX3gh?=
- =?us-ascii?Q?K3K4hxY/l7W+7GQcHF1AWqzP0ohmVlUoZwUvGzLoevdOyG3MyqB5TIzRNKsH?=
- =?us-ascii?Q?QK81RhxWusi+gPQ0fhY/5eXTaY/NLSu2GH0fUNYXrL4RdibJAHZ0Ok5v/d/B?=
- =?us-ascii?Q?FN6AtN3DF5SVWMzazUQBAFIpludm6Y7nGEAmEgvr2jDQuaGWMoBsoITkZM8m?=
- =?us-ascii?Q?aIxJjAjVtSmDRaJkVfkRtL8/lX0fRVYTSF0kid/fdvhWUPboshKhN9jvAFFV?=
- =?us-ascii?Q?Od9xV84Tewti4KR0ZWrPX+hiEYq+AV5s7tUFVxZKOuLbVt06N7dra/uBfBSF?=
- =?us-ascii?Q?8oKtysfP+Bf3HW9hHLGOT6hrwW2z6YSmWKnwUYJngp/lvj2lIDSGGZeLjRtk?=
- =?us-ascii?Q?GP4NMfIA9J4m7UNdzBXvVNguPko7gJXj/Tl4o8Zk+/62b9nGcwwO22UEFx+/?=
- =?us-ascii?Q?WD7ufGxxS1SL0ixntsbDXvsQbjV7nYUvVw2K2TrcV1DU95qcW7g/30ofC5VS?=
- =?us-ascii?Q?03HnX6Uq5U0zTHbm0I6SfWYHMVPI/hlQxpTt3m5071lk0sZ/HsFoOzZW4q0U?=
- =?us-ascii?Q?WpF7W7dO+lwYvHjeqtFZ2NvVlBgdwY/0sEx/EZI8XS3pClb/gsNKtuiULjEx?=
- =?us-ascii?Q?y+em92u4aPRRT9ic0z6+D9AdrJmGnLDiw0qtuhoUuYg5y2Lxt8t1LNuCBrdN?=
- =?us-ascii?Q?JXvGZkBw9JYc4C58dcZCS6y5YwVvvL64XXqHSgmhrnpwGsp34Xh58jo3Hepq?=
- =?us-ascii?Q?vLWuCnkU6b5fGYNstpjKbCv6gVdGg71HEYP94R5CbWEZgm63ZA77YpS/kDQi?=
- =?us-ascii?Q?gM7WI6JRJMidF+PLP2QFhbjccoeE7rF36J0oK223kw97EbwInpUfrxskmyj0?=
- =?us-ascii?Q?UfcMJ70l0VWU3xzxeiFU5r7wT9iUrX+PiAsm/QeTyCQx85U4P7NQWZYPjbS7?=
- =?us-ascii?Q?9477ZOPZqq8qSgn3+g8MhamU9OjP+uBPUXw7bsFHg5j5adVwReeK86PBtCsa?=
- =?us-ascii?Q?J1cySmwIFvoCRVi3IBvS5cho6wm1n2UmMMqhoJtQOeA+Il4nfiQvSsKdlKpP?=
- =?us-ascii?Q?/xAOss0M8wob8TgSdZuTE0wczzrXXJsJ1dJcGlZI/e2yduOfRUvih5Dbp3U/?=
- =?us-ascii?Q?oEReZH+aJVs/2Px0SFhicyQ97yt7Hg8VvKoqVLRSlWdzbTU5cD4sIa49cOqn?=
- =?us-ascii?Q?lkKS/ePMmRKEiYbwWPIj9DbBcruYvNghZKAnnLJ3+Dnxd1WG0P8mH1Wq2aZP?=
- =?us-ascii?Q?WmRGrRJKnJETqGiWZ77cgTUSXflGQivbTbBOs9fRrtBsF/hZxQTWUsmM+N9l?=
- =?us-ascii?Q?mnqRYTFpo7ABMIChdeXQrJTGOYLwjvs/+3lY6JvOiB4/MReOpUJrdk/8sDEE?=
- =?us-ascii?Q?bwAKu+8eNFBr5pPT8cJNFbk3hyHrbT7sbdScKFZLNc83Wxe2UF0Xz/5NlWAJ?=
- =?us-ascii?Q?itOrKMbI051SnV//HtngU8FOdC4HQbgK2nAyz7n0H7PqNO4JAc1IM9pPe7kG?=
- =?us-ascii?Q?ui+OKxWXUz0ioKw/XmL/h8BwkKmXTOgdWYqLSbH06DtqJemSafrspH1Cwhkd?=
- =?us-ascii?Q?Cg7eVeC3xSncGwLugsbDtm+PxD/y8L5YzlfdcUdueYdpTkfbUepZr57/qKgz?=
- =?us-ascii?Q?w2Z5JHY1sqEWtyR9YA3J9cVdWo2y8Zi1fmTA6G6S+LpR8VOoP/N4vBpNVyOD?=
- =?us-ascii?Q?q9ogXjGoXGkDkwAEx73YYLWB68tx5R108AypR/hjPogDXrWJawKU7hXh9ANQ?=
- =?us-ascii?Q?1kgoqZMmG+hBn/VlskJaX+AoGTc/jnQ4HnNgNaTVCTkyq86OmSMh?=
+	=?us-ascii?Q?0WLnHLNn5fuLksY+9ZhujwVxYssZs4+m3OJq2EmrhhbmXrpb3vC6vJ7mp+t4?=
+ =?us-ascii?Q?rENabUTMDFv2g2gaX20D9qgp901i1aF9Y1qT/jubA7zgrHd9q3oaa7mng9zN?=
+ =?us-ascii?Q?7opYQyWeI8NHKCf3MU+Wd3WjKC0qj8bPgM0tBKgdl4eZXUSqKGj8jTkJGiHC?=
+ =?us-ascii?Q?vmJ19Hshvf8TWuJ7ExPjn3eONsLpYIIDwabKu6yIVs1l8/WNa1nBgQdNARZO?=
+ =?us-ascii?Q?jzYbdqdqW+NK4E5P/miR6INDY5ilRGQjVXe+pDOsTTNiRW5OCAoc/ZbALshE?=
+ =?us-ascii?Q?K/X82hwQvx5qNb1svUtmG3BwEcNPfSthl4wDLYPJ8ijLHvetW8KjvR58iHO2?=
+ =?us-ascii?Q?YFQgi9QdolfV18IZoeVhEwsx7Se4lXCqWvz1zJIPyHIQ15qRNDZc+okiYkff?=
+ =?us-ascii?Q?EsLFvtNX85+Pk68p8NmUbiWzf5j/Kf0wMpQMd8GK7LnVR8PwC94mCr+wyyzO?=
+ =?us-ascii?Q?mWsQKFGwV1h8Szaclzd4Rr1a33wwnbzDt4OW10jzY9CXgjjmIKieD8lhKq7Q?=
+ =?us-ascii?Q?qM8l3gICqutE+Hga0KdFGD2jToInK+KPUI3xvvQ69Xlf8JK6NYy7Vr9MQWsL?=
+ =?us-ascii?Q?D5R8LLwhW105AnGLlyp+G0m2rWuXqaoLazqvsZOMPAkYBnOxFQgA3wVoSBY2?=
+ =?us-ascii?Q?yt8axSzJoRMe8Yc/uMhrutpl4nVVVxb7M5SMedNvpaJbofNcf6ayof7Fh6mh?=
+ =?us-ascii?Q?Cncb4Gm17XOoCT4YRVcZCNbeqZp3bZzAWCUvwVZv0boTxvrlxOUGQ67+Olfu?=
+ =?us-ascii?Q?hzHeVb8YrH3BA5Vsy/5B5MwyOllbsh8TVs6AmWcaPXRNSmc1taEuhixIwbX+?=
+ =?us-ascii?Q?tLe1cjXA6xxFnI1arJTWq5N/Ek3HKZPMV5ucLQ5bV4xZ6ZPibx3LXS2GipFE?=
+ =?us-ascii?Q?TCUZ7vj/4GAyShljs8mInlLRvG513vGi1fyLSfZLzpSOGUI7NXjW8syajiAX?=
+ =?us-ascii?Q?a0O4v3U5USvW/Sa6+r8xqJFYY8kM0r1a8v0F7+rewK1kfFE/vNMC7Q2L4c5W?=
+ =?us-ascii?Q?iUAbwmVE8KquMps8hoRf+edx4DP7gNH/aGy/tbRjRfC5w/Bm/IWmSc6pl/2q?=
+ =?us-ascii?Q?8M88E0k42eqGbaIHCx4AXbNxaPbW6vQFb4AEhyx4QrnSIiyFQyaBFNREPBQd?=
+ =?us-ascii?Q?pHSyoEsrwxHXXlTa6G8Ufm12FT8tCsE2MQ7Li57zD7QDOOHbF9pPwphfaFCq?=
+ =?us-ascii?Q?FhIP8B8qzSUAAlTZrZGyiWqZF00Vl6MTkRMBTEvF47NUKf51GRgXAdg1JoeV?=
+ =?us-ascii?Q?56tLSp6ruB9yG1KgKstYkGwPXbRCAG9wMw1uK2SCzmyjuHLZ+hlP+f8lytru?=
+ =?us-ascii?Q?hjw5PS92naS8fn4DhQkIdD6x8BrWoP1u+cHehlFngvTe5RVQ4JpCX+VqdasH?=
+ =?us-ascii?Q?Y0NHw2O0MLmKtFb8mXIA9t+H3io0Wkb1V9w/s6i6NC+VHJHwZ7gSy5c942S1?=
+ =?us-ascii?Q?4KP+ZK0KNrlTLB4qD6PQRwv/mS+QFtQabFLxMOvYFVIo/qJis6o9pC9dvhqd?=
+ =?us-ascii?Q?e5oFXseMBoCdkWrrRf5o3aTmlUD91d9mDVvAx6T30lGSZSm/wKrjJcvZgGlS?=
+ =?us-ascii?Q?mk1IdCE6PxDa+qjM6zeh96y620ffMyHgrkMZxu3QJPaRZo2yh+FS5t+40yFh?=
+ =?us-ascii?Q?hr4PUPtuHqc5mPNJm3piFPVKSoAyiyw11NfV9XFJK62PEs2GDrW/s9WyYkck?=
+ =?us-ascii?Q?TPvu8zzPQwg+hboSUiHpfkvDyuqNsbsvKv/9wjORZfnkQbg7FPyvhRcaUX5I?=
+ =?us-ascii?Q?aqPO4l8yhxROVri5mjNF2oXwecOGcM8pxftwo7xSaF64orzkZaTx?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3658702b-8c90-4f55-ba70-08df41cd3d3a
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8412f754-da13-41e9-f7fe-08df41cdfe60
 X-MS-Exchange-CrossTenant-AuthSource: MI3PR04MB12438.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Nov 2026 21:29:46.2395
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Nov 2026 21:35:10.3672
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: zEK3vuuIBsqOHodsi/Rf2hkjTKVtACl70TjYJCd9oIbczDPaqtv49674tR37y+rxhQAL+zTRW/scBNE2FDt+AC6MqxgrCqh08fEnGf85QqrbTFmRHlJYtQx9l+mGHb/g
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8655
+X-MS-Exchange-CrossTenant-UserPrincipalName: L16+iMJS2M4ww2OKDBz283B/z9aEaZ2jglMjajFRUH9YVJ7Vso0gLrJ4oplYa9zEUBKTpzAWW0eJGMU+A25AHaNUeO/u0AdW+pngrsVKQemerbjITAJEHnT3ucbebXoQ
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA6PR04MB11946
 
-On Sun, Nov 08, 2026 at 11:06:49AM +0100, Vincent Jardin via B4 Relay wrote:
-> From: Vincent Jardin <vjardin@free.fr>
+On Fri, Nov 13, 2026 at 06:19:27PM +0100, Francesco Dolcini wrote:
+> On Fri, Nov 13, 2026 at 10:11:11AM -0600, Frank Li wrote:
+> > On Fri, Nov 13, 2026 at 08:31:35AM +0100, Francesco Dolcini wrote:
+> > > Hello Frank,
+> > >
+> > > On Thu, Nov 12, 2026 at 09:41:31AM -0600, Frank Li wrote:
+> > > > On Thu, Nov 12, 2026 at 04:02:23PM +0100, Francesco Dolcini wrote:
+> > > > > From: Francesco Dolcini <francesco.dolcini@toradex.com>
+> > > > >
+> > > > > The Verdin family pinout defines the SoM interfaces and their
+> > > > > numbering, SPI_1 being the SPI bus available to the carrier board,
+> > > > > implemented by ecspi2 on Verdin iMX8MM.
+> > > > >
+> > > > > imx8mm.dtsi numbers ecspi2 as spi1, so the Linux bus number in sysfs
+> > > > > and the spidev name do not match the Verdin interface. Add a spi0
+> > > > > alias in the SoM dtsi and delete the inherited spi1, so ecspi2 is
+> > > > > bus 0, zero-based with SPI_1 being spi0, and carries a single alias.
+> > > > > ecspi3, internal to the SoM with the CAN controller and the TPM, keeps
+> > > > > the spi2 alias inherited from the SoC.
+> > > > >
+> > > > > Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+> > > > > ---
+> > > > >  arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi | 2 ++
+> > > > >  1 file changed, 2 insertions(+)
+> > > > >
+> > > > > diff --git a/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
+> > > > > index 1ac9d000d415..0369803a4d46 100644
+> > > > > --- a/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
+> > > > > +++ b/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
+> > > > > @@ -16,6 +16,8 @@ chosen {
+> > > > >  	aliases {
+> > > > >  		rtc0 = &rtc_i2c;
+> > > > >  		rtc1 = &snvs_rtc;
+> > > > > +		spi0 = &ecspi2;
+> > > > > +		/delete-property/ spi1;
+> > > >
+> > > > Can you avoid delete property for new platform?
+> > >
+> > > Unfortunately this is needed.
+> > >
+> > > The included imx8mm.dtsi has
+> > >
+> > >   spi1 = &ecspi2;
+> >
+> > Create patch move aliase to each boards' dts from imx8mm.dtsi, which is
+> > board feature, not soc features.
 >
-> The LX2160A muxes its IIC, XSPI, SDHC, UART, IRQ and EVT pads from
-> fields of the RCW: read-only in RCWSR12..14 of DCFG, changed at runtime
-> through the override registers of its DCSR view.
->
-> Describe the pad mux as a child of DCFG at its RCWSR12 to RCWSR14
-> window: the override registers are at the same offset of the DCSR view
-> of the parent. One group per RCW field, one function per encoding.
->
-> Each function lists the groups that take it, so a pair the driver
-> would refuse, such as can on iic1, is refused by the schema.
->
-> Signed-off-by: Vincent Jardin <vjardin@free.fr>
-> ---
+> Please see the linked thread [0][1]. It's not a viable option.
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+where [0] and [1]
 
->  .../bindings/pinctrl/fsl,lx2160a-rcw-pinmux.yaml   | 264 +++++++++++++++++++++
->  1 file changed, 264 insertions(+)
 >
-> diff --git a/Documentation/devicetree/bindings/pinctrl/fsl,lx2160a-rcw-pinmux.yaml b/Documentation/devicetree/bindings/pinctrl/fsl,lx2160a-rcw-pinmux.yaml
-> new file mode 100644
-> index 000000000000..6bd21c27a00c
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/pinctrl/fsl,lx2160a-rcw-pinmux.yaml
-> @@ -0,0 +1,264 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/pinctrl/fsl,lx2160a-rcw-pinmux.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: NXP LX2160A RCW pad muxes
-> +
-> +maintainers:
-> +  - Vincent Jardin <vjardin@free.fr>
-> +
-> +description:
-> +  The LX2160A muxes its IIC, XSPI, SDHC, UART, IRQ and EVT pads based on its
-> +  RCW. The related fields are from the read-only RCWSR12 to RCWSR14 registers
-> +  of DCFG, and can be changed at runtime by writing the RCW override registers
-> +  in the DCSR view of DCFG. The node is a child of the DCFG node, which owns
-> +  both views. Its reg is the RCWSR12 to RCWSR14 window of the CCSR view, and
-> +  the override registers are at the same offset of the DCSR view.
-> +
-> +properties:
-> +  compatible:
-> +    const: fsl,lx2160a-rcw-pinmux
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +patternProperties:
-> +  '-pins$':
-> +    type: object
-> +    $ref: pinmux-node.yaml#
-> +    additionalProperties: false
-> +
-> +    properties:
-> +      function:
-> +        enum: [ asleep, can, evt, flexspi, flextimer, gpio, i2c, irq,
-> +                reset-req, sdhc, sdhc-clk, sdhc-data, sdhc-data4, sdhc-spi,
-> +                spi, uart, uart3, uart4 ]
-> +
-> +      groups:
-> +        items:
-> +          enum: [ iic1, iic2, iic3, iic4, iic5, iic6, xspi1-data74,
-> +                  xspi1-data30, xspi1-base, sdhc1-base, sdhc1-dir,
-> +                  sdhc2-data74, sdhc2-base, uart1-soutsin, uart1-rtscts,
-> +                  uart2-soutsin, uart2-rtscts, irq11-8, irq7-4, irq3-0,
-> +                  evt4-3, evt2-0, clk-out, asleep, reset-req ]
-> +
-> +    required:
-> +      - function
-> +      - groups
-> +
-> +    allOf:
-> +      - if:
-> +          properties:
-> +            function:
-> +              const: asleep
-> +        then:
-> +          properties:
-> +            groups:
-> +              items:
-> +                enum: [ asleep ]
-> +
-> +      - if:
-> +          properties:
-> +            function:
-> +              const: can
-> +        then:
-> +          properties:
-> +            groups:
-> +              items:
-> +                enum: [ iic3, iic4 ]
-> +
-> +      - if:
-> +          properties:
-> +            function:
-> +              const: evt
-> +        then:
-> +          properties:
-> +            groups:
-> +              items:
-> +                enum: [ iic3, iic4, evt4-3, evt2-0, asleep ]
-> +
-> +      - if:
-> +          properties:
-> +            function:
-> +              const: flexspi
-> +        then:
-> +          properties:
-> +            groups:
-> +              items:
-> +                enum: [ xspi1-data74, xspi1-data30, xspi1-base,
-> +                        sdhc2-data74, sdhc2-base ]
-> +
-> +      - if:
-> +          properties:
-> +            function:
-> +              const: flextimer
-> +        then:
-> +          properties:
-> +            groups:
-> +              items:
-> +                enum: [ iic2, irq7-4, irq3-0, evt4-3, evt2-0, clk-out ]
-> +
-> +      - if:
-> +          properties:
-> +            function:
-> +              const: gpio
-> +        then:
-> +          properties:
-> +            groups:
-> +              items:
-> +                enum: [ iic2, iic3, iic4, iic5, iic6, xspi1-data74,
-> +                        xspi1-data30, xspi1-base, sdhc1-base, sdhc1-dir,
-> +                        sdhc2-data74, sdhc2-base, uart1-soutsin,
-> +                        uart1-rtscts, uart2-soutsin, uart2-rtscts,
-> +                        irq11-8, irq7-4, irq3-0, evt4-3, evt2-0, clk-out,
-> +                        asleep, reset-req, iic1 ]
-> +
-> +      - if:
-> +          properties:
-> +            function:
-> +              const: i2c
-> +        then:
-> +          properties:
-> +            groups:
-> +              items:
-> +                enum: [ iic2, iic3, iic4, iic5, iic6, sdhc2-data74, iic1 ]
-> +
-> +      - if:
-> +          properties:
-> +            function:
-> +              const: irq
-> +        then:
-> +          properties:
-> +            groups:
-> +              items:
-> +                enum: [ irq11-8, irq7-4, irq3-0 ]
-> +
-> +      - if:
-> +          properties:
-> +            function:
-> +              const: reset-req
-> +        then:
-> +          properties:
-> +            groups:
-> +              items:
-> +                enum: [ reset-req ]
-> +
-> +      - if:
-> +          properties:
-> +            function:
-> +              const: sdhc
-> +        then:
-> +          properties:
-> +            groups:
-> +              items:
-> +                enum: [ iic2, sdhc1-base, sdhc1-dir, sdhc2-data74,
-> +                        sdhc2-base ]
-> +
-> +      - if:
-> +          properties:
-> +            function:
-> +              const: sdhc-clk
-> +        then:
-> +          properties:
-> +            groups:
-> +              items:
-> +                enum: [ iic5, iic6 ]
-> +
-> +      - if:
-> +          properties:
-> +            function:
-> +              const: sdhc-data
-> +        then:
-> +          properties:
-> +            groups:
-> +              items:
-> +                enum: [ sdhc1-dir ]
-> +
-> +      - if:
-> +          properties:
-> +            function:
-> +              const: sdhc-data4
-> +        then:
-> +          properties:
-> +            groups:
-> +              items:
-> +                enum: [ sdhc1-base ]
-> +
-> +      - if:
-> +          properties:
-> +            function:
-> +              const: sdhc-spi
-> +        then:
-> +          properties:
-> +            groups:
-> +              items:
-> +                enum: [ sdhc1-base ]
-> +
-> +      - if:
-> +          properties:
-> +            function:
-> +              const: spi
-> +        then:
-> +          properties:
-> +            groups:
-> +              items:
-> +                enum: [ iic5, sdhc1-base, sdhc1-dir, sdhc2-base ]
-> +
-> +      - if:
-> +          properties:
-> +            function:
-> +              const: uart
-> +        then:
-> +          properties:
-> +            groups:
-> +              items:
-> +                enum: [ uart1-soutsin, uart1-rtscts, uart2-soutsin,
-> +                        uart2-rtscts ]
-> +
-> +      - if:
-> +          properties:
-> +            function:
-> +              const: uart3
-> +        then:
-> +          properties:
-> +            groups:
-> +              items:
-> +                enum: [ uart1-rtscts ]
-> +
-> +      - if:
-> +          properties:
-> +            function:
-> +              const: uart4
-> +        then:
-> +          properties:
-> +            groups:
-> +              items:
-> +                enum: [ uart2-rtscts ]
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +
-> +allOf:
-> +  - $ref: pinctrl.yaml#
-> +
-> +unevaluatedProperties: false
-> +
-> +examples:
-> +  - |
-> +    pinctrl@12c {
-> +        compatible = "fsl,lx2160a-rcw-pinmux";
-> +        reg = <0x12c 0xc>;
-> +
-> +        iic3-i2c-pins {
-> +            function = "i2c";
-> +            groups = "iic3";
-> +        };
-> +
-> +        iic3-gpio-pins {
-> +            function = "gpio";
-> +            groups = "iic3";
-> +        };
-> +    };
+> In addition, I can do this for my boards (Toradex), how do I know what I
+> have to move for boards I do not know? I can't do that. The only way
+> would be to duplicate the whole aliases on *every* board.
+
+at imx9, already move aliase to each boards, dupicate it and just make
+sure build finial results the same.
+
+i.mx8 is still not too old yet.
+
+Frank
+
 >
-> --
-> 2.43.0
+> Unfortunately your proposal does not work.
 >
->
+> Francesco
 >
