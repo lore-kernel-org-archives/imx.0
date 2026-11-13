@@ -1,69 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.48
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794555103;
-	b=LZcvViX7ix40fXZEBQnYFItN6R3qUFNzm4Wt+b6glbGSUnv/ylQxpAc/NaLPh6xiY7EJ
-	 2jjJa6bmYDIR6CB2fVHvkEXOmo3KERsEYMhXtFElmRVkKDny0nhtf26M4L0bx9wGDPW7B
-	 19HLNXFeziesSe+l4o7WD+mY7Ce2g+32CoHqNf/H22TjmBGW2jUwXdp6FpeDJj0YgI89S
-	 iv2bV78Cvo8vZdFyDwaMIdXGSPT1rjpHmpK0cg8yZLEyhCxu3XsCvG6/DmbDWytHH8b+2
-	 HKzE1E5vOSehowe4VTBXEoLipaZAuMr+qek4sdUfl8ssZrvX2g/3Vh3uMP8t1tg0/7A==
+	t=1794555174;
+	b=dRHHHJOfRSC4+v6Y5bG8mcSQiFaOYQnvQ6tEYxdsUQl2HdUriqMSnXeEUG1h1s2tgmKz
+	 Uwx/CTfU9D8nIs/te4wh/VZ31OczaDmltim4pQ5H527ms/u8v65M6U7IKyIBoEC7hYUjz
+	 Y2kxTnez9x28EEGVCxVGS095oCgDxQsHCAVPLnvePoCDZtidY6kBl8+ibsxrg2yuK9wXi
+	 SOtVDkpqrEk5fPN64hhC8W338tw7jDnpktKwKqnltQlLNUeM40Sj0K2tXqoHjqum15EEa
+	 V0NlS012qtziUJiOcCCcnB7bklpJ9WhYMdbTXrNPCoSxo+TMob5km+m9wcFn52U6UVg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794555103;
-	h=DMARC-Filter:Received:DKIM-Signature:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=a8dwXPHMPfCbtdhYZUDcAPyhoTp0Li9Sm++J9+wQ2hg=;
-	b=PK08LxdjEWQnGY9f79sfQyAYiVZBtc5jvAO4pGORKH0izRhzBKOa+RB0tE0GvyxGQjjM
-	 1WbEUpspw6Zyh5enH+6NALv149XWk3gXJXAlH0ld9qnLfNpgZrwY+eq9lrYqakHswtZIb
-	 Mht+ZXi9mrwE1Ms9/5LhTMa+qxohspImhK7GjoWB4BvL5hIcwly0RHLNjUk/Uj0LjCdf2
-	 f2jGoG6H4P1IsUW+kg+33nFgsYfBU2GyLuzlXRqnmAp7X57ZACO5UAVk3yNc0OA8ZwRp+
-	 6b+D13bea6eRlMXcieUQAhJ3CiRy9dKVUgsW/Jh9p76mImj6FGOPSNGc0r66yLBhSKA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794555174;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=Jqp8TYr/BxJeYtd0GqFzJoVixzfcdiw2tIdD5ztXl7A=;
+	b=YY9KNTN11Dmv6OQdeNWdWFKEcKZE7fBUuFFisaU0Xz2Y6nY3+25qaLvymGfvum+h53Tp
+	 EnYEuc8XVh/K6AAdFPIT9PnYhDTuiKw6MjIx9Dd6YdN8zpSbictTOaUP+A8FX6fjDhhqJ
+	 de9EAIyiROykABD1RC8tJ6mPUtFLH0Ro8xuQuE8j+uOdp7WsVmWWueM0cWU8d08gOBaEx
+	 VUozsx4RKfPzn55Nba0KKD06bkcU+CScnZ4d/vBGc9G8gOoyZamRBelYnpTA0bNtvPcZ/
+	 GuzByaSJI3yGOsFoxaa3gI2YzaEQ92PCkMWsLKLk8dZtgco6HN5qV7gXzWvwUa/77Ug==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=dolcini.it;
-	spf=pass smtp.mailfrom=dolcini.it;
-	dkim=pass header.d=dolcini.it header.i=@dolcini.it header.a=rsa-sha256 header.s=default header.b=DY9VXQ9g;
-	arc=none smtp.remote-ip=217.194.8.81
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=HYSRQOHv;
+	arc=none smtp.remote-ip=209.85.221.48
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FB50606A321
-	for <imx@lists.linux.dev>; Fri, 13 Nov 2026 07:31:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0FB50606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A373606A327
+	for <imx@lists.linux.dev>; Fri, 13 Nov 2026 07:32:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4A373606A327
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=dolcini.it header.i=@dolcini.it header.a=rsa-sha256 header.s=default header.b=DY9VXQ9g
-Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 26417227AD;
-	Fri, 13 Nov 2026 08:31:39 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1794555099;
-	bh=a8dwXPHMPfCbtdhYZUDcAPyhoTp0Li9Sm++J9+wQ2hg=; h=From:To:Subject;
-	b=DY9VXQ9goHKAVqWr8PfX1MtVIeeN2mOlbRRYpfI3rFmaWdvnuPGoEQb0j71qf65fQ
-	 SipdsSUlhQjaWUUYT8TVtx7rWSK6EMCaZYOjR2ELbcueb/lhIcNfrwTpyJnHnizRnn
-	 2HA+cxrkSuX9qVZkiVuq8MKRfAFY60DEvE9XIQJn5LFtd1/eniXZ3xQTmda6u1t/yg
-	 Aai5Cl8uCZ+qrWufRJY6pQV0vDtETVgQHTTgwX8C/0NirWv8Gadb7khoXz9kEw1gJP
-	 tvVb3QZK5Em9ZSCkXcd0mHQAhD6WSuEEtSef+BEZme2DxxX8T9h6mDDk6556WOgz1R
-	 QWBPZJehhQRlw==
-Date: Fri, 13 Nov 2026 08:31:35 +0100
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Frank Li <Frank.li@oss.nxp.com>
-Cc: Francesco Dolcini <francesco@dolcini.it>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=HYSRQOHv
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-4918c2d727fso238404f8f.3
+        for <imx@lists.linux.dev>; Thu, 12 Nov 2026 23:32:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794555172; x=1795159972; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Jqp8TYr/BxJeYtd0GqFzJoVixzfcdiw2tIdD5ztXl7A=;
+        b=HYSRQOHvEbxhatEDTpks0bPHYJJTH6AdfZVMncK8vo6P5pVnxcZ3sD14kA+Gb9CIH5
+         7qnENJdau/zY/WaDaDanSQyl9LeJpjMfpB1zHZ3rdO56AjVApIyu2GI7KlL2uz8vNiir
+         jJrSqm1o9vA4e0hHwFfjSaGd2ruuf3WmduLKZnz7bs3nJTjbEG2tcnFa5boZ4QzbJA8F
+         6ymH9e1xEI93C1ZY7J/KKAp5lua/uqsdIusawOZPZ6A8A/Z6M/bxuXOoWfO6e3VOlVhx
+         SwkIcx2IXaPnNHvbDoJzl0q0T5jcMnu0hNtRROQpgjeVUJoHjKwpkm3jng88eWu6udLN
+         qY3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794555172; x=1795159972;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Jqp8TYr/BxJeYtd0GqFzJoVixzfcdiw2tIdD5ztXl7A=;
+        b=ZkF3gDbIouISOqz7bDdwtMAYtr/PclbfmqHUW1W2KTolP8VAKP1HPuIfyZZ6Nv0vpu
+         NxWCNrv2Tja1SpVZdfkaEGPHB685fPj4zYqH+L6xE5UReXVd6aOrmkxf/lMi+YRkIzMz
+         /dnkyRsU3Siu5hyIS7pcjMPKv5T9WyLNmG/sFY9nQHYmIidlTRxacsKcSW8IfOESfSyn
+         QINDPPy0NCy8SljCeRbBQrkGuZgnPeHShO6BhH7xrNTekpPi+dp3JqmE28Ign+slHW7I
+         DIuPxuFyaKgh5jl1AM96nA3c+zkPYCukpwx3CMfDcknPXfcX8yFJhtuBjrPH/b7kDO0A
+         HyPw==
+X-Forwarded-Encrypted: i=1; AL+hErH/5DsfdkoQWiZVW4JoHn4TFm8dMYKQFUYO20P5FmEa31sRca3e5DftIOU3G6RTGCfT8qk=@lists.linux.dev
+X-Gm-Message-State: APuU4Z9lBtqIIRmfmjeUjCAk/rAKI2o9za+5H43KdiDi2tqOzrelzFp8
+	aUO+Tc/fJkL9fnWna+NSj2noZua2IhBdCnJdGV62ZozfNaZ2MbLj4UiN
+X-Gm-Gg: AYBFou0doRdtOAM8pXU2om/iQ3XNK/WWK75ctZP1mbie36LsU8NZQ8zOIsSalUMdFx6
+	Rz6OfuafFPrMjH/1KjrjgXx4yO0kHmaSPK0Hcwu+YX+IG03cnU3p6eQNO/RrbXftcYfaZ+zm/tI
+	Lg73ubt73Zs9kp99WDeBjnf3KtGGGkKOBgXGh6sdACbtgy42K8+tv3TMX4FeyF6G2EQ0g3nCP+U
+	lnGqeJsA77mFvlqlMMEtrCpZl+NQgFP1P5Kz0KyBxkHww+9pNNKm8CZ5hXsEBfnluRHX1/ulTt8
+	/3uopNkaK53F/fzEVW8tbjzvpQaLXm60klhGnX1Lj7DxuLHBuxZ34Z2AOH2ST8OOYEsPyhUvG89
+	DHQBgh9qFkuFF+30zR81IhLS7EhUv2o4mzDe5YzBHewucAzT7hLgKlIbeLEdHdy8pVPnSk92Yhr
+	iujoST2zPdVu+8e8lsmhNC4AOackqJPnSYUMldNuSm27PMJWQ1Z5+gCE1gHhClT2kkQ6FC0Yvp2
+	8pKoa9YFoB3HHg+/O53vYXE753yLVO4Z6VRhogyYd9oRp0O3Qge68d5gnJ3UOMvdaxjK9wZqXFl
+	d+ObNf7k0/Ypd5oLjJM8kAXnCwRgtO1g31s=
+X-Received: by 2002:a05:6000:240b:b0:490:39ba:4359 with SMTP id ffacd0b85a97d-49c714a2db3mr3596058f8f.23.1794555172357;
+        Thu, 12 Nov 2026 23:32:52 -0800 (PST)
+Received: from deb05.proceq.com ([213.160.61.66])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-49c5d223a29sm3799903f8f.8.2026.11.12.23.32.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Nov 2026 23:32:51 -0800 (PST)
+From: Mehmet Fide <mehmet.fide@gmail.com>
+To: Andi Shyti <andi.shyti@kernel.org>,
+	Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Frank Li <Frank.Li@nxp.com>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-bsp@toradex.com,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 01/11] arm64: dts: freescale: imx8mm-verdin: Add SPI
- alias
-Message-ID: <20261113073135.GA8515@francesco-nb>
-References: <20261112150236.164850-1-francesco@dolcini.it>
- <20261112150236.164850-2-francesco@dolcini.it>
- <avXeK-IRXbKqI-pc@SMW015318>
+	Fabio Estevam <festevam@gmail.com>,
+	Yao Yuan <yao.yuan@freescale.com>,
+	Wolfram Sang <wsa@kernel.org>,
+	linux-i2c@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH 0/2] i2c: imx: two fixes for a DMA write that is not acknowledged
+Date: Fri, 13 Nov 2026 08:32:48 +0100
+Message-ID: <20261113073250.1037215-1-mehmet.fide@gmail.com>
+X-Mailer: git-send-email 2.56.0
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -73,67 +104,31 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <avXeK-IRXbKqI-pc@SMW015318>
+Content-Transfer-Encoding: 8bit
 
-Hello Frank,
+From: Mehmet Fide <mehmet.fide@screeningeagle.com>
 
-On Thu, Nov 12, 2026 at 09:41:31AM -0600, Frank Li wrote:
-> On Thu, Nov 12, 2026 at 04:02:23PM +0100, Francesco Dolcini wrote:
-> > From: Francesco Dolcini <francesco.dolcini@toradex.com>
-> >
-> > The Verdin family pinout defines the SoM interfaces and their
-> > numbering, SPI_1 being the SPI bus available to the carrier board,
-> > implemented by ecspi2 on Verdin iMX8MM.
-> >
-> > imx8mm.dtsi numbers ecspi2 as spi1, so the Linux bus number in sysfs
-> > and the spidev name do not match the Verdin interface. Add a spi0
-> > alias in the SoM dtsi and delete the inherited spi1, so ecspi2 is
-> > bus 0, zero-based with SPI_1 being spi0, and carries a single alias.
-> > ecspi3, internal to the SoM with the CAN controller and the TPM, keeps
-> > the spi2 alias inherited from the SoC.
-> >
-> > Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-> > ---
-> >  arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi | 2 ++
-> >  1 file changed, 2 insertions(+)
-> >
-> > diff --git a/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
-> > index 1ac9d000d415..0369803a4d46 100644
-> > --- a/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
-> > +++ b/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
-> > @@ -16,6 +16,8 @@ chosen {
-> >  	aliases {
-> >  		rtc0 = &rtc_i2c;
-> >  		rtc1 = &snvs_rtc;
-> > +		spi0 = &ecspi2;
-> > +		/delete-property/ spi1;
-> 
-> Can you avoid delete property for new platform?
+A write of DMA_THRESHOLD bytes or more to an address that does not
+answer leaves the interrupt status behind, so that the next DMA read
+returns 0xff for every byte without an error (patch 1), and it blocks
+for DMA_TIMEOUT before it fails with -ETIMEDOUT instead of -ENXIO
+(patch 2). Patch 2 needs patch 1.
 
-Unfortunately this is needed. 
+Tested on a Colibri VF50 (i2c0 at 100 kHz, DMA) with v6.12.117, where
+the touched code is the same; on this base compile tested only (W=1,
+sparse). 200 rounds of failed write, 32 byte read and acknowledged
+18 byte write: 200 times ENXIO at once, no wrong read, every write
+acknowledged.
 
-The included imx8mm.dtsi has
+Mehmet Fide (2):
+  i2c: imx: do not carry the interrupt status over to the next transfer
+  i2c: imx: return -ENXIO at once when a DMA write is not acknowledged
 
-  spi1 = &ecspi2;
+ drivers/i2c/busses/i2c-imx.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-so, without the /delete-property/ we will have both
 
-  spi0 = &ecspi2;
-  spi1 = &ecspi2;
+base-commit: 25e7ab89f4774b0f842cee0e8a20c11f755924d5
+-- 
+2.56.0
 
-and what is happening with that is implementation dependent, and this
-would not be ok.
-
-The original issue is that imx8mm.dtsi should not define the aliases in
-the first place, unfortunately removing it now is no longer possible,
-it will introduce regressions everywhere [0][1].
-
-This issue, and the reason I have the delete-property, is already
-explained in the commit message.
-
-Francesco
-
-[0] https://lore.kernel.org/all/20250425-dts-imx-aliases-ethernet-v1-0-15b9d5cca611@linaro.org/
-[1] https://lore.kernel.org/all/aca3addbe510c58524af8d3fd069fe2ae4b1cd24.camel@pengutronix.de/
