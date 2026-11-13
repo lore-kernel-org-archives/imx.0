@@ -1,57 +1,103 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.53
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794556078;
-	b=jqSE0IlqJaYs2uhmV6QJuGAoi8AEnY4q2k7I1jio7Hpb/IaDUT9pSoYiWgNUzzwdNt80
-	 4lzLG5rfcXkzV3Md4VuAp4B68Ikl4XOX40AuzJpqIHFhcVQcfDheWTtp/JlU1uSHWpiRB
-	 AziLCIkM4sHrhcCWcFaaw2Mj1jfLEpZ7k0shAFG3M4spRZ/hT1d+djBFp8hsHuVUdbSQe
-	 4Lq2jR0lI4oand6yfMGI97VdOiJUgJaFqhtBUTy/pJzmDZbc4G2n4rK7KfQ8eE0bjFLwd
-	 ZoEKyg52o9WQNrwizAQweuP76CYXtWRzKGUjpdUSTs5ay9H7skXR7iHIJ9v+Oh6x8qA==
+	t=1794556926;
+	b=V+fn1Eg7PsHL8JWVO5UYL0aOCJrn8xfy3pTPQQBji1wU9DrBTc7C65g0SLO5K4RqTlXY
+	 nCJpNTBw0ZsXIf5jUblB44kXGF5T/3fhNE75KqSMuMAR0c5dwEOTwt8sx6Fnk77d6NXhO
+	 fHAsWaaR00+r/ZcmwkYRwIzvhGD3Igu0kdI+YK0bWtEKSnPrvBqLIJlEF4OskREqcJJXg
+	 jgvrXNfNEAQ46tBjEyMWpO0NC+cm8A1Gu9w9dmbnQvqo7ahBHNoTMgMjxcu3LVbyY6BZ+
+	 pOK2HU5d6M7liYAFOnZeiet9EPhjkIj9loTR7b4NfQh4e+Bix43tyaBcPxRiWc4AGdg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794556078;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=K983kx2BBZUqpAkIlVMzG9mNTlpab50TucPAELdFaic=;
-	b=gFWXZ9+8GGH3xPgl0kh6WMnWh8u7xez0VmzHUt+3nAB48kQCo1/QD/43nha3kTEygsOu
-	 9fKK2OCkkc1O1BpLyZ7Fk/uJKx9P8WVXKq4WxVklmCvVsXPII7Rr3s47BmcyDBnyzg3fi
-	 H+oSSEQjMXbHi+hc9G17qQsz8r3K1K8G76UUFY/ehS6yN5XTugklEzSYuLoSHvPUzmbmA
-	 n84NJTM3xCL93ThlxYRu/BvRFNRkond90PIfLfjEISwLH7qfujCx8bjVlKtejCHLwzx/M
-	 0vBxV9Gv7JpCBCQoVvs4OVmtqxDMBgMpkRkLFfTg670K7WoKQ9/p3WRL3cK11OdA7gQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794556926;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=QJxalrHssAZhNnjpSDoFedeDiy/biVpvzIuN3reWEpI=;
+	b=jmxUcbr+flzocyKH5AS6dQcBK+AMKMV3EGE9HyfWrzHuxaA54VyjM3XS+/31ETfwgyhn
+	 Mycjsz8xNX1pgEFgwICpAHIqTPe5dibl9OeGMCO+FcIpvqKl6bmq5Mw/SQKJAPSE+0a5z
+	 Q73ybVrLPx0Y3wjRPEvbmyJI8GcsZzM/qogGsnxsxDdKqJe81fuhIJYXJQKZApF6/brH7
+	 OHerRzc/PCGTWX+E05EodntfNQemXjpccSkRoE1gVKtZ0qEoJhWinDtaNPQFughcS/aQw
+	 vgGZ5uQNd3hWWQPXXC23Z9NR7m28WN0cZzv7e0CI847T8v1UXC6WJMpy4W3xha3Gfpw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QROYrC8D;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=DPCXw6z4;
+	arc=none smtp.remote-ip=209.85.128.53
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F00FF606A31C
-	for <imx@lists.linux.dev>; Fri, 13 Nov 2026 07:47:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E111606A32D
+	for <imx@lists.linux.dev>; Fri, 13 Nov 2026 08:02:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7E111606A32D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QROYrC8D
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52D611F000C6;
-	Fri, 13 Nov 2026 07:47:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794556077;
-	bh=K983kx2BBZUqpAkIlVMzG9mNTlpab50TucPAELdFaic=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=QROYrC8DWyx+X8FR3rbupZ59j3x+Af1yiZGnA4M03t5v2oBN1/81uLAUq4W+Xz5vu
-	 dM/lSy6gTimf/SpDb5QZXY/Dj5kVvB1HW+vRg+Lcg8THt9mtq+tQkDA86J/gZVovUX
-	 UQO20JSYDBeHW4mIiGhh6J+zvy+7eItHfJxeN5M2WUDghEhXyylkpacECDU/sY+vUk
-	 DQ1mEz7Rd9M8+aJZsF5dD9vRDtCAvJF3xILer7DKSG+ecBhae8gVIZlhdOCJFgl1Cn
-	 C4iNyg4IMjMKTYwyieDOq7YlKOH++1CCd7fTRE4WwbZYHm5zdKETYim1y7O8rA5HOo
-	 bpBgeQpL63QXg==
-Message-ID: <sashiko-outbox-212367@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 2/2] i2c: imx: return -ENXIO at once when a DMA write is
- not acknowledged
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Mehmet Fide" <mehmet.fide@gmail.com>
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20261113073250.1037215-3-mehmet.fide@gmail.com>
-References: <20261113073250.1037215-1-mehmet.fide@gmail.com>
- <20261113073250.1037215-3-mehmet.fide@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 13 Nov 2026 07:47:56 +0000
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=DPCXw6z4
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4a207b02a2cso3095475e9.1
+        for <imx@lists.linux.dev>; Fri, 13 Nov 2026 00:02:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794556925; x=1795161725; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=QJxalrHssAZhNnjpSDoFedeDiy/biVpvzIuN3reWEpI=;
+        b=DPCXw6z4gOVe9wosedUCp+wa0Vl+Oeb4GAxsVZUcBnObgcP1Up301sGicm4TrL4OqA
+         7P+fRRH97TFWdFUjVHNnLeMi7mzuZVq6ctbNBNfvZftsBsfGQ5I2IkK8hwoI9TTH7CZL
+         VGdSHlEKyPVS1pWuvLN8qOQhy9oNrgqGnjDagFENfU7HAGKaz8sOEIYD9Hlj14XYEjFK
+         ZUmdwIvmLpvu4Pme3iDzXdNKfmhlbbAsDGAw5sPS7iIf4yczNZuukzWOFcOzOWfG1RzQ
+         RvYShtA4CtyCUNreZ5xa032T8clfLWtmj6bk65oJgO310Nj1Np9iNZPN9Aw6MDi1aJj0
+         ynzw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794556925; x=1795161725;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=QJxalrHssAZhNnjpSDoFedeDiy/biVpvzIuN3reWEpI=;
+        b=sYt9Fb1x+Z+W4AZ9K+K/B0episeouYjYrU6igwyAHMmpghz3sWesEDqDB10cZAZjHy
+         pbFvP+DSC45fGltXWH/QwSyqBtcq1lg61G/ff9RDQrD2qbKkbLoIeZJ0HyW1/hOFN+dL
+         LR63elwCcfB+7Om9U/yPQDXHPMSa+vupWJ5nJgT/EVii6W3j4RpHK5TZsKOnac4OppTc
+         Sjwt9bFpl/8ZMvgt6MZiRGM0Uyc/iWPWnbJGCm9HdlMQPMjhuROMl+5SX7ZckFCevIu+
+         cWcabgCGkPO9TDZDHuhsmLLzte9RrSSMKEs9kw3IISJKdfrh/Wfg/jR10aQjEvqmkJIO
+         nsLw==
+X-Forwarded-Encrypted: i=1; AL+hErHzNLSQ4T7FkRPnt10c8OMR7PM5SB8BZXreXYWjLGOiGaSVsOH4g+P/ROL8RL899YsqbgI=@lists.linux.dev
+X-Gm-Message-State: APuU4Z8PYwcJ9XH6NqafJvZZ6PKiiC7QcyX/FNEcoqVsH9quDs6k76ir
+	+/jdXjPzdiz+fplwh3AtILBxpZ/XmSASzR3duV6fX9ytZ1v0KTS18oFB
+X-Gm-Gg: AYBFou3mN3IBfmzoRrGa4eJ92yRskuQvZF1exNPLjMLGzZaXBmHw0uxC4RFwp9XYmKn
+	VOtMzhQr5h5GFLvdtQ8yVd/QuVaMrNILTomgyFWWQiySSyEg5fGMQfDiGQ6E2s7H4h74d+7oJOu
+	qnWdEN/iGsO2WYYIj1orBZPUXpw/wTiTSldBkwC598YwARJyhU/A7I2IHFZ5zHDUW8MF2aIEdPL
+	4TaLs9cuI/l6UvBNQsnbaupTsIKB7zF1xE8/+ml5c2dlOwN6ICXpWKUQGlmUyUY0M+E3u4zunbA
+	iulZC7ikfHMtvLRSi0yvNIjh3sUV45Y/7n4fYvPIn7ydtW6GsrAU/yQLe3b5v5SGnKtgkAfDCRm
+	datXbBvdDQedboq4pJOtgwGV87lvnpU4HvmcXXk58MFUapm+0u5qbakIA38wldOmjsuKwQf+mzS
+	fJKiMJMxJTSl9zLaxYIKxK1EI0AfDXcIOksgZN4ieXIwmHTGxDavu1SFmFDhCrCcZH2ar/ebEvC
+	27JxRjU+0IXjERis0ygpVCO5suQVg9FaRjtLsusDWxu8GG9j9Mc9X8Xag1ELbJOj8mJ0kCf8SPT
+	P0XhxKmWc6sk1W53uTGtJKD8k/QIEovKQ4LH
+X-Received: by 2002:a05:600c:c4a3:b0:4a1:9663:7639 with SMTP id 5b1f17b1804b1-4bb55ab5526mr35140005e9.34.1794556924633;
+        Fri, 13 Nov 2026 00:02:04 -0800 (PST)
+Received: from deb05.proceq.com ([213.160.61.66])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb4e2acf81sm121590835e9.14.2026.11.13.00.02.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Nov 2026 00:02:04 -0800 (PST)
+From: Mehmet Fide <mehmet.fide@gmail.com>
+To: Andi Shyti <andi.shyti@kernel.org>,
+	Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Yao Yuan <yao.yuan@freescale.com>,
+	Wolfram Sang <wsa@kernel.org>,
+	linux-i2c@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 0/2] i2c: imx: two fixes for a DMA write that is not acknowledged
+Date: Fri, 13 Nov 2026 09:02:03 +0100
+Message-ID: <20261113080203.1046422-1-mehmet.fide@gmail.com>
+X-Mailer: git-send-email 2.56.0
+In-Reply-To: <20261113073250.1037215-1-mehmet.fide@gmail.com>
+References: 
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -60,81 +106,17 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issues to consider:
-- [High] i2c: imx: DMA mapping leak in i2c_imx_dma_write() on I2SR_RXAK
-- [Medium] i2c: imx: missed NACK on last DMA byte in i2c_imx_dma_write()
---
+A correction to the test note in this cover letter.
 
-commit 466099063994a0c4c92a4a0f7a1a450fa666895b
-Author: Mehmet Fide <mehmet.fide@screeningeagle.com>
+The v6.12.117 kernel I tested with is not plain stable. It carries a
+backport of commit 5f5c2d4579ca ("i2c: imx: prevent rescheduling in non
+dma mode"), so its i2c-imx.c has the interrupt state machine of
+mainline. "The touched code is the same" is true for that tree only.
 
-i2c: imx: return -ENXIO at once when a DMA write is not acknowledged
-
-This commit completes the DMA wait in the interrupt handler when a
-missing acknowledge is detected during a DMA write and returns -ENXIO
-from i2c_imx_dma_write().
-
-> diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
-> index 1987a0fd81329..09934f3b13efa 100644
-> --- a/drivers/i2c/busses/i2c-imx.c
-> +++ b/drivers/i2c/busses/i2c-imx.c
-[ ... ]
-> @@ -1225,6 +1228,11 @@ static int i2c_imx_dma_write(struct imx_i2c_struct=
- *i2c_imx,
->  		return -ETIMEDOUT;
->  	}
-> =20
-> +	if (i2c_imx->i2csr & I2SR_RXAK) {
-> +		dmaengine_terminate_sync(dma->chan_using);
-> +		return -ENXIO;
-> +	}
-> +
->  	/* Waiting for transfer complete. */
->  	while (1) {
->  		temp =3D imx_i2c_read_reg(i2c_imx, IMX_I2C_I2SR);
-
-[Severity: High]
-Does this error path leak the DMA mapping in dma->dma_buf?
-
-i2c_imx_dma_xfer() maps msgs->buf with dma_map_single(), and outside
-submission errors the buffer is only unmapped in i2c_imx_dma_callback():
-
-drivers/i2c/busses/i2c-imx.c:i2c_imx_dma_callback() {
-	struct imx_i2c_dma *dma =3D (struct imx_i2c_dma *)arg;
-
-	dma_unmap_single(dma->chan_using->device->dev, dma->dma_buf,
-			dma->dma_len, dma->dma_data_dir);
-	complete(&dma->cmd_complete);
-}
-
-When a write is not acknowledged, the ISR completes dma->cmd_complete and
-dmaengine_terminate_sync() aborts the pending DMA transfer without running
-i2c_imx_dma_callback().  The mapping is never unmapped, and callers free
-the message buffer while it is still DMA-mapped.  Moving dma_unmap_single()
-out of i2c_imx_dma_callback() and into i2c_imx_dma_write() and
-i2c_imx_dma_read() after waiting and any dmaengine_terminate_sync() call
-would avoid both the leak and a double unmap if the callback already ran.
-
-[Severity: Medium]
-Can a NACK on the last DMA-transferred byte (msgs->buf[msgs->len - 2]) be
-missed because I2SR_RXAK is checked before waiting for I2SR_ICF?
-
-The DMA engine signals dma->cmd_complete as soon as it writes
-msgs->buf[msgs->len - 2] into IMX_I2C_I2DR, while that byte is still
-shifting out on the bus (I2SR_ICF =3D=3D 0).  i2c_imx_dma_write() wakes up,
-checks i2c_imx->i2csr & I2SR_RXAK before the byte finishes transmitting,
-and enters the I2SR_ICF polling loop.
-
-If the target NACKs msgs->buf[msgs->len - 2] when it finishes shifting
-out, the controller raises an interrupt that stores I2SR_IIF | I2SR_RXAK
-into i2c_imx->i2csr and sets I2SR_ICF.  The loop then exits without
-rechecking I2SR_RXAK, writes the final byte msgs->buf[msgs->len - 1] to
-IMX_I2C_I2DR, and calls i2c_imx_trx_complete(), which returns immediately
-by consuming the stale I2SR_IIF from the earlier NACK while the final byte
-is still on the wire.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261113073250.1037=
-215-1-mehmet.fide@gmail.com?part=3D2
+For stable: both patches apply to 6.18.y and 7.3.y. On 6.12.y and older
+patch 1 applies with fuzz and patch 2 does not apply, as the interrupt
+handler is different there. I can send backports for those trees once
+the patches are in mainline.
