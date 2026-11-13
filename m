@@ -1,82 +1,83 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.47
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794567905;
-	b=FA89tM1cuFUPkP4xkC6U4PAEE67k8U/2HKZ7i0ggPsKdh+LgO9L2Q7SNps9v5vTCaWty
-	 n4YN86jSvVVfmoJBlrZcAJm8Akvh2ZNX8Vt0KjBedKoqm+Jq3QLS2b4YgNZuSyhiWUh6Q
-	 Wcd0F6t4IfSuOVx0qMUsn7GLPlCxyHzf0acDOowScVQ9i4vJ0x975gmqgl8sByrkzCjx7
-	 iYI7gNVdTj/OPFmmA1CCbJq24w1GWiPBhErOMbzEFEDVZfci+1soBOUFamnlnI4harjb3
-	 eY+B3P666P2d4sRYIi+1ufBz57QkSrniLwMkJk7qOuwkWMB4iyTagWICtGQXLr83ECg==
+	t=1794567920;
+	b=H9AJxBUxaVDVe35NpHHNCNZpsl0urfqmfI7IFakHrmW5ggRJt5ag4h8WIZGzG1MfZDs1
+	 GqiCnGZS1Vd7SuZvkZ5lxejlYmqz22hUc0tZHHVUyBrtqLPoUwWLERpWpaOSadsuifiSN
+	 9YsoklEsFzA+t603kQhr2+wpANWxHZKP833yUO7feW+G2e8Lmb+5jjZXgOvgt6hwAsotO
+	 gTdWHV+gxIHOBtF7Wr2QSEZT5G91OyVPQWh0MEjUw61QQD/xf0nqzupNzmWafrwd2/bfY
+	 sYB3Yvfvvk8sq8saJ82CrUjFcdC3inSC+B7jxHy4ZBYBw/NrnI/Gqbf2MFXfXsptNGw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794567905;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794567920;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=k5kTzIC/xwbiOBwUmgidJlrRFiWrIZutr9d7t0kBwUc=;
-	b=EMFKtDz8v+eZuIo1qCQ+DrKABio4akkdjwwuhc+DFV7TmTC9pU+H5bU/ljqZF3aFPxwo
-	 etbatW0Pm01QLdkO2zjzmJYGm9KxMtdAWscA3iVvAHCxsYWmkOJgeBGw0y5WJVaKL1vsQ
-	 UX0el21Js+6fAL0orbWp4jAqZzCBY1m9HDdPtyXU14OASTx9E9hZERkiufid+T4arx1zh
-	 QicrRgKauBR9iTJWqHTApl/fkC2YgJs0UMQQduFc48N6g8NH4NUxvGDJ44fzJR67H1LeY
-	 Fv7oWfIItyqgu58ChIUEUAZWVlNrtfEyNkCObGq1X2ttGW+ey0rcvzHPzBWR9FyCr3A==
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=QftI3K44ZZiobTwr/u+4ZTOlGFkxNtcO4iEVZ0vgnek=;
+	b=Z6+x1EBi83nKGNSgCyF3EoYSG6QSvarcy0AEV/mJ+VnnDiYX6f9kf7D3Te0Ws2zpdBj1
+	 7RUGZt3yVHw5x8R3LCnCzqiu2cSrLbLpYKI1Ci9s/nt1DWO8ZVHCyJB3sxC046Z1GGJL+
+	 Yv5jqjof1R1a59AuVVemQWnwZOJzKyexH66XIBlp1lyXGmDang77DBHIzapVcF11U6tap
+	 tpj9luLWqFOZgsKxKHlRs708qR8cRtEovGw/lq1TUlvprUbhm+LACRN+H6FaItHFHH+r2
+	 la01dbWGuPZKNH1vBuEclHycdc+UeVpLG4+R89wDVx0GYA7s6eYriwpWmoBVTigBeQg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=sVAVYsoR;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=QGhqadxb;
 	arc=none smtp.remote-ip=209.85.128.47
 Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C6AA606A339
-	for <imx@lists.linux.dev>; Fri, 13 Nov 2026 11:05:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3C6AA606A339
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30BEA606A333
+	for <imx@lists.linux.dev>; Fri, 13 Nov 2026 11:05:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 30BEA606A333
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=sVAVYsoR
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4ba013938d7so11403435e9.2
-        for <imx@lists.linux.dev>; Fri, 13 Nov 2026 03:05:05 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=QGhqadxb
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4a2072b9832so10804985e9.1
+        for <imx@lists.linux.dev>; Fri, 13 Nov 2026 03:05:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794567903; x=1795172703; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=k5kTzIC/xwbiOBwUmgidJlrRFiWrIZutr9d7t0kBwUc=;
-        b=sVAVYsoRaHX1OYAiye1Eu6v9E8jpLcVEB45m7MadimyLLKhb1aNzr2EUa6EIk/eaaq
-         0aUPxzCAaKineUZJMq5iU+6bjvORoSsiOTnQG0X3v5bxR0We9KS19AwdnPAC3rZkKbUb
-         0QODluw1qmFqa+G0q2Woy447LBmMf+qs59MR29Wc3xJH6wZ4evanOw6jtanWDliiq8zs
-         0zigTk7uM6p29y9K562KLiYd0wWp9Kv5z1yKK4dVFpxrSMz4xnLDEu/0X97JD1MsD3EL
-         RMFU0PkLsF2ToNRPRFCdq6sh/tC03nIxG/4xheYXnF7u+k9TMJAtdt39RHeC+pJ9IwQZ
-         1N7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794567903; x=1795172703;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20260707; t=1794567918; x=1795172718; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=k5kTzIC/xwbiOBwUmgidJlrRFiWrIZutr9d7t0kBwUc=;
-        b=kEOvfZJWtYyZZBjG+3PEpsyB2G2kjtZRj/9h+C6JIavS2H1W321EFeNTT1Jal/ZIMX
-         IfyjzAr0MG1NDqeksPA0+FZOiTGHp32U+62wSGg2zlX7BUXDlSQQ5phzo3pKh0AlNj2u
-         JPJZ8wHGF95c5+UyLeguRr76IEw/XSBIGEdkUREJExEJTOc+wM8oC47/9wjL8ibBwBEz
-         F3g1mfzS49dVtE2zHfbnVyEtSqLpucB9MVVkEaomZSYu/djyQUOzs78T5YWAaMqjKzDl
-         vBPd0bM0WC1khj/A9aaVdJUqbJmthgE+v6DYj4jzgVN+Wc9BDas1FXbv1n8BpCAlTtY9
-         lrDQ==
-X-Forwarded-Encrypted: i=1; AL+hErFWOoEhxylG6vWGPVbdEk5/Yo/oClSbLQAVCQ4ksiKQ51yyBLJ782OO++0HPH/3KKWDGZs=@lists.linux.dev
-X-Gm-Message-State: APuU4Z/H5gze7Et83yaYwvJxoY6z5z6hqgb1oHBN5ZG3ED9aUC4JvPF0
-	xEs2j8E9mRXdY3a/fZR90sS7sqC7+UGu8jmbVo6qd0rx93CeBy4bT8ec
-X-Gm-Gg: AYBFou3mnqZIGf/B3ERvJYB5oJkbDwHb6u2W+2ahQAnhpxaJ/55J41tYwb3p3H0TY8O
-	3UCRF53fIkLbNMJaFF6xiWNLpuVkiiCDs/jpbiaJ9k8l8yIEbKgIE3TAPiGFXUcuLXN1jFb1ZvW
-	bY+RMy4Gw368JAcx2+duNx3rV4Mu2JzmSpa6rnq10XCH+Gy5YjXB90pLadnT14VFJUDAM2vMlMJ
-	dR/4yXqUdVAIPqovYbzzxlHiZVcHteySQGeE52CdEt+c8NkNz7N5HBKttSZEIXNtLMlk2daUa+L
-	Yqim8hvYC6HtfEcsvdOqqGAU2AgQsiC5k0EYnI3jCMLbSNLYHDTG4QOHuQ5nT4p2H/dSYfxbGGg
-	hOy7QwbKgpiyOxGqetsXGscbXwPz5bDz5gUoD2FpA59Y0WsH1Yol1sCsnyWYDl4jdpCADT2vqgb
-	MUxOqxi76LEOw8ok7z0vwNw71d11Sp4FifIcHy5m3DqklkKRUFy9BWX0temfW/1reO8z+MTpnzS
-	dUfKtvfvRx0MTbO1WyfjIG/ilLWuWQaZ4EX8aIZHYGJhYjfdmTrF98tMbCVF7McWffG8aUnNU9b
-	rtE8lytgJGp0fY3nVjW57sO1klwbgXjIhcY=
-X-Received: by 2002:a05:600c:c4a3:b0:4a1:6992:f861 with SMTP id 5b1f17b1804b1-4bb55a02932mr43197405e9.1.1794567903271;
-        Fri, 13 Nov 2026 03:05:03 -0800 (PST)
+        bh=QftI3K44ZZiobTwr/u+4ZTOlGFkxNtcO4iEVZ0vgnek=;
+        b=QGhqadxbFWCD/NvYPyT+uMPUes01xXvHVcw+w4Fxm2VUCo0H/CU2WaFUEdjw52NS7I
+         PwWwWE19MFqzLEz6hbRG5pN52srMW7fDUz1vG2tE8hn/ad9rQPhiaJzMTE7aD+mb/zrA
+         NTbB7pEDah8N/z/b4CwIc/RtmyGqhDY/MPpBSEESxBTQmwCRklGoii9DF9gE0WoKm3WR
+         VOPGX3XZ4Efzu7T3D0UNaOyS1AG7Kw30ngWDqjYYRNPGzzv+bzrCYppal2TUI2QxKaNM
+         7/dMubOmYiSvH0r4OXf49e2qhoMHKJ17fgcBNNK4u1xb+W57Cbz2rfltKvwK/89FoSyL
+         2E8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794567918; x=1795172718;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=QftI3K44ZZiobTwr/u+4ZTOlGFkxNtcO4iEVZ0vgnek=;
+        b=O+t6fJ4I2ftvIFrnFM92UB3gK6yd5s5Xup04eovas0qLXiVfoBqZ2rAJr6CVQbYmcA
+         dhMpt/i4cI9Mfe5ZK062qNLS2uwstV5iI5z3O2a6lmw3V26zw89tFpg6WeTZwFnbttaB
+         3J9BnGw6SxuCh/m//cvrZ/faF5YLv3VoMaaMOAReIB6hxBRhFi6Fuqh2qzMkpkwDgi7R
+         DclY24H2bd0/B1wRBE+Pj56VAtXNNiS9UEdECFveLipcB6wviDM71YPE5t8YuQJiVACY
+         ecOIeQpv3/N3QmuHIk70IuyjvG8e9K0/dRGOs6g7hg1xhGFW+Eto0ipOJOxvn73ehjX5
+         p0fA==
+X-Forwarded-Encrypted: i=1; AL+hErF7Tdg8Dvwnlc3c+34oJWc17yZMevN4ML3Ieip9zVr0JMx5K9shh0JauES1q437fb9PsdA=@lists.linux.dev
+X-Gm-Message-State: APuU4Z9zymEHS8ZxLIbHbz9U3zFFAetIuPZV8KKFp7Yp5cqTQ2w1DmiM
+	WZVA592FtDvie4UC+2vvlUlv21rAqobXllj/niseFs+Ei/ix+YuVducB
+X-Gm-Gg: AYBFou0hVbg5oPguLkgc9j++4nVBC/RctewGY/rI0nFryhgb5iRFoUt+llKj2BsU6bc
+	IDmC58xZ9CHsPARM+1Z9ydjm7vt2a1hLn5UjVcHOJ+TTZhIDian3To104o0CMup+dBcVh4l0Mgk
+	HAYTo0QHKf/oMzu+X8U1Ytv3DbnfJhbae7tRpQCVdNoZ5xwd5+rY5pMMagH+CVBgNofsrB9CKW0
+	S4LZ70fTlxG6gHxJc0UrinHwfvKtWHpkXsXW5S0XFR+Gj/ul4kNi8TYc18t1B7cG4FmyfIYMNwf
+	2k2/ozCFBMw2uwJ983BbwE02D0TCd+iYBraoe1g9GAKYiVmzuXy8d6if44HmRPbbt37vYr+n2d/
+	jhqSeQWYauug5nVDoipGGB2OmF/MEXlcm7bVHwkRTcc+O9Jgk9Dkbpe4810Mfmr7V+GCCakx9m2
+	ouH9Aoz7Av3/oswuU8VYtis8TMB6mVK4GtLEqJ9eZZIzMsKWgIbKMJ6GFXrmxuqjY+Q/XdOtjrA
+	TUDnChHJd9sHmssPgYexltdFWnXAJWL0vTj9VtpaaCc4X3GA38cJ7lAmeXF+XmSqh2hSoOc/zmg
+	B4Gi8vnccrxsoPOZf9cnsarmJ3iuGabutME=
+X-Received: by 2002:a05:600c:3b16:b0:4a2:1960:6fa with SMTP id 5b1f17b1804b1-4bb55a6116bmr46200125e9.4.1794567918385;
+        Fri, 13 Nov 2026 03:05:18 -0800 (PST)
 Received: from deb05.proceq.com ([213.160.61.66])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb55afb6absm57515955e9.15.2026.11.13.03.05.02
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-49c605e4a2asm4788105f8f.39.2026.11.13.03.05.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Nov 2026 03:05:02 -0800 (PST)
+        Fri, 13 Nov 2026 03:05:17 -0800 (PST)
 From: Mehmet Fide <mehmet.fide@gmail.com>
 To: Andi Shyti <andi.shyti@kernel.org>,
 	Oleksij Rempel <o.rempel@pengutronix.de>
@@ -84,16 +85,19 @@ Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Frank Li <Frank.Li@nxp.com>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
+	Yao Yuan <yao.yuan@freescale.com>,
+	Wolfram Sang <wsa@kernel.org>,
 	linux-i2c@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH] i2c: imx: test the block read flag of the message that is read
-Date: Fri, 13 Nov 2026 12:05:01 +0100
-Message-ID: <20261113110501.1142036-1-mehmet.fide@gmail.com>
+Subject: Re: [PATCH 2/2] i2c: imx: return -ENXIO at once when a DMA write is not acknowledged
+Date: Fri, 13 Nov 2026 12:05:16 +0100
+Message-ID: <20261113110517.1142293-1-mehmet.fide@gmail.com>
 X-Mailer: git-send-email 2.56.0
+In-Reply-To: <20261113073250.1037215-3-mehmet.fide@gmail.com>
+References: 
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -105,49 +109,10 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Mehmet Fide <mehmet.fide@screeningeagle.com>
+Please do not apply this patch as it is. Sashiko is right on both
+points: the new -ENXIO path leaves the DMA buffer mapped, as the timeout
+path does today, and a NACK of the last byte the DMA writes can be
+missed. v2 fixes both. Patch 1/2 is not affected.
 
-i2c_imx_xfer_common() decides between the DMA and the interrupt driven
-read with I2C_M_RECV_LEN of the first message of the transfer instead of
-the message at hand. A block read of DMA_THRESHOLD bytes or more that
-follows another message is therefore done with DMA, which reads the
-initial length and does not look at the count byte.
-
-Fixes: b460b15b3cc2 ("i2c: imx: separate atomic, dma and non-dma use case")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mehmet Fide <mehmet.fide@screeningeagle.com>
----
-Reported by the Sashiko review of another i2c-imx patch:
-https://sashiko.dev/#/bug/linux-f62df5ed-ad96-43f2-872a-ae2c0100b73f
-
-Tested on a Colibri VF50 (i2c0 with DMA) with a v6.12.117 kernel that
-carries the i2c-imx changes of v6.13 and later as backports; on this
-base compile tested only. An I2C_RDWR transfer of a one byte write
-followed by a read with I2C_M_RECV_LEN and an initial length of 16:
-without the patch 16 bytes are read and the count byte is taken as data,
-with it the count byte is evaluated (here -EPROTO, the device answers
-with 0x25).
-
-The line is from v6.13, the patch applies to 6.18.y and 7.3.y.
-
- drivers/i2c/busses/i2c-imx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
-index ccf08cd63151..9abe0a26c877 100644
---- a/drivers/i2c/busses/i2c-imx.c
-+++ b/drivers/i2c/busses/i2c-imx.c
-@@ -1713,7 +1713,7 @@ static int i2c_imx_xfer_common(struct i2c_adapter *adapter,
- 			msgs[i].flags & I2C_M_DMA_SAFE &&
- 			!(msgs[i].flags & I2C_M_NOSTART);
- 		if (msgs[i].flags & I2C_M_RD) {
--			int block_data = msgs->flags & I2C_M_RECV_LEN;
-+			int block_data = msgs[i].flags & I2C_M_RECV_LEN;
- 
- 			if (atomic)
- 				result = i2c_imx_atomic_read(i2c_imx, &msgs[i], is_lastmsg);
-
-base-commit: 25e7ab89f4774b0f842cee0e8a20c11f755924d5
--- 
-2.56.0
-
+The block_data remark on patch 1/2 is a separate bug; I have sent a
+patch for it on its own.
