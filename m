@@ -1,73 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=212.27.42.3
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794587978;
-	b=YEErBogFx3VPDffeFupy0tPDrwQ12v1pt4XwzWbrUWIEkyHAlDY/n5DAAlTfcs433eP0
-	 BZIUXgTsq7eSYIImyvkSW/3VbohzvQ41e/hkzMORXO4jC5rBkY8MapMfQMcwmAdq9Q5sG
-	 i5U1xjvbA+djL2vzbefIdZ9XfQP11FwRhesZPpSfZD7H13JxmfG0mRrJ8Pjr2SkHS9mlh
-	 WBeg41eLeVTFMQKTGVpjmMMK/k2D9AGHmEBBC1DJT0QMonJ2uTrvZM53ngTTvWZjuFUEX
-	 nK+/qypTYzVYs4S8WenUhUyvQoSZWRIzWCo2rH/GjQ3x0ftQ4vZw4LvroUbymZdPFiw==
+	t=1794588152;
+	b=JbvS3NtGbUuwWaKLC4JxAPYUHvSEGTrDONWIJ7H7O1CXzo9gCDdBhdr+InFjZb7wC5P0
+	 Kq5UhTqSJryoIinEK/lh3nhfU0qKhiSwR1SVqUzuElMQg/1Z1IpG2vkK0J3UWYkyduVFh
+	 O2p4aoddUtLUHh1ZYFz8y7nFE5VD47zqK3/EOoACk6FWuQO5317EQKuu46BYh/FRos1VP
+	 ihI0tfhHAnO87lPX3RXLiQeG8nylhTMCp145YIv9YmQtDELwrfIk/Xh5VeIxUmShIAUXg
+	 h4hXiuygzOrohrJdUAoze9bxwYLlcIE3b/6FjOYjbjmiuTtYcfSOgje8ru+mZOlKFcA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794587978;
-	h=DMARC-Filter:Received:DKIM-Signature:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To;
-	bh=ZIaozk2aBHaH1oFJEjjG6pq54xGfHGZXMiLG49FuxWM=;
-	b=k1nnNmo3w+n8SoGlJNdN8Kx7oTXY3gXZCYWht8FD6FFVLNG8tFUGvhewpG6WzR4thfvn
-	 KmWc9zamZjG24BSSevufT1792ufRDtTk2cp94wtTmSRH6JwXMdRSICvrijzeN60PTTzJZ
-	 7DTNOP5OFsRQ5aRd2AO+A7qI0JPMbUnoCcD5geeOdHUFmrgi9sEJQ13LL1sKk3FR5K3yD
-	 PSmZXgSOw22CfGFNilc+RIYhl3IOb+LFiCLdfmGN3Pqz3GhUhqK/N8bsYKQjA1+LtxUI5
-	 2ExXBtVLoMxPRrmutRTO/vgukIn7zf/Jq51LPeg90bbN4ANZXhXocDy1VTGoLI48L3Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794588152;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=m/PpC4O3NzjAavCAj87Bv2LPOvh9Te54rBz9fHCqCGE=;
+	b=CbpBe+e8nA69tQaO/bENtx/9fbIkd6XDGWnTnbqehQIVlsEVqxhUyccFDlxQu0WCskaD
+	 /sRXbo16632qTrORume+C1EVKHidgt3VmDwFoWv4mgzynuUsoDXwTmFaFrJtNDboPvsOr
+	 OkEkecAE9WjC+2nr/72YLDkIbJBLDXTfAh6D5OiJcrzn/WNty4mI5VVr/kTlruJ6G6sAl
+	 9Wni5sB4frN8qV/QA097cdqhksdU2jwfMcyv3wYsRtwYt/0LxSkur35qj8VlX49LrKgTM
+	 ZRcxR4iXFwTRhFb/o7RQMw8eGX5MHrZmTUnrHwSGECctNlZ954SqyealXRLnE0WMFNw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=free.fr;
-	spf=pass smtp.mailfrom=free.fr;
-	dkim=pass header.d=free.fr header.i=@free.fr header.a=rsa-sha256 header.s=smtp-20201208 header.b=Y27pSlBF;
-	arc=none smtp.remote-ip=212.27.42.3
-Received: from smtp3-g21.free.fr (smtp3-g21.free.fr [212.27.42.3])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Cg7ZwTKz;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A180606BCA9
-	for <imx@lists.linux.dev>; Fri, 13 Nov 2026 16:39:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4A180606BCA9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=free.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=free.fr
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A999D6073F66;
+	Fri, 13 Nov 2026 16:42:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=free.fr header.i=@free.fr header.a=rsa-sha256 header.s=smtp-20201208 header.b=Y27pSlBF
-Received: from L30177.local (unknown [158.255.110.170])
-	(Authenticated sender: vjardin@free.fr)
-	by smtp3-g21.free.fr (Postfix) with ESMTPSA id ECC3913F8AE;
-	Fri, 13 Nov 2026 17:39:06 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=free.fr;
-	s=smtp-20201208; t=1794587970;
-	bh=Nq5VMxuAxZkNVKKpbGt5VbkTDNOsTH++OiONsbi9n9A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Y27pSlBF6JC60hVZAj8IPVqa48C/9DgkKqOkQDESe2muCIMq1QiH0t2hpY74zGNor
-	 OtZzOAz4r2ULrN4s+CBzg/XtDOlc9O89iXA+G0s6SUgY7mlQnzDErXQV+ELA5RNaVW
-	 PK2PDB4K43IBDzZj9SO+65cyDlC491QsHI1NYeRwF/XtNGdaiyb8ChPIcKkIUVC2In
-	 dvO1b1pdQocvaDngZ6qUQv0TZJtqExY4YIAmBF+5gHhlvome38PHRk5sKV9ag8cLbe
-	 xkXCmw2A00qeLS/JkZrIUoxtz0CyY8rdsqNrklwxDAO/6T8FiPaISATPfhBBiQvTEd
-	 tKScOcofIrrdA==
-Date: Fri, 13 Nov 2026 17:39:05 +0100
-From: Vincent Jardin <vjardin@free.fr>
-To: Christophe Leroy <chleroy@kernel.org>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>
-Cc: Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>,
-	Frank Li <Frank.Li@nxp.com>, Jacky Bai <ping.bai@nxp.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	NXP S32 Linux Team <s32@nxp.com>, Linus Walleij <linusw@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>, linux-gpio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev
-Subject: Re: [PATCH v3 3/5] soc: fsl: guts: add the RCW override of any RCWSR
-Message-ID: <avc9KbxQ4dxlibGQ@L30177.local>
-References: <20261108-for-upstream-lx2160a-rcw-pinmux-v1-v3-0-5a0063f1da9e@free.fr>
- <20261108-for-upstream-lx2160a-rcw-pinmux-v1-v3-3-5a0063f1da9e@free.fr>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Cg7ZwTKz
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B88A1F000C9;
+	Fri, 13 Nov 2026 16:42:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794588152;
+	bh=m/PpC4O3NzjAavCAj87Bv2LPOvh9Te54rBz9fHCqCGE=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=Cg7ZwTKzaL5cIghRSQIAmUB1l2GCAW2rXSTKzHi9SiGYeQuOlMGpXkT7uE5PT2/W3
+	 yzLLZnpw/b/Vu+YzxNu7PFMNJKGPAoexQG6oJiSJTECpFlukpwypsJnaGlm6SUgwqY
+	 EddF/XrR5eaeKYAgrd3mxk4rEN7hhquh+rwg+/+IYhQ23pC7yoqc3QO0iMyhl1cRHL
+	 v/7myZBX4tgFETu7qGM00lpohIPJgkbBZyvA+LQExLHSWLxyV9XFM2xYP4sRwIcVPv
+	 3zKF8HWpiV9ckP6W8Mu8/lcff4WoGjBz4ciMFZ5pYBrBx+IlUsnPhdSjtqBH2r89PF
+	 j7NCmg7tbJAGA==
+Message-ID: <sashiko-outbox-213219@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 2/5] arm64: dts: imx95-phyflex-libra-rdk: Add
+ phyFLEX-i.MX 95 Libra RDK
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Benjamin Hahn" <B.Hahn@phytec.de>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org
+In-Reply-To: <20261113-wip-bhahn-imx95_upstreaming-v2-2-3ef58af5e689@phytec.de>
+References: <20261113-wip-bhahn-imx95_upstreaming-v2-0-3ef58af5e689@phytec.de>
+ <20261113-wip-bhahn-imx95_upstreaming-v2-2-3ef58af5e689@phytec.de>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 13 Nov 2026 16:42:31 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -76,29 +60,153 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20261108-for-upstream-lx2160a-rcw-pinmux-v1-v3-3-5a0063f1da9e@free.fr>
 
-Hi Christophe, or Vladimir,
+Thank you for your contribution! Sashiko AI review found 4 potential
+issues to consider:
+- [High] arm64: dts: freescale: missing OF graph ports on M.2 connectors
+  disable radios
+- [High] arm64: dts: freescale: usb2 missing dr_mode, vbus-supply, and
+  pinctrl_usb2
+- [Medium] arm64: dts: freescale: eeprom@58 uses 4 KiB 24c32 compatible
+  for 32B ID page
+- [Medium] arm64: dts: imx95-phyflex-libra-rdk: descending
+  cooling-levels breaks pwm-fan
+--
 
-Le 08/11/26 11:06, Vincent Jardin via B4 Relay a écrit :
-> From: Vincent Jardin <vjardin@free.fr>
-> 
-> fsl_guts_rcw_rmw() only serves the SerDes lane modes. Export it for
-> other fields of the RCW:
->  - fsl_guts_rcw_read() reads a status register
->  - fsl_guts_rcw_override() changes fields of one under rcwcr_lock and
->    waits for the status register to follow
->  - fsl_guts_rcw_override_supported() tells whether the DCSR view of DCFG,
->    which holds the override registers, is mapped
+commit 831b01c8ff6e8f1f1ec13e354da0a278c7f495db
+Author: Benjamin Hahn <B.Hahn@phytec.de>
 
-May I ask for your advise on this topic ?
+arm64: dts: imx95-phyflex-libra-rdk: Add phyFLEX-i.MX 95 Libra RDK
 
-I am looking for the review of this serie, then I'll adapt it
-for u-boot along with the integration of Linux.
+This commit adds device tree support for the PHYTEC phyFLEX-i.MX 95 FPSC
+Gamma SoM and the phyFLEX Libra RDK baseboard.
 
-thank you,
-  Vincent
+> diff --git a/arch/arm64/boot/dts/freescale/imx95-phyflex-fpsc-g-som.dtsi =
+b/arch/arm64/boot/dts/freescale/imx95-phyflex-fpsc-g-som.dtsi
+> new file mode 100644
+> index 0000000000000..7cc4fa0104c36
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx95-phyflex-fpsc-g-som.dtsi
+
+[ ... ]
+
+> +	/* User EEPROM ID page */
+> +	eeprom@58 {
+> +		compatible =3D "atmel,24c32";
+> +		reg =3D <0x58>;
+> +		pagesize =3D <32>;
+> +		vcc-supply =3D <&reg_nvcc_aon>;
+> +	};
+
+[Severity: Medium]
+Should eeprom@58 use compatible =3D "atmel,24c32d-wl" (or specify size =3D =
+<32>)
+instead of "atmel,24c32"?
+
+"atmel,24c32" registers a 4096-byte NVMEM device for the 32-byte
+identification page, so reads past 32 bytes wrap around and writes at
+offsets >=3D 0x400 set address bit A10, which permanently locks the
+identification page on M24C32-D devices.
+
+[ ... ]
+
+> diff --git a/arch/arm64/boot/dts/freescale/imx95-phyflex-libra-rdk.dts b/=
+arch/arm64/boot/dts/freescale/imx95-phyflex-libra-rdk.dts
+> new file mode 100644
+> index 0000000000000..ccd05932e9557
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx95-phyflex-libra-rdk.dts
+
+[ ... ]
+
+> +	m2-key-m-connector {
+> +		compatible =3D "pcie-m2-m-connector";
+> +		clocks =3D <&rv3028>;
+> +		i2c-parent =3D <&lpi2c5>;
+> +		vpcie3v3-supply =3D <&reg_vdd_3v3>;
+> +	};
+> +
+> +	m2-key-e-connector {
+> +		compatible =3D "pcie-m2-e-connector";
+> +		clocks =3D <&rv3028>;
+> +		i2c-parent =3D <&lpi2c3>;
+> +		sdio-reset-gpios =3D <&gpio_expander2 6 GPIO_ACTIVE_LOW>;
+> +		sdio-wake-gpios =3D <&gpio_expander2 5 GPIO_ACTIVE_LOW>;
+> +		uart-wake-gpios =3D <&gpio_expander1 13 GPIO_ACTIVE_LOW>;
+> +		vpcie3v3-supply =3D <&reg_vdd_3v3>;
+> +		w-disable1-gpios =3D <&gpio_expander1 9 GPIO_ACTIVE_LOW>;
+> +		w-disable2-gpios =3D <&gpio_expander1 10 GPIO_ACTIVE_LOW>;
+> +	};
+
+[Severity: High]
+Are m2-key-m-connector and m2-key-e-connector missing OF graph ports linking
+them to pcie1_port0 and pcie0_port0?
+
+When pwrseq_pcie_m2_probe() binds to m2-key-e-connector, it requests
+w-disable1-gpios and w-disable2-gpios with GPIOD_OUT_HIGH, holding both
+active-low disable lines asserted.  Because neither the connector nodes nor
+pcie0_port0 and pcie1_port0 define OF graph endpoints, slot_pwrctrl_probe()
+and pwrseq_pcie_m2_match() never match the PCIe consumers to enable the
+sequencers and deassert W_DISABLE1#.
+
+[ ... ]
+
+> +	fan: pwm-fan {
+> +		compatible =3D "pwm-fan";
+> +		interrupt-parent =3D <&gpio1>;
+> +		interrupts =3D <4 IRQ_TYPE_EDGE_RISING>;
+> +		#cooling-cells =3D <2>;
+> +		/* startup 35%, duty cycle 30%-100%;
+> +		 * polarity inversion does not appear to work
+> +		 */
+> +		cooling-levels =3D <255 166 96 0>;
+> +		/* fan-supply =3D <&reg_vdd_5v0>;  probe fails with this set */
+> +		pwms =3D <&tpm5 3 86958 0>;
+> +		pulses-per-revolution =3D <2>;
+> +	};
+
+[Severity: Medium]
+Does using descending cooling-levels =3D <255 166 96 0> with normal PWM
+polarity break pwm-fan suspend/shutdown and cooling state tracking?
+
+On suspend and shutdown, pwm_fan_power_off() disables TPM5_CH3, which lets
+the 0x51e pad pull-down on IMX95_PAD_GPIO_IO26__TPM5_CH3 pull the inverted
+fan control line low and spin the fan at 100%.  In addition,
+pwm_fan_update_state() assumes cooling-levels is sorted in ascending order
+(pwm < ctx->pwm_fan_cooling_levels[i + 1]), so writing pwm1 or pwm1_enable
+via sysfs records the wrong cooling state and causes pwm_fan_set_cur_state()
+to skip thermal transitions.
+
+Using PWM_POLARITY_INVERTED with ascending levels and a non-zero off state
+(such as cooling-levels =3D <1 96 166 255>) or a pull-up on
+IMX95_PAD_GPIO_IO26__TPM5_CH3 avoids disabling the output into a pull-down.
+
+[ ... ]
+
+> +&usb2 {
+> +	disable-over-current;
+> +	status =3D "okay";
+> +};
+
+[ ... ]
+
+> +&usbphynop {
+> +	vbus-supply =3D <&reg_vdd_5v0>;
+> +};
+
+[Severity: High]
+Is usb2 missing dr_mode =3D "host", pinctrl_usb2, and its VBUS supply?
+
+Without dr_mode, ci_get_platdata() defaults to USB_DR_MODE_OTG, and because
+no ID pin or role switch is wired to usb2, ci_hdrc_otg_fsm_init() leaves the
+controller in peripheral B-idle mode instead of host mode.  Furthermore,
+fsl,imx95-usb does not set CI_HDRC_PHY_VBUS_CONTROL, so ehci_ci_portpower()
+only controls vbus-supply on &usb2, while placing vbus-supply =3D <&reg_vdd=
+_5v0>
+on &usbphynop causes usb_phy_gen_create_phy() to claim reg_vdd_5v0 via
+devm_regulator_get_exclusive() and block other consumers such as pwm-fan.
+Finally, pinctrl_usb2 in imx95-phyflex-fpsc-g-som.dtsi is never referenced.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261113-wip-bhahn-=
+imx95_upstreaming-v2-0-3ef58af5e689@phytec.de?part=3D2
