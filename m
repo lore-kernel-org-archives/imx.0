@@ -1,71 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=178.251.229.89
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794568198;
-	b=gsd31MfA9Kr9G+x/Yvob13OIP7A8+Fxde0BaMbqfsqu87F/iI+7c/GUWW+AmUAyzTUqM
-	 rCgSvQSdP8q7Qf4zjeGzIZHeT3tF3rxTq/PMDPQMzh/6rW+mlS8+4Lg9EC0tio71/UmWt
-	 ttkSPCfgaX7b+TFTqtGPpKpIy64av46bZGpsQA1TpYEz0I+qLX/gCAUck5WStf9ehsAzI
-	 9rBK++NFtM5+OyxK7pCHjp3VFrhICeBq6XaKWguKLNOMNATQbz9Uq3UtDBtgaO2Q1nFb4
-	 QoySMOlUbqp+qWgkPWCw0QNV5gjkTrOSXeYnvqGPNYbnFO6IoQ/9CaVYri2QUGfj31A==
+	t=1794568495;
+	b=ROEhWg98PiZl2tZdd0J8UjPH4z1+5iOUKs+0L53f+a24Ck3b+1pZ2g7GwSarz9PNnFsI
+	 rEW/zQUuevgNilqmm6ZUov+XBfw2zzwhpi1vQbs9T67yPQ3Or+5d5n+tIOEQiuhPBZUf3
+	 s8qTfpxhOUFFvjZjjN+HEm6bh6nDQn830kZ4yCK9SsHkYk0/EhJZdLVMhQsMtvrBYdxPg
+	 pkUovUqm0wI6Y7u/sbQ8wxi9JuwdRgKc/DQbtaaMKCO1tYq+mm5cLsz315RwvS1dcadIq
+	 0za8Y3S3OeVsYl+6wR583yRPyL2BbKvNDJjAqOMHg984aUQI8UQXdmsOoqDWIII7DlA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794568198;
-	h=DMARC-Filter:Received:DKIM-Signature:Date:From:To:Cc:Subject:
-	 Message-ID:In-Reply-To:References:Organization:X-Mailer:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:X-Last-TLS-Session-Version;
-	bh=aP0HKF1Y4kyUipuAWkIw5ff7zQHGrIr+0UoFFBdTvm4=;
-	b=pkdg1aTNdzx1naKuHcvC8QqlCLOd1BvtggpYQjvL8eEQKBk4sD2hit2Do0HLWYdS0sJQ
-	 h5mE76NiDIFOkcpX1D57b3q2C9KuolIArWdke58iWf4ejSx+0L9hzY3+NPyVHUFuUoOQj
-	 nOgoDT6q5+m2/ZWlHO84gDQYRexrRto05iK57Rh2UN5Xb/Wiga6yhkjSt5F8/DyRkp6C/
-	 InBM8TLSoe3rtsMLV+Zpxqf9CQK+geE6kIfM/g1fbDpqgE68VYAgbr0al/yr3/oAE/BJh
-	 TcUCHFtnGCMxXnxRNilQvJuDP6KhgvP73VK4kjnSbyWjpbbp5jerXu6TnXFoh5oezkA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794568495;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=dm+Y4UoccczspGqcTXua/0X4RBhuIew6v+iwrNY6IPQ=;
+	b=yXvmV3ZVGwPx7IGrk9Mw1OyYd9wV2I1p/VY6d+JqVM2M/I55I8UWGkLKJ25vjeQ/xjDk
+	 5uAxCIiJ5oq0ARUhjvfZZBOomMT6cE4L4BlUNGOOWbBUrskTTKTQVeMxgOWueWlzhR7Hk
+	 usWd5uUswGm6WpWWH5y9Fn5d/abAOJF8S1Li/QATEKbeFJVW/1Vz+Z0SQ516nocbrsmCV
+	 3bh0Kyxzhq6jvyg7Ch08o7F0JUy+VZTlJkt54vA3V8fLHrluuzs+P2AbOOfEE6OQzRs0e
+	 XESj5SCuBht/NFh/vE84aoUBobahuRkVYFH1cnwLIe3uePOFZjqFYoKZjLYEemnKcSg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nabladev.com;
-	spf=pass smtp.mailfrom=nabladev.com;
-	dkim=pass header.d=nabladev.com header.i=@nabladev.com header.a=rsa-sha256 header.s=dkim header.b=Db7ugddb;
-	arc=none smtp.remote-ip=178.251.229.89
-Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=exDIIZN9;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68DEA606A336
-	for <imx@lists.linux.dev>; Fri, 13 Nov 2026 11:09:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 68DEA606A336
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41797606A333
+	for <imx@lists.linux.dev>; Fri, 13 Nov 2026 11:14:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.a=rsa-sha256 header.s=dkim header.b=Db7ugddb
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C3BCE10BE6E;
-	Fri, 13 Nov 2026 12:09:48 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1794568191;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=aP0HKF1Y4kyUipuAWkIw5ff7zQHGrIr+0UoFFBdTvm4=;
-	b=Db7ugddb3uRmWVLzG/X/epdSB4A/gZAo/hVS8jD8Nki58Hq86gWjE8FGjm2Ppd204tYMCG
-	Cygj0jRcuQt1WeThqtBIAYnxPRuROckC42hDv3ARyCZVc9BtF4X9YitlDzC1nGjK1G/in0
-	1+N/wagugPPLNzfZ07SpeU/QR6knDBfyNXCzhpc1pNP/f5rwQbBNaBIikb5Z8qC0f627nc
-	X/sKyMvvaRtwYAPjvIBe2SwdZxtabaH/CraitCOSLVnZU7g1bxwFTL47qlx2fJSEnesvFm
-	8gGMqx8MAAEcam5BjNGEc3/f3YEBqNFSAICAW/NMTnYqeiLyPCHZtyvz4VpMCA==
-Date: Fri, 13 Nov 2026 12:09:47 +0100
-From: =?UTF-8?B?xYF1a2Fzeg==?= Majewski <lukma@nabladev.com>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, Sascha
- Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
- <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Shawn Guo
- <shawnguo@kernel.org>, Guenter Roeck <linux@roeck-us.net>, Daniel Baluta
- <daniel.baluta@nxp.com>, Jonathan Cameron
- <jonathan.cameron@oss.qualcomm.com>, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/3] dt-bindings: trivial-devices: Add National lm77
- temperature sensor
-Message-ID: <20261113120947.6c9fb820@wsk>
-In-Reply-To: <20261113-roaring-relaxed-oryx-5cfa1e@quoll>
-References: <20261112163703.3358164-1-lukma@nabladev.com>
-	<20261112163703.3358164-2-lukma@nabladev.com>
-	<20261113-roaring-relaxed-oryx-5cfa1e@quoll>
-Organization: Nabla
-X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=exDIIZN9
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 948DB1F000C6;
+	Fri, 13 Nov 2026 11:14:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794568494;
+	bh=dm+Y4UoccczspGqcTXua/0X4RBhuIew6v+iwrNY6IPQ=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=exDIIZN9RcL8yEW/lzH8LoD64453Xlrwl9sT5zgsZL9memsP57N6sLT3aZ/DNhEYs
+	 upAPsjHJ6LJP6jGZBGJwt+Ynve30XSDHoTPVZ+2P+GvZjgeiDYFPqX6ef8drjWDhRm
+	 jUM1Q49YlRjJ8icUAycxDOkOnN2MVL+diSVfq7IEnl3ndWRZ2gOPDSQtwuTkWVmIf3
+	 5Qcxj0tVhFqOi3K4roYAxFuS+0RHSL6tKsjx8dzyTCCUwfg9hHZvjkuYfXwBAYo3pW
+	 Q9I4eOb3zzjri6FOOrT34eBgXNUzcfC2t5eI9I63u3KjbNlc+tRcsz3ZYjijLMaMFv
+	 cySN5lOURSzcg==
+Message-ID: <sashiko-outbox-212692@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] i2c: imx: test the block read flag of the message that
+ is read
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Mehmet Fide" <mehmet.fide@gmail.com>
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <20261113110501.1142036-1-mehmet.fide@gmail.com>
+References: <20261113110501.1142036-1-mehmet.fide@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 13 Nov 2026 11:14:54 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -74,41 +59,65 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Krzysztof,
-
-> On Thu, Nov 12, 2026 at 05:37:02PM +0100, Lukasz Majewski wrote:
-> > Add "national,lm77" as compatible for the National (now TI) LM77
-> > digital I2C temperature sensor.  
-> 
-> Are you sure this is a trivial device, not like LM75? No interrupts,
-> no VS supply? Datasheet disagrees.
-
-In my case the T_CRIT_A and INT are not connected on the schematic.
-Moreover, the V+ is connected to board's 3V3.
-
-Hence, the conclusion that this sensor works as "simple" I2C based
-temperature sensor.
-
-> 
-> Best regards,
-> Krzysztof
-> 
-
-
-
--- 
-Best regards,
-
-Lukasz Majewski
-
+Thank you for your contribution! Sashiko AI review found no new issues
+in this patch, but noticed 1 related pre-existing issue it does not
+introduce:
+- [High] i2c: imx: uncleared I2CR_TXAK for I2C_M_RECV_LEN in
+  i2c_imx_prepare_read() [1]
 --
-Nabla Software Engineering GmbH
-HRB 40522 Augsburg
-Phone: +49 821 45592596
-E-Mail: office@nabladev.com
-Managing Director : Stefano Babic
+
+commit ce48b1bb4f3f90616018dca56aca9a327411019e
+Author: Mehmet Fide <mehmet.fide@screeningeagle.com>
+
+i2c: imx: test the block read flag of the message that is read
+
+This commit changes i2c_imx_xfer_common() to check I2C_M_RECV_LEN on the
+current message (msgs[i]) rather than the first message of the transfer
+when deciding whether to use DMA for a read.
+
+> diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
+> index ccf08cd63151f..9abe0a26c877a 100644
+> --- a/drivers/i2c/busses/i2c-imx.c
+> +++ b/drivers/i2c/busses/i2c-imx.c
+> @@ -1713,7 +1713,7 @@ static int i2c_imx_xfer_common(struct i2c_adapter *=
+adapter,
+>  			msgs[i].flags & I2C_M_DMA_SAFE &&
+>  			!(msgs[i].flags & I2C_M_NOSTART);
+>  		if (msgs[i].flags & I2C_M_RD) {
+> -			int block_data =3D msgs->flags & I2C_M_RECV_LEN;
+> +			int block_data =3D msgs[i].flags & I2C_M_RECV_LEN;
+> =20
+>  			if (atomic)
+>  				result =3D i2c_imx_atomic_read(i2c_imx, &msgs[i], is_lastmsg);
+
+[Severity: High]
+This problem wasn't introduced by this patch, but in the
+i2c_imx_atomic_read() -> i2c_imx_prepare_read() path just below, does
+i2c_imx_prepare_read() fail to clear I2CR_TXAK for an SMBus block read
+([1])?
+
+drivers/i2c/busses/i2c-imx.c:i2c_imx_prepare_read() {
+	...
+	/*
+	 * Reset the I2CR_TXAK flag initially for SMBus block read since the
+	 * length is unknown
+	 */
+	if (msgs->len - 1)
+		temp &=3D ~I2CR_TXAK;
+	...
+}
+
+i2c_smbus_xfer_emulated() initializes I2C_M_RECV_LEN read messages with
+len =3D 1, and i2c_imx_start() sets I2CR_TXAK at the start of the transfer.
+Unlike i2c_imx_isr_read(), i2c_imx_prepare_read() does not check
+msgs->flags & I2C_M_RECV_LEN, so I2CR_TXAK stays set when the dummy read
+of IMX_I2C_I2DR starts reception.  The controller then sends a NACK after
+the initial length byte, causing the target device to abort the transfer
+while the remaining payload bytes read as 0xff.
+
+[1] https://sashiko.dev/#/bug/linux-09e3015b-fc03-4410-809b-82964cdfac9c
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261113110501.1142=
+036-1-mehmet.fide@gmail.com?part=3D1
