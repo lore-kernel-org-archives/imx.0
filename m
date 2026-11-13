@@ -1,78 +1,69 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=62.210.214.84
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794572013;
-	b=bCTgPVeFHLmznnwYE1a/TsCSiRhpgbREd1HMCgqZhH6kMLqwRZQgQp1RPZ5a1z9OdLTL
-	 cF+UUEx75KWM3gMbXWFDfscpDEJmOvUWI34N7NKDMuw5BKdSe/gntbvFiG2521JUeuDGj
-	 vWcJ3yQ5Gm9PY3/3FHAR/6dfCXSXIG3vlE3xmp5/mxsBdWcds6cU3RDbSC/iQTOrQymL0
-	 csuwq4Me09NCjpdr90FownZckexgp1evz4oWNJyAlpxtSv2pQFW58cKF0B+gl2otzCKz1
-	 M41NVdu6m1GtzZcesiUQVXxJSU05YExWlDYaft86DB3DB5S5UmLrDeFrsdcjCRMdVhQ==
+	t=1794572362;
+	b=Ist4X1VDt3NSXiuo4ghUr0iDEvvwGAEYApl4QdMSkUS+j7+p6rp3DwWKzydHjyvhwpML
+	 fX4MLGI0SQQx+PsEwT3lSj7pv4E8CzWV3OwMsQJh9N7Yuon7JzseCzDj1UEADQEnCkY/2
+	 5vwPX92W5x3djMMygj4ZZzWsevntOxbvLovRJI4G30xk9EIRl2pa0uCbhdb1VWXFY4CMJ
+	 K+qsLvSXUMdc2m7DxkW3kZBMGw63yV4Be3RBgyOLQmcwUAmUWqvOj30KF1NYAy/fqBZNV
+	 69KzLyRJ2Z98cwr1iCDb1nZTO8N/+Snz6wTuOCAmFGIc3WEhQ8p7UtNBQVunl/1PFRQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794572013;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
+	a=rsa-sha256; c=relaxed/relaxed; t=1794572362;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Date:From:To:Cc:
 	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To:Organization;
-	bh=1iUZT/JRKjiRUq3S3wXoQz2Mr1XA+Ebv5deNzL+Hfx0=;
-	b=qZ+2mlYfmodm2ZV3PxHQn4S8/TLWhmfgUYWvEEn4mrDg5KVW/wztHepIjn7j94TBI1eV
-	 DOocTyN/aUUBQqcMqrK3qvpP2OOAyZ4HxfnMQ9H/iv1ZUDs1L3TK/LKT7ED9sbvZot2UD
-	 ILtYmky+0ye6uR34LBhq2Ur5m0xBgwtPvzbhuIH6mmaqYaIRwRK/XSAhWkt2TnPx7i9ub
-	 pB6HOy1tbNkRWPQSpjJgpsIyc2g75q7hCOHZtbvTIcEpN1HktG1legedMmihUFquFPGmT
-	 ne3iIQwyx6V2NoGjXzKQNsHDmYq3CCZEGqAceP5DgYnUnigjziKcf3tjILIhygdEK0g==
+	 Content-Disposition:In-Reply-To;
+	bh=NInaYM5/ulsk78/rKQK71fJZph826pB2bolPCV0acww=;
+	b=dRQrF8F3G3oaIYvtdTyuCjnvrzkO2SFFlUfWlX1enJ09cwA8t+SaHFiXRycX836Uj0IJ
+	 z/1c5kN+z6QnM4vX/VTAgU2yzNATfY6u1tqlwdqcHTWvESGIV0QwEz+W7czB6ck+Rqk65
+	 qOf8qyC7yL7PIQkIny0nYrzUa6YpFHssExxUpLZ1QZ+EDMzevxrlAkmQO9fCYieunL5ff
+	 090SApKmZTKTM9eRU+iM5k76IH5Lw9qIv7dvUxJC6PhQ7V4U8LYk17k5SHKBIB3pMKfv+
+	 0LwfpLa1Gt2HeIvi2kA2X5Co4j1oolxzRoeLBqCJ/lVMq5Qa/lEW9jk5jvkZTFZdroQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Fuo0fjLv;
-	arc=none smtp.remote-ip=198.175.65.17
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=codewreck.org;
+	spf=(null) smtp.mailfrom=codewreck.org;
+	dkim=pass header.d=codewreck.org header.i=@codewreck.org header.a=rsa-sha256 header.s=2 header.b=E1IES2KV;
+	arc=none smtp.remote-ip=62.210.214.84
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A269606A321;
-	Fri, 13 Nov 2026 12:13:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5A269606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A55F606A327
+	for <imx@lists.linux.dev>; Fri, 13 Nov 2026 12:19:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4A55F606A327
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=tempfail smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Fuo0fjLv
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794572012; x=1826108012;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=rHH8i6Jaj4wG/QVHWjBNd4UsOpx6pzu7l9kaAO5hq6U=;
-  b=Fuo0fjLvrze0KqzVK+2WW5qq3YrJg3MdGtNA39cv01DroWDEJIVZUlKg
-   Mas+DEnMhGP+u4Ztz9wGv0+kdrq6Twrtf8QnLEaKpz8U9ZmU+Lrr7NPpn
-   iCR/36fV9rgnJ4qAeUT++pIX1YkkvYUtcMunBIf1FSxxgfjOv7iPikg8D
-   CmSLawqPsfg6JsrlPhwmSMfBwD4FTIba/TSb92BmwhuMh3HfuW5c9sdKi
-   Om9xhJYSrbe1qVU8mhiX+IWWRvT4H5GDHj8gTN3d6vVd4sS3mrJW8noL8
-   OHfNDRb1yO3GVh3HJ8sMu27T2EER0vlFi6xvzCnEftHFeItXH3wGQMXNv
-   A==;
-X-CSE-ConnectionGUID: inbhH+dSSfGS8QRytkdKRg==
-X-CSE-MsgGUID: vXYzVLV0QoCraREsQSjGNA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11964"; a="3385784"
-X-IronPort-AV: E=Sophos;i="6.27,211,1787036400"; 
-   d="scan'208";a="3385784"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2026 04:13:31 -0800
-X-CSE-ConnectionGUID: TtlvUlykT4SNAU2R1Isc5g==
-X-CSE-MsgGUID: iB+z62UDSbW0eDhITPJ7GA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,211,1787036400"; 
-   d="scan'208";a="8834698"
-Received: from ettammin-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.244.148])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2026 04:13:28 -0800
-Date: Fri, 13 Nov 2026 14:13:26 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Fabio Estevam <festevam@gmail.com>
-Cc: lee@kernel.org, maz@kernel.org, andy@kernel.org, jic23@kernel.org,
-	dmitry.torokhov@gmail.com, linux-input@vger.kernel.org,
-	mfd@lists.linux.dev, linux-iio@vger.kernel.org, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, stable@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] mfd: mxs-lradc: Pass parent IRQs to child drivers
-Message-ID: <avb-5lw3JHpfmIlz@ashevche-desk.local>
-References: <20261113013212.470981-1-festevam@gmail.com>
- <20261113013212.470981-2-festevam@gmail.com>
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.a=rsa-sha256 header.s=2 header.b=E1IES2KV
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id 58E4F14C2D6;
+	Fri, 13 Nov 2026 13:19:06 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1794572351;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NInaYM5/ulsk78/rKQK71fJZph826pB2bolPCV0acww=;
+	b=E1IES2KVgYEB6pOuIqY3HGLBMX1AFtAm0XtC08mfjPnUlijVCi7/vHqpOvEHcBDRZ3KJQa
+	iDJ7mpQjjNoha05y5p1VK+S57OcLA5AR9x9zV+6jd3rt96pj1iKJljZctBdaI2kEduObrJ
+	k3hlUmlXS+nfzkShN13dZgVlh9kAv3NyLsP1zhNc1iPysCy0w/U4l1f+YR88lvVOZ6XLId
+	TEThieEH4us11BfqoC9CRavIV2DKviKArlyArxIVgtDvhIozTenJ3eOtH9RbchW9cp7tVp
+	Jcsd8U4GkSck9wq3bkWB3nCoj4RdiNf86lspYpMTy15LOQ3N3plt1lKa4JEB4Q==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 284c54b0;
+	Fri, 13 Nov 2026 12:19:04 +0000 (UTC)
+Date: Fri, 13 Nov 2026 21:18:49 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Jiawen Liu <1298662399@qq.com>
+Cc: broonie@kernel.org, cl634@andestech.com, william.zhang@broadcom.com,
+	kursad.oney@broadcom.com, jonas.gorski@gmail.com,
+	bcm-kernel-feedback-list@broadcom.com, anand.gore@broadcom.com,
+	f.fainelli@gmail.com, rafal@milecki.pl, olteanv@gmail.com,
+	han.xu@nxp.com, haibo.chen@nxp.com, yogeshgaur.83@gmail.com,
+	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev
+Subject: Re: [PATCH 4/4] spi: nxp-fspi: disable runtime PM on probe failures
+Message-ID: <avcAKdwmS3nZ2Uk_@codewreck.org>
+References: <20260620083931.1120616-1-1298662399@qq.com>
+ <tencent_8FC0B8DFAF4AE67AEBA20548045D53A77707@qq.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -82,42 +73,34 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261113013212.470981-2-festevam@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+In-Reply-To: <tencent_8FC0B8DFAF4AE67AEBA20548045D53A77707@qq.com>
 
-On Thu, Nov 12, 2026 at 10:32:12PM -0300, Fabio Estevam wrote:
-> The MFD driver stores raw DT interrupt indices in IRQ resources but
-> registers its child devices without an IRQ domain or IRQ base. The child
-> drivers consequently receive the indices as if they were mapped Linux
-> IRQ numbers. IRQ index 0 triggers the platform_get_irq_byname() warning:
-> 
->   0 is an invalid IRQ number
-> 
-> The children then try to recover the indices from their resources and
-> map them against the parent OF node. Besides duplicating IRQ names in
-> the parent and children, this relies on invalid platform IRQ resources
-> and fails when IRQ 0 is rejected.
-> 
-> Resolve the interrupts with platform_get_irq() in the MFD parent and
-> store the mapped IRQs in the shared LRADC data. Drop the child IRQ
-> resources and duplicated name arrays, and have both child drivers
-> request the mapped IRQs directly. Use the MFD memory base support to
-> translate a single relative memory resource shared by both cells.
-> 
-> Tested on an i.MX28 EVK. The mxs-lradc-ts driver probes successfully,
-> touch events are reported, and the touch-detect and LRADC channel 7
-> interrupt counters increase as expected.
+Jiawen Liu wrote on Sat, Jun 20, 2026 at 12:39:31PM +0400:
+> @@ -1389,6 +1397,11 @@ static int nxp_fspi_probe(struct platform_device *pdev)
+>  		return ret;
+>  
+>  	return devm_spi_register_controller(&pdev->dev, ctlr);
 
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Should failures in devm_spi_register_controller() also go through the
+error path, or is the current code as intended?
+e.g. something like
+---
+ret = devm_spi_register_controller(&pdev->dev, ctlr);
+if (ret)
+	goto err_disable_pm;
+return 0;
+---
 
-Thanks for fixing this, I hope it will be applied sooner than later to reduce
-the number of weird cases in the kernel.
+> +
+> +err_disable_pm:
+> +	pm_runtime_dont_use_autosuspend(dev);
+> +	pm_runtime_disable(dev);
+> +	return ret;
+>  }
+>  
+>  static int nxp_fspi_runtime_suspend(struct device *dev)
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
-
+Dominique Martinet | Asmadeus
