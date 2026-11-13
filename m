@@ -1,76 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=180.181.231.80
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794575112;
-	b=dpOP7LJ4wQG2sq5uAtdAPcK44GdFXT4+Ro0xS7bOAlYfgI8ymFhFzQ6l2PxFymqy6oDM
-	 6s37wgvP3VWPPbPjnVOqgLqx4GiJ16aM7z8kcyXis8Z5rW1Wk/kYTsxG6Jz9hf69qIT7L
-	 RoxHDB1MM5uuH3qJFO9lccHOSywUNWNymKEbMo43iaQkesMCYajJYhvAoM5U51AewbQhj
-	 f0Sn8zO+cBY2Me/u+kiRQbyiExkGNFPu+4/RJwEcnt64c9JVvt4j/gnG7o+TUXuEyKYyI
-	 XTa4Qti966gp9/bfdOhgvfwfUBHkaen/VnJm7BPYw4IxI2UAL/p1wo2JbomtHq9GmsA==
+	t=1794577243;
+	b=V6rMKP2yo672ftPsfziGf8l/STa1Ho/raX3a7Tm1X4dTQ3dktOu0gzFrrSdjLvadqy/3
+	 e1+9vR1rrNkC9zmP8K7+iaBmvReIpl6mH5d+0OeDW17egVZBt0jZL0GMugMfOrj8/N/at
+	 8qGB1uyaMYBuxsoYD/e14tVG553NqOCznBxX0kL0iVrJ46NN9+zZdEQKI6NoQWWSkMCyK
+	 XMTF/6qW+ybcf7u7C0QZCbk1Z4FKXpDtNUukYhPA9q+dkzlur4X78Sba2XmlO+VaPYTmT
+	 c86ZMfwqqoIPCyQdcN2scCFbjjj8SaSNoepGsGHtPN+jAgh1U9bq3eRLzxR5HDfDJIQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794575112;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=sBw3P7XEecuUSrnOX7EuT/qRSUKWDAXXiFgzDBf5980=;
-	b=ax4mn1jRqzxQkNGiwLOFyhQahZLWqtZGtWqDH5MqFJtWRHWJdxJu3VG6rD7xyLZJyI50
-	 Zy2Pg15DAPe25w1Ju7qFIJopGpt4/9Qgdh2IsvSV0nBtlqgNYC3/ktY1s/dQj5+QE0jUF
-	 ksm4baQlJBNu6B36mfe5tgLF3S0gstfj6p3CxwnIcb0damz7AhcAAw/2oDbObuNxdIeA2
-	 +412Dv/zGR1ZJTnlh4EhDdQVydZC3mWPnrEw6UHt9ri+O0zUaSo38toqnIArYV1HjCeip
-	 pOR4sEH4JX1lCZy+t5dFBvyFU9Q8/y8h+ONufWVHLKnFoCq/x9QnTcLzJoDvik9OtBg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794577243;
+	h=Received:DKIM-Signature:From:To:Cc:In-Reply-To:References:Subject:
+	 Message-Id:Date:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-Mailer;
+	bh=SNoLKxUB9rBkU92blcv5qQgqkRz/rRE9L1+6xhOucIA=;
+	b=R9CFNyWfpO95yP+nTm3rqJw0FGVGkTvb0A0d1NW+1z6jLo9Wo79OfA8ho4vj05n/hoTS
+	 d36iM9SezZRxwtw4EL7dynEFdMo7eX88NyhC0sG2rcrhQipfu4EdZTpFO4IXQkEz1UL0f
+	 YZsgOSwI5kb8VmnAKG8Ky5mMd0qyTwsRuISeJMGQq6OrhKRjlth6qIy48zxUxX0fDvxLw
+	 XSsq9o57Gr8Dq9RA8da7N27iQUXVqlu7cWGGWI7fhlEwgy+liRbh1n5PEdGYRn4xKZSVc
+	 Gv157iXhe153Clc7JY1WTnkJR6PZpZaeGa4DatPb6cLNYoxG9k7OT89/3Cl3UHyovGQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gondor.apana.org.au;
-	spf=pass smtp.mailfrom=gondor.apana.org.au;
-	dkim=pass header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.a=rsa-sha256 header.s=h01 header.b=BG6GxORi;
-	arc=none smtp.remote-ip=180.181.231.80
-Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=B5E4Lnpk;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47819606A88F;
-	Fri, 13 Nov 2026 13:05:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 47819606A88F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D08AA606A330;
+	Fri, 13 Nov 2026 13:40:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.a=rsa-sha256 header.s=h01 header.b=BG6GxORi
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
-	from:content-type:reply-to; bh=sBw3P7XEecuUSrnOX7EuT/qRSUKWDAXXiFgzDBf5980=; 
-	b=BG6GxORi3Hgn6fmiF3iJoLXnALrcRu7/DWSuWkLSjwtM14z1LDCE9Pk+ohHHk7Rw3LKZ6mI6G9o
-	vLbHQV1Dg3af3NiYd5QQpUFvjTVoz+W9pHNiX8eA531UB4Gu4oxChZRqjaMrqpmYCFI9lDTIxa7i/
-	IDPl+d6U6zkc5sMVwafPfqRM4zeeqZIECnDDJ4gQIDsC/OcYv7Y29VsS4EWmtT3GYFgSQhLYQ9k7m
-	HTEhtyrfTmMVgrXiqaB5B9CpIkkf6E5oIvC79IjGm/g2jLc5gTFI9Q+lP7bZlY5EIYEBknZm4oCDK
-	jaICX6gwvaTmuWHOrMgW2evLXVqir8trjFwg==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.98.2 #2 (Debian))
-	id 1xRqxO-0000000EfDG-00ou;
-	Fri, 13 Nov 2026 21:04:43 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 13 Nov 2026 21:04:41 +0800
-Date: Fri, 13 Nov 2026 21:04:41 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Frank.Li@oss.nxp.com
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Bartosz Golaszewski <brgl@kernel.org>,
-	Jia Jie Ho <jiajie.ho@starfivetech.com>,
-	William Qiu <william.qiu@starfivetech.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	T Pratham <t-pratham@ti.com>, Thorsten Blum <blum@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>, Pan Chuang <panchuang@vivo.com>,
-	Maxime =?iso-8859-1?Q?M=E9r=E9?= <maxime.mere@foss.st.com>,
-	"open list:CRYPTO API" <linux-crypto@vger.kernel.org>,
-	"moderated list:ARM/Microchip (AT91) SoC support" <linux-arm-kernel@lists.infradead.org>,
-	open list <linux-kernel@vger.kernel.org>,
-	"open list:QUALCOMM CRYPTO DRIVERS" <linux-arm-msm@vger.kernel.org>,
-	"moderated list:ARM/STM32 ARCHITECTURE" <linux-stm32@st-md-mailman.stormreply.com>,
-	imx@lists.linux.dev, vkoul@kernel.org
-Subject: Re: [PATCH 1/1] crypto: use dmaengine_desc_set_callback()
-Message-ID: <avcK6e1eMqcyW66R@gondor.apana.org.au>
-References: <20261102164538.3834039-1-Frank.Li@oss.nxp.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=B5E4Lnpk
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 098DC1F000C4;
+	Fri, 13 Nov 2026 13:40:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794577243;
+	bh=SNoLKxUB9rBkU92blcv5qQgqkRz/rRE9L1+6xhOucIA=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=B5E4LnpkBq28Oq9EAKWTxU+UWi7ZQ+FXozOPosnLV1L8e46K6i2TMUCPLGfeuQ2e4
+	 3JV/DtoqSxfwnzlSEx4QZLe6y5gWXxGPvq+WfTC0eW2VMArWrmJ5lnS0KGJy9Q54RR
+	 6bCHv7qiqrqXkWtXVb5S2rDrtMmE9ynqNucJFhrIDr1MC2jhBKAd5V13Esfh7NUo9F
+	 eYcuLvgDiCgFGGUbqSUNmLRprSGJiCiDVLU8W8M4HH6OOhqV1LOA5WF3CGoTmjyC5r
+	 HOjBp1/zphBabRt/yAERDtHRT7hz3a8k9ugyiP8enhvZvh1JLLIC3iNpT9XbdfyD0x
+	 uzwb5HFYEoO0w==
+From: Vinod Koul <vkoul@kernel.org>
+To: Neil Armstrong <neil.armstrong@linaro.org>, 
+ Stefan Ghetu <stefan.ghetu@nxp.com>
+Cc: Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, daniel.baluta@nxp.com, 
+ linux-phy@lists.infradead.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ "Oliver F. Brown" <oliver.brown@oss.nxp.com>, stable@vger.kernel.org
+In-Reply-To: <20261110120546.6247-1-stefan.ghetu@nxp.com>
+References: <20261110120546.6247-1-stefan.ghetu@nxp.com>
+Subject: Re: [PATCH] phy: freescale: phy-fsl-imx8-mipi-dphy: Fix hs_zero
+ underflow
+Message-Id: <179457723966.636098.12816261169765119793.b4-ty@kernel.org>
+Date: Fri, 13 Nov 2026 19:10:39 +0530
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -80,40 +64,34 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261102164538.3834039-1-Frank.Li@oss.nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.3
 
-On Mon, Nov 02, 2026 at 11:45:30AM -0500, Frank.Li@oss.nxp.com wrote:
-> From: Frank Li <Frank.Li@nxp.com>
-> 
-> Replace open-coded assignments to callback and callback_param fields
-> of struct dma_async_tx_descriptor with calls to the
-> dmaengine_desc_set_callback() helper across various crypto drivers.
-> 
-> No functional change intended. Prepare make to struct
-> dma_async_tx_descriptor private to the DMA engine.
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  drivers/crypto/atmel-aes.c            | 3 +--
->  drivers/crypto/atmel-sha.c            | 6 ++----
->  drivers/crypto/atmel-tdes.c           | 3 +--
->  drivers/crypto/img-hash.c             | 3 +--
->  drivers/crypto/omap-aes.c             | 8 +++-----
->  drivers/crypto/omap-des.c             | 5 ++---
->  drivers/crypto/omap-sham.c            | 3 +--
->  drivers/crypto/qce/dma.c              | 3 +--
->  drivers/crypto/sa2ul.c                | 3 +--
->  drivers/crypto/starfive/jh7110-aes.c  | 3 +--
->  drivers/crypto/starfive/jh7110-hash.c | 3 +--
->  drivers/crypto/stm32/stm32-cryp.c     | 9 +++------
->  drivers/crypto/stm32/stm32-hash.c     | 3 +--
->  drivers/crypto/ti/dthev2-aes.c        | 9 +++------
->  14 files changed, 22 insertions(+), 42 deletions(-)
 
-Patch applied.  Thanks.
+On Tue, 10 Nov 2026 14:05:46 +0200, Stefan Ghetu wrote:
+> The hs_zero timing is computed as
+> 
+> 	n = (144 * (hs_clk_rate / 1000000) - 47500) / 10000;
+> 	cfg->m_prg_hs_zero = n < 1 ? 1 : n;
+> 
+> hs_clk_rate is an unsigned long, so the subtraction is done unsigned and
+> wraps for any rate below about 330 MHz, where 144 * MHz < 47500. Because
+> n is a u32, the wrapped value is never seen as negative and the "n < 1"
+> clamp does not take effect. The garbage value is then truncated into the
+> 8-bit m_prg_hs_zero register field. At the minimum supported rate of
+> 80 MHz this programs 199 on 64-bit and 181 on 32-bit, instead of the
+> intended minimum of 1.
+> 
+> [...]
+
+Applied, thanks!
+
+[1/1] phy: freescale: phy-fsl-imx8-mipi-dphy: Fix hs_zero underflow
+      commit: 9a0dd2a09484e5ba45eb8e6ab58c0effe18703a3
+
+Best regards,
 -- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+~Vinod
+
+
