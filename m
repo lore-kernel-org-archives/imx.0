@@ -1,73 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=212.27.42.3
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794588215;
-	b=jgsRfebP3YqzZe4gpWR5nacMZd2N7o7IHYeELo3H5RZ9jkpZpzhYchDKT+1saK0pGk0q
-	 F9d/VspGt8L2bQAL1sJjDS0sbpBPI6E+weBAOClgLubT6IkyZkq7MUN8Ejvps6sbwC4xu
-	 CdS1xHGDT7iNPDW2+uRcPr7Xzm4UkUtnnvwJq4SqQ0XwLekS5CKBJ33oSwjgBqy668O55
-	 RxOJrdEDt/yaMlQcGSInImRW2k/JZxag0N/TqYss8CbkURnM0gK/xoYnR9qr2Qz8RAdo2
-	 t81Eymhs4FXvI3vrhV8uHrgoDiLSdRcQcCRYEUmpBRpBoq9E95hfK9eM10UPNz/BKtA==
+	t=1794588514;
+	b=W4Z9nYqLkAnjDdpjen6/2Kx4LXQhtYJR+J7mTHddJwLUR7zf17eujPMQ1ik1o6kKFm6B
+	 24IngB/V9AYVmpg2xoLPAL/bYPw/MLMJqq3KCCAWwrtufN6Ve2rIbJz+xFfQv3R4fYQ/f
+	 2RvwQQe56fYthLkLS+8JRtflbcbW5cwHyS+vNk0Pgj+4j3sq0SLOPdwV6+2pJeuvx93sV
+	 3mo5U+hPkZbxA2ha7FAZHW+dckiJqWE+LVPUUBNfRCJgBXt9+tYN9EHdtvGDJPTcFFsYd
+	 wDnHsYRgH1VOCHWFkimW1h9Af1dSgkfPqz3gRP3uHiHaTMy5xVV0BXbOVHjqcwqdYag==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794588215;
-	h=DMARC-Filter:Received:DKIM-Signature:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To;
-	bh=Von8RsBp854kjbWitsXhRdJUlu1QgEP7MszYVID9w9o=;
-	b=0YPWkyeKRO9FG0lUSt1ZufWphdfpVkcdyxGLfROhOY6xahJNqMCl/liEjK+Hf5JKxJvm
-	 nA+iUCjmHLhi6h6qsJeO4ehrE9L81rLxhZ8BsL4RDItyG2F0Lce1Q9mwZldYTwpgrVIeD
-	 +4HavuGTuWv6UiEOLnWGbliPjWWYAUHREvsXfbjqjSwJAFoArpWcncA4iAtyFZAJpd3VK
-	 bovjrnEqGJ/ZBagJEBil2myQfDqLsfpQH0JLkv/LYboWhA5dc9OUgDCGrZ5N3jxyUY9el
-	 i7ywYa/xbuQN3p/Znx8oeRQKKK7TbY9wQaYlINpR5nUfWdppsTbYQGkYVRFINugxgBw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794588514;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=skcqS+8ac77eYUcchznlRTYKurrkiQlKrxxFR4B6VdI=;
+	b=S/13AyvD5tSLPUAJ0seipr1Fk8GuIq9StG8cV4uhjl0pNwpli5ThXlZPWzuaZKczhtt5
+	 B5JHjD2/haEa5BPQHt/FEZHUz/eKEVUzgKOEn7pJPcJ8+jpw8jzKdsBuapCMTpfL3pDuH
+	 LgKSHWSebzY1Wp1a3qzHy8OyOe1PT0kajmP5hPkqaA1j2ipKskMnSvYapYudTqLC+uJP/
+	 g2FZeu//34E8WJi9Md/NF57xGI0iuvTRde/e8tFZo3cBETu58A2QrRqEr3vYsi3oCwTDg
+	 J2wUCCVSI2vkES+kp4XoXOZC/7rY/bMcqEoCTOLktNVITrLKNoyzlJZBeyi0YEL9OtQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=free.fr;
-	spf=pass smtp.mailfrom=free.fr;
-	dkim=pass header.d=free.fr header.i=@free.fr header.a=rsa-sha256 header.s=smtp-20201208 header.b=HM6inVUr;
-	arc=none smtp.remote-ip=212.27.42.3
-Received: from smtp3-g21.free.fr (smtp3-g21.free.fr [212.27.42.3])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kcTO8C69;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DC80606A337
-	for <imx@lists.linux.dev>; Fri, 13 Nov 2026 16:43:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9DC80606A337
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=free.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=free.fr
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3992606A335;
+	Fri, 13 Nov 2026 16:48:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=free.fr header.i=@free.fr header.a=rsa-sha256 header.s=smtp-20201208 header.b=HM6inVUr
-Received: from L30177.local (unknown [158.255.110.170])
-	(Authenticated sender: vjardin@free.fr)
-	by smtp3-g21.free.fr (Postfix) with ESMTPSA id AD61613F92C;
-	Fri, 13 Nov 2026 17:43:10 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=free.fr;
-	s=smtp-20201208; t=1794588213;
-	bh=5xzBNkaSBIwsby4+iTJvSunuWxT8nAvHfJoI83KVZUo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HM6inVUr3h+5hT4j2wq5zg5TH/nz4NrbKLsWvdW8BDitD52J8P8MDhFA0EiO8bDmV
-	 mCuBvX4M8HGeSD4Hn2JFl/MlJ+y962RUhxuAubENIx5f1Cu6ZNckGAqfu601STKc3J
-	 dsH6aqzOPE5d5WQwxhWCT0OMZJQVVuV4hZWJ1Db0o9cr7q5Zqq2WbrX84oBMkMDoBh
-	 mM96MfXiI5GqohedOQdIRui1XYqXe6A8ypHHL5WJdWUht1PxLFs1okuf0eFd3tO3H0
-	 zgw38AiCs4gbZp9Gc4sU6SmJ9WA/IcEkgbTkax1N+eMdNlmu+UPQcitr/rU1VnMsNb
-	 Uof0sAubw5Tww==
-Date: Fri, 13 Nov 2026 17:43:09 +0100
-From: Vincent Jardin <vjardin@free.fr>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>,
-	Frank Li <Frank.Li@nxp.com>, Jacky Bai <ping.bai@nxp.com>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kcTO8C69
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 640D01F000C5;
+	Fri, 13 Nov 2026 16:48:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794588514;
+	bh=skcqS+8ac77eYUcchznlRTYKurrkiQlKrxxFR4B6VdI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=kcTO8C69P+H/9UHJPoXjeO5FyzZJRgtthRjsL+WIS3sXykdo+YT6yDO6+0EfXyAUV
+	 5vNe7yXDemr+KMyuM6+yFxKaBQLK76rRLlHq2PJG0o5xTfmftUtPkpqZQgc+BIlBBz
+	 GHVZIj5UCbXJj3QUYLIMEgcVSiLTCFAsBbRriK91+DNAHlQxbes5TnG4DcW4LnmAza
+	 zCLmPlJYOZ1NIY6+nf42xBxdhfgup2QMhuJA2jyaUjCB1fE1Dd9BruyQ3prPpYGerx
+	 Aevm7rIEQ7XrUA/ToK19xD3ZvF0wp/2REg+QLEJ/3etLHVlhoMhAR1aHotu7C3JshI
+	 kjTd9r2Q4wXaQ==
+Date: Fri, 13 Nov 2026 16:48:29 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Benjamin Hahn <B.Hahn@phytec.de>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	NXP S32 Linux Team <s32@nxp.com>, Linus Walleij <linusw@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>, linux-gpio@vger.kernel.org,
+	Fabio Estevam <festevam@gmail.com>, Yannic Moog <y.moog@phytec.de>,
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev, Vladimir Oltean <vladimir.oltean@nxp.com>
-Subject: Re: [PATCH v3 4/5] pinctrl: freescale: add the LX2160A RCW pad-mux
- driver
-Message-ID: <avc-HWnGVhhR3m8J@L30177.local>
-References: <20261108-for-upstream-lx2160a-rcw-pinmux-v1-v3-0-5a0063f1da9e@free.fr>
- <20261108-for-upstream-lx2160a-rcw-pinmux-v1-v3-4-5a0063f1da9e@free.fr>
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	upstream@lists.phytec.de
+Subject: Re: [PATCH v2 5/5] dt-bindings: arm: fsl: remove outdated PHYTEC
+ i.MX95 FPSC
+Message-ID: <20261113-modified-spoiled-e01e679958a7@spud>
+References: <20261113-wip-bhahn-imx95_upstreaming-v2-0-3ef58af5e689@phytec.de>
+ <20261113-wip-bhahn-imx95_upstreaming-v2-5-3ef58af5e689@phytec.de>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -77,39 +64,27 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="iZ92SGTP+TDYvN6h"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20261108-for-upstream-lx2160a-rcw-pinmux-v1-v3-4-5a0063f1da9e@free.fr>
+In-Reply-To: <20261113-wip-bhahn-imx95_upstreaming-v2-5-3ef58af5e689@phytec.de>
 
-Hi Frank,
+--iZ92SGTP+TDYvN6h
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Le 08/11/26 11:06, Vincent Jardin via B4 Relay a écrit :
-> From: Vincent Jardin <vjardin@free.fr>
-> 
-> The LX2160A muxes its IIC, XSPI, SDHC, UART, IRQ and EVT pads from
-> fields of the RCW, read-only in RCWSR12..14 of DCFG and changed at
-> runtime through the same fields of the override registers in its DCSR
-> view, which read 0 until written.
-> 
-> Since commit 8a1365c7bbc1 ("arm64: dts: lx2160a: add pinmux and i2c
-> gpio to support bus recovery") Linux drives them with pinctrl-single on
-> the override registers, so its first pin state clears every other field
-> of the word: a board whose RCW programs a non-zero pad mux loses those
-> pads at the first I2C probe.
-> 
-> Add a driver for the pad mux as a child of the DCFG node: the fields
-> of RCWSR12..14 and their encoding.
-> Then pin states select them with the generic function and groups
-> properties, and every change goes through the RCW override
-> of fsl-guts, which reads the status register, writes the override and
-> waits for the status register to follow.
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+pw-bot: not-applicable
 
-Following the review on the patch 1 and 2, then can I have your advise
-on this topic ?
+--iZ92SGTP+TDYvN6h
+Content-Type: application/pgp-signature; name=signature.asc
 
-I am looking for the review of this serie, then I'll adapt it
-for u-boot along with the integration of Linux.
+-----BEGIN PGP SIGNATURE-----
 
-best regards,
-  Vincent
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCavc/XQAKCRB4tDGHoIJi
+0hyrAP4/hkjo91I+3YhKmBjbBFwHfkA38P9TmLn65vrMX2MKnQD9HeBYSfwve0Ab
+To9jhl/rmlNnu333KuSTRGMrMbwtjgE=
+=xQUA
+-----END PGP SIGNATURE-----
+
+--iZ92SGTP+TDYvN6h--
