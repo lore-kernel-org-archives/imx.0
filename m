@@ -1,106 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.66.60
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794610660;
-	b=s9QI9kEQTonshxzryai65bvhYxqJpGtr1OLZbYtOXlbJy9F0FCHuGYh9mRwZosyfi7UA
-	 /1ePGxgzWnu8oGM3gkf7cCGMkJWuhXrHnSZaLSOYkNY+sTwYf/jR6zkqLDg0cy4jUv3PB
-	 tZRAIdrEqeZpCffbJ7Np4P9NJnqISYvSKRGnk1P59VzJTpOXYE8oIcBLs81dVXEF3KmNd
-	 LFddB37E+4pChvRZLA4RCb6f8DVwDkvhhE37QTJysfeBJrA5DFrx7IC6NfMZ6cVXSodC1
-	 o+crUKpgcj04hfqS+Fm6JrLsaaahC2DAYjGjKQve53yUlAbLTkd6d92SkMQSRUvMMhw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794610660;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:Content-Type:
-	 Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=Mr2g35obSTwFbDcVu1pJ5/MTt2tur5PHecenUXMxXjc=;
-	b=SoQFCBmyBizEPZWb8SSZ1xZcGxXoYny9WagIsw3KJV37ReslRtkJJC+umzwgARZjBWzZ
-	 b5U7qXWUS0ZpuAXPM+Y6SPs8n9PH6m+zejHAaDpJHY6wBKl2Kuwz+clA97aBIEhBIx/86
-	 sEq4zuTvSyniMj7/HB4u/7DWi8Ud/KlYSSOG9DmvsZcbjui6GXT0PjnPLiXJ2pe2JulWp
-	 JiJnJezdIYGxnkDgVmkuTLcp05VgzqgVZCVMxOsLIaLV6djGB33YgELnod+bZmu84n4Sp
-	 SNyoZ8GIcZl/1eVKnzdEQK8dxsorTwlIuTwoxvBbCwynN5DcabGrYinFvQhlvmB7LDg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.nxp.com;
-	spf=pass smtp.mailfrom=oss.nxp.com;
-	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=PnBa5MCj;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.66.60
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012060.outbound.protection.outlook.com [52.101.66.60])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=178.251.229.89
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794615538;
+	b=xnkhbqrdfjaOTMy9q7Yjy6icGBo82RgUVJHsslSoxDDD6D8zbnFxpJkxEyq6dQxBlMyK
+	 uVnmFUeh3DV+YJmrMNqkVqeQdvV8tvG4IHV+nY7wXjF/kT/tidt1McRxcGCC3hvQ5UpXH
+	 OFVKP+/8ALfbnxMSLcZCBJuBz7D+2cY1wSjq1RVYMInGoBl5WHYdlbOBi3aF0nUfONaFM
+	 BMvh0jNfgtchHQD6xv9SBs2XEnfFS9yoF2Hyb1phxYm3aGQoGG44dZ0NUZ2oXje8c94u1
+	 JUOCDQ9UgWuRpEWlwv5AZrCM7kSFgA9Rrm70hzwBeEQZHBdZr9T0cIhtZUC1GKfjr1g==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794615538;
+	h=DMARC-Filter:Received:DKIM-Signature:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 X-Last-TLS-Session-Version;
+	bh=DbYweoBpLl4boR3F2YSCZ+f/7ZwlJREZqL4oFlSlCEs=;
+	b=nK77TSFi+hyaArqeuQxg2u+9yWTTEzk7LRcOiBC7BQxRRQK6RbMlLVEI/0SzefuNEGaL
+	 s9oDqE7iFG03hGnPIAcQ4Gq3mb9iBHH43Vrf9fFw36mTIhkuVtU7YiqbJcYOAA+UE+aug
+	 ozClbMIB4xltoxd3Q4F6B7VXZYxmWrTQaBnj+QhqwkSR0XgowQgckAJzEAUnNbWBGvgMK
+	 ReZEbUHaLTUZzYKB7KIzwFpgqPsu+oZyEpUruWI6TYmInMFsGnldiVssz6Py9Fh476/0G
+	 P1XYJAxjesL4PQ6Xb1Fbo7AdTH9UR4euRpXlxXZuJS26O4G62465djJd43e1paGsg5w==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nabladev.com;
+	spf=pass smtp.mailfrom=nabladev.com;
+	dkim=pass header.d=nabladev.com header.i=@nabladev.com header.a=rsa-sha256 header.s=dkim header.b=hNhKbdAk;
+	arc=none smtp.remote-ip=178.251.229.89
+Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14B65606A337
-	for <imx@lists.linux.dev>; Fri, 13 Nov 2026 22:57:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 14B65606A337
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5424E606A329
+	for <imx@lists.linux.dev>; Sat, 14 Nov 2026 00:18:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5424E606A329
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=PnBa5MCj
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DHB9KO2xjAJFFrJxrAOYT9ZPlaylKR83cIgdEWat+1vjUXdG0wFszFTWnCZx63h77YH+0WvnnGpPaj5LOaiaHsEp2pDVeLKeVmC2/BzmYwFwbRMsQ6P+l0Yby2VGhlfXTdZ/HfPykRGm7XgTxc2qd8X/b7Db5vcBDY08tcc0Qi7AYPz2UbzRqR8ytPhBjQM1uin+zifBrFjWn1C1fyhfi/z0zOg3WbnBTYQtNEo3/bPmZTiehUncrYDMmYPtkhux2piVwDpk3t1lYQUY+owrldWnS/s2QPItU8w/rQe5OsxjD5Au4vPW5LGABi9oADl27eA/pfSwYpCY7/9KiXfkkw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Mr2g35obSTwFbDcVu1pJ5/MTt2tur5PHecenUXMxXjc=;
- b=nKtoi9urUWswZJ4lEhMT3UDpI1gtCeo/Kjs6CzUM9PJ/kyBt06rA/T330O9zLYmylPUYKHdV4zYx/1+f9So118TitPBGnHxLOf7R92sWEMEp3e49hhFFKjVZw4JVFJi0myW3/Bl82YXSKkIW6WnRWUzVpJHhSYoKFptFwvZQYbiS0lzqeCPRdF7T5J+69l3FgP+wMmmd6H19m0hJD9iYMrL7Yc2eBh5/u2jU23CGFbETqqKjKV33q6+3BMfesa8yl7Pat63d4KdZrXG7yUuIJN6sgWx4I71TbxAQJffqhKgcS0yYKY7TatemAi3WUl9Gdpjf0zag2yCPGfhj4PDjlg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Mr2g35obSTwFbDcVu1pJ5/MTt2tur5PHecenUXMxXjc=;
- b=PnBa5MCjbfkzCk/uv2H2Dgp/SHSLLe0ACvN77N0DRaXcmveqOrObv0w+acrBg87Wt0K++EOxOI2PPIARjCmS7K20GHastwGrP4tWKLtkvRyn3g3CZx+sluRyp9fXmZB5640uGIXud9JXqqE1aCyNTGvBdatgrrKFILnX3ytIGY2QQiQ+1Nuq40uIVre6tgcVjfXWl3WZ89jZ6qR9jsbxLYU81IcDUhdkHRH3bbyXafSdJQtxMW88fAGXjrbTvZ8bIdVltVAPUlOhcYQwlBpjaowNTKlxxOoGMe50sL/sWyOcs6Pq8XYnc3B9iDLTUkFc0pX54QrtrC8k0o2Uj/+dvQ==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from MI3PR04MB12438.eurprd04.prod.outlook.com (2603:10a6:290:76::14)
- by VI0PR04MB530740.eurprd04.prod.outlook.com (2603:10a6:800:35f::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.10; Fri, 13 Nov
- 2026 22:57:36 +0000
-Received: from MI3PR04MB12438.eurprd04.prod.outlook.com
- ([fe80::c715:c32:8bb1:b70b]) by MI3PR04MB12438.eurprd04.prod.outlook.com
- ([fe80::c715:c32:8bb1:b70b%4]) with mapi id 15.21.0615.009; Fri, 13 Nov 2026
- 22:57:36 +0000
-From: Frank.Li@oss.nxp.com
-To: Neil Armstrong <neil.armstrong@linaro.org>,
-	Jessica Zhang <jesszhan0024@gmail.com>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.a=rsa-sha256 header.s=dkim header.b=hNhKbdAk
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B8B7B10E90C;
+	Sat, 14 Nov 2026 01:18:48 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
+	s=dkim; t=1794615531; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=DbYweoBpLl4boR3F2YSCZ+f/7ZwlJREZqL4oFlSlCEs=;
+	b=hNhKbdAk4wxqYGAkBPE3sYS0dLg5IQotUjNWcE9Sh00ctDgyUDdEVIm5MQL0O8LM//vVs1
+	fQXtjb9XvloRCwXk5p9fBjmoCXUIm++xSCCRklvizur0jX2JDaB0y2i6ZHBrvGcid+S1gc
+	y3kAfKl4KOBrP/vDWpcU+Lap+22zxN+GaHzYv/RUhq55B59+GDTRccvL+6HQ2uOODZzgHP
+	IGdYFRaOMDtXxbjQKvUkR7Mb+98WXvizsglUV0MhZKgand8xbpver7ExkXYClZ57AjpQ9d
+	BhsVR8Jdy6WmPqU+1YNDtcr1SYPUlspsvarkQSHAm+9BMu7ySdgu9YzFFnX37g==
+From: Marek Vasut <marex@nabladev.com>
+To: linux-arm-kernel@lists.infradead.org
+Cc: Marek Vasut <marex@nabladev.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+	Aswath Govindraju <a-govindraju@ti.com>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	dri-devel@lists.freedesktop.org,
+	Fabio Estevam <festevam@gmail.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Vinod Koul <vkoul@kernel.org>,
 	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Frank.Li@oss.nxp.com
-Cc: Frank Li <Frank.Li@nxp.com>,
-	imx@lists.linux.dev
-Subject: Re: [PATCH v2 1/1] dt-bindings: display: sgd,gktw70sdae4se: use unevaluatedProperties
-Date: Fri, 13 Nov 2026 17:57:28 -0500
-Message-ID: <179461004096.472201.1470837672942154435.b4-ty@b4>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261019205000.1084408-1-Frank.Li@oss.nxp.com>
-References: <20261019205000.1084408-1-Frank.Li@oss.nxp.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: DS7PR05CA0038.namprd05.prod.outlook.com
- (2603:10b6:8:2f::23) To MI3PR04MB12438.eurprd04.prod.outlook.com
- (2603:10a6:290:76::14)
+	imx@lists.linux.dev,
+	linux-can@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v7 1/2] dt-bindings: arm: fsl: Document Data Modul i.MX95 eDM SBC
+Date: Sat, 14 Nov 2026 01:18:25 +0100
+Message-ID: <20261114001844.30606-1-marex@nabladev.com>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -110,96 +72,52 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|VI0PR04MB530740:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4887677f-0e78-4dd8-e75b-08df41d98290
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|23010399003|366016|19092799006|921020|10067099003|11063799006|56012099006|261009223027099003|261022075727099003|261021121427099003|261026121527099003|261102123227099003|22082099003|18002099003|3023799007;
-X-Microsoft-Antispam-Message-Info:
-	tsWTbRhYUtbY+bFur6+WFQvJbWzdVNYQsUzotKxTmu934700gdbTK1AQBNlzxOCaWoz4DHLWPfO8nGgTlvcU4Q+Q51niXtjFY81gDmAQwgfCtIieNxdRKDJVDkfh2J1UmPOA3U5n4WhqoeAyPWK+W+5WFBlvx8CJy32nyMQ3bs32DfuEmUefeyoZcVuMyj69VH24ugk3ELrhcm9BuAepiaeGEUQ44KTQfAEBAmIFNbyyOXqquT3Y6aniWgSP/qOh7oxUDQejgKFJaXtPlzJXCBRh1f9FXL8PNzyNjfJwXWyk+3bd5wL76eQoq7L1BzwkcJ8l3iLNMjsRSXe8h35hAIr04OSyzrwi25/+z9m+Ri1JCvlZvaiINiChxOZ2cTkZJS+oO/4D5pjsAih0DV++rHISnoubjaoE3HMLl81FhNUDGfGLgW923z0/HBOwZ1BhOQJxX3WCsZaGMZEbL4/C00JtzWpqcIP+n/Kc4Qi/6mPzGL2UH662Su2Z8zVlz8iVn0woqTDV+Mg7faiSId685V+EogqFT74bTXD7x4HJBte9uN9nfcvrMRA/L8IRcpdRelnN5yhPEMP8tPK+b18iZe8pH4EZoweMAK9Fa53J3MtFMUsb9Fl5fbTL0deL1pwcgpgoIcOqEW/hATK1nxC0kTIAcKJcmrJCgvu/X4sqxyU=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(23010399003)(366016)(19092799006)(921020)(10067099003)(11063799006)(56012099006)(261009223027099003)(261022075727099003)(261021121427099003)(261026121527099003)(261102123227099003)(22082099003)(18002099003)(3023799007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?UzU1clpUMWhpOHZpRzdrY2t3WTRXREROQ0hBbnJXVjRuOGZ3NHJvSlpITThB?=
- =?utf-8?B?M2pUZ2dlbXlKem1JeSt0bGVraTBERXFrUHBxc2ZrSmYrRG03Rk91cWZrN3Nx?=
- =?utf-8?B?UEhsMDQrYVY3RlBpQ1IzNjgyZVByZDAvU1hvYityZURmVnF2STV5TWJZU1J6?=
- =?utf-8?B?NWhWZEZIMGg4ZzVUazhTU1dhdk9pTENGV1NJZm9TbTk2RG9xS3ZjZEs4YkEx?=
- =?utf-8?B?MkxVQnpYWVFRbkFrYXp0Y1BGTkdYUGF2cXBvRldDYjFaM3pyQ2Z5WUZIZVRW?=
- =?utf-8?B?U0NHemlNVEx4UWRIMjJPZlFqdlV4YVdxcE5zMVJ3c2hEUU9YaEpIL3lEcmZY?=
- =?utf-8?B?UXQ1cDdLOGhkRTUrWmg1aWowZTFNbkc4SlEzbVBYOGlTT1Rma3Q1T3Z4ME1S?=
- =?utf-8?B?eGVINTBXeWtkajdGMGJKaERKejRYSGk1N3FFaVAyR2hvRXFvdWxGa29rK0hO?=
- =?utf-8?B?cXpVc3ZWS01jNisxd1o4amNycGJGeE90Z290b1NpR1g3dVphMHFsVjBTQ1NM?=
- =?utf-8?B?WGdHT0pFR0tYVTFuWWJiN3NzNU5ObTdXcWNVblEva0hSNnhiSW1kY2IvR3Yx?=
- =?utf-8?B?VzFMMW8yR2F2QVk4c2c1NDZvREpPeDlvSW8veVlaMHNFdGVPNHlPcVZIenE2?=
- =?utf-8?B?elVZOWpWeXlaTUVwWFlBUGg0Qm44RFd3VVJnNm9MRGE2L3cxbGNZYWVSMkNP?=
- =?utf-8?B?WXE3OFc4NFJ0anU4YTRUazZObmdDMjdoNWJwNTdkMlJBWTQ0SzJuTmJwcVhB?=
- =?utf-8?B?QXY1eWV4L2o3YXR3QVJVNE1YRnYzRkFIL3dkNVFOQm1Pa2dLYjZLVGIwZ0Jh?=
- =?utf-8?B?ZlNCOTZCUmdUc05EQzA1QnpjOTNRS09xWlVSblF6Z1JaZUlQNXEyN2VYZEhy?=
- =?utf-8?B?MVJxY21hSnVjYXRtY1d3cDlVNGRQMFVyK3oxK2t4Y1VwUHRmZmNtM0ZROTdw?=
- =?utf-8?B?T1l5WSs2MCt0YkorMjRuRGRmM29odXhtV3QxZWs0citkUEluZHlwYmNuV3k5?=
- =?utf-8?B?MGZHOVpsUDRRZ3RDakk0QVg4bnlkeUpjTjFBejhUL1NqUmFCaTV5Ym1IRlhy?=
- =?utf-8?B?b0JydjJSNmFCMGhtb0cxYnRtclZVbVBSaTdLVWpZcUE5NU5SRElIME9IY05O?=
- =?utf-8?B?NXA4c0tqU1ZrZ21CTUJCL05Hd0VSTkkyZDNaeitjZ0xhak91OTI0M1piZTR6?=
- =?utf-8?B?ZUNzcThmQmd1ZmR3RFI2dTMrN0M2ZVU0L1BidzRzcnFXQVJpUDVleDRCQS8r?=
- =?utf-8?B?TXVqbWl6OXVHd2xVNDEyelFFVnZEanBoVkd0eXdFdnVYR3M3K0lnT3JLQlYr?=
- =?utf-8?B?aVltWUNyeXdmUzFNeUZHNFFkRmFrQ0Q3dWZ4V1JXa1hIME1tcm5xNlVlVWR4?=
- =?utf-8?B?MTREWXJVbEtabkJJZm1zcFl4a1hSNHRYOTdDRTlhVzFncEc2bXJZNlRWYk9K?=
- =?utf-8?B?b0YyM3NZSXV4eVRuaHdhUVBlRG9aNUMzcEY1T2c4RThFV0E1VnI2Tk5hdDVQ?=
- =?utf-8?B?U0o3cGZLaFdJQWZIVkdOcXJORUdaSndoaUlkTXVFZUJDWm5WODdIN2RZcXhl?=
- =?utf-8?B?ck9QV3JabGdUeDRWUlhINXZZT0NGZW1hWG9nSXY1bnNkLzJaNXJ0VlFGMnVh?=
- =?utf-8?B?UUpYdFdPN0QwcGFwdHhPTmNiclZPcGZwQlc4TWdIbnFKN3FIWFJlM0J5NlBz?=
- =?utf-8?B?T21Wck5qVEE0cGwvWENYZ2ZvK0NxZWIxVFNvTTc5NmN3WUhWWjFTRnZhRDdX?=
- =?utf-8?B?bjJNVzcyUnNaRXYrK21aSHRkOFRrVVFTOFN5bW5sa0U5N0hMYnFtQVcvWjVL?=
- =?utf-8?B?czJLYmVMbE9FNTd3TmxoWmx6Qkk2aGYyRjY4RTVobVg2enlLK3o3Vmk0OUlQ?=
- =?utf-8?B?Z1IxdWNHYUNPaENyeHl6TkhYMmVtbEEzWEJGZVRuTEVtTllKN1ZBMSt2dCtM?=
- =?utf-8?B?RUhrM2h0dDgxUnVhTEpVQ3ZrRXBVOERUTlk3Ung0TXFoNHo3WVM4U0dBSnM1?=
- =?utf-8?B?azNnV2htZjU1ZHZzd3IzbFNTMFRIRE5QZ3ZrVGRXdDFMKzJ3MXZTZ2RpL2lq?=
- =?utf-8?B?NmJsN0NZREtIelFWUnJzSE0wUk01WmRzTjRMNnpCY0QzSTY0TFZ1RFlSL3FE?=
- =?utf-8?B?UjlzamFKTlVWRmVibFlNSS9SbkFWdlBuQXQ0RllCK29UbG1qZFJQVkU2TUJW?=
- =?utf-8?B?R1NObmp1aUFVRjVxcUZyV2R1YjdBRXkrUDJia0N4WFYyeUpoeUR3TWVCT1hW?=
- =?utf-8?B?cmI3dlRVM2IxMFQ3VkYwK04rQkptVTBKdWxkdXB2aW1tdGdMSTRvWlNFQmxX?=
- =?utf-8?B?akJoUVBEM2FjUlpJQ0kwK0xocnpOcU9EU0hlYTNBM21RMG9MOU5WbjhOWXZ2?=
- =?utf-8?Q?qPB72ENbcqpTxHZm3mTjQ1Bbi2HyyS4vwJTDO?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4887677f-0e78-4dd8-e75b-08df41d98290
-X-MS-Exchange-CrossTenant-AuthSource: MI3PR04MB12438.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Nov 2026 22:57:36.5178
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: vd8YSsP4dxkc5TREYinZ48ScGLaZdNuDAl2LKxBXeRLyZNuFuxTlTe1SPfpcqnf8aLP01p5u4gOUn0S8nzMgaZgygurlusfNoQrZ2M948+dgiKy7fVqmkmobRMqCu6Kh
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB530740
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-From: Frank Li <Frank.Li@nxp.com>
+Document Data Modul i.MX95 eDM SBC board. This is an evaluation
+board for various custom display units. Currently supported are
+serial console, ethernet, eMMC, SD, SPI NOR, USB host and PCIe.
 
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Signed-off-by: Marek Vasut <marex@nabladev.com>
+---
+Cc: Aswath Govindraju <a-govindraju@ti.com>
+Cc: Conor Dooley <conor+dt@kernel.org>
+Cc: Fabio Estevam <festevam@gmail.com>
+Cc: Frank Li <Frank.Li@nxp.com>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
+Cc: Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: Rob Herring <robh@kernel.org>
+Cc: Vinod Koul <vkoul@kernel.org>
+Cc: devicetree@vger.kernel.org
+Cc: imx@lists.linux.dev
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-can@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+---
+V2: No change
+V3: No change
+V4: No change
+V5: Add AB from Krzysztof
+V6: No change
+V7: No change
+---
+ Documentation/devicetree/bindings/arm/fsl.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-On Mon, 19 Oct 2026 16:50:00 -0400, Frank.Li@oss.nxp.com wrote:
-> Use unevaluatedProperties replace additionalProperties because it ref
-> other yaml file to allow backlight and label property.
->
-> Drop panel-timing and port, which copy from panel-common.yaml. Others have
-> additional restrictions.
->
-> Fix below CHECK_DTBS warning:
->   arch/arm/boot/dts/nxp/imx/imx6q-var-dt6customboard.dtb: lvds-panel (sgd,gktw70sdae4se): 'backlight', 'label' do not match any of the regexes: '^pinctrl-[0-9]+$'
->         from schema $id: http://devicetree.org/schemas/display/panel/sgd,gktw70sdae4se.yaml
->
-> [...]
+diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
+index 36e7a325af5ab..d40af695bc7de 100644
+--- a/Documentation/devicetree/bindings/arm/fsl.yaml
++++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+@@ -1579,6 +1579,7 @@ properties:
+       - description: i.MX95 based Boards
+         items:
+           - enum:
++              - dmo,imx95-data-modul-edm-sbc # i.MX95 eDM SBC
+               - fsl,imx95-15x15-ab2       # i.MX95 15x15 Audio Board V2
+               - fsl,imx95-15x15-evk       # i.MX95 15x15 EVK Board
+               - fsl,imx95-15x15-frdm      # i.MX95 15x15 FRDM Board
+-- 
+2.53.0
 
-Applied, thanks!
-
-[1/1] dt-bindings: display: sgd,gktw70sdae4se: use unevaluatedProperties
-      commit: 6f5338af664c42e200b846a8d51c80a5a230ce6f
-
-I picked it to avoid warning, any concern, let me know!
-
-Frank
-
-Best regards,
---
-Frank Li <Frank.Li@nxp.com>
