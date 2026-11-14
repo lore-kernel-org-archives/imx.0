@@ -1,59 +1,60 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794616486;
-	b=bfsdRQTEtW+VZa15fDgwDiIBb0eyRk9yPTcySx76hengLvVawSAtU+9W7xc8kY6Qm1jZ
-	 VfPUWHBkEi7WpcixNuwxP2atH8z83MPoJGHSc0uz5ut7zCIWXkoIfUC+f2cHfWtEC1yZ7
-	 YH6PRe+tF4lT8LT+pwQI3rt2GjPNsYBpW1SgIo3jUV10/Ekx0jg0SMr8mSGFSbIu5b2bY
-	 ZuXmQHBAxsZUl9IP8jJwcuHimcAItY8ZhUPbvNp7Iuj3aC6Y8mVQ8P5mSErptU9JonEuu
-	 LGuiwC4EzFfyt1DW6R5NfUeNauflBRoyRmnOOJq/RQVKN34+GEKba7epa3ReWbwW9xA==
+	t=1794621893;
+	b=WcVqFxVS+NceoFDK4Qdo04e5f9cZuGg17ewmLfdsK4apgMMOFKuYSW9k3GLr50pNvpdw
+	 PaQvZfCfl7dsNuplfwv6EDqR3hW8sCq6Cl6lbTkl2gMl61IXtC1ESww84An7XJ6KsiIsK
+	 BOvlXCDK30pxdo2VqbB9ZU209n6HmdhQuyjilezR+sTArxfGN/RY8hJSx8EPLMLUEBPM0
+	 zj1rPrJf6ARmvIntf2F3uuHbpE5HvmVxpomT7JZhFrp61V89q/GkD5sA+Rk0pY8UTS1RV
+	 +7kLRKZUwtXfo9yYDaoslYkqfkuQuLF1DEqWQbELcukaBL/84xIQPWrXAHdH0A2Z/DA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794616486;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=FpgEwmMzNnxajwtzHIwdlHqmmNh9zHN0T9NnKFNpv/Q=;
-	b=ri60KFYZmzFqx5mmCIK2BMRU6yHIouCz0j1D8vtZl5r8jTTmt4aBoCv+hnBb2BLhYb+S
-	 bVAZ75+oXU9EC2a3Q0wbjZIP9mD8/hdGmO/7l/SApbsdqkRCVjzxl/POyntMucI2kQme5
-	 oFi5SJC8M7JHrTTBNXU5t2stdb10ezmrLG/F2JRQVCa5L79QmREjqNfOxbOrrZ2e7WHob
-	 U2//9aFnMRsqM/m71adKBsFQ/YNuOM3ansMRSgwKOvGSqkRoPaL5OssVGhCcbhSDwVxU4
-	 hUb/PZlR9nBSadHqnSx9PChZJIHhe7JQu0aEwv8CmD8UURJuvykgAfeZOvhPfAYM6NA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794621893;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 In-Reply-To:References:X-Mailer:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=c3TMKQvGudvZgsPILw4nmz5grw8WhZuLvbEH6M2mYGQ=;
+	b=GulsV7vxXVaq0uWVEGixWyYcQHuSgBXhOIIBLuINJacMhjcYMQJ0jFKP/FFJR74UEpHQ
+	 UMH3BAPXOfXbNvRG7zDqdYuhWzOTkdD27LhXbiQaoM0nzDA09kdXKift5Y7i37BYyja3c
+	 XxzLgiGy8c/FktCfqIFP2Q9/diKHs6peRrPdgp62RpS91973scKC29UKRStQvYoW0uiQH
+	 qC76dKISEcxc/XntPcaOm7mfly7E8TYrrUml2mLtopYAikmfG+awZwDGsPwZdlfxVK5h2
+	 HSSqV82YhZHf4NJKCjiYgpi2OvgsA2GKDJ6E2DixBS2hQukZLkMIhfBsXSbwTUGFZXw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ggWAxiWG;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dunwn7t6;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE5E9606A330;
-	Sat, 14 Nov 2026 00:34:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1547B606A331;
+	Sat, 14 Nov 2026 02:04:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ggWAxiWG
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 199901F000C4;
-	Sat, 14 Nov 2026 00:34:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dunwn7t6
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E00941F000C4;
+	Sat, 14 Nov 2026 02:04:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794616485;
-	bh=FpgEwmMzNnxajwtzHIwdlHqmmNh9zHN0T9NnKFNpv/Q=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ggWAxiWGWlOaCva97NAGYzUMZSKbK6+NDcbMjTKuFAac2f79Aecm5HmsUmsZd8+zc
-	 LZFEtECVzH3nUzFdJgPDfFZojALGk/HL0BKVh43VOslux6oMZB3iofCSWA5u7ZIAy1
-	 jr2m85/QKEIxJOlFPfVJCaXOoeposHPnKOW3v9aQ7GmPnPk86MHZ/1LMCsRfgg8Sin
-	 np83a3ZT6/oCMowX9Y7TKA/ou1b45Tw4yb2qMDVK+Yyc/Njyp2L6YYmOeWtFLlHSPT
-	 3PnES/NJxSs8DDlXjHpS8lD4zdGfYJCXUon/uCFBOPayqQVzKLB09aACc+i+2XYO3b
-	 9PTHzuIBCVBjA==
-Message-ID: <sashiko-outbox-213933@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v7 2/2] arm64: dts: imx95: Add support for Data Modul
- i.MX95 eDM SBC
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Marek Vasut" <marex@nabladev.com>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, linux-can@vger.kernel.org, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org, "Marc
- Kleine-Budde" <mkl@pengutronix.de>, "Oliver Hartkopp" <socketcan@hartkopp.net>, "Vincent
- Mailhol" <mailhol@kernel.org>, "Oleksij Rempel" <o.rempel@pengutronix.de>
-In-Reply-To: <20261114001844.30606-2-marex@nabladev.com>
-References: <20261114001844.30606-1-marex@nabladev.com>
- <20261114001844.30606-2-marex@nabladev.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sat, 14 Nov 2026 00:34:44 +0000
+	s=k20260515; t=1794621892;
+	bh=c3TMKQvGudvZgsPILw4nmz5grw8WhZuLvbEH6M2mYGQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=dunwn7t6OF5BWqY7ESWPFycpyqyP3T4yNXkPQgI5zCq85NoZuGdkl8K+OQLpGxuhj
+	 aZfyQ79ujvGmg9XYCmqWqZaQGfYNLFp7ruAlDNqV5Cm84fRiv5Zj5BB6jzXZ7+d0uI
+	 E5CFDFO/nY3T2vMUt2LkZzsiR/qMv7L3XrbwhTppxrYcIOsJ51a42VEvNPt6M6b1iS
+	 zgHMQ8RmmYwmwXYf8pCs/68KriYAqBdX6VrBWHV53KWxWIBbyrJAKitQ2fHtAXhS2f
+	 Tjc5ss42PvCwwAS82P9ZNhUaTuE2XZ3zC6zjf+Z9hQ73oOOWa9PNQIMftV9LkSwYsm
+	 prwrUht0iB9gQ==
+Date: Sat, 14 Nov 2026 02:04:47 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Fabio Estevam <festevam@gmail.com>
+Cc: lee@kernel.org, maz@kernel.org, andy@kernel.org,
+ dmitry.torokhov@gmail.com, linux-input@vger.kernel.org,
+ mfd@lists.linux.dev, linux-iio@vger.kernel.org, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, stable@vger.kernel.org
+Subject: Re: [PATCH v3 2/2] mfd: mxs-lradc: Pass parent IRQs to child
+ drivers
+Message-ID: <20261114020447.7a0b71d5@jic23-hlaptop>
+In-Reply-To: <20261113013212.470981-2-festevam@gmail.com>
+References: <20261113013212.470981-1-festevam@gmail.com>
+	<20261113013212.470981-2-festevam@gmail.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -62,124 +63,102 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issues to consider:
-- [Medium] arm64: dts: imx95: missing pinmux for Ethernet PHY IRQ on
-  GPIO1_IO10
-- [Low] arm64: dts: imx95: unused backlight pinctrl node and header
-  includes
---
+On Thu, 12 Nov 2026 22:32:12 -0300
+Fabio Estevam <festevam@gmail.com> wrote:
 
-commit 08308b97a054b075daa4e1d5655d37470b104a88
-Author: Marek Vasut <marex@nabladev.com>
+> The MFD driver stores raw DT interrupt indices in IRQ resources but
+> registers its child devices without an IRQ domain or IRQ base. The child
+> drivers consequently receive the indices as if they were mapped Linux
+> IRQ numbers. IRQ index 0 triggers the platform_get_irq_byname() warning:
+> 
+>   0 is an invalid IRQ number
+> 
+> The children then try to recover the indices from their resources and
+> map them against the parent OF node. Besides duplicating IRQ names in
+> the parent and children, this relies on invalid platform IRQ resources
+> and fails when IRQ 0 is rejected.
+> 
+> Resolve the interrupts with platform_get_irq() in the MFD parent and
+> store the mapped IRQs in the shared LRADC data. Drop the child IRQ
+> resources and duplicated name arrays, and have both child drivers
+> request the mapped IRQs directly. Use the MFD memory base support to
+> translate a single relative memory resource shared by both cells.
+> 
+> Tested on an i.MX28 EVK. The mxs-lradc-ts driver probes successfully,
+> touch events are reported, and the touch-detect and LRADC channel 7
+> interrupt counters increase as expected.
+> 
+> Cc: stable@vger.kernel.org
+> Suggested-by: Lee Jones <lee@kernel.org>
+> Closes: https://lore.kernel.org/linux-input/CAOMZO5CgTzo6GuXptD4mFTN=UsJJqpkixDW1Q64gqZGrij8+uQ@mail.gmail.com/
+> Fixes: a85a6c86c25b ("driver core: platform: Clarify that IRQ 0 is invalid")
+> Signed-off-by: Fabio Estevam <festevam@gmail.com>
+For this change
+Acked-by: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
+With assumption it'll go through mfd.
 
-arm64: dts: imx95: Add support for Data Modul i.MX95 eDM SBC
+However, one of those, whilst you are here comments below....
 
-This commit adds a device tree for the Data Modul i.MX95 eDM SBC board.
+> diff --git a/drivers/mfd/mxs-lradc.c b/drivers/mfd/mxs-lradc.c
+> index 30a66e268169..d16dfea89207 100644
+> --- a/drivers/mfd/mxs-lradc.c
+> +++ b/drivers/mfd/mxs-lradc.c
 
-> diff --git a/arch/arm64/boot/dts/freescale/imx95-data-modul-edm-sbc.dts b=
-/arch/arm64/boot/dts/freescale/imx95-data-modul-edm-sbc.dts
-> new file mode 100644
-> index 0000000000000..5ca26c6ab665f
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx95-data-modul-edm-sbc.dts
-> @@ -0,0 +1,1079 @@
-> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-> +/*
-> + * Copyright (C) 2025-2026 Marek Vasut <marex@nabladev.com>
-> + */
+>  static int mxs_lradc_probe(struct platform_device *pdev)
+>  {
+>  	struct device *dev = &pdev->dev;
+>  	struct device_node *node = dev->of_node;
+> +	const struct mxs_lradc_soc_data *data;
+>  	struct mxs_lradc *lradc;
+> -	struct mfd_cell *cells = NULL;
+>  	struct resource *res;
+> +	unsigned int num_cells;
+>  	int ret = 0;
+>  	u32 ts_wires = 0;
+>  
+> @@ -137,7 +161,11 @@ static int mxs_lradc_probe(struct platform_device *pdev)
+>  	if (!lradc)
+>  		return -ENOMEM;
+>  
+> -	lradc->soc = (kernel_ulong_t)device_get_match_data(&pdev->dev);
+> +	data = device_get_match_data(dev);
+> +	if (!data)
+> +		return -ENODATA;
 > +
-> +/dts-v1/;
-> +
-> +#include <dt-bindings/i3c/i3c.h>
-> +#include <dt-bindings/leds/common.h>
-> +#include <dt-bindings/pwm/pwm.h>
-> +#include <dt-bindings/usb/pd.h>
-> +#include "imx95.dtsi"
+> +	lradc->soc = data->soc;
+>  
+>  	lradc->clk = devm_clk_get(&pdev->dev, NULL);
 
-[ ... ]
+This is what would need changing to fix potential ordering issues with devm / non devm
+mixing.
 
-> +&netc_emdio {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_emdio>;
-> +	status =3D "okay";
-> +
-> +	ethphy0: ethernet-phy@1 {	/* KSZ9131RNXI U20 */
-> +		compatible =3D "ethernet-phy-id0022.1640";
-> +		reg =3D <1>;
-> +		interrupts-extended =3D <&gpio1 10 IRQ_TYPE_LEVEL_LOW>;
-> +		reset-assert-us =3D <1000>;
-> +		/* RESET_N signal rise time ~100ms */
-> +		reset-deassert-us =3D <120000>;
-> +		reset-gpios =3D <&i2c2_gpio_expander_22 4 GPIO_ACTIVE_HIGH>;
-> +	};
-> +
-> +	ethphy1: ethernet-phy@2 {	/* KSZ9131RNXI U22 */
-> +		compatible =3D "ethernet-phy-id0022.1640";
-> +		reg =3D <2>;
-> +		interrupts-extended =3D <&gpio1 10 IRQ_TYPE_LEVEL_LOW>;
-> +		reset-assert-us =3D <1000>;
-> +		/* RESET_N signal rise time ~100ms */
-> +		reset-deassert-us =3D <120000>;
-> +		reset-gpios =3D <&i2c2_gpio_expander_22 5 GPIO_ACTIVE_HIGH>;
-> +	};
-> +};
+>  	if (IS_ERR(lradc->clk)) {
+> @@ -187,38 +215,15 @@ static int mxs_lradc_probe(struct platform_device *pdev)
 
-[ ... ]
+>  
+> -	ret = devm_mfd_add_devices(&pdev->dev, PLATFORM_DEVID_NONE,
+> -				   &cells[TSC_CELL], 1, NULL, 0, NULL);
+> +	num_cells = lradc->touchscreen_wire ? ARRAY_SIZE(mxs_lradc_cells) : 1;
+> +	ret = devm_mfd_add_devices(dev, PLATFORM_DEVID_NONE,
+> +				   mxs_lradc_cells, num_cells, res, 0, NULL);
+>  	if (ret) {
+> -		dev_err(&pdev->dev,
+> -			"Failed to add the touchscreen subdevice\n");
+> +		dev_err(dev, "Failed to add subdevices\n");
 
-> +&scmi_iomuxc {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_hog>;
-> +
-> +	pinctrl_hog: hoggrp {
-> +		fsl,pins =3D <
-> +			/* PCIe 0 PEWAKE */
-> +			IMX95_PAD_GPIO_IO34__GPIO5_IO_BIT14			0x4000031e
-> +			/* PCIe 1 PEWAKE */
-> +			IMX95_PAD_GPIO_IO37__GPIO5_IO_BIT17			0x4000031e
-> +			/* BOOT_MODE2 */
-> +			IMX95_PAD_SAI1_TXFS__AONMIX_TOP_GPIO1_IO_BIT11		0x4000031e
-> +			/* IO_XPNDR_RST_1V8 shared by multiple expanders */
-> +			IMX95_PAD_XSPI1_SS0_B__GPIO5_IO_BIT10			0x40000b9e
-> +			/* IO_XPNDR_INT_1V8 shared by multiple expanders */
-> +			IMX95_PAD_XSPI1_SS1_B__GPIO5_IO_BIT11			0x40000b9e
-> +		>;
-> +	};
-> +
-> +	pinctrl_emdio: emdiogrp {
-> +		fsl,pins =3D <
-> +			IMX95_PAD_ENET2_MDC__NETCMIX_TOP_NETC_MDC		0x50e
-> +			IMX95_PAD_ENET2_MDIO__NETCMIX_TOP_NETC_MDIO		0x90e
-> +		>;
-> +	};
+Not related to what you are changing here, but a devm call with a goto that
+follows it is usually an alarm bell...
 
-[Severity: Medium]
-Should pinctrl_hog or pinctrl_emdio mux
-IMX95_PAD_PDM_BIT_STREAM1__AONMIX_TOP_GPIO1_IO_BIT10 for the shared PHY
-interrupt line on <&gpio1 10>?
+Can we fix that with a change to devm_clk_get_enabled()?
 
-Both ethphy0 and ethphy1 use <&gpio1 10> as their interrupt, and
-pinctrl-imx-scmi does not implement .gpio_request_enable, so requesting
-the line as an interrupt will not switch the pad from its default
-PDM_BIT_STREAM_BIT1 mux mode.  Unless firmware pre-configures this pad as
-a GPIO, PHY interrupts will not reach gpio1.
+Jonathan
 
-[ ... ]
 
-> +	pinctrl_panel_backlight_lvds: backlightlvdsgrp {
-> +		fsl,pins =3D <
-> +			IMX95_PAD_GPIO_IO27__GPIO2_IO_BIT27			0x31e
-> +		>;
-> +	};
+>  		goto err_clk;
+>  	}
 
-[Severity: Low]
-This isn't a bug, but pinctrl_panel_backlight_lvds is unreferenced now
-that the backlight nodes have been removed.  Also, the dt-bindings/i3c/i3c.=
-h,
-dt-bindings/pwm/pwm.h, and dt-bindings/usb/pd.h includes at the top of the
-file are unused.
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261114001844.3060=
-6-1-marex@nabladev.com?part=3D2
