@@ -1,73 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=212.27.42.3
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794700060;
-	b=zSEQDueLlUuumPn+pgwNjAV2wpj1KACOMp3YtpLc5poszd280HAdPFG76+j6LktbTXcn
-	 2ULvmNuFqrhTYX5wBhd48PlqBWbyA7qGqLsQDwdfq5WjiOL2FNhK7B/5V99TTkU1lEQAS
-	 4x5qMj/i75zYAewAg+HhdXO/bV7mIY4wAcDPUJ5zquLM6njizcrbQNemPzxX6hv0cKfCe
-	 2J8FwLnV2lSNrT6P6OroO8wKrZXstyENIQjbU4vWeQfyCU0eRMyrqL8B5cAP9CJeTy5Zr
-	 qQ7cEbJrP1Q+H2hzo11h6zfyj4rPmrGvS1ZDEsvsktHNJZKtdzCtuqMJG0/+Z/rQeZw==
+	t=1794727465;
+	b=J8Vjils+VPrOfO67hYs8AH4jdPKrWIPnNp8MP94CMbPqVGz9RS9iEwI0ULsEXND3EWPZ
+	 Zn2nS3GCvKMuyYX7uRmvkC4Ao6rR0ub09w0LoLFb01tTCrlBg5f9zmzTkAPR4GA5RuaK7
+	 rp3ZOxwCzYFVU3BQdTcUXMd3hvgb2vLpCALX+Gl9ldkkZyqIakCDXvMsd4shurAk3Mot4
+	 0yOHIw684JLNnWfff89l7xQsz44GTqb6qtcsQwI39m+nXHskNS9TyxLEka0Q0D4Ou/O8S
+	 8Jn5IQf/rD2ugLwma3lo/R3GpWx2SRjkl0tb9QOUeUdzUmm+Qve/+n8QumsyVH6CZyg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794700060;
-	h=DMARC-Filter:Received:DKIM-Signature:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=+msR+L8hupIZu3L7AvrprWnt14EoIGonWEztPzERWDk=;
-	b=BP5C1v6VcDWqve0hNR8OwFIXjh7ZIAG3CYO9WtIWT+KltpLRlTA5Q5CWhP8enfEPPEbI
-	 iTz4SrdlQjrKxsxdroxY64FBJyufJzShZE8TqC1w0baH1xIndPMMVvjf6teJHfre0cqCr
-	 oi7c+X2s2U7u/dvsHuaqnG2ZU1cDB0LPD/QFIoo2pNQ90rlK739DmlS6uARAQIk6Yo4GE
-	 GlZ2kWjbxv2/V6efYetFB3kene5hJwrtUA1Wyg8JngIxycjvT0KwnqYbg1VUjbTkytJ/M
-	 XifmfMbfZx9HExUAfBsbh+Xiq2Y6sBbcfvJ+9nS7W5wt6xYRjIJl2MEaX4v7wguXBlQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794727465;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=AidHs0Awemb2NZ24itVBVZKYL6ptkEfvldQHKQBgGl0=;
+	b=LcIq85woFkwLiMGsCxgIEF+PAOBwYg01+p0QipVFwac+7/q6HMDKNl4VCDlpYY0oA9Ur
+	 fMarRQOrqv2h561n1p/Tq0td6ZkNECensrFTjMhe+ImUUMGeKFg9eU84ogK9OIg7oZEf/
+	 oMXwVC6ox1f6K9C7Gcig3orOn6l3qY7Lcac5ftQMN90L61hrsdZS00GJ3HBMZZc1kd37V
+	 1mBxavSvx580Tj0B0EDDWRAvjVjHvL9gvqpgeQUeFbKbT4ti2EMFmKT+K4e6NJC1pc3ld
+	 3hsRG5wPp0qsHfG+1Xtizyi9Xzt4CP71IEt4ldDNFeMAmeLZoQPEH8b9Lgt90ZqJ29g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=free.fr;
-	spf=pass smtp.mailfrom=free.fr;
-	dkim=pass header.d=free.fr header.i=@free.fr header.a=rsa-sha256 header.s=smtp-20201208 header.b=DRTkaIZa;
-	arc=none smtp.remote-ip=212.27.42.3
-Received: from smtp3-g21.free.fr (smtp3-g21.free.fr [212.27.42.3])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=J9D0afPn;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12048606A32D
-	for <imx@lists.linux.dev>; Sat, 14 Nov 2026 23:47:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 12048606A32D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=free.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=free.fr
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51C71606A327;
+	Sun, 15 Nov 2026 07:24:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=free.fr header.i=@free.fr header.a=rsa-sha256 header.s=smtp-20201208 header.b=DRTkaIZa
-Received: from L30177.local (unknown [82.65.104.223])
-	(Authenticated sender: vjardin@free.fr)
-	by smtp3-g21.free.fr (Postfix) with ESMTPSA id CE22313F880;
-	Sun, 15 Nov 2026 00:47:07 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=free.fr;
-	s=smtp-20201208; t=1794700050;
-	bh=3DuhsD14Zo+NE2HJ5h/Fip7dpWi29Qk67BwYWlaEb8g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DRTkaIZaYSzmqkoLQbhO9xlX4cTzmOA5DYPOCj96tq1OnyApDP1+kVRiRn+70PlFS
-	 qPeIxbFJcwi4DDTbEXyVTBvyTdu2k4FJIFH4bZP1fpta8kqGcB0JzORI4dSFxiGcOV
-	 uABtjcmX33/nN78SOb6wasOQcfzoVwBA5N01QCLOOqChMfBiDzGQHh1vtYbhkIgrk/
-	 dhC1DmBpCenH82iUoBWmtDFmYoXRDRD3RSGpRhPyr7pRd3X08yAQQoZXCZeVvI76BW
-	 gPESwU1Cs/6ksgLAgZ9AEsHDdSnkUArgMn7MxrmEENwElzAtUfBr7gcOf9F0eTwOC8
-	 6QVVl55AxHdwg==
-Date: Sun, 15 Nov 2026 00:47:06 +0100
-From: Vincent Jardin <vjardin@free.fr>
-To: Vladimir Oltean <vladimir.oltean@nxp.com>
-Cc: Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>,
-	Frank Li <Frank.Li@nxp.com>, Jacky Bai <ping.bai@nxp.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	NXP S32 Linux Team <s32@nxp.com>, Linus Walleij <linusw@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>, linux-gpio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev, Ioana Ciornei <ioana.ciornei@nxp.com>
-Subject: Re: [PATCH v4 3/5] soc: fsl: guts: add the RCW override of any RCWSR
-Message-ID: <avjy-lCL2A9gEhcL@L30177.local>
-References: <20261114-for-upstream-lx2160a-rcw-pinmux-v1-v4-0-eefcea066a55@free.fr>
- <20261114-for-upstream-lx2160a-rcw-pinmux-v1-v4-3-eefcea066a55@free.fr>
- <avi9N8P34X5uel7a@skbuf>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=J9D0afPn
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E50281F000C4;
+	Sun, 15 Nov 2026 07:24:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794727464;
+	bh=AidHs0Awemb2NZ24itVBVZKYL6ptkEfvldQHKQBgGl0=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=J9D0afPnqD/0sfW+WAvE5yqR5xx4q5F1P40g3fB8SgXIXt03kybektbsmLTAz7ka8
+	 BJYYsvbzT8Gdg0OhCrqbtEy+XcVDpZ4a35cEv0HPLPFVVlWZ2kK2ZYzkgU6PBTirG1
+	 jdCVoZEWD0S9FFoVdgkaVOATKn2i8CeA3IzhKCKpMnzmgcnYKup3qc6NCqFxO158/Q
+	 bOMhJB9UPKjOH9abL0QMfx5HzjwGol/FqCgZ6VhfPZ4ncbzwmrJcNpR2zNlZsoGppH
+	 kNItHofx6sfPkth1MoRpH8Jm8k98VOgu0i6oqaAtlej0fdJtp+KlOy7Q++TodO8fYd
+	 flN96cmOMKOQg==
+Subject: Re: [PATCH v7 net-next 4/9] net: dsa: netc: tie setup resources and
+ reset to DSA setup/teardown
+From: netdev-bot+sashiko@kernel.org
+To: wei.fang@oss.nxp.com
+Cc: xiaoning.wang@nxp.com, andrew@lunn.ch, olteanv@gmail.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ richardcochran@gmail.com, linusw@kernel.org, linux@armlinux.org.uk,
+ wei.fang@nxp.com, imx@lists.linux.dev, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org
+Date: Sun, 15 Nov 2026 07:24:23 +0000
+Message-ID: <179472746345.2199510.13684304240938201686@kernel.org>
+In-Reply-To: <20261111062753.1397582-5-wei.fang@oss.nxp.com>
+References: <20261111062753.1397582-5-wei.fang@oss.nxp.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -77,33 +67,114 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <avi9N8P34X5uel7a@skbuf>
 
-Hi Vladimir,
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-> I cannot agree with your API proposal. It exports to the rest of the
-> kernel a blanket API for RCW override of any RCWSR1-RCWSR31 register,
-> *including* the SerDes fields for which the fsl_guts module already
-> exposes an API. So with your proposal, what can be done with
-> fsl_guts_lane_set_mode() can also be (un)done with fsl_guts_rcw_override().
-> The possibilities of abusing this API design are endless, and I don't
-> want to have to deal with them when I can avoid them.
-> 
-> At a minimum, I would recommend renaming the API as fsl_guts_pmux_override(),
-> and make guts enforce which register fields it permits overriding via
-> this API. Example:
-> 
-> static const struct fsl_soc_pmux_mask lx2160a_pmux[] = {
-> 	{ 12, GENMASK(29, 0) }, /* IIC2..SDHC1_DIR */
-> 	{ 13, GENMASK(29, 0) }, /* SDHC2_DAT74..EVT43 */
-> 	{ 14, GENMASK(10, 0) }, /* EVT20..IIC1 */
-> 	{ 27, GENMASK(7, 0) },  /* EC1, EC2, USB_EXT, GTX_CLK, SDHC1_DS <- your series is missing these */
-> 	{}
-> };
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-good idea, I'll apply it.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Thanks,
-  Vincent
+- [Medium] The patch makes the first netc_setup() skip the reset
+  (priv->configured == false) on the grounds that "the probe path…
+
+--
+
+net: dsa: netc: tie setup resources and reset to DSA setup/teardown
+
+This patch adds netc_switch_reset(), which netc_setup() calls first so
+each DSA setup starts from a clean hardware state. The first setup skips
+the reset and relies on the probe-time FLR. The patch also turns the
+setup-path devm_ allocations into explicit alloc/free calls, released in
+netc_teardown() and on the error paths.
+
+> diff --git a/drivers/net/dsa/netc/netc_main.c b/drivers/net/dsa/netc/netc_main.c
+> index 77077352c1a57..c291123f53170 100644
+> --- a/drivers/net/dsa/netc/netc_main.c
+> +++ b/drivers/net/dsa/netc/netc_main.c
+
+[ ... ]
+
+> +static int netc_switch_reset(struct netc_switch *priv)
+> +{
+> +	struct pci_dev *pdev = priv->pdev;
+> +	int err;
+> +
+> +	if (!priv->configured) {
+> +		/* The hardware will be configured after netc_switch_reset()
+> +		 * is called, so set priv->configured to true.
+> +		 */
+> +		priv->configured = true;
+> +		return 0;
+> +	}
+
+[Severity: Medium]
+Can the first netc_setup() start on stale hardware tables if the FLR in
+probe failed?
+
+The commit message says:
+
+    The probe path already performs a FLR in netc_switch_pci_init(), so
+    the first setup will skip the reset because the priv->configured flag
+    is not set.
+
+But netc_switch_pci_init() ignores the pcie_flr() return value:
+
+drivers/net/dsa/netc/netc_main.c:netc_switch_pci_init() {
+    ...
+	pcie_flr(pdev);
+	err = pcim_enable_device(pdev);
+    ...
+}
+
+pcie_flr() can fail. It returns -ENOTTY if config space is not
+accessible or if pci_dev_wait() times out. It can also fail through
+pci_dev_reset_iommu_prepare() for an ATS-capable device behind an IOMMU.
+
+Suppose that happens after an unbind/rebind:
+
+netc_switch_probe()
+  netc_switch_pci_init()
+    pcie_flr()            <- fails, error ignored
+  dsa_register_switch()
+    netc_setup()
+      netc_switch_reset() <- returns 0 early, !priv->configured
+
+The FDB, VLAN filter, IPFT, BPT and ETT entries from the previous binding
+would then stay in hardware. netc_setup() builds empty software state on
+top of them, and the driver has no record of those entries to remove.
+
+Later setups treat an FLR failure as fatal, so a failed first FLR is
+handled differently. Should the probe path check the pcie_flr() result
+and fail probe? Alternatively, priv->configured could be set only after
+a successful FLR, so that the first setup retries the reset.
+
+> +
+> +	/* Block user space config access and other PCI resets, which take
+> +	 * pci_cfg_access_lock() via pci_dev_lock(), during the FLR.
+> +	 */
+> +	pci_cfg_access_lock(pdev);
+> +	err = pci_save_state(pdev);
+> +	if (err)
+> +		goto unlock_cfg_access;
+> +
+> +	err = pcie_flr(pdev);
+> +	if (err)
+> +		dev_err(priv->dev, "FLR failed: %pe\n", ERR_PTR(err));
+> +
+> +	pci_restore_state(pdev);
+> +
+> +unlock_cfg_access:
+> +	pci_cfg_access_unlock(pdev);
+> +
+> +	return err;
+>  }
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261111062753.1397582-1-wei.fang%40oss.nxp.com
