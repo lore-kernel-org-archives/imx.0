@@ -1,57 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.32
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.93
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794751900;
-	b=Mx+M0SLBfHYar0UwigUuVcgb1ABdZkoGUYLyYvqueZH+HU1tI7jvy6TRSrkrlSI+//r1
-	 XH21NVx5XOq9tGDVoe5jbChFiAfCC6J7t0zJf+/Vh6+PLb66oHF1aEQmvP5RZ+mTrpxFe
-	 euoZbhBNKcyIMkmAiYEOWWWFp6h8r929lbiIobcv51A+4tO2WnjpTrCagl9kXDNnUAo3E
-	 U3BJsoDy/voU7xWsscwPP7VBWPeZ6wu7zRHZ3WMHM0tjFpbJ9nxi+TzylHQjf7J80TYKL
-	 HQLL3XFcPEE25lmP1VDYXqZ7UBKotVgII0CZa1Q3EIEvuuj7xo9bs6htzCD7pXCNtIA==
+	t=1794751906;
+	b=460wGvYvuZXbifSNF4whC7+0KB7YgYjFzOpflAX4UI5ohzkJ9csI03BJk8EdlenF/emb
+	 DhvuXr7DQHcHlhilm375hanMYTphJUU8lMQCsc0Ua9SraRlN5rsLxklLmU0JcUposdMbl
+	 ZHg7axOZiyabLzfzVkp93zombJ91OYzEDv9If6lblHYAJUM+Rkt8+P32tCHSfv533QCOW
+	 RhLlfz218QcGYYW9d6BhpstIdkKSvJEJBJBE7HET57AeBBLQj+jce9O3Qk0kbNxX7IeD7
+	 zcRzwZwDuzx17e2RlIea49jTSFQDehmChi+iPlP2v1dwePW8d4ywNXJYfPCGx3jYe4w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794751900;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794751906;
 	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:From:Subject:Date:Message-Id:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-B4-Tracking:
-	 X-Change-ID:To:Cc:X-Mailer;
-	bh=a8ettMTIMLv2Wh6ztg/2TP5SGbNIvkE4ulbl7gtN2Rk=;
-	b=McbkDAxFyixDuxwmfMO1ECYqA9Ndn1wmKj1XjTvqw3xn/b3ScHp965PJM0DkKiRAEsV7
-	 PXWHtRX1/w5MqSy4+qrYUnAcSCfcVCsrMgBKF5pQvRt3i+/xtXikOC98oCmLz+KdOuhyJ
-	 gLEwrJl86bdRltwRUobtygvZwLfI4P1KV3tu+xn9xdDOeBGG3OjE7l3nNm5+keu4AaZtu
-	 ylj0NitLSSkQ0OoCNuQMKqh50zQg1+WPLORBHx2PpFidPdyQkbGdFY+LOVvjcRbsDGd3W
-	 cf4YG4rWA/BVgoCOJwfVL9ZMcTFGe/nsj68KFrUH0sSs9pkPa4cye0iooHjKA/OReNQ==
+	 X-Mizu-Trace-ID:X-Migadu-Flow:From:Date:Subject:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
+	 In-Reply-To:To:Cc:X-Mailer;
+	bh=fX4x/DwPozKPTud5FkAAKQrO1M5Mc9gEHPAUZrZ+dhU=;
+	b=ho+tzFK2fCYs475qBDn7yFuUglRekYw/39/rfnqVBTs+XyzKtCndjfvLnTVTn2ZnA2wk
+	 cqQTz7dSOyD8jSvzoDhQ0HmIQ++3IDHyVPYCyuje1++xY5/oM6WqsOeI6qO9Tcg82pJUC
+	 ZL4/4YUemOKIPZ6RCCoUhANupSO7/Q87s63i8Ki5kX2tKvqBKVu12zCvv6lVLYdhXAzlt
+	 A7ihjrr+5ZD0vLY9KPAHjT1QSqDCaiadMklwIYxHxEIZZXisyrDJ5ofGGpJe6evEnAvP5
+	 f1uKBL0jZ4JHvVL9S1flCNZyLZ6DQP2ZZxVRgaxEM7fte+sVfo+jqAtFGbopHyRwBbw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.dev;
 	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=NZCmnVXC;
-	arc=none smtp.remote-ip=91.218.175.32
-Received: from mta0.migadu.com (out-32.mta0.migadu.com [91.218.175.32])
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=HMFtC04U;
+	arc=none smtp.remote-ip=95.215.58.93
+Received: from mta1.migadu.com (out-93.mta1.migadu.com [95.215.58.93])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F07A606A323
-	for <imx@lists.linux.dev>; Sun, 15 Nov 2026 14:11:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9F07A606A323
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7298606A31D
+	for <imx@lists.linux.dev>; Sun, 15 Nov 2026 14:11:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B7298606A31D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=NZCmnVXC
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=HMFtC04U
 X-Envelope-To: imx@lists.linux.dev
-DKIM-Signature: a=rsa-sha256; bh=aPxa4y3+ppxmpAAuJ70W++p4hkmg2eJERKnjs9y4jWo=;
+DKIM-Signature: a=rsa-sha256; bh=dYZVjHUUnYJbCP3BEmxFNbYbsLJb5S56W4DO//XaLI8=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794751897; v=1; x=1795356697;
- b=NZCmnVXC7qxU1dw6OfZEl8mzxNY+bk1+Pzf9KIvRNb3qrU81NHXNTBwgl+SPUbXmO/H3k/JB
- AoR65PIvRjWMjH/YS84ZSTG7n7dYby+f4TN/sQDYpi+rHoXaoDBwInXpcj67GkEk8HrOP3vlqMN
- HV6X8opinCETepsMaLPSc0UI=
+ t=1794751903; v=1; x=1795356703;
+ b=HMFtC04Uf+2QnwCff9CM65z7x9EnmQ/4oIK+o6iTNwJK4zdPaDuvygZ2NIP3ED2jFy8M28p5
+ BpxKBDDT87szR2FwqdETrrPmtk7mUs++bEt1HCjSuzPCOwB3kb7rAlwYNk6c6xG9gIiEtbpFSfp
+ v0A/J8LEdGQEUf2lzH8m1eLM=
 X-Envelope-To: imx@lists.linux.dev
-Received: by smtp.migadu.com with ESMTPS id 4b04229f9dcdc18d;
-	Sun, 15 Nov 2026 14:11:37 +0000
-X-Mizu-Trace-ID: 4b04229f9dcdc18d
+Received: by smtp.migadu.com with ESMTPS id 616e2252748b30ee;
+	Sun, 15 Nov 2026 14:11:43 +0000
+X-Mizu-Trace-ID: 616e2252748b30ee
 X-Migadu-Flow: FLOW_OUT
 From: Peng Fan <peng.fan@linux.dev>
-Subject: [PATCH 0/2] irqchip/imx-mu-msi: Fix MSI dispatch and probe error
- handling
-Date: Sun, 15 Nov 2026 22:11:24 +0800
-Message-Id: <20261115-imx-mu-msi-v1-0-8beb58854ca4@nxp.com>
+Date: Sun, 15 Nov 2026 22:11:25 +0800
+Subject: [PATCH 1/2] irqchip/imx-mu-msi: Fix MSI dispatch through the
+ parent domain
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -63,10 +62,9 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzNDQ0NT3czcCt3cUt3c4kxdi2QTUyPjNEuDJMNkJaCGgqLUtMwKsGHRsbW
- 1AKHbSYNcAAAA
-X-Change-ID: 20261115-imx-mu-msi-8c4523f90b1c
+Message-Id: <20261115-imx-mu-msi-v1-1-8beb58854ca4@nxp.com>
+References: <20261115-imx-mu-msi-v1-0-8beb58854ca4@nxp.com>
+In-Reply-To: <20261115-imx-mu-msi-v1-0-8beb58854ca4@nxp.com>
 To: Thomas Gleixner <tglx@kernel.org>, Radu Rendec <radu@rendec.net>, 
  Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
  Pengutronix Kernel Team <kernel@pengutronix.de>, 
@@ -78,26 +76,39 @@ Cc: linux-kernel@vger.kernel.org, imx@lists.linux.dev,
  linux-arm-kernel@lists.infradead.org, Peng Fan <peng.fan@nxp.com>
 X-Mailer: b4 0.14.3
 
-Two small patches to fix bugs in the i.MX MU MSI controller driver.
+From: Peng Fan <peng.fan@nxp.com>
 
-Patch 1: Fix MSI dispatch through the parent domain.
-Patch 2: Fix PM domain teardown on probe errors.
+Since commit 7b2f8aa005bc ("irqchip/imx-mu-msi: Switch to MSI parent")
+the driver creates the MSI parent (nexus) domain in
+imx_mu_msi_domains_init(), but never stores it in msi_data->msi_domain.
+The chained interrupt handler therefore calls generic_handle_domain_irq()
+with a NULL domain, which resolves the hardware interrupt against
+irq_default_domain instead of the MU domain. Depending on the platform
+this dispatches an unrelated interrupt or drops the MSI completely.
 
-More information could be found in commit message of each patch.
+Save the nexus domain so that the handler resolves MU channel numbers
+through the domain whose reverse map was populated when the MSI was
+allocated.
 
+Fixes: 7b2f8aa005bc ("irqchip/imx-mu-msi: Switch to MSI parent")
 Signed-off-by: Peng Fan <peng.fan@nxp.com>
 ---
-Peng Fan (2):
-      irqchip/imx-mu-msi: Fix MSI dispatch through the parent domain
-      irqchip/imx-mu-msi: Fix PM domain teardown on probe errors
+ drivers/irqchip/irq-imx-mu-msi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
- drivers/irqchip/irq-imx-mu-msi.c | 70 ++++++++++++++++++++++++----------------
- 1 file changed, 42 insertions(+), 28 deletions(-)
----
-base-commit: 84abb955b1015477aa11a96e2f3ac1b938b77f48
-change-id: 20261115-imx-mu-msi-8c4523f90b1c
+diff --git a/drivers/irqchip/irq-imx-mu-msi.c b/drivers/irqchip/irq-imx-mu-msi.c
+index 6d7baeeb2bc8..c42ea0797624 100644
+--- a/drivers/irqchip/irq-imx-mu-msi.c
++++ b/drivers/irqchip/irq-imx-mu-msi.c
+@@ -238,6 +238,7 @@ static int imx_mu_msi_domains_init(struct imx_mu_msi *msi_data, struct device *d
+ 		return -ENOMEM;
+ 	}
+ 	parent->dev = parent->pm_dev = dev;
++	msi_data->msi_domain = parent;
+ 	return 0;
+ }
+ 
 
-Best regards,
 -- 
-Peng Fan <peng.fan@nxp.com>
+2.56.0
 
