@@ -1,49 +1,49 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=178.251.229.89
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794827902;
-	b=FR7S3tTfOUdqpyB97cwLTtScO/lsq29NNcsHtHyKNn+vQhRdp3T4HSu4G/iO8jZbpK9u
-	 nj5BLz1dv1acdVtZ6M+3pqLhl/yOfn7nqarae1XDAnYrxWmbiJ/tD2hImNys1bVuCL4Rw
-	 34vgzZvDx8kRqwDAjc9pUcF/Q0uroKcIh4FIV2KPlmyX6AOFniW1E6NKBZ+wDt6+2sDcZ
-	 rvM2AzgFrOKdLlag2dART9UbDFkUZyn3ZWKDn2nrWCtisgR2LZDPNKpeI/ZlG7D5+QIek
-	 UiGZP6EKIl5vfJrAgHzJqNJmioMqSJHPhdYg2612RAw+V/EV4GhhgxqoxOUrVwZJdeQ==
+	t=1794827903;
+	b=iIRYCRVOb2dvviUx6582RJE4anIqmhVhp1a9ibR7Ha4vO5CArcKfpjsRcFFvMQZqvLRL
+	 RPGsJs6Njw/IFPJNbUcsm74kPbUjD7zQrGQlXF47jnVfPw9qxJwZV6KTzU3bMOj7wQ/Eg
+	 f5txlP079N0tjFooy+b6IRgATyy2OkIvJtTSC2+X1G2eFgTqCcptQXSSLVFaJDFSpCorf
+	 vpVw1G9Hq2Xwnf1RNxz3YGvUhkZERfSQCCUET/ADfjd99nfHirBW4jLoGpJ9bArBx2bkU
+	 iGMzn+kV4CzRz0cWmP/Lkm14QSk8S7yRCc0O6yHPW7qN0I1wzL6RTHnQq/Nf8v+cLRQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794827902;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794827903;
 	h=DMARC-Filter:Received:DKIM-Signature:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:X-Last-TLS-Session-Version;
-	bh=IGnOiA0x9CKr+L+HJwDstHQe2wKKE1kXCubYYWWblik=;
-	b=vD/fKYfTfU1IyZ4ndYo3tJ2Gl/ZBb4Gec/a7AbgPmQqctYlle66N8FqPpVHqMDv2X9A4
-	 7zhq4nTQGAaV7Bmmhvz0a8NGVVMe2IeR7VjE3S7clTwESfC61g9ht/0/38u3myl8bMLjy
-	 E2nOpf9pG9kvk7y2YN7jisZhaCBV0jRRGVVHgtoWcJd6muDkVlPT7BGD0ESxbJD2/Ccld
-	 NGRzE3/dSl3FzLcWjhdhsDsowsOKhMXTWD/OeNBDU5rWxmk51BqTgjQfm9w9tvg6JBPiP
-	 PRFL5z6EcFGi1qw4BNCn1rN8ztfhqSy2wHQdApdzDoqYNLLIWpkLOGDAO09340FnlHQ==
+	bh=+JlK0mtszYWRRKfDiYEk9P3BPm80IkDrur7UQ8yKQdg=;
+	b=JdXs1ktMzLG6FostPCUXE88HuxAEv1aMFTFv876xAB8EKzp7GeZvvnT6gKsk/v2nXoDA
+	 OCPki9gL42kC2pn3c24rTuwGjljXDWIMrzkx0wDWqXMqvyIf6EvhpnAqAf8kwH5UY8xUW
+	 qibFdXmYqb5hE7tPUoXVbNAgsG+jjjCUd8+MDuF165gNPCdiiTP45rXU2PY81Mc5FITcK
+	 zJmCnr+YD1Y/oRR6e6PYeNEP7ysUr7jBZbi5/+C/AkuvVvuXlh8VoZ03lvuZbKFS3mx0q
+	 4dPJX8eIBjOD2pAut7fgfsxL8sumuuNIO6y6ZmmPRvQ12blwauRredroLXufitaAzsA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=nabladev.com;
 	spf=pass smtp.mailfrom=nabladev.com;
-	dkim=pass header.d=nabladev.com header.i=@nabladev.com header.a=rsa-sha256 header.s=dkim header.b=jERngUQc;
+	dkim=pass header.d=nabladev.com header.i=@nabladev.com header.a=rsa-sha256 header.s=dkim header.b="KH5xeVG/";
 	arc=none smtp.remote-ip=178.251.229.89
 Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C93D4606FDA9
-	for <imx@lists.linux.dev>; Mon, 16 Nov 2026 11:18:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C93D4606FDA9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38A3E606FE88
+	for <imx@lists.linux.dev>; Mon, 16 Nov 2026 11:18:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 38A3E606FE88
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.a=rsa-sha256 header.s=dkim header.b=jERngUQc
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id EBA5910D4A6;
-	Mon, 16 Nov 2026 12:18:17 +0100 (CET)
+	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.a=rsa-sha256 header.s=dkim header.b=KH5xeVG/
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 68A4310D4AA;
+	Mon, 16 Nov 2026 12:18:19 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1794827899; h=from:subject:date:message-id:to:cc:mime-version:
+	s=dkim; t=1794827900; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=IGnOiA0x9CKr+L+HJwDstHQe2wKKE1kXCubYYWWblik=;
-	b=jERngUQcHDXF+liNkWwQLn7p0Sfrg8qk/uCZkc93jBVbfYavQfTYJI/3A1XrNwnXB/Ped3
-	hLcZmSSjfUqgroAmCum/gud97Ta02C6vmC/5izv8puQnik1jzNYSbM85BwJKU7+vtwYbLh
-	pBJr5iRQd9PULMWXrmUve4vClQvGiLjLzBdM9jUbeM8le5SqzwXJvDLK9S6tdU5Avuq0eW
-	2dhhHaS2wzX5xAcuLcip0l4b7I+6gnQ/sz1fHHaVjLwfjRIoVdvXjGChRws4zPhuscgpaX
-	hOqg9fJGwRu354gaEE5gszC95i4oYS6b4OL7/87eLGaj+ed8xfqy/NY5NiGQEw==
+	bh=+JlK0mtszYWRRKfDiYEk9P3BPm80IkDrur7UQ8yKQdg=;
+	b=KH5xeVG/E58RAX/zSh4vS5tNTmWAeE1ql0F+N64O1BeVpDbUu53dwBfeEZBBiFDvGkKqP+
+	0u9GyGU43z0QEDp8rQwm2hmTdh2+x5gX8BT7Y4Rws7InqJ0eppienkypexgjCEn31VlQ7v
+	Nmg6QdZ0gPzTJqcdQbZygE4dYdE/VdSDpqxyVIkuEAx5Ke/A1tvpvDMJllzasKEMznxMD4
+	qWEHHG2sqLYmhzhKXLJFoWPfUpafxeh+C0L8SgecSpHDiUNX1sYQv63xdxEry0+m2KcX4e
+	8sM654DKaivzgpqZfMWwhV97o3xNxVTlldAtkqld3atFKjWWXckD4PHE8ZW7CA==
 From: Lukasz Majewski <lukma@nabladev.com>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -61,9 +61,9 @@ Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	Lukasz Majewski <lukma@nabladev.com>
-Subject: [PATCH v3 2/3] dt-bindings: hwmon: Add National/TI LM77 temperature sensor
-Date: Mon, 16 Nov 2026 12:18:01 +0100
-Message-ID: <20261116111802.2442456-2-lukma@nabladev.com>
+Subject: [PATCH v3 3/3] arm64: dts: freescale: Add device tree definition for Cloos CBASE with i.MX8MM
+Date: Mon, 16 Nov 2026 12:18:02 +0100
+Message-ID: <20261116111802.2442456-3-lukma@nabladev.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261116111802.2442456-1-lukma@nabladev.com>
 References: <20261116111802.2442456-1-lukma@nabladev.com>
@@ -79,95 +79,620 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-Add binding description for National/TI LM77 temperature sensor.
-When compared to LM75 - it has two output pins one for interrupt
-and another one to signal the critical temperature alarm.
-
-It also has only two I2C address pins (A0 and A1) - possible I2C
-addresses are: 0x4[89ab].
+This commit adds support for CBASE board, which incorporates the TQMa8MQML
+module.
 
 Signed-off-by: Lukasz Majewski <lukma@nabladev.com>
 ---
+Changes for v2:
+- Fix the DTS according to the sashiko bot review (gemini/gemini-4-argon)
 Changes for v3:
-- New patch, as this IC description is added to Documentation/hwmon
-  as a separate entry and not to trivial devices
+- None
 ---
- .../bindings/hwmon/national,lm77.yaml         | 66 +++++++++++++++++++
- 1 file changed, 66 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/hwmon/national,lm77.yaml
+ arch/arm64/boot/dts/freescale/Makefile        |   1 +
+ .../arm64/boot/dts/freescale/imx8mm-cbase.dts | 581 ++++++++++++++++++
+ 2 files changed, 582 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-cbase.dts
 
-diff --git a/Documentation/devicetree/bindings/hwmon/national,lm77.yaml b/Documentation/devicetree/bindings/hwmon/national,lm77.yaml
+diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
+index a80cccf34eb5..c14e5ae2e4a0 100644
+--- a/arch/arm64/boot/dts/freescale/Makefile
++++ b/arch/arm64/boot/dts/freescale/Makefile
+@@ -121,6 +121,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx8dxl-hummingboard-telematics.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8dxp-tqma8xdp-mba8xx.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8dxp-tqma8xdps-mb-smarc-2.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mm-beacon-kit.dtb
++dtb-$(CONFIG_ARCH_MXC) += imx8mm-cbase.dtb
+ 
+ imx8mm-data-modul-edm-sbc-overlay-cm4-dtbs := \
+ 	imx8mm-data-modul-edm-sbc.dtb \
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-cbase.dts b/arch/arm64/boot/dts/freescale/imx8mm-cbase.dts
 new file mode 100644
-index 000000000000..fbb6e711342c
+index 000000000000..029a637c9530
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/hwmon/national,lm77.yaml
-@@ -0,0 +1,66 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/hwmon/national,lm77.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
++++ b/arch/arm64/boot/dts/freescale/imx8mm-cbase.dts
+@@ -0,0 +1,581 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++/*
++ * Copyright 2022 Fabio Estevam <festevam@denx.de>
++ * Copyright 2026 Lukasz Majewski <lukma@nabladev.com>
++ */
 +
-+title: National Semiconductor / TI LM77 Temperature Sensor
++/dts-v1/;
 +
-+maintainers:
-+  - Guenter Roeck <linux@roeck-us.net>
++#include "imx8mm-tqma8mqml.dtsi"
 +
-+description: |
-+  The LM77 is a 9-bit plus sign digital temperature sensor and thermal window
-+  comparator with a 2-wire (I2C) interface.
++/ {
++	model = "Cloos i.MX8MM CBASE board";
++	compatible = "cloos,imx8mm-cbase", "tq,imx8mm-tqma8mqml", "fsl,imx8mm";
 +
-+  Unlike the LM75, which has a single alert output, the LM77 features two
-+  separate open-drain outputs: an Interrupt (INT) output and a Critical
-+  Temperature Alarm (T_CRIT_A) output.
++	aliases {
++		mmc0 = &usdhc3;
++		mmc1 = &usdhc2;
++	};
 +
-+properties:
-+  compatible:
-+    const: national,lm77
++	chosen {
++		stdout-path = &uart2;
++	};
 +
-+  reg:
-+    maxItems: 1
-+    description: |
-+      I2C address of the device. Depending on the A0 and A1 pins, this
-+      can be 0x48, 0x49, 0x4a, or 0x4b.
++	clk_xtal40: clk-xtal40 {
++		compatible = "fixed-clock";
++		#clock-cells = <0>;
++		clock-frequency = <40000000>;
++	};
 +
-+  vs-supply:
-+    description: +VS power supply regulator.
++	leds {
++		compatible = "gpio-leds";
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_gpio_led>;
 +
-+  interrupts:
-+    minItems: 1
-+    maxItems: 2
-+    description: |
-+      The LM77 has two open-drain interrupt outputs.
-+      - The first interrupt should be the INT pin (window comparator).
-+      - The second (optional) interrupt is the T_CRIT_A pin (critical
-+        over-temp limit).
++		led-0 {
++			label = "status1";
++			gpios = <&gpio2 5 GPIO_ACTIVE_HIGH>;
++		};
 +
-+required:
-+  - compatible
-+  - reg
++		led-1 {
++			label = "status2";
++			gpios = <&gpio2 6 GPIO_ACTIVE_HIGH>;
++		};
 +
-+additionalProperties: false
++		led-2 {
++			label = "status3";
++			gpios = <&gpio2 3 GPIO_ACTIVE_HIGH>;
++		};
 +
-+examples:
-+  - |
-+    #include <dt-bindings/interrupt-controller/irq.h>
++		led-3 {
++			label = "status4";
++			gpios = <&gpio2 4 GPIO_ACTIVE_HIGH>;
++		};
 +
-+    i2c {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
++		led-4 {
++			label = "error";
++			gpios = <&gpio2 1 GPIO_ACTIVE_HIGH>;
++		};
 +
-+        temperature-sensor@49 {
-+            compatible = "national,lm77";
-+            reg = <0x49>;
-+            vs-supply = <&vcc_3v3_reg>;
-+            interrupt-parent = <&gpio1>;
++		led-5 {
++			label = "run";
++			gpios = <&gpio2 0 GPIO_ACTIVE_HIGH>;
++		};
++	};
 +
-+            /* INT routed to GPIO1_12, T_CRIT_A routed to GPIO1_13 */
-+            interrupts = <12 IRQ_TYPE_LEVEL_LOW>,
-+                         <13 IRQ_TYPE_LEVEL_LOW>;
-+        };
-+    };
++	reg_usb_otg_vbus: regulator-usb-otg-vbus {
++		compatible = "regulator-fixed";
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_otg_vbus_ctrl>;
++		regulator-name = "usb_otg_vbus";
++		regulator-min-microvolt = <5000000>;
++		regulator-max-microvolt = <5000000>;
++		gpio = <&gpio2 2 GPIO_ACTIVE_HIGH>;
++		enable-active-high;
++	};
++
++	reg_usdhc2_vmmc: regulator-vmmc {
++		compatible = "regulator-fixed";
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_reg_usdhc2_vmmc>;
++		regulator-name = "VSD_3V3";
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++		gpio = <&gpio2 19 GPIO_ACTIVE_HIGH>;
++		enable-active-high;
++		startup-delay-us = <100>;
++		off-on-delay-us = <12000>;
++	};
++
++	sfp_bot: sfp-bot {
++		compatible = "sff,sfp";
++		i2c-bus = <&i2c_sfp_bot>;
++		tx-fault-gpios = <&sfp_gpio 4 GPIO_ACTIVE_HIGH>;
++		tx-disable-gpios = <&sfp_gpio 5 GPIO_ACTIVE_HIGH>;
++		mod-def0-gpios = <&sfp_gpio 6 GPIO_ACTIVE_LOW>;
++		los-gpios = <&sfp_gpio 7 GPIO_ACTIVE_HIGH>;
++		maximum-power-milliwatt = <1000>;
++	};
++
++	sfp_top: sfp-top {
++		compatible = "sff,sfp";
++		i2c-bus = <&i2c_sfp_top>;
++		tx-fault-gpios = <&sfp_gpio 0 GPIO_ACTIVE_HIGH>;
++		tx-disable-gpios = <&sfp_gpio 1 GPIO_ACTIVE_HIGH>;
++		mod-def0-gpios = <&sfp_gpio 2 GPIO_ACTIVE_LOW>;
++		los-gpios = <&sfp_gpio 3 GPIO_ACTIVE_HIGH>;
++		maximum-power-milliwatt = <1000>;
++	};
++};
++
++&ddrc {
++	operating-points-v2 = <&ddrc_opp_table>;
++
++	ddrc_opp_table: opp-table {
++		compatible = "operating-points-v2";
++
++		opp-25000000 {
++			opp-hz = /bits/ 64 <25000000>;
++		};
++
++		opp-100000000 {
++			opp-hz = /bits/ 64 <100000000>;
++		};
++
++		opp-750000000 {
++			opp-hz = /bits/ 64 <750000000>;
++		};
++	};
++};
++
++&ecspi1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_ecspi1>;
++	cs-gpios = <&gpio5 9 GPIO_ACTIVE_LOW>,
++		   <&gpio1 1 GPIO_ACTIVE_LOW>,
++		   <&gpio1 12 GPIO_ACTIVE_LOW>,
++		   <&gpio1 13 GPIO_ACTIVE_LOW>;
++	status = "okay";
++
++	can@0 {
++		compatible = "microchip,mcp2518fd";
++		reg = <0>;
++		clocks = <&clk_xtal40>;
++		interrupt-parent = <&gpio1>;
++		interrupts = <3 IRQ_TYPE_EDGE_FALLING>;
++		spi-max-frequency = <4000000>;
++	};
++
++	can@1 {
++		compatible = "microchip,mcp2518fd";
++		reg = <1>;
++		clocks = <&clk_xtal40>;
++		interrupt-parent = <&gpio4>;
++		interrupts = <20 IRQ_TYPE_EDGE_FALLING>;
++		spi-max-frequency = <4000000>;
++	};
++};
++
++&ecspi2 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_ecspi2>;
++	cs-gpios = <&gpio5 13 GPIO_ACTIVE_LOW>;
++	status = "okay";
++};
++
++&fec1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_fec1>;
++	fsl,magic-packet;
++	phy-mode = "rgmii-id";
++	status = "okay";
++
++	fixed-link {
++		full-duplex;
++		pause;
++		speed = <1000>;
++	};
++
++	mdio {
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		managed_switch: switch@0  {
++			compatible = "marvell,mv88e6190";
++			#interrupt-cells = <2>;
++			interrupt-controller;
++			interrupt-parent = <&gpio1>;
++			interrupts = <0 IRQ_TYPE_LEVEL_LOW>;
++			pinctrl-0 = <&pinctrl_switch_interrupt>;
++			pinctrl-names = "default";
++			reg = <0>;
++			status = "okay";
++
++			mdio {
++				#address-cells = <1>;
++				#size-cells = <0>;
++
++				switch0phy1: ethernet-phy@1 {
++					reg = <0x1>;
++				};
++
++				switch0phy2: ethernet-phy@2 {
++					reg = <0x2>;
++				};
++
++				switch0phy3: ethernet-phy@3 {
++					reg = <0x3>;
++				};
++
++				switch0phy4: ethernet-phy@4 {
++					reg = <0x4>;
++				};
++
++				switch0phy5: ethernet-phy@5 {
++					reg = <0x5>;
++				};
++
++				switch0phy6: ethernet-phy@6 {
++					reg = <0x6>;
++				};
++
++				switch0phy7: ethernet-phy@7 {
++					reg = <0x7>;
++				};
++
++				switch0phy8: ethernet-phy@8 {
++					reg = <0x8>;
++				};
++			};
++
++			ports {
++				#address-cells = <1>;
++				#size-cells = <0>;
++
++				port@0 {
++					ethernet = <&fec1>;
++					phy-mode = "rgmii-id";
++					reg = <0>;
++
++					fixed-link {
++						full-duplex;
++						pause;
++						speed = <1000>;
++					};
++				};
++
++				port@1 {
++					label = "lan1";
++					phy-handle = <&switch0phy1>;
++					phy-mode = "internal";
++					reg = <1>;
++				};
++
++				port@2 {
++					label = "lan2";
++					phy-handle = <&switch0phy2>;
++					phy-mode = "internal";
++					reg = <2>;
++				};
++
++				port@3 {
++					label = "lan3";
++					phy-handle = <&switch0phy3>;
++					phy-mode = "internal";
++					reg = <3>;
++				};
++
++				port@4 {
++					label = "lan4";
++					phy-handle = <&switch0phy4>;
++					phy-mode = "internal";
++					reg = <4>;
++				};
++
++				port@5 {
++					label = "lan5";
++					phy-handle = <&switch0phy5>;
++					phy-mode = "internal";
++					reg = <5>;
++				};
++
++				port@6 {
++					label = "lan6";
++					phy-handle = <&switch0phy6>;
++					phy-mode = "internal";
++					reg = <6>;
++				};
++
++				port@7 {
++					label = "lan7";
++					phy-handle = <&switch0phy7>;
++					phy-mode = "internal";
++					reg = <7>;
++				};
++
++				port@8 {
++					label = "lan8";
++					phy-handle = <&switch0phy8>;
++					phy-mode = "internal";
++					reg = <8>;
++				};
++
++				port@9 {
++					reg = <9>;
++					label = "lan-sfp1";
++					phy-mode = "sgmii";
++					sfp = <&sfp_top>;
++					managed = "in-band-status";
++				};
++
++				port@a {
++					reg = <10>;
++					label = "lan-sfp2";
++					phy-mode = "sgmii";
++					sfp = <&sfp_bot>;
++					managed = "in-band-status";
++				};
++			};
++		};
++	};
++};
++
++&flexspi {
++	status = "disabled";
++};
++
++&i2c2 {
++	clock-frequency = <100000>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_i2c2>;
++	status = "okay";
++
++	onewire@18 {
++		compatible = "maxim,ds2484";
++		reg = <0x18>;
++	};
++
++	temperature-sensor@49 {
++		compatible = "national,lm77";
++		reg = <0x49>;
++	};
++};
++
++&i2c3 {
++	clock-frequency = <100000>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_i2c3>;
++	status = "okay";
++
++	i2c-mux@70 {
++		compatible = "nxp,pca9543";
++		reg = <0x70>;
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		i2c_sfp_top: i2c@0 {
++			#address-cells = <1>;
++			#size-cells = <0>;
++			reg = <0>;
++		};
++		i2c_sfp_bot: i2c@1 {
++			#address-cells = <1>;
++			#size-cells = <0>;
++			reg = <1>;
++		};
++	};
++
++	sfp_gpio: gpio@38 {
++		compatible = "nxp,pca9554";
++		reg = <0x38>;
++		gpio-controller;
++		#gpio-cells = <2>;
++		gpio-line-names = "SFP_TXFI_T", "SFP_TXDIS_T",
++				  "SFP_MODPRES_T", "SFP_LOS_T",
++				  "SFP_TXFI_L", "SFP_TXDIS_L",
++				  "SFP_MODPRES_L", "SFP_LOS_L";
++	};
++};
++
++&reg_usdhc2_vqmmc {
++	status = "okay";
++};
++
++&uart1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_uart1>;
++	status = "okay";
++};
++
++&uart2 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_uart2>;
++	status = "okay";
++};
++
++&uart3 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_uart3>;
++	status = "okay";
++};
++
++&usbotg1 {
++	dr_mode = "host";
++	vbus-supply = <&reg_usb_otg_vbus>;
++	status = "okay";
++};
++
++&usbotg2 {
++	dr_mode = "host";
++	status = "okay";
++};
++
++&usbphynop1 {
++	power-domains = <&pgc_otg1>;
++};
++
++&usbphynop2 {
++	power-domains = <&pgc_otg2>;
++};
++
++&usdhc2 {
++	assigned-clocks = <&clk IMX8MM_CLK_USDHC2>;
++	assigned-clock-rates = <400000000>;
++	assigned-clock-parents = <&clk IMX8MM_SYS_PLL1_400M>;
++	pinctrl-names = "default", "state_100mhz", "state_200mhz";
++	pinctrl-0 = <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;
++	pinctrl-1 = <&pinctrl_usdhc2_100mhz>, <&pinctrl_usdhc2_gpio>;
++	pinctrl-2 = <&pinctrl_usdhc2_200mhz>, <&pinctrl_usdhc2_gpio>;
++	bus-width = <4>;
++	cd-gpios = <&gpio2 12 GPIO_ACTIVE_LOW>;
++	disable-wp;
++	no-mmc;
++	no-sdio;
++	sd-uhs-sdr104;
++	sd-uhs-ddr50;
++	vmmc-supply = <&reg_usdhc2_vmmc>;
++	status = "okay";
++};
++
++&iomuxc {
++	pinctrl_ecspi1: ecspi1grp {
++		fsl,pins = <
++			MX8MM_IOMUXC_ECSPI1_MISO_ECSPI1_MISO		0x82
++			MX8MM_IOMUXC_ECSPI1_MOSI_ECSPI1_MOSI		0x82
++			MX8MM_IOMUXC_ECSPI1_SCLK_ECSPI1_SCLK		0x82
++			MX8MM_IOMUXC_ECSPI1_SS0_GPIO5_IO9		0x19
++			MX8MM_IOMUXC_GPIO1_IO01_GPIO1_IO1		0x19
++			MX8MM_IOMUXC_GPIO1_IO03_GPIO1_IO3		0x19
++			MX8MM_IOMUXC_GPIO1_IO12_GPIO1_IO12		0x19
++			MX8MM_IOMUXC_GPIO1_IO13_GPIO1_IO13		0x19
++			MX8MM_IOMUXC_SAI1_MCLK_GPIO4_IO20		0x19
++		>;
++	};
++
++	pinctrl_ecspi2: ecspi2grp {
++		fsl,pins = <MX8MM_IOMUXC_ECSPI2_SCLK_ECSPI2_SCLK	0x00000006>,
++			   <MX8MM_IOMUXC_ECSPI2_MOSI_ECSPI2_MOSI	0x00000006>,
++			   <MX8MM_IOMUXC_ECSPI2_MISO_ECSPI2_MISO	0x00000006>,
++			   <MX8MM_IOMUXC_ECSPI2_SS0_GPIO5_IO13		0x00000006>;
++	};
++
++	pinctrl_fec1: fec1grp {
++		fsl,pins = <
++			MX8MM_IOMUXC_ENET_MDC_ENET1_MDC		0x40000002
++			MX8MM_IOMUXC_ENET_MDIO_ENET1_MDIO		0x40000002
++			MX8MM_IOMUXC_ENET_TD3_ENET1_RGMII_TD3		0x14
++			MX8MM_IOMUXC_ENET_TD2_ENET1_RGMII_TD2		0x14
++			MX8MM_IOMUXC_ENET_TD1_ENET1_RGMII_TD1		0x14
++			MX8MM_IOMUXC_ENET_TD0_ENET1_RGMII_TD0		0x14
++			MX8MM_IOMUXC_ENET_RD3_ENET1_RGMII_RD3		0x90
++			MX8MM_IOMUXC_ENET_RD2_ENET1_RGMII_RD2		0x90
++			MX8MM_IOMUXC_ENET_RD1_ENET1_RGMII_RD1		0x90
++			MX8MM_IOMUXC_ENET_RD0_ENET1_RGMII_RD0		0x90
++			MX8MM_IOMUXC_ENET_TXC_ENET1_RGMII_TXC		0x14
++			MX8MM_IOMUXC_ENET_RXC_ENET1_RGMII_RXC		0x90
++			MX8MM_IOMUXC_ENET_RX_CTL_ENET1_RGMII_RX_CTL	0x90
++			MX8MM_IOMUXC_ENET_TX_CTL_ENET1_RGMII_TX_CTL	0x14
++			MX8MM_IOMUXC_SAI2_RXC_GPIO4_IO22		0x10
++		>;
++	};
++
++	pinctrl_gpio_led: gpioledgrp {
++		fsl,pins = <
++			MX8MM_IOMUXC_SD1_CLK_GPIO2_IO0			0x19
++			MX8MM_IOMUXC_SD1_CMD_GPIO2_IO1			0x19
++			MX8MM_IOMUXC_SD1_DATA1_GPIO2_IO3		0x19
++			MX8MM_IOMUXC_SD1_DATA2_GPIO2_IO4		0x19
++			MX8MM_IOMUXC_SD1_DATA3_GPIO2_IO5		0x19
++			MX8MM_IOMUXC_SD1_DATA4_GPIO2_IO6		0x19
++		>;
++	};
++
++	pinctrl_i2c2: i2c2grp {
++		fsl,pins = <
++			MX8MM_IOMUXC_I2C2_SCL_I2C2_SCL		0x400001c3
++			MX8MM_IOMUXC_I2C2_SDA_I2C2_SDA		0x400001c3
++		>;
++	};
++
++	pinctrl_i2c3: i2c3grp {
++		fsl,pins = <
++			MX8MM_IOMUXC_I2C3_SCL_I2C3_SCL		0x400001c3
++			MX8MM_IOMUXC_I2C3_SDA_I2C3_SDA		0x400001c3
++		>;
++	};
++
++	pinctrl_otg_vbus_ctrl: otgvbusctrlgrp {
++		fsl,pins = <
++			MX8MM_IOMUXC_SD1_DATA0_GPIO2_IO2		0x119
++		>;
++	};
++
++	pinctrl_switch_interrupt: switchinterruptgrp {
++		fsl,pins = <
++			MX8MM_IOMUXC_GPIO1_IO00_GPIO1_IO0		0x19
++		>;
++	};
++
++	pinctrl_uart1: uart1grp {
++		fsl,pins = <
++			MX8MM_IOMUXC_UART1_RXD_UART1_DCE_RX		0x140
++			MX8MM_IOMUXC_UART1_TXD_UART1_DCE_TX		0x140
++		>;
++	};
++
++	pinctrl_uart2: uart2grp {
++		fsl,pins = <
++			MX8MM_IOMUXC_UART2_RXD_UART2_DCE_RX		0x140
++			MX8MM_IOMUXC_UART2_TXD_UART2_DCE_TX		0x140
++		>;
++	};
++
++	pinctrl_uart3: uart3grp {
++		fsl,pins = <
++			MX8MM_IOMUXC_UART3_RXD_UART3_DCE_RX		0x140
++			MX8MM_IOMUXC_UART3_TXD_UART3_DCE_TX		0x140
++		>;
++	};
++
++	pinctrl_usdhc2_gpio: usdhc2grpgpiogrp {
++		fsl,pins = <
++			MX8MM_IOMUXC_SD2_CD_B_GPIO2_IO12		0x1c4
++		>;
++	};
++
++	pinctrl_usdhc2: usdhc2grp {
++		fsl,pins = <
++			MX8MM_IOMUXC_SD2_CLK_USDHC2_CLK		0x190
++			MX8MM_IOMUXC_SD2_CMD_USDHC2_CMD		0x1d0
++			MX8MM_IOMUXC_SD2_DATA0_USDHC2_DATA0		0x1d0
++			MX8MM_IOMUXC_SD2_DATA1_USDHC2_DATA1		0x1d0
++			MX8MM_IOMUXC_SD2_DATA2_USDHC2_DATA2		0x1d0
++			MX8MM_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d0
++		>;
++	};
++
++	pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {
++		fsl,pins = <
++			MX8MM_IOMUXC_SD2_CLK_USDHC2_CLK		0x194
++			MX8MM_IOMUXC_SD2_CMD_USDHC2_CMD		0x1d4
++			MX8MM_IOMUXC_SD2_DATA0_USDHC2_DATA0		0x1d4
++			MX8MM_IOMUXC_SD2_DATA1_USDHC2_DATA1		0x1d4
++			MX8MM_IOMUXC_SD2_DATA2_USDHC2_DATA2		0x1d4
++			MX8MM_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d4
++		>;
++	};
++
++	pinctrl_usdhc2_200mhz: usdhc2-200mhzgrp {
++		fsl,pins = <
++			MX8MM_IOMUXC_SD2_CLK_USDHC2_CLK		0x196
++			MX8MM_IOMUXC_SD2_CMD_USDHC2_CMD		0x1d6
++			MX8MM_IOMUXC_SD2_DATA0_USDHC2_DATA0		0x1d6
++			MX8MM_IOMUXC_SD2_DATA1_USDHC2_DATA1		0x1d6
++			MX8MM_IOMUXC_SD2_DATA2_USDHC2_DATA2		0x1d6
++			MX8MM_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d6
++		>;
++	};
++};
++
++/* SPI-NOR memory is not mounted on the used SoM */
++/delete-node/ &flash0;
 -- 
 2.39.5
 
