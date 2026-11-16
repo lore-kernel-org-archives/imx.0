@@ -1,90 +1,64 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.161.42
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.194.8.81
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794810627;
-	b=y5j+N0BDsvgk5V11FPglfSmSjvtiUKwt28CDkQxiQUBLdLSWrFvcVVCekVcCFHMTTV/Y
-	 rF8Ap2nKOJhiNyILw/v0QnO2++W5xE+xi5yVZC/L1S796ssGJ8fdMoagswVkn6WO+g8Jg
-	 QEgRRrlsoDh6PgFVkbLHDoa1z2xEBG7egXO1qLe3JQ0d93LwuUjyO2FVYxfxpV870gRYS
-	 /+KzOVQyZwCXWthgZrU1YGfS+AnXcP9yjFfH2bhwyD2tCoNpqwrrXseblkvo3D6cKjTNt
-	 zqj2GeGY/cLu/3Rz+6W2hPXzo2QAdIInoMiARhHEONwfrfzZqdLfJmFOCmD6T4DS7aA==
+	t=1794814201;
+	b=IIGCq/+QvO3rF2k7+KlzEAk3fcW90Iq9W3DrECEvsAe4t1LT0Hgr1f1A62B1Q4KatIxo
+	 OiTG+MN51Ui/B/e0c8s69bV9mGNxBQ+WkhtL0MjuwJnPm41uUz+C3fDqjtLeI/4AiKZvj
+	 nk802nM3FUt0uSXtEkQzSNtKgar+z6kzaP3faYk9KkihBcR2Mt2CZ5HaXuUaoPdDF30uM
+	 KmrxcLBbzGz/EwHk0AbAdqKgodZWGYiv+isFEPwrE1KNd+GyUJ2hWTONv6sif1ANTbW3h
+	 C6W9nq30sq7qntVX264PrwwvFsgDyfvbukhvTjE+SMpdkzOAVjegeqUeaOeNsdoUp7Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794810627;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:Date:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer;
-	bh=mvuynEc/zou9KrFKkA7KFsXhyWwB/r4tY3U/lfuSaD4=;
-	b=YRYHJzdWoSsIwfyAK70xHTNVURiCZMgwlrxYKrrkiPE/48NV/Vi1bGwgwbHlrL6FzBl0
-	 dTEVickoDmpnu68PaaJBBO6z8Nq7u+f7VhrKK9F7b/1wD+aQ9RMN+lGWWXvXt/TpfGS7X
-	 g6+i/vCefRqfieAa9gyaiBfTdzToL3nuwbdGfwXFGeXzeAiFifgO7vpgCysu62/q5YPsb
-	 WS6YVrfkczH71wkPqKPYhvVSvm0bNBhjckqda1TwbFH8ZKrLUOksUjtOFtm6rQ3Y0o8WP
-	 xsCTgKdp9mfInFIZ34p5rEhWMEkG9ow4cm/LcmGzttBoOzC6zh0BAu8Eb/L05tTqPOQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794814201;
+	h=DMARC-Filter:Received:DKIM-Signature:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=cpKxpc6WsFeeIjPOouIAutKYzzXcNv+Zda+j40xqrT4=;
+	b=G65n55tca7fC3vlzG1gv5oiMRJ60zBhvuiLti1HfD/+Cp/PlFL/uEtvkMdbdLEwz25cq
+	 GbGYxVecv0y1+8Z6Pyd3AIAmFSa1kFicU2pCN+xN1fWYzyiFHm38LQMKvrucf1NuahaJQ
+	 fy8iob3hRWewFfQS2twfZMHI1pb1g/esCJtPWV2cx2eEY4o4yGemR455WhAwXItPV9SFm
+	 Vyq+WnWkZDv8NE6GWxRToCKhSnzj70ayX5rjt/mGPMRIKuHQsJ2klTWbkHXMk21j1aoEu
+	 3hSWyz6rnopMQa+hzaKUoXGWHm66cuva1dLP2NbHfrYLqrFlheDHLrtwWcyw+QdrCpg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=maFh5pjK;
-	arc=none smtp.remote-ip=209.85.161.42
-Received: from mail-oo1-f42.google.com (mail-oo1-f42.google.com [209.85.161.42])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=dolcini.it;
+	spf=pass smtp.mailfrom=dolcini.it;
+	dkim=pass header.d=dolcini.it header.i=@dolcini.it header.a=rsa-sha256 header.s=default header.b=ZaDDPzsc;
+	arc=none smtp.remote-ip=217.194.8.81
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6939F60A6F7D
-	for <imx@lists.linux.dev>; Mon, 16 Nov 2026 06:30:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6939F60A6F7D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1FB3606A323
+	for <imx@lists.linux.dev>; Mon, 16 Nov 2026 07:29:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E1FB3606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=maFh5pjK
-Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-7190d9bdb2cso2620122eaf.0
-        for <imx@lists.linux.dev>; Sun, 15 Nov 2026 22:30:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794810626; x=1795415426; darn=lists.linux.dev;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=mvuynEc/zou9KrFKkA7KFsXhyWwB/r4tY3U/lfuSaD4=;
-        b=maFh5pjKGoHJKsRpZsdQYyqg8YJsf05VTlQby9UPwF/v4046iJ+n9X2/pgr+b6hwU7
-         /eOh80uydNv2kBnCKZ6WvQ1oxK9WZnGoLJdLAkXuUFzid0cQCTMHgFAZLeTKNtiA2mWm
-         vMLSfGCdBxxVeiVjomyrcQpGP1jwX1ZY6dU8i8I7tUvl9j3T7nGRP4WsmYkcPfN6jeyb
-         gqcVi8WggKWGLjky8VY/5spKCApekKbCpHR5Es2QTYG0r+WpeFjOv2oG7uaokEog8jpU
-         DKF8PTfNOAqkyOhJy3niHLq4PQs0OgepvBbEw78h8qJmktjWnnYOr0330qUMs21TKHiH
-         CnDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794810626; x=1795415426;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=mvuynEc/zou9KrFKkA7KFsXhyWwB/r4tY3U/lfuSaD4=;
-        b=btODl0L5aMLOD6ccgsupuBiBltvH/GLKaEcVKCb58osOXYzLYQaijWnSTySOxDqAqW
-         7H5X/QFtgc4iN2XUhGLluFHBsfKMxk/7JrorlqX4Bpz6wftJjFqvIJjrbGbocEQ6EidO
-         RVZ8mQVuv6mVQlPvaAtua2vtOhoyvX5gJkgzDOOtrQM17sWjlqsT66dr4l9CaXrSXrWn
-         jEDDF5RzszjfBPo09yOEvQJzkKLYXg9o1LiaZgCu7Eg1Yps1CriagbhlLEPntyQzpwaj
-         aVj6XvwC4I7N3mOrDPGqXEmFzhpRjoEUqZv18EhxS6rzFiADcbJ93vFYOQAg9AhTwDje
-         YLmw==
-X-Forwarded-Encrypted: i=1; AL+hErGc+Ec56Eny4HEfZyR2v/2mKeWUCam1WhZ5vtdu7KkDGw6LuP/f7ILVix82z3cC48NnvLo=@lists.linux.dev
-X-Gm-Message-State: APuU4Z+E2fHedwCH4GBjwpt4Oze0i9xlEt//GOtPUnQEiX+uTjE5zXeP
-	txX68MRsb5r9lt5peWc96u2ofYjkt6qrZ5f+UyvKEv4nmnlpMDYogp/qojy98AMj
-X-Gm-Gg: AYBFou2CGYUpgh1Dr1LjfyRXm25KgXGSIzEoVFo6fGOPDQUhrAyYWH+30RUKjd9uJOR
-	RrY4kRKqM1bfq9I+Ry2gF3g5FGAyn231wVWumbmDcn7LMw8mtM896cjUw7a5U7wjfADHgDWwqk/
-	l1vhcuVBUvGArMbAxOQzdLGD+294QR9Hf4BMqpyMFX6t0aiLvkKYX3B+st2RNTn9CGbpwBOBVhz
-	aqazJhnf4vFXlsx64Okir1yTnfkLVPoOECetVCb1pdnxFSvDMcfqSQ21QxYiwUSJeJp+LnwZ4bX
-	l1rcu/bcEQNaAtHfIKOLrR0diHUc9dyenV3rlzPFzz2l/UV5XR269uV2RGk5cYaIxr7DRArvWwH
-	4MpVAfkhtV1YZ+BMFIEG2Ns20SVuus1lusNqM3gBmF1JMu7Sli1U+x2NlUP7OtN5LRPfro5Pp2p
-	vA7DzqDjTS6PwT0B+fyxD26TepD4nV8PUYifMeJ5HcWanQfRFllsH5Dp1q2YREn3B3ckaS7J7M4
-	OLQKqKxi6AmwihlH19EiOlcLwsw5LNESKIZt/oTDYQuPBUNv+thmH+ctl2hGvBWEPYQuJDNAngC
-	IoHtAiPeN6yovYyCpLfOFH8k84lY7QR3gng5b0cEYy5COtnIpYtCHwtchAxXhQV8l/ruYZH6v2Q
-	Q7FJFRulFWQ9L1PfkbvU+jbAcBlXv1YB939HwIGhx6vwBHj1IIAVHaQHuPYgY3abVN0Fkea4D9+
-	0NnNHWj+doAE+AjmaHYKekDqFQq2p5np/BkFDgfC+nlFvnNTns1/A=
-X-Received: by 2002:a05:6820:1517:b0:6d7:4af6:e292 with SMTP id 006d021491bc7-71ab4cd94a9mr6597662eaf.2.1794810626312;
-        Sun, 15 Nov 2026 22:30:26 -0800 (PST)
-Received: from [127.0.1.1] (174-29-1-49.hlrn.qwest.net. [174.29.1.49])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-71ab42c41e9sm7994558eaf.6.2026.11.15.22.30.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 15 Nov 2026 22:30:25 -0800 (PST)
-From: James Hilliard <james.hilliard1@gmail.com>
-Date: Sun, 15 Nov 2026 23:29:48 -0700
-Subject: [PATCH v5 33/58] mtd: rawnand: gpmi: retain open-handle state on
- removal
+	dkim=pass (2048-bit key, unprotected) header.d=dolcini.it header.i=@dolcini.it header.a=rsa-sha256 header.s=default header.b=ZaDDPzsc
+Received: from francesco-nb (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch [83.173.201.248])
+	by mail11.truemail.it (Postfix) with ESMTPA id 2276B1F8CC;
+	Mon, 16 Nov 2026 08:29:51 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1794814191;
+	bh=cpKxpc6WsFeeIjPOouIAutKYzzXcNv+Zda+j40xqrT4=; h=From:To:Subject;
+	b=ZaDDPzscN1ltEbMVzyLxLzy6ReDNSpiilgbf3In3Ed36NMvylO0xTU6O01WzZA2Mh
+	 rHctIcdBPAPpR80jH9vBnniG0FaigUtxWemjau0MNzGqQcjf4xnECf6gPTG3bM9Z48
+	 LSG58aLaCVa0/djiHJpH4W+WG9AJvYn5YJA9FlauHtU0B41LMFzd8TmDzlqf7XnWWl
+	 wh7Qy4grV0kfim9yxSAEAIOgiSlqZ2/upRHqPZIY1WdiAAmzQgfImcqmm6DAC8p76m
+	 StCGLsx2sKthKr8XUxUMawKMzs8CDzo1u21rPoiN2e9yEt2Nl0K+r9hPdx65WGcvry
+	 3tT8/c4txjCXA==
+Date: Mon, 16 Nov 2026 08:29:47 +0100
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Leonardo Costa <leoreis.costa@gmail.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	Leonardo Costa <leonardo.costa@toradex.com>
+Subject: Re: [PATCH 0/3] Add Lotus Carrier Board with Aquila iMX95
+Message-ID: <20261116072947.GA16341@francesco-nb>
+References: <20261112-b4-v1-aquila-lotus-dtbs-v1-0-ca150bb4b0f9@toradex.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -94,96 +68,38 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261115-submit-rawnand-retained-handle-lifetime-v1-v5-33-cbc49c5c5e74@gmail.com>
-References: <20261115-submit-rawnand-retained-handle-lifetime-v1-v5-0-cbc49c5c5e74@gmail.com>
-In-Reply-To: <20261115-submit-rawnand-retained-handle-lifetime-v1-v5-0-cbc49c5c5e74@gmail.com>
-To: Miquel Raynal <miquel.raynal@bootlin.com>, 
- Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>
-Cc: linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- James Hilliard <james.hilliard1@gmail.com>, Han Xu <han.xu@nxp.com>, 
- imx@lists.linux.dev
-X-Mailer: b4 0.17-dev
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261112-b4-v1-aquila-lotus-dtbs-v1-0-ca150bb4b0f9@toradex.com>
 
-Keep chip metadata and controller storage alive until the final MTD
-reference is released. Unregister and disconnect each published chip
-before releasing the resources used by its hardware operations.
+On Thu, Nov 12, 2026 at 11:37:32AM -0300, Leonardo Costa wrote:
+> This patch series adds support for the Lotus Carrier Board with the
+> Toradex Aquila iMX95 SoM. Lotus is a carrier board for the Aquila family
+> featuring a small form factor (Nano-ITX 120mm x 120mm) and built for
+> volume production.
+> 
+> The board features:
+> 
+> - 1x 1Gbit/s Ethernet
+> - 1x 10Gbit/s SFP+ cage
+> - 2x RS-485 (Isolated and Non-Isolated)
+> - 4x CAN (3x Non-Isolated, 1x Isolated)
+> - 3x isolated digital I/O
+> - 1x CSI
+> - 1x DSI
+> - 1x TPM 2.0 chip
+> - 1x microSD slot
+> - 1x USB-C DRP
+> - 1x USB 3 hub
+> - DisplayPort through a Mini DP connector
+> - A mini PCIe slot with USB / SIM card connector for a modem
+> 
+> Additionally, this series adds pinctrl groups to the Aquila iMX95 SoM
+> dtsi, muxing the I2S_1 and PWM_4_DP pins to their GPIO functions. On
+> Lotus, these pins carry the SFP+ low-speed control and status signals
+> and the isolated digital I/O readback signals.
+> 
+> Link: https://www.toradex.com/products/carrier-board/lotus
+> Signed-off-by: Leonardo Costa <leonardo.costa@toradex.com>
 
-Keep geometry available after removal while releasing DMA and clocks.
-
-Run NAND cleanup during disconnection; the final core-owned put only
-releases retained allocation and layout data.
-
-Cc: Han Xu <han.xu@nxp.com>
-Cc: imx@lists.linux.dev
-Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
----
- drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c | 17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c b/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
-index 4822485bd512..8fc78e679f0f 100644
---- a/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
-+++ b/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
-@@ -2744,7 +2744,6 @@ static int gpmi_nand_init(struct gpmi_nand_data *this)
- 	if (ret)
- 		return ret;
- 
--	nand_controller_init(&this->base);
- 	this->base.ops = &gpmi_nand_controller_ops;
- 	chip->controller = &this->base;
- 
-@@ -2759,9 +2758,15 @@ static int gpmi_nand_init(struct gpmi_nand_data *this)
- 	if (ret)
- 		goto err_nand_cleanup;
- 
--	ret = mtd_device_register(mtd, NULL, 0);
-+	ret = nand_set_lifetime(chip, NULL);
- 	if (ret)
- 		goto err_nand_cleanup;
-+	ret = mtd_device_register(mtd, NULL, 0);
-+	if (ret) {
-+		nand_disconnect(chip);
-+		mtd_put_master(mtd);
-+		goto err_out;
-+	}
- 	return 0;
- 
- err_nand_cleanup:
-@@ -2787,9 +2792,12 @@ static int gpmi_nand_probe(struct platform_device *pdev)
- 	struct gpmi_nand_data *this;
- 	int ret;
- 
--	this = devm_kzalloc(&pdev->dev, sizeof(*this), GFP_KERNEL);
-+	this = kzalloc_obj(*this);
- 	if (!this)
- 		return -ENOMEM;
-+	ret = devm_nand_controller_init(&pdev->dev, &this->base, this);
-+	if (ret)
-+		return ret;
- 
- 	this->devdata = of_device_get_match_data(&pdev->dev);
- 	platform_set_drvdata(pdev, this);
-@@ -2838,7 +2846,7 @@ static void gpmi_nand_remove(struct platform_device *pdev)
- 
- 	ret = mtd_device_unregister(nand_to_mtd(chip));
- 	WARN_ON(ret);
--	nand_cleanup(chip);
-+	nand_disconnect(chip);
- 	gpmi_free_dma_buffer(this);
- 	release_resources(this);
- 	pm_runtime_dont_use_autosuspend(&pdev->dev);
-@@ -2846,6 +2854,7 @@ static void gpmi_nand_remove(struct platform_device *pdev)
- #ifndef CONFIG_PM
- 	gpmi_disable_clk(this);
- #endif
-+	mtd_put_master(nand_to_mtd(chip));
- }
- 
- static int gpmi_pm_suspend(struct device *dev)
-
--- 
-2.53.0
-
+Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
