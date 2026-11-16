@@ -1,101 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=194.104.111.113
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794821037;
-	b=z4A+GAcpPpBPSBofvLTlpT32WXjPW+EatFk9j8fImILqmvA9BNx2gzezWNqOSi2PHKy8
-	 apyaSwH2LFVv0TXlDc4sDbkm8TUCodgibL+1aPdMX3iYPuLdCivKC0a9n2YFCD47azSWc
-	 eVv8SV70J37j+2IMHX7XKSGv6O1aue2/0ryUFFihPXpiNAHWTDpZ7JM+DvVSBv/sI9F1i
-	 9LSkg0e0lM9auQ+1Nk7OhjLFPSjCBrAwlmf/jD80ujGjKUdl4du0y0ekDY2SUiaM23WXB
-	 h2pyoIvUql6jF8lP3sjRf4OAexwO0wfafU+EvU1clJX72cd3bKVw4737Uv4AH1oKj/Q==
+	t=1794821348;
+	b=I3B7hgI0h8JZ12HgjYW5fJDiN/t07oOvwid/PjJwh6cll+EcSS1XOGLq6l1RAAW/t+Ep
+	 +k56OeXcWHXpgyKjFj420FjgVcMGXh6wlUPE9HFsB4/I7pYRfsk84Abd/dSX0k9oDy5D3
+	 yGTlO27SsYq3WUJdWPYUa64e2DG6fViWvEmVtFOSTo1+9gh/2cLk1oT223/xAa77Uxz7N
+	 Q2womhkyNMddi/A2L3I6MBCi5SJep0Ciiu3831o+r4z8EmZtqRDS1g6YobtK8ZqRotfua
+	 uTa3BMw3anMVWfWEKwpK4B5JJX4G7LhzvlyCF1iIRiDB0oCn5XPrJRxuDcXNR+c68DQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794821037;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:In-Reply-To:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-Exchange-RoutingPolicyChecked:
-	 X-OriginatorOrg:X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:
-	 X-Mimecast-Spam-Score:X-Mimecast-MFC-PROC-ID:X-Mimecast-Originator:
-	 Content-Type:Content-Disposition:Content-Transfer-Encoding;
-	bh=pqwida33/VM75iN3zlR3VtqccdamTS/EN4HBvOYXc7k=;
-	b=LtiWifT0dE8FEC+M2VX2BQmPEQmXb0IoW8E0+PdzxYNnk+3Y0+vJ7mquJTv0OPNPE33N
-	 1rW4Jekdu64e7f5M8vjz6pPY+5dayvGown+OK3REV0Z8KmvExVDL7fPN5CxQKt4V0buaX
-	 UAvi7x0peRWq2oeoGk0mgCyYzr6t8K3lgWzOMR0WqxJy/qZcLrchIx66wW1RJ/hkQrcvL
-	 Ou+/PkrZU2VkpgXXIr1uDpr2+nCrnZZ+Z+WXqetiprOg4GQ0UvIqZtfAaJUh3gF+yDT8a
-	 Bu61y0oCDP6CeIPK4VDJfFJiz9y4UP9FeJWgwx96SgmBMPdQP3iOHbxF/6Jdc6tTKsg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794821348;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=9qlmeEjjN/Hi5B1yhZatHZmrPx94agQrfT4eJRLAUHQ=;
+	b=GwLoJoTWh4xZl/kkoeDQ7YLnIAwdYc4O2EGVBTcDofWgy6Hj/1Ol+hKNQUERjTr+LvqE
+	 0ATivv8gl4jFc1l8awac00KxaLR5gpE34qfdrDhZXBL8x16IB6Tjz/uxdL56NNxyfjc0J
+	 mfhLGcBsnjpk+xUlzhOHoGP7j6oNuFzloXvEcrJj5Lg/+xuCRZeSYtNG+Bs6qV0bajihq
+	 sjF7CMi1vLDcQuBjU/vQEgOnpUeLBPcCLRQ15gs1UlkX6c42b/qz2nN9ybFnMzcECaUan
+	 rx+3vRqY8MxrS0eKHGs/wG9u35NUCZqKwOYWd+4VuNkra55lL+CzTnutyT1qQW8ygIg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=toradex.com;
-	spf=pass smtp.mailfrom=toradex.com;
-	dkim=pass header.d=toradex.com header.i=@toradex.com header.a=rsa-sha256 header.s=toradex-com header.b=Y4SxtFLW;
-	arc=none smtp.remote-ip=194.104.111.113
-Received: from de-smtp-delivery-113.mimecast.com (de-smtp-delivery-113.mimecast.com [194.104.111.113])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WryHB1Y5;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E043D606A333
-	for <imx@lists.linux.dev>; Mon, 16 Nov 2026 09:23:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E043D606A333
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=toradex.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toradex.com
+	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id 88187606A330;
+	Mon, 16 Nov 2026 09:29:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=toradex.com header.i=@toradex.com header.a=rsa-sha256 header.s=toradex-com header.b=Y4SxtFLW
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=toradex.com; s=toradex-com;
-	t=1794821029;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pqwida33/VM75iN3zlR3VtqccdamTS/EN4HBvOYXc7k=;
-	b=Y4SxtFLWVy7ml1ixjtvfP/yK6hcGNoD2+3MhYjaoWtGC6g0Ifye5iAOnaJP5t+XRVDngYo
-	40S0qiyfCRuPdb68/unzd3tMcWQglBqB1dDwI4kOUzBM7WTrpKzov5bqA/A4LMRpK6Rzb4
-	yfDRmEqmSYU6C459X3wTL2k3OE68xXs=
-Received: from GVAP278CU002.outbound.protection.outlook.com
- (mail-switzerlandwestazon11020129.outbound.protection.outlook.com
- [52.101.188.129]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- de-mta-84-zzTGyk_cO6CjZVK1R-1YQg-1; Mon, 16 Nov 2026 09:23:46 +0000
-X-MC-Unique: zzTGyk_cO6CjZVK1R-1YQg-1
-X-Mimecast-MFC-AGG-ID: zzTGyk_cO6CjZVK1R-1YQg_1794821026
-Received: from ZRAP278MB0495.CHEP278.PROD.OUTLOOK.COM (2603:10a6:910:2e::8) by
- ZR4P278MB1772.CHEP278.PROD.OUTLOOK.COM (2603:10a6:910:b2::8) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.615.14; Mon, 16 Nov 2026 09:23:44 +0000
-Received: from ZRAP278MB0495.CHEP278.PROD.OUTLOOK.COM
- ([fe80::88:6821:13f5:a5b2]) by ZRAP278MB0495.CHEP278.PROD.OUTLOOK.COM
- ([fe80::88:6821:13f5:a5b2%3]) with mapi id 15.21.0615.013; Mon, 16 Nov 2026
- 09:23:44 +0000
-Date: Mon, 16 Nov 2026 10:23:41 +0100
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Peng Fan <peng.fan@nxp.com>
-Cc: linux-remoteproc@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rt-devel@lists.linux.dev,
-	Bjorn Andersson <andersson@kernel.org>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Steven Rostedt <rostedt@goodmis.org>
-Subject: Re: [PATCH v3 00/10] mailbox: imx: Use threaded handler to avoid
- kworker in imx's remoteproc
-Message-ID: <avrLnVFtgobyTwN1@francesco-nb>
-References: <20260617-imx_mbox_rproc-v3-0-77948112defc@linutronix.de>
-In-Reply-To: <20260617-imx_mbox_rproc-v3-0-77948112defc@linutronix.de>
-X-ClientProxiedBy: AS4PR09CA0005.eurprd09.prod.outlook.com
- (2603:10a6:20b:5e0::11) To ZRAP278MB0495.CHEP278.PROD.OUTLOOK.COM
- (2603:10a6:910:2e::8)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WryHB1Y5
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 91AE21F000C4;
+	Mon, 16 Nov 2026 09:29:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794821348;
+	bh=9qlmeEjjN/Hi5B1yhZatHZmrPx94agQrfT4eJRLAUHQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=WryHB1Y5S8dXg39aRX1rQ50qwjg8X6zBrNMJ+ABoR3hHhY+4yElAJwg8iwYY7Kkf1
+	 FfPPVktWVzNRS6EEjk6BK8MBcvzabmWwtTgTAF1aRdBqZBDlCZfUufQpEbcQ0rHuK2
+	 zOyzkWwv5eHoc8mhrIMolgkw21AiIWOPi9nM94kfZZET/4TtTllsTOpSU8huyPDHZS
+	 oGtxKBVY//l4D8cGoQaEUJesYrkV+KnfgWKPI/C19I1W56JBwdWeH08YZkA4Ne/YI2
+	 u8giuvqKE4kCzZGbe3v8E6DJyScj2Ojun43MuWYdgjGPQFdK6THB6PHPGdfa6opebd
+	 OQTvAKnGB8Vjg==
+Date: Mon, 16 Nov 2026 10:29:05 +0100
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+To: Xiangwu Lai <laixiangwu@cmss.chinamobile.com>
+Cc: Frank.Li@nxp.com, s.hauer@pengutronix.de, kernel@pengutronix.de, 
+	festevam@gmail.com, linux-pwm@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Lee Jones <lee@kernel.org>
+Subject: Re: [PATCH] pwm: mxs: Disable clock on invalid period error path
+Message-ID: <avrMdLAPp2oOtdQA@monoceros>
+References: <20261102105005.1007-1-laixiangwu@cmss.chinamobile.com>
+ <20261116031043.508-1-laixiangwu@cmss.chinamobile.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -105,104 +58,65 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: ZRAP278MB0495:EE_|ZR4P278MB1772:EE_
-X-MS-Office365-Filtering-Correlation-Id: c2ccb7ab-0621-4583-6cca-08df43c34f64
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|23010399003|366016|18002099003|22082099003|6133799003|5023799004|56012099006|10067099003|261102123227099003|261028144727099003|261026121527099003|261026140227099003|261021123027099003|261022105027099003|261021121427099003|261022075727099003
-X-Microsoft-Antispam-Message-Info: AKHdyGHlS37rlJARDybQJB+TGI7jpV+9b+VeVCLrKcLLdtEjI6dD4x8VuJNFbcNI3sjGRWh2kszIq6o9W9nV6b3JOrn0KfaXrrA5aVNWAFROMxIJO1S1hZ9MWm5B1hBzRi+pdaH1wxmcQy6URGLsBpK5TJnNHEKbU+wWefw2mlJbJFb5O22/uFvhghGVVj6pBVLFZO99xv5u5hfXeeS50RmwVgCEAXG6YwmHn0Hvx4IDVJyQgL1dTJRIQLKfE7z/+l1oCyaFvJoUUVk0mpWUlK7JbyX3I8noyS72BgJ2HRaJj3wsLM9tjr6AU9+5nc4PEnibsOQ6lwUXHhUQTgnKM5Wa7Y+5QRFj40a5sLfYyKq6CqNSud8eUs1KH2C3iRNisJIcsa+7jjTK18a1oiGdweJH4iD6QNe0tKBlV67veYtezkL63jTRqm26ncTRUCUBB7VOPvxZ26pmObBYaGh+tcMXO/DS5/Y3Z9Q8S2PjWs15r+mKHId0n0+IMeQyogaNNc8h9i0kAFng/WoFmRsBVJFzBaRXfEYP4xiauA4QgUMC128nAMuEvMrV2owQmyRj0F/pxSkP/MZJfPyqkIJNXHD93+E//0B5xchQz+uu/a09zE4wNn5k+gX3lOQCSBDzyniHleXqU3aYuGRvuxwgDHBzYHQ/LLsD2nVJEspYam4=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ZRAP278MB0495.CHEP278.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(23010399003)(366016)(18002099003)(22082099003)(6133799003)(5023799004)(56012099006)(10067099003)(261102123227099003)(261028144727099003)(261026121527099003)(261026140227099003)(261021123027099003)(261022105027099003)(261021121427099003)(261022075727099003);DIR:OUT;SFP:1102
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?eG/fLyMCylugFeQK+B/S5j3Hxu1Qg2wagp6ZtBZn6rhaHXWcoXZ6GveS80il?=
- =?us-ascii?Q?gnz30QXsXgcU7gzQ0wJ/HtcO6mDc8/xFFf6AVXeMjnAs1aK5IWy023p2i+Ik?=
- =?us-ascii?Q?tdZf5WeaBxzaf1HG/hwgIPajl396HpKojl2v1oY9EnA2hUZxpu05k2hXUPRK?=
- =?us-ascii?Q?z5DuVyHFoMge54Not/89ZOTpKf63oYpTM/IzkIDvGJPT81MDMs2v55UnrEDV?=
- =?us-ascii?Q?pPymzr1lPZ+/jkM5LRykjKmv8q/uTcE5dYx6KR0QhdZNS3/DRyN3nkdyYY+7?=
- =?us-ascii?Q?AriG5aRcqWXpiaUqeWqCc6wBOhRnjQDRI0Er9hn+XlpSgLcoWgw6mRqqGX8o?=
- =?us-ascii?Q?fvt44QEoOF9W7GQRd4YwAV2IIqMBK6jVGO2Bb9StkqKKn5sIoJOrQ/3j6WZi?=
- =?us-ascii?Q?FNFIouW2Jy7h9vh6gipPToIvGB2V+4//dz7LxzdSy9I6XzYpwhSh791cxMzy?=
- =?us-ascii?Q?YiRaBp2EVnXs7b8v+taFn9rll/d7KEKtEfJTcvxfOaB2L/9XRUMyD0ON+/TC?=
- =?us-ascii?Q?h8hfA/8d1i/jVgbfxksm6v5BtO68cwQY8r2fBd+cNPfVdhJIBpyWJJpeM27A?=
- =?us-ascii?Q?m8tkS+BIUQlLXcwjWomEyWgEduS0rUOR6hSR9qKtIbZ6J5YK/zgKqR+WhDwJ?=
- =?us-ascii?Q?Vis7wbiOilf5JNHfzPA3IeU/nFABEB26owl/dz357hw7eZdXyCErV/mupJGd?=
- =?us-ascii?Q?qtt6NSChFPOpXbcJfWxjWz+d4w8GyjF2p9W59NOb1MNMrCjkJHEkYFv+0zvy?=
- =?us-ascii?Q?VPtPtYD+EDxBIv1hlH45W4jZy8BiDbdkDTh2U9bbjVRL+4zx5bwHJMEIrqT1?=
- =?us-ascii?Q?+79sdnqStMkbXDIK2OjsLvXwMBNcgIRXIRm+Z8LGzR0Tkg82aS4SIjLc4MNR?=
- =?us-ascii?Q?1kSWW42+uJD/i9i2sMA6viSd5mOaPVup/NkrwsPjEOcSBHWswLaGznrkCabD?=
- =?us-ascii?Q?BYpoYXSeXr8hztfOWQrkOK+JSLbiWuN5h1eHmCpnRoaEbpeFlSDrGLIdbX/9?=
- =?us-ascii?Q?A8oxpffVE6J4DJYZO//xLShrQHC9k8ImKONQR3BbPyq18+p4YORCsqVwcRlq?=
- =?us-ascii?Q?ViQxbFxDSUSKHPhe7ZxQ6245mw/M/pE8NC8bsLCGu3zmAjTgKY+gGELfRAx5?=
- =?us-ascii?Q?vb8M6oaiqLZix6RzXu67h7Bb8HA6gL60KLjv3/XioFnsNlBNcGthOMzJc+4Q?=
- =?us-ascii?Q?Q0C3YzgiBewtsouMvOdEr9qyNGXhOkFhP94CtP1G92a1ItunrkY8/bH8HK7g?=
- =?us-ascii?Q?DNCKohqTXZED9ippDeof/xWWWQpCcDfAlWLWXHIreL9ec71r/IK+CICHIw/q?=
- =?us-ascii?Q?REagssAQZsLM+nqQvFzW5sALQFLlG32EocU+/TefTzmf3oOa8PW0CjRuSMXB?=
- =?us-ascii?Q?W3v5x8+O2KU/1+/HuQhJs6ru6mnw/+d2fdbFZr5SA39/lAxD8dfXjXJdbhw9?=
- =?us-ascii?Q?6tOAaYLfuQwQl84zpxOW1WA33YkoB6EXvYuZeFCOkfSqESaTO+c5Y2WQr1F0?=
- =?us-ascii?Q?cpWkZbv7W/QR0IZlDey5PVOy+VpCBsC3zJ/EUFS4/+787n5L+5169rk5LUHS?=
- =?us-ascii?Q?t1jxaCqO5o5CvI6UopeTDXiuWmSWBI2eXL18I92Fi+X7HOICfiilhn5+ECK+?=
- =?us-ascii?Q?IEWuZCZ6AyHRiVB8TPPTFU6zfuJ0eFdwwbIwKAFgO/qd8iEsNaQF6zEUbqyX?=
- =?us-ascii?Q?ybQ/tWsMPHVOjEprDWlaRH23kmyxv1ScwOVRITM07JVMiq0r0uMH9+ki+Wjl?=
- =?us-ascii?Q?/PhPJXKREhyayxZTcp6wQCdhlC2103Q=3D?=
-X-Exchange-RoutingPolicyChecked: cnYw4asfbWvVLu9Y+XO+kq+kMJSXWxBb8puuI2/k54EHznQ9R/Lm4R/dAd+THvIbGAmL3wrc3WPL60L37HkKWjVUaywiTn88kOsu5a+X2xxKkJaQdk9+16Lv8JjyMDIpvm0VkKeRjV+EshMz7gUR25dQyQ89tPCYhQIXEVCsXIiMIPzF5HPEAj/dqI4lT1Kf5koR7f221abr6Hmph7aYeeVtE1aphGJ5s5OfqYdK8YRkX5gOPbF7BnkNLy2pc62UnDHw0zisBPOS8eBUbp+MR+UZFN3THVqgo/HoZOTopIuYURlfjcugeqex3yjsRySGNnSfID2vW7Mee2yENnuVug==
-X-OriginatorOrg: toradex.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c2ccb7ab-0621-4583-6cca-08df43c34f64
-X-MS-Exchange-CrossTenant-AuthSource: ZRAP278MB0495.CHEP278.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Nov 2026 09:23:44.1927
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: d9995866-0d9b-4251-8315-093f062abab4
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: rVNf2mGvGyp4bQwnK+Eirwmp0CLKTZsi4NTlHVbuIR3BnEBi57hp8tRDjxhjY51+gjZQr/M2Ue0tYp1omsG5cVFBh6VI91o/4fD9M81h6p8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: ZR4P278MB1772
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: kqkTh_KOfzpyn5LwmX8w5IP8Wx3EeJpVcUC4xNvJCPk_1794821026
-X-Mimecast-Originator: toradex.com
-Content-Type: text/plain; charset=WINDOWS-1252
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="2qdyaspsc4lt35jv"
+Content-Disposition: inline
+In-Reply-To: <20261116031043.508-1-laixiangwu@cmss.chinamobile.com>
+
+
+--2qdyaspsc4lt35jv
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH] pwm: mxs: Disable clock on invalid period error path
+MIME-Version: 1.0
 
-Hello Sebastian, Peng
+[Cc: +=3D Lee]
 
-On Wed, Jun 17, 2026 at 08:55:25AM +0200, Sebastian Andrzej Siewior wrote:
-> The imx's remoteproc driver uses a kworker from its mailbox callback to
-> complete the request. The reason is that the imx mailbox driver invokes
-> the callback from its interrupt handler and the remoteproc callback (at
-> least the rpmsg-tty) requires a preemptible context.
+Hello,
+
+On Mon, Nov 16, 2026 at 11:10:43AM +0800, Xiangwu Lai wrote:
+> I've noticed that Lee Jones' series "pwm: Fix various bugs
+> reported by Sashiko" also fixes the clock leak addressed by my
+> patch below, with a broader scope:
 >=20
-> This works but is problematic in a PREEMPT_RT environment where the
-> latency of the invocation is important. By scheduling a kworker the
-> high task priority from the threaded handler is lost and the kworker
-> competes for CPU ressources with every SCHED_OTHER task in the system.
-> This can lead to long delays on a busy system with other RT threads
-> which are less important than the completion of this request.
+>   [PATCH 2/8] pwm: mxs: Return early when disabling and fix error-path cl=
+ock leak
+>   https://lore.kernel.org/all/20261105143847.2559586-3-lee@kernel.org/
 >=20
-> Looking over other mailbox driver, like the arm_mhu for instance, they
-> use a threaded interrupt handler to invoke the callback. This avoids the
-> kworker detour.
+> Besides balancing clk_prepare_enable() on the same -EINVAL error
+> path, that patch also handles the !state->enabled case upfront,
+> avoiding a division by zero when state->period is zero, and it
+> already carries a Reviewed-by from Frank Li.
 >=20
-> The here suggested change utilises a threaded interrupt to invoke the
-> callback. The primary handler mask the interrupt source so that the
-> handler can run without getting interrupted by the interrupt again.
-> Doing so avoids marking the interrupt IRQF_ONESHOT so that in a
-> shared-interrupt environment the other interrupt can still fire while
-> the first is masked.
+> My patch for reference:
 >=20
-> The first four patches are result of the sashiko review. Does not look
-> critical.
+>   pwm: mxs: Disable clock on invalid period error path
+>   https://lore.kernel.org/all/20261102105005.1007-1-laixiangwu@cmss.china=
+mobile.com/
 >=20
-> This change was tested on a im93 board with rpmsg-tty driver.
+> Please feel free to drop my patch in favour of Lee's more complete
+> fix; there is no need to keep both.
 
-Our CI shows a ~10-15% eMMC sequential read throughput drop on i.MX8QXP
-and i.MX8DX (Colibri iMX8X, Cortex-A35), starting with v7.2-rc1 and
-still present in v7.4-rc3 (hdparm --direct -t: ~129 MB/s -> 105-120
-MB/s on i.MX8DX). i.MX8QM, i.MX8M and i.MX9 are not affected.
+Thanks for this follow-up, very appreciated. I marked your patch as
+Superseded in patchwork in favour of Lee's patch.
 
-5d1c0000.mailbox interrupt count before the test went from ~8k on v6.18
-to 60k+ on v7.3/v7.4.
+Best regards
+Uwe
 
-Peng: any idea/suggestion? Does it makes any sense to you?
+--2qdyaspsc4lt35jv
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Francesco
+-----BEGIN PGP SIGNATURE-----
 
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmr6zN8ACgkQj4D7WH0S
+/k7o7Qf/UjQPeXOgoT/+hklwnuPwbNMvmFIoh2yJPPQxNX68YtUWalecVUW/TmP+
+/ZSd6ajIFk0peHc7RIh2WFNEehinYm9NtMF18bmVq1NX4SqsyLwsml249xLW8WoA
+WaKvrw5E2R68hfsgFf0UyL0XosMR83mQr0cYXnaPGOjqMxjR03euzOF0vU5+bLR6
+asiWvLn0dquA7ZbR59dOrWYC+w/2IY9qBpQxZEWYh6IdNzVwMw/9hKoA8SOW7l0C
+6836BOJF8XGxdkZ/ceXALJtxeVgmwxhry3xYika7u+OKSdMhdYxX0idkNfpUGNtv
+S5quDF/FV+xyi93Z+bqj9pyFQmZG5A==
+=KPRv
+-----END PGP SIGNATURE-----
+
+--2qdyaspsc4lt35jv--
