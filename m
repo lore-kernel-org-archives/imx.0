@@ -1,102 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.42
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794852222;
-	b=vWPdItTDSgcj5y7WJ+A2djjn+HkAoyLcCqwP9TcKliEs8zwTR5gZ9ida98yLa/LrHTP6
-	 oR3NXchDNABHOGG7hTzYGamSMKWceTzP6T803VY1r5Z8CZtNzl5J64cX6Cysb7E6mCu7i
-	 2/chKTHvwf/Mqnefjd9ISSeBZUXlXlJKcix7MaLPGvcd3EwT00PQqqbrg00ysow59ro+t
-	 iFca41wryIJmjpOg9wyyeNeLEc1fjxuBQqa1BoJb4dbLPxKzNtEieXpWmsZ6ufB1UJc8N
-	 aIoWVRKWnSCN3iAqR8klDpjlGAXEgH0bt0p6M7o1tozngE4THiWY88HN14aVtR4S68Q==
+	t=1794853506;
+	b=pCXMlnLEU7gW0EyycpePWjJIMBrBCMXVgaDKHLbOsBeJSN49cOlsAfvzE+LwLNbo55Gg
+	 o3opIoRK2e5rjeKz2iFpdrSIbSCTFYsar7H9nbdVuniQeugpwlt0TAd0n2CU76ew5S68P
+	 U/lBd/osoHIN92UvXCGP9DvpluEo835I6q2rZkX0r3P59g+KWOBghGCvQ9Va4TiXyp4BB
+	 sVcEmcCuUiAaPpCET4YB4A4SZqQdv6V5OQ4lkvoggRnlfNVMCDGby/EV19oNcD22Keau8
+	 hZKzGM1TWKPpdZNG7qwu60rHDG5quEITJ0ufaASGSzT5W/MTCqJy0fv1BL3x27KlbRQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794852222;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794853506;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:X-Google-Original-From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=qdwVpDmUyX6+miopugFQ74zvWKqlDoa5kHuLWgelFRU=;
-	b=hPtG3qDh62NqnYqDjnEcVIwtRsaYY/21wsXSwT9nh2lKJfzcjDFga8pLgarJobqU/061
-	 9+dzTpuLq96td5LfbbzYRYF2Nf6CN+wZxO+sYNnpO4xSgJfPTZmzN8JtS/A37HkfJFCIL
-	 f+TLE0mVbx/vUXKC06B5nkZJSywl/kpk5fDkDvG5ffVqJ6Q2+vCEJWDtZM/KEDi/p3Vev
-	 UptI9WUo3zMVB84UJmf4e0YFMduLoM1QsNE1iADU9SlBvfhsCSe3HwakH90zf66xj3K+V
-	 r0118kkg8RczcIm0qCiMEiDDzd+xWUBuXiZXrTI2+MZdXl7L6AmZ/4H5jXjoWyUHXsQ==
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=EjsiR+6jJ8ZmBsAFEuHSjNRWBiCgBYf83KNABOGKFps=;
+	b=zM7nHWQM0oI0C5OlAgWJGNqXID7YX+7pNsO9X02STAvdfe+cFT3tzPvH4IP89EmV+28u
+	 9/Nov0VBKcZOhC1XMySHKnSr6ulpdgbPdsBrS3Z9Q8gDLa3sP1Cd2BLzmfEigvnm3ReQW
+	 zEVQhimSWhhtFemqYKP6m+qNrJf9gi6gwgd/CjSeI7slhf0zYnwJzvn7ESSKGsmaARAzH
+	 HGcCko+3x/y6ZFkWjJEnzxcRvXp9rbHlcSugIBFLXQaBpNwiCJueA0uRDPCeIjQEX+Qxz
+	 h8AkoOf4tYoNXdwZhLhkwnNYW/KstPEIZv57Le7bgARg9Snp+n6dD3JCM2wMEjVCsIg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=xtk8ikwP;
-	arc=none smtp.remote-ip=209.85.128.49
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=oKSDLKP1;
+	arc=none smtp.remote-ip=209.85.128.42
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8922606A32A
-	for <imx@lists.linux.dev>; Mon, 16 Nov 2026 18:03:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E8922606A32A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E51C606A32A
+	for <imx@lists.linux.dev>; Mon, 16 Nov 2026 18:25:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3E51C606A32A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=xtk8ikwP
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4ac95761c85so24445685e9.2
-        for <imx@lists.linux.dev>; Mon, 16 Nov 2026 10:03:41 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=oKSDLKP1
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4a214c5c4c0so38025365e9.3
+        for <imx@lists.linux.dev>; Mon, 16 Nov 2026 10:25:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794852220; x=1795457020; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=qdwVpDmUyX6+miopugFQ74zvWKqlDoa5kHuLWgelFRU=;
-        b=xtk8ikwPoX8+3yEAsakGUCbYZ22f0ifmGSWLk7O3Dq5a95Qfihc3puJY9DGneheP4j
-         4tY3TQ5XlqIolqlOh0XqK1KS45E+fYvPY3U1btE2MaPNDnUSQcm24s/jOt1y0sEjPX/A
-         SQYQ2S3On/uLE5GjlkoXnK96BxwpnPpZoWaiGmQWyAmKNw9Jaqa8GlIVe27LGYS1En8T
-         Pin66EOatM0+y819Xh1JqWpsEAxo/b/TEXBG+thDKXGkXDhTa8yLWLeNIB4YQYvHlcmJ
-         o8QACGUXQlOlbglhQHk48Sn3ePdeygRuPiaAEzjoQVBaTJmRDNQuv3oW5Jju2pC6L1wE
-         RxrA==
+        d=gmail.com; s=20260707; t=1794853504; x=1795458304; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=EjsiR+6jJ8ZmBsAFEuHSjNRWBiCgBYf83KNABOGKFps=;
+        b=oKSDLKP1aA81GW0PokAf2I1DvpmquxAjlif6D79Kr5nWT3BVUu1/jQ5z3zQvGzB/wZ
+         DM8Eokn21pnzvNwjkCmWLHXQx2NlRYO8kRx+0ZDWTLp600gr+rUCRdJdAvVeAmAwdYXP
+         UocBscxQKY99kheSVR5alYPtTEAG3Ng64pQ6GtU73TH8JP0V5egBLnSpePAUlL6jvImv
+         vtXqDKctjA2nf1uTylLZCf9j6K3H1Rt5C7Kq6lFsWzLdppuJAzi5O6YloGcnsqXzYcur
+         4cXwkPzaZGO1Ap0DpWhMAsIZRXwjupFYXxScDe8O9z48Q1PVCAj541LgVg8wY7z5Gcby
+         xJMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794852220; x=1795457020;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=qdwVpDmUyX6+miopugFQ74zvWKqlDoa5kHuLWgelFRU=;
-        b=msmyA/JaBzPg7mvK/u7CKFYOVErmuQSs00t7pXpVuI1ptiqsWBtJIld3hwomrAl3a9
-         iGtplMyDHM6J1JrZlJwCvBIzkZFxX47oLqPk/b64VBmgnnDUt0bJuWnJMhx0CTJAFuig
-         l+fgUSBH5gHKbbKn25LXE0EoKwUTbSLFl0Q62RP2fmiVIWwlUzdEpDKFsxCVPizOhL1o
-         Lqq8vhtUzBknfOVq7wfQ1vzHLusLmbM8ku3Rd8Jl11sy0fvstZef5lP/FVjCnhLUfByW
-         8oWmKF4jnZk5dmAc/Ql19Aer1qb3V0Bww+D0KzOCWGpvFBXzNooPkt9cBzXK9DLM+Si4
-         ul2g==
-X-Forwarded-Encrypted: i=1; AL+hErG8lTjFfbO8OJmVrfYwMAJn2CuKhQFVyZhPpvV9Y6kkz0pJ958RyYebIwQ1rZ1Q362Whj4=@lists.linux.dev
-X-Gm-Message-State: APuU4Z+8enMMCzPG/9VEwxfAgf7TgCIXIsAu4x0DxHiLgR0nx+enq9h4
-	3P+tUBNCwYmFp+h+iiBjsVu8s7MAoE6qm6myj9TI9sXTckSkjJikolIz
-X-Gm-Gg: AYBFou3rCE9/NQfqdI1vOLFDW83ht7jpY8X5zVSE7XvA0GdCMQamxUfHlPeFc9WU3K2
-	K8UOcAueHVYKO1lpn+RJ6yz+ad+pJIbUNFBmUPyRqi5bboUiqoB9wVFjwD2wtuuHE/bUEhuFltF
-	9YnY6RbW4mV/sDHcupIZxnrp/J/nLuv4l+qmrHKl0xrHymviMnMu7A8L4KDHVb4KL+9eJDRWH21
-	gXqU5eBfAhstuaZi/MDuy3EMS5cJ3OQoZTdNrG2mhxsez+ucDqBLzWPfixmPHjUK8CxKcgPfVHc
-	ug4bSnz6j5YV3LHOrBHeyChUMoI1e/kltL7h7jFtv+tkoZ62NsjBIOewA05NnlEql0UcfUFvWAi
-	9E720eX339aeMRbf/oeFUtJZB0xo8WA3+NDHaL/1lWD/mDvV2CAfGPNxArzTbc0K0/s+BAh1c/O
-	v+38DwToDTfyzBwlIwJQ0f1HZoLTpqZYzp9eK0upBu6JWuHQHL2GKfCqRsiY4do+x0VY2fxXH++
-	o/UfwTmJMkl2T5FBLLkUc1gVGnQsGiBngmJcxEcDeKND75PXasIifINf3VIrEy/JJAQy31u2I9l
-	xm8VKDt7HJI+iVb92wGYpOA9d4C/RmigfPVfFiohXLv1wpiUzDLDRznV8PZXYTW4plIoXnoofJq
-	6IGHZQYabUHyxV34Fq3jTZtrJCUi7/mFW78HTs3feSrBfRJHdbOy7bHE=
-X-Received: by 2002:a05:600c:c167:b0:4bb:6a75:d04f with SMTP id 5b1f17b1804b1-4bb6a75defamr97842195e9.8.1794852219973;
-        Mon, 16 Nov 2026 10:03:39 -0800 (PST)
-Received: from Lord-Beerus.station ([93.146.104.162])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-49c5f1c1968sm23904692f8f.10.2026.11.16.10.03.37
+        d=1e100.net; s=20260707; t=1794853504; x=1795458304;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=EjsiR+6jJ8ZmBsAFEuHSjNRWBiCgBYf83KNABOGKFps=;
+        b=AygExX1qnE0Bfi8BHB9p/kTyuklG85ApyWw5bGa2cvRj7gUsXm8oAI60U/lWOCKR/q
+         wcgrznMi8KW37YlOcIORuAoX1q7sUtznGHnH6KdHi99g/facSdbN9J+OUYPZ7vil2Ai/
+         oUd5EDvdoah4tEFX+pTFzQRt77D/ogfzoroviPd80R7/TTAWhXcNFIDIbwsqnb0kNfmX
+         wh7DaVw+Idk1N6lOR5n89jrkRjNGHg+zkTOUIpSOneHDKKc7A0KOqe6eBa1W1hOHK19V
+         EaTfjf3v4fhh6OaRnYXju7bw9H3VjUJ661en2BIJn2T26dSwEj3A9D1FXsIEUPb8gMIn
+         OYJQ==
+X-Forwarded-Encrypted: i=1; AL+hErFxJvWOlhl1X+86wy5bQ67M5sSbDSeZn1y61zPFpuAa0YqPsQeVnZaFTzRgdyF/lITzWJ0=@lists.linux.dev
+X-Gm-Message-State: APuU4Z+b91D/KmKRpJKKe/w3NMB2dOSzv+v5TAqDtzG9rKguA6mojtvz
+	dH/bpRJ8eZ4uNvKFs/CGD5Lj8os5PNmgInyCVRFiIPgAT/pqz3/YpGDH+37WEv0N
+X-Gm-Gg: AYBFou1kTplKQAJ4cLKILGKiDy7R7BE5s65ANZTYpCqMwJer0IvYu7Bxmtmdj0RmJat
+	MzQLWDK2ZNrHN2aynZPYjPNDF05U3gsvreR+eExevaU5hEDrHNMtZjxZbEttH8rpCvGaAxHS9kN
+	qSkTgpHtQJdjHZT7HYXdPE8MTX/SGU2oUCkPv8MqBrVcn2D7FSb9L9yc4aNlFpNROMemacGyuWf
+	3P7WTESeYO7D+Qj3Wdk+TTRk8AkyDnbpn6skgA5iLiCcvGYHNRiH9Ogwh4GYataq99YeIj0PnF7
+	SQ3qOq9QUeyJc3by1oy2ePpKMDyheKxmVMs1bUG2Jj3FhNcyn5oZKyXW6xWO1CnptizeY15H+h1
+	+Mi9DyPLl6jNLXDat2KHF7SUA8r0MnWigvZYqfeKdOC1smV6PM7sm0ozM6yFVYF0In0hc8w9qAU
+	RFx8t0gpTKGYfmmN7l8LGDU6DGyL6VprZ3lZNxYGsaIlxqfhivXDcMOyITrGSD8CsS8kJM1UO8D
+	8ZGoxiY5BYD8M+GZRbRv9wtGLLfX+8SjmtLZBlSfyMyk+n7SdukBYBV6dNcmwWiCaZnciVR5ZjI
+	9xBUdPs=
+X-Received: by 2002:a05:600c:34cf:b0:4bb:6a2d:b440 with SMTP id 5b1f17b1804b1-4bb6a2db5a1mr110927715e9.2.1794853503457;
+        Mon, 16 Nov 2026 10:25:03 -0800 (PST)
+Received: from eichest-laptop ([2a02:168:af72::cb4])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb78430918sm5161735e9.13.2026.11.16.10.25.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Nov 2026 10:03:38 -0800 (PST)
-From: Stefano Radaelli <stefano.radaelli21@gmail.com>
-X-Google-Original-From: Stefano Radaelli <stefano.r@variscite.com>
-To: Frank Li <Frank.Li@nxp.com>,
-	linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Cc: pierluigi.p@variscite.com,
-	Stefano Radaelli <stefano.r@variscite.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
+        Mon, 16 Nov 2026 10:25:02 -0800 (PST)
+Date: Mon, 16 Nov 2026 19:25:01 +0100
+From: Stefan Eichenberger <eichest@gmail.com>
+To: Mehmet Fide <mehmet.fide@gmail.com>
+Cc: Andi Shyti <andi.shyti@kernel.org>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Subject: [PATCH v2 1/1] arm64: dts: imx8mm-var: Add Cortex-M4 support
-Date: Mon, 16 Nov 2026 19:03:33 +0100
-Message-ID: <20261116180333.43440-1-stefano.r@variscite.com>
-X-Mailer: git-send-email 2.47.3
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
+	linux-i2c@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	mehmet.fide@screeningeagle.com
+Subject: Re: [PATCH] i2c: imx: keep the error of a failed read
+Message-ID: <avtKfW6vYmwl6D-s@eichest-laptop>
+References: <20261116125940.1368194-1-mehmet.fide@gmail.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -106,225 +103,62 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261116125940.1368194-1-mehmet.fide@gmail.com>
 
-From: Stefano Radaelli <stefano.r@variscite.com>
+On Mon, Nov 16, 2026 at 01:59:40PM +0100, Mehmet Fide wrote:
+> From: Mehmet Fide <mehmet.fide@screeningeagle.com>
+> 
+> When the count byte of an SMBus block read is larger than
+> I2C_SMBUS_BLOCK_MAX, i2c_imx_isr_read_block_data_len() sets -EPROTO and
+> fails the read. The read of I2DR that took the count byte has started
+> the reception of one more byte, and its interrupt comes in while the
+> state is IMX_I2C_STATE_FAILED. i2c_imx_master_isr() has no case for
+> that state, so the default case replaces -EPROTO with -EINVAL.
+> 
+> Ignore interrupts in IMX_I2C_STATE_FAILED so that the first error is
+> returned.
+> 
+> Fixes: 5f5c2d4579ca ("i2c: imx: prevent rescheduling in non dma mode")
+> Signed-off-by: Mehmet Fide <mehmet.fide@screeningeagle.com>
+> ---
+> 
+> Notes:
+>     Tested on a Colibri VF50 on the Iris carrier, kernel at this base plus
+>     "i2c: imx: acknowledge the count byte of an atomic block read" and
+>     "i2c: imx: do not acknowledge the last byte of a block read of one
+>     byte", with the M41T0 RTC at 0x68. A test-only hook passed the messages
+>     that i2c_smbus_xfer_emulated() builds for a block read to the adapter,
+>     alone and followed by a one byte read. Register 0x03 (0xae) as count
+>     byte: without the patch -EINVAL 40 of 40, and a print in the default
+>     case showed state IMX_I2C_STATE_FAILED with -EPROTO each time; with it
+>     -EPROTO 100 of 100, as the atomic read returns. Count bytes of 0, 1 and
+>     0x13 read the same bytes as before, and the bus works after each
+>     failed read.
+> 
+>  drivers/i2c/busses/i2c-imx.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
+> index ccf08cd63151..c7fef98934d4 100644
+> --- a/drivers/i2c/busses/i2c-imx.c
+> +++ b/drivers/i2c/busses/i2c-imx.c
+> @@ -1142,6 +1142,9 @@ static irqreturn_t i2c_imx_master_isr(struct imx_i2c_struct *i2c_imx, unsigned i
+>  		wake_up(&i2c_imx->queue);
+>  		break;
+>  
+> +	case IMX_I2C_STATE_FAILED:
+> +		break;
+> +
+>  	default:
+>  		i2c_imx->i2csr = status;
+>  		i2c_imx->state = IMX_I2C_STATE_FAILED;
+> 
+> base-commit: 25e7ab89f4774b0f842cee0e8a20c11f755924d5
+> -- 
+> 2.56.0
 
-Add Cortex-M4 configurations for DART-MX8M-MINI on Sonata and
-VAR-SOM-MX8M-MINI on Symphony.
+Looks good as well, thanks.
 
-Share the reserved memory and remoteproc configuration through a common
-include, and add overlays and combined -m4 DTBs for remoteproc and RPMsg
-support.
-
-Reserve ECSPI1, I2C4, PWM3 and UART3 for the Cortex-M4 firmware. On Sonata,
-also disable the buttons and PCIe, which depend on GPIO expanders on
-I2C4.
-
-Signed-off-by: Stefano Radaelli <stefano.r@variscite.com>
----
-This patch depends on commit ebb21cc5d1c0
-("dt-bindings: remoteproc: imx_rproc: Document memory-region-names to avoid implicit ABI")
-for validation of the new memory-region-names property:
-https://lore.kernel.org/r/20261023-memory-region-name-v9-1-ad597887dfe9@nxp.com
-
-v1->v2:
- - Add memory-region-names as requested by Frank Li.
- - Convert the Sonata M4 configuration to an overlay, so both boards use
-   the same approach and the overlays can be reused across board variants.
-
- arch/arm64/boot/dts/freescale/Makefile        |  9 +++
- .../dts/freescale/imx8mm-var-common-m4.dtsi   | 62 +++++++++++++++++++
- .../freescale/imx8mm-var-dart-sonata-m4.dtso  | 49 +++++++++++++++
- .../freescale/imx8mm-var-som-symphony-m4.dtso | 31 ++++++++++
- 4 files changed, 151 insertions(+)
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-var-common-m4.dtsi
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-var-dart-sonata-m4.dtso
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-var-som-symphony-m4.dtso
-
-diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index cfd548284358..c542613ed3ea 100644
---- a/arch/arm64/boot/dts/freescale/Makefile
-+++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -245,9 +245,18 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mm-prt8mm.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mm-tqma8mqml-mba8mx.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mm-tx8m-1610-moduline-iv-306-d.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mm-tx8m-1610-moduline-mini-111.dtb
-+
-+imx8mm-var-dart-sonata-m4-dtbs := imx8mm-var-dart-sonata.dtb imx8mm-var-dart-sonata-m4.dtbo
- dtb-$(CONFIG_ARCH_MXC) += imx8mm-var-dart-sonata.dtb
-+dtb-$(CONFIG_ARCH_MXC) += imx8mm-var-dart-sonata-m4.dtb
-+dtb-$(CONFIG_ARCH_MXC) += imx8mm-var-dart-sonata-m4.dtbo
-+
-+imx8mm-var-som-symphony-m4-dtbs := imx8mm-var-som-symphony.dtb imx8mm-var-som-symphony-m4.dtbo
- dtb-$(CONFIG_ARCH_MXC) += imx8mm-var-som-symphony.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mm-var-som-symphony-legacy.dtb
-+dtb-$(CONFIG_ARCH_MXC) += imx8mm-var-som-symphony-m4.dtb
-+dtb-$(CONFIG_ARCH_MXC) += imx8mm-var-som-symphony-m4.dtbo
-+
- dtb-$(CONFIG_ARCH_MXC) += imx8mm-venice-gw71xx-0x.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mm-venice-gw72xx-0x.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mm-venice-gw73xx-0x.dtb
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-var-common-m4.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-var-common-m4.dtsi
-new file mode 100644
-index 000000000000..ba2457d0ec91
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-var-common-m4.dtsi
-@@ -0,0 +1,62 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Common Cortex-M4 configuration for Variscite i.MX8M Mini modules
-+ *
-+ * Link: https://www.variscite.com/
-+ *
-+ * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com/
-+ *
-+ */
-+
-+#include <dt-bindings/clock/imx8mm-clock.h>
-+
-+&{/} {
-+	#address-cells = <2>;
-+	#size-cells = <2>;
-+
-+	reserved-memory {
-+		#address-cells = <2>;
-+		#size-cells = <2>;
-+		ranges;
-+
-+		vdev0vring0: vdev0vring0@40000000 {
-+			reg = <0 0x40000000 0 0x8000>;
-+			no-map;
-+		};
-+
-+		vdev0vring1: vdev0vring1@40008000 {
-+			reg = <0 0x40008000 0 0x8000>;
-+			no-map;
-+		};
-+
-+		rsc_table: rsc-table@400ff000 {
-+			reg = <0 0x400ff000 0 0x1000>;
-+			no-map;
-+		};
-+
-+		vdev0buffer: vdev0buffer@40400000 {
-+			compatible = "shared-dma-pool";
-+			reg = <0 0x40400000 0 0x100000>;
-+			no-map;
-+		};
-+
-+		m4_reserved: m4@7e000000 {
-+			reg = <0 0x7e000000 0 0x1000000>;
-+			no-map;
-+		};
-+	};
-+
-+	imx8mm-cm4 {
-+		compatible = "fsl,imx8mm-cm4";
-+		clocks = <&clk IMX8MM_CLK_M4_CORE>;
-+		mbox-names = "tx", "rx", "rxdb";
-+		mboxes = <&mu 0 1
-+			  &mu 1 1
-+			  &mu 3 1>;
-+		memory-region = <&vdev0buffer>, <&vdev0vring0>, <&vdev0vring1>,
-+				<&m4_reserved>, <&rsc_table>;
-+		memory-region-names = "vdev0buffer", "vdev0vring0", "vdev0vring1",
-+				      "m4-reserved-ddr", "rsc-table";
-+		syscon = <&src>;
-+	};
-+};
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-var-dart-sonata-m4.dtso b/arch/arm64/boot/dts/freescale/imx8mm-var-dart-sonata-m4.dtso
-new file mode 100644
-index 000000000000..dacc845e53ec
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-var-dart-sonata-m4.dtso
-@@ -0,0 +1,49 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Cortex-M4 support for Variscite DART-MX8M-MINI on Sonata-Board
-+ *
-+ * Link: https://variscite.com/carrier-boards/sonata-board/
-+ *
-+ * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com/
-+ *
-+ */
-+
-+/dts-v1/;
-+/plugin/;
-+
-+#include "imx8mm-var-common-m4.dtsi"
-+
-+/* The buttons use a GPIO expander on I2C4. */
-+&{/gpio-keys} {
-+	status = "disabled";
-+};
-+
-+/* Reserve the peripherals used by the Cortex-M4 firmware. */
-+&ecspi1 {
-+	status = "disabled";
-+};
-+
-+/*
-+ * Keep the touchscreen enabled without its optional reset GPIO, since the
-+ * GPIO expander on I2C4 is unavailable to Linux.
-+ */
-+&ft5x06_ts {
-+	reset-gpios = <0>;
-+};
-+
-+&i2c4 {
-+	status = "disabled";
-+};
-+
-+/* The PCIe reset uses a GPIO expander on I2C4. */
-+&pcie0 {
-+	status = "disabled";
-+};
-+
-+&pwm3 {
-+	status = "disabled";
-+};
-+
-+&uart3 {
-+	status = "disabled";
-+};
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-var-som-symphony-m4.dtso b/arch/arm64/boot/dts/freescale/imx8mm-var-som-symphony-m4.dtso
-new file mode 100644
-index 000000000000..f2a1618edcf5
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-var-som-symphony-m4.dtso
-@@ -0,0 +1,31 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Cortex-M4 support for Variscite VAR-SOM-MX8M-MINI on Symphony-Board
-+ *
-+ * Link: https://variscite.com/carrier-boards/symphony-board/
-+ *
-+ * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com/
-+ *
-+ */
-+
-+/dts-v1/;
-+/plugin/;
-+
-+#include "imx8mm-var-common-m4.dtsi"
-+
-+/* Reserve the peripherals used by the Cortex-M4 firmware. */
-+&ecspi1 {
-+	status = "disabled";
-+};
-+
-+&i2c4 {
-+	status = "disabled";
-+};
-+
-+&pwm3 {
-+	status = "disabled";
-+};
-+
-+&uart3 {
-+	status = "disabled";
-+};
--- 
-2.47.3
-
+Reviewed-by: Stefan Eichenberger <eichest@gmail.com>
