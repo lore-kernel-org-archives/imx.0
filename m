@@ -1,93 +1,87 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794839409;
-	b=GwQvAFiPU04uPH6WM2jUs9z6wmDeu4hMLN8Sqskx7dRacOPq+C8HcckThLLQ0/zFW8Ct
-	 wYOQPiFYdZd9TBk1/wJTnDVFbzTKA46eNvcc1c23w/NX6mv2UV6wmjn8OF4BAeB19U2Zh
-	 5RwTkzBZHy47g4vrb/oJAxGB3wkQzWGJ9MyVlbkdFCI6XZ6UVI3BHsP3+REqZW8SSuvzh
-	 gFzEinRTvJEQG/iVEqM7veHjpNe+6sHB0vOue3SZPdNdfkRQKHafqm2t0DZdKALVlmy58
-	 LlQvdOX2/d7A9sm7kLRAa+M279MZCnsD3rZi5HeMWQFhRdWl41Oo4nxWam0B9XPhyOA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794839409;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=oElFm/yj2o3LRHDrA9VBkjg9/gf3iwVC8tnrYXPGEtY=;
-	b=ttqUQ3lRUBQW7e92gb15/p52iXcfT0SxoB9L53igOlvP8J33ohM2K+RJFWxrQ38NqCVx
-	 VplC+k+6IXFRDFBpm57jfiO3mDSFo4I3HNvakuqE4jIuMKrNXjNyACf1XkSlvDdXCBlkB
-	 qM7aJH4s7G0FtZ+vGI+GzWo8EoxPGBmXvz1x/SDz36VHmZnLo7gVjIoCh1jzpLeHF4s+W
-	 1RqoNmXiIIRS1A05Zt56AIWdIx4Xp7zrQclwaGLaa0vRJYwhKJxSC9p2OuXA6hIxDDx05
-	 E9SLNx9SOwN2jiUjZMNxJRMWYEomKR12byXnYE0IxCVRmNACwMqJagvhugTAeaEsx1A==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=pengutronix.de;
-	spf=pass smtp.mailfrom=pengutronix.de;
-	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=bM2egM1P;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794840377;
+	b=dPRBuQqo9CrjQCNeSOkL08Ho/jprNY/sZuOQFOPS/suiYW6IqN8JdfGOV4vazaP7EYS6
+	 PKjRb4IiFjx88lVx92U3bb/52dfC9SAl1CewaXI6ylgjF+FYvcGVEp+EEtdtE5f8A66dg
+	 Uu0QCL33ZauVMvvB+/lVVJkWwEu3NCy5h9w7Mlrd9TavzQCrqTbuby2ZYZQuBjOK8GWzz
+	 eVTMljQ87iM2LnxKJTc9W3MYk+eqBAXZkxIPGPD7nt7uxfUyEdUOcNHQNtjjG3YCgEasF
+	 ju0yPFUXHNrDEwrp5c+r+MuGng+ETiE/sBBVPTYeiVExLMxp5BiRcIeCnfUICKC9i8w==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794840377;
+	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:To:Cc:
+	 Subject:In-Reply-To:References:User-Agent:Date:Message-ID:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-Last-TLS-Session-Version;
+	bh=FeipBFfhGUrMTKnujrvxDjavPU7yfgD2WlGNa9kNguw=;
+	b=T3QN5BXfB1LFz0VY+HMyt04wE9U2DONA4pPIWWgoQuEqWzt5BHEf3CVwIflmHKv8dNC7
+	 wKOv0w17E60BaOk2WRmydpAOmXq/bvwPlfza42g/n6wRqEate4qWqRWat1MKbDezLXicA
+	 ciCOnJKPQ1wtUEd0cUqE0NYNioFISUIOEGNuxou6FRRj71ToBIKhncm97zISkhtYVHIWJ
+	 /k7+6XoxojD4w3HNoQ235BZzku+MDQzUTmMgMS6JRQtEK85/NZjCR3OBJ4KRY9hyYrI4O
+	 SEofwc81oDtLDZngCHuHqGDNyL85K+DG0Tn10W+Ff11tJiVweeR6ognMfTKhhoqa07g==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=bootlin.com;
+	spf=pass smtp.mailfrom=bootlin.com;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=DnkCEYsm;
+	arc=none smtp.remote-ip=185.171.202.116
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13913606A88B
-	for <imx@lists.linux.dev>; Mon, 16 Nov 2026 14:30:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 13913606A88B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13B33606A333;
+	Mon, 16 Nov 2026 14:46:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 13B33606A333
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=bM2egM1P
-Received: from dude04.red.stw.pengutronix.de (dude04.red.stw.pengutronix.de [IPv6:2a0a:edc0:0:1101:1d::ac])
-	(Authenticated sender: relay-from-dude04.red.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 2382720059B;
-	Mon, 16 Nov 2026 15:30:02 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1794839402;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=oElFm/yj2o3LRHDrA9VBkjg9/gf3iwVC8tnrYXPGEtY=;
-	b=bM2egM1PsJ6ui+EYrbwMd/MGeBJQrXZMVba9q4erp8UXUAkyuKuF/R+vRZONyam4Rtyfmy
-	39SXrCn00xVz8fzfBSkOkTK8GPAjUjSCzEsVM3YbbvUzPZY0k8jcFlSBwGuETIbN5OL9/F
-	IjgaPxmhn7hvtY2j7DadlA80JvkUQeG3jvOvJifeZjAaqIVGJw0xOTy2Z5nHMJ/IJDnPGb
-	SQivj4RQTVKt5O+ieLj/77ZzrzjjhC3MWPFX3CX71xtHmCkDaGS8RyhLKTMfeX5yZMdy/9
-	UZAfEC3p/YlLUrMep5dp5Z68KAmuYVCvW/87OQ8b2L29lNF70DuYUaS99k9WlA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1794839402;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=oElFm/yj2o3LRHDrA9VBkjg9/gf3iwVC8tnrYXPGEtY=;
-	b=eIQ9LwT4ieKpgMveJnSzLLGvXbyTn2kfSNuOt7ZPLfH6LUMLEeXcRYIed4kk9RpraTOpa6
-	Cgd3QVvx9XVwdi98oAa0EFA/ptyoUzJREkJz5c31DSslYI02lZzHdPR11SzOojS2JdPw0z
-	pGCpDH7e8FS3WWeYIBj/UlsoCFD4+Ztb51SKbtwA57bCEiINy6iPkd+9gwjVj8wZWd+Saj
-	aBTCyMTiGPPdTvNBvChxMl+N6x1si7y8EYFbzeacJGwijlggjxypa1GgcwyuxHsb3HfHZZ
-	9lqss8IhrsqdOs/aL5/u1dGz6ndQ/crdjnI/AvG88/ryIx/6efl4cW/bebMoOg==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1794839402; a=rsa-sha256;
-	cv=none;
-	b=CiCNMn6J9bOGe2ECG93EpnChs2AHhFZHCJ+N3GdC4ng485kr69z8sIPDJIhnNnJUFMVh5I
-	NQbCkdAFbQW50yq/0IHkXWh7TdbURVHTFTtBtLbTLw6aLY12iNRtvvolzJ+dhjTOY4Q5RF
-	gfP8jH+ACg1TUb/3VvvPfOyG0Lpg41C3ZxW4h9vb+SUxEhFfYMDZeRa0duHhlE0O3zrs2S
-	NbT32RDx1MtTr4XaJ2fyw8Yo6mdCYbh9e0YS/qEWOEtEU0MnVNlwLAmgmBlRRNdJ214Il+
-	LgnAPMd4nxRrIywjRuzPsYyQc+YcQKUVGJylfDUcPSy8GgsbrdVDBlX7xvjA0Q==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=relay-from-dude04.red.stw.pengutronix.de smtp.mailfrom=rhi@pengutronix.de
-Received: by dude04.red.stw.pengutronix.de (Postfix, from userid 1059)
-	id 17688380329; Mon, 16 Nov 2026 15:30:02 +0100 (CET)
-From: Roland Hieber <rhi@pengutronix.de>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
-	imx@lists.linux.dev (open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
-	linux-arm-kernel@lists.infradead.org (moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
-	linux-kernel@vger.kernel.org (open list)
-Cc: Roland Hieber <rhi@pengutronix.de>,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Subject: [PATCH] arm64: dts: imx8mp-skov: fix input supply properties
-Date: Mon, 16 Nov 2026 15:29:09 +0100
-Message-ID: <20261116142912.3011357-2-rhi@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=DnkCEYsm
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 12484C4EFD7;
+	Mon, 16 Nov 2026 14:46:19 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 05A116023F;
+	Mon, 16 Nov 2026 14:46:15 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id CCE0B11BC1D59;
+	Mon, 16 Nov 2026 15:45:53 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1794840372; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=FeipBFfhGUrMTKnujrvxDjavPU7yfgD2WlGNa9kNguw=;
+	b=DnkCEYsmhyrHl8FqobFTXDmDzhl/fQVyzgPFYqGeJ/pzGE8yt5iPxVrWFIUIkbforPsa4l
+	GaGpgOWSSm/5ZPK9XXRRoE3Uzk1PTzQ3/Pl07rFQN32NFyx83oX6jA8Axf1MrenlwLmqB0
+	v05puuobZikiVJ4K9QJYcQP8zzJ/6YXEJADgxLA4TEukf5FZtnlWK+OgZOm7+PXtlGzOgK
+	9EFUd0wgr/lY4Vwt2puSTRk6hqt69U3AAzfchzLqnu+ErLxLhBPQhnwVpVW2wqIAWS7wXg
+	55f1sMKf9JvHcpcRN3sG3ZMd1Zaov8cANlYB99R/KUjmp6AexywEIBlsdBsnEQ==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: sashiko-bot@kernel.org
+Cc: Frank.Li@oss.nxp.com,  "Vignesh Raghavendra" <vigneshr@ti.com>,  "Tudor
+ Ambarus" <tudor.ambarus@linaro.org>,  "Richard Weinberger"
+ <richard@nod.at>,  "Kyungmin Park" <kyungmin.park@samsung.com>,  "Nicolas
+ Ferre" <nicolas.ferre@microchip.com>,  "Alexandre Belloni"
+ <alexandre.belloni@bootlin.com>,  "Claudiu Beznea"
+ <claudiu.beznea@tuxon.dev>,  "Han Xu" <han.xu@nxp.com>,  "Keguang Zhang"
+ <keguang.zhang@gmail.com>,  "Vladimir Zapolskiy" <vz@mleia.com>,  "Piotr
+ Wojtaszczyk" <piotr.wojtaszczyk@timesys.com>,  "Maxime Coquelin"
+ <mcoquelin.stm32@gmail.com>,  "Alexandre Torgue"
+ <alexandre.torgue@foss.st.com>,  "Rosen Penev" <rosenp@gmail.com>,  "Frank
+ Li" <Frank.Li@nxp.com>,  "Wentao Liang" <vulab@iscas.ac.cn>,  Rob Herring
+ (Arm) <robh@kernel.org>,  "Alok Tiwari" <alok.a.tiwari@oracle.com>,  "Chen
+ Ni" <nichen@iscas.ac.cn>,  "Runyu Xiao" <runyu.xiao@seu.edu.cn>,  "Hemanth
+ Selam" <hemanth.selam@gmail.com>,  "Pengpeng Hou" <pengpeng@iscas.ac.cn>,
+  Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= (The Capable Hub)
+ <u.kleine-koenig@baylibre.com>,
+  "Triet Hoang" <triet.hoang.dev@gmail.com>,  open list:HYPERBUS SUPPORT
+ <linux-mtd@lists.infradead.org>,  open list:FREESCALE GPMI NAND DRIVER
+ <imx@lists.linux.dev>,  moderated list:ARM/STM32 ARCHITECTURE
+ <linux-stm32@st-md-mailman.stormreply.com>,
+  sashiko-reviews@lists.linux.dev,  vkoul@kernel.org,  Frank.Li@kernel.org
+Subject: Re: [PATCH 1/1] mtd: use dmaengine_desc_set_callback()
+In-Reply-To: <sashiko-outbox-193928@kernel.org> (sashiko-bot@kernel.org's
+	message of "Mon, 02 Nov 2026 18:21:00 +0000")
+References: <20261102181406.3994422-1-Frank.Li@oss.nxp.com>
+	<sashiko-outbox-193928@kernel.org>
+User-Agent: mu4e 1.12.12; emacs 30.2
+Date: Mon, 16 Nov 2026 15:45:53 +0100
+Message-ID: <87wlqcrg0u.fsf@bootlin.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -97,98 +91,28 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Last-TLS-Session-Version: TLSv1.3
 
-The nxp,pca9450c node used the non-standard 'vin-supply' binding until now.
-Upstream commit 4c33cef58965eb655a0a ("regulator: pca9450: link regulator
-inputs to supply groups") added support for 'in*-supply' bindings, so move
-to this standardized binding to fix errors on boot:
+Hello Frank!
 
-  nxp-pca9450 0-0025: Failed to create device link (0x180) with supplier
-    regulator-5v-p for
-    /soc@0/bus@30800000/i2c@30a20000/pmic@25/regulators/LDO1
+On 02/11/2026 at 18:21:00 GMT, sashiko-bot@kernel.org wrote:
 
-Suggested-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Signed-off-by: Roland Hieber <rhi@pengutronix.de>
----
- arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+> Thank you for your contribution! Sashiko AI review found 2 potential issu=
+e(s) to consider:
+> - [High] mtd: implicit declaration of dmaengine_desc_set_callback()
+> breaks build
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi
-index 5453e590f64f..1c97f2c2873a 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi
-@@ -275,13 +275,16 @@ pmic@25 {
- 		pinctrl-0 = <&pinctrl_pmic>;
- 		interrupts-extended = <&gpio1 3 IRQ_TYPE_EDGE_RISING>;
- 		priority = <200>;
-+		inl1-supply = <&reg_5v_p>;
-+		inb13-supply = <&reg_5v_p>;
-+		inb26-supply = <&reg_5v_p>;
-+		inb45-supply = <&reg_5v_p>;
- 
- 		regulators {
- 			reg_vdd_soc: BUCK1 {
- 				regulator-name = "VDD_SOC";
- 				regulator-min-microvolt = <850000>;
- 				regulator-max-microvolt = <850000>;
--				vin-supply = <&reg_5v_p>;
- 				regulator-boot-on;
- 				regulator-always-on;
- 				regulator-ramp-delay = <3125>;
-@@ -291,7 +294,6 @@ reg_vdd_arm: BUCK2 {
- 				regulator-name = "VDD_ARM";
- 				regulator-min-microvolt = <850000>;
- 				regulator-max-microvolt = <1000000>;
--				vin-supply = <&reg_5v_p>;
- 				regulator-boot-on;
- 				regulator-always-on;
- 				regulator-ramp-delay = <3125>;
-@@ -303,7 +305,6 @@ reg_vdd_3v3: BUCK4 {
- 				regulator-name = "VDD_3V3";
- 				regulator-min-microvolt = <3300000>;
- 				regulator-max-microvolt = <3300000>;
--				vin-supply = <&reg_5v_p>;
- 				regulator-boot-on;
- 				regulator-always-on;
- 			};
-@@ -312,7 +313,6 @@ reg_vdd_1v8: BUCK5 {
- 				regulator-name = "VDD_1V8";
- 				regulator-min-microvolt = <1800000>;
- 				regulator-max-microvolt = <1800000>;
--				vin-supply = <&reg_5v_p>;
- 				regulator-boot-on;
- 				regulator-always-on;
- 			};
-@@ -321,7 +321,6 @@ reg_nvcc_dram_1v1: BUCK6 {
- 				regulator-name = "NVCC_DRAM_1V1";
- 				regulator-min-microvolt = <1100000>;
- 				regulator-max-microvolt = <1100000>;
--				vin-supply = <&reg_5v_p>;
- 				regulator-boot-on;
- 				regulator-always-on;
- 			};
-@@ -330,7 +329,6 @@ reg_nvcc_snvs_1v8: LDO1 {
- 				regulator-name = "NVCC_SNVS_1V8";
- 				regulator-min-microvolt = <1800000>;
- 				regulator-max-microvolt = <1800000>;
--				vin-supply = <&reg_5v_p>;
- 				regulator-boot-on;
- 				regulator-always-on;
- 			};
-@@ -339,7 +337,6 @@ reg_vdda_1v8: LDO3 {
- 				regulator-name = "VDDA_1V8";
- 				regulator-min-microvolt = <1800000>;
- 				regulator-max-microvolt = <1800000>;
--				vin-supply = <&reg_5v_p>;
- 				regulator-boot-on;
- 				regulator-always-on;
- 			};
-@@ -348,7 +345,6 @@ reg_nvcc_sd2: LDO5 {
- 				regulator-name = "NVCC_SD2";
- 				regulator-min-microvolt = <1800000>;
- 				regulator-max-microvolt = <3300000>;
--				vin-supply = <&reg_5v_p>;
- 				regulator-boot-on;
- 				regulator-always-on;
- 			};
+Should this land after DMA core changes have been merged? I have too
+many patches in my inbox atm, so I will drop this one, please re-send it
+whenever it can be applied and I will happily take it (with the commit
+log fixed).
+
+> - [Low] mtd: commit message inaccurately states change is across sound
+> drivers
+
+:-)
+
+Cheers,
+Miqu=C3=A8l
