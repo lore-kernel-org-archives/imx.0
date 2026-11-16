@@ -1,13 +1,13 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.159.45
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.84.68
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794848055;
-	b=2yyb/n3v7/VWNNaH6XQHzqgt0QcfT2jtc1JOlEX0Q1UYPHloICtzz6F+CvSjxsgBHoCl
-	 pAfXCz1emEBfq70OdlHMKws+uSncaumEtszg/PJmG/zDtWEQppO1eQI5QD6fVQpOomMKk
-	 8ksQfsoKru0loO8wvCUDF+KT9N7pp+5Z9Bl7rQcWWSoFhD96oCyHuH/WvJutM8V+a10Wc
-	 Uxrja4d6jUNUTsQm0Q1Qp+ooIbjPhQ4F0oG1s/5Lj4g0MtEyCHIBA8rBu8vVppgosflZE
-	 RnZ6QhL4y6kj3tOG8IwqApBKSiHNn1MG9K7E24uWRHTlNAabQlMFpB556s6+4/xMPPw==
+	t=1794848159;
+	b=4shJ6c9ndODrCtCNDTzKhx7U9cKFWWx/kAa+V9dcRqCXQzaY77+3BQU99JvjrQLg1nTW
+	 QVrAUxYmgqBaSQKggAgdUxgIaOIyiY7pnh1oPAp8yrF5QXXKfl7yTlf/nWC8R/FD7rmsp
+	 sS39hB7HEzYMQLDPrf6cK670yz8FhQSqUe3RPg+EJrut+iTOFGVK7HTgObqTzJjqYuK7f
+	 0cTXwzYajsgyDJv+DRBquFMTGVQJLnlHMX6v0FKTaiPy4A5x6nTA2d2a9QVPDeBlz2Z52
+	 xWFqiyOh1TaxAAHLMjAoDgwS/ZXcal7j6QDQY1Fp2EkgMmATthh7NLbz/4kXUfqW3Zg==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794848055;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794848159;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
 	 Subject:Message-ID:References:Content-Type:Content-Disposition:
 	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
@@ -24,79 +24,84 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
 	 X-MS-Exchange-CrossTenant-UserPrincipalName:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=xSrVfB9D5irp0CfUCRWxc9PFSLvScyMJMovECZufq0U=;
-	b=OnAyXAWDQH3BzNkqEBf2pWKaX7tO070z+0hVgY0rAUxauCFT/yuBt7QyecvfyTPc3r1Z
-	 6W52tYKN65PYbuOX/BsyH0g5ZjUgn7NvMqL8H0/m5Q/C15ovAeLoapMqGcs05JRRaEtGL
-	 f74P+aYFcb+1/C9fm5BRhel5ZHAtQoFT/SOFF96PGZHulDbrfgqePcl46SI7qnlnZIrkw
-	 TkQiM8b+hspqJBHqbtarod6oPvrXv0/7IRKp2xBF1Hr18r1nygUghkv9ipKqrLSakec/1
-	 ja919nqMN2pG70fJEJst3EUFWz5GnmbvhmVXUqON+L2bo1Bl8WxtIEzKTPMUHA2GnIw==
+	bh=b5jmQ+tC0YavRr54vIVtQOf5BBZ6aEk4FcFpuCpy7PQ=;
+	b=RZP7H+7RfpmrxRFUq0jjyQDPL5JwuiBkFpr8eC7A7n8WIVeyiajPrPCN11+AgAUkO85Z
+	 GWrP1hnSl0yjWkO2Hw1lOF/9mJsNLSn1W9vh1kdI2x07xTtw/oXNAmtrXQbThHPWiVBoW
+	 ppkXVHMJfEZQER6B11l2sPiexzGaBpG3ph77QqrKScQIVADnfzansYOAicMxd5omzqCch
+	 CIMa4DCz/wDdJhPnDjRjA+NL0ieMp5A4uB0PEaNrGTpS9DzgEwcT/BJn04Zlg9OTDpMKQ
+	 D41PI7DbcNO/ZfKoTnfRwFOiJD7oSWq8BOOlzvulvKu5fzMSnV0PKOb4Xz3u2WDzv6w==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=oss.nxp.com;
 	spf=pass smtp.mailfrom=oss.nxp.com;
-	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=ejDtPRXR;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.159.45
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013045.outbound.protection.outlook.com [40.107.159.45])
+	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=Q4A7PA8H;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.84.68
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010068.outbound.protection.outlook.com [52.101.84.68])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37615606A32A
-	for <imx@lists.linux.dev>; Mon, 16 Nov 2026 16:54:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 37615606A32A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52370606A32F;
+	Mon, 16 Nov 2026 16:55:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 52370606A32F
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=ejDtPRXR
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=Q4A7PA8H
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ccEHPgmX9K1sijWRySKB6W1F8utc/5pd2JG+CdEbiL+UIS/MhNwhv9/H4rvz/WGDNZxRAYiSlGNcSxvLbFgkGzESot8vSRXVYzy6nSpgwrFXpitx1oHJxS7x2M+iGnNH4Fu6d8KQIQMQZ7ADf59Yep1BT5uYcl5NobOc3aYLOYeVPD+1i1BO2Xzk8sO5h77GTbYvNgozelKTfSv6hKz9LMU50iR7TxImFvJ82ZBQoGztH5wWew779PKk9adUsHtNpCFWaHMqD6NwedYbYX3+2YpAVGyjSTQ4ubNQFF2n3TYihF9HeAOGzt9cppO7uHbiH4wDxVPfrUvdlAxzfbx2fQ==
+ b=RhO0wnRNJ3sDlFUG3wKMIMUlZivkMRvjmWXQyOKYJ4ibcaiFXYUq/3nm5Q75eeGeLsFg+jg2A1CvKt7GCtH6flpVo/bcbGXRhFSCDcn3STyzpbU2ef4Ctpux7fAqPt60itePriGeDPQe0Am7uVWAp3pOMcpTLQ1mBCR2wCdho173Eo1H2aWtxLXSubUw8p2T4rD6kulnueaX2j04jWOk8QJYrxa3VQx83UdPUIW5GxfBJhqdEBiGkyLtpLE9iDpTZyyjb0YK3fEAA9+vrnB/7sU5KiklZY63WDTcVf5fhNEaOIWvhMSp19jMkY1BH0UVZq7DpyDffj/5DpYenLr7gw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xSrVfB9D5irp0CfUCRWxc9PFSLvScyMJMovECZufq0U=;
- b=S0etp19UQmStXpvLoFGugkIMWZ2CK/Ds8IuZA9MzJkscz3XBkLh0PkwdM7kW99s5OvKO3VZX2GXxeucjwBnsPRF9Lmqt0USVGy4gozGkp5PXLdWmKixBMuqfwxcACv7jeC/sboB2u4SZ2Zt1SSEeiHqLabwoY8LFDHCfiJ1iSk5Wn06PKQBLtXW0RlvCwzcMCxN4Y48SEE3jtg7kqeYPkbA+5qLdhtIzIMT7+zL+km4pFsphxLp3f37OpQfArOnXNnLcQLF39SnThh1M9pw63hIT1RlUuy5sY3A/UGszcqfjOZivYA9paTghZTANmxpAwLpYqY1kj69JwXfvP4wwww==
+ bh=b5jmQ+tC0YavRr54vIVtQOf5BBZ6aEk4FcFpuCpy7PQ=;
+ b=tXSFoRJlqBhUBuORwj0fLXeh743Snzp8UZomoe/yqRo0iq83GxIw/0qsRXWbpSuABBDVeC4ltYmpHPs6Z0j3eqVMtpu6WL6Z3TKB+xRIQBIK9RUcgceqtyjaaciY3P3DUBJp3VXsidF6OqfNwflK9AnDfJXC06LmjJcnjxZzgRNBlT9wSRB8NSe2sHK7P+l+f6W3VZ6qqZUoiXJR0LD3pN2MrEv6kDQbUt+WEC8xBRFSY8wURCvkP+CzRNjs6+NBNVJ/1f9NaUsgeMj89ytWTzlAFOkixu3xrvkCgNe08mHGtAsV2hlZGN4WACW3aTwKbcoLScSt4Od83dXJPzpWGA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xSrVfB9D5irp0CfUCRWxc9PFSLvScyMJMovECZufq0U=;
- b=ejDtPRXR7h3/fXUZPATJsNWlaShjhAsHss/mSbzm1QU9UwCriQ1XQ02+nYbC1/FLLYP7In8eCzEF9CTPTsuFI5kLgLgEhvUw0P1hVh8lIW+9Iso0t34J6kR+Vm2F9u2JW5GDms0cHwzKW0lr4fnorTcKiILzf1cyU382A3LXuy5wahf+QMdrfkgcXfxa3s1lw6BJqjBzVvj3JSjDeSeEU1zpgZqoapLkYMeujEn3pf/SL6cmG4Sj1yT2abnoNB0mzT4h/o5yq9MMjKEzN+lSFSozpCKmESOUr8iYMS9ZDYroprW5CWUNgI0WsiPxOPY3BtwSeTZwXZGfoocLc//9jQ==
+ bh=b5jmQ+tC0YavRr54vIVtQOf5BBZ6aEk4FcFpuCpy7PQ=;
+ b=Q4A7PA8HR/071GfIxTnB3Clh5NpgF/ZOlAtE8XmP+Z7ueY7SyE0YrqAQGUWAaWVcYsLa3J0FAZTf+fBvupbkKbR0sq5Dhh4LpPWq/3KH3EV+R4kyMfdFmwbfI0+pUn2JOwE1kHM0FO4gGoKSDfsq3ESW83yQErj8hXqPSq9qID4gYVsOmbel7e/NokXWldevgtXSzNhj7a0Ui0tshvgcPUlWmTu+S66SXGZA91rgtdx/lVanlXEyXZVi6hlN1lEWAnHcbO7SUYCMUTj4IK8bUQC1Z2J9Wv767vMvDhzhcmYRVQKC+mFe1J/BbSQZ5ASLPCAShbHH3LXTECOylkOeVQ==
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
 Received: from MI3PR04MB12438.eurprd04.prod.outlook.com (2603:10a6:290:76::14)
- by PAXPR04MB8557.eurprd04.prod.outlook.com (2603:10a6:102:214::10) with
+ by PAXPR04MB8349.eurprd04.prod.outlook.com (2603:10a6:102:1bd::9) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.10; Mon, 16 Nov
- 2026 16:54:09 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.14; Mon, 16 Nov
+ 2026 16:55:55 +0000
 Received: from MI3PR04MB12438.eurprd04.prod.outlook.com
  ([fe80::c715:c32:8bb1:b70b]) by MI3PR04MB12438.eurprd04.prod.outlook.com
  ([fe80::c715:c32:8bb1:b70b%4]) with mapi id 15.21.0615.013; Mon, 16 Nov 2026
- 16:54:09 +0000
-Date: Mon, 16 Nov 2026 10:53:57 -0600
+ 16:55:55 +0000
+Date: Mon, 16 Nov 2026 10:55:42 -0600
 From: Frank Li <Frank.li@oss.nxp.com>
-To: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
-Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: Frank Li <Frank.Li@nxp.com>, Vinod Koul <vkoul@kernel.org>,
+	"Joerg Roedel (AMD)" <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+	Laxman Dewangan <ldewangan@nvidia.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	Thierry Reding <thierry.reding@kernel.org>,
+	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Loic Poulain <loic.poulain@oss.qualcomm.com>,
-	linux-media@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH v5 08/11] media: imx8-isi: Exclude RAW10/12/14 output
- formats on i.MX95
-Message-ID: <avs1JcPW9mtX1k0A@SMW015318>
-References: <20261116-isi_imx952-v5-0-46de1d24efd4@oss.nxp.com>
- <20261116-isi_imx952-v5-8-46de1d24efd4@oss.nxp.com>
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@kernel.org>,
+	Larisa IIeana Grigore <larisa.grigore@nxp.com>, imx@lists.linux.dev,
+	dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org,
+	iommu@lists.linux.dev, linux-tegra@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH v7 3/9] iommu: register the DMA channel bus for IOMMU
+ notifications
+Message-ID: <avs1jnMrYjHkQss3@SMW015318>
+References: <20261116-edma-iommu-v3-v7-0-32794ba8efbf@nxp.com>
+ <20261116-edma-iommu-v3-v7-3-32794ba8efbf@nxp.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261116-isi_imx952-v5-8-46de1d24efd4@oss.nxp.com>
-X-ClientProxiedBy: PH8PR05CA0022.namprd05.prod.outlook.com
- (2603:10b6:510:2cc::10) To MI3PR04MB12438.eurprd04.prod.outlook.com
+In-Reply-To: <20261116-edma-iommu-v3-v7-3-32794ba8efbf@nxp.com>
+X-ClientProxiedBy: PH5P220CA0008.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:510:34a::6) To MI3PR04MB12438.eurprd04.prod.outlook.com
  (2603:10a6:290:76::14)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -108,235 +113,109 @@ List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|PAXPR04MB8557:EE_
-X-MS-Office365-Filtering-Correlation-Id: 828be0f7-8ffa-4f89-3cdf-08df44023b8e
+X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|PAXPR04MB8349:EE_
+X-MS-Office365-Filtering-Correlation-Id: 119da20d-6b64-4518-0c92-08df44027a9d
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|7416014|376014|23010399003|366016|1800799024|18002099003|22082099003|3023799007|4143699003|11063799006|56012099006|10067099003|261026140227099003|261022105027099003|261028144727099003|261022075727099003|261021123027099003|261021121427099003|261009223027099003|261102123227099003;
+	BCL:0;ARA:13230040|1800799024|19092799006|376014|7416014|23010399003|366016|22082099003|18002099003|261009223027099003|4143699003|56012099006|11063799006|261102123227099003|261028144727099003|261026121527099003|261026140227099003|261022105027099003|261021121427099003|10067099003;
 X-Microsoft-Antispam-Message-Info:
-	v8N27usmRqNorMRbgVtihTbKfgO4KTUO6YFC0UdSgabcF45yqrAdK5UNDDn77UK+DnMQEmvCMX6LVD85Jb9m4l1Z3rjdE7y/oEzlyLEmdH2m3BAqqwuiSLkX+81bFOX//8MDj5/Nh75DWYoS32ro/HWzdigr6ynAyWWveIsiIro3MVkx4dSnZhUfwwLgl7tbz03iCG/6ZUiGqW86bsqsL6CXVHRjWkxZgOwlrhCENlXmaBIprqqI5P/xMpTrnDlQD3cXsoYqNG+1fA/h2K/9B4Q1sTa5YWDszejheD+Em0K8zCIv4XWb9Bb4xrjcaqevf3pCd1EBXRNVD2SgoFwGSZ1ULvVyEEBaRRULK+det2ZH7iwHXEx3bGkDgDXYgi5JtpQON7nuCK4TK0ou+kIut3bGoy6tye2qglKSpXHSvxiYY8vDwj5UKuzozX4+dHZSIXUh4InoIIlcL5kUCxAQ9ZuAt8Wg9j8Q4C5/hVkxnH4Buptj+BwxUhLQzZVcf67e16mYZdqNJjAtRQ+FviYXrjT6IUL+Li8tLGB6twmbNRUX7HDhRa5asumsZWkdhQB4ncYgDDBL6sVWAYIVpQH/VHRvYFTjq6MP+5ODJqKjL7979VyC5caWSDBcXekQBxFa2eU6iqGMRdbhyvJ+07OqzSwQnnobuqCUFs83MpE7Jc4=
+	lAS3hJTm0k+U9BC9qfaDDoOM5w4ciN0A1Gs4bh0RttiouLeDPk0QJWJrO+yvyGacHR/gaKyNWLELeyVRO/YAO7H1YBOiIAbVT00cd2riolj1W0b1RdZ0VkIwsFjGKy6cB52yIkRw+KlHpcHxMbA1S5472R+HT4M4VSPYwb7m6UcJ9Ml5Iqk6iq+uxXtMSNxWhosJPTNEHUrM49aNq8GRON+fbHW8zyEyXW6ICply4n6A0ksrylaJdKeUdtm/BUYwx0QZ9P/agvtkQZHKYcSv2fNoWF7/uPqTNluYet45p48zQJkadBCoCluHR5u1XbDjdhn+BMw5ZtcbKoQdHIqnjWOBYvxRY1BTkcZG28mp4LgDL9MvTSdlH2kL9G2jM+wMG1blfzwGz0WtVXG2Wr9LnHlxgYkWtzu3JWk1ONwYpFUg6EFfoCCbiy9mRdMJSWf3X2wpOoXYn5NCAM/MpGhPLqqCkHq45VuZZbcQyhGhpSvmgMEQpVLL/CLOvU39h3nYD2xjSX6+f2PrAy5LCkUsBpJxuSdCmP7XzuWuLr9EIexEY1ZCBhYonuIIjS1rcmlHEjUzm4qKBpL7D79Idb0/GUbcIQ59BYZgBIRmGVR8dLYZbKwmZZtOUjP4V9gHR7M5CdLHOD4/Ov928KzizmxnzucXhn/g9Rug9J2BTdmM0Xc=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(7416014)(376014)(23010399003)(366016)(1800799024)(18002099003)(22082099003)(3023799007)(4143699003)(11063799006)(56012099006)(10067099003)(261026140227099003)(261022105027099003)(261028144727099003)(261022075727099003)(261021123027099003)(261021121427099003)(261009223027099003)(261102123227099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(376014)(7416014)(23010399003)(366016)(22082099003)(18002099003)(261009223027099003)(4143699003)(56012099006)(11063799006)(261102123227099003)(261028144727099003)(261026121527099003)(261026140227099003)(261022105027099003)(261021121427099003)(10067099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?5u2E5xs4+BQd+FkwzVFB/XvJQCxnKRS7r50afidNxi5Vm8tUtVn1GzluiTL+?=
- =?us-ascii?Q?qerYTOlnPVN3uRoN4IEqB6gQu7nqNUFBdsYeGm1+J7wzgn6MZXea7x+Ody2i?=
- =?us-ascii?Q?AQM+TlgVJrucsxGBTX3pmcT7ai6lbyLsvWiWBiiTVM0cEUCoh736yA3w5AKE?=
- =?us-ascii?Q?xjFfLvHLxAvxYr9v3YREHwSYI79Ji5m2XTNVflrwei/z5BKrqCY/4Ar6UTYd?=
- =?us-ascii?Q?CGbSR8dY7Mg4q3vjKcUxTN1VjPB5Go9yqxzd7tUkq99StutOFdXOujVs0YLt?=
- =?us-ascii?Q?9Y1s/6n+f30kA0k0CVYhk859ELdquA6V5bLpMWbnLqrHQJcsXj845IvbLVQQ?=
- =?us-ascii?Q?Zs5axZcmxvUHcQQmDmBg7oFX9t+lXJL5AHPfSgcGa3tmDRvxUCnjA5i4nAvg?=
- =?us-ascii?Q?QQfMCJTP30awCdqn+8GkkPcEHO22+RRP9g3Fxl27kGfm83mgoyqy6rEx924c?=
- =?us-ascii?Q?PQ6AXPGI8Es7RWRFYHudJMCuVLLihIx1Ob05onJInAFpXF7mu1VF8qDkyTn0?=
- =?us-ascii?Q?m2bLAx47ZrCtHB3cAOLByKa4v1eokIh446llwiNbSz78vdKvF79N/Q8d20fC?=
- =?us-ascii?Q?HCkJCMdmfAb7mV0ch8KTQPoPjxhH9eTJUunLbLnn0ImTUkIge0HM1BalCAVU?=
- =?us-ascii?Q?65RpXS478YgCDnMvJhGtlE1pOxHgNoTVhWcl5m7A/zYx9Go28l82FkOZMPUq?=
- =?us-ascii?Q?6wEqcpSRtOqU9iOkDpkhFAKe9ubsI1wBWhmXnPkEy02FX9156bJZBNl31hkc?=
- =?us-ascii?Q?0jcFHemqxDHu8EtmMlAsnO+I4BnJqjSWm1xouTBY/aVTBQDUKgNPxTlQYG8t?=
- =?us-ascii?Q?j2s0wkS5J3BB7yPelPQ/VF+3yEMkWouSmLgN3z0TGwSJzi9aUxyA90GjjWux?=
- =?us-ascii?Q?WdSUHGSrd690c8bHh8M5RzGSaE34xSpvkD9AwLh4UHA3+PfRDgRY/6zUYKAn?=
- =?us-ascii?Q?yf5K4zh81Z/HS+KGycHgmxSRVKzCpgkNv+HJz+1CtClCKFSRofQGIUOqS0Vx?=
- =?us-ascii?Q?GXCarhRTzLVPRrzo0rud/oxKjAIZIgR03spAvwdBDLTqEataLGY11+P70Lqg?=
- =?us-ascii?Q?v/A6Q2kMFQ/9yd25bTD/jnq6qzHLMhV8ELysqluClEw3No1J9NKIdg8GKkNM?=
- =?us-ascii?Q?4eG3SXu/5jppKruXUD1/z24fDZNANQhRAzL8/sOURgNodGLrmXtppLZmh90j?=
- =?us-ascii?Q?Uwu1TjZFqGdBJt43gfZCLV/1TGSzb+DshmNQdfASt1/4l4odvyw5TrdKtLy8?=
- =?us-ascii?Q?fG3ZHo54da6mnHc4fdtJGacxrOcTCZkl84reuyHLaUaAq8b4eWCmr0x6+OYp?=
- =?us-ascii?Q?SjIxHYVg1YZ+zw6e3H7jYZ91CqDbwoKYyQSuPo4dRYnpcj6AECK984MrIT/t?=
- =?us-ascii?Q?xFDZxG1vKQCbMalwlFs4sCs//Z7OScxJA2eDpaTlJWrykJMLypNhHPzbYxSc?=
- =?us-ascii?Q?DLwJCxJd51PjfNWpfLlJd4lw+1fUIjEBfuU1AItjZzxK3rgYj+ghtqC/pFQ1?=
- =?us-ascii?Q?0mOmoBo9N8ao48NnxwxHgy+bIgWGQIp3TYvUxf8lN6uHmihAALHDJVJHvStm?=
- =?us-ascii?Q?2QWq3xf+4nCDdXdJaDPrvXdcpSbu+KqNkUhZBxJqnQw8vrM3H7VScDVfylBz?=
- =?us-ascii?Q?yq1PMRAz5mZnvcpeO7fL/RUJfIyUZgH72Iup38iLfGG+a+EWnPOCytIyjJ8q?=
- =?us-ascii?Q?wArvU2yAutG/jgCBCZeHATJvIhNGc3h0T/zKKT0vcSZj2jz8wXi4IjQUXvN3?=
- =?us-ascii?Q?W1iPFocJUrnpeinA3i+iT6vYgStTHRNGTEnQwI7qSLxkC0m8txIO?=
+	=?us-ascii?Q?JGgEbNQbgvQ81CtOmRcJ9ORJpgnTNh0aIpVwgSid8NerR1xuXR3e8hO1SRvA?=
+ =?us-ascii?Q?XfSeOdrS/q6IeEbv3NP2T3zx8LNtrf9mS6jArOQj/uD5LZImhFIYIHmpJBON?=
+ =?us-ascii?Q?JFdpg54DCiFHSmWe/yvplTA8RZ1RzjfNfuWLATbFckdohJxuM3lfSM3hTfPC?=
+ =?us-ascii?Q?DwwVJNaw5XSVy1/h3KTfOMofzahjfCJ/iemWgHcAQ6mPmggMRUQ/j/UDbk27?=
+ =?us-ascii?Q?ZbS38N21j18ClpEkWOpUdbv04aQut2HCPg+258bJi1tpyvzqaD0d4JeYS1i+?=
+ =?us-ascii?Q?2cDaKhli5DCv8Arn8j9WCyQ3j4ty5uYEXuorV9E7PsUFuf1130oBPkZoupKM?=
+ =?us-ascii?Q?zx8uQmV+0hy+FBVhOAKWpDOzkgJvpic6RPNq8Bd89RULgUw/VreaDijL9U1V?=
+ =?us-ascii?Q?AJHFhlzIzU2XqAHnvWdM2JRgZtXjke8kJl1ny/2RnkDA2Yzb/E/YW0lCB72h?=
+ =?us-ascii?Q?0dWqyMZcp6R6y3ydqM65m+RYAsRfHETFH8PbAj8e+nB4QEaqLg+dmN+uzAul?=
+ =?us-ascii?Q?AS8rcIMaxxGKJErBnT/+uCA793fvBf/MUhdqGTdJ6bwAQoGNnOB2Fw5CcZGv?=
+ =?us-ascii?Q?Vvh1jzdAAoJsHY31riC3ZMQu9BdGzs8NsOa1bU+8kOVTTLzTqPB4z7rX7OTi?=
+ =?us-ascii?Q?duNN3rOEf7ZVHz8fbbKSah2LYbqlN09x4T4Tiq9EAJ1Gk5G1QyBYmOCOVbA4?=
+ =?us-ascii?Q?t5ccvx4xZ9Lp4hm3nisJF5iPEnE96dLhywEftbj6dnTCID3txUuSUCFQ0ok3?=
+ =?us-ascii?Q?H3Ty4u4M6WaeANJpj7ZXwmfbQOpwmOiHXrIC7IvdMWgLA/jNwaEogGaRk0Al?=
+ =?us-ascii?Q?eLkU2iVQEQ3dsfta5gzRtvwodoruogw46qOhO76WXwmifwBdQd5Caduw59It?=
+ =?us-ascii?Q?9xFCn980v8rTMr3yS1U9HpmNCH41jBb9PNy/+hzgLB5Mv6RKWSLppDP5YD75?=
+ =?us-ascii?Q?qYcEZtO53gj67UGVzoVs138dS3SW+K+d6IydJUi4muRFM/ehPsp5mAz4w3c0?=
+ =?us-ascii?Q?CNHKV4WHXbAoiiVLbjAvuIpeh50EComq6QOaDnMuJ3zXySgqcCTzYUem/hkg?=
+ =?us-ascii?Q?UBh5Dj6LxbQWyH2fGtZXYC9kGJO8HxEeqJpIze34IrTf4oG7okO8Mubo/T8X?=
+ =?us-ascii?Q?Pqe8XusxSjtnfU0yc50w07ZBP5ZNpqgjDsMCOjPuLtzviixQCpgQ7+19zYZH?=
+ =?us-ascii?Q?AB/oIQWAIwRFu+vVuuSjfEiSA5DUc/XpcdTznD76RvprKxK3+lyceNPT2OBR?=
+ =?us-ascii?Q?U/jRoj0Y1Bvg///+EOJl8wKlLmxRE/BcVtCGm0zRAYVY23bgrP7oAuGTDH/p?=
+ =?us-ascii?Q?Sdvobiv/pOLUtO3AUU0HhwrgAnWNDUe3HRT1oArOFNhRFHqBTDcIN3ZS33R7?=
+ =?us-ascii?Q?RlFrNuSmeG6kltGMTSQYduKCdWnUBV4IZ+lkMf3f5gZyLbAJhB6ZiWqOHlHX?=
+ =?us-ascii?Q?EeydZjWgvgtAfZheLl5CkS7mf158Xk5AIiEURvGXkRFCne1PXleiZoQZCI2Z?=
+ =?us-ascii?Q?sQ8a9FRvOSdvG1Nue1VnLo4uP2ufi0wSWDHbZgPAI9F1C3FWV3fr/kWY6ef8?=
+ =?us-ascii?Q?3gvNNHpQJZQvy/QomcP4bXnWrnhsDyEClJcr5O1pJapjQ0/GFnmXjw9DJzUX?=
+ =?us-ascii?Q?5nfI1KkBUrL2mQs87Wx4Jh62vSXt3TS9mp7A2AhO7Fu+K4Z8vMDmuYlaNZCm?=
+ =?us-ascii?Q?nh97KmlOmf+fcPhOGEPjS7aBe6Rhtngx4xoqQ/74SF7s+bfqBxVatxdDJ3Yr?=
+ =?us-ascii?Q?Y6mJ1XyYsFAIB/X6uGFRzCsLwMte9aZZF1qTF1Jh9KwSOWkL3vO8?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 828be0f7-8ffa-4f89-3cdf-08df44023b8e
+X-MS-Exchange-CrossTenant-Network-Message-Id: 119da20d-6b64-4518-0c92-08df44027a9d
 X-MS-Exchange-CrossTenant-AuthSource: MI3PR04MB12438.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Nov 2026 16:54:09.1861
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Nov 2026 16:55:54.9741
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: b048nJ34JfGTfbTBGLmBsueYiBVKwvOqkYx0u/9X1RI2fLyXes30yzJ8BxPirYuWBxSMEHDRrToq4iipeqsJTdPyAZ+8+ISbb91uriob3WjV0Ub48Kn84d5yyKG23RDB
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8557
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4x7HfUm0jNGmjbLNC12fBqhhp1nx53ooSQD6xkbP/Ru0tco060G73bnYocr7oxXOr4f04VCX+nu6SguhnpJl3zCwd9xVXpNasxBWZpl0uEDL16zSbKVF38Fub50Ohe6k
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8349
 
-On Mon, Nov 16, 2026 at 11:28:26AM +0800, Guoniu Zhou wrote:
-> On i.MX95, the CSI formatter provides MSB-aligned RAW data to the ISI
-> via the Pixel Link. The RAW16 passthrough that older platforms use to
-> produce LSB-aligned output now passes through MSB-aligned data instead,
-> so it no longer produces correct V4L2-compatible output. Exclude
-> RAW10/12/14 from format enumeration on i.MX95.
+On Mon, Nov 16, 2026 at 11:05:24AM +0800, Peng Fan (OSS) wrote:
+> From: Peng Fan <peng.fan@nxp.com>
 >
-> Signed-off-by: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
+> DMA channel devices are about to be registered on a dedicated DMA channel
+> bus so that they get a properly balanced bus association before
+> device_register().
+>
+> Add that bus to iommu_buses[] so the IOMMU core installs its bus notifier
+> for it. This allows of_dma_configure() to probe a per-channel IOMMU and,
+> more importantly, lets BUS_NOTIFY_REMOVED_DEVICE release the IOMMU group
+> and domain when the channel device is unregistered.
+>
+> The dmaengine bus is registered from a core_initcall, before any IOMMU
+> driver can call iommu_device_register(), which iterates iommu_buses[] and
+> fails if a bus has not been registered yet. Guard the entry with
+> CONFIG_DMA_ENGINE because the bus does not exist when the DMA engine core
+> is not built.
+>
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
 > ---
 
 Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
-> Changes in v4:
-> - New patch
-> ---
->  .../media/platform/nxp/imx8-isi/imx8-isi-core.h    |  6 ++--
->  drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c |  2 +-
->  .../media/platform/nxp/imx8-isi/imx8-isi-regs.h    | 10 +++---
->  .../media/platform/nxp/imx8-isi/imx8-isi-video.c   | 38 ++++++++++++++++++----
->  4 files changed, 42 insertions(+), 14 deletions(-)
+>  drivers/iommu/iommu.c | 4 ++++
+>  1 file changed, 4 insertions(+)
 >
-> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
-> index a30633a7e2e9..ba0d6df98fd4 100644
-> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
-> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
-> @@ -320,9 +320,11 @@ mxc_isi_bus_format_by_code(u32 code, unsigned int pad);
->  const struct mxc_isi_bus_format_info *
->  mxc_isi_bus_format_by_index(unsigned int index, unsigned int pad);
->  const struct mxc_isi_format_info *
-> -mxc_isi_format_by_fourcc(u32 fourcc, enum mxc_isi_video_type type);
-> +mxc_isi_format_by_fourcc(const struct mxc_isi_plat_data *pdata, u32 fourcc,
-> +			 enum mxc_isi_video_type type);
->  const struct mxc_isi_format_info *
-> -mxc_isi_format_enum(const struct v4l2_fmtdesc *f, enum mxc_isi_video_type type);
-> +mxc_isi_format_enum(const struct mxc_isi_plat_data *pdata,
-> +		    const struct v4l2_fmtdesc *f, enum mxc_isi_video_type type);
->  const struct mxc_isi_format_info *
->  mxc_isi_format_try(struct mxc_isi_pipe *pipe, struct v4l2_pix_format_mplane *pix,
->  		   enum mxc_isi_video_type type);
-> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
-> index 1178947bb548..1ad0fd1af3b1 100644
-> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
-> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
-> @@ -492,7 +492,7 @@ static int mxc_isi_m2m_enum_fmt_vid(struct file *file, void *fh,
->  		MXC_ISI_VIDEO_M2M_OUT : MXC_ISI_VIDEO_M2M_CAP;
->  	const struct mxc_isi_format_info *info;
+> diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
+> index b486b8bbd1fc..ab31cd15d1d5 100644
+> --- a/drivers/iommu/iommu.c
+> +++ b/drivers/iommu/iommu.c
+> @@ -8,6 +8,7 @@
 >
-> -	info = mxc_isi_format_enum(f, type);
-> +	info = mxc_isi_format_enum(NULL, f, type);
->  	if (!info)
->  		return -EINVAL;
->
-> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-regs.h b/drivers/media/platform/nxp/imx8-isi/imx8-isi-regs.h
-> index 35438abf3172..b83a25a58ebe 100644
-> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-regs.h
-> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-regs.h
-> @@ -425,11 +425,11 @@
->  #define CHNL_IN_BUF_XTND_ADDR					0x00b8
->
->  /*
-> - * The ISI shifts the 10-bit and 12-bit RAW formats left by 6 and 4 bits when
-> - * using CHNL_IMG_CTRL_FORMAT_RAW10 or CHNL_IMG_CTRL_FORMAT_RAW12 respectively,
-> - * to align the bits to the left and pad with zeros in the LSBs. The
-> - * corresponding V4L2 formats are however right-aligned, so
-> - * CHNL_IMG_CTRL_FORMAT_RAW16 must be used to avoid the left shift.
-> + * The ISI shifts the 10/12/14-bit RAW formats left to MSB-align the output.
-> + * On platforms where the Pixel Link provides LSB-aligned data, the RAW16
-> + * passthrough must be used instead to preserve LSB alignment. On platforms
-> + * where the Pixel Link provides MSB-aligned data (i.MX95), these formats
-> + * cannot produce correct V4L2-compatible output and must be excluded.
->   */
->  static inline bool isi_out_raw_shifted(u32 format)
->  {
-> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c
-> index ca8fe8782af8..708aa4c775c7 100644
-> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c
-> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c
-> @@ -458,14 +458,32 @@ static const struct mxc_isi_format_info mxc_isi_formats[] = {
->  	}
->  };
->
-> +/*
-> + * On i.MX95, the Pixel Link provides MSB-aligned RAW data, so neither the
-> + * RAW16 passthrough nor the native RAW10/12/14 output formats can produce
-> + * correct V4L2-compatible LSB-aligned output. Exclude these formats.
-> + */
-> +static bool
-> +mxc_isi_format_is_raw_unsupported(const struct mxc_isi_plat_data *pdata,
-> +				  const struct mxc_isi_format_info *fmt)
-> +{
-> +	return pdata && pdata->model == MXC_ISI_IMX95 &&
-> +	       isi_out_raw_shifted(fmt->isi_out_format);
-> +}
-> +
->  const struct mxc_isi_format_info *
-> -mxc_isi_format_by_fourcc(u32 fourcc, enum mxc_isi_video_type type)
-> +mxc_isi_format_by_fourcc(const struct mxc_isi_plat_data *pdata, u32 fourcc,
-> +			 enum mxc_isi_video_type type)
->  {
->  	unsigned int i;
->
->  	for (i = 0; i < ARRAY_SIZE(mxc_isi_formats); i++) {
->  		const struct mxc_isi_format_info *fmt = &mxc_isi_formats[i];
->
-> +		/* Skip formats unsupported by the platform. */
-> +		if (mxc_isi_format_is_raw_unsupported(pdata, fmt))
-> +			continue;
-> +
->  		if (fmt->fourcc == fourcc && fmt->type & type)
->  			return fmt;
->  	}
-> @@ -474,7 +492,8 @@ mxc_isi_format_by_fourcc(u32 fourcc, enum mxc_isi_video_type type)
->  }
->
->  const struct mxc_isi_format_info *
-> -mxc_isi_format_enum(const struct v4l2_fmtdesc *f, enum mxc_isi_video_type type)
-> +mxc_isi_format_enum(const struct mxc_isi_plat_data *pdata,
-> +		    const struct v4l2_fmtdesc *f, enum mxc_isi_video_type type)
->  {
->  	unsigned int index = f->index;
->  	unsigned int i;
-> @@ -482,6 +501,10 @@ mxc_isi_format_enum(const struct v4l2_fmtdesc *f, enum mxc_isi_video_type type)
->  	for (i = 0; i < ARRAY_SIZE(mxc_isi_formats); i++) {
->  		const struct mxc_isi_format_info *fmt = &mxc_isi_formats[i];
->
-> +		/* Skip formats unsupported by the platform. */
-> +		if (mxc_isi_format_is_raw_unsupported(pdata, fmt))
-> +			continue;
-> +
->  		if (f->mbus_code && fmt->mbus_code != f->mbus_code)
->  			continue;
->
-> @@ -509,7 +532,7 @@ mxc_isi_format_try(struct mxc_isi_pipe *pipe, struct v4l2_pix_format_mplane *pix
->  		  ? MXC_ISI_MAX_WIDTH_UNCHAINED
->  		  : MXC_ISI_MAX_WIDTH_CHAINED;
->
-> -	fmt = mxc_isi_format_by_fourcc(pix->pixelformat, type);
-> +	fmt = mxc_isi_format_by_fourcc(pipe->isi->pdata, pix->pixelformat, type);
->  	if (!fmt)
->  		fmt = &mxc_isi_formats[0];
->
-> @@ -803,7 +826,8 @@ static int mxc_isi_video_validate_format(struct mxc_isi_video *video)
->
->  	state = v4l2_subdev_lock_and_get_active_state(sd);
->
-> -	info = mxc_isi_format_by_fourcc(video->pix.pixelformat,
-> +	info = mxc_isi_format_by_fourcc(video->pipe->isi->pdata,
-> +					video->pix.pixelformat,
->  					MXC_ISI_VIDEO_CAP);
->  	format = v4l2_subdev_state_get_format(state, MXC_ISI_PIPE_PAD_SOURCE);
->
-> @@ -1222,9 +1246,10 @@ static int mxc_isi_video_querycap(struct file *file, void *priv,
->  static int mxc_isi_video_enum_fmt(struct file *file, void *priv,
->  				  struct v4l2_fmtdesc *f)
->  {
-> +	struct mxc_isi_video *video = video_drvdata(file);
->  	const struct mxc_isi_format_info *fmt;
->
-> -	fmt = mxc_isi_format_enum(f, MXC_ISI_VIDEO_CAP);
-> +	fmt = mxc_isi_format_enum(video->pipe->isi->pdata, f, MXC_ISI_VIDEO_CAP);
->  	if (!fmt)
->  		return -EINVAL;
->
-> @@ -1281,7 +1306,8 @@ static int mxc_isi_video_enum_framesizes(struct file *file, void *priv,
->  	if (fsize->index)
->  		return -EINVAL;
->
-> -	info = mxc_isi_format_by_fourcc(fsize->pixel_format, MXC_ISI_VIDEO_CAP);
-> +	info = mxc_isi_format_by_fourcc(video->pipe->isi->pdata,
-> +					fsize->pixel_format, MXC_ISI_VIDEO_CAP);
->  	if (!info)
->  		return -EINVAL;
->
+>  #include <linux/amba/bus.h>
+>  #include <linux/device.h>
+> +#include <linux/dmaengine.h>
+>  #include <linux/kernel.h>
+>  #include <linux/bits.h>
+>  #include <linux/bug.h>
+> @@ -191,6 +192,9 @@ static const struct bus_type * const iommu_buses[] = {
+>  #ifdef CONFIG_ARM_AMBA
+>  	&amba_bustype,
+>  #endif
+> +#ifdef CONFIG_DMA_ENGINE
+> +	&dmaengine_chan_bus_type,
+> +#endif
+>  #ifdef CONFIG_FSL_MC_BUS
+>  	&fsl_mc_bus_type,
+>  #endif
 >
 > --
 > 2.34.1
->
 >
