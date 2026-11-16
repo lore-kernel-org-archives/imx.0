@@ -1,45 +1,45 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.28.122
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.28.5
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1794822864;
-	b=Q1E7beKwuEzGPSkK2IO9aRt+daX+hg2sLtRYO6AuMGwQ/XWxHHnMGS8CglG3TNI3c9tC
-	 HD+/ahFe9T3H6EVyS7bDfxQ1AGhBoTo1YtKih5lFNmknKWxf7ZD25hN3ot7Jfspn3JjJC
-	 r6F6arj5q6oWRkYW2G33McEr7wxAdFm07YuNbWZNhzXAGuU1YjvD/Ro1Q6zRT0OgoStW3
-	 F0Iivc7T0MniQ07pm8IE6DrEltFRclIcXqhElSVmuroYfJRe9L3NGH219BEsEGn5zbh4z
-	 YmvzpcKsvCyOFnYQORwoWop+rZl4XwCiRcSymGxbm3FRVLi7vSSFKDPKIPxXkPEHJsw==
+	b=QkXVav5mIxjEpan5RTLmIU/mPX4v73wFO3kMrBXS0lMMSafEteQemMwQHldILMWds28p
+	 4KQn12t1paXhIsRO6crE4z4Tgp1dNwNEaVjreWw5Z6XL39Ohpx60ESd5RFla7J9sXwUvm
+	 pA8jIsDpvotlYBJVjQVp4b56Rhqxdd8Bb3coVnr9O3abV6bkII4fYs8lJS/OxBN8wJ4Vi
+	 zcsDlT6i9vMzmvKkk3Z6TfhmQIM6BDYI9wcou1HEPc5HnQ2lO6TBsMtJxtVpLNmGkN7Bm
+	 L205MtJyS6vy5wU3yHZVHl9xfSZ9XUDQoiBTf64N87I1tC7ZkVRFGe+V7ug1fn8G3Bw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1794822864;
 	h=DMARC-Filter:DKIM-Signature:X-Alimail-AntiSpam:Received:From:To:Cc:
 	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=Sj9W2KXStfMsSzmzo3maa1XXWhMpVcMuMXc2iP94Ags=;
-	b=NI80VGnvhmEcjIMvZCL9Ge7oizqmaVn7uxKBSJa2f1mUnsLQD+mkv+hOnzeodUt+KhWq
-	 +zdyknL//Hkm2lRjhPTiUJ7lmLj8sDVAZzyLUax2YJ6ty4v3IDOXiqStxP/eJ/S2/lXw2
-	 ZUpsvLHTsmlkNxx6IBP4vfzK40qQXiO0B6PC05Vmp7BFP4kAP08bVwR6JktRcOUHj8tDp
-	 7UeOVCe6fVNnLKXHJYNvjsjQlbYKRlhpP3+eqBTGZiFfRL06tDHshirMBW/EyEGAu9aRP
-	 JrIX0xLR3lEk8WQYVf+wc5c9RDvQtkJm4HFVcbFikYW3Cj6APOHhruyJW1RIX2aAeaQ==
+	bh=MIEsz04HMukRNUYKBj+g59TS1FT0VEv2KoQXa5uhrKE=;
+	b=2e8mmU1R9vcl3DqQhpL2Y8VrbFcaL5GkXeB8QybXX86b6tFtf0jGeVcufO5+OtXHR1mD
+	 fOcs4annhtLHqEMAyHovjo4jZAhv+EtzoOwbL/SVQfhssZbfSk2pY2ZRsGqofPiU7/C+E
+	 hqzWKCJGacfSgCLtJRssh6yjzglXccRm4eF6ZqCwntVg10uJi48xELXoZb4bkBWZMF/fV
+	 AY2DXpKNmZ3ld+S88N7Met5aVSmYzn4tnQKc/UwHiLTC6RETeGV86CgGxlspelYDJJMSr
+	 lydZnWZzAzPuyugrXPlItJQl1ZDkqkyeCkOwx8iQ386XNyCuR49r0EF0oNcEYPvRgyA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=yinhe.ht;
 	spf=pass smtp.mailfrom=yinhe.ht;
-	dkim=pass header.d=yinhe.ht header.i=@yinhe.ht header.a=rsa-sha256 header.s=default header.b=RVuzTe8A;
-	arc=none smtp.remote-ip=115.124.28.122
-Received: from out28-122.mail.aliyun.com (out28-122.mail.aliyun.com [115.124.28.122])
+	dkim=pass header.d=yinhe.ht header.i=@yinhe.ht header.a=rsa-sha256 header.s=default header.b=O7Xwzy+0;
+	arc=none smtp.remote-ip=115.124.28.5
+Received: from out28-5.mail.aliyun.com (out28-5.mail.aliyun.com [115.124.28.5])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F39B5606A33D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4D4F606A329
 	for <imx@lists.linux.dev>; Mon, 16 Nov 2026 09:54:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F39B5606A33D
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E4D4F606A329
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yinhe.ht
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yinhe.ht
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yinhe.ht header.i=@yinhe.ht header.a=rsa-sha256 header.s=default header.b=RVuzTe8A
+	dkim=pass (2048-bit key) header.d=yinhe.ht header.i=@yinhe.ht header.a=rsa-sha256 header.s=default header.b=O7Xwzy+0
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=yinhe.ht; s=default;
 	t=1794822855; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=Sj9W2KXStfMsSzmzo3maa1XXWhMpVcMuMXc2iP94Ags=;
-	b=RVuzTe8Aaap5ZtOh0AqRdno2rfoXnntcw/pc7Hab/29syZBaB4WZdISc4QRNdTdpc+wy5D8vh1EdQCmBhExul+QFBZkRPCmSNm5GZFe8TBh8Htf2mcNX3HCc2g3YxXPHJ5LIiMABOuD0ymHD/bYJkV/ZjxRIHwUEip5bM5bCoPmd+QLM3OjBuKVReeQC8QquAJfJHXSyMisqmW9PuGYZs5BOeE7B/5M6PnHGLog2gv87rcGX8fG0eS5erYDToflwNtcVV3WnYrVZ7uFbWjGXSA1SVlEq5+nB87rsOzRTNq3BHhQgav67BWB6kr2Yj5zgfPeLq7uR1BKlVffMmam3lA==
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07436259|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.010619-0.0156546-0.973726;FP=10534534883485174998|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037028158;MF=chunyuzhiqiang@yinhe.ht;NM=1;PH=DS;RN=6;RT=6;SR=0;TI=SMTPD_---.k33mMOC_1794822854;
-Received: from galx..(mailfrom:chunyuzhiqiang@yinhe.ht fp:SMTPD_---.k33mMOC_1794822854 cluster:ay29)
+	bh=MIEsz04HMukRNUYKBj+g59TS1FT0VEv2KoQXa5uhrKE=;
+	b=O7Xwzy+09/5peDjnJyMgcXYDdtti9LbpgUBViK/Y9wWe8WQZf4CNfyk0POWmqb1aHe2cgH0LEmwDp2dUHElVpRlTqYPKgazyq/y0JASFU52SV4kaskAQNBub1CXhOi7gEqDhtcn1wt0soc8sylah8KYapfeKH2RRy/tbZy6oDRKlsvb4QMHzoyFIAp98OZXAMKtjEsoCq+JnpcO0AtkQcL7owXpvdOjgRUDvj3EFQD2zqsqD5zedAB5rjsWBN5IyverwB11+CjIibXN+ljDHPGEA11nGd1weTuJrhVHBT60wdbelSjOzioZBL3Z9SPvjMVLdFkTPYVLM0wAstZfopw==
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07436259|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.309506-0.00180094-0.688693;FP=3933085070037369330|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037006180;MF=chunyuzhiqiang@yinhe.ht;NM=1;PH=DS;RN=6;RT=6;SR=0;TI=SMTPD_---.k33mMOj_1794822854;
+Received: from galx..(mailfrom:chunyuzhiqiang@yinhe.ht fp:SMTPD_---.k33mMOj_1794822854 cluster:ay29)
           by smtp.aliyun-inc.com;
           Mon, 16 Nov 2026 17:54:14 +0800
 From: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
@@ -49,9 +49,9 @@ Cc: Frank Li <Frank.Li@nxp.com>,
 	imx@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	=?UTF-8?q?Heiko=20St=C3=BCbner?= <heiko@sntech.de>
-Subject: [RFC PATCH 1/2] spi: fsl-lpspi: add atomic transfer support
-Date: Mon, 16 Nov 2026 17:49:14 +0800
-Message-ID: <20261116094916.4039108-2-chunyuzhiqiang@yinhe.ht>
+Subject: [RFC PATCH 2/2] spi: add spi_sync_atomic() for panic and oops
+Date: Mon, 16 Nov 2026 17:49:15 +0800
+Message-ID: <20261116094916.4039108-3-chunyuzhiqiang@yinhe.ht>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261116094916.4039108-1-chunyuzhiqiang@yinhe.ht>
 References: <20261116094916.4039108-1-chunyuzhiqiang@yinhe.ht>
@@ -66,318 +66,170 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Implement transfer_atomic() for the i.MX LPSPI controller, following the
-atomic transfer API added by Heiko Stuebner.  The callback uses PIO
-polling with interrupts and DMA disabled, handles chip select through
-spi_set_cs(), and runs the message synchronously without completions.
-The controller is reset before the message so state left by a crashed
-transfer does not leak into the atomic path.
+Add an explicit atomic transfer entry point for crash logging.  The
+shutdown path added by Heiko Stuebner is gated on system_state being past
+SYSTEM_RUNNING, but panic and oops run while the system is still running,
+so they cannot use it.
 
-The atomic path cannot call clk_get_rate(), because it takes the clock
-prepare lock.  Cache the per-clock rate at probe and refresh it in the
-normal transfer path; the atomic path only uses the cached value.  A
-zero rate is rejected instead of programming a bogus divisor.
+spi_sync_atomic() reuses the controller's transfer_atomic() callback.  It
+only accepts callers that are in panic or oops context with interrupts or
+preemption disabled, takes the bus locks with trylock so a normal transfer
+in progress on another CPU returns -EBUSY instead of deadlocking, and
+validates the message without allocating or optimizing it.
 
-Only host mode registers the callback.  Poweroff and restart prepare
-handlers runtime-resume the controller so the atomic path can be used
-from the shutdown notifiers, matching the Rockchip implementation.
-
-The driver is compile-tested on x86 with COMPILE_TEST and on arm64;
-hardware validation on i.MX8QXP is pending.
+The first user is pstore over an SPI FRAM, which needs to persist the
+crash log before the next reset.  The controller must already be powered
+and clocked; this path does not resume it.  fsl_lpspi implements the
+callback in the previous patch.
 
 This patch was prepared with AI assistance; the submitter must review it
 before submission.
 
 Signed-off-by: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
 ---
- drivers/spi/spi-fsl-lpspi.c | 171 ++++++++++++++++++++++++++++++++++--
- 1 file changed, 163 insertions(+), 8 deletions(-)
+ drivers/spi/spi.c       | 72 ++++++++++++++++++++++++++++++++++++++---
+ include/linux/spi/spi.h |  1 +
+ 2 files changed, 68 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index b25f94b2e..6443471b0 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -14,6 +14,7 @@
- #include <linux/err.h>
- #include <linux/interrupt.h>
- #include <linux/io.h>
-+#include <linux/iopoll.h>
- #include <linux/irq.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
-@@ -22,6 +23,7 @@
- #include <linux/platform_device.h>
- #include <linux/dma/imx-dma.h>
- #include <linux/pm_runtime.h>
-+#include <linux/reboot.h>
- #include <linux/slab.h>
- #include <linux/spi/spi.h>
- #include <linux/spi/spi_bitbang.h>
-@@ -112,6 +114,7 @@ struct fsl_lpspi_data {
- 	unsigned long base_phys;
- 	struct clk *clk_ipg;
- 	struct clk *clk_per;
-+	u32 perclk_rate;
- 	bool is_target;
- 	bool is_only_cs1;
- 	bool is_first_byte;
-@@ -335,7 +338,8 @@ static void fsl_lpspi_set_watermark(struct fsl_lpspi_data *fsl_lpspi)
- 	dev_dbg(fsl_lpspi->dev, "FCR=0x%08x\n", temp);
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 0b1e07d87..e24ad60e1 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -23,6 +23,7 @@
+ #include <linux/mutex.h>
+ #include <linux/of_device.h>
+ #include <linux/of_irq.h>
++#include <linux/panic.h>
+ #include <linux/percpu.h>
+ #include <linux/platform_data/x86/apple.h>
+ #include <linux/pm_domain.h>
+@@ -1712,11 +1713,25 @@ static inline bool spi_in_atomic_mode(void)
+ 	       (IS_ENABLED(CONFIG_PREEMPT_COUNT) ? !preemptible() : irqs_disabled());
  }
  
--static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data *fsl_lpspi)
-+static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data *fsl_lpspi,
-+				 bool atomic)
- {
- 	struct lpspi_config config = fsl_lpspi->config;
- 	unsigned int perclk_rate, div;
-@@ -343,7 +347,14 @@ static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data *fsl_lpspi)
- 	u8 prescale;
- 	int scldiv;
- 
--	perclk_rate = clk_get_rate(fsl_lpspi->clk_per);
-+	if (atomic) {
-+		perclk_rate = fsl_lpspi->perclk_rate;
-+	} else {
-+		perclk_rate = clk_get_rate(fsl_lpspi->clk_per);
-+		fsl_lpspi->perclk_rate = perclk_rate;
-+	}
-+	if (!perclk_rate)
-+		return -EINVAL;
- 	prescale_max = fsl_lpspi->devtype_data->prescale_max ?: 7;
- 
- 	if (!config.speed_hz) {
-@@ -427,13 +438,13 @@ static int fsl_lpspi_dma_configure(struct spi_controller *controller)
- 	return 0;
- }
- 
--static int fsl_lpspi_config(struct fsl_lpspi_data *fsl_lpspi)
-+static int fsl_lpspi_config(struct fsl_lpspi_data *fsl_lpspi, bool atomic)
- {
- 	u32 temp;
- 	int ret;
- 
- 	if (!fsl_lpspi->is_target) {
--		ret = fsl_lpspi_set_bitrate(fsl_lpspi);
-+		ret = fsl_lpspi_set_bitrate(fsl_lpspi, atomic);
- 		if (ret)
- 			return ret;
- 	}
-@@ -464,7 +475,7 @@ static int fsl_lpspi_config(struct fsl_lpspi_data *fsl_lpspi)
- 
- static int fsl_lpspi_setup_transfer(struct spi_controller *controller,
- 				     struct spi_device *spi,
--				     struct spi_transfer *t)
-+				     struct spi_transfer *t, bool atomic)
- {
- 	struct fsl_lpspi_data *fsl_lpspi =
- 				spi_controller_get_devdata(spi->controller);
-@@ -496,7 +507,7 @@ static int fsl_lpspi_setup_transfer(struct spi_controller *controller,
- 
- 	fsl_lpspi->watermark = min(fsl_lpspi->txfifosize, t->len);
- 
--	return fsl_lpspi_config(fsl_lpspi);
-+	return fsl_lpspi_config(fsl_lpspi, atomic);
- }
- 
- static int fsl_lpspi_prepare_message(struct spi_controller *controller,
-@@ -515,7 +526,7 @@ static int fsl_lpspi_prepare_message(struct spi_controller *controller,
- 
- 	fsl_lpspi->is_first_byte = true;
- 	fsl_lpspi->usedma = false;
--	ret = fsl_lpspi_setup_transfer(controller, spi, t);
-+	ret = fsl_lpspi_setup_transfer(controller, spi, t, false);
- 
- 	fsl_lpspi->usedma = fsl_lpspi_can_dma(controller, spi, t);
- 
-@@ -776,6 +787,114 @@ static int fsl_lpspi_pio_transfer(struct fsl_lpspi_data *fsl_lpspi,
- 	return ret;
- }
- 
-+static int fsl_lpspi_pio_xfer_atomic(struct fsl_lpspi_data *fsl_lpspi,
-+				     struct spi_transfer *t)
++/*
++ * Panic and oops happen while the system is still running, so the shutdown
++ * check above does not catch them.  This is only for crash logging and other
++ * very late communication; it must not be used for general atomic transfers.
++ */
++static inline bool spi_in_panic_mode(void)
 +{
-+	u32 sr, timeout_us;
-+	int ret;
++	if (!panic_in_progress() && !oops_in_progress)
++		return false;
 +
-+	/* One frame plus margin, at least 1ms. */
-+	timeout_us = DIV_ROUND_UP(8 * USEC_PER_SEC, fsl_lpspi->config.speed_hz);
-+	timeout_us = max(timeout_us * 2, 1000U);
-+
-+	fsl_lpspi->tx_buf = t->tx_buf;
-+	fsl_lpspi->rx_buf = t->rx_buf;
-+	fsl_lpspi->remain = t->len;
-+
-+	while (fsl_lpspi->remain) {
-+		ret = readl_poll_timeout_atomic(fsl_lpspi->base + IMX7ULP_SR,
-+						sr, sr & SR_TDF, 0, timeout_us);
-+		if (ret)
-+			return ret;
-+		fsl_lpspi->tx(fsl_lpspi);
-+
-+		ret = readl_poll_timeout_atomic(fsl_lpspi->base + IMX7ULP_SR,
-+						sr, sr & SR_RDF, 0, timeout_us);
-+		if (ret)
-+			return ret;
-+		fsl_lpspi->rx(fsl_lpspi);
-+	}
-+
-+	ret = readl_poll_timeout_atomic(fsl_lpspi->base + IMX7ULP_SR, sr,
-+					sr & SR_TCF, 0, timeout_us);
-+	if (ret)
-+		return ret;
-+
-+	writel(SR_TCF, fsl_lpspi->base + IMX7ULP_SR);
-+	return 0;
++	return IS_ENABLED(CONFIG_PREEMPT_COUNT) ? !preemptible() : irqs_disabled();
 +}
 +
-+static int fsl_lpspi_transfer_atomic(struct spi_device *spi,
-+				     struct spi_message *msg)
-+{
-+	struct spi_controller *controller = spi->controller;
-+	struct fsl_lpspi_data *fsl_lpspi =
-+				spi_controller_get_devdata(controller);
-+	struct spi_transfer *t, *next;
-+	bool first = true;
-+	bool keep_cs = false;
-+	int ret = 0;
-+
-+	if (!pm_runtime_active(fsl_lpspi->dev))
-+		return -ESHUTDOWN;
-+
-+	fsl_lpspi->usedma = false;
-+	fsl_lpspi_reset(fsl_lpspi);
-+	writel(0, fsl_lpspi->base + IMX7ULP_DER);
-+
-+	t = list_first_entry(&msg->transfers, struct spi_transfer, transfer_list);
-+	spi_set_cs(spi, !t->cs_off, false);
-+
-+	list_for_each_entry(t, &msg->transfers, transfer_list) {
-+		if (t->len) {
-+			fsl_lpspi->is_first_byte = first;
-+			ret = fsl_lpspi_setup_transfer(controller, spi, t, true);
-+			if (ret)
-+				break;
-+			if (t->len %
-+			    fsl_lpspi_bytes_per_word(fsl_lpspi->config.bpw)) {
-+				ret = -EINVAL;
-+				break;
-+			}
-+
-+			fsl_lpspi_set_cmd(fsl_lpspi);
-+			fsl_lpspi->is_first_byte = false;
-+
-+			ret = fsl_lpspi_pio_xfer_atomic(fsl_lpspi, t);
-+			if (ret)
-+				break;
-+
-+			fsl_lpspi_reset(fsl_lpspi);
-+			first = false;
-+		}
-+
-+		spi_transfer_delay_exec(t);
-+
-+		if (t->cs_change) {
-+			if (list_is_last(&t->transfer_list, &msg->transfers)) {
-+				keep_cs = true;
-+			} else {
-+				if (!t->cs_off)
-+					spi_set_cs(spi, false, false);
-+				spi_transfer_cs_change_delay_exec(msg, t);
-+				next = list_next_entry(t, transfer_list);
-+				if (!next->cs_off)
-+					spi_set_cs(spi, true, false);
-+			}
-+		} else if (!list_is_last(&t->transfer_list, &msg->transfers)) {
-+			next = list_next_entry(t, transfer_list);
-+			if (t->cs_off != next->cs_off)
-+				spi_set_cs(spi, !next->cs_off, false);
-+		}
+ static void _spi_transfer_delay_ns(u32 ns)
+ {
+ 	if (!ns)
+ 		return;
+-	if (ns <= NSEC_PER_USEC || spi_in_atomic_mode()) {
++	if (ns <= NSEC_PER_USEC || spi_in_atomic_mode() ||
++	    spi_in_panic_mode()) {
+ 		ndelay(ns);
+ 	} else {
+ 		u32 us = DIV_ROUND_UP(ns, NSEC_PER_USEC);
+@@ -5027,7 +5042,8 @@ static int __spi_sync(struct spi_device *spi, struct spi_message *message)
+ 	return status;
+ }
+ 
+-static int __spi_sync_atomic(struct spi_device *spi, struct spi_message *message)
++static int __spi_sync_atomic(struct spi_device *spi, struct spi_message *message,
++			     bool trylock)
+ {
+ 	struct spi_controller *ctlr = spi->controller;
+ 	unsigned long flags;
+@@ -5048,7 +5064,12 @@ static int __spi_sync_atomic(struct spi_device *spi, struct spi_message *message
+ 	if (status)
+ 		return status;
+ 
+-	spin_lock_irqsave(&ctlr->bus_lock_spinlock, flags);
++	if (trylock) {
++		if (!spin_trylock_irqsave(&ctlr->bus_lock_spinlock, flags))
++			return -EBUSY;
++	} else {
++		spin_lock_irqsave(&ctlr->bus_lock_spinlock, flags);
 +	}
+ 	status = ctlr->transfer_atomic(spi, message);
+ 	spin_unlock_irqrestore(&ctlr->bus_lock_spinlock, flags);
+ 
+@@ -5090,7 +5111,7 @@ int spi_sync(struct spi_device *spi, struct spi_message *message)
+ 
+ 	/* Keep old behaviour for clients that tolerate the warnings */
+ 	if (spi_in_atomic_mode() && ctlr->transfer_atomic) {
+-		ret = __spi_sync_atomic(spi, message);
++		ret = __spi_sync_atomic(spi, message, false);
+ 	} else {
+ 		mutex_lock(&spi->controller->bus_lock_mutex);
+ 		ret = __spi_sync(spi, message);
+@@ -5126,12 +5147,53 @@ int spi_sync_locked(struct spi_device *spi, struct spi_message *message)
+ 	struct spi_controller *ctlr = spi->controller;
+ 
+ 	if (spi_in_atomic_mode() && ctlr->transfer_atomic)
+-		return __spi_sync_atomic(spi, message);
++		return __spi_sync_atomic(spi, message, false);
+ 	else
+ 		return __spi_sync(spi, message);
+ }
+ EXPORT_SYMBOL_GPL(spi_sync_locked);
+ 
++/**
++ * spi_sync_atomic - transfer a message during panic or oops
++ * @spi: device with which data will be exchanged
++ * @message: describes the data transfers
++ *
++ * Context: panic or oops, with interrupts or preemption disabled.
++ *
++ * This is the panic-time counterpart of spi_sync().  It is only for crash
++ * logging and other very late communication; it must not be used from
++ * ordinary interrupt context.  The controller's transfer_atomic() callback
++ * must perform the whole message without sleeping, allocating, using DMA or
++ * waiting for interrupts or completions.
++ *
++ * The bus locks are taken with trylock(): if a normal transfer is still in
++ * progress on another CPU, this function returns -EBUSY instead of
++ * deadlocking.  The controller must already be powered and clocked; this
++ * function does not resume it.
++ *
++ * Return: zero on success, -EOPNOTSUPP if the controller does not support
++ * atomic transfers, -EPERM if not called from panic/oops context, -EBUSY if
++ * the bus is busy, -ESHUTDOWN if the controller is suspended, or another
++ * negative error from the controller.
++ */
++int spi_sync_atomic(struct spi_device *spi, struct spi_message *message)
++{
++	struct spi_controller *ctlr = spi->controller;
++	int ret;
 +
-+	if (!keep_cs)
-+		spi_set_cs(spi, false, false);
-+	fsl_lpspi_reset(fsl_lpspi);
-+	msg->status = ret;
++	if (!spi_in_panic_mode())
++		return -EPERM;
++
++	if (!mutex_trylock(&ctlr->bus_lock_mutex))
++		return -EBUSY;
++
++	ret = __spi_sync_atomic(spi, message, true);
++	mutex_unlock(&ctlr->bus_lock_mutex);
++
 +	return ret;
 +}
++EXPORT_SYMBOL_GPL(spi_sync_atomic);
 +
- static int fsl_lpspi_transfer_one(struct spi_controller *controller,
- 				  struct spi_device *spi,
- 				  struct spi_transfer *t)
-@@ -786,7 +905,7 @@ static int fsl_lpspi_transfer_one(struct spi_controller *controller,
+ /**
+  * spi_bus_lock - obtain a lock for exclusive SPI bus usage
+  * @ctlr: SPI bus controller that should be locked for exclusive bus access
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index f62b21af5..b3fad85ec 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -1512,6 +1512,7 @@ extern int spi_split_transfers_maxwords(struct spi_controller *ctlr,
  
- 	fsl_lpspi->usedma = fsl_lpspi_can_dma(controller, spi, t);
+ extern int spi_sync(struct spi_device *spi, struct spi_message *message);
+ extern int spi_sync_locked(struct spi_device *spi, struct spi_message *message);
++int spi_sync_atomic(struct spi_device *spi, struct spi_message *message);
+ extern int spi_bus_lock(struct spi_controller *ctlr);
+ extern int spi_bus_unlock(struct spi_controller *ctlr);
  
--	ret = fsl_lpspi_setup_transfer(controller, spi, t);
-+	ret = fsl_lpspi_setup_transfer(controller, spi, t, false);
- 	if (ret < 0)
- 		return ret;
- 
-@@ -880,6 +999,19 @@ static int fsl_lpspi_init_rpm(struct fsl_lpspi_data *fsl_lpspi)
- 	return 0;
- }
- 
-+static int fsl_lpspi_power_off(struct sys_off_data *data)
-+{
-+	struct fsl_lpspi_data *fsl_lpspi = data->cb_data;
-+	int ret;
-+
-+	ret = pm_runtime_resume_and_get(fsl_lpspi->dev);
-+	if (ret)
-+		dev_warn(fsl_lpspi->dev,
-+			 "failed to resume controller for poweroff: %d\n", ret);
-+
-+	return 0;
-+}
-+
- static int fsl_lpspi_probe(struct platform_device *pdev)
- {
- 	const struct fsl_lpspi_devtype_data *devtype_data;
-@@ -960,6 +1092,9 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
- 		goto out_pm_get;
- 	}
- 
-+	/* The atomic transfer path cannot call clk_get_rate(). */
-+	fsl_lpspi->perclk_rate = clk_get_rate(fsl_lpspi->clk_per);
-+
- 	temp = readl(fsl_lpspi->base + IMX7ULP_PARAM);
- 	fsl_lpspi->txfifosize = 1 << (temp & 0x0f);
- 	fsl_lpspi->rxfifosize = 1 << ((temp >> 8) & 0x0f);
-@@ -974,6 +1109,8 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
- 	controller->bits_per_word_mask = SPI_BPW_RANGE_MASK(8, 32);
- 	controller->prepare_message = fsl_lpspi_prepare_message;
- 	controller->transfer_one = fsl_lpspi_transfer_one;
-+	if (!fsl_lpspi->is_target)
-+		controller->transfer_atomic = fsl_lpspi_transfer_atomic;
- 	controller->prepare_transfer_hardware = lpspi_prepare_xfer_hardware;
- 	controller->unprepare_transfer_hardware = lpspi_unprepare_xfer_hardware;
- 	controller->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
-@@ -984,6 +1121,24 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
- 	if (!fsl_lpspi->is_target)
- 		controller->use_gpio_descriptors = true;
- 
-+	if (!fsl_lpspi->is_target) {
-+		ret = devm_register_sys_off_handler(&pdev->dev,
-+						    SYS_OFF_MODE_POWER_OFF_PREPARE,
-+						    SYS_OFF_PRIO_DEFAULT,
-+						    fsl_lpspi_power_off,
-+						    fsl_lpspi);
-+		if (ret)
-+			goto out_pm_get;
-+
-+		ret = devm_register_sys_off_handler(&pdev->dev,
-+						    SYS_OFF_MODE_RESTART_PREPARE,
-+						    SYS_OFF_PRIO_DEFAULT,
-+						    fsl_lpspi_power_off,
-+						    fsl_lpspi);
-+		if (ret)
-+			goto out_pm_get;
-+	}
-+
- 	ret = fsl_lpspi_dma_init(&pdev->dev, fsl_lpspi, controller);
- 	if (ret == -EPROBE_DEFER)
- 		goto out_pm_get;
 -- 
 2.47.3
 
