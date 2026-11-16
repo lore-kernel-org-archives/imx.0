@@ -1,100 +1,108 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.84.36
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794849297;
-	b=vnimTiY+VEyPK9B+T1gowvO9udQUMdIGmoiGULOTZHjnjplXwSjBANcT1kV66iuetHeT
-	 ErJqyf3mn8nyHeuqMfAUC0hFOTyJ9GsLORoXOzvDGcr4i4URvbQdtYox7HxX8HJxcV206
-	 OfVYbT6m6p6K6+b5UR6Fu70ML0cz4cSS8mc5bxqdnWaflRes4Ehyrl1ZDIoS5jXZbDJHQ
-	 6fsi82I3UQD413+gOs/TcXm9VI6e9ZGGT52RlZnnfNE+xKpULGZ8quSMgrJ7gVBvdCUjg
-	 AUWO4QVd3zHcGFn095leeYhGxVljKXFgzv1gXmMufpPxtyQUXIhBou9dTscDU+lakuQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794849297;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:Content-Type:Content-Disposition:
-	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=EaC/pPVou/u/38tKjSvAHFuQs6S2I9gJNc22xC1aO5A=;
-	b=f+3h8AV3TIOhwbd1mft/KrZ+weF5DeVvrHyZXWa6bbUIqr6Mu/I2yRBInNG+lqFxo4vc
-	 iuzy4j8K9P6y+1Epu32TiVJGRLO2/R3dyG68EDpTvjvFX/gxd+cfLF5smMaUm0bmmEpdh
-	 L2Zqy4ZWprn30cZt4JLeO9Nccxmy9dET4VgOVLQ4KaF41BzrcSMgqqCur1ncPdNcFRYLH
-	 Z2at7acXGs83k3mjzz8W1/no8wO5xasX0y7+KciJf+lWhIx8H+9M3uDPlTzs/oJNa7RT7
-	 uSR2KPS+NSLp/o/bPO+9/kp29ZlCrEHiWrKecKSDeakGbco5fkrM5DB9aBYBufkS8Sw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.nxp.com;
-	spf=pass smtp.mailfrom=oss.nxp.com;
-	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=dK5iWi4N;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.84.36
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010036.outbound.protection.outlook.com [52.101.84.36])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.178
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794849378;
+	b=EMMEedLJYsop61pgIDsPx6wTsfj+cqorh6ZC+EdezPwLALD/xnElWYAn4PRi7fAQ10DQ
+	 38iZ9btxqNiXFa9z16SDTb2NgPqvmzjLagV9cKnBjyNRKmWfPJ1dqbrlm+MIIdtAbR71l
+	 UhTWg1FHMW9bvpdZPVPwg9PYCJXroi/+sGVePeWiNjPWBGB5c34SGlvjARRlNFJgXWLVN
+	 s+xrwOI1d80yMQ83RnN+mPCwzGZgRKKS0Ku1uP8k7OJDyKTbR24rHGuUds9fnhkTxKzT7
+	 eOVnX5jgnTt1kmJm8blkuYc8BUDEzRg97CAWRMe2FJtjMdQp7h+STaLK7kCdRQEc0gg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794849378;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=Bd5KkZtIi9hEU9aTOnohsJP4GtQbznYQgq/LOm2c1XM=;
+	b=1kWdkb7lKnLeNFGGpL61bajTObYr2MxdU9cGb6OPOWhKkgNOnm9l5eLeOmK0QhhxlV2m
+	 KrfgJK2lihvToZsX5zAgP4oh+5ioNFVpVJldTS1DLZjFh4nDj92xKFniV8QlRquZGfmxY
+	 8WnnBMyxCwkYqN93uks393KKHkGgFfbJxb0AGsK87JDfmDLDgmZ5R2ibVw3d+YMsTSVkn
+	 9dl9fH7m0EfS+hafzpsbyPj+0q5Xq+sNtW2QUvGM9VYI1OjPqFBwdu0wTOOopc4ghHQHG
+	 96YBa6ryjrieU/LWMnl1C+6wfcQt0XnferH6utmFXXKRMnrAvLi2JK5m2k2ij9+SNjw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=linaro.org;
+	spf=pass smtp.mailfrom=linaro.org;
+	dkim=pass header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=yxD2HKpX;
+	arc=none smtp.remote-ip=209.85.210.178
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9624F606A33B
-	for <imx@lists.linux.dev>; Mon, 16 Nov 2026 17:14:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9624F606A33B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58530606A329
+	for <imx@lists.linux.dev>; Mon, 16 Nov 2026 17:16:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 58530606A329
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=dK5iWi4N
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Q+fU/ImkHhs+nd1LEWMmirh5Dh9THvBJNToFdd4phNQhvxFKfcoZuUcSCOWBsxghovyHmm/B8A4TLWrnmgi9pTATby7+vuGEMRly3jaF77HTOqjd0PBzqiJznieVqqmE+HWHH15OAhPa7+IbUxorN8vH/nxSLDcs8lj/FXlFgZk+iq6624pZEe9H238EFgRF5kzi0gtbTndT1+1p0zjLBPPfujmMB0S8gPYr8qYRCwbpkyA9i8TfQcYUB9QzUrB78BKNS8eMW/0Snd5kk4J2rGvo1PyZz5rW4exe86dqta0Z8PQ7AQXrk1AFeC/ymYoLrN6bH1pHf2962hKtaSYYrA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=EaC/pPVou/u/38tKjSvAHFuQs6S2I9gJNc22xC1aO5A=;
- b=DkmsduFKosm89LVDInFYkrRHccG/XYQQgbmfqBO7Zv/tfNvXRqQkNkEAfh0ef5gRqNMNU88AANEMPbVWuRDBevkp8wtyyDwoTJH6dqLyhO/iW0Ds1PveTpfv7SEaU7NhyD7SR0T9TOWzaGM4iEos3UXfzvAUcNBoWcnLc3QfxQ6h5FDcw1Z0+Ku4Re5qRa5SZs/d91poAe0yQc+2+/W5pprfQbTpiT3+8E2PIoR2+5NBxxqeVntMbyj1mOu77ad+xvJP6o8POAU36UtiS6pM96WRqDiucrpb8QNicqsp7G6/580LnZL8crBIiRE37zvwG13My7zcZJYS+ZEC+zFYrA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=EaC/pPVou/u/38tKjSvAHFuQs6S2I9gJNc22xC1aO5A=;
- b=dK5iWi4NdgIHA5+hRWjpBqfMudusLBHXnXIZAbnnSfLivlfwLzHdGSTtBcRrHMZP2nlzIycJyFXwjHmypAWffxyiPBmQWdjIU0Gw9WfCYk0pVfn48puDgjFsfzZ7mlB6C4Tns3aFjz8wWgRIgM1bY+oWF+OiD4HZcjhSaamEa/7slfPZIgAJDDFCPNiMMM9YwA62wU8dqIn2aRgOeEwMopgjKivalZqb+GjzBxZdut5FaFzCotG4QSxp2w+9ClHz4w1hNof3eP1XSQzWxLgqEEHJT1HKNdizlPrtXl20JCcW2dLgutsZMJPTBJU9i8lFs4GKgEAyaZiFXDBijVri8g==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from MI3PR04MB12438.eurprd04.prod.outlook.com (2603:10a6:290:76::14)
- by AS8PR04MB8834.eurprd04.prod.outlook.com (2603:10a6:20b:42d::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.13; Mon, 16 Nov
- 2026 17:14:53 +0000
-Received: from MI3PR04MB12438.eurprd04.prod.outlook.com
- ([fe80::c715:c32:8bb1:b70b]) by MI3PR04MB12438.eurprd04.prod.outlook.com
- ([fe80::c715:c32:8bb1:b70b%4]) with mapi id 15.21.0615.013; Mon, 16 Nov 2026
- 17:14:53 +0000
-Date: Mon, 16 Nov 2026 11:14:42 -0600
-From: Frank Li <Frank.li@oss.nxp.com>
-To: Peng Fan <peng.fan@linux.dev>
-Cc: Thomas Gleixner <tglx@kernel.org>, Radu Rendec <radu@rendec.net>,
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=yxD2HKpX
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-8b5efadd183so27200b3a.1
+        for <imx@lists.linux.dev>; Mon, 16 Nov 2026 09:16:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1794849376; x=1795454176; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Bd5KkZtIi9hEU9aTOnohsJP4GtQbznYQgq/LOm2c1XM=;
+        b=yxD2HKpXU1vFPVrbP7OYANtMwVh8UmS+RE0y/8dpnSVVFYr0uJFkTP3bb/8ZVxuP/s
+         PN1nZRD2Sk4Ll67jvz9pza6IRNJ00eVidi392yOa0nhutOEtYk+hB8OkS7G09UDDL9J+
+         SXdCgwhixXlN/oyyn+EKOgmbqgUrTU0RPTOMREAnVuj9pGOkinCydMgHpiU/rnWapp4D
+         Z3KQkSeXnbq5Z63AjjE0FYP7FctE/RrL13FHeJJCRohqnE8i5riGUX23ESQG918Bl8rj
+         sTdNBZGp4vM7P7aeBL2HBTT7tpDmyPdWPCCMGQIjEbGLPtZJ8OGlHfixz673fDPOiTY6
+         puTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794849376; x=1795454176;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Bd5KkZtIi9hEU9aTOnohsJP4GtQbznYQgq/LOm2c1XM=;
+        b=1MPOVGKfa2OBFvXlsiULpbi08vfeKmGUY5F5aNf2INQdhYTOguUHHzUEOBrUXRkHHP
+         7fc2DswBotqk88tHi86mOFPgtOD8XrtVa9PFSjgfhq4bYFHfVbN46Ty2KyFs1B7tB98M
+         FsBZviZjiRLDPPt2bb87LhagyySoIoF/Qa6SIERRMvs7URbf6RK3HQlGMV25okOLbk6n
+         8yp7Hr/D/kSg3ywuN/20z64LlfgJCAeRQl/PWlYiZOYMruPY9FlSoQ6Wn3rb4360iVQV
+         BTcmTD0oJlOzgXDyLJ/2q0rgK5ZXkvqyg9THa/8Y8etoGneRODNwDdFEciWjCLAxDvjr
+         SI9Q==
+X-Forwarded-Encrypted: i=1; AL+hErHx9lLGL20WhOwJ5boWWz6/diZYo3eeE7R/RYzAYiD+fUV0PuBu+fWdKq27Qh4X1+6zmuk=@lists.linux.dev
+X-Gm-Message-State: APuU4Z8vxHuCo36324jT3oPGWuvJ5/T9E7u6/eSBhGzscL0LIuFfFXpN
+	VkV527iDBU1kfx1ZuEr0OdQO0NwAwmdIJAzcfKr4Xeb1/PEbvr78oEkgQMCdiO+2TYg=
+X-Gm-Gg: AYBFou0sXM/bQDnuvC1a5UNmOXbKUUMlC5iCq12FMgCK3fO/meE0I6uE9Aaz0Wd0ve0
+	sAKqzgD6qZG4k7W5Wv0t2rk58AS78+Whtlbh3cMyLYRVN80Akeyk+xMbW8oBY9XW45dyv/SNLUP
+	qHUDsYqYzErnOlEp9gDfxI74gPfFF8rG4AvDG4Lh/mYgpAIIIRTWeZPuR+cqoCHFDUztFMxWdY3
+	Y/jAbZefMNLrRn9QK6f30vZ1x9rK6KjofBLdLDJ4yt43wceHfDEx3VVnRnSS/fhLIbA9WUiIgoP
+	AkOv+MA1SW1dwP+0P7W2ngSToOEpY9ePUVPyN95CgALiaeedY9Pycw8EYj8wBndg/ot1gLWI84D
+	QCszQQ61+RSHmWpSBe7Gy+N+kMFxQPbSaIE24mH3lBqhzXymUwHQaZBnWQEHS0YgPSHW5Xc3Lni
+	rxf8LZWbsyek7pPb5f7wCA1o6ZJjjcZzyNzeDmjMUSyru9vFp4/k95d3AyHykCG6FqA3uRknzgY
+	lB9kPSt0rUDMvDhx2koTlmIIZ8N12OFAdAQY0qgs36c/FO+Mp+HWb0MTcgk+W2Ze8ZSRINY5KNR
+	u80s6cogCSLhtNhwCR7GE2YTymJNvGPp
+X-Received: by 2002:a05:6a21:7a46:b0:3de:71c4:a22b with SMTP id adf61e73a8af0-3fd29c153b2mr84093637.1.1794849376336;
+        Mon, 16 Nov 2026 09:16:16 -0800 (PST)
+Received: from p14s ([2604:3d09:148c:c800:ea6f:45e1:c614:f10f])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8bed12a97f9sm3778408b3a.14.2026.11.16.09.16.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Nov 2026 09:16:15 -0800 (PST)
+Date: Mon, 16 Nov 2026 11:16:13 -0600
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
+To: Francesco Valla <francesco@valla.it>
+Cc: Bjorn Andersson <andersson@kernel.org>, Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Shivamurthy Shastri <shivamurthy.shastri@linutronix.de>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	Marc Zyngier <maz@kernel.org>, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH 1/2] irqchip/imx-mu-msi: Fix MSI dispatch through the
- parent domain
-Message-ID: <avs6Avu4PQrcysPl@SMW015318>
-References: <20261115-imx-mu-msi-v1-0-8beb58854ca4@nxp.com>
- <20261115-imx-mu-msi-v1-1-8beb58854ca4@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261115-imx-mu-msi-v1-1-8beb58854ca4@nxp.com>
-X-ClientProxiedBy: PH7PR03CA0017.namprd03.prod.outlook.com
- (2603:10b6:510:339::32) To MI3PR04MB12438.eurprd04.prod.outlook.com
- (2603:10a6:290:76::14)
+	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-hardening@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-doc@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH RFC v2 05/11] remoteproc: virtio: report
+ VIRTIO_F_ACCESS_PLATFORM when required
+Message-ID: <avs6XQpoQmY_MNYx@p14s>
+References: <20261102-remoteproc_virtio_map-v2-0-26b300e01c62@valla.it>
+ <20261102-remoteproc_virtio_map-v2-5-26b300e01c62@valla.it>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -104,99 +112,84 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|AS8PR04MB8834:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3dfe0ec1-0c44-4952-16f0-08df44052156
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|7416014|376014|23010399003|366016|1800799024|18002099003|22082099003|4143699003|11063799006|56012099006|10067099003|261026140227099003|261026121527099003|261022105027099003|261028144727099003|261021121427099003|261009223027099003|261102123227099003;
-X-Microsoft-Antispam-Message-Info:
-	DWD9oQtKYwuMJFFiBBkTsQagmOYZIDdJjNSXo/Gw2XKE6a3m1OouNPECJY8X2zrLKvYzPYCVFWDbTNOP61FQv8hrF82y++mleVnzD1LNtrxIeuWPFg1Ls3S1OjZ6aaaaTNbzHLZuDfQbgGoTRnQ18RBB4A6cS94QDvvh/qG3qnuwcEugV9b1/gWIygwJhmxdKWgaPnpIphTlulBftndPvFryO7OTxgfbR79As1zMY1LOQ6yg7Iw22LgnfMpcfgBdYP+6UqNXVrgzHOYQ1Q+6rIx+3UaH6y9yh2bHTohAJey1he3uH5+bitQxqeoEiv+yymxJz51pd8G7ZI8qHa5UCzMXEIFLTAt83JGlH/Hu9fTQBiDHIdrXWrFwYoibcuz1By/BWRHHyLwTo8k889FDUU8XjWVx0p0O7HmCX/6TEGP3p7Fa1u2NNWOXTB3QcGYxQ7NWo/IOCTB+P+itTPZ2TePugpwjTOS2sWqfdbl9JyUBioDPlushamCXWkDkPxhW4ev8hnbHVof9n99n2RZJkWDZI4keg51f+UTQU+MLRgv2e+Dd2mhGsdqwCQCCmfapX1i/ajjC1S1Co13ymHMrGtjkcOt7jo8c96ZkD8Rs1h1wiHlMK3xNWDL27wxpivSe+UPfUvBI1MkUemhlXdBq/cMZmb9lkYG2jUxTzt3Z5uA=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(7416014)(376014)(23010399003)(366016)(1800799024)(18002099003)(22082099003)(4143699003)(11063799006)(56012099006)(10067099003)(261026140227099003)(261026121527099003)(261022105027099003)(261028144727099003)(261021121427099003)(261009223027099003)(261102123227099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?1munswHk2QjsL+Psk+YnrryYquGa2LHxDr8m08+bFr5zoD+rOjPP0pF3mT7z?=
- =?us-ascii?Q?Kzz0umXtdrAG/dySBIx2+YBHr9bjzxFqG3sNsfIP6y9rS+7+7yfFDNN5ejFc?=
- =?us-ascii?Q?KRnyMBp7TPVgv79YFrWYIVydZc8n6AbDrSBLvPTn5Qydk7irXR+SD+Nt1tj1?=
- =?us-ascii?Q?tWIi28YLSuwdMoa4jb8NeWyjx/hYeA/i1z8ZrSGpkRqW4CfVokLa2fbwatCH?=
- =?us-ascii?Q?pR7SKhZcDxNuoypS1RTGpexf6ZmACynmXmAlWeA76Tj+bNYje0cLput2SFRn?=
- =?us-ascii?Q?OnaoNy9+gNID4rF97kmKfF/DmPD9gGMeekI7wtQvCaFWwUZTdvfof6+g+K+n?=
- =?us-ascii?Q?OtEt4JfuqV63hfoNUq0Xxahbbt0Oz4rbv8S2sRbIoXqROBFUMm6kKxeNR7nR?=
- =?us-ascii?Q?Fvy1Ib5K1yhz1phNRPCtRs4A/zb1hRNtQxW3NAfdxwNaxufuFEg6NeiURYDx?=
- =?us-ascii?Q?xwoqeniSFFK6P8FDtGfaNidrGnsHIMeLlGPaBVgSYIm1bR45nQ/Gb51WHlbj?=
- =?us-ascii?Q?d1L+oNVSkMicF3dm8yqHQ9sRZyTKw1qdylXm1b3IfwcGLRds/RBaHE+0HkKa?=
- =?us-ascii?Q?uwA3ZWSHT6MqOh/GL00UBV3YfGZLDWfx5ud86Ie+jlFMmln+mq4Mw59kioFu?=
- =?us-ascii?Q?dOfNyPekXGUJ2MoSSzYa9vvHOLM1fmozyKO0AvAjtC1cB6wfqz395Vj+Tk99?=
- =?us-ascii?Q?T4ct+3fg92pl3MWh8zZiE/MLdLaSRvTpUNngdFwJnf85JItLNLD2uQSOAIqY?=
- =?us-ascii?Q?0uoDmZyG3uKwNBDxWywctpVmpr4k4T99ZhYsItNb5kPc2YHmXj44b20wr+Fw?=
- =?us-ascii?Q?gae9ghaqj33mtldPBuj2C0LaRoo35g0VwquVlJGncACSzpxtV0DgafIBGSwp?=
- =?us-ascii?Q?kRNZFe9UMpLfKYGsLaFBWNrY+XStPjyLhgPgTiMhEFovP7Xt5mblVU6G4jFr?=
- =?us-ascii?Q?JfZUbH3FYJFQtPZ8lnFNyTlsO37MUuZ/8yyljVAjk4TCkAsnkw/6KyggjUN/?=
- =?us-ascii?Q?g1jUqBAg4ab/pC4j2meKVqurHI05jFUr10pa4bSQ89s6/Iq429sxfiduA3tk?=
- =?us-ascii?Q?A7OQqNhqdaKyafDEu/mxul12y022wP7Fhf8mftZbnaGON400PziCwmnFmfrS?=
- =?us-ascii?Q?+mCtHa4ZedL4Yqr52i9SrXU3Zk+MjymvGuml2dete+ma+mY+DNSBo7Xqgutx?=
- =?us-ascii?Q?XZw0tY7lfB8M8U6tJAuoaf4R/F4ovdB0z6WA+tEpbpKNZer5n0YUaNML/r8m?=
- =?us-ascii?Q?rZB4kMoyFHFUpcFrrjE26exQ52I04F3nEVfDmDiJYwdbOIedlkNqJC7MhaU2?=
- =?us-ascii?Q?7wxCJspQvjsbHU6/qih6j0Wc3NyjoVyqlgjS8ScI6kB6eTC3SNOSlxkJAL69?=
- =?us-ascii?Q?96We3lsPgZ8x2fsR4dhChOk2AUuYSCheVKwuuwTDf162ThlEXlfj953Nmekp?=
- =?us-ascii?Q?GuPn62saLp8dWfS0HdHOSnbpLLcDB86ExA8wrthQSDuM+oLpxRXB4snQumI9?=
- =?us-ascii?Q?bZJ6yMSAbJHQuaw3Kj2vTxEobKIdW+eDfUkoOduweonJFyOdyouvNP6N4WU9?=
- =?us-ascii?Q?vFjDH9EuJGMhQxGyiRS61YpOyDEP0xoWZqUHgXIfrKcNdLaEPd9iSAvYpCpG?=
- =?us-ascii?Q?VbQXCzrsViwrp02qEZGcA0+LEeu2dYXcigKty4rSC1WKbxBABucgylka/eEI?=
- =?us-ascii?Q?RCoxYQO8ptI0+HNl3dxRFkFbVH7D/3RLr0pg9fAENCOqpFdC2m7ujrjXvH2s?=
- =?us-ascii?Q?bXb36NkT9mDeaMYo6uVJ3DhQD9xS9rIqSheV7vzgT54xGX/UXUnN?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3dfe0ec1-0c44-4952-16f0-08df44052156
-X-MS-Exchange-CrossTenant-AuthSource: MI3PR04MB12438.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Nov 2026 17:14:53.6968
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: wgyWZs7NVripzLXFebNSSw29ExFaT8WhF7FwtiGKva5O/yKjRuLyPZfhuxJrHp/8sNwdBBtfgGRAeCpD/iVHdggO+HRlyyE8Kak0z3FD8IpGS+sjn3/nO6umtlqmHeU1
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8834
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261102-remoteproc_virtio_map-v2-5-26b300e01c62@valla.it>
 
-On Sun, Nov 15, 2026 at 10:11:25PM +0800, Peng Fan wrote:
-> From: Peng Fan <peng.fan@nxp.com>
->
-> Since commit 7b2f8aa005bc ("irqchip/imx-mu-msi: Switch to MSI parent")
-> the driver creates the MSI parent (nexus) domain in
-> imx_mu_msi_domains_init(), but never stores it in msi_data->msi_domain.
-> The chained interrupt handler therefore calls generic_handle_domain_irq()
-> with a NULL domain, which resolves the hardware interrupt against
-> irq_default_domain instead of the MU domain. Depending on the platform
-> this dispatches an unrelated interrupt or drops the MSI completely.
->
-> Save the nexus domain so that the handler resolves MU channel numbers
-> through the domain whose reverse map was populated when the MSI was
-> allocated.
->
-> Fixes: 7b2f8aa005bc ("irqchip/imx-mu-msi: Switch to MSI parent")
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+On Mon, Nov 02, 2026 at 12:26:42AM +0100, Francesco Valla wrote:
+> Depending on the driver originating them, data buffers used for virtio
+> communication can either:
+> 
+>   - already be allocated from the coherent memory area that is
+>     accessible by the remote processor; this is the case of
+>     remoteproc-specific virtio devices, i.e., rpmsg and rproc-serial;
+>   - be allocated from generic kmem, and thus not necessarily accessible
+>     directly by the remote processor.
+> 
+> In the second case, the DMA APIs can be exploited to obtain a
+> functional communication, since they will take care of cache maintenance
+> and - if required - bounce buffering. The VIRTIO_F_ACCESS_PLATFORM
+> feature flag can be used for this purpose: with it set, the virtio
+> framework will use the aforementioned DMA APIs to map and unmap buffers.
+> 
+> Bounce buffering will be transparently used in two cases:
+> 
+>   - if the buffer address supplied by the virtio driver is not suitable
+>     for DMA transfers, or
+>   - if the reserved memory associated to the vdev is a
+>     restricted-dma-pool; in this case, *all* buffers will be bounced to
+>     and from this pool.
+> 
+> With this support in place, any kind of virtio device can be supported
+> through the remoteproc-virtio transport, at least from a data exchange
+> standpoint.
+> 
+> Note that remote processors behind an IOMMU need da == pa for the memory
+> region(s) the buffers are allocated from.
+
+I'm not sure to understand the da == pa requirement - can you expand more on
+that?
+
+> 
+> Existing use cases (e.g., rpmsg and virtio-console) are not impacted as
+> they are explicitly excluded.
+> 
+> Signed-off-by: Francesco Valla <francesco@valla.it>
 > ---
-
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-
->  drivers/irqchip/irq-imx-mu-msi.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/drivers/irqchip/irq-imx-mu-msi.c b/drivers/irqchip/irq-imx-mu-msi.c
-> index 6d7baeeb2bc8..c42ea0797624 100644
-> --- a/drivers/irqchip/irq-imx-mu-msi.c
-> +++ b/drivers/irqchip/irq-imx-mu-msi.c
-> @@ -238,6 +238,7 @@ static int imx_mu_msi_domains_init(struct imx_mu_msi *msi_data, struct device *d
->  		return -ENOMEM;
->  	}
->  	parent->dev = parent->pm_dev = dev;
-> +	msi_data->msi_domain = parent;
->  	return 0;
+>  drivers/remoteproc/remoteproc_virtio.c | 10 ++++++++--
+>  1 file changed, 8 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/remoteproc/remoteproc_virtio.c b/drivers/remoteproc/remoteproc_virtio.c
+> index f1b362158a9c..1496659ddff9 100644
+> --- a/drivers/remoteproc/remoteproc_virtio.c
+> +++ b/drivers/remoteproc/remoteproc_virtio.c
+> @@ -280,9 +280,14 @@ static u64 rproc_virtio_get_features(struct virtio_device *vdev)
+>  	 * All non-remoteproc-specific virtio devices are assumed to be
+>  	 * compliant with virtio specifications 1.x; there is no other method
+>  	 * to transmit this capability from the remote processor to the host.
+> +	 *
+> +	 * Virtio devices that are specific for remoteproc usage take care on
+> +	 * their own to allocate memory from the device's coherent pool; use
+> +	 * the DMA APIs for the others through VIRTIO_F_ACCESS_PLATFORM.
+>  	 */
+>  	if (!rproc_virtio_rsc_vdev_rproc_specific(rsc))
+> -		features |= (1ULL << VIRTIO_F_VERSION_1);
+> +		features |= ((1ULL << VIRTIO_F_VERSION_1) |
+> +			     (1ULL << VIRTIO_F_ACCESS_PLATFORM));
+>  
+>  	return features;
 >  }
->
->
-> --
+> @@ -312,7 +317,8 @@ static int rproc_virtio_finalize_features(struct virtio_device *vdev)
+>  	features = vdev->features;
+>  
+>  	if (!rproc_virtio_rsc_vdev_rproc_specific(rsc))
+> -		features &= ~(1ULL << VIRTIO_F_VERSION_1);
+> +		features &= ~((1ULL << VIRTIO_F_VERSION_1) |
+> +			      (1ULL << VIRTIO_F_ACCESS_PLATFORM));
+>  
+>  	if (WARN_ON((u32)vdev->features != features))
+>  		return -EINVAL;
+> 
+> -- 
 > 2.56.0
->
->
+> 
