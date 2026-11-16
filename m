@@ -1,100 +1,103 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.69.69
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794863733;
-	b=GVBffWkKE2kCKB9ckqn+s8zFXAS5+X+73pttSAEX+oHplERaNDf4CEsLayLjmHbZKXG7
-	 5dVV9/KdmW/ltwAUkmp6pK5ynTRPnsef3is1PZrnS/3xHt7KkqRs7EhbywCfQ73N0I9aQ
-	 MRI7vTmSRbCERwLy4sEQUFj4Sl5jsw+PyE8nTBS7V2ipOaOiw4ace7wo0oQyXJLolHP7V
-	 3UyPrK7lMzlAkznm9+xI0mkdsTfnzPaJdFRbgo4fCJ5JUX6oYnM2JEukmYdzaIZJMbIh9
-	 Nx8bheaS3Ibfl7Bi9mMbH2qINnEtZuEvsa3j3Kanp/m9VrHgCU+fBL0U6pNdrbSDcLw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794863733;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:Content-Type:Content-Disposition:
-	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:
-	 X-MS-Exchange-AntiSpam-MessageData-1:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=gppz6Eixz6RelKMBIkKcmwJq0OoAPs+EHo8jitDWE7M=;
-	b=BvNnAHSWVd8maTE0+Cw0lm03kul4+UFTFtMefZZDZK0/F0Gha7BwzTAY5MEJ8BrxU5uv
-	 QoKdSxPcJVDSsRNroyJ1PpoMtQnr6Ydo9jbQc0cHd/q70wNE4/MRkvY+p8+9mR4uB56gF
-	 mnRxVFNFCwTnYWb2qwJ/b1Bg3DTmnr9D8KqPCZwjnxMBGPvr+AsUN2p8f47NEYa0LrF15
-	 U6YYEr65Xut7sUdLI84XpTtNT8I9RiaugXbLfUaYds0zE5/95uqV2/AS/K02w7NvWDS+P
-	 Z7HGUfaHKawXnkV/o8Q5zPWD1TYAoDm3SWfAg4GAnChnfkzboBC+MPlitVPdiXIPXtQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nxp.com;
-	spf=pass smtp.mailfrom=nxp.com;
-	dkim=pass header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=PbBao557;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.69.69
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010069.outbound.protection.outlook.com [52.101.69.69])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.169
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794869294;
+	b=t+7A4TrskSDsp1CXMOj6XNFDaJBu/UYak2e/+9L2U1Rk/DEbzsn3sfaM2TLKisggFBGH
+	 6E/FePdGhYX4xQYd1WMk93qlnBHiWtF+UTHZVOOQr5QyWaMl3lCGOnM0hLwCAp1DkIk7w
+	 W87AyXLxK4F1FmNEP5SQt8J1IRSST3u+YCKWn0TyyAZItuxWPH5FBMhbfT/XB6p2HSvHP
+	 DmkRFjJe/epJLPd5F9WQrWLKAqlospZ3M2hBaEpYfP9wFGN3G13VZe9lSqTKPJQfwx5Kd
+	 fsIUSZs9NlitPSaN176JoS2jayRy8zI03p4AKIpL18wy0fKPeuSg/Jdirjm8JO0LBzw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794869294;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=rS6peJ8v9Pm7ofa72f18HTAmcNJmQCcntGCb1eMGOG4=;
+	b=bBRaRS3WSk3F9HPtKNDVy2ZJzRtQEw3ynQnRQF83asayjFKuZdyapJ48cZKQTVCwl06z
+	 S4JJ1K9p3HUwCwRQZ39HaLeW6kT9ibcjueub9UMdHgoJAV0YiFnI0iVJqdl0xUeVVuCGk
+	 5RanigfKdA38VNhE/4rRPj7O8qsu8rsTaJdq9TjENY7N6GSG+iCAnr83S6GjF9DH15J+l
+	 3fTsS5N/co/zrb0lH3duQoqdoSZKdLwpCn/OKBm6KywORbj6GdGbBUKlAXgv/cfW7fmth
+	 A9OdqvEB/90zouREH2t9FRpETnbHz+7fvqQV20CgI0JVwTZCM/7pk3Ot7idbnhbuH3Q==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Hc1rM6fo;
+	arc=none smtp.remote-ip=209.85.128.169
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAAEB606A322
-	for <imx@lists.linux.dev>; Mon, 16 Nov 2026 21:15:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CAAEB606A322
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FB4D606A335
+	for <imx@lists.linux.dev>; Mon, 16 Nov 2026 22:48:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2FB4D606A335
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=PbBao557
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Vm72QLDb9G2bf1GeDYdndAa0N7r8iLx3BjKqkfgEp4Lc6Z8iqNg5afw8E3bAd7UuHvl5Zc5f1Fhf+PN2NUH7ksk3rYXp0sU3S/yjAvua/JNa/xGWOLV+TfJR8Gn18QUFFofwQjGXtFF0xPjcSH10Jzp/d/J8ccJVpBa9HzalfYxSJY9beicPe/eZzEH8hm1PaXp4jqQ1R/7XKbuiZmK5ZDaJnAEcNdLrvUrhJhAIdLPx666lD2nCkx64VdDWzu6TENQ0Dwp8YPqSGhEbD74JcNPiCKToOmwCfQSbW+Rp0nzgmWzRMVt6+fkSI//oamhOEiJqYfUA7ybm6eZe93Skpg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=gppz6Eixz6RelKMBIkKcmwJq0OoAPs+EHo8jitDWE7M=;
- b=ct7Km8WNKuqd8aN97+dAL7+jOkCfyfzNZ3FnhVD2YLq6cVm382P8yctT3ryZkrPzoZKRjQ4+e7F/S1bPzPdrbUiwNs5OZjC93oSEyym0fPU9Omv7HjsLN9xAo5FY2vPwqvgfhjTWLLq5Ywh/S1K5uniyrX1J0ml7EW25qEnJ08iIw4VzVjto3OFMxKosIW9eCV4DcfyN5qF9AWQNHNqx1Ni6/b1XMCh4d6d4bgmKLEToM6D9gXSs6MudbXfVX3NMFFTq55wCjoMs339/9YUsoWt2gYsPxdFy0YHxt9X2gwvQS5gcPdQx1ZX6xfiYhcAooNn4cxqKMS3UHUelgxn/oQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gppz6Eixz6RelKMBIkKcmwJq0OoAPs+EHo8jitDWE7M=;
- b=PbBao5577gBJhMmLB80V6YQ959wFqTAku5RZDwiQpEYnm4iMn7w0hMX9bbdTuXYdXlQGJ9ED4ey3CxwREK7dtZ+iJuWgfOh4pKJdgQFtGFD3BxNBj4ajr5aBKlOMjwLOS6KmR5IFRtZZNN4ImPg8xldnhHsxK8lzUPtLx2K/7kJiCohspG2ydL+UNF9fs8DpbiHTFYZIKHFrX7Pug4P9V3TOqbQ/b730SlOpXnISHZnymfYLpAhhK1Ft0aMW19rsNXup1zeglcnqO8b88nKDkg/U26VyQsXk0+SrOi4tFtLSFQWuMv3WI78cQI7C8oHHsgfhMpErS8bcTe01DXnjjA==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM0PR04MB6900.eurprd04.prod.outlook.com (2603:10a6:208:17d::10)
- by BR0PR04MB385734.eurprd04.prod.outlook.com (2603:10a6:2c8:61::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.14; Mon, 16 Nov
- 2026 21:15:28 +0000
-Received: from AM0PR04MB6900.eurprd04.prod.outlook.com
- ([fe80::7fda:8431:ca1b:b023]) by AM0PR04MB6900.eurprd04.prod.outlook.com
- ([fe80::7fda:8431:ca1b:b023%4]) with mapi id 15.21.0615.013; Mon, 16 Nov 2026
- 21:15:28 +0000
-Date: Mon, 16 Nov 2026 23:15:24 +0200
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
-To: vjardin@free.fr
-Cc: Dong Aisheng <aisheng.dong@nxp.com>, 
-	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>, Jacky Bai <ping.bai@nxp.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, NXP S32 Linux Team <s32@nxp.com>, 
-	Linus Walleij <linusw@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, linux-gpio@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, Ioana Ciornei <ioana.ciornei@nxp.com>
-Subject: Re: [PATCH v6 4/5] pinctrl: freescale: add the Layerscape RCW
- pad-mux driver
-Message-ID: <avtsY-7-I7_pdyD0@lxl00025.wbi.nxp.com>
-References: <20261115-for-upstream-lx2160a-rcw-pinmux-v1-v6-0-fbdce4565a5c@free.fr>
- <20261115-for-upstream-lx2160a-rcw-pinmux-v1-v6-4-fbdce4565a5c@free.fr>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261115-for-upstream-lx2160a-rcw-pinmux-v1-v6-4-fbdce4565a5c@free.fr>
-X-ClientProxiedBy: AS4P250CA0005.EURP250.PROD.OUTLOOK.COM
- (2603:10a6:20b:5df::16) To AM0PR04MB6900.eurprd04.prod.outlook.com
- (2603:10a6:208:17d::10)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Hc1rM6fo
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-8b30cbfa628so32463467b3.0
+        for <imx@lists.linux.dev>; Mon, 16 Nov 2026 14:48:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794869293; x=1795474093; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=rS6peJ8v9Pm7ofa72f18HTAmcNJmQCcntGCb1eMGOG4=;
+        b=Hc1rM6fo6R4X0NWpVKkn+lZ0hxpdEZ74V+rEmCnmfZeH9iPMp0yNLNSh+dXofcBxvb
+         iL1wQRSQig3JB95xDk/4/HbjEY5EBmi3Uo1BTkU0GmpJwEwyhh69M+9B4L1Umm/c9d9v
+         jVIsbh3GIT15pCF159d3dsjv1IEFmyE2PUubB02hzwLaq8lkvVV7X1eUkKu9xvOK7xSH
+         y1NlqB52zDZTvI4ulUsVy8ad8UDTw0OqAoWf9JcUJTwUoZDmnIjq8u07HrsXLwJqjW5z
+         EyfA/DwbazNPlbN4IZmK/NqEEtB+tfZTe5lJRa27syFPM+cLSvaQIUv39i/GlhnMs93+
+         Asxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794869293; x=1795474093;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=rS6peJ8v9Pm7ofa72f18HTAmcNJmQCcntGCb1eMGOG4=;
+        b=yn/YvoJRPs6tYiuIUSTPx6MpTB1iUjTmCu7sbmtE6WV/fF1tRal1xgTU+ML6amQBop
+         M4q6MoAvhgo8maiQ2cFrnwKjfA65irMhjTEdbavinKBgs2qM3/T+1PMUKkLHFiBU0cH1
+         nyTZD2N7MbIX5OM6ZDq2QPHE1ZxzKIbzvC4kVP4TyVLGvcHJi/hbYLoJX2jY68bSitpv
+         2PC3i4wSOV8RWv7Q2GY8ylYxiIIXbRFGGoRZx90ziaWaM6E5+Nuts9JVe55/uoZLjRMp
+         njuKBi3gX9NC0HZqZF+hRK0W0qOrYQdc2jlpsD2n/H2RXO5z8EOV3SyC4iq4RFUBEn2j
+         EOcA==
+X-Forwarded-Encrypted: i=1; AL+hErG5wuz/g/SgJ40JL7qpPeLXwKwCeuobD/NC8k32G8E76lXqmXyxncYtHDW14mvsZ/3o89g=@lists.linux.dev
+X-Gm-Message-State: APuU4Z9j9gUtxnP28BC1eYXmuXsQQkPOYg90Ezb64rbaUVw8Fjpqmx4S
+	oyI6FpEiwScyZXUWgsvrk4bcySEhFFs7v6BMS5aCWAhWvi4WTDF4zF8U
+X-Gm-Gg: AZFdTZdt00YIqZ0UqQzymtypuegwq+wXQPpal1o4RSqoNaKUfOSg+ZTP19VvmodBThx
+	+8DlF4tgyjwDF7503taM4D7GH2NdIxppjEU/TKPhyJ5FRk6rB+3iXXz2j7SjKT4T9c8F8fPkQj1
+	KMTaRdEPPTWWb6X7/EOEpjNAx1PBXNJ+qCZOdBP5gkqgRcKmKXwgBl0d4agllJOG9RxnXixM1d6
+	OfoB17yPQkCUboT86Zpz7mY04YBHCT7pEmjBz7vLuY8Z2qjRJgqDQAfMzcIbRDj7gnD+6vESFvz
+	Qa2JobTUD/nltdQTQy2LttBeUd7Nyj4a878Gf8jVYcRxga6+ItJMDbbE9Q412CTldL/2fnD9MLM
+	ejXMmZ0vKFnPeXZPKbIey0sxnHHwILDGHz5hen6qmoE14FYeY1M7CFNdUsaaGpJDFU4g3Ocit97
+	ABo2CFz9RVVm04Fq8uE9diJUzCVPEM2VmjMVJB/gMgWWTNgVlm+eErUGJw4W9wyLNRXkqaWFNSE
+	e+ZBpOF9YP7Zux50KAiF5s6ow+eL679iYedmXrNuCuZZH5rwg2JSSr4QS6h3DK3MI/WLuyi8dfM
+	v+DdZTJJNdKWPsPY7YeC1iwYmmof0heTvjNhPCbLj7edjpNalntm+jGOlWsOzznsBcfDPRQyZ+5
+	sn26rQXETtKxrgH/vL4Qca9A=
+X-Received: by 2002:a05:690e:4191:b0:677:cf4d:a932 with SMTP id 956f58d0204a3-67d896cf4b2mr5729807d50.63.1794869293001;
+        Mon, 16 Nov 2026 14:48:13 -0800 (PST)
+Received: from fabio-X870-EAGLE-WIFI7.tail2bb604.ts.net ([2804:1b3:a803:1afe:e1c3:da60:db44:d0c8])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-67db0361f39sm5259534d50.19.2026.11.16.14.48.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Nov 2026 14:48:12 -0800 (PST)
+From: Fabio Estevam <festevam@gmail.com>
+To: lee@kernel.org
+Cc: maz@kernel.org,
+	andy@kernel.org,
+	jic23@kernel.org,
+	dmitry.torokhov@gmail.com,
+	linux-input@vger.kernel.org,
+	mfd@lists.linux.dev,
+	linux-iio@vger.kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	Fabio Estevam <festevam@gmail.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Subject: [PATCH v4 1/4] dt-bindings: mfd: mxs-lradc: Fix interrupt order
+Date: Mon, 16 Nov 2026 19:48:00 -0300
+Message-ID: <20261116224803.61154-1-festevam@gmail.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -104,94 +107,78 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM0PR04MB6900:EE_|BR0PR04MB385734:EE_
-X-MS-Office365-Filtering-Correlation-Id: 275c3d33-27f5-4bfe-b72f-08df4426bce4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|1800799024|10070799003|376014|19092799006|366016|23010399003|261022105027099003|4143699003|5023799004|11063799006|10067099003|56012099006|261026121527099003|261026140227099003|261028144727099003|261022075727099003|261021121427099003|261102123227099003|261021123027099003|261009223027099003|18002099003|6133799003|22082099003|41080700001;
-X-Microsoft-Antispam-Message-Info:
-	UsZ/DL0rMZRMlAQ+ocPW6alQNUwCmvNDR2doa75nlZ7N//5veCY+K6R25X8oks/NBnSIC2i4w7cpoV5SYc/udUuYCBW1yj+95VwILaIfJTtVUD+4ns2akJrM7HbGYkeZvlCssIVHNkhPmGf6M9Fbx2BLuux42Cr2oiD28sJfuTumPfkMql+ofXaoRJv4chlGhgW7UNu20GdLArNNBIIOWzFDuNWB3EqTslmYcq3b39n2D7XWRSA2PqkLJtn4ruhwdF1Q6gNgAMSlk0NKmlOFRF6bIO4XS4yWiJ/tx8SjoGrnWDNmGDrwX7aBOsmbB0I21vD4cv5dqh+kVW8Q3N/+mugEVVW3Qh5U9qFV3xCfCvuTwjcnQYw8f5Abp4OsME5R4w7HX8ayyO5HjmgeTZvxv2+QV0q8LGYl+WdldPTnEzGVu0+MqhWa87OBxVC5tWQKKlj6KZkNPlQYrJB3afhaZzcMuWM8yuF+2CabRxnJWlvW6H8u9q5DAmHuYAeIu/JgDn09IFoqY5S88qBY7ig+klkDeY4dMUCkoanSLzXt6Awi5jCAdJeW2q3EOfDqzAgHugY9/HAzmYtm+L3XB2vgiXPTla9vs7+e1czVIVwVxuX2WHzVnARa1R1Aeep34lW/1Z2GJ1dPcrTgesZmxdyk00EomK2q0eVPdSAIS7HwSGglpLcqzybD2Sk8QVtVHZAIWUX8yahX8HPp4kMm6D2ogA==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB6900.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(10070799003)(376014)(19092799006)(366016)(23010399003)(261022105027099003)(4143699003)(5023799004)(11063799006)(10067099003)(56012099006)(261026121527099003)(261026140227099003)(261028144727099003)(261022075727099003)(261021121427099003)(261102123227099003)(261021123027099003)(261009223027099003)(18002099003)(6133799003)(22082099003)(41080700001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?sDjgkQZrjbLEDIYd8SJv/nr2QqDLJCRuxKTowr5X5qtF4+AfWrjUy0IMVVR2?=
- =?us-ascii?Q?7lYxMcY8UXg59w+kHb1/mKClDEfr/vP/q/8n/FBC4KAyKVK9Y7K9v2n2UPg2?=
- =?us-ascii?Q?PuwbwOs8A01S9B8/T67O5HUdEPvMGyaTs7DCEwmJP7o642GNf12CVPm9wEQi?=
- =?us-ascii?Q?CcfRFIN1BlMkVDbbBVU28YiYhexOe/bBuv1vlJ8p/omysfSYuoJT7/CFkksq?=
- =?us-ascii?Q?G2PKXdpkuf0yo8Fan+gbY+aQCHtyX0ErFBEtX6sh0y52+VRr9qL43FXHovNR?=
- =?us-ascii?Q?J2JNAWbBgTcNMTKpqTIQU6wdF6oo3ni6BKEoa4De0cOV5AINeVIO7l9sFmM8?=
- =?us-ascii?Q?BapiawAG5exvhY1sos5KqswUaB0oM0rFKfcrYO31B5ORHYea3ctJfuv0YzXg?=
- =?us-ascii?Q?wlnx+GwMT9cl+g5L8bB+V888QXNMst/OTEuT1iQEhmkjrt7Cvb4LPvZZIdmv?=
- =?us-ascii?Q?+VmWHFBDv3++ufkDy0LFxtDvSPsYQ7hjRjhHnyzhnPlok/YeKiQt8B3g5wdG?=
- =?us-ascii?Q?q3JN2opKI3k8yjFm4xftnM6svI77Ggz9fF1uUXP1KZUJQ2Mc/Ve+a5cDr4mW?=
- =?us-ascii?Q?UyrCilY7YUFcs5huOm+asy9+TuszvweXrU937lvh04AC2dsYIkD19R2u6l9i?=
- =?us-ascii?Q?aBrAjmwgAwOtItrW/an5kSPyDqK5Y4voq6BdbR3vWl9B8lhJ3dG7hcJmJd7i?=
- =?us-ascii?Q?CAJw6evMlpS33fzcPityD9yhZot1V9p2jbEZZQtsem3YgD80RZiV8XaLLl78?=
- =?us-ascii?Q?w7xpFjnAKpACrjwvM8Fe/bay9ppIdmnfkkq4A0iKpYcpJttGVjcrJWHUxmBp?=
- =?us-ascii?Q?h4RoDEwqaBjS5QC+PnwrnzUjm2C9qTN3ULOl/JUCgv2exEiDafhoYYD9H4Hd?=
- =?us-ascii?Q?TwqdbJV4nlo5xjrv+Ud91J2gjqLsV43WS+kD0APMHIBVn/I754MjeDtB/g51?=
- =?us-ascii?Q?IldhrvDREhr6bCqWKa+p3RQT+BBkrB/lVmeTzjlnrN/Q9b4FLFAvdUelbVYj?=
- =?us-ascii?Q?xbIskrHqlWnImuv/ixPzAnnjnwOmcIukzbz8ARSp4dDWRRGEuC96yUb6cvSu?=
- =?us-ascii?Q?w93VHOr1qdNxyEdDNeEtyAaLpvBf+TFY0hK5KJyLxUj6ORlDSlTlbxqFc4ph?=
- =?us-ascii?Q?mhzMdX4RWPc1rX43i5S1vG3DraXYd4Vwo7P/9Z0b2LAw4zAQTHwR+iFSUXe4?=
- =?us-ascii?Q?UXTPcpkRzn+rTOm6i8aTnS5KqT2neYdSL6Zp7r3lEZab5impe8T/G5oAWOHn?=
- =?us-ascii?Q?BofLgavaZljLMzfD37wHOErtkF+qGbTe9V+5GksastEB27cxis6+vxQa5bIa?=
- =?us-ascii?Q?iAn5U6rb4oZrpF4HrwH+GD2CpOXnElDaoPecGoWr1fMDZNZ3QvtxDhOgi6hm?=
- =?us-ascii?Q?A30diOHgIcf/1g/HTmtED3W+SNnrOmooLOdoYhnIkSowssUhea8rwphbLa2h?=
- =?us-ascii?Q?Bukea6/XEeoi9guXBHoRJoXbBeMGM3oQmiufiGh4S3E7Dh/YqDyGyCza3UlK?=
- =?us-ascii?Q?5kRoixTt++s+mrCv5xdQlH/XXjoevIeiD/GE6d+ZgJN+B19B+OGisq34Wbv9?=
- =?us-ascii?Q?4+EDk0x+Tj25aRFvPCut9VkrdhI0J53RxIBfzRKV0X08ZiGUplg/6B8pxGV0?=
- =?us-ascii?Q?VpHQPt15/YXW0IL8reUo4/JsP1Oj2JztxdyRHKmm4ufUhUPTaqQIccfpcsG9?=
- =?us-ascii?Q?E8gr3O1gVDYTLc+IBWcTg38hXSkMMr8BG94IS2GSiSYzv5bsxKK/WVIMNi7e?=
- =?us-ascii?Q?aCY78gr6hcnQKbg5TR2w/gGvUVSXDmXds95QmeFGnvwz1TCQ2CiLVO9zSlwE?=
-X-MS-Exchange-AntiSpam-MessageData-1: SOxmJw1KNdxFtA==
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 275c3d33-27f5-4bfe-b72f-08df4426bce4
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB6900.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Nov 2026 21:15:28.8172
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: vmYZof7RQG7TzAwPI+GQxowCcdDm/ddy/5ruRetvYVY4S6B7opHKS0nwZxxqZ4SmKKumTA0iHe1vyGdurO/ByA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BR0PR04MB385734
+Content-Transfer-Encoding: 8bit
 
-On Sun, Nov 15, 2026 at 02:27:34PM +0100, Vincent Jardin via B4 Relay wrote:
-> +static const struct rcw_pmux_func lx2160a_sdhc2_data74_funcs[] = {
-> +	RCW_PMUX_FUNC("sdhc", 0), RCW_PMUX_FUNC("gpio", 1),
-> +	RCW_PMUX_FUNC("i2c", 2), RCW_PMUX_FUNC("flexspi", 6),
-> +};
+The interrupt descriptions added during the conversion to YAML do not
+match the ICOLL source numbers used by the existing DTS files.
 
-The "i2c" and "gpio" functions of lx2160a_sdhc2_data74_funcs[] here
-hides some real unpleasantness. These 4 pins either get all assigned to
-I2C7_SCL, I2C7_SDA, I2C8_SCL, I2C8_SDA, or they get all assigned to GPIO.
-But they cannot be assigned in pairs of two (or individually, i.o.w. not
-in the granularity we need), which makes independent I2C bus recovery
-practically impossible (i2c6 as I2C while i2c7 is as GPIO).
+For i.MX23, Table 5-1 of the reference manual maps source 36 to touch
+detection and sources 37 through 44 to channels 0 through 7. The DTS
+lists these sources in that order.
 
-The way the code is currently written, the pin_request() call will fail here:
+For i.MX28, Table 5-1 maps source 10 to touch detection, sources 14 and
+15 to the threshold interrupts, sources 16 through 23 to channels 0
+through 7, and sources 24 and 25 to buttons 0 and 1. The DTS also lists
+these sources in that order.
 
-		if ((!gpio_range || ops->strict) && !gpio_ok &&
-		    desc->mux_usecount && strcmp(desc->mux_owner, owner)) {
-			dev_err(pctldev->dev,
-				"pin %s already requested by %s; cannot claim for %s\n",
-				desc->name, desc->mux_owner, owner);
-			goto out;
-		}
+Reorder the schema descriptions to match the hardware documentation and
+the existing DT ABI.
 
-And even if it weren't for this core pinctrl rejection, there's still
-the functional problem associated with I2C bus recovery independent of
-another I2C controller, with whom you share a pinctrl group. Even
-assuming that these two controllers are hacked to acquire a shared mutex
-to serialize bus recovery operations of A with transfers of B, it's
-still not enough, because B may be an I2C slave, and in that case, the
-bus recovery of A will cause B to miss events.
+This change was prepared with assistance from OpenAI Codex, which was
+used to compare the binding with the reference manuals, existing DTS,
+and driver ordering.
 
-Due to the fundamental issue of this limitation, I don't think it makes
-sense to have the pinctrl states described in fsl-lx216x.dtsi for i2c6
-and i2c7. Perhaps you could remove them in another change (either as a
-follow-up, or another patch in v7 if you need to resend).
+Fixes: 009528b5aa13 ("dt-bindings: mfd: convert mxs-lradc bindings to json-schema")
+Signed-off-by: Fabio Estevam <festevam@gmail.com>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+---
+Changes since v3:
+- None.
+
+ Documentation/devicetree/bindings/mfd/mxs-lradc.yaml | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/Documentation/devicetree/bindings/mfd/mxs-lradc.yaml b/Documentation/devicetree/bindings/mfd/mxs-lradc.yaml
+index 782b2f4005a0..755029880677 100644
+--- a/Documentation/devicetree/bindings/mfd/mxs-lradc.yaml
++++ b/Documentation/devicetree/bindings/mfd/mxs-lradc.yaml
+@@ -87,13 +87,13 @@ then:
+   properties:
+     interrupts:
+       items:
++        - description: touchscreen
+         - description: channel 0
+         - description: channel 1
+         - description: channel 2
+         - description: channel 3
+         - description: channel 4
+         - description: channel 5
+-        - description: touchscreen
+         - description: channel 6
+         - description: channel 7
+     fsl,lradc-touchscreen-wires:
+@@ -102,6 +102,7 @@ else:
+   properties:
+     interrupts:
+       items:
++        - description: touchscreen
+         - description: threshold 0
+         - description: threshold 1
+         - description: channel 0
+@@ -110,11 +111,10 @@ else:
+         - description: channel 3
+         - description: channel 4
+         - description: channel 5
+-        - description: button 0
+-        - description: button 1
+-        - description: touchscreen
+         - description: channel 6
+         - description: channel 7
++        - description: button 0
++        - description: button 1
+ 
+ additionalProperties: false
+ 
+-- 
+2.43.0
+
