@@ -1,117 +1,95 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=52.101.83.18
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1794843925;
-	b=bHjIsjI8OJf7SvKQR9yFK9eotJI+oZgwerde+Le+nq+XTBXk1JGAcjc71uLblmRPXfKu
-	 ++9bVjC5LZDeUcP9FaP0jEyLRu2uJPjIRrScLPmxxmUcOGKw8ks1O9oDFXJnSjG9N8/r1
-	 a/36vB4ybKW7M5IKeG39kVE1+3Zw+AbgiXRl21KBsF8x2+a4V8V/nM8EY1n3YT9VwUIlk
-	 rg4exJ/rFjDTx1i7MPifBuqKwHIKl354cJvrA6y9M9nx52GUWWnmb7k8SFAywroyi8uEb
-	 knimBfpM5ZrC1tQuNL9M9+JxU6/ph8mHkl6JDLqzX2VgMIavk+F9floTc+GNed6FlvA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794843925;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=CBcsPqd2/PXv/5LXbrThVtNK8U0r8fvQdYI3xsnniao=;
-	b=ATdzunxZGEaOvM7yPXLbh55V+azsvBYnG8E5Uc6X5UFsVfhlyxoJa1mQeL7xZGrlAIgC
-	 RshCV46kjy04pLdmnZRN8LX53pldQaQBssNujMl9oCe4JFAdnyNkcwMzlN7NV4g7xNUdh
-	 6R+bOi1RO98Kg/OW5xy/mA5QNBO4UwThUWSDUrU1q4q4uZDCvcjUDs/36P7d7jiPfrpRp
-	 fd7Pf+XHYAlHoNKjjIVM/L5CGrhJ4+xXhIDiWAMjW+be04Z5jBhm87v70aNaV6hu6cRfz
-	 DY/tdK8rp2iSsju8ecqbeehkZUHy4hmUecOfPZmeMBqjTKTpZCrp7tUFFuyI+heAAxQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.nxp.com;
-	spf=pass smtp.mailfrom=oss.nxp.com;
-	dkim=fail reason="signature verification failed" header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=pgvwaD1k;
-	arc=fail smtp.remote-ip=52.101.83.18
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013018.outbound.protection.outlook.com [52.101.83.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=213.167.242.64
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794844336;
+	b=SxvWfhig1Vo+F8HkFGNv2t17M7xv1SCyAAdF3hx1w5+8qCTr2LOr7MUKwK+Lg93UYQxE
+	 axIV4LCQ/gG/GIq+xQyNhxI8YXEyud5m1wEQeFASphmzNIDUPcG5lEhXa095dOZ1L80+4
+	 KBXeVdQZBa+11Lr0+O0iUVxBlR3ad6i/SUEF9RnX01C5j2pwEZJuQPACnI9yEa5vmkgGL
+	 XVokIJBgtAGF58KhIcIvjN/rM2/HNujfrUfMlEdHIHnZoZdE67UecPdLTLObpdqekKs3/
+	 k449vfQ2qg+gyGgjY4UbN3fmIMq/UBoCiLT+5Py8VBfnOVRyaqieOreNlOPDpx/xkyg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794844336;
+	h=DMARC-Filter:Received:DKIM-Signature:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=tc6KfHj5fySnLDo/yssasn7KXGGvXcSn8JCgqMRWVxQ=;
+	b=uzroADecQpHrOCPogW6uR0kJ7NWfacFfXw1tLieKnGULnbqOd+5rUSnGfXZQsVod5pW9
+	 A21YrXvkF16G3ggbLh6DzZaDQG0V6VTlbXZN3nrZgaegNn6YoOEttdT3aQHUMtUECC5NU
+	 lwG4PksSU0j7486QG0m/PjXTbpJLeU6BGfAZxCvG4eW0R9j8nRSc5hgj5BkBk5hMcgiNG
+	 fGdbEqls0PkxqdEl87R1PlvnrBG48arnvZisZ7ICvq/dgQiUSZYF2/kwLtIbgNW1SxzLV
+	 DL8Hb/7NqUDJ3aS7BAFtxPpjacKrQUDZLpqJ1KB8dyPV+sySlszON5AKDv9j4ezMr/A==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=ideasonboard.com;
+	spf=pass smtp.mailfrom=ideasonboard.com;
+	dkim=pass header.d=ideasonboard.com header.i=@ideasonboard.com header.a=rsa-sha256 header.s=mail header.b=NusKEKiY;
+	arc=none smtp.remote-ip=213.167.242.64
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED98A606A322;
-	Mon, 16 Nov 2026 15:45:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org ED98A606A322
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DDCD606A336;
+	Mon, 16 Nov 2026 15:52:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1DDCD606A336
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=pgvwaD1k
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=pQXDUDFTw2NjzaZnzbBS/B9XoxYmkRrESj4cqjN/9Zum/1VrjMSP3DmYV9ml7EO3+wIXaZh75Mr1PuAyarF43ZZipsD7W3BB3eWOapZpfKZtFbmjnMOjLPjrvMtC9s3dQCfbrk6HWITfULkjhoTK+sbgfB78rWm+DZwx31qPncHIsPirB2yWxISAZf/AKY4O0GJUsWDqBdbnQkjAcK6gH1/Pr+i8ZcclsMZeBMOf5JjmwR5j+9ZOe58+StNGAl/UJBl+8zfF+Yh0BtJVLbxbhO5hfx4Iv61pID+q8oixUWWp3rXHYDSVJ+P5rmEUHuNRIyZUvAyT+NRtgzNoFEXfRA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IMWB4jtlgoDv+la2UYIYALsqDtwbTwbZPG59uxT5PA8=;
- b=sJ8b4dxuQ8U0qYMaJA9zMLCMOJI8ixN8TI5k2Ky0Z+xF4/Q+HUaiv6yRw4HrhBSDFY6Ybuu9AMf86uSGNSeAAXPgCTtSfmKomX6ob5jLbXAaORE1blrAaOwllrlqZ7hnuqgvb2DuKdwDxAEWloz0OCA+SotD4/ib7dgcP5w8kXFVBGIZVfbE1ha97Qhmqr8JjOd86KJ45H8RtUUnsEqNKpaWgB9IZdn9aCyH6SEGfOlDl6TiKwV+fT8OTdKuNiTpLgBILuCzNX5V1TnUMOW/9ZMjb03vMz1/k2Dfki64qfcF/ux0LhxRiwESTxALDXinA9e7Beuya3X/qBDDeUUvSQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=IMWB4jtlgoDv+la2UYIYALsqDtwbTwbZPG59uxT5PA8=;
- b=pgvwaD1kAeBGbHB3LT4uRttQ6FI2IJB02UkJyrDzKFbcWuyEP2k/iPVrxYyP9NQNq9rMs3zzHLg3udN/ZjyQv7Oif4K2V0/aKJw4iGtEOAOkfguiWIH7OQmrxce9hgk0UrikwnKsN5OSnGLsBJUvApffdzX2Cv3zwQP49d867qGLUCSrVG3jGgbABFMBh1h4llqLihpBK+24nQl8f1912fPsl3POpqvawApk6cuqpuI9s65bIgkD/bsSreVzuFs0Xo1OCkj1QOvHuTrgJL3v9eXoI4oLmw2qDuRHfmleowdn9MUwGmwD6d5maHWe8K98qDG9/wIrM1nCtmVl1JE5rQ==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from MI3PR04MB12438.eurprd04.prod.outlook.com (2603:10a6:290:76::14)
- by AM0PR04MB7041.eurprd04.prod.outlook.com (2603:10a6:208:19a::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.14; Mon, 16 Nov
- 2026 15:45:21 +0000
-Received: from MI3PR04MB12438.eurprd04.prod.outlook.com
- ([fe80::c715:c32:8bb1:b70b]) by MI3PR04MB12438.eurprd04.prod.outlook.com
- ([fe80::c715:c32:8bb1:b70b%4]) with mapi id 15.21.0615.013; Mon, 16 Nov 2026
- 15:45:21 +0000
-Date: Mon, 16 Nov 2026 09:45:05 -0600
-From: Frank Li <Frank.li@oss.nxp.com>
-To: Miquel Raynal <miquel.raynal@bootlin.com>
-Cc: sashiko-bot@kernel.org, Vignesh Raghavendra <vigneshr@ti.com>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Richard Weinberger <richard@nod.at>,
-	Kyungmin Park <kyungmin.park@samsung.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>, Han Xu <han.xu@nxp.com>,
-	Keguang Zhang <keguang.zhang@gmail.com>,
-	Vladimir Zapolskiy <vz@mleia.com>,
-	Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Rosen Penev <rosenp@gmail.com>, Frank Li <Frank.Li@nxp.com>,
-	Wentao Liang <vulab@iscas.ac.cn>, Rob Herring <robh@kernel.org>,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Chen Ni <nichen@iscas.ac.cn>, Runyu Xiao <runyu.xiao@seu.edu.cn>,
-	Hemanth Selam <hemanth.selam@gmail.com>,
-	Pengpeng Hou <pengpeng@iscas.ac.cn>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>,
-	Triet Hoang <triet.hoang.dev@gmail.com>, open list: 
-	HYPERBUS SUPPORT <linux-mtd@lists.infradead.org>;,
-	FREESCALE GPMI NAND DRIVER <imx@lists.linux.dev>, moderated list: 
-	ARM/STM32 ARCHITECTURE <linux-stm32@st-md-mailman.stormreply.com>,
-	sashiko-reviews@lists.linux.dev, vkoul@kernel.org,
-	Frank.Li@kernel.org;
-Subject: Re: [PATCH 1/1] mtd: use dmaengine_desc_set_callback()
-Message-ID: <avslAXoa_LSuFNrP@SMW015318>
-References: <20261102181406.3994422-1-Frank.Li@oss.nxp.com>
- <sashiko-outbox-193928@kernel.org>
- <87wlqcrg0u.fsf@bootlin.com>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <87wlqcrg0u.fsf@bootlin.com>
-X-ClientProxiedBy: PH7P220CA0127.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:510:327::7) To MI3PR04MB12438.eurprd04.prod.outlook.com
- (2603:10a6:290:76::14)
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.a=rsa-sha256 header.s=mail header.b=NusKEKiY
+Received: from killaraus.ideasonboard.com (2001-14ba-7086-3000--a06.rev.dnainternet.fi [IPv6:2001:14ba:7086:3000::a06])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id ED0204BB;
+	Mon, 16 Nov 2026 16:49:45 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1794844186;
+	bh=dmodi+YIJbHNHccq3QM7tWgiNzPRHtMFkx//VJBaXh4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=NusKEKiY4bzAOfEoYrIhBXyGlIkZI3PnloPf2BxBVRwuEIJvmtu+vw7O/jc41VQuU
+	 J3Ty1U67T4ibE4hILXY3O/CpMrCBJQpictxpRHUyim+WJ3gBdqwhQf8GriCHlXRv3w
+	 cuUezGZlAQGClI/3BR6NS7TrNFoxwJ2vIQYfr6tw=
+Date: Mon, 16 Nov 2026 17:52:11 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Frank Li <Frank.li@oss.nxp.com>
+Cc: Frank Li <Frank.Li@nxp.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
+	linux-pm@vger.kernel.org, Jani Nikula <jani.nikula@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Hellstrom <thomas.hellstrom@linux.intel.com>,
+	Simona Vetter <simona@ffwll.ch>, David Airlie <airlied@gmail.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
+	Alessio Belle <alessio.belle@imgtec.com>,
+	Luigi Santivetti <luigi.santivetti@imgtec.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Robin Murphy <robin.murphy@arm.com>, Yong Wu <yong.wu@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Dafna Hirschfeld <dafna@fastmail.com>,
+	Michael Tretter <m.tretter@pengutronix.de>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Will Deacon <will@kernel.org>,
+	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
+	dri-devel@lists.freedesktop.org, imagination@lists.freedesktop.org,
+	intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
+	iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, linux-media@vger.kernel.org,
+	linux-rockchip@lists.infradead.org, linux-sound@vger.kernel.org,
+	sound-open-firmware@alsa-project.org, imx@lists.linux.dev
+Subject: Re: [PATCH v2 2/2] PM: runtime: fix stub pm_runtime_get_if_in_use()
+ for !CONFIG_PM
+Message-ID: <20261116155211.GB1763340@killaraus.ideasonboard.com>
+References: <20261116152513.2676573-1-Frank.Li@oss.nxp.com>
+ <20261116152513.2676573-2-Frank.Li@oss.nxp.com>
+ <20261116153139.GB1763944@killaraus.ideasonboard.com>
+ <avskkbztzVF_SRo6@SMW015318>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -121,85 +99,166 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|AM0PR04MB7041:EE_
-X-MS-Office365-Filtering-Correlation-Id: 43fc282f-510a-4e8f-3347-08df43f89f51
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|7416014|19092799006|23010399003|366016|18002099003|22082099003|261009223027099003|4143699003|56012099006|11063799006|261028144727099003|261026140227099003|261022105027099003|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	URQzRkn8pPheGkVHrFH6O5oBelRCLX5puwKDsq4C1BPLcvK7S3q5KRZfDU9TMLCeOZFgqP2haNzpL7lzpzZkUzdoVv8sHuqfuS8QZzcMLUnw9fAjvlAuVERlEi9UpfBD1i7zlPcq/xMWvFMFyekHyp6QrDtl/7JzPZlFYUgllGCLGf4pGixpy5uVsVijYJbuypUsTPKnSOnH40IV33BgqrEkrMWhrhG2WnnwzBX6a3ino823LXqr/WDiXpwlV/H8Gsvs7WlCXCIkh9gBJw435mORFpF4+fPknstCSw3CuSuvc5emtxO80k9fYVFCzQ3vRMWh7svhYqQUmv0K+Afpf0iQAifD5QYgrG7Nn5OOWajhgbxvMV8tNcOEx22bamRQGRorMnTDnT0/7tz6Wq/gs0KpOoDVvraZ4+GnW7/Tf8adTppDJ2Hgj1zhU2c6sj8eD7H3nvIGrUBl2QlESczGuSXhjPjjnOex28hk15R8ojJxSZ5p9RZ/5q6HjAgG3Jl1mszyKDCqhtTbpUZorWHvRWNmNeDW5lITmzbiz7H7rK4vbZX3RzQAKoF/sTaXKFsDWWHu4SXdgTTZ8bIuhCF2iYIVLBlIL1ju19vVkn6jFbyOcNwbq5pAZ4ZTu3zI8xNfdruPQh8m25B0RqvHe9oIQV1qqI1AXOH7TeGfcXhEt+c=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(19092799006)(23010399003)(366016)(18002099003)(22082099003)(261009223027099003)(4143699003)(56012099006)(11063799006)(261028144727099003)(261026140227099003)(261022105027099003)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?UbNdDa+3P9WtKmScMArnJJrZGRFKt9GITSf3+GceQ8YPZTjjetts6sBx6M?=
- =?iso-8859-1?Q?Pbt5sW8gZcGjvna8QuF/CpqcZfhK66K1MJlRkOzbL/WRiCbwmQ4/2mxPRd?=
- =?iso-8859-1?Q?tDKstm2KwJC/Ns48esC5PBs9iDNUEhwN3daMcbwWeiqlo3mmaHnsFWI7IH?=
- =?iso-8859-1?Q?oXCy3A5zPt/72uC+u1TswmpOe8vbzlvSevSMiZ61GOUfWnyKDCIXA/qwZU?=
- =?iso-8859-1?Q?Er9ydP7IQ17X1i9f1o14ZeOB5VntVF0ydj8PSORSBt+4unoH4ewfeIIK5x?=
- =?iso-8859-1?Q?U1hOUBhzLWBoLY7vzmNBuxOwF/hCnxut49qHoWpop+II7atsqk+hKkwGdh?=
- =?iso-8859-1?Q?RqgoE4u64fANuT64MvekCMAVCWkKoFlCgof7kADQa7qTs4P70I//hFhDQM?=
- =?iso-8859-1?Q?Hqr1wd/hK65sv2+1A9qLtFh0xxBoigLQzIwAH4HBypOGyY3t391PG7o+5K?=
- =?iso-8859-1?Q?M3LsLMlZjJkztzwH1aRANgQehJWN2dnPAmtlanVTO2FWsL92w0IPj/ta60?=
- =?iso-8859-1?Q?iVbZkvcqIxuF3xdqd+DLEI4ZfdmM+vAjJs6a8g7t0QXFoj85jlXU98BZcP?=
- =?iso-8859-1?Q?3KRhfBFnmjng5+9lGkZiCUBqzdqgrwN5iWVW7ksHS/g/mbkIUdoBRJtabB?=
- =?iso-8859-1?Q?WNNhWPoPRQ4oaWDBkl6iBvBS19AXyRB6S+a1ssqcPPDSLmxgpmNBlEtM5k?=
- =?iso-8859-1?Q?pGZiT2hwan8gp2oO3oNX0wbXGoYoU/xJBaiUgR3PeCWsg8VnpXZsYjm/gS?=
- =?iso-8859-1?Q?jsXCqb1JMnOIa0NfV53Z85Vnuzd8jyDJtRHCiH50bLK2qeZxfGNQffb2ag?=
- =?iso-8859-1?Q?XEU15VHP4jgeY64FFW+fvALZT6t+nL59thjv6KSksNzQ1tp27ILmhKVnRD?=
- =?iso-8859-1?Q?B0djkDjmDRi4P6VDGbLfQrE3jYr4cjSe4yDw0Ngl6gvAHJruwhQugWm7z+?=
- =?iso-8859-1?Q?9zUOl7L9E0T7dSHYuzKZ7wjB7gbsetBSFiSChRxoFYc1Ra0/I/134Q7nB3?=
- =?iso-8859-1?Q?DbjMZxJciZeg/cpz1rF47KgVj+RbRkKvDCab380Pu78ahgI7Wmf7ssTWbt?=
- =?iso-8859-1?Q?oPmu6NtxkEGDloTyMnZYsdbWmgx+RmHDyERaE9mqf1prG3oTHnvRKyfgY5?=
- =?iso-8859-1?Q?HIkQTpTTUlOaQJHvOdxZTgMwRiLnyG8YbRNB2z4uf2wz9Kij5PQohnSbst?=
- =?iso-8859-1?Q?LGptLibIR84pjLD/7InCpwHREdRucBCQbWkQX+Wx2vyNfcydeRFLnmbvWt?=
- =?iso-8859-1?Q?wiMb4KMqKvh6xQONWtx+2XRCYnsOznKU55DyagmJF85FolZEZGkjYCYete?=
- =?iso-8859-1?Q?xALCwGNVh8e9FscX97fb7MjMJeoqxJ2Ltl11afLUQARrA+ugdsSKI47JEi?=
- =?iso-8859-1?Q?eWYbi9BOYpPAwL7rFyVpAGtei41984dLhyDBD8JbWaBeWYGvMYw+ANl2ZU?=
- =?iso-8859-1?Q?WRJzv24rKJfMLutCTiOk2BubHMrZKXoDK46k77cZqCXdv7pDbOnu5VG0J8?=
- =?iso-8859-1?Q?llMNwsgOJq/zDWCfPKkz6VmrNIP226rbU/3oRO/XCoxtOyThhEB1Cj/lx4?=
- =?iso-8859-1?Q?p90n9ba5SLzknm/5p+LKEIEATvhWykUaYc3Y6admu3vGvNO6XWZOWBojbz?=
- =?iso-8859-1?Q?qlPHpK2fbCBvx0kk6088R148e/zPEtHf8w4nyjc/lcx7oRRtak1/QKkwSe?=
- =?iso-8859-1?Q?sq1nvOhWLuTENDqWIZ4pTVXaMVn9W8IQpMAX824Pik4mvVW9L2RCuqPXm8?=
- =?iso-8859-1?Q?zh06bwUwpiG/a3Neo4tVOz5/rAbWlExfHIi4MHvwBNL3h+gaKKmXpPP3sd?=
- =?iso-8859-1?Q?4JAoyL9qk54Hl7iCYCDpxwvwNvSf3yfYRO0r9i0Ui8oD5TY5Ovbr?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 43fc282f-510a-4e8f-3347-08df43f89f51
-X-MS-Exchange-CrossTenant-AuthSource: MI3PR04MB12438.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Nov 2026 15:45:21.6012
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: aNtJDjq3qFYUV1hWrQqtb8xr9ExJJYAN/sf+bhAPNucBCHorhoYH44uL+gghrM3Xyy/+VviRgOHQZnuJNx0kcnfxOJZnvXPd4F6a8K6qcRRFXR2ba9vlefyRda6jCHH4
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB7041
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <avskkbztzVF_SRo6@SMW015318>
 
-On Mon, Nov 16, 2026 at 03:45:53PM +0100, Miquel Raynal wrote:
-> Hello Frank!
->
-> On 02/11/2026 at 18:21:00 GMT, sashiko-bot@kernel.org wrote:
->
-> > Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
-> > - [High] mtd: implicit declaration of dmaengine_desc_set_callback()
-> > breaks build
->
-> Should this land after DMA core changes have been merged? I have too
-> many patches in my inbox atm, so I will drop this one, please re-send it
-> whenever it can be applied and I will happily take it (with the commit
-> log fixed).
+On Mon, Nov 16, 2026 at 09:43:13AM -0600, Frank Li wrote:
+> On Mon, Nov 16, 2026 at 05:31:39PM +0200, Laurent Pinchart wrote:
+> > On Mon, Nov 16, 2026 at 10:25:11AM -0500, Frank.Li@oss.nxp.com wrote:
+> > > From: Frank Li <Frank.Li@nxp.com>
+> > >
+> > > The stub for pm_runtime_get_if_in_use() under !CONFIG_PM currently
+> > > returns -EINVAL.  The real implementation returns:
+> > >   1  - device is active and its usage counter is non-zero (bumped)
+> > >   0  - device is not in use or not active (counter not bumped)
+> > >  -EINVAL - runtime PM disabled for this device
+> > >
+> > > When CONFIG_PM is not set every device is permanently "active" and
+> > > always considered "in use", so the stub must return 1, mirroring
+> > > __pm_runtime_resume() which already returns 1 in the same build.
+> > >
+> > > Returning -EINVAL breaks callers that test the return value with
+> > > comparisons other than "!= 0 / == 0":
+> > >
+> > > drivers/gpu/drm/i915/intel_runtime_pm.c:
+> > >   if (intel_runtime_pm_get_if_in_use(rpm))
+> > >   which wraps to: ret = pm_runtime_get_if_in_use(); return ret > 0;
+> > >   With -EINVAL the wrapper returns false, causing an incorrect error
+> > >   path in the GT fence revocation code.
+> > >
+> > > drivers/gpu/drm/xe/xe_pm.c:
+> > >   if (pm_runtime_get_if_in_use(xe->drm.dev) > 0)
+> > >   With -EINVAL the condition is false; xe_pm_runtime_get_if_in_use()
+> > >   returns false, so callers believe the device is not usable.
+> > >
+> > > drivers/gpu/drm/gma500/power.c:
+> > >   return pm_runtime_get_if_in_use(dev) == 1;
+> > >   -EINVAL != 1, so the helper always returns false when !CONFIG_PM.
+> > >
+> > > drivers/gpu/drm/imagination/pvr_power.c:
+> > >   if (pm_runtime_get_if_in_use(...) <= 0)
+> > >   -EINVAL <= 0 is true, so the driver always takes the "requeue" error
+> > >   path instead of proceeding with the active device.
+> > >
+> > > sound/soc/sof/debug.c:
+> > >   if (pm_runtime_get_if_in_use(sdev->dev) == 1)
+> > >   -EINVAL != 1, so d3_prevented is never set, corrupting exception
+> > >   debug accounting.
+> > >
+> > > drivers/iommu/mtk_iommu.c:
+> > >   if (pm_runtime_get_if_in_use(dom->plat_dev->dev) <= 0)
+> > >   -EINVAL <= 0 skips the TLB flush, leaving stale IOMMU mappings.
+> > >
+> > > drivers/iommu/rockchip-iommu.c:
+> > >   Three call sites use WARN_ON_ONCE(err < 0) or similar patterns.
+> > >   -EINVAL < 0 triggers a spurious WARNING on every call.
+> > >
+> > > drivers/media/i2c/isl7998x.c:
+> > >   if (pm_runtime_get_if_in_use(dev) <= 0)  (two call sites)
+> > >   -EINVAL <= 0 causes the driver to always skip register programming
+> > >   when !CONFIG_PM.
+> > >
+> > > drivers/media/platform/rockchip/rkisp1/rkisp1-debug.c:
+> > >   if (pm_runtime_get_if_in_use(dev) <= 0)  (two call sites)
+> > >   -EINVAL <= 0 prevents any debug statistics from being collected.
+> > >
+> > > Fixes: 9d58aa46291d ("drm/i915: Fix the GT fence revocation runtime PM logic")
+> > > Fixes: cbb6a7413b17 ("drm/xe: Introduce xe_pm_runtime_get_noresume for inner callers")
+> > > Fixes: 672c473576ca ("drm/gma500: Rewrite power management code")
+> > > Fixes: 727538a4bbff ("drm/imagination: Implement power management")
+> > > Fixes: b30289e7fa92 ("ASoC: SOF: Fix runtime pm usage counter balance after fw exception")
+> > > Fixes: c0b57581b73b ("iommu/mediatek: Add power-domain operation")
+> > > Fixes: 0f181d3cf7d9 ("iommu/rockchip: Add runtime PM support")
+> > > Fixes: 51ef2be546e2 ("media: i2c: isl7998x: Add driver for Intersil ISL7998x")
+> > > Fixes: cbb819c363c5 ("media: rkisp1: debug: Collect input status by sampling ISP_FLAGS_SHD")
+> >
+> > I don't think this one is right. The rkisp1 driver only runs on ARCH_MXC
+> > and ARCH_ROCKCHIP, which select CONFIG_PM. The same may be true for some
+> > of the other fixes tags.
+> 
+> But code itself should be wrong even though these platform force enable
+> CONFIG_PM.
 
-Sashiko should be wrong. dmaengine_desc_set_callback() already in v7.4-rc1.
+How does it make the code wrong in the rkisp1 driver ? There's nothing
+to fix there, because there's no bug.
 
-Frank
+I'm not saying this patch is wrong (I'll let the runtime PM folks
+provide expert feedback), but I think some of the Fixes: tags are not
+correct.
 
->
-> > - [Low] mtd: commit message inaccurately states change is across sound
-> > drivers
->
-> :-)
->
-> Cheers,
-> Miquèl
+> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > > ---
+> > > Change in v2
+> > > - new patches.
+> > >
+> > > Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> > > Cc: linux-pm@vger.kernel.org
+> > > Cc: Jani Nikula <jani.nikula@linux.intel.com>
+> > > Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+> > > Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> > > Cc: Tvrtko Ursulin <tursulin@ursulin.net>
+> > > Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> > > Cc: Maxime Ripard <mripard@kernel.org>
+> > > Cc: "Thomas Hellstrom" <thomas.hellstrom@linux.intel.com>
+> > > Cc: Simona Vetter <simona@ffwll.ch>
+> > > Cc: David Airlie <airlied@gmail.com>
+> > > Cc: Matthew Brost <matthew.brost@intel.com>
+> > > Cc: Thomas Zimmermann <tzimmermann@suse.de>
+> > > Cc: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
+> > > Cc: Alessio Belle <alessio.belle@imgtec.com>
+> > > Cc: Luigi Santivetti <luigi.santivetti@imgtec.com>
+> > > Cc: Liam Girdwood <lgirdwood@gmail.com>
+> > > Cc: Mark Brown <broonie@kernel.org>
+> > > Cc: Jaroslav Kysela <perex@perex.cz>
+> > > Cc: Takashi Iwai <tiwai@suse.com>
+> > > Cc: Bard Liao <yung-chuan.liao@linux.intel.com>
+> > > Cc: Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>
+> > > Cc: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+> > > Cc: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+> > > Cc: Robin Murphy <robin.murphy@arm.com>
+> > > Cc: Yong Wu <yong.wu@mediatek.com>
+> > > Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+> > > Cc: Matthias Brugger <matthias.bgg@gmail.com>
+> > > Cc: Heiko Stuebner <heiko@sntech.de>
+> > > Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+> > > Cc: Dafna Hirschfeld <dafna@fastmail.com>
+> > > Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> > > Cc: Michael Tretter <m.tretter@pengutronix.de>
+> > > Cc: Daniel Baluta <daniel.baluta@nxp.com>
+> > > Cc: Will Deacon <will@kernel.org>
+> > > Cc: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+> > > Cc: dri-devel@lists.freedesktop.org
+> > > Cc: imagination@lists.freedesktop.org
+> > > Cc: intel-gfx@lists.freedesktop.org
+> > > Cc: intel-xe@lists.freedesktop.org
+> > > Cc: iommu@lists.linux.dev
+> > > Cc: linux-arm-kernel@lists.infradead.org
+> > > Cc: linux-mediatek@lists.infradead.org
+> > > Cc: linux-media@vger.kernel.org
+> > > Cc: linux-rockchip@lists.infradead.org
+> > > Cc: linux-sound@vger.kernel.org
+> > > Cc: sound-open-firmware@alsa-project.org
+> > > Cc: imx@lists.linux.dev
+> > > ---
+> > >  include/linux/pm_runtime.h | 2 +-
+> > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > >
+> > > diff --git a/include/linux/pm_runtime.h b/include/linux/pm_runtime.h
+> > > index de9e7518ecef2..1d983fe55a16a 100644
+> > > --- a/include/linux/pm_runtime.h
+> > > +++ b/include/linux/pm_runtime.h
+> > > @@ -276,7 +276,7 @@ static inline int pm_schedule_suspend(struct device *dev, unsigned int delay)
+> > >  }
+> > >  static inline int pm_runtime_get_if_in_use(struct device *dev)
+> > >  {
+> > > -	return -EINVAL;
+> > > +	return 1;
+> > >  }
+> > >  static inline int pm_runtime_get_if_active(struct device *dev)
+> > >  {
+
+-- 
+Regards,
+
+Laurent Pinchart
