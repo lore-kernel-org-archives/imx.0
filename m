@@ -1,83 +1,84 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.169
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.224.53
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794869294;
-	b=t+7A4TrskSDsp1CXMOj6XNFDaJBu/UYak2e/+9L2U1Rk/DEbzsn3sfaM2TLKisggFBGH
-	 6E/FePdGhYX4xQYd1WMk93qlnBHiWtF+UTHZVOOQr5QyWaMl3lCGOnM0hLwCAp1DkIk7w
-	 W87AyXLxK4F1FmNEP5SQt8J1IRSST3u+YCKWn0TyyAZItuxWPH5FBMhbfT/XB6p2HSvHP
-	 DmkRFjJe/epJLPd5F9WQrWLKAqlospZ3M2hBaEpYfP9wFGN3G13VZe9lSqTKPJQfwx5Kd
-	 fsIUSZs9NlitPSaN176JoS2jayRy8zI03p4AKIpL18wy0fKPeuSg/Jdirjm8JO0LBzw==
+	t=1794869300;
+	b=nkBILbfSta2krdPm/OOKjyhNAzGkCpz9wGPY8bbDJjAfS92A9apGZWFbMix6d2G0u9J7
+	 9mmW+aDId+rn2yBOJ+g15EcabHdD/a5SggDmx7E+ehEdPiw+h7mBfRbBBavRTPBhosrxU
+	 wB+cwWqqB0wrwStVbcKXNBnVWjFr9QLkEU0l30XCLT5wwjpxv3zZVhYu19BqRnpKwtOCQ
+	 tHIO12cnnHfZtwpybDphY9cG3CGn2QkeiidOv9P8sTVu5j1g07YvCbN0oV+7F85w9eGd2
+	 ciKIt1WGQpsDJ4j94vThyb13B+Y4Bq2HAQFoCJSAlsZLV1dO+lBevdbbHtkZklECuJg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794869294;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794869300;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=rS6peJ8v9Pm7ofa72f18HTAmcNJmQCcntGCb1eMGOG4=;
-	b=bBRaRS3WSk3F9HPtKNDVy2ZJzRtQEw3ynQnRQF83asayjFKuZdyapJ48cZKQTVCwl06z
-	 S4JJ1K9p3HUwCwRQZ39HaLeW6kT9ibcjueub9UMdHgoJAV0YiFnI0iVJqdl0xUeVVuCGk
-	 5RanigfKdA38VNhE/4rRPj7O8qsu8rsTaJdq9TjENY7N6GSG+iCAnr83S6GjF9DH15J+l
-	 3fTsS5N/co/zrb0lH3duQoqdoSZKdLwpCn/OKBm6KywORbj6GdGbBUKlAXgv/cfW7fmth
-	 A9OdqvEB/90zouREH2t9FRpETnbHz+7fvqQV20CgI0JVwTZCM/7pk3Ot7idbnhbuH3Q==
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=oh/bkFp2nuSyz5ivDEaIwr2GT3sFP3wzg1ta0b9US0w=;
+	b=vQ4zkQEoORecT9Fo0YoWDeuA3rmkwZteTTejhjTAYHUR1SfOp3axwf0dply2jdD86OSr
+	 k3q7TXWDFZEdM8iMQRRTMpqyP92bf3SpO5l9sE91iwkmcpr6MPP4J7was40sAaKT46IE7
+	 D87yufhNYuptNWFJB/rh4tRz5cY+fyh2T5u0qeinX3qtROlCvdG7SvYRR3Rj/uhO43kyc
+	 ZLcjRgB96DX6W9lbw04z0xDdjDuxSeYRASARdU6Jvhtk2ZX0XSZ6HalOoPcq+dnctfIK6
+	 qGdHY45Vc5vn2kn6tCty7UW/CPb7ct+7IM3wYoslGtZcPKncVClKHwLz4ElHfaymz3A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Hc1rM6fo;
-	arc=none smtp.remote-ip=209.85.128.169
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Vgq1tgXv;
+	arc=none smtp.remote-ip=74.125.224.53
+Received: from mail-yx1-f53.google.com (mail-yx1-f53.google.com [74.125.224.53])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FB4D606A335
-	for <imx@lists.linux.dev>; Mon, 16 Nov 2026 22:48:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2FB4D606A335
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F7D0606A32A
+	for <imx@lists.linux.dev>; Mon, 16 Nov 2026 22:48:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0F7D0606A32A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Hc1rM6fo
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-8b30cbfa628so32463467b3.0
-        for <imx@lists.linux.dev>; Mon, 16 Nov 2026 14:48:14 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Vgq1tgXv
+Received: by mail-yx1-f53.google.com with SMTP id 956f58d0204a3-67db8985419so2427238d50.1
+        for <imx@lists.linux.dev>; Mon, 16 Nov 2026 14:48:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794869293; x=1795474093; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=rS6peJ8v9Pm7ofa72f18HTAmcNJmQCcntGCb1eMGOG4=;
-        b=Hc1rM6fo6R4X0NWpVKkn+lZ0hxpdEZ74V+rEmCnmfZeH9iPMp0yNLNSh+dXofcBxvb
-         iL1wQRSQig3JB95xDk/4/HbjEY5EBmi3Uo1BTkU0GmpJwEwyhh69M+9B4L1Umm/c9d9v
-         jVIsbh3GIT15pCF159d3dsjv1IEFmyE2PUubB02hzwLaq8lkvVV7X1eUkKu9xvOK7xSH
-         y1NlqB52zDZTvI4ulUsVy8ad8UDTw0OqAoWf9JcUJTwUoZDmnIjq8u07HrsXLwJqjW5z
-         EyfA/DwbazNPlbN4IZmK/NqEEtB+tfZTe5lJRa27syFPM+cLSvaQIUv39i/GlhnMs93+
-         Asxg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794869293; x=1795474093;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20260707; t=1794869298; x=1795474098; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=rS6peJ8v9Pm7ofa72f18HTAmcNJmQCcntGCb1eMGOG4=;
-        b=yn/YvoJRPs6tYiuIUSTPx6MpTB1iUjTmCu7sbmtE6WV/fF1tRal1xgTU+ML6amQBop
-         M4q6MoAvhgo8maiQ2cFrnwKjfA65irMhjTEdbavinKBgs2qM3/T+1PMUKkLHFiBU0cH1
-         nyTZD2N7MbIX5OM6ZDq2QPHE1ZxzKIbzvC4kVP4TyVLGvcHJi/hbYLoJX2jY68bSitpv
-         2PC3i4wSOV8RWv7Q2GY8ylYxiIIXbRFGGoRZx90ziaWaM6E5+Nuts9JVe55/uoZLjRMp
-         njuKBi3gX9NC0HZqZF+hRK0W0qOrYQdc2jlpsD2n/H2RXO5z8EOV3SyC4iq4RFUBEn2j
-         EOcA==
-X-Forwarded-Encrypted: i=1; AL+hErG5wuz/g/SgJ40JL7qpPeLXwKwCeuobD/NC8k32G8E76lXqmXyxncYtHDW14mvsZ/3o89g=@lists.linux.dev
-X-Gm-Message-State: APuU4Z9j9gUtxnP28BC1eYXmuXsQQkPOYg90Ezb64rbaUVw8Fjpqmx4S
-	oyI6FpEiwScyZXUWgsvrk4bcySEhFFs7v6BMS5aCWAhWvi4WTDF4zF8U
-X-Gm-Gg: AZFdTZdt00YIqZ0UqQzymtypuegwq+wXQPpal1o4RSqoNaKUfOSg+ZTP19VvmodBThx
-	+8DlF4tgyjwDF7503taM4D7GH2NdIxppjEU/TKPhyJ5FRk6rB+3iXXz2j7SjKT4T9c8F8fPkQj1
-	KMTaRdEPPTWWb6X7/EOEpjNAx1PBXNJ+qCZOdBP5gkqgRcKmKXwgBl0d4agllJOG9RxnXixM1d6
-	OfoB17yPQkCUboT86Zpz7mY04YBHCT7pEmjBz7vLuY8Z2qjRJgqDQAfMzcIbRDj7gnD+6vESFvz
-	Qa2JobTUD/nltdQTQy2LttBeUd7Nyj4a878Gf8jVYcRxga6+ItJMDbbE9Q412CTldL/2fnD9MLM
-	ejXMmZ0vKFnPeXZPKbIey0sxnHHwILDGHz5hen6qmoE14FYeY1M7CFNdUsaaGpJDFU4g3Ocit97
-	ABo2CFz9RVVm04Fq8uE9diJUzCVPEM2VmjMVJB/gMgWWTNgVlm+eErUGJw4W9wyLNRXkqaWFNSE
-	e+ZBpOF9YP7Zux50KAiF5s6ow+eL679iYedmXrNuCuZZH5rwg2JSSr4QS6h3DK3MI/WLuyi8dfM
-	v+DdZTJJNdKWPsPY7YeC1iwYmmof0heTvjNhPCbLj7edjpNalntm+jGOlWsOzznsBcfDPRQyZ+5
-	sn26rQXETtKxrgH/vL4Qca9A=
-X-Received: by 2002:a05:690e:4191:b0:677:cf4d:a932 with SMTP id 956f58d0204a3-67d896cf4b2mr5729807d50.63.1794869293001;
-        Mon, 16 Nov 2026 14:48:13 -0800 (PST)
+        bh=oh/bkFp2nuSyz5ivDEaIwr2GT3sFP3wzg1ta0b9US0w=;
+        b=Vgq1tgXvVTYlVxNlpd8JHP60+TCQNIhZAR7/Qie4z5jQUxaIf/Sss0JmyoPnqawK8Q
+         bA+igC2pr+gJ1ZcVsdeGxkQ8If6VpVC6BEhUCMlico+lyQzchcpGAyAHlxN8Yvr8by4X
+         +iWrNJEhjmWrC/WW8sWgc/MJDLTrbdg0D1/re+HfDU0yhXV5ageBTZHMKfXDzhU3eADz
+         eVu6MgUx5VMQvUQSZDP8SUQlai0sFb2Zr1D0PVZETR/tVRh3w5YLTiWrke0k+5UC3mSE
+         51HVOXV/36CdRRPU0QHaXWNDCURvd4EqOCzOolV+rKw9B5LaZKKTvaKgCNQbM6cBJXDa
+         +Ujg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794869298; x=1795474098;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=oh/bkFp2nuSyz5ivDEaIwr2GT3sFP3wzg1ta0b9US0w=;
+        b=1Sf5SDWFUREiXVFOXnqILZ2HrB12mtu/1R1khoECHwb6ljdTq1H4wZbJYaYta3wGS1
+         cuJKdq000U/B/1MKocYsX6VjvEQGIWZWU0yLTgXc2ndmGXzvzjKY2WQ1qLFaA4wyol+4
+         9ybo4c+3xuSVaA6503Gn86R6/vsqaifLN9tyk82ApOG3QVZ7XzzEjbxq5CfZZykyfy5s
+         neNXtrsv+xn8o1WVa//BHiuVBFkdA+n8KqglUxpCN+URLQroWwg3Cf8ygWsp+8HY9E07
+         dLVExA9o/bSMBXUmTM+xAa7HRWJQBeuTqpazmHAvrb6RVsswpWwwy5E210yPwGmS5aYc
+         FW7w==
+X-Forwarded-Encrypted: i=1; AL+hErEZWblkjA7FiEvS3166+D4nP5mWrzbSKnrCbvLgZxXpu6z26/dPVIjUDtADLX8QqcpiOX0=@lists.linux.dev
+X-Gm-Message-State: APuU4Z90B4iRephrKPYPpGnhYe9O0UwtYypqg3ijbf78I7HUJlnHPv//
+	qY+Tl2n5DrDMkqiJ4PeMZSQmpQhkSE9QM5kJAFkkGJilj+NZ4mPQ1rfz
+X-Gm-Gg: AZFdTZc+qvEYhtIXBB+N9dC1+mKwEs2kt4pomvn/d/nauqg4OJWZCnXuU7z9NjBzXkR
+	yrlHXfyfHRcfTkQLPuodrZOEPRJJJ6HgZPXHFsXRYq0P4jLZaUruF+ivlCQWruaVQQs/xqbTtpx
+	A5KP1eEwy1H3HtCllN5Sv/nHlVLJiv5w+MWxfnwgCrhNySMwO8Cy9z+VStx4gRBrrQL7c2NlTDa
+	0u+HD9uQhtGlhiJLZdnCoLZlNCaLAZ7S2qTFsnx+DvjyfR6yiRrOG7Ze/g2sOoeJEAGpYIqmWYy
+	oi1vwzQDTlqFlzr5H+2oblrCUttkEGpIW36LFVDog8y+HlzSe42zMvP9BbkAr4FWvqEoRBFowdU
+	I7KpCiMA9Dd4g6VtE7q+1B48i8a6JSIrH7H2YwcmLqHocMuX69s+Fux2wZzfXReQMVkE2HNdqxa
+	hYDBFrANLB+IyDrlumSukIzH6AfFtZ+OGOCVPDvwFVhnXeFyCvfFoTdnSMOD5zL3j1uHilrmmpj
+	fagpCz9VkAI8XPiXxklVrFG/CjlQQTZHxhVvuGWu0+Aym3KmXdCUk8zF5r4QPyJ+84UqSIdsfht
+	oVn2NaM7jKxZF9+jammyHsfp1GifBiHrGoPIrDJKE6q9BhNiuxrYPEpZh4iWlky03/x+EvdC5xv
+	s2TQVktm+9jPc1z54PaJ16IM=
+X-Received: by 2002:a05:690e:a49:b0:67d:a8db:2821 with SMTP id 956f58d0204a3-67da8db2967mr3475909d50.103.1794869297941;
+        Mon, 16 Nov 2026 14:48:17 -0800 (PST)
 Received: from fabio-X870-EAGLE-WIFI7.tail2bb604.ts.net ([2804:1b3:a803:1afe:e1c3:da60:db44:d0c8])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-67db0361f39sm5259534d50.19.2026.11.16.14.48.08
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-67db0361f39sm5259534d50.19.2026.11.16.14.48.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Nov 2026 14:48:12 -0800 (PST)
+        Mon, 16 Nov 2026 14:48:17 -0800 (PST)
 From: Fabio Estevam <festevam@gmail.com>
 To: lee@kernel.org
 Cc: maz@kernel.org,
@@ -93,11 +94,13 @@ Cc: maz@kernel.org,
 	devicetree@vger.kernel.org,
 	imx@lists.linux.dev,
 	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Subject: [PATCH v4 1/4] dt-bindings: mfd: mxs-lradc: Fix interrupt order
-Date: Mon, 16 Nov 2026 19:48:00 -0300
-Message-ID: <20261116224803.61154-1-festevam@gmail.com>
+	stable@vger.kernel.org
+Subject: [PATCH v4 2/4] iio: adc: mxs-lradc: Fix trigger use-after-free on removal
+Date: Mon, 16 Nov 2026 19:48:01 -0300
+Message-ID: <20261116224803.61154-2-festevam@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261116224803.61154-1-festevam@gmail.com>
+References: <20261116224803.61154-1-festevam@gmail.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -109,76 +112,51 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The interrupt descriptions added during the conversion to YAML do not
-match the ICOLL source numbers used by the existing DTS files.
+The LRADC trigger is devm-allocated against the IIO device, but it is
+manually unregistered after iio_device_unregister(). The latter deletes
+the IIO device and releases its managed resources, freeing the trigger
+before mxs_lradc_adc_trigger_remove() accesses it.
 
-For i.MX23, Table 5-1 of the reference manual maps source 36 to touch
-detection and sources 37 through 44 to channels 0 through 7. The DTS
-lists these sources in that order.
+Since commit 699fb50d9903 ("drivers: base: Free devm resources when
+unregistering a device"), device_del() releases managed resources.
+Consequently, iio_device_unregister() drops the trigger's allocation
+reference before the driver unregisters it.
 
-For i.MX28, Table 5-1 maps source 10 to touch detection, sources 14 and
-15 to the threshold interrupts, sources 16 through 23 to channels 0
-through 7, and sources 24 and 25 to buttons 0 and 1. The DTS also lists
-these sources in that order.
+On an i.MX28 EVK with KASAN enabled, unbinding the LRADC parent with:
 
-Reorder the schema descriptions to match the hardware documentation and
-the existing DT ABI.
+  echo 80050000.lradc > /sys/bus/platform/drivers/mxs-lradc/unbind
 
-This change was prepared with assistance from OpenAI Codex, which was
-used to compare the binding with the reference manuals, existing DTS,
-and driver ordering.
+reports a slab-use-after-free in device_release_driver_internal().
 
-Fixes: 009528b5aa13 ("dt-bindings: mfd: convert mxs-lradc bindings to json-schema")
+Allocate the managed trigger against the platform device instead. This
+matches the trigger device's parent and keeps the allocation alive until
+the platform driver's remove callback has unregistered the trigger.
+
+Cc: stable@vger.kernel.org
+Fixes: 699fb50d9903 ("drivers: base: Free devm resources when unregistering a device")
 Signed-off-by: Fabio Estevam <festevam@gmail.com>
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 ---
 Changes since v3:
-- None.
+- Newly introduced. After Sashiko's feedback in v3:
+https://sashiko.dev/#/patchset/20261110141934.42490-1-festevam@gmail.com?part=2
+I ran KASAN and spotted this new issue.
 
- Documentation/devicetree/bindings/mfd/mxs-lradc.yaml | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/iio/adc/mxs-lradc-adc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/mfd/mxs-lradc.yaml b/Documentation/devicetree/bindings/mfd/mxs-lradc.yaml
-index 782b2f4005a0..755029880677 100644
---- a/Documentation/devicetree/bindings/mfd/mxs-lradc.yaml
-+++ b/Documentation/devicetree/bindings/mfd/mxs-lradc.yaml
-@@ -87,13 +87,13 @@ then:
-   properties:
-     interrupts:
-       items:
-+        - description: touchscreen
-         - description: channel 0
-         - description: channel 1
-         - description: channel 2
-         - description: channel 3
-         - description: channel 4
-         - description: channel 5
--        - description: touchscreen
-         - description: channel 6
-         - description: channel 7
-     fsl,lradc-touchscreen-wires:
-@@ -102,6 +102,7 @@ else:
-   properties:
-     interrupts:
-       items:
-+        - description: touchscreen
-         - description: threshold 0
-         - description: threshold 1
-         - description: channel 0
-@@ -110,11 +111,10 @@ else:
-         - description: channel 3
-         - description: channel 4
-         - description: channel 5
--        - description: button 0
--        - description: button 1
--        - description: touchscreen
-         - description: channel 6
-         - description: channel 7
-+        - description: button 0
-+        - description: button 1
+diff --git a/drivers/iio/adc/mxs-lradc-adc.c b/drivers/iio/adc/mxs-lradc-adc.c
+index dda5182a5076..64dd3a9995ff 100644
+--- a/drivers/iio/adc/mxs-lradc-adc.c
++++ b/drivers/iio/adc/mxs-lradc-adc.c
+@@ -454,7 +454,7 @@ static int mxs_lradc_adc_trigger_init(struct iio_dev *iio)
+ 	struct iio_trigger *trig;
+ 	struct mxs_lradc_adc *adc = iio_priv(iio);
  
- additionalProperties: false
- 
+-	trig = devm_iio_trigger_alloc(&iio->dev, "%s-dev%i", iio->name,
++	trig = devm_iio_trigger_alloc(adc->dev, "%s-dev%i", iio->name,
+ 				      iio_device_id(iio));
+ 	if (!trig)
+ 		return -ENOMEM;
 -- 
 2.43.0
 
