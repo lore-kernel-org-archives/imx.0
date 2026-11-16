@@ -1,93 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794841120;
-	b=SMz4tShFsekRPBEzV43OTGZyi/4lNSoCSI2nbLN5ASYcwMNYL85Gq2dZkyJjcQtP0D/8
-	 EYfI4n0xQJm+mlmtMoo/Z4VCTD/DvhkiAWEC7vgw/LFReBg2a+XDAHsHskqV+YDwIhxPo
-	 GeUVjRzHd8z8sO9sWLFqqEma92KGNR89Th00auwXuzhD7Rx9KeXluTdQP7y5CPrhN6Ba2
-	 V5Qv+SC1hNZHGDJewk9fkyPMO/1fLSof0VhLlxOCXt1GAAjblBesYHlrM3l5niqcOaPf7
-	 pFwWw82LkOE+KV7EV8QMcHeucJYSOiBXxVwfFQFNbnWZaiIxyssa6J3YcIlIIpSM3mQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794841120;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=OA0ptQ31eFEcSFsZJ4yPzR1jURMkIU8HhjZh8gto8cM=;
-	b=D7Tri/okYx8IngBDXW5z1yqqkjMUqwGMW/xV/p18Q51Zpjid+RVgvvk7DzSBBpotN0AO
-	 PR1ISE4PS7yJTvyYFhvv/p7HCQ/NeXhoME9bTnSJ+uVee1VM/wta/t3hQe6B5+bpCWEYx
-	 6iOux+f9U7bv8c0B5CyxX4lEN4Vl6oNsFwWqJPQ1gKI6TSmofuQw5HoYeAqoUY2aub/S7
-	 Dn/4QyGQYTThGRvlKas5G7YlhabQL3w0vzhU9T/UlDDqrEow9izScXjIgYs67LaJK70fk
-	 0J0vw+X2VWXUjJppmfeBPjeGPrLyMI+j70gpKHJCusME9wOF56Z8bJX8zldM4p50TRA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=pengutronix.de;
-	spf=pass smtp.mailfrom=pengutronix.de;
-	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=An+km0yz;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794841633;
+	b=SwX/bH1GrP1F2d7sL+I7CwH0DZPdIbEwUiheXEoxFyPRX/xQPY8uaJlc8bMihP+2bTBI
+	 Jxh/fQJePqMvsG7qdxrtxUduQNh6BGnk8GloooJKUxNHyJOy8EWo1YSFqPcNzsPO46eKj
+	 MmrxC+fDeNImVnzat9jT3ZjXiy6Wu1PxsG7NxLmAtglHn5VuVwbpDWhy8p6IYpZBFBu1R
+	 futIjNonP5vuZE/RlbKoF534R3p9DWetBu7Jz2LojLCmKeDcRr05ibrd0VQkC5Vu/MNph
+	 1o3IMNVy2zUQjSkMITn0Xv/FPp3F3htsV/xncFxb3yx8DNkggYppIOrv+/egq0bD1ew==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794841633;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=B6OrgtY3FqXGsa/CVyV+Da2A6C6jjew6gnRb5d5Xjvw=;
+	b=IP/QshAGQqMIBvY2IMNZS4HyWCE26P3GE6KWFrwZcx808HdlahszZMe3Upa1nzaQnN60
+	 3a3ChBia/BiUvFANFaRs7/JO2BuaeLsIelydkt0kZveH2o2aL0V3wNb9ifOGZiy+oMtC3
+	 0zCAvuBH+8JJxirGVl+huw1gV8vFdBYIn6Cg3Y+1OrfXqzG/pFEqrnuBeiZx1+G7eYrfX
+	 R8N3P+9S3vZ2rS2s8heB6yoMFLMdLW2iIk8zND3DiRtUjKPpR+8Jhmpa7Bk/5gpUrWrQD
+	 3/ijubB0v0XW9f2O5sLUrQ0J31dGhICaCNsJotRh23dWQuJcLHZsaUDxh3SgBqYc2DA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aBVsAuRJ;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB055606A888
-	for <imx@lists.linux.dev>; Mon, 16 Nov 2026 14:58:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CB055606A888
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3419A606A323;
+	Mon, 16 Nov 2026 15:07:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=An+km0yz
-Received: from dude04.red.stw.pengutronix.de (dude04.red.stw.pengutronix.de [IPv6:2a0a:edc0:0:1101:1d::ac])
-	(Authenticated sender: relay-from-dude04.red.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id B677C200668;
-	Mon, 16 Nov 2026 15:58:33 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1794841113;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=OA0ptQ31eFEcSFsZJ4yPzR1jURMkIU8HhjZh8gto8cM=;
-	b=An+km0yzMf57k2u47uCqIgdUmpYMaT803G5RIh1ChpbxBdpuQYOBe0QFmX3hxiPDEorl8n
-	9+Y0QPfG+0hq0NPCfyCqCuG2eLwT2gxsCXtTfxGXEgdfaU/FiredcAfEOg782vCTp6F0h5
-	xWHb9YTpBv+xl5jN4vchnqNfSKqZ82hJODMS0El8MyXB4uu1ongtRbfw/Df2jeeofXKhK7
-	orc/QIhOY/xgV1paUYzDh990zioOI8ILBoP5sxyAfQoNkjbaa2gMW29GjVLkfdiGq9v3Dd
-	QmyFQXKeFJqJ2vYN8jAb2Ev8OawGxZeEG7Vpr9psW+QpOKqKRzhG1m3d8AGASg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1794841113;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=OA0ptQ31eFEcSFsZJ4yPzR1jURMkIU8HhjZh8gto8cM=;
-	b=buT1xJwIeO2Yy4i5WohUcACgKnTQ9JNI9iWN3Lsyk+XQgBDQ3kbiBMs4vOFQKV+5VXTKlw
-	Bitym51J2iSN9Db7ulVi02ZftJ7lhxZnuflGMrhZDVLnmZD+/UaHGlb/BREW0QnW13H5af
-	Zeg/A50aSzfWdVSIIMPF1PQaXL8uyrbLcsln7kaUGRZD7poxxIOIK39UeHI4qfk0HCwAMp
-	/59oSwe7k8Epqjktyf9eYcDCZcmG3BUM3gOytUhIQntsI1OCMINI+FjeaNFKCjwWxuuPuZ
-	Vb2zrjvTW1D7IKffFp3EdLhlAngCJmngG+UyR4CTrHQR7LcvVALfOtZA1YjM0w==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1794841113; a=rsa-sha256;
-	cv=none;
-	b=B7Z2osZ97km61rF5bvo+GZWdbEAlyb5BMvCQ5EReySf8oiuL1j1jDdKrP4AliPBSwIw07Z
-	u5edIuNKP4cLE723/nElFmdxvDkOAM4iGnPruEtBOPXziMapE8p8IWHbJ1/h08j87yrndj
-	M0Ly9Y3JZufafhHQ4sltvGWG/9F6rephjPU7SZTcuPpmLm5QN1kGLWoTcuNvbau+Pw5PRq
-	2+l5BN5ND+20Ra1tnltX6FKErbn3L6VIzqJFcWUZi4XmcD7/fDl2UTobJ+8xZ1JO5NuBL5
-	evM8TiNY4EzpLmVW11PDsBhuwreaIwOfErQCc1b33C7PVfpLIDGs2dJGI1N2JQ==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=relay-from-dude04.red.stw.pengutronix.de smtp.mailfrom=rhi@pengutronix.de
-Received: by dude04.red.stw.pengutronix.de (Postfix, from userid 1059)
-	id 9735A3803FE; Mon, 16 Nov 2026 15:58:33 +0100 (CET)
-From: Roland Hieber <rhi@pengutronix.de>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
-	imx@lists.linux.dev (open list:ARM/FREESCALE IMX / MXC / LAYERSCAPE ARM ARCHIT...),
-	linux-arm-kernel@lists.infradead.org (moderated list:ARM/FREESCALE IMX / MXC / LAYERSCAPE ARM ARCHIT...),
-	linux-kernel@vger.kernel.org (open list)
-Cc: Roland Hieber <rhi@pengutronix.de>,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Subject: [PATCH v2] arm64: dts: imx8mp-skov: fix input supply properties
-Date: Mon, 16 Nov 2026 15:42:30 +0100
-Message-ID: <20261116145823.3018840-1-rhi@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aBVsAuRJ
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BFA01F000C4;
+	Mon, 16 Nov 2026 15:07:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794841632;
+	bh=B6OrgtY3FqXGsa/CVyV+Da2A6C6jjew6gnRb5d5Xjvw=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=aBVsAuRJ2vGQGnanpFW5LcIvJSPyZ+WiTGyJs6AXs6MP42NSOq/PsrUKYPMNvbEWD
+	 9+y+FpCsuzDu/X9T6sw48B+lmBCbGjTiarnczNPc6jxFu8zdKlR637qFGTXYlh3++v
+	 EqzI0R1GNgR66oXpRR1a6iVB+k4oDkqXR+q9alP2Zx2+dZ5+WfFfLNLbbWqU2nCXCC
+	 ikZT7QBkJnwqzocBPs/ESZl1e5KRLN3MZdH3yU9OIyNVm9jnbgAA9bhMKkdG23Cugr
+	 jFBcXHiRl7wIVdTU73WOVnmv2V16wtVWfAt73YS3p4CF9xh0jEcvgaP+lO5LgDwnet
+	 7d88n4qZNylwQ==
+Message-ID: <sashiko-outbox-217223@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2] arm64: dts: imx8mp-skov: fix input supply properties
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Roland Hieber" <rhi@pengutronix.de>, =?utf-8?b?b3BlbiBsaXN0Ok9QRU4g?=
+ =?utf-8?b?RklSTVdBUkUgQU5EIEZMQVRURU5FRCBERVZJQ0UgVFJFRSBCSU5ESU5HUw==?= <devicetree@vger.kernel.org>,
+ =?utf-8?b?b3BlbiBsaXN0OkFSTS9GUkVFU0NBTEUgSU1YIC8gTVhDIC8gTEFZRVJTQ0FQ?=
+ =?utf-8?b?RSBBUk0gQVJDSElULi4u?= <imx@lists.linux.dev>
+Cc: robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org
+In-Reply-To: <20261116145823.3018840-1-rhi@pengutronix.de>
+References: <20261116145823.3018840-1-rhi@pengutronix.de>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 16 Nov 2026 15:07:12 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -96,100 +61,40 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-The nxp,pca9450c node used the non-standard 'vin-supply' binding until now.
-Upstream commit 4c33cef58965eb655a0a ("regulator: pca9450: link regulator
-inputs to supply groups") added support for 'in*-supply' bindings, so move
-to this standardized binding to fix errors on boot:
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Low] arm64: dts: imx8mp-skov: missing Fixes trailer on PMIC supply
+  fix
+--
 
-  nxp-pca9450 0-0025: Failed to create device link (0x180) with supplier
-    regulator-5v-p for
-    /soc@0/bus@30800000/i2c@30a20000/pmic@25/regulators/LDO1
+commit dab9e66c18c2737f269617a98e59a193266cb200
+Author: Roland Hieber <rhi@pengutronix.de>
 
-Suggested-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Signed-off-by: Roland Hieber <rhi@pengutronix.de>
----
-v1 -> v2: fix patch context for merge on current master
+> arm64: dts: imx8mp-skov: fix input supply properties
+>
+> The nxp,pca9450c node used the non-standard 'vin-supply' binding until no=
+w.
+> Upstream commit 4c33cef58965eb655a0a ("regulator: pca9450: link regulator
+> inputs to supply groups") added support for 'in*-supply' bindings, so move
+> to this standardized binding to fix errors on boot:
+>
+>   nxp-pca9450 0-0025: Failed to create device link (0x180) with supplier
+>     regulator-5v-p for
+>     /soc@0/bus@30800000/i2c@30a20000/pmic@25/regulators/LDO1
+>
+> Suggested-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> Signed-off-by: Roland Hieber <rhi@pengutronix.de>
 
- arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+[Severity: Low]
+Since this fixes invalid per-regulator vin-supply properties and boot-time
+device link errors, should this include a Fixes tag (with 4c33cef58965
+("regulator: pca9450: link regulator inputs to supply groups") as a
+prerequisite):
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi
-index 5453e590f64f..1c97f2c2873a 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi
-@@ -275,12 +275,15 @@ pmic@25 {
- 		pinctrl-0 = <&pinctrl_pmic>;
- 		interrupts-extended = <&gpio1 3 IRQ_TYPE_EDGE_RISING>;
-+		inl1-supply = <&reg_5v_p>;
-+		inb13-supply = <&reg_5v_p>;
-+		inb26-supply = <&reg_5v_p>;
-+		inb45-supply = <&reg_5v_p>;
- 
- 		regulators {
- 			reg_vdd_soc: BUCK1 {
- 				regulator-name = "VDD_SOC";
- 				regulator-min-microvolt = <850000>;
- 				regulator-max-microvolt = <850000>;
--				vin-supply = <&reg_5v_p>;
- 				regulator-boot-on;
- 				regulator-always-on;
- 				regulator-ramp-delay = <3125>;
-@@ -291,7 +294,6 @@ reg_vdd_arm: BUCK2 {
- 				regulator-name = "VDD_ARM";
- 				regulator-min-microvolt = <850000>;
- 				regulator-max-microvolt = <1000000>;
--				vin-supply = <&reg_5v_p>;
- 				regulator-boot-on;
- 				regulator-always-on;
- 				regulator-ramp-delay = <3125>;
-@@ -303,7 +305,6 @@ reg_vdd_3v3: BUCK4 {
- 				regulator-name = "VDD_3V3";
- 				regulator-min-microvolt = <3300000>;
- 				regulator-max-microvolt = <3300000>;
--				vin-supply = <&reg_5v_p>;
- 				regulator-boot-on;
- 				regulator-always-on;
- 			};
-@@ -312,7 +313,6 @@ reg_vdd_1v8: BUCK5 {
- 				regulator-name = "VDD_1V8";
- 				regulator-min-microvolt = <1800000>;
- 				regulator-max-microvolt = <1800000>;
--				vin-supply = <&reg_5v_p>;
- 				regulator-boot-on;
- 				regulator-always-on;
- 			};
-@@ -321,7 +321,6 @@ reg_nvcc_dram_1v1: BUCK6 {
- 				regulator-name = "NVCC_DRAM_1V1";
- 				regulator-min-microvolt = <1100000>;
- 				regulator-max-microvolt = <1100000>;
--				vin-supply = <&reg_5v_p>;
- 				regulator-boot-on;
- 				regulator-always-on;
- 			};
-@@ -330,7 +329,6 @@ reg_nvcc_snvs_1v8: LDO1 {
- 				regulator-name = "NVCC_SNVS_1V8";
- 				regulator-min-microvolt = <1800000>;
- 				regulator-max-microvolt = <1800000>;
--				vin-supply = <&reg_5v_p>;
- 				regulator-boot-on;
- 				regulator-always-on;
- 			};
-@@ -339,7 +337,6 @@ reg_vdda_1v8: LDO3 {
- 				regulator-name = "VDDA_1V8";
- 				regulator-min-microvolt = <1800000>;
- 				regulator-max-microvolt = <1800000>;
--				vin-supply = <&reg_5v_p>;
- 				regulator-boot-on;
- 				regulator-always-on;
- 			};
-@@ -348,7 +345,6 @@ reg_nvcc_sd2: LDO5 {
- 				regulator-name = "NVCC_SD2";
- 				regulator-min-microvolt = <1800000>;
- 				regulator-max-microvolt = <3300000>;
--				vin-supply = <&reg_5v_p>;
- 				regulator-boot-on;
- 				regulator-always-on;
- 			};
+  Fixes: 6d382d51d979 ("arm64: dts: freescale: Add SKOV IMX8MP CPU revB boa=
+rd")
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261116145823.3018=
+840-1-rhi@pengutronix.de?part=3D1
