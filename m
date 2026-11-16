@@ -1,75 +1,47 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794845544;
-	b=Bn3cyoZmE2ZUGD6sku8uThY6fzH80tIoFz4e2nVXH2/m9B23gUPNh7BO+nsbLZsjeTUP
-	 +cmZ6HO3BRylnpI8bmST27lT2kKd0TbPBEVD5UaN8ShPESvgi++vHGiWPbPA9DjTj3sc7
-	 50QnGzSoWleHS2Hu8ee5Y8o6erBVhKu+rYPtHVoEegSiqZtVJem1dFcO3zrvi1IX21yiy
-	 HlDTzF1wBGGt53IO5R/QnnWIB0ycVLl/rQkbHso/rWy5o1uAlxDoW+UuqRuaUihhHmDNK
-	 cy+YlsdvtTtGmQJeBGKRjxAxK7PoYsbAxi3532Oc17QtZXfxii4NVaXzRbC8NfMG8tA==
+	t=1794846207;
+	b=NXKmQPm0GVKU/IrVRVZ6FPNBLn+kXi6EYUCIhVuXIs/nFLbG9fNTOZsZKJ0+MlNe+acX
+	 UK8wk/4j2u+Q9pF1K9aZB4IeIVrS7INAjaOi6S2a8q9mfHA6sbrBchdSw/jOCVTej4y+d
+	 +iVpo1PcdaLbkDZTDHgmcv80ggHExeThGG/K7rmKIJor52hJ/jeggM0S51RPnt6NyUZ8E
+	 Qb5L88LRs4yOz9TkEFg/UU/DxndWd37T9OEUBS5yFGY//+j3PD0qzEfQ4m+q/q0bA+noI
+	 sVZenN4jrqLpWoIYfaaWTHv3Qj8PP2F8brqlUJDm1aFaPE+A+YvHeovTcmeJl/3fp/A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794845544;
-	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:To:Cc:
-	 Subject:In-Reply-To:References:User-Agent:Date:Message-ID:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 X-Last-TLS-Session-Version;
-	bh=WL42cWBPuyCFWlEF/5Nn+QC5AN/XCgSMhpRtAl3fZBE=;
-	b=S7vFwcqY+WgnyzepBT5yTErTzunCKYRHoiCmR0jbw88vjA33tkLbG52RUOar8zXbxLn/
-	 wUJQUMG155WgT7WLcrATfVXE+1bpcNMMBpmriQjGNDmU053k0hMa9Nj5XKPuDhTwWX86n
-	 8oLtO/H0vO80JLk1dwKIKF/GjRXblt9ldqW4cQCK4Fko3i5HZIJCdyQupdogRJSndNiVc
-	 XIEuMdq25Md8KpvYEPgALy9dPDnH47SZ57I6OWQ/QiyOzrnIKntObHUz8set30inEo0aG
-	 3FBGnD3ymayPG2q6wEw3fqxXL6nve3rga1yHfcTSpRJYxpvxf3pwhAdniCrXS/fj6kA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794846207;
+	h=Received:DKIM-Signature:Date:Content-Type:Content-Transfer-Encoding:
+	 MIME-Version:From:Cc:To:In-Reply-To:References:Message-Id:Subject;
+	bh=hV5HxN4iZUg/iKmw0/HzwNF9cux4HXGPAW6rNXzLRBY=;
+	b=DQOqEe1igS29BFqHQpTT+UZpF3ADPemhsjpZUR4NpUK3B2mCp2FjC5+8K7SmGp2jn5R0
+	 uJZuG4dvN0pRYpBmCCRl9JzLCEbkDevRO0bXBLPb53w3/3BT0s00m+NleQwTWtNZNIsCG
+	 4nOXpYHM0+7k3ZZjHQ8G+rg3ogrLBOAOv+tmdf+F29lwv8osnbiiuJVIVxeB3lXfvYT+R
+	 TCTNZRwR0JQOhHlKzOnXqylBzOr3GMgNAbshf2xYhCrIwYuUrWXM2wy+yu/KWdj2oo9w+
+	 I+4wloosY9rf4MK9gpDE1x+5H/M384bhC+xQewTtK1MMTlLz66+QIn55905hIt8itQg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=bootlin.com;
-	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b="riGSXRd/";
-	arc=none smtp.remote-ip=185.171.202.116
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QlZTyq5c;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79B7E606A332
-	for <imx@lists.linux.dev>; Mon, 16 Nov 2026 16:12:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 79B7E606A332
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F6BB606A8A0;
+	Mon, 16 Nov 2026 16:23:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=riGSXRd/
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 09F72C4EFDB;
-	Mon, 16 Nov 2026 16:12:27 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 017136023F;
-	Mon, 16 Nov 2026 16:12:23 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 043D111BC146D;
-	Mon, 16 Nov 2026 17:12:14 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1794845538; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=WL42cWBPuyCFWlEF/5Nn+QC5AN/XCgSMhpRtAl3fZBE=;
-	b=riGSXRd/myHb5u8n6/BiinflJE9PCHCIQkASe3+enQEEMPlS7Ns9BC/mT0H8WJG0Wjjh1w
-	f+lviNzHVXBT0Y3e+PoiY/lYOA/3wT6CQkvrsuECFuKu0vR9uZy6Ex/ZRAd9fOCJxlfhph
-	6IjvX4jHgGcTfDtre56AbRQF1YEtTtLhNRxeh9fqdiMetaWEJ+aZMOiIbzhf3q0/Ta59Cs
-	qN+sCfUXAnfDG/obKM035JktQEN8+OYExdWfqteguehklPj4DwfQMU3W5KYJfQPUVRl/+h
-	s3eNdFnAFvuaIU4aqN5ts6KXvkmm45MfkBKEBJfOcwzNJGQN1OzX7vtpu/n2Hw==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Stefan Ghetu <stefan.ghetu@nxp.com>
-Cc: Han Xu <han.xu@nxp.com>,  "sashiko-reviews@lists.linux.dev"
- <sashiko-reviews@lists.linux.dev>,  "richard@nod.at" <richard@nod.at>,
-  "vigneshr@ti.com" <vigneshr@ti.com>,  "s.hauer@pengutronix.de"
- <s.hauer@pengutronix.de>,  "imx@lists.linux.dev" <imx@lists.linux.dev>,
-  Daniel Baluta <daniel.baluta@nxp.com>,  "linux-mtd@lists.infradead.org"
- <linux-mtd@lists.infradead.org>,  "Frank.Li@kernel.org"
- <Frank.Li@kernel.org>
-Subject: Re: [EXT] Re: [PATCH] mtd: rawnand: gpmi: Fix possible NULL pointer
- dereference in gpmi_nfc_exec_op()
-In-Reply-To: <DB7PR04MB4474F2E3C2C31984F1A0C8299D772@DB7PR04MB4474.eurprd04.prod.outlook.com>
-	(Stefan Ghetu's message of "Thu, 5 Nov 2026 10:49:48 +0000")
-References: <20261105103410.4424-1-stefan.ghetu@nxp.com>
-	<sashiko-outbox-198870@kernel.org>
-	<DB7PR04MB4474F2E3C2C31984F1A0C8299D772@DB7PR04MB4474.eurprd04.prod.outlook.com>
-User-Agent: mu4e 1.12.12; emacs 30.2
-Date: Mon, 16 Nov 2026 17:12:14 +0100
-Message-ID: <87se10pxgh.fsf@bootlin.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QlZTyq5c
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF5CE1F0092A;
+	Mon, 16 Nov 2026 16:23:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794846207;
+	bh=hV5HxN4iZUg/iKmw0/HzwNF9cux4HXGPAW6rNXzLRBY=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject;
+	b=QlZTyq5cHKxeaEi+fzkvC/Lbqk4D0G3AeGRHdYzwyTMeevQL6y/lFn1ohvEuxIjD5
+	 ZnsC/a9Lk8PhaT23sSFm3Nzin+NBnYyaU3VwfKNJm2QtJqj7PsHs1mdANQgQGRmBBh
+	 D+uZaw82PA67VQzCOHf4IXqBi4GNtS+BiLF/GZhlShQ6YKlb/XriqZvQIPblyrs6FO
+	 YXIc3DDbjbmGaEJMuKE1wwglvvQAiESh1ZdtNPZXpvQWPqnGx3Xk+1URl8YGVrgL9Z
+	 syQF+J+gBXfuRFm93Z5NWObV7XxuePV98Ig4McfuNxOGCZmELlQx2oR+AbpKTRs7XW
+	 UxdDIXN5KPAxg==
+Date: Mon, 16 Nov 2026 10:23:25 -0600
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -79,36 +51,59 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Fabio Estevam <festevam@gmail.com>, Jan Remmet <j.remmet@phytec.de>, 
+ upstream@lists.phytec.de, linux-kernel@vger.kernel.org, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Frank Li <Frank.Li@nxp.com>, imx@lists.linux.dev, 
+ Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org, 
+ Sascha Hauer <s.hauer@pengutronix.de>, Benjamin Hahn <b.hahn@phytec.de>, 
+ linux-arm-kernel@lists.infradead.org, Christian Hemp <C.Hemp@phytec.de>, 
+ Conor Dooley <conor+dt@kernel.org>
+To: Yannic Moog <y.moog@phytec.de>
+In-Reply-To: <20261116-imx8mp-phyflex-v1-1-4adcf8b4d373@phytec.de>
+References: <20261116-imx8mp-phyflex-v1-0-4adcf8b4d373@phytec.de>
+ <20261116-imx8mp-phyflex-v1-1-4adcf8b4d373@phytec.de>
+Message-Id: <179484619251.2165678.3116272117041652680.robh@kernel.org>
+Subject: Re: [PATCH 1/5] dt-bindings: fsl: add phyFLEX-Libra i.MX 8M Plus
+ FPSC
 
-Hi Stefan,
 
-On 05/11/2026 at 10:49:48 GMT, Stefan Ghetu <stefan.ghetu@nxp.com> wrote:
+On Mon, 16 Nov 2026 11:54:40 +0100, Yannic Moog wrote:
+> Add bindings for phyFLEX-i.MX 8M Plus System-on-Module [1] along with a
+> carrier board (Libra) that join to an SBC.
+> 
+> [1] https://www.phytec.eu/en/produkte/system-on-modules/phyflex-imx-8m-plus-fpsc/
+> 
+> Signed-off-by: Yannic Moog <y.moog@phytec.de>
+> ---
+>  Documentation/devicetree/bindings/arm/fsl.yaml | 18 ++++++++++++------
+>  1 file changed, 12 insertions(+), 6 deletions(-)
+> 
 
-> Hi,
->
-> The review is right.
->
-> Moving the !desc check out of the loop lets the loop continue after an
-> intermediate gpmi_chain_() failure. That can submit a truncated DMA
-> chain and, once get_next_transfer() has returned NULL, index past
-> this->transfers[] both in the loop and in the unmap cleanup.
-> The original concern does not seem reachable either:
->
-> * the continue in the NAND_OP_CMD_INSTR case only happens when the next
->  instruction is NAND_OP_ADDR_INSTR, which sets and checks desc;
-> * a zero-length NAND_OP_DATA_IN_INSTR only breaks out of the switch, so
->  the existing in-loop check still catches desc =3D=3D NULL;
-> * the core helpers drop zero-length data instructions (or reject them
->  with -EINVAL), so ->exec_op() never gets an operation without
->
-> So the Coverity report looks like a false positive and the current code
-> is correct.
->
-> Please drop this patch.
+My bot found errors running 'make dt_binding_check' on your patch:
 
-Ok, thanks a lot for the feedback.
+yamllint warnings/errors:
+./Documentation/devicetree/bindings/arm/fsl.yaml:1231:13: [warning] wrong indentation: expected 14 but found 12 (indentation)
+./Documentation/devicetree/bindings/arm/fsl.yaml:1236:13: [warning] wrong indentation: expected 14 but found 12 (indentation)
 
-Miqu=C3=A8l
+dtschema/dtc warnings/errors:
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.kernel.org/project/devicetree/patch/20261116-imx8mp-phyflex-v1-1-4adcf8b4d373@phytec.de
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
+
