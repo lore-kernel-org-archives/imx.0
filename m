@@ -1,88 +1,88 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.41
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794831113;
-	b=SzFAX0LX9iUL9WA66cq5e/HxCpKBV/Lwehr6vacMEiQd9MmzZHjgTPJ42zEs55Gp/5pS
-	 MHx6mvMyfTISxM8A6PkTV8wmodDtQLu+FDUNIVBh1XjoZRha56GucFlvEOECOZ3DJ5El1
-	 JpLsA0b4Fc/Wr0PLBYh7eoIDq+ODjs8chTjahpJdkpnT9i0SQKnUhYmGfzGXAi5Xn/4T7
-	 g7HV2jfYqrfJS8aQK6BcZa3FKnvU+eFMt8jqIbbSWa5+ou553FDKDlzsiQB9fQpkKHLof
-	 P2IF4fjV/mHzrPyJQBLVw+c5RZ6QBTxYh2x/20B0JkG1WLYcZFiB3gg1LX+jAtCvZHw==
+	t=1794831114;
+	b=ixedXa7gAq3W7bdtmAq4wsaRTeLRDpN2u/Y7klSgjx8X6dTb/YGlKuWwsQ+JL0JqOv4h
+	 RZxFqCuDWvn2qnw+ZxEO2CTcA9pchkmr0GrQ2zI3R/sY/nGP9Hs8scIR7ZymjJflSsuWm
+	 Je9AVP2ozBEaE++HUMXM7o+81do9ixly/3nOVg2nm4qbzUZrSrqKY4B8XS2yd8yHkw8Pr
+	 2PCMTLv51bEhSAzUc9zKv+UZDxCXfP/ch19la4PhcKc4K9P5RrpmvmxWW3WBPOFIpPfFB
+	 RYeZqXNslZhL3E6PLqsUwOT+lqn47GakJWFaqEmdfyG2GK0ObNlv5HEMDECCcYmCLXg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794831113;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794831114;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:Subject:Date:Message-Id:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer;
-	bh=crdLSmlfnO7VKMZXhE1g/GIeZeZ2qlXrtngZdD7/DKk=;
-	b=uSMP9XY8l+ESSdbu/uHccwYDgcHNFwh540RHS7/jeTCl8Z8d6UZdKkq7ZtxHyifTa2br
-	 4ZA1ixMhFAhw9CVZfhmv0Lb5PYpvD6Ve1Qdfx0H6fSHzmudEeLilpMcOGlnsntCjM/a77
-	 RlJTrHBS/UqIdn8ztQtGNLjXz1W45MbUUrGV+XyKzgS4id8x1sgBAlMPa9h/7XwnaDvZQ
-	 /Mjrpp56zG0YzZjeT+pYc6ywe60tJ3N2qtBcBdwc49DSj9qp3lauW2g3Q8kjGDfeY3ZYD
-	 9ZW3F32cFSBDVlkCECoeHvN9nqeYdObw1yTv5xXcCaxVMqIrg32V34xE6ZAgCmiuI6Q==
+	 From:Date:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer;
+	bh=Mh+ToPltBb8mnDHqsdQlNCdlhh90EXZrqETmJQ+oo/w=;
+	b=W54yVD8Yx3MLh816V3JBice1Tcc1ogsCr63tHz7R3rLlfcUuEuBmhPlAieQ2x1wToFIQ
+	 WZs7ufkv967nkSYoDXQEJOW9l79G118IEm8H8xDtZRGYAd2bS+dqRdrvbWvd9o1CN2bPl
+	 Asxaz10DdlBbwHZyOdvU4EzcqK1knris3E4OWgaILX8p6UWiiVNAs9i9yL7tUFZfKmlsT
+	 14pWlxcZZU+xnct7Z8XW3YT5cLgmsSxam0aUxo0IlwCKNMe4r358C06FKXxq0V2UO1ftB
+	 efHahiqbcIqepLhHeLw+GMMapIv/oEv4tNNB2xmSsnhqMmb5Fy4EOkuJosk0uLMqLyg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=03vMja10;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=DN7NQGhc;
 	arc=none smtp.remote-ip=209.85.128.41
 Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6BC0606A32C
-	for <imx@lists.linux.dev>; Mon, 16 Nov 2026 12:11:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C6BC0606A32C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81587606A336
+	for <imx@lists.linux.dev>; Mon, 16 Nov 2026 12:11:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 81587606A336
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=03vMja10
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4bb6886d30aso11193945e9.3
-        for <imx@lists.linux.dev>; Mon, 16 Nov 2026 04:11:52 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=DN7NQGhc
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4a35d5d4a20so41792335e9.2
+        for <imx@lists.linux.dev>; Mon, 16 Nov 2026 04:11:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794831111; x=1795435911; darn=lists.linux.dev;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=crdLSmlfnO7VKMZXhE1g/GIeZeZ2qlXrtngZdD7/DKk=;
-        b=03vMja103365S65vsxpoiN6e/uDkn4o5F5d2uABA3XO9OyGv/Uf8H1Li4djz5aA1gs
-         f/2u/LRt5rGTwhGGuU3OMi5JHWw4dxG0JCHMbh85nbY7SRsKiMLQO6HiZMRpXu+1FRwb
-         CYOUvnvkhU30MM4/UQHETkyBveZZPjJTW7GHOCuYVj2LWWOi6HmM1E258IMkhB4h8vyR
-         JVi++MpV6JRwe0PORjr/RvdeRTieXD/OgkeWcokpLlGyC8xgZG4+nKZgmQ3RaoTJoHuu
-         jR+oFMsXqyVwX0toIYp/VXcZLNIlFE8I+eR9x+CuCG7hN+WkZ8UVDteQGQp2Ivan6ybC
-         BRcw==
+        d=gmail.com; s=20260707; t=1794831113; x=1795435913; darn=lists.linux.dev;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Mh+ToPltBb8mnDHqsdQlNCdlhh90EXZrqETmJQ+oo/w=;
+        b=DN7NQGhc/wHKER/VCNZVQb488dKxxAzV4cIxfQ/MKOuKXFvA74JZffbd+z1RUfVw/n
+         Z8HslmuFZW3EblrzZGpW++IQmbbWo5O9HK03cnrE9/6bnt/p8zBJqTIOMUKy5nbQ49yI
+         d6OSkWTXsDGR3Zmw+ZDKLxxFSF2ogi8UCUNAoeztCkKCZqNtW7fePTooFFpVfaeXjrVw
+         v+R4wmkbcaGKQCYdrFKRuJVFO3a8RdAcaVTNBQT1Cnh+B7Uz9jdZYIyPz4GmGs2g9QvM
+         yCp5kJP30VNh4nyVudZ6lPXqjiEdT+JNDT4RfaAB8TJjJSJb9fIvCnILinv4OycK9kJ/
+         k4fg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794831111; x=1795435911;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=crdLSmlfnO7VKMZXhE1g/GIeZeZ2qlXrtngZdD7/DKk=;
-        b=EzJUOv+GZF7guvTo88FtAbu6N/NMxrb2ODDnXdG29ctUaZIRqll/iwWV190XRAaZYs
-         DKwT1oB2I2dc4NDArvyjungqHeui+4jqVi12pq0vDuWaPgvMy1dU/nARSlRxz4te7G7Q
-         i2fRooPbryhJ0v9DhvbWW6dHcAg+kIQT9/Y4EzxxcR/b7Gq9FblnFeBY8qeKC6T/M4Fg
-         IwrBtR1VuhA9fmrOg3iEeCOZVlNmL8MLNSSfUjRErhI/NkivTMn1/viKeP2xHMJ66G2p
-         huLxEMuWc+e64qWK0g9JdHFd/TmE5PhI5C+BrMujRoOSdo+4eFmnSpX6gWcXEI0grtMS
-         dR+Q==
-X-Forwarded-Encrypted: i=1; AL+hErEmtUfFPdh3CA87+6dRuYM1hVdF8AOMNcZ2cnBmUq5AfHNau6uoVyp8zA5QKuZy0W50jBw=@lists.linux.dev
-X-Gm-Message-State: APuU4Z/Bz8xt1a+2YfRoVvVsSR7jVVvZskg1OQ8ZuFf8OkACGgcO4KhB
-	SKAArBGDgSfjSIW8J6Wz7l2ZnOuqMQq0bIOhpidkbfdEEGXMax0CGmay
-X-Gm-Gg: AYBFou1ETC326mzTrJqbpB6ZqBCvGQmxfgQPgnhlLrmJq84Gm7hGGmW4K+fIEhLoAYB
-	RPiMTl/ttLgz8NBaS5e3xXBhBfdvJxMpFnOJ3kJs5sgw/+lJ30ArSZCVLJR/5zLO4cv0db8eb/d
-	6vFGjGbodq2ETqgr8VYm3WXpMPOa6/sAYeMsV4UK9ejM5epPUUdg3z/sumZqal79jVx6tWeMG8/
-	ZRqlUfCze6R9Z514dvrRrsJG/a3CN7SLfL9H6ZAcMvKH6ElOqdF16KpDiopTqxQN4DEuFAs0cFU
-	WmDObPYzykHqctGG44KyN35FI/RMcZMw88ATgwBI4TB8BupzhLDUzDjh+3GdFmP0EyTKwH05xJH
-	8uCBITPMvYFux8CduuiSexfViYnkFOFyvYq6fKvkM3uE+vQws7pfzwdV/DWn3n2hDw/bSE2E1WS
-	DBZdWMqLwdwpDLnbuWmUX0/38hWMRcHpQ518VQmcYMr9ViPxkIi9seXTbOH8jd471OJJ3Ta1Ty8
-	TPAFoX2Bux1X25sEHYyTFsRcsWha3tKamDtbdFIjVkA226+kNEAjohJt/Om6KLlMjvCMFgdkVLx
-	pz0SjwkL76rOgbFu7buUz5jZBhzGpkeUKbp1Nm9hXKoirSgPoQGrM8blF1SFqNrdsnHvdvhnpBj
-	5Ag4o4lNpGi/4/6l/2Rr9XRWIUHwyXKWd0l/tFNrV52KpoOvm8FSTiGWfEjka8nINGFf/efad
-X-Received: by 2002:a7b:c009:0:b0:4a1:e672:5721 with SMTP id 5b1f17b1804b1-4bb55a832famr162798335e9.13.1794831111064;
-        Mon, 16 Nov 2026 04:11:51 -0800 (PST)
+        d=1e100.net; s=20260707; t=1794831113; x=1795435913;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Mh+ToPltBb8mnDHqsdQlNCdlhh90EXZrqETmJQ+oo/w=;
+        b=R6PZ706cFis+oXkNzxLaWi/coI+Gke0Unf3Q3xnfjFzl9mSGhmVNuG0tScTgbE+hn2
+         m/Bnbjyb3Zsi7EJpoAgTwhScX0+jctgsoMu8mV0CCgUeQjiKb/9J5pJML2QuAzEstKMi
+         8Djq3k0/JAEJx41JK50pqfacYbXF5aC/C1RyOZcGiLLCflRMiKf03ghVBjCYue8YfxRt
+         llVynIPvjx8lEbJKUQqaRey+sQDIpGoZqhwCCM8NtF7pKy1UVP5QJz5fq0H+rcjavjod
+         I02cUKUN1Re4rQAJP+q/vuD0yibupaQK4cOsloQAJKDJLYrggfkdmOlDew/qB7wSw4xK
+         m15Q==
+X-Forwarded-Encrypted: i=1; AL+hErFI9Fe6/+0bkEqHCqiYZ6GcoV8Qcy6FdjRk3MmPrr2/MLZfgLVp8WQ9HOiPXjnqC3Lz3vs=@lists.linux.dev
+X-Gm-Message-State: APuU4Z+RyGr/w2xcDWNRYYx+YOQz8wbGcQZM5doxO9mvXJT2j7VN3j7D
+	jV9R02bfGIqYUjcd8E2O0y5i42cjHePfT2PXXz81runj7Bmkibf+K2lh
+X-Gm-Gg: AYBFou0b1NcIGpEI035z/kLkK7oR8O02SXX6ThyheZYA3832E2UYnuPqv5iLBOOuQTk
+	yXcBfqdqxf/tmhcC3HCBeZCC3dZQIWDv9rYWYyjRdnaxRfFBReQYpFEmQtJXcVPr/cLph37l8xu
+	rZ8quWSI6G3jRM6uqR4XL1Fnajctkpe/YVnEIywvUnjXysVZLJCPB4myZzuYj9Si0nWjPuM8L2M
+	kTx4hzRnPan6/7n1nPWANh8NXwfmq9PmS7zhCpsoeM7xGqASq8bIr4AqCX/Zuw6CXowrr0i3qS/
+	cOMi3G4wDfVJ1bjV9WGmEO1a5wzW6wIhlPyJheOE5MoptbYroFL48spG6rHW23Hdfg5MntJPgih
+	VwFBcQrnaz9SQ69Y/QLbuXoRsQzA+8LRxg3May2eMxDsAO6JaqhDiCS1+rn6B5JkGRkYapZVYxi
+	xCxIC1z/nPv2ZWfrYj1QdHMMWZm1Lf3KpvioyqB4pSre09vyKlHfcFOtjz9qLH64h7uS35yAHD1
+	DG01ckoh9aYfQXX8vEfI8UlrlyrccE3CZh3/dbgemfALQJzcD5ZE87qMuKcR4VdU3ke3xvgUonz
+	lWpyMAbK+/Ke76ogEJI1XcsvcmzAcZmCocEfSNlO0RvSRufkWs6oRNwomfpzGL34hLivAdq1tQL
+	OAIddJQrmw17euESpL69GoTCfmGE2QFUeJooGLJ5bQxbsbjc7JL0aBb11SdA248qym+eV5ngC
+X-Received: by 2002:a05:600c:4e0d:b0:4bb:69b2:d3df with SMTP id 5b1f17b1804b1-4bb69b2d82fmr91695095e9.25.1794831112818;
+        Mon, 16 Nov 2026 04:11:52 -0800 (PST)
 Received: from localhost.localdomain (80-108-121-211.cable.dynamic.surfer.at. [80.108.121.211])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb70105a98sm61442005e9.5.2026.11.16.04.11.49
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb70105a98sm61442005e9.5.2026.11.16.04.11.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Nov 2026 04:11:50 -0800 (PST)
+        Mon, 16 Nov 2026 04:11:52 -0800 (PST)
 From: Christian Gmeiner <christian.gmeiner@gmail.com>
-Subject: [PATCH 0/2] MNT Reform 2: Fix the internal panel on i.MX8MQ
-Date: Mon, 16 Nov 2026 13:11:47 +0100
-Message-Id: <20261116-reform2-internal-panel-v1-0-765cf8d5ff4f@igalia.com>
+Date: Mon, 16 Nov 2026 13:11:48 +0100
+Subject: [PATCH 1/2] drm/panel-edp: Fix Innolux N125HCE-GN1 mode
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -94,10 +94,9 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2MQQqDQAwAvyI5N+BGuhW/Ij1Em7YBjZIVEWT/7
- uJxYGZOSOIqCbrqBJddky5WIDwqGP9sP0H9FAaqKYYQIrp8F58J1TZx4wlXNpmweY7ti5iHgVo
- o8Vo8Pe5x/875ArE+tEpoAAAA
-X-Change-ID: 20261116-reform2-internal-panel-35c872aabb28
+Message-Id: <20261116-reform2-internal-panel-v1-1-765cf8d5ff4f@igalia.com>
+References: <20261116-reform2-internal-panel-v1-0-765cf8d5ff4f@igalia.com>
+In-Reply-To: <20261116-reform2-internal-panel-v1-0-765cf8d5ff4f@igalia.com>
 To: Douglas Anderson <dianders@chromium.org>, 
  Neil Armstrong <neil.armstrong@linaro.org>, 
  Jessica Zhang <jesszhan0024@gmail.com>, 
@@ -116,33 +115,56 @@ Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
  Christian Gmeiner <cgmeiner@igalia.com>
 X-Mailer: b4 0.14.3
 
-The internal eDP panel of the MNT Reform 2 with the i.MX8MQ module does
-not show a stable picture. There are two problems.
+From: Christian Gmeiner <cgmeiner@igalia.com>
 
-The panel-edp mode for the Innolux N125HCE-GN1 is a 70 Hz mode that is
-not in the EDID of the panel. Patch 1 replaces it with the 60 Hz timing
-from the EDID.
+The mode has a pixel clock of 162 MHz, which is 70 Hz. The EDID of the
+panel only has 60 Hz and 40 Hz. Output of edid-decode:
 
-LCDIF underflows at 1920x1080. Patch 2 connects DCSS to the MIPI-DSI
-host instead and leaves LCDIF disabled.
+  DTD 1:  1920x1080   60.001038 Hz  16:9     66.721 kHz    138.780000 MHz
+               Hfront   46 Hsync  30 Hback   84 Hpol P
+               Vfront    2 Vsync   4 Vback   26 Vpol N
+  DTD 2:  1920x1080   40.000692 Hz  16:9     44.481 kHz     92.520000 MHz
+               Hfront   46 Hsync  30 Hback   84 Hpol P
+               Vfront    2 Vsync   4 Vback   26 Vpol N
 
-Patch 2 depends on patch 1. The video PLL rate in the device tree is
-four times the 138.78 MHz pixel clock of the new mode.
+On the MNT Reform 2 with i.MX8MQ the picture flickers at 70 Hz. Use the
+60 Hz timing from the EDID.
 
+Fixes: a14c6b0eef77 ("panel-simple: add Innolux N125HCE-GN1")
 Signed-off-by: Christian Gmeiner <cgmeiner@igalia.com>
 ---
-Christian Gmeiner (2):
-      drm/panel-edp: Fix Innolux N125HCE-GN1 mode
-      arm64: dts: imx8mq-mnt-reform2: Drive the internal panel from DCSS
+ drivers/gpu/drm/panel/panel-edp.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
- .../boot/dts/freescale/imx8mq-mnt-reform2.dts      | 52 ++++++++++++++++++++--
- drivers/gpu/drm/panel/panel-edp.c                  | 15 ++++---
- 2 files changed, 56 insertions(+), 11 deletions(-)
----
-base-commit: aebb7274476403040d582c61478df8f4a7bf9cd3
-change-id: 20261116-reform2-internal-panel-35c872aabb28
+diff --git a/drivers/gpu/drm/panel/panel-edp.c b/drivers/gpu/drm/panel/panel-edp.c
+index f7add22ccf69..0ebd756d14d0 100644
+--- a/drivers/gpu/drm/panel/panel-edp.c
++++ b/drivers/gpu/drm/panel/panel-edp.c
+@@ -1364,15 +1364,16 @@ static const struct panel_desc innolux_n116bge = {
+ };
+ 
+ static const struct drm_display_mode innolux_n125hce_gn1_mode = {
+-	.clock = 162000,
++	.clock = 138780,
+ 	.hdisplay = 1920,
+-	.hsync_start = 1920 + 40,
+-	.hsync_end = 1920 + 40 + 40,
+-	.htotal = 1920 + 40 + 40 + 80,
++	.hsync_start = 1920 + 46,
++	.hsync_end = 1920 + 46 + 30,
++	.htotal = 1920 + 46 + 30 + 84,
+ 	.vdisplay = 1080,
+-	.vsync_start = 1080 + 4,
+-	.vsync_end = 1080 + 4 + 4,
+-	.vtotal = 1080 + 4 + 4 + 24,
++	.vsync_start = 1080 + 2,
++	.vsync_end = 1080 + 2 + 4,
++	.vtotal = 1080 + 2 + 4 + 26,
++	.flags = DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_NVSYNC,
+ };
+ 
+ static const struct panel_desc innolux_n125hce_gn1 = {
 
-Best regards,
 -- 
-Christian Gmeiner <cgmeiner@igalia.com>
+2.56.0
 
