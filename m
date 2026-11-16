@@ -1,89 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.51
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794831116;
-	b=SPRs0igpYleR0dWe/VsKzeM9uZ4RDkTrswwxkxhCDAl266jlVrFOgFvLnprDZkj4O5p8
-	 yiCuhjAc8jjpKTsupaqrTYa+r+19cwM5uOP+sCXKEW/j7ypjSwIpr3SmqoMjqtwr80OFy
-	 zZMXGIeIACOGNTDrEUjK65N+alRWdqDKZDjUTdnVQG+O5U56/b8ouCqpoAKM9xnl/DauM
-	 t99YcPukLDj53lU1laKOas2VN69SzKBcae5sFxq1fDvle3gcg6uMcuXuRhfUi5hjfO0xm
-	 AV8hx6ogFXrA4Tnp+hkdEjYqhKLGdl5Tbp2PJsZ9ykOLPR3QnI3H3IZtoTW2RW+2BAA==
+	t=1794832031;
+	b=OJRUBgg44jhCy1JK9ib3+/EfhXlywM92wvufFxVsap/dbeKse/pjzqlpE2MKfOSRnjvq
+	 Zx18crZ5DRpRtZFqkyJla3ZSjlrlPdVhr5LaHGNf52SPJz0BvMW7S7SUSgWOfDYWkHg8z
+	 vVZtFDS3veV9jUMRpTUQgo39BX9SILrS4kcH+VB54ECiWS+dLJK5lgn9gppAGz2Dm+SyZ
+	 MJM/HedVPJl+6OxXE1P8QkAH0ZpGXv8jQFtezZOmcosFanVN84LLOEvEGvWeDJbzhi7G3
+	 cJRIxC2NMetmB3PyKcw7ypulkuCHRZqxmShkg87f2+CvxCNBJwB5bW3XmHSbCSqrNhA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794831116;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794832031;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:Date:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer;
-	bh=pEbQYi4NjQVP0dtbEgl40Tg4qtmWWlkw/cjXJIhkZZg=;
-	b=fsXfbpDyyekIJfdH03DDbn0vGgisQKBq+1TdZA7fp7KqkCwuP0v5N4cWmOv3JdYeDBXI
-	 gxvGblsnKfFJyNqW7R+YgL/DMA8/X4rYnvrWQSW7BYvfhL08VyMA8xX8FkOaQSMogFSO6
-	 Ut0TdhFRsOimxXv4dAmgj6L8WYWABPm8bRjXJMKz2heDxsaY4hqcvC/UtGalJ+cgS/5f3
-	 aGSRI1IGpV9hxUQdLmMPzJluGGAXaDOwIdcVR53AEUd2ouYwivHZqg+7zGm9hySymxUpy
-	 19+PBhjhIdmCQ9z1+vXUJkwc6EIW88T4BUlqaDtadom2QBHWchyXIm4jc0K4yv6ZrFg==
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=lYiKs2zOREczoUXWCfabA4P+kj5kMFUufjVpxMQWxLc=;
+	b=H8o52/yeOs5b9mCNGJ32neeqp4WPUq8HAr1KLvf8NmrkAuJKExaoCUXk73XQfOVe20wi
+	 8MnVkQ2Zk2EfYmwUYmEoPAEj1qpQxbtN+e7z97Zy5iIoXuDxY7sYRwwxOb+2biwZieSoZ
+	 etghqr7xWfOKR7focPvl6tIHRirLaU5kegBoYCA3atXnQ6611NNEyY9U9W4v77STIsBUi
+	 pGLI3zROsn+GHOSekg3yycOMDr/EwfX8uM8YigZA7O2gEAgbCF0zwKUObyvsWoYy3QUsX
+	 sqOqYMknURtHeAn37GAUvWA043rVgM1S83NKOeJ3/qn13aCx4GIfkn+2XZsZuDVVcLQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=pvAV4zEu;
-	arc=none smtp.remote-ip=209.85.128.48
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=sSE+5RQL;
+	arc=none smtp.remote-ip=209.85.128.51
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65048606A33E
-	for <imx@lists.linux.dev>; Mon, 16 Nov 2026 12:11:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 65048606A33E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1E31606A331
+	for <imx@lists.linux.dev>; Mon, 16 Nov 2026 12:27:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C1E31606A331
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=pvAV4zEu
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4bb64c99d2fso20589065e9.3
-        for <imx@lists.linux.dev>; Mon, 16 Nov 2026 04:11:56 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=sSE+5RQL
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4bb606491faso9929795e9.3
+        for <imx@lists.linux.dev>; Mon, 16 Nov 2026 04:27:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794831115; x=1795435915; darn=lists.linux.dev;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=pEbQYi4NjQVP0dtbEgl40Tg4qtmWWlkw/cjXJIhkZZg=;
-        b=pvAV4zEudbj4euJ9Sf5SYOaaDBr9V1QS4wT4xaJ8VhhizBME7gu9P2myKfReap8ql0
-         o6+Ion88gdM0pEjp612mvCA1qNto+XfSLCvH9suay7akTGxys0Q8yjBwSXkdeh4lfCYc
-         YZYINqYcBvyWV2/KNVBcvXnuu8tiHensS/cdewLP4ukHY/1RWFvgGnAEpJuXwrAt+qFo
-         AlyxcCvWVeH9QM3sCNA/vPZdrchV6RAhQY6CVqRWIi9+sJ/WCjWsgf5lGZCPLoKNIf1o
-         9L1Gt01zn5svGvp2FY/m2/2YKmB+IVHBs+R7+sFXcOHeeU1NU8Bd2NpC1lJ0JABO9WD9
-         DbkQ==
+        d=gmail.com; s=20260707; t=1794832029; x=1795436829; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=lYiKs2zOREczoUXWCfabA4P+kj5kMFUufjVpxMQWxLc=;
+        b=sSE+5RQL5DEdgZhjL745CO9zhq4Q+BDJtPsKH6R+GmoHrPbiJ2gV/yYfxEzb+3jj/9
+         O54oXH2Z/9GdQkExMsxGOZU3pr+eFFrdKEkE2pnBOIyRaSFBcm4IwoCUcy1bHl2+hHaN
+         k2EKM6GyjXshRpAj1ypj2GrT+pQlEljh8vu+qhCeR2s5EpsH9npgMP8ElGJLEmKPg2vD
+         Vr1VCQZmk09aXxMLpzq8BY5AC0GkrZIpbYSnot6anJ6O7ufwO24k9UxyRWOevVMopmCQ
+         j8tIBPHH1mAd1vMuTW8JdpJV0g/lqdvhtEKT+hfLumKnlOmXmLN7kfxNKDX+An5TDbgi
+         IWRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794831115; x=1795435915;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=pEbQYi4NjQVP0dtbEgl40Tg4qtmWWlkw/cjXJIhkZZg=;
-        b=gQ8Ks41LYNlgcfzbv7NMIMx9iSAgYgOuKwAjXJwCki2FwzPySUvWfbEmJDMsYqUtS9
-         L2ugzRnjQmaRkNz7yt08JhAmoiJWLlsRWGwau75CxfgUFE0YhhvQLStsl7Ndt/2jKu92
-         3pitCzLOeHt5WduTMX2kDNSgeVpsDERGcHikXlgtFzV9Jh8t68km51igDuu38lbdUVkN
-         ikBoMNaT3LgsNklJXyHDxhmaNyHelw4jNWBwKgqWWZLWGJAPNki/FCtUG59YYmjyjX2G
-         z7jUTquKKT+T/rrPaXSH1dn3/P8l5Ld7UWlOkaZVaPe3b/5NVgIAz+wnvbq+RRXcTc7T
-         jfLg==
-X-Forwarded-Encrypted: i=1; AL+hErEJEPXVLIxHkedOgJdPqIYOF5iQi6OM0FIJcXWBlBA6zWMU14+FUr3R4lv0tcVEo4BdqGE=@lists.linux.dev
-X-Gm-Message-State: APuU4Z/dt+m/nBnF9pbCFRIq5GBVagPNEzgsCX0bIW4Kk06ViNinzpQ0
-	tMawGd+klvojIUxW74rBH+AHCWtN9917WvofCa+Opr3uudWpqyOMHUYo
-X-Gm-Gg: AYBFou1Llwl2p9HEJrXIPtPo/Xj3MT02WklT6DigdMsCddlXM0VrBtWq1ADUPusnq9R
-	1dx80CenmryaTrjPH2K87hUCb7uHRO+L3TbgpMg6y217kAXKMKpJd/L9mF+l9WNeJGKc4oRHD5G
-	vrBgTLV9Hy+uANJY304ULUjaF463IJ6vmapGCQ+IbZOXCtLpbsu2LxCnzqmksh1Op51/jsr+gco
-	sT5ONQGj1Fa4HIq/9SgxeU6lvwXpgVo9PF3QRJk2OVZNDPrK2EGJQNmR12pZUPA2KV09b/V1Bzb
-	/F0ewbfpTq14BGMwn9WZXQfNpKfSXVRgziGe30lOaRLFeJNmSqp8p8zNMLtAtWJxtGR4fGtVtgZ
-	ujKO2jF7C9yp+4wHeTXuZ+o6Eom1d97ZF0bZQYlqcNqPEYEhTVzfc999c1+1a7dc3T1CRQcZrh2
-	nK/rLgim/4CW/sU8VM70oaIcYIcS62WRFmng05uCfIawvJnSARuTXvgOG5Vhcvm160FQDrezN81
-	mrjWzFQ1NQZTdpKmfvV1olZ7KT7TFbDa9BW2YGqG26i8x9F1pni1z0C6wn504y9SX9DD3/1EhG8
-	5si55kL/g6fwrFbO140DeZJ9SmYyeq4WxXBSDzZc2kdSd4pyPkqS0guIT184Cc5grwd0pvj7zkv
-	9/xMYKhgT+u6hauStbgv8o5eNuYt8O/ojIK/uVeaq7ZiCaR0EDtE=
-X-Received: by 2002:a05:600d:41c9:b0:4bb:60bd:5398 with SMTP id 5b1f17b1804b1-4bb60bd5507mr142579815e9.10.1794831114708;
-        Mon, 16 Nov 2026 04:11:54 -0800 (PST)
-Received: from localhost.localdomain (80-108-121-211.cable.dynamic.surfer.at. [80.108.121.211])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb70105a98sm61442005e9.5.2026.11.16.04.11.52
+        d=1e100.net; s=20260707; t=1794832029; x=1795436829;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=lYiKs2zOREczoUXWCfabA4P+kj5kMFUufjVpxMQWxLc=;
+        b=JvxgxMAcn6P8vk/qFm9AR6w0lugDf4VEVkxXxRcR0xHH34CRh54XpiCSuaHPINZtO7
+         XCVhwz6Lq+cA+yb6hl9w2Z06osDYNsHJalm9pxfykPJF1Y3IyDs/vhLPC0ojcM6Oo0y6
+         igGXAdWXdRReUuSYGhs5Y5K8xOytuhMicaC/65HUpwJHu3Eh78q09Slm8iOlQ4tO1M23
+         7fYce5JoO+/vSGcheYJ/yJwW06hg+6Y+G3bjPMz2zCmnDjqKoztE9oNS4lce97jyLhyf
+         S0x3kVsLVOlVBuBDJkYT5th9E6VXBDJ9Fuh6+BBJFHl8YE4FC0bFT9Bq/KpFWD9b0knS
+         PGpg==
+X-Forwarded-Encrypted: i=1; AL+hErHGWxSQqERlfEiwoR4pX/I5Kv2DpgcEW1E1anTt3y4KNWSwZtptoac12zIo3Iq+jFIDSr0=@lists.linux.dev
+X-Gm-Message-State: APuU4Z93UXMw+raIVsABrddpvhGTvHpr8kNF3/D7OoqQ7JZHUj/ghx/F
+	mH2d9hw/LuZEM4YU5tTstKW6yzW0Z7XC2IxVk6Xvjk5Yzr9c6T89rDBn
+X-Gm-Gg: AYBFou2zXz+kdOiBEqpol4zvOgMNJzujGWDm/IUx0P8i7q1cDzfF9NH4fpZglqdZ8HE
+	DsoL+ye78I3hpEZsNe54wvVAs7GI9v8QB+tpmQ84+IFhj4JkE+Fv6gl9wVunDtb0jDVejiUmbIr
+	t9zCDULw59WUpeU1GrHFK3ggoQkNnFS5DWFnIBJ/JwgLUHj8c5jyL/+vsqsg30kaCby65AMEcEg
+	oXnc1Q6k5TaH5CBBCJl7sKkmLBsOEODCR3iAXXSod13PxO5srRUgU3Wetv5AJ4zznJb1BwAya8d
+	+jRsSqE0o2uBOD8wpbWBF5jDM0RzWPy8k+vsDUaLdy//0BRl04Qkti3J8ZCzuGzUEqAY8vOnGkr
+	LMpIW/9ojYdpqnQBpAv1/Doay++YnZ3CVcJqF1JHGuYCB0GfNxD/OKLbv84EPUmsgxMU4w37T8m
+	Iy76I7nPoAAGd5wzFAQQSZVw/dj5OKXkTLdT0GUP5ZxCbMCDZDhZmTvChXYuB/l1qg7e23lRFAt
+	K+Dim8iE5UTUBj77FEyu3UQ0sW+5rEw9ha/7A7oZYjV7r+whDq03HFiD360kLruMAlckNrYn6e7
+	gdDXsDVCpsOQ7X+8TYNkv1NrrKBPJ6e8Njo=
+X-Received: by 2002:a05:600c:3f18:b0:4bb:6ac0:6dc0 with SMTP id 5b1f17b1804b1-4bb6ac06e5dmr82826765e9.29.1794832028780;
+        Mon, 16 Nov 2026 04:27:08 -0800 (PST)
+Received: from deb05.proceq.com ([213.160.61.66])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb56689bc2sm171999685e9.2.2026.11.16.04.27.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Nov 2026 04:11:53 -0800 (PST)
-From: Christian Gmeiner <christian.gmeiner@gmail.com>
-Date: Mon, 16 Nov 2026 13:11:49 +0100
-Subject: [PATCH 2/2] arm64: dts: imx8mq-mnt-reform2: Drive the internal
- panel from DCSS
+        Mon, 16 Nov 2026 04:27:08 -0800 (PST)
+From: Mehmet Fide <mehmet.fide@gmail.com>
+To: Andi Shyti <andi.shyti@kernel.org>,
+	Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
+	Stefan Eichenberger <eichest@gmail.com>,
+	linux-i2c@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	mehmet.fide@screeningeagle.com
+Subject: [PATCH] i2c: imx: acknowledge the count byte of an atomic block read
+Date: Mon, 16 Nov 2026 13:27:06 +0100
+Message-ID: <20261116122707.1349139-1-mehmet.fide@gmail.com>
+X-Mailer: git-send-email 2.56.0
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -93,119 +105,58 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261116-reform2-internal-panel-v1-2-765cf8d5ff4f@igalia.com>
-References: <20261116-reform2-internal-panel-v1-0-765cf8d5ff4f@igalia.com>
-In-Reply-To: <20261116-reform2-internal-panel-v1-0-765cf8d5ff4f@igalia.com>
-To: Douglas Anderson <dianders@chromium.org>, 
- Neil Armstrong <neil.armstrong@linaro.org>, 
- Jessica Zhang <jesszhan0024@gmail.com>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Sam Ravnborg <sam@ravnborg.org>, "Lukas F. Hartmann" <lukas@mntre.com>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
- devicetree@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, 
- Christian Gmeiner <cgmeiner@igalia.com>
-X-Mailer: b4 0.14.3
+Content-Transfer-Encoding: 8bit
 
-From: Christian Gmeiner <cgmeiner@igalia.com>
+From: Mehmet Fide <mehmet.fide@screeningeagle.com>
 
-The panel is driven by LCDIF through the NWL MIPI-DSI host and a
-SN65DSI86 eDP bridge. LCDIF underflows at 1920x1080. The picture shows
-horizontal streaks and the underflow flag in LCDIF_CTRL1 is set several
-times per second, even when idle.
+i2c_smbus_xfer_emulated() sends the read message of an SMBus block read
+with a length of 1 and I2C_M_RECV_LEN. i2c_imx_prepare_read() clears
+I2CR_TXAK only for a message longer than one byte, so the atomic read
+does not acknowledge the count byte. The target stops sending, the rest
+of the block is read as 0xff and the transfer reports success.
 
-DCSS does not have this problem. Connect it to the MIPI-DSI host and
-leave LCDIF disabled.
+The test for I2C_M_RECV_LEN was dropped when the read was split into
+i2c_imx_prepare_read() and its callers. Commit a5d0b9e32745 ("i2c: imx:
+fix emulated smbus block read") added it back to the interrupt driven
+read only. The DMA read never gets an I2C_M_RECV_LEN message.
 
-Use IMX8MQ_CLK_DC_PIXEL as pixel clock, with the video PLL at four
-times the panel pixel clock. The DCSS binding only allows three
-assigned-clocks, so the PLL setup is in the MIPI-DSI node.
-
-Signed-off-by: Christian Gmeiner <cgmeiner@igalia.com>
+Fixes: b460b15b3cc2 ("i2c: imx: separate atomic, dma and non-dma use case")
+Cc: stable@vger.kernel.org # v6.13+
+Signed-off-by: Mehmet Fide <mehmet.fide@screeningeagle.com>
 ---
- .../boot/dts/freescale/imx8mq-mnt-reform2.dts      | 52 ++++++++++++++++++++--
- 1 file changed, 48 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mq-mnt-reform2.dts b/arch/arm64/boot/dts/freescale/imx8mq-mnt-reform2.dts
-index 3ae3824be027..31c7428f0386 100644
---- a/arch/arm64/boot/dts/freescale/imx8mq-mnt-reform2.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mq-mnt-reform2.dts
-@@ -171,17 +171,61 @@ edp_bridge_out: endpoint {
- 	};
- };
- 
--&lcdif {
--	assigned-clocks = <&clk IMX8MQ_CLK_LCDIF_PIXEL>;
--	assigned-clock-parents = <&clk IMX8MQ_SYS1_PLL_800M>;
--	/delete-property/assigned-clock-rates;
-+&dcss {
-+	clocks = <&clk IMX8MQ_CLK_DISP_APB_ROOT>,
-+		 <&clk IMX8MQ_CLK_DISP_AXI_ROOT>,
-+		 <&clk IMX8MQ_CLK_DISP_RTRM_ROOT>,
-+		 <&clk IMX8MQ_CLK_DC_PIXEL>,
-+		 <&clk IMX8MQ_CLK_DISP_DTRC>;
-+	assigned-clocks = <&clk IMX8MQ_CLK_DISP_AXI>,
-+			  <&clk IMX8MQ_CLK_DISP_RTRM>,
-+			  <&clk IMX8MQ_VIDEO_PLL1_REF_SEL>;
-+	assigned-clock-parents = <&clk IMX8MQ_SYS1_PLL_800M>,
-+				 <&clk IMX8MQ_SYS1_PLL_800M>,
-+				 <&clk IMX8MQ_CLK_25M>;
- 	status = "okay";
-+
-+	port {
-+		dcss_dsi_out: endpoint {
-+			remote-endpoint = <&mipi_dsi_dcss_in>;
-+		};
-+	};
-+};
-+
-+&lcdif {
-+	/delete-node/ port;
- };
- 
- &mipi_dsi {
-+	/*
-+	 * DCSS takes the pixel clock from the video PLL. The PLL runs at four
-+	 * times the 138.78 MHz panel pixel clock.
-+	 */
-+	assigned-clocks = <&clk IMX8MQ_CLK_DSI_AHB>,
-+			  <&clk IMX8MQ_CLK_DSI_CORE>,
-+			  <&clk IMX8MQ_CLK_DSI_IPG_DIV>,
-+			  <&clk IMX8MQ_VIDEO_PLL1_BYPASS>,
-+			  <&clk IMX8MQ_CLK_DC_PIXEL>,
-+			  <&clk IMX8MQ_VIDEO_PLL1>;
-+	assigned-clock-parents = <&clk IMX8MQ_SYS1_PLL_80M>,
-+				 <&clk IMX8MQ_SYS1_PLL_266M>,
-+				 <0>,
-+				 <&clk IMX8MQ_VIDEO_PLL1>,
-+				 <&clk IMX8MQ_VIDEO_PLL1_OUT>;
-+	assigned-clock-rates = <80000000>, <266000000>, <20000000>, <0>, <0>,
-+			       <555120000>;
- 	status = "okay";
- 
- 	ports {
-+		port@0 {
-+			/delete-node/ endpoint@0;
-+
-+			mipi_dsi_dcss_in: endpoint@1 {
-+				reg = <1>;
-+				remote-endpoint = <&dcss_dsi_out>;
-+			};
-+		};
-+
- 		port@1 {
- 			reg = <1>;
- 
+Notes:
+    Reported by the Sashiko review of "i2c: imx: test the block read flag of
+    the message that is read":
+    https://sashiko.dev/#/bug/linux-09e3015b-fc03-4410-809b-82964cdfac9c
+    
+    Tested on a Colibri VF50 on the Iris carrier, kernel at this base, with
+    the M41T0 RTC at 0x68. The core takes the atomic path only after
+    SYSTEM_RUNNING, so a test-only hook called xfer_atomic() with interrupts
+    disabled, with the two messages that i2c_smbus_xfer_emulated() builds
+    for a block read. Register 0x04 (0x13) as count byte: without the patch
+    0x13 and then 0xff (50 of 50, return 2); with it the next registers,
+    the same bytes as the interrupt driven read (50 of 50). With a count
+    byte of 1 (register 0x05): 01 ff before, 01 01 after (50 of 50 each).
 
+ drivers/i2c/busses/i2c-imx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
+index ccf08cd63151..1a3fc245d6ba 100644
+--- a/drivers/i2c/busses/i2c-imx.c
++++ b/drivers/i2c/busses/i2c-imx.c
+@@ -1283,7 +1283,7 @@ static int i2c_imx_prepare_read(struct imx_i2c_struct *i2c_imx,
+ 	 * Reset the I2CR_TXAK flag initially for SMBus block read since the
+ 	 * length is unknown
+ 	 */
+-	if (msgs->len - 1)
++	if ((msgs->len - 1) || (msgs->flags & I2C_M_RECV_LEN))
+ 		temp &= ~I2CR_TXAK;
+ 	if (use_dma)
+ 		temp |= I2CR_DMAEN;
+
+base-commit: 25e7ab89f4774b0f842cee0e8a20c11f755924d5
 -- 
 2.56.0
 
