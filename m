@@ -1,106 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.174
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794869309;
-	b=X+SGuk+hTIETgfrkHlPJFVzzW7Gt6wFidXs6pTSJ7VPeQIsX5BihhxBG1oEhfIV8wFHr
-	 nMsFQ2RZIr51LhDH4pmn0xMWCJ4/NRztuev7rtlpOK9UFFBHMcpEPAdYRkBUhXAXDEC0T
-	 nBr3tvpwH4hgSdvDdbd+Lg//YDUKeTVrEs9N4HPEbsFProcwzSQ0MvLV6OpGVlcd9f8fd
-	 xdF35dq+4KuRtqxdvLgmmj+KPyVfZE6rnKQR0haNOYS0qTELLclb6JQSgCovmZfhg57DD
-	 kq691QvyZEVLEubMJuPpamyBiF9DFr/sogDalrbLC1l5vHHNlP8wX2iFZUkVqHRSfew==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794869309;
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.167.47
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794869477;
+	b=nvd60kxM/ySY7vWxYIgbMYM9PrrssSm8JMo0IjYBFBQxuQ16DXNflDKGfxvZG8APEDLR
+	 AWY8QPcNoRhkzy9u5D3FkaJidvBUZL4m8khiKI4y/eU6kXyy5mEOsEqRcVuw5yVfcCtca
+	 4Q8tA+makW6h6BGIvurCyjYAiIT7/VemD2lOBPeb4/tLQlSEKPH6HfbPO5/ZHu9FTVMhD
+	 /TrlwUhOJJ281lunN/YhQwXaQFTDHMwxU+F7BGrOk+zEzqRzrh8nqBlvGSuilAU24u6zp
+	 2rjAbyPyidsMk+Z/gEo27MFlpUHIZqA0kayMTzdVA/9TiZOtdMddQ6cxFEZHUZfzfww==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794869477;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=bZKF6TYd/oNwfZR5R6RX8KffmVrf3Im0dZF68ZrZGqU=;
-	b=jveAZ3lJkvHTtBz6nCJ85Cv8XqhnKOcMxm+GGFf6iFDT3ZA48GdgJEPtF/8Jegyijl9X
-	 Wsr/+te6Mt8SXL483MKN+WD5dI6jW7GeHDraqTXC0ZUmIG6sawArxMXyLscK+BIasUukP
-	 ftkIndKEgcjPH+JKIVBzxGP0H4NSXcevaHBcWtLs8MERvTVfiIl2DIwfDZtXl8+BdOsY9
-	 +iQGxKvOM0B0BdBwC86WLrwM7B+/PIJwBf04sqTsLSjQf45vEsMTh5Wc8EMZ3585e3vjU
-	 u4PL5zOcFmAPTXpO6nogl4K3HHMmOUY/1ds4KmzoUkcf3ohUMbf5Usl4456DQILgj3Q==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=4R6GMf+N1WSGNe7ynv/fMp2cLGWJ15ixMnxyfrCx9Yw=;
+	b=i6VbCrTkSH0UIicxBMe0yJTqPDQoZ2q0oKpfN8133qM5w5XhFFh+XMroEBVxdYuqEkmA
+	 5i/lpzkGzEyn6GwX3Qep110GpQEkyFWsjE+8k/Y4lf0xI+yhI17TTOCtCMuLrco2uwRxU
+	 gjAP7wmw0cR18R+cjbRYz1vzgF/jjSG858QtNANNYdqkP8qrmRxNtOZ0gYGOqnxvTo6yq
+	 ksXj+918CoXWPy9czSdGdtZDXRnwdsS1lDrAV+b7RnA5jV6NrtMJ/b1phRouZw2ZWFU9x
+	 +TFteKPFHN+F6HwFToMKquHrTIBhgJ2YOvFwQTmE/bvBXi/IDlaRNy3P+m6q7sSQQPg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=mnugZclL;
-	arc=none smtp.remote-ip=209.85.128.174
-Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="i/PqAoE1";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.167.47
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F4B5606A323
-	for <imx@lists.linux.dev>; Mon, 16 Nov 2026 22:48:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3F4B5606A323
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06DE2606A32C
+	for <imx@lists.linux.dev>; Mon, 16 Nov 2026 22:51:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 06DE2606A32C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=mnugZclL
-Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-8b4d5e645d1so12598717b3.1
-        for <imx@lists.linux.dev>; Mon, 16 Nov 2026 14:48:29 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=i/PqAoE1
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5bfa7c09c9eso3260369e87.2
+        for <imx@lists.linux.dev>; Mon, 16 Nov 2026 14:51:16 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794869475; cv=none;
+        d=google.com; s=arc-20260327;
+        b=sbNrqanu/QBjU8OkVZ0rv09QTDFt4WKCUrbz45MYqYo8Y8suU6xZWsuzVGGG1M6qUR
+         1WGRnL4bzQGM/Np58weQCk54zhqZ5eMr6/Hhxe56rN0yKTm79u//3IU/Zepy3Qm/uPA6
+         lt8HKPN2QDBP1QOnVsraPv5dWJrnzvWMg6uPZnwbsb5cdXIUJ9J46GDo8zDMiUIC8Qf/
+         TkbCH5fuMB9Q5e7OnrE/hOrOXPKc9CkliTeKeTecKRGrKOmdjmKqffO48KP/Hvf29g2M
+         qVduwZ0SZaaFuxxplIj+HgRwYNXuzgEfXt1eA5vPjkHn1X3SuRhCkUuU9DnEBfb5FBMl
+         p3Jw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=4R6GMf+N1WSGNe7ynv/fMp2cLGWJ15ixMnxyfrCx9Yw=;
+        fh=bZTGsYqTdPvbLkEPBlxVg0YQapFz5qoT7YXVs6oe0j0=;
+        b=aZMjYVBnsfIZ//i8DcH2s2TJBdW1Xujm0gImFDvrJZ9mLWvjHUX6CFkDFuswn9lkQF
+         0FIf4EjaU4HEc4nh6En1lUP+wR7vUmFpVuJV/4SkRvNRjoRJZS8IC7SFUefBTtIgfVzy
+         42q49pNlvc1KevGBW6KOLqhnHL31xcsWfvmqT9cw/tJGMp6bKUQn60+cHeqCVTcNsIiV
+         z4KRVp9hc4jrLgFWuJn6UzX+VICt6PL8SYk4gVWo0mblDoh6AjL9Dy8n/BYIMkX8Q7qC
+         fpmZ5OiFM2mVK1smwiwMSFynSiOZlK/RVg/iiJT5r+4BzLNGnAifdQcqkMQdYglbn0MX
+         dzBw==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794869308; x=1795474108; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=bZKF6TYd/oNwfZR5R6RX8KffmVrf3Im0dZF68ZrZGqU=;
-        b=mnugZclL1bia+g4S5QuEGJtC05tZ1Sotz2EX8Af5BnBOIbaDkVaFyUg+7zttgeECeY
-         1MACz0h+k5mmQQvb4353GHBqWlYVHJ1conhNxwXKhCmbKfxQlpCd4DLfptQFY4kO59s9
-         uKWnUh1t6D7EHDC78X2kQCXSzIsEgJIQZJbEjMUEAYc+WlenfBIUqStNBQ1fF0vHOtDj
-         d0gYTI3T6T1XhUdIe9l2CaJxzTOqosbqwBB5R3Xq2KHvWWZukrZfAAGA0qDN4ek7bGn5
-         bvfmw5JKQ7fpciK1YSNDaCV0lLlLfi5vscNEK18NvGodF8eeN5KpAim6QG5n4rcv17cl
-         j1fA==
+        d=gmail.com; s=20260707; t=1794869475; x=1795474275; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=4R6GMf+N1WSGNe7ynv/fMp2cLGWJ15ixMnxyfrCx9Yw=;
+        b=i/PqAoE1/kPFQN1tJPckyQIp4inbHV2tEgQNzwJ/ioys7X3t/V+H8N39AKd7+rxKRd
+         U/L1Dzala5xDas6SqUvgURX8cPnTFaP9kWiNuNO+9NYfPPYyoff8485xWSW79d/1YOsG
+         Xg8e+tnSxcDvOkDnj0nRro4lvuTrO+lSg5609ovQjsfqo28AO15EIkqnNWvUF2SjrwCm
+         dGvVkoLk/9lTQF5oJZfzqr1JSjW0O5BW8RbS/Jcmb4oAMEtkepzWqB9QVvdmq9qkTEmE
+         4m/0zrj/N/xXgZ/J8B9SnGtuP2sY1HK6iTNa4sjDtpQCiH6UjZwd92H/BB0sPbCzLEoE
+         ajcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794869308; x=1795474108;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=bZKF6TYd/oNwfZR5R6RX8KffmVrf3Im0dZF68ZrZGqU=;
-        b=SCAx3i/GKyR3y9BnA0oiJzsGVoPGTD300CzW7ieFlnNr9IS6UKKEtpgLYIBph+trnO
-         XALeiHDTkkmxI4ToojcE+dFTP7Vn/qx9Jjww1k0E47q+IQ0zDx2dGFGV8cpRin2gZccS
-         LVn6p5xqZXaiKUjOuZHZdYC/iOsfBEnm1wHvSuQxH/6t+myUxha/Kggob2YwKeEbwtBe
-         IBrg37bwk1ltk/mBxPoFUBLIvphV/KLjY1mUky521RTl613WLKAH9od5JZidItIBsup1
-         4Ou4pzsliIlR+qjY7h3guPxJXRlzvGc+F15HtY4rLcnkdfmdiCNDNkBOTwmMLGP+cav2
-         JuAg==
-X-Forwarded-Encrypted: i=1; AL+hErHLKGMNEzvlI/X1VWvTyt1FjWbmZ+ohXg9aggJ3ErFvZ32lCyNahzrJoa04ImxsnxiFVSM=@lists.linux.dev
-X-Gm-Message-State: APuU4Z8hAdI8Mo/B1nq9SatT5hJu6WEonJ4vQQvQf9B7+Tz2GS+A47U6
-	dz+kjRiVcVw1WWVKaDOrJLPmWY2x/DbPFAqW0lk5oPnfsjoBf8AzlOk+
-X-Gm-Gg: AZFdTZco4+gfQYa00O1aWKXIwpo/oW3VVCn/bjKZuP44OwesRHZW7YfB4gjG6CYLrf+
-	pPNA2/yxBxd4fXON8vmg6hwXLFze/smTMAivPK8Pzh0ZEwkUB3zPmAddWe9xt9qLJTJVs4YBih5
-	U+gjTNO1/KEnIz9WeZrxm5B53aCKCXtouzZMzmEJmN3N+bfNEv8MdokFMvgt1oXCqfOMqOcfi41
-	6ENSw+BAXfSJ1zfghZjoY+130nm4myVthy29VihTSSRVh94Sqae0Hj+7KiBaFOWA6RC2G0gnEYm
-	rEGAO2yltn9p24Obyv/fJdynbZ7R8RYE1Qeo0R0fAdxQv48p6souJSIWIL2Ikc2hFQFDEHJU4QJ
-	029Rk5RC8NgU46aLvrQK2izYxYyz2ZpKus8w+8yGJ9QnI5UvGjw+t1WNxxerV76Pg/3EhuytVCj
-	sECiN+IeWyd655kDSjpxI3QWL7Ygv+jLP3vYntJILbJlUOKPYkpCBTNuUKWx/D2tf6TB3NxgW32
-	9vTfFdoYSFoWNpxyPcsIXcjLTiSCNS0HF6aKR5o12uaLzgJc2XEPifz8yOE0MmnP80D8fjTyxWi
-	W18QsdyMcdvkR7x399EFX+7M3PZgivtvRowkGjeYvCNDPMtHxg9VVhqNc932zYZxeNEQs2QySjL
-	O/HcnySf8NYYQMUbcSFKrFmI=
-X-Received: by 2002:a05:690e:d42:b0:67b:e822:6ccc with SMTP id 956f58d0204a3-67d895e5aacmr4455238d50.33.1794869308071;
-        Mon, 16 Nov 2026 14:48:28 -0800 (PST)
-Received: from fabio-X870-EAGLE-WIFI7.tail2bb604.ts.net ([2804:1b3:a803:1afe:e1c3:da60:db44:d0c8])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-67db0361f39sm5259534d50.19.2026.11.16.14.48.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Nov 2026 14:48:27 -0800 (PST)
-From: Fabio Estevam <festevam@gmail.com>
-To: lee@kernel.org
-Cc: maz@kernel.org,
-	andy@kernel.org,
-	jic23@kernel.org,
-	dmitry.torokhov@gmail.com,
-	linux-input@vger.kernel.org,
-	mfd@lists.linux.dev,
-	linux-iio@vger.kernel.org,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	Fabio Estevam <festevam@gmail.com>,
-	Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
-Subject: [PATCH v4 4/4] mfd: mxs-lradc: Convert to devm_clk_get_enabled()
-Date: Mon, 16 Nov 2026 19:48:03 -0300
-Message-ID: <20261116224803.61154-4-festevam@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261116224803.61154-1-festevam@gmail.com>
-References: <20261116224803.61154-1-festevam@gmail.com>
+        d=1e100.net; s=20260707; t=1794869475; x=1795474275;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=4R6GMf+N1WSGNe7ynv/fMp2cLGWJ15ixMnxyfrCx9Yw=;
+        b=tZRRfP7Byn+lX87f/SyIptkb4vFjSCVDxVAvTxoOMkjiMefXfs+jzuTePZ8nRXl94J
+         QZL2B9U1UNarX0iLcgfaI5m1AK76qhOahqNiJTvTfxTmtU3FSGQYn0l7ovEyGc/EBKxp
+         beoQi89PBK0B6JpSZz8DxP3awd/5Nzlxz7osR1exxN2M7sXboInLrFRd57yTlR4i+Sf6
+         /mq3pLW6EfyZUkcyNYTJhy1liKHwAwAQeuh6iGnLGVDXm0Z0hpsjyDFMkQF7Nwymp2UC
+         slmPoxknrse8OJ7t9m+fRHbPhozTv/Q2jAqZu3xVwAAO2bD2MaHYiedagBNE/j7l5/Sy
+         6n6A==
+X-Forwarded-Encrypted: i=1; AL+hErHjIu95E1ohi2kFwZmb75P231ekZ9ENTEfdliN66dG3g/MhYggsoCces7Dr7SfZSqXUIkw=@lists.linux.dev
+X-Gm-Message-State: APuU4Z9Qzbo1Og8c6VmnEY5BOFKfef5kwF1IkXrik51WWKEOzcEQ79Yw
+	LnZPN4CLIY3yScan3hG57ROW7f2Pry+k8xRF9S6ELMJ7H7sBa6r74V1yRcrD/X7U4QTwRSyrIz4
+	nBhBYQ6CC3n6aOEF49QOmffYjkG84vwE=
+X-Gm-Gg: AYBFou1VzB+kgKiY1qzZCT3s1WNMJiLTUXiQ0fk5dauyw0PIvHRHh0RfSmyaudC+ZXq
+	JtZngcXoxh9wU+iMNnX/EectvHmE+l0OEhawxAYrUW/3THjN736LLk3al91UQs914xBL9Hwzvj3
+	k5yic9CKBaRD0NQcq2qvgx/BTF/fOcJJVQHw+Pr6YQkVhx24JGdDPYC+NuJdp0n7lNbxCVFG3Is
+	AfVV4agHoG79l8IT+tcz1n9HvS5s8eymXbkGqKUMRAmYFkdBKiPm2aELHgIAWV2Ja/pTfZ3RjTB
+	udpVUhWcAEDvStffDxlJpEiv5h1NnsQG6uGbANp3H4YM6fciJeRWh0hXqphsOiKFt7IcOCgbFnL
+	xlISfo1bqoQzm74xZqdyFeiXPelHsTxyExtbfqFGrykj6ZxxCk9xLsoXQCgoMaUNUKlOo5B+EBz
+	iRIXf8IXO18ix0HzLLdrGyHF1T2g==
+X-Received: by 2002:a05:6512:31c3:b0:5c1:4f6f:564c with SMTP id
+ 2adb3069b0e04-5c1709c5b64mr4475988e87.39.1794869474886; Mon, 16 Nov 2026
+ 14:51:14 -0800 (PST)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -110,102 +105,37 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261116224803.61154-1-festevam@gmail.com> <20261116224803.61154-3-festevam@gmail.com>
+In-Reply-To: <20261116224803.61154-3-festevam@gmail.com>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Mon, 16 Nov 2026 19:51:01 -0300
+X-Gm-Features: Aa3M54oXe-IAn7x15degHvby6uCIkABaEwDsnl3MJEDi4r1Iu6Ak5t9VY_ssJ7s
+Message-ID: <CAOMZO5CPym+AYFLv7D-mAH+OQXL_83yForV3GaSk4ReT_x1HrQ@mail.gmail.com>
+Subject: Re: [PATCH v4 3/4] mfd: mxs-lradc: Pass parent IRQs to child drivers
+To: lee@kernel.org
+Cc: maz@kernel.org, andy@kernel.org, jic23@kernel.org, 
+	dmitry.torokhov@gmail.com, linux-input@vger.kernel.org, mfd@lists.linux.dev, 
+	linux-iio@vger.kernel.org, robh@kernel.org, krzk+dt@kernel.org, 
+	conor+dt@kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	stable@vger.kernel.org, Andy Shevchenko <andriy.shevchenko@intel.com>, 
+	Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The LRADC clock is acquired with a managed helper but enabled and
-disabled manually.
+On Mon, Nov 16, 2026 at 7:48=E2=80=AFPM Fabio Estevam <festevam@gmail.com> =
+wrote:
 
-Acquire the LRADC clock with devm_clk_get_enabled() instead of a bare
-devm_clk_get() followed by a manual clk_prepare_enable(), so it is
-prepared/enabled for the device lifetime and released on unbind.
 
-This conversion makes the code simpler.
+> Changes since v4:
+> - Map the LRADC MMIO range once in the parent.
+> - Share lradc->base with both children.
+> - Remove duplicate child memory resources, preventing the unbind use-afte=
+r-free,
+> as reported by Sashiko:
+> https://sashiko.dev/#/patchset/20261110141934.42490-1-festevam@gmail.com?=
+part=3D2
 
-Suggested-by: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
-Signed-off-by: Fabio Estevam <festevam@gmail.com>
----
-Changes since v3:
-- Newly introduced.
+Sorry, the correct URL is:
 
- drivers/mfd/mxs-lradc.c | 35 +++++++----------------------------
- 1 file changed, 7 insertions(+), 28 deletions(-)
-
-diff --git a/drivers/mfd/mxs-lradc.c b/drivers/mfd/mxs-lradc.c
-index aa55f88399ef..c3dd2d80e7f1 100644
---- a/drivers/mfd/mxs-lradc.c
-+++ b/drivers/mfd/mxs-lradc.c
-@@ -160,17 +160,10 @@ static int mxs_lradc_probe(struct platform_device *pdev)
- 	if (IS_ERR(lradc->base))
- 		return PTR_ERR(lradc->base);
- 
--	lradc->clk = devm_clk_get(&pdev->dev, NULL);
--	if (IS_ERR(lradc->clk)) {
--		dev_err(dev, "Failed to get the delay unit clock\n");
--		return PTR_ERR(lradc->clk);
--	}
--
--	ret = clk_prepare_enable(lradc->clk);
--	if (ret) {
--		dev_err(dev, "Failed to enable the delay unit clock\n");
--		return ret;
--	}
-+	lradc->clk = devm_clk_get_enabled(dev, NULL);
-+	if (IS_ERR(lradc->clk))
-+		return dev_err_probe(dev, PTR_ERR(lradc->clk),
-+				     "Failed to get and enable the delay unit clock\n");
- 
- 	ret = of_property_read_u32(node, "fsl,lradc-touchscreen-wires",
- 					 &ts_wires);
-@@ -193,8 +186,7 @@ static int mxs_lradc_probe(struct platform_device *pdev)
- 			dev_err(&pdev->dev,
- 				"Unsupported number of touchscreen wires (%d)\n"
- 				, ts_wires);
--			ret = -EINVAL;
--			goto err_clk;
-+			return -EINVAL;
- 		}
- 	} else {
- 		lradc->buffer_vchans = BUFFER_VCHANS_ALL;
-@@ -204,29 +196,17 @@ static int mxs_lradc_probe(struct platform_device *pdev)
- 
- 	ret = mxs_lradc_get_irqs(pdev, lradc, data);
- 	if (ret)
--		goto err_clk;
-+		return ret;
- 
- 	num_cells = lradc->touchscreen_wire ? ARRAY_SIZE(mxs_lradc_cells) : 1;
- 	ret = devm_mfd_add_devices(dev, PLATFORM_DEVID_NONE,
- 				   mxs_lradc_cells, num_cells, NULL, 0, NULL);
- 	if (ret) {
- 		dev_err(dev, "Failed to add subdevices\n");
--		goto err_clk;
-+		return ret;
- 	}
- 
- 	return 0;
--
--err_clk:
--	clk_disable_unprepare(lradc->clk);
--
--	return ret;
--}
--
--static void mxs_lradc_remove(struct platform_device *pdev)
--{
--	struct mxs_lradc *lradc = platform_get_drvdata(pdev);
--
--	clk_disable_unprepare(lradc->clk);
- }
- 
- static struct platform_driver mxs_lradc_driver = {
-@@ -235,7 +215,6 @@ static struct platform_driver mxs_lradc_driver = {
- 		.of_match_table = mxs_lradc_dt_ids,
- 	},
- 	.probe = mxs_lradc_probe,
--	.remove = mxs_lradc_remove,
- };
- module_platform_driver(mxs_lradc_driver);
- 
--- 
-2.43.0
-
+https://sashiko.dev/#/patchset/20261113013212.470981-1-festevam@gmail.com?p=
+art=3D2
