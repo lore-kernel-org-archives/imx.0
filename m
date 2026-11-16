@@ -1,13 +1,13 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.72.11
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.65.57
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794845130;
-	b=oWpAlN+kB8VFkrdcscsoKRzvNr/qtU1gsvRyd9zlIj+xHiYkwfoKXANJdHW6GcgBqs8y
-	 Mr5F/UzyoBFBrBw4pL3k0TpQsf2GA6B8tvyGT1Yf5JjIth/ggt8RKW9JuH0UCbqAHFTGp
-	 dCtpnJWgtzXTRRKgMz2bEl1l2loCnmnaFUbCLCcU3HyMXjkaR/pZ5cl2ao9Lhdzp1Ogvi
-	 D06RlgXZVWL1Zm1m6H0j3zGzNUqX7ivRIIwtqQ5rRrLK9M29ZmxuquKGp2rjgjdRORr6k
-	 Zz/Twu8tpmDLp2YA5uNHYY8Wnb/c2tVKd20DWORw0yVaMGfOlnYVxtCPfX/AcSWrxRg==
+	t=1794845275;
+	b=IvtDXo4K40UaywVyjK+Gqmho14H61ounENstiYjQD8a/CbWOmJF5pCMnDOcrMbCrZs8a
+	 RL1Vj+NrOHZkuhgf+R2Nn/opp7yPHQRxTPHw+H10QjEWClMcel3Ko7t0ARThQven0JuIq
+	 3gTP8V4Npl8MZ2P4n5bVTyC1ZiKdoZzSe6VYLDGSJ1vrS9P5uadegd6q1ZQPrO1InZvAg
+	 fJ5Uv+/X0BXS4agxCpQP7/w+qFBkAGAWTrTpfHZvT36CL7WhwdwdXv5C091BWAVRZxWxF
+	 7x3bF6tYcpMNJ3+m1VdyNUvHn7NS8jvgoZvqel/EcQxLCgH4jjx1uUk8VZsECFtQeuA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794845130;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794845275;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
 	 Subject:Message-ID:References:Content-Type:Content-Disposition:
 	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
@@ -24,82 +24,74 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
 	 X-MS-Exchange-CrossTenant-UserPrincipalName:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=909fGxJj8pcbDn0gjsDKGhAGHncEpAXdhzKPe6Jd3lw=;
-	b=4as3KhVoFz9VpF/OYLdhuQLB2uRztYRymgFHpArQP6KCAygOBJTAyRqloPZXHaAMUTAs
-	 STkBtUfetsILxFnM4yKlJoPvohSMQt+DiLxz56hmXEo0uuyaS9/kHUpPUGewtUNPYeZSm
-	 aYqmB4J6bftUNFnjZwcW4PUwRXScclGaTF78DL9+4nxzqTU/QWqIHJ3C3RuX3ReaZDP8J
-	 5VWlwlIYIh8IjHFeuaj/VXz7E3/qJrLt4S4o+BapWKRv1/lSrN1nnLrAEiTY0EAAEir/j
-	 RVYirQtYn15YBThnx0W6jNOQO0uNV78kfrlmjF0EWw2tO+390+pxtpBxjJzOoz0wN/w==
+	bh=228y2LRA2i4R0O8FUn76zl6sZ6/tBQQWTfVZBjVirpQ=;
+	b=kJHGwP1hQN7uWFvkn/aWHxwgIpefGCC6pjdDQHOZ8b2WklsjUfKXFdu0GNBYg4E8qTeU
+	 yPfB82y7SlnfbUWTMtHSV8fnbD6DyDO+Ua2foXx6WReNZOIiID2Vk/1CPJ41XZhfuiSxP
+	 xmnZJNSUwc7892tPv4Deu8SvJ/o5BEj/GWdwBJa5B4SZfHftHoC233ys6NtWI7ZLeigsp
+	 7EaN+rKsy5EfgMUlztJDl+JF4I7OzfXBGmmma4IKBT6zuJpREOEn1lDXQZPlN1/TZTQ5w
+	 JblGvEeldc/LX5xCF42zm70FzL4UsdmOL29zr3Tk0EUrsftV5dk+D9s9abX6uaBWgkA==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=oss.nxp.com;
 	spf=pass smtp.mailfrom=oss.nxp.com;
-	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=co2D1OUk;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.72.11
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013011.outbound.protection.outlook.com [52.101.72.11])
+	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=SBT2i8B5;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.65.57
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011057.outbound.protection.outlook.com [52.101.65.57])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67FFE606A31C
-	for <imx@lists.linux.dev>; Mon, 16 Nov 2026 16:05:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 67FFE606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A141606A31C
+	for <imx@lists.linux.dev>; Mon, 16 Nov 2026 16:07:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8A141606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=co2D1OUk
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=SBT2i8B5
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=h3bko/I+kKp+6Vn2fs+vB4jNgaOYyDPZMSY7cPlBqICykD13EHx/uwWVAysX7Fc4Nzlhfq4eilGENMt3Ll6R/DhOuIf3DSV7UEy33IvAOLDDNK/cjW2XxpEQM6B++fiORFtKN58vrS/WcwKBjyPHiim4yFxTo/Z64aRmIFeVWpXnZfeMmHmeHH8peXTOMobl/xfac8SR8xv+2KhF/EM0mF//CVefCGHY7ejidx7U81SsAWy8LMk4PEzHNjAspBMTqLKzKiRRdu/lURS5wNMbKV2VreeO+zuHFGEel1F9i8kRgGJdu6ibw7IjwjjDUYFtFAqDnpL3avYOmirEcKiEwA==
+ b=Rh3v3a633H7WqOxrXchEGQs1lfb/946Mj61BJMGSHMzg/aIbu1Kb96mjEGbRHnq804fbOHJyXuzGLlX/CBz1gotea02afbCl+MrZ3sa8FAABZtL959oB+DnE9W1B+l05hZ+hBKfDBDKgQMA5mf+LlEtURCbyU4cTV/ZC3QYpfqpqSBrijefFIU82Z7HjfGsGb6vJ5dXO8A/X26zSF2Y3iGFG9EJqiuUuZQxsj2xYiDcQjywaBKhbwr5JOywvGJz9LFjsutO0+6AzIyjqlzLrZ6BnFj6DfUKoJlNLxLrl69X5JzuG3cw7O4e3krnl+mEyY9nfEPvp4LnpbFBLsbCz5A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=909fGxJj8pcbDn0gjsDKGhAGHncEpAXdhzKPe6Jd3lw=;
- b=EKNIyWd3YO/C9A4xrYBB9teXAbYLkC295sEq3ChJ32Gne9jrISeDVWKPEtlbI5Gvyd7g/zcgqxksYG+hlemyqvwCwwycFgQEhF3XDKPrE1ew1JF/p6ssGh9/YtFw+lG8iixRQCm9852FAXSCqyb+ISMP18zcbQu6SWxErOA5tyQ4Hk8k45RYk44hvDCuRRW2TA1ctuHKpaU3PXleJcG9EHUqT/zcDh3HuAIJ4gJ/v+tlUmhoeccE0YYhq7jB7tpQb0aQXi/XzMexaVK0RNpBI1M4w9l1jAfavxwRI/qwcidNoIz1FP+5DZey7l43bTUKiM3Rd4R+jCm4KUkOD9/MUw==
+ bh=228y2LRA2i4R0O8FUn76zl6sZ6/tBQQWTfVZBjVirpQ=;
+ b=V8yHn6vAuD0elGdpbsM7P1iPvd1j0AD/Kr4a1Bc63bIxtqeVtsMw+TPTPS51JflUzPbcwZsipM2PE/hVIRhUAakyxj+XR7xlBY+Bq0ZlJarwMlMhxL/oFN+YIrY36pA8+RcjpVDEmL3V09gtFFMAvPk1A3JL85xvZX30n5S3qMwVuaMVs+6K1jsxlm4OylB9jrgatonXre700OoiRwcdUoEw/bOklMMFC0eeJCNmGmnqpedsHDm04SVcZkAW4H16jCASDfKuBwpHNBAmihClXoeqWbDPDkeHtHga7QBPPSm3OGTYnSgDkx4JIvJxA3n0/dj5zw9fjF8h5OqWB9VCtg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=909fGxJj8pcbDn0gjsDKGhAGHncEpAXdhzKPe6Jd3lw=;
- b=co2D1OUkQbzM/nbdF1JrX8RdYkzwdAMhXqJkJnuAeuuQ/hr3q42tX1tSLkVkYcc4dz5/KhBdnNGtgDFJLE3KLyxFjr00DvRxyQ1jegARtVAxma+vxC0aRH9tHpagNQKoz2l3CZNtMqeD4LvyRh5DXf5lSnGhgTUoqK0ysrfd7okMGpZunqCoVez25R02ttsv3RINQ1f9+orXTBbZSEhnNmJt7rtiymqOjXpbwefeb85+YkDCT9HHHx+jiSSrgazEMmcVSagGgNGndheok1Ufd4D68o4tqhcsuGlUcSAxbDj/OrLOKCjeXPzYEXpgT1FvVo6D4h/kju5QQAakh7ESSg==
+ bh=228y2LRA2i4R0O8FUn76zl6sZ6/tBQQWTfVZBjVirpQ=;
+ b=SBT2i8B50yGHwFzPE4X14DAvKMVhoN998+OcZVeOtOIGygboNsMFzyfHHATl0owiIa3VyIyQXWoLb25wdqKgYK+PnRNMCN4JnblwS48YHB2wTW6m/PUydqKn41kSy+Peh5netWYRioIP+OWb9p3pJDkBR/sUjL/d45yT0oq53mj3C52C+qhl8NYh08Ne4gT5E2bMqLNCBxqWKVqzKYJIJkvWGCVJ4R8UcXiRYQiAZnxyu5w9/OpjMWPkoM4cOo8tuDq7b7hRuaaUF33dYUBnc2rjJp44hoMMygQtfxbrLCc6SQtRZlgkJ16fQstSDlTFGPzZdhW9cb6VBpOR287RgA==
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
 Received: from MI3PR04MB12438.eurprd04.prod.outlook.com (2603:10a6:290:76::14)
- by AS1PR04MB9405.eurprd04.prod.outlook.com (2603:10a6:20b:4db::17) with
+ by AM9PR04MB8068.eurprd04.prod.outlook.com (2603:10a6:20b:3b5::18) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.14; Mon, 16 Nov
- 2026 16:05:26 +0000
+ 2026 16:07:51 +0000
 Received: from MI3PR04MB12438.eurprd04.prod.outlook.com
  ([fe80::c715:c32:8bb1:b70b]) by MI3PR04MB12438.eurprd04.prod.outlook.com
  ([fe80::c715:c32:8bb1:b70b%4]) with mapi id 15.21.0615.013; Mon, 16 Nov 2026
- 16:05:26 +0000
-Date: Mon, 16 Nov 2026 10:05:15 -0600
+ 16:07:51 +0000
+Date: Mon, 16 Nov 2026 10:07:40 -0600
 From: Frank Li <Frank.li@oss.nxp.com>
-To: Francesco Dolcini <francesco@dolcini.it>
-Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+To: Stefano Radaelli <stefano.radaelli21@gmail.com>
+Cc: Frank Li <Frank.Li@nxp.com>, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, pierluigi.p@variscite.com,
+	Stefano Radaelli <stefano.r@variscite.com>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-bsp@toradex.com,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 01/11] arm64: dts: freescale: imx8mm-verdin: Add SPI
- alias
-Message-ID: <avspu5VpQ6OtbJF2@SMW015318>
-References: <20261112150236.164850-1-francesco@dolcini.it>
- <20261112150236.164850-2-francesco@dolcini.it>
- <avXeK-IRXbKqI-pc@SMW015318>
- <20261113073135.GA8515@francesco-nb>
- <avc2nzql-JV7a-JH@SMW015318>
- <20261113171927.GA762258@francesco-nb>
- <aveChu8WqYM2JZcN@SMW015318>
- <20261116114509.GA101185@francesco-nb>
+	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Subject: Re: [PATCH v1 1/1] arm64: dts: imx8mm-var: Add Cortex-M4 support
+Message-ID: <avsqTMh7YjMHeO6E@SMW015318>
+References: <20261116111337.15740-1-stefano.r@variscite.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261116114509.GA101185@francesco-nb>
-X-ClientProxiedBy: PH8P221CA0020.NAMP221.PROD.OUTLOOK.COM
- (2603:10b6:510:2d8::33) To MI3PR04MB12438.eurprd04.prod.outlook.com
+In-Reply-To: <20261116111337.15740-1-stefano.r@variscite.com>
+X-ClientProxiedBy: PH0PR07CA0119.namprd07.prod.outlook.com
+ (2603:10b6:510:4::34) To MI3PR04MB12438.eurprd04.prod.outlook.com
  (2603:10a6:290:76::14)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -111,153 +103,274 @@ List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|AS1PR04MB9405:EE_
-X-MS-Office365-Filtering-Correlation-Id: cf72f224-9e22-48ce-bf63-08df43fb6d65
+X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|AM9PR04MB8068:EE_
+X-MS-Office365-Filtering-Correlation-Id: 496cf1aa-5de6-49de-c7da-08df43fbc3c6
 X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|23010399003|19092799006|10067099003|11063799006|4143699003|56012099006|261021123027099003|261022105027099003|261026140227099003|261026121527099003|261021121427099003|261022075727099003|261102123227099003|261028144727099003|261009223027099003|22082099003|18002099003;
+ BCL:0;ARA:13230040|376014|7416014|1800799024|23010399003|366016|19092799006|10067099003|11063799006|56012099006|261021135927099003|261021123027099003|261021121427099003|261009223027099003|261009221227099003|261102123227099003|261022075727099003|261026121527099003|22082099003|18002099003|6133799003|13003099007;
 X-Microsoft-Antispam-Message-Info:
-	T085JXDYDORSzZc25Y3tSVX4PSmNdNajwIpXnO5IhteJ3d9ybGbN8ca425+HlNyRWAuvQOUaNW/YFdeNgoyeUXWrr4RBUpaD+VjBkppZZiAAmsstHqSYyx1iQDhDze4jKrxHSmHjXC+D/oWdQLyHxgPfgVR+Qz5MWRrO2wG7X4GbakPvKpKefKfCXsv6Empbm9IXe97qo80vFuPfGhA9MPx3yYhvYPQXwSHYtWZso51bb3E65WOdAxpJDl7aqDT2vRXNV6S1EdDVM430U4ugmMJ70nJK0H5wHVbiHi2qdVu9iEtDq0YiJamTOoFlXQk5ZjkSNv+nRnvexJgtcevHK1rMqN33Leb848n+8esvHbGd4NQc04gwMXgahHqMb5+sntv/Z7KSI17Ibp8czCYKDiVyhMBQz5UdmZMemgLUWn3yPaO5OHVoU4sCvXtNEcsnkeDzyFbuFejIYxLtt0+YLTegJvnHv52y6l2foA6kOoEtyF7eoG4KsuDYMiqJAJ6rYXw82hSbkoQq9B0tzaCXQk35jaL7uwZvZEd3MLvBxSnp8RSiYIfiOEx0f87Q7m0m6ekIK2gasbRHoJwBm6xzTpsR4vLFneLiJYwcTMrQcpa5BG0DaBYFMhPZkW+c74C0
+ st4RYAvqIdlqMQ83Bxfj1LicsvqUWnm06uFfG1esuWdxwwkwtIRXU8yrRr/LIO7bZaWm4TPKpgFLGxenqOgJEKJi4R1JslYP2XdEHEhg6DP0Mu059PsLrzD5XrCkBn98ZdPaVdDYyKfzNrnLoLVCB/L0xpPvUua/4MRyfe2Tz/2gw0OOPBhWOhFsH9UXfTFlGwJYvDcxTcAcKZ9F9wRbMLbm4SrObzG2IgS/kU53EYrs+E7FNoR4Rt+Flvz6nnjOhynoX+/rzHBDNFk9kK+moTMz/NBU3oA8DsbSTDmR+gpernbcHPL4wRoQ+z/Nem7eLxkQr1Cnr7p8bfQ0I5XJhet8XmoO9oKj+llXyzTkyypsgj2dHezdPoK+qL3HBqM+/4l1qXnKo8yPqQyvtZvs2vh0Q0Zdr1UD9ysYBDUsiXctSc0Ppm/Xdv961lqa6HY0gR7a/s9pI0uYaE+jyt3sxUV3YAuOx8uPqNv9ErUePv6qGMTlHmAN7lKfprLNxaxm9qXOtZ4qjjN9wubGDVe1Lr6whWjA0Qft3etserM1u8Kdplv3Twv29YS+Vo5NPb+/GJxDQy7X8XQZUhJdozcbRYw5+pOwcdyBzMXWA163Adc=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(23010399003)(19092799006)(10067099003)(11063799006)(4143699003)(56012099006)(261021123027099003)(261022105027099003)(261026140227099003)(261026121527099003)(261021121427099003)(261022075727099003)(261102123227099003)(261028144727099003)(261009223027099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(23010399003)(366016)(19092799006)(10067099003)(11063799006)(56012099006)(261021135927099003)(261021123027099003)(261021121427099003)(261009223027099003)(261009221227099003)(261102123227099003)(261022075727099003)(261026121527099003)(22082099003)(18002099003)(6133799003)(13003099007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Y5ZHA+iop8kvjRVm9oR8b/a4GGR14oTp7ptUlJhZU+8qNDEgQPgs2r+i9Qa1?=
- =?us-ascii?Q?I+Ok1uUwbc5znpl4xO6rLLu5kQfJbclxwmPVXJEj3zIV1dXZVVcUOTgzSS0d?=
- =?us-ascii?Q?GTDiXuvDccP2gq3JBvCNZHP3sagOsqNu61YECJlX5oBJ1bJo1dXI6SatgeuP?=
- =?us-ascii?Q?GuHCB2X5XVHf6zT/QdrgTHZK37N6kYqnmplMr0E4LMZeNV2L7MbMXkN7/Acy?=
- =?us-ascii?Q?1NovLTx8fvt4U99KOZjTrr40c/kjgWW0EwnUotdX6ZXMEAthbMeYOnnArgiR?=
- =?us-ascii?Q?+dgcsw51Z9AsjeRH9i5E4vFXlKNxYyW7PLHni/HDQU4eD6jENteXsGaenn6X?=
- =?us-ascii?Q?gd9jgF9tJesM5nG7v98mnGm7++QwHFalSP/JQ+196FrztLiXt3qDewwQL5Nf?=
- =?us-ascii?Q?NvrwR0g1b5RYy8g7f5rhUbmkDiHroVcQOSKNmSoAUp79lwI3MzmCbdMFPOOW?=
- =?us-ascii?Q?T5K9Ek9WyXEGmdzpd50Xj2UWBa0BSyl4TS47vD/wTyKQOyzVjBYR9BdwVPUZ?=
- =?us-ascii?Q?xJKb/bsPeUmDIco9XivtODYgAWvVsbYt7nbv9LluRNwGmhtlEwEy15/9UsO2?=
- =?us-ascii?Q?uk0wATRyBiW57d74EdJcW8PkCN6T+raxKnpsUbFyo0Z0aRmkqvRR2wz9LEvx?=
- =?us-ascii?Q?VFChOgBSmoqJfhbUOe8mhQyOZCgJEes3H2GhgdCp8L+UB3U+81LeAole4Z53?=
- =?us-ascii?Q?5SIWB5Kjt1yHOChG7mEflK2R12Gs9ON1UW60ZP3mDHbOQEH/AwsnPKX/9d7O?=
- =?us-ascii?Q?MYTajFtm9+WDwDz8SdJuuTIbNevPojCz0sRvav4u2BSetYKOgM0dWdPhYF5B?=
- =?us-ascii?Q?Sp2NqE+r8uKaPx3rDVJH3WDabC4gnrA99TL/oYpP41jgGOHL7losJ0kQ6ks0?=
- =?us-ascii?Q?8wVxEWkwvjIbzYb+5FMEHz0piisFndpbLck+Hm1+NJO4QVsvhLlXz9J8iAVx?=
- =?us-ascii?Q?8cEK1QntA6OoPQOz+7wIDLzSlIIOBw80STSg/j3+ggh7uh8Uf8+5Kaqr2wQw?=
- =?us-ascii?Q?Udu9Hf7KOZeWZTY7WboPsiEiyjR802sz05hcsO02kKZp6ANHHAteojOXJ4nx?=
- =?us-ascii?Q?qbecMrObNy3aTFP2s5sq6RWUvxGAn5I5qjBsxN1BFUq0ZCi8lYmFua8YTC0F?=
- =?us-ascii?Q?ClBSK1o6yL8+/5Zx+zGfULt9LPjm9SKj4j5+FdhpgsLquNITYjjZDvYS+sNA?=
- =?us-ascii?Q?1GqACWrFevtn4NG2+lODl2V9rzJ6rR7iwHRcrAnlgyxdjDAmzMkHE49/AVWW?=
- =?us-ascii?Q?yKkGV8qAshEXJ2mtUBi/N6tNBM30nNxAlDoBjEBuDs2CPMfIfAXMQOyQHGke?=
- =?us-ascii?Q?bmr3K3BMC51tYt33Hc7VTt3dtARC278vlM3nhlY/EkZhLT4qtd/xE19nkdwv?=
- =?us-ascii?Q?nBnVOXZQfOIzMi7ofV7BJt+vuKzwC6NPZwO3pAlN67icP1CronSmkR+qeAwl?=
- =?us-ascii?Q?TaBHjdcVMMm2RhDgkM8LvR9IGY9y2jwuPanCUUX1haYVk6pdX28mvDu5Nnsl?=
- =?us-ascii?Q?0Pvj2WmwIaN+A0p+3WfOieh7ehxciZ/0yaTLnTIe6Tb6m6UpNUXSHfAT3F/l?=
- =?us-ascii?Q?V6YKULmOcg6KVIseCaWxxIePNgD2auL6EMQMdHgj+xrpGfJ1p9CtwLtLI2t0?=
- =?us-ascii?Q?kT6nwU0Pw0UHh0HakbzKfETB3y1ATDjrjjfJlJIjlAV9FQK3oybMyXi8LItY?=
- =?us-ascii?Q?Kb4SZWCqkH/lVM2xMqToeWHDaNrwu0YjByjslRREFYHsZOLcJH3+20qgPLrs?=
- =?us-ascii?Q?BTmsZLqqHavHi45bFLy9gK2VeJRHQVFzcYh2nBi1AsJIw69UAW8H?=
+ =?us-ascii?Q?8b5C/9l9xKrtz/KJS1yRqgCIWlJGGYqiGKJsaZKiv+sVjxipTK+u9OCFlt9+?=
+ =?us-ascii?Q?KLKNgPr51MOtIenbv5pNe3MHb4Td7NoZXe+rwoQopWdwYPm8otID/rXubH61?=
+ =?us-ascii?Q?LSVfArttaeBfuJ7Z0q+lWCbIcTXKoySA8fLrmPAqwN6/E+kVpH8UAFcZdSan?=
+ =?us-ascii?Q?lMbFhRyQQsYQRDqtUCH8Zp65wY/vSHXF3vIbV/LuIBISyYkSvN/d3VvNT9Lx?=
+ =?us-ascii?Q?sGUblgxSOnkhM8zoc2aZrC7VCCYA3gCpLA3LRVDSTLH3PuvYMzX91Z/BKSoH?=
+ =?us-ascii?Q?vQO0KaXfJUSDzQkXvZ2MlrG3G4nsbSyD8l5b+1OrSO7ueu+WmXf4gIzW9dO6?=
+ =?us-ascii?Q?bYWf6ZhHRstHpwJkhwOtH8h/KJyDJc/Jwx9ZX13j2gWk1eQRpd78ANN1sRib?=
+ =?us-ascii?Q?mgGGwnKEyGeTQccGJLtEZ5MPMnJ8fPS7sIrijgXRfzMGYdpIkGNXNTFfYOxG?=
+ =?us-ascii?Q?awHdC0kDdVYy6kecqr2qK9jadnnuY+hOfsMk60UwrRYTHXNeiBLgea+0Hf+v?=
+ =?us-ascii?Q?hJyy6LlBg6QQYEKOoT4rGTOne7HWOBUG4/Tqdqu0KHxhcIfsCjVYrJNntXHm?=
+ =?us-ascii?Q?g1DMozsqYsFG0pPNBeOXzs5jYODhYVpzNa3+Jy521YXVwNdUsiDXETQQkci9?=
+ =?us-ascii?Q?3Ft/Va/pnrnJnrYUFr8FpjIBikH06N4MIZZKU30N8r27MDAjYpj5N+kbWsbW?=
+ =?us-ascii?Q?9hOj5M6FOoHm+Y8NBaUa2aLrkBb+jFI1+PMlgHor0/OERL8rIz2ohxm0Clzo?=
+ =?us-ascii?Q?4pUpNbNPR+v+m2mi2Ya4plARZHH+zZJBBQpRTmjgSZSCXlg1GvXkrj3FtD4Q?=
+ =?us-ascii?Q?ohzaKnFOHMIpSfmcmiaEoYFpQhiCfIjBIlrhC1cVkKNrSrPLj8hofGmCe9aX?=
+ =?us-ascii?Q?vJGAIw2rHueVqFkAuJ3PACUtmOT6hIJxNwWKwwYOCRELJeo47u7zX2x3CCCc?=
+ =?us-ascii?Q?wSdqbEMakO4vWX+p6oQI7KMxKf+OZJpSAVwZAYRxwM0hpmRjR4Oayxdx5ci8?=
+ =?us-ascii?Q?2N9c/5Fz4gcfjYKe05uxeYKrQsu084ZqTHGg7Q+LNgmRdovRfDDm2lbSN8qD?=
+ =?us-ascii?Q?e2qNHvim3AxmWz8DI0wM0KM/OgfmjRcI4k/opOP9TdjC4DZ79haCR64qBOi6?=
+ =?us-ascii?Q?u4JXjPp/ibhbZZWm0kW3/9PTXOuSi2wtcF4o1F6mFlfWQa1I+uRc91mjXBae?=
+ =?us-ascii?Q?11q3Uq5C8oKCqUnPhas8JDHo7wZAWBxpY6lPEEKgJEix6SZjNz+EwQDEAaky?=
+ =?us-ascii?Q?tvcRBYgwdZ6oE/zfO6RFFgVhsXxSE4r3aCl+ZcWLS303OzW76HAVRS5m1JlQ?=
+ =?us-ascii?Q?gNI0cv4cJAHUllenY4D/c9kaMa0wbKF3oD54gS0g71MbJ1pHETvb7BvFAg4/?=
+ =?us-ascii?Q?nBC1mlJI7sfBd8cB2gNegPnesJxeIKn5t8ZyMGb0/NgNPABULrz+xRYIbavp?=
+ =?us-ascii?Q?BTi6oIM2hLlVVJU2EGfZ+u+MZrsnuo2gax8ZdQRQIIrmFqJCsfGUAe6zMXhs?=
+ =?us-ascii?Q?sbTIHVBC9ahGJiQ495TFCeySg+WrS2q4UNgq3utEaLveD+gcze2zkpAcunJh?=
+ =?us-ascii?Q?sQgXvPAugcfatdWELrjw9BJ6HW8VEfnsc8dlIBsTCseohjM+VW09DrGs43WO?=
+ =?us-ascii?Q?/PgPQ+CnfIGUTnGvYWjfm+7Sfk/X5S3U380v/UqNwUSa7SqFox5IhE0mHSIk?=
+ =?us-ascii?Q?GDEw/+sp+SOkQ4dNBGTERHPeniM84r+gCCT7c/I6GD84LL3XtBQrO0wvMhOJ?=
+ =?us-ascii?Q?XWHQDjH+77HtXBa2PTNhvvTRS/hcsHzSvbyK23SMoqQ5OiRdN1Z3?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cf72f224-9e22-48ce-bf63-08df43fb6d65
+X-MS-Exchange-CrossTenant-Network-Message-Id: 496cf1aa-5de6-49de-c7da-08df43fbc3c6
 X-MS-Exchange-CrossTenant-AuthSource: MI3PR04MB12438.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Nov 2026 16:05:26.3309
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Nov 2026 16:07:51.2459
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: V8l//ku9NoDfpKfskDQ122EbL+84sK/vi684jsOqxT7IaFxTmFbcQiMnPPVD9H9Sd2/f7dAZjmFbAqslkNyeFeH+5yfnoYbBTgO1MOPv877fDE5Q39SteSfQrEdId585
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS1PR04MB9405
+X-MS-Exchange-CrossTenant-UserPrincipalName: LFDkugIu8hGYLDP5gJBcsoogAmA460EBUyt0hmqH35PFx44qRcqTI0EinfiquiFjae8LuFL5a7DL+n385OWX9bkU8mnvb+TyTpsTUwPF4zxzODTTvr968Ogpc5t9YWSf
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8068
 
-On Mon, Nov 16, 2026 at 12:45:09PM +0100, Francesco Dolcini wrote:
-> Hello Frank,
+On Mon, Nov 16, 2026 at 12:13:36PM +0100, Stefano Radaelli wrote:
+> From: Stefano Radaelli <stefano.r@variscite.com>
 >
+> Add Cortex-M4 configurations for DART-MX8M-MINI on Sonata and
+> VAR-SOM-MX8M-MINI on Symphony.
 >
-> On Fri, Nov 13, 2026 at 03:35:02PM -0600, Frank Li wrote:
-> > On Fri, Nov 13, 2026 at 06:19:27PM +0100, Francesco Dolcini wrote:
-> > > On Fri, Nov 13, 2026 at 10:11:11AM -0600, Frank Li wrote:
-> > > > On Fri, Nov 13, 2026 at 08:31:35AM +0100, Francesco Dolcini wrote:
-> > > > > Hello Frank,
-> > > > >
-> > > > > On Thu, Nov 12, 2026 at 09:41:31AM -0600, Frank Li wrote:
-> > > > > > On Thu, Nov 12, 2026 at 04:02:23PM +0100, Francesco Dolcini wrote:
-> > > > > > > From: Francesco Dolcini <francesco.dolcini@toradex.com>
-> > > > > > >
-> > > > > > > The Verdin family pinout defines the SoM interfaces and their
-> > > > > > > numbering, SPI_1 being the SPI bus available to the carrier board,
-> > > > > > > implemented by ecspi2 on Verdin iMX8MM.
-> > > > > > >
-> > > > > > > imx8mm.dtsi numbers ecspi2 as spi1, so the Linux bus number in sysfs
-> > > > > > > and the spidev name do not match the Verdin interface. Add a spi0
-> > > > > > > alias in the SoM dtsi and delete the inherited spi1, so ecspi2 is
-> > > > > > > bus 0, zero-based with SPI_1 being spi0, and carries a single alias.
-> > > > > > > ecspi3, internal to the SoM with the CAN controller and the TPM, keeps
-> > > > > > > the spi2 alias inherited from the SoC.
-> > > > > > >
-> > > > > > > Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-> > > > > > > ---
-> > > > > > >  arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi | 2 ++
-> > > > > > >  1 file changed, 2 insertions(+)
-> > > > > > >
-> > > > > > > diff --git a/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
-> > > > > > > index 1ac9d000d415..0369803a4d46 100644
-> > > > > > > --- a/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
-> > > > > > > +++ b/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
-> > > > > > > @@ -16,6 +16,8 @@ chosen {
-> > > > > > >  	aliases {
-> > > > > > >  		rtc0 = &rtc_i2c;
-> > > > > > >  		rtc1 = &snvs_rtc;
-> > > > > > > +		spi0 = &ecspi2;
-> > > > > > > +		/delete-property/ spi1;
-> > > > > >
-> > > > > > Can you avoid delete property for new platform?
-> > > > >
-> > > > > Unfortunately this is needed.
-> > > > >
-> > > > > The included imx8mm.dtsi has
-> > > > >
-> > > > >   spi1 = &ecspi2;
-> > > >
-> > > > Create patch move aliase to each boards' dts from imx8mm.dtsi, which is
-> > > > board feature, not soc features.
-> > >
-> > > Please see the linked thread [0][1]. It's not a viable option.
-> >
-> > where [0] and [1]
+> Share the reserved memory and remoteproc configuration through a common
+> include, and add -m4 DTBs for remoteproc and RPMsg support.
 >
-> Please see my previous email,
+> Reserve ECSPI1, I2C4, PWM3 and UART3 for the Cortex-M4 firmware. On Sonata,
+> also disable the buttons and PCIe, which depend on GPIO expanders on
+> I2C4.
 >
-> https://lore.kernel.org/all/20261113073135.GA8515@francesco-nb/
+> Signed-off-by: Stefano Radaelli <stefano.r@variscite.com>
+> ---
+>  arch/arm64/boot/dts/freescale/Makefile        |  7 +++
+>  .../dts/freescale/imx8mm-var-common-m4.dtsi   | 60 +++++++++++++++++++
+>  .../freescale/imx8mm-var-dart-sonata-m4.dts   | 44 ++++++++++++++
+>  .../freescale/imx8mm-var-som-symphony-m4.dtso | 31 ++++++++++
+>  4 files changed, 142 insertions(+)
+>  create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-var-common-m4.dtsi
+>  create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-var-dart-sonata-m4.dts
+>  create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-var-som-symphony-m4.dtso
 >
-> in which I tried to explain the issue.
->
->
-> > > In addition, I can do this for my boards (Toradex), how do I know what I
-> > > have to move for boards I do not know? I can't do that. The only way
-> > > would be to duplicate the whole aliases on *every* board.
-> >
-> > at imx9, already move aliase to each boards, dupicate it and just make
-> > sure build finial results the same.
-> >
-> > i.mx8 is still not too old yet.
->
-> Do you want me to duplicate the whole aliases block on every board? I
-> cannot do anything better then just duplicating everything, given I do
-> not know what aliases make sense for each board. I can do better for my
-> boards (Toradex), but for the others I can't.
->
-> And this will likely break out-of-tree users (and to be clear, I think
-> that out-of-tree users of Linux DT files is a fact, see U-Boot, barebox,
-> ... and more), as I discussed in the previously linked discussion.
+> diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
+> index cfd548284358..9574763dec09 100644
+> --- a/arch/arm64/boot/dts/freescale/Makefile
+> +++ b/arch/arm64/boot/dts/freescale/Makefile
+> @@ -245,9 +245,16 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mm-prt8mm.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx8mm-tqma8mqml-mba8mx.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx8mm-tx8m-1610-moduline-iv-306-d.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx8mm-tx8m-1610-moduline-mini-111.dtb
+> +
+>  dtb-$(CONFIG_ARCH_MXC) += imx8mm-var-dart-sonata.dtb
+> +dtb-$(CONFIG_ARCH_MXC) += imx8mm-var-dart-sonata-m4.dtb
+> +
+> +imx8mm-var-som-symphony-m4-dtbs := imx8mm-var-som-symphony.dtb imx8mm-var-som-symphony-m4.dtbo
+>  dtb-$(CONFIG_ARCH_MXC) += imx8mm-var-som-symphony.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx8mm-var-som-symphony-legacy.dtb
+> +dtb-$(CONFIG_ARCH_MXC) += imx8mm-var-som-symphony-m4.dtb
+> +dtb-$(CONFIG_ARCH_MXC) += imx8mm-var-som-symphony-m4.dtbo
+> +
+>  dtb-$(CONFIG_ARCH_MXC) += imx8mm-venice-gw71xx-0x.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx8mm-venice-gw72xx-0x.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx8mm-venice-gw73xx-0x.dtb
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mm-var-common-m4.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-var-common-m4.dtsi
+> new file mode 100644
+> index 000000000000..98790a28694d
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx8mm-var-common-m4.dtsi
+> @@ -0,0 +1,60 @@
+> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+> +/*
+> + * Common Cortex-M4 configuration for Variscite i.MX8M Mini modules
+> + *
+> + * Link: https://www.variscite.com/
+> + *
+> + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com/
+> + *
+> + */
+> +
+> +#include <dt-bindings/clock/imx8mm-clock.h>
+> +
+> +&{/} {
+> +	#address-cells = <2>;
+> +	#size-cells = <2>;
+> +
+> +	reserved-memory {
+> +		#address-cells = <2>;
+> +		#size-cells = <2>;
+> +		ranges;
+> +
+> +		vdev0vring0: vdev0vring0@40000000 {
+> +			reg = <0 0x40000000 0 0x8000>;
+> +			no-map;
+> +		};
+> +
+> +		vdev0vring1: vdev0vring1@40008000 {
+> +			reg = <0 0x40008000 0 0x8000>;
+> +			no-map;
+> +		};
+> +
+> +		rsc_table: rsc-table@400ff000 {
+> +			reg = <0 0x400ff000 0 0x1000>;
+> +			no-map;
+> +		};
+> +
+> +		vdev0buffer: vdev0buffer@40400000 {
+> +			compatible = "shared-dma-pool";
+> +			reg = <0 0x40400000 0 0x100000>;
+> +			no-map;
+> +		};
+> +
+> +		m4_reserved: m4@7e000000 {
+> +			reg = <0 0x7e000000 0 0x1000000>;
+> +			no-map;
+> +		};
+> +	};
+> +
+> +	imx8mm-cm4 {
+> +		compatible = "fsl,imx8mm-cm4";
+> +		clocks = <&clk IMX8MM_CLK_M4_CORE>;
+> +		mbox-names = "tx", "rx", "rxdb";
+> +		mboxes = <&mu 0 1
+> +			  &mu 1 1
+> +			  &mu 3 1>;
+> +		memory-region = <&vdev0buffer>, <&vdev0vring0>, <&vdev0vring1>,
+> +				<&m4_reserved>, <&rsc_table>;
 
-This is validate reason. We can try move one platform firstly later.
+commit ebb21cc5d1c0950a8cb35f5f2870593f97724973
+Author: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+Date:   Fri Oct 23 15:52:49 2026 -0400
+
+    dt-bindings: remoteproc: imx_rproc: Document memory-region-names to avoid implicit ABI
+
+    Document the optional memory-region-names property.
+
+
+Please add memory-region-names for it.
 
 Frank
 
+> +		syscon = <&src>;
+> +	};
+> +};
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mm-var-dart-sonata-m4.dts b/arch/arm64/boot/dts/freescale/imx8mm-var-dart-sonata-m4.dts
+> new file mode 100644
+> index 000000000000..35e3ea43e5ec
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx8mm-var-dart-sonata-m4.dts
+> @@ -0,0 +1,44 @@
+> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+> +/*
+> + * Cortex-M4 support for Variscite DART-MX8M-MINI on Sonata-Board
+> + *
+> + * Link: https://variscite.com/carrier-boards/sonata-board/
+> + *
+> + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com/
+> + *
+> + */
+> +
+> +#include "imx8mm-var-dart-sonata.dts"
+> +#include "imx8mm-var-common-m4.dtsi"
+> +
+> +/* The buttons use a GPIO expander on I2C4. */
+> +&{/gpio-keys} {
+> +	status = "disabled";
+> +};
+> +
+> +/* Reserve the peripherals used by the Cortex-M4 firmware. */
+> +&ecspi1 {
+> +	status = "disabled";
+> +};
+> +
+> +/* The touchscreen reset uses a GPIO expander on I2C4. */
+> +&ft5x06_ts {
+> +	/delete-property/ reset-gpios;
+> +};
+> +
+> +&i2c4 {
+> +	status = "disabled";
+> +};
+> +
+> +/* The PCIe reset uses a GPIO expander on I2C4. */
+> +&pcie0 {
+> +	status = "disabled";
+> +};
+> +
+> +&pwm3 {
+> +	status = "disabled";
+> +};
+> +
+> +&uart3 {
+> +	status = "disabled";
+> +};
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mm-var-som-symphony-m4.dtso b/arch/arm64/boot/dts/freescale/imx8mm-var-som-symphony-m4.dtso
+> new file mode 100644
+> index 000000000000..f2a1618edcf5
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx8mm-var-som-symphony-m4.dtso
+> @@ -0,0 +1,31 @@
+> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+> +/*
+> + * Cortex-M4 support for Variscite VAR-SOM-MX8M-MINI on Symphony-Board
+> + *
+> + * Link: https://variscite.com/carrier-boards/symphony-board/
+> + *
+> + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com/
+> + *
+> + */
+> +
+> +/dts-v1/;
+> +/plugin/;
+> +
+> +#include "imx8mm-var-common-m4.dtsi"
+> +
+> +/* Reserve the peripherals used by the Cortex-M4 firmware. */
+> +&ecspi1 {
+> +	status = "disabled";
+> +};
+> +
+> +&i2c4 {
+> +	status = "disabled";
+> +};
+> +
+> +&pwm3 {
+> +	status = "disabled";
+> +};
+> +
+> +&uart3 {
+> +	status = "disabled";
+> +};
+> --
+> 2.47.3
 >
-> To me this is not the correct thing to do, it will work for my boards,
-> but I do not think this is the right decision for the whole i.MX
-> ecosystem.
->
-> And it's not about being old or not, it's about not introducing
-> regressions and caring about the users.
->
-> Francesco
 >
