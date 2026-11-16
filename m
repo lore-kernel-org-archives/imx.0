@@ -1,91 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.65.50
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794851398;
-	b=zI2Yw4e27uLmMacqxMFk+QzerA3C3+zd3lZW4sN3nTTNmrumtlK15geHgl6kyOAOM8oL
-	 qNw1UzjNL7m5F0i/gq9NAIqSHFxi8UYzEO6E+f33gY7PIOUplZAF5/R0qhWEKW6C/MZjG
-	 ywSwvLztatJXw0NH0QWGvgOxfBaHaGcoQZZUnySf0kmpFxXMR9D65vTEYlhbbZaRmoe3Q
-	 fmChXdmlQpDHa/la4ou/pQqWCEHERe293sWi9ASVknO9DGqgSHB59Mh7SiBNg8mOSDXOb
-	 ObNjZnndENqglE9gTa7Wmqq0hLbutMlGnyTuMeEduOf5s4qhZeUz3+r+uuKIjomU/9w==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794851398;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:Content-Transfer-Encoding:Content-Type:
-	 X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=kPoBrmYnUD8AY7LO0kdh98nFRE9v+UsoLB+U8I2BoIc=;
-	b=NgQW9GCDrH0bXumPW3nUGEOjARhLhAD9iVoz3Rkr66/wt5RxnDXO+7AGz8PSxYgYwxWI
-	 y9A+8YmMiqEWtcw3cN8O05MhWKgj2A4U3QTaRKSb0KY/zjE+hLAVHadcwARS/PirSxbDo
-	 CNB/OkipA7AqUNEHUf3ewjsbedhQI2gBdMESEaK66BU2qzL2rzzbCSPBHz1mBBw0twaVs
-	 9Dh57ftkcvt/oMkxjaKyRPDJCVzdDrvFdPHIWTYpRGJ8ETXDE2gKIgtSQ5Evg46kcxhj6
-	 9jl7hXLS+PLufG+h/JRqpIJFmFSsoa0xJhZhNgvWOiXBIWoy4PhA2/LwlVu5+MjrG/g==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.nxp.com;
-	spf=pass smtp.mailfrom=oss.nxp.com;
-	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=xJ+QnSp+;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.65.50
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011050.outbound.protection.outlook.com [52.101.65.50])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.44
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794851975;
+	b=fTjZWZGmueQ+kO5dxtkKsdpUHGVvdGYaFD6W7qnQ0/M9/Lg0W4Jhau3J1lt3frPb0yUi
+	 1U+YmMNuQ0/GXkw8A0XhjB9ysS5SLa8OGYqoJIcYNxsnjB5tyXsBnkIE9TFmh4+ji31uB
+	 ahJs+Er62aLtS0GFl+d0wXNhT52iNPwl+ZRk6f3myPbpep+rAdQj40uI5931mJ30vbNae
+	 vlILOwYJWdJ9JjihuengWqqRyoqjlf5gVQjxi8hbR7hq1VKX/Dd4BMu0qX6kkFx7DxQls
+	 9ZLDZaet7TGugK1oyGs+sVHnuQR7lij5Tlo117J3CDPb6wvmrU7HC907v/4FyoQAWpA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794851975;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=+nvE593UQ9d0U2IPo3a1ExhnUFrCrkM14breEsOZj/U=;
+	b=id7V0ygaFsP83nL88MCJkdocjVnTbl0pOEkIaXccM4nsLYx2k9L2ibJvZRlz9oJWp90I
+	 JrC8lnuN5Vf4MJonrPcHH1tUaYFpBOAkCZGRoBPhT3WM5doIBRE3Vofkqr33XUSsA2Jfm
+	 1yq6sngI8k4ow22ZGWZ+8CN5zwJpZdXFQHcXl8wh33/lLD+oVtqb/CchIIJm7+KIIv36q
+	 VHQVcuNia6NvVTPlXL47DTodgDkyk+MD3x7L4JEiJjHTdIBqLOo5psB/duUo9Wq6TZXoZ
+	 t2e/Es+3s1n7UF1g4CVlETvPkGKSToO1j7zvD6mghKU16Vt9icymY8dg0vk6eX/swdQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=qTOFdZgm;
+	arc=none smtp.remote-ip=209.85.128.44
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57AFB606A334
-	for <imx@lists.linux.dev>; Mon, 16 Nov 2026 17:49:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 57AFB606A334
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFB1D606A880
+	for <imx@lists.linux.dev>; Mon, 16 Nov 2026 17:59:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BFB1D606A880
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=xJ+QnSp+
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gVC1Rwc8y3Svn7vgataXlAMhbTBmPP6YTCxnWTg5L4xPeL3pF/CeYV0mvylUX1Udk9gSnBFP4qgmX3hAMiEIJEqjiAuEbMJuTzXOuQGIB2DD6CYad36pTdG5DNc6WxPmPVcpROLWenUhXnpEdo3aYOg9RLXyDb/uWnyFEibRZRo5OL1KN3SR5Wuvp3peKbpE2SrK4cTs5yW5+JKGLj1cd1jgxF3eBzgIyiKNSrhyPgEzP7UpZe/BLbXIGmkhU+ag9VwoDgwH7bWXgS4NZAvIGfxaBcAdYnSPioAEynT2X6T7086ul5XfTrCWc5M09nEH5hq7OAevwxeMgmkEbnwwpw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kPoBrmYnUD8AY7LO0kdh98nFRE9v+UsoLB+U8I2BoIc=;
- b=X1qtQGeMlgvOv5MR7wivbsu26AsZZAP9XjIO1oigUuVNh/+DeYzXhwNvmEG2geBRPO5LE5g5u91jp4N9fFU5OG2TjtsFvvQphEKC4RwuOiRgYtnF/xLHozJk5QvrvUpTWhKrbfRaQxLiGGty7WwDnAVA+8BtvrAMe9/HVzrAN2EBpFfl4wWYs0odNwHP8fYoQPdMPSi0gnUV+JokfWDAzNSR7C89kSfCPTXnfGl7ovjmrdNuxwXb27caqDqfaAFdMMKoMKPsm9uBauHXlCpGFbDCBYe8oH3+FSgfC+7G/AFXy4mTzu46Dc3Uh4cnhZaIhoCKgrWEEAJAyUXTuOS7mA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kPoBrmYnUD8AY7LO0kdh98nFRE9v+UsoLB+U8I2BoIc=;
- b=xJ+QnSp+ta6aj/JkK+g/1v4zW62CxGY88o06pCNG9b1JPJYQg+NJSt4F324mvZuQ48BAV2uKgd0rnZI82lamCNLur2vE4JplU+jCrw+kw9ppigcsryT1ZTBeNrxvLjylaN/FAHmJsPUASQkrqWLu9PR6yplgGMrndMwAewhoawsOOH+VC2O5o5Vejc+SdO4ohgbKJu637a3YJ483Sa9whahJDbbdZGdsU7HFYMa36paAO+2nxoh3YlNVMLzSoS3qISB03G7XtVqtDn/4oM9LbbLRzOLIlkBQ2E85R8KvvGEvrmNFdg5KymZ92Skw7FA3FSiC48jvOlMxY72MrwHEZA==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from MI3PR04MB12438.eurprd04.prod.outlook.com (2603:10a6:290:76::14)
- by AM9PR04MB8227.eurprd04.prod.outlook.com (2603:10a6:20b:3b4::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.14; Mon, 16 Nov
- 2026 17:49:54 +0000
-Received: from MI3PR04MB12438.eurprd04.prod.outlook.com
- ([fe80::c715:c32:8bb1:b70b]) by MI3PR04MB12438.eurprd04.prod.outlook.com
- ([fe80::c715:c32:8bb1:b70b%4]) with mapi id 15.21.0615.013; Mon, 16 Nov 2026
- 17:49:54 +0000
-From: Frank.Li@oss.nxp.com
-To: soc@kernel.org
-Cc: Frank.Li@nxp.com,
-	kernel@pengutronix.de,
-	imx@lists.linux.dev
-Subject: [GIT PULL] iMX fixes for 7.4
-Date: Mon, 16 Nov 2026 12:49:46 -0500
-Message-ID: <20261116174947.2957972-1-Frank.Li@oss.nxp.com>
-X-Mailer: git-send-email 2.43.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: PH8P220CA0031.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:510:348::14) To MI3PR04MB12438.eurprd04.prod.outlook.com
- (2603:10a6:290:76::14)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=qTOFdZgm
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4bb55cda775so822635e9.0
+        for <imx@lists.linux.dev>; Mon, 16 Nov 2026 09:59:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794851973; x=1795456773; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=+nvE593UQ9d0U2IPo3a1ExhnUFrCrkM14breEsOZj/U=;
+        b=qTOFdZgmRkyjLlSvsdQ+ui+TPK2WxNiEdHIBKtroOSKXYROKQDGB1rUycaaDI08Fh4
+         d/9zsZnCDCyWeZZC/ODnWvpp+OhTPVjVnsZreHMBfmxTE6yA7iDUFDWe9ysXRjJIcPY3
+         Z5lYaZb1Er+9OQYcrjUIcBcmJNGMN/ybmDV18vQR3SxFvRPnxvb9PdIxnTa5soKX6dpy
+         jP8XbeZbuldK07/3lxjX8YwDA5S5/OL9r4yqRiD8CwUhp7LiH1zRSjUm03bxwj4oq2lH
+         kpqoNBiNnFuCBev155LF2BXU4+jaXMdqlvhL1+1coqmmH9/LDRGokjCO6Sd3g3GxYCRz
+         uSAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794851973; x=1795456773;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=+nvE593UQ9d0U2IPo3a1ExhnUFrCrkM14breEsOZj/U=;
+        b=OvdnI7gCXnzMCbza2d+EIGGMvBommnFNhcHbDiNiX4QGqudsokWeam43tWkwoT2YFw
+         O5P/ebHzV5bFhSjZAx1MZjY7cFWM+usmAv4P9hgHqhejKs9A+tp6fmR1qu6hXD+TNx8Q
+         j+UsQi6RfAm0e2KsFieJaKLioNqE836XVFJlC5XB/NYBa0GOkdaqFK4Ph4xcjQvih7XA
+         9EPAlJGOEEHLr6V6XGBN8/zkkodavQKGX0Y6exK3OnFenA8SE1kE5+p58FrhN++HqOSs
+         xWTIELWf4n0jTRLPo3R2dZ46VGfogbCPEpmlDpRtnNWBjbVJJUdAa8c/Dkg1oQVZp63/
+         1WBg==
+X-Forwarded-Encrypted: i=1; AL+hErFTHlYDuht4mlOAwMrdKFQUqd07iv8WqsQGsn6QLdW8+S+/euEt4+vHV5D6wXGLMFPZR9I=@lists.linux.dev
+X-Gm-Message-State: APuU4Z9QV8rkkSoWweXjUtzk92OSeYt5sf1ugefZjyvHc4ogKZx3opSm
+	c1PWAuuE68X4tf9qIPA3vMQ/8W7n0gEL14DzYzjtLg2pfGckL2ppPK5q
+X-Gm-Gg: AYBFou3kgEjzxHnvHyzgr3zFq86kVKewcqgB4FwC9R7jvjb2dOr7/AOVQxcDcF6mzSm
+	Kls5PqoE+HHsx5qQiP4U3MSW0jR5W8wq8Jo4vUBbcRVIXtzfTkTb4YD7x3PYPBpsrq1WJPDj1ia
+	Lyyqq+jPSXvummZtgoX4KiZ7p3jqESqAJBVTumOORUuSaOCdZ+JJ54cZI/zr96+Xddai4CV06CI
+	aVGwPdJrszD9UvpTWiEBUpFeNLdl/Lw6JT21uiiIV0iy+OxN5/h7rrnrYs86AqIoGR3/wgZNWXS
+	AKUOnJKVHzlcahQd0RSB0IDHK0Vegslqk5W0zDVwoS1srYxTW1lzjrMnuinBtDq1qZj64fNmWN+
+	g4EmXwzuxd6qpXNSbioCUpWHwCMwZibl9LdNNbTHh4V1oGb9bYyAoepS/g1IeXuys3b7+nhkL2u
+	BIOBlk+pX3TDzG2ssTlei0NX9FlGrsuBXM9TeE+bvfXhCWXYLl+lF969bFwhNqgKBCnzN+JVQpx
+	zD+b2IOHgZUF7W1aMufcCmrssPbYKVLuo+AKudWwr8jb6+uPmI7jg1H6dWNL2PfVkJY
+X-Received: by 2002:a05:600c:678a:b0:4a1:d49e:9ce with SMTP id 5b1f17b1804b1-4bb78372a20mr8533235e9.2.1794851972940;
+        Mon, 16 Nov 2026 09:59:32 -0800 (PST)
+Received: from eichest-laptop ([2a02:168:af72::cb4])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-49c5f5972a7sm22431108f8f.21.2026.11.16.09.59.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Nov 2026 09:59:32 -0800 (PST)
+Date: Mon, 16 Nov 2026 18:59:30 +0100
+From: Stefan Eichenberger <eichest@gmail.com>
+To: Mehmet Fide <mehmet.fide@gmail.com>
+Cc: Andi Shyti <andi.shyti@kernel.org>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
+	linux-i2c@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, mehmet.fide@screeningeagle.com
+Subject: Re: [PATCH] i2c: imx: acknowledge the count byte of an atomic block
+ read
+Message-ID: <avtEgpw9YpIzCj5p@eichest-laptop>
+References: <20261116122707.1349139-1-mehmet.fide@gmail.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -95,84 +103,64 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|AM9PR04MB8227:EE_
-X-MS-Office365-Filtering-Correlation-Id: ff41204c-0ab1-4cfb-bb0d-08df440a05a9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|1800799024|376014|23010399003|366016|18002099003|261009223027099003|11063799006|56012099006|10067099003|261028144727099003|261026140227099003|261022105027099003|261021123027099003;
-X-Microsoft-Antispam-Message-Info:
-	FmVwiZbmUi8/jjLNzBPUv9zphB6XSMVJw50Vjlw4IbUdireG4YcZ3WrUIK7zB+htPv6XYR+zvbLhBwsHmd8KHg/3aaNcOgwmFgxFQdbp1sNa8qD+zyJWx6fBcTl24awxO4F22ljCI9TDbkomrPtrt4T8tnCICs6GFusPzj80g55T6m1de+JzFyzJ4pKnOD2qLxpzWh8zXBzi9Zfw6h/oLVWnhlBfUg1o+kd+q+q/p+XS4MTwg2lCVsCzESd5k9lM6sBiGMP8Fb9w3SjUMvD7YOI2YzH9xI02OPSRlj5F0qnMi/upVOicgQeJVMgx3f8xGkDLcIi0JJB0scc7zXDWw7DaYdXMscq2UIteMkUlIrHASqfjWDN0qtJYhESEvWQv84TdjldyY0UxYWrIE5/0mLb2YpLdCLUAt2r3YlNmyBbn1oIqncN5Ta5vgIUB8Jyq3rjg6A0U+lG4GZOc/9/WnNdgqJcZmjMIHYqvhgqUytkse6JgM9R1n0SIcYFHc0pvUhBvSJW5/HLJRqG+1vPuL7j5DI6du7GTw72C1jkZ4+wO7xQYiPBBgh4Us5BtLwPS5EwuXBBs4illcML4L7IUuFV/lfDh6Q+aD+uUqGm8YfPeZzp+7qr+yaV1wFZDcJLr
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(1800799024)(376014)(23010399003)(366016)(18002099003)(261009223027099003)(11063799006)(56012099006)(10067099003)(261028144727099003)(261026140227099003)(261022105027099003)(261021123027099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?9jsioFEuUQHDbp4y+Gt5uA5B908gRWV0FR1H9qn5DXG7jugU33PUwAaXiMji?=
- =?us-ascii?Q?69FuFtqujtO7RTZwSeUqS/6u0mAww57GaLOB18HKei4LCJtAduILyqNYijk/?=
- =?us-ascii?Q?EtYXW22h1UVdWgwbAKEwJEq7JsP20UCZbQ1xrnVHBEhEjWt9U49kTWlcBkkw?=
- =?us-ascii?Q?tRTIy5rQdSfeOflP9D56PriqL2S8UMwXw4qMBspHG6FarCiuv557ZEqq+ojE?=
- =?us-ascii?Q?q8G6bSDDEFocw8JnAuFv3NCKLBa6kYNcfWMVMtcEiWoAa4ImjMl0s1wFuNVk?=
- =?us-ascii?Q?0wBa04Q5WBAzpiVH54LbA5U9Sd6Td2HgbRoQguS2trE+dLw0vE6LFQlmt5r5?=
- =?us-ascii?Q?HyG6ur13a+qSW6hg5BddJnhmjkv+dDwVSCI3kKs18a9XVgbLO1CaLGRX6fOr?=
- =?us-ascii?Q?J+zZTFxAtxx1DEpk94wH7PlGhSb687+42YqScv4NUpxz5O2jGheweFp+fJ+H?=
- =?us-ascii?Q?tsu4HHaaxaP1c2y0OStVseqy0/ggEyhB0Ixsy5N+5DPn+45XFWrrDU5NTSVX?=
- =?us-ascii?Q?NDyxDTW+E0fh4oY8wu5BNQMfePntPPHpjU8DZWbak0fOker7U9OMd1/1yiSY?=
- =?us-ascii?Q?4j4Z/aiktAE37HvU8lw52GYmcxVD8ym8pgfbImfdU9eHDEzOtNaqCusUW7x2?=
- =?us-ascii?Q?5SzXhIOC4ZnrAQ38z/eyciCHKQpIt2wWKO1B/TQD5aIhakFfMsFbLiwexHed?=
- =?us-ascii?Q?ORpxzE8Wlvc+FyOidYQtAbD+5IzhiaW+jbNfL0AxEtwh0CiJXHF/JSLI5kEW?=
- =?us-ascii?Q?tC/Ir9bdT7Q17wtgOeocMmOChKqouidmqsk3OLiPonPJtaB275wN2BVWZDWh?=
- =?us-ascii?Q?Pbjb2feUUFzruGnTB9lbdNcyjRBz5qYoUEdF9Y/PH1Fcr6OUqsq1MSydLF6P?=
- =?us-ascii?Q?ltABX7TphDotJoPlG0+XVlsQriedKGw7pHvQ/j7FHu6FkkTVG7xPikQVu8mG?=
- =?us-ascii?Q?p0e30w2UoabzoCtp3/CS1AOQiBWH77DQZwT+S+Vh2Gz3ya4LikZKAzmC/dwG?=
- =?us-ascii?Q?lPKU9cSS5CKhA9LUBprDxOajBxK7cS65Lwchlvx1jYxjYBN4U52XHX94SDHv?=
- =?us-ascii?Q?WRGHw+HVk/KVz0THGk1FMONCwp/tT8anz0k9LyxGWaLLTrLKK53GgbxEQ0pH?=
- =?us-ascii?Q?IXpOmDn5kwII55qU1bhOQS8hN6B1KyRn3mDWFAzZJcGSfrTvVdUkVfCCs5em?=
- =?us-ascii?Q?DS8vV+JzRgV4pWUseGcyA5lbbFebqeMyG0P00v0j/m/6p5smrexJdlsmzzmy?=
- =?us-ascii?Q?8absqnAoa30E1EtZdxlANDhXCXDJiatDeRoMMZtY2dFNZmNXIZFuZbQP0O9B?=
- =?us-ascii?Q?bDMRgxZR8JfPUrGywyYHJ4kHPwUuWQW4Ti91C3ZpjVlsutzDUxb2DyjZqe4I?=
- =?us-ascii?Q?3iKj64LWphmntwEpPjA17/JuVaruXEQzbO+sC9OGLeO37tF37MEAQbsfZZSE?=
- =?us-ascii?Q?vzeVCTYwqOGWxMveKGHmayS3sQsYtkvXptO+xPu4LbGtqZCDmnCrmRy2f0nc?=
- =?us-ascii?Q?/f5dlO6wDNZU2RyjuSuWqoxAzfpuXzmSxWSTyFP8Xbdzy5sxofGznfvCnKH7?=
- =?us-ascii?Q?Zt4dHZkv6UhC5Iv7gZk6pLVYaUDULlkaG15cyP1Geqm+1EdfcOV97KhdKND2?=
- =?us-ascii?Q?A8Mtg405bCfdR8ptcFU1hG6OTGGMplnz5gzmPN/g/YJmzdcSFnxAXLRw+Tw5?=
- =?us-ascii?Q?/7xfMGtKDOSohGzeCJyxWxkQPlUpX29PW21ykHuDXQXfwwtM/Z8WzV1dFO3L?=
- =?us-ascii?Q?PT7ZudVZpB+/c9VDB7ICMgKfLZYXcgY+3HARuZlv5S0kr/A5VljS?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ff41204c-0ab1-4cfb-bb0d-08df440a05a9
-X-MS-Exchange-CrossTenant-AuthSource: MI3PR04MB12438.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Nov 2026 17:49:54.6207
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5Pj+AGrBjVTCv19rW1EyxiH+XMyr4vrOfD7BUfKy9EnKlRQqsjtWG75MnvS94zBtyybqmYIOIltI3TP8/rDibhT9iCIOEBAVHLC5d0M83LlSxtMHqMEadRcN4VI6GAJ/
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8227
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261116122707.1349139-1-mehmet.fide@gmail.com>
 
-From: Frank.Li@nxp.com
+On Mon, Nov 16, 2026 at 01:27:06PM +0100, Mehmet Fide wrote:
+> From: Mehmet Fide <mehmet.fide@screeningeagle.com>
+> 
+> i2c_smbus_xfer_emulated() sends the read message of an SMBus block read
+> with a length of 1 and I2C_M_RECV_LEN. i2c_imx_prepare_read() clears
+> I2CR_TXAK only for a message longer than one byte, so the atomic read
+> does not acknowledge the count byte. The target stops sending, the rest
+> of the block is read as 0xff and the transfer reports success.
+> 
+> The test for I2C_M_RECV_LEN was dropped when the read was split into
+> i2c_imx_prepare_read() and its callers. Commit a5d0b9e32745 ("i2c: imx:
+> fix emulated smbus block read") added it back to the interrupt driven
+> read only. The DMA read never gets an I2C_M_RECV_LEN message.
+> 
+> Fixes: b460b15b3cc2 ("i2c: imx: separate atomic, dma and non-dma use case")
+> Cc: stable@vger.kernel.org # v6.13+
+> Signed-off-by: Mehmet Fide <mehmet.fide@screeningeagle.com>
+> ---
+> 
+> Notes:
+>     Reported by the Sashiko review of "i2c: imx: test the block read flag of
+>     the message that is read":
+>     https://sashiko.dev/#/bug/linux-09e3015b-fc03-4410-809b-82964cdfac9c
+>     
+>     Tested on a Colibri VF50 on the Iris carrier, kernel at this base, with
+>     the M41T0 RTC at 0x68. The core takes the atomic path only after
+>     SYSTEM_RUNNING, so a test-only hook called xfer_atomic() with interrupts
+>     disabled, with the two messages that i2c_smbus_xfer_emulated() builds
+>     for a block read. Register 0x04 (0x13) as count byte: without the patch
+>     0x13 and then 0xff (50 of 50, return 2); with it the next registers,
+>     the same bytes as the interrupt driven read (50 of 50). With a count
+>     byte of 1 (register 0x05): 01 ff before, 01 01 after (50 of 50 each).
+> 
+>  drivers/i2c/busses/i2c-imx.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
+> index ccf08cd63151..1a3fc245d6ba 100644
+> --- a/drivers/i2c/busses/i2c-imx.c
+> +++ b/drivers/i2c/busses/i2c-imx.c
+> @@ -1283,7 +1283,7 @@ static int i2c_imx_prepare_read(struct imx_i2c_struct *i2c_imx,
+>  	 * Reset the I2CR_TXAK flag initially for SMBus block read since the
+>  	 * length is unknown
+>  	 */
+> -	if (msgs->len - 1)
+> +	if ((msgs->len - 1) || (msgs->flags & I2C_M_RECV_LEN))
+>  		temp &= ~I2CR_TXAK;
+>  	if (use_dma)
+>  		temp |= I2CR_DMAEN;
+> 
+> base-commit: 25e7ab89f4774b0f842cee0e8a20c11f755924d5
+> -- 
+> 2.56.0
 
-The following changes since commit 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4:
+Thanks for the fix.
 
-  Linux 7.4-rc1 (2026-11-01 13:26:31 -0800)
-
-are available in the Git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/frank.li/linux.git tags/imx-fixes-7.4
-
-for you to fetch changes up to acba37c2e2df26ad722d470777044fd21620834e:
-
-  Revert "arm64: dts: imx8qm-ss-conn: add usbotg3 iommu information" (2026-11-12 12:40:48 -0500)
-
-----------------------------------------------------------------
-iMX fixes for 7.4
-
-- Fixes i.MX8QM usb3 host xhci function broken by
-  Revert "arm64: dts: imx8qm-ss-conn: add usbotg3 iommu information"
-
-----------------------------------------------------------------
-Frank Li (1):
-      Revert "arm64: dts: imx8qm-ss-conn: add usbotg3 iommu information"
-
- arch/arm64/boot/dts/freescale/imx8qm-ss-conn.dtsi | 4 ----
- 1 file changed, 4 deletions(-)
+Reviewed-by: Stefan Eichenberger <eichest@gmail.com>
