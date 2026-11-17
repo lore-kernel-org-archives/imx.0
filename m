@@ -1,79 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.52
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794927899;
-	b=VOXVvK5D0upL1c62wfG7GINsuTCVbWR1ghcIyIRznWDddQPQRVP3zGxDeHkvYoiwvPhV
-	 cIx9pz0B0o27iSgYWWRMNKFET5t2geYNrs71OkcqZCq31nzaiQxVG9romEywWZLZ9rScS
-	 XcDDVSqwoJaJqm0hPilmRjxhfiT9YPuwTI7aDdbeGNIa3IREzmdcv4NHZTMBnFg+9M7HV
-	 d6nlB4VsIMGBdX1dbJoC/kxhuF/UPmUmEZHjfNb6Y3imwsG+7s/J5BrjatN/ZidBDM/h/
-	 hVsznd1rARJVHM5yMEBwC92QfBuH9o569Vvtu7+5BsXLNCFfjC5pFKQFb65wckJMqJA==
+	t=1794929129;
+	b=4dWdWs7dC8yTphcPQTCq6i0fQnxj7W75RwJLBw1AIJAS1Jr/OoQXhk82XIvsjsk5Cnt2
+	 7UUrl2IPAi0jX9tsckSLzUL+Aias1yYDu6HV280A1/fhV+WZQkrKPdMjj5PotmyF9zaIp
+	 y2WVW4XC2MtWha83Uet28eUcnEYn5YHQNNOBxZqkiLzUs1009hrnCLVN5AvDl3K6Ft0x3
+	 ugIMDI/Wkk5jFEYGQfKM6QRKFBq2CkHXBiI9iPltZHJbT09xIenFHCYBfxtJyZ1TG8+re
+	 qA1/jEsQElSLdg47QraKNmkhM2jfinD+as9Pgx2na5Nc1BTQHTnOAzmxANX+Fk6Vfzw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794927899;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=YGp9PC/3VbbJew7o6lt7FFNFnWRQ4swf3eWUT365kY4=;
-	b=pDNmLyKMG2YuideZnqtDeEEBRq/9C5f1K2Pv4KprI4COkyRq1N7j0wFf/3T2HHcGyHXj
-	 NKvtyQHbqwyhwXUd6cOHSbNpqxJa4p5h/4x5ny1+3Np5nfyAxu3dMxHhb4gy11JzdFPaO
-	 5RnVwFFN6Frw882C/c+DTzYf0AuD+iX1JsUYQrBTEhksNmPnuMALAaDUM4+fzOoWMtxDo
-	 tqhHjxbCjoWhDe0m3nmRP57X5E5DaGo5WA9PkQiaYx5y4q3bMP9PHJnw57Uc7Wp/V4VHO
-	 VtUA/WMSTjlq7Q+wQAImECN1jnHoINbB3Yv3ybh8w2ejUT6z9wRmfwbURiLaGf325kQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794929129;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=geAZF0Il5WD1+26bR5uT5bi5MaP/KecTvi/DYJOMYhE=;
+	b=RR+uk0DqDV51OxXoc7roSUiYI2ReSX5DOLQ/27EWppOZ3DkidEMFLmCGbpkN/9NFCcsZ
+	 IY7CqKonSEp7mMlesqMtPohVVCDJT6fMggkSYX2YTvLyVhAQF+gpN0xOJeqOpDdv94QOa
+	 kAmPJ5+QZ0U10rySEB9776znZGoDR5eRqmoO74Zk+AYGvDrXcy/GIQ+NSxf6szZhrC5p9
+	 bw7GL6oDrB1q1i0WsFpn+hkvTdzKnku3usu7WETHol5etkiImixLwhDpuXQRZqd2GT1mZ
+	 vt2q03Hg8cES0/7a1f/1D7TE1xkgxrHZ7mlpdPCLcZ7rlQ+CZ/w1CjH27PHEr0SWI+A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Gd6ZY2Up;
-	arc=none smtp.remote-ip=95.215.58.52
-Received: from mta1.migadu.com (out-52.mta1.migadu.com [95.215.58.52])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=akJKf4vk;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE91E606A32A
-	for <imx@lists.linux.dev>; Tue, 17 Nov 2026 15:04:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CE91E606A32A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 402AB606A32F;
+	Tue, 17 Nov 2026 15:25:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Gd6ZY2Up
-X-Envelope-To: imx@lists.linux.dev
-DKIM-Signature: a=rsa-sha256; bh=EF8PbkYJiw2SNYIbhXqCwRQsFcWPdAKgl4U2nMsfivM=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794927896; v=1; x=1795532696;
- b=Gd6ZY2UpdrZJMbZpVdKAc3uir6WaMVnLKdTjum8VXcuGFY1YPLjTTyGn2Ktuoh2tal6aJY3t
- 0/60LtM700/6qvKKkA2U7OEHtJl9Kz5xQtyU3g/QWrW6Zcgl7ps2kqOUXU3Ptm4TPtdYd97xYQZ
- g4KmAm0xJpKl8qE1T91IgtLA=
-X-Envelope-To: imx@lists.linux.dev
-Received: by smtp.migadu.com with ESMTPS id b65b25fb13c5725a;
-	Tue, 17 Nov 2026 15:04:55 +0000
-X-Mizu-Trace-ID: b65b25fb13c5725a
-X-Migadu-Flow: FLOW_OUT
-Date: Tue, 17 Nov 2026 23:04:29 +0800
-From: Peng Fan <peng.fan@linux.dev>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>, Frank Li <Frank.Li@nxp.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	"Joerg Roedel (AMD)" <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	Laxman Dewangan <ldewangan@nvidia.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Thierry Reding <thierry.reding@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@kernel.org>,
-	Larisa IIeana Grigore <larisa.grigore@nxp.com>, imx@lists.linux.dev,
-	dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org,
-	iommu@lists.linux.dev, linux-tegra@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH v6 0/9] dmaengine: add DMA channel bus and fsl-edma
- per-channel IOMMU support
-Message-ID: <avxs_TU6FHn7MMx8@fedora>
-References: <20261112-edma-iommu-v3-v6-0-b038edb8ce6f@nxp.com>
- <20261116193021.GB2452510@ziepe.ca>
- <avwQl18smAW4R6ec@fedora>
- <20261117130005.GC2606445@ziepe.ca>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=akJKf4vk
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FE9B1F000C7;
+	Tue, 17 Nov 2026 15:25:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794929129;
+	bh=geAZF0Il5WD1+26bR5uT5bi5MaP/KecTvi/DYJOMYhE=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=akJKf4vkqfnvJ5nLABh28AJjppT5zPwlLXoXjZQB/2wXkKK4pB8bQUdHm8STv03w2
+	 v5x2dHdQszcgDmB2oabeMJALqxf0f2VyWG8bpxGzpFr+hskhv12JpBI7BKlsXcsjGX
+	 8e2nkqOgP6TX6bFXvqLEEKhIzUiL7UmgMpLnDsaL9c+jVZyknVNz00Y7tUtCI98DHE
+	 WcuE8fpSI3e5Zvbsj2hE1Pt7Hk/vt8UnlBgl+Ys9QUFb/stbOWK965mTMusgbm5xl9
+	 QeIzgxmhoDStywlrGlJPhfmvcsG8w060cX+mRuD4VnD5AZ9iOnJuWY0CWqVqHwANjx
+	 1jpS9XNscsKPg==
+Message-ID: <sashiko-outbox-219062@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 1/2] PM: runtime: fix stub pm_runtime_get_if_active()
+ for !CONFIG_PM
+Reply-To: sashiko-reviews@lists.linux.dev
+To: Frank.Li@oss.nxp.com
+Cc: linux-usb@vger.kernel.org, dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org, linux-hwmon@vger.kernel.org, imx@lists.linux.dev, Frank.Li@kernel.org, media-ci@linuxtv.org
+In-Reply-To: <20261116152513.2676573-1-Frank.Li@oss.nxp.com>
+References: <20261116152513.2676573-1-Frank.Li@oss.nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 17 Nov 2026 15:25:28 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -82,109 +59,120 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261117130005.GC2606445@ziepe.ca>
 
-On Tue, Nov 17, 2026 at 09:00:05AM -0400, Jason Gunthorpe wrote:
->On Tue, Nov 17, 2026 at 04:30:15PM +0800, Peng Fan wrote:
->> On Mon, Nov 16, 2026 at 03:30:21PM -0400, Jason Gunthorpe wrote:
->> >On Thu, Nov 12, 2026 at 03:53:03PM +0800, Peng Fan (OSS) wrote:
->> >> I used iommu-map for eDMA, but iommu experts rejected it:
->> >> "Using iommu-map to describe synthetic dma_chan_dev devices that the
->> >> kernel creates is the same kind of DT abuse from over here:"
->> >> More info: https://lore.kernel.org/all/20260917144804.GI3196566@ziepe.ca/
->> >> 
->> >> So I followed here [2] as Krzysztof wrote for QCOM VPU:
->> >> "Thanks Jason for context and detailed arguments. Robin did not chime in
->> >> yet, but from what I understood the DT-child-node approach will be the
->> >> way we should go here.
->> >> 
->> >> I accept above point of view and I am fine with this, thus Vishnu and
->> >> Vikash - please go ahead with DT-child-node solution we had some time ago."
->> >> [2] https://lore.kernel.org/linux-iommu/c7b956a9-d3e8-4e18-b780-5d08f5cd2ca1@kernel.org/
->> >> 
->> >> This series adds per-channel DT child node support to fsl-edma and, as a
->> >> prerequisite, introduces a proper bus for DMA channel devices.
->> >
->> >To be fair this is discouraged too, now that I've seen 3-4 people
->> >trying to do exactly the same thing I'm not as positive about the
->> >DT-child-node hack.
->> 
->> I may not describe it clear in cover-letter.
->> 
->> I understand the concern. Let me explain why I believe it is justified here
->> rather than a hack.
->> 
->> On i.MX eDMA each channel has its own interrupt, its own register region,
->> and on i.MX8QM even its own power domain. Each channel may also have its
->> own Stream ID, or share one when SIDs are scarce. These are genuine
->> per-channel hardware resources, not software fiction.
->> 
->> In dmaengine each channel is already modeled as a channel device (see
->> dmaengine_chan_dev()), and this series puts those devices on a real bus
->> (dmaengine_chan_bus_type) as a prerequisite. The DT child node simply
->> describes that existing device, so its reg/interrupts/power-domains/iommus
->> are attached per channel instead of as index-matched flat lists on the
->> controller.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Low] PM: runtime: inaccurate Fixes trailers and caller analysis in
+  commit message
+--
+
+commit ef3656b915b0fdf6f58ce6d87b9638c3f1514d1a
+Author: Frank Li <Frank.Li@nxp.com>
+
+> PM: runtime: fix stub pm_runtime_get_if_active() for !CONFIG_PM
 >
->If they are real devices then why can't they come out as platform
->devices?
+> When CONFIG_PM is not enabled, should be treated as if runtime PM were
+> enabled for the device and the runtime status is active.
 >
->I think you are overstating how independent they are. Many single
->devices have per "channel" resources like MMIO and IRQs. That's
->totally normal. It doesn't make the sub resources independent devices.
+> It's a subtle distinction but the previous behavior returned -EINVAL, whi=
+ch
+> means "runtime PM is disabled for the device"
 >
->AFAICT what you have here is some HW designer used SID where they
->should have used SSID and you are trying to hack DT to make that
->usable because Linux does not support a SID as SSID model today.
-
-Thanks Jason, that clarifies the core issue.
-
-Anyway, I agree that per-channel MMIO/IRQ/power-domains do not by themselves
-make the channels independent devices. The real problem is that the eDMA could
-have separate SIDs for channels that are logically part of one controller, i.e.
-it uses SID where an SSID/substream would be the natural model, and Linux
-does not support that today.
-
-So I'd like to step back from the DT child-node shape and propose a
-generic direction:
-
-- Keep the DMA controller as one device and describe its channel Stream
-  IDs in the controller node (ordered list, no per-channel child nodes and
-  no requester-ID map).
-- Add a generic dmaengine/IOMMU mechanism that assigns one of those
-  Stream IDs to each dma_chan_dev, so the channel gets its own IOMMU
-  context/domain without inventing a DT device.
-- Use the SMMUv3 shared-SID support (still under reviewing) for channels that
-  must share a SID.
-
-This keeps DT describing real hardware (the controller's SIDs) and moves
-the Linux-specific unbundling into the core instead of a per-driver
-binding. Each channel occupies 64KB MMIO region and works independently.
-With separate DT node, it will be easy for us to do channel device passthrough
-when using Xen hypervisor. Now moving away from this, the remaining question is
-how to expose a channel for Xen/per-channel passthrough without a per-channel
-DT node, seems I need to add some code in Xen hypervisor to support channel
-passthrough.
-
-Would that direction be acceptable, or do you see SID-as-SSID support in
-the IOMMU core as the required longer-term fix?
-
-Vinod, Frank, from dmaengine perspective, do you have any comments?
-Rob, you reviewed DT binding patch, do you have any comments?
-
+> __pm_runtime_resume() returns 1 (called by pm_runtime_get()).
+> pm_runtime_get_if_active() is the try-and-get version of pm_runtime_get().
+> stub pm_runtime_active() also returns true. So pm_runtime_get_if_active()
+> should return the same value as the stub pm_runtime_get(), which is 1.
 >
->Again, since this is the 3rd - 4th case like this, it seems like a
->popular hardware choice and we should try to do better to make Linux
->support if we can.
-
-Yeah, I saw QCOM VPU case and thought child node usage was agreed from
-Krzysztof's reply. So I use same idea here.
-
-Thanks,
-Peng
-
+> Analysis of all callers and their behavior with old (-EINVAL) vs new (1):
 >
->Jason
+> Pattern A: if (!pm_runtime_get_if_active(dev)) -- no impact
+>   Both -EINVAL and 1 are non-zero, so !ret is false in both cases.
+>   Callers: drivers/accel/ethosu/ethosu_perfmon.c,
+>            drivers/gpu/drm/msm/adreno/a6xx_gmu.c,
+>            drivers/gpu/drm/msm/msm_perfcntr.c,
+>            drivers/gpu/drm/v3d/v3d_mmu.c,
+>            drivers/gpu/drm/v3d/v3d_perfmon.c (x4),
+>            drivers/media/i2c/gc08a3.c gc05a2.c og0ve1b.c ov6211.c,
+>            drivers/media/i2c/ccs/ccs-core.c s5kjn1.c lm3560.c (x2),
+>            drivers/media/i2c/s5k3m5.c thp7312.c imx283.c ov64a40.c,
+>            drivers/media/pci/intel/ipu6/ipu6-buttress.c,
+>            sound/hda/core/device.c
+>
+> Pattern B: if (!ret) after get -- no impact
+>   Both -EINVAL and 1 are non-zero, !ret is false in both cases.
+>   drivers/gpu/drm/amd/pm/amdgpu_pm.c (comment says "allow access"
+>     in kernels without CONFIG_PM), drivers/pci/pci.c
+>
+> Pattern C: ret > 0 / ret <=3D 0 / ret !=3D 1 checks -- FIXED
+>   drivers/usb/core/offload.c: checks (!=3D 1), old -EINVAL caused
+>     -EBUSY even with !CONFIG_PM. Fixed: now returns 1, proceeds.
+>   drivers/accel/ivpu/ivpu_job.c: drm_WARN_ON(<=3D 0), old -EINVAL
+>     spuriously triggered WARN. Fixed: 1 > 0, no warn.
+>   drivers/gpu/drm/i915/intel_runtime_pm.c: checks (<=3D 0), old
+>     -EINVAL triggered error path. Fixed: 1 > 0, correct path.
+>   drivers/accel/ivpu/ivpu_sysfs.c: (> 0), old skipped freq read.
+>     Fixed: proceeds correctly without CONFIG_PM.
+>   drivers/gpu/drm/xe/xe_pm.c: wraps (> 0), all xe callers
+>     (xe_bo.c, xe_shrinker.c, xe_vsec.c, xe_ggtt.c, xe_guc_ct.c,
+>     xe_pxp.c) now correctly treat !CONFIG_PM as active.
+>   drivers/net/ipa/ipa_smp2p.c: power_on =3D (> 0), now correctly true.
+>   drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c: (> 0), now correctly
+>     executes stall register update.
+>   drivers/staging/media/ipu7/ipu7-buttress.c: active (<=3D 0) early
+>     return now skipped, correctly proceeds.
+>
+> Pattern D: explicit -EINVAL check
+>   drivers/hwmon/prom21-xhci.c: checks (> 0) then (=3D=3D -EINVAL).
+>     Old: took -EINVAL fallback. New: takes (> 0) fast path.
+>     Both succeed when CONFIG_PM is disabled; functionally equivalent.
+>   drivers/hwmon/eic7700-pvt.c: call is guarded by IS_ENABLED(CONFIG_PM),
+>     stub is never reached. No impact.
+>
+> Fixes: bd3d245b0fef5 ("usb: core: use dedicated spinlock for offload stat=
+e")
+> Fixes: 7806bad76ac39 ("accel/ivpu: Prevent runtime suspend during context=
+ abort work")
+> Fixes: 9d58aa46291d4 ("drm/i915: Fix the GT fence revocation runtime PM l=
+ogic")
+> Fixes: 1524c28b99527 ("accel/ivpu: Show NPU frequency in sysfs")
+> Fixes: 30c399529f4c6 ("drm/xe: Document Xe PM component")
+> Fixes: 0d08026ac6099 ("net: ipa: kill ipa_clock_get_additional()")
+> Fixes: 70892277ca2db ("iommu/arm-smmu-qcom: Make set_stall work when the =
+device is on")
+> Fixes: 9ad65684b9285 ("media: staging/ipu7: Ignore interrupts when device=
+ is suspended")
+> Acked-by: Alex Elder <elder@riscstar.com>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+
+[Severity: Low]
+Are some of the Fixes: tags and caller notes in the commit message
+pointing to the wrong commits or config guards?
+
+The !CONFIG_PM stub for pm_runtime_get_if_active() was introduced
+returning -EINVAL in c111566bea7c ("PM: runtime: Add
+pm_runtime_get_if_active()") and updated in c0ef3df8dbae ("PM: runtime:
+Simplify pm_runtime_get_if_active() usage"), neither of which is listed in
+Fixes:.
+
+For the caller-specific tags and descriptions:
+
+- 30c399529f4c ("drm/xe: Document Xe PM component") only touched kernel-doc
+  comments; the > 0 check in xe_pm_runtime_get_if_active() came from
+  46edb0a3eb16 ("drm/xe: Fix xe_pm_runtime_get_if_active return").
+
+- In __intel_runtime_pm_get_if_active() in
+  drivers/gpu/drm/i915/intel_runtime_pm.c, the pm_runtime_get_if_active()
+  call is guarded by if (IS_ENABLED(CONFIG_PM)), so the !CONFIG_PM stub is
+  never reached there and 9d58aa46291d ("drm/i915: Fix the GT fence
+  revocation runtime PM logic") was not affected.  Similarly,
+  snd_hdac_keep_power_up() in sound/hda/core/device.c is inside #ifdef
+  CONFIG_PM and also checks if (ret < 0).
+
+- 0d08026ac609 ("net: ipa: kill ipa_clock_get_additional()") only inlined
+  ipa_clock_get_additional() into ipa_smp2p_notify(); the
+  pm_runtime_get_if_active() > 0 check was introduced in a71aeff3dd0a
+  ("net: ipa: kill IPA clock reference count").
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261116152513.2676=
+573-1-Frank.Li@oss.nxp.com?part=3D1
