@@ -1,75 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794924503;
-	b=W4mONXP5G+uuCW47EgLWzith9E0RqH0dovie92Ib53C2YEULeDjnq3edicqiffTQFpB0
-	 6s6xEI5oEY0jAAbcomEKbMTGeCyOXo/V6v9K+wCaeDuy9ggyC3CbfXjqAv9rDulSrdACl
-	 tEDhmwX1yWT/nYq3MNCP1G4RLDn59u7bBKuCztLbWtQwreAVEVyaeeDnTF0MJ92bN6+F4
-	 8fkGcLgMd50BDvb6bapj5Rcdu4i63siDMfWyLvv3M0dMaQDk10LSYpZpKvMh9vPLHTL5l
-	 +cxfq4ZXH3Naf/Ckdp7Zw+Hd9bu84ddjZe+awZlCTbzpPXbXLUuf1UVoNl41NLowGLw==
+	t=1794924734;
+	b=N66wFO6YUpDUNVigUjp+F8ewkrkIVp63oEaMQHR8DcxVRh+7EOzDQsMio1udTEKshYY1
+	 WedQcppIYXgO7nzOaGLPQmhsp8R7S45BUEsxgCi1GJy714glLAb3lns5ycTs1wq65ue89
+	 50t3brUKJpDAcgi57Mie2IBxhPCVOLqbtRicojWC1mAoqPSFC5hkF/X28F9C8klkCoPPv
+	 UJh49XLV/fBxWWNaCbKeKEUrmvjblLYd673TnkwjcdGaxwINRIhmDX9ufo3Bux7+Hqrcv
+	 AywEdHvlWeUEij+stj0AiORu9SszSBFNjho7elHO119wzKO5fZNVbtifSz+1xgmGKEg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794924503;
-	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:To:Cc:
-	 Subject:In-Reply-To:References:User-Agent:Date:Message-ID:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 X-Last-TLS-Session-Version;
-	bh=NC6ZdVr8PNnbXOJqM4/9u9Fx5qy89lUhN3gY95QsORE=;
-	b=LnDg5/rXgleoZFb5LN6U/UXHEZ3BPBRVYp7+NcNhyEYMj1jXwc2NuxypGDpDtHoL2AsY
-	 0RReGasLE5r/6kqWOVmTzwAU9l5uMXQ2Qqd8787ya87mvEWXRJzkPlhW1byTQTLjwa2Py
-	 trEtuBcjn4q5a3GV8kA5+FLsHeELu/XQzkEyrs8QgEVqkoG+3O6lhYHITDkw07aXcioRm
-	 WoIa2WxK7Z5pg96EO+vUqY5+HsKI9mQAnxM0tZy8mcOpN6Qxk5JM92y1l1EKGFd5Uwgt9
-	 2GYDqrcABkYuJvKg4EseL6w0FIp0O4MW32oeFK/USlASqGW/U8o3fiwrgYORGUhDjDw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794924734;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=pbNZwpO0WLPO2bSO9M9Tgbqe1kctlVysNw7KKHUQxRw=;
+	b=4zufY6DTWrtbPVsgFUEIsy/1jcs0efxcTu3MfVthkHRekjFeUPdRMUITayD9bw26exQv
+	 F0EeRMQ3VgL4XLKyyZMA5elK9+ZIWlOXDCPphTcKCxdvqhzcAn20MvVmsv6FWeQHA55yp
+	 hgyrVK0pVMPpHYAGXcnVEV/mP20TC2YB6OoBGT34bI9t4uXmPl4nkhRwijssxa1ytsV3F
+	 O2Aw/rtjgWsocaLPNciFMficFZhKuorrDHu5dXA6dh+MbWeCUqEuMzdnk2uO9dwFxQ9wb
+	 gj8YXn4YrXqZEGEoLaWF8Y6OUAJ0Rwh9Kphfj7Tn8K3ncbbk/jckNd476qtqS+0DFEQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=bootlin.com;
-	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=np0ax1GY;
-	arc=none smtp.remote-ip=185.246.85.4
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ImjEFfLZ;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E30C5606A323
-	for <imx@lists.linux.dev>; Tue, 17 Nov 2026 14:08:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E30C5606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58FF6606A333
+	for <imx@lists.linux.dev>; Tue, 17 Nov 2026 14:12:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=np0ax1GY
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 8DD0B4E41575;
-	Tue, 17 Nov 2026 14:08:21 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 5A88A5FC81;
-	Tue, 17 Nov 2026 14:08:21 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8A87611BC0024;
-	Tue, 17 Nov 2026 15:08:16 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1794924500; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=NC6ZdVr8PNnbXOJqM4/9u9Fx5qy89lUhN3gY95QsORE=;
-	b=np0ax1GYh8y8hX/axL4c6tX2KdsQYngA5vekITEeamJXrmg5sltJaPe9OWZkkhSkftPAXY
-	VtQFeF6swqfLZqxWNM+Um1JQfbVJkKfFRXE/ufXEel2BgG/BajJX6tYxs4pbKCMIZRKAkS
-	FdJ7tkG1tisvq2hfLpRNzJoOA6GBWwpjWkg1SryPcAKIKiZYgV5gRlW1jS9l3U5430sTvN
-	R5cH+0+dbJ43DMk+lJHGWxk+k3e0lmMF3JhPz12q+FFy0Vm1vyenAKYQeggt4VZGojRn5D
-	+c9Kseq0X3nA2m7F5EBf9DSQ+SSSBv4v+ei6j/bva7J92BEx7fGiBpHXb2uubA==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: sashiko-bot@kernel.org
-Cc: "Samarth Narang" <samarth.colleges@gmail.com>,  "Vignesh Raghavendra"
- <vigneshr@ti.com>,  "Han Xu" <han.xu@nxp.com>,  "Manivannan Sadhasivam"
- <mani@kernel.org>,  "Maxime Coquelin" <mcoquelin.stm32@gmail.com>,
-  "Alexandre Torgue" <alexandre.torgue@foss.st.com>,
-  sashiko-reviews@lists.linux.dev,  "Richard Weinberger" <richard@nod.at>,
-  linux-mtd@lists.infradead.org,  imx@lists.linux.dev,
-  linux-stm32@st-md-mailman.stormreply.com,  Frank.Li@kernel.org
-Subject: Re: [PATCH v2 5/6] mtd: rawnand: marvell: stop DMA before unmapping
- on timeout
-In-Reply-To: <sashiko-outbox-191272@kernel.org> (sashiko-bot@kernel.org's
-	message of "Fri, 30 Oct 2026 16:38:42 +0000")
-References: <20261030162041.2998170-1-samarth.colleges@gmail.com>
-	<20261030162041.2998170-6-samarth.colleges@gmail.com>
-	<sashiko-outbox-191272@kernel.org>
-User-Agent: mu4e 1.12.12; emacs 30.2
-Date: Tue, 17 Nov 2026 15:08:15 +0100
-Message-ID: <87h5hflfe8.fsf@bootlin.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ImjEFfLZ
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 346141F000CA
+	for <imx@lists.linux.dev>; Tue, 17 Nov 2026 14:12:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794924734;
+	bh=pbNZwpO0WLPO2bSO9M9Tgbqe1kctlVysNw7KKHUQxRw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=ImjEFfLZ4ReySMJg6pyyhW4kKzRBBH5I3lV4fAvOH2xoPnphth9aE3oCDev/Mk/8o
+	 Mdd7BwPAy/wogycRUXV5a05uRTiy++pkJUd2uN4afFORFy0rbWWiLenYwF4vYQvTvn
+	 z+SkPAIuPte2ZPVGu1CZW8f3JmpxlmSpAkFej67kIE9GOAvlgNmtPiUCLbeZeSmZdP
+	 +kTuRQpOi2chjAnWIxqZmO7Q+Ph89DSjbzCkd8mFZdZKneWjjx/keF2StoFnSbfHTH
+	 7OPbjBQcWX7esrUoAR18yiBd9A8Xtl310V1X3xWFDaAMSKeH/q68l6x2/HWKTNdfJ7
+	 bVv2YjTzcl+aw==
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-5be3d5927ceso1056904e87.3
+        for <imx@lists.linux.dev>; Tue, 17 Nov 2026 06:12:14 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AL+hErHenC/vb1McSsmOEt1yb+yhGGYqNzbE7/m662UOBZZsIUpzDIM00JOW+S4W4ZBHCpcQLBo=@lists.linux.dev
+X-Gm-Message-State: APuU4Z87KvwI7Zp9G7CRhnusJGaFqW+2PQK6QgOBYeMWDiKypIeb0O+v
+	l8GoTmBJJXSkPCkdu3xjbon/4SCBNFqRPfGZRanI5mcLgvZM9pMhtYEXpdLCXddaVOdA5Ghbn9K
+	qk/2YMVHWmiRWjzJJVVqeDXygCMwjCnY=
+X-Received: by 2002:a05:6512:3182:b0:5c1:5a23:ec04 with SMTP id
+ 2adb3069b0e04-5c1709a86d0mr5207689e87.44.1794924732930; Tue, 17 Nov 2026
+ 06:12:12 -0800 (PST)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -79,18 +59,49 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20261109-pinconf-widen-v1-1-469726456c84@nxp.com>
+In-Reply-To: <20261109-pinconf-widen-v1-1-469726456c84@nxp.com>
+From: Linus Walleij <linusw@kernel.org>
+Date: Tue, 17 Nov 2026 15:12:01 +0100
+X-Gmail-Original-Message-ID: <CAD++jL=eaNy+JxLEbFQ52JPmTAE-_-jHmHzJzgUgUaqwtOOoGg@mail.gmail.com>
+X-Gm-Features: Aa3M54oZqHQKMZF59PzOU07B0U5kws7VjBYGwpelj8tlWXe9U6F2b0839kFN2Uk
+Message-ID: <CAD++jL=eaNy+JxLEbFQ52JPmTAE-_-jHmHzJzgUgUaqwtOOoGg@mail.gmail.com>
+Subject: Re: [PATCH] pinctrl: pinconf-generic: widen the packed config
+ argument to unsigned long
+To: Peng Fan <peng.fan@linux.dev>
+Cc: Bartosz Golaszewski <brgl@kernel.org>, linux-gpio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+	Peng Fan <peng.fan@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
 
-On 30/10/2026 at 16:38:42 GMT, sashiko-bot@kernel.org wrote:
+On Mon, Nov 9, 2026 at 1:28=E2=80=AFPM Peng Fan <peng.fan@linux.dev> wrote:
 
-> Thank you for your contribution! Sashiko AI review found 1 potential issu=
-e(s) to consider:
-> - [Medium] mtd: rawnand: marvell: sleep in atomic context in
-> marvell_nfc_xfer_data_dma()
+> From: Peng Fan <peng.fan@nxp.com>
+>
+> The packed pin configuration stores the parameter in the lower 8 bits and
+> the argument in the remaining bits of an unsigned long. However, the
+> argument was limited to 24 bits: pinconf_to_config_argument() masked it
+> with 0xffffff, and pinconf_to_config_packed() took a u32 argument, so eve=
+n
+> on 64-bit systems the left shift in PIN_CONF_PACKED() discarded the upper
+> bits. For example, the pad configuration value 0x1080000 used by a new
+> i.MX SoC was packed as 0x08000000 and read back as 0x80000.
+>
+> Allow the argument to use the full width of unsigned long so that such
+> values survive the pack/unpack round trip. Cast the argument in
+> PIN_CONF_PACKED() to unsigned long to keep direct users of the macro
+> consistent with pinconf_to_config_packed(), and print the full argument
+> in the debugfs dumps.
+>
+> The packed argument only has BITS_PER_LONG - 8 bits available, so on
+> 32-bit systems values above 0xffffff still cannot be represented. Reject
+> such firmware properties instead of silently truncating them.
+>
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
 
-I'll be taking the other patches, please fix this one!
+Allright patch applied for v7.5 let's smoke it out in linux-next
+and see if everything survives!
 
-Thanks,
-Miqu=C3=A8l
+Yours,
+Linus Walleij
