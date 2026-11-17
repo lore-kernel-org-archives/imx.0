@@ -1,57 +1,77 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.176
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794901098;
-	b=LqbfOCgjiZl3x+lqn69I6QQ/OBsdg0IepmHjMhVP3ratJvcFZ3gy7/QIE92aDWKl8YIc
-	 hYYf46i1jB8QwM+g+Hf2CNbrcBd0JmvQNtAVvQkocEywV0L8r5AfosaLXyMYSKOsoA5XM
-	 DzgTg8K/3E8vMEW4ineT7JibVNyZ1EZzQeJ3K49Wm2AnZ61I75HQ88/vLXZR0wD9SFCF0
-	 QeRgX3UFOfL2x9BQLtC0ImBaGg0cE+Vb4PSbnKqk8s939B0rTmR4hnMJdbhq5Jpae8RfZ
-	 SP2xyUynFiXYPi4UhU+RhcsRH0pRpyKfDLRlplGO+sOCxJY2w0PsJRD5Rnyb+vRXmBA==
+	t=1794904241;
+	b=hczR5hwVDkBYJtW4cap3uNTCa0XP5yQYLvnRku/jKVZiJ1BQSkGbTU0Kgh8eFtvCQg5N
+	 AoErJfBKUD5enm6wzzPtwAtsP+VQoNgVHcrRPoGzlukMELP3sfcLLO/Yx/en6rnNo8cGo
+	 S7IMBJ1WTRKMZA9GB0RQzQbKYr0N6SZSaPR7nm7ggiLcdXIiv7zoN7GfoBlPNFJ0LCr+O
+	 ah569mmvg5KrRIgXG9Q8Pnvf5dkUkMjGPIRqczvuE9bigQi40TSkpi5Zba2gJ6Uo8EymX
+	 dbPN2STytWf8jlLL5VITaVZ1+RWEtjE1mgOTeN80G9GeWrNXWpb02N0eDMtHSHVYE4g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794901098;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=DRLY/XEdn+bTO8kt7HS98J3lRMl4u8FkkC7S4KIzV5Y=;
-	b=5hK68pD2/3MluxEyd6EKaB6Z3K9A5MW+5Q+T37AmcGjCyLpvufVT1N14Ry36wPRsrV2c
-	 ljPJIvIEvp22LMNbFnL0OYh8hmxBbCdpJ23qPz8LlKJm3nQDOI0Lko7b3dy4QbXOHSfPR
-	 EQ03K3qKzViZZRtPs4K2EstUX32Yt1aiPAHzHujFcco3/YD8Ax0ZHI2MIx84Z9uqCeF03
-	 Aj1UJN4zoooDNUxOGJ2bfSB9tKlfDKk0IUpL6ySTmRxwihKEGvG1pnCTPchNRW8deeK2A
-	 uTHCHJ2Zww/dJtGR1Vk9ZtUalyuKb40jdxe/FrNFJ1Zl1FtO0d1B2KsNt9x5CsUl52A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794904241;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=zheIQktVmbZG4c834zKCy7evdo7oC0W6fMu1Q7CHhCE=;
+	b=dNYtmQq8112zCE5XAN9edyLTt7zUkidCYhJ3V2cO/WD89Rts1UWEs983nRtKwuW9bJgF
+	 nCTDw/819l4kZsvFkB1hCMKd5ApJ4/HB+v5ZVPkV7wM4BAPieJU1Cy/+80xy85BjOrIxQ
+	 OsxeFezlD7fCqqRFptqyv2qCGt+zdOSI9GLyrj0ma7eVG1HdciHcAw10l0e6t3hvs1Jd3
+	 oFuSHUXujow+CZHuWOSlIPQX4PTkHFrxFP7AThYNxx8JZJMukFMogAMRccVJDaiqY8+GA
+	 x6gO6pg1TJMaySPjsDDDx6JaqrOyvVYb3B7/oXIP4KtZ0WxtHUmvv+4svAApK6S5Y2w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kxeNacyI;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=AqABhpm3;
+	arc=none smtp.remote-ip=91.218.175.176
+Received: from mta0.migadu.com (out-176.mta0.migadu.com [91.218.175.176])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8CEA606A31C
-	for <imx@lists.linux.dev>; Tue, 17 Nov 2026 07:38:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C672C606A891
+	for <imx@lists.linux.dev>; Tue, 17 Nov 2026 08:30:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C672C606A891
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kxeNacyI
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F39C1F000C4;
-	Tue, 17 Nov 2026 07:38:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794901097;
-	bh=DRLY/XEdn+bTO8kt7HS98J3lRMl4u8FkkC7S4KIzV5Y=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=kxeNacyImU3NJmGZMbjjuOSydzX0ntY7qDcwjeVt0iSEcO3eB3kxoQWVvolbm3bha
-	 pFZtaK0LwB7oMZDEUNKcpEqB9n136hic8CoIK1rY6dQbwbzLc9CmM+1b+PJYmsDncj
-	 J9mrCmNn7lCCWhcInoU2uwW7mYs/uXx77ZYSmq7aKK/uh0VGFRVBss/49ZFqhhKHA3
-	 ew3YefMsCo39r4euhDsl578neOLrt6savyzSMzSvvGRn0xsoo8nL8wyQVIkoRi537x
-	 Q+ENNsonI4XN1UhZQdkYd+nY8vm6JpYPjYc8TOE+nZm+hdgncetK+sJFYXHAhOks3B
-	 HtU3AzjJJTbXg==
-Message-ID: <sashiko-outbox-218364@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 8/8] irqchip/imx-intmux: Use
- devm_pm_runtime_set_active_enabled()
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Peng Fan" <peng.fan@linux.dev>
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20261117-imx-intmux-v1-8-189e7e0ad98d@nxp.com>
-References: <20261117-imx-intmux-v1-0-189e7e0ad98d@nxp.com>
- <20261117-imx-intmux-v1-8-189e7e0ad98d@nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 17 Nov 2026 07:38:16 +0000
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=AqABhpm3
+X-Envelope-To: imx@lists.linux.dev
+DKIM-Signature: a=rsa-sha256; bh=pyWTIi2y6JoIJ6IOmHBgjnTL/Q73eud7KJwC8hfFNgY=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794904239; v=1; x=1795509039;
+ b=AqABhpm3NiDW2u51rSlCew3nKj/O5rKF9XyNeS2Wd+I3pWwpWLJJx9V75Bs3D697t8fZDjpr
+ DN5VoTfPu1d8qxDkgOwiKg0rDUkXd2Bwedu96VqZ0VXyo+CeeekOuk8G0w75Ebi/P41KTrtSZSf
+ s200mf5lcIomdgDsM3MGzbhE=
+X-Envelope-To: imx@lists.linux.dev
+Received: by smtp.migadu.com with ESMTPS id 072b8882c51a40c5;
+	Tue, 17 Nov 2026 08:30:29 +0000
+X-Mizu-Trace-ID: 072b8882c51a40c5
+X-Migadu-Flow: FLOW_OUT
+Date: Tue, 17 Nov 2026 16:30:15 +0800
+From: Peng Fan <peng.fan@linux.dev>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>, Frank Li <Frank.Li@nxp.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	"Joerg Roedel (AMD)" <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+	Laxman Dewangan <ldewangan@nvidia.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	Thierry Reding <thierry.reding@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@kernel.org>,
+	Larisa IIeana Grigore <larisa.grigore@nxp.com>, imx@lists.linux.dev,
+	dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org,
+	iommu@lists.linux.dev, linux-tegra@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH v6 0/9] dmaengine: add DMA channel bus and fsl-edma
+ per-channel IOMMU support
+Message-ID: <avwQl18smAW4R6ec@fedora>
+References: <20261112-edma-iommu-v3-v6-0-b038edb8ce6f@nxp.com>
+ <20261116193021.GB2452510@ziepe.ca>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -60,93 +80,60 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261116193021.GB2452510@ziepe.ca>
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issues to consider:
-- [High] irqchip/imx-intmux: unexpected runtime_suspend() in devres
-  teardown
-- [High] irqchip/imx-intmux: unexpected runtime suspend in
-  pm_runtime_disable_action()
---
+On Mon, Nov 16, 2026 at 03:30:21PM -0400, Jason Gunthorpe wrote:
+>On Thu, Nov 12, 2026 at 03:53:03PM +0800, Peng Fan (OSS) wrote:
+>> I used iommu-map for eDMA, but iommu experts rejected it:
+>> "Using iommu-map to describe synthetic dma_chan_dev devices that the
+>> kernel creates is the same kind of DT abuse from over here:"
+>> More info: https://lore.kernel.org/all/20260917144804.GI3196566@ziepe.ca/
+>> 
+>> So I followed here [2] as Krzysztof wrote for QCOM VPU:
+>> "Thanks Jason for context and detailed arguments. Robin did not chime in
+>> yet, but from what I understood the DT-child-node approach will be the
+>> way we should go here.
+>> 
+>> I accept above point of view and I am fine with this, thus Vishnu and
+>> Vikash - please go ahead with DT-child-node solution we had some time ago."
+>> [2] https://lore.kernel.org/linux-iommu/c7b956a9-d3e8-4e18-b780-5d08f5cd2ca1@kernel.org/
+>> 
+>> This series adds per-channel DT child node support to fsl-edma and, as a
+>> prerequisite, introduces a proper bus for DMA channel devices.
+>
+>To be fair this is discouraged too, now that I've seen 3-4 people
+>trying to do exactly the same thing I'm not as positive about the
+>DT-child-node hack.
 
-commit 2bb337f25f51814af4aab296ab2a9e9b51b12962
-Author: Peng Fan <peng.fan@nxp.com>
+I may not describe it clear in cover-letter.
 
-irqchip/imx-intmux: Use devm_pm_runtime_set_active_enabled()
+I understand the concern. Let me explain why I believe it is justified here
+rather than a hack.
 
-This commit replaces manual pm_runtime_set_active(), pm_runtime_enable(),
-pm_runtime_disable(), and pm_runtime_set_suspended() calls with
-devm_pm_runtime_set_active_enabled().
+On i.MX eDMA each channel has its own interrupt, its own register region,
+and on i.MX8QM even its own power domain. Each channel may also have its
+own Stream ID, or share one when SIDs are scarce. These are genuine
+per-channel hardware resources, not software fiction.
 
-> diff --git a/drivers/irqchip/irq-imx-intmux.c b/drivers/irqchip/irq-imx-i=
-ntmux.c
-> index 1f6e5d9c797aa..770656ef10ece 100644
-> --- a/drivers/irqchip/irq-imx-intmux.c
-> +++ b/drivers/irqchip/irq-imx-intmux.c
-> @@ -234,9 +234,11 @@ static int imx_intmux_probe(struct platform_device *=
-pdev)
->  	data->channum =3D channum;
->  	raw_spin_lock_init(&data->lock);
-> =20
-> +	ret =3D devm_pm_runtime_set_active_enabled(&pdev->dev);
-> +	if (ret)
-> +		return ret;
-> +
->  	pm_runtime_get_noresume(&pdev->dev);
-> -	pm_runtime_set_active(&pdev->dev);
-> -	pm_runtime_enable(&pdev->dev);
-> =20
->  	for (i =3D 0; i < channum; i++) {
->  		data->irqchip_data[i].chanidx =3D i;
-> @@ -286,7 +288,6 @@ static int imx_intmux_probe(struct platform_device *p=
-dev)
->  							     hwirq));
->  		irq_dispose_mapping(data->irqchip_data[i].irq);
->  	}
-> -	pm_runtime_disable(&pdev->dev);
->  	pm_runtime_put_noidle(&pdev->dev);
->  	return ret;
->  }
+In dmaengine each channel is already modeled as a channel device (see
+dmaengine_chan_dev()), and this series puts those devices on a real bus
+(dmaengine_chan_bus_type) as a prerequisite. The DT child node simply
+describes that existing device, so its reg/interrupts/power-domains/iommus
+are attached per channel instead of as index-matched flat lists on the
+controller.
 
-[Severity: High]
-Can removing pm_runtime_disable() from the probe error path cause a NULL
-pointer dereference in imx_intmux_runtime_suspend() when channel setup
-fails?
+Given that context, do you agree that a child node per channel is the
+right description here?
 
-If irq_of_parse_and_map() or devm_irq_domain_create_linear() fails,
-platform_set_drvdata() has not been called yet, and pm_runtime_put_noidle()
-drops usage_count to 0 while runtime PM is still enabled and RPM_ACTIVE.
-During devres teardown, pm_runtime_disable_action() calls
-pm_runtime_dont_use_autosuspend() before pm_runtime_disable(), which runs
-update_autosuspend() -> rpm_idle() -> rpm_suspend() synchronously.
-imx_intmux_runtime_suspend() then reads a NULL dev_get_drvdata(dev) and
-dereferences data->channum.
+Thanks,
+Peng
 
-> @@ -312,11 +313,8 @@ static void imx_intmux_remove(struct platform_device=
- *pdev)
->  		irq_dispose_mapping(data->irqchip_data[i].irq);
->  	}
-> =20
-> -	pm_runtime_disable(&pdev->dev);
-> -	if (ret >=3D 0) {
-> +	if (ret >=3D 0)
->  		pm_runtime_put_noidle(&pdev->dev);
-> -		pm_runtime_set_suspended(&pdev->dev);
-> -	}
->  }
-
-[Severity: High]
-Does dropping pm_runtime_disable() in imx_intmux_remove() cause
-data->ipg_clk to be disabled and unprepared twice on unbind?
-
-imx_intmux_remove() resumes the device (enabling data->ipg_clk) and then
-calls pm_runtime_put_noidle(), leaving usage_count at 0 while runtime PM is
-enabled and RPM_ACTIVE.  When devres teardown runs
-pm_runtime_disable_action(), pm_runtime_dont_use_autosuspend() synchronously
-suspends the device via imx_intmux_runtime_suspend(), which calls
-clk_disable_unprepare(data->ipg_clk) before the devm_clk_get_enabled()
-release action disables and unprepares data->ipg_clk a second time.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261117-imx-intmux=
--v1-0-189e7e0ad98d@nxp.com?part=3D8
+>
+>Can all of you come up with a proposal that doesn't involve hacking up
+>DT just to unbundle the SIDs?
+>
+>Jason
+>
