@@ -1,72 +1,66 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794924817;
-	b=DmaDuq+ILPlhfvAfwWxmBA/Qzjn1zeZ9lfMUAhmnBB4Ynu7MmkTnfC7PnljdOhXYDZ4J
-	 rB1VnyJr6gLjhOQTbomSP/s33D+kaXPCTOH4DCTxu+NLzjwDGD1avY1w+s1wbXeyldoOW
-	 jwooHo61yfyiGXBfEogls5xkJEFGvOydnMu4yCFyNmtrNzo4CBxshJfzIe8+haHJN8xFS
-	 iGmiTq3n8BVfuAMEqrb4SZRgJq/ayfYvD6Fy3WR1YDmSN38qoI9EwyIoGlRWaPl2O0JWS
-	 rQkjmBgh/MzeP6xpFcwCU/BRM9KgvEvI6CHy9NPawVUPoRsnpHTMt5b7J5oj8eD80Aw==
+	t=1794925403;
+	b=LYpSO2ALEScX2VOLSdXQmU9PIpedkaumkeEmyswsusb2WPak5vecCY6+aVFZuulVVF8k
+	 5tM8r8ftVVPBlAj6o8LZ1Y2j1UkPlyuf7viP8I5lBQHYolCke6lP2wDXpAFXMiDsTEveD
+	 KiAVIsWTYcXiLTtKtJKM+VAoSfynsSy1d3kDEg3BF4vYkO0aaa4KQ7RAcThmCaEcDFHKy
+	 oY3txXzuYeiDbY0ICT0W3sxXmoN0LtIuLAaZMuh+YEh4yuDG3/AbFhpW2ip5xwSNN2B/l
+	 iujozYF1nMVaplCQes2fXhYujLtvKHoHMSIxswmGpLHJY40yO8I0h6KKl8dQ4uOpX/w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794924817;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794925403;
 	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:To:Cc:
-	 Subject:In-Reply-To:References:User-Agent:Date:Message-ID:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 In-Reply-To:References:Subject:Message-Id:Date:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-Mailer:
 	 X-Last-TLS-Session-Version;
-	bh=XnDg3LSvvLKOhODP50y+bXUFTm0xPYEfsjQv/OxLyvY=;
-	b=oegTB8rosVGT4XjPMPm5qlHZ8TKqcLv7xSG7929L+DuuLIK+syPPRC+AP1VER+eaNJKz
-	 vv37im0MxNSueFXPXmirfBoeIUvfEgJBST99ucPTZG9yb/KX1JX1SHxHOr0/5utml6bRj
-	 TL8urOZjH0ohVTOZoPsLEsR5QXocRthe21ehSZzc3iZtKew1btxObTdTHLM8t0sKH05Wv
-	 yzzNADrkDlv6jyG1w+n8DVqcSbAkPhBd1E3ldaU+soj0j8Bju0S/fzzc3n4zZXiG4kSe/
-	 hbxQgSDhUqO/VMcx0IbgJWyWdjapBE/dPlK25yGgta1kjX4UX2B+iePa/RQR02V5IJw==
+	bh=6WQMx50c6/HUXnMlaTSPMugwkj2McUSU1kPMIyMEHsw=;
+	b=KlU2rKExJ7lDkCRKZ0hpBCODxderm7WI0M83h92pZ3HDuomniI8ng9bIXngeh9LOhX+L
+	 qCY93LSCcIa/mnRojZXlWkNwJIRBw3WM73MrvKpKlb9Q2MZm0VsF0k1D8ATEggEUvcJZs
+	 2pgol+QzPaXocU3DNxyNFwqSAP9+cVj0gDHNMHNx2N8PjdZZA5xT0kBXjY34Vs6968aM0
+	 /HrOpYlH7/GEnJxMOzcqUQCpSwRd/6KvV3VNo1rRF1AbvcxVa96q+HCTH+/23Z6phZ8PU
+	 h7zgj2u4QyEfPII2o6rm86XPacFIF/apJeGBXavD7ZFz87EhtcJ4Gy3+1Gs6beHM1Zw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=bootlin.com;
 	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=T8RtQEgD;
-	arc=none smtp.remote-ip=185.246.84.56
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=i4rxdppC;
+	arc=none smtp.remote-ip=185.246.85.4
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FDE7606BD36
-	for <imx@lists.linux.dev>; Tue, 17 Nov 2026 14:13:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8FDE7606BD36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE3E1606A32C
+	for <imx@lists.linux.dev>; Tue, 17 Nov 2026 14:23:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EE3E1606A32C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=T8RtQEgD
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=i4rxdppC
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 063A41A167C;
-	Tue, 17 Nov 2026 14:13:35 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id AF3FF4E4157D;
+	Tue, 17 Nov 2026 14:23:21 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id C4FE45FC81;
-	Tue, 17 Nov 2026 14:13:34 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C008411BC0024;
-	Tue, 17 Nov 2026 15:13:26 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 7D30B5FD6A;
+	Tue, 17 Nov 2026 14:23:21 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3333111BC0041;
+	Tue, 17 Nov 2026 15:23:19 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1794924813; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1794925400; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=XnDg3LSvvLKOhODP50y+bXUFTm0xPYEfsjQv/OxLyvY=;
-	b=T8RtQEgDk82tB+T2G8WcDM83qbuxQWJx50BVnv5ZQSuXl8L3T+hASktHtCiSVsWRwsRvne
-	08/HM2XY+9JfRhDzrK4adoxW/gZ2cOcEg5ycMusHDq62o1vSWPPkMevMd+H6PzgV09rbqo
-	Wv1vzevpnUlPkR9m8wjg6K8ac6TPgzAQrRhY+GCDAie0a03yg9L29AbsFSIj+h8yv0VtYH
-	hThFiJGiXDewVXgYOPX7+SoinmumDzsWHRk8zTmP0aBNWvOjcmk5o1S25Vtj9yvRSEV3Ac
-	TIkIjlLdLXWTYCwQ7gm/DZG2g9tIEspLPORS9mwLwOG8P6eo9MOlcytVEnU/kQ==
+	bh=6WQMx50c6/HUXnMlaTSPMugwkj2McUSU1kPMIyMEHsw=;
+	b=i4rxdppCKk1vAV1bBDPISu2sjhV/O07pkl3hWlxjoWPLCOJxe2H3awTDdtMHSzYR1sR72m
+	6tnMAHr6C6gOyeelGfpnJSRe6/mgeU2KYHIKgBn47b6ymsa2fPMZK8qXehQWZJUes830Sj
+	2ULJEn+uqisojbvAhQXBbLDOhtluiKYyOCHfeXO6Oydd8n21mN7G5lTOw/1vXbGWJphBYk
+	PJmNCdInFgHIQ/4so57R+7cMitL7aPvr/KFKNtD+YZI4MF28GL6MjjhMs2QwFkx/8C1hsL
+	eq5SMKM+hiD+6r2vHLBAnbJqRLdSh0N/Q/y6sEtoZoi1YhAHojuqy6vv062vcw==
 From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Frank.Li@oss.nxp.com
-Cc: Richard Weinberger <richard@nod.at>,  Vignesh Raghavendra
- <vigneshr@ti.com>,  Frank Li <Frank.Li@nxp.com>,  Alok Tiwari
- <alok.a.tiwari@oracle.com>,  Runyu Xiao <runyu.xiao@seu.edu.cn>,  Chen Ni
- <nichen@iscas.ac.cn>,  Kees Cook <kees+treewide@kernel.org>,  Hemanth
- Selam <hemanth.selam@gmail.com>,  linux-mtd@lists.infradead.org (open
- list:CADENCE NAND DRIVER),  linux-kernel@vger.kernel.org (open list),
-  imx@lists.linux.dev
-Subject: Re: [PATCH 1/1] mtd: nand: raw: use dmaengine accessor API functions
-In-Reply-To: <20261111202502.3860647-1-Frank.Li@oss.nxp.com> (Frank Li's
-	message of "Wed, 11 Nov 2026 15:24:45 -0500")
-References: <20261111202502.3860647-1-Frank.Li@oss.nxp.com>
-User-Agent: mu4e 1.12.12; emacs 30.2
-Date: Tue, 17 Nov 2026 15:13:25 +0100
-Message-ID: <87bj7nlf5m.fsf@bootlin.com>
+To: han.xu@nxp.com, Stefan Ghetu <stefan.ghetu@nxp.com>
+Cc: richard@nod.at, daniel.baluta@nxp.com, vigneshr@ti.com, 
+ imx@lists.linux.dev, linux-mtd@lists.infradead.org, 
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20261105095935.159650-1-stefan.ghetu@nxp.com>
+References: <20261105095935.159650-1-stefan.ghetu@nxp.com>
+Subject: Re: [PATCH] mtd: rawnand: gpmi: Fix unintentional integer overflow
+Message-Id: <179492539910.2259780.13383890149441799128.b4-ty@bootlin.com>
+Date: Tue, 17 Nov 2026 15:23:19 +0100
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -76,27 +70,26 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Mailer: b4 0.14.3
 X-Last-TLS-Session-Version: TLSv1.3
 
-On 11/11/2026 at 15:24:45 -05, Frank.Li@oss.nxp.com wrote:
+On Thu, 05 Nov 2026 11:59:35 +0200, Stefan Ghetu wrote:
+> Cast block to loff_t before shifting, so that the shift is done in
+> 64-bit arithmetic and the potential integer overflow is avoided.
+> Reported by Coverity.
+> 
+> 
 
-> From: Frank Li <Frank.Li@nxp.com>
->
-> Use dmaengine_get_dma_device() instead of directly accessing chan->device
-> and use dmaengine_prep_dma_memcpy() instead of calling the function point=
-er
-> directly. This follows the dmaengine API convention of using accessor
-> helpers to decouple drivers from internal dmaengine structures.
->
-> Affects cadence-nand-controller and fsmc_nand drivers.
->
-> No functional change and prepare to move struct dma_device to private.
->
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Applied to nand/next, thanks!
 
-I will fix the subject when applying (nand: raw: -> rawnand:)
+[1/1] mtd: rawnand: gpmi: Fix unintentional integer overflow
+      commit: 3b955aa675345cf494a67f95f0cf91eff33c1866
 
-Thanks,
-Miqu=C3=A8l
+Patche(s) should be available on mtd/linux.git and will be
+part of the next PR (provided that no robot complains by then).
+
+Kind regards,
+Miquèl
+
