@@ -1,55 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.115
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794899701;
-	b=A/tJJwoPjrCnNC2JxDJQ+//fEMuMSJ6RtOu4n4Q/oTrs8RhjMJqRSNo7Fj+b1R0WADj/
-	 WfPNeE7BvF8hbAYtDPmlbIYKBUGLRGYEendKVUJls+S8/zlmy//ZvaSByI7wKhtJD5rlI
-	 da6/lrfHafFu+osmadpdehZOpb8+w5kW6RUlJnnWjNJtUp3vUVpKe1QA2C9YlDhWd87Wd
-	 9+MbGaKL+orUcbSooSj7Vd/1ktIEkkFich1MVhIapxLyJ7+wSgJmHHr5xIJcnRbpQTwo7
-	 1YvifiFLMTxBBS+O276ww7fIFpbuvawajZvFbnaQ5+iorFPo3TVBkR4CFVf6M8Gs6zw==
+	t=1794899706;
+	b=Z3/Am2Eo4owTsFYBx9wcqVXABHFd0Z69ooJ1bW1qCMXG9nl4zLzX9xt/67w0IYh0vzjI
+	 cMPU5ZISV7TTepV5AbCyvfDtC2bbDQ5wk5Wg72yY4oGp6kMQOAi4R+rkVGiuIBCU3dCfF
+	 7z/xlenv3L75CZAf3dheBp8o0cK5htQJ2j+l4RvQMWz32OFmFx5W2qmeExq6tOoD3toNn
+	 sWmhZ+Ajl6yBUbDitacZRWZeLt2myXEkImDm34Fm3RkGZv9xhEn7yNK8bfujG3X4L3R0I
+	 e5t8eO9YW7SA+9MawARUo+mdsjbdyhhBQL/ZDJ2Qh3ga/tnV9NdJoqOZZyAxBZV7VXA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794899701;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794899706;
 	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
 	 X-Mizu-Trace-ID:X-Migadu-Flow:From:Date:Subject:MIME-Version:
 	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
 	 In-Reply-To:To:Cc:X-Mailer;
-	bh=CEtV9Of40PlIkgls/ESF0YVCrLHY2cnVFegrd0OWX3U=;
-	b=l/YgdJafA4lbD4I85XM9LokEbFUZ0tqE157fYS0WZ8X/B0iNaBO19eRxHXlLNFNfIQzb
-	 J4cqbmh4puDB4Pex1iWO+s506x28aAb9+4h0I2dSUCR/Woz56JZ6pkZCBo8x5SWE5uncg
-	 nzu+w6Kf4WxgYCuf6xqTuNuElidVfSQZhPcX55odvm4NBsH4tB/84A8xBGk+4cW6y0o5l
-	 3CFTdgFP5RaRCF9L5Tvs71iPj9WTl38JaoPFzElG9cicg04aUvuaDZjp40iGiG9j4J6p9
-	 +tm3NEuTBTXHaiIn+IFZ5tGY3ExI0bCciG6N6TtWQb12yrdDhjI9FEbXaR3XEKCmHwg==
+	bh=wKJtGPqUh8xd1e5gRSCSrRuD1kv5RiOZcl5rDs0i/H0=;
+	b=OiXPRj43SBZsggjkEgzUQmzjrBAsT9EzyaiBAm9pPxwoPk7ngnQ1PPG0orJwyTzksByk
+	 NwTyW7hl30OzgJYoXIeXThgM+IeGJmDtf/zDfcs3PCjQ1+ZRJJRvNCxY1Cy9rgArBRfTV
+	 p9pwdApVOB1ksiWqGi6jPzxQCsIjhNxO7ub3oVISws+kRT7w3iSayO59jNsulIjAExkpO
+	 kbjbUlsfiR76+oOFeHwWErG02/EqQdam5+EgYWCpSIuz/Ur9RefsuRjSZjeA7VTv8v4vh
+	 xJb2YVCgvRtUj4+PpFnamf4gBLdUr1VnGTd833azPgNpHkR+WKfrzvYiM5/YtKH3wvQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.dev;
 	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=qxwcWPSF;
-	arc=none smtp.remote-ip=91.218.175.172
-Received: from mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=ZHecvaiQ;
+	arc=none smtp.remote-ip=95.215.58.115
+Received: from mta1.migadu.com (out-115.mta1.migadu.com [95.215.58.115])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FA3B606A323
-	for <imx@lists.linux.dev>; Tue, 17 Nov 2026 07:15:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8FA3B606A323
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35AFE606A88B
+	for <imx@lists.linux.dev>; Tue, 17 Nov 2026 07:15:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 35AFE606A88B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=qxwcWPSF
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=ZHecvaiQ
 X-Envelope-To: imx@lists.linux.dev
-DKIM-Signature: a=rsa-sha256; bh=Wwhk/gDwsoNFkoxCGTnT6H0lIHt7+Q74XS0tvVACqJA=;
+DKIM-Signature: a=rsa-sha256; bh=egOOHYWo88XqIsFmRrJ9jNqDbHUnSeRXeEa+bS/h07s=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794899698; v=1; x=1795504498;
- b=qxwcWPSFkfxxzVOiPYsFJIcNsIzUaZgf8sUkwjLouMsdm3KKhmgv0aDc/3HgMOeMrK+ZVCQw
- rzhNeFGdWmWeGbi3I8RMR0455+yoDtQ0uTK6EOxVXU4QKETKUMOlsMAggiuksGwgEECpuBqJ0oH
- CG1c3OkY3hKGdSb2nnKdQ7J4=
+ t=1794899704; v=1; x=1795504504;
+ b=ZHecvaiQA5gt/14YhiLhtDW/Br2QboeyBwUzeh38lXl3TSXoLDwP5SdhgIOU3L4yToezvy4p
+ grE4/YG+TqFO/Cx5/qKk+KcwkSOdGnU6nH/l/bODrWHQqB9WdHA2UB+gQ/66zR6YGq7h6/dnUqI
+ mUzVHiKPq+zdug9XSdwzsPaQ=
 X-Envelope-To: imx@lists.linux.dev
-Received: by smtp.migadu.com with ESMTPS id e02f4fff576faa84;
-	Tue, 17 Nov 2026 07:14:58 +0000
-X-Mizu-Trace-ID: e02f4fff576faa84
+Received: by smtp.migadu.com with ESMTPS id d5b6e237ac341039;
+	Tue, 17 Nov 2026 07:15:04 +0000
+X-Mizu-Trace-ID: d5b6e237ac341039
 X-Migadu-Flow: FLOW_OUT
 From: Peng Fan <peng.fan@linux.dev>
-Date: Tue, 17 Nov 2026 15:14:10 +0800
-Subject: [PATCH 6/8] irqchip/imx-intmux: Use devm_clk_get_enabled()
+Date: Tue, 17 Nov 2026 15:14:11 +0800
+Subject: [PATCH 7/8] irqchip/imx-intmux: Use
+ devm_irq_domain_create_linear()
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -61,7 +62,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261117-imx-intmux-v1-6-189e7e0ad98d@nxp.com>
+Message-Id: <20261117-imx-intmux-v1-7-189e7e0ad98d@nxp.com>
 References: <20261117-imx-intmux-v1-0-189e7e0ad98d@nxp.com>
 In-Reply-To: <20261117-imx-intmux-v1-0-189e7e0ad98d@nxp.com>
 To: Thomas Gleixner <tglx@kernel.org>, Radu Rendec <radu@rendec.net>, 
@@ -75,58 +76,55 @@ X-Mailer: b4 0.14.3
 
 From: Peng Fan <peng.fan@nxp.com>
 
-Enable the IPG clock with devm_clk_get_enabled() so that it is enabled
-during probe and automatically disabled when the device is detached.
+Manage the per-channel IRQ domains with devres so that they are removed
+automatically when probe fails or the driver is unbound, instead of
+calling irq_domain_remove() explicitly in the probe error path and in
+imx_intmux_remove().
+
+The child mappings are still disposed explicitly before the domains go
+away. devres runs after imx_intmux_remove(), so each domain is removed
+with an empty reverse map, and the domains are torn down before the IPG
+clock devres action disables the clock.
 
 No functional change.
 
 Signed-off-by: Peng Fan <peng.fan@nxp.com>
 ---
- drivers/irqchip/irq-imx-intmux.c | 10 +---------
- 1 file changed, 1 insertion(+), 9 deletions(-)
+ drivers/irqchip/irq-imx-intmux.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/irqchip/irq-imx-intmux.c b/drivers/irqchip/irq-imx-intmux.c
-index ebfff621e5a9..755c07007390 100644
+index 755c07007390..1f6e5d9c797a 100644
 --- a/drivers/irqchip/irq-imx-intmux.c
 +++ b/drivers/irqchip/irq-imx-intmux.c
-@@ -226,7 +226,7 @@ static int imx_intmux_probe(struct platform_device *pdev)
- 		return PTR_ERR(data->regs);
- 	}
+@@ -248,8 +248,9 @@ static int imx_intmux_probe(struct platform_device *pdev)
+ 			goto out;
+ 		}
  
--	data->ipg_clk = devm_clk_get(&pdev->dev, "ipg");
-+	data->ipg_clk = devm_clk_get_enabled(&pdev->dev, "ipg");
- 	if (IS_ERR(data->ipg_clk))
- 		return dev_err_probe(&pdev->dev, PTR_ERR(data->ipg_clk),
- 				     "failed to get ipg clk\n");
-@@ -234,12 +234,6 @@ static int imx_intmux_probe(struct platform_device *pdev)
- 	data->channum = channum;
- 	raw_spin_lock_init(&data->lock);
- 
--	ret = clk_prepare_enable(data->ipg_clk);
--	if (ret) {
--		dev_err(&pdev->dev, "failed to enable ipg clk: %d\n", ret);
--		return ret;
--	}
--
- 	pm_runtime_get_noresume(&pdev->dev);
- 	pm_runtime_set_active(&pdev->dev);
- 	pm_runtime_enable(&pdev->dev);
-@@ -294,7 +288,6 @@ static int imx_intmux_probe(struct platform_device *pdev)
+-		domain = irq_domain_create_linear(of_fwnode_handle(np), 32, &imx_intmux_domain_ops,
+-					       &data->irqchip_data[i]);
++		domain = devm_irq_domain_create_linear(&pdev->dev, dev_fwnode(&pdev->dev), 32,
++						       &imx_intmux_domain_ops,
++						       &data->irqchip_data[i]);
+ 		if (!domain) {
+ 			ret = -ENOMEM;
+ 			dev_err(&pdev->dev, "failed to create IRQ domain\n");
+@@ -283,7 +284,6 @@ static int imx_intmux_probe(struct platform_device *pdev)
+ 		for (unsigned int hwirq = 0; hwirq < 32; hwirq++)
+ 			irq_dispose_mapping(irq_find_mapping(data->irqchip_data[i].domain,
+ 							     hwirq));
+-		irq_domain_remove(data->irqchip_data[i].domain);
+ 		irq_dispose_mapping(data->irqchip_data[i].irq);
  	}
  	pm_runtime_disable(&pdev->dev);
- 	pm_runtime_put_noidle(&pdev->dev);
--	clk_disable_unprepare(data->ipg_clk);
- 	return ret;
- }
- 
-@@ -323,7 +316,6 @@ static void imx_intmux_remove(struct platform_device *pdev)
- 	pm_runtime_disable(&pdev->dev);
- 	if (ret >= 0) {
- 		pm_runtime_put_noidle(&pdev->dev);
--		clk_disable_unprepare(data->ipg_clk);
- 		pm_runtime_set_suspended(&pdev->dev);
+@@ -309,7 +309,6 @@ static void imx_intmux_remove(struct platform_device *pdev)
+ 		for (unsigned int hwirq = 0; hwirq < 32; hwirq++)
+ 			irq_dispose_mapping(irq_find_mapping(data->irqchip_data[i].domain,
+ 							     hwirq));
+-		irq_domain_remove(data->irqchip_data[i].domain);
+ 		irq_dispose_mapping(data->irqchip_data[i].irq);
  	}
- }
+ 
 
 -- 
 2.56.0
