@@ -1,57 +1,67 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.194.8.81
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794929130;
-	b=d18uqWIxofOhpHYYdD4+dbaOfEwTInrlkXFU85amS5LRccEHYkXrnemCaFIWN8BkFkZc
-	 hX3b/hdWir/ghVq+wCEzKbFpJHcb7xSC5pjq7LGhUN4ytLjMTqj19HP7EDS2v5xCk3rAm
-	 wstDbjMjT6RPeNPuqL7Wa1O+Drlt2dLpnPmMg1G0K/5J3VCIrXbYZJvuB72AYwnnoGm1e
-	 +dHVyTtCag9XEwjBwvwLGmzVBK+8rh3uTWs/0OA53C7cktpx8ldtT0RVxDU7bTGj59wYO
-	 9F8eNd9TBMZ2IjM8fAIZrKClfUU8vJT2NzSzQIvNKvLgimsoW6IkLVdCwWXLRgKxJWg==
+	t=1794930310;
+	b=gbKoDLjpU2odcx1qxKeUb02TnmUmpL7Hrdo8ZLVmmtAYnZLUNVhOpcWa6d8aQPqu1PE6
+	 vq5ly3IoPvWmCQgwNuuAERUpW9ML2e+DBg+f4LXYcNkHUopLk9cdK70+SoeqUFRij74Z5
+	 0w/Sqp+v2eWFeSCovDEh2GkevrE/yl/xXu3YchoaP81gD2e/6OHod3EPgju7t04ZgQO4R
+	 6PVzrDm7FOyQ+rjCnsoUGBLYVpYDekDBZ1hEGeAss3I+Y1qYXgK5vWESPlFHF/umzFsrY
+	 ErUDVgxjviMP6Fy1NQVyejG4f8+IR55mxXk/CDmdCIjHRzFT7fHhD/DeEItr4LnJ42w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794929130;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=bafEnHj9OQp2os8W30yYIs+yQ2nbAuaGSL1q+Ya78F4=;
-	b=u0zRiaWC8Nsu+0VOaY0hBLoa9wB/e1YAqNyOhfiX5MnViLd0APWXSXp1H5J8+SZoDsPb
-	 nqV0gXU/cqpz4BGKxhe+plZhst0bR0ue6Lo7OkhT5Zf/FtFwNYk1jsFV0g1fFB8L5Z30a
-	 ebLFUPT3SakxkgL9qI4Ykic7d4pZv9tkVrnHYPuWLaN7LobdmlS3ItZmer8IveHuMmPee
-	 xuOEKpElJuXsh+TViB3C9w3nPRHVcVF92UlNwMFrVfmO3cqgTUerQILVEQzEMC05F4X55
-	 W9b4RwSh57Yzn6o77BCXJ+1HQ4o0iU4Ld8ksnZyiannR3v/kYzhZZj4AgCLat+GtdkQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794930310;
+	h=DMARC-Filter:Received:DKIM-Signature:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=A8nrZNesO9VLezCFBss71uBRpn9fM/JhgyAtVyrelME=;
+	b=SA756yq3RxSRYLrokDEF2AI2+d72Bry5hfXGoT80J8eycU43Y5P3F3T3fOqutLo4cDLH
+	 TPb4u9qdikWIeIpFugdkBf9rmkqApHUsvEeIbE2Qp/G6bDCoTWGBRmVpCDtZtEmR8hWVQ
+	 yeHtXyHRBVSGaR6A4+aYCKtgzgT02f7BGh4sHihYj0PmgLhL0rMhzGWJK2WJZQX8e/eH8
+	 7meC457C8Kr0nPAiT+jtHLBf0GbAeSzS2l3TJUDVfhsTbYJK04XgWRUl+m5kV8O1Go3dp
+	 qj3insosB+2PyJJ+6QgS6NBRa0zHCNxCnTZgp5uwIUFTd3PKTm426heu/e8Fv+m/YfA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kMScttj5;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=dolcini.it;
+	spf=pass smtp.mailfrom=dolcini.it;
+	dkim=pass header.d=dolcini.it header.i=@dolcini.it header.a=rsa-sha256 header.s=default header.b=bMyX7dQ3;
+	arc=none smtp.remote-ip=217.194.8.81
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E685606A337;
-	Tue, 17 Nov 2026 15:25:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DEC5606A32A
+	for <imx@lists.linux.dev>; Tue, 17 Nov 2026 15:45:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1DEC5606A32A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kMScttj5
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92D051F000C5;
-	Tue, 17 Nov 2026 15:25:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794929130;
-	bh=bafEnHj9OQp2os8W30yYIs+yQ2nbAuaGSL1q+Ya78F4=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=kMScttj50pgYGX4tOqXNqQxBd14vvfsQSvpxUJxIyXUsxkpzfQGWZIr0cscd0qvto
-	 gT+R3gWwCzzJQA67X5fOYCjp2EP2k/ry806XWY3RacEvaiB7/uwm3KdH9ybfnROD5W
-	 BDJH3wKectxTh4DNlslQFwJqDLHzR2KjxF98wOwKaaZQx9xL7snwWjwmEpMoIRexVw
-	 BTy7GZQg2jsisz14TT8XNU9xjSkHzrX0HSU8iilG89Vj+H8V25rUVnyxUeH9c7MCmM
-	 L8fg8kiH86uvVraA0q+HIag+smt1jTCNYbxa9FIaKvr0Sz5K8aGfIhDqRnoxvhorwM
-	 jpidpahhrSJCQ==
-Message-ID: <sashiko-outbox-219063@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 2/2] PM: runtime: fix stub pm_runtime_get_if_in_use()
- for !CONFIG_PM
-Reply-To: sashiko-reviews@lists.linux.dev
-To: Frank.Li@oss.nxp.com
-Cc: dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org, linux-sound@vger.kernel.org, imx@lists.linux.dev, Frank.Li@kernel.org, media-ci@linuxtv.org
-In-Reply-To: <20261116152513.2676573-2-Frank.Li@oss.nxp.com>
-References: <20261116152513.2676573-1-Frank.Li@oss.nxp.com>
- <20261116152513.2676573-2-Frank.Li@oss.nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 17 Nov 2026 15:25:29 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=dolcini.it header.i=@dolcini.it header.a=rsa-sha256 header.s=default header.b=bMyX7dQ3
+Received: from francesco-nb.. (93-41-19-23.ip79.fastwebnet.it [93.41.19.23])
+	by mail11.truemail.it (Postfix) with ESMTPA id EA3E21FAD2;
+	Tue, 17 Nov 2026 16:44:57 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1794930299;
+	bh=A8nrZNesO9VLezCFBss71uBRpn9fM/JhgyAtVyrelME=; h=From:To:Subject;
+	b=bMyX7dQ3wYrLehzQAWo5jATDdKgQu3k7LcAXyKDdCovr4y/ziIiu5t1HODtiMytG9
+	 KxZxUh+ZMITBTynT228gU9DLHoLp0BO6cRnU3aVF3gdPVOYyEPxbYoKWfPvjvlVSYY
+	 v2iFNOrdGCGX5m8+wvtqoBqHciVk6PQ4G8gZOMAJ3eYsfoCFIDvSCVcLwiYIOHUJ9t
+	 uzJ4OMuZThyv+ZPB/WC7/3GfZl7h6c95pKXdSXJOel33wa0i2iJ4n3WZzK/VHxflSy
+	 qZQyK3vkTJtGVRbp0dQVOWpOP/Jznor1bqxXG3RjNMBvUFgpbBYAzl7FZ3Hw1zwPMh
+	 JpT1Iv6FOMMuQ==
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: linux-bsp@toradex.com,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v1] ARM: dts: imx6ull-colibri: Add RTC aliases
+Date: Tue, 17 Nov 2026 16:44:48 +0100
+Message-ID: <20261117154450.461570-1-francesco@dolcini.it>
+X-Mailer: git-send-email 2.47.3
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -60,122 +70,55 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Low] PM: runtime: inaccurate Fixes trailers and caller notes in
-  commit message
---
+From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-commit 48057d65d03972fb7f912d84a7a35bf1b15bba82
-Author: Frank Li <Frank.Li@nxp.com>
+The Colibri Evaluation Board and the Iris carrier board have an M41T0
+RTC backed by the carrier coin cell, besides the SNVS RTC of the SoC.
+Without aliases their numbering depends on probe order, alias the
+carrier RTC as rtc0 and the SNVS RTC as rtc1 as on the other Colibri
+modules.
 
-> PM: runtime: fix stub pm_runtime_get_if_in_use() for !CONFIG_PM
->
-> The stub for pm_runtime_get_if_in_use() under !CONFIG_PM currently
-> returns -EINVAL.  The real implementation returns:
->   1  - device is active and its usage counter is non-zero (bumped)
->   0  - device is not in use or not active (counter not bumped)
->  -EINVAL - runtime PM disabled for this device
->
-> When CONFIG_PM is not set every device is permanently "active" and
-> always considered "in use", so the stub must return 1, mirroring
-> __pm_runtime_resume() which already returns 1 in the same build.
->
-> Returning -EINVAL breaks callers that test the return value with
-> comparisons other than "!=3D 0 / =3D=3D 0":
->
-> drivers/gpu/drm/i915/intel_runtime_pm.c:
->   if (intel_runtime_pm_get_if_in_use(rpm))
->   which wraps to: ret =3D pm_runtime_get_if_in_use(); return ret > 0;
->   With -EINVAL the wrapper returns false, causing an incorrect error
->   path in the GT fence revocation code.
->
-> drivers/gpu/drm/xe/xe_pm.c:
->   if (pm_runtime_get_if_in_use(xe->drm.dev) > 0)
->   With -EINVAL the condition is false; xe_pm_runtime_get_if_in_use()
->   returns false, so callers believe the device is not usable.
->
-> drivers/gpu/drm/gma500/power.c:
->   return pm_runtime_get_if_in_use(dev) =3D=3D 1;
->   -EINVAL !=3D 1, so the helper always returns false when !CONFIG_PM.
->
-> drivers/gpu/drm/imagination/pvr_power.c:
->   if (pm_runtime_get_if_in_use(...) <=3D 0)
->   -EINVAL <=3D 0 is true, so the driver always takes the "requeue" error
->   path instead of proceeding with the active device.
->
-> sound/soc/sof/debug.c:
->   if (pm_runtime_get_if_in_use(sdev->dev) =3D=3D 1)
->   -EINVAL !=3D 1, so d3_prevented is never set, corrupting exception
->   debug accounting.
->
-> drivers/iommu/mtk_iommu.c:
->   if (pm_runtime_get_if_in_use(dom->plat_dev->dev) <=3D 0)
->   -EINVAL <=3D 0 skips the TLB flush, leaving stale IOMMU mappings.
->
-> drivers/iommu/rockchip-iommu.c:
->   Three call sites use WARN_ON_ONCE(err < 0) or similar patterns.
->   -EINVAL < 0 triggers a spurious WARNING on every call.
->
-> drivers/media/i2c/isl7998x.c:
->   if (pm_runtime_get_if_in_use(dev) <=3D 0)  (two call sites)
->   -EINVAL <=3D 0 causes the driver to always skip register programming
->   when !CONFIG_PM.
->
-> drivers/media/platform/rockchip/rkisp1/rkisp1-debug.c:
->   if (pm_runtime_get_if_in_use(dev) <=3D 0)  (two call sites)
->   -EINVAL <=3D 0 prevents any debug statistics from being collected.
->
-> Fixes: 9d58aa46291d ("drm/i915: Fix the GT fence revocation runtime PM lo=
-gic")
-> Fixes: cbb6a7413b17 ("drm/xe: Introduce xe_pm_runtime_get_noresume for in=
-ner callers")
-> Fixes: 672c473576ca ("drm/gma500: Rewrite power management code")
-> Fixes: 727538a4bbff ("drm/imagination: Implement power management")
-> Fixes: b30289e7fa92 ("ASoC: SOF: Fix runtime pm usage counter balance aft=
-er fw exception")
-> Fixes: c0b57581b73b ("iommu/mediatek: Add power-domain operation")
-> Fixes: 0f181d3cf7d9 ("iommu/rockchip: Add runtime PM support")
-> Fixes: 51ef2be546e2 ("media: i2c: isl7998x: Add driver for Intersil ISL79=
-98x")
-> Fixes: cbb819c363c5 ("media: rkisp1: debug: Collect input status by sampl=
-ing ISP_FLAGS_SHD")
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+---
+ arch/arm/boot/dts/nxp/imx/imx6ull-colibri-eval-v3.dtsi | 5 +++++
+ arch/arm/boot/dts/nxp/imx/imx6ull-colibri-iris.dtsi    | 5 +++++
+ 2 files changed, 10 insertions(+)
 
-[Severity: Low]
-Are the Fixes tags and caller descriptions in the commit message accurate?
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-colibri-eval-v3.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ull-colibri-eval-v3.dtsi
+index 692ef26fbab3..a296454641e9 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6ull-colibri-eval-v3.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx6ull-colibri-eval-v3.dtsi
+@@ -4,6 +4,11 @@
+  */
+ 
+ / {
++	aliases {
++		rtc0 = &m41t0m6;
++		rtc1 = &snvs_rtc;
++	};
++
+ 	chosen {
+ 		stdout-path = "serial0:115200n8";
+ 	};
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-colibri-iris.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ull-colibri-iris.dtsi
+index 5e408e54b335..e0eacd0b6928 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6ull-colibri-iris.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx6ull-colibri-iris.dtsi
+@@ -4,6 +4,11 @@
+  */
+ 
+ / {
++	aliases {
++		rtc0 = &m41t0m6;
++		rtc1 = &snvs_rtc;
++	};
++
+ 	chosen {
+ 		stdout-path = "serial0:115200n8";
+ 	};
+-- 
+2.47.3
 
-The !CONFIG_PM stub for pm_runtime_get_if_in_use() returning -EINVAL was
-introduced in a436b6a19f57 ("PM / runtime: Add new helper for conditional
-usage count incrementation"), which is missing from the Fixes tags.
-
-For i915, __intel_runtime_pm_get_if_active() guards the call to
-pm_runtime_get_if_in_use() with if (IS_ENABLED(CONFIG_PM)), so the
-!CONFIG_PM stub is never called there, and 9d58aa46291d ("drm/i915: Fix the
-GT fence revocation runtime PM logic") switched i915_vma_revoke_fence() to
-with_intel_runtime_pm_if_active, which calls pm_runtime_get_if_active().
-
-For imagination, DRM_POWERVR in drivers/gpu/drm/imagination/Kconfig has
-"depends on PM" (added in 727538a4bbff ("drm/imagination: Implement power
-management")), so pvr_power.c cannot be built with !CONFIG_PM.
-
-Also, several of the remaining Fixes tags do not point to the commits that
-introduced the affected checks:
-- In drivers/gpu/drm/xe/xe_pm.c, the pm_runtime_get_if_in_use() > 0 check
-  in xe_pm_runtime_get_if_in_use() was added by 3b85b7bcccf4 ("drm/xe: Fix
-  display runtime_pm handling"), whereas cbb6a7413b17 ("drm/xe: Introduce
-  xe_pm_runtime_get_noresume for inner callers") only added a caller.
-- In drivers/iommu/rockchip-iommu.c, 0f181d3cf7d9 ("iommu/rockchip: Add
-  runtime PM support") used boolean checks where -EINVAL evaluated to true;
-  the WARN_ON_ONCE() checks on negative or non-positive returns were added
-  by 3fc7c5c0cff3 ("iommu/rockchip: Handle errors returned from PM
-  framework").
-- In drivers/media/platform/rockchip/rkisp1/rkisp1-debug.c, the first
-  pm_runtime_get_if_in_use() <=3D 0 check in rkisp1_debug_dump_regs() was
-  added earlier by 2a6b586035ec ("media: rkisp1: debug: Add debugfs files
-  to dump core and ISP registers").
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261116152513.2676=
-573-1-Frank.Li@oss.nxp.com?part=3D2
