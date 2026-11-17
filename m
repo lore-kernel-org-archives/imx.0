@@ -1,102 +1,91 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.159.65
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794949335;
-	b=Fr5mkl+5PvjNli6+ula0oyZwIRX6GkQI15nfclobx0UPLVaWZfhQfkbJSp/AYcdwROLt
-	 bmjdiyhqYIDW93vPiFpHjT6d8FLVof4LhIsCy/99GJOIN6cQGuFDLF526dPG+15cQ91Q8
-	 EHjUkmP2dF+MIwbQftIjvIexu585fujFmCo2MlbCKDtyt1ylxMQUUTPjyy7lwPBIAtaJp
-	 kOKFvUuRdHCjQnxaiX4EoLFlgNmmEp7UPw7CtExafbx2qF43F1zjqtb8bGo0nV9Y85++a
-	 Wkf3zMJjgUGBB0UzDq/S1/AjjwdgRkaLYrBZFhRqVU8Lj9YdzkriHcM/Ok+DUAc6eDg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794949335;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:Content-Type:Content-Disposition:
-	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:
-	 X-MS-Exchange-AntiSpam-MessageData-1:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=PLNi9oq0QeGtGGDAHeG+GKXV/DgerA0rBDv8AS22WoE=;
-	b=gF+iPdSirl8w8QvmsJVtv7zXpNmRnumDoZVZwAAhNEkk7acLbQjI7I67d9SFZy8w7gpv
-	 0YPgHyzXZreUWhnSjlvx2sT6oj164rZ0o0+i+QKnpxFuGmPwStviG7skik5TbTkqIyE7q
-	 qh8PL3um9qdmm5O6KJMVEWDU5Yj8VycLCpnP8zuDokIfyAmiU4/6J/RoG6IW7U92+tbJA
-	 hn3kXPofHW+R3S66ZJVnlEIxxy3EUvPL6zzMadEV5ELFaD1LGhxcMSXwmHcgp/hIVE9dc
-	 /6/RyHmfaDaZI9Qy+xqN2JGVmIX8iq5gldl0VHJUNWeERdrP0yS/lXVMTqdUHLaYCNQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nxp.com;
-	spf=pass smtp.mailfrom=nxp.com;
-	dkim=pass header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=JuTIQyz5;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.159.65
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013065.outbound.protection.outlook.com [40.107.159.65])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.251.105.195
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794949571;
+	b=cx/l/QFbHduTOK/Yl/ZqbmamJzIhjr5lPLKQtTDSO/S1g0c3R22Kdpo2h7kvg7q5joO3
+	 4M6yu7ivI15dPr6u/I0VjF0U0hKNtdc+cdGVF0zc7aMyVpyEGmMJJzr0cuZblRc+mVdCj
+	 biqQSYhp78zz2TJ7c6zo7VztunWRQ6fu8fZ7co3QCepCOC4E6vcpP/aU9OvfntgEGpOBW
+	 g3TS6l32OHWa1b3qdE3z5v5nevPM9SqD47T1ap67kZAwI2qpZuhpvl9i4wTUPlpK+GFj0
+	 kDUAlSa98Aw4+1BoeDiXJhSOqj1fMZKUJRxXaTIBiFG32F7ebgzkGsYi/aGBsgXhwsA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794949571;
+	h=DMARC-Filter:DKIM-Signature:Received:Message-ID:Subject:From:To:Cc:
+	 Date:In-Reply-To:References:Autocrypt:Organization:Content-Type:
+	 User-Agent:MIME-Version;
+	bh=HtvTu/64ettxzPxkBEvKYZ34ZkkbT9fHPhc3+fZwto0=;
+	b=WNiYctj7W44hEoAMTm2fOyLMDk8W5LqTFOJaRqS1mvQuD77gXLbl3xTMh/4jXAX3VZQd
+	 /Wpv64w3om8EX5DH+OLNeNKRtPmoq26YGGn3LP3lkx9SBJ6QbKGObHW4fc7nE8mNlE73w
+	 d7kmAkS8eCZUsP2+AUDS4oFryVkd/q8iTSVADOObv6AcnLDY5J0PTSKBsSseK2U2tOFtA
+	 dVAhwV+tOR86os1ZDy7WI21X1dMpUDa5HUUvryb6AjiNeSO8lzfzak/lyllmm6jE1TKv+
+	 13SqcJUDRZcUmZhQByjkTJj77177NMVacMb/oeUsEs1/rHxGw0MJz84kffW+k/uQLzg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=collabora.com;
+	spf=pass smtp.mailfrom=collabora.com;
+	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=lPt5x4V8;
+	arc=none smtp.remote-ip=148.251.105.195
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FD39606A32A
-	for <imx@lists.linux.dev>; Tue, 17 Nov 2026 21:02:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3FD39606A32A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AEE7606A31C
+	for <imx@lists.linux.dev>; Tue, 17 Nov 2026 21:06:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9AEE7606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=JuTIQyz5
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gYJqYdVA2y1adQ4AlaR7qDsVDVkEpsITPx5DQRbr8TynCjs37PShQ7kakqhumQEb7xL7yzxKaGkRY2iVs1iV5O0PEZ9tdG+tGNoR/8CjlolyDPM+BWHiZAn1TcoMsx35Va4P5fX+uL1UAlGASrRUNd3WAhymimb4sKJLV4xxRGmoHvU9oxGXDcecABnbECCGiZhBwlRQ8O3ot1woM10M1L+J1KF86+b5u/rnEBTp8VQKGbgRklmKnMwTxI3lSn7Kyh49CXtMMq+Jz141YEw+ESrXRUGCuv/m0CSlAxeefWHkVEIWJbWVmp4J5FSYgiJhCQCXA1XBNUzLfujkrUW+ww==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PLNi9oq0QeGtGGDAHeG+GKXV/DgerA0rBDv8AS22WoE=;
- b=CcxuGMGEJDZwvrHs3nrlnmlNXZcQ4eDf01pxsEX3LqLkSCLNPzapmbdpw7XUg+qh/2o30JcM7xDaWNXwD6n4T8ZKLd8PV4LKNZ55h1MFBv81rPJt55ZkmrmBRFPAt5pjQBLYXroTCjapn8SbqgXhUmRBAMcJKrZ9SveRk2lkYJOLzFpGITPu98wFAf+5XaaqB5sbvVG/VNp6r+T1mXmBgUv4XS9uoMoygxuIn+X+FkYLrRSMwrSMyRk5HYlZDjx5G8sQsbA46xPCt4r1MdGhY4KujI+dt1sJp0u2b1dDmJVlHHUvM3FTzdlCneGE8Hlpdf1yiBeKTT3GSOdUPDDXbA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PLNi9oq0QeGtGGDAHeG+GKXV/DgerA0rBDv8AS22WoE=;
- b=JuTIQyz5sMNxKIQBrRL09RDpl22QJUL0Wm6gO6S/NtX9lWFP8gVyYF7CETWpL1Pe1bb9rhzKqTyShIEs5fPyOczYWvXoL/UcaUsOFcJyQ7NbYSLo8vHrsfp5ZZi/8F0zYvNH6zxHcRhMp7/hogdCTT3PEAQBnCwwLRXJJl0T59keN8XlcZrkr31Kqnr/9LWSOXyFsoTtL984tXR7G4NyiAYK3qBCfrxXH3/q88NDzG4AHqVKnfAlzVW0sW7IvUDNJ3Xxt8R39kcl8UWOG+zUvR3ad2uWWeC6bAmIPvHaPx16DQEYUoXinC8TbD4glvKwUaDTOzoX/yp7aCCog/iLHQ==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM0PR04MB6900.eurprd04.prod.outlook.com (2603:10a6:208:17d::10)
- by GV2PR04MB707735.eurprd04.prod.outlook.com (2603:10a6:150:385::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.14; Tue, 17 Nov
- 2026 21:02:11 +0000
-Received: from AM0PR04MB6900.eurprd04.prod.outlook.com
- ([fe80::7fda:8431:ca1b:b023]) by AM0PR04MB6900.eurprd04.prod.outlook.com
- ([fe80::7fda:8431:ca1b:b023%4]) with mapi id 15.21.0615.013; Tue, 17 Nov 2026
- 21:02:11 +0000
-Date: Tue, 17 Nov 2026 23:02:07 +0200
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
-To: Vincent Jardin <vjardin@free.fr>
-Cc: Dong Aisheng <aisheng.dong@nxp.com>, 
-	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>, Jacky Bai <ping.bai@nxp.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, NXP S32 Linux Team <s32@nxp.com>, 
-	Linus Walleij <linusw@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, linux-gpio@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, Ioana Ciornei <ioana.ciornei@nxp.com>
-Subject: Re: [PATCH v6 4/5] pinctrl: freescale: add the Layerscape RCW
- pad-mux driver
-Message-ID: <avykU0WMTq24_xkR@lxl00025.wbi.nxp.com>
-References: <20261115-for-upstream-lx2160a-rcw-pinmux-v1-v6-0-fbdce4565a5c@free.fr>
- <20261115-for-upstream-lx2160a-rcw-pinmux-v1-v6-4-fbdce4565a5c@free.fr>
- <avtsY-7-I7_pdyD0@lxl00025.wbi.nxp.com>
- <avyEUKJBiDwxpLt7@L23803.iliad.fr>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <avyEUKJBiDwxpLt7@L23803.iliad.fr>
-X-ClientProxiedBy: AM8P189CA0030.EURP189.PROD.OUTLOOK.COM
- (2603:10a6:20b:218::35) To AM0PR04MB6900.eurprd04.prod.outlook.com
- (2603:10a6:208:17d::10)
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=lPt5x4V8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1794949568;
+	bh=ZbD9FwnOoOQeC1E98ztkUVdqmp6pvxce5xq0Ue6S3KI=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=lPt5x4V8aOdwRhqhcsDubH/sIdh16mL5AfebH6UXaLc0JLoXVC8nRITRN13oIAWY3
+	 7uDhKnSgX2PuuxE3eu13N/Zx+Aiga+bMWqZkOuU79rBaowHCmRlHq7bBK0zAn9agDx
+	 QGLrFsQArkBXg0+a+m60QhqsnDzF3K68nJC0/VbgSTe1Fdsz9V4dq2JdaYlqEq6TWn
+	 Y9qFBx5/BCgkh0UVlw38/SFJZqG/+TA+8J6f4JL6XpzuGZja9RJfnyxlGX5iO6Qsvs
+	 ZUAVE0t6WLoMFxeWICZsswSsBSiCaWLXe3lulXfk8UpUmfLaOV4rsorZ8QbvMPcMt1
+	 iXs9Fa99mEUOg==
+Received: from [100.64.0.214] (unknown [100.64.0.214])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: nicolas)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id C8B0C17E05D6;
+	Tue, 17 Nov 2026 22:06:06 +0100 (CET)
+Message-ID: <760e33e8de1f139be7dba2270313c80aeb53c1d3.camel@collabora.com>
+Subject: Re: [PATCH 01/14] media: h264: Add a more generic reflist builder
+ init
+From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+To: Paul Kocialkowski <paulk@sys-base.io>, devicetree@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+  Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,  Pengutronix Kernel Team	
+ <kernel@pengutronix.de>, Benjamin Gaignard
+ <benjamin.gaignard@collabora.com>,  Philipp Zabel <p.zabel@pengutronix.de>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Hans Verkuil	
+ <hverkuil@kernel.org>, Marco Felsch <m.felsch@pengutronix.de>, Michael
+ Tretter	 <m.tretter@pengutronix.de>
+Date: Tue, 17 Nov 2026 16:06:05 -0500
+In-Reply-To: <20260522101653.2565125-2-paulk@sys-base.io>
+References: <20260522101653.2565125-1-paulk@sys-base.io>
+	 <20260522101653.2565125-2-paulk@sys-base.io>
+Autocrypt: addr=nicolas.dufresne@collabora.com; prefer-encrypt=mutual;
+ keydata=mDMEaCN2ixYJKwYBBAHaRw8BAQdAM0EHepTful3JOIzcPv6ekHOenE1u0vDG1gdHFrChD
+ /e0J05pY29sYXMgRHVmcmVzbmUgPG5pY29sYXNAbmR1ZnJlc25lLmNhPoicBBMWCgBEAhsDBQsJCA
+ cCAiICBhUKCQgLAgQWAgMBAh4HAheABQkJZfd1FiEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrjo
+ CGQEACgkQ2UGUUSlgcvQlQwD/RjpU1SZYcKG6pnfnQ8ivgtTkGDRUJ8gP3fK7+XUjRNIA/iXfhXMN
+ abIWxO2oCXKf3TdD7aQ4070KO6zSxIcxgNQFtDFOaWNvbGFzIER1ZnJlc25lIDxuaWNvbGFzLmR1Z
+ nJlc25lQGNvbGxhYm9yYS5jb20+iJkEExYKAEECGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4
+ AWIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaCyyxgUJCWX3dQAKCRDZQZRRKWBy9ARJAP96pFmLffZ
+ smBUpkyVBfFAf+zq6BJt769R0al3kHvUKdgD9G7KAHuioxD2v6SX7idpIazjzx8b8rfzwTWyOQWHC
+ AAS0LU5pY29sYXMgRHVmcmVzbmUgPG5pY29sYXMuZHVmcmVzbmVAZ21haWwuY29tPoiZBBMWCgBBF
+ iEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrGYCGwMFCQll93UFCwkIBwICIgIGFQoJCAsCBBYCAw
+ ECHgcCF4AACgkQ2UGUUSlgcvRObgD/YnQjfi4+L8f4fI7p1pPMTwRTcaRdy6aqkKEmKsCArzQBAK8
+ bRLv9QjuqsE6oQZra/RB4widZPvphs78H0P6NmpIJ
+Organization: Collabora Canada
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-ZjSFNpEuHw1qtBTWERh5"
+User-Agent: Evolution 3.62.1 (3.62.1-1.fc45) 
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -106,133 +95,158 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM0PR04MB6900:EE_|GV2PR04MB707735:EE_
-X-MS-Office365-Filtering-Correlation-Id: 76cf72af-2832-47ed-d0da-08df44ee0c36
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|10070799003|19092799006|366016|1800799024|7416014|376014|18002099003|22082099003|6133799003|261009223027099003|4143699003|5023799004|11063799006|56012099006|261028144727099003|261102123227099003|261022105027099003|261026140227099003|261026121527099003|261022075727099003|261021123027099003|261021121427099003|10067099003|41080700001;
-X-Microsoft-Antispam-Message-Info:
-	YuvPCkwf0ePw5N7pefW3VCHeMbhAh63RDCFbXam4Y89uj4BZ1ecuj0CtXHAkP9SAPpaL5qSZXBrHcsoPLfhDyWDMS4Sl4S9xGEENB2l6R6IYaEUKYp2WUw1hMs3t+T99HM3gMpPL2RXH7jKQnCXkVRjKEzVg6jlilMj8FgmgFUoq96P/5HGaVrpYqGOranW1ovPOM5R2jwirMx2GFLBSDPrZlFc0Az7+dC3PHmapqBkGBaZDKfoiKtPCA4BtskI07OWNIjZPYXNAwEuDogHwmEbzRYJTN9MBsCdlYOvaeBHoPLdyNOmlrEXurSSFLZpO9tOM1IjUMhVb9nuSU92JvMzFpqjEQxSq+JS+5lUo8Etg2HUXvskow8Hm6OCU5btQzMg7RYoRzAT7wAgEz/MRQS+mCo4FTkGz6zyE4sWR6Tk1og6J87aBJRSlPgFSMTwu7rMrdypedqnTIi7lomhK1nWoMcP7OHr5mnuYXOnhItvvTp5gdOziAgdo+8NsCBzWWDjHZQqKFvMzCRv/JamVKNVqZj7m/eyidh3DGxTzcWMnnAKEHyFzX4zRdlNaSLLgh+0K9rKjoSqZmrmatnTwz9eJmKwE0cNPy1NkZMdBV8ciHhf+kjBmuaaFyV6rd/Qoq4HXbgMFrK3jvk3qVJf9t1yA3WfhsMjMX5IWaf1FmQ8vM7Y4sorn/O9ea6BqncuV1vcsWzF1Zdd2oJuoWSBdyw==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB6900.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(10070799003)(19092799006)(366016)(1800799024)(7416014)(376014)(18002099003)(22082099003)(6133799003)(261009223027099003)(4143699003)(5023799004)(11063799006)(56012099006)(261028144727099003)(261102123227099003)(261022105027099003)(261026140227099003)(261026121527099003)(261022075727099003)(261021123027099003)(261021121427099003)(10067099003)(41080700001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?h0Qr+9YgehzjjTkmx1LRarIpuk5tINEye91pFs72h+BrxReteVu7gK+Tfw8N?=
- =?us-ascii?Q?IsSrNTIdbAOls62duZwbtPj1OxjTLn4ZoBXSqLJn1++4EfueG2vSUiLqIyG5?=
- =?us-ascii?Q?NwLKNjQTHd6iELeadlRnlhnPe7PyuCxbAeagU3wh/m9nUPGGh7WVOrxz6YVM?=
- =?us-ascii?Q?JHu17y+lp44PUk/8VbqkNH+irTXByha3BSkIHpGP/yD/q+vDJzNriBylUDgX?=
- =?us-ascii?Q?nSMy4GN5hGgMrCKOAO1LgussB7LQFuD2amRHurRiZttXPPoXW4xbshpNpKrp?=
- =?us-ascii?Q?N+qoDw+hLwc8zBL1WYk0w+UYDDQN+eVmwRxjPZ8jyLCx26GfWEGLP/M9tsBX?=
- =?us-ascii?Q?a5aWFdaS6kx0E5TKU8XuzvIEMxtHsQAhFnuA+msAC0j3FpDlkWXKBG2EIaHu?=
- =?us-ascii?Q?rmYvSG7XnHfHbOm0lP8juEvQJOnq6Eorry4acz4qWIa60SwyJlTd/DEtWram?=
- =?us-ascii?Q?uRpsjKSZboxyQ4T63p6N+93GiHOg/G/CkHW6OMIg1VQ8nk+OTrRE8NOj0Wtn?=
- =?us-ascii?Q?7aK88AT6I8m7uNXIf/bliGvNCc/9BiqW7D6MOECf2szjdqJoNiNw468ipKRh?=
- =?us-ascii?Q?XbgOo0lvPOYxX1KN5ubDRmjc1hN9ZF4+a3S3miyvZxvT22qQ1O58vaPOJ7cR?=
- =?us-ascii?Q?rpkDoUBraloiWwAzjzb37+v0D1L0mDYKmL+MAhqmR13Jk7pokjWz6GZ8YtVL?=
- =?us-ascii?Q?+KAEgOeaDCaMSpRHJMYmAWFqlJkvtATY2bomIvgUbhkc10/hLKJcbJioXwg1?=
- =?us-ascii?Q?fZvJY0H4HbiPL5omgdGrbqnRCilxaaet84M19JhsyP0ms4sx9TY9MyWElWQt?=
- =?us-ascii?Q?Who8LjI2wX4TP9RiAcZOZMYB0adi2vQ9FfN4tj/QCKZtOOiZfo/FyGAvLpW8?=
- =?us-ascii?Q?6OdKOikD5JuT6rigOs4yclRYTR7ZQfivMx5UmMa/pBHbQBz0kyg6ZRcaHSMW?=
- =?us-ascii?Q?JF72YEV5amQzvf9SvV6o9YqgW1ilaGOe2kZR/ELwuGkGeUu9Q5Bb9xguLNUD?=
- =?us-ascii?Q?NuHRIgvWy87aHcmGYa2hoBzQjzFh2QZO58bawXrNUE5H8TKONkabvcBUo2KM?=
- =?us-ascii?Q?V8Lpm+5mfLGXJNsVLoUdkwkKvPZCDV1XVUL/SBFndnlAIY6FIbsUFSub8DjW?=
- =?us-ascii?Q?/dO+cQIWlIHFSZolNAbJRW7f8KY0c643wffY14i7RdkKRsVKdSp0DAS3/rAf?=
- =?us-ascii?Q?veL8qhYL34BmtdeeaR3uUjyBo4lr92oP5WyEOyjN/V1IkoEMtWfagfyihryR?=
- =?us-ascii?Q?6Y11Tvp7JysiqndgWHlK+opyqG28Qp/N4HUbc3FV6WaoM6y36tiPfD2cPZH8?=
- =?us-ascii?Q?XUlrurN95BPwKd3M3rPz0tZqHU8OOVddKfMAST/5oTPGywJY7NJR3xtijEAf?=
- =?us-ascii?Q?Z3Lxa3Q5w1aC9mINl5eaZzkY+uwxZHJ96eIKXNsBtBUpfzDo9Q4d4oEjCf91?=
- =?us-ascii?Q?D1QJGzv0qBzd9OCAaqPG7cTozcrfl442kl3Kerny+WNenDBRf4oTw3kaTgHf?=
- =?us-ascii?Q?l+R2Ag4yLWaj4cAKSfPdMWVMD6yiNVt7DbPc7eG/pKZAfI+U6dqSUBN6nDM2?=
- =?us-ascii?Q?3DkJN2aoMjeIRg5CTh9D0ttxu3RoNJHjRCAcCh8bMQt2kH8xCCirSR7hrBAA?=
- =?us-ascii?Q?jgD79BGOr9bH+04SFmHB/NpZCYHcLlgyPdI8GjS0+AFqkFTGhJkN/u+7d26l?=
- =?us-ascii?Q?6lNsaOuCZWeDp1DSUaGcBb/XO2Wf6GxEAREg6+0Q4AXoQvLDuI4UKOSxdRSH?=
- =?us-ascii?Q?hA4DMAvVmaj6YMaks2VdW+rjz9M1fmKpGpae3ygVMUZ7Fuwe0oTUUSU9EyMs?=
-X-MS-Exchange-AntiSpam-MessageData-1: T9axJn1UbVFtDA==
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 76cf72af-2832-47ed-d0da-08df44ee0c36
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB6900.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Nov 2026 21:02:11.0267
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: hGI0DvaKAAL6kSIdsV/d7CNiKkiSalpr/of5hGuURTMiKtbw5S3q+bY9cJ5jwTBcBvnHbNqj/Sah0rxRXDviRw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR04MB707735
 
-On Tue, Nov 17, 2026 at 05:44:00PM +0100, Vincent Jardin wrote:
-> Hi Vladimir,
-> 
-> > The "i2c" and "gpio" functions of lx2160a_sdhc2_data74_funcs[] here
-> > hides some real unpleasantness. These 4 pins either get all assigned to
-> > I2C7_SCL, I2C7_SDA, I2C8_SCL, I2C8_SDA, or they get all assigned to GPIO.
-> > But they cannot be assigned in pairs of two (or individually, i.o.w. not
-> > in the granularity we need), which makes independent I2C bus recovery
-> > practically impossible (i2c6 as I2C while i2c7 is as GPIO).
-> 
-> yep, the doc is clear about it: SDHC2_DAT74_PMUX is a single field for
-> the 4 pads, 0b001 gives GPIO_2[18:15] and 0b010 gives IIC7 and IIC8
-> together (RM rev 1, 4.9.8.9). IIC7 and IIC8 are not available on any
-> other pad.
-> 
-> Checking from other angles, the A-010650 workaround uses one write for both
-> buses: 0x700100130 = RegA OR 0x031. That mask looks wrong to me though: bits 5:4
-> belong to SDHC2_BASE_PMUX, and OR-ing 0x001 onto 0b010 gives the reserved
-> 0b011. Could someone at NXP have a look ?
-> 
-> > The way the code is currently written, the pin_request() call will fail here:
-> 
-> Yes, in fact, it is not new with this series: both nodes have shared the
-> same setting since
->   8a1365c7bbc1 ("arm64: dts: lx2160a: add pinmux and i2c gpio to support bus recovery")
-> from Carlos Song (NXP) where the two pinctrl-single states covered the same
-> bits, so the second controller would have failed the same way. Wihtin the
-> kernel, there is no board that enables i2c6 or i2c7, so nobody did hit it!
-> 
-> > Due to the fundamental issue of this limitation, I don't think it makes
-> > sense to have the pinctrl states described in fsl-lx216x.dtsi for i2c6
-> > and i2c7. Perhaps you could remove them in another change (either as a
-> > follow-up, or another patch in v7 if you need to resend).
-> 
-> Done for v7 as an additional patch: the DTS drops pinctrl-names, pinctrl-0/1
-> and scl/sda-gpios from i2c6 and i2c7, and the two states nothing else uses.
-> A board that needs one of these buses can add its own states, or set the
-> field once with a hog on the pad-mux node.
+--=-ZjSFNpEuHw1qtBTWERh5
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-I'm not entirely happy with my own suggestion either, I'll comment more
-on v7.
+Hi,
 
-> 
-> I tested on my board for regressions, since there those 4 pads carry
-> the eMMC DAT[7:4]: the other I2C buses still set up their GPIO recovery,
-> and the eMMC still runs in 8-bit HS400.
-> 
-> I also went through the other fields. 7 more settings mix two
-> controllers the same way:
->  - flextimer on iic2, irq3-0, irq7-4, evt4-3 and evt2-0 (FTM1 and FTM2 channels)
->  - sdhc-spi on sdhc1-base (SDHC1 with SPI3_PCS0) and usb on usb-ext (USB1 and USB2)
-> No dts claims any of them.
-> 
-> About your previous comment on clk-out: v7 names encoding 0 "clk-out".
-> On my board, with debugfs, it shows now:
-> 
->   pin 20 (evt2-0) 0:? evt
->   pin 21 (clk-out) 0:? clk-out
->   pin 22 (asleep) 0:? asleep
-> 
-> and the U-Boot port of this driver shows "clk-out : clk-out" in
-> "pinmux status".
-> My take: the reserved marking comes from RM rev 1: its revision history
-> says "Updated 0b000 as reserved" and the CLK_OUT configuration section was
-> removed, while table 19 still lists 000 (CLK_OUT).
-> 
-> There is a similar gap on EC1: the signal tables list CLK_OUT2 on
-> EC1_TXD0/GPIO4_DAT03, but EC1_PMUX only has 0b00 RGMII and 0b01 GPIO,
-> 0b10 and 0b11 being reserved. Would you know which value selects CLK_OUT2 ?
+Le vendredi 22 mai 2026 =C3=A0 12:16 +0200, Paul Kocialkowski a =C3=A9crit=
+=C2=A0:
+> This should become part of a larger reflist builder rework.
 
-These are good questions. I've opened a ticket internally and I'm hoping
-to get some answers regarding the correctness of the documented A-010650
-workaround procedure and the CLK_OUT/CLK_OUT2 signals, which are in a weird
-superposition of documented and not documented at the same time.
+Maybe a tiny bit more meet would help? What am I reviewing, what is this ne=
+w
+builder used for?
+>=20
+> Signed-off-by: Paul Kocialkowski <paulk@sys-base.io>
+> ---
+>  drivers/media/v4l2-core/v4l2-h264.c | 69 +++++++++++++++++++++++++++++
+>  include/media/v4l2-h264.h           |  7 +++
+>  2 files changed, 76 insertions(+)
+>=20
+> diff --git a/drivers/media/v4l2-core/v4l2-h264.c b/drivers/media/v4l2-cor=
+e/v4l2-h264.c
+> index c00197d095e7..4e5a177ca2c7 100644
+> --- a/drivers/media/v4l2-core/v4l2-h264.c
+> +++ b/drivers/media/v4l2-core/v4l2-h264.c
+> @@ -105,6 +105,75 @@ v4l2_h264_init_reflist_builder(struct v4l2_h264_refl=
+ist_builder *b,
+>  }
+>  EXPORT_SYMBOL_GPL(v4l2_h264_init_reflist_builder);
+> =20
+> +void
+> +v4l2_h264_init_reflist_builder_gen(struct v4l2_h264_reflist_builder *b,
+> +=09=09const struct v4l2_ctrl_h264_sps *sps,
+> +=09=09const struct v4l2_h264_dpb_entry dpb[V4L2_H264_NUM_DPB_ENTRIES],
+> +=09=09unsigned int pic_order_count, unsigned int frame_num, unsigned int=
+ fields)
+
+Add a doc comment.
+
+> +{
+> +=09int cur_frame_num, max_frame_num;
+> +=09unsigned int i;
+> +
+> +=09max_frame_num =3D 1 << (sps->log2_max_frame_num_minus4 + 4);
+> +=09cur_frame_num =3D frame_num;
+> +
+> +=09memset(b, 0, sizeof(*b));
+> +=09b->cur_pic_order_count =3D pic_order_count;
+> +=09b->cur_pic_fields =3D fields;
+> +
+> +=09for (i =3D 0; i < V4L2_H264_NUM_DPB_ENTRIES; i++) {
+> +=09=09if (!(dpb[i].flags & V4L2_H264_DPB_ENTRY_FLAG_ACTIVE))
+> +=09=09=09continue;
+> +
+> +=09=09if (dpb[i].flags & V4L2_H264_DPB_ENTRY_FLAG_LONG_TERM)
+> +=09=09=09b->refs[i].longterm =3D true;
+> +
+> +=09=09/*
+> +=09=09 * Handle frame_num wraparound as described in section
+> +=09=09 * '8.2.4.1 Decoding process for picture numbers' of the spec.
+> +=09=09 * For long term references, frame_num is set to
+> +=09=09 * long_term_frame_idx which requires no wrapping.
+> +=09=09 */
+> +=09=09if (!b->refs[i].longterm && dpb[i].frame_num > cur_frame_num)
+> +=09=09=09b->refs[i].frame_num =3D (int)dpb[i].frame_num -
+> +=09=09=09=09=09       max_frame_num;
+> +=09=09else
+> +=09=09=09b->refs[i].frame_num =3D dpb[i].frame_num;
+> +
+> +=09=09b->refs[i].top_field_order_cnt =3D dpb[i].top_field_order_cnt;
+> +=09=09b->refs[i].bottom_field_order_cnt =3D dpb[i].bottom_field_order_cn=
+t;
+> +
+> +=09=09if (b->cur_pic_fields =3D=3D V4L2_H264_FRAME_REF) {
+> +=09=09=09u8 fields =3D V4L2_H264_FRAME_REF;
+> +
+> +=09=09=09b->unordered_reflist[b->num_valid].index =3D i;
+> +=09=09=09b->unordered_reflist[b->num_valid].fields =3D fields;
+> +=09=09=09b->num_valid++;
+> +=09=09=09continue;
+> +=09=09}
+> +
+> +=09=09if (dpb[i].fields & V4L2_H264_TOP_FIELD_REF) {
+> +=09=09=09u8 fields =3D V4L2_H264_TOP_FIELD_REF;
+> +
+> +=09=09=09b->unordered_reflist[b->num_valid].index =3D i;
+> +=09=09=09b->unordered_reflist[b->num_valid].fields =3D fields;
+> +=09=09=09b->num_valid++;
+> +=09=09}
+> +
+> +=09=09if (dpb[i].fields & V4L2_H264_BOTTOM_FIELD_REF) {
+> +=09=09=09u8 fields =3D V4L2_H264_BOTTOM_FIELD_REF;
+> +
+> +=09=09=09b->unordered_reflist[b->num_valid].index =3D i;
+> +=09=09=09b->unordered_reflist[b->num_valid].fields =3D fields;
+> +=09=09=09b->num_valid++;
+> +=09=09}
+> +=09}
+> +
+> +=09for (i =3D b->num_valid; i < ARRAY_SIZE(b->unordered_reflist); i++)
+> +=09=09b->unordered_reflist[i].index =3D i;
+> +}
+> +EXPORT_SYMBOL_GPL(v4l2_h264_init_reflist_builder_gen);
+> +
+>  static s32 v4l2_h264_get_poc(const struct v4l2_h264_reflist_builder *b,
+>  =09=09=09     const struct v4l2_h264_reference *ref)
+>  {
+> diff --git a/include/media/v4l2-h264.h b/include/media/v4l2-h264.h
+> index 0d9eaa956123..1833c0556963 100644
+> --- a/include/media/v4l2-h264.h
+> +++ b/include/media/v4l2-h264.h
+> @@ -42,6 +42,7 @@ struct v4l2_h264_reflist_builder {
+>  =09u8 cur_pic_fields;
+> =20
+>  =09struct v4l2_h264_reference unordered_reflist[V4L2_H264_REF_LIST_LEN];
+> +=09/* FIXME: confusing with valid flag (active is checked). Proper termi=
+nology is "used" */
+
+Just drop a patch before that rename it?
+
+>  =09u8 num_valid;
+
+>  };
+> =20
+> @@ -51,6 +52,12 @@ v4l2_h264_init_reflist_builder(struct v4l2_h264_reflis=
+t_builder *b,
+>  =09=09const struct v4l2_ctrl_h264_sps *sps,
+>  =09=09const struct v4l2_h264_dpb_entry dpb[V4L2_H264_NUM_DPB_ENTRIES]);
+> =20
+> +void
+> +v4l2_h264_init_reflist_builder_gen(struct v4l2_h264_reflist_builder *b,
+> +=09=09const struct v4l2_ctrl_h264_sps *sps,
+> +=09=09const struct v4l2_h264_dpb_entry dpb[V4L2_H264_NUM_DPB_ENTRIES],
+> +=09=09unsigned int pic_order_count, unsigned int frame_num, unsigned int=
+ fields);
+> +
+>  /**
+>   * v4l2_h264_build_b_ref_lists() - Build the B0/B1 reference lists
+>   *
+
+--=-ZjSFNpEuHw1qtBTWERh5
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCavzBvQAKCRDZQZRRKWBy
+9BtfAQDuX6YWkZlnq7Kl+f+bMXt1CF2vU/q45B92Be31HwQATAEAp6eHgUOWcmtf
+VOnv8NvHgu6jahauAoGMYcbg1POycAE=
+=uvaF
+-----END PGP SIGNATURE-----
+
+--=-ZjSFNpEuHw1qtBTWERh5--
