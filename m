@@ -1,55 +1,87 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.177
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794910821;
-	b=D/Bvj1dAAHCBQbbv+18OAHgTwoYPimRZE/d0g4zkWN71xfjOYytLo/QD1hgdP+RaBWj2
-	 4jHfVMHANwvjXRSGIkF1+NaVf6OnGY/TJt3m1hgH3BfMjmdbA23F/0sgvpGe5f40QcbKo
-	 2ow0d94WW03V1Io3QEJqY0uustbJOqXWzGdiI3gLmToy/2Pgcwdt0nkfC2jPwMou953Mv
-	 qA0TKNMsUcx8XT670TgCXdzLxFRvM+UREvXDO4y/23P31UJqQDuCawo6MRZ2RrKph5jtW
-	 9likdVsxbMo127E8ffS6Wf33Uj/SdpS+CshSjdoXsBklyZge2WyGQGaQnrAw3DqUURA==
+	t=1794919490;
+	b=g5kIt1ISqSgTjmkgHG4I8/5DcBh8TpUnPMmznYCgzG8e+jBXqX/rTkS7kWJ8b3dpIF6Z
+	 YcQEgAoD/A6AsZ79nEne/kolWp0a5R7DqiEoZZAXE2O54/4MuzhxMOEwrOQf6l+tSe3Xi
+	 fh/dglT5hS/FJ3tGSSTCA96wUl1nJYAcyei9KKvIJTW5zatZmJ0sIdOYl3Q0rWbdUa1fu
+	 UKbQDTRKWDIWl/ArOBMBqc9YpX6oLP49ukolnYJpLPZxXIB5MZkK8Ex8GrPh09MjHw2+l
+	 0jT+WGr83NEMvu3wzMq4tV1G9XNOWcpGW+gVZHJ/3G6PzUuZOHRa/X+dY3jeuXtsT7g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794910821;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=LYjA64OY7mzK30+EmXCloZ1d2MnMctrR1lEa4XYe6Og=;
-	b=q0e5q3z66YgNtwfsHygrO6pTs5YrmbFCNcHRWPk4jwBiepOXLm3h+RvSZWPFw2rBhBTp
-	 YAhs1lXFQGj2YehYk54EctPuqtfWJrsz5V7yK0hk5dmgd+FKGWYri8esNkFAlCB9I+Orr
-	 MnoiM7O+vBqKikchsp6KXnhf5rCwaXukTLNtsE5HNhiGEyZOKeMiADFdf/qEBMY+xXyPP
-	 vqpZuPypxayzsFYhHKl8jWyTDjvwsVIez5DOO4fr4OoNRciFWXIHYwmP06x00STvBdMZ+
-	 PyEdb2LaVO/DhxRztTcAQjYbM4Fabv+qJa+3kebvw1m0rwubkqmq02B977WG/oXqUuw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794919490;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:Subject:Date:
+	 Message-Id:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-B4-Tracking:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=65x/rmOi9eSRyE50YMLG+5ikwTFST6PY1hiF0uL56W0=;
+	b=hfLepDXdkgkVG+DRYUWXG+vDvEmdUStFWqfj5o+A7APlvY5zn5NxiZcj3gebK9HOuj/G
+	 D6jTXVYdXkolTFY4MA7WEsUSlTGQJ33hbA1nfAfGlzNZ0aSDJK61GHEjIrIz8YUU2w9kD
+	 y0kNh/RNGaT8eALAmkAakwDRw7jL4Vqnwg/1iUrlZNPY+PmuFFaOZJ3xAMyi5JIjgRZsJ
+	 +tzCA3+HJB1m9+4FVc4s8JxbtzI5kHbMDba18kltJLmRUx9MUumcEjVaCGxDz8iQjNjT9
+	 iz+YR4f++lP2VgWoiSjRF8oucOu+6e1VoOznsGK1ImYNE2HP9fMYG1GhSaOQP+X4AfA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VY+cEPzz;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=XJOMOQrZ;
+	arc=none smtp.remote-ip=209.85.214.177
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C851606A323
-	for <imx@lists.linux.dev>; Tue, 17 Nov 2026 10:20:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C406C606A333
+	for <imx@lists.linux.dev>; Tue, 17 Nov 2026 12:44:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C406C606A333
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VY+cEPzz
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ED491F000CD
-	for <imx@lists.linux.dev>; Tue, 17 Nov 2026 10:20:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794910821;
-	bh=LYjA64OY7mzK30+EmXCloZ1d2MnMctrR1lEa4XYe6Og=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=VY+cEPzzOeQl350iSplr3YTbz/NtmEMKg6hNuwMjP304qeTNTNVYjYn69bfPeDIrr
-	 lS7RhvYXF4dCg9CZ8zAIS1K9t+Ts2W6/CwaJXt+xpLSgkZ0KkEjPZXcp/4WYY1aOjX
-	 KgvvCBalfuTh7MDTCxX/lqDxO0eqA51GFCKXPRmVhjH860W+HS8ZWHfZiUv4Pdg1Ot
-	 NCKtr9f/uT0p7JoxmLwfDWgnAn25r4zqaX1A+yEahv/mz5de0wAQrWh37dAKryhSDf
-	 cNDA/Jg4XwFcxwYpEWDh98BL5zveMpdl6T3nP6EeJ1kkzMzwF5iA0j/fkoFcXeZHyS
-	 WTgYOuBxjFWFA==
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5c151178f0cso4265894e87.0
-        for <imx@lists.linux.dev>; Tue, 17 Nov 2026 02:20:21 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErG055VBrkPgRvwT0ysMyrDL8tOZWagTIEqtzzClrVeulQ/mulsMIsndAVQKweUWWJLQ6Vw=@lists.linux.dev
-X-Gm-Message-State: APuU4Z+HKxFTLZNja4wRlUW8PMfAO4qlZLTCja+K2xltzXTtSvpwR8f4
-	P1ou0ZymtUMBlUSuLZjkg0DkrbeuU2dawt+JZUSE7IXSiZuKBnp0V9Is1OvIEfYqvE6gHaADDy/
-	lJ7mbX9SXYuPNP8ZzZuivGtMCURJeNP4=
-X-Received: by 2002:a05:6512:3c89:b0:5c1:57d3:efd0 with SMTP id
- 2adb3069b0e04-5c170b45aa9mr4736734e87.35.1794910819929; Tue, 17 Nov 2026
- 02:20:19 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=XJOMOQrZ
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2ed08b07213so21683935ad.2
+        for <imx@lists.linux.dev>; Tue, 17 Nov 2026 04:44:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794919489; x=1795524289; darn=lists.linux.dev;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=65x/rmOi9eSRyE50YMLG+5ikwTFST6PY1hiF0uL56W0=;
+        b=XJOMOQrZRUcCBcC+Ur6t1IbGo+yslPuwVxaEAefEiSVC22t3ZwX6qTu3XYPkENaSSV
+         SMEslCADouirf80exCibStzb2Wq1byQVmkMjMgoGYwkiVR11adTt8+JtA7gGeiCpAW72
+         l36uL50wChVWV/LcIELeurb/F8V/xXgdEUFBuDnnUCfVDPtFneacgmjOTc4x7LAmRTyy
+         yvG/vElBz8WNUCKIEeOZ3L3p4AkXki7644xibx6bjCogGlq8sxykotVjrgm75WonV569
+         CSBBzo1yuJYx87vjzH0Avyn/7hVbAd+YAThnLNtKMgk0ZpF3woomUR1lNfQ5RILPLWFV
+         +WYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794919489; x=1795524289;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=65x/rmOi9eSRyE50YMLG+5ikwTFST6PY1hiF0uL56W0=;
+        b=UBBPtoImHkSjMWeS3HReeilNShkjmKeZYL+kGVzZhlWUTYUx4btdCnvAbFwKgpSTtn
+         z1sFcK9JEcQgJn10ELnnVhrcmwbYyyCJ+lbm53SPPS4ssHuY7Yu9O05reYoTqQpJXVlx
+         fYaXTtPMMggbQtnykQw3l6L7+9k1TdK1x4aovC/sDD9tfwWG+7PZ+I5NOLl/1vimUX2l
+         0ynkQ0EHesUjYXfzRERNFy0IDx6efi1Pz3cw2sT9/RugjooPJDBFgxsKAHXyxduw4+Ci
+         rfPs1m96UzMBR8BEv+cCfRTxpLTpTGodTZ1lZVWNoRZLXj/vWahnmCUuBIcUeXemLfob
+         xeyw==
+X-Gm-Message-State: APuU4Z8ggkFMZgcZGHWl3VHHirKO7cxOvT62BPwKSIxTsiyPlWO8Rnkf
+	GiU+MS/NiQllGC5XZbryxKL2Zhwx9d5/3RaEZZ9VMNwwxVHLi/viL9Us
+X-Gm-Gg: AZFdTZe0R1Q84f6pjW2Qe+sWbrFG9X/RdC/uJvCxPOtci1o+KUXCdvBmOwMwFO2/c+V
+	loSnmBuN/o6H9xooRAWPVWtjftAL+1pemFwt+dsQNkkqscGYdAAX9/JJLI0PIhTzer2a70hUgrh
+	4LmlZ+7MrDwlEtgLByXdvDFuegcqLAjidf+kdiOncWzWWIUSmGaDUYAQ4Tqznzu//Twmlo3cVC1
+	YgGIbcy49KQjo9DvqsbxaISLKV1F7EUyfMx/QF4uu9ZBcvIk/t/iZj7YzJRu7SlBr+HINC2HJEj
+	ws4uc+H9Cv6/8u2DRBVBDjN8VzEkbdcbbld3fIyodvszP+HMy8Hq4as52G53sM5uJX1J6rKa6hr
+	nKs5E3FMxVi4ETypahUDexzsmhIJuZGZWHuC+lLHgDZMPOkiEOawitouetYCnjokNtRpRaCkjfz
+	VInpCRaQZ1YansUhuR1yKMk1GRRTEj3vwEQXk6pwvNKFIqkjWi0dbZPiuHX320rP1AfNTAtJhtB
+	qYA6z7+AkCHDWvi8nJEl2PBHtw/0gvfCMgiSKbVl3PJ3EP3T6lSImvFhtldUo6wiLREijJFRxPe
+	nqEtjUUnJ9DaT8U8zvYUrKWYOtN62cFHWw==
+X-Received: by 2002:a17:903:19c8:b0:2df:9655:fe24 with SMTP id d9443c01a7336-2ee0dcd06d5mr119181965ad.30.1794919488900;
+        Tue, 17 Nov 2026 04:44:48 -0800 (PST)
+Received: from [127.0.1.1] ([67.159.246.222])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2efd7a85f1dsm14585725ad.59.2026.11.17.04.44.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Nov 2026 04:44:47 -0800 (PST)
+From: Leonardo Costa <leoreis.costa@gmail.com>
+Subject: [PATCH v2 0/2] Add Toradex DSI to LVDS adapter with the 10.1" V2
+ display
+Date: Tue, 17 Nov 2026 09:44:12 -0300
+Message-Id: <20261117-v2-imx8mm-verdin-add-lvds-v2-v2-0-ecfd237cf7ee@toradex.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -59,44 +91,61 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-References: <20261103-for-upstream-lx2160a-rcw-pinmux-v1-v2-0-3aad0860b984@free.fr>
- <20261103-for-upstream-lx2160a-rcw-pinmux-v1-v2-4-3aad0860b984@free.fr>
- <CAD++jL=Np+_+wTkuLCiqjNY5EBqn5qq8zKTJB6F-=1G0R+7=Ww@mail.gmail.com> <au9YgytCc4TKfETI@l3017727.home>
-In-Reply-To: <au9YgytCc4TKfETI@l3017727.home>
-From: Linus Walleij <linusw@kernel.org>
-Date: Tue, 17 Nov 2026 11:20:05 +0100
-X-Gmail-Original-Message-ID: <CAD++jLnWcVDbh-vf20w4nfvOSZik619XqoEjXTBZ29sJkX-bCQ@mail.gmail.com>
-X-Gm-Features: Aa3M54rAvJrdH2ioBjmTcd53sA32PoIoppu6eV1QG1zyBMjvlTxU-cDEh9WFtc0
-Message-ID: <CAD++jLnWcVDbh-vf20w4nfvOSZik619XqoEjXTBZ29sJkX-bCQ@mail.gmail.com>
-Subject: Re: [PATCH v2 4/5] pinctrl: freescale: add the LX2160A RCW pad-mux driver
-To: Vincent Jardin <vjardin@free.fr>
-Cc: Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
-	Frank Li <Frank.Li@nxp.com>, Jacky Bai <ping.bai@nxp.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, NXP S32 Linux Team <s32@nxp.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, linux-gpio@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, 
-	imx@lists.linux.dev, Vladimir Oltean <vladimir.oltean@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIABxM/GoC/x3MQQqEMAxA0atI1gbaLmLxKuKiTqIGbGdooQji3
+ ae6fHz4FxTJKgXG7oIsVYt+U4PrO/jsIW2Cys3gjCNrLWF1qPH0MWKVzJowMONRuTwlkCe/UBA
+ zGGiLX5ZVz3c/zff9B0l3gv5uAAAA
+To: Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Leonardo Costa <leonardo.costa@toradex.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794919484; l=1590;
+ i=leonardo.costa@toradex.com; s=20261001; h=from:subject:message-id;
+ bh=Fj2m0UsmYRbogE2wB5gnwQa+eW5qWmp45T7j+6XBwIM=;
+ b=l2PR4FEDB+ESaSkJf52gV0k6GKWc9FUD8b8QzlURaMMAOj6dohZg5elkpgnWtzvKi+8fj40LO
+ n7rxq6nv+elD/Y1f1gYBh68+aCmZ0Hq64vyvicESYUrrZ+YW5RC4fxy
+X-Developer-Key: i=leonardo.costa@toradex.com; a=ed25519;
+ pk=4xvoVLDt+NxIz9D8BJHhT0fD43Ig6XgSDw4jRN/gHzk=
 
-On Sat, Nov 7, 2026 at 5:58=E2=80=AFPM Vincent Jardin <vjardin@free.fr> wro=
-te:
+This patch series adds the device tree overlay for the Toradex
+Capacitive Touch Display 10.1" LVDS V2 through the DSI to LVDS bridge on
+the Verdin iMX8M Mini.
 
-> > Can this be applied separately once reviewed?
->
-> I do not see how: this 4th patch needs fsl_guts_rcw_read(), and
-> few other fsl_guts_*() which are from the patch 3.
+It also renames the existing DSI to LVDS adapter with the 10.1" V1 display
+overlay, to keep a consistent naming scheme with the V2 and with the other
+Toradex Displays being introduced.
 
-OK
+Changes from v1:
+- Rename the V1 display overlay to include the 'tdx-' prefix and the
+  '-v1' suffix, to make it clear that this is a Toradex product, and to
+  make the major version explicit.
+- Use the new naming convention for the LVDS V2 display overlay.
+- Add comment explaining the usage of rising edge for TOUCH_INT# in the
+  DSI to LVDS bridge with the 10.1" LVDS V2 display overlay.
 
-> Could an ack of Christophe Leroy be enough on patch 3 to 1...4 could land=
- into the pinctrl tree ?
-> Then, patch 5 could be managed apart.
+Signed-off-by: Leonardo Costa <leonardo.costa@toradex.com>
+---
+Leonardo Costa (2):
+      arm64: dts: freescale: imx8mm-verdin: Rename Toradex display overlays
+      arm64: dts: freescale: imx8mm-verdin: Add Toradex DSI to LVDS adapter with the 10.1" V2 display
 
-OK let's try to do it like that.
+ arch/arm64/boot/dts/freescale/Makefile             |  34 +++---
+ ...dsi-to-lvds-tdx-panel-cap-touch-10inch-v1.dtso} |   0
+ ...-dsi-to-lvds-tdx-panel-cap-touch-10inch-v2.dtso | 134 +++++++++++++++++++++
+ ...8mm-verdin-tdx-panel-cap-touch-10inch-dsi.dtso} |   0
+ ...x8mm-verdin-tdx-panel-cap-touch-7inch-dsi.dtso} |   0
+ 5 files changed, 153 insertions(+), 15 deletions(-)
+---
+base-commit: 33adc96ac217d6e95b7c44ac383c19ca4ae2ff52
+change-id: 20261116-v2-imx8mm-verdin-add-lvds-v2-a6868b6ae070
 
-Yours,
-Linus Walleij
+Best regards,
+-- 
+Leonardo Costa <leonardo.costa@toradex.com>
+
