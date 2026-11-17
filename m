@@ -1,58 +1,58 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.251.105.195
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794952126;
-	b=3YSi7R8Xt60vNhqhwk/Ax9nHE0dhA5udbst0sRO0eYz7cgEopGyyULN06oz7kXP6fnao
-	 m78uvTMcRH2OVe6G4GUjueFYUKi94CAmVuMGQWtpvscY9ZxHVgsrb9789TNjg5B5xmBhz
-	 y4SEu13oVjf5UOCVsrv6zaoRHI6DDkT0HOMEzbPw2NRvGB/4A8JGIj6J8vOcacBbc32Xy
-	 /0HQOkHdfW9WXrc5lhIPEJh6o/nL+9HTPJ/MBvmG5hmH6ZYSC4xw/6etZxky67/s67h6d
-	 7Yojl+KqY7OYqhZUYnWplLUTUYRjwf818VGDZs/EwmVFAHGIcyaxyaX0VGRbhUn1f2w==
+	t=1794952264;
+	b=XR1dUSIe/JkTb5D748z2uj1TdJg01a+YRTDAWVed5xFPg9OqX0pC6Vnwq68+tywPo1oM
+	 w51kHbzt73pmD1L8ZA0zb73xZB0jlQzc5eKyIeMyNo6Rb16+TARRcpF9XsArbiqfX5Nqa
+	 agtwy7OSKHILJ7S4QYPWkP8wngwvVii6lKxNFKAptGBMOduKTLhEpUK1NGkfkyQMoplyl
+	 qAbJ+H8nfI++LdE7cPjck3KaYq0ceSac72PhVscQFx2sKiv/AzqGYdDPjm3RY+P9Y3NxS
+	 k5+mCLs6T/oCa1iFrWUXv3q+SmVnj/BiDEl/LLXVE1SrDDNvC3A5sf5650cLqENIH7A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794952126;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794952264;
 	h=DMARC-Filter:DKIM-Signature:Received:Message-ID:Subject:From:To:Cc:
 	 Date:In-Reply-To:References:Autocrypt:Organization:Content-Type:
 	 User-Agent:MIME-Version;
-	bh=bmfQENYgWZpmGfv2io958u6QZxK/XN9a956gDJqvbJ4=;
-	b=Qit4Dlgds+dH5FPFmiRmgTItUIwniizAl/hj8+Dr3KvQ4+xmxlAhxjmDOS8K0RUwOQF2
-	 LSqE/FJNSl8B5IIa/Efn8KER6RkVOitPbSAVxowjBofpDdMX53ZFZLqwTfZBPtApFNeMO
-	 e+bUjolmh0RtOwkCNaLVEC/3fp/gYi4UqjzhB1I3xujfINHKReJ/7dOKHs5zp3/xVvTxY
-	 uKfBTkw7tUzTAa35xeEseGsap+qfOouh/rZRSXh2VBTgStGFWZzFhv4V2DNbk+WkBVWpz
-	 4r0xWiFdgI7PnTXbcZUeC9ikVPEy7zk/9e/C1UC2X7JLN3jnIBU3kl+f7GFPj3z9WKQ==
+	bh=uOYZ3YUnApgAE+Wv9P1FnmCQYiPIee7XKpJASXihcf4=;
+	b=ZxnQBnzNjZcJkKAgrqpVKu/7aMKDWp26e1ATYnNQbEMwkbOgyYYEAwgctJXeY7MLUCGi
+	 E8RRKzRxVMu63x56RTpqeX2E2i274MDYnn9igYYxuSMLkolVKUHhN/Uumh8it62fB+/Vn
+	 zgLosbu0swFU7A8jKbJQflXC/CYZ/tyNzjlenbKUmCOYxAOTT8wana9+dLGho+3bvL30Q
+	 lCxbCqFANnRQp8kueQauP/3Lcuza195aDc3LmUWtChXhsRwBMdBKuJDhH9JzqrZzrfwK4
+	 gMFbqLNnFu6xIufo3ZzhVEaHY7wJb8QKewFPuGY5H8/YUorm+04j1FIAcM+gvRB7OgQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=collabora.com;
 	spf=pass smtp.mailfrom=collabora.com;
-	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=DCbgpcrp;
+	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=bW1WtPPL;
 	arc=none smtp.remote-ip=148.251.105.195
 Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B924606A31C
-	for <imx@lists.linux.dev>; Tue, 17 Nov 2026 21:48:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2B924606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8163606A31C
+	for <imx@lists.linux.dev>; Tue, 17 Nov 2026 21:51:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A8163606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=DCbgpcrp
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=bW1WtPPL
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1794952123;
-	bh=bmfQENYgWZpmGfv2io958u6QZxK/XN9a956gDJqvbJ4=;
+	s=mail; t=1794952261;
+	bh=uOYZ3YUnApgAE+Wv9P1FnmCQYiPIee7XKpJASXihcf4=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=DCbgpcrpKbP9Wj0tG+57kXnefBUUMqgSXeCtWGCGDmBn112uhsB3BezV3aKZydZ+C
-	 FwYCaUmXcIA8aLi3bzkR2VAN5cfAtIjjimu8aNj6h+oNKZTQocRCmAlKVsvqb7xH9Y
-	 g2x7TOd3OsZ0Ai1q2hJLTeO1r9JTIzG4As7fMEJxDL1s3WFTUVYiQvvPXJR/ecO7nR
-	 HZ7tbY+T0Kcx3n7BXG9mFqrN/mmrcrdKLvOTm8OQU8JSps6yljTMm3QcbQYuqmBECa
-	 mSM2sxa06WF87psuqH0i4z2/YmpNnjtIYENsbWbnrdy7Cm+rPNh9h2IcqFsXNxuSbE
-	 HsC8h2h/THBlw==
+	b=bW1WtPPLvbXoAYI3Ztps0gKSqqfIfW3pUSLErv0E8g8kaRAGtFdC9xepCppn68AFz
+	 GTUTZXSICFEdDvY7Bxs++Ns1CjPqcjqYeFAJhg6Fdz6/L5Q8jlozmokrAVCaO4ix1k
+	 4vGv74cipL6KA07OmJidjxGkTh1sPmCoCKj+XIHUITFn/onmTVshGAVXXaKH8Iourv
+	 WIvRnzN9pa6GiCDqjV9JsWlGICiS0j1b3dVY5ls/LLFOxkTEg4h6Cr5VKaW8Ozmdku
+	 mVW6NYKdNU04yzdFfAUwm2b/+hlo2yTIEmBQf5oJPSQZ5NLos3XygCViplSvrkhEXX
+	 wwxP8dWnfZpRg==
 Received: from [100.64.0.214] (unknown [100.64.0.214])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange secp256r1)
+	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: nicolas)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 1CF1417E02F2;
-	Tue, 17 Nov 2026 22:48:41 +0100 (CET)
-Message-ID: <a1aa59b44904a3b093ca02f86ee1a98f6c572583.camel@collabora.com>
-Subject: Re: [PATCH 10/14] media: hantro: use hantro_decoded_buffer only for
- dst_vq
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id BD5D717E02F2;
+	Tue, 17 Nov 2026 22:50:59 +0100 (CET)
+Message-ID: <632f258f80a3b20d6edda600772e95a5c7735735.camel@collabora.com>
+Subject: Re: [PATCH 11/14] media: verisilicon: Add common encoder parm and
+ frameintervals ioctls
 From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
 To: Paul Kocialkowski <paulk@sys-base.io>, devicetree@vger.kernel.org, 
 	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
@@ -65,10 +65,10 @@ Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Mauro Carvalho Chehab <mchehab@kernel.org>, Hans Verkuil	
  <hverkuil@kernel.org>, Marco Felsch <m.felsch@pengutronix.de>, Michael
  Tretter	 <m.tretter@pengutronix.de>
-Date: Tue, 17 Nov 2026 16:48:40 -0500
-In-Reply-To: <20260522101653.2565125-11-paulk@sys-base.io>
+Date: Tue, 17 Nov 2026 16:50:58 -0500
+In-Reply-To: <20260522101653.2565125-12-paulk@sys-base.io>
 References: <20260522101653.2565125-1-paulk@sys-base.io>
-	 <20260522101653.2565125-11-paulk@sys-base.io>
+	 <20260522101653.2565125-12-paulk@sys-base.io>
 Autocrypt: addr=nicolas.dufresne@collabora.com; prefer-encrypt=mutual;
  keydata=mDMEaCN2ixYJKwYBBAHaRw8BAQdAM0EHepTful3JOIzcPv6ekHOenE1u0vDG1gdHFrChD
  /e0J05pY29sYXMgRHVmcmVzbmUgPG5pY29sYXNAbmR1ZnJlc25lLmNhPoicBBMWCgBEAhsDBQsJCA
@@ -84,7 +84,7 @@ Autocrypt: addr=nicolas.dufresne@collabora.com; prefer-encrypt=mutual;
  bRLv9QjuqsE6oQZra/RB4widZPvphs78H0P6NmpIJ
 Organization: Collabora Canada
 Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-nLh/UB/KObZ+4VCcD/xs"
+	protocol="application/pgp-signature"; boundary="=-31nN73e0jiIWmYgoHCNh"
 User-Agent: Evolution 3.62.1 (3.62.1-1.fc45) 
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -96,7 +96,7 @@ List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
 
---=-nLh/UB/KObZ+4VCcD/xs
+--=-31nN73e0jiIWmYgoHCNh
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -104,32 +104,27 @@ Hi,
 
 Le vendredi 22 mai 2026 =C3=A0 12:16 +0200, Paul Kocialkowski a =C3=A9crit=
 =C2=A0:
-> From: Marco Felsch <m.felsch@pengutronix.de>
+> This introduces the required encoder ioctls for configuring the
+> frame rate (via the parm timeperframe field) and enumerating available
+> frame rates (via enum_frameintervals) for the encoder.
 >=20
-> The dst_vq buffer size for encoders should not use the size of the
-> 'hantro_decoded_buffer'. Make use of 'v4l2_m2m_buffer' instead till some
-> encoder requires pre buffer extra data.
->=20
-> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+> Signed-off-by: Paul Kocialkowski <paulk@sys-base.io>
+
+Perhaps add a word or two about what it is used for (rate control right?).
 
 Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
 
-Its independent, so I picked it and added a Fixes tag.
-
-cheers,
-Nicolas
-
---=-nLh/UB/KObZ+4VCcD/xs
+--=-31nN73e0jiIWmYgoHCNh
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: This is a digitally signed message part
 Content-Transfer-Encoding: 7bit
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCavzLuAAKCRDZQZRRKWBy
-9HeFAP4oHdSCfI8KY84Av78wYv28NgXY9eBk1eY2xYRycAHPOwD/RnGf91mn/T5V
-d3DQ6MjLkJ2QhoahVS6bvxw7omKvbAg=
-=3IEk
+iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCavzMQgAKCRDZQZRRKWBy
+9DylAQDgvmfKrtRkUANNPHiNDtUyH56zB5LxGC+9R+k4oMPkYQD+N5a2pBuwNnUX
+LTCWo+50B8YJ+2lyaFgk6ENf7j4GEgM=
+=X2W/
 -----END PGP SIGNATURE-----
 
---=-nLh/UB/KObZ+4VCcD/xs--
+--=-31nN73e0jiIWmYgoHCNh--
