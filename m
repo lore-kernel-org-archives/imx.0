@@ -1,111 +1,108 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.130.65
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794934324;
-	b=VuARd4Mvv+2fJ2TEB8u2pz7P7yjRy3AyQJSJlnzBAXyq2J/AP5hKQXi5BBkRrfQ08vY1
-	 Zz0RTbMacWVMbcGqiLD6XannniX6vFKpzqKrGcQRg/Cj2vHPZUBMFcOgZQO2DEWg/i2w4
-	 7E0YKdrcCH/EEyo42CqQ1mEItqcj2dj+d3d036wEBxRG1aMTtzIO1RQ9iwbdKjHN0OVUm
-	 WTY3mMna9VdSvzkIlGmvWs0wIN+8hjr+LjcwMt8a9arbhukyNoPxSgsdCGnjdqCUG+3uq
-	 jragc6oNEv6F/9SuchXI3hj6QWKK6qm1WH7TiOmc87rCEYyQ4fEv08mx7k+iafhL3ug==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794934324;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:Content-Type:Content-Disposition:
-	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=dVyO6p3THBEdpg71tAu/mvRTYtcQze6lRLEq/wqk/xE=;
-	b=eI7ez15RbfDFVDiu6Ra/qtrUeQzUBGWkRC+I2A17NZWRTJri66LzI9TsEnHSW/iqbpCr
-	 LOw1H0XoNwk5l4CtwUJnTs1yMAhoX3eVA5Vi2yqnB65fD6tG3eak4w/g8v6EOvBcB3Sr3
-	 qZUNiLsrOB2LWEkdnzc9gA7iE5/Mn1u74Ub190Q08gvV6WpjxGAXQETsQfe5e2pOGt1tk
-	 ZSOeHDPfxuOPqjNjrG2TW1/Zq1WcMm0dsyDlf6rrrU7fbFXvYGv/cjqoc3Kd57FvPyOEZ
-	 3UB3d3ek5N5HAvzSgzjMeEvFS1iGUhAbzum82fc/nAKg0soJsXbylz+Ri/fABLStgHw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.nxp.com;
-	spf=pass smtp.mailfrom=oss.nxp.com;
-	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=Z9NkscsY;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.130.65
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011065.outbound.protection.outlook.com [40.107.130.65])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.44
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794936688;
+	b=otqi5tEOUfeYhlyph47NIjK9snOyAMbg6uKIB0KG+jL5h0wRhRxLQIpk68XLJhJK7/qp
+	 bOz7ijiER6qQG14KCDg8fMWzM3PsqaUag82gmjk1SZjmYjbQEV9sNz3B6jsTwx/YSMiei
+	 QrwvRry3cQwc5YF8iPBidbDQCXWDVcOKLKwKn9wAmbpT/Zikx17GLGStrgrzuIr1D6TKH
+	 z/bJk2gEVcC95yLfYC4tfaMW5tYcnL4V6REPcOy81+ZngYgje3Df3YYjTzgsHENfQ2iQt
+	 UzlCKrcXTEaKT+uXle+aI5iL3m0OYRKJhtoJYOl5cb4vY30+8kgLVam3NKD7vPvjJaw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794936688;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=5cYrB3RoftR9+ZJufZSneOA3rg0mkVzJBEfjOWndr34=;
+	b=rQC4gj4GUk3J65WmhmxkhJjNXkQ4YLNXKWAy8Rdqs7E3FqMIOoTWBTImRNvF6Q/jCB4N
+	 e2QtPoA7laDMcZXvXvNsaes4GbFv2PWz3hvBnVT9Q7+sLusE177yoX3UqYH4mJFiIZiVa
+	 5iWymJrqQyABNrWe2mVHpzkmmJcTO6v18wHptwBtCSWUT6GKrubT4iiPNGHn90a3RSsNh
+	 HlNmIjhXNOQXvjYh2cUopONq5ytbm2lL58Mvf24TD4Sitk95p+z3tWJWkPv0jsThR4XlB
+	 yXHV16fsn7vQgwV/w5aOasXRZewSNpzpWt/2C/8zK9FeDb4maIdi+cdXKsLRTzsTb/A==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=linaro.org;
+	spf=pass smtp.mailfrom=linaro.org;
+	dkim=pass header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=WuyJuN+8;
+	arc=none smtp.remote-ip=209.85.216.44
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD1F6606A32C;
-	Tue, 17 Nov 2026 16:52:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DD1F6606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2EEC606A332
+	for <imx@lists.linux.dev>; Tue, 17 Nov 2026 17:31:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F2EEC606A332
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=Z9NkscsY
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vVoP0Q/stD2JD5joPEj8Yxcv7z5HsriVPfZs26k/I1Q0Yx8AFp9FzDD1oY3Mf17JcEN1IWa6xGLb5HQH2N3PHVLdZKn4dml0hLUULzjmku37la63gq4J/1ENxPqSPR2HNt4kXF7Gi1kEyAkugGdO1K9NkFDMO8UYbH6zSs+/18jlldUFaxopzby9Gc5QHP1NQK63mCPdGBk+b2KmdclhvluBtjzA8tV57iYqELxejd1R8ORywcXfd6LuQspnEbuBZVkocVOazCEZQTw2KjZN4Ny7ofdTi9IccUR33sLRGghi4i0NfYDPNIqua/nHQ4k/JZE6NdvRLfPjcjzFf0UixQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dVyO6p3THBEdpg71tAu/mvRTYtcQze6lRLEq/wqk/xE=;
- b=Eg4acNsZk1m1vNUnUMLw03bSdcwFhIRNbpH1NLllPUtM2eQbFUoflutzxETGJVr6QO1V8v33Zix27wwJXeSbDF78BzKe4WTcZRWrFUbQ++SN9vEGGjdzmVqJY/8iYyIKcfZSJEXJtkRi2UsKEKeCnM+n7bW82cGiGGdjZhk/yiTY5Ga9q9kTgf680Vo3JzVJuvoSgbDON3YWg4xGZrAxkuXMEx4Mjtz/NxnKb8nB3N/wxwhXcWOQ8H30OJpLGd38huLZ6IIvRzZLQTNJVuFVJllAa/uxvBVkTQni0bw+RncTTQNN8KPAJfz0zAi5EUj+WxzR1y2iud46LwAj7xOCgg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dVyO6p3THBEdpg71tAu/mvRTYtcQze6lRLEq/wqk/xE=;
- b=Z9NkscsYRJVF9ug61yqXN8D3f0brAehMeFsOA9cwDU+xm56BwI2BUhlPRDXuyGQe79wGq74Wmtzd1ebCST+ghmgh6OXOCNEjwgSFOpXkuOSbQs41CU/dTa+l9n9WJDxY9Sv8FYKwfcFxuRBV5UtOaORvUAQFcMbkdhoeyMh6USOiZmRJSjxwg550zLavUCtpGiV5yonAh00FTauoWMK7IlxFTyVMUoafPpQtHCmw3GwiOjexfGBQ8Qg0lEn6HXzSkhq2hj+REgsfbHgyiEstxlx+cGViPXgp8Kr7XM0XpgKJBQyFmM9ODDRXAecviseBpw5/Peav+9eTFL4YdNwgvQ==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from MI3PR04MB12438.eurprd04.prod.outlook.com (2603:10a6:290:76::14)
- by PR3PR04MB7418.eurprd04.prod.outlook.com (2603:10a6:102:8b::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.14; Tue, 17 Nov
- 2026 16:52:00 +0000
-Received: from MI3PR04MB12438.eurprd04.prod.outlook.com
- ([fe80::c715:c32:8bb1:b70b]) by MI3PR04MB12438.eurprd04.prod.outlook.com
- ([fe80::c715:c32:8bb1:b70b%4]) with mapi id 15.21.0615.013; Tue, 17 Nov 2026
- 16:52:00 +0000
-Date: Tue, 17 Nov 2026 10:51:47 -0600
-From: Frank Li <Frank.li@oss.nxp.com>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Peng Fan <peng.fan@linux.dev>, "Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
-	Frank Li <Frank.Li@nxp.com>, Vinod Koul <vkoul@kernel.org>,
-	"Joerg Roedel (AMD)" <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	Laxman Dewangan <ldewangan@nvidia.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Thierry Reding <thierry.reding@kernel.org>,
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=WuyJuN+8
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-3b155f50c24so5792021a91.3
+        for <imx@lists.linux.dev>; Tue, 17 Nov 2026 09:31:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1794936687; x=1795541487; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=5cYrB3RoftR9+ZJufZSneOA3rg0mkVzJBEfjOWndr34=;
+        b=WuyJuN+8wI++wNqP+Hkl1fKK78QLPmpDOAdS4mLLV/HQUqp1vJVtuPl8pF3ncCzUPe
+         5AtKPryGOKCQBa/7KXxcDJtFbO0sCk+W2oQdfSOHGowjDL7h9fW6p+rWbpqCn3puP4iy
+         bS4BnC2wZmHOmGbdVx/BpkVF1Shlj+itdsDNVlGp46Ilb1zzopRdeunvFkyEb/08u08O
+         JFl5m16HsWOuaJIAy7Yz04OPTB5TFoZqkyA3tcgsj0mOcqzjvtYci9m4nflPAhB0Neom
+         5TElysmjIoTNmZ9SkRzoqDw7SOeogU/1eSr0SNJxDs9QM5qG5ODgqcfW/zmke/QyVfJD
+         ruiw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794936687; x=1795541487;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=5cYrB3RoftR9+ZJufZSneOA3rg0mkVzJBEfjOWndr34=;
+        b=HoflucKlitoPwn40HC9MLBBUVncFPJljUakPYUNx2o2/H6sgmnbcPnBvn+Sx1+NI9H
+         6MKJgdSJjV5bDRnEAmD8V6UIopc6kUjv4uuV1V0s+Tvpa6P1+O+R7xjMd37hGjnHhIL5
+         AkxJBZKd9LTTExL5inKXOxS/Groqe8lfGEcA8bOWnjt54gUkMX/fYKuZdK9hCGPKi23M
+         nLqMH6UDwP93BU8AJP5Yy7xjALpz5Mj81GU4uDYx+fnJ2l7WO75dHX6ZxjKq/2M00U1B
+         /Sdul8RYjrRNwLJfkh3Ie0svxc/XAYbsaVw02Y2YPzGaMii2H/j468cGBpXIvJ1RZfrK
+         1z8g==
+X-Forwarded-Encrypted: i=1; AL+hErGleGXsIVTUjWL+fKlx9dZG1izoo3Q5w12hTjCglv2+bhA7N24/gPEVC0bOAXFy8rAnXps=@lists.linux.dev
+X-Gm-Message-State: APuU4Z9jWIHJZNg5K3yNj/LOd28WEYgtO5GE3IQ5Qo7uSw2SM+xVds5Q
+	kn30axygCxZRsXn7FNktwvuB6vu3spG4XO1FcxvW866WgG2Tztk/GPmrDPzRr+ntoIU=
+X-Gm-Gg: AZFdTZc51wTMTGQShE3dCd4T8nghEcNLxgKYnzVQuama5II8YMYuKdB19Hwik9k93Ps
+	kcVldn9ydYOj2Nque3TB8RderjLOZp4rro2YKJ/yDY2u2PbT1fTQ0jO0ZaV/7UXrlPo5hFGoCPo
+	zxu+SNiQbTZ2cgJD3TfhjJ2NIMeiIE1zDOLHuyfOhcua8ZBCoO/SZu8pMO54kCgunsUaa4VtpgZ
+	uVZKW93gzVblr6Ljb0zmxLYEF5bd3ebt6tvNmLyn4rMZa3bkc/bThlJF2CIr2qRg4We1dPD+cd3
+	ZRv81xzhIcH37NnkqZXZ2V7T4y5ECniI8ZSzWlKENH5egkC82UQWWbKXezruC/9/2U27uUtpzMP
+	82BWROpJmsiZ5FQOIfRoXGWH9xbt3WBpq2jvx3GQyXqChQJo+yPIWZbKo54GWC6hl0S9udqZI/J
+	ntqiirAfpGFfL33dXVYgAktWAs/TabYHQ+BA4r4G8l8IUuWl/+JjltXs2CZouyEAajDqVvLGeab
+	5WL3hnzFvHvVfnCsrM/bnVyNEiJ/l7uDEteqdyjZHfsnZzd4jgUM/drticODhgTQ/IBYgA8ZZ+3
+	DBIiLclHZeHNRJu4nF4CqAyA/SykrxuEOmvP+JDHX8hvZUTTB0k+ag==
+X-Received: by 2002:a17:90b:3892:b0:3ac:9f24:44be with SMTP id 98e67ed59e1d1-3b3d07becb8mr123850a91.29.1794936686801;
+        Tue, 17 Nov 2026 09:31:26 -0800 (PST)
+Received: from p14s ([2604:3d09:148c:c800:61f7:13ac:b599:b52c])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b3abeaf532sm4936578a91.14.2026.11.17.09.31.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Nov 2026 09:31:26 -0800 (PST)
+Date: Tue, 17 Nov 2026 11:31:23 -0600
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
+To: Francesco Valla <francesco@valla.it>
+Cc: Bjorn Andersson <andersson@kernel.org>, Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>, Frank Li <Frank.Li@nxp.com>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@kernel.org>,
-	Larisa IIeana Grigore <larisa.grigore@nxp.com>, imx@lists.linux.dev,
-	dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org,
-	iommu@lists.linux.dev, linux-tegra@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH v6 0/9] dmaengine: add DMA channel bus and fsl-edma
- per-channel IOMMU support
-Message-ID: <avyGI6QmuZ3DUqc9@SMW015318>
-References: <20261112-edma-iommu-v3-v6-0-b038edb8ce6f@nxp.com>
- <20261116193021.GB2452510@ziepe.ca>
- <avwQl18smAW4R6ec@fedora>
- <20261117130005.GC2606445@ziepe.ca>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261117130005.GC2606445@ziepe.ca>
-X-ClientProxiedBy: PH8PR02CA0033.namprd02.prod.outlook.com
- (2603:10b6:510:2da::6) To MI3PR04MB12438.eurprd04.prod.outlook.com
- (2603:10a6:290:76::14)
+	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-hardening@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-doc@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH RFC v2 08/11] Documentation: remoteproc: expand virtio
+ support section
+Message-ID: <avyPa5rSx9rhf9yO@p14s>
+References: <20261102-remoteproc_virtio_map-v2-0-26b300e01c62@valla.it>
+ <20261102-remoteproc_virtio_map-v2-8-26b300e01c62@valla.it>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -115,145 +112,140 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|PR3PR04MB7418:EE_
-X-MS-Office365-Filtering-Correlation-Id: 870379bf-55ad-4163-055d-08df44cb1921
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|23010399003|19092799006|7416014|376014|1800799024|22082099003|18002099003|11063799006|4143699003|56012099006|261022075727099003|261026121527099003|261028144727099003|10067099003|261021123027099003|261026140227099003|261009223027099003|261022105027099003;
-X-Microsoft-Antispam-Message-Info:
-	SazQsnZKPFNZdqw7ek1CuWN+pYYD1Doq79Bd/iNYBym5lJAH1RHVt30CG6LGMzqtaTCrrGhnrP44yRl15x1yS+Nfqy2+Q/biVxURoNE0NatfS7b/01Wg5wvPwFeDjzWFaRFszLC8sfJBRaJyjk0hd8q15SvUYh5WLbm36ynz7khpZFcyh2J5kMnjtNSAErAXTfhpKoqzzwsQYuUhxNOM7J6fQYg04/B1Z8VSN7dSxENIj7VdOAwGlvlwNiQAzWKpEfAf/MF5QVzEeUjX5LL56SwCXKh8EhuGXSP5Ny7FGrINvw5hsls32mxFw/EFO0Q2ztGUk2xSYeyzzn83VLfl2JF9D2IeoI14nFLwUHuEtkQy2McS4j1AEKABfUu+9nxc+F4DVu7pzcjldp5PPqtzITZ7APER/6EnRVE3oFScUP27bZiUP6tUUVQzliRf4ZHVvVU40gpiJI/zG0fWBu+iGCsIxV7Ohii870e7BlhqVeri7bC9h4glpbZVPCGdhoR0PL5Po5RyYP2F22nIOzDBNiaFDSm7gI5wprtauiPX58zieYWMezYFuB7j1sCt9Gjo6M6uSdrnTh+ajsU0HRMSHg9wQle9nG3Ob6cJIpcHzLJMAf3Waqko2ZpGTTPlZjNE
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(19092799006)(7416014)(376014)(1800799024)(22082099003)(18002099003)(11063799006)(4143699003)(56012099006)(261022075727099003)(261026121527099003)(261028144727099003)(10067099003)(261021123027099003)(261026140227099003)(261009223027099003)(261022105027099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?MeWH8g4nZGQLSHfaoCHVd1zh3gtQsafT313wXN2wqFivdHKSqZS/jkam4iJz?=
- =?us-ascii?Q?Y00M0JLAQQauExAnIgzVFbvcBGYKmKpGMrMxjqkfALQ76slKFTKkhZJlBQlI?=
- =?us-ascii?Q?ekjOmCAzpVNW3Wn0IuSpvgqeMs5Ax9zHBeBrmuif4D0QXsbYu89wURu9fTcf?=
- =?us-ascii?Q?7BsvyuGT03r6rH+eHrN+43TIB1eUQKv4HFkunqO4P6G8XILzpgCyfIdJwEWV?=
- =?us-ascii?Q?rsrXPkQYuWKCNbTFGIXusD9W8o0yYTFI8He7GKRP4Xp/B2cRNwpcyBh3Ek+2?=
- =?us-ascii?Q?EOxr2DBSCqk/kmv1lJ35MRDNkyDo1HeU+0HKmhsPKroOzdi3Y7aYSD0NCY2t?=
- =?us-ascii?Q?ZynHGvRoueIF3Zc4Bj0B2l80uzJ5RWIf7jjZlHA33I21ihKS4A9WQl/VasHX?=
- =?us-ascii?Q?MIqc9PCX9uzPU3PePi8L2Pl8TruNzsYmOGGweYpOMxtrInunDuiaO0oaBS0n?=
- =?us-ascii?Q?EEsdCXA7bjji/5DHLJB6ejaqhD84FMXUTbW3Hv6KhFukpTNODX5H2KmyUxxQ?=
- =?us-ascii?Q?i+ACJ0fvIUxGHBZMgIuooZY8+2EYToXh/9iYyjDleiNe8ETA7sGjvIwFWqB6?=
- =?us-ascii?Q?383QCWgJqgFYIAvWCn71PsRFqXmqDizAB7a7T0C6HCgkhk92KiQQsEY3ytwc?=
- =?us-ascii?Q?fpC2DDjnsFC4LGRz7N+vqT5GRpVyAub8ZH4FM/23nO+wE0uxw/LGjpFa8OVy?=
- =?us-ascii?Q?jskcgbSG3rNjQVM3xQM5i6g7LqrVbPqGmEfmYK2OMoaEhu/8wcPVowj1Gws3?=
- =?us-ascii?Q?e1R4z6BiE+G0G7tsnlc89gqUt2HuzuWNq5Uj+mc5W12iEGqQ5Y7ZO9fAgbvf?=
- =?us-ascii?Q?nJ8rMVxSHNfAb3QlFUzPkcrV0YYAJinhZ/IDsctdt/eRtmCX4mzpGW5xu2RX?=
- =?us-ascii?Q?M5Y1hupHhI48JrLVNrqQiRfXCmX2dKsb2a2zUTO4FicWFrCnOIeazUyh4sFm?=
- =?us-ascii?Q?Ql4sz9aCGXsLnTKF7DbxkD9rwh84oBqQihNLvivdRYZfkk41uX6o7kF8e6Fj?=
- =?us-ascii?Q?n8dlEvh7x0uAD+1n9JHvNI+pNkkT9LvorUA5eqNyiA9pTQi4kQ2zPG35FXeT?=
- =?us-ascii?Q?IUC5Uj6YaMA4hUx1AuSBYuDHV9J9BRX+zaQH+oS/gsKR6DgDDjIegAJAifdm?=
- =?us-ascii?Q?rkLGL38QgcSjR1Hz9GG9psY/ZDxYCUYmWgH1R2PxRBoEG0HdQLypTypFsEDm?=
- =?us-ascii?Q?3q7JIYw9U0SDAlz9GsEleoh0nrlMMFn5TUNqDiqIrnrhZiMlTtFHQLRdcAcD?=
- =?us-ascii?Q?jIT+cnQl4+4gMoJKzbo6O6NBFU3QyvZfwlztjy3hTiKSpoP/cH8oi2gGbEJl?=
- =?us-ascii?Q?330ITKeCOv6J5sSM1hEt7nYQwAi0FpN/tg3IwnAnrf6oN08gjNmp5bOcqR/4?=
- =?us-ascii?Q?65EafpfRx+yfSlp54ILL4p3ALtjXS8jXu4sdiTDMwwgf2SE/XgB8ZdxyD6ju?=
- =?us-ascii?Q?Pv0DH5b/x7MZdrEbWkoSdsV6yj6ItaF48GYUUoal9uJgs1LpeOG6zSDX2QAe?=
- =?us-ascii?Q?Flp9hUopU5Wuh4D6VFU/xNYBvTEEGgdRlzESbTbw5QH2sIIOC29fRFJCSHX0?=
- =?us-ascii?Q?0OPkAnY4e1IKu8dt4B7BhrX7Du2WfrERx3J8t+N6XfeD+q8kbdJPfGEOdqDu?=
- =?us-ascii?Q?mLyKrX1oWchsMT6S32Ebf9jeOYqsPij3AVDWKzsotrFqamRlTFu2Z4upEH/h?=
- =?us-ascii?Q?RcoTeGLYla7X7rHcZVLHvPtrf3pjM283Lx0iqlr1Ow+imV/nzHPr9hX0CqXe?=
- =?us-ascii?Q?sBl9jXVpR1pfeFTgdsprJ5Gn7Zu+6n6RXehH8l7enXH1aADJU4vi?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 870379bf-55ad-4163-055d-08df44cb1921
-X-MS-Exchange-CrossTenant-AuthSource: MI3PR04MB12438.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Nov 2026 16:52:00.2739
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: PfEMMDNhmuDH+xggEhbSqf9/onhTgWgB261YnKlVPYC2bdB94VtD6I7a5ebTHQOym2H1qgFc++r7sSoOioBmeGJVCw1FGyle3WSHXMqvuuA34SJWbdF/5QQLSmkBQNE2
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR3PR04MB7418
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261102-remoteproc_virtio_map-v2-8-26b300e01c62@valla.it>
 
-On Tue, Nov 17, 2026 at 09:00:05AM -0400, Jason Gunthorpe wrote:
-> [You don't often get email from jgg@ziepe.ca. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
->
-> On Tue, Nov 17, 2026 at 04:30:15PM +0800, Peng Fan wrote:
-> > On Mon, Nov 16, 2026 at 03:30:21PM -0400, Jason Gunthorpe wrote:
-> > >On Thu, Nov 12, 2026 at 03:53:03PM +0800, Peng Fan (OSS) wrote:
-> > >> I used iommu-map for eDMA, but iommu experts rejected it:
-> > >> "Using iommu-map to describe synthetic dma_chan_dev devices that the
-> > >> kernel creates is the same kind of DT abuse from over here:"
-> > >> More info: https://lore.kernel.org/all/20260917144804.GI3196566@ziepe.ca/
-> > >>
-> > >> So I followed here [2] as Krzysztof wrote for QCOM VPU:
-> > >> "Thanks Jason for context and detailed arguments. Robin did not chime in
-> > >> yet, but from what I understood the DT-child-node approach will be the
-> > >> way we should go here.
-> > >>
-> > >> I accept above point of view and I am fine with this, thus Vishnu and
-> > >> Vikash - please go ahead with DT-child-node solution we had some time ago."
-> > >> [2] https://lore.kernel.org/linux-iommu/c7b956a9-d3e8-4e18-b780-5d08f5cd2ca1@kernel.org/
-> > >>
-> > >> This series adds per-channel DT child node support to fsl-edma and, as a
-> > >> prerequisite, introduces a proper bus for DMA channel devices.
-> > >
-> > >To be fair this is discouraged too, now that I've seen 3-4 people
-> > >trying to do exactly the same thing I'm not as positive about the
-> > >DT-child-node hack.
-> >
-> > I may not describe it clear in cover-letter.
-> >
-> > I understand the concern. Let me explain why I believe it is justified here
-> > rather than a hack.
-> >
-> > On i.MX eDMA each channel has its own interrupt, its own register region,
-> > and on i.MX8QM even its own power domain. Each channel may also have its
-> > own Stream ID, or share one when SIDs are scarce. These are genuine
-> > per-channel hardware resources, not software fiction.
-> >
-> > In dmaengine each channel is already modeled as a channel device (see
-> > dmaengine_chan_dev()), and this series puts those devices on a real bus
-> > (dmaengine_chan_bus_type) as a prerequisite. The DT child node simply
-> > describes that existing device, so its reg/interrupts/power-domains/iommus
-> > are attached per channel instead of as index-matched flat lists on the
-> > controller.
->
-> If they are real devices then why can't they come out as platform
-> devices?
+On Mon, Nov 02, 2026 at 12:26:45AM +0100, Francesco Valla wrote:
+> Expand the section on virtio support over remoteproc with details on
+> memory allocation setup and constraints.
+> 
+> Signed-off-by: Francesco Valla <francesco@valla.it>
+> ---
+>  Documentation/staging/remoteproc.rst | 99 +++++++++++++++++++++++++++++++++++-
+>  1 file changed, 98 insertions(+), 1 deletion(-)
+> 
+> diff --git a/Documentation/staging/remoteproc.rst b/Documentation/staging/remoteproc.rst
+> index c117b060e76c..4b42ed582fb4 100644
+> --- a/Documentation/staging/remoteproc.rst
+> +++ b/Documentation/staging/remoteproc.rst
+> @@ -354,7 +354,104 @@ it supports. A firmware may support any number of virtio devices, and
+>  of any type (a single remote processor can also easily support several
+>  rpmsg virtio devices this way, if desired).
+>  
+> +Memory carveouts
+> +----------------
+> +
+> +For a virtio device at position ``X`` among the RSC_VDEV resources declared by
+> +the resource table, the remoteproc framework will search for memory carveouts
+> +for:
+> +
+> +* all the vrings the specific virtio device requires (as ``vdevXvringY``);
+> +* the memory area to allocate communication buffers from (as ``vdevXbuffer``).
+> +
+> +The carveouts can be provided by the remote processor itself as RSC_CARVEOUT
+> +resources inside the resource table and/or supplied by the remoteproc driver
+> +and will be indexed by their name.
 
-It cause complex when consumer to bindle channel dynmatically.
+The remoteproce driver doesn't supply carvouts, it gets them from the device
+tree.
 
-for example:
+> +If a carveout with the same name is provided through both means, the one
+> +supplied by the remote processor should be marked as dynamically allocable,
+> +i.e., with the device address set to ``FW_RSC_ADDR_ANY`` (-1).
+> +
 
-consumer_A
-{
-	dmas = <&dma_provider ID>;
-}
+Right, as per my comment in the previous patch, carveouts at the virtio level
+should be distinct from those declared at the remote processor level.  Hopefully
+this will keep the remoteproc core simple and make it easy to differentiate
+between code paths that handle legacy and authentic rproc-virtio devices.
 
-if each channel is platform devices,
-
-consumer_A
-{
-        dmas = <&dma_provider_chan0 ID>;
-}
-
-Consumer_A will have to bindle to chan0. Actually, dma engine support bind
-to any free channel. It will be problem when there are not enough channels
-for all peripheral.
-
-
->
-> I think you are overstating how independent they are. Many single
-> devices have per "channel" resources like MMIO and IRQs. That's
-> totally normal. It doesn't make the sub resources independent devices.
->
-> AFAICT what you have here is some HW designer used SID where they
-> should have used SSID and you are trying to hack DT to make that
-> usable because Linux does not support a SID as SSID model today.
->
-> Again, since this is the 3rd - 4th case like this, it seems like a
-> popular hardware choice and we should try to do better to make Linux
-> support if we can.
-
-What's your prefer?
-
-Frank
-
->
-> Jason
+> +If a ``vdevXvringY`` carveout is not provided, the remoteproc framework will
+> +try to allocate it using dma_alloc_coherent(), which will resort to allocate it
+> +either from the first ``restricted-dma-pool`` region associated to the virtio
+> +device's parent (i.e., the remote processor device), if present, or the global
+> +DMA pool.
+> +
+> +.. WARNING::
+> +
+> +    This fallback mechanism can result in a vring being allocated using a
+> +    ``vdevXbuffer`` area meant for another vdev, so a particular care shall be
+> +    adopted when defining the carveouts. In particular, ``restricted-dma-pool``
+> +    memory regions should be specified inside the virtio device's devicetree
+> +    nodes and not attached to the parent remote processor.
+> +
+> +If a ``vdevXbuffer`` carveout is not provided, the remoteproc framework will
+> +use the memory region declared by the virtio device's own devicetree node (see
+> +Documentation/devicetree/bindings/remoteproc/remoteproc-virtio.yaml), if any.
+> +Otherwise, it will try to replace it with the first memory region (of any type)
+> +associated to the virtio device's parent (i.e., the remote processor device);
+> +if no such memory region is present, it will be replaced with the global DMA
+> +pool.
+> +
+> +If both a ``vdevXbuffer`` carveout and a memory region inside the virtio
+> +device's devicetree node are present, the carveout takes precedence and the
+> +memory region is ignored.
+> +
+> +Declaring the memory region inside the virtio device's devicetree node is the
+> +preferred method for ``restricted-dma-pool`` regions, since listing them among
+> +the memory regions of the remote processor device would make the first of them
+> +the (forced) bounce buffer for the remote processor device itself as well.
+> +
+> +Buffer allocation
+> +-----------------
+> +
+> +There are different kinds of buffer allocation scenarios:
+> +
+> +* if the remote processor can access the whole DMA memory area of the host, no
+> +  special arrangement needs to be performed, since either the drivers (in case
+> +  of rpmsg and rproc-serial devices) or the DMA APIs (in case of any other
+> +  virtio device type) will take care of any necessary translation;
+> +* if the remote processor has limited access to the host memory space, for
+> +  example because of a different addressing scheme or for memory isolation
+> +  constraints, the memory reserved for buffer allocation shall be selected
+> +  depending on the virtio device type:
+> +
+> +  - for rpmsg and rproc-serial devices, a simple contiguous memory region
+> +    (e.g.: one declared in devicetree as ``shared-dma-pool``) is sufficient and
+> +    should be preferred, since it allows zero-copy message transmission between
+> +    the host and the remote processor;
+> +  - for any other virtio device type, a swiotlb-enabled memory region (e.g.:
+> +    one declared in devicetree as ``restricted-dma-pool``) is required, because
+> +    such devices need bounce buffering to work correctly.
+> +
+> +For virtio devices other than rpmsg and rproc-serial, the remoteproc framework
+> +offers the ``VIRTIO_F_ACCESS_PLATFORM`` feature, so the buffer addresses written
+> +in the vring descriptors are the DMA addresses returned by the DMA APIs for the
+> +virtio device. The virtio device inherits the DMA mask and the DMA range map
+> +(i.e., the translation described by the ``dma-ranges`` devicetree property) of
+> +the remote processor device, and is never attached to an IOMMU: these DMA
+> +addresses are therefore host physical addresses, translated only through the
+> +DMA range map. The remote processor must be able to access the buffers at
+> +these addresses.
+> +
+> +.. WARNING::
+> +
+> +    For remote processors that access memory through an IOMMU managed by the
+> +    remoteproc framework (i.e., with ``has_iommu`` set), the IOMMU domain only
+> +    contains the mappings created for the RSC_CARVEOUT and RSC_DEVMEM entries
+> +    of the resource table, at the device addresses they specify; no mapping is
+> +    created for the buffers of the virtio devices. Such remote processors are
+> +    supported only if all the memory that can hold virtio buffers (e.g., the
+> +    ``restricted-dma-pool`` region associated to the virtio device) is mapped
+> +    with its device address equal to its physical address, for example through
+> +    an RSC_DEVMEM entry. The same constraint applies to any fixed address
+> +    translation applied by the remote processor that is not described by the
+> +    DMA range map of the remote processor device.
+> +
+> +Allocation of virtio devices
+> +----------------------------
+> +
+>  Of course, RSC_VDEV resource entries are only good enough for static
+>  allocation of virtio devices. Dynamic allocations will also be made possible
+>  using the rpmsg bus (similar to how we already do dynamic allocations of
+> -rpmsg channels; read more about it in rpmsg.txt).
+> +rpmsg channels; read more about it in Documentation/staging/rpmsg.rst).
+> 
+> -- 
+> 2.56.0
+> 
