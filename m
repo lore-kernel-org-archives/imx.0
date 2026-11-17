@@ -1,103 +1,90 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.65.0
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794950821;
-	b=BaFb91GsG0QKPWRYnTsMEv202R0kPL0oT9gGAc8js8adLcPIn4usepgRVAosN+mhtwlq
-	 4gDyYARvuG+GUVQirOhlM+s3P0ASrrix3cYF0XQfIRMOghWWMwRvkGqkJzJ32lpd7EtcA
-	 Oqc0AFToswftssfFvY/4lioSMMrwI4mPzQnrW+UaIOnge3rfjb8jjek1eAONGN1tIcNAk
-	 j1sVB4CEs/ACVEl/9dysKZ1dhh9Ehi4vv3fO0nFi03r75+wzWpCqeXLpEy8AmtFzy+0TN
-	 OiB9tktZ69XCL9rVL9BzQGSQrPqqTX1M46yTJe2zQfVbbC1c1SGoa0g2BC+5tALRpXw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794950821;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:Content-Type:Content-Disposition:
-	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:
-	 X-MS-Exchange-AntiSpam-MessageData-1:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=d1fXAJ/C3j+HZbD62s0P3FAMtkAwER4hhXiDRqWQ8m0=;
-	b=T3fjYYU5hP6F6xLBfZJW6x/+UGAY638thlXR678HW0zC+NXpKH+cPDiD2xQ43obqa6Wx
-	 +kkL+G3cA3kwnOLtFZk4fTJrBOGtmbaEmfnzj/x3eK9XJV0r3EMi1T/wz8ZirWmv+kPS/
-	 UZ/rSFtC7dAWxB6CVzpp6wNRWHhy81Z8AfWfVXcM9WHDiBG1oIU86ZVBDDessVlYBw58F
-	 qy7/eo6Gkz6qR5z6ZvqDDLNghkwc9bTwK20YdEqiNE84ZDQTGieTvvBPj/tvq2lk6oZST
-	 LDXqlAFZmCAg6PsMV5NASlkqHwQKuft5nHdpngS4s90QzU0uVTq0NvWBlEdv1erVYyw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nxp.com;
-	spf=pass smtp.mailfrom=nxp.com;
-	dkim=pass header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=IgvcejVP;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.65.0
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011000.outbound.protection.outlook.com [52.101.65.0])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.251.105.195
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794951019;
+	b=WAtkFGlV2iltILnDP0HVIrCSHe2JwnONLBaoPD+K+AV4GEFR0LR6HZmSQvbbQDIWhON/
+	 9NvAqxowAsoFdOrpYrO6bwaG/nYW9Y74ihVTlgJljevIEygi3KpYOl1kq/TG/dBxAzawH
+	 jCyxGd1srbEZ6H0GNqt38kUwwj67xgg0LFRcjNvX1+YRgGlVDkGfKmIZgmCjJuksRI9ox
+	 P50EJm6MYrqjUkWKAY6b5mYz6QtkrMj7fsI/NPuGhOF/tL3bYhYRlr0QqgBW+EsfEsJQ1
+	 nSRZpRl90NlkgXGpKOOSZYVkakqnvaODPO0jif7Uqp3ArReXgB0pCW1GT7kRYWVoq9w==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794951019;
+	h=DMARC-Filter:DKIM-Signature:Received:Message-ID:Subject:From:To:Cc:
+	 Date:In-Reply-To:References:Autocrypt:Organization:Content-Type:
+	 User-Agent:MIME-Version;
+	bh=1OiGkRU0cDSw8p5HzufjcDuCRJXHBz8bqybKLzavlng=;
+	b=CO/LQ6SNTglUN/bPIt9ZLiF8WokLnbppSdd/f82io+XVasLmov9T32gzqKiLFNZfK/aa
+	 0kf1k4U18x8n8fiIpzEALm3PMbNd01skeNqaa2dhbX8a0G5H6HlxRDgMLztb/cCzcsk76
+	 3GtjSWpSwf5fakSYx3Os+rVh5GSNvWMTbonNgU4A97ZCltXCsud6Y43FQ0m3jIqpMYQVt
+	 +fnF0mnt1+CXCWODkFJ3qYWDZdgq3SLSz8YM4kbBHXziBmTzVEZieCz535KeYJglQTNTs
+	 FI4CpHOfDQLKBwCdkWLYZHRHV2E0q5CiV4n7vvCY76wr948luY1iaktS4snJiB0GUjg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=collabora.com;
+	spf=pass smtp.mailfrom=collabora.com;
+	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=I4tMIksr;
+	arc=none smtp.remote-ip=148.251.105.195
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7564606A334
-	for <imx@lists.linux.dev>; Tue, 17 Nov 2026 21:27:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D7564606A334
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B02DB606A32C
+	for <imx@lists.linux.dev>; Tue, 17 Nov 2026 21:30:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B02DB606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=IgvcejVP
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DpjbEz90HhBbt1SHbXvxWv1klRaA6AuuFSanmAs7Dgm+d+G4wTrOVQwwhl9d7s/GLO7B3+a+UKeVzNuipsguVxMacYewE51C9tgtKMMQmVgaYTJ9v1T8hhZJXLtH8GVkfIQjpPrD5+Z/L2LLZZ8fEbz4hMKZwNItqjb/Xrfxy9wA9cYoZJmG8OII/kbGPfSos819+Vc/MtqR2CuIQ1OVX0fg0FAXx49G+Jy9+3/aaftYcdLFcxu8lp3mWqntLUryBt1MKYmKfNdpIABbTJ4L3+Wlr5/dRsfHSr2MadlWKJkoqww2Lwy75N5pAH47s6/bbBO43OUNEdUi1yfKXszgxw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=d1fXAJ/C3j+HZbD62s0P3FAMtkAwER4hhXiDRqWQ8m0=;
- b=N4a6+jh9hafFyh+aOpaaUus5NnZp/AVVAwtIjfxmOES97UjyBK1e54EWZPzLyB5gegiFqYjvVzkNeLm7H0m9+KEp+Cu0ZLDFncEI0gHc2aG7Kw07mqw9rg8qL/3YXzw5nLv/ZD7VSULmnCKTmlR0AINNtWTEkRScrYOmPBXc0cCzi8tUtw7iXLYimwcFkt0Scs+2GJ8NWiWTEByXnwsL4Tquz4M4X4BBEv7e0480ilhVcaSN378qHDNjbZYpNVlTjHSVi4DiT+XckUz9ZWJTcdKNPmSQ1s3n8LRPUIbE0AxhZrswlW6w5D+BlQfYnPPBTdaBqJb4XVV+P/vA6xd+6w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=d1fXAJ/C3j+HZbD62s0P3FAMtkAwER4hhXiDRqWQ8m0=;
- b=IgvcejVPOGIvcZHW6MFnPFb/kmS9/y7GH1sV44cF/+sdkPBdodoWgUHEK85/u92fQhwaYJ47lFSgtBKi9pFd6nzqP/DkOyvSYbdYD+0R8BiUa2ZQkt9GYb/OePH7Xrgj6SVBRP45HSDLbRazGtrxxd1JLZYmTXlvyQRwwd95SmK5Wbm/D2guBoj5KmlzOqmG52mrJnukCj1O/v06vuLboZGcB0SmtBPMYHQDn0XbJZnRWo/9BitU74aa2H27Hb1pi5twZRBry6368RdS0gOAoNfPIg57KWqQrOVGygug5TOvmShGy6GWQhEzm05Ucujy1ecNs4SKSe6u9vVb/t8eUw==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM0PR04MB6900.eurprd04.prod.outlook.com (2603:10a6:208:17d::10)
- by MA8PR04MB391102.eurprd04.prod.outlook.com (2603:10a6:250:7c::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.14; Tue, 17 Nov
- 2026 21:26:58 +0000
-Received: from AM0PR04MB6900.eurprd04.prod.outlook.com
- ([fe80::7fda:8431:ca1b:b023]) by AM0PR04MB6900.eurprd04.prod.outlook.com
- ([fe80::7fda:8431:ca1b:b023%4]) with mapi id 15.21.0615.013; Tue, 17 Nov 2026
- 21:26:57 +0000
-Date: Tue, 17 Nov 2026 23:26:54 +0200
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
-To: vjardin@free.fr
-Cc: Dong Aisheng <aisheng.dong@nxp.com>, 
-	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>, Jacky Bai <ping.bai@nxp.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, NXP S32 Linux Team <s32@nxp.com>, 
-	Linus Walleij <linusw@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, linux-gpio@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, Ioana Ciornei <ioana.ciornei@nxp.com>
-Subject: Re: [PATCH v7 5/6] arm64: dts: lx2160a: describe the pad muxes as
- the DCFG RCW override
-Message-ID: <avzGjhMNV2pRRoDO@lxl00025.wbi.nxp.com>
-References: <20261117-for-upstream-lx2160a-rcw-pinmux-v1-v7-0-5d7201970629@free.fr>
- <20261117-for-upstream-lx2160a-rcw-pinmux-v1-v7-0-5d7201970629@free.fr>
- <20261117-for-upstream-lx2160a-rcw-pinmux-v1-v7-5-5d7201970629@free.fr>
- <20261117-for-upstream-lx2160a-rcw-pinmux-v1-v7-5-5d7201970629@free.fr>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261117-for-upstream-lx2160a-rcw-pinmux-v1-v7-5-5d7201970629@free.fr>
- <20261117-for-upstream-lx2160a-rcw-pinmux-v1-v7-5-5d7201970629@free.fr>
-X-ClientProxiedBy: AS4P192CA0049.EURP192.PROD.OUTLOOK.COM
- (2603:10a6:20b:658::22) To AM0PR04MB6900.eurprd04.prod.outlook.com
- (2603:10a6:208:17d::10)
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=I4tMIksr
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1794951015;
+	bh=VT3Hiu+RNn1MMNT9IiX/G0AxSztSwjtS3pUJpZOQnDI=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=I4tMIksrS92/CeGx1jYL2cphB0NumRf/t0CNClGVtVkMjhJp/Y6dxc+rvItFkbsOW
+	 6PgSNuiSMIwN80WBkQ5GZhUFmgiB8lG+r0XOuZm7hiZVJJ6qs6k1K1LaMd/wOTEqfC
+	 agfvUfLwnQpJkL1TgWiakOWSbNWz0jP0tmty0BThhCP0To6BhNpEldwRUl379WTd3w
+	 94NhAEb1zwx3Cqz//XR4HSogciHwwPNQ392bzl701BL8g4tZVMVCpWC4qcCj1917og
+	 /G43mN+9nfEEkA1R/1K9u10nMSRhX2N5tYzV5vsU3CYtjLdUkrG8/PvJC0bPzhX7Hd
+	 RiZ5aK/aOJ+Sw==
+Received: from [100.64.0.214] (unknown [100.64.0.214])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: nicolas)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id BC8C017E06BF;
+	Tue, 17 Nov 2026 22:30:13 +0100 (CET)
+Message-ID: <1a1feaf854e6e1c34af468b7501988f2cf68ebca.camel@collabora.com>
+Subject: Re: [PATCH 02/14] media: uapi: Add H.264 stateless encode support
+From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+To: Paul Kocialkowski <paulk@sys-base.io>, devicetree@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+  Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,  Pengutronix Kernel Team	
+ <kernel@pengutronix.de>, Benjamin Gaignard
+ <benjamin.gaignard@collabora.com>,  Philipp Zabel <p.zabel@pengutronix.de>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Hans Verkuil	
+ <hverkuil@kernel.org>, Marco Felsch <m.felsch@pengutronix.de>, Michael
+ Tretter	 <m.tretter@pengutronix.de>
+Date: Tue, 17 Nov 2026 16:30:11 -0500
+In-Reply-To: <20260522101653.2565125-3-paulk@sys-base.io>
+References: <20260522101653.2565125-1-paulk@sys-base.io>
+	 <20260522101653.2565125-3-paulk@sys-base.io>
+Autocrypt: addr=nicolas.dufresne@collabora.com; prefer-encrypt=mutual;
+ keydata=mDMEaCN2ixYJKwYBBAHaRw8BAQdAM0EHepTful3JOIzcPv6ekHOenE1u0vDG1gdHFrChD
+ /e0J05pY29sYXMgRHVmcmVzbmUgPG5pY29sYXNAbmR1ZnJlc25lLmNhPoicBBMWCgBEAhsDBQsJCA
+ cCAiICBhUKCQgLAgQWAgMBAh4HAheABQkJZfd1FiEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrjo
+ CGQEACgkQ2UGUUSlgcvQlQwD/RjpU1SZYcKG6pnfnQ8ivgtTkGDRUJ8gP3fK7+XUjRNIA/iXfhXMN
+ abIWxO2oCXKf3TdD7aQ4070KO6zSxIcxgNQFtDFOaWNvbGFzIER1ZnJlc25lIDxuaWNvbGFzLmR1Z
+ nJlc25lQGNvbGxhYm9yYS5jb20+iJkEExYKAEECGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4
+ AWIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaCyyxgUJCWX3dQAKCRDZQZRRKWBy9ARJAP96pFmLffZ
+ smBUpkyVBfFAf+zq6BJt769R0al3kHvUKdgD9G7KAHuioxD2v6SX7idpIazjzx8b8rfzwTWyOQWHC
+ AAS0LU5pY29sYXMgRHVmcmVzbmUgPG5pY29sYXMuZHVmcmVzbmVAZ21haWwuY29tPoiZBBMWCgBBF
+ iEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrGYCGwMFCQll93UFCwkIBwICIgIGFQoJCAsCBBYCAw
+ ECHgcCF4AACgkQ2UGUUSlgcvRObgD/YnQjfi4+L8f4fI7p1pPMTwRTcaRdy6aqkKEmKsCArzQBAK8
+ bRLv9QjuqsE6oQZra/RB4widZPvphs78H0P6NmpIJ
+Organization: Collabora Canada
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-/fZMDlE7IzlEjztDt+D/"
+User-Agent: Evolution 3.62.1 (3.62.1-1.fc45) 
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -107,84 +94,314 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM0PR04MB6900:EE_|MA8PR04MB391102:EE_
-X-MS-Office365-Filtering-Correlation-Id: e3402584-0873-43c4-5dd3-08df44f1827f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|10070799003|19092799006|366016|376014|1800799024|7416014|18002099003|6133799003|22082099003|3023799007|11063799006|4143699003|56012099006|261028144727099003|261022105027099003|261026121527099003|261026140227099003|261021121427099003|261102123227099003|10067099003|15866825006|41080700001;
-X-Microsoft-Antispam-Message-Info:
-	Qs0VmnYLj0OvAGfxHJoG38Hp7z0mmUqkjNQbHK3GaEnJlou7iWHnrCUoGpd88KR7G/Q8ru32ffoX2ni/aOBzqBliQfwe+Sk/C6hMulHhnnm7wG+9urwBo7eSMaeFRUSjwLOgecVH6rusRuDQtok/awTLiG+JLJR4an/+HXPUtgKXScOq70sDbbE5oNazW3jJhL1651S0iwgCWZIJnI+jYrXrmtvVVuBtQyV/A2ng0F4ZXdsM04rP3oiXg9Wf6Fc1txyng5uLyNVATx3HOy024hRJ1d96MVqD/7Oc12+tXw6lObfXdqWcn2ecprHFpzEBEBXuRYXpzbwEDzNYWyxNlhHXEsP6oP0gNcJVXDRH2PxYYOmF5a28z0TlZZ6FH3Eb6+SdBpZXtJ9TY4ERfi41s1C/zU1V3XhEGV+I2uhrtUOWSmr6IK8vPTNtOWLrPj+7qZbJldImSV0a388CZbYpkX1/gBzzb9CBts+KPj5s4B6Q4GqU6RyXvzLCaDvyr1xX42m6g3hIoAUboipcyo50nbv9rUECGWDD3MgEXcuWQH4LCDSqYWEAgaZoOnduCrkezwuc2VocRFClou++xtYw06ksnyEUBuHomTJKd+IKAMtp5Sb7GJgVktRlu9Uudodw51nSIaF3sLbgjBvil7JSXP2T0JlQ7UrKDLwvoQbDdGeKoLY8zmxsdk7vS9q/nWLywxkB4WKe9n37YcmLrk0E7meKmI1viyI/91cCj2mheh6NPSA4rpsW6tbFucFlsNzH
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB6900.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(10070799003)(19092799006)(366016)(376014)(1800799024)(7416014)(18002099003)(6133799003)(22082099003)(3023799007)(11063799006)(4143699003)(56012099006)(261028144727099003)(261022105027099003)(261026121527099003)(261026140227099003)(261021121427099003)(261102123227099003)(10067099003)(15866825006)(41080700001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?9cQWKULhSpUwkkZSNHNYzEsEy43ucnLd2eicZ06FqEgFJEO9G16ZpqSQr53l?=
- =?us-ascii?Q?SDKGrEqt4AiMCPfRFgRrhxAkuNINyhzQ8qSPG1/FeNT06xyS7UPgY8Csryur?=
- =?us-ascii?Q?RWraC0aHAP3DpGS1GiDmHWxypXpeXhfJgTd71S9tdgvLeCddezfim329rmLq?=
- =?us-ascii?Q?N5SNY2Mm0dLDCtkAQyftGLTnlSuFn0kERgj4vfSjGVWjB0Oh+PRYFbYiGcKo?=
- =?us-ascii?Q?dRHUREZUxqXPWfV8vK6NvVuB3IYO3lLO+GNY0FsLnXbyNpIW3J+p+HFzLttS?=
- =?us-ascii?Q?g6/XFweDLLe1SVKwDIIgeQe9MVBJw/Wqtji5+Uu83g5SdeZV68GxVJvn3/mq?=
- =?us-ascii?Q?5D4J8n1enEGBz9ibiwPjOr9oPxqDMn3Ss+idGJOTXkqgCIVioVMxKdldafc+?=
- =?us-ascii?Q?ipvBf/8n9kE78nBw0huQcGsl7J+8tJu+z63vsjbksMs1wi1bddGkbgWpDR1I?=
- =?us-ascii?Q?Fv5JBCjJM45W00x6NHEcvZl0v0pR0CgdleOqB5VQrojme7dvW+aspjMv98p/?=
- =?us-ascii?Q?eCt7K7HEhvMtP7OWlLmB85EyrORbAj92a1a/kMPJCkHKtll4ZqwUfLE2gy/y?=
- =?us-ascii?Q?DuLbJhK6q993x7afsrwxmJ4CacYdvzeVZN1tlijYYauvjn+U+PhkPJihRF6Y?=
- =?us-ascii?Q?vjAprG33Afu067CfQqIi//NIUiFD/nBLnU6jpDHgESVVeK4Fk31bnidSLmVA?=
- =?us-ascii?Q?yYKCJC+u25Fi0DDzfRZ7mhlwbh+GiQfdKYdWwsWGymBnmqjT0os8g9lMi/8u?=
- =?us-ascii?Q?1ZWkWvIXI0YN2+SfDDjqwj4NyPiY5ipb5Q+D15j0XVhLCFrtkJqwEpsXQSeQ?=
- =?us-ascii?Q?yBwqKNmUdfqNb/aAjs0R7z9HI/lUP6Njj1iHOPFYmob9c8bR6KDiiGT+QJdr?=
- =?us-ascii?Q?8W/jnZ5TW5MQfSvr1+PA8GSnb8GM20HAHGzuM9Is/Acqse7MKoVhSW2jkmka?=
- =?us-ascii?Q?puQcU9MShis+Lyf1FQ/6zqyQYyhXrp59OzDgLCIMwrC+/3X72zZAnYhgY+2Y?=
- =?us-ascii?Q?TLAj5azs8ytkumKzrR7PPSxdogm0x6Tvho0n5pu6wfrK2g4YCxfRyISV0f6V?=
- =?us-ascii?Q?2Lsxtwv2wH/2Zbxwh00iruwdEcWPaM1l6XtC5mEFSui9R5+DFhLhhhpv0Ns+?=
- =?us-ascii?Q?fQo/p5sP+HfkQXcf2WKOvMZif7yoPsNVfRDJLjXjbm0xekaVSCjq7f1dmheX?=
- =?us-ascii?Q?KucpD/+YsKIxuiXo872ycsw3zSMIvc2yoDtPqHjOjHHyZ2qBjoevmuQ819l4?=
- =?us-ascii?Q?Ap5FgjM1XZxhloMF4QvN4/PoARJiIO7LRkPNUqYGDBB5xof6LxlNLmtMHu3n?=
- =?us-ascii?Q?CIZe96pdvoEtFCAoB9tEG1UTSeO6ZArdMrPD/dch3909k2y3GQMkbZ7LzYF3?=
- =?us-ascii?Q?1/23BsC+BHPMa0E2kwc37C1ikOG/vr7LCWKR0jm8+Oic9ZjPTvBH6WCnpRIq?=
- =?us-ascii?Q?9laiViAWRvNGXhfRmhn1hFWRiyCpTv9bTtMeryB6IXZU/SkMy5Xki9oFvSjc?=
- =?us-ascii?Q?YKMd441ApSnC6u61uk4A4+dgFFogAkqgw6YLCmQkisf7jsfi9i9CZ51PsrSp?=
- =?us-ascii?Q?cQI6i6WqWzbSX7hOtwFh1GyQ3dD5q3g0yAmAq4mQUstXpp0vWGOa7wqctCwZ?=
- =?us-ascii?Q?0cQUAII/xkJAX+AfcOzeTyA4Tv5hV/hg3H3pWDtPxp9LT8ewt+2KMSPJC/X6?=
- =?us-ascii?Q?Uy+zwUsjCa17dO+6NiKXppWs8lfodySaN8AQer4TxupaAoDGiaXiSbPx2qJY?=
- =?us-ascii?Q?n54KE8MKUm97u78DE+IUiuxYcnshkgsGC/+F/05yJ49N2YrrNVGufrHVTEVD?=
-X-MS-Exchange-AntiSpam-MessageData-1: x7U6TOUqO0xmeg==
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e3402584-0873-43c4-5dd3-08df44f1827f
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB6900.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Nov 2026 21:26:57.8340
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Txkn4mxQH+e07CLS5lKWUTwmNf5FQLETKJuUtHtIiFE4WeH93Hmf6+VNVOKgwjD3yC7T0XTgZFKJCLgtJHpCjA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MA8PR04MB391102
 
-On Tue, Nov 17, 2026 at 03:53:15PM +0100, Vincent Jardin via B4 Relay wrote:
-> From: Vincent Jardin <vjardin@free.fr>
-> 
-> The pad muxes are fields of the RCW: read-only in RCWSR12..14, changed
-> at runtime through the override registers in the DCSR view of DCFG,
-> which read 0 until written.
-> 
-> pinctrl-single on those registers, since commit 8a1365c7bbc1
-> ("arm64: dts: lx2160a: add pinmux and i2c gpio to support bus recovery"),
-> clears every other field of the word with its first pin state:
-> a board whose RCW programs a non-zero pad mux loses those pads at the
-> first I2C probe.
-> 
-> Describe the pad mux as a child of the dcfg node, which gains its DCSR
-> view and, as on the LS1028A, the addressing of its children:
-> the child is at its RCWSR12 to RCWSR14 and RCWSR27 windows, one group
-> per RCW field, one function per encoding, driven by
-> fsl,lx2160a-rcw-pinmux using fsl-guts. Labels and pin node names stay,
-> so no consumer changes.
-> The pinctrl-single node goes.
-> 
-> Signed-off-by: Vincent Jardin <vjardin@free.fr>
+--=-/fZMDlE7IzlEjztDt+D/
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Hi,
+
+Le vendredi 22 mai 2026 =C3=A0 12:16 +0200, Paul Kocialkowski a =C3=A9crit=
+=C2=A0:
+> This introduces the stateless H.264 encode params control that allows
+> configuring an H.264 encode run.
+>=20
+> Note that the current uAPI does not support explicit passing of
+> references and works following the sliding window decoded reference
+> picture marking process. This may change in the future.
+
+Since its no longer an RFC, you have to support this with a how it can chan=
+ge in
+the future without breaking the API. Its fine to create a entry profile for
+encoders of course, we need a plan though.
+
+>=20
+> Signed-off-by: Paul Kocialkowski <paulk@sys-base.io>
 > ---
+>  drivers/media/v4l2-core/v4l2-ctrls-core.c | 62 +++++++++++++++++++++++
+>  drivers/media/v4l2-core/v4l2-ctrls-defs.c |  4 ++
+>  include/media/v4l2-ctrls.h                |  2 +
+>  include/uapi/linux/v4l2-controls.h        | 33 ++++++++++++
+>  include/uapi/linux/videodev2.h            |  1 +
+>  5 files changed, 102 insertions(+)
+>=20
+> diff --git a/drivers/media/v4l2-core/v4l2-ctrls-core.c b/drivers/media/v4=
+l2-core/v4l2-ctrls-core.c
+> index 85d07ef44f62..48217811b0f1 100644
+> --- a/drivers/media/v4l2-core/v4l2-ctrls-core.c
+> +++ b/drivers/media/v4l2-core/v4l2-ctrls-core.c
+> @@ -382,6 +382,9 @@ void v4l2_ctrl_type_op_log(const struct v4l2_ctrl *ct=
+rl)
+>  =09case V4L2_CTRL_TYPE_H264_PRED_WEIGHTS:
+>  =09=09pr_cont("H264_PRED_WEIGHTS");
+>  =09=09break;
+> +=09case V4L2_CTRL_TYPE_H264_ENCODE_PARAMS:
+> +=09=09pr_cont("H264_ENCODE_PARAMS");
+> +=09=09break;
+>  =09case V4L2_CTRL_TYPE_FWHT_PARAMS:
+>  =09=09pr_cont("FWHT_PARAMS");
+>  =09=09break;
+> @@ -880,6 +883,7 @@ static int std_validate_compound(const struct v4l2_ct=
+rl *ctrl, u32 idx,
+>  =09struct v4l2_ctrl_h264_pred_weights *p_h264_pred_weights;
+>  =09struct v4l2_ctrl_h264_slice_params *p_h264_slice_params;
+>  =09struct v4l2_ctrl_h264_decode_params *p_h264_dec_params;
+> +=09struct v4l2_ctrl_h264_encode_params *p_h264_enc_params;
+>  =09struct v4l2_ctrl_hevc_sps *p_hevc_sps;
+>  =09struct v4l2_ctrl_hevc_pps *p_hevc_pps;
+>  =09struct v4l2_ctrl_hdr10_mastering_display *p_hdr10_mastering;
+> @@ -1102,6 +1106,61 @@ static int std_validate_compound(const struct v4l2=
+_ctrl *ctrl, u32 idx,
+>  =09=09zero_reserved(*p_h264_dec_params);
+>  =09=09break;
+> =20
+> +=09case V4L2_CTRL_TYPE_H264_ENCODE_PARAMS:
+> +=09=09p_h264_enc_params =3D p;
+> +
+> +=09=09if (p_h264_enc_params->slice_type !=3D V4L2_H264_SLICE_TYPE_B)
+> +=09=09=09p_h264_enc_params->flags &=3D
+> +=09=09=09=09~V4L2_H264_ENCODE_FLAG_DIRECT_SPATIAL_MV_PRED;
+> +=09=09if (!(p_h264_enc_params->flags & V4L2_H264_ENCODE_FLAG_IDR_PIC) ||
+> +=09=09    !p_h264_enc_params->nal_ref_idc)
+> +=09=09=09p_h264_enc_params->flags &=3D
+> +=09=09=09=09~V4L2_H264_ENCODE_FLAG_LONG_TERM_REFERENCE;
+> +
+> +=09=09if (p_h264_enc_params->flags & V4L2_H264_ENCODE_FLAG_IDR_PIC &&
+> +=09=09    p_h264_enc_params->slice_type !=3D V4L2_H264_SLICE_TYPE_I)
+> +=09=09=09return -EINVAL;
+> +=09=09if (p_h264_enc_params->colour_plane_id > 2)
+> +=09=09=09return -EINVAL;
+> +=09=09if (p_h264_enc_params->cabac_init_idc > 2)
+> +=09=09=09return -EINVAL;
+> +=09=09if (p_h264_enc_params->disable_deblocking_filter_idc > 2)
+> +=09=09=09return -EINVAL;
+> +=09=09if (p_h264_enc_params->slice_alpha_c0_offset_div2 < -6 ||
+> +=09=09    p_h264_enc_params->slice_alpha_c0_offset_div2 > 6)
+> +=09=09=09return -EINVAL;
+> +=09=09if (p_h264_enc_params->slice_beta_offset_div2 < -6 ||
+> +=09=09    p_h264_enc_params->slice_beta_offset_div2 > 6)
+> +=09=09=09return -EINVAL;
+> +
+> +=09=09if (p_h264_enc_params->slice_type =3D=3D V4L2_H264_SLICE_TYPE_I ||
+> +=09=09    p_h264_enc_params->slice_type =3D=3D V4L2_H264_SLICE_TYPE_SI)
+> +=09=09=09p_h264_enc_params->num_ref_idx_l0_active_minus1 =3D 0;
+> +=09=09if (p_h264_enc_params->slice_type !=3D V4L2_H264_SLICE_TYPE_B)
+> +=09=09=09p_h264_enc_params->num_ref_idx_l1_active_minus1 =3D 0;
+> +
+> +=09=09if (p_h264_enc_params->flags & V4L2_H264_ENCODE_FLAG_IDR_PIC) {
+> +=09=09=09p_h264_enc_params->frame_num =3D 0;
+> +=09=09=09p_h264_enc_params->pic_order_cnt_lsb =3D 0;
+> +=09=09=09p_h264_enc_params->delta_pic_order_cnt_bottom =3D 0;
+> +=09=09=09p_h264_enc_params->delta_pic_order_cnt0 =3D 0;
+> +=09=09=09p_h264_enc_params->delta_pic_order_cnt1 =3D 0;
+> +=09=09} else {
+> +=09=09=09p_h264_enc_params->idr_pic_id =3D 0;
+> +=09=09}
+> +
+> +=09=09if (p_h264_enc_params->num_ref_idx_l0_active_minus1 >
+> +=09=09    (V4L2_H264_REF_LIST_LEN - 1))
+> +=09=09=09return -EINVAL;
+> +=09=09if (p_h264_enc_params->num_ref_idx_l1_active_minus1 >
+> +=09=09    (V4L2_H264_REF_LIST_LEN - 1))
+> +=09=09=09return -EINVAL;
+> +=09=09memset(&p_h264_enc_params->reserved0, 0,
+> +=09=09       sizeof(p_h264_enc_params->reserved0));
+> +=09=09memset(&p_h264_enc_params->reserved1, 0,
+> +=09=09       sizeof(p_h264_enc_params->reserved1));
+> +=09=09break;
+> +
+>  =09case V4L2_CTRL_TYPE_VP8_FRAME:
+>  =09=09p_vp8_frame =3D p;
+> =20
+> @@ -1913,6 +1972,9 @@ static struct v4l2_ctrl *v4l2_ctrl_new(struct v4l2_=
+ctrl_handler *hdl,
+>  =09case V4L2_CTRL_TYPE_H264_PRED_WEIGHTS:
+>  =09=09elem_size =3D sizeof(struct v4l2_ctrl_h264_pred_weights);
+>  =09=09break;
+> +=09case V4L2_CTRL_TYPE_H264_ENCODE_PARAMS:
+> +=09=09elem_size =3D sizeof(struct v4l2_ctrl_h264_encode_params);
+> +=09=09break;
+>  =09case V4L2_CTRL_TYPE_VP8_FRAME:
+>  =09=09elem_size =3D sizeof(struct v4l2_ctrl_vp8_frame);
+>  =09=09break;
+> diff --git a/drivers/media/v4l2-core/v4l2-ctrls-defs.c b/drivers/media/v4=
+l2-core/v4l2-ctrls-defs.c
+> index ad41f65374e2..4fa6dc7a3b00 100644
+> --- a/drivers/media/v4l2-core/v4l2-ctrls-defs.c
+> +++ b/drivers/media/v4l2-core/v4l2-ctrls-defs.c
+> @@ -1216,6 +1216,7 @@ const char *v4l2_ctrl_get_name(u32 id)
+>  =09case V4L2_CID_STATELESS_H264_PPS:=09=09=09return "H264 Picture Parame=
+ter Set";
+>  =09case V4L2_CID_STATELESS_H264_SCALING_MATRIX:=09=09return "H264 Scalin=
+g Matrix";
+>  =09case V4L2_CID_STATELESS_H264_PRED_WEIGHTS:=09=09return "H264 Predicti=
+on Weight Table";
+> +=09case V4L2_CID_STATELESS_H264_ENCODE_PARAMS:=09=09return "H264 Encode =
+Parameters";
+>  =09case V4L2_CID_STATELESS_H264_SLICE_PARAMS:=09=09return "H264 Slice Pa=
+rameters";
+>  =09case V4L2_CID_STATELESS_H264_DECODE_PARAMS:=09=09return "H264 Decode =
+Parameters";
+>  =09case V4L2_CID_STATELESS_FWHT_PARAMS:=09=09=09return "FWHT Stateless P=
+arameters";
+> @@ -1555,6 +1556,9 @@ void v4l2_ctrl_fill(u32 id, const char **name, enum=
+ v4l2_ctrl_type *type,
+>  =09case V4L2_CID_STATELESS_H264_PRED_WEIGHTS:
+>  =09=09*type =3D V4L2_CTRL_TYPE_H264_PRED_WEIGHTS;
+>  =09=09break;
+> +=09case V4L2_CID_STATELESS_H264_ENCODE_PARAMS:
+> +=09=09*type =3D V4L2_CTRL_TYPE_H264_ENCODE_PARAMS;
+> +=09=09break;
+>  =09case V4L2_CID_STATELESS_VP8_FRAME:
+>  =09=09*type =3D V4L2_CTRL_TYPE_VP8_FRAME;
+>  =09=09break;
+> diff --git a/include/media/v4l2-ctrls.h b/include/media/v4l2-ctrls.h
+> index 31fc1bee3797..54133cda7bc7 100644
+> --- a/include/media/v4l2-ctrls.h
+> +++ b/include/media/v4l2-ctrls.h
+> @@ -42,6 +42,7 @@ struct video_device;
+>   * @p_h264_scaling_matrix:=09Pointer to a struct v4l2_ctrl_h264_scaling_=
+matrix.
+>   * @p_h264_slice_params:=09Pointer to a struct v4l2_ctrl_h264_slice_para=
+ms.
+>   * @p_h264_decode_params:=09Pointer to a struct v4l2_ctrl_h264_decode_pa=
+rams.
+> + * @p_h264_encode_params:=09Pointer to a struct v4l2_ctrl_h264_encode_pa=
+rams.
+>   * @p_h264_pred_weights:=09Pointer to a struct v4l2_ctrl_h264_pred_weigh=
+ts.
+>   * @p_vp8_frame:=09=09Pointer to a VP8 frame params structure.
+>   * @p_vp9_compressed_hdr_probs:=09Pointer to a VP9 frame compressed head=
+er probs structure.
+> @@ -76,6 +77,7 @@ union v4l2_ctrl_ptr {
+>  =09struct v4l2_ctrl_h264_scaling_matrix *p_h264_scaling_matrix;
+>  =09struct v4l2_ctrl_h264_slice_params *p_h264_slice_params;
+>  =09struct v4l2_ctrl_h264_decode_params *p_h264_decode_params;
+> +=09struct v4l2_ctrl_h264_encode_params *p_h264_encode_params;
+>  =09struct v4l2_ctrl_h264_pred_weights *p_h264_pred_weights;
+>  =09struct v4l2_ctrl_vp8_frame *p_vp8_frame;
+>  =09struct v4l2_ctrl_hevc_sps *p_hevc_sps;
+> diff --git a/include/uapi/linux/v4l2-controls.h b/include/uapi/linux/v4l2=
+-controls.h
+> index 2d30107e047e..9add059ca02a 100644
+> --- a/include/uapi/linux/v4l2-controls.h
+> +++ b/include/uapi/linux/v4l2-controls.h
+> @@ -1568,6 +1568,7 @@ struct v4l2_h264_reference {
+> =20
+>  #define V4L2_H264_SLICE_FLAG_DIRECT_SPATIAL_MV_PRED=09=090x01
+>  #define V4L2_H264_SLICE_FLAG_SP_FOR_SWITCH=09=09=090x02
+> +#define V4L2_H264_SLICE_FLAG_NUM_REF_IDX_ACTIVE_OVERRIDE=090x04
+> =20
+>  #define V4L2_CID_STATELESS_H264_SLICE_PARAMS=09(V4L2_CID_CODEC_STATELESS=
+_BASE + 6)
+>  /**
+> @@ -1707,6 +1708,38 @@ struct v4l2_ctrl_h264_decode_params {
+>  =09__u32 flags;
+>  };
+> =20
+> +#define V4L2_H264_ENCODE_FLAG_IDR_PIC=09=09=09=090x01
+> +#define V4L2_H264_ENCODE_FLAG_FIELD_PIC=09=09=09=090x02
+> +#define V4L2_H264_ENCODE_FLAG_BOTTOM_FIELD=09=09=090x04
 
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Just notice you are ahead of Vulkan here, they don't seem to have inerlaced
+encoding, maybe they just want to discourage people to use that, and that's=
+ why
+they only decode it :-D
+
+> +#define V4L2_H264_ENCODE_FLAG_DIRECT_SPATIAL_MV_PRED=09=090x08
+> +#define V4L2_H264_ENCODE_FLAG_NUM_REF_IDX_ACTIVE_OVERRIDE=090x10
+> +#define V4L2_H264_ENCODE_FLAG_NO_OUTPUT_OF_PRIOR_PICS=09=090x20
+> +#define V4L2_H264_ENCODE_FLAG_LONG_TERM_REFERENCE=09=090x40
+> +
+> +#define V4L2_CID_STATELESS_H264_ENCODE_PARAMS=09(V4L2_CID_CODEC_STATELES=
+S_BASE + 8)
+> +struct v4l2_ctrl_h264_encode_params {
+> +=09__u8 nal_ref_idc;
+
+This is fixed in this implementation, and will be derivable with support fo=
+r
+other reference model. I'd remove.
+
+> +=09__u8 slice_type;
+
+I think we should do like Vulkan here though. They split the frame invarian=
+t
+(StdVideoEncodeH264PictureInfo) from the slice parameters
+(StdVideoEncodeH264SliceHeader). slice_type does not have to be the same on=
+ all
+slices, just like many more below.
+
+> +=09__u8 pic_parameter_set_id;
+> +=09__u8 colour_plane_id;
+
+I'm not aware of any HW capable of !=3D 0 here, so I'd be keen on dropping.=
+ We can
+make it an encode_params_professional in the future, there will likely be m=
+ore
+things to add by then.
+
+> +=09__u16 frame_num;
+> +=09__u16 idr_pic_id;
+> +=09__u16 pic_order_cnt_lsb;
+> +=09__u8 reserved0[2];
+> +=09__s32 delta_pic_order_cnt_bottom;
+> +=09__s32 delta_pic_order_cnt0;
+> +=09__s32 delta_pic_order_cnt1;
+> +=09__u8 num_ref_idx_l0_active_minus1;
+> +=09__u8 num_ref_idx_l1_active_minus1;
+> +=09__u8 cabac_init_idc;
+> +=09__s8 slice_qp_delta;
+> +=09__u8 disable_deblocking_filter_idc;
+> +=09__s8 slice_alpha_c0_offset_div2;
+> +=09__s8 slice_beta_offset_div2;
+> +=09__u8 reserved1[6];
+
+This leads the next flag 1 byte off 32bit alignment, what the compiler will=
+ do
+next can't be predicted. Did you forgot to run pahole?
+
+> +=09__u32 flags; /* V4L2_H264_ENCODE_FLAG_ */
+
+Missing something like temporal_id, first_mb_in_slice, while splitting the =
+slice
+params, these would become a dybamic array and that will define the number =
+of
+slices. No long term support I think?=20
+
+That's all I could find on this pass.
+Nicolas
+
+
+> +};
+> +
+>  /* Stateless FWHT control, used by the vicodec driver */
+> =20
+>  /* Current FWHT version */
+> diff --git a/include/uapi/linux/videodev2.h b/include/uapi/linux/videodev=
+2.h
+> index becd08fdbddb..1d5e27b65544 100644
+> --- a/include/uapi/linux/videodev2.h
+> +++ b/include/uapi/linux/videodev2.h
+> @@ -1964,6 +1964,7 @@ enum v4l2_ctrl_type {
+>  =09V4L2_CTRL_TYPE_H264_SLICE_PARAMS    =3D 0x0203,
+>  =09V4L2_CTRL_TYPE_H264_DECODE_PARAMS   =3D 0x0204,
+>  =09V4L2_CTRL_TYPE_H264_PRED_WEIGHTS    =3D 0x0205,
+> +=09V4L2_CTRL_TYPE_H264_ENCODE_PARAMS   =3D 0x0206,
+> =20
+>  =09V4L2_CTRL_TYPE_FWHT_PARAMS=09    =3D 0x0220,
+> =20
+
+--=-/fZMDlE7IzlEjztDt+D/
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCavzHZAAKCRDZQZRRKWBy
+9JIeAPwLoc6UcFJ+vaUaCM7hDt//6JEo8hCRaEtlHKiHkmOfrQEA7aIsygjuOzNb
+tM4fww/8zNbM5bOdURvRgRfIGaadvAw=
+=b9OE
+-----END PGP SIGNATURE-----
+
+--=-/fZMDlE7IzlEjztDt+D/--
