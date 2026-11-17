@@ -1,56 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794923444;
-	b=0qPq9iwg+RgrW4/KDVbfV+sO1HZp/lzWEfV3+gfemWcXvpPqKfjWq8KeJRe9s8GXuSX6
-	 CnwYYdl4nrk567cJ+exIBYzE86A3IX5Wcq5/wv9iQip5V/Y4MYV9rDHSwxI8X4Gdc4jMf
-	 jHJYU1TvgCL5xVIBR/HtNTgmCU4Z686LZ54npWvzzsJBWAanmhVpThvo7GkMvzprA3u+V
-	 Xm8vXBZEcByNLROppUE6I5RgoIxMXu7U2mmiE4fLcZOeSP5XE0lrRs8F3zAjE6DhpxRh4
-	 S/MLHdN6d/a+FE54zvtXN4aW2anR5/mLvzV7LU3u5TqQbdLtqenvANCnT4B+vK0a+dA==
+	t=1794924503;
+	b=W4mONXP5G+uuCW47EgLWzith9E0RqH0dovie92Ib53C2YEULeDjnq3edicqiffTQFpB0
+	 6s6xEI5oEY0jAAbcomEKbMTGeCyOXo/V6v9K+wCaeDuy9ggyC3CbfXjqAv9rDulSrdACl
+	 tEDhmwX1yWT/nYq3MNCP1G4RLDn59u7bBKuCztLbWtQwreAVEVyaeeDnTF0MJ92bN6+F4
+	 8fkGcLgMd50BDvb6bapj5Rcdu4i63siDMfWyLvv3M0dMaQDk10LSYpZpKvMh9vPLHTL5l
+	 +cxfq4ZXH3Naf/Ckdp7Zw+Hd9bu84ddjZe+awZlCTbzpPXbXLUuf1UVoNl41NLowGLw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794923444;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=wmFVfvCnnhAnhNO4rEUhI4H5IUGmRAkPA7MnRyun0Wc=;
-	b=gT9KBGIxx9NIbAn0Kg8aSIUCw4daspCYIwQPGMKsNJTl8zoIyKmxW5xIYXBFupFvVpLE
-	 cd/ESvCwjCcMMdlJhSviUEn+fiUCI0xTYoVP/pG1zDSincdi0lQMM6GLsl4v7a8Iciufa
-	 PA6x9Hu2bHgWi35jWNAJi6pCFIHCOSF7IbHqpUkSKhvYF5HP6pzuhDxq8O5jTt7lXIQnX
-	 mH+eDdyynoLnsQYZxVvbEL+cIstukMogm9UmEWKchBjGYFY89o9kVZ0Ss2HpdyrKV+k5A
-	 ODdKd9t+WCJJEhOzifKqMSMs/fvPB1Uqcz50BTpl9ngnXWmUv1pIqDr8CeOJiIkpwQg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794924503;
+	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:To:Cc:
+	 Subject:In-Reply-To:References:User-Agent:Date:Message-ID:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-Last-TLS-Session-Version;
+	bh=NC6ZdVr8PNnbXOJqM4/9u9Fx5qy89lUhN3gY95QsORE=;
+	b=LnDg5/rXgleoZFb5LN6U/UXHEZ3BPBRVYp7+NcNhyEYMj1jXwc2NuxypGDpDtHoL2AsY
+	 0RReGasLE5r/6kqWOVmTzwAU9l5uMXQ2Qqd8787ya87mvEWXRJzkPlhW1byTQTLjwa2Py
+	 trEtuBcjn4q5a3GV8kA5+FLsHeELu/XQzkEyrs8QgEVqkoG+3O6lhYHITDkw07aXcioRm
+	 WoIa2WxK7Z5pg96EO+vUqY5+HsKI9mQAnxM0tZy8mcOpN6Qxk5JM92y1l1EKGFd5Uwgt9
+	 2GYDqrcABkYuJvKg4EseL6w0FIp0O4MW32oeFK/USlASqGW/U8o3fiwrgYORGUhDjDw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oxUoMaS4;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=bootlin.com;
+	spf=pass smtp.mailfrom=bootlin.com;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=np0ax1GY;
+	arc=none smtp.remote-ip=185.246.85.4
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45C07606A31C;
-	Tue, 17 Nov 2026 13:50:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E30C5606A323
+	for <imx@lists.linux.dev>; Tue, 17 Nov 2026 14:08:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E30C5606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oxUoMaS4
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD2B61F000C4;
-	Tue, 17 Nov 2026 13:50:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794923444;
-	bh=wmFVfvCnnhAnhNO4rEUhI4H5IUGmRAkPA7MnRyun0Wc=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=oxUoMaS4JxJax7gMzNM29ujPcZ312rmGTno7FlycYRef95xdhYkED8UxMgYIKp7km
-	 HPUDBgDyLO6W0a8REVW5VZRdgmeZEZgqv8d/Hc6k+2DknVonUNyHfqetezN0Is2adh
-	 9A0XSVQDKBZiL0ZL6aaDIew0V5fYmOs96kcN/LPgL6iQJ4C+r87v8eMv6OOkURnjBQ
-	 q0p/z4WoklLbWXQ+SnPQTyyLV/TzGW2fMBXU9Rdlbw134hLX5VfJRKuAjhL8MoAa7s
-	 3cYg4A7qo9xBhw9RBxQk52YQ/rhV96VZKOMqRyGsmTe+CPLpsQiqjeUE2e0vTozaNL
-	 KN7B2YLVG5J8w==
-Message-ID: <sashiko-outbox-218905@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 1/2] arm64: dts: freescale: fsl: Remove undocumented,
- unapproved aliases
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Krzysztof Kozlowski" <krzysztof.kozlowski@oss.qualcomm.com>, imx@lists.linux.dev, devicetree@vger.kernel.org
-Cc: robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20261117133842.245262-3-krzysztof.kozlowski@oss.qualcomm.com>
-References: <20261117133842.245262-3-krzysztof.kozlowski@oss.qualcomm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 17 Nov 2026 13:50:43 +0000
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=np0ax1GY
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 8DD0B4E41575;
+	Tue, 17 Nov 2026 14:08:21 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 5A88A5FC81;
+	Tue, 17 Nov 2026 14:08:21 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8A87611BC0024;
+	Tue, 17 Nov 2026 15:08:16 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1794924500; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=NC6ZdVr8PNnbXOJqM4/9u9Fx5qy89lUhN3gY95QsORE=;
+	b=np0ax1GYh8y8hX/axL4c6tX2KdsQYngA5vekITEeamJXrmg5sltJaPe9OWZkkhSkftPAXY
+	VtQFeF6swqfLZqxWNM+Um1JQfbVJkKfFRXE/ufXEel2BgG/BajJX6tYxs4pbKCMIZRKAkS
+	FdJ7tkG1tisvq2hfLpRNzJoOA6GBWwpjWkg1SryPcAKIKiZYgV5gRlW1jS9l3U5430sTvN
+	R5cH+0+dbJ43DMk+lJHGWxk+k3e0lmMF3JhPz12q+FFy0Vm1vyenAKYQeggt4VZGojRn5D
+	+c9Kseq0X3nA2m7F5EBf9DSQ+SSSBv4v+ei6j/bva7J92BEx7fGiBpHXb2uubA==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: sashiko-bot@kernel.org
+Cc: "Samarth Narang" <samarth.colleges@gmail.com>,  "Vignesh Raghavendra"
+ <vigneshr@ti.com>,  "Han Xu" <han.xu@nxp.com>,  "Manivannan Sadhasivam"
+ <mani@kernel.org>,  "Maxime Coquelin" <mcoquelin.stm32@gmail.com>,
+  "Alexandre Torgue" <alexandre.torgue@foss.st.com>,
+  sashiko-reviews@lists.linux.dev,  "Richard Weinberger" <richard@nod.at>,
+  linux-mtd@lists.infradead.org,  imx@lists.linux.dev,
+  linux-stm32@st-md-mailman.stormreply.com,  Frank.Li@kernel.org
+Subject: Re: [PATCH v2 5/6] mtd: rawnand: marvell: stop DMA before unmapping
+ on timeout
+In-Reply-To: <sashiko-outbox-191272@kernel.org> (sashiko-bot@kernel.org's
+	message of "Fri, 30 Oct 2026 16:38:42 +0000")
+References: <20261030162041.2998170-1-samarth.colleges@gmail.com>
+	<20261030162041.2998170-6-samarth.colleges@gmail.com>
+	<sashiko-outbox-191272@kernel.org>
+User-Agent: mu4e 1.12.12; emacs 30.2
+Date: Tue, 17 Nov 2026 15:08:15 +0100
+Message-ID: <87h5hflfe8.fsf@bootlin.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -59,92 +78,19 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Last-TLS-Session-Version: TLSv1.3
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Low] arm64: dts: freescale: incomplete alias cleanup in
-  fsl-ls1046a-qds.dts
---
+On 30/10/2026 at 16:38:42 GMT, sashiko-bot@kernel.org wrote:
 
-commit 54e57023b3aee0e459e326a808c4fb4cbc55b171
-Author: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+> Thank you for your contribution! Sashiko AI review found 1 potential issu=
+e(s) to consider:
+> - [Medium] mtd: rawnand: marvell: sleep in atomic context in
+> marvell_nfc_xfer_data_dma()
 
-arm64: dts: freescale: fsl: Remove undocumented, unapproved aliases
+I'll be taking the other patches, please fix this one!
 
-This commit removes undocumented custom aliases such as dpmac, rtic-,
-qsgmii-, sgmii-riser-, rgmii-, and emi1-slot* from several Freescale
-Layerscape devicetree files.
-
-> diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1043a-qds.dts b/arch/arm=
-64/boot/dts/freescale/fsl-ls1043a-qds.dts
-> index e850551b16acb..ea4863c9686c7 100644
-> --- a/arch/arm64/boot/dts/freescale/fsl-ls1043a-qds.dts
-> +++ b/arch/arm64/boot/dts/freescale/fsl-ls1043a-qds.dts
-> @@ -24,22 +24,6 @@ aliases {
->  		serial1 =3D &duart1;
->  		serial2 =3D &duart2;
->  		serial3 =3D &duart3;
-> -		sgmii-riser-s1-p1 =3D &sgmii_phy_s1_p1;
-> -		sgmii-riser-s2-p1 =3D &sgmii_phy_s2_p1;
-> -		sgmii-riser-s3-p1 =3D &sgmii_phy_s3_p1;
-> -		sgmii-riser-s4-p1 =3D &sgmii_phy_s4_p1;
-> -		qsgmii-s1-p1 =3D &qsgmii_phy_s1_p1;
-> -		qsgmii-s1-p2 =3D &qsgmii_phy_s1_p2;
-> -		qsgmii-s1-p3 =3D &qsgmii_phy_s1_p3;
-> -		qsgmii-s1-p4 =3D &qsgmii_phy_s1_p4;
-> -		qsgmii-s2-p1 =3D &qsgmii_phy_s2_p1;
-> -		qsgmii-s2-p2 =3D &qsgmii_phy_s2_p2;
-> -		qsgmii-s2-p3 =3D &qsgmii_phy_s2_p3;
-> -		qsgmii-s2-p4 =3D &qsgmii_phy_s2_p4;
-> -		emi1-slot1 =3D &ls1043mdio_s1;
-> -		emi1-slot2 =3D &ls1043mdio_s2;
-> -		emi1-slot3 =3D &ls1043mdio_s3;
-> -		emi1-slot4 =3D &ls1043mdio_s4;
->  	};
-
-[ ... ]
-
-> diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1046a-qds.dts b/arch/arm=
-64/boot/dts/freescale/fsl-ls1046a-qds.dts
-> index 48a6c08fcea82..8c095aafd5968 100644
-> --- a/arch/arm64/boot/dts/freescale/fsl-ls1046a-qds.dts
-> +++ b/arch/arm64/boot/dts/freescale/fsl-ls1046a-qds.dts
-> @@ -24,10 +24,6 @@ aliases {
->  		gpio1 =3D &gpio1;
->  		gpio2 =3D &gpio2;
->  		gpio3 =3D &gpio3;
-> -		qsgmii-s2-p1 =3D &qsgmii_phy_s2_p1;
-> -		qsgmii-s2-p2 =3D &qsgmii_phy_s2_p2;
-> -		qsgmii-s2-p3 =3D &qsgmii_phy_s2_p3;
-> -		qsgmii-s2-p4 =3D &qsgmii_phy_s2_p4;
->  		serial0 =3D &duart0;
->  		serial1 =3D &duart1;
->  		serial2 =3D &duart2;
-
-[Severity: Low]
-Should the emi1-slot* and sgmii-s* aliases in this node also be removed, as
-was done for fsl-ls1043a-qds.dts above?
-
-Because the aliases in fsl-ls1046a-qds.dts are sorted alphabetically around
-gpio0..3 and serial0..3, only the middle qsgmii-s2-p* group was dropped,
-leaving the other undocumented MDIO mux and PHY aliases introduced by
-63c396414bfc ("arm64: dts: ls1046a-qds: add mmio based mdio-mux nodes for
-FPGA"):
-
-arch/arm64/boot/dts/freescale/fsl-ls1046a-qds.dts:
-	aliases {
-		emi1-slot1 =3D &ls1046mdio_s1;
-		emi1-slot2 =3D &ls1046mdio_s2;
-		emi1-slot4 =3D &ls1046mdio_s4;
-		...
-		serial3 =3D &duart3;
-		sgmii-s1-p1 =3D &sgmii_phy_s1_p1;
-		sgmii-s1-p2 =3D &sgmii_phy_s1_p2;
-		sgmii-s1-p3 =3D &sgmii_phy_s1_p3;
-		sgmii-s1-p4 =3D &sgmii_phy_s1_p4;
-		sgmii-s4-p1 =3D &sgmii_phy_s4_p1;
-	};
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261117133842.2452=
-62-3-krzysztof.kozlowski@oss.qualcomm.com?part=3D1
+Thanks,
+Miqu=C3=A8l
