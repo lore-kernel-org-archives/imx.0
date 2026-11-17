@@ -1,117 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.178
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794939421;
-	b=Agy2lmj9B8M8kM+U3xwRlPZdR3k8Cl9wNbLsX8K63uyLfp/mh6ruJMwdI2dr7uFvZ/yd
-	 Y3BJYpkJn0UM/GBikZR8gnHL1sfqh3td2fFTjS/3bPsiMXTCoPAKc06uVttt5uEP4SyIh
-	 Rtiy7zdUV510VAJNTWkE8/7VeFc8Vbh0m/g+YcVRizHh3xjyKtYqL8XCaIsqs42l9goPs
-	 AnW6gKkJlUuTP24y58ySDDfWkgCDqhvSEZDRFllXaAVFOb5YAy3TbDZSMWcgy/Vma1SXU
-	 YC7x9i53cjYFS37yKUUUNiPL50IOwP1BofYzsejm58K+rh2TLJHQly0/c6InyrpyUrw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794939421;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=pepFJC4WupF41wk+cSidNw5vmFTw1POO1gRenleZ+aQ=;
-	b=TW8noGDPLzK3XsbGMohstwDu2AuOA6kQcMfPcQayEHZLTBVxwmh7HS77Z1NdUsCFq3X/
-	 UmQx+JWmZEQVh6TuxSwxUQiMmN7ZCf08DLGdo/ei7khPOBl9aVliE9j0OPkmQ11VCAtXt
-	 ktsg58EyhamOhD2WrhqXtAwXHJE+h6tpcQse0CcKRA+G04vHnnil7Weu6aRuV0CJisHhN
-	 0Cfo2xrvRin+qoCT2hqQAo4yNZp3P+GcsJaV55XEHu01ji/Ey6Oe3sgj6QLdFsPj1ofaG
-	 Df3dJTCqNSTfIxu945gIS8moVAKfVYwgUAiPPua5+Tni6RjWY+RA3IvKLbd3FXRdzmQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=ziepe.ca;
-	spf=pass smtp.mailfrom=ziepe.ca;
-	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=IUFNsDeS;
-	arc=none smtp.remote-ip=209.85.160.178
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.159.65
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794949335;
+	b=Fr5mkl+5PvjNli6+ula0oyZwIRX6GkQI15nfclobx0UPLVaWZfhQfkbJSp/AYcdwROLt
+	 bmjdiyhqYIDW93vPiFpHjT6d8FLVof4LhIsCy/99GJOIN6cQGuFDLF526dPG+15cQ91Q8
+	 EHjUkmP2dF+MIwbQftIjvIexu585fujFmCo2MlbCKDtyt1ylxMQUUTPjyy7lwPBIAtaJp
+	 kOKFvUuRdHCjQnxaiX4EoLFlgNmmEp7UPw7CtExafbx2qF43F1zjqtb8bGo0nV9Y85++a
+	 Wkf3zMJjgUGBB0UzDq/S1/AjjwdgRkaLYrBZFhRqVU8Lj9YdzkriHcM/Ok+DUAc6eDg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794949335;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:Content-Type:Content-Disposition:
+	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:
+	 X-MS-Exchange-AntiSpam-MessageData-1:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=PLNi9oq0QeGtGGDAHeG+GKXV/DgerA0rBDv8AS22WoE=;
+	b=gF+iPdSirl8w8QvmsJVtv7zXpNmRnumDoZVZwAAhNEkk7acLbQjI7I67d9SFZy8w7gpv
+	 0YPgHyzXZreUWhnSjlvx2sT6oj164rZ0o0+i+QKnpxFuGmPwStviG7skik5TbTkqIyE7q
+	 qh8PL3um9qdmm5O6KJMVEWDU5Yj8VycLCpnP8zuDokIfyAmiU4/6J/RoG6IW7U92+tbJA
+	 hn3kXPofHW+R3S66ZJVnlEIxxy3EUvPL6zzMadEV5ELFaD1LGhxcMSXwmHcgp/hIVE9dc
+	 /6/RyHmfaDaZI9Qy+xqN2JGVmIX8iq5gldl0VHJUNWeERdrP0yS/lXVMTqdUHLaYCNQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nxp.com;
+	spf=pass smtp.mailfrom=nxp.com;
+	dkim=pass header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=JuTIQyz5;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.159.65
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013065.outbound.protection.outlook.com [40.107.159.65])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E24AE606A338
-	for <imx@lists.linux.dev>; Tue, 17 Nov 2026 18:17:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E24AE606A338
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FD39606A32A
+	for <imx@lists.linux.dev>; Tue, 17 Nov 2026 21:02:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3FD39606A32A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=IUFNsDeS
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-5364042eecfso1033661cf.2
-        for <imx@lists.linux.dev>; Tue, 17 Nov 2026 10:17:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1794939420; x=1795544220; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=pepFJC4WupF41wk+cSidNw5vmFTw1POO1gRenleZ+aQ=;
-        b=IUFNsDeSXqEXUtvv5J1fX+vK8nIjcBpw7etJ0QeiB5XKb88W76inRuv3k2Jko+IWBz
-         SCvMe6AeV6KP/00dmG7biJ2o1WTLkD5jsiJnvG+1lNJjXcCmeddcSNT4pqHuYSvRMiC+
-         NlNd3SiElxKVb3lukcRc0UQvAQLOY/sNneYWg37UM01ap5KmMJeYYApN4cSDpxDYZa4H
-         93llk9TzQ/25jVxrktfENERHm7hFNlbjcTKrlE7iAeqEkY2ry5EsBWP6frf1tlz2zRa7
-         Xtu7/ZPGa6QOMjGyCuj+a7XBs7F2+gTgstsBuWebfGaIiMGooWL1SXZVU+t1AY453bq9
-         ndiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794939420; x=1795544220;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=pepFJC4WupF41wk+cSidNw5vmFTw1POO1gRenleZ+aQ=;
-        b=Q61uyERjqYsocbrWNEGMdmomJMlx3/8yuux2sfBAcKZY8Vt/4Dd/OOeYh7AiIU4978
-         sOBGvllVzsZI8Mmnq15CfKCKRbK8C9ECQAAhR35AECNkaddAq7iPmNj7jWwHZmiIkdyG
-         R+AwHKZrRl4y4QQ/NYjMpl/yH8yma8F/YqiUQWUtRB2IG1+VK18tF4XJmX5tokCWkMNf
-         VXGqw0x48RPbflwvzZ6eYVxHEZcBPCS44ul8emiyoeLb3FCftUxCEB+b7yMfT2n3oGDp
-         jWUrDU+quxfaabJYsi+xozspvYXd+sfFt1zzrq4iDiJ+eLXhx/+QW2Tc4P6A+vXK5q92
-         lzHw==
-X-Forwarded-Encrypted: i=1; AL+hErGAVBmbeutY69R1ni/uCPNVe1t3beh2viQFlubhWdKA/x3DilzCFNlbOIECM6qSl34+6Ho=@lists.linux.dev
-X-Gm-Message-State: APuU4Z+rvCCN6kONnjXFOMOS1a9gLTtDhviJ7DlZDL9l+omgOFcMIonr
-	4WV1kklhzE5qQSiADLHG2A+2XdqucfS6tTfgv/os+WZDtjyVlMcVxpa7aiq5hjYPIgE=
-X-Gm-Gg: AYBFou0qypD1L0CXKkmIxp2jRGP/ZebUZm4FGgRxwjp4m1Db3wUj9ot01pTsPKVDvKP
-	0kuED0ya/F2QPgS14h7m2pXS8fBk5RmUng9iSjk4bJm55Grj07H2fr79UO16Jaoehk/WujED8hA
-	dU9fAO53fPzQf1YFVj5ICRFlCMgZYM0pZPzjLDtgBklVhgkKbzt0E5GsO6tyGpZb8e2bLGSBW3c
-	472gVFwQvCqy9ICxyUDGa2NpstQf3+PsXpGfaJ6lOpXeKvGu+d5G31uFtBdUPf1Fn8LKEWCJmIR
-	4VBlqu46B4EOQPR9r49wG1KYHQ/Jur6JBP0HPk6jvpawskyYvc/3IFfDfV4A5LplZ7bgrwN2stt
-	CzI8IkWxK15BLtRW8/gtej0eLKrQXo5NzJ0Oh7xK6pwARhiMGLQs5CLYvcOJPkPmIWDaoKi9H08
-	asMZDkXN3tGC9bzbxSB3rf+i6CzUb4f1tG+97QEqtUnQ4gjfB84KyN38cAqPsoFj1PS5BZ8l4Ak
-	xafMaon0bwTZlxqAEQZ1EAtFLf2Cb9WAFtgMREwrg9SpLBY/OkdFou8yt/AmyPeCovNO6/oU8//
-	6ByDoA==
-X-Received: by 2002:a05:622a:1b10:b0:55c:3b4b:45 with SMTP id d75a77b69052e-55d5a538613mr1980541cf.24.1794939419724;
-        Tue, 17 Nov 2026 10:16:59 -0800 (PST)
-Received: from ziepe.ca ([142.166.156.71])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-55d5907ee6dsm2590361cf.19.2026.11.17.10.16.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Nov 2026 10:16:58 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1xTNjm-0000000D0qg-02mP;
-	Tue, 17 Nov 2026 14:16:58 -0400
-Date: Tue, 17 Nov 2026 14:16:57 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Peng Fan <peng.fan@linux.dev>
-Cc: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>, Frank Li <Frank.Li@nxp.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	"Joerg Roedel (AMD)" <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	Laxman Dewangan <ldewangan@nvidia.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Thierry Reding <thierry.reding@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@kernel.org>,
-	Larisa IIeana Grigore <larisa.grigore@nxp.com>, imx@lists.linux.dev,
-	dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org,
-	iommu@lists.linux.dev, linux-tegra@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH v6 0/9] dmaengine: add DMA channel bus and fsl-edma
- per-channel IOMMU support
-Message-ID: <20261117181657.GF2606445@ziepe.ca>
-References: <20261112-edma-iommu-v3-v6-0-b038edb8ce6f@nxp.com>
- <20261116193021.GB2452510@ziepe.ca>
- <avwQl18smAW4R6ec@fedora>
- <20261117130005.GC2606445@ziepe.ca>
- <avxs_TU6FHn7MMx8@fedora>
+	dkim=pass (2048-bit key, unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=JuTIQyz5
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=gYJqYdVA2y1adQ4AlaR7qDsVDVkEpsITPx5DQRbr8TynCjs37PShQ7kakqhumQEb7xL7yzxKaGkRY2iVs1iV5O0PEZ9tdG+tGNoR/8CjlolyDPM+BWHiZAn1TcoMsx35Va4P5fX+uL1UAlGASrRUNd3WAhymimb4sKJLV4xxRGmoHvU9oxGXDcecABnbECCGiZhBwlRQ8O3ot1woM10M1L+J1KF86+b5u/rnEBTp8VQKGbgRklmKnMwTxI3lSn7Kyh49CXtMMq+Jz141YEw+ESrXRUGCuv/m0CSlAxeefWHkVEIWJbWVmp4J5FSYgiJhCQCXA1XBNUzLfujkrUW+ww==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=PLNi9oq0QeGtGGDAHeG+GKXV/DgerA0rBDv8AS22WoE=;
+ b=CcxuGMGEJDZwvrHs3nrlnmlNXZcQ4eDf01pxsEX3LqLkSCLNPzapmbdpw7XUg+qh/2o30JcM7xDaWNXwD6n4T8ZKLd8PV4LKNZ55h1MFBv81rPJt55ZkmrmBRFPAt5pjQBLYXroTCjapn8SbqgXhUmRBAMcJKrZ9SveRk2lkYJOLzFpGITPu98wFAf+5XaaqB5sbvVG/VNp6r+T1mXmBgUv4XS9uoMoygxuIn+X+FkYLrRSMwrSMyRk5HYlZDjx5G8sQsbA46xPCt4r1MdGhY4KujI+dt1sJp0u2b1dDmJVlHHUvM3FTzdlCneGE8Hlpdf1yiBeKTT3GSOdUPDDXbA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=PLNi9oq0QeGtGGDAHeG+GKXV/DgerA0rBDv8AS22WoE=;
+ b=JuTIQyz5sMNxKIQBrRL09RDpl22QJUL0Wm6gO6S/NtX9lWFP8gVyYF7CETWpL1Pe1bb9rhzKqTyShIEs5fPyOczYWvXoL/UcaUsOFcJyQ7NbYSLo8vHrsfp5ZZi/8F0zYvNH6zxHcRhMp7/hogdCTT3PEAQBnCwwLRXJJl0T59keN8XlcZrkr31Kqnr/9LWSOXyFsoTtL984tXR7G4NyiAYK3qBCfrxXH3/q88NDzG4AHqVKnfAlzVW0sW7IvUDNJ3Xxt8R39kcl8UWOG+zUvR3ad2uWWeC6bAmIPvHaPx16DQEYUoXinC8TbD4glvKwUaDTOzoX/yp7aCCog/iLHQ==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM0PR04MB6900.eurprd04.prod.outlook.com (2603:10a6:208:17d::10)
+ by GV2PR04MB707735.eurprd04.prod.outlook.com (2603:10a6:150:385::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.14; Tue, 17 Nov
+ 2026 21:02:11 +0000
+Received: from AM0PR04MB6900.eurprd04.prod.outlook.com
+ ([fe80::7fda:8431:ca1b:b023]) by AM0PR04MB6900.eurprd04.prod.outlook.com
+ ([fe80::7fda:8431:ca1b:b023%4]) with mapi id 15.21.0615.013; Tue, 17 Nov 2026
+ 21:02:11 +0000
+Date: Tue, 17 Nov 2026 23:02:07 +0200
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
+To: Vincent Jardin <vjardin@free.fr>
+Cc: Dong Aisheng <aisheng.dong@nxp.com>, 
+	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>, Jacky Bai <ping.bai@nxp.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, NXP S32 Linux Team <s32@nxp.com>, 
+	Linus Walleij <linusw@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, linux-gpio@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, Ioana Ciornei <ioana.ciornei@nxp.com>
+Subject: Re: [PATCH v6 4/5] pinctrl: freescale: add the Layerscape RCW
+ pad-mux driver
+Message-ID: <avykU0WMTq24_xkR@lxl00025.wbi.nxp.com>
+References: <20261115-for-upstream-lx2160a-rcw-pinmux-v1-v6-0-fbdce4565a5c@free.fr>
+ <20261115-for-upstream-lx2160a-rcw-pinmux-v1-v6-4-fbdce4565a5c@free.fr>
+ <avtsY-7-I7_pdyD0@lxl00025.wbi.nxp.com>
+ <avyEUKJBiDwxpLt7@L23803.iliad.fr>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <avyEUKJBiDwxpLt7@L23803.iliad.fr>
+X-ClientProxiedBy: AM8P189CA0030.EURP189.PROD.OUTLOOK.COM
+ (2603:10a6:20b:218::35) To AM0PR04MB6900.eurprd04.prod.outlook.com
+ (2603:10a6:208:17d::10)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -121,65 +106,133 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <avxs_TU6FHn7MMx8@fedora>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM0PR04MB6900:EE_|GV2PR04MB707735:EE_
+X-MS-Office365-Filtering-Correlation-Id: 76cf72af-2832-47ed-d0da-08df44ee0c36
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|10070799003|19092799006|366016|1800799024|7416014|376014|18002099003|22082099003|6133799003|261009223027099003|4143699003|5023799004|11063799006|56012099006|261028144727099003|261102123227099003|261022105027099003|261026140227099003|261026121527099003|261022075727099003|261021123027099003|261021121427099003|10067099003|41080700001;
+X-Microsoft-Antispam-Message-Info:
+	YuvPCkwf0ePw5N7pefW3VCHeMbhAh63RDCFbXam4Y89uj4BZ1ecuj0CtXHAkP9SAPpaL5qSZXBrHcsoPLfhDyWDMS4Sl4S9xGEENB2l6R6IYaEUKYp2WUw1hMs3t+T99HM3gMpPL2RXH7jKQnCXkVRjKEzVg6jlilMj8FgmgFUoq96P/5HGaVrpYqGOranW1ovPOM5R2jwirMx2GFLBSDPrZlFc0Az7+dC3PHmapqBkGBaZDKfoiKtPCA4BtskI07OWNIjZPYXNAwEuDogHwmEbzRYJTN9MBsCdlYOvaeBHoPLdyNOmlrEXurSSFLZpO9tOM1IjUMhVb9nuSU92JvMzFpqjEQxSq+JS+5lUo8Etg2HUXvskow8Hm6OCU5btQzMg7RYoRzAT7wAgEz/MRQS+mCo4FTkGz6zyE4sWR6Tk1og6J87aBJRSlPgFSMTwu7rMrdypedqnTIi7lomhK1nWoMcP7OHr5mnuYXOnhItvvTp5gdOziAgdo+8NsCBzWWDjHZQqKFvMzCRv/JamVKNVqZj7m/eyidh3DGxTzcWMnnAKEHyFzX4zRdlNaSLLgh+0K9rKjoSqZmrmatnTwz9eJmKwE0cNPy1NkZMdBV8ciHhf+kjBmuaaFyV6rd/Qoq4HXbgMFrK3jvk3qVJf9t1yA3WfhsMjMX5IWaf1FmQ8vM7Y4sorn/O9ea6BqncuV1vcsWzF1Zdd2oJuoWSBdyw==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB6900.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(10070799003)(19092799006)(366016)(1800799024)(7416014)(376014)(18002099003)(22082099003)(6133799003)(261009223027099003)(4143699003)(5023799004)(11063799006)(56012099006)(261028144727099003)(261102123227099003)(261022105027099003)(261026140227099003)(261026121527099003)(261022075727099003)(261021123027099003)(261021121427099003)(10067099003)(41080700001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?h0Qr+9YgehzjjTkmx1LRarIpuk5tINEye91pFs72h+BrxReteVu7gK+Tfw8N?=
+ =?us-ascii?Q?IsSrNTIdbAOls62duZwbtPj1OxjTLn4ZoBXSqLJn1++4EfueG2vSUiLqIyG5?=
+ =?us-ascii?Q?NwLKNjQTHd6iELeadlRnlhnPe7PyuCxbAeagU3wh/m9nUPGGh7WVOrxz6YVM?=
+ =?us-ascii?Q?JHu17y+lp44PUk/8VbqkNH+irTXByha3BSkIHpGP/yD/q+vDJzNriBylUDgX?=
+ =?us-ascii?Q?nSMy4GN5hGgMrCKOAO1LgussB7LQFuD2amRHurRiZttXPPoXW4xbshpNpKrp?=
+ =?us-ascii?Q?N+qoDw+hLwc8zBL1WYk0w+UYDDQN+eVmwRxjPZ8jyLCx26GfWEGLP/M9tsBX?=
+ =?us-ascii?Q?a5aWFdaS6kx0E5TKU8XuzvIEMxtHsQAhFnuA+msAC0j3FpDlkWXKBG2EIaHu?=
+ =?us-ascii?Q?rmYvSG7XnHfHbOm0lP8juEvQJOnq6Eorry4acz4qWIa60SwyJlTd/DEtWram?=
+ =?us-ascii?Q?uRpsjKSZboxyQ4T63p6N+93GiHOg/G/CkHW6OMIg1VQ8nk+OTrRE8NOj0Wtn?=
+ =?us-ascii?Q?7aK88AT6I8m7uNXIf/bliGvNCc/9BiqW7D6MOECf2szjdqJoNiNw468ipKRh?=
+ =?us-ascii?Q?XbgOo0lvPOYxX1KN5ubDRmjc1hN9ZF4+a3S3miyvZxvT22qQ1O58vaPOJ7cR?=
+ =?us-ascii?Q?rpkDoUBraloiWwAzjzb37+v0D1L0mDYKmL+MAhqmR13Jk7pokjWz6GZ8YtVL?=
+ =?us-ascii?Q?+KAEgOeaDCaMSpRHJMYmAWFqlJkvtATY2bomIvgUbhkc10/hLKJcbJioXwg1?=
+ =?us-ascii?Q?fZvJY0H4HbiPL5omgdGrbqnRCilxaaet84M19JhsyP0ms4sx9TY9MyWElWQt?=
+ =?us-ascii?Q?Who8LjI2wX4TP9RiAcZOZMYB0adi2vQ9FfN4tj/QCKZtOOiZfo/FyGAvLpW8?=
+ =?us-ascii?Q?6OdKOikD5JuT6rigOs4yclRYTR7ZQfivMx5UmMa/pBHbQBz0kyg6ZRcaHSMW?=
+ =?us-ascii?Q?JF72YEV5amQzvf9SvV6o9YqgW1ilaGOe2kZR/ELwuGkGeUu9Q5Bb9xguLNUD?=
+ =?us-ascii?Q?NuHRIgvWy87aHcmGYa2hoBzQjzFh2QZO58bawXrNUE5H8TKONkabvcBUo2KM?=
+ =?us-ascii?Q?V8Lpm+5mfLGXJNsVLoUdkwkKvPZCDV1XVUL/SBFndnlAIY6FIbsUFSub8DjW?=
+ =?us-ascii?Q?/dO+cQIWlIHFSZolNAbJRW7f8KY0c643wffY14i7RdkKRsVKdSp0DAS3/rAf?=
+ =?us-ascii?Q?veL8qhYL34BmtdeeaR3uUjyBo4lr92oP5WyEOyjN/V1IkoEMtWfagfyihryR?=
+ =?us-ascii?Q?6Y11Tvp7JysiqndgWHlK+opyqG28Qp/N4HUbc3FV6WaoM6y36tiPfD2cPZH8?=
+ =?us-ascii?Q?XUlrurN95BPwKd3M3rPz0tZqHU8OOVddKfMAST/5oTPGywJY7NJR3xtijEAf?=
+ =?us-ascii?Q?Z3Lxa3Q5w1aC9mINl5eaZzkY+uwxZHJ96eIKXNsBtBUpfzDo9Q4d4oEjCf91?=
+ =?us-ascii?Q?D1QJGzv0qBzd9OCAaqPG7cTozcrfl442kl3Kerny+WNenDBRf4oTw3kaTgHf?=
+ =?us-ascii?Q?l+R2Ag4yLWaj4cAKSfPdMWVMD6yiNVt7DbPc7eG/pKZAfI+U6dqSUBN6nDM2?=
+ =?us-ascii?Q?3DkJN2aoMjeIRg5CTh9D0ttxu3RoNJHjRCAcCh8bMQt2kH8xCCirSR7hrBAA?=
+ =?us-ascii?Q?jgD79BGOr9bH+04SFmHB/NpZCYHcLlgyPdI8GjS0+AFqkFTGhJkN/u+7d26l?=
+ =?us-ascii?Q?6lNsaOuCZWeDp1DSUaGcBb/XO2Wf6GxEAREg6+0Q4AXoQvLDuI4UKOSxdRSH?=
+ =?us-ascii?Q?hA4DMAvVmaj6YMaks2VdW+rjz9M1fmKpGpae3ygVMUZ7Fuwe0oTUUSU9EyMs?=
+X-MS-Exchange-AntiSpam-MessageData-1: T9axJn1UbVFtDA==
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 76cf72af-2832-47ed-d0da-08df44ee0c36
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB6900.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Nov 2026 21:02:11.0267
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: hGI0DvaKAAL6kSIdsV/d7CNiKkiSalpr/of5hGuURTMiKtbw5S3q+bY9cJ5jwTBcBvnHbNqj/Sah0rxRXDviRw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR04MB707735
 
-On Tue, Nov 17, 2026 at 11:04:29PM +0800, Peng Fan wrote:
-
-> - Keep the DMA controller as one device and describe its channel Stream
->   IDs in the controller node (ordered list, no per-channel child nodes and
->   no requester-ID map).
-> - Add a generic dmaengine/IOMMU mechanism that assigns one of those
->   Stream IDs to each dma_chan_dev, so the channel gets its own IOMMU
->   context/domain without inventing a DT device.
-
-IMHO what you really need here is some way to get the DMA API for a
-"PASID" combined with some way to convert SIDs in an iommus property
-into a "PASID".
-
-How exactly that looks, I'm, not sure, but you probably do need a
-struct device to do DMA with as that is integral to how the DMA API
-works.
-
-If that is a real struct device or some proxy, I don't know. Long ago
-there was some work on this topic and struct device per PASID seemed
-to be the direction people were interested in.
-
-> - Use the SMMUv3 shared-SID support (still under reviewing) for channels that
->   must share a SID.
-
-If you get struct device handles for the SID then you don't need this
-at all since you'd have exactly N handles with no overlap.
-
-You don't need to force the struct devices you want to use in the DMA
-channel's model to be exactly used as the DMA device..
- 
-> This keeps DT describing real hardware (the controller's SIDs) and moves
-> the Linux-specific unbundling into the core instead of a per-driver
-> binding. Each channel occupies 64KB MMIO region and works independently.
-> With separate DT node, it will be easy for us to do channel device passthrough
-> when using Xen hypervisor. Now moving away from this, the remaining question is
-> how to expose a channel for Xen/per-channel passthrough without a per-channel
-> DT node, seems I need to add some code in Xen hypervisor to support channel
-> passthrough.
-
-Normally you'd make a VFIO driver for this, especially if you have a
-"PASID". You really care about Xen? It is so weird in this area?
-
-> >Again, since this is the 3rd - 4th case like this, it seems like a
-> >popular hardware choice and we should try to do better to make Linux
-> >support if we can.
+On Tue, Nov 17, 2026 at 05:44:00PM +0100, Vincent Jardin wrote:
+> Hi Vladimir,
 > 
-> Yeah, I saw QCOM VPU case and thought child node usage was agreed from
-> Krzysztof's reply. So I use same idea here.
+> > The "i2c" and "gpio" functions of lx2160a_sdhc2_data74_funcs[] here
+> > hides some real unpleasantness. These 4 pins either get all assigned to
+> > I2C7_SCL, I2C7_SDA, I2C8_SCL, I2C8_SDA, or they get all assigned to GPIO.
+> > But they cannot be assigned in pairs of two (or individually, i.o.w. not
+> > in the granularity we need), which makes independent I2C bus recovery
+> > practically impossible (i2c6 as I2C while i2c7 is as GPIO).
+> 
+> yep, the doc is clear about it: SDHC2_DAT74_PMUX is a single field for
+> the 4 pads, 0b001 gives GPIO_2[18:15] and 0b010 gives IIC7 and IIC8
+> together (RM rev 1, 4.9.8.9). IIC7 and IIC8 are not available on any
+> other pad.
+> 
+> Checking from other angles, the A-010650 workaround uses one write for both
+> buses: 0x700100130 = RegA OR 0x031. That mask looks wrong to me though: bits 5:4
+> belong to SDHC2_BASE_PMUX, and OR-ing 0x001 onto 0b010 gives the reserved
+> 0b011. Could someone at NXP have a look ?
+> 
+> > The way the code is currently written, the pin_request() call will fail here:
+> 
+> Yes, in fact, it is not new with this series: both nodes have shared the
+> same setting since
+>   8a1365c7bbc1 ("arm64: dts: lx2160a: add pinmux and i2c gpio to support bus recovery")
+> from Carlos Song (NXP) where the two pinctrl-single states covered the same
+> bits, so the second controller would have failed the same way. Wihtin the
+> kernel, there is no board that enables i2c6 or i2c7, so nobody did hit it!
+> 
+> > Due to the fundamental issue of this limitation, I don't think it makes
+> > sense to have the pinctrl states described in fsl-lx216x.dtsi for i2c6
+> > and i2c7. Perhaps you could remove them in another change (either as a
+> > follow-up, or another patch in v7 if you need to resend).
+> 
+> Done for v7 as an additional patch: the DTS drops pinctrl-names, pinctrl-0/1
+> and scl/sda-gpios from i2c6 and i2c7, and the two states nothing else uses.
+> A board that needs one of these buses can add its own states, or set the
+> field once with a hog on the pad-mux node.
 
-It was but at that point it was the only one. Now there are two QCOM
-ones, this and maybe another I forget.
+I'm not entirely happy with my own suggestion either, I'll comment more
+on v7.
 
-Also, IIRC, it wasn't quite like this, the DT was supposed to create
-real platform devices. This kernel creates struct devices and attaches
-them to DT was the first idea that was pushed back on when it became
-too complicated.
+> 
+> I tested on my board for regressions, since there those 4 pads carry
+> the eMMC DAT[7:4]: the other I2C buses still set up their GPIO recovery,
+> and the eMMC still runs in 8-bit HS400.
+> 
+> I also went through the other fields. 7 more settings mix two
+> controllers the same way:
+>  - flextimer on iic2, irq3-0, irq7-4, evt4-3 and evt2-0 (FTM1 and FTM2 channels)
+>  - sdhc-spi on sdhc1-base (SDHC1 with SPI3_PCS0) and usb on usb-ext (USB1 and USB2)
+> No dts claims any of them.
+> 
+> About your previous comment on clk-out: v7 names encoding 0 "clk-out".
+> On my board, with debugfs, it shows now:
+> 
+>   pin 20 (evt2-0) 0:? evt
+>   pin 21 (clk-out) 0:? clk-out
+>   pin 22 (asleep) 0:? asleep
+> 
+> and the U-Boot port of this driver shows "clk-out : clk-out" in
+> "pinmux status".
+> My take: the reserved marking comes from RM rev 1: its revision history
+> says "Updated 0b000 as reserved" and the CLK_OUT configuration section was
+> removed, while table 19 still lists 000 (CLK_OUT).
+> 
+> There is a similar gap on EC1: the signal tables list CLK_OUT2 on
+> EC1_TXD0/GPIO4_DAT03, but EC1_PMUX only has 0b00 RGMII and 0b01 GPIO,
+> 0b10 and 0b11 being reserved. Would you know which value selects CLK_OUT2 ?
 
-Jason
+These are good questions. I've opened a ticket internally and I'm hoping
+to get some answers regarding the correctness of the documented A-010650
+workaround procedure and the CLK_OUT/CLK_OUT2 signals, which are in a weird
+superposition of documented and not documented at the same time.
