@@ -1,75 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=212.27.42.6
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.52
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794927477;
-	b=pl0C1Z9a1XfzmU7qGDKmS+uoXyiQMbf7D92BxPLmlcKUTV+oTyD7ro2oyiyzdlCX11jZ
-	 yqShh5oFVorbZ+ZFyMtvVHqLjddqKbSfVWQuqqKSE+CN8jRGtl1ujLt0RyHtsmFDCS2s+
-	 IVUjcHqVy4kuM16+juy2+mfyLetAPA0IDVngEjncZUXxRgLO02Yb6amR7JnJe8K1TfjUc
-	 MfWud5IAWBzaBD1lS81awC0KPIqt7eIgtAHHbHzAAEjiNy3GSX9j0ET4W6V7uPG6F79WY
-	 29SWbhuwiZ+doELKjiBVcjCeYwFGfRIY+vrl3w1BGuO6KZhxR0Bo+o9rq22lwMLFTVA==
+	t=1794927899;
+	b=VOXVvK5D0upL1c62wfG7GINsuTCVbWR1ghcIyIRznWDddQPQRVP3zGxDeHkvYoiwvPhV
+	 cIx9pz0B0o27iSgYWWRMNKFET5t2geYNrs71OkcqZCq31nzaiQxVG9romEywWZLZ9rScS
+	 XcDDVSqwoJaJqm0hPilmRjxhfiT9YPuwTI7aDdbeGNIa3IREzmdcv4NHZTMBnFg+9M7HV
+	 d6nlB4VsIMGBdX1dbJoC/kxhuF/UPmUmEZHjfNb6Y3imwsG+7s/J5BrjatN/ZidBDM/h/
+	 hVsznd1rARJVHM5yMEBwC92QfBuH9o569Vvtu7+5BsXLNCFfjC5pFKQFb65wckJMqJA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794927477;
-	h=DMARC-Filter:Received:DKIM-Signature:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=s6kZBCjfiQkhSEJV2Z1jyMjdsrciCZ6ttNX5JGYKx+4=;
-	b=d6bfxaRAOoHKhEjxhD9KwQzqv/9jFnROP22U/kCjZQFlCSaX9Ho/RTLpBhNOhvywHlI0
-	 nxG707LRzJDUik6Tma7AtDDudXGF8L1q88l+eoddUIN0CTr8QCqtaf5eT4EoYeNMOJv/i
-	 NMU4JUwLEVH7gtYTteCRO53yxdC4XgyB/1KefLHqm3q4wEdm0+SVCCMIR+fxty3HsbS0m
-	 fjywf+Qi9euwE1UaJXUOZitm0fz5MLxs71A/kIw3sgQrXxxXZiWIL7rYc6FOBiwBFJgIi
-	 behs6LDiV9b90B3kgiLW3MJV5h8NLnaB3tDW7fzZi6TvT8nDty5323xzxRTr0m6XH0Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794927899;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=YGp9PC/3VbbJew7o6lt7FFNFnWRQ4swf3eWUT365kY4=;
+	b=pDNmLyKMG2YuideZnqtDeEEBRq/9C5f1K2Pv4KprI4COkyRq1N7j0wFf/3T2HHcGyHXj
+	 NKvtyQHbqwyhwXUd6cOHSbNpqxJa4p5h/4x5ny1+3Np5nfyAxu3dMxHhb4gy11JzdFPaO
+	 5RnVwFFN6Frw882C/c+DTzYf0AuD+iX1JsUYQrBTEhksNmPnuMALAaDUM4+fzOoWMtxDo
+	 tqhHjxbCjoWhDe0m3nmRP57X5E5DaGo5WA9PkQiaYx5y4q3bMP9PHJnw57Uc7Wp/V4VHO
+	 VtUA/WMSTjlq7Q+wQAImECN1jnHoINbB3Yv3ybh8w2ejUT6z9wRmfwbURiLaGf325kQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=free.fr;
-	spf=pass smtp.mailfrom=free.fr;
-	dkim=pass header.d=free.fr header.i=@free.fr header.a=rsa-sha256 header.s=smtp-20201208 header.b=agZnjsJQ;
-	arc=none smtp.remote-ip=212.27.42.6
-Received: from smtp6-g21.free.fr (smtp6-g21.free.fr [212.27.42.6])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Gd6ZY2Up;
+	arc=none smtp.remote-ip=95.215.58.52
+Received: from mta1.migadu.com (out-52.mta1.migadu.com [95.215.58.52])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1D6A606A882
-	for <imx@lists.linux.dev>; Tue, 17 Nov 2026 14:57:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C1D6A606A882
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=free.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=free.fr
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE91E606A32A
+	for <imx@lists.linux.dev>; Tue, 17 Nov 2026 15:04:57 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CE91E606A32A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=free.fr header.i=@free.fr header.a=rsa-sha256 header.s=smtp-20201208 header.b=agZnjsJQ
-Received: from L23803.iliad.fr (unknown [213.36.7.12])
-	(Authenticated sender: vjardin@free.fr)
-	by smtp6-g21.free.fr (Postfix) with ESMTPSA id 3E5A5780510;
-	Tue, 17 Nov 2026 15:57:25 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=free.fr;
-	s=smtp-20201208; t=1794927467;
-	bh=Kxv9zLHW2Eb4osegyxsTaFPBbgAIfUoYui4bAAK2XVg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=agZnjsJQLzDfu3kiyhn9g9Sy0L9RXmaKwOcrWY/ydd2lvFoEG5S9tDXomzsdJ1VXJ
-	 6Efhw+DDCL3WoiHk12XxonGtBUnHIhNCazNoTIrzAfuRtLZMQQFyFcu2UHxCjLQADB
-	 hScFR3JbvNWUVxSXxsCfq5BXGNYwnbuxoKWlRjpizBFRUIXTETgyq8CAW+oQJUDFJy
-	 /SsNK4xGmX5TYhdANwCFD9lfsmUCExQhiLbR3ofnBYnQDvbmme3MajAzHttOMQiJ/1
-	 jY160eWve0YCnHZLGap/GtTdoe2QJs23ebh3cXWuKGWKBwbQ7Bl+Hhl8kUsHfU0Tru
-	 O8KB8MTr4ysWA==
-Date: Tue, 17 Nov 2026 15:57:23 +0100
-From: Vincent Jardin <vjardin@free.fr>
-To: Linus Walleij <linusw@kernel.org>
-Cc: Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>,
-	Frank Li <Frank.Li@nxp.com>, Jacky Bai <ping.bai@nxp.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	NXP S32 Linux Team <s32@nxp.com>, Rob Herring <robh@kernel.org>,
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Gd6ZY2Up
+X-Envelope-To: imx@lists.linux.dev
+DKIM-Signature: a=rsa-sha256; bh=EF8PbkYJiw2SNYIbhXqCwRQsFcWPdAKgl4U2nMsfivM=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794927896; v=1; x=1795532696;
+ b=Gd6ZY2UpdrZJMbZpVdKAc3uir6WaMVnLKdTjum8VXcuGFY1YPLjTTyGn2Ktuoh2tal6aJY3t
+ 0/60LtM700/6qvKKkA2U7OEHtJl9Kz5xQtyU3g/QWrW6Zcgl7ps2kqOUXU3Ptm4TPtdYd97xYQZ
+ g4KmAm0xJpKl8qE1T91IgtLA=
+X-Envelope-To: imx@lists.linux.dev
+Received: by smtp.migadu.com with ESMTPS id b65b25fb13c5725a;
+	Tue, 17 Nov 2026 15:04:55 +0000
+X-Mizu-Trace-ID: b65b25fb13c5725a
+X-Migadu-Flow: FLOW_OUT
+Date: Tue, 17 Nov 2026 23:04:29 +0800
+From: Peng Fan <peng.fan@linux.dev>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>, Frank Li <Frank.Li@nxp.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	"Joerg Roedel (AMD)" <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+	Laxman Dewangan <ldewangan@nvidia.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	Thierry Reding <thierry.reding@kernel.org>,
+	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>, linux-gpio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev, Vladimir Oltean <vladimir.oltean@nxp.com>
-Subject: Re: [PATCH v2 4/5] pinctrl: freescale: add the LX2160A RCW pad-mux
- driver
-Message-ID: <avxrU7frfDp6HeF0@L23803.iliad.fr>
-References: <20261103-for-upstream-lx2160a-rcw-pinmux-v1-v2-0-3aad0860b984@free.fr>
- <20261103-for-upstream-lx2160a-rcw-pinmux-v1-v2-4-3aad0860b984@free.fr>
- <CAD++jL=Np+_+wTkuLCiqjNY5EBqn5qq8zKTJB6F-=1G0R+7=Ww@mail.gmail.com>
- <au9YgytCc4TKfETI@l3017727.home>
- <CAD++jLnWcVDbh-vf20w4nfvOSZik619XqoEjXTBZ29sJkX-bCQ@mail.gmail.com>
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@kernel.org>,
+	Larisa IIeana Grigore <larisa.grigore@nxp.com>, imx@lists.linux.dev,
+	dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org,
+	iommu@lists.linux.dev, linux-tegra@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH v6 0/9] dmaengine: add DMA channel bus and fsl-edma
+ per-channel IOMMU support
+Message-ID: <avxs_TU6FHn7MMx8@fedora>
+References: <20261112-edma-iommu-v3-v6-0-b038edb8ce6f@nxp.com>
+ <20261116193021.GB2452510@ziepe.ca>
+ <avwQl18smAW4R6ec@fedora>
+ <20261117130005.GC2606445@ziepe.ca>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -79,19 +83,108 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAD++jLnWcVDbh-vf20w4nfvOSZik619XqoEjXTBZ29sJkX-bCQ@mail.gmail.com>
+In-Reply-To: <20261117130005.GC2606445@ziepe.ca>
 
-Hi Linus,
+On Tue, Nov 17, 2026 at 09:00:05AM -0400, Jason Gunthorpe wrote:
+>On Tue, Nov 17, 2026 at 04:30:15PM +0800, Peng Fan wrote:
+>> On Mon, Nov 16, 2026 at 03:30:21PM -0400, Jason Gunthorpe wrote:
+>> >On Thu, Nov 12, 2026 at 03:53:03PM +0800, Peng Fan (OSS) wrote:
+>> >> I used iommu-map for eDMA, but iommu experts rejected it:
+>> >> "Using iommu-map to describe synthetic dma_chan_dev devices that the
+>> >> kernel creates is the same kind of DT abuse from over here:"
+>> >> More info: https://lore.kernel.org/all/20260917144804.GI3196566@ziepe.ca/
+>> >> 
+>> >> So I followed here [2] as Krzysztof wrote for QCOM VPU:
+>> >> "Thanks Jason for context and detailed arguments. Robin did not chime in
+>> >> yet, but from what I understood the DT-child-node approach will be the
+>> >> way we should go here.
+>> >> 
+>> >> I accept above point of view and I am fine with this, thus Vishnu and
+>> >> Vikash - please go ahead with DT-child-node solution we had some time ago."
+>> >> [2] https://lore.kernel.org/linux-iommu/c7b956a9-d3e8-4e18-b780-5d08f5cd2ca1@kernel.org/
+>> >> 
+>> >> This series adds per-channel DT child node support to fsl-edma and, as a
+>> >> prerequisite, introduces a proper bus for DMA channel devices.
+>> >
+>> >To be fair this is discouraged too, now that I've seen 3-4 people
+>> >trying to do exactly the same thing I'm not as positive about the
+>> >DT-child-node hack.
+>> 
+>> I may not describe it clear in cover-letter.
+>> 
+>> I understand the concern. Let me explain why I believe it is justified here
+>> rather than a hack.
+>> 
+>> On i.MX eDMA each channel has its own interrupt, its own register region,
+>> and on i.MX8QM even its own power domain. Each channel may also have its
+>> own Stream ID, or share one when SIDs are scarce. These are genuine
+>> per-channel hardware resources, not software fiction.
+>> 
+>> In dmaengine each channel is already modeled as a channel device (see
+>> dmaengine_chan_dev()), and this series puts those devices on a real bus
+>> (dmaengine_chan_bus_type) as a prerequisite. The DT child node simply
+>> describes that existing device, so its reg/interrupts/power-domains/iommus
+>> are attached per channel instead of as index-matched flat lists on the
+>> controller.
+>
+>If they are real devices then why can't they come out as platform
+>devices?
+>
+>I think you are overstating how independent they are. Many single
+>devices have per "channel" resources like MMIO and IRQs. That's
+>totally normal. It doesn't make the sub resources independent devices.
+>
+>AFAICT what you have here is some HW designer used SID where they
+>should have used SSID and you are trying to hack DT to make that
+>usable because Linux does not support a SID as SSID model today.
 
-> > Could an ack of Christophe Leroy be enough on patch 3 to 1...4 could land into the pinctrl tree ?
-> > Then, patch 5 could be managed apart.
-> 
-> OK let's try to do it like that.
+Thanks Jason, that clarifies the core issue.
 
-ok, recorded into the serie 7, but then it should be patch 5 and 6
-  https://lore.kernel.org/all/20261117-for-upstream-lx2160a-rcw-pinmux-v1-v7-6-5d7201970629@free.fr/
+Anyway, I agree that per-channel MMIO/IRQ/power-domains do not by themselves
+make the channels independent devices. The real problem is that the eDMA could
+have separate SIDs for channels that are logically part of one controller, i.e.
+it uses SID where an SSID/substream would be the natural model, and Linux
+does not support that today.
 
-best regards,
-  Vincent
+So I'd like to step back from the DT child-node shape and propose a
+generic direction:
+
+- Keep the DMA controller as one device and describe its channel Stream
+  IDs in the controller node (ordered list, no per-channel child nodes and
+  no requester-ID map).
+- Add a generic dmaengine/IOMMU mechanism that assigns one of those
+  Stream IDs to each dma_chan_dev, so the channel gets its own IOMMU
+  context/domain without inventing a DT device.
+- Use the SMMUv3 shared-SID support (still under reviewing) for channels that
+  must share a SID.
+
+This keeps DT describing real hardware (the controller's SIDs) and moves
+the Linux-specific unbundling into the core instead of a per-driver
+binding. Each channel occupies 64KB MMIO region and works independently.
+With separate DT node, it will be easy for us to do channel device passthrough
+when using Xen hypervisor. Now moving away from this, the remaining question is
+how to expose a channel for Xen/per-channel passthrough without a per-channel
+DT node, seems I need to add some code in Xen hypervisor to support channel
+passthrough.
+
+Would that direction be acceptable, or do you see SID-as-SSID support in
+the IOMMU core as the required longer-term fix?
+
+Vinod, Frank, from dmaengine perspective, do you have any comments?
+Rob, you reviewed DT binding patch, do you have any comments?
+
+>
+>Again, since this is the 3rd - 4th case like this, it seems like a
+>popular hardware choice and we should try to do better to make Linux
+>support if we can.
+
+Yeah, I saw QCOM VPU case and thought child node usage was agreed from
+Krzysztof's reply. So I use same idea here.
+
+Thanks,
+Peng
+
+>
+>Jason
