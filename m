@@ -1,56 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.84
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.164
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794899690;
-	b=ttMesniv8UX5k99lkSqKMuo0dYf9UaVR4sFaxW6f7Sz7guT3aRFkl65SRO3FKDhtRgAy
-	 DbuYUKzxoblEd7kpVGVAlss19wDbMCgHOvi8B5R3duKvnRVtIucb3Y3GaIouCxU+v6HtV
-	 8gA9Q47gs8gpbiUM5QVkXEV4TU6WGNhpBRJfrouRQBkjMKKhYjc8Wst1P58uL6DYhdVXh
-	 FTDL8BIIvm/PCkxJ7mBbfSMCq0gkQU5lNr4QMSgJfbAP0yDnT8hQDeIM669Wnk2iPmara
-	 M+OlwOyV+YoDHv232J7WYwiEZ+mueFHgDJN7aGXXVI9Zi8xU+FUD+JauBL6jZayLmjA==
+	t=1794899695;
+	b=fmmWgtITINzKoBW5praoPhLsiSxsxbwEEXGpp/5snA3rvQsmU1vsjQ3HdVVlFvuiVSjy
+	 OfGqqCQAFUOP5l4cLqKwq4OtbHPQJZpZ2Y7fhqdIjew4bab3m1u6RcoHALcMleZ5b4Wdu
+	 oLrY1ZX5jupxKT2CXBLdqEJPT0HvVLsnmj0rqcmZZKFchlUiK08FYfgwwJS+PSfiD/TQ6
+	 SakIsUjvjcoHcNO/xI/X3AcbrmZbAtEtimxjJyaniVHN5V1WJK3QRRm+beeBshd9LwwMs
+	 eUBs/VgyFnblcrdCVVlPGLUs9wxGhPS09G8vWhe+u78aUT3R8xfYpVrmwedPjVOs6rg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794899690;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794899695;
 	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
 	 X-Mizu-Trace-ID:X-Migadu-Flow:From:Date:Subject:MIME-Version:
 	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
 	 In-Reply-To:To:Cc:X-Mailer;
-	bh=vIeF9vrR2DgyA1S6iCBievDYCjb9lO6NZyShcWqBnb8=;
-	b=Br7sfJZyLE+0RYr2HCemN3RP9HFjGUGzybZrh3Q3u3umPYfSczwKMLST1yom5hiO6UGM
-	 rudIKXClv8cOMAyS5IXotIocGKyX/LH9xJEeK1HZG2a+YkEjX9H50mb4szG+2SJrkdd2b
-	 aexou3Bc04MkEV6iJi7G6q8FQ0H7AjNgS8d4dx4XlS0OMbZiBlKie3nKd5e0rfK+Qz5G2
-	 KCdm8yBjR4zZS5uHaY1q30Uh1JB2IptYvc07puwI5RTIC82lWvjAJm+syHrtfIPmVWdM3
-	 2v4NovYEeGTyYccFi3E4VQAZ8eXJXIxntMoWXhr/Ye400uQccTaGc8H1bX/rEARjoxA==
+	bh=7i5qcP5sxivInnRUrN+Klf/63NaDFtusfexk9BVAIbk=;
+	b=lNqtfNVkcccDxbr+BBLh1vIW/eQ8A9whhnez1FfG6WYHvPO3gaCHVqqzOL+wtT4aU1FR
+	 cIR+bPlLmUh14DuH8xJceKM5J/NjdyyLQvSKatAr81kIKItczM05gIVE0LLL+2wgo8h0x
+	 RcZzcp1iDDH6eRp7/S2+QWOrvtDcQfMli66T2nBmj6IZ6G5K3CXzaKrmwtpBpaLTGKu5n
+	 2dZ3niI96rMAK9b2TjcyrsBCX1jCxnzVeGM+zkTmEAg3CkfabAXLNrZU51hXIEK5w1a6Q
+	 PKxYpkLap609RczLg8USZExGHjhXjQ8LH8GrBUsnSFZzrLIsF0vT4z193TM4T3irIug==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.dev;
 	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=fzWKQmAo;
-	arc=none smtp.remote-ip=95.215.58.84
-Received: from mta1.migadu.com (out-84.mta1.migadu.com [95.215.58.84])
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=JmX8pIhr;
+	arc=none smtp.remote-ip=91.218.175.164
+Received: from mta0.migadu.com (out-164.mta0.migadu.com [91.218.175.164])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 016E0606A335
-	for <imx@lists.linux.dev>; Tue, 17 Nov 2026 07:14:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 016E0606A335
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B95A9606A323
+	for <imx@lists.linux.dev>; Tue, 17 Nov 2026 07:14:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B95A9606A323
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=fzWKQmAo
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=JmX8pIhr
 X-Envelope-To: imx@lists.linux.dev
-DKIM-Signature: a=rsa-sha256; bh=H8cqCHYI9Gmfe1/SCs9KFv5NYlTFBza+OEuLdfK12EQ=;
+DKIM-Signature: a=rsa-sha256; bh=grnlVM8NPzNbFsIqKfom85HvWWMDds8Zcuvnsl0twCg=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794899687; v=1; x=1795504487;
- b=fzWKQmAoJFh/AMJTMqk0ygTTQTLXH8EXUYcD+jdX8vDL3VeOpjlvbxWTRXjK9wsv0NnmhMR2
- qwls7A00L1wirVr1Iw9AkXud60Wrk67payq7oQdjE39jPzq3jCnMcdmEnseiJnItPKaIiTdA1fn
- CbpPG+0LHheLSgbGChxozfSg=
+ t=1794899692; v=1; x=1795504492;
+ b=JmX8pIhrwPheQ+nQ+Tes13ezhkwtqRBYWSivI5fv4q7gwA1VhkzZQSBm9uXr4TUs+GDuuf2G
+ 6M/dlwnqszO7QXpQqVjtB/8N/qk1XgBFwjDZRlEXNcnf/auCSPRoR+B1mApN+i651Jaz9lkmbXj
+ bHI5mRziYCTFGPLqtDpJwraw=
 X-Envelope-To: imx@lists.linux.dev
-Received: by smtp.migadu.com with ESMTPS id 99571a1b9b522972;
-	Tue, 17 Nov 2026 07:14:47 +0000
-X-Mizu-Trace-ID: 99571a1b9b522972
+Received: by smtp.migadu.com with ESMTPS id a95767629e953e9f;
+	Tue, 17 Nov 2026 07:14:52 +0000
+X-Mizu-Trace-ID: a95767629e953e9f
 X-Migadu-Flow: FLOW_OUT
 From: Peng Fan <peng.fan@linux.dev>
-Date: Tue, 17 Nov 2026 15:14:08 +0800
-Subject: [PATCH 4/8] irqchip/imx-intmux: Don't WARN on malformed interrupt
- specifiers
+Date: Tue, 17 Nov 2026 15:14:09 +0800
+Subject: [PATCH 5/8] irqchip/imx-intmux: Mark input interrupts as
+ level-triggered
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -62,7 +62,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261117-imx-intmux-v1-4-189e7e0ad98d@nxp.com>
+Message-Id: <20261117-imx-intmux-v1-5-189e7e0ad98d@nxp.com>
 References: <20261117-imx-intmux-v1-0-189e7e0ad98d@nxp.com>
 In-Reply-To: <20261117-imx-intmux-v1-0-189e7e0ad98d@nxp.com>
 To: Thomas Gleixner <tglx@kernel.org>, Radu Rendec <radu@rendec.net>, 
@@ -76,35 +76,30 @@ X-Mailer: b4 0.14.3
 
 From: Peng Fan <peng.fan@nxp.com>
 
-The xlate callback validates the interrupt specifier cells, but uses
-WARN_ON() for checks that can be triggered by user-supplied device tree
-data. A malformed specifier is an expected, recoverable error, so the
-WARN only floods the log.
+The child interrupts are handled by handle_level_irq() and xlate()
+advertises IRQ_TYPE_LEVEL_HIGH, but the descriptors are not marked
+IRQ_LEVEL. Apart from the inconsistency, the flag feeds IRQD_LEVEL,
+which makes check_irq_resend() skip replaying level interrupts.
 
-Return -EINVAL without the splat.
+Set IRQ_LEVEL in the map callback.
 
 Signed-off-by: Peng Fan <peng.fan@nxp.com>
 ---
- drivers/irqchip/irq-imx-intmux.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/irqchip/irq-imx-intmux.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/drivers/irqchip/irq-imx-intmux.c b/drivers/irqchip/irq-imx-intmux.c
-index c7b6b475bfb9..31fd895f477b 100644
+index 31fd895f477b..ebfff621e5a9 100644
 --- a/drivers/irqchip/irq-imx-intmux.c
 +++ b/drivers/irqchip/irq-imx-intmux.c
-@@ -144,10 +144,10 @@ static int imx_intmux_irq_xlate(struct irq_domain *d, struct device_node *node,
- 	 * the 1st cell: hw interrupt number
- 	 * the 2nd cell: channel index
- 	 */
--	if (WARN_ON(intsize != 2))
-+	if (intsize != 2)
- 		return -EINVAL;
+@@ -124,6 +124,7 @@ static int imx_intmux_irq_map(struct irq_domain *h, unsigned int irq,
+ {
+ 	struct intmux_irqchip_data *data = h->host_data;
  
--	if (WARN_ON(intspec[1] >= data->channum))
-+	if (intspec[1] >= data->channum)
- 		return -EINVAL;
++	irq_set_status_flags(irq, IRQ_LEVEL);
+ 	irq_set_chip_data(irq, data);
+ 	irq_set_chip_and_handler(irq, &imx_intmux_irq_chip, handle_level_irq);
  
- 	*out_hwirq = intspec[0];
 
 -- 
 2.56.0
