@@ -1,102 +1,108 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.66.39
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794932044;
-	b=UEcIzZVl9C4pl6xQRlCqfvbY1Rp0BKHBNa1nNsxa4Hm53pQZ7Er5907ZJ6vZHA6pbMYO
-	 1WaRAcHQytL2mJShd9OupX3FRjNmBRKGaRYSES92ffV1dkfg8XHjkErjlYtXGT9I/EBff
-	 4ZIgrOO583Hz+i/pjbc6pheuj9aBwgf/Cj9lDBf0mxrBkmXz1XOLhFBZtByTLBmqfvxDp
-	 rGGyTlZKttW9FD+XN8Tvj8WHLDT0JYYhwpcxuDCug8qsxykwrVe8DzxOtO2McHc3P96/3
-	 TLyWUYT5DcnTMcD7AfqtAKVIDU5u2AxBGyU247mpVxh/jZ0LZFm3NxB+dUIBeZwY4cQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794932044;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:In-Reply-To:
-	 References:Subject:Message-Id:Date:Content-Type:
-	 Content-Transfer-Encoding:X-Mailer:X-ClientProxiedBy:MIME-Version:
-	 X-MS-Exchange-MessageSentRepresentingType:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SharedMailbox-RoutingAgent-Processed:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=TmIWIwzpvVPW5qWTRBA8J9URBFsswe1CcGXepVcKOrs=;
-	b=h5Qoj8VOtcf74khIk+LjhnMJS2S3YFb3O/9a9EAAeVrWCs/6/OPsoBfpPfZTWY1IR2Kg
-	 /Y2Ws3n/M5lZKTHT+Mxy0vOA0FmyRL+hqJ+mOclOyLOmr3STk6xyTbJvqGqZCf/wjBQJ9
-	 XxXrHBfqxrJMoVtjnkZVKah6EwDa4F/9ljg5cjsKol/IZUIStLxEY3nBb1MgKaY8xYsQM
-	 Wq7tLwUdtS4HvKrOWLjLJeu1epQf7e4gflZedXMRH3r27S5kEIQpLw/hXJVZv6BUyI/cU
-	 f2Gwe0Cx/N9SltzRTY/h/6UQqF8+kPpmXf0haap7TFPPLlpFMeeshp7Z6qbrXM4jZ4A==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.nxp.com;
-	spf=pass smtp.mailfrom=oss.nxp.com;
-	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=gBXmYVrB;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.66.39
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012039.outbound.protection.outlook.com [52.101.66.39])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.48
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794932924;
+	b=Pu6TINSjYmwHOrxpJA7QrXk/Y3KOrfsbabAACO7bf5EDMyIP10ZRxxF45yrUl/hcyn0t
+	 mipA0bqs24kqfYlJCX3B+0zKkcfx+ZDjLyRDssG7Kyv7sq869adHskz7xCpQ2B9nJJaI1
+	 mBQAhBxv0FnkLa0Wa3KM7CYmFqUgo/olDy4MI9uiydF5YdQGjVrLfve3cquLU2SG6nr43
+	 ASFmR8NgPha4UjYwtIPj+ctwSeHWAplcrK0Ezf8/DGuB3qpQV6EBLQDzig01c3Kgcu955
+	 pJ4vDMLz+/uwqERMVJK1g6y/186T7yQzpbRdY5I755D3Ol1DftVQYFGXdwkYSFnE8FA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794932924;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=z9knRtCcMgIWWsx+jn+Ep/GYomBKonoGDT8JCXsB+Dc=;
+	b=gn3H35/NlGMTLzjGmkypZ4foUfNMmVGzWbhcx279bulMg42vjaogc4XFE7WGJJgO5de+
+	 mzNl/TatGhjeWTybVo/2EGgfC4N8QeFfhFTLf8EgdeeNSY0jAMds4womPauDUm8rSCZpN
+	 6+braztsA4/SEbEED77WPHEr4dYrCs2sbwJwVuQNqXYRVBfgJQ8yLJgfQ+K6fFmD7KPAq
+	 PqwUvuUEAJfZmZSQpuGNnZoBNFJr9BM+qZpwBYx5zmmff1PjMfcCYTB2xeShHcxU5f0zp
+	 urlMXAKbQVHJGgkB/++zWW7kSWNmBHZEiM4FVCFTJta10ZHoap8X34dIjLDcZaxnLLg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=linaro.org;
+	spf=pass smtp.mailfrom=linaro.org;
+	dkim=pass header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=AShIKmj7;
+	arc=none smtp.remote-ip=209.85.216.48
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3C9D606A31C
-	for <imx@lists.linux.dev>; Tue, 17 Nov 2026 16:14:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B3C9D606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5ED8606A330
+	for <imx@lists.linux.dev>; Tue, 17 Nov 2026 16:28:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D5ED8606A330
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=gBXmYVrB
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=D+uf5bdPsY8vGHxdeQnHYQiy9Z8RFuA7vzKkUy3e86PHif/slF5M+ZICw9Z+XqbJ+9DUBDLsM5AxucGIRlYaCawJp0jYNpl0/xPkvbIKHRt/7ORuecJ3kuuDao2psRHKuhpMN6uhokOT5nJ8Fk4gluY2sAp2VNWdzKEYcumecq3efQv/cEzutW7R8MzYETbcGAlDhTzZsQoRfuQlQAUo+ZPCGBBLgJFriQiVAWIFX6lrtTeuSCeTsQPtdrttrYHwz8VaieE5NepL9Oql6ZsNrwAqtFlnm98b++/Eyo/fXdkwpd5gv8q4P5mCqCuVCtBZdt5uI9lyoyvHboCZBQ+LkQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TmIWIwzpvVPW5qWTRBA8J9URBFsswe1CcGXepVcKOrs=;
- b=a2lBdXDPEoTrTohGsXwGPmK2+rKU0K/CvLzxPsUIwucnVlPnzHadXE5OUqBpRAHJokvsnWz27g7+U09MaLJyX/TfNjSDEtttyCiiaMJyuoyucTurbzo1zJAiSHLJradnKD3GfTAcd9QtVf8DAI/RCSyDojaSqK3JMjTyMMYGvhW1XBCpLK4UmJ+qJEx/f6vFT7MoEJLNTPsMLvUnTpEnPIZPrl3DuyMkmu8KbyVfAIDRsDgtoC0VbhBWypyu4MOf28SugpagkDqI5b4ohy9PxetMnlWeilRB9zmuYgSQBJ0h8gekV3z3P/VRvN68aXrecQAi6MKqLot7POToezVjgA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TmIWIwzpvVPW5qWTRBA8J9URBFsswe1CcGXepVcKOrs=;
- b=gBXmYVrB77uV8DzTYJ9OiblmleUPQFksHcmpR3ao4KEpij46Y1GykIfqJryY4mkLBbVfF2daoY+MhwN+Cso1QKnk4LBOfnYxN542BnQ4WagTA8G4bbIDuBV5iiE+Chpn1vcMPTGd0YHjeJVEXL7GrnECxxOYOXt8Kw4hLxvIszKxpEMorEdwAjOKz826ny+7z5WqnoB6gTL8hrw8WwwY/L+wsROQUkxpvgJPgGCfMlERLoWpKdlmP1GpPp7H1YWgFYNaz/Tz/0qbTdpqZZ+znx4eBA2q+x2XHwBKdLcTVoO/ST7oSVAwicYToANTDKSNgVnYyR9o38nJ5usI8I02jQ==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB12318.eurprd04.prod.outlook.com
- (2603:10a6:150:32b::19) by VI2PR04MB10114.eurprd04.prod.outlook.com
- (2603:10a6:800:22d::15) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.14; Tue, 17 Nov
- 2026 16:13:59 +0000
-Received: from GV2PR04MB12318.eurprd04.prod.outlook.com
- ([fe80::a498:2b5a:cbdb:d6fa]) by GV2PR04MB12318.eurprd04.prod.outlook.com
- ([fe80::a498:2b5a:cbdb:d6fa%3]) with mapi id 15.21.0615.013; Tue, 17 Nov 2026
- 16:13:59 +0000
-From: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
-To: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
- laixiangwu <laixiangwu@cmss.chinamobile.com>
-Cc: Lucas Stach <l.stach@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, dri-devel@lists.freedesktop.org, 
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- linux-kernel@vger.kernel.org
-In-Reply-To: <20261030111304.2205-1-laixiangwu@cmss.chinamobile.com>
-References: <20261030111304.2205-1-laixiangwu@cmss.chinamobile.com>
-Subject: Re: [PATCH v2] drm/imx/dcss: Fix clock leak on blkctl init failure
-Message-Id: <179493203722.1421468.4624148645241955168.b4-ty@b4>
-Date: Tue, 17 Nov 2026 18:13:57 +0200
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16.0
-X-ClientProxiedBy: AM0PR02CA0158.eurprd02.prod.outlook.com
- (2603:10a6:20b:28d::25) To GV2PR04MB12318.eurprd04.prod.outlook.com
- (2603:10a6:150:32b::19)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=AShIKmj7
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-3b197cd42b0so3621651a91.2
+        for <imx@lists.linux.dev>; Tue, 17 Nov 2026 08:28:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1794932922; x=1795537722; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=z9knRtCcMgIWWsx+jn+Ep/GYomBKonoGDT8JCXsB+Dc=;
+        b=AShIKmj7yFLIVvllvfX9YWH7crSyaA3E1kk7u5cRgBGqq/dIqfOA6rdJnBizjdX0+I
+         JhVKQsXwCYrMhR2Q5PPodvswfi3VcJXW8y+cT999XPPITEkJtFLwl3CqcyWvVeO2YYNX
+         oFCDP/a5PQQLBwctQcBS0cvvhVds8AKQuD/x1hEq/5kIFwJYZqIO/lN3qhGq6GMI3Mg8
+         KAlJPb1IYKggZUKmQ4YaqmiuJwE/VShc1Qg5mwUkEgsfwH1gNTkBrumsviksaB2uiOg7
+         NGJb0l+bJiqWolVJsBXvM2f5+k93HP1TeAE9GZoVi+0KNdNbyHqGlEiCCexoemeh8wJV
+         f0yQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794932922; x=1795537722;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=z9knRtCcMgIWWsx+jn+Ep/GYomBKonoGDT8JCXsB+Dc=;
+        b=i9fs7wMYYBhh7wlehteVdvnra5XcDb0eqiQ+oE7gj8zI5ygrzr/s9KPcFAZOWpUBLn
+         8askvhZ3Vw9C7g3kEIhXFUa8S4BGWM1PZCxaplcS3Dxionzbhi+NfvLnd1UH/TXkKoFS
+         o14WV9VmNU81XZoSOe4CZ22F1xxGY0ZiFjMRHMLhlou4Tjm9/tyF5OUcO4wf/DChAEA/
+         4qYtrpGwO2JhheekcQf3oVRs51LyI31zCTYo/34yg0N0fAzrW4KABdF0yOLikFzgzDPh
+         JrHqpuqDK0mG50KeyKqbExUxbMAgDFCx6W0HWCiF3yipNtab55SH+yGPziCAu1XWdVLb
+         D5nA==
+X-Forwarded-Encrypted: i=1; AL+hErHYid86kmQeyChthaFBkHEVXXNhvSI7aNGayHoOiUIK/DXkefgXNF1rk+iLo3MpY5uzmM8=@lists.linux.dev
+X-Gm-Message-State: APuU4Z/kT9hNiJ6+3gh9iqC0w+HFl8MTiHir1+hzCyy0Gh2jeJqReO5n
+	4K+rPRa67inop/0Sh2jAdInhKXw3TwLtQu0S0mSYLeFD3ZhaPPI7BuwzWfOW1zPGe48=
+X-Gm-Gg: AZFdTZdph67vflvtYMgEEGT3KyewXn4oRaNv8gHOghqUUXAYYQLBBTZ6flytHDcevBy
+	AXXgIQRJmON8yZl6bnUvF6q4VKb1Y8NsxpN8GDJ75KHCN1XO87kbduLr5h1eN5gFp1AnJ1qGTTT
+	VMTQwgL1TM/Qa5Bjv4I3pmeWYWyRg9sE0kOdhlNGlfxorkuhQ87dSwPAO97StHzSsZ6XRGPjcp5
+	DgPz6QDs0MCT5q8bffwxPCVGnyvKh391NnoxmSN6jhJdfEmObFZ/08wcg45Hp/IRevMwGe/jvlH
+	2NHIDXB58GYN3XrvFpyLyOX0NxvPP3Dry9RVqkuCx6El76rCi1sK7T9R8uX1BQtwjM16J3jjx59
+	LhnFqPG9dTDOY8svPmn4yMYSkJ8ae/ReYUvFy4V9GPSazmbdPxg65wl6BdET9KL2dWdLR2X+Z0Z
+	4CxDmUG9rGD99QBNiFurR5CSqTNjXcGhC2XjwytXKyuxDdCHAX/2YgQTYNWE8t7pL7HV8n5sMke
+	IHyiNPF8QE9fjZln/oMUhcsev29h7XQNxpSNHN7HKy41HSYRNB1190b2lRkzkwXd63cMichzMt4
+	OGHS1sJniKsQkQ/xpjREm9ljD36OxuRD
+X-Received: by 2002:a17:90b:6c7:b0:3b0:9183:23ef with SMTP id 98e67ed59e1d1-3b1b07e41b9mr15684802a91.3.1794932922021;
+        Tue, 17 Nov 2026 08:28:42 -0800 (PST)
+Received: from p14s ([2604:3d09:148c:c800:61f7:13ac:b599:b52c])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b3abe8b263sm5082310a91.13.2026.11.17.08.28.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Nov 2026 08:28:41 -0800 (PST)
+Date: Tue, 17 Nov 2026 10:28:38 -0600
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
+To: Francesco Valla <francesco@valla.it>
+Cc: Bjorn Andersson <andersson@kernel.org>, Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-hardening@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-doc@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH RFC v2 07/11] remoteproc: assign fwnode during vdev
+ registration
+Message-ID: <avyAtmxdbfEBbZ87@p14s>
+References: <20261102-remoteproc_virtio_map-v2-0-26b300e01c62@valla.it>
+ <20261102-remoteproc_virtio_map-v2-7-26b300e01c62@valla.it>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -106,92 +112,215 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB12318:EE_|VI2PR04MB10114:EE_
-X-MS-Office365-Filtering-Correlation-Id: b599c1e4-a183-4edf-77f2-08df44c5c98c
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|19092799006|23010399003|18002099003|261009223027099003|22082099003|261022105027099003|261022075727099003|261028144727099003|261026140227099003|56012099006|11063799006|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	kn6Ga5ZDz92fArhWSXSPykmJz5DUS6lhG+FYRaH4asjctDp0s4osOerlLZXbVH0Oo9Ju6/Fo+y9aTvBb1nX4FkjYdFKlRIRgty1wcWgDXfOrfdCR0J0yAA6AVFlmLMrLJ5TMvvyN/STebOji4yrudSCYqaM306ANW4laIsgD+/ivoj6J7MsKe2Az9jIDMnjFH4j3F/OEOReWoY5WK2O1D8YyaYMv12RySLpkj5X+hageonKvmizNNVFLm47MQZcPW1qaDufquajLEN0W52qLGXv4LmC3m7Zk/khxysW+tYja+TcbNkoHsp6r9xVGqOOG7l8ZT3VK74rnsNKr6UgtxbvvXxp965+/O+Qu8wUM/VQnAgoKYpmjYOMjXdst/mkgA/AQVYSZ39OiJTly7gB1Xc31WiEg8zxVV1tZZrx4zd1AQe7HlFGgoC5fNgmrjFr8mZl03QkjFb7cJHDhlMZ5YE65EMjut79/NpI4fQ5kLkC9wdEIUi+MgH+1AQYeEmXY8R/WKR5nU9ohegyTpuEE5VTaP7eu8Ij5HVZJb00imlCkIUDFRLTuIeniMCLvn3HiUHg7/sOQnztQvoma+g7dUX3Ih9wPExNhOydEp7gVQZ4YK4DYylvNcA3q2TR5RjXhVgZCgdkXepSO7xPN34S404Zdl4cymy1ixxnbAaalQm0=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB12318.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(19092799006)(23010399003)(18002099003)(261009223027099003)(22082099003)(261022105027099003)(261022075727099003)(261028144727099003)(261026140227099003)(56012099006)(11063799006)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZlBJNEhtTi9BUHRmRVdHY1ZtcGpick5UQzErbWVEMjJWQ3dUb3pXWURHTkhJ?=
- =?utf-8?B?T1VlWXRlZUk0dTJLZytOeWd4RURyeVhXVDUxWjFrWEw2T3hwd2wwenFlbGtl?=
- =?utf-8?B?NWVyakp1dks3NkdBZVNEcUROU3ovM3JKcjVsb3FXdGxlNUR1cTl6YnlmeHVl?=
- =?utf-8?B?L0IzZnBod0lxaEZWS0tRMFR4NHJKSDluQ1NZNzdvS25ibDlzbmxNZWxhNUM1?=
- =?utf-8?B?azBYemVIWXBBVmkzZnpNWkRhOXY3Q0pyZVN6bEt6R0JNTnovNXl0dGRaVkgx?=
- =?utf-8?B?UlV0VGxETXUrRmN3T1pGZkE0c2liMnRGY25lSWRuMnUyL1F4QURWSytMczJu?=
- =?utf-8?B?bnRhODlvcTVISmw5b3p5MWRoRk5zOFhXM0NNRFdvWCtDK1Via0pqdFVhWk1O?=
- =?utf-8?B?YXEvUkYvaTZlSFIyTWc5dzZ4NGhoNXFDUkgxZFFVSmt5dUE0MEs2ajlZdE8z?=
- =?utf-8?B?bDhQd0x0U0orWHIwMG80NC9uUXE5T0J2eGE4eGhNVmF6ZTVhMFRORy9ZaU9w?=
- =?utf-8?B?UVdKQkF2UDhWUEpsYTd6NVdxTlAzTGVDQmhvSFFJcUU1b29OelNvT245WE5K?=
- =?utf-8?B?UGhRNCsweWV4SGcxdVg0ejlPdFZ4cFZMVittLys4emYrZ3NYcGFLTzByOUVp?=
- =?utf-8?B?KzNEK3cvNEgyNGJYZlEweVVSQVBnRGQ5VFRSTEpmTS9kaVNlOXF3OUNmeWll?=
- =?utf-8?B?Qjl4Z1k2NkhzUWp1c2YyK2hQcW5sKzVYTFk1SDM1UXhNd1lUUks4cE5NZklN?=
- =?utf-8?B?YnJkWWlBU2czSkZsVHM1b3kyeHhRdmxYMVR4b2o0TWJScEJZdDRaaElESXNZ?=
- =?utf-8?B?MDZkVHlVUGVybnFOSksyVTVBcVFZc0JHNnNRNm5ONWFOeUQrQkJhZElodWRX?=
- =?utf-8?B?Q1hDTWpxY3VLbkllUDZCeGdQTTkwQVVod2ZKekV4YWhJUStCWmhPd1FUS01E?=
- =?utf-8?B?VkFldGQzVlJEYktjcHMzdVlRRU92T0xFbUpmaXdjUVBQUDQyQWRZYjJPelE2?=
- =?utf-8?B?VG51ZmdqVnFVTjZudmpDYU1LeFlKWDRNa0JQY0xoaTJnR0RSUmlkbVJRalJB?=
- =?utf-8?B?bDFleDJQNEcwaTYzWFhtbVFOOWFZSFE2S25hSDBsekZqV2IzQmprdTRPZUtO?=
- =?utf-8?B?bE9SRjE0U25JNCs1YStvOEVsMnFOVHF6Tk5WWkI1azRCMmVicFQ3YlBSYnNk?=
- =?utf-8?B?ZWpGNkxuNkJJcFVjZ0ZkYzdudDFNdDNONWROcW9CcURXbTJ2QkovWjlObVNR?=
- =?utf-8?B?ejZxNHVhQ2VtUVFCT1U5Vmo5T0hxQWIvd0ZHeDlUNEJUQjJFVzVqUWNoY2hl?=
- =?utf-8?B?MDNscnBNMmVSUStOYksvTVJqbkJESmNSNHJYalJmYXF0TkkySDM5aEY1MUNz?=
- =?utf-8?B?c2tOOERlQ1lpeHhQbTMxOUJMVkFYRkJaWnBrcHorSGJqL01sNGFoMHA3UU5Q?=
- =?utf-8?B?bGM2dVdNeTlZQ3l6ckJmSEd6NXRYWWFPUHFiSVNIemVqeHk4SE41dmFuOHZx?=
- =?utf-8?B?VUVWQStVNHB0OXN6am9EOFB3R21lNGlxZXYwYW1VdkY1bnF1UDFzL1hUeTZv?=
- =?utf-8?B?ZVpSVmNob3dmbFFibDVLUHY2Zjh3V1lNaU04eXY0ZUxTVWFyUGtUYTdhTk5M?=
- =?utf-8?B?THlrUFUwUWtlUUtzdGRMVGtPN0FOTHNWcXBYWTdHbHlNdUdBOWVGSXoyeTRr?=
- =?utf-8?B?T3l5N09vVWJaSmVmN2ZnRmcraFJGeGY5aFNCWUQ4UWVaNjl3L2tuM0h6bGtW?=
- =?utf-8?B?TUIxTHZOWEw3WWlYSHpiL2grWVVMNVVHUzNnU2xLTEgzb1BHRlR4TWxQMlJy?=
- =?utf-8?B?TE9INnlMckRmK01ySXVBMEtkUUZIMXBDcHh6QVh3dGxzclZ4dEpJbmEveENq?=
- =?utf-8?B?RENRNXpuSzVEVncwUjJCTzBrYUp3T1ZiMXM3eUxWMzhlallkT0IrbFpNejJ1?=
- =?utf-8?B?RGxvRFdPZFVQNnRWd0o0RjNvblgrL0g1aTNjZ0FQUzVVRXg1THJvcCsrMm5r?=
- =?utf-8?B?R25tSDJBdlFxcUI2ajFCUXZZR1ZSWEl1ZzJlTFlMUGJneXhNQUtBMDNuVGxJ?=
- =?utf-8?B?ME5STTcvSjNmSnU1c3BRVWlNQjlWUVdsN3NPUkNwUzAreFRvRWpWOVZ2RitU?=
- =?utf-8?B?T0ZyL1dzcUpyU2tlN20zZWhCWWZ2MGo0c3lmZGZqNmltcXNUaXNOS0dNM2sw?=
- =?utf-8?B?UDFYeXpTSWsvbGJFVllSTld0ek5NV05JZ3ZTRktZcjl4ZXJkTVRZQmcvVE8x?=
- =?utf-8?B?czVVaE1mUm8yR2s4Y2lIZWFvUVlWbkRta0t4eTF4VjZwblZERzNNQjdtQWVq?=
- =?utf-8?B?aWlHY0Rxand4bHh6aHNMc3locEZSRzRYTGNScGpicmgzUS9PUHVoVFE1aE9K?=
- =?utf-8?Q?GbQSQxpa9AAXQpQI=3D?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b599c1e4-a183-4edf-77f2-08df44c5c98c
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB12318.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Nov 2026 16:13:59.4464
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: HELt5Bbl+RByI9XchWPbSQsESV47Ts/biSeuG5+kLkfm4gkAMUZMrMhX+MfoXrIQb3nIkJBO7e9kx5x08cluYg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB10114
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261102-remoteproc_virtio_map-v2-7-26b300e01c62@valla.it>
 
-
-On Fri, 30 Oct 2026 19:13:03 +0800, laixiangwu wrote:
-> dcss_submodules_init() enables the DCSS clocks before initializing the
-> submodules, but if the first submodule (blkctl) fails to initialize the
-> function returns directly, without disabling the clocks again. All the
-> later error paths already jump to err_clocks, which calls
-> dcss_clocks_disable().
+On Mon, Nov 02, 2026 at 12:26:44AM +0100, Francesco Valla wrote:
+> The virtio subsystem already supports a fwnode describing a vdev; search
+> for a specific node during vdev registration and supply it to the
+> rproc-virtio platform device that is being registered.
 > 
-> Since the clocks are only devm-managed for their reference (devm_clk_get),
-> a blkctl init failure leaves all five DCSS clocks prepared and enabled.
+> A memory-region specified inside that node is also used for the virtio
+> device if a carveout was not supplied for it through the parent device's
+> node.
 > 
-> [...]
+> Signed-off-by: Francesco Valla <francesco@valla.it>
+> ---
+>  drivers/remoteproc/remoteproc_core.c   | 48 +++++++++++++++++++++++++++++++---
+>  drivers/remoteproc/remoteproc_virtio.c | 41 +++++++++++++++++++++++++++++
+>  2 files changed, 85 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/remoteproc/remoteproc_core.c b/drivers/remoteproc/remoteproc_core.c
+> index c946ecd980a5..e833853ae7f6 100644
+> --- a/drivers/remoteproc/remoteproc_core.c
+> +++ b/drivers/remoteproc/remoteproc_core.c
+> @@ -440,6 +440,33 @@ void rproc_remove_rvdev(struct rproc_vdev *rvdev)
+>  	if (rvdev)
+>  		list_del(&rvdev->node);
+>  }
+> +
+> +static struct fwnode_handle *rproc_get_vdev_fwnode(struct device *dev, u32 idx)
+> +{
+> +	struct fwnode_handle *group, *child;
+> +	u32 reg;
+> +	int ret;
+> +
+> +	group = device_get_named_child_node(dev, "virtio");
+> +	if (!fwnode_device_is_available(group)) {
+> +		fwnode_handle_put(group);
+> +		return NULL;
+> +	}
+> +
+> +	fwnode_for_each_available_child_node(group, child) {
+> +		ret = fwnode_property_read_u32(child, "reg", &reg);
+> +		if (ret)
+> +			continue;
+> +
+> +		if (idx == reg)
+> +			break;
+> +	}
+> +
+> +	fwnode_handle_put(group);
+> +
+> +	return child;
+> +}
+> +
+>  /**
+>   * rproc_handle_vdev() - handle a vdev fw resource
+>   * @rproc: the remote processor
+> @@ -475,7 +502,16 @@ static int rproc_handle_vdev(struct rproc *rproc, void *ptr,
+>  	struct device *dev = &rproc->dev;
+>  	size_t rsc_size;
+>  	struct rproc_vdev_data rvdev_data;
+> +	struct platform_device_info pdev_info = {
+> +		.parent = dev,
+> +		.name = "rproc-virtio",
+> +		.id = PLATFORM_DEVID_AUTO,
+> +		.data = &rvdev_data,
+> +		.size_data = sizeof(rvdev_data),
+> +	};
+>  	struct platform_device *pdev;
+> +	struct fwnode_handle *fwnode;
+> +	int ret = 0;
+>  
+>  	/* make sure resource isn't truncated */
+>  	rsc_size = struct_size(rsc, vring, rsc->num_of_vrings);
+> @@ -498,20 +534,24 @@ static int rproc_handle_vdev(struct rproc *rproc, void *ptr,
+>  	rvdev_data.rsc_offset = offset;
+>  	rvdev_data.rsc = rsc;
+>  
+> +	fwnode = rproc_get_vdev_fwnode(dev->parent, rvdev_data.index);
+> +	pdev_info.fwnode = fwnode;
+> +
+>  	/*
+>  	 * When there is more than one remote processor, rproc->nb_vdev number is
+>  	 * same for each separate instances of "rproc". If rvdev_data.index is used
+>  	 * as device id, then we get duplication in sysfs, so need to use
+>  	 * PLATFORM_DEVID_AUTO to auto select device id.
+>  	 */
+> -	pdev = platform_device_register_data(dev, "rproc-virtio", PLATFORM_DEVID_AUTO, &rvdev_data,
+> -					     sizeof(rvdev_data));
+> +	pdev = platform_device_register_full(&pdev_info);
+>  	if (IS_ERR(pdev)) {
+>  		dev_err(dev, "failed to create rproc-virtio device\n");
+> -		return PTR_ERR(pdev);
+> +		ret = PTR_ERR(pdev);
+>  	}
+>  
+> -	return 0;
+> +	fwnode_handle_put(fwnode);
+> +
+> +	return ret;
+>  }
+>
+>  /**
+> diff --git a/drivers/remoteproc/remoteproc_virtio.c b/drivers/remoteproc/remoteproc_virtio.c
+> index 1496659ddff9..950d65480be5 100644
+> --- a/drivers/remoteproc/remoteproc_virtio.c
+> +++ b/drivers/remoteproc/remoteproc_virtio.c
+> @@ -13,10 +13,12 @@
+>  #include <linux/dma-map-ops.h>
+>  #include <linux/dma-mapping.h>
+>  #include <linux/export.h>
+> +#include <linux/of.h>
+>  #include <linux/of_reserved_mem.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/remoteproc.h>
+>  #include <linux/rsc_table.h>
+> +#include <linux/swiotlb.h>
+>  #include <linux/virtio.h>
+>  #include <linux/virtio_config.h>
+>  #include <linux/virtio_ids.h>
+> @@ -394,6 +396,23 @@ static void rproc_virtio_dev_release(struct device *dev)
+>  	put_device(&rvdev->pdev->dev);
+>  }
+>  
+> +/*
+> + * Attach the memory region declared inside the vdev's own devicetree node.
+> + *
+> + * A restricted-dma-pool region is attached by of_dma_configure() when the
+> + * platform device is probed, but it is released together with the virtio
+> + * device (see rproc_virtio_dev_release()); attach it again if needed, e.g.
+> + * when the remote processor is restarted during a crash recovery.
+> + * Any other kind of region (e.g., shared-dma-pool) is attached only here.
+> + */
+> +static int rproc_virtio_init_vdev_mem(struct device *dev)
+> +{
+> +	if (is_swiotlb_for_alloc(dev))
+> +		return 0;
+> +
+> +	return of_reserved_mem_device_init_by_idx(dev, dev->of_node, 0);
+> +}
+> +
+>  /**
+>   * rproc_add_virtio_dev() - register an rproc-induced virtio device
+>   * @rvdev: the remote vdev
+> @@ -410,6 +429,7 @@ static int rproc_add_virtio_dev(struct rproc_vdev *rvdev, int id)
+>  	struct device *dev = &rvdev->pdev->dev;
+>  	struct virtio_device *vdev;
+>  	struct rproc_mem_entry *mem;
+> +	bool has_mem_region;
+>  	int ret;
+>  
+>  	if (rproc->ops->kick == NULL) {
+> @@ -417,11 +437,24 @@ static int rproc_add_virtio_dev(struct rproc_vdev *rvdev, int id)
+>  		return -EINVAL;
+>  	}
+>  
+> +	has_mem_region = of_property_present(dev->of_node, "memory-region");
+> +
+>  	/* Try to find dedicated vdev buffer carveout */
+>  	mem = rproc_find_carveout_by_name(rproc, "vdev%dbuffer", rvdev->index);
+>  	if (mem) {
+>  		phys_addr_t pa;
+>  
+> +		if (has_mem_region) {
+> +			/*
+> +			 * The carveout takes precedence: drop the region that
+> +			 * of_dma_configure() might have attached at probe time.
 
-Applied, thanks!
+I don't understand this part - why would someone configure vdevXbuffer with the
+same name at the rproc and rproc-virtio level?  This should be an error.
 
-[1/1] drm/imx/dcss: Fix clock leak on blkctl init failure
-      commit: 18e73878de68302508dbddbafeb5aef508640588
+> +			 */
+> +			dev_warn(dev,
+> +				 "vdev%dbuffer carveout found, ignoring memory-region\n",
+> +				 rvdev->index);
+> +			of_reserved_mem_device_release(dev);
 
-Best regards,
--- 
-Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+Who would have called of_reserved_mem_device_init_by_XYZ()?  The remoteproc core
+or virtio core?  
 
+> +		}
+> +
+>  		if (mem->of_resm_idx != -1) {
+>  			struct device_node *np = rproc->dev.parent->of_node;
+>  
+> @@ -451,6 +484,14 @@ static int rproc_add_virtio_dev(struct rproc_vdev *rvdev, int id)
+>  				return ret;
+>  			}
+>  		}
+> +	} else if (has_mem_region) {
+> +		/* Use the memory region declared in the vdev's own node */
+> +		ret = rproc_virtio_init_vdev_mem(dev);
+> +		if (ret) {
+> +			dev_err(dev, "Can't associate vdev memory-region: %d\n",
+> +				ret);
+> +			return ret;
+> +		}
+
+Mixing the initialisation of the legacy rproc-virtio and authentic rproc-virtio
+devices is very confusing.  I think there is value in splitting them, even if it
+entails some code duplication.
+
+Thanks,
+Mathieu
+
+>  	} else {
+>  		struct device_node *np = rproc->dev.parent->of_node;
+>  
+> 
+> -- 
+> 2.56.0
+> 
