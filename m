@@ -1,116 +1,150 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.66.5
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.162.58
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794906216;
-	b=XIiw0vmmnDo2PsOCF+oy6nSlHCjNXnNSJrjpQLpJDpvLmkQj+duxNaMPYNOHv+JVQuJk
-	 rKP8NRjMdfrzhHfCj2/qn4gk4E8dk2syiKATAuO3to6Jb/VQuu2R1n26dMgY69iIIE0g6
-	 ihdib0wuqeyYpXls51bM60/pM1oP4WMdLcpAxWh2usNQrsGq/YTiBRTByTavpciGb8NDU
-	 9oRMZq9FUwlVPmPR+3nMJDRDPocgkBzziHAYxPvcDGXVZj0ssFnoPUFVXJs2UtvLXkN06
-	 SxlKJjFxCRxjm/vrKpsNtqgFM6VDjMceHJRelYV8RNm9B4DLBmZDBATHS8TsAtk55PQ==
+	t=1794906494;
+	b=hkE7fgW0k/nTBEcRR6UKuDcMt16oLZCDqV7NN7r+WKSdxywy+SUMEZ6fKlUTNhVRr9zF
+	 ilQemmTYqS6jHPegYUv+Qxo8WDutaMQ1LpkOrhvdkjByd9Nn5F0SxNulImWEZS2tr6vV8
+	 tjYc0+BkFTarr9uQXbfHLcnBxum3BE687dy81fn/9z40/NRGwqucY0ciaNzmXIXkg0fRV
+	 wm5OGMgpJrVG1Z1KdokDNVY1IeJUYmUnkc6X2Ph+CIQpZIpVRE+5plT7dxhDfsfGCwBKQ
+	 7N89tQ/46lKR4NXcmwhRr2d245NbP8wdoV2OPVC78M3pYUvOVnOjnQCVzm7U/2kBgwg==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794906216;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
-	 Received:Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To:X-Disclaimer:
-	 X-Originating-IP:X-ClientProxiedBy:X-EOPAttributedMessage:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	a=rsa-sha256; c=relaxed/relaxed; t=1794906494;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:CC:Subject:
+	 Thread-Topic:Thread-Index:Date:Message-ID:References:In-Reply-To:
+	 Accept-Language:Content-Language:X-MS-Has-Attach:X-MS-TNEF-Correlator:
+	 msip_labels:x-ms-publictraffictype:x-ms-traffictypediagnostic:
+	 x-ms-office365-filtering-correlation-id:x-ms-exchange-senderadcheck:
+	 x-ms-exchange-antispam-relay:x-microsoft-antispam:
+	 x-microsoft-antispam-message-info:x-forefront-antispam-report:
+	 x-ms-exchange-antispam-messagedata-chunkcount:
+	 x-ms-exchange-antispam-messagedata-0:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-AuthAs:X-MS-Exchange-CrossTenant-AuthSource:
 	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-originalarrivaltime:
+	 X-MS-Exchange-CrossTenant-fromentityheader:
+	 X-MS-Exchange-CrossTenant-id:X-MS-Exchange-CrossTenant-mailboxtype:
+	 X-MS-Exchange-CrossTenant-userprincipalname:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=xWRZopVkJFPOfdZdb6dsUSJiNIlH3IWCafsQuDLgxfo=;
-	b=hwSoUzW/imGvDyJicsGj9yvbO0luElL3k1vNzkCxUKMkLvCzdD2Dus4Pm9zZgrEopGdC
-	 JZqnS7HjwkgbUs5PfuwP4y1hDyaRg/fbztrZErEl3pMLxY4D8aFj4GaieeWtZbUK/rnHM
-	 UiBeTNUJPMzoI9sxcA6h0syFLiBTfNBDhlA/NokhdiYQr27ucnaIu4i9WDZseYnEDIz+8
-	 6ANwCWZBoaWXrPr+phkzu5tSiVpLeoro74YoPMni3yuReyvdHPstBLUYriorXh8VMdbW7
-	 3pHoJDn9Wq1NpihQgVa7nd9JwAn4vQG+zn6Qx7UBkhG5dgbqfYuSqvFZLSwbamI1L0w==
+	bh=iIpYJPZimjQTGw3I5irovopL5vVDDsAT1H6lBRv7VCE=;
+	b=1Pb5+i+yxAV60r0ivFyxn8hjdEUE2xinn4mwUpLvvjfNrk4bBNHQM+RkvLD8U+Te/1k3
+	 JLZnpZSohH6qcCBj54mpyzkxw2I3D7M6MLhsaDGFI9nUAP8Sv0rVLjVYuSL7kebsXy9pc
+	 hFuq/wL/oTNY3PiF/KyV5ih3TnZsFK+aUaq4dMoSFdGa7CAEomNQQGFpyVlviuuO6FCOA
+	 FXiLVEg5I8YvvzLDGXwSnd4GliJgvYOAnp1nVnNXTIjtDOwIydJDl1q0Se1yu9Gjzixg1
+	 4KB3WytNDMEIKTzN+xg3ZtV5FWt7G8Dw1LZhgyf5/sX2PxKsozJYyAIeWm4q5/KMyZw==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=foss.st.com;
-	spf=pass smtp.mailfrom=foss.st.com;
-	dkim=pass header.d=foss.st.com header.i=@foss.st.com header.a=rsa-sha256 header.s=selector2 header.b=Xb+io7vT;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.66.5
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012005.outbound.protection.outlook.com [52.101.66.5])
+	dmarc=pass header.from=nxp.com;
+	spf=pass smtp.mailfrom=nxp.com;
+	dkim=pass header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=iKOlTySB;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.162.58
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013058.outbound.protection.outlook.com [40.107.162.58])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3710A606A323
-	for <imx@lists.linux.dev>; Tue, 17 Nov 2026 09:03:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3710A606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BDBF606A329;
+	Tue, 17 Nov 2026 09:08:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5BDBF606A329
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=foss.st.com header.i=@foss.st.com header.a=rsa-sha256 header.s=selector2 header.b=Xb+io7vT
+	dkim=pass (2048-bit key, unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=iKOlTySB
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qUyIvV0bx66K68lSh+JyaAPZMxdbAFZKP1b0CwOSzOFbhJyEs6owsqZtmK0ARPX3VHILJzZ6bdaQH4X2fWbcCsD/ZRLbJvTvC2USfvEv2+le1BaVy/NVFzJhBADxJfGHeott3G/3JQj6vI/IZaTbeoHon6NVmmVanqxpHJ1APuxAdM2TUu3qXcUiSSBT0GBiQi7jFOVRWofFFAFBs4LfbgwOgE/4JORIbC6Yc2RkVVdFx7VBG+pvIWOyLX+ABTF5v2SMNHxTtSDupoziwsLu32L8ujGONRK4YskWlHs4wuFTXGpfDCSHhM2OYozfmeznhfNsaj1wzUXC+t1Buw00dA==
+ b=VKdM2V7waAJT4jRjveQpxiuktwi/9b0NUDYrn5xiOh7M3XhmJb+C/OBZqMdMHMXWp1XBhH0CdUF7U8LvERluXEN3zo6NYQIndUwxdHwH0NYcHxYyDViX0ZO2tVGV2kdiPGNktPEDkXvfGNhupphOZe7C40A7wVduORSiDyY+ktmwXsieVcYim40jc9lFFZXX3otRnnXiAP45mKJBQH3QNd3yOySceynNta/JHMud/Zx0tJbsK80m42Y0UdoXjoA3Hec/q68mgIdWUoTaaQUDEvZTvMdDlhQ9tzpohVO2hXN0rJAH4UonykDMoaBJqLeRDFEeKO/GOpYkCYBYKKMoNg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xWRZopVkJFPOfdZdb6dsUSJiNIlH3IWCafsQuDLgxfo=;
- b=WOQl5CLzOD0nRxFOet8xKkL4n2JlwBhe48SBiS/5R2oh8GyppPh96oV6dUU5e7X3FKW14j4a15922PBYD6TdfOI4Nk137JUnlEeZO2PZ3oc+N7Jm0LtIPVk/YOvTmWppCGXuREOzEbwqqWBcxzQCLi/mm10ToIQuuDcjzKu62dWeFREXITxOxMUfyfJZpzTg5F2Ax2CevfxhKLfFlydG4m0kDmQ4PgckQxWFga7digToY56jMjelRzWROz5ddljKg8RVgOIlI3I9AlLDtPU6Eg12ZeRL/XEv6uHQrgj/ggTllRFtJ7Fq1mvAeojI8ZjhwRdohN+pSzYA57hSCsY9cw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
- 164.130.1.59) smtp.rcpttodomain=kernel.org smtp.mailfrom=foss.st.com;
- dmarc=fail (p=none sp=none pct=100) action=none header.from=foss.st.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com;
- s=selector2;
+ bh=iIpYJPZimjQTGw3I5irovopL5vVDDsAT1H6lBRv7VCE=;
+ b=rSa6a0HRvAjIkfm7D2Wt9N9OnakuceJnIJABqznapiB6cvguiCc179iIRqBjTpMAZlZhCyLNfNDxgCV1xYhFB+vUKC+Sbtb5ousTlgqjFAkSQB45bUK/zLMpdGACmUFQ7khAisS2rc5eHKJzV/mXZ8oWV2Mh8Nf9MaaXOAkSZzt1MqbH8jH0ERXBtovCLAaGTNoye2e3XvfvHCbOi2pIMoZvVC9Nb6TLi2fFXLWyoUtfh11LbdkEd55QB8AaWDGLuEOjtLz8gphSuxH1Y6uv15L17Mv+Awq3Ps0S2P0lUJFsv3MLDHC4HMv6VoK/PfI2qWWJ/CJP2cmzXXCIkPI3cw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xWRZopVkJFPOfdZdb6dsUSJiNIlH3IWCafsQuDLgxfo=;
- b=Xb+io7vTBLfUPPvSLga/sP6YFpXtIZn5L7em92QhP/0uN9fm/taW4PXEUaTikOQMn7ILPVgCcpeNHvRIq3vWdFrYXOUwG2dpQAZeEmvfX+zzJ2bziYBvHlArNrledVnNUNoasulnZEoxj/7SGij5ZQFhqHD1LGrgIiMtxJlqwkZgshmxeU3yq9v5lH8Ex+3QC0JAUuyvAeNj7Irht3BYWmBS/7AlEXqo1LYBR/YaO2gA36Gf+Zfk0Hz55kE1H6iwnVqLIE2bFAsj0fOClB2RmIjD8h4fO/+bTAcaRwj06lDtuXDsuAiM1t8ol1B2GhcJrQWcS7vuVx56SL3sWWFmmw==
-Received: from AM6P191CA0021.EURP191.PROD.OUTLOOK.COM (2603:10a6:209:8b::24)
- by DB8PR10MB3516.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:10:13c::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.7; Tue, 17 Nov
- 2026 09:03:32 +0000
-Received: from AM1PEPF000C1AD9.eurprd02.prod.outlook.com
- (2603:10a6:209:8b:cafe::a9) by AM6P191CA0021.outlook.office365.com
- (2603:10a6:209:8b::24) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.615.10 via Frontend Transport; Tue,
- 17 Nov 2026 09:03:32 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=fail (sender IP
- is 164.130.1.59) smtp.mailfrom=foss.st.com; dkim=none (message not signed)
- header.d=none;dmarc=fail action=none header.from=foss.st.com;
-Received-SPF: Fail (protection.outlook.com: domain of foss.st.com does not
- designate 164.130.1.59 as permitted sender) receiver=protection.outlook.com;
- client-ip=164.130.1.59; helo=smtpO365.st.com;
-Received: from smtpO365.st.com (164.130.1.59) by
- AM1PEPF000C1AD9.mail.protection.outlook.com (10.167.242.104) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.615.4 via Frontend Transport; Tue, 17 Nov 2026 09:03:31 +0000
-Received: from STKDAG1NODE2.st.com (10.75.128.133) by smtpo365.st.com
- (10.250.44.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Tue, 17 Nov
- 2026 10:04:15 +0100
-Received: from gnbcxd0016.gnb.st.com (10.130.77.119) by STKDAG1NODE2.st.com
- (10.75.128.133) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46; Tue, 17 Nov
- 2026 10:03:27 +0100
-Date: Tue, 17 Nov 2026 10:03:17 +0100
-From: Alain Volmat <alain.volmat@foss.st.com>
-To: Joshua Crofts <crofts@kernel.org>
-CC: Michal Simek <michal.simek@amd.com>, Andi Shyti <andi.shyti@kernel.org>,
-	Oleksij Rempel <o.rempel@pengutronix.de>, Pengutronix Kernel Team
-	<kernel@pengutronix.de>, Frank Li <Frank.Li@nxp.com>, Sascha Hauer
-	<s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Chris Brandt
-	<chris.brandt@renesas.com>, Pierre-Yves MORDRET
-	<pierre-yves.mordret@foss.st.com>, Maxime Coquelin
-	<mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-i2c@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <imx@lists.linux.dev>,
-	<linux-renesas-soc@vger.kernel.org>,
-	<linux-stm32@st-md-mailman.stormreply.com>
-Subject: Re: [PATCH 5/6] i2c: stm32f7: remove redundant
- pm_runtime_dont_use_autosuspend() calls
-Message-ID: <avwYVXluZuM4vteb@gnbcxd0016.gnb.st.com>
-References: <20261109-i2c-remove-dont-use-autosuspend-v1-0-49a08b8daf36@kernel.org>
- <20261109-i2c-remove-dont-use-autosuspend-v1-5-49a08b8daf36@kernel.org>
+ bh=iIpYJPZimjQTGw3I5irovopL5vVDDsAT1H6lBRv7VCE=;
+ b=iKOlTySBwPQcMMeliGxNYoED5CRuNU4Wl0lKLoQjjwuDPzxqs4y5u1f4+MHXfQ7AJoQxqfmnpVlQU9epF0AyR9a+4+67tKz2hsuO4rn1SdvpGQPAItIdRkZCZLJO4Izoiw6w1DUnerURWm8oEpZ5WAKWTV1qchk1NN+dcUqZWtICC+aREEjxuAvH8HIrneG2Raff2LTQN8d0Rxy7ha0OIvO92H7iFunFujkwWv5dhYmzQ9HGcfX7NJDzR1GPPz+Xcnrs2AA2wKbEnxFXHVx4BC/r/d13HeGemiB61mJOq6XxBglHiQ/pvk2U7CPw9lf98u0T7biw2rNYsj+d6ZeKhg==
+Received: from GV2PR04MB11740.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cd::13) by AM9PR04MB8381.eurprd04.prod.outlook.com
+ (2603:10a6:20b:3b5::17) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.14; Tue, 17 Nov
+ 2026 09:08:11 +0000
+Received: from GV2PR04MB11740.eurprd04.prod.outlook.com
+ ([fe80::ca5f:7e1c:a67a:a490]) by GV2PR04MB11740.eurprd04.prod.outlook.com
+ ([fe80::ca5f:7e1c:a67a:a490%6]) with mapi id 15.21.0615.013; Tue, 17 Nov 2026
+ 09:08:11 +0000
+From: Claudiu Manoil <claudiu.manoil@nxp.com>
+To: Russell King <linux@armlinux.org.uk>, "andrew@lunn.ch" <andrew@lunn.ch>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>, Vladimir Oltean
+	<vladimir.oltean@nxp.com>, Wei Fang <wei.fang@nxp.com>, Jakub Kicinski
+	<kuba@kernel.org>, Simon Horman <horms@kernel.org>
+CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "imx@lists.linux.dev"
+	<imx@lists.linux.dev>, "devicetree@vger.kernel.org"
+	<devicetree@vger.kernel.org>, "robh@kernel.org" <robh@kernel.org>,
+	"conor+dt@kernel.org" <conor+dt@kernel.org>, "Frank.Li@kernel.org"
+	<Frank.Li@kernel.org>, "sashiko-reviews@lists.linux.dev"
+	<sashiko-reviews@lists.linux.dev>
+Subject: RE: [PATCH net-next v4 1/6] net: enetc: Add pseudo-MAC support for
+ ENETCv4 Ports via a fixed-link node
+Thread-Topic: [PATCH net-next v4 1/6] net: enetc: Add pseudo-MAC support for
+ ENETCv4 Ports via a fixed-link node
+Thread-Index: AQHdc4nYhJFH1dmVTk6cQvCCjjel0rctr1QAgAQ9z8A=
+Date: Tue, 17 Nov 2026 09:08:11 +0000
+Message-ID:
+ <GV2PR04MB11740CF1755A54ECCB6075434967B2@GV2PR04MB11740.eurprd04.prod.outlook.com>
+References: <cover.1794581338.git.claudiu.manoil@nxp.com>
+ <4f51bfd237fa584c7d9187d7b82f36e261853ea3.1794581338.git.claudiu.manoil@nxp.com>
+ <sashiko-outbox-214685@kernel.org>
+In-Reply-To: <sashiko-outbox-214685@kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: GV2PR04MB11740:EE_|AM9PR04MB8381:EE_
+x-ms-office365-filtering-correlation-id: e536ee52-fb55-4360-ab80-08df448a4dc8
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|23010399003|366016|1800799024|19092799006|376014|7416014|38070700021|10067099003|11063799006|260925021311599003|260925021911599003|56012099006|260925022911599003|4143699003|261026121527099003|261026140227099003|261028144727099003|261022075727099003|261022113327099003|261021121427099003|261022105027099003|261102123227099003|261009223027099003|18002099003|22082099003|6133799003;
+x-microsoft-antispam-message-info:
+ 59+RAJjxLiUuiHpX+OgoFQL6qGoEZWo2hPAecDUOV5P5v69W9TuSjvZ1VjelQb27Q+igzC8XYg/7LyieoyHpxFAkq+bg+wpaWkzb3VnXveNXVCQWxVc4h9AP+hOkSpgCCY8wNBefheLw8BlyW4bEskr92Ywp5br87UGu5v2/WdPprtNJD6My/F0gGOUlvYFwaAvDzm7L7Ifz9B40Qsi+gaJvhMW6IQtL4JJpnwXwBm//KFFtqv2afkkpbRYGAXO+czEKBRAhMasvoP1kzCN+gjFBSGuW4Iy+RiGshqWqiYFrGZcMuLQMPVsbtOL8GSZL5CabYRPz4U8EqVvB4ubugoxUhX5Eq1p3QL0BWlAZo9qbVOITgRmtx1zVvkjPV46lxCWia/mpZB+AzInRVcC1dbZQUTVJ2KqfgFQgQQbRUyZMB83l5C87bJ4zUSkQ2VgtzNch9O9ry58Z+G1kVb7h70aEaOFa4d3da8ABQGPwZgvpkC1KSwcauTzF9hmF2tISBz/25SSWCL8Y+dyYC55NEHaBZhj6sZ+4Pt2XX2I/kY42ckQEaahdwI2wu0gd5y1ct2NKY/xgcTutnJqCAZnkhdG/5/JGyF83Lu7GXRv939EqTEa5mXXlEfK0IzADTH5xBO4ZdFrKzZGP/DEc/uFcMwLgoJtLddGVq584pmxLDi8=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11740.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(1800799024)(19092799006)(376014)(7416014)(38070700021)(10067099003)(11063799006)(260925021311599003)(260925021911599003)(56012099006)(260925022911599003)(4143699003)(261026121527099003)(261026140227099003)(261028144727099003)(261022075727099003)(261022113327099003)(261021121427099003)(261022105027099003)(261102123227099003)(261009223027099003)(18002099003)(22082099003)(6133799003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?t5FM3+vBAB9GsCp0n5hV5Bz9omzptI1lnwpfCAdOpZeWDLhfN12xyLgJ0I6W?=
+ =?us-ascii?Q?n0cgaYGZEXeCd6bwAWuDUHdPY6C94wPw0Iyh7peQq9LJNBBr/H5cTVvvBB4Q?=
+ =?us-ascii?Q?2Gmp9n6dCD5ZG+FK7KQ+21s7cUKshZ7MSEO3AlNEXoFpXU2GDBpXDBxj+b+r?=
+ =?us-ascii?Q?REpYi0S/ozclEFoDpwzSZAx1FjTNTnodnL4yUqJ9vM9tf2vqHYbjx81/L7q0?=
+ =?us-ascii?Q?dPqJVyFCyoe+hHtFyRc3M1jkthf/ygQM/IBG7p0tZJ9YUy9HrQVcvln5m1PG?=
+ =?us-ascii?Q?J5tWpgBa2MSXTvTnvD0yTSmRV8vNI9skZdRIXtFTAiCxI7PbLSGV0po/DFxw?=
+ =?us-ascii?Q?s8C/0u/H+REvWq881HIyu2clwfXDerRRz/XFof3Dr1fBwoVBoJzWsaJCQwQa?=
+ =?us-ascii?Q?RKtGKANDLfq1S9cYVLsiJzptjmdBAdtdx5h8KXoFgwGB8FliwO1oxRjNDyre?=
+ =?us-ascii?Q?iuwWujkRSBUa/iY1ZZp41a5ccR0WlQ8KFGd37C6FT9se77gaGYmhc8YLqpW9?=
+ =?us-ascii?Q?hgev+F1/KINbZ6KI8OKmxnmsYJvR3BvdGneGP7wZLt4TbDR4cXx5BOH8ez4H?=
+ =?us-ascii?Q?CuAubySX9i1E4Li2LETyHQyP7PcpbUzutL6uj4pCsVz215nsGkNq3btYTUuA?=
+ =?us-ascii?Q?W3oPzQB3D5f9mFTOaIYns//qJdlkOw7BzKbkNR2+esjmKaaKbTGBDBX+d2zo?=
+ =?us-ascii?Q?+jD4OKtmgMJSx9A8ML5A0Oi5N9TLbB0IFAVHxDm37M/11KNxymDjGuHhnL3T?=
+ =?us-ascii?Q?spsxKqFDOqSwrqEolHbfXtRETjyLhC2Hl4uyG/gL8gHT3DedDQUZWvkH7UC8?=
+ =?us-ascii?Q?etHYM+B5bJlNTEpyPrqJ2Zmml1NJPdcXEiMMTIOvEwDo6SIdyZD2aAKNi59z?=
+ =?us-ascii?Q?FbXgzSbbLOvo5wC6F4hDAPqwpyM3IDan9jTLzYJsD/QYWwziy2QxSDpWQWHg?=
+ =?us-ascii?Q?3FQTZKNznU/2vZw48ByN1I3o6hxxBJ+clC0F5B0hBfM/eJ8yTQPijhzMxUvm?=
+ =?us-ascii?Q?DLLlapf+rT0BjAnBXhXAyv2abbaNm+bPMlrHK9NB8w4diUBhGQN/j4ow0Mqm?=
+ =?us-ascii?Q?TWTTr7l8jBaaUie952TZRt4ob0UM2OCE3gpjVPRRJf2ImUUUc731UfZjwpxV?=
+ =?us-ascii?Q?kDyfLZwMfC2cm6Nyn/RM544wPbOHxlfUd2wdHN/wH4Wu1nlei8dpPp1Dxasx?=
+ =?us-ascii?Q?euX6aAtOrsQrGnF1yfAYg+E9L5mHmkbr07onmiLbLsSNIkIc378JBMr4mlq8?=
+ =?us-ascii?Q?YJRd3UPAd6OY1HRmzZ/VFvwM0leIZ8i81Cc90v4X8/L6vNPsrqzcz1mdVC+x?=
+ =?us-ascii?Q?Zol02nJXa7UhCqDSFs5BnlFfzMqUPUMvWS6FE6cRgITTke1c3PS6h1gN7yY6?=
+ =?us-ascii?Q?FRvRtcdMB5193LPyekhutjLk/3wfGOSF2n4qxSFMri3v236+Vgd4Bd78AcTl?=
+ =?us-ascii?Q?D0FFskHNFSFHiAMwVA6f7/HoMWYUxTiK0jbhGNOIze5hYVmH9OdR4vN5V3GO?=
+ =?us-ascii?Q?6omSDHK4vw4f6kFCvtW1SD5hPAqnOQmahJA4b/VPEO6/RAZgLfB/xPRG888U?=
+ =?us-ascii?Q?qG8jthpD2OB+pohLS69nk/StvnK8w31vXxSlDEOcju56O5kgoZcDSx/L0efu?=
+ =?us-ascii?Q?RYHfYMHZiYDKmfUt+wKWPIHdfFhPfGyZUc3hyhATdcnXoLSzwnyWXVIT1aKt?=
+ =?us-ascii?Q?PHfvEPG0yp8WWLrKXCJJyoxJyloMRwb6SlowEsNeXnczvzdEbOLmvizKKcNY?=
+ =?us-ascii?Q?cyGBfODe4A=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -120,79 +154,115 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20261109-i2c-remove-dont-use-autosuspend-v1-5-49a08b8daf36@kernel.org>
-X-Disclaimer: ce message est personnel / this message is private
-X-ClientProxiedBy: STKCAS1NODE1.st.com (10.75.128.134) To STKDAG1NODE2.st.com
- (10.75.128.133)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM1PEPF000C1AD9:EE_|DB8PR10MB3516:EE_
-X-MS-Office365-Filtering-Correlation-Id: 16292574-1007-4a8b-defc-08df4489a753
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|82310400026|23010399003|36860700016|10067099003|4143699003|11063799006|56012099006|261026121527099003|261028144727099003|261026140227099003|261021123027099003|261022105027099003|261022075727099003|261009221727099003|261009220027099003|261009221227099003|261009223027099003|261009223327099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	wH2IhiGGtbu2hDMra96Zr2ha+777Hz1Tlk0gPteoprWkOtJRzHLwuo3W7GHX7gGoQgxvEOhQr1tAgSaPkVP870e3FRwRCYtq71mvib+376wEd4rSWGh/JoEw7FuQfcgt72AAqbrxptfXezEit3qvSP+8hf/EtstnOAv20+H+wF5GkMQL6Mx3utS2EKJh62U7z7HFwtMFdCzkX1fQqkFLkpIxdqc/v0U2gQR7bpMYk5HJseQx4I1eKk/Y2K2OMIj2LjhnZW39fGRG4b9jBL1tLvM4iCuPPdEM8yAh+ln+0qVvtjIyPZjPifThTI99rsPaDhkVneowZpRTiAW9iRg0uj4HZ3lrIk0UQSq/XJfOIagOUp26G4NWdjYhIhlt/n9Vxo3DuJvNeVcOyr4k2hYjLD5mqtJeMnqlljsoy6nzU4mOs4hhGXpie3FFCSltVo4I29O6z1n/Jm+MT/yReob44u1TjnQOYNlUR95EplUf8EzrqefZjHxmqc1mWVrAXcjt44uHsDePKntE4eTd3Yjyjad5mqmwoA4Y+hnv7g/QHhQjKT9xr6d8ROf5i7Q1QXnDwNl3VoW3++O65yeHiS4VxAiApTWVvJdrMV9Tp1Tho++NZUTzbvn/nibPkAKlOgOgznYMnMbjlcvIunxYBoxVq/niZULHaCF9KMJOGZmidn7NKvbojdtGvaM9S6IH83Pe29YarqM+M6YX34dZQskElg==
-X-Forefront-Antispam-Report:
-	CIP:164.130.1.59;CTRY:IT;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:smtpO365.st.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(82310400026)(23010399003)(36860700016)(10067099003)(4143699003)(11063799006)(56012099006)(261026121527099003)(261028144727099003)(261026140227099003)(261021123027099003)(261022105027099003)(261022075727099003)(261009221727099003)(261009220027099003)(261009221227099003)(261009223027099003)(261009223327099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	tS5TH5zbjf3jxUBZ5g0u28gTLm8ewH5tnPYsZesZebK7M5FrQZNFKfdfKi6Zhja8M9XyHwflEVSWsyODGWi7kqsVPz6G/Soe3TgGGVaNpSwp9yCjOaoa3DlzVp7dlzpSsID18zLX8AfHlY7w3llOked95rZB+CiSZh4wiwDPLryQqRMYItcGhB6C6U/PahcIgzFaBgVYBqH5cB+IiKsygeFlSMq0CfZ8RmIxLAIj6Cgxi58cxHUioeyyPrlr5h5WwjxqwRCQZ0FMZemblNnhtKsXY2hSDME+/RPB5tAvn2ObAYjDxmydnvrEzAZ3NHpX0qVAhNzP709xHrtajS8MLiV2w9EaxbT0daAP2BGsD/SbkxLPBaEFHO6YOYPjqqrHi8QMzuHDO/gS86Fy1iDTVcaXowZzuf7SWj7VOAFErNzFufbBATqE/2ZDz5iYdytZ
-X-OriginatorOrg: foss.st.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Nov 2026 09:03:31.7613
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11740.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e536ee52-fb55-4360-ab80-08df448a4dc8
+X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Nov 2026 09:08:11.0428
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 16292574-1007-4a8b-defc-08df4489a753
-X-MS-Exchange-CrossTenant-Id: 75e027c9-20d5-47d5-b82f-77d7cd041e8f
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=75e027c9-20d5-47d5-b82f-77d7cd041e8f;Ip=[164.130.1.59];Helo=[smtpO365.st.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	AM1PEPF000C1AD9.eurprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR10MB3516
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: zrqa/CM1ogvVoWKeEmzkp9VxTq+psviQhD8H+UIxV6gIujR4BHVCdcIpCM8Kn4TkexEHE0jbE8JgtN0nbmhnjg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8381
 
-Hi,
+From: sashiko-bot@kernel.org <sashiko-bot@kernel.org>
+Sent: Saturday, November 14, 2026 5:17 PM
+> To: Claudiu Manoil <claudiu.manoil@nxp.com>
+> Cc: imx@lists.linux.dev; devicetree@vger.kernel.org; robh@kernel.org;
+> conor+dt@kernel.org; Frank.Li@kernel.org
+> Subject: Re: [PATCH net-next v4 1/6] net: enetc: Add pseudo-MAC support f=
+or
+> ENETCv4 Ports via a fixed-link node
+>=20
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue to consider:
+> - [Medium] net: enetc: enetc_phylink_match_pseudo_mac_speed() returns
+>   >10G fixed-link
+> --
+>=20
+> commit 15e36db0338302292004a6cbf3727d8f9d63565f
+> Author: Claudiu Manoil <claudiu.manoil@nxp.com>
+>=20
+> net: enetc: Add pseudo-MAC support for ENETCv4 Ports via a fixed-link nod=
+e
+>=20
+> This commit adds pseudo-MAC support for ENETCv4 ports lacking static DT
+> nodes by synthesizing a fixed-link DT subnode at probe time with the spee=
+d
+> derived from PCR[PSPEED].
+>=20
+> > diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
+> b/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
+> > index 8facc8bf8693a..b032b586f07b4 100644
+> > --- a/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
+> > +++ b/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
+>=20
+[...]
+> [Severity: Medium]
+> Can phylink_parse_fixedlink() handle SPEED_20000 or SPEED_25000 when
+> enetc4_add_ppm_fixed_link() writes the result of
+> enetc_phylink_match_pseudo_mac_speed() into the fixed-link DT node?
+>=20
+> When PCR[PSPEED] is configured for 20 Gbps or 25 Gbps at boot,
+> enetc_phylink_match_pseudo_mac_speed() returns 20000 or 25000, but
+> phylink_fill_fixedlink_supported() only populates linkmodes up to
+> 10000baseT_Full:
+>=20
+> drivers/net/phy/phylink.c:phylink_fill_fixedlink_supported() {
+>     ...
+> 	linkmode_set_bit(ETHTOOL_LINK_MODE_2500baseT_Full_BIT,
+> supported);
+> 	linkmode_set_bit(ETHTOOL_LINK_MODE_5000baseT_Full_BIT,
+> supported);
+> 	linkmode_set_bit(ETHTOOL_LINK_MODE_10000baseT_Full_BIT,
+> supported);
+> }
+>=20
+> As a result, phy_caps_lookup() in phylink_parse_fixedlink() returns NULL,
+> triggering a phylink warning ("fixed link full duplex 20000Mbps not
+> recognised") and leaving pl->supported, pl->link_config.advertising, and
+> pl->link_config.lp_advertising with no speed linkmode bits set.
+>=20
+> --
 
-On Mon, Nov 09, 2026 at 09:50:06PM +0100, Joshua Crofts wrote:
-> Since commit d1706f9da9f4 ("PM: runtime: call pm_runtime_dont_use_autosuspend() on reinit()"),
-> driver core is now responsible for undoing any
-> pm_runtime_use_autosuspend() calls on driver exit.
-> 
-> Remove the redundant function calls.
-> 
-> Signed-off-by: Joshua Crofts <crofts@kernel.org>
-> ---
->  drivers/i2c/busses/i2c-stm32f7.c | 2 --
->  1 file changed, 2 deletions(-)
-> 
-> diff --git a/drivers/i2c/busses/i2c-stm32f7.c b/drivers/i2c/busses/i2c-stm32f7.c
-> index 2e1cc6a92b81..7904d888550c 100644
-> --- a/drivers/i2c/busses/i2c-stm32f7.c
-> +++ b/drivers/i2c/busses/i2c-stm32f7.c
-> @@ -2325,7 +2325,6 @@ static int stm32f7_i2c_probe(struct platform_device *pdev)
->  	pm_runtime_put_noidle(i2c_dev->dev);
->  	pm_runtime_disable(i2c_dev->dev);
->  	pm_runtime_set_suspended(i2c_dev->dev);
-> -	pm_runtime_dont_use_autosuspend(i2c_dev->dev);
->  
->  	if (i2c_dev->wakeup_src)
->  		dev_pm_clear_wake_irq(i2c_dev->dev);
-> @@ -2367,7 +2366,6 @@ static void stm32f7_i2c_remove(struct platform_device *pdev)
->  	pm_runtime_put_noidle(i2c_dev->dev);
->  	pm_runtime_disable(i2c_dev->dev);
->  	pm_runtime_set_suspended(i2c_dev->dev);
-> -	pm_runtime_dont_use_autosuspend(i2c_dev->dev);
->  
->  	if (i2c_dev->dma) {
->  		stm32_i2c_dma_free(i2c_dev->dma);
-> 
+Hello,
 
-Reviewed-by: Alain Volmat <alain.volmat@foss.st.com>
+This remains the only outstanding issue for this series introducing S32N79 =
+support [1],
+and I would prefer not to address this in this series, for two reasons:
 
-Regards,
-Alain
-> -- 
-> 2.56.0
-> 
+1. It is not specific to the ENETC pseudo-MAC support. The ENETC driver
+   already advertises MAC_20000FD and MAC_25000FD for pseudo-MAC ports
+   (see 7c9a6ae0edb2 "net: enetc: differentiate phylink capabilities
+   for pseudo-MAC and standalone MAC"), so this series does not
+   introduce the situation. It only makes it reachable through a
+   fixed-link node, which is the same mechanism any other fixed-link
+   MAC would use for these speeds.
+
+2. The limit sits in generic code and in the binding, not in this
+   driver. Besides phylink's supported mask, the "speed" property of
+   fixed-link in
+   Documentation/devicetree/bindings/net/ethernet-controller.yaml is
+   also restricted to 10, 100, 1000, 2500, 5000 and 10000. Limiting
+   fixed links to 10G looks arbitrary to me given that 20G and 25G are
+   standard speeds and are already handled by phylink's capability and
+   phy_caps tables for non-fixed-link MACs.
+
+Extending fixed-link to 20G and 25G therefore touches phylink and the
+DT binding. I think it deserves its own series, where it can be reviewed on
+its own merits by the phylink and DT maintainers, rather than being bundled
+with S32N79 enablement.
+
+This is the only outstanding issue I am aware of for this series. I'm open =
+to
+send the phylink and binding change as a separate follow-up once we agree
+on the approach, if no one else wants to do it.
+
+Does that approach work for you?
+
+Regards
+Claudiu
+
+[1] https://lore.kernel.org/netdev/cover.1794581338.git.claudiu.manoil@nxp.=
+com
