@@ -1,56 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794900528;
-	b=enjlgs3O6rIiLN6tb7VA2wWdrRzF0RZy5qKaZyc7r2vtPxk99dAoJDMltz2FrY3Y4S8N
-	 zwBRL9K2VJH6Tkfs/kB4hCx3SUH6v1RmFw8p8YXajeHRPDBkujInvolhU+TV/XJhVNU66
-	 egPyFBG/NZ42Y1Pl+SjzbXzArHtbDZaKmMNt8026lEiyULuLPb2dgvDIR2gGpYIcN2a/D
-	 8z6VRkIUkcsmuQhVfcjBg8PMmCg4dkdiDgDAT79th8Bt0Rt1Byu0r113mnyMxTj+4qhrJ
-	 MC+DcR6jhY6uqDNlBpYx3ALoI6NAlTGqA8rHhExyVvp+FKoJlj1stKCSncWaLTwsb6g==
+	t=1794901098;
+	b=LqbfOCgjiZl3x+lqn69I6QQ/OBsdg0IepmHjMhVP3ratJvcFZ3gy7/QIE92aDWKl8YIc
+	 hYYf46i1jB8QwM+g+Hf2CNbrcBd0JmvQNtAVvQkocEywV0L8r5AfosaLXyMYSKOsoA5XM
+	 DzgTg8K/3E8vMEW4ineT7JibVNyZ1EZzQeJ3K49Wm2AnZ61I75HQ88/vLXZR0wD9SFCF0
+	 QeRgX3UFOfL2x9BQLtC0ImBaGg0cE+Vb4PSbnKqk8s939B0rTmR4hnMJdbhq5Jpae8RfZ
+	 SP2xyUynFiXYPi4UhU+RhcsRH0pRpyKfDLRlplGO+sOCxJY2w0PsJRD5Rnyb+vRXmBA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794900528;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794901098;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=PDirAEMiyce6Xby/owWrJFqKuo+G84rGMHiqJqLmaTQ=;
-	b=3Fk5Zt8Lz/CmOh6INDRYMeVKiC9kKpPmJQWnizhhVp6ncZDkfymEMzNYEzKVgHTqy13y
-	 8NlDiM4X+JjRM4Mrx355l2/CQQ+556z7ulqYEP4axhxgQPladwA4lSLP0fXhNtiULKSyS
-	 vu8eQWF//V7OkqtYOgE2A2fXfCZIuSZD6Xrk4SAPUcOBGTsNf8R4z2NdWc+WCnauUvRl6
-	 ROO+rS1GlobKnJnS7ZitELQIgDkhE7fwag2/lHJjB0cbtDirBCnA53lm/oGQXsR2oqmE9
-	 9oVhehRkbmeGCvsw2yrnXKXk+fwURgtU/FA984mdNWd8LhqAaqW8si/ZhXryzzsGe0Q==
+	bh=DRLY/XEdn+bTO8kt7HS98J3lRMl4u8FkkC7S4KIzV5Y=;
+	b=5hK68pD2/3MluxEyd6EKaB6Z3K9A5MW+5Q+T37AmcGjCyLpvufVT1N14Ry36wPRsrV2c
+	 ljPJIvIEvp22LMNbFnL0OYh8hmxBbCdpJ23qPz8LlKJm3nQDOI0Lko7b3dy4QbXOHSfPR
+	 EQ03K3qKzViZZRtPs4K2EstUX32Yt1aiPAHzHujFcco3/YD8Ax0ZHI2MIx84Z9uqCeF03
+	 Aj1UJN4zoooDNUxOGJ2bfSB9tKlfDKk0IUpL6ySTmRxwihKEGvG1pnCTPchNRW8deeK2A
+	 uTHCHJ2Zww/dJtGR1Vk9ZtUalyuKb40jdxe/FrNFJ1Zl1FtO0d1B2KsNt9x5CsUl52A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ORJ6+1Qu;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kxeNacyI;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35F8D606A31C
-	for <imx@lists.linux.dev>; Tue, 17 Nov 2026 07:28:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8CEA606A31C
+	for <imx@lists.linux.dev>; Tue, 17 Nov 2026 07:38:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ORJ6+1Qu
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD1CA1F000C4;
-	Tue, 17 Nov 2026 07:28:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kxeNacyI
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F39C1F000C4;
+	Tue, 17 Nov 2026 07:38:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794900528;
-	bh=PDirAEMiyce6Xby/owWrJFqKuo+G84rGMHiqJqLmaTQ=;
+	s=k20260515; t=1794901097;
+	bh=DRLY/XEdn+bTO8kt7HS98J3lRMl4u8FkkC7S4KIzV5Y=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ORJ6+1QuVRmLXQi5adrucUK9+ph/ISO5qTQIXMObH1/TuWlHtUrCD49u+YAM7rvuW
-	 xfn0/6K8h6mx0rLhvAH3rUv/MnS377WjqYuYxB9HK4OW029xgKVGQrMcWxtyTTVaFc
-	 eM/aUN+9LO8AI4G/LiZRUDCuFKdtdKrlzYHUTHEivxUb7uqkftqkwAeJrRNjxDPia8
-	 2EeyekWnxoZpSDzRCHQ/rzJuPfxL3iMD23+fl1iONmzzQk1qc9at6qQIdp/Z6RwS5A
-	 kjhQpcoUCbnzienRN825sHL1naq4AqdRMESMC0T4VsMnckDW9BM3LceFiJ8s26NPnT
-	 aLFGKk7OKW1LA==
-Message-ID: <sashiko-outbox-218347@kernel.org>
+	b=kxeNacyImU3NJmGZMbjjuOSydzX0ntY7qDcwjeVt0iSEcO3eB3kxoQWVvolbm3bha
+	 pFZtaK0LwB7oMZDEUNKcpEqB9n136hic8CoIK1rY6dQbwbzLc9CmM+1b+PJYmsDncj
+	 J9mrCmNn7lCCWhcInoU2uwW7mYs/uXx77ZYSmq7aKK/uh0VGFRVBss/49ZFqhhKHA3
+	 ew3YefMsCo39r4euhDsl578neOLrt6savyzSMzSvvGRn0xsoo8nL8wyQVIkoRi537x
+	 Q+ENNsonI4XN1UhZQdkYd+nY8vm6JpYPjYc8TOE+nZm+hdgncetK+sJFYXHAhOks3B
+	 HtU3AzjJJTbXg==
+Message-ID: <sashiko-outbox-218364@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 6/8] irqchip/imx-intmux: Use devm_clk_get_enabled()
+Subject: Re: [PATCH 8/8] irqchip/imx-intmux: Use
+ devm_pm_runtime_set_active_enabled()
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Peng Fan" <peng.fan@linux.dev>
 Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20261117-imx-intmux-v1-6-189e7e0ad98d@nxp.com>
+In-Reply-To: <20261117-imx-intmux-v1-8-189e7e0ad98d@nxp.com>
 References: <20261117-imx-intmux-v1-0-189e7e0ad98d@nxp.com>
- <20261117-imx-intmux-v1-6-189e7e0ad98d@nxp.com>
+ <20261117-imx-intmux-v1-8-189e7e0ad98d@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 17 Nov 2026 07:28:47 +0000
+Date: Tue, 17 Nov 2026 07:38:16 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -60,60 +61,92 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Medium] irqchip/imx-intmux: unbalanced clock disable in
-  imx_intmux_remove() on error
+Thank you for your contribution! Sashiko AI review found 2 potential
+issues to consider:
+- [High] irqchip/imx-intmux: unexpected runtime_suspend() in devres
+  teardown
+- [High] irqchip/imx-intmux: unexpected runtime suspend in
+  pm_runtime_disable_action()
 --
 
-commit d7b67b8e6922337551fee107f931cdac342397ec
+commit 2bb337f25f51814af4aab296ab2a9e9b51b12962
 Author: Peng Fan <peng.fan@nxp.com>
 
-irqchip/imx-intmux: Use devm_clk_get_enabled()
+irqchip/imx-intmux: Use devm_pm_runtime_set_active_enabled()
 
-This commit replaces devm_clk_get() and manual clk_prepare_enable() and
-clk_disable_unprepare() calls for ipg_clk with devm_clk_get_enabled().
+This commit replaces manual pm_runtime_set_active(), pm_runtime_enable(),
+pm_runtime_disable(), and pm_runtime_set_suspended() calls with
+devm_pm_runtime_set_active_enabled().
 
 > diff --git a/drivers/irqchip/irq-imx-intmux.c b/drivers/irqchip/irq-imx-i=
 ntmux.c
-> index ebfff621e5a90..755c070073902 100644
+> index 1f6e5d9c797aa..770656ef10ece 100644
 > --- a/drivers/irqchip/irq-imx-intmux.c
 > +++ b/drivers/irqchip/irq-imx-intmux.c
-> @@ -226,7 +226,7 @@ static int imx_intmux_probe(struct platform_device *p=
-dev)
->  		return PTR_ERR(data->regs);
->  	}
+> @@ -234,9 +234,11 @@ static int imx_intmux_probe(struct platform_device *=
+pdev)
+>  	data->channum =3D channum;
+>  	raw_spin_lock_init(&data->lock);
 > =20
-> -	data->ipg_clk =3D devm_clk_get(&pdev->dev, "ipg");
-> +	data->ipg_clk =3D devm_clk_get_enabled(&pdev->dev, "ipg");
->  	if (IS_ERR(data->ipg_clk))
->  		return dev_err_probe(&pdev->dev, PTR_ERR(data->ipg_clk),
->  				     "failed to get ipg clk\n");
-
-[ ... ]
-
-> @@ -323,7 +316,6 @@ static void imx_intmux_remove(struct platform_device =
-*pdev)
->  	pm_runtime_disable(&pdev->dev);
->  	if (ret >=3D 0) {
->  		pm_runtime_put_noidle(&pdev->dev);
-> -		clk_disable_unprepare(data->ipg_clk);
->  		pm_runtime_set_suspended(&pdev->dev);
+> +	ret =3D devm_pm_runtime_set_active_enabled(&pdev->dev);
+> +	if (ret)
+> +		return ret;
+> +
+>  	pm_runtime_get_noresume(&pdev->dev);
+> -	pm_runtime_set_active(&pdev->dev);
+> -	pm_runtime_enable(&pdev->dev);
+> =20
+>  	for (i =3D 0; i < channum; i++) {
+>  		data->irqchip_data[i].chanidx =3D i;
+> @@ -286,7 +288,6 @@ static int imx_intmux_probe(struct platform_device *p=
+dev)
+>  							     hwirq));
+>  		irq_dispose_mapping(data->irqchip_data[i].irq);
 >  	}
+> -	pm_runtime_disable(&pdev->dev);
+>  	pm_runtime_put_noidle(&pdev->dev);
+>  	return ret;
 >  }
 
-[Severity: Medium]
-Can this underflow the enable and prepare counts on data->ipg_clk if
-pm_runtime_resume_and_get() fails in imx_intmux_remove()?
+[Severity: High]
+Can removing pm_runtime_disable() from the probe error path cause a NULL
+pointer dereference in imx_intmux_runtime_suspend() when channel setup
+fails?
 
-At the end of imx_intmux_probe(), pm_runtime_put() allows runtime PM to
-suspend the device via imx_intmux_runtime_suspend(), which calls
-clk_disable_unprepare(data->ipg_clk).  Previously, imx_intmux_remove()
-only disabled data->ipg_clk when pm_runtime_resume_and_get() succeeded
-(ret >=3D 0).  With devm_clk_get_enabled(), devres unconditionally calls
-clk_disable_unprepare(data->ipg_clk) after imx_intmux_remove() returns,
-disabling the clock a second time when runtime resume fails.
+If irq_of_parse_and_map() or devm_irq_domain_create_linear() fails,
+platform_set_drvdata() has not been called yet, and pm_runtime_put_noidle()
+drops usage_count to 0 while runtime PM is still enabled and RPM_ACTIVE.
+During devres teardown, pm_runtime_disable_action() calls
+pm_runtime_dont_use_autosuspend() before pm_runtime_disable(), which runs
+update_autosuspend() -> rpm_idle() -> rpm_suspend() synchronously.
+imx_intmux_runtime_suspend() then reads a NULL dev_get_drvdata(dev) and
+dereferences data->channum.
+
+> @@ -312,11 +313,8 @@ static void imx_intmux_remove(struct platform_device=
+ *pdev)
+>  		irq_dispose_mapping(data->irqchip_data[i].irq);
+>  	}
+> =20
+> -	pm_runtime_disable(&pdev->dev);
+> -	if (ret >=3D 0) {
+> +	if (ret >=3D 0)
+>  		pm_runtime_put_noidle(&pdev->dev);
+> -		pm_runtime_set_suspended(&pdev->dev);
+> -	}
+>  }
+
+[Severity: High]
+Does dropping pm_runtime_disable() in imx_intmux_remove() cause
+data->ipg_clk to be disabled and unprepared twice on unbind?
+
+imx_intmux_remove() resumes the device (enabling data->ipg_clk) and then
+calls pm_runtime_put_noidle(), leaving usage_count at 0 while runtime PM is
+enabled and RPM_ACTIVE.  When devres teardown runs
+pm_runtime_disable_action(), pm_runtime_dont_use_autosuspend() synchronously
+suspends the device via imx_intmux_runtime_suspend(), which calls
+clk_disable_unprepare(data->ipg_clk) before the devm_clk_get_enabled()
+release action disables and unprepares data->ipg_clk a second time.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261117-imx-intmux=
--v1-0-189e7e0ad98d@nxp.com?part=3D6
+-v1-0-189e7e0ad98d@nxp.com?part=3D8
