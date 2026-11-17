@@ -1,56 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.180
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794899717;
-	b=aaol3dwxuPwoyY2Ap/HoRUkWoQotRs+VIQtaNeaK6UmeNhiUoixwIabGU6XYVHS+SHBb
-	 UHcg8T7uljKmOY8ers1OYy7tgV9AKA6brQnhsFb4dq0SE4PvGw8nNQwHkkfxeqhUJ+Cnh
-	 ekBWhWmqbi5vIVKzLjUGBjKopst0Rtvp35CJvyc+G/wHIMMr0czTKsi8VOhKiV49LQUqJ
-	 m3X0T6FfpaNJU7GUnVHVCPuD8hpYl/6aisp/ruezMnkOKddz0Royf/gKSDJr6APuot5wJ
-	 FZxazxNYA39xf8gS1hqheDn6kKwwjLjXJzW7HOX73TJzLbhMBrqn15afNILB6Nlt6aQ==
+	t=1794900179;
+	b=X4AqRXYl4Xfo+JCIz3HJ+zUoxjpcGbPNOOrBtWsr4edgh/4ofi/vU2ZKd/4a6obNzSYk
+	 Vonn92GEDQrcaf0me0xHTUdqI1On946j9BNb66M+2YbSqUlw30nTZwPrHQEMicsuSw4EZ
+	 A7/YGVdBM5W1RV65hOyggUMIzRSY9QoEX7S7Ei4CpkYZcEDN79wryIkivM/ZvAqoWag0I
+	 GqXDIvTg3ge9TWi65aG2iF8yxoVRXCNd+HnqYIlUDGR/WRrQ/4QpDGxN1RgcCOpyUtLqb
+	 6qi+uefwhT50GI2hfs42Rb9TL/TWtHuX61td1HvP33jm4Ep0oUnS7uy5cMSzOOTvcQQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794899717;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:From:Date:Subject:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
-	 In-Reply-To:To:Cc:X-Mailer;
-	bh=BlXwq6e5uLfBG6i7v3zQQBNsfUZ7M/ptQpeTZ0epfD8=;
-	b=UQvx3/oG9TYPnOH8XT24lZDND/fPRZ3imuC8IyqrN/UOq600mpxss/nBHa8N3N8NcOnC
-	 fYeQrzcAepIaFbJ8E+DdDxm7tJSmtwguZCZIjRIm9vkwElcPdxorYlEfKCQnC7hx5wWzQ
-	 aLbY8JQTKEvM/QzhU36oCCSEIqDaEsE4Ltn7I/vc3QzVWM/FHqItjdp3KEh804jzZWd+t
-	 j+LVtKtKn44EJ90D5Kp8TuVOV9kmbcyqzplCjLZAV7mdwLM0uRiSmmwZchlLptauWCmLF
-	 CkIpGIMXSgwufh1/jPX3Inee34S+0cnzVI/VTEbW/+sDxRezgJ8jCG6l3a+/rLfIwdA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794900179;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=Z6ysyxV6ULE9MXoe/n1oFDP9yT5OOZNjVC1qfeffxMQ=;
+	b=Tp+/nUvgW0aTtdHe+Ae5pOY2srCd9TQ3LCJqlzoXTnTeAqxsEkImLjQ+W2cqIaE1MLls
+	 yIhQzEFU63H1hdUXrWljnIjQQruUxsfX2huShilqkBBWYmhL0nde/f3XJnhizcJo9QqCD
+	 CNKSRx8zqjmEwtdEneskGwXyupdkcI/mWW4+RrZcCejlql1xHu47EJRSDlX5pb7jy3w0v
+	 BkDCFmpGkdMAOY+8dFkwHgeG1XoyoeaRbqXWvWEJfQlpXoi6ugfm3rg0Pcinw6HnjRexO
+	 7jNB7Nxuz9TGdKHI34XJe2cWMrWU1hisHtR+tUGJdaqEsMAH3xdMAlbiXAbaFP4WcpA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b="l0BKcpU/";
-	arc=none smtp.remote-ip=91.218.175.180
-Received: from mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lMLFP57r;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1507F606A332
-	for <imx@lists.linux.dev>; Tue, 17 Nov 2026 07:15:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1507F606A332
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84B1E606A31C
+	for <imx@lists.linux.dev>; Tue, 17 Nov 2026 07:22:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=l0BKcpU/
-X-Envelope-To: imx@lists.linux.dev
-DKIM-Signature: a=rsa-sha256; bh=c6YRxFHQ4d67zvszv7CQoix0mMpRpP6JHVOJd5jF0pU=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794899715; v=1; x=1795504515;
- b=l0BKcpU/WDYWQfs435gNcQpxBkzIoQUDUqv+y9CWhwx3Ck8CGEaKlwNaMdfDS7Btq+3bUqfA
- A/XpF4quha3gylK7onRayOIQEGW3QOsiJt8gcV2JybGc64uo/zeHUshQJq+SwgKlbKfTi/dBW0P
- y7KfSgI5lo20xf5WTmFReqBM=
-X-Envelope-To: imx@lists.linux.dev
-Received: by smtp.migadu.com with ESMTPS id a6958a8986243bd0;
-	Tue, 17 Nov 2026 07:15:13 +0000
-X-Mizu-Trace-ID: a6958a8986243bd0
-X-Migadu-Flow: FLOW_OUT
-From: Peng Fan <peng.fan@linux.dev>
-Date: Tue, 17 Nov 2026 15:14:12 +0800
-Subject: [PATCH 8/8] irqchip/imx-intmux: Use
- devm_pm_runtime_set_active_enabled()
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lMLFP57r
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E13251F000C4;
+	Tue, 17 Nov 2026 07:22:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794900179;
+	bh=Z6ysyxV6ULE9MXoe/n1oFDP9yT5OOZNjVC1qfeffxMQ=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=lMLFP57r1G3d6SIJnrXDouijZXkbOWjLS8pbwd1pPDHB+MpL61HDdR0TRz0fnNWpD
+	 Mbxsaqk+UbY22YRpXnmmZZXoKkEs3WIjmGCIU/8zNAMmO7s6PhplvjBr2jfnsc7W5g
+	 vrFrDbOHsrXS/Ls7JUZwusVmNH1z7qj7wv5e64abmQx0SK/P8Y4at8lKrZINArycIF
+	 Od+A7UKUX8iPKD2d24h2pguGqINIfuCj68S6TtsBs9svlTP1Cd9vBuz4eOCMNpqGZm
+	 HGcUL1udnv2eEi0+IhbOf4INkLwtL+tKwXbtQmkJ3Y11Ge0XvGjg2dyBRylww1Ccg+
+	 KzlkxatfnyPHQ==
+Message-ID: <sashiko-outbox-218320@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 5/8] irqchip/imx-intmux: Mark input interrupts as
+ level-triggered
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Peng Fan" <peng.fan@linux.dev>
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <20261117-imx-intmux-v1-5-189e7e0ad98d@nxp.com>
+References: <20261117-imx-intmux-v1-0-189e7e0ad98d@nxp.com>
+ <20261117-imx-intmux-v1-5-189e7e0ad98d@nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 17 Nov 2026 07:22:58 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -59,82 +60,33 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261117-imx-intmux-v1-8-189e7e0ad98d@nxp.com>
-References: <20261117-imx-intmux-v1-0-189e7e0ad98d@nxp.com>
-In-Reply-To: <20261117-imx-intmux-v1-0-189e7e0ad98d@nxp.com>
-To: Thomas Gleixner <tglx@kernel.org>, Radu Rendec <radu@rendec.net>, 
- Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Shengjiu Wang <shengjiu.wang@nxp.com>, 
- Marc Zyngier <maz@kernel.org>
-Cc: linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, Peng Fan <peng.fan@nxp.com>
-X-Mailer: b4 0.14.3
 
-From: Peng Fan <peng.fan@nxp.com>
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Low] irqchip/imx-intmux: missing Fixes trailer for IRQ_LEVEL fix
+--
 
-Use devm_pm_runtime_set_active_enabled() to manage the runtime PM
-enablement instead of calling pm_runtime_set_active() and
-pm_runtime_enable() manually. The devres actions then disable runtime PM
-and mark the device suspended when probe fails or the driver is unbound.
+commit 16ad01e929ba768146f616b1aa477818ab9093de
+Author: Peng Fan <peng.fan@nxp.com>
 
-Keep the explicit pm_runtime_get_noresume()/pm_runtime_put() pair so the
-device is still suspended immediately after a successful probe, and keep
-pm_runtime_put_noidle() in remove() to drop the reference acquired by
-pm_runtime_resume_and_get().
+> irqchip/imx-intmux: Mark input interrupts as level-triggered
+>
+> The child interrupts are handled by handle_level_irq() and xlate()
+> advertises IRQ_TYPE_LEVEL_HIGH, but the descriptors are not marked
+> IRQ_LEVEL. Apart from the inconsistency, the flag feeds IRQD_LEVEL,
+> which makes check_irq_resend() skip replaying level interrupts.
+>
+> Set IRQ_LEVEL in the map callback.
+>
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
 
-The devres teardown runs after imx_intmux_remove() and disables runtime
-PM before marking the device suspended, which is the order required by
-the PM core. The IPG clock devres action still disables the clock last.
+[Severity: Low]
+Since this fixes the missing level trigger flag present since the driver was
+introduced, should it include a Fixes tag?
 
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
----
- drivers/irqchip/irq-imx-intmux.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+  Fixes: 2fbb13961e74 ("irqchip: Add NXP INTMUX interrupt multiplexer suppo=
+rt")
 
-diff --git a/drivers/irqchip/irq-imx-intmux.c b/drivers/irqchip/irq-imx-intmux.c
-index 1f6e5d9c797a..770656ef10ec 100644
---- a/drivers/irqchip/irq-imx-intmux.c
-+++ b/drivers/irqchip/irq-imx-intmux.c
-@@ -234,9 +234,11 @@ static int imx_intmux_probe(struct platform_device *pdev)
- 	data->channum = channum;
- 	raw_spin_lock_init(&data->lock);
- 
-+	ret = devm_pm_runtime_set_active_enabled(&pdev->dev);
-+	if (ret)
-+		return ret;
-+
- 	pm_runtime_get_noresume(&pdev->dev);
--	pm_runtime_set_active(&pdev->dev);
--	pm_runtime_enable(&pdev->dev);
- 
- 	for (i = 0; i < channum; i++) {
- 		data->irqchip_data[i].chanidx = i;
-@@ -286,7 +288,6 @@ static int imx_intmux_probe(struct platform_device *pdev)
- 							     hwirq));
- 		irq_dispose_mapping(data->irqchip_data[i].irq);
- 	}
--	pm_runtime_disable(&pdev->dev);
- 	pm_runtime_put_noidle(&pdev->dev);
- 	return ret;
- }
-@@ -312,11 +313,8 @@ static void imx_intmux_remove(struct platform_device *pdev)
- 		irq_dispose_mapping(data->irqchip_data[i].irq);
- 	}
- 
--	pm_runtime_disable(&pdev->dev);
--	if (ret >= 0) {
-+	if (ret >= 0)
- 		pm_runtime_put_noidle(&pdev->dev);
--		pm_runtime_set_suspended(&pdev->dev);
--	}
- }
- 
- #ifdef CONFIG_PM
-
--- 
-2.56.0
-
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261117-imx-intmux=
+-v1-0-189e7e0ad98d@nxp.com?part=3D5
