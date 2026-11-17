@@ -1,108 +1,136 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.44
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794936688;
-	b=otqi5tEOUfeYhlyph47NIjK9snOyAMbg6uKIB0KG+jL5h0wRhRxLQIpk68XLJhJK7/qp
-	 bOz7ijiER6qQG14KCDg8fMWzM3PsqaUag82gmjk1SZjmYjbQEV9sNz3B6jsTwx/YSMiei
-	 QrwvRry3cQwc5YF8iPBidbDQCXWDVcOKLKwKn9wAmbpT/Zikx17GLGStrgrzuIr1D6TKH
-	 z/bJk2gEVcC95yLfYC4tfaMW5tYcnL4V6REPcOy81+ZngYgje3Df3YYjTzgsHENfQ2iQt
-	 UzlCKrcXTEaKT+uXle+aI5iL3m0OYRKJhtoJYOl5cb4vY30+8kgLVam3NKD7vPvjJaw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794936688;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=5cYrB3RoftR9+ZJufZSneOA3rg0mkVzJBEfjOWndr34=;
-	b=rQC4gj4GUk3J65WmhmxkhJjNXkQ4YLNXKWAy8Rdqs7E3FqMIOoTWBTImRNvF6Q/jCB4N
-	 e2QtPoA7laDMcZXvXvNsaes4GbFv2PWz3hvBnVT9Q7+sLusE177yoX3UqYH4mJFiIZiVa
-	 5iWymJrqQyABNrWe2mVHpzkmmJcTO6v18wHptwBtCSWUT6GKrubT4iiPNGHn90a3RSsNh
-	 HlNmIjhXNOQXvjYh2cUopONq5ytbm2lL58Mvf24TD4Sitk95p+z3tWJWkPv0jsThR4XlB
-	 yXHV16fsn7vQgwV/w5aOasXRZewSNpzpWt/2C/8zK9FeDb4maIdi+cdXKsLRTzsTb/A==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linaro.org;
-	spf=pass smtp.mailfrom=linaro.org;
-	dkim=pass header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=WuyJuN+8;
-	arc=none smtp.remote-ip=209.85.216.44
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.130.15
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794937072;
+	b=L0r22yFPhaNNs3CypBQ2nLIUSVNqvfZZL3poF0J7rDFWtO1ZYj8b2mfCiE2eHO97Rzjh
+	 ZSQ6lCCtCht5eEKDlNRKSe4f0a03T+Nyn1qUhb3WQv6x/wPbceFVFtOOW02Cj5+MxxQk+
+	 LJ5v0UKmWodEMOaSv1bmzfHqowZSxMkeWzI/ZUxe+1vzqr8NCCCej0N7C1sbAygFsE6DY
+	 vRrz+9QWlicByYCvlK2T/DwxPTLnBjygDRkLPgoAqCREBaeIAX7zoNiZNVpCVF9LRLO2u
+	 6ZmFJiPZYB1Zqcr19Dk+hTTRQ6LM70uYn31WbyuqzsJ5wGJWxvZ3HSd85YXM1ED9t0g==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794937072;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:Content-Transfer-Encoding:Content-Type:
+	 X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=KZDINx5lhf7d31ocOX+VQCEAiwgDnXrcbLsOzE74GS4=;
+	b=tLliGxgFChEcPSFeKqyYqYl+v7AeC6k1X4MXU46zMUbG1Gs3Pqd5OteHfiJ38dBhuvQc
+	 L36AIZvH3dnhZELWtYN3eyMty0xBpkHFJkcLuZEkUzqUxIWwdMP7gsyO7JQsv3YJm/xVe
+	 3t5w7LGrIDG2VN/JNlVZVQLfLSfRkqZ/AJGPteiEbxzi7CckrmfmnRviU/RetAIeAcqGy
+	 6TPL2n7GQASL6TR2RPEno897qbKvd4mjTJVw8nFVUHMN6YggCVc9YrymLX8r8cXVNCBGe
+	 BWhBGXEA1U9DC+RYw3A6vsgEwXCVNshWxmLSWiFmKR6PTRfjPNRFHPWs3Sbc0gxp/Jg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=oss.nxp.com;
+	spf=pass smtp.mailfrom=oss.nxp.com;
+	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=vpbSGS1r;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.130.15
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011015.outbound.protection.outlook.com [40.107.130.15])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2EEC606A332
-	for <imx@lists.linux.dev>; Tue, 17 Nov 2026 17:31:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F2EEC606A332
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E965606A32A;
+	Tue, 17 Nov 2026 17:37:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3E965606A32A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=WuyJuN+8
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-3b155f50c24so5792021a91.3
-        for <imx@lists.linux.dev>; Tue, 17 Nov 2026 09:31:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1794936687; x=1795541487; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=5cYrB3RoftR9+ZJufZSneOA3rg0mkVzJBEfjOWndr34=;
-        b=WuyJuN+8wI++wNqP+Hkl1fKK78QLPmpDOAdS4mLLV/HQUqp1vJVtuPl8pF3ncCzUPe
-         5AtKPryGOKCQBa/7KXxcDJtFbO0sCk+W2oQdfSOHGowjDL7h9fW6p+rWbpqCn3puP4iy
-         bS4BnC2wZmHOmGbdVx/BpkVF1Shlj+itdsDNVlGp46Ilb1zzopRdeunvFkyEb/08u08O
-         JFl5m16HsWOuaJIAy7Yz04OPTB5TFoZqkyA3tcgsj0mOcqzjvtYci9m4nflPAhB0Neom
-         5TElysmjIoTNmZ9SkRzoqDw7SOeogU/1eSr0SNJxDs9QM5qG5ODgqcfW/zmke/QyVfJD
-         ruiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794936687; x=1795541487;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=5cYrB3RoftR9+ZJufZSneOA3rg0mkVzJBEfjOWndr34=;
-        b=HoflucKlitoPwn40HC9MLBBUVncFPJljUakPYUNx2o2/H6sgmnbcPnBvn+Sx1+NI9H
-         6MKJgdSJjV5bDRnEAmD8V6UIopc6kUjv4uuV1V0s+Tvpa6P1+O+R7xjMd37hGjnHhIL5
-         AkxJBZKd9LTTExL5inKXOxS/Groqe8lfGEcA8bOWnjt54gUkMX/fYKuZdK9hCGPKi23M
-         nLqMH6UDwP93BU8AJP5Yy7xjALpz5Mj81GU4uDYx+fnJ2l7WO75dHX6ZxjKq/2M00U1B
-         /Sdul8RYjrRNwLJfkh3Ie0svxc/XAYbsaVw02Y2YPzGaMii2H/j468cGBpXIvJ1RZfrK
-         1z8g==
-X-Forwarded-Encrypted: i=1; AL+hErGleGXsIVTUjWL+fKlx9dZG1izoo3Q5w12hTjCglv2+bhA7N24/gPEVC0bOAXFy8rAnXps=@lists.linux.dev
-X-Gm-Message-State: APuU4Z9jWIHJZNg5K3yNj/LOd28WEYgtO5GE3IQ5Qo7uSw2SM+xVds5Q
-	kn30axygCxZRsXn7FNktwvuB6vu3spG4XO1FcxvW866WgG2Tztk/GPmrDPzRr+ntoIU=
-X-Gm-Gg: AZFdTZc51wTMTGQShE3dCd4T8nghEcNLxgKYnzVQuama5II8YMYuKdB19Hwik9k93Ps
-	kcVldn9ydYOj2Nque3TB8RderjLOZp4rro2YKJ/yDY2u2PbT1fTQ0jO0ZaV/7UXrlPo5hFGoCPo
-	zxu+SNiQbTZ2cgJD3TfhjJ2NIMeiIE1zDOLHuyfOhcua8ZBCoO/SZu8pMO54kCgunsUaa4VtpgZ
-	uVZKW93gzVblr6Ljb0zmxLYEF5bd3ebt6tvNmLyn4rMZa3bkc/bThlJF2CIr2qRg4We1dPD+cd3
-	ZRv81xzhIcH37NnkqZXZ2V7T4y5ECniI8ZSzWlKENH5egkC82UQWWbKXezruC/9/2U27uUtpzMP
-	82BWROpJmsiZ5FQOIfRoXGWH9xbt3WBpq2jvx3GQyXqChQJo+yPIWZbKo54GWC6hl0S9udqZI/J
-	ntqiirAfpGFfL33dXVYgAktWAs/TabYHQ+BA4r4G8l8IUuWl/+JjltXs2CZouyEAajDqVvLGeab
-	5WL3hnzFvHvVfnCsrM/bnVyNEiJ/l7uDEteqdyjZHfsnZzd4jgUM/drticODhgTQ/IBYgA8ZZ+3
-	DBIiLclHZeHNRJu4nF4CqAyA/SykrxuEOmvP+JDHX8hvZUTTB0k+ag==
-X-Received: by 2002:a17:90b:3892:b0:3ac:9f24:44be with SMTP id 98e67ed59e1d1-3b3d07becb8mr123850a91.29.1794936686801;
-        Tue, 17 Nov 2026 09:31:26 -0800 (PST)
-Received: from p14s ([2604:3d09:148c:c800:61f7:13ac:b599:b52c])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b3abeaf532sm4936578a91.14.2026.11.17.09.31.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Nov 2026 09:31:26 -0800 (PST)
-Date: Tue, 17 Nov 2026 11:31:23 -0600
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-To: Francesco Valla <francesco@valla.it>
-Cc: Bjorn Andersson <andersson@kernel.org>, Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=vpbSGS1r
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=nEZEMH0ODW7JS8htOWXrfiAQvVeqbWwn2Y35s05Mc2UEdQ4VzImwVvXZUNq+JUHKadJyeMXULCykLTPCmejFYBWBSqMno2BB4jpoGauj8yWt3tBx6BxCVT1dFY5GQViNsdJ0FUE5us3fJK12/9KrUbuWAOwESPtJmXgeeOrTmYBD4jfwgz8v7oeyjCjIX3h1tmymp4ctx7WY88aaeQVSapsV+YC+38vINmO8rAEQ+2LUr8RQIGxBHXjdJFotWPru7yKfCYAB5DsDsuruub7Duf2hE3O7Bnrm1cmX2fT1fkouUtUNM7nuZCziFtQjVgyKp3AMsFcDF+uWyGY62bEuCg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=KZDINx5lhf7d31ocOX+VQCEAiwgDnXrcbLsOzE74GS4=;
+ b=k/s90KxTEHCb2GVQ0j2Ak7bqHWrktXxeQQWT6him8m8L2Q4cacGmf3r2dxel7sv/+gNHZGFVXX7LZiWeWEZEUSQJZE2tWSmfiiKLWtjofnWJKKwh+QgfJkDzRvuI9g7my4T4mRxZkKeaOvEwTeTxJECo/kve/GWy0aol4RQ4loCcsSSeQAI11mHPrKN86L7x64ihlsw3GM0gRS1DuY1wFKJAFl1ZOQSkZcZ2m0l3WACxeec44LADfAfHDDfnkK/M2wWUfca7YH4ARiqp9iq5X2RmM6lpPUrJVP5LfmG3ymAQpGtWCgyEb7J+8epcs2Xc1kNVljHMVwZsqsbae7o6MA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KZDINx5lhf7d31ocOX+VQCEAiwgDnXrcbLsOzE74GS4=;
+ b=vpbSGS1r3LrWC3eK3w6TKHMkj7YI0XXWQbnmD5K3E6yDuq3kUR9OVbO9zOA4y4WA1hzLZxGEXpHG1frnnfyvuOx0ANJjwMi6Rb8OhtTWzPVWhxpz8AEY7xr8+hTrJs7b06SSLIsrJpKZNhM0QYx3BNuARP6jdJVMMPHwx7ruhgmtXHBBO/1bCYSQruNIpXNaLhRO/7L1iMq9tu/jxcG3xLTj8fq7xL2phHnhpladaIQ7eGwU5O+DfkLzISF54VZimAgSB5KpVkQwQqOUXLp3WPlsouNtda8xsEcnkj9oTDTU9+yrHMa8h670bKCPhMy1cPORjEKnMqI6aYq2qSHcDQ==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from MI3PR04MB12438.eurprd04.prod.outlook.com (2603:10a6:290:76::14)
+ by GV2PR04MB12582.eurprd04.prod.outlook.com (2603:10a6:150:36f::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.14; Tue, 17 Nov
+ 2026 17:37:46 +0000
+Received: from MI3PR04MB12438.eurprd04.prod.outlook.com
+ ([fe80::c715:c32:8bb1:b70b]) by MI3PR04MB12438.eurprd04.prod.outlook.com
+ ([fe80::c715:c32:8bb1:b70b%4]) with mapi id 15.21.0615.013; Tue, 17 Nov 2026
+ 17:37:46 +0000
+From: Frank.Li@oss.nxp.com
+To: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
+	Alex Elder <elder@kernel.org>,
+	Guan-Yu Lin <guanyulin@google.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Andrzej Kacprowski <Andrzej.Kacprowski@intel.com>,
+	Maciej Falkowski <maciej.falkowski@linux.intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Will Deacon <will@kernel.org>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Connor Abbott <cwabbott0@gmail.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Bingbu Cao <bingbu.cao@intel.com>,
+	linux-pm@vger.kernel.org (open list:POWER MANAGEMENT CORE),
+	linux-kernel@vger.kernel.org (open list)
+Cc: imx@lists.linux.dev,
+	Frank Li <Frank.Li@nxp.com>,
+	Alex Elder <elder@riscstar.com>,
+	Andrzej Kacprowski <andrzej.kacprowski@linux.intel.com>,
+	Karol Wachowski <karol.wachowski@linux.intel.com>,
+	Oded Gabbay <ogabbay@kernel.org>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Matthew Brost <matthew.brost@intel.com>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
 	Robin Murphy <robin.murphy@arm.com>,
-	linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-hardening@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-doc@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH RFC v2 08/11] Documentation: remoteproc: expand virtio
- support section
-Message-ID: <avyPa5rSx9rhf9yO@p14s>
-References: <20261102-remoteproc_virtio_map-v2-0-26b300e01c62@valla.it>
- <20261102-remoteproc_virtio_map-v2-8-26b300e01c62@valla.it>
+	"Joerg Roedel" <joro@8bytes.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Guenter Roeck <linux@roeck-us.net>,
+	linux-pm@vger.kernel.org,
+	linux-usb@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	intel-gfx@lists.freedesktop.org,
+	intel-xe@lists.freedesktop.org,
+	linux-hwmon@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	iommu@lists.linux.dev,
+	linux-arm-msm@vger.kernel.org,
+	linux-media@vger.kernel.org,
+	linux-staging@lists.linux.dev,
+	netdev@vger.kernel.org
+Subject: [PATCH v3 1/2] PM: runtime: fix stub pm_runtime_get_if_active() for !CONFIG_PM
+Date: Tue, 17 Nov 2026 12:37:35 -0500
+Message-ID: <20261117173738.1073856-1-Frank.Li@oss.nxp.com>
+X-Mailer: git-send-email 2.43.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: PH8PR02CA0008.namprd02.prod.outlook.com
+ (2603:10b6:510:2d0::17) To MI3PR04MB12438.eurprd04.prod.outlook.com
+ (2603:10a6:290:76::14)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -112,140 +140,194 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261102-remoteproc_virtio_map-v2-8-26b300e01c62@valla.it>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|GV2PR04MB12582:EE_
+X-MS-Office365-Filtering-Correlation-Id: b33219af-6a41-4bc5-a1db-08df44d17e27
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|366016|19092799006|7416014|376014|1800799024|18002099003|6133799003|921020|11063799006|56012099006|261026140227099003|261028144727099003|261021123027099003|261021121427099003|10067099003|261009221227099003|261102123227099003|261009223027099003|261009221727099003|261022105027099003|261009223327099003|261009220027099003|261022075727099003;
+X-Microsoft-Antispam-Message-Info:
+	sXtO+HxvVxV42O279f88YaFtOC00rsexvU7RrlOygzOyAv2vKembZvaQz7pSAwPSyEgaSuLyYN/ndIL2WgC6K9nHKydKHmBJZSCmmWvkpOhtcJlJfnLVnYLfiRuuNphj0N8pFjfBU7sT2AQMqOkcgfaJxrVskzJf9oC3v7N2igD6Nb264Szt4kpMUw4r3mL0e1LlPdgQ4qAbmAUJab/7iRdnM8QfMRnD+PuQaoZkmGW7bvwBQlwu/XPVSxXiyMaO5eEUWv2uGp2B0d1WVy1EE1B6pzwEc1wxLAXVA1wQUDXZPPphgvTNF8Bz96O9T1TWzL2gguiaqGOq/8EehU7r4pqBoG3x0BEEGLAPG3jkLvTOtbrHFAOYpB4pSqAcJSqycREhnejO68pesOZjfZF0b5FIgUINvngcyCs+9pQqS7J5QVyS3UBqDqz8ASxuuXpy9neu2BBzr1xPPUKpfyS4vahkWtZq8J2nAiosgXbgrjN3XW0P3rpchBUpgMWgogE74X46EbhSVx/EUAgyWbWKnQeE/nn3k5JFZMC+au8fBsl2fV1ruFYRmGBudJSPb6o0sAdkY8GBWFv+BEWGi+tw0EaSP19Zw4VrSLm71N2RVNq6vTvF6wMyfKol5jlizVkZO6uBNQAhja8ShiJiRSQEOIQZ+VzpBcyjqyNhy8q6KulpM5kCErIdDUAiQ6TTB0fQq1kbPdCbfHpe2Ua6Ghd4CA==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(19092799006)(7416014)(376014)(1800799024)(18002099003)(6133799003)(921020)(11063799006)(56012099006)(261026140227099003)(261028144727099003)(261021123027099003)(261021121427099003)(10067099003)(261009221227099003)(261102123227099003)(261009223027099003)(261009221727099003)(261022105027099003)(261009223327099003)(261009220027099003)(261022075727099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?WDTlm33+BJQF8p43MTj+HSWKgcn5Ht/MLtFaOkGIBR4hOjuMRc21/7nkHh66?=
+ =?us-ascii?Q?DyX0vVH446IPkg2uim0IBgdB67fnH8YS2g1JMsfpjX42O+bfCTH9Jl7LlL+r?=
+ =?us-ascii?Q?GyYYqlu2j0ycNLabWrA8tNY4VqaPf7fAbhOuUkj7LO+LwirDH0LRkQMh/S92?=
+ =?us-ascii?Q?Z7yFKXaB0zpmmW4ekpJY2V8fJdZK5N47zEYc1sXMCrZ5xuFWOO+eiDtAh7ZN?=
+ =?us-ascii?Q?iQQlFsI187UGC3a7CCzWGyFP8oi6j+GbaDhChjoIzxOlWXW3qIrevuSPZu9D?=
+ =?us-ascii?Q?U7+B3SILo/NfmZLF1y7aS+Xucc5AxwLKfSlpEFgN0XZArH9z8Z9M/8+YSV/7?=
+ =?us-ascii?Q?d08Af6lowSitlGDad0xf9ViFhnMMpf5hiOJUAKYJjG1LNQpQV/UqqxncWmJl?=
+ =?us-ascii?Q?QJil/ugVeMesv2sQmbedtutbbueAMZc8C9VeP9V5Wu2jBuMb28ACkYOURQTG?=
+ =?us-ascii?Q?cB4UvWFOkTupw5fZXfI1DTzoaYLRqjywcr9vyBENDKftlCP3nONtdQEnw/TU?=
+ =?us-ascii?Q?aH/XB2YPpYt8dYDZKITX7QS3Hc4DYvs1HBDowpBxlMqwUe+Qe2Pje3JY0jXs?=
+ =?us-ascii?Q?8HcM/hoxaovQc55wMMmQd4zdWJLU8nNIIKC5vKEtKfxqFM+HYmfc14dOP7hJ?=
+ =?us-ascii?Q?3d9M0PqfUNgFimnNa7R5gwspa+C1u9dziplilUZLg70zH79CYIvJSqccalT4?=
+ =?us-ascii?Q?VgLpfdjufvgozStzxgFjaRBznxIkxjf8H6YPSVaqyp+HN2Kbcf/3fTkEUWer?=
+ =?us-ascii?Q?pVk/4qmkfirsmu6DdaUQgnah63GoST643Wo+z1o682FM94vNVDJK3xohWk3f?=
+ =?us-ascii?Q?CmoKwCgu+0AlPEpX0Eva26qWbzTfwg3qBwGk0EQwRTZNnPM0zLsBt97YGzpN?=
+ =?us-ascii?Q?VYVPMz3GaDMAzsWMSbaZukcD4OEvYUKK87CkbFbg66wpIlnjcp/WAy5pZT6l?=
+ =?us-ascii?Q?b6WdCC3Vk+MuF+w08d6Pq/h22BeN8hI40yJEzwSj8Wh+/ybqWSjvUax/xe0z?=
+ =?us-ascii?Q?vJt16SrY2nS3XwzMfK04AapeUuyS7qAsD0YP11IZf0dIzekCcbimeizT3bJQ?=
+ =?us-ascii?Q?KOlDoLWh0QRSM/wY0cC7NuH3H6ALXosJj56FMSFLFoCEHtozExIadoqepaeZ?=
+ =?us-ascii?Q?QfC5iKdHAwlPrQ+7WHRLT/vAJOsytvGlnrlilNiJCn5aWqv0A9pNZBmzTD0m?=
+ =?us-ascii?Q?M8BCXvDf0QDGNIw+7csvD9n9Or7GdAPHT/pa54klMWh2mWCXmghs/la27eXO?=
+ =?us-ascii?Q?E3cEvP+BfWGIFMC4L6GyKTSGDSfrbzIm5yO/vyR3cNlXrFh1esVcnX/y8BWx?=
+ =?us-ascii?Q?1lqB6cQlWEQmEjMrGUv/UCkp3Tbj6o8dvAym6wSCTU7yuFC/vIlY6ctSm67C?=
+ =?us-ascii?Q?63iMcwUDwGK+iobxNb7sHFdgZwZvpRgRfhhvCH/LIyCXpHaXsM/04fUseZ9C?=
+ =?us-ascii?Q?vGFPR5pOoo2xawok4CdL89Ng1UmiMzqIrrwpFF7/nERWQ/k6yHGuTS/WNDA/?=
+ =?us-ascii?Q?5WHExSiI7SxOrFvwNlkTc46FVnai5drIbrYkVj5rqdIalL904tmsGuda1wXZ?=
+ =?us-ascii?Q?45B2qr6XNAkHsCofwUW6JwI7LSoPtUAGjBVu3SikzC+yZgKBGdXKwWh/8fte?=
+ =?us-ascii?Q?igput+Wohy7do6k/UnppcgCo8Bs/3edpMFKfzw8o+q3iYkocOl6SvqAXAj/y?=
+ =?us-ascii?Q?kpacsMUhY5cRMtCN7KjpgRMN4UTNYp6HNODfG7NgOiFiL++SYy9V4hBL/Joy?=
+ =?us-ascii?Q?8FFRncMSL2zNEr166xPAQcIe9gjJ/eg5DBLTnz7xkVw0QwTfbHO/?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b33219af-6a41-4bc5-a1db-08df44d17e27
+X-MS-Exchange-CrossTenant-AuthSource: MI3PR04MB12438.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Nov 2026 17:37:46.7668
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: VWfUD6wlehPxnzu4NU3G0iBrBiEqYn3cBibMVadJE6Er5rSdhcaj6M6SwU23gNd2DFl9TxjFKQ0H739L6f38EH4BRzmTW1DDynqmhsMqvSrGrGvqKGs7I07lW0Xr9KoB
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR04MB12582
 
-On Mon, Nov 02, 2026 at 12:26:45AM +0100, Francesco Valla wrote:
-> Expand the section on virtio support over remoteproc with details on
-> memory allocation setup and constraints.
-> 
-> Signed-off-by: Francesco Valla <francesco@valla.it>
-> ---
->  Documentation/staging/remoteproc.rst | 99 +++++++++++++++++++++++++++++++++++-
->  1 file changed, 98 insertions(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/staging/remoteproc.rst b/Documentation/staging/remoteproc.rst
-> index c117b060e76c..4b42ed582fb4 100644
-> --- a/Documentation/staging/remoteproc.rst
-> +++ b/Documentation/staging/remoteproc.rst
-> @@ -354,7 +354,104 @@ it supports. A firmware may support any number of virtio devices, and
->  of any type (a single remote processor can also easily support several
->  rpmsg virtio devices this way, if desired).
->  
-> +Memory carveouts
-> +----------------
-> +
-> +For a virtio device at position ``X`` among the RSC_VDEV resources declared by
-> +the resource table, the remoteproc framework will search for memory carveouts
-> +for:
-> +
-> +* all the vrings the specific virtio device requires (as ``vdevXvringY``);
-> +* the memory area to allocate communication buffers from (as ``vdevXbuffer``).
-> +
-> +The carveouts can be provided by the remote processor itself as RSC_CARVEOUT
-> +resources inside the resource table and/or supplied by the remoteproc driver
-> +and will be indexed by their name.
+From: Frank Li <Frank.Li@nxp.com>
 
-The remoteproce driver doesn't supply carvouts, it gets them from the device
-tree.
+When CONFIG_PM is not enabled, should be treated as if runtime PM were
+enabled for the device and the runtime status is active.
 
-> +If a carveout with the same name is provided through both means, the one
-> +supplied by the remote processor should be marked as dynamically allocable,
-> +i.e., with the device address set to ``FW_RSC_ADDR_ANY`` (-1).
-> +
+It's a subtle distinction but the previous behavior returned -EINVAL, which
+means "runtime PM is disabled for the device"
 
-Right, as per my comment in the previous patch, carveouts at the virtio level
-should be distinct from those declared at the remote processor level.  Hopefully
-this will keep the remoteproc core simple and make it easy to differentiate
-between code paths that handle legacy and authentic rproc-virtio devices.
+__pm_runtime_resume() returns 1 (called by pm_runtime_get()).
+pm_runtime_get_if_active() is the try-and-get version of pm_runtime_get().
+stub pm_runtime_active() also returns true. So pm_runtime_get_if_active()
+should return the same value as the stub pm_runtime_get(), which is 1.
 
-> +If a ``vdevXvringY`` carveout is not provided, the remoteproc framework will
-> +try to allocate it using dma_alloc_coherent(), which will resort to allocate it
-> +either from the first ``restricted-dma-pool`` region associated to the virtio
-> +device's parent (i.e., the remote processor device), if present, or the global
-> +DMA pool.
-> +
-> +.. WARNING::
-> +
-> +    This fallback mechanism can result in a vring being allocated using a
-> +    ``vdevXbuffer`` area meant for another vdev, so a particular care shall be
-> +    adopted when defining the carveouts. In particular, ``restricted-dma-pool``
-> +    memory regions should be specified inside the virtio device's devicetree
-> +    nodes and not attached to the parent remote processor.
-> +
-> +If a ``vdevXbuffer`` carveout is not provided, the remoteproc framework will
-> +use the memory region declared by the virtio device's own devicetree node (see
-> +Documentation/devicetree/bindings/remoteproc/remoteproc-virtio.yaml), if any.
-> +Otherwise, it will try to replace it with the first memory region (of any type)
-> +associated to the virtio device's parent (i.e., the remote processor device);
-> +if no such memory region is present, it will be replaced with the global DMA
-> +pool.
-> +
-> +If both a ``vdevXbuffer`` carveout and a memory region inside the virtio
-> +device's devicetree node are present, the carveout takes precedence and the
-> +memory region is ignored.
-> +
-> +Declaring the memory region inside the virtio device's devicetree node is the
-> +preferred method for ``restricted-dma-pool`` regions, since listing them among
-> +the memory regions of the remote processor device would make the first of them
-> +the (forced) bounce buffer for the remote processor device itself as well.
-> +
-> +Buffer allocation
-> +-----------------
-> +
-> +There are different kinds of buffer allocation scenarios:
-> +
-> +* if the remote processor can access the whole DMA memory area of the host, no
-> +  special arrangement needs to be performed, since either the drivers (in case
-> +  of rpmsg and rproc-serial devices) or the DMA APIs (in case of any other
-> +  virtio device type) will take care of any necessary translation;
-> +* if the remote processor has limited access to the host memory space, for
-> +  example because of a different addressing scheme or for memory isolation
-> +  constraints, the memory reserved for buffer allocation shall be selected
-> +  depending on the virtio device type:
-> +
-> +  - for rpmsg and rproc-serial devices, a simple contiguous memory region
-> +    (e.g.: one declared in devicetree as ``shared-dma-pool``) is sufficient and
-> +    should be preferred, since it allows zero-copy message transmission between
-> +    the host and the remote processor;
-> +  - for any other virtio device type, a swiotlb-enabled memory region (e.g.:
-> +    one declared in devicetree as ``restricted-dma-pool``) is required, because
-> +    such devices need bounce buffering to work correctly.
-> +
-> +For virtio devices other than rpmsg and rproc-serial, the remoteproc framework
-> +offers the ``VIRTIO_F_ACCESS_PLATFORM`` feature, so the buffer addresses written
-> +in the vring descriptors are the DMA addresses returned by the DMA APIs for the
-> +virtio device. The virtio device inherits the DMA mask and the DMA range map
-> +(i.e., the translation described by the ``dma-ranges`` devicetree property) of
-> +the remote processor device, and is never attached to an IOMMU: these DMA
-> +addresses are therefore host physical addresses, translated only through the
-> +DMA range map. The remote processor must be able to access the buffers at
-> +these addresses.
-> +
-> +.. WARNING::
-> +
-> +    For remote processors that access memory through an IOMMU managed by the
-> +    remoteproc framework (i.e., with ``has_iommu`` set), the IOMMU domain only
-> +    contains the mappings created for the RSC_CARVEOUT and RSC_DEVMEM entries
-> +    of the resource table, at the device addresses they specify; no mapping is
-> +    created for the buffers of the virtio devices. Such remote processors are
-> +    supported only if all the memory that can hold virtio buffers (e.g., the
-> +    ``restricted-dma-pool`` region associated to the virtio device) is mapped
-> +    with its device address equal to its physical address, for example through
-> +    an RSC_DEVMEM entry. The same constraint applies to any fixed address
-> +    translation applied by the remote processor that is not described by the
-> +    DMA range map of the remote processor device.
-> +
-> +Allocation of virtio devices
-> +----------------------------
-> +
->  Of course, RSC_VDEV resource entries are only good enough for static
->  allocation of virtio devices. Dynamic allocations will also be made possible
->  using the rpmsg bus (similar to how we already do dynamic allocations of
-> -rpmsg channels; read more about it in rpmsg.txt).
-> +rpmsg channels; read more about it in Documentation/staging/rpmsg.rst).
-> 
-> -- 
-> 2.56.0
-> 
+Analysis of all callers and their behavior with old (-EINVAL) vs new (1):
+
+Pattern A: if (!pm_runtime_get_if_active(dev)) -- no impact
+  Both -EINVAL and 1 are non-zero, so !ret is false in both cases.
+  Callers: drivers/accel/ethosu/ethosu_perfmon.c,
+           drivers/gpu/drm/msm/adreno/a6xx_gmu.c,
+           drivers/gpu/drm/msm/msm_perfcntr.c,
+           drivers/gpu/drm/v3d/v3d_mmu.c,
+           drivers/gpu/drm/v3d/v3d_perfmon.c (x4),
+           drivers/media/i2c/gc08a3.c gc05a2.c og0ve1b.c ov6211.c,
+           drivers/media/i2c/ccs/ccs-core.c s5kjn1.c lm3560.c (x2),
+           drivers/media/i2c/s5k3m5.c thp7312.c imx283.c ov64a40.c,
+           drivers/media/pci/intel/ipu6/ipu6-buttress.c,
+           sound/hda/core/device.c
+
+Pattern B: if (!ret) after get -- no impact
+  Both -EINVAL and 1 are non-zero, !ret is false in both cases.
+  drivers/gpu/drm/amd/pm/amdgpu_pm.c (comment says "allow access"
+    in kernels without CONFIG_PM), drivers/pci/pci.c
+
+Pattern C: ret > 0 / ret <= 0 / ret != 1 checks -- FIXED
+  drivers/usb/core/offload.c: checks (!= 1), old -EINVAL caused
+    -EBUSY even with !CONFIG_PM. Fixed: now returns 1, proceeds.
+  drivers/accel/ivpu/ivpu_job.c: drm_WARN_ON(<= 0), old -EINVAL
+    spuriously triggered WARN. Fixed: 1 > 0, no warn.
+  drivers/gpu/drm/i915/intel_runtime_pm.c: checks (<= 0), old
+    -EINVAL triggered error path. Fixed: 1 > 0, correct path.
+  drivers/accel/ivpu/ivpu_sysfs.c: (> 0), old skipped freq read.
+    Fixed: proceeds correctly without CONFIG_PM.
+  drivers/gpu/drm/xe/xe_pm.c: wraps (> 0), all xe callers
+    (xe_bo.c, xe_shrinker.c, xe_vsec.c, xe_ggtt.c, xe_guc_ct.c,
+    xe_pxp.c) now correctly treat !CONFIG_PM as active.
+  drivers/net/ipa/ipa_smp2p.c: power_on = (> 0), now correctly true.
+  drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c: (> 0), now correctly
+    executes stall register update.
+  drivers/staging/media/ipu7/ipu7-buttress.c: active (<= 0) early
+    return now skipped, correctly proceeds.
+
+Pattern D: explicit -EINVAL check
+  drivers/hwmon/prom21-xhci.c: checks (> 0) then (== -EINVAL).
+    Old: took -EINVAL fallback. New: takes (> 0) fast path.
+    Both succeed when CONFIG_PM is disabled; functionally equivalent.
+  drivers/hwmon/eic7700-pvt.c: call is guarded by IS_ENABLED(CONFIG_PM),
+    stub is never reached. No impact.
+
+Fixes: c0ef3df8dbaef ("PM: runtime: Simplify pm_runtime_get_if_active() usage")
+Fixes: bd3d245b0fef5 ("usb: core: use dedicated spinlock for offload state")
+Fixes: 7806bad76ac39 ("accel/ivpu: Prevent runtime suspend during context abort work")
+Fixes: 1524c28b99527 ("accel/ivpu: Show NPU frequency in sysfs")
+Fixes: 46edb0a3eb16c ("drm/xe: Fix xe_pm_runtime_get_if_active return")
+Fixes: a71aeff3dd0a7 ("net: ipa: kill IPA clock reference count")
+Fixes: 70892277ca2db ("iommu/arm-smmu-qcom: Make set_stall work when the device is on")
+Fixes: 9ad65684b9285 ("media: staging/ipu7: Ignore interrupts when device is suspended")
+Acked-by: Alex Elder <elder@riscstar.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+Change in v3
+- fix drm/xe fixes tag hash (sashiko)
+- drop i915 fix tag because guard by CONFIG_PM (sashiko)
+- fix net ipa fixes tag hash (sashiko)
+- Add c0ef3df8dbae ("PM: runtime: Simplify pm_runtime_get_if_active() usage" (sashiko)
+
+Change in v2
+- add fixes tag for patten C.
+- add Alex Elder ack tags
+- change subject to fix stub pm_runtime_get_if_active()
+
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Andrzej Kacprowski <andrzej.kacprowski@linux.intel.com>
+Cc: Karol Wachowski <karol.wachowski@linux.intel.com>
+Cc: Oded Gabbay <ogabbay@kernel.org>
+Cc: Jani Nikula <jani.nikula@linux.intel.com>
+Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Tvrtko Ursulin <tursulin@ursulin.net>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: "Thomas Hellstrom" <thomas.hellstrom@linux.intel.com>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Simona Vetter <simona@ffwll.ch>
+Cc: Alex Elder <elder@kernel.org>
+Cc: Will Deacon <will@kernel.org>
+Cc: Robin Murphy <robin.murphy@arm.com>
+Cc: "Joerg Roedel" <joro@8bytes.org>
+Cc: Rob Clark <robin.clark@oss.qualcomm.com>
+Cc: Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: Guenter Roeck <linux@roeck-us.net>
+Cc: Guan-Yu Lin <guanyulin@google.com>
+Cc: Mathias Nyman <mathias.nyman@linux.intel.com>
+Cc: linux-pm@vger.kernel.org
+Cc: linux-usb@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: intel-gfx@lists.freedesktop.org
+Cc: intel-xe@lists.freedesktop.org
+Cc: linux-hwmon@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: iommu@lists.linux.dev
+Cc: linux-arm-msm@vger.kernel.org
+Cc: linux-media@vger.kernel.org
+Cc: linux-staging@lists.linux.dev
+Cc: netdev@vger.kernel.org
+Cc: imx@lists.linux.dev
+---
+ include/linux/pm_runtime.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/linux/pm_runtime.h b/include/linux/pm_runtime.h
+index 64921b10ac74f..de9e7518ecef2 100644
+--- a/include/linux/pm_runtime.h
++++ b/include/linux/pm_runtime.h
+@@ -280,7 +280,7 @@ static inline int pm_runtime_get_if_in_use(struct device *dev)
+ }
+ static inline int pm_runtime_get_if_active(struct device *dev)
+ {
+-	return -EINVAL;
++	return 1;
+ }
+ static inline int __pm_runtime_set_status(struct device *dev,
+ 					    unsigned int status) { return 0; }
+-- 
+2.43.0
+
