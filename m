@@ -1,73 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794908051;
-	b=ztFpmefSK6fussJmX5yBn4OevITYy8CTYSx2VkDhbF4ypaEOSRmvgVUiUBW7z4EN5V61
-	 +b6GF3JnMVvTtiZu2e7iLszrrvBiRHttb9H1iaX+SZgopu66QEEf+8OzFtTpifjWaAHWb
-	 Ci1PIg571k+7Tepjs2N0iynT5Q2qzCBdrzhRXIeB7Ok0v87WNABbJVWppQPKy9B/I32Mp
-	 jCaaaUovPC2cFi4rAOzACJUDYFkCcLKMhJbWjcVTUiis9UJBXUO54q6AOPeNZDwuKaOYW
-	 JZ75lFXdaEtV5jSCUYdhW/MhI1JYB5/kyBOe9d0i8NG2bm1kS7OQCWhjqJEnSRBM0Yw==
+	t=1794910821;
+	b=D/Bvj1dAAHCBQbbv+18OAHgTwoYPimRZE/d0g4zkWN71xfjOYytLo/QD1hgdP+RaBWj2
+	 4jHfVMHANwvjXRSGIkF1+NaVf6OnGY/TJt3m1hgH3BfMjmdbA23F/0sgvpGe5f40QcbKo
+	 2ow0d94WW03V1Io3QEJqY0uustbJOqXWzGdiI3gLmToy/2Pgcwdt0nkfC2jPwMou953Mv
+	 qA0TKNMsUcx8XT670TgCXdzLxFRvM+UREvXDO4y/23P31UJqQDuCawo6MRZ2RrKph5jtW
+	 9likdVsxbMo127E8ffS6Wf33Uj/SdpS+CshSjdoXsBklyZge2WyGQGaQnrAw3DqUURA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794908051;
-	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:To:Cc:
-	 Subject:In-Reply-To:References:User-Agent:Date:Message-ID:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 X-Last-TLS-Session-Version;
-	bh=AuE4JfXLFzUDx+6R1OGPPSSy0rX3ecyLORLK9C1d1XU=;
-	b=cVzWjfPuOjkkto75hYuIrzvgOTepsiZDRSHMYQDSiRwF6cpARoxTPtpykRMQnVqOcTmK
-	 wqproUQaspFM0e7Xg37u0jWHQ0Pu1DI3R29dEGJhNRZvLxrmV7BStAhpmly62GCKzyPoE
-	 md1tiQqixtOyvBijfFsgOTRR7IrKPoapYxpN8RX7yR87rmMOBrc2Esn4cvd8v20oR1kg9
-	 nnVtaUZy7etV9G2A9YBVZPcmMSXb9ec1f6SOOOamwY6QNZ8AvuiM2UQ/Hi3xfykrY/gIO
-	 JrEkCKJJOGClNyqHf4uYwZaciqa94PzCW69eSdXZmRLXBBvv082hYeu2SzJHuzqaESg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794910821;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=LYjA64OY7mzK30+EmXCloZ1d2MnMctrR1lEa4XYe6Og=;
+	b=q0e5q3z66YgNtwfsHygrO6pTs5YrmbFCNcHRWPk4jwBiepOXLm3h+RvSZWPFw2rBhBTp
+	 YAhs1lXFQGj2YehYk54EctPuqtfWJrsz5V7yK0hk5dmgd+FKGWYri8esNkFAlCB9I+Orr
+	 MnoiM7O+vBqKikchsp6KXnhf5rCwaXukTLNtsE5HNhiGEyZOKeMiADFdf/qEBMY+xXyPP
+	 vqpZuPypxayzsFYhHKl8jWyTDjvwsVIez5DOO4fr4OoNRciFWXIHYwmP06x00STvBdMZ+
+	 PyEdb2LaVO/DhxRztTcAQjYbM4Fabv+qJa+3kebvw1m0rwubkqmq02B977WG/oXqUuw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=bootlin.com;
-	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=TLKYfy8l;
-	arc=none smtp.remote-ip=185.171.202.116
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VY+cEPzz;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 883FA606A323
-	for <imx@lists.linux.dev>; Tue, 17 Nov 2026 09:34:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 883FA606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C851606A323
+	for <imx@lists.linux.dev>; Tue, 17 Nov 2026 10:20:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=TLKYfy8l
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 5090DC4EDB9;
-	Tue, 17 Nov 2026 09:34:13 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id EDDD75FC81;
-	Tue, 17 Nov 2026 09:34:08 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4C65B11BC0B8F;
-	Tue, 17 Nov 2026 10:34:05 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1794908048; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=AuE4JfXLFzUDx+6R1OGPPSSy0rX3ecyLORLK9C1d1XU=;
-	b=TLKYfy8l/wEs4kMrr/zo8ahpXceqadQAJ3lSoKzU+PP3cGXWGNaobo2soYFeX/USVBUsEH
-	M/kXRlVKhdLTzVjUJ+ctKfvQqB33hTp6RWZPgF3fcfA9uD8okIs445vyjFERlUKamWHA0h
-	uXJmVU9ny/3w70n44TNL8h4d4mSIXyAP/VDUMJE6+VmOLlTZKBja+UPS2OfOFFPBEY13J+
-	2P289S2EFGjPoqg6Nm7s/E8RSJQ8mfyxQLGJiixtL6ANFHK7Un+dQIDwkGHzwDGXO4yeg+
-	YeQavABR0p0PREKt7Xd0qj7ky30Yzi9SmrEocSuSLmHiLVFv8PjOmy+gbAZpYw==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Bough Chen <haibo.chen@oss.nxp.com>
-Cc: Pratyush Yadav <pratyush@kernel.org>,  Michael Walle
- <mwalle@kernel.org>,  Takahiro Kuwano <takahiro.kuwano@infineon.com>,
-  Richard Weinberger <richard@nod.at>,  Vignesh Raghavendra
- <vigneshr@ti.com>,  linux-mtd@lists.infradead.org,
-  linux-kernel@vger.kernel.org,  imx@lists.linux.dev,  michael@walle.cc,
-  Haibo Chen <haibo.chen@nxp.com>,  stable@vger.kernel.org
-Subject: Re: [PATCH v5] mtd: spi-nor: clear the default read_sr2 opcode for
- Octal DTR flashes
-In-Reply-To: <20261110081355.5d7ubrgulopr7qvm@shlinux89> (Bough Chen's message
-	of "Tue, 10 Nov 2026 16:13:55 +0800")
-References: <20261023-spi-nor-fix-v5-1-bb6e0ce21169@nxp.com>
-	<20261110081355.5d7ubrgulopr7qvm@shlinux89>
-User-Agent: mu4e 1.12.12; emacs 30.2
-Date: Tue, 17 Nov 2026 10:34:04 +0100
-Message-ID: <878q2rol83.fsf@bootlin.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VY+cEPzz
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ED491F000CD
+	for <imx@lists.linux.dev>; Tue, 17 Nov 2026 10:20:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794910821;
+	bh=LYjA64OY7mzK30+EmXCloZ1d2MnMctrR1lEa4XYe6Og=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=VY+cEPzzOeQl350iSplr3YTbz/NtmEMKg6hNuwMjP304qeTNTNVYjYn69bfPeDIrr
+	 lS7RhvYXF4dCg9CZ8zAIS1K9t+Ts2W6/CwaJXt+xpLSgkZ0KkEjPZXcp/4WYY1aOjX
+	 KgvvCBalfuTh7MDTCxX/lqDxO0eqA51GFCKXPRmVhjH860W+HS8ZWHfZiUv4Pdg1Ot
+	 NCKtr9f/uT0p7JoxmLwfDWgnAn25r4zqaX1A+yEahv/mz5de0wAQrWh37dAKryhSDf
+	 cNDA/Jg4XwFcxwYpEWDh98BL5zveMpdl6T3nP6EeJ1kkzMzwF5iA0j/fkoFcXeZHyS
+	 WTgYOuBxjFWFA==
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5c151178f0cso4265894e87.0
+        for <imx@lists.linux.dev>; Tue, 17 Nov 2026 02:20:21 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AL+hErG055VBrkPgRvwT0ysMyrDL8tOZWagTIEqtzzClrVeulQ/mulsMIsndAVQKweUWWJLQ6Vw=@lists.linux.dev
+X-Gm-Message-State: APuU4Z+HKxFTLZNja4wRlUW8PMfAO4qlZLTCja+K2xltzXTtSvpwR8f4
+	P1ou0ZymtUMBlUSuLZjkg0DkrbeuU2dawt+JZUSE7IXSiZuKBnp0V9Is1OvIEfYqvE6gHaADDy/
+	lJ7mbX9SXYuPNP8ZzZuivGtMCURJeNP4=
+X-Received: by 2002:a05:6512:3c89:b0:5c1:57d3:efd0 with SMTP id
+ 2adb3069b0e04-5c170b45aa9mr4736734e87.35.1794910819929; Tue, 17 Nov 2026
+ 02:20:19 -0800 (PST)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -77,21 +59,44 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20261103-for-upstream-lx2160a-rcw-pinmux-v1-v2-0-3aad0860b984@free.fr>
+ <20261103-for-upstream-lx2160a-rcw-pinmux-v1-v2-4-3aad0860b984@free.fr>
+ <CAD++jL=Np+_+wTkuLCiqjNY5EBqn5qq8zKTJB6F-=1G0R+7=Ww@mail.gmail.com> <au9YgytCc4TKfETI@l3017727.home>
+In-Reply-To: <au9YgytCc4TKfETI@l3017727.home>
+From: Linus Walleij <linusw@kernel.org>
+Date: Tue, 17 Nov 2026 11:20:05 +0100
+X-Gmail-Original-Message-ID: <CAD++jLnWcVDbh-vf20w4nfvOSZik619XqoEjXTBZ29sJkX-bCQ@mail.gmail.com>
+X-Gm-Features: Aa3M54rAvJrdH2ioBjmTcd53sA32PoIoppu6eV1QG1zyBMjvlTxU-cDEh9WFtc0
+Message-ID: <CAD++jLnWcVDbh-vf20w4nfvOSZik619XqoEjXTBZ29sJkX-bCQ@mail.gmail.com>
+Subject: Re: [PATCH v2 4/5] pinctrl: freescale: add the LX2160A RCW pad-mux driver
+To: Vincent Jardin <vjardin@free.fr>
+Cc: Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
+	Frank Li <Frank.Li@nxp.com>, Jacky Bai <ping.bai@nxp.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, NXP S32 Linux Team <s32@nxp.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, linux-gpio@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, 
+	imx@lists.linux.dev, Vladimir Oltean <vladimir.oltean@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
 
-On 10/11/2026 at 16:13:55 +08, Bough Chen <haibo.chen@oss.nxp.com> wrote:
+On Sat, Nov 7, 2026 at 5:58=E2=80=AFPM Vincent Jardin <vjardin@free.fr> wro=
+te:
 
-> Hello,
+> > Can this be applied separately once reviewed?
 >
-> Just a gentle ping to the MTD spi nor maintainers.
->
-> Please let me know if any changes are still needed. Otherwise, could
-> it be picked up?
+> I do not see how: this 4th patch needs fsl_guts_rcw_read(), and
+> few other fsl_guts_*() which are from the patch 3.
 
-Once agreed on the patch (I'll let SPI NOR people decide), I can carry
-it through mtd/fixes rather than spi-nor/next.
+OK
 
-Thanks,
-Miqu=C3=A8l
+> Could an ack of Christophe Leroy be enough on patch 3 to 1...4 could land=
+ into the pinctrl tree ?
+> Then, patch 5 could be managed apart.
+
+OK let's try to do it like that.
+
+Yours,
+Linus Walleij
