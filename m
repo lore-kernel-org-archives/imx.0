@@ -1,70 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794925409;
-	b=skRARaLjORYUMMNCTWdflXhgXGdRFaiEdqGjFx+gDkwB7ORkBbRZpl0Un7L9mnP3NBY8
-	 LlO9avt4Y5IGYXCqCyDVhKz6FC6pwdNDMlWiPaChyYndBLoSN37hF1B4fU9a66lHKX1UC
-	 ELZUsl1El9GIykk3zqE4DqNmQ674vV0Er5JGT/xxWRN2IHGobgtj+ahWqSyp5LzuhJ0X6
-	 d/mGv8ehDrHUyYJZqDBMa44zSz1Uf/O7M1McMjJq+rS3JoE8NN3zBa69zL05B50p1dNI5
-	 vf3OitJVaXgAGldY/TfU09glmr0XJbUWSdTTe4UFeNesYaUowcMm2w6QBU3+HyDaK3Q==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794925409;
-	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:To:Cc:
-	 In-Reply-To:References:Subject:Message-Id:Date:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:X-Mailer:
-	 X-Last-TLS-Session-Version;
-	bh=XtFQDcwceQa3Sr+OhE1k+wWRHerfk4qk4lkJyg2kfJo=;
-	b=k7ilyT6eqnbI/iJkTLOYNah6EoIOj3pJJWp0JJDBaoP7Z81s06y4lnQMXtyQ2LvorBwM
-	 ZzPwO58R/G99BpKA2nSvrbiu/4ulmYxozLovbHZ2lmeijsb6iwenIIfKkJkeYs19zrR51
-	 InRa3YGJfjIfQkwc5VpdBoXP2zoPAYbExKA4NJBxU1WXxEdHmPkTxWpJ61VBuDUF+5M0o
-	 2IYPy7sz770b85L2Swo50wspMq/cCOfYkPzUWjWnt4HMaVtjhFLFer4a6pq7VOPeKbkJ2
-	 xoyWA7DAxXXYGIp55xq1NlGkqASav9aatgbh+L5SkhMFGFJJb3hs68Z32X0CZdOl8qQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=bootlin.com;
-	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=1q1S9Pd7;
-	arc=none smtp.remote-ip=185.246.85.4
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794927208;
+	b=rI2Vuk0oD/YwmMilGh5JB1vEMqRaWY/QIW0dLpx6pqY2ZNJFsbjhfSvFxGI7SXeIa8os
+	 X9VZL9Uq+nwvbJPPcrTWk1YJKbatEzI3VKucgQ/zkS1dt52LKf8DW5F8PB6qlxu9zCfY5
+	 jRMxF43jpBb4tcnFY1h2Psd+94yoN//mj2m1FpcFUK9NL4L5moM5c3Rip8BOqANhN4V8V
+	 KsnhptiEy8JI/rCBE/BcoGns54KjP6Um2PC0jwUU4c5+Y6QZgQsH9hrlphWkgSo0mDNxX
+	 hLn9BY5kAIxVrN50FkevJ0aiCeaRxQ63I1FU58v0NLHLWDp8Rt/yMsiAgJmBXn7ucpA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794927208;
+	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=a4PoB+1aicRpvLxDE1/KgNnpi1kOiDP2CU5f5EIZbKM=;
+	b=QAHNYyykj8qlqVeK5Z7n6CD3InTZmoeuEatj1x6K36xow1/XsQqcoQf12XZcwtUSf3Pw
+	 kHH2OS937CcYjPFecZdw7UBskOxpoQEyy4/yHVgIpTc4iuT6FCcHUaWcYzALj4eGPK5ZX
+	 NaDGcV5dZfAUlMtRC028I/JvMKizuCPRylEUZTBKiiELpB89EiiH2V5mBKw1WYTFAZAuL
+	 VId9KpTYB+l4H/t4CIGwOC3qXuwRLdI5LwJUK459wudtVW4vuQbZndwdTprklP6nZyunD
+	 r5L8XzTC81m+ZbKPxiBVTgEbOiEkGO2oooFT1mHnrAZ5481C5Ky2Zk016pLMx/Ze7NA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CU9p2Po0;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E69D6606A32C;
+	Tue, 17 Nov 2026 14:53:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CU9p2Po0
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1794927207;
+	b=upivYtpT+0o4hcWruKtyF209lGJ149JXD2zC/OTKiZcQQavyeMFJjYqggYNKpVEI7QD8
+	 bNH1eQ5p3wtphFUuinjuLXjTwL1QUnDT49QVG9hF7zSSOmWLVTyoTOMOXk1V1Fw/LX9qv
+	 K8a7WGP2dSPzyy86G97hTFtkN6gGD/1AJuHLgIyXsVrawxD7fWVJnESfLtrnZvtKv5BSn
+	 bkcu/pnLSwiIkdqYy8VLJfp+NzpuTEpJU8szzGegyDcSkhoMVwoDpR1DGxKJHTVeCZWXn
+	 ed6gnJt33LdbrGmCitgEQiPWFqwbx35msReq8+hm/OZlMmS9ZwXdavudobnlJ+zqa0A==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1794927207;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=a4PoB+1aicRpvLxDE1/KgNnpi1kOiDP2CU5f5EIZbKM=;
+	b=ctlWwBiiYhq3DuuTLoI9UVYY6mBTGrXIsBqE6/d6mYpBS8iU9jMM9g+4sZ6bTZSeDRed
+	 sedo0Ovaz4BhRQPpsaruPLvIoQrpITtaeo5M9mpNrhCxTSH6QyqmNSA6jlEcaJHHKAx1Q
+	 GsyREc+xw0Sd2MaTCLDj3IcrabYpGjSnF8QO4UEdt2CLgGa8cvFIbpSfWWAHGBz2e3OKN
+	 QiVBc4apXxQdKc88w9zguTYtJfrztLiMCr/CaFx74KNoww8SYp06NOxdQi9m5H9p5z8Cc
+	 uo+0kKcaF9SrXzGpjxp/ev3gHtDh075QrhQGGMdpzvWiQBj1NBSMQJO0P3znOFaLEfw==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 969A460A3803
-	for <imx@lists.linux.dev>; Tue, 17 Nov 2026 14:23:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 969A460A3803
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=1q1S9Pd7
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 3E62A4E4157D;
-	Tue, 17 Nov 2026 14:23:27 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 120E55FD6A;
-	Tue, 17 Nov 2026 14:23:27 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1B0D011BC0039;
-	Tue, 17 Nov 2026 15:23:23 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1794925405; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=XtFQDcwceQa3Sr+OhE1k+wWRHerfk4qk4lkJyg2kfJo=;
-	b=1q1S9Pd77qyl4ks/rAZs4tWBzzKJxwbhs+GjdlKzNE8v8VfwmKF1gAM4tm+wT0HKqXcAI8
-	V85azkHVlxyod7PF09JjNMsoOJcva5H4RmM0O9j269IgEIWVqqsjN9q2t52UD2l+Pt+Rba
-	fGgerv2m2bVMgqfC3zwj7QEe38Clb9aL0GNUHpXkOwI/CzSrkE28jExKHZM51eC/e9M3I5
-	XVTsoW4/jxNOIsB0teTHQ++StlGA6+fp+3tSLe+8N9qIiCkIiblYqh6LUj/14ctV8D/8lZ
-	olnCiWeeX8ixtcvqSdcQJW7OSR/fmDNkexg9nNNHhdgJGQMCsn2h7SfendL1Aw==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Richard Weinberger <richard@nod.at>, 
- Vignesh Raghavendra <vigneshr@ti.com>, Frank Li <Frank.Li@nxp.com>, 
- Alok Tiwari <alok.a.tiwari@oracle.com>, Runyu Xiao <runyu.xiao@seu.edu.cn>, 
- Chen Ni <nichen@iscas.ac.cn>, Kees Cook <kees+treewide@kernel.org>, 
- Hemanth Selam <hemanth.selam@gmail.com>, linux-mtd@lists.infradead.org, 
- linux-kernel@vger.kernel.org, Frank.Li@oss.nxp.com
-Cc: imx@lists.linux.dev
-In-Reply-To: <20261111202502.3860647-1-Frank.Li@oss.nxp.com>
-References: <20261111202502.3860647-1-Frank.Li@oss.nxp.com>
-Subject: Re: [PATCH 1/1] mtd: nand: raw: use dmaengine accessor API
- functions
-Message-Id: <179492540302.2259780.2818998667835752553.b4-ty@bootlin.com>
-Date: Tue, 17 Nov 2026 15:23:23 +0100
+	by smtp.kernel.org (Postfix) with ESMTPS id 271611F000C9;
+	Tue, 17 Nov 2026 14:53:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794927207;
+	bh=a4PoB+1aicRpvLxDE1/KgNnpi1kOiDP2CU5f5EIZbKM=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
+	b=CU9p2Po0+oGDABryw3jRmJpihX9FvjjZl3Y5Ci/+pv4v3je6o1E1jB+eegn8s6bxy
+	 jnKXh4koh9Vd7DS19G+bgBzUare3Utc6MWkm6ZTiZfgEc9Poi8Lw8eGEWX72kr/P3v
+	 6mHfBT5BYmfDJxx+aXTLuLONtm1U4tyQJA0Yu/frOIUNzIT1bgVzhNf14vaNZFEv2N
+	 MZLnhuLzc0I3X2wgvuSlzLVpxCOO9XPiEeoTxGQ1rGKmYXbtdEZxCAil1L5IKnFX6V
+	 ipEzaqLwMmPCxCE2NEiXyJgHRTRTx615KsZeaTT8RdU1oY2WLxOUrJCW7G2lbHFaFo
+	 wE7u/+yhdjXRg==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id AAC4E4A9C8;
+	Tue, 17 Nov 2026 14:53:26 +0000 (UTC)
+From: Vincent Jardin via B4 Relay <devnull+vjardin.free.fr@kernel.org>
+Date: Tue, 17 Nov 2026 15:53:12 +0100
+Subject: [PATCH v7 2/6] dt-bindings: soc: fsl: layerscape-dcfg: add the
+ LX2160A pad-mux child
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -75,28 +84,91 @@ List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.14.3
-X-Last-TLS-Session-Version: TLSv1.3
+Message-Id: <20261117-for-upstream-lx2160a-rcw-pinmux-v1-v7-2-5d7201970629@free.fr>
+References: <20261117-for-upstream-lx2160a-rcw-pinmux-v1-v7-0-5d7201970629@free.fr>
+In-Reply-To: <20261117-for-upstream-lx2160a-rcw-pinmux-v1-v7-0-5d7201970629@free.fr>
+To: Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
+ Frank Li <Frank.Li@nxp.com>, Jacky Bai <ping.bai@nxp.com>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ NXP S32 Linux Team <s32@nxp.com>, Linus Walleij <linusw@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>
+Cc: linux-gpio@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+ linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
+ Vladimir Oltean <vladimir.oltean@nxp.com>, 
+ Ioana Ciornei <ioana.ciornei@nxp.com>, Vincent Jardin <vjardin@free.fr>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794927205; l=1719;
+ i=vjardin@free.fr; s=20260525; h=from:subject:message-id;
+ bh=CVizR3NF8jRDqX6EvvjxDP8c9Q4ToahcqGl3Dh7PyAk=;
+ b=3TPhrYj6d+1xEf11drbCP6wqDTqz8ph4uhtqO3Ieji2ssW1alXM+tDr6BIAJnQq3/T5pLc0sW
+ bSelyra8Y0eASYPzOB+S0UcAtUvi+qH3H7H9TBHnyeIqds7wgQ0ncWP
+X-Developer-Key: i=vjardin@free.fr; a=ed25519;
+ pk=hppgLeFpGpKOi7LNwGEZ4jOYofJCoGd4Jf1ltAabiLw=
+X-Endpoint-Received: by B4 Relay for vjardin@free.fr/20260525 with
+ auth_id=871
+X-Original-From: Vincent Jardin <vjardin@free.fr>
+Reply-To: vjardin@free.fr
+Content-Transfer-Encoding: 7bit
 
-On Wed, 11 Nov 2026 15:24:45 -0500, Frank.Li@oss.nxp.com wrote:
-> Use dmaengine_get_dma_device() instead of directly accessing chan->device
-> and use dmaengine_prep_dma_memcpy() instead of calling the function pointer
-> directly. This follows the dmaengine API convention of using accessor
-> helpers to decouple drivers from internal dmaengine structures.
-> 
-> Affects cadence-nand-controller and fsmc_nand drivers.
-> 
-> [...]
+From: Vincent Jardin <vjardin@free.fr>
 
-Applied to nand/next, thanks!
+On the LX2160A the DCFG node holds the pad mux, overridden through its
+DCSR view. Allow fsl,lx2160a-dcfg with simple-mfd, so that the child is
+populated, and the pinctrl child, on the LX2160A only.
 
-[1/1] mtd: nand: raw: use dmaengine accessor API functions
-      (no commit info)
+Reviewed-by: Rob Herring <robh@kernel.org>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Vincent Jardin <vjardin@free.fr>
+---
+ .../bindings/soc/fsl/fsl,layerscape-dcfg.yaml          | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-Patche(s) should be available on mtd/linux.git and will be
-part of the next PR (provided that no robot complains by then).
+diff --git a/Documentation/devicetree/bindings/soc/fsl/fsl,layerscape-dcfg.yaml b/Documentation/devicetree/bindings/soc/fsl/fsl,layerscape-dcfg.yaml
+index fc14fd0bf84b1..bb9dbcfec1881 100644
+--- a/Documentation/devicetree/bindings/soc/fsl/fsl,layerscape-dcfg.yaml
++++ b/Documentation/devicetree/bindings/soc/fsl/fsl,layerscape-dcfg.yaml
+@@ -32,6 +32,7 @@ properties:
+       - items:
+           - enum:
+               - fsl,ls1028a-dcfg
++              - fsl,lx2160a-dcfg
+           - const: syscon
+           - const: simple-mfd
+ 
+@@ -66,10 +67,27 @@ patternProperties:
+   "^clock-controller@[0-9a-f]+$":
+     $ref: /schemas/clock/fsl,flexspi-clock.yaml#
+ 
++  "^pinctrl@[0-9a-f]+$":
++    $ref: /schemas/pinctrl/fsl,lx2160a-rcw-pinmux.yaml#
++    description:
++      The pad muxes of the RCW on the LX2160A, at their RCWSR12 to RCWSR14
++      and RCWSR27 windows, overridden through the DCSR view of this block.
++
+ required:
+   - compatible
+   - reg
+ 
++allOf:
++  - if:
++      not:
++        properties:
++          compatible:
++            contains:
++              const: fsl,lx2160a-dcfg
++    then:
++      patternProperties:
++        "^pinctrl@[0-9a-f]+$": false
++
+ additionalProperties: false
+ 
+ examples:
 
-Kind regards,
-Miquèl
+-- 
+2.43.0
+
 
