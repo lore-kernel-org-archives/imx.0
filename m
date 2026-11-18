@@ -1,68 +1,63 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.194.8.81
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795026700;
-	b=a+UQad2zRBOwWVV9kanaR5UPE9jlpsNrl9S8uGBmR0CFpZCrNil4kpvYna6Ipc54hhLf
-	 g1H+P6d0ygIm2mUSBBsLGGth9SeHn5FEsYvtIB0A0j5yhowAIYV2d9U8OVeMg4cZXtnJC
-	 IHngpzvoEeAuaJ4ZfmA0ybZsP4Wp3eDhGSiv4nEOAam5e4ZFU7XRQHTjk9TEPYvDJY961
-	 RJBq/1uq5L72macV/gt7sjkOJERqgdDzksjolulzG9EetRfTrqkA1LxpG+tbjgFcp5BAo
-	 6FR+c4o3zujZyx62DXUNopCijWOKTvfqj8rV+87GQRQ1kdCVYfky/WpXe56s7FPnOWg==
+	t=1795027065;
+	b=F3qfEENzLnBEflvuBtRof8s+Dwb4nak5PDO6b2K/8GD1eQQ3PGF0TDZDa+bdvgzM/eFP
+	 RynKaL2FX/Bje+hKJFQPF/PY7/Pv0MYfqqwV8nGqSaT+lImgnI/b1JNDPDPC8Yx25yoaX
+	 SGrPlF7DZ4AauFamgRcpkbOR9YMvSqeOUp01I3rsEYujmqJUJFICocRblqTX6pBspiDLH
+	 R4Z1I0ya1zS5MXu5o3xM7RcOIqSiOTd14OQPpzq7pzy6o4DVKdIBOUW/DurhTkMaV/9Hi
+	 02gxExTwOoSgrG65tYjBKr4XR1oZOoHq6abcdKSiJZXDvIRak0Cf6sLwLnVY/tEUlZw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795026700;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795027065;
 	h=DMARC-Filter:Received:DKIM-Signature:Date:From:To:Cc:Subject:
 	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
 	 In-Reply-To;
-	bh=n1K8seOsKkPOPbWKSfQ5OwT529T+UjkzED1UxjM8Iaw=;
-	b=iaWpgDOxHAeI6eHqX4gEN2bARHO1VAQE5yB8+XonK/e98KPDXxPnGcAO52X5DaPgNnMb
-	 qv/v8Ghg482uOoJ5dsPxB8PBiUnKrpdPWfsxEfGFghQOQPK0a6q5P41cNCO7qs+8brBTh
-	 5eq+5xltWdmfk2hFhlOakb8rhP+g46YfKVuDK+AYMP/Axy7DXNlqEiGlpIsF9uHHTfjoD
-	 II74rF6PxSEZYLSm/gD8CJuyLiXvQfgO/pc3OaApPToqzL5EWkomKHACD+g4hAbn0i7uV
-	 SPkr+eeCYYcB91vtBB8p1+te1sGzPtkYHcOQcOY0rWjV3pI4UHc6nHZ0x3xHJkFP5qw==
+	bh=HYS4Hhk1XtX2QGmPf086xmrpzOVBpca45TP8GMHf5yk=;
+	b=EdH4OMfogmTuYLV50qAw9MvwByptWwtCC+cZYU0SuR7SyUILiMhojx4YDivLzYo1BzJL
+	 2NNCjYaCiraGruWdsYce8J+2DHRkliQy3IWZDzN1rC8kEwkV/jeJNgiyjc/R8zJsYr3MK
+	 n48ddOa5hNjAuRnqywP/IrgTjMjJHOAXDbr74GOGsl7krj9vpB4/XE3xr5lfBz360XaJK
+	 J9FdxlGb/7kXimuNdZXXe8kSnVaO+gyFrBIQPHKnSwwTPfWwdmsU52vUlY+VzNEifnDIA
+	 4/LULqBIGvyVLbOJewJj/DgJxuUmTlSYGlGlWJMO/iLrm+0egSU0jNryEn0TxsUxGww==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=dolcini.it;
 	spf=pass smtp.mailfrom=dolcini.it;
-	dkim=pass header.d=dolcini.it header.i=@dolcini.it header.a=rsa-sha256 header.s=default header.b=KgyGWn4Q;
+	dkim=pass header.d=dolcini.it header.i=@dolcini.it header.a=rsa-sha256 header.s=default header.b="M/wWPWC3";
 	arc=none smtp.remote-ip=217.194.8.81
 Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83DB9606A330
-	for <imx@lists.linux.dev>; Wed, 18 Nov 2026 18:31:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 83DB9606A330
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F38C606A32F;
+	Wed, 18 Nov 2026 18:37:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0F38C606A32F
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=dolcini.it header.i=@dolcini.it header.a=rsa-sha256 header.s=default header.b=KgyGWn4Q
+	dkim=pass (2048-bit key, unprotected) header.d=dolcini.it header.i=@dolcini.it header.a=rsa-sha256 header.s=default header.b=M/wWPWC3
 Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 2CDB422219;
-	Wed, 18 Nov 2026 19:31:29 +0100 (CET)
+	by mail11.truemail.it (Postfix) with ESMTPA id 5EA1D22219;
+	Wed, 18 Nov 2026 19:37:42 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1795026689;
-	bh=n1K8seOsKkPOPbWKSfQ5OwT529T+UjkzED1UxjM8Iaw=; h=From:To:Subject;
-	b=KgyGWn4QC1zzmfmuQGu9yfSa246jCGcvpfJIZaVGLWN4ZRWX46+MFucMbVfmItST5
-	 yQu42gMtBGpN3wnQXjB7yP3Ld1Z+l2ir41zHS6zEoJBZFaXUqzgssJ7/BSW+TG5XVz
-	 /r8fitAWr0f05Y1fZqkVXWddvcfXJefs9MTnjtU6Ouamwnmz2IpVbenDY2bmhA7v3f
-	 2LJTSYlqoVAxMRAvu85ow7j6dX8jPsg2vn/YKZMzUq8XMcCNNlSa2aXfEqlENeKYpI
-	 JIlJElvlXmcfmL8gniLEUBYccqK8vkFF5M8EiDxuo7Fx1B2bcjdfYe9FgC05B+WVfc
-	 Dkykgg66NXraA==
-Date: Wed, 18 Nov 2026 19:31:25 +0100
+	s=default; t=1795027062;
+	bh=HYS4Hhk1XtX2QGmPf086xmrpzOVBpca45TP8GMHf5yk=; h=From:To:Subject;
+	b=M/wWPWC3Wfdp9xIUcX2cFdGqPkTBcZ90qqpPnEeiCicwE8eJJuXW+LW1dpPY0fbDE
+	 Rkw0L0NfQVNwG1E9imGv4ZR9zkQPuKpDh3yMDZHalSjBgJMyWyaabalCTOiCFcJrKw
+	 XlqNnyOI2ssPlxtbYdrwUCKcQpz563uLFTbWqrqmEmS9WcZnlPViC5994Be3NCMWTr
+	 Tg/PlUwHYGX0kDkoX7Hemi/KX7p2K1ly/rwccXnqPCf7j3jF3MS5oZIvQ7AKzfknzW
+	 2bhd94dWN4uV2j5SyACBIRdkSsDRIgUU51INBqUpefRtvvvYvzod+piDyb27MMzPPE
+	 Nn57f9kLaIggw==
+Date: Wed, 18 Nov 2026 19:37:41 +0100
 From: Francesco Dolcini <francesco@dolcini.it>
-To: Vitor Soares <ivitro@gmail.com>
-Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Vitor Soares <vitor.soares@toradex.com>, linux-bsp@toradex.com,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	ath12k@lists.infradead.org
-Subject: Re: [PATCH] arm64: dts: freescale: imx95-aquila: Add ath12k
- calibration variant
-Message-ID: <20261118183125.GA530200@francesco-nb>
-References: <20261118123837.651915-2-ivitro@gmail.com>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+	Frank.Li@kernel.org
+Cc: sashiko-reviews@lists.linux.dev, imx@lists.linux.dev,
+	devicetree@vger.kernel.org, robh@kernel.org, conor+dt@kernel.org
+Subject: Re: [PATCH 2/2] arm64: dts: freescale: imx8q: Remove undocumented,
+ unapproved aliases
+Message-ID: <20261118183741.GB530200@francesco-nb>
+References: <20261117133842.245262-3-krzysztof.kozlowski@oss.qualcomm.com>
+ <20261117133842.245262-4-krzysztof.kozlowski@oss.qualcomm.com>
+ <sashiko-outbox-218903@kernel.org>
+ <c3082671-9d0d-4a29-9e05-17ae9d4ca997@oss.qualcomm.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -74,21 +69,29 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261118123837.651915-2-ivitro@gmail.com>
+In-Reply-To: <c3082671-9d0d-4a29-9e05-17ae9d4ca997@oss.qualcomm.com>
 
-On Wed, Nov 18, 2026 at 12:38:37PM +0000, Vitor Soares wrote:
-> From: Vitor Soares <vitor.soares@toradex.com>
-> 
-> The Aquila iMX95 has a Silex SX-PCEBE Wi-Fi module (WCN7850). The
-> module reports the same PCI and QMI IDs as other WCN7850 designs, and
-> its board data also comes in variants for different regulatory domains
-> (US/EU/JP, UK/CA low and high). The IDs alone therefore cannot identify
-> the right board data.
-> 
-> Describe the Wi-Fi device behind the PCIe1 root port and set
-> qcom,calibration-variant to the US/EU/JP board data.
-> 
-> Signed-off-by: Vitor Soares <vitor.soares@toradex.com>
+Hello Krzysztof, Frank
 
-Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+On Wed, Nov 18, 2026 at 01:10:30PM +0100, Krzysztof Kozlowski wrote:
+> On 17/11/2026 14:47, sashiko-bot@kernel.org wrote:
+> > Thank you for your contribution! Sashiko AI review found 1 potential
+> > issue to consider:
+> > - [High] arm64: dts: imx8q: removing vpu-core aliases breaks
+> >   vpu_core_probe()
+> 
+> That's intentional. Users should not add undocumented ABI and rely on that.
+
+
+If I understand correctly this is breaking working software (correct me
+if I am wrong!)
+ 
+I see the need of a clean-up, but I do not think that just introducing a
+regression for the users is the right way to go.
+
+We should fix the code that rely on this, and after that remove the
+aliases.
+
+Francesco
+
 
