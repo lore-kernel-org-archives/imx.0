@@ -1,54 +1,54 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=116.203.77.234
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1794998293;
-	b=BM5d/ama7mPELV6ARx6nanLpurw7U2HO4C8wb0Ul/3Qx4ZfRVRrrGfLKa/fxXNKXxZ1x
-	 f1MJ9k8GwwLIiOK3tN6E9kMAwq0fcT6Mst5katttw7aa43UZscaeZ13ro0fNG8uLNy40m
-	 klz6/fro6y3QS8AhFadN8wbDxfkSa/sPSC2buNlx48WWt+83mdVrFeP3qBGKM7UyjDn85
-	 j7t/0qOuxEvnD76CMvN0Cz1yJxfBYAaxL34k/wLgQBB3Zt4xKhbj2q4J4YvdkyV7Z6b1c
-	 6b9ZHsQj1wi4XnO0DBwLjFFYJgAook79H0tzklFPdvD6k0WWreYLeuQmWAi3LO+oHjg==
+	b=t/ApJ2fTqlVdKOMoYj6O3utF6XtwLo7qyzd6TVHdD1XTxm/VMGhM0fyatoSoFNKWgbFF
+	 U5vmsG1NNddHL9QWv9B22INL9DeY9vAV6paUCYdk+DV2HYmr1kw7Rmn8Rc8dr/NJ2+9V5
+	 ZJe/Fo2mr0eZcht4gmyTUnU4cFFtZxtKE1aApCLvHdngwSkC1XRC1iSCAyitru0F2jgk4
+	 11KWgN5Uk/L2TpyDXfe7LIpKMAnUdRBa0pUz2Ft8f+ZK4Jbctm9b7Go3N0QyvAI7SBqQQ
+	 qD26c2bQAf0kIW4M1aCQFXbNiUfxfjLRguo619kFoi72at83gL8o67ZDDrkcLQGkwFw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1794998293;
 	h=DMARC-Filter:From:DKIM-Signature:Date:Subject:MIME-Version:
 	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
 	 In-Reply-To:To:Cc:X-Developer-Signature:X-Developer-Key;
-	bh=er5BIVyflTBw/dl8O4AeKo3x5VZC2mUzFVF3Z90Ru84=;
-	b=iHWO5cOPauKkVjvK/YhsBzkB0Gz1wfPAz0BAD7Kl1oZmTpM9CecbCFXEItbAgm+pxxII
-	 iidZC1FHvP6uaWKeuRFmhK6epIGlk2C5Vkksy4JszzvAeXxsIpLYSKu9JFeY2vAf4cmsA
-	 wGSBEInouhlVGMDc1WV61YfmJ/GVzA3A8pbVGqgz386/SH9dmVMpGxIp9c+319sIyn8IX
-	 +cJKnEeh6vB7KH+4F979Hv3SCzIb8fWYF+QN/+psHuj4+yl/eVJFFJrn1QcqHUVBkn7ok
-	 aIt//n2FdzRP/8D7wQAffvyMNehHIBRQCgVQU5+vka9qJuaGbwYl3OgbtC557QalfXw==
+	bh=C9nJMFyqCQqC0aSYr+rmBQxGR2sahljlQmIWT81NwDY=;
+	b=2I49E/cby6vnCDSkH3SpV1NisaUv9FynrKGk94P5md8BDjiagS2wpecROMc4uZtgk/nf
+	 Uo+oicMvnp5lw6bHCYhTaEILzhLACh06D1ou8l7z5thFdejJkihBWfIoD/jzoaBCPzrdU
+	 RTWLx0Zb+Ah4TOaJqQODXw6cTHPCIcbc/AbPndHK4K83uqD2GaZf/sYOBMDzPHOmkcIyH
+	 BB1rxJsJ7naEOYbJYIb7b/Dr761Eg6siLx7P4NPBJrH+DdmBF16OFjzcPMI7q7Kw2P5YD
+	 XPl63P9dsh4iolg8rZEcC1kc2EOekF8bjtcVC5BFy//tzPPpu/RHZVeDzB8D0I+yRfg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=fris.de;
 	spf=pass smtp.mailfrom=fris.de;
-	dkim=pass header.d=fris.de header.i=@fris.de header.a=rsa-sha256 header.s=mail header.b=qJGpuRDi;
+	dkim=pass header.d=fris.de header.i=@fris.de header.a=rsa-sha256 header.s=mail header.b=E6WTelkh;
 	arc=none smtp.remote-ip=116.203.77.234
 Received: from mail.fris.de (mail.fris.de [116.203.77.234])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 517CD606A331
-	for <imx@lists.linux.dev>; Wed, 18 Nov 2026 10:38:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 517CD606A331
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57E47606A334
+	for <imx@lists.linux.dev>; Wed, 18 Nov 2026 10:38:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 57E47606A334
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fris.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.a=rsa-sha256 header.s=mail header.b=qJGpuRDi
+	dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.a=rsa-sha256 header.s=mail header.b=E6WTelkh
 From: Frieder Schrempf <frieder@fris.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fris.de; s=mail;
-	t=1794998283;
+	t=1794998284;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=er5BIVyflTBw/dl8O4AeKo3x5VZC2mUzFVF3Z90Ru84=;
-	b=qJGpuRDiX9gBeQC43GmnsepqhWIRwTMLXdljAbtb/sTB/OmHaCDIybyEUuOlbSUDYL+QIt
-	cj8DVBRYlenutZ3D+Gca/5eonUuQO0OqhKr5mJMDTB6pK/BYGnLVzkPG6kPTSKeq0Iv8HV
-	7zzgbuGcXb36S7ulq1qoFJbf6ygjqbg0rIoLr05ahxeuMdAjqAKFHNodsD5JPdgKyn+3HT
-	ndnqiEdOMVtcyecFeCDSFumCLWiNIH2iifPP8yOIDcnca2SzA60NQDo5Z1fWws4zphhhkm
-	tY2qEtpMMXMPSzJ5B9ca8RkYpdLaRRoN1lIcMv4hdJ62GSD5Md3SbsT/ksp2IQ==
-Date: Wed, 18 Nov 2026 11:37:39 +0100
-Subject: [PATCH net-next 1/4] dt-bindings: net: nxp,netc-blk-ctrl: add
- i.MX952 compatible
+	bh=C9nJMFyqCQqC0aSYr+rmBQxGR2sahljlQmIWT81NwDY=;
+	b=E6WTelkhvyMUBRNmU4AuxLu4ubSP5VKaFk063z2kRGqh19FIBabL2W3jrGFum/ZaLOjlip
+	alqucVS84A5PLtKUw70gHw1C3Bb92pYJJznxkSnwjql8DBb8PDpoTmI+MEaydY5ZRSSv2e
+	NnOzREY+OeaiQbrIufrwiCvGj7TSyJUM03AbID3Nj5WNDi1k+rnqWolAgwwuIC1+/0UcdW
+	o/XLZWW3GKAngrgESObVZ+uM5t9iar3aB5qyxtQOsiCOwQSuyCRCksm5ekEBDl5OU5Llg3
+	vDcATDcYJ+oHSs472MpiczzX9Qt1eFkxu+stNxbTYBIQGfJ+G2xeVQNgwtGMeg==
+Date: Wed, 18 Nov 2026 11:37:42 +0100
+Subject: [PATCH net-next 4/4] ptp: netc: use 133 MHz system clock on
+ i.MX952
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -60,7 +60,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261118-imx952-enetc-v1-1-25721440602e@kontron.de>
+Message-Id: <20261118-imx952-enetc-v1-4-25721440602e@kontron.de>
 References: <20261118-imx952-enetc-v1-0-25721440602e@kontron.de>
 In-Reply-To: <20261118-imx952-enetc-v1-0-25721440602e@kontron.de>
 To: Claudiu Manoil <claudiu.manoil@nxp.com>, 
@@ -74,39 +74,65 @@ To: Claudiu Manoil <claudiu.manoil@nxp.com>,
 Cc: imx@lists.linux.dev, netdev@vger.kernel.org, devicetree@vger.kernel.org, 
  linux-kernel@vger.kernel.org, 
  Frieder Schrempf <frieder.schrempf@kontron.de>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=895;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1739;
  i=frieder.schrempf@kontron.de; h=from:subject:message-id;
- bh=vo/Z9PpckDQXfhXy+AKwhEFDXKaJuyt510ocLsCv/0I=;
- b=owGbwMvMwCWWWSatKlDTJMZ4Wi2JIetvA4fK8Y6fnYxFqrrrrj8RvrNHYd4WCackjqcJd59PE
- mIJq9DsKGVhEONikBVTZJHit3htaxbrI3+sOgpmDisTyBAGLk4BmMjkzYwM7RMUxWfOnrLonOHV
- 9/pWjoZGbqfsv3SuC9ju8Gvfom9bUhj+mbDe9Sn9JNLa2v65LLt2PrOI/8KFexc67OcRtTvF/dO
- LAwA=
+ bh=LCQAQ1BB6kTXKdOUGFaeHZK8oskn8+AXnQmmv+OKHQs=;
+ b=owGbwMvMwCWWWSatKlDTJMZ4Wi2JIetvA4fh7q/9LFyfVYqeHNEwLD4u0dxWvSU38HVyT/irz
+ TlsYikdpSwMYlwMsmKKLFL8Fq9tzWJ95I9VR8HMYWUCGcLAxSkAE1G1YGTYfUxkTxjzTL81cwP2
+ pubEFF3Pm7F5zgfuVe0O+9ja0naWMjK8Vu889Fvi55It0xMM2XRsHbgXCppwN2hwtW/o8mNcd44
+ DAA==
 X-Developer-Key: i=frieder.schrempf@kontron.de; a=openpgp;
  fpr=1A0F38EB3D365D4C1FC67B5A69761B25107C8216
 
-From: Frieder Schrempf <frieder.schrempf@kontron.de>
+From: Clark Wang <xiaoning.wang@nxp.com>
 
-The NETC on i.MX952 has the same IERB, PRB and NETCMIX register blocks
-as on i.MX95, but a different set of ENETC instances and a different
-NETCMIX link configuration. Add a dedicated compatible string for it.
+On i.MX952 (NETC revision 4.6) the NETC system clock runs at 133 MHz
+instead of 333 MHz. If no reference clock is given in the device tree,
+the timer uses the system clock, so its default frequency must match,
+otherwise the PTP clock runs at the wrong rate.
 
+The revision is read before the device tree is parsed, so it can be
+used to select the default frequency.
+
+Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
+[fs: from NXP 8af062154e48]
 Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
 ---
- Documentation/devicetree/bindings/net/nxp,netc-blk-ctrl.yaml | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/ptp/ptp_netc.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/net/nxp,netc-blk-ctrl.yaml b/Documentation/devicetree/bindings/net/nxp,netc-blk-ctrl.yaml
-index deea4fd73d767..c443fe0b4693f 100644
---- a/Documentation/devicetree/bindings/net/nxp,netc-blk-ctrl.yaml
-+++ b/Documentation/devicetree/bindings/net/nxp,netc-blk-ctrl.yaml
-@@ -23,6 +23,7 @@ properties:
-     enum:
-       - nxp,imx94-netc-blk-ctrl
-       - nxp,imx95-netc-blk-ctrl
-+      - nxp,imx952-netc-blk-ctrl
+diff --git a/drivers/ptp/ptp_netc.c b/drivers/ptp/ptp_netc.c
+index 1a327a7561e39..7b9c0a4cbb4c3 100644
+--- a/drivers/ptp/ptp_netc.c
++++ b/drivers/ptp/ptp_netc.c
+@@ -72,6 +72,7 @@
+ #define NETC_GLOBAL_IPBRR0		0xbf8
+ #define  IPBRR0_IP_REV			GENMASK(15, 0)
+ #define NETC_REV_4_1			0x0401
++#define NETC_REV_4_6			0x0406
  
-   reg:
-     maxItems: 3
+ #define NETC_TMR_FIPER_NUM		3
+ #define NETC_TMR_INVALID_CHANNEL	NETC_TMR_FIPER_NUM
+@@ -88,6 +89,7 @@
+ #define NETC_TMR_EXT_OSC		2 /* tmr_1588_clk, from IO pins */
+ 
+ #define NETC_TMR_SYSCLK_333M		333333333U
++#define NETC_TMR_SYSCLK_133M		133333333U
+ 
+ enum netc_pp_type {
+ 	NETC_PP_PPS = 1,
+@@ -858,7 +860,10 @@ static int netc_timer_get_reference_clk_source(struct netc_timer *priv)
+ 
+ 	/* Select NETC system clock as the reference clock by default */
+ 	priv->clk_select = NETC_TMR_SYSTEM_CLK;
+-	priv->clk_freq = NETC_TMR_SYSCLK_333M;
++	if (priv->revision == NETC_REV_4_6)
++		priv->clk_freq = NETC_TMR_SYSCLK_133M;
++	else
++		priv->clk_freq = NETC_TMR_SYSCLK_333M;
+ 
+ 	/* Update the clock source of the reference clock if the clock
+ 	 * is specified in DT node.
 
 -- 
 2.56.0
