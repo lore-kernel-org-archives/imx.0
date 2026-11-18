@@ -1,121 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795092546;
-	b=4Nhaplm7nokikKzWRo18x3xbIOTc/vuWr6rDZWbiwCsq1J2Gze3NmsrLtv2DGJuIfqIf
-	 zhFB6SxSOfYUav9wS/0tmrSj+wlFACyZjCCoD4bGBh/xc/QowglqnI49g2vntAsXEZSzv
-	 LPZDKHmwHiO1ZAEH9P1TUIe+NEhGE5zCDSPsY+ybi5hRCNMcRLHSsGjUL0XSJ3lD+1Eoe
-	 sP2N75LMLQ+7qctoEQNgSyaiFxna/qPzvvb4vV7/JO/A25Uc50b/tv4PUIwzjeqAXr5/y
-	 nsewES5WOqlWo8E/3e22+B0xRBvLGmoN3XZDeENctfF9K7/qBxE+02//sMb0R99YjaA==
+	t=1795093152;
+	b=gS/i8YKkxyzomFirO7I0W3XXjTma/xHosviw/fKCw4WFDdhStnOZILgS0nDTWsY5xssO
+	 krTtCLX35XVSiy0S+sFK9UAo54kAySscxY6dFW9+BDnXHcLjrNHreVzLmSAEg1kn1eIDb
+	 5PYx3k45kXE/ZW1FGDUxDcVD0MZdbjfTeueu6KdmWBeL+z5Ye7Dfgj7n0Z5ojj+cPreRg
+	 7Wm+bQrKXOsfBxuZKr66q9B9lUJkDR6tyZCLM/t4eTWkcno3wmmPaV6NXyEWtWPPr/s2O
+	 nqFrQ0oMa57ARIIqLSWm9GwwJo048enmUC0gjIAGa4jYq3y6dmdQV5lT+etFIpD50xw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795092546;
-	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:To:Cc:
-	 Subject:In-Reply-To:References:User-Agent:Date:Message-ID:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 X-Last-TLS-Session-Version;
-	bh=FrqcePVIbKpJOlr0CwwEXmHuYmHa3yUMeo1BTUrWcl0=;
-	b=jwwi7l2Xw9+Lj2sLe/C9kDdELXq+pX4XLIftq0OTIb/IflvLa+vBQjSSv1kjya5iydvD
-	 h+PlCSTo/sHjtL12DVxBOwbOJZZKzwKBvoTTM9EbLi31kDaBE55e8/7nlLdqyHTNCdAtx
-	 MCD9wULB738z/P9sKNQ1axj5G/OpL5AllVuhgqERq5LIO6HOQuutxgVnULSBOdLL9qZ8V
-	 tDJ5avNprO7LGy82XFjuDKaSm3YgAaZa4+nPS7GBdsm+1O0bkR5Rhns/SS7bg19uO823o
-	 ED6OhTa9WkxisVKHi+0CP5lDR/m3Cno+8evOsKTbqe8KwqXf4wIJ8jMHQWGPKy1h5Fw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795093152;
+	h=Received:DKIM-Signature:From:To:Cc:In-Reply-To:References:Subject:
+	 Message-Id:Date:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-Mailer;
+	bh=u1SN1hC9VIgGoRZ9A5lVags89D283dZdE9oZilD1ZWs=;
+	b=qFZ2Dzr9QyuMpsDSGv4bZH64iZSNsa3UEmfISWSCmjCGMpcq2fn3aWdqvy/MdnzL+Jhp
+	 WnVJWcz4M2X1aSZNAYeFjlZrpoX0C5ai+KRvCp+XlxwrUnBh77eLJfwoXR9jBqZ/FrK6v
+	 7/5hzxmUyF2BoOZ0nJhBgWA+jY1591qqA9EH+bIcGNf87Fz343mkVtW8U+FLaaS8QnB64
+	 bznutdi5rtiZ0dqVXAak6tUeB+ab1MkXufS34di+D/GPWlEFQYXMrnjns+903KiJNZXAV
+	 N3omsl7Jg9yo/nkeQPpj0S4yHwlYCyFekELczLoeDMbqDXQxFPXygIVkCqWiTMO8/XA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=bootlin.com;
-	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=mteItAuJ;
-	arc=none smtp.remote-ip=185.171.202.116
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JbgCWTEh;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33DB8606A320
-	for <imx@lists.linux.dev>; Thu, 19 Nov 2026 12:49:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 33DB8606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AC98606A320;
+	Thu, 19 Nov 2026 12:59:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=mteItAuJ
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id C2044C4CBF1;
-	Thu, 19 Nov 2026 12:49:09 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 5877D60271;
-	Thu, 19 Nov 2026 12:49:04 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id CC49311BC0673;
-	Thu, 19 Nov 2026 13:48:02 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1795092535; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=FrqcePVIbKpJOlr0CwwEXmHuYmHa3yUMeo1BTUrWcl0=;
-	b=mteItAuJBxCXIm6o7Tz4CiCkaMG9jXhvMU2sSQLnSpwBcZpG8f2MBEvcJ1Bx2lQIvEFPHc
-	cDtQgbCpT1F3jW229XoKlV3ReW5mnP/ABdent9sCr/5183826BqbllILfT90L05VaHMgtP
-	dUJUiAyMuYUR1NhbdpZFwHZONdW4QU9si+WZSm1qV6DhZI6XlaK2xQVRCAOzwBKLP1wBFh
-	3qw4wVp4q47Ts1Jsp/lIRy+UYxCPzeFEV89KDKzTVDondoVzVYjpyUCZKV/Oz4GxrsbGus
-	YTBzHCONs5aDQShHm1+BnPAiQ9L4baKhNKmb68Cs/uKC0//BXan270Bf1Uz6BQ==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: James Hilliard <james.hilliard1@gmail.com>
-Cc: Richard Weinberger <richard@nod.at>,  Vignesh Raghavendra
- <vigneshr@ti.com>,  linux-mtd@lists.infradead.org,
-  linux-kernel@vger.kernel.org,  Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>,  Srinivas Kandagatla <srini@kernel.org>,
-  Tze Yee Ng <tze.yee.ng@altera.com>,  Richard Cochran
- <richardcochran@gmail.com>,  Jonathan Lemon <jonathan.lemon@gmail.com>,
-  Vadim Fedorenko <vadim.fedorenko@linux.dev>,  Yuqiang Sun
- <izaiahsun@gmail.com>,  Amit Kumar Mahapatra
- <amit.kumar-mahapatra@amd.com>,  Luca Ceresoli
- <luca.ceresoli@bootlin.com>,  Bernhard Frauendienst
- <kernel@nospam.obeliks.de>,  "Gustavo A. R. Silva"
- <gustavoars@kernel.org>,  Kees Cook <kees@kernel.org>,
-  linux-hardening@vger.kernel.org,  Arseniy Krasnov
- <AVKrasnov@sberdevices.ru>,  Boris Brezillon <bbrezillon@kernel.org>,
-  Brian Norris <computersforpeace@gmail.com>,  Jernej Skrabec
- <jernej.skrabec@gmail.com>,  linux-arm-kernel@lists.infradead.org,
-  linux-sunxi@lists.linux.dev,  Samuel Holland <samuel@sholland.org>,
-  Chen-Yu Tsai <wens@kernel.org>,  David Woodhouse <dwmw2@infradead.org>,
-  Thomas Gleixner <tglx@kernel.org>,  Vitaly Wool <vitalywool@gmail.com>,
-  David Woodhouse <David.Woodhouse@intel.com>,  Russell King
- <rmk+kernel@arm.linux.org.uk>,  Mike Rapoport <rppt@kernel.org>,
-  Alexandre Torgue <alexandre.torgue@foss.st.com>,  Christophe Kerello
- <christophe.kerello@st.com>,  Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-  Jason Roberts <jason.e.roberts@intel.com>,  Boris Brezillon
- <boris.brezillon@collabora.com>,  Michal Simek <michal.simek@amd.com>,
-  Mason Yang <masonccyang@mxic.com.tw>,  Ramuthevar Vadivel Murugan
- <vadivel.muruganx.ramuthevar@linux.intel.com>,  Lucas Stach
- <dev@lynxeye.de>,  Dmitry Osipenko <digetx@gmail.com>,  Jonathan Hunter
- <jonathanh@nvidia.com>,  linux-tegra@vger.kernel.org,  Stefan Agner
- <stefan@agner.ch>,  Thierry Reding <thierry.reding@kernel.org>,
-  AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-  Jorge Ramirez-Ortiz <jorge.ramirez@oss.qualcomm.com>,
-  linux-mediatek@lists.infradead.org,  Matthias Brugger
- <matthias.bgg@gmail.com>,  Heiko Stuebner <heiko@sntech.de>,
-  linux-rockchip@lists.infradead.org,  Yifeng Zhao
- <yifeng.zhao@rock-chips.com>,  Alexandre Belloni
- <alexandre.belloni@bootlin.com>,  Claudiu Beznea
- <claudiu.beznea@tuxon.dev>,  Nicolas Ferre <nicolas.ferre@microchip.com>,
-  Keguang Zhang <keguang.zhang@gmail.com>,  linux-mips@vger.kernel.org,
-  Shan-Chun Hung <schung@nuvoton.com>,  Jacky Huang <ychuang3@nuvoton.com>,
-  Fabio Estevam <festevam@gmail.com>,  Frank Li <Frank.Li@nxp.com>,
-  imx@lists.linux.dev,  Pengutronix Kernel Team <kernel@pengutronix.de>,
-  Sascha Hauer <s.hauer@pengutronix.de>,  Han Xu <han.xu@nxp.com>,
-  linux-renesas-soc@vger.kernel.org,  Wolfram Sang
- <wsa+renesas@sang-engineering.com>,  Jerome Brunet <jbrunet@baylibre.com>,
-  Kevin Hilman <khilman@baylibre.com>,  Liang Yang
- <liang.yang@amlogic.com>,  linux-amlogic@lists.infradead.org,  Martin
- Blumenstingl <martin.blumenstingl@googlemail.com>,  Neil Armstrong
- <neil.armstrong@linaro.org>,  linux-arm-msm@vger.kernel.org,  Manivannan
- Sadhasivam <mani@kernel.org>,  Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>,  Kamal Dasu
- <kamal.dasu@broadcom.com>,  Piotr Wojtaszczyk
- <piotr.wojtaszczyk@timesys.com>,  Vladimir Zapolskiy <vz@mleia.com>,
-  Harvey Hunt <harveyhuntnexus@gmail.com>,  Paul Cercueil
- <paul@crapouillou.net>,  Maxim Levitsky <maximlevitsky@gmail.com>
-Subject: Re: [PATCH v5 00/58] mtd: rawnand: retain chip and controller state
- across removal
-In-Reply-To: <20261115-submit-rawnand-retained-handle-lifetime-v1-v5-0-cbc49c5c5e74@gmail.com>
-	(James Hilliard's message of "Sun, 15 Nov 2026 23:29:15 -0700")
-References: <20261115-submit-rawnand-retained-handle-lifetime-v1-v5-0-cbc49c5c5e74@gmail.com>
-User-Agent: mu4e 1.12.12; emacs 30.2
-Date: Thu, 19 Nov 2026 13:48:02 +0100
-Message-ID: <87v75tc7i5.fsf@bootlin.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JbgCWTEh
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94F8C1F000C6;
+	Thu, 19 Nov 2026 12:59:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795093151;
+	bh=u1SN1hC9VIgGoRZ9A5lVags89D283dZdE9oZilD1ZWs=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=JbgCWTEh7AP6a7DkIhtJ4Z28RPWcN/avbNXbtJhF+OxCRAHBoGShX2dV122ccQ0v6
+	 AwboFdq6PccwueCCmW37QOjquYjoKbAYB+9z8hJN8igvxeROvch9wVZAhrdgnoTY3j
+	 yBjeB6uTJB+R6aceYQzconlvT6ZWMXETOI/j7gBiXOrcN609QeUL0QBMhyBj2RUW9F
+	 M3HvFvErSO8NEEC2vquAaU70yc2PQjOFdZnpk3niMd+Y4+cDmCT34f6Bn13AYrpa8E
+	 L/Jd1KqE4V/1r5lDVwP4Fa5bukTi2vh63Cc9t4FJvyrqy+C487re9OM0IZdSABkqv2
+	 J5fRrLeqjpJKw==
+From: Mark Brown <broonie@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>, Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: kernel@pengutronix.de, linux-spi@vger.kernel.org, imx@lists.linux.dev, 
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20261009-spi-fsl-lpspi-more-cleanups-v1-0-2d4549d5205e@pengutronix.de>
+References: <20261009-spi-fsl-lpspi-more-cleanups-v1-0-2d4549d5205e@pengutronix.de>
+Subject: Re: (subset) [PATCH spi-next 0/3] spi: spi-fsl-lpspi: various
+ cleanup and enhancement patches - part 2
+Message-Id: <179501545047.349622.14638244834416296314.b4-ty@b4>
+Date: Wed, 18 Nov 2026 15:24:10 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -125,82 +59,43 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.17-dev
 
-Hi James,
+On Fri, 09 Oct 2026 12:16:34 +0200, Marc Kleine-Budde wrote:
+> spi: spi-fsl-lpspi: various cleanup and enhancement patches - part 2
+> 
+> While optimizing the spi-fsl-lpspi driver, I created some cleanup and
+> enhacement patches.
 
-On 15/11/2026 at 23:29:15 -07, James Hilliard <james.hilliard1@gmail.com> w=
-rote:
+Applied to
 
-> An MTD handle can outlive controller unbind. Its metadata and NAND locks
-> must remain valid, including when a writable file closes and calls sync,
-> while further hardware access must be rejected after disconnection.
->
-> This builds on earlier MTD removal-lifetime work. Commit 19bfa9ebebb5
-> ("mtd: use refcount to prevent corruption") added MTD reference counting
-> [0], but retaining an MTD reference does not by itself retain the
-> driver-owned allocation containing the master. The read/unbind discussion
-> also covered raw NAND [1] and draining active operations [2]. Tze Yee Ng's
-> SPI-NOR series addresses the corresponding SPI-NOR paths [3].
->
-> Following Greg's review [7], separate class-device data from the MTD
-> backing allocation. Delete the device's interfaces and drain NVMEM and
-> class PM callbacks before releasing backing data. Bare device references
-> retain an independently allocated device, whose type, PM dispatch and
-> final release are built in even when MTD is modular. NVMEM similarly
-> disconnects and drains provider and layout callbacks before unregister
-> returns; retained consumers keep core-owned metadata and receive -ENODEV
-> on subsequent access.
->
-> Introduce opt-in backing-object ownership for MTD masters. Registered
-> nodes and acquired MTD handles retain the chip, while nested partitions
-> also retain their parent metadata. Unregister first so removal notifiers
-> can finish I/O, then disconnect raw NAND and drain admitted operations.
-> Hardware resources can be released without waiting for open files to clos=
-e.
->
-> Virtual concatenations serialize publication and removal across physical
-> controllers. Disconnect and drain a published concatenation before any
-> component can disappear, then release its component references. An old
-> handle keeps the disconnected virtual device, independently of a later
-> replacement.
->
-> Run NAND and controller-specific cleanup during disconnection, while
-> the controller driver is still bound. Snapshot the OOB layout in core-own=
-ed
-> data before publication so metadata queries remain valid without driver
-> callbacks. The NAND core frees retained chip and controller allocations;
-> the final MTD put never calls back into the controller module. Ordinary
-> MTD and NVMEM handles retain the NAND core that implements their
-> operations, rather than the hardware driver.
->
-> Share allocation ownership across the raw-NAND drivers, including
-> partially published probes. Shared controllers remain allocated until
-> their last retained chip is released. R852 allocates a new chip for each
-> card, and NDFC allocates controller state per binding.
->
-> Based on NAND next at 30daaf3e7897, with Tze Yee Ng's module-reference
-> ordering fix [4], Karl Mehltretter's OTP cleanup fix [6], and the separat=
-ely
-> posted registration, operation-locking and controller probe/teardown fixes
-> identified by the prerequisite metadata. TLA+ models and their assumptions
-> and coverage limits are available in [5].
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.3
 
-While lifetime issues are a real concern in the kernel, please note that
-in general, removing or unbinding the flash controller driver is not a
-practical operation. While highly unlikely, this is possible though. But
-I am not going to sacrifice all the devm_ calls in favor of reinstating
-manual error handling just for that. If there is a way, it must be
-different.
+Thanks!
 
-Also, this kind of contribution can only be done if you *understand*
-what you are doing. Getting the big picture here is not optional.
+[1/3] spi: spi-fsl-lpspi: pass struct fsl_lpspi_data instead of struct spi_controller if possible
+      https://git.kernel.org/broonie/spi/c/4eac392e48fc
+[2/3] spi: spi-fsl-lpspi: fsl_lpspi_transfer_one(): directly return ret
+      https://git.kernel.org/broonie/spi/c/b0f0c761ed3f
 
-Maybe the problem is MTD refcounting? Maybe the problem is the devm_
-orderging? I don't know, I haven't looked in depth at all the
-patches. But the current approach is clearly not acceptable.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
 Thanks,
-MIqu=C3=A8l
+Mark
+
