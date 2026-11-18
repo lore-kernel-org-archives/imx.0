@@ -1,111 +1,109 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.43
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795017301;
-	b=Df/RIURyANSvaMnuI/glw/RBCEfNVQT8FCRBe4JGXBBf61f9H2pVOXtKQFz3Q9U8DH7L
-	 /T9YQIFBU9jjnx738bFgRNo0vGDFWBnCogtrV8OH0EgcfBIJbxSfq1ijDjjVvJjyhjR10
-	 Jj63fMu8WbDG65v9/x1axuWpwPY/L5zW+zP4vOTc9mSnyS5teJqPyzGXBMDWehP7ESfiC
-	 jhFu52vzqSUFzzNkv4YUziFQbWpZFjHrcivZ0vEfBiGO6yHjaV+BcWhakBHUp3nF2BlJR
-	 OkYr1OLZNculqviCqlA1Ir6h+QLmI9lWOT7DEIhMToJJxooezAvILj5GjFI+ykLgtLw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795017301;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=qYegP4uULHLbb4rYN9EEt/ZV0VWypeovKGqy+rkk7so=;
-	b=hFP4qZrGpYx9hFvZUzZirbVY5X0dp7oMJHkw3TWsre9RkCco8CEaoYJ0ksr9IgMUoOy9
-	 iQiemTdECEbNLs0+wLdFoGIwtFc9T0zJD6X4GSMfXKLuS4KcmJfjJbEaeBOhNY8b8Bm8N
-	 r84UQ4lU2on/N/42dCoE09AdqHMFHZ/QSwV3iKKDQxCjMaMrSYXBsrsQcJCSTSKVpqSuO
-	 eCE2VzUfjE2buIxJ/dEiw27+rYpKgnqKh/zZyaPPaAPgD7ZmbbuCJX8jfTe5+tjtrwug6
-	 mEMObxilK8nHWd9uh1yn+YN9eLj0j83PjfTDzSj5yyU25pCfUUcWSFxeIaPa8L6f6zw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linaro.org;
-	spf=pass smtp.mailfrom=linaro.org;
-	dkim=pass header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=WaxcBNG7;
-	arc=none smtp.remote-ip=209.85.208.43
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.66.85
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795017668;
+	b=BJuL7S3KZ8LbUVm2+fH/h/yERTPMKRd3VOmIeH91C5H0JccSHQDRrwWMAKejlmCLI6B+
+	 cLm1lBQZbCMhXh7c16/DWhm+qFqDThggQ7oT8TgVf6YONYWfH8btQwj3NeiQbED2ziLIc
+	 XAKvcl0ZBfT9A9vwUR1k5xjpjEK2RRhqlc5VMdRHWqDmrd+xSl8XHgN8WPUZ4YcpAJHNT
+	 7heM1/Ka4FEBmEOPsg4NXBzpyr8GgjqXQTpyCEyKv9zxnBknAq/ME3HSwKiGZIKbsNiy3
+	 0DjqEJo2wV8fE9gNM/ddqYaGlYHxyFBurkXgnQcxi9+xRZxPy4IpZOLt1mAY8y2lbGQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795017668;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=CiXqUQZYouMNgPNGRQIxrM/PyjF7aZMYDgEmHwPJOkw=;
+	b=IMkUiZRfi/zTA40SSW4t0GNSOBkKekr6y9AmcCbcDeORJZbkg4JNwTiSW5alMuDCUEWq
+	 HZDNtDfldpNWoNk/c/eeNNteDo0UdmjETMzls4406RYJlbP3c4x7SCHo+/LNWD5XyV+W7
+	 Ql2tkuhD/h2PI3KmNF45lyUQLL2frtrht5uS9BwdE+w2hsN/w1APdw9sEn+d84zObvXiw
+	 ExBIDDfC/vx4sOJsYHsMckBVqDxF0U4Ub+d5+psVemeI86Abn5iM+/8Mh7iDevYbIIN5p
+	 64ifRX5W4hO24KUKPAKmvyKUH9Jj2QL2EosjbrzgvjFXvam8vhQH2QYvPi5p4s5FZew==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=none header.from=kontron.de;
+	spf=pass smtp.mailfrom=kontron.de;
+	dkim=pass header.d=kontron.de header.i=@kontron.de header.a=rsa-sha256 header.s=selector1 header.b=rm2DMK9Q;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.66.85
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11022085.outbound.protection.outlook.com [52.101.66.85])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF2A8606A331
-	for <imx@lists.linux.dev>; Wed, 18 Nov 2026 15:55:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BF2A8606A331
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1BA4606A330
+	for <imx@lists.linux.dev>; Wed, 18 Nov 2026 16:01:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D1BA4606A330
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kontron.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kontron.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=WaxcBNG7
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-6b86bbce3d1so1635270a12.0
-        for <imx@lists.linux.dev>; Wed, 18 Nov 2026 07:55:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1795017299; x=1795622099; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=qYegP4uULHLbb4rYN9EEt/ZV0VWypeovKGqy+rkk7so=;
-        b=WaxcBNG712Pc8IGdQFOwU2NUzkxbywZXLbOmxbUba96CVr+Gt++Ir94ZNDT28DnSMX
-         8NQBW5o1ElsmYljS8izWET0jY877iFOjeTBY3BIJ3+Y8OL5s8tbGmSUlmkPOzJkp6TCk
-         2mAr7YKQvmnFKQVlh8knOlBWtstp/sr3YZu9lg5zelS4nfT7Xav9LY+ma6MOCgHCeY39
-         ZL83p4Mzirjwy4AgF0gyJjMslHAPA7y6j6Y2dk6e+SVv8sATOmgV8bEKA9U0VnHIafAi
-         fBrkYjQHYViz7oKhljQPGHaKQd+k6OBa8Y61yR2AH6LTZEIbJnxoKDhFvj+n1wo3Zgfo
-         L2Kw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795017299; x=1795622099;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=qYegP4uULHLbb4rYN9EEt/ZV0VWypeovKGqy+rkk7so=;
-        b=pDeXiTgf+8QH5zcxuN4n/l5/qpHlrKvIPOUYIg3pqV2mCxJfdzDWuv0bmUK5B00JsE
-         JDTejJ4Z7zPuYr5qXh2XKAAQ5oAQ80Hamv16ekwUlvzKx7y2sb5UxCtKGihLGKxQGRtz
-         DWMJ2ty3gDdvd7XjfnjW8djmuYCVFihiZANDXtHj5E/9KAfYQbXakAOxrj9SPg+dgdy8
-         mLVJ5K/IwkYaELj4JWq0Ae0j+uyhYBCpxjYbbznx+PDJcDPMz2a5W07/DOauGjAIgS73
-         7dy7YTZ4hK6yS437TSMTk7R2sd5nVjf4pkS9qpMfPzTf1HeK2reg4t7M52cY1dv8Ylu7
-         YYgQ==
-X-Forwarded-Encrypted: i=1; AL+hErGAT/p5hOSHJXXcRnjcovpVYnMrxDplVuo2J5afFhy2+q6r9zxGsSP414/VCLEgwDnyZp0=@lists.linux.dev
-X-Gm-Message-State: APuU4Z9LnIv668rL1AG+PyKUHwR4pHGswNNNQeaf7GftWYc0lRPzRfOM
-	YoSlQg5Xu10KSZxGjsBvWukHuDFcEPM+YLhN3W3R2CXQAnfUDfqq+LLg8L3gUM/qa1Wy6xMKcx6
-	FagjN
-X-Gm-Gg: AYBFou39PKwKvDG5/OXbrwMUDpITL6noQWqHmlwY0fsGXv3vhu0t/23Mfp8UkTf6ReD
-	sKfkrnll2AAk8kIpXd+Z7PRygzF/XgFau65fIMIKQtweISCcKnXcXEtjLjnJ4MZ12ksjx7qQ+8n
-	7U688c4JX6I5cO35oPF4AKE29+bvzaOR0HHXIggHxIKTQft1xKI16wl5Y+DiilEqSPbcZFs7hiV
-	U6jb5/YRz28S/DgNPFFBCscHyifjCRZcnT7kaZ+KZPBdtqkpj7ksyIJCk5RW3NPsan3o2LHt0AF
-	iaLfEOo22fWZzgpjiOWDuO8D57au26FQFa6aO6kKKOPpXhQqok5nmHkQD0jVRD7N1ok4/Up/Wzz
-	VIE4qR6pnCD+idkJ1pbAqRoBWzkZ52i5J+MFoqzKQlIYyOFyt5W3sel4qGd3ah6w542hRcNDynD
-	/yzvpSQPHpXPImhLnX+mkkaprywS3p0EYeus8PqyjvvKRRUSjVeBDzKdNjanYb4qRboaBGn/pnp
-	Mj0arauqly6dr0Bjee8GtICs4x4/TEcHAaq0twZLSdWb6GLSUC3LJts7L/q6rNvMJBHpwEKtghT
-	NQuaBllVRP/2rX2LWuZBtJRLgxRjovN9
-X-Received: by 2002:a17:906:c14e:b0:c50:a7ff:f880 with SMTP id a640c23a62f3a-c510e28dfcamr310805266b.34.1795017299066;
-        Wed, 18 Nov 2026 07:54:59 -0800 (PST)
-Received: from p14s ([2604:3d09:148c:c800:9f37:bd39:7f19:3b3c])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c51231bc1a2sm20902066b.5.2026.11.18.07.54.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Nov 2026 07:54:58 -0800 (PST)
-Date: Wed, 18 Nov 2026 09:54:49 -0600
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-To: Francesco Valla <francesco@valla.it>
-Cc: Bjorn Andersson <andersson@kernel.org>, Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-hardening@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-doc@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH RFC v2 07/11] remoteproc: assign fwnode during vdev
- registration
-Message-ID: <av3KSXqeGyazaMR9@p14s>
-References: <20261102-remoteproc_virtio_map-v2-0-26b300e01c62@valla.it>
- <20261102-remoteproc_virtio_map-v2-7-26b300e01c62@valla.it>
- <avyAtmxdbfEBbZ87@p14s>
- <avzS1DiNGmL1Pqmn@bywater>
+	dkim=pass (2048-bit key, unprotected) header.d=kontron.de header.i=@kontron.de header.a=rsa-sha256 header.s=selector1 header.b=rm2DMK9Q
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=rsqEiiwDifT6ndvKOzdquiORfp2jFDtOJa4NUoi1qgbRiL+Qnysg6ykZKETRHI9pQehCQuKPMf/CXGqa0B2a67YK+xyh01PKK1k+m4/lguG9vRpR5mD/beqsq5n8LF/Ng6UKjaRc1i7SMj35cNouwdxdHeywqwDzWC0NiOiEyhA9/tOSRsDI33hbws+eDvLmrFxgWnYXczGLX5gfRyWSkaeYCaQWoq4+hx0XsgFqavEfWvrXm63hXAy0nIUROGG+n/IeVSBx06psLVn6vm0N8Z85pmdASluHPDH+NNo9tD9wDAktxkPnyFhacBT0z4XuQLCq6dF0R5hSgzedpoDS9w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=CiXqUQZYouMNgPNGRQIxrM/PyjF7aZMYDgEmHwPJOkw=;
+ b=DtHalefi3m6w+S7qM2mS1vtIhCriqTT3CFSU35xCocqNzFs13zePPfBV1fmlTks0qWeryoxceDgsqRD9xRUvKwIIvaeNSTeq0PB3OKpN03ZMN1vriCCl7p7QjyLQEyd2HrZxwD4VjrQxQIZnYZQf/f2jy6TiP9LuaBpRBv0lFlRBHWk5cbi4Wu+nsB0Ap+WzGqi1NLzqP9KBXm7QY7x0WqQUSNkU60qyfu3WlcOmus8b5/JyFvjixvNzcNCQf5V3GcUm8tTd9x3Fp8VAk4bxTHnmE+j4hP1ruuGpXyu8j4udqNJIp0ejisM5+J6opaN1/0RZZuJuqB0aaPxm7OcstQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=kontron.de; dmarc=pass action=none header.from=kontron.de;
+ dkim=pass header.d=kontron.de; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kontron.de;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=CiXqUQZYouMNgPNGRQIxrM/PyjF7aZMYDgEmHwPJOkw=;
+ b=rm2DMK9QtK8r/pwYKC3FLG6zXMrt+rQx8oElQdpAfHdsIgvXmO8JLr8UbeYXlwDGO/ouQ2ZP6HNjfndkird9h18VoaVvEZi9bpCgKyBoUSVbDOKsSA31gfrKdQLllteUuB7uzF3mMASxyE4+o5mnpG8Gv7h/HluyOyb9G6+8iQo0tIhkztURF54JTUiS8mvA3M1ViJIUcd1bq41tCUqHu5MCflr8MI+yd3zvvfLRHf9TfvMacfTN3iH2R6cRrQSkkkNhMXqgw3r2YgwdDpwlrQRYndH2P3wuLhf1pWwNLT+2EFNpfUjW/DKnzX2iE2iPQTZGhw3+5TsiTTV+Bv7cNQ==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=kontron.de;
+Received: from AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:1fb::23)
+ by AS4PR10MB5671.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:4f2::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.7; Wed, 18 Nov
+ 2026 16:01:03 +0000
+Received: from AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::a276:4ad7:962:da22]) by AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::a276:4ad7:962:da22%3]) with mapi id 15.21.0639.006; Wed, 18 Nov 2026
+ 16:01:02 +0000
+Message-ID: <a2d7056c-602b-4c6b-bb14-211843aa3183@kontron.de>
+Date: Wed, 18 Nov 2026 17:01:01 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v51 5/7] firmware: imx: adds miscdev
+To: Frank Li <Frank.li@oss.nxp.com>
+Cc: Arnd Bergmann <arnd@arndb.de>, pankaj.gupta@oss.nxp.com,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Pankaj Gupta <pankaj.gupta@nxp.com>,
+ Randy Dunlap <rdunlap@infradead.org>, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ Peng Fan <peng.fan@nxp.com>
+References: <20260915-imx-se-if-v51-0-4a7dac612cb5@nxp.com>
+ <20260915-imx-se-if-v51-5-4a7dac612cb5@nxp.com>
+ <2034fb2f-f169-46a5-85e8-fa723ddb0360@app.fastmail.com>
+ <aqqqDnOMmlfqit6u@SMW015318>
+ <f3e1e3de-6abf-48cb-aba7-7b231c38ec5c@kontron.de>
+ <180d2335-e328-48a4-b376-a90464279027@kontron.de>
+ <3acc652b-d2e2-4a18-b70a-2656b309d798@kontron.de>
+ <av3KA89WuUc5GdZj@SMW015318>
+Content-Language: en-US, de-DE
+From: Frieder Schrempf <frieder.schrempf@kontron.de>
+In-Reply-To: <av3KA89WuUc5GdZj@SMW015318>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR4P281CA0155.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:ba::9) To AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:20b:1fb::23)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -115,257 +113,148 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <avzS1DiNGmL1Pqmn@bywater>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM9PR10MB4277:EE_|AS4PR10MB5671:EE_
+X-MS-Office365-Filtering-Correlation-Id: 681ef51b-220c-4fef-34be-08df458d253b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|1800799024|7416014|366016|23010399003|10067099003|261028144727099003|11063799006|4143699003|56012099006|261022105027099003|261026121527099003|261022075727099003|261026140227099003|261021135927099003|261009223027099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	oWsxDq/x+2tjuiA+2vUupu4NsuvhdwhGjx7DAwWbBZrVxhBw2OxX7PgtNtPvilic0LxFHhVHali2gxvA2GxlL9UX0NUKCuc6Qgkt9gfrFucutNG7wjqWenh1Hp5HhudHn5JhpJjzUfqW32bejyK0Dtstn+ayGeN/ZW2yOu2Z3IHLzWgKtw9plCS26eA40oJaJkzk9rAiF63KzBXfktlVzR5WHJmHhUqOXMageWIweSS3vQwjZsEf78U+r7mH2arFzZyW10B/TCD5YTH2M6xGGSbRrop0nAgWVSHvHH2b78lNQPWxK8EnnEScjdA3zJSranS0FOKnTyIVVSAfCtsmONLLwu7j6BJIawJPRqd0SVnEAwLOzP6Y+qgQdLMAgxtMRYOwwzw1lFicAN1E86KlOz9fKnlFNx+AoIHYJ/j3daxTA64n7z8PhQ1nltIzMLNedZ0JoGmzP+MLOM4/3H8LlRlw9nT1ksaM8d5W4Siwzawii2gYfOf1+hziKuebfZJIDDHoJtfuL0t3cJ2Ckn82BOQ6h5YjbMxW0CI2aSYWkaQ1u7RhG0qIA4xHlfTsKMKbWeMhlyf0Dwku+x5VmYzalBaPUfN7KxwxwjWO5sOaefw51od9DcBbiUXVm2poZeUz
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(7416014)(366016)(23010399003)(10067099003)(261028144727099003)(11063799006)(4143699003)(56012099006)(261022105027099003)(261026121527099003)(261022075727099003)(261026140227099003)(261021135927099003)(261009223027099003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?blFLdGNQdkhJSmZFaUdBdjVTWXk4V2xlcXpHdy8zT2V6NEM3TDAxdlBLaVlE?=
+ =?utf-8?B?a2VZUzVzOUNSSDB4c3lZWG83dVlmNVRheWNJeXBvdlgrdy8xK1l6Yzcxa0tM?=
+ =?utf-8?B?eTVuTFl5ZFM5OTBSK0RhNGtMY0pZN05YemRyUW1LOFlmaHJscVVCMWE5Yk41?=
+ =?utf-8?B?cGJ2em8zS09DUzJwc2VOckpWa1R1NzhTaU0vdENKSndFYkRobHY3bkZHSTVx?=
+ =?utf-8?B?cGxBZzJYNmxicStRK2xpUnh3RWtDa05odEcxOURyS2pPclB2MVYyUGxuSk1U?=
+ =?utf-8?B?TXFyc3NzU0F6cDFDdkdjUXgyL3kwaml3MzArL1RTcDVDamFPcnFrLy81N2xo?=
+ =?utf-8?B?ZzMrdE5QWmpLaDhKdng4V0xablBtU2NKWE80MGxDaDdZU1B3Q0NhVGR3RWFW?=
+ =?utf-8?B?OUpLbU9nMmdjNklrUmdFNjMyR05mQ0xWdmREUHNPRzB6TXlYSjNNSnRmZ3Ir?=
+ =?utf-8?B?U01ETXRlR3FMc2I3K005NUdVNEFpOGdiMjVoYTl5cjRXWVNQL1d2VTFxMVY2?=
+ =?utf-8?B?czVzbVNsRE14MmVoUFV4bHl3SGVRVGJkQTFCNVFyMEQrUm1sT254SnNHSmpp?=
+ =?utf-8?B?SG9lTmZteE50L2wwc1pXQ1ZzcWFVRFpPelFuQkFmRkRwN3VEZWJ1RS9GdlBM?=
+ =?utf-8?B?aVlWeXFTVWdMVmtqdzF0NHdpUDVMdlc2SEYxa3RoVStZZEZqZmhwS2xoWTBt?=
+ =?utf-8?B?TEJlNWJPVlZ3S2hqMkNSVDdqbjQ3amtSRWdlb01YSnRlR1JjUkw4TzJPd3I5?=
+ =?utf-8?B?THEyUWN4QUlubTZQQmxBUVBHZjhYckF6VC9nWldKdTdzczQ3MVI2MjdacTFx?=
+ =?utf-8?B?eWluM0YwcmZROUZVQ1d2STV0MmtaZGdsTDg2YXAyLy9GUDZFaTF6bGxLekRI?=
+ =?utf-8?B?elJlVmdwVFVsNFdQOE1UTC9LUjUwTUJVRFZZc29yWWI1Vko1dHNsSUlsSERj?=
+ =?utf-8?B?aGl2TTRncHI1K2k4cnN4ZkcvSDhxdnJQdUNqbFFJM1Bzd1ZDdGZ2VXhmRGcy?=
+ =?utf-8?B?aHJscDNCNnB3OHhNS25oV2NXZGVrZ0lhb0FzZWZncVptTjcvWjI0Skw2MXd6?=
+ =?utf-8?B?aFdpWkVUbUpDNGZiRFNUQis2WUpudVRiT0tDd3Bka3g3bFZpcjVPcmVnNk15?=
+ =?utf-8?B?WWo5c2xDcStwdE9ZaTlJNlVxZS9QSDJHaWpjTjY5eFlZeWorUjZTZjh0OE13?=
+ =?utf-8?B?d1NOa1BUVXZ6OWwrYWN1d0FEUXc0cHA1QnFRRU1BWktLYUVQVkNES1NMQitZ?=
+ =?utf-8?B?TENNQmdlTXhaSitTMUdDUDlGKytnVnB4dzE2WmhLTFJGRk1HQlgyVzNDRXBS?=
+ =?utf-8?B?UkhuaUtRZW50SGJyelFPQmZ6T3lhRC8vZlVIZmVxUFJBTTkrbWh5bk82R0JM?=
+ =?utf-8?B?YXVza3lSS1ppL0tRUkgzcGcwME1jR3YvR1ZndW9YNXpVTjFOMWN6ZE1OcldC?=
+ =?utf-8?B?b3dtckI0TVRydm1wbzc4TjgvQ05NZ2FmU0JNUm0rS2UyRmlvMU5pTGEzdFRu?=
+ =?utf-8?B?UHVLL29YY2hwT0RabHRtNGFGRXJhcVYzdFVMcTEyN0hRbEFQSVFlaUhPUWxN?=
+ =?utf-8?B?MlVVbzl1cTd3STJtWHVoNHpWYmhEMmQ4K2JJNTNzVkwxbWFGZHRQM2dnYWQ2?=
+ =?utf-8?B?K1hJLzR3d2V5bW1JUDFTcmkvV0lqeEl6L2dQWmVkOXJZK01IaHAzd05GRTQ4?=
+ =?utf-8?B?dXEyVm5uQVVhQ0EzZDVVM2JFSkx5VFRpazlyVVc3QVRkdXRmYVhQZ0tTdXNZ?=
+ =?utf-8?B?TjVpTmIyamdkTUhrQUI1NkhpY0N1eDBxY2Fjb0wyeW9xTzNxb2FNaHNlem1M?=
+ =?utf-8?B?eUZBQTE3dGRLZnoyRkRIMmZmQXJya2xzM24zbVVnQVAyZC93aGsvR0drcmJE?=
+ =?utf-8?B?Z2R5a0pjT01BZDNjbldNVVc4ZTlqYTdRS1VnUVFWRWdaQzdleXJhVlRJTHlV?=
+ =?utf-8?B?djZ0OUdtL2JtdGMrMWloR0JsOHVnSXRuamhzQm92dHFRVitiQmE3alNWOFdJ?=
+ =?utf-8?B?bWhkQ3FUZlhhNnFHRmwvZ3VyUWpPTHk1UkI3Zi9uZjlSVFVGaEdDY0gvR3Jq?=
+ =?utf-8?B?ZGZtcUZ1dG80Q3RhZjNibnpjUTF3dThQYnl1Y05yMnhOMlN2UkF2N3lmei9C?=
+ =?utf-8?B?Q2g5U3JkSDdMMDIvOXFpelBIeEZ1d2trbTQ4R3l6RHpSb1dZU3hMRVRSSkFN?=
+ =?utf-8?B?Slg2U1FYV1BSOTJ3TDhFTFh4NVBvTlBlMFVEOE5kYmVXSFNyclRXNzRzaE1l?=
+ =?utf-8?B?UlJTK1ZnNWpOMHJaTFBDUWFSRy92L0orVEtZTHhIWVBGSWY0WVBlRDVTZW14?=
+ =?utf-8?B?aVJRYlZaSm1OeFA0UmcvQ0FNTjNKdThPOUJXSjI3Ym9Fb3FBMklJOXBpL3U4?=
+ =?utf-8?Q?klv9YF8NNo8K2yP0=3D?=
+X-OriginatorOrg: kontron.de
+X-MS-Exchange-CrossTenant-Network-Message-Id: 681ef51b-220c-4fef-34be-08df458d253b
+X-MS-Exchange-CrossTenant-AuthSource: AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Nov 2026 16:01:02.8696
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 8c9d3c97-3fd9-41c8-a2b1-646f3942daf1
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: BPEiFLnIuJoQlaQ8YNf+N/bLM3YH+e12blvcRsM7/HPU6reC09HRqcGcprHMqKrabjE2S25nj2vm+XnBR3zY5DA4d8BZUpZZPFttzIq5GnM=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR10MB5671
 
-On Tue, Nov 17, 2026 at 11:29:01PM +0100, Francesco Valla wrote:
-> On Tue, Nov 17, 2026 at 10:28:38AM -0600, Mathieu Poirier wrote:
-> > On Mon, Nov 02, 2026 at 12:26:44AM +0100, Francesco Valla wrote:
-> > > The virtio subsystem already supports a fwnode describing a vdev; search
-> > > for a specific node during vdev registration and supply it to the
-> > > rproc-virtio platform device that is being registered.
-> > > 
-> > > A memory-region specified inside that node is also used for the virtio
-> > > device if a carveout was not supplied for it through the parent device's
-> > > node.
-> > > 
-> > > Signed-off-by: Francesco Valla <francesco@valla.it>
-> > > ---
-> > >  drivers/remoteproc/remoteproc_core.c   | 48 +++++++++++++++++++++++++++++++---
-> > >  drivers/remoteproc/remoteproc_virtio.c | 41 +++++++++++++++++++++++++++++
-> > >  2 files changed, 85 insertions(+), 4 deletions(-)
-> > > 
-> > > diff --git a/drivers/remoteproc/remoteproc_core.c b/drivers/remoteproc/remoteproc_core.c
-> > > index c946ecd980a5..e833853ae7f6 100644
-> > > --- a/drivers/remoteproc/remoteproc_core.c
-> > > +++ b/drivers/remoteproc/remoteproc_core.c
-> > > @@ -440,6 +440,33 @@ void rproc_remove_rvdev(struct rproc_vdev *rvdev)
-> > >  	if (rvdev)
-> > >  		list_del(&rvdev->node);
-> > >  }
-> > > +
-> > > +static struct fwnode_handle *rproc_get_vdev_fwnode(struct device *dev, u32 idx)
-> > > +{
-> > > +	struct fwnode_handle *group, *child;
-> > > +	u32 reg;
-> > > +	int ret;
-> > > +
-> > > +	group = device_get_named_child_node(dev, "virtio");
-> > > +	if (!fwnode_device_is_available(group)) {
-> > > +		fwnode_handle_put(group);
-> > > +		return NULL;
-> > > +	}
-> > > +
-> > > +	fwnode_for_each_available_child_node(group, child) {
-> > > +		ret = fwnode_property_read_u32(child, "reg", &reg);
-> > > +		if (ret)
-> > > +			continue;
-> > > +
-> > > +		if (idx == reg)
-> > > +			break;
-> > > +	}
-> > > +
-> > > +	fwnode_handle_put(group);
-> > > +
-> > > +	return child;
-> > > +}
-> > > +
-> > >  /**
-> > >   * rproc_handle_vdev() - handle a vdev fw resource
-> > >   * @rproc: the remote processor
-> > > @@ -475,7 +502,16 @@ static int rproc_handle_vdev(struct rproc *rproc, void *ptr,
-> > >  	struct device *dev = &rproc->dev;
-> > >  	size_t rsc_size;
-> > >  	struct rproc_vdev_data rvdev_data;
-> > > +	struct platform_device_info pdev_info = {
-> > > +		.parent = dev,
-> > > +		.name = "rproc-virtio",
-> > > +		.id = PLATFORM_DEVID_AUTO,
-> > > +		.data = &rvdev_data,
-> > > +		.size_data = sizeof(rvdev_data),
-> > > +	};
-> > >  	struct platform_device *pdev;
-> > > +	struct fwnode_handle *fwnode;
-> > > +	int ret = 0;
-> > >  
-> > >  	/* make sure resource isn't truncated */
-> > >  	rsc_size = struct_size(rsc, vring, rsc->num_of_vrings);
-> > > @@ -498,20 +534,24 @@ static int rproc_handle_vdev(struct rproc *rproc, void *ptr,
-> > >  	rvdev_data.rsc_offset = offset;
-> > >  	rvdev_data.rsc = rsc;
-> > >  
-> > > +	fwnode = rproc_get_vdev_fwnode(dev->parent, rvdev_data.index);
-> > > +	pdev_info.fwnode = fwnode;
-> > > +
-> > >  	/*
-> > >  	 * When there is more than one remote processor, rproc->nb_vdev number is
-> > >  	 * same for each separate instances of "rproc". If rvdev_data.index is used
-> > >  	 * as device id, then we get duplication in sysfs, so need to use
-> > >  	 * PLATFORM_DEVID_AUTO to auto select device id.
-> > >  	 */
-> > > -	pdev = platform_device_register_data(dev, "rproc-virtio", PLATFORM_DEVID_AUTO, &rvdev_data,
-> > > -					     sizeof(rvdev_data));
-> > > +	pdev = platform_device_register_full(&pdev_info);
-> > >  	if (IS_ERR(pdev)) {
-> > >  		dev_err(dev, "failed to create rproc-virtio device\n");
-> > > -		return PTR_ERR(pdev);
-> > > +		ret = PTR_ERR(pdev);
-> > >  	}
-> > >  
-> > > -	return 0;
-> > > +	fwnode_handle_put(fwnode);
-> > > +
-> > > +	return ret;
-> > >  }
-> > >
-> > >  /**
-> > > diff --git a/drivers/remoteproc/remoteproc_virtio.c b/drivers/remoteproc/remoteproc_virtio.c
-> > > index 1496659ddff9..950d65480be5 100644
-> > > --- a/drivers/remoteproc/remoteproc_virtio.c
-> > > +++ b/drivers/remoteproc/remoteproc_virtio.c
-> > > @@ -13,10 +13,12 @@
-> > >  #include <linux/dma-map-ops.h>
-> > >  #include <linux/dma-mapping.h>
-> > >  #include <linux/export.h>
-> > > +#include <linux/of.h>
-> > >  #include <linux/of_reserved_mem.h>
-> > >  #include <linux/platform_device.h>
-> > >  #include <linux/remoteproc.h>
-> > >  #include <linux/rsc_table.h>
-> > > +#include <linux/swiotlb.h>
-> > >  #include <linux/virtio.h>
-> > >  #include <linux/virtio_config.h>
-> > >  #include <linux/virtio_ids.h>
-> > > @@ -394,6 +396,23 @@ static void rproc_virtio_dev_release(struct device *dev)
-> > >  	put_device(&rvdev->pdev->dev);
-> > >  }
-> > >  
-> > > +/*
-> > > + * Attach the memory region declared inside the vdev's own devicetree node.
-> > > + *
-> > > + * A restricted-dma-pool region is attached by of_dma_configure() when the
-> > > + * platform device is probed, but it is released together with the virtio
-> > > + * device (see rproc_virtio_dev_release()); attach it again if needed, e.g.
-> > > + * when the remote processor is restarted during a crash recovery.
-> > > + * Any other kind of region (e.g., shared-dma-pool) is attached only here.
-> > > + */
-> > > +static int rproc_virtio_init_vdev_mem(struct device *dev)
-> > > +{
-> > > +	if (is_swiotlb_for_alloc(dev))
-> > > +		return 0;
-> > > +
-> > > +	return of_reserved_mem_device_init_by_idx(dev, dev->of_node, 0);
-> > > +}
-> > > +
-> > >  /**
-> > >   * rproc_add_virtio_dev() - register an rproc-induced virtio device
-> > >   * @rvdev: the remote vdev
-> > > @@ -410,6 +429,7 @@ static int rproc_add_virtio_dev(struct rproc_vdev *rvdev, int id)
-> > >  	struct device *dev = &rvdev->pdev->dev;
-> > >  	struct virtio_device *vdev;
-> > >  	struct rproc_mem_entry *mem;
-> > > +	bool has_mem_region;
-> > >  	int ret;
-> > >  
-> > >  	if (rproc->ops->kick == NULL) {
-> > > @@ -417,11 +437,24 @@ static int rproc_add_virtio_dev(struct rproc_vdev *rvdev, int id)
-> > >  		return -EINVAL;
-> > >  	}
-> > >  
-> > > +	has_mem_region = of_property_present(dev->of_node, "memory-region");
-> > > +
-> > >  	/* Try to find dedicated vdev buffer carveout */
-> > >  	mem = rproc_find_carveout_by_name(rproc, "vdev%dbuffer", rvdev->index);
-> > >  	if (mem) {
-> > >  		phys_addr_t pa;
-> > >  
-> > > +		if (has_mem_region) {
-> > > +			/*
-> > > +			 * The carveout takes precedence: drop the region that
-> > > +			 * of_dma_configure() might have attached at probe time.
-> > 
-> > I don't understand this part - why would someone configure vdevXbuffer with the
-> > same name at the rproc and rproc-virtio level?  This should be an error.
-> >
+On 18.11.26 16:53, Frank Li wrote:
+> On Wed, Nov 18, 2026 at 03:43:28PM +0100, Frieder Schrempf wrote:
+>> On 18.11.26 13:46, Frieder Schrempf wrote:
+>>> +Cc: Peng
+>>>
+>>> Hi NXP developers,
+>>>
+>>> On 05.10.26 16:28, Frieder Schrempf wrote:
+>>>> On 16.09.26 16:39, Frank Li wrote:
+>>>>> On Wed, Sep 16, 2026 at 03:16:13PM +0200, Arnd Bergmann wrote:
+>>>>>> On Mon, Sep 14, 2026, at 21:40, pankaj.gupta@oss.nxp.com wrote:
+>>>>>>> From: Pankaj Gupta <pankaj.gupta@nxp.com>
+>>>>>>>
+>>>>>>> Adds the driver for communication interface to secure-enclave, that
+>>>>>>> enables exchanging messages with NXP secure enclave HW IP(s)
+>>>>>>> like EdgeLock Enclave, from:
+>>>>>>> - User-Space Applications via character driver.
+>>>>>>>
+>>>>>>> ABI documentation for the NXP secure-enclave driver.
+>>>>>>
+>>>>>> I just saw this in linux-next, where it has caused a build failure
+>>>>>> for a missing include of linux/slab.h. I hadn't see the series
+>>>>>> before (even though it is a v51, which seems crazy), but I am
+>>>>>
+>>>>> It is in linux-next about v37, but build bot find many problems, I dropped
+>>>>> it and request to fix it. And sashiko is online recently and also find many
+>>>>> risk. I request to clean up it, and local AI environment have difference
+>>>>> with sashiko, so bump to v51.
+>>>>>
+>>>>> I put to linux-next again to make sure that pass all build test.
+>>>>>
+>>>>> Other two problems, need more time to check whole review history. reply
+>>>>> you later.
+>>>>
+>>>> So this is still in linux-next, but was not sent in the pull request for
+>>>> 7.4. It's rather confusing to me that maintainers add stuff to
+>>>> linux-next for build-testing and then leave it there, neither removing
+>>>> it, nor continuing the mainlining process.
+>>>>
+>>>> Frank, what is the plan?
+>>>>
+>>>> I'm currently rebasing my work for the NVMEM driver onto linux-next, but
+>>>> as there have been so many iterations and this whole thing took so long,
+>>>> I want to make sure that this is not another dead end where I'm wasting
+>>>> my time on.
+>>>
+>>> I need to ping here, again. What is the plan at NXP to move on with
+>>> this? This is blocking multiple features that depend on ELE firmware
+>>> support for i.MX9 and similar platforms from being upstreamed.
+>> To be more constructive, here is a proposal: let's get the
+>> kernel-internal part of this series merged first (patch 2-4, DT patches
+>> 6-7, doc patch 1 reduced to kernel side). I currently don't see any
+>> objections or issues with those.
+>>
+>> This would unblock drivers using the in-kernel API, such as the NVMEM
+>> driver and this is also the part I already tested when working on [1].
+>>
+>> The somewhat more controversial uAPI in patch 5 can then be further
+>> discussed until there is a consensus on it.
+>>
+>> Arnd, Frank, would that work for you?
 > 
-> The carveout might come from the remote processor's resource table. I
-> was unsure on how to treat it (warning or error) - if you advise for
-> the second I'll go that route.
-> 
+> It needs at least one user for the in-kernel API.
 
-Ok, so this is also related to my for patch [5/11], i.e handling of authentic
-rproc-virtio device should follow modern practices.   
+I can provide the NVMEM driver as user. I just need to rebase my series
+on the new reduced firmware driver patchset once that has been posted.
 
-> > > +			 */
-> > > +			dev_warn(dev,
-> > > +				 "vdev%dbuffer carveout found, ignoring memory-region\n",
-> > > +				 rvdev->index);
-> > > +			of_reserved_mem_device_release(dev);
-> > 
-> > Who would have called of_reserved_mem_device_init_by_XYZ()?  The remoteproc core
-> > or virtio core?  
-> > 
-> The of_dma_configure() call that is part of the platform DMA
-> configuration automatically associates to the device the first
-> restricted-dma-pool node referenced by memory-region; see [1].
-> 
-> This is actually beneficial to the proposed solution, but current
-> implementation requires this step to avoid leaking the association (this
-> will be required also in case of error, because of_dma_configure() is
-> called during the probe).
-> 
+Or if you want to have this all in one series, maybe someone at NXP
+(Pankaj?) can provide the firmware driver as proposed above in a public
+git tree somewhere or send it as RFC. Then I will provide the NVMEM
+patches on top of this for you to pick up and send in a combined series.
 
-Ok
+Just let me know what works best for you.
 
-> > > +		}
-> > > +
-> > >  		if (mem->of_resm_idx != -1) {
-> > >  			struct device_node *np = rproc->dev.parent->of_node;
-> > >  
-> > > @@ -451,6 +484,14 @@ static int rproc_add_virtio_dev(struct rproc_vdev *rvdev, int id)
-> > >  				return ret;
-> > >  			}
-> > >  		}
-> > > +	} else if (has_mem_region) {
-> > > +		/* Use the memory region declared in the vdev's own node */
-> > > +		ret = rproc_virtio_init_vdev_mem(dev);
-> > > +		if (ret) {
-> > > +			dev_err(dev, "Can't associate vdev memory-region: %d\n",
-> > > +				ret);
-> > > +			return ret;
-> > > +		}
-> > 
-> > Mixing the initialisation of the legacy rproc-virtio and authentic rproc-virtio
-> > devices is very confusing.  I think there is value in splitting them, even if it
-> > entails some code duplication.
-> > 
-> 
-> Ok, I'll split them for V3.
-> 
+>>
+>> Pankaj, can you prepare such a reduced series?
+>>
+>> [1]
+>> https://patchwork.kernel.org/project/linux-arm-kernel/cover/20260727-upstreaming-next-20260609-imx-ocotp-ele-v4-0-1a515de33093@kontron.de/
 
-Please move forward on that.  Since it will introduce a fair amount of churn, I
-will simply stop reviewing the current set and wait for V3.  You can remove the
-"RFC" tag, we are well past that now.
-
-
-> > Thanks,
-> > Mathieu
-> > 
-> > >  	} else {
-> > >  		struct device_node *np = rproc->dev.parent->of_node;
-> > >  
-> > > 
-> > > -- 
-> > > 2.56.0
-> > > 
-> >
-> 
-> Thank you!
-> 
-> Regards,
-> Francesco
-> 
-> 
-> [1] https://elixir.bootlin.com/linux/v7.4-rc1/source/drivers/of/device.c#L35
-> 
