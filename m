@@ -1,59 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795020760;
-	b=3j52IGT+ZhJ+LXq6f5D6rtxxMK+ElpLfQEvXQqaiGrRdHdXoMjGOT4XUBxTCF3jJj3Dj
-	 loWEOuqBvKL/KHnzx3srbt8A5F4pisffXNk74b8xfFNK/urBz+Jh9v6n6ETsc9hyAAxtJ
-	 QRpgJr+kb7x2aRphZXPBPR2lgDPNlrcYzu7mavaRZD9DRK/n78hEjfGI8HO4NsDtj/h91
-	 hz2YObfrL0sSt5mNXfdRe3j0f8qbJCNecgmuKtsQHQ2dwmWbXqDNwJTWogU7eSRnIIE2I
-	 3rMoeWfmmuVwnzu4ZUpCp6SRROXLDepw+LOYholX/lFniqJ4CuxRxvXfpbTDnlSv5+w==
+	t=1795020765;
+	b=PCvxKHSkQDwp/ODejLXN1bqQcql4Lhzzxz3susSfy3o/++QipBTHBOr36mRl4ZIkhbOb
+	 PMaqTsxHzUUsodwAXUZvLfonAJDcSSypbg5S6aWRrjNsCkKHKxkzrN+YUEMiQmCgmiqf3
+	 ycWv0WSd4JKB4rTcod4fNx5BRUDa/0w9lqzeCZxFg3t2uocZt5dNs0XGfPsodarGUwQJn
+	 szmalchHLeO3GQ4xNl034zolLVMI7v8C8XjywAkXgcParC/OkNsMkDNwrzcSfkxztXqnn
+	 It0gJJCPCIimYNEnySfzIcPpw/Jp0t5WmesADm7Jm9gGCi3MLa0XikGy+iaYUzEri+g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795020760;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795020765;
 	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:Date:
 	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Last-TLS-Session-Version;
-	bh=UQW0nXrPyYbjo4S1oXxussje5vbJBtGNzCRcDY+IPUI=;
-	b=YJtRun3Ndt1K9N5nb741BvqZ4RpcyFc2SlUBTDwDUO3J6mBb6yunwpq29i/KnBWt1UMM
-	 wMTsERgw7XgmnC2EEGAHOspw4m1Xg9xHq3xV3wVEnXq7eu1yP8nuoWbgLdaowM80kRDB1
-	 IpNG/jKbUVmjmp8bO8os4N0dKnt8weKW7QXQX4rqnsIofaCpowwcFQpRnfxf7MSTEYEHm
-	 +yr3XNazDw//ZbhGkQLoDc9u9GNiBouvdJ+QaCxWbW//4RdwGfu5g3GMIZwGRVN6ojqIE
-	 OH6qEUIRP3sa33xOui3dxL36OhbnpvZL20IP5R3fS6SUIOqM4DKrcnV8cjw1VMM2UJA==
+	bh=WjS1TnU5G3NX36BJmuETJgLua1a34Ccm5l9F2qAupl8=;
+	b=eXFn2mXsFJc2kRoFUwQBysP6UTN1nd4R0Uph4hPDkDJdgOMUTgVhkQ9fxdjr6Dw0yqzv
+	 8+ezXprhPNFqFH6Ks8clx1f15PfsRkRfTruwUGewqTvXfyEY4eZOygE8hPwwwg2R0Jwfb
+	 o4gWiyCMG2h7P+rT3SRyHFmxPA610rV3Mn0vf7MJFisaiQ3kL/zlxycdyPWJKN2ATNCPb
+	 uXBykZH2hc7zuVmISRpS2xvuAyiKzgJX5JJ3QcKFQd8xTFGWfZr2Ua2IJ6jIiM9EGriS5
+	 Zp8ptOQltvnZ/7pPADpozWrYGxySDJtvhLccKI/opMZp3c4ZEp47soXSKVRFM6PRU9g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=bootlin.com;
 	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=z6U8OeUG;
-	arc=none smtp.remote-ip=185.246.85.4
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=WTG9wZ4V;
+	arc=none smtp.remote-ip=185.171.202.116
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D67EF60A2603
-	for <imx@lists.linux.dev>; Wed, 18 Nov 2026 16:52:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D67EF60A2603
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AA9D60A3838
+	for <imx@lists.linux.dev>; Wed, 18 Nov 2026 16:52:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1AA9D60A3838
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=z6U8OeUG
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=WTG9wZ4V
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 9426A4E41635;
-	Wed, 18 Nov 2026 16:52:38 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id C46BEC4F77E;
+	Wed, 18 Nov 2026 16:52:48 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 5A4805FE9B;
-	Wed, 18 Nov 2026 16:52:38 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 01C3311BC28D2;
-	Wed, 18 Nov 2026 17:52:31 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id DB1E55FE9B;
+	Wed, 18 Nov 2026 16:52:43 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0E2CA11BC28EE;
+	Wed, 18 Nov 2026 17:52:36 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1795020756; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1795020762; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=UQW0nXrPyYbjo4S1oXxussje5vbJBtGNzCRcDY+IPUI=;
-	b=z6U8OeUGx24j59DLc4w+fnKkcOO7UM0k0NqgdPg8ADQXR+N0kViIqu/euZ9VUAU8EzzzOi
-	7syx7sE/CELspN/0yfv4xCc9SRR2TcOsJa+E5u/kUm7xDbTR63n+k9fX9rd2nF7dyXEmNS
-	q/fauQM+zzPPnzPQ73YLJhLVjbNz98dj/JQbq9z6Fz/QUcPq+u7YXLiN2WN9p9SzMeqSyW
-	lG/hDiSpAsTM7cO9toOKTE85BDfvXVyie/f7YeAiSWzBMR169iErk6xtwbgLB47On1BCns
-	fNC/E5+Xk1NIvQQdsTYVj0NkG7fekzFrwXg+zrxJF8SAMq1zNQOfwRxYM3u4MA==
+	bh=WjS1TnU5G3NX36BJmuETJgLua1a34Ccm5l9F2qAupl8=;
+	b=WTG9wZ4VyVIGQ4UVZlXnb2w4efL7atDAKfqbP6xwYOhTVsEM6/Ftdd8i3cuRRR3J0vtEyQ
+	4M633/W4wxKOISwgz9uQ1U+euEtb9PZljkIJDeqseRGvX4HzZsYdZ4+FCSkn8yCsmrGJXy
+	z4jifcUUx95b388z+pbsyXZOzU9n4pCPwowHpekULkh5mTt28DmxsLAyPSpUMcu5jddSwx
+	N1D/+Eyzka/W9W2BuORGq/XdBF1mG2lSw9UboJ4xoPF9kAqPNt8cYS9iijKgjZarRQfd+3
+	7v1Jsc7ognwPhOcE9aVErcqsGC6RHV9cv3IN98veu1CeZcvASMI+vExX/jJqnA==
 From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Date: Wed, 18 Nov 2026 17:50:06 +0100
-Subject: [PATCH RFC v3 23/31] drm/bridge: ti-sn65dsi86: implement
+Date: Wed, 18 Nov 2026 17:50:07 +0100
+Subject: [PATCH RFC v3 24/31] drm/bridge: samsung-dsim: implement
  .get_next_bridge
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -66,7 +66,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261118-drm-bridge-hotplug-v3-23-44bb3b4a828f@bootlin.com>
+Message-Id: <20261118-drm-bridge-hotplug-v3-24-44bb3b4a828f@bootlin.com>
 References: <20261118-drm-bridge-hotplug-v3-0-44bb3b4a828f@bootlin.com>
 In-Reply-To: <20261118-drm-bridge-hotplug-v3-0-44bb3b4a828f@bootlin.com>
 To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
@@ -101,46 +101,43 @@ Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Changes in v3:
 - add missing drm_bridge_get
 ---
- drivers/gpu/drm/bridge/ti-sn65dsi86.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/samsung-dsim.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/gpu/drm/bridge/ti-sn65dsi86.c b/drivers/gpu/drm/bridge/ti-sn65dsi86.c
-index 75e36bf261b0..637e4f4076eb 100644
---- a/drivers/gpu/drm/bridge/ti-sn65dsi86.c
-+++ b/drivers/gpu/drm/bridge/ti-sn65dsi86.c
-@@ -768,6 +768,13 @@ static int ti_sn_attach_host(struct auxiliary_device *adev, struct ti_sn65dsi86
- 	return devm_mipi_dsi_attach(&adev->dev, dsi);
+diff --git a/drivers/gpu/drm/bridge/samsung-dsim.c b/drivers/gpu/drm/bridge/samsung-dsim.c
+index ad595c749957..230ac7b13a17 100644
+--- a/drivers/gpu/drm/bridge/samsung-dsim.c
++++ b/drivers/gpu/drm/bridge/samsung-dsim.c
+@@ -1821,6 +1821,13 @@ static void samsung_dsim_mode_set(struct drm_bridge *bridge,
+ 	drm_mode_copy(&dsi->mode, adjusted_mode);
  }
  
-+static struct drm_bridge *sn65dsi86_get_next_bridge(struct drm_bridge *bridge)
++static struct drm_bridge *samsung_dsim_get_next_bridge(struct drm_bridge *bridge)
 +{
-+	struct ti_sn65dsi86 *pdata = bridge_to_ti_sn65dsi86(bridge);
++	struct samsung_dsim *dsi = bridge_to_dsi(bridge);
 +
-+	return pdata->next_bridge ? drm_bridge_get(pdata->next_bridge) : ERR_PTR(-ENODEV);
++	return dsi->bridge.next_bridge ? drm_bridge_get(dsi->bridge.next_bridge) : ERR_PTR(-ENODEV);
 +}
 +
- static int ti_sn_bridge_attach(struct drm_bridge *bridge,
+ static int samsung_dsim_attach(struct drm_bridge *bridge,
  			       struct drm_encoder *encoder,
  			       enum drm_bridge_attach_flags flags)
-@@ -1374,6 +1381,7 @@ static void ti_sn_bridge_hpd_disable(struct drm_bridge *bridge)
+@@ -1832,6 +1839,7 @@ static int samsung_dsim_attach(struct drm_bridge *bridge,
  }
  
- static const struct drm_bridge_funcs ti_sn_bridge_funcs = {
-+	.get_next_bridge = sn65dsi86_get_next_bridge,
- 	.attach = ti_sn_bridge_attach,
- 	.detach = ti_sn_bridge_detach,
- 	.mode_valid = ti_sn_bridge_mode_valid,
-@@ -1512,8 +1520,9 @@ static int ti_sn_bridge_probe(struct auxiliary_device *adev,
- 	pdata->bridge.type = pdata->next_bridge->type == DRM_MODE_CONNECTOR_DisplayPort
- 			   ? DRM_MODE_CONNECTOR_DisplayPort : DRM_MODE_CONNECTOR_eDP;
+ static const struct drm_bridge_funcs samsung_dsim_bridge_funcs = {
++	.get_next_bridge		= samsung_dsim_get_next_bridge,
+ 	.atomic_duplicate_state		= drm_atomic_helper_bridge_duplicate_state,
+ 	.atomic_destroy_state		= drm_atomic_helper_bridge_destroy_state,
+ 	.atomic_create_state			= drm_atomic_helper_bridge_create_state,
+@@ -2204,6 +2212,7 @@ int samsung_dsim_probe(struct platform_device *pdev)
  
-+	pdata->bridge.ops = DRM_BRIDGE_OP_GET_NEXT_BRIDGE;
- 	if (pdata->bridge.type == DRM_MODE_CONNECTOR_DisplayPort) {
--		pdata->bridge.ops = DRM_BRIDGE_OP_EDID | DRM_BRIDGE_OP_DETECT;
-+		pdata->bridge.ops |= DRM_BRIDGE_OP_EDID | DRM_BRIDGE_OP_DETECT;
- 		if (client->irq)
- 			pdata->bridge.ops |= DRM_BRIDGE_OP_HPD;
- 		/*
+ 	dsi->bridge.of_node = dev->of_node;
+ 	dsi->bridge.type = DRM_MODE_CONNECTOR_DSI;
++	dsi->bridge.ops = DRM_BRIDGE_OP_GET_NEXT_BRIDGE;
+ 
+ 	/* DE_LOW: i.MX8M Mini/Nano LCDIF-DSIM glue logic inverts HS/VS/DE */
+ 	if (dsi->plat_data->hw_type == DSIM_TYPE_IMX8MM)
 
 -- 
 2.56.1
