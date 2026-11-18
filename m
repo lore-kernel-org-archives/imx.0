@@ -1,71 +1,106 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.53
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795009918;
-	b=fe+RFiUt5ilXuYqJ0vae8bTkdLf78AMIe96jxLLC9vdinvIcY7S9yKS3x4wFY271olvm
-	 bKu0YzgR8mrxRJB0kosUB43ZsMef+Zpr7B5uTsHKtMURFMDYuGwmJxtEJjPGqr8sHHMuf
-	 u4EZWHrxvsl6iNRF8ED4W88TiXr4Nyn4U1gWo3fvkoa1GywZLO4J9Yp3Y4rB2x0HhHvct
-	 FIr5cwOdGgUY2iJPlN3qs8ivHl/tpgBcByoOtOtkolXu3Gfi9RmYja2smRHH/hq/KC/Rn
-	 8DT6/HIkAaBuuj5BTMpgsFNKBTzQUWdySdeqQ8tzWWXdoi3aVbjGDDJ4bRUNR3ztYPw==
+	t=1795010806;
+	b=bIP4zF/iiAoijLAIHCjU3xD+caSnfJRRzRiJhVl3SLEqfBtWeexSRVPUA2YYFqY1wiAc
+	 +4RrCyjy1Jhd1MG2H8RTM+ZRPvsJ5ec6JuoLmwo9oCKR16qnefgQ1vr9xuM2/PdtzoWZr
+	 5prKwETTWDKn+rm8DkRknbUx7N5GO6oBFs/sIbF6Jd7avD2lxnZu0hBI7r0M/zSCuiaOi
+	 9J0lynq/ll9RsbrC1HW8C/+AfNu9xELS3vvqVh8jIBMipiTM0tLnPc32tq5KUE+d21zrW
+	 zkP6RJVK6HQt5o5cnL8V1zLHlTqAb/VpMI2nYO8Zu6QMf3FdR7vcRkzTC0R7SyMB9oA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795009918;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=VHLJsIJFyqtvRqXnKEHB3qZMFu94gIc6D+p1OgPM6lg=;
-	b=B3SMA7EcwzFrnA2gjdiMOGZ1q6aJeolu3cNklztdKz2V7bmZ6iDNOJUTeh9+57XYaK/F
-	 uKRU6AhTwwx0XxMU/mZG56J7mKVa99X386W0QeCEApP8Lq6q/bGXWer1I8Ixvwh3Rt9jA
-	 0Lv5owK994dypVGvwgkzqZt867KfdMUUxQ9CXGYMUxdY95+TJiKkR+JiYLBRrsZsRk7pD
-	 bxSpZKrjbXdojcde5WZPTOpXBkXYq6Y+Bi3jOre3PeF97vwjgwy9U1qOZstF4QP5l/Hrk
-	 lLMbDv5yqzsknhgu27GViDovFMpTHxpMj1fnw2EIjdIw4J2TC1jHBl6xYYqaD67glGg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795010806;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=O8kUxWwNMGGKdJF+2JBGIvhWCx8VFS9Gq0fs2XPEP3c=;
+	b=epmwTBRNh8l40x4PC5wiRAOJ7E1HXY8RbC/EqN0R94ELeMmC6CGLW0Ui5Qyf2OdAUNoE
+	 5JQ/GKpj4tC200xCe0ZbNW9iHnvSzZ1BzTKarNYfFmMZVhtkZi/YfLy6ri+FKggbXj3sk
+	 BYYNMX/6ExJFl5kl5fnSG2SfICeFyum5UczfZqKsUBeG9UyuCy12nlfiGpPPJNM9Cw/pu
+	 +H3a3Yn128qE0ckxvmBRBBm6s/tVMeYxEaS/ey5GChqsVba9Dq5Ane/E0+t/Usx9I9HJb
+	 wkCz7Ud9TjIqHPpc7miDxqUM0B70WWWwNSQh2nKzvXNxRxrC/YU07k0Q4nEwUmw1zRw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=lunn.ch;
-	spf=pass smtp.mailfrom=lunn.ch;
-	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=UJwMBM3b;
-	arc=none smtp.remote-ip=156.67.10.101
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=baylibre.com;
+	spf=pass smtp.mailfrom=baylibre.com;
+	dkim=pass header.d=baylibre.com header.i=@baylibre.com header.a=rsa-sha256 header.s=google header.b=m+xbdE2k;
+	arc=none smtp.remote-ip=209.85.128.53
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A2CC606A333;
-	Wed, 18 Nov 2026 13:51:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1A2CC606A333
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F8DA606A32A
+	for <imx@lists.linux.dev>; Wed, 18 Nov 2026 14:06:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8F8DA606A32A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=UJwMBM3b
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=VHLJsIJFyqtvRqXnKEHB3qZMFu94gIc6D+p1OgPM6lg=; b=UJwMBM3bNYcqNwC4wFX0wj7AXI
-	qKVW+I8+d0IxCWWoCwDJ5G8j2vCIcoHJDYlAHxPvGCkpScvC5mZ32Lswu1TmhL8FTvWCvzgoSNrJe
-	iVJXIPZAcXmilKSIbPAsnNrpRVUvS1W3P1tlPQcYSGeGvwEHBeFaJNcKdesb3Es0hluU=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xTg4j-00HQiI-Km; Wed, 18 Nov 2026 14:51:49 +0100
-Date: Wed, 18 Nov 2026 14:51:49 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Frieder Schrempf <frieder@fris.de>
-Cc: Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Wei Fang <wei.fang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Richard Cochran <richardcochran@gmail.com>, imx@lists.linux.dev,
-	netdev@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Frieder Schrempf <frieder.schrempf@kontron.de>
-Subject: Re: [PATCH net-next 2/4] net: enetc: netc_blk_ctrl: add i.MX952
- support
-Message-ID: <abd5b300-2dd6-45b9-9ef1-c7c123b6dfa3@lunn.ch>
-References: <20261118-imx952-enetc-v1-0-25721440602e@kontron.de>
- <20261118-imx952-enetc-v1-2-25721440602e@kontron.de>
+	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.a=rsa-sha256 header.s=google header.b=m+xbdE2k
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4a5177d78c7so8953125e9.2
+        for <imx@lists.linux.dev>; Wed, 18 Nov 2026 06:06:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre.com; s=google; t=1795010804; x=1795615604; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=O8kUxWwNMGGKdJF+2JBGIvhWCx8VFS9Gq0fs2XPEP3c=;
+        b=m+xbdE2k5CCVtpBP577o2tkxcRdCBv8X0ubrc4Nn7qvC4s7OT1ONYtLDkxTy81wS5s
+         XLRxhavPkNIyPjaAfZ6kanIOp/tyFL/uG4Faezv5bA6NYiFOnyy1oPi3XQBSvAMea7aK
+         ltrHwWADMWOV1HqENeFcmmHZOUlHBXT0MtECSc41tppkRmtQbVOd1Iw+W/9bRFPg0xwZ
+         AfOa6Xj4i9j5ebEXys5PkCUIFA6nAUcOmu3Sxzy3pFSURiCUsqKkBSDMD0t53bG7ur2+
+         ydjYlSXuGjuc7BAbkG3yeDi9kwk4d92sCO9wZLm1CgzZa+DWoaEd/Oy3RS6bWfeG8hdq
+         GTgw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795010804; x=1795615604;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=O8kUxWwNMGGKdJF+2JBGIvhWCx8VFS9Gq0fs2XPEP3c=;
+        b=R4iyy2uK4ZUo3IBDdtK4K5CEH0QWeErxnMAz3PZ6g8O37k9xw1R9wDrWW6LqPhi6tL
+         t7aXHx5MF97x0IDpEOySD7emIJPPR0lvi/4+QtfUpguzDEGZO8pqwHakvogmN6/XtwYe
+         krFx8jB4H0E3/TVYkfKi+nk2WlZJN8aLkQQRb3Vd9PWhjw87jwxAJPl4zFnt67Te49P9
+         3yaLZ9+U19MU7cSdTSuAhG9fkJ4QTCfgn6/B4tW9+CTIpnL4noTOZCd93N1OlnynwRHr
+         /i9OOaJXF+J4EcmiBgd48c8Fubxvus3Cm76Ty0RJiqcerjsWCTlzJ4dCrUOUBJy6Q6tl
+         f8QA==
+X-Forwarded-Encrypted: i=1; AL+hErEvgz7h0iY8fVIQxNku6G4z6xsyQSLV6HWUQg3vGv0J7sE4lbuVSGi/y6OH3WTlefySVWs=@lists.linux.dev
+X-Gm-Message-State: APuU4Z+OhOYARjLbiKwOLZxZH1QxlmxHQhnjdueT4QmaxlVg3OP68BTB
+	Qw6BV2Ei4ixVpuWiylE9e5sjFrX6tnY9ZFi4BmXfn+ChSBS235tFYkNR5qwggQG5qAY=
+X-Gm-Gg: AYBFou1f18zmv+k46g8Hd0gPRqRtv1Nt4Ab51vT6VUEzbY9nnagibkui1qj3h3kXeQc
+	01Pedz+0j+5Ee7+U3UrwPmsRkdtEp61cGjheHAzS8V9XDbf7YxApUV4VlVnFTSOe+wpqBpsBTKI
+	i1X2jZokeA8gKtaDeG3vyrgNlNoOoqcUo6hXXQowNcaH5aSQ/UVI6Sr9OzBLhb1T7As/H7qP4vx
+	v+bZwv7RdCUB0EdLHzMDmpKfEB15ytPbk+hq9TXf4/0WY0F70GRizpTGeIXTDkgeW5v+VztVKF7
+	mB10hky4bC9xMgFwDr4+T8Q1/yW5Q0KMt8Jopsr+RooLONENy6YDx9s4l1koMm/0Xsug9vxjDaG
+	Tw4CoaECHQEd1wfS4l0Wk5HjmLxrGpMhu+RrG/T/Y7JfKAApwBmkmFJNBi1dYX/ernIb0XMkKa0
+	s59HuCibc1CRC/QOGzS1YpTJW6wSWpx4F4CnshG+rX+7eGpYQcYUoUYHCTRmh9PcdgluJFycWdh
+	ETYkqphES2vQUTmVjAeQiy1uXgKQCacUXZ0mzh1dXB/W6sqqoONlUDh7g6YNf8e8L9WSZvT5dJ5
+	5Gmc0QTD5dsjvkWb0l+JrZbxOCt579SZvPo=
+X-Received: by 2002:a05:600c:3509:b0:4bb:68b9:f610 with SMTP id 5b1f17b1804b1-4bb7da03954mr52120315e9.9.1795010803953;
+        Wed, 18 Nov 2026 06:06:43 -0800 (PST)
+Received: from localhost ([2a02:8071:56d1:2de0:1d24:d58d:2b65:c291])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-4bb7d256f64sm61534715e9.1.2026.11.18.06.06.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Nov 2026 06:06:43 -0800 (PST)
+Date: Wed, 18 Nov 2026 15:06:41 +0100
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Jani Nikula <jani.nikula@linux.intel.com>
+Cc: David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Sasha Finkelstein <k@chaosmail.tech>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	Andrzej Hajda <andrzej.hajda@intel.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	Robert Foss <rfoss@kernel.org>, dri-devel@lists.freedesktop.org, asahi@lists.linux.dev, 
+	linux-aspeed@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
+	linux-riscv@lists.infradead.org, etnaviv@lists.freedesktop.org, linux-samsung-soc@vger.kernel.org, 
+	intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org, 
+	imagination@lists.freedesktop.org, linux-mips@vger.kernel.org, lima@lists.freedesktop.org, 
+	linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org, linux-amlogic@lists.infradead.org, 
+	linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org, nouveau@lists.freedesktop.org, 
+	virtualization@lists.linux.dev, spice-devel@lists.freedesktop.org, 
+	linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org, 
+	linux-stm32@st-md-mailman.stormreply.com, linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org
+Subject: Re: [PATCH v1 9/9] drm: Unify coding style for *_device_id arrays
+Message-ID: <av2rKJQ0AKU9CFZI@monoceros>
+References: <cover.1795002467.git.ukleinek@kernel.org>
+ <a2d5ce256b8ec150de4a6494c177b19693a33222.1795002467.git.ukleinek@kernel.org>
+ <7692c160e418e7ad0528739fcc879b11fbac8ab0@intel.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -75,64 +110,98 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="5c6ped4sw6nigwko"
 Content-Disposition: inline
-In-Reply-To: <20261118-imx952-enetc-v1-2-25721440602e@kontron.de>
+In-Reply-To: <7692c160e418e7ad0528739fcc879b11fbac8ab0@intel.com>
 
-> +static int imx952_netcmix_init(struct platform_device *pdev)
-> +{
-> +	struct netc_blk_ctrl *priv = platform_get_drvdata(pdev);
-> +	struct device_node *np = pdev->dev.of_node;
-> +	phy_interface_t interface;
-> +	int bus_devfn, mii_proto;
-> +	u32 val;
-> +	int err;
-> +
-> +	/* Default setting */
-> +	val = MII_PROT(0, MII_PROT_RGMII) | MII_PROT(1, MII_PROT_RGMII);
-> +
-> +	/* Update the link MII protocol through parsing phy-mode */
-> +	for_each_child_of_node_scoped(np, child) {
-> +		for_each_child_of_node_scoped(child, gchild) {
-> +			if (!of_device_is_compatible(gchild, "pci1131,e101"))
-> +				continue;
-> +
-> +			bus_devfn = netc_of_pci_get_bus_devfn(gchild);
-> +			if (bus_devfn < 0)
-> +				return bus_devfn;
-> +
-> +			err = of_get_phy_mode(gchild, &interface);
-> +			if (err)
-> +				continue;
-> +
-> +			mii_proto = netc_get_link_mii_protocol(interface);
-> +			if (mii_proto < 0)
-> +				return mii_proto;
-> +
-> +			switch (bus_devfn) {
-> +			case IMX952_ENETC0_BUS_DEVFN:
-> +				val = u32_replace_bits(val, mii_proto,
-> +						       CFG_LINK_MII_PORT_0);
-> +				break;
-> +			case IMX952_ENETC1_BUS_DEVFN:
-> +				val = u32_replace_bits(val, mii_proto,
-> +						       CFG_LINK_MII_PORT_1);
-> +				break;
-> +			default:
-> +				return -EINVAL;
-> +			}
-> +		}
-> +	}
-> +
-> +	netc_reg_write(priv->netcmix, IMX95_CFG_LINK_MII_PROT, val);
-> +
-> +	return 0;
-> +}
-> +
 
-This looks very similar to imx95_netcmix_init(), and
-imx94_link_config() is similar to the core of this loop.
+--5c6ped4sw6nigwko
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v1 9/9] drm: Unify coding style for *_device_id arrays
+MIME-Version: 1.0
 
-Can some core refactoring be done to reduce duplication?
+Hello Jani,
 
-Andrew
+On Wed, Nov 18, 2026 at 03:27:40PM +0200, Jani Nikula wrote:
+> > [...]
+> >  drivers/gpu/ipu-v3/ipu-common.c               |   8 +-
+> >  drivers/gpu/ipu-v3/ipu-pre.c                  |   4 +-
+> >  drivers/gpu/ipu-v3/ipu-prg.c                  |   4 +-
+> >  254 files changed, 1155 insertions(+), 940 deletions(-)
+>=20
+> How do you expect a patch of this size be merged?
+
+Using b4 am :-) Honestly, in the cover letter I wrote about an immutable
+branch and offered to rebase to 7.4-rc1. When trying to apply this
+series on top ov 7.4-rc1 there are only 6 conflicts (1x modify/delete
+and 5x content); these are all not so hard to resolve (and even dropping
+the respective hunks (i.e. resolving using `git checkout HEAD`) is fine
+for me.)
+
+> > diff --git a/drivers/gpu/drm/i915/i915_pci.c b/drivers/gpu/drm/i915/i91=
+5_pci.c
+> > index 84a7dc6ab5db..faceb3de4fa3 100644
+> > --- a/drivers/gpu/drm/i915/i915_pci.c
+> > +++ b/drivers/gpu/drm/i915/i915_pci.c
+> > @@ -870,7 +870,7 @@ static const struct pci_device_id pciidlist[] =3D {
+> >  	INTEL_ATS_M_IDS(INTEL_VGA_DEVICE, &ats_m_info),
+> >  	INTEL_ARL_IDS(INTEL_VGA_DEVICE, &mtl_info),
+> >  	INTEL_MTL_IDS(INTEL_VGA_DEVICE, &mtl_info),
+> > -	{}
+> > +	{ }
+>=20
+> Personally, I would *always* use {} instead of { }, and would rather not
+> change.
+>=20
+> Across the tree, {} is slightly more common than { }. IMO changing them
+> is pointless churn.
+
+It depends on how you count. My statistic looks as follows (on top of
+next-20261117):
+
+	$ git grep -l device_id | xargs -n 1 perl -g -n -e 'print "$1\n" if m/devi=
+ce_id\s*[a-zA-Z_0-9]*\[\]\s*=3D\s*{(?:\s*{[^}]*},\s*({\s*}))/' | sort | uni=
+q -c
+	      2 	}
+	      2 {
+	      6 {  }
+	   2598 { }
+	   1262 {}
+
+So over all *_device_id { } is more common by a factor of > 2. This
+series fixes one {  } and reduces the number of {} by 37. For only
+pci_device_id it's:
+
+	$ git grep -l pci_device_id | xargs -n 1 perl -g -n -e 'print "$1\n" if m/=
+pci_device_id\s*[a-zA-Z_0-9]*\[\]\s*=3D\s*{(?:\s*{[^}]*},\s*({\s*}))/' | so=
+rt | uniq -c
+	    159 { }
+	     32 {}
+
+Without the context of an array initializer there are many empty
+code blocks (function bodys or `do {} while (0)`), empty dt nodes, and
+{} in Rust code, which IMHO have to be considered off-topic for this
+statistic.
+
+Best regards
+Uwe
+
+--5c6ped4sw6nigwko
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmr9sOcACgkQj4D7WH0S
+/k4vggf+PQfM4MkbLgaQRCdXRWWsc4/Fa0tTMBQAl4gjx2p5NE/N7TDUO571o3+N
+oWcelzY5O1uRcc2qHZVnu3vAxFqzk4YHfGjsbGHsxQAibxnIFW7ttYTzt0w5a9NH
+v65V6+sebCdwLrPVE5ilcqzFFSgmnv1wTNm2vCEUxdKGacifySaGRmg4+ax+fLb1
+CL+RS7fM2EkQxG1k4iDEPv1Onrm9S4DtwTts0wxkK780rWYD9FoSLjHyX/x21Y8x
+SZKaXeNZlxtHJpQLq8ub8AL/t6k82nC020wYZOUbUmvPyqxhNoUuuS0/RVlz9xT6
+kXiliIwWzcMtAKt4ik8nbTRO5JERhQ==
+=0alU
+-----END PGP SIGNATURE-----
+
+--5c6ped4sw6nigwko--
