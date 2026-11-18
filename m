@@ -1,90 +1,154 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.49
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794974338;
-	b=G8hK0gm1HwxFSs4axElY4unD4nJqijkuuO3xcUPMwIpx1xfhqAmvRFEjY3TjtlOKZWF2
-	 oTaEdU+PyjK6PDf+TNU2WO3cvc9GuaRIRRei1dfUu4/8vbwFHPW8CCFUTvJX1PNTMwrHM
-	 Dj8KreMpc602cJf7JYKSAOGLTl1VJ7lEGEFzbeQzNfCasUXnm03gbqVhHrZ2uW0sk/B97
-	 OJv8fuIrHmp3aiTc9H94ONqydZVSq0VrbEpIbSeuFkKjaLQkK7mc3ToNagW3zW61kGme1
-	 DJFjhd+thuOdSKaHdHiz9wYU4efM0pdAm8i4NS6h77spk7XOAVHaBN++4uld0VtpyZQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794974338;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Received:X-Forwarded-Encrypted:X-Received:MIME-Version:References:
-	 In-Reply-To:From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=IOskFv7B1qRwSI1xnDutWFbR8KW2ByneEJ1ja9wWCsE=;
-	b=rLliFQS7pi0Ss2fl0zCXL/E7pqGhmlh2vtAw2kwrWnvOWCJt8U5oEA+OjnIA8aD3rSTQ
-	 h6YD7u8in8f2S3Dmi80qzg3kt1BPHXrtsQZjq0uvyDiZaXzQlXpKw47FnKYGpDlLFBoei
-	 6SeYVhgugc3/BabJbU16AzHRaFALicHt5ewjQI5gf78+NvBO8FEHkBrPLIBau/PYah+01
-	 MkMmTxabutJvOB/vUa2N1fncVmI9W/gHelhy9p6ipvE6S6gye6EVL2qZ9S9Ak2WEZva8y
-	 DuWJV/bTCx/EbcttafZgdWLmkzicmQZSZsDuybXV3CQvufSNO+yIP97cKmaaSr+wrDw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=chromium.org;
-	spf=pass smtp.mailfrom=chromium.org;
-	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=IgXzMXNX;
-	arc=none smtp.remote-ip=209.85.218.49
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.130.22
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794975496;
+	b=HpFSF5mBevw5lSyZ5XHhufPmYvOGeqF8RdONlU8U5VsM6/T2pc86ScdcAdsTDvcVDtJ1
+	 lBKU2kLITMLBOxVzbIwI+y11nsZ1ApAv5NJ7rhD5MzteMiMCj2idc0cIKVKW3KOHW9I3X
+	 XbtHQaqPCdiux83xygJq/LL3CC8hQd4lnjFGIRnNQy2h8b8kHrd6m0Rm7Qi+N1pI5nMI5
+	 X76Qv3gxzeFwlrZB31ehKVhqv4ICpsx+Y0bqmZjf6aDVJ2i+XH2NpFNWf0/aefilHfb+q
+	 ej8HnV4DNwsJ7I3eSzpLIr35UmcMbRWXOFc9x+rQ62JF0uwrJsNbu123eQapVgukhfQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794975496;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:CC:Subject:
+	 Thread-Topic:Thread-Index:Date:Message-ID:References:In-Reply-To:
+	 Accept-Language:Content-Language:X-MS-Has-Attach:X-MS-TNEF-Correlator:
+	 msip_labels:x-ms-publictraffictype:x-ms-traffictypediagnostic:
+	 x-ms-office365-filtering-correlation-id:x-ms-exchange-senderadcheck:
+	 x-ms-exchange-antispam-relay:x-microsoft-antispam:
+	 x-microsoft-antispam-message-info:x-forefront-antispam-report:
+	 x-ms-exchange-antispam-messagedata-chunkcount:
+	 x-ms-exchange-antispam-messagedata-0:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-AuthAs:X-MS-Exchange-CrossTenant-AuthSource:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-originalarrivaltime:
+	 X-MS-Exchange-CrossTenant-fromentityheader:
+	 X-MS-Exchange-CrossTenant-id:X-MS-Exchange-CrossTenant-mailboxtype:
+	 X-MS-Exchange-CrossTenant-userprincipalname:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=vnQPJjjH6hN5V7veicXc949/FeYS+wOHdGFONuB19cA=;
+	b=4CFknkSqM3m2KDMQ3qTH6v8FBoWLQJfOnmTrAkccnIe+vmbPdT46UbixNaHSBkHy7ZjR
+	 mo7Vl01B69fXXoBxVr9tO2As0jt+bE39CrHYRGZu9c/+SorLLziGyyRTRuiDxYfQMuXOW
+	 8h2jEn2pVSPqO8glQ8DkScp+8GVdtnhQlI+McVR2sblo4Bg3KqJsILPPICKpX9G6Ath0y
+	 96L9YsA3JQVcN41v+qoDywAsCJgrKw8Ppyj9qlcTpZDu13zW97ioz9uAyr3P+SoUkDSaV
+	 GW4pp2IZttIr3kljuAK8/O/4JcMflbB8QAKdvdbvMbnzrIUGgs0s4y8LMlwdU48H7SQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nxp.com;
+	spf=pass smtp.mailfrom=nxp.com;
+	dkim=pass header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=Mt3PzOCp;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.130.22
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011022.outbound.protection.outlook.com [40.107.130.22])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3D99606A31C
-	for <imx@lists.linux.dev>; Wed, 18 Nov 2026 03:58:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B3D99606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44A3B606A325
+	for <imx@lists.linux.dev>; Wed, 18 Nov 2026 04:18:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 44A3B606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=IgXzMXNX
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-c50933bdf4bso110074166b.1
-        for <imx@lists.linux.dev>; Tue, 17 Nov 2026 19:58:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1794974336; x=1795579136; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=IOskFv7B1qRwSI1xnDutWFbR8KW2ByneEJ1ja9wWCsE=;
-        b=IgXzMXNXPq/Z0YinAyKidLWa63/pa7llo9kfOsfBRux+ySwNDf8ewce3no+h5kYwhC
-         MpTbAkjGtfzHAnWrAQxQjU5VjloMKFZSIbEeVssV5R81zCjuErMaXA7qz9L2ojdUpZqz
-         wyTNBafOa/gz250dogjsH18dFZ7zT4uKb9fOo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794974336; x=1795579136;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=IOskFv7B1qRwSI1xnDutWFbR8KW2ByneEJ1ja9wWCsE=;
-        b=Zeug9ArkE+EIlACV8Xno27x7BrJGp7pPLiayJHnJsefQUVqgf4S8Hkr23PWjb+Weln
-         yBsKTR8XwLtiWo8QTzyWcA1fYiQ0IlkG41lPBjdZQf/wJch1/mz7ITpSURxAlYeW2Ulv
-         VyuvTFozhtEZRFdqt/E5OCdS7m7IiF+1NdkEo73ug4DDAME64YglqTJORlAdVszchqsE
-         xWf/zMUKHiYuNLw1z5DBN+4rQA4Wd6bfizwhNVjiOp/26F7B931f13utRVTTc/78obn/
-         ZgvXlpk37xd+3Qw+sksSMwxj2H58SUMRkl9+EoZDJYyimFbLVPSSESa+WR1HIYO87jny
-         Ii2Q==
-X-Forwarded-Encrypted: i=1; AL+hErGSZIOh32GqZv63pmPBVgTDK7abBhsv+KMC7Ec5qKLPnXlnyMy/NgrltEKIycILwO7EorE=@lists.linux.dev
-X-Gm-Message-State: APuU4Z+ngV532B5gbi2FQ2d5nSgwawxp9yIizf5TxKMoWLkEUIGrBR4h
-	grLLKJfHYN/SQ/nKCDFG3om5wzCtotSEiiUx0NKa3kEqrlfDHe17FwFtMDYrKrRC7UsLqQrBOIg
-	5pvjE6GD+
-X-Gm-Gg: AYBFou2jzYUV1rSdo9MY2+42JtdHteh40b0CvqcNjbj3Jg9EfVRWYEsYhLVjx8ltn2b
-	BBUMIZ8O5/SwiJDFw0zfs0VYzwV7+B6DkFHO2Pvdo7zkxtsFhe1n1j8ktpnLspUzj3pSEPdfi3+
-	FIxVnCw+Eodz8ubYnNf+9ZGljTqNq5kSeaxE8SMsE5jq/k4ycFX1WcnO2aWf41uGwh1kVz5HCP8
-	XI6m0iPmG5KEgfxUdP8lQ0bFYh5bxn8C3+tl3b5/6i4bsWGnhe485Kqj89ECI82xj5BQD/vhVFL
-	ruBKtZW2e1lNTKDMj/bgUjHPTp5VcJ/oOb6wu/j5/qOwY27LKCnW9y7F3VF2O6vsXxatPwazrBd
-	vnedecn3zzUfr1GSSJquXkCPqu/HhqLaoU62sx5ySIVjy2Sj2oTY9sIQFKRT+xF6XvS1n/ukudq
-	+jw8/5ELcMsVkoDn40ZawpHKiHqW3Lwoczdl4cEzPqtlVbTah3YhZzc5gLLhuJDGyFQRjo973bi
-	lZgCG9Dzq2NOTls52X155SDxqCrufmECUNyMpdDaquVW8qv87f+mKn5O/bRBsi26fxCU3fJgR9r
-	pLdPnOaxiahsX45rhu9o+d0qvEVK1IAon9tacTQX3tbzHXX/4mMrBxDxruLSAuw6sjdY
-X-Received: by 2002:a17:907:84a:b0:c40:9b35:ad91 with SMTP id a640c23a62f3a-c510e2b7e2amr91851066b.13.1794974336069;
-        Tue, 17 Nov 2026 19:58:56 -0800 (PST)
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com. [209.85.218.53])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c510cab3000sm51410666b.56.2026.11.17.19.58.55
-        for <imx@lists.linux.dev>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 17 Nov 2026 19:58:55 -0800 (PST)
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-c4d5b2db4bbso105123466b.0
-        for <imx@lists.linux.dev>; Tue, 17 Nov 2026 19:58:55 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErFmpU+ttHvaBgiwl5aWTjeaY4F/4hCZeZYm/y+lUAIip67y83GcAUs3BH+6qXkaJGu7I7w=@lists.linux.dev
-X-Received: by 2002:a05:6000:2893:b0:498:364d:7509 with SMTP id
- ffacd0b85a97d-4a3774cbbbamr10035694f8f.24.1794974022637; Tue, 17 Nov 2026
- 19:53:42 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=Mt3PzOCp
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=uydlNblYZYNUoRs63a7z0mHvVGgjT8ilEPucWMl9tCdca9i4Nt5gYZ4YNJJNZwntBWbvqoO4fbAWFL9PhzozQDboY7UvyTyo+P58ZvdnNVCYmWi5EJ+ownuk39HvkKe8GeqeowgU2KIuWScD2bhQn4cGZDprtFyP7SVL8PIgCxjGDCd1ZHg7QfFe8IeUYVTly9zvrJkJzfw9piUbMfWFLqWqVQCXkhcs29ZmtTsv/RWJ7sstzxjnMrYqgQLTZyu2fQOFjXZ2lIhH53J2pYJLEEvkwSO51TLWCwm2z5eGIisu8QuZ9dhbbI4sic/5BVRCC4E7vK4ozvsSashIuju74Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=vnQPJjjH6hN5V7veicXc949/FeYS+wOHdGFONuB19cA=;
+ b=KqQbVvBaO0zoX2B2cnMWwkIMQsBp23C1ZlaV7PjsXY82iBLLbQfG2aI3lulHPvWC8sjSFNhjzUhx5l8pehNwihIyDCv7nb185eDQstVyGQ2SywimdTJzWpX866fjbPuBGURv2IAGahHlHMfjjV5kmwcXojIA3QEvNLRgezKULXfUcX97YbM6UlajWnRBIWTW4uGnq80fX0OYdlq14+i+81oD/Mahb6zh/8GBuca1bQBCjZIhasfmhjX6sZ1wS3U822Tiv+mMGqLL4jfEFoBqi5842+/flwQkl0WisKVV5bfi3jPTHava1vOEEPWqjhweKpn9wcq7jxAMGYNgI7J3cQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=vnQPJjjH6hN5V7veicXc949/FeYS+wOHdGFONuB19cA=;
+ b=Mt3PzOCp/dJmMIcL7u+wlWS+ycG+o2DpKhWPTuC/fUj2VZXGwLtDp8x5IIPo2of2LP5qe5UhjAjC1nJ1vvGOiyUH0SVEMsmV4W+1L8D2G0E2vTYD3Hg5ret2WkkgZ0wnTLVFT0BKUh/UdIvXo5HP2I7452JNEo3y5xgwYSxl3fClgBN5u74j4cX3AlFRvEkbejAhQLnXH820yJvafQ1/itDvgxhZdh0xXfUk8E8PejMp1gJZ2xwD3DUp5aPga34GoHDy3E1xj6hShhNReZr4wepyCUmhVUYtaTlKGRrUv3UBuAM+TjiZtf+gJz59qn/9bwnQMzfJ5UXvlZUwF5lD+w==
+Received: from AS4PR04MB9338.eurprd04.prod.outlook.com (2603:10a6:20b:4e6::17)
+ by VI0PR04MB11940.eurprd04.prod.outlook.com (2603:10a6:800:307::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.14; Wed, 18 Nov
+ 2026 04:18:10 +0000
+Received: from AS4PR04MB9338.eurprd04.prod.outlook.com
+ ([fe80::7c4c:9c56:8552:f680]) by AS4PR04MB9338.eurprd04.prod.outlook.com
+ ([fe80::7c4c:9c56:8552:f680%7]) with mapi id 15.21.0615.013; Wed, 18 Nov 2026
+ 04:18:10 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: "netdev-bot+sashiko@kernel.org" <netdev-bot+sashiko@kernel.org>, "Wei Fang
+ (OSS)" <wei.fang@oss.nxp.com>
+CC: Clark Wang <xiaoning.wang@nxp.com>, "andrew@lunn.ch" <andrew@lunn.ch>,
+	"olteanv@gmail.com" <olteanv@gmail.com>, "andrew+netdev@lunn.ch"
+	<andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
+	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"horms@kernel.org" <horms@kernel.org>, "richardcochran@gmail.com"
+	<richardcochran@gmail.com>, "linusw@kernel.org" <linusw@kernel.org>,
+	"linux@armlinux.org.uk" <linux@armlinux.org.uk>, "imx@lists.linux.dev"
+	<imx@lists.linux.dev>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Subject: RE: [PATCH v7 net-next 9/9] net: dsa: netc: add PTP one-step
+ timestamping support
+Thread-Topic: [PATCH v7 net-next 9/9] net: dsa: netc: add PTP one-step
+ timestamping support
+Thread-Index: AQHdcaU8FIWnfsUcvkazg7XTHvzRILcuwWcAgAR9yZA=
+Date: Wed, 18 Nov 2026 04:18:10 +0000
+Message-ID:
+ <AS4PR04MB933806268CA9276C44A5696D887A2@AS4PR04MB9338.eurprd04.prod.outlook.com>
+References: <20261111062753.1397582-10-wei.fang@oss.nxp.com>
+ <179472746829.2199510.2714083926199671078@kernel.org>
+In-Reply-To: <179472746829.2199510.2714083926199671078@kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+ MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_Enabled=True;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_SiteId=686ea1d3-bc2b-4c6f-a92c-d99c5c301635;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_SetDate=2026-11-18T03:59:41.0000000Z;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_Name=NXP
+ Confidential;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_ContentBits=3;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_Method=Standard
+authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: AS4PR04MB9338:EE_|VI0PR04MB11940:EE_
+x-ms-office365-filtering-correlation-id: dc2fc065-acab-4e5d-0bdc-08df452af4c1
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|1800799024|376014|7416014|19092799006|23010399003|38070700021|10067099003|5023799004|4143699003|56012099006|261026140227099003|11063799006|261028144727099003|261021121427099003|261022105027099003|261022075727099003|261026121527099003|261021123027099003|261102123227099003|261009223027099003|22082099003|18002099003|6133799003;
+x-microsoft-antispam-message-info:
+ /nmp85ks+s7wa3zg0jPfeIJ7TzOdxARjWrkkif6Iq/CKuDVRI01WZFh6sV4SyDTajUE8+WOLXRMETdy2qqTiAa4+wt0vZtI6gHoZvP8lGVt2wmow3G8eXsgEMDcZAOLSgaz+8oQjUywcDafZd32mq7fH1kmhGQxBahMdaftzpz4cY9Ku5wPr+p4c+urLSAJlFkZno2E7qojRYec3B+nq5uZAMITvErWC2xDsQEIEFMV5OuFaAOROEZvEH0v2geEKyXtwvw8gUkNMOXudT/LwFK041Nput2E5Oryd5l7tU1G3I2psULu8y6GvR3YzzYJ8fQT3SDlz+bNj47xjorL24fKH3s9rxroSfxwV4tJfg2ZmAbUbDMcU6pUxflUzQX8OFCMyzgVLfZGMw+ahOTcy++K4xtivhQLMmkNFqcIc5wjE+viylG1pDOvkvERVbWb6vQ/3T+hfJVTKv1vZbJCOKtGWxis9ze0It4BwuEFbdabd1CUhA2R9w0bqoBfQrwuxkUFjAS+92NglsWW5AJRswiqHn1Rsu+MyousA9irFAmLMZjfQcMrP4LHh5WlPASpErArRKw8kXAv05QKzDCypabyi7Tow8pcVK60p3JQ/ZEZrnXJTNxr0QV5ZklO3SZknPk9QE+Es6hb0GnbaaNATh72ItPgQkldtzx6vaM9qv28Ed2oWQZUstQ5tT3VqBY8DbhM3ZZM/RfgxjkLTfVUpXsBVSz4FokBDHDCzNWF5QIA=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9338.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(19092799006)(23010399003)(38070700021)(10067099003)(5023799004)(4143699003)(56012099006)(261026140227099003)(11063799006)(261028144727099003)(261021121427099003)(261022105027099003)(261022075727099003)(261026121527099003)(261021123027099003)(261102123227099003)(261009223027099003)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?8kFfOKaWW0q9QZn6zTqS6s0/h4ry/YTuOTfv4VOCZY8xFnlCXmhzNOPFLmwX?=
+ =?us-ascii?Q?9Fh1jreuNDAiyH7yU+WluMxk1lyvIUYBV7kTlTFVE5iwfJ2S5N+nOSUSYKqy?=
+ =?us-ascii?Q?HBCAGoav/qWYw44LZKByHnJRNdRhiXLnSJLaBqZvG+4LmMa8iZavIrREipoj?=
+ =?us-ascii?Q?tkxUc8GVYV2KYrWijsy2nTCaFcvvmqap7QtjRylm8WItZXokf8H6sQ1jNh6j?=
+ =?us-ascii?Q?VH4tZbZbdjBUveABYLYkwvklGvlWbp41hnVp7ygsTKhKu7NGuO1Fzte+xHJd?=
+ =?us-ascii?Q?wUUhv+gCjTuiR9l6f+WaEXZYAgRGOCegXUNAEnNuyyM+wH6dNo3kV+0hiWFE?=
+ =?us-ascii?Q?ioPNL2msV4n7R/bUXk64DqGu+ZNBwmCQU5tBRetVPXT/wrm7jBIeEJ8ZQJjR?=
+ =?us-ascii?Q?eRsUTyzHz+w2u24FYY1RhrkDqg1poAQ/hXbdbQ+pdRoR0yqPU6Nazbr3fXd/?=
+ =?us-ascii?Q?RVyoSU0dybjJlaZBXEbbYgVdOt12yE6Jd0iSdB5TlwfQOroyZf/R8b4dU9te?=
+ =?us-ascii?Q?u2+RUNXMJXL16Vktff7dOe+vm+cF+wBel1aNbKlqhYG9fqeun2KunbBU7JXC?=
+ =?us-ascii?Q?e7ptJy1pfHdxtL0LB2QeTcmlqU//vrjbcXdeCpA12Gf5kmgSWo+W39YrGn3T?=
+ =?us-ascii?Q?JoJkhnbGKGtd3qlpcq6ai0igeIth9acunHCNpeJzde8lmRi1o4q8IxWnqmRk?=
+ =?us-ascii?Q?3gbzUCyHe83gCvQ4Sib7YwJfhYFUHBu9LdkWgte+UTI283AA9/K5uJAoHrXS?=
+ =?us-ascii?Q?YJVsmS2W+fLt4+YXhGwczk7ZxUBSng/XH9aFmsY8UtwaGIvJielSQsW3mzih?=
+ =?us-ascii?Q?JeVpevZXvqFEcvYFIWqynHCS4wQge6FekB6ycQgvvPv5bRQzzxuMo+QBooeZ?=
+ =?us-ascii?Q?Ise5H7OkeB/eaOr7FPxAcKR2uZUoWfG6km5XbA8NyQg6/GNFxxtRdQYkGiaA?=
+ =?us-ascii?Q?fsV3uVEatjMjrK4rS59VvJ+Ddit/JomvWtD4wqra+A0ixaJ+fZKAYRu5tHgM?=
+ =?us-ascii?Q?RgXdLDaurGUxx5/bW8ZXDeO5/gABTWMu8vaAJxv2i0vp0uY+mv+321zjTEj3?=
+ =?us-ascii?Q?mZl9sPcX0okq/aCJw2ll3g2XYx+kO7raVhzNeP5NW/Qa+fN4Proy0LZqTQM8?=
+ =?us-ascii?Q?LzMmSKHQNiWvQ/lLh93IzdVVdlT9JDy/1+9j9UykQPlfN9GVu0pOvQTX1bfu?=
+ =?us-ascii?Q?6o/XLLb5JOeMNNWO0MKmVM0bqKSrOqO0x4qgHp/GqSa6Lxy2w3g5ifUud9we?=
+ =?us-ascii?Q?mDlsjGK5eZxpN+gk14abBwCqiUTKoc+/HOveaVUNkpDZKGGDG1fx1AeKzRNY?=
+ =?us-ascii?Q?UA2QF1ZDqa6MtZJ+0OPRLG1I3lEf1Qvc91TvWODtiJydwnDH1FVBEbe3bq8M?=
+ =?us-ascii?Q?f3//QbMakwscpyatlFTrMQv3BjmVHB4HSwyaNj6e9KSTKJ9aTODGxD5EHYI9?=
+ =?us-ascii?Q?Fwphpybm9jwCG738HWqigaHFn11RftmKjD1AqQUPczrEEYtHKJ5rp0t0B6rj?=
+ =?us-ascii?Q?aWIBTMYztShTe80oAQyEnAugUnqXumb2hZ2WPUBY2XnfKdVMDuEDCe7sE+1b?=
+ =?us-ascii?Q?eBQPBhYJuC+E5CpPDHBOpyS4vURxw/GND0oZfkGIMp18xmcc9zWA/1GtFYUq?=
+ =?us-ascii?Q?4BuGKSUs2kRO8CVeBohTHNjGF9TIbBYouKItdtfZcaccAB54NgdZcX+DUXad?=
+ =?us-ascii?Q?4VYjbOLAy4AuHIjYNusc8Ztk5ADx9GmFeC5J6aNQiuZHEbPb?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -94,71 +158,183 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-References: <20261116-reform2-internal-panel-v1-0-765cf8d5ff4f@igalia.com> <20261116-reform2-internal-panel-v1-1-765cf8d5ff4f@igalia.com>
-In-Reply-To: <20261116-reform2-internal-panel-v1-1-765cf8d5ff4f@igalia.com>
-From: Doug Anderson <dianders@chromium.org>
-Date: Tue, 17 Nov 2026 19:53:31 -0800
-X-Gmail-Original-Message-ID: <CAD=FV=XQ0Nw6tuUjr_pC_DQnWQZ0XD=jH+_djvbduQSd3XSrcg@mail.gmail.com>
-X-Gm-Features: Aa3M54pcJVKrzVh9hl7PlSfdr6bBBDt4Ls2uHxZOi9oF_y8egwxD6E6UxsIqAlM
-Message-ID: <CAD=FV=XQ0Nw6tuUjr_pC_DQnWQZ0XD=jH+_djvbduQSd3XSrcg@mail.gmail.com>
-Subject: Re: [PATCH 1/2] drm/panel-edp: Fix Innolux N125HCE-GN1 mode
-To: Christian Gmeiner <christian.gmeiner@gmail.com>, Lucas Stach <dev@lynxeye.de>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>, Jessica Zhang <jesszhan0024@gmail.com>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Sam Ravnborg <sam@ravnborg.org>, "Lukas F. Hartmann" <lukas@mntre.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, dri-devel@lists.freedesktop.org, 
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, Christian Gmeiner <cgmeiner@igalia.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: AS4PR04MB9338.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: dc2fc065-acab-4e5d-0bdc-08df452af4c1
+X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Nov 2026 04:18:10.6623
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: dY9VP5y6eUds2dxVWpFgqr6cDJPFQL6fkvg6KRUDWZ7mNmP1fE4S/rdn0fxK6ktH2UTjmZYITTwts/b6PVsgqQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB11940
 
-Hi,
-
-On Mon, Nov 16, 2026 at 4:11=E2=80=AFAM Christian Gmeiner
-<christian.gmeiner@gmail.com> wrote:
+> > +   if (np->onestep_state =3D=3D NETC_ONESTEP_IN_FLIGHT &&
+> > +       time_is_before_jiffies64(expire_time))
+> > +           return true;
 >
-> From: Christian Gmeiner <cgmeiner@igalia.com>
+> [Severity: Low]
+> Is it safe to treat PM_SINGLE_STEP as free based only on elapsed time?
 >
-> The mode has a pixel clock of 162 MHz, which is 70 Hz. The EDID of the
-> panel only has 60 Hz and 40 Hz. Output of edid-decode:
+> After netc_port_onestep_work() programs the register and calls
+> onestep_sync_xmit(), the tagged frame may not have left yet. It can still
+> be in the conduit qdisc, the ENETC TX ring, or a switch egress queue (for
+> example under pause/PFC or a closed Qbv gate).
 >
->   DTD 1:  1920x1080   60.001038 Hz  16:9     66.721 kHz    138.780000 MHz
->                Hfront   46 Hsync  30 Hback   84 Hpol P
->                Vfront    2 Vsync   4 Vback   26 Vpol N
->   DTD 2:  1920x1080   40.000692 Hz  16:9     44.481 kHz     92.520000 MHz
->                Hfront   46 Hsync  30 Hback   84 Hpol P
->                Vfront    2 Vsync   4 Vback   26 Vpol N
+> Three paths seem to reprogram the register without knowing whether the
+> previous subtype 3 frame has gone out:
 >
-> On the MNT Reform 2 with i.MX8MQ the picture flickers at 70 Hz. Use the
-> 60 Hz timing from the EDID.
+>   netc_port_onestep_sync_enqueue(), once netc_onestep_timeout() is true
 >
-> Fixes: a14c6b0eef77 ("panel-simple: add Innolux N125HCE-GN1")
-> Signed-off-by: Christian Gmeiner <cgmeiner@igalia.com>
-> ---
->  drivers/gpu/drm/panel/panel-edp.c | 15 ++++++++-------
->  1 file changed, 8 insertions(+), 7 deletions(-)
+>   netc_port_tstamp_timeout_work(), which sets resume_onestep after 5 s
+>
+>   netc_mac_link_down()->netc_port_disable_onestep() followed by
+>   netc_mac_link_up()->netc_port_enable_onestep(), which sets
+>   NETC_ONESTEP_IDLE without tracking frames already handed to the conduit
+>
+> Suppose the old frame goes out after the register has been rewritten for
+> a new Sync with a different layout (L2 vs UDPv4 vs UDPv6, or VLAN vs
+> untagged). Would the MAC then apply the new correction offset and CH bit
+> to the old frame?
+>
+> The NETC_ONESTEP_VALID_WINDOW comment says such a frame "is already
+> invalid, whether it has been dropped or not". In this case, though, the
+> hardware could add the residence time at the wrong byte offset, for
+> example inside the IPv4 header or the originTimestamp. It could also
+> update or skip the UDP checksum wrongly. The frame on the wire would then
+> be malformed, not just carrying a stale correction field.
+>
 
-Hmmm, this worries me a little bit. I know that on some boards people
-purposely set a clock rate that didn't match the EDID because it was
-the only rate achievable with the PLLs available. It kinda seems like
-that's the case for at least one user of this board. In commit
-eb893e34309c ("arm64: dts: mnt-reform2: add internal display
-support"), for instance, I see:
+Old frames will be discarded by the receiver due to format errors or checks=
+um
+errors, so there is nothing to worry about.
 
-> Clocking
-> is derived from a system PLL, which provides quite good rate matching
-> for the single supported display mode and keeps the video PLL free for
-> usage with the external display, which isn't supported yet.
+> This depends on when the hardware latches PM_SINGLE_STEP. That point is
+> inferred from the commit message, not checked against a datasheet.
+>
+> [ ... ]
+>
+> > +void netc_port_onestep_sync_enqueue(struct dsa_switch *ds, int port,
+> > +                               struct sk_buff *skb)
+> > +{
+> > +   struct netc_port *np =3D NETC_PORT(ds, port);
+> > +
+> > +   spin_lock_bh(&np->onestep_lock);
+> > +   if (unlikely(np->onestep_state =3D=3D NETC_ONESTEP_PORT_INACTIVE))
+> > +           goto free_skb;
+> > +
+> > +   if (unlikely(skb_queue_len(&np->onestep_queue) >=3D
+> NETC_ONESTEP_QTH))
+> > +           goto free_skb;
+>
+> [Severity: Low]
+> Can an unprivileged local sender crowd the real Sync frames out of
+> onestep_queue?
+>
+> SOF_TIMESTAMPING_TX_HARDWARE needs no capability. ptp_classify_raw()
+> treats any UDP datagram to port 319 as a PTP event, and the sender
 
-By picking a different rate here, you might break someone's setup.
-...or is that your setup?
+I think this is an overreaction; ptp_classify_raw() is designed to filter P=
+TP
+frames.
 
-FWIW, it would be better to change how the panel is expressed in the
-device tree rather than changing this mode. Can you change to using
-the generic "edp-panel" under the AUX bus? Then everything just comes
-from the EDID anyway.
+> controls the payload (msgtype Sync, twoStepFlag clear). With
+> HWTSTAMP_TX_ONESTEP_SYNC set, such frames take this path:
+>
+>   dsa_user_xmit()
+>     dsa_skb_tx_timestamp()
+>       netc_port_txtstamp()
+>         netc_port_prepare_onestep_sync()   /* NETC_PTP_FLAG_ONESTEP */
+>   netc_xmit()
+>     netc_port_onestep_sync_enqueue()       /* shared FIFO, drop at 512 */
+>   netc_port_onestep_work()                 /* one frame per response */
+>
+> These frames share the single per-port onestep_queue with the ptp4l
+> Syncs. A flood would delay the real Syncs, or get them dropped once
+> NETC_ONESTEP_QTH is reached.
+>
+> The same sender can also send non-Sync event frames. Those take the
+> two-step path and can use up the 16-entry ts_req_id pool. Then
+> netc_port_onestep_work() drops the real Syncs when netc_get_ts_req_id()
+> fails. If tagged frames are also lost in the conduit, the queue stays
+> stuck until the window check fires on a later enqueue or the 5 s timeout
+> runs.
+>
+> The ts_req_id pool exhaustion already exists before this patch. What is
+> new is the serialized one-step FIFO.
+>
+> [ ... ]
+>
+> > @@ -409,6 +718,67 @@ int netc_port_hwtstamp_get(struct dsa_switch *ds,
+> int port,
+> >     return 0;
+> >  }
+> >
+> > +static void netc_port_prepare_onestep_sync(struct netc_port *np,
+> > +                                      struct sk_buff *skb,
+> > +                                      u32 ptp_class, bool *twostep)
+> > +{
+>
+> [ ... ]
+>
+> > +   /* Ensure the buffer is linear and writable so the packet can be
+> > +    * parsed and updated in place. Otherwise, fall back to two-step.
+> > +    */
+> > +   if (unlikely(skb_linearize_cow(skb))) {
+> > +           *twostep =3D true;
+> > +           return;
+> > +   }
+>
+> [Severity: Medium]
+> What happens here if the frame really is a one-step Sync (msgtype Sync,
+> twoStepFlag clear)?
+>
+> skb_linearize_cow() makes a GFP_ATOMIC copy whenever the skb is cloned
+> or
+> nonlinear. A clone is common, for example from dev_queue_xmit_nit() when
+> tcpdump is attached to the user port. So this can fail under memory
+> pressure before the message type is checked.
+>
+> netc_port_txtstamp() then sends the frame down the two-step path:
+>
+>       if (tx_type =3D=3D HWTSTAMP_TX_ON || twostep)
+>               netc_port_prepare_twostep(np, skb);
+>
+> netc_xmit() then gives the frame a subtype 2 tag. On this path
+> originTimestamp is never written, PM_SINGLE_STEP is not programmed, and
+> the correction field is not updated. The frame still says it is one-step,
+> so no Follow_Up will be sent.
+>
+> Would the slave then compute its offset from whatever originTimestamp
+> user space left in the frame? The socket would also get an unexpected
+> hardware TX timestamp through skb_complete_tx_timestamp().
+>
+> The commit message says:
+>
+>   "Frames that are not one-step Sync still fall back to two-step
+>   timestamping."
+>
+> and:
+>
+>   "If the originTimestamp field of the sync frame is not in the linear
+>   buffer of the skb or the correction offset exceeds the hardware
+>   capability, the frame will be dropped."
+>
+> Should this path drop the frame and count it in tx_dropped, like the
+> offset check further down? The ptp_parse_header() failure falls back the
+> same way. There the header is incomplete, though, so that frame cannot be
+> a well-formed Sync.
 
--Doug
+From a software perspective, this is a trade-off and cannot completely solv=
+e
+the problem unless skb_linearize_cow() never fails; otherwise, the driver
+cannot parse the message type. The issue raised by Sashiko can indeed occur=
+,
+but only under memory pressure. Once the memory pressure subsides, PTP
+synchronization will return to normal. So there is nothing we can do this i=
+ssue,
+I would like to leave it as it is.
+
+
+NXP Confidential
