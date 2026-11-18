@@ -1,59 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795020726;
-	b=vvE7onLLvbF39EfxlMhEclZu0wqh1T2XeNDU/fv9+LhjsaHJWBRweLAfOgKXYVFTv1u9
-	 BEqHx1X4d3UbxRUyp9Gq1opK+lHyIP9SNrPBKBFYLJ6C/JhhDSW6DtNZDDcgHJIcZzR0l
-	 ty8Bzjq1iMvYnNcXdtlJgbvgtDr48VVvLH0knkQN93zBPRfuJo6HZKqXYye58E/PjjC/q
-	 SnL29BDGrQfxkMt6pGBLV5uSFSRfOMbKkcWvmPrtwRQKL172WaOJyZxyX6xXh19NPNkBw
-	 bgoqIVk8dER1VY5/2SwL2B9Ikj3pn9MUXxuWe4aIGO7EJCOlBUZ/+oSgK575hb1/RJw==
+	t=1795020732;
+	b=eNCgumdXTlsXw8umRKBweGAz1W4z8os4Q8GAjHhimxT3SdBSDJjW0mua7Out4dsf7Pd9
+	 odyWUii6WDt+QRc47oiKGhm+EpzV8kOCDunaRvK6zWwPuyTATocjiU4jcM/0q99QcUcAU
+	 dOW89wI9ZAHCBSaGh/90u7aI01RWMfcjysUR8j4il67b9I/pniqv7Lfg/By4nugMlTCIR
+	 0KB1u6L+dwStRkbfJq70UY51IJ/mkccqrYaVDnRGFS+DhMT0EPpXb+k4TJ17Tn/uL78yw
+	 NmWig0V0J3NIVhWI1TDKbkknFslnB9xVo+SHuykD1rU++08Hl5xGMrw++hdL9dhBugg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795020726;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795020732;
 	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:Date:
 	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Last-TLS-Session-Version;
-	bh=PawFOJzGO+j7Rk1FiSoFYRQzAZVs1Yl5DoDfqYSRNT4=;
-	b=DctzCldlso39Rc/6DS2NT79JmNy6T+6UzI7yRvrRQCmbwG8GStRo7DxCfQjRAeNxKzIX
-	 eG1GcUW+rF++ZBk2RkT7jvQ/nDIZQbz4IHm1xRyn3LsyDfRFOC9VNyJeoSsBTeiRiN9Ac
-	 jfGah9N16dAIV20IhmtzB0kovIbJtBo/HTU2HsxLnpqQ8DcGvQpgUp3I+QZV/mUPvkT+S
-	 JHMwZrrRrI1T1PJGvmNTnESpPFvyy7EYeRHNwe4+vJpXaa3YSlt/jegl5N6o1AhSYWqUh
-	 mICjhx5yIWB4A2IKasZXiY4mKKsHfW6O3jK4NLMLY+t0Ai5M5BUlpMaa99MDfucol5w==
+	bh=2HLVIjfVNg5rhW25oP8mGOOhTAy3zo5GlIBaKlN+WIU=;
+	b=oxEbKxR/+YfRa7K2f2H6Y1Zr9MaaNf0PdC9q2VsXFXiSQHNT6af6TSKtKNq6KDA2NkUR
+	 HxWaNK8a3zTI6HW9qh76jn27gZEMVCHb9UKkpoMn8WRgLXutBlkJCPA3e2HpfKvBFGOKY
+	 1TwILn89TxlXSTuDPJfRJsepLzBNFZYqmPkMiVjjguOnljcDAWMddG8zadcFKqPQz3+F0
+	 cqvye0ayzefBk4Gq70cl1zfdrTFQfKe/o7e28LEHncbp7NKV/MF1U9YOgxgslQNq0KP14
+	 YRM/gcP6HCYykQbWqYpHJUxzk3tNsyHn6j6XWVPv2/3rUcAyYWyV8UYYPV0tp96SAcQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=bootlin.com;
 	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=xB+1Urz7;
-	arc=none smtp.remote-ip=185.171.202.116
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=lKvP6lwP;
+	arc=none smtp.remote-ip=185.246.84.56
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 089F660A3838
-	for <imx@lists.linux.dev>; Wed, 18 Nov 2026 16:52:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 089F660A3838
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD8C660A2604
+	for <imx@lists.linux.dev>; Wed, 18 Nov 2026 16:52:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CD8C660A2604
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=xB+1Urz7
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=lKvP6lwP
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id A33BBC4F77E;
-	Wed, 18 Nov 2026 16:52:09 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id B88431A16CA;
+	Wed, 18 Nov 2026 16:52:10 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id BAF155FE9B;
-	Wed, 18 Nov 2026 16:52:04 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8987511BC27F3;
-	Wed, 18 Nov 2026 17:51:57 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 865E95FE9B;
+	Wed, 18 Nov 2026 16:52:10 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 533F511BC28EF;
+	Wed, 18 Nov 2026 17:52:03 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1795020722; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1795020728; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=PawFOJzGO+j7Rk1FiSoFYRQzAZVs1Yl5DoDfqYSRNT4=;
-	b=xB+1Urz72QZ3bKmVFogNO/YK6rZUtdkdPXSmy/r5gjqtP7ckfdkJObtVqSZfEd8kONlLqD
-	BVjWS5C8IKHSjg2wVNjZT9lnqWRCaZOWl9Bxq+/uMBb72Ve1FL+KtONzoOGEplGzc8R3rl
-	aPzT0OPXQ/BBZELKURsK11UBdR6Nrotxs0Di1RBzyD/lg5ZIrLF1Cg632+ZrFq8YhU+zV9
-	bmpNFnBcm0lafIHLTY+o1gXOwis+r84Y9HTxpYb+on0wfHVpxX/uOlfvpX6LxFTHlymKLN
-	1M1owoM608rZPxzOaI24GXcH4SybwatpZquBqNfm/OoCfv5bTtlSeerfwq2gYQ==
+	bh=2HLVIjfVNg5rhW25oP8mGOOhTAy3zo5GlIBaKlN+WIU=;
+	b=lKvP6lwPWFqTADj5kmqaNtDYJSgXfC73X0pWwQvh2hnAUK35Xf3O061QdsIQyrux7G5bsK
+	Mk7Pcj1nb896DaX/1gkQ1+Q0myWX1LW+64Jzl29sFKyFkFhJbWmT1bvPUkrf9pzJ9DLDC/
+	ibM9qSCHrrtbBwoldrWulLPMqvfLFW68kHMbMvtY1gkz3t5FgiXVwzWl79rZctTj4Eh6y6
+	SwJRCdtwkcpg6Ie7Tahx9vnKBD8XYiIIYbOYiuXNaB6HQSNiaxQLFXE1bzYO5BI/yq61/u
+	tof3Z3ee7yPvRfd6vQBVBHAf1tcb5YKkZBYsG2+reCaFAuGyrSrlTyKuJAulVQ==
 From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Date: Wed, 18 Nov 2026 17:50:01 +0100
-Subject: [PATCH RFC v3 18/31] drm/mipi-dsi: notify about DSI attach
+Date: Wed, 18 Nov 2026 17:50:02 +0100
+Subject: [PATCH RFC v3 19/31] drm/bridge: add drm_bridge_get_next() and
+ supporting func
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -65,7 +66,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261118-drm-bridge-hotplug-v3-18-44bb3b4a828f@bootlin.com>
+Message-Id: <20261118-drm-bridge-hotplug-v3-19-44bb3b4a828f@bootlin.com>
 References: <20261118-drm-bridge-hotplug-v3-0-44bb3b4a828f@bootlin.com>
 In-Reply-To: <20261118-drm-bridge-hotplug-v3-0-44bb3b4a828f@bootlin.com>
 To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
@@ -91,56 +92,129 @@ Cc: Hui Pu <Hui.Pu@gehealthcare.com>, Ian Ray <ian.ray@gehealthcare.com>,
 X-Mailer: b4 0.16.0
 X-Last-TLS-Session-Version: TLSv1.3
 
-In preparation to support DRM bridge hotplug, let the drm_mipi_dsi code
-emit an event when a DSI device is attached to the corresponding DSI host,
-so that this event can trigger the actions needed to configure the pipeline
-and register the connector as appropriate.
+For bridge hotplug we need to successfully probe a card with an incomplete
+bridge chain, i.e. a chain whose last bridge currently in bridge_chain
+needs another bridge at its output. Such a card would have no connector,
+and be able to add one as soon as the following bridges are added up to the
+bridge that requires no further ones (like a panel or a connector_bridge).
 
+So we need a way to know whether the pipeline is complete in the hardware
+(all bridges probed), in order to complete it in software (attach all
+bridges not yet attached). Currently common DRM code has no way to know
+that.
+
+Add drm_bridge_get_next() and a supporting get_next_bridge func so each
+bridge can expose its next bridge, and whether there's supposed to be one.
+
+A subsequent commit will use this function to detect whether the pipeline
+is complete in the hardware or not.
+
+Link: https://lore.kernel.org/r/20260624-vagabond-neon-gorilla-cd6487@houat
+Suggested-by: Maxime Ripard <mripard@kernel.org>
 Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
 ---
 
 Changes in v3:
-- use new v3 notifier API name
-- fix commit message
----
- drivers/gpu/drm/Kconfig        | 1 +
- drivers/gpu/drm/drm_mipi_dsi.c | 3 +++
- 2 files changed, 4 insertions(+)
+- fix and improve kerneldoc
 
-diff --git a/drivers/gpu/drm/Kconfig b/drivers/gpu/drm/Kconfig
-index 105dd46a0a45..3ebd9388bdda 100644
---- a/drivers/gpu/drm/Kconfig
-+++ b/drivers/gpu/drm/Kconfig
-@@ -45,6 +45,7 @@ config DRM_MIPI_DBI
- config DRM_MIPI_DSI
- 	bool
- 	depends on DRM
-+	select DRM_HOTPLUG_EVENT_NOTIFIER
- 
- config DRM_KMS_HELPER
- 	tristate
-diff --git a/drivers/gpu/drm/drm_mipi_dsi.c b/drivers/gpu/drm/drm_mipi_dsi.c
-index 3ac1dd5ad640..ae49f3aa1b2b 100644
---- a/drivers/gpu/drm/drm_mipi_dsi.c
-+++ b/drivers/gpu/drm/drm_mipi_dsi.c
-@@ -34,6 +34,7 @@
- #include <linux/slab.h>
- 
- #include <drm/display/drm_dsc.h>
-+#include <drm/drm_hotplug_event_notifier.h>
- #include <drm/drm_mipi_dsi.h>
- #include <drm/drm_print.h>
- 
-@@ -386,6 +387,8 @@ int mipi_dsi_attach(struct mipi_dsi_device *dsi)
- 
- 	dsi->attached = true;
- 
-+	drm_hotplug_event_notifier_notify(DRM_MIPI_DSI_ATTACHED, dsi);
-+
- 	return 0;
+New patch in v2, replacing the is_tail patch in v1
+---
+ drivers/gpu/drm/drm_bridge.c | 30 ++++++++++++++++++++++++++++++
+ include/drm/drm_bridge.h     | 25 +++++++++++++++++++++++++
+ 2 files changed, 55 insertions(+)
+
+diff --git a/drivers/gpu/drm/drm_bridge.c b/drivers/gpu/drm/drm_bridge.c
+index bcf65cddbd6e..e0a1e016b37c 100644
+--- a/drivers/gpu/drm/drm_bridge.c
++++ b/drivers/gpu/drm/drm_bridge.c
+@@ -705,6 +705,36 @@ void drm_bridge_detach(struct drm_bridge *bridge)
+ 	drm_bridge_put(bridge);
  }
- EXPORT_SYMBOL(mipi_dsi_attach);
+ 
++/**
++ * drm_bridge_get_next - return the bridge at this bridge's output port
++ * @bridge: the bridge to query
++ *
++ * Return the next bridge, i.e. the bridge that is connected at the output
++ * port of @bridge. Unlike drm_bridge_get_next_bridge(), the next bridge
++ * might or not be in the encoder chain.
++ *
++ * Returns:
++ * * Pointer to a bridge connected to the output port of this bridge,
++ *   with refcount incremented; call drm_bridge_put() when done
++ * * ERR_PTR(-ENODEV): this bridge has an output port where a next bridge
++ *                     needs to be present for video output, but the next
++ *                     bridge is not currently available
++ * * NULL: this bridge does not have an output port where a next bridge
++ *         is expected
++ * * ERR_PTR(-ENOENT): the bridge does not implement the func
++ * * Another negative error returned by the bridge func
++ */
++struct drm_bridge *drm_bridge_get_next(struct drm_bridge *bridge)
++{
++	if (!(bridge->ops & DRM_BRIDGE_OP_GET_NEXT_BRIDGE)) {
++		drm_warn_once(bridge->dev, "get_next_bridge func not implemented!");
++		return ERR_PTR(-ENOENT);
++	}
++
++	return bridge->funcs->get_next_bridge(bridge);
++}
++EXPORT_SYMBOL(drm_bridge_get_next);
++
+ /**
+  * DOC: bridge operations
+  *
+diff --git a/include/drm/drm_bridge.h b/include/drm/drm_bridge.h
+index c88532998aae..32962224a6e7 100644
+--- a/include/drm/drm_bridge.h
++++ b/include/drm/drm_bridge.h
+@@ -62,6 +62,25 @@ enum drm_bridge_attach_flags {
+  * struct drm_bridge_funcs - drm_bridge control functions
+  */
+ struct drm_bridge_funcs {
++	/**
++	 * @get_next_bridge:
++	 *
++	 * Return a pointer to the bridge connected at the output port of
++	 * this bridge.
++	 *
++	 * Returns:
++	 * * Pointer to a bridge connected to the output port of this bridge,
++	 *   with refcount incremented; call drm_bridge_put() when done
++	 * * ERR_PTR(-ENODEV): this bridge has an output port where a next
++	 *                     bridge needs to be present for video output,
++	 *                     but the next bridge is not currently
++	 *                     available
++	 * * NULL: this bridge does not have an output port where a next
++	 *         bridge is expected (e.g. a panel)
++	 * * Another negative error returned by the bridge func
++	 */
++	struct drm_bridge *(*get_next_bridge)(struct drm_bridge *bridge);
++
+ 	/**
+ 	 * @attach:
+ 	 *
+@@ -1021,6 +1040,11 @@ enum drm_bridge_ops {
+ 	 * &drm_bridge_funcs->hdmi_clear_spd_infoframe callbacks.
+ 	 */
+ 	DRM_BRIDGE_OP_HDMI_SPD_INFOFRAME = BIT(10),
++	/**
++	 * @DRM_BRIDGE_OP_GET_NEXT_BRIDGE: The bridge implements the
++	 * &drm_bridge_funcs->get_next_bridge callback.
++	 */
++	DRM_BRIDGE_OP_GET_NEXT_BRIDGE = BIT(11),
+ };
+ 
+ /**
+@@ -1270,6 +1294,7 @@ void drm_bridge_remove(struct drm_bridge *bridge);
+ int drm_bridge_attach(struct drm_encoder *encoder, struct drm_bridge *bridge,
+ 		      struct drm_bridge *previous,
+ 		      enum drm_bridge_attach_flags flags);
++struct drm_bridge *drm_bridge_get_next(struct drm_bridge *bridge);
+ 
+ #ifdef CONFIG_OF
+ struct drm_bridge *of_drm_find_and_get_bridge(const struct device_node *np);
 
 -- 
 2.56.1
