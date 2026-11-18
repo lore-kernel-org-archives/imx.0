@@ -1,106 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.83.140
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795006017;
-	b=eIA3KpZRoiD6Ml+gLhUnZbnnt9DiVZn1N8Qscb4s9mMZbFrv8tHAmWcCrZL37Yp+yzoo
-	 oxMzMGav2eevS5iP26yyw/9OlPMGQx9AJLNOCq8Ew/vmKXMAASR9HngmU/ypY2N2nbo23
-	 pS2Rq7Qa3n1GIhEl9T51/TF9wsv4VdsY7xKeD+jC6X9YxA+9fi66ayIv70jt+FkEAgUgB
-	 pG1TkJyfLqUvq1yfrfGcoH62Elx1pQdI0u82zCQkukpOXaO/zHmyEBCjF8vAywWN9WEWS
-	 phpBPWfl0VEeThr5Z33vW8TOLbSWoJSRsWbFSHHOG9Uo8OtN0DlZXaujC4Pd8nZrltw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795006017;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
-	 User-Agent:Subject:From:To:Cc:References:Content-Language:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=li65XB04WseXUq8cuZWYwEHkNArGTVKVnfLUbCTETGs=;
-	b=Qlm+m6cHqXFZuk68E4wAPeBzZRgXPbR5Ib+1ypt2QXy6jzVycBvUb1dbrpK3vZWG367j
-	 sOSQC2GQoqBZjzRHNNOp9p73GmmRvHdnqH8qd0w/s/1Ry4iYfxiz6ickIZgkrkpg3jnaS
-	 zc9BJ5NqPgs5wAN+7OSUyOIf8afoIpZK8VUahOMOFIY37SvigFkUs0WJ1ghlJveyU63gb
-	 cOFOdPbXo6C0t2yT+Zc/j/86nAISjVfZ/4AVL3ZeHOuRsUsvCvi/lqPN/dSu6+1bIlObN
-	 biLORbEJOwL7WxQdmNC+J1TIr/pnpIG9z2LKtU/y0QnX9HFPwgf9bgjKhtOxMgKDKIQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=kontron.de;
-	spf=pass smtp.mailfrom=kontron.de;
-	dkim=pass header.d=kontron.de header.i=@kontron.de header.a=rsa-sha256 header.s=selector1 header.b=Mtnv5zc6;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.83.140
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11023140.outbound.protection.outlook.com [52.101.83.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.15
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795008503;
+	b=a2N5hMY0Y0uXYNsgJhqWglwST1NtG2ARWgB+ThPAI9YmunXgO/hhO6hjNuAOUemFaYPR
+	 80tNwAvx5kBJrNp+eP8CrdXEfWkmRuveVYTiMClsXc9c3A1b/RBCy/mv+zMcnXemIWDZq
+	 yLb1rb/fICGBioZmJJwPrvpw2kmrP0W64Wn185xA2ADSBibMu88QYp+BTS2gwZ3vx0ZjI
+	 3GV2Y9PlrJyoOv6rPX7JLWvo1C+CTC/zeBXo6cF2+lY3LmVCANwySbDv57O8APJCPUyrw
+	 XaGRiOxQb1tma9i07xMBC3XqhcPT4yHp1CdLHXuAj09AZiU0LdRJxDXnkk4mxIQM77A==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795008503;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:To:Cc:Subject:
+	 In-Reply-To:Organization:References:Date:Message-ID:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=xrbOr3k8zHV2i5uttrL4VksfyxzivrA+exHcMjQwxoA=;
+	b=BIgWWgKL7fwEKqMgxaawvXaAMxjKWRJW5Jdxz4OczFukw+bhXaYnlxQ2+aENnBbwaCKW
+	 exvAlLjYTYFd6oBa/EKbEw65/Gy5qO9/SJ9icdIrXp58yx0AagdjuvQHyX3NXnm5eNA5l
+	 xEnewz1LdI93Xn6vStIHbHAiqKuxiFdoBZnATnDHdrUOqmzG3ocZ/4+D7sngHF8J5IPET
+	 AFv6mlKc/hMsm1T0UGBIlc+RjLroG2H9NeTXbyFLmXzd4hdUtBh2xGfAUGaVz+PIVO6ij
+	 SX64YE75tfDDg6gLcDg1VbSoUbhavVakIqQW77AW0j5ZK2KHGxV3P6F9kNsXCdihO6A==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b="K3D+/KxA";
+	arc=none smtp.remote-ip=198.175.65.15
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C464606A334
-	for <imx@lists.linux.dev>; Wed, 18 Nov 2026 12:46:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0C464606A334
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kontron.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kontron.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67256606A31C;
+	Wed, 18 Nov 2026 13:28:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 67256606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kontron.de header.i=@kontron.de header.a=rsa-sha256 header.s=selector1 header.b=Mtnv5zc6
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=s9VuuxN8boBa9Tqutycp5jxINfMyYV2HZCcicoAY0FKRa8WkHSGTFPFJ+1i97Acf7zjUsfMGD3jB9GPXgqDkCUTHkAfe+j0QVcqYlPdMThK54/BSMKjb2a16XZZch/5dUZ2fu2W7vtpHlSVf1FaHR0P3toEJb6fXx1s1MUpdROq3+lxphGmDLD78Yf3i78BI2kxxg6+eRAhuyhJ0eqW7ui/bX4W3bfH2J1YRjJz3aqe+oZZ0vXhpShptbCy0mnZ3RIileCt9H8CPkhqF6ml34fyeV/jsPef2gokecQEp11ZL/4xP+ZCZ7TfE1zl4tDKTMnugPVBJt6mTqnqaM0d6qw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=li65XB04WseXUq8cuZWYwEHkNArGTVKVnfLUbCTETGs=;
- b=ZTTBK69+N/2Gh4QdQiOAEpl+ab87/XX0lfWqhb8hfPbqXMiwLLxr86PK43+hT1CoYQWeaKHl5MVEzfa2lJm0l/w3neLb5O093CQP+PrUuex0zoUc0Kl5t3p/C94GRrOrkPOWqN9EW5lY2NZ8i8y9GdMhrh5sEy98LMLfoXcNTkF8A1kJTcX0CLUAcFVm9nWOikpFI9buzFCp0F1TleLSqtdUWWJsWNosn8jbxNIj7/ClNLeDIb1WN0uSoKci8MoOkwqgiZlv08tFHQFpxgMrewRJD5cHNDqNnuwtjXan5I6a3f/c5F4/kehMklCNp084j2KJvX+9pMZUet6emJSeKg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=kontron.de; dmarc=pass action=none header.from=kontron.de;
- dkim=pass header.d=kontron.de; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kontron.de;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=li65XB04WseXUq8cuZWYwEHkNArGTVKVnfLUbCTETGs=;
- b=Mtnv5zc6cN/BUEPpsxiwZXZzf8MBL6qF5udebUndjcr3YusB4h/xAGEPoezHoa1RYxwm6eH27Dw5CaVqVZfofBHUPXySu9fEtaMk2ckrk13O+JVH2QZDHYRuY6/0H/5WAakdowg+caGEcVMj2ynmvahJPwtb0NE+QdbsxfCG2+cKgPH/2WHi8FED31Flws8ONcwhpQX66QYiIPvgiquGyyvzQkzSfzcLjvEnkQzpInVyPp7dD2Ijmc1soHg8ixV7m3b4avdLbuUvk/kwGuFDA9xzRB/rgVSwd4mb0tdYqIyrj3F96Ef2v1Hh8KoX9yfWUqdoS4sGK+dtTg71uftHKg==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=kontron.de;
-Received: from AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:1fb::23)
- by GV1PR10MB679331.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:150:3be::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.8; Wed, 18 Nov
- 2026 12:46:47 +0000
-Received: from AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM
- ([fe80::a276:4ad7:962:da22]) by AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM
- ([fe80::a276:4ad7:962:da22%3]) with mapi id 15.21.0639.006; Wed, 18 Nov 2026
- 12:46:47 +0000
-Message-ID: <180d2335-e328-48a4-b376-a90464279027@kontron.de>
-Date: Wed, 18 Nov 2026 13:46:45 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v51 5/7] firmware: imx: adds miscdev
-From: Frieder Schrempf <frieder.schrempf@kontron.de>
-To: Frank Li <Frank.li@oss.nxp.com>
-Cc: pankaj.gupta@oss.nxp.com, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Pankaj Gupta <pankaj.gupta@nxp.com>,
- Randy Dunlap <rdunlap@infradead.org>, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- Arnd Bergmann <arnd@arndb.de>, Peng Fan <peng.fan@nxp.com>
-References: <20260915-imx-se-if-v51-0-4a7dac612cb5@nxp.com>
- <20260915-imx-se-if-v51-5-4a7dac612cb5@nxp.com>
- <2034fb2f-f169-46a5-85e8-fa723ddb0360@app.fastmail.com>
- <aqqqDnOMmlfqit6u@SMW015318>
- <f3e1e3de-6abf-48cb-aba7-7b231c38ec5c@kontron.de>
-Content-Language: en-US, de-DE
-In-Reply-To: <f3e1e3de-6abf-48cb-aba7-7b231c38ec5c@kontron.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: PA7P264CA0171.FRAP264.PROD.OUTLOOK.COM
- (2603:10a6:102:36f::20) To AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM
- (2603:10a6:20b:1fb::23)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=K3D+/KxA
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1795008501; x=1826544501;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version:content-transfer-encoding;
+  bh=9s0PP2tU8ramnQ9P7B7e47VS/Lqt+TFQgn/D6GHoCw4=;
+  b=K3D+/KxAKDTaaTF8bOj6cZkSODKUhC6p/kRZMaUxv2XWr1uEc9NEmIkY
+   jjX8U8iymukQurWXCQ184nolI8E56CyMhMkregzjUKFowm2O5T6s6Qe7a
+   JYVHwbPO5xZw18RCzdYdpByN8yGvrcyRWWa185bpaPcmVkIvU3wJ6Mhxe
+   RBpWOrkffQVZGjjC4fQl3iALkaxyi4sGeXOUVk3XCiUo5dJ9VpvcQ4CMk
+   rlYwt+P2ZHKbA8I4+M8kSPe57iXJd4rvs669Au9vBJXGEcgGj2A8AoErv
+   SdoTepnmxTej+o3rxcj7mBbflA11UqRiNPt2uI1zr7mzNAIhB9oDfQaiY
+   g==;
+X-CSE-ConnectionGUID: IqKIm+xcTT2WGjQjDGJ/1w==
+X-CSE-MsgGUID: 23A5hiQKRSmNY1Lo7iwT0Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11969"; a="3818339"
+X-IronPort-AV: E=Sophos;i="6.27,219,1787036400"; 
+   d="scan'208";a="3818339"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2026 05:28:21 -0800
+X-CSE-ConnectionGUID: yZhr9dpARI60OAP4iow+yA==
+X-CSE-MsgGUID: +rfdIahmSKCYwfI5yMV7+A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,219,1787036400"; 
+   d="scan'208";a="10544495"
+Received: from mkosciow-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.187])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2026 05:27:43 -0800
+From: Jani Nikula <jani.nikula@linux.intel.com>
+To: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>, David
+ Airlie
+ <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
+Cc: Sasha Finkelstein <k@chaosmail.tech>, Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>, Andrzej Hajda
+ <andrzej.hajda@intel.com>, Neil Armstrong <neil.armstrong@linaro.org>,
+ Robert Foss <rfoss@kernel.org>, dri-devel@lists.freedesktop.org,
+ asahi@lists.linux.dev, linux-aspeed@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+ linux-riscv@lists.infradead.org, etnaviv@lists.freedesktop.org,
+ linux-samsung-soc@vger.kernel.org, intel-gfx@lists.freedesktop.org,
+ intel-xe@lists.freedesktop.org, imagination@lists.freedesktop.org,
+ linux-mips@vger.kernel.org, lima@lists.freedesktop.org,
+ linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-amlogic@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+ freedreno@lists.freedesktop.org, nouveau@lists.freedesktop.org,
+ virtualization@lists.linux.dev, spice-devel@lists.freedesktop.org,
+ linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org,
+ linux-stm32@st-md-mailman.stormreply.com, linux-sunxi@lists.linux.dev,
+ linux-tegra@vger.kernel.org
+Subject: Re: [PATCH v1 9/9] drm: Unify coding style for *_device_id arrays
+In-Reply-To: <a2d5ce256b8ec150de4a6494c177b19693a33222.1795002467.git.ukleinek@kernel.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
+ 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+References: <cover.1795002467.git.ukleinek@kernel.org>
+ <a2d5ce256b8ec150de4a6494c177b19693a33222.1795002467.git.ukleinek@kernel.org>
+Date: Wed, 18 Nov 2026 15:27:40 +0200
+Message-ID: <7692c160e418e7ad0528739fcc879b11fbac8ab0@intel.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -110,119 +100,340 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM9PR10MB4277:EE_|GV1PR10MB679331:EE_
-X-MS-Office365-Filtering-Correlation-Id: dc4105a3-89fa-4356-7977-08df457201fe
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|376014|23010399003|366016|22082099003|18002099003|4143699003|11063799006|56012099006|261026121527099003|261028144727099003|261026140227099003|261021135927099003|261022105027099003|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	Ky0PdT6lBXaqUqjecjl5xWVsDN41TJKrUDSUO8Q2g/q+iJRpN941SVEYlWJTWVlzl2bqZgMbRwyNb2xkaqeeJMjN/MxaltNb1uUE8rar3ccSjY5P467z5ScWItxp7yJePRhNMA5a+eN1wDpyZsQWh/uoBTpYbmViuP6xv5LLxpZiEdqlYbjFmMcQRXvkAgdr2CcSNFD9kLs51aNDwHp7TH4M7pvIo5Wjl5sWacndVY3KQ6+IZYl0uKHn5hoWPxYNnQygRdxls9INa4y5ZbWqJw0szvE51YqfaMp2PFZXiZqSorIVIpXsweeCO8s53ynE8T2czxO/JNDP9pgfmDnqgrZ9HbrVqumSU7DdWfyKzj4hgfRMCuo0sKPi0UztvGMaaEc/oaX4FimhpjAMr9WH7+KZEeT722haq0WlTp1jHYTEIny3uouOmyGuBbTKstfmM3j8iwMhGzisKVtOr0pEsVelgQKlIe5nljq1Nsc1xlKJq0P7GA9zlM9GFxnCncRrWPybGmFrKTuA+kNb+LTVzipdPxMAuGiZFjG7KoA9yP4/4nXltoyYoK0X/FT+sPkPr3USAq/wjSDOtGwhrZqTwWFHQlllTQT1ADGlp/oX+AsLNvDsIE61dx3uHhbfC7GNUYhC51fLF/obQZX+3ul0VPxPcSSsSyYqw+xUrh2j4gg=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(23010399003)(366016)(22082099003)(18002099003)(4143699003)(11063799006)(56012099006)(261026121527099003)(261028144727099003)(261026140227099003)(261021135927099003)(261022105027099003)(10067099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?NVJHV05KOHBValhCVGN5d1NqQWRFRkhseG9aWmJMTmRhYnltbzBmYUlJL0Rl?=
- =?utf-8?B?WUJhVC91QWV3dElTSFN1WGNaVmcxanZsSUxQUC9CbE0rMU5DNDRoMU5CLzRE?=
- =?utf-8?B?ZU1qdnh6TXZieGNEc1V2WHVNbVBnRTdOU3pwc1RObytyT3h1c0RoaEYxaEU4?=
- =?utf-8?B?elJKMW5UdjZ4TnltaFRYRXpxK20vSXFOMlIyQVdTL3RucWVKeWxjSHhTcWxr?=
- =?utf-8?B?UDVvcTYyazh4WG43akM2RVBlZ3NMd2R2emJzZjBQUTlRWFEweHp0Y3FhSHE5?=
- =?utf-8?B?UGJXUEt1ejRNKzVRNGp0dlI1azhWajlIajNwOGFNR3lPOUVIUjc4L0tJZ3da?=
- =?utf-8?B?S1pxWG4veHRTazQ4Yld6eFBvUkhvNkR4Y1JEV3RnY3h6T1JTTmlsV3MrTW5s?=
- =?utf-8?B?UkxpZndJNk5NMHUrdHFxT21iZ3ppRXBkRENpNkx4T2Vtd2F0bDFLVSt1alMw?=
- =?utf-8?B?U0xWZ0VkNGwxZy9HVG1reWlWc2M3RVJlL0Y5bmpOSjJLaXBTK0VyNjUvSzBK?=
- =?utf-8?B?d1ZGL2UwRFI3dW4vOTVaQzRzVmhrMy9YdU40MDBENURtaUZlNHBHdUdIalo5?=
- =?utf-8?B?R0g3cndoYnBPOVN3QjJoUnllN0tuSlF2VFh5TUFlYUpMZkdHQ2xabUtNZGky?=
- =?utf-8?B?aUJBL1pya2FXM3A1elprcnRBZGNFeTh5Y3NGMXJ5V3YrODc3N2tXWlNaN0hR?=
- =?utf-8?B?d1RSeUNmbVI5UlNxZ09tbURwQ2tad0NBUGFMVlJxWGQxc2ZjeS9DeThUdSt1?=
- =?utf-8?B?ZCtsQ1FLd2dBNm55Ylc2NWFySVBVY3JRZGNsMTF1dEpVb2hNTzd0SUtldGM1?=
- =?utf-8?B?RHgySWJaeDNLVjNEbjZqaTdIL1NNTXVoU3dpdlhxTVVxZTF0MHp3eXk2OE5v?=
- =?utf-8?B?THFRcXl1eDZnY0pvNUNxUFlFQ2M5T3NqOUE3U3J1Y2Vud3lEKzZRZUZKTlV4?=
- =?utf-8?B?ZG9Ld3Myd3cwOGNUVGdWLzRMNk5mb29mcnhNdUFyUzlyZ2x1a2pBK09tWkdo?=
- =?utf-8?B?Y3lvMDNKRWNkNXNQMENGRG91aXBTeWRwNEl4L3p0RVRYWUtDeERkdnJmajhu?=
- =?utf-8?B?bWVKSlUyWHNHa3k3eDlSaWdseXNwNUgzaUtIOUQxSU1DbEJYaEJBcVh1Ty9O?=
- =?utf-8?B?SUhsV0s2VHZ4b2FpM3FicHZzU09tOXJMandjMlFvVWUza2hNaG11ekhVbklo?=
- =?utf-8?B?T0YwN2dsWEMzcmpWUUlab3R3MnNJQ1JmT0F1K1dGaEVtY0UrT3gzNEV4VFZs?=
- =?utf-8?B?UTVsSHlvWDZscFlqdTkzMG8vWUk1NDQ3ZjFSSE5sS2JEbi80ajlWbG9MTW9M?=
- =?utf-8?B?eVB2OU1RVHV2L0JVUURjZWMzSmxOYmdYaUJFV283UkZucHZIQVJ0MGJIamRR?=
- =?utf-8?B?ZWVNb0tFQkR3NFNHbWJEQ29LM1NFVlo3Vm15cWRuRVEzcjVLRDBkRHVoS3RU?=
- =?utf-8?B?aVNVTEVnOUlpOTFMajVPU3R1YWhKTXFUdU9icjNRV2NVaEdjeEV1R2xiSkZM?=
- =?utf-8?B?MUlrZWZmR2J6am9ZV1hyK2NQSE5iWGc1ckFJZ0RqSkY4ZTBPK1pVd0VUajRy?=
- =?utf-8?B?R0dMUnE1MVpwQ3VSSGN2S1RzL3F0b3RWSVM4MHhQbDVDaC9HNjE0U1pwY3NJ?=
- =?utf-8?B?NlFtNnB5QXI0SnJ0QXhKMXZyN2xnQ1ZoNmF0eEJxZWM3VjhqR2RVVGVLUHcy?=
- =?utf-8?B?Z3o1ek9oTUpWMElHSEJVR1FoTEFDTnIzendhTzlBbW43bHBOeGFCQ2xuK0ZD?=
- =?utf-8?B?Ti9rTXM0anV6d1VYMGllSDB4a3RiMlo1bFhoMFRJSkViZnZia1Q2YWtYN2Nh?=
- =?utf-8?B?SG9Nem16Wmtac08wcjRhdHZsMW1jTUpKTEdBblNTT0dOb0JpeEFSZytjVGto?=
- =?utf-8?B?NE9kemp4dnIybU84Y0h1M3RtMTl2eStLeWFXTnEwbmtmZU01NDE3Y1JGZVli?=
- =?utf-8?B?eUsxMGdKaTd6QnJad3JLR091RmhJUHZNMzgxQkVQOVU1UDh4bFdXSk1DV05u?=
- =?utf-8?B?cHYxdW1oNGhNNkhpVlVWc2tvRTFEVjVxaWdYNGR4eTJnVFo3cy9KNnZiZ25l?=
- =?utf-8?B?UFFVMG1jdHlzTWE3NDFDY3RMYlEreGJ5dHYreUtmRVVBZnVKY1lRTG96S3lR?=
- =?utf-8?B?YnAyTHltZTZqcVVJUTFPQWFLUmNCVkpHMnd4TGsveDNUdXhPL0J6ZXVsVThx?=
- =?utf-8?B?MTVhZkh4QW9wNmJLVVA5QXVENGZuNXdtK0d5aUtTQTBwbWVtS2E3eVlvbnR4?=
- =?utf-8?B?aXd3OWYrSGVDWnpGcDkzV1dYT08yL0xaVzEydHI5RG9jNk1DenA2aTBDVDEr?=
- =?utf-8?B?WXFDSHFNMHo4R1ZvTVJkSk13bzB4UVJ1WkJFbnozV25ORGRBSnN4RGYzZXhZ?=
- =?utf-8?Q?ym4JyVX74TapihdA=3D?=
-X-OriginatorOrg: kontron.de
-X-MS-Exchange-CrossTenant-Network-Message-Id: dc4105a3-89fa-4356-7977-08df457201fe
-X-MS-Exchange-CrossTenant-AuthSource: AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Nov 2026 12:46:47.3108
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 8c9d3c97-3fd9-41c8-a2b1-646f3942daf1
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: fLpQ6Fjvh90elOHSSvl5GYtc9+A/5KkBfklhC0Lw9uQaLSnwa5ki3UxIySswKbbcYLAhiMKEE2Ahw04E7Shb+SRN1qZ150XWGHrfE+pmKbE=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR10MB679331
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-+Cc: Peng
+On Wed, 18 Nov 2026, Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com> w=
+rote:
+> These arrays already mostly match the most used and generally
+> recommended coding style. That is:
+>
+>  - list terminators in a single line;
+>  - no comma after the list terminator;
+>  - a comma after an initializer if (and only if) the closing } is not
+>    directly following;
+>  - a space after an opening { and before a closing }, a single space in
+>    the list terminator (unless there is a comment);
+>  - proper tab indentation for multi-line initializers;
+>
+> Adapt the offenders accordingly.
+>
+> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com>
+> ---
+>  drivers/gpu/drm/adp/adp-mipi.c                |   4 +-
+>  drivers/gpu/drm/adp/adp_drv.c                 |   4 +-
+>  .../gpu/drm/arm/display/komeda/komeda_drv.c   |   8 +-
+>  drivers/gpu/drm/arm/hdlcd_drv.c               |   4 +-
+>  drivers/gpu/drm/arm/malidp_drv.c              |   8 +-
+>  drivers/gpu/drm/armada/armada_crtc.c          |   2 +-
+>  drivers/gpu/drm/aspeed/aspeed_gfx_drv.c       |   2 +-
+>  drivers/gpu/drm/atmel-hlcdc/atmel_hlcdc_dc.c  |   4 +-
+>  .../drm/bridge/analogix/analogix-anx6345.c    |   4 +-
+>  .../drm/bridge/analogix/analogix-anx78xx.c    |   2 +-
+>  drivers/gpu/drm/bridge/analogix/anx7625.c     |   4 +-
+>  drivers/gpu/drm/bridge/chipone-icn6211.c      |   2 +-
+>  drivers/gpu/drm/bridge/chrontel-ch7033.c      |   2 +-
+>  drivers/gpu/drm/bridge/display-connector.c    |   2 +-
+>  drivers/gpu/drm/bridge/fsl-ldb.c              |  23 +-
+>  drivers/gpu/drm/bridge/imx/imx8mp-hdmi-pvi.c  |   7 +-
+>  .../drm/bridge/imx/imx8qxp-pixel-combiner.c   |   4 +-
+>  .../gpu/drm/bridge/imx/imx8qxp-pixel-link.c   |   4 +-
+>  drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c  |   2 +-
+>  drivers/gpu/drm/bridge/imx/imx93-mipi-dsi.c   |   2 +-
+>  drivers/gpu/drm/bridge/imx/imx93-pdfc.c       |   4 +-
+>  drivers/gpu/drm/bridge/ite-it6263.c           |   2 +-
+>  drivers/gpu/drm/bridge/lontium-lt8912b.c      |   4 +-
+>  drivers/gpu/drm/bridge/lontium-lt9211.c       |   2 +-
+>  drivers/gpu/drm/bridge/lvds-codec.c           |   2 +-
+>  .../bridge/megachips-stdpxxxx-ge-b850v3-fw.c  |   4 +-
+>  drivers/gpu/drm/bridge/microchip-lvds.c       |   6 +-
+>  drivers/gpu/drm/bridge/nwl-dsi.c              |   2 +-
+>  drivers/gpu/drm/bridge/nxp-ptn3460.c          |   2 +-
+>  drivers/gpu/drm/bridge/parade-ps8622.c        |   6 +-
+>  drivers/gpu/drm/bridge/sii902x.c              |   2 +-
+>  drivers/gpu/drm/bridge/sii9234.c              |   2 +-
+>  drivers/gpu/drm/bridge/sil-sii8620.c          |   2 +-
+>  drivers/gpu/drm/bridge/tc358767.c             |   2 +-
+>  drivers/gpu/drm/bridge/tc358768.c             |   4 +-
+>  drivers/gpu/drm/bridge/tc358775.c             |   4 +-
+>  drivers/gpu/drm/bridge/tda998x_drv.c          |   2 +-
+>  drivers/gpu/drm/bridge/th1520-dw-hdmi.c       |   2 +-
+>  drivers/gpu/drm/bridge/thc63lvd1024.c         |   4 +-
+>  drivers/gpu/drm/bridge/ti-sn65dsi83.c         |   2 +-
+>  drivers/gpu/drm/bridge/ti-sn65dsi86.c         |   4 +-
+>  drivers/gpu/drm/bridge/ti-tfp410.c            |   2 +-
+>  drivers/gpu/drm/bridge/ti-tpd12s015.c         |   4 +-
+>  drivers/gpu/drm/bridge/waveshare-dsi.c        |   4 +-
+>  drivers/gpu/drm/etnaviv/etnaviv_gpu.c         |   2 +-
+>  drivers/gpu/drm/exynos/exynos5433_drm_decon.c |   6 +-
+>  drivers/gpu/drm/exynos/exynos7_drm_decon.c    |   2 +-
+>  drivers/gpu/drm/exynos/exynos_dp.c            |   2 +-
+>  drivers/gpu/drm/exynos/exynos_drm_fimc.c      |   2 +-
+>  drivers/gpu/drm/exynos/exynos_drm_fimd.c      |  33 +-
+>  drivers/gpu/drm/exynos/exynos_drm_g2d.c       |   2 +-
+>  drivers/gpu/drm/exynos/exynos_drm_gsc.c       |   2 +-
+>  drivers/gpu/drm/exynos/exynos_drm_rotator.c   |   2 +-
+>  drivers/gpu/drm/exynos/exynos_drm_scaler.c    |   2 +-
+>  drivers/gpu/drm/exynos/exynos_hdmi.c          |   5 +-
+>  drivers/gpu/drm/exynos/exynos_mixer.c         |  15 +-
+>  drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c     |   2 +-
+>  drivers/gpu/drm/hisilicon/kirin/dw_drm_dsi.c  |   2 +-
+>  .../gpu/drm/hisilicon/kirin/kirin_drm_drv.c   |   7 +-
+>  .../drm/i915/display/intel_display_device.c   |   2 +-
+>  .../gpu/drm/i915/display/intel_lpe_audio.c    |   6 +-
+>  drivers/gpu/drm/i915/i915_pci.c               |   2 +-
+>  drivers/gpu/drm/imagination/pvr_drv.c         |   2 +-
+>  drivers/gpu/drm/imx/dc/dc-drv.c               |   2 +-
+>  drivers/gpu/drm/imx/dc/dc-ic.c                |   2 +-
+>  drivers/gpu/drm/imx/dc/dc-pe.c                |   2 +-
+>  drivers/gpu/drm/imx/dcss/dcss-drv.c           |   4 +-
+>  drivers/gpu/drm/imx/ipuv3/dw_hdmi-imx.c       |  11 +-
+>  drivers/gpu/drm/imx/ipuv3/imx-drm-core.c      |   4 +-
+>  drivers/gpu/drm/imx/ipuv3/imx-ldb.c           |   4 +-
+>  drivers/gpu/drm/imx/ipuv3/imx-tve.c           |   2 +-
+>  drivers/gpu/drm/imx/ipuv3/parallel-display.c  |   2 +-
+>  drivers/gpu/drm/ingenic/ingenic-drm-drv.c     |   2 +-
+>  drivers/gpu/drm/ingenic/ingenic-dw-hdmi.c     |   2 +-
+>  drivers/gpu/drm/ingenic/ingenic-ipu.c         |   2 +-
+>  drivers/gpu/drm/kmb/kmb_drv.c                 |   4 +-
+>  drivers/gpu/drm/lima/lima_drv.c               |   2 +-
+>  drivers/gpu/drm/logicvc/logicvc_drm.c         |   2 +-
+>  drivers/gpu/drm/mcde/mcde_drv.c               |   2 +-
+>  drivers/gpu/drm/mcde/mcde_dsi.c               |   2 +-
+>  drivers/gpu/drm/mediatek/mtk_cec.c            |   4 +-
+>  drivers/gpu/drm/mediatek/mtk_disp_ccorr.c     |  14 +-
+>  drivers/gpu/drm/mediatek/mtk_disp_color.c     |  20 +-
+>  drivers/gpu/drm/mediatek/mtk_disp_gamma.c     |  20 +-
+>  drivers/gpu/drm/mediatek/mtk_disp_merge.c     |   4 +-
+>  drivers/gpu/drm/mediatek/mtk_disp_ovl.c       |  50 ++-
+>  drivers/gpu/drm/mediatek/mtk_disp_rdma.c      |  26 +-
+>  drivers/gpu/drm/mediatek/mtk_dp.c             |   2 +-
+>  drivers/gpu/drm/mediatek/mtk_dpi.c            |   2 +-
+>  drivers/gpu/drm/mediatek/mtk_drm_drv.c        | 395 +++++++++++-------
+>  drivers/gpu/drm/mediatek/mtk_ethdr.c          |   4 +-
+>  drivers/gpu/drm/mediatek/mtk_hdmi_ddc.c       |   4 +-
+>  drivers/gpu/drm/mediatek/mtk_mdp_rdma.c       |   4 +-
+>  drivers/gpu/drm/meson/meson_drv.c             |  28 +-
+>  drivers/gpu/drm/meson/meson_dw_hdmi.c         |  24 +-
+>  drivers/gpu/drm/meson/meson_dw_mipi_dsi.c     |   2 +-
+>  drivers/gpu/drm/msm/adreno/adreno_device.c    |   2 +-
+>  drivers/gpu/drm/msm/disp/dpu1/dpu_kms.c       |  70 ++--
+>  drivers/gpu/drm/msm/disp/mdp5/mdp5_kms.c      |   6 +-
+>  drivers/gpu/drm/msm/dp/dp_display.c           |   2 +-
+>  drivers/gpu/drm/msm/dsi/dsi.c                 |   2 +-
+>  drivers/gpu/drm/msm/hdmi/hdmi.c               |   2 +-
+>  drivers/gpu/drm/msm/hdmi/hdmi_phy.c           |  38 +-
+>  drivers/gpu/drm/msm/msm_drv.c                 |   2 +-
+>  drivers/gpu/drm/msm/msm_mdss.c                |   2 +-
+>  drivers/gpu/drm/mxsfb/mxsfb_drv.c             |   6 +-
+>  drivers/gpu/drm/nouveau/nouveau_drm.c         |   2 +-
+>  drivers/gpu/drm/omapdrm/dss/dispc.c           |   2 +-
+>  drivers/gpu/drm/omapdrm/dss/dsi.c             |   8 +-
+>  drivers/gpu/drm/omapdrm/dss/dss.c             |   2 +-
+>  drivers/gpu/drm/omapdrm/dss/hdmi4.c           |   4 +-
+>  drivers/gpu/drm/omapdrm/dss/hdmi5.c           |   6 +-
+>  drivers/gpu/drm/omapdrm/dss/venc.c            |   8 +-
+>  drivers/gpu/drm/omapdrm/omap_dmm_tiler.c      |   2 +-
+>  drivers/gpu/drm/panel/panel-arm-versatile.c   |   4 +-
+>  drivers/gpu/drm/panel/panel-boe-himax8279d.c  |   4 +-
+>  .../drm/panel/panel-boe-th101mb31ig002-28a.c  |   4 +-
+>  .../gpu/drm/panel/panel-boe-tv101wum-nl6.c    |  47 ++-
+>  drivers/gpu/drm/panel/panel-dsi-cm.c          |   2 +-
+>  drivers/gpu/drm/panel/panel-edp.c             |   5 +-
+>  .../gpu/drm/panel/panel-feixin-k101-im2ba02.c |   2 +-
+>  .../drm/panel/panel-feiyang-fy07024di26a30d.c |   2 +-
+>  .../gpu/drm/panel/panel-focaltech-ota7290b.c  |   4 +-
+>  drivers/gpu/drm/panel/panel-himax-hx83102.c   |  47 ++-
+>  drivers/gpu/drm/panel/panel-ilitek-ili9882t.c |  17 +-
+>  drivers/gpu/drm/panel/panel-innolux-p079zca.c |  11 +-
+>  .../gpu/drm/panel/panel-jadard-jd9365da-h3.c  |  30 +-
+>  drivers/gpu/drm/panel/panel-jdi-lpm102a188a.c |   2 +-
+>  .../gpu/drm/panel/panel-jdi-lt070me05000.c    |   2 +-
+>  drivers/gpu/drm/panel/panel-khadas-ts050.c    |   4 +-
+>  .../drm/panel/panel-kingdisplay-kd097d04.c    |   2 +-
+>  drivers/gpu/drm/panel/panel-lg-lb035q02.c     |   4 +-
+>  drivers/gpu/drm/panel/panel-lg-sw43408.c      |   4 +-
+>  .../gpu/drm/panel/panel-lincolntech-lcd197.c  |   2 +-
+>  drivers/gpu/drm/panel/panel-lvds.c            |   4 +-
+>  .../drm/panel/panel-magnachip-d53e6ea8966.c   |   2 +-
+>  drivers/gpu/drm/panel/panel-nec-nl8048hl11.c  |   4 +-
+>  drivers/gpu/drm/panel/panel-novatek-nt35950.c |   2 +-
+>  drivers/gpu/drm/panel/panel-novatek-nt36523.c |   2 +-
+>  .../gpu/drm/panel/panel-novatek-nt36672a.c    |   2 +-
+>  drivers/gpu/drm/panel/panel-novatek-nt36850.c |   2 +-
+>  drivers/gpu/drm/panel/panel-novatek-nt37801.c |   2 +-
+>  .../drm/panel/panel-osd-osd101t2587-53ts.c    |   5 +-
+>  .../drm/panel/panel-panasonic-vvx10f034n00.c  |   2 +-
+>  drivers/gpu/drm/panel/panel-raydium-rm67191.c |   2 +-
+>  drivers/gpu/drm/panel/panel-renesas-r63419.c  |   2 +-
+>  drivers/gpu/drm/panel/panel-ronbo-rb070d30.c  |   2 +-
+>  .../gpu/drm/panel/panel-samsung-atna33xc20.c  |   2 +-
+>  drivers/gpu/drm/panel/panel-samsung-db7430.c  |   6 +-
+>  drivers/gpu/drm/panel/panel-samsung-s6d27a1.c |   4 +-
+>  drivers/gpu/drm/panel/panel-samsung-s6d7aa0.c |   6 +-
+>  .../panel/panel-samsung-s6e88a0-ams427ap24.c  |   2 +-
+>  .../panel/panel-samsung-s6e88a0-ams452ef01.c  |   2 +-
+>  drivers/gpu/drm/panel/panel-seiko-43wvf1g.c   |   5 +-
+>  .../gpu/drm/panel/panel-sharp-lq101r1sx01.c   |   2 +-
+>  .../gpu/drm/panel/panel-sharp-ls037v7dw01.c   |   4 +-
+>  .../gpu/drm/panel/panel-sharp-ls043t1le01.c   |   2 +-
+>  drivers/gpu/drm/panel/panel-simple.c          |  70 ++--
+>  .../gpu/drm/panel/panel-sitronix-st7789v.c    |  18 +-
+>  drivers/gpu/drm/panel/panel-sony-acx565akm.c  |   4 +-
+>  .../drm/panel/panel-startek-kd070fhfid015.c   |   2 +-
+>  drivers/gpu/drm/panel/panel-summit.c          |   2 +-
+>  drivers/gpu/drm/panel/panel-tdo-tl070wsh30.c  |   2 +-
+>  drivers/gpu/drm/panel/panel-tpo-td028ttec1.c  |   6 +-
+>  drivers/gpu/drm/panel/panel-tpo-td043mtea1.c  |   4 +-
+>  drivers/gpu/drm/panel/panel-tpo-tpg110.c      |   6 +-
+>  drivers/gpu/drm/panel/panel-visionox-r66451.c |   2 +-
+>  .../gpu/drm/panel/panel-visionox-rm69299.c    |  12 +-
+>  .../gpu/drm/panel/panel-widechips-ws2401.c    |   6 +-
+>  drivers/gpu/drm/panfrost/panfrost_drv.c       |  36 +-
+>  drivers/gpu/drm/panthor/panthor_drv.c         |   4 +-
+>  drivers/gpu/drm/pl111/pl111_versatile.c       |   4 +-
+>  drivers/gpu/drm/qxl/qxl_drv.c                 |   6 +-
+>  drivers/gpu/drm/renesas/rcar-du/rcar_cmm.c    |   6 +-
+>  drivers/gpu/drm/renesas/rcar-du/rcar_dsc.c    |   2 +-
+>  .../gpu/drm/renesas/rcar-du/rcar_dw_hdmi.c    |   2 +-
+>  .../gpu/drm/renesas/rz-du/rzg2l_mipi_dsi.c    |   6 +-
+>  .../gpu/drm/rockchip/analogix_dp-rockchip.c   |  12 +-
+>  drivers/gpu/drm/rockchip/cdn-dp-core.c        |   8 +-
+>  .../gpu/drm/rockchip/dw-mipi-dsi-rockchip.c   |  32 +-
+>  .../gpu/drm/rockchip/dw-mipi-dsi2-rockchip.c  |   2 +-
+>  drivers/gpu/drm/rockchip/dw_dp-rockchip.c     |   2 +-
+>  drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c   |  32 +-
+>  .../gpu/drm/rockchip/dw_hdmi_qp-rockchip.c    |   6 +-
+>  drivers/gpu/drm/rockchip/inno_hdmi-rockchip.c |  12 +-
+>  drivers/gpu/drm/rockchip/rk3066_hdmi.c        |   2 +-
+>  drivers/gpu/drm/rockchip/rockchip_drm_drv.c   |   4 +-
+>  drivers/gpu/drm/rockchip/rockchip_lvds.c      |   6 +-
+>  drivers/gpu/drm/rockchip/rockchip_vop2_reg.c  |   4 +-
+>  drivers/gpu/drm/rockchip/rockchip_vop_reg.c   |  92 ++--
+>  drivers/gpu/drm/sitronix/st7571-i2c.c         |   2 +-
+>  drivers/gpu/drm/sitronix/st7571-spi.c         |   2 +-
+>  drivers/gpu/drm/sitronix/st7586.c             |   4 +-
+>  drivers/gpu/drm/sitronix/st7735r.c            |   4 +-
+>  drivers/gpu/drm/sprd/sprd_dpu.c               |   2 +-
+>  drivers/gpu/drm/sprd/sprd_drm.c               |   4 +-
+>  drivers/gpu/drm/sprd/sprd_dsi.c               |   2 +-
+>  drivers/gpu/drm/sti/sti_compositor.c          |   5 +-
+>  drivers/gpu/drm/sti/sti_drv.c                 |   4 +-
+>  drivers/gpu/drm/sti/sti_dvo.c                 |   2 +-
+>  drivers/gpu/drm/sti/sti_hda.c                 |   4 +-
+>  drivers/gpu/drm/sti/sti_hdmi.c                |   5 +-
+>  drivers/gpu/drm/sti/sti_hqvdp.c               |   2 +-
+>  drivers/gpu/drm/sti/sti_tvout.c               |   2 +-
+>  drivers/gpu/drm/sti/sti_vtg.c                 |   2 +-
+>  drivers/gpu/drm/stm/drv.c                     |   8 +-
+>  drivers/gpu/drm/stm/dw_mipi_dsi-stm.c         |   4 +-
+>  drivers/gpu/drm/stm/lvds.c                    |   2 +-
+>  drivers/gpu/drm/sun4i/sun4i_frontend.c        |   8 +-
+>  drivers/gpu/drm/sun4i/sun4i_hdmi_enc.c        |   6 +-
+>  drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c        |  12 +-
+>  drivers/gpu/drm/sun4i/sun8i_dw_hdmi.c         |   2 +-
+>  drivers/gpu/drm/sun4i/sun8i_tcon_top.c        |   6 +-
+>  drivers/gpu/drm/sysfb/ofdrm.c                 |   4 +-
+>  drivers/gpu/drm/sysfb/simpledrm.c             |   4 +-
+>  drivers/gpu/drm/tegra/dc.c                    |   5 +-
+>  drivers/gpu/drm/tegra/dpaux.c                 |   2 +-
+>  drivers/gpu/drm/tegra/drm.c                   |  84 ++--
+>  drivers/gpu/drm/tegra/dsi.c                   |   2 +-
+>  drivers/gpu/drm/tegra/gr2d.c                  |   2 +-
+>  drivers/gpu/drm/tegra/hdmi.c                  |   2 +-
+>  drivers/gpu/drm/tegra/hub.c                   |   9 +-
+>  drivers/gpu/drm/tegra/nvdec.c                 |   2 +-
+>  drivers/gpu/drm/tegra/nvjpg.c                 |   2 +-
+>  drivers/gpu/drm/tegra/sor.c                   |   2 +-
+>  drivers/gpu/drm/tegra/vic.c                   |   2 +-
+>  drivers/gpu/drm/tidss/tidss_drv.c             |  12 +-
+>  drivers/gpu/drm/tilcdc/tilcdc_drv.c           |   6 +-
+>  drivers/gpu/drm/tiny/arcpgu.c                 |   4 +-
+>  drivers/gpu/drm/tiny/ili9225.c                |   4 +-
+>  drivers/gpu/drm/tiny/ili9486.c                |   2 +-
+>  drivers/gpu/drm/tiny/mi0283qt.c               |   4 +-
+>  drivers/gpu/drm/tiny/panel-mipi-dbi.c         |   4 +-
+>  drivers/gpu/drm/tiny/pixpaper.c               |   2 +-
+>  drivers/gpu/drm/tiny/repaper.c                |   4 +-
+>  drivers/gpu/drm/tiny/sharp-memory.c           |   4 +-
+>  drivers/gpu/drm/tve200/tve200_drv.c           |   2 +-
+>  drivers/gpu/drm/v3d/v3d_drv.c                 |   2 +-
+>  drivers/gpu/drm/vc4/vc4_crtc.c                |   2 +-
+>  drivers/gpu/drm/vc4/vc4_dpi.c                 |   2 +-
+>  drivers/gpu/drm/vc4/vc4_drv.c                 |   2 +-
+>  drivers/gpu/drm/vc4/vc4_dsi.c                 |   2 +-
+>  drivers/gpu/drm/vc4/vc4_hdmi.c                |   2 +-
+>  drivers/gpu/drm/vc4/vc4_hvs.c                 |   2 +-
+>  drivers/gpu/drm/vc4/vc4_txp.c                 |   2 +-
+>  drivers/gpu/drm/vc4/vc4_v3d.c                 |   2 +-
+>  drivers/gpu/drm/vc4/vc4_vec.c                 |   2 +-
+>  drivers/gpu/drm/verisilicon/vs_dc.c           |   2 +-
+>  drivers/gpu/drm/xlnx/zynqmp_dpsub.c           |   4 +-
+>  drivers/gpu/host1x/dev.c                      |  20 +-
+>  drivers/gpu/host1x/tegra114-mipi.c            |   2 +-
+>  drivers/gpu/ipu-v3/ipu-common.c               |   8 +-
+>  drivers/gpu/ipu-v3/ipu-pre.c                  |   4 +-
+>  drivers/gpu/ipu-v3/ipu-prg.c                  |   4 +-
+>  254 files changed, 1155 insertions(+), 940 deletions(-)
 
-Hi NXP developers,
+How do you expect a patch of this size be merged?
 
-On 05.10.26 16:28, Frieder Schrempf wrote:
-> On 16.09.26 16:39, Frank Li wrote:
->> On Wed, Sep 16, 2026 at 03:16:13PM +0200, Arnd Bergmann wrote:
->>> On Mon, Sep 14, 2026, at 21:40, pankaj.gupta@oss.nxp.com wrote:
->>>> From: Pankaj Gupta <pankaj.gupta@nxp.com>
->>>>
->>>> Adds the driver for communication interface to secure-enclave, that
->>>> enables exchanging messages with NXP secure enclave HW IP(s)
->>>> like EdgeLock Enclave, from:
->>>> - User-Space Applications via character driver.
->>>>
->>>> ABI documentation for the NXP secure-enclave driver.
->>>
->>> I just saw this in linux-next, where it has caused a build failure
->>> for a missing include of linux/slab.h. I hadn't see the series
->>> before (even though it is a v51, which seems crazy), but I am
->>
->> It is in linux-next about v37, but build bot find many problems, I dropped
->> it and request to fix it. And sashiko is online recently and also find many
->> risk. I request to clean up it, and local AI environment have difference
->> with sashiko, so bump to v51.
->>
->> I put to linux-next again to make sure that pass all build test.
->>
->> Other two problems, need more time to check whole review history. reply
->> you later.
-> 
-> So this is still in linux-next, but was not sent in the pull request for
-> 7.4. It's rather confusing to me that maintainers add stuff to
-> linux-next for build-testing and then leave it there, neither removing
-> it, nor continuing the mainlining process.
-> 
-> Frank, what is the plan?
-> 
-> I'm currently rebasing my work for the NVMEM driver onto linux-next, but
-> as there have been so many iterations and this whole thing took so long,
-> I want to make sure that this is not another dead end where I'm wasting
-> my time on.
+> diff --git a/drivers/gpu/drm/i915/display/intel_display_device.c b/driver=
+s/gpu/drm/i915/display/intel_display_device.c
+> index 055396f85e4a..6b51a5102201 100644
+> --- a/drivers/gpu/drm/i915/display/intel_display_device.c
+> +++ b/drivers/gpu/drm/i915/display/intel_display_device.c
+> @@ -1442,7 +1442,7 @@ static bool has_no_display(struct pci_dev *pdev)
+>  {
+>  	static const struct pci_device_id ids[] =3D {
+>  		INTEL_IVB_Q_IDS(INTEL_VGA_DEVICE, 0),
+> -		{}
+> +		{ }
+>  	};
+>=20=20
+>  	return pci_match_id(ids, pdev);
+> diff --git a/drivers/gpu/drm/i915/display/intel_lpe_audio.c b/drivers/gpu=
+/drm/i915/display/intel_lpe_audio.c
+> index ff2cf479d8e1..3d92cb307251 100644
+> --- a/drivers/gpu/drm/i915/display/intel_lpe_audio.c
+> +++ b/drivers/gpu/drm/i915/display/intel_lpe_audio.c
+> @@ -185,10 +185,10 @@ static bool lpe_audio_detect(struct intel_display *=
+display)
+>  	if (display->platform.valleyview || display->platform.cherryview) {
+>  		static const struct pci_device_id atom_hdaudio_ids[] =3D {
+>  			/* Baytrail */
+> -			{PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x0f04)},
+> +			{ PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x0f04) },
+>  			/* Braswell */
+> -			{PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x2284)},
+> -			{}
+> +			{ PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x2284) },
+> +			{ }
+>  		};
+>=20=20
+>  		if (!pci_dev_present(atom_hdaudio_ids)) {
+> diff --git a/drivers/gpu/drm/i915/i915_pci.c b/drivers/gpu/drm/i915/i915_=
+pci.c
+> index 84a7dc6ab5db..faceb3de4fa3 100644
+> --- a/drivers/gpu/drm/i915/i915_pci.c
+> +++ b/drivers/gpu/drm/i915/i915_pci.c
+> @@ -870,7 +870,7 @@ static const struct pci_device_id pciidlist[] =3D {
+>  	INTEL_ATS_M_IDS(INTEL_VGA_DEVICE, &ats_m_info),
+>  	INTEL_ARL_IDS(INTEL_VGA_DEVICE, &mtl_info),
+>  	INTEL_MTL_IDS(INTEL_VGA_DEVICE, &mtl_info),
+> -	{}
+> +	{ }
 
-I need to ping here, again. What is the plan at NXP to move on with
-this? This is blocking multiple features that depend on ELE firmware
-support for i.MX9 and similar platforms from being upstreamed.
+Personally, I would *always* use {} instead of { }, and would rather not
+change.
 
-Thanks for your support in advance!
+Across the tree, {} is slightly more common than { }. IMO changing them
+is pointless churn.
 
-Best regards
-Frieder
+
+BR,
+Jani.
+
+
+--=20
+Jani Nikula, Intel
