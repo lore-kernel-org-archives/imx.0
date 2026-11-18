@@ -1,56 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794993852;
-	b=jkSOCqolAr+9CLt5QmHfQdOO2mWm+5J/SD7TElt3RS6u715kYtY1dfiWwzRUloIL9Qc6
-	 mUTAMOlydNIi7dKdiE88MSFY6nUTbfX0WpKjx8cLAa8JzhYw0cqpS2CpdnniPlCm00HI3
-	 VVbNrAIiR2ZbTocw8GOKKtPa/c3LN1N3oQ2aiieZUSggxkUYvlnEyre2hV1hO4/xJRHxG
-	 vYhTSQBzvqvztHwyV7NhFEgwCOlnWY6iDMuZ+OhHbV0cWE1gMJygsNgB5OTaxPBi+nnyM
-	 HdoyUQXuocIsaoGw7MXC4cLLrpeppXjbx5Oq+j2lTM7/DdNBfT1SfcrjHHWbf+xF+BQ==
+	t=1794993884;
+	b=WZGX3LJYSJgtmDM/gVR39nsJfTMdMY9VayQLx3sVKJ5FhGrESFhhIFsK0fJ0rbC6zSQG
+	 dO7XePjLXFgFYEfXFZ3oyxK1LprQwaAZ5NBHZyTc0g4b8cvUQwjZk7F3JkcA1jjmLYfFH
+	 2zdcCR1qM0zC0OUMh5CNMsiFaXH+jOcMB5Uxfawlg7DEShlPoH9nLvwRvfnp1I7kKxtPd
+	 SwAm3ZXesWRTnZRWGX2BcxXj7ZD9/mUJkvXY9wIlDREJCt8Xn30YwCGRzm8lQvmoAWQxv
+	 wtWAG4EtniaEEnExZAf5DZbtCzPOuWkenzntRZvzW/XxToFty+dcxGrImINHfkZD6Fg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794993852;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794993884;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=eiSAmxoY+0yCXI1tj3V4CagndGnn2ZclLqZ3nXlza9Y=;
-	b=T3ZrLzYNBW+nqZ6Ae8IkAOUFmJo1DvfVHKXhgWhFhafv1IEdtgCyxU1WvlUXUMdhC5k1
-	 BMrMmZGUGX6VITPgLUxvYdc+n40/yII1GFzEW1FZNkGgq6bMt64JCyQHMRn8wfq5YklN6
-	 42trYM45iFdA4PztlUwwqxh7NRu8uTMGuqJzMHY0Ic2xh2jjoJAw17jKrB5QeuVFNSNNh
-	 N4iDxo2RRTZQ/kciNDeOAQztfl5N3zahP83Y7J4rOZlxvBb3yviXa5lLOu2kv7DxMB6ju
-	 ABfLlBVhQUR8VPqO/25vaojfJkC4krfFDEy6G06DjVgPkkr8ieTOojNI96wN/BhTd9g==
+	bh=XEcukLWCsTBXumUpfO8m6GUmCmS52S6S7BSWA/MA88Q=;
+	b=uHFsNByAUnwR5YW9lwcr2Dv5+HqgPZwIlZMjEejzHOpOp1VQ3QI5HNgGcwSWbeQeD55Y
+	 AVTOoBR3M721KtklBEXDkzCkJsWTUyWTVrkxiWAXPnwIpynmBU/UUNAB8ig2uEO9ZU6Up
+	 lZFs2Lo7erAjxiUjjuYzvG5HuhmEjevupdQM9AlKoGeCgQUwp9TjXxRomJz0weX/Qg7+y
+	 VQa45h+mv0sLMiZ19gH1KH4D7LHk/yXalc+q6lr9l0hzWxQqkBD6o1Kiw0tmC2MiLHJuu
+	 8f6XMnW26DDtf7l8Hb7aCQTTn2y9iZ+hdrmi+T/aAxpDMFHI+6cd4lMFX48oIHSB5Rg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WZM6a7oN;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RPI7B2OV;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2E46606A320;
-	Wed, 18 Nov 2026 09:24:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06814606A31C;
+	Wed, 18 Nov 2026 09:24:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WZM6a7oN
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 535991F000C4;
-	Wed, 18 Nov 2026 09:24:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RPI7B2OV
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 337931F000C4;
+	Wed, 18 Nov 2026 09:24:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794993852;
-	bh=eiSAmxoY+0yCXI1tj3V4CagndGnn2ZclLqZ3nXlza9Y=;
+	s=k20260515; t=1794993883;
+	bh=XEcukLWCsTBXumUpfO8m6GUmCmS52S6S7BSWA/MA88Q=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=WZM6a7oNeU2yL2csC0WaK07tTLjNyRcxxQ7F6K+XkklQ054zIn+UBci6Xyv/HLhBy
-	 SVl1MrFzEG82gDoS9x5VpmI/3a6ZV12tkKOk36PUYLjKnmSFiTogOhhec3rZiYVTTo
-	 LWMyEHRYvO5Y0cEQoPfRQC4rD4fFTkGiQFBc4lGNxgJZZ2JPsSyKPZSf3N2CHbYuSX
-	 NmoVR+RhMXDJDYjsHHY4YOs9FdNX5eauES41VynUMnU1+ygtlVAEpbHCNo/vHRWU7V
-	 ZJgbHua7uw0vXeR8b2zTlU2yTULOkTkCQo4xUHJBk2TjkAJuKanZvIUoLQGUnYTA/1
-	 VDoUcj+m7xfGA==
-Message-ID: <sashiko-outbox-220551@kernel.org>
+	b=RPI7B2OVIHyeRGB4S5EXuBRuIQvYSa0G5OjPCB8v4IiNRgo72Ul7znuAluBy0eqn0
+	 BLszd+5yLQH5qa1VncnpkN5rB3ZJ+q0JQ1lNfhVYPOLLkcWDdB3MUrz+3OFYkgh43z
+	 pxXzFwPvPVODPikvutFcPtl38UxvgcT0ABz1esmtgscCrlLBDH3pgSyTXovfPgMvrH
+	 R2N0nphWJZeqn0O3TpaCsu7WYy1WZja8KLiwBUJC+AENyVTvZeHJUmsPrVz6p1foxu
+	 gCHVYSmakW0XN0vThm5i78Ixbmm7MyPw+pr9eGGdYVHXOQviuqSTlMnSwmpWPwhLXp
+	 JtEnfUWXkDetg==
+Message-ID: <sashiko-outbox-220552@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 2/2] arm: dts: nxp: imx: Add devicetree files for M48
+Subject: Re: [PATCH v4 1/2] dt-bindings: arm: fsl: add Draeger M48 dual-cpu
+ board
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Petko Manolov" <petko.manolov@konsulko.com>
 Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20261118090914.38082-3-petko.manolov@konsulko.com>
+In-Reply-To: <20261118090914.38082-2-petko.manolov@konsulko.com>
 References: <20261118090914.38082-1-petko.manolov@konsulko.com>
- <20261118090914.38082-3-petko.manolov@konsulko.com>
+ <20261118090914.38082-2-petko.manolov@konsulko.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 18 Nov 2026 09:24:11 +0000
+Date: Wed, 18 Nov 2026 09:24:42 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -62,50 +63,48 @@ Precedence: list
 
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue to consider:
-- [Low] ARM: dts: imx: undocumented draeger vendor prefix in M48 board
-  compatibles
+- [Low] dt-bindings: arm: fsl: undocumented draeger vendor prefix in
+  fsl.yaml
 --
 
-commit 4a3279abe9868d1f357238a507cb14a2a1c89b59
+commit 8e20d52f09f0bb31e6607b78e6cf44266f04fbf1
 Author: Petko Manolov <petko.manolov@konsulko.com>
 
-arm: dts: nxp: imx: Add devicetree files for M48
+dt-bindings: arm: fsl: add Draeger M48 dual-cpu board
 
-This commit adds devicetree files for the i.MX6 DualLite and i.MX6 Quad
-variants of the Draeger M48 board.
+This commit adds the draeger,imx6q-m48 and draeger,imx6dl-m48 board
+compatible strings to the Freescale i.MX6 devicetree bindings.
 
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6dl-draeger-m48.dts b/arch/arm/=
-boot/dts/nxp/imx/imx6dl-draeger-m48.dts
-> new file mode 100644
-> index 0000000000000..b0bc9a67f5b34
-> --- /dev/null
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6dl-draeger-m48.dts
-> @@ -0,0 +1,16 @@
-[ ... ]
-> +/ {
-> +	model =3D "Draeger M48 i.MX6 DualLite";
-> +	compatible =3D "draeger,imx6dl-m48", "fsl,imx6dl";
-> +};
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-draeger-m48.dts b/arch/arm/b=
-oot/dts/nxp/imx/imx6q-draeger-m48.dts
-> new file mode 100644
-> index 0000000000000..ff9c337e93fbf
-> --- /dev/null
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6q-draeger-m48.dts
-> @@ -0,0 +1,16 @@
-[ ... ]
-> +/ {
-> +	model =3D "Draeger M48 i.MX6 Quad";
-> +	compatible =3D "draeger,imx6q-m48", "fsl,imx6q";
-> +};
+> diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentati=
+on/devicetree/bindings/arm/fsl.yaml
+> index c8290a83205b6..d0126f54b3877 100644
+> --- a/Documentation/devicetree/bindings/arm/fsl.yaml
+> +++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+> @@ -261,6 +261,7 @@ properties:
+>                - boundary,imx6q-nitrogen6x
+>                - compulab,cm-fx6           # CompuLab CM-FX6
+>                - dmo,imx6q-edmqmx6         # Data Modul eDM-QMX6 Board
+> +              - draeger,imx6q-m48         # Draeger imx6q variant of M48
+>                - ds,imx6q-sbc              # Da Sheng COM-9XX Modules
+>                - embest,imx6q-marsboard    # Embest MarS Board i.MX6Dual
+>                - emtrion,emcon-mx6         # emCON-MX6D or emCON-MX6Q SoM
+> @@ -459,6 +460,7 @@ properties:
+>                - boundary,imx6dl-nit6xlite     # Boundary Devices Nitroge=
+n6 Lite
+>                - boundary,imx6dl-nitrogen6x    # Boundary Devices Nitroge=
+n6x
+>                - bticino,imx6dl-mamoj      # BTicino i.MX6DL Mamoj
+> +              - draeger,imx6dl-m48        # Draeger imx6dl variant of M48
 
 [Severity: Low]
-Should the "draeger" vendor prefix be documented in
-Documentation/devicetree/bindings/vendor-prefixes.yaml?  Without an entry
-for "^draeger,.*", scripts/checkpatch.pl and devicetree schema validation
-report an undocumented vendor prefix warning for "draeger,imx6dl-m48" and
-"draeger,imx6q-m48".
+As reported by Frank Li on v4 [1], should the draeger vendor prefix also
+be documented under patternProperties in
+Documentation/devicetree/bindings/vendor-prefixes.yaml?  Without a
+"^draeger,.*" entry there, scripts/checkpatch.pl and devicetree schema
+validation report draeger as an undocumented vendor prefix.
+
+[1] https://lore.kernel.org/r/aton_teIric7IKX8@SMW015318
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261118090914.3808=
-2-1-petko.manolov@konsulko.com?part=3D2
+2-1-petko.manolov@konsulko.com?part=3D1
