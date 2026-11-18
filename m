@@ -1,79 +1,159 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794999621;
-	b=BGg2lpaYami7hCkRISLfL4e01SjH2VkhYJzeIUjG8lYKBet8WZe9iZ3pcN52WLVrBolp
-	 opdXsN97x1EP8trK+yEEPpELkQTKDCSxTI27H1aBa89eKuZB5Npte8pOQYMe1COmVg4a2
-	 fLg9zCJDEADXMxdnZ9yF0AKP7rq44B0/+WotdLg5pbApCi/MeCydJ5cYFSjrmuAVGJDzP
-	 Wu/+CmgSwLc6o7TNNAOI0ei1wm+Ffj7g7zgrVF4uve2Ri+cl0Hjmag+oi50S8AigS8+lJ
-	 T1bd0Aj+QbRJ/NOeGMjMdkjKrfd3UCT04y/H5ALT+Wkh50cLFLDhLx0BYsoimum7JFg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794999621;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=vEoi4P7BQr8rHpfacdOlQuPPdzVB1aHJRvkDt1Kpjuc=;
-	b=5Wd9M3kwKsPfZjuhakbVMyheeIWv7EaphGRriwqQUDKas6eNLhcbjfzXtcjanbTJ+Zf1
-	 chwBVjD/5JXSEpe90IkTAYH3jN/hGtezVHJgAJ+2ijHygMyWWRhD9DEvDsnBsf4R+EnxM
-	 vilAU1eX0v8cTV0kqwGx8cO1d0nuPr8ItjJ3hIKKG4ZWOCVgPsmx1Q7v+iznjB1NOcL9f
-	 5FFIiWtKJCTDpZ5+016+NZBN2zakSxzusNo78jCsL8Fk0E3twmzLf1Ox4A06k3KmQUilK
-	 ViS6DKFABH16iRuxvztQRkFa6GEr50FOjsibICyfYgH1Xk1mhY3NrjuIhvgioEVA4Uw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=h167uyux;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 890F4606A330;
-	Wed, 18 Nov 2026 11:00:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=h167uyux
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1794999621;
-	b=2+QsxIAsrFXXzAKmCkX0bOv3cJsyy44/iKvmYK6Gmm6pnEbcTFoQqjCGIksiFvDmipGo
-	 39K6d4hmNtJaa+d6JHHwEjcv4YiXcmadRASOqymHctle466YZx/JNHJ7m0RfbsOtHD8tY
-	 S3Y1Zsz3RtnCOlggB5hInjJ5OkLItttuYt1AZxpwXe8ReeJfuFksZUztnlewUtCdyEIBn
-	 wVQN4r+Tna960DE90pyLx846hC/y8hrTtE9k12SOTlQwwyMzWP5dna9JjcIiOna+HpsEd
-	 J2y4s3sNyJrTGguUC93o/mIJEVuFJ+oXJCzK7xJBATvLmAqCYrzLIumVQoDQUI6Zo3A==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1794999621;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=vEoi4P7BQr8rHpfacdOlQuPPdzVB1aHJRvkDt1Kpjuc=;
-	b=QcUGGEOf3uatUHPkeTh5D4w4m/4kujpY7Fm6OA59qYa1p5haKe6h6o71bbgVPDiZQuRb
-	 qa6lfM03bPTDSUiPlp1Y+ivi4n/y1B+ZFS/7zjg2kfOG2PzD+et7OOfVt92a2Cl9Lpgvd
-	 /IW9H2mzl9TiEIqjktfqy2HTZyD8qumWUsrIR9hqOPUx0Jvix7SDefCO5tv+kgz+fAtr4
-	 lWk+K2Rs+Lh6/Pg6u0eyo+B9VQZHyWAZkELiCnu5js+QU60czE1FJ7DLvtB6MHYSkvohz
-	 udeg8qQP1Vsl7kpgV/+xCsLinOahVumnUhN1ghv+m0A8EqLaaBRR2ceOw6tTsZZo7cQ==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.49
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795003719;
+	b=rkGaJQYiFIPJYQXfeEQ53UPrRqXqTcH6pv/jQ47gDMrpFEXatCkyjP1ivQK0T9rajoBb
+	 YreUkpjeHuwhcqRL0UFqnSr4AUh0hnOMPPCnSncrz6le6CUwEMlpGTcupWl7E0aJ2jr3/
+	 AfNJ6D1TxQPQrAOEPuWlSoQP7mgp9IcOxj0juY3jfBqFrJRhZ50jfb5yuFS7SdXiceKgA
+	 P4SVqyRv8BydX2ZQvIG+X/ZlsbsYL6v8a2+D4mFkQpEKMmYXYxBBGAEaEq6JRR0iy3/tJ
+	 JEl8gnTeBhij1NdcCoXRrrRjyDidC8u/TNwfYO4Tkcf42iRtnlSdJ54KycyV5hXgD6g==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795003719;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:Content-Type:
+	 X-Developer-Signature:X-Developer-Key:Content-Transfer-Encoding;
+	bh=ZqIfHdJWGskORflhidLcXHU0GNeut3EmsuGrPNz6McQ=;
+	b=EHUQbPmUy/X/bV5y8NXS4MBfKShpNAaNp0GGRBS5x4+Wuo9QKQ46S9nhIEv+fZB3rfzB
+	 HMbhGWdSbqiKAC66XTWjD9SMtr046U5SRyc2PtvDT71UQzkpzkpgUu2Yai3GqSuPtipZM
+	 VwDxGVi8+7/aJ1TgLhiVZ9e3j93k0lr/Sz0Br/XDV9d25rvJ6xiYhCfpI308+NFycHf1j
+	 dNdWJEea0JIywxNee7k0Pd10mVQiUCMdTegS92vO/+MqP48kghxsT2n7aMU+4lRgchmRp
+	 4f9jYQm+bJaiiGg2pzcZXnMbKiiCUD+mMF/uQF2/K3A8EUI4B6y7F2sVZaoMCztZuXg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=baylibre.com;
+	spf=pass smtp.mailfrom=baylibre.com;
+	dkim=pass header.d=baylibre.com header.i=@baylibre.com header.a=rsa-sha256 header.s=google header.b=S3K1xPI0;
+	arc=none smtp.remote-ip=209.85.221.49
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 8DD9F1F000CE;
-	Wed, 18 Nov 2026 11:00:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794999621;
-	bh=vEoi4P7BQr8rHpfacdOlQuPPdzVB1aHJRvkDt1Kpjuc=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=h167uyuxGBHw2dhL6UZckpyOy8yLt80U2IaeqOv2eZ3pJbWN4FHQ+DX8xS52SYtg9
-	 /NlJoJBwjI76/bm2HJHrJmMtSQuuUKxdHEcF/UGUeIkArMVmt0pwGQ2yHwRr8Zv+bh
-	 pcLXqjYsPHgPC6v/nAXXAcpRgR63WJ9XrdxAvI8FSafQwN/VMtHOTsZ6DJNPXLp5a/
-	 xGsXTP2KM8YghyGTLZD0qX+yaixCUBTy5AbBwbXHSyTDMxFDtUjujo1XGaamtwhC9S
-	 Dg8EzG2EPhFt0gHoKjuOEwsco6Szkd4EZAyAngrkeajEUimjk6malT6G09A6k0QB4r
-	 Jq6gVxInkOR6A==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 1A05E4AD36;
-	Wed, 18 Nov 2026 11:00:17 +0000 (UTC)
-From: Vincent Jardin via B4 Relay <devnull+vjardin.free.fr@kernel.org>
-Date: Wed, 18 Nov 2026 12:00:19 +0100
-Subject: [PATCH v8 5/6] arm64: dts: lx2160a: describe the pad muxes as the
- DCFG RCW override
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 144C6606A332
+	for <imx@lists.linux.dev>; Wed, 18 Nov 2026 12:08:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 144C6606A332
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.a=rsa-sha256 header.s=google header.b=S3K1xPI0
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-491f34b4e0fso363038f8f.2
+        for <imx@lists.linux.dev>; Wed, 18 Nov 2026 04:08:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre.com; s=google; t=1795003715; x=1795608515; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ZqIfHdJWGskORflhidLcXHU0GNeut3EmsuGrPNz6McQ=;
+        b=S3K1xPI0+nLnXycJNgRoB020EHMsLPQnxbqAz/AO7xDKy6ysws4g7cdjHu3HIGZBq+
+         ePTtz5RQsKrz1ggPoWkAkAZWO3PyBP4QDXUc415xwOQzzmFLlq9iRcJSqNUV97ENzdJ9
+         8ABGZf4iO0q9JVW1CgfdamhdpT/+BA8j8tMMpOu/qu0tHV4SrZqrKgIH320BK80jnGC6
+         YbvTVY5ljxW50fABT8wC7uuTgzxQeXFAR9sc8zsAD36C53YWfARFJom8CF4NJh6AM1GH
+         pR6Kp/NafSnBgs6QZGecRkC5I4oWNYSrt9S31rWFlPk68OOoPgBt5+T5bswPwRCPGm00
+         m0pA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795003715; x=1795608515;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ZqIfHdJWGskORflhidLcXHU0GNeut3EmsuGrPNz6McQ=;
+        b=cmjfuPEGGPoEJ4JvlzB0oKVOpNtf90e+TAXyHHOR7VBjg9z98MBI0ppn+sFUbBLUiV
+         FY5uC0wWyb0trhFYjTAz4Dj/eGhIrnlRcHKu4B7dATF8iNoO7nvkyZxj+YgfVck0JZ6S
+         6xcTIOdkSjLYW8fqI0zbbBEn6ugXocZX+8VRPL5mrXD57ICeKDiQd2+PHzRgO3ju68jT
+         NJrvSCMAv2TPsXy36ot77SDWENbfeP7QPnJ/TbgeaMh0iG+qIjP3ZzTz2S34/5U88Q+8
+         IUFfTB3LWzClbkoRp+LV5G9DH6AIyhev/v3v6fmk2bhX5EatUx/wwwRQhKAnAKTUkNzr
+         j9ow==
+X-Forwarded-Encrypted: i=1; AL+hErFtHLBIoTBsHoJ4m4964kzy2+dnni9fiqxRdGy3f+IAgAvbXUbjTOoq0eZPPpbNXpFd5LA=@lists.linux.dev
+X-Gm-Message-State: APuU4Z+ELlKWgXAun+ZjsETgUY/t+y10KjeeAMnmOCLGfcI7rK3sftNQ
+	BDgvKdD78EMEFjIp9dpflflhRAXjwesJAKxOO6N1DPD5OmzxYO9bylq26RF0CHJQlrw=
+X-Gm-Gg: AZFdTZcrfbiZUd41E+1yZ1ubO1vGDoS2xh/W5s9HsqnLakRophY4sODUHXYw8bGht9f
+	FiPukCWmKQgF+384iWlYU6TpXqY3fKGMQuRNc7udUYbF+Ncme72sF+KKQifFUrHQ2X47VFkzxcd
+	DcjkFr0G0Qj2fgP7Ed1g2musmJmtc1jkwgYyag63NVXRWKAoNGg2v/ccCEsjIuEQg+HBv67on2w
+	x3dWg/ol4F6kw0dimLOKoNn/gV8E2k+jiBh+/rWVzN4vSB6n+ThrH8gTp+lvkvl9Ch/Eby111R3
+	I2v+BB8zvtNRsP3MaSWZpW8eqVC0ybhmHsfpha5TAZqEr8N5RxLizA9q67cWxzK1iAHYPbeAZVu
+	4qaJg4Zry/GQQ39yaBQ82f5v2POYCGLn6z61BpOqxBkyT1S7i/nR7FnwU3On5UOry4LcehpIkoy
+	fpTs3LOf86AIAJXGViIhOgkh8k/86hicdWMBRex5lpw0uTi7L6MAVg6VXey7AYRWglSd/uNH0D9
+	N2caWccgFkKf602wxtjtgnM0lu6vdqN97+0nMNNSc/OFyjU15ZsAWscvnwRTAOvAIKR6j6YsnYz
+	HT2NXV2dDMpYlqQquJTZCxPNhmfqPSM8L3EnEtrO/PrkYyC0PF7EbLUsXB6UNe4GCiqXXEHkFpi
+	J5Nm3wskRrS4iHGs=
+X-Received: by 2002:a05:6000:470a:b0:4a5:a777:b5d5 with SMTP id ffacd0b85a97d-4a63d1da532mr5045850f8f.55.1795003714869;
+        Wed, 18 Nov 2026 04:08:34 -0800 (PST)
+Received: from localhost (p200300f65f19a904dea20c2220232395.dip0.t-ipconnect.de. [2003:f6:5f19:a904:dea2:c22:2023:2395])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-4a65541f3b3sm4537428f8f.23.2026.11.18.04.08.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Nov 2026 04:08:34 -0800 (PST)
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>
+Cc: Alex Deucher <alexander.deucher@amd.com>,
+	=?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	"Yo-Jung Leo Lin (AMD)" <Leo.Lin@amd.com>,
+	Hugo Sales <hugo@hsal.es>,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Zhigang Luo <Zhigang.Luo@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	Marcus Folkesson <marcus.folkesson@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Jessica Zhang <jesszhan0024@gmail.com>,
+	David Lechner <david@lechnology.com>,
+	Kamlesh Gurudasani <kamlesh.gurudasani@gmail.com>,
+	Alex Lanzano <lanzano.alex@gmail.com>,
+	LiangCheng Wang <zaq14760@gmail.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Dave Airlie <airlied@redhat.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Kees Cook <kees+treewide@kernel.org>,
+	Michael Walle <mwalle@kernel.org>,
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Linus Walleij <linusw@kernel.org>,
+	Jagan Teki <jagan@amarulasolutions.com>,
+	Iker Pedrosa <ikerpedrosam@gmail.com>,
+	Lyude Paul <lyude@redhat.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	nouveau@lists.freedesktop.org,
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	=?utf-8?q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>,
+	Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>,
+	Jocelyn Falempe <jfalempe@redhat.com>,
+	Yongbang Shi <shiyongbang@huawei.com>,
+	Tian Tao <tiantao6@hisilicon.com>,
+	Xinwei Kong <kong.kongxinwei@hisilicon.com>,
+	Sasha Finkelstein <k@chaosmail.tech>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Robert Foss <rfoss@kernel.org>,
+	asahi@lists.linux.dev,
+	linux-aspeed@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev,
+	linux-riscv@lists.infradead.org,
+	etnaviv@lists.freedesktop.org,
+	linux-samsung-soc@vger.kernel.org,
+	intel-gfx@lists.freedesktop.org,
+	intel-xe@lists.freedesktop.org,
+	imagination@lists.freedesktop.org,
+	linux-mips@vger.kernel.org,
+	lima@lists.freedesktop.org,
+	linux-mediatek@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-amlogic@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org,
+	freedreno@lists.freedesktop.org,
+	virtualization@lists.linux.dev,
+	spice-devel@lists.freedesktop.org,
+	linux-renesas-soc@vger.kernel.org,
+	linux-rockchip@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-sunxi@lists.linux.dev,
+	linux-tegra@vger.kernel.org
+Subject: [PATCH v1 0/9] drm: Improvements around device-id arrays
+Date: Wed, 18 Nov 2026 13:08:07 +0100
+Message-ID: <cover.1795002467.git.ukleinek@kernel.org>
+X-Mailer: git-send-email 2.47.3
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -83,461 +163,326 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261118-for-upstream-lx2160a-rcw-pinmux-v1-v8-5-d01bc837593e@free.fr>
-References: <20261118-for-upstream-lx2160a-rcw-pinmux-v1-v8-0-d01bc837593e@free.fr>
-In-Reply-To: <20261118-for-upstream-lx2160a-rcw-pinmux-v1-v8-0-d01bc837593e@free.fr>
-To: Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
- Frank Li <Frank.Li@nxp.com>, Jacky Bai <ping.bai@nxp.com>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- NXP S32 Linux Team <s32@nxp.com>, Linus Walleij <linusw@kernel.org>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>
-Cc: linux-gpio@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
- linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
- Vladimir Oltean <vladimir.oltean@nxp.com>, 
- Ioana Ciornei <ioana.ciornei@nxp.com>, Vincent Jardin <vjardin@free.fr>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794999615; l=11060;
- i=vjardin@free.fr; s=20260525; h=from:subject:message-id;
- bh=Zq2ZELCjBC2i/jGfOicU5lCYjF3qK07tZfqYcnwzjkc=;
- b=MoX+KjH+bwxkY2/c5qppeaBm5H5a0NnGFoIv1MfCIoGy+Y/JzM7Gj9VCUwXJ3R8rkN7XxrHeN
- LR47L/Q3d4aCli2iGAJdXk2VipsIP4ILUFigdeSahLYPYHOvJ85+Xdt
-X-Developer-Key: i=vjardin@free.fr; a=ed25519;
- pk=hppgLeFpGpKOi7LNwGEZ4jOYofJCoGd4Jf1ltAabiLw=
-X-Endpoint-Received: by B4 Relay for vjardin@free.fr/20260525 with
- auth_id=871
-X-Original-From: Vincent Jardin <vjardin@free.fr>
-Reply-To: vjardin@free.fr
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=17437; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=cusi/boMbD+x1Pm/G4pa0m2BbrVcm185QOqhPTSRPB4=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBq/ZUnzEwB4mHy5ZgAJ72PvaAQv4DmXs/I31u7G NTyp2l7bSCJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCav2VJwAKCRCPgPtYfRL+ Tv7RB/9msZyqIvVeGaXtwizzwzzkwmEvZBogp403ClUyjQf6dOFf8vD9xdMFNWtqzOwvKhQuXfM SzT9hOFo8OtXAMVgH/GaZrDV2ErZPyGgUIjEDufg9GVearhhRaUM/g83kesoE+IHiG96xKUxBOD wL4cb1gnIAp7Dn7K1azJGWD11ofvPUxBn73KunSE/xmaBZCStfgyl+oMAtdi3ZLcKZwJ3Sud7Lj HBSJhoawj/nWfTauw3Nl/dIZ7tmkEa1Fu8SdGXIk7YEACZ5uawffoHOn9kd1F58wzXUuoCKMmFj NOForLt+l8rIVAUuwfgytSa5MwOZMoz+ZcOSMlzTgvdmZwID
+X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
 
-From: Vincent Jardin <vjardin@free.fr>
+the motivation for this series is the wish to replace .driver_data in
+various *_device_id structs by an anonymous union. See
+https://lore.kernel.org/all/cover.1780048925.git.u.kleine-koenig@baylibre.com/
+for the idea behind that and the added benefit.
 
-The pad muxes are fields of the RCW: read-only in RCWSR12..14, changed
-at runtime through the override registers in the DCSR view of DCFG,
-which read 0 until written.
+This bases on top of yesterday's next. (Note:
+https://lore.kernel.org/all/cover.1794469153.git.u.kleine-koenig@baylibre.com/
+is also needed for my quest, but this is orthogonal to this series.)
 
-pinctrl-single on those registers, since commit 8a1365c7bbc1
-("arm64: dts: lx2160a: add pinmux and i2c gpio to support bus recovery"),
-clears every other field of the word with its first pin state:
-a board whose RCW programs a non-zero pad mux loses those pads at the
-first I2C probe.
+I didn't split the patches per driver or maintainer team, and I hope I
+don't need to because that is quite some effort for very little gain.
+I'm happy to provide a stable branch for the unsplit series if desired.
+For that I'd rebase on top of v7.4-rc1 in the hope that there aren't too
+many changes that were introduced after that point that need adaption
+here.
 
-Describe the pad mux as a child of the dcfg node, which gains its DCSR
-view and, as on the LS1028A, the addressing of its children:
-the child is at its RCWSR12 to RCWSR14 and RCWSR27 windows, one group
-per RCW field, one function per encoding, driven by
-fsl,lx2160a-rcw-pinmux using fsl-guts. Labels and pin node names stay,
-so no consumer changes.
-The pinctrl-single node goes.
+All but the last patch is necessary to progress with the quest pointed
+out above. If you consider the last patch churn, that's fine for me,
+just drop it then.
 
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Signed-off-by: Vincent Jardin <vjardin@free.fr>
----
- arch/arm64/boot/dts/freescale/fsl-lx216x.dtsi | 377 ++++++++++++++------------
- 1 file changed, 202 insertions(+), 175 deletions(-)
+I didn't add everyone to Cc: who was emitted by get_maintainer.pl to not
+trigger mail server limits. Even only keeping maintainers and lists was too
+much.
 
-diff --git a/arch/arm64/boot/dts/freescale/fsl-lx216x.dtsi b/arch/arm64/boot/dts/freescale/fsl-lx216x.dtsi
-index 2085362ab0eac..b0bb7bf944059 100644
---- a/arch/arm64/boot/dts/freescale/fsl-lx216x.dtsi
-+++ b/arch/arm64/boot/dts/freescale/fsl-lx216x.dtsi
-@@ -669,9 +669,209 @@ clockgen: clock-controller@1300000 {
- 		};
- 
- 		dcfg: syscon@1e00000 {
--			compatible = "fsl,lx2160a-dcfg", "syscon";
--			reg = <0x0 0x1e00000 0x0 0x10000>;
-+			compatible = "fsl,lx2160a-dcfg", "syscon", "simple-mfd";
-+			reg = <0x0 0x1e00000 0x0 0x10000>,
-+			      <0x7 0x00100000 0x0 0x10000>;
-+			reg-names = "dcfg_ccsr", "dcfg_dcsr";
-+			ranges = <0x0 0x0 0x1e00000 0x10000>;
-+			#address-cells = <1>;
-+			#size-cells = <1>;
- 			little-endian;
-+
-+			pinmux_i2crv: pinctrl@12c {
-+				compatible = "fsl,lx2160a-rcw-pinmux";
-+				reg = <0x12c 0xc>, <0x168 0x4>;
-+
-+				i2c1_pins: iic2-i2c-pins {
-+					function = "i2c";
-+					groups = "iic2";
-+				};
-+
-+				gpio0_31_30_pins: iic2-gpio-pins {
-+					function = "gpio";
-+					groups = "iic2";
-+				};
-+
-+				ftm0_ch10_pins: iic2-ftm-pins {
-+					function = "flextimer";
-+					groups = "iic2";
-+				};
-+
-+				esdhc0_cd_wp_pins: iic2-sdhc-pins {
-+					function = "sdhc";
-+					groups = "iic2";
-+				};
-+
-+				i2c2_pins: iic3-i2c-pins {
-+					function = "i2c";
-+					groups = "iic3";
-+				};
-+
-+				gpio0_29_28_pins: iic3-gpio-pins {
-+					function = "gpio";
-+					groups = "iic3";
-+				};
-+
-+				can0_pins: iic3-can-pins {
-+					function = "can";
-+					groups = "iic3";
-+				};
-+
-+				event65_pins: iic3-event-pins {
-+					function = "evt";
-+					groups = "iic3";
-+				};
-+
-+				i2c3_pins: iic4-i2c-pins {
-+					function = "i2c";
-+					groups = "iic4";
-+				};
-+
-+				gpio0_27_26_pins: iic4-gpio-pins {
-+					function = "gpio";
-+					groups = "iic4";
-+				};
-+
-+				can1_pins: iic4-can-pins {
-+					function = "can";
-+					groups = "iic4";
-+				};
-+
-+				event87_pins: iic4-event-pins {
-+					function = "evt";
-+					groups = "iic4";
-+				};
-+
-+				i2c4_pins: iic5-i2c-pins {
-+					function = "i2c";
-+					groups = "iic5";
-+				};
-+
-+				gpio0_25_24_pins: iic5-gpio-pins {
-+					function = "gpio";
-+					groups = "iic5";
-+				};
-+
-+				esdhc0_clksync_pins: iic5-sdhc-clk-pins {
-+					function = "sdhc-clk";
-+					groups = "iic5";
-+				};
-+
-+				dspi2_miso_mosi_pins: iic5-spi3-pins {
-+					function = "spi";
-+					groups = "iic5";
-+				};
-+
-+				i2c5_pins: iic6-i2c-pins {
-+					function = "i2c";
-+					groups = "iic6";
-+				};
-+
-+				gpio0_23_22_pins: iic6-gpio-pins {
-+					function = "gpio";
-+					groups = "iic6";
-+				};
-+
-+				esdhc1_clksync_pins: iic6-sdhc-clk-pins {
-+					function = "sdhc-clk";
-+					groups = "iic6";
-+				};
-+
-+				fspi_data74_pins: xspi1-data74-pins {
-+					function = "flexspi";
-+					groups = "xspi1-data74";
-+				};
-+
-+				gpio1_31_28_pins: xspi1-data74-gpio-pins {
-+					function = "gpio";
-+					groups = "xspi1-data74";
-+				};
-+
-+				fspi_data30_pins: xspi1-data30-pins {
-+					function = "flexspi";
-+					groups = "xspi1-data30";
-+				};
-+
-+				gpio1_27_24_pins: xspi1-data30-gpio-pins {
-+					function = "gpio";
-+					groups = "xspi1-data30";
-+				};
-+
-+				fspi_dqs_sck_cs10_pins: xspi1-base-pins {
-+					function = "flexspi";
-+					groups = "xspi1-base";
-+				};
-+
-+				gpio1_23_20_pins: xspi1-base-gpio-pins {
-+					function = "gpio";
-+					groups = "xspi1-base";
-+				};
-+
-+				esdhc0_cmd_data30_clk_vsel_pins: sdhc1-base-sdhc-vsel-pins {
-+					function = "sdhc";
-+					groups = "sdhc1-base";
-+				};
-+
-+				gpio0_21_15_pins: sdhc1-base-gpio-pins {
-+					function = "gpio";
-+					groups = "sdhc1-base";
-+				};
-+
-+				dspi0_pins: sdhc1-base-spi1-pins {
-+					function = "spi";
-+					groups = "sdhc1-base";
-+				};
-+
-+				esdhc0_cmd_data30_clk_dspi2_cs0_pins: sdhc1-base-sdhc-spi3-pins {
-+					function = "sdhc-spi";
-+					groups = "sdhc1-base";
-+				};
-+
-+				esdhc0_cmd_data30_clk_data4_pins: sdhc1-base-sdhc-data4-pins {
-+					function = "sdhc-data4";
-+					groups = "sdhc1-base";
-+				};
-+
-+				esdhc0_dir_pins: sdhc1-dir-pins {
-+					function = "sdhc";
-+					groups = "sdhc1-dir";
-+				};
-+
-+				gpio0_14_12_pins: sdhc1-dir-gpio-pins {
-+					function = "gpio";
-+					groups = "sdhc1-dir";
-+				};
-+
-+				dspi2_cs31_pins: sdhc1-dir-spi3-pins {
-+					function = "spi";
-+					groups = "sdhc1-dir";
-+				};
-+
-+				esdhc0_data75_pins: sdhc1-dir-sdhc-pins {
-+					function = "sdhc-data";
-+					groups = "sdhc1-dir";
-+				};
-+
-+				gpio1_18_15_pins: iic8-iic7-gpio-pins {
-+					function = "gpio";
-+					groups = "sdhc2-data74";
-+				};
-+
-+				i2c6_i2c7_pins: iic8-iic7-i2c-pins {
-+					function = "i2c";
-+					groups = "sdhc2-data74";
-+				};
-+
-+				i2c0_pins: iic1-i2c-pins {
-+					function = "i2c";
-+					groups = "iic1";
-+				};
-+
-+				gpio0_3_2_pins: iic1-gpio-pins {
-+					function = "gpio";
-+					groups = "iic1";
-+				};
-+			};
- 		};
- 
- 		sfp: efuse@1e80000 {
-@@ -1531,179 +1731,6 @@ pcs18: ethernet-phy@0 {
- 			};
- 		};
- 
--		pinmux_i2crv: pinmux@70010012c {
--			compatible = "pinctrl-single";
--			reg = <0x00000007 0x0010012c 0x0 0xc>;
--			#address-cells = <1>;
--			#size-cells = <0>;
--			#pinctrl-cells = <2>;
--			pinctrl-single,bit-per-mux;
--			pinctrl-single,register-width = <32>;
--			pinctrl-single,function-mask = <0x7>;
--
--			/* RCWSR12 */
--			i2c1_pins: iic2-i2c-pins {
--				pinctrl-single,bits = <0x0 0x0 0x7>;
--			};
--
--			gpio0_31_30_pins: iic2-gpio-pins {
--				pinctrl-single,bits = <0x0 0x1 0x7>;
--			};
--
--			ftm0_ch10_pins: iic2-ftm-pins {
--				pinctrl-single,bits = <0x0 0x2 0x7>;
--			};
--
--			esdhc0_cd_wp_pins: iic2-sdhc-pins {
--				pinctrl-single,bits = <0x0 0x6 0x7>;
--			};
--
--			i2c2_pins: iic3-i2c-pins {
--				pinctrl-single,bits = <0x0 0x0 (0x7 << 3)>;
--			};
--
--			gpio0_29_28_pins: iic3-gpio-pins {
--				pinctrl-single,bits = <0x0 (0x1 << 3) (0x7 << 3)>;
--			};
--
--			can0_pins: iic3-can-pins {
--				pinctrl-single,bits = <0x0 (0x2 << 3) (0x7 << 3)>;
--			};
--
--			event65_pins: iic3-event-pins {
--				pinctrl-single,bits = <0x0 (0x6 << 3) (0x7 << 3)>;
--			};
--
--			i2c3_pins: iic4-i2c-pins {
--				pinctrl-single,bits = <0x0 0x0 (0x7 << 6)>;
--			};
--
--			gpio0_27_26_pins: iic4-gpio-pins {
--				pinctrl-single,bits = <0x0 (0x1 << 6) (0x7 << 6)>;
--			};
--
--			can1_pins: iic4-can-pins {
--				pinctrl-single,bits = <0x0 (0x2 << 6) (0x7 << 6)>;
--			};
--
--			event87_pins: iic4-event-pins {
--				pinctrl-single,bits = <0x0 (0x6 << 6) (0x7 << 6)>;
--			};
--
--			i2c4_pins: iic5-i2c-pins {
--				pinctrl-single,bits = <0x0 0x0 (0x7 << 9)>;
--			};
--
--			gpio0_25_24_pins: iic5-gpio-pins {
--				pinctrl-single,bits = <0x0 (0x1 << 9) (0x7 << 9)>;
--			};
--
--			esdhc0_clksync_pins: iic5-sdhc-clk-pins {
--				pinctrl-single,bits = <0x0 (0x2 << 9) (0x7 << 9)>;
--			};
--
--			dspi2_miso_mosi_pins: iic5-spi3-pins {
--				pinctrl-single,bits = <0x0 (0x3 << 9) (0x7 << 9)>;
--			};
--
--			i2c5_pins: iic6-i2c-pins {
--				pinctrl-single,bits = <0x0 0x0 (0x7 << 12)>;
--			};
--
--			gpio0_23_22_pins: iic6-gpio-pins {
--				pinctrl-single,bits = <0x0 (0x1 << 12) (0x7 << 12)>;
--			};
--
--			esdhc1_clksync_pins: iic6-sdhc-clk-pins {
--				pinctrl-single,bits = <0x0 (0x2 << 12) (0x7 << 12)>;
--			};
--
--			fspi_data74_pins: xspi1-data74-pins {
--				pinctrl-single,bits = <0x0 0x0 (0x7 << 15)>;
--			};
--
--			gpio1_31_28_pins: xspi1-data74-gpio-pins {
--				pinctrl-single,bits = <0x0 (0x1 << 15) (0x7 << 15)>;
--			};
--
--			fspi_data30_pins: xspi1-data30-pins {
--				pinctrl-single,bits = <0x0 0x0 (0x7 << 18)>;
--			};
--
--			gpio1_27_24_pins: xspi1-data30-gpio-pins {
--				pinctrl-single,bits = <0x0 (0x1 << 18) (0x7 << 18)>;
--			};
--
--			fspi_dqs_sck_cs10_pins: xspi1-base-pins {
--				pinctrl-single,bits = <0x0 0x0 (0x7 << 21)>;
--			};
--
--			gpio1_23_20_pins: xspi1-base-gpio-pins {
--				pinctrl-single,bits = <0x0 (0x1 << 21) (0x7 << 21)>;
--			};
--
--			esdhc0_cmd_data30_clk_vsel_pins: sdhc1-base-sdhc-vsel-pins {
--				pinctrl-single,bits = <0x0 0x0 (0x7 << 24)>;
--			};
--
--			gpio0_21_15_pins: sdhc1-base-gpio-pins {
--				pinctrl-single,bits = <0x0 (0x1 << 24) (0x7 << 24)>;
--			};
--
--			dspi0_pins: sdhc1-base-spi1-pins {
--				pinctrl-single,bits = <0x0 (0x2 << 24) (0x7 << 24)>;
--			};
--
--			esdhc0_cmd_data30_clk_dspi2_cs0_pins: sdhc1-base-sdhc-spi3-pins {
--				pinctrl-single,bits = <0x0 (0x3 << 24) (0x7 << 24)>;
--			};
--
--			esdhc0_cmd_data30_clk_data4_pins: sdhc1-base-sdhc-data4-pins {
--				pinctrl-single,bits = <0x0 (0x4 << 24) (0x7 << 24)>;
--			};
--
--			esdhc0_dir_pins: sdhc1-dir-pins {
--				pinctrl-single,bits = <0x0 0x0 (0x7 << 27)>;
--			};
--
--			gpio0_14_12_pins: sdhc1-dir-gpio-pins {
--				pinctrl-single,bits = <0x0 (0x1 << 27) (0x7 << 27)>;
--			};
--
--			dspi2_cs31_pins: sdhc1-dir-spi3-pins {
--				pinctrl-single,bits = <0x0 (0x3 << 27) (0x7 << 27)>;
--			};
--
--			esdhc0_data75_pins: sdhc1-dir-sdhc-pins {
--				pinctrl-single,bits = <0x0 (0x4 << 27) (0x7 << 27)>;
--			};
--
--			/* RCWSR13 */
--			gpio1_18_15_pins: iic8-iic7-gpio-pins {
--				pinctrl-single,bits = <0x4 0x1 0x7>;
--			};
--
--			i2c6_i2c7_pins: iic8-iic7-i2c-pins {
--				pinctrl-single,bits = <0x4 0x2 0x7>;
--			};
--
--			/* RCWSR14 */
--			/*
--			 * IIC1_PMUX is a single bit at RCWSR14[10], but bit-per-mux
--			 * uses the mask for the field to clear before applying the
--			 * value.
--			 * So bits 11 and 12, which are reserved, are written as 0
--			 * on every mux switch, it is harmless.
--			 */
--			i2c0_pins: iic1-i2c-pins {
--				pinctrl-single,bits = <0x8 0x0 (0x7 << 10)>;
--			};
--
--			gpio0_3_2_pins: iic1-gpio-pins {
--				pinctrl-single,bits = <0x8 (0x1 << 10) (0x7 << 10)>;
--			};
--		};
--
- 		fsl_mc: fsl-mc@80c000000 {
- 			compatible = "fsl,qoriq-mc";
- 			reg = <0x00000008 0x0c000000 0 0x40>,
+Best regards
+Uwe
 
+Uwe Kleine-König (9):
+  drm/amdgpu: Use named initializer for acpi_device_id array
+  drm/sitronix/st7571-i2c: Drop unused assignment of i2c_device_id
+    driver data
+  drm: Drop unused assignment of spi_device_id driver_data
+  drm: Use designated initializers for spi_device_id arrays
+  drm: Use designated initializers for i2c_device_id arrays
+  drm: Use designated initializers for of_device_id arrays
+  drm: Use an empty initializer as pci_device_id array terminator
+  drm/pl111: Use an empty initializer as amba_id array terminator
+  drm: Unify coding style for *_device_id arrays
+
+ drivers/gpu/drm/adp/adp-mipi.c                |   4 +-
+ drivers/gpu/drm/adp/adp_drv.c                 |   4 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c      |   2 +-
+ .../gpu/drm/arm/display/komeda/komeda_drv.c   |   8 +-
+ drivers/gpu/drm/arm/hdlcd_drv.c               |   4 +-
+ drivers/gpu/drm/arm/malidp_drv.c              |   8 +-
+ drivers/gpu/drm/armada/armada_crtc.c          |   2 +-
+ drivers/gpu/drm/aspeed/aspeed_gfx_drv.c       |   2 +-
+ drivers/gpu/drm/ast/ast_drv.c                 |   2 +-
+ drivers/gpu/drm/atmel-hlcdc/atmel_hlcdc_dc.c  |   4 +-
+ .../drm/bridge/analogix/analogix-anx6345.c    |   4 +-
+ .../drm/bridge/analogix/analogix-anx78xx.c    |   2 +-
+ drivers/gpu/drm/bridge/analogix/anx7625.c     |   4 +-
+ drivers/gpu/drm/bridge/chipone-icn6211.c      |   2 +-
+ drivers/gpu/drm/bridge/chrontel-ch7033.c      |   2 +-
+ drivers/gpu/drm/bridge/display-connector.c    |   2 +-
+ drivers/gpu/drm/bridge/fsl-ldb.c              |  23 +-
+ drivers/gpu/drm/bridge/imx/imx8mp-hdmi-pvi.c  |   7 +-
+ .../drm/bridge/imx/imx8qxp-pixel-combiner.c   |   4 +-
+ .../gpu/drm/bridge/imx/imx8qxp-pixel-link.c   |   4 +-
+ drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c  |   2 +-
+ drivers/gpu/drm/bridge/imx/imx93-mipi-dsi.c   |   2 +-
+ drivers/gpu/drm/bridge/imx/imx93-pdfc.c       |   4 +-
+ drivers/gpu/drm/bridge/ite-it6263.c           |   2 +-
+ drivers/gpu/drm/bridge/lontium-lt8912b.c      |   4 +-
+ drivers/gpu/drm/bridge/lontium-lt9211.c       |   2 +-
+ drivers/gpu/drm/bridge/lvds-codec.c           |   2 +-
+ .../bridge/megachips-stdpxxxx-ge-b850v3-fw.c  |   4 +-
+ drivers/gpu/drm/bridge/microchip-lvds.c       |   6 +-
+ drivers/gpu/drm/bridge/nwl-dsi.c              |   2 +-
+ drivers/gpu/drm/bridge/nxp-ptn3460.c          |   2 +-
+ drivers/gpu/drm/bridge/parade-ps8622.c        |   6 +-
+ drivers/gpu/drm/bridge/sii902x.c              |   2 +-
+ drivers/gpu/drm/bridge/sii9234.c              |   2 +-
+ drivers/gpu/drm/bridge/sil-sii8620.c          |   2 +-
+ drivers/gpu/drm/bridge/tc358767.c             |   2 +-
+ drivers/gpu/drm/bridge/tc358768.c             |   4 +-
+ drivers/gpu/drm/bridge/tc358775.c             |   4 +-
+ drivers/gpu/drm/bridge/tda998x_drv.c          |   2 +-
+ drivers/gpu/drm/bridge/th1520-dw-hdmi.c       |   2 +-
+ drivers/gpu/drm/bridge/thc63lvd1024.c         |   4 +-
+ drivers/gpu/drm/bridge/ti-sn65dsi83.c         |   2 +-
+ drivers/gpu/drm/bridge/ti-sn65dsi86.c         |   4 +-
+ drivers/gpu/drm/bridge/ti-tfp410.c            |   2 +-
+ drivers/gpu/drm/bridge/ti-tpd12s015.c         |   4 +-
+ drivers/gpu/drm/bridge/waveshare-dsi.c        |   4 +-
+ drivers/gpu/drm/etnaviv/etnaviv_gpu.c         |   2 +-
+ drivers/gpu/drm/exynos/exynos5433_drm_decon.c |   6 +-
+ drivers/gpu/drm/exynos/exynos7_drm_decon.c    |   2 +-
+ drivers/gpu/drm/exynos/exynos_dp.c            |   2 +-
+ drivers/gpu/drm/exynos/exynos_drm_fimc.c      |   2 +-
+ drivers/gpu/drm/exynos/exynos_drm_fimd.c      |  33 +-
+ drivers/gpu/drm/exynos/exynos_drm_g2d.c       |   2 +-
+ drivers/gpu/drm/exynos/exynos_drm_gsc.c       |   2 +-
+ drivers/gpu/drm/exynos/exynos_drm_rotator.c   |   2 +-
+ drivers/gpu/drm/exynos/exynos_drm_scaler.c    |   2 +-
+ drivers/gpu/drm/exynos/exynos_hdmi.c          |   5 +-
+ drivers/gpu/drm/exynos/exynos_mixer.c         |  15 +-
+ drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c     |   2 +-
+ .../gpu/drm/hisilicon/hibmc/hibmc_drm_drv.c   |   2 +-
+ drivers/gpu/drm/hisilicon/kirin/dw_drm_dsi.c  |   2 +-
+ .../gpu/drm/hisilicon/kirin/kirin_drm_drv.c   |   7 +-
+ .../drm/i915/display/intel_display_device.c   |   2 +-
+ .../gpu/drm/i915/display/intel_lpe_audio.c    |   6 +-
+ drivers/gpu/drm/i915/i915_pci.c               |   2 +-
+ drivers/gpu/drm/imagination/pvr_drv.c         |   2 +-
+ drivers/gpu/drm/imx/dc/dc-drv.c               |   2 +-
+ drivers/gpu/drm/imx/dc/dc-ic.c                |   2 +-
+ drivers/gpu/drm/imx/dc/dc-pe.c                |   2 +-
+ drivers/gpu/drm/imx/dcss/dcss-drv.c           |   4 +-
+ drivers/gpu/drm/imx/ipuv3/dw_hdmi-imx.c       |  11 +-
+ drivers/gpu/drm/imx/ipuv3/imx-drm-core.c      |   4 +-
+ drivers/gpu/drm/imx/ipuv3/imx-ldb.c           |   4 +-
+ drivers/gpu/drm/imx/ipuv3/imx-tve.c           |   2 +-
+ drivers/gpu/drm/imx/ipuv3/parallel-display.c  |   2 +-
+ drivers/gpu/drm/ingenic/ingenic-drm-drv.c     |   2 +-
+ drivers/gpu/drm/ingenic/ingenic-dw-hdmi.c     |   2 +-
+ drivers/gpu/drm/ingenic/ingenic-ipu.c         |   2 +-
+ drivers/gpu/drm/kmb/kmb_drv.c                 |   4 +-
+ drivers/gpu/drm/lima/lima_drv.c               |   2 +-
+ drivers/gpu/drm/logicvc/logicvc_drm.c         |   2 +-
+ drivers/gpu/drm/mcde/mcde_drv.c               |   2 +-
+ drivers/gpu/drm/mcde/mcde_dsi.c               |   2 +-
+ drivers/gpu/drm/mediatek/mtk_cec.c            |   4 +-
+ drivers/gpu/drm/mediatek/mtk_disp_ccorr.c     |  14 +-
+ drivers/gpu/drm/mediatek/mtk_disp_color.c     |  20 +-
+ drivers/gpu/drm/mediatek/mtk_disp_gamma.c     |  20 +-
+ drivers/gpu/drm/mediatek/mtk_disp_merge.c     |   4 +-
+ drivers/gpu/drm/mediatek/mtk_disp_ovl.c       |  50 ++-
+ drivers/gpu/drm/mediatek/mtk_disp_rdma.c      |  26 +-
+ drivers/gpu/drm/mediatek/mtk_dp.c             |   2 +-
+ drivers/gpu/drm/mediatek/mtk_dpi.c            |   2 +-
+ drivers/gpu/drm/mediatek/mtk_drm_drv.c        | 395 +++++++++++-------
+ drivers/gpu/drm/mediatek/mtk_ethdr.c          |   4 +-
+ drivers/gpu/drm/mediatek/mtk_hdmi_ddc.c       |   4 +-
+ drivers/gpu/drm/mediatek/mtk_mdp_rdma.c       |   4 +-
+ drivers/gpu/drm/meson/meson_drv.c             |  28 +-
+ drivers/gpu/drm/meson/meson_dw_hdmi.c         |  24 +-
+ drivers/gpu/drm/meson/meson_dw_mipi_dsi.c     |   2 +-
+ drivers/gpu/drm/msm/adreno/adreno_device.c    |   2 +-
+ drivers/gpu/drm/msm/disp/dpu1/dpu_kms.c       |  70 ++--
+ drivers/gpu/drm/msm/disp/mdp5/mdp5_kms.c      |   6 +-
+ drivers/gpu/drm/msm/dp/dp_display.c           |   2 +-
+ drivers/gpu/drm/msm/dsi/dsi.c                 |   2 +-
+ drivers/gpu/drm/msm/hdmi/hdmi.c               |   2 +-
+ drivers/gpu/drm/msm/hdmi/hdmi_phy.c           |  38 +-
+ drivers/gpu/drm/msm/msm_drv.c                 |   2 +-
+ drivers/gpu/drm/msm/msm_mdss.c                |   2 +-
+ drivers/gpu/drm/mxsfb/mxsfb_drv.c             |   6 +-
+ .../gpu/drm/nouveau/dispnv04/i2c/ch7006_drv.c |   2 +-
+ .../gpu/drm/nouveau/dispnv04/i2c/sil164_drv.c |   2 +-
+ drivers/gpu/drm/nouveau/nouveau_drm.c         |   2 +-
+ drivers/gpu/drm/omapdrm/dss/dispc.c           |   2 +-
+ drivers/gpu/drm/omapdrm/dss/dsi.c             |   8 +-
+ drivers/gpu/drm/omapdrm/dss/dss.c             |   2 +-
+ drivers/gpu/drm/omapdrm/dss/hdmi4.c           |   4 +-
+ drivers/gpu/drm/omapdrm/dss/hdmi5.c           |   6 +-
+ drivers/gpu/drm/omapdrm/dss/venc.c            |   8 +-
+ drivers/gpu/drm/omapdrm/omap_dmm_tiler.c      |   2 +-
+ drivers/gpu/drm/panel/panel-arm-versatile.c   |   4 +-
+ drivers/gpu/drm/panel/panel-auo-a030jtn01.c   |   5 +-
+ drivers/gpu/drm/panel/panel-boe-himax8279d.c  |   4 +-
+ .../drm/panel/panel-boe-th101mb31ig002-28a.c  |   4 +-
+ .../gpu/drm/panel/panel-boe-tv101wum-nl6.c    |  47 ++-
+ drivers/gpu/drm/panel/panel-dsi-cm.c          |   6 +-
+ drivers/gpu/drm/panel/panel-edp.c             |   5 +-
+ .../gpu/drm/panel/panel-feixin-k101-im2ba02.c |   2 +-
+ .../drm/panel/panel-feiyang-fy07024di26a30d.c |   2 +-
+ .../gpu/drm/panel/panel-focaltech-ota7290b.c  |   4 +-
+ drivers/gpu/drm/panel/panel-himax-hx83102.c   |  47 ++-
+ drivers/gpu/drm/panel/panel-ilitek-ili9341.c  |   2 +-
+ .../gpu/drm/panel/panel-ilitek-ili9806e-spi.c |   2 +-
+ drivers/gpu/drm/panel/panel-ilitek-ili9881c.c |   4 +-
+ drivers/gpu/drm/panel/panel-ilitek-ili9882t.c |  17 +-
+ drivers/gpu/drm/panel/panel-innolux-p079zca.c |  11 +-
+ .../gpu/drm/panel/panel-jadard-jd9365da-h3.c  |  30 +-
+ drivers/gpu/drm/panel/panel-jdi-lpm102a188a.c |   2 +-
+ .../gpu/drm/panel/panel-jdi-lt070me05000.c    |   2 +-
+ drivers/gpu/drm/panel/panel-khadas-ts050.c    |   4 +-
+ .../drm/panel/panel-kingdisplay-kd097d04.c    |   2 +-
+ drivers/gpu/drm/panel/panel-lg-lb035q02.c     |   6 +-
+ drivers/gpu/drm/panel/panel-lg-sw43408.c      |   4 +-
+ .../gpu/drm/panel/panel-lincolntech-lcd197.c  |   2 +-
+ drivers/gpu/drm/panel/panel-lvds.c            |   4 +-
+ .../drm/panel/panel-magnachip-d53e6ea8966.c   |   4 +-
+ drivers/gpu/drm/panel/panel-nec-nl8048hl11.c  |   6 +-
+ .../gpu/drm/panel/panel-newvision-nv3052c.c   |   6 +-
+ drivers/gpu/drm/panel/panel-novatek-nt35950.c |   2 +-
+ drivers/gpu/drm/panel/panel-novatek-nt36523.c |   2 +-
+ .../gpu/drm/panel/panel-novatek-nt36672a.c    |   2 +-
+ drivers/gpu/drm/panel/panel-novatek-nt36850.c |   2 +-
+ drivers/gpu/drm/panel/panel-novatek-nt37801.c |   2 +-
+ .../gpu/drm/panel/panel-orisetech-ota5601a.c  |   2 +-
+ .../drm/panel/panel-osd-osd101t2587-53ts.c    |   5 +-
+ .../drm/panel/panel-panasonic-vvx10f034n00.c  |   2 +-
+ drivers/gpu/drm/panel/panel-raydium-rm67191.c |   2 +-
+ drivers/gpu/drm/panel/panel-renesas-r63419.c  |   2 +-
+ drivers/gpu/drm/panel/panel-ronbo-rb070d30.c  |   2 +-
+ .../gpu/drm/panel/panel-samsung-atna33xc20.c  |   2 +-
+ drivers/gpu/drm/panel/panel-samsung-db7430.c  |   8 +-
+ drivers/gpu/drm/panel/panel-samsung-ld9040.c  |   2 +-
+ drivers/gpu/drm/panel/panel-samsung-s6d27a1.c |   4 +-
+ drivers/gpu/drm/panel/panel-samsung-s6d7aa0.c |   6 +-
+ .../panel/panel-samsung-s6e88a0-ams427ap24.c  |   2 +-
+ .../panel/panel-samsung-s6e88a0-ams452ef01.c  |   2 +-
+ drivers/gpu/drm/panel/panel-seiko-43wvf1g.c   |   5 +-
+ .../gpu/drm/panel/panel-sharp-lq101r1sx01.c   |   2 +-
+ .../gpu/drm/panel/panel-sharp-ls037v7dw01.c   |   4 +-
+ .../gpu/drm/panel/panel-sharp-ls043t1le01.c   |   2 +-
+ drivers/gpu/drm/panel/panel-simple.c          |  70 ++--
+ drivers/gpu/drm/panel/panel-sitronix-st7701.c |   2 +-
+ .../gpu/drm/panel/panel-sitronix-st7789v.c    |  26 +-
+ drivers/gpu/drm/panel/panel-sony-acx565akm.c  |   6 +-
+ .../drm/panel/panel-startek-kd070fhfid015.c   |   2 +-
+ drivers/gpu/drm/panel/panel-summit.c          |   2 +-
+ drivers/gpu/drm/panel/panel-tdo-tl070wsh30.c  |   2 +-
+ drivers/gpu/drm/panel/panel-tpo-td028ttec1.c  |   8 +-
+ drivers/gpu/drm/panel/panel-tpo-td043mtea1.c  |   6 +-
+ drivers/gpu/drm/panel/panel-tpo-tpg110.c      |   8 +-
+ drivers/gpu/drm/panel/panel-visionox-r66451.c |   2 +-
+ .../gpu/drm/panel/panel-visionox-rm69299.c    |  12 +-
+ .../gpu/drm/panel/panel-widechips-ws2401.c    |   8 +-
+ drivers/gpu/drm/panfrost/panfrost_drv.c       |  36 +-
+ drivers/gpu/drm/panthor/panthor_drv.c         |   4 +-
+ drivers/gpu/drm/pl111/pl111_drv.c             |   2 +-
+ drivers/gpu/drm/pl111/pl111_versatile.c       |   4 +-
+ drivers/gpu/drm/qxl/qxl_drv.c                 |   6 +-
+ drivers/gpu/drm/renesas/rcar-du/rcar_cmm.c    |   6 +-
+ drivers/gpu/drm/renesas/rcar-du/rcar_dsc.c    |   2 +-
+ .../gpu/drm/renesas/rcar-du/rcar_dw_hdmi.c    |   2 +-
+ .../gpu/drm/renesas/rz-du/rzg2l_mipi_dsi.c    |   6 +-
+ .../gpu/drm/rockchip/analogix_dp-rockchip.c   |  12 +-
+ drivers/gpu/drm/rockchip/cdn-dp-core.c        |   8 +-
+ .../gpu/drm/rockchip/dw-mipi-dsi-rockchip.c   |  32 +-
+ .../gpu/drm/rockchip/dw-mipi-dsi2-rockchip.c  |   2 +-
+ drivers/gpu/drm/rockchip/dw_dp-rockchip.c     |   2 +-
+ drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c   |  32 +-
+ .../gpu/drm/rockchip/dw_hdmi_qp-rockchip.c    |   6 +-
+ drivers/gpu/drm/rockchip/inno_hdmi-rockchip.c |  12 +-
+ drivers/gpu/drm/rockchip/rk3066_hdmi.c        |   2 +-
+ drivers/gpu/drm/rockchip/rockchip_drm_drv.c   |   4 +-
+ drivers/gpu/drm/rockchip/rockchip_lvds.c      |   6 +-
+ drivers/gpu/drm/rockchip/rockchip_vop2_reg.c  |   4 +-
+ drivers/gpu/drm/rockchip/rockchip_vop_reg.c   |  92 ++--
+ drivers/gpu/drm/sitronix/st7571-i2c.c         |   6 +-
+ drivers/gpu/drm/sitronix/st7571-spi.c         |   6 +-
+ drivers/gpu/drm/sitronix/st7586.c             |   6 +-
+ drivers/gpu/drm/sitronix/st7735r.c            |   8 +-
+ drivers/gpu/drm/sitronix/st7920.c             |   2 +-
+ drivers/gpu/drm/sprd/sprd_dpu.c               |   2 +-
+ drivers/gpu/drm/sprd/sprd_drm.c               |   4 +-
+ drivers/gpu/drm/sprd/sprd_dsi.c               |   2 +-
+ drivers/gpu/drm/sti/sti_compositor.c          |   5 +-
+ drivers/gpu/drm/sti/sti_drv.c                 |   4 +-
+ drivers/gpu/drm/sti/sti_dvo.c                 |   2 +-
+ drivers/gpu/drm/sti/sti_hda.c                 |   4 +-
+ drivers/gpu/drm/sti/sti_hdmi.c                |   5 +-
+ drivers/gpu/drm/sti/sti_hqvdp.c               |   2 +-
+ drivers/gpu/drm/sti/sti_tvout.c               |   2 +-
+ drivers/gpu/drm/sti/sti_vtg.c                 |   2 +-
+ drivers/gpu/drm/stm/drv.c                     |   8 +-
+ drivers/gpu/drm/stm/dw_mipi_dsi-stm.c         |   4 +-
+ drivers/gpu/drm/stm/lvds.c                    |   2 +-
+ drivers/gpu/drm/sun4i/sun4i_frontend.c        |   8 +-
+ drivers/gpu/drm/sun4i/sun4i_hdmi_enc.c        |   6 +-
+ drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c        |  12 +-
+ drivers/gpu/drm/sun4i/sun8i_dw_hdmi.c         |   2 +-
+ drivers/gpu/drm/sun4i/sun8i_tcon_top.c        |   6 +-
+ drivers/gpu/drm/sysfb/ofdrm.c                 |   4 +-
+ drivers/gpu/drm/sysfb/simpledrm.c             |   4 +-
+ drivers/gpu/drm/tegra/dc.c                    |   5 +-
+ drivers/gpu/drm/tegra/dpaux.c                 |   2 +-
+ drivers/gpu/drm/tegra/drm.c                   |  84 ++--
+ drivers/gpu/drm/tegra/dsi.c                   |   2 +-
+ drivers/gpu/drm/tegra/gr2d.c                  |   2 +-
+ drivers/gpu/drm/tegra/hdmi.c                  |   2 +-
+ drivers/gpu/drm/tegra/hub.c                   |   9 +-
+ drivers/gpu/drm/tegra/nvdec.c                 |   2 +-
+ drivers/gpu/drm/tegra/nvjpg.c                 |   2 +-
+ drivers/gpu/drm/tegra/sor.c                   |   2 +-
+ drivers/gpu/drm/tegra/vic.c                   |   2 +-
+ drivers/gpu/drm/tidss/tidss_drv.c             |  12 +-
+ drivers/gpu/drm/tilcdc/tilcdc_drv.c           |   6 +-
+ drivers/gpu/drm/tiny/arcpgu.c                 |   4 +-
+ drivers/gpu/drm/tiny/hx8357d.c                |   2 +-
+ drivers/gpu/drm/tiny/ili9163.c                |   2 +-
+ drivers/gpu/drm/tiny/ili9225.c                |   6 +-
+ drivers/gpu/drm/tiny/ili9341.c                |   2 +-
+ drivers/gpu/drm/tiny/ili9486.c                |   8 +-
+ drivers/gpu/drm/tiny/mi0283qt.c               |   6 +-
+ drivers/gpu/drm/tiny/panel-mipi-dbi.c         |   6 +-
+ drivers/gpu/drm/tiny/pixpaper.c               |   7 +-
+ drivers/gpu/drm/tiny/repaper.c                |  12 +-
+ drivers/gpu/drm/tiny/sharp-memory.c           |  44 +-
+ drivers/gpu/drm/tve200/tve200_drv.c           |   2 +-
+ drivers/gpu/drm/v3d/v3d_drv.c                 |   2 +-
+ drivers/gpu/drm/vc4/vc4_crtc.c                |   2 +-
+ drivers/gpu/drm/vc4/vc4_dpi.c                 |   2 +-
+ drivers/gpu/drm/vc4/vc4_drv.c                 |   2 +-
+ drivers/gpu/drm/vc4/vc4_dsi.c                 |   8 +-
+ drivers/gpu/drm/vc4/vc4_hdmi.c                |   2 +-
+ drivers/gpu/drm/vc4/vc4_hvs.c                 |   2 +-
+ drivers/gpu/drm/vc4/vc4_txp.c                 |   2 +-
+ drivers/gpu/drm/vc4/vc4_v3d.c                 |   2 +-
+ drivers/gpu/drm/vc4/vc4_vec.c                 |   2 +-
+ drivers/gpu/drm/verisilicon/vs_dc.c           |   2 +-
+ drivers/gpu/drm/xlnx/zynqmp_dpsub.c           |   4 +-
+ drivers/gpu/host1x/dev.c                      |  20 +-
+ drivers/gpu/host1x/tegra114-mipi.c            |   2 +-
+ drivers/gpu/ipu-v3/ipu-common.c               |   8 +-
+ drivers/gpu/ipu-v3/ipu-pre.c                  |   4 +-
+ drivers/gpu/ipu-v3/ipu-prg.c                  |   4 +-
+ 272 files changed, 1238 insertions(+), 1017 deletions(-)
+
+
+base-commit: 7cfbf79c66c63e807ea452abf0546e6f6d6833a6
 -- 
-2.43.0
-
+2.56.0.rc1
 
