@@ -1,57 +1,76 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=212.27.42.6
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794993884;
-	b=WZGX3LJYSJgtmDM/gVR39nsJfTMdMY9VayQLx3sVKJ5FhGrESFhhIFsK0fJ0rbC6zSQG
-	 dO7XePjLXFgFYEfXFZ3oyxK1LprQwaAZ5NBHZyTc0g4b8cvUQwjZk7F3JkcA1jjmLYfFH
-	 2zdcCR1qM0zC0OUMh5CNMsiFaXH+jOcMB5Uxfawlg7DEShlPoH9nLvwRvfnp1I7kKxtPd
-	 SwAm3ZXesWRTnZRWGX2BcxXj7ZD9/mUJkvXY9wIlDREJCt8Xn30YwCGRzm8lQvmoAWQxv
-	 wtWAG4EtniaEEnExZAf5DZbtCzPOuWkenzntRZvzW/XxToFty+dcxGrImINHfkZD6Fg==
+	t=1794995949;
+	b=0I9lR6jZW045u7ICo9dPhKYlu/VMXXycyK7ZICahRrbAx4i800J5MMeUfEQWwcnugXHY
+	 utdTqAh75YrNHaBtCOMISrv/N8KHOY5js0IvouRq7S4FyKbildvYYP8qWQmeGHcv5zRSO
+	 9ccOiF5ITrPcSnqaByhdrcu6IOa4tZaSGDzvZl0pbrFNNgwOSsyWCwSqFZ9ZrshvPJD0f
+	 ebjYGfuXdJ/e7E3AIH17BECFUtTRx7DRCO3M5XtjPM+1Z2H97BWCtFsvjWOMzzCilCKEo
+	 BysUUxPm0efWPf6mHpWhN4nFSoxWkDt0UETVVz44EzkmRNeq7hRGAVMkd7BO0KvU+4Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794993884;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=XEcukLWCsTBXumUpfO8m6GUmCmS52S6S7BSWA/MA88Q=;
-	b=uHFsNByAUnwR5YW9lwcr2Dv5+HqgPZwIlZMjEejzHOpOp1VQ3QI5HNgGcwSWbeQeD55Y
-	 AVTOoBR3M721KtklBEXDkzCkJsWTUyWTVrkxiWAXPnwIpynmBU/UUNAB8ig2uEO9ZU6Up
-	 lZFs2Lo7erAjxiUjjuYzvG5HuhmEjevupdQM9AlKoGeCgQUwp9TjXxRomJz0weX/Qg7+y
-	 VQa45h+mv0sLMiZ19gH1KH4D7LHk/yXalc+q6lr9l0hzWxQqkBD6o1Kiw0tmC2MiLHJuu
-	 8f6XMnW26DDtf7l8Hb7aCQTTn2y9iZ+hdrmi+T/aAxpDMFHI+6cd4lMFX48oIHSB5Rg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794995949;
+	h=DMARC-Filter:Received:DKIM-Signature:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=wVxSIi4bRaqI2NNvgQHyFiPGPX0+mZZDkHVHA/9ddgo=;
+	b=Pyg/ysww7IiC9D5m01VkDDZTBLsvPYuGs86AjacThpmjGao/31ApR7DQ9WicbMzqGWh/
+	 GwJOXahebagCTK6zv/TOlQOzw4K418Juov1YLM4n31GmGMtdZYHbk5hF6kycAuMFxDAlx
+	 YEnxjkofvwm8w1AJrbPufjzJ8Ucebatg2GSoNEbI3h/ixVvESVAYqXLPIj+Z36qqJmzWh
+	 G9ATG0ZVsDCC3B/3VtF/xnp4bNnH13Wl+vVS24cgPCsOGlAUHdhlIWXLKg3396pLbSbnu
+	 iB3MzHH794qHe5TXELEXmWmAMISbSs1aYLAzxDZ1JtanjqUxTwW1JBqc32+3MG4pGCA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RPI7B2OV;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=free.fr;
+	spf=pass smtp.mailfrom=free.fr;
+	dkim=pass header.d=free.fr header.i=@free.fr header.a=rsa-sha256 header.s=smtp-20201208 header.b=oaQnw3aV;
+	arc=none smtp.remote-ip=212.27.42.6
+Received: from smtp6-g21.free.fr (smtp6-g21.free.fr [212.27.42.6])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06814606A31C;
-	Wed, 18 Nov 2026 09:24:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E826D606A320
+	for <imx@lists.linux.dev>; Wed, 18 Nov 2026 09:59:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E826D606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=free.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=free.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RPI7B2OV
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 337931F000C4;
-	Wed, 18 Nov 2026 09:24:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794993883;
-	bh=XEcukLWCsTBXumUpfO8m6GUmCmS52S6S7BSWA/MA88Q=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=RPI7B2OVIHyeRGB4S5EXuBRuIQvYSa0G5OjPCB8v4IiNRgo72Ul7znuAluBy0eqn0
-	 BLszd+5yLQH5qa1VncnpkN5rB3ZJ+q0JQ1lNfhVYPOLLkcWDdB3MUrz+3OFYkgh43z
-	 pxXzFwPvPVODPikvutFcPtl38UxvgcT0ABz1esmtgscCrlLBDH3pgSyTXovfPgMvrH
-	 R2N0nphWJZeqn0O3TpaCsu7WYy1WZja8KLiwBUJC+AENyVTvZeHJUmsPrVz6p1foxu
-	 gCHVYSmakW0XN0vThm5i78Ixbmm7MyPw+pr9eGGdYVHXOQviuqSTlMnSwmpWPwhLXp
-	 JtEnfUWXkDetg==
-Message-ID: <sashiko-outbox-220552@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 1/2] dt-bindings: arm: fsl: add Draeger M48 dual-cpu
- board
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Petko Manolov" <petko.manolov@konsulko.com>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20261118090914.38082-2-petko.manolov@konsulko.com>
-References: <20261118090914.38082-1-petko.manolov@konsulko.com>
- <20261118090914.38082-2-petko.manolov@konsulko.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 18 Nov 2026 09:24:42 +0000
+	dkim=pass (2048-bit key) header.d=free.fr header.i=@free.fr header.a=rsa-sha256 header.s=smtp-20201208 header.b=oaQnw3aV
+Received: from L30177.local (unknown [213.36.7.12])
+	(Authenticated sender: vjardin@free.fr)
+	by smtp6-g21.free.fr (Postfix) with ESMTPSA id 5A024780331;
+	Wed, 18 Nov 2026 10:58:42 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=free.fr;
+	s=smtp-20201208; t=1794995946;
+	bh=PWhoRlLKNjf+e4xV0f2mSPdPAM1c5SfrVYrUMaV3T4U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=oaQnw3aVfnOts8ga92P93O8AsnQL0oPXuJ2clCNHXXjkpLKYQe43SdAtntcQBrCVG
+	 TsEz074ulTs4/KGu+ZYB0bkpWZpFkESyq8Uv7ovgeaLAvLNjEqZ8I82QZfygu8hMiQ
+	 0Q6ipzXv/xH/91tlCu9+GOjPNHQvE0j1kPxmP5IViu4koP/AOtBRG4AGv+wImgdnO2
+	 030X2btsdTzQ8xSttdiJK22GJfzm6z4YLXY8HEbcQmnj/k3xhsq4JcCCsP1FKnoETK
+	 aLaLKCGzr/OYT1etXlU8MOuD7ubI5ppHt8Bc3xqUiDZQUo9Iif4h3gUmjQeGO64DmV
+	 UziCaH6xhDHvg==
+Date: Wed, 18 Nov 2026 10:58:41 +0100
+From: Vincent Jardin <vjardin@free.fr>
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc: Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>,
+	Frank Li <Frank.Li@nxp.com>, Jacky Bai <ping.bai@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	NXP S32 Linux Team <s32@nxp.com>, Linus Walleij <linusw@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>, linux-gpio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev, Ioana Ciornei <ioana.ciornei@nxp.com>
+Subject: Re: [PATCH v7 1/6] dt-bindings: pinctrl: add the NXP LX2160A RCW pad
+ mux
+Message-ID: <av120SMcb31YLAWK@L30177.local>
+References: <20261117-for-upstream-lx2160a-rcw-pinmux-v1-v7-0-5d7201970629@free.fr>
+ <20261117-for-upstream-lx2160a-rcw-pinmux-v1-v7-0-5d7201970629@free.fr>
+ <20261117-for-upstream-lx2160a-rcw-pinmux-v1-v7-1-5d7201970629@free.fr>
+ <20261117-for-upstream-lx2160a-rcw-pinmux-v1-v7-1-5d7201970629@free.fr>
+ <avzBgDksGfXb-MxZ@lxl00025.wbi.nxp.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -60,51 +79,24 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <avzBgDksGfXb-MxZ@lxl00025.wbi.nxp.com>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Low] dt-bindings: arm: fsl: undocumented draeger vendor prefix in
-  fsl.yaml
---
+Hi Vladimir,
 
-commit 8e20d52f09f0bb31e6607b78e6cf44266f04fbf1
-Author: Petko Manolov <petko.manolov@konsulko.com>
+> It's a bit difficult to manually follow all the constraints, which are
+> listed in the opposite way as the RM would have them (function -> valid pads
+> rather than pad -> valid functions), but AI says it's OK and I'm not
+> spotting any obvious problems either.
 
-dt-bindings: arm: fsl: add Draeger M48 dual-cpu board
+I am trying a small update into the yaml file, that should be easier to
+follow. You are right that this serie is having an heritage that
+should be simplified to ease the maintenance. I'd prefer to improve
+it before merging it.
 
-This commit adds the draeger,imx6q-m48 and draeger,imx6dl-m48 board
-compatible strings to the Freescale i.MX6 devicetree bindings.
+I'll send the update later today.
 
-> diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentati=
-on/devicetree/bindings/arm/fsl.yaml
-> index c8290a83205b6..d0126f54b3877 100644
-> --- a/Documentation/devicetree/bindings/arm/fsl.yaml
-> +++ b/Documentation/devicetree/bindings/arm/fsl.yaml
-> @@ -261,6 +261,7 @@ properties:
->                - boundary,imx6q-nitrogen6x
->                - compulab,cm-fx6           # CompuLab CM-FX6
->                - dmo,imx6q-edmqmx6         # Data Modul eDM-QMX6 Board
-> +              - draeger,imx6q-m48         # Draeger imx6q variant of M48
->                - ds,imx6q-sbc              # Da Sheng COM-9XX Modules
->                - embest,imx6q-marsboard    # Embest MarS Board i.MX6Dual
->                - emtrion,emcon-mx6         # emCON-MX6D or emCON-MX6Q SoM
-> @@ -459,6 +460,7 @@ properties:
->                - boundary,imx6dl-nit6xlite     # Boundary Devices Nitroge=
-n6 Lite
->                - boundary,imx6dl-nitrogen6x    # Boundary Devices Nitroge=
-n6x
->                - bticino,imx6dl-mamoj      # BTicino i.MX6DL Mamoj
-> +              - draeger,imx6dl-m48        # Draeger imx6dl variant of M48
-
-[Severity: Low]
-As reported by Frank Li on v4 [1], should the draeger vendor prefix also
-be documented under patternProperties in
-Documentation/devicetree/bindings/vendor-prefixes.yaml?  Without a
-"^draeger,.*" entry there, scripts/checkpatch.pl and devicetree schema
-validation report draeger as an undocumented vendor prefix.
-
-[1] https://lore.kernel.org/r/aton_teIric7IKX8@SMW015318
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261118090914.3808=
-2-1-petko.manolov@konsulko.com?part=3D1
+best regards,
+  Vincent
