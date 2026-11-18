@@ -1,102 +1,106 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.47
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795005531;
-	b=C9xOI2gXxetNbuqVG2CvpL7T17LvHndTggAdI/ojzizkE6AbS0TJcjbGQEiv9NjpQGnC
-	 QIkDBYYR1PJV+cIm3m8YtMzVGWur8oewBYNTm/wflGmb+rtzCVOR61is4lS7f2J1Lrs45
-	 h5mbnOt/EXVeEm1hF+zSYhnQXRofQhhiaAMEUpbsocZLOzS20CSHdaVlQdJuxL8GXYhhd
-	 CqQiQwU1x6IENJzSs4kHcHkTkWQ7Ow4IExOALpH3sX7xccBdZoy+c798wa3SbQo+gUrki
-	 hX7XhKK8HNO7Q/k4KkIBK/aqNf1WnpX7DUGeutmGlmfxOU8F+4k3X9JwVFGQlPT6e6g==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795005531;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=PCeTG5B3FnqoW+qGoo1FXEjHCoH6J7aBegNAVVKMa/Q=;
-	b=VwfiB+E3HE0Mhsg0U8uDH5xUUjqIo5PP5fDG04jGoknPF5rpeYE5K9vT4Jt6ckATChTZ
-	 uh/oqoBFasO4cdk5XLTlWy6CueXHCbLXGxkc/feBi4OUe/Vr3Esm/b7xQPUMa9g/AuPoI
-	 NOaxoG8rRQ0oPf3MMF48+7BS5E+hjddFpL4GpTWHu4XCs604V04bmTnqwKqZ9fDeERqSv
-	 FJn0AQ4SZq9xsCrOoaPzVv5tS3kfOAfFYg59pJEY9TmJRobyN8fYUVJ67/8V+UBPZ1pLz
-	 rWf6X69GsQNYQuXZXBcpWrRsX9uE0/I54SlaPjbw2GnwhmcgeC88dp2Kh0vrn1P/18w==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=re3bMHah;
-	arc=none smtp.remote-ip=209.85.221.47
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.83.140
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795006017;
+	b=eIA3KpZRoiD6Ml+gLhUnZbnnt9DiVZn1N8Qscb4s9mMZbFrv8tHAmWcCrZL37Yp+yzoo
+	 oxMzMGav2eevS5iP26yyw/9OlPMGQx9AJLNOCq8Ew/vmKXMAASR9HngmU/ypY2N2nbo23
+	 pS2Rq7Qa3n1GIhEl9T51/TF9wsv4VdsY7xKeD+jC6X9YxA+9fi66ayIv70jt+FkEAgUgB
+	 pG1TkJyfLqUvq1yfrfGcoH62Elx1pQdI0u82zCQkukpOXaO/zHmyEBCjF8vAywWN9WEWS
+	 phpBPWfl0VEeThr5Z33vW8TOLbSWoJSRsWbFSHHOG9Uo8OtN0DlZXaujC4Pd8nZrltw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795006017;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
+	 User-Agent:Subject:From:To:Cc:References:Content-Language:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=li65XB04WseXUq8cuZWYwEHkNArGTVKVnfLUbCTETGs=;
+	b=Qlm+m6cHqXFZuk68E4wAPeBzZRgXPbR5Ib+1ypt2QXy6jzVycBvUb1dbrpK3vZWG367j
+	 sOSQC2GQoqBZjzRHNNOp9p73GmmRvHdnqH8qd0w/s/1Ry4iYfxiz6ickIZgkrkpg3jnaS
+	 zc9BJ5NqPgs5wAN+7OSUyOIf8afoIpZK8VUahOMOFIY37SvigFkUs0WJ1ghlJveyU63gb
+	 cOFOdPbXo6C0t2yT+Zc/j/86nAISjVfZ/4AVL3ZeHOuRsUsvCvi/lqPN/dSu6+1bIlObN
+	 biLORbEJOwL7WxQdmNC+J1TIr/pnpIG9z2LKtU/y0QnX9HFPwgf9bgjKhtOxMgKDKIQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=none header.from=kontron.de;
+	spf=pass smtp.mailfrom=kontron.de;
+	dkim=pass header.d=kontron.de header.i=@kontron.de header.a=rsa-sha256 header.s=selector1 header.b=Mtnv5zc6;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.83.140
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11023140.outbound.protection.outlook.com [52.101.83.140])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B85E2606A320
-	for <imx@lists.linux.dev>; Wed, 18 Nov 2026 12:38:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B85E2606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C464606A334
+	for <imx@lists.linux.dev>; Wed, 18 Nov 2026 12:46:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0C464606A334
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kontron.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kontron.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=re3bMHah
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-4a2f4ca0dcfso446622f8f.1
-        for <imx@lists.linux.dev>; Wed, 18 Nov 2026 04:38:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795005529; x=1795610329; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=PCeTG5B3FnqoW+qGoo1FXEjHCoH6J7aBegNAVVKMa/Q=;
-        b=re3bMHahmQvv4gHde3IjfLYT4hGDnyQV5D/ck9UbL/9vPsVZs9yDQE0RAy7ae9UP1C
-         MqIzrrhyuZINxZ2zq1Qho48y5HEMeG04Gop1FLEL5rKaUZmCV1UAtV2HUFJc9NG0QxnN
-         f1CZHRaV2WZTYA/2BZqeSmciyW9hozRAb8yqMbXc/bUtpT+cOxI6UhsEZaMmRqAtLBlR
-         0boBKAbul9+RPclFjtZuJXbv2Y08xBje1EAjdn9VsKxeV/yFYawZ8VvWvCzj11U6Tacd
-         cFeqAaRc2c2Jd1UrYcTPaL1CbEkDuqf+Iy0jhWcKHAQhUyTjlk3od9Ucrpo25Lc5qkWc
-         KyJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795005529; x=1795610329;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=PCeTG5B3FnqoW+qGoo1FXEjHCoH6J7aBegNAVVKMa/Q=;
-        b=IC0ahsrY06EL6/X6Sx11dpNnZA3xGtVhIg0MJTc+VqIV/gE6wV8CNOgj6pUJC5Ir7J
-         ui+P/gGzAxeFbiWV2+JMw5YhAZq1Rqrs4gaeqBn5ARFs0zjhL33OYL0GovN0KIwX1zZq
-         8DgB8pJ3F+jC+6oER+Fz/rr8VUWsMmcMYwdDqdh94kKoL7i5QrBsJ48aq0DQSOvndcmq
-         F0IfM99cOkDfSM3GsCsRYntxvfMxJmfZ5sOW/XOAwx+jagTVgqn8RZPRBnamjeQ2aoso
-         1u9YokzFNgunS2aYC/vgIKQpwRll8YO8IGQuKEwiD68DumWPIq0Sm7l3sK2tI2JNYljo
-         EIEQ==
-X-Forwarded-Encrypted: i=1; AL+hErE2Bp04PLkx7pwL5D535UoClycoK87+t9etEr9FE8NUVlHRnNhBpBy6yR/OnQOaZKqvkbk=@lists.linux.dev
-X-Gm-Message-State: APuU4Z/hC9wE9QNqUAF76TdvkXdUt3SB8RiP/HorNMb1Aut9DhNsSwHI
-	Qj1f2XdmSTlTqfKXvaXs2ObAd1GZLf51UpUtQkZVIHKpN6OQXsll4uBv
-X-Gm-Gg: AZFdTZf5iZHoY96wB0XDs6rGI/QW3Wl2VoXtzdSSK60NMViMn4Obgi7kXRXObiLYepp
-	MbMMXPea9pML4oHowvCAngARXIisze3/bw1wcryyGRXcQJ1w4SKnEpM9B5y7hHk2+0k9zjt93OI
-	sar94mVk8OmD5ftnNLKdu2tEt+2sb4hMEjmGBFwPufv4kkGBedOSLmfQbbXM4DlQhglyvih3qkm
-	IPL02c71cCyLsTTR6GHp9X6URmIDODn6l0z8KKWP0ICDef7S4kYzEccdBGZYjRdqI8jhzMtnip5
-	TGMP82vcoSVN60MErc5JyWHp/tM8ETcWVZhfETBRMeUQyfe9fXeQ+hlS80R7P2v/8aNxJLQFDq9
-	o2S1n2YRi5BRsHneAdkjqFVlf1iieYdMPjWv9jIDo0TgILGv/0IdGPgad2znHZQqKJg4byHIeXM
-	eEuNWeCtv38rouSBfiJYdaX1hKJFtvp6QFRZ0flCJvnYakzbQgXM9s2U0mVH7Ta/vXbTuFWHRT3
-	qJHb/mRPCspCJ6mIVCz0LrwzJFthIzxdmsWNufQHTrxe4j3zN7cSZUmiluvJtgaWHPwjY/v0VYR
-	+q3JJZ0g7gQOkH7xkfeetGky4zt8Jc4WzQ==
-X-Received: by 2002:a05:6000:1a85:b0:4a7:ed95:7c9f with SMTP id ffacd0b85a97d-4a7ed957d61mr1616041f8f.22.1795005529035;
-        Wed, 18 Nov 2026 04:38:49 -0800 (PST)
-Received: from vitor-21h1cto1ww ([2001:8a0:c4c6:f00:370f:e244:9816:c590])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4a650d2efcdsm4539201f8f.5.2026.11.18.04.38.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Nov 2026 04:38:48 -0800 (PST)
-From: Vitor Soares <ivitro@gmail.com>
-To: Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: Vitor Soares <vitor.soares@toradex.com>,
-	linux-bsp@toradex.com,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	ath12k@lists.infradead.org
-Subject: [PATCH] arm64: dts: freescale: imx95-aquila: Add ath12k calibration variant
-Date: Wed, 18 Nov 2026 12:38:37 +0000
-Message-ID: <20261118123837.651915-2-ivitro@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key, unprotected) header.d=kontron.de header.i=@kontron.de header.a=rsa-sha256 header.s=selector1 header.b=Mtnv5zc6
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=s9VuuxN8boBa9Tqutycp5jxINfMyYV2HZCcicoAY0FKRa8WkHSGTFPFJ+1i97Acf7zjUsfMGD3jB9GPXgqDkCUTHkAfe+j0QVcqYlPdMThK54/BSMKjb2a16XZZch/5dUZ2fu2W7vtpHlSVf1FaHR0P3toEJb6fXx1s1MUpdROq3+lxphGmDLD78Yf3i78BI2kxxg6+eRAhuyhJ0eqW7ui/bX4W3bfH2J1YRjJz3aqe+oZZ0vXhpShptbCy0mnZ3RIileCt9H8CPkhqF6ml34fyeV/jsPef2gokecQEp11ZL/4xP+ZCZ7TfE1zl4tDKTMnugPVBJt6mTqnqaM0d6qw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=li65XB04WseXUq8cuZWYwEHkNArGTVKVnfLUbCTETGs=;
+ b=ZTTBK69+N/2Gh4QdQiOAEpl+ab87/XX0lfWqhb8hfPbqXMiwLLxr86PK43+hT1CoYQWeaKHl5MVEzfa2lJm0l/w3neLb5O093CQP+PrUuex0zoUc0Kl5t3p/C94GRrOrkPOWqN9EW5lY2NZ8i8y9GdMhrh5sEy98LMLfoXcNTkF8A1kJTcX0CLUAcFVm9nWOikpFI9buzFCp0F1TleLSqtdUWWJsWNosn8jbxNIj7/ClNLeDIb1WN0uSoKci8MoOkwqgiZlv08tFHQFpxgMrewRJD5cHNDqNnuwtjXan5I6a3f/c5F4/kehMklCNp084j2KJvX+9pMZUet6emJSeKg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=kontron.de; dmarc=pass action=none header.from=kontron.de;
+ dkim=pass header.d=kontron.de; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kontron.de;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=li65XB04WseXUq8cuZWYwEHkNArGTVKVnfLUbCTETGs=;
+ b=Mtnv5zc6cN/BUEPpsxiwZXZzf8MBL6qF5udebUndjcr3YusB4h/xAGEPoezHoa1RYxwm6eH27Dw5CaVqVZfofBHUPXySu9fEtaMk2ckrk13O+JVH2QZDHYRuY6/0H/5WAakdowg+caGEcVMj2ynmvahJPwtb0NE+QdbsxfCG2+cKgPH/2WHi8FED31Flws8ONcwhpQX66QYiIPvgiquGyyvzQkzSfzcLjvEnkQzpInVyPp7dD2Ijmc1soHg8ixV7m3b4avdLbuUvk/kwGuFDA9xzRB/rgVSwd4mb0tdYqIyrj3F96Ef2v1Hh8KoX9yfWUqdoS4sGK+dtTg71uftHKg==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=kontron.de;
+Received: from AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:1fb::23)
+ by GV1PR10MB679331.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:150:3be::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.8; Wed, 18 Nov
+ 2026 12:46:47 +0000
+Received: from AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::a276:4ad7:962:da22]) by AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::a276:4ad7:962:da22%3]) with mapi id 15.21.0639.006; Wed, 18 Nov 2026
+ 12:46:47 +0000
+Message-ID: <180d2335-e328-48a4-b376-a90464279027@kontron.de>
+Date: Wed, 18 Nov 2026 13:46:45 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v51 5/7] firmware: imx: adds miscdev
+From: Frieder Schrempf <frieder.schrempf@kontron.de>
+To: Frank Li <Frank.li@oss.nxp.com>
+Cc: pankaj.gupta@oss.nxp.com, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Pankaj Gupta <pankaj.gupta@nxp.com>,
+ Randy Dunlap <rdunlap@infradead.org>, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ Arnd Bergmann <arnd@arndb.de>, Peng Fan <peng.fan@nxp.com>
+References: <20260915-imx-se-if-v51-0-4a7dac612cb5@nxp.com>
+ <20260915-imx-se-if-v51-5-4a7dac612cb5@nxp.com>
+ <2034fb2f-f169-46a5-85e8-fa723ddb0360@app.fastmail.com>
+ <aqqqDnOMmlfqit6u@SMW015318>
+ <f3e1e3de-6abf-48cb-aba7-7b231c38ec5c@kontron.de>
+Content-Language: en-US, de-DE
+In-Reply-To: <f3e1e3de-6abf-48cb-aba7-7b231c38ec5c@kontron.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PA7P264CA0171.FRAP264.PROD.OUTLOOK.COM
+ (2603:10a6:102:36f::20) To AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:20b:1fb::23)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -106,53 +110,119 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM9PR10MB4277:EE_|GV1PR10MB679331:EE_
+X-MS-Office365-Filtering-Correlation-Id: dc4105a3-89fa-4356-7977-08df457201fe
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|7416014|376014|23010399003|366016|22082099003|18002099003|4143699003|11063799006|56012099006|261026121527099003|261028144727099003|261026140227099003|261021135927099003|261022105027099003|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	Ky0PdT6lBXaqUqjecjl5xWVsDN41TJKrUDSUO8Q2g/q+iJRpN941SVEYlWJTWVlzl2bqZgMbRwyNb2xkaqeeJMjN/MxaltNb1uUE8rar3ccSjY5P467z5ScWItxp7yJePRhNMA5a+eN1wDpyZsQWh/uoBTpYbmViuP6xv5LLxpZiEdqlYbjFmMcQRXvkAgdr2CcSNFD9kLs51aNDwHp7TH4M7pvIo5Wjl5sWacndVY3KQ6+IZYl0uKHn5hoWPxYNnQygRdxls9INa4y5ZbWqJw0szvE51YqfaMp2PFZXiZqSorIVIpXsweeCO8s53ynE8T2czxO/JNDP9pgfmDnqgrZ9HbrVqumSU7DdWfyKzj4hgfRMCuo0sKPi0UztvGMaaEc/oaX4FimhpjAMr9WH7+KZEeT722haq0WlTp1jHYTEIny3uouOmyGuBbTKstfmM3j8iwMhGzisKVtOr0pEsVelgQKlIe5nljq1Nsc1xlKJq0P7GA9zlM9GFxnCncRrWPybGmFrKTuA+kNb+LTVzipdPxMAuGiZFjG7KoA9yP4/4nXltoyYoK0X/FT+sPkPr3USAq/wjSDOtGwhrZqTwWFHQlllTQT1ADGlp/oX+AsLNvDsIE61dx3uHhbfC7GNUYhC51fLF/obQZX+3ul0VPxPcSSsSyYqw+xUrh2j4gg=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(23010399003)(366016)(22082099003)(18002099003)(4143699003)(11063799006)(56012099006)(261026121527099003)(261028144727099003)(261026140227099003)(261021135927099003)(261022105027099003)(10067099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?NVJHV05KOHBValhCVGN5d1NqQWRFRkhseG9aWmJMTmRhYnltbzBmYUlJL0Rl?=
+ =?utf-8?B?WUJhVC91QWV3dElTSFN1WGNaVmcxanZsSUxQUC9CbE0rMU5DNDRoMU5CLzRE?=
+ =?utf-8?B?ZU1qdnh6TXZieGNEc1V2WHVNbVBnRTdOU3pwc1RObytyT3h1c0RoaEYxaEU4?=
+ =?utf-8?B?elJKMW5UdjZ4TnltaFRYRXpxK20vSXFOMlIyQVdTL3RucWVKeWxjSHhTcWxr?=
+ =?utf-8?B?UDVvcTYyazh4WG43akM2RVBlZ3NMd2R2emJzZjBQUTlRWFEweHp0Y3FhSHE5?=
+ =?utf-8?B?UGJXUEt1ejRNKzVRNGp0dlI1azhWajlIajNwOGFNR3lPOUVIUjc4L0tJZ3da?=
+ =?utf-8?B?S1pxWG4veHRTazQ4Yld6eFBvUkhvNkR4Y1JEV3RnY3h6T1JTTmlsV3MrTW5s?=
+ =?utf-8?B?UkxpZndJNk5NMHUrdHFxT21iZ3ppRXBkRENpNkx4T2Vtd2F0bDFLVSt1alMw?=
+ =?utf-8?B?U0xWZ0VkNGwxZy9HVG1reWlWc2M3RVJlL0Y5bmpOSjJLaXBTK0VyNjUvSzBK?=
+ =?utf-8?B?d1ZGL2UwRFI3dW4vOTVaQzRzVmhrMy9YdU40MDBENURtaUZlNHBHdUdIalo5?=
+ =?utf-8?B?R0g3cndoYnBPOVN3QjJoUnllN0tuSlF2VFh5TUFlYUpMZkdHQ2xabUtNZGky?=
+ =?utf-8?B?aUJBL1pya2FXM3A1elprcnRBZGNFeTh5Y3NGMXJ5V3YrODc3N2tXWlNaN0hR?=
+ =?utf-8?B?d1RSeUNmbVI5UlNxZ09tbURwQ2tad0NBUGFMVlJxWGQxc2ZjeS9DeThUdSt1?=
+ =?utf-8?B?ZCtsQ1FLd2dBNm55Ylc2NWFySVBVY3JRZGNsMTF1dEpVb2hNTzd0SUtldGM1?=
+ =?utf-8?B?RHgySWJaeDNLVjNEbjZqaTdIL1NNTXVoU3dpdlhxTVVxZTF0MHp3eXk2OE5v?=
+ =?utf-8?B?THFRcXl1eDZnY0pvNUNxUFlFQ2M5T3NqOUE3U3J1Y2Vud3lEKzZRZUZKTlV4?=
+ =?utf-8?B?ZG9Ld3Myd3cwOGNUVGdWLzRMNk5mb29mcnhNdUFyUzlyZ2x1a2pBK09tWkdo?=
+ =?utf-8?B?Y3lvMDNKRWNkNXNQMENGRG91aXBTeWRwNEl4L3p0RVRYWUtDeERkdnJmajhu?=
+ =?utf-8?B?bWVKSlUyWHNHa3k3eDlSaWdseXNwNUgzaUtIOUQxSU1DbEJYaEJBcVh1Ty9O?=
+ =?utf-8?B?SUhsV0s2VHZ4b2FpM3FicHZzU09tOXJMandjMlFvVWUza2hNaG11ekhVbklo?=
+ =?utf-8?B?T0YwN2dsWEMzcmpWUUlab3R3MnNJQ1JmT0F1K1dGaEVtY0UrT3gzNEV4VFZs?=
+ =?utf-8?B?UTVsSHlvWDZscFlqdTkzMG8vWUk1NDQ3ZjFSSE5sS2JEbi80ajlWbG9MTW9M?=
+ =?utf-8?B?eVB2OU1RVHV2L0JVUURjZWMzSmxOYmdYaUJFV283UkZucHZIQVJ0MGJIamRR?=
+ =?utf-8?B?ZWVNb0tFQkR3NFNHbWJEQ29LM1NFVlo3Vm15cWRuRVEzcjVLRDBkRHVoS3RU?=
+ =?utf-8?B?aVNVTEVnOUlpOTFMajVPU3R1YWhKTXFUdU9icjNRV2NVaEdjeEV1R2xiSkZM?=
+ =?utf-8?B?MUlrZWZmR2J6am9ZV1hyK2NQSE5iWGc1ckFJZ0RqSkY4ZTBPK1pVd0VUajRy?=
+ =?utf-8?B?R0dMUnE1MVpwQ3VSSGN2S1RzL3F0b3RWSVM4MHhQbDVDaC9HNjE0U1pwY3NJ?=
+ =?utf-8?B?NlFtNnB5QXI0SnJ0QXhKMXZyN2xnQ1ZoNmF0eEJxZWM3VjhqR2RVVGVLUHcy?=
+ =?utf-8?B?Z3o1ek9oTUpWMElHSEJVR1FoTEFDTnIzendhTzlBbW43bHBOeGFCQ2xuK0ZD?=
+ =?utf-8?B?Ti9rTXM0anV6d1VYMGllSDB4a3RiMlo1bFhoMFRJSkViZnZia1Q2YWtYN2Nh?=
+ =?utf-8?B?SG9Nem16Wmtac08wcjRhdHZsMW1jTUpKTEdBblNTT0dOb0JpeEFSZytjVGto?=
+ =?utf-8?B?NE9kemp4dnIybU84Y0h1M3RtMTl2eStLeWFXTnEwbmtmZU01NDE3Y1JGZVli?=
+ =?utf-8?B?eUsxMGdKaTd6QnJad3JLR091RmhJUHZNMzgxQkVQOVU1UDh4bFdXSk1DV05u?=
+ =?utf-8?B?cHYxdW1oNGhNNkhpVlVWc2tvRTFEVjVxaWdYNGR4eTJnVFo3cy9KNnZiZ25l?=
+ =?utf-8?B?UFFVMG1jdHlzTWE3NDFDY3RMYlEreGJ5dHYreUtmRVVBZnVKY1lRTG96S3lR?=
+ =?utf-8?B?YnAyTHltZTZqcVVJUTFPQWFLUmNCVkpHMnd4TGsveDNUdXhPL0J6ZXVsVThx?=
+ =?utf-8?B?MTVhZkh4QW9wNmJLVVA5QXVENGZuNXdtK0d5aUtTQTBwbWVtS2E3eVlvbnR4?=
+ =?utf-8?B?aXd3OWYrSGVDWnpGcDkzV1dYT08yL0xaVzEydHI5RG9jNk1DenA2aTBDVDEr?=
+ =?utf-8?B?WXFDSHFNMHo4R1ZvTVJkSk13bzB4UVJ1WkJFbnozV25ORGRBSnN4RGYzZXhZ?=
+ =?utf-8?Q?ym4JyVX74TapihdA=3D?=
+X-OriginatorOrg: kontron.de
+X-MS-Exchange-CrossTenant-Network-Message-Id: dc4105a3-89fa-4356-7977-08df457201fe
+X-MS-Exchange-CrossTenant-AuthSource: AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Nov 2026 12:46:47.3108
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 8c9d3c97-3fd9-41c8-a2b1-646f3942daf1
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: fLpQ6Fjvh90elOHSSvl5GYtc9+A/5KkBfklhC0Lw9uQaLSnwa5ki3UxIySswKbbcYLAhiMKEE2Ahw04E7Shb+SRN1qZ150XWGHrfE+pmKbE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR10MB679331
 
-From: Vitor Soares <vitor.soares@toradex.com>
++Cc: Peng
 
-The Aquila iMX95 has a Silex SX-PCEBE Wi-Fi module (WCN7850). The
-module reports the same PCI and QMI IDs as other WCN7850 designs, and
-its board data also comes in variants for different regulatory domains
-(US/EU/JP, UK/CA low and high). The IDs alone therefore cannot identify
-the right board data.
+Hi NXP developers,
 
-Describe the Wi-Fi device behind the PCIe1 root port and set
-qcom,calibration-variant to the US/EU/JP board data.
+On 05.10.26 16:28, Frieder Schrempf wrote:
+> On 16.09.26 16:39, Frank Li wrote:
+>> On Wed, Sep 16, 2026 at 03:16:13PM +0200, Arnd Bergmann wrote:
+>>> On Mon, Sep 14, 2026, at 21:40, pankaj.gupta@oss.nxp.com wrote:
+>>>> From: Pankaj Gupta <pankaj.gupta@nxp.com>
+>>>>
+>>>> Adds the driver for communication interface to secure-enclave, that
+>>>> enables exchanging messages with NXP secure enclave HW IP(s)
+>>>> like EdgeLock Enclave, from:
+>>>> - User-Space Applications via character driver.
+>>>>
+>>>> ABI documentation for the NXP secure-enclave driver.
+>>>
+>>> I just saw this in linux-next, where it has caused a build failure
+>>> for a missing include of linux/slab.h. I hadn't see the series
+>>> before (even though it is a v51, which seems crazy), but I am
+>>
+>> It is in linux-next about v37, but build bot find many problems, I dropped
+>> it and request to fix it. And sashiko is online recently and also find many
+>> risk. I request to clean up it, and local AI environment have difference
+>> with sashiko, so bump to v51.
+>>
+>> I put to linux-next again to make sure that pass all build test.
+>>
+>> Other two problems, need more time to check whole review history. reply
+>> you later.
+> 
+> So this is still in linux-next, but was not sent in the pull request for
+> 7.4. It's rather confusing to me that maintainers add stuff to
+> linux-next for build-testing and then leave it there, neither removing
+> it, nor continuing the mainlining process.
+> 
+> Frank, what is the plan?
+> 
+> I'm currently rebasing my work for the NVMEM driver onto linux-next, but
+> as there have been so many iterations and this whole thing took so long,
+> I want to make sure that this is not another dead end where I'm wasting
+> my time on.
 
-Signed-off-by: Vitor Soares <vitor.soares@toradex.com>
----
-Depends on the qcom,ath12k binding changes in ath-next:
-- 75bc725cd92b ("dt-bindings: wireless: ath12k: allow calibration variant for WCN7850")
-- "dt-bindings: wireless: ath12k: Make WCN7850 supplies optional"
-  https://lore.kernel.org/all/20261117174154.549590-5-ivitro@gmail.com/
+I need to ping here, again. What is the plan at NXP to move on with
+this? This is blocking multiple features that depend on ELE firmware
+support for i.MX9 and similar platforms from being upstreamed.
 
-Until they are merged, dtbs_check reports the missing supplies and
-qcom,calibration-variant for this node.
----
- arch/arm64/boot/dts/freescale/imx95-aquila.dtsi | 8 ++++++++
- 1 file changed, 8 insertions(+)
+Thanks for your support in advance!
 
-diff --git a/arch/arm64/boot/dts/freescale/imx95-aquila.dtsi b/arch/arm64/boot/dts/freescale/imx95-aquila.dtsi
-index a1870f7b2eca..a73d137af2c4 100644
---- a/arch/arm64/boot/dts/freescale/imx95-aquila.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx95-aquila.dtsi
-@@ -621,6 +621,14 @@ &pcie1 {
- 	status = "okay";
- };
- 
-+&pcie1_port0 {
-+	wifi@0 {
-+		compatible = "pci17cb,1107";
-+		reg = <0x10000 0x0 0x0 0x0 0x0>;
-+		qcom,calibration-variant = "Silex_SX-PCEBE_US_EU_JP";
-+	};
-+};
-+
- /* Aquila I2S_1 */
- &sai2 {
- 	pinctrl-names = "default";
-
-base-commit: 33adc96ac217d6e95b7c44ac383c19ca4ae2ff52
--- 
-2.53.0
-
+Best regards
+Frieder
