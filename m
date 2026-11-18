@@ -1,110 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.56.87.9
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795020605;
-	b=He0hGwGobjssIMbbzttHeWswrXbk1oPrSJyA0qz0vZQaupTd0STC54hZN3jWswKHdhJf
-	 NLnu03cnn9xbhaaFFWJTI4lulDAzLczhH9EsOJPXkG6FnshY4o7jCXm/LfcjD8LXFsddp
-	 nQ6CJD1RSpv6kOPKQorsQ/SLtAGkjlPF67aw1AI2V+II3YNGOvql19uVPfVixG8w4Vzvg
-	 IW4IzDw/nGbLPZClVVeNBf2G97088JAn8Yewg4T2emP4C+/lBMkCo/HVtAIhtK38qiO8d
-	 Idv4N6+qX7gE9I6K+Zy0rPou1PVLWllWO6LqOvUEz2Gye1oTMBrFqG9x3XuAIM4eWsQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795020605;
-	h=DMARC-Filter:DKIM-Signature:Received:DKIM-Signature:Received:Date:
-	 From:To:Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To:X-AntiAbuse:X-AntiAbuse:X-AntiAbuse:
-	 X-AntiAbuse:X-AntiAbuse:X-Source:X-Source-Args:X-Source-Dir:
-	 X-SGantispam-id:X-AntiAbuse:AntiSpam-DLS:AntiSpam-DLSP:AntiSpam-DLSRS:
-	 AntiSpam-TS:CFBL-Address:CFBL-Feedback-ID;
-	bh=2uPA2P1zslLeIVOa70XvA0evtGpxjtPjWoywnGVn/F4=;
-	b=Kf1fzHP1aZhlWVVXNZo+yTIzbQltRI/JA51gdPqV/oSoMeoYXH4+VUDe+Trhalv3z1w3
-	 2Wd7UsDQOz6iefNerD2PsF95CjgXC/5RxGJNJ8V9kABH94LSpBRHP1G4vsLoRz01f5/hU
-	 Pks4N3Os68eL+b9KgzhdSJGUoRQiTfYwbyio2+sZ9EIDMSUDCb/b6S8FLh2gRvWW9r4PH
-	 t7Hr1CrdPXYyFHPCzbZSAvUled/N2qcgjFcZ8/4GkpS5aQCdYLTDi36RaAckzoEfehuQI
-	 l2kGhPF1omch0lWaDknQaJHcon+POnGy0BIB2dDZV8W90dssa1GihzcRjm+rvzCKNrQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=valla.it;
-	spf=pass smtp.mailfrom=valla.it;
-	dkim=pass header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.a=rsa-sha256 header.s=default header.b=dglV3O6g;
-	dkim=pass header.d=valla.it header.i=@valla.it header.a=rsa-sha256 header.s=default header.b=gM18Xna2;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=185.56.87.9
-Received: from delivery.antispam.mailspamprotection.com (delivery.antispam.mailspamprotection.com [185.56.87.9])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795020606;
+	b=mZm9Jk8ir0JoGas1N7Wi57+wWk//jgniuxZpx7sO9wijAiWmUeyCetp3b8p4bokKs9P7
+	 tHZmzrI4eH7yZR+BdJoRplotwH/w80FIHTa1RDM63c8vfkhPROrPm4TpflJMe5qSuKgJj
+	 N6K2YWtnv2eBPkRbhbhOwPoZzmGZzCElJrJe3tsjMFxx7ln5rr9fmWbHUh1GUqtj73Bji
+	 5hkhoOIDR5+xVj3ufiwhMKWvzfu0W4sFjr8vknueqYyxiyZCU4HyaWK8FYSw1nEqjmEFj
+	 1TjoGZ5WdE6oIDPL2Dl9loYqS7WUHNRFHJ7E8LGkEGBs1y7nmsBySrCUBisxBVjT7ng==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795020606;
+	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:Subject:
+	 Date:Message-Id:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:X-Last-TLS-Session-Version;
+	bh=CyjKDjy9c46o/HWa56BDlf4pykp2gQLkYqhUcMj3WmQ=;
+	b=ZBf54lTd7ZV+tFOOKsNDlbCmQQy2BXiG5/cGFAZ3wfRws67jfuxs4AlNOprPYE5WozVh
+	 Nl1E9OGmNSXSDMClXLmJh0ftBl3q/WLkEHfEPnzcqSIL7415YceFvpRNL6AvgSLCw9DZZ
+	 yBpeDlLhMGsnHnBGu2+V8bXNyfV0kvnz12dp8HRqdMySMuM4KmsYReLHlNoETpztQB+gs
+	 /rCLfFK7LReLZTMeyJ4g1WKZqT7Ql4AjgcB+Csc0nqbON0dzFCFK9A7PkkQfdSGtNgWgg
+	 k6/ixhfzJgIdonx10auXtGdlS5wDs5Cj3qnNs21pqlnPqDHpJUMFFs3/lsUh+tubWMw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=bootlin.com;
+	spf=pass smtp.mailfrom=bootlin.com;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=ZUGoGX5b;
+	arc=none smtp.remote-ip=185.246.85.4
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2208A606A325
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E378606A32A
 	for <imx@lists.linux.dev>; Wed, 18 Nov 2026 16:50:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2208A606A325
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valla.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valla.it
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7E378606A32A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.a=rsa-sha256 header.s=default header.b=dglV3O6g;
-	dkim=pass (1024-bit key, unprotected) header.d=valla.it header.i=@valla.it header.a=rsa-sha256 header.s=default header.b=gM18Xna2
-ARC-Seal: i=1; cv=none; a=rsa-sha256; d=outgoing.instance-europe-west4-4zq2.prod.antispam.mailspamprotection.com; s=arckey; t=1795020604;
-	 b=ZFX+lPm1/axBhqLkWrpm3YPp558vab1h7ktffOPH9QX6ZZfArqTt4YjU4IftRcfv6xm/sO6OAY
-	  /q/A6sKvJpIl/WwgiVJ3LMsBVaDqu3491eKKMKPWcH7MufSNxWI4T1rkr6SxEmIygJg+UouPEA
-	  O6kfvP2eov1ZESj7C7SbaKyOHpS9aA9eKAnsf8Qk7jyV27Fik2QPFfsrqXBY/Ojt3jEtk5gG0d
-	  H7TTu2C1hHKApSX/WEzwPbDpu4VLheHXul+1r3627oavBoWPs1GAShG0NhyD1n5rBPcEtbfVmr
-	  BlS/9GlEl7Rgf3GQEPw5TzBqeFn3yigaw0q0F2/ik5ea1Q==;
-ARC-Authentication-Results: i=1; outgoing.instance-europe-west4-4zq2.prod.antispam.mailspamprotection.com; smtp.remote-ip=35.214.173.214;
-	iprev=pass (214.173.214.35.bc.googleusercontent.com) smtp.remote-ip=35.214.173.214;
-	auth=pass (LOGIN) smtp.auth=esm19.siteground.biz;
-	dkim=pass header.d=valla.it header.s=default header.a=rsa-sha256;
-	arc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed; d=outgoing.instance-europe-west4-4zq2.prod.antispam.mailspamprotection.com; s=arckey; t=1795020604;
-	bh=Gb4r+Pw57CuiAbJfXKIlWAJvWJKiFvHYFDez1//PX1I=;
-	h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:
-	  From:Date:DKIM-Signature:DKIM-Signature;
-	b=OEtabkO2VDPINA6Z7HBh7TqV/7MHdiwjo0dYpQxhwuChEjl00/4P8qy648q6B8yhXT0LH2k6iu
-	  XfRQ37q4QoYIF8HzYAo723ZYXjZVZY7jvZd3FstrZEXJpi4MSubAIbR1TSKL6OfNKrgU16orTJ
-	  ih/6EYfSNZJhA3AadpV89NQNPtdDTVkvhpuevq9Pn2HM6ihZeSnvB5Xux2PPsjTF9X41vqRvOw
-	  EivAAf6oUyBfxSIaNJ1hnbqTYspakABcKK5sKFQq+qbNcTndpxjlWX+9P+W7j7z/GJZNjr6B8r
-	  9SszSgdttky2+kM87Wx5VbHOV42wDeotIxzZmTuS1o9dtQ==;
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=antispam.mailspamprotection.com; s=default; h=CFBL-Feedback-ID:CFBL-Address
-	:Content-Type:MIME-Version:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	List-Unsubscribe:Content-Transfer-Encoding;
-	bh=2uPA2P1zslLeIVOa70XvA0evtGpxjtPjWoywnGVn/F4=; b=dglV3O6g0BPJ4S56E2ezeQpu5L
-	LBphRqBRm6rNS7JmJyx+HNip6QNykM4da2pf6dtyBLiyRb+qLgOExGQIEs/F6ZPDgjPTltEgmmnOd
-	x48XMedMfAV5kJvUftA/JmSiBUGTKvoJVP6rmC7fGV5b2kBZ+STdUTqoi8rbewDxwCQo=;
-Received: from 214.173.214.35.bc.googleusercontent.com ([35.214.173.214] helo=esm19.siteground.biz)
-	by instance-europe-west4-4zq2.prod.antispam.mailspamprotection.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.100.1)
-	(envelope-from <francesco@valla.it>)
-	id 1xTir6-00000000PmR-4AFv
-	for imx@lists.linux.dev;
-	Wed, 18 Nov 2026 16:49:57 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=valla.it;
-	s=default; h=Subject:Cc:To:From:Date:list-help:list-unsubscribe:
-	list-subscribe:list-post:list-owner:list-archive;
-	bh=2uPA2P1zslLeIVOa70XvA0evtGpxjtPjWoywnGVn/F4=; b=gM18Xna2Uj2X83uizi6araxZZH
-	m1rLkElSQywAMzKEJY0UxFTrnhQwBA9uwbY7Y0a3UNP5X5A2qxh+SAXJ5Fy27LcYbtEaDuWLz2ZiG
-	0PZbwjarxKKRy1k/kOedspw7PVkh0uQ2FgEUyhq5dyXPj4UVu3xR5zbeDJRz+739G91g=;
-Received: from [95.251.96.187] (port=60573 helo=bywater)
-	by esm19.siteground.biz with essmtpa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.100.1)
-	(envelope-from <francesco@valla.it>)
-	id 1xTiqk-00000000MNz-2g4b;
-	Wed, 18 Nov 2026 16:49:34 +0000
-Date: Wed, 18 Nov 2026 17:49:32 +0100
-From: Francesco Valla <francesco@valla.it>
-To: Mathieu Poirier <mathieu.poirier@linaro.org>
-Cc: Bjorn Andersson <andersson@kernel.org>, Kees Cook <kees@kernel.org>, 
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Randy Dunlap <rdunlap@infradead.org>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>, Robin Murphy <robin.murphy@arm.com>, 
-	linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-doc@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH RFC v2 07/11] remoteproc: assign fwnode during vdev
- registration
-Message-ID: <av3WpUc3Dss790ji@bywater>
-References: <20261102-remoteproc_virtio_map-v2-0-26b300e01c62@valla.it>
- <20261102-remoteproc_virtio_map-v2-7-26b300e01c62@valla.it>
- <avyAtmxdbfEBbZ87@p14s>
- <avzS1DiNGmL1Pqmn@bywater>
- <av3KSXqeGyazaMR9@p14s>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=ZUGoGX5b
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 8E1624E40546;
+	Wed, 18 Nov 2026 16:50:03 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 51DA25FE9B;
+	Wed, 18 Nov 2026 16:50:03 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B73EC11BC288E;
+	Wed, 18 Nov 2026 17:49:50 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1795020600; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=CyjKDjy9c46o/HWa56BDlf4pykp2gQLkYqhUcMj3WmQ=;
+	b=ZUGoGX5bBxznGuj2njy1KOPSgGFIOjUlp8TNOOXoCntty8WmdVCpyfs4sYguwawSwOav8a
+	4LJNI6/NlRMXiURLOqu0IQyqoA1O7731csdWZ6ExGtQf1E3k1/goi1gS7mPkYSS2NANZBk
+	6N4vxmmbuB49N2WFZ3B51Vr3/daAxw2TpKsb35IUPX2isGt/Fdf9+vM5xGusg5GT4/NlKl
+	7+2yvEVbnS2qrUUp2XQ6aP0OaKlGdpb03kcO/pZYjtanjTUlNHOstypjXlB3ddOU42NEIi
+	UYcZGVrIcfn7XLhtMmUjOT+rdprQolwtMzqoOmq49JiZbJ66OqbwN2kL4cGqGg==
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Subject: [PATCH RFC v3 00/31] drm bridge hotplug
+Date: Wed, 18 Nov 2026 17:49:43 +0100
+Message-Id: <20261118-drm-bridge-hotplug-v3-0-44bb3b4a828f@bootlin.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -114,269 +62,275 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <av3KSXqeGyazaMR9@p14s>
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - esm19.siteground.biz
-X-AntiAbuse: Original Domain - lists.linux.dev
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - valla.it
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-SGantispam-id: f94ff4954434a7eca121c8fd053e871b
-X-AntiAbuse: ID - f94ff4954434a7eca121c8fd053e871b
-AntiSpam-DLS: false
-AntiSpam-DLSP: 
-AntiSpam-DLSRS: 
-AntiSpam-TS: 1.0
-CFBL-Address: feedback@antispam.mailspamprotection.com; report=arf
-CFBL-Feedback-ID: 1xTir6-00000000PmR-4AFv-feedback@antispam.mailspamprotection.com
-Authentication-Results: outgoing.instance-europe-west4-4zq2.prod.antispam.mailspamprotection.com;
-	iprev=pass (214.173.214.35.bc.googleusercontent.com) smtp.remote-ip=35.214.173.214;
-	auth=pass (LOGIN) smtp.auth=esm19.siteground.biz;
-	dkim=pass header.d=valla.it header.s=default header.a=rsa-sha256;
-	arc=none
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/22OywrCMBBFf6VkbSSPJrSuBMEPcCsuTDO1EW00S
+ YNS+u+mDwTB5Z25c870yIMz4NEm65GDaLyxbQp8laGqObcXwEanjBhhkggqsHZ3rJzRadPY8Lh
+ 1F5xLJoXmZ1YXAqXDh4PavCboER32O3Sah75TV6jCiFtqDp5dUoa5O9Ya44N17+mfSCfCoi7/q
+ SPFBOcCmNKK61rlW2VtuJl2Xdn75I3sC6GE0L8QliAF8LwspK6ULH4hwzB8AGftJr8nAQAA
+X-Change-ID: 20260515-drm-bridge-hotplug-46265d3a2f85
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Andrzej Hajda <andrzej.hajda@intel.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Inki Dae <inki.dae@samsung.com>, Jagan Teki <jagan@amarulasolutions.com>, 
+ Marek Szyprowski <m.szyprowski@samsung.com>, 
+ Jessica Zhang <jesszhan0024@gmail.com>, 
+ Douglas Anderson <dianders@chromium.org>, Marek Vasut <marex@denx.de>, 
+ Stefan Agner <stefan@agner.ch>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: Hui Pu <Hui.Pu@gehealthcare.com>, Ian Ray <ian.ray@gehealthcare.com>, 
+ Luca Ceresoli <luca.ceresoli@bootlin.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+X-Mailer: b4 0.16.0
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Wed, Nov 18, 2026 at 09:54:49AM -0600, Mathieu Poirier wrote:
-> On Tue, Nov 17, 2026 at 11:29:01PM +0100, Francesco Valla wrote:
-> > On Tue, Nov 17, 2026 at 10:28:38AM -0600, Mathieu Poirier wrote:
-> > > On Mon, Nov 02, 2026 at 12:26:44AM +0100, Francesco Valla wrote:
-> > > > The virtio subsystem already supports a fwnode describing a vdev; search
-> > > > for a specific node during vdev registration and supply it to the
-> > > > rproc-virtio platform device that is being registered.
-> > > > 
-> > > > A memory-region specified inside that node is also used for the virtio
-> > > > device if a carveout was not supplied for it through the parent device's
-> > > > node.
-> > > > 
-> > > > Signed-off-by: Francesco Valla <francesco@valla.it>
-> > > > ---
-> > > >  drivers/remoteproc/remoteproc_core.c   | 48 +++++++++++++++++++++++++++++++---
-> > > >  drivers/remoteproc/remoteproc_virtio.c | 41 +++++++++++++++++++++++++++++
-> > > >  2 files changed, 85 insertions(+), 4 deletions(-)
-> > > > 
-> > > > diff --git a/drivers/remoteproc/remoteproc_core.c b/drivers/remoteproc/remoteproc_core.c
-> > > > index c946ecd980a5..e833853ae7f6 100644
-> > > > --- a/drivers/remoteproc/remoteproc_core.c
-> > > > +++ b/drivers/remoteproc/remoteproc_core.c
-> > > > @@ -440,6 +440,33 @@ void rproc_remove_rvdev(struct rproc_vdev *rvdev)
-> > > >  	if (rvdev)
-> > > >  		list_del(&rvdev->node);
-> > > >  }
-> > > > +
-> > > > +static struct fwnode_handle *rproc_get_vdev_fwnode(struct device *dev, u32 idx)
-> > > > +{
-> > > > +	struct fwnode_handle *group, *child;
-> > > > +	u32 reg;
-> > > > +	int ret;
-> > > > +
-> > > > +	group = device_get_named_child_node(dev, "virtio");
-> > > > +	if (!fwnode_device_is_available(group)) {
-> > > > +		fwnode_handle_put(group);
-> > > > +		return NULL;
-> > > > +	}
-> > > > +
-> > > > +	fwnode_for_each_available_child_node(group, child) {
-> > > > +		ret = fwnode_property_read_u32(child, "reg", &reg);
-> > > > +		if (ret)
-> > > > +			continue;
-> > > > +
-> > > > +		if (idx == reg)
-> > > > +			break;
-> > > > +	}
-> > > > +
-> > > > +	fwnode_handle_put(group);
-> > > > +
-> > > > +	return child;
-> > > > +}
-> > > > +
-> > > >  /**
-> > > >   * rproc_handle_vdev() - handle a vdev fw resource
-> > > >   * @rproc: the remote processor
-> > > > @@ -475,7 +502,16 @@ static int rproc_handle_vdev(struct rproc *rproc, void *ptr,
-> > > >  	struct device *dev = &rproc->dev;
-> > > >  	size_t rsc_size;
-> > > >  	struct rproc_vdev_data rvdev_data;
-> > > > +	struct platform_device_info pdev_info = {
-> > > > +		.parent = dev,
-> > > > +		.name = "rproc-virtio",
-> > > > +		.id = PLATFORM_DEVID_AUTO,
-> > > > +		.data = &rvdev_data,
-> > > > +		.size_data = sizeof(rvdev_data),
-> > > > +	};
-> > > >  	struct platform_device *pdev;
-> > > > +	struct fwnode_handle *fwnode;
-> > > > +	int ret = 0;
-> > > >  
-> > > >  	/* make sure resource isn't truncated */
-> > > >  	rsc_size = struct_size(rsc, vring, rsc->num_of_vrings);
-> > > > @@ -498,20 +534,24 @@ static int rproc_handle_vdev(struct rproc *rproc, void *ptr,
-> > > >  	rvdev_data.rsc_offset = offset;
-> > > >  	rvdev_data.rsc = rsc;
-> > > >  
-> > > > +	fwnode = rproc_get_vdev_fwnode(dev->parent, rvdev_data.index);
-> > > > +	pdev_info.fwnode = fwnode;
-> > > > +
-> > > >  	/*
-> > > >  	 * When there is more than one remote processor, rproc->nb_vdev number is
-> > > >  	 * same for each separate instances of "rproc". If rvdev_data.index is used
-> > > >  	 * as device id, then we get duplication in sysfs, so need to use
-> > > >  	 * PLATFORM_DEVID_AUTO to auto select device id.
-> > > >  	 */
-> > > > -	pdev = platform_device_register_data(dev, "rproc-virtio", PLATFORM_DEVID_AUTO, &rvdev_data,
-> > > > -					     sizeof(rvdev_data));
-> > > > +	pdev = platform_device_register_full(&pdev_info);
-> > > >  	if (IS_ERR(pdev)) {
-> > > >  		dev_err(dev, "failed to create rproc-virtio device\n");
-> > > > -		return PTR_ERR(pdev);
-> > > > +		ret = PTR_ERR(pdev);
-> > > >  	}
-> > > >  
-> > > > -	return 0;
-> > > > +	fwnode_handle_put(fwnode);
-> > > > +
-> > > > +	return ret;
-> > > >  }
-> > > >
-> > > >  /**
-> > > > diff --git a/drivers/remoteproc/remoteproc_virtio.c b/drivers/remoteproc/remoteproc_virtio.c
-> > > > index 1496659ddff9..950d65480be5 100644
-> > > > --- a/drivers/remoteproc/remoteproc_virtio.c
-> > > > +++ b/drivers/remoteproc/remoteproc_virtio.c
-> > > > @@ -13,10 +13,12 @@
-> > > >  #include <linux/dma-map-ops.h>
-> > > >  #include <linux/dma-mapping.h>
-> > > >  #include <linux/export.h>
-> > > > +#include <linux/of.h>
-> > > >  #include <linux/of_reserved_mem.h>
-> > > >  #include <linux/platform_device.h>
-> > > >  #include <linux/remoteproc.h>
-> > > >  #include <linux/rsc_table.h>
-> > > > +#include <linux/swiotlb.h>
-> > > >  #include <linux/virtio.h>
-> > > >  #include <linux/virtio_config.h>
-> > > >  #include <linux/virtio_ids.h>
-> > > > @@ -394,6 +396,23 @@ static void rproc_virtio_dev_release(struct device *dev)
-> > > >  	put_device(&rvdev->pdev->dev);
-> > > >  }
-> > > >  
-> > > > +/*
-> > > > + * Attach the memory region declared inside the vdev's own devicetree node.
-> > > > + *
-> > > > + * A restricted-dma-pool region is attached by of_dma_configure() when the
-> > > > + * platform device is probed, but it is released together with the virtio
-> > > > + * device (see rproc_virtio_dev_release()); attach it again if needed, e.g.
-> > > > + * when the remote processor is restarted during a crash recovery.
-> > > > + * Any other kind of region (e.g., shared-dma-pool) is attached only here.
-> > > > + */
-> > > > +static int rproc_virtio_init_vdev_mem(struct device *dev)
-> > > > +{
-> > > > +	if (is_swiotlb_for_alloc(dev))
-> > > > +		return 0;
-> > > > +
-> > > > +	return of_reserved_mem_device_init_by_idx(dev, dev->of_node, 0);
-> > > > +}
-> > > > +
-> > > >  /**
-> > > >   * rproc_add_virtio_dev() - register an rproc-induced virtio device
-> > > >   * @rvdev: the remote vdev
-> > > > @@ -410,6 +429,7 @@ static int rproc_add_virtio_dev(struct rproc_vdev *rvdev, int id)
-> > > >  	struct device *dev = &rvdev->pdev->dev;
-> > > >  	struct virtio_device *vdev;
-> > > >  	struct rproc_mem_entry *mem;
-> > > > +	bool has_mem_region;
-> > > >  	int ret;
-> > > >  
-> > > >  	if (rproc->ops->kick == NULL) {
-> > > > @@ -417,11 +437,24 @@ static int rproc_add_virtio_dev(struct rproc_vdev *rvdev, int id)
-> > > >  		return -EINVAL;
-> > > >  	}
-> > > >  
-> > > > +	has_mem_region = of_property_present(dev->of_node, "memory-region");
-> > > > +
-> > > >  	/* Try to find dedicated vdev buffer carveout */
-> > > >  	mem = rproc_find_carveout_by_name(rproc, "vdev%dbuffer", rvdev->index);
-> > > >  	if (mem) {
-> > > >  		phys_addr_t pa;
-> > > >  
-> > > > +		if (has_mem_region) {
-> > > > +			/*
-> > > > +			 * The carveout takes precedence: drop the region that
-> > > > +			 * of_dma_configure() might have attached at probe time.
-> > > 
-> > > I don't understand this part - why would someone configure vdevXbuffer with the
-> > > same name at the rproc and rproc-virtio level?  This should be an error.
-> > >
-> > 
-> > The carveout might come from the remote processor's resource table. I
-> > was unsure on how to treat it (warning or error) - if you advise for
-> > the second I'll go that route.
-> > 
-> 
-> Ok, so this is also related to my for patch [5/11], i.e handling of authentic
-> rproc-virtio device should follow modern practices.   
->
+Hello,
 
-Ok.
+this series adds support for devices with a DRM pipeline whose final
+components, including one or more bridges, can be hot-plugged and
+hot-unplugged.
 
-> > > > +			 */
-> > > > +			dev_warn(dev,
-> > > > +				 "vdev%dbuffer carveout found, ignoring memory-region\n",
-> > > > +				 rvdev->index);
-> > > > +			of_reserved_mem_device_release(dev);
-> > > 
-> > > Who would have called of_reserved_mem_device_init_by_XYZ()?  The remoteproc core
-> > > or virtio core?  
-> > > 
-> > The of_dma_configure() call that is part of the platform DMA
-> > configuration automatically associates to the device the first
-> > restricted-dma-pool node referenced by memory-region; see [1].
-> > 
-> > This is actually beneficial to the proposed solution, but current
-> > implementation requires this step to avoid leaking the association (this
-> > will be required also in case of error, because of_dma_configure() is
-> > called during the probe).
-> > 
-> 
-> Ok
-> 
-> > > > +		}
-> > > > +
-> > > >  		if (mem->of_resm_idx != -1) {
-> > > >  			struct device_node *np = rproc->dev.parent->of_node;
-> > > >  
-> > > > @@ -451,6 +484,14 @@ static int rproc_add_virtio_dev(struct rproc_vdev *rvdev, int id)
-> > > >  				return ret;
-> > > >  			}
-> > > >  		}
-> > > > +	} else if (has_mem_region) {
-> > > > +		/* Use the memory region declared in the vdev's own node */
-> > > > +		ret = rproc_virtio_init_vdev_mem(dev);
-> > > > +		if (ret) {
-> > > > +			dev_err(dev, "Can't associate vdev memory-region: %d\n",
-> > > > +				ret);
-> > > > +			return ret;
-> > > > +		}
-> > > 
-> > > Mixing the initialisation of the legacy rproc-virtio and authentic rproc-virtio
-> > > devices is very confusing.  I think there is value in splitting them, even if it
-> > > entails some code duplication.
-> > > 
-> > 
-> > Ok, I'll split them for V3.
-> > 
-> 
-> Please move forward on that.  Since it will introduce a fair amount of churn, I
-> will simply stop reviewing the current set and wait for V3.  You can remove the
-> "RFC" tag, we are well past that now.
-> 
+For more about the use case see the v1 cover letter:
+https://lore.kernel.org/lkml/20260519-drm-bridge-hotplug-v1-0-45e2bdb3dfb4@bootlin.com/
 
-Ok. That will take some days, though.
+Design
+======
 
-Thank you for the review you did so far!
+The drm_bridge_connector is nowadays the recommended way to implement DRM
+connectors when a chain of bridges is used.
 
-Regards,
-Francesco
+This series proposes a small helper (drm_hotplug_helper) which drivers can
+use to make their encoder able to:
+
+ * receive hotplug-relevant events
+ * add a drm_bridge_connector when a new bridge is added making the
+   pipeline complete in the hardware
+ * remove the drm_bridge_connector when a bridge is removed
+ * start/stop HPD polling when the connector is added/removed
+   (despite the name, HPD is pretty much orthogonal to bridge hotplug)
+ 
+Series layout
+=============
+
+There are various preparation steps before the last patches introduce
+bridge hotplug itself.
+
+ A. Add a dynamic variant of drmm_connector_hdmi_init() and non-drmm
+    hdmi-cec API
+    (needed for the bridge-connector to allocate the connector dynamically)
+
+     1	drm/display: hdmi-cec-helper: use drmm_ prefix for drmm action
+     2	drm/display: hdmi-cec-helper: add non-drmm API variant
+     3	drm/display: hdmi-cec-notifier-helper: use drmm_ prefix for drmm action
+     4	drm/display: hdmi-cec-notifier-helper: add non-drmm API variant
+     5	drm/connector: split drmm_connector_hdmi_init() in 3 parts
+     6	drm/connector: add drm_connector_hdmi_dynamic_init()
+
+ B. bridge-connector: use a dynamic drm_connector
+
+     7	drm/display: bridge-connector: split allocation code from initialization code
+     8	drm/display: bridge-connector: hoist error management to common code
+     9	drm/display: bridge-connector: use a dynamic connector
+    10	drm/display: bridge-connector: add APIs to add/remove the connector dynamically
+
+ C. Misc preparation work
+
+    11	drm/bridge: constify of_drm_find_and_get_bridge() device_node parameter
+    12	drm/bridge: initialize chain_node list head on allocation
+    13	drm/bridge: initialize chain_node list head on detach and attach errors
+    14	drm/bridge: ti-sn65dsi86: protect device resources on unplug
+    15	drm/atomic: drm_atomic_private_obj_fini: protect private_obj removal from list
+
+ D. Add notifier mechanism to let common code (the bridge-connector)
+    take actions on hotplug events
+
+    16	drm: event-notifier: add mechanism to notify about hotplug events
+    17	drm/bridge: notify about added and detached bridges
+    18	drm/mipi-dsi: notify about DSI attach
+
+ E. Let bridges return their next bridge
+    (allows to know when the pipeline is complete)
+
+    19	drm/bridge: add drm_bridge_get_next() and supporting func
+    20	drm/panel: implement .get_next_bridge
+    21	drm/bridge: display-connector: implement .get_next_bridge
+    22	drm/bridge: ti-sn65dsi83: implement .get_next_bridge
+    23	drm/bridge: ti-sn65dsi86: implement .get_next_bridge
+    24	drm/bridge: samsung-dsim: implement .get_next_bridge
+
+ F. drm_bridge: stop pipeline when a bridge is removed
+
+    25	drm/bridge: add drm_bridge_detach_from()
+    26	drm/atomic: add drm_atomic_shutdown_encoder()
+    27	drm/tests: atomic: add tests for drm_atomic_shutdown_encoder()
+    28	drm/bridge: clear bridge->encoder on detach
+    29	drm/bridge: shutdown encoder and detach downstream bridges on bridge unplug
+
+ G. Implement bridge hotplug in bridge-connector, enable it in a driver
+
+    30	drm: drm_hotplug_helper: new helper to implement bridge hotplug
+    31	drm/mxsfb/lcdif: enable bridge hotplug
+
+== Grand plan
+
+This is part of the work to support hotplug of DRM bridges.
+
+Here's the work breakdown (➜ marks the current series):
+
+1. … add refcounting to DRM bridges struct drm_bridge,
+      based on devm_drm_bridge_alloc()
+    A. ✔ add new alloc API and refcounting (v6.16)
+    B. ✔ convert all bridge drivers to new API (v6.17)
+    C. ✔ kunit tests (v6.17)
+    D. ✔ add get/put to drm_bridge_add/remove() + attach/detach()
+         and warn on old allocation pattern (v6.17)
+    E. … add get/put on drm_bridge accessors
+       1. ✔ drm_bridge_chain_get_first_bridge(), add cleanup action (v6.18)
+       2. ✔ drm_bridge_get_prev_bridge() (v6.18)
+       3. ✔ drm_bridge_get_next_bridge() (v6.19)
+       4. ✔ drm_for_each_bridge_in_chain() (v6.19)
+       5. ✔ drm_bridge_connector_init (v6.19)
+       6. ✔ protect encoder bridge chain with a mutex (v7.2)
+       7. ✔ of_drm_find_bridge
+          a. ✔ add of_drm_get_bridge() (v7.0),
+               convert basic direct users (v7.0-v7.1)
+          b. ✔ convert direct of_drm_get_bridge() users, part 2 (v7.0)
+          c. ✔ convert direct of_drm_get_bridge() users, part 3 (v7.0)
+          d. ✔ convert direct of_drm_get_bridge() users, part 4 (v7.1-v7.2)
+          e. ✔ bridge-only drm_of_find_panel_or_bridge() users (v7.2)
+       8. … panel_bridge lifetime
+          a. ✔ cleanup DRM_PANEL in bridge drivers (v7.4)
+	  b. ✔ embed a drm_bridge in every drm_panel (v7.4)
+	  c. ✔ remove *_of_get_bridge(): non-OF drivers (v7.5)
+	  d. … remove drmm_of_get_bridge()
+	  e. … remove devm_drm_of_get_bridge(), part 1
+	  f.   remove devm_drm_of_get_bridge(), part 2
+       9. ✔ enforce drm_bridge_add before drm_bridge_attach (v6.19)
+    F. ✔ debugfs improvements
+       1. ✔ add top-level 'bridges' file (v6.16)
+       2. ✔ show refcount and list lingering bridges (v6.19)
+ 2. ✔ handle gracefully atomic updates during bridge removal
+    A. ✔ Add drm_bridge_enter/exit() to protect device resources (v7.0)
+    B. ✔ Add drm_bridge_clear_and_put() (v7.1)
+ 3. ✕ DSI host-device driver interaction
+ 4. ✔ removing the need for the "always-disconnected" connector
+ 5. ✔ Migrate i.MX LCDIF driver to bridge-connector (v7.2)
+ 6. ➜ DRM bridge hotplug
+    A. ➜ Bridge hotplug management in the DRM core
+       1. ✔ bridge-connector: attach encoder to the connector (v7.2)
+       2. ➜ drm bridge hotplug
+    B.   Device tree description
+   
+
+---
+Changes in v3:
+- Handle use cases where the first bridge after the encoder is hotpluggable
+  (in v1 and v2 the first bridge was required to be always present)
+  as well as all cases where the first bridge is a DSI host
+   - Removed "samsung-dsim: move drm_bridge_add() call to probe", not
+     needed anymore
+- Handle hot-pluggable bridges supporting HPD, add TI SN65DSI86 DSI-to-DP
+- Fully implement dynamic connector in drm_bridge_connector (CEC helpers
+  were missing in v2)
+- Fixed shutdown to not shutdown the whole card
+   - as a consequence, removed (not needed anymore)
+     "drm/atomic: move [...] from drm_atomic_helper to drm_atomic"
+- Many smaller fixes and improvements
+- Link to v2: https://patch.msgid.link/20261001-drm-bridge-hotplug-v2-0-8e34986dcb68@bootlin.com
+
+Changes in v2:
+- Rewrote: added new drm_hotplug_helper, dropped most changes to
+  drm_bridge_connector
+- Added get_next_bridge func, dropped is_tail func, and stop
+  using -EPROBE_DEFER to mean a next bridge is needed but currently absent
+- Rebased on drm-misc-next, which required a few reworks
+- Fix dynconn mutex locking
+- Fix sashiko-reported bugs
+- Drop "drm/display: bridge-connector: store the drm_device pointer", not
+  strongly needed, and adapt the remaining patches
+- Simplify handle_hpd code types
+- Lots of other smaller improvements
+- Link to v1: https://patch.msgid.link/20260519-drm-bridge-hotplug-v1-0-45e2bdb3dfb4@bootlin.com
+
+---
+Luca Ceresoli (31):
+      drm/display: hdmi-cec-helper: use drmm_ prefix for drmm action
+      drm/display: hdmi-cec-helper: add non-drmm API variant
+      drm/display: hdmi-cec-notifier-helper: use drmm_ prefix for drmm action
+      drm/display: hdmi-cec-notifier-helper: add non-drmm API variant
+      drm/connector: split drmm_connector_hdmi_init() in 3 parts
+      drm/connector: add drm_connector_hdmi_dynamic_init()
+      drm/display: bridge-connector: split allocation code from initialization code
+      drm/display: bridge-connector: hoist error management to common code
+      drm/display: bridge-connector: use a dynamic connector
+      drm/display: bridge-connector: add APIs to add/remove the connector dynamically
+      drm/bridge: constify of_drm_find_and_get_bridge() device_node parameter
+      drm/bridge: initialize chain_node list head on allocation
+      drm/bridge: initialize chain_node list head on detach and attach errors
+      drm/bridge: ti-sn65dsi86: protect device resources on unplug
+      drm/atomic: drm_atomic_private_obj_fini: protect private_obj removal from list
+      drm: event-notifier: add mechanism to notify about hotplug events
+      drm/bridge: notify about added and detached bridges
+      drm/mipi-dsi: notify about DSI attach
+      drm/bridge: add drm_bridge_get_next() and supporting func
+      drm/panel: implement .get_next_bridge
+      drm/bridge: display-connector: implement .get_next_bridge
+      drm/bridge: ti-sn65dsi83: implement .get_next_bridge
+      drm/bridge: ti-sn65dsi86: implement .get_next_bridge
+      drm/bridge: samsung-dsim: implement .get_next_bridge
+      drm/bridge: add drm_bridge_detach_from()
+      drm/atomic: add drm_atomic_shutdown_encoder()
+      drm/tests: atomic: add tests for drm_atomic_shutdown_encoder()
+      drm/bridge: clear bridge->encoder on detach
+      drm/bridge: shutdown encoder and detach downstream bridges on bridge unplug
+      drm: drm_hotplug_helper: new helper to implement bridge hotplug
+      drm/mxsfb/lcdif: enable bridge hotplug
+
+ MAINTAINERS                                        |  16 +
+ drivers/gpu/drm/Kconfig                            |   5 +
+ drivers/gpu/drm/Makefile                           |   2 +
+ drivers/gpu/drm/bridge/display-connector.c         |   7 +
+ drivers/gpu/drm/bridge/samsung-dsim.c              |   9 +
+ drivers/gpu/drm/bridge/ti-sn65dsi83.c              |   9 +
+ drivers/gpu/drm/bridge/ti-sn65dsi86.c              |  61 +++-
+ drivers/gpu/drm/display/Kconfig                    |   7 +
+ drivers/gpu/drm/display/Makefile                   |   2 +
+ drivers/gpu/drm/display/drm_bridge_connector.c     | 225 ++++++++++----
+ drivers/gpu/drm/display/drm_hdmi_cec_helper.c      |  62 ++--
+ .../gpu/drm/display/drm_hdmi_cec_notifier_helper.c |  34 ++-
+ drivers/gpu/drm/display/drm_hotplug_helper.c       | 325 +++++++++++++++++++++
+ drivers/gpu/drm/drm_atomic.c                       | 151 ++++++++++
+ drivers/gpu/drm/drm_bridge.c                       |  87 +++++-
+ drivers/gpu/drm/drm_connector.c                    | 131 ++++++---
+ drivers/gpu/drm/drm_hotplug_event_notifier.c       |  62 ++++
+ drivers/gpu/drm/drm_mipi_dsi.c                     |   3 +
+ drivers/gpu/drm/drm_panel.c                        |   8 +-
+ drivers/gpu/drm/mxsfb/Kconfig                      |   2 +-
+ drivers/gpu/drm/mxsfb/lcdif_drv.c                  |  40 ++-
+ drivers/gpu/drm/tests/drm_bridge_test.c            | 209 +++++++++++++
+ include/drm/display/drm_hdmi_cec_helper.h          |  21 ++
+ include/drm/drm_atomic.h                           |   1 +
+ include/drm/drm_bridge.h                           |  27 +-
+ include/drm/drm_bridge_connector.h                 |   4 +
+ include/drm/drm_connector.h                        |   6 +
+ include/drm/drm_hotplug_event_notifier.h           |  52 ++++
+ include/drm/drm_hotplug_helper.h                   |  30 ++
+ 29 files changed, 1442 insertions(+), 156 deletions(-)
+---
+base-commit: 9c327dceb627a7947de3e82da6363fa508fd619b
+change-id: 20260515-drm-bridge-hotplug-46265d3a2f85
+
+Best regards,
+--  
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
