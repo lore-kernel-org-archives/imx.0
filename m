@@ -1,60 +1,110 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.56.87.7
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
 	t=1795020807;
-	b=0zUR8o6JPHQpHUN+6LjOqdWpLQH0bzV6FnI2yohYnK8yNdb3fS5p5SVRXvJvh9t/r88I
-	 jxvhFinks7taTY0z9Cxnyj7ykGuIHFTQ9aBL97RPEng4gMJGmhKNE8a/qGS+JtaIo4haS
-	 ZBLO3xdj3s1dJ1IB+QVhG4oUCBEshwMN4KGJ0osY1ZW2t7YkFV+7ZKDLHn1E5tbWG+bL+
-	 3YjzdVrL7r4x9xmTREYmmtSA8OMIlhOd4YKY69pRpLLovWgClB0d85KDaT8gb/9/fvPwd
-	 TmQSYO9d1GPo2FKuRC73uGhT74R0+hT/DtwTn3Vbg8dEDiv/CniyWpw/2RAQQVJkqqQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	b=F9HsFW/TcpX2nejiyfWQVxdocMaegb9wM3Sy4HhsbObdoDU3TnUAf8Xv9zg0FpSCHdDU
+	 PncZ00fjMdbnSOX06Aop0xnD8DPI9UP89nKUjILTcL585LMWhBVZsFWv02hl8CUbENUjM
+	 +s1ieMF4al9LLq8E6ENkA/K/0oFcZtAC30oBtQfTRpl6uQptNzVFlTF/CsjbUkuMwMwU1
+	 ArQ5HjWIHFlxNoTX5z735ZuszTlMV1g7wkijn3VQJWva2cjPTqDFlPOmIWWUsAT0Rz2tU
+	 vkEgknHdlba/oqcTfu1sJR80xCPX1UO9CfwvHczPg4D9FLOc/NrBttslXOxgVrbXH1Q==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1795020807;
-	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:Date:
-	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Last-TLS-Session-Version;
-	bh=VcG30sa+93pw9ClhwzPfhT8lh5QnjKv4zrX533cn6l0=;
-	b=mh9DkVm0wk+0Rs5laHchuRYCOJQTbxmLjStBHntUU0Dfdgd5DR4llT/WEW3nPsPMX2Ub
-	 a//RxjL5MSe5WCZAp0qqhpwxiBC+9xDv1FvH7IhJLyhIqAGDQgq1fRKSpIqmKnR+YGQsL
-	 BYz24oNjW6rPOKxA+24uzejshy1NY0rFOX13DMT0KZcxZnYuT77FxkSm5rSv1hSd8MgRr
-	 UKq5T6/icZ6Ar4lWtkiXiGWx0yurQuONrz4Kb2SmoFLSh1rEPU1mmPQrHAHz1jBt5/HqK
-	 l/zyxLjmteMpmOi+zPNnxoDbAdRADJR81wcG7fczjn3wlqtKbt8QB1tNp5lfFFrsk6w==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=bootlin.com;
-	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b="aM/xKKxj";
-	arc=none smtp.remote-ip=185.246.84.56
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	h=DMARC-Filter:DKIM-Signature:Received:DKIM-Signature:Received:Date:
+	 From:To:Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To:X-AntiAbuse:X-AntiAbuse:X-AntiAbuse:
+	 X-AntiAbuse:X-AntiAbuse:X-Source:X-Source-Args:X-Source-Dir:
+	 X-SGantispam-id:X-AntiAbuse:AntiSpam-DLS:AntiSpam-DLSP:AntiSpam-DLSRS:
+	 AntiSpam-TS:CFBL-Address:CFBL-Feedback-ID;
+	bh=s49vQAT48BxIZLfMkEXtnKafHZS3S30w7qy4wPSK4ME=;
+	b=u/9iZKcNptXYgUcRgt4z/4AdkV8jKBcPxoExo0ofhvi//G5f+BwUVek/dUwnkQrcs1P5
+	 FPRavCeEzftFmcuNkpzBbBGJxGy9yY1O0oG6J++G6WcqyhbF9QcY38verp1aaLO2nUOqe
+	 tXoV+z+VhHJWCDRfx51xFD80Uc+w5h+riQQ5zQoIG6e/+4/AxDsH90cdbAGhdMH4D7UM0
+	 prizmtR77QNQwTsSmNvMblpvm/thx9b+c9I3Na8Ddvb+ZaMG9EKzrR7Wsau19oBYIct0g
+	 SjTCAIVVlW1GoNlA/2AQ6KmmWyr7WmFzquYV/0W9Y2wRJuFTT0xEOzC5OSiABQ5fvlA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=valla.it;
+	spf=pass smtp.mailfrom=valla.it;
+	dkim=pass header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.a=rsa-sha256 header.s=default header.b="D5d/Syz2";
+	dkim=pass header.d=valla.it header.i=@valla.it header.a=rsa-sha256 header.s=default header.b=UEg0TeVF;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=185.56.87.7
+Received: from delivery.antispam.mailspamprotection.com (delivery.antispam.mailspamprotection.com [185.56.87.7])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA4A660A261B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3267A60A2626
 	for <imx@lists.linux.dev>; Wed, 18 Nov 2026 16:53:25 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CA4A660A261B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3267A60A2626
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valla.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valla.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=aM/xKKxj
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id AC2701A16DA;
-	Wed, 18 Nov 2026 16:53:24 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 72B275FE9B;
-	Wed, 18 Nov 2026 16:53:24 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D321711BC2937;
-	Wed, 18 Nov 2026 17:53:13 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1795020798; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=VcG30sa+93pw9ClhwzPfhT8lh5QnjKv4zrX533cn6l0=;
-	b=aM/xKKxjopE+Un5pt3rwL4bpxQPJBEFkuGVgKiqIOb6YhHHag/yNUmZvbYEenYPRG+3XuS
-	rHvbA+f2lEzwesExwsKoOgYlQKez5kYzTwmyTr2IpUAlg7gPaS89LogdlBPwBqqAXRBhxr
-	X9mJJC6w2ZcI1XLqR1FCqxndSFDuj6bMYSDLyAg/O+Kqelo9TBdXBJEsINJJ6Z0ZOmuraN
-	Rc8oWhcPQ8y9nnbs7Yn16lCGOD4MH9LHnC1dIkgvNTyxWlfU0RgTNO2XNS0GzI+epE/LXA
-	ltVhAceUE/E/nOyNvzvq0pWVa6fZsgIeBTKjvGBTueDyNn4uvsbjahWtlkmeVg==
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Date: Wed, 18 Nov 2026 17:50:13 +0100
-Subject: [PATCH RFC v3 30/31] drm: drm_hotplug_helper: new helper to
- implement bridge hotplug
+	dkim=pass (1024-bit key) header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.a=rsa-sha256 header.s=default header.b=D5d/Syz2;
+	dkim=pass (1024-bit key, unprotected) header.d=valla.it header.i=@valla.it header.a=rsa-sha256 header.s=default header.b=UEg0TeVF
+ARC-Seal: i=1; cv=none; a=rsa-sha256; d=outgoing.instance-europe-west4-h034.prod.antispam.mailspamprotection.com; s=arckey; t=1795020805;
+	 b=vu0vwoKJxX1S3Jxr8zqKrGQN8RunCxwDp9vPR2s6citsNuKmoo+WsY/rPJ+fRrmAnp9jO2Iz8d
+	  tUQYpYblEjezHp1XaAZYbH2PAvb0VwaFDZYIXFFnuQgdKkCL/Cppf6y45OgObbWjeac9B+skDJ
+	  sOT0wrp4Hhq1CisZr0uELjpppHLu8J4/m4vsvtnU99eMwkvP3qQl7RD2CX7iMPYhCEO6yidOJf
+	  TobS5AdcVvDYn9plgJeDQeDuTMbPWAWKldhnbqTxlS+ClGSAgC0EqLbVjlMV+nFF4p8qYjj/5r
+	  mrBftx6nGG/VuEYF5IwX4GfvNJaWNSFKEZ81T81nZhyHJQ==;
+ARC-Authentication-Results: i=1; outgoing.instance-europe-west4-h034.prod.antispam.mailspamprotection.com; smtp.remote-ip=35.214.173.214;
+	iprev=pass (214.173.214.35.bc.googleusercontent.com) smtp.remote-ip=35.214.173.214;
+	auth=pass (LOGIN) smtp.auth=esm19.siteground.biz;
+	dkim=pass header.d=valla.it header.s=default header.a=rsa-sha256;
+	arc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed; d=outgoing.instance-europe-west4-h034.prod.antispam.mailspamprotection.com; s=arckey; t=1795020805;
+	bh=hq59j9MIUVaImvVcxyR40iCL7QyC1S8ejdHje+eHY8Q=;
+	h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:
+	  From:Date:DKIM-Signature:DKIM-Signature;
+	b=d1/jzUpsVrZMb+MLeq9BVJRgG/qrDQ/mBVvD7y04SWO5JUN0oTqzoIzqf+IeLzpsgp0xxmf7H0
+	  pzXObXhJ+L0liqHt5Zgzhz7G8T2yr0x/1QkXR6DFURLqp0rBnEUGTfv8zM22EGTJ0wh9Bb4bwM
+	  F6QgY5mbAJSkkb40VEwRdZcjGyW68s8hm1yF5ZZ1cxNprBvgY8uGi57Ps+/YlP5KGVjsDg4M2t
+	  M/9LMB9JShZl369MIQRXNBMW5JuFURAS4MfE+RBDRZi3V3zMo8e5fQE7UjUey21uQfmzceZxEG
+	  WXW6U9V4IFlrrvYQzx1BVrS5gvR/TYuEKGQ4jWmeIHN2RQ==;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=antispam.mailspamprotection.com; s=default; h=CFBL-Feedback-ID:CFBL-Address
+	:Content-Type:MIME-Version:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	List-Unsubscribe:Content-Transfer-Encoding;
+	bh=s49vQAT48BxIZLfMkEXtnKafHZS3S30w7qy4wPSK4ME=; b=D5d/Syz2rd/JITkbllMamJDzNO
+	zL4BJiUx1fN+GufbS9f42l9mNGqy0VP9/XPNJyR1dB4RauGyinBLwoZbvh75XhofQH6Sj07EPQCMV
+	PJt5vG8scin9nPzbRhSJbcP1aIuDESx2IGF+slXe2iVq16Wasom32McPe7gRsjAWMXaU=;
+Received: from 214.173.214.35.bc.googleusercontent.com ([35.214.173.214] helo=esm19.siteground.biz)
+	by instance-europe-west4-h034.prod.antispam.mailspamprotection.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.100.1)
+	(envelope-from <francesco@valla.it>)
+	id 1xTiuM-0000000HN7w-0ywz
+	for imx@lists.linux.dev;
+	Wed, 18 Nov 2026 16:53:18 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=valla.it;
+	s=default; h=Subject:Cc:To:From:Date:list-help:list-unsubscribe:
+	list-subscribe:list-post:list-owner:list-archive;
+	bh=s49vQAT48BxIZLfMkEXtnKafHZS3S30w7qy4wPSK4ME=; b=UEg0TeVF31O2xVuW3Qw4fUKuWq
+	22O0c+RoE43yXb2K1fcEGcj4yLs39qyWMdbnThi3UjcTjDy9fjjzecG0xypXBoVvkqR0gQywrnrpy
+	7aRCBZeCKAMrhgnP2KZqp4EmLuTXsa4adOHWK4o1SFGw482Eo5u6z+Uo4965hkzS3Fmw=;
+Received: from [95.251.96.187] (port=64594 helo=bywater)
+	by esm19.siteground.biz with essmtpa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.100.1)
+	(envelope-from <francesco@valla.it>)
+	id 1xTiu4-00000000OYn-0kDy;
+	Wed, 18 Nov 2026 16:53:00 +0000
+Date: Wed, 18 Nov 2026 17:52:58 +0100
+From: Francesco Valla <francesco@valla.it>
+To: Mathieu Poirier <mathieu.poirier@linaro.org>
+Cc: Bjorn Andersson <andersson@kernel.org>, Kees Cook <kees@kernel.org>, 
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Randy Dunlap <rdunlap@infradead.org>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>, Robin Murphy <robin.murphy@arm.com>, 
+	linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-doc@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH RFC v2 05/11] remoteproc: virtio: report
+ VIRTIO_F_ACCESS_PLATFORM when required
+Message-ID: <av3XR-APUl0ENo_n@bywater>
+References: <20261102-remoteproc_virtio_map-v2-0-26b300e01c62@valla.it>
+ <20261102-remoteproc_virtio_map-v2-5-26b300e01c62@valla.it>
+ <avs6XQpoQmY_MNYx@p14s>
+ <avzQI6R9LubGP7-d@bywater>
+ <av3HVh5jlMsyaiq7@p14s>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -64,481 +114,161 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261118-drm-bridge-hotplug-v3-30-44bb3b4a828f@bootlin.com>
-References: <20261118-drm-bridge-hotplug-v3-0-44bb3b4a828f@bootlin.com>
-In-Reply-To: <20261118-drm-bridge-hotplug-v3-0-44bb3b4a828f@bootlin.com>
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Andrzej Hajda <andrzej.hajda@intel.com>, 
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Inki Dae <inki.dae@samsung.com>, Jagan Teki <jagan@amarulasolutions.com>, 
- Marek Szyprowski <m.szyprowski@samsung.com>, 
- Jessica Zhang <jesszhan0024@gmail.com>, 
- Douglas Anderson <dianders@chromium.org>, Marek Vasut <marex@denx.de>, 
- Stefan Agner <stefan@agner.ch>, Frank Li <Frank.Li@nxp.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: Hui Pu <Hui.Pu@gehealthcare.com>, Ian Ray <ian.ray@gehealthcare.com>, 
- Luca Ceresoli <luca.ceresoli@bootlin.com>, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-X-Mailer: b4 0.16.0
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <av3HVh5jlMsyaiq7@p14s>
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - esm19.siteground.biz
+X-AntiAbuse: Original Domain - lists.linux.dev
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - valla.it
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-SGantispam-id: 4ee9078fbe98320d334ce8348f2c9cd4
+X-AntiAbuse: ID - 4ee9078fbe98320d334ce8348f2c9cd4
+AntiSpam-DLS: false
+AntiSpam-DLSP: 
+AntiSpam-DLSRS: 
+AntiSpam-TS: 1.0
+CFBL-Address: feedback@antispam.mailspamprotection.com; report=arf
+CFBL-Feedback-ID: 1xTiuM-0000000HN7w-0ywz-feedback@antispam.mailspamprotection.com
+Authentication-Results: outgoing.instance-europe-west4-h034.prod.antispam.mailspamprotection.com;
+	iprev=pass (214.173.214.35.bc.googleusercontent.com) smtp.remote-ip=35.214.173.214;
+	auth=pass (LOGIN) smtp.auth=esm19.siteground.biz;
+	dkim=pass header.d=valla.it header.s=default header.a=rsa-sha256;
+	arc=none
 
-Add a new helper to support cards implementing hotpluggable drm_bridges.
+On Wed, Nov 18, 2026 at 09:42:14AM -0600, Mathieu Poirier wrote:
+> On Tue, Nov 17, 2026 at 11:18:03PM +0100, Francesco Valla wrote:
+> > On Mon, Nov 16, 2026 at 11:16:13AM -0600, Mathieu Poirier wrote:
+> > > On Mon, Nov 02, 2026 at 12:26:42AM +0100, Francesco Valla wrote:
+> > > > Depending on the driver originating them, data buffers used for virtio
+> > > > communication can either:
+> > > > 
+> > > >   - already be allocated from the coherent memory area that is
+> > > >     accessible by the remote processor; this is the case of
+> > > >     remoteproc-specific virtio devices, i.e., rpmsg and rproc-serial;
+> > > >   - be allocated from generic kmem, and thus not necessarily accessible
+> > > >     directly by the remote processor.
+> > > > 
+> > > > In the second case, the DMA APIs can be exploited to obtain a
+> > > > functional communication, since they will take care of cache maintenance
+> > > > and - if required - bounce buffering. The VIRTIO_F_ACCESS_PLATFORM
+> > > > feature flag can be used for this purpose: with it set, the virtio
+> > > > framework will use the aforementioned DMA APIs to map and unmap buffers.
+> > > > 
+> > > > Bounce buffering will be transparently used in two cases:
+> > > > 
+> > > >   - if the buffer address supplied by the virtio driver is not suitable
+> > > >     for DMA transfers, or
+> > > >   - if the reserved memory associated to the vdev is a
+> > > >     restricted-dma-pool; in this case, *all* buffers will be bounced to
+> > > >     and from this pool.
+> > > > 
+> > > > With this support in place, any kind of virtio device can be supported
+> > > > through the remoteproc-virtio transport, at least from a data exchange
+> > > > standpoint.
+> > > > 
+> > > > Note that remote processors behind an IOMMU need da == pa for the memory
+> > > > region(s) the buffers are allocated from.
+> > > 
+> > > I'm not sure to understand the da == pa requirement - can you expand more on
+> > > that?
+> > > 
+> > 
+> > Yes! With a caveat: the IOMMU usage by the remoteproc framework and how
+> > it can integrate with this work is the main reason this is an RFC, as
+> > stated in the cover letter, because I'm not sure I understand all of it.
+> > See for example the dma-to-da conversion in [1] or the comment in [2].
+> >
+> 
+> The remoteproc subsystem was written a _very_ long time ago and the context of
+> some artefacts, such as [1] and [2], is long lost.
+>  
+> > That said: all the IOMMU setup that is done today by the remoteproc core
+> > is linked to the *remoteproc* device, not to the rproc_vdev (i.e., the
+> > device backing the virtio device). For that reason, the DMA subsystem
+> > should not be able to know that setup even exists, in particular while
+> > performing swiotlb operations. Hence, the requirement to have a 1:1
+> > mapping between da (i.e., the address the device uses) and pa (the
+> > physical memory map).
+> 
+> I would like to reserve the current remoteproc IOMMU design for handling legacy
+> rproc-virtio devices, i.e rpmsg and serial, and only use the modern
+> virtio/swiotlb API to handle authentic rproc-virtio devices.
+>
 
-drmm_hotplug_helper_init() registers to get notified of relevant events and
-react by creating a bridge (if the pipeline is complete in the hardware)
-and destroying it on bridge removal.
+Agreed. I'll come up with a proposal there. In the mean time I found a
+multi-core system *with* an IOMMU that I can use for further testing in
+that area.
 
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+> Based on what I see here [3], I think above sentence:
+> 
+> "Note that remote processors behind an IOMMU need da == pa for the memory..."
+> 
+> should be replaced with:
+> 
+> "Note that remote processors not behind an IOMMU need da == pa for the memory..."
+> 
+> [3]. https://elixir.bootlin.com/linux/v7.4-rc1/source/drivers/remoteproc/remoteproc_core.c#L703 
+> 
+> > 
+> > > > 
+> > > > Existing use cases (e.g., rpmsg and virtio-console) are not impacted as
+> > > > they are explicitly excluded.
+> > > > 
+> > > > Signed-off-by: Francesco Valla <francesco@valla.it>
+> > > > ---
+> > > >  drivers/remoteproc/remoteproc_virtio.c | 10 ++++++++--
+> > > >  1 file changed, 8 insertions(+), 2 deletions(-)
+> > > > 
+> > > > diff --git a/drivers/remoteproc/remoteproc_virtio.c b/drivers/remoteproc/remoteproc_virtio.c
+> > > > index f1b362158a9c..1496659ddff9 100644
+> > > > --- a/drivers/remoteproc/remoteproc_virtio.c
+> > > > +++ b/drivers/remoteproc/remoteproc_virtio.c
+> > > > @@ -280,9 +280,14 @@ static u64 rproc_virtio_get_features(struct virtio_device *vdev)
+> > > >  	 * All non-remoteproc-specific virtio devices are assumed to be
+> > > >  	 * compliant with virtio specifications 1.x; there is no other method
+> > > >  	 * to transmit this capability from the remote processor to the host.
+> > > > +	 *
+> > > > +	 * Virtio devices that are specific for remoteproc usage take care on
+> > > > +	 * their own to allocate memory from the device's coherent pool; use
+> > > > +	 * the DMA APIs for the others through VIRTIO_F_ACCESS_PLATFORM.
+> > > >  	 */
+> > > >  	if (!rproc_virtio_rsc_vdev_rproc_specific(rsc))
+> > > > -		features |= (1ULL << VIRTIO_F_VERSION_1);
+> > > > +		features |= ((1ULL << VIRTIO_F_VERSION_1) |
+> > > > +			     (1ULL << VIRTIO_F_ACCESS_PLATFORM));
+> > > >  
+> > > >  	return features;
+> > > >  }
+> > > > @@ -312,7 +317,8 @@ static int rproc_virtio_finalize_features(struct virtio_device *vdev)
+> > > >  	features = vdev->features;
+> > > >  
+> > > >  	if (!rproc_virtio_rsc_vdev_rproc_specific(rsc))
+> > > > -		features &= ~(1ULL << VIRTIO_F_VERSION_1);
+> > > > +		features &= ~((1ULL << VIRTIO_F_VERSION_1) |
+> > > > +			      (1ULL << VIRTIO_F_ACCESS_PLATFORM));
+> > > >  
+> > > >  	if (WARN_ON((u32)vdev->features != features))
+> > > >  		return -EINVAL;
+> > > > 
+> > > > -- 
+> > > > 2.56.0
+> > > > 
+> > > 
+> > 
+> > Thank you!
+> > 
+> > Reagrds,
+> > Francesco
+> > 
+> > [1] https://elixir.bootlin.com/linux/v7.4-rc1/source/drivers/remoteproc/remoteproc_core.c#L716
+> > [2] https://elixir.bootlin.com/linux/v7.4-rc1/source/drivers/remoteproc/remoteproc_core.c#L461
+> > 
+>
 
----
-
-Changes in v3:
-- Do not require the first bridge is non-hotpluggable
-- Support non-DSI bridges too
-- Add callback to report connector add/remove
-- Do not store the drm_device pointer, get it from the encoder
-- use new v3 notifier API name
-
-Changes in v2:
-- Add callback to report connector addition/removal
-- Sanity-check drmm_hotplug_helper_init() parameters
-- Reformat kdoc comment
----
- MAINTAINERS                                  |   8 +
- drivers/gpu/drm/display/Kconfig              |   7 +
- drivers/gpu/drm/display/Makefile             |   2 +
- drivers/gpu/drm/display/drm_hotplug_helper.c | 325 +++++++++++++++++++++++++++
- include/drm/drm_hotplug_helper.h             |  30 +++
- 5 files changed, 372 insertions(+)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index fc404918c938..86a08dc33a16 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -8218,6 +8218,14 @@ F:	Documentation/devicetree/bindings/npu/rockchip,rk3588-rknn-core.yaml
- F:	drivers/accel/rocket/
- F:	include/uapi/drm/rocket_accel.h
- 
-+DRM BRIDGE HOTPLUG HELPER
-+M:	Luca Ceresoli <luca.ceresoli@bootlin.com>
-+S:	Maintained
-+T:	git https://gitlab.freedesktop.org/drm/misc/kernel.git
-+F:	Documentation/devicetree/bindings/display/bridge/
-+F:	drivers/gpu/drm/display/drm_hotplug_helper.c
-+F:	include/drm/drm_hotplug_helper.h
-+
- DRM COMPUTE ACCELERATORS DRIVERS AND FRAMEWORK
- M:	Oded Gabbay <ogabbay@kernel.org>
- L:	dri-devel@lists.freedesktop.org
-diff --git a/drivers/gpu/drm/display/Kconfig b/drivers/gpu/drm/display/Kconfig
-index df09cf9a8ca1..e086e2fd08a4 100644
---- a/drivers/gpu/drm/display/Kconfig
-+++ b/drivers/gpu/drm/display/Kconfig
-@@ -22,6 +22,13 @@ config DRM_BRIDGE_CONNECTOR
- 	help
- 	  DRM connector implementation terminating DRM bridge chains.
- 
-+config DRM_HOTPLUG_HELPER
-+	bool
-+	depends on OF
-+	select DRM_BRIDGE_CONNECTOR
-+	help
-+	  Helper code to implement a card supporting hotpluggable bridges.
-+
- config DRM_DISPLAY_DP_AUX_CEC
- 	bool "Enable DisplayPort CEC-Tunneling-over-AUX HDMI support"
- 	select DRM_DISPLAY_DP_HELPER
-diff --git a/drivers/gpu/drm/display/Makefile b/drivers/gpu/drm/display/Makefile
-index 0ff4a1ad0222..ce6dbd65833b 100644
---- a/drivers/gpu/drm/display/Makefile
-+++ b/drivers/gpu/drm/display/Makefile
-@@ -5,6 +5,8 @@ obj-$(CONFIG_DRM_DISPLAY_DP_AUX_BUS) += drm_dp_aux_bus.o
- drm_display_helper-y := drm_display_helper_mod.o
- drm_display_helper-$(CONFIG_DRM_BRIDGE_CONNECTOR) += \
- 	drm_bridge_connector.o
-+drm_display_helper-$(CONFIG_DRM_HOTPLUG_HELPER) += \
-+	drm_hotplug_helper.o
- drm_display_helper-$(CONFIG_DRM_DISPLAY_DP_HELPER) += \
- 	drm_dp_dual_mode_helper.o \
- 	drm_dp_helper.o \
-diff --git a/drivers/gpu/drm/display/drm_hotplug_helper.c b/drivers/gpu/drm/display/drm_hotplug_helper.c
-new file mode 100644
-index 000000000000..ea32bdb0af8f
---- /dev/null
-+++ b/drivers/gpu/drm/display/drm_hotplug_helper.c
-@@ -0,0 +1,325 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ * Copyright (C) 2026 GE HealthCare
-+ * Author: Luca Ceresoli <luca.ceresoli@bootlin.com>
-+ */
-+
-+#include <linux/of.h>
-+#include <linux/of_graph.h>
-+
-+#include <drm/drm_bridge.h>
-+#include <drm/drm_bridge_connector.h>
-+#include <drm/drm_hotplug_event_notifier.h>
-+#include <drm/drm_hotplug_helper.h>
-+#include <drm/drm_managed.h>
-+#include <drm/drm_print.h>
-+
-+struct drm_hotplug_helper {
-+	/**
-+	 * @encoder: The encoder at the start of the bridges chain
-+	 */
-+	struct drm_encoder *encoder;
-+	/**
-+	 * @event_cb: Callback to report connector addition/removal
-+	 */
-+	drm_hotplug_helper_event_cb event_cb;
-+	/**
-+	 * @drm_event_nb: Notifier to receive DRM hotplug-related events
-+	 */
-+	struct notifier_block drm_event_nb;
-+	/**
-+	 * @connector: The drm_connector added/removed on plug/unplug
-+	 */
-+	struct drm_connector *connector;
-+	/**
-+	 * @event_mutex: Protect entry points (init, fini, event notifier)
-+	 * from concurrent attach and connector creation or destruction
-+	 */
-+	struct mutex event_mutex;
-+	/**
-+	 * @first_bridge_ep: Device tree node of the encoder endpoint
-+	 * connected to the first bridge
-+	 */
-+	struct device_node *first_bridge_ep;
-+};
-+
-+/*
-+ * True if the encoder bridge chain is complete, i.e. the last bridge in
-+ * the chain is the last bridge expected in the hardware (e.g. a panel).
-+ */
-+static bool drm_hotplug_helper_bridge_chain_is_complete(struct drm_hotplug_helper *hotplug_helper)
-+{
-+	struct drm_bridge *last_bridge __free(drm_bridge_put) =
-+		drm_bridge_chain_get_last_bridge(hotplug_helper->encoder);
-+	struct drm_device *drm = hotplug_helper->encoder->dev;
-+
-+	/* We expect at least one bridge */
-+	if (!last_bridge) {
-+		drm_dbg_driver(drm, "no bridges in pipeline (yet)\n");
-+		return false;
-+	}
-+
-+	struct drm_bridge *next_bridge __free(drm_bridge_put) =
-+		drm_bridge_get_next(last_bridge);
-+
-+	/* No next bridge expected, pipeline is complete */
-+	if (!next_bridge) {
-+		drm_dbg_driver(drm, "pipeline complete\n");
-+		return true;
-+	}
-+
-+	/* Next bridge expected but not there now, pipeline incomplete */
-+	if (next_bridge == ERR_PTR(-ENODEV)) {
-+		drm_dbg_driver(drm, "pipeline not (yet) complete\n");
-+		return false;
-+	}
-+
-+	/* Unexpected error */
-+	if (IS_ERR(next_bridge))
-+		drm_warn(drm, "%s error %pe\n", __func__, next_bridge);
-+
-+	/* next_bridge is valid, but not (yet|anymore) in chain */
-+	return false;
-+}
-+
-+/**
-+ * drm_hotplug_helper_connector_add - add the drm_connector
-+ * @hotplug_helper: drm_hotplug_helper to add the drm_connector to
-+ *
-+ * Returns 0 on success or a negative error otherwise.
-+ */
-+static int drm_hotplug_helper_connector_add(struct drm_hotplug_helper *hotplug_helper)
-+{
-+	struct drm_device *drm = hotplug_helper->encoder->dev;
-+	struct drm_connector *connector;
-+
-+	if (drm_WARN_ON(drm, hotplug_helper->connector))
-+		return -EBUSY;
-+
-+	connector = drm_bridge_connector_dynamic_add(drm, hotplug_helper->encoder);
-+	if (IS_ERR(connector))
-+		return PTR_ERR(connector);
-+
-+	hotplug_helper->connector = connector;
-+	hotplug_helper->event_cb(DRM_HOTPLUG_HELPER_CONNECTOR_ADDED, connector);
-+
-+	dev_dbg(drm->dev, "added bridge connector\n");
-+
-+	return 0;
-+}
-+
-+/*
-+ * Removes the connector, which must be present.
-+ *
-+ * Must be called with the hotplug_helper->event_mutex locked.
-+ */
-+static void drm_hotplug_helper_connector_remove(struct drm_hotplug_helper *hotplug_helper)
-+{
-+	struct drm_device *drm = hotplug_helper->encoder->dev;
-+
-+	if (drm_WARN_ON(drm, !hotplug_helper->connector))
-+		return;
-+
-+	dev_dbg(drm->dev, "removing bridge connector\n");
-+
-+	hotplug_helper->event_cb(DRM_HOTPLUG_HELPER_CONNECTOR_REMOVING, hotplug_helper->connector);
-+	drm_bridge_connector_dynamic_remove(hotplug_helper->connector);
-+	hotplug_helper->connector = NULL;
-+}
-+
-+/*
-+ * Propagate the attach chain and possibly add a drm_bridge_connector after
-+ * a new drm_bridge is hot-plugged.
-+ *
-+ * The connector is added only if the pipeline is now complete. This could
-+ * not be the case for various reasons:
-+ *
-+ * - the new bridge is just unrelated to our encoder
-+ * - the new bridge is not the next one in the pipeline
-+ * - the new bridge is the next in the pipeline but the pipeline is not yet
-+ *   complete
-+ *
-+ * All these cases are normal, not an error.
-+ *
-+ * Must be called with the hotplug_helper->event_mutex locked.
-+ */
-+static void drm_hotplug_helper_try_complete(struct drm_hotplug_helper *hotplug_helper)
-+{
-+	struct device *dev = hotplug_helper->encoder->dev->dev;
-+	int err;
-+
-+	WARN_ON(!mutex_is_locked(&hotplug_helper->event_mutex));
-+
-+	/*
-+	 * drm_connector already present, the new bridge must be for
-+	 * another card
-+	 */
-+	if (hotplug_helper->connector)
-+		return;
-+
-+	struct drm_bridge *last_bridge __free(drm_bridge_put) =
-+		drm_bridge_chain_get_last_bridge(hotplug_helper->encoder);
-+
-+	if (last_bridge) {
-+		/*
-+		 * Some bridge(s) already in the chain, propagate the
-+		 * attach call chain from the current chain tail to newly
-+		 * hotplugged bridge(s)
-+		 */
-+		dev_dbg(dev, "propagate attach after %ps\n", last_bridge->funcs);
-+
-+		err = last_bridge->funcs->attach(last_bridge, hotplug_helper->encoder,
-+						 DRM_BRIDGE_ATTACH_NO_CONNECTOR);
-+		if (err)
-+			return;
-+	} else {
-+		/* Bridge chain still empty, find first bridge and attach */
-+
-+		const struct device_node *first_bridge_node __free(device_node) =
-+			of_graph_get_remote_port_parent(hotplug_helper->first_bridge_ep);
-+		if (!of_device_is_available(first_bridge_node))
-+			return;
-+
-+		struct drm_bridge *first_bridge __free(drm_bridge_put) =
-+			of_drm_find_and_get_bridge(first_bridge_node);
-+		if (!first_bridge)
-+			return;
-+
-+		dev_dbg(dev, "attach chain starting at %ps\n", first_bridge->funcs);
-+
-+		err = drm_bridge_attach(hotplug_helper->encoder, first_bridge, NULL,
-+					DRM_BRIDGE_ATTACH_NO_CONNECTOR);
-+		if (err)
-+			return;
-+	}
-+
-+	/* Add the connector if the encoder chain is now complete */
-+	if (drm_hotplug_helper_bridge_chain_is_complete(hotplug_helper))
-+		drm_hotplug_helper_connector_add(hotplug_helper);
-+}
-+
-+static int drm_hotplug_helper_handle_event(struct notifier_block *nb,
-+					   unsigned long event, void *data)
-+{
-+	struct drm_hotplug_helper *hotplug_helper =
-+		container_of(nb, struct drm_hotplug_helper, drm_event_nb);
-+	struct device *dev = hotplug_helper->encoder->dev->dev;
-+
-+	guard(mutex)(&hotplug_helper->event_mutex);
-+
-+	dev_dbg(dev, "received event %lu\n", event);
-+
-+	switch (event) {
-+	case DRM_BRIDGE_ADDED:
-+	case DRM_MIPI_DSI_ATTACHED:
-+		/*
-+		 * A bridges hot-plugged, try adding the
-+		 * drm_bridge_connector
-+		 */
-+		drm_hotplug_helper_try_complete(hotplug_helper);
-+		break;
-+	case DRM_BRIDGE_DETACHED:
-+	{
-+		/*
-+		 * A bridge was unplugged, remove the drm_bridge_connector
-+		 * if it's part of the same pipeline
-+		 */
-+		struct drm_bridge *bridge = (struct drm_bridge *)data;
-+
-+		if (hotplug_helper->connector &&
-+		    bridge->encoder == hotplug_helper->encoder)
-+			drm_hotplug_helper_connector_remove(hotplug_helper);
-+		break;
-+	}
-+	default:
-+	}
-+
-+	return NOTIFY_DONE;
-+}
-+
-+static void drmm_hotplug_helper_fini(struct drm_device *dev, void *res)
-+{
-+	struct drm_hotplug_helper *hotplug_helper = (struct drm_hotplug_helper *)res;
-+
-+	guard(mutex)(&hotplug_helper->event_mutex);
-+
-+	if (hotplug_helper->connector)
-+		drm_hotplug_helper_connector_remove(hotplug_helper);
-+
-+	of_node_put(hotplug_helper->first_bridge_ep);
-+}
-+
-+static void drmm_hotplug_helper_notifier_unregister(struct drm_device *dev, void *res)
-+{
-+	struct notifier_block *nb = (struct notifier_block *)res;
-+
-+	drm_hotplug_event_notifier_unregister(nb);
-+}
-+
-+/**
-+ * drmm_hotplug_helper_init - Initialise the hotplug helper for an encoder
-+ * @encoder: the encoder where the bridge chain starts; must be already
-+ *           associated to the drm_device (e.g. by drm_encoder_init())
-+ * @event_cb: callback invoked when a drm_connector is added or removed
-+ * @first_bridge_ep: device tree node of the encoder endpoint connected to
-+ *                   the first bridge
-+ *
-+ * Register to receive hotplug-related events and react to them:
-+ * - when a new bridge appears: tries to attach the whole bridge chain,
-+ *   then checks if the pipeline is now complete, and if it is it adds a
-+ *   drm_bridge_connector (which in turn will add a drm_connector)
-+ * - when a bridge disappears, remove the drm_bridge_connector (which in
-+ *   turn will remove the drm_connector)
-+ *
-+ * When a connector is added or removed, the @event_cb will be called.
-+ *
-+ * The caller does not need to attach the bridge(s) anymore because the
-+ * hotplug_helper will do it, including at init time in case all bridges
-+ * are present already.
-+ *
-+ * Returns a pointer to the new &drm_hotplug_helper on success, or a
-+ * negative error pointer otherwise.
-+ */
-+struct drm_hotplug_helper *drmm_hotplug_helper_init(struct drm_encoder *encoder,
-+						    drm_hotplug_helper_event_cb event_cb,
-+						    struct device_node *first_bridge_ep)
-+{
-+	struct drm_hotplug_helper *hotplug_helper;
-+	int ret;
-+
-+	if (!encoder || !event_cb || !first_bridge_ep)
-+		return ERR_PTR(-EINVAL);
-+
-+	struct drm_device *drm = encoder->dev;
-+	if (WARN_ON(IS_ERR_OR_NULL(drm)))
-+		return ERR_PTR(-EINVAL);
-+
-+	hotplug_helper = drmm_kzalloc(drm, sizeof(*hotplug_helper), GFP_KERNEL);
-+	if (!hotplug_helper)
-+		return ERR_PTR(-ENOMEM);
-+
-+	mutex_init(&hotplug_helper->event_mutex);
-+	hotplug_helper->encoder = encoder;
-+	hotplug_helper->event_cb = event_cb;
-+	hotplug_helper->drm_event_nb.notifier_call = drm_hotplug_helper_handle_event;
-+	hotplug_helper->first_bridge_ep = of_node_get(first_bridge_ep);
-+
-+	ret = drmm_add_action_or_reset(drm, drmm_hotplug_helper_fini, hotplug_helper);
-+	if (ret)
-+		return ERR_PTR(ret);
-+
-+	ret = drm_hotplug_event_notifier_register(&hotplug_helper->drm_event_nb);
-+	if (ret)
-+		return ERR_PTR(ret);
-+
-+	ret = drmm_add_action_or_reset(drm, drmm_hotplug_helper_notifier_unregister,
-+				       &hotplug_helper->drm_event_nb);
-+	if (ret)
-+		return ERR_PTR(ret);
-+
-+	guard(mutex)(&hotplug_helper->event_mutex);
-+	drm_hotplug_helper_try_complete(hotplug_helper);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(drmm_hotplug_helper_init);
-diff --git a/include/drm/drm_hotplug_helper.h b/include/drm/drm_hotplug_helper.h
-new file mode 100644
-index 000000000000..ba14d547f8ff
---- /dev/null
-+++ b/include/drm/drm_hotplug_helper.h
-@@ -0,0 +1,30 @@
-+/* SPDX-License-Identifier: GPL-2.0+ */
-+/*
-+ * Copyright (C) 2026 GE HealthCare
-+ * Author: Luca Ceresoli <luca.ceresoli@bootlin.com>
-+ */
-+
-+#ifndef __DRM_HOTPLUG_HELPER_H__
-+#define __DRM_HOTPLUG_HELPER_H__
-+
-+/**
-+ * enum drm_hotplug_helper_event - DRM hotplug helper connector events
-+ */
-+enum drm_hotplug_helper_event {
-+	/** @DRM_HOTPLUG_HELPER_CONNECTOR_ADDED: A drm_connector has just been added */
-+	DRM_HOTPLUG_HELPER_CONNECTOR_ADDED,
-+	/** @DRM_HOTPLUG_HELPER_CONNECTOR_REMOVING: A drm_connector is about to be removed */
-+	DRM_HOTPLUG_HELPER_CONNECTOR_REMOVING,
-+};
-+
-+/**
-+ * drm_hotplug_helper_event_cb - Callback to report connector addition and removal.
-+ */
-+typedef void (*drm_hotplug_helper_event_cb)(enum drm_hotplug_helper_event event,
-+					    struct drm_connector *connector);
-+
-+struct drm_hotplug_helper *drmm_hotplug_helper_init(struct drm_encoder *encoder,
-+						    drm_hotplug_helper_event_cb event_cb,
-+						    struct device_node *next_bridge_ep);
-+
-+#endif /* __DRM_HOTPLUG_HELPER_H__ */
-
--- 
-2.56.1
+Regards,
+Francesco
 
