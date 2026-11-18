@@ -1,60 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795020691;
-	b=phYaNJuVBZPWsFB+9PHYCtUPlgchsbE34W017HiFHpzh4Riz1ffBqOATudgu/ZVgjCgA
-	 WSF1WK34M3ARVpVdtUlFxOrfY725HpO/vo4Uj8MwFnTBoByUsG0nIfgMIQcMk2qqrSKFp
-	 NxIK2/S5S4vNgWTKwMf/xpk6LKQky9/bYhWjTyEpTDajfXGAT79u8RD+Mx6TtGUfpQTj1
-	 Ari5tmht9IbLAt+7mUDwXc9PwINIid+YJR2U5am7UD9TIk2Svs6D6MsZt+VuxoGMudknk
-	 YtDMMcj8DBUNm/oIbOVerSouydx42sxc5pir2epE6XMLPsD5/AfkMTg0l3i0i8VCf4A==
+	t=1795020696;
+	b=QJmnfPUPaLY6AMVFupo7XlvCRHfWNVM5K5WgdfR5TviimqdKrtBwl4kOasD28QKzbae4
+	 dwWldcYzY2RZDLSI/bZnyFvES4KKWPlkvBevwvvEHXBkXomoJbIgwtFHnjAyWcFR2+H2R
+	 U23KVR/+SN2rhgBQC8iQ1B+Otq7e2KDaXYDeblNF84ttTnq81m0C2uY4uoTAEgZhShUx9
+	 i06M4C2sWMTmwqA5gezccztrPEPT/Z6v23KUlpAVwFKMfX0yfPA8fGLlolI23y2bHzP/3
+	 UPPtiGVjabEbJL4grSkItjBjbFCTUSzPTTKVvd5zdiLIzfslWxA7IYC1WblWJFPmuQQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795020691;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795020696;
 	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:Date:
 	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Last-TLS-Session-Version;
-	bh=iHS1CP9tSXe3fyN73BGrE3K8GQSmYW6v05x00gz8hDQ=;
-	b=ef/khbmtE183/T2la1Ymbn5VdzWkhvq7UTOAhD6RI1dUcreafxECZPy46Wz66uUe2ouG
-	 a6PkLmdGUcPj2IRirzsH/z/4MYoHMYgMHQLS6nQwJFcDq4cKSVHSLiI3wJNmABr9Fn1Z/
-	 GKTs44IlNGeswR45YOqS1PsjPewyH+0h/oQgVZ4algDY62ZMA9OXZggul1z571A4H2Vs8
-	 Os5Zcyj8cGAtPNib/bYh8GRzcT18xvzo9lhy01gvpHXAYQ+tH6nezeeGetadE6Vp96xbC
-	 MqvsDtqs/tGM0WOy/l6dbYVYfX8CbOnrTDIR3VYTxLwpR1Pndf8EDEvtDJDq2/ioZ7Q==
+	bh=dWxfOxs6Q0dpbo4RjDNuIDxsM7SkDxHUe3z8fq4Q1kY=;
+	b=PvFkHDbcEdgDd1vuvIpAdkvO8GRGWh/hapFt6/AzVyvNHGsu5CFGjbk+RjaenKhhrikw
+	 mOMCpbViR5RYsQZDYiUuoxFpJNaohaI+zW0V1h/Ot+w6DR5cs3zE+r0co8djTvmb8xXrH
+	 8mKwg+DMAusgAcwwfr6r3qCj+G/dQOLpt+KSVQ91MTwRC4jWAGhhJJ8ow5mzCIreS/PLj
+	 /ewhbsyWMPnW88rV+f50lEYODV2exzTLvyE/I6HgY2THhHb3YE77rhGdOIRtQUl7NMGS9
+	 I2xN0FLdR45toViSQTvFtH59IiM5RDP60eZUyDT5SbuYtWVkgth5Oto33awRqowSLBg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=bootlin.com;
 	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=A7Kx9TT1;
-	arc=none smtp.remote-ip=185.246.85.4
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b="J/xp2jZq";
+	arc=none smtp.remote-ip=185.171.202.116
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ED2D606A33F
-	for <imx@lists.linux.dev>; Wed, 18 Nov 2026 16:51:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6ED2D606A33F
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1676460A2604
+	for <imx@lists.linux.dev>; Wed, 18 Nov 2026 16:51:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1676460A2604
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=A7Kx9TT1
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=J/xp2jZq
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 224F64E40546;
-	Wed, 18 Nov 2026 16:51:30 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id AEE48C4F77E;
+	Wed, 18 Nov 2026 16:51:39 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id DEFC35FE9B;
-	Wed, 18 Nov 2026 16:51:29 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DD33F11BC27C2;
-	Wed, 18 Nov 2026 17:51:23 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id C7B035FE9B;
+	Wed, 18 Nov 2026 16:51:34 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7677511BC28C8;
+	Wed, 18 Nov 2026 17:51:28 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1795020687; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1795020693; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=iHS1CP9tSXe3fyN73BGrE3K8GQSmYW6v05x00gz8hDQ=;
-	b=A7Kx9TT1tx1v7xnjVIVqScxdjU6vfofBonPi+8rfV09BF7rP5dVeHL9aQPpdOKQZ+fKCLM
-	JBgraxfuQipCB9fgw5EdNhbp++9FwBmzSag++L5aGseLjVWj0KutbIRkjM7Y/Yid20bpck
-	YUP28BT8jlNRXEdc3QG2VwtcnPCQaoNRGjLR+PkbjCtLvZW375ZUC3JCAZTIR7ARXv4GHO
-	mM5Fe/DTX6Z8dC41rM0nZvHbPXwfTIGFi6u0BwFUAMTyC4/BWm1nOHVHbjwm8XFD5lr61u
-	lTLviEri//6K68J7+qnwd0UM7LmW44m1PwJQ2gkgGTJKgfLhzIfzWGAYBDNKPg==
+	bh=dWxfOxs6Q0dpbo4RjDNuIDxsM7SkDxHUe3z8fq4Q1kY=;
+	b=J/xp2jZquTe/vOWqVCmtWy9eaF6Mfv6x/+hq/4vcEivdM9AVG1LNAsrPXT7PhT3MXBo6Gs
+	z1RU4KRAqWkY+Pgfbgpuqrcr2pCUjoBTfadAW1a6V+3Xv/sPDL41q1FOtLNI6yNJRkthLv
+	+XJyvOI8ddPi838LQpe+OwzaWz2TxVKppoAzg7nH4/Qys2KwGyY7+ydSBZMVpCJWi/Ov2Z
+	kOHGlSkEwaypk/x2hQn6Nk+b/CxZdVdl2CC4+AWDW7MjOR05WvGLefkP1l8+mThEr3Hujz
+	O3mQJ23axbxKs/tl01yTckTEGChiB3GtX4d8onB/3e2YgJd8a9lhOsoEJNN6oQ==
 From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Date: Wed, 18 Nov 2026 17:49:56 +0100
-Subject: [PATCH RFC v3 13/31] drm/bridge: initialize chain_node list head
- on detach and attach errors
+Date: Wed, 18 Nov 2026 17:49:57 +0100
+Subject: [PATCH RFC v3 14/31] drm/bridge: ti-sn65dsi86: protect device
+ resources on unplug
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -66,7 +66,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261118-drm-bridge-hotplug-v3-13-44bb3b4a828f@bootlin.com>
+Message-Id: <20261118-drm-bridge-hotplug-v3-14-44bb3b4a828f@bootlin.com>
 References: <20261118-drm-bridge-hotplug-v3-0-44bb3b4a828f@bootlin.com>
 In-Reply-To: <20261118-drm-bridge-hotplug-v3-0-44bb3b4a828f@bootlin.com>
 To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
@@ -92,46 +92,168 @@ Cc: Hui Pu <Hui.Pu@gehealthcare.com>, Ian Ray <ian.ray@gehealthcare.com>,
 X-Mailer: b4 0.16.0
 X-Last-TLS-Session-Version: TLSv1.3
 
-When a bridge is detached it is removed from the encoder bridge_chain list,
-but the bridge::chain_node list head is not cleared. This is going to be
-problematic with the upcoming hotplug bridge support because if a bridge is
-detached from the encoder chain but not yet removed, when later detaching
-it the encoder code may think it is still attached, thus trying to detach
-it twice.
+To support hot-unplug of this bridge we need to protect access to device
+resources in case device removal happens concurrently to other code.
 
-Avoid this by clearing the list head on detach, so there's a clear and
-simple way to know when a bridge is not attached anymore.
+Some care is needed for the case when drm_bridge_unplug() happens before
+ti_sn_bridge_atomic_post_disable(), so the latter cannot release supplier
+resources taken by ti_sn_bridge_atomic_pre_enable(): runtime PM (and in
+turn regulators) and refclk.
 
-Do the same in the error management code in drm_bridge_attach(), so that
-chain_node is always empty [as in list_empty()] when it is not
-(yet|anymore) in the bridge chain.
+To ensure those resources are released exactly once on device removal:
+
+ * move the code to release them to a dedicated function
+ * register that function when the resources are taken in
+   ti_sn_bridge_atomic_pre_enable()
+ * if ti_sn_bridge_atomic_post_disable() happens before drm_bridge_unplug()
+   (typical non-hot-unplug case):
+   * ti_sn_bridge_atomic_post_disable() can enter the critical section
+     (drm_bridge_enter() returns 0) -> it releases and executes the
+     devres action
+ * if ti_sn_bridge_atomic_post_disable() happens after drm_bridge_unplug()
+   (typical hot-unplug case):
+   * ti_sn_bridge_remove() -> drm_bridge_unplug() defuses
+     ti_sn_bridge_atomic_post_disable() so it cannot execute the devres
+     action
+   * the devres action is executed just after ti_sn_bridge_remove()
 
 Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
----
- drivers/gpu/drm/drm_bridge.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_bridge.c b/drivers/gpu/drm/drm_bridge.c
-index f1a88c8c75af..d54245f3c4d3 100644
---- a/drivers/gpu/drm/drm_bridge.c
-+++ b/drivers/gpu/drm/drm_bridge.c
-@@ -664,7 +664,7 @@ int drm_bridge_attach(struct drm_encoder *encoder, struct drm_bridge *bridge,
- 	bridge->dev = NULL;
- 	bridge->encoder = NULL;
- 	mutex_lock(&encoder->bridge_chain_mutex);
--	list_del(&bridge->chain_node);
-+	list_del_init(&bridge->chain_node);
- 	mutex_unlock(&encoder->bridge_chain_mutex);
+---
+
+New patch in v3
+
+This commit basically replicates the same change done on the ti-sn65dsi83
+driver, now upstream:
+https://lore.kernel.org/all/20251112-drm-bridge-atomic-vs-remove-v3-2-85db717ce094@bootlin.com/
+---
+ drivers/gpu/drm/bridge/ti-sn65dsi86.c | 50 ++++++++++++++++++++++++++++++++---
+ 1 file changed, 46 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/gpu/drm/bridge/ti-sn65dsi86.c b/drivers/gpu/drm/bridge/ti-sn65dsi86.c
+index 4fd9fde77d2b..75e36bf261b0 100644
+--- a/drivers/gpu/drm/bridge/ti-sn65dsi86.c
++++ b/drivers/gpu/drm/bridge/ti-sn65dsi86.c
+@@ -852,9 +852,15 @@ static void ti_sn_bridge_atomic_disable(struct drm_bridge *bridge,
+ 					struct drm_atomic_commit *state)
+ {
+ 	struct ti_sn65dsi86 *pdata = bridge_to_ti_sn65dsi86(bridge);
++	int idx;
++
++	if (!drm_bridge_enter(bridge, &idx))
++		return;
  
- 	if (ret == -EPROBE_DEFER)
-@@ -694,7 +694,7 @@ void drm_bridge_detach(struct drm_bridge *bridge)
- 	if (bridge->funcs->detach)
- 		bridge->funcs->detach(bridge);
+ 	/* disable video stream */
+ 	regmap_update_bits(pdata->regmap, SN_ENH_FRAME_REG, VSTREAM_ENABLE, 0);
++
++	drm_bridge_exit(idx);
+ }
  
--	list_del(&bridge->chain_node);
-+	list_del_init(&bridge->chain_node);
- 	bridge->dev = NULL;
- 	drm_bridge_put(bridge);
+ static void ti_sn_bridge_set_dsi_rate(struct ti_sn65dsi86 *pdata,
+@@ -1124,11 +1130,16 @@ static void ti_sn_bridge_atomic_enable(struct drm_bridge *bridge,
+ 	int ret = -EINVAL;
+ 	int max_dp_lanes;
+ 	unsigned int bpp;
++	int idx;
++
++	if (!drm_bridge_enter(bridge, &idx))
++		return;
+ 
+ 	connector = drm_atomic_get_new_connector_for_encoder(state,
+ 							     bridge->encoder);
+ 	if (!connector) {
+ 		dev_err_ratelimited(pdata->dev, "Could not get the connector\n");
++		drm_bridge_exit(idx);
+ 		return;
+ 	}
+ 
+@@ -1206,6 +1217,7 @@ static void ti_sn_bridge_atomic_enable(struct drm_bridge *bridge,
+ 	}
+ 	if (ret) {
+ 		DRM_DEV_ERROR(pdata->dev, "%s (%d)\n", last_err_str, ret);
++		drm_bridge_exit(idx);
+ 		return;
+ 	}
+ 
+@@ -1215,26 +1227,57 @@ static void ti_sn_bridge_atomic_enable(struct drm_bridge *bridge,
+ 	/* enable video stream */
+ 	regmap_update_bits(pdata->regmap, SN_ENH_FRAME_REG, VSTREAM_ENABLE,
+ 			   VSTREAM_ENABLE);
++
++	drm_bridge_exit(idx);
++}
++
++/*
++ * Release resources taken by ti_sn_bridge_atomic_pre_enable().
++ *
++ * Invoked by ti_sn_bridge_atomic_post_disable() normally, or by devres
++ * after ti_sn_bridge_remove() in case this happens befora
++ * atomic_post_disable.
++ */
++static void ti_sn_bridge_release_resources(void *data)
++{
++	struct ti_sn65dsi86 *pdata = (struct ti_sn65dsi86 *)data;
++
++	if (!pdata->refclk)
++		ti_sn65dsi86_disable_comms(pdata);
++
++	pm_runtime_put_sync(pdata->dev);
+ }
+ 
+ static void ti_sn_bridge_atomic_pre_enable(struct drm_bridge *bridge,
+ 					   struct drm_atomic_commit *state)
+ {
+ 	struct ti_sn65dsi86 *pdata = bridge_to_ti_sn65dsi86(bridge);
++	int idx;
++
++	if (!drm_bridge_enter(bridge, &idx))
++		return;
+ 
+ 	pm_runtime_get_sync(pdata->dev);
+ 
+ 	if (!pdata->refclk)
+ 		ti_sn65dsi86_enable_comms(pdata, state);
+ 
++	devm_add_action(pdata->dev, ti_sn_bridge_release_resources, pdata);
++
+ 	/* td7: min 100 us after enable before DSI data */
+ 	usleep_range(100, 110);
++
++	drm_bridge_exit(idx);
+ }
+ 
+ static void ti_sn_bridge_atomic_post_disable(struct drm_bridge *bridge,
+ 					     struct drm_atomic_commit *state)
+ {
+ 	struct ti_sn65dsi86 *pdata = bridge_to_ti_sn65dsi86(bridge);
++	int idx;
++
++	if (!drm_bridge_enter(bridge, &idx))
++		return;
+ 
+ 	/* semi auto link training mode OFF */
+ 	regmap_write(pdata->regmap, SN_ML_TX_MODE_REG, 0);
+@@ -1243,10 +1286,9 @@ static void ti_sn_bridge_atomic_post_disable(struct drm_bridge *bridge,
+ 	/* disable DP PLL */
+ 	regmap_write(pdata->regmap, SN_PLL_ENABLE_REG, 0);
+ 
+-	if (!pdata->refclk)
+-		ti_sn65dsi86_disable_comms(pdata);
++	devm_release_action(pdata->dev, ti_sn_bridge_release_resources, pdata);
+ 
+-	pm_runtime_put_sync(pdata->dev);
++	drm_bridge_exit(idx);
+ }
+ 
+ static enum drm_connector_status
+@@ -1514,7 +1556,7 @@ static void ti_sn_bridge_remove(struct auxiliary_device *adev)
+ 	if (!pdata)
+ 		return;
+ 
+-	drm_bridge_remove(&pdata->bridge);
++	drm_bridge_unplug(&pdata->bridge);
+ 
+ 	of_node_put(pdata->host_node);
  }
 
 -- 
