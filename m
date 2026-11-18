@@ -1,63 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795027065;
-	b=F3qfEENzLnBEflvuBtRof8s+Dwb4nak5PDO6b2K/8GD1eQQ3PGF0TDZDa+bdvgzM/eFP
-	 RynKaL2FX/Bje+hKJFQPF/PY7/Pv0MYfqqwV8nGqSaT+lImgnI/b1JNDPDPC8Yx25yoaX
-	 SGrPlF7DZ4AauFamgRcpkbOR9YMvSqeOUp01I3rsEYujmqJUJFICocRblqTX6pBspiDLH
-	 R4Z1I0ya1zS5MXu5o3xM7RcOIqSiOTd14OQPpzq7pzy6o4DVKdIBOUW/DurhTkMaV/9Hi
-	 02gxExTwOoSgrG65tYjBKr4XR1oZOoHq6abcdKSiJZXDvIRak0Cf6sLwLnVY/tEUlZw==
+	t=1795036722;
+	b=St+Y72OikPSqieYKEhVN5fd/doP3XP6xwfToyMWAHbXjURk8GUlruTzNRV6ME9ADHujT
+	 e1cZWHkcC/cW0VGq6SeGOT1anPL5XNdopc3MlV32JBle2NVRj6e+4LZBv98kul0Abqgjq
+	 HajaBe0uDGu4wwZLgqbMYYUs1PAtzz20/jQDojQLQpJTU9uEI/6vTlL7OEYYetNhDERfZ
+	 HSiH9TvsMlUoRGNj7gXtB+ZLoHRO9GtzG7/2wzk7YyXjro39RPiTB90BsaKcMif7F1m03
+	 N9RZcWMJPE4USa+f5i/HgAN/9x4gX5m6VG++6EVLcpzyzCWMUDulP4COoaEv2icsZjw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795027065;
-	h=DMARC-Filter:Received:DKIM-Signature:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=HYS4Hhk1XtX2QGmPf086xmrpzOVBpca45TP8GMHf5yk=;
-	b=EdH4OMfogmTuYLV50qAw9MvwByptWwtCC+cZYU0SuR7SyUILiMhojx4YDivLzYo1BzJL
-	 2NNCjYaCiraGruWdsYce8J+2DHRkliQy3IWZDzN1rC8kEwkV/jeJNgiyjc/R8zJsYr3MK
-	 n48ddOa5hNjAuRnqywP/IrgTjMjJHOAXDbr74GOGsl7krj9vpB4/XE3xr5lfBz360XaJK
-	 J9FdxlGb/7kXimuNdZXXe8kSnVaO+gyFrBIQPHKnSwwTPfWwdmsU52vUlY+VzNEifnDIA
-	 4/LULqBIGvyVLbOJewJj/DgJxuUmTlSYGlGlWJMO/iLrm+0egSU0jNryEn0TxsUxGww==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795036722;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=Kl+5DghMKTaZgPNB/B3Ks3HUgsKJJ4T95CFWeDz/JHc=;
+	b=Lpn9ynNfWuu3COan16JWmcBiP817C2PHwx3VxjugEd+OsAmBIwixysAP58vyWmS2cpby
+	 G0jE7UrCEeNeQCY3XBOidLJCVN/qz0vBssr1pXL6lHAKw/BgJgr61ESi25v1YWxNMfygw
+	 hDMCIxjNin+mBsY/5R3+BURQpokmiPSLpWB4J7HYUhZ10IKTBPteEdKybmBqA5nlMrBwt
+	 r2zrwQnmK8WSqxpHuZ1ttAGITu4inrdrxTPZUmCutIXTHHuAZhHw22x064XDRvD0juWIU
+	 pGIIDtKl/A8gwG1d0G1niWuOp66nin+y5lgNLShY/4qxf3wL78E5GtrSLFaWI7Tsq4w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=dolcini.it;
-	spf=pass smtp.mailfrom=dolcini.it;
-	dkim=pass header.d=dolcini.it header.i=@dolcini.it header.a=rsa-sha256 header.s=default header.b="M/wWPWC3";
-	arc=none smtp.remote-ip=217.194.8.81
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RuI4e2me;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F38C606A32F;
-	Wed, 18 Nov 2026 18:37:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0F38C606A32F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7900D60A2604;
+	Wed, 18 Nov 2026 21:18:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=dolcini.it header.i=@dolcini.it header.a=rsa-sha256 header.s=default header.b=M/wWPWC3
-Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 5EA1D22219;
-	Wed, 18 Nov 2026 19:37:42 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1795027062;
-	bh=HYS4Hhk1XtX2QGmPf086xmrpzOVBpca45TP8GMHf5yk=; h=From:To:Subject;
-	b=M/wWPWC3Wfdp9xIUcX2cFdGqPkTBcZ90qqpPnEeiCicwE8eJJuXW+LW1dpPY0fbDE
-	 Rkw0L0NfQVNwG1E9imGv4ZR9zkQPuKpDh3yMDZHalSjBgJMyWyaabalCTOiCFcJrKw
-	 XlqNnyOI2ssPlxtbYdrwUCKcQpz563uLFTbWqrqmEmS9WcZnlPViC5994Be3NCMWTr
-	 Tg/PlUwHYGX0kDkoX7Hemi/KX7p2K1ly/rwccXnqPCf7j3jF3MS5oZIvQ7AKzfknzW
-	 2bhd94dWN4uV2j5SyACBIRdkSsDRIgUU51INBqUpefRtvvvYvzod+piDyb27MMzPPE
-	 Nn57f9kLaIggw==
-Date: Wed, 18 Nov 2026 19:37:41 +0100
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
-	Frank.Li@kernel.org
-Cc: sashiko-reviews@lists.linux.dev, imx@lists.linux.dev,
-	devicetree@vger.kernel.org, robh@kernel.org, conor+dt@kernel.org
-Subject: Re: [PATCH 2/2] arm64: dts: freescale: imx8q: Remove undocumented,
- unapproved aliases
-Message-ID: <20261118183741.GB530200@francesco-nb>
-References: <20261117133842.245262-3-krzysztof.kozlowski@oss.qualcomm.com>
- <20261117133842.245262-4-krzysztof.kozlowski@oss.qualcomm.com>
- <sashiko-outbox-218903@kernel.org>
- <c3082671-9d0d-4a29-9e05-17ae9d4ca997@oss.qualcomm.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RuI4e2me
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFC9C1F000C4;
+	Wed, 18 Nov 2026 21:18:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795036722;
+	bh=Kl+5DghMKTaZgPNB/B3Ks3HUgsKJJ4T95CFWeDz/JHc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=RuI4e2mec3sUPfeNBE8UyWG3m6Z4skLFGEsE1FO//kVaQ7WfnzvPrFxCotQd2MLA5
+	 LUCF42/jeOQ1vGSfrcUY31/bjnot37kc4giVZwYN8ak02qNwFtnm0xFc0qjWobMW9a
+	 i6e4kNhrEzjJv5TnpSbg9tBqdvdWQ3E3Obf3cleE9lT+xyyw3/186jd250TrFZvg8V
+	 rq7k/ApCBEI5iR/OhhbxSV0utbJ30F41VVToezOUWOH42B0QTmfyiuqRSYFm6TzWb1
+	 2vHJEm9rB3L18ZRsPSRHYLKKk2qiT+hm+qm7urvwjGeVsT/eB9rGAFJ33xlgLlYEdQ
+	 HS78cweMQqG3A==
+Date: Wed, 18 Nov 2026 15:18:39 -0600
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Lukasz Majewski <lukma@nabladev.com>
+Cc: linux-kernel@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>,
+	devicetree@vger.kernel.org,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
+	imx@lists.linux.dev, Daniel Baluta <daniel.baluta@nxp.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH v3 2/3] dt-bindings: hwmon: Add National/TI LM77
+ temperature sensor
+Message-ID: <179503671942.1054722.10836348939766634841.robh@kernel.org>
+References: <20261116111802.2442456-1-lukma@nabladev.com>
+ <20261116111802.2442456-2-lukma@nabladev.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -69,29 +69,27 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <c3082671-9d0d-4a29-9e05-17ae9d4ca997@oss.qualcomm.com>
+In-Reply-To: <20261116111802.2442456-2-lukma@nabladev.com>
 
-Hello Krzysztof, Frank
 
-On Wed, Nov 18, 2026 at 01:10:30PM +0100, Krzysztof Kozlowski wrote:
-> On 17/11/2026 14:47, sashiko-bot@kernel.org wrote:
-> > Thank you for your contribution! Sashiko AI review found 1 potential
-> > issue to consider:
-> > - [High] arm64: dts: imx8q: removing vpu-core aliases breaks
-> >   vpu_core_probe()
+On Mon, 16 Nov 2026 12:18:01 +0100, Lukasz Majewski wrote:
+> Add binding description for National/TI LM77 temperature sensor.
+> When compared to LM75 - it has two output pins one for interrupt
+> and another one to signal the critical temperature alarm.
 > 
-> That's intentional. Users should not add undocumented ABI and rely on that.
+> It also has only two I2C address pins (A0 and A1) - possible I2C
+> addresses are: 0x4[89ab].
+> 
+> Signed-off-by: Lukasz Majewski <lukma@nabladev.com>
+> ---
+> Changes for v3:
+> - New patch, as this IC description is added to Documentation/hwmon
+>   as a separate entry and not to trivial devices
+> ---
+>  .../bindings/hwmon/national,lm77.yaml         | 66 +++++++++++++++++++
+>  1 file changed, 66 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/hwmon/national,lm77.yaml
+> 
 
-
-If I understand correctly this is breaking working software (correct me
-if I am wrong!)
- 
-I see the need of a clean-up, but I do not think that just introducing a
-regression for the users is the right way to go.
-
-We should fix the code that rely on this, and after that remove the
-aliases.
-
-Francesco
-
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 
