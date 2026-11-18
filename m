@@ -1,60 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795020682;
-	b=l2Jffz8Kxy9iIDeupzTcgUJif2OWdSURh3wAkuiEVfROMR+ie2SGF6j5kg8Pj8gCEZUm
-	 kPbQFAmhSUt7cNv0vQHIw/Oh+qtOvN+lANpzrO/OfCIsL/zkvw0yQhQSL7jv9hJ8LJjUx
-	 WIuRsS6yw289KPIc6VwVZUXgcFCkqVnwFvLiAzmMe1BDUOH3yqYuiXXn0RwUVKCGaYkSl
-	 SUBHqb4Lh7LB8su9092Nqhn5Wq439XMKFeDwtcr6pHlDBKwkhbLBm78tbJohwpCXyz5BL
-	 EqAAxsgG0OKSDNkVKZGdJuuMfYOiCgaSvhr9adImoTqOGZcNi6/4gJdBf4mx8esWWeA==
+	t=1795020687;
+	b=zh9qAd8S0uaiqZdlwBjBUtMtYMEdNWQho6spqp6UIoOkT7pbcvqU8i5yIqnp3Y0kduxu
+	 W4/LFWds8UWSTcPr93d5JJX8kKIfIMf8U98Qg5EzB76GwIh+rooklKbT0xdT6TZZfQkJO
+	 znSl4uig/8ycndWIhYHl7671ab4UmCbI5xI3a/nCMYE4xUFuzv0iNkCEdUu61DLwP/x/o
+	 pg4qxV7/qSZy9hJfUAH6KaLa/jh4uIYoxcvWH3xdlB20vV4vdhp2DCgnBpupyNo308gY6
+	 WmGFf7zljnWuCkak+sRIet9Yr+3oI2SE1+U9lEUsagGzPfTeKWxEDymcBXh2LwT8g6g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795020682;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795020687;
 	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:Date:
 	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Last-TLS-Session-Version;
-	bh=JJaj1pzguVVi4wrbJ2dUOb481zjC5mrMJwQIMmLcnGk=;
-	b=xfSDKujNTZbayr12LDUSjkwMDlkqLoLkyP2iOuWQDyjzB+Re5EpY8MqC8nIrcMffc2KZ
-	 DMrSd7wQs/Xahw5xc6TJFRht6eicvwTk0X42G9UXTAO/0mDXG42iLo2IZIy2KUNQq2rGz
-	 MhAR8hl/dzzxKIMzwyAwvPN1t0Aj0TXKRkZD38M0y2mhpOIbVf+0xv2W+bhxSlb1NqVrH
-	 llI3y4BTpNFyfXG6KaL5NuXzJL2GR32B8LkHHWvz0tizT58cuyRmN0O+d3IESA0EsACfb
-	 Gc7gIErD2R2fv9ssyfx93shhKmKEds2bzYMlnNh1wJMQGPPcul9hhwQCPcuwM4rr9DA==
+	bh=d35upQ/KjKfmtIlMfzNpcawpg+D1fRQcb8QyekXqnV4=;
+	b=SpeGElFqvZ4yBM4h6y2iY7lz9nugAsDE5G6t04L0CbakXMbm/ZJY6zPWyTO1RNPu2WMy
+	 qWmcF3fNr9aGa31rtMOctjyBw5ZkD50AcpGKbaDYZYHtaHnYqgaQTeMhJe3xkNRlSFZcB
+	 nuIDNY3DVC7qbn8vES/tCTaVSKYIAuVd2+o29aomLuooZQccTUwuCYlCJ1xN6b91UhlZr
+	 syfindLEyUlUq9oqdoLXtT0hrGe39vKvu6naP+Yiifyoatz6FIKmoz7vsWConh/WDfb1Q
+	 oKgvPzIamYD3S602HpMpLI1QTV/D4ImJwqtpUKdr9J6DcgJgq4BQ5Qdu+ZW7QcrR6wQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=bootlin.com;
 	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=runb4UUv;
-	arc=none smtp.remote-ip=185.246.84.56
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b="a9xhLrX/";
+	arc=none smtp.remote-ip=185.246.85.4
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1417E60A2623
-	for <imx@lists.linux.dev>; Wed, 18 Nov 2026 16:51:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1417E60A2623
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF94D60A381F
+	for <imx@lists.linux.dev>; Wed, 18 Nov 2026 16:51:26 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EF94D60A381F
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=runb4UUv
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=a9xhLrX/
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id DAC531A16CA;
-	Wed, 18 Nov 2026 16:51:20 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id A69984E41635;
+	Wed, 18 Nov 2026 16:51:25 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id A08E35FE9B;
-	Wed, 18 Nov 2026 16:51:20 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4424E11BC27C2;
-	Wed, 18 Nov 2026 17:51:14 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 6DF205FE9B;
+	Wed, 18 Nov 2026 16:51:25 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2D6A711BC28B9;
+	Wed, 18 Nov 2026 17:51:19 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1795020678; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1795020683; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=JJaj1pzguVVi4wrbJ2dUOb481zjC5mrMJwQIMmLcnGk=;
-	b=runb4UUvjNlVAxag3hTrCWwUr7Nn0+edq+cZ7iSkzlkYJlWKNZf+KlFIBXgUzmRz6t2rrQ
-	idcH7iMeoen8Dny11WTbRaz2yp22n1p6FVWWiOzMUvZq44kZmw7dAvUNNSf9WL0n8HcnW3
-	hSq+s0Xjd0z9uhc0s6W/RMaSz+2p+O7TaXGiQOxrTYYi5rB8mqP3muGhFbOT8yI7MskaR9
-	jzLuhjHjcDgxjxH/ThYypeUq3Nq1thYaFrP8xx+3Zd7JHhPZEsMqO/esnxT2O1qdukWGaz
-	s/F2ahm6yF77p6MGIzFfNkCq2RbFrwxiL/2mpp70inU1u3Ri3LXcVQx4CmTj5g==
+	bh=d35upQ/KjKfmtIlMfzNpcawpg+D1fRQcb8QyekXqnV4=;
+	b=a9xhLrX/XVThXKTotZKoL2Ibw32/JfguFaHMilaN4ZUS/W8IWzMfjYn590wUutFWfKN+o2
+	tyMitVR83Gp+Ydo8Pf+QnzraMVDxzKiKekAIKGQoVoHjSr3UrnB/nRSxFU6VzcipgGhq5z
+	Vnj4fW22wkcdQvuMbaNUiUFH8tczAvgVeyKQokNh/RK/kaIY/SsfIBo/iOGzNzVlIivrqC
+	Xi4SrnKdaoMCcwIyI5tcu0yIOyCWNvGEjL3HeU/xRcntTVJAtz19LJKfIk0hxEAwtpxlM/
+	WrOKQjqYrIKNLXtBjGgLnSff4vqL8ejQ85e8ZGr0TuyeYiBSrad0CslehQolVA==
 From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Date: Wed, 18 Nov 2026 17:49:54 +0100
-Subject: [PATCH RFC v3 11/31] drm/bridge: constify
- of_drm_find_and_get_bridge() device_node parameter
+Date: Wed, 18 Nov 2026 17:49:55 +0100
+Subject: [PATCH RFC v3 12/31] drm/bridge: initialize chain_node list head
+ on allocation
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -66,7 +66,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261118-drm-bridge-hotplug-v3-11-44bb3b4a828f@bootlin.com>
+Message-Id: <20261118-drm-bridge-hotplug-v3-12-44bb3b4a828f@bootlin.com>
 References: <20261118-drm-bridge-hotplug-v3-0-44bb3b4a828f@bootlin.com>
 In-Reply-To: <20261118-drm-bridge-hotplug-v3-0-44bb3b4a828f@bootlin.com>
 To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
@@ -92,47 +92,27 @@ Cc: Hui Pu <Hui.Pu@gehealthcare.com>, Ian Ray <ian.ray@gehealthcare.com>,
 X-Mailer: b4 0.16.0
 X-Last-TLS-Session-Version: TLSv1.3
 
-The @np argument does not need to be modified. Similarly to what
-of_drm_get_bridge_by_endpoint() already does, make it const. This allows
-passing a const pointer.
+In preparation to add a check to detect whether a bridge is not yet
+attached, ensure the chain_node list_head is always empty [as in
+list_empty()] since it is allocated, until it is attached.
 
 Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-
 ---
-
-New patch in v3, needed for the v3 code of "drm: drm_hotplug_helper: new
-helper to implement bridge hotplug"
----
- drivers/gpu/drm/drm_bridge.c | 2 +-
- include/drm/drm_bridge.h     | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/drm_bridge.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/drivers/gpu/drm/drm_bridge.c b/drivers/gpu/drm/drm_bridge.c
-index 6272513316cd..92f47dd962fc 100644
+index 92f47dd962fc..f1a88c8c75af 100644
 --- a/drivers/gpu/drm/drm_bridge.c
 +++ b/drivers/gpu/drm/drm_bridge.c
-@@ -1648,7 +1648,7 @@ EXPORT_SYMBOL_GPL(drm_bridge_hpd_notify);
-  * RETURNS:
-  * drm_bridge control struct on success, NULL on failure
-  */
--struct drm_bridge *of_drm_find_and_get_bridge(struct device_node *np)
-+struct drm_bridge *of_drm_find_and_get_bridge(const struct device_node *np)
- {
- 	struct drm_bridge *bridge;
+@@ -419,6 +419,7 @@ void *__devm_drm_bridge_alloc(struct device *dev, size_t size, size_t offset,
+ 		return ERR_PTR(-ENOMEM);
  
-diff --git a/include/drm/drm_bridge.h b/include/drm/drm_bridge.h
-index 1981d24a700d..c88532998aae 100644
---- a/include/drm/drm_bridge.h
-+++ b/include/drm/drm_bridge.h
-@@ -1272,7 +1272,7 @@ int drm_bridge_attach(struct drm_encoder *encoder, struct drm_bridge *bridge,
- 		      enum drm_bridge_attach_flags flags);
- 
- #ifdef CONFIG_OF
--struct drm_bridge *of_drm_find_and_get_bridge(struct device_node *np);
-+struct drm_bridge *of_drm_find_and_get_bridge(const struct device_node *np);
- struct drm_bridge *of_drm_find_bridge(struct device_node *np);
- struct drm_bridge *of_drm_get_bridge_by_endpoint(const struct device_node *np,
- 						 int port, int endpoint);
+ 	bridge = container + offset;
++	INIT_LIST_HEAD(&bridge->chain_node);
+ 	INIT_LIST_HEAD(&bridge->list);
+ 	bridge->container = container;
+ 	bridge->funcs = funcs;
 
 -- 
 2.56.1
