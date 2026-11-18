@@ -1,59 +1,103 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.48
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795020813;
-	b=OQ8lQHcSpjQen28KPS/qxi/2MjxokZFLISjHvspZDrl5QL9/k6NXE8VVkkpX5N5q9uPr
-	 u28ZEaWZAkL2V+smXUt0Df/jOTwvMveqPO6GkAfMuW/bKLZiz8MYBvQbiTk8RP9CrjywB
-	 DlsaJ761egrMJb2dJOv4ktdNAZC18hC/F/ecL6x+mheoMrVvkwO0QWV3WfuX0tHUtDqXO
-	 Fp5cWzFgQGjgxyXs2f9GGhgitBLytAp6o3e7gyzi1gLbi9dtj+vZLyN15Z266AzR4K32t
-	 u7/Kxaxv/lbkZqX4hJS3+xHScYoNN9HU3mKAqC/FnhskPn5BFO141uxmREvYGA73RaA==
+	t=1795021046;
+	b=oYEUGRdQMMXi/PjUteUWHITGIkW38oscLqmo6zRo1mOah+TCqiYXaQQx6fYNXtu3DhgN
+	 naBrLCBwlpHmbc4wcjmZNHvW1vUf9RvJ/R4NdRLrDwing4Xo87jUgSDVCIC1Y/4nbhnZZ
+	 BxxaHRKTzygGpTus034YW4I1wganOyCNWXnmeRNN6NKkQenUGUB3ihxP32fbnOV7cnCwT
+	 ERZAO+7g8iwl8SZwuFh5XfcHHPKtHJ8wWdip8Eh4kX4FGEA5aPOPDwJdfNut1+uZDEcMb
+	 mcd+v1N86P2z9ZxJZ6nO3xP9XvvT86EYchh3qSby/zdMmTtDbfxdb6vsKSguqSmypAg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795020813;
-	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:Date:
-	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Last-TLS-Session-Version;
-	bh=VqaXeB0uMmevpA1DBkwlWl8Zdc+Q/NLjUm3MHxfbmWA=;
-	b=ch5MJdKtrWrLaH97554y0oVtHcMYzNISk6A4gmmXs1F1qd/ZQsXG5iE+1r35pBiort55
-	 drM7j+11QOx6SiTqhkl80DUHMlYVyJpslvMP2Ft9LSN5s4gGstSb+YKYBfbrxTVr2s4/p
-	 329hPjdT0Sko2/JyT0bSfvrzGCHK7PnNzm3JisZ175gPeNN4CkUdPthXOD7MKMBlDzSzF
-	 Ozk/JvGzulIcfpRzkL+Nfk9URsFGmLJUydfHypUEFk3oWSOeQdSudHoq58DSCj61ttSP2
-	 Rcq/FV/d+OhHF4ZbKcCux5YbXTLnkT21GJypS7oJKrmy2zcKVbfgaSnqiWpJtJHbWPQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795021046;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:X-Google-Original-From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=l3wnV7FKjR+kltfF/8FAvuWedzvvOsE0ympUYTB2Ew8=;
+	b=Akc/OmEUKQIAA8JI48LOt75pZyXYnytl9rmmZeiD9kADJduMmoZv8p8SXzVOiORwWlOa
+	 6Ql5moEa2fT5NYBk1HmRESKSbZApunDYT9JuBUHMfvgXRwJbfBL8XgpIF0RaugfQkWFWZ
+	 ub5PHC2cOXvD2o2sAlLfaBtoVkPuqXJ/QT+atpE8cCO27XTG2yXvsQSNLXJg8nnLmsRzs
+	 eRI/gKW7Rbmnd/eBEdh7L61kboSrNt2QIKPFHQjQ31fba2pFZk8Adb9MVz0AIZIeZPIec
+	 qOLPqirxwjAlm8hwufeSiP4QWwUBHaIcEL3Ov7PgiNrWWw3NxmjX3mbmVKYCQq1aOYA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=bootlin.com;
-	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=VANaU7qz;
-	arc=none smtp.remote-ip=185.246.84.56
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="ApSsnpH/";
+	arc=none smtp.remote-ip=209.85.128.48
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE77760A2601
-	for <imx@lists.linux.dev>; Wed, 18 Nov 2026 16:53:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CE77760A2601
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FF3A606A33D
+	for <imx@lists.linux.dev>; Wed, 18 Nov 2026 16:57:26 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5FF3A606A33D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=VANaU7qz
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 7822D1A16E9;
-	Wed, 18 Nov 2026 16:53:30 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 3DF8B5FE9B;
-	Wed, 18 Nov 2026 16:53:30 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1DB3011BC2904;
-	Wed, 18 Nov 2026 17:53:22 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1795020808; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=VqaXeB0uMmevpA1DBkwlWl8Zdc+Q/NLjUm3MHxfbmWA=;
-	b=VANaU7qzFLNn9jCCAM4AUeqfHTFbIC0X8Rxr4mIGW8NgVhivkoBEwv2X6tDBhl4RePaRnH
-	0rRdIKVBGH9nre5316eDL8VBW2vQADdBPszUbrrz1eCoD2/39ybx/utxJH4otL5Qf+6DXp
-	voVfQEqZ+SLE/hAmX1kHJzeX7Sdr3G8MvtZ8HNrk/fzCf4QnqtEgcDtlsD3ZclV2TiCT/A
-	1vCIuiKj/u1atUAEslTjoYo6sy+D1buXq/j+n+kc+6aFbiIladk7jHHlk1IioJHcFKwAcd
-	rzM6KInCM4ce+dML/E4aQCZ3pnM/RNZAeqoyjmorV9aDKN+c0RA4SXsv5TLXnA==
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Date: Wed, 18 Nov 2026 17:50:14 +0100
-Subject: [PATCH RFC v3 31/31] drm/mxsfb/lcdif: enable bridge hotplug
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ApSsnpH/
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4a140e7405dso11948685e9.3
+        for <imx@lists.linux.dev>; Wed, 18 Nov 2026 08:57:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795021045; x=1795625845; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=l3wnV7FKjR+kltfF/8FAvuWedzvvOsE0ympUYTB2Ew8=;
+        b=ApSsnpH/5LHViBovIw4oY7TwYjG2NKJ0qPN9ilMDyr9E/UxY77SDYUvHuP3ox0jPU5
+         yiw16w+EdAo2QzyTWoqTlzheoHpWnilt2B3sL5CHvmCISpsPL/Cdy9rPtsVr0kRx45ko
+         +nSmmEondTkZYcVD3QoWrA7pWphwIrflCcVRs/s1d91WOizuVMKT2HBjAv4kqUJl1/w4
+         VPgwULuQvP3WuiI0W288Vrcd8A/cTUdVvEtXTfpi6IxF920zjLHiVEvwWrNsEMa3C5mi
+         Iic4YgVRWiJRy3WFCuNbPI1nRTQ9Uh7/VlfTDNeXqcIyXl+YCM6rEhaClC5m+nFW6z0o
+         vGzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795021045; x=1795625845;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=l3wnV7FKjR+kltfF/8FAvuWedzvvOsE0ympUYTB2Ew8=;
+        b=SxjvETEq31ZE33bArnQMgnXA4qmca0BlKp/I+i+cHesILuiC5oCIK77+mGQw7NfYG1
+         RHtOX43mLM9q9WF+BDuLf3NV6yzFkOS+b3C7y40LF2WbdjKIwW6q6sbPvf0RDgZ2Z+Hl
+         l8e6AOUjovLVDqU8sfxqw5I9L4+fwbscWMRB1H7VfSpfzU8c9LYj97REodvVqEkYDNXK
+         bIKTKzpHPG/7BwHNWlAfuJVjupzwp3UlZ0c2EY7AuEx7M1vnXuVBFu9LfbI2hW5mGN/i
+         WjaMnKuvt9TWrCfQFl1NN7qDXQfKp6GVvo9oFJbCXtN2v7HVaML2TUTuTIPSydF7vxtv
+         PEkg==
+X-Forwarded-Encrypted: i=1; AL+hErGA+vO37nOXEFwHMQktLuOl08cjske0e9ywM56r6R46DuQGVDvzqwmHfxfVd01loBY9FBQ=@lists.linux.dev
+X-Gm-Message-State: APuU4Z8ukgkp4lsTfOiAZ84zcnylQcBe4muMA6yXtKfKRLXC28x6hFcI
+	H/uyDcAqUzViCK09oqNZEvoCEiVfyiYDz695Iw/Jgq90wxcafpHCibSL
+X-Gm-Gg: AZFdTZe2dGD+vh3m7bQzPopvnngrWXCQPLp7gfnKxbQfGrJyKCj8Bl4GuROuKqnPsp/
+	klx09YKRdAeb8kVvgRhX5ys+BdrO0PKZGia80pJKm+HOXacGm/8+MjYulpZeUIzXhi/hhblmjck
+	EKgH4J4TY7Ih2mx7R6hK3pNITW8jQ1qaNWnwb/Is9Zh5KJRmlGDG6KPgS+PPAE1O+BJMjhklump
+	7NSjmhCweuL2mrZ+D+UHj9g1qWxiDuajjPsypIHCsFvSpd+twXDEv3npiCxJbGp0+Lo/J+e0TJt
+	yqzMm9oBG3U405iG9PxpC2itjn5hgqKMW4eEJodshJ8zIYWfNBDAPm7UbEvRw/TJV5a6l51ijXP
+	rqXaA4kPyoeYbv11soDhSPxnK3Ea9GMd8sVkFDdKOjPMS2JnY5maonvvYrbRgYnsUYsahYXqWx1
+	9lISFx1O1G+v7/ku4HauG3Moqn7WD58lZjJX13d5AvAKFJUAMZAqFtxgouobu/B3HTLaaMXgrPT
+	JnIyP9n8slKKXkspuFMqiwjNPJu3WZIPlcshwzwhFFwXKgMu9/GchTcuCEidN9qOkJVzVi1g0GW
+	AB8WEqJQpPPjJEfgdk1YdIibeVtASioKo+xfxihRXEa8RM4gb7fMiZbn2bKGZvKAmDI7R3GIS5v
+	D7sY3oUdVnjDpEgaKRe3ly+4sOz+Vxu6qot9RtLZed3PMprKhe11HuVN1afMPQgtRhgkiJiKNjP
+	/A0w==
+X-Received: by 2002:a05:6000:4b17:b0:4a7:f82a:7f6d with SMTP id ffacd0b85a97d-4a7f82a8286mr3406352f8f.6.1795021044441;
+        Wed, 18 Nov 2026 08:57:24 -0800 (PST)
+Received: from Lord-Beerus.station ([93.146.104.162])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4a650d2f682sm5603591f8f.6.2026.11.18.08.57.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Nov 2026 08:57:23 -0800 (PST)
+From: Stefano Radaelli <stefano.radaelli21@gmail.com>
+X-Google-Original-From: Stefano Radaelli <stefano.r@variscite.com>
+To: Frank Li <Frank.Li@nxp.com>,
+	linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Cc: pierluigi.p@variscite.com,
+	Stefano Radaelli <stefano.r@variscite.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Subject: [PATCH v1 1/1] arm64: dts: freescale: imx93-var: Add Cortex-M33 configurations
+Date: Wed, 18 Nov 2026 17:57:19 +0100
+Message-ID: <20261118165719.46297-1-stefano.r@variscite.com>
+X-Mailer: git-send-email 2.47.3
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -63,151 +107,227 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261118-drm-bridge-hotplug-v3-31-44bb3b4a828f@bootlin.com>
-References: <20261118-drm-bridge-hotplug-v3-0-44bb3b4a828f@bootlin.com>
-In-Reply-To: <20261118-drm-bridge-hotplug-v3-0-44bb3b4a828f@bootlin.com>
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Andrzej Hajda <andrzej.hajda@intel.com>, 
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Inki Dae <inki.dae@samsung.com>, Jagan Teki <jagan@amarulasolutions.com>, 
- Marek Szyprowski <m.szyprowski@samsung.com>, 
- Jessica Zhang <jesszhan0024@gmail.com>, 
- Douglas Anderson <dianders@chromium.org>, Marek Vasut <marex@denx.de>, 
- Stefan Agner <stefan@agner.ch>, Frank Li <Frank.Li@nxp.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: Hui Pu <Hui.Pu@gehealthcare.com>, Ian Ray <ian.ray@gehealthcare.com>, 
- Luca Ceresoli <luca.ceresoli@bootlin.com>, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-X-Mailer: b4 0.16.0
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
 
-Switch to the new drm_hotplug_helper() to handle bridge hotplugging.
+From: Stefano Radaelli <stefano.r@variscite.com>
 
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Add Cortex-M33 overlays and combined DTBs for DART-MX93 on Sonata and
+VAR-SOM-MX93 on Symphony.
 
+Share the remoteproc and mailbox configuration through a common include.
+Reuse the reserved memory from each carrier DTS, preserving the different
+resource table addresses.
+
+Reserve the peripherals used by the M33 firmware and disable Wi-Fi,
+Bluetooth and the devices depending on GPIO4. On Sonata, also disable USB
+OTG1 because its USB-C role controller is unavailable.
+
+Signed-off-by: Stefano Radaelli <stefano.r@variscite.com>
 ---
+This patch uses the memory-region-names binding and driver support from
+the following commits, both already in linux-next:
 
-Changes in v3:
-- Adapt to the v3 version of the drm_hotplug_helper, which also handles HPD
+- ebb21cc5d1c0 ("dt-bindings: remoteproc: imx_rproc: Document
+  memory-region-names to avoid implicit ABI")
+- 8396089f91fa ("remoteproc: imx_rpoc: Use memory-region-names to avoid
+  implicit ABI")
 
-Changes in v2:
-- Use the hotplug helper callback to enable HPD on the hotplugged connector
----
- drivers/gpu/drm/mxsfb/Kconfig     |  2 +-
- drivers/gpu/drm/mxsfb/lcdif_drv.c | 40 +++++++++++++++++++--------------------
- 2 files changed, 20 insertions(+), 22 deletions(-)
+For dtbs_check on older trees, commit cebd1c0961d8 ("dt-bindings: gpio:
+vf610: fix clock requirements per SoC"), also in linux-next, fixes the
+pre-existing GPIO clock validation errors.
 
-diff --git a/drivers/gpu/drm/mxsfb/Kconfig b/drivers/gpu/drm/mxsfb/Kconfig
-index 31db7a824a93..ada9a9334ea4 100644
---- a/drivers/gpu/drm/mxsfb/Kconfig
-+++ b/drivers/gpu/drm/mxsfb/Kconfig
-@@ -34,7 +34,7 @@ config DRM_IMX_LCDIF
- 	select DRM_PANEL
- 	select DRM_PANEL_BRIDGE
- 	select DRM_DISPLAY_HELPER
--	select DRM_BRIDGE_CONNECTOR
-+	select DRM_HOTPLUG_HELPER
- 	help
- 	  Choose this option if you have an LCDIFv3 LCD controller.
- 	  Those devices are found in various i.MX SoC (i.MX8MP,
-diff --git a/drivers/gpu/drm/mxsfb/lcdif_drv.c b/drivers/gpu/drm/mxsfb/lcdif_drv.c
-index b7be7e17d1d0..56b15dbcfd2a 100644
---- a/drivers/gpu/drm/mxsfb/lcdif_drv.c
-+++ b/drivers/gpu/drm/mxsfb/lcdif_drv.c
-@@ -18,7 +18,7 @@
- #include <drm/clients/drm_client_setup.h>
- #include <drm/drm_atomic_helper.h>
- #include <drm/drm_bridge.h>
--#include <drm/drm_bridge_connector.h>
-+#include <drm/drm_hotplug_helper.h>
- #include <drm/drm_drv.h>
- #include <drm/drm_encoder.h>
- #include <drm/drm_fbdev_dma.h>
-@@ -47,6 +47,19 @@ static const struct drm_encoder_funcs lcdif_encoder_funcs = {
- 	.destroy = drm_encoder_cleanup,
- };
- 
-+static void lcdif_hotplug_event(enum drm_hotplug_helper_event event,
-+				struct drm_connector *connector)
-+{
-+	switch (event) {
-+	case DRM_HOTPLUG_HELPER_CONNECTOR_ADDED:
-+		drm_kms_helper_poll_init(connector->dev);
-+		break;
-+	case DRM_HOTPLUG_HELPER_CONNECTOR_REMOVING:
-+		drm_kms_helper_poll_fini(connector->dev);
-+		break;
-+	}
-+}
+ arch/arm64/boot/dts/freescale/Makefile        |  9 +++
+ .../dts/freescale/imx93-var-common-m33.dtsi   | 24 ++++++++
+ .../freescale/imx93-var-dart-sonata-m33.dtso  | 55 +++++++++++++++++++
+ .../dts/freescale/imx93-var-dart-sonata.dts   |  2 +-
+ .../freescale/imx93-var-som-symphony-m33.dtso | 50 +++++++++++++++++
+ 5 files changed, 139 insertions(+), 1 deletion(-)
+ create mode 100644 arch/arm64/boot/dts/freescale/imx93-var-common-m33.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx93-var-dart-sonata-m33.dtso
+ create mode 100644 arch/arm64/boot/dts/freescale/imx93-var-som-symphony-m33.dtso
+
+diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
+index cfd548284358..05a7556e9de9 100644
+--- a/arch/arm64/boot/dts/freescale/Makefile
++++ b/arch/arm64/boot/dts/freescale/Makefile
+@@ -956,8 +956,17 @@ dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba93xxca-lvds-tm070jvhg33.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba93xxla-lvds-tm070jvhg33.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba93xxla-mini-ezurio-wlan.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba93xxla-mini-lvds-tm070jvhg33.dtb
 +
- static int lcdif_attach_bridge(struct lcdif_drm_private *lcdif)
- {
- 	struct device *dev = lcdif->drm->dev;
-@@ -56,9 +69,8 @@ static int lcdif_attach_bridge(struct lcdif_drm_private *lcdif)
- 		struct device_node *remote __free(device_node) =
- 			of_graph_get_remote_port_parent(ep);
- 		struct of_endpoint of_ep;
--		struct drm_bridge *bridge;
- 		struct drm_encoder *encoder;
--		struct drm_connector *connector;
-+		struct drm_hotplug_helper *hotplug_helper;
- 		int ret;
++imx93-var-dart-sonata-m33-dtbs := imx93-var-dart-sonata.dtb imx93-var-dart-sonata-m33.dtbo
+ dtb-$(CONFIG_ARCH_MXC) += imx93-var-dart-sonata.dtb
++dtb-$(CONFIG_ARCH_MXC) += imx93-var-dart-sonata-m33.dtb
++dtb-$(CONFIG_ARCH_MXC) += imx93-var-dart-sonata-m33.dtbo
++
++imx93-var-som-symphony-m33-dtbs := imx93-var-som-symphony.dtb imx93-var-som-symphony-m33.dtbo
+ dtb-$(CONFIG_ARCH_MXC) += imx93-var-som-symphony.dtb
++dtb-$(CONFIG_ARCH_MXC) += imx93-var-som-symphony-m33.dtb
++dtb-$(CONFIG_ARCH_MXC) += imx93-var-som-symphony-m33.dtbo
++
+ dtb-$(CONFIG_ARCH_MXC) += imx93w-evk.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx93w-frdm.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx943-evk.dtb
+diff --git a/arch/arm64/boot/dts/freescale/imx93-var-common-m33.dtsi b/arch/arm64/boot/dts/freescale/imx93-var-common-m33.dtsi
+new file mode 100644
+index 000000000000..51b4cfe143d4
+--- /dev/null
++++ b/arch/arm64/boot/dts/freescale/imx93-var-common-m33.dtsi
+@@ -0,0 +1,24 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++/*
++ * Common Cortex-M33 configuration for Variscite i.MX93 modules
++ *
++ * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com/
++ *
++ */
++
++/* Use the reserved memory and resource table address from the carrier DTS. */
++&cm33 {
++	mbox-names = "tx", "rx", "rxdb";
++	mboxes = <&mu1 0 1
++		  &mu1 1 1
++		  &mu1 3 1>;
++	memory-region = <&vdevbuffer>, <&vdev0vring0>, <&vdev0vring1>,
++			<&vdev1vring0>, <&vdev1vring1>, <&rsc_table>;
++	memory-region-names = "vdev0buffer", "vdev0vring0", "vdev0vring1",
++			      "vdev1vring0", "vdev1vring1", "rsc-table";
++	status = "okay";
++};
++
++&mu1 {
++	status = "okay";
++};
+diff --git a/arch/arm64/boot/dts/freescale/imx93-var-dart-sonata-m33.dtso b/arch/arm64/boot/dts/freescale/imx93-var-dart-sonata-m33.dtso
+new file mode 100644
+index 000000000000..d97da9916ef4
+--- /dev/null
++++ b/arch/arm64/boot/dts/freescale/imx93-var-dart-sonata-m33.dtso
+@@ -0,0 +1,55 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++/*
++ * Cortex-M33 support for Variscite DART-MX93 on Sonata-Board
++ *
++ * Link: https://variscite.com/carrier-boards/sonata-board/
++ *
++ * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com/
++ *
++ */
++
++/dts-v1/;
++/plugin/;
++
++#include "imx93-var-common-m33.dtsi"
++
++/* Reserve the peripherals used by the Cortex-M33 firmware. */
++&flexcan1 {
++	status = "disabled";
++};
++
++&gpio4 {
++	status = "disabled";
++};
++
++&lpspi5 {
++	status = "disabled";
++};
++
++/* Disable Bluetooth along with Wi-Fi and release the JTAG pins. */
++&lpuart5 {
++	status = "disabled";
++};
++
++&lpuart7 {
++	status = "disabled";
++};
++
++/* The USB-C role controller uses an interrupt on GPIO4. */
++&ptn5150 {
++	status = "disabled";
++};
++
++/* The USB-C role controller is unavailable. */
++&usbotg1 {
++	status = "disabled";
++};
++
++/* Wi-Fi reset is connected to GPIO4. */
++&usdhc3 {
++	status = "disabled";
++};
++
++&wifi_pwrseq {
++	status = "disabled";
++};
+diff --git a/arch/arm64/boot/dts/freescale/imx93-var-dart-sonata.dts b/arch/arm64/boot/dts/freescale/imx93-var-dart-sonata.dts
+index 1ca3ec8330d0..e3afd0efe5c7 100644
+--- a/arch/arm64/boot/dts/freescale/imx93-var-dart-sonata.dts
++++ b/arch/arm64/boot/dts/freescale/imx93-var-dart-sonata.dts
+@@ -291,7 +291,7 @@ ft5x06_ts: touchscreen@38 {
+ 	};
  
- 		if (!of_device_is_available(remote))
-@@ -68,12 +80,6 @@ static int lcdif_attach_bridge(struct lcdif_drm_private *lcdif)
- 		if (ret < 0)
- 			return dev_err_probe(dev, ret, "Failed to parse endpoint %pOF\n", ep);
- 
--		bridge = devm_drm_of_get_bridge(dev, dev->of_node, 0, of_ep.id);
--		if (IS_ERR(bridge))
--			return dev_err_probe(dev, PTR_ERR(bridge),
--					     "Failed to get bridge for endpoint%u\n",
--					     of_ep.id);
--
- 		encoder = devm_kzalloc_obj(dev, *encoder);
- 		if (!encoder)
- 			return dev_err_probe(dev, -ENOMEM,
-@@ -88,16 +94,10 @@ static int lcdif_attach_bridge(struct lcdif_drm_private *lcdif)
- 					     "Failed to initialize encoder for endpoint%u\n",
- 					     of_ep.id);
- 
--		ret = drm_bridge_attach(encoder, bridge, NULL, DRM_BRIDGE_ATTACH_NO_CONNECTOR);
--		if (ret)
--			return dev_err_probe(dev, ret,
--					     "Failed to attach bridge for endpoint%u\n",
--					     of_ep.id);
--
--		connector = drm_bridge_connector_init(lcdif->drm, encoder);
--		if (IS_ERR(connector))
--			return dev_err_probe(dev, PTR_ERR(connector),
--					     "Failed to init bridge_connector for endpoint%u\n",
-+		hotplug_helper = drmm_hotplug_helper_init(encoder, lcdif_hotplug_event, ep);
-+		if (IS_ERR(hotplug_helper))
-+			return dev_err_probe(dev, PTR_ERR(hotplug_helper),
-+					     "Failed to init hotplug_helper for endpoint%u\n",
- 					     of_ep.id);
- 	}
- 
-@@ -211,8 +211,6 @@ static int lcdif_load(struct drm_device *drm)
- 		return ret;
- 	}
- 
--	drm_kms_helper_poll_init(drm);
--
- 	drm_helper_hpd_irq_event(drm);
- 
- 	pm_runtime_enable(drm->dev);
-
+ 	/* USB Type-C Controller */
+-	typec@3d {
++	ptn5150: typec@3d {
+ 		compatible = "nxp,ptn5150";
+ 		reg = <0x3d>;
+ 		interrupt-parent = <&gpio4>;
+diff --git a/arch/arm64/boot/dts/freescale/imx93-var-som-symphony-m33.dtso b/arch/arm64/boot/dts/freescale/imx93-var-som-symphony-m33.dtso
+new file mode 100644
+index 000000000000..96860a2dbf7c
+--- /dev/null
++++ b/arch/arm64/boot/dts/freescale/imx93-var-som-symphony-m33.dtso
+@@ -0,0 +1,50 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++/*
++ * Cortex-M33 support for Variscite VAR-SOM-MX93 on Symphony-Board
++ *
++ * Link: https://variscite.com/carrier-boards/symphony-board/
++ *
++ * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com/
++ *
++ */
++
++/dts-v1/;
++/plugin/;
++
++#include "imx93-var-common-m33.dtsi"
++
++/* The resistive touchscreen uses GPIO4. */
++&ads7846 {
++	status = "disabled";
++};
++
++/* Reserve the peripherals used by the Cortex-M33 firmware. */
++&flexcan1 {
++	status = "disabled";
++};
++
++&gpio4 {
++	status = "disabled";
++};
++
++&lpspi6 {
++	status = "disabled";
++};
++
++/* Disable Bluetooth along with Wi-Fi and release the JTAG pins. */
++&lpuart5 {
++	status = "disabled";
++};
++
++&lpuart7 {
++	status = "disabled";
++};
++
++/* Wi-Fi reset is connected to GPIO4. */
++&usdhc3 {
++	status = "disabled";
++};
++
++&usdhc3_pwrseq {
++	status = "disabled";
++};
 -- 
-2.56.1
+2.47.3
 
