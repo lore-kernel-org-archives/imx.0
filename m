@@ -1,56 +1,180 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794961663;
-	b=Uv1vezd1VJfwDrNLBW700u6HXqdR5bNhZGERtrBu5FwROiDv5+3630okIxD+56ay+mEn
-	 NWTDbblt9mUA6ZsJey3JS7Mo0CJTgoHeRjbXlJb02o2Gm0dZNSCv5LSkgdPgIdbxW5qz4
-	 /Zl5ycziWQDUVr91GieE8RAqLMWSLQmIWxd90ibf3SfaO81J2TtDSEvDloZzgiaS5b9I1
-	 uykWvA1Cb4Z1xluYhE/JX1U/uItrKHd5L/8a+ucl7SYAW5NWHFINQaHVn/ETCAeNzhaCI
-	 LRLab1Z0nGLKcdLSRbEiGoDA/8b+2LqL6w7LcZtC7vBiN+kdRTh4aMjpCtHVdabBlnQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794961663;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=yae3qijt8GJTqeTlCMEs36FXAbgpDkVqH045G3fLWOc=;
-	b=i/S4k7tbmcRmIyDgeZ/05PXam5g+QLDZgEFIAE4aBgOPkVU6ERx9Rl5iC8F/aOW9XVD1
-	 r7kOjSxS4wYd7QptB7Y2aFDxurDdCVwUzrDjYM5P0KpYUfE8Dd2Rk9pRr8sz2dgk8Wt/7
-	 Gtwr6jHfYuPIbKqvr3We8nPwTVUcxReJy2MKqwEufvHdQFjl8PiobGmOjM7B4Hk3itcsP
-	 M4zrrQbyHJAT1Grq1+EGYXDfYzGwcRgK1Eogz5Wn0/y6aofthFeZR89NgUm1tYgx5qMQS
-	 bLUGmlrpUKlAA+IemXu4v9mBgGz5DFm4Y1w0DttDdpidvAUdlxWyHbqCEv/rj9/y3Jw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JhdNJ+ds;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=139.219.17.117
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794964728;
+	b=RivL1vYuZ1iXS4V4kkfagH7hiUt+Xd4JzF/OSC7dDZhTxV2k/PDIl1aeuxj+k/cFZ1sq
+	 nR4+3WMHpqWqQ5J3VpC7X/vp9W3n4vjrp8iox8J/J1DmOBU6W6UNwUEHbtrxh74CBdNUj
+	 rQWXEE13pKkQsjEEp1d+xn+BpKJ7raBSSKGmxsBEhKn75s3B5MWR02pEhewSM9/3XWxRi
+	 nqTGLEZicexP9uHXUfiMdhl0m6R4HvCMA2epOE3ot39/mS7Kw2SV/e80h/wdRu5uuY074
+	 oARGlLcfcKGmyYZOTiqlIQiK1EYb2t7MIsaFtl0aZA9MbF38HA1R69xgI0hf3gfCEKA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794964728;
+	h=DMARC-Filter:Received:Received:From:To:CC:Subject:Thread-Topic:
+	 Thread-Index:Date:Message-ID:References:In-Reply-To:Accept-Language:
+	 Content-Language:X-MS-Has-Attach:X-MS-TNEF-Correlator:
+	 x-ms-publictraffictype:x-ms-traffictypediagnostic:
+	 x-ms-office365-filtering-correlation-id:x-ms-exchange-senderadcheck:
+	 x-microsoft-antispam:x-microsoft-antispam-message-info:
+	 x-forefront-antispam-report:
+	 x-ms-exchange-antispam-messagedata-chunkcount:
+	 x-ms-exchange-antispam-messagedata-0:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-AuthAs:X-MS-Exchange-CrossTenant-AuthSource:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-originalarrivaltime:
+	 X-MS-Exchange-CrossTenant-fromentityheader:
+	 X-MS-Exchange-CrossTenant-id:X-MS-Exchange-CrossTenant-mailboxtype:
+	 X-MS-Exchange-CrossTenant-userprincipalname:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=TMv0YW0NIMm5mMHuOn0rWVFkG+82wqoBV7h5yD2M7+M=;
+	b=hcah9iSw8059LNYlI6QUx0k7ChJo5mStfG5sWpzzYnG/o6yZbfsPE6xMbN3iYCvbn/j+
+	 R23lrJ1C0/3EjvCohBY7OnuNN/uaJiv65rw/4yPk4KIaRdud2zbQqSbReaSTdiNb/LjL/
+	 SOpxdc7pUluVH0mpAJ21TQqc1b9Zk3EP57hfpJhYQkJzaFpV8STkWIGaZDtMMKTmAst/W
+	 5HSKNhe81GDQEkWnyCvhsWjGlAa4IKde/GKQ9CiIujZus07VT07iQLUdjb6L9DvDe8Kyj
+	 58Xir1MVeyrSKc32wQeCJOXk3iMzERZhjAz2L+8DJgD+qRPuow4bcp9Lku3XLjbLiQw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=starfivetech.com;
+	spf=pass smtp.mailfrom=starfivetech.com;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=139.219.17.117
+Received: from CHN02-BJS-obe.outbound.protection.partner.outlook.cn (mail-bjschn02on2117.outbound.protection.partner.outlook.cn [139.219.17.117])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F121E606A31C
-	for <imx@lists.linux.dev>; Wed, 18 Nov 2026 00:27:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JhdNJ+ds
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F91B1F000C4;
-	Wed, 18 Nov 2026 00:27:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794961662;
-	bh=yae3qijt8GJTqeTlCMEs36FXAbgpDkVqH045G3fLWOc=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=JhdNJ+dsqHA+e3JDa/k0xQ5zhsHMshY1Y+8WVkf6WESngaYzRJ2SsmWGiOkNpNqOk
-	 p82GPlBghhgDnaCh5tsEzQEpr+mFQSE/+vweTrGOQmocIhM0taAKruUEtXrqY1rN5s
-	 XpW6NVXagvBpgUBr7lDaySyF52xPgb5fo8NGRnZTUktiSnXgMYPAnq5B6SFjOrsAZf
-	 YDre4S83VmJigPKdIe+UEwFuxJYnkGzFEQPrdKhliaaPMWGAaH+/TMSgmQ/qcjSx7G
-	 67ifFkqTaLML+GY7ZYJDJSSMr1Gm0YgBGpCpYBGs4vgfJm1mXDlx2tN/nxGoWBHtkT
-	 dZetr0nZ2xMcg==
-Message-ID: <sashiko-outbox-219842@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2] staging: media: imx: ic-prpencvf: add FORMAT_TRY
- frame interval support
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Maximo Manriquez Lizarraga" <DelaySystem@tubot.lat>
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org, media-ci@linuxtv.org
-In-Reply-To: <20261117-batch1-m2-prpencvf-try-v2-1-dd331ab13137@tubot.lat>
-References: <20261117-batch1-m2-prpencvf-try-v2-1-dd331ab13137@tubot.lat>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 18 Nov 2026 00:27:41 +0000
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E3BD606A32F;
+	Wed, 18 Nov 2026 01:18:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9E3BD606A32F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=starfivetech.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=d/6BKRuM37bvU0EGjkBJzleJvNst63+lYAZrw5b/IXYBjSqaGZVPIBN42pnp44v6+SemRqW895+Q06afGafllSlW9X+hrC3B9MhfCfShx3DCfau7I8oqvxaSzY8dha+8v+EZTqH0+QySqN1IrXd9NE1wrNgiVtiXtTSNBNxxk1dN335qqJpjMaaTlCupPFjanN7OWuA0tnihlxPdYltEQ2Ix619dlmdnWD07VnifzBftl56TA+BGBetEkKnOuR+Qja7y20/PWsIMKy8vBD7GGAJHjyS9YVAl8YwXWB4xAy+T3dl3d1HjP5+l+1QWUrqZDeJiRNyzQMmJqPxwxgro/Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=TMv0YW0NIMm5mMHuOn0rWVFkG+82wqoBV7h5yD2M7+M=;
+ b=ikNQg1puCd5BD71WnUIiUFJD925FWJp0Oe4+2DlxXVqSQsaJqfpGKTwDbG1qnCqTHMoGd8PRWPWbYunk95hGwETbAbzuVd/5HxkfDL/nwmFbZY5gY5A2KEju3l5S2cwjfujbgoHgT5HxqduYHfvvWZyvH3zntWigurmwip/83NjGc40oQHpjcWkEJpeM3e5YKUyNJjmcmzCU/cOMVmqH/D3MtbebAOIXAkNL3IC8bEb6wKKGmyvLObru3JNABwOUNbMZpegH1jBbI1wvE+q+ZbRDvDqbXZqEsblnpU+gCch2AmdMSmx3n3lQ14m9Zl0Q9KgtQXqCHAddVyhApvYw9A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=starfivetech.com; dmarc=pass action=none
+ header.from=starfivetech.com; dkim=pass header.d=starfivetech.com; arc=none
+Received: from ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c550:17::6) by ZQ4PR01MB1219.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c550:15::8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.10; Wed, 18 Nov
+ 2026 01:18:34 +0000
+Received: from ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn
+ ([fe80::e7d4:256c:b066:850d]) by
+ ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn ([fe80::e7d4:256c:b066:850d%4])
+ with mapi id 15.21.0615.009; Wed, 18 Nov 2026 01:18:34 +0000
+From: Changhuang Liang <changhuang.liang@starfivetech.com>
+To: Peng Fan <peng.fan@linux.dev>, Thomas Gleixner <tglx@kernel.org>, Radu
+ Rendec <radu@rendec.net>, Krzysztof Kozlowski <krzk@kernel.org>, Peter
+ Griffin <peter.griffin@linaro.org>, Alim Akhtar <alim.akhtar@samsung.com>,
+	Andrew Lunn <andrew@lunn.ch>, Gregory Clement <gregory.clement@bootlin.com>,
+	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Ryan Chen
+	<ryan_chen@aspeedtech.com>, Benjamin Herrenschmidt
+	<benh@kernel.crashing.org>, Joel Stanley <joel@jms.id.au>, Andrew Jeffery
+	<andrew@codeconstruct.com.au>, Billy Tsai <billy_tsai@aspeedtech.com>, Tan
+ Siewert <tan.siewert@9elements.com>, Eddie James <eajames@linux.ibm.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>, Ray Jui
+	<rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>, Broadcom internal
+ kernel review list <bcm-kernel-feedback-list@broadcom.com>, Caleb James
+ DeLisle <cjd@cjdns.fr>, Marc Zyngier <maz@kernel.org>, Miodrag Dinic
+	<miodrag.dinic@mips.com>, Frank Li <Frank.Li@nxp.com>, Sascha Hauer
+	<s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Herve Codina <herve.codina@bootlin.com>,
+	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, Jiaxun
+ Yang <jiaxun.yang@flygoat.com>, Vladimir Zapolskiy <vz@mleia.com>, Piotr
+ Wojtaszczyk <piotr.wojtaszczyk@timesys.com>, Anup Patel
+	<anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt
+	<palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti
+	<alex@ghiti.fr>, Samuel Holland <samuel.holland@sifive.com>, Qin Jian
+	<qinjian@cqplus1.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre
+ Torgue <alexandre.torgue@foss.st.com>, Chen-Yu Tsai <wens@kernel.org>, Jernej
+ Skrabec <jernej.skrabec@gmail.com>, Nishanth Menon <nm@ti.com>, Tero Kristo
+	<kristo@kernel.org>, Santosh Shilimkar <ssantosh@kernel.org>, Linus Walleij
+	<linusw@kernel.org>, Michal Simek <michal.simek@amd.com>, Anirudha Sarangi
+	<anirudha.sarangi@amd.com>, Tushar Nimkar <tushar.nimkar@amd.com>
+CC: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-samsung-soc@vger.kernel.org"
+	<linux-samsung-soc@vger.kernel.org>, "linux-i2c@vger.kernel.org"
+	<linux-i2c@vger.kernel.org>, "openbmc@lists.ozlabs.org"
+	<openbmc@lists.ozlabs.org>, "linux-aspeed@lists.ozlabs.org"
+	<linux-aspeed@lists.ozlabs.org>, "linux-rpi-kernel@lists.infradead.org"
+	<linux-rpi-kernel@lists.infradead.org>, "linux-mips@vger.kernel.org"
+	<linux-mips@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"loongarch@lists.linux.dev" <loongarch@lists.linux.dev>,
+	"linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
+	"linux-stm32@st-md-mailman.stormreply.com"
+	<linux-stm32@st-md-mailman.stormreply.com>, "linux-sunxi@lists.linux.dev"
+	<linux-sunxi@lists.linux.dev>, "git@amd.com" <git@amd.com>,
+	"linux-arm-msm@vger.kernel.org" <linux-arm-msm@vger.kernel.org>, Peng Fan
+	<peng.fan@nxp.com>
+Subject: Re: [PATCH] irqchip: Convert chained handlers to guard_chained_irq()
+Thread-Topic: [PATCH] irqchip: Convert chained handlers to guard_chained_irq()
+Thread-Index: AQHddEnOdOKyDAC7E0m8b1kTp8D2PLczDOBw
+Date: Wed, 18 Nov 2026 01:18:34 +0000
+Message-ID:
+ <ZQ4PR01MB1202F7E2F371812215F5E06CF27A2@ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn>
+References: <20261114-irqchip-cleanup-api-v1-1-4a9d598b0bdb@nxp.com>
+In-Reply-To: <20261114-irqchip-cleanup-api-v1-1-4a9d598b0bdb@nxp.com>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=starfivetech.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: ZQ4PR01MB1202:EE_|ZQ4PR01MB1219:EE_
+x-ms-office365-filtering-correlation-id: b7b23c1c-34ca-4327-0ca9-08df4511dd67
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|23010399003|1800799024|376014|7416014|366016|18002099003|22082099003|6133799003|261009223027099003|921020|5023799004|261102123227099003|261022075727099003|261022105027099003|261026121527099003|261026140227099003|261021121427099003|261028144727099003|38070700021|56012099006|10067099003;
+x-microsoft-antispam-message-info:
+ yKwXvzZ4qGJtqeK1TjdDMA4e0+8iYSmziMmJseD+oUwkLdPp2v4vvMGiElNVq+b/Yq/6N3KR0wkO4BG64FUDtPVKHeRU11ScRqAHTEojGMLh95ICgUarUvObcTQISW4sns66/frZ35LX7EZw9nye298fhx3K9FP3KRTtOCxBX3tqFdAMtQzBjy0CjKKV+FFrnqQ9Jy8s7ieHIE1TKBUr8Ckrz+D7nMwCRg3AM9T/mD9wkKPmJVXMq/OAEBS3rfPEmpuzfIgc4xneqLhBFjRUHu6luMCQwLhUU+h1E8ZkC/VBmf4yarKIo6t6oX8X2+EV7JiYrZ8eegx+9Wb9xmXNzuF5NV7e9uztMmSN9dy6N2rxpGG7l79GCMA7LiYUU4Bd957kHIKobNZpXWwiFh/gn+WUIHTlEgjgUCYT/kdvX7stZklWa3nNrM2KyR4/MGZa5yFQ8n7BrqjAVMX6/CK+G0aPxX4hJCj4LgmKH3gHllhZnJHVQJ5j8e0Q8uKAk8Pu11NdDnQ6uUvPOIkS5IQjdfAXEAMuFKQVwIwwg2xQDRMX5Fz5wRSzXHiykNwdXX/9A5rXZ9QyaWAN2yVYPph+dg==
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:zh-cn;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(376014)(7416014)(366016)(18002099003)(22082099003)(6133799003)(261009223027099003)(921020)(5023799004)(261102123227099003)(261022075727099003)(261022105027099003)(261026121527099003)(261026140227099003)(261021121427099003)(261028144727099003)(38070700021)(56012099006)(10067099003);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?Qnp5aFRXODZFNlJldk9YVXhVTnBJR1BpcnZQNG16cWFMYTFxSVNXN2ZWR096?=
+ =?utf-8?B?SHZ4ZXJrM25EY3NqK0IyS2hQbUZoZkdKRURhQmNuWkt4SVFrekVZWjdlRThD?=
+ =?utf-8?B?aEQxVEQ2SERYeXBVUUhZNDhjZ0JPWEhWeWNBRWNoUXZ6VUloUUd5YUxyUFFD?=
+ =?utf-8?B?K3BpbWs3cXduU0VVcWFud3JXVHh6dUIvdFlGZUdObllmVXB4aTNZdzVKcHdt?=
+ =?utf-8?B?d1RhMDZETzZDK1lNc0N3bDlOdEVhbW5jWTNLMGYrcmJjQ1FvalcvZ1ZqTjcx?=
+ =?utf-8?B?SFdva0N5a2FGZll2S25CMHlzZDcyNDJhdWd4Y01iMnVzdVBmS1lmTGxVUWxC?=
+ =?utf-8?B?T1dYRFFheDUvZE41c0ovcks1R0ptV3habVU2d3pJUVI0TVljWUthWDUzblgz?=
+ =?utf-8?B?c2VJSStaOERDalcveTF2WEFFdVFmQ25BNy9ST0U3aUVnKzQ1a0lIaEFJbkRQ?=
+ =?utf-8?B?N0wzNFZxTEk0d0dYVVBZbzJaQzhDMVE0RFRLWm1kMDlKbG1rVmNEQThzZzBy?=
+ =?utf-8?B?ZU9zQ3A4V2ZRMVB5TDhFU3BJZ3R2TVhTSFFyOGVSalRGWURlbG5wRHo2VmRR?=
+ =?utf-8?B?Rm9tUjRtaTM2N1k5MXJ5c2dhMWRpVlFBUmh6bERZODhzZzMvbTQzWWVQMWYw?=
+ =?utf-8?B?Z2JYK0liNGh2K1FadXZ0dTdrMTNPSUlRMFBnd004bFhQWmlMTEpKSnJPcnBs?=
+ =?utf-8?B?MFlXSG5aTkpiYkFQL2NiRWowYktVOThMUktDSzQ5REpldVllb1NDVDVkM0Fj?=
+ =?utf-8?B?WVY1c1ljV1BqQ0hmaVpwZ0ZtWDhtMmlaRGxRUVZGcUdGRkFrTit4UFVyTWdt?=
+ =?utf-8?B?cmtsNnRlVmMraDMrTGhSZ014ZjQyeVllYjljWW81TnFXbTN1NVY2M04vRStB?=
+ =?utf-8?B?NGNyMUlBSlhPZWtHVmtZT0F4eUNHMnlVSktBV01MMmlyTmZlUG14dEZJWU1B?=
+ =?utf-8?B?MkU3Tk0reE8yUkRaODFKOGpQQ1VRbEFGVFhHb0kxWkd3M3ZzVUJEeitSVWxy?=
+ =?utf-8?B?ZGlQNHVSbll2Rk1GNFhjdDd4NHZWbGgrRkNFa0NpWnBrL09uVkxOTEdwN3Bn?=
+ =?utf-8?B?OXJoUUJCNG1EYTJCVGpUcGNJdFV2dVE3OXdFemJBYk80bW9JUnJuWi9ZdDNC?=
+ =?utf-8?B?QjFVYktnT2JuNEFXZjQ4Zk0yekh5dGR4MGJhSDhZbjdCd2YzRmxiVzZualdO?=
+ =?utf-8?B?L1I4YnUwbTBselNuWTBNQW1xSCtlRk14MjFCMUFtdjZwQmV2M0E0KzlvSitT?=
+ =?utf-8?B?MjQ4NjRhTTdIODM1UngxS1BrMm9pZ0N2eitxUlN0aGdjNHlGaHhNeXpiTFds?=
+ =?utf-8?B?VWdTcWoydEN4aDVidFVMcWo5aW1MdU1Vd05BMHZZelg4WXE4dEl0ZGNHaW9u?=
+ =?utf-8?B?TDM2Yk4yOW81YjRPenRCaFkyc2NEOFNKYmg1bmROcXoyc0pMa3Zuems0ait5?=
+ =?utf-8?B?R0poT2RENlBPb0hNV0t1dzJWc2Q4alUwU1hFbkxNQS8yRE9aNmU3VXFQQ3dN?=
+ =?utf-8?B?N2NQRDR0b2xJa3hnYllLZFR1TG5oQ3E5Q0tJWTErS3lnZG9RWUJmN2R4NmJs?=
+ =?utf-8?B?K1RpckJBMkhLQnE0QmtrNnhuOGdSNEVzN1VsemErbGxmQXFNeTM0b3FucVpq?=
+ =?utf-8?B?OHRDN3B6VFBRN1pzdWxpYTBhOE8wMDBoVHVhRnloekhvL2J0VjZZUVpHYndW?=
+ =?utf-8?B?VkEwTGhYbDRBMG9ybGVCejJlT2M1ME5PNzJVMHRxQnhxR2lYYWxBWE9mRVRt?=
+ =?utf-8?B?WXpYb21UQmxsRndHdHpXMGZrZEZCV25pWFNxckExSW50N2NsVTlOeHEzL3hL?=
+ =?utf-8?B?RytsSUd2SmpRckJBVEowUklpdlRpRzl5eFdNR3F3L2lHTDJnQ0NGd25JdFln?=
+ =?utf-8?B?dW1GS2hvK2VtWkk0RFlJd1VHM0N5QTJuM21nUmRremY1K2k1RThKcmdZTVMw?=
+ =?utf-8?B?WUFHOUtHN0FJLzRXbHhzZXIyUHZ2SmFNbk5vUVhQa2JNdVFtMTRVcTRhdTlD?=
+ =?utf-8?B?dVB3cGZMc0x0T29rbHZMTFZad1RONlJkUGhaN1N2bFpzb2VJTkNQUjIzcVJ5?=
+ =?utf-8?B?bk9yekJRUnMxVkRLeFpjWCtlUHdnSkw0U2NUdkxZZHNIL3hxdmVxRWFGdmgv?=
+ =?utf-8?B?OEphQjBuRzV5eSs4OGxuVzdHL1RZZzNScnErN2xWdTFjMnpHcFMrQTVCNFJ4?=
+ =?utf-8?B?a2FEVkR4aDdtZ0djdDROREVYYmdiSUZveEFvSFE4MG5FUDgzU3BuS1dSanlm?=
+ =?utf-8?B?OEVFNWlyYWpDMUZSemthRnQrVXljeUJZamtXZ0pRRUdVSzJoazRBOVZsN2Jm?=
+ =?utf-8?B?V2NYQ0JGTnNsb2x6ZEZXSit0MnJaaXQ2STRJSEhWQVhuSSt1SXNaMDgvc2hU?=
+ =?utf-8?Q?3lhPMfT7Aqy9070g=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -59,97 +183,35 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
+MIME-Version: 1.0
+X-OriginatorOrg: starfivetech.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn
+X-MS-Exchange-CrossTenant-Network-Message-Id: b7b23c1c-34ca-4327-0ca9-08df4511dd67
+X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Nov 2026 01:18:34.0978
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 06fe3fa3-1221-43d3-861b-5a4ee687a85c
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 2qtCpoGJ+bCG24FDWg596I9jABKa+NT4vihTFEY8ZKI5fs1ukA6wgnRJ5Imrx3U4Pg6YJ9N/EEhfKfedPRHwWR/+DAE6Gws+LyAIMliUMBLQMrusG0WIx5Or+L/J5vJu
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: ZQ4PR01MB1219
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Low] staging: media: imx: divergent TRY pad intervals in
-  prp_set_frame_interval()
---
-
-commit ab0674eed0b91380970c6973e29f82828fdedc3b
-Author: Maximo Manriquez Lizarraga <DelaySystem@tubot.lat>
-
-staging: media: imx: ic-prpencvf: add FORMAT_TRY frame interval support
-
-This commit adds V4L2_SUBDEV_FORMAT_TRY support for frame intervals in
-the i.MX IC prpencvf subdev by storing TRY intervals in the subdev state
-and initializing them in a custom init_state callback.
-
-> diff --git a/drivers/staging/media/imx/imx-ic-prpencvf.c b/drivers/stagin=
-g/media/imx/imx-ic-prpencvf.c
-> index 3430ddeac3569..5ce0eb56be5bf 100644
-> --- a/drivers/staging/media/imx/imx-ic-prpencvf.c
-> +++ b/drivers/staging/media/imx/imx-ic-prpencvf.c
-
-[ ... ]
-
-> @@ -1231,24 +1246,68 @@ static int prp_set_frame_interval(struct v4l2_sub=
-dev *sd,
->  				  struct v4l2_subdev_frame_interval *fi)
->  {
->  	struct prp_priv *priv =3D sd_to_priv(sd);
-> -
-> -	/*
-> -	 * FIXME: Implement support for V4L2_SUBDEV_FORMAT_TRY, using the V4L2
-> -	 * subdev active state API.
-> -	 */
-> -	if (fi->which !=3D V4L2_SUBDEV_FORMAT_ACTIVE)
-> -		return -EINVAL;
-> +	struct v4l2_fract *interval;
-> +	int ret =3D 0;
-> =20
->  	if (fi->pad >=3D PRPENCVF_NUM_PADS)
->  		return -EINVAL;
-> =20
->  	mutex_lock(&priv->lock);
-> +	interval =3D __prp_get_frame_interval(priv, sd_state, fi->pad,
-> +					    fi->which);
-> +	if (!interval) {
-> +		ret =3D -EINVAL;
-> +		goto out;
-> +	}
-> =20
->  	/* No limits on valid frame intervals */
-> -	if (fi->interval.numerator =3D=3D 0 || fi->interval.denominator =3D=3D =
-0)
-> -		fi->interval =3D priv->frame_interval;
-> -	else
-> -		priv->frame_interval =3D fi->interval;
-> +	if (fi->interval.numerator =3D=3D 0 || fi->interval.denominator =3D=3D =
-0) {
-> +		fi->interval =3D *interval;
-> +	} else {
-> +		*interval =3D fi->interval;
-> +
-> +		/*
-> +		 * The IC task does not change the frame rate between sink
-> +		 * and source, so keep both TRY slots in sync the same way
-> +		 * prp_set_fmt() propagates formats to the source pad.
-> +		 * (ACTIVE uses a single shared interval and needs nothing.)
-> +		 */
-> +		if (fi->which =3D=3D V4L2_SUBDEV_FORMAT_TRY &&
-> +		    fi->pad =3D=3D PRPENCVF_SINK_PAD) {
-> +			struct v4l2_fract *src_interval;
-> +
-> +			src_interval =3D __prp_get_frame_interval(priv, sd_state,
-> +								PRPENCVF_SRC_PAD,
-> +								fi->which);
-> +			if (src_interval)
-> +				*src_interval =3D fi->interval;
-> +		}
-> +	}
-
-[Severity: Low]
-Can setting a V4L2_SUBDEV_FORMAT_TRY frame interval on PRPENCVF_SRC_PAD
-cause the sink and source TRY intervals to diverge?
-
-For V4L2_SUBDEV_FORMAT_ACTIVE, both pads share priv->frame_interval, so
-calling prp_set_frame_interval() on PRPENCVF_SRC_PAD updates both pads.
-For V4L2_SUBDEV_FORMAT_TRY, *interval =3D fi->interval overwrites the
-source pad slot without either clamping it to the sink pad interval or
-updating the sink pad slot to match, leaving the two pads with different
-TRY frame intervals even though the IC does not alter the frame rate.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261117-batch1-m2-=
-prpencvf-try-v2-1-dd331ab13137@tubot.lat?part=3D1
+aGkNCg0KPiBGcm9tOiBQZW5nIEZhbiA8cGVuZy5mYW5AbnhwLmNvbT4NCj4gDQo+IFVzZSB0aGUg
+c2NvcGUtYmFzZWQgZ3VhcmRfY2hhaW5lZF9pcnEoKSBoZWxwZXIgaW4gYWxsIGNoYWluZWQgaGFu
+ZGxlcnMgdW5kZXINCj4gZHJpdmVycy9pcnFjaGlwLyBzbyB0aGF0IGNoYWluZWRfaXJxX2V4aXQo
+KSBpcyBhbHdheXMgaW52b2tlZCB3aGVuIHRoZSBoYW5kbGVyDQo+IHJldHVybnMuIEhhbmRsZXJz
+IHRoYXQgZHVwbGljYXRlZCB0aGUgZXhpdCBjYWxsIG9uIGFuIGVycm9yIHBhdGggb3IganVtcGVk
+IHRvIGENCj4gY29tbW9uIGV4aXQgbGFiZWwgc2ltcGx5IHJldHVybiBub3cgYW5kIHJlbHkgb24g
+dGhlIGd1YXJkLg0KPiANCj4gTm8gZnVuY3Rpb25hbCBjaGFuZ2VzLg0KPiANCj4gU2lnbmVkLW9m
+Zi1ieTogUGVuZyBGYW4gPHBlbmcuZmFuQG54cC5jb20+DQo+IC0tLQ0KPiBXaXRoIFsxXSBub3cg
+bWVyZ2VkIGluIGlycS9kcml2ZXJzLCBjb252ZXJ0IHRoZSBjaGFpbmVkIElSUSBoYW5kbGVycyBp
+bg0KPiBkcml2ZXJzL2lycWNoaXAvIHRvIHVzZSBndWFyZF9jaGFpbmVkX2lycSgpLiBUaGlzIHJl
+bW92ZXMgdGhlIGV4cGxpY2l0DQo+IGNoYWluZWRfaXJxX2V4aXQoKSBjYWxscyBhbmQgdGhlIGdv
+dG9zIHRoYXQgb25seSBleGlzdGVkIHRvIHJlYWNoIHRoZW0sDQo+IHJlZHVjaW5nIGJvaWxlcnBs
+YXRlLg0KPiANCj4gSSB1c2UgYSBzY3JpcHQgdG8gZG8gdGhlIGpvYiwgYW5kIGFmdGVyIHRoYXQs
+IGRvIG1hbm51YWwgY2hlY2tpbmcuDQo+IA0KPiBObyBmdW5jdGlvbmFsIGNoYW5nZXMuDQo+IA0K
+PiBbMV0NCj4gaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvYWxsLzE3OTQxNzQ1ODMyMy4yMDkzOTQy
+LjE0MzMwMTk3NjA5ODQxODk2NTk4Lg0KPiB0aXAtYm90MkB0aXAtYm90Mi8jdA0KPiAtLS0NCg0K
+Rm9yIGRyaXZlcnMvaXJxY2hpcC9pcnEtc3RhcmZpdmUtamhiMTAwLWludGMuYw0KDQpSZXZpZXdl
+ZC1ieTogQ2hhbmdodWFuZyBMaWFuZyA8Y2hhbmdodWFuZy5saWFuZ0BzdGFyZml2ZXRlY2guY29t
+Pg0KDQpCZXN0IFJlZ2FyZHMsDQpDaGFuZ2h1YW5nDQoNCg==
