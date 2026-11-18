@@ -1,55 +1,71 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795009518;
-	b=O3R/UwE+ujZaxMucm0ixVvfK71WYxKvwwQZaWZv10C4bnfgaYLn6i+Q/8h7BaU6rEHS4
-	 Utl0Cfgg+AXjrKvWIVGHSGo8UcKQXeh4G76BQLfGeaqHTkDhua/48bXZuaTfIhp7jWuQ6
-	 b47gOPJYh0MDy7UoAwqNFThqn4iC7Zvaw+CGf7Tyklpr7CNxl/rJN3JPOZH/TJt6vp6tm
-	 rH0FGu0nOgP+rmRVeBgE0CvCvRIaNVb0GLQ5lw+y4xqGknxDir+1gy/5tpxJ/8oyljVO7
-	 02dJkgb3OYYioLZaIOyKIxpKGOO4kqRF2MO5COtTZxyv7dXSRGH/VToPrXZckvexvDA==
+	t=1795009918;
+	b=fe+RFiUt5ilXuYqJ0vae8bTkdLf78AMIe96jxLLC9vdinvIcY7S9yKS3x4wFY271olvm
+	 bKu0YzgR8mrxRJB0kosUB43ZsMef+Zpr7B5uTsHKtMURFMDYuGwmJxtEJjPGqr8sHHMuf
+	 u4EZWHrxvsl6iNRF8ED4W88TiXr4Nyn4U1gWo3fvkoa1GywZLO4J9Yp3Y4rB2x0HhHvct
+	 FIr5cwOdGgUY2iJPlN3qs8ivHl/tpgBcByoOtOtkolXu3Gfi9RmYja2smRHH/hq/KC/Rn
+	 8DT6/HIkAaBuuj5BTMpgsFNKBTzQUWdySdeqQ8tzWWXdoi3aVbjGDDJ4bRUNR3ztYPw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795009518;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 Reply-To:From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=zbYI8uP1li72NzJh/wjWDJ72bmhe8G4M88p9Kdrkgp4=;
-	b=PByOIrQl8pz3nsoRoB6Kkj/hvmrmvxR+1gOLCoUDelMz/2sF3CThZ5ic0sZM7+vLM13y
-	 YKMzj5l1/0gqciNSUeDxcWRA2hSeFe0FSu+bGJ7iPvipG+65r9aiQGQb151USPOy6pai2
-	 D+H2WfcGobtTDdYtd4XZG59Z1Kbwaq3V9hZFkD7T8D05lojSygMzN9dPMHLeUzviFex+A
-	 XjUjl2OTELHUxxLMMQSs3AQVScNHIs6QMbzrP8lWF7yMLPUpLWhF3hqTBdxM8GDAkDpwm
-	 Ujf242/EzplYvPr5PoUrEuMSv4IkDrApvtlgGYqQXeYgt+fyyIDjP/6OTv+7lbzELXw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795009918;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=VHLJsIJFyqtvRqXnKEHB3qZMFu94gIc6D+p1OgPM6lg=;
+	b=B3SMA7EcwzFrnA2gjdiMOGZ1q6aJeolu3cNklztdKz2V7bmZ6iDNOJUTeh9+57XYaK/F
+	 uKRU6AhTwwx0XxMU/mZG56J7mKVa99X386W0QeCEApP8Lq6q/bGXWer1I8Ixvwh3Rt9jA
+	 0Lv5owK994dypVGvwgkzqZt867KfdMUUxQ9CXGYMUxdY95+TJiKkR+JiYLBRrsZsRk7pD
+	 bxSpZKrjbXdojcde5WZPTOpXBkXYq6Y+Bi3jOre3PeF97vwjgwy9U1qOZstF4QP5l/Hrk
+	 lLMbDv5yqzsknhgu27GViDovFMpTHxpMj1fnw2EIjdIw4J2TC1jHBl6xYYqaD67glGg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RxwDW1Jg;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=lunn.ch;
+	spf=pass smtp.mailfrom=lunn.ch;
+	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=UJwMBM3b;
+	arc=none smtp.remote-ip=156.67.10.101
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC868606A339
-	for <imx@lists.linux.dev>; Wed, 18 Nov 2026 13:45:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A2CC606A333;
+	Wed, 18 Nov 2026 13:51:57 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1A2CC606A333
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RxwDW1Jg
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB3261F000C4
-	for <imx@lists.linux.dev>; Wed, 18 Nov 2026 13:45:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795009518;
-	bh=zbYI8uP1li72NzJh/wjWDJ72bmhe8G4M88p9Kdrkgp4=;
-	h=References:In-Reply-To:Reply-To:From:Date:Subject:To:Cc;
-	b=RxwDW1JguCDucDNsShayzwrpopd1ZL9Qf2ZCAagnmVvg0zW+stUUkU79tiVnQB/Zo
-	 Pmp7J5O40OKniL5gftISQKy3xeMQgqfUbNtMIYx/OgRyH5+WyU2VySZ2IsBbRbmLyD
-	 Lcv2pp9ib1bXBYNArl1iETwXLKN6wdgElDCYFpz/BMJc+rZuNQ37QytMx+d2WMCe0H
-	 FOrOeLU8pFP47A4NCAla2ZZdXV5MbYDeQMlL1zoWCPwvU6TpWK/+ZlW3NnD/6hU3zj
-	 TjvzFKfPvmXqp86SHZoCLdg9t9YdEaZ5DJG81/QUfM4q8+rzPhOD6DXr9sxVvO3l1m
-	 hi3EWHj5PIRRg==
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-3acef9307c7so9690661fa.2
-        for <imx@lists.linux.dev>; Wed, 18 Nov 2026 05:45:18 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErFa6wWzCFqUippsqXNMqfycLm9MVJBtiQtRU7VNt2gGjyPI4ELEFUYeq+/5ayqoVv3w4qU=@lists.linux.dev
-X-Gm-Message-State: APuU4Z9kvcRxB52vNB850Q0SLgwDHso8C1je/Zc2LAL4pbtQMtfYkOvm
-	yYR0yoL5vduvpoaedm2280PRJlmbNFrZVFoPMDt4S95XEV/UZUDzAFazkBXFCDVUgzb5QlnsHBL
-	t4u1ePLshdcAwzHI9jXBb76YOHd+2x7o=
-X-Received: by 2002:a05:651c:b27:b0:3ab:3b73:4560 with SMTP id
- 38308e7fff4ca-3ae670b2ef1mr8658421fa.11.1795009516447; Wed, 18 Nov 2026
- 05:45:16 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=UJwMBM3b
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=VHLJsIJFyqtvRqXnKEHB3qZMFu94gIc6D+p1OgPM6lg=; b=UJwMBM3bNYcqNwC4wFX0wj7AXI
+	qKVW+I8+d0IxCWWoCwDJ5G8j2vCIcoHJDYlAHxPvGCkpScvC5mZ32Lswu1TmhL8FTvWCvzgoSNrJe
+	iVJXIPZAcXmilKSIbPAsnNrpRVUvS1W3P1tlPQcYSGeGvwEHBeFaJNcKdesb3Es0hluU=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xTg4j-00HQiI-Km; Wed, 18 Nov 2026 14:51:49 +0100
+Date: Wed, 18 Nov 2026 14:51:49 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Frieder Schrempf <frieder@fris.de>
+Cc: Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Wei Fang <wei.fang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Richard Cochran <richardcochran@gmail.com>, imx@lists.linux.dev,
+	netdev@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Frieder Schrempf <frieder.schrempf@kontron.de>
+Subject: Re: [PATCH net-next 2/4] net: enetc: netc_blk_ctrl: add i.MX952
+ support
+Message-ID: <abd5b300-2dd6-45b9-9ef1-c7c123b6dfa3@lunn.ch>
+References: <20261118-imx952-enetc-v1-0-25721440602e@kontron.de>
+ <20261118-imx952-enetc-v1-2-25721440602e@kontron.de>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -59,122 +75,64 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-References: <20261114-irqchip-cleanup-api-v1-1-4a9d598b0bdb@nxp.com>
-In-Reply-To: <20261114-irqchip-cleanup-api-v1-1-4a9d598b0bdb@nxp.com>
-Reply-To: wens@kernel.org
-From: Chen-Yu Tsai <wens@kernel.org>
-Date: Wed, 18 Nov 2026 21:45:03 +0800
-X-Gmail-Original-Message-ID: <CAGb2v65uyYnE-sryit44oXBwstxkG7HRtYWip5nyuHeZ034TbQ@mail.gmail.com>
-X-Gm-Features: AclHuK_Ko1utGgb-Cp6pja7wJidoLs_raftCWPKZ3OajYizpg1rSK6L9ElxDv8s
-Message-ID: <CAGb2v65uyYnE-sryit44oXBwstxkG7HRtYWip5nyuHeZ034TbQ@mail.gmail.com>
-Subject: Re: [PATCH] irqchip: Convert chained handlers to guard_chained_irq()
-To: Peng Fan <peng.fan@linux.dev>
-Cc: Thomas Gleixner <tglx@kernel.org>, Radu Rendec <radu@rendec.net>, 
-	Krzysztof Kozlowski <krzk@kernel.org>, Peter Griffin <peter.griffin@linaro.org>, 
-	Alim Akhtar <alim.akhtar@samsung.com>, Andrew Lunn <andrew@lunn.ch>, 
-	Gregory Clement <gregory.clement@bootlin.com>, 
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Ryan Chen <ryan_chen@aspeedtech.com>, 
-	Benjamin Herrenschmidt <benh@kernel.crashing.org>, Joel Stanley <joel@jms.id.au>, 
-	Andrew Jeffery <andrew@codeconstruct.com.au>, Billy Tsai <billy_tsai@aspeedtech.com>, 
-	Tan Siewert <tan.siewert@9elements.com>, Eddie James <eajames@linux.ibm.com>, 
-	Florian Fainelli <florian.fainelli@broadcom.com>, Ray Jui <rjui@broadcom.com>, 
-	Scott Branden <sbranden@broadcom.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Caleb James DeLisle <cjd@cjdns.fr>, 
-	Marc Zyngier <maz@kernel.org>, Miodrag Dinic <miodrag.dinic@mips.com>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Herve Codina <herve.codina@bootlin.com>, 
-	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
-	Jiaxun Yang <jiaxun.yang@flygoat.com>, Vladimir Zapolskiy <vz@mleia.com>, 
-	Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>, Anup Patel <anup@brainfault.org>, 
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, Samuel Holland <samuel.holland@sifive.com>, 
-	Qin Jian <qinjian@cqplus1.com>, Changhuang Liang <changhuang.liang@starfivetech.com>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Nishanth Menon <nm@ti.com>, Tero Kristo <kristo@kernel.org>, 
-	Santosh Shilimkar <ssantosh@kernel.org>, Linus Walleij <linusw@kernel.org>, 
-	Michal Simek <michal.simek@amd.com>, Anirudha Sarangi <anirudha.sarangi@amd.com>, 
-	Tushar Nimkar <tushar.nimkar@amd.com>, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org, 
-	linux-i2c@vger.kernel.org, openbmc@lists.ozlabs.org, 
-	linux-aspeed@lists.ozlabs.org, linux-rpi-kernel@lists.infradead.org, 
-	linux-mips@vger.kernel.org, imx@lists.linux.dev, loongarch@lists.linux.dev, 
-	linux-riscv@lists.infradead.org, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-sunxi@lists.linux.dev, git@amd.com, linux-arm-msm@vger.kernel.org, 
-	Peng Fan <peng.fan@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261118-imx952-enetc-v1-2-25721440602e@kontron.de>
 
-On Sat, Nov 14, 2026 at 11:06=E2=80=AFPM Peng Fan <peng.fan@linux.dev> wrot=
-e:
->
-> From: Peng Fan <peng.fan@nxp.com>
->
-> Use the scope-based guard_chained_irq() helper in all chained handlers
-> under drivers/irqchip/ so that chained_irq_exit() is always invoked when
-> the handler returns. Handlers that duplicated the exit call on an error
-> path or jumped to a common exit label simply return now and rely on the
-> guard.
->
-> No functional changes.
->
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> ---
-> With [1] now merged in irq/drivers, convert the chained IRQ handlers in
-> drivers/irqchip/ to use guard_chained_irq(). This removes the explicit
-> chained_irq_exit() calls and the gotos that only existed to reach them,
-> reducing boilerplate.
->
-> I use a script to do the job, and after that, do mannual checking.
->
-> No functional changes.
->
-> [1] https://lore.kernel.org/all/179417458323.2093942.14330197609841896598=
-.tip-bot2@tip-bot2/#t
-> ---
->  drivers/irqchip/exynos-combiner.c          | 7 ++-----
->  drivers/irqchip/irq-aclint-sswi.c          | 4 +---
->  drivers/irqchip/irq-armada-370-xp.c        | 4 +---
->  drivers/irqchip/irq-aspeed-i2c-ic.c        | 4 +---
->  drivers/irqchip/irq-aspeed-scu-ic.c        | 8 ++------
->  drivers/irqchip/irq-ast2700-intc1.c        | 4 +---
->  drivers/irqchip/irq-ath79-misc.c           | 5 +----
->  drivers/irqchip/irq-bcm2836.c              | 4 +---
->  drivers/irqchip/irq-bcm6345-l1.c           | 4 +---
->  drivers/irqchip/irq-bcm7038-l1.c           | 4 +---
->  drivers/irqchip/irq-bcm7120-l2.c           | 4 +---
->  drivers/irqchip/irq-brcmstb-l2.c           | 4 +---
->  drivers/irqchip/irq-dw-apb-ictl.c          | 4 +---
->  drivers/irqchip/irq-econet-en751221.c      | 4 +---
->  drivers/irqchip/irq-gic.c                  | 6 ++----
->  drivers/irqchip/irq-goldfish-pic.c         | 4 +---
->  drivers/irqchip/irq-idt3243x.c             | 4 +---
->  drivers/irqchip/irq-imx-intmux.c           | 4 +---
->  drivers/irqchip/irq-imx-irqsteer.c         | 7 ++-----
->  drivers/irqchip/irq-imx-mu-msi.c           | 3 +--
->  drivers/irqchip/irq-ingenic-tcu.c          | 4 +---
->  drivers/irqchip/irq-lan966x-oic.c          | 3 +--
->  drivers/irqchip/irq-loongarch-avec.c       | 4 +---
->  drivers/irqchip/irq-loongson-eiointc.c     | 4 +---
->  drivers/irqchip/irq-loongson-htpic.c       | 3 +--
->  drivers/irqchip/irq-loongson-htvec.c       | 4 +---
->  drivers/irqchip/irq-loongson-liointc.c     | 4 +---
->  drivers/irqchip/irq-loongson-pch-lpc.c     | 3 +--
->  drivers/irqchip/irq-lpc32xx.c              | 4 +---
->  drivers/irqchip/irq-ls-scfg-msi.c          | 4 +---
->  drivers/irqchip/irq-ls1x.c                 | 4 +---
->  drivers/irqchip/irq-mmp.c                  | 7 ++-----
->  drivers/irqchip/irq-mscc-ocelot.c          | 4 +---
->  drivers/irqchip/irq-mvebu-pic.c            | 4 +---
->  drivers/irqchip/irq-mvebu-sei.c            | 4 +---
->  drivers/irqchip/irq-pruss-intc.c           | 4 +---
->  drivers/irqchip/irq-realtek-rtl.c          | 7 ++-----
->  drivers/irqchip/irq-riscv-aplic-direct.c   | 4 +---
->  drivers/irqchip/irq-riscv-imsic-early.c    | 4 +---
->  drivers/irqchip/irq-sifive-plic.c          | 8 ++------
->  drivers/irqchip/irq-sp7021-intc.c          | 4 +---
->  drivers/irqchip/irq-starfive-jhb100-intc.c | 4 +---
->  drivers/irqchip/irq-stm32-exti.c           | 4 +---
+> +static int imx952_netcmix_init(struct platform_device *pdev)
+> +{
+> +	struct netc_blk_ctrl *priv = platform_get_drvdata(pdev);
+> +	struct device_node *np = pdev->dev.of_node;
+> +	phy_interface_t interface;
+> +	int bus_devfn, mii_proto;
+> +	u32 val;
+> +	int err;
+> +
+> +	/* Default setting */
+> +	val = MII_PROT(0, MII_PROT_RGMII) | MII_PROT(1, MII_PROT_RGMII);
+> +
+> +	/* Update the link MII protocol through parsing phy-mode */
+> +	for_each_child_of_node_scoped(np, child) {
+> +		for_each_child_of_node_scoped(child, gchild) {
+> +			if (!of_device_is_compatible(gchild, "pci1131,e101"))
+> +				continue;
+> +
+> +			bus_devfn = netc_of_pci_get_bus_devfn(gchild);
+> +			if (bus_devfn < 0)
+> +				return bus_devfn;
+> +
+> +			err = of_get_phy_mode(gchild, &interface);
+> +			if (err)
+> +				continue;
+> +
+> +			mii_proto = netc_get_link_mii_protocol(interface);
+> +			if (mii_proto < 0)
+> +				return mii_proto;
+> +
+> +			switch (bus_devfn) {
+> +			case IMX952_ENETC0_BUS_DEVFN:
+> +				val = u32_replace_bits(val, mii_proto,
+> +						       CFG_LINK_MII_PORT_0);
+> +				break;
+> +			case IMX952_ENETC1_BUS_DEVFN:
+> +				val = u32_replace_bits(val, mii_proto,
+> +						       CFG_LINK_MII_PORT_1);
+> +				break;
+> +			default:
+> +				return -EINVAL;
+> +			}
+> +		}
+> +	}
+> +
+> +	netc_reg_write(priv->netcmix, IMX95_CFG_LINK_MII_PROT, val);
+> +
+> +	return 0;
+> +}
+> +
 
->  drivers/irqchip/irq-sunxi-nmi.c            | 3 +--
+This looks very similar to imx95_netcmix_init(), and
+imx94_link_config() is similar to the core of this loop.
 
-Acked-by: Chen-Yu Tsai <wens@kernel.org> # sunxi-nmi
+Can some core refactoring be done to reduce duplication?
+
+Andrew
