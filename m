@@ -1,100 +1,110 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.66.27
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795015635;
-	b=yhxo91TQxJ9EapUhjfMsfF1X2SAoAqgSFDi1+0OGu1giwJKvz4fg1oKZiA2B+ZaS7wcN
-	 S45zepdJSK2a8zI24yTAr9a1+Rf2YUANOYq6l2vErPJil/hXMZJqk3v01C3ku6nlHat4M
-	 HHffPq+/wq4xmxt0LRWI5kceyFxNo0Iz2opybtPf9Yx+PShyVia3BdW8qg+dCp9fdw4dg
-	 sGKMuO5Uv9U+jUBim7a+CrN1QNbh9xjTcwOGrjLoVhaEs9xNvPeV5x46NQsVwXrwRYmuC
-	 ItIHq+cvidDVdQdjq5n8CC67r3l/wSkYNN2ZcTdq1A6xkS3VFz62IvPQJqJkazmYXHQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795015635;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:Content-Type:Content-Disposition:
-	 In-Reply-To:X-ClientProxiedBy:MIME-Version:
-	 X-MS-Exchange-MessageSentRepresentingType:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SharedMailbox-RoutingAgent-Processed:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=eY2hHNDdt1qZV3S19uhVtiep8ZuUlQu9tochO15/uXs=;
-	b=T0Vs1PE32s4E/++TIbZyNzX2xXkdz+cqDY4yEuujTdtArqfkG7WxDj7Q9ePx5BBJ0hz8
-	 VnGJG0DGbXAYxsOl8FytSxe45GiAXoGa4JDs5Y9h1TfBAwJdG5OnaqYzeskB9R+fNNhSx
-	 Xx1DOFJ/BXAgmWHbjt61HcNSTcubl8NHM9wpzgKxEdLI0VI+gBGBwf8GcXlMbc48Il4vA
-	 O7hll2xuw/evxd4ZvAFtCfVXvPlwyxLDXS4jjCItVBM8GiMUj3v6IEC86hvLeik4pAFEL
-	 Jme8SwukncEljdUm9Zexx3nESySYexzGWtMsplpYxnIw49uSItGczw+Pe7mdemcIuBw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.nxp.com;
-	spf=pass smtp.mailfrom=oss.nxp.com;
-	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=mDBBfEnI;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.66.27
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012027.outbound.protection.outlook.com [52.101.66.27])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.175
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795016539;
+	b=BsQ19et1Rki3S916XXRmJvbuJvyc7iO+pRCX9SaSkGowtPQ/QhRk20bA3gVTTSGO6upD
+	 J3U9/6Dw6hYsIPw4F04Z0ryCMCGhp8GMktMuvf1gf2YRbd8Ycq9zHoa73BIF4lx3kzgjp
+	 hYiMvg0O/JfmdcP2vHgxyslhd1dvvBLmCdl5Hv2h10b9jAqPQj9HW1wtz/gh3vRbC+Qf9
+	 rxe62HpSXUBi4tpo/eSr70CqeBDHFxRoRLfTpaKoYCZPmm98ArWLt6+5w2WzaEVGO9nZM
+	 X+XJ+fBB1oQiO2ellwlBZLpLN7uK8pa7txe1RBOMimyB6TRuCa4llDzQDn3q8MEg1/Q==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795016539;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=CN3uhxZTJ97ugRoC/mFf/rnGzVK4gaQ4Bs/xHJQaLBY=;
+	b=M7Dw7uSsgeD6SX7lzM8QuykWYZRAv0Mf0l4AdyDweHsALkoBr4Zz+Ypj5RCRzIvuDZMD
+	 iRskDCHxKPeF1SupGqJTxGEtmJu0uUTefsX34PDvLFRgJYmgJJTRKDcLz+VOZ/bYrMRMJ
+	 iRCIfZDqtEFD32JQfBgyDviV7rLdhu0sjt5LjejT7ejYeIUrwDbF7LMJ+9flVWgzI2jq7
+	 OOSn1fB5IGVk1Nfc9mdxrRV4C32n4wr7BWcMSS8/ojWmB881cXtS5joMAiul14E5FXPd/
+	 YwWz5lRsHF8ERmWig7lqjKqITpeDBFp1ZrgiwWzjO5RMcKjDcREIKDR0i0RIr8rwxJQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=linaro.org;
+	spf=pass smtp.mailfrom=linaro.org;
+	dkim=pass header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=f1BK9NXN;
+	arc=none smtp.remote-ip=209.85.215.175
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 458AB606A331
-	for <imx@lists.linux.dev>; Wed, 18 Nov 2026 15:27:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 458AB606A331
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9E10606A330
+	for <imx@lists.linux.dev>; Wed, 18 Nov 2026 15:42:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E9E10606A330
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=mDBBfEnI
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=v3EnXgYFMZ8CSRzqmBDtnTrK/HJSL4aci41Xo4F6XqtScpy2CAV/I/3OltaOHV53DJaQU+gBF+SeawlRnSydIJxD2rUk+wXJW/2uILMmDGX3y+andt/pgivnSft7MIvUlf9mTXEY+KzQhxLB1MGO4hbgeozpXlV9FvOPBXEYOG9cx405cGU4wfbanqUleM34RzuysQ2cHODiSkS33193Iy6dSNEn9VZFuarKxxx5kMCoATYB9gvGf5NGA2yAVrqi0qQNZSthv8U8ARkStBmV0Dzy9IDY59J9wvnKcwHYhKXetJGIojXSnoWtchBl9HYraewp7MLoNRwMVgNL0qv30w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eY2hHNDdt1qZV3S19uhVtiep8ZuUlQu9tochO15/uXs=;
- b=kHx0xyrbjD316E1FwydkVe/LL93FMtpxRYhg+7hJZM8XMtBE5FMzvPZqMGi9I+m/iCeEgKkaq2SQ6z3070jskSkWpxlOGTNsnaVaAST7sJ7zHFl7KtcWabfC8ewy7GKF1J6hnnTXwF3VVS1OE0kHMzUpu+sOZ4Fq0OxUd81/aF2g9VozESw6BwDifvRmtsrGAXZiS0un5+eX6jiMgwzNw7axn7zAWrpbj8nYtSrnHuaXunckwLCUpzyD1TSNgkdVcjU473Rg2ls4Vj5XHp997BmrWdW8yDWGHXl1tPv+u6cGEGegoRAp5sao1gJ8E/knGkcqgTp7VV1P1Ru9OO+P7g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=eY2hHNDdt1qZV3S19uhVtiep8ZuUlQu9tochO15/uXs=;
- b=mDBBfEnIdJvr+FR6hnjhgiLsYq/DP3eLxYRE5qLItKYdyLj3QDUD42i9JnaI7NVX8wXeuzahcKg+u5zx/RVJJ8GuSyWuGiJAjzZki7QAZFVQr63FRYa2mknNXXCOQrYeEwQpE1Od1+9Z4rAAfOrP+E4Po+vtLcR2db6kJe8q1mO1BlcNfEPa59Z355TWIaaGbJzVKs+Jb9oqiCnV1/LNMsD4+LETmWLgN2rPoQA5EQgZghU2Pla/qKipSgPSWOy8GsafmvWm9NU1ksJrvfv20uHd/Ui2zBCq2OG/oyhP2dHDeKofxJ/C4GrJ0VNdELqlck8hLRhqrpljP5HkKvm27Q==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB12318.eurprd04.prod.outlook.com
- (2603:10a6:150:32b::19) by PAXPR04MB8974.eurprd04.prod.outlook.com
- (2603:10a6:102:20d::21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.9; Wed, 18 Nov
- 2026 15:27:10 +0000
-Received: from GV2PR04MB12318.eurprd04.prod.outlook.com
- ([fe80::a498:2b5a:cbdb:d6fa]) by GV2PR04MB12318.eurprd04.prod.outlook.com
- ([fe80::a498:2b5a:cbdb:d6fa%3]) with mapi id 15.21.0615.013; Wed, 18 Nov 2026
- 15:27:10 +0000
-Date: Wed, 18 Nov 2026 17:27:06 +0200
-From: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
-To: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, linux-clk@vger.kernel.org, imx@lists.linux.dev, 
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH v11 4/7] drm/imx: Add support for i.MX94 DCIF
-Message-ID: <av3C0ietJXI1ax3X@vm>
-References: <20261110-dcif-upstreaming-v11-0-9e13c85ae0d8@oss.nxp.com>
- <20261110-dcif-upstreaming-v11-4-9e13c85ae0d8@oss.nxp.com>
- <179449701677.2030221.6593749298448668349.b4-review@b4>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <179449701677.2030221.6593749298448668349.b4-review@b4>
-X-ClientProxiedBy: AS4P189CA0047.EURP189.PROD.OUTLOOK.COM
- (2603:10a6:20b:659::19) To GV2PR04MB12318.eurprd04.prod.outlook.com
- (2603:10a6:150:32b::19)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=f1BK9NXN
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-cdd9d0c9bbdso774526a12.1
+        for <imx@lists.linux.dev>; Wed, 18 Nov 2026 07:42:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1795016538; x=1795621338; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=CN3uhxZTJ97ugRoC/mFf/rnGzVK4gaQ4Bs/xHJQaLBY=;
+        b=f1BK9NXNyN1JAaM0w/7Qv5nxbRk4ImDsCPtiu9PPBDFXs+aPPq9zdGFY9AQ4Xk+qDv
+         ihtmREHCLfaKuezwvWupnRak1eSPOZ+SPyKQ8RsU9n8XOFfNo8lYBeVEXa5hwtr5W8iT
+         mITmEECsGtQJ0XsG5ptjfS2n+WNw9O2bJIzy2Si/785cTSLHnYxcBi+Lx6ALbQZQqPas
+         RT8S4zA7ZAiFzxLriAPuEutVjhIRrOVbiRF5jTFN5QAzt4JuM/wYEQ8vNwHHUtVUdxyA
+         rWoIqxCx2bTYCsEGPT+mp08Y0ybGBShBg8GHPI2JlWD/C3URs4eD2ckUUWHaq6O5c4mk
+         +LCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795016538; x=1795621338;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=CN3uhxZTJ97ugRoC/mFf/rnGzVK4gaQ4Bs/xHJQaLBY=;
+        b=dUK2m2GXccL4TkgH7zyx4VMgCPgmg0TKe9xoAjgtSeBbk+aobUIZmCvo7n7XHhjBfP
+         L/hSaTD63JCnew0dYTY01brac6SA/weUgtki6ApOWJivWNIcGXQkmb9nLU7ULij3Z2VG
+         6vB9LMQ5si8xoCsDRLBz+kuXqPt12HJ3XWcPeQNuCt/2RRfVD2RMevDZPjJ5vCeyPZdb
+         BSVxb492/DWBWDvka8Wks6UarLyCmtbxU2NHNNjOEC04mNz6UfQprJTIatBw0gLLlj4g
+         CKDGlqsYKDMVFQsGMPnbPmD6ersFF2sAxhPqa9ZXIp37HVZ5aqouFmO+LOol7LsGoMRn
+         yaTQ==
+X-Forwarded-Encrypted: i=1; AL+hErHyWgnD9b42WEz5wE8wMOq4dEW9wTpd/sSkYE/VLlrQr5oAhChXKLVMHnfxod6lGtNjYOg=@lists.linux.dev
+X-Gm-Message-State: APuU4Z8nI+7kfFstOQyB4SX/XTkGl3wq0BIqLw44G6G2coWAKzGl4RvC
+	JbM2wxNG1me0iZl90Vlm1r9BBYCTTrN0guPbMYVQTHsOWsN8fnFx3QBUWKmPj5psqF4=
+X-Gm-Gg: AZFdTZepzQeEOHI59mnRTHjNWHoMS/iaGCslD+zyG0XDbWKhUdKZKKCoxHjpZa99DqN
+	hMLVlvQzien7WMO6ePFQvQSTDFjy10PuvwqoDydWivv3rBqefPT8ag29bJAVIeV3itcklhQ9BRt
+	ZR707OU38tEd9YyKImQ1uXcp8aCBqdO89fKlQ/C5t1MNFts+Cr1SF6aScgh6DrvD+MWkN8N0gzX
+	PHCl52Uge5gBRmhEBVVMYOy7neLBL04iPFjdBEFyL7jJ8ileCuZ+eHn5gDtvzueMKhzZjZXWmci
+	AqJsc5f7apt+6s1jo1w5EAk1Sgs5gazs+ENlHHGxVBxz6ouJ2mdynb94MBywhhPY5eSAHM2uJ4B
+	DNTQkmcUsRmnEzDMWF24wCHYi7FMOzMnKH/qKo2ViBqtBpeIOin5vs2xfl6QpJzm44vWxbCxsev
+	cYUPg/00qZbsDFMNyD2KKc1RtY480idRGUN9B6GiGuaFi3r6emf8TMaytnyWE33Hg0BFqVtEr9+
+	OXmscxQWyDJHT9tvXzWCWwlpi+j76pfko2bNxc+Ca5Sarx2lhG2kZ7wA9jKTY5ZLXGo7M6mEG8g
+	j96x4PIeMuZXJDhUGh9K46P3NAPMF9SfZw==
+X-Received: by 2002:a17:902:d2cf:b0:2ef:e06c:38d2 with SMTP id d9443c01a7336-2eff756587bmr30526375ad.54.1795016538193;
+        Wed, 18 Nov 2026 07:42:18 -0800 (PST)
+Received: from p14s ([2604:3d09:148c:c800:9f37:bd39:7f19:3b3c])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2eff6246213sm16061995ad.56.2026.11.18.07.42.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Nov 2026 07:42:17 -0800 (PST)
+Date: Wed, 18 Nov 2026 09:42:14 -0600
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
+To: Francesco Valla <francesco@valla.it>
+Cc: Bjorn Andersson <andersson@kernel.org>, Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-hardening@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-doc@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH RFC v2 05/11] remoteproc: virtio: report
+ VIRTIO_F_ACCESS_PLATFORM when required
+Message-ID: <av3HVh5jlMsyaiq7@p14s>
+References: <20261102-remoteproc_virtio_map-v2-0-26b300e01c62@valla.it>
+ <20261102-remoteproc_virtio_map-v2-5-26b300e01c62@valla.it>
+ <avs6XQpoQmY_MNYx@p14s>
+ <avzQI6R9LubGP7-d@bywater>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -104,194 +114,129 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB12318:EE_|PAXPR04MB8974:EE_
-X-MS-Office365-Filtering-Correlation-Id: 79f7bb89-8be6-4f17-470c-08df458869c3
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|19092799006|7416014|1800799024|366016|23010399003|261009223027099003|261009221727099003|261009220027099003|4143699003|11063799006|261022105027099003|261028144727099003|261102123227099003|56012099006|261026121527099003|261009223327099003|261009221227099003|261026140227099003|261021121427099003|10067099003|22082099003|18002099003|3023799007;
-X-Microsoft-Antispam-Message-Info:
-	2XMeuwlxi3I0rS4TcYTYs3FJ2SZYzUEVbcWUl3ryi80h9SIZdtTZ2mO7EusxnV4f8PlrvqqSYn1VOkryjMhXJOjjrX0+xhynHAO6iwITNmsG15l0bYwz+V2PVxf08pnYOSluG1FvcOmL3Ous6kLdMFmAfs6kOw0hZig/R60zspWVY3SdnvbpOgAOPJhNOpLop47qTz5FMivuvHC1cWp4Cfhda2I/7MzVgGWUez5sGFipfi8UbYAweuYNIlfiaMFGyQEOaucEM7oGJDOys6pE+iG13zmynXdPNOKXrJnHipWCKINSLVxpU1LOKELBi+82okAIWWP5ckVs8Xp1Fe/iQ2HhEbSgXzA6Rv6phoEvHVX/CVeU3ZnJ7d39p4C3tRxAsc58OhaPzTloMQQX4as0RZR6E39/rWnO3VF8F6T29ytQiuaHqpDr25LpBdEVh2ti3PCEm5yn74QoIP4hDwpe0nV6A8FVRymhxoHJr2jridGt1O33Vxc9qhb1CO5DjI/r+Jy0tSLGZYdRvJL6q2dTFYaL3B9Rkv+W8JeAO00r2/eMe+HBakAw3hyWr/bW2blvwWg4av3mBCYTFYhMPYsyxjSPifJH3iXvH8RmG8wThoaKEuxwCIZv5uMjm74gEkGDbB+o363XBy6HlIhXfZiEbzKw4yL0OACA7CvkuDrGGR4=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB12318.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(19092799006)(7416014)(1800799024)(366016)(23010399003)(261009223027099003)(261009221727099003)(261009220027099003)(4143699003)(11063799006)(261022105027099003)(261028144727099003)(261102123227099003)(56012099006)(261026121527099003)(261009223327099003)(261009221227099003)(261026140227099003)(261021121427099003)(10067099003)(22082099003)(18002099003)(3023799007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?O+xQBYzhPfo2I5pjwaVBqPy3imeA9CNdNgS1IRuI/fVmJVaicUxORySfJYYI?=
- =?us-ascii?Q?urJv3Q8BFxu7apcgFDqHvqUk2dgdxbFcB4tVJ0hW8uUD1y7IqorLzNgMgxsz?=
- =?us-ascii?Q?KSLq5iIXgGe3fF6mYnws1fKjCO1L8c+PmGi8VOUVsrngHAR72mQr6Zf09q0r?=
- =?us-ascii?Q?4KTl/hBPuIX6jz9Sj5HsPHcvEJpD57jBFXC2x/0F5MOeW6hgdfWnR6p/olNu?=
- =?us-ascii?Q?Ib94P2CM1ODohL6QSAG3hJ28+Dc5jWVmfs+HPkHbChOa8CdNN8MWax9798Qm?=
- =?us-ascii?Q?AiO7xdIEZF9c7xaNeFaGjt6E4Gfdhbf46WmJJWApkOR7Uh4HUFX0ByaOnmVn?=
- =?us-ascii?Q?vP/qrTkTK7rAOLPjQrdhRwYBfHDXDGFP7jugqPKaui0L4uB99dupM+fmuOfB?=
- =?us-ascii?Q?VUhNfgRjbFIN0PaMNdukjjVA1JB5az96A4XY9MGcgE/kN6DCg3p1/G4eKGMC?=
- =?us-ascii?Q?UHMCMRaANKx5d/vq4Q1ozUQClSOhX9f7nme4aiKfp0Zfgz2A8TtDOf5+0HNQ?=
- =?us-ascii?Q?OF3wGDR+Sxr1PuD5qD0Qnf5BEeJupqkUmseYvr1kjRZxYtDtCCJ/i/oduE03?=
- =?us-ascii?Q?ql8kMJSiD1lJyj9xmFozTtM97Z2NaImdoxeuXOAVWNh1WrhGShsDyGaLc1Y9?=
- =?us-ascii?Q?SprR3P2eCkemk79NLPrZaifP48PtxrxSAG3y2EV5VtRakNh57X0+I/z+tEdV?=
- =?us-ascii?Q?DGIwdBh/t1gYoyXZ2kxc2ha3xUuYKz5vPaRKdQXHW0EO1h+Q1bBMEFasCcYH?=
- =?us-ascii?Q?RaGwQu9hid81bT/a97y68UyHb7MqrbvmeVOlfb6cyYiWtSukzhaG5pDWPpDi?=
- =?us-ascii?Q?bDefV5e4vvNEBZ0IEKFpBFxXoB3nUzOuWzTJP+ZaRsxslxHUjZNu7RnBN7km?=
- =?us-ascii?Q?ZbmRe7PB4kgOEq00NmbJxh7sBqrnDcI6XyG+4pF6UeS8r2blXnMcd1g2rXVG?=
- =?us-ascii?Q?BGOZ/rmPBMrlnYlDNDRyhL0hw/Nj47wdUw/rcnHoaQIfFBQIMStpQ+/dYOyl?=
- =?us-ascii?Q?iLcKD/5fHHTVAPX69NefbK5Z4CCmWmUOUd3/A0LVWBAlr3u0YrftiiLFXIXz?=
- =?us-ascii?Q?fTexIMpP/nTYJDGtBVJ/rARtAPlO3fqn6WX3ilFmwIQJHvWzRK+ItihIT79B?=
- =?us-ascii?Q?OjJkwIKzya+vDu8rHqQgLfFms8bxGuAByDzQBSGfhRGAHIbv5tJxza/JtRek?=
- =?us-ascii?Q?6gdVGKFAQ6x8qvh74b+Gl3KNlir7KxsRgluOX8W1/s2AFHRaG0dzUhmW29vB?=
- =?us-ascii?Q?Oue2zaJecstaduxtHXNCDWGp1DBaK1B7NPlUsTTWoZqGNlooVPSy7hX+QnQu?=
- =?us-ascii?Q?YAj4dMFqSzXLf9Y/5QWphxqfrf7pRZFYj8J/WqbKqunbazE/WFaLGP0xbfhA?=
- =?us-ascii?Q?BIC7CKTTLwKG91VPFFiO3pszS/6Kwak/PwgI95CIlZsNqJDVlxzduC6Kneni?=
- =?us-ascii?Q?suI5yzqqefj6f/bg/NGXdJ1GSvSneRJe2VREofnQ/PYei8Y3+SDX2RfWxwq5?=
- =?us-ascii?Q?/fhrLB6/+0g1H8OcAVf+CwMKo+nTfkMEysp3YX92U7KX7M5GMv36TW1siZcX?=
- =?us-ascii?Q?czk8fl529mev71XPbIHNFX392DgcScVBfx8LYq8xbc726UMRIu0g/wzl3xLF?=
- =?us-ascii?Q?4Uzd0BMkaUxO9LiL5LFnDB0LPWMHWKdDdQ2KCwxj+ojFNYz1kQERFYrqIr6g?=
- =?us-ascii?Q?T8P/JhuvUSIsq0k7nEL5GRmrNr6QchomMEDLkvsdFx9j8Webed0dCDSQO1yA?=
- =?us-ascii?Q?Zfk8gFtm79X7ACTtrlMlBJgi/qa3Auw=3D?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 79f7bb89-8be6-4f17-470c-08df458869c3
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB12318.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Nov 2026 15:27:10.3727
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: OIU4ERWak21ngOiqd+AyCDd5V9kvaW2bq9uFaoXIcXnFpjuf7f56hGYYRRD93jATa+A8hIlfNmQov1GLxwo0/Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8974
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <avzQI6R9LubGP7-d@bywater>
 
-Hi Luca,
+On Tue, Nov 17, 2026 at 11:18:03PM +0100, Francesco Valla wrote:
+> On Mon, Nov 16, 2026 at 11:16:13AM -0600, Mathieu Poirier wrote:
+> > On Mon, Nov 02, 2026 at 12:26:42AM +0100, Francesco Valla wrote:
+> > > Depending on the driver originating them, data buffers used for virtio
+> > > communication can either:
+> > > 
+> > >   - already be allocated from the coherent memory area that is
+> > >     accessible by the remote processor; this is the case of
+> > >     remoteproc-specific virtio devices, i.e., rpmsg and rproc-serial;
+> > >   - be allocated from generic kmem, and thus not necessarily accessible
+> > >     directly by the remote processor.
+> > > 
+> > > In the second case, the DMA APIs can be exploited to obtain a
+> > > functional communication, since they will take care of cache maintenance
+> > > and - if required - bounce buffering. The VIRTIO_F_ACCESS_PLATFORM
+> > > feature flag can be used for this purpose: with it set, the virtio
+> > > framework will use the aforementioned DMA APIs to map and unmap buffers.
+> > > 
+> > > Bounce buffering will be transparently used in two cases:
+> > > 
+> > >   - if the buffer address supplied by the virtio driver is not suitable
+> > >     for DMA transfers, or
+> > >   - if the reserved memory associated to the vdev is a
+> > >     restricted-dma-pool; in this case, *all* buffers will be bounced to
+> > >     and from this pool.
+> > > 
+> > > With this support in place, any kind of virtio device can be supported
+> > > through the remoteproc-virtio transport, at least from a data exchange
+> > > standpoint.
+> > > 
+> > > Note that remote processors behind an IOMMU need da == pa for the memory
+> > > region(s) the buffers are allocated from.
+> > 
+> > I'm not sure to understand the da == pa requirement - can you expand more on
+> > that?
+> > 
+> 
+> Yes! With a caveat: the IOMMU usage by the remoteproc framework and how
+> it can integrate with this work is the main reason this is an RFC, as
+> stated in the cover letter, because I'm not sure I understand all of it.
+> See for example the dma-to-da conversion in [1] or the comment in [2].
+>
 
-Thanks for the review.
+The remoteproc subsystem was written a _very_ long time ago and the context of
+some artefacts, such as [1] and [2], is long lost.
+ 
+> That said: all the IOMMU setup that is done today by the remoteproc core
+> is linked to the *remoteproc* device, not to the rproc_vdev (i.e., the
+> device backing the virtio device). For that reason, the DMA subsystem
+> should not be able to know that setup even exists, in particular while
+> performing swiotlb operations. Hence, the requirement to have a 1:1
+> mapping between da (i.e., the address the device uses) and pa (the
+> physical memory map).
 
-On Thu, Nov 12, 2026 at 04:23:36PM +0100, Luca Ceresoli wrote:
-> Hello Laurentiu,
-> 
-> > The i.MX94 Display Control Interface features:
-> >  * Up to maximum 3 layers of alpha blending:
-> >     - 1 background layer(Layer 0);
-> >     - 1 foreground layer(Layer 1);
-> >     - A programmable constant color behind the background layer;
-> >  * Each layer supports:
-> >     - programmable plane size;
-> >     - programmable background color;
-> >     - embedded alpha and global alpha;
-> >  * Data output with CRC checksum for 4 programmable regions;
-> >
-> > Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com> # bridge refcounting
-> > Signed-off-by: Sandor Yu <sandor.yu@nxp.com>
-> > Co-developed-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
-> > Signed-off-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
-> 
-> Looks OK, I just have a small remark and a few minor nitpicks, see below.
-> 
-> > +++ b/drivers/gpu/drm/imx/dcif/Kconfig
-> > @@ -0,0 +1,16 @@
-> > +config DRM_IMX_DCIF
-> > +	tristate "DRM support for NXP i.MX94 DCIF"
-> > +	select DRM_KMS_HELPER
-> > +	select DRM_GEM_DMA_HELPER
-> > +	select DRM_DISPLAY_HELPER
-> > +	select DRM_PANEL_BRIDGE
-> 
-> This should be unneeded now. As o fnow it is basically a complicated way to
-> say 'select DRM_PANEL'. And you are (rightfully) not using the panel API,
-> so this line should probably just be removed. Please double check by
-> building multiple configs, including an allmodconfig.
+I would like to reserve the current remoteproc IOMMU design for handling legacy
+rproc-virtio devices, i.e rpmsg and serial, and only use the modern
+virtio/swiotlb API to handle authentic rproc-virtio devices.
 
-Indeed, I addressed this in v12 and compiled DCIF with allmodconfig for
-i386, x86_64 and arm, 
+Based on what I see here [3], I think above sentence:
+
+"Note that remote processors behind an IOMMU need da == pa for the memory..."
+
+should be replaced with:
+
+"Note that remote processors not behind an IOMMU need da == pa for the memory..."
+
+[3]. https://elixir.bootlin.com/linux/v7.4-rc1/source/drivers/remoteproc/remoteproc_core.c#L703 
 
 > 
-> > +++ b/drivers/gpu/drm/imx/dcif/dcif-crc.c
-> > @@ -0,0 +1,221 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +
-> > +/*
-> > + * Copyright 2025 NXP
+> > > 
+> > > Existing use cases (e.g., rpmsg and virtio-console) are not impacted as
+> > > they are explicitly excluded.
+> > > 
+> > > Signed-off-by: Francesco Valla <francesco@valla.it>
+> > > ---
+> > >  drivers/remoteproc/remoteproc_virtio.c | 10 ++++++++--
+> > >  1 file changed, 8 insertions(+), 2 deletions(-)
+> > > 
+> > > diff --git a/drivers/remoteproc/remoteproc_virtio.c b/drivers/remoteproc/remoteproc_virtio.c
+> > > index f1b362158a9c..1496659ddff9 100644
+> > > --- a/drivers/remoteproc/remoteproc_virtio.c
+> > > +++ b/drivers/remoteproc/remoteproc_virtio.c
+> > > @@ -280,9 +280,14 @@ static u64 rproc_virtio_get_features(struct virtio_device *vdev)
+> > >  	 * All non-remoteproc-specific virtio devices are assumed to be
+> > >  	 * compliant with virtio specifications 1.x; there is no other method
+> > >  	 * to transmit this capability from the remote processor to the host.
+> > > +	 *
+> > > +	 * Virtio devices that are specific for remoteproc usage take care on
+> > > +	 * their own to allocate memory from the device's coherent pool; use
+> > > +	 * the DMA APIs for the others through VIRTIO_F_ACCESS_PLATFORM.
+> > >  	 */
+> > >  	if (!rproc_virtio_rsc_vdev_rproc_specific(rsc))
+> > > -		features |= (1ULL << VIRTIO_F_VERSION_1);
+> > > +		features |= ((1ULL << VIRTIO_F_VERSION_1) |
+> > > +			     (1ULL << VIRTIO_F_ACCESS_PLATFORM));
+> > >  
+> > >  	return features;
+> > >  }
+> > > @@ -312,7 +317,8 @@ static int rproc_virtio_finalize_features(struct virtio_device *vdev)
+> > >  	features = vdev->features;
+> > >  
+> > >  	if (!rproc_virtio_rsc_vdev_rproc_specific(rsc))
+> > > -		features &= ~(1ULL << VIRTIO_F_VERSION_1);
+> > > +		features &= ~((1ULL << VIRTIO_F_VERSION_1) |
+> > > +			      (1ULL << VIRTIO_F_ACCESS_PLATFORM));
+> > >  
+> > >  	if (WARN_ON((u32)vdev->features != features))
+> > >  		return -EINVAL;
+> > > 
+> > > -- 
+> > > 2.56.0
+> > > 
+> > 
 > 
-> 2026 I guess... v11, a long journey, hopefully it won't slip to 2027! :)
-
-Thanks, I guess I forgot to update this. It was/is a long journey
-indeed... :/ Addressed in v12.
-
+> Thank you!
 > 
-> > +++ b/drivers/gpu/drm/imx/dcif/dcif-crtc.c
-> ...
-> > +static int dcif_crtc_query_output_bus_format(struct drm_crtc *crtc,
-> > +					     struct drm_crtc_state *crtc_state)
-> > +{
-> > +	struct dcif_crtc_state *dcif_state = to_dcif_crtc_state(crtc_state);
-> > +	struct drm_bridge *bridge __free(drm_bridge_put) = NULL;
+> Reagrds,
+> Francesco
 > 
-> While this is OK, there is generally a preference to declare and assign in
-> the same statement when using cleanup actions, so...
+> [1] https://elixir.bootlin.com/linux/v7.4-rc1/source/drivers/remoteproc/remoteproc_core.c#L716
+> [2] https://elixir.bootlin.com/linux/v7.4-rc1/source/drivers/remoteproc/remoteproc_core.c#L461
 > 
-> > +	struct drm_bridge_state *bridge_state;
-> > +	u32 bus_format;
-> > +
-> > +	dcif_state->bus_format = MEDIA_BUS_FMT_RGB888_1X24;
-> > +	dcif_state->bus_flags = 0;
-> > +
-> > +	bridge = dcif_crtc_get_bridge(crtc, crtc_state);
-> 
-> ...it should all happen here, as:
-> 
-> 	struct drm_bridge *bridge __free(drm_bridge_put) =
-> 		dcif_crtc_get_bridge(crtc, crtc_state);
-
-Addressed in v12.
-
-> 
-> > +++ b/drivers/gpu/drm/imx/dcif/dcif-kms.c
-> > @@ -0,0 +1,168 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +
-> > +/*
-> > + * Copyright 2025 NXP
-> > + */
-> > +
-> > +#include <linux/device.h>
-> > +#include <linux/of.h>
-> > +#include <linux/of_platform.h>
-> > +#include <linux/platform_device.h>
-> > +
-> > +#include <drm/drm_atomic.h>
-> > +#include <drm/drm_atomic_helper.h>
-> > +#include <drm/drm_bridge.h>
-> > +#include <drm/drm_bridge_connector.h>
-> > +#include <drm/drm_gem_framebuffer_helper.h>
-> > +#include <drm/drm_panel.h>
-> 
-> Unused include?
-
-Removed, thanks.
-
-> 
-> > +static int dcif_kms_init(struct dcif_dev *dcif)
-> > +{
-> > +	struct drm_device *drm = &dcif->drm;
-> > +	struct device_node *np = drm->dev->of_node;
-> > +	struct drm_connector *connector;
-> > +	struct drm_bridge *bridge;
-> > +	int ret;
-> > +
-> > +	ret = dcif_crtc_init(dcif);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	bridge = devm_drm_of_get_bridge(drm->dev, np, 0, 0);
-> 
-> This function is deprecated. You can use of_drm_get_bridge_by_endpoint()
-> instead, which returns a refcounted bridge pointer. And since the bridge
-> pointer is a local variable you can just use a cleanup action to put it
-> easily:
-> 
->   struct drm_bridge *bridge __free(drm_bridge_put) = of_drm_get_bridge_by_endpoint(...);
-
-Thanks for the hint. I updated the driver to use the new function.
-
--- 
-Thanks,
-Laurentiu
