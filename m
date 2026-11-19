@@ -1,106 +1,95 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.51
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795104073;
-	b=C7rQbXCZNQhZnvApqHC+aroh5PfviFw/on93hV0qaomRl8xPSipqHivz/yg+44bfPdaw
-	 kZrcm8fiW0a8JXh4Hfi0+GumewPv+UHyhZEVbfa0FxKIiiSoXR4NB3oJmOlthZ4lID+oK
-	 O4Nc6pPdvi5gVjbuft4AdTAeKoKP1o2C+wCETyLxhPZbYPvN+8N+6FqkIL4WSJVlSjbXK
-	 oxZQ1/LLbK6PfAxSsMyypErhjs7b/TeoIpr1NPNuVEEbLE/BJsANrGGZze402AhDdQtuz
-	 8HK9u48E0ekbCh4PX4Hi87Ky9dyTkD0yHQDVCeBdm9lPeA3zLSkeT/LIAj6YJ5mEmPQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795104073;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:X-Google-Original-From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=kguNqPOSlh7fe1C453DDiUzdHElyaO7Alv2xhzvgL+o=;
-	b=jscVleUFzBQk1EQswoup/XuQZE1trgo16bMFlHQX9oa7XkWnB9JtJXlHd3xXgsBmABOj
-	 gjPI0eE/siA5025A3b/Abd4cKqXM1xIO9wx2H9ZHnE2Jhr4mK+s/N6SQs1CqHOjyqtV6J
-	 gShr7j3c4hyA21efIjtppeAYO8fjcw4/KIxgGAVw/T4z7gYEJJwuSLz2qBd97P3iDxWpB
-	 tDj5f8lfH/JjQWVf3aJzNTXO94wIQkFkNeDbPP2vBHCVKrkWWcQFsIqLE9rGpa+f8+cmg
-	 MWEV1/6qXIFhzqpJ1pRwu6OXomWICX4+eSbVre+co973cmo71l25gssQfFOpzm2+4BA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=rq4cuMvT;
-	arc=none smtp.remote-ip=209.85.218.51
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.130.15
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795104469;
+	b=VmMrzjmS5KrEfVMeIxr7trFtkRzJxaiHbwAL7wKSls9vUOsCM0IGPdWhjA5NFEXLoFU7
+	 925nwI8hfOgUWcCQypvY/BepfvBfQjmoRzGHu9/rlQPSTgspXTHjiysV1LwQj6sIxbCCD
+	 tCWf3T2brJE/h9P9Y81xUgNJCZlf995RwRnUPoahtOA2X50OvNcN7Jx2KU7q42QuptNGu
+	 fOxfv4W2+E+aaLxWEy7ChrWU0LcQr/GWQGjaR2ZhxJpezMGCL8uNtyTKQE9EBtb/9sZ2g
+	 YCpQnLtbDFN4KXtJSHFltgpo1AeqhFq5my7J8OgOhIYdDqtOMCUSBAyFTQxA4r8zB6A==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795104469;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:Content-Type:Content-Disposition:
+	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=w5wY7B4wxU+WJsr8t/SuFNdKrrVXmbRrJzqkurHNsuc=;
+	b=Qmjw8F6PKJzPIEWDHi6qzI7s+mFjKCGdMlZyIAjjZfDSmXK5PQ9kglZfxdffn238NRE0
+	 IDKxktnGb8CLMEdngSZe7b8LmD998PWIxclLh8zvg15KxlSZD76F7ccyjU5rEFwkCSNQh
+	 cXX5/5ayu/0ty0L441Gh39sCIlTAAz5A3cewHpBXO1tDiN7YWKfbUJLvkVKoQtMO7/H7Z
+	 AX5HXVB9/7BQVRnvEQG+qHENRFS5LpWpPRJraV466CSPmqzszJha9on4Sx0THNtDyZACX
+	 ApIeqcoRwpPuGWmmZ72xWq3wj9QndznMf84p8RDzeAUWhEzdoXIVoj6pQeg2mVAROIw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=oss.nxp.com;
+	spf=pass smtp.mailfrom=oss.nxp.com;
+	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=BYJiTg4t;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.130.15
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011015.outbound.protection.outlook.com [40.107.130.15])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9507760A2620
-	for <imx@lists.linux.dev>; Thu, 19 Nov 2026 16:01:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9507760A2620
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A45B9606A32A;
+	Thu, 19 Nov 2026 16:07:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A45B9606A32A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=rq4cuMvT
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-c50ac25cdd4so321702366b.1
-        for <imx@lists.linux.dev>; Thu, 19 Nov 2026 08:01:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795104070; x=1795708870; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=kguNqPOSlh7fe1C453DDiUzdHElyaO7Alv2xhzvgL+o=;
-        b=rq4cuMvTswLCS3wXC8hqelKC5dykra4XXmyByJ0/pnGW0kxe2hdx0ae7t0y11bDBpe
-         0svAB1NsNogMyHfSSO8G6lT4HnH4jBNlKhGzJSq7VEK3ca3MxHg30H6dSzqMtESKS+8n
-         f2UbzpTVDM7Q57dA5WvQ0JUXLkpjQ19RO5SsClmb98XqHmTZW2uWVlkl8KPaIZRhdhx+
-         ffWNqzc6asvlnH+IMA7JbzT2OhgfYgCz9Mbj+PwKKOEwOE2xYH0pp8YrEWBc/IBUjPSx
-         IDOT6oZfG5DY9NInr013bcPKboCu3/2BHwvMDhsHvLvlQOKXSuar/lI/42wzSIfdAUk1
-         3hug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795104070; x=1795708870;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=kguNqPOSlh7fe1C453DDiUzdHElyaO7Alv2xhzvgL+o=;
-        b=IvWp51kXneJBiuG3UHTXZCO8ZnzH0X/rtc1mTkRneIALm315O/ta5fMZxI84r+pf9H
-         rgJrs0rqgK9BnVDAyyvzb/TZJ8gaP1mMHrSLfQ9A4fD9gfE8PnCrD/trFrNa70IoLPaF
-         7SqBfUbT16YIwDjS0968OIEWLANvN6XvI0kToUs8344yZ0JyXVoMomjBsr+NixQ2dh3z
-         XaRxp/zyiD8MsYjJRbARglKy1A/qzlDSW98Ebn4IUj3ZhdR5fWGE10agAcbU7Bxxg7ut
-         BKCyJglYXqq8aMFpT8pXMvgfVHwFwbySESH4yoh2hhV/mITUv+RchC6+4PP4x0f9YWlI
-         Fe/w==
-X-Forwarded-Encrypted: i=1; AL+hErG55q08k89XziFeaZXvCik9C9PqMCPLXI0I1ULrBp65gfVHcCy947vr02r3RVms2m+r8ao=@lists.linux.dev
-X-Gm-Message-State: APuU4Z8dff9yUQtolqzDxmCrm3I6fmROCScPk03zFblxiQhbuOuE9Ka6
-	PAg/HMJ3JgZinJt4uL+76Qk1CLzFiGqVQ40ONSD+XiBPbWL2hfQkmcSu
-X-Gm-Gg: AYBFou1MX3SElkoce8dVYi4co9pW/NndlOFxYsJr+acPzfZm7DYT5nsgmqz/2yGxfdv
-	e13ySeHEKdg0QvPGPZw/pxzMtVPbqW4U5mauU3Ca5m0GdxV8MJBES/TC8b1orNd5s1sYZutamx4
-	IE0eU2DgWHEzHcrol0ltrFUWOcCBHjvaO9cUoGouBrPNuvbt5CKco06Clm3y7x21WQmWkMgxhXl
-	ApFCh5L0ny0G9TxOjZNyR8PK+GCCiW+PtTI6urcXXH7gguT2xL2P6mBfQSLrxx3PrqzTCxwiOj0
-	8N6dCqY4t0W4HLzK9SK2H5+jgrFCbyGk+Zt1BcEKhQSe5x5AXKW/z7WN/BpO+lAQkxMMiD7gDxu
-	or7DDegFZI3OxDuNSv1NWNoM3jmKcSZ+oLhyvF3evvDBG2mUu9kYkYs7YY7DaqpN5B6Jj71w/ip
-	+kWRHteViWfgnVGhQBYuR8Po3OBDIrrap2u6I4tUDN96H3ZnTldSB4HBc+ri24I5BhyB/jfg97O
-	L/DuCeVYRIdlU6b8z6OsFwVmV9/q2u7vtoRrVWOpa6iMXzfQ3+5rBDA2cDG3rOu0eTvtiAlVvKz
-	6j3EQxYLOwgLLQkmwIOXuJjdsiZZ/ASCcUVRivqFpxsMjLOHyc6xFLGXVWRJN+elr8ydQpVU+se
-	ZwqGWdc1EmlLmrGoncm55pH5VJrWpVEzEqF7v0mRgPG4epUrzxJ2J5gg=
-X-Received: by 2002:a17:907:3e15:b0:c51:249f:7331 with SMTP id a640c23a62f3a-c513a3aacc8mr39598366b.1.1795104069371;
-        Thu, 19 Nov 2026 08:01:09 -0800 (PST)
-Received: from Lord-Beerus.station ([93.146.104.162])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4ab6b9add26sm323784f8f.44.2026.11.19.08.01.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Nov 2026 08:01:08 -0800 (PST)
-From: Stefano Radaelli <stefano.radaelli21@gmail.com>
-X-Google-Original-From: Stefano Radaelli <stefano.r@variscite.com>
-To: Frank Li <Frank.Li@nxp.com>,
-	linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Cc: pierluigi.p@variscite.com,
-	Stefano Radaelli <stefano.r@variscite.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Daniel Baluta <daniel.baluta@nxp.com>
-Subject: [PATCH v3 2/2] arm64: dts: freescale: imx93-var: Add Cortex-M33 configurations
-Date: Thu, 19 Nov 2026 17:00:54 +0100
-Message-ID: <f52268cdb748fc4fcca95f8de1384054da8d7964.1795103362.git.stefano.r@variscite.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <cover.1795103362.git.stefano.r@variscite.com>
-References: <cover.1795103362.git.stefano.r@variscite.com>
+	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=BYJiTg4t
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=h76aFVNBcOnN85LwCjE0I8Qhx+/+cttHWnGB/SXcRMppsgrHmniea/UQWCilWPOd8FzYmsJ8BQfe5uJkvBZchjCuYZoWifFOz5C/KQ1/2HyIO3TmP8ge2xJZbkxWKFjXyMXjpWwV/OgNidqs62F/i7laO1FeV/+Cx7J3vpd9JRkc779CrqZZEVGBjD/V6+wgtMKyspjDhdbxi4+5kw3dsytNTPyUB5gjK+4omyEGGENuoOwLJVACZtPHmfBxIi/mq8Q15FkHoe+NNoOJj3WpkSeW4A+nSny3vX8FeE/UDXP/V6SVx68tnE+NFBLAfB/Q3QC8yoTdzq2KsXZQRIITlA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=w5wY7B4wxU+WJsr8t/SuFNdKrrVXmbRrJzqkurHNsuc=;
+ b=Do6eebfiWD5gxcGG9wWkLhGU8rU5W+/+YVhAR9RwBma8SxyHCnTspqcwkzSQ5BnIE+kJWckoetgjeADdY1GdTr83WMiH3SyPZgRyFwQVcNGM7ILabI3/o+lticfME/oQoojhB8JGzSHKQWawts7byCosXfVpRXgBnHyHBKZurOS1Ud3/PggimLez3ct2i3kmNZw3TqnqLNmw4dq2y/+BEIvpfGile3b+37bCfnpkxSSv+KA/8aqVO3m05Jtehvx/N2UxpzmnlgYtM4iQtSLOfG1x1TWTyoB8mMCGWCftcBuTRbhvMUqL2Om6X4cgGDprdAxSEN8+iOImyTaXR8CzXg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=w5wY7B4wxU+WJsr8t/SuFNdKrrVXmbRrJzqkurHNsuc=;
+ b=BYJiTg4tbfP7HdzZfjhl0n3jzXg2lZyPjR9uFXpVJaMkOAl+cj+A91xVCKmIim5lTyZRSVuezTFbxvltD2EnPB88KjWIP1gxyKH1aIHWS5BmdM7FVMsFiVAEGX8z5wuDB4UYjSyZ2wMh8+I6eRha52pAhA+00weaOCuk/AXMJUDxftutrIEhTrz+k5KeLiIqLij0+C+KAODLrE1htjOcgc4P4lY2sHY7VtmeoEFgtgbggq25tUdQI6gb+j++fKg/KeGoaINZR0f4g3y71pgJ2atNTav02ncculkHq7Qe2Ks8sn94EdwJBOEnURmhuudjzWaC1S/bkc1Pvp4DHWg/hQ==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from MI3PR04MB12438.eurprd04.prod.outlook.com (2603:10a6:290:76::14)
+ by GV4PR04MB601625.eurprd04.prod.outlook.com (2603:10a6:150:411::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.10; Thu, 19 Nov
+ 2026 16:07:43 +0000
+Received: from MI3PR04MB12438.eurprd04.prod.outlook.com
+ ([fe80::c715:c32:8bb1:b70b]) by MI3PR04MB12438.eurprd04.prod.outlook.com
+ ([fe80::c715:c32:8bb1:b70b%4]) with mapi id 15.21.0639.010; Thu, 19 Nov 2026
+ 16:07:43 +0000
+Date: Thu, 19 Nov 2026 10:07:34 -0600
+From: Frank Li <Frank.li@oss.nxp.com>
+To: Fabio Estevam <festevam@gmail.com>
+Cc: lee@kernel.org, maz@kernel.org, andy@kernel.org, jic23@kernel.org,
+	dmitry.torokhov@gmail.com, linux-input@vger.kernel.org,
+	mfd@lists.linux.dev, linux-iio@vger.kernel.org, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, crofts@kernel.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Subject: Re: [PATCH v5 1/4] dt-bindings: mfd: mxs-lradc: Fix interrupt order
+Message-ID: <av8exqpGDbMhDnzK@SMW015318>
+References: <20261119134041.16611-1-festevam@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261119134041.16611-1-festevam@gmail.com>
+X-ClientProxiedBy: PH7P220CA0154.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:510:33b::35) To MI3PR04MB12438.eurprd04.prod.outlook.com
+ (2603:10a6:290:76::14)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -110,227 +99,136 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|GV4PR04MB601625:EE_
+X-MS-Office365-Filtering-Correlation-Id: 763b5f65-96e2-4cc1-f30d-08df46573e94
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|1800799024|366016|19092799006|23010399003|56012099006|11063799006|261021121427099003|261021123027099003|10067099003|261102123227099003|261009223027099003|261026140227099003|261022075727099003|261022105027099003|261028144727099003|261026121527099003|22082099003|18002099003|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	GGXVZV/3sX7ouLS0cTpSWxFPA2glNB15InfuxG8bvYIu8114N3lzGkgV/Si6G1aYNdA+wyvep6i46o0CaToZNpcbqFP1W+RFUkHm87XP/s+XsLDQmw1kTZTchJe5JqYJ3pmDidH5yffrfgER1sGlR7Chfy/vcFIwJvdmx4eD39k9hSlZxrQyyWUkAkpceU9qkD7gud2vVMeAmfvscDHGFuF7TwXqPUA3VN0qCZZL/UB1/HP7LZitLc/JYnGKNylAqdVGC2Iq6OvWt6d4Bv7LdWf9shNvFZRjYEYqdRj9kQjYJ8oPEN6WiNbtfy7rCuLMRGypYMwFRwOAAQbc31ZCtnvPIBUcFR+uJRke1KkhUp1ZusMfIHC+FIdNyaNDWb7izWCCae2lFJtESje+IPVh8Y6Hkz5iG8KTajFOrQaUw+DplcfJhh43MCcHxuhHtZxuKHgEehb2DOZuFeqsV8vtw2NuDXze+uuElFmGoTpfVxVrzCAn6oU6XBwUXWWrqxQLOpQp1sNaT/F9L09sJRnqzUfbvGsGPJuFKBrI8mcCoOCYYQyi1PevaS1G1BtuZKLjTHHEQk/MR83o85lD07IFBIIPL60TYS+Gkv7YUGUlOn6VtMZM2JCHYlrgWapoUol0Ehar/s7lcMMxybuNr6B187hA1m82wLW7Hi5s5uXwQhk=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(19092799006)(23010399003)(56012099006)(11063799006)(261021121427099003)(261021123027099003)(10067099003)(261102123227099003)(261009223027099003)(261026140227099003)(261022075727099003)(261022105027099003)(261028144727099003)(261026121527099003)(22082099003)(18002099003)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?8k1+VZEA2+HQQ2E7ya1sQHfD2xR8HIlbNIOc+SBzC3DNio6uzd7l9qFihlaY?=
+ =?us-ascii?Q?ID6IwVLKhQljxgaamio4P5Lx2xbfrnuZFMT2nnrj1jqYm3Ycb1P1cvvph6FE?=
+ =?us-ascii?Q?XgAujF5y8h3i5chDinODdW8ULwzfdbcywY0vQIQZH8rOxXCrhWFn0p3zTL9Q?=
+ =?us-ascii?Q?yYihADPKjf2GVmB0JIY1SvNVKsOqorIMzVRmb7emqcErn3rSVYjep143k0N3?=
+ =?us-ascii?Q?ghJDFrRyvBt56ltnzmY0fFXrwL3YKBh8oYgeF8EHHmJp5PUQiRpKKMZ9BXOD?=
+ =?us-ascii?Q?PybLssYPtkojKi+iIbkzC+Y7MGpbaDYrFUhF+B+qnUe0UNC+CeD573r+snaC?=
+ =?us-ascii?Q?Rb7O7Aebm/882gONzlyLLMyAzx6TPNbJlBDn7rcBdVa20nm7TK68X3N6pc0V?=
+ =?us-ascii?Q?43Kw7fFn6tG4qspJTiUKp+k1VHY0fITDzbN1EG+e4VWyK7RTPDAiMh5lFRUd?=
+ =?us-ascii?Q?/whv2rcp2rKw7p9l9P12phVtbE1WbE0NgP8sY2ykkHMV+ZjcTqeTNtVgE1BP?=
+ =?us-ascii?Q?4qrzfcMjqsnrFbv33gN7D7Utz3yvnfCbts9MvEQfS3I9hYsgdf2+2OYtK1CQ?=
+ =?us-ascii?Q?3FZApF4abYNzZgiwsZd3UtGvFrLTABAm7AdZjAJ4P02WQ4usKjoov7O51swA?=
+ =?us-ascii?Q?RL+i0hyxSKH0NwCdLdWL2aB7tlCTcAxV6BPzIr5HG9NPJMw46sSOif0nHPtD?=
+ =?us-ascii?Q?0MRAl7cPvHA+jE9F6/Z34Hkw408OPx4qfBslD+SWuJ/9eQBsuNHRnvPxqSbT?=
+ =?us-ascii?Q?AGMyVFXzi5xvhURCBScUkOMh2SayRAnfO9MGqhKrqN+sWPzpoHmA9N/1lJA0?=
+ =?us-ascii?Q?dAEnft55VijeZMduFd0e20DmbWuKFmQ4kQaAKp0N040tMFaN6a0sX5SyTs9W?=
+ =?us-ascii?Q?bTbLWB62DPbw6xunqVqh3G95QuZyZuVKKIG/8BUgY18l1uiLKh2n3wGOvv5M?=
+ =?us-ascii?Q?1RCo1HgAZhXEkr03CIrvbEEIfvUknGRA8P0OpKbnIqzPnbScPmx7xqd6tR8e?=
+ =?us-ascii?Q?vEuMUdS8ExiY+fcHja6FZWep8hx/Pz+Ya2093Elz6dOKMyAIploBmchYahg0?=
+ =?us-ascii?Q?uKMvwXom108fPCwCIJKHjPY54/f91ikq1kuVnD07aEQa4WAnKo3johTmiU+m?=
+ =?us-ascii?Q?BUCjrm9IUC3zZzx1w4pviXpenc8o0RyU05SnV+yFzEZiidOwnALo9I+y2HVF?=
+ =?us-ascii?Q?9qjR3bYSLmaO2iU6CgUyIObsa5/20QOIR7c6kSChgAqeGQjOqh6x1fOedptF?=
+ =?us-ascii?Q?OO3w9oaGxDqpHc6UCrX1LZGt7jMeeDv4qf+GIOp8vLGtpZX1RQjAFyphw6ja?=
+ =?us-ascii?Q?mnYoBglnz2zZ0dt0diKLhK/oirN2fcSIdn8HI8rleyER+cs7tMMAqfyXvCE6?=
+ =?us-ascii?Q?70Adc8hx++qZZGwjl4bdtKr22cBA4gcs2JIpD3/h5YkdV95QIny0yECgQE9c?=
+ =?us-ascii?Q?1W03G6kS6i2l5oKNA38rg6qWOpT5U+L6piQyCZb8dhBBW6Sr8vby7Lri8Ky9?=
+ =?us-ascii?Q?gugyIjKi3Wkjz5WXA0C6EtmuAD+8/MXVogct/BrqwB16X+3Lz13Yyx7xvlzL?=
+ =?us-ascii?Q?rm7qJfrxuVpvRNMVH2jC6q7UABq/+eNEbiKRNSBNzg+HL60OH4f9Nwfx7/HA?=
+ =?us-ascii?Q?1q9EG8aHjSJxh9W/SH8ccJ4N6xgIGt+cqW0FGrFjwj3WExEhz6x9X88E03wG?=
+ =?us-ascii?Q?2GUFPKZejq2an55gdS4GU2p85ABX5YDYpIh8RozljlGGqbqVETJANd+troyB?=
+ =?us-ascii?Q?Xw0Me+xgW9xn4iAqEY2/HVBcPOfQcma0zwYlkbXEkH38EgGP+FDR?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 763b5f65-96e2-4cc1-f30d-08df46573e94
+X-MS-Exchange-CrossTenant-AuthSource: MI3PR04MB12438.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Nov 2026 16:07:43.8182
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: oYXxmjZwEYMej+spqDx+TG8wFVDDHzgPmrY0LZ0ybSzQ/M2Ybdzm9U64LWyCqZErxI1skMeD4HTiliKZ5uwQ+5/4KUMLGwCEhgg9bKyPyO3S9TRLhSQN72w8iuYehgZj
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV4PR04MB601625
 
-From: Stefano Radaelli <stefano.r@variscite.com>
+On Thu, Nov 19, 2026 at 10:40:38AM -0300, Fabio Estevam wrote:
+> The interrupt descriptions added during the conversion to YAML do not
+> match the ICOLL source numbers used by the existing DTS files.
+>
+> For i.MX23, Table 5-1 of the reference manual maps source 36 to touch
+> detection and sources 37 through 44 to channels 0 through 7. The DTS
+> lists these sources in that order.
+>
+> For i.MX28, Table 5-1 maps source 10 to touch detection, sources 14 and
+> 15 to the threshold interrupts, sources 16 through 23 to channels 0
+> through 7, and sources 24 and 25 to buttons 0 and 1. The DTS also lists
+> these sources in that order.
+>
+> Reorder the schema descriptions to match the hardware documentation and
+> the existing DT ABI.
+>
+> This change was prepared with assistance from OpenAI Codex, which was
+> used to compare the binding with the reference manuals, existing DTS,
+> and driver ordering.
+>
+> Fixes: 009528b5aa13 ("dt-bindings: mfd: convert mxs-lradc bindings to json-schema")
+> Signed-off-by: Fabio Estevam <festevam@gmail.com>
+> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
-Add Cortex-M33 overlays and combined DTBs for DART-MX93 on Sonata and
-VAR-SOM-MX93 on Symphony. Use the common remoteproc configuration and
-identify the existing reserved memory with memory-region-names.
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
-Include the common configuration only from the overlays, so remoteproc
-and MU1 are enabled only in the M33 variants. Use the -m33 DTB when
-remoteproc support is needed.
-
-Mark the peripherals used by the M33 firmware as reserved. Disable Wi-Fi,
-Bluetooth and the devices depending on GPIO4. On Sonata, also disable USB
-OTG1 because its USB-C role controller is unavailable.
-
-Signed-off-by: Stefano Radaelli <stefano.r@variscite.com>
----
-Changes in v3:
-- Move the common configuration extraction to patch 1.
-- Use "reserved" for peripherals assigned to the M33 firmware; keep
-  "disabled" for dependent devices.
-
-Changes in v2:
-- Enable cm33 and MU1 only through the M33 overlay on DART-MX93.
-
-This patch uses the following binding and driver commits, already in
-linux-next:
-
-- ebb21cc5d1c0 ("dt-bindings: remoteproc: imx_rproc: Document
-  memory-region-names to avoid implicit ABI")
-- 8396089f91fa ("remoteproc: imx_rpoc: Use memory-region-names to avoid
-  implicit ABI")
-
- arch/arm64/boot/dts/freescale/Makefile        |  9 +++
- .../dts/freescale/imx93-var-common-m33.dtsi   |  2 +
- .../freescale/imx93-var-dart-sonata-m33.dtso  | 55 +++++++++++++++++++
- .../dts/freescale/imx93-var-dart-sonata.dts   |  2 +-
- .../boot/dts/freescale/imx93-var-dart.dtsi    |  1 -
- .../freescale/imx93-var-som-symphony-m33.dtso | 50 +++++++++++++++++
- 6 files changed, 117 insertions(+), 2 deletions(-)
- create mode 100644 arch/arm64/boot/dts/freescale/imx93-var-dart-sonata-m33.dtso
- create mode 100644 arch/arm64/boot/dts/freescale/imx93-var-som-symphony-m33.dtso
-
-diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index cfd548284358..05a7556e9de9 100644
---- a/arch/arm64/boot/dts/freescale/Makefile
-+++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -956,8 +956,17 @@ dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba93xxca-lvds-tm070jvhg33.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba93xxla-lvds-tm070jvhg33.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba93xxla-mini-ezurio-wlan.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba93xxla-mini-lvds-tm070jvhg33.dtb
-+
-+imx93-var-dart-sonata-m33-dtbs := imx93-var-dart-sonata.dtb imx93-var-dart-sonata-m33.dtbo
- dtb-$(CONFIG_ARCH_MXC) += imx93-var-dart-sonata.dtb
-+dtb-$(CONFIG_ARCH_MXC) += imx93-var-dart-sonata-m33.dtb
-+dtb-$(CONFIG_ARCH_MXC) += imx93-var-dart-sonata-m33.dtbo
-+
-+imx93-var-som-symphony-m33-dtbs := imx93-var-som-symphony.dtb imx93-var-som-symphony-m33.dtbo
- dtb-$(CONFIG_ARCH_MXC) += imx93-var-som-symphony.dtb
-+dtb-$(CONFIG_ARCH_MXC) += imx93-var-som-symphony-m33.dtb
-+dtb-$(CONFIG_ARCH_MXC) += imx93-var-som-symphony-m33.dtbo
-+
- dtb-$(CONFIG_ARCH_MXC) += imx93w-evk.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx93w-frdm.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx943-evk.dtb
-diff --git a/arch/arm64/boot/dts/freescale/imx93-var-common-m33.dtsi b/arch/arm64/boot/dts/freescale/imx93-var-common-m33.dtsi
-index de0e56f322a2..51b4cfe143d4 100644
---- a/arch/arm64/boot/dts/freescale/imx93-var-common-m33.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx93-var-common-m33.dtsi
-@@ -14,6 +14,8 @@ &mu1 1 1
- 		  &mu1 3 1>;
- 	memory-region = <&vdevbuffer>, <&vdev0vring0>, <&vdev0vring1>,
- 			<&vdev1vring0>, <&vdev1vring1>, <&rsc_table>;
-+	memory-region-names = "vdev0buffer", "vdev0vring0", "vdev0vring1",
-+			      "vdev1vring0", "vdev1vring1", "rsc-table";
- 	status = "okay";
- };
- 
-diff --git a/arch/arm64/boot/dts/freescale/imx93-var-dart-sonata-m33.dtso b/arch/arm64/boot/dts/freescale/imx93-var-dart-sonata-m33.dtso
-new file mode 100644
-index 000000000000..51ec0beea7c9
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx93-var-dart-sonata-m33.dtso
-@@ -0,0 +1,55 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Cortex-M33 support for Variscite DART-MX93 on Sonata-Board
-+ *
-+ * Link: https://variscite.com/carrier-boards/sonata-board/
-+ *
-+ * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com/
-+ *
-+ */
-+
-+/dts-v1/;
-+/plugin/;
-+
-+#include "imx93-var-common-m33.dtsi"
-+
-+/* Reserve the peripherals used by the Cortex-M33 firmware. */
-+&flexcan1 {
-+	status = "reserved";
-+};
-+
-+&gpio4 {
-+	status = "reserved";
-+};
-+
-+&lpspi5 {
-+	status = "reserved";
-+};
-+
-+/* Disable Bluetooth along with Wi-Fi and release the JTAG pins. */
-+&lpuart5 {
-+	status = "disabled";
-+};
-+
-+&lpuart7 {
-+	status = "reserved";
-+};
-+
-+/* The USB-C role controller uses an interrupt on GPIO4. */
-+&ptn5150 {
-+	status = "disabled";
-+};
-+
-+/* The USB-C role controller is unavailable. */
-+&usbotg1 {
-+	status = "disabled";
-+};
-+
-+/* Wi-Fi reset is connected to GPIO4. */
-+&usdhc3 {
-+	status = "disabled";
-+};
-+
-+&wifi_pwrseq {
-+	status = "disabled";
-+};
-diff --git a/arch/arm64/boot/dts/freescale/imx93-var-dart-sonata.dts b/arch/arm64/boot/dts/freescale/imx93-var-dart-sonata.dts
-index 1ca3ec8330d0..e3afd0efe5c7 100644
---- a/arch/arm64/boot/dts/freescale/imx93-var-dart-sonata.dts
-+++ b/arch/arm64/boot/dts/freescale/imx93-var-dart-sonata.dts
-@@ -291,7 +291,7 @@ ft5x06_ts: touchscreen@38 {
- 	};
- 
- 	/* USB Type-C Controller */
--	typec@3d {
-+	ptn5150: typec@3d {
- 		compatible = "nxp,ptn5150";
- 		reg = <0x3d>;
- 		interrupt-parent = <&gpio4>;
-diff --git a/arch/arm64/boot/dts/freescale/imx93-var-dart.dtsi b/arch/arm64/boot/dts/freescale/imx93-var-dart.dtsi
-index 4ee4d74cadea..6c596d61bd21 100644
---- a/arch/arm64/boot/dts/freescale/imx93-var-dart.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx93-var-dart.dtsi
-@@ -12,7 +12,6 @@
- 
- #include <dt-bindings/usb/pd.h>
- #include "imx93.dtsi"
--#include "imx93-var-common-m33.dtsi"
- 
- / {
- 	model = "Variscite DART-MX93 Module";
-diff --git a/arch/arm64/boot/dts/freescale/imx93-var-som-symphony-m33.dtso b/arch/arm64/boot/dts/freescale/imx93-var-som-symphony-m33.dtso
-new file mode 100644
-index 000000000000..8df03ed3c004
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx93-var-som-symphony-m33.dtso
-@@ -0,0 +1,50 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Cortex-M33 support for Variscite VAR-SOM-MX93 on Symphony-Board
-+ *
-+ * Link: https://variscite.com/carrier-boards/symphony-board/
-+ *
-+ * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com/
-+ *
-+ */
-+
-+/dts-v1/;
-+/plugin/;
-+
-+#include "imx93-var-common-m33.dtsi"
-+
-+/* The resistive touchscreen uses GPIO4. */
-+&ads7846 {
-+	status = "disabled";
-+};
-+
-+/* Reserve the peripherals used by the Cortex-M33 firmware. */
-+&flexcan1 {
-+	status = "reserved";
-+};
-+
-+&gpio4 {
-+	status = "reserved";
-+};
-+
-+&lpspi6 {
-+	status = "reserved";
-+};
-+
-+/* Disable Bluetooth along with Wi-Fi and release the JTAG pins. */
-+&lpuart5 {
-+	status = "disabled";
-+};
-+
-+&lpuart7 {
-+	status = "reserved";
-+};
-+
-+/* Wi-Fi reset is connected to GPIO4. */
-+&usdhc3 {
-+	status = "disabled";
-+};
-+
-+&usdhc3_pwrseq {
-+	status = "disabled";
-+};
--- 
-2.47.3
-
+> ---
+> Changes since v4:
+> - None.
+>
+>  Documentation/devicetree/bindings/mfd/mxs-lradc.yaml | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+>
+> diff --git a/Documentation/devicetree/bindings/mfd/mxs-lradc.yaml b/Documentation/devicetree/bindings/mfd/mxs-lradc.yaml
+> index 782b2f4005a0..755029880677 100644
+> --- a/Documentation/devicetree/bindings/mfd/mxs-lradc.yaml
+> +++ b/Documentation/devicetree/bindings/mfd/mxs-lradc.yaml
+> @@ -87,13 +87,13 @@ then:
+>    properties:
+>      interrupts:
+>        items:
+> +        - description: touchscreen
+>          - description: channel 0
+>          - description: channel 1
+>          - description: channel 2
+>          - description: channel 3
+>          - description: channel 4
+>          - description: channel 5
+> -        - description: touchscreen
+>          - description: channel 6
+>          - description: channel 7
+>      fsl,lradc-touchscreen-wires:
+> @@ -102,6 +102,7 @@ else:
+>    properties:
+>      interrupts:
+>        items:
+> +        - description: touchscreen
+>          - description: threshold 0
+>          - description: threshold 1
+>          - description: channel 0
+> @@ -110,11 +111,10 @@ else:
+>          - description: channel 3
+>          - description: channel 4
+>          - description: channel 5
+> -        - description: button 0
+> -        - description: button 1
+> -        - description: touchscreen
+>          - description: channel 6
+>          - description: channel 7
+> +        - description: button 0
+> +        - description: button 1
+>
+>  additionalProperties: false
+>
+> --
+> 2.43.0
+>
+>
