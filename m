@@ -1,57 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795080746;
-	b=o21XXPxluPv2QNjkira/8M4Q9EHzWv3/qS7dszWDZOCdiXmCZcmcRL5K0RQuRqbVX2oa
-	 XFFd7CZxEcA8/qMvilA5KY/kc8fBDTruLXHbQqmEg296MtEd1Xp5yVmB7aWQniQV6HX6t
-	 xERkR3nBt3RRSNY019CEaihTk37k/bUj7/uzFw7uutITGCpI2qzdtqF3ZLMaQwmlvlY97
-	 pIBznspF04C/qJWF5w1kJ62iX3Ukkvb5SGzXQR3fP4xoCkt/EeX3BANtu0JFzuoj56n82
-	 nQNze0ohKRkRv/aBzpkj0vjI/2qL6U2WOrSQobTrz7uU4ptjwW8qQws5r93pPbEPAxA==
+	t=1795080928;
+	b=Pl7Phd/qfrBUJqIBS45K1u7TvV4VxyQNcvOMBDuPD8E6NgWTkRKXWyODXsQ0233rhIgp
+	 x0hr1jVpzh/yrU8ZQwLQhqz9wMFv/83tUdIJ3mLkQsT4SYo1IFTsdCymiADdqOykk1pVC
+	 cx0CKGrVhcmeZHmI+CTZvnk0dGhERLsMmitaXfp1gmPlJeGhsNGTsW7hfDfdEo62MauHC
+	 bHWGWGwhyuhEf/tjxa6BDv9hmaKkoIOyajbOg+je8e2qlLRFFKrDwwszci+tkEgaWAr3Z
+	 Wm1SEVuvRrBM6sBhKxewS9UHjxfpxx9B/dGOMWGVbNfW5b6VIRBcb9h/lF0SIiiXN2Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795080746;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795080928;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=Cb/rdS3dUQAnUffSKLin/7OD+BSanQxlhIVsgC5f/r0=;
-	b=4kQREUDWcxCz+Z74KNJ7QRxh1zdwR94H/Hf1RT+qOyTg73KiaZ5SZ67K+31RDFTLlO4e
-	 KlXbLYLOcjdR68c96IOGCoHuGxm6XQ9RR1f85D+Y8cIR/4Sy9LSB5lmtMEgIzSLpT3hxt
-	 /XoFHbaz1hqnWrXPbBOVGNwwNKqTK+5QzfEwsVAHpzV4Xj60NfjagTYTad37j52nRexx/
-	 XopY3r1I62DB46jAZQDUK/u8etmSBtPQAwrrl3WBfA4VQ9dzwymYqZ7fwBC20bgeJu40w
-	 5Is5fZvBPyA3oJWwRohEYWz4zoC/3Wc7bxBHbAEr5BXtvX4r6ii5aPnBV+UqSiJ4/MA==
+	bh=LLfVBaD4Kmp8LPJLmZT1e9Itac1d29q9Djaoah8jO3c=;
+	b=Vl70KJMEAXNV+mISR4DyCjMM3sEsrGJZzvC0aB51tGob1FR792BDA5tIVOthMj7O/7U5
+	 3TexRvBbAj+y2RR7CA1Xvu7LBnnqYUWTFsmwT53f92UuPMODw7NeNnaDt1N2b3Swb4HmS
+	 EMBgP8tvHvnXuKq+Pj1c1reDC3lN0pKU47xBJcA8tEdMhPxyaZQpn//2hVAmGPuVCYcaT
+	 UhDiTqoUBfv6fElHT+UvTJeU4R5WQBQ31J4bVcbQlhsNy/Kwkk9EN5y7+eX7iYyvlv2+0
+	 ddP+QiAgz81/q0xTGnnbdKpuoDpqK7tf453uSjkMS0+65mCAtVDvvUUaCayFraKj+pA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TxDwGX1z;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Kv675w9J;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 346EB606A320;
-	Thu, 19 Nov 2026 09:32:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A433960A2611;
+	Thu, 19 Nov 2026 09:35:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TxDwGX1z
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6272B1F000C4;
-	Thu, 19 Nov 2026 09:32:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Kv675w9J
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF8C91F000C4;
+	Thu, 19 Nov 2026 09:35:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795080745;
-	bh=Cb/rdS3dUQAnUffSKLin/7OD+BSanQxlhIVsgC5f/r0=;
+	s=k20260515; t=1795080928;
+	bh=LLfVBaD4Kmp8LPJLmZT1e9Itac1d29q9Djaoah8jO3c=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=TxDwGX1z+1+iJ+B3Hq3hfQfoH5nsnDnlu5DVhnw/OV6TtRaFCjtg75WH1lOgVVvm7
-	 4sp4FLupV9rrG6zpN24m28GRAzdsbVxDxdNuO3fx8+HJfeA17n7ZEeS6ZZGrFBdpgX
-	 TqB5RqZ6xI3YVm03CYyzCwY7HMnQzXM+gHsIDaYxSGGmzy/FDw0NZJKuTzoVO40+Pf
-	 xOIepQ16Y+k5+3wBbV+od7jIjaDWDi23752yHmC17aDvrdiOC0oVy1rkRhAWlDs75V
-	 7rKTP5c4pbj84KMxwJnCQy75i2PBZdSbvPXFkoihvFpRMSKJlXnz4b8drD+fv2Opbs
-	 edc7sjgM4oqrA==
-Message-ID: <sashiko-outbox-222843@kernel.org>
+	b=Kv675w9JDRnsbe+nyyXFc1J7BUuDos8g7haJ/amfYtJC7RSp9JG3W4AQX7AqUr9v0
+	 lJxQnZeyuHDbUeuTgzv7h3Ox0a+JQwQEQYpguw4CC4QGS3sajp+WoEnzQbzY2wfvTx
+	 bv53qyWMS7uG0GOFxpUMWCf8pSNEvbwfa5mlyCVTxGZB3rZbGFDiJp6KHMpBa5zOyp
+	 6HBy2+SYxzIllgVG9Or+XB2VeFotkqbA6LDU1lFhGXyJnNA2sCcKp2cxjzxZOUO6Ky
+	 UW0BvYtXeawp3ZaXv5CvgvPWE366xXw4Fh0+y6U+EGbyhD1eA0fiPVWIU0twq+4bD2
+	 Wsg8X0txaJpBw==
+Message-ID: <sashiko-outbox-222858@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v8 03/11] media: chips-media: wave6: Add Wave6 core
- driver
+Subject: Re: [PATCH v8 07/11] media: chips-media: wave6: Add Wave6 m2m
+ encoder
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Nas Chung" <nas.chung@chipsnmedia.com>
 Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org, media-ci@linuxtv.org
-In-Reply-To: <1030b93108a94a28b572a97695f3b5bfc75e0ac9.1795075580.git.nas.chung@chipsnmedia.com>
+In-Reply-To: <542892d0f75d82102f122dfd55c73847e6b8c6f1.1795075581.git.nas.chung@chipsnmedia.com>
 References: <cover.1795075577.git.nas.chung@chipsnmedia.com>
- <1030b93108a94a28b572a97695f3b5bfc75e0ac9.1795075580.git.nas.chung@chipsnmedia.com>
+ <542892d0f75d82102f122dfd55c73847e6b8c6f1.1795075581.git.nas.chung@chipsnmedia.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 19 Nov 2026 09:32:23 +0000
+Date: Thu, 19 Nov 2026 09:35:27 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -61,341 +61,123 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 
-Thank you for your contribution! Sashiko AI review found 7 potential
+Thank you for your contribution! Sashiko AI review found 12 potential
 issues to consider:
-- [High] media: wave6: data race in wave6_vpu_require_work_buffer()
-  across cores
-- [High] media: wave6: dropped interrupts in wave6_vpu_core_irq() and
-  irq_thread
-- [High] media: wave6: unlocked rdy_queue traversal in
-  wave6_vpu_check_fb_available()
-- [Medium] media: wave6: skipped VPU init and active_count race in
-  runtime_resume
-- [Medium] media: wave6: race and missing error state in
-  wave6_vpu_device_run_timeout()
-- [Medium] media: wave6: stale codec sizeimage in wave6_update_pix_fmt()
-- [Medium] media: wave6: vpu->lock inversion and clock leak on core
-  removal
+- [High] media: wave6: buffer leak and m2m job hang in
+  wave6_vpu_enc_finish_encode()
+- [High] media: wave6: unvalidated CAPTURE size and stale sizeimage in
+  dst_fmt
+- [High] media: wave6: asymmetric instance lifecycle in start and
+  stop_streaming()
+- [High] media: wave6: missing busy check and zero crop return in
+  s_selection()
+- [High] media: wave6: unlocked m2m rdy_queue traversal in encoder
+  buffer lookup
+- [High] media: wave6: race between wave6_vpu_enc_finish_encode() and
+  timeout work
+- [Medium] media: wave6: zero CSC coefficients in wave6_set_csc() for
+  XV601 and XV709
+- [Medium] media: wave6: HEVC refresh controls overwritten in
+  wave6_set_enc_hevc_param()
+- [Medium] media: wave6: skipped CAPTURE validation in
+  wave6_vpu_enc_buf_prepare()
+- [Medium] media: wave6: zero-padded format table match in
+  wave6_find_vpu_fmt()
+- [Medium] media: wave6: wave6_find_vpu_fmt() matches zeroed format
+  table entries
+- [Low] media: wave6: unupdated timeperframe in wave6_vpu_enc_s_parm()
 --
 
-commit 203cdebd14b0043756ee7b19b462b06f101581ec
+commit d914baad0e743b67d2e3cd7e1bd636ba7a5de85f
 Author: Nas Chung <nas.chung@chipsnmedia.com>
 
-media: chips-media: wave6: Add Wave6 core driver
+media: chips-media: wave6: Add Wave6 m2m encoder
 
-This commit adds the core platform driver for the Chips&Media Wave6 video
-codec IP to manage the per-core interface register regions, interrupts,
-runtime PM, and V4L2 mem2mem helpers.
+This commit adds the V4L2 m2m stateful encoder driver for the Chips&Media
+Wave6 video codec IP, supporting H.264 and HEVC encoding.
 
-> diff --git a/drivers/media/platform/chips-media/wave6/wave6-vpu-core.c b/=
-drivers/media/platform/chips-media/wave6/wave6-vpu-core.c
+> diff --git a/drivers/media/platform/chips-media/wave6/wave6-vpu-enc.c b/d=
+rivers/media/platform/chips-media/wave6/wave6-vpu-enc.c
 > new file mode 100644
-> index 0000000000000..67c6666579d92
+> index 0000000000000..7142666d4503d
 > --- /dev/null
-> +++ b/drivers/media/platform/chips-media/wave6/wave6-vpu-core.c
-> @@ -0,0 +1,392 @@
-[ ... ]
-> +static irqreturn_t wave6_vpu_core_irq(int irq, void *dev_id)
-> +{
-> +	struct vpu_core_device *core =3D dev_id;
-> +	struct vpu_irq irq_info;
-> +
-> +	if (!vpu_read_reg(core, W6_VPU_VPU_INT_STS))
-> +		return IRQ_NONE;
-> +
-> +	irq_info.status =3D vpu_read_reg(core, W6_VPU_VINT_REASON);
-> +	irq_info.inst_idc =3D vpu_read_reg(core, W6_RET_INT_INSTANCE_INFO);
-> +
-> +	vpu_write_reg(core, W6_RET_INT_INSTANCE_INFO, INT_INSTANCE_INFO_CLEAR);
-> +	vpu_write_reg(core, W6_VPU_VINT_REASON_CLEAR, irq_info.status);
-> +	vpu_write_reg(core, W6_VPU_VINT_CLEAR, VINT_CLEAR);
-> +
-> +	if (irq_info.status & BIT(W6_INT_BIT_REQ_WORK_BUF)) {
-> +		wave6_vpu_require_work_buffer(core->vpu, core->reg_base);
-> +
-> +		return IRQ_HANDLED;
-> +	}
-
-[Severity: High]
-Can concurrent W6_INT_BIT_REQ_WORK_BUF interrupts on different cores race
-on core->vpu->work_buffers_avail in wave6_vpu_require_work_buffer()?
-
-Each core has its own interrupt line, but all cores share the parent
-core->vpu:
-
-drivers/media/platform/chips-media/wave6/wave6-vpu.c:wave6_vpu_require_work=
-_buffer() {
-	...
-	if (WARN_ON(vpu->work_buffers_avail =3D=3D 0))
-		goto exit;
-
-	vpu->work_buffers_avail--;
-	vb =3D &vpu->work_buffers[vpu->work_buffers_avail];
-	...
-}
-
-CPU0 (core 0 hardirq)             CPU1 (core 1 hardirq)
-wave6_vpu_core_irq()              wave6_vpu_core_irq()
-  wave6_vpu_require_work_buffer()   wave6_vpu_require_work_buffer()
-    work_buffers_avail =3D=3D 1           work_buffers_avail =3D=3D 1
-    vpu->work_buffers_avail-- (0)
-                                      vpu->work_buffers_avail-- (U32_MAX)
-                                      &vpu->work_buffers[U32_MAX]  <-- OOB =
-read
-
-Even when work_buffers_avail > 1, two cores can read the same decremented
-index and assign the same DMA work buffer to two codec instances.
+> +++ b/drivers/media/platform/chips-media/wave6/wave6-vpu-enc.c
+> @@ -0,0 +1,2732 @@
 
 [ ... ]
 
-> +static struct vpu_instance *wave6_vpu_core_get_instance(struct vpu_core_=
-device *core,
-> +							u32 inst_idc)
+> +static const struct vpu_format wave6_vpu_enc_fmt_list[2][23] =3D {
+> +	[VPU_FMT_TYPE_CODEC] =3D {
+> +		{
+> +			.v4l2_pix_fmt =3D V4L2_PIX_FMT_HEVC,
+> +			.max_width =3D W6_MAX_ENC_PIC_WIDTH,
+> +			.min_width =3D W6_MIN_ENC_PIC_WIDTH,
+> +			.max_height =3D W6_MAX_ENC_PIC_HEIGHT,
+> +			.min_height =3D W6_MIN_ENC_PIC_HEIGHT,
+> +			.num_planes =3D 1,
+> +		},
+> +		{
+> +			.v4l2_pix_fmt =3D V4L2_PIX_FMT_H264,
+> +			.max_width =3D W6_MAX_ENC_PIC_WIDTH,
+> +			.min_width =3D W6_MIN_ENC_PIC_WIDTH,
+> +			.max_height =3D W6_MAX_ENC_PIC_HEIGHT,
+> +			.min_height =3D W6_MIN_ENC_PIC_HEIGHT,
+> +			.num_planes =3D 1,
+> +		},
+> +	},
+
+[ ... ]
+
+> +static const struct vpu_format *wave6_find_vpu_fmt(unsigned int v4l2_pix=
+_fmt,
+> +						   enum vpu_fmt_type type)
 > +{
-> +	struct vpu_instance *inst;
-> +
-> +	guard(spinlock)(&core->inst_lock);
-> +
-> +	list_for_each_entry(inst, &core->instances, list) {
-> +		if ((BIT(inst->id) & inst_idc) && inst->enable)
-> +			return inst;
+> +	for (int i =3D 0; i < ARRAY_SIZE(wave6_vpu_enc_fmt_list[type]); i++) {
+> +		if (wave6_vpu_enc_fmt_list[type][i].v4l2_pix_fmt =3D=3D v4l2_pix_fmt)
+> +			return &wave6_vpu_enc_fmt_list[type][i];
 > +	}
 > +
 > +	return NULL;
 > +}
+
+[Severity: Medium]
+Can wave6_find_vpu_fmt() match the unpopulated trailing entries in
+wave6_vpu_enc_fmt_list[VPU_FMT_TYPE_CODEC] when v4l2_pix_fmt is 0?
+
+Because wave6_vpu_enc_fmt_list is sized to 23 elements for both sub-arrays
+while VPU_FMT_TYPE_CODEC only populates 2 entries, the remaining 21 entries
+are zero-initialized. Unlike wave6_find_vpu_fmt_by_idx(), wave6_find_vpu_fm=
+t()
+does not reject a zero pixelformat, so passing pixelformat 0 to
+VIDIOC_TRY_FMT on the capture queue matches a zeroed entry and sets
+pix_mp->pixelformat and pix_mp->num_planes to 0 instead of falling back to
+inst->dst_fmt.
+
 [ ... ]
-> +static irqreturn_t wave6_vpu_core_irq_thread(int irq, void *dev_id)
+
+> +static struct vb2_v4l2_buffer *wave6_get_valid_src_buf(struct vpu_instan=
+ce *inst)
 > +{
-> +	struct vpu_core_device *core =3D dev_id;
-> +	struct vpu_instance *inst;
-> +	struct vpu_irq irq_info;
+> +	struct vb2_v4l2_buffer *vb2_v4l2_buf;
+> +	struct v4l2_m2m_buffer *v4l2_m2m_buf;
+> +	struct vpu_buffer *vpu_buf =3D NULL;
 > +
-> +	while (kfifo_len(&core->irq_fifo)) {
-> +		bool error =3D false;
+> +	v4l2_m2m_for_each_src_buf(inst->v4l2_fh.m2m_ctx, v4l2_m2m_buf) {
+> +		vb2_v4l2_buf =3D &v4l2_m2m_buf->vb;
+> +		vpu_buf =3D wave6_to_vpu_buf(vb2_v4l2_buf);
 > +
-> +		if (!kfifo_out(&core->irq_fifo, &irq_info, sizeof(struct vpu_irq)))
-> +			break;
-> +
-> +		inst =3D wave6_vpu_core_get_instance(core, irq_info.inst_idc);
-> +		if (!inst)
-> +			continue;
-> +
-> +		if (irq_info.status & BIT(W6_INT_BIT_INIT_SEQ)) {
-> +			complete(&inst->irq_done);
-> +			continue;
+> +		if (!vpu_buf->consumed) {
+> +			dev_dbg(inst->dev->dev, "no consumed src idx : %d\n",
+> +				vb2_v4l2_buf->vb2_buf.index);
+> +			return vb2_v4l2_buf;
 > +		}
-> +
-> +		if (irq_info.status & BIT(W6_INT_BIT_BSBUF_ERROR))
-> +			error =3D true;
-> +
-> +		if (inst->ops && inst->ops->finish_process)
-> +			inst->ops->finish_process(inst, error);
 > +	}
 > +
-> +	return IRQ_HANDLED;
-> +}
-
-[Severity: High]
-Can wave6_vpu_core_irq() and wave6_vpu_core_irq_thread() drop pending
-interrupts when multiple status or instance bits are set at once?
-
-In wave6_vpu_core_irq(), W6_RET_INT_INSTANCE_INFO and
-W6_VPU_VINT_REASON_CLEAR are cleared for the entire irq_info.status mask
-before the BIT(W6_INT_BIT_REQ_WORK_BUF) check.  If W6_INT_BIT_REQ_WORK_BUF
-is set alongside another bit such as W6_INT_BIT_DEC_PIC or
-W6_INT_BIT_INIT_SEQ, returning IRQ_HANDLED early without queuing the
-remaining bits to core->irq_fifo loses that completion interrupt.
-
-In addition, irq_info.inst_idc is a bitmask of instance IDs, and
-W6_RET_INT_INSTANCE_INFO has already been cleared to 0 in the hardirq
-handler.  Because wave6_vpu_core_irq_thread() calls
-wave6_vpu_core_get_instance() only once per FIFO entry and returns the
-first matching instance, any other instances with bits set in
-irq_info.inst_idc never receive their completion callback and will time
-out.
-
-[ ... ]
-
-> +void wave6_vpu_core_activate(struct vpu_core_device *core)
-> +{
-> +	atomic_inc(&core->active_count);
+> +	return NULL;
 > +}
 > +
-> +void wave6_vpu_core_deactivate(struct vpu_core_device *core)
-> +{
-> +	atomic_dec(&core->active_count);
-> +}
-> +
-> +static int wave6_vpu_core_wait_activated(struct vpu_core_device *core)
-> +{
-> +	if (!atomic_read(&core->active_count))
-> +		return 0;
-> +
-> +	return wave6_vpu_core_check_state(core);
-> +}
-[ ... ]
-> +	ret =3D devm_pm_runtime_enable(&pdev->dev);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return 0;
-> +}
-> +
-> +static int wave6_vpu_core_runtime_suspend(struct device *dev)
-> +{
-> +	struct vpu_core_device *core =3D dev_get_drvdata(dev);
-> +
-> +	if (WARN_ON(!core))
-> +		return -ENODEV;
-> +
-> +	if (core->vpu_held) {
-> +		wave6_vpu_put(core->vpu, core->reg_base);
-> +		core->vpu_held =3D false;
-> +	}
-> +
-> +	clk_bulk_disable_unprepare(core->num_clks, core->clks);
-> +
-> +	return 0;
-> +}
-
-[Severity: Medium]
-Can unregistering child core devices under vpu->lock in
-wave6_vpu_release() deadlock with wave6_vpu_core_runtime_suspend() or leak
-prepared clocks on teardown?
-
-drivers/media/platform/chips-media/wave6/wave6-vpu.c:wave6_vpu_release() {
-	guard(mutex)(&vpu->lock);
-
-	wave6_vpu_destroy_cores(vpu);
-	...
-}
-
-wave6_vpu_destroy_cores() calls platform_device_unregister() while holding
-vpu->lock, which waits for child runtime PM transitions and barriers,
-whereas wave6_vpu_core_runtime_suspend() and
-wave6_vpu_core_runtime_resume() call wave6_vpu_put() and wave6_vpu_get(),
-which acquire vpu->lock:
-
-CPU0                              CPU1
-----                              ----
-lock(&vpu->lock)
-                                  /* runtime PM transition on core */
-/* waits for core runtime PM */
-                                  lock(&vpu->lock)
-
- *** DEADLOCK ***
-
-CPU0: wave6_vpu_release() -> wave6_vpu_destroy_cores() -> platform_device_u=
-nregister()
-CPU1: rpm_suspend() -> wave6_vpu_core_runtime_suspend() -> wave6_vpu_put()
-
-Furthermore, wave6_vpu_core_driver has no remove callback or devm action
-to suspend a runtime-active core before devm_clk_bulk_get_all() releases
-core->clks.  If a core is runtime-active at unbind (for example via sysfs
-power/control set to "on"), core->clks are never disabled or unprepared
-and any held core->vpu_held reference is leaked.
-
-> +
-> +static int wave6_vpu_core_runtime_resume(struct device *dev)
-> +{
-> +	struct vpu_core_device *core =3D dev_get_drvdata(dev);
-> +	int ret;
-> +
-> +	if (WARN_ON(!core))
-> +		return -ENODEV;
-> +
-> +	ret =3D clk_bulk_prepare_enable(core->num_clks, core->clks);
-> +	if (ret) {
-> +		dev_err(dev, "failed to enable clocks: %d\n", ret);
-> +		return ret;
-> +	}
-> +
-> +	if (atomic_read(&core->active_count)) {
-> +		ret =3D wave6_vpu_get(core->vpu, core->reg_base);
-> +		if (ret)
-> +			goto error_get_vpu;
-> +
-> +		core->vpu_held =3D true;
-> +	}
-> +
-> +	ret =3D wave6_vpu_core_wait_activated(core);
-> +	if (ret)
-> +		goto error_activate;
-
-[Severity: Medium]
-What happens if wave6_vpu_core_runtime_resume() runs while
-core->active_count is 0?
-
-If the core device is runtime-resumed before wave6_vpu_core_activate() is
-called (for instance when runtime PM is forced on via sysfs
-power/control), wave6_vpu_core_runtime_resume() skips both wave6_vpu_get()
-and wave6_vpu_core_check_state(), leaving core->vpu_held false.  When an
-instance later calls wave6_vpu_core_activate() followed by
-pm_runtime_resume_and_get(), runtime PM sees the device is already
-RPM_ACTIVE and returns 0 without running wave6_vpu_core_runtime_resume(),
-so the parent VPU is never powered on or initialized and core interrupts
-are never enabled.
-
-Also, because wave6_vpu_core_runtime_resume() and
-wave6_vpu_core_wait_activated() read core->active_count twice without
-synchronization (rather than checking core->vpu_held in
-wave6_vpu_core_wait_activated()), an intervening wave6_vpu_core_activate()
-can cause wave6_vpu_core_check_state() to poll VPU registers when
-wave6_vpu_get() was skipped.
-
-> diff --git a/drivers/media/platform/chips-media/wave6/wave6-vpu-v4l2.c b/=
-drivers/media/platform/chips-media/wave6/wave6-vpu-v4l2.c
-> new file mode 100644
-> index 0000000000000..75371566de385
-> --- /dev/null
-> +++ b/drivers/media/platform/chips-media/wave6/wave6-vpu-v4l2.c
-> @@ -0,0 +1,384 @@
-> +// SPDX-License-Identifier: (GPL-2.0 OR BSD-3-Clause)
-> +/*
-> + * Wave6 series multi-standard codec IP - v4l2 driver helper interface
-> + *
-> + * Copyright (C) 2026 CHIPS&MEDIA INC
-> + */
-> +
-> +#include "wave6-vpu.h"
-> +#include "wave6-vpu-core.h"
-> +
-> +void wave6_update_pix_fmt(struct v4l2_pix_format_mplane *pix_mp,
-> +			  unsigned int width,
-> +			  unsigned int height)
-> +{
-> +	const struct v4l2_format_info *fmt_info;
-> +	unsigned int stride_y;
-> +
-> +	pix_mp->width =3D width;
-> +	pix_mp->height =3D height;
-> +	pix_mp->flags =3D 0;
-> +	pix_mp->field =3D V4L2_FIELD_NONE;
-> +	memset(pix_mp->reserved, 0, sizeof(pix_mp->reserved));
-> +
-> +	fmt_info =3D v4l2_format_info(pix_mp->pixelformat);
-> +	if (!fmt_info) {
-> +		pix_mp->plane_fmt[0].bytesperline =3D 0;
-> +		if (!pix_mp->plane_fmt[0].sizeimage)
-> +			pix_mp->plane_fmt[0].sizeimage =3D width * height;
-> +
-> +		return;
-> +	}
-
-[Severity: Medium]
-Does preserving a non-zero pix_mp->plane_fmt[0].sizeimage for compressed
-formats leave sizeimage stale when the resolution is increased?
-
-For codec formats (where v4l2_format_info() returns NULL), if
-pix_mp->plane_fmt[0].sizeimage was already initialized to a default
-resolution's size (or populated by VIDIOC_G_FMT) and wave6_update_pix_fmt()
-is then called for a larger resolution without zeroing sizeimage first,
-plane_fmt[0].sizeimage remains clamped to the old smaller resolution's
-buffer size.
-
-[ ... ]
-
-> +static bool wave6_vpu_check_fb_available(struct vpu_instance *inst)
+> +static struct vb2_v4l2_buffer *wave6_get_valid_dst_buf(struct vpu_instan=
+ce *inst)
 > +{
 > +	struct vb2_v4l2_buffer *vb2_v4l2_buf;
 > +	struct v4l2_m2m_buffer *v4l2_m2m_buf;
@@ -405,137 +187,605 @@ buffer size.
 > +		vb2_v4l2_buf =3D &v4l2_m2m_buf->vb;
 > +		vpu_buf =3D wave6_to_vpu_buf(vb2_v4l2_buf);
 > +
-> +		if (!vpu_buf->used)
-> +			return true;
+> +		if (!vpu_buf->consumed) {
+> +			dev_dbg(inst->dev->dev, "no consumed dst idx : %d\n",
+> +				vb2_v4l2_buf->vb2_buf.index);
+> +			return vb2_v4l2_buf;
+> +		}
 > +	}
 > +
-> +	return false;
-> +}
-> +
-> +static int wave6_vpu_job_ready(void *priv)
-> +{
-> +	struct vpu_instance *inst =3D priv;
-> +
-> +	dev_dbg(inst->dev->dev, "[%d]%s: state %d\n",
-> +		inst->id, __func__, inst->state);
-> +
-> +	if (inst->state =3D=3D VPU_INST_STATE_OPEN)
-> +		return 1;
-> +	if (inst->state < VPU_INST_STATE_PIC_RUN)
-> +		return 0;
-> +	if (inst->state =3D=3D VPU_INST_STATE_ERROR)
-> +		return 0;
-> +	if (!wave6_vpu_check_fb_available(inst))
-> +		return 0;
-> +
-> +	return 1;
+> +	return NULL;
 > +}
 
 [Severity: High]
-Isn't m2m_ctx->cap_q_ctx.rdy_queue traversed without holding
-cap_q_ctx.rdy_spinlock or core->dev_lock when wave6_vpu_check_fb_available()
-is called from wave6_vpu_finish_job()?
+Does iterating the M2M ready queues in wave6_get_valid_src_buf(),
+wave6_get_valid_dst_buf(), and wave6_get_dst_buf_by_addr() race with
+v4l2_m2m_buf_queue()?
 
-v4l2_m2m_for_each_dst_buf() expands to list_for_each_entry() over
-m2m_ctx->cap_q_ctx.rdy_queue without taking cap_q_ctx.rdy_spinlock.  When
-wave6_vpu_finish_job() runs from wave6_vpu_core_irq_thread(), core->dev_lock
-is not held, and v4l2_m2m_job_finish() only takes m2m_dev->job_spinlock
-before calling wave6_vpu_job_ready().  Meanwhile, VIDIOC_QBUF on another
-CPU holds core->dev_lock and cap_q_ctx.rdy_spinlock while mutating
-cap_q_ctx.rdy_queue in v4l2_m2m_buf_queue():
+v4l2_m2m_for_each_src_buf() and v4l2_m2m_for_each_dst_buf() expand to plain
+list_for_each_entry() over out_q_ctx.rdy_queue and cap_q_ctx.rdy_queue
+without taking q_ctx->rdy_spinlock:
 
-CPU0 (irq thread)                 CPU1 (VIDIOC_QBUF)
-wave6_vpu_finish_job()            v4l2_m2m_qbuf()
-  v4l2_m2m_job_finish()             v4l2_m2m_buf_queue()
-    lock(&m2m_dev->job_spinlock)      lock(&cap_q_ctx.rdy_spinlock)
-    wave6_vpu_job_ready()             list_add_tail(..., &rdy_queue)
-      wave6_vpu_check_fb_available()
-        v4l2_m2m_for_each_dst_buf()  <-- concurrent list traversal/mutation
+CPU0 (v4l2_m2m_device_run_work)   CPU1 (VIDIOC_QBUF)
+wave6_vpu_device_run()            wave6_vpu_enc_buf_queue()
+  wave6_vpu_enc_start_encode()      v4l2_m2m_buf_queue()
+    wave6_get_valid_src_buf()         spin_lock(&q_ctx->rdy_spinlock)
+      v4l2_m2m_for_each_src_buf()     list_add_tail(&b->list,
+                                                    &q_ctx->rdy_queue)
+        /* unlocked list traversal <-- data race */
+
+When wave6_vpu_device_run() runs from the M2M job workqueue, neither
+inst->dev->dev_lock nor rdy_spinlock is held. Likewise, when
+wave6_handle_encoded_frame() calls wave6_get_dst_buf_by_addr() from the IRQ
+thread, it holds only inst->lock while VIDIOC_QBUF mutates rdy_queue under
+inst->dev->dev_lock and rdy_spinlock.
 
 > +
-> +void wave6_vpu_device_run_timeout(struct work_struct *work)
+> +static void wave6_set_csc(struct vpu_instance *inst, struct enc_param *p=
+ic_param)
 > +{
-> +	struct vpu_instance *inst =3D container_of(to_delayed_work(work),
-> +						 struct vpu_instance, task_timer);
-> +	struct vb2_v4l2_buffer *src_buf =3D NULL;
-> +	struct vb2_v4l2_buffer *dst_buf =3D NULL;
+> +	const struct vpu_format *vpu_fmt;
+> +	bool is_10bit;
 > +
-> +	dev_err(inst->dev->dev, "[%d] sequence %d timeout\n", inst->id, inst->s=
-equence);
-> +	src_buf =3D v4l2_m2m_src_buf_remove(inst->v4l2_fh.m2m_ctx);
-> +	if (src_buf) {
-> +		v4l2_m2m_buf_done(src_buf, VB2_BUF_STATE_ERROR);
-> +		if (inst->type =3D=3D VPU_INST_TYPE_DEC)
-> +			inst->processed_buf_num++;
-> +		inst->error_buf_num++;
-> +	}
-> +
-> +	dst_buf =3D v4l2_m2m_dst_buf_remove(inst->v4l2_fh.m2m_ctx);
-> +	if (dst_buf)
-> +		v4l2_m2m_buf_done(dst_buf, VB2_BUF_STATE_ERROR);
-> +
-> +	vb2_queue_error(v4l2_m2m_get_src_vq(inst->v4l2_fh.m2m_ctx));
-> +	vb2_queue_error(v4l2_m2m_get_dst_vq(inst->v4l2_fh.m2m_ctx));
-> +
-> +	v4l2_m2m_job_finish(inst->dev->m2m_dev, inst->v4l2_fh.m2m_ctx);
-> +}
-> +
-> +static void wave6_vpu_device_run(void *priv)
-> +{
-> +	struct vpu_instance *inst =3D priv;
-> +	int ret;
-> +
-> +	dev_dbg(inst->dev->dev, "[%d]%s: state %d\n",
-> +		inst->id, __func__, inst->state);
-> +
-> +	ret =3D inst->ops->prepare_process(inst);
-> +	if (ret) {
-> +		v4l2_m2m_job_finish(inst->dev->m2m_dev, inst->v4l2_fh.m2m_ctx);
+> +	vpu_fmt =3D wave6_find_vpu_fmt(inst->src_fmt.pixelformat, VPU_FMT_TYPE_=
+RAW);
+> +	if (!vpu_fmt)
 > +		return;
+> +
+> +	if (!(vpu_fmt->flags & VPU_FMT_FLAG_RGB))
+> +		return;
+> +
+> +	is_10bit =3D !!(vpu_fmt->flags & VPU_FMT_FLAG_10BIT);
+> +	pic_param->csc.fmt_order =3D vpu_fmt->csc_fmt_order;
+> +
+> +	if (inst->ycbcr_enc =3D=3D V4L2_YCBCR_ENC_DEFAULT ||
+> +	    inst->ycbcr_enc =3D=3D V4L2_YCBCR_ENC_601) {
+
+[ ... ]
+
+> +	} else if (inst->ycbcr_enc =3D=3D V4L2_YCBCR_ENC_XV601) {
+> +		if (inst->quantization =3D=3D V4L2_QUANTIZATION_LIM_RANGE) {
+> +			/*
+> +			 * Y   0.2558(R)  0.5021(G)  0.0975(B)
+> +			 * Cb -0.1476(R) -0.2899(G)  0.4375(B)
+> +			 * Cr  0.4375(R) -0.3664(G) -0.0711(B)
+> +			 */
+> +			pic_param->csc.coef_ry =3D 0x083;
+> +			pic_param->csc.coef_gy =3D 0x101;
+> +			pic_param->csc.coef_by =3D 0x032;
+> +			pic_param->csc.coef_rcb =3D 0xffffffb4;
+> +			pic_param->csc.coef_gcb =3D 0xffffff6c;
+> +			pic_param->csc.coef_bcb =3D 0x0e0;
+> +			pic_param->csc.coef_rcr =3D 0x0e0;
+> +			pic_param->csc.coef_gcr =3D 0xffffff44;
+> +			pic_param->csc.coef_bcr =3D 0xffffffdc;
+> +			pic_param->csc.offset_y =3D (is_10bit) ? 0x40 : 0x10;
+> +			pic_param->csc.offset_cb =3D 0x0;
+> +			pic_param->csc.offset_cr =3D 0x0;
+> +		}
+> +	} else if (inst->ycbcr_enc =3D=3D V4L2_YCBCR_ENC_XV709) {
+> +		if (inst->quantization =3D=3D V4L2_QUANTIZATION_LIM_RANGE) {
+> +			/*
+> +			 * Y   0.1819(R)  0.6118(G)  0.0618(B)
+> +			 * Cb -0.1003(R) -0.3372(G)  0.4375(B)
+> +			 * Cr  0.4375(R) -0.3974(G) -0.0401(B)
+> +			 */
+> +			pic_param->csc.coef_ry =3D 0x05d;
+> +			pic_param->csc.coef_gy =3D 0x139;
+> +			pic_param->csc.coef_by =3D 0x020;
+> +			pic_param->csc.coef_rcb =3D 0xffffffcd;
+> +			pic_param->csc.coef_gcb =3D 0xffffff53;
+> +			pic_param->csc.coef_bcb =3D 0x0e0;
+> +			pic_param->csc.coef_rcr =3D 0x0e0;
+> +			pic_param->csc.coef_gcr =3D 0xffffff35;
+> +			pic_param->csc.coef_bcr =3D 0xffffffeb;
+> +			pic_param->csc.offset_y =3D (is_10bit) ? 0x40 : 0x10;
+> +			pic_param->csc.offset_cb =3D 0x0;
+> +			pic_param->csc.offset_cr =3D 0x0;
+> +		}
 > +	}
-> +
-> +	schedule_delayed_work(&inst->task_timer, msecs_to_jiffies(W6_VPU_TIMEOU=
-T));
-> +
-> +	ret =3D inst->ops->start_process(inst);
-> +	if (ret)
-> +		wave6_vpu_finish_job(inst);
-> +}
-> +
-> +void wave6_vpu_finish_job(struct vpu_instance *inst)
-> +{
-> +	cancel_delayed_work(&inst->task_timer);
-> +	v4l2_m2m_job_finish(inst->dev->m2m_dev, inst->v4l2_fh.m2m_ctx);
 > +}
 
 [Severity: Medium]
-Can wave6_vpu_device_run_timeout() race with normal job completion in
-finish_process() and wave6_vpu_finish_job()?
+Does wave6_set_csc() leave pic_param->csc zeroed when encoding RGB formats
+with V4L2_YCBCR_ENC_XV601 or V4L2_YCBCR_ENC_XV709 and default quantization?
 
-wave6_vpu_finish_job() uses non-synchronous cancel_delayed_work() and does
-not check its return value.  If wave6_vpu_device_run_timeout() has already
-started running when finish_process() executes on the IRQ thread, nothing
-serializes them:
+inst->quantization defaults to V4L2_QUANTIZATION_DEFAULT, and
+wave6_vpu_enc_try_fmt_out() only converts V4L2_QUANTIZATION_FULL_RANGE to
+V4L2_QUANTIZATION_LIM_RANGE for XV601 and XV709. Because these two branches
+require inst->quantization =3D=3D V4L2_QUANTIZATION_LIM_RANGE, all CSC
+coefficients remain 0 when quantization is V4L2_QUANTIZATION_DEFAULT,
+producing all-zero YCbCr output. In addition, V4L2_YCBCR_ENC_DEFAULT is
+always treated as BT.601 here instead of being resolved via
+V4L2_MAP_YCBCR_ENC_DEFAULT(inst->colorspace) as in to_matrix_coeffs().
 
-CPU0 (kworker)                    CPU1 (irq thread)
-wave6_vpu_device_run_timeout()    wave6_vpu_core_irq_thread()
-                                    inst->ops->finish_process()
-  v4l2_m2m_src_buf_remove()           ...
-  inst->error_buf_num++               wave6_vpu_finish_job()
-                                        cancel_delayed_work() -> false
-                                        v4l2_m2m_job_finish()
-  v4l2_m2m_job_finish()  <-- double v4l2_m2m_job_finish()
+[ ... ]
 
-Both contexts concurrently remove buffers, update inst->processed_buf_num
-and inst->error_buf_num, and call v4l2_m2m_job_finish().
+> +static int wave6_vpu_enc_start_encode(struct vpu_instance *inst)
+> +{
 
-In addition, wave6_vpu_device_run_timeout() does not transition
-inst->state to VPU_INST_STATE_ERROR before calling v4l2_m2m_job_finish().
-Because v4l2_m2m_job_finish() immediately checks wave6_vpu_job_ready() to
-schedule the next queued job, and neither __v4l2_m2m_try_queue() nor
-wave6_vpu_job_ready() checks vq->error, another queued job will be started
-on the timed-out instance.
+[ ... ]
+
+> +	src_buf =3D wave6_get_valid_src_buf(inst);
+> +	dst_buf =3D wave6_get_valid_dst_buf(inst);
+> +
+> +	if (!src_buf || !dst_buf) {
+> +		dev_dbg(inst->dev->dev, "no valid src or dst buf\n");
+> +		return 0;
+> +	}
+> +
+> +	dst_vbuf =3D wave6_to_vpu_buf(dst_buf);
+> +	dst_vbuf->consumed =3D true;
+> +	dst_vbuf->used =3D true;
+> +	pic_param.pic_stream_buffer_addr =3D wave6_get_dma_addr(dst_buf, 0);
+> +	pic_param.pic_stream_buffer_size =3D vb2_plane_size(&dst_buf->vb2_buf, =
+0);
+> +
+> +	src_vbuf =3D wave6_to_vpu_buf(src_buf);
+> +	src_vbuf->consumed =3D true;
+
+[ ... ]
+
+> +static void wave6_handle_encoded_frame(struct vpu_instance *inst,
+> +				       struct enc_output_info *info)
+> +{
+> +	struct vb2_v4l2_buffer *src_buf;
+> +	struct vb2_v4l2_buffer *dst_buf;
+> +	struct vpu_buffer *vpu_buf;
+> +	struct vpu_buffer *dst_vpu_buf;
+> +	enum vb2_buffer_state state;
+> +
+> +	guard(mutex)(&inst->lock);
+> +
+> +	state =3D info->encoding_success ? VB2_BUF_STATE_DONE : VB2_BUF_STATE_E=
+RROR;
+> +
+> +	dst_buf =3D wave6_get_dst_buf_by_addr(inst, info->bitstream_buffer);
+> +	if (!dst_buf) {
+> +		dev_err(inst->dev->dev, "[%d] encoder can't find dst buffer\n", inst->=
+id);
+> +		return;
+> +	}
+> +
+> +	src_buf =3D v4l2_m2m_src_buf_remove_by_idx(inst->v4l2_fh.m2m_ctx,
+> +						 info->enc_src_idx);
+> +	if (!src_buf) {
+> +		dev_err(inst->dev->dev, "[%d] encoder can't find src buffer\n", inst->=
+id);
+> +		return;
+> +	}
+> +
+> +	vpu_buf =3D wave6_to_vpu_buf(src_buf);
+> +	if (!vpu_buf->consumed) {
+> +		dev_err(inst->dev->dev, "[%d] src buffer is not consumed\n", inst->id);
+> +		v4l2_m2m_buf_done(src_buf, VB2_BUF_STATE_ERROR);
+> +		return;
+> +	}
+
+[ ... ]
+
+> +	v4l2_m2m_dst_buf_remove_by_buf(inst->v4l2_fh.m2m_ctx, dst_buf);
+> +	if (state =3D=3D VB2_BUF_STATE_ERROR) {
+> +		dev_dbg(inst->dev->dev, "[%d] error frame %d\n", inst->id, inst->seque=
+nce);
+> +		inst->error_recovery =3D true;
+> +		inst->error_buf_num++;
+> +	}
+> +	v4l2_m2m_buf_done(dst_buf, state);
+> +	inst->processed_buf_num++;
+> +}
+
+[Severity: High]
+Can wave6_handle_encoded_frame() race with wave6_vpu_device_run_timeout()
+and corrupt the destination queue list or complete dst_buf twice?
+
+wave6_vpu_enc_finish_encode() runs wave6_handle_encoded_frame() before
+cancelling inst->task_timer in wave6_vpu_finish_job(), and
+wave6_vpu_finish_job() only uses asynchronous cancel_delayed_work() while
+wave6_vpu_device_run_timeout() does not take inst->lock:
+
+CPU0 (wave6_vpu_core_irq_thread)  CPU1 (wave6_vpu_device_run_timeout)
+wave6_vpu_enc_finish_encode()
+  wave6_handle_encoded_frame()
+    mutex_lock(&inst->lock)
+    dst_buf =3D wave6_get_dst_buf_by_addr()
+                                  dst_buf =3D v4l2_m2m_dst_buf_remove()
+                                  v4l2_m2m_buf_done(dst_buf,
+                                                    VB2_BUF_STATE_ERROR)
+    v4l2_m2m_dst_buf_remove_by_buf(..., dst_buf)
+      list_del(&dst_buf->list)    <-- double list_del
+    v4l2_m2m_buf_done(dst_buf, state)
+                                  <-- double buffer completion
+
+> +
+> +static void wave6_vpu_enc_finish_encode(struct vpu_instance *inst, bool =
+error)
+> +{
+> +	int ret;
+> +	struct enc_output_info info;
+> +
+> +	if (error) {
+> +		vb2_queue_error(v4l2_m2m_get_src_vq(inst->v4l2_fh.m2m_ctx));
+> +		vb2_queue_error(v4l2_m2m_get_dst_vq(inst->v4l2_fh.m2m_ctx));
+> +
+> +		wave6_vpu_set_instance_state(inst, VPU_INST_STATE_ERROR);
+> +
+> +		goto finish_encode;
+> +	}
+> +
+> +	memset(&info, 0, sizeof(info));
+> +
+> +	ret =3D wave6_vpu_enc_get_output_info(inst, &info);
+> +	if (ret) {
+> +		dev_dbg(inst->dev->dev, "vpu_enc_get_output_info fail %d\n", ret);
+> +		goto finish_encode;
+> +	}
+> +
+> +	if (info.enc_src_idx >=3D 0 && info.recon_frame_index >=3D 0)
+> +		wave6_handle_encoded_frame(inst, &info);
+> +
+> +finish_encode:
+> +	wave6_vpu_finish_job(inst);
+> +}
+
+[Severity: High]
+Are the in-flight source and destination buffers stranded on the M2M ready
+queues when a frame is skipped or an encode error occurs?
+
+wave6_vpu_enc_start_encode() marks src_vbuf->consumed =3D true and
+dst_vbuf->consumed =3D true while leaving both buffers on m2m_ctx until
+wave6_handle_encoded_frame() removes and completes them. When a frame is
+skipped due to V4L2_MPEG_VIDEO_FRAME_SKIP_MODE_BUF_LIMIT (so
+info.recon_frame_index < 0), or when error is true or
+wave6_vpu_enc_get_output_info() fails, wave6_handle_encoded_frame() is
+not called; similarly, its early returns if src_buf is missing or unconsumed
+leave dst_buf unremoved. Those buffers remain on the ready queues with
+consumed =3D true and are skipped forever by wave6_get_valid_src_buf() and
+wave6_get_valid_dst_buf().
+
+Furthermore, when wave6_vpu_enc_start_encode() subsequently finds no
+unconsumed buffer (!src_buf || !dst_buf), it returns 0 without starting a
+hardware command, so wave6_vpu_device_run() leaves the M2M job running with
+inst->task_timer armed until the 6-second watchdog timeout fires and kills
+both queues.
+
+[ ... ]
+
+> +static int wave6_vpu_enc_enum_framesizes(struct file *f, void *fh, struc=
+t v4l2_frmsizeenum *fsize)
+> +{
+> +	const struct vpu_format *vpu_fmt;
+> +
+> +	if (fsize->index)
+> +		return -EINVAL;
+> +
+> +	vpu_fmt =3D wave6_find_vpu_fmt(fsize->pixel_format, VPU_FMT_TYPE_CODEC);
+> +	if (!vpu_fmt) {
+> +		vpu_fmt =3D wave6_find_vpu_fmt(fsize->pixel_format, VPU_FMT_TYPE_RAW);
+> +		if (!vpu_fmt)
+> +			return -EINVAL;
+> +	}
+
+[Severity: Medium]
+Does wave6_vpu_enc_enum_framesizes() succeed with 0x0 stepwise bounds when
+fsize->pixel_format is 0?
+
+Because wave6_find_vpu_fmt(0, VPU_FMT_TYPE_CODEC) returns a pointer to the
+first zero-padded entry in wave6_vpu_enc_fmt_list[VPU_FMT_TYPE_CODEC],
+VIDIOC_ENUM_FRAMESIZES returns 0 with min_width, max_width, min_height, and
+max_height all set to 0 instead of returning -EINVAL.
+
+[ ... ]
+
+> +static int wave6_vpu_enc_try_fmt_cap(struct file *file, void *fh, struct=
+ v4l2_format *f)
+> +{
+> +	struct vpu_instance *inst =3D wave6_file_to_vpu_inst(file);
+> +	struct v4l2_pix_format_mplane *pix_mp =3D &f->fmt.pix_mp;
+> +	const struct vpu_format *vpu_fmt;
+> +	int width, height;
+> +
+> +	dev_dbg(inst->dev->dev, "%s: 4cc %d w %d h %d plane %d colorspace %d\n",
+> +		__func__, pix_mp->pixelformat, pix_mp->width, pix_mp->height,
+> +		pix_mp->num_planes, pix_mp->colorspace);
+> +
+> +	if (!V4L2_TYPE_IS_CAPTURE(f->type))
+> +		return -EINVAL;
+> +
+> +	vpu_fmt =3D wave6_find_vpu_fmt(pix_mp->pixelformat, VPU_FMT_TYPE_CODEC);
+> +	if (!vpu_fmt) {
+> +		width =3D inst->dst_fmt.width;
+> +		height =3D inst->dst_fmt.height;
+> +		pix_mp->pixelformat =3D inst->dst_fmt.pixelformat;
+> +		pix_mp->num_planes =3D inst->dst_fmt.num_planes;
+> +	} else {
+> +		width =3D pix_mp->width;
+> +		height =3D pix_mp->height;
+> +		pix_mp->pixelformat =3D vpu_fmt->v4l2_pix_fmt;
+> +		pix_mp->num_planes =3D vpu_fmt->num_planes;
+> +	}
+> +
+> +	wave6_update_pix_fmt(pix_mp, width, height);
+
+[Severity: High]
+Can wave6_vpu_enc_try_fmt_cap() set plane_fmt[0].sizeimage to 0, and do
+wave6_vpu_enc_s_fmt_out() and wave6_vpu_enc_s_selection() leave
+inst->dst_fmt.plane_fmt[0].sizeimage stuck at the initial 416x240 size?
+
+In wave6_update_pix_fmt(), sizeimage for coded formats is only recalculated
+when plane_fmt[0].sizeimage is 0:
+
+drivers/media/platform/chips-media/wave6/wave6-vpu-v4l2.c:wave6_update_pix_=
+fmt() {
+    ...
+	if (!fmt_info) {
+		pix_mp->plane_fmt[0].bytesperline =3D 0;
+		if (!pix_mp->plane_fmt[0].sizeimage)
+			pix_mp->plane_fmt[0].sizeimage =3D width * height;
+
+		return;
+	}
+    ...
+}
+
+When pix_mp->pixelformat is valid in wave6_vpu_enc_try_fmt_cap(), width and
+height are taken directly from userspace without clamping or using
+inst->dst_fmt. Passing width =3D 0 or height =3D 0 with sizeimage =3D 0 sets
+inst->dst_fmt.plane_fmt[0].sizeimage to 0 in wave6_vpu_enc_s_fmt_cap(),
+which triggers WARN_ON(!plane_sizes[i]) in vb2_core_reqbufs().
+
+Conversely, because wave6_vpu_open_enc() initializes inst->dst_fmt to
+416x240 (sizeimage =3D 99840) and neither wave6_vpu_enc_s_fmt_out() nor
+wave6_vpu_enc_s_selection() clears inst->dst_fmt.plane_fmt[0].sizeimage
+before calling wave6_update_pix_fmt(&inst->dst_fmt, ...), raising the
+output resolution leaves capture bitstream buffers undersized at 99840
+bytes.
+
+[ ... ]
+
+> +static int wave6_vpu_enc_s_selection(struct file *file, void *fh, struct=
+ v4l2_selection *s)
+> +{
+> +	struct vpu_instance *inst =3D wave6_file_to_vpu_inst(file);
+> +	u32 max_crop_w, max_crop_h;
+> +
+> +	if (!V4L2_TYPE_IS_OUTPUT(s->type))
+> +		return -EINVAL;
+> +
+> +	if (s->target !=3D V4L2_SEL_TGT_CROP)
+> +		return -EINVAL;
+> +
+> +	if (!(s->flags & (V4L2_SEL_FLAG_GE | V4L2_SEL_FLAG_LE)))
+> +		s->flags |=3D V4L2_SEL_FLAG_LE;
+> +
+> +	if (s->flags & V4L2_SEL_FLAG_GE) {
+> +		s->r.left =3D round_up(s->r.left, W6_ENC_CROP_STEP);
+> +		s->r.top =3D round_up(s->r.top, W6_ENC_CROP_STEP);
+> +		s->r.width =3D round_up(s->r.width, W6_ENC_CROP_STEP);
+> +		s->r.height =3D round_up(s->r.height, W6_ENC_CROP_STEP);
+> +	}
+> +	if (s->flags & V4L2_SEL_FLAG_LE) {
+> +		s->r.left =3D round_down(s->r.left, W6_ENC_CROP_STEP);
+> +		s->r.top =3D round_down(s->r.top, W6_ENC_CROP_STEP);
+> +		s->r.width =3D round_down(s->r.width, W6_ENC_CROP_STEP);
+> +		s->r.height =3D round_down(s->r.height, W6_ENC_CROP_STEP);
+> +	}
+> +
+> +	s->r.left =3D clamp_t(s32, s->r.left, 0,
+> +			    inst->src_fmt.width - W6_MIN_ENC_PIC_WIDTH);
+> +	s->r.top =3D clamp_t(s32, s->r.top, 0,
+> +			   inst->src_fmt.height - W6_MIN_ENC_PIC_HEIGHT);
+> +
+> +	max_crop_w =3D inst->src_fmt.width - s->r.left;
+> +	max_crop_h =3D inst->src_fmt.height - s->r.top;
+> +
+> +	if (!s->r.width || !s->r.height)
+> +		return 0;
+> +	if (max_crop_w < W6_MIN_ENC_PIC_WIDTH)
+> +		return 0;
+> +	if (max_crop_h < W6_MIN_ENC_PIC_HEIGHT)
+> +		return 0;
+> +
+> +	s->r.width =3D clamp(s->r.width, W6_MIN_ENC_PIC_WIDTH, max_crop_w);
+> +	s->r.height =3D clamp(s->r.height, W6_MIN_ENC_PIC_HEIGHT, max_crop_h);
+> +
+> +	wave6_update_pix_fmt(&inst->dst_fmt, s->r.width, s->r.height);
+> +	wave6_update_crop_info(inst, s->r.left, s->r.top, s->r.width, s->r.heig=
+ht);
+
+[Severity: High]
+Can wave6_vpu_enc_s_selection() modify inst->codec_rect while streaming,
+and does it return a 0-sized rectangle when width or height is 0?
+
+wave6_vpu_enc_s_selection() does not check vb2_is_busy() on the queues or
+whether inst->state !=3D VPU_INST_STATE_NONE. Because hardware picture
+dimensions are configured once at streamon while
+wave6_update_frame_buf_addr() adds inst->codec_rect.top and
+inst->codec_rect.left to the source frame DMA addresses on every frame,
+changing the crop offset mid-stream shifts the DMA base addresses while the
+VPU still reads the original frame dimensions past the end of the source
+buffer.
+
+In addition, returning 0 early when !s->r.width || !s->r.height bypasses
+the clamp() calls right below and reports an invalid 0-sized crop rectangle
+back to userspace.
+
+[ ... ]
+
+> +static int wave6_vpu_enc_s_parm(struct file *file, void *fh, struct v4l2=
+_streamparm *a)
+> +{
+> +	struct vpu_instance *inst =3D wave6_file_to_vpu_inst(file);
+> +	struct enc_controls *ctrls =3D &inst->enc_ctrls;
+> +
+> +	dev_dbg(inst->dev->dev, "%s: type %d\n", __func__, a->type);
+> +
+> +	if (!V4L2_TYPE_IS_OUTPUT(a->type))
+> +		return -EINVAL;
+> +
+> +	a->parm.output.capability =3D V4L2_CAP_TIMEPERFRAME;
+> +	if (a->parm.output.timeperframe.denominator &&
+> +	    a->parm.output.timeperframe.numerator) {
+> +		ctrls->frame_rate =3D DIV_ROUND_CLOSEST(a->parm.output.timeperframe.de=
+nominator,
+> +						      a->parm.output.timeperframe.numerator);
+> +		ctrls->frame_rate =3D clamp(ctrls->frame_rate,
+> +					  MIN_FRAME_RATE, MAX_FRAME_RATE);
+> +	} else {
+> +		a->parm.output.timeperframe.numerator =3D 1;
+> +		a->parm.output.timeperframe.denominator =3D ctrls->frame_rate;
+> +	}
+
+[Severity: Low]
+Should wave6_vpu_enc_s_parm() update a->parm.output.timeperframe after
+computing and clamping ctrls->frame_rate?
+
+When numerator and denominator are non-zero, the driver rounds and clamps
+ctrls->frame_rate but leaves the caller's unadjusted values in
+a->parm.output.timeperframe instead of returning 1 / ctrls->frame_rate.
+
+[ ... ]
+
+> +static void wave6_set_enc_hevc_param(struct enc_codec_param *output,
+> +				     struct hevc_enc_controls *ctrls)
+> +{
+
+[ ... ]
+
+> +	switch (ctrls->refresh_type) {
+> +	case V4L2_MPEG_VIDEO_HEVC_REFRESH_NONE:
+> +		output->decoding_refresh_type =3D DEC_REFRESH_TYPE_NON_IRAP;
+> +		break;
+> +	case V4L2_MPEG_VIDEO_HEVC_REFRESH_IDR:
+> +		output->decoding_refresh_type =3D DEC_REFRESH_TYPE_IDR;
+> +		break;
+> +	default:
+> +		break;
+> +	}
+> +	output->intra_period =3D ctrls->refresh_period;
+> +	if (output->idr_period) {
+> +		output->decoding_refresh_type =3D DEC_REFRESH_TYPE_IDR;
+> +		output->intra_period =3D output->idr_period;
+> +		output->idr_period =3D 0;
+> +	}
+
+[Severity: Medium]
+Does checking if (output->idr_period) here overwrite the HEVC refresh type
+and period whenever V4L2_CID_MPEG_VIDEO_GOP_SIZE is non-zero?
+
+wave6_set_enc_open_param() sets output->idr_period =3D ctrls->gop_size
+(which defaults to 30) before calling wave6_set_enc_hevc_param(). Checking
+if (output->idr_period) instead of if (!output->intra_period) clobbers
+ctrls->refresh_period and ctrls->refresh_type unless GOP size is explicitly
+set to 0.
+
+[ ... ]
+
+> +static int wave6_vpu_enc_buf_prepare(struct vb2_buffer *vb)
+> +{
+> +	struct vpu_instance *inst =3D vb2_get_drv_priv(vb->vb2_queue);
+> +
+> +	if (V4L2_TYPE_IS_CAPTURE(vb->type))
+> +		return 0;
+
+[Severity: Medium]
+Should wave6_vpu_enc_buf_prepare() validate the capture plane size against
+inst->dst_fmt.plane_fmt[0].sizeimage and reset the plane payload to 0?
+
+Returning early for capture buffers allows undersized imported DMABUFs to
+be queued without error, and a re-queued capture buffer that is later
+completed as an empty EOS buffer via v4l2_m2m_last_buffer_done() when
+V4L2_ENC_CMD_STOP or output streamoff runs retains its stale bytesused
+payload from the previous frame.
+
+[ ... ]
+
+> +static int wave6_vpu_enc_start_streaming(struct vb2_queue *q, unsigned i=
+nt count)
+> +{
+> +	struct vpu_instance *inst =3D vb2_get_drv_priv(q);
+> +	int ret =3D 0;
+> +
+> +	v4l2_m2m_update_start_streaming_state(inst->v4l2_fh.m2m_ctx, q);
+> +
+> +	if (inst->state =3D=3D VPU_INST_STATE_NONE) {
+> +		ret =3D wave6_vpu_enc_create_instance(inst);
+> +		if (ret)
+> +			goto exit;
+> +	}
+> +
+> +	if (inst->state =3D=3D VPU_INST_STATE_OPEN) {
+> +		ret =3D wave6_vpu_enc_initialize_instance(inst);
+> +		if (ret) {
+> +			wave6_vpu_enc_destroy_instance(inst);
+> +			goto exit;
+> +		}
+> +	}
+> +
+> +	if (inst->state =3D=3D VPU_INST_STATE_INIT_SEQ) {
+> +		ret =3D wave6_vpu_enc_prepare_fb(inst);
+> +		if (ret) {
+> +			wave6_vpu_enc_destroy_instance(inst);
+> +			goto exit;
+> +		}
+> +	}
+> +
+> +exit:
+> +	if (ret)
+> +		wave6_vpu_return_buffers(inst, q->type, VB2_BUF_STATE_QUEUED);
+> +
+> +	return ret;
+> +}
+> +
+> +static void wave6_vpu_enc_stop_streaming(struct vb2_queue *q)
+> +{
+> +	struct vpu_instance *inst =3D vb2_get_drv_priv(q);
+> +
+> +	dev_dbg(inst->dev->dev, "[%d] %s, input %d, encode %d\n",
+> +		inst->id, V4L2_TYPE_IS_OUTPUT(q->type) ? "output" : "capture",
+> +		inst->queued_src_buf_num, inst->sequence);
+> +
+> +	if (inst->state =3D=3D VPU_INST_STATE_NONE)
+> +		goto exit;
+> +
+> +	if (V4L2_TYPE_IS_OUTPUT(q->type)) {
+> +		inst->queued_src_buf_num =3D 0;
+> +		inst->processed_buf_num =3D 0;
+> +		inst->error_buf_num =3D 0;
+> +		inst->sequence =3D 0;
+> +	} else {
+> +		inst->queued_dst_buf_num =3D 0;
+> +	}
+> +
+> +	if (V4L2_TYPE_IS_CAPTURE(q->type) && inst->state !=3D VPU_INST_STATE_NO=
+NE)
+> +		wave6_vpu_enc_destroy_instance(inst);
+> +
+> +exit:
+> +	wave6_vpu_return_buffers(inst, q->type, VB2_BUF_STATE_ERROR);
+> +	v4l2_m2m_update_stop_streaming_state(inst->v4l2_fh.m2m_ctx, q);
+> +}
+
+[Severity: High]
+Can starting streaming on one queue before configuring the other leave the
+hardware instance and FBC reference buffers out of sync with the configured
+formats?
+
+wave6_vpu_enc_start_streaming() creates the hardware instance and allocates
+FBC buffers sized to inst->codec_rect on whichever queue starts streaming
+first, while wave6_vpu_enc_s_fmt_out() and wave6_vpu_enc_s_fmt_cap() only
+check vb2_is_busy() on their own queue. If userspace starts capture
+streaming first (or stops only the output queue, which does not destroy the
+instance) and then changes the output resolution or capture codec format,
+the second STREAMON sees inst->state =3D=3D VPU_INST_STATE_PIC_RUN and skips
+reinitializing the hardware instance and FBC buffers.
+
+In addition, if capture stops streaming before output,
+wave6_vpu_enc_stop_streaming() destroys the instance and sets inst->state
+to VPU_INST_STATE_NONE, so stopping the output queue afterwards takes the
+early goto exit and skips resetting queued_src_buf_num, processed_buf_num,
+error_buf_num, and sequence.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1795075577.gi=
-t.nas.chung@chipsnmedia.com?part=3D3
+t.nas.chung@chipsnmedia.com?part=3D7
