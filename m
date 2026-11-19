@@ -1,157 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.127
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795095788;
-	b=l3pSqhDijIEDgJhwCG1z/MiHCm7YtX3HSEzTEvOGwsURRz1Ic0++QVUTn8Adp6ue1Hxt
-	 xOEQCdy90YjS+T6TxDpx4E4nK3CCLSmLDt1k5/xy1X8RY6MqhRAlGWH1jd7MBkOy8r5CB
-	 DC56VOR0Wmne4+cwdXSxwJAdxKYoS8qOVH930HD8CKmCL5GiPdJP30XELeuYnw9PGD9+R
-	 PWZBgrVCY4nFLAjOikN8wW7ePicfeEr5rXolVmM+uir0GFjzdD05KZZ6poZyOLGx3TQWp
-	 k06M+GrNakLXjVERFkr09mFPJiXZY9tGCTsODX1e0WVsKUKv+JesfGUSVO06+pMOffQ==
+	t=1795098624;
+	b=rHLb3t9uHZZ6hanYW+LBXMKs9VlRTqmBdNPxiin/5ISUgRG/WlLHHYsOFKcZsi99GwIA
+	 6vRqPX1y8Enwropkb/ElXMcRgIEYJP7GRL1eKFVhzre44IDlQCLjiwCFlLytgEDFL+qHx
+	 6Pw9g68h9Bp0eWjQ74fVA+HarvrCjZRRtUO1ZGXR/hcSrWfecaPisZgcn5EmPC8qlKX5L
+	 bwiwU2KBn71gQheHeSmfOxDXGwhW6YDlecc5OHiEU05B2FlpyLgW6O0gANxJIarxGVGpm
+	 sNaOkZYZtTqiKYHFVvkTH7AeBaozPhMI7Q3WeZNZW3wVZ2XfkuxOa3BKzVijbIsl7Fg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795095788;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=CbEg7XvfeDnBQ/K77/dlrEkK7yv8e4LifTJxVZmhLAs=;
-	b=h47X2qhB7967iQIcTXCPFXjjrMphxrf+dHgVXSCeldRNhrilKeT4pDhtrqMwuApgEWZk
-	 M+S6ebuPk+ICNiWSwfdi60DFl51iCJnywhvmmsaTa4wdDsYrD3iSaG/YfFYMfR0eLMXdr
-	 zPMOmGPnvujUvEV2oj3EFOiktpc8mxZKH0XLJyvKG6iGmXjK5xQiAkeqQta3Y3jagpW8s
-	 M0SLTugq7frbZQaOT6I6KEGZOxACiSVAGWhWJlON0RAfbIaIc+DIzcpTEBdfbmyH+R6kR
-	 EOAk4gimdNVv2V/9r8mwv9tazTEiaz0KwcPXRn2O9x7aEj4v3aoVyng9rblgSvaCx2Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795098624;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=FEcK1VASWBIoUCoyKyCFXja3r1A/FxKQfO0b3GK01/Q=;
+	b=jcNla/dGHwkgesxPpCajdNGmxS4hgB87DCEj0+TzgNjHuHYVAo+mPWsbK3/9ZmtrrZCd
+	 px+UTW8lYgZjpsiJoQ0tBziD9L+oBIFodcStLVfYqqY5j0N3Re3+4X92euS3TwwQ2RD6O
+	 Ry7v5d+0pyhrLMIpXIsZQxagrfDmvFYxx+Op+I8D/JORKRo5Pagpsfxn4+zYDKxx79Fl2
+	 y4yPkw0ONjk83/swmZZLjvWowvhTZdVurTGdDI2D4hUu596kD3RJb/pwMqr15xhlZl/Wv
+	 pc38pp9lkZn7IkAJi2kxfxxWqVPkl3sA2obMRrPZrpdqkPL+da7bJSDlsbLPk0ISEpg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="n/jm8GB4";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=MCO2f6aQ;
+	arc=none smtp.remote-ip=95.215.58.127
+Received: from mta1.migadu.com (out-127.mta1.migadu.com [95.215.58.127])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D82C606A33E;
-	Thu, 19 Nov 2026 13:43:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DE1A606A32F
+	for <imx@lists.linux.dev>; Thu, 19 Nov 2026 14:30:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5DE1A606A32F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=n/jm8GB4
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7C561F000C4;
-	Thu, 19 Nov 2026 13:43:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795095788;
-	bh=CbEg7XvfeDnBQ/K77/dlrEkK7yv8e4LifTJxVZmhLAs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=n/jm8GB4oI1ZqtVH3mcxqQUwu9zuKiDu90pq6oKhkRGMpkul9cUzIWyL0OMn9lNiE
-	 yBKBsV8prLTEFyx0qEMoD8RpojqItT9dAXuguu1fIPVRXKdIrWHbwCsl9jO+ySa7g7
-	 k00W4Ui1/3OvE8DlqLfbOZX3jHIMUSZi3jgQBAE/Cw/9/Zykh9QHw5PS1qgR2i71IR
-	 zfO8LeXoviNETRPF0eKG6jI5XGyHA/nbymcYM0a9zYLwrYLw9o5tAXmABdR6mFolMb
-	 LOw2bTAgup7y5wAExPZUZs/Z37euTnmiFeLJ23GCI0jxPdlBzRNv8iqF2TPyMS/YJP
-	 fqCrH5mGo+kGQ==
-From: Maxime Ripard <mripard@kernel.org>
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Maxime Ripard <mripard@kernel.org>
-Cc: dri-devel@lists.freedesktop.org,
-	Janne Grunau <j@jannau.net>,
-	Sasha Finkelstein <k@chaosmail.tech>,
-	asahi@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	amd-gfx@lists.freedesktop.org,
-	sashiko-bot@kernel.org,
-	Liviu Dudau <liviu.dudau@arm.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Dave Airlie <airlied@redhat.com>,
-	Jocelyn Falempe <jfalempe@redhat.com>,
-	Alim Akhtar <alim.akhtar@samsung.com>,
-	Inki Dae <inki.dae@samsung.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Kyungmin Park <kyungmin.park@samsung.com>,
-	Peter Griffin <peter.griffin@linaro.org>,
-	Seung-Woo Kim <sw0312.kim@samsung.com>,
-	linux-samsung-soc@vger.kernel.org,
-	Alison Wang <alison.wang@nxp.com>,
-	Stefan Agner <stefan@agner.ch>,
-	Tian Tao <tiantao6@hisilicon.com>,
-	Xinwei Kong <kong.kongxinwei@hisilicon.com>,
-	Yongbang Shi <shiyongbang@huawei.com>,
-	Dexuan Cui <decui@microsoft.com>,
-	Long Li <longli@microsoft.com>,
-	Saurabh Sengar <ssengar@linux.microsoft.com>,
-	linux-hyperv@vger.kernel.org,
-	Fabio Estevam <festevam@gmail.com>,
-	Frank Li <Frank.Li@nxp.com>,
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=MCO2f6aQ
+X-Envelope-To: imx@lists.linux.dev
+DKIM-Signature: a=rsa-sha256; bh=FFz3gGYp69FcAIj4l0Zmahf+dyqjlU9rmv2m5wrHIas=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1795098621; v=1; x=1795703421;
+ b=MCO2f6aQ7MENRTRxOZSuXhCIHs0kP4m/P2pSRGN0KQ5QH5QW9nTGPRbKwmFOQM7R2mVxlLHu
+ 1+NV82S/YGKgNpIXHn8kOlbhKVQKPBcpnZ1/0San3lfWbHiPdY5TVoRBf6wcw3h1yFF9hIA8WX5
+ V4Wjn83e6XhdRbq82s+Jk5/Q=
+X-Envelope-To: imx@lists.linux.dev
+Received: by smtp.migadu.com with ESMTPS id 650b3532e440f0d6;
+	Thu, 19 Nov 2026 14:30:20 +0000
+X-Mizu-Trace-ID: 650b3532e440f0d6
+X-Migadu-Flow: FLOW_OUT
+Date: Thu, 19 Nov 2026 22:30:06 +0800
+From: Peng Fan <peng.fan@linux.dev>
+To: Francesco Dolcini <francesco@dolcini.it>
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Peng Fan <peng.fan@oss.nxp.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Peng Fan <peng.fan@nxp.com>, linux-remoteproc@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-rt-devel@lists.linux.dev,
+	Bjorn Andersson <andersson@kernel.org>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	imx@lists.linux.dev,
-	Paul Cercueil <paul@crapouillou.net>,
-	linux-mips@vger.kernel.org,
-	Anitha Chrisanthus <anitha.chrisanthus@intel.com>,
-	Paul Kocialkowski <paulk@sys-base.io>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	Icenowy Zheng <zhengxingda@iscas.ac.cn>,
-	Jianmin Lv <lvjianmin@loongson.cn>,
-	Mingcong Bai <jeffbai@aosc.io>,
-	Qianhai Wu <wuqianhai@loongson.cn>,
-	Xi Ruoyao <xry111@xry111.site>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	Abhinav Kumar <abhinav.kumar@linux.dev>,
-	Dmitry Baryshkov <lumag@kernel.org>,
-	Jessica Zhang <jesszhan0024@gmail.com>,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
-	Sean Paul <sean@poorly.run>,
-	freedreno@lists.freedesktop.org,
-	linux-arm-msm@vger.kernel.org,
-	Danilo Krummrich <dakr@kernel.org>,
-	Lyude Paul <lyude@redhat.com>,
-	nouveau@lists.freedesktop.org,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Gerd Hoffmann <kraxel@redhat.com>,
-	spice-devel@lists.freedesktop.org,
-	virtualization@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>,
-	linux-renesas-soc@vger.kernel.org,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Marcus Folkesson <marcus.folkesson@gmail.com>,
-	David Lechner <david@lechnology.com>,
-	Iker Pedrosa <ikerpedrosam@gmail.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Chunyan Zhang <zhang.lyra@gmail.com>,
-	Orson Zhai <orsonzhai@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Philippe Cornu <philippe.cornu@foss.st.com>,
-	Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>,
-	Yannick Fertre <yannick.fertre@foss.st.com>,
-	Chen-Yu Tsai <wens@kernel.org>,
-	Samuel Holland <samuel@sholland.org>,
-	linux-sunxi@lists.linux.dev,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Mikko Perttunen <mperttunen@nvidia.com>,
-	Thierry Reding <thierry.reding@kernel.org>,
-	linux-tegra@vger.kernel.org,
-	Jyri Sarha <jyri.sarha@iki.fi>,
-	Alexey Brodkin <abrodkin@synopsys.com>,
-	Hans de Goede <hansg@kernel.org>,
-	Kamlesh Gurudasani <kamlesh.gurudasani@gmail.com>,
-	Alex Lanzano <lanzano.alex@gmail.com>,
-	LiangCheng Wang <zaq14760@gmail.com>,
-	Chia-I Wu <olvaffe@gmail.com>,
-	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-	Gurchetan Singh <gurchetansingh@chromium.org>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Zack Rusin <zack.rusin@broadcom.com>,
-	Oleksandr Andrushchenko <oleksandr_andrushchenko@epam.com>,
-	Michal Simek <michal.simek@amd.com>
-Subject: Re: (subset) [PATCH v2 00/64] drm: Switch drivers to drm_mode_config_create_initial_state
-Date: Thu, 19 Nov 2026 14:43:02 +0100
-Message-ID: <179509577844.523497.5498880532220697042.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.56.1
-In-Reply-To: <20261116-drm-no-more-config-reset-v2-0-0bb471f4d1e0@kernel.org>
-References: <20261116-drm-no-more-config-reset-v2-0-0bb471f4d1e0@kernel.org>
+	Steven Rostedt <rostedt@goodmis.org>
+Subject: Re: [PATCH v3 00/10] mailbox: imx: Use threaded handler to avoid
+ kworker in imx's remoteproc
+Message-ID: <av8H7l6C8fmiHdbV@fedora>
+References: <av6Wc+kHFKqwFHAR@shlinux89>
+ <20261116102331.K8Sc86V9@linutronix.de>
+ <20261119114041.GA166708@francesco-nb>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -161,39 +78,98 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261119114041.GA166708@francesco-nb>
 
-On Mon, 16 Nov 2026 11:30:16 +0100, Maxime Ripard wrote:
-> drm_mode_config_reset() has a dual role: it creates the initial KMS
-> state at probe time, and resets hardware and software state during
-> suspend/resume cycles. However, the two roles need different
-> behaviors, notably for objects like drm_private_obj that must persist
-> across suspend/resume and are excluded from drm_mode_config_reset()
-> by design.
-> 
-> [...]
+On Thu, Nov 19, 2026 at 12:40:41PM +0100, Francesco Dolcini wrote:
+>Hello Peng, Sebastian
+>
+>On Mon, Nov 16, 2026 at 11:23:31AM +0100, Sebastian Andrzej Siewior wrote:
+>> On 2026-11-16 10:23:41 [+0100], Francesco Dolcini wrote:
+>> > Our CI shows a ~10-15% eMMC sequential read throughput drop on i.MX8QXP
+>> > and i.MX8DX (Colibri iMX8X, Cortex-A35), starting with v7.2-rc1 and
+>> > still present in v7.4-rc3 (hdparm --direct -t: ~129 MB/s -> 105-120
+>> > MB/s on i.MX8DX). i.MX8QM, i.MX8M and i.MX9 are not affected.
+>> > 
+>> > 5d1c0000.mailbox interrupt count before the test went from ~8k on v6.18
+>> > to 60k+ on v7.3/v7.4.
+>> > 
+>> > Peng: any idea/suggestion? Does it makes any sense to you?
+>> 
+>> Can you pin point it to a patch in this series? My guess is that
+>> something with the masking/ unmasking went wrong. The increase might be
+>> result of the interrupt keeping firing while the threaded interrupt did
+>> not have a chance to run.
+>
+>Reverting 36cac4b5101f, 3225a745f517, e55bea377d49 and 692e1bc96a5d
+>restores 149 MB/s with schedutil.
+>
+>
+>On Thu, Nov 19, 2026 at 02:25:55PM +0800, Peng Fan wrote:
+>> On Mon, Nov 16, 2026 at 10:23:41AM +0100, Francesco Dolcini wrote:
+>> >Peng: any idea/suggestion? Does it makes any sense to you?
+>> 
+>> Please help test whether this helps:
+>> 
+>> diff --git a/drivers/mailbox/imx-mailbox.c b/drivers/mailbox/imx-mailbox.c
+>> index 683ccea6f2ba..e29044cf4b92 100644
+>> --- a/drivers/mailbox/imx-mailbox.c
+>> +++ b/drivers/mailbox/imx-mailbox.c
+>> @@ -635,7 +635,7 @@ static int imx_mu_startup(struct mbox_chan *chan)
+>>  {
+>>         struct imx_mu_priv *priv = to_imx_mu_priv(chan->mbox);
+>>         struct imx_mu_con_priv *cp = chan->con_priv;
+>> -       unsigned long irq_flag = IRQF_NO_THREAD;
+>> +       unsigned long irq_flag = IRQF_NO_THREAD | IRQF_ONESHOT;
+>>         int ret;
+>> 
+>>         pm_runtime_get_sync(priv->dev);
+>
+>It does not help.
+>	
+>The analysis below was done with Claude help, on measurements I took on a
+>Colibri iMX8QXP. I hope you can pick it up from there, this is not my
+>area of expertise, and the best I can do is to send a revert for those 4
+>commits.
+>
+>Every SCU RPC now wakes the SCHED_FIFO irq thread (TX done and RX), and
+>while an RT task is runnable schedutil requests the maximum CPU frequency.
+>The A35 clock is CLK_GET_RATE_NOCACHE, so each frequency change is
+>followed by an SCU RPC reading the rate back, which wakes the irq thread
+>again. The loop never settles, even when idle, and the transitions (ATF +
+>SCU) are what costs the eMMC throughput (and I assume there is more
+>impact on performance than just this).
 
-Applied to misc/kernel.git (drm-misc-next)
+Not sure whether this is root cause, per my understanding, cpu freq update
+is not that high frequency call.
 
-[03/64] drm/hdlcd: Fix drm_atomic_helper_shutdown() on the probe error path
-        commit: e388eae138aa9364caada0a372b5712642188c16
-[11/64] drm/hyperv: Switch to drm_mode_config_create_initial_state
-        commit: 50b11ceaaef03d4062971db173bbddc8ac0df28b
-[25/64] drm/rcar-du: Switch to drm_mode_config_create_initial_state
-        commit: d8b8de5c35983567a7ef78fcd9f75db46d6c26af
-[29/64] drm/st7586: Switch to drm_mode_config_create_initial_state
-        commit: 52eb5b7764084bddd68e77c1c3e62e70ad11828f
-[30/64] drm/st7735r: Switch to drm_mode_config_create_initial_state
-        commit: 28d10bb2421152b650329710183c1f6df1bd056e
-[31/64] drm/st7920: Switch to drm_mode_config_create_initial_state
-        commit: b17f5f1abd5c30875d203d7690c92129d2d814d6
-[35/64] drm/stm: Switch to drm_mode_config_create_initial_state
-        commit: d78ccdcc94eba858fd8386f0da6de4ec4cd44666
-[37/64] drm/tegra: Switch to drm_mode_config_create_initial_state
-        commit: 0c187722c35db771276ee7390454f7de70508833
-[50/64] drm/ili9225: Switch to drm_mode_config_create_initial_state
-        commit: 0fc18dd1409138d88089ecdda5544ea2f8785520
+Let me setup a i.MX8QXP board and see what's going on there. BTW, i.MX8QM should
+also have same issue, but seems not impact in your report, a bit werid,
+might be because i.MX8QM has more cores :)
 
-Thanks!
-Maxime
+Have you tried pin your emmc test thread to core3, or core2, just not core0.
+
+Regards
+Peng
+
+>
+>v7.4-rc3, 4 CPUs, idle irq/cpufreq transitions per 10s, hdparm --direct -t:
+>
+>                               irq    trans  schedutil  performance
+>  v6.18                          -      -    149.7 MB/s     -
+>  v7.4-rc3                   16203  10800    113 MB/s   150 MB/s
+>  v7.4-rc3 + IRQF_ONESHOT     7832   7813    113 MB/s   150 MB/s
+>  v7.4-rc3 + revert 4 commits   60     36    149 MB/s   150 MB/s
+>
+>The 4 commits are 36cac4b5101f, 3225a745f517, e55bea377d49 and
+>692e1bc96a5d; reverting only the RX part (e55bea377d49) is not enough.
+>
+>
+>#regzbot introduced: 692e1bc96a5d^..36cac4b5101f
+>#regzbot title: mailbox: imx: threaded IRQ handling causes a cpufreq transition storm on SCU-based i.MX8
+>
+>Thanks,
+>Francesco
+>
+>
