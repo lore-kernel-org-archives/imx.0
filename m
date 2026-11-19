@@ -1,64 +1,121 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=188.40.3.216
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795090389;
-	b=QUO48o8Wxd35qFIzqGroByHlH1PsJd95YDXWgAOy6Vx3TNmbegXmDNC8kC3yN0+Y97KJ
-	 6657K8iAlt+HaPzEwDSFFSQ3DTJP+RMyvLqep9EHhjgFm1Q/GK4nHQUYoC0ofLP9VodAC
-	 iKQa6ALQc7m6pyknSiZyNCRAjq70uTdffjxSGT2IKcIjd+jAU5qKr+JWDvmtt3aY4iNW6
-	 2zzxusFlWe70Tz0hKN34y7F9/94qt7J/jxvVFmHW3LHX/8verKq2F80UD6cieFVTFp4YY
-	 Z+0oYgZ9rBa+UEDZKf1t7jbiwSQJVXepA0hCggnV3tYhE+JEHdWUf2lAb4jZlntqspg==
+	t=1795092546;
+	b=4Nhaplm7nokikKzWRo18x3xbIOTc/vuWr6rDZWbiwCsq1J2Gze3NmsrLtv2DGJuIfqIf
+	 zhFB6SxSOfYUav9wS/0tmrSj+wlFACyZjCCoD4bGBh/xc/QowglqnI49g2vntAsXEZSzv
+	 LPZDKHmwHiO1ZAEH9P1TUIe+NEhGE5zCDSPsY+ybi5hRCNMcRLHSsGjUL0XSJ3lD+1Eoe
+	 sP2N75LMLQ+7qctoEQNgSyaiFxna/qPzvvb4vV7/JO/A25Uc50b/tv4PUIwzjeqAXr5/y
+	 nsewES5WOqlWo8E/3e22+B0xRBvLGmoN3XZDeENctfF9K7/qBxE+02//sMb0R99YjaA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795090389;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 X-Virus-Scanned;
-	bh=REsnftpp5R8mVp6m2NhUleDB0j+A8D+8snw/QN9P/es=;
-	b=4uolKJLnuXWhWwvOjYBPwvKdmBaWerEG3yA/kpq+1v7TU7ebM4L9gbWHumQyK489i0CV
-	 q7sKaWTMlWIyaufBt8AuEj/NjLsnHa/LxVt3ILPX2ttr/G319m1RIRKAwPIy8WGWm8aO+
-	 5zZqGqUl5JOk0Lkm5S5IPNIUGA183dvQblpCQZTg9Vc1QlgI6mDrZ71tSCcse3eaVmLWK
-	 wvjfk6nvsBVoq0kSRhaQN8+M+7J3qMcjQ5tWaAQGmiup0dkHtZsxO6CZDBzSzjPIlqqtz
-	 tYBOyQc3Gkz6H6H3eg0JkE9lj5N1m1qaLxi6mSM+4vJSmKi8nawhSm2PiInIY49yXNA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795092546;
+	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:To:Cc:
+	 Subject:In-Reply-To:References:User-Agent:Date:Message-ID:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-Last-TLS-Session-Version;
+	bh=FrqcePVIbKpJOlr0CwwEXmHuYmHa3yUMeo1BTUrWcl0=;
+	b=jwwi7l2Xw9+Lj2sLe/C9kDdELXq+pX4XLIftq0OTIb/IflvLa+vBQjSSv1kjya5iydvD
+	 h+PlCSTo/sHjtL12DVxBOwbOJZZKzwKBvoTTM9EbLi31kDaBE55e8/7nlLdqyHTNCdAtx
+	 MCD9wULB738z/P9sKNQ1axj5G/OpL5AllVuhgqERq5LIO6HOQuutxgVnULSBOdLL9qZ8V
+	 tDJ5avNprO7LGy82XFjuDKaSm3YgAaZa4+nPS7GBdsm+1O0bkR5Rhns/SS7bg19uO823o
+	 ED6OhTa9WkxisVKHi+0CP5lDR/m3Cno+8evOsKTbqe8KwqXf4wIJ8jMHQWGPKy1h5Fw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=ew.tq-group.com;
-	spf=pass smtp.mailfrom=ew.tq-group.com;
-	dkim=pass header.d=ew.tq-group.com header.i=@ew.tq-group.com header.a=rsa-sha256 header.s=default2602 header.b="Ow1j+iK/";
-	arc=none smtp.remote-ip=188.40.3.216
-Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
+	dmarc=pass header.from=bootlin.com;
+	spf=pass smtp.mailfrom=bootlin.com;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=mteItAuJ;
+	arc=none smtp.remote-ip=185.171.202.116
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E50A606A320;
-	Thu, 19 Nov 2026 12:13:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0E50A606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33DB8606A320
+	for <imx@lists.linux.dev>; Thu, 19 Nov 2026 12:49:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 33DB8606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.a=rsa-sha256 header.s=default2602 header.b=Ow1j+iK/
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=ew.tq-group.com; s=default2602; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=REsnftpp5R8mVp6m2NhUleDB0j+A8D+8snw/QN9P/es=; b=Ow1j+iK/0IXr3VjEg+HVcVRwx4
-	ClZh46wm3jwoJUVDAxFIqsxoZ2Ne7kNGjkKMnV1I2iuu+4Y2/PszSHbhbhw4W1hy3L+HiNX3dHrM5
-	DP1TcGgLpSwzVCdI7sh8RlIqxLJtnk9KkHGMu2gGvJJ8YIaf8R6+QmTCmV5r1gY/cqOqvV67wD21z
-	xv2rpZcvIdV5rCaZLOTboYJmaWqrI1UxU99KchXsx3c9Y9sl+ATp4XwLSLijEOfgRMmLOQfdQONKL
-	LcmavD58kF7/4vNyS7B/Upkr7kSvvHtOybAQXD2X336TWJHk9+sERgqdHlv1s9U+mQ6FVhy5cx3GH
-	hWdIyBBw==;
-Received: from sslproxy03.your-server.de ([88.198.220.132])
-	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <max.merchel@ew.tq-group.com>)
-	id 1xU10k-0009Qi-1O;
-	Thu, 19 Nov 2026 13:13:06 +0100
-Received: from localhost ([127.0.0.1])
-	by sslproxy03.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <max.merchel@ew.tq-group.com>)
-	id 1xU10k-000GBq-0t;
-	Thu, 19 Nov 2026 13:13:06 +0100
-Message-ID: <327196f2-9063-4164-a556-3093a649b5e0@ew.tq-group.com>
-Date: Thu, 19 Nov 2026 13:13:05 +0100
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=mteItAuJ
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id C2044C4CBF1;
+	Thu, 19 Nov 2026 12:49:09 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 5877D60271;
+	Thu, 19 Nov 2026 12:49:04 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id CC49311BC0673;
+	Thu, 19 Nov 2026 13:48:02 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1795092535; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=FrqcePVIbKpJOlr0CwwEXmHuYmHa3yUMeo1BTUrWcl0=;
+	b=mteItAuJBxCXIm6o7Tz4CiCkaMG9jXhvMU2sSQLnSpwBcZpG8f2MBEvcJ1Bx2lQIvEFPHc
+	cDtQgbCpT1F3jW229XoKlV3ReW5mnP/ABdent9sCr/5183826BqbllILfT90L05VaHMgtP
+	dUJUiAyMuYUR1NhbdpZFwHZONdW4QU9si+WZSm1qV6DhZI6XlaK2xQVRCAOzwBKLP1wBFh
+	3qw4wVp4q47Ts1Jsp/lIRy+UYxCPzeFEV89KDKzTVDondoVzVYjpyUCZKV/Oz4GxrsbGus
+	YTBzHCONs5aDQShHm1+BnPAiQ9L4baKhNKmb68Cs/uKC0//BXan270Bf1Uz6BQ==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: James Hilliard <james.hilliard1@gmail.com>
+Cc: Richard Weinberger <richard@nod.at>,  Vignesh Raghavendra
+ <vigneshr@ti.com>,  linux-mtd@lists.infradead.org,
+  linux-kernel@vger.kernel.org,  Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>,  Srinivas Kandagatla <srini@kernel.org>,
+  Tze Yee Ng <tze.yee.ng@altera.com>,  Richard Cochran
+ <richardcochran@gmail.com>,  Jonathan Lemon <jonathan.lemon@gmail.com>,
+  Vadim Fedorenko <vadim.fedorenko@linux.dev>,  Yuqiang Sun
+ <izaiahsun@gmail.com>,  Amit Kumar Mahapatra
+ <amit.kumar-mahapatra@amd.com>,  Luca Ceresoli
+ <luca.ceresoli@bootlin.com>,  Bernhard Frauendienst
+ <kernel@nospam.obeliks.de>,  "Gustavo A. R. Silva"
+ <gustavoars@kernel.org>,  Kees Cook <kees@kernel.org>,
+  linux-hardening@vger.kernel.org,  Arseniy Krasnov
+ <AVKrasnov@sberdevices.ru>,  Boris Brezillon <bbrezillon@kernel.org>,
+  Brian Norris <computersforpeace@gmail.com>,  Jernej Skrabec
+ <jernej.skrabec@gmail.com>,  linux-arm-kernel@lists.infradead.org,
+  linux-sunxi@lists.linux.dev,  Samuel Holland <samuel@sholland.org>,
+  Chen-Yu Tsai <wens@kernel.org>,  David Woodhouse <dwmw2@infradead.org>,
+  Thomas Gleixner <tglx@kernel.org>,  Vitaly Wool <vitalywool@gmail.com>,
+  David Woodhouse <David.Woodhouse@intel.com>,  Russell King
+ <rmk+kernel@arm.linux.org.uk>,  Mike Rapoport <rppt@kernel.org>,
+  Alexandre Torgue <alexandre.torgue@foss.st.com>,  Christophe Kerello
+ <christophe.kerello@st.com>,  Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+  Jason Roberts <jason.e.roberts@intel.com>,  Boris Brezillon
+ <boris.brezillon@collabora.com>,  Michal Simek <michal.simek@amd.com>,
+  Mason Yang <masonccyang@mxic.com.tw>,  Ramuthevar Vadivel Murugan
+ <vadivel.muruganx.ramuthevar@linux.intel.com>,  Lucas Stach
+ <dev@lynxeye.de>,  Dmitry Osipenko <digetx@gmail.com>,  Jonathan Hunter
+ <jonathanh@nvidia.com>,  linux-tegra@vger.kernel.org,  Stefan Agner
+ <stefan@agner.ch>,  Thierry Reding <thierry.reding@kernel.org>,
+  AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+  Jorge Ramirez-Ortiz <jorge.ramirez@oss.qualcomm.com>,
+  linux-mediatek@lists.infradead.org,  Matthias Brugger
+ <matthias.bgg@gmail.com>,  Heiko Stuebner <heiko@sntech.de>,
+  linux-rockchip@lists.infradead.org,  Yifeng Zhao
+ <yifeng.zhao@rock-chips.com>,  Alexandre Belloni
+ <alexandre.belloni@bootlin.com>,  Claudiu Beznea
+ <claudiu.beznea@tuxon.dev>,  Nicolas Ferre <nicolas.ferre@microchip.com>,
+  Keguang Zhang <keguang.zhang@gmail.com>,  linux-mips@vger.kernel.org,
+  Shan-Chun Hung <schung@nuvoton.com>,  Jacky Huang <ychuang3@nuvoton.com>,
+  Fabio Estevam <festevam@gmail.com>,  Frank Li <Frank.Li@nxp.com>,
+  imx@lists.linux.dev,  Pengutronix Kernel Team <kernel@pengutronix.de>,
+  Sascha Hauer <s.hauer@pengutronix.de>,  Han Xu <han.xu@nxp.com>,
+  linux-renesas-soc@vger.kernel.org,  Wolfram Sang
+ <wsa+renesas@sang-engineering.com>,  Jerome Brunet <jbrunet@baylibre.com>,
+  Kevin Hilman <khilman@baylibre.com>,  Liang Yang
+ <liang.yang@amlogic.com>,  linux-amlogic@lists.infradead.org,  Martin
+ Blumenstingl <martin.blumenstingl@googlemail.com>,  Neil Armstrong
+ <neil.armstrong@linaro.org>,  linux-arm-msm@vger.kernel.org,  Manivannan
+ Sadhasivam <mani@kernel.org>,  Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>,  Kamal Dasu
+ <kamal.dasu@broadcom.com>,  Piotr Wojtaszczyk
+ <piotr.wojtaszczyk@timesys.com>,  Vladimir Zapolskiy <vz@mleia.com>,
+  Harvey Hunt <harveyhuntnexus@gmail.com>,  Paul Cercueil
+ <paul@crapouillou.net>,  Maxim Levitsky <maximlevitsky@gmail.com>
+Subject: Re: [PATCH v5 00/58] mtd: rawnand: retain chip and controller state
+ across removal
+In-Reply-To: <20261115-submit-rawnand-retained-handle-lifetime-v1-v5-0-cbc49c5c5e74@gmail.com>
+	(James Hilliard's message of "Sun, 15 Nov 2026 23:29:15 -0700")
+References: <20261115-submit-rawnand-retained-handle-lifetime-v1-v5-0-cbc49c5c5e74@gmail.com>
+User-Agent: mu4e 1.12.12; emacs 30.2
+Date: Thu, 19 Nov 2026 13:48:02 +0100
+Message-ID: <87v75tc7i5.fsf@bootlin.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -68,100 +125,82 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ARM: dts: imx6qdl-mba6: Add EEPROM nvmem cell for all
- board information
-To: sashiko-reviews@lists.linux.dev
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org,
- conor+dt@kernel.org, Frank.Li@kernel.org, linux@ew.tq-group.com
-References: <20261119102531.2995127-1-Max.Merchel@ew.tq-group.com>
- <sashiko-outbox-222965@kernel.org>
-Content-Language: en-US
-From: Max Merchel <max.merchel@ew.tq-group.com>
-In-Reply-To: <sashiko-outbox-222965@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: Clear (ClamAV 1.4.6/28188/Thu Nov 19 07:24:39 2026)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Last-TLS-Session-Version: TLSv1.3
 
+Hi James,
 
-On 11/19/26 11:37, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue to consider:
-> - [Low] ARM: dts: imx6qdl-mba6: duplicate @20 unit-address in
->    nvmem-layout
-> --
+On 15/11/2026 at 23:29:15 -07, James Hilliard <james.hilliard1@gmail.com> w=
+rote:
+
+> An MTD handle can outlive controller unbind. Its metadata and NAND locks
+> must remain valid, including when a writable file closes and calls sync,
+> while further hardware access must be rejected after disconnection.
 >
-> commit b5a0ac272fe3356ca3f0ff5cbf739f7f5d760dab
-> Author: Max Merchel <Max.Merchel@ew.tq-group.com>
+> This builds on earlier MTD removal-lifetime work. Commit 19bfa9ebebb5
+> ("mtd: use refcount to prevent corruption") added MTD reference counting
+> [0], but retaining an MTD reference does not by itself retain the
+> driver-owned allocation containing the master. The read/unbind discussion
+> also covered raw NAND [1] and draining active operations [2]. Tze Yee Ng's
+> SPI-NOR series addresses the corresponding SPI-NOR paths [3].
 >
-> ARM: dts: imx6qdl-mba6: Add EEPROM nvmem cell for all board information
+> Following Greg's review [7], separate class-device data from the MTD
+> backing allocation. Delete the device's interfaces and drain NVMEM and
+> class PM callbacks before releasing backing data. Bare device references
+> retain an independently allocated device, whose type, PM dispatch and
+> final release are built in even when MTD is modular. NVMEM similarly
+> disconnects and drains provider and layout callbacks before unregister
+> returns; retained consumers keep core-owned metadata and receive -ENODEV
+> on subsequent access.
 >
-> This commit adds an EEPROM fixed-layout nvmem cell at offset 0x20 covering
-> board information on MBa6a and MBa6b carrier boards.
+> Introduce opt-in backing-object ownership for MTD masters. Registered
+> nodes and acquired MTD handles retain the chip, while nested partitions
+> also retain their parent metadata. Unregister first so removal notifiers
+> can finish I/O, then disconnect raw NAND and drain admitted operations.
+> Hardware resources can be released without waiting for open files to clos=
+e.
 >
->> diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-mba6a.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-mba6a.dtsi
->> index aca320ee8f476..9b199b277c220 100644
->> --- a/arch/arm/boot/dts/nxp/imx/imx6qdl-mba6a.dtsi
->> +++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-mba6a.dtsi
->> @@ -29,6 +29,10 @@ nvmem-layout {
->>   			#address-cells = <1>;
->>   			#size-cells = <1>;
->>   
->> +			board_info: board-info@20 {
->> +				reg = <0x20 0x60>;
->> +			};
->> +
->>   			mba_mac_address: mac-address@20 {
->>   				reg = <0x20 0x6>;
->>   			};
->> diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-mba6b.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-mba6b.dtsi
->> index c7bbd6195fef1..517913abbc66d 100644
->> --- a/arch/arm/boot/dts/nxp/imx/imx6qdl-mba6b.dtsi
->> +++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-mba6b.dtsi
->> @@ -39,6 +39,10 @@ nvmem-layout {
->>   			#address-cells = <1>;
->>   			#size-cells = <1>;
->>   
->> +			board_info: board-info@20 {
->> +				reg = <0x20 0x60>;
->> +			};
->> +
->>   			mba_mac_address: mac-address@20 {
->>   				reg = <0x20 0x6>;
->>   			};
-> [Severity: Low]
-> Does adding board-info@20 alongside mac-address@20 under the same
-> nvmem-layout parent in both dtsi files cause duplicate unit-address dtc
-> warnings?
+> Virtual concatenations serialize publication and removal across physical
+> controllers. Disconnect and drain a published concatenation before any
+> component can disappear, then release its component references. An old
+> handle keeps the disconnected virtual device, independently of a later
+> replacement.
 >
-> Because both enabled sibling nodes share the @20 unit-address and overlap
-> at offset 0x20, building the MBa6x DTBs with W=1 or W=2 triggers
-> unique_unit_address_if_enabled and unique_unit_address warnings.  Could the
-> fields be defined as non-overlapping cells at their respective offsets, or
-> exposed through a dedicated nvmem layout?
+> Run NAND and controller-specific cleanup during disconnection, while
+> the controller driver is still bound. Snapshot the OOB layout in core-own=
+ed
+> data before publication so metadata queries remain valid without driver
+> callbacks. The NAND core frees retained chip and controller allocations;
+> the final MTD put never calls back into the controller module. Ordinary
+> MTD and NVMEM handles retain the NAND core that implements their
+> operations, rather than the hardware driver.
 >
-Hello,
+> Share allocation ownership across the raw-NAND drivers, including
+> partially published probes. Shared controllers remain allocated until
+> their last retained chip is released. R852 allocates a new chip for each
+> card, and NDFC allocates controller state per binding.
+>
+> Based on NAND next at 30daaf3e7897, with Tze Yee Ng's module-reference
+> ordering fix [4], Karl Mehltretter's OTP cleanup fix [6], and the separat=
+ely
+> posted registration, operation-locking and controller probe/teardown fixes
+> identified by the prerequisite metadata. TLA+ models and their assumptions
+> and coverage limits are available in [5].
 
-the MAC address is the first part of the TQ-EEPROM structure for 
-module/board data (MAC, serial number, type).
+While lifetime issues are a real concern in the kernel, please note that
+in general, removing or unbinding the flash controller driver is not a
+practical operation. While highly unlikely, this is possible though. But
+I am not going to sacrifice all the devm_ calls in favor of reinstating
+manual error handling just for that. If there is a way, it must be
+different.
 
-The function “nvmem_get_mac_address” in “net/ethernet/eth.c” retrieves 
-an nvmem cell containing the MAC address and compares its length to 
-ETH_ALEN. Therefore, it is not possible to use the same nvmem layout.
+Also, this kind of contribution can only be done if you *understand*
+what you are doing. Getting the big picture here is not optional.
 
-Consequently, two nvmem layouts are required, both starting at the same 
-offset.
+Maybe the problem is MTD refcounting? Maybe the problem is the devm_
+orderging? I don't know, I haven't looked in depth at all the
+patches. But the current approach is clearly not acceptable.
 
-I have not found a way to use only the first part of an “nvmem layout” 
-or to create sub layouts for sections of an existing layout.
-
-
--- 
-Best regards,
-Max
-
-TQ-Systems GmbH | Mühlstraße 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht München, HRB 105018
-Geschäftsführer: Detlef Schneider, Rüdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
-
+Thanks,
+MIqu=C3=A8l
