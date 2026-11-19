@@ -1,100 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.175
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795069388;
-	b=Vw483F+PNInGR61iyORRHvPgjA0Z5hrAaCF5TElFURaxTTOY9zaeY5nzLnstsMdrJMaL
-	 0PyLLKvcANgPCUrif9fCrcVnrYw94rFNM+ttt4njyaAhM2QdiM1fa5NG1yoGk5z2QlPKD
-	 gUvgRMre8a9OarGxtolzRz8V5DWGpjZdITQgTRG4r+0fna2RJb4jLuZ5M08QGdBx7OUFs
-	 n6WuMuypF7KfThgmwVW+XteYByYogSaOltdgKZGqCkq2tHinPApdzz9NlYO0hk3zcppu/
-	 +O0pEMXtX3O1KBsxzSPbdFWMTtZ5zob4qzjGDNLiM1NKJVd/1Is61z+Oqqv0K0UmS1w==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795069388;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=vIyXTGC5+88ay5cdcjaG1P2/fm08Yk80tNUxmrQFq58=;
-	b=HhzGGuj8eT7IAHUE1hBV+Y+SnW9Zc9IFfKffwL/dcbTrYx+nQA9nXytIyW5ZSxUptKk9
-	 Oz9K8IlxpSrk9tULSR6ol/H5/2Wro5OywaGj0GIa30mCOrHjZ2tUd0qPKjskQ6mphhKre
-	 6nEPNScjUICHTsXHPxiIyrMTMEeyZ0iDT8b/wOez4QdDAtU5bvuWPKOy5LAcwZwJq7svr
-	 JuPVo0d86uZHbvWLYvvrWY9PwXMYpRrJ0lsIOP3te5KckNkstgzhfCJ6B5v5kojgTA7TZ
-	 imIi4/6UcuH3JfyxpUhzUK6S2r4yp+IgZVx75CstJ0ci9g+IdFM7vOAb5kr7hAVZkdw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=jclark.com;
-	spf=pass smtp.mailfrom=jclark.com;
-	dkim=pass header.d=jclark-com.20260707.gappssmtp.com header.i=@jclark-com.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=IFZvNijI;
-	arc=none smtp.remote-ip=209.85.214.175
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.69.24
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795073277;
+	b=0MuERZMKqUsBztneSTQYPK5bHrhO+cAuNRm3T4bYR1/yg0/8Jl17uxJhsG6Tx0mQaXnz
+	 qQ/uyDc8DNCd91Hj/QALflRWu3GH4ehVGOwRE5Q8TJeFWm3T3k5oZnd40zgpHXHQESoU/
+	 EWRDSnrX8oMc8fR+wen8MdQmIFdQ4JccNSwa+jCJau3l89CVFLZhssfu9o3nhUiDjLsSv
+	 d9Rb8FYUIisE3f13o59FORTkdV0p0QHFG2uWCuLdG0dXrgG1ihChCo47nntivv07xgNAS
+	 HNllLa3xx/EpnEuwii1TBGnnV38OBtV2rcpnw6ZxkkQNRGzVhHQjheN0tvedSipX49Q==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795073277;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:Date:Subject:
+	 Content-Type:Content-Transfer-Encoding:Message-Id:X-B4-Tracking:
+	 X-Change-ID:To:Cc:X-Mailer:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=iCmx5M7ujUm1IfWX40ZfSkMyh+Eos/Q9MDjpaPeqirs=;
+	b=b3ZsRfkhmyYsmsXcGEWtpzsQkK21hs9K/dTjP3bWs4d8+y+59tw0Lpd2SQBbaVCrGNTH
+	 3kBnr1TnJ1kuFQOnHDaJqlXx9/ddRclg102T1v6qyJwDxYAO74s6kbi391auFzyyX8u69
+	 zt0vqyGf7ny0hhnRnMU1rPbrl/G/VCZ6iumGAkiqkTttClTvRbcZo893bdpTP5zsP36nq
+	 r7NjvVBaH5l9HNZRVyByKlACaej6gP1jAOeKvRKmoFD5AVPSgHsqzkEawp+gWw+yq+ozl
+	 Nec/cT2NIxI5qOV8eZqvAfzg2U+kAO0cOt7Xap/DFcv0njQtUebNsaotk9KyqK00GTQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=oss.nxp.com;
+	spf=pass smtp.mailfrom=oss.nxp.com;
+	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=TGNEt2kg;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.69.24
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010024.outbound.protection.outlook.com [52.101.69.24])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88FAA606A32A
-	for <imx@lists.linux.dev>; Thu, 19 Nov 2026 06:23:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 88FAA606A32A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jclark.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jclark.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6598606A325
+	for <imx@lists.linux.dev>; Thu, 19 Nov 2026 07:27:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C6598606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=jclark-com.20260707.gappssmtp.com header.i=@jclark-com.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=IFZvNijI
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2e9d7791b00so19649295ad.0
-        for <imx@lists.linux.dev>; Wed, 18 Nov 2026 22:23:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=jclark-com.20260707.gappssmtp.com; s=20260707; t=1795069387; x=1795674187; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=vIyXTGC5+88ay5cdcjaG1P2/fm08Yk80tNUxmrQFq58=;
-        b=IFZvNijISejbD/T/pe2iRcTdnLOKYeAEc9tX5sUj6d1w3XdUJQ8zlczKxdoFHp4/3b
-         7qYer8KAevPX5lk3Qtgq4cIxvrnA7hNewAoazKVwM3Y3+xLYn97XMwnwXMBwgMOPjcTS
-         1l1YGMzwv0/+6XmwvlweeL2P1Ha6q2DesIE+EcmS5Kjk10gC8oeT2131AfMvi0cb+sWq
-         RHC/Ji0W2EqVS0D9PtMTPZ2gttODomo+HyUn8SAeFlXc8T1UmHtLbKmmeI63xnHPgJ5N
-         rItPMBjcSHf+yo5iOFyCSh84SqyximLYT6VTfBsbD9zXx1THz5RvTLw0WUox+xdu/xmX
-         0J7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795069387; x=1795674187;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=vIyXTGC5+88ay5cdcjaG1P2/fm08Yk80tNUxmrQFq58=;
-        b=ByF/+IiNkNB4DKPL5ULbgZav5xsbIh1A/tw5Ev5U/mE4upfb5imCHk13nJvvyQoqqh
-         XFoDNFwOckul/qlfjeN6xyrTrw8B3txviItZg6kL7NGZUF9eQ7XL82Pk8qd8HM42x7Y3
-         7w7rR9lNmYuH6vICqH8Iv/qtpvxYxOVLDGLVHUiTKZwwTD+Y5w+dwyTHCxxBOfoDIlIx
-         0vIezzLkDwiVjtO9QBgu8rbPn9m8rp7AmPAxf6h8xRPdFfvMM2pgQ0iPtlMvYzduR21R
-         fUGGcAw0XWYkcKPuMJVBIfqyPQTrPW+RFXy5XU5rgDAwqcGgp4ojxLQaJgNdOQvWso8i
-         HIEw==
-X-Forwarded-Encrypted: i=1; AL+hErG44OaOKanvVFsttSoVaRjcWWzA+9ep2N4Od/6vPiFXFPAUF3nyjkMKzo4lQTOuRPIcx5M=@lists.linux.dev
-X-Gm-Message-State: APuU4Z+jG0obZ9c26orBWNKWpINlz++gJlvMrxYdAg6s9VRXbsQA3Gt4
-	0SgSLcXkPMe22kyhZ3cCNuzCo23R6byxyh4YzkxYa9/dCzcksQqjUi4owo5o1Cdb9A==
-X-Gm-Gg: AZFdTZfOfpZdid6vCy5KxyMPibJVbADCrWt5YFOKv6NBGfQ1MMED40Rq58F2yXifiyN
-	z6ORZEE0uHZJPNnlawgbPEFYlPaUcZuu0TUJ9qyNcbwMDPjibYo3LuOzpShT+GCPn5qFh9DALMe
-	WdrB5KXapUdjlhbCjhtAh4/mbEnmNiRwwqp3GI8JQtIuNCx3DkGRbbkSp+kgdPUO2J+4iCzMWSN
-	spyPESRnJjKFDEwpBk/IVGVQwdcpoe42f+VCxbGXdAZvEJLC3GZ1UIbz5yWwXpS2Mj5MAvEFT7t
-	DkbYTHmHMB1zJJyKC2A76geIC4nKs/zmIUei0emMEgIQEi1Yhdr9PpyJLkQYhnFqi3Jm1qm0eEF
-	oUk0oA0RUfw9zF1Mfd3eahFUgWoQVeQpkOlMMvG0BRrGfl/u1Y+YSsEFJ/LHxHFvPwXSsGaqrAY
-	6eI7YFPiiu1MQoJJb6Hm1KoJHvIrEMAX11HdMZfmYNzXL9z6PEqYYLMFbCCptK/GOcZkGOnxwH9
-	XKYIfay3Ayc9htTk8wIokMnTzw4aKnNAhEIK8H+LXo0uKvIbF0ql6fmzUA2EExSH1QatcoVyWIg
-	Ek7F2drrZaohupazCfrouBSoAyKK/4OV8WL3FODdHhsVUs5naYH8KNxZvKUGo6PtrcA2jSM+HS8
-	Ygk8IbqgCVQ1PgH/30yKPRwAPTVwod4YREHgj8A==
-X-Received: by 2002:a17:902:d48e:b0:2f0:20cc:32fd with SMTP id d9443c01a7336-2f020cc33e9mr13953395ad.51.1795069386749;
-        Wed, 18 Nov 2026 22:23:06 -0800 (PST)
-Received: from cantal.lan ([58.136.72.57])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2eff627f421sm24292605ad.57.2026.11.18.22.23.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Nov 2026 22:23:06 -0800 (PST)
-From: James Clark <jjc@jclark.com>
-To: Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Richard Cochran <richardcochran@gmail.com>,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] arm64: dts: imx8mp-frdm: Add overlay for EQOS PTP event pins
-Date: Thu, 19 Nov 2026 13:23:01 +0700
-Message-ID: <20261119062301.1778558-1-jjc@jclark.com>
-X-Mailer: git-send-email 2.56.0
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=TGNEt2kg
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=eNmV9s7/6se08Gp8whLIREljuSU2nhktbzIJpjczI6vuN3+nTCVyrIcByLu5f7gaR0rjqV3Eve1koKn+W7IQyVHzKsy6z3PzLV+vJ5ayD+nHdZ5rhS0799Xqb5HcwW6eW+1GfC+J6iUHGjxXrbL26PindL0cdZedB/zSRU5TLWZZNs2fUfM17KDpMq3+Q/mn7njKZ+8Q0z8LuzBQRU7qFodx3QfgwsXa7PA/AcHF6wqSyDYl7n7IAl5wwuoguPfECivEou5UISa6K7ffB/bIf3zOOpOjrhzw28w+RydrFjLS6d/87CEofXU0bw1gqCITfC9DoD0d0HyQ5G2Weig6yw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=iCmx5M7ujUm1IfWX40ZfSkMyh+Eos/Q9MDjpaPeqirs=;
+ b=dQpM0jiFmm1B1O5OUNPTnqFLWETjuJoZsmLPUxk/WS4Acb41oxSOG9QXdAqkSBZBZSGu5LL7p+Z6lu5L2W0XUZip2VdpX5bdP92x5WXdL7OPeZoywlKAJeSWs0KI4w8PejkWJb9eCDvj4Ja0v1/iatv1nYxUC98PVIKqtx560yHOXBKwxhxdKbe29b06oByosXTtKBgAE4AwUABFDEy/QEpIJWkqf0UaFabCZAl3fCGjt0PhuUdVd1GjKQxd+OcFO2quL0hT7glvaykRbLCCcTaht00JZDadAP42DyGFQx2Won4mHyp3MV4IU5dcCm0T2aTcjKRWrqZwBqXILjYl/w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=iCmx5M7ujUm1IfWX40ZfSkMyh+Eos/Q9MDjpaPeqirs=;
+ b=TGNEt2kgNa3XnRfBHo0icNxydlnCt2jxz7ufGPZQk5O7CXqEttt/kFYfSZ6RzIL75EFiR1iUUKupQjlj3yOwej2ryU+hCbaElKN6Gj9VJ+L4fZIy4tb2dS7/AP1J+39jnO6Vg49vbuTESN2XaZP+MZ4WV9mX2QiLaCveQf6P7Y+7KxjQVh/sV25KaMDja+aPC4P41KbwFQnr877xilAIFKn48C1L/DXuKVIA3+7rhNEi7ncIv/dkIC1/igO1fBrORHwt/esP90IvS6gI3Z3NTC+Osy9Ke6gPsj9OWlcHK2SUE1vCTXgjngArp6uaoN2IGQZaN2upOZhdwyKZ7c2Jgg==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from DB7PR04MB4698.eurprd04.prod.outlook.com (2603:10a6:10:1c::21)
+ by PA4PR04MB9248.eurprd04.prod.outlook.com (2603:10a6:102:2a3::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.10; Thu, 19 Nov
+ 2026 07:27:49 +0000
+Received: from DB7PR04MB4698.eurprd04.prod.outlook.com
+ ([fe80::c571:bdf2:afe7:c03c]) by DB7PR04MB4698.eurprd04.prod.outlook.com
+ ([fe80::c571:bdf2:afe7:c03c%4]) with mapi id 15.21.0615.013; Thu, 19 Nov 2026
+ 07:27:49 +0000
+From: Ming Qian <ming.qian@oss.nxp.com>
+Date: Thu, 19 Nov 2026 16:27:14 +0900
+Subject: [PATCH] media: amphion: Enable non-coherent allocation for raw
+ frame buffers
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261119-amphion-non-coherent-v1-1-c3154395e448@oss.nxp.com>
+X-B4-Tracking: v=1; b=H4sIANGk/moC/yWM0QpAQBBFf0XzbGsHKX5FHlizdpSlXaTk3w0e7
+ sOpe84FkQJThDq5INDBkRcvgGkCxnV+JMWDMGQ6KxGxUt28OvkoLzOLo0B+U7ZEras8LwZrQdQ
+ 1kOXzyzbtz3HvJzLb24L7fgCJgw+reAAAAA==
+X-Change-ID: 20261119-amphion-non-coherent-f61009334dff
+To: Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Hans Verkuil <hverkuil@kernel.org>, 
+ Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Cc: Zhou Peng <eagle.zhou@nxp.com>, Frank Li <Frank.Li@nxp.com>, 
+ linux-imx@nxp.com, imx@lists.linux.dev, linux-media@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Ming Qian <ming.qian@oss.nxp.com>
+X-Mailer: b4 0.15.2
+X-ClientProxiedBy: SI1PR02CA0025.apcprd02.prod.outlook.com
+ (2603:1096:4:1f4::13) To DB7PR04MB4698.eurprd04.prod.outlook.com
+ (2603:10a6:10:1c::21)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -104,82 +102,109 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB7PR04MB4698:EE_|PA4PR04MB9248:EE_
+X-MS-Office365-Filtering-Correlation-Id: cd09c3de-e198-463c-f450-08df460e9d8c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|376014|23010399003|19092799006|10067099003|11063799006|56012099006|261022075727099003|261021121427099003|261102123227099003|261009223027099003|18002099003|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	PegijPfmB3hlck5rG9JCfJiw8qdkoV3Hzl080xDoeKO/YOTJrzjPSxSXptt3ySqOC9V0ZhclWw8OyVgQqVhGvzAByv206jkNgAw1AkjHBlNUzIA/JsAePfoUV2CKTQ2FWZ+FzpHNlmAXCrsWmvXcgFz/neIL7yCPoe7Md/MM3B6d2M1oQmqNxi8asxeqqYZ8ZEvCpvDj56oBLQD2bQyOjWhiMnyk0JcC/RNEtKvlibt2o8LwxVNyoqel42nzJw66XbmrDCtEnFanPPogz0AEWscIt5a50WwTt9WWMGxCQ3b8ZIAWU3FuPs6N/xruxrALXoqkL+r66nultWKtmqMCybCkgMfWkkXlCCrkvC52C8/Af0svlMILYX0y+DCAFHcE+tU/Tb5aiAedjZLwpsNuyMLF6igDHNww7DLJm3hKwmRX4nOaF2pbW88ie01xljGGptkVNKSLK3YgafarSNkB6iH+iyXOsAkiy2AbhS0XOAdbIvnLgZuYPRTxWbdODi2OYxNSyWo3NHe5J4J4fHKrV6y8rbPxFmpJgZD5l4P6G1Xrp/BMnnq5h6tpa7/pSHHo6mh3rRBjuCznLbE81C7LBBPuohMwSA7gRbaUgWW5HlbdFg3xhdF20MABUAnkRi2e/5gS8SbIz6i0AQV2/jMua05XErPuBqwkDUTKCc0ZEXg=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB7PR04MB4698.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(23010399003)(19092799006)(10067099003)(11063799006)(56012099006)(261022075727099003)(261021121427099003)(261102123227099003)(261009223027099003)(18002099003)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?dXR5N3FxZURsV08zak9GN1BBOTBrSFhoRExyTmw4Y1RWdHdYL0tqaHI1bkJV?=
+ =?utf-8?B?MDZEeU16TmVNN05sQkw0VmhLTDhjVDZ4ZUU0RlFKbXdIang0S25NODN0Mk9I?=
+ =?utf-8?B?ak1IQ0YzaEI4TWFGSXk3Z0RUMWZseWFSa3BFOHNmbElwWHp1VUxnOGpYRmwr?=
+ =?utf-8?B?alRmcHlnTWEyK0pwOEtoSC9La21HWGRVTWJMMW8yRU5IZEtQaFp3N0krNUdP?=
+ =?utf-8?B?bUVpRk13d3hQWWlrcC9nNGdFSG5FZVg1T1NkSG10TkJycGV3NjBTSmVKdHZG?=
+ =?utf-8?B?MjFkSWo3WkExUlcveGxQZ1o4SFFHc1EzRjd4N1RXb09hSWczdGlxZ3FDN3Rk?=
+ =?utf-8?B?Q09mTXIxRUJLa1lsT2RPb3pleCtyTGNhMzdjR2dnOCswRGU0SFVveVoyR241?=
+ =?utf-8?B?RGNkQkFUSGlQTWtTcHU2RDNqQXVHQTVpcFBOZnhESkFjelJTd2FBVUJXWThv?=
+ =?utf-8?B?a1puNzlRL2NqVnArcnpMWTNwU3ArM0RKckd5NGdXcFFBZFdhd0tZd0tGMVZE?=
+ =?utf-8?B?L2ZVSGJDOW9vNVFaZ0JPQ3Ara2h4U0xDNnV3WHJtbjFqQmRjbjZHMUVKUDBp?=
+ =?utf-8?B?a0xjNllrVldKaGJ1aWQrZlFYVGYwNWFhcjlZTTBFU3U4YXRKUzg2eXRObXBw?=
+ =?utf-8?B?ekRKSGpkQkExdDRNL3REaTRGbzNFTS83TzQ0ZUJpU2VqcTNKWUZ3OUE1Z2pz?=
+ =?utf-8?B?L0E4aGNxd0VnaC9IZENLVitqZytkaVVySTZRQ0pWVFprQklZam5Hc1gvNGw2?=
+ =?utf-8?B?VitJZlJQaWhNejNmZElGWW5NbFpDT3dxcm1XREQ4ZVFzZzE5VW9KK3ZmQ1VK?=
+ =?utf-8?B?TnBEdEt3NUtSNFZPcWZ4dlZpYUUxRkN4UHVZNWJJSEswTUxNV3NXZ2VTcnNa?=
+ =?utf-8?B?eWxOZGFyazJzcEZCN1ZQU2xzK0RkTkpmeHpPUEhWRm9sRDhtL2NDc2V0ZW5n?=
+ =?utf-8?B?VnBHcEJnMW1QYlBNQkswZUFDL3ppM1BJcjcybGlQSjJhcnA0cGJIN1d3SEpG?=
+ =?utf-8?B?eGdWNDhsTVpIQy94TnZhZW1YcnE2bSt1eTd1S09SV2xOTGQzR3R1aDdwRUh1?=
+ =?utf-8?B?RWh0RUw3N1FoSlNQTEp4KzFCWlk0Z3UyRkxaZUhWNGNnTjNPQkJ6NFVUTzJ5?=
+ =?utf-8?B?NFVmVGs0VDc2c21DblhZc21laENSSnF1Zjl6OEVGUXZjNFovTUg5SDd4akV0?=
+ =?utf-8?B?VWRxRVQyc3M1clhZa1B2enB2cDdUUzlidFdNL3ZXZ1lrRTdGaDBFSWkvSEwx?=
+ =?utf-8?B?TTRhSXdpYjVPbXpKR3dSWFQxNlIwQmpicXdweXF1YnVVKzhwalpybFJXaWs5?=
+ =?utf-8?B?ZUZsTnZZWWt1Zk5WdVRDTWF2QnNvM1MxbUlsSjZDZXNFZndSZ0kwOWhoYnZl?=
+ =?utf-8?B?enFsck9YeUJwMWkxSU0yd3puUFEzRDQ2dDMwQkZkUVVVL1M1MUNMRkRjUVdx?=
+ =?utf-8?B?Q1ljRUdhR081RWZrRzh4T0hieHVpZzVvaFFaTXVWVzlYdWljaWFoUDluNU0w?=
+ =?utf-8?B?bk5ESUJMZkYvcjY4UHl4WnduS1RQUmVVbXNMdktSenowRGI4ZExvSEVRSmVo?=
+ =?utf-8?B?TmJDQ0hMYTRHRGFObGlCM2FHUUZuVzB6WEJlbk5LRkdBMlBVQ3ZiUWQxZ3Nx?=
+ =?utf-8?B?VFlnV2J3RnllZDlUZ2loVWY3NXB0YkIwMExMblptUCt5U0RGb25PMkpTeGJD?=
+ =?utf-8?B?MG4xRGRCK2R1WjFxSWpKc3dCNUFiQWJoRFVFcFgvOEpzOENkTXlwRk81TGly?=
+ =?utf-8?B?ZUNIa0xNNklIZitGY3VyYU1LYUJTVFNsL2c1VStNMk9ySE9hRHpJVTBpdnBo?=
+ =?utf-8?B?MXR4VVNURXFza1Q1WFE0SWhIdTBpNHRabjRqTURyT0x3Y1UwdUlhNk1jUGda?=
+ =?utf-8?B?YzMvRVQzYWVNVndIY0pZUGlRRUR0MjNVNWFZbFpkN3owT21Jd1VjR2hvand2?=
+ =?utf-8?B?TmtoQXBUWFJxNjJUbTdJbytha1Vwc1o1emMvOE80dCtMemROc2hweTl2S1Z0?=
+ =?utf-8?B?bGtKWk9Kd1E2Y05zRGNHendrQU1EM24wOS9XUUM1UFptd0lOWmxJN3RVZUFo?=
+ =?utf-8?B?WHlQT3BvaXdYMlc2Zml0RWQvU0xOa3pGZmR1ekZGQVJCcU9xU2ZIREVubFo0?=
+ =?utf-8?B?Y2tCcXQ4WXNUNW84aWRqY0lVSGhxZXYrcXlsdGlLSTR5UWtvSjlWMnBKTjBh?=
+ =?utf-8?B?UnoxTVFkM2RWdjZldG9wTWdCUjlIQ2NBckFYclkrUys5dkE0SkpEeUtmSEZs?=
+ =?utf-8?B?VHpMR1JPS3BKUTNmTnNzeE1LNFlBNDIrTUt2Q0dxemg3T20yUUpsVms5L1Bj?=
+ =?utf-8?B?bHMwQS9Xa3ljZENTRjdrYVNqYUxwaU1CTGJjWWdNTkc0OHNaeEUxdDZjcHp4?=
+ =?utf-8?Q?I1VQ/NZF6lYQUWdP0la558zIaIr1wDIH/QHcY?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: cd09c3de-e198-463c-f450-08df460e9d8c
+X-MS-Exchange-CrossTenant-AuthSource: DB7PR04MB4698.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Nov 2026 07:27:49.8503
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Hi4LfMty3wr+F5lAUdg2lxT3Mj9/Ou8/6KysTzmnOdoIj6pGQqPTcUXx3FLZAlKd4O0q1Vccn+x5SwxIz5E1EEUjWWPQHKxbwu1D5K9vwFYvYojd5K7ThendC4xkEJ3j
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB9248
 
-On the FRDM-IMX8MPLUS, pins 13 and 28 of the J18 expansion header are
-wired to the SoC pads GPIO1_IO08 and GPIO1_IO09. Very few boards
-bring PTP event signals out to a header, so this is a valuable feature
-for PTP work. Add an overlay that connects the two pads to PTP event
-channel 0 of the EQOS Ethernet controller:
+Allow applications to allocate raw frame buffers with
+V4L2_MEMORY_FLAG_NON_COHERENT for efficient CPU access. The required
+cache synchronization is handled by videobuf2 in its prepare() and
+finish() methods.
 
-  J18 pin 13 (GPIO1_IO08): ENET_QOS_1588_EVENT0_AUX_IN, external
-                           timestamp input
-  J18 pin 28 (GPIO1_IO09): ENET_QOS_1588_EVENT0_OUT, periodic output
+Set allow_cache_hints only for the encoder OUTPUT and decoder CAPTURE
+queues. Leave it disabled for compressed bitstream queues, as the
+driver may access their payloads through the CPU.
 
-The input must be EVENT0_AUX_IN, not EVENT0_IN: the stmmac driver
-timestamps external events with the auxiliary snapshot; with EVENT0_IN
-no timestamps are captured.
-
-Tested with pin 28 wired to pin 13: a 1 Hz periodic output on channel
-0 was timestamped on external timestamp channel 0.
-
-Signed-off-by: James Clark <jjc@jclark.com>
+Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
 ---
-I used an LLM coding assistant to help prepare this patch.
+ drivers/media/platform/amphion/vpu_v4l2.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
- arch/arm64/boot/dts/freescale/Makefile        |  5 ++++
- .../dts/freescale/imx8mp-frdm-eqos-ptp.dtso   | 26 +++++++++++++++++++
- 2 files changed, 31 insertions(+)
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-frdm-eqos-ptp.dtso
+diff --git a/drivers/media/platform/amphion/vpu_v4l2.c b/drivers/media/platform/amphion/vpu_v4l2.c
+index 7cccc994fc50..c8d52f0af879 100644
+--- a/drivers/media/platform/amphion/vpu_v4l2.c
++++ b/drivers/media/platform/amphion/vpu_v4l2.c
+@@ -664,6 +664,8 @@ static int vpu_m2m_queue_init(void *priv, struct vb2_queue *src_vq, struct vb2_q
+ 	src_vq->mem_ops = &vb2_dma_contig_memops;
+ 	if (inst->type == VPU_CORE_TYPE_DEC && inst->use_stream_buffer)
+ 		src_vq->mem_ops = &vb2_vmalloc_memops;
++	if (inst->type == VPU_CORE_TYPE_ENC)
++		src_vq->allow_cache_hints = 1;
+ 	src_vq->drv_priv = inst;
+ 	src_vq->buf_struct_size = sizeof(struct vpu_vb2_buffer);
+ 	src_vq->dev = inst->vpu->dev;
+@@ -680,6 +682,8 @@ static int vpu_m2m_queue_init(void *priv, struct vb2_queue *src_vq, struct vb2_q
+ 	dst_vq->mem_ops = &vb2_dma_contig_memops;
+ 	if (inst->type == VPU_CORE_TYPE_ENC && inst->use_stream_buffer)
+ 		dst_vq->mem_ops = &vb2_vmalloc_memops;
++	if (inst->type == VPU_CORE_TYPE_DEC)
++		dst_vq->allow_cache_hints = 1;
+ 	dst_vq->drv_priv = inst;
+ 	dst_vq->buf_struct_size = sizeof(struct vpu_vb2_buffer);
+ 	dst_vq->dev = inst->vpu->dev;
 
-diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index cfd548284358..5cdad9dbda8c 100644
---- a/arch/arm64/boot/dts/freescale/Makefile
-+++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -633,6 +633,11 @@ imx8mp-evk-flexcan2-dtbs += imx8mp-evk.dtb imx8mp-evk-flexcan2.dtbo
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-evk-flexcan2.dtb
- 
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-frdm.dtb
-+
-+dtb-$(CONFIG_ARCH_MXC) += imx8mp-frdm-eqos-ptp.dtbo
-+imx8mp-frdm-eqos-ptp-dtbs += imx8mp-frdm.dtb imx8mp-frdm-eqos-ptp.dtbo
-+dtb-$(CONFIG_ARCH_MXC) += imx8mp-frdm-eqos-ptp.dtb
-+
- DTC_FLAGS_imx8mp-hummingboard-iiot := -@
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-hummingboard-iiot.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-frdm-eqos-ptp.dtso b/arch/arm64/boot/dts/freescale/imx8mp-frdm-eqos-ptp.dtso
-new file mode 100644
-index 000000000000..15d0efc30243
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-frdm-eqos-ptp.dtso
-@@ -0,0 +1,26 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Overlay for the NXP FRDM-IMX8MPLUS board: connect PTP event channel 0
-+ * of the EQOS Ethernet controller to the J18 expansion header.
-+ *
-+ *   J18 pin 13 (GPIO1_IO08): external timestamp input (EXTTS 0)
-+ *   J18 pin 28 (GPIO1_IO09): periodic output (PEROUT 0)
-+ */
-+
-+#include "imx8mp-pinfunc.h"
-+
-+/dts-v1/;
-+/plugin/;
-+
-+&eqos {
-+	pinctrl-0 = <&pinctrl_eqos>, <&pinctrl_eqos_1588_event>;
-+};
-+
-+&iomuxc {
-+	pinctrl_eqos_1588_event: eqos1588eventgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_GPIO1_IO08__ENET_QOS_1588_EVENT0_AUX_IN	(MX8MP_PULL_ENABLE | MX8MP_HYS_SCHMITT)
-+			MX8MP_IOMUXC_GPIO1_IO09__ENET_QOS_1588_EVENT0_OUT	(MX8MP_DSE_X6 | MX8MP_FSEL_FAST)
-+		>;
-+	};
-+};
--- 
-2.56.0
+---
+base-commit: 7969a6f407cf55b5254c824c87875452655ef11e
+change-id: 20261119-amphion-non-coherent-f61009334dff
 
