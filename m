@@ -1,57 +1,83 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795084695;
-	b=mwv/FraJ5/XQ+c1HxKgM/8LUh3rbb4seLZ4aD6jF0VJc7eExuSASgYO0kl3iCi8AZl+m
-	 tbuN6MK5pKcBjhnZqaRo+7psW12pNX9pJ8sw5qk2K8XmSDMwaf6P5/QlYt4Ys/C3qferV
-	 8PV7uPAcrgha7/nAwN3JKeLp5yHcm0BYfq4VzhzXLGuBoDUBe9zqlsT5LlxlBO42y/u+C
-	 qxFaRku+uR/5y9SkPEbzWDDMp/XIJyYX1IA6EGT0VfDQyMXNbIapfMZvHWdLTkrMuszJW
-	 nSARNw0VRRnu6jq64ql82QoQ4O0wa4pDMT05TnoQKLTBgNqlATAVLRIDQiDPa8IIz8w==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795084695;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=hb9SBAxjoFg7sCmioO5nEQcXRYJHzr79D+k5eb5o8ZI=;
-	b=fjK9spu/TKAlBgjbyaSDJCEm9MFVs7N2DWBDWMCOmylZvxB5xqsPx9rCKhjExOuPpEve
-	 yzI0DYTp//wbA+u4Gt9hQKoHQ1MiN1Hp6R6xbGo/UeePLhVyotOyQPUAFbmJsJ/WBeeF5
-	 uiUI9toqOe2AFqC/bZS0RmQbzEvwM+3gdcIT1+Hs9zmBRoTLuvrBSVQYH6y2oyN+qqBK0
-	 cwHtB6UwDWfdqxKXJeA8aClECHZBFX7bJ9OcnGlqZSseYs8spxDl3T2NCYTEo5dVwg/64
-	 tS1XYYD1PcyqJlo6XNkBgAH+pzCoHvlGU0Rsiu8ct1n5K8FEDXmDIYf2D+bMivlR1KQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GsWbzdnf;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795085987;
+	b=kx7dVLZ8oLPryY9OUOyYuoTeRkdLls8+Ef5IT8r1QWkyTk2uo0mwBSVkMk030KXkKNqZ
+	 y17E4lTqoPRrHsLj38JtqXojvrMfERCobjw8ItVHxmefX0nGRy8GLavDKRhoJNIo32Ozq
+	 CrWlBqzfic6ho5ry7Hjr4qQ1Bn6nEcUuCuiWDZ3JYIXPbtw611zjsEchM5gyQsZhyYip9
+	 9hBNm1WONllIBxcTU6GyNTqKCzgRSTMI/KwBeA+6eC1WLQU6NF1KzU8f6ZeURCJBqkTZz
+	 rapL2mKw/ZDjAnig8+DTUAP+1/jI8iAswA7zxdW0ARMmiLcSCrHl+sI8vu6pyjVZ1ew==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795085987;
+	h=DMARC-Filter:Received:DKIM-Signature:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=uZmBVCO/E+M3LGN206IhnPbUYGaF035jqFVGv/CZR9E=;
+	b=SSXBkrAMyhyLZn4X2kS+CEVdluSO6sqyNUkWByhq/j02IEh0uU/SoYIUWLW5kt6e0oIV
+	 N7Gr4sPa1/mvfHg0hA+QAmbG3Udrxd5ls3WkcnYmAI4uWoDJP8c/WPcb+qHYvrkuzZP3s
+	 EAdr0PY7hrx18/LiL5EoHZO2bsh9oswzfYYP+SZIApPYEQR14vuJicXB/pz2r55jd0cEy
+	 qZ6rzsTSiCcyuQdnKwAVYKsIdSAdV91HZlHmyevHvdfRLS9+0ZoOo1esAJrft3p+p6ZiN
+	 MTpuicKyJ0FoUGsMOALn68jX44YLfYkAmD7v24snmkbUUpcIR5/gF50Eb9RLpepiaHA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=none header.from=pengutronix.de;
+	spf=pass smtp.mailfrom=pengutronix.de;
+	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=dKHe7A8q;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
+Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2CEC606A320;
-	Thu, 19 Nov 2026 10:38:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18D05606A320
+	for <imx@lists.linux.dev>; Thu, 19 Nov 2026 10:59:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 18D05606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GsWbzdnf
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D1691F000C8;
-	Thu, 19 Nov 2026 10:38:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795084694;
-	bh=hb9SBAxjoFg7sCmioO5nEQcXRYJHzr79D+k5eb5o8ZI=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=GsWbzdnfXgmMCl/iPSDzYUzKIWamn+EpyMJ/CbOcuuH09IWC2R4Yd+zbrl3A4llls
-	 4nXYaae+YogmzOv1w86I0VyYKo4a9hLj4td3aBXXm/UHNSAPnOdh8ncWhYUC9Mn0tS
-	 w8ZMV/+LYIGlbeIL0Oivmge2eiYG9Ja0Vh+oLo4JytrX7NtT7UkRzRXNJ589Kvgizm
-	 mfagUND3m3vV4eCEKcANcu4b4kokbmVsGU76CjNobTsXlsHRU/ZHFqmq8vXtfbk2FB
-	 +VRA314VA6KIR/FyD/1txC5WmVyTCn6aUIeT3Zd6fz3S4J/2qVu/l+hbOBfBL6s4Tl
-	 ygIpr7IoLdKmQ==
-Message-ID: <sashiko-outbox-222970@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH net-next 4/4] ptp: netc: use 133 MHz system clock on
- i.MX952
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Frieder Schrempf" <frieder@fris.de>
-Cc: imx@lists.linux.dev, devicetree@vger.kernel.org, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20261118-imx952-enetc-v1-4-25721440602e@kontron.de>
-References: <20261118-imx952-enetc-v1-0-25721440602e@kontron.de>
- <20261118-imx952-enetc-v1-4-25721440602e@kontron.de>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 19 Nov 2026 10:38:14 +0000
+	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=dKHe7A8q
+Received: from pengutronix.de (ptz.office.stw.pengutronix.de [IPv6:2a0a:edc0:0:900:1d::77])
+	(Authenticated sender: mkl@pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 9EC68200F2F;
+	Thu, 19 Nov 2026 11:59:43 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1795085983;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=uZmBVCO/E+M3LGN206IhnPbUYGaF035jqFVGv/CZR9E=;
+	b=dKHe7A8q9Xpwv+VQkBFatz9PfnUs9YrS8wWbAqbXIgDw8ZeyOEv0U19drTGgkSgLLojebV
+	ch5WiFx5xevOhefB9+qkHqq/LYSNDiQ0Z/LOsPGbRkhzQZJHKdWm7Ail/45Yhfs/UmrhzD
+	/lCEj/1JMrnGYdTG+3BIqqarJdXzszhIRT/YJy1zeW8fMbifHhAQ9FIUZjEEZXEgTB2msA
+	KfHlQyW8DkERPX17sSa2jMGRQ9Zi2c9CdMVCB/aDkXmwESJMjBr72Wx1UFipIvZ8PZqCva
+	ZmEpzWStAoEJli4UqSUhlXZYSydaTytDtDzcoyqMJHLg2W2xVe31NHpVGkFAsQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1795085983;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=uZmBVCO/E+M3LGN206IhnPbUYGaF035jqFVGv/CZR9E=;
+	b=L0KBMMz7rb7mBp/ydrpatG2oqaEsYVIdolV19kZBorMrwtclV3h8h2ff9UhwRxDwIXooAd
+	7nFxKpfXlava60tE2lmBDxLaAUvROT/lEUjLZUS0D6FnB2O7qjr5e7oJO8kOt8Hw90wSxR
+	IeJXdNs4QHFU99mgblEKzfNJtuX9J2RBZZABuLK3pATVoIWDpJccNoUYmiyP5hmotoG9VJ
+	hjq4bty9Flvg/YATQqjxdU4PothcT/5RgQrFJJXhgU24y4+0KlU6HhUIxaOXW+Eis01zzY
+	+3HdZ3L0m6N2SPn2YNpVO3/Wnc0HmC8fAfxoM7IG/qkCva0rIUakhq2OzFaiBw==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1795085983; a=rsa-sha256;
+	cv=none;
+	b=Z7IqYLzL6AodbMdZCudDlRmnP8xJSry6QuSSGhBNZAGbGjVusyy/lk6fOQA+2ck4YOj/Bj
+	AoNecKPbgmGdwFxqmvIRusyqRi3FozRiCC3+jdm4oJYAx3LuJ5QfgXWZCnVHtXoPq9d1aT
+	uTZlQPfmbrngcrWI/pZpM1+dgQFsuejjKJYBulpW5ICCUD9FLkhjq6n4W4jkQTJfjSiIxg
+	XVUGMhMvAmbPEo3LhiWKO9cjVzQcvsCk+lhYME0jzvlajf7JaCPpByafg1zJaNPMBtPjTI
+	yw7KasOvVfjyat7iXlDWGNlX9CoiefrxNNnQbdkxb9dlGTZXwEiSXijp5AvpuA==
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=mkl@pengutronix.de smtp.mailfrom=mkl@pengutronix.de
+Date: Thu, 19 Nov 2026 11:59:43 +0100
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: carlos.song@oss.nxp.com
+Cc: Frank.Li@nxp.com, broonie@kernel.org, linux-spi@vger.kernel.org, 
+	imx@lists.linux.dev, Carlos Song <carlos.song@nxp.com>
+Subject: Re: [PATCH] spi: fsl-lpspi: expand FCR TWATER and RXWATER bit fields
+ to 4 bits
+Message-ID: <20261119-jumping-pompous-silkworm-a6e7df-mkl@pengutronix.de>
+References: <20261119101539.2536367-1-carlos.song@oss.nxp.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -60,69 +86,65 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="w7lrfqvj3zly6jiv"
+Content-Disposition: inline
+In-Reply-To: <20261119101539.2536367-1-carlos.song@oss.nxp.com>
 
-Thank you for your contribution! Sashiko AI review found no new issues
-in this patch, but noticed 1 related pre-existing issue it does not
-introduce:
-- [High] ptp: netc: divide-by-zero in
-  netc_timer_get_reference_clk_source() [1]
---
 
-commit e475f16482c806a640a726db8d69f83db4761a16
-Author: Clark Wang <xiaoning.wang@nxp.com>
+--w7lrfqvj3zly6jiv
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH] spi: fsl-lpspi: expand FCR TWATER and RXWATER bit fields
+ to 4 bits
+MIME-Version: 1.0
 
-ptp: netc: use 133 MHz system clock on i.MX952
+On 19.11.2026 18:15:39, carlos.song@oss.nxp.com wrote:
+> From: Carlos Song <carlos.song@nxp.com>
+>
+> The original FCR[TWATER|RXWATER] fields were defined as 3-bit values,
+> limiting the FIFO watermark to values 0-7. This is sufficient for LPSPI
+> instances with 8-word FIFOs (like i.MX93) where watermark =3D FIFO_SIZE/2.
+>
+> However, platforms like i.MX95 feature 16-word FIFOs requiring watermark
+> values up to 8, which exceeds the 3-bit field capacity. Expands both
+> TXWATER and RXWATER fields from 3 bits to 4 bits to support larger FIFO
+> configurations across various IMX platforms while maintaining backward
+> compatibility with existing 8-word FIFO implementations.
+>
+> Fixes: 732b903ea3e2 ("spi: spi-fsl-lpspi: fsl_lpspi_set_watermark(): use =
+FIELD_PREP() to encode FIFO Control register")
+> Signed-off-by: Carlos Song <carlos.song@nxp.com>
 
-This commit sets the default NETC timer reference clock frequency to
-133 MHz on i.MX952 (NETC revision 4.6) when no reference clock is specified
-in the device tree.
+Reviewed-by: Marc Kleine-Budde <mkl@pengutronix.de>
 
-> diff --git a/drivers/ptp/ptp_netc.c b/drivers/ptp/ptp_netc.c
-> index 1a327a7561e39..7b9c0a4cbb4c3 100644
-> --- a/drivers/ptp/ptp_netc.c
-> +++ b/drivers/ptp/ptp_netc.c
+Maybe you can pick up the idea from:
 
-[ ... ]
+| https://lore.kernel.org/all/20260319-spi-fsl-lpspi-cleanups-v2-3-02b56c5d=
+44a8@pengutronix.de/
 
-> @@ -858,7 +860,10 @@ static int netc_timer_get_reference_clk_source(struc=
-t netc_timer *priv)
-> =20
->  	/* Select NETC system clock as the reference clock by default */
->  	priv->clk_select =3D NETC_TMR_SYSTEM_CLK;
-> -	priv->clk_freq =3D NETC_TMR_SYSCLK_333M;
-> +	if (priv->revision =3D=3D NETC_REV_4_6)
-> +		priv->clk_freq =3D NETC_TMR_SYSCLK_133M;
-> +	else
-> +		priv->clk_freq =3D NETC_TMR_SYSCLK_333M;
-> =20
->  	/* Update the clock source of the reference clock if the clock
->  	 * is specified in DT node.
+and mainline it too?
 
-[Severity: High]
-This problem wasn't introduced by this patch, but can a reference clock in
-the device tree cause a divide-by-zero in
-netc_timer_get_reference_clk_source() [1]?
-
-drivers/ptp/ptp_netc.c:netc_timer_get_reference_clk_source() {
-    ...
-		if (clk) {
-			priv->clk_freq =3D clk_get_rate(clk);
-			priv->clk_select =3D i ? NETC_TMR_EXT_OSC :
-					       NETC_TMR_CCM_TIMER1;
-			break;
-		}
-	}
-    ...
-	priv->period =3D div_u64((u64)NSEC_PER_SEC << 32, priv->clk_freq);
-}
-
-When a DT clock is present, clk_get_rate(clk) overwrites priv->clk_freq
-without checking for 0 before dividing by it in div_u64() (and later in
-netc_timer_get_gclk_period()).  If an uninitialized or misconfigured clock
-provider returns 0 Hz, probe will crash with a divide-by-zero exception.
-
-[1] https://sashiko.dev/#/bug/linux-3717398e-82c6-4e7a-897d-56088b4c53be
+regards,
+Marc
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261118-imx952-ene=
-tc-v1-0-25721440602e@kontron.de?part=3D4
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+
+--w7lrfqvj3zly6jiv
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSl+MghEFFAdY3pYJLMOmT6rpmt0gUCav7WnQAKCRDMOmT6rpmt
+0iOtAP96lbtWoS0f8szegRd9Db3yGX+sxGt4hk5qCpKotsaz4wEAh1BsGAVsljfN
+Dt/bVCvNDsUdnWB31TAaa2LcPmUKqAc=
+=PVp0
+-----END PGP SIGNATURE-----
+
+--w7lrfqvj3zly6jiv--
