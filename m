@@ -1,106 +1,92 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.66.32
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795111396;
-	b=3jbb5Roqw00LFV7TR6IzmG/Cb+ysF5PjEKQRlPJDTyvs9N3EcHcYBwV8uixp7uy0vFmq
-	 dIZJp/kSvJcKh+2akEiomdRRfvmlLTPLX4CUsLKQ82lriLRaoDmGabBhJvoS+QL8mh4TD
-	 /SjQjHO4cRDmZ7QZTTr0+D+pZmw8cZJwiIyeOr136hwTetBf5VHaGVckYUYSTw71tw5v+
-	 3OHn2jC8VCmF8qou+14DEqaV6riJPjdF35EeBJL9D9x4hKSWou2ysFI5a/VXzYwrqNuTt
-	 ZVj/IchphUBQb/QXBVKUpxx0Umkn7M37gjA86+qEV0ZHq74Ka5liZu17ck5Xw9YZNTA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795111396;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:Content-Type:
-	 Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-LD-Processed:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=zezPWWJaFgNGBit8o31PEX16ChqH3n+DrgI9mvVVXvE=;
-	b=4fO3WtICjUv/2X4Ot5MExMm2OyTRmjz6dRNEaF+Czx/Q9zc9MaYuMNfKkD81AyDsq2Zg
-	 VzdebQVp3SK3SdNP3qF7scWUxfLP9rRthoaUjTUr4FACwPg3Qj2vbcVXEVBUvsFF6D3H4
-	 9LdV/2gPvYKpefHP9JA4qZwBonl040SfqJQ+8w3vICu3ijMhWr7goJH45YwTyKN6Y0sfD
-	 vjyiWfO/i3XtTe6LA1eb8KOSxWkNZIQ2bf+FmF+rw+CzIbZCmHqk83nvlNpLPR1eeBm7b
-	 akoqHSXp9JVzdTgnubJpzzpmYMXzsCUz9VyvNdY4eDekz9Ws5wO3ZxZrUHNkEVoOqug==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.nxp.com;
-	spf=pass smtp.mailfrom=oss.nxp.com;
-	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=to5urJUW;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.66.32
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012032.outbound.protection.outlook.com [52.101.66.32])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.251.105.195
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795113326;
+	b=ztnzMOsT6QeLvPRE/1eCbVfgEC5jhWW+ClXr4chrP415haFURCxUI+2owBzUw9XWwiBB
+	 RxwRm/mYaMwLi+JRYLMZv5e2cgVSUacmDLbYoJu05WZaaG7uuZK9RD7TaHUOn3EwYV6rB
+	 AzDMCgKjRfObgchx/8rdpe8G/MN+KMCYTN6Xdcmie4jLaKUCMWDVHoaalKm8SsJNtw37+
+	 SYnAtq5r6BJwSsoI2u+QIS3jddBNVVxfsbjZdj68Ysx4ki9yl0p1eV+xFT/N1080+4n14
+	 bf91oI8OxN8LPqyP0hdgD5Y1tcgsKBFnIBDD/1L78XbVnP36w/He85LPXpJUuvYRA4Q==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795113326;
+	h=DMARC-Filter:DKIM-Signature:Received:Message-ID:Subject:From:To:Cc:
+	 Date:In-Reply-To:References:Autocrypt:Organization:Content-Type:
+	 User-Agent:MIME-Version;
+	bh=5hBiRR3uvhlqcGyHW7g80rM4DQMM7cCTGVY4OSFhmyo=;
+	b=mpynn7jUFneaYrNf4wHAdOK9TXXzg2HNaTheTVA4qP91pysgt2P4tFyn5GYZmb2QE0o2
+	 EgwO71fHYAMmL2Y4MWp1G5gmr35GbCJFU/46gwRsQD+0byPzvRUYXyWAFXkW+g2FdCw2o
+	 ATvuuD5ZxH4gndvl4cYjg9D5gARDJGiSKoFyhGOTCr+TkPDZoYBzjPDICktrrlSBFjPvM
+	 eiQ7a6y4zEk1qHIKM3YCl3lrntHrlGiaVJWXAB70mg8rxqN8HLytYQaEQf9TCq8A7vP+U
+	 N8n00RzKhoYI6KDoc/9gE6ikwdBl80abuh49yNVNFicbAYox5n/VTZJlwhhvVpvmJPw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=collabora.com;
+	spf=pass smtp.mailfrom=collabora.com;
+	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=mfLkeLyp;
+	arc=none smtp.remote-ip=148.251.105.195
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2FA960A261B
-	for <imx@lists.linux.dev>; Thu, 19 Nov 2026 18:03:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C2FA960A261B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A972606A334
+	for <imx@lists.linux.dev>; Thu, 19 Nov 2026 18:35:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9A972606A334
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=to5urJUW
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XhZJMzG2ism1mN59j5ciWee3ku5Xybl9vof0Ej+Yg5GDntg9Ix7YJY/twYKEaaey7dRJR1FseCTwsLPX2PAn/eL3jBuVXs1xkevs95NxosmNAN85yR7cYL4GUkJNf/zC+tXps2MXCo021z33wyZ54ea5fSCjTEaOkQgrBIe+SOSpKJjVy3LQmiOoZYhobeCsFIlNnOmsRB3R/I4qyyBPEE361HpgKBfIOn9N2+cuVJq5XBVyO9CJ2ghpsLIqoq+HZNQOd2vtv+ZqG8AIukewEJwMiKgAAxw72CtKjUeDhqhj8oerayQaUJ2zbLBI2g2GAhg/hN5gOVNQnMsjTTSO7Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zezPWWJaFgNGBit8o31PEX16ChqH3n+DrgI9mvVVXvE=;
- b=uTpivrXpXiUEVqpAGNK6lsSU8FZ/eHxymjt1hIslzdDUwXtP9HRVRmj8L85B9GRthZbYeyHY6HPaVKs8xS1v4l0YA5eeJ6N4978tX2fpm1KtcrxFyJ58z1LFKAxbqaysI9DoPQopU1SMcNYGCBhRm5gItT0bsdQuhainivl8Hx+Z8T8ilqG0GKkguvHiWqgk01h4XVydZkED7ckIZcuXBdj+kHJ6XAMZHTae788yPDCnHQEqY98nvwpEzheyYGUoIVikJcGsj6+1sKAlQgYiqnHdrGTXtU3Kf0wKedO2CYWQwgu+u3+Ha5RoCqnFHy9W2cGeekSnKEYXKryU+sHWkA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zezPWWJaFgNGBit8o31PEX16ChqH3n+DrgI9mvVVXvE=;
- b=to5urJUWeHrO4uJoilizzgEskUuOr+7xnTvjsKRsvoeeApTo6570rzHlC0ScedyC2422yveBTEx+DstbLDsC5wIeB4a8iUiAJ2OnzziIcHQE6WU+iqq9Ll92uDznwLITknfLfKiq/fQK1BAYRJPgHC8tb4q/ptllKVjY52BPJJR0idN++HnGrAOMduIKJHuUnlq8uRQ2GMZpMJU0SCT8uJ/QpyLWcWTQJPsm/M6ZIXFXY3V8kltsOCXVarTLstN3qL4TdTm0xbcqB7UEuRDtfOciYLLuiosoQj2v6A3R2NBJw+LlrzY7GPASHTXk9NRrIulhrn9bvuaS5ogvwYSJ8Q==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from MI3PR04MB12438.eurprd04.prod.outlook.com (2603:10a6:290:76::14)
- by VI1PR04MB9954.eurprd04.prod.outlook.com (2603:10a6:800:1d7::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.14; Thu, 19 Nov
- 2026 18:03:04 +0000
-Received: from MI3PR04MB12438.eurprd04.prod.outlook.com
- ([fe80::c715:c32:8bb1:b70b]) by MI3PR04MB12438.eurprd04.prod.outlook.com
- ([fe80::c715:c32:8bb1:b70b%4]) with mapi id 15.21.0639.010; Thu, 19 Nov 2026
- 18:03:04 +0000
-From: Frank.Li@oss.nxp.com
-To: linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Stefano Radaelli <stefano.radaelli21@gmail.com>
-Cc: Frank Li <Frank.Li@nxp.com>,
-	pierluigi.p@variscite.com,
-	Nate.D@variscite.com,
-	Stefano Radaelli <stefano.r@variscite.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Shawn Guo <shawnguo@kernel.org>
-Subject: Re: [PATCH v1 1/1] arm64: dts: freescale: Move Variscite Ethernet LEDs to carrier boards
-Date: Thu, 19 Nov 2026 13:02:57 -0500
-Message-ID: <179511133537.1546694.3592040633584814473.b4-ty@b4>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261105101739.10614-1-stefano.r@variscite.com>
-References: <20261105101739.10614-1-stefano.r@variscite.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: PH8P220CA0041.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:510:2d9::20) To MI3PR04MB12438.eurprd04.prod.outlook.com
- (2603:10a6:290:76::14)
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=mfLkeLyp
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1795113322;
+	bh=PtkjMJxHJnazgCHS2pnc/zi0BG90FbjTzcafaQp3k/g=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=mfLkeLypR+LQoCVSxoXfM7L6HGYOOKdDfv4CkkBaVejLFDifoR4yaSPwg638W/Ftp
+	 MC7VhltkNZPC2Gv6//sMXHz9ziRkLeNYXTsZGW4wnZDD4/lHzNZhUxqCI6OzCiyXeb
+	 lsQ/OejEfa1FhAY6HgNEI6t3+o0kaKwHchWo80qVricLa594YxS33h1pjEgYoF4/+p
+	 wXr6zyM/OKtUTP/NWmvWlZ/A261Z4a7D67XUfitb8F7p+dk24S54a8qlFqVr7P7y5O
+	 5V/X5yxk7JcfAFM0VAix5TwKJfuwseFvPwGOmDmy+uKtnsZ0sqx/EIN81OZ2jaui8a
+	 QVO6xEJ3ebQEA==
+Received: from [100.64.0.214] (unknown [100.64.0.214])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: nicolas)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 7AEC717E052F;
+	Thu, 19 Nov 2026 19:35:20 +0100 (CET)
+Message-ID: <e323dfe8a9b848833332599d6d5df6d302b5fd20.camel@collabora.com>
+Subject: Re: [PATCH 3/3] media: mediatek: jpeg: cancel job timeout work
+ before m2m release
+From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+To: Shengzhuo Wei <me@cherr.cc>, Mirela Rabulea <mirela.rabulea@nxp.com>, 
+ Mauro Carvalho Chehab	 <mchehab@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+ Sascha Hauer	 <s.hauer@pengutronix.de>, Pengutronix Kernel Team
+ <kernel@pengutronix.de>,  Fabio Estevam <festevam@gmail.com>, Hans Verkuil
+ <hverkuil@kernel.org>, Ming Qian <ming.qian@nxp.com>,  Benjamin Gaignard
+ <benjamin.gaignard@collabora.com>, Philipp Zabel <p.zabel@pengutronix.de>,
+ Ezequiel Garcia	 <ezequiel@vanguardiasur.com.ar>, Bin Liu
+ <bin.liu@mediatek.com>, Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno	 <angelogioacchino.delregno@collabora.com>, irui
+ wang <irui.wang@mediatek.com>,  kyrie wu <kyrie.wu@mediatek.com>
+Cc: imx@lists.linux.dev, linux-media@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
+Date: Thu, 19 Nov 2026 13:35:18 -0500
+In-Reply-To: <20260825-media-timeout-work-v1-3-ebfebbeb6c31@cherr.cc>
+References: <20260825-media-timeout-work-v1-0-ebfebbeb6c31@cherr.cc>
+	 <20260825-media-timeout-work-v1-3-ebfebbeb6c31@cherr.cc>
+Autocrypt: addr=nicolas.dufresne@collabora.com; prefer-encrypt=mutual;
+ keydata=mDMEaCN2ixYJKwYBBAHaRw8BAQdAM0EHepTful3JOIzcPv6ekHOenE1u0vDG1gdHFrChD
+ /e0J05pY29sYXMgRHVmcmVzbmUgPG5pY29sYXNAbmR1ZnJlc25lLmNhPoicBBMWCgBEAhsDBQsJCA
+ cCAiICBhUKCQgLAgQWAgMBAh4HAheABQkJZfd1FiEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrjo
+ CGQEACgkQ2UGUUSlgcvQlQwD/RjpU1SZYcKG6pnfnQ8ivgtTkGDRUJ8gP3fK7+XUjRNIA/iXfhXMN
+ abIWxO2oCXKf3TdD7aQ4070KO6zSxIcxgNQFtDFOaWNvbGFzIER1ZnJlc25lIDxuaWNvbGFzLmR1Z
+ nJlc25lQGNvbGxhYm9yYS5jb20+iJkEExYKAEECGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4
+ AWIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaCyyxgUJCWX3dQAKCRDZQZRRKWBy9ARJAP96pFmLffZ
+ smBUpkyVBfFAf+zq6BJt769R0al3kHvUKdgD9G7KAHuioxD2v6SX7idpIazjzx8b8rfzwTWyOQWHC
+ AAS0LU5pY29sYXMgRHVmcmVzbmUgPG5pY29sYXMuZHVmcmVzbmVAZ21haWwuY29tPoiZBBMWCgBBF
+ iEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrGYCGwMFCQll93UFCwkIBwICIgIGFQoJCAsCBBYCAw
+ ECHgcCF4AACgkQ2UGUUSlgcvRObgD/YnQjfi4+L8f4fI7p1pPMTwRTcaRdy6aqkKEmKsCArzQBAK8
+ bRLv9QjuqsE6oQZra/RB4widZPvphs78H0P6NmpIJ
+Organization: Collabora Canada
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-rr4R+OXCofjTXy4WSX5A"
+User-Agent: Evolution 3.62.1 (3.62.1-1.fc45) 
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -110,95 +96,78 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|VI1PR04MB9954:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8d0f405b-fef3-4883-b904-08df46675bbc
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|23010399003|7416014|376014|366016|1800799024|19092799006|10067099003|56012099006|11063799006|261022075727099003|22082099003|261009223027099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
- t61ZdQflr3puDpNBGU4LQ3q6zCVIYM7J9nsPnjsYtsa8LSg1U6gPL9aWsysGOTUXh28SizQODgZB5iy5h8B2PX78eIpj/er0iLa6KldQHdmjVbe0yB3twQC0cOJcSaKC2F/PzTaGE32kpzlijLlNXmnrrcfQY2snjElCnuXD+vgui/CQJnmnAJ53/SV2oFQMjb3MPHdgXsZQN/suXSYQn2Ia2wZxt4U1rOOkImFALAnevHkBlE4ldHMpFjWtw+PcS5qpdVmS+gZAr8V7KnSRTnCSs0j/atQyf8mmgLKhD+hNWHdpfrfPaxERNnGMagZYwZp8eV40UmGxq45B4QGCYY4piTNu4m5prNoiW08t42uH58GKbGefwlzVr2874lUPLqVH+aJhiRqGonbWyvfh7LzlHau+i51g6/dg8S4RsEsxSTW6WN5LzgD3VNrprvF6gIoS4oilTi0MfsVTgwMck6VH28ObgX9alf7c7mgLYsig+u558lTP9aCxq8fxcLs268LKoA5HhbWQ+uB9cBGTC3BOkEWdp0Cgb3VoayJjb+HL1v3/xZ0r24BDc6BVY7if0ysL4rAXvGrSie0HcJsVKLuW/7mdvFSweM2W5GVROnPa5B8tJHBBpYDWHwRNl4FsY7TLldO3nkoFJm0oxRhImUH0VCMD5qyIhTGkWtrKa6k=
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(366016)(1800799024)(19092799006)(10067099003)(56012099006)(11063799006)(261022075727099003)(22082099003)(261009223027099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?utf-8?B?SWc0Nmt5bDVpemNZbjJRTTQ0M0kvT3BIbnlJNmdUNlFPQnphNytIbi9XQUZT?=
- =?utf-8?B?c2hrTHV3UUQ0RlVoL0g0SU9nbXVmNzlDZG5ML3pDUXZhUVNFOXlJZVZKcm9w?=
- =?utf-8?B?anNLeTIybGgxdXgrdStzVDYvVXh3N2FUVWRkSzdnTmpwSFhRblZ0dmNTenlk?=
- =?utf-8?B?TTU1WHVmMDZvQkZMVCt2RUxDZzNPbkdMYmEzNnBFN0dGLzRBY1ZqcWtMYktU?=
- =?utf-8?B?OGpmU1NaMGwxcVhDN214S3dma2hBcWMxa2FCckp0RGJUSzhNaE5GMklnYTA4?=
- =?utf-8?B?NWhtdVNYdXJTOEV4WC9FbEZ0R1FaeWc4TitZSUJkZlVzWFdneUFUQlhudTRD?=
- =?utf-8?B?SnNrcmpVd3hHZWZ4cGxlcVAzdWdwaDdkWFJrQTJGMzE2QVhHMHVxSVArbllZ?=
- =?utf-8?B?OC8vanpnWEx0bUhVUVk0amtPRUtKbFJWSEg3NzVvNTc1ZlAwcUZUdmdzbGwy?=
- =?utf-8?B?cW5CbEtGcDk3elI1TVB5TXkzREk2UUw1d0VaVWVRUnE4S2lsbjFYeWlzTEVC?=
- =?utf-8?B?cUJiZkVNRGVVKzJ5ZDBMd3dteDBpQUZkc1MvMnRqS2JMbUtleWx4Mk9lUVR6?=
- =?utf-8?B?c1dQSGZFS1BLMzUyYWppWVZkZHAvWkVWRW1SbHJiZ0RadGxhQlJlN2NadDYy?=
- =?utf-8?B?RFVLcVR5dE5sZFlsb3liZ0xxQThxL2toTW9XWkpBczZ1V2FjekozRUJIa0Z4?=
- =?utf-8?B?NXdHZmVoNWlMWkd0RCszTnY4NGxXemkxS1BoejZtYkJsNldvc3cyeGREYVdB?=
- =?utf-8?B?amFZakRhWFFOU3JtbTVTZGlTL2F5Mmk4VStJUzJEQWQweVgvYjE4NEJuVC9m?=
- =?utf-8?B?c2JnMVhOaUZSbExlbUcydVJ4OUFubzlEM3dSRjBoU1lxa0dSaGpnYytxL3RR?=
- =?utf-8?B?cjhIY1hJTGRwQStpOGtJdjduM29jWnRBVE5ic2pCNnAwU1FVVDZMTXF1cUYy?=
- =?utf-8?B?M0dHREF2SU9vRUxYTDdqcDlMTnNVUEYwQ3Ywc3VGTW0wME1lUzNLcm4xbUdT?=
- =?utf-8?B?Y1c1VjRBQ2k3Vy9ELzlJcEhHL0k4NTBJTDNsM1FUcVFqK0JNQ1RsSFBrRUFq?=
- =?utf-8?B?ZmtZV3EvcTRtZzdFYXlQNUxjdFJGSXdFOUFycHcrcHpMUkpZdUxtN0Q2ZmJt?=
- =?utf-8?B?MU9FNFpEQitDL2F3Q3pHTkw5Y3YwZGU1SHFLcVljWVdaaDJ3TXlsd0h0Vkk5?=
- =?utf-8?B?QTc4T1RmWlhJZlBmMUJZbzJjam50dmdJWmx4OHVxd0ZMbFgwNFNhUXpTWk1H?=
- =?utf-8?B?Wmp3VDhtSlRlRmlOdnpaOWx5Ymt5SDcyQ3EwL3dBTTVLYmtyT1VFNHJqd0Z1?=
- =?utf-8?B?WHRobHBETjlRcDNTRlBhbjBDSmQxbStLOEptZVQ0Qjk3U1NhNTJBODBRK2Zy?=
- =?utf-8?B?ZWEvUG91Y3pKanlLVWx4OUU5YThtOUNQbkxLVXlSckg1eHZuUUNkZDg2VHVj?=
- =?utf-8?B?bUVUMkVYeVYrbHBzZXNvM3VmelVJOTFibnF0dlJUc2JzK2lETElJME1vRTdF?=
- =?utf-8?B?MmJuMEUwakhuQUVrR1Z5b1pLNUNMeElxS08vc096N0JiVTRxS0pHcVlGOCt0?=
- =?utf-8?B?RUdQVyt3UVZCMnVMdWZ4TEI0bmNna1dLNkdrNVBtdUtxSitBWG5kR3YyaFpR?=
- =?utf-8?B?VE5EQVdjZGtDNkl5M3VKbjZYb3VnMXVTNk42aGVQY2RCTWlCL29sc1ZnVkZO?=
- =?utf-8?B?blZvYUM5cHdqMTkvWU1nMkFVVkIzZWVubzVFQzB3TDZ5RGM2TlBkRHF2RVdG?=
- =?utf-8?B?eWJDbUZIanBQdFZ0Wlk4Q3VjbXhrN2hoK2RlMndsejh2NThjZUR0RXA2UEVL?=
- =?utf-8?B?dE5GUXR0ZUNpTEo1YWhmV3lIbXlNSEFlYUt1N3hSNEs0N3l1R3k3aWlkc3pw?=
- =?utf-8?B?MUFYTVVPTmwxU3ZyQVIrekluczFLY0lyeGJqM0czU3QwdEZoQ25Xd1ZtS3ZL?=
- =?utf-8?B?NlpQY2o2aDFPTTd0TWlvY2FMTWZPU0tXeXRKZDRPNnlxTFc4YmtMaGI0U1Vk?=
- =?utf-8?B?QUFid2FnSStrQ00xWHdqdXlYR0d5cnFvV0d0L0dnYXg3Ymo3ZkFkL29pNEFV?=
- =?utf-8?B?NzJvb1BTWS9hSTc1b3VnZHlzMXdNeElqa05rc21ocjA1ejNDTDI4MXJSWE50?=
- =?utf-8?B?THZxdDNLbDl3VzhEYno1MVlVS1lrUk1ybGtYZmdqTEdrYmlSOFpFeXpQYTJQ?=
- =?utf-8?B?Y3hPZ09wVDhzWERONGorY3FiY1lNN09mSkZ2V2V5dDZxa2JhS3JBOWJaWDQz?=
- =?utf-8?B?enhqZWZjeVZBV0oxUHcyRldkVEpIa0tOaVlGL2RsVVczcVV0N1l6eUp1Sk5k?=
- =?utf-8?B?N2pGcnRsTC9GSlBMbjBQb1ZjRnRub2RoSUp5K3dUYi9oN0xyK25wV2VhZHZW?=
- =?utf-8?Q?KQSQgrGLEeBPiPrY615uzrTTCRiR/LKG2qF33?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8d0f405b-fef3-4883-b904-08df46675bbc
-X-MS-Exchange-CrossTenant-AuthSource: MI3PR04MB12438.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Nov 2026 18:03:04.5547
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4NBUlB1Z/Q6d8o1+W38ZfgL4ZIoSR2EefXiaN/IuCvEv9+NT01UXHkiMynbfJyv3sypj7p5hjVGpVtqd5aGUYVMpdKuaJnc9/+Nj6rJFAbluGmPKMrDIebEh7GcNTlpW
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB9954
 
-From: Frank Li <Frank.Li@nxp.com>
+--=-rr4R+OXCofjTXy4WSX5A
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+Hi,
 
-On Thu, 05 Nov 2026 11:17:39 +0100, Stefano Radaelli wrote:
-> The Ethernet LEDs are physically on the carrier boards, but the
-> VAR-SOM-MX8MP, DART-MX91, VAR-SOM-MX93 and DART-MX95 module descriptions
-> include their LED nodes. Other carriers therefore inherit LED definitions
-> that may not match their wiring.
->
-> Move the LED nodes to the Symphony and Sonata board descriptions through
-> ethphy0 references, along with the LED binding includes where needed.
-> Keep the existing LED properties unchanged.
->
-> [...]
+Le mardi 25 ao=C3=BBt 2026 =C3=A0 03:34 +0800, Shengzhuo Wei a =C3=A9crit=
+=C2=A0:
+> Each job arms jpeg->job_timeout_work, cancelled only by the IRQ
+> completion path. If a job stalls, mtk_jpeg_remove() frees
+> jpeg->m2m_dev via v4l2_m2m_release() with the timeout still pending,
+> and mtk_jpeg_job_timeout_work() then dereferences the freed m2m_dev
+> and the stale ctx it returns -- a use-after-free.
+>=20
+> Drain the work before the m2m device is released. The device-level
+> job_timeout_work was missed by the earlier fix for ctx->jpeg_work.
+>=20
+> Fixes: 5fb1c2361e56 ("mtk-jpegenc: add jpeg encode worker interface")
+> Fixes: dedc21500334 ("media: mtk-jpegdec: add jpeg decode worker interfac=
+e")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Shengzhuo Wei <me@cherr.cc>
+> Assisted-by: GLM:5.3
+> ---
+>  drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c | 1 +
+>  1 file changed, 1 insertion(+)
+>=20
+> diff --git a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c b/drive=
+rs/media/platform/mediatek/jpeg/mtk_jpeg_core.c
+> index d147ec48308110ae8520662e182dc0445447d8d0..f0fe14e83d515f5011cbfe051=
+abbf565568013d0 100644
+> --- a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
+> +++ b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
+> @@ -1405,6 +1405,7 @@ static void mtk_jpeg_remove(struct platform_device =
+*pdev)
+> =20
+>  =09pm_runtime_disable(&pdev->dev);
+>  =09video_unregister_device(jpeg->vdev);
+> +=09cancel_delayed_work_sync(&jpeg->job_timeout_work);
 
-Applied, thanks!
+A similar fix was made by Fan We, instead of doing it in remove, it actuall=
+y
+sync on the delayed work in stop streaming:
 
-[1/1] arm64: dts: freescale: Move Variscite Ethernet LEDs to carrier boards
-      commit: 5ba903416f38e9fae58bc64c8701848c464354f8
+https://lore.kernel.org/lkml/20260623103031.3051-1-fanwu01@zju.edu.cn/
 
-drop fixes tag because it is not user visualable issue.
+This way, whatever gets added in the timeout later won't possibly outlive t=
+he
+instance. Might be just extra cautious for this specific driver, but I'd ra=
+ther
+fix it once, then having this fixed again later.
 
+In some ways, your Sashiko review tends to verbosely lean toward this.
 
-Best regards,
---
-Frank Li <Frank.Li@nxp.com>
+Nicolas
+
+>  =09v4l2_m2m_release(jpeg->m2m_dev);
+>  =09v4l2_device_unregister(&jpeg->v4l2_dev);
+>  }
+
+--=-rr4R+OXCofjTXy4WSX5A
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCav9BZgAKCRDZQZRRKWBy
+9GVlAQCOGnpSOIJSn4V/Ho12zuZ5598wym0rXnC1VlAS9AoqvQEAsOTBEYfjI0RJ
+PU17Ybkq4kAlomadhU0ku0C5hgSy+g4=
+=Kc9h
+-----END PGP SIGNATURE-----
+
+--=-rr4R+OXCofjTXy4WSX5A--
