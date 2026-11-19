@@ -1,68 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.143.211.150
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.194.8.81
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795087842;
-	b=WvLq2Cf4P/VSLxlIiKod/BcdKFx7o9wp5m2ruMtx8NXEENLXi+2Hkm5rphBxhWqbbVwI
-	 D+yQMItvnHld3x8BRSgpG83upLfIs4xA9Q6CLyuABZFyZ6XOUXTCND56Yk6pMvhKHyrmx
-	 TiTR1adLGEvVtbMSrkQu0eAjyX66akU4M5zFOaSt29BwOZnaifnIxlKqNJ+HiYFDyYlua
-	 VAVdB3/W/34Dx7QO87Zwx828T2LUkVLuizJO04AZrBhJAiEFEreVFUCVf94y8i0+JpFf+
-	 dgshmRMSuKsWgEn0NLw4UIrvuCgnZJwBlyYXdPn9zeTD39sOtnZPJm5vaxQB4lMqUZA==
+	t=1795088450;
+	b=W4FuZr35EiVm3mShKXq5G09FftavF/sNgZFAQUP7kkInzIIXi4kaLl1XutuANDPKrcAC
+	 dVYhLzhJT6/WoPbSsEwJ1EPKMb40EJGsU0YYaRBGA57Vp3gUnduiqCpmkkngYdK/yr3D1
+	 gk+1lzLKLQsQzUObc0W2HzR+1//oW5Gl1WNJtujxm5FR/jBiiTB/XlI4o2TGo07JVbF44
+	 YZOGz0vjznNAp0fUso7NNHkVHvp+nEH9XixRL2mBNWSOSHS62chcTlUXG5yNmEAgUkLgB
+	 kFmeFeU/NpI9kYoI7hvnhEqwF2PDvxsdPbB+S/kn4XI2Eg36yebL3ktBrEcDdREJl6Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795087842;
-	h=DMARC-Filter:From:DKIM-Signature:To:Cc:Subject:Date:Message-ID:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=YLq833Da6iVYeGdT+KadJJm72vxSoeHnYAbiFsDpxsQ=;
-	b=F8h7JQZMLsPw+dH3Zxai7LCPEgCrlVPiLOuKZvDgbHDAXaDxrZY/bDbIBCC6+s0QeoVH
-	 a2VzlXOye8xwNvYhmG4efM8kB9C5B1brY5JJ9uFKyj1cMskOZBxJLYfYsxwUtJFYCdiXY
-	 lZljFpGPlrstBQL5I+Qt3GmBUfcrmZieH8/aCrx0TYFG+RWJBty9HSFtz++tlhed62k2/
-	 TuKd6nRlGKUplR7Cq0hAEpqLTqAHBlrJR/ujzUjXM5N0L/aWzkJcG2ahqvWZ/mfe4XQJt
-	 UjjcrY/ywUEPvjD3PMbf0g89xSA64Ez+ih5Uww3OgsWXucn2Mxvw2NEx07H5V8qHYBQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795088450;
+	h=DMARC-Filter:Received:DKIM-Signature:Date:From:To:Cc:Subject:
+	 Message-ID:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=bUsF2BFmyfh8u4YXfKRfweeg9EbYkyMl9BdaPhOcFI8=;
+	b=urUxszhsd2VYJrwRvjyIYJu1CClx2hswfqeltmlAnSmqM+5isK+9HLf0Z7jyw6EM96px
+	 70sawdHwFawzSUbCWzY2ctkjT7M83P7iR7F2ZdZdWJ5xxgzpG5zPsFRHbXF2IK/++9jIm
+	 MxNL6R/BAxiIrhV2QLeZla66kznHz2aiQ8S0yRa0c67dGlNK9zdSNIX3l1LNLpj5Hj6SF
+	 EaqBsqFByeXI9K5nms9AhF6wTJWvuVf85RHxOQe5CRnemXUwAaEgGmxYAYgDtpGJ8HyDd
+	 K1QhGut1yVxLTeOTG4zqvAd9XL2zZAATEHFR3SQrcXs4kOJDkrhJR5txbSNkKdYwEWQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=swemel.ru;
-	spf=pass smtp.mailfrom=swemel.ru;
-	dkim=pass header.d=swemel.ru header.i=@swemel.ru header.a=rsa-sha256 header.s=mail header.b=WdApNlaR;
-	arc=none smtp.remote-ip=95.143.211.150
-Received: from mx.swemel.ru (mx.swemel.ru [95.143.211.150])
+	dmarc=pass header.from=dolcini.it;
+	spf=pass smtp.mailfrom=dolcini.it;
+	dkim=pass header.d=dolcini.it header.i=@dolcini.it header.a=rsa-sha256 header.s=default header.b="iSp5/LpD";
+	arc=none smtp.remote-ip=217.194.8.81
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE8AC606A324
-	for <imx@lists.linux.dev>; Thu, 19 Nov 2026 11:30:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AE8AC606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=swemel.ru
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF144606A326;
+	Thu, 19 Nov 2026 11:40:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AF144606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.a=rsa-sha256 header.s=mail header.b=WdApNlaR
-From: Denis Arefev <arefev@swemel.ru>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
-	t=1795087831;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=YLq833Da6iVYeGdT+KadJJm72vxSoeHnYAbiFsDpxsQ=;
-	b=WdApNlaReVWiFHY24zJ4gDKi+BvJ5U13eP9wS2Du8AQcs3H+OddwFwSO2ekqbiQy/Ou4et
-	ikzVVHXbdXOsBpTAv2AM3zczklWZTEgROPYgxJOmfPW1fJbItOakXQrGaaNSOZEL/fCCxs
-	8/XDogI/TrR4ycseRX0I6sHyW+g8EMU=
-To: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
-Cc: Lucas Stach <l.stach@pengutronix.de>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
+	dkim=pass (2048-bit key, unprotected) header.d=dolcini.it header.i=@dolcini.it header.a=rsa-sha256 header.s=default header.b=iSp5/LpD
+Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id 83B30249CF;
+	Thu, 19 Nov 2026 12:40:45 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1795088446;
+	bh=bUsF2BFmyfh8u4YXfKRfweeg9EbYkyMl9BdaPhOcFI8=; h=From:To:Subject;
+	b=iSp5/LpDRebEE2dL1d8oR0gjk2x4hoaFOYKH5eR1fQ0XANEJWSMg713KP0F/tTkcH
+	 59X2iUmbKsTrWu9aB78yyv4lens8+4d7a3BUDi69lsiC9kjhcgapB+8UJGr4C3sF1B
+	 t348F4A2tuaWsF9JiNNqO4f9BDonT8YRwzl3kE9gnTtvNeJIow2ljGoscks7QeGG4d
+	 Hrp/mgraJIfLF/crc/xqZT/922etN77mUXUA9ftYZbVh4JoCCAC/lcPjmIvdAQOOfY
+	 5PRacq4vo16f05C6NVv3sEeuSl6dEUt50HfrrnWyDHh2t556GEGpbOgzq8hsgmo8ua
+	 yjP5WVb9mhZ/Q==
+Date: Thu, 19 Nov 2026 12:40:41 +0100
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Peng Fan <peng.fan@oss.nxp.com>
+Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Peng Fan <peng.fan@nxp.com>, linux-remoteproc@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-rt-devel@lists.linux.dev,
+	Bjorn Andersson <andersson@kernel.org>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	=?UTF-8?q?Guido=20G=C3=BCnther?= <agx@sigxcpu.org>,
-	dri-devel@lists.freedesktop.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	stable@vger.kernel.org
-Subject: [PATCH] drm: imx-dcss: Check return value of drm_mode_config_helper_suspend()
-Date: Thu, 19 Nov 2026 14:30:29 +0300
-Message-ID: <20261119113031.36945-1-arefev@swemel.ru>
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Steven Rostedt <rostedt@goodmis.org>
+Subject: Re: [PATCH v3 00/10] mailbox: imx: Use threaded handler to avoid
+ kworker in imx's remoteproc
+Message-ID: <20261119114041.GA166708@francesco-nb>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -72,42 +72,84 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <av6Wc+kHFKqwFHAR@shlinux89>
+ <20261116102331.K8Sc86V9@linutronix.de>
 
-dcss_dev_suspend() ignores the return value of 
-drm_mode_config_helper_suspend(). On failure that helper rolls back its
-partial work (re-enables fbdev and polling) and leaves
-mode_config.suspend_state unset, i.e. the DRM side is not suspended.
-Continuing to suspend the context loader and disable the clocks then
-leaves the device in an inconsistent state.
+Hello Peng, Sebastian
 
-Check the return value and propagate the error to the PM core, as the
-other DRM drivers calling this helper do.
+On Mon, Nov 16, 2026 at 11:23:31AM +0100, Sebastian Andrzej Siewior wrote:
+> On 2026-11-16 10:23:41 [+0100], Francesco Dolcini wrote:
+> > Our CI shows a ~10-15% eMMC sequential read throughput drop on i.MX8QXP
+> > and i.MX8DX (Colibri iMX8X, Cortex-A35), starting with v7.2-rc1 and
+> > still present in v7.4-rc3 (hdparm --direct -t: ~129 MB/s -> 105-120
+> > MB/s on i.MX8DX). i.MX8QM, i.MX8M and i.MX9 are not affected.
+> > 
+> > 5d1c0000.mailbox interrupt count before the test went from ~8k on v6.18
+> > to 60k+ on v7.3/v7.4.
+> > 
+> > Peng: any idea/suggestion? Does it makes any sense to you?
+> 
+> Can you pin point it to a patch in this series? My guess is that
+> something with the masking/ unmasking went wrong. The increase might be
+> result of the interrupt keeping firing while the threaded interrupt did
+> not have a chance to run.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Reverting 36cac4b5101f, 3225a745f517, e55bea377d49 and 692e1bc96a5d
+restores 149 MB/s with schedutil.
 
-Fixes: 9021c317b770 ("drm/imx: Add initial support for DCSS on iMX8MQ")
-Cc: stable@vger.kernel.org
-Signed-off-by: Denis Arefev <arefev@swemel.ru>
----
- drivers/gpu/drm/imx/dcss/dcss-dev.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/imx/dcss/dcss-dev.c b/drivers/gpu/drm/imx/dcss/dcss-dev.c
-index 45a91e43bab1..0b12ce2498f0 100644
---- a/drivers/gpu/drm/imx/dcss/dcss-dev.c
-+++ b/drivers/gpu/drm/imx/dcss/dcss-dev.c
-@@ -253,7 +253,9 @@ static int dcss_dev_suspend(struct device *dev)
- 	struct drm_device *ddev = dcss_drv_dev_to_drm(dev);
- 	int ret;
- 
--	drm_mode_config_helper_suspend(ddev);
-+	ret = drm_mode_config_helper_suspend(ddev);
-+	if (ret)
-+		return ret;
- 
- 	if (pm_runtime_suspended(dev))
- 		return 0;
--- 
-2.43.0
+On Thu, Nov 19, 2026 at 02:25:55PM +0800, Peng Fan wrote:
+> On Mon, Nov 16, 2026 at 10:23:41AM +0100, Francesco Dolcini wrote:
+> >Peng: any idea/suggestion? Does it makes any sense to you?
+> 
+> Please help test whether this helps:
+> 
+> diff --git a/drivers/mailbox/imx-mailbox.c b/drivers/mailbox/imx-mailbox.c
+> index 683ccea6f2ba..e29044cf4b92 100644
+> --- a/drivers/mailbox/imx-mailbox.c
+> +++ b/drivers/mailbox/imx-mailbox.c
+> @@ -635,7 +635,7 @@ static int imx_mu_startup(struct mbox_chan *chan)
+>  {
+>         struct imx_mu_priv *priv = to_imx_mu_priv(chan->mbox);
+>         struct imx_mu_con_priv *cp = chan->con_priv;
+> -       unsigned long irq_flag = IRQF_NO_THREAD;
+> +       unsigned long irq_flag = IRQF_NO_THREAD | IRQF_ONESHOT;
+>         int ret;
+> 
+>         pm_runtime_get_sync(priv->dev);
+
+It does not help.
+	
+The analysis below was done with Claude help, on measurements I took on a
+Colibri iMX8QXP. I hope you can pick it up from there, this is not my
+area of expertise, and the best I can do is to send a revert for those 4
+commits.
+
+Every SCU RPC now wakes the SCHED_FIFO irq thread (TX done and RX), and
+while an RT task is runnable schedutil requests the maximum CPU frequency.
+The A35 clock is CLK_GET_RATE_NOCACHE, so each frequency change is
+followed by an SCU RPC reading the rate back, which wakes the irq thread
+again. The loop never settles, even when idle, and the transitions (ATF +
+SCU) are what costs the eMMC throughput (and I assume there is more
+impact on performance than just this).
+
+v7.4-rc3, 4 CPUs, idle irq/cpufreq transitions per 10s, hdparm --direct -t:
+
+                               irq    trans  schedutil  performance
+  v6.18                          -      -    149.7 MB/s     -
+  v7.4-rc3                   16203  10800    113 MB/s   150 MB/s
+  v7.4-rc3 + IRQF_ONESHOT     7832   7813    113 MB/s   150 MB/s
+  v7.4-rc3 + revert 4 commits   60     36    149 MB/s   150 MB/s
+
+The 4 commits are 36cac4b5101f, 3225a745f517, e55bea377d49 and
+692e1bc96a5d; reverting only the RX part (e55bea377d49) is not enough.
+
+
+#regzbot introduced: 692e1bc96a5d^..36cac4b5101f
+#regzbot title: mailbox: imx: threaded IRQ handling causes a cpufreq transition storm on SCU-based i.MX8
+
+Thanks,
+Francesco
 
