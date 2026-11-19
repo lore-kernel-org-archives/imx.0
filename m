@@ -1,107 +1,103 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=194.104.109.113
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.52
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795099475;
-	b=L1bvtOdkSznaOREkMp6D6tbilxrh2MwuZQw23Uf4QfkVkNj3i/lZIymAg3nNKNt5hOAF
-	 ps2Xr4jBvJK5PuGxlvm77pjfrgNalBMV0K74pxtwzDpmYA4jDWedOlv7Luu2T2JUzg3k9
-	 mVdKOl0fI2rBf1tTV3QaOCOfwaxHMXpEztwwxizvh3RsoBUlMP1vlS2fcAJfcvIAZ6eo8
-	 x9xBclazpSEFD5Yh9IJm0EC4BHI/FEnaPqkGXLbqpfPLhUzuyrlBr9aT8cfeLXOYAEWWS
-	 Cvpax6oDJ++/JkuXKeh09B8ZSJZbsfqFMg/ZmRPSuk+xXMrEKYEmAgdWcdARpQChQWw==
+	t=1795104069;
+	b=qDd1WazaWvb68CWYhhuFF1GxMbWzOFx6QpqgOirOyuMjuoBENJZ74K9MilibqOR9S0hq
+	 gvK4RjHfcaw8MBhGSB6QctfLGfcwI4j90YuPlYqihyGYsWnsCTtGz0aGwcrCe9eUFB59h
+	 +muxJvua9GUTGeRs6edqlFjt8Ng5U2ABRVCb5FJsl9ifVl4XLZnmr6ger6Y0p9rpUBo4K
+	 slGFqBNA8qqd3puSSYfs/frZqw22UL0eeNgaM3x2EwiUA7/eoeBrv9onlF0eZXj6eB17g
+	 PwuONJv1T3MDAb6iU8MCkdQJAESH0Es+welhq/rJ2nUjTspg421llQzDUyE8BfFAk9A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795099475;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:In-Reply-To:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-Exchange-RoutingPolicyChecked:
-	 X-OriginatorOrg:X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:
-	 X-Mimecast-Spam-Score:X-Mimecast-MFC-PROC-ID:X-Mimecast-Originator:
-	 Content-Type:Content-Disposition:Content-Transfer-Encoding;
-	bh=ddl+5wLd7JrcYCQu/tKnUPSlPM9wcUjbTD7xT0J9hdE=;
-	b=ZAB8GRfDqG7DoVSESZOa75ZtHtMWUWbtzkIK4BzlIfvbqW/0gpaLxl9zUGU/xJqIeSqS
-	 H9JHVHqTMOuKNV6Qrvj67qtrDyTI2yW/3KWAFythd7TVAjbF9skKpcZZSkJwJr1+0sGEU
-	 cvk0Xx2ZRvRU548lggNEeFcis/dl4cwqbu6I/6BTIguuDyeLdsaedCa6YvdOKLvrCQUCd
-	 5kTdwbLJ3sdY8R9bt0cKynKft6z0aO4EFfDGe3AzVRWFf3NpRo+rZ/BffsfZnJjF1/xdm
-	 KI9hG/w2HEXUbVx+sfWH8y75zv2J+/NWWErxVsjBZozLeL9a59+JKY/SFVv1Z8EKIjA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795104069;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:X-Google-Original-From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=G96VJts1v3/6sj9M5CAvHWlJcDFh4oPkNZ60e98HLbE=;
+	b=JgHKO3Zcse8T6aE7YY3nR/Au8H5oDG20Y84V/tCdPVtKcdywi7eydjgOGcWB57c8oDMn
+	 T5rOuiqKCXxkPYpgOFGPrdUHrYPey3ZR2zrDUNZTTUippwfhTMvmfZrxlARs1NJYnFJZG
+	 Qh9E4HMwp4LD/0brCVmkuWMmvjvnh5UxrKFcaRFV4BGKAV/qEpkYv014pQv5u9G0qlApC
+	 5rwHZhlP1xDhYWzEYcvXefJjtrT1pbO8AP5cGI862NUFXe+2y4Pkv4tPVIJhdmlTvM62U
+	 kXLH0FcUDvdDVerxdT+f1kH0M/IfEoG6ZUooB7mld9LPwHzp7+ASTXwAbLGlSOQCVaw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=toradex.com;
-	spf=pass smtp.mailfrom=toradex.com;
-	dkim=pass header.d=toradex.com header.i=@toradex.com header.a=rsa-sha256 header.s=toradex-com header.b=oTH+5BMK;
-	arc=none smtp.remote-ip=194.104.109.113
-Received: from de-smtp-delivery-113.mimecast.com (de-smtp-delivery-113.mimecast.com [194.104.109.113])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=h1PYyHSF;
+	arc=none smtp.remote-ip=209.85.128.52
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 835C6606A324
-	for <imx@lists.linux.dev>; Thu, 19 Nov 2026 14:44:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 835C6606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=toradex.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toradex.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEE7960A2602
+	for <imx@lists.linux.dev>; Thu, 19 Nov 2026 16:01:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CEE7960A2602
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=toradex.com header.i=@toradex.com header.a=rsa-sha256 header.s=toradex-com header.b=oTH+5BMK
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=toradex.com; s=toradex-com;
-	t=1795099467;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ddl+5wLd7JrcYCQu/tKnUPSlPM9wcUjbTD7xT0J9hdE=;
-	b=oTH+5BMKqqvkKDYlNzpATSLLbzkTOk7KJia9jiQTRk3g52UQFqZzwYnq/rGKmGXmHGohrb
-	1AOY114cM3Jq8Kzso17zpdR1aRiW90dQC5gXSz3VQ1XZHMcZP2u7HgIlOqw0YQI/DR1jGe
-	+tRr2r8Q3v1shl3CLEjApDu4WXtHjM4=
-Received: from ZR1P278CU001.outbound.protection.outlook.com
- (mail-switzerlandnorthazon11022117.outbound.protection.outlook.com
- [40.107.168.117]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- de-mta-73-tCU5VljqO6OmdbQnImAZ3A-1; Thu, 19 Nov 2026 14:44:22 +0000
-X-MC-Unique: tCU5VljqO6OmdbQnImAZ3A-1
-X-Mimecast-MFC-AGG-ID: tCU5VljqO6OmdbQnImAZ3A_1795099462
-Received: from ZRAP278MB0495.CHEP278.PROD.OUTLOOK.COM (2603:10a6:910:2e::8) by
- ZR2P278MB927271.CHEP278.PROD.OUTLOOK.COM (2603:10a6:910:202::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.10; Thu, 19 Nov
- 2026 14:44:19 +0000
-Received: from ZRAP278MB0495.CHEP278.PROD.OUTLOOK.COM
- ([fe80::88:6821:13f5:a5b2]) by ZRAP278MB0495.CHEP278.PROD.OUTLOOK.COM
- ([fe80::88:6821:13f5:a5b2%3]) with mapi id 15.21.0615.013; Thu, 19 Nov 2026
- 14:44:19 +0000
-Date: Thu, 19 Nov 2026 15:44:17 +0100
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
-To: Peng Fan <peng.fan@linux.dev>
-Cc: Francesco Dolcini <francesco@dolcini.it>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Peng Fan <peng.fan@oss.nxp.com>, Peng Fan <peng.fan@nxp.com>,
-	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rt-devel@lists.linux.dev,
-	Bjorn Andersson <andersson@kernel.org>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=h1PYyHSF
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4bb70074ab2so25924705e9.0
+        for <imx@lists.linux.dev>; Thu, 19 Nov 2026 08:01:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795104067; x=1795708867; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=G96VJts1v3/6sj9M5CAvHWlJcDFh4oPkNZ60e98HLbE=;
+        b=h1PYyHSF4D29MtpfrybtBr5nB4FIUG399yN3THRyxkgwUe8dEe1ExvYUcBR9WDL9Nv
+         UrlUhCQRACIrJr7EA64xrkaSKaPlNS6HKdUaGxjL3aY55z1OcfJfC9CdpghJAVx3VMbp
+         ahcxaxA3KEuyM1lT4+zLzKjPKZXP/hUihzvmD2vbF19G/3Xiwp7OtXeYy7KBTh3vYnmL
+         3k77SJ/HKTU06cS+n0zT5cyIvLHUbzQWCoJXF+W2ny0f125YmD/Jq4RalPSgkeuKcM/U
+         ieZWt/pH3CQFYAdEkgboudLufrc22uXFiOSfSVfib4giQY+5BvE2btWaMO8NnpDIA91z
+         lKBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795104067; x=1795708867;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=G96VJts1v3/6sj9M5CAvHWlJcDFh4oPkNZ60e98HLbE=;
+        b=c2aDYg24Re90Z3lPHqTGrQtpjr74gGWZckQ1s7YyA+hVvwfpxmCYdFu0rW63XSNKT/
+         VuDxIGc17kMD5hp20J9KK4AE+Xi/KAf6EPltX2KwjHF8d9LhbADjUUBfUHdgXPxQfjBq
+         SEuvFZwV2UkANihdahuw8aKnTiinXEP70LtE4ckJJXKKqNPcch5ov5/Gs6poavw1J5qF
+         WBVPimRktbWC7ek+nTZcCurq7jhz1J7e/s52qaP98n1t6lelndqIivSB9fpx4S/SIus6
+         NZmXAKXl227lv0IUKL7iKzAsRD/YT0+FWdSWcZ/3/85xg+BpU9mjzClIq1Ffv+uT2ufK
+         VS4Q==
+X-Forwarded-Encrypted: i=1; AL+hErETcNCcQ9zdj0E5phMKQJK24CnmRE2hy4sfDkXxaxRT5UwwdkSR3r2/M7QC3apaQ7nVH8o=@lists.linux.dev
+X-Gm-Message-State: APuU4Z9Uh1f+tZtNPhEhqvZB5VjDwdL11F5PpRSD8IRSQWJvo7UxyQLe
+	ouT1qeES4MI0VAbXjO2bPKklCDBeyF07utzZ9+VetBm07iT3nelfrTd3
+X-Gm-Gg: AYBFou2Z0npNvvdCq2rJeQJrG1t6uEiIqnewdtuHLhC75Orb+aE8P5LyBLRAzGO+oMM
+	9A6S4NlYvdfEmm/RI03ejdctdeFYSKzlQMOknjMePamRE5SJGf8R37si0sSNLAqlIG8Tic60p9P
+	mMOjozWAOsF1ZlpJDxwS1iWprkkPGZRpsZRtiqs+ncJeIwtAiy8ksFzAlx7hVDBhf8pu4cb1KK1
+	zlqIeJGM8p5fwWAkE8iPFV1Y3OAdCQpWJ9rGXes72y/iwTk8qeMjS7rMt2u0kQFP8ycFdGuX7p6
+	Nw0a02N9Xm5cMTnHiHQ3MbWw17QinjAiMF/0MJTFgiyZNsXlKjmFNTn4VolfX8ahPkcI4AgBa/f
+	CTqtVxASFE46rkkN/6ZkniD3Rpm13O60OQ5O0uvoRnccYAQliLWTW0VGWogWQaXPqKaoJ026jeq
+	FmwCNuSSkl2dyOnfoiFvpyyohfBsSf+gDBWdOqxltGwwlZdySa64UX+ofuFYaIDzrkyAKX2e38+
+	f1C7ToI/dN3e0s67Y3oeDNslwg0BGD9Q87u95gOH/if9snD+L19f5Hsc2hiQh7zWc0rNB2TwZdt
+	+VpSFPrYXY03nx3K86dyTaEm1fNlC0+jf99fI7A4F7bC5bPe13OnYEYpXqgUcL1ySeNKgmoLbED
+	9cQgso7sSkfc12KChwBccT3rLAUhgzLhRuIIulAl1m3Xie5aEi7qE/KI=
+X-Received: by 2002:a05:600c:4f0d:b0:4bb:6f41:399f with SMTP id 5b1f17b1804b1-4bb7da2ba1bmr145169935e9.24.1795104066898;
+        Thu, 19 Nov 2026 08:01:06 -0800 (PST)
+Received: from Lord-Beerus.station ([93.146.104.162])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4ab6b9add26sm323784f8f.44.2026.11.19.08.01.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 19 Nov 2026 08:01:06 -0800 (PST)
+From: Stefano Radaelli <stefano.radaelli21@gmail.com>
+X-Google-Original-From: Stefano Radaelli <stefano.r@variscite.com>
+To: Frank Li <Frank.Li@nxp.com>,
+	linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Cc: pierluigi.p@variscite.com,
+	Stefano Radaelli <stefano.r@variscite.com>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Steven Rostedt <rostedt@goodmis.org>
-Subject: Re: [PATCH v3 00/10] mailbox: imx: Use threaded handler to avoid
- kworker in imx's remoteproc
-Message-ID: <av8LQa77SbshHmZD@francesco-nb>
-References: <av6Wc+kHFKqwFHAR@shlinux89>
- <20261116102331.K8Sc86V9@linutronix.de>
- <20261119114041.GA166708@francesco-nb>
- <av8H7l6C8fmiHdbV@fedora>
-In-Reply-To: <av8H7l6C8fmiHdbV@fedora>
-X-ClientProxiedBy: FR2P281CA0052.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:93::15) To ZRAP278MB0495.CHEP278.PROD.OUTLOOK.COM
- (2603:10a6:910:2e::8)
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Daniel Baluta <daniel.baluta@nxp.com>
+Subject: [PATCH v3 0/2] arm64: dts: freescale: imx93-var: Add Cortex-M33 configurations
+Date: Thu, 19 Nov 2026 17:00:52 +0100
+Message-ID: <cover.1795103362.git.stefano.r@variscite.com>
+X-Mailer: git-send-email 2.47.3
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -111,157 +107,58 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: ZRAP278MB0495:EE_|ZR2P278MB927271:EE_
-X-MS-Office365-Filtering-Correlation-Id: 31e16043-56cf-4f3c-39b5-08df464b97c2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024|23010399003|10067099003|4143699003|5023799004|56012099006|261021121427099003|261022105027099003|261022075727099003|261009223027099003|261102123227099003|261026140227099003|261026121527099003|261028144727099003|22082099003|18002099003
-X-Microsoft-Antispam-Message-Info: KTup7N2qzdFVzEW0/Qp75792bpJzo033s++7ck+QIEwiil3/laugym1uWuRPmXP3oCItjhArrDcwafBzXHVfUE3hjuN+hdPdrWMY7gPs0jwbkRVS2V1mv4RYhuRVAdTGJG8SH6nCwgz9GcI9j0LMKLnhuCYFLpI5ZgGiUvWUKI8PSbvLx0eIQH+q+J2FzcGhR555aFDDDnu+fj9G1iicfa4JIuuFey9VH/Sp8fGHr5+D2KHIE5xYBmLxEoaqcBU+6cITPBVbcgZaZM3RVp7/b665WjM+jxLdg5oeWXKPi9AJ1y6I0zYuhm6WXUebwYMuRECq+1hPz/6ZmPgIZGEk7fBVOkqwhfOsEPgJyEiTdqafFGHWOWqvEBABlIWbSoPHEpOiTEcCQyXbqexmBj8nO84rZ/yrC/Zzt5YJmncMu2BWgruUusb8XgEklmLtXhBrto6JMg6IjDEU48aF3RNHSwi/Yq+DWGD6U2dYZwPABdMVmN/tSpaffUrqeG1urOZjTaaicBbMTQ/AajXurGmNCmbHjs/uK2tJXSe7/RlwPEyPSt8EQ0rSuNkYBxbwslb89XCDvP8a6sx4efycL3WDo3deacL/tTWPsr5Fj2PbCpPfU1SJgKGqd9r23pK3JPjgclkan/Y5pu8nyiERAWrL9NUwfLYvVqadzgcXH767xDc=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ZRAP278MB0495.CHEP278.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(23010399003)(10067099003)(4143699003)(5023799004)(56012099006)(261021121427099003)(261022105027099003)(261022075727099003)(261009223027099003)(261102123227099003)(261026140227099003)(261026121527099003)(261028144727099003)(22082099003)(18002099003);DIR:OUT;SFP:1102
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?B2suc6pvRuFum8hj40BSqdFPK4ELHsFCLiBhYgRFhT/ravCNgrhnM9T8ro1C?=
- =?us-ascii?Q?iiJ/tv6tkYLAkw7xJnTT/JQPujJEQa7r38qnfIku575Rm/oQLchfIbqxhNRD?=
- =?us-ascii?Q?JKQTZTF4FWrDmBM0jSmpXryLtWeeQ9qRTQflMZl5GMw8bb6Ok/Q4pwRZyBnY?=
- =?us-ascii?Q?KGslF2vftVkU2bC6izWkdv4g9KohkSAg5FHf59g/P1lKUzvT6g3Bd2rX8RO9?=
- =?us-ascii?Q?4jsrc/ecohWS/yw+WujuGPhIV/r7g3pkQw07xSaoH7ok6l2g2qFl7e/DhkTA?=
- =?us-ascii?Q?dMDQuGiu/XmbbbrkG0k38kmQza1L+lzqafW8iUQT+HCOFl6MrWwQvvCPoINT?=
- =?us-ascii?Q?l8H1k2Qz2Tu6apSw3+yezSZQ64mpVaXH1Go+3deRMsJ4Ca3vLitZWDlBI2bR?=
- =?us-ascii?Q?0/XpJ+9KD27K+d7zZ5D338VASYt7qowvxvsTFWxXMsFzxT3QwONi1NAhCPBG?=
- =?us-ascii?Q?QW/csj7ETHukQEfLLTkIiOcdfxxEQNaYxzeoXmENrKUjE5xYrjKpekUEOeGO?=
- =?us-ascii?Q?BdgqRMzIV+1vjMtLSfEwBRmkipTRydEJA+6B153ZjaQp8lDK6MLAV3/Y7H8o?=
- =?us-ascii?Q?Kizn3fDQOUeji/h/Y+dCZNcJEr8geMyKWU1u6AZBQxNf+qRYxEcPIa3JKHsI?=
- =?us-ascii?Q?PqmiOaNCRXZR/5sTHcoMPdFxaHGXn4HVAu6qUnN054fWOtl9C26Mg3/64oKi?=
- =?us-ascii?Q?pObalA80JkcrBw+yTJMOU7YXKjwLrm/HP8kjO71Di883mE9KDRs+sQ2HKvO0?=
- =?us-ascii?Q?t4lo+dJJXJyG0VaKYk+pQ6CyYXgT7d5+a1WV0syyVs32+fz6aC6d3vA5Cu3a?=
- =?us-ascii?Q?3GRN/l7u4vsT4kfzki9li12uBzfdJqvrUJ87L0O6nNI3Vv3hswWAEMk2JMtj?=
- =?us-ascii?Q?wyAVFAbHYtqLToQnhsAGB2s3KP6uqhGbEYT3htbjrHPP+Z68EboBiNdRAydE?=
- =?us-ascii?Q?dSfaxTofJQJ/VLugtgmNRDSFXMzmHye6YntbsVjwQ07FLUfvxjWa4l43z6Ui?=
- =?us-ascii?Q?ji8AgHnU+WWritsVZdIMLJ06MqKrXyiY5a2foAcP5aAGqTsh9w/BBOo1aWLc?=
- =?us-ascii?Q?zl4YULK+EEP7DQTY2hsxCFTlX+Ewp9zv+Nqedrs8e7m8bQUvqUbBObI19CRJ?=
- =?us-ascii?Q?ZITgMy6MNC9qWU3667MWFETm/8CQDMrzAJEZZN/IuUWuR8bhj/T2UZ3L2/s5?=
- =?us-ascii?Q?n/QBI/0UiG+FKd2zEYaoZGYEN8FlKjI7ZlRK7AmJrVPqSVmRCcMW/Kc6rY1E?=
- =?us-ascii?Q?xAGXOehPP8/6v40RBnePoxiN39nFBEiIeYYVP6AG1SLDfQrZk0xvwaWB9Nwb?=
- =?us-ascii?Q?Fm4QMLNNgmWpiTApYncErpNsxcart8yg4q0zGc8fDPFxFVRvqfht3A7HTM7R?=
- =?us-ascii?Q?Ej4J5ooifPIkvWDKSks0+XekoreNIMGiskA+AgdGTFXGREzELxozLzjS6cxa?=
- =?us-ascii?Q?9AmyaK/obfDEQqXVYbIvAqVr8I4LaMI2skOSILCSSg2PYXwZvkxnO2IPlhlc?=
- =?us-ascii?Q?e5LXPyrrEg/I9nLUJQKHgMI/5Z0hmXhJoEj0nnkehXffadheRq9Yc5nMGvtB?=
- =?us-ascii?Q?nRArSHz+L2rxmQGNQRXv086gceSSVc1GQND4QIqFDNMqPVuv3Eq7gQyc5GUb?=
- =?us-ascii?Q?3qOmGHZSh5Jto3kOaTIloBLPg6W3Hqdu1tGN8Z0KrewxAy/xyO0GK/Cx1o7U?=
- =?us-ascii?Q?UVWQpree7WD0VjNMWH2GC1vhIO8qZ4CPAoCVCYFWpYsB+rPrd2SwIu3iFEvt?=
- =?us-ascii?Q?IQeHbDRzwq+ld/MCGizOT04EB0H56j0=3D?=
-X-Exchange-RoutingPolicyChecked: 2ydbplWztFh1bXcdiXlYPNPhFqJJuzUw1a9ejvQKni9MNLTLgm3SEPbgr63cgpRoVXzlRveQZVtoyQpvsatGDxpsIc8f3GDBV8D8DYl6yFLSVTuwEr1zKWKGPVETHwjJMp7LHZAMyEXhXJVt9KBzOwPVeQh7u4e1waeewPckRVlg+CzSiGPD2z143fMz5lPX4ySGZSit0lkTDWu2LH/nPYBBHEcG/js9nFAIVJUPCNJi+r9umNNHEsxc4hW0N8IzNoIGdXoH6OuHPJPuHsoreHuo1sfe+6IFn3Dww7wzmoaZhBraj2ySYiknFT/zNVkfqeIf7AGWp6bVHgscNOqVDQ==
-X-OriginatorOrg: toradex.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 31e16043-56cf-4f3c-39b5-08df464b97c2
-X-MS-Exchange-CrossTenant-AuthSource: ZRAP278MB0495.CHEP278.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Nov 2026 14:44:19.3924
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: d9995866-0d9b-4251-8315-093f062abab4
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: NIzCX8ee/GL51WUBrC09g2SdaH2PbTCV5CsIWfjkdoSars4PNnfH4D4qx1IWW7z0d3xyAUkszUp7ODVyyK08PU7F5Md/d0kcFJsyTbK3tzU=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: ZR2P278MB927271
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: hSjdn0RDrvWZGhccCi2Qzpwv20JDS9DaL5sD2IHXJEg_1795099462
-X-Mimecast-Originator: toradex.com
-Content-Type: text/plain; charset=WINDOWS-1252
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, Nov 19, 2026 at 10:30:06PM +0800, Peng Fan wrote:
-> On Thu, Nov 19, 2026 at 12:40:41PM +0100, Francesco Dolcini wrote:
-> >Hello Peng, Sebastian
-> >
-> >On Mon, Nov 16, 2026 at 11:23:31AM +0100, Sebastian Andrzej Siewior wrot=
-e:
-> >> On 2026-11-16 10:23:41 [+0100], Francesco Dolcini wrote:
-> >> > Our CI shows a ~10-15% eMMC sequential read throughput drop on i.MX8=
-QXP
-> >> > and i.MX8DX (Colibri iMX8X, Cortex-A35), starting with v7.2-rc1 and
-> >> > still present in v7.4-rc3 (hdparm --direct -t: ~129 MB/s -> 105-120
-> >> > MB/s on i.MX8DX). i.MX8QM, i.MX8M and i.MX9 are not affected.
-> >> >=20
-> >> > 5d1c0000.mailbox interrupt count before the test went from ~8k on v6=
-.18
-> >> > to 60k+ on v7.3/v7.4.
-> >> >=20
-> >> > Peng: any idea/suggestion? Does it makes any sense to you?
-> >>=20
-> >> Can you pin point it to a patch in this series? My guess is that
-> >> something with the masking/ unmasking went wrong. The increase might b=
-e
-> >> result of the interrupt keeping firing while the threaded interrupt di=
-d
-> >> not have a chance to run.
-> >
-> >Reverting 36cac4b5101f, 3225a745f517, e55bea377d49 and 692e1bc96a5d
-> >restores 149 MB/s with schedutil.
-> >
-> >
-> >On Thu, Nov 19, 2026 at 02:25:55PM +0800, Peng Fan wrote:
-> >> On Mon, Nov 16, 2026 at 10:23:41AM +0100, Francesco Dolcini wrote:
-> >> >Peng: any idea/suggestion? Does it makes any sense to you?
-> >>=20
-> >> Please help test whether this helps:
-> >>=20
-> >> diff --git a/drivers/mailbox/imx-mailbox.c b/drivers/mailbox/imx-mailb=
-ox.c
-> >> index 683ccea6f2ba..e29044cf4b92 100644
-> >> --- a/drivers/mailbox/imx-mailbox.c
-> >> +++ b/drivers/mailbox/imx-mailbox.c
-> >> @@ -635,7 +635,7 @@ static int imx_mu_startup(struct mbox_chan *chan)
-> >>  {
-> >>         struct imx_mu_priv *priv =3D to_imx_mu_priv(chan->mbox);
-> >>         struct imx_mu_con_priv *cp =3D chan->con_priv;
-> >> -       unsigned long irq_flag =3D IRQF_NO_THREAD;
-> >> +       unsigned long irq_flag =3D IRQF_NO_THREAD | IRQF_ONESHOT;
-> >>         int ret;
-> >>=20
-> >>         pm_runtime_get_sync(priv->dev);
-> >
-> >It does not help.
-> >=09
-> >The analysis below was done with Claude help, on measurements I took on =
-a
-> >Colibri iMX8QXP. I hope you can pick it up from there, this is not my
-> >area of expertise, and the best I can do is to send a revert for those 4
-> >commits.
-> >
-> >Every SCU RPC now wakes the SCHED_FIFO irq thread (TX done and RX), and
-> >while an RT task is runnable schedutil requests the maximum CPU frequenc=
-y.
-> >The A35 clock is CLK_GET_RATE_NOCACHE, so each frequency change is
-> >followed by an SCU RPC reading the rate back, which wakes the irq thread
-> >again. The loop never settles, even when idle, and the transitions (ATF =
-+
-> >SCU) are what costs the eMMC throughput (and I assume there is more
-> >impact on performance than just this).
->=20
-> Not sure whether this is root cause, per my understanding, cpu freq updat=
-e
-> is not that high frequency call.
+This series adds Cortex-M33 overlays and combined DTBs for DART-MX93 on
+Sonata and VAR-SOM-MX93 on Symphony.
 
-Moving to `performance` from `schedutil` or reverting those 4 patches
-solve the issue. And the significant increase on ctx switches and irq
-count is real even on idle without any emmc test running.
+The first patch extracts the existing DART-MX93 remoteproc configuration
+into a common include without changing the resulting DTB. The second adds
+the M33 variants, reserving the peripherals used by the firmware and
+keeping dependent devices disabled. Remoteproc and MU1 are then enabled
+only through the M33 overlays.
 
-> Let me setup a i.MX8QXP board and see what's going on there.
-Thanks!
+Changes in v3:
+- Split the common configuration extraction and the M33 overlays into two
+  patches
+- Use "reserved" for peripherals assigned to the M33 firmware; keep
+  "disabled" for dependent devices.
 
-> BTW, i.MX8QM should
-> also have same issue, but seems not impact in your report, a bit werid,
-> might be because i.MX8QM has more cores :)
+Changes in v2:
+- Enable cm33 and MU1 only through the M33 overlay on DART-MX93.
 
-I agree, I did not run any kind of extensive performance test. What
-happened is just that our emmc test started to fail, and this lead to
-this series.=20
+Patch 2 uses the following binding and driver commits, already in
+linux-next:
 
-> Have you tried pin your emmc test thread to core3, or core2, just not cor=
-e0.
+- ebb21cc5d1c0 ("dt-bindings: remoteproc: imx_rproc: Document
+  memory-region-names to avoid implicit ABI")
+- 8396089f91fa ("remoteproc: imx_rpoc: Use memory-region-names to avoid
+  implicit ABI")
 
-It was never pinned to any core, so the scheduler decided on its own.
-And multiple runs of the test all lead to the same results.
+Validation used the remoteproc binding update and cebd1c0961d8
+("dt-bindings: gpio: vf610: fix clock requirements per SoC"), which fixes
+pre-existing GPIO schema errors. The base and M33 DTBs build and pass
+schema validation.
+No hardware testing was performed.
 
-Francesco
+Stefano Radaelli (2):
+  arm64: dts: freescale: imx93-var: Extract common Cortex-M33
+    configuration
+  arm64: dts: freescale: imx93-var: Add Cortex-M33 configurations
+
+ arch/arm64/boot/dts/freescale/Makefile        |  9 +++
+ .../dts/freescale/imx93-var-common-m33.dtsi   | 24 ++++++++
+ .../freescale/imx93-var-dart-sonata-m33.dtso  | 55 +++++++++++++++++++
+ .../dts/freescale/imx93-var-dart-sonata.dts   |  2 +-
+ .../boot/dts/freescale/imx93-var-dart.dtsi    | 14 -----
+ .../freescale/imx93-var-som-symphony-m33.dtso | 50 +++++++++++++++++
+ 6 files changed, 139 insertions(+), 15 deletions(-)
+ create mode 100644 arch/arm64/boot/dts/freescale/imx93-var-common-m33.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx93-var-dart-sonata-m33.dtso
+ create mode 100644 arch/arm64/boot/dts/freescale/imx93-var-som-symphony-m33.dtso
+
+
+base-commit: 33adc96ac217d6e95b7c44ac383c19ca4ae2ff52
+-- 
+2.47.3
 
