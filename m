@@ -1,57 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795079419;
-	b=WSrRym++wRRwqAlWfBreltB3ws1CyQ3MrYp+rdZ8ngDUBiJVAvVMd/6PCQHDhlRFWOE9
-	 +2pL9VQktqmXSy9zaKnHoZQsrKXtBIkV7D7Klwu/BjlGAMw20g6sEw216IPoq7WQV/sbw
-	 pHZoQQHTiv5m4h6VSFwvLHGmXfu1YHIahdotDph0MpDyUTZy9jv4Sjf9uXDYFR75vw8J/
-	 rt8ru3AZ3kMIj5djqrs94sqtDDvUSbkG3Mrk5IdNrO0uilg9x7jbHIHFuOfX9Ar+hpYC1
-	 XmnHHEmh8PYoHIJc/6si49WQFoPdw1+msJePXtSt5e0qYJUSjQaD72i0WwaNMbksyMQ==
+	t=1795079649;
+	b=bL/2mw5b2UGExMHA2XhCY8UvIgV3qsatvyMa6D/nYX+AJZWgA0nw9z3itzxGAfqZmgXF
+	 Q4T4tC1iXdIwjBVr12FCMNReNE7P/zb9IytCVN0jN4KGtqJbPlX23GzqEZO4lNPrDMDNX
+	 hTg6kz9KqpJ0qD14BIFEJt4Tg9/NR0Yn1HB4wUyX1T8P1qeFJIdjfEmdxZrzYkNQo3oPz
+	 72IOFkGd42Xe+xamkCgM9lOYHuq4RrqsnEn6dIzn4Hp8bUrr7ySvwXkoEyZOd08sGqfee
+	 SCc78iPq8gdfpXRcvGiWiyO0zkvUail59YOEaNFcQbL6DrJ0fSUJp9q0FXAkhcy+Tqw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795079419;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795079649;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=IY9v5voMoqbpkuw94TFUrSadrFvCUDNpGXTCRmuvkWA=;
-	b=Pp06fCfqdKh3rvxdZQ5VqccOFVjdOCPSJ0kuE2aLIpci5hKx4tw7FQp1Ml3Yu5+pO/n0
-	 vYlxb60i3seyt9ROwuzO7HMKehezQIMc9UaTcd70FXZ3auDH7GVh5N1FErt/K1TCxg0bj
-	 fTMGBdbdbwt78yDqXQD8gERmdRT7qNim4kAjc6yTbZtQRm/N+ZZkvC+u5M1q2ryxpJnrT
-	 6Qx9ZwocFQTh4N3GANRHoO3iVK7aePBa0zhWKDQZcTq68zsWTINP2DMIcWOgEx1HSbeo0
-	 80X3ZiPHhXiNzofvCZC/CGdg0VchwBEbSpg/BxcWXk4NuUwtIbO43qh+6EDPLVW5WCw==
+	bh=XIeZm2yU4XBw7tXpjsTdDiSAWc3DBRGYJFQJ0pDwJ+g=;
+	b=CKsNlv/oCrucxmT6v3tWK8TFZ3wvJRryl3mK8YwrhrIoUBlNsGTWel9cMIYNkaxk3sJR
+	 C34BRNO8e+okvb2n5wZvDhsJ9de9MoSlCy4ptsxC6BneEAmCj0EQPCNjX6uouyg7DIPZ1
+	 DWt2pWCYNLdV6uE02WDbeD1/4Vd9AllwO/7f0J6bxakzt7wASN9oBPCyc7/172PmQph8G
+	 utwXKmk4KyPHsulft6gNOzEQC7wz6prxAd2JAbtFxK6ruhaTTidTf6HKnScEDFK25eEgG
+	 grPafsB3lp9sQmh5PGlF/j8n+WhDnh80x9mmgVvXA+Ut0ifVQd/5YXaztX3ahQhUULg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IdamdoWd;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=J91C9+cX;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DD5E60A2604;
-	Thu, 19 Nov 2026 09:10:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BCA6606A324;
+	Thu, 19 Nov 2026 09:14:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IdamdoWd
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A14B31F000C4;
-	Thu, 19 Nov 2026 09:10:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=J91C9+cX
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 923A71F000C4;
+	Thu, 19 Nov 2026 09:14:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795079419;
-	bh=IY9v5voMoqbpkuw94TFUrSadrFvCUDNpGXTCRmuvkWA=;
+	s=k20260515; t=1795079649;
+	bh=XIeZm2yU4XBw7tXpjsTdDiSAWc3DBRGYJFQJ0pDwJ+g=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=IdamdoWdy8apwSxIEkqS2mEr2MapSWCXG5IVQ5qZU3X6Nm5H+n5l0/ckj356OzYv/
-	 KrPhssHS5H6XFmtrQLsJ7TBTNW6da8ie7OykH0JVzLgIHRPpbFw+YBzan8q/usDvkl
-	 6NUgLNjt09sbu0AA4K7hZo4HhDdznr707hF1TTJicMXwhudeZKGtcHJJiG8URHnop1
-	 C3lqdmC6d8PA8DuGV3B+fX7AoA6SnYRMlSfjdDf6Otor4TJnzFc7CcR7KjCnAhB8Ds
-	 AKIUjtxa0IGbJtcuuMd9c8NkWkBkrO51hpQR3VQlYF9hvlB2XH+bRceQAElPI51PMh
-	 uQxPyAkE23I3Q==
-Message-ID: <sashiko-outbox-222793@kernel.org>
+	b=J91C9+cXhIB05VCnH3FC3g2+ssaoCfGTbmyGfZHTDBzzOy2snILcAAn9Zs1BJIfpO
+	 S/RCCERfSENoGIYNxJmFWHYc0H2a0JVTuO5F4FWh80YnXONNmoXojvCpg5ghIkg1SM
+	 t3HJFoxHI2+ahsB/17M5BH4YtgkMP5uyXBmjOzx2j5gZB0fzKSJpc6CgM2z1lV84wL
+	 rguLZuhp03au+HnF3uCMToL4tkofRuZOntORnbjLH8h/0bSu4qRaPsrd6IZKUVVL39
+	 SFft3aghv3vnG+GcKE5xg7vMVe6ta/osNBjO+le2dMD6ZtovFksxMJBOHcdJfuSpcJ
+	 2WEqvD/vM8dlQ==
+Message-ID: <sashiko-outbox-222800@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v8 06/11] media: chips-media: wave6: Add Wave6 encoder
- firmware interface
+Subject: Re: [PATCH v8 08/11] media: chips-media: wave6: Add trace and
+ debugfs
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Nas Chung" <nas.chung@chipsnmedia.com>
 Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org, media-ci@linuxtv.org
-In-Reply-To: <85ce28c44e167aa05ffc19dc02ce2be26dd99893.1795075581.git.nas.chung@chipsnmedia.com>
+In-Reply-To: <761d894fbe7d4696719e8c8afd1deba3fc591c62.1795075581.git.nas.chung@chipsnmedia.com>
 References: <cover.1795075577.git.nas.chung@chipsnmedia.com>
- <85ce28c44e167aa05ffc19dc02ce2be26dd99893.1795075581.git.nas.chung@chipsnmedia.com>
+ <761d894fbe7d4696719e8c8afd1deba3fc591c62.1795075581.git.nas.chung@chipsnmedia.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 19 Nov 2026 09:10:18 +0000
+Date: Thu, 19 Nov 2026 09:14:08 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -63,70 +63,47 @@ Precedence: list
 
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue to consider:
-- [Medium] media: wave6: avoid large struct copies on stack in
-  wave6_gen_enc_pic_reg()
+- [Medium] media: wave6: debugfs directory leak in
+  wave6_vpu_core_probe() on teardown
 --
 
-commit 0c77c50267143f16a1d2daf6f5d24a657e85b50e
+commit 5ece419bea0b582239e058aa46da23a997a50915
 Author: Nas Chung <nas.chung@chipsnmedia.com>
 
-media: chips-media: wave6: Add Wave6 encoder firmware interface
+media: chips-media: wave6: Add trace and debugfs
 
-This commit adds the firmware interface and MMIO register configuration
-helpers for Wave6 video encoding operations.
+This commit adds tracepoints, per-instance debugfs entries, and readable
+firmware error messages to the Wave6 VPU driver.
 
-> diff --git a/drivers/media/platform/chips-media/wave6/wave6-hw.c b/driver=
-s/media/platform/chips-media/wave6/wave6-hw.c
-> index 872a540df0218..171391f797cb8 100644
-> --- a/drivers/media/platform/chips-media/wave6/wave6-hw.c
-> +++ b/drivers/media/platform/chips-media/wave6/wave6-hw.c
+> diff --git a/drivers/media/platform/chips-media/wave6/wave6-vpu-core.c b/=
+drivers/media/platform/chips-media/wave6/wave6-vpu-core.c
+> index aad4023d66a44..12efa3afebf7a 100644
+> --- a/drivers/media/platform/chips-media/wave6/wave6-vpu-core.c
+> +++ b/drivers/media/platform/chips-media/wave6/wave6-vpu-core.c
 [ ... ]
-> +static void wave6_update_enc_info(struct enc_info *p_enc_info)
-> +{
-> +	struct enc_open_param op =3D p_enc_info->open_param;
+> @@ -285,6 +293,12 @@ static int wave6_vpu_core_probe(struct platform_devi=
+ce *pdev)
+>  	if (ret)
+>  		return ret;
+> =20
+> +	core->debugfs =3D debugfs_lookup(WAVE6_VPU_DEBUGFS_DIR, NULL);
+> +	if (!IS_ERR_OR_NULL(core->debugfs))
+> +		dput(core->debugfs);
+> +	else
+> +		core->debugfs =3D debugfs_create_dir(WAVE6_VPU_DEBUGFS_DIR, NULL);
 > +
-> +	p_enc_info->width =3D op.pic_width;
-> +	p_enc_info->height =3D op.pic_height;
-> +	p_enc_info->c_fmt_idc =3D get_chroma_format_idc(op.out_fmt);
-> +}
-[ ... ]
-> +static void wave6_gen_enc_pic_reg(struct enc_info *p_enc_info, bool cbcr=
-_interleave, bool nv21,
-> +				  struct enc_param *opt, struct enc_cmd_enc_pic_reg *reg)
-> +{
-> +	struct enc_open_param open =3D p_enc_info->open_param;
-> +	struct enc_codec_param param =3D open.codec_param;
-> +	u32 stride_c =3D opt->source_frame->stride_c;
-> +	u32 c_fmt_idc;
-[ ... ]
-> +int wave6_vpu_enc_start_one_frame(struct vpu_instance *inst, struct enc_=
-param *param,
-> +				  u32 *fail_res)
-> +{
-> +	struct enc_cmd_enc_pic_reg reg =3D {};
-> +	struct enc_info *p_enc_info;
-> +	int ret;
-> +
-> +	guard(mutex)(&inst->dev->hw_lock);
-> +
-> +	p_enc_info =3D &inst->codec_info->enc_info;
-> +
-> +	wave6_gen_enc_pic_reg(p_enc_info, inst->cbcr_interleave,
-> +			      inst->nv21, param, &reg);
+>  	ret =3D devm_pm_runtime_enable(&pdev->dev);
+>  	if (ret)
+>  		return ret;
 
 [Severity: Medium]
-Should wave6_gen_enc_pic_reg() and wave6_update_enc_info() take pointers
-to p_enc_info->open_param and its codec_param instead of copying them by
-value onto the stack?
-
-struct enc_open_param is around 824 bytes and struct enc_codec_param is
-around 772 bytes.  When wave6_gen_enc_pic_reg() is inlined into
-wave6_vpu_enc_start_one_frame() alongside struct enc_cmd_enc_pic_reg, the
-local structures alone consume roughly 1,700 bytes of stack space (and
-over 1,220 bytes in wave6_vpu_enc_issue_seq_init() via
-wave6_update_enc_info()), exceeding the 1,280-byte CONFIG_FRAME_WARN
-threshold on 32-bit builds.
+Does this leak the wave6 debugfs directory on probe failure or module
+unload?  Every other resource in wave6_vpu_core_probe() registers a
+devm_add_action_or_reset() cleanup callback because wave6_vpu_core_driver
+has no .remove callback, and wave6_vpu_remove_dbgfs_file() only removes
+the per-instance file, so nothing ever calls debugfs_remove() on
+core->debugfs.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1795075577.gi=
-t.nas.chung@chipsnmedia.com?part=3D6
+t.nas.chung@chipsnmedia.com?part=3D8
