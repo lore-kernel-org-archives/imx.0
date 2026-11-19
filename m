@@ -1,107 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.54
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.42
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795095675;
-	b=Kb3uSt9GiG1qHB+NNbjLmnIvQzg1gUNN625UiatWAdJUAm6PFm/BojYv0vvtUrcT/8iO
-	 gooOS5lq8l17KhHVIr4eslcCqA5ZHjXsYQIEh4I+AA3Ns01Drrb4nw+Z0xox/2Z0UZLU7
-	 bJgRvC7XM3wiHa9E4OIC9bjFqQwXgdbpH0p2nScKcl01bWtMJx9/uA2m+2RffhDaY9+4P
-	 uzkTjhN6h8Qq8v76zON8NkVeJ5yNMTiTFBFQKkjZB4RIqdVol0Reqc+qbc2fQHLFr222c
-	 DYBWM8MiyF8gSozy0L3OblUqmT5H2vrLV2XtCcwQPqgKAFpe5bDlxxvjE1iPif87IYA==
+	t=1795095750;
+	b=qGBVMf5cDMi9qfxd6T7CJvbc1SfxtC9ZEjebIXrDsqisRraOwksx9xKFV+8O6eCyrzec
+	 yS5ijPRJPsAyJlAb95mygNqzkpjdxLrM1UDacCzFMoaBUSCDboJRnN33YjX195Wz0TKdZ
+	 AWYdgz+D3HzZuxcYF46kbowdNlH2nvEDV7Tb8p+GhqNWdBtbtbvz2wbnN8IUHTgIuGpWA
+	 jHwQIESvPld5i73q0GMLo21CL5sfmYtgJnYx2amwa7RHy1K3EgOpwsOFDTWsI56kIoAH4
+	 lrWphC71eKRJDglYbvAQJK7WviPza31RWtj5thzZI4RX0Xh9DVnjBYm3NQqOPu4jorA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795095675;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795095750;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=4c0G4YZiEJEesEvJcSiHJ7KCJftI/dPzJGtmeIgLqHA=;
-	b=wSiOcvEMVrrRq5m8W4DWAJU4OrKK3s1Wcz+bPOkM0yRXJ8X1mUQWL5mgcjZQFZ9/PSTW
-	 cuDI5C723n4rh3FnSdENMIhMKxUoWZD7EkO2T+a2HHfRoRzdAmll6g33uCrobUV0XQNWP
-	 tljTBxFgXBeekoQQ9DwIIyXwKLq83oayxtd6Gt/4yxq5wTIZDku/0l2uYCuU7P+FEcpu0
-	 5fZ8ON/TUxSxxAjTE25YlyRSggZybqDrX2jFXAHgZu/cU2sZlAHhb78r2jT6ymLSrEFGz
-	 qX/gXvIFyWbtRBgTdXXtJeOp+FNw0T//cRJ0bomhW3M3XdkZGgR4ke52d+qa9fYg+Xg==
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=n0YIwd+6fF1gaH/fRdW2fKrVKfd8aWdILvAcZvt6cEU=;
+	b=fDniENElVkdyFc4xFRZgpPwiYVh8z7fA/V62P9P22i5MBmoNQxySmF0opqSv0RH32JPX
+	 R+vT28OwSrbAmkkGvDVS1TB4o6E6nNvc4q0wBy+bUkgx6A1AfGE6SgoahIcT1ZyA00Fls
+	 SrtaeqLA4+gmpQka8HOk1Qhrpuw6FOkwJC0iUdDW+nKTQmNNoW1zDXuRKlF2soW0G1FI6
+	 hDAYLMLoruDjxQ0Y7YRZ8XtuADBdRgQLgMMlvb5A7RkreyoRoggWhRexNLeiDIqmQHhQo
+	 LuznkmmbxeBW6vJqV9Q+D2sz+5CxPrkeKr4IODMecfZx61DswMcxvRrrvXk+ZAXJ4Nw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=cfWlR86j;
-	arc=none smtp.remote-ip=209.85.222.54
-Received: from mail-ua1-f54.google.com (mail-ua1-f54.google.com [209.85.222.54])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=B6AyNJMS;
+	arc=none smtp.remote-ip=209.85.221.42
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 705E7606A335
-	for <imx@lists.linux.dev>; Thu, 19 Nov 2026 13:41:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 705E7606A335
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94AC0606A33C
+	for <imx@lists.linux.dev>; Thu, 19 Nov 2026 13:42:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 94AC0606A33C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=cfWlR86j
-Received: by mail-ua1-f54.google.com with SMTP id a1e0cc1a2514c-99071945aa7so1124623241.3
-        for <imx@lists.linux.dev>; Thu, 19 Nov 2026 05:41:14 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=B6AyNJMS
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-48dee593f18so2223962f8f.3
+        for <imx@lists.linux.dev>; Thu, 19 Nov 2026 05:42:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795095674; x=1795700474; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=4c0G4YZiEJEesEvJcSiHJ7KCJftI/dPzJGtmeIgLqHA=;
-        b=cfWlR86jkEmxkM1a8hHbu3eYtSsKGjJQHaKjGhQWtO7FqdCSZ2UxiKT3QOOCehVxxC
-         /BWywjaxsUVrE1Dbsov60qLC7QPGr46ylmOFOjHuO+NAAcrPh8Z64SHcVkAUyYhG52DF
-         j52SNXUpvntSleu5FLpBggFamesVEWx2jFgnwh9yx+yu8qbNmn5GGlCKXdWbyNiAohqh
-         wJLHJs/7v8pU8pMmZQ+duGWz/+EjsglRJBVRTsocEZnmuMVPpuDmCQ//RNm8Uf7n8bTX
-         DFA0Llq6cJtJB8h3af++n8vz5Ju4G89i6bQOIu69wCQvXul2ZkI8UWddeNNaxbDtCLsg
-         /igg==
+        d=gmail.com; s=20260707; t=1795095748; x=1795700548; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=n0YIwd+6fF1gaH/fRdW2fKrVKfd8aWdILvAcZvt6cEU=;
+        b=B6AyNJMSe77fjOVTbwTxiZWskYq6SGdArWvWBEyT/kAvONMNpzU0bmyLU+9lvaXwE4
+         47dxYfvzYvo17l1zk85iA6tjOVwpA1eHkLMklAse2QUi0W3cy8RoVNAw7bxrEqZskQyw
+         GfYvnrZttHAB7JFwp1adObp8fmviRYOceZf48EA0As4hQwTG5IVEWEtb2wmKAl8ybT5E
+         W2Y16b/wd1mL361S9nlK2KYX4ri70K2wUl0zMLEke7kOA8y1BRKorghG8ehQUcbDHgqO
+         yrEUbi5nwhOtJMtzj0CB3kamry656xf25We/6Jw2TGYdKPeVDEFEX+jtkKjrJKvt9sjH
+         ekKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795095674; x=1795700474;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=4c0G4YZiEJEesEvJcSiHJ7KCJftI/dPzJGtmeIgLqHA=;
-        b=A6u/t2/DawodaldzwGIKh4AUW0UAlG4CWo1hY9b92WQvYk63zQgnTDevqnH2o8xAE3
-         X6BqX7M9/8GinpcNchPS2p8sEozI/uMw54F3gJO/ROYy1vNS3SvR12iME9VJTKzzF1bc
-         DMhC0cmC5j2WjpU1WioB7JDJ943pXhLcxmhaSEp49kKtwweYS4SqVq9okkvrvgxMqZlQ
-         jKPG7bAAuWUYExjwiyvm9j2EAkggEqZwdETlKWLPs3k5YVb5Gsz5jz+5EA12EqKQIJHy
-         OonHTD35C4//u8o4BXFMPsDqT1LvjuOZFedFgCyS5XcX2uiRoDvAYnTrmz7vBYLb2OwK
-         GgRg==
-X-Forwarded-Encrypted: i=1; AL+hErF3avPdTq9x4fvzwMczWv+L+m8K0TQiu1cfpgT69TBzq2ycHI9M9K0/SBPHgogXJI1YDiY=@lists.linux.dev
-X-Gm-Message-State: APuU4Z8gFz5YntLQFAElz/N/KN8iG6MxWxAv8gfD05k+HTTH7MAYC9u8
-	u8i/jcBEHOK1hU+RX3LSh8kd5hX+57dDnh2NCETFjPpYwf1HYR1P3oeV
-X-Gm-Gg: AYBFou3CaDvqnQu028pE1iSzTyBxqKEaHo8EuuKuFIwfj+iRdo7chgoJjbp7rOjdnFi
-	7bbsXF1WlZBGYxGjgE1GY446CLCyNVHsis4aHcRymP6YvlzfXsK+HGEWWhxTay5ttQFgE7mMNZA
-	VqEm0DuOJDgYlvpyDwtEx4sY/nVdY7cLqCF90YW0U0J9PTWYdrQt+VHW+tbcaIdpbcO+2TsRndm
-	fYyV/1pZ/NYF+WmRS9UhLarzt4LCa5BPlhivo1hCGw5NC5o9HzqsW2xyiM7KjQGvuiQG4oRgKgb
-	fih0TC1x2sr1E8cEBP4OsdCPIMQplkvPjEOXcWaU9rwNyrRwZmEy2W6QGmLH40qqh9tF+hRJ/N8
-	IL3crc+oZ9Nn0NbhhCNTaMFkN+QB7nLY8z8fiM7GuWnRvGZER77Jqh86oLoX/Li+FUf2OI6wQ9f
-	tXXGKA8O19FTqik5+zVSgq5R6VNv3ZI2ZvzYV6PIUHkhdBNwzzaHgxj6TXZVtjoCslSAzaZK4pd
-	mBLfFdG1DUmZppd6068amM5HLqzefn73gTe6qwNeSoTWlJ1K5ChlN30RiUCNFv818Vy8lsTjGeJ
-	9PiCLVDGXiQMxCrUZCdD6PMIAszjrxky9t/VWg/AAmfXDrdn7uw86DNHv5GRa1dGFFRymP8HhSC
-	D/HTjRUAE00Jl0nX72dg=
-X-Received: by 2002:a05:6102:2c8d:b0:7d6:49a9:fa61 with SMTP id ada2fe7eead31-7d6ba435c6bmr2530171137.15.1795095673999;
-        Thu, 19 Nov 2026 05:41:13 -0800 (PST)
-Received: from fabio-X870-EAGLE-WIFI7.tail2bb604.ts.net ([2804:1b3:a803:a13e:f40:91:660f:4d51])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-99e4a240ac5sm4134862241.7.2026.11.19.05.41.08
+        d=1e100.net; s=20260707; t=1795095748; x=1795700548;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=n0YIwd+6fF1gaH/fRdW2fKrVKfd8aWdILvAcZvt6cEU=;
+        b=xztGS5hM7paawaDTvoswfFAREgCevBabc/O5iuEU/66IIOe6+C96d69ftyR6LAA05Q
+         Y7YGJZ4Eh42IylogyCBdC1kRbe5Su33PEe7ld/pHIKhrb8JRPY+HXDURNEutXEp4ZIuf
+         dJlUx9Guo0pf2dvGZ6Vz5gRF3PxDgqWa2yQjxxjOagQCC+T6y2OfDQYassHUJ6XaIbvP
+         UnRV+UVg8DxV5htofqbuo/z1rZWI0YSkPdrvseFxKYEqJA01c+/74YCrb+JDeR0KS2MZ
+         BnVf6T0jUgafOqMi23AH7sroagRFsvmraj95d8ASCeUenX0UzWeKNKTlP8jqHbsqpTEv
+         VArg==
+X-Forwarded-Encrypted: i=1; AL+hErG8S/IkIqCWmT8mqWFyPwK09RzTxPcu5B3oNKEKxZgRUIwsd3eYyfp2kcIRwdce947ix+E=@lists.linux.dev
+X-Gm-Message-State: APuU4Z+DA2nTXAnRf0DOrGux+ZdUovhaMB2gQIjGGMTqJ41v7hA773Wy
+	X6Gtu8isbH043jE1E5c8wxVIZv+/Syu4tD4vOTAgezrM0oYHeycEw7mj
+X-Gm-Gg: AZFdTZf+De+GSLwDcprqCHZExH7oSnNcA4V/A8f/QhQnPCFQ0R1MZ5pqAA9pgokF0tl
+	Wjaa452zS1uFbmMtLjuUz/GFbv01M7G+BESBbB5EN3aiVO1tM43FQuid8R/g5xOe57oh0iJlh6A
+	Uqv+1fNQDyYChSgTrUKQMCrXorgtcdsbPSvKkVMVcmN6MfGCS1GXR+KugPnltEMpkNuS3495QcT
+	0dFgmr/8swQNTDjvG0LLCVFwgDlTl1k0XmMkrpTZdlUII8/HIrAhQjf/FR59lml72RU6i9T8tyj
+	Y8mjK5xGyK7buEZu7TLlDlUpbUN6B8aSSHhIlyOjH5RO4k52zDLVrpXuWoxVbaQsAoNsNXvKv5i
+	NyclG37f6AbuJLiMDMd8MYCE0udmOmTJ1LTgpsFeom0/kogGI/oEmKxU/ACagtX6BMySx+piDzK
+	v6KNz31P7fxqO4s2Z91IyLELRPWbfmEaqhB676VmgfjO/JBy9w8W39MiHYsNw6O6EDVaGXuj+zQ
+	mBz3DAPnVUSLT1f6SXeGcuUU2zdTA0LT/ticKw63ZLn6MUWuuTT8tx+TCgOpTdPXzuQGQc5MYUB
+	2ZM/REEocp4fkk0U1MxagLjEd74ovQMFemA=
+X-Received: by 2002:a05:6000:26c7:b0:48c:67d6:a87a with SMTP id ffacd0b85a97d-4a639ff6138mr14542869f8f.32.1795095747665;
+        Thu, 19 Nov 2026 05:42:27 -0800 (PST)
+Received: from deb05.proceq.com ([213.160.61.66])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4a656095e98sm9437971f8f.42.2026.11.19.05.42.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Nov 2026 05:41:13 -0800 (PST)
-From: Fabio Estevam <festevam@gmail.com>
-To: lee@kernel.org
-Cc: maz@kernel.org,
-	andy@kernel.org,
-	jic23@kernel.org,
-	dmitry.torokhov@gmail.com,
-	linux-input@vger.kernel.org,
-	mfd@lists.linux.dev,
-	linux-iio@vger.kernel.org,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	crofts@kernel.org,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
+        Thu, 19 Nov 2026 05:42:26 -0800 (PST)
+From: Mehmet Fide <mehmet.fide@gmail.com>
+To: Andi Shyti <andi.shyti@kernel.org>,
+	Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
-Subject: [PATCH v5 4/4] mfd: mxs-lradc: Convert to devm_clk_get_enabled()
-Date: Thu, 19 Nov 2026 10:40:41 -0300
-Message-ID: <20261119134041.16611-4-festevam@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261119134041.16611-1-festevam@gmail.com>
-References: <20261119134041.16611-1-festevam@gmail.com>
+	Stefan Eichenberger <eichest@gmail.com>,
+	Yao Yuan <yao.yuan@freescale.com>,
+	Wolfram Sang <wsa@kernel.org>,
+	linux-i2c@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	mehmet.fide@screeningeagle.com
+Subject: [PATCH v2 0/3] i2c: imx: fixes for a DMA write that is not acknowledged
+Date: Thu, 19 Nov 2026 14:42:22 +0100
+Message-ID: <20261119134225.265242-1-mehmet.fide@gmail.com>
+X-Mailer: git-send-email 2.56.0
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -113,100 +108,63 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The LRADC clock is acquired with a managed helper but enabled and
-disabled manually.
+From: Mehmet Fide <mehmet.fide@screeningeagle.com>
 
-Acquire the LRADC clock with devm_clk_get_enabled() instead of a bare
-devm_clk_get() followed by a manual clk_prepare_enable(), so it is
-prepared/enabled for the device lifetime and released on unbind.
+A write of DMA_THRESHOLD bytes or more to an address that does not
+answer leaves the interrupt status behind, so that the next DMA read
+returns 0xff for every byte without an error (patch 1). It also leaves
+its DMA buffer mapped, as every terminated DMA transfer does (patch 2),
+and it blocks for DMA_TIMEOUT before it fails with -ETIMEDOUT instead
+of -ENXIO (patch 3). Patch 3 needs patches 1 and 2.
 
-This conversion makes the code simpler.
+Tested on a Colibri VF50 on the Iris carrier (i2c0 with DMA, M41T0 RTC
+at 0x68) with this base, the other i2c-imx fixes on the list [1-4],
+PROVE_LOCKING and DMA_API_DEBUG. Each round wrote 20 bytes to an unused
+address and read 16 bytes of the RTC:
 
-Suggested-by: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
-Signed-off-by: Fabio Estevam <festevam@gmail.com>
----
-Changes since v4:
-- None.
+  without the series, 200 rounds: 124 writes failed with -ETIMEDOUT
+    after up to 1.08 s, none with -ENXIO, 163 reads failed, 128 more
+    DMA mappings in use afterwards
+  with the series, 200 + 300 rounds: every write failed with -ENXIO
+    within 10 ms, every read was right, 4 more DMA mappings in use
+    after the first 200 rounds and none more after the next 300
 
- drivers/mfd/mxs-lradc.c | 35 +++++++----------------------------
- 1 file changed, 7 insertions(+), 28 deletions(-)
+On a v6.12 product kernel with the series backported, 200 rounds that
+also wrote 18 bytes to a device that acknowledges them: every NACKed
+write failed with -ENXIO at once and every acknowledged write went
+through. A NACK of the last byte the DMA writes could not be provoked
+on either board, so that path is not tested.
 
-diff --git a/drivers/mfd/mxs-lradc.c b/drivers/mfd/mxs-lradc.c
-index aa55f88399ef..c3dd2d80e7f1 100644
---- a/drivers/mfd/mxs-lradc.c
-+++ b/drivers/mfd/mxs-lradc.c
-@@ -160,17 +160,10 @@ static int mxs_lradc_probe(struct platform_device *pdev)
- 	if (IS_ERR(lradc->base))
- 		return PTR_ERR(lradc->base);
- 
--	lradc->clk = devm_clk_get(&pdev->dev, NULL);
--	if (IS_ERR(lradc->clk)) {
--		dev_err(dev, "Failed to get the delay unit clock\n");
--		return PTR_ERR(lradc->clk);
--	}
--
--	ret = clk_prepare_enable(lradc->clk);
--	if (ret) {
--		dev_err(dev, "Failed to enable the delay unit clock\n");
--		return ret;
--	}
-+	lradc->clk = devm_clk_get_enabled(dev, NULL);
-+	if (IS_ERR(lradc->clk))
-+		return dev_err_probe(dev, PTR_ERR(lradc->clk),
-+				     "Failed to get and enable the delay unit clock\n");
- 
- 	ret = of_property_read_u32(node, "fsl,lradc-touchscreen-wires",
- 					 &ts_wires);
-@@ -193,8 +186,7 @@ static int mxs_lradc_probe(struct platform_device *pdev)
- 			dev_err(&pdev->dev,
- 				"Unsupported number of touchscreen wires (%d)\n"
- 				, ts_wires);
--			ret = -EINVAL;
--			goto err_clk;
-+			return -EINVAL;
- 		}
- 	} else {
- 		lradc->buffer_vchans = BUFFER_VCHANS_ALL;
-@@ -204,29 +196,17 @@ static int mxs_lradc_probe(struct platform_device *pdev)
- 
- 	ret = mxs_lradc_get_irqs(pdev, lradc, data);
- 	if (ret)
--		goto err_clk;
-+		return ret;
- 
- 	num_cells = lradc->touchscreen_wire ? ARRAY_SIZE(mxs_lradc_cells) : 1;
- 	ret = devm_mfd_add_devices(dev, PLATFORM_DEVID_NONE,
- 				   mxs_lradc_cells, num_cells, NULL, 0, NULL);
- 	if (ret) {
- 		dev_err(dev, "Failed to add subdevices\n");
--		goto err_clk;
-+		return ret;
- 	}
- 
- 	return 0;
--
--err_clk:
--	clk_disable_unprepare(lradc->clk);
--
--	return ret;
--}
--
--static void mxs_lradc_remove(struct platform_device *pdev)
--{
--	struct mxs_lradc *lradc = platform_get_drvdata(pdev);
--
--	clk_disable_unprepare(lradc->clk);
- }
- 
- static struct platform_driver mxs_lradc_driver = {
-@@ -235,7 +215,6 @@ static struct platform_driver mxs_lradc_driver = {
- 		.of_match_table = mxs_lradc_dt_ids,
- 	},
- 	.probe = mxs_lradc_probe,
--	.remove = mxs_lradc_remove,
- };
- module_platform_driver(mxs_lradc_driver);
- 
+For stable: 6.12.y and older need backports, as noted on v1; I can
+send them once the patches are in mainline.
+
+Changes in v2:
+- 2/3: new. Sashiko on v1 2/2: the new -ENXIO path left the DMA buffer
+  mapped, as the timeout path already did
+- 3/3 (v1 2/2): a NACK of the last byte the DMA writes was missed
+  (Sashiko). Its acknowledge is now checked once the byte is out,
+  before the final byte is sent
+- 1/3: no change
+- rebased on v7.4-rc3+ (4405c18c95d2) and tested on that base; v1
+  was compile tested on its base only
+
+v1: https://lore.kernel.org/linux-i2c/20261113073250.1037215-1-mehmet.fide@gmail.com/
+
+[1] https://lore.kernel.org/linux-i2c/20261113110501.1142036-1-mehmet.fide@gmail.com/
+[2] https://lore.kernel.org/linux-i2c/20261116122707.1349139-1-mehmet.fide@gmail.com/
+[3] https://lore.kernel.org/linux-i2c/20261116125940.1368194-1-mehmet.fide@gmail.com/
+[4] https://lore.kernel.org/linux-i2c/20261119130542.180192-1-mehmet.fide@gmail.com/
+
+Mehmet Fide (3):
+  i2c: imx: do not carry the interrupt status over to the next transfer
+  i2c: imx: unmap the DMA buffer when a transfer is terminated
+  i2c: imx: return -ENXIO at once when a DMA write is not acknowledged
+
+ drivers/i2c/busses/i2c-imx.c | 52 +++++++++++++++++++++++-------------
+ 1 file changed, 34 insertions(+), 18 deletions(-)
+
+
+base-commit: 4405c18c95d2d0f99f6c581ef0ee8591a1aa6ccd
 -- 
-2.43.0
+2.56.0
 
