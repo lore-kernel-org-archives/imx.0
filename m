@@ -1,109 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.42.110
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795078843;
-	b=X74WhTCGVvVD+tt7OujIDJxNkcngvZ2o8lCQuapI7UgTgjNJqrUdvTA+zp6bmllj1I19
-	 RRRXT45uNLES5qms3PwSloeXWJYFZjZhdvZGan8dgBc3f3uEx7TKCq+Bg+6hM35wuiAg8
-	 3wHn1uykxVqwlyp/dOtrOrvwqmEa2FyJJzIm8E/WprvUpFC8MkSwUv3RhAE6VJYT/tshx
-	 HEUNLzTa6mzfrbkStpbut8XjCwoFFagarySoUzreO/8Uw5Xy5JgLev2pgZXWbUN79Sq6I
-	 kRPNsGdDh1BX7IRNMz4D4dWJqidXFfT7ajIEyrFi3KrDmVqJl/ZWqnvjty06PucR1Eg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795078843;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
-	 Date:Message-Id:X-Mailer:In-Reply-To:References:
-	 Content-Transfer-Encoding:Content-Type:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=ooGTyD9cINo1BOVzIujOSh7E6nNjykPa/1JHAv8torE=;
-	b=P3XNRigooE5WBVDdyAE19YwnWWxn/5LQxEFxMb5fkAkOebM6NzfuMdqUCOHyFsk65F1Y
-	 zKGIEArAwYGBq5Gky6T8W8RWqNSF5KYivUA2eEbdxXzwN/2+YAz3J0RNIcOI4ttX8KBB8
-	 rQEWez7yItNj6mmasI1ATdLGYilTXYGG3JeMnW6xnopX8uiFdtWKL9TOG67ZvZ569AUEv
-	 7pdSVWhJiEKb7iysycbrMOYnf3wbQotqRApZVeHGuf8/Sc/7WRy2d/GMqoRchkbyDpVK4
-	 Y69rjw3fZ/FcXhpBQVjZ1t1bmSuaQcdrTiCea4BjcwrM+jn6ym5lvyWw6p8nTlHUP1g==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=chipsnmedia.com;
-	spf=fail smtp.mailfrom=chipsnmedia.com;
-	dkim=pass header.d=chipsnmedia.com header.i=@chipsnmedia.com header.a=rsa-sha256 header.s=selector2 header.b=Mt6PUEQa;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.42.110
-Received: from SE2P216CU007.outbound.protection.outlook.com (mail-koreacentralazon11021110.outbound.protection.outlook.com [40.107.42.110])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.43
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795079167;
+	b=dHfggC1D8aUxIQGPQF4axcOEF0EVEV7eXW964pa2rpkWRPl1Tahc5d6iT+cRNVpc44Uz
+	 CVoGTs3Emw3kyYycVVYPYj4tTKbUuckdahK7hRpFiM6/ufqsGVi24O4IrxISds6B+te59
+	 OHGpbetyXkcZ9vE/8tRFjlOmqGGQtkSGG9B8gjMZZYwGSM1wGYIOioYz5leCGdgYMKtdQ
+	 vlhUeMsfEdOrRoISM5qkuMlI6fj/rXnUsXyFwI8jXA5fNpQEILqbciHe42nGEnXwWl5D0
+	 +7SogHqgurtQmkAIT6GmORpJmnYwwaXdKyWNpW1xRHSF0G/MK/jFEK0lvOCzt69asJw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795079167;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:X-Google-Original-From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=5bsnXM9lYnHDcLWwvi6s8sH/ygRCCvDbN6hw3fGCZdQ=;
+	b=CDZd3GKgGhgtjEcqDYPjtghonCEXl6+zC86ENRqcEF7+4g1BdrxGWwNoEmRhXz/g3ASN
+	 KavLkl3WrxdyolAJgaIH+uoMguGdhDaerhMjDhJE2qDaX/uHKINkpMooexuc+75Asiv0U
+	 DnHJPrLv5QqKVKCg7xStFHhT4pEQN+qCKEMd2Kxzpb4P2EMncQQE9NVeyGaJJwGnDr1I3
+	 kccihlAKGoKt3v1d9uiI8rcr/lZoql5TBNuua2+4FX1UJPtj6xFe4b2WfprQthMnD3FXD
+	 UIaQWFsBT2Ncj+pHbw+Oo8gmz71SUhtLcf/fOnFahEwVju4rMIoiRSWq3mQRsfMl9Eg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ED2U+7eF;
+	arc=none smtp.remote-ip=209.85.221.43
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58D9860A2638
-	for <imx@lists.linux.dev>; Thu, 19 Nov 2026 09:00:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 58D9860A2638
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chipsnmedia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=chipsnmedia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AB15606A32A
+	for <imx@lists.linux.dev>; Thu, 19 Nov 2026 09:06:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5AB15606A32A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=chipsnmedia.com header.i=@chipsnmedia.com header.a=rsa-sha256 header.s=selector2 header.b=Mt6PUEQa
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=sU+omZFJyuvKmgP8GGc2ihyqS17IV14xBAFCjARtz2EDQwwVUK4zOw9DyO9Z9xlihxoQbWH+5DNhfwupVjcMBJoKpSL34Ih1pJftpx8v9NOiY1uwSPi0+lnKMNXSAqSsvbGn71tJOqlJ5Mjbq1NlQo+aAvf0DgKoLRlGQd7XQCraQ2cv8mlyb7XddqfZNqWzlSIHU+I1h4Z8bcDjAXhOe032394q9IPhSuxQkleXeWGSjp5lWVt0roWDi3+1xGU0GHDHEzWs7lqzQjNHdVZDJX2gtLWwOlQ8XLwpI4OX/yucTBJYjfkcNAt1Xp5lYxgS4ezxD8VVhSnzrlu9XXOOQQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ooGTyD9cINo1BOVzIujOSh7E6nNjykPa/1JHAv8torE=;
- b=GwlGco1PD6DZUe/iwXWGLCcQPpIIiar/xkRlGr84FqV7B/shZxhGZvMqLymv0IL5eNlXWGmr1HESipEDYqap/V56gFLAfo1Nm42KzwZqhPADoAkTYBVv5M7vXk6DgbIOgYJH08dcpCQfLB5b6S4ikAyM0gs8vURkdsPcWDr3Y1/kGsFQGzxtpHRJA/WhlyniFLQ2AswB7LBqRWv3EtTfghLiYOuiTVE558pF4kdOHN/tTaqCJOfPUCL6wiw42S8MDa32rQcpl2QTf39ZnVniWNnP9rN5nZ78VuvgZL9X9dIrvZFQZC1fyk8S+vtcU1Gjg8e2PAdQhTa5O0bipJP7oA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=chipsnmedia.com; dmarc=pass action=none
- header.from=chipsnmedia.com; dkim=pass header.d=chipsnmedia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chipsnmedia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ooGTyD9cINo1BOVzIujOSh7E6nNjykPa/1JHAv8torE=;
- b=Mt6PUEQaR0umgPo5xyXz6IZqVqChhTTfBWD48Nmb0BMZXKcYnnotD7cfGV7U3PmtB/LvMJGXNFDFN04+/N1qw7WsP3Sks/Cm6//fMT2rvA1Q4073vL1dzpD8uLOeYDOMVw1y6UwetzHWJn+QVCBpJaULKFXEOzEM4wmbesM9OQWlQzA5U+szP+SuO0P48oscxxFbNDiAi2o+knyCXaXNDw8/RIVl1hKibiZwsDdJMOg2MYLPmsBS1e+bgzF84KKChHdp6fpfIrMhNsoDOUGkSVltKphS74GYgYyYMOAOJw8ktgQHZBDvmGC5WhnkPY4gzwVIou6Ch8MoRICsXk2f2Q==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=chipsnmedia.com;
-Received: from SL2P216MB2441.KORP216.PROD.OUTLOOK.COM (2603:1096:101:1b9::8)
- by SL2P216MB1466.KORP216.PROD.OUTLOOK.COM (2603:1096:101:33::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.10; Thu, 19 Nov
- 2026 09:00:31 +0000
-Received: from SL2P216MB2441.KORP216.PROD.OUTLOOK.COM
- ([fe80::f234:3bc6:9197:8232]) by SL2P216MB2441.KORP216.PROD.OUTLOOK.COM
- ([fe80::f234:3bc6:9197:8232%6]) with mapi id 15.21.0639.010; Thu, 19 Nov 2026
- 09:00:31 +0000
-From: Nas Chung <nas.chung@chipsnmedia.com>
-To: mchehab@kernel.org,
-	hverkuil@kernel.org,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	Frank.Li@nxp.com,
-	s.hauer@pengutronix.de
-Cc: linux-media@vger.kernel.org,
-	devicetree@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ED2U+7eF
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-490d59c3f0aso893221f8f.1
+        for <imx@lists.linux.dev>; Thu, 19 Nov 2026 01:06:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795079165; x=1795683965; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=5bsnXM9lYnHDcLWwvi6s8sH/ygRCCvDbN6hw3fGCZdQ=;
+        b=ED2U+7eFhCUsq9UdUXQ4t0iMRk+9hQYOCaVzCUoe3ayN9mdYNAk1YRH+kxB0SIcthj
+         pTaKXUPa43nfx27jjgrzIGMQVXOvd2jDADrR8N2wu0TKuUFtJxXTOlehEtXzrsoEc+7u
+         lUm5pUXXEVP5ZJNJ8jgK84jTweUw/mJaQksp/crnt/XamnEM7PU9LskAXIsSRH3KrOUs
+         OF+of7CsCKlNpDG5eQWqp1Jt6wHGl3oXEQfP0STRds77IXPN59xBvT3Rlcp7tuWyu9bH
+         yKqsgBtgS88yj50Ae/246BXpOmxWVEaR/o8SopairSaO/CZ6VLY9C0uYy6/CGXj4Z1SO
+         o9ig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795079165; x=1795683965;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=5bsnXM9lYnHDcLWwvi6s8sH/ygRCCvDbN6hw3fGCZdQ=;
+        b=oR1Rb5g5At+6E7Fro6GiuttrztxWqJfPZ5r0cHXiwCoTq72O/Z4WChT4RenJH4GldJ
+         nvMCSJrLpuMnmqWIUzetVySXCfturL0eN1vmpa6Ro2Zzodk9/TBhYag0TqTTWHldhldZ
+         3q2wHsXnzJy09SFPye8SIVBSsnaUj/YA6oFrUb8ukvEiVPn5s3TcAqYv1xsTu5STQIbZ
+         BKe7MF9I5uXq+2xJkaSaw18Pg1Os++tYaNP6lsIWjSdJX4dzdsq5I3oHAPiAItY886Gt
+         05pzGKC8VfgxXv7ncwKa6lTlUcJkw/VYXH2Y9EJ8OCikYJcO7R/dLx1838c6KpIwOS11
+         K6jA==
+X-Forwarded-Encrypted: i=1; AL+hErHjfRCEnxW7R1LpAX6pyY9v489ODi3TASSV6SydSQpQmSJuVOdcX+OtYkKaXfP1OSaKX8I=@lists.linux.dev
+X-Gm-Message-State: APuU4Z/gmgjYcat95OlHp0OpOLyQ71LiZNJuiWzhGkwiCUT4klLbs8UB
+	66e+OvMCUOduwS31YAarKu+AuskJM8nTaPuaZOa93F8nM4UT0RJIlftD
+X-Gm-Gg: AZFdTZf32Vj4plo73CJKSxgDKo4nEzfLXfm7xPh1BzgEyewJy17y+Vp8N+Rhlbh6iOJ
+	qHny8mGLlMkizay70jDeuS0O6ntnhMqJH2F2DRMz8+rO/GfFO6fR7dlCUT9vsNQ+0tqELV3OshP
+	fI2euiMr1AeOnNI73I327kdO9F4nqU4I9KYYhM3d5+k/8zudawR0IgKxviyIjZldaXw6evRYTJ3
+	BbslrAZlblKfmyMGG2pceV5O514AJ8RbgbTOsgRepD/0UG5qhXSgostYf1bTbrfcpEurvQ8hgqM
+	VjAMWpAMXQexRkb/BIFtmt2Tckqv1IS92JqHi2kPCLLAsZ1K57kNIwfCoHyM3jaH2RXx2LlGGxe
+	Ciqb8CNOnonajPPJt7qvyEgO0vNL22P4NffT7ipz1rEBjce5e58/phGXMqHpd/GTvyopYoBEL+k
+	Yyg9IOZbybjdC/fxywSCKjIZ9lCTzpB1yQQ58ctOdh9GpjN87qFy9mmMKIYOtdbygKQee6eoj45
+	2UUXjNLEn92Anc8OiUtbYmyu47hL4ytgYffAV+cNoS51LjVgs1RChboxrkUlR2Dmwrf8Gv9RxA1
+	5WxW0Rn/WEVKMzChuTlt1QfUqxIPqXfP2HsX2Hab8gMMST7DHi901ok0ozQyUJl9BDnIzitf4zH
+	xwRQi5a+9aOobYH7u6oGjKNuU8NCRgxWmjHY11TXk6tZkQBifrsOSphk=
+X-Received: by 2002:a05:6000:4705:b0:4aa:2afc:ea30 with SMTP id ffacd0b85a97d-4aa2afceb05mr1443459f8f.19.1795079164332;
+        Thu, 19 Nov 2026 01:06:04 -0800 (PST)
+Received: from Lord-Beerus.station ([93.146.104.162])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4a65683d5a2sm9770644f8f.43.2026.11.19.01.06.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 19 Nov 2026 01:06:03 -0800 (PST)
+From: Stefano Radaelli <stefano.radaelli21@gmail.com>
+X-Google-Original-From: Stefano Radaelli <stefano.r@variscite.com>
+To: Frank Li <Frank.Li@nxp.com>,
 	linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
 	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	festevam@gmail.com,
-	kernel@pengutronix.de,
-	nicolas.dufresne@collabora.com,
-	ming.qian@oss.nxp.com,
-	marek.vasut@mailbox.org,
-	jackson.lee@chipsnmedia.com,
-	lafley.kim@chipsnmedia.com,
-	Nas Chung <nas.chung@chipsnmedia.com>
-Subject: [PATCH v8 11/11] arm64: dts: freescale: imx95: Add video codec node
-Date: Thu, 19 Nov 2026 18:00:05 +0900
-Message-Id: <e89f330486c8b986088278b563d0c4364d35f19b.1795075582.git.nas.chung@chipsnmedia.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <cover.1795075577.git.nas.chung@chipsnmedia.com>
-References: <cover.1795075577.git.nas.chung@chipsnmedia.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SEWP216CA0060.KORP216.PROD.OUTLOOK.COM
- (2603:1096:101:2ba::8) To SL2P216MB2441.KORP216.PROD.OUTLOOK.COM
- (2603:1096:101:1b9::8)
+	linux-arm-kernel@lists.infradead.org
+Cc: pierluigi.p@variscite.com,
+	Stefano Radaelli <stefano.r@variscite.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Subject: [PATCH v2 1/1] arm64: dts: freescale: imx93-var: Add Cortex-M33 configurations
+Date: Thu, 19 Nov 2026 10:06:00 +0100
+Message-ID: <20261119090600.9257-1-stefano.r@variscite.com>
+X-Mailer: git-send-email 2.47.3
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -113,142 +106,268 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SL2P216MB2441:EE_|SL2P216MB1466:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8c2b7006-8baa-4685-be0b-08df461b9079
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|7416014|52116014|376014|1800799024|366016|22082099003|18002099003|56012099006|10067099003|261026140227099003|261026121527099003|261028144727099003|261022105027099003|261021121427099003|261009223027099003|261102123227099003|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	yIdp84kEqcNCVbAxJfjYUceWEGJNKkYkXSUCVq2+rlzvArnBU9qoeiLTwrVUpeLjH0cKDVqbmIc8Ua4vv7wrXjFZn95xI9GpWMiNnhjwb6zF3b2r2JLe1aJxTaVe2KIuny3V//7t70R993tF0wcaJEmaXmOshKSc3hGrRp0qpCyB/x4w352MzU7i0ol2eq5c/eSPcQn11yQM8N2HThZappU0mf4p3eKUTe0tdEDXKDyBg07SwfSxubj5c71PYYKuIhA75dCY9zD0Pppjkit2fyK/zilnrlSoGm8Gkfwa1qoOjMooKWlx/bi813itsdhPrq6a2YC3WYqUmD0Ok2QoOv+DOr6TdkrOjSn6fFBvbuFV7z1aYu55VqWLOmBXHaJfm6F7f8PRn+sXmS25REaNITL9j8oP4G0Cza/ZL/UNjUdUgU/qSNwFV64tX/ptbRSXX2FtfwAdkvkCW5Wx5NCCSi+Mz7eNsc0fXnrgGsZEivNTVVwhOr/pydgk01DgFUzwxQ4dQNzG9h4OoUOoeZCq+5+a/5MH6aUCfVihSBGavozeaIWijCuNh6lNT8wwxlUL05UQg7x6bhCHu+92uB57rY7Lbgqn+Fn6TP/pnpK5I/uYN6tzTTLO7vwc0niF3wLvzmv9rvS5cp9PQxZWuiQXGkVUbVcI4qagxYc6d8Gq5j1A0e3XxPj9qlG43l5eFnmCBVWyq56B4SpIIhrwSbn+8Shlmez6mr2HHYa0SyF1ejU=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SL2P216MB2441.KORP216.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(52116014)(376014)(1800799024)(366016)(22082099003)(18002099003)(56012099006)(10067099003)(261026140227099003)(261026121527099003)(261028144727099003)(261022105027099003)(261021121427099003)(261009223027099003)(261102123227099003)(38350700014);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?/g3BOJk7x0QKG5KAyLsiL0v8i3z5htUGYdvvHz2d19HVsWW0Aer2BzVM3GjI?=
- =?us-ascii?Q?nUUuTTiqRP9AwgA16UpsWwZ7bWe0pRWbIaFQviW0PNKTqOY34ZUeyM5L9xHQ?=
- =?us-ascii?Q?wFCK/jh0wt4QSHp67GxfPpE9Cfya1q9BqdePlBkIn/+EOscls+wxdRnWVlF3?=
- =?us-ascii?Q?NU60BivWpMNdpAq+obPE4RNEFYOAh9+kOGSaGBHAOkV55t9kP6ONyOdk4Hi1?=
- =?us-ascii?Q?0Z6SGwIcCqSdAP37bmMzkH/3qW5C2c3VRSiysBaEfGeei5r+P1socWVN5mVx?=
- =?us-ascii?Q?lzAKF8sAjBvqz6LEYt9cesWv15SgMmKIFPfCKu8B8Ox90a0iLhkJ5TXcZcwf?=
- =?us-ascii?Q?mGTWQh8Ip6QfGLuZ+l4sH++YBk0BN5Ljczsb+fGWre58U49YVT2zfcs8a25T?=
- =?us-ascii?Q?URHyklXdA2SCqWeD2CHBl9uiBlp89Z+G1D21+MUQDDg79fvZeJLFy4SkufrB?=
- =?us-ascii?Q?6T/2Rr0SWDlgEd9juiP3sH15DqJvNA+OEUyCHH984SXJqDmpB1+fqoGl/YhD?=
- =?us-ascii?Q?ju1dQMkcHcgZxA+zgfCffXkUI7PgwBWYbxtldsVxfJk/ENujU0G+d0N2NuhK?=
- =?us-ascii?Q?8Bi+IF1V+Fn4qhYVNWY3kBe5n8LbbbhZ9TOGGBUkjSQcQ4iVOTJz+LuGeNLl?=
- =?us-ascii?Q?w/9CevJhrYc9J34/8c89wKBgkXhWFi2cP68Saja8LqNaYKcLmTJEHUzLojUt?=
- =?us-ascii?Q?bKEn/FzBGRPtT5hZuqB7GYkEJvC1aSGQ+pUqwH6AZiJrAxBSJODoJr9WKZWV?=
- =?us-ascii?Q?N0fJjHagbYm3xG296HFpxddu6GTVo1vyKj9q3eqZgmpmV90EM0GSkv0v4Bxz?=
- =?us-ascii?Q?zjgsCZUVx3KrrFMNGqfXF9FvdVAAyOCtTZliISC3kEYqWEyrMATYsvBMVTl5?=
- =?us-ascii?Q?6Cvf7fnX5lm0A6v5SxdTaQAUWBnuoQJF4qgeBJYzt5jBXYXSN0HSGxzShDoH?=
- =?us-ascii?Q?XR31omkH9mI7Z6894BK3whaWSVr1wjelxnOuoa1Q3gX/Jsn2oW4WP5xE5F4v?=
- =?us-ascii?Q?wJS3UPVy4Yl0h+JUfhruMFRB98igbZgYhAtHD/VTUY/G3G5YH23cVlA3LZ2A?=
- =?us-ascii?Q?o6pT9TLzL1bCjEa5spZfTMwPHUFY4fql2ELNI58YXqVYfbM37ayMiRfH5s1Y?=
- =?us-ascii?Q?+4Gl/30sqNnTsex5Av3zYflqQB05jRFeEf9p8h7bri7KFh5As0GBJ3yn7NX4?=
- =?us-ascii?Q?yQor81eYRoYJlP/0PyA0Ytzt+EtbRERvpFXOem+793kkuGzqXHXMgYJlbu3e?=
- =?us-ascii?Q?yQJMscSgxeZJAU1lgj47MI+hSPc37UkTL2Y+5Vy8YBGEz1CxlhN8OBALv/1F?=
- =?us-ascii?Q?2tthvCn+Us1Wi8YRYaA0RCpzXEC1BKpUdFa2DO8A/d7vpyQ8HXzlZvA8ImTb?=
- =?us-ascii?Q?a5fyJA1gtLdnPdujxlvnFVzJjKMoIydQVoK6wKGYuv9VjOReWhmxvhEI+rz/?=
- =?us-ascii?Q?/i0lfG/rtcz8xRMW9usJ7KzJ6uBkJmveOcPlET15+NzHqQZK/gKrp+J0Eypr?=
- =?us-ascii?Q?Z+E97gEQ0FZnyRWMvx2gVH9YfKDlHXNGvpKsilVe1ybLLsSfp0Vj/T2n3Toi?=
- =?us-ascii?Q?QP0lLs8uCK4glrnPMb+hGJRx8V1BzVZ68S34jzV8loPbRHpcENORXXuZSnkR?=
- =?us-ascii?Q?/0Y8feH7C9JSina6YyDPSBwthJ5iCPdFv81mOl9As8+TNbUUSOnETPXFnW9m?=
- =?us-ascii?Q?5UZWSffWTfamvbxDALUscO4iY2OVOySQ8DnFTyoiSZLrRUfxRc8OBjVQNsj5?=
- =?us-ascii?Q?opQsJyETDB/3F87yTo1rnCYDFFJfW6I=3D?=
-X-OriginatorOrg: chipsnmedia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8c2b7006-8baa-4685-be0b-08df461b9079
-X-MS-Exchange-CrossTenant-AuthSource: SL2P216MB2441.KORP216.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Nov 2026 09:00:31.2773
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4d70c8e9-142b-4389-b7f2-fa8a3c68c467
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: En41O5uiH/FdLm9aAielNyWF2BXgH4OrBx0N9Ov6BM1talq7JoLX7LHQcdW5EaL69gNIpcvo2lMv8Qxqs4YUvEf6Evaq9cWBIRaktW+LzeU=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SL2P216MB1466
+Content-Transfer-Encoding: 8bit
 
-Add the Chips and Media wave633 video codec node on IMX95 SoCs.
+From: Stefano Radaelli <stefano.r@variscite.com>
 
-Signed-off-by: Nas Chung <nas.chung@chipsnmedia.com>
+Add Cortex-M33 overlays and combined DTBs for DART-MX93 on Sonata and
+VAR-SOM-MX93 on Symphony.
+
+Share the remoteproc and mailbox configuration through a common include.
+Reuse the reserved memory from each carrier DTS, preserving the different
+resource table addresses.
+
+Move the existing DART-MX93 remoteproc and MU1 configuration out of the
+module DTSI so that they are enabled only by the M33 overlay. Use the
+-m33 DTB when remoteproc support is needed.
+
+Reserve the peripherals used by the M33 firmware and disable Wi-Fi,
+Bluetooth and the devices depending on GPIO4. On Sonata, also disable USB
+OTG1 because its USB-C role controller is unavailable.
+
+Signed-off-by: Stefano Radaelli <stefano.r@variscite.com>
 ---
- .../boot/dts/freescale/imx95-19x19-evk.dts    | 10 +++++
- arch/arm64/boot/dts/freescale/imx95.dtsi      | 37 +++++++++++++++++++
- 2 files changed, 47 insertions(+)
+Changes in v2:
+- Remove the cm33 and mu1 overrides from imx93-var-dart.dtsi,
+  enabling them only through the M33 overlay.
 
-diff --git a/arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts b/arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts
-index 47ed0ef67611..a15d5b471708 100644
---- a/arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts
-+++ b/arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts
-@@ -143,6 +143,11 @@ vdev0buffer: vdev0buffer@88020000 {
- 			reg = <0 0x88020000 0 0x100000>;
- 			no-map;
- 		};
+This patch uses the memory-region-names binding and driver support from
+the following commits, both already in linux-next:
+
+- ebb21cc5d1c0 ("dt-bindings: remoteproc: imx_rproc: Document
+  memory-region-names to avoid implicit ABI")
+- 8396089f91fa ("remoteproc: imx_rpoc: Use memory-region-names to avoid
+  implicit ABI")
+
+For dtbs_check on older trees, commit cebd1c0961d8 ("dt-bindings: gpio:
+vf610: fix clock requirements per SoC"), also in linux-next, fixes the
+pre-existing GPIO clock validation errors.
+
+ arch/arm64/boot/dts/freescale/Makefile        |  9 +++
+ .../dts/freescale/imx93-var-common-m33.dtsi   | 24 ++++++++
+ .../freescale/imx93-var-dart-sonata-m33.dtso  | 55 +++++++++++++++++++
+ .../dts/freescale/imx93-var-dart-sonata.dts   |  2 +-
+ .../boot/dts/freescale/imx93-var-dart.dtsi    | 14 -----
+ .../freescale/imx93-var-som-symphony-m33.dtso | 50 +++++++++++++++++
+ 6 files changed, 139 insertions(+), 15 deletions(-)
+ create mode 100644 arch/arm64/boot/dts/freescale/imx93-var-common-m33.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx93-var-dart-sonata-m33.dtso
+ create mode 100644 arch/arm64/boot/dts/freescale/imx93-var-som-symphony-m33.dtso
+
+diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
+index cfd548284358..05a7556e9de9 100644
+--- a/arch/arm64/boot/dts/freescale/Makefile
++++ b/arch/arm64/boot/dts/freescale/Makefile
+@@ -956,8 +956,17 @@ dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba93xxca-lvds-tm070jvhg33.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba93xxla-lvds-tm070jvhg33.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba93xxla-mini-ezurio-wlan.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba93xxla-mini-lvds-tm070jvhg33.dtb
 +
-+		vpu_boot: memory@a0000000 {
-+			reg = <0 0xa0000000 0 0x100000>;
-+			no-map;
-+		};
- 	};
- 
- 	flexcan1_phy: can-phy0 {
-@@ -1225,3 +1230,8 @@ &tpm6 {
- 	pinctrl-0 = <&pinctrl_tpm6>;
- 	status = "okay";
- };
++imx93-var-dart-sonata-m33-dtbs := imx93-var-dart-sonata.dtb imx93-var-dart-sonata-m33.dtbo
+ dtb-$(CONFIG_ARCH_MXC) += imx93-var-dart-sonata.dtb
++dtb-$(CONFIG_ARCH_MXC) += imx93-var-dart-sonata-m33.dtb
++dtb-$(CONFIG_ARCH_MXC) += imx93-var-dart-sonata-m33.dtbo
 +
-+&vpu {
-+	memory-region = <&vpu_boot>;
++imx93-var-som-symphony-m33-dtbs := imx93-var-som-symphony.dtb imx93-var-som-symphony-m33.dtbo
+ dtb-$(CONFIG_ARCH_MXC) += imx93-var-som-symphony.dtb
++dtb-$(CONFIG_ARCH_MXC) += imx93-var-som-symphony-m33.dtb
++dtb-$(CONFIG_ARCH_MXC) += imx93-var-som-symphony-m33.dtbo
++
+ dtb-$(CONFIG_ARCH_MXC) += imx93w-evk.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx93w-frdm.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx943-evk.dtb
+diff --git a/arch/arm64/boot/dts/freescale/imx93-var-common-m33.dtsi b/arch/arm64/boot/dts/freescale/imx93-var-common-m33.dtsi
+new file mode 100644
+index 000000000000..51b4cfe143d4
+--- /dev/null
++++ b/arch/arm64/boot/dts/freescale/imx93-var-common-m33.dtsi
+@@ -0,0 +1,24 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++/*
++ * Common Cortex-M33 configuration for Variscite i.MX93 modules
++ *
++ * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com/
++ *
++ */
++
++/* Use the reserved memory and resource table address from the carrier DTS. */
++&cm33 {
++	mbox-names = "tx", "rx", "rxdb";
++	mboxes = <&mu1 0 1
++		  &mu1 1 1
++		  &mu1 3 1>;
++	memory-region = <&vdevbuffer>, <&vdev0vring0>, <&vdev0vring1>,
++			<&vdev1vring0>, <&vdev1vring1>, <&rsc_table>;
++	memory-region-names = "vdev0buffer", "vdev0vring0", "vdev0vring1",
++			      "vdev1vring0", "vdev1vring1", "rsc-table";
 +	status = "okay";
 +};
-diff --git a/arch/arm64/boot/dts/freescale/imx95.dtsi b/arch/arm64/boot/dts/freescale/imx95.dtsi
-index d20c2498b9aa..b6323e527ab7 100644
---- a/arch/arm64/boot/dts/freescale/imx95.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx95.dtsi
-@@ -2139,6 +2139,43 @@ vpu_blk_ctrl: clock-controller@4c410000 {
- 			assigned-clock-rates = <133333333>, <667000000>, <500000000>;
- 		};
++
++&mu1 {
++	status = "okay";
++};
+diff --git a/arch/arm64/boot/dts/freescale/imx93-var-dart-sonata-m33.dtso b/arch/arm64/boot/dts/freescale/imx93-var-dart-sonata-m33.dtso
+new file mode 100644
+index 000000000000..d97da9916ef4
+--- /dev/null
++++ b/arch/arm64/boot/dts/freescale/imx93-var-dart-sonata-m33.dtso
+@@ -0,0 +1,55 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++/*
++ * Cortex-M33 support for Variscite DART-MX93 on Sonata-Board
++ *
++ * Link: https://variscite.com/carrier-boards/sonata-board/
++ *
++ * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com/
++ *
++ */
++
++/dts-v1/;
++/plugin/;
++
++#include "imx93-var-common-m33.dtsi"
++
++/* Reserve the peripherals used by the Cortex-M33 firmware. */
++&flexcan1 {
++	status = "disabled";
++};
++
++&gpio4 {
++	status = "disabled";
++};
++
++&lpspi5 {
++	status = "disabled";
++};
++
++/* Disable Bluetooth along with Wi-Fi and release the JTAG pins. */
++&lpuart5 {
++	status = "disabled";
++};
++
++&lpuart7 {
++	status = "disabled";
++};
++
++/* The USB-C role controller uses an interrupt on GPIO4. */
++&ptn5150 {
++	status = "disabled";
++};
++
++/* The USB-C role controller is unavailable. */
++&usbotg1 {
++	status = "disabled";
++};
++
++/* Wi-Fi reset is connected to GPIO4. */
++&usdhc3 {
++	status = "disabled";
++};
++
++&wifi_pwrseq {
++	status = "disabled";
++};
+diff --git a/arch/arm64/boot/dts/freescale/imx93-var-dart-sonata.dts b/arch/arm64/boot/dts/freescale/imx93-var-dart-sonata.dts
+index 1ca3ec8330d0..e3afd0efe5c7 100644
+--- a/arch/arm64/boot/dts/freescale/imx93-var-dart-sonata.dts
++++ b/arch/arm64/boot/dts/freescale/imx93-var-dart-sonata.dts
+@@ -291,7 +291,7 @@ ft5x06_ts: touchscreen@38 {
+ 	};
  
-+		vpu: video-codec@4c4c0000 {
-+			compatible = "nxp,imx95-vpu";
-+			reg = <0x0 0x4c4c0000 0x0 0x10000>;
-+			clocks = <&scmi_clk IMX95_CLK_VPU>,
-+				 <&vpu_blk_ctrl IMX95_CLK_VPUBLK_WAVE>;
-+			clock-names = "core", "vpublk";
-+			power-domains = <&scmi_devpd IMX95_PD_VPU>,
-+					<&scmi_perf IMX95_PERF_VPU>;
-+			power-domain-names = "vpu", "perf";
-+			sram = <&sram1>;
-+			#cooling-cells = <2>;
-+			#address-cells = <2>;
-+			#size-cells = <2>;
-+			ranges;
-+			status = "disabled";
+ 	/* USB Type-C Controller */
+-	typec@3d {
++	ptn5150: typec@3d {
+ 		compatible = "nxp,ptn5150";
+ 		reg = <0x3d>;
+ 		interrupt-parent = <&gpio4>;
+diff --git a/arch/arm64/boot/dts/freescale/imx93-var-dart.dtsi b/arch/arm64/boot/dts/freescale/imx93-var-dart.dtsi
+index 69495bb7fc9f..6c596d61bd21 100644
+--- a/arch/arm64/boot/dts/freescale/imx93-var-dart.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx93-var-dart.dtsi
+@@ -54,16 +54,6 @@ wifi_pwrseq: wifi-pwrseq {
+ 	};
+ };
+ 
+-&cm33 {
+-	mbox-names = "tx", "rx", "rxdb";
+-	mboxes = <&mu1 0 1>,
+-		 <&mu1 1 1>,
+-		 <&mu1 3 1>;
+-	memory-region = <&vdevbuffer>, <&vdev0vring0>, <&vdev0vring1>,
+-			<&vdev1vring0>, <&vdev1vring1>, <&rsc_table>;
+-	status = "okay";
+-};
+-
+ &eqos {
+ 	pinctrl-names = "default", "sleep";
+ 	pinctrl-0 = <&pinctrl_eqos>;
+@@ -221,10 +211,6 @@ bluetooth {
+ 	};
+ };
+ 
+-&mu1 {
+-	status = "okay";
+-};
+-
+ &mu2 {
+ 	status = "okay";
+ };
+diff --git a/arch/arm64/boot/dts/freescale/imx93-var-som-symphony-m33.dtso b/arch/arm64/boot/dts/freescale/imx93-var-som-symphony-m33.dtso
+new file mode 100644
+index 000000000000..96860a2dbf7c
+--- /dev/null
++++ b/arch/arm64/boot/dts/freescale/imx93-var-som-symphony-m33.dtso
+@@ -0,0 +1,50 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++/*
++ * Cortex-M33 support for Variscite VAR-SOM-MX93 on Symphony-Board
++ *
++ * Link: https://variscite.com/carrier-boards/symphony-board/
++ *
++ * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com/
++ *
++ */
 +
-+			interface@4c480000 {
-+				reg = <0x0 0x4c480000 0x0 0x10000>;
-+				interrupts = <GIC_SPI 299 IRQ_TYPE_LEVEL_HIGH>;
-+			};
++/dts-v1/;
++/plugin/;
 +
-+			interface@4c490000 {
-+				reg = <0x0 0x4c490000 0x0 0x10000>;
-+				interrupts = <GIC_SPI 300 IRQ_TYPE_LEVEL_HIGH>;
-+			};
++#include "imx93-var-common-m33.dtsi"
 +
-+			interface@4c4a0000 {
-+				reg = <0x0 0x4c4a0000 0x0 0x10000>;
-+				interrupts = <GIC_SPI 301 IRQ_TYPE_LEVEL_HIGH>;
-+			};
++/* The resistive touchscreen uses GPIO4. */
++&ads7846 {
++	status = "disabled";
++};
 +
-+			interface@4c4b0000 {
-+				reg = <0x0 0x4c4b0000 0x0 0x10000>;
-+				interrupts = <GIC_SPI 302 IRQ_TYPE_LEVEL_HIGH>;
-+			};
-+		};
++/* Reserve the peripherals used by the Cortex-M33 firmware. */
++&flexcan1 {
++	status = "disabled";
++};
 +
- 		jpegdec: jpegdec@4c500000 {
- 			compatible = "nxp,imx95-jpgdec", "nxp,imx8qxp-jpgdec";
- 			reg = <0x0 0x4C500000 0x0 0x00050000>;
++&gpio4 {
++	status = "disabled";
++};
++
++&lpspi6 {
++	status = "disabled";
++};
++
++/* Disable Bluetooth along with Wi-Fi and release the JTAG pins. */
++&lpuart5 {
++	status = "disabled";
++};
++
++&lpuart7 {
++	status = "disabled";
++};
++
++/* Wi-Fi reset is connected to GPIO4. */
++&usdhc3 {
++	status = "disabled";
++};
++
++&usdhc3_pwrseq {
++	status = "disabled";
++};
 -- 
-2.41.0.windows.3
+2.47.3
 
