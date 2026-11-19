@@ -1,70 +1,92 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=178.251.229.89
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795079712;
-	b=LSDP3t1VXEfOmi5qJEjtNB5yzwDXxPaRS3tmK1GpJo/DUjjf6Ws6gu583dnhlajuJ7Gm
-	 vuwGqhXJkfu8bscbDulSpG37yblD6whM7+VfPyHz9gvxVF5RwMCa5GJ/tTW5CkT904+Eq
-	 wOwhoLQKTinKgqgfW6WuyYwfHI80IN6pNEU9nht8J9GpZhr+L4NCt+T/32r1GtU5nYs/C
-	 GqsMuA0gEl1aCCkDxEL8Hc5HHmIfbkeW0GSRmoub3S/3Uuw+af2sl2uYdt9pkw7UEMfkU
-	 LFwoRaNIoM5lpZeCYBMpDZBzWLE+HcmtVfJCxklEfT/2k0hQ1VRAp5RwMCALZSt4ohg==
+	t=1795079899;
+	b=xiZLk/X/EsgzGA8TtMoH8HfKcaal93kyWyWBMBflGvPRE9r7pb2YM+1CmMfrELnC03GQ
+	 8wf7Ghx1aj72QkHDfIye+6SoDhjqvMtQb2BmJc+9cqKHF2mLB8GDNdY5m45V219jUuqh5
+	 N8DajZtomoCda+HMgvA9oCFM2Y1dsi3/fiZokeLmwiVhDK5z8lPu1HCKZ8Lx/jF5F7UR2
+	 IuSoNICzJ5FvtV8mmHGhF9WBuaV67884+gS4jA88clGaiMNtLwKrxloMUKgAMGorZPfIb
+	 PG3ngijNRew8JW2OUCH4/FFdbkl92ucguyTxQHmAD1WDDkZ28xKWBNwVEDgdb4Dq2Sw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795079712;
-	h=DMARC-Filter:Received:DKIM-Signature:Date:From:To:Cc:Subject:
-	 Message-ID:In-Reply-To:References:Organization:X-Mailer:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:X-Last-TLS-Session-Version;
-	bh=XQBhhzHd49eMecbJ9Ihf5iuvQwUvWADjs9cSukpLuKg=;
-	b=PNaBBUWivVoPLDQod7fyEBQA14ddZxSdE12JpBrjvm2C5CaWKezr7OpiKfADfBTKq5ax
-	 0HNhZ3tH/BlG3CM4yf+i4Gck3WpVokMZiyvji5JS/l8U6YM7CvCiRH3nQ0+EX2vdOgLCF
-	 rW0VxDQVL3cio0o9XSBxLCktHzcK+ZHqHfm7Q20kWIiHbGDkHWKK7KGQ+N3vuLPPy+Tbe
-	 hcFAZygnbhrlrcQDCCm0wofqTsoK+y1n1gG6o7qxhfoKCRQR9ZD4D4JrdOpXqS9DdboQC
-	 POeHB7q0Lr8qhz0PYTl6XXLfY/SKQFlFD+AM4I9fCQy+jNO2OMREFmdzjoxr3Dyo0BA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795079899;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=v3bo8ZcbgAObjcXddzvPQDs3qKip3UcYyi2IBIcsxXE=;
+	b=xF2XvQqVFfE6byW+SscXthuvFFM+plcyweVYJJ2UuMT/3QZCbprOFArFkRwVjYkzXkbd
+	 QvY1w6VSh3HjqjWPKTg49sdHOO40S5CTUYwWAR5Iai3fn1fRwZ+8TAdqGlJAKUaMPfvg/
+	 q35zNKx3Y5rWaskk5/5849DnE0iBqNzJYyyBYSfpZzRtJc49DRQW7rgnHVhYzDahCY4rS
+	 FTiEXxkMecHuWtJurgM02l75ybJc/654hNyfVROEKFn2fj8ev6Q89sIVWH/YklrbCHA0q
+	 8kalOUCVoHB1eCaMadPTWmZN0HtTezHUazhjl5VMPSuF2XDaKktWs+XtZeVGclLEPSA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nabladev.com;
-	spf=pass smtp.mailfrom=nabladev.com;
-	dkim=pass header.d=nabladev.com header.i=@nabladev.com header.a=rsa-sha256 header.s=dkim header.b=ALNi8PxV;
-	arc=none smtp.remote-ip=178.251.229.89
-Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cUlTbof7;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A627A606A320
-	for <imx@lists.linux.dev>; Thu, 19 Nov 2026 09:15:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A627A606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2DB9606A324;
+	Thu, 19 Nov 2026 09:18:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.a=rsa-sha256 header.s=dkim header.b=ALNi8PxV
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E8B1410AF96;
-	Thu, 19 Nov 2026 10:15:01 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1795079705;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=XQBhhzHd49eMecbJ9Ihf5iuvQwUvWADjs9cSukpLuKg=;
-	b=ALNi8PxVGHzaIPABW2PNN0O9FhC7zhTCvQcqUEV0cdvuGmFjbU88QtUDCn3hbezbtaErH7
-	yxi6FVSMW/+vUsUeQEID0QcdIYcEGmkw0iOsycZKNOhBePJLaGSrrDpTO+8EPcApzf8Xc6
-	8HbGp1gcr45bva2CeBZx4WO5EWElso1ymyHGWVKc/OpgvHl0Qia4ciuiQb1+a5f4xyfzDq
-	c/tlV1TWZ0O3xGy8VN3r5zaL88J0ymwHbzobsEBxa8uOLvbXRFB5sae09hBJjzl+CtTSCX
-	slQ9nTjkP/nugILxuxaf98T7g+kRLsmOyDdUUiMF0zLheMUez7TURUilHDBzWA==
-Date: Thu, 19 Nov 2026 10:15:00 +0100
-From: =?UTF-8?B?xYF1a2Fzeg==?= Majewski <lukma@nabladev.com>
-To: Fabio Estevam <festevam@gmail.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, Sascha
- Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
- <kernel@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, Guenter Roeck
- <linux@roeck-us.net>, Daniel Baluta <daniel.baluta@nxp.com>, Jonathan
- Cameron <jonathan.cameron@oss.qualcomm.com>, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 3/3] arm64: dts: freescale: Add device tree
- definition for Cloos CBASE with i.MX8MM
-Message-ID: <20261119101500.77f72411@wsk>
-In-Reply-To: <CAOMZO5AiGRHNijfDcCXhsrQDwcWDwHNsxVEoHuEaGdVaR6JBWw@mail.gmail.com>
-References: <20261116111802.2442456-1-lukma@nabladev.com>
-	<20261116111802.2442456-3-lukma@nabladev.com>
-	<CAOMZO5AiGRHNijfDcCXhsrQDwcWDwHNsxVEoHuEaGdVaR6JBWw@mail.gmail.com>
-Organization: Nabla
-X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cUlTbof7
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E19B51F000C5;
+	Thu, 19 Nov 2026 09:18:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795079899;
+	bh=v3bo8ZcbgAObjcXddzvPQDs3qKip3UcYyi2IBIcsxXE=;
+	h=From:To:Cc:Subject:Date;
+	b=cUlTbof7TRhkdIj9zM4tAOPe0BxnlUOXyAgKKafiWTNT7F37OrMgblULvjHOKHi7B
+	 7kJ68GQ0aMp8WMQbw4aC8lMNrvwUI6lA1C6kJcpAGHDKysiBnB5+FNjwJgiPrnjngT
+	 cYH32bJQ6VPHjApvcg3HgSlzaIRhgMMEeHCf49Zvb0v3zOqVL6NSn2USYZo/llzCNe
+	 uPV6dDgTc8I12wAuxTfy5qWgbfoaFD15SdhpYdz49kFnYyR6s/dTsaIp51i6PrqDSb
+	 2oZ5uY6GET3M+5w2+rb74fN+2RO5sL5kV7Q5hSeu+5/2Gsawym3Srgm4tubLNwcwKF
+	 u1CnU5Mu0dqKg==
+From: Lee Jones <lee@kernel.org>
+To: lee@kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Anton Vorontsov <avorontsov@ru.mvista.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Boris Brezillon <bbrezillon@kernel.org>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Chris Boot <bootc@bootc.net>,
+	Chunyan Zhang <zhang.lyra@gmail.com>,
+	Dhruva Gole <d-gole@ti.com>,
+	Felix Gu <ustc.gu@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Foon Tan <lftan@altera.com>,
+	Frieder Schrempf <frieder.schrempf@kontron.de>,
+	Gabor Juhos <juhosg@openwrt.org>,
+	Giulio Benetti <giulio.benetti@benettiengineering.com>,
+	Graham Moore <grmoore@opensource.altera.com>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	Han Xu <han.xu@nxp.com>,
+	imx@lists.linux.dev,
+	Jayshri Pawar <jpawar@cadence.com>,
+	Jisheng Zhang <jszhang@kernel.org>,
+	Johan Hovold <johan@kernel.org>,
+	Johannes Thumshirn <jth@kernel.org>,
+	Konrad Kociolek <konrad@cadence.com>,
+	Linus Walleij <linusw@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rpi-kernel@lists.infradead.org,
+	linux-spi@vger.kernel.org,
+	Mark Brown <broonie@kernel.org>,
+	Murugan R <vadivel.muruganx.ramuthevar@intel.com>,
+	Orson Zhai <orsonzhai@gmail.com>,
+	Parshuram Thombare <pthombar@cadence.com>,
+	Pratyush Yadav <p.yadav@ti.com>,
+	Ray Jui <rjui@broadcom.com>,
+	Scott Branden <sbranden@broadcom.com>,
+	Suresh Gupta <suresh.gupta@nxp.com>,
+	=?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
+	Tomoya MORINAGA <tomoya.rohm@gmail.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Weibin Liu <liuwb@xiaopeng.com>,
+	Witold Sadowski <wsadowski@marvell.com>,
+	Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
+Subject: [PATCH 00/10] spi: Fix data corruption, uninitialised data leaks and bounds checks
+Date: Thu, 19 Nov 2026 09:17:12 +0000
+Message-ID: <20261119091810.3440619-1-lee@kernel.org>
+X-Mailer: git-send-email 2.56.1.708.g77570a6a1d-goog
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -75,37 +97,87 @@ List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
 
-Hi Fabio,
+These issues were reported by Sashiko.
 
-> Hi Lukasz,
->=20
-> On Mon, Nov 16, 2026 at 8:18=E2=80=AFAM Lukasz Majewski <lukma@nabladev.c=
-om>
-> wrote:
-> >
-> > This commit adds support for CBASE board, which incorporates the
-> > TQMa8MQML module. =20
->=20
-> You missed addressing Frank's earlier suggestion.
->=20
+The series is based on spi/for-7.5, since patch 5 relies on the
+following commit, which is not yet in Linus's tree:
 
-Yes, I've overlook it. Thanks.
+  3515e312e096 ("spi: topcliff-pch: clamp DMA bpw_len by bytes not words")
 
-> Please use the imperative mood: "Add support for CBASE..."
+Witold, patch 10 is derived from the TX-only accounting in the Marvell
+b0 path, so confirmation that it matches the hardware's READ_DATA
+behaviour would be appreciated.
 
-+1
+Cc: Anton Vorontsov <avorontsov@ru.mvista.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Cc: Boris Brezillon <bbrezillon@kernel.org>
+Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
+Cc: Chris Boot <bootc@bootc.net>
+Cc: Chunyan Zhang <zhang.lyra@gmail.com>
+Cc: Dhruva Gole <d-gole@ti.com>
+Cc: Felix Gu <ustc.gu@gmail.com>
+Cc: Florian Fainelli <florian.fainelli@broadcom.com>
+Cc: Foon Tan <lftan@altera.com>
+Cc: Frieder Schrempf <frieder.schrempf@kontron.de>
+Cc: Gabor Juhos <juhosg@openwrt.org>
+Cc: Giulio Benetti <giulio.benetti@benettiengineering.com>
+Cc: Graham Moore <grmoore@opensource.altera.com>
+Cc: Grant Likely <grant.likely@secretlab.ca>
+Cc: Han Xu <han.xu@nxp.com>
+Cc: imx@lists.linux.dev
+Cc: Jayshri Pawar <jpawar@cadence.com>
+Cc: Jisheng Zhang <jszhang@kernel.org>
+Cc: Johan Hovold <johan@kernel.org>
+Cc: Johannes Thumshirn <jth@kernel.org>
+Cc: Konrad Kociolek <konrad@cadence.com>
+Cc: Linus Walleij <linusw@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-rpi-kernel@lists.infradead.org
+Cc: linux-spi@vger.kernel.org
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Murugan R <vadivel.muruganx.ramuthevar@intel.com>
+Cc: Orson Zhai <orsonzhai@gmail.com>
+Cc: Parshuram Thombare <pthombar@cadence.com>
+Cc: Pratyush Yadav <p.yadav@ti.com>
+Cc: Ray Jui <rjui@broadcom.com>
+Cc: Scott Branden <sbranden@broadcom.com>
+Cc: Suresh Gupta <suresh.gupta@nxp.com>
+Cc: "Théo Lebrun" <theo.lebrun@bootlin.com>
+Cc: Tomoya MORINAGA <tomoya.rohm@gmail.com>
+Cc: Vignesh Raghavendra <vigneshr@ti.com>
+Cc: Weibin Liu <liuwb@xiaopeng.com>
+Cc: Witold Sadowski <wsadowski@marvell.com>
+Cc: Yogesh Gaur <yogeshnarayan.gaur@nxp.com>
 
---=20
-Best regards,
+Lee Jones (10):
+  spi: fsl-cpm: Map the zero page's address, not its struct page
+  spi: bcm2835: Store native chip-select GPIO descriptor per device
+  spi: ch341: Limit transfers to the hardware packet size
+  spi: sprd-adi: Do not copy uninitialised data to rx_buf on read
+    failure
+  spi: topcliff-pch: Advance tx_buf between DMA chunks
+  spi: cadence-quadspi: Bound chip select against f_pdata array size
+  spi: cadence-xspi: Zero the tail word in m_iowriteq()
+  spi: fsl-qspi: Propagate clock errors from fsl_qspi_select_mem()
+  spi: cadence-xspi: Advance tx pointer between Marvell b0 chunks
+  spi: cadence-xspi: Skip tail read for qword-aligned Marvell b0
+    receives
 
-Lukasz Majewski
+ drivers/spi/spi-bcm2835.c         | 18 +++++++++---------
+ drivers/spi/spi-cadence-quadspi.c |  8 +++++---
+ drivers/spi/spi-cadence-xspi.c    |  8 ++++++--
+ drivers/spi/spi-ch341.c           |  6 ++++++
+ drivers/spi/spi-fsl-cpm.c         |  3 ++-
+ drivers/spi/spi-fsl-qspi.c        | 26 +++++++++++++++++---------
+ drivers/spi/spi-sprd-adi.c        |  3 ++-
+ drivers/spi/spi-topcliff-pch.c    |  5 +++++
+ 8 files changed, 52 insertions(+), 25 deletions(-)
 
---
-Nabla Software Engineering GmbH
-HRB 40522 Augsburg
-Phone: +49 821 45592596
-E-Mail: office@nabladev.com
-Managing Director : Stefano Babic
+
+base-commit: 9b2d7c8736a6fd27ceda93bd67529758c139e24f
+-- 
+2.56.1.708.g77570a6a1d-goog
+
