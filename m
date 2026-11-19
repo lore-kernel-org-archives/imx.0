@@ -1,71 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.151
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795075117;
-	b=4B22+iSAX4g1SwkEPFCIkXzg5f7scy89d3yfaa+GCY+hRgHsarnRC51efKvRRar0qVMj
-	 mh4guxq6DyH+I/lkkGTuYPRQyYyXbuhqX4cZ92PWsIzy8fRfdDsWO1mm5RNlXDt+10jCw
-	 4+7D6sE5vPjFx0TZenkENGY7mUsu5bLGoDBaUlG5xFaltxQ6OuQ618LLf7nvjC8bEkLWH
-	 ue2XsgoQW32W5AbVeIADz8lUc41TwOqzLbA55qRzD4VcSqMRlTdmElAWNfSWn92N9NErS
-	 3vlNO7Wkq+kNk8BOei0V3ttUIvZwOxifAhEOup3D8ToA+Fw5dhYbswkjsWb9GP6YDug==
+	t=1795077149;
+	b=zHnigJ0WyJfp9RJUuknAr/yaDkcVm2N2YFtOiTGOf4y40qaYYFKUMcZJyTHeBshluKsg
+	 tAG9fwpkSojAkQhj1aoH9JqULPTMMjJ4dMXaokf7jdCfE7v+Lno/synOT1V2KZ7xkRJ7v
+	 AV9fra3ZQoLrp2LZbsou0U2s1JWxo8ZkNfQ7c7fW1KFNGhXpRBII/EKoEyy6Nr7XMwVfh
+	 Jxh3+ShybmAnSTl+WsKKfJOpOyfHOJAq2chOwCgArKeqoWj7D9ErGxbXlDx/hX7pjN8qL
+	 lh12oWYvebsglO8kl+wkbFa+/wmyo3DFrBFxdzbOognRsg+SVU/+2BeSONSUd8TEbZQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795075117;
-	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
-	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
-	 To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=E7ul2arr6XENd17+ogc5CtyqshNXPbPmSVo+aN3QCi4=;
-	b=LTXKiF/hf8gO3JIqho5sIlUTJTeG8niFkGoh6458GCivT2z2luF4cfvb+Q+/xf+qCCdU
-	 EZRy0bGQiNEHEP+Rii1v1lW5ic05TSMjyLIg8TANFlsuYJrLSPprDsQ+4shrEoUbR8vVN
-	 AHVR8mKyWYX1LvXQuWbyP1NgGeKQhCgszs6uhwyBlMGnaBWcBWxaRZ2MWFgqY5tH3aPqG
-	 oD5iethqzTxhHK1Kw36K2LwYNruzd/ZeLDWVlDzLDLAaDz5SGXfPGK6AnrZxj5lJEtka+
-	 gtpwaIaTFDKrMnq9ZA0pzFvmh7ZZFW9oLOJ3Z7a1Fj1nhbGFSuYxKQPanlZrGPsyf3w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795077149;
+	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:Subject:From:To:Cc:In-Reply-To:
+	 References:Date:Message-Id:X-Mailer:X-Last-TLS-Session-Version;
+	bh=d+pbzDtS/JQiA7b4wrmuxjkA2iPIz7YvM7ymaKga0rs=;
+	b=431F+7WDuUiGCIXkPq6h51tOP3GvwZ3NsbNB1+rMYCmcNFdDmYl82pzMjdUvd9vr2u73
+	 xwtfkfeAbFyOldol7npJFBuokyqWZ9oRf2NkzsOjZg6vLrqrSmJnjR4I4T7Xib9lfDgml
+	 OXqbLyQ4rgSCRYvjx+vumlF5EoHr5UKMguNDs/RWYCPaLgTZuzrWHVs592yVl0CMktNeC
+	 mqs/CRCxrYjmDj2CRtWfu6kxWCFkSJjLA6jSqIB6dGOnxGnt9AaIPk11bCH9n+jNpMNIz
+	 dbS6pisjwsHfeULt85K9Ew31C+9aB/Y2i5LK0YRNuFMGYxMyLkFwnoIaxtqLwhqwJqg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cmss.chinamobile.com;
-	spf=pass smtp.mailfrom=cmss.chinamobile.com;
-	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=AaxlJOZD;
-	arc=none smtp.remote-ip=111.22.67.151
-Received: from cmccmta8.chinamobile.com (cmccmta8.chinamobile.com [111.22.67.151])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 404EF606A324
-	for <imx@lists.linux.dev>; Thu, 19 Nov 2026 07:58:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 404EF606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
+	dmarc=pass header.from=bootlin.com;
+	spf=pass smtp.mailfrom=bootlin.com;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=J65EdjmP;
+	arc=none smtp.remote-ip=185.171.202.116
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB1F2606A325
+	for <imx@lists.linux.dev>; Thu, 19 Nov 2026 08:32:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CB1F2606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=AaxlJOZD
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=cmss.chinamobile.com; s=default; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=AaxlJOZDWE1XQp/vmEVc3NShjnZfgv559FJ28Np3fobvcZDDb1+ZthRlFg/0Jp8eMHGXImLrkdlzU
-	 1YOR5/Gt9o425YFwQ+cEKpE6n1T4CboeyYry0jFfAHec3nlSGRpbPuL1MMBoW6iXMa3eTT/qRhfgBK
-	 dZuR+oNZYw28eAF4=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app02-12002 (RichMail) with SMTP id 2ee26afeac224a1-57a37;
-	Thu, 19 Nov 2026 15:58:33 +0800 (CST)
-X-RM-TRANSID:2ee26afeac224a1-57a37
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from devin-VMware-Virtual-Platform (unknown[223.108.79.97])
-	by rmsmtp-syy-appsvr01-12001 (RichMail) with SMTP id 2ee16afeac26a8c-f54cc;
-	Thu, 19 Nov 2026 15:58:33 +0800 (CST)
-X-RM-TRANSID:2ee16afeac26a8c-f54cc
-From: Zhu Jun <zhujun2@cmss.chinamobile.com>
-To: broonie@kernel.org
-Cc: lgirdwood@gmail.com,
-	shengjiu.wang@gmail.com,
-	Xiubo.Lee@gmail.com,
-	festevam@gmail.com,
-	nicoleotsuka@gmail.com,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Zhu Jun <zhujun2@cmss.chinamobile.com>
-Subject: [PATCH] ASoC: imx-audmix: Balance SAI node references with devres
-Date: Thu, 19 Nov 2026 15:58:32 +0800
-Message-ID: <20261119075832.50172-1-zhujun2@cmss.chinamobile.com>
-X-Mailer: git-send-email 2.51.0
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=J65EdjmP
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 1A8CFC4CBEF;
+	Thu, 19 Nov 2026 08:32:32 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id DC49C60237;
+	Thu, 19 Nov 2026 08:32:26 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9AD7F11BC31D3;
+	Thu, 19 Nov 2026 09:32:19 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1795077145; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=d+pbzDtS/JQiA7b4wrmuxjkA2iPIz7YvM7ymaKga0rs=;
+	b=J65EdjmPAxHMYXVljGZhHi9UwDX8egcSnd8PSZFe9AhLAwFS3tqyv9DBuO5bhFFxpMJp66
+	oopgmeIVRLQW3xYvB1CCVUqdbZkcjJuIdrKbSXyoDC9SO7LezCP6JNI0Cv3AQn/zqHrLWp
+	2tP/nMASKt4MayFXPa8xTaI8naoQzTDfsNHgB4L6MSwcTXBXy6LFRdTlKI9d3BLbK6CdML
+	9MiKssAk9n1AnS3bTMcPpD67AoixRvHFjticPSCwyGaQQRsfxaf7f97V1T+gRL94x5gcRs
+	g/lMUbG99dFuADw9mxJxAs37zWUyTX2yV9lufMvIgPKYNEQ6TJwTLgFGLFWJww==
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -75,58 +59,52 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v12 2/5] drm/imx: Add support for i.MX94 DCIF
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+To: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, 
+ Luca Ceresoli <luca.ceresoli@bootlin.com>, linux-clk@vger.kernel.org, 
+ imx@lists.linux.dev, devicetree@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ dri-devel@lists.freedesktop.org
+In-Reply-To: <20261118-dcif-upstreaming-v12-2-29b35e27a1cc@oss.nxp.com>
+References: <20261118-dcif-upstreaming-v12-0-29b35e27a1cc@oss.nxp.com>
+ <20261118-dcif-upstreaming-v12-2-29b35e27a1cc@oss.nxp.com>
+Date: Thu, 19 Nov 2026 09:32:16 +0100
+Message-Id: <179507713631.198693.2786295335112670846.b4-review@b4>
+X-Mailer: b4 0.16.0
+X-Last-TLS-Session-Version: TLSv1.3
 
-Each successful parse of a SAI phandle in imx_audmix_probe() takes
-a node reference. The card uses these nodes in the DAI links and
-codec configuration, but neither probe failure nor device removal
-releases the references.
+> The i.MX94 Display Control Interface features:
+>  * Up to maximum 3 layers of alpha blending:
+>     - 1 background layer(Layer 0);
+>     - 1 foreground layer(Layer 1);
+>     - A programmable constant color behind the background layer;
+>  * Each layer supports:
+>     - programmable plane size;
+>     - programmable background color;
+>     - embedded alpha and global alpha;
+>  * Data output with CRC checksum for 4 programmable regions;
+>
+> Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com> # bridge refcounting
+> Signed-off-by: Sandor Yu <sandor.yu@nxp.com>
+> Co-developed-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+> Signed-off-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
 
-Register a devres action for each reference as soon as it is acquired.
-The card registration is managed by the same device, so the actions
-release the nodes after the card has been unregistered.
+Looks good, but there are some issues reported by sashiko. Can you either
+fix them or explain why the code is OK?
 
-Fixes: b86ef5367761 ("ASoC: fsl: Add Audio Mixer machine driver")
-Signed-off-by: Zhu Jun <zhujun2@cmss.chinamobile.com>
----
- sound/soc/fsl/imx-audmix.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+Luca
 
-diff --git a/sound/soc/fsl/imx-audmix.c b/sound/soc/fsl/imx-audmix.c
-index 2372cd26ee47..8d7faa1b9cc3 100644
---- a/sound/soc/fsl/imx-audmix.c
-+++ b/sound/soc/fsl/imx-audmix.c
-@@ -10,6 +10,7 @@
-  * https://www.gnu.org/copyleft/gpl.html
-  */
- 
-+#include <linux/device/devres.h>
- #include <linux/module.h>
- #include <linux/of_platform.h>
- #include <linux/clk.h>
-@@ -123,6 +124,11 @@ static const char *name[][3] = {
- 	{"SAI-Playback", "SAI-Playback", "AUDMIX-Capture-0"},
- };
- 
-+static void imx_audmix_put_node(void *data)
-+{
-+	of_node_put(data);
-+}
-+
- static int imx_audmix_probe(struct platform_device *pdev)
- {
- 	struct device_node *np = pdev->dev.of_node;
-@@ -206,6 +212,11 @@ static int imx_audmix_probe(struct platform_device *pdev)
- 			return ret;
- 		}
- 
-+		ret = devm_add_action_or_reset(&pdev->dev, imx_audmix_put_node,
-+					       args.np);
-+		if (ret)
-+			return ret;
-+
- 		cpu_pdev = of_find_device_by_node(args.np);
- 		if (!cpu_pdev) {
- 			dev_err(&pdev->dev, "failed to find SAI platform device\n");
-
+-- 
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
