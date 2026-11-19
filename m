@@ -1,56 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795084694;
-	b=XShbY0caepTNLF5KG06XiyTXBwN1Rve7A6TeWdYUqg9J/BvMVgibSGCCgHPFLnYrKRj/
-	 u2zhBjVluWuzX/kqjijg7Q4P+D3whFDuSK3aqVfVBZLJaePDQN9pH09ab/6AM0BDgbi3n
-	 N5WeeoPxJS1k1yVVmFr2EfkTJFyODnQAv1RBRijzGds7LBvkraeF51m/Q/4GkMhA4p+Wn
-	 OuaB9P5rcfDtJ77f+Fu3j2J07Vmte6ILd7Naysn5mFi44ics7w7IXwUmOGdPo6u3/hSlu
-	 Vi5cBxFR5MqYF7pmoOzkrlUbXLoGamOfrVTcZwoq10yiKSH5tqZzGu/dWyMAQP1GpAQ==
+	t=1795084695;
+	b=mwv/FraJ5/XQ+c1HxKgM/8LUh3rbb4seLZ4aD6jF0VJc7eExuSASgYO0kl3iCi8AZl+m
+	 tbuN6MK5pKcBjhnZqaRo+7psW12pNX9pJ8sw5qk2K8XmSDMwaf6P5/QlYt4Ys/C3qferV
+	 8PV7uPAcrgha7/nAwN3JKeLp5yHcm0BYfq4VzhzXLGuBoDUBe9zqlsT5LlxlBO42y/u+C
+	 qxFaRku+uR/5y9SkPEbzWDDMp/XIJyYX1IA6EGT0VfDQyMXNbIapfMZvHWdLTkrMuszJW
+	 nSARNw0VRRnu6jq64ql82QoQ4O0wa4pDMT05TnoQKLTBgNqlATAVLRIDQiDPa8IIz8w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795084694;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795084695;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=3pcyGAvMf58HInW/rNv20dPAompvXtqrqZgDs1TKSqA=;
-	b=ZI+joF9l+DkfXJLGCu+qJhCS3wVlF8nakPxgpz/ngXHPW8EqwZC+yCGaxQVRSNEusnit
-	 3IXhOVwWMnIevvtI1h/PVh0yZIvpWUvcU1mvuxFs/toTs9T9B7xyM7xOhF1yGS06jAgBS
-	 gr7SlS17ZtQ0Y7X1PeN2p5Nd60epvxL12qTTGV8Q+P8UuMWZaZKa1TVf+7ZelFOaXot/i
-	 39OvOV+s5TogLc2yIjAxEdo8+hXWkNpCKHxtKEt+FhCTDt2qPSk5xE+NEOQEadDexTmHI
-	 OTlimmJaX5F83f6RYDIjaP67KKYowaPQZ7DQp01K64AZcRYxJpyZcoIVR3k69pkNFng==
+	bh=hb9SBAxjoFg7sCmioO5nEQcXRYJHzr79D+k5eb5o8ZI=;
+	b=fjK9spu/TKAlBgjbyaSDJCEm9MFVs7N2DWBDWMCOmylZvxB5xqsPx9rCKhjExOuPpEve
+	 yzI0DYTp//wbA+u4Gt9hQKoHQ1MiN1Hp6R6xbGo/UeePLhVyotOyQPUAFbmJsJ/WBeeF5
+	 uiUI9toqOe2AFqC/bZS0RmQbzEvwM+3gdcIT1+Hs9zmBRoTLuvrBSVQYH6y2oyN+qqBK0
+	 cwHtB6UwDWfdqxKXJeA8aClECHZBFX7bJ9OcnGlqZSseYs8spxDl3T2NCYTEo5dVwg/64
+	 tS1XYYD1PcyqJlo6XNkBgAH+pzCoHvlGU0Rsiu8ct1n5K8FEDXmDIYf2D+bMivlR1KQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OPIYvPzA;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GsWbzdnf;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 641F5606A320;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2CEC606A320;
 	Thu, 19 Nov 2026 10:38:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OPIYvPzA
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A077C1F000C4;
-	Thu, 19 Nov 2026 10:38:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GsWbzdnf
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D1691F000C8;
+	Thu, 19 Nov 2026 10:38:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1795084694;
-	bh=3pcyGAvMf58HInW/rNv20dPAompvXtqrqZgDs1TKSqA=;
+	bh=hb9SBAxjoFg7sCmioO5nEQcXRYJHzr79D+k5eb5o8ZI=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=OPIYvPzArsRl1abQFgLDbW5IAiC+mpJF55iV/RrEGXPCq5ovSryeeK+MJhN69f579
-	 lXvo2YLQ5jpWoLSs8nvYhCyIxL3/xiPO1OWkyAANnNchR+e0FWlUyxGCsYEhVSNZAI
-	 hOE3BHuEUNnCmO8kdPGwZdwrH6HNPyqSzVj1AgDKNcFQId+nzlKRWeQaoSVPqX5mFl
-	 IlJP9vzE/Bw1AOfCoCernWt+C9X1gLzEFNTPErA1hxuXPfm/6RjYeABcqYfITpMdqu
-	 mIjnSbxK21xsxrutpw2C6TF7JCGic7+RJOuk5C9+BrHpDqVOOoVrGAU/0gWE4uwD9F
-	 DCWZSkmJgRSwA==
-Message-ID: <sashiko-outbox-222969@kernel.org>
+	b=GsWbzdnfXgmMCl/iPSDzYUzKIWamn+EpyMJ/CbOcuuH09IWC2R4Yd+zbrl3A4llls
+	 4nXYaae+YogmzOv1w86I0VyYKo4a9hLj4td3aBXXm/UHNSAPnOdh8ncWhYUC9Mn0tS
+	 w8ZMV/+LYIGlbeIL0Oivmge2eiYG9Ja0Vh+oLo4JytrX7NtT7UkRzRXNJ589Kvgizm
+	 mfagUND3m3vV4eCEKcANcu4b4kokbmVsGU76CjNobTsXlsHRU/ZHFqmq8vXtfbk2FB
+	 +VRA314VA6KIR/FyD/1txC5WmVyTCn6aUIeT3Zd6fz3S4J/2qVu/l+hbOBfBL6s4Tl
+	 ygIpr7IoLdKmQ==
+Message-ID: <sashiko-outbox-222970@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH net-next 3/4] net: enetc: add i.MX952 ENETC support
+Subject: Re: [PATCH net-next 4/4] ptp: netc: use 133 MHz system clock on
+ i.MX952
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Frieder Schrempf" <frieder@fris.de>
 Cc: imx@lists.linux.dev, devicetree@vger.kernel.org, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20261118-imx952-enetc-v1-3-25721440602e@kontron.de>
+In-Reply-To: <20261118-imx952-enetc-v1-4-25721440602e@kontron.de>
 References: <20261118-imx952-enetc-v1-0-25721440602e@kontron.de>
- <20261118-imx952-enetc-v1-3-25721440602e@kontron.de>
+ <20261118-imx952-enetc-v1-4-25721440602e@kontron.de>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 19 Nov 2026 10:38:13 +0000
+Date: Thu, 19 Nov 2026 10:38:14 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -60,53 +61,68 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Medium] net: enetc: wrong PCI bus lookup in
-  enetc_get_phc_index_by_pdev() on i.MX952
+Thank you for your contribution! Sashiko AI review found no new issues
+in this patch, but noticed 1 related pre-existing issue it does not
+introduce:
+- [High] ptp: netc: divide-by-zero in
+  netc_timer_get_reference_clk_source() [1]
 --
 
-commit 9488db0afb3e3295b4063b2f78e46b5195953993
-Author: Wei Fang <wei.fang@nxp.com>
+commit e475f16482c806a640a726db8d69f83db4761a16
+Author: Clark Wang <xiaoning.wang@nxp.com>
 
-net: enetc: add i.MX952 ENETC support
+ptp: netc: use 133 MHz system clock on i.MX952
 
-This commit adds driver data with a 133 MHz sysclk frequency and PHC PCI
-lookup support for i.MX952 ENETC (revision 4.6) PF and VF devices.
+This commit sets the default NETC timer reference clock frequency to
+133 MHz on i.MX952 (NETC revision 4.6) when no reference clock is specified
+in the device tree.
 
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c b/drive=
-rs/net/ethernet/freescale/enetc/enetc_ethtool.c
-> index 7965dfd06f5f6..3c6c6fc0ab8cf 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
-> @@ -1149,6 +1149,7 @@ static int enetc_get_phc_index_by_pdev(struct enetc=
-_si *si)
->  		devfn =3D PCI_DEVFN(24, 0);
->  		break;
->  	case ENETC_REV_4_3:
-> +	case ENETC_REV_4_6:
->  		devfn =3D PCI_DEVFN(0, 1);
->  		break;
->  	default:
+> diff --git a/drivers/ptp/ptp_netc.c b/drivers/ptp/ptp_netc.c
+> index 1a327a7561e39..7b9c0a4cbb4c3 100644
+> --- a/drivers/ptp/ptp_netc.c
+> +++ b/drivers/ptp/ptp_netc.c
 
-[Severity: Medium]
-Does enetc_get_phc_index_by_pdev() look up the PTP timer on the wrong PCI
-bus for i.MX952 ENETC1 and its VFs?
+[ ... ]
 
-On i.MX952, ENETC0 is on bus 0 whereas ENETC1 is on bus 1:
+> @@ -858,7 +860,10 @@ static int netc_timer_get_reference_clk_source(struc=
+t netc_timer *priv)
+> =20
+>  	/* Select NETC system clock as the reference clock by default */
+>  	priv->clk_select =3D NETC_TMR_SYSTEM_CLK;
+> -	priv->clk_freq =3D NETC_TMR_SYSCLK_333M;
+> +	if (priv->revision =3D=3D NETC_REV_4_6)
+> +		priv->clk_freq =3D NETC_TMR_SYSCLK_133M;
+> +	else
+> +		priv->clk_freq =3D NETC_TMR_SYSCLK_333M;
+> =20
+>  	/* Update the clock source of the reference clock if the clock
+>  	 * is specified in DT node.
 
-drivers/net/ethernet/freescale/enetc/netc_blk_ctrl.c:
-#define IMX952_ENETC0_BUS_DEVFN		0x0
-#define IMX952_ENETC1_BUS_DEVFN		0x100
+[Severity: High]
+This problem wasn't introduced by this patch, but can a reference clock in
+the device tree cause a divide-by-zero in
+netc_timer_get_reference_clk_source() [1]?
 
-Unlike i.MX94 (ENETC_REV_4_3), which provides a timer endpoint on each
-bus, i.MX952 only has a single NETC 1588 timer on bus 0 at PCI_DEVFN(0, 1).
-Because enetc_get_phc_index_by_pdev() queries si->pdev->bus via
-pci_get_domain_bus_and_slot(), calling it for ENETC1 (on VFs where of_node
-is NULL, or on PF when the optional ptp-timer phandle is absent) searches
-bus 1, fails to find the timer, and causes enetc_get_ts_info() to fall back
-to software timestamping.
+drivers/ptp/ptp_netc.c:netc_timer_get_reference_clk_source() {
+    ...
+		if (clk) {
+			priv->clk_freq =3D clk_get_rate(clk);
+			priv->clk_select =3D i ? NETC_TMR_EXT_OSC :
+					       NETC_TMR_CCM_TIMER1;
+			break;
+		}
+	}
+    ...
+	priv->period =3D div_u64((u64)NSEC_PER_SEC << 32, priv->clk_freq);
+}
+
+When a DT clock is present, clk_get_rate(clk) overwrites priv->clk_freq
+without checking for 0 before dividing by it in div_u64() (and later in
+netc_timer_get_gclk_period()).  If an uninitialized or misconfigured clock
+provider returns 0 Hz, probe will crash with a divide-by-zero exception.
+
+[1] https://sashiko.dev/#/bug/linux-3717398e-82c6-4e7a-897d-56088b4c53be
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261118-imx952-ene=
-tc-v1-0-25721440602e@kontron.de?part=3D3
+tc-v1-0-25721440602e@kontron.de?part=3D4
