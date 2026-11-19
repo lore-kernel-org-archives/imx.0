@@ -1,68 +1,64 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=188.40.3.216
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795088450;
-	b=W4FuZr35EiVm3mShKXq5G09FftavF/sNgZFAQUP7kkInzIIXi4kaLl1XutuANDPKrcAC
-	 dVYhLzhJT6/WoPbSsEwJ1EPKMb40EJGsU0YYaRBGA57Vp3gUnduiqCpmkkngYdK/yr3D1
-	 gk+1lzLKLQsQzUObc0W2HzR+1//oW5Gl1WNJtujxm5FR/jBiiTB/XlI4o2TGo07JVbF44
-	 YZOGz0vjznNAp0fUso7NNHkVHvp+nEH9XixRL2mBNWSOSHS62chcTlUXG5yNmEAgUkLgB
-	 kFmeFeU/NpI9kYoI7hvnhEqwF2PDvxsdPbB+S/kn4XI2Eg36yebL3ktBrEcDdREJl6Q==
+	t=1795090389;
+	b=QUO48o8Wxd35qFIzqGroByHlH1PsJd95YDXWgAOy6Vx3TNmbegXmDNC8kC3yN0+Y97KJ
+	 6657K8iAlt+HaPzEwDSFFSQ3DTJP+RMyvLqep9EHhjgFm1Q/GK4nHQUYoC0ofLP9VodAC
+	 iKQa6ALQc7m6pyknSiZyNCRAjq70uTdffjxSGT2IKcIjd+jAU5qKr+JWDvmtt3aY4iNW6
+	 2zzxusFlWe70Tz0hKN34y7F9/94qt7J/jxvVFmHW3LHX/8verKq2F80UD6cieFVTFp4YY
+	 Z+0oYgZ9rBa+UEDZKf1t7jbiwSQJVXepA0hCggnV3tYhE+JEHdWUf2lAb4jZlntqspg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795088450;
-	h=DMARC-Filter:Received:DKIM-Signature:Date:From:To:Cc:Subject:
-	 Message-ID:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=bUsF2BFmyfh8u4YXfKRfweeg9EbYkyMl9BdaPhOcFI8=;
-	b=urUxszhsd2VYJrwRvjyIYJu1CClx2hswfqeltmlAnSmqM+5isK+9HLf0Z7jyw6EM96px
-	 70sawdHwFawzSUbCWzY2ctkjT7M83P7iR7F2ZdZdWJ5xxgzpG5zPsFRHbXF2IK/++9jIm
-	 MxNL6R/BAxiIrhV2QLeZla66kznHz2aiQ8S0yRa0c67dGlNK9zdSNIX3l1LNLpj5Hj6SF
-	 EaqBsqFByeXI9K5nms9AhF6wTJWvuVf85RHxOQe5CRnemXUwAaEgGmxYAYgDtpGJ8HyDd
-	 K1QhGut1yVxLTeOTG4zqvAd9XL2zZAATEHFR3SQrcXs4kOJDkrhJR5txbSNkKdYwEWQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795090389;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 X-Virus-Scanned;
+	bh=REsnftpp5R8mVp6m2NhUleDB0j+A8D+8snw/QN9P/es=;
+	b=4uolKJLnuXWhWwvOjYBPwvKdmBaWerEG3yA/kpq+1v7TU7ebM4L9gbWHumQyK489i0CV
+	 q7sKaWTMlWIyaufBt8AuEj/NjLsnHa/LxVt3ILPX2ttr/G319m1RIRKAwPIy8WGWm8aO+
+	 5zZqGqUl5JOk0Lkm5S5IPNIUGA183dvQblpCQZTg9Vc1QlgI6mDrZ71tSCcse3eaVmLWK
+	 wvjfk6nvsBVoq0kSRhaQN8+M+7J3qMcjQ5tWaAQGmiup0dkHtZsxO6CZDBzSzjPIlqqtz
+	 tYBOyQc3Gkz6H6H3eg0JkE9lj5N1m1qaLxi6mSM+4vJSmKi8nawhSm2PiInIY49yXNA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=dolcini.it;
-	spf=pass smtp.mailfrom=dolcini.it;
-	dkim=pass header.d=dolcini.it header.i=@dolcini.it header.a=rsa-sha256 header.s=default header.b="iSp5/LpD";
-	arc=none smtp.remote-ip=217.194.8.81
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	dmarc=pass header.from=ew.tq-group.com;
+	spf=pass smtp.mailfrom=ew.tq-group.com;
+	dkim=pass header.d=ew.tq-group.com header.i=@ew.tq-group.com header.a=rsa-sha256 header.s=default2602 header.b="Ow1j+iK/";
+	arc=none smtp.remote-ip=188.40.3.216
+Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF144606A326;
-	Thu, 19 Nov 2026 11:40:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AF144606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E50A606A320;
+	Thu, 19 Nov 2026 12:13:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0E50A606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=dolcini.it header.i=@dolcini.it header.a=rsa-sha256 header.s=default header.b=iSp5/LpD
-Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 83B30249CF;
-	Thu, 19 Nov 2026 12:40:45 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1795088446;
-	bh=bUsF2BFmyfh8u4YXfKRfweeg9EbYkyMl9BdaPhOcFI8=; h=From:To:Subject;
-	b=iSp5/LpDRebEE2dL1d8oR0gjk2x4hoaFOYKH5eR1fQ0XANEJWSMg713KP0F/tTkcH
-	 59X2iUmbKsTrWu9aB78yyv4lens8+4d7a3BUDi69lsiC9kjhcgapB+8UJGr4C3sF1B
-	 t348F4A2tuaWsF9JiNNqO4f9BDonT8YRwzl3kE9gnTtvNeJIow2ljGoscks7QeGG4d
-	 Hrp/mgraJIfLF/crc/xqZT/922etN77mUXUA9ftYZbVh4JoCCAC/lcPjmIvdAQOOfY
-	 5PRacq4vo16f05C6NVv3sEeuSl6dEUt50HfrrnWyDHh2t556GEGpbOgzq8hsgmo8ua
-	 yjP5WVb9mhZ/Q==
-Date: Thu, 19 Nov 2026 12:40:41 +0100
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Peng Fan <peng.fan@oss.nxp.com>
-Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Peng Fan <peng.fan@nxp.com>, linux-remoteproc@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-rt-devel@lists.linux.dev,
-	Bjorn Andersson <andersson@kernel.org>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Steven Rostedt <rostedt@goodmis.org>
-Subject: Re: [PATCH v3 00/10] mailbox: imx: Use threaded handler to avoid
- kworker in imx's remoteproc
-Message-ID: <20261119114041.GA166708@francesco-nb>
+	dkim=pass (2048-bit key, unprotected) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.a=rsa-sha256 header.s=default2602 header.b=Ow1j+iK/
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=ew.tq-group.com; s=default2602; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=REsnftpp5R8mVp6m2NhUleDB0j+A8D+8snw/QN9P/es=; b=Ow1j+iK/0IXr3VjEg+HVcVRwx4
+	ClZh46wm3jwoJUVDAxFIqsxoZ2Ne7kNGjkKMnV1I2iuu+4Y2/PszSHbhbhw4W1hy3L+HiNX3dHrM5
+	DP1TcGgLpSwzVCdI7sh8RlIqxLJtnk9KkHGMu2gGvJJ8YIaf8R6+QmTCmV5r1gY/cqOqvV67wD21z
+	xv2rpZcvIdV5rCaZLOTboYJmaWqrI1UxU99KchXsx3c9Y9sl+ATp4XwLSLijEOfgRMmLOQfdQONKL
+	LcmavD58kF7/4vNyS7B/Upkr7kSvvHtOybAQXD2X336TWJHk9+sERgqdHlv1s9U+mQ6FVhy5cx3GH
+	hWdIyBBw==;
+Received: from sslproxy03.your-server.de ([88.198.220.132])
+	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <max.merchel@ew.tq-group.com>)
+	id 1xU10k-0009Qi-1O;
+	Thu, 19 Nov 2026 13:13:06 +0100
+Received: from localhost ([127.0.0.1])
+	by sslproxy03.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <max.merchel@ew.tq-group.com>)
+	id 1xU10k-000GBq-0t;
+	Thu, 19 Nov 2026 13:13:06 +0100
+Message-ID: <327196f2-9063-4164-a556-3093a649b5e0@ew.tq-group.com>
+Date: Thu, 19 Nov 2026 13:13:05 +0100
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -72,84 +68,100 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <av6Wc+kHFKqwFHAR@shlinux89>
- <20261116102331.K8Sc86V9@linutronix.de>
-
-Hello Peng, Sebastian
-
-On Mon, Nov 16, 2026 at 11:23:31AM +0100, Sebastian Andrzej Siewior wrote:
-> On 2026-11-16 10:23:41 [+0100], Francesco Dolcini wrote:
-> > Our CI shows a ~10-15% eMMC sequential read throughput drop on i.MX8QXP
-> > and i.MX8DX (Colibri iMX8X, Cortex-A35), starting with v7.2-rc1 and
-> > still present in v7.4-rc3 (hdparm --direct -t: ~129 MB/s -> 105-120
-> > MB/s on i.MX8DX). i.MX8QM, i.MX8M and i.MX9 are not affected.
-> > 
-> > 5d1c0000.mailbox interrupt count before the test went from ~8k on v6.18
-> > to 60k+ on v7.3/v7.4.
-> > 
-> > Peng: any idea/suggestion? Does it makes any sense to you?
-> 
-> Can you pin point it to a patch in this series? My guess is that
-> something with the masking/ unmasking went wrong. The increase might be
-> result of the interrupt keeping firing while the threaded interrupt did
-> not have a chance to run.
-
-Reverting 36cac4b5101f, 3225a745f517, e55bea377d49 and 692e1bc96a5d
-restores 149 MB/s with schedutil.
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ARM: dts: imx6qdl-mba6: Add EEPROM nvmem cell for all
+ board information
+To: sashiko-reviews@lists.linux.dev
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org,
+ conor+dt@kernel.org, Frank.Li@kernel.org, linux@ew.tq-group.com
+References: <20261119102531.2995127-1-Max.Merchel@ew.tq-group.com>
+ <sashiko-outbox-222965@kernel.org>
+Content-Language: en-US
+From: Max Merchel <max.merchel@ew.tq-group.com>
+In-Reply-To: <sashiko-outbox-222965@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: Clear (ClamAV 1.4.6/28188/Thu Nov 19 07:24:39 2026)
 
 
-On Thu, Nov 19, 2026 at 02:25:55PM +0800, Peng Fan wrote:
-> On Mon, Nov 16, 2026 at 10:23:41AM +0100, Francesco Dolcini wrote:
-> >Peng: any idea/suggestion? Does it makes any sense to you?
-> 
-> Please help test whether this helps:
-> 
-> diff --git a/drivers/mailbox/imx-mailbox.c b/drivers/mailbox/imx-mailbox.c
-> index 683ccea6f2ba..e29044cf4b92 100644
-> --- a/drivers/mailbox/imx-mailbox.c
-> +++ b/drivers/mailbox/imx-mailbox.c
-> @@ -635,7 +635,7 @@ static int imx_mu_startup(struct mbox_chan *chan)
->  {
->         struct imx_mu_priv *priv = to_imx_mu_priv(chan->mbox);
->         struct imx_mu_con_priv *cp = chan->con_priv;
-> -       unsigned long irq_flag = IRQF_NO_THREAD;
-> +       unsigned long irq_flag = IRQF_NO_THREAD | IRQF_ONESHOT;
->         int ret;
-> 
->         pm_runtime_get_sync(priv->dev);
+On 11/19/26 11:37, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue to consider:
+> - [Low] ARM: dts: imx6qdl-mba6: duplicate @20 unit-address in
+>    nvmem-layout
+> --
+>
+> commit b5a0ac272fe3356ca3f0ff5cbf739f7f5d760dab
+> Author: Max Merchel <Max.Merchel@ew.tq-group.com>
+>
+> ARM: dts: imx6qdl-mba6: Add EEPROM nvmem cell for all board information
+>
+> This commit adds an EEPROM fixed-layout nvmem cell at offset 0x20 covering
+> board information on MBa6a and MBa6b carrier boards.
+>
+>> diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-mba6a.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-mba6a.dtsi
+>> index aca320ee8f476..9b199b277c220 100644
+>> --- a/arch/arm/boot/dts/nxp/imx/imx6qdl-mba6a.dtsi
+>> +++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-mba6a.dtsi
+>> @@ -29,6 +29,10 @@ nvmem-layout {
+>>   			#address-cells = <1>;
+>>   			#size-cells = <1>;
+>>   
+>> +			board_info: board-info@20 {
+>> +				reg = <0x20 0x60>;
+>> +			};
+>> +
+>>   			mba_mac_address: mac-address@20 {
+>>   				reg = <0x20 0x6>;
+>>   			};
+>> diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-mba6b.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-mba6b.dtsi
+>> index c7bbd6195fef1..517913abbc66d 100644
+>> --- a/arch/arm/boot/dts/nxp/imx/imx6qdl-mba6b.dtsi
+>> +++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-mba6b.dtsi
+>> @@ -39,6 +39,10 @@ nvmem-layout {
+>>   			#address-cells = <1>;
+>>   			#size-cells = <1>;
+>>   
+>> +			board_info: board-info@20 {
+>> +				reg = <0x20 0x60>;
+>> +			};
+>> +
+>>   			mba_mac_address: mac-address@20 {
+>>   				reg = <0x20 0x6>;
+>>   			};
+> [Severity: Low]
+> Does adding board-info@20 alongside mac-address@20 under the same
+> nvmem-layout parent in both dtsi files cause duplicate unit-address dtc
+> warnings?
+>
+> Because both enabled sibling nodes share the @20 unit-address and overlap
+> at offset 0x20, building the MBa6x DTBs with W=1 or W=2 triggers
+> unique_unit_address_if_enabled and unique_unit_address warnings.  Could the
+> fields be defined as non-overlapping cells at their respective offsets, or
+> exposed through a dedicated nvmem layout?
+>
+Hello,
 
-It does not help.
-	
-The analysis below was done with Claude help, on measurements I took on a
-Colibri iMX8QXP. I hope you can pick it up from there, this is not my
-area of expertise, and the best I can do is to send a revert for those 4
-commits.
+the MAC address is the first part of the TQ-EEPROM structure for 
+module/board data (MAC, serial number, type).
 
-Every SCU RPC now wakes the SCHED_FIFO irq thread (TX done and RX), and
-while an RT task is runnable schedutil requests the maximum CPU frequency.
-The A35 clock is CLK_GET_RATE_NOCACHE, so each frequency change is
-followed by an SCU RPC reading the rate back, which wakes the irq thread
-again. The loop never settles, even when idle, and the transitions (ATF +
-SCU) are what costs the eMMC throughput (and I assume there is more
-impact on performance than just this).
+The function “nvmem_get_mac_address” in “net/ethernet/eth.c” retrieves 
+an nvmem cell containing the MAC address and compares its length to 
+ETH_ALEN. Therefore, it is not possible to use the same nvmem layout.
 
-v7.4-rc3, 4 CPUs, idle irq/cpufreq transitions per 10s, hdparm --direct -t:
+Consequently, two nvmem layouts are required, both starting at the same 
+offset.
 
-                               irq    trans  schedutil  performance
-  v6.18                          -      -    149.7 MB/s     -
-  v7.4-rc3                   16203  10800    113 MB/s   150 MB/s
-  v7.4-rc3 + IRQF_ONESHOT     7832   7813    113 MB/s   150 MB/s
-  v7.4-rc3 + revert 4 commits   60     36    149 MB/s   150 MB/s
-
-The 4 commits are 36cac4b5101f, 3225a745f517, e55bea377d49 and
-692e1bc96a5d; reverting only the RX part (e55bea377d49) is not enough.
+I have not found a way to use only the first part of an “nvmem layout” 
+or to create sub layouts for sections of an existing layout.
 
 
-#regzbot introduced: 692e1bc96a5d^..36cac4b5101f
-#regzbot title: mailbox: imx: threaded IRQ handling causes a cpufreq transition storm on SCU-based i.MX8
+-- 
+Best regards,
+Max
 
-Thanks,
-Francesco
+TQ-Systems GmbH | Mühlstraße 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht München, HRB 105018
+Geschäftsführer: Detlef Schneider, Rüdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
 
