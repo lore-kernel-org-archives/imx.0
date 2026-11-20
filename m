@@ -1,98 +1,104 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.51
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795191128;
-	b=yaWRCuy/ltKB3Co0EKTZKB6tvEhtN/D5gAckRZiIayAgTBH17YrBkR2z7B3w8MWhC9GL
-	 flll/mqCEBYYf6ETR3Zi4jlTt5G8dd0UGGfV67qPF2MulnQ+Sje0nbkUgjNHAMJfBCw2Q
-	 rSsAjw7OluJgHCZnNTNbjdUthLgO1rhm/WcITFJ98RD3ZZ8gqrTWpzmy75pcfjOPzPrlU
-	 hKsYFP5vDaM06YoInY39eSRR4v/r4fvaYECflOWZv6qDsf/qeA4JcX0iFLYzTzt8xAEYn
-	 CJ1JUZQM6fCTHrKLXdczAdgd+LEaCMb/JDbCX3WQVvr+qS+qIMJBcfr+6zE/Wy9MibQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795191128;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=a35Mq+RYpt2dEaWC1d1eJMfVyB9If3Q8Pl622VJ/HUQ=;
-	b=ZFtDG/CqVbO6EVLQdegyr72XkGQZ4ScItVHOA6wIlW3U4VR1lBYpSwui1etzHtcQb9hm
-	 AW37VSpdfAaoWE9V00iTUzWYmd9sikd2R4Aki/A4C6rOjfek7KXT88JPE/qxLBTXX07w0
-	 dEQa+NgiQZIe5E6Xt0WXIxgLmqiPqtaJwEKC4BmE6V2yc5v60wTQzVIqdkf7voJOBnn/S
-	 VYKJbDWgwOZkgNkBWrGewhyBVTr0rYKZ9iU6oAblChRazbJ8wKSFC6gtw7UxQKIBM0qUA
-	 /1ZJRGkxr7Yb/2A75gfby6X65hURvzR/tEIlOXRyQu6RmOLyXBs10DQkAFZKk9Ppm1g==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=amarulasolutions.com;
-	spf=pass smtp.mailfrom=amarulasolutions.com;
-	dkim=pass header.d=amarulasolutions.com header.i=@amarulasolutions.com header.a=rsa-sha256 header.s=google header.b=L3e+1lDI;
-	arc=none smtp.remote-ip=209.85.128.51
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.83.47
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795192221;
+	b=N5g3iE9O0nIhzuP/e6flofcAmoliCJGGTaa2GucLLutiydJS+8SgGvmyesoqq0ipJzHy
+	 qvw4S1UpCHtsdiPbW8P6v1L2fA6s4N+vWeFWk6WWlDs3z6AwQc4wFzpvcZTSsSJYiqugi
+	 BuKbjNnRbuktT55rnVl96JrzPPFh34behit9FtGSHFZYOxlejZ0Mrfs7eU3ZhPUf3sArY
+	 it+TOdLRLqrptYhylAqGecCnK1QOPBPNzuqO6eGw2yAOz+RNvr3WVuBz29CMhaRhQlqFN
+	 u7UydSfa5YSJY5rJPikg5V/7BJE2UY4lkPSogOcEG712glC1FyYGcL9/0EI3Ms/qXsg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795192221;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:In-Reply-To:References:Content-Type:
+	 Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-LD-Processed:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=VKYRBdXb/GbE15X2GdmuZ6dvn5CC/xJ1Uon1SW9ll8o=;
+	b=dPEe35bYwuebqKxzaidrilH0Ty2GYHknzwIgZfSwlR0FofI4ao9gKxIQ0hgpNDE5TJPP
+	 hJul7oj+qvRKwGRdgP6nKLpsfzt97pR96/YzCQ488FOg+mafkwamqYHDCLCWWo7RAVpLr
+	 ST+t0OurU4FRmeFCRxhLlfcFAJ8bLRSiPiuXgYWVmf/AJl8jmRDSagvNgQiw8Fg/9poWN
+	 uepIiM16rlWOtxwL//2Br6yqWh62rv9keBH73O6g8dpLfLP1a8+2gBhRQ/I087HyyidpN
+	 QABjU5u/700NuVjLhWZXSCSgUaceBHUmNuWcR9jMELET4ts1fx5QsGqnt4rYmpsZllw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=oss.nxp.com;
+	spf=pass smtp.mailfrom=oss.nxp.com;
+	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=Wt0uEjJo;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.83.47
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013047.outbound.protection.outlook.com [52.101.83.47])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97310606A325
-	for <imx@lists.linux.dev>; Fri, 20 Nov 2026 16:12:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 97310606A325
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3821660A2608
+	for <imx@lists.linux.dev>; Fri, 20 Nov 2026 16:30:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3821660A2608
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.a=rsa-sha256 header.s=google header.b=L3e+1lDI
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4a1fbd52ab6so7654845e9.0
-        for <imx@lists.linux.dev>; Fri, 20 Nov 2026 08:12:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amarulasolutions.com; s=google; t=1795191126; x=1795795926; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=a35Mq+RYpt2dEaWC1d1eJMfVyB9If3Q8Pl622VJ/HUQ=;
-        b=L3e+1lDI01eWk+gG7hhEMZhV7lCjxL5jWeNSU4ynW8lrvcjjC8pYkgQBQs7DpzGI49
-         2s00odxTiMXUa/cPDfw6GuaaLccHkFBt3OZ+ZXNeylTRK9FKSUCDCIUA/eAaGsI1sxlj
-         ad5weGEslNROS8u7GFsacRzynB4o3sq/OmcFA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795191126; x=1795795926;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=a35Mq+RYpt2dEaWC1d1eJMfVyB9If3Q8Pl622VJ/HUQ=;
-        b=cSgqqQuHf6xcQNdus8ug7wdLae/sDLpA0kitIi/8GMtWrnkxM3g5urcoTWntID7r3D
-         M9y1Gq3Df+Luc3zO/58xxqCpzpRFq8VEGDJ4WZv35pZv3p1BFbjGo+6DDhtiZocnL8u5
-         rJy2UuGhZuJ2qc4mLcV3lYM1by4hApfkDGHqEqExuMw2D8f49gi+v1YEZuxaommVox+x
-         Do54MfL4y5H0X6vRLtNWlPp7xJBltTLjZSFBk/u5J583mKrWNRJVMQrveb6Xa+pKe1dx
-         PzAcoBnc8xKXv5PTBMvr27HYt3EWDlZCIWXQhOujW3EoOpN21YKWAn6ciNTJXH+CVMYW
-         Jtyg==
-X-Forwarded-Encrypted: i=1; AL+hErFPZmc+9t4FRUtT6tw7QScYmdOQg9CHD4Jcgw1eoET9QTAyp350vf9NY3BuKdZT9PDnp4g=@lists.linux.dev
-X-Gm-Message-State: APuU4Z+xY/j+b3YbeBfOzUVeHk4Ji3eVoR0P0dLmzBMlCbG7LQY4cuiL
-	t78EPgkdqoUb2gtQCEWZZxi2BmOGwI0n5qLf7otk+ndEtla5sFgIatCZiHCHGQ992wY=
-X-Gm-Gg: AYBFou2drMqpfrd/y1DXAgrRlC+0pHZYT4cYQGYYHc0sF2PV9YJFCrbjK4t3Xzu+Wh4
-	idC6Zvb4NixpAhlYIAaIzHyL212UsXfYc2CGGUt+4OZPDQAfG1s50JoOZtrv360G06zOR2I6Jmv
-	nRnuHx5rKb8LkdpDP+El0b2PXbPltBC6sicmpNP15DBByVCh+yGAZNvaJJH8tjPUEJSE+d0UB+5
-	TmSvk6jS7CmYPWRTtaU2ykANqWeR56/du9/byOszKTv6jKQko4Aio1vH7RA5rjOwL0PucnlWXyD
-	z5nYX9B1W7J3IEpz9DUNJ7uT7D3HzlvTiCXOkBNMnDUC03uM36decQ6ZnEIsirODmqAGMkFPp/C
-	dfpvCYAIFf5kMipjsVkhzvYdOyEluKDFUX2usfRzJl3cyOqhpnTy6+JKTF5NjN5vXVWssL4jluA
-	p0jyUUtGdSSJt3JE7ScwTyyoJWcp7EuzC6pKwY2NoGfcrJdU9G8VK60RMaPYMhiEybs9TuHEij7
-	v4H64J1BbjQPxl5gvw7I5oTddB9cHcQe0iNsldtWuIj3r1NoyD1nsycMqjT3RlEcbseTidh1WjL
-	jhaInptjGAdrerq+9tv8dZheTDiW7+wElbFi5R0AIfX785xsqjoJUHmiAme9qZ5PvRNUD6JDEip
-	xz15AGJzHir2IKvLGOcJ/oxIUhZs0M9u0evAI54NBj219nvKekww=
-X-Received: by 2002:a05:600c:a15:b0:4b6:267a:dd6e with SMTP id 5b1f17b1804b1-4bb88938a62mr81026755e9.28.1795191125848;
-        Fri, 20 Nov 2026 08:12:05 -0800 (PST)
-Received: from dario-ThinkPad-P14s-Gen-5.amarulasolutions.com ([2.196.41.246])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb8538b3a7sm143459745e9.3.2026.11.20.08.12.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Nov 2026 08:12:05 -0800 (PST)
-From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: michael@amarulasolutions.com,
-	linux-amarula@amarulasolutions.com,
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=Wt0uEjJo
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=x2ekVOgY/YjGxJnmIPieSkseycJ3of6v296yUEJIVFYE/C+gpv0K632yqctHIcswLIyrTKG7ptoxvhmA2wq6zloZ6PE4vqt7m/mvNKOt2FFBFszwYFJbb2kY+Wl5N1mqIigVqYCYynPCNknRT3D5Lc0xH1shUWzfpTsAQd4EfpwT63oT2b7oIO16c6T4UzqrSlntRcVF6+kIV7V6mJwhxvRTomVEGfNyh1blw8nviGbaYUzjql1tT6vYeXTr/s2YosDuiPWl/LmWEBeurc6GYglWcSeOZoE2VXB328uucEJkP2qx+Nd6PH1W0odd+M3ZhQrfYiqfOAf48rMS2bX3Ew==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=VKYRBdXb/GbE15X2GdmuZ6dvn5CC/xJ1Uon1SW9ll8o=;
+ b=hjrg2U8SdV0irEnOQGRnVmxelNgxRi4ACy64I5VYbtcL9fqHsJrGjxIUlmSQgbNUlFBNl63k4w+3ojzvl3ppodnNQ5eN6FmZn0b9qKxRD+cesEnUBJbmS/SUue61/DBGRikjzp3YYRQ1pOz0n1JvivGQKk9vJmgKl8LpOseixhKpqVz/tvJEEeKn4jklCDIXLWmWe4MK3fuSAGW38QpUDlrnqd1UdefxxI2jM8kzuyYaNdTvWIu/xv2CG5/UHRpOIOVrQuTsCKVPLwzLnrl6sXnQdDq61osxpi6uCR+NYXXuMuJxRT0B1+waPGyrD5N7qLGPcCz4ehvrBWAS5xiZWw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=VKYRBdXb/GbE15X2GdmuZ6dvn5CC/xJ1Uon1SW9ll8o=;
+ b=Wt0uEjJouOcMtP2RbEXmPIMXcVdIyfbSEqqxLd7mTPQ2tjiTS0YRxpAfs1oVCFZiKOy7oPa/1/um18kpmuUZib7eQHYudjeGVxol407bGVbaehh3AdgaJCkFL/a6gAZt3F74grZn+sh8FAgGErMHwIMckH16tYoddaX0cEE6oOb/tUcynyLnWj2AcX0sqXB5Ow4Gvv3ywC/3xf4sb9TmOOZlnqY9OQVZxzO0juOpRFal3y3IjZTkhQXSEivN7dcq1glnrJuW3t5CHp/4hE+iy0HzPD5iz4i7cakJmZ1IfF80UstRv/iZSTdL5IveGxtE9ReLf5T6vAithYV61ENQMw==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from MI3PR04MB12438.eurprd04.prod.outlook.com (2603:10a6:290:76::14)
+ by GV1PR04MB9213.eurprd04.prod.outlook.com (2603:10a6:150:28::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.12; Fri, 20 Nov
+ 2026 16:30:16 +0000
+Received: from MI3PR04MB12438.eurprd04.prod.outlook.com
+ ([fe80::c715:c32:8bb1:b70b]) by MI3PR04MB12438.eurprd04.prod.outlook.com
+ ([fe80::c715:c32:8bb1:b70b%4]) with mapi id 15.21.0639.010; Fri, 20 Nov 2026
+ 16:30:16 +0000
+From: Frank.Li@oss.nxp.com
+To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
 	devicetree@vger.kernel.org,
 	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH] arm64: dts: imx8mn-bsh-smm-s2/pro: add boot phase properties
-Date: Fri, 20 Nov 2026 17:11:53 +0100
-Message-ID: <20261120161159.1944199-1-dario.binacchi@amarulasolutions.com>
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-bsp@toradex.com,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Cc: Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH] arm64: dts: freescale: Correct white-space style
+Date: Fri, 20 Nov 2026 11:30:08 -0500
+Message-ID: <179519219422.3710319.8948835867917075030.b4-ty@b4>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261113185329.183113-2-krzysztof.kozlowski@oss.qualcomm.com>
+References: <20261113185329.183113-2-krzysztof.kozlowski@oss.qualcomm.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: PH8P220CA0022.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:510:345::16) To MI3PR04MB12438.eurprd04.prod.outlook.com
+ (2603:10a6:290:76::14)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -102,156 +108,90 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|GV1PR04MB9213:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0ebe59d8-568c-4cde-2916-08df47238f15
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|19092799006|366016|7416014|376014|23010399003|18002099003|22082099003|921020|11063799006|56012099006|261026121527099003|261009223027099003|261022075727099003|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	1TBLZBxmKy7xrgEFw/ogHK4IA9EAe1lgcCtRGNRJFS0S76BSzAMHE1R7hhweoWlA+TXAvf5mvcuBifXyAFDL8uB3IXmlV71PFyRU55pPvRzYjGqKg6p8w8VX/BD3NFfxZanXIcsUSsvF5txv3xrCHB9+q9mGGlxOpLmpQhfWhhezOzruA/mGNkXN8oJcPaKyPYzZ00qEmrqS8DjTdTYZUnCcd69ekw/o4o0/qiNzj95xUMRG6vbqj8b3yo+PgMUXnNChpAwOo3hTobR+mQiSx1mkSm4P1KsHh+fewrgT+utpn5gK6CLMGSoPrACbF/D/Id9Nhdnv+sEmPqgpdOG/fYYulnCNsee69fPn0tLWrfnV2IH/dnoEyqgDuurrSGh31Dtz7pwbNjo3qgF5h+Rksr5uBQ/m3CFDUWuRzwo1oiK89iDpjX+YhZuSAY4quvsn7Uem5IT3Y/iuHVuKhbYo5SglNz8GegrnChSuPuSdHsSVCQrP9//4oWE7luVwDZNmHL2i/tgElYU8z4hDY1W3SI1NByjAmKJ+H3xVz2y8xp34pg/xcNygByxET10oZ5OSTFXXPMY06jl/tIHn43J7Vb0zee3q2feThlViTx313H7gXI2UvA0sIJXVbJagAkVna/1vD+fFk7tk+Ws3TqhVHSNP110Fm8I+7cyA006GlveI+KEYZCEDQMfivNmRA9bX0IrEnILKtp0PcBjTWhV6HA==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(366016)(7416014)(376014)(23010399003)(18002099003)(22082099003)(921020)(11063799006)(56012099006)(261026121527099003)(261009223027099003)(261022075727099003)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?OVRhdmNDZHZPZkQxSzdpb0RIekdaZTJDMXcvcElRQ1hHQVpPMmFCZjJ0UmY4?=
+ =?utf-8?B?M1pGOXdEc3JjKzBCODRuaUZNL2QwazlFSkQvMWo1SnNZRVJoMVVYVmx4V2Uw?=
+ =?utf-8?B?NXJ5T2c1SjNXSTBHSDFDeC9CbkgvRldadnFTNndHSGRQRk9vMFFsNG5HZnVw?=
+ =?utf-8?B?MXNUY090T3FueFZzV0hYNndZcmpBenJ1eFZYQmdNTlRmSU5CUko3VUVTRlRN?=
+ =?utf-8?B?NnJSWFM4bi9Tdm5BelhSalNia0xzY2xUSXBPT1pDcVQxd3BXSElPcE5Ob0x6?=
+ =?utf-8?B?bDFUYmJzdHN1MzlmOHp4RlBFOC9SZTBkdHVmWnVoRmhUMWRCQTZ3TnFPejB1?=
+ =?utf-8?B?Z3U5STdTM0lmWWNBR2hxMEpYamJBbS84VXRQWGVERDk4Nk9YVEgzclJUQWV6?=
+ =?utf-8?B?UlpxbGw3QytMNThqVE4wNmVMcDdWRjljNW5ieExBaGJndURFTTg5alUyQ05X?=
+ =?utf-8?B?SVJZVEtHVU8rU29UTUlwSG4zZGYrdHZZY21yUER1MzloMkF2ZmRiTGRQVzlW?=
+ =?utf-8?B?ZUhuMmgvZElxNDdaMEIwaEQ4YkcvWHRCZTBlaGFBVHQ5MkxHblJNVnd2a0Uz?=
+ =?utf-8?B?MVo1cTVXOStISkFHa2JPZjJsNzFaYWJmODBBcXhoRkR6QWlSRlNsVjVYMWh2?=
+ =?utf-8?B?dFlkZGhiQThwK2Q2bEhnc3FFY0V2NUdETVBXQ01pZVEzMWRLOEVMaU8zQ0xo?=
+ =?utf-8?B?ZmVRQUNWT2F2OSt6NU5UYXIzYzFmODU5QTkzd0lpVjJjSTBEZUlBbW41NnFj?=
+ =?utf-8?B?bzArN3lOVi80dDFzV0ZwQytybXlFakwyb2x0TWc0Zjl2VUk2UWpIS0FNa0lj?=
+ =?utf-8?B?eEtJMTJ4Z2ZEVFVBSDl5M0tCRkJLbWEzVWVjdmRQNzlJUUk5K1pDOUtudVln?=
+ =?utf-8?B?bHlNdHo2eERYRmxiMXpqcXhKSGxYTUxPdlNJQmJCTVNidi9FaEgwTHk0OEV4?=
+ =?utf-8?B?SmJXR1dMblBMQnd4VUxvbkdIaTZPSHdxMmE5Wm5kTVI0K0tjQ2M1bHAwaWJJ?=
+ =?utf-8?B?Q0YreHdvWUJMdHVudHJ4TzZ3ZmRBQ0RWWkdHc0I5cDNnQlQ3Zkp5Z3pwL0Jv?=
+ =?utf-8?B?ZzlUeHRJdWtqcVJpUUxiK1FIbmFjNHpFZUtQREJTTFp2QTc3WTRSbUNMT3E5?=
+ =?utf-8?B?ZFBJR3VBTW83ZGVHUE1zdm50eDFJRW9JSEV6dEphSEdFTko4aFcwN08wWnlm?=
+ =?utf-8?B?bjFmdzU1bjhRQmg1dFlPcWhPNHBCaFRRSjMzT2hpT09HQWpPMEFqYjN0YW1T?=
+ =?utf-8?B?UDZIN2MrRjJyczIwRDU5WEIrT0ZLazJ4SVk1Qm9oeFJWQlNmTFMxSDZKblpO?=
+ =?utf-8?B?NnhROVdZT0pkdENlM25wMFMybDZmaHIrUDhSTXVJUjZnNDN6ZmJxbEMxZzkx?=
+ =?utf-8?B?aWxZVWpMRkVOemNPQUdNYUhzSHRQSUVLcXp1RTFRcUlnQmNpVkRXOFlIOXVD?=
+ =?utf-8?B?R1A4bXF6MURncmZqdTVLVHlIZ3FvOVNNUTR4Ny9VU1ZXZUNqZHlDNzlNY3dR?=
+ =?utf-8?B?bUQzY2h6Rm92a2N2MEJ0Z0I2U0g4WktZT1B3eWU2MG1IT0JtSlQwZXVDTkpo?=
+ =?utf-8?B?b2FDbEg0b09PN2VScG9RY0dmMGFrQU1yNWZlY3N2WFJIV1p0WG5QWDA1cXps?=
+ =?utf-8?B?MHVseFpLWGlzZXowUkk1UVZRYjY3S252OTNnYnBtbklmL0w1TzRTSzN5ckYr?=
+ =?utf-8?B?SWNoU2N1emI5YjBFVU5ZbnBUREdCb0RjVk9kSTArMG1oRzZ5WThwVFZVL3Bx?=
+ =?utf-8?B?TEtLOWUrNmVNNnFZcTAyYStWOEU0Si9mYjA3dkZWTUw3eXVON3hJb0FISEw4?=
+ =?utf-8?B?NDQxeTFSOWs2VzRDdVFqWVV0c3VsTHFqRUlUaFVhYlVEdFR5WXJUVDRPRHpH?=
+ =?utf-8?B?djg5aHdtelJuNGt0eHZ1d2VXdGZBTDN3VjNpdlduYjF0NkIvU0xVV1pTdUll?=
+ =?utf-8?B?WEJ3UGNGdW55SWQwTEdHT0R3WC9EK0FYbE4xbGtCdlgzYnR6VTB5NnZrejZK?=
+ =?utf-8?B?WEN5bmpIOWFpWXNDKzRQQlZPTE83VTRLUEJYdk5pU2pZbjFEYUhGQXlFNWIw?=
+ =?utf-8?B?TVJYQUdYYVdHeklDbGhmNUNGSlgzT1hlbElQZzJZUzl0K3R5MXR3NlYvbnpq?=
+ =?utf-8?B?NFVSWDU0bHhRNWlwaVJGQStWMDB4RmVRSGZFV09KbDlzMHVJYlM0M3EzSjdS?=
+ =?utf-8?B?eTBPYlVSSk9QdEhKWklpalpRcktLZGZIYjQySVJUc3VCR240amJ2cmhXU2hI?=
+ =?utf-8?B?K1dnSEh1NDM3bHZJbVN2TzRyT2FXSnZzc0wxL3YzZEhWd1pSQ1cwbjh4akJY?=
+ =?utf-8?B?WmlOTnFvdXpWWU9qVjJnTW5sdGgxamdyMm95enUyaythK1R2NkNlb0UycHRz?=
+ =?utf-8?Q?3yrhRoA4p+N2GLovv+uazQlgOADAizlgSuxIx?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0ebe59d8-568c-4cde-2916-08df47238f15
+X-MS-Exchange-CrossTenant-AuthSource: MI3PR04MB12438.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Nov 2026 16:30:16.1241
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: XsOIaQ2GnIL2TO0aq2bp8NJVQLuj4e2BvEoJn7K7GTZXpo8hVaxI9KXEsWpvEQEEFx0H9GXN7p7yVnxhffvns/NzrD2UMZItO2w1PDVyyFOcQ9zlIuicWEoBbHlVw0Qa
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB9213
 
-Add boot phase properties to the resources needed during the boot
-process.
+From: Frank Li <Frank.Li@nxp.com>
 
-The BSH SMM S2 and S2PRO need UART, watchdog, PMIC, GPIO and boot
-device access.
 
-Tested on BSH SMM S2PRO with U-Boot v2027.01-rc1.
+On Fri, 13 Nov 2026 19:53:30 +0100, Krzysztof Kozlowski wrote:
+> Correct minor style issues around white-spaces (e.g. double space before
+> '=', missing space before bracket or colon) to fix dt-style-check
+> warnings like:
+> 
+>   imx91-toradex-osm.dtsi:75: [redundant-whitespace] extra whitespace after :
+> 
+> 
+> [...]
 
-Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Applied, thanks!
 
----
+[1/1] arm64: dts: freescale: Correct white-space style
+      commit: e32bda9845c5239c3b7605c465d61f3e2d350599
 
- .../freescale/imx8mn-bsh-smm-s2-common.dtsi   | 22 +++++++++++++++++++
- .../boot/dts/freescale/imx8mn-bsh-smm-s2.dts  |  2 ++
- .../dts/freescale/imx8mn-bsh-smm-s2pro.dts    |  2 ++
- 3 files changed, 26 insertions(+)
-
-diff --git a/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2-common.dtsi b/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2-common.dtsi
-index d20393c2d901..5515236d3c09 100644
---- a/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2-common.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2-common.dtsi
-@@ -77,10 +77,23 @@ ethphy0: ethernet-phy@0 {
- 	};
- };
- 
-+&gpio1 {
-+	bootph-pre-ram;
-+};
-+
-+&gpio2 {
-+	bootph-pre-ram;
-+};
-+
-+&gpio4 {
-+	bootph-pre-ram;
-+};
-+
- &i2c1 {
- 	clock-frequency = <400000>;
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_i2c1>;
-+	bootph-pre-ram;
- 	status = "okay";
- 
- 	bd71847: pmic@4b {
-@@ -95,8 +108,11 @@ bd71847: pmic@4b {
- 		#clock-cells = <0>;
- 		clocks = <&osc_32k>;
- 		clock-output-names = "clk-32k-out";
-+		bootph-pre-ram;
- 
- 		regulators {
-+			bootph-pre-ram;
-+
- 			buck1_reg: BUCK1 {
- 				/* PMIC_BUCK1 - VDD_SOC */
- 				regulator-name = "buck1";
-@@ -244,6 +260,7 @@ bluetooth {
- &uart4 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_uart4>;
-+	bootph-pre-ram;
- 	status = "okay";
- };
- 
-@@ -280,6 +297,7 @@ &wdog1 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_wdog>;
- 	fsl,ext-reset-output;
-+	bootph-pre-ram;
- 	status = "okay";
- };
- 
-@@ -326,6 +344,7 @@ pinctrl_i2c1: i2c1grp {
- 			MX8MN_IOMUXC_I2C1_SCL_I2C1_SCL			0x400000c2
- 			MX8MN_IOMUXC_I2C1_SDA_I2C1_SDA			0x400000c2
- 		>;
-+		bootph-pre-ram;
- 	};
- 
- 	pinctrl_i2c3: i2c3grp {
-@@ -346,6 +365,7 @@ pinctrl_pmic: pmicirqgrp {
- 		fsl,pins = <
- 			MX8MN_IOMUXC_GPIO1_IO03_GPIO1_IO3		0x040
- 		>;
-+		bootph-pre-ram;
- 	};
- 
- 	pinctrl_uart2: uart2grp {
-@@ -369,6 +389,7 @@ pinctrl_uart4: uart4grp {
- 			MX8MN_IOMUXC_UART4_RXD_UART4_DCE_RX		0x040
- 			MX8MN_IOMUXC_UART4_TXD_UART4_DCE_TX		0x040
- 		>;
-+		bootph-pre-ram;
- 	};
- 
- 	pinctrl_usdhc2: usdhc2grp {
-@@ -414,6 +435,7 @@ pinctrl_wdog: wdoggrp {
- 		fsl,pins = <
- 			MX8MN_IOMUXC_GPIO1_IO02_WDOG1_WDOG_B		0x046
- 		>;
-+		bootph-pre-ram;
- 	};
- 
- 	pinctrl_wlan: wlangrp {
-diff --git a/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2.dts b/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2.dts
-index 11a1ba5bfdb7..5add6a8e1c59 100644
---- a/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2.dts
-@@ -21,6 +21,7 @@ memory@40000000 {
- &gpmi {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_gpmi_nand>;
-+	bootph-pre-ram;
- 	status = "okay";
- };
- 
-@@ -43,5 +44,6 @@ MX8MN_IOMUXC_NAND_READY_B_RAWNAND_READY_B	0x00000056
- 			MX8MN_IOMUXC_NAND_WE_B_RAWNAND_WE_B		0x00000096
- 			MX8MN_IOMUXC_NAND_WP_B_RAWNAND_WP_B		0x00000096
- 		>;
-+		bootph-pre-ram;
- 	};
- };
-diff --git a/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2pro.dts b/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2pro.dts
-index 475cbf9e0d1e..b48905a9b4dd 100644
---- a/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2pro.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2pro.dts
-@@ -85,6 +85,7 @@ &usdhc1 {
- 	pinctrl-2 = <&pinctrl_usdhc1_200mhz>;
- 	bus-width = <8>;
- 	non-removable;
-+	bootph-pre-ram;
- 	status = "okay";
- };
- 
-@@ -133,6 +134,7 @@ MX8MN_IOMUXC_SD1_DATA6_USDHC1_DATA6		0x0d0
- 			MX8MN_IOMUXC_SD1_DATA7_USDHC1_DATA7		0x0d0
- 			MX8MN_IOMUXC_SD1_STROBE_USDHC1_STROBE		0x090
- 		>;
-+		bootph-pre-ram;
- 	};
- 
- 	pinctrl_usdhc1_100mhz: usdhc1-100mhzgrp {
----
-base-commit: 65e4fd942f72a9dba0e4e257290c4fa1aa756854
-branch: imx8mn-bsh-smm-s2-bootph
-
+Best regards,
 -- 
-2.43.0
-
+Frank Li <Frank.Li@nxp.com>
