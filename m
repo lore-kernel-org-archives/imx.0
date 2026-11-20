@@ -1,84 +1,84 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.53
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795199593;
-	b=awyVQrSKeDcyz3CMJwW14EmQTqKkdmEjLnt4QHTEXU7/8Zhl9gfcOuplY6nUYPkYcBXi
-	 QcLFe3te41Jc3MJguYk2AUxS2MXJKQQC4bG6xbtwmeEoC7hygXPn79rHgDzbLGmE67FCk
-	 a0uYWO6Uuq/jn8KHdL2ohHpXNgEbk141gGegb2n5p0UaA/vgnbr7D+aJ4uwIuhxRaZh7w
-	 MuAxOHU0rFxABhlfrTF2AzpXTBxulGbDa2gAfsjB0cdcGN2rW6HQ32gHRMYv3UMwuN9Xk
-	 VCX8xkuz3JZTW9o89AgQAoXkZsXpIdaME23xWDCCiIpolFE/4Q+buJ7qZmePiiHFzrA==
+	t=1795199596;
+	b=HpxuRnpBcq5yDi7YkH4VD9coHv/XkXEzO3Ez8xmkDifTsEkrPR6tI2529C3wVCgmNAPh
+	 rastBSXYldxB9HmK4ZW6grcTQsAN/5CHP9R8ol/q56AOfu1QaxSoCxbqEnCRcA1SHIZnb
+	 w9GbjrKGQMSJYuZ15gYjm4YIqQht6R05xGuzS7mHFQ460SJJ97IJ0LBpm0MOoRIMB9aVh
+	 FChx93+OtEW4SrfzE9s9WSshtahV6cAFKnf0bVxhQuQLxUK8yvTS7PLZ3eCsToO4oTuGv
+	 o132vVwEQDleDD6MdWhnDaQ4uPAkzhYkNiUKVc02QN9fMj7ce7U9bWcsVJOlzO66hHA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795199593;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795199596;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:X-Google-Original-From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=VelTmERfpnFtTZC+wB5krB/CsanpetBmD1N19wuVuo4=;
-	b=NUgxA7Kh8TrwMBCqLCanIkKgLOUfTIOgLTDklanoJn7UJ1Ai0HuCkKDOcfNbHSZny7N2
-	 CF1DJ76ntPLPwwP1GdHB2IH2f016WmS9s/do8wNEDrJ7IEaRdgrVNPdq+nS+AtzoeOpvd
-	 KFk9ldwQrRnJk0dhvKNMKPQxATZ32bRQnt0NgtNj0eNvRTIAgE8yXx2833EtpoisiHwrJ
-	 x3nLg1m7IBNLxwAlaUeenS8xhAu4Fs8oOTcS7Uav/WjmP4+RRAj9F9LyGxY96cLjUVfW5
-	 J+sWBQBLADO4tyJkSlvYPwnfmHxSC2krvTOXG4E49YEJBJzAFNcYXL7XpgFZmtGIOkw==
+	bh=gQSQjSRJnKJyi/DyI9dUqIc7eXSvEGbjLptiauw7SSs=;
+	b=kHimsRGl2xfsVfEotN7QskTVOkdsNSfnjFcgaNnNQieHE5nEtPBpe1r7VRY4LNAbXBbW
+	 jY06oIK9DdHiFKWrElq8G/QS1g/TX+FzjExqr4Uj8uXAaafV0tZqtqyTVW5fDjyOdNCEW
+	 M89vIrOvqYlRTS6BPkEybkpFnurlUwdcl/tL/YkrCnByXWmbEFxIxSjW4zg4wyzc8VryQ
+	 QB0qcnDQbc5YRrqhCq3Q9Ra7C8lbPKhwk/QR4KWIjKH7wFcql6JT0aoy8rpkWc0Dpd6ip
+	 k6S/ihcL3Dk4rPdoVOLkYAY3BkyLFuFVayrAfH6WA4+RsaIvVzJ6xoj7vMu+LU565Tw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=vC9xfaET;
-	arc=none smtp.remote-ip=209.85.128.43
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=n3oO27kl;
+	arc=none smtp.remote-ip=209.85.128.53
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48FEC60A261C
-	for <imx@lists.linux.dev>; Fri, 20 Nov 2026 18:33:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 48FEC60A261C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA6D560A2617
+	for <imx@lists.linux.dev>; Fri, 20 Nov 2026 18:33:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BA6D560A2617
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=vC9xfaET
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4a2d6d01ecbso7208805e9.0
-        for <imx@lists.linux.dev>; Fri, 20 Nov 2026 10:33:09 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=n3oO27kl
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4bb5b8ef642so10908015e9.1
+        for <imx@lists.linux.dev>; Fri, 20 Nov 2026 10:33:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795199588; x=1795804388; darn=lists.linux.dev;
+        d=gmail.com; s=20260707; t=1795199590; x=1795804390; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=VelTmERfpnFtTZC+wB5krB/CsanpetBmD1N19wuVuo4=;
-        b=vC9xfaETyfN4MtRes/OOBcLTSrFqRccKf9CK2OurETqDXT+eNJLqz3OzzzVo1bCj1e
-         0CQ7YdiDiwD5TlRQkFQBOt+PL16tpnZxDCYk9C/m8yQ0l2UKbe8PfXlrDCXSBEtB2Wpv
-         a+DAJucf++RT3zu1gn/FdbIAHS8thg4JrnIdGa4ftcZA29wF43lis/xcG4wlY4hzPnTP
-         UVsAYxanPmVwzrNDm11MDGcIUwsKkDLQ+RfIQ5kBfzHBAA3TRKlvecpAffXyZrBKZ9Md
-         IGRT2byiUVpS30biiofokiI6mVCN+CBvO7TS7rerh2bgh2+O1QhiS76IdtPIInoIwUnD
-         +6UA==
+        bh=gQSQjSRJnKJyi/DyI9dUqIc7eXSvEGbjLptiauw7SSs=;
+        b=n3oO27kloypT0FqFrWRjiEjH8aCkRY8215fFw585DTxpNgj+msab7G3Wz+d8jv3fGz
+         0gvBfzhHgjx4LscTL5LMZhQDxexd4n86ybl9j13Y6tmpj6qA1g5vYKJBExKJ07ie4Tdl
+         LvoxI5aJcDL281xCly7PIVSmgj7vK9tNsrAmV9mJqXvkZasPWuPJ3GT0dGCIoBe7cHNm
+         YRwWwDTAbsvBqlLwzpqT8b8Rpet9QdW54bCmL8TC0qBITZjRHGPUkkOQosu2FPyDLGpR
+         Zbo+INTYjCtpslVky2q2znH7Bs85YTSDgupgmGhEhYR0YCYfV64sninnhrxjGA/L62fj
+         ZeTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795199588; x=1795804388;
+        d=1e100.net; s=20260707; t=1795199590; x=1795804390;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=VelTmERfpnFtTZC+wB5krB/CsanpetBmD1N19wuVuo4=;
-        b=mC2uZm/nUrSUiaQnxDluaQZ2YDUYaUK+xKxSev4QbvN92D8azrL3Ms6KUV+5eopVaY
-         BHMi/Wsrw6cxwhm1v8QyJ0C0g4PgTOAFrGSbvoxUsaKQh8D365nmYA63xS/Kx2PYXuQI
-         wvw8RvEgfll/M9A72DWpotqiuPSfyjqu0VH6NopIU6o960c/bZzzGjMAQpqPzG8ARb9O
-         DL6d2K0jq7hmjt7e+D7ejVZqVwSQVSzeHttPd04BxXhX6ZiIxBlumbFa2FuxXrIA2ndd
-         4mwtPZ5ifYd7a4QAz29QBKOZ3oZdNmd31QDg3Zl9KUeVlVQc8rUoiFvPNqfoNmYBmnMI
-         fZRg==
-X-Forwarded-Encrypted: i=1; AL+hErELZnRBUcC2QmOPCjW8pukzeeCGQ94HvvJ5NzyYsXKPdcN8WB0pAsVdf6HGTWIKW4T2hHA=@lists.linux.dev
-X-Gm-Message-State: APuU4Z9eTwBWTz42SAQyH1zkKlCBJkRRv/L6A90uLwi+rde31RhFnEEx
-	XDJE03j7dKjhwclIFAKJyVi7c2cLQlZP3wYTMg49lXEv7b6zZalEovYn
-X-Gm-Gg: AYBFou3LmnL4BEUatIhTgo/X/xHyUPopsh6JpP4uOwlxA8xy/p25BnfNI+glgCYwlkH
-	oCPA0JHVl+Vo5b3uNW2u5HNfx+KrIFKClOvueQiNzy9FY+2ymPSPijwFvfWmTitpzeMwx6b3dxL
-	uB5vdlKeydlDXTtUIw2E1h13e3cuE1+qMvIP09pxGvBQ4tC6ai097RfJGq7cKYJ6SwqFo9o8U/P
-	aUJS17iEVoFPKpP/21nv38QPK3mkAD9J7EWrMLLYS48IwDurFD2KhduxbuVjr6hK2g66tzYQ1dF
-	hDi13MwCtUp0MaFlrJyL7i0CqFEdQQvRERv+doLr1qdnaRJWP31NEbZbkLTtny5pBPKPChh/xde
-	IsPSlR2TGryKUONNa1poqXYLUZVoqdndWqktHCQOE5mmNr34vzM7kVqTMsZ/EA85WKcW7hXU31T
-	6GSd7Pl7kgigzJgXaOONkTH2di3uV9y9G3IaKCHk0AeL/d9K9QIEDkcQfWMl0SjpQZXyqT6RNPX
-	+enh7MDRm6f5bUJPe0jt5Yx/aI61HEwlkBq87QuhGkNZfebiPDZSpYYjW+UwCeVpsLocX8WzMmk
-	pyqnfPL7m8kOUSzIjanc954OstQi7dpoIHLbkkPhpSBk1jYOifIbtkTix5FhXjxAOAe6KywHIAj
-	TfpnsHpFrlm94r4OgWxd86WAXKpkdzu/VZtLHB0ySQcUX3z3BakxKviTjU526esuYjOr3
-X-Received: by 2002:a05:600c:a087:b0:4bb:5c92:ce22 with SMTP id 5b1f17b1804b1-4bb887fe887mr89696315e9.8.1795199587508;
-        Fri, 20 Nov 2026 10:33:07 -0800 (PST)
+        bh=gQSQjSRJnKJyi/DyI9dUqIc7eXSvEGbjLptiauw7SSs=;
+        b=kPZqGAuTCHT4nwmVQUPD7Rebp/p/1WEQO/E/TmADTbvTTCLMmU0Cn3VT0uGQGRO3yQ
+         5E8X0IGLpDDIjPmqH0pAmlYr/dOZnyQmom6+xSXMqTzvEOdNedJvnZL6rG+cB0dCy8eM
+         vyGsmZuYcqbuvefdzq39YSoYDjp5zX6g3guiTICFbXbj9TU+MD1aFGF8eIgad+ZFJkD/
+         kAAXXcczl8aB/se+wNvYqUVjA7JUWNR6KPan75Ff2+sOCVzEsi3r44zRF4MkiVJW0aQi
+         Ftmbr/3Gh8AqojzX8Fnv+nY6YjEGbzq7epLGV72beQRF0xYHyLRozlYfuYJjsKxIVkxx
+         vhEw==
+X-Forwarded-Encrypted: i=1; AL+hErFBTeDFdyePwknZI0g41fQP4p7lI9Wgv2hXN7FzIsZIrROqRZFqVm4B6DmrkWC2FiN0Olw=@lists.linux.dev
+X-Gm-Message-State: APuU4Z8hLozqvoZGb+EuRprFEp4koR4kzF2W4KsK1BCF5sgmJT2vwsLW
+	inDZS8WL1I1daooTnedpN7ju3siFuINI/P94zc0fJej4Qy9idLoAvsZz
+X-Gm-Gg: AYBFou2K8vTDbmNh65XAuSKy06xfrP9kmM5/tK3N+IMRoXlGZdpNvGllyLL8ZZyD9sI
+	QW5HFRTt298+9OLTcje2UGt5g6uFxHCA7XQ0txoj5WDCKtWm7PASLTaD0kNne0N6aCuRdCyVOTD
+	fpOdOp5ENTbTnOigw/WlD/zbm2vw30L93FgkuwH2rGwD1FbyP5WlpNPlflNJcrTgzW/c7aqvHzp
+	hZPLLTYqHKlvDrUs4tJKO9gje+QWhY1yYjCbUAY+ykyE803hkGX9Vv4WsC0Fd2l5Ugq5Gc/l1S7
+	z9jE18QYim9TUOmUtAiL2P+f4FeJ9aX1uv3mA4C1JpoXDojr+Xiie0syBE0XcWFr3nWcRA8xDX1
+	t8Q/hJy3r1TsTT+ZazWTOb3zDLuEPXC8+5EB4ST41OL3ov9DEfLYr1Rl7KDtIvWbuWrzBn7ZuFS
+	PtbDJFRr+EXDdEREqVPEloU0BDQznOfPFcEdyxOwNczWgEr0Keo1Zw8Q4Wuoub32IKwICY8LTLD
+	WMJnIghB+WgtlwTPIVHtPwRRtlmiQrGUiTw0QDRzTugRyH3o8/wZBzjRY0ZTBJP/FrgvoXfd5w+
+	LX5SUhF57n1iQrHFjjvpYCWSUJC1BR2VyLKrp5r6CoTgbObYLx09Nf81zn+1BZ0L+YdnT7rPnAt
+	PCkZB4L7mhBBOLsK3K8aQjYjD+y1i9u0lYYoAFpaLQY0sSzg=
+X-Received: by 2002:a05:600d:18:b0:4bb:9001:1aa with SMTP id 5b1f17b1804b1-4bb900102b8mr10489545e9.10.1795199589928;
+        Fri, 20 Nov 2026 10:33:09 -0800 (PST)
 Received: from GLaDOS.station ([193.207.36.37])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4ab6bb98b4dsm7467718f8f.53.2026.11.20.10.33.06
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4ab6bb98b4dsm7467718f8f.53.2026.11.20.10.33.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Nov 2026 10:33:07 -0800 (PST)
+        Fri, 20 Nov 2026 10:33:08 -0800 (PST)
 From: Stefano Radaelli <stefano.radaelli21@gmail.com>
 X-Google-Original-From: Stefano Radaelli <stefano.r@variscite.com>
 To: Frank Li <Frank.Li@nxp.com>,
@@ -96,9 +96,9 @@ Cc: pierluigi.p@variscite.com,
 	Conor Dooley <conor+dt@kernel.org>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Mathieu Othacehe <othacehe@gnu.org>
-Subject: [PATCH v4 2/3] arm64: dts: freescale: imx93-var: Extract common Cortex-M33 configuration
-Date: Fri, 20 Nov 2026 19:32:29 +0100
-Message-ID: <6ab5925c4f1346cd801c58fd88ec624419ad0ce8.1795197853.git.stefano.r@variscite.com>
+Subject: [PATCH v4 3/3] arm64: dts: freescale: imx93-var: Add Cortex-M33 configurations
+Date: Fri, 20 Nov 2026 19:32:30 +0100
+Message-ID: <947a7bcf39d89b4a162f296278ccaa3db6512983.1795197853.git.stefano.r@variscite.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <cover.1795197853.git.stefano.r@variscite.com>
 References: <cover.1795197853.git.stefano.r@variscite.com>
@@ -115,244 +115,215 @@ Content-Transfer-Encoding: 8bit
 
 From: Stefano Radaelli <stefano.r@variscite.com>
 
-Move the Cortex-M33 reserved memory and remoteproc configuration into a
-common include shared by DART-MX93 and VAR-SOM-MX93.
+Add Cortex-M33 overlays and combined DTBs for DART-MX93 on Sonata and
+VAR-SOM-MX93 on Symphony.
 
-Include the common file from both module DTSI files.
+Include the common configuration only from the overlays, so the M33
+memory regions are reserved and remoteproc and MU1 are enabled only in
+the M33 variants. Use the -m33 DTB when remoteproc support is needed.
+
+Mark the peripherals used by the M33 firmware as reserved. Disable Wi-Fi,
+Bluetooth and the devices depending on GPIO4. On Sonata, also disable USB
+OTG1 because its USB-C role controller is unavailable.
 
 Signed-off-by: Stefano Radaelli <stefano.r@variscite.com>
 ---
 Changes in v4:
-- Move the resource table, RPMsg vrings and shared buffer from both
-  carrier DTS files into the common include.
-- Use generic memory@ node names and move memory-region-names from the
-  overlay patch into this patch.
-- Include the common configuration from both module DTSI files.
+- Move memory-region-names to the common configuration extraction patch.
+- Remove the common include from both module DTSI files, so the M33
+  memory regions are now reserved only in the M33 variants.
 
 Changes in v3:
-- Split the common configuration extraction into a separate patch,
-  preserving the existing DART-MX93 configuration.
+- Move the common configuration extraction to patch 1.
+- Use "reserved" for peripherals assigned to the M33 firmware; keep
+  "disabled" for dependent devices.
 
-This patch uses the following binding and driver commits, already in
-linux-next:
+Changes in v2:
+- Enable cm33 and MU1 only through the M33 overlay on DART-MX93.
 
-- ebb21cc5d1c0 ("dt-bindings: remoteproc: imx_rproc: Document
-  memory-region-names to avoid implicit ABI")
-- 8396089f91fa ("remoteproc: imx_rpoc: Use memory-region-names to avoid
-  implicit ABI")
+ arch/arm64/boot/dts/freescale/Makefile        |  9 +++
+ .../freescale/imx93-var-dart-sonata-m33.dtso  | 55 +++++++++++++++++++
+ .../dts/freescale/imx93-var-dart-sonata.dts   |  2 +-
+ .../boot/dts/freescale/imx93-var-dart.dtsi    |  1 -
+ .../freescale/imx93-var-som-symphony-m33.dtso | 50 +++++++++++++++++
+ .../boot/dts/freescale/imx93-var-som.dtsi     |  1 -
+ 6 files changed, 115 insertions(+), 3 deletions(-)
+ create mode 100644 arch/arm64/boot/dts/freescale/imx93-var-dart-sonata-m33.dtso
+ create mode 100644 arch/arm64/boot/dts/freescale/imx93-var-som-symphony-m33.dtso
 
- .../dts/freescale/imx93-var-common-m33.dtsi   | 65 +++++++++++++++++++
- .../dts/freescale/imx93-var-dart-sonata.dts   | 31 ---------
- .../boot/dts/freescale/imx93-var-dart.dtsi    | 15 +----
- .../dts/freescale/imx93-var-som-symphony.dts  | 31 ---------
- .../boot/dts/freescale/imx93-var-som.dtsi     |  1 +
- 5 files changed, 67 insertions(+), 76 deletions(-)
- create mode 100644 arch/arm64/boot/dts/freescale/imx93-var-common-m33.dtsi
-
-diff --git a/arch/arm64/boot/dts/freescale/imx93-var-common-m33.dtsi b/arch/arm64/boot/dts/freescale/imx93-var-common-m33.dtsi
+diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
+index cfd548284358..05a7556e9de9 100644
+--- a/arch/arm64/boot/dts/freescale/Makefile
++++ b/arch/arm64/boot/dts/freescale/Makefile
+@@ -956,8 +956,17 @@ dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba93xxca-lvds-tm070jvhg33.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba93xxla-lvds-tm070jvhg33.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba93xxla-mini-ezurio-wlan.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba93xxla-mini-lvds-tm070jvhg33.dtb
++
++imx93-var-dart-sonata-m33-dtbs := imx93-var-dart-sonata.dtb imx93-var-dart-sonata-m33.dtbo
+ dtb-$(CONFIG_ARCH_MXC) += imx93-var-dart-sonata.dtb
++dtb-$(CONFIG_ARCH_MXC) += imx93-var-dart-sonata-m33.dtb
++dtb-$(CONFIG_ARCH_MXC) += imx93-var-dart-sonata-m33.dtbo
++
++imx93-var-som-symphony-m33-dtbs := imx93-var-som-symphony.dtb imx93-var-som-symphony-m33.dtbo
+ dtb-$(CONFIG_ARCH_MXC) += imx93-var-som-symphony.dtb
++dtb-$(CONFIG_ARCH_MXC) += imx93-var-som-symphony-m33.dtb
++dtb-$(CONFIG_ARCH_MXC) += imx93-var-som-symphony-m33.dtbo
++
+ dtb-$(CONFIG_ARCH_MXC) += imx93w-evk.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx93w-frdm.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx943-evk.dtb
+diff --git a/arch/arm64/boot/dts/freescale/imx93-var-dart-sonata-m33.dtso b/arch/arm64/boot/dts/freescale/imx93-var-dart-sonata-m33.dtso
 new file mode 100644
-index 000000000000..72b47ba99cb9
+index 000000000000..51ec0beea7c9
 --- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx93-var-common-m33.dtsi
-@@ -0,0 +1,65 @@
++++ b/arch/arm64/boot/dts/freescale/imx93-var-dart-sonata-m33.dtso
+@@ -0,0 +1,55 @@
 +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 +/*
-+ * Common Cortex-M33 configuration for Variscite i.MX93 modules
++ * Cortex-M33 support for Variscite DART-MX93 on Sonata-Board
++ *
++ * Link: https://variscite.com/carrier-boards/sonata-board/
 + *
 + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com/
 + *
 + */
 +
-+&{/} {
-+	#address-cells = <2>;
-+	#size-cells = <2>;
++/dts-v1/;
++/plugin/;
 +
-+	reserved-memory {
-+		#address-cells = <2>;
-+		#size-cells = <2>;
-+		ranges;
++#include "imx93-var-common-m33.dtsi"
 +
-+		rsc_table: memory@2021e000 {
-+			reg = <0 0x2021e000 0 0x1000>;
-+			no-map;
-+		};
-+
-+		vdev0vring0: memory@87ee0000 {
-+			reg = <0 0x87ee0000 0 0x8000>;
-+			no-map;
-+		};
-+
-+		vdev0vring1: memory@87ee8000 {
-+			reg = <0 0x87ee8000 0 0x8000>;
-+			no-map;
-+		};
-+
-+		vdev1vring0: memory@87ef0000 {
-+			reg = <0 0x87ef0000 0 0x8000>;
-+			no-map;
-+		};
-+
-+		vdev1vring1: memory@87ef8000 {
-+			reg = <0 0x87ef8000 0 0x8000>;
-+			no-map;
-+		};
-+
-+		vdevbuffer: memory@87f00000 {
-+			compatible = "shared-dma-pool";
-+			reg = <0 0x87f00000 0 0x100000>;
-+			no-map;
-+		};
-+	};
++/* Reserve the peripherals used by the Cortex-M33 firmware. */
++&flexcan1 {
++	status = "reserved";
 +};
 +
-+&cm33 {
-+	mbox-names = "tx", "rx", "rxdb";
-+	mboxes = <&mu1 0 1
-+		  &mu1 1 1
-+		  &mu1 3 1>;
-+	memory-region = <&vdevbuffer>, <&vdev0vring0>, <&vdev0vring1>,
-+			<&vdev1vring0>, <&vdev1vring1>, <&rsc_table>;
-+	memory-region-names = "vdev0buffer", "vdev0vring0", "vdev0vring1",
-+			      "vdev1vring0", "vdev1vring1", "rsc-table";
-+	status = "okay";
++&gpio4 {
++	status = "reserved";
 +};
 +
-+&mu1 {
-+	status = "okay";
++&lpspi5 {
++	status = "reserved";
++};
++
++/* Disable Bluetooth along with Wi-Fi and release the JTAG pins. */
++&lpuart5 {
++	status = "disabled";
++};
++
++&lpuart7 {
++	status = "reserved";
++};
++
++/* The USB-C role controller uses an interrupt on GPIO4. */
++&ptn5150 {
++	status = "disabled";
++};
++
++/* The USB-C role controller is unavailable. */
++&usbotg1 {
++	status = "disabled";
++};
++
++/* Wi-Fi reset is connected to GPIO4. */
++&usdhc3 {
++	status = "disabled";
++};
++
++&wifi_pwrseq {
++	status = "disabled";
 +};
 diff --git a/arch/arm64/boot/dts/freescale/imx93-var-dart-sonata.dts b/arch/arm64/boot/dts/freescale/imx93-var-dart-sonata.dts
-index 1ca3ec8330d0..efd51f6364f3 100644
+index efd51f6364f3..57007f716f22 100644
 --- a/arch/arm64/boot/dts/freescale/imx93-var-dart-sonata.dts
 +++ b/arch/arm64/boot/dts/freescale/imx93-var-dart-sonata.dts
-@@ -137,37 +137,6 @@ ethosu_mem: ethosu-region@88000000 {
- 			reg = <0x0 0x88000000 0x0 0x8000000>;
- 		};
+@@ -260,7 +260,7 @@ ft5x06_ts: touchscreen@38 {
+ 	};
  
--		vdev0vring0: vdev0vring0@87ee0000 {
--			reg = <0 0x87ee0000 0 0x8000>;
--			no-map;
--		};
--
--		vdev0vring1: vdev0vring1@87ee8000 {
--			reg = <0 0x87ee8000 0 0x8000>;
--			no-map;
--		};
--
--		vdev1vring0: vdev1vring0@87ef0000 {
--			reg = <0 0x87ef0000 0 0x8000>;
--			no-map;
--		};
--
--		vdev1vring1: vdev1vring1@87ef8000 {
--			reg = <0 0x87ef8000 0 0x8000>;
--			no-map;
--		};
--
--		rsc_table: rsc-table@2021e000 {
--			reg = <0 0x2021e000 0 0x1000>;
--			no-map;
--		};
--
--		vdevbuffer: vdevbuffer@87f00000 {
--			compatible = "shared-dma-pool";
--			reg = <0 0x87f00000 0 0x100000>;
--			no-map;
--		};
--
- 		ele_reserved: ele-reserved@87de0000 {
- 			compatible = "shared-dma-pool";
- 			reg = <0 0x87de0000 0 0x100000>;
+ 	/* USB Type-C Controller */
+-	typec@3d {
++	ptn5150: typec@3d {
+ 		compatible = "nxp,ptn5150";
+ 		reg = <0x3d>;
+ 		interrupt-parent = <&gpio4>;
 diff --git a/arch/arm64/boot/dts/freescale/imx93-var-dart.dtsi b/arch/arm64/boot/dts/freescale/imx93-var-dart.dtsi
-index 69495bb7fc9f..4ee4d74cadea 100644
+index 4ee4d74cadea..6c596d61bd21 100644
 --- a/arch/arm64/boot/dts/freescale/imx93-var-dart.dtsi
 +++ b/arch/arm64/boot/dts/freescale/imx93-var-dart.dtsi
-@@ -12,6 +12,7 @@
+@@ -12,7 +12,6 @@
  
  #include <dt-bindings/usb/pd.h>
  #include "imx93.dtsi"
-+#include "imx93-var-common-m33.dtsi"
+-#include "imx93-var-common-m33.dtsi"
  
  / {
  	model = "Variscite DART-MX93 Module";
-@@ -54,16 +55,6 @@ wifi_pwrseq: wifi-pwrseq {
- 	};
- };
- 
--&cm33 {
--	mbox-names = "tx", "rx", "rxdb";
--	mboxes = <&mu1 0 1>,
--		 <&mu1 1 1>,
--		 <&mu1 3 1>;
--	memory-region = <&vdevbuffer>, <&vdev0vring0>, <&vdev0vring1>,
--			<&vdev1vring0>, <&vdev1vring1>, <&rsc_table>;
--	status = "okay";
--};
--
- &eqos {
- 	pinctrl-names = "default", "sleep";
- 	pinctrl-0 = <&pinctrl_eqos>;
-@@ -221,10 +212,6 @@ bluetooth {
- 	};
- };
- 
--&mu1 {
--	status = "okay";
--};
--
- &mu2 {
- 	status = "okay";
- };
-diff --git a/arch/arm64/boot/dts/freescale/imx93-var-som-symphony.dts b/arch/arm64/boot/dts/freescale/imx93-var-som-symphony.dts
-index 78b19d8918b7..c3e880025a06 100644
---- a/arch/arm64/boot/dts/freescale/imx93-var-som-symphony.dts
-+++ b/arch/arm64/boot/dts/freescale/imx93-var-som-symphony.dts
-@@ -87,37 +87,6 @@ ethosu_mem: ethosu-region@88000000 {
- 			reg = <0x0 0x88000000 0x0 0x8000000>;
- 		};
- 
--		vdev0vring0: vdev0vring0@87ee0000 {
--			reg = <0 0x87ee0000 0 0x8000>;
--			no-map;
--		};
--
--		vdev0vring1: vdev0vring1@87ee8000 {
--			reg = <0 0x87ee8000 0 0x8000>;
--			no-map;
--		};
--
--		vdev1vring0: vdev1vring0@87ef0000 {
--			reg = <0 0x87ef0000 0 0x8000>;
--			no-map;
--		};
--
--		vdev1vring1: vdev1vring1@87ef8000 {
--			reg = <0 0x87ef8000 0 0x8000>;
--			no-map;
--		};
--
--		rsc_table: rsc-table@2021e000 {
--			reg = <0 0x2021e000 0 0x1000>;
--			no-map;
--		};
--
--		vdevbuffer: vdevbuffer@87f00000 {
--			compatible = "shared-dma-pool";
--			reg = <0 0x87f00000 0 0x100000>;
--			no-map;
--		};
--
- 		ele_reserved: ele-reserved@87de0000 {
- 			compatible = "shared-dma-pool";
- 			reg = <0 0x87de0000 0 0x100000>;
+diff --git a/arch/arm64/boot/dts/freescale/imx93-var-som-symphony-m33.dtso b/arch/arm64/boot/dts/freescale/imx93-var-som-symphony-m33.dtso
+new file mode 100644
+index 000000000000..8df03ed3c004
+--- /dev/null
++++ b/arch/arm64/boot/dts/freescale/imx93-var-som-symphony-m33.dtso
+@@ -0,0 +1,50 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++/*
++ * Cortex-M33 support for Variscite VAR-SOM-MX93 on Symphony-Board
++ *
++ * Link: https://variscite.com/carrier-boards/symphony-board/
++ *
++ * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com/
++ *
++ */
++
++/dts-v1/;
++/plugin/;
++
++#include "imx93-var-common-m33.dtsi"
++
++/* The resistive touchscreen uses GPIO4. */
++&ads7846 {
++	status = "disabled";
++};
++
++/* Reserve the peripherals used by the Cortex-M33 firmware. */
++&flexcan1 {
++	status = "reserved";
++};
++
++&gpio4 {
++	status = "reserved";
++};
++
++&lpspi6 {
++	status = "reserved";
++};
++
++/* Disable Bluetooth along with Wi-Fi and release the JTAG pins. */
++&lpuart5 {
++	status = "disabled";
++};
++
++&lpuart7 {
++	status = "reserved";
++};
++
++/* Wi-Fi reset is connected to GPIO4. */
++&usdhc3 {
++	status = "disabled";
++};
++
++&usdhc3_pwrseq {
++	status = "disabled";
++};
 diff --git a/arch/arm64/boot/dts/freescale/imx93-var-som.dtsi b/arch/arm64/boot/dts/freescale/imx93-var-som.dtsi
-index b0ffcb534cb6..46b739a147e3 100644
+index 46b739a147e3..b0ffcb534cb6 100644
 --- a/arch/arm64/boot/dts/freescale/imx93-var-som.dtsi
 +++ b/arch/arm64/boot/dts/freescale/imx93-var-som.dtsi
-@@ -7,6 +7,7 @@
+@@ -7,7 +7,6 @@
  /dts-v1/;
  
  #include "imx93.dtsi"
-+#include "imx93-var-common-m33.dtsi"
+-#include "imx93-var-common-m33.dtsi"
  
  /{
  	model = "Variscite VAR-SOM-MX93 module";
