@@ -1,94 +1,87 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795170409;
-	b=mvikaJ9wVX3OnzASNuvg4Wk218y8Wm317nCQs5iKGvK0anc3m8Pkb6G/0/yTj1jIvHe8
-	 DbhOQSEcCvskdxzB5MDSS+nnVPaWRDRzod8jNyaOnTqhlfBxWIxqufR7DQtnT/hU39R7x
-	 fQ5c8OZDd34FNmTOdDiIGIVDsJRKKpB1FzsRXhYygvCYrefBeXpyWQA/mVXxgZjsUw0Xn
-	 pN/jvpyKtbxP9eO2O+kXoMnG49tO6nATFKfeCEcLDptczKuhYX/C7lItwPuR+DJ/ZGpOY
-	 dk7qkjDzsJnMI40M6krPgS9eGKcx0r19PFPLjmKX14TMA2EtNkKqVosoN9iCpt567NQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795170409;
-	h=DMARC-Filter:Received:DKIM-Signature:From:To:Cc:Subject:In-Reply-To:
-	 References:Date:Message-ID:MIME-Version:Content-Type;
-	bh=j5Ce4d8nCM+piZH9frIPw21eODt2zq4vwjw4r8+6bNI=;
-	b=BKp9Ad90bFalrKZb4dXmSWn5lFkTVXyUg9jR32nT6iUnpri9I7HVkvNI4EIsJoJFile1
-	 IpIN6DzlacfyC5DzzA0/jNAXrkKCUZuD6Q+X4djiD7R3PwgM75fdihGTKGvvDiZCb1Obe
-	 UzedG6Bfi8Y8FNygzemn55ggKfQR86RFfBhztguLITl0uXlBN4EQ0W+Jx1nlRm+Io4dmV
-	 wsAsHjGlo629AbVK/leXEEDgXMmrIg5x+IXsUGuXznBW4ZjmdxCELOztE5puRlImY/NaG
-	 RemXf5IDxdWbqqq2nUHIgHWsHAdGSsgnY3JDUvwsYHtv4T+pKPeU8hvGW4lRYUhivaw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=pengutronix.de;
-	spf=pass smtp.mailfrom=pengutronix.de;
-	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=Sq8HoMfT;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.173
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795171195;
+	b=HHLn3okOoPvgeIwfCTYEfsii9eqr1+1fHXT114MyGMuRbWZakl0Nkj88bBiHh+N8AIKT
+	 c4de9xIpgW3n06pI3AWTeC3LCLpGYWLULkEpdV+wr1AJYtX9cNj2mEu5HQgfygakS3Ubc
+	 V/O0MPmQdiO4S46AIOKLyd0GGc6/2rBXIOMkUwyAjSYY560U9En+tlkAmvmYoF0df8jPx
+	 69sgmbWq+lCSqoMXrmnwQmG5kGOWpuyrszHfNLIYVrE9HRmpZR6XEaKpfc24ZFYC7hXrT
+	 6m26DyiYknA1/Ylr1ZM/mNxVY0VsKImjBg4rJaAcvjM/+VisAdd87s4CKKpCHFBW6uw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795171195;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:References:
+	 Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=3+VBw69wTrVgO5VPJPDE6AGnWD5/X+T7xbN7bpttQ7A=;
+	b=KinQRI7lMjxvNxTIyZq8teq5YLsJ0KuH9wQDBCOuVZF8fTWWS4KPdO7SaZLLDAQuPyMO
+	 Ep1ZI4+zcD+C+B7HPvzkp9ieEwv/jNag/fr1O09jEmr4euNzsUTPgEsL6z4/mPV8KQSiY
+	 GQbc3a0w6f0kekP5ES9o4Pu67GOPza87m0jVJMLkh9ko44+WbSudeZH+nytWOwmPaFZVx
+	 4uT6Awa5BF1cS65cD878h9cfPnl9nrPcXyCyxIH6VgU/7H/ykMv7sU0AaI5g8YYpo7/yC
+	 KQw+iDYlAhwMe5ubxxMKwNBdzAe4nGnNF2Ykh9pvrDUe3EdIpJU4v4H1soWAONURxow==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=OkvgYcBE;
+	arc=none smtp.remote-ip=209.85.215.173
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C767E606A320
-	for <imx@lists.linux.dev>; Fri, 20 Nov 2026 10:26:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C767E606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DE6E606A325
+	for <imx@lists.linux.dev>; Fri, 20 Nov 2026 10:39:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3DE6E606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=Sq8HoMfT
-Received: from localhost (unknown [IPv6:2a0a:edc0:0:701:a74f:3cb8:3e85:d062])
-	(Authenticated sender: fdi@pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id C42CC202348;
-	Fri, 20 Nov 2026 11:26:45 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1795170405;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=j5Ce4d8nCM+piZH9frIPw21eODt2zq4vwjw4r8+6bNI=;
-	b=Sq8HoMfT3XG0l9P0SmFcK67og1lgWqB7xLO4i0HzF0IY52ob9ogJUIiy1qkldCkwa4dyKH
-	VcCPaHOkK2F1BKwNBh4+qLBVi8zmUGdgjKpgAhBYWFn0UfzUABfA+j68Ur71So4XVdTany
-	8yZX//j7LOT9oP1MSFEV7o9Li1zU099henMckecZ1/jldwbS2dkp/rc3Iv7+rRu+hvCvVH
-	M7HXArO0aOqeSzT0QJ8KVE7vx/Y2hoc29IZq96YisrohSVcikR8FPoqEuVaKv0VT/e4iiM
-	zF3ia5Ch8ws2ACOESEQSDR2zABWJnoJTEm0a7KNegid8B5z1BqqyqC9V+2HZXA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1795170405;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=j5Ce4d8nCM+piZH9frIPw21eODt2zq4vwjw4r8+6bNI=;
-	b=K7PVPwC4xprzdbghWsTfZ1WVXXRuduZaUC37obVf/2++llZk6rbmRD2K0usWXErezQuFBU
-	B85b3L+E6xGvXVJi5IT0cp7Gkb/HOLqXKdiCd7x3iFKBlzm7XNfcRo6uQ091gE6Nn7BNk7
-	eugQp1YXVsy4KTnvoJLCAtyei2nKdwwLvdTB5PDNSG9TRl7fT0OcxsUj/yFQS3V+JHl8yz
-	7z179y/47AFc2OXmesm3DBk28QlS638Q01RkyQIRSoL4jJaEMqbUFSdhI8kHuMWEihvaa7
-	WPJbxRlvc06M41uXp15I/Z61tsIFv5F2jRiliwnEeieNMPaAb0bP6wMqQ2GZpg==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1795170405; a=rsa-sha256;
-	cv=none;
-	b=PgJ/LQn5mrtT/eudvsFQ1hZF3AHyTkNwSc/5HTY17o79eY6QEcTZkDp17d6M28UF8J+xQ4
-	n8fR2FqpSB9TRMgP15nqLUqQlKsyR7hlo0cjdMZjAnPCQe+pZtGtyMqbTR1wWRGCXs1/aw
-	ptLAcCKxR90yPakgY0uTVq7XPuO1P8lwMHbnbkUHd8fWDVID547a4p3bwvsZfkx2qifIRo
-	7LAF98iXd4vu8YM9jLXx98sgXiQT9M6i2dTJyLcqoBmgP3pSAz2vHngZG0mCGiuW2SxOhQ
-	8VPOsr/0piTmL5/UjAfAQqhsVQHa6sswfKOTiRVDrTs9ySUBxOO8vKJhazxPzQ==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=fdi@pengutronix.de smtp.mailfrom=f.diener@pengutronix.de
-From: Freimut Diener <f.diener@pengutronix.de>
-To: "Joseph Guo (OSS)" <qijian.guo@oss.nxp.com>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Frank Li <frank.li@nxp.com>, Sascha Hauer
- <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>
-Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>, "kernel@pengutronix.de"
- <kernel@pengutronix.de>, Marco Felsch <m.felsch@pengutronix.de>, Justin
- Jiang <justin.jiang@nxp.com>
-Subject: RE: [PATCH 1/5] arm64: dts: freescale: imx93-11x11-frdm: Enable I2C
- level shifter
-In-Reply-To: <MRWPR04MB12117B415189A3EC52A69934E94782@MRWPR04MB12117.eurprd04.prod.outlook.com>
-References: <20261120-imx93-frdm-fixes-v1-0-78dde22a56fe@pengutronix.de>
- <20261120-imx93-frdm-fixes-v1-1-78dde22a56fe@pengutronix.de>
- <MRWPR04MB12117B415189A3EC52A69934E94782@MRWPR04MB12117.eurprd04.prod.outlook.com>
-Date: Fri, 20 Nov 2026 11:26:45 +0100
-Message-ID: <87cxrzbxy2.fsf@theta.mail-host-address-is-not-set>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=OkvgYcBE
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-cdac6d19ddaso346532a12.2
+        for <imx@lists.linux.dev>; Fri, 20 Nov 2026 02:39:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795171194; x=1795775994; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=3+VBw69wTrVgO5VPJPDE6AGnWD5/X+T7xbN7bpttQ7A=;
+        b=OkvgYcBEOG7tnQJ+iui9Hd7oUL3Fdp25jf2/MNlSioTxjxtofRw2pd+voAONm0xxW8
+         5kkZ2sgVH3yxSU+c+Lfm+h3JigSKbvODN3VeRXCsnxAEe8h89G6ZTWOL1vQ7szmNF8nR
+         7nHe/6nlsT7LssXRpFHPQIb3+3w+I45wXydX8g2Qpyhe5iCRtfVMwyrHRKhm7hZlpVGV
+         gYOi5awLgrDcJCyiu0A9bY8t+mrPZsguuV3heHrkUFeI0gCuaSeo/+euRWr4gfMmMOk/
+         C7M284PyobQSxUzXz5fdCwdUcbH3Ys0MVJngtcpTcZ4fXWMQhd0u5mCDhSrTi1+kCuym
+         SWIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795171194; x=1795775994;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=3+VBw69wTrVgO5VPJPDE6AGnWD5/X+T7xbN7bpttQ7A=;
+        b=TygtX6QEusNWGm4gjOVP/AVWmyGxLINeH1klRKww31xJujeFwhLQBG5SXqTc0LSDXv
+         aY0048WPwWH4wW5KACu1QgtiUEOZjWNvuOsGRF3W5pGgir54zw9IHmkt50iQDp2hrdtP
+         8dmM6J1PaYc/aRmxXzOKqaASCkuSBFu4e4Uot/f0mftsSXJBw+n0XRfY+Qzc7g0EbZ4D
+         oA0ELuWZukPde6nPp3SoowpkKihMnsvX0VNWW08aX6KnL+/0CUjme6lz6NAsfjHsCYDX
+         GmcNvQV7wqs0ncXNqCVI64C5uvD59VouMwqWENnKkSxOYgZ95eDkvaKSnKZJDqaQY8tQ
+         cMTw==
+X-Forwarded-Encrypted: i=1; AL+hErH2dJEvYOaoto9PUI5EE+aO/XpBkGS+sEIqhUOnnHocUEc9euduIbK7tFnFVm6yJfj5yWc=@lists.linux.dev
+X-Gm-Message-State: APuU4Z+/l1rJaGmSY1zTc6BIlA0vUVP1iLrRELdDjYm0JOTpdkhy9H6X
+	2rtDrK9DmoiTAD+vGLXYPNQ22Y9esKf3i01S1jRLYaByis14tvL1MJWh1sKLcw==
+X-Gm-Gg: AZFdTZeK280gs6e7ujCkla5Stz/P2Vk+WLNWHtmEWCnlp3dIDhom2j0/DQqEDX40xo1
+	GKOJqooDExzwoqeKqiwgZvQ75/WhRJCBerHMIE3nX5fibjpPYQ/vTvvBIOeWN2j8Ps9thVBgI37
+	jJHEyz1H6Z1bMTY3RHvJ3SVIiqWyZlvW/BRCY9xTqMvmUmp11MlHUPdTXQClYqvjTM2RB0zucMr
+	i3HJKeEc0GNPJRUzeKTjeqO7UjEKDt9xvaS7jSoWpGqH587BxuM++on6y7+XzFACkE7+G5/TJqM
+	maaopWNpisiBTS7BGVkZahkqOxI5U5Jy7FR6cvUmvVPLh1SwDUrWaTbeaxPRb0zV08jclYMVy7A
+	9OFxu2zpuKoGChTakwBJGa9mRCmJ1fwbEEYWw3OFUQo8iKyMaQm2mJMgX8NhZchqvgFo2Uzeuvv
+	k2YjLlpNZJ8Fhj/hTQsEF+ivUHTBCRoCVci9JE7L9UAHs0iFlkO29K/JD44H4ySYNmm85IqZAkO
+	rOLzjYhNhkRkYWtxrEmHzbXvG9IUP9+I37b4HebErowi5mbbndm78k0at8wWqCdN5/5ukJTr/TV
+	bVIYpIP1quLJPkaRJHPRj7CO2PRmX7iXewjGbaKXF5MZnrhNpTUEji8r91ZwD5+OTjSN8w==
+X-Received: by 2002:a17:90b:5109:b0:3b4:e3e:650 with SMTP id 98e67ed59e1d1-3b41c9c40a1mr2219270a91.67.1795171193537;
+        Fri, 20 Nov 2026 02:39:53 -0800 (PST)
+Received: from [10.25.164.32] ([128.77.72.132])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b41ad92c13sm3843513a91.14.2026.11.20.02.39.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Nov 2026 02:39:53 -0800 (PST)
+Message-ID: <47b32f82-cd7e-4bd4-8072-ba859f78c844@gmail.com>
+Date: Fri, 20 Nov 2026 18:39:47 +0800
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -98,31 +91,35 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/7] arm64: dts: imx93-11x11-evk: Add DMIC codec to
+ replace dummy codec for micfil
+To: shengjiu.wang@oss.nxp.com, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, Frank.Li@nxp.com, s.hauer@pengutronix.de,
+ kernel@pengutronix.de, festevam@gmail.com, shawnguo@kernel.org,
+ daniel.baluta@nxp.com, chancel.liu@nxp.com, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+References: <20261120031853.1175454-1-shengjiu.wang@oss.nxp.com>
+ <20261120031853.1175454-3-shengjiu.wang@oss.nxp.com>
+Content-Language: en-US
+From: Chancel Liu <chancel.liu@gmail.com>
+In-Reply-To: <20261120031853.1175454-3-shengjiu.wang@oss.nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-"Joseph Guo (OSS)" <qijian.guo@oss.nxp.com> writes:
+On 11/20/2026 11:18 AM, shengjiu.wang@oss.nxp.com wrote:
+> From: Shengjiu Wang <shengjiu.wang@nxp.com>
+> 
+> The "fsl,imx-audio-card" machine driver uses a dummy codec by default
+> which does not allow configuring the channel number according to the
+> board design. Replace it with a proper "dmic-codec" node configured
+> for 4 channels to match the DMIC hardware layout on the i.MX93 11x11
+> EVK board.
+> 
+> Fixes: fcfa86b3e02c ("arm64: dts: imx93-11x11-evk: Add PDM microphone sound card support")
+> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Reviewed-by: Chancel Liu <chancel.liu@gmail.com>
 
->> --- a/arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts
->> +++ b/arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts
->> @@ -49,6 +49,12 @@ pcal6408: gpio@20 {
->>         };
->>  };
->>
->> +&lpi2c2 {
->> +       pmic@25 {
->> +               nxp,i2c-lt-enable;
->> +       };
->> +};
-> [...]
-> Can you please move this into imx93-11x11-frdm-common.dtsi?
+Regards,
+Chancel Liu
 
-I don't have access to the i.MX93 Wireless FRDM board.
-Are its schematics publicly available?
-
-Have you verified that the I2C level shifter is also present on
-the Wireless variant?
-
-I'll move the property into the common .dtsi in v2.
-
-Best,
-Freimut
