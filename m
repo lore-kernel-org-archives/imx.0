@@ -1,59 +1,59 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795168866;
-	b=GgHL126j1HgHeS18IQHuctfOjfBx2CuOTB3On8q8T6eGlAR6i+SNsZbK+bpK0RUe13GG
-	 OT7us1525ZE6/uk5n7ozZb78I99RDBi01GoTTTrTUupyOZBsBeWi2pGsaqHx5FHuz20kA
-	 xlHPqYWilocQmDmSnS5QjGyjYhftvkyMXjxTccOntaTwIYi2nqsTqNuiWHYLqwvS3bsyR
-	 nviGjm5HMR2XCSRBcMqdOXjs0PULpbaR+7vfAGnhzHipi4ZS1mZTWbTA85DmQfZK3xjbr
-	 K/VHq5U9+BI7XGxYBWgGnPFfjb4MEyPfZ/3c3vMCFS6Ugs3urvaTcdz62mV0WXGO3PQ==
+	t=1795168874;
+	b=0Qg4z0NDLEjg9R2y0YfqSHa7TjQbkAYmzIVixvprTDxC82ufbf8V+v2s24EMiUZL1cJV
+	 aTeIfrJCFusgbUBqn+S8iufCjztF6+iS8prUdLRvX5TXvv8j8mCjB5LSO5h87DuDScESd
+	 3dyqFRvPWzpc85a6dPHUKnEzf8xDoCPOrpCTgP6iKff2N5EWEOlC0EvJql8F+vTikbVpp
+	 v1MFEsoQE/oqhKS5JuaCscI9aTdJx1JYjm9qlIXwxrhGarslIwOdei8c1Gn4oUUkfywee
+	 ddymXcL2Ta+anHyp3WnIl8OnkE+ObZohBwQhdpKuIgsM4dB20O+bSIHwYzUQuOtUJtA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795168866;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795168874;
 	h=Received:DKIM-Signature:From:To:Cc:In-Reply-To:References:Subject:
 	 Message-Id:Date:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	 X-Mailer;
-	bh=TEM/lwyfYjFDZGkgKWhS1fxpehScreTDFbg06MSARgw=;
-	b=VuSw6bgoUiaZEDFsMJlgD0MQBpmWlTYStlAfSa6iGM31zf6GjBWG+OupO8wicJHnUtAp
-	 vA/JcN7Y7SnTNF2dJr4cyTBDLpdAYdbdrEwFXrutapgwCCYs3N+6h21kITgaKXvMf3hS4
-	 1eYZYBL+86OICDRI2mRjHCeHM8R4Xi3lgdBS33hMiUZCDhrMaQioyhXF91DxNhZn/FenD
-	 vQWNOGu4JmRCyBNU+OtkOeWMBQLKpC0Wv1Ck+e5KfrDGohS6kmL0L7MICwwbwIqEFcfht
-	 Q/iby0K7CiNA81DC6FEMcRZUpJKLb0+Atpw5wJtlHGeDcY7E/7wxN+TAyauJ0hABxDw==
+	bh=2iGpZRMj92nkG71mPvOSkY4E7rAqM7fEmk8vg3NlSjw=;
+	b=P/S9gaHt/6sn0qsvzBz/CjqaI5lnI/23Mz2z2JetzuuU+UFvlzYIWAEN3KDYB8zfUX4P
+	 vDoyTYCG41AF7337q7PYELOGJSewZ1u5X6l8qSUnOWhEMhfNBg4Goh1J2vBqZvNDjJiO3
+	 WsuhJuRCSirA/0hWy8u0iN8+1wcDw67Uyol2UTxPYlyPhuLXkeAzIeX7xhNLHxkeTRl2Q
+	 8mAd8QAXhWtiUiZrNtbTwTWvKxi0zuCJnogfpRJJT2o5NFgRpkSPNWx1KVcnsozLnzhI9
+	 LfsgMoS1tFRHyoZ/q1zafa6AZts6BMKOERXDFOBqRHcLHh+i8hmB+Ua6ncKZ2nINZLw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eTyJ47H8;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iaDQDnEh;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0196A606A336;
-	Fri, 20 Nov 2026 10:01:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03D9860A262B;
+	Fri, 20 Nov 2026 10:01:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eTyJ47H8
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52D711F000ED;
-	Fri, 20 Nov 2026 10:01:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iaDQDnEh
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 106211F000EB;
+	Fri, 20 Nov 2026 10:01:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795168865;
-	bh=TEM/lwyfYjFDZGkgKWhS1fxpehScreTDFbg06MSARgw=;
+	s=k20260515; t=1795168873;
+	bh=2iGpZRMj92nkG71mPvOSkY4E7rAqM7fEmk8vg3NlSjw=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=eTyJ47H88RxfllOMLe3j4uRy4TDGOMXxDlsrUGB0NkCv7mdelT+iDZz5Vp/AUpsWP
-	 kcvxInSd5A+0y4JrnK4CQI+F0FAbylJTG0m7e+zscGOY8Ja5Vel8UByfPJZBR/whBl
-	 8soi7Ep2obpUTllFowND+1ZQzUKvhGRzdwwKu5l52oU2BQf7XySa7s4ZLeDgC7udPy
-	 6F23xDG69QwDOR3mXqvhUU7Vvbl17b4AXYTHjbQo1g0X9Ycw5zt1gW5+nWecXidYBI
-	 C59zpSStvY8G2eIKL32g3Y7iVSjITDnVrlu1vV6iN2atR26u1BN4jPUpLt7prrdiWL
-	 lUfQk6f5FwomQ==
+	b=iaDQDnEhFhBsXe4VtHkCGSRlci6yoG2hMW9v8VNHkRIdOZHHNCADNozjXOiJqdYL8
+	 vDWbpKag/eErDDSGv14Fp7vLMaKy12JnYYsYMKkjHaZACClzcsbCIJZs0mik3fG2Wu
+	 ZlFqlqZSTWM8JH4hVbnN8SjcxSGTLLLXmiU77FrHN6YYJNpxBHE6zTdU6WYcQbhMh5
+	 qfoyN19fDP/ZFJdkbC5mF1vxj08E9iedhLNlFz5kHRk7vikvOGRvRH8yTyt5kAGI0d
+	 nZkOzbrfKAL+7jvN8loVCKaNMP7EAC86TPn+C6S4FwXd5dgD1/bjjtnkBrSjePFDPU
+	 auwddZ9+9K+UA==
 From: Vinod Koul <vkoul@kernel.org>
-To: Vinicius Costa Gomes <vinicius.gomes@intel.com>, 
- Dave Jiang <dave.jiang@intel.com>, Frank Li <Frank.Li@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>, 
- Kees Cook <kees@kernel.org>, "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: linux-kernel@vger.kernel.org, dmaengine@vger.kernel.org, 
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-In-Reply-To: <20260918141622.3022876-1-peng.fan@oss.nxp.com>
-References: <20260918141622.3022876-1-peng.fan@oss.nxp.com>
-Subject: Re: [PATCH] dmaengine: use assign_bit() where applicable
-Message-Id: <179516886198.45276.2354167655096140791.b4-ty@kernel.org>
-Date: Fri, 20 Nov 2026 15:31:01 +0530
+To: Frank Li <Frank.Li@kernel.org>, 
+ "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+ Randy Dunlap <rdunlap@infradead.org>, dmaengine@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Frank.Li@oss.nxp.com
+Cc: imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>
+In-Reply-To: <20261013203433.337893-1-Frank.Li@oss.nxp.com>
+References: <20261013203433.337893-1-Frank.Li@oss.nxp.com>
+Subject: Re: [PATCH 1/1] dmaengine: shdma: move shdma_chan and shdma_desc
+ structs to private header
+Message-Id: <179516887070.45276.17681245678832282840.b4-ty@kernel.org>
+Date: Fri, 20 Nov 2026 15:31:10 +0530
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -68,20 +68,20 @@ Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.3
 
 
-On Fri, 18 Sep 2026 22:16:17 +0800, Peng Fan (OSS) wrote:
-> Convert open-coded if/else with set_bit/clear_bit and their
-> non-atomic __set_bit/__clear_bit variants to the assign_bit/__assign_bit
-> API.
+On Tue, 13 Oct 2026 16:34:23 -0400, Frank.Li@oss.nxp.com wrote:
+> Move struct shdma_chan and struct shdma_desc from the public header
+> include/linux/shdma-base.h into the driver-private header
+> drivers/dma/sh/shdma.h. These structs are only used internally by the
+> shdma driver and do not need to be exposed to external users.
 > 
-> Done with Coccinelle semantic patch.
-> 
+> Prepare to make struct dma_async_tx_descriptor private.
 > 
 > [...]
 
 Applied, thanks!
 
-[1/1] dmaengine: use assign_bit() where applicable
-      commit: 15e06365b056e9e73723295a1de9205159e28f1f
+[1/1] dmaengine: shdma: move shdma_chan and shdma_desc structs to private header
+      commit: 2e02fb103be058cf8b2fb24112a74a2715e090f0
 
 Best regards,
 -- 
