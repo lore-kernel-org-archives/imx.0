@@ -1,97 +1,158 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.128.172
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795172758;
-	b=SPEjB3Qq5/8Ky4sTSCxEpfjlmjFBiHsV8RP232N7lKdMqUSBC6LGZHxHdV8DtQ6J/np2
-	 NuspqhzpyxoPTOR888NporLiJnNQkQFQIguHf/ACky1f8jF6PeY56X9IAQRT1gEEKFOwf
-	 NIp5xlX7x3ecsjQOZif5S7F1pJyzJfp7/KzysZc2hpWKt2byln/eEl+isfd6iUNQ+BTtf
-	 Dj5sBzD0/H41nCBafyEy+yPc3aQ5R2QxGeACS5vV6wH8eXvFlnFwHIlGaVv2RH32fYbEP
-	 MnUqX1W7YoKZVPxrv2ojR+SvNGc4EnVCf0W4ajLeqopyqnrDlL/5W47DvKjtWAPIVnw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795172758;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.41
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795173101;
+	b=lsURzCalv6DtSHENzFvTCimYwvT84Dvzn9Z1TZWKCz4tBuWcfVAGVNfnU7UoVRtA95XF
+	 Ul7+bcCChRJYLY12pVTEYsT4Q0zBvr1vhPAkcT9bAOu9CaK8vrT8sr0MR5wPrCnFDcw2T
+	 hs5NpKebqhkZsLLWBZq5WvhpMxXXMFujhzov+rxfRV5bGAxCXzfsf4DFG/+eARdBXJRtN
+	 OmxUqyrtAJbD6bWOEnSjdC26cq7pxW7eSeD7dIoaVuq+Vd8x1do9WWBb80KDGWLFc6dd/
+	 Y/fTwWQflfwfofv8JZvlic2hWO7WHByTrLvxwqO0NyljcDrIj7iO90AmzsRA17QWP6w==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795173101;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
-	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=t5AKTHXlCqIuWDfB5gbPvSysRhBo74t8qpIPPyXGwtU=;
-	b=wyCSw/MmxjfxmjxQsPFSa9AtNOquHJKdDtS5u76YEgmVGDce7L6jRoyLJwmT/AvZY64v
-	 mYAI0doNBLbyI8/iUYqG4oILXksUvDWJiFBxJMutzYiMVjFl1zPqiupkQAfH5s4Ip0PkO
-	 l6dObsaxTjMM/IZJZUL/XAy9tdmb6Jq5yzBPE2yFP3leUrHNQW0eUOLxWWbsrT8BoG0xJ
-	 YgJO0UFlP6H4AgZGJ43t9r1J66B7NZXygeIRx29Y6/mJJcy1W/mpOv7xM6YVbB19gUSej
-	 R5+f7OwDxzB1XA0kWisi8skGWN2CN5rsVTGMGKDPvApAsuMLed7krlohbznsWrpN82A==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=amarulasolutions.com;
-	spf=pass smtp.mailfrom=amarulasolutions.com;
-	dkim=pass header.d=amarulasolutions.com header.i=@amarulasolutions.com header.a=rsa-sha256 header.s=google header.b=ZraxnYJb;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.128.172
-Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:Content-Type:
+	 X-Developer-Signature:X-Developer-Key:Content-Transfer-Encoding;
+	bh=6iowvnjr0RIgWlIDQQOFrlHY5uCtXtYYlYEEp/cOH20=;
+	b=3v2vumrId69HhKbGVflHgDxQezxwI2qfGgwH/0gN5VPYJ2qpXUKHTqi1l/zN7OQq3FWu
+	 G4dWIRcUKvT7N5/q/XWItwYpI1N/Ci8nq0TBx6EtU8gL/w+RX4/waACgZf3MgbsgzdvwD
+	 NuAdzPtlwApQhqXOonyDMUN9nv0LsSvgbLhqn1auyksj8sbRcsrflihUYxBjyHitADz4p
+	 O4EQprf5QyTnQ2gbCQiGxrU1lxYY9o+UO6kIddYPi7IabtEIUZ5s5YMCMFlPN3UZRqFmc
+	 lHOGwQ89j/h10AouP3vKNZR/X4svDAt/DKvX7jCBfI17TbUvyJ21lgVh87taYhFEQ8Q==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=baylibre.com;
+	spf=pass smtp.mailfrom=baylibre.com;
+	dkim=pass header.d=baylibre.com header.i=@baylibre.com header.a=rsa-sha256 header.s=google header.b=AJMPI8Ee;
+	arc=none smtp.remote-ip=209.85.221.41
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6A81606A339
-	for <imx@lists.linux.dev>; Fri, 20 Nov 2026 11:05:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B6A81606A339
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61B7C60A2630
+	for <imx@lists.linux.dev>; Fri, 20 Nov 2026 11:11:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 61B7C60A2630
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.a=rsa-sha256 header.s=google header.b=ZraxnYJb
-Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-8b0ca1ebc8bso6532007b3.2
-        for <imx@lists.linux.dev>; Fri, 20 Nov 2026 03:05:57 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795172756; cv=none;
-        d=google.com; s=arc-20260327;
-        b=qpYOJfIKktvbXCSnN9m6TLmopje6VkyNKDZaDmyr7cL67URdPqZ2gjLMHTpc4chM3/
-         C/xOcL2YRF3sedxazIae0+6OpYh/vgjVrmX8gyOxoZfoVUfQ/kmHhC9Uow0ucB0mdoNi
-         GfcKsNrV1e/SFjvd2ttmJQILGTJ4I+LABgUGkrAsSxFekL402oA22RKAuc02lhstXGEw
-         UhJscsuI6qPbDtqOdu80iR+NxMqaV1YUSH/TcAtpMAKld7xD5kfVSGrFZz3XT+XyOI9F
-         kd8ZUYjyUEthS65wi+QFPLOzSuf4ymUaqhUslUHI4zzMUP9NBnLHqwwZNTaY1PN4kE5A
-         gyEA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=t5AKTHXlCqIuWDfB5gbPvSysRhBo74t8qpIPPyXGwtU=;
-        fh=OPAGc+VZ6VQDmSMMz/AXs+0ARGHYp1icwoDHsGkk5R0=;
-        b=rROoZRx04Nmp1as4DQoiumYHTtCBdszcv3FQxuN9pHQOCxac+Rxg3ZLFD6Lsy7sTrG
-         pZu6AId06LjmL8zyOP6hlWlsoJu1BhgISJzlTC01iHAqXxmCwYRpABRTYribVWR/I1Zy
-         hEvgzJPd6vyulil5gS7wVRtvnNpFt95woCTfMNPsZzcQWgbfR78FQ7thlawFqdMhuudp
-         s8vDQt9iuuuCNE4Sk+a8u5/jBxUQ+bu+lYQSTf4VprXHnRIOVKU5SnoIde/fqq6RTOLm
-         nS/2dKmj0oOdhJc2ImwErQ2bS+r3Aibs7jkqHASVB9n+U86YkInngh0TnKXk09F3XK3o
-         bWmg==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.a=rsa-sha256 header.s=google header.b=AJMPI8Ee
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-4a2f4ca0dcfso382158f8f.1
+        for <imx@lists.linux.dev>; Fri, 20 Nov 2026 03:11:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amarulasolutions.com; s=google; t=1795172756; x=1795777556; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=t5AKTHXlCqIuWDfB5gbPvSysRhBo74t8qpIPPyXGwtU=;
-        b=ZraxnYJb1wgfLGJJE2HTdfRip+K2Oc9OTv8RGao7B0VruGP6uuZSBQFnWIlibiYJjw
-         r4ZSNigglf004Zs3puqvdFCEilg+jv8zeoCjW/hoeNzE+RBoAsPWwNy87ydR7icgXhYN
-         7vtpzOp0HOTm3zjfNLuK0ecRPsc+zIdpESBQE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795172756; x=1795777556;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=baylibre.com; s=google; t=1795173093; x=1795777893; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=t5AKTHXlCqIuWDfB5gbPvSysRhBo74t8qpIPPyXGwtU=;
-        b=MRF50x9wBqVLGh/760YYreU4AJdVCeuCS/74nfXM+ZXmMrty4eHhKITXZqvMdMHmsd
-         P43RAaxTMBTEWPLPc62tSko3O09hwMG9lxa6b/T/IqCDlYqp8MqWItbRBWW0WUeWWv+1
-         VUMjDE/1wGqlqtTXSKQbXkQKKKVMlmbIow5dBwKDAi0D1CrysQeC/ZWzp4HPmx2oCGV4
-         eQ+HWbOE9d6RWO0BIt/SqTB9LQEL1pT936gUXn6A/WDxvA/65oeDDBdBTw/PBtnwfuoq
-         cLT3/iC4LcwH/UcAY9n2NC0o1mq+yJd4iKd02i1bKwHeLgRrUB5ymXUWGT9HDnmIauJr
-         t2XQ==
-X-Gm-Message-State: APuU4Z8SIemI/tXLcG1axk+zr6G/28Z8KfdEzRS8irOkiFfi+LfucBIF
-	z5hSG+AakV90ObLvQEKNNH5BZ0IWW9rqP2g3Y0H0iguPB+7SEMpN+zPVVPnb+BfHEKpqVSDkgu7
-	AzMaGwoxbDcQWUw7/np6UaP6o1lZCAIs/KOKkPV2AGQ==
-X-Gm-Gg: AZFdTZcgSR0oKWh+bcv1hsBXmEhGW5hCGhyiRm+xHDz92uMlw8M6OLKIXx9ocDky063
-	sp3muhR8SctqSeQvFlfAz1mnL0y+FZf49M4w6Jj0OKIC3xopZDHYM4vmRqaZhHoTSnMjRVb7ybZ
-	Ubf86hmvcjAunKVHFS7ijS7Lgz9okjYJ+iIu6oUN7P2NGgFM+bMOx/J113zGKVI9XDl3mpNmdhp
-	BI25wZn8BfleZ7KuYEqtUfNvyNO06mIvYSlUwWIorwE/dKb2N+lai4kW+jmUFFQeuzwQ5AxbDmd
-	O+7xRlJZsterKpkRCykapQ0ETbBMQrBTK47pCwQmiLG/FfMFEQnNQX74fDvfI5FR84/NLjaUchb
-	ePEkUR8qFWRLXEjfgTMLVV3Y2xLH+ERWPZbDCAEJjbckKXb1W6IogudGmnnUjBlFjzP1VdfIABD
-	N3hJwXzmNlN2Xg
-X-Received: by 2002:a05:690c:6b81:b0:8b4:d0a3:dd64 with SMTP id
- 00721157ae682-8b520456d74mr12517987b3.12.1795172756538; Fri, 20 Nov 2026
- 03:05:56 -0800 (PST)
+        bh=6iowvnjr0RIgWlIDQQOFrlHY5uCtXtYYlYEEp/cOH20=;
+        b=AJMPI8EeeqeABQJ2uQG8PtsPSO2bt5dJiVsNqGwha2cfhdU1Bmc6b7KCd6vNMLt8lb
+         3lns13r1oapKvMCZo1azbP3dScmgBZ0VoOlXbp6QDCywK/hL7VHWGzWdCt7mu9CyBn96
+         DtbdlwWm6fzZI8G/I62tm5Htua+wz1jszf5ZSTrnshgbmkevZkEHuMa10kbqq+bNtMgP
+         4QZDrVoCPlQE8NugYmOpjej6DodeF4NhVRHy3D8sF2WLz3ln/04lxXGRQztEPuWTdQix
+         zQ2v1GeoX7vwRSMsVk4U0K+8EX7V1u3rnYGw4daTJquNM4i+6d2meDlhshLwiJbi9KAc
+         tYDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795173093; x=1795777893;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=6iowvnjr0RIgWlIDQQOFrlHY5uCtXtYYlYEEp/cOH20=;
+        b=O/w0g1W1VTX90CS4zlNjWIUt2i8+TO56+sugWnw/ty9ONDk4otDGYShrVJXrAauTKn
+         wmhSdSmQsBWWWgDtFBfti5oAbDc5GtSFlqQ+LLqDfCP+rxt7KSdXgYhroCRoJSoPtpD5
+         rZhVwRJzdf9o+av7/7IaW3x3Xg2zU+1wKv6f4gqycBfX4VFWWXlMEG5lpzaLdN+zKIc7
+         2I3zO5O3mnQ6lrty+0IabC//9kocq1TLumG+XBT+xEbYLfiKOw8v7o9d/1s5gHY6ZSD1
+         tcWORquLGjrSjouOy4fuY9UtQSzGAed4T1UaTbjTa3QVYSM7aHg6sj5fGkpEe7EQgLhQ
+         ywEg==
+X-Forwarded-Encrypted: i=1; AL+hErFpofMYD7seFZEnxXaxJxmGbvWFUmdwTxMi+j/SfEk+vnp2653yohn8d7c4cZbyxLpxExs=@lists.linux.dev
+X-Gm-Message-State: APuU4Z/oQ81ILzICCY4y94j6Wl3d3GYTvh+mGeSOhHqHVnoTU7PY7lLB
+	kHdiShkbLVzYlWShIjndaeRUi+Iysj+AR1pNJB1MciFigc0tS5Pd78DOyQN9rayRfJk=
+X-Gm-Gg: AYBFou2QgX6UfQsTcQedOu2gzpSba78wHb5Hp2Ff+X7+i0s8C3Rj2dvwZJEiy9lbzXV
+	UcXdvOx7L7r9j5451+cxugBoZ5aosT+8q00Shep8o+3FPkKxOLSumg1poq5ElKte7dFDItathnQ
+	tmB2XLKCAsldzLuADReqJuNLFJh/peEp6eeymstrFWh8hOmyWxF18/M+Tvcx+85D2gjoFxKXTn6
+	tJMxVS/vKYBf+sLbAeYUO9wvQAAv+WvGDtZKe5wbNOa1SXSUjTAOed+EvUMQOya/vnvw7awHveQ
+	2TrQNjwv2CRyttCHF+U/myf42nRhaCx26VKrmSaFjbZwYoWnOHQOv6WFEWuGI9BLh/47h4OmV1X
+	CcedG/5oRjUiVP0Mcdtw7bBYw+4C9MSbOnGp/5WDUPnQbuSXAhlAxCb52zNvFm74coTYKmW7vkU
+	Z5SO9dSV+Z/VZTb4ZZXdP0pHY3WV4+XEtEAFz0Q/weqamT6mEK8A7HziEl0kzl/h1MtItWzs4FT
+	h7EUZXVcQI1AD4XDVE1+p+2rk7Ux/eT1mX5liiL9oXLgbG+MF48jN43+VHgXl+g4Ct/htQ5ZQOh
+	qZozwtPn2/iKOs8T9GRNAboDIP1kPYQiaRXNUx1ph0VlyQXhO9Anbw6ArjfiJR/0YAT/EI3UGc5
+	K6lcWteYvoYV1yx/L
+X-Received: by 2002:a05:600c:3b0e:b0:4a1:efba:511 with SMTP id 5b1f17b1804b1-4bb8882508emr60110635e9.35.1795173092340;
+        Fri, 20 Nov 2026 03:11:32 -0800 (PST)
+Received: from localhost (p200300f65f19a904be03815e1634e776.dip0.t-ipconnect.de. [2003:f6:5f19:a904:be03:815e:1634:e776])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-4bb884a15absm67887745e9.9.2026.11.20.03.11.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Nov 2026 03:11:31 -0800 (PST)
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Johan Hovold <johan@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Nipun Gupta <nipun.gupta@amd.com>,
+	Nikhil Agarwal <nikhil.agarwal@amd.com>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Longfang Liu <liulongfang@huawei.com>,
+	Julian Ruess <julianr@linux.ibm.com>,
+	Ankit Agrawal <ankita@nvidia.com>,
+	Brett Creeley <brett.creeley@amd.com>,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	=?utf-8?q?Micha=C5=82_Winiarski?= <michal.winiarski@intel.com>,
+	Eric Auger <eric.auger@redhat.com>,
+	Eric Farman <farman@linux.ibm.com>,
+	Matthew Rosato <mjrosato@linux.ibm.com>,
+	Tony Krowiak <akrowiak@linux.ibm.com>,
+	Jason Herne <jjherne@linux.ibm.com>,
+	Harald Freudenberger <freude@linux.ibm.com>,
+	Holger Dengler <dengler@linux.ibm.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Mark Brown <broonie@kernel.org>,
+	Abel Vesa <abelvesa@kernel.org>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Brian Masney <bmasney+clk@redhat.com>,
+	Jerome Brunet <jbrunet+clk@baylibre.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Srinivas Kandagatla <srini@kernel.org>,
+	Sylwester Nawrocki <s.nawrocki@samsung.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Jaroslav Kysela <perex@perex.cz>
+Cc: Jonathan Corbet <corbet@lwn.net>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Bradley Morgan <bradley.morgan@linux.dev>,
+	Armin Wolf <W_Armin@gmx.de>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	linux-doc@vger.kernel.org,
+	driver-core@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	Alex Williamson <alex@shazbot.org>,
+	Mostafa Saleh <smostafa@google.com>,
+	kvm@vger.kernel.org,
+	qat-linux@intel.com,
+	virtualization@lists.linux.dev,
+	intel-xe@lists.freedesktop.org,
+	Vineeth Vijayan <vneethv@linux.ibm.com>,
+	Peter Oberparleiter <oberpar@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	linux-s390@vger.kernel.org,
+	linux-hyperv@vger.kernel.org,
+	linux-spi@vger.kernel.org,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	linux-clk@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-remoteproc@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-sound@vger.kernel.org,
+	Takashi Iwai <tiwai@suse.com>
+Subject: [PATCH v2 00/10] driver core: Disable driver overriding by default
+Date: Fri, 20 Nov 2026 12:11:01 +0100
+Message-ID: <cover.1795171088.git.u.kleine-koenig@baylibre.com>
+X-Mailer: git-send-email 2.47.3
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -101,183 +162,110 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-References: <20261104103620.4054694-1-dario.binacchi@amarulasolutions.com>
-In-Reply-To: <20261104103620.4054694-1-dario.binacchi@amarulasolutions.com>
-From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Date: Fri, 20 Nov 2026 12:05:44 +0100
-X-Gm-Features: AclHuK8j5lV0ZPwyCvHflp982Xer6I8gVMC44Ov4SpRq9SvLhJ8sxGrzvqdlJNI
-Message-ID: <CABGWkvp-fBTjTZKxkUTiTFzUYn70x1OTQxe81Jh=ScPEye94TA@mail.gmail.com>
-Subject: Re: [PATCH v15 0/2] clk: scmi: fix the i.MX OEM spread spectrum configuration
-To: Sudeep Holla <sudeep.holla@kernel.org>, Cristian Marussi <cristian.marussi@arm.com>, 
-	Brian Masney <bmasney+clk@redhat.com>
-Cc: imx@lists.linux.dev, Peng Fan <peng.fan@nxp.com>, 
-	linux-amarula@amarulasolutions.com, arm-scmi@vger.kernel.org, 
-	michael@amarulasolutions.com, Jerome Brunet <jbrunet+clk@baylibre.com>, 
-	Sebin Francis <sebin.francis@ti.com>, Stephen Boyd <sboyd@kernel.org>, linux-clk@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4896; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=zb+igsuXLt8tOTuUjhzAr7HaxCaZLq4II70BN40Br9Y=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBrACrJx1qga/LvoqPeQ2w7AGsIzkvZ0u8Ei7ilD OnkWyRDOleJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCawAqyQAKCRCPgPtYfRL+ TrT2B/4h+7Q3cE0LlxcXdMzSjo72DibWSV5sOQkmoVdvDT2jirOpWioUU86bki4NAIk6Z4fKuAQ Tq67UAFcdu/x0sb+TsWnSkdYqWbFXP1E9qqHzS6LbgG2Wo9AfXLnJRQPoIkCW5R3i/w6jmyDLiI LkWjw6qUO85o5cf3veZf7uvTVs/F1HlPcGi5H2XR8SEvtsTQoNcOqyDD/XO+JfY5VRim2QTygzC /LqpSYXX2fMI/PZcft+vtXeHkKEsua161Yxgcwt3mnXV1cWuUQhOgqkI5MNgrbn/8PHF60B4GWC cbYFOHiY7+15odYG/kF7YqO0HOLOodN9ndNTOKA9GdiXGD/D
+X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
 
-Hi Brian,
+Hello,
 
-Cristian has reviewed both patches [1][2]. Is that enough on the SCMI
-side for you to pick them up, or would you rather wait for Sudeep?
+here comes v2 which addresses the review feedback I got for (implicit)
+v1. See https://lore.kernel.org/linux-kernel/20261116110853.3418077-2-u.kleine-koenig@baylibre.com
+for the discussion about that previous submission.
+ 
+The objective is to deny force binding a device to a driver that isn't
+prepared for that. There are many drivers that run in a null pointer
+exception when this happens and only very few drivers are supposed to be
+used like that. So the first patch implements an explicit opt-in for
+drivers and denies other matches; the remaining patches implement the
+opt-in for drivers that rely on it. This makes it unnecessary to fix
+individual drivers to explicitly refuse such bindings. See commit
+1e50a0349012 ("iio: adc: mcp3564: reject devices without match data")
+for an example of such a driver-specific fix.
 
-Patch 1/2 is a fix for 7.3 (Cc: stable), so it could go in as a 7.4-rc fix.
+Changes since (implicit) v1:
+ 
+ - Rework parameter parsing to just use `allow_driver_override` on the
+   kernel commandline
+ - Add review tags
+ - Add patches by Alex Williamson setting .support_driver_override in
+   pci and vfio drivers
+ - Add patches for uio, spidev and a few more drivers setting
+   .support_driver_override
+ - align wording in Documentation/admin-guide/tainted-kernels.rst with 
+   tools/debugging/kernel-chktaint
 
-Cristian, your reply to 2/2 [2] has a "From:" line where I think you
-meant Reviewed-by. Could you confirm?
+It is sensible to merge the driver core change (patch #1) together with
+the individual driver patches setting .support_driver_override because
+with the driver core change the driver override doesn't work any more
+for the unmodified drivers (unless the new kernel parameter is provided
+and a taint is accepted). So I suggest (once there is agreement that the
+patches are fine) to merge them all in one go and provide a stable
+branch in case a driver was missed to be adapted. I can create such a
+branch and ask Greg or Linus to pull it, or Greg can do that.
 
-[1] https://lore.kernel.org/all/avMog5kzJpsiUhXn@pluto/
-[2] https://lore.kernel.org/all/avMtgxmGXTbTKG1t@pluto/
+So if you're the maintainer of one of the drivers touched by patches #2
+and later and assuming your ok with that patch, please provide your Ack
+(plus the required coordination if applicable) for not merging via your
+usual tree.
 
-Thanks and regards,
-Dario
+Best regards
+Uwe
 
-On Wed, Nov 4, 2026 at 11:36=E2=80=AFAM Dario Binacchi
-<dario.binacchi@amarulasolutions.com> wrote:
->
-> These are the two patches of the v14 series [1] still pending, as
-> patches 2/4 and 4/4 have been merged in 7.4-rc1.
->
-> The first one is a fix for 7.3: the i.MX SCMI OEM extension converts
-> the spread to the wrong unit, so the hardware is programmed with no
-> spread at all for any valid configuration. The second one rejects the
-> configurations that do not fit in the OEM fields, instead of silently
-> truncating them.
->
-> Brian is waiting for an ack from the SCMI side on both patches.
-> Sudeep and the arm-scmi list were not Cc'ed on v14, as
-> get_maintainer.pl does not list them for clk-scmi-oem.c.
->
-> [1] https://lore.kernel.org/all/20260904101243.412006-1-dario.binacchi@am=
-arulasolutions.com/
->
-> Changes in v15:
->  - Drop patches 2/4 and 4/4, merged in 7.4-rc1.
->  - Rebase on v7.4-rc1.
->
-> Changes in v14:
->  - Move the fixes first, so that they can be picked up separately from
->    the new patches.
->
-> Changes in v13:
->  - Add patch "clk: scmi: reject SSC configuration out of the OEM field
->    range".
->  - Rename patch "clk: scmi: fix SSC permyriad conversion" to "clk: scmi:
->    fix SSC spread conversion".
->
-> Changes in v12:
->  - Add patch "clk: scmi: fix SSC permyriad conversion" to fix the
->    permyriad to percent conversion in clk-scmi-oem.c, reported by
->    Sashiko AI review.
->
-> Changes in v11:
->  - Add patch "clk: Validate spread spectrum configuration" to reject
->    invalid parameters in the clk core before they reach the providers.
->
-> Changes in v10:
-> - Drop patches 1-22, superseded by the generic spread spectrum clocking
->   support from Peng Fan, merged in 7.3, so the i.MX8M specific infrastruc=
-ture
->   is no longer needed. This patch is now based on the following commits:
->   - ae794aa6e88d ("dt-bindings: clock: Add spread spectrum definition")
->   - c86814e70390 ("clk: Introduce clk_hw_set_spread_spectrum")
->   - a7f16660af39 ("clk: conf: Support assigned-clock-sscs")
->   - 7d98de6ffdab ("clk: Add KUnit tests for assigned-clock-sscs")
->   https://lore.kernel.org/all/20260826165611.236321-1-sboyd@kernel.org/
->
-> Changes in v9:
-> - Add 'Reviewed-by' tag of Peng Fan for imx8mn platform patches
-> - Fix building warning raised by the kernel test robot for patch
->   v8, 11/18 clk: imx: add support for i.MX8MN anatop clock driver
-> - Add patches for imx8m{m,p} platforms:
->   - 23/23 clk: imx8mm: support spread spectrum clock generation
->   - 22/23 clk: imx: add support for i.MX8MM anatop clock driver
->   - 21/23 clk: imx8mp: support spread spectrum clock generation
->   - 20/23 clk: imx8mp: rename ccm_base to base
->   - 19/23 clk: imx: add support for i.MX8MP anatop clock driver
->
-> Changes in v8:
-> - Drop the patches added in version 7:
->   - 10/23 dt-bindings: clock: imx8m-clock: add phandle to the anatop
->   - 11/23 arm64: dts: imx8mm: add phandle to anatop within CCM
->   - 12/23 arm64: dts: imx8mn: add phandle to anatop within CCM
->   - 13/23 arm64: dts: imx8mp: add phandle to anatop within CCM
->   - 14/23 arm64: dts: imx8mq: add phandle to anatop within CCM
->
-> Changes in v7:
-> - Add and manage fsl,anatop property as phandle to the anatop node with
->   the new patches:
->   - 10/23 dt-bindings: clock: imx8m-clock: add phandle to the anatop
->   - 11/23 arm64: dts: imx8mm: add phandle to anatop within CCM
->   - 12/23 arm64: dts: imx8mn: add phandle to anatop within CCM
->   - 13/23 arm64: dts: imx8mp: add phandle to anatop within CCM
->   - 14/23 arm64: dts: imx8mq: add phandle to anatop within CCM
->
-> Changes in v6:
-> - Merge patches:
->   10/20 dt-bindings: clock: imx8mm: add binding definitions for anatop
->   11/20 dt-bindings: clock: imx8mn: add binding definitions for anatop
->   12/20 dt-bindings: clock: imx8mp: add binding definitions for anatop
->   to
->   05/20 dt-bindings: clock: imx8m-anatop: define clocks/clock-names
->   now renamed
->   05/18 dt-bindings: clock: imx8m-anatop: add oscillators and PLLs
-> - Split the patch
->   15/20 dt-bindings-clock-imx8m-clock-support-spread-spectru.patch
->   into
->   12/18 dt-bindings: clock: imx8m-clock: add PLLs
->   16/18 dt-bindings: clock: imx8m-clock: support spread spectrum clocking
->
-> Changes in v5:
-> - Fix compilation errors.
-> - Separate driver code from dt-bindings
->
-> Changes in v4:
-> - Add dt-bindings for anatop
-> - Add anatop driver
-> - Drop fsl,ssc-clocks from spread spectrum dt-bindings
->
-> Changes in v3:
-> - Patches 1/8 has been added in version 3. The dt-bindings have
->   been moved from fsl,imx8m-anatop.yaml to imx8m-clock.yaml. The
->   anatop device (fsl,imx8m-anatop.yaml) is indeed more or less a
->   syscon, so it represents a memory area accessible by ccm
->   (imx8m-clock.yaml) to setup the PLLs.
-> - Patches {3,5}/8 have been added in version 3.
-> - Patches {4,6,8}/8 use ccm device node instead of the anatop one.
->
-> Changes in v2:
-> - Add "allOf:" and place it after "required:" block, like in the
->   example schema.
-> - Move the properties definition to the top-level.
-> - Drop unit types as requested by the "make dt_binding_check" command.
->
-> Dario Binacchi (2):
->   clk: scmi: fix SSC spread conversion
->   clk: scmi: reject SSC configuration out of the OEM field range
->
->  drivers/clk/clk-scmi-oem.c | 27 +++++++++++++++++++++++----
->  1 file changed, 23 insertions(+), 4 deletions(-)
->
-> ---
-> base-commit: 05441d697f7f9a927264f4058cbbc6a03dfcac9d
-> branch: imx-pll14xx-spread-spectrum
->
-> --
-> 2.43.0
->
+Alex Williamson (3):
+  PCI: Allow untainted driver_override for PCI stub drivers
+  vfio: Allow untainted use of driver_override
+  s390/vfio: Allow untainted use of driver_override
+
+Uwe Kleine-König (7):
+  driver core: Disable driver overriding by default
+  uio: Allow untainted use of driver_override
+  spi: spidev: Allow untainted use of driver_override
+  clk: imx: scu: Allow untainted use of driver_override
+  remoteproc: Allow untainted use of driver_override
+  slimbus: qcom-ngd-ctrl: Allow untainted use of driver_override
+  ASoC: samsung: i2s: Allow untainted use of driver_override
+
+ .../admin-guide/kernel-parameters.txt         |  6 +++
+ Documentation/admin-guide/tainted-kernels.rst | 54 ++++++++++---------
+ drivers/base/bus.c                            | 51 ++++++++++++++++++
+ drivers/clk/imx/clk-scu.c                     |  1 +
+ drivers/pci/pci-pf-stub.c                     |  1 +
+ drivers/pci/pci-stub.c                        |  1 +
+ drivers/rpmsg/rpmsg_ctrl.c                    |  1 +
+ drivers/rpmsg/rpmsg_ns.c                      |  5 +-
+ drivers/s390/cio/vfio_ccw_drv.c               |  1 +
+ drivers/s390/crypto/vfio_ap_drv.c             |  1 +
+ drivers/slimbus/qcom-ngd-ctrl.c               |  1 +
+ drivers/spi/spidev.c                          |  1 +
+ drivers/uio/uio_dmem_genirq.c                 |  1 +
+ drivers/uio/uio_hv_generic.c                  |  1 +
+ drivers/uio/uio_pci_generic.c                 |  1 +
+ drivers/uio/uio_pdrv_genirq.c                 |  1 +
+ drivers/vfio/cdx/main.c                       |  1 +
+ drivers/vfio/fsl-mc/vfio_fsl_mc.c             |  1 +
+ .../vfio/pci/hisilicon/hisi_acc_vfio_pci.c    |  3 +-
+ drivers/vfio/pci/ism/main.c                   |  3 +-
+ drivers/vfio/pci/mlx5/main.c                  |  3 +-
+ drivers/vfio/pci/nvgrace-gpu/main.c           |  3 +-
+ drivers/vfio/pci/pds/pci_drv.c                |  3 +-
+ drivers/vfio/pci/qat/main.c                   |  3 +-
+ drivers/vfio/pci/vfio_pci.c                   |  3 +-
+ drivers/vfio/pci/virtio/main.c                |  3 +-
+ drivers/vfio/pci/xe/main.c                    |  3 +-
+ drivers/vfio/platform/vfio_amba.c             |  1 +
+ drivers/vfio/platform/vfio_platform.c         |  1 +
+ include/linux/device.h                        | 19 +------
+ include/linux/device/driver.h                 |  2 +
+ include/linux/panic.h                         |  3 +-
+ include/trace/events/module.h                 |  3 +-
+ kernel/panic.c                                |  3 +-
+ sound/soc/samsung/i2s.c                       |  1 +
+ tools/debugging/kernel-chktaint               |  9 ++++
+ 36 files changed, 144 insertions(+), 55 deletions(-)
 
 
---=20
-Dario Binacchi
-Senior Embedded Software Engineer
-M. +39 328 0625246
-dario.binacchi@amarulasolutions.com
-=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
-=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95
-Amarula Solutions SRL
- Via Felice Cavallotti 25D, 41012 Carpi, MO, IT
-info@amarulasolutions.com
-www.amarulasolutions.com
+base-commit: 7cfbf79c66c63e807ea452abf0546e6f6d6833a6
+-- 
+2.56.0.rc1
+
