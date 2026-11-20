@@ -1,20 +1,22 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.65.43
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.83.32
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795171576;
-	b=Me1yah95WLp1B2Bch+nY/IPrEqgCoJA35GRkMDg5fqVbyeyri5svuFoWvUimw1eYFG5U
-	 6h27fu/xS1ZbRPQVZpcoNGcAlPGRG+07wu2eO/nXOp3VwyqhGYoCwM+FVNo4irs4Cj0K8
-	 hzMr+294P+hqiCfxVj/u/XGATGcjNw6fFZpHmzYAVJR2CRjNgluBRUq04blyRVYkUskR5
-	 CrGHqpbIQWZa3lefYIAMq+k5/DpanvaTgM3MKTPqIDtjmTW7eR9vUYf/AZottzQ+hCOwk
-	 owo/hvrSyF1/R9XPEq0mPjyNuMjsK21OZuFwyblNioWoDe6sDAT2kP6DOqbyVxZAMPA==
+	t=1795171720;
+	b=Ph5Zz2er1ft0H62PBmK3rTBlc6vGA9RVdKIA34Al30cG3mSEJ4a59gdoomUyccu4FfeR
+	 db2qDZVy4fkkFOzeclQUfBB8OJg8cQYb3r3sBPC2rCKrnZzf9e0bRioGz14XXaj4mV2FL
+	 GGXGUS0LYl0wGaOX+BMvbcux/DqrAiN+fV7MpF7avCdQjzJqXcS/GS8XAECNlkr0aZuVV
+	 Bxho6/AOrWzYbEm5TngPbWwjcE90jmYTL3vmQi/qThB9mLOIlWwaBzp+Q/EavQjBie+pH
+	 DnyYsEHMjwQbvEqufq4dpqT4kcOqRgtbd9g5fogpM+CIc6rX/uSiADddkHSPqeq2EMg==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795171576;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:From:Date:Subject:
-	 Content-Type:Content-Transfer-Encoding:Message-Id:X-B4-Tracking:
-	 X-Change-ID:To:Cc:X-Mailer:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	a=rsa-sha256; c=relaxed/relaxed; t=1795171720;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:Content-Type:Content-Disposition:
+	 In-Reply-To:X-ClientProxiedBy:MIME-Version:
+	 X-MS-Exchange-MessageSentRepresentingType:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SharedMailbox-RoutingAgent-Processed:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
 	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
 	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
 	 X-MS-Exchange-CrossTenant-Network-Message-Id:
@@ -24,79 +26,71 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
 	 X-MS-Exchange-CrossTenant-UserPrincipalName:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=5VD+SnSQ0H18PuuB69eT53iuS7VHVFOjmVb6eiq5bgI=;
-	b=SuHte3yjn0qyB6BHUfYfgGAVe5ufebaQOrV2Uxq5d8iU38TuvWeF46cJCJNzGsE/AtTk
-	 PTOqaFoBs6OldgDJhWJAi+7HNYvRXUWt4PPNpIbTiRsJrUhAhWKfE/GKdQDPHxvhp7khb
-	 J9uydzrJ1YZmW15ehVb6h3RisYi1fFeTN7P5khJocj+D9cYhR0i4JTu40pwfwsG+Ec6GY
-	 WpMa6ULo0O9AdZCb8IZS0jFBDGbs79b1yVlpaDYvKo0lXuI/Yulsj9xo/D0GZiqX+FVW8
-	 zgBMDEi0nxciLI8PVFnAgHQoP/bftuw5uoyTxN3KP6A1Cjf3IzZVt885sbZ3kAcg4jQ==
+	bh=PpIkpj45PnSBFFJR7sWSdwgY/ddfffz58HANlT3Ibbw=;
+	b=2yxprECL9lzuZxQilHSQi/V7q0PAn+DueJyUqbi8CwJzFuhYeT8qkFTVZ9eIFfSJYq7a
+	 p4m/j0/VlrDsWRCfWc1TbogWy4SJ8aji7FiWYHXmqThCjU8DyxTkD+0Z/gEZRHuGaVvbs
+	 W5eoMbAMHNytgqjS1fsI4kG6+HDioxpG7whN+5NEZrpk0Z72v1xKMKbKFvOzD+TMSlE4J
+	 rHXYYlC2CLh6w6y+9bPXDkO56Q5z4gl/kB6veFaHmx2RpeSsLLaI/Y+Bd+GpUbGotHK+A
+	 QqwcQ0dI4YQ5t3DBJT1UaBSDKix/uKdCRJR9wTTzpEMixhhB6JF3mfjvbOZUft9hIXg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=oss.nxp.com;
 	spf=pass smtp.mailfrom=oss.nxp.com;
-	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=gfA0gfik;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.65.43
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011043.outbound.protection.outlook.com [52.101.65.43])
+	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b="EPprA3/u";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.83.32
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013032.outbound.protection.outlook.com [52.101.83.32])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 532A0606A336
-	for <imx@lists.linux.dev>; Fri, 20 Nov 2026 10:46:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 532A0606A336
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A1AB606A326;
+	Fri, 20 Nov 2026 10:48:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3A1AB606A326
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=gfA0gfik
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=EPprA3/u
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Vm1SY1aZXycpXPcFjODkdRk6hjx+qm/hQMibCQuWIzazBALoeyArV11b2IDXHAJY35yv57h1qeE7lNQo+a4VNmxukW0vcnEbYKwX4WYBdewcjrO/2A3b+VmJsP49N7bZvoUBZuD9yw3VNdZBJYWZaqXkj2gi1nDyomin+k8Sax2T8QNk7n2/wjxJxY5dmB4mtOwgUaqJL8ErNH2AVRyi0wTS7jgrsjJ4fGiazLghZ0Yff33aT6cPOTgW8miYExSsjMbcOLnRy2PsVabe6UQf5tFgN9dR6Y6UtEuXImHtVJTb+D/HXrsQuWuhZHbqaaIjGY7E2p4wNa4K7daU6ec4bA==
+ b=LRgHz2fz7mMQQuVvTgYZ2zD5NcYEH4JUrBD0LvFjHPeCoxbfzCxiwziiX6gXnZKl0Upq/1pf777SMpQVEgLkPp4V5ExwXfTEMA1yiOsu2wc3cvbYA4c1fDigAkusxbV9EfSp6Mk5uXSKDRysCHxLPtROV9VDyr9m13yeGJlKMqp3sEaZwqySfk1P7lb3MpI8HAQZqT2x63B7HyTbfUyuURE5pjQAFKParzfFjSQE6nAF/0f52PJ9KGr/lYzN+xogT/h9AVTpuWNwUv6qn+huArDaPRhjGIKEIcWguBo9ZqXFW/kiKrH60vmG1fgReZXAc+MOQuDSnlv09StvscyIZw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5VD+SnSQ0H18PuuB69eT53iuS7VHVFOjmVb6eiq5bgI=;
- b=cjCvrrneKkdoZf8tl2EXlcLJNC7nj1OtU2Y15vqotkls9jDLNwV7tY8JYuL+AZUe9VAMVYWqMynt/TgbE/PBNEMvSUVX2nW4yXUP0CcMnEgre4dHU17ijchV//7KCPH9QOC5jX+m7tskqF1rwEFKb/pLLDxh3tbAnXrisX9WeSPo4mbWr+k+OjyultPyZ2nWnqatTStc8opKpEKjEmL6eVRF/KRaG4N/5r8oL2jbcBXn2UOr/yGXzG62BizvTJClWo8D4nUTaMUAVwS1FKlnC2Be1QoRgEY5qbGtz4P4umcHCguY8I1iDqRms7NQW5buVLOf+xEG7EeJwTnmlU4PIA==
+ bh=PpIkpj45PnSBFFJR7sWSdwgY/ddfffz58HANlT3Ibbw=;
+ b=v5372+UtNNQq1QjL20cm+ArJqW0q/mf+NkIJzkfsnh4GKrxOEJc7bd7fjaZRVw0soEKhyDxZ5soALRsFBreL6D1Zv2OmoxSXUWF/BfZX9sInLBqZnWDjp21agxtvUHQ5Q8xub4/s3TtnCX4gicdu3GuZyOPGTiWYxf4FjHtWWJuuJKkOJq/0lx2HG9FDjvEhcVZ5i4qtgZBkEzfPvncX7IbFyDhrNZK4CLVxoGFo8a4eabQoFJhx5oPy38JPmUORuzryBYR3xAMp+nT+gm7v/hIUyeB4xUinr1P7dlITJyvB1jkAt1AydkkCFLHzln7MFRBHkO0EPXpnpUcbdxHbYg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5VD+SnSQ0H18PuuB69eT53iuS7VHVFOjmVb6eiq5bgI=;
- b=gfA0gfikEXhRCT2uWkgC49jwdoMP/kkBqv2nfcgSPnP3ukejh4FEkqMkyLVqmWhekpqeqyAgfArCkQDgU5bluvXToA6tyvhFLvyLSfDRnr1EQ1ZuQZuotqZ30gzwzvpiuEuxX7Jq3DCGaSr3nBQXKcVbyrF2aFKmimrJaFLgy3K9NKQnhIJFrK10Co3hX7pPnm9aSjSinMNyGK/GYCKiswU50UDRKIqq78L8ZthX++Bch6lLoT4La5Jj5oSMEeWDHYPRDIkdgUntPW67nMyr4NAibOkNYSOxJgeFBC2hmzv4K3vHeGGiKN+8VFaOdVxPa5t5RXowouc5Fxam7rw6wQ==
+ bh=PpIkpj45PnSBFFJR7sWSdwgY/ddfffz58HANlT3Ibbw=;
+ b=EPprA3/ui3m0JNTP466msx4xDYED9backaSzI++NN6IDIFWe0ibSsGGdsHMua976QTsjYSicJjGDh9nVjmCtwla9h1h75JUU/87zqBY2repeE3+qqe6cO8jaUh50uk9rV7l/qf+0U34c/DH98iZ8OgWdMC423IXgvnyBwrsk86R1KVRa0bsxetqltPYpCuYCMy7mCJHAedCvwp6kcONiUv9+6968r1AdMCBC4NVG5A1xf1zJew8nejiSAsVfJFBrdG300t2qAKrKEJN1SuVmXnCat1c5cDUnBit1NGRU917jZm+ByrbUCFN3ztwp2f40bCA+7JnZM4jmRk93Y+sP0A==
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from VI1PR04MB5807.eurprd04.prod.outlook.com (2603:10a6:803:ec::21)
- by AS8PR04MB8150.eurprd04.prod.outlook.com (2603:10a6:20b:3f0::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.10; Fri, 20 Nov
- 2026 10:46:12 +0000
-Received: from VI1PR04MB5807.eurprd04.prod.outlook.com
- ([fe80::3da4:2827:d637:37de]) by VI1PR04MB5807.eurprd04.prod.outlook.com
- ([fe80::3da4:2827:d637:37de%7]) with mapi id 15.21.0639.011; Fri, 20 Nov 2026
- 10:46:08 +0000
-From: joy.zou@oss.nxp.com
-Date: Fri, 20 Nov 2026 18:50:53 +0800
-Subject: [PATCH v2] pinctrl: imx: Use of_device_id match table for per-SoC
- data
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261120-b4-imx937-frdm-scmi-pinctrl-v2-1-911487a14300@oss.nxp.com>
-X-B4-Tracking: v=1; b=H4sIAAwmAGsC/42NQQ6CMBAAv0J6dklbgVJP/sNwsKWVNdKSLhIM4
- e8CfsDjJJOZhZFL6IhdsoUlNyFhDBvIU8Zsdw8PB9huzCSXleBCgykA+1mfFfjU9kC2Rxgw2DG
- 9QBnrZO1rXXrFtsKQnMf5qN+aH9PbPJ0d9+RudEhjTJ9jP4nd++80CRDAS1V5I7muCnONRHmYh
- 9zGnjXrun4BLIrhctoAAAA=
-X-Change-ID: 20261019-b4-imx937-frdm-scmi-pinctrl-7bce28f895f7
-To: Peng Fan <peng.fan@nxp.com>, Dong Aisheng <aisheng.dong@nxp.com>, 
- Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>, 
- Jacky Bai <ping.bai@nxp.com>, Ye Li <ye.li@nxp.com>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- NXP S32 Linux Team <s32@nxp.com>, Linus Walleij <linusw@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>
-Cc: linux-gpio@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Joy Zou <joy.zou@nxp.com>, Joy Zou <joy.zou@oss.nxp.com>
-X-Mailer: b4 0.15.2
-X-ClientProxiedBy: SI1PR02CA0052.apcprd02.prod.outlook.com
- (2603:1096:4:1f5::20) To VI1PR04MB5807.eurprd04.prod.outlook.com
- (2603:10a6:803:ec::21)
+Received: from GV2PR04MB12318.eurprd04.prod.outlook.com
+ (2603:10a6:150:32b::19) by AS8PR04MB7638.eurprd04.prod.outlook.com
+ (2603:10a6:20b:291::23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.12; Fri, 20 Nov
+ 2026 10:48:34 +0000
+Received: from GV2PR04MB12318.eurprd04.prod.outlook.com
+ ([fe80::a498:2b5a:cbdb:d6fa]) by GV2PR04MB12318.eurprd04.prod.outlook.com
+ ([fe80::a498:2b5a:cbdb:d6fa%3]) with mapi id 15.21.0639.010; Fri, 20 Nov 2026
+ 10:48:34 +0000
+Date: Fri, 20 Nov 2026 12:48:30 +0200
+From: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: linux-clk@vger.kernel.org, imx@lists.linux.dev, 
+	devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org, robh@kernel.org, 
+	conor+dt@kernel.org, Frank.Li@kernel.org
+Subject: Re: [PATCH v12 2/5] drm/imx: Add support for i.MX94 DCIF
+Message-ID: <awAgaVs4LLwqVA57@vm>
+References: <20261118-dcif-upstreaming-v12-0-29b35e27a1cc@oss.nxp.com>
+ <20261118-dcif-upstreaming-v12-2-29b35e27a1cc@oss.nxp.com>
+ <sashiko-outbox-221406@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <sashiko-outbox-221406@kernel.org>
+X-ClientProxiedBy: AM8P191CA0027.EURP191.PROD.OUTLOOK.COM
+ (2603:10a6:20b:21a::32) To GV2PR04MB12318.eurprd04.prod.outlook.com
+ (2603:10a6:150:32b::19)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -106,226 +100,266 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: VI1PR04MB5807:EE_|AS8PR04MB8150:EE_
-X-MS-Office365-Filtering-Correlation-Id: 244e15e5-c123-4edc-5ced-08df46f37ba5
+X-MS-TrafficTypeDiagnostic: GV2PR04MB12318:EE_|AS8PR04MB7638:EE_
+X-MS-Office365-Filtering-Correlation-Id: b03cec65-aac4-4241-afea-08df46f3d2be
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|23010399003|366016|19092799006|1800799024|921020|10067099003|261021121427099003|261022113327099003|11063799006|56012099006|261021135927099003|261021123027099003|261022115727099003|261022075727099003|261021130227099003|261026130827099003|261026121527099003|261022105027099003|261026140227099003|261028144727099003|261102123227099003|261009223027099003|18002099003|6133799003|13003099007|3023799007;
+	BCL:0;ARA:13230040|366016|1800799024|376014|23010399003|19092799006|6133799003|261009223027099003|18092099006|22082099003|18002099003|261022075727099003|261022105027099003|261026140227099003|261026121527099003|261028144727099003|261021121427099003|261102123227099003|261021135927099003|56012099006|4143699003|10067099003|5023799004|11063799006;
 X-Microsoft-Antispam-Message-Info:
-	bpeFEZ5TyOpmXRPldKLhqD1oxcUVKlk3PtG9Nq4gJQqhbzATvo6I+EkqLngbU0W9XqSTSi5XnG1WCMOBJzKuSARQyS7t78x1/kZPcyI1fNRyZTiBnwxuOgvfm0UNDKJ4L3bF0lI8TQ3R0SpGrr8kt4HuBNsnszpQfwHwubXH/JC5sb/uRztNQ8TmncnMKCEJMTBj+nnaJLZ+SXGMCplNA5ip8CEUz0MgeoRwTFFkN0p+YUOUmzrwAF/BqLTkX6GzdAb7l1g+iDbc2gEnHGjTFbED3t+grMVhg18vzZkawxkUxOrHdBeVVF3HT4jqLOjZxr9/LImy7aIFEcvmdB1rMJ0LnWWhdrYNTuc3SRke/2hDszvQ06gP//CWKgRxO88BGR1U+8fwlfS6R5FP/OYXTshd4Bl2nrUoWs+oVM7tMJbUeimyho7TvG5CPKQR6yQTv1Hc6++LCzlBaMhKYMjTTWtvdKYJxxwkva5e6n39LYUQTRgVggdkO2CbHeNhhfWNFfIvek7DQeyysffX8UOQxfW3ge8jgC8T1aOodZ89Ao6+O7FJ8Kz7Ajqn14se2cDNalzjJ5XMT6wHpa1d8WdWPhJPXFLMjh5GGH4PGGDa5AwHYx2sztN9JvqDD9bJjvaSaE4p6ft5z4hAh/YyN4u0exSlCIyxZDOX7DMdwqCgghk=
+	LThyzbVjH5Z0K8+8JifSDWch4ObxXkAzqyDd75eTw2tBJToBwG3XK3CBHPBWezzA9UV7n8sYg943fGhHfh5cuqMCO7Hr/RU5JiEweDkWDaVKe9mAp93LjS+ruUHhc5TK167s4YLIzm82q8sZZdhigifznZv2k/qgN3Ho2HFbThIcoMHBIuUA1mEzAQBf918UzSeWphv9YUtQPLNUuZdnpG7dHTdyu6K/PDCzUUztKP6nmYSatqLp9VCcYZEOSwCVw4O+OwEyL86kEcaIiOW0iHbYP6bDx968zCPIAZYLdUUAkq9fWe28pVMPxHa23oY1hr5zNHEoObTembvCXIwJ2Utyf4GjHwpMcC8rFPjoYolij753+AL7vsw5LKm8FXMlbOXQvQcge8G5ECRRifBC5xqe74lM/02na18dQaEjBLvGfHrAJnP0eKdSd8/CJseweu86YCosSrv+IaoSgMfZvZW56IVIVjh6jDCJSyrDnjLeykttqaTNYBlN7krKIzMJQe61PuVFpouYKzrLWRScf/o7Bf1Og7c/iYKQEvGCFZJbua6zSYDMpFvc9fcyCvnO4cuBpYutRyy12EbFrTKwzvvFMccrVyV68Jk+GQMjsUGN0eJAzFkgFxncTg5eTXxP3n6L33y1f1QS+979iWd51kHAR2d03TlAwB2lVm8nMeA=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR04MB5807.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(366016)(19092799006)(1800799024)(921020)(10067099003)(261021121427099003)(261022113327099003)(11063799006)(56012099006)(261021135927099003)(261021123027099003)(261022115727099003)(261022075727099003)(261021130227099003)(261026130827099003)(261026121527099003)(261022105027099003)(261026140227099003)(261028144727099003)(261102123227099003)(261009223027099003)(18002099003)(6133799003)(13003099007)(3023799007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB12318.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(23010399003)(19092799006)(6133799003)(261009223027099003)(18092099006)(22082099003)(18002099003)(261022075727099003)(261022105027099003)(261026140227099003)(261026121527099003)(261028144727099003)(261021121427099003)(261102123227099003)(261021135927099003)(56012099006)(4143699003)(10067099003)(5023799004)(11063799006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RUlvZ3dSM0MzcVlhVldqTElhQzFQK2xlYTlyZnlhVHFSbUFKZnRSMzAxb05l?=
- =?utf-8?B?OGxPcEZRdmcrWGhmTTh1elJ5UUs1Y2w0UTBBV0NzWjhYY2pmR0dMZFFUd0Fo?=
- =?utf-8?B?ZXdrVWFkSkQ3L2d4L0pSUkhLZGEvUVZoSkExNitERzlhdlhmYkhKaVN4ekFN?=
- =?utf-8?B?S3d0UE1UaWdhNHBxYldDQTJBeERXN21WRWZpSmhHM3hMc2d1RGhKTkJTWTUv?=
- =?utf-8?B?bVJ2bThzU0I2aG1QeTUvOE9STmJHelRFM0U3NkJkNHJGWEx5V3FOMnM2M2Z5?=
- =?utf-8?B?RUtzNTNlQVM5bzVOamVsNWw4dmNCUEVlT0U5Z09BNFVpMXBwcUFjQnIxajBw?=
- =?utf-8?B?OUgrbEtIOGlzMExkdlZISk1OV1Z4ZEF5TVJqMGgwd2l6anRhQ216dXB6RmxN?=
- =?utf-8?B?TUZvM1dVVEdpTTduSWZBWHdvVTc0enJ6UWFTazBialNzdlhPYnJOUjRPUjNw?=
- =?utf-8?B?Q3Q4RTl6K3A4TExzTTAvZnMrQ1VjQU1BamIrY2VQVE9IWUFmQUpvYlNpNzNi?=
- =?utf-8?B?MkdIWU1SWnZRd0I0YllZSXNCMHg4U1hVY2YvaC9HcXFpWWkydFRtaUpOcnov?=
- =?utf-8?B?T3FFZXllcnl2L2VjeXZ4Nk02SFRLVjFtVGlCb2ZKUWJuaG5mUllkYlpVWG1L?=
- =?utf-8?B?QytBQklWMkQ5cFYzeUhuZnpIWmJqZldMSVc5SEsydllxSEpjcW5sRk9lYlBY?=
- =?utf-8?B?ZUZBN2dvaXNYVFNVcDZiMnpCS0kxM2gzNEVKeWhFUlZ5NTJtZk5OUW9PWHVh?=
- =?utf-8?B?aXB4QjlscmRYZWY4SXVOVFZ4Q21WMzZZUlZBVEJubVpCYU16cXZibDhaVHk2?=
- =?utf-8?B?RThjaDJMN3E2TjNVNnZCU2NpN2JQMDg1ZXBSNkpSMTUzS00xcUd1VmRNV3RZ?=
- =?utf-8?B?RTJVZ25ZL01lc1N2NXhaRjlVbTNDZXlZQlQ1L21oRy9IUUlQa3g5TUJFL0xF?=
- =?utf-8?B?TmZwZ0VqeDNlN29PNmZmS25qRndQL09DVXlwYUtsTVo4aTJ3dHdleDIvZ2JK?=
- =?utf-8?B?alNBQ1pSZ2R6TlhLNlV1blpzK1VNZkd5WnQzaERqZks2b0hBWll0anZ1Y1l6?=
- =?utf-8?B?ZmR4RURxUlRId25CU0pxM1JVT1lKbVFjN1JYYkZkM1lKL1ZEK28yaGlYa3R4?=
- =?utf-8?B?eWVKOGFKK3NNMVdjM1gvNWJjUDJjZ0tFcUttdUxRWXNMYTV1bVlyWm5iaE03?=
- =?utf-8?B?cUdCQVphckNDK3V2d2dsaG5mUnVKUytTSEhYdlpiVnVqVCtGNjFZbjAwSjRk?=
- =?utf-8?B?aEs5OW1mRkF2czZTNzl3K2V2UVZnNHUzQlVoUWIyb3IzTitJalE3bVJLWlUv?=
- =?utf-8?B?U3Q2QVhkeXhQTnA1ekUvTnh0QVNLc1B1bjI1WUZrcG02S2VoZ1BlelpSSHNq?=
- =?utf-8?B?YVY5anZJbTNWOG9SdUw4ZHRXSUN6elhjSFRpZFByTnltWWNtdTBWcGsxVVBY?=
- =?utf-8?B?WDBkVi8rZDdpWjVQNVlnbnMyUDlvalFuaGRHcTJMZjBkbjkvdzQ2V2ZjOGxt?=
- =?utf-8?B?dndMMVZkTmd0QmdJMjZ6QXhYcEZWL1ExWUZIWmM2ajF6NlVqZ3BXVndKTlVx?=
- =?utf-8?B?azNlUm9mMFU3eWU2MXdsWjdzWXVhakNHRTN5TFgxWVQ4RnI1UUl3bGJLc2Vp?=
- =?utf-8?B?Z09lNVZnSDBDZ1dmU0NpZjJCSFh2TVE0d3dtb2hYL2tjTS9PdTF3OGlobGdY?=
- =?utf-8?B?Y2JTZ1FvZWtONElkdHJNb1duSTZCODFnODlZeXV4cEFxWFJjSlkxYmZvcEJ5?=
- =?utf-8?B?Q3JvUGFtWExZaTQzNFZDdWw5N1ZiVTRTSFIvblEwa1JLTThEdUNEL3U3TlBa?=
- =?utf-8?B?SFhheDdIZjlUMnVzOVdmV3FQaUJaQVhWbzNIc1pyRkZvZlJ3NVQzd0FKMGh6?=
- =?utf-8?B?aE9Yb1QwOUFLRGRxb2c2OEN3dUxMa3FmYjBIRGdxb3ZXTHYyTmpwaElTc1l2?=
- =?utf-8?B?Ykx3R0dJYklyZGFQQmRwNWlOdDhKZU5ZTUNTbitYMlk1b0tjdWNHUWw5NVdC?=
- =?utf-8?B?L1pib2cvbkl4N0g0Q1Bhb2RkMzdscm5OcVhmekZ4WHprWENXUjRlS0pwWHpr?=
- =?utf-8?B?RkZxb1FnOGlrb2I0RXFhckdVV3dRYTZ2Q3loNmRwVVR3SlRjbDR5OGs0UDBs?=
- =?utf-8?B?SkwzdFUraER6bG16MlVBbndLV2JHY0RxRHNvandoRVN3TE03QUdoRVpONWpO?=
- =?utf-8?B?eDIvcE5HN0JDMVZBa3pjMUpadVJkMTFBaERKNGd3U0J3TUxnbzF0R2EyUnI0?=
- =?utf-8?B?aHhCVDduS2JyTnRsMGZTWkZCMzR2TmpuNWhYOUJsYUVGN240U0xQTkhmdVE3?=
- =?utf-8?B?Mk50Y2Z0UXk4enQyYVdORTk3K3lGSytPRUpZdldnb1I5ZzFlajlCS0J5SmJk?=
- =?utf-8?Q?NpOt7p/bGPq5e2xVDnfKJILlGMod7NaB9dnrT?=
+	=?us-ascii?Q?xwe7LpzWc1pXfBpEERjemn0UftsTCeiM/NfxxgsIfgbN/hCLMF82XQJUoINJ?=
+ =?us-ascii?Q?IDubnkalGjUX139ldEX8/WAmomQkbUqWrFaPZ/iPKobvbdFE3rd02M0jXrsz?=
+ =?us-ascii?Q?ogqMlrsoyjU/b1dWMa2zGYK/3aT+/09PTEWNBgEEsZmOgFf7l0xke+wMZ4EN?=
+ =?us-ascii?Q?u5ud/YtpWkdV8hnT3Gk5/5C4JH1EGsn8c2+fxqsFp4UkBUPaw8jw2xc66EZd?=
+ =?us-ascii?Q?Z9lwtN2DOiyYkbH+KOJ9nMnUHFqIZlZInGv39BtGMSueif4rIVkVwGs6Qu0P?=
+ =?us-ascii?Q?p+ImCFiOn+tqWZdDnUgKv650EpTjYgnSv213tzCS/eD61CkRuIMfe7PeclwE?=
+ =?us-ascii?Q?2u3SVbjMBwYJZ8GYTw6I4j1IGphN26cgFAWEXSl1N7SjQChNVb6T+cEg/5fw?=
+ =?us-ascii?Q?2cymzy0YtPLpA1E+zgjg5vMeD3AsoNn7AmvMiU6HnWDxPQ9CjhHY5gvZY7jU?=
+ =?us-ascii?Q?L/3iI1rfpeaqnL0gnvKWKAkQdjMQN6/leK7PyHjUtAY8RiTpnUYZrzYuD84o?=
+ =?us-ascii?Q?VbiLCXqf+lMvlmwGD9BNGfh+4Evh+25/XkN6YHNYp9jqiY0ZfyHPv3iVKw9G?=
+ =?us-ascii?Q?TbB6me/6GytqUQO3tqpKnAJ+4HAh9UHzMV4jiNGRrH8gpJkejEIQNKaO7UsK?=
+ =?us-ascii?Q?CFjpLJCwSocje2c+AZaN+lc2kqn8sPO5QDkX24vmO9vQKEsMNg50z7hQ6+DF?=
+ =?us-ascii?Q?LTIEGtEifuDLv7aNSA32RtOnfbYJZsTX8ozTVMuxi4gCZBkZsocwqePtoa1F?=
+ =?us-ascii?Q?ysV7dmCQJjvkvSp4p10m/KSIb7Uzp1Wykk1V1UoBLLobcrFCO/PqZRqhl2PT?=
+ =?us-ascii?Q?oAxvSvaIAI9RNt0++NOGKdUwcZSnH9CnJVGQQjgTW7XVh3kN/uDgKxyKFUrd?=
+ =?us-ascii?Q?eE+KlHSgyTRlQZR3tdIHgWAIZ0wzR8Z6clFKGl9T0YFYiGKuzRX4bcwlYCwq?=
+ =?us-ascii?Q?9K58TR5Jx/EXUXxzCt0j/SAADOdHjM4VyDz5P/yLcuGv8EDvRSqLyIANgCwF?=
+ =?us-ascii?Q?+nu8zZpwl8ZmxUsPkZyIPFmOCE65REktJCgjStOcJI15pGleqFkg4ZoHRuwz?=
+ =?us-ascii?Q?9iKwyRVim/2dKw++1pvUsJhzBqDM4jCTMc+uGhndXj08TZ5/xxI2uvVi8T8o?=
+ =?us-ascii?Q?NoduJHfqMup8w4iSKxyaNyv22YmQDfKfuMdUE6yWnt4Tzatu0ObeOX01Gwem?=
+ =?us-ascii?Q?whkEo8Sez0l7RtQbUOJSI0ReFFG93lsWl1lInHzzOlkOqPM8mo0OzpxHSazs?=
+ =?us-ascii?Q?VCGY2lLsEpn9ViV23IWUsZI1p/26kBZJr3bJfjYFOjPRIt4fb5oC/UiYhaUQ?=
+ =?us-ascii?Q?9WzXTuZBwaIm3/s77V3RVYCXkov6PJ/z8dQ1PVgJFcFn8KQ1V8745uhRfYmj?=
+ =?us-ascii?Q?/K9RkJIq3Gn41m6V2E3pLjayjRkaX6YGmfU2g1YJ845ybmXXVe6v/TovUBOS?=
+ =?us-ascii?Q?w6OG4yRZuGuiZ3RMWyXAz+7+WJbl+FU3y61OoFL7J06YJGZ37qxE6jx7aOrT?=
+ =?us-ascii?Q?zEWDqLP4cLUR8UyaHdgsZLmCWft2kctAlitn8xitnPa8G2oLPdbQ4S0a4Inc?=
+ =?us-ascii?Q?G4TwZIX8w6wuUj/2UUlkcXazW84gbX3undSKP/UUxOl9EjMuS/RvDeQnslcE?=
+ =?us-ascii?Q?s4v9j2J9P49SuP856vuWjNagri/tDaEz8nZGRj8aYctm9KTFYcFVUzauNw7h?=
+ =?us-ascii?Q?251bhxw6KucvNmQqyu/Te1fHh51XWEOo2nKMURob2zXA8zSLLa28v1stjm8K?=
+ =?us-ascii?Q?19tv5TNR9Q=3D=3D?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 244e15e5-c123-4edc-5ced-08df46f37ba5
-X-MS-Exchange-CrossTenant-AuthSource: VI1PR04MB5807.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b03cec65-aac4-4241-afea-08df46f3d2be
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB12318.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Nov 2026 10:46:08.3840
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Nov 2026 10:48:33.8643
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: r9iqiJnDQwTSwTWxCtZzyzOL0A8HfyFGqgXr5lxy0zs0QInJYTEffF8x9ysiZvTIIRKsuizQZ7WS8oqzYUjLOLbzI6sKH31EZFIVlfERJENyyoruxvqSBk/etYw5XWDK
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8150
+X-MS-Exchange-CrossTenant-UserPrincipalName: 83X6a7mbucdwMNwOMzeo0hFIZgmChg6dpV2JYFtSKdg2BnYQJ8GhJj0DqTCxCQblX+FCu6cgrYDifXA+/iT/aA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7638
 
-From: Peng Fan <peng.fan@nxp.com>
+On Wed, Nov 18, 2026 at 04:02:40PM +0000, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 3 potential
+> issues to consider:
+> - [Medium] drm/imx/dcif: unclocked MMIO access when runtime PM resume
+>   fails
+> - [Medium] drm/imx: dcif: unbalanced clock disable if
+>   dcif_runtime_resume() fails
+> - [Low] drm/imx/dcif: missing shadow load and trigger clear in
+>   dcif_crc_source_disable()
+> --
+> 
+> commit 373caa0eccbfd7fa4334093ea8869b540640e7ab
+> Author: Sandor Yu <sandor.yu@nxp.com>
+> 
+> drm/imx: Add support for i.MX94 DCIF
+> 
+> This commit adds a DRM/KMS driver for the NXP i.MX94 Display Control
+> Interface (DCIF), supporting primary and overlay planes, YCbCr-to-RGB CSC
+> on layer 0, and frame/ROI CRC generation.
+> 
+> > diff --git a/drivers/gpu/drm/imx/dcif/dcif-crc.c b/drivers/gpu/drm/imx/dcif/dcif-crc.c
+> > new file mode 100644
+> > index 0000000000000..ad94b458a6c59
+> > --- /dev/null
+> > +++ b/drivers/gpu/drm/imx/dcif/dcif-crc.c
+> [ ... ]
+> > +void dcif_crc_source_enable(struct dcif_dev *dcif, enum dcif_crc_source source,
+> > +			    struct drm_rect *roi, int ncrc)
+> > +{
+> > +	int ret;
+> > +
+> > +	if (ncrc >= MAX_DCIF_CRC_NUM)
+> > +		return;
+> > +
+> > +	if (source == DCIF_CRC_SRC_NONE)
+> > +		return;
+> > +
+> > +	if (dcif->crc_is_enabled)
+> > +		return;
+> > +
+> > +	ret = drm_crtc_vblank_get(&dcif->crtc);
+> > +	if (ret) {
+> > +		drm_err(&dcif->drm, "Could not get vblank reference: %d\n", ret);
+> > +		return;
+> > +	}
+> > +
+> > +	dcif_crc_config(dcif, roi, ncrc);
+> > +
+> > +	regmap_set_bits(dcif->regmap, DCIF_CRC_CTRL,
+> > +			DCIF_CRC_CTRL_CRC_MODE | DCIF_CRC_CTRL_CRC_SHADOW_LOAD_EN |
+> > +			DCIF_CRC_CTRL_CRC_TRIG);
+> > +
+> > +	scoped_guard(spinlock_irqsave, &dcif->drm.event_lock)
+> > +		dcif->crc_is_enabled = true;
+> > +}
+> > +
+> > +void dcif_crc_source_disable(struct dcif_dev *dcif, int ncrc)
+> > +{
+> > +	if (!dcif->crc_is_enabled)
+> > +		return;
+> > +
+> > +	if (ncrc >= MAX_DCIF_CRC_NUM)
+> > +		return;
+> > +
+> > +	regmap_clear_bits(dcif->regmap, DCIF_CRC_CTRL, DCIF_CRC_CTRL_CRC_EN(ncrc));
+> 
+> [Severity: Low]
+> Should dcif_crc_source_disable() also clear DCIF_CRC_CTRL_CRC_TRIG and set
+> DCIF_CRC_CTRL_CRC_SHADOW_LOAD_EN when disabling CRC on an active CRTC?
+> 
+> Clearing only DCIF_CRC_CTRL_CRC_EN(ncrc) leaves the disabled state
+> unlatched, and if DCIF_CRC_CTRL_CRC_MODE, DCIF_CRC_CTRL_CRC_SHADOW_LOAD_EN
+> and DCIF_CRC_CTRL_CRC_TRIG stay set in DCIF_CRC_CTRL, a later
+> dcif_crc_source_enable() call via regmap_set_bits() will see no bit changes
+> and skip writing the register.
 
-Replace the hardcoded of_machine_is_compatible() if-else chain and the
-static string allowlist with a proper of_device_id match table carrying
-per-SoC data via the .data field.
+It appears this one is correct. The CRC_EN(n) is shadowed and CRC_TRIG
+is not self-clearing in continuous mode. Will fix in v13.
 
-This eliminates the static local variable anti-pattern for daisy_off
-(lazy-initialized, shared across instances) and adopts the idiomatic
-kernel of_machine_get_match_data() APIs.
+> 
+> [ ... ]
+> 
+> > diff --git a/drivers/gpu/drm/imx/dcif/dcif-crtc.c b/drivers/gpu/drm/imx/dcif/dcif-crtc.c
+> > new file mode 100644
+> > index 0000000000000..233e149929964
+> > --- /dev/null
+> > +++ b/drivers/gpu/drm/imx/dcif/dcif-crtc.c
+> [ ... ]
+> > +static void dcif_crtc_atomic_enable(struct drm_crtc *crtc,
+> > +				    struct drm_atomic_commit *state)
+> > +{
+> > +	struct drm_crtc_state *crtc_state = drm_atomic_get_new_crtc_state(state, crtc);
+> > +	struct dcif_crtc_state *dcif_crtc_state = to_dcif_crtc_state(crtc_state);
+> > +	struct drm_display_mode *adj = &crtc_state->adjusted_mode;
+> > +	struct dcif_dev *dcif = crtc_to_dcif_dev(crtc);
+> > +	struct drm_device *drm = crtc->dev;
+> > +	int ret;
+> > +
+> > +	dev_dbg(drm->dev, "mode " DRM_MODE_FMT "\n", DRM_MODE_ARG(adj));
+> > +
+> > +	/* enable power when we start to set mode for CRTC */
+> > +	ret = pm_runtime_resume_and_get(drm->dev);
+> > +	if (ret < 0) {
+> > +		drm_err(drm, "failed to resume DCIF, ret = %d\n", ret);
+> > +		return;
+> > +	}
+> > +	dcif->crtc_pm_enabled = true;
+> [ ... ]
+> > +static void dcif_crtc_atomic_disable(struct drm_crtc *crtc,
+> > +				     struct drm_atomic_commit *state)
+> > +{
+> > +	struct dcif_dev *dcif = crtc_to_dcif_dev(crtc);
+> > +	struct drm_device *drm = crtc->dev;
+> > +
+> > +	if (dcif->has_crc)
+> > +		dcif_crc_source_disable(dcif, 0);
+> > +
+> > +	dcif_disable_controller(dcif);
+> > +	dcif_disable_plane_panic(dcif);
+> > +
+> > +	drm_crtc_vblank_off(crtc);
+> > +
+> > +	if (dcif->crtc_pm_enabled) {
+> > +		dcif->crtc_pm_enabled = false;
+> > +		pm_runtime_put_sync(drm->dev);
+> > +	}
+> 
+> [Severity: Medium]
+> Can a failure in pm_runtime_resume_and_get() lead to MMIO register accesses
+> while the DCIF clocks are disabled?
+> 
+> If pm_runtime_resume_and_get() fails in dcif_crtc_atomic_enable(),
+> dcif->crtc_pm_enabled remains false, but crtc_state->active is still true.
+> In the same commit tail, drm_atomic_helper_commit_planes() still calls
+> dcif_plane_atomic_update() and dcif_crtc_atomic_flush(), and a later
+> dcif_crtc_atomic_disable() calls dcif_crc_source_disable(),
+> dcif_disable_controller(), and dcif_disable_plane_panic() before checking
+> dcif->crtc_pm_enabled.  Accessing DCIF registers while the block is
+> unclocked can cause an external abort or bus hang on i.MX94.
 
-A new pinctrl_scmi_imx_data struct captures the daisy register offset
-for future extensibility when new SoCs may not use register-offset based
-daisy configuration.
+This one is not worth fixing. First, the only thing that can fail in the
+runtime resume is clk_bulk_prepare_enable(). If that fails, the platform
+is already broken since the clocks are managed by the SCMI firmware. Second,
+adding checks dor crtc_pm_enabled in every commit path (flush, plane
+update, etc) would add a lot of unnecessary noise for something that
+will probably never happen in practice.
 
-No functional changes.
+> 
+> [ ... ]
+> 
+> > diff --git a/drivers/gpu/drm/imx/dcif/dcif-drv.c b/drivers/gpu/drm/imx/dcif/dcif-drv.c
+> > new file mode 100644
+> > index 0000000000000..80b554f1b6843
+> > --- /dev/null
+> > +++ b/drivers/gpu/drm/imx/dcif/dcif-drv.c
+> [ ... ]
+> > +static int dcif_suspend(struct device *dev)
+> > +{
+> > +	struct dcif_dev *dcif = dev_get_drvdata(dev);
+> > +	int ret;
+> > +
+> > +	ret = drm_mode_config_helper_suspend(&dcif->drm);
+> > +	if (ret < 0)
+> > +		return ret;
+> > +
+> > +	if (pm_runtime_suspended(dev))
+> > +		return 0;
+> > +
+> > +	return dcif_runtime_suspend(dev);
+> > +}
+> > +
+> > +static int dcif_resume(struct device *dev)
+> > +{
+> > +	struct dcif_dev *dcif = dev_get_drvdata(dev);
+> > +	int ret;
+> > +
+> > +	if (!pm_runtime_suspended(dev)) {
+> > +		ret = dcif_runtime_resume(dev);
+> > +		if (ret < 0)
+> > +			return ret;
+> > +	}
+> > +
+> > +	return drm_mode_config_helper_resume(&dcif->drm);
+> > +}
+> 
+> [Severity: Medium]
+> Can a failure in dcif_runtime_resume() during system resume cause an
+> unbalanced clk_bulk_disable_unprepare()?
+> 
+> When the CRTC is active entering system suspend, the PM core's
+> device_prepare() holds a runtime PM reference, so the pm_runtime_put_sync()
+> in dcif_crtc_atomic_disable() leaves the device's runtime PM status as
+> RPM_ACTIVE.  dcif_suspend() then calls dcif_runtime_suspend() directly,
+> disabling clocks without updating runtime_status.  If dcif_runtime_resume()
+> fails in dcif_resume(), clocks remain disabled while runtime_status is
+> still RPM_ACTIVE, and device_complete() -> pm_runtime_put() will invoke
+> dcif_runtime_suspend() a second time.  Using pm_runtime_force_suspend() and
+> pm_runtime_force_resume() would keep runtime_status aligned with the clock
+> state.
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Joy Zou <joy.zou@nxp.com>
----
-Replace the hardcoded of_machine_is_compatible() if-else chain and the
-static string allowlist with an of_device_id match table that carries the
-per-SoC daisy register offset in its .data field.
+This is related to the previous issue and also not worth fixing since
+the resume is unlikely to fail, as I explained above.
 
-This drops the lazily-initialized "static uint32_t daisy_off" local and
-lets probe do the compatible match and per-SoC data lookup in one step
-via of_machine_get_match_data().
-
-No functional change intended.
-
-Signed-off-by: Joy Zou <joy.zou@oss.nxp.com>
----
-Changes in v2:
-- remove redundant pmx->data check.
-- add Reviewed-by tag.
-- Link to v1: https://patch.msgid.link/20261019-b4-imx937-frdm-scmi-pinctrl-v1-1-0576fb20964b@oss.nxp.com
----
-Changes in v2:
-- remove redundant pmx->data check.
-- add Reviewed-by tag.
-- Link to v1: https://patch.msgid.link/20261019-b4-imx937-frdm-scmi-pinctrl-v1-1-0576fb20964b@oss.nxp.com
----
- drivers/pinctrl/freescale/pinctrl-imx-scmi.c | 52 ++++++++++++++++------------
- 1 file changed, 30 insertions(+), 22 deletions(-)
-
-diff --git a/drivers/pinctrl/freescale/pinctrl-imx-scmi.c b/drivers/pinctrl/freescale/pinctrl-imx-scmi.c
-index 7c3860f890c9..1d1f2fea3a49 100644
---- a/drivers/pinctrl/freescale/pinctrl-imx-scmi.c
-+++ b/drivers/pinctrl/freescale/pinctrl-imx-scmi.c
-@@ -28,12 +28,17 @@
- 
- #define DRV_NAME "scmi-pinctrl-imx"
- 
-+struct pinctrl_scmi_imx_data {
-+	uint32_t daisy_off;
-+};
-+
- struct scmi_pinctrl_imx {
- 	struct device *dev;
- 	struct scmi_protocol_handle *ph;
- 	struct pinctrl_dev *pctldev;
- 	struct pinctrl_desc pctl_desc;
- 	const struct scmi_pinctrl_proto_ops *ops;
-+	const struct pinctrl_scmi_imx_data *data;
- };
- 
- /* SCMI pin control types, aligned with SCMI firmware */
-@@ -59,6 +64,7 @@ static int pinctrl_scmi_imx_dt_node_to_map(struct pinctrl_dev *pctldev,
- 					   struct pinctrl_map **map,
- 					   unsigned int *num_maps)
- {
-+	struct scmi_pinctrl_imx *pmx = pinctrl_dev_get_drvdata(pctldev);
- 	struct pinctrl_map *new_map;
- 	const __be32 *list;
- 	unsigned long *configs = NULL;
-@@ -67,20 +73,9 @@ static int pinctrl_scmi_imx_dt_node_to_map(struct pinctrl_dev *pctldev,
- 	int mux_reg, conf_reg, input_reg, mux_val, conf_val, input_val;
- 	int i, j;
- 	uint32_t ncfg;
--	static uint32_t daisy_off;
--
--	if (!daisy_off) {
--		if (of_machine_is_compatible("fsl,imx95")) {
--			daisy_off = IMX95_DAISY_OFF;
--		} else if (of_machine_is_compatible("fsl,imx94")) {
--			daisy_off = IMX94_DAISY_OFF;
--		} else if (of_machine_is_compatible("fsl,imx952")) {
--			daisy_off = IMX952_DAISY_OFF;
--		} else {
--			dev_err(pctldev->dev, "platform not support scmi pinctrl\n");
--			return -EINVAL;
--		}
--	}
-+	uint32_t daisy_off;
-+
-+	daisy_off = pmx->data->daisy_off;
- 
- 	list = of_get_property(np, "fsl,pins", &size);
- 	if (!list) {
-@@ -293,11 +288,23 @@ scmi_pinctrl_imx_get_pins(struct scmi_pinctrl_imx *pmx, struct pinctrl_desc *des
- 	return 0;
- }
- 
--static const char * const scmi_pinctrl_imx_allowlist[] = {
--	"fsl,imx94",
--	"fsl,imx95",
--	"fsl,imx952",
--	NULL
-+static const struct pinctrl_scmi_imx_data imx94_pin_data = {
-+	.daisy_off = IMX94_DAISY_OFF,
-+};
-+
-+static const struct pinctrl_scmi_imx_data imx95_pin_data = {
-+	.daisy_off = IMX95_DAISY_OFF,
-+};
-+
-+static const struct pinctrl_scmi_imx_data imx952_pin_data = {
-+	.daisy_off = IMX952_DAISY_OFF,
-+};
-+
-+static const struct of_device_id scmi_pinctrl_imx_data[] = {
-+	{ .compatible = "fsl,imx94", .data = &imx94_pin_data, },
-+	{ .compatible = "fsl,imx95", .data = &imx95_pin_data, },
-+	{ .compatible = "fsl,imx952", .data = &imx952_pin_data, },
-+	{ }
- };
- 
- static int scmi_pinctrl_imx_probe(struct scmi_device *sdev)
-@@ -312,9 +319,6 @@ static int scmi_pinctrl_imx_probe(struct scmi_device *sdev)
- 	if (!handle)
- 		return -EINVAL;
- 
--	if (!of_machine_compatible_match(scmi_pinctrl_imx_allowlist))
--		return -ENODEV;
--
- 	pinctrl_ops = handle->devm_protocol_get(sdev, SCMI_PROTOCOL_PINCTRL, &ph);
- 	if (IS_ERR(pinctrl_ops))
- 		return PTR_ERR(pinctrl_ops);
-@@ -323,6 +327,10 @@ static int scmi_pinctrl_imx_probe(struct scmi_device *sdev)
- 	if (!pmx)
- 		return -ENOMEM;
- 
-+	pmx->data = of_machine_get_match_data(scmi_pinctrl_imx_data);
-+	if (!pmx->data)
-+		return -ENODEV;
-+
- 	pmx->ph = ph;
- 	pmx->ops = pinctrl_ops;
- 
-
----
-base-commit: adcad7f4e6332cff3d6d7165f41584899f598534
-change-id: 20261019-b4-imx937-frdm-scmi-pinctrl-7bce28f895f7
-
-Best regards,
---  
-Joy Zou <joy.zou@oss.nxp.com>
-
+-- 
+Thanks,
+Laurentiu
