@@ -1,157 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.42.129
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795149282;
-	b=Q0ry3Er06WGu6rlaazQ8G3aztWQjoaoFyDyw1IjEBtELgsjJ5WLsO8daQp1YIxMKwkHa
-	 PqeRdObsEbKA3XPOBYpW4XCA8N4BAq6F8PzfpFSYe3clGbUaEfeMGOWqjlqUTkulsXboZ
-	 ljvRcrwzWXBxJFxv8ZW6yqonDmLtOw03Xg1Ml6hIEowmAZYskrndexj6gF95hbqwpCl+F
-	 7CDpYNdNLqA1x5vZTzLxeyCgj7aKnSWeXJYczn57+7OLTqDGR1i1dr0OcMqciUaHB6Noj
-	 8R1B+1mqxr1V68gZu7jlhO/Z71q8cWjo7u1Ho0iVuBTbzxhbxXo495DA/JjBt8OEq/g==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795149282;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:CC:Subject:
-	 Thread-Topic:Thread-Index:Date:Message-ID:References:In-Reply-To:
-	 Accept-Language:Content-Language:X-MS-Has-Attach:X-MS-TNEF-Correlator:
-	 x-ms-publictraffictype:x-ms-traffictypediagnostic:
-	 x-ms-office365-filtering-correlation-id:x-ms-exchange-senderadcheck:
-	 x-ms-exchange-antispam-relay:x-microsoft-antispam:
-	 x-microsoft-antispam-message-info:x-forefront-antispam-report:
-	 x-ms-exchange-antispam-messagedata-chunkcount:
-	 x-ms-exchange-antispam-messagedata-0:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-AuthAs:X-MS-Exchange-CrossTenant-AuthSource:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-originalarrivaltime:
-	 X-MS-Exchange-CrossTenant-fromentityheader:
-	 X-MS-Exchange-CrossTenant-id:X-MS-Exchange-CrossTenant-mailboxtype:
-	 X-MS-Exchange-CrossTenant-userprincipalname:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=YmaM25r+8C+J37WvP0GM+EhWHpMzbHlS12Y+Zb4EwcI=;
-	b=GFpRG6LSnnDfBqcI9ovD5om5f8u5cSfxykAIm23B3yAr07Dii4Gu8OyGnAOdayl5t7hA
-	 i15OQY64uEa/d6eKVxx7WaNVRxklrae0o8xwUGefI5BxQ1zfKfX5doZcle5LDFgiJb+et
-	 zFLVBtJO7QhB+CgQcdKvC8z3QXeFWomYUwSaM7IPwK2BOSJMYGM4YRMKQTyZL1DC/53Kg
-	 gpTliImX9LQr+0ULbtr1AAiyhVYrCg6MMBHZDIh4hFkO0B5iT5HS89skEnTLMRaP9fjvR
-	 /TkjkTgruMZ2I28B5p+u5VnVp0NpbeZOV0lddlvwkuFXd0dPEvuiBKThPbk10pZcwjg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=chipsnmedia.com;
-	spf=fail smtp.mailfrom=chipsnmedia.com;
-	dkim=pass header.d=chipsnmedia.com header.i=@chipsnmedia.com header.a=rsa-sha256 header.s=selector2 header.b=caISTFJ3;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.42.129
-Received: from SE2P216CU007.outbound.protection.outlook.com (mail-koreacentralazon11021129.outbound.protection.outlook.com [40.107.42.129])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795159455;
+	b=t2xbTwgHrWzrB3exH2VXCnEQa6ovzp7fJshcapvhFJ1N6HFRMjOc4NxdLHgq9Fj0Xmlj
+	 rMdy0461Yav6dZpOTulldJ+GT00zJQ2VFvxx0lznNJ8cv2MLqGhcKJPHSrDfAEYXG3CWr
+	 c3qO+eaJ/Vm2Nxej1fyZwiJ4kKvOOsjxpGJpsaNdxH5WHwWGFqaAQxmsEJUIomKT3lAX/
+	 Ky61m4njfsMzFNUbrAlmQ3rOGL+7U29z+VNfqJqJQtqf9w3+XbKv1RLni/54JG5fPMBwW
+	 xw7RTWK5qVJsqm77XQI7i0xpDYdE0tpD9EnKe/dPmK7SOV64TcQyR32e1c5F3ADSFQQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795159455;
+	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:Subject:
+	 Date:Message-Id:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:X-Last-TLS-Session-Version;
+	bh=vCkduuwTwhdRZPFHnESFbOpUc/C7mFXMs6TuK3gtbA4=;
+	b=oTMbyfIorYJbCdJ0Yt0e/LLf5w0RfiaSlzOU8tKr0/txs0Os6h9Ci1dg2lw1Jf/rbGjx
+	 dF5DZyIHl+dqIeBorjQcfoahhBBkb7CKpBjnPf1Hq+6XxTtRpS67jcVPA+nVKcJWCTaiz
+	 fZYgeVi/ao3+MuHZVOPxjokpGkOG8lVYzSotlyYHGNxndGUzKBq6GlXNz1S0qohWEyAkA
+	 MXpupEGfWCRNLHdPHvuJOK2YY0CxYCMFlINg3mgykVbrB41ooEoOcgaoO5lWQF25Tem3b
+	 5hKs6BAo79jn2oyFrAh7CEhwO1d9tzk5bdN2odt5rPTZeBsB/UVPP/QEFnFP7c+6jXA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=bootlin.com;
+	spf=pass smtp.mailfrom=bootlin.com;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=towOuZq7;
+	arc=none smtp.remote-ip=185.171.202.116
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF417606A335
-	for <imx@lists.linux.dev>; Fri, 20 Nov 2026 04:34:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AF417606A335
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chipsnmedia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=chipsnmedia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFA60606A320;
+	Fri, 20 Nov 2026 07:24:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CFA60606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=chipsnmedia.com header.i=@chipsnmedia.com header.a=rsa-sha256 header.s=selector2 header.b=caISTFJ3
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=x5PQgazYdN9Q245n6jlc31W16RStMcpWV86+rR5vCKTdNNMQRMWkKk5GncFDATd0sbAzU0splcWerpF24Jw3VRisjC42IEqYaujYWV8aHsKWP+1bxaAYcecfBVdqx4ND5IgloX90BIO7p7ZusBjLIwUni27hzkIC6p1xSPmOBLOxMhqpHYbuBmlVKe/4b6tpBCyCputu8tg7RbHRY4/NKtmLU5ISkYrdADTfZeQ5mx9uIIb9kYlNe3585XuM0pE77GTwmqWUHLrDhDJRgsx08B+8Tir1FuvUSYkEMY2/ytcsqu/nTwmQW6X3WjZIU82SvVHhfj1Z7r8vBQHgWTxLgQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YmaM25r+8C+J37WvP0GM+EhWHpMzbHlS12Y+Zb4EwcI=;
- b=XFt/4V3Nldhijf+EvjYH7wG4S9XMTgHk5vByGlX5RrDFU2xzpd0eKWte/PWlNtAS2in/hi4GZK8zX0jEA5uxKt9VsBLLcmeJPxW80V7dwBhj7Pr7S0dlxu4S1kKJRk+0JDgv1D8bkvy+Bc1tvgGsUCKoAz1vidieARqw6HSpHsnBWcHm6WyAHd77nuWmE17j3I1/eyDVChr9fzyZkjFzKtA72UHuvT7H+EhrTn3b6pEfodA84pUJRyyRqPcfFRR+b8HxhS1WmOZ/eDqOglVrICtHfO85G2wzM3dPuq+K3WXtGsA6Q3cwHnBSSQfPv6pP7bO9d1waH77jWV2dN7SFGg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=chipsnmedia.com; dmarc=pass action=none
- header.from=chipsnmedia.com; dkim=pass header.d=chipsnmedia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chipsnmedia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YmaM25r+8C+J37WvP0GM+EhWHpMzbHlS12Y+Zb4EwcI=;
- b=caISTFJ3m7mzY3geaN3sEQJ7RK+23/wkr9F+rhTa29MwXacZRKJVVHuyrn71FXHXx/ejYE3TIo8mQdF1fs/t0Q2W1wY/co+ipbnobblRcGom78c5SQI+e99/cZsx/qnkPgOdl7hf6AClCkdeW4nehsGFCvyf17EEm7ZuK43uuphqObeEk7QEnm/+nT3JDu+LZYhy9GFBmBt5iwWFwiXYOdIP46sOAi1r8f79B8WbEXrAqUbqGrVy8KRHZxn1D3IKhCAzAXD+n299ljTBEk0WiguWx9ZQB0P+0ltZsE77lxIr5C38AUkaciXUMrgEbWlbGw020YpuIGjpS8yAcJB4Zw==
-Received: from SL2P216MB2441.KORP216.PROD.OUTLOOK.COM (2603:1096:101:1b9::8)
- by SE5P216MB3149.KORP216.PROD.OUTLOOK.COM (2603:1096:101:2fe::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.10; Fri, 20 Nov
- 2026 04:34:38 +0000
-Received: from SL2P216MB2441.KORP216.PROD.OUTLOOK.COM
- ([fe80::f234:3bc6:9197:8232]) by SL2P216MB2441.KORP216.PROD.OUTLOOK.COM
- ([fe80::f234:3bc6:9197:8232%6]) with mapi id 15.21.0639.011; Fri, 20 Nov 2026
- 04:34:38 +0000
-From: Nas Chung <nas.chung@chipsnmedia.com>
-To: Frank Li <Frank.li@oss.nxp.com>
-CC: "mchehab@kernel.org" <mchehab@kernel.org>, "hverkuil@kernel.org"
-	<hverkuil@kernel.org>, "robh@kernel.org" <robh@kernel.org>,
-	"krzk+dt@kernel.org" <krzk+dt@kernel.org>, "conor+dt@kernel.org"
-	<conor+dt@kernel.org>, "Frank.Li@nxp.com" <Frank.Li@nxp.com>,
-	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-	"linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "festevam@gmail.com"
-	<festevam@gmail.com>, "kernel@pengutronix.de" <kernel@pengutronix.de>,
-	"nicolas.dufresne@collabora.com" <nicolas.dufresne@collabora.com>,
-	"ming.qian@oss.nxp.com" <ming.qian@oss.nxp.com>, "marek.vasut@mailbox.org"
-	<marek.vasut@mailbox.org>, "jackson.lee" <jackson.lee@chipsnmedia.com>,
-	"lafley.kim" <lafley.kim@chipsnmedia.com>
-Subject: RE: [PATCH v8 10/11] media: chips-media: wave6: Add Wave6 thermal
- cooling device
-Thread-Topic: [PATCH v8 10/11] media: chips-media: wave6: Add Wave6 thermal
- cooling device
-Thread-Index: AQHdeARtlVZt/dvDTk+1cGJg7YekHrc14tIAgAB9rZA=
-Date: Fri, 20 Nov 2026 04:34:38 +0000
-Message-ID:
- <SL2P216MB24418B9F81DE8CF8D69A107CFB782@SL2P216MB2441.KORP216.PROD.OUTLOOK.COM>
-References: <cover.1795075577.git.nas.chung@chipsnmedia.com>
- <d973e48036b43e9f1e5fc254153303a4c21deebb.1795075582.git.nas.chung@chipsnmedia.com>
- <av9kIkW6rYeUGFBE@SMW015318>
-In-Reply-To: <av9kIkW6rYeUGFBE@SMW015318>
-Accept-Language: en-US, ko-KR
-Content-Language: ko-KR
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=chipsnmedia.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SL2P216MB2441:EE_|SE5P216MB3149:EE_
-x-ms-office365-filtering-correlation-id: 0da8e5d1-2ab2-4206-3c9c-08df46bf962e
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|23010399003|1800799024|366016|7416014|376014|261026121527099003|261021135927099003|261026140227099003|261021121427099003|261022075727099003|261022105027099003|261028144727099003|261102123227099003|38070700021|5023799004|56012099006|4143699003|10067099003|18002099003|22082099003|261009223027099003;
-x-microsoft-antispam-message-info:
- yA3vXVtW9k/pA5yQsvVTkp5bhuwiKz9e9MNZ+/Gceh3mg4wp6nL5txm1ZUv0E31B5dfwQd7bQXWtmAL7LbJ/mGuqAd5eFAeifKlfyijLIIoi+lp/jyidA/NwktB/aD+WPGJmDLCKS4mr80DPYhQ1aPVRf12K6XrZe045YQOGZyN+ZWy6a9Fw2qGMXxaOzDogM5+cT9ixj8eEDJVCHL4uQFVxivpfa3Nm4EfrU2Vc8fQ8VmxqHEl2VOa4PNkl3FpLaowSFVWukkHReukSD6ZzoFBKxggTd6gDW4XtDHob5OZ6/3RoqN0JR8x73te29D2Mtdj+8YrqJFOdaym0TSWHuPz8bAX76ZCAv8esL0qEQExX9Kk4OHnYQT+90VMOgmv9BW5Z3tpR8SMgf0F0Jnlq8MVNobdeGy6YZcIPF8XNduPO6Plnd4gOoLW8MlkRUSB5jZDIonkr995L9RRYpTG5kv2maWsHS2Vk2KgH0dX+4R+k1OEb0duocxYmXDdmoLb+svhKdNKZlI62fdrsZ9//YlEI11bB8SGiQK6FH0cB2vGkiCy2hjfzymtytCrx/D1pB4oX4TrYvnykM3gs3qndxnt0PrYAnmq3tR8hVYDUdFxWEDfjO1YkWhJ60cb2/b1vC0e5MJAnhH8BO3nvkD9KxluSmIt2S5B9pv/8CiKIILvzW94xldHgktMJPtOFsGRhK06MfxBziN5VWHp6X7SJho4BtShtxO60gu/3Qott3Vw=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SL2P216MB2441.KORP216.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(366016)(7416014)(376014)(261026121527099003)(261021135927099003)(261026140227099003)(261021121427099003)(261022075727099003)(261022105027099003)(261028144727099003)(261102123227099003)(38070700021)(5023799004)(56012099006)(4143699003)(10067099003)(18002099003)(22082099003)(261009223027099003);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?F9pAuNMX2Z+yIJ7ueumtei55OUGZ3rcB7ihRxHfM++DvrMO+5LPVki9ipq9f?=
- =?us-ascii?Q?pJG4DzxL7LRAt7HvOi8/UnB2waCiNmAe4/f9lAkaFF87ADWIRP5OON369bZu?=
- =?us-ascii?Q?ifTV0YplYs8Bq8poin8pC5dS6xoNacgWp3cG8iTnctK4R4R+tfX8g0mUCLeh?=
- =?us-ascii?Q?wQS4pnxAUhGZEOT+Jo0+9qRRxgDjoFknxStY5u+iud5T5bTN2Bw2DnMBJIA+?=
- =?us-ascii?Q?T22l9EKOSQBYrPVvjH5VQK6iQkns3tjPDVtElF+C9R6VFI5w8gg3DTNMp50S?=
- =?us-ascii?Q?B+xNUdu21vjKx7KbbmIl8zitd7J+5yHXH5rVe9qmX+DRFv4+4W7E9u3WQKr3?=
- =?us-ascii?Q?m7lmJLdeRCCE7o36pYBl7m4Ayw0nFyBo5GKgFsVJ6oMEsDdFe4UwrahHGf7V?=
- =?us-ascii?Q?mCTf/oFF1/teR+1owGjA5Eqiolfi6DM/HY4jQDGQ6/M8sXDXfty2Ia7LPA27?=
- =?us-ascii?Q?EqMWJtarbVsDFN+pWPJxkwMXxomtLrc4jp6C/dC1AA78dC0r8qKJZklk9+YR?=
- =?us-ascii?Q?dvG7bTykAtx4aX1YFtdlbYuM6M3qfnW/l9L60Hl2/XbEfjqnDXNNgi+6zd6Y?=
- =?us-ascii?Q?d1GezdnFPKxeKIw53vX7Zj1KFSGAQFcX2bsEoNC65X9SoxP8ZSohDqnqiJHu?=
- =?us-ascii?Q?mu8AhfljiEZ3dQnntnQiMiKD/MKmoPBqWA2luoPxZaJMXo7yBFmKUAmrMKC6?=
- =?us-ascii?Q?90PmAe39rZhPNj5j1/HoHH/FIlFxhs13lOaFWlhi0P2ltp18agE8gpIuUaFD?=
- =?us-ascii?Q?86+TQARgP11QmQ8psQbL66DWzoOoG71F/7wvjPpbys3zEx0R9Fn8/XLVRdmO?=
- =?us-ascii?Q?+cFZrE+h3NRtD2HzoqL5x0noCTDy9PLeQ4oVzfrQJ3miLZZAccZEXB6sg7AA?=
- =?us-ascii?Q?8WHE87TaULyI+XFYCyYdyiIcpUEz6dqj9ZOS5n976lColcG7ZQwT02FUbbyn?=
- =?us-ascii?Q?HCgRhiXtk1jdJ4ulS59B0/MRuAZXooW8J6Fi8moZHdFdgwt053A9JGo3sTLO?=
- =?us-ascii?Q?s+fFhj6L7UWm/HiIz/GUS4jmFyxKIAa6rQkeLlRwtCnV7YnfUFBkSJfF7Ajj?=
- =?us-ascii?Q?vNIFnBCLkVAFK37CdqPXtLzsDOoq7V30dqZ6sV88wHQRAYuBdYAL7+BbqJ/Z?=
- =?us-ascii?Q?dFOk1ad3VqOY3bhPo7Zite/3PPwxXNJDkuyZh7JwB9hsFZQrIl3jXPkxPc6v?=
- =?us-ascii?Q?E/8Kpo04FsRCW/u55XqDKCM9ctG/ssyAxZMlPceQVttNwMbez17NnUYwoGM+?=
- =?us-ascii?Q?Aj3C8xm9i+YU8kWarYOBoNqaQ4u9wd4A4mHUtenPgnI/IFN/BBuMJrPcZg+e?=
- =?us-ascii?Q?EDEBR9rCBKIOWuIk+qUHtWJvxtfrYGvqgVuo6m6Gu1cn3N+hsQYrH8JadMD9?=
- =?us-ascii?Q?64F42htHDbi2zhOr/VmaDsmhNI9/fZazHdG7qmfe6gbcCebPmfYpnjFwCgje?=
- =?us-ascii?Q?Zaxy8BC5OatC39lyIX54nQaRfl6kpTPJaGfqXuxoSSJuSFiDuiSKzRGb7m/S?=
- =?us-ascii?Q?9wnvZfr9H9SYQNvTRLj8VCkzVw40ZCBRjzfrz0evBqeShZIUfkF6PrUGlTsb?=
- =?us-ascii?Q?5I9mc/iq8swjsKL6lwckhQcGsvPIG/c0QagG4Q0uhOzNdiuV/PX0h/pz7BoF?=
- =?us-ascii?Q?c8ipEkeotlQ1YvAqzSY3+hVK7DrlpXMYlq6qnOM4jaVKL+r2KMmMvgkZWG+l?=
- =?us-ascii?Q?UpvjIUbQYFPKQnZBExzxaa+3PZRIb0bJLzrz1tn5LMiepgZPh8r9wglJKq+a?=
- =?us-ascii?Q?gDJ1DXivgg=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=towOuZq7
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 6A558C2F4CB;
+	Fri, 20 Nov 2026 07:24:16 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id A7E206017D;
+	Fri, 20 Nov 2026 07:24:10 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id EFD5C11BC10F1;
+	Fri, 20 Nov 2026 08:23:59 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1795159448; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=vCkduuwTwhdRZPFHnESFbOpUc/C7mFXMs6TuK3gtbA4=;
+	b=towOuZq7KtmvM/Q5f4+wBK6Ap2w3YihaT2IF64czyeetprLfLrifLCIHG61hzQG9JRcF3n
+	DqNqSbhRmyaA41r/KS0ivKFBnjZLwB/Mti284NMMxujNUWt28azre3dJxJ/7zy7OmBHbBz
+	zH2hrbP8RROp6/n9lZAWMaOQWBkj2XEx9MlX+NCVLW8GsgJ44UUStx4QaGLRTvBFNThTO/
+	FDimLuVfBvq+rTknmEpY5S0vtwm2GP8CssMqNMc9mx/l12lrUiVX+Bc5d6o2eVAG1XOyhc
+	Namz9s4cMG1w4IdY2ncPhpyakgfYOtOPCx/az7KUm4jt2tm9bfd7ULqTsCo0+A==
+From: "Thomas Perrot (Schneider Electric)" <thomas.perrot@bootlin.com>
+Subject: [PATCH v10 0/5] Add support for AAEON SRG-IMX8P MCU
+Date: Fri, 20 Nov 2026 08:23:52 +0100
+Message-Id: <20261120-dev-b4-aaeon-mcu-driver-v10-0-a756687e7997@bootlin.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -161,88 +62,225 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-OriginatorOrg: chipsnmedia.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SL2P216MB2441.KORP216.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0da8e5d1-2ab2-4206-3c9c-08df46bf962e
-X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Nov 2026 04:34:38.1488
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 4d70c8e9-142b-4389-b7f2-fa8a3c68c467
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: biRVmxMEp8Y5qwEtVdPGEd6bHiKacGOhXesYg8EauAmyPrBq/8QK+FYU7EXnke6W9PGwbmqGjKk2dh6w0V+BLy5TVxQCJYJjJzwUnUBRUrY=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SE5P216MB3149
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/4XS207DMAwG4FeZek2QnVMTrngPxEWcA4sELWpHB
+ Zr27rgTUKbScWlL+Wzl97EZ81Dz2Nztjs2QpzrWvuMC4WbXxH3onrKoiRuNBGlQIoqUJ0FahJD
+ 7TrzEN5GGOuVBZMjOZyo6FGr49euQS30/0w+PXO/reOiHj/OkCefu/+aEAoTxVAJSiKqoe+r7w
+ 3PtbmP/Mg/5EuR1wVKyhqLLBeWFMO81ye9dLKBU25JkyRcdAaiQibSW1CJJuCIpliCg10pCa0N
+ cS3qRlNTbkmaJ/xsQU9Gt12vJLJIGty2ZWUreUdIOrXVryS6SVbAtWZaStWRKpCQLrKV2kVpot
+ 6WWpRhsND5wgu0f2blfkrpyR27OLhDwjUIqMqwl/yMhSL8teZaKJ5sgRmTsUjqdTp+alBrpUwM
+ AAA==
+X-Change-ID: 20251211-dev-b4-aaeon-mcu-driver-e0e89ebf4afb
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Linus Walleij <linusw@kernel.org>, 
+ Bartosz Golaszewski <brgl@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, 
+ =?utf-8?q?J=C3=A9r=C3=A9mie_Dautheribes?= <jeremie.dautheribes@bootlin.com>, 
+ Wim Van Sebroeck <wim@linux-watchdog.org>, 
+ Guenter Roeck <linux@roeck-us.net>, Lee Jones <lee@kernel.org>, 
+ Frank Li <Frank.Li@nxp.com>, Jonathan Corbet <corbet@lwn.net>, 
+ Shuah Khan <skhan@linuxfoundation.org>, 
+ Randy Dunlap <rdunlap@infradead.org>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-gpio@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-watchdog@vger.kernel.org, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Miquel Raynal <miquel.raynal@bootlin.com>, mfd@lists.linux.dev, 
+ linux-doc@vger.kernel.org, 
+ "Thomas Perrot (Schneider Electric)" <thomas.perrot@bootlin.com>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>, 
+ Conor Dooley <conor.dooley@microchip.com>, 
+ Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+X-Mailer: b4 0.14.3
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi, Frank.
+This patch series introduces support for the AAEON SRG-IMX8P embedded
+controller (MCU). The MCU is connected via I2C and provides GPIO and
+watchdog functionality for the SRG-IMX8P board.
 
->-----Original Message-----
->From: Frank Li <Frank.li@oss.nxp.com>
->Sent: Friday, November 20, 2026 6:04 AM
->To: Nas Chung <nas.chung@chipsnmedia.com>
->Cc: mchehab@kernel.org; hverkuil@kernel.org; robh@kernel.org;
->krzk+dt@kernel.org; conor+dt@kernel.org; Frank.Li@nxp.com;
->s.hauer@pengutronix.de; linux-media@vger.kernel.org;
->devicetree@vger.kernel.org; linux-kernel@vger.kernel.org;
->imx@lists.linux.dev; linux-arm-kernel@lists.infradead.org;
->festevam@gmail.com; kernel@pengutronix.de; nicolas.dufresne@collabora.com;
->ming.qian@oss.nxp.com; marek.vasut@mailbox.org; jackson.lee
-><jackson.lee@chipsnmedia.com>; lafley.kim <lafley.kim@chipsnmedia.com>
->Subject: Re: [PATCH v8 10/11] media: chips-media: wave6: Add Wave6 thermal
->cooling device
->
->On Thu, Nov 19, 2026 at 06:00:04PM +0900, Nas Chung wrote:
->> Add a thermal cooling device for the Wave6 VPU, so the thermal
->> framework can lower the VPU performance state when the SoC gets hot.
->>
->> The control driver registers the cooling device on its device tree
->> node. The cooling states are built from the OPP table of the "perf"
->> power domain.
->>
->> Tested-by: Ming Qian <ming.qian@oss.nxp.com>
->> Tested-by: Marek Vasut <marek.vasut@mailbox.org>
->> Signed-off-by: Nas Chung <nas.chung@chipsnmedia.com>
->> ---
->>  .../media/platform/chips-media/wave6/Makefile |   1 +
->>  .../chips-media/wave6/wave6-vpu-thermal.c     | 141 ++++++++++++++++++
->>  .../chips-media/wave6/wave6-vpu-thermal.h     |  24 +++
->>  .../platform/chips-media/wave6/wave6-vpu.c    |  22 +++
->>  .../platform/chips-media/wave6/wave6-vpu.h    |   3 +
->>  5 files changed, 191 insertions(+)
->>  create mode 100644 drivers/media/platform/chips-media/wave6/wave6-vpu-
->thermal.c
->>  create mode 100644 drivers/media/platform/chips-media/wave6/wave6-vpu-
->thermal.h
->...
->> +
->> +	if (!thermal->thermal_max)
->> +		goto error;
->
->nothing clean up at error label, just return ret
+The series includes:
+- Device tree binding for the MFD driver
+- MFD driver that serves as the core driver for the MCU
+- GPIO driver implementing the GPIO functionality
+- Watchdog driver for system monitoring
+- MAINTAINERS entry for the new drivers
 
-Agreed.
+The drivers follow the standard Linux kernel subsystem patterns, with
+the MFD driver registering the sub-devices (GPIO and watchdog) which
+are then handled by their respective subsystem drivers.
 
->
->> +
->> +	thermal->thermal_event =3D 0;
->> +	thermal->cooling =3D devm_thermal_of_child_cooling_device_register(dev=
-,
->> +									 dev->of_node,
->> +
->dev_name(thermal->dev),
->> +									 thermal,
->> +
->&wave6_cooling_ops);
->> +	if (IS_ERR(thermal->cooling)) {
->> +		dev_err(thermal->dev, "register cooling device failed\n");
->> +		ret =3D PTR_ERR(thermal->cooling);
->> +		goto error;
->
->return dev_err_probe()
+Signed-off-by: Thomas Perrot (Schneider Electric) <thomas.perrot@bootlin.com>
+---
+Changes in v10:
+- dt-bindings: send the AAEON vendor prefix patch again as patch 1; v9
+  omitted it, leaving the "aaeon" compatible vendor undocumented
+- mfd: reject reads whose register or value size is not the 2-byte
+  address and 1-byte value of a MCU command, as writes already do
+- mfd: replace the opcode shift and the watchdog status argument with
+  named macros, and name the register, value and command lengths
+- mfd: embed the two I2C transfer buffers, aligned to ARCH_DMA_MINALIGN,
+  in struct aaeon_mcu instead of allocating them separately
+- mfd: move the Kconfig entry, which sat between ABX500_CORE and
+  AB8500_CORE and broke the menuconfig submenu of the latter
+- mfd: include linux/module.h
+- dt-bindings: define timeout-sec in the binding (maxItems and
+  description) instead of a bare "true"; watchdog.yaml cannot be
+  referenced from an embedded-controller node
+- gpio: return 0 or 1 from .get() instead of the raw MCU byte, which
+  gpiolib warns about
+- gpio: use the shared read opcode instead of a duplicate define, and
+  build the GPIO register addresses in a helper using MAX_GPOS
+- watchdog: use the shared watchdog register macros
+- watchdog: document the timeout parameter in watchdog-parameters.rst
+- watchdog: trim the Kconfig help and add the module name line, as the
+  other MFD-child watchdog drivers do
+- watchdog: document that the suspend callback stops the MCU watchdog even
+  with nowayout set, and say so in the commit message
+- Link to v9: https://lore.kernel.org/r/20261029-dev-b4-aaeon-mcu-driver-v9-0-f9b6d0cc180d@bootlin.com
 
-I'll address this in v9.
+Changes in v9:
+- mfd: hold the I2C segment lock across the MCU command write and the
+  response read, so no other transfer on the same I2C segment can land
+  in between; the STOP between the two is kept
+- mfd: read the response through the driver's DMA-safe buffer instead of
+  flagging the regmap caller's buffer as I2C_M_DMA_SAFE; reject writes
+  that are not a single 3-byte command
+- mfd: add .readable_reg so only the GPIO input and watchdog status
+  registers can be read; any other address is a command that a read
+  (e.g. through the regmap debugfs registers file) would execute
+- mfd: drop "Multi-Function Device (MFD)" from the commit message and
+  document the bus locking and the readable registers
+- dt-bindings: document the timeout-sec property read by the watchdog
+  driver and reword the watchdog description accordingly
+- gpio: move GPIO_AAEON_MCU to the "MFD GPIO expanders" Kconfig menu
+- watchdog: set min_timeout to the 25 second hardware heartbeat, as
+  shorter timeouts cannot be honoured
+- watchdog: honour CONFIG_WATCHDOG_NOWAYOUT with watchdog_set_nowayout()
+- watchdog: fix the timeout comment and commit message (timeout module
+  parameter, not a "watchdog_timeout" boot parameter); align the defines
+  with tabs
+- MAINTAINERS: keep the F: entries sorted
+- Link to v8: https://lore.kernel.org/r/20260731-dev-b4-aaeon-mcu-driver-v8-0-9ab00e80df2a@bootlin.com
 
-Thanks.
-Nas.
+Changes in v8:
+- mfd: add .use_single_read = true to regmap config; the MCU produces exactly
+  one response byte per command and a bulk read passing val_size > 1 to the
+  bus callback would be incorrect
+- watchdog: call watchdog_stop_ping_on_suspend() in probe so the kthread ping
+  worker is cancelled before platform devices are suspended, preventing I2C
+  transfers on a suspended bus
+- watchdog: check watchdog_hw_running() alongside watchdog_active() in the
+  suspend/resume callbacks so watchdog is stopped before sleep and restarted
+  on wake, preventing a spurious MCU reset if suspend exceeds the 25-second
+  hardware timeout
+- Link to v7: https://lore.kernel.org/r/20260707-dev-b4-aaeon-mcu-driver-v7-0-ca6c59abd672@bootlin.com
 
->
->Frank
+Changes in v7:
+- mfd: fix select REGMAP Kconfig entry indented with spaces instead of a tab
+- mfd: use devm_kcalloc() instead of devm_kzalloc() for the cmd buffer allocation
+- mfd: add .use_single_write = true to the regmap config to prevent regcache sync
+or debugfs from issuing multi-register writes that would overflow the fixed 3-byte
+cmd buffer
+- watchdog: remove max_timeout; it is documented as irrelevant when
+max_hw_heartbeat_ms is set and is silently ignored by the watchdog core
+- watchdog: pass dev->parent to watchdog_init_timeout() so that the timeout-sec
+DT property is correctly read from the MCU I2C node; the MFD child platform device
+has no of_node of its own
+- watchdog: add suspend/resume PM hooks to stop the watchdog before entering sleep
+and restart it on resume, preventing spurious resets if suspend lasts longer than
+the 25-second hardware heartbeat
+- Link to v6: https://lore.kernel.org/r/20260630-dev-b4-aaeon-mcu-driver-v6-0-d66b5fcbd2f0@bootlin.com
+
+Changes in v6:
+- mfd: rename local variable to ddata in probe
+- mfd: fix driver name from "aaeon_mcu" to "aaeon-mcu"
+- mfd: set I2C_M_DMA_SAFE on all i2c_msg flags so the host driver
+  skips bounce-buffering the heap-allocated DMA-safe buffers
+- mfd: drop COMPILE_TEST
+- gpio: replace __set/__clear/__assign_bit with atomic set_bit/
+  clear_bit/assign_bit to fix potential races on shared bitmaps
+- gpio: write output value before switching pin to output mode to
+  avoid a potential glitch on direction_output
+- gpio: add MODULE_ALIAS("platform:aaeon-mcu-gpio")
+- watchdog: add WDIOF_SETTIMEOUT and watchdog_init_timeout() so the
+  software timeout is configurable via ioctl, DT timeout-sec or
+  the watchdog_timeout boot parameter
+- watchdog: add watchdog_stop_on_reboot() to prevent a spurious
+  reset from the external MCU during system shutdown
+- watchdog: add MODULE_ALIAS("platform:aaeon-mcu-wdt")
+- Link to v5: https://lore.kernel.org/r/20260408-dev-b4-aaeon-mcu-driver-v5-0-ad98bd481668@bootlin.com
+
+Changes in v5:
+- mfd: use heap-allocated DMA-safe buffers for I2C transfers, replacing
+  stack-allocated buffers in the regmap bus callbacks
+- mfd: switch from REGCACHE_NONE to REGCACHE_MAPLE; add volatile_reg
+  callback marking GPIO input read registers (opcode 0x72) as volatile;
+  add max_register
+- mfd: use PLATFORM_DEVID_AUTO instead of PLATFORM_DEVID_NONE
+- mfd: use MFD_CELL_BASIC() macro for cell definitions
+- mfd: use dev_err_probe() for regmap initialization error
+- Link to v4: https://lore.kernel.org/r/20260324-dev-b4-aaeon-mcu-driver-v4-0-afb011df4794@bootlin.com
+
+Changes in v4:
+- mfd: switch to a custom regmap bus; remove aaeon_mcu_i2c_xfer() and the aaeon_mcu_dev struct
+- mfd: locking delegated to regmap's built-in mutex; drop explicit mutex
+- mfd: remove firmware version reading at probe time
+- gpio, watchdog: use regmap_read()/regmap_write() via dev_get_regmap()
+- include: replace aaeon_mcu_i2c_xfer() declaration with AAEON_MCU_REG() macro
+- dt-bindings: remove unused label from example node
+- Link to v3: https://lore.kernel.org/r/20260203-dev-b4-aaeon-mcu-driver-v3-0-0a19432076ac@bootlin.com
+
+Changes in v3:
+- Renamed SRG-IMX8PL to SRG-IMX8P
+- dt-bindings: add gpio-controller properties as required
+- mfd: move struct aaeon_mcu_dev from header to .c file (private)
+- mfd: use guard(mutex) and devm_mutex_init() for cleanup
+- mfd: firmware version log changed to dev_dbg()
+- mfd: add select MFD_CORE to Kconfig
+- Kconfig: add || COMPILE_TEST to all three drivers
+- watchdog: add comments explaining hardware timeout and WDOG_HW_RUNNING
+- watchdog: remove unused platform_set_drvdata()
+- watchdog: add a function to query the status
+- Link to v2: https://lore.kernel.org/r/20260123-dev-b4-aaeon-mcu-driver-v2-0-9f4c00bfb5cb@bootlin.com
+
+Changes in v2:
+- Fold GPIO and watchdog bindings into MFD binding
+- Drop OF_GPIO dependency in GPIO Kconfig
+- Use __set_bit/__clear_bit/__assign_bit instead of atomic variants
+- Various driver cleanups and improvements
+- Link to v1: https://lore.kernel.org/r/20251212-dev-b4-aaeon-mcu-driver-v1-0-6bd65bc8ef12@bootlin.com
+
+---
+Thomas Perrot (Schneider Electric) (5):
+      dt-bindings: vendor-prefixes: Add AAEON vendor prefix
+      dt-bindings: mfd: Add AAEON embedded controller
+      mfd: aaeon: Add SRG-IMX8P MCU driver
+      gpio: aaeon: Add GPIO driver for SRG-IMX8P MCU
+      watchdog: aaeon: Add watchdog driver for SRG-IMX8P MCU
+
+ .../bindings/mfd/aaeon,srg-imx8p-mcu.yaml          |  73 +++++++
+ .../devicetree/bindings/vendor-prefixes.yaml       |   2 +
+ Documentation/watchdog/watchdog-parameters.rst     |   8 +
+ MAINTAINERS                                        |  10 +
+ drivers/gpio/Kconfig                               |   9 +
+ drivers/gpio/Makefile                              |   1 +
+ drivers/gpio/gpio-aaeon-mcu.c                      | 235 +++++++++++++++++++++
+ drivers/mfd/Kconfig                                |  11 +
+ drivers/mfd/Makefile                               |   1 +
+ drivers/mfd/aaeon-mcu.c                            | 227 ++++++++++++++++++++
+ drivers/watchdog/Kconfig                           |  11 +
+ drivers/watchdog/Makefile                          |   1 +
+ drivers/watchdog/aaeon_mcu_wdt.c                   | 174 +++++++++++++++
+ include/linux/mfd/aaeon-mcu.h                      |  46 ++++
+ 14 files changed, 809 insertions(+)
+---
+base-commit: aebb7274476403040d582c61478df8f4a7bf9cd3
+change-id: 20251211-dev-b4-aaeon-mcu-driver-e0e89ebf4afb
+
+Best regards,
+-- 
+Thomas Perrot (Schneider Electric) <thomas.perrot@bootlin.com>
+
