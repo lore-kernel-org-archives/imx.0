@@ -1,97 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.128.181
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795179199;
-	b=LtyulEU65OWEWJobwhAeNwoR8l1c8lz5dK/8f+h/sM0NLKKuhaloX3R4CueLEeF9xCmY
-	 /VTSpdEHey29IK0wzyUDiAFMreTiDHix/NA/1cMsCvBvDILLaKFXr/2P4jjE4eX/y9+Jg
-	 RLYwZxs2tBq8E7dQuJTvwHiyMC3cINxdtLmka+oKr2CXjsBod0iFKhKTmeX/z2nARoA1G
-	 PBzxBehuhusaqfiphRsjFEZlqeY1UJaOUWLnCYORnoIcpBUwIWFA1q8y1oS+uGZQ95N9X
-	 hKU1J/b90Rnawb40j8GneR1FN1HFbt4dLxdvTzPILAPpV2qT76b1tODb6WIFwcEmayQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795179199;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=ieYBoPMUvb4s/PCH+V30xJw7NXondGMmODLCCsted48=;
-	b=jmzTmTv8YKVbXMkbS1TekakBGG2io53534X0cZnbBLKeTXsvsRsp7ocE95iLk5okkO6R
-	 3q+4P42PdaQT4TeYiHV85GnRGbZ0uD2EHlw5Ej/GOODba74AXj/CBrBlQeu/ouyJNULCO
-	 EAfp1oczZ2evBYydNZufBvnYZsqj5Zk4o/j40J06ynz0h6yW28YGCjAsrl83Q8TT5oeX1
-	 IaBXNPuszajg445S4QmLjrRGq4jNc87LxdWB6RDLNwAWmDcRaV/r8lQU4FNpNdh0iyNfj
-	 QpeXeb917mOZ0rM41D5NOcoENrRgHfYsZp72lSaZxdIRGhwK4aFzaLCL+cKryX7PoYg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=amarulasolutions.com;
-	spf=pass smtp.mailfrom=amarulasolutions.com;
-	dkim=pass header.d=amarulasolutions.com header.i=@amarulasolutions.com header.a=rsa-sha256 header.s=google header.b=Evh9YsWB;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.128.181
-Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795180577;
+	b=iQrczM3aQ0afMh6HeL8cPPlAHDP+Ul8zhUnQHlWrIMHg750SjVI7jVya4ebKZ+qUHYyh
+	 QDP4ZbVMhWXUwdlJgIlfear3MTOFubhZobIgHvWC9wpsiaHuFAbM+V6e3qEw7W+fO5NKg
+	 XlG7Gukdf8R1LcJpnwdbParNZVNs2js9Sr9dl0ppL2mMQCsqhkvUqQ03UgHHsagmySdvL
+	 JQqfQUr8hF/ht9ppUbnH2bN5yAEOG31BLw3zDqeUAbJf8+YH2aVXd65iXp4aKtmFFglLd
+	 uPBN0M1zjzYs2a97uK8G/01HzsHOkKl+h81DRLok1uskFX9HX3dpGdUr7Rx4IMtj/LQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795180577;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=rymBCJyiHy8Ghdn2DaeKiGdHuUNaTTqnH0lL1TRcJxE=;
+	b=rke+YAR1gWbhka5vH8EaEL9tiI9scy7S80AW2LBpRMBOLvcYWbBk080ey4b3R4UD2w2G
+	 jKilEtCDoGHp/Ky5aZwpxQIt2TJFMHcMCuaacqg235j8qoUiRcJIskH5fwP9FQhCsR35n
+	 hln0FXY9JZYh2rg7LOEZkIt2WWzI2Dz5Odrd0GmOnMJawKRXuCX9DlD9cUvCs7u5jtjEi
+	 Fh0ICh/rEF+0WSl8V/bImNGiW4PRQE87RpzaY6CqQSdb1I6evBXcUdFmuHgJazeh5xg9D
+	 GwNsq4qA2+dkU1AEa5O1oi9i7p0S2AtZs0DobF9Y44PtZSzYsIqu1TSFerBZ0KjQeFQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=U1+7dvHG;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A8B460A2601
-	for <imx@lists.linux.dev>; Fri, 20 Nov 2026 12:53:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5A8B460A2601
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C90C60A2604;
+	Fri, 20 Nov 2026 13:16:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.a=rsa-sha256 header.s=google header.b=Evh9YsWB
-Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-8b4eab91bcaso5206807b3.2
-        for <imx@lists.linux.dev>; Fri, 20 Nov 2026 04:53:18 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795179197; cv=none;
-        d=google.com; s=arc-20260327;
-        b=AWZdXWsuG8JNI27s0AlZDvxJEcYwK5Pcm5uimCk7OuDXrkfW+Er9IkZuE1ge8O7E+J
-         HnK0vCe2XTe/vVYVvUW9OkxnEy7swoR7ptQ2UJib9K0qkKWDMDACr7W9FCkniMOQniNq
-         IzUSNuYT6k/cweyF2Qf+81kzCn+RL1u1H4MDqRT1kks1+ZbOf4l/41FGwrrEFVo3b6NM
-         e4OP1dAyjV3Gy9DJcxRjamBx9EGNkVE8o03SDVGZLgn2HtfjQhPNeOEl01XyNpym0BOY
-         2CLuxXd2fvcFj/L3+HpDMDsCcJp416+LK/AeuKf1jtCSXxWdxgQVQgXS0qGiYabCRidX
-         ZMmQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ieYBoPMUvb4s/PCH+V30xJw7NXondGMmODLCCsted48=;
-        fh=xF7SAzvWUBXRFTK4GTO0NpP8sVUTiCMx9nv+t8sDJ3w=;
-        b=TtJJgeR9t/4NP9T3SuKf+RLY8+t2kGtpvfNTduX57WUACLiEJTr5lqu0C9bBlKQLQW
-         e/x1HVa6cpck0JjnOrkkItDmvllHy8im5g4Xl+nZ8IKg1uyBtgP3OHed4AHvvTqTixDT
-         S67n/sro7JRz1LRzDh384HcpgQlKZezec5m+ceLssvpqpTKS16LXoI+RfrNh8NGCxiwP
-         GdGZJMDRZkKwnSr9dy1WQ77fqc7bjo2yyizQ+SVwM5M1HnxNt+QTTHRYQ7BZRy6KK81o
-         0xOtekO3lyBRRtrz+8kF9bzmp9rPPX+DXl67lWh1SYDeFVSU+5JmHDgCKcWhzKXW46g/
-         Dk6w==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amarulasolutions.com; s=google; t=1795179197; x=1795783997; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ieYBoPMUvb4s/PCH+V30xJw7NXondGMmODLCCsted48=;
-        b=Evh9YsWBfcmsU8kxQk2Mnf1yQS51k5MbTbyOVCxWZJFm1MEI7pI5x+/8LXinBCoKT+
-         YhK5PZalnwzKxGE6sDbs1GvSJmjZXFBGoo9WpQ1OFzFIitG/jrdeCY0uF3kgnWpnEkcc
-         z/FsdofVLtma/geOLj4n5M9iWbWowhtnrrF6Y=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795179197; x=1795783997;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ieYBoPMUvb4s/PCH+V30xJw7NXondGMmODLCCsted48=;
-        b=II4h6FMext5XXxTil5h/LwJeMgPbh9bov5Jd8rgGcu3fhPJPx5pL1bzPcySkZhsGiE
-         CeLtfwnEDifkbNlfZSKTk1NTkhWrMnHpG8sPLztQK8V3yuBYWy2JHiM1UWM2KJREtZdg
-         o1C7qUB/0uk+PdOYea/wuCtU4gOa5DR5Vk3OfQdhWm1HnQUN3q211SoccnK3QmJZglyY
-         WFhPzpl3oNg03Bj0PdK8kxRCaowEvbKNQYtuMCWKoDEJMFJn3z/g4R4OVltGphRnL/QG
-         VKB1vO7aOuTASTzCoF6ImvBpJLtjGHiGEPu27T73BeLE6MnslB/lnf1/wMdy39Hk9qC7
-         W1eg==
-X-Forwarded-Encrypted: i=1; AL+hErFAMce0yZGhYpHTmaVNbEgezYdi9eIoHxk6Gyd0X6jEjn7kqzaTMgCW96WxnPlotxAcjYQ=@lists.linux.dev
-X-Gm-Message-State: APuU4Z9F6tx1CrmcA4TFXced37nkCKSWuBA5zURdCRNsn7ovXthNh0df
-	qdfx085z0/wTr9/R+xoX1oZPAqcVzmu1HjnMimpc2GJKRJwzR3qjq0MVhnRiy2y0DhPgCrTEJq6
-	eBlAJlhZFG+i8I3MYHip+aUMrrl0dEAulfwwKWUH+Jw==
-X-Gm-Gg: AZFdTZfOmjv5oKmjOQuBPIhxJAnMKJpIe1yqTf3uZz+bLBfgBD9Zhx+/eHoJKGiNjm2
-	zF0feML5DBMPUdlkjlmgt2bjPpDnwupsDbqncNlA94mi2I6rF83IFF1nq0Xg+dOCiEBqTiMwTS6
-	UIXuibJGyM2ZvX2NJs99Aj/vxuCu6n8XggW1ysvcaCNl9pN1mC+A6IxiSX+hCuWo9418cty2OBJ
-	55uYKKr7F6aPR62ink9r4weElzwzFPwznQHGXsOI9H2Oe4NDKDTUr5evauBoMjClWIEZzHIVMzU
-	AFOVTOk3jN8kW7yJey31YkrDI4AaEZGhFJnXTcdh7mp4JNzHyZpwxLV+SKb37obCoHirRHJeH2P
-	dG2dPLeqis7BYIykm3qIa26ZEkiQ9dJd33midxb/mK/GXFkpv3ZHWvmWxWHfunPqBagE=
-X-Received: by 2002:a05:690c:e3d2:b0:8b2:e0c3:1f4d with SMTP id
- 00721157ae682-8b5204ab2a6mr13766787b3.37.1795179197354; Fri, 20 Nov 2026
- 04:53:17 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=U1+7dvHG
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CD771F000F0;
+	Fri, 20 Nov 2026 13:16:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795180577;
+	bh=rymBCJyiHy8Ghdn2DaeKiGdHuUNaTTqnH0lL1TRcJxE=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=U1+7dvHGJyor3CsGEGO8dR09Z+Ox5yzjvEdcIB6MttWlEAI/fgVJoRDQRaaIk6llC
+	 lROet6Mam2eTKNtcLjdZk7cbYDBAN7DbnRfe7Zgv53soNdKR2/OEbgfQggrd2heiqB
+	 /SasuUOTemJOaPvE0V43mR+gX1nohn3ZqxAsdHUs/eYRT4zRUiNYcmwXHuzXYBj1Ke
+	 REByfybOYxAjhpb74yzrRFhMyUW44nCFUMB5g4W3MfvJr+/Re9qxOXZ37GNG1OtzRs
+	 GTG5oMMTBEbvb+Dxo+gAuqmNXLgwt0s1qvax/MTrWG3D1Ik5lJcQN8pz9Sbz3aeiCP
+	 AtlqgJ0e7Pctg==
+Message-ID: <sashiko-outbox-225210@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v13 2/5] drm/imx: Add support for i.MX94 DCIF
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Laurentiu Palcu" <laurentiu.palcu@oss.nxp.com>
+Cc: linux-clk@vger.kernel.org, imx@lists.linux.dev, devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org
+In-Reply-To: <20261120-dcif-upstreaming-v13-2-966ac248773f@oss.nxp.com>
+References: <20261120-dcif-upstreaming-v13-0-966ac248773f@oss.nxp.com>
+ <20261120-dcif-upstreaming-v13-2-966ac248773f@oss.nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 20 Nov 2026 13:16:15 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -100,93 +59,146 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
-MIME-Version: 1.0
-References: <20261030163547.2682583-1-dario.binacchi@amarulasolutions.com>
-In-Reply-To: <20261030163547.2682583-1-dario.binacchi@amarulasolutions.com>
-From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Date: Fri, 20 Nov 2026 13:53:06 +0100
-X-Gm-Features: AclHuK9f8_4hj4WZI7U8R_PPW4mheeI6fjAZW22lb_dsLGyAMF1kCmKW69Uy0Cc
-Message-ID: <CABGWkvoKQksL0vKOi2bLY5o3j998SzkAhdkkP4_ftySjbgqBrA@mail.gmail.com>
-Subject: Re: [PATCH 0/5] arm64: support Engicam i.Core MX8M Plus FE C.TOUCH
- 2.0 board
-To: linux-kernel@vger.kernel.org, Frank Li <Frank.Li@nxp.com>
-Cc: michael@amarulasolutions.com, linux-amarula@amarulasolutions.com, 
-	Conor Dooley <conor+dt@kernel.org>, Daniel Baluta <daniel.baluta@nxp.com>, 
-	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>, Fabio Estevam <festevam@gmail.com>, 
-	Francesco Dolcini <francesco.dolcini@toradex.com>, Hugo Villeneuve <hvilleneuve@dimonoff.com>, 
-	Joseph Guo <qijian.guo@nxp.com>, Josua Mayer <josua@solid-run.com>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Markus Niebel <Markus.Niebel@ew.tq-group.com>, 
-	Maud Spierings <maudspierings@gocontroll.com>, Mehmet Fide <mehmet.fide@screeningeagle.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Rob Herring <robh@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
-	Stefano Radaelli <stefano.r@variscite.com>, devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Hi Frank,
+Thank you for your contribution! Sashiko AI review found 2 potential
+issues to consider:
+- [Medium] drm/imx/dcif: unclocked MMIO access after
+  pm_runtime_resume_and_get() fails
+- [Medium] drm/imx: dcif: unbalanced clock disable if
+  dcif_runtime_resume() fails
+--
 
-Gentle ping on this series. Patch 2/5 has Krzysztof's Acked-by, and
-the series still applies cleanly on next-20261119.
+commit aec0e23d14596f3fd993df3e2ad261bfab2bf2dd
+Author: Sandor Yu <sandor.yu@nxp.com>
 
-Thanks and regards,
-Dario
+drm/imx: Add support for i.MX94 DCIF
 
-On Fri, Oct 30, 2026 at 5:35=E2=80=AFPM Dario Binacchi
-<dario.binacchi@amarulasolutions.com> wrote:
->
-> This series adds initial support for the Engicam i.Core MX8M Plus Fast
-> Ethernet C.TOUCH 2.0 board, based on the i.Core MX8M Plus Fast Ethernet
-> SoM.
->
-> The support includes device tree descriptions for the SoM and for the
-> C.TOUCH 2.0 carrier board, together with an overlay for the 10.1"
-> LVDS display (C.TOUCH 2.0 10.1" Open Frame).
->
->
-> Dario Binacchi (5):
->   arm64: dts: imx8mp-icore-mx8mp: enable the watchdog
->   dt-bindings: arm: fsl: support Engicam i.Core MX8M Plus FE C.TOUCH 2.0
->     board
->   arm64: dts: freescale: support Engicam i.Core MX8M Plus FE SoM
->   arm64: dts: freescale: support Engicam i.Core MX8M Plus FE C.TOUCH 2.0
->     board
->   arm64: dts: freescale: add Engicam C.TOUCH 2.0 LVDS display overlay
->
->  .../devicetree/bindings/arm/fsl.yaml          |   7 +
->  arch/arm64/boot/dts/freescale/Makefile        |   8 +
->  ...ctouch2-overlay-am-1280800w8tzqw-t00h.dtso |  53 ++++++
->  .../freescale/imx8mp-icore-mx8mp-ctouch2.dtsi | 166 ++++++++++++++++++
->  .../imx8mp-icore-mx8mp-fe-ctouch2.dts         |  17 ++
->  .../dts/freescale/imx8mp-icore-mx8mp-fe.dtsi  |  62 +++++++
->  .../dts/freescale/imx8mp-icore-mx8mp.dtsi     |  13 ++
->  7 files changed, 326 insertions(+)
->  create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-icore-mx8mp-ctou=
-ch2-overlay-am-1280800w8tzqw-t00h.dtso
->  create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-icore-mx8mp-ctou=
-ch2.dtsi
->  create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-icore-mx8mp-fe-c=
-touch2.dts
->  create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-icore-mx8mp-fe.d=
-tsi
->
-> ---
-> base-commit: d89e1d186ec9271bf78e62771779e9fc03bf0fc3
-> branch: engicam-imx8mp-icore-fe-ctouch2
->
-> --
-> 2.43.0
->
+This commit adds a DRM driver for the Display Control Interface (DCIF) on
+NXP i.MX94 SoCs, supporting primary and overlay planes, alpha blending,
+and display output CRC generation.
 
+> diff --git a/drivers/gpu/drm/imx/dcif/dcif-crtc.c b/drivers/gpu/drm/imx/d=
+cif/dcif-crtc.c
+> new file mode 100644
+> index 0000000000000..233e149929964
+> --- /dev/null
+> +++ b/drivers/gpu/drm/imx/dcif/dcif-crtc.c
+> @@ -0,0 +1,710 @@
+
+[ ... ]
+
+> +static void dcif_crtc_atomic_enable(struct drm_crtc *crtc,
+> +				    struct drm_atomic_commit *state)
+> +{
+> +	struct drm_crtc_state *crtc_state =3D drm_atomic_get_new_crtc_state(sta=
+te, crtc);
+> +	struct dcif_crtc_state *dcif_crtc_state =3D to_dcif_crtc_state(crtc_sta=
+te);
+> +	struct drm_display_mode *adj =3D &crtc_state->adjusted_mode;
+> +	struct dcif_dev *dcif =3D crtc_to_dcif_dev(crtc);
+> +	struct drm_device *drm =3D crtc->dev;
+> +	int ret;
+> +
+> +	dev_dbg(drm->dev, "mode " DRM_MODE_FMT "\n", DRM_MODE_ARG(adj));
+> +
+> +	/* enable power when we start to set mode for CRTC */
+> +	ret =3D pm_runtime_resume_and_get(drm->dev);
+> +	if (ret < 0) {
+> +		drm_err(drm, "failed to resume DCIF, ret =3D %d\n", ret);
+> +		return;
+> +	}
+> +	dcif->crtc_pm_enabled =3D true;
+
+[ ... ]
+
+> +static void dcif_crtc_atomic_disable(struct drm_crtc *crtc,
+> +				     struct drm_atomic_commit *state)
+> +{
+> +	struct dcif_dev *dcif =3D crtc_to_dcif_dev(crtc);
+> +	struct drm_device *drm =3D crtc->dev;
+> +
+> +	if (dcif->has_crc)
+> +		dcif_crc_source_disable(dcif, 0);
+> +
+> +	dcif_disable_controller(dcif);
+> +	dcif_disable_plane_panic(dcif);
+> +
+> +	drm_crtc_vblank_off(crtc);
+> +
+> +	if (dcif->crtc_pm_enabled) {
+> +		dcif->crtc_pm_enabled =3D false;
+> +		pm_runtime_put_sync(drm->dev);
+> +	}
+
+[Severity: Medium]
+Can a failure in pm_runtime_resume_and_get() lead to unclocked MMIO
+accesses and a synchronous external abort?
+
+When pm_runtime_resume_and_get() fails in dcif_crtc_atomic_enable(),
+dcif->crtc_pm_enabled stays false and the DCIF clocks remain disabled,
+while crtc_state->active is still true.  In the same commit tail,
+drm_atomic_helper_commit_planes() then runs dcif_plane_atomic_update() and
+dcif_crtc_atomic_flush(), writing to plane and shadow-load registers
+without checking dcif->crtc_pm_enabled.  Later, dcif_crtc_atomic_disable()
+also accesses and polls DCIF registers in dcif_crc_source_disable(),
+dcif_disable_controller(), and dcif_disable_plane_panic() before checking
+dcif->crtc_pm_enabled.
+
+> diff --git a/drivers/gpu/drm/imx/dcif/dcif-drv.c b/drivers/gpu/drm/imx/dc=
+if/dcif-drv.c
+> new file mode 100644
+> index 0000000000000..80b554f1b6843
+> --- /dev/null
+> +++ b/drivers/gpu/drm/imx/dcif/dcif-drv.c
+> @@ -0,0 +1,250 @@
+
+[ ... ]
+
+> +static int dcif_suspend(struct device *dev)
+> +{
+> +	struct dcif_dev *dcif =3D dev_get_drvdata(dev);
+> +	int ret;
+> +
+> +	ret =3D drm_mode_config_helper_suspend(&dcif->drm);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	if (pm_runtime_suspended(dev))
+> +		return 0;
+> +
+> +	return dcif_runtime_suspend(dev);
+> +}
+> +
+> +static int dcif_resume(struct device *dev)
+> +{
+> +	struct dcif_dev *dcif =3D dev_get_drvdata(dev);
+> +	int ret;
+> +
+> +	if (!pm_runtime_suspended(dev)) {
+> +		ret =3D dcif_runtime_resume(dev);
+> +		if (ret < 0)
+> +			return ret;
+> +	}
+> +
+> +	return drm_mode_config_helper_resume(&dcif->drm);
+> +}
+
+[Severity: Medium]
+Can a failure in dcif_runtime_resume() during system resume cause an
+unbalanced clk_bulk_disable_unprepare()?
+
+When the CRTC is active entering system suspend, the PM core holds an
+extra runtime PM reference from device_prepare(), so the
+pm_runtime_put_sync() in dcif_crtc_atomic_disable() leaves the device
+runtime-active.  dcif_suspend() then calls dcif_runtime_suspend() directly,
+disabling dcif->clks while runtime_status remains RPM_ACTIVE.
+
+If dcif_runtime_resume() fails in dcif_resume(), the device stays
+RPM_ACTIVE with its clocks already disabled, and device_complete() ->
+pm_runtime_put() will invoke dcif_runtime_suspend() a second time.  Using
+pm_runtime_force_suspend() and pm_runtime_force_resume() would keep the
+runtime PM state in sync with the clocks.
 
 --=20
-Dario Binacchi
-Senior Embedded Software Engineer
-M. +39 328 0625246
-dario.binacchi@amarulasolutions.com
-=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
-=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95
-Amarula Solutions SRL
- Via Felice Cavallotti 25D, 41012 Carpi, MO, IT
-info@amarulasolutions.com
-www.amarulasolutions.com
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261120-dcif-upstr=
+eaming-v13-0-966ac248773f@oss.nxp.com?part=3D2
