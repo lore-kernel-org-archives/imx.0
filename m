@@ -1,57 +1,65 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=180.181.231.80
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795167829;
-	b=o8PwPf+E05sV2rUBEfLrKHXbWPTFOyGdFrTmEdmwi29PFVQBN2mp1Bxf5c35/lEHaklt
-	 ucZZU/mq4C8P+TdD4mt9oUM1ZkAP3GR8x30zlG0lbRfA5Uv5dFOWkHtKDFHEkeZawsX1G
-	 Q/d5p1dO7VA8CeyfasM92aRWYgDkasVdTXDuzgIsT+mNf8AbAerJvnBZOwv+E6CJw7ZCx
-	 DXhRQipJukkmOvpEjhjOJ/3EMJ/L9Dmjnj/V7bsrLR8sBK5b+u8UsSC/11jmS6RoByhVH
-	 79tBgt+Aly079PHVpKK8uyZ5z9ZEvDwGXxSQvzKvIc0CCD8b9MmHhHV0yF20w4+9N6Q==
+	t=1795168167;
+	b=uaGjJPTyLzaedGHnJo1igJ+uSaVuQEcaso1/PajNS31rkNmz7Wys4JaW/G5w6dZ7lCNZ
+	 5Dc3MoMdIrFxiZT+QNGgclk7nJiUB6oKNTTKGb/62jMf9vhjkGnmU/K0PDuLALg2tRLnX
+	 XyKzMLEvkFVn6SvAuylbnO4GFdKKeG+EVdT3zys98r1hg2AMzaDo8U4ogT2urksyCIjJ/
+	 UHSwRMgS+PRWjJODw2cccDVc0AicxJGqqd7S2ydSeCTqqWOGtHGp6Rgzzu0QH9eyOAGDu
+	 hfqHk65y5Ji1iifNdsRQItgcVHC3e1biVNGtJb3Gmv7ZhXvSls5yPvJ3JvXEH6JF1qQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795167829;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=GeCtzp2xoImZ0E0jQSKhDwxA/F4ssL7yrY8e3r4L1SU=;
-	b=VsQ/cwsnCbXt74Mlb6Na+GxDBIY7X4kB6oxF6WQiC2E7z1ZOeNaAW7X+XxQEPbBA5uwd
-	 YF3P6BwJKVAPuGscS+wL3t2EdeZPrWOCUJv8a/4IH2oRSkPQ/Ome6LjeNoSpGIrsxdowi
-	 d4mYd5hVpzfM27wefgdeKV2yO1JfwldBNHk1roZILB+kA7OUzb3Em9CzLfb7zhNCm4tua
-	 sklVUbU0oh2zhNPig7yo3PFF1YZ3XZqCH+EI2dN8vE36zvp+vPOspiSwEGDIs3NyiYD+m
-	 T3tzA9cAxg7p3n5VqYfHQzx7RnMFqvoxElSRf2zPcVa7OmIE1c8QZnTeiwhsctOxSUA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795168167;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=Ahj0CzU1hVbnWhl0n2zcJwrXID4d5ZIGphREm93F3NE=;
+	b=JX804phf43UlX77criWJajsrbq3649QpkDazlXOJ9Cbb/OSb+ZSDj9BgEHRQfH/5F+y4
+	 gdzXzA8U6mVOVGArDL96+YVztqqrP2a3zMRAHV6i0lRKblkO5BLrSwpKs/Alt4wLF0Jnh
+	 x7zwL84Dt3nGyesfw+11vvuojaMa9Qamp0mQ9zQz4NSRkc1+cMCBC+jI0Y6qe9ws7Cqjj
+	 eUmAja0LvNvChc+WqCnX3arKwiFHCQoes2liBJ1Pjc8vzYf740y4NT/DcSvfbddFML2jy
+	 laYJEH99vfmJxeafBoskigbhOpQuEIysnPxjEjgucEtDFrpVNlYg/ammwkbK74ptngg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hPqyTvSE;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=gondor.apana.org.au;
+	spf=pass smtp.mailfrom=gondor.apana.org.au;
+	dkim=pass header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.a=rsa-sha256 header.s=h01 header.b=H1WVx17U;
+	arc=none smtp.remote-ip=180.181.231.80
+Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3937E606A325;
-	Fri, 20 Nov 2026 09:43:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 324F1606A326;
+	Fri, 20 Nov 2026 09:49:26 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 324F1606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hPqyTvSE
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A9C21F000C6;
-	Fri, 20 Nov 2026 09:43:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795167828;
-	bh=GeCtzp2xoImZ0E0jQSKhDwxA/F4ssL7yrY8e3r4L1SU=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=hPqyTvSErmOWwfZlhZotI9IwFsMS8pqJuFyKVcffoMoYiAMWhJSdOgWikELSwAegw
-	 EzWKybW6hJi9nwQSbNNGHPZuAiz6116gnXPg+JaXdLXkwPTyFvA4HXjNnz4G6RglUW
-	 CkFES390EAgqfUdBNZGFDn9x68FP8k1Ns12i9IojZ+6AIYvjuWQv3OgM9oXvwoRzy3
-	 qAdF/pjoT8UcfXM3sot2DmmWoSCpVyyUg9qV1G4reEGCyLDJYXNBbByk+gJI5IBW/J
-	 PMOic3tFkVK8qNCe3gtkSxyDqvHIncmeuURs7qhUczTrpxcSUuulUxqP/AZ5nOcRUp
-	 2BI5QKxdNzwHA==
-Message-ID: <sashiko-outbox-224871@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 3/5] arm64: dts: freescale: imx93-11x11-frdm: use 8-bit
- eMMC bus
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Freimut Diener" <f.diener@pengutronix.de>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20261120-imx93-frdm-fixes-v1-3-78dde22a56fe@pengutronix.de>
-References: <20261120-imx93-frdm-fixes-v1-0-78dde22a56fe@pengutronix.de>
- <20261120-imx93-frdm-fixes-v1-3-78dde22a56fe@pengutronix.de>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 20 Nov 2026 09:43:47 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.a=rsa-sha256 header.s=h01 header.b=H1WVx17U
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
+	from:content-type:reply-to; bh=Ahj0CzU1hVbnWhl0n2zcJwrXID4d5ZIGphREm93F3NE=; 
+	b=H1WVx17UduHJXhsqMth2XijYI7d19aD7TZi6FtWGof7pRRJ3VSEfG3vC9nTPyfz8/AuXGq7C4Kl
+	YMEOhKp910Qe5OBCsN/Ku3B71lxP5JMCvFn+EvmakYHvfNrjnLvUypvTDTlZ4v193LYUU4LjfWbz+
+	ILC1Pkfj6dDYc3l4bTMzZLqF0S1iG9kJ7xPW3Hi1Sq9U76HjQjefdcoq4FDMxb7UNzy7jevOWoR5S
+	2oSPWvRmw5167Vo5PypkR+tsm5QYvjgszgw0kkBkSJCzCdg8B6n3zvIhnEvY0LSdl33+3y70Ehg4i
+	fLC+YLtepD1gFX6QdtA7rtWdEzF6hHn5dO7A==;
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.98.2 #2 (Debian))
+	id 1xULF1-0000000HYWQ-27Cr;
+	Fri, 20 Nov 2026 17:49:12 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 20 Nov 2026 17:49:11 +0800
+Date: Fri, 20 Nov 2026 17:49:11 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Tomas Paukrt <tomaspaukrt@email.cz>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Marek Vasut <marex@denx.de>,
+	linux-crypto@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] crypto: mxs-dcp - Fix softirq locking and completion
+Message-ID: <awAXl6j7tb5NNTjQ@gondor.apana.org.au>
+References: <1qB.ZqMy.4DIhrOb2ZPx.1gyQAk@seznam.cz>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -60,52 +68,40 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1qB.ZqMy.4DIhrOb2ZPx.1gyQAk@seznam.cz>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Medium] arm64: dts: freescale: imx93-11x11-frdm sets 8-bit bus-width
-  on 4-bit usdhc3
---
+On Mon, Nov 09, 2026 at 11:38:38AM +0100, Tomas Paukrt wrote:
+> The request queues are protected by plain spin_lock(), but requests are
+> enqueued from softirq context (e.g. by ESP on packet receive) as well as
+> from process context, while the channel threads dequeue them in process
+> context with bottom halves enabled. A softirq that runs on the same CPU
+> while the lock is held either deadlocks on SMP, or corrupts the queue on
+> UP where the spinlock does not provide any protection.
+> 
+> In addition, the channel threads call the completion callbacks with
+> bottom halves enabled, although the crypto API requires them to be
+> called with bottom halves disabled. With IPsec, esp_input_done() then
+> runs xfrm_input() and gro_cells_receive() in plain process context,
+> which races with the NET_RX softirq on the per-CPU GRO cell queue and on
+> the xfrm state, and defers the NAPI poll until the next interrupt.
+> 
+> This was observed with strongSwan on i.MX6ULL: the throughput drops
+> quickly and eventually no packets are decrypted at all.
+> 
+> Fix this by taking the queue locks with spin_lock_bh() and by calling
+> the completion callbacks with bottom halves disabled.
+> 
+> Fixes: 15b59e7c3733 ("crypto: mxs - Add Freescale MXS DCP driver")
+> Signed-off-by: Tomas Paukrt <tomaspaukrt@email.cz>
+> ---
+>  drivers/crypto/mxs-dcp.c | 30 ++++++++++++++++++++----------
+>  1 file changed, 20 insertions(+), 10 deletions(-)
 
-commit 1b60016bb1be48a6e2b6b1dfc5d19ef5de2490d6
-Author: Freimut Diener <f.diener@pengutronix.de>
-
-arm64: dts: freescale: imx93-11x11-frdm: use 8-bit eMMC bus
-
-This commit changes the bus-width property of the usdhc3 node in
-imx93-11x11-frdm.dts from 4 to 8.
-
-> diff --git a/arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts b/arch/ar=
-m64/boot/dts/freescale/imx93-11x11-frdm.dts
-> index fbe3543e1ee8c..af674f3f48364 100644
-> --- a/arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts
-> +++ b/arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts
-> @@ -75,7 +75,7 @@ &sai1 {
->  };
-> =20
->  &usdhc3 {
-> -	bus-width =3D <4>;
-> +	bus-width =3D <8>;
->  	keep-power-in-suspend;
->  	mmc-pwrseq =3D <&usdhc3_pwrseq>;
->  	non-removable;
-
-[Severity: Medium]
-Should usdhc3 really have an 8-bit bus width here?
-
-On the FRDM-i.MX93, the 8-bit eMMC is connected to usdhc1, which already
-has bus-width =3D <8> in
-arch/arm64/boot/dts/freescale/imx93-11x11-frdm-common.dtsi.  usdhc3
-(428b0000.mmc) is connected to the 4-bit Wi-Fi SDIO interface of the
-IW612 module, and both pinctrl_usdhc3 and the i.MX93 SoC itself
-(arch/arm64/boot/dts/freescale/imx93-pinfunc.h) only have four data lines
-(USDHC3_DATA0 through USDHC3_DATA3).
-
-428b0000.mmc logs the HS400 warning in mmc_validate_host_caps() because
-usdhc3 is missing the no-mmc property (unlike usdhc2 in
-imx93-11x11-frdm-common.dtsi).  Keeping bus-width =3D <4> and adding no-mmc
-(and no-sd) on usdhc3 would match the hardware and avoid the warning.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261120-imx93-frdm=
--fixes-v1-0-78dde22a56fe@pengutronix.de?part=3D3
+Patch applied.  Thanks.
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
