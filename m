@@ -1,45 +1,45 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795185532;
-	b=VVFpQXjjCyIic/yf+p47kZBVp3B5xBNyJH6mf1G6Luob9NM/N6ahPk5bOiWOzEs41G2M
-	 OdcikSx3sdBdz9BwkmKp8SFfOv0FHBETckrSEfQABIbNAxuZGFBE91e5J7fRwh9xN5dsJ
-	 O87DiWkXZT9AJhHdpkCBQpSnCFLCQpGa1sKJH/RMwlbTSUyA9UaIOzCr1UNj589ZwKhSG
-	 wc+YcsUQoU8+oFPDul1jM4bE7HvjNczNE6bg/dK7ljG0EUcTw1Xi6u1oRFOzbKJ5VnTJw
-	 FWf0RPTWk1ASTkdRC4fPy08bjDVHICP89itkbJ0LnxkCjcmsueZhqXn0pcRiG5KNA6w==
+	t=1795185595;
+	b=dJ4bNnWPMheY7HbxYIRWC2VX0C3/57Pnt1rEP5k2X9A9K0CV5XJGYTR1q5wUNBhHNDBn
+	 vhcVYovu+z8i2CJKlmEk3/Itst0XQtfxUCfSZBj6CrL3w2g5Mj45iTZnsEVXUKbM50H9N
+	 Q0cyxXBDDxgN87D6gaqj32UTzRAVNncVvGRv6RP47VPJtaL24RA4cAUbyqNhrer4+D0po
+	 iWE7U6QNneuo+R77bglJQqRX+/Wev9EDbAuEDWJGV5RJ0Qo/6sshQaHYKNSAloDurzSCc
+	 Lp0PoR6xL9w0J1BNcMrG7Qbg0iihAIQnSFpkuRDws0o9i0Kn3iTAD9yva9H0G1JxjRg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795185532;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795185595;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=Mg4tO9uvKi9Gwzh0PfSMjaKb+RogQEZ6WjO+Jsmx8hk=;
-	b=BIUcM3J9WbDgI+xIWB+aiQU8/wcpY6F/uDLOYG4al5TTq1QSIHyiJFZVVhzdHn+6pJgR
-	 UgeznJLUr5H3/bqSVXdQD0eD9hZ24u2HdutfbgLgN6bXlkDlSaNotFv6WdaNIGki+ZcKy
-	 GxGj77a/EMASHs5vzaAZB9q6Y+pCHmCxv7/aTreIUUfMewc10hn4KNTtZVe8hGA/bcKk8
-	 AQC3lH2pzdUIVhryTbywyEzIHRfnMxHyO/TjgYFwnOS51UHdwQog6mBFktcB7kW1gFW7D
-	 NEFsEqhkfgNKfuubrtGHNxFOo7bjw3dFh7t4pVlWM5UpJ0IcCaXjI8IiXrw1d9ewCXw==
+	bh=HERWT3R7sQc4IpReBoiiAir63QoWdA7u/aZTx6j4nHA=;
+	b=M5cnzh9cJKGibF31UVbWUuC0MlnH/aSk7qEMzuL20DQZX3PWekTuhcLmWosQdZEeBIke
+	 bB6ihouX4JaD7b8PYcbtjKgRaObBMjBACRk90KjyowNEPqiIv2kTy7K6eIykWPQo7hfQ5
+	 LW4SQ63vo3pJGjfTLYCtCiqSQ0n7dz4WrBKxJ1NAxxF8C2rF8h9v9YdfdoFzjc1Fplrqi
+	 CpY+xgjeeMnwyprs0vYy1X2q0xDHkgBqy/zb7IanuZ99RB+nxD1QFJ3ybboWtYyN85Gzd
+	 ZyzsW8gOceT5A4n11TXBVemKOPQxT4LI4EMjctwJb5VV2en9kBpBae2PAc5JjKaU7sw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FTdQFNtp;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=l8n0JTrx;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51328606A331;
-	Fri, 20 Nov 2026 14:38:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EE9F606A320;
+	Fri, 20 Nov 2026 14:39:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FTdQFNtp
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FD1B1F000D3;
-	Fri, 20 Nov 2026 14:38:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=l8n0JTrx
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 897B91F00A3D;
+	Fri, 20 Nov 2026 14:39:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795185531;
-	bh=Mg4tO9uvKi9Gwzh0PfSMjaKb+RogQEZ6WjO+Jsmx8hk=;
+	s=k20260515; t=1795185594;
+	bh=HERWT3R7sQc4IpReBoiiAir63QoWdA7u/aZTx6j4nHA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=FTdQFNtpVu6zGOw4c+pl81NSiYbcDLna7/0xJ3TQeCLtJSY7Sfd1AIMDKt1tSVCXH
-	 Y774gVMNcmIJgWek0APsIQqYa82ejrv7ac+ns2VQdN8+8rNvFJOO2uyAWGCKLoy5Fh
-	 AiU+apX/F0EJci0LrF1vI6sQCHh54s6nHnqiTEIoaqMpyNMLAElGT1cHWYS5NOcylr
-	 JcNijs5dg6nsjqCUT5W864+FtUMxprZMA1SoaDVCNWJZ8mEBDMtricr36oZY2kbioJ
-	 pQhyhuTkiFzOegZSmVRZaqSoZrND9fFnHGfIM+AFvGpB2QnRXuOxRQC2bAIhlEo09H
-	 0D41ONaNOO7Cg==
-Date: Fri, 20 Nov 2026 15:38:46 +0100
+	b=l8n0JTrxgkutQ1NYeg/2mAqD9dggsgrVoyS5hBasWwKQD/+oBJypDhg0nAExQ9/gn
+	 KruMn40VWj9RlFq1PHzQsPf5XtY/7co3wuQTPwtpmXbWFP24UgoNKQDNj1Ll8cjyMm
+	 MNgqeqsH+W85QHKMOWHyi4mMQm4dEuCL6uxrqSWDDOn5Hq3qjc0nzxyDeqJlh6obqm
+	 1sdU6vuwgfYFiKrz/OGy6o0Za5RCtrfrprdomNxMEu85OpVl9mXyuPcQvuC1mFbKV4
+	 Ftic3aqDMqemZdRhOnaSMG7UVy10s0BdF+HBuquh0TKYvIrvwNtJHM1ZRg8jz4iOpd
+	 3ykGvdQB7nvyg==
+Date: Fri, 20 Nov 2026 15:39:49 +0100
 From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Yannic Moog <y.moog@phytec.de>
 Cc: Rob Herring <robh@kernel.org>, 
@@ -50,10 +50,10 @@ Cc: Rob Herring <robh@kernel.org>,
 	Christian Hemp <C.Hemp@phytec.de>, Jan Remmet <j.remmet@phytec.de>, devicetree@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
 	upstream@lists.phytec.de
-Subject: Re: [PATCH 1/5] dt-bindings: fsl: add phyFLEX-Libra i.MX 8M Plus FPSC
-Message-ID: <20261120-successful-amiable-porcupine-cef7ae@quoll>
+Subject: Re: [PATCH 5/5] dt-bindings: fsl: remove phyCORE-i.MX 8M Plus FPSC
+Message-ID: <20261120-intelligent-victorious-jackrabbit-4caf35@quoll>
 References: <20261116-imx8mp-phyflex-v1-0-4adcf8b4d373@phytec.de>
- <20261116-imx8mp-phyflex-v1-1-4adcf8b4d373@phytec.de>
+ <20261116-imx8mp-phyflex-v1-5-4adcf8b4d373@phytec.de>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -65,42 +65,31 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261116-imx8mp-phyflex-v1-1-4adcf8b4d373@phytec.de>
+In-Reply-To: <20261116-imx8mp-phyflex-v1-5-4adcf8b4d373@phytec.de>
 
-On Mon, Nov 16, 2026 at 11:54:40AM +0100, Yannic Moog wrote:
-> Add bindings for phyFLEX-i.MX 8M Plus System-on-Module [1] along with a
-> carrier board (Libra) that join to an SBC.
-> 
-> [1] https://www.phytec.eu/en/produkte/system-on-modules/phyflex-imx-8m-plus-fpsc/
+On Mon, Nov 16, 2026 at 11:54:44AM +0100, Yannic Moog wrote:
+> binding has no consumer anymore. It describes prototype product only due
+> to renaming of the product. Remove it.
 > 
 > Signed-off-by: Yannic Moog <y.moog@phytec.de>
 > ---
->  Documentation/devicetree/bindings/arm/fsl.yaml | 18 ++++++++++++------
->  1 file changed, 12 insertions(+), 6 deletions(-)
+>  Documentation/devicetree/bindings/arm/fsl.yaml | 5 -----
+>  1 file changed, 5 deletions(-)
 > 
 > diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
-> index 656f2596e1d53..2d21a1949d949 100644
+> index 2d21a1949d949..ae823a7670b02 100644
 > --- a/Documentation/devicetree/bindings/arm/fsl.yaml
 > +++ b/Documentation/devicetree/bindings/arm/fsl.yaml
-> @@ -1225,12 +1225,18 @@ properties:
->            - const: kontron,imx8mp-osm-s               # Kontron i.MX8MP OSM-S SoM
->            - const: fsl,imx8mp
+> @@ -1227,11 +1227,6 @@ properties:
 >  
-> -      - description: PHYTEC phyCORE-i.MX8MP FPSC based boards
-> -        items:
-> -          - enum:
-> -              - phytec,imx8mp-libra-rdk-fpsc  # i.MX 8M Plus Libra RDK
-> -          - const: phytec,imx8mp-phycore-fpsc # phyCORE-i.MX 8M Plus FPSC
-> -          - const: fsl,imx8mp
-> +      - description: PHYTEC i.MX8MP FPSC based boards
-> +        oneOf:
-> +          - items:
-> +            - enum:
-> +                - phytec,imx8mp-libra-rdk-fpsc  # i.MX 8M Plus Libra RDK
-> +            - const: phytec,imx8mp-phycore-fpsc # phyCORE-i.MX 8M Plus FPSC
-> +            - const: fsl,imx8mp
+>        - description: PHYTEC i.MX8MP FPSC based boards
+>          oneOf:
+> -          - items:
+> -            - enum:
+> -                - phytec,imx8mp-libra-rdk-fpsc  # i.MX 8M Plus Libra RDK
 
-Except lack of testing, don't nest oneOf.
+You just changed this line in earlier patch.
+
 
 Best regards,
 Krzysztof
