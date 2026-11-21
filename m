@@ -1,77 +1,106 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.35
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.44
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795266177;
-	b=vw/UAdBsYSYiYI4L8PiG9wrm7IQa6+8lvrJ/VyqC+RxHiCkI6dDO4TY59GKp98a/XE/O
-	 35uVp29n2OOEdjQsENstDaKbCmR81U4a/3SMZpJUi83WEeoIT2bAyEeaik79ABV2yyZvX
-	 8j4+Jw9Cf3aLmFfx41+HXpGdXR52X78CdtjixYezyrmUrCfhBGqwQuT4O2LvJlb89BXjc
-	 EqR5cBqRdx0xIF0QQ4M07CNYpptuRc+uP2YQtN1XyJY3GseMZVZ44MV8m/FNEz+SFyZxF
-	 nKctuW9FYcjfNSj0STo1Whd90O1AbpRXvFsIrPMlx7ipDoglgdfL/qVxDLNaMk3ytLg==
+	t=1795266381;
+	b=0LY3o2bQAPmM/ngHqh1dHRzhDbGVIYBfqQTyCkiUcJJzrb9ci77AFEvHWHYdoZlNFkGJ
+	 G9uO7MQziMSNeIbij4T9cxWsQr6m9JhzoavrAWh4GwmsDW17rzUwPzl0NqLfnxuV1GxH+
+	 I12guolBgdsbU7PV/olg7hOJy2PQ7x/v06kOPldfXyQPA5sE9yx9JxgMk8mTdf0aVqWJ9
+	 zpKtlw7Z/3vHe+HS9WA122S+g8PH9ZX82Z54wL4GDlYhh5cMDVjVAFCA42m6fwFGsiweW
+	 el+Dfp7wZHzc3cHykZUnbenkqCKzBW/+t2P73EjfjrFTvhemUpuXnDICv7Ny36D4rcQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795266177;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=kosSlO4n4eaj/l8QctRPYZS0nYWx+0xDQzEvrB+dFGg=;
-	b=ap4siubcMJYHHhbKzC2A/aNdmw/mA62/7Zu+0oAglsAi+IJ449J4Vpvv21faSigB+frH
-	 1VH7KIEa0sOxl1tatniFg6fxfFbq0Rk0UdorlByqIW8PODn4McNYYY58TxfGprxmUSlSi
-	 WWvq8LU//Wfg8qWZyk63Gt8QsSdVNJeW+8R5yF/I3NIVEfQLKpKTLgcmqb3HqwI+FLAfy
-	 vIqjDqZfEWgEf2Jzy1AAuedR+buzcALdZ2ULzdq0s4a/4/pnCG5rOg3fC0uvddPxufwg8
-	 p4CT2GxdJ5mbK9LracZiwQapOwnNDo5p7jTxu2AUqY78YwJwRvVC5Srrq5rzVRz1hxQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795266381;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=xGBvMhcJS11wtjrVJLfPo1Rw7P07wLWwQE89UszjvXk=;
+	b=0sKj7hVFyujui3Xf17geFhozPxJrQBRBp27y8x/6L4h8wQmpCVFWN88G1ZN0vmDCCus0
+	 BLCQ7HAFJBnbRKdll2vw4QiXPBb4SVtJNNxW9xpsQTMKVHgUF1pKKznSMPFUwj0mda2ZS
+	 FHVAsQbVYHiSesKewVwwh7yzab8Nvq/Q0QXDOmpCTqYBJfbX0ICtvfESpVvq4u8J14xTu
+	 ueWs7jqXx+67Nmn5edqteys/8SnNbuJvJxuJsJhi//Ih2/aL9W9aG0vIitbqHrrlXJ9cl
+	 wXjNQ3AJh1RkEkkvejLVa34lmB9TF2s6PeJFNVnh5SKAo4PxoE6AP2x3akuWmUlNzoA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	arc=none smtp.remote-ip=95.215.58.35
-Received: from mta1.migadu.com (out-35.mta1.migadu.com [95.215.58.35])
+	dmarc=pass header.from=amarulasolutions.com;
+	spf=pass smtp.mailfrom=amarulasolutions.com;
+	dkim=pass header.d=amarulasolutions.com header.i=@amarulasolutions.com header.a=rsa-sha256 header.s=google header.b=PwMIp+nS;
+	arc=none smtp.remote-ip=209.85.128.44
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 490AC606A330
-	for <imx@lists.linux.dev>; Sat, 21 Nov 2026 13:02:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 490AC606A330
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Envelope-To: imx@lists.linux.dev
-DKIM-Signature: a=rsa-sha256; bh=AXPl9MSQKEVnxwBZxVz70iQ3WAgcrk7wcvSe7Ve0uwo=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795266175; v=1; x=1795870975;
- b=evWxxf05XzVJt8Tiou/ooJaFuuGuIEy6pjt2YmbAgNiOxUhEf41eaNZKkg47SGXEuGOXmAyt
- 3WwiAi8ByTAobCpv3Fp+93sxm2LZVZgMx5+WnZdbPDilExVU6ew6/6LAC8t6n1rEElzVU8kRIXn
- y9U/4883p+Brc6sMaiwDe+Bk=
-X-Envelope-To: imx@lists.linux.dev
-Received: by smtp.migadu.com with ESMTPS id 2fb3a475fbc6b1aa;
-	Sat, 21 Nov 2026 13:02:54 +0000
-X-Mizu-Trace-ID: 2fb3a475fbc6b1aa
-X-Migadu-Flow: FLOW_OUT
-Date: Sat, 21 Nov 2026 21:02:42 +0800
-From: Peng Fan <peng.fan@linux.dev>
-To: Jason Gunthorpe <jgg@ziepe.ca>, Frank Li <Frank.Li@nxp.com>,
-	Vinod Koul <vkoul@kernel.org>, Robin Murphy <robin.murphy@arm.com>
-Cc: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>, Frank Li <Frank.Li@nxp.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	"Joerg Roedel (AMD)" <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	Laxman Dewangan <ldewangan@nvidia.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Thierry Reding <thierry.reding@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACFB8606A330
+	for <imx@lists.linux.dev>; Sat, 21 Nov 2026 13:06:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org ACFB8606A330
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.a=rsa-sha256 header.s=google header.b=PwMIp+nS
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4a5b2be99a8so15442395e9.2
+        for <imx@lists.linux.dev>; Sat, 21 Nov 2026 05:06:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=amarulasolutions.com; s=google; t=1795266379; x=1795871179; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=xGBvMhcJS11wtjrVJLfPo1Rw7P07wLWwQE89UszjvXk=;
+        b=PwMIp+nS5DIY/nyjADTOhfwdBP3jo3fNNbLRBBFDh3JlgVOgIJna79v2pgwYqMvDvU
+         Oxe+KH0TTD3MURroC1Xc6qnkcfloYADUxoY7KIy5Ejed2g4rjmWKrC3WrD30pvKfb3QO
+         DjV73KRH+UTR4oH7VstOnetkcnU3OndmJpknQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795266379; x=1795871179;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=xGBvMhcJS11wtjrVJLfPo1Rw7P07wLWwQE89UszjvXk=;
+        b=LgwAQYnD7NuqcUxwvNzmIeasclFaA/n+z8YMzzkES8BPi54axeeUfhkB8yoiM/w4dJ
+         1xkLspqcWH/UAgN3JdPuKlkZ/Vp1XaGhpe6kIEJ8ty5Rs37ugGWKQIe17ObKhAp2vUkW
+         3ktGTXnGb0SwgzILC+BOFSq/z/NXt0VDaEOaPGqyo0FZeYCaH51efWnux+uHWBNGbt4z
+         kI1ccshFBBG7IrllwlHj8DZMParHF3McUuVQn+U2gt7u+bq4IxLeAKPZbWRBR+/fkQfY
+         h7DrR8vxQPiC1EHRwAD64okoth7CTLZAUz+HxBKfQzCgcm9kuDwVgcS9xfyq1gCtaYtj
+         ssPQ==
+X-Forwarded-Encrypted: i=1; AL+hErEAGCEBGI1BjpAVxcOgofK/tFq1RQNHakwmQ2ndPWkU88jNKQhdv9A4QecEexLZv09u6gs=@lists.linux.dev
+X-Gm-Message-State: APuU4Z9N5tQgt9QNiglXa7BRgzYiV/krXIsXHl4kjbxU/E06e3Z/WWJC
+	ZJvwCICyTNXmjlWDUTS9vspiQojN0H9J0w+/DC9dMecS/ObXHeyZNWdbXv44X5FpFUo=
+X-Gm-Gg: AZFdTZcUvl/CsYLIAHH35DrjwcRzcsnkG8fhEDyZJ82tE3rOO6Y4hYJnnxnfJrJzSLF
+	C7rKTiO5vcNhmZTYDuhq8ti+ofndMguPsh8ELjPi49bwoOLhNTUGN3dpZhxoQ3H7QYsto+6w48O
+	8pavfqkGnLdUsJpktupAXuphkaZ8CO+o6DYiMRIH9iQn5u/4X30O+v5soVqZTkkddLDF0VsOLmj
+	7iM8mq+N/S+WE71JKOQZ4kpxHY3kAwdHXsiAgrKrGKDxK19PL4tafFL08jCurOnN+fyilyuPsTy
+	P5MhsC+pxPQKS7p4SxobPdjHI2PpnjXn8x/2sJwlJm8nW8dr0gvmQjaqB2IOzxZXf3JURS9kexV
+	NX1wQd2SULhf0lUpFEzVdojqKSJZ/bWpHjkS7KjtCdKeOXAm4aoiPriQfdOX4BRM/ozaqCu4fxm
+	Tt8+f1nH1OmY4Yp1pYXrgkHmHxk58AYSKWVUP3dwT6IFAjOxbD6XVBBxF9ECkt/UCJ1mOmqP83Q
+	eThDd1K+sa46KnXaLs3JDosly5rXD/rdhpA9dW0Vu527d8AJE6Q9rCReETXvCgPqYJBXERh2fjE
+	ENiNHoepaBdvyt69I2pXtIukoXXAXkg/Bc0xyPEDvuxs7DgitknvpvO8gU15DKe+hF64JW0QjsF
+	TeNcCLlbG+EU0AjJzTxH9cxM0D9LGNr1y1lkJfOP4zYQP62aPTviTTbkZBcHixd1tt0M9k9345c
+	OK520V4oGfOzf8ASIsBTSvpSOqF71vc4KW+kUkvDejxxNVyeI=
+X-Received: by 2002:a05:600c:3b8a:b0:4ba:761:c0c5 with SMTP id 5b1f17b1804b1-4bb8880f0e0mr139372685e9.5.1795266379055;
+        Sat, 21 Nov 2026 05:06:19 -0800 (PST)
+Received: from dario-ThinkPad-P14s-Gen-5.homenet.telecomitalia.it (host-79-14-29-58.business.telecomitalia.it. [79.14.29.58])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb906d6a13sm47196545e9.3.2026.11.21.05.06.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 21 Nov 2026 05:06:17 -0800 (PST)
+From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+To: Ulf Hansson <ulfh@kernel.org>
+Cc: Peng Fan <peng.fan@nxp.com>,
+	linux-amarula@amarulasolutions.com,
+	Lucas Stach <l.stach@pengutronix.de>,
+	michael@amarulasolutions.com,
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Jacky Bai <ping.bai@nxp.com>,
+	Kees Cook <kees+treewide@kernel.org>,
+	Ming Qian <ming.qian@oss.nxp.com>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@kernel.org>,
-	Larisa IIeana Grigore <larisa.grigore@nxp.com>, imx@lists.linux.dev,
-	dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org,
-	iommu@lists.linux.dev, linux-tegra@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH v6 0/9] dmaengine: add DMA channel bus and fsl-edma
- per-channel IOMMU support
-Message-ID: <awGWcq_nKWShC81B@fedora>
-References: <20261112-edma-iommu-v3-v6-0-b038edb8ce6f@nxp.com>
- <20261116193021.GB2452510@ziepe.ca>
- <avwQl18smAW4R6ec@fedora>
- <20261117130005.GC2606445@ziepe.ca>
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	Xu Yang <xu.yang_2@nxp.com>,
+	bui duc phuc <phucduc.bui@gmail.com>,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-pm@vger.kernel.org
+Subject: [PATCH 0/3] pmdomain: imx: Keep the domains left on by the bootloader
+Date: Sat, 21 Nov 2026 14:06:07 +0100
+Message-ID: <20261121130614.2482656-1-dario.binacchi@amarulasolutions.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -81,68 +110,33 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261117130005.GC2606445@ziepe.ca>
+Content-Transfer-Encoding: 8bit
 
-Hi Jason, and all
+The i.MX8M power domain drivers register all their domains as off.
+A domain left on by the bootloader, e.g. to show a splash screen, is
+then powered up again by its first consumer, which on the i.MX8MN
+turns the display off and hangs the system.
 
-On Tue, Nov 17, 2026 at 09:00:05AM -0400, Jason Gunthorpe wrote:
->> 
+This series reads the state of the domains from the hardware, so that
+the ones left on are kept on until their consumers have probed.
 
-[...]
+Tested on i.MX8MN (BSH SMM S2 PRO) and i.MX8MP (Engicam i.Core MX8M
+Plus Fast Ethernet C.TOUCH 2.0).
 
->> I may not describe it clear in cover-letter.
->> 
->> I understand the concern. Let me explain why I believe it is justified here
->> rather than a hack.
->> 
->> On i.MX eDMA each channel has its own interrupt, its own register region,
->> and on i.MX8QM even its own power domain. Each channel may also have its
->> own Stream ID, or share one when SIDs are scarce. These are genuine
->> per-channel hardware resources, not software fiction.
->> 
->> In dmaengine each channel is already modeled as a channel device (see
->> dmaengine_chan_dev()), and this series puts those devices on a real bus
->> (dmaengine_chan_bus_type) as a prerequisite. The DT child node simply
->> describes that existing device, so its reg/interrupts/power-domains/iommus
->> are attached per channel instead of as index-matched flat lists on the
->> controller.
->
->If they are real devices then why can't they come out as platform
->devices?
->
->I think you are overstating how independent they are. Many single
->devices have per "channel" resources like MMIO and IRQs. That's
->totally normal. It doesn't make the sub resources independent devices.
->
->AFAICT what you have here is some HW designer used SID where they
->should have used SSID and you are trying to hack DT to make that
->usable because Linux does not support a SID as SSID model today.
->
->Again, since this is the 3rd - 4th case like this, it seems like a
->popular hardware choice and we should try to do better to make Linux
->support if we can.
 
-Let's put i.MX eDMA aside, I have one general question regarding
-dma channel DMA.
+Dario Binacchi (3):
+  pmdomain: imx: gpcv2: Keep the domains left on by the bootloader
+  pmdomain: imx8m-blk-ctrl: Keep the domains left on by the bootloader
+  pmdomain: imx8m-blk-ctrl: Hold boot-on domain clocks until sync_state
 
-The below two drivers[1] has chan_dma_dev set as true which means they use
-dma channel device to do dma memory allocation. And for tegra186, it
-use dma channel device for iommu, the buggy part is that it forces
-chan dev's bus to platform bus.
+ drivers/pmdomain/imx/gpcv2.c          |  61 +++++++++++++-
+ drivers/pmdomain/imx/imx8m-blk-ctrl.c | 115 +++++++++++++++++++++++++-
+ 2 files changed, 173 insertions(+), 3 deletions(-)
 
-Do you think it is reasonable to have chan device(not platform device) do dma
-allocation? I ask because if we allow chan device to do dma allocation, we need
-to provide a dma channel bus for iommu_buses to fix tegre186(TBH, I 
-am not familar with this platform, it even has iommu-map for the dma node).
+---
+base-commit: d0f871bfb831705d9f55479f5b2b40f636ea7b16
+branch: imx-pmdomain-boot-on
 
-[1] drivers/dma/tegra186-gpc-dma.c
-    drivers/dma/ti/k3-udma.c
-    https://elixir.bootlin.com/linux/v7.4-rc1/A/ident/chan_dma_dev
+-- 
+2.43.0
 
-Thanks
-Peng
-
->
->Jason
