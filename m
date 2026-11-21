@@ -1,57 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=220.197.31.2
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795272052;
-	b=K2lJSu/HTZGomydJIpgYvAvhYmS+yJwjk1fEj7jUsw9QDFhM0gqqSFJO28VB/DNSzoDa
-	 zmGvFzZgj6JHsS3phnzOce2ehJPGMYUw8HfHDXA7jfaICTj9jE9e74Syew0c1oqJRO9nk
-	 SgSmoq8BvPunlvUTekAxl3Tp8opcRGc/qONTgD4d9/tO+0zhQqgaBhXYp+PZ+ii25+ICf
-	 AFReg7bODQ8YMqEVHbKaMyEXN6cmlnqEfogsc/ZD6VDzTH2SlEbZFLkhkU8yIGPTmaeZV
-	 tzKFGa8zNji+xXOm+WeMFv/sGECpn14Ycf0GD8lggEX4vEOlTbjv4UQryv41uFZdo1A==
+	t=1795280578;
+	b=Z01Lq3p8nKZuT1bYjHdM0ts1Q0Sh3hJj9I93ysOKUY/CDWXJeBh8ld/fubQA+52VCZzU
+	 SFFYUp5psMzKMyPEzpKmG/Xh1KcsNhWxItMwuY9Wf4+HWAtFOGhZrtYKA8UtUPmID204O
+	 AXclcIS1e4SnKejfQLEOxGhdXGTxgW+HG9dqM/QCiqVg6fOs6DiSW74Dd9lvpGSY8mcgY
+	 uPln8wob4uHqiMN0hw1U7GTd/TxCkdzrstHCLJh1xQYE5ljHH7vq5+mZ3Pq4FVpOyFk9f
+	 u0sn7P/23SdwAfbqyiTu/2tHo25hQ3OkN69qpMgXSFQRICRAkpz9Ets/ySw0z9uJgnA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795272052;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=76SUQA4iZCBChWCWrbKMq0yPpuKDzWXlwdSqpb8MwiU=;
-	b=IW8RHLAEQp/OJ4JdRgNxidbJ5g1JA5/Euer+xx4Tes65wxSf++aSI4bUbN3fVvoAbFt2
-	 XlmM8yvdTCNpMPCl9WZ2M67O4c4XUvkKr2PO4mDY4moVHqZN/d6ltd+yUFvkSdLV6zbxH
-	 BXgMb/1umLoqqgOyBGN/KNr6txmJj7uyvHtPNq1ZhNgNobo9h40v2qPC7jiuIbRoWDNpb
-	 SstS2k4Teq6c6P+YsX0sYEWFLANv7xQ5L2Eq8YIH0I5AxlRjGEIOyUWOtaGSoGOsPLNwr
-	 2xfj2Rd/7ehsh4wlxVuIoUg6OcEvA0j+rtp4O4VesoKvgzG6xUbIB/5S86ytHOtan/Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795280578;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 X-CM-TRANSID:X-Coremail-Antispam:X-CM-SenderInfo;
+	bh=E7zw4OvfJS9WxxRydc8gjWSqNO5VuBv0ubtJ7RVhPKc=;
+	b=P8CyISvGgxFAeI93adBdCskKvm+sZ8jPnB1ix1Ed519KUQEXNA+LC3qo6Y7zWSjmrTXe
+	 3JakAH8nf6ZzRThUNJGsbA4OwVEl9IQuHS4siICbaBB2SY9nWepoyoLEPj+z+SgFHRCB5
+	 /lW29+Guww8Jq1j9vwCLfRYSHrWR0wy/GstzAU9szMbRBSzXU4xkF6Em51OdVp3HWDWcr
+	 Ou1KE5B40vCD+nsiRtdn4LvW/0K/QnVbfesG8GK4iz90M9BR2VbFvFTZhBPqk7YoRtR3q
+	 nNIs3AvD018/KcmURctQm0BrNxjZC4dIpCxcskqwgoVh1iL1itCF7DFOW2MHnN+6YOQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ODV7ryxb;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=163.com;
+	spf=pass smtp.mailfrom=163.com;
+	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b="kdyZgZ/V";
+	arc=none smtp.remote-ip=220.197.31.2
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13E58606A320
-	for <imx@lists.linux.dev>; Sat, 21 Nov 2026 14:40:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92C26606A320;
+	Sat, 21 Nov 2026 17:02:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 92C26606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ODV7ryxb
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA0F11F000C4;
-	Sat, 21 Nov 2026 14:40:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795272051;
-	bh=76SUQA4iZCBChWCWrbKMq0yPpuKDzWXlwdSqpb8MwiU=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ODV7ryxb4Pz7+s1SrwTUa7hvBfayI4jYwTZB5QWFPPd6AmBN1oH0g8hzgdQDAXYyg
-	 1MfG7Pk1SbaFlyOg6yE74rB9nCx7MXU9c09bunM7SrYDtuRDRmmiuCiSVOuz542UFk
-	 lKfPvu15UTm/3KsepiJQkNUT372vcYKSB92v0qSHXSJrken7uf27wiwITqrl4cUdeS
-	 MUG9pTARQPDCvpTMcpOYGXq+D1JJ1/0V9TML3kT15lc8745tfGg2dBf8DpdXd07utG
-	 jfOa1o0cPn2l6lZpPqzk2i5xexiqdbYaUuHvPpdVwcHFO/5cqCnp7R9WR1CCGc9XXP
-	 CfSaqqHrhRAEA==
-Message-ID: <sashiko-outbox-227100@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 1/3] media: imx: remove legacy video node control and
- format handling
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Jiaqi Shi" <shijiaqi_develop@163.com>, imx@lists.linux.dev
-Cc: Frank.Li@kernel.org, media-ci@linuxtv.org
-In-Reply-To: <20261121141412.319802-2-shijiaqi_develop@163.com>
-References: <20261121141412.319802-1-shijiaqi_develop@163.com>
- <20261121141412.319802-2-shijiaqi_develop@163.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sat, 21 Nov 2026 14:40:51 +0000
+	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=kdyZgZ/V
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=E7
+	zw4OvfJS9WxxRydc8gjWSqNO5VuBv0ubtJ7RVhPKc=; b=kdyZgZ/VzLZ5DMWTQ4
+	eG8+n1vpAcCQ1h5VE9VziRd68x631SbgUzVspV9WgBiYhlKRjOk1XQJXsAv6Ybex
+	biwuPjFPZtyiqMMVl18lmjgYpLlYFaY0MwGfnLKRkEiWFI4w37DeAox7ik0SYw9c
+	MfeGIGaK28KT98jCVMCyJPXaM=
+Received: from Ubuntu26.04LTS (unknown [])
+	by gzsmtp3 (Coremail) with SMTP id PigvCgCXDkKozgFrr_GYHQ--.15432S2;
+	Sun, 22 Nov 2026 01:02:33 +0800 (CST)
+From: Jiaqi Shi <shijiaqi_develop@163.com>
+To: linux-media@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-staging@lists.linux.dev
+Cc: slongerbeam@gmail.com,
+	p.zabel@pengutronix.de,
+	mchehab@kernel.org,
+	gregkh@linuxfoundation.org,
+	Frank.Li@nxp.com,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	Jiaqi Shi <shijiaqi_develop@163.com>
+Subject: [PATCH v2 0/2] media: imx: staging cleanup and FIM export to v4l2-core
+Date: Sun, 22 Nov 2026 01:02:30 +0800
+Message-ID: <20261121170232.414316-1-shijiaqi_develop@163.com>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -60,246 +66,71 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PigvCgCXDkKozgFrr_GYHQ--.15432S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxGr18Wr15Jw4rAF15tw4fKrg_yoW5Wr1xpF
+	4Ska1akrWxJF43CrnrJw17XF98Zw1fGa9Igw47X340vFyrCas7X3y8Ka48Zr98CrZav34a
+	vFyYqryxWa1jyFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pico7tUUUUU=
+X-CM-SenderInfo: xvklyxpdtlsvxhyhz0rs6rljoofrz/xtbCzQn4TGsBzqkeBAAA3n
 
-Thank you for your contribution! Sashiko AI review found 5 potential
-issues to consider:
-- [High] media: imx: unresolved default colorimetry and field in
-  capture_init_format()
-- [High] media: imx: insufficient pixel format validation in
-  capture_validate_fmt()
-- [High] media: imx: unclamped dimensions in __capture_try_fmt() cause
-  divide-by-zero
-- [Medium] media: imx: callers of imx_media_capture_device_init() still
-  set legacy_api
-- [Low] media: imx: outdated v4l2-ctl format examples in
-  Documentation/admin-guide
---
+Changes in v2:
+- Drop the ICAP_CHANNEL s_ctrl patch. The ICAP controls are clustered and
+  s_ctrl is always called on ICAP_EDGE, so the added case was dead code.
+- Initialize the default field and colorimetry with
+  imx_media_init_mbus_fmt(), and resolve try-format colorimetry using the
+  selected format's media bus code.
+- Clamp dimensions to non-zero values and reject formats whose image size
+  exceeds the 32-bit sizeimage field.
+- Validate the selected pixel format against the source media bus format,
+  including an exact match on non-IPU passthrough links.
+- Update the v4l2-ctl examples to specify width and height explicitly.
+- During FIM control updates, read new values only from the active
+  cluster and committed values from other clusters.
 
-commit 91db31570bbb5c6e57f4f438a93a25e73be6926a
-Author: Jiaqi Shi <shijiaqi_develop@163.com>
+This series continues the i.MX staging media driver cleanup by removing
+legacy video node handling and exporting the Frame Interval Monitor to
+v4l2-core.
 
-media: imx: remove legacy video node control and format handling
+Patch 1 removes control inheritance and source-dependent format handling
+from capture video nodes in favor of the subdev-based userspace API.
 
-This commit removes V4L2 control inheritance from pipeline subdevices to
-capture video nodes and switches capture video nodes to source-independent
-format initialization and format ioctls.
+Patch 2 moves the generic FIM implementation to v4l2-core while keeping
+the i.MX-specific input capture controls in the i.MX adapter. The error
+calculation uses signed arithmetic to avoid underflow when the measured
+interval is smaller than the nominal interval.
 
-> diff --git a/Documentation/admin-guide/media/imx.rst b/Documentation/admi=
-n-guide/media/imx.rst
-> index bb68100d8acba..b1c5fecfaef74 100644
-> --- a/Documentation/admin-guide/media/imx.rst
-> +++ b/Documentation/admin-guide/media/imx.rst
-> @@ -394,13 +394,9 @@ scaling up to 1024x1024, CSC, flip, and rotation:
->  Usage Notes
->  -----------
-> =20
-> -To aid in configuration and for backward compatibility with V4L2
-> -applications that access controls only from video device nodes, the
-> -capture device interfaces inherit controls from the active entities
-> -in the current pipeline, so controls can be accessed either directly
-> -from the subdev or from the active capture device interface. For
-> -example, the FIM controls are available either from the ipuX_csiY
-> -subdevs or from the active capture device.
-> +Controls for pipeline entities are accessed through their subdev device
-> +nodes. For example, the FIM controls are available from the ipuX_csiY
-> +subdevs.
+Validation:
+- allmodconfig build and sparse
+- local FIM KUnit tests, not included in this series: 13/13 passed
+- local white-box i.MX capture format tests, not included: 15/15 passed
+- QEMU vivid: v4l2-compliance 125/125, 30-frame streaming passed
+- QEMU vim2m: v4l2-compliance 49/49, 10-frame streaming passed
+- i.MX register-level and hardware DMA paths remain untested
 
-[Severity: Low]
-Should the v4l2-ctl --set-fmt-video examples later in this document also
-be updated to specify width and height when the upstream subdev pad is not
-640x480?
+Jiaqi Shi (2):
+  media: imx: remove legacy video node control and format handling
+  media: v4l2-core: add frame interval monitor helper
 
-Because capture nodes now initialize to 640x480 and VIDIOC_S_FMT no longer
-inherits dimensions from the source subdev, the 720x480, 720x576, and
-800x600 pipeline examples that only pass field=3D or pixelformat=3DRGB3 lea=
-ve
-the capture node at 640x480 and fail in capture_validate_fmt() with -EPIPE
-at stream start.
+ Documentation/admin-guide/media/imx.rst       |  20 +-
+ drivers/media/v4l2-core/Kconfig               |   4 +
+ drivers/media/v4l2-core/Makefile              |   1 +
+ drivers/media/v4l2-core/v4l2-fim.c            | 331 ++++++++++++++++
+ drivers/staging/media/imx/Kconfig             |   1 +
+ drivers/staging/media/imx/TODO                |  13 -
+ drivers/staging/media/imx/imx-ic-prpencvf.c   |   7 +-
+ drivers/staging/media/imx/imx-media-capture.c | 230 +++---------
+ drivers/staging/media/imx/imx-media-csi.c     |   7 +-
+ .../staging/media/imx/imx-media-dev-common.c  | 113 +-----
+ drivers/staging/media/imx/imx-media-fim.c     | 355 +++---------------
+ drivers/staging/media/imx/imx-media.h         |   9 +-
+ include/media/v4l2-fim.h                      |  40 ++
+ 13 files changed, 490 insertions(+), 641 deletions(-)
+ create mode 100644 drivers/media/v4l2-core/v4l2-fim.c
+ delete mode 100644 drivers/staging/media/imx/TODO
+ create mode 100644 include/media/v4l2-fim.h
 
-[ ... ]
+-- 
+2.53.0
 
-> diff --git a/drivers/staging/media/imx/imx-media-capture.c b/drivers/stag=
-ing/media/imx/imx-media-capture.c
-> index 9216a221b72f4..93d05cd967980 100644
-> --- a/drivers/staging/media/imx/imx-media-capture.c
-> +++ b/drivers/staging/media/imx/imx-media-capture.c
-
-[ ... ]
-
-> @@ -566,10 +432,10 @@ static const struct v4l2_ioctl_ops capture_legacy_i=
-octl_ops =3D {
->  	.vidioc_enum_framesizes		=3D capture_legacy_enum_framesizes,
->  	.vidioc_enum_frameintervals	=3D capture_legacy_enum_frameintervals,
-> =20
-> -	.vidioc_enum_fmt_vid_cap	=3D capture_legacy_enum_fmt_vid_cap,
-> +	.vidioc_enum_fmt_vid_cap	=3D capture_enum_fmt_vid_cap,
->  	.vidioc_g_fmt_vid_cap		=3D capture_g_fmt_vid_cap,
-> -	.vidioc_try_fmt_vid_cap		=3D capture_legacy_try_fmt_vid_cap,
-> -	.vidioc_s_fmt_vid_cap		=3D capture_legacy_s_fmt_vid_cap,
-> +	.vidioc_try_fmt_vid_cap		=3D capture_try_fmt_vid_cap,
-> +	.vidioc_s_fmt_vid_cap		=3D capture_s_fmt_vid_cap,
-
-[Severity: High]
-Does capture_validate_fmt() allow incompatible pixel formats on the video
-node now that capture_s_fmt_vid_cap() accepts any PIXFMT_SEL_ANY format?
-
-Previously, capture_legacy_s_fmt_vid_cap() called capture_find_format()
-with both fmt_src->format.code and pixfmt->pixelformat, which rejected
-Bayer formats on IPU internal links and required an exact format match on
-non-IPU passthrough links.  Now capture_validate_fmt() is the only check,
-and it only compares the two-value colorspace enum:
-
-drivers/staging/media/imx/imx-media-capture.c:capture_validate_fmt() {
-    ...
-	cc =3D capture_find_format(fmt_src.format.code, 0);
-	if (!cc || priv->vdev.cc->cs !=3D cc->cs)
-		return -EPIPE;
-    ...
-}
-
-Because all RGB, Bayer, and greyscale formats share IPUV3_COLORSPACE_RGB
-and all YUV formats share IPUV3_COLORSPACE_YUV, mismatched formats pass
-validation.  On a CSI passthrough link, configuring an 8-bpp or 12-bpp
-format on the video node while the source subdev outputs a 16-bpp format
-with the same colorspace programs 16-bpp IDMAC DMA transfers into buffers
-sized for 8 or 12 bpp, overflowing the DMA buffer.  On an IPU internal RGB
-link, V4L2_PIX_FMT_Y10 or V4L2_PIX_FMT_Y12 reaches the default WARN_ON(1)
-in ipu_cpmem_set_image(), while 8-bpp Bayer or greyscale formats cause
-ipu_cpmem_set_fmt() to fail with its return value ignored, leaving the
-CPMEM BPP field at 0 (32 bpp) for 8-bpp buffers.
-
-Passing priv->vdev.fmt.pixelformat instead of 0 to capture_find_format()
-in capture_validate_fmt() would restore the format check.
-
-[Severity: High]
-Can VIDIOC_S_FMT followed by VIDIOC_REQBUFS trigger a divide-by-zero in
-capture_queue_setup()?
-
-capture_legacy_s_fmt_vid_cap() previously took width and height from the
-source subdev, where dimensions were already clamped to non-zero hardware
-bounds.  capture_s_fmt_vid_cap() instead passes the user's unclamped
-width and height through __capture_try_fmt() to
-imx_media_mbus_fmt_to_pix_fmt(), so width =3D 0 or height =3D 0 sets
-priv->vdev.fmt.sizeimage to 0.  A subsequent VIDIOC_REQBUFS or
-VIDIOC_CREATE_BUFS then divides by pix->sizeimage:
-
-drivers/staging/media/imx/imx-media-capture.c:capture_queue_setup() {
-    ...
-	count =3D min_t(__u32, VID_MEM_LIMIT / pix->sizeimage, count);
-    ...
-}
-
-[ ... ]
-
-> @@ -869,36 +735,21 @@ void imx_media_capture_device_error(struct imx_medi=
-a_video_dev *vdev)
->  }
->  EXPORT_SYMBOL_GPL(imx_media_capture_device_error);
-> =20
-> -static int capture_init_format(struct capture_priv *priv)
-> +static void capture_init_format(struct capture_priv *priv)
->  {
-> -	struct v4l2_subdev_format fmt_src =3D {
-> -		.pad =3D priv->src_sd_pad,
-> -		.which =3D V4L2_SUBDEV_FORMAT_ACTIVE,
-> -	};
->  	struct imx_media_video_dev *vdev =3D &priv->vdev;
-> -	int ret;
-> -
-> -	if (priv->legacy_api) {
-> -		ret =3D v4l2_subdev_call(priv->src_sd, pad, get_fmt, NULL,
-> -				       &fmt_src);
-> -		if (ret) {
-> -			dev_err(priv->dev, "failed to get source format\n");
-> -			return ret;
-> -		}
-> -	} else {
-> -		fmt_src.format.code =3D MEDIA_BUS_FMT_UYVY8_2X8;
-> -		fmt_src.format.width =3D IMX_MEDIA_DEF_PIX_WIDTH;
-> -		fmt_src.format.height =3D IMX_MEDIA_DEF_PIX_HEIGHT;
-> -	}
-> +	struct v4l2_mbus_framefmt fmt_src =3D {
-> +		.code =3D MEDIA_BUS_FMT_UYVY8_2X8,
-> +		.width =3D IMX_MEDIA_DEF_PIX_WIDTH,
-> +		.height =3D IMX_MEDIA_DEF_PIX_HEIGHT,
-> +	};
-> =20
-> -	imx_media_mbus_fmt_to_pix_fmt(&vdev->fmt, &fmt_src.format, NULL);
-> -	vdev->compose.width =3D fmt_src.format.width;
-> -	vdev->compose.height =3D fmt_src.format.height;
-> +	imx_media_mbus_fmt_to_pix_fmt(&vdev->fmt, &fmt_src, NULL);
-> +	vdev->compose.width =3D fmt_src.width;
-> +	vdev->compose.height =3D fmt_src.height;
-> =20
->  	vdev->cc =3D imx_media_find_pixel_format(vdev->fmt.pixelformat,
->  					       PIXFMT_SEL_ANY);
-> -
-> -	return 0;
->  }
-
-[Severity: High]
-Does leaving fmt_src.field and the colorimetry members zero-initialized in
-capture_init_format() and __capture_try_fmt() break IC color space
-conversion at stream start?
-
-Previously, vdev->fmt was initialized and updated from the source subdev's
-active format, which imx_media_init_mbus_fmt() and
-imx_media_try_colorimetry() populated with V4L2_FIELD_NONE and resolved
-colorimetry values (such as V4L2_YCBCR_ENC_601 and
-V4L2_QUANTIZATION_LIM_RANGE).  Now fmt_src leaves field as V4L2_FIELD_ANY
-(0) and ycbcr_enc and quantization as DEFAULT (0), and __capture_try_fmt()
-also passes zeroed values through without resolving them.
-
-When streaming starts on an IC capture node (ipuX_ic_prpenc or
-ipuX_ic_prpvf), prp_setup_norotation() and prp_setup_rotation() pass
-vdev->fmt.ycbcr_enc and vdev->fmt.quantization to ipu_ic_calc_csc() ->
-calc_csc_coeffs(), which rejects V4L2_YCBCR_ENC_DEFAULT with -ENOTSUPP
-whenever YUV-to-RGB or RGB-to-YUV conversion is needed:
-
-drivers/gpu/ipu-v3/ipu-ic-csc.c:calc_csc_coeffs() {
-    ...
-	switch (csc->out_cs.enc) {
-	case V4L2_YCBCR_ENC_601:
-		params_tbl =3D (csc->in_cs.cs =3D=3D IPUV3_COLORSPACE_YUV) ?
-			yuv2rgb_601 : rgb2yuv_601;
-		break;
-	case V4L2_YCBCR_ENC_709:
-		params_tbl =3D (csc->in_cs.cs =3D=3D IPUV3_COLORSPACE_YUV) ?
-			yuv2rgb_709 : rgb2yuv_709;
-		break;
-	default:
-		return -ENOTSUPP;
-	}
-    ...
-}
-
-On default YUV-to-YUV IC captures, V4L2_QUANTIZATION_DEFAULT also maps to
-full range instead of limited range, programming the yuvl2yuvf range
-expansion CSC matrix instead of an identity pass-through.
-
-[ ... ]
-
-> @@ -974,7 +823,6 @@ imx_media_capture_device_init(struct device *dev, str=
-uct v4l2_subdev *src_sd,
->  	priv->src_sd =3D src_sd;
->  	priv->src_sd_pad =3D pad;
->  	priv->dev =3D dev;
-> -	priv->legacy_api =3D legacy_api;
-
-[Severity: Medium]
-Should prp_registered() and csi_registered() stop setting legacy_api =3D tr=
-ue
-(or should legacy_api be removed altogether)?
-
-Both callers of imx_media_capture_device_init() still pass legacy_api =3D
-true, which leaves V4L2_CAP_IO_MC unset on every capture device, keeps
-capture_ioctl_ops unused, and keeps capture_legacy_enum_framesizes() active.
-Without V4L2_CAP_IO_MC, v4l_enum_fmt() in the V4L2 core zeroes
-f->mbus_code before calling capture_enum_fmt_vid_cap(), and on
-ipuX_ic_prpenc/prpvf capture nodes capture_legacy_enum_framesizes() passes
-non-IPU mbus codes to prp_enum_frame_size(), which rejects 22 of the 23
-enumerated pixel formats with -EINVAL.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261121141412.3198=
-02-1-shijiaqi_develop@163.com?part=3D1
