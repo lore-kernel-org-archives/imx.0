@@ -1,47 +1,46 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795345251;
-	b=fNzvBf1/wkA9RYXYOqrSJubjUqljOylqXIUCETWk+9A4NQGxy/W6NHuNDJYmh93QyzGV
-	 OY2jwAzdxoL0hzH3DATHJUrkuLScbU8/2sTBOk5Z2kmTDMtbtjAitC9kyC3aINeJY21fB
-	 hhEf7/BJ5cOjw55KIsbXJ0r3uwh7PX1RShvo3oebuqlhXsW3VuOfykQv0D10RausxCVpK
-	 djVGUmbWGqgIwOvsP0oogWyxaLya6JLh3lMMK643BpoL+J5J22klVPeJz2aWlCuADzPei
-	 hjnOT1B0BauQgHNaXQfg47TZN8jZu+HpdRXBFWgN16akeiYIMmMH4veZWXQmqvL+W0Q==
+	t=1795345252;
+	b=p78JGjOFTHOusUqBmh60aq6DQ1JmlzEj6+NUN0OaPxV/ulpFylQ5Cp7LOYo0SQCXfdLJ
+	 znU23vG9PD7VxV8YkoZQQMW0HdT64RbCBk2Zme7IWgygvos/rCpK+laxFCbEWdOrT4g3n
+	 UWlFv+HzGqmgRC26QkufQKR6M7b3tfFn31gj/dDJT5EMKpc0zYBCC03zuyFl32LpgE7O0
+	 2TezULUBHVu0rAZCZTo3N3ca5kj9lXAlFPKQR3Pz47T39K307CQCVyk/yDTHYKWq5e+0v
+	 0JdifRAWsE6WydaeIgvRhuA7o9NXVhIt1DaAl37b3leRrU43veKe2li+CMDZq5hwj5g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795345251;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795345252;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=udWJrXNIpTxLGF6F0MLOBV1YkMsAJ0RVnTeV27nP6Fo=;
-	b=DCo82zSUk4QuEude+O4fAdxUXUvII4IRuGdN7wrpRVNGv5jm0TddLsensh621aHGvlfR
-	 glDNrDKiBIeuQfdBZlwHBxbDoExEeZN4zW/b0stDDIqtt3zmDxqu8FY/ibpACmaS/5zz1
-	 5K/PzQourGPiuNKqpNnbBrgDoS9N36SClfGe+CrYtia+ro+OHkvsKWSOFWycBaCPxtneB
-	 lluSR2qwsBhEx/236yJFd9tbHQRcStOhThiecp3takF13rII099rihhk8K96LsBtkL6mn
-	 zqnacGr7+i/awPsvB10AeXMSp83cvuasWzlhB7eEn6vhVNuH5EqA7xXHSsYkHl0Hcnw==
+	bh=zggGzxEmYdUO2ER56cmR3uCkWwbZK6jGMEYqYgWH4qo=;
+	b=ItCsVBAkqZZXLyH+HRa1RBYh1gakIravlxGATW0K0mzEgYngVQg8nR3k9csF7+O4sNoQ
+	 vW5r+kfn07MnoGxc8J7VgLfd6mhmdWYUfLf3njWycHRF1OTX5ygPDx1caZmeLJ5r3X5Ao
+	 q7YE57bYZvFjzUY2NKUFM0rAK/yPRw+NivpM8RPCXZQ3mCnLQ6uhur3ze/v9mllpvhzM5
+	 ABQTMLUhYd2sEpjZKHtV1dVrx6pFeokC/d/PbfaQHnX0zPIhkHEfthv32N2Jze7mEzOtL
+	 7H+H77GI8oodqqb8oTl+frSSA3c9HRJ3JlosIrq0qpms44sPgtl567TmQ2+5czPmg5Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=E2WSzx8a;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=db6jrTnn;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D7D3606A332;
-	Sun, 22 Nov 2026 11:00:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9306606A681;
+	Sun, 22 Nov 2026 11:00:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=E2WSzx8a
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26F351F000C0;
-	Sun, 22 Nov 2026 11:00:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=db6jrTnn
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A40EF1F000C6;
+	Sun, 22 Nov 2026 11:00:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795345251;
-	bh=udWJrXNIpTxLGF6F0MLOBV1YkMsAJ0RVnTeV27nP6Fo=;
+	s=k20260515; t=1795345252;
+	bh=zggGzxEmYdUO2ER56cmR3uCkWwbZK6jGMEYqYgWH4qo=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=E2WSzx8aigeSWhRfrxSqxNR9NZGdHN1oao155zQPvQEwT1mHVpLErMBiz7tyjmx9L
-	 9+vkOJVVtfjyHndYtfZrNdsE0tBkYeu60kacmiyPbHHI7Am2squZ3NrSCoDMC7JliE
-	 O46Tbr6qjPj5MijYcV7dcDiX8iZyg6cw1MsN1OF+ZTaaO5Q8Fph9pji6NK/UavZo3b
-	 Bu0g3NeC+QMRaGs2w+pWnmfZhb9O06x5Y/8/SYbelDKxFFs6Pg9MmXdh3r2DP20AXO
-	 8HLYs64fxQDYk++GPC653p37Cm1974tsMczmmWloxSO1dZoTfe0pp2L1waeg9RJAYZ
-	 gCHqQQcDpfUtQ==
-Subject:
- Re: [PATCH net-next 2/4] net: enetc: netc_blk_ctrl: add i.MX952 support
+	b=db6jrTnn+WbkFLApyKYhketGr/FUPldhNR/KbNljcMY5jriBMR3R4zTA5wGO4RMSM
+	 /dFynGSlhdNnxZVGKXNSJE+5FkKkzWNnYIEzpvDSDLh4GxplUgq6O8DCRBj5xsdC7N
+	 jYwnaSAlITZPYhGyLQjNoWqliI18FNWEC2CK8BIYUB8fOrF4l7xz5+Xun3duRD0QoN
+	 zBeGkOpSEmG0RdSiL1Ve9jENSaspZ6Ct2CQcJ2+1LR1E0ElAhk4zzh/EWyBQMqbBib
+	 GPzKV9V6n0lqaRmfslCAWcUuNsK58bAq37z9YUzb7H3Ot2AY+Jg5/wO1uAm4U5mXCm
+	 jBtLgVmaiAoHg==
+Subject: Re: [PATCH net-next 3/4] net: enetc: add i.MX952 ENETC support
 From: netdev-bot+sashiko@kernel.org
 To: frieder@fris.de
 Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, wei.fang@nxp.com,
@@ -50,10 +49,10 @@ Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, wei.fang@nxp.com,
  krzk+dt@kernel.org, conor+dt@kernel.org, richardcochran@gmail.com,
  imx@lists.linux.dev, netdev@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, frieder.schrempf@kontron.de
-Date: Sun, 22 Nov 2026 11:00:49 +0000
-Message-ID: <179534524969.3135.7066285557650709547@kernel.org>
-In-Reply-To: <20261118-imx952-enetc-v1-2-25721440602e@kontron.de>
-References: <20261118-imx952-enetc-v1-2-25721440602e@kontron.de>
+Date: Sun, 22 Nov 2026 11:00:51 +0000
+Message-ID: <179534525124.3135.3738979682916581664@kernel.org>
+In-Reply-To: <20261118-imx952-enetc-v1-3-25721440602e@kontron.de>
+References: <20261118-imx952-enetc-v1-3-25721440602e@kontron.de>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -67,10 +66,10 @@ List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 1
+Critical: 0 · High: 0 · Medium: 2 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -78,174 +77,130 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] imx952_ierb_init()
-  (drivers/net/ethernet/freescale/enetc/netc_blk_ctrl.c) writes only…
-- [Medium] imx952_netcmix_init()
-  (drivers/net/ethernet/freescale/enetc/netc_blk_ctrl.c) accepts serial…
-- [Low] imx952_ierb_init() writes the hard-coded IMX952_BYTE_CREDIT
-  (0xc35 = 3125 bytes) to E0TXHPTBCR/E0TXLPTBCR.
+- [Medium] When an i.MX952 (ENETC rev 4.6) VF cannot get its IP minor
+  revision from the PF, enetc_vf_get_revision()…
+- [Medium] This finding is speculative.
 
 --
 
-net: enetc: netc_blk_ctrl: add i.MX952 support
+net: enetc: add i.MX952 ENETC support
 
-This patch adds NETCMIX support for i.MX952, which has two ENETC
-instances on separate PCIe buses. Their link MII protocol is configured
-through the IMX95_CFG_LINK_MII_PROT register. During IERB init it also
-sets the ENETC0 TX byte-credit registers to 0xc35.
+This commit adds ENETC revision 4.6 (i.MX952) entries to the enetc_info
+table, with new PF and VF driver data that use a 133 MHz sysclk. It also
+maps revision 4.6 to a PTP timer at PCI_DEVFN(0, 1) in
+enetc_get_phc_index_by_pdev().
 
-> diff --git a/drivers/net/ethernet/freescale/enetc/netc_blk_ctrl.c b/drivers/net/ethernet/freescale/enetc/netc_blk_ctrl.c
-> index 658fab31e9ed7..6e3098a0a43ee 100644
-> --- a/drivers/net/ethernet/freescale/enetc/netc_blk_ctrl.c
-> +++ b/drivers/net/ethernet/freescale/enetc/netc_blk_ctrl.c
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
+> index c6571b5cc8425..4ef387578b1e4 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc.c
 
 [ ... ]
 
-> @@ -368,6 +374,56 @@ static int imx94_netcmix_init(struct platform_device *pdev)
->  	return 0;
->  }
+> @@ -3832,6 +3840,13 @@ static const struct enetc_drvdata enetc4_vf_data = {
+>  	.eth_ops = &enetc_vf_ethtool_ops,
+>  };
 >  
-> +static int imx952_netcmix_init(struct platform_device *pdev)
-> +{
-
-[ ... ]
-
-> +			mii_proto = netc_get_link_mii_protocol(interface);
-> +			if (mii_proto < 0)
-> +				return mii_proto;
+> +static const struct enetc_drvdata enetc4_6_vf_data = {
+> +	.sysclk_freq = ENETC_CLK_133M,
+> +	.tx_csum = true,
+> +	.max_frags = ENETC4_MAX_SKB_FRAGS,
+> +	.eth_ops = &enetc_vf_ethtool_ops,
+> +};
 > +
-> +			switch (bus_devfn) {
-> +			case IMX952_ENETC0_BUS_DEVFN:
-> +				val = u32_replace_bits(val, mii_proto,
-> +						       CFG_LINK_MII_PORT_0);
-> +				break;
-> +			case IMX952_ENETC1_BUS_DEVFN:
-> +				val = u32_replace_bits(val, mii_proto,
-> +						       CFG_LINK_MII_PORT_1);
-> +				break;
-> +			default:
-> +				return -EINVAL;
-> +			}
-> +		}
-> +	}
-> +
-> +	netc_reg_write(priv->netcmix, IMX95_CFG_LINK_MII_PROT, val);
 
 [Severity: Medium]
-Does this leave serial links only partly configured?
+What happens to an i.MX952 VF when it cannot get the minor revision from
+the PF? enetc_vf_get_revision() in enetc_vf.c falls back to a fixed
+revision:
 
-netc_get_link_mii_protocol() maps sgmii, 2500base-x, 10gbase-r, xgmii and
-usxgmii to MII_PROT_SERIAL, and that value gets written into
-CFG_LINK_MII_PORT_n here. However, IMX95_CFG_LINK_IO_VAR and
-IMX95_CFG_LINK_PCS_PROT(n) are never written, and serial modes are not
-rejected either.
+drivers/net/ethernet/freescale/enetc/enetc_vf.c:enetc_vf_get_revision() {
+    ...
+	ip_mn = enetc_vf_get_ip_minor_revision(si);
+	if (ip_mn >= 0) {
+		si->revision = (si->pdev->revision << 8) | ip_mn;
+		return;
+	}
 
-imx95_netcmix_init() sets these registers together for its serial link:
+	si->revision = ENETC_REV_4_1;
+    ...
+}
 
-	/* Configure Link I/O variant */
-	netc_reg_write(priv->netcmix, IMX95_CFG_LINK_IO_VAR,
-		       IO_VAR(2, IO_VAR_16FF_16G_SERDES));
-	/* Configure Link 2 PCS protocol */
-	netc_reg_write(priv->netcmix, IMX95_CFG_LINK_PCS_PROT(2),
-		       PCS_PROT_10G_SXGMII);
+In that case enetc_get_driver_data() matches the ENETC_REV_4_1 VF entry.
+It selects enetc4_vf_data (333 MHz) instead of enetc4_6_vf_data
+(133 MHz), and enetc_vf_netdev_setup() copies the 333 MHz value into
+priv->sysclk_freq.
 
-imx94_link_config() also sets NETC_LINK_CFG_IO_VAR whenever the protocol
-is MII_PROT_SERIAL.
+Before this patch every v4 VF drvdata used 333 MHz, so the fallback still
+gave the right clock. Now that rev 4.6 uses a different sysclk, would
+every usec/cycle conversion on that VF be off by about 2.5x?
 
-The patch "net: enetc: add i.MX952 ENETC support" in this series says
-133 MHz is needed as the ENETC sysclk "to enable SGMII 1G". That makes
-SGMII look like a supported configuration on i.MX952.
+For example, enetc_init_si_rings_params() does:
 
-Take an i.MX952 ENETC with phy-mode = "sgmii". Would the MAC be switched
-to the serial datapath while the I/O variant and PCS protocol keep their
-reset or bootloader values? If so, the link would never come up even
-though probe succeeds.
+	priv->tx_ictt = enetc_usecs_to_cycles(600, priv->sysclk_freq);
 
-> +
-> +	return 0;
-> +}
+At the real 133 MHz clock this works out to about 1.5 ms instead of
+600 us. The RX DIM work and the ethtool coalesce get/set paths would be
+scaled by the same wrong factor.
+
+The fallback also makes enetc_get_phc_index_by_pdev() take the
+ENETC_REV_4_1 case. That case looks up the timer at PCI_DEVFN(24, 0), not
+at the PCI_DEVFN(0, 1) added below for rev 4.6. Without a ptp-timer
+phandle, could the VF then report no PHC, or the wrong one?
+
+The fallback runs whenever enetc_vf_get_ip_minor_revision() returns an
+error. That can be a DMA allocation failure, a busy mailbox, a poll
+timeout, or an error status from the PF.
+
+>  static const struct enetc_platform_info enetc_info[] = {
+>  	{ .revision = ENETC_REV_1_0,
+>  	  .dev_id = ENETC_DEV_ID_PF,
 
 [ ... ]
 
-> @@ -783,6 +839,16 @@ static int imx94_ierb_init(struct platform_device *pdev)
->  	return 0;
->  }
->  
-> +static int imx952_ierb_init(struct platform_device *pdev)
-> +{
-> +	struct netc_blk_ctrl *priv = platform_get_drvdata(pdev);
-> +
-> +	netc_reg_write(priv->ierb, IERB_ETXHPTBCR(0), IMX952_BYTE_CREDIT);
-> +	netc_reg_write(priv->ierb, IERB_ETXLPTBCR(0), IMX952_BYTE_CREDIT);
-
-[Severity: Low]
-How was IMX952_BYTE_CREDIT (0xc35, or 3125 bytes) derived?
-
-The commit message says:
-
-  Both ENETC0 transmit byte-credit registers reset to 0x5dc, which
-  matches the RM example for a 1536-byte maximum frame size.
-
-0x5dc is 1500, and 1536 would be 0x600. Is the arithmetic in the commit
-message correct?
-
-The commit message also links the problem to jumbo frames. However, 3125
-has no clear relation to ENETC_MAC_MAXFRM_SIZE (9600), which enetc4_pf.c
-programs into PM_MAXFRM. The only reason given for the value is "the
-same as port 1".
-
-For comparison, the LS1028A code in enetc_ierb.c derives its TX credit
-from the maximum frame size:
-
-	tx_credit = roundup(1000 + ENETC_MAC_MAXFRM_SIZE / 2, 100);
-
-Suppose the i.MX952 credit needs to cover at least one maximum-size
-frame. Would 3125 bytes still throttle ENETC0 jumbo TX?
-
-These registers cannot be changed once the IERB is locked. Could the RM
-rule be documented here, or the value derived from ENETC_MAC_MAXFRM_SIZE?
-
-Writing the value unconditionally seems fine, though. "ptp: netc: use
-133 MHz system clock on i.MX952" in this series says the i.MX952 NETC
-system clock is 133 MHz.
-
-> +
-> +	return 0;
-> +}
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c b/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
+> index 7965dfd06f5f6..3c6c6fc0ab8cf 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
+> @@ -1149,6 +1149,7 @@ static int enetc_get_phc_index_by_pdev(struct enetc_si *si)
+>  		devfn = PCI_DEVFN(24, 0);
+>  		break;
+>  	case ENETC_REV_4_3:
+> +	case ENETC_REV_4_6:
+>  		devfn = PCI_DEVFN(0, 1);
+>  		break;
 
 [Severity: Medium]
-Should imx952_ierb_init() also program the port EMDIO PHY address into
-IERB_LBCR(n) for each ENETC?
+Is there a NETC timer at 00.1 on the bus of each i.MX952 ENETC?
 
-Both sibling SoCs do this in their ierb_init callbacks: i.MX95 through
-imx95_enetc_mdio_phyaddr_config() and i.MX94 through
-imx94_enetc_mdio_phyaddr_config(). The i.MX95 version says:
+netc_blk_ctrl.c puts the two i.MX952 ENETCs on different buses:
 
-	/* Update the port EMDIO PHY address through parsing phy properties.
-	 * This is needed when using the port EMDIO but it's harmless when
-	 * using the central EMDIO. So apply it on all cases.
-	 */
+#define IMX952_ENETC0_BUS_DEVFN		0x0
+#define IMX952_ENETC1_BUS_DEVFN		0x100
 
-Those functions also check the PHY addresses against the central EMDIO
-mask from netc_get_emdio_phy_mask(). That check is missing here too.
+This lookup uses the ENETC's own bus->number. So ENETC0 would look for a
+timer at 00:00.1, and ENETC1 would look for one at 01:00.1.
 
-netc_ierb_init() calls netc_lock_ierb() as soon as devinfo->ierb_init()
-returns, so LBCR cannot be corrected later. Meanwhile,
-enetc_mdiobus_create() still creates a port MDIO bus whenever the ENETC
-node has an "mdio" child:
+i.MX94 has a timer at 00.1 on each bus. It also programs the
+ENETC-to-timer binding explicitly in imx94_enetc_update_tid():
 
-	mdio_np = of_get_child_by_name(node, "mdio");
-	if (mdio_np) {
-		err = enetc_mdio_probe(pf, mdio_np);
+	netc_reg_write(priv->ierb, IERB_ETBCR(eid), tid);
 
-On an i.MX952 board that uses port MDIO, would that bus stay at the
-reset-default PHY address instead of the PHY described in DT? That would
-make the PHY probe or the link fail. A PHY address that clashes with the
-central EMDIO would also go undetected.
+imx952_ierb_init() only writes the byte credit registers and never
+programs IERB_ETBCR. There are also no i.MX952 timer definitions or NETC
+DT nodes in the tree to compare against, so I couldn't verify the
+topology. This may well be fine on real hardware.
 
-The dt-bindings patch in this series describes the i.MX952 IERB block as
-the same as on i.MX95. No later patch in the series touches
-netc_blk_ctrl.c.
+If only one timer exists, would the ENETC on the other bus get -1 here
+and report no PHC?
+
+If each bus has its own timer, but the reset value of IERB_ETBCR does not
+bind each ENETC to the timer on its own bus, could the PHC index reported
+to userspace differ from the timer that actually timestamps the packets?
+
+>  	default:
+
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261118-imx952-enetc-v1-0-25721440602e%40kontron.de
