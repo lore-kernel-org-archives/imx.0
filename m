@@ -1,107 +1,108 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.47
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795361469;
-	b=CL92BVltIK8Xo8RAqd34zZVXq2A4Fj0e5pwM12W32ZeXPVHARJJK/fCuvkKwsHqW2vgH
-	 3XkUdcBzSYs1VC71Vr5nDnLfNSJUNe1ASh3M2L6Hual3Ht7BEUf6Yq7D3BDzAW0hZih0k
-	 3Lq272h4a832aAx56R9J+itfgSc7XnMk6VFTS7OzPEpfP9abqoAZyM8cld/FbmGADdpxr
-	 pbi74iKQ8589CmGRu/F8OLgpYs7ZvhRk8F4UZoFdp02J7Z0sTpz7UFlO3Lq8BwBAjqJWA
-	 x4dttVJCg6JaEHvosJOnKxfbkdiB7UuLTdtbHVONVb4jcdzQMYnYbgA96GQCf3YcaVA==
+	t=1795362921;
+	b=u7U3dpq8USB3L71DPXCDeVHMebKVgdcq71IrJ2Ah1zEDo7WC3z+OrZmJd4ebHidnOfWE
+	 D2eEvTQbcDzvMJh3TLq1krx0HD0+79+uylSR/8LXFfw2J/sUQKrNVZW+GFr2k7QCCKmoj
+	 3Clou8cP8pcwMaxcyJv8vxBdCIc4h31huxt6pF2b8NuCmhsIHTTgb6Nc0YRVugyjSv+yG
+	 cmuRsrnfVXXF2/KWfpE+HhbBN3AX95q9+6kHke09HxpVeQaI76EiP5B9bMROk+NW2ukb/
+	 KrQBqJlHtlxkosBuEnse44yk+8rWA8TQmMuN7+EBEm0Tq+EoBIP68T1BNRhvJtEB5rQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795361469;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795362921;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=da6eqqr5+mNyqLPiJjh9XR2U6FENUUFBFqpSoPRBQAU=;
-	b=1P2udWK8D5b34VWlSmYpI3cKn3mFwkx2UzaRePPR90oGyun2BZMO/FyoEhBJDCS+dKeR
-	 ULI47nEw7p+RTTJTE7zplKXdNl1iRZcBl8N0kJQqWxIL6Q/GIbetqj1Jh/dvzcAGBjaxr
-	 Uhm7M2KxAw8huFOpBzR40WTAA0Ks5ZI5+QJ4j9l4XShhBTUcQZEnBGMWm8dWJ242vBkzK
-	 SCaFZ18ZLyDFJQLy9LYED+bTeZ0q7gi46poXXBkaTvpDqEmrzm2IgsmUIjwzdSz7wL0Z5
-	 6hcf32/Y/1kbo4hNqz1FeARlSom+sDsM62kqIXvB5OxGNVSWxlXsfflQn1+UAEjON0A==
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=brpic2gxGr+UpSfI0BgDue8RQ+H82jnfKcpc5s/aMXc=;
+	b=z1hXGuRHwuQ2uUdIWXA3ifh7Y5U2TbVy8di9jd9e2oYo2WVMshTnB9HYWulk88sR02/Z
+	 /AyCaPvGw10PIYPPMCzdBCGA3nCH3+spFhz49fFmulEEBk0danim+aH04BHxFQNb7IClz
+	 A1+qsLqOnjcfAsMmgDNCjR8wDr9NCAeGkFGaQDaxAh6nDHtNbRArjraqfZjtnCjGKiSWk
+	 vJGdEYNtyUwcm+h/YT+U/+79vC7T8clLS70ZShTKB+WZgYsebGrbjOVeLTa0U0wQi8hY6
+	 nxFYadC6+bohERDUif3jc4Bc02IJ8HBF+HMKTORctcKqtWjmLpbabdoKDGRF+d+QobA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=amarulasolutions.com;
 	spf=pass smtp.mailfrom=amarulasolutions.com;
-	dkim=pass header.d=amarulasolutions.com header.i=@amarulasolutions.com header.a=rsa-sha256 header.s=google header.b=JwobW7cN;
-	arc=none smtp.remote-ip=209.85.128.46
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	dkim=pass header.d=amarulasolutions.com header.i=@amarulasolutions.com header.a=rsa-sha256 header.s=google header.b=ObN0vLW0;
+	arc=none smtp.remote-ip=209.85.128.47
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FA3E606A32C
-	for <imx@lists.linux.dev>; Sun, 22 Nov 2026 15:31:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1FA3E606A32C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D844D606A32A
+	for <imx@lists.linux.dev>; Sun, 22 Nov 2026 15:55:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D844D606A32A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.a=rsa-sha256 header.s=google header.b=JwobW7cN
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4a214c5c4c0so22552925e9.3
-        for <imx@lists.linux.dev>; Sun, 22 Nov 2026 07:31:08 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.a=rsa-sha256 header.s=google header.b=ObN0vLW0
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4bb6057b333so9606455e9.3
+        for <imx@lists.linux.dev>; Sun, 22 Nov 2026 07:55:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amarulasolutions.com; s=google; t=1795361467; x=1795966267; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=da6eqqr5+mNyqLPiJjh9XR2U6FENUUFBFqpSoPRBQAU=;
-        b=JwobW7cNPk/csw05qYtF7VcLGKrF3H+74wBoyeZh92jwARmgR7nLZiSySsguZek9m7
-         txvyOV+8U9FNju5z4vfBrWslAhwuP16+E0oqtehZ0aw7KQI9gNYKClyX8MpjKacmmw/Z
-         OQCIxLh35ETTJtrMKu14sVNBf8h8H3NDU7088=
+        d=amarulasolutions.com; s=google; t=1795362919; x=1795967719; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=brpic2gxGr+UpSfI0BgDue8RQ+H82jnfKcpc5s/aMXc=;
+        b=ObN0vLW0RPgrc43lfuLvfm8A7iKR0CgycucLQqfK3Ka3Yij08XAJ108bT85dQmO/y+
+         V2ObTDq0Hpj5oe4zssvmA2wyNHurCoTNIlGyqX9LlpSJAZQkiOHS7voyKyrAwsZkzhk5
+         VHjYxDop48QmYNDmfgExUVCTPIJHtDQBXIgRk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795361467; x=1795966267;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=da6eqqr5+mNyqLPiJjh9XR2U6FENUUFBFqpSoPRBQAU=;
-        b=ul+Ydx0WL3ArK80pQ192RagaPE4lKSzmKbitatY3SthRk8Kv2LQkMe2pGwpyBKjyu9
-         BGsNaurULF0m3j+6jOEH+LYf+ZYVrLciD1H3NraY77SyfjkCEV9jkFA3GZzN3TfCXiz9
-         oFR7RqGbBmmAwQ3NrjGbjXL2pTUADb8AVXbTMsAMkvmeQNYBxZfZ35Pj+vmokzypJEOT
-         E4b+8SknF5sDEqAO1Jl6QhAHBwGEv7O2V1CeI1YhqYqlLI8IKqCwMpplPHNwMgq9iIHU
-         PgpZsWnPRCar0xh+gk+SrSB85E/N9ZPH+949xSm+oQU1LyRHS5MRzlL6MRTxK7q8eErz
-         MgRg==
-X-Forwarded-Encrypted: i=1; AL+hErFzEnmry82Kwv7/XT9CrLE9sw4sV75lbDLJ0E0cwDrYEIecilxye0Dz7o4PT6JcRycWLS0=@lists.linux.dev
-X-Gm-Message-State: APuU4Z985Lt+Lu8dSqPV5OSvYrsQ0SkKUR+Bs57+gv1+nGOxUZhGjYSh
-	10ZNLlQO4K2XQuPTQ+S9Lm7u30k9lCo8PhS+3VwGDAkxvuSbqJeMi2Mzz6NLeawXFHg=
-X-Gm-Gg: AZFdTZc+i0kwVfjBEs0015WecQTeywxNjdv/spTcJfU39cULARujUCyvJhHit6ZwlRK
-	WSakfRMEhfsbxTpyzgPkz8gatYCfUdknz7U/EOgckfC9T6T2IRwUgDGB/hy0IfCDwbsr+IL7RFC
-	TvTZDwEaBRyXAJYGLl4rK3ZVyjYYyiBU225Ul8P8VQtMFkmVapDffXM2iV9tvftAoJtglhlF4kx
-	rHQkVK+iaEOPOaqlMFpeeD3vwq5ckd/kkOra/NbrjwGD9EZsxmjaSTJjLSu0DMwZJv8kwfXfry4
-	AVRkKfBivtDqYj8PgAY0Tq5A4zhwM/nUh4bTXmym03+chCplnu2l7WRjExLxpTjj6d3pO5V6v3f
-	oiTb/+0bT47snPrgAQz1KRgK/ctujLyvhLw11mzid1yThFvo04XyXpbDZyHCJR9JXoDsXISmR0O
-	/BuZnBjBO5zc1AythcpyMRARvheVJJxWKXsNfcoqtWKvU30wy86cvtZrgh2DgWmnyi0E+WV5vqM
-	aqzUR5lDCpKU3Jwq3hzIoRGn3tC9g1kMobbV79wmj4/UxbkgWYJrmiLjt6TO+vx+LaNp+Trc91i
-	H9YQk1XHRkCOjZDJHeRrivLrv5rgJvT/sVpPl+VYdIcMgMJiD44/qYjp1aIeg77WdJnXWgn5tgi
-	8y1ZSyN989xAlBsaZDf3xKbvci0QbLW/xxfzvn/kFRRHQEzU2+PNI06ZbcinfqJLoJY0YlyqRV2
-	wm2t1wX8IvTR2IA3ggyQkHG5dYnYTk0xZyH7zTpSoYG/+VBz0=
-X-Received: by 2002:a05:600c:8287:b0:4a1:6992:f861 with SMTP id 5b1f17b1804b1-4bb887e064dmr198299585e9.1.1795361467514;
-        Sun, 22 Nov 2026 07:31:07 -0800 (PST)
+        d=1e100.net; s=20260707; t=1795362919; x=1795967719;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=brpic2gxGr+UpSfI0BgDue8RQ+H82jnfKcpc5s/aMXc=;
+        b=2M2my+rHIZLH25yt8DnEBsvHLdvYmtjtrf7q9yznmydm19rQXML6o8qn1gMqXYJ8yg
+         GK211lZziovB/7OlTdlkEB/gOn7cYTyytzx+Z3AWcHdNdRMAsK2Uor7VzNHIh2zkjaU2
+         i4hMsID7UnANPDZ5KcAK6yBhGrT1rVlpqzCuEH2QJNaJMYwC/siJMVH4RdQxQ/pvmVpA
+         I1zqGqyPVZJfU6MuXV1LSkHtM+lOhtA0uWqKGA91TH0PlQTlUt5BVceUPmMtGnckQasZ
+         PL8qDSKmAc/iJjb6bQs2SBkPATMtAeWcL7GQNjp9N65ykVlPA7PCB46PvK6prcmVJ0CT
+         RKaA==
+X-Forwarded-Encrypted: i=1; AL+hErGFBwNtOKi73ZhRbJDwtkjB5Mxb+5kprjXuJNB3dF2vNfYcildVEfIUrFPOAeHe8miM8EY=@lists.linux.dev
+X-Gm-Message-State: APuU4Z/3L9OCSZeNoPXqPa7FvTaPJ/N8boI91IUa7IDHJyHh2XuGgz7A
+	8sxfPxSrMvw58x1gIrOaA84SP3t67NL41Wk3vY9rwfO0x5f+kiCUoqHooQz/pD2k5QA=
+X-Gm-Gg: AZFdTZep8sqclovIAEVuWKMuSBw8UeYdeTKHYWsjua1vhNFnuCc42FcLx2I9fYsXBXi
+	9ABZ4UBTCkEZ0/YeYvBaDpDr0E4gzxrw1iOk524PoKFQFRc+FpnP1U48yn8Ac8UZdcw1NsYE7XQ
+	je+NLYcNaVXDrFjWnXFjV3s7jgaFfZqduWKnOIN2r0jXk4/KXZTpQEbmGMX3QjvGIqBrXVkZg+6
+	xVEPCGfA6g8oyYSv+nAje0EKX/7Cl6ck4WI6t9cORaX+kGMFGOPdZfaapXbdVAJJQTNZyUnkNIZ
+	WZohDpjOyvrDccbfI34tqVgyXj/ccGPesgwyTcm29b0HJSB8HOzKAZJBT72giMTHXSPCN0whXur
+	5JxDbrtopfIC+KKTjG8Xqs9vFtnyn/Necub9o433aPcC9fiOBq69zA1QBHCwM5LRJl407rqHYk+
+	Y5uwbhoqHQG60sJ0EdrcUWCHSf/VDGx+HDGEkYhvlDWir34L63LUfLaW0bAC6STSTM8GJKuGplv
+	Ob+LFWQlj9wKXO/cDj/lssj2hmGgExE/vZO1K+1Fkfxfm8NiGff4mimdXaFi61mgFdyZJLMne3G
+	30kaGN1pp3xQzf8W5HKa/E1NRUA8oHImXhGrxZyrkGu/DiKCNlr9eytgAqIPfQ3f1CyzbKZLICB
+	TsjdYOOkh0eLfiWq93bWpNQPeeZwakkm7BnH4nahSO75gLzHUxqJ/A49ZMTvU54o2kKGUQlCTlx
+	3qm7FoZkscb0UpgH5vWj4p6lYaig==
+X-Received: by 2002:a05:600c:820c:b0:4bb:6a2d:b426 with SMTP id 5b1f17b1804b1-4bb887c281dmr172330355e9.1.1795362919237;
+        Sun, 22 Nov 2026 07:55:19 -0800 (PST)
 Received: from dario-ThinkPad-P14s-Gen-5.homenet.telecomitalia.it (host-79-14-29-58.business.telecomitalia.it. [79.14.29.58])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb884a15absm237833815e9.9.2026.11.22.07.31.02
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4ab6c340df4sm20046526f8f.55.2026.11.22.07.55.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Nov 2026 07:31:06 -0800 (PST)
+        Sun, 22 Nov 2026 07:55:18 -0800 (PST)
 From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-To: Maxime Ripard <mripard@kernel.org>
+To: Ulf Hansson <ulfh@kernel.org>
 Cc: michael@amarulasolutions.com,
 	linux-amarula@amarulasolutions.com,
+	Peng Fan <peng.fan@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
 	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	David Airlie <airlied@gmail.com>,
 	Fabio Estevam <festevam@gmail.com>,
 	Frank Li <Frank.Li@nxp.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Jacky Bai <ping.bai@nxp.com>,
+	Kees Cook <kees+treewide@kernel.org>,
 	Marek Vasut <marex@denx.de>,
+	Ming Qian <ming.qian@oss.nxp.com>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Simona Vetter <simona@ffwll.ch>,
-	Stefan Agner <stefan@agner.ch>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	dri-devel@lists.freedesktop.org,
+	Shawn Guo <shawnguo@kernel.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	Xu Yang <xu.yang_2@nxp.com>,
+	bui duc phuc <phucduc.bui@gmail.com>,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH 5/8] drm/mxsfb: Stop the controller in hw_reset
-Date: Sun, 22 Nov 2026 16:30:05 +0100
-Message-ID: <20261122153032.2782768-6-dario.binacchi@amarulasolutions.com>
+	linux-pm@vger.kernel.org
+Subject: [PATCH v3 0/4] pmdomain: imx: Keep the domains left on by the bootloader
+Date: Sun, 22 Nov 2026 16:55:07 +0100
+Message-ID: <20261122155514.10289-1-dario.binacchi@amarulasolutions.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261122153032.2782768-1-dario.binacchi@amarulasolutions.com>
-References: <20261122153032.2782768-1-dario.binacchi@amarulasolutions.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -113,109 +114,49 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When the hardware state can't be read out, a controller left running
-by the bootloader is reprogrammed while running on the first enable.
-Stop it in the hw_reset hook.
+The i.MX8M power domain drivers register all their domains as off.
+A domain left on by the bootloader, e.g. to show a splash screen, is
+then powered up again by its first consumer, which on the i.MX8MN
+turns the display off and hangs the system.
 
-Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+This series reads the state of the domains from the hardware, so that
+the ones left on are kept on until their consumers have probed.
+
+The first patch fixes an error path of the blk-ctrl probe. The clocks
+held by the last patch are released at sync_state, so they stay on
+until all the consumers of the blk-ctrl have probed.
+
+Tested on i.MX8MN (BSH SMM S2 PRO).
+
+Changes in v3:
+- Add Reported-by and Closes tags
+- Drop the runtime PM reference synchronously in the probe error path
+- Keep the bus domain on while the state of the domains is read
+- Remove the domains before releasing their boot-on references
+
+Changes in v2:
+- New patch
+- Release the resources of the domains left on when the driver is
+  removed
+- Take the references once the probe can no longer be deferred
+- Clear the boot-on state when the domain is powered off
+- Release the references when the driver is removed
+- Rebase on the changes of the previous patch
+
+Dario Binacchi (4):
+  pmdomain: imx8m-blk-ctrl: Remove the power notifier on probe failure
+  pmdomain: imx: gpcv2: Keep the domains left on by the bootloader
+  pmdomain: imx8m-blk-ctrl: Keep the domains left on by the bootloader
+  pmdomain: imx8m-blk-ctrl: Hold boot-on domain clocks until sync_state
+
+ drivers/pmdomain/imx/gpcv2.c          |  77 +++++++++++++-
+ drivers/pmdomain/imx/imx8m-blk-ctrl.c | 144 +++++++++++++++++++++++++-
+ 2 files changed, 217 insertions(+), 4 deletions(-)
+
 ---
+base-commit: d0f871bfb831705d9f55479f5b2b40f636ea7b16
+branch: imx-pmdomain-boot-on-v3
 
- drivers/gpu/drm/mxsfb/mxsfb_drv.c |  2 ++
- drivers/gpu/drm/mxsfb/mxsfb_kms.c | 33 ++++++++++++++++++++++++++++++-
- 2 files changed, 34 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/gpu/drm/mxsfb/mxsfb_drv.c b/drivers/gpu/drm/mxsfb/mxsfb_drv.c
-index c8bc79264361..ef4a47d238ed 100644
---- a/drivers/gpu/drm/mxsfb/mxsfb_drv.c
-+++ b/drivers/gpu/drm/mxsfb/mxsfb_drv.c
-@@ -31,6 +31,7 @@
- #include <drm/drm_gem_dma_helper.h>
- #include <drm/drm_gem_framebuffer_helper.h>
- #include <drm/drm_mode_config.h>
-+#include <drm/drm_modeset_helper.h>
- #include <drm/drm_module.h>
- #include <drm/drm_of.h>
- #include <drm/drm_panel.h>
-@@ -110,6 +111,7 @@ static const struct drm_mode_config_funcs mxsfb_mode_config_funcs = {
- 	.fb_create		= mxsfb_fb_create,
- 	.atomic_check		= drm_atomic_helper_check,
- 	.atomic_commit		= drm_atomic_helper_commit,
-+	.hw_reset		= drm_mode_config_helper_hw_reset,
- };
- 
- static const struct drm_mode_config_helper_funcs mxsfb_mode_config_helpers = {
-diff --git a/drivers/gpu/drm/mxsfb/mxsfb_kms.c b/drivers/gpu/drm/mxsfb/mxsfb_kms.c
-index bbc2a2df9f16..96cd80c6e76c 100644
---- a/drivers/gpu/drm/mxsfb/mxsfb_kms.c
-+++ b/drivers/gpu/drm/mxsfb/mxsfb_kms.c
-@@ -35,6 +35,18 @@
- /* 1 second delay should be plenty of time for block reset */
- #define RESET_TIMEOUT		1000000
- 
-+static void mxsfb_hw_get(struct mxsfb_drm_private *mxsfb)
-+{
-+	pm_runtime_get_sync(mxsfb->drm->dev);
-+	mxsfb_enable_axi_clk(mxsfb);
-+}
-+
-+static void mxsfb_hw_put(struct mxsfb_drm_private *mxsfb)
-+{
-+	mxsfb_disable_axi_clk(mxsfb);
-+	pm_runtime_put_sync(mxsfb->drm->dev);
-+}
-+
- /* -----------------------------------------------------------------------------
-  * CRTC
-  */
-@@ -205,7 +217,7 @@ static void mxsfb_enable_controller(struct mxsfb_drm_private *mxsfb)
- 	writel(CTRL_RUN, mxsfb->base + LCDC_CTRL + REG_SET);
- }
- 
--static void mxsfb_disable_controller(struct mxsfb_drm_private *mxsfb)
-+static void mxsfb_stop_controller(struct mxsfb_drm_private *mxsfb)
- {
- 	u32 reg;
- 
-@@ -221,6 +233,11 @@ static void mxsfb_disable_controller(struct mxsfb_drm_private *mxsfb)
- 	reg = readl(mxsfb->base + LCDC_VDCTRL4);
- 	reg &= ~VDCTRL4_SYNC_SIGNALS_ON;
- 	writel(reg, mxsfb->base + LCDC_VDCTRL4);
-+}
-+
-+static void mxsfb_disable_controller(struct mxsfb_drm_private *mxsfb)
-+{
-+	mxsfb_stop_controller(mxsfb);
- 
- 	clk_disable_unprepare(mxsfb->clk);
- 	if (mxsfb->clk_disp_axi)
-@@ -433,6 +450,19 @@ static void mxsfb_crtc_atomic_disable(struct drm_crtc *crtc,
- 	pm_runtime_put_sync(drm->dev);
- }
- 
-+static void mxsfb_crtc_hw_reset(struct drm_crtc *crtc)
-+{
-+	struct mxsfb_drm_private *mxsfb = to_mxsfb_drm_private(crtc->dev);
-+
-+	mxsfb_hw_get(mxsfb);
-+
-+	/* The bootloader may have left the controller running */
-+	if (readl(mxsfb->base + LCDC_CTRL) & CTRL_RUN)
-+		mxsfb_stop_controller(mxsfb);
-+
-+	mxsfb_hw_put(mxsfb);
-+}
-+
- static int mxsfb_crtc_enable_vblank(struct drm_crtc *crtc)
- {
- 	struct mxsfb_drm_private *mxsfb = to_mxsfb_drm_private(crtc->dev);
-@@ -493,6 +523,7 @@ static const struct drm_crtc_helper_funcs mxsfb_crtc_helper_funcs = {
- 	.atomic_flush = mxsfb_crtc_atomic_flush,
- 	.atomic_enable = mxsfb_crtc_atomic_enable,
- 	.atomic_disable = mxsfb_crtc_atomic_disable,
-+	.hw_reset = mxsfb_crtc_hw_reset,
- };
- 
- static const struct drm_crtc_funcs mxsfb_crtc_funcs = {
 -- 
 2.43.0
 
