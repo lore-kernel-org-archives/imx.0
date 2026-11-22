@@ -1,57 +1,62 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795342834;
-	b=a3LYnpruycrdooTE5dWXl8xnGXfoCgIjYM1xkl5GbPKXZ26LeHt1KibspUyIiA0psZhH
-	 UjwxNpmDOs45Ctrb191HPntnwDx8lKcGlINXatn3P/CSixqYYCnQ03v2ecooKNyQyIpxZ
-	 UAR+JmEeXwKJvsuJvQo4XALQrFbrvbmfb32/9yCfQVOW2aJvfadXLpg2pp9+xKoCsa8L+
-	 lR4BJ7NKHsl2vQvENXEIvjUGy2GtqdMumI+t7ohbKkA6g6UrR2RWOaQqBdjlR1Uiv+/mq
-	 KG3gqC+4lZqoCkYRJDbSz2WdkkB3mrzCe8LEgoq/w/9sOfuap3Oay39zdb8Ar3YQvkA==
+	t=1795345251;
+	b=fNzvBf1/wkA9RYXYOqrSJubjUqljOylqXIUCETWk+9A4NQGxy/W6NHuNDJYmh93QyzGV
+	 OY2jwAzdxoL0hzH3DATHJUrkuLScbU8/2sTBOk5Z2kmTDMtbtjAitC9kyC3aINeJY21fB
+	 hhEf7/BJ5cOjw55KIsbXJ0r3uwh7PX1RShvo3oebuqlhXsW3VuOfykQv0D10RausxCVpK
+	 djVGUmbWGqgIwOvsP0oogWyxaLya6JLh3lMMK643BpoL+J5J22klVPeJz2aWlCuADzPei
+	 hjnOT1B0BauQgHNaXQfg47TZN8jZu+HpdRXBFWgN16akeiYIMmMH4veZWXQmqvL+W0Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795342834;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=Wpvgzwn4vHuwpHwyEp7ZSp+VcB0zSaNfIZR6B9cElYk=;
-	b=c95vSy2hxOzMdvH8SZ8xdqXgdxwCI2yg6T7HMy+YAlJ2hmdhg4rtpfb3yLGQtF41phVh
-	 9DnV5tou4Y5EU+vL2qJc6+X8cB2i11CLv4ZiE5dpwAfs+YF2hD2etjWD6gY5ywqqWloP4
-	 GVhvgcZnQpa4o9pU+9edVQLXoiE+vuNNO8ol8RkjOb+CO+u5LC7lg7VuG2EOmflwUbo36
-	 e3nxkyKyve6PZZ5CxMSN8cSm6sjV0Z8KQiSyKqr5AuHOvxfD9Nl/IXgW9VJRUSa2DZuIt
-	 /akkFLPWvLDy7ytqqBJ4eYmg9iCnbq9UlW5LAiC2djjy8cQjwuaaDR+mpiFimKufMGA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795345251;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=udWJrXNIpTxLGF6F0MLOBV1YkMsAJ0RVnTeV27nP6Fo=;
+	b=DCo82zSUk4QuEude+O4fAdxUXUvII4IRuGdN7wrpRVNGv5jm0TddLsensh621aHGvlfR
+	 glDNrDKiBIeuQfdBZlwHBxbDoExEeZN4zW/b0stDDIqtt3zmDxqu8FY/ibpACmaS/5zz1
+	 5K/PzQourGPiuNKqpNnbBrgDoS9N36SClfGe+CrYtia+ro+OHkvsKWSOFWycBaCPxtneB
+	 lluSR2qwsBhEx/236yJFd9tbHQRcStOhThiecp3takF13rII099rihhk8K96LsBtkL6mn
+	 zqnacGr7+i/awPsvB10AeXMSp83cvuasWzlhB7eEn6vhVNuH5EqA7xXHSsYkHl0Hcnw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nRcc0xSZ;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=E2WSzx8a;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBD86606A320
-	for <imx@lists.linux.dev>; Sun, 22 Nov 2026 10:20:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D7D3606A332;
+	Sun, 22 Nov 2026 11:00:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nRcc0xSZ
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36AB31F000C4;
-	Sun, 22 Nov 2026 10:20:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=E2WSzx8a
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26F351F000C0;
+	Sun, 22 Nov 2026 11:00:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795342834;
-	bh=Wpvgzwn4vHuwpHwyEp7ZSp+VcB0zSaNfIZR6B9cElYk=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=nRcc0xSZQQM+oWmQDRcfMK8/fyC7+Ydmg0SzfmGlw8Bt726SsF6ZRqYISa5NLL1S3
-	 PuOta4VBhyESe0TNMbf6sLJMgxm3smCl7bf/iZl0wmS9GuyTQ5ZyAsBpBhjt50FcYV
-	 D4gIrGaBVRQJPtl9MgBnK5UnauAln/KRGG67Y3CC6MOcH+dMJRe1Qk0jlTrJAwUZbY
-	 Ha3+H7jHzy7kXY8o9nbqhqSEoxDydJb0HSa47SHL3vYVdZWJQ/6flqXKoH45HSQZ8L
-	 eFUuKQllYM8Hz8izKNC+ErsdIFb/FuZZZIoBY9HAdcRbs97kpdMzzbAn7By1epk8Co
-	 pfE9aMMv7Hc8Q==
-Message-ID: <sashiko-outbox-227889@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 3/4] pmdomain: imx8m-blk-ctrl: Keep the domains left
- on by the bootloader
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Dario Binacchi" <dario.binacchi@amarulasolutions.com>
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20261122095927.2631909-4-dario.binacchi@amarulasolutions.com>
-References: <20261122095927.2631909-1-dario.binacchi@amarulasolutions.com>
- <20261122095927.2631909-4-dario.binacchi@amarulasolutions.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sun, 22 Nov 2026 10:20:33 +0000
+	s=k20260515; t=1795345251;
+	bh=udWJrXNIpTxLGF6F0MLOBV1YkMsAJ0RVnTeV27nP6Fo=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=E2WSzx8aigeSWhRfrxSqxNR9NZGdHN1oao155zQPvQEwT1mHVpLErMBiz7tyjmx9L
+	 9+vkOJVVtfjyHndYtfZrNdsE0tBkYeu60kacmiyPbHHI7Am2squZ3NrSCoDMC7JliE
+	 O46Tbr6qjPj5MijYcV7dcDiX8iZyg6cw1MsN1OF+ZTaaO5Q8Fph9pji6NK/UavZo3b
+	 Bu0g3NeC+QMRaGs2w+pWnmfZhb9O06x5Y/8/SYbelDKxFFs6Pg9MmXdh3r2DP20AXO
+	 8HLYs64fxQDYk++GPC653p37Cm1974tsMczmmWloxSO1dZoTfe0pp2L1waeg9RJAYZ
+	 gCHqQQcDpfUtQ==
+Subject:
+ Re: [PATCH net-next 2/4] net: enetc: netc_blk_ctrl: add i.MX952 support
+From: netdev-bot+sashiko@kernel.org
+To: frieder@fris.de
+Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, wei.fang@nxp.com,
+ xiaoning.wang@nxp.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, richardcochran@gmail.com,
+ imx@lists.linux.dev, netdev@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, frieder.schrempf@kontron.de
+Date: Sun, 22 Nov 2026 11:00:49 +0000
+Message-ID: <179534524969.3135.7066285557650709547@kernel.org>
+In-Reply-To: <20261118-imx952-enetc-v1-2-25721440602e@kontron.de>
+References: <20261118-imx952-enetc-v1-2-25721440602e@kontron.de>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -60,195 +65,187 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
+MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issues to consider:
-- [High] pmdomain: imx8m-blk-ctrl: unlocked bus domain check in
-  imx8m_blk_ctrl_is_off()
-- [Medium] pmdomain: imx8m-blk-ctrl: put_boot_on() races with genpd
-  power_off_work
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
+
+Critical: 0 · High: 0 · Medium: 2 · Low: 1
+
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] imx952_ierb_init()
+  (drivers/net/ethernet/freescale/enetc/netc_blk_ctrl.c) writes only…
+- [Medium] imx952_netcmix_init()
+  (drivers/net/ethernet/freescale/enetc/netc_blk_ctrl.c) accepts serial…
+- [Low] imx952_ierb_init() writes the hard-coded IMX952_BYTE_CREDIT
+  (0xc35 = 3125 bytes) to E0TXHPTBCR/E0TXLPTBCR.
+
 --
 
-commit c08d94b261d674a0f3a8ba6bcb7abe4442f21fa6
-Author: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+net: enetc: netc_blk_ctrl: add i.MX952 support
 
-pmdomain: imx8m-blk-ctrl: Keep the domains left on by the bootloader
+This patch adds NETCMIX support for i.MX952, which has two ENETC
+instances on separate PCIe buses. Their link MII protocol is configured
+through the IMX95_CFG_LINK_MII_PROT register. During IERB init it also
+sets the ENETC0 TX byte-credit registers to 0xc35.
 
-This commit reads the blk-ctrl registers at probe time on supported SoCs
-(i.MX8MN DISP) to keep power domains left on by the bootloader active
-until their consumers release them.
+> diff --git a/drivers/net/ethernet/freescale/enetc/netc_blk_ctrl.c b/drivers/net/ethernet/freescale/enetc/netc_blk_ctrl.c
+> index 658fab31e9ed7..6e3098a0a43ee 100644
+> --- a/drivers/net/ethernet/freescale/enetc/netc_blk_ctrl.c
+> +++ b/drivers/net/ethernet/freescale/enetc/netc_blk_ctrl.c
 
-> diff --git a/drivers/pmdomain/imx/imx8m-blk-ctrl.c b/drivers/pmdomain/imx=
-/imx8m-blk-ctrl.c
-> index 7d6735728d8c6..5ab201eefeb38 100644
-> --- a/drivers/pmdomain/imx/imx8m-blk-ctrl.c
-> +++ b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
 [ ... ]
-> @@ -187,11 +190,80 @@ static int imx8m_blk_ctrl_power_off(struct generic_=
-pm_domain *genpd)
->  	/* allow bus domain to suspend */
->  	pm_runtime_put(bc->bus_power_dev);
-> =20
-> +	domain->boot_on =3D false;
-> +
+
+> @@ -368,6 +374,56 @@ static int imx94_netcmix_init(struct platform_device *pdev)
 >  	return 0;
 >  }
-> =20
->  static struct lock_class_key blk_ctrl_genpd_lock_class;
-> =20
-> +/*
-> + * A domain left on by the bootloader has its resets deasserted and its
-> + * clocks enabled. The registers can only be read if the bus domain is
-> + * on, so a domain is considered off whenever the bus domain is off.
-> + */
-> +static bool imx8m_blk_ctrl_is_off(struct imx8m_blk_ctrl *bc,
-> +				  const struct imx8m_blk_ctrl_data *bc_data,
-> +				  const struct imx8m_blk_ctrl_domain_data *data)
+>  
+> +static int imx952_netcmix_init(struct platform_device *pdev)
 > +{
-> +	u32 rst, clk, mipi =3D 0;
-> +
-> +	if (!bc_data->boot_state_readable ||
-> +	    !dev_pm_genpd_is_on(bc->bus_power_dev))
-> +		return true;
-> +
-> +	if (regmap_read(bc->regmap, BLK_SFT_RSTN, &rst) ||
-> +	    regmap_read(bc->regmap, BLK_CLK_EN, &clk))
-> +		return true;
-> +
-> +	if (data->mipi_phy_rst_mask &&
-> +	    regmap_read(bc->regmap, BLK_MIPI_RESET_DIV, &mipi))
-> +		return true;
-> +
-> +	return (rst & data->rst_mask) !=3D data->rst_mask ||
-> +	       (clk & data->clk_mask) !=3D data->clk_mask ||
-> +	       (mipi & data->mipi_phy_rst_mask) !=3D data->mipi_phy_rst_mask;
-> +}
 
-[Severity: High]
-Can the upstream bus domain (pgc_dispmix) power down asynchronously on
-pm_wq between dev_pm_genpd_is_on(bc->bus_power_dev) and the regmap_read()
-calls?
+[ ... ]
 
-dev_pm_genpd_is_on() drops the genpd lock before returning, and no
-runtime PM reference is held on bc->bus_power_dev during the domain loop
-in imx8m_blk_ctrl_probe().  If DISPMIX was off at boot, an earlier probe
-of a child domain such as pgc_mipi powers pgc_dispmix on with
-PD_FLAG_ATTACH_POWER_ON, and dev_pm_domain_attach_by_name() in
-imx8m_blk_ctrl_probe() queues pgc_dispmix->power_off_work on pm_wq right
-before imx8m_blk_ctrl_is_off() runs:
-
-CPU0                                  kworker (pm_wq)
-imx8m_blk_ctrl_probe()
-  dev_pm_domain_attach_by_name()
-    genpd_queue_power_off_work()
-  imx8m_blk_ctrl_is_off()
-    dev_pm_genpd_is_on() -> true
-                                      genpd_power_off_work_fn()
-                                        imx_pgc_power_down(pgc_dispmix)
-    regmap_read(bc->regmap, ...)  <-- MMIO read with DISPMIX powered off
-
-Reading the disp_blk_ctrl registers after DISPMIX and its
-DISP_AXI_ROOT/DISP_APB_ROOT clocks are disabled causes a bus hang or
-synchronous external abort during boot.
-
+> +			mii_proto = netc_get_link_mii_protocol(interface);
+> +			if (mii_proto < 0)
+> +				return mii_proto;
 > +
-> +/* Take the references of imx8m_blk_ctrl_power_on() for a domain left on=
- */
-> +static int imx8m_blk_ctrl_get_boot_on(struct imx8m_blk_ctrl_domain *doma=
-in)
-> +{
-> +	struct imx8m_blk_ctrl *bc =3D domain->bc;
-> +	int ret;
-> +
-> +	if (!domain->boot_on)
-> +		return 0;
-> +
-> +	ret =3D pm_runtime_resume_and_get(bc->bus_power_dev);
-> +	if (ret < 0) {
-> +		dev_err(bc->dev, "failed to power up bus domain\n");
-> +		return ret;
+> +			switch (bus_devfn) {
+> +			case IMX952_ENETC0_BUS_DEVFN:
+> +				val = u32_replace_bits(val, mii_proto,
+> +						       CFG_LINK_MII_PORT_0);
+> +				break;
+> +			case IMX952_ENETC1_BUS_DEVFN:
+> +				val = u32_replace_bits(val, mii_proto,
+> +						       CFG_LINK_MII_PORT_1);
+> +				break;
+> +			default:
+> +				return -EINVAL;
+> +			}
+> +		}
 > +	}
 > +
-> +	ret =3D pm_runtime_resume_and_get(domain->power_dev);
-> +	if (ret < 0) {
-> +		dev_err(bc->dev, "failed to power up peripheral domain\n");
-> +		pm_runtime_put(bc->bus_power_dev);
-> +		return ret;
-> +	}
-> +
-> +	if (icc_bulk_set_bw(domain->num_paths, domain->paths))
-> +		dev_err(bc->dev, "failed to set icc bw\n");
+> +	netc_reg_write(priv->netcmix, IMX95_CFG_LINK_MII_PROT, val);
+
+[Severity: Medium]
+Does this leave serial links only partly configured?
+
+netc_get_link_mii_protocol() maps sgmii, 2500base-x, 10gbase-r, xgmii and
+usxgmii to MII_PROT_SERIAL, and that value gets written into
+CFG_LINK_MII_PORT_n here. However, IMX95_CFG_LINK_IO_VAR and
+IMX95_CFG_LINK_PCS_PROT(n) are never written, and serial modes are not
+rejected either.
+
+imx95_netcmix_init() sets these registers together for its serial link:
+
+	/* Configure Link I/O variant */
+	netc_reg_write(priv->netcmix, IMX95_CFG_LINK_IO_VAR,
+		       IO_VAR(2, IO_VAR_16FF_16G_SERDES));
+	/* Configure Link 2 PCS protocol */
+	netc_reg_write(priv->netcmix, IMX95_CFG_LINK_PCS_PROT(2),
+		       PCS_PROT_10G_SXGMII);
+
+imx94_link_config() also sets NETC_LINK_CFG_IO_VAR whenever the protocol
+is MII_PROT_SERIAL.
+
+The patch "net: enetc: add i.MX952 ENETC support" in this series says
+133 MHz is needed as the ENETC sysclk "to enable SGMII 1G". That makes
+SGMII look like a supported configuration on i.MX952.
+
+Take an i.MX952 ENETC with phy-mode = "sgmii". Would the MAC be switched
+to the serial datapath while the I/O variant and PCS protocol keep their
+reset or bootloader values? If so, the link would never come up even
+though probe succeeds.
+
 > +
 > +	return 0;
 > +}
-> +
-> +static void imx8m_blk_ctrl_put_boot_on(struct imx8m_blk_ctrl_domain *dom=
-ain)
-> +{
-> +	if (!domain->boot_on)
-> +		return;
-> +
-> +	/* Sync, to power down the bus domain before its notifier is removed */
-> +	pm_runtime_put_sync(domain->power_dev);
-> +	pm_runtime_put_sync(domain->bc->bus_power_dev);
-> +	domain->boot_on =3D false;
-> +}
+
 [ ... ]
-> @@ -353,6 +439,10 @@ static int imx8m_blk_ctrl_probe(struct platform_devi=
-ce *pdev)
->  	dev_pm_genpd_remove_notifier(bc->bus_power_dev);
->  cleanup_provider:
->  	of_genpd_del_provider(dev->of_node);
-> +cleanup_boot_on:
-> +	while (i--)
-> +		imx8m_blk_ctrl_put_boot_on(&bc->domains[i]);
-> +	i =3D bc_data->num_domains;
->  cleanup_pds:
->  	for (i--; i >=3D 0; i--) {
->  		pm_genpd_remove(&bc->domains[i].genpd);
-> @@ -374,6 +464,7 @@ static void imx8m_blk_ctrl_remove(struct platform_dev=
-ice *pdev)
->  	for (i =3D 0; i < bc->onecell_data.num_domains; i++) {
->  		struct imx8m_blk_ctrl_domain *domain =3D &bc->domains[i];
-> =20
-> +		imx8m_blk_ctrl_put_boot_on(domain);
->  		pm_genpd_remove(&domain->genpd);
->  		dev_pm_domain_detach(domain->power_dev, true);
->  	}
+
+> @@ -783,6 +839,16 @@ static int imx94_ierb_init(struct platform_device *pdev)
+>  	return 0;
+>  }
+>  
+> +static int imx952_ierb_init(struct platform_device *pdev)
+> +{
+> +	struct netc_blk_ctrl *priv = platform_get_drvdata(pdev);
+> +
+> +	netc_reg_write(priv->ierb, IERB_ETXHPTBCR(0), IMX952_BYTE_CREDIT);
+> +	netc_reg_write(priv->ierb, IERB_ETXLPTBCR(0), IMX952_BYTE_CREDIT);
+
+[Severity: Low]
+How was IMX952_BYTE_CREDIT (0xc35, or 3125 bytes) derived?
+
+The commit message says:
+
+  Both ENETC0 transmit byte-credit registers reset to 0x5dc, which
+  matches the RM example for a 1536-byte maximum frame size.
+
+0x5dc is 1500, and 1536 would be 0x600. Is the arithmetic in the commit
+message correct?
+
+The commit message also links the problem to jumbo frames. However, 3125
+has no clear relation to ENETC_MAC_MAXFRM_SIZE (9600), which enetc4_pf.c
+programs into PM_MAXFRM. The only reason given for the value is "the
+same as port 1".
+
+For comparison, the LS1028A code in enetc_ierb.c derives its TX credit
+from the maximum frame size:
+
+	tx_credit = roundup(1000 + ENETC_MAC_MAXFRM_SIZE / 2, 100);
+
+Suppose the i.MX952 credit needs to cover at least one maximum-size
+frame. Would 3125 bytes still throttle ENETC0 jumbo TX?
+
+These registers cannot be changed once the IERB is locked. Could the RM
+rule be documented here, or the value derived from ENETC_MAC_MAXFRM_SIZE?
+
+Writing the value unconditionally seems fine, though. "ptp: netc: use
+133 MHz system clock on i.MX952" in this series says the i.MX952 NETC
+system clock is 133 MHz.
+
+> +
+> +	return 0;
+> +}
 
 [Severity: Medium]
-Can imx8m_blk_ctrl_put_boot_on() race with domain->genpd.power_off_work
-when called before pm_genpd_remove()?
+Should imx952_ierb_init() also program the port EMDIO PHY address into
+IERB_LBCR(n) for each ENETC?
 
-Both imx8m_blk_ctrl_remove() and the cleanup_boot_on path in
-imx8m_blk_ctrl_probe() call imx8m_blk_ctrl_put_boot_on() before
-pm_genpd_remove() cancels power_off_work, without taking genpd_lock or
-transitioning domain->genpd.status to GENPD_STATE_OFF.  If power_off_work
-was queued on pm_wq (for example by genpd_power_off_unused() or when a
-consumer detaches), both paths drop the same runtime PM references:
+Both sibling SoCs do this in their ierb_init callbacks: i.MX95 through
+imx95_enetc_mdio_phyaddr_config() and i.MX94 through
+imx94_enetc_mdio_phyaddr_config(). The i.MX95 version says:
 
-CPU0                                  kworker (pm_wq)
-imx8m_blk_ctrl_remove()
-  imx8m_blk_ctrl_put_boot_on(domain)
-    pm_runtime_put_sync(power_dev)
-    pm_runtime_put_sync(bus_power_dev)
-    domain->boot_on =3D false
-  pm_genpd_remove(&domain->genpd)
-    cancel_work_sync(&power_off_work)
-                                      genpd_power_off_work_fn()
-                                        genpd_power_off()
-                                          imx8m_blk_ctrl_power_off()
-                                            regmap_clear_bits(...)
-                                            pm_runtime_put(power_dev)
-                                            pm_runtime_put(bus_power_dev)
-                                              <-- double put & MMIO while
-                                                  bus_power_dev is off
+	/* Update the port EMDIO PHY address through parsing phy properties.
+	 * This is needed when using the port EMDIO but it's harmless when
+	 * using the central EMDIO. So apply it on all cases.
+	 */
 
-Calling pm_genpd_remove(&domain->genpd) before
-imx8m_blk_ctrl_put_boot_on(domain) (matching imx_pgc_domain_remove() in
-drivers/pmdomain/imx/gpcv2.c) ensures power_off_work is flushed before
-checking domain->boot_on.
+Those functions also check the PHY addresses against the central EMDIO
+mask from netc_get_emdio_phy_mask(). That check is missing here too.
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261122095927.2631=
-909-1-dario.binacchi@amarulasolutions.com?part=3D3
+netc_ierb_init() calls netc_lock_ierb() as soon as devinfo->ierb_init()
+returns, so LBCR cannot be corrected later. Meanwhile,
+enetc_mdiobus_create() still creates a port MDIO bus whenever the ENETC
+node has an "mdio" child:
+
+	mdio_np = of_get_child_by_name(node, "mdio");
+	if (mdio_np) {
+		err = enetc_mdio_probe(pf, mdio_np);
+
+On an i.MX952 board that uses port MDIO, would that bus stay at the
+reset-default PHY address instead of the PHY described in DT? That would
+make the PHY probe or the link fail. A PHY address that clashes with the
+central EMDIO would also go undetected.
+
+The dt-bindings patch in this series describes the i.MX952 IERB block as
+the same as on i.MX95. No later patch in the series touches
+netc_blk_ctrl.c.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261118-imx952-enetc-v1-0-25721440602e%40kontron.de
