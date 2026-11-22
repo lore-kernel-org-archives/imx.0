@@ -1,82 +1,82 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.46
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795361474;
-	b=UIFt+4+wy8ehjth65jEMPwL7FH3JOwEdi66oZ93ZWnDtgTIZP3lGlANVRJHUgMa6Z9Qk
-	 H2anOgpJgWc5RPyBDgKtIqMUrTLocO9EiJMPRgrtapjU5hqLgHlh3PHrbY1s8ITT461PZ
-	 MVZZcAf3FbnbgrmC3A8OOVla553N73vwk/9GlWvkgF5kL1+sOmeMBMtLziAC5dg2QP0rz
-	 GObTPwaw9FQVYe0yx8W8bCYERJU1lccK/uC/KUJt1ZrS3KI7EzCR+r23bnWBx2aIRDeyk
-	 VGrlOOijHLlOf9oLHueb6dQlrF3RvxhypWxAJw1UOuZ5j8nQnXgEM9icULKPcVEeQjA==
+	t=1795361469;
+	b=CL92BVltIK8Xo8RAqd34zZVXq2A4Fj0e5pwM12W32ZeXPVHARJJK/fCuvkKwsHqW2vgH
+	 3XkUdcBzSYs1VC71Vr5nDnLfNSJUNe1ASh3M2L6Hual3Ht7BEUf6Yq7D3BDzAW0hZih0k
+	 3Lq272h4a832aAx56R9J+itfgSc7XnMk6VFTS7OzPEpfP9abqoAZyM8cld/FbmGADdpxr
+	 pbi74iKQ8589CmGRu/F8OLgpYs7ZvhRk8F4UZoFdp02J7Z0sTpz7UFlO3Lq8BwBAjqJWA
+	 x4dttVJCg6JaEHvosJOnKxfbkdiB7UuLTdtbHVONVb4jcdzQMYnYbgA96GQCf3YcaVA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795361474;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795361469;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding;
-	bh=U7jgIRAX0Cr/2+phjsNttZYf1mknb1CdJT8wOU5EptE=;
-	b=GUPGKi022/V+rxw+AekUFjRoI9wlZ6K5od68pjRbQo0D6VGjfp1qd2K4vpDs807RY37q
-	 d8FcueTVJHa9fuBxqku1sk+IFw3wtrxvfhNoEmXQoAVv0ljDbL3qmC5AhanfgYIzgQTVD
-	 B+lhdwi87U2eTM5Oc6KQBFco9dkreqoKolXHdP/WTwmaqehfQLpA2kh8eSnZnBXjHtkxu
-	 uD5tuZQMduYp7DdNQkygala1F/i9WlZu1xZz5FKm3AVjAM+0gLRMQdpH2IDCR1pa6v0ls
-	 aIHRC4yCyES5jrjt6+nnhANaPZIUfq5Kizt5BHReEEXoH/O79bZkhMR8cyaoakWJX4w==
+	bh=da6eqqr5+mNyqLPiJjh9XR2U6FENUUFBFqpSoPRBQAU=;
+	b=1P2udWK8D5b34VWlSmYpI3cKn3mFwkx2UzaRePPR90oGyun2BZMO/FyoEhBJDCS+dKeR
+	 ULI47nEw7p+RTTJTE7zplKXdNl1iRZcBl8N0kJQqWxIL6Q/GIbetqj1Jh/dvzcAGBjaxr
+	 Uhm7M2KxAw8huFOpBzR40WTAA0Ks5ZI5+QJ4j9l4XShhBTUcQZEnBGMWm8dWJ242vBkzK
+	 SCaFZ18ZLyDFJQLy9LYED+bTeZ0q7gi46poXXBkaTvpDqEmrzm2IgsmUIjwzdSz7wL0Z5
+	 6hcf32/Y/1kbo4hNqz1FeARlSom+sDsM62kqIXvB5OxGNVSWxlXsfflQn1+UAEjON0A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=amarulasolutions.com;
 	spf=pass smtp.mailfrom=amarulasolutions.com;
-	dkim=pass header.d=amarulasolutions.com header.i=@amarulasolutions.com header.a=rsa-sha256 header.s=google header.b=PmDXLoIe;
-	arc=none smtp.remote-ip=209.85.128.41
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	dkim=pass header.d=amarulasolutions.com header.i=@amarulasolutions.com header.a=rsa-sha256 header.s=google header.b=JwobW7cN;
+	arc=none smtp.remote-ip=209.85.128.46
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D93B606A332
-	for <imx@lists.linux.dev>; Sun, 22 Nov 2026 15:31:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0D93B606A332
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FA3E606A32C
+	for <imx@lists.linux.dev>; Sun, 22 Nov 2026 15:31:09 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1FA3E606A32C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.a=rsa-sha256 header.s=google header.b=PmDXLoIe
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4a3517554f7so23513275e9.2
-        for <imx@lists.linux.dev>; Sun, 22 Nov 2026 07:31:13 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.a=rsa-sha256 header.s=google header.b=JwobW7cN
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4a214c5c4c0so22552925e9.3
+        for <imx@lists.linux.dev>; Sun, 22 Nov 2026 07:31:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amarulasolutions.com; s=google; t=1795361472; x=1795966272; darn=lists.linux.dev;
+        d=amarulasolutions.com; s=google; t=1795361467; x=1795966267; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=U7jgIRAX0Cr/2+phjsNttZYf1mknb1CdJT8wOU5EptE=;
-        b=PmDXLoIeoXt4RsRzsqut3X9K7u/lWIJ+tqjBPYXwELaIPbmCxHzRE05F3GpxIV0R1o
-         34VbwTYA08YrocFcvC5NvYuo3fuOINGTso/FSYovd46MDawujHegd3TrfGsFjAsSsVKc
-         JAFu5bl++Lf7z1LUz8IrmHKYZgtFUloLg35IA=
+        bh=da6eqqr5+mNyqLPiJjh9XR2U6FENUUFBFqpSoPRBQAU=;
+        b=JwobW7cNPk/csw05qYtF7VcLGKrF3H+74wBoyeZh92jwARmgR7nLZiSySsguZek9m7
+         txvyOV+8U9FNju5z4vfBrWslAhwuP16+E0oqtehZ0aw7KQI9gNYKClyX8MpjKacmmw/Z
+         OQCIxLh35ETTJtrMKu14sVNBf8h8H3NDU7088=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795361472; x=1795966272;
+        d=1e100.net; s=20260707; t=1795361467; x=1795966267;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=U7jgIRAX0Cr/2+phjsNttZYf1mknb1CdJT8wOU5EptE=;
-        b=XMRxLr9Il5HFAMwx5upp6R4XdPKfikdlz4xCWBlTZk6aw/giTJ/SvDx1fGsQG6NEXc
-         hMlxFLxCNT6lCBhPDoGmqQ57fuYlnc2j/edL2oNgZDskn2POEUwDyh+ZGmY2ovPuQJwz
-         t2BnEiHvD7100vQQBqKWtOJHbyNMBNowPTP5hGPTNb8l9c3bGZoXB6um+oMcDn1UV6Po
-         HLtFlxhnnFDu5vj7cCgqucq1jB4Mp1+oIyEd3+Z/64Gdl718/TANzKLRdjbB/YDzJW6t
-         nQT2SLevw9tnIAFsGNf9uMNqC9UbZcRbjVCtnYxD4dqoIs9bTO74qcJinFN22rzoUfze
-         RI+g==
-X-Forwarded-Encrypted: i=1; AL+hErGKpAwWbmeoKZW8HRb8kKYWF/cgOtJo/F7ZaB6jbsbQ6pjNiKUm2RKZKIH7Gnwe7bc3iNA=@lists.linux.dev
-X-Gm-Message-State: APuU4Z8wjDobZhG/K8HzPHOpIdN3q4CpJjjqG6BFrc4vtPcSWvYib8WT
-	ahmfzHlQLTooTkavt4f+dzKYAYsGmFv+JII0boGRkLO4HEIwzo0ep33g2J3wyqXGDaw=
-X-Gm-Gg: AZFdTZf1a6BhqZj1NtEHM+vxj8K4J4ChbJ4i3ejWUSPbT4y4G8jUwZtSLec/0hwTSZN
-	iVqATnHhRh2zY0jfm4G9fbgf8qKf4vxPh+hFSyfjSzJhGO+FAFrQrNRSy3k3qwfCOyrCeCgYNbD
-	UL7qdN7NQpsOT2jw9FlMWPzVwOyOUbUtcWZwnLJzBNs4OudKrWbo7k8q5nliPt98TKDAuIZW95e
-	YckvNwfDeslf0vu8zMovOV66MB1bawvZrl1ACOtGULO9QGtvSgd/m6Uy7Z8NFziYH3Phwry5odk
-	mTpUaq9SF8wPtVwo+WR5md5SojdSnRCQ4in8jXliLhVQobvcCv2adPptIrJyheoE/OgEa32N/zf
-	21QZrUQK7JhII4sqJPyQPmC/BAOItsCFepLyqmWaD3X25QlMaAg4Rf4rL9f2ibJpIRSXqyfUqaZ
-	UzIkHa+D8IdzYBcirQyoKsIQY2/tu0iw8o+1/dfSCZRaV+l7IIhlA3Pwae362YCTi4kDq7uA5rU
-	HNILcnXWMg1I9V/f+zC5nWIIvtpMRzl3fqxFxLo+a3ppnOPzH/n+S8l1B9zCYYit5WEgazlnwMc
-	fEdaS/jFZdmunyVuQJy2IuJ/vsq55z5uk7cofwEFyTK3yYyL+YWWXdYuOm6J2SlHX3ZIbFLpnNY
-	SObjfg4Kgyy7g9EIqBXIGSqUl7zus4VWj/+1ZK5Wl0IRPUMpf6nIdzU9IiRY7TiwyRM4xVkba9m
-	0OBMzEgbIFYhNOU82zk0q4z+b7mw==
-X-Received: by 2002:a05:600c:a085:b0:4a2:a9:ed87 with SMTP id 5b1f17b1804b1-4bb88811c75mr209309595e9.19.1795361472384;
-        Sun, 22 Nov 2026 07:31:12 -0800 (PST)
+        bh=da6eqqr5+mNyqLPiJjh9XR2U6FENUUFBFqpSoPRBQAU=;
+        b=ul+Ydx0WL3ArK80pQ192RagaPE4lKSzmKbitatY3SthRk8Kv2LQkMe2pGwpyBKjyu9
+         BGsNaurULF0m3j+6jOEH+LYf+ZYVrLciD1H3NraY77SyfjkCEV9jkFA3GZzN3TfCXiz9
+         oFR7RqGbBmmAwQ3NrjGbjXL2pTUADb8AVXbTMsAMkvmeQNYBxZfZ35Pj+vmokzypJEOT
+         E4b+8SknF5sDEqAO1Jl6QhAHBwGEv7O2V1CeI1YhqYqlLI8IKqCwMpplPHNwMgq9iIHU
+         PgpZsWnPRCar0xh+gk+SrSB85E/N9ZPH+949xSm+oQU1LyRHS5MRzlL6MRTxK7q8eErz
+         MgRg==
+X-Forwarded-Encrypted: i=1; AL+hErFzEnmry82Kwv7/XT9CrLE9sw4sV75lbDLJ0E0cwDrYEIecilxye0Dz7o4PT6JcRycWLS0=@lists.linux.dev
+X-Gm-Message-State: APuU4Z985Lt+Lu8dSqPV5OSvYrsQ0SkKUR+Bs57+gv1+nGOxUZhGjYSh
+	10ZNLlQO4K2XQuPTQ+S9Lm7u30k9lCo8PhS+3VwGDAkxvuSbqJeMi2Mzz6NLeawXFHg=
+X-Gm-Gg: AZFdTZc+i0kwVfjBEs0015WecQTeywxNjdv/spTcJfU39cULARujUCyvJhHit6ZwlRK
+	WSakfRMEhfsbxTpyzgPkz8gatYCfUdknz7U/EOgckfC9T6T2IRwUgDGB/hy0IfCDwbsr+IL7RFC
+	TvTZDwEaBRyXAJYGLl4rK3ZVyjYYyiBU225Ul8P8VQtMFkmVapDffXM2iV9tvftAoJtglhlF4kx
+	rHQkVK+iaEOPOaqlMFpeeD3vwq5ckd/kkOra/NbrjwGD9EZsxmjaSTJjLSu0DMwZJv8kwfXfry4
+	AVRkKfBivtDqYj8PgAY0Tq5A4zhwM/nUh4bTXmym03+chCplnu2l7WRjExLxpTjj6d3pO5V6v3f
+	oiTb/+0bT47snPrgAQz1KRgK/ctujLyvhLw11mzid1yThFvo04XyXpbDZyHCJR9JXoDsXISmR0O
+	/BuZnBjBO5zc1AythcpyMRARvheVJJxWKXsNfcoqtWKvU30wy86cvtZrgh2DgWmnyi0E+WV5vqM
+	aqzUR5lDCpKU3Jwq3hzIoRGn3tC9g1kMobbV79wmj4/UxbkgWYJrmiLjt6TO+vx+LaNp+Trc91i
+	H9YQk1XHRkCOjZDJHeRrivLrv5rgJvT/sVpPl+VYdIcMgMJiD44/qYjp1aIeg77WdJnXWgn5tgi
+	8y1ZSyN989xAlBsaZDf3xKbvci0QbLW/xxfzvn/kFRRHQEzU2+PNI06ZbcinfqJLoJY0YlyqRV2
+	wm2t1wX8IvTR2IA3ggyQkHG5dYnYTk0xZyH7zTpSoYG/+VBz0=
+X-Received: by 2002:a05:600c:8287:b0:4a1:6992:f861 with SMTP id 5b1f17b1804b1-4bb887e064dmr198299585e9.1.1795361467514;
+        Sun, 22 Nov 2026 07:31:07 -0800 (PST)
 Received: from dario-ThinkPad-P14s-Gen-5.homenet.telecomitalia.it (host-79-14-29-58.business.telecomitalia.it. [79.14.29.58])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb884a15absm237833815e9.9.2026.11.22.07.31.07
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb884a15absm237833815e9.9.2026.11.22.07.31.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Nov 2026 07:31:11 -0800 (PST)
+        Sun, 22 Nov 2026 07:31:06 -0800 (PST)
 From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 To: Maxime Ripard <mripard@kernel.org>
 Cc: michael@amarulasolutions.com,
@@ -96,9 +96,9 @@ Cc: michael@amarulasolutions.com,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH 6/8] drm/mxsfb: Implement hw state readout
-Date: Sun, 22 Nov 2026 16:30:06 +0100
-Message-ID: <20261122153032.2782768-7-dario.binacchi@amarulasolutions.com>
+Subject: [RFC PATCH 5/8] drm/mxsfb: Stop the controller in hw_reset
+Date: Sun, 22 Nov 2026 16:30:05 +0100
+Message-ID: <20261122153032.2782768-6-dario.binacchi@amarulasolutions.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261122153032.2782768-1-dario.binacchi@amarulasolutions.com>
 References: <20261122153032.2782768-1-dario.binacchi@amarulasolutions.com>
@@ -113,545 +113,109 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Read out the state of the CRTC and of the planes from the hardware,
-so that the first modeset can be skipped when the bootloader has
-already set up the display.
+When the hardware state can't be read out, a controller left running
+by the bootloader is reprogrammed while running on the first enable.
+Stop it in the hw_reset hook.
 
 Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 ---
 
- drivers/gpu/drm/mxsfb/mxsfb_drv.c  |   3 +
- drivers/gpu/drm/mxsfb/mxsfb_kms.c  | 361 ++++++++++++++++++++++++++++-
- drivers/gpu/drm/mxsfb/mxsfb_regs.h |   3 +
- 3 files changed, 360 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/mxsfb/mxsfb_drv.c |  2 ++
+ drivers/gpu/drm/mxsfb/mxsfb_kms.c | 33 ++++++++++++++++++++++++++++++-
+ 2 files changed, 34 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/gpu/drm/mxsfb/mxsfb_drv.c b/drivers/gpu/drm/mxsfb/mxsfb_drv.c
-index ef4a47d238ed..6317a30f54ad 100644
+index c8bc79264361..ef4a47d238ed 100644
 --- a/drivers/gpu/drm/mxsfb/mxsfb_drv.c
 +++ b/drivers/gpu/drm/mxsfb/mxsfb_drv.c
-@@ -22,6 +22,7 @@
- 
- #include <drm/clients/drm_client_setup.h>
- #include <drm/drm_atomic_helper.h>
-+#include <drm/drm_atomic_state_readout_helper.h>
- #include <drm/drm_bridge.h>
- #include <drm/drm_bridge_connector.h>
- #include <drm/drm_connector.h>
-@@ -112,10 +113,12 @@ static const struct drm_mode_config_funcs mxsfb_mode_config_funcs = {
+@@ -31,6 +31,7 @@
+ #include <drm/drm_gem_dma_helper.h>
+ #include <drm/drm_gem_framebuffer_helper.h>
+ #include <drm/drm_mode_config.h>
++#include <drm/drm_modeset_helper.h>
+ #include <drm/drm_module.h>
+ #include <drm/drm_of.h>
+ #include <drm/drm_panel.h>
+@@ -110,6 +111,7 @@ static const struct drm_mode_config_funcs mxsfb_mode_config_funcs = {
+ 	.fb_create		= mxsfb_fb_create,
  	.atomic_check		= drm_atomic_helper_check,
  	.atomic_commit		= drm_atomic_helper_commit,
- 	.hw_reset		= drm_mode_config_helper_hw_reset,
-+	.atomic_sro_readout_state = drm_atomic_helper_sro_readout_state,
++	.hw_reset		= drm_mode_config_helper_hw_reset,
  };
  
  static const struct drm_mode_config_helper_funcs mxsfb_mode_config_helpers = {
- 	.atomic_commit_tail = drm_atomic_helper_commit_tail_rpm,
-+	.atomic_sro_build_state = drm_atomic_helper_sro_build_state,
- };
- 
- static int mxsfb_attach_bridge(struct mxsfb_drm_private *mxsfb)
 diff --git a/drivers/gpu/drm/mxsfb/mxsfb_kms.c b/drivers/gpu/drm/mxsfb/mxsfb_kms.c
-index 96cd80c6e76c..242b03a903a5 100644
+index bbc2a2df9f16..96cd80c6e76c 100644
 --- a/drivers/gpu/drm/mxsfb/mxsfb_kms.c
 +++ b/drivers/gpu/drm/mxsfb/mxsfb_kms.c
-@@ -13,10 +13,14 @@
- #include <linux/iopoll.h>
- #include <linux/media-bus-format.h>
- #include <linux/pm_runtime.h>
-+#include <linux/slab.h>
- #include <linux/spinlock.h>
+@@ -35,6 +35,18 @@
+ /* 1 second delay should be plenty of time for block reset */
+ #define RESET_TIMEOUT		1000000
  
- #include <drm/drm_atomic.h>
- #include <drm/drm_atomic_helper.h>
-+#include <drm/drm_atomic_state_readout.h>
-+#include <drm/drm_atomic_state_readout_helper.h>
-+#include <drm/drm_atomic_uapi.h>
- #include <drm/drm_bridge.h>
- #include <drm/drm_crtc.h>
- #include <drm/drm_encoder.h>
-@@ -47,6 +51,36 @@ static void mxsfb_hw_put(struct mxsfb_drm_private *mxsfb)
- 	pm_runtime_put_sync(mxsfb->drm->dev);
- }
- 
-+/* The overlay plane starts 64 bytes within the framebuffer */
-+#define MXSFB_AS_BUF_OFFSET	64
-+
-+/* Framebuffer read out from the hardware, without a GEM object */
-+struct mxsfb_readout_fb {
-+	struct drm_framebuffer base;
-+	dma_addr_t dma_addr;
-+};
-+
-+static void mxsfb_readout_fb_destroy(struct drm_framebuffer *fb)
++static void mxsfb_hw_get(struct mxsfb_drm_private *mxsfb)
 +{
-+	drm_framebuffer_cleanup(fb);
-+	kfree(container_of(fb, struct mxsfb_readout_fb, base));
++	pm_runtime_get_sync(mxsfb->drm->dev);
++	mxsfb_enable_axi_clk(mxsfb);
 +}
 +
-+static const struct drm_framebuffer_funcs mxsfb_readout_fb_funcs = {
-+	.destroy = mxsfb_readout_fb_destroy,
-+};
-+
-+static dma_addr_t mxsfb_plane_get_dma_addr(struct drm_plane_state *pstate)
++static void mxsfb_hw_put(struct mxsfb_drm_private *mxsfb)
 +{
-+	struct drm_framebuffer *fb = pstate->fb;
-+
-+	if (fb->funcs == &mxsfb_readout_fb_funcs)
-+		return container_of(fb, struct mxsfb_readout_fb,
-+				    base)->dma_addr;
-+
-+	return drm_fb_dma_get_gem_addr(fb, pstate, 0);
++	mxsfb_disable_axi_clk(mxsfb);
++	pm_runtime_put_sync(mxsfb->drm->dev);
 +}
 +
  /* -----------------------------------------------------------------------------
   * CRTC
   */
-@@ -418,7 +452,7 @@ static void mxsfb_crtc_atomic_enable(struct drm_crtc *crtc,
- 	mxsfb_crtc_mode_set_nofb(mxsfb, bridge_state, bus_format);
- 
- 	/* Write cur_buf as well to avoid an initial corrupt frame */
--	dma_addr = drm_fb_dma_get_gem_addr(new_pstate->fb, new_pstate, 0);
-+	dma_addr = mxsfb_plane_get_dma_addr(new_pstate);
- 	if (dma_addr) {
- 		writel(dma_addr, mxsfb->base + mxsfb->devdata->cur_buf);
- 		writel(dma_addr, mxsfb->base + mxsfb->devdata->next_buf);
-@@ -463,6 +497,114 @@ static void mxsfb_crtc_hw_reset(struct drm_crtc *crtc)
- 	mxsfb_hw_put(mxsfb);
+@@ -205,7 +217,7 @@ static void mxsfb_enable_controller(struct mxsfb_drm_private *mxsfb)
+ 	writel(CTRL_RUN, mxsfb->base + LCDC_CTRL + REG_SET);
  }
  
-+static bool mxsfb_is_running(struct mxsfb_drm_private *mxsfb)
-+{
-+	u32 mask = CTRL_RUN | CTRL_DOTCLK_MODE;
-+
-+	/* A controller being stopped keeps running until the end of frame */
-+	return (readl(mxsfb->base + LCDC_CTRL) & mask) == mask;
+-static void mxsfb_disable_controller(struct mxsfb_drm_private *mxsfb)
++static void mxsfb_stop_controller(struct mxsfb_drm_private *mxsfb)
+ {
+ 	u32 reg;
+ 
+@@ -221,6 +233,11 @@ static void mxsfb_disable_controller(struct mxsfb_drm_private *mxsfb)
+ 	reg = readl(mxsfb->base + LCDC_VDCTRL4);
+ 	reg &= ~VDCTRL4_SYNC_SIGNALS_ON;
+ 	writel(reg, mxsfb->base + LCDC_VDCTRL4);
 +}
 +
-+static int mxsfb_readout_mode(struct mxsfb_drm_private *mxsfb,
-+			      struct drm_display_mode *mode)
++static void mxsfb_disable_controller(struct mxsfb_drm_private *mxsfb)
 +{
-+	const struct mxsfb_devdata *devdata = mxsfb->devdata;
-+	u32 ctrl, vdctrl0, vdctrl2, vdctrl3, reg;
-+	u16 hsync_len, vsync_len;
-+
-+	ctrl = readl(mxsfb->base + LCDC_CTRL);
-+	if (!(ctrl & CTRL_DOTCLK_MODE) || !(ctrl & CTRL_MASTER))
-+		return -EINVAL;
-+
-+	vdctrl0 = readl(mxsfb->base + LCDC_VDCTRL0);
-+	if (!(vdctrl0 & VDCTRL0_ENABLE_PRESENT) ||
-+	    !(vdctrl0 & VDCTRL0_VSYNC_PERIOD_UNIT) ||
-+	    !(vdctrl0 & VDCTRL0_VSYNC_PULSE_WIDTH_UNIT))
-+		return -EINVAL;
-+
-+	reg = readl(mxsfb->base + devdata->transfer_count);
-+	mode->hdisplay = TRANSFER_COUNT_GET_HCOUNT(reg);
-+	mode->vdisplay = TRANSFER_COUNT_GET_VCOUNT(reg);
-+
-+	mode->vtotal = readl(mxsfb->base + LCDC_VDCTRL1);
-+
-+	vdctrl2 = readl(mxsfb->base + LCDC_VDCTRL2);
-+	mode->htotal = VDCTRL2_GET_HSYNC_PERIOD(vdctrl2);
-+	hsync_len = (vdctrl2 >> devdata->hs_wdth_shift) & devdata->hs_wdth_mask;
-+	vsync_len = VDCTRL0_GET_VSYNC_PULSE_WIDTH(vdctrl0);
-+
-+	vdctrl3 = readl(mxsfb->base + LCDC_VDCTRL3);
-+	mode->hsync_start = mode->htotal - GET_HOR_WAIT_CNT(vdctrl3);
-+	mode->hsync_end = mode->hsync_start + hsync_len;
-+	mode->vsync_start = mode->vtotal - GET_VERT_WAIT_CNT(vdctrl3);
-+	mode->vsync_end = mode->vsync_start + vsync_len;
-+
-+	if (!mode->hdisplay || !mode->vdisplay ||
-+	    mode->hsync_start < mode->hdisplay ||
-+	    mode->vsync_start < mode->vdisplay)
-+		return -EINVAL;
-+
-+	mode->clock = DIV_ROUND_CLOSEST(clk_get_rate(mxsfb->clk), 1000);
-+
-+	/* An active low sync signal can't be told from an unspecified one */
-+	if (vdctrl0 & VDCTRL0_HSYNC_ACT_HIGH)
-+		mode->flags |= DRM_MODE_FLAG_PHSYNC;
-+	if (vdctrl0 & VDCTRL0_VSYNC_ACT_HIGH)
-+		mode->flags |= DRM_MODE_FLAG_PVSYNC;
-+
-+	mode->type |= DRM_MODE_TYPE_DRIVER;
-+	drm_mode_set_name(mode);
-+	drm_mode_set_crtcinfo(mode, 0);
-+
-+	return 0;
-+}
-+
-+static int mxsfb_crtc_readout_state(struct drm_crtc *crtc,
-+				    struct drm_atomic_sro_state *state,
-+				    struct drm_crtc_state *crtc_state)
++	mxsfb_stop_controller(mxsfb);
+ 
+ 	clk_disable_unprepare(mxsfb->clk);
+ 	if (mxsfb->clk_disp_axi)
+@@ -433,6 +450,19 @@ static void mxsfb_crtc_atomic_disable(struct drm_crtc *crtc,
+ 	pm_runtime_put_sync(drm->dev);
+ }
+ 
++static void mxsfb_crtc_hw_reset(struct drm_crtc *crtc)
 +{
 +	struct mxsfb_drm_private *mxsfb = to_mxsfb_drm_private(crtc->dev);
-+	struct drm_display_mode mode = {};
-+	int ret = 0;
 +
 +	mxsfb_hw_get(mxsfb);
 +
-+	if (!mxsfb_is_running(mxsfb))
-+		goto out;
++	/* The bootloader may have left the controller running */
++	if (readl(mxsfb->base + LCDC_CTRL) & CTRL_RUN)
++		mxsfb_stop_controller(mxsfb);
 +
-+	ret = mxsfb_readout_mode(mxsfb, &mode);
-+	if (ret)
-+		goto out;
-+
-+	ret = drm_atomic_set_mode_for_crtc(crtc_state, &mode);
-+	if (ret)
-+		goto out;
-+
-+	drm_mode_copy(&crtc_state->adjusted_mode, &mode);
-+	crtc_state->active = true;
-+
-+out:
 +	mxsfb_hw_put(mxsfb);
-+	return ret;
-+}
-+
-+static void mxsfb_crtc_install_state(struct drm_crtc *crtc,
-+				     struct drm_crtc_state *crtc_state)
-+{
-+	struct mxsfb_drm_private *mxsfb = to_mxsfb_drm_private(crtc->dev);
-+
-+	if (!crtc_state->active)
-+		return;
-+
-+	/* Take the references mxsfb_crtc_atomic_enable() would have taken */
-+	mxsfb_hw_get(mxsfb);
-+	if (mxsfb->clk_disp_axi)
-+		clk_prepare_enable(mxsfb->clk_disp_axi);
-+	clk_prepare_enable(mxsfb->clk);
-+
-+	drm_crtc_vblank_on(crtc);
 +}
 +
  static int mxsfb_crtc_enable_vblank(struct drm_crtc *crtc)
  {
  	struct mxsfb_drm_private *mxsfb = to_mxsfb_drm_private(crtc->dev);
-@@ -535,6 +677,9 @@ static const struct drm_crtc_funcs mxsfb_crtc_funcs = {
- 	.atomic_destroy_state = drm_atomic_helper_crtc_destroy_state,
- 	.enable_vblank = mxsfb_crtc_enable_vblank,
- 	.disable_vblank = mxsfb_crtc_disable_vblank,
-+	.atomic_sro_readout_state = mxsfb_crtc_readout_state,
-+	.atomic_sro_install_state = mxsfb_crtc_install_state,
-+	.atomic_sro_compare_state = drm_atomic_helper_crtc_compare_state,
+@@ -493,6 +523,7 @@ static const struct drm_crtc_helper_funcs mxsfb_crtc_helper_funcs = {
+ 	.atomic_flush = mxsfb_crtc_atomic_flush,
+ 	.atomic_enable = mxsfb_crtc_atomic_enable,
+ 	.atomic_disable = mxsfb_crtc_atomic_disable,
++	.hw_reset = mxsfb_crtc_hw_reset,
  };
  
- static const struct drm_crtc_funcs mxsfb_crtc_with_crc_funcs = {
-@@ -546,6 +691,9 @@ static const struct drm_crtc_funcs mxsfb_crtc_with_crc_funcs = {
- 	.atomic_destroy_state = drm_atomic_helper_crtc_destroy_state,
- 	.enable_vblank = mxsfb_crtc_enable_vblank,
- 	.disable_vblank = mxsfb_crtc_disable_vblank,
-+	.atomic_sro_readout_state = mxsfb_crtc_readout_state,
-+	.atomic_sro_install_state = mxsfb_crtc_install_state,
-+	.atomic_sro_compare_state = drm_atomic_helper_crtc_compare_state,
- 	.set_crc_source = mxsfb_crtc_set_crc_source,
- 	.verify_crc_source = mxsfb_crtc_verify_crc_source,
- };
-@@ -554,8 +702,17 @@ static const struct drm_crtc_funcs mxsfb_crtc_with_crc_funcs = {
-  * Encoder
-  */
- 
-+static struct drm_crtc *
-+mxsfb_encoder_get_current_crtc(struct drm_encoder *encoder)
-+{
-+	struct mxsfb_drm_private *mxsfb = to_mxsfb_drm_private(encoder->dev);
-+
-+	return &mxsfb->crtc;
-+}
-+
- static const struct drm_encoder_funcs mxsfb_encoder_funcs = {
- 	.destroy = drm_encoder_cleanup,
-+	.atomic_sro_get_current_crtc = mxsfb_encoder_get_current_crtc,
- };
- 
- /* -----------------------------------------------------------------------------
-@@ -587,7 +744,7 @@ static void mxsfb_plane_primary_atomic_update(struct drm_plane *plane,
- 									    plane);
- 	dma_addr_t dma_addr;
- 
--	dma_addr = drm_fb_dma_get_gem_addr(new_pstate->fb, new_pstate, 0);
-+	dma_addr = mxsfb_plane_get_dma_addr(new_pstate);
- 	if (dma_addr)
- 		writel(dma_addr, mxsfb->base + mxsfb->devdata->next_buf);
- }
-@@ -603,7 +760,7 @@ static void mxsfb_plane_overlay_atomic_update(struct drm_plane *plane,
- 	dma_addr_t dma_addr;
- 	u32 ctrl;
- 
--	dma_addr = drm_fb_dma_get_gem_addr(new_pstate->fb, new_pstate, 0);
-+	dma_addr = mxsfb_plane_get_dma_addr(new_pstate);
- 	if (!dma_addr) {
- 		writel(0, mxsfb->base + LCDC_AS_CTRL);
- 		return;
-@@ -615,7 +772,7 @@ static void mxsfb_plane_overlay_atomic_update(struct drm_plane *plane,
- 	 * is understood, live with the 16 initial invalid pixels on the first
- 	 * line and start 64 bytes within the framebuffer.
- 	 */
--	dma_addr += 64;
-+	dma_addr += MXSFB_AS_BUF_OFFSET;
- 
- 	writel(dma_addr, mxsfb->base + LCDC_AS_NEXT_BUF);
- 
-@@ -663,6 +820,182 @@ static void mxsfb_plane_overlay_atomic_disable(struct drm_plane *plane,
- 	writel(0, mxsfb->base + LCDC_AS_CTRL);
- }
- 
-+static int mxsfb_plane_readout_state(struct drm_plane *plane,
-+				     struct drm_atomic_sro_state *state,
-+				     struct drm_plane_state *plane_state,
-+				     u32 format, dma_addr_t dma_addr)
-+{
-+	struct mxsfb_drm_private *mxsfb = to_mxsfb_drm_private(plane->dev);
-+	struct drm_crtc *crtc = &mxsfb->crtc;
-+	struct drm_crtc_state *crtc_state;
-+	struct mxsfb_readout_fb *rfb;
-+	struct drm_framebuffer *fb;
-+	u32 reg;
-+	int ret;
-+
-+	crtc_state = drm_atomic_sro_get_crtc_state(state, crtc);
-+	if (!crtc_state)
-+		return -ENODEV;
-+
-+	rfb = kzalloc_obj(*rfb);
-+	if (!rfb)
-+		return -ENOMEM;
-+
-+	/* The planes can be neither scaled nor positioned */
-+	reg = readl(mxsfb->base + mxsfb->devdata->transfer_count);
-+
-+	rfb->dma_addr = dma_addr;
-+	fb = &rfb->base;
-+	fb->dev = plane->dev;
-+	fb->format = drm_format_info(format);
-+	fb->width = TRANSFER_COUNT_GET_HCOUNT(reg);
-+	fb->height = TRANSFER_COUNT_GET_VCOUNT(reg);
-+	fb->pitches[0] = fb->width * fb->format->cpp[0];
-+
-+	ret = drm_framebuffer_init(plane->dev, fb, &mxsfb_readout_fb_funcs);
-+	if (ret) {
-+		kfree(rfb);
-+		return ret;
-+	}
-+
-+	plane_state->fb = fb;
-+	plane_state->crtc = crtc;
-+	plane_state->visible = true;
-+	plane_state->crtc_w = fb->width;
-+	plane_state->crtc_h = fb->height;
-+	plane_state->src_w = fb->width << 16;
-+	plane_state->src_h = fb->height << 16;
-+	plane_state->src.x2 = plane_state->src_w;
-+	plane_state->src.y2 = plane_state->src_h;
-+	plane_state->dst.x2 = plane_state->crtc_w;
-+	plane_state->dst.y2 = plane_state->crtc_h;
-+
-+	crtc_state->plane_mask |= drm_plane_mask(plane);
-+
-+	return 0;
-+}
-+
-+static int
-+mxsfb_plane_primary_readout_state(struct drm_plane *plane,
-+				  struct drm_atomic_sro_state *state,
-+				  struct drm_plane_state *plane_state)
-+{
-+	struct mxsfb_drm_private *mxsfb = to_mxsfb_drm_private(plane->dev);
-+	u32 ctrl, ctrl1, format;
-+	dma_addr_t dma_addr;
-+	int ret = 0;
-+
-+	mxsfb_hw_get(mxsfb);
-+
-+	if (!mxsfb_is_running(mxsfb))
-+		goto out;
-+
-+	ctrl = readl(mxsfb->base + LCDC_CTRL);
-+	ctrl1 = readl(mxsfb->base + LCDC_CTRL1);
-+
-+	switch (ctrl & CTRL_WORD_LENGTH_MASK) {
-+	case CTRL_WORD_LENGTH_16:
-+		format = DRM_FORMAT_RGB565;
-+		break;
-+	case CTRL_WORD_LENGTH_24:
-+		/* Packed pixels are not supported */
-+		if (CTRL1_GET_BYTE_PACKAGING(ctrl1) == 0x7) {
-+			format = DRM_FORMAT_XRGB8888;
-+			break;
-+		}
-+		fallthrough;
-+	default:
-+		ret = -EINVAL;
-+		goto out;
-+	}
-+
-+	dma_addr = readl(mxsfb->base + mxsfb->devdata->next_buf);
-+	ret = mxsfb_plane_readout_state(plane, state, plane_state, format,
-+					dma_addr);
-+
-+out:
-+	mxsfb_hw_put(mxsfb);
-+	return ret;
-+}
-+
-+static int
-+mxsfb_plane_overlay_readout_state(struct drm_plane *plane,
-+				  struct drm_atomic_sro_state *state,
-+				  struct drm_plane_state *plane_state)
-+{
-+	struct mxsfb_drm_private *mxsfb = to_mxsfb_drm_private(plane->dev);
-+	dma_addr_t dma_addr;
-+	u32 ctrl, format;
-+	bool alpha;
-+	int ret = 0;
-+
-+	mxsfb_hw_get(mxsfb);
-+
-+	if (!mxsfb_is_running(mxsfb))
-+		goto out;
-+
-+	ctrl = readl(mxsfb->base + LCDC_AS_CTRL);
-+	if (!(ctrl & AS_CTRL_AS_ENABLE))
-+		goto out;
-+
-+	alpha = (ctrl & AS_CTRL_ALPHA_CTRL_MASK) == AS_CTRL_ALPHA_CTRL_EMBEDDED;
-+
-+	switch (ctrl & AS_CTRL_FORMAT_MASK) {
-+	case AS_CTRL_FORMAT_RGB444:
-+		format = DRM_FORMAT_XRGB4444;
-+		break;
-+	case AS_CTRL_FORMAT_ARGB4444:
-+		format = DRM_FORMAT_ARGB4444;
-+		break;
-+	case AS_CTRL_FORMAT_RGB555:
-+		format = DRM_FORMAT_XRGB1555;
-+		break;
-+	case AS_CTRL_FORMAT_ARGB1555:
-+		format = DRM_FORMAT_ARGB1555;
-+		break;
-+	case AS_CTRL_FORMAT_RGB565:
-+		format = DRM_FORMAT_RGB565;
-+		break;
-+	case AS_CTRL_FORMAT_RGB888:
-+		format = DRM_FORMAT_XRGB8888;
-+		break;
-+	case AS_CTRL_FORMAT_ARGB8888:
-+		format = DRM_FORMAT_ARGB8888;
-+		break;
-+	default:
-+		ret = -EINVAL;
-+		goto out;
-+	}
-+
-+	if (alpha != drm_format_info(format)->has_alpha) {
-+		ret = -EINVAL;
-+		goto out;
-+	}
-+
-+	dma_addr = readl(mxsfb->base + LCDC_AS_NEXT_BUF) - MXSFB_AS_BUF_OFFSET;
-+	ret = mxsfb_plane_readout_state(plane, state, plane_state, format,
-+					dma_addr);
-+
-+out:
-+	mxsfb_hw_put(mxsfb);
-+	return ret;
-+}
-+
-+static bool mxsfb_plane_compare_state(struct drm_plane *plane,
-+				      struct drm_printer *p,
-+				      struct drm_plane_state *expected,
-+				      struct drm_plane_state *actual)
-+{
-+	struct drm_crtc *crtc = expected->crtc;
-+
-+	/* The planes can't be read out while the controller is stopped */
-+	if (crtc && !crtc->state->active && !actual->fb)
-+		return true;
-+
-+	return drm_atomic_helper_plane_compare_state(plane, p, expected,
-+						     actual);
-+}
-+
- static bool mxsfb_format_mod_supported(struct drm_plane *plane,
- 				       uint32_t format,
- 				       uint64_t modifier)
-@@ -681,7 +1014,19 @@ static const struct drm_plane_helper_funcs mxsfb_plane_overlay_helper_funcs = {
- 	.atomic_disable = mxsfb_plane_overlay_atomic_disable,
- };
- 
--static const struct drm_plane_funcs mxsfb_plane_funcs = {
-+static const struct drm_plane_funcs mxsfb_plane_primary_funcs = {
-+	.format_mod_supported	= mxsfb_format_mod_supported,
-+	.update_plane		= drm_atomic_helper_update_plane,
-+	.disable_plane		= drm_atomic_helper_disable_plane,
-+	.destroy		= drm_plane_cleanup,
-+	.atomic_create_state = drm_atomic_helper_plane_create_state,
-+	.atomic_duplicate_state	= drm_atomic_helper_plane_duplicate_state,
-+	.atomic_destroy_state	= drm_atomic_helper_plane_destroy_state,
-+	.atomic_sro_readout_state = mxsfb_plane_primary_readout_state,
-+	.atomic_sro_compare_state = mxsfb_plane_compare_state,
-+};
-+
-+static const struct drm_plane_funcs mxsfb_plane_overlay_funcs = {
- 	.format_mod_supported	= mxsfb_format_mod_supported,
- 	.update_plane		= drm_atomic_helper_update_plane,
- 	.disable_plane		= drm_atomic_helper_disable_plane,
-@@ -689,6 +1034,8 @@ static const struct drm_plane_funcs mxsfb_plane_funcs = {
- 	.atomic_create_state = drm_atomic_helper_plane_create_state,
- 	.atomic_duplicate_state	= drm_atomic_helper_plane_duplicate_state,
- 	.atomic_destroy_state	= drm_atomic_helper_plane_destroy_state,
-+	.atomic_sro_readout_state = mxsfb_plane_overlay_readout_state,
-+	.atomic_sro_compare_state = mxsfb_plane_compare_state,
- };
- 
- static const uint32_t mxsfb_primary_plane_formats[] = {
-@@ -724,7 +1071,7 @@ int mxsfb_kms_init(struct mxsfb_drm_private *mxsfb)
- 	drm_plane_helper_add(&mxsfb->planes.primary,
- 			     &mxsfb_plane_primary_helper_funcs);
- 	ret = drm_universal_plane_init(mxsfb->drm, &mxsfb->planes.primary, 1,
--				       &mxsfb_plane_funcs,
-+				       &mxsfb_plane_primary_funcs,
- 				       mxsfb_primary_plane_formats,
- 				       ARRAY_SIZE(mxsfb_primary_plane_formats),
- 				       mxsfb_modifiers, DRM_PLANE_TYPE_PRIMARY,
-@@ -737,7 +1084,7 @@ int mxsfb_kms_init(struct mxsfb_drm_private *mxsfb)
- 				     &mxsfb_plane_overlay_helper_funcs);
- 		ret = drm_universal_plane_init(mxsfb->drm,
- 					       &mxsfb->planes.overlay, 1,
--					       &mxsfb_plane_funcs,
-+					       &mxsfb_plane_overlay_funcs,
- 					       mxsfb_overlay_plane_formats,
- 					       ARRAY_SIZE(mxsfb_overlay_plane_formats),
- 					       mxsfb_modifiers, DRM_PLANE_TYPE_OVERLAY,
-diff --git a/drivers/gpu/drm/mxsfb/mxsfb_regs.h b/drivers/gpu/drm/mxsfb/mxsfb_regs.h
-index cf813a1da1d7..cfbd13a64388 100644
---- a/drivers/gpu/drm/mxsfb/mxsfb_regs.h
-+++ b/drivers/gpu/drm/mxsfb/mxsfb_regs.h
-@@ -50,6 +50,7 @@
- #define CTRL_WORD_LENGTH_8		(1 << 8)
- #define CTRL_WORD_LENGTH_18		(2 << 8)
- #define CTRL_WORD_LENGTH_24		(3 << 8)
-+#define CTRL_WORD_LENGTH_MASK		(0x3 << 8)
- #define CTRL_MASTER			BIT(5)
- #define CTRL_DF16			BIT(3)
- #define CTRL_DF18			BIT(2)
-@@ -115,11 +116,13 @@
- #define AS_CTRL_FORMAT_ARGB1555		(0x8 << 4)
- #define AS_CTRL_FORMAT_RGB888		(0x4 << 4)
- #define AS_CTRL_FORMAT_ARGB8888		(0x0 << 4)
-+#define AS_CTRL_FORMAT_MASK		(0xf << 4)
- #define AS_CTRL_ENABLE_COLORKEY		BIT(3)
- #define AS_CTRL_ALPHA_CTRL_ROP		(3 << 1)
- #define AS_CTRL_ALPHA_CTRL_MULTIPLY	(2 << 1)
- #define AS_CTRL_ALPHA_CTRL_OVERRIDE	(1 << 1)
- #define AS_CTRL_ALPHA_CTRL_EMBEDDED	(0 << 1)
-+#define AS_CTRL_ALPHA_CTRL_MASK		(3 << 1)
- #define AS_CTRL_AS_ENABLE		BIT(0)
- 
- #define MXSFB_MIN_XRES			120
+ static const struct drm_crtc_funcs mxsfb_crtc_funcs = {
 -- 
 2.43.0
 
