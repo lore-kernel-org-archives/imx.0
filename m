@@ -1,61 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795345252;
-	b=p78JGjOFTHOusUqBmh60aq6DQ1JmlzEj6+NUN0OaPxV/ulpFylQ5Cp7LOYo0SQCXfdLJ
-	 znU23vG9PD7VxV8YkoZQQMW0HdT64RbCBk2Zme7IWgygvos/rCpK+laxFCbEWdOrT4g3n
-	 UWlFv+HzGqmgRC26QkufQKR6M7b3tfFn31gj/dDJT5EMKpc0zYBCC03zuyFl32LpgE7O0
-	 2TezULUBHVu0rAZCZTo3N3ca5kj9lXAlFPKQR3Pz47T39K307CQCVyk/yDTHYKWq5e+0v
-	 0JdifRAWsE6WydaeIgvRhuA7o9NXVhIt1DaAl37b3leRrU43veKe2li+CMDZq5hwj5g==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795345252;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=zggGzxEmYdUO2ER56cmR3uCkWwbZK6jGMEYqYgWH4qo=;
-	b=ItCsVBAkqZZXLyH+HRa1RBYh1gakIravlxGATW0K0mzEgYngVQg8nR3k9csF7+O4sNoQ
-	 vW5r+kfn07MnoGxc8J7VgLfd6mhmdWYUfLf3njWycHRF1OTX5ygPDx1caZmeLJ5r3X5Ao
-	 q7YE57bYZvFjzUY2NKUFM0rAK/yPRw+NivpM8RPCXZQ3mCnLQ6uhur3ze/v9mllpvhzM5
-	 ABQTMLUhYd2sEpjZKHtV1dVrx6pFeokC/d/PbfaQHnX0zPIhkHEfthv32N2Jze7mEzOtL
-	 7H+H77GI8oodqqb8oTl+frSSA3c9HRJ3JlosIrq0qpms44sPgtl567TmQ2+5czPmg5Q==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=db6jrTnn;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.174
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795347056;
+	b=ZYuMR1sFjMQ8N39sURxcXBXdxiGoDmNz1H6ybh2rAJlv8jAn7SrahOtUtxVBq8Uv29ME
+	 3uOUUSi+xcM6bb9YwXJJS1X94cT6xqDgOquJqKajqt2s8KhEEIA14BysTnCwjBBXDKR9+
+	 LTPjIKsH6xxXbq5PLQYyAXAvfpZDBcIp7lki0wLhv+zlS2WMGICvl3xZU+Fmk26R4ggwj
+	 NfQ0nsrr/qhSbpVnasJu64k6wbrok6x7p5J97Ur8V0mzy7gUNqNhXI1aIN+zGCI0Z5VQu
+	 Mze4Zn6OQkEm3QLU1A65uDrvFjVPPABxDMYNUG+th6eO8RNc7dH3hrsvvWeNIH8Q2GA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795347056;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=HTIrhwJl/9ipJcdFd57QjcFO8vQHJXUr0hmcwxLC+cc=;
+	b=GQW/bfmFumIWxySTjhIjQyfXpUogNkChsLWDYkLPJnKwxRYgEsoF7v3KZTVD7BBA6526
+	 gsox6PJCIPpkOQxBclqCTtOXZgMNk4ZytLdh9zsChXGJum0v9c31RRMXinIWr3y67Ny9R
+	 ICc/jejuaiQQHn8ko+rM+nZN/hw5YTQTCDPLFVooyX5vQLCkHOLEJohPST4fBUAIjoipZ
+	 DGDytNZ5pn8hUNjNHt+uV1bnj4kA6v1UZhu/IWuz2Z+xKDf3LPDZ1r2LpfnfY3bt0Hbts
+	 mqkGuMPFWf+wrxT9keHgfIV6txmiw98/mzWABg+EQEELsMvFBx/E3+fgTFXFipWD0hw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=F6PGiZgY;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.174
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9306606A681;
-	Sun, 22 Nov 2026 11:00:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88510606A32A
+	for <imx@lists.linux.dev>; Sun, 22 Nov 2026 11:30:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 88510606A32A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=db6jrTnn
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A40EF1F000C6;
-	Sun, 22 Nov 2026 11:00:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795345252;
-	bh=zggGzxEmYdUO2ER56cmR3uCkWwbZK6jGMEYqYgWH4qo=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=db6jrTnn+WbkFLApyKYhketGr/FUPldhNR/KbNljcMY5jriBMR3R4zTA5wGO4RMSM
-	 /dFynGSlhdNnxZVGKXNSJE+5FkKkzWNnYIEzpvDSDLh4GxplUgq6O8DCRBj5xsdC7N
-	 jYwnaSAlITZPYhGyLQjNoWqliI18FNWEC2CK8BIYUB8fOrF4l7xz5+Xun3duRD0QoN
-	 zBeGkOpSEmG0RdSiL1Ve9jENSaspZ6Ct2CQcJ2+1LR1E0ElAhk4zzh/EWyBQMqbBib
-	 GPzKV9V6n0lqaRmfslCAWcUuNsK58bAq37z9YUzb7H3Ot2AY+Jg5/wO1uAm4U5mXCm
-	 jBtLgVmaiAoHg==
-Subject: Re: [PATCH net-next 3/4] net: enetc: add i.MX952 ENETC support
-From: netdev-bot+sashiko@kernel.org
-To: frieder@fris.de
-Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, wei.fang@nxp.com,
- xiaoning.wang@nxp.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, richardcochran@gmail.com,
- imx@lists.linux.dev, netdev@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, frieder.schrempf@kontron.de
-Date: Sun, 22 Nov 2026 11:00:51 +0000
-Message-ID: <179534525124.3135.3738979682916581664@kernel.org>
-In-Reply-To: <20261118-imx952-enetc-v1-3-25721440602e@kontron.de>
-References: <20261118-imx952-enetc-v1-3-25721440602e@kontron.de>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=F6PGiZgY
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-3ab3b29a1d4so17733691fa.1
+        for <imx@lists.linux.dev>; Sun, 22 Nov 2026 03:30:56 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795347055; cv=none;
+        d=google.com; s=arc-20260327;
+        b=HbEWFnapiUklhZpXMoTabV2kv4wm+3gXbYkv1tRyBz47bTh8bIQFBSsoxrHpshmwuZ
+         csRFC6gff/YswiRKJ/Vv0f7w48l1v70FKOUrExuya05B8/j1cbGwT4dMryN83jr/++Qc
+         msrF5PpHR6/iU/x73qegFSrKYTUZuIO6XjUhDBRw2tM6PgEaPP2MRBuGT54XSPiv6oPf
+         Qfz4zUlgQElMiFBn+VkrXBwgC08ZpoG5JAc7XlGYSaslNVyJjDQYQLyklQJVY+eGTOQ9
+         DKEj9q3Tb4sUy42CQ88DxzXDzufpQoEV7NebKV3kZ3lLL04QjxS62+juo0tB7a4GyDl4
+         wcig==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=HTIrhwJl/9ipJcdFd57QjcFO8vQHJXUr0hmcwxLC+cc=;
+        fh=evTMuidSZexMfxvNwAZ50QOBh/kUdUfLvA/wSjM/PbM=;
+        b=cbDm6KDuS5RGcYujRKhxRCSelTeVfDXGq9J84PiyrepWmciOXljYjgwhvVSFtoFoPA
+         j/O7RP0YfwU684MqUjwIItngson027+LbZChZOQIbJE35uAHgYeaoSgA8cKWF+5D6rqb
+         T8+mWM3THWJNNdC+lmrJvcm8Vvbc9RezaaDtswKVz7YPm+W4pA3htgh793my0JWlpjCK
+         TnjnnGh933+W3epSDbyhiny7fb14cKoJaXEZZR9Whes9sXqH3vtfwkODRdVQBZy0+BfH
+         UDmHt45dA8xpkwMVlEjYmT7yacbRqn1398PeXh5i8J0XCfU3yQEQOmB8DxEpuviDgZYP
+         ETjg==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795347055; x=1795951855; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=HTIrhwJl/9ipJcdFd57QjcFO8vQHJXUr0hmcwxLC+cc=;
+        b=F6PGiZgYthx5/wB7iJLTsCSFd7u8ulfHLOzJvl6GJcHgSy9WZw2i5t6U5Go+m26r/c
+         V4Cvgnr7KJOW6NawREbMb29yPA4pSn8LJiaCpvJOXR0sfPHK7sstvPsgrjw1ljKPw+YI
+         7tlZshRad3BrKkHBaeBsiVsV0vjwe87Yv9Jf157mXdKBSUdq8MPphb+zVqwlWalV3v3V
+         oyjoA+YHbk2eSl3G/WVOSHUUm5Bd2QR20aVEEdxKV9hX7DQgC8BSC80c8hY7Fypu7ReP
+         3Mexf34oVw4Yy2AaYSaYvELDu/QWRaRg3QE8seuin7+XNE41mHKAm5L7XikTfTfMJ+4y
+         1bag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795347055; x=1795951855;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=HTIrhwJl/9ipJcdFd57QjcFO8vQHJXUr0hmcwxLC+cc=;
+        b=qIEQJCRlvZXHbo1Rg+22LbSzylSYcIPqmzJtJjzM1Mmaz7zL1veBaS6cetZMm36QVL
+         DqgvItUb1cRXKzoHoQ5mLhZOh/ggDOZQ7IbHZX5WJejo4ijQTJHylf88C5nlDvLG1sIt
+         iLkIP8sya6zAFFaEwdpCQfgqKabdLbQVHqyAc9CH4gaCwT189G/LTkubFfJNr34OA4Q3
+         CWQkPQrr07OhyZEM5S90nmm5BTZpPxhFH/rtVaQrp0YZ1ZamZ6gwpZF5OpPxCKLT12E3
+         CHq/Q4ds2GlszQyVwRLend1nXVIjxnNog9hjV+Na3jLKqitpr0+7sNSy9Ht0d8icAQFH
+         HU5g==
+X-Forwarded-Encrypted: i=1; AL+hErEOLDgeLfjQxLsCs0HUzUhbXXM5VWXT5wHVlFtts68U9eXs/T7OEjd3EEItNazQfwsmOyA=@lists.linux.dev
+X-Gm-Message-State: APuU4Z/rUI5iLw8BXzxTRysGu6ruq9QIRGx8aOiSbuj4HGfmWRbLJVv9
+	DqhEsjRG8AxRx5sJmnZBTXV3tjc/L12vn8ziLFyUEkS64eu0zLvHV0nJIWiCfGJxFGjim2stkM2
+	T3Vyg/mAU6p2yxK7qMkuy98mFUgddidE=
+X-Gm-Gg: AZFdTZea8zS2XBnzVYQ3GoXnNO8XHpFaux27xortUgnh7499KFsdxpYDoUnC8Kfmof7
+	hMU85TQKiT/zzQcoNudVIi4NwHqT+w/hmwahBAcvnmaqU6fddebscf4LPUYDs+2s0lsfnmhSyUv
+	6yeOa+z0jUNrpCpWPLEHh1DT8s/zioMMnPD22Nq1/ScFLhZW5ioZ9UKn2hr5/LPkdzRUtdQuLaU
+	aOrz6NlagcowluNA3p+W5xO8ZT6BYP7COl9HDhcWIXLmlsxITHxebSwnuRV1bI6LKPC8nybYAOS
+	iQkAQj1p2O0cKRGYi50mdJQ5gSO9HYh8wNB8yMYfgO65iefSrJFvgkmvvrLMRNQhTvkvJ1iGpDJ
+	nc1Q0uPsbKSSalcuzu6/4kweHRQR1zMB52Y9FZh9+pG7gN24FZw/JI5lIqYu5T7JpzS+jeI1oh7
+	erBiZNHtRwUlCMI3Xk+AV7qv8j85G9FCdxNgKnI1ThjYD2epg=
+X-Received: by 2002:a05:651c:a32f:b0:3ad:fb2d:a757 with SMTP id
+ 38308e7fff4ca-3ae7fa45871mr24883491fa.24.1795347054437; Sun, 22 Nov 2026
+ 03:30:54 -0800 (PST)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -65,142 +105,30 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
+References: <20261119134041.16611-1-festevam@gmail.com> <20261121231726.71aa1aba@jic23-hlaptop>
+In-Reply-To: <20261121231726.71aa1aba@jic23-hlaptop>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Sun, 22 Nov 2026 08:30:41 -0300
+X-Gm-Features: Aa3M54qp-5FUOe8r1ZuLPebMgOZXGH2Yo_N6UQqWLwX2mQ0uaPQ4PbhpovaTi3g
+Message-ID: <CAOMZO5Dp6KYkd6=hsK366x_83ji9tdumq9k5tWXJGvW0EeRpDg@mail.gmail.com>
+Subject: Re: [PATCH v5 1/4] dt-bindings: mfd: mxs-lradc: Fix interrupt order
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: lee@kernel.org, maz@kernel.org, andy@kernel.org, dmitry.torokhov@gmail.com, 
+	linux-input@vger.kernel.org, mfd@lists.linux.dev, linux-iio@vger.kernel.org, 
+	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, crofts@kernel.org, 
+	devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+Hi Jonathan,
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 0
+On Sat, Nov 21, 2026 at 8:17=E2=80=AFPM Jonathan Cameron <jic23@kernel.org>=
+ wrote:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+> This bit belongs below the --- with the change log.
+> I'll fix up if you don't have to do a v6 for other reasons.
 
-- [Medium] When an i.MX952 (ENETC rev 4.6) VF cannot get its IP minor
-  revision from the PF, enetc_vf_get_revision()…
-- [Medium] This finding is speculative.
+Please fix it up. For now, I don't plan to do a v6.
 
---
-
-net: enetc: add i.MX952 ENETC support
-
-This commit adds ENETC revision 4.6 (i.MX952) entries to the enetc_info
-table, with new PF and VF driver data that use a 133 MHz sysclk. It also
-maps revision 4.6 to a PTP timer at PCI_DEVFN(0, 1) in
-enetc_get_phc_index_by_pdev().
-
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
-> index c6571b5cc8425..4ef387578b1e4 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-
-[ ... ]
-
-> @@ -3832,6 +3840,13 @@ static const struct enetc_drvdata enetc4_vf_data = {
->  	.eth_ops = &enetc_vf_ethtool_ops,
->  };
->  
-> +static const struct enetc_drvdata enetc4_6_vf_data = {
-> +	.sysclk_freq = ENETC_CLK_133M,
-> +	.tx_csum = true,
-> +	.max_frags = ENETC4_MAX_SKB_FRAGS,
-> +	.eth_ops = &enetc_vf_ethtool_ops,
-> +};
-> +
-
-[Severity: Medium]
-What happens to an i.MX952 VF when it cannot get the minor revision from
-the PF? enetc_vf_get_revision() in enetc_vf.c falls back to a fixed
-revision:
-
-drivers/net/ethernet/freescale/enetc/enetc_vf.c:enetc_vf_get_revision() {
-    ...
-	ip_mn = enetc_vf_get_ip_minor_revision(si);
-	if (ip_mn >= 0) {
-		si->revision = (si->pdev->revision << 8) | ip_mn;
-		return;
-	}
-
-	si->revision = ENETC_REV_4_1;
-    ...
-}
-
-In that case enetc_get_driver_data() matches the ENETC_REV_4_1 VF entry.
-It selects enetc4_vf_data (333 MHz) instead of enetc4_6_vf_data
-(133 MHz), and enetc_vf_netdev_setup() copies the 333 MHz value into
-priv->sysclk_freq.
-
-Before this patch every v4 VF drvdata used 333 MHz, so the fallback still
-gave the right clock. Now that rev 4.6 uses a different sysclk, would
-every usec/cycle conversion on that VF be off by about 2.5x?
-
-For example, enetc_init_si_rings_params() does:
-
-	priv->tx_ictt = enetc_usecs_to_cycles(600, priv->sysclk_freq);
-
-At the real 133 MHz clock this works out to about 1.5 ms instead of
-600 us. The RX DIM work and the ethtool coalesce get/set paths would be
-scaled by the same wrong factor.
-
-The fallback also makes enetc_get_phc_index_by_pdev() take the
-ENETC_REV_4_1 case. That case looks up the timer at PCI_DEVFN(24, 0), not
-at the PCI_DEVFN(0, 1) added below for rev 4.6. Without a ptp-timer
-phandle, could the VF then report no PHC, or the wrong one?
-
-The fallback runs whenever enetc_vf_get_ip_minor_revision() returns an
-error. That can be a DMA allocation failure, a busy mailbox, a poll
-timeout, or an error status from the PF.
-
->  static const struct enetc_platform_info enetc_info[] = {
->  	{ .revision = ENETC_REV_1_0,
->  	  .dev_id = ENETC_DEV_ID_PF,
-
-[ ... ]
-
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c b/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
-> index 7965dfd06f5f6..3c6c6fc0ab8cf 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
-> @@ -1149,6 +1149,7 @@ static int enetc_get_phc_index_by_pdev(struct enetc_si *si)
->  		devfn = PCI_DEVFN(24, 0);
->  		break;
->  	case ENETC_REV_4_3:
-> +	case ENETC_REV_4_6:
->  		devfn = PCI_DEVFN(0, 1);
->  		break;
-
-[Severity: Medium]
-Is there a NETC timer at 00.1 on the bus of each i.MX952 ENETC?
-
-netc_blk_ctrl.c puts the two i.MX952 ENETCs on different buses:
-
-#define IMX952_ENETC0_BUS_DEVFN		0x0
-#define IMX952_ENETC1_BUS_DEVFN		0x100
-
-This lookup uses the ENETC's own bus->number. So ENETC0 would look for a
-timer at 00:00.1, and ENETC1 would look for one at 01:00.1.
-
-i.MX94 has a timer at 00.1 on each bus. It also programs the
-ENETC-to-timer binding explicitly in imx94_enetc_update_tid():
-
-	netc_reg_write(priv->ierb, IERB_ETBCR(eid), tid);
-
-imx952_ierb_init() only writes the byte credit registers and never
-programs IERB_ETBCR. There are also no i.MX952 timer definitions or NETC
-DT nodes in the tree to compare against, so I couldn't verify the
-topology. This may well be fine on real hardware.
-
-If only one timer exists, would the ENETC on the other bus get -1 here
-and report no PHC?
-
-If each bus has its own timer, but the reset value of IERB_ETBCR does not
-bind each ENETC to the timer on its own bus, could the PHC index reported
-to userspace differ from the timer that actually timestamps the packets?
-
->  	default:
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261118-imx952-enetc-v1-0-25721440602e%40kontron.de
+Thanks
