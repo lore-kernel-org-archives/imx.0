@@ -1,61 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=220.197.31.4
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795303574;
-	b=btCnuAlTKVaCuUfWuqNjx4WQz1DFsF0DajlnYOLAgYvY4gc0lGqTHM3RPV8APIiJY1Kb
-	 ZB7xuNtfGt4AlrFpJrA4QErdEJ7VUZp9EndG/bAozNMVPepeKqoWHOk4FUwV3/WTVAFw4
-	 TyoDl0G9vJVk7to7otaJn6B85A/clqN/UKchseRaeFb01Dgj2Xz/xa2mlX477MnEKP7AU
-	 iDTWcqixicWJtPaiWeFG7DGlsGPcY3sXtGJrSC2WgrmJIhXodzIIbf9dFSELjQqWRuDo0
-	 //6fzvRwQJYHhuFcAR6kc53xoY6PIXYfC/Cp2qjQwNNpkw6Ba9/wPBk1tvM5q1svpGw==
+	t=1795310967;
+	b=f7gG2GPfGQmtl/EaxeJ6txl+h1rvxVZo6Nojlbb4OZuwJyBJwYRN7Oq1XPWl+/DvqlSn
+	 CUv3sbn9vsDwdggUDB77S+mSoUU/DkwPChRMPuDHNCLq/B0ssfLqDzbCG5EGrfBr+MxJR
+	 ZDRwMdc+L+Xvvej+uFd7o/2KrysCiQPA+XbvYsjUIeBixCIVbzBx5QNrU3xPNZdashHxy
+	 DOKDzUmvkvj+5mtvUNkj9/hj1CkAHMGOcOlxzfSTn24Q0gY+NGcQKxtO2tXLIOH1RqcHM
+	 C3ZvaI36FWWAdw5bKcM0ZDbfSQ9wU+Ml/6lxio3eqhLwoYOKSOtziUiMKfS2iKvI9xA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795303574;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 In-Reply-To:References:X-Mailer:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=2h4+akabm+ASDuNc49m//l2gEtofBDGQhNVDAgqwlrc=;
-	b=0jdvs6iwNieG3YKieOIqeBi6j2HgwbCPNKN1PK9NGDzqD3h5Dceko2sknBjepxSsOnsH
-	 VmLv3MsDm1EyRDRwVwXZ1UzozxP4AADNI79egGMAcftLgI/qzS2y5k12dKryl4wKGr+gJ
-	 jY+ILsNlKNl8w4/4seGMyGI81k217TK8czgVt8khQy4se0aYlH0Vmru0NyTKyGeysI4ef
-	 iyIfesYGuA96Y/FdsFaPjTQRiI7uuWFrCYLI6I6HoyFsam6qcJngiKpLDmRU+NWosDI0F
-	 z6UMkfcMV/RmDGz2uJ2N7LZAWeqvB3raJhemEJTsTSTBRyNOmX4vC8brbMAZJgoXESg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795310967;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 X-CM-TRANSID:X-Coremail-Antispam:X-CM-SenderInfo;
+	bh=Z70PYIui9VEuOne7HdVafDOBCOxQ+P2TK6HaLLeEkro=;
+	b=S14PaxW+ripIK8Bqt0z0Mm4F18HHd6whZYx/IzV3DHdLLasM/H5uZKfDAvij4pgFIGJj
+	 Fd41zx2iK6htr1TNXD2+R396DiHYxss/d5gOWwwbqUiA69s8bZUOF4d18RaFosh1otYai
+	 F6gR+Hvlg49I69obXbuFGMxHf6Hw7R8yiibfaP/O2aEFNvfMR9InJ7cbFmSPd2Y442pIx
+	 7BCp3sqA7ICacXUm/Vs8IODpiHJVhsATEQr3sZfVo7PlFXKDj3L0Xc6X5yVsSqM2PfeP0
+	 bZc+dt12FSQFHhN+4r9NSWPAbGPFXbcMtN42ZedRCyPWeYcWGld/tXeifoCRDKNe5pA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SSNF+Svo;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=163.com;
+	spf=pass smtp.mailfrom=163.com;
+	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=nlfrXUKS;
+	arc=none smtp.remote-ip=220.197.31.4
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C865C606A320;
-	Sat, 21 Nov 2026 23:26:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C2E2606A320;
+	Sun, 22 Nov 2026 01:29:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4C2E2606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SSNF+Svo
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB3331F000C0;
-	Sat, 21 Nov 2026 23:26:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795303574;
-	bh=2h4+akabm+ASDuNc49m//l2gEtofBDGQhNVDAgqwlrc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=SSNF+Svo84NBPncASHi9V59JsViurOpH0gFsQx6euuEZv2XH4nHqdIVwQXgA9pnaA
-	 sVZ3HnO0u9wGQCbyy/OBzPeGzBaZF5DsOH0Hi1i1m57FeOt78FKSELat5um/eWbdy8
-	 AVqxc9kQD0RTLJJpU0dYcQzVuN9vUE7FzpN84WxrSJZoe6ShUH399dIldVr54pi/FV
-	 Cwi5ScBL4yypo6qIdmK2H1wWtMuzhnHuQRk8iYEOuDFsCukhXnm3blopvO8991KEn3
-	 nFEDf8DpVunU0VRte3PFEgqG7+I4r0f+l/04NosjUjl9VFOvNzlCZGFMaS8y3+OKWd
-	 6n5tnhgKOMUcw==
-Date: Sat, 21 Nov 2026 23:26:09 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Fabio Estevam <festevam@gmail.com>
-Cc: lee@kernel.org, maz@kernel.org, andy@kernel.org,
- dmitry.torokhov@gmail.com, linux-input@vger.kernel.org,
- mfd@lists.linux.dev, linux-iio@vger.kernel.org, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, crofts@kernel.org,
- devicetree@vger.kernel.org, imx@lists.linux.dev, Jonathan Cameron
- <jonathan.cameron@oss.qualcomm.com>
-Subject: Re: [PATCH v5 4/4] mfd: mxs-lradc: Convert to
- devm_clk_get_enabled()
-Message-ID: <20261121232609.65a3be18@jic23-hlaptop>
-In-Reply-To: <20261119134041.16611-4-festevam@gmail.com>
-References: <20261119134041.16611-1-festevam@gmail.com>
-	<20261119134041.16611-4-festevam@gmail.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=nlfrXUKS
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=Z7
+	0PYIui9VEuOne7HdVafDOBCOxQ+P2TK6HaLLeEkro=; b=nlfrXUKSjGO4lqiqg0
+	k49xEJjZkR9GUyu+gnNXvcUxcuxd5fJQtJBhI1NHNQLj4jh7K83ALwO6jdeBDzBV
+	BkE+CJRdC7z6fKfnwOenkEcPJP6tQDMqO4P++JZS+a7LV/cg9qpi0j/Pt7R6mXWA
+	MGnb0FCFx897myF5Jd+YXbQsE=
+Received: from Ubuntu26.04LTS (unknown [])
+	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wD3P_FiRQJrGE4QKA--.56681S2;
+	Sun, 22 Nov 2026 09:29:07 +0800 (CST)
+From: Jiaqi Shi <shijiaqi_develop@163.com>
+To: linux-media@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-staging@lists.linux.dev
+Cc: slongerbeam@gmail.com,
+	p.zabel@pengutronix.de,
+	mchehab@kernel.org,
+	gregkh@linuxfoundation.org,
+	Frank.Li@nxp.com,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	Jiaqi Shi <shijiaqi_develop@163.com>
+Subject: [PATCH v5 0/2] media: imx: staging cleanup and FIM export to v4l2-core
+Date: Sun, 22 Nov 2026 09:29:03 +0800
+Message-ID: <20261122012905.436504-1-shijiaqi_develop@163.com>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -65,23 +67,64 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3P_FiRQJrGE4QKA--.56681S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxCw1kCry8WFW8Jr15Kr4xtFb_yoW5Gr4UpF
+	4Fyw1akFWxJFsxZrnrJ3W7XFy5Xa1fCayag39rX34F9ryrAF9rJw18Ka4UXr98Gr92yw1a
+	vF1Yqry7Wa1jyF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pRcyCJUUUUU=
+X-CM-SenderInfo: xvklyxpdtlsvxhyhz0rs6rljoofrz/xtbC8APEGGsCRWP+8wAA3t
 
-On Thu, 19 Nov 2026 10:40:41 -0300
-Fabio Estevam <festevam@gmail.com> wrote:
+Changes in v5:
+- Use the source-independent frame-size enumeration for legacy capture
+  nodes as well, instead of pairing generic pixel-format enumeration
+  with source-dependent frame-size enumeration.
+- Restrict IC capture format enumeration and fallback to YUV/RGB formats;
+  CSI capture nodes continue to support the full format set.
+- Keep the remaining STD and frame-interval legacy ioctls unchanged.
+- Add kernel-doc for the public FIM configuration and helper APIs,
+  including ownership, callback context, and locking rules.
 
-> The LRADC clock is acquired with a managed helper but enabled and
-> disabled manually.
-> 
-> Acquire the LRADC clock with devm_clk_get_enabled() instead of a bare
-> devm_clk_get() followed by a manual clk_prepare_enable(), so it is
-> prepared/enabled for the device lifetime and released on unbind.
-> 
-> This conversion makes the code simpler.
-> 
-> Suggested-by: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
-> Signed-off-by: Fabio Estevam <festevam@gmail.com>
-I don't mind if you get to the dev_err_probe() now or later
+This series continues the i.MX staging media driver cleanup by removing
+legacy control inheritance and source-dependent format handling from
+capture video nodes, and exports the generic Frame Interval Monitor to
+v4l2-core while retaining the i.MX input capture controls locally.
 
-Reviewed-by: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
+The new FIM files are already covered by the existing MEDIA INPUT
+INFRASTRUCTURE entries for drivers/media/ and include/media/.
+
+Validation:
+- allmodconfig build and sparse
+- scripts/kernel-doc -none on the FIM header and implementation
+- local FIM KUnit tests, not included in this series: 13/13 passed
+- local white-box i.MX capture format tests, not included: 21/21 passed
+- QEMU vivid: v4l2-compliance 125/125, 30-frame streaming passed
+- QEMU vim2m: v4l2-compliance 49/49, 10-frame streaming passed
+- i.MX register-level and hardware DMA paths remain untested
+
+Jiaqi Shi (2):
+  media: imx: remove legacy video node control and format handling
+  media: v4l2-core: add frame interval monitor helper
+
+ Documentation/admin-guide/media/imx.rst       |  20 +-
+ drivers/media/v4l2-core/Kconfig               |   4 +
+ drivers/media/v4l2-core/Makefile              |   1 +
+ drivers/media/v4l2-core/v4l2-fim.c            | 385 +++++++++++++++++
+ drivers/staging/media/imx/Kconfig             |   1 +
+ drivers/staging/media/imx/TODO                |  13 -
+ drivers/staging/media/imx/imx-ic-prpencvf.c   |  10 +-
+ drivers/staging/media/imx/imx-media-capture.c | 391 +++++++-----------
+ drivers/staging/media/imx/imx-media-csi.c     |  10 +-
+ .../staging/media/imx/imx-media-dev-common.c  | 113 +----
+ drivers/staging/media/imx/imx-media-fim.c     | 361 +++-------------
+ drivers/staging/media/imx/imx-media-utils.c   |   9 +-
+ drivers/staging/media/imx/imx-media.h         |  11 +-
+ include/media/v4l2-fim.h                      |  57 +++
+ 14 files changed, 672 insertions(+), 714 deletions(-)
+ create mode 100644 drivers/media/v4l2-core/v4l2-fim.c
+ delete mode 100644 drivers/staging/media/imx/TODO
+ create mode 100644 include/media/v4l2-fim.h
+
+-- 
+2.53.0
+
