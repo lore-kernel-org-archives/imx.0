@@ -1,57 +1,115 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.52
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795348413;
-	b=Pm7w2q/ryne4tfqvSs+Ub+2HJ4uiDISPJG90OwjOH1tGwm2FexmzvXB12fAx4HB14kVn
-	 r+dsVsNLneLqnuT2W9Uo6CdBzlBrr5uwIh791BY7JzhJs1dbc20fEmCHeaMCdpfK5YkJK
-	 lJhHK7wgKUbJkn6AIyV/I1/Q3f9simE3R9O6v6srIIVvd+Qf2vks2e8wPblB1CAo94Gx/
-	 nRrn3RkRRVah3yU9cQuPR6SSxv+iGyP1eAV0bo27ymrkM+pQ/JvNQ7//v05D8v4kgvA7V
-	 uRaBkvdOwThY1BTkQ3MAmAX7qWaxldPC0SI6y6LOQGSYJwhL95HegHIgPBi4DtDl/Lg==
+	t=1795361446;
+	b=s3Ed2PRCyAzjBs9L7KE3bdCrkxDbELy9imZu7zhfBGVTUR374omqEKcmdqyMMTdiwsp+
+	 0sKGUDd8Bd6JI6ChLANZtMC8pfxIdT2sdUjuAuEcumggfFXkeRb1Tnec52hMPzn7Dduo2
+	 jzMynCEGh7VYFI1EOHYBICYXrTwHqqpoj8og3nEANjLv9cO7HnBeyyDxSluPHRl9nauQm
+	 yuUL5q7qRH0HbQSuvlgo3PoQFN7QjHikXBugsEryHF6N53zp5CXmmMrLfLFh3INLdViKp
+	 Wn5LYI+91IuL3Jw9UbuZQORdgvakjjZ1llVUV2qw/XaBGafz1WybiOwLeDTERzWTpTA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795348413;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=Km95FdJ3grboSVXJfnJERlZVzUyfSZ1Xz0g6pqN01GA=;
-	b=OVlgm4LGViKvCujSn9XdZrbSJMcxrKlHkCZk99MY4Hn0nxktngCji66llqMFT7vNtvRL
-	 OEHckEgPMEwijLyFGqPYMcm+MXVqBxenOk5UTq80aJlnWzANFKBSd860KFbqbt/K/h/Uq
-	 5xNWCrUbePLBr5HpD1Me1k/1995HgE+/Bb0Z98OFjK03dOW+Hgh/unW/leg7kBQ4m+Pc6
-	 19S2p5wsMODpM8s3rWblo9SL7MZnBp0CDOfT1lbsF4SRhuBc41HvKMz+ORjM69WxvxRcM
-	 Zo4IYVAylROy1xrX4XBgjIg/omZA2qpc9XBwHwgLOYMPhI6Ws8JsOlWA18tC1afaagQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795361446;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=AcE23n4pwXrPvICR/OBmKOqECG6PQtTg4meGhVNm1yI=;
+	b=litpJLhhLuS9B4Ny2qMgQwYfEFwIR2BXTGDStwvZGYcFyEHTxSXU2ytf9igkQ44bnykX
+	 IUxyUTn0oiubrrLOXUC1NFdzM+DUkvJpH2JqWHPIGr1IsglkbEgbPksyMAfovhdJaupkG
+	 7/2Tobq8jbhlFbBk1ljascoP8OZXGf2Pfv93BVknccoPxhjF/jAEzpPzphUdiL/10BO/f
+	 3/k0M2ATwrjc+qp8MKKh194aJka16tGoIEBkcckRuPOi8Zd0tAT6Ys3QoFzoSaFVk2FRi
+	 umH0MNUBzzgQI5azKrnXlwJxIXerQdEyIVryt2o1Rya1e/simUn8QwEyFKefkh+ZLrg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gEkAZas7;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=amarulasolutions.com;
+	spf=pass smtp.mailfrom=amarulasolutions.com;
+	dkim=pass header.d=amarulasolutions.com header.i=@amarulasolutions.com header.a=rsa-sha256 header.s=google header.b=jiFsbvCe;
+	arc=none smtp.remote-ip=209.85.128.52
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59D26606A320
-	for <imx@lists.linux.dev>; Sun, 22 Nov 2026 11:53:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 078B5606A32C
+	for <imx@lists.linux.dev>; Sun, 22 Nov 2026 15:30:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 078B5606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gEkAZas7
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E46021F000C6;
-	Sun, 22 Nov 2026 11:53:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795348413;
-	bh=Km95FdJ3grboSVXJfnJERlZVzUyfSZ1Xz0g6pqN01GA=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=gEkAZas7JQ1+JnMhAw1oFnfYrF1cWaAnZcFg+JUyKpYo2/+NjyR5iHdEWbW7bjJy7
-	 gTGFrLhIteiyIf+mYDdeoHg+oPTYrSqb73FnMjTs2BztIgRhoiFLtwSejblPk4a97k
-	 VtUNueSaZa4HVL8BwZ1lWJARtlt3rCtS59PwM2nhDfZLmOOROtfs3f1YqocdjQjqT5
-	 e7HV/kTqf7laoZaWvnhPiEXb+RaPzLHwDCtfXXY1nlP7DpJarQzj3BEoQ98oFbrXJR
-	 rAFZLPMNbmSU/P+lowCZiYqYyodm6VEaDdp/BcirMamVOnZQcVNbfKrhDRFAP3folC
-	 t8pE1LHiUMlgQ==
-Message-ID: <sashiko-outbox-227913@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v6 1/2] media: imx: remove legacy video node control and
- format handling
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Jiaqi Shi" <shijiaqi_develop@163.com>, imx@lists.linux.dev
-Cc: Frank.Li@kernel.org, media-ci@linuxtv.org
-In-Reply-To: <20261122114205.494704-2-shijiaqi_develop@163.com>
-References: <20261122114205.494704-1-shijiaqi_develop@163.com>
- <20261122114205.494704-2-shijiaqi_develop@163.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sun, 22 Nov 2026 11:53:32 +0000
+	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.a=rsa-sha256 header.s=google header.b=jiFsbvCe
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4bb64ef5a00so18477935e9.3
+        for <imx@lists.linux.dev>; Sun, 22 Nov 2026 07:30:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=amarulasolutions.com; s=google; t=1795361444; x=1795966244; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=AcE23n4pwXrPvICR/OBmKOqECG6PQtTg4meGhVNm1yI=;
+        b=jiFsbvCe+yzY993QrFLoUy9EixzV9FgzlD5ZONHN554B9GLIZQO+tUgWFO2zBSW1yK
+         i9M51VKNaU9mkhyAPoXUHrBjji9zzC+MOqDDsUDUENEKzvhjzJh9aZalfJeaozkS36DP
+         wXNPirIl1g9JqnAjjz0edtqZX8zrwrKApqQa8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795361444; x=1795966244;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=AcE23n4pwXrPvICR/OBmKOqECG6PQtTg4meGhVNm1yI=;
+        b=nPB8ZXeXFbGCtc+8XZPZHQyU2KtT8OiZ35cvOmsg+BJhu95k5eurtN9eLPWH4ioNU4
+         XCY/1UA/7hP37fbdo2Ni+a07QFd0hJHyrVxzaibDYpaEWBtqun6Zh/hb45HVTgWtUVrF
+         b1QL5rO6Z0Oi5E2sFlNJi1Tm093FcDMz6qlJjxPExnoNbHGsXDuCUuGepfjDWRQFLMRg
+         dM3i/vDytpSwtWgI7UBsTdK4FzR24d3UOZqWlNPy1kJQwn/JQCnSOGhx7bPmMTjTu3IH
+         WaGOuXEE4MlOKlW0OYEhegsuK70sxHBJerzA6fTXdNPmBZzEvxA/qNuJ5fCa5qd/t2bA
+         BVdQ==
+X-Forwarded-Encrypted: i=1; AL+hErH6byUzq4RDX6GEOqbZjU6mBgR+VlO3VgPW1G9TpwTAvssktXxGSKgQcRWWUV5xhSQ9s8U=@lists.linux.dev
+X-Gm-Message-State: APuU4Z9ZOm0HbHaTHqOvw6Bv32q53d/PyWZPLzCNzY6OBsJy8tt1S6eV
+	g6hJVl0/wt5PeRy3Xd3aaIERtgxm4NQbiPgrYc/H49SOaz0462fcUXSZAp7h8YjtKSc=
+X-Gm-Gg: AZFdTZeScY0MNP5N08sXfhaVrGWz9bCT82hnaSAXB8b6OwCJCrvmzpbT181za7qnXi3
+	UWDp7l+HdIM6+RnuC73BSruSnwRKD7JLostGJ/jc6TOlqS2Jv3IJ65eccXFdgVAHOlDXkqTJxDs
+	iJ2JkqRqwW+/KCp2a4FaoBW7QRaTsAWs9YK4ndehIkucIrCGsVEMyzGMcy6s1Gmk0IHS58Rd2Bf
+	HxtkDwi4wyOJY8cJsj99ZetYR08Ti6JLejpdEtJ54WR8fQ9zhRynX02M6e5IEkMrdAZXOhN+9DM
+	Np6+HEpc0L7a1wl5i/F+qO3rWI9lncewkc9LxiSe6PhBjjcBo0Tmobk7rI5IJgP0Fl6fbIj7/ZY
+	wD4k8xfo1ozDUush2MyJnU3Pixt2P9c/ex5Xu7lKCXZtAjqQO1m0I9kxiIcrL247lR89CAXus/o
+	TKlmKrjnJJyrK0tQIfub1BpwPyZhXZAiDHxxZ2NhNE+eM1KvJ1f5NqQ0n2gvRFIERAJirMQuKGv
+	yLDoAvdM98h37jNGfbGHD91ftqQcGOxMhG85fFjh272PFHPmqN2+52qdJC1U2Ww1UE4CwgTQSQZ
+	cqs8ELWM0nn/yb0dDrSx5TDJxBoJF5U4vA4n1mdzy7LWrxirDWm04adj1s9wUqm9aGdIG60c20K
+	mfn+HE4pcTBLOwMYN7sV6KMFjYVCnfTcWLz/Jn2ziSf9u4o++hIGrtNfEeHndQsQhuYzuA4J996
+	iizxnWlG+WCqGvyixYCqiQELYZwHifm2v3blGtJmk6vkPJugQ=
+X-Received: by 2002:a05:600c:468c:b0:4bb:6d61:af7c with SMTP id 5b1f17b1804b1-4bb88944bf5mr182002275e9.35.1795361444382;
+        Sun, 22 Nov 2026 07:30:44 -0800 (PST)
+Received: from dario-ThinkPad-P14s-Gen-5.homenet.telecomitalia.it (host-79-14-29-58.business.telecomitalia.it. [79.14.29.58])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb884a15absm237833815e9.9.2026.11.22.07.30.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 22 Nov 2026 07:30:43 -0800 (PST)
+From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+To: Maxime Ripard <mripard@kernel.org>
+Cc: michael@amarulasolutions.com,
+	linux-amarula@amarulasolutions.com,
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	David Airlie <airlied@gmail.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Inki Dae <inki.dae@samsung.com>,
+	Jagan Teki <jagan@amarulasolutions.com>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Jessica Zhang <jesszhan0024@gmail.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Marek Vasut <marex@denx.de>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Robert Foss <rfoss@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Simona Vetter <simona@ffwll.ch>,
+	Stefan Agner <stefan@agner.ch>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	dri-devel@lists.freedesktop.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [RFC PATCH 0/8] drm: State readout for the i.MX8MN display pipeline
+Date: Sun, 22 Nov 2026 16:30:00 +0100
+Message-ID: <20261122153032.2782768-1-dario.binacchi@amarulasolutions.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -60,61 +118,54 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Medium] media: imx: callers of imx_media_capture_device_init() pass
-  legacy_api
---
+This series implements the hardware state readout [1] for the display
+pipeline of the i.MX8MN (LCDIF, Samsung DSIM, Synaptics R63353 panel),
+so that the splash screen shown by the bootloader stays on, without a
+modeset, until a client draws.
 
-commit f477c79fad0e434429f9fa5c4d3df4807bcb087f
-Author: Jiaqi Shi <shijiaqi_develop@163.com>
+The first two patches add the hooks a bridge and a panel need to
+acquire their resources (runtime PM, regulators) when they are found
+enabled. They are a proposal, since the drivers converted so far
+didn't need them.
 
-media: imx: remove legacy video node control and format handling
+The series is based on [1] and needs [2] to keep the power domains of
+the display on.
 
-This commit removes subdevice control inheritance to capture video nodes
-and switches capture nodes to source-independent format negotiation with
-stream-time format validation.
+Tested on i.MX8MN (BSH SMM S2 PRO).
 
-> diff --git a/drivers/staging/media/imx/imx-ic-prpencvf.c b/drivers/stagin=
-g/media/imx/imx-ic-prpencvf.c
-> index 3430ddeac3569..bd4c2e7a0b8d0 100644
-> --- a/drivers/staging/media/imx/imx-ic-prpencvf.c
-> +++ b/drivers/staging/media/imx/imx-ic-prpencvf.c
+[1] https://lore.kernel.org/r/20261106-drm-state-readout-v8-0-cbe78624e1bc@kernel.org
+[2] https://lore.kernel.org/r/20261122095927.2631909-1-dario.binacchi@amarulasolutions.com
 
-[ ... ]
 
-> @@ -1280,13 +1281,13 @@ static int prp_registered(struct v4l2_subdev *sd)
-> =20
->  	priv->vdev =3D imx_media_capture_device_init(ic_priv->ipu_dev,
->  						   &ic_priv->sd,
-> -						   PRPENCVF_SRC_PAD, true);
-> +						   PRPENCVF_SRC_PAD, true, true);
+Dario Binacchi (8):
+  drm/bridge: Add atomic_sro_install_state hook
+  drm/panel: Add sro_install hook
+  drm/mxsfb: Use the bridge connector
+  drm/mxsfb: Switch to drm_mode_config_create_initial_state()
+  drm/mxsfb: Stop the controller in hw_reset
+  drm/mxsfb: Implement hw state readout
+  drm/bridge: samsung-dsim: Implement hw state readout
+  drm/panel: synaptics-r63353: Support hw state readout
 
-[Severity: Medium]
-Should prp_registered() and csi_registered() pass legacy_api =3D false (or
-should the legacy_api parameter and capture_legacy_ioctl_ops be removed)?
+ drivers/gpu/drm/bridge/samsung-dsim.c         | 125 +++++-
+ drivers/gpu/drm/drm_bridge.c                  |  41 ++
+ drivers/gpu/drm/drm_panel.c                   |  16 +
+ drivers/gpu/drm/mxsfb/Kconfig                 |   2 +
+ drivers/gpu/drm/mxsfb/mxsfb_drv.c             |  31 +-
+ drivers/gpu/drm/mxsfb/mxsfb_kms.c             | 394 +++++++++++++++++-
+ drivers/gpu/drm/mxsfb/mxsfb_regs.h            |   3 +
+ .../gpu/drm/panel/panel-synaptics-r63353.c    |  33 +-
+ include/drm/drm_bridge.h                      |  20 +
+ include/drm/drm_panel.h                       |  10 +
+ 10 files changed, 642 insertions(+), 33 deletions(-)
 
-Because both callers of imx_media_capture_device_init() still pass
-legacy_api =3D true:
+---
+base-commit: fe97bd8df0365f5aa27ea88b621e3f475bdd544d
+branch: drm-sro-rfc
 
-drivers/staging/media/imx/imx-media-capture.c:imx_media_capture_device_init=
-() {
-	...
-	vfd->ioctl_ops =3D legacy_api ? &capture_legacy_ioctl_ops
-		       : &capture_ioctl_ops;
-	...
-	vfd->device_caps =3D V4L2_CAP_VIDEO_CAPTURE | V4L2_CAP_STREAMING
-			 | (!legacy_api ? V4L2_CAP_IO_MC : 0);
-}
+-- 
+2.43.0
 
-V4L2_CAP_IO_MC is never set on any capture device, so v4l_enum_fmt() in
-v4l2-core zeroes f->mbus_code before calling capture_enum_fmt_vid_cap(),
-making its f->mbus_code filtering unreachable from userspace.  In
-addition, capture_ioctl_ops is left unused while
-capture_legacy_enum_frameintervals() remains active and coupled to the
-source subdevice's V4L2_SUBDEV_FORMAT_ACTIVE configuration.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261122114205.4947=
-04-1-shijiaqi_develop@163.com?part=3D1
