@@ -1,82 +1,82 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.52
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795361460;
-	b=WQFo/oP+YKcil7fo9Dq7FIS+VyXW9QTLnUUMAvY6kUjvoRUT3anoayk9utrUi6AvuZYv
-	 jGsgW2zKIJW41avYmX0WtX28NdNxcIVlKzjefXxhFRRfVgt3LuASMqGuad1v+rW6NnbGS
-	 lsN13rytDfPE0SID955q0qi/QmwPUlXepxl9eKOe/y5weEbAsigejlsrjzOg04kv8EE9v
-	 jHLsQ9MtKWSAMLxMxNwEXDSJKORwzZHDKJZK8VSzOCd6HWc02rAt+MXDJhM+2SJGI6pJ2
-	 V72XsgcKJxBFiQM7cMODFwM7VjTMwVJ9w0SuCQfK6ImnHiQFlcE7RiokODeVFbKn1iw==
+	t=1795361464;
+	b=5iDXtKUy/Yfpu3j9nxuBSJ1aXuXcvKTQoL/lVY2DvO8tmdrZIr/+jk2dUVdRcdjNuBa/
+	 fu/Z9EknojdkG0Svq+b3CgIp5JpyIk+zn4FF6scDrZtChRccwQS5v250gxRh/9cz6JGZB
+	 hL1Dbea85UeghfO4s6aiI+jxOb9q6/sAcTvyRieJpB4yo1ofr7bonfJDHS3gabJw2uDua
+	 djN76lxRN+q73rVHxCV69qZU6iy4P2XG12I+hCkLJcxic3W6vOoOyrp4mLXovzlKoBQHY
+	 B9cwAPrPa0GwQ4vm6vww36ovIHFCubPpAbqPvUtksxl2kWBVZ7CJhqOSdBl2llnzUqQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795361460;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795361464;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding;
-	bh=7itunjG2J42PnC7jSB4jhKO5BUVvNkVP3J0t/6cOCWw=;
-	b=PWWiuXz7WI/h+N8HqU8bY8csB0N4aaKXSMWdS9fsnmtEWKcR+LKvqNqYom7NJ80oxDew
-	 y/Cpjt45u5h2UsgVKxkVatyVa0gkwJ5Ukc2ZViGk5Xv5QG1o0RjKTtIG8nM/Ql/jLJzU4
-	 /tiVdDs8qI/cFF6JRxcHsr1TTW2rwcHy/GxvYa7wzh8GUk3Chsf17v1TID4CPNm0uo6P2
-	 0Ndr1802BZEcHfPKadnUAsyIS1v/MDEJQ9HEiF981sIXNFTQbPduVJWOmtL5oN97zNrxR
-	 G3fhTQaTmSnYRko5o1qrTHr1AFC2DA4DsJWmssQz+Ydx4D3ikcPBQ8voLQVEYxfr7JA==
+	bh=NKlfL/cIMbCShlnoUQAoP1Uep9RrtGH8SZf3MvBv2hw=;
+	b=XHd+JJ++PAcGyS7VJB8DBwFNGO8Fd9hdYJYLF3yeQtdfv3QfKCrEuc0BopptaaB7mftR
+	 AXdxp1pCAi9REcVX9YnMEs96ZB61GFVyLVi42AvoYUEEJGoUNejj0NssN78p9AodmgoqO
+	 Nnc4QrCMSaaAvaPcUw2xsMHWvu8EKidW8KO9dcBds085FzuGa7EyC0XiOwfON3KM11evs
+	 pEof75qvWaxJqO91cl2HEQMH1jGkptho2uYtoHzIs8Ru3hx7ONmkbixo5WGI05X7frJvx
+	 RUycwPtzU7vOgDC2Q9StGUAL4JIj3ErazRkJv1jw/O3hejFrAOzK48oGlSZggLB2mYA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=amarulasolutions.com;
 	spf=pass smtp.mailfrom=amarulasolutions.com;
-	dkim=pass header.d=amarulasolutions.com header.i=@amarulasolutions.com header.a=rsa-sha256 header.s=google header.b=IWCmayX6;
-	arc=none smtp.remote-ip=209.85.128.48
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	dkim=pass header.d=amarulasolutions.com header.i=@amarulasolutions.com header.a=rsa-sha256 header.s=google header.b=J42035r6;
+	arc=none smtp.remote-ip=209.85.128.52
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04422606A32C
-	for <imx@lists.linux.dev>; Sun, 22 Nov 2026 15:30:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 04422606A32C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5822606A32C
+	for <imx@lists.linux.dev>; Sun, 22 Nov 2026 15:31:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C5822606A32C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.a=rsa-sha256 header.s=google header.b=IWCmayX6
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-49d05d51553so16570315e9.2
-        for <imx@lists.linux.dev>; Sun, 22 Nov 2026 07:30:59 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.a=rsa-sha256 header.s=google header.b=J42035r6
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4a2d6d01ecbso13176005e9.0
+        for <imx@lists.linux.dev>; Sun, 22 Nov 2026 07:31:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amarulasolutions.com; s=google; t=1795361458; x=1795966258; darn=lists.linux.dev;
+        d=amarulasolutions.com; s=google; t=1795361462; x=1795966262; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=7itunjG2J42PnC7jSB4jhKO5BUVvNkVP3J0t/6cOCWw=;
-        b=IWCmayX6BUhTLAz95JeYG+024Sp3bQwI+XFERGKhpldUQ9xxubt7QzLnP9W5cEvf5a
-         g9U1sdg7oMD0ZZJFpO/uLvk230Oxje0NSlWRXE3iFS096vGC1xqpElIUog3dAw+4i+lu
-         t6xC3hqWty8OHlXXscN890VZTbBGIExfe0r0w=
+        bh=NKlfL/cIMbCShlnoUQAoP1Uep9RrtGH8SZf3MvBv2hw=;
+        b=J42035r6CXT/09Lm9yT3YWAdTAsmYSF6mSUYISIpq4oCFLBRun1YDsXrm4NAFf29PS
+         ipMhnA9enRKObLXvebq0Oq+hjdd+hlafVzVsxclCf0XizgFgo+AVw54xx+ARA1FkXgXk
+         23trg8EddTXzHiHhYdZKoTmPNGgxvYjOQfiz8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795361458; x=1795966258;
+        d=1e100.net; s=20260707; t=1795361462; x=1795966262;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=7itunjG2J42PnC7jSB4jhKO5BUVvNkVP3J0t/6cOCWw=;
-        b=bFaGY7dGvIeHpIQ7mbeAHYnsXgyzxwI5zntDjATw1duq6B8xcCUW4xDez2L6GMhUSJ
-         dyQ/3zJs7485l6oylJW38YGTwaGR0R9N8xVQA11MfzgqM0GvbB+cMy3q7PfaY/oRIOzm
-         7EnQxBUG3oP9C2BnYKF29piudi0DozdrGFhfl6XYPUEjj7dZTCp9G2GOlpnXjc0df1ir
-         vonOjnGYqKukDTa1PNso/ZEq/ynj/I979nZVvBuqA8NPOIDObdHrPDMYX5XL9BmlA5Wt
-         pWqquv4IqzpBjabGNOEc7Cjeql5fGN66PnSJtsbsLjkgxb0dmy91rnTR/Tyi9DQ4DFy3
-         pc8g==
-X-Forwarded-Encrypted: i=1; AL+hErFc2pwZqXGn+U4MBorBrvQeyVE1tITeX8CGjnIdbZL56Nf8/TFFkwhYNtzoGnhLhKQ1JEk=@lists.linux.dev
-X-Gm-Message-State: APuU4Z/mG3vN1IrzzgwxSSQIWxH16JIr+ECSZkIBIQGH6q9H6Oce/7Kd
-	fMd2iPnDYHF0TbV0Ag0aPLna+2RrE23CfadCNT3X4aLmLo1ZeRHV5j93Xb9is/rVL4I=
-X-Gm-Gg: AZFdTZf6XrGGGrdC8+aX2yjVOCpYGwlANeQOTSi23szhhvmXfA/aoSd3EbSufO3sneD
-	wljQxkq1nA6axQwJU4ULC34CkxJk6mZu38MSU4OU42ruGTplCZpeft8QZqekhQ43qx4vA25Tl2w
-	7mtYkITItkw2HFu1Y+kx2LwRTAjve0QryZJlHxqplX+1YMUwW8R7p2Xcl51V0T5Hu9iQl1Nv3DQ
-	XjQzCXdA4vbm1tmF5GpoRcNbikQKD2AvUb3J4FsMod1wmsJUHd4tZBL6CuhMIMMBlFlCcCZBLML
-	KqTIwIySs0+Uv/TXrK218UI+DQnql+o+IDA0xv0cYu/EdZRCJRD1hVraWzz/1GqZgov9EsWB68J
-	XQL+xAN1cce17mZdg4fx4yOmpqFCdDCPpZtpOE0z9AFQeh87KXQyI+LZVu5vQoJjowvk7zY3VKy
-	uSqB3SmmZvAyOxygDCHvZB9Epq/I9khQpewy9wTpGAyKi1vd2QTI0vQozQ3S/9CsShwobHzPOFM
-	PvKCDlZnMIOq51hGmyoT2Kmsryrx0OhVpZnS5szjsV5T8giW4GKGC7Xe8++6q02VtOAx0C1vYzb
-	mSfpFh04Lsah05zhC0bXNx8AO7K3+w2oxLdAw4rqTMmUExFu9TTJZCvaEvA1R6JpCXcPop9EdV4
-	ZYM/I2pinDaZCq05Ta/rmYa5wWSvkP2+yX4Fdv+0KFtspayyFWgyiZSzapkjeGLLuxqEgDpsoLS
-	WfKL32GFna8ihqfjOhmieJeLw6pQ==
-X-Received: by 2002:a05:600c:64c8:b0:4a4:fc8c:cfd9 with SMTP id 5b1f17b1804b1-4bb8881de62mr177878065e9.25.1795361458330;
-        Sun, 22 Nov 2026 07:30:58 -0800 (PST)
+        bh=NKlfL/cIMbCShlnoUQAoP1Uep9RrtGH8SZf3MvBv2hw=;
+        b=0PORhKj0ZyZPUYiFHWY3P5OyoBQ6jDbYvmu7Xtgklf79gsZvxY/IwH6gUVRRaD6QEv
+         VwFEPddXgdgDWMmZbxMOrJpiZyleQZvtcLhHF7jOUqbvku6qv3pz1obbpJwJXP5UpKz4
+         PJf9//te9BYFjdWWorO/87Md4K/JzI/8QGDh4kJ3JFR7QEIZ1TkTtoybOGa0giGkB9qm
+         5eOMMyYXPjZjuIfJsrUvrQgL2wyttCT5IgLdMogQI9SCnvQ3Fd2ptMAn9b2ARTRkjT4o
+         MGd+h0ntR+mRuVlwiLZ7ouLKIUONmXH5sU2R2jrUPyrtZmIf4rTF4w8yuQqIsYASMkZw
+         SNdA==
+X-Forwarded-Encrypted: i=1; AL+hErG6Wb3bmPRpr1ZPnkKIAtFG+vVeNhAfj8vpuBMMIqh+tEy+0Q7qQiHMHtNYsaAGg4cX8Sw=@lists.linux.dev
+X-Gm-Message-State: APuU4Z8fOWPZtXsUlO3+6U8f8yMqUpv7qEp+uRY+cEHClWKdQoY1y8vH
+	dTBgH5CyCiYIz/7Gx/9R0k8tWMBPSwr/NBTqcwkBUyC/HQl7vpCQRrwwED4kLQtiD7I=
+X-Gm-Gg: AZFdTZdRJ45n2QeQifyuXu7UYjF5MOV7VwsMQ3fHXCtUMJgWq7DKSClxbBe4LrSnzUW
+	RQqnshqoDC8e8mbLJMa2+Xky/BT8Kbkz/kL3u8dGHhv6ZzYtLvhKtw9eTHgXHma8uCOO6YbTyxJ
+	0Pwj+f2DZTwdKq62vwleAcyowWFMwPfJZyT5WEwtjLOJON3Br03OKAgXChlREyfN1vs+B0ZSHlr
+	prtPY5nYg8C+4+boj3XpEhnoJXSTdWT3wfPTgRF0+z1zfhTKDMV/GgKE3azuUBT7rf30crly/1j
+	hbUaHomhZQ2coYfm11ob0FAadaBA+RtCLWJze804unfkr5gAs8RtJcvIF4l5EJ5l56VyxkFXbB8
+	D0a03h+hFPM0/CtaM+e02EoCoaaWFwCFSj96/7//NOuSd2W/NF7DAaTzMSYc1RflJ0p1btXEhhq
+	N+5c336cm7UPsMffA7ovNaQFa4PPC0uN6DbOozupawsEvV/XJsnvBplWw6qw0HZ4Y2epVQynMz6
+	/WD3l94Ova/wLBr8oSImRD7L+SejxoHk+Rb9ebIA7GIoFguRpdoXQeExODpzgmYoUnZyhWmnzSc
+	HgPrFUaVDeGZxM0ajEoxr8yIUdcvKC+lvhNmfliIM4ijczf9MzQNx9IM4ofP8s4482dp1xn9NMt
+	xpdoGo4Sf5yvHuukiS6wT57WRugVphKMEtPWVbw7pWMJ7ePqoZQSkyLvoZo2g52FhEO72pl2GN1
+	wMk1179eprg5QnAwEX65vQnT/9Mg==
+X-Received: by 2002:a05:600c:4584:b0:4bb:5de1:e90f with SMTP id 5b1f17b1804b1-4bb88819bcdmr186394735e9.31.1795361462157;
+        Sun, 22 Nov 2026 07:31:02 -0800 (PST)
 Received: from dario-ThinkPad-P14s-Gen-5.homenet.telecomitalia.it (host-79-14-29-58.business.telecomitalia.it. [79.14.29.58])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb884a15absm237833815e9.9.2026.11.22.07.30.54
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb884a15absm237833815e9.9.2026.11.22.07.30.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Nov 2026 07:30:57 -0800 (PST)
+        Sun, 22 Nov 2026 07:31:01 -0800 (PST)
 From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 To: Maxime Ripard <mripard@kernel.org>
 Cc: michael@amarulasolutions.com,
@@ -96,9 +96,9 @@ Cc: michael@amarulasolutions.com,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH 3/8] drm/mxsfb: Use the bridge connector
-Date: Sun, 22 Nov 2026 16:30:03 +0100
-Message-ID: <20261122153032.2782768-4-dario.binacchi@amarulasolutions.com>
+Subject: [RFC PATCH 4/8] drm/mxsfb: Switch to drm_mode_config_create_initial_state()
+Date: Sun, 22 Nov 2026 16:30:04 +0100
+Message-ID: <20261122153032.2782768-5-dario.binacchi@amarulasolutions.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261122153032.2782768-1-dario.binacchi@amarulasolutions.com>
 References: <20261122153032.2782768-1-dario.binacchi@amarulasolutions.com>
@@ -113,82 +113,32 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The state readout of a connector is implemented by the bridge
-connector helper. Use it, as the LCDIF driver already does, in place
-of the connector each bridge creates on its own.
+The hardware state is read out only when the initial state is created
+with drm_mode_config_create_initial_state().
 
 Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-
 ---
-The bridges used with this driver have not been checked one by one
-for DRM_BRIDGE_ATTACH_NO_CONNECTOR support.
 
- drivers/gpu/drm/mxsfb/Kconfig     |  2 ++
- drivers/gpu/drm/mxsfb/mxsfb_drv.c | 20 ++++++++++----------
- 2 files changed, 12 insertions(+), 10 deletions(-)
+ drivers/gpu/drm/mxsfb/mxsfb_drv.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/mxsfb/Kconfig b/drivers/gpu/drm/mxsfb/Kconfig
-index 31db7a824a93..78e983b71ec0 100644
---- a/drivers/gpu/drm/mxsfb/Kconfig
-+++ b/drivers/gpu/drm/mxsfb/Kconfig
-@@ -15,6 +15,8 @@ config DRM_MXSFB
- 	select DRM_GEM_DMA_HELPER
- 	select DRM_PANEL
- 	select DRM_PANEL_BRIDGE
-+	select DRM_DISPLAY_HELPER
-+	select DRM_BRIDGE_CONNECTOR
- 	help
- 	  Choose this option if you have an LCDIF or eLCDIF LCD controller.
- 	  Those devices are found in various i.MX SoC (including i.MX23,
 diff --git a/drivers/gpu/drm/mxsfb/mxsfb_drv.c b/drivers/gpu/drm/mxsfb/mxsfb_drv.c
-index 641691fc92c8..038f5c896dcb 100644
+index 038f5c896dcb..c8bc79264361 100644
 --- a/drivers/gpu/drm/mxsfb/mxsfb_drv.c
 +++ b/drivers/gpu/drm/mxsfb/mxsfb_drv.c
-@@ -23,6 +23,7 @@
- #include <drm/clients/drm_client_setup.h>
- #include <drm/drm_atomic_helper.h>
- #include <drm/drm_bridge.h>
-+#include <drm/drm_bridge_connector.h>
- #include <drm/drm_connector.h>
- #include <drm/drm_drv.h>
- #include <drm/drm_fbdev_dma.h>
-@@ -118,7 +119,7 @@ static const struct drm_mode_config_helper_funcs mxsfb_mode_config_helpers = {
- static int mxsfb_attach_bridge(struct mxsfb_drm_private *mxsfb)
- {
- 	struct drm_device *drm = mxsfb->drm;
--	struct drm_connector_list_iter iter;
-+	struct drm_connector *connector;
- 	struct drm_panel *panel;
- 	struct drm_bridge *bridge;
- 	int ret;
-@@ -139,19 +140,18 @@ static int mxsfb_attach_bridge(struct mxsfb_drm_private *mxsfb)
- 	if (!bridge)
- 		return -ENODEV;
+@@ -322,7 +322,11 @@ static int mxsfb_load(struct drm_device *drm,
+ 	drm->mode_config.funcs		= &mxsfb_mode_config_funcs;
+ 	drm->mode_config.helper_private	= &mxsfb_mode_config_helpers;
  
--	ret = drm_bridge_attach(&mxsfb->encoder, bridge, NULL, 0);
-+	ret = drm_bridge_attach(&mxsfb->encoder, bridge, NULL,
-+				DRM_BRIDGE_ATTACH_NO_CONNECTOR);
- 	if (ret)
- 		return dev_err_probe(drm->dev, ret, "Failed to attach bridge\n");
+-	drm_mode_config_reset(drm);
++	ret = drm_mode_config_create_initial_state(drm);
++	if (ret) {
++		dev_err(drm->dev, "Failed to create initial state\n");
++		goto err_vblank;
++	}
  
--	mxsfb->bridge = bridge;
-+	connector = drm_bridge_connector_init(drm, &mxsfb->encoder);
-+	if (IS_ERR(connector))
-+		return dev_err_probe(drm->dev, PTR_ERR(connector),
-+				     "Failed to init bridge connector\n");
- 
--	/*
--	 * Get hold of the connector. This is a bit of a hack, until the bridge
--	 * API gives us bus flags and formats.
--	 */
--	drm_connector_list_iter_begin(drm, &iter);
--	mxsfb->connector = drm_connector_list_iter_next(&iter);
--	drm_connector_list_iter_end(&iter);
-+	mxsfb->bridge = bridge;
-+	mxsfb->connector = connector;
- 
- 	return 0;
- }
+ 	ret = platform_get_irq(pdev, 0);
+ 	if (ret < 0)
 -- 
 2.43.0
 
