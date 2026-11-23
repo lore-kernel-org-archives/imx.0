@@ -1,104 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.72.19
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795465927;
-	b=cByFFbFhq2BHwJiOExvfCDowihWFiaCsAcqjbeBPgo78gjhHLHFuQYUnViCbFLn31ayJ
-	 nA8d1xjXSI1doohbM/zF2G3o3gW+pq8VqBXSbYv5WGO6yD3bMAK8UwnhCOZ23cHl5VJkS
-	 aGTbD8/QNTqK1/ViuQEy8usLRvVBCfXOmo/fPOVG/72PHfpVEgc9WyISMwzcQbwm/Oete
-	 iMIIwIBg/DV6BQ8Wx8/kCM6+5y0mXnxjORrc0mZ3jqAhmBQG2kU7Y0PfYvYsnxeB/HLLN
-	 5XJKvj5sa7SNPQid8/TR1arI7ZNFyAsWn3D5rNmSFNrVUtO/RdLTuuk12jWs1ksQFDg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795465927;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:Content-Type:
-	 Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-LD-Processed:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=xQZuvY/8myHCTWX9QPQ+aLJ1uq1TP2vMpYgDCp9sY2Y=;
-	b=a8F8GWl5TsXR+bSMm26QC0K0PmMIzUGBvjgpH1UmGzmoUSqfo/Zt4ViEL1VnrMttHZNy
-	 qQytcND3pM0PHigd+aoNzKodft+N9R/eEaf11XF0qzczTsB5IE53HOEyJgu1hakdKm/5Y
-	 PklvWLqVl1EibvS04lPnovugVOSBOhMHy5fNuOFasN63hcb6ARBxXC3KwibTdypyO45lr
-	 gYWARYXBsre8SXi5Vin3SSZ92luUGuTmxgfXSsK7yZODgxw5aNzmuyBlnAbyijpT1cwty
-	 y6Yykr0GItnV/AwknH7AWqksA3vuEqfn5HkitywQ8FuDHmO8Lil1pXQf4N0ozwZM/4w==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.nxp.com;
-	spf=pass smtp.mailfrom=oss.nxp.com;
-	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=L6ZOUDIp;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.72.19
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013019.outbound.protection.outlook.com [52.101.72.19])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=161.97.139.27
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795465986;
+	b=hbwwW2sPITnh5f07mqWtNTlqS8eRiMX3qXUQ5jswu6vxE0nF7ANUVIm48Th4dipgtU2m
+	 3A88oD5TNRiYtclYd23L9NwO3FLYbRrRx8mo/tpIyiZW+5zhTeW6x4j1gMgZGZusFtdVE
+	 PpMXo06jG7Edv8Sk3j6JMsqUoHxIOtw6tmrrSxwBLhxDzOjhdzW5mCSQK0iGRFZb0Ails
+	 s396utTWsJK/LKEqz4damfdzjiV7VYGsBoEb93iUV9LZTVl9NRO+9jKoqNmHBPBvJ1PiG
+	 FPjMXgeruH/OgL60aQvb3e55zfFdXfZvA2kCZ0txLOP2s3Nu+MQuxU1B8E/+KtnGpTQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795465986;
+	h=DMARC-Filter:Received:DKIM-Signature:From:Date:Subject:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
+	 In-Reply-To:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=crdpRbf/fj88j4MDqPdQowdHt/HZuMRPboLP7OQ8lXI=;
+	b=piCobPqWfBICBN3Xy1YjW5NJ3NC0bWSyikvShM+X9SU0GXbxOI0GnqDW+ATHnuGqBq7e
+	 FLfgN0e1sivgh/pZ+dwKC9USxOMjtsg0m8XPmKGJR6uArACvI5LHXa6sZxdbcKLrDSZY8
+	 NNkA/rSAhdld6aEZ73b+lscZpII2Y6xQs2F90gG1S1AF9Amldhl0cdJ7X8NAS6aoU8Rgz
+	 7jE4+8hVmws0WrsKobcv3GYs9jN34RBlu0jUXSrVxTPGKxvq6nSSKxAqidKqAjyL8keK6
+	 7Cij7tiF2Sei7PNt0yiUrNwEpnrhdItgVKO56nwOLCvrpCR5twnCWsvSEBEjf2WUbxg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=kemnade.info;
+	spf=pass smtp.mailfrom=kemnade.info;
+	dkim=pass header.d=kemnade.info header.i=@kemnade.info header.a=rsa-sha256 header.s=20220719 header.b=TrMqAt7D;
+	arc=none smtp.remote-ip=161.97.139.27
+Received: from mail2.andi.de1.cc (vmd64148.contaboserver.net [161.97.139.27])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAAED606A31E
-	for <imx@lists.linux.dev>; Mon, 23 Nov 2026 20:32:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EAAED606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A810A606A681
+	for <imx@lists.linux.dev>; Mon, 23 Nov 2026 20:33:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A810A606A681
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=L6ZOUDIp
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VxGGB3bHZ2/xgQxZvMY1x/wmwNER2C7CP8Mg8stVmPYs39LmaPMuMJE++6pYPB/EB1hcH49QPOaiN03iAeGz433dkX7lP/IS4JKSnsafz3fW+StUxyOd4wl/OWzwBGKxFD3TfiquBRd9U6eROfehvHrhMEQPwb1EA/ytBpx3PqszT49hL1oEBjPE5QaBhxkRB+ejtae8NIzvudU7H6OhqIZA04c2lMyDZyKQ9xGZ9J0w4M1nEAa6ACqZ0gU4BJsMgYLc2JkEEy4bjLhEEX1jINapG/9DZhiLccHUNVV+CuR+5mJl9UrjCAmhkKlfO3RNDfJRjjI8mn7mUKRDOF9eSA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xQZuvY/8myHCTWX9QPQ+aLJ1uq1TP2vMpYgDCp9sY2Y=;
- b=qDKIrEGGoVzqUfPFopu7kwnUI0ThRQWjZ1DFqQXSARYasyyMXsjwZTfk/G7ngXsNVeybaEKXIaA5JK+ZMKxYN8vZUTxuSYfj7RUefo4vC/1u4v9jiUx4I8zLo2YguZoHQ0pJmBDBczIc65GugdFk329ON7T4n0VEkRE5t8N2/7/CDoA5PGAB5wiUU2hWgzbrEV3DJUGjtBpQQBQNEDUTxxlirX+XjT3RBwOM5ruf82jv/HV7FvbM5UYp7CYhZoA67zr1M6psnZnpfdsnDqOwSlbOZIP0+1uaWx5YXPMaXIqUe1uTckRR2Cs55fc24Q7wsD7VmvOwk+TtHupEUWOhPA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xQZuvY/8myHCTWX9QPQ+aLJ1uq1TP2vMpYgDCp9sY2Y=;
- b=L6ZOUDIp2kBuhKtPfstYs2s8tYRqR8g2cTL/qB0WrEw2WunohotgKuCdOEuD6X4r7Gt6Yz+sF4JchBxZfatlpHLMckjAv4B7mfUTT5ry1NuFSsXmnnIfuXi7bzaZQI6DcZwB/KyWcnD8wer89kXg5lcINKHZ4oAqOwlj/K1SMYA80K0VuPPxOpOSlNLguY19IEL8zwS24niH3UumXXVNZ0xf47oDEWwkjAA3LRDhZePCPpUxg/hY5/38FVjMJ0USDnlZ1Y73FEmvc8OiyIV0je7Jn1knVFGvyDbaypACTsa3Ze50a12SdL08v3Ix4L4toh1LfpMUDCRzfduyzjjIrQ==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from MI3PR04MB12438.eurprd04.prod.outlook.com (2603:10a6:290:76::14)
- by PAXPR04MB8701.eurprd04.prod.outlook.com (2603:10a6:102:21c::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.14; Mon, 23 Nov
- 2026 20:32:02 +0000
-Received: from MI3PR04MB12438.eurprd04.prod.outlook.com
- ([fe80::c715:c32:8bb1:b70b]) by MI3PR04MB12438.eurprd04.prod.outlook.com
- ([fe80::c715:c32:8bb1:b70b%4]) with mapi id 15.21.0639.012; Mon, 23 Nov 2026
- 20:32:02 +0000
-From: Frank.Li@oss.nxp.com
-To: Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Francesco Dolcini <francesco@dolcini.it>
-Cc: Frank Li <Frank.Li@nxp.com>,
-	linux-bsp@toradex.com,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 0/4] ARM: dts: imx: Add SPI aliases to Toradex Apalis and Colibri SoMs
-Date: Mon, 23 Nov 2026 15:31:55 -0500
-Message-ID: <179546590199.2861425.10922466893082116297.b4-ty@b4>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261112150849.177133-1-francesco@dolcini.it>
-References: <20261112150849.177133-1-francesco@dolcini.it>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: PH7P220CA0087.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:510:32c::35) To MI3PR04MB12438.eurprd04.prod.outlook.com
- (2603:10a6:290:76::14)
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.a=rsa-sha256 header.s=20220719 header.b=TrMqAt7D
+Received: from mail.andi.de1.cc ([2a02:c205:3004:2154::1])
+	by mail2.andi.de1.cc with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <andreas@kemnade.info>)
+	id 1xVaig-00000003fT6-1Dyy
+	for imx@lists.linux.dev;
+	Mon, 23 Nov 2026 21:32:58 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=Cc:To:In-Reply-To:References:Subject:From:
+	Reply-To:Content-ID:Content-Description;
+	bh=crdpRbf/fj88j4MDqPdQowdHt/HZuMRPboLP7OQ8lXI=; t=1795465978; x=1796675578; 
+	b=TrMqAt7DtoBE7Lix+lPOnVg9o/79VCGl1t2MLyJefj0DpHAnzbaJ9Ggc1QH8YTBfjaKhanDAbIE
+	z2nUAaDaTLdWfx952nvDfzXbtnBR1az+ihmTgWdCt+K4wfKB2ftVHduRfto4d8Se9I/gLn2sxlbDd
+	V3UBSlr230ewYzSRc1GTSJH4rGsfwmPdVpbX8T/VLOY0zLqWh1NHOjc/BOoAcjPeUrS/e2YuVYiQp
+	NIifTcXJ6hb0afIxdh4xZMqPju+HvkZa2VkaGaKm/Lvv53kwJ2DKk9JUJBC795flOPuFsbF7Who7i
+	kNFgVQJ+ILhXGQio7reaEQq4AwX85ZUY1xQQ==;
+From: Andreas Kemnade <andreas@kemnade.info>
+Date: Mon, 23 Nov 2026 21:31:19 +0100
+Subject: [PATCH RFC 1/3] ARM: imx: enable STOP-ON mode in idle if wakeup
+ requirements permit
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -108,97 +62,174 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|PAXPR04MB8701:EE_
-X-MS-Office365-Filtering-Correlation-Id: 12518489-4dea-4434-1d19-08df49a0d4fc
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|23010399003|376014|7416014|19092799006|1800799024|261028144727099003|10067099003|11063799006|56012099006|261022105027099003|261026140227099003|261026121527099003|261009223027099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	vMnLrmy4mToMJaY99CsHxe8bfJIhbUDu1KNP0ElP4OFrV8GG7wUBUcQ+eWFzIvOJa6j4050a0qjbaxq9mHX/SyCcw88kn6GzLjDEOVMuSef1XiLG7+N3c/8VCc97v5XbkLQmFMau9TfKz7DqiGPbfDzxIHZMxw4xwfkq1mxsoq0wqWKwcuBOI9/XkA58N0dUJm6X9EO2xHQ8HUMsC3rzjo+3RwXtFXq3OE1e3EmyiTC+enl3mNP0ANCYVnUx5OO8HqAc3EioLZCUVbMk9HpeLqZr9Lu0mG4I42wCCQ01k4BO0EBJS1PatgODsnB/ZdlKiiAo8R2AO38EHr9Y5ATXWg4rNyHyCl0/ZfZLVYLFmm030kzNdU+eheEE1fIPspogYTpbuJqiQtcMJiu3mm5mdCmFbAh3Nu75r7N6cImKF18E81e6hpIS/3KEqchmdGHOkiq+lY/gMzf9hxQG9/SQS6CrFRwwjwUkHbNGLFvqZ6vBMFZUg1kqv7zpFnE3PqnKtH3t1Q0uJ/48Mie9doMfKT+c1g8H13A03yGmTm9naBplA3wLErv2q6e3SjQTGXibMBiOlzHG4xBniz49bqm6XBeJAeUoiCeFQxPQE40XVpEcg65jkeGDzTKxDCI+exMmujQKx3xJOE3L48qOySyKRA9pVBBA+hefp9bDzfc+Chs=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(376014)(7416014)(19092799006)(1800799024)(261028144727099003)(10067099003)(11063799006)(56012099006)(261022105027099003)(261026140227099003)(261026121527099003)(261009223027099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cmZ1V3czbnUwVTRqTXhuNFdUZkFVdXp5NkpkZDF3c2tsalZUc1ZnY2o3c3do?=
- =?utf-8?B?YzZyMFYzeFhROTRVaStsM1ZZK1VyMzRKWDdDRTE1a2RCMHpLRXJ0OEFBQnA1?=
- =?utf-8?B?UUV5RE9Pbm9sYXN3ajlnQm55S1BGYUxZWjJhTUluTVpzV0E4WDlsV2ZsZWNW?=
- =?utf-8?B?c3lQRmJ6NlNQS2hPZHMwSjRVV1ZSMjk1akh6eTJiWGR3ZDQwS2huem03SFZs?=
- =?utf-8?B?bDZhb0tja3FKUkNWMEhCUUhMUU1oQlNvWVlaMWNiRXpiRk01bWlpaEsyVVdL?=
- =?utf-8?B?M0xtSkVNSXdPaXVueGNHMFJSR1JPREYvTWJGNE1mZkRVdjQ4ZHhiMzVBcWEv?=
- =?utf-8?B?Wm1iNmVyb1d0dWxmRlhuS2lLb0ZGUHkvSWJGK1lvazFucUYxS21MdjJPNENj?=
- =?utf-8?B?OWduVzJXa28rUFFYWEJKU0tLNzBUOFJTZnduWTExb3htQ3pmcVVabTlySERY?=
- =?utf-8?B?SDhvTXA2N1Ztck1Za1JjZTNnL0hVNW0wWmQ0T3R4cFdxWDZQZEFacGdvL1Jx?=
- =?utf-8?B?dHdqYjNxaG8wWVlUakhoeEJEb1hzM0NOSE1Td3J5UVBKL0dLN2xuZlZadDNq?=
- =?utf-8?B?M2N2M0Q4RHF5eWdMQnFoNzVaZ0NKdkdqUGcrbEh0blo3cWJab254a25UeWN1?=
- =?utf-8?B?dGNyQ2Fsc1E2a2RoWlVuNEk1QWZDZytTZk1XdS8vakU2azRmQk96WVBMU01x?=
- =?utf-8?B?dFBYRXNGVHJZbkhPTDA2LzcxOFB1RzVua2dRRXM2UUlGbXdtV2ppQW0wbS82?=
- =?utf-8?B?ZHAwMDdybU5JU1hiOUtCMWk4WUVFSXhNRk1Xdmdpbkk3WWpOUGlMVU04MWtk?=
- =?utf-8?B?c3hlZVlSd09RWkZSckZsNkFXVkdLV05TOHV4aDRKL1U2ak16d2x5NG0yeHI2?=
- =?utf-8?B?U3IvK3A1VnIxVDVEZlpSVFhWZ2x4Q0dqakFaSDN0N3ZwMDhwdHR2NytTVVBX?=
- =?utf-8?B?di95ZFk2VUEraVBYQWpnWDVJaGdMNXZkRExpOVVVSWFFZjFOeDBGbkNYYVIv?=
- =?utf-8?B?SzFzRGt6cTlnMEhDRTZvMDJTL00xYnpSVmZxamVwQkQ1YUdkbDVFVnUwcGk3?=
- =?utf-8?B?SHo0Y2ZLaU5VRUt3TzdiRldxRmdMOFh2SHROcUw5RzIyRjFvZUVRSkpwd1dZ?=
- =?utf-8?B?dXpvTFVmekgzejBUb2NEUnlwbmE1eEpleXpRUXVBOFpDWm00VmlPRy93VmV6?=
- =?utf-8?B?VXNPWUMyWEFueUNXenZ6d0dFa0NwT1V5UmZMU0FlWGFEcFZSaUw4d2Y4VndP?=
- =?utf-8?B?UlVsYVQ2aHZMQUt5VEEwbmY3cEY1WEpnYUlxYjIrajd3QmIzNThzRmlaREVq?=
- =?utf-8?B?RVkvc1FkWE1kU0xQNXlBbjcwS1Zla3hpRWRjem1heW9jV1R3RDBBYnpycEJS?=
- =?utf-8?B?VThmeFFJbmFmakJDSTN3OUtpVkNBRXo3VWJ5c3orY2QybzlVZHQ1Rzc3bFlF?=
- =?utf-8?B?UlZuRGtLWEM2akdQRmt6d2g0OTY2MGtodzZWMkMrSHhLYmo0alBxOVBzdE1t?=
- =?utf-8?B?SzgzTkpUeWYrOStoR3l1UEVrbkdtU3dNbEpjS0wzWWhvRDMwcWZDNnVFditz?=
- =?utf-8?B?cEsyQnhobjVzdGNDcjZwc1o5eVpDMElTNllZcXRoVVZhODVIN1hlT1ptcXp1?=
- =?utf-8?B?RjRscjBLUmJzSnlDM0VXNlluVUszSmpRQ0w5a0FlcFVDSUpsZUxnNU9EQW5k?=
- =?utf-8?B?V210eU1RVG1VeEFjWXVlWFVBOVJJRm83ckpPYTBDSU9YSUFUVUNLNVlsQ3RC?=
- =?utf-8?B?cWJSUkFEaU1YaFU4S1VBaVZBM3h2NjVtQkVLcTNsV3JaMHh2Tm43Zi9PbUxv?=
- =?utf-8?B?dkpwbjZidnF4M3NLU1pWaUtVa01WYVJ5ZjYvVXRiZmNjb1I5dE1SL2k4aTI3?=
- =?utf-8?B?TmdxT1d5aVFLMktEdjdRVjkvTmJyR0JIUElwcER1LzZ1L04wMUhzWkJsbXhL?=
- =?utf-8?B?eGkyNEl4NXgrN3hMRVdZdHp3Q3FmMzlyK1JVR1dQcUhTeE5KbGMzcFZ1UVRz?=
- =?utf-8?B?ZE50bU9hR3hQc3hPaElNTE16VEd6YWlZcEF2S0VCa2NYbGJqVkJzR1VVd1JX?=
- =?utf-8?B?TzhNZXNRVmVLbXJQcGFIQ1d3UGRnNzN1MDdqT2thRm1BWDB5NDhCcXQ0VXdO?=
- =?utf-8?B?bEZMSmJRcXRwRmhCNTRPNUhzSkUwQU5HVkd0N3YwR2N6Z3pCMFY0M2l2eDQx?=
- =?utf-8?B?OHp2K3BHMnFnNFBhMVMyaTBhYS9TdUxYQnlhbkpHQnRvQVo4bEltN3dLeWZD?=
- =?utf-8?B?RTBxMENaVGpTTm1TbmJ1bWZwazg4blNLNW9wMmZ1K1luSUdNckxyL2lzajhQ?=
- =?utf-8?B?TGtSZlVzMXlidk12WnR3VXdUanNsSFpyZ3ZHa3ZseVdTZlluM09kQkk1aEFF?=
- =?utf-8?Q?1yVgng0FadIo0XSq8r9e2ocEZ43CWU9aD6d8Z?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 12518489-4dea-4434-1d19-08df49a0d4fc
-X-MS-Exchange-CrossTenant-AuthSource: MI3PR04MB12438.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Nov 2026 20:32:02.9052
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: fhAtSQDR2OrjyPXI7U6P/quY7wzZEiHV5L6bWOR2bLtxFPqYTEhjGwkZTXen6FK6SITfElNjfphG0QMp4/h0C5IlTTmWq+uq8brgIfjuwnEXrOun0DG0IcSikNM2IESQ
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8701
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261123-imx6-idlestop-v1-1-e32f1f44e46f@kemnade.info>
+References: <20261123-imx6-idlestop-v1-0-e32f1f44e46f@kemnade.info>
+In-Reply-To: <20261123-imx6-idlestop-v1-0-e32f1f44e46f@kemnade.info>
+To: Russell King <linux@armlinux.org.uk>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, 
+ Daniel Lezcano <daniel.lezcano@kernel.org>, 
+ Thomas Gleixner <tglx@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux@yoavmoshe.com, Andreas Kemnade <andreas@kemnade.info>
+X-Mailer: b4 0.17-dev-e5168
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4614; i=andreas@kemnade.info;
+ h=from:subject:message-id; bh=ntGS1US+arjnYdgF/bjGJOwq/Z9wV52FocMKZLs+wYQ=;
+ b=owEBbQKS/ZANAwAKAYRhRfpAKNzxAcsmYgBrBKKuXjetOqHBL7nFgfi77nvDEQFyNRKo3D88i
+ usgEoXAdYWJAjMEAAEKAB0WIQTY6xCZL0TEE1XHfFiEYUX6QCjc8QUCawSirgAKCRCEYUX6QCjc
+ 8eqCD/0f5ikBPNIahit9k7kHBrOI2CxnrVvel/0MvHfTBsT2hDec+c5y7FhKHqTd1B7O/l/DRo+
+ /Y+FhH12SvFfaQ3jRRKhprP1HLR/uRxl6xBuYz6IGHkGwinecXxLVl0GmeE/8WPR/Pa8BF+XJEG
+ oMU19OLjdmuYC+gYeixpJ46ypy13E1xlAzPBHDk4jjEMeA0+b1eItOgw296fDlTGoHKvzYjBK0N
+ 3O4WcUjHvArgbD5f0lhYNfzvdVX2a/prmj8qGwtW+d972OcJzrZ4NlhKwT5X0iv8u6YbjqRwQi7
+ ei2ISCn1L5tUzcNqntpveuiozzQMyzKkMlJoi7khjSDEg2CRB8IwyYWX/p/fNxLK0urBFDdC1Bw
+ XbIvUj6Yoz2UVMVSBPgKWyaCu1cndKlNHkn2eQgehs77rSZAxosyOcIKH9W/O8rKpTGOJLQfHLt
+ v4P5LAgSMhWNZjlzMCKS7aK6NdEurIdsqmDNkChFRn53d5Y2vKhEGuYKvTHUha06oPV7CAFhChe
+ rWKOywyq8O3bg/DETST1XSAFThiVU04hmcAOFmMGah1pxYvcs1bQ+u1OE1sKkjhck6FtB6er/Fp
+ bR7cA4tshPViWmVom28AqlmDXX1yH/cx0YGS1D4z+5j6ZAL1k7m9s/YMJdDHDceqGfbOjGwR2v5
+ xvuYEPSE7VFUOsg==
+X-Developer-Key: i=andreas@kemnade.info; a=openpgp;
+ fpr=EEC0DB858E66C0DA70620AC07DBD6AC74DE29324
 
-From: Frank Li <Frank.Li@nxp.com>
+Since there are situations when only wakeup from some GPIO IRQs is
+required (besides the timekeeping infrastructure which can be fed by
+an always on 32K clock), add another idle state to allow power-hungry
+PLLs to be turned off in that condition.
+Since some clocks are not turned off by RPM and
+implementing it seems not feasible, keep a list of clocks to be ignored.
+This includes clocks marked as CLK_IS_CRITICAL (romclk, aips_tzX clocks).
 
+This is RFC because that mask check feels hacky. collecting references to
+every clock feels a bit too much, maybe set a flag somewhere by
+the clock driver.
 
-On Thu, 12 Nov 2026 16:08:44 +0100, Francesco Dolcini wrote:
-> From: Francesco Dolcini <francesco.dolcini@toradex.com>
-> 
-> Toradex SoM families (Apalis, Colibri) define the interfaces available
-> to the carrier board and their numbering as part of the family pinout.
-> The i.MX6, i.MX6ULL and i.MX7 SoC dtsi files number the SPI
-> controllers in SoC order instead, so the Linux bus number in sysfs and
-> the spidev device name follow the SoC, not the SoM interface.
-> 
-> [...]
+Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+---
+ arch/arm/mach-imx/common.h         |  1 +
+ arch/arm/mach-imx/cpuidle-imx6sx.c | 42 +++++++++++++++++++++++++++++++++++++-
+ arch/arm/mach-imx/pm-imx6.c        | 23 +++++++++++++++++++++
+ 3 files changed, 65 insertions(+), 1 deletion(-)
 
-Applied, thanks!
+diff --git a/arch/arm/mach-imx/common.h b/arch/arm/mach-imx/common.h
+index d7ecaa822adbd..7804cf5d83922 100644
+--- a/arch/arm/mach-imx/common.h
++++ b/arch/arm/mach-imx/common.h
+@@ -35,6 +35,7 @@ void imx_gpc_set_arm_power_down_timing(u32 sw2iso, u32 sw);
+ void imx25_pm_init(void);
+ void imx27_pm_init(void);
+ void imx5_pmu_init(void);
++bool imx6sll_check_pll_are_used(void);
+ 
+ enum mxc_cpu_pwr_mode {
+ 	WAIT_CLOCKED,		/* wfi only */
+diff --git a/arch/arm/mach-imx/cpuidle-imx6sx.c b/arch/arm/mach-imx/cpuidle-imx6sx.c
+index 83c5cbd3748e1..4537cb7b3a637 100644
+--- a/arch/arm/mach-imx/cpuidle-imx6sx.c
++++ b/arch/arm/mach-imx/cpuidle-imx6sx.c
+@@ -65,6 +65,36 @@ static __cpuidle int imx6sx_enter_wait(struct cpuidle_device *dev,
+ 	return index;
+ }
+ 
++static __cpuidle int imx6sx_enter_pll_off(struct cpuidle_device *dev,
++				       struct cpuidle_driver *drv, int index)
++{
++	if (!cpu_is_imx6sll() || imx6sll_check_pll_are_used())
++		return imx6sx_enter_wait(dev, drv, 2);
++
++	imx6_set_lpm(STOP_POWER_ON);
++	imx6_enable_rbc(true);
++	imx_gpc_set_arm_power_in_lpm(true);
++	imx_set_cpu_jump(0, v7_cpu_resume);
++	imx6_set_int_mem_clk_lpm(true);
++	/* Need to notify there is a cpu pm operation. */
++	cpu_pm_enter();
++	cpu_cluster_pm_enter();
++
++	ct_cpuidle_enter();
++
++	cpu_suspend(0, imx6sx_idle_finish);
++
++	ct_cpuidle_exit();
++
++	cpu_cluster_pm_exit();
++	cpu_pm_exit();
++	imx6_enable_rbc(false);
++	imx_gpc_set_arm_power_in_lpm(false);
++
++	imx6_set_lpm(WAIT_CLOCKED);
++	return index;
++}
++
+ static struct cpuidle_driver imx6sx_cpuidle_driver = {
+ 	.name = "imx6sx_cpuidle",
+ 	.owner = THIS_MODULE,
+@@ -95,8 +125,18 @@ static struct cpuidle_driver imx6sx_cpuidle_driver = {
+ 			.name = "LOW-POWER-IDLE",
+ 			.desc = "ARM power off",
+ 		},
++		/* STOP ON */
++		{
++			.exit_latency = 500,
++			.target_residency = 800,
++			.flags = CPUIDLE_FLAG_TIMER_STOP |
++				 CPUIDLE_FLAG_RCU_IDLE,
++			.enter = imx6sx_enter_pll_off,
++			.name = "STOP ON",
++			.desc = "ARM power off + PLL off",
++		},
+ 	},
+-	.state_count = 3,
++	.state_count = 4,
+ 	.safe_state_index = 0,
+ };
+ 
+diff --git a/arch/arm/mach-imx/pm-imx6.c b/arch/arm/mach-imx/pm-imx6.c
+index 3c73e2cdb8ceb..65a5268d31614 100644
+--- a/arch/arm/mach-imx/pm-imx6.c
++++ b/arch/arm/mach-imx/pm-imx6.c
+@@ -64,6 +64,14 @@
+ #define MX6Q_SUSPEND_OCRAM_SIZE		0x1000
+ #define MX6_MAX_MMDC_IO_NUM		33
+ 
++#define CCGR0 0x68
++#define CCGR1 0x6c
++#define CCGR2 0x70
++#define CCGR3 0x74
++#define CCGR4 0x78
++#define CCGR5 0x7c
++#define CCGR6 0x80
++
+ static void __iomem *ccm_base __ro_after_init;
+ static void __iomem *suspend_ocram_base __ro_after_init;
+ static void (*imx6_suspend_in_ocram_fn)(void __iomem *ocram_vbase) __ro_after_init;
+@@ -287,6 +295,21 @@ void imx6_enable_rbc(bool enable)
+ 	imx_gpc_restore_all();
+ }
+ 
++bool imx6sll_check_pll_are_used(void)
++{
++	/* check for any clock active which provides more than register access */
++	return readl_relaxed(ccm_base + CCGR0) & BIT(29)  ||
++		readl_relaxed(ccm_base + CCGR1) & (BIT(25) | BIT(23) | BIT(15) | BIT(13) |
++						   BIT(11) | BIT(7) | BIT(5) | BIT(3) | BIT(1)) ||
++		readl_relaxed(ccm_base + CCGR2) & (BIT(31) | BIT(29) | BIT(11) | BIT(9) |
++						   BIT(7) | BIT(3)) ||
++		readl_relaxed(ccm_base + CCGR3) & (BIT(11) | BIT(5) | BIT(3)) ||
++		readl_relaxed(ccm_base + CCGR4) & (BIT(23) | BIT(21) | BIT(19) | BIT(17)) ||
++		readl_relaxed(ccm_base + CCGR5) & (BIT(25) | BIT(23) | BIT(21) | BIT(21) |
++						   BIT(19) | BIT(15) | BIT(7)) ||
++		readl_relaxed(ccm_base + CCGR6) & (BIT(7) | BIT(5) | BIT(3) | BIT(1));
++}
++
+ static void imx6q_enable_wb(bool enable)
+ {
+ 	u32 val;
 
-[1/4] ARM: dts: imx6qdl-apalis: Add SPI aliases
-      commit: b291172a867458955d7dd09fa5af83f6b836d6cc
-[2/4] ARM: dts: imx6qdl-colibri: Add SPI alias
-      commit: 70ee629c874733e2f4a907c22822c159ef25c0bf
-[3/4] ARM: dts: imx6ull-colibri: Add SPI alias
-      commit: f40b465960f31fad03ad344114071500bc25d302
-[4/4] ARM: dts: imx7-colibri: Add SPI alias
-      commit: db617e3a9d025a486e5328d25dfef483e4dac95d
-
-Best regards,
 -- 
-Frank Li <Frank.Li@nxp.com>
+2.47.3
+
