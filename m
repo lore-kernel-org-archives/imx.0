@@ -1,65 +1,94 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.39
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795417773;
-	b=A4peLs6641+YNmv8GDGhmP6XJzdkBuvW1RWWwwRTeZM92wan5z/zzcEo1eUxc2blQCcy
-	 9wNnXLDcgpjl0xgrQrjlgPTMe2FTUgo/78kBS3kQz03hKWuruUMrTzv7eeDbyoghAUASR
-	 sHEVbCTAAOvoGgkQupzPEsp8ZaSB6xPiXWQfpj0nY8EPkJ9pd9rinP1smjyRABjvhZAfG
-	 4/tr1A2q6moZFhOEbMUqU01O0R3s3L4NtlcFZv3drOndgYhvxd3sr7JndzKDIKa/qWHPL
-	 WnyduEORreCEN3DC0XqxSUqtjK2RDfxMX65wVdFL3G26Sv4D5qXEJYECVpo/zVjx7EA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795417773;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=iKeZ2tXUAbc+Q1yEFhsgCE9SEarvq7KvC09KIeMlRqg=;
-	b=GRW6X644FH/u+tb6hw+vvzp6LmiyOauQtghctoNlxnxuYZtzyzMdXGFmTLl5MnQA5uvu
-	 OFeYHvvRUfx6vtDncNcyz729cmX6JZ6ii+33anZdJJhdZxBofjefJFuYX+h2Dvx4cDTAa
-	 L4nhdb6UicKa6RVghI4fDVLd5wiGFp9ho1i+SvPTi1sfoOBc7IZQ7uXF2m3NzzWoAzY70
-	 FFs07yUywMy8amOwssJZj65fM0LbVI0U22915TpCygGKmNcrWucK/vRp0VeXxt0MGgivD
-	 odyx3WLI1Zm4v1Iaz3+2y7EAfqLpdeSL6HNvD+w2ceZwXb4y02gG4pvUZ50ihxiuEMQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=slSYe7we;
-	arc=none smtp.remote-ip=95.215.58.39
-Received: from mta1.migadu.com (out-39.mta1.migadu.com [95.215.58.39])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.159.7
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795420000;
+	b=R6qhElJhuvq+mTxhXyPKH829Tn8fjyqSwAf8Cv6vYEJmO1WTKQ+5xrK4fDYXAljhXefj
+	 0bMdzQBWr2jF3TKH0mJVBvl9Ryw8Nez9fllw6QaU9WaJ/nn3Vyip5LULu72MRk6wt1Xqk
+	 Qzl9d5MZ8VOHlZlyB4bi4ZAjU3G4XWLm7OZoU9jzEBMU2ba9OBIkmiFF0Bhg9mowyqqyv
+	 YHKOvkU2Ds7Bi4Fqj3oJ5PguoonBQG2IB2EehRGW/cMS0RkufKdfNl/g2809ggcB31LfY
+	 T9EoCdXyMd1HFvgTjb656kJ9ESHHR+lGTKvfeEq5s9pYiiewJPo7kh85uHUcKLq/7oQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795420000;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
+	 Date:Message-Id:X-Mailer:Content-Transfer-Encoding:Content-Type:
+	 X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=RKohgNXBmmNn3Ev7J7dTvcE+DhI6RIeeoeE/tLerCKY=;
+	b=cSpHV52aBT/s9odOXfS60ze0txUV+zZ+yucfsEwSpjgZuf9WYC+2s3/FWVHlPQv6CuJn
+	 ScBDGBrrHtIvUugqJ8zRFm9hM9rQzqFiMeSu8GuX6xnjFDynHMvJz7TAEjqGWFZyTQQdP
+	 KWuZyZQxwdEy7joZ1gkTFNoqwT7VohblsdFIgL3w+RQhV3kP3l6Sd/3SkfrmPtDYcSGpg
+	 8WKZMFufd8R3FioRtd00ytZT5zTQkB5DoKsoyYsMHYIprrFLyKkBrwg+3wkWgaUbtIOSO
+	 +zEJHupTjTetzscc4wdAtaswDB9uzzKjHrWhncZDlB7/RFbThHGAKuM51vs+ZJ6UcsA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=oss.nxp.com;
+	spf=pass smtp.mailfrom=oss.nxp.com;
+	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=UpRzae1v;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.159.7
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013007.outbound.protection.outlook.com [40.107.159.7])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26786606A321
-	for <imx@lists.linux.dev>; Mon, 23 Nov 2026 07:09:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 26786606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86955606A32C
+	for <imx@lists.linux.dev>; Mon, 23 Nov 2026 07:46:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 86955606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=slSYe7we
-X-Envelope-To: imx@lists.linux.dev
-DKIM-Signature: a=rsa-sha256; bh=q3tQG3ndRBja5RIwJmSbJq8oOy/7QF8ip5BzTsP8piU=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795417770; v=1; x=1796022570;
- b=slSYe7weT505Px2/vLvB70Al9S5OgU2HDX15Bp2NVZAJR7Xj7Pska8bqp65nCf+FNHhtXRDN
- fQFYCKcEL5vhQRBbt91tp5qHTF1+yU9FeKiSfX1v1Aw+HH/jIMb7o73f9lkgOuP7PCsH1O8THAQ
- opMMcZCWEDBJvVRpczQSiwYU=
-X-Envelope-To: imx@lists.linux.dev
-Received: by smtp.migadu.com with ESMTPS id 34a5fd8e430d72d2;
-	Mon, 23 Nov 2026 07:09:30 +0000
-X-Mizu-Trace-ID: 34a5fd8e430d72d2
-X-Migadu-Flow: FLOW_OUT
-Date: Mon, 23 Nov 2026 08:09:24 +0100
-From: Richard Leitner <richard.leitner@linux.dev>
-To: Peng Fan <peng.fan@oss.nxp.com>
-Cc: Bjorn Andersson <andersson@kernel.org>, 
-	Mathieu Poirier <mathieu.poirier@linaro.org>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>, linux-remoteproc@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, weinshec@holodeck2.de, stable@vger.kernel.org
-Subject: Re: [PATCH] remoteproc: imx_rproc: revert channel freeing order in
- imx_rproc_free_mbox
-Message-ID: <awPmc_4VFkcpW0C_@bombadil>
-References: <20261110-imx-rproc-free-mbox-v1-1-3e33ff98570d@linux.dev>
- <avMgJNyGez2Eyr3a@nxa18884-linux-1.ap.freescale.net>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=UpRzae1v
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=supi1JoYVH0bIm00qDnYQNXC7NnAHIUePXj/exL4ZvpAXp768T0JRnUEhIINACWc//vfN8rVXWWP3N88IV1I5l/q4vaXOwWu9wQiuHvfogg7LThUpXmLghKnWWWSweieODBOXgjpGpdyGnk7FoPujXCQ1tMrnqg37rTTbtkSBnOM6XPspO8nr+EcGPv8g8uzsi8LoeNW3tj7Z9jW5SufbYhlD9zmiZfQiHmKjyBBtgmJrHx3vtiungFs6h/QFSslvadzVoLYq9993fGjWsajFM/Gz4nmjSKmvoHPSQWYSdLwaFRj76GQoEtXZ6sG4BPw1yKDCa6J7bf58VgFGJClpA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=RKohgNXBmmNn3Ev7J7dTvcE+DhI6RIeeoeE/tLerCKY=;
+ b=vI5F+yEV+r499B8iGyGHoJDdJT+nR1TJComcteP950Pz0aq5TbqPIUywGdwMxgL3W/g+7b1vdlm0XNa7lguDbSKAH2B30tse8HR728NhBlisi84ZsRPn4d10VhWukUGClYhgYmunL4/x11KkeBtLcMQWZEic1czvYnTFUWFrIFeovq159DDlY/a2ACAr9jwGeW/BhshOyAccy/V76+whrgy4LJUUphZGrMOm02AziYJJBRIoZ7KQWKSuAKRdJF8WGvDh1w7gUsn6gwE+GiRJUtHdf3D4XdPc+48M6miwjpgwlgkq6wefvgXHP5WjVW2IE1oWvek0+eCa9GV/E0yXjA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=RKohgNXBmmNn3Ev7J7dTvcE+DhI6RIeeoeE/tLerCKY=;
+ b=UpRzae1v3FJJn0G0rlbCGCZyeANTX9EElqQAg8iHcUGEnhrlkbFXF2nDnqrh2hZvJEAd0oQaoj+8b5WKPvyZdGMyVY2lv2tV6BMoNezyLFP7RSECoxeUZPFkSX7OdBVfam9DKBi8DwMXsPpJh6miQZ1Ola1ZtIuQjXoeESbkIlwGWwmkRdUOpHq5VMFTjFKUvcRhijnYe+yXpFNjJ9D/EUcwTf8y+jR9411NLImTdIM/DIMfnjrxRkDq42PXvp/V9EkrejwEKmJPMEptX+R5EpzN2OLdDfGznGtCxxa0kVghp/A4tANnMWojfKWilf2Y6x4ww5b3ApitPUUNtVdJQA==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from PAXPR04MB9422.eurprd04.prod.outlook.com (2603:10a6:102:2b4::21)
+ by ZR6PR04MB438545.eurprd04.prod.outlook.com (2603:10a6:910:e1::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.13; Mon, 23 Nov
+ 2026 07:46:35 +0000
+Received: from PAXPR04MB9422.eurprd04.prod.outlook.com
+ ([fe80::54e:28bf:aa85:d25d]) by PAXPR04MB9422.eurprd04.prod.outlook.com
+ ([fe80::54e:28bf:aa85:d25d%3]) with mapi id 15.21.0639.012; Mon, 23 Nov 2026
+ 07:46:35 +0000
+From: Xu Yang <xu.yang_2@oss.nxp.com>
+To: badhri@google.com,
+	heikki.krogerus@linux.intel.com,
+	gregkh@linuxfoundation.org
+Cc: linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	jun.li@nxp.com
+Subject: [PATCH v3] usb: typec: tcpm: advance vdm_discovery_state on Discover Identity Not_Supported
+Date: Mon, 23 Nov 2026 15:51:36 +0800
+Message-Id: <20261123075136.650549-1-xu.yang_2@oss.nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI1PR02CA0046.apcprd02.prod.outlook.com
+ (2603:1096:4:1f5::14) To PAXPR04MB9422.eurprd04.prod.outlook.com
+ (2603:10a6:102:2b4::21)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -69,82 +98,128 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <avMgJNyGez2Eyr3a@nxa18884-linux-1.ap.freescale.net>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9422:EE_|ZR6PR04MB438545:EE_
+X-MS-Office365-Filtering-Correlation-Id: dcf1bd28-13aa-421d-c34a-08df4935e5e8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|1800799024|23010399003|19092799006|10067099003|11063799006|56012099006|261021121427099003|261021123027099003|261022105027099003|261022113327099003|261009223027099003|261026121527099003|261028144727099003|261026140227099003|261102123227099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	KTtCv7NPJRk93QLvrJshZXoaL6TVHt2OXex6RoVZV3BLFFo/Mt4Shks1ShtJU/FuLAGRQmfNNaWAB86r+uEq9e8IXOy5gn4ihLQ/h/GcgZCZzn+FxnTHqT7rKu5c8M4N8I1ApZ5q4k56FMpIXqdg1oZZFEchXJa8T+2AzrA8HvRNBZqNtYH1MGhSADHfNHm5Aq7Md94gf4SLbCTO1jKgwIUCddpOIuPw0vFLKOj9f9iQ6oysAh9z2MUmQ9bU7iajq5aSy28VIcV6iADrzALuT0wCw4rwVM+S4AnloYA6ooPAsQElsTzsI4w83Aljn43oH2zbvfFqD4jkvTPZouRyL9O3wAb3NM5+qoIjypSGRcjcJijVDLqhBroadtJssIL7MJQGYEy5xTFlajd4jv371rnp8otEqs4CNqfQiwMN/7xK8Cd2g6pmaiIfFaPd45uTSxu+Ie2Stf708mmwJ4hjEe68QAnxiryUQM7rAb+eU96/ykvWhQzoYvLBTQTLUZfQpHDy4IkYQ6eVwCDBYS4YRInmSqANhNToZz3QNzTXYSs/gJg7RVUXRRbVwe1zjfK1b2jglRHOX914hQ/LTwQ2pw1yelfVqlrcsU0gYxRZPYMAyZ9NpyUjBWS4WKDFL/of8WE0poVLkjiXZ0VPoJLVSNKUR3GmoHuD3eXrm0+2So8=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9422.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(23010399003)(19092799006)(10067099003)(11063799006)(56012099006)(261021121427099003)(261021123027099003)(261022105027099003)(261022113327099003)(261009223027099003)(261026121527099003)(261028144727099003)(261026140227099003)(261102123227099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?bxqUeUk8Huacqh8rj3qghwKxWB9BqYmltzWg97WWBGKaXW8/NmhMhE4HBh4R?=
+ =?us-ascii?Q?8RdSms5L4Yxi0zLO9Yjo2uFBrIxEUcmaWrIfd3JD0RNIHOPYiQAPoIlcIHgS?=
+ =?us-ascii?Q?Qk8y4oAti6PewsEWgtAxduhrANMwl2qVGPZ1hmbLGmxpljK6V9t2Ax5Lrvze?=
+ =?us-ascii?Q?HWr7xiW//f900TUrGNWse4+O12abXWhe2ZhomweBARx5uhJZp/0DNxQ0Z5vL?=
+ =?us-ascii?Q?A7icXusMd8SVA8kASf8xG/CSeoeDiU/807CdrOTPFe923Yym9UmYp73RgM3g?=
+ =?us-ascii?Q?kvQ862YRMq90CNmLA25bCnPaI7IpZmaLIcPX0A7r07Haa8IiLseDmMhjKI0B?=
+ =?us-ascii?Q?Hepoxa+sLt50Qmn1+3F2yGOY0rjRR0oqb89wMIhMHuezIrOPGF7zdxudXgCh?=
+ =?us-ascii?Q?RipAudHYGzB+2vud7T2k6d4xv9K2u++KVAhs32JQWSHdBixvvjes90djjxxY?=
+ =?us-ascii?Q?IZa7SzHE9NP+I2w7V//bRR/hFuOCApxIr/kvnGU+joQVPezPpSEyI6tirjVd?=
+ =?us-ascii?Q?TT+meXZzJFHYWPOQm/x6+jTxJtYT6DHWUymSH1AvBrNtDcu1QQJtWuToI99G?=
+ =?us-ascii?Q?2KpYrs9sutBYOcO1anB1i2a6gU3ybXQXER2tPW/pZY9+rEnvsSPwkVq/j5BX?=
+ =?us-ascii?Q?kA3MRUxmwAa7J2tQnRaqiJ6A63abazq8I66fCaj5K+MdTDctsG4r5q+FwSYz?=
+ =?us-ascii?Q?G99t8SkiK2c4ui5WB0gzg6ArZxRxFaPPAWeIGlPSNb4ZSiGKguLgWWLqTSNX?=
+ =?us-ascii?Q?RVpxpPwlMC7IZ28DeOXNPB4tR1WfHluXYe3ChLPm3n1l+JnaOtJbINHuGTHl?=
+ =?us-ascii?Q?XqA9RpNpGa+iA4miLH7UuxMFuf/WT+JDz4qv/2j/SvDOq8Q+tezz47rNe0Zi?=
+ =?us-ascii?Q?Q6oHtYXjvLAKd9Yg8JiXViFjY+LClN/RzmPgCmHrdCQrk1upy5RYPNIBxxSz?=
+ =?us-ascii?Q?g3Tbd82/a+s3ZzkGmlra/bCLBJucK5ip4VnJd7cn85VdFUIqkNuhxE3OPUoo?=
+ =?us-ascii?Q?VQytRu75z0pPEpxUBKb2PXBOewoKGZpEXqdRxxNtNrWlBctHx5OqDZj1EZ7W?=
+ =?us-ascii?Q?fF5kYnIshO6i345CAPOq7Pbzb46jE1ZBtJtfJ/kDroOAdvyZQQ3uBtVU6jfo?=
+ =?us-ascii?Q?qz+5RxsHv6fDbwDeoUfJwZA4lGA2n/3x7Biz49FCL2Mk5gFW2xL9hCwJwx08?=
+ =?us-ascii?Q?XjmwmuyKPahzcQclzG7N13CObvH8D4tdt7yXiuYvWDxtuUBCEaqttE0b5QD7?=
+ =?us-ascii?Q?Te7AuhG1396BQs2w0hd2EZFBcRdKucCO2oQVkKXAOVISqhaPVBJl/yCb6B5n?=
+ =?us-ascii?Q?9tCY3JkRK0oIPnfn9XQedg/XcE6H02qJJdsdHVdVqmfC04kixNnT2vEKAps/?=
+ =?us-ascii?Q?k2Ecl0jfTIcxq/hgh/X6i+eV99O4QJ2yhxqUnxemZGjHC7KsVpQnOQnSbNXn?=
+ =?us-ascii?Q?lGvueNSTjZAcniMcARjPBahZiFBludiRU4xvbgzLurEPmq+20DB/M6R4caDu?=
+ =?us-ascii?Q?ewgw/8blZ4Cep4xXOwpRD7c092EGKpnCmaOlIKs+wjc+YPHgLSYMMzPeT+kx?=
+ =?us-ascii?Q?qKqMHTnxpVwhwLaH5py+8AZK4GfWjenYk4t1tMB6ukhdO0N9le7nQoZ3/268?=
+ =?us-ascii?Q?0mNwT5SdGkrbkoPtwulCdAcAZKOWIdtQkaJ9ZrBHaQ1JSkG4B4Jl9e8E6fge?=
+ =?us-ascii?Q?WWHT4v5MxXI1VafHln/H1P4kasP1E2IN0izbSmilgc46+CoYMJEIfySCorL1?=
+ =?us-ascii?Q?3aXIRlxL9GFfR+2ADFor/izq3kU4Kg0YPqKh+wGz3V6AzynKdEMo?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: dcf1bd28-13aa-421d-c34a-08df4935e5e8
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9422.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Nov 2026 07:46:35.5597
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: dMV4n4j3XhKFLuvYJ3cZzvMaOt+F6Txe6X7gegk2kcMxf9UxmS4hh6npuztRKK3SdfsFRUOv4ikWwQO3ZoL0qJUJr8RMk4MOnaaqbTdG4/RN77DQYTtbkjzyytjCsWmL
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: ZR6PR04MB438545
 
-On Tue, Nov 10, 2026 at 09:46:12PM +0800, Peng Fan wrote:
-> On Tue, Nov 10, 2026 at 01:29:08PM +0100, Richard Leitner wrote:
-> >The imx_rproc driver is affected by a race condition in the shutdown
-> >ordering in imx_rproc_free_mbox(). A received message might cause a
-> >virtqueue_kick resulting in tx_ch access. When imx_rproc_free_mbox() is
-> >triggered between the if (!priv->tx_ch) check and the mbox_send_message()
-> >call in the imx_rproc_kick() function the mbox_send_message() then tries
-> >to dereference a NULL pointer on the tx_ch (as seen in the call trace
-> >below).
-> >
-> >Therefore fix this behaviour by first freeing the rx channel, so no new
-> >messages are received and therefore no kicking on tx_ch can happen.
-> >Afterwards release the tx channel.
-> >
-> >This problem was encountered on a fleet of i.MX8MP devices on about 1 in
-> >500 system shutdowns, resulting in Oops below. This Oops was recorded
-> >from a v7.3.0 kernel before the work-queue removal.
-> >
-> >    remoteproc remoteproc0: stopped remote processor imx8mp-cm7
-> >    Unable to handle kernel NULL pointer dereference at virtual address 0000000000000008
-> >    Internal error: Oops: 0000000096000004 [#1]  SMP
-> >    CPU: 0 UID: 0 PID: 32710 Comm: kworker/0:1 Not tainted 7.3.0-XXX #1 PREEMPT
-> >    Hardware name: XXX (DT)
-> >    Workqueue: imx8mp-cm7 imx_rproc_vq_work [imx_rproc]
-> >    pstate: 40000005 (nZcv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-> >    pc : mbox_send_message+0x8c/0x178
-> >    lr : mbox_send_message+0x88/0x178
-> >    sp : ffff8000897f3b70
-> >    x29: ffff8000897f3b70 x28: ffff80007a07b248 x27: ffff0000d90e1a20
-> >    x26: ffff80007a07b328 x25: ffff0000c1d31300 x24: ffff0000d90e1a40
-> >    x23: 0000000000000001 x22: 0000000000000005 x21: ffff8000897f3ba4
-> >    x20: 000000000000000b x19: ffff0000c1b24240 x18: 0000000000000000
-> >    x17: ffff80006a453000 x16: ffff800081ac8000 x15: 0000000000000000
-> >    x14: 0000000000000040 x13: 0000000000000228 x12: ffff0000c115a3e8
-> >    x11: 0000000000000000 x10: 0000000000000001 x9 : ffff800080cd6570
-> >    x8 : ffff8000897f3ba0 x7 : 0000000000000002 x6 : 0000000000000000
-> >    x5 : 000000000000000c x4 : 0000000004400000 x3 : 0000000000000000
-> >    x2 : 0000000000000000 x1 : ffff0000cb268000 x0 : 0000000000000000
-> >    Call trace:
-> >     mbox_send_message+0x8c/0x178 (P)
-> >     imx_rproc_kick+0x50/0xc0 [imx_rproc]
-> >     rproc_virtio_notify+0x3c/0xa0
-> >     virtqueue_kick+0x4c/0x68
-> >     rpmsg_recv_done+0x224/0x658 [virtio_rpmsg_bus]
-> >     vring_interrupt+0xbc/0x158
-> >     rproc_vq_interrupt+0x40/0xb0
-> >     imx_rproc_notified_idr_cb+0x20/0x40 [imx_rproc]
-> >     idr_for_each+0x74/0x100
-> >     imx_rproc_vq_work+0x2c/0x40 [imx_rproc]
-> >     process_one_work+0x194/0x520
-> >     worker_thread+0x19c/0x320
-> >     kthread+0x134/0x148
-> >     ret_from_fork+0x10/0x20
-> >    Code: 37f80574 aa1303e0 97ffff39 f9400a60 (39402001)
-> >
-> >Fixes: 99b142cf7191 ("remoteproc: imx_rproc: Request mbox channel later")
-> >Cc: stable@vger.kernel.org
-> >Signed-off-by: Richard Leitner <richard.leitner@linux.dev>
-> 
-> LGTM:
-> 
-> Reviewed-by: Peng Fan <peng.fan@nxp.com>
-> 
-> BTW: would you plan to fix the other issue that sashiko reported
-> regarding imx_rproc_xtr_mbox_init()?
+From: Xu Yang <xu.yang_2@nxp.com>
 
-Thanks for the review and sorry for the late reply.
+Commit Fixes: 205dc9cb39f5 ("usb: typec: tcpm: implement retry mechanism
+for Discover Identity VDMs") advances vdm_discovery_state to
+VDM_DISCOVERY_COMPLETE when a CMDT_RSP_NAK is received, but it does not
+advance the state when a non-modal port returns PD_CTRL_NOT_SUPP.
 
-Sure. Should this be a separate patch or added to a v2 of this series?
+This can re-arm another vdm_discovery_work if the port is going to
+respond with PD_CTRL_NOT_SUPP to the partner.
 
-regards;rl
+  tcpm_pd_handle_msg(port, PD_MSG_CTRL_NOT_SUPP, NONE_AMS);
+    tcpm_queue_message();
+      mod_tcpm_delayed_work();
+        tcpm_state_machine_work()
+          tcpm_send_queued_message()  -> send PD_MSG_CTRL_NOT_SUPP
+          run_state_machine()
+            case SRC_READY:
+            case SNK_READY:
+              mod_vdm_discovery_delayed_work(port, 0);
 
-> 
-> Regards
-> Peng
+If both the port and its partner do not support modal operation, they
+will send DISCOVER_IDENTITY to each other infinitely.
+
+Advance vdm_discovery_state to VDM_DISCOVERY_COMPLETE in this path as
+well. In particular, update the state to VDM_DISCOVERY_COMPLETE if it comes
+from the port partner, and to VDM_DISCOVERY_CABLE_IDENT if it comes from a
+cable.
+
+Fixes: 205dc9cb39f5 ("usb: typec: tcpm: implement retry mechanism for Discover Identity VDMs")
+Cc: stable@vger.kernel.org
+Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Reviewed-by: RD Babiera <rdbabiera@google.com>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+
+---
+Changes in v3:
+ - cc stable mail list
+ - add Rb and Ab tag
+Changes in v2:
+ - cover a cable returns PD_CTRL_NOT_SUPP case reported by sashiko
+ - kick off vdm_discovery work to continue working
+ - correct previous wrong fix commit id
+---
+ drivers/usb/typec/tcpm/tcpm.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
+index 51e5c72799f2..09bfa596bc5c 100644
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -3909,6 +3909,16 @@ static void tcpm_pd_ctrl_request(struct tcpm_port *port,
+ 		case SRC_READY:
+ 		case SNK_READY:
+ 			if (port->vdm_state > VDM_STATE_READY) {
++				if (port->ams == DISCOVER_IDENTITY) {
++					if (rx_sop_type == TCPC_TX_SOP) {
++						tcpm_update_vdm_discovery_state(port,
++								VDM_DISCOVERY_COMPLETE);
++					} else if (rx_sop_type == TCPC_TX_SOP_PRIME) {
++						tcpm_update_vdm_discovery_state(port,
++								VDM_DISCOVERY_CABLE_IDENT);
++						mod_vdm_discovery_delayed_work(port, 0);
++					}
++				}
+ 				port->vdm_state = VDM_STATE_DONE;
+ 				if (tcpm_vdm_ams(port))
+ 					tcpm_ams_finish(port);
+-- 
+2.34.1
+
