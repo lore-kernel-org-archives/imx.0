@@ -1,61 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795393740;
-	b=ClOMvm6SW4abfviY7FuZTBtoP94VoZ7ArekikrntSca5DETFM/riW0KZHkpF10O18iLz
-	 KzUqgON3nQbG6RQQ30KZlZi81wLG+ntBVlrdD81opdUqSW6PqDUJVZszL5/bwYV4JhP0d
-	 628daJ5H3XE+LTGyFACQbMqqCzgH0GW6TYG16v1SLA0k5FoxEPt+KZiUtNJZJwT4WvtVv
-	 aGDqyllt9akbxnKaj7skVpF74SCN0LqPXQVMd1u0Wzi6cdg0TkcchBDlqoaABGaOPc6wc
-	 yij0OdaPsef0SLLP2bPyuT1C4EkN75gZbgX6liddX+Ki7+vP1hmJV5hjnyxOgDUFmNA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795393740;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=S4w0oOIqRRFhwLmmeq+5wIFtejIyyqqRZ+I+DxVaI3I=;
-	b=3Ao/lp1S50qpuNl1CuylAvm5Bf3pFA4qOyhcdNGTkTr/TE+ElbZRqcQWFiWrJG0EPL8C
-	 JnE+KmF0clN7/Je5tPh5J8mOygsnaHY9A48vIZ+LLy3o/VEt0DdrfzMKe1x3BPd4rJ4nm
-	 z3yp8ei7YT5YJaT/CBlELThgho3yn8EtMmilPcrw/G69W+wouZymNU19xV23UqSmcuhih
-	 Tvm783ruoGQqzkpUn2IE0mv9az3/+OSxOswEOinG879BBaeR7bPdKuMDsbVnZtw7isl1B
-	 dnr4uYRpigIrJzmLocs+sZmQE38eNJG+BteCaYJfR4g9SvH7TNWeFn0jjpSkCgahkLA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IsR3abNA;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.70.31
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795394727;
+	b=e63P3SVUNj6O9ITsB7p0SRCMGQi1CF615J3ZYwrmtqWdJRa7AH+zxmNkO7y9NpwOa4X1
+	 sRM7EeUCRxnvazEyq4CsfH0W+RcOQE9PDwOX5DHrOIvqtr2ayaRvF1rkUZqlwVFYUr5AA
+	 TXQGrvUHeU981al6pO5mOUx17OOBOow/PZksSz+HgFoaQoRe8onrNgmMA6eyNo5p91SK5
+	 L+6MLt+WGmxOY+kSJQ8k7HOuku6k/NQnD0UMKyEBVDkKEGrNst/YgR2YkKh2vpCzlXkel
+	 hTTiF8joEAhvcg5LHwW6lxQZbwERpHoJAMu1/iGxvPWcLFH/d5lZCwBInScTNEq+ZNA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795394727;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:Content-Type:Content-Disposition:
+	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=Mygv9yfdzTnzhZU+iErvdAHE+8we2lJsJVVu5kpfCU0=;
+	b=erweGJ7VzqYzJtbtZ2R6PJcI39ss5Xrpyy+Avw2RaPBnbcsMlNkBnmOzt6OHF9DA7nXa
+	 H9Qqvbisgj35px4m272K5RBmQfPWY8p7/BXxg328xSJZf3LNRxhBdGnW7tO8kYgeLkWwz
+	 9TnOSqu70GHDj6Txo7zoRFs589RnaozXRpgc68oTlLdrrAaClxA00pZT5zZwPV8Lcjosm
+	 QvZZoARsIke6tMdodS6XzwkvxEo82a9gvtaqiAMonXCNBEJlBGuR7j2ET92tG3zbk/Nzl
+	 6tZFX+4txfw+4X3PMu4g4ukJba32/6LzjUAChkpprXyD2sQSqx9X6MxrlXfb3VpNNJw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=oss.nxp.com;
+	spf=pass smtp.mailfrom=oss.nxp.com;
+	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=KQeCjmRK;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.70.31
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011031.outbound.protection.outlook.com [52.101.70.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5EFA606A32E;
-	Mon, 23 Nov 2026 00:28:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACAB4606A327
+	for <imx@lists.linux.dev>; Mon, 23 Nov 2026 00:45:26 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org ACAB4606A327
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IsR3abNA
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C10601F000D4;
-	Mon, 23 Nov 2026 00:28:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795393739;
-	bh=S4w0oOIqRRFhwLmmeq+5wIFtejIyyqqRZ+I+DxVaI3I=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=IsR3abNAGs6/7pKTWllt/Fa/96S079HUvjJ/T01SY6v0hMGcZ9pLKBYRtFyTSr7TJ
-	 DpqZfLNiLM5xHipFmzEpZNjqxpQpM/syYis3ewCPb3AQQ9B3sOGy2BBq4erhAzVdps
-	 uIHX4SsarmrVOmvOLogdR/rypnpoMmZL7oEl1hc7SQ6YhBsJkgAHJxdZDwjAuJ8xCv
-	 4+lPr088FjVKZm6RO6kQBexExjPc2aIIPBDUEsYwM4DU/ojI58HGVVnp+bQNQ+kxsj
-	 g7oNSXeee5sp/DZGzc/8Zx8D9LVGC+CbLuDSra/ErLCYMH8k3ZVc7XR4B3CskLBsGL
-	 uFemgxA5oqW8Q==
-Subject: Re: [PATCH v2 net 4/4] net: enetc: let core segment GSO skb when
- headers exceed TSO_HEADER_SIZE
-From: netdev-bot+sashiko@kernel.org
-To: vladimir.oltean@nxp.com
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- claudiu.manoil@nxp.com, wei.fang@nxp.com, xiaoning.wang@nxp.com,
- ioana.ciornei@nxp.com, willemdebruijn.kernel@gmail.com, imx@lists.linux.dev,
- linux-kernel@vger.kernel.org
-Date: Mon, 23 Nov 2026 00:28:58 +0000
-Message-ID: <179539373837.3135.4065744412888442454@kernel.org>
-In-Reply-To: <20261118235055.1225115-5-vladimir.oltean@nxp.com>
-References: <20261118235055.1225115-5-vladimir.oltean@nxp.com>
-X-sashiko-severity: Low
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=KQeCjmRK
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=LhfBvPnwo3Vkh7313JcW6FoMV0w3AybvZwfNgY6Fs7bLOnNxEXnMBrKuItgfoFYHn3FbGG1kf51zAfjSzuZzOHfgbrzg6oiRApLLtjbJk4Q5D0XU7WlUiZ4e9ijFH8EVfdEy//aCeNMMzg1OuPDUxWdxOCOPMuWCckK8nhndPwh4wYlt5xUNhkkXeE2OZnhdbYtoV4pwjjoAGk5OsjJ1807Dwob6ryXONbwwaoPNWO4S5qlZDMqwdRTKvNmKq+p0ow0fJMpkU/76W2k9Lda4TXdxDCjxfMxFt2J6t6OgkUpR9HCHDoLOhMe3TqthvlE1KAdMQx+0DVzzhoR5WdA7pw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Mygv9yfdzTnzhZU+iErvdAHE+8we2lJsJVVu5kpfCU0=;
+ b=RyLaasUo8JT69DvMTsmIIHIQ3Kd9rNXIBEMmJJF48w+KD8yX1NwoS8oSw9vk3LxvZ3IrzhfEKUBIqdOk4Xo1oVYNsDhX4UzUO5H3gUTzfstkG6yuF/US9UTfMZ717PACH+5PBRhJaVPnV2oLGxVZPdx+045RhGX/RD9lkyxuxbIjPlAXyTBtagJGIjCKajP7UfYKcMwEs+YRiPjCS/eoBWOuXBgOrkKfeUOOyIGypgpbe/khVs3ltFeCKZjoEhVWoqigFUQUxvh7OlckkKZz+MwNwMPir29H38N7Use0qGdi6yZC7Pli5tj8ZM2PCO8YTX2aGE+qtBfhHaVrv3HS8g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Mygv9yfdzTnzhZU+iErvdAHE+8we2lJsJVVu5kpfCU0=;
+ b=KQeCjmRK5RG3WeUfz1ZR8iB5u0xCxIuXmlXbgHpel8BtahZAMTMqw7kcUIBt/BEcWd1EqIrsTjqsBhpw97ImxF28uwN7mj+vLe1tu4dFdFYrxBkja7dYTFZhBPZ/OAutXpiPtI/Ac797WBQasf3ahuvBvdr1rrrz/8+MIoqa7HfZ7PEexNnDZCeTJZrF68aHQqOaz2N0z3AqxgvkVk9dTnfe05DPNN5so3FzkRnO0eDoyDopZxTnVnakOjGJjWQQfDgCRuHkKU+K610hB+d1xQCSw25GVZcmQoz9AA34XZOZ5kGCe+oDTKYSpVDMdalkQjrwXtdi1p+DxtMxrCL6dw==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from AM8PR04MB7874.eurprd04.prod.outlook.com (2603:10a6:20b:24d::9)
+ by AMBPR04MB644081.eurprd04.prod.outlook.com (2603:10a6:20b:7da::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.14; Mon, 23 Nov
+ 2026 00:45:23 +0000
+Received: from AM8PR04MB7874.eurprd04.prod.outlook.com
+ ([fe80::ac38:1699:6f18:c5d9]) by AM8PR04MB7874.eurprd04.prod.outlook.com
+ ([fe80::ac38:1699:6f18:c5d9%5]) with mapi id 15.21.0639.012; Mon, 23 Nov 2026
+ 00:45:23 +0000
+Date: Mon, 23 Nov 2026 08:50:26 +0800
+From: Peng Fan <peng.fan@oss.nxp.com>
+To: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Cc: Sudeep Holla <sudeep.holla@kernel.org>,
+	Cristian Marussi <cristian.marussi@arm.com>, imx@lists.linux.dev,
+	Peng Fan <peng.fan@nxp.com>, linux-amarula@amarulasolutions.com,
+	arm-scmi@vger.kernel.org, michael@amarulasolutions.com,
+	Brian Masney <bmasney+clk@redhat.com>,
+	Jerome Brunet <jbrunet+clk@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, linux-clk@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v15 2/2] clk: scmi: reject SSC configuration out of the
+ OEM field range
+Message-ID: <awON0ibzB7zVj7kR@shlinux89>
+References: <20261104103620.4054694-1-dario.binacchi@amarulasolutions.com>
+ <20261104103620.4054694-3-dario.binacchi@amarulasolutions.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261104103620.4054694-3-dario.binacchi@amarulasolutions.com>
+X-ClientProxiedBy: SI1PR02CA0039.apcprd02.prod.outlook.com
+ (2603:1096:4:1f6::9) To AM8PR04MB7874.eurprd04.prod.outlook.com
+ (2603:10a6:20b:24d::9)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -65,143 +103,78 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM8PR04MB7874:EE_|AMBPR04MB644081:EE_
+X-MS-Office365-Filtering-Correlation-Id: f0f80f97-a873-4f82-3efc-08df48fb0ec3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|7416014|366016|376014|1800799024|23010399003|22082099003|18002099003|6133799003|11063799006|56012099006|4143699003|261102123227099003|261026121527099003|261022075727099003|261021121427099003|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	6L5VIvhgYGeTxWuNw611J4W5dBcBcZ4255+YfvXTIw3D+DBwJv9N+q42uEZ47gvEkF4CT6rNb3UtRsopiAjoiEj6VeAFBzgJ1xPAbcZMldPQ9tZ+hzpHsCg2h+M8gx0mDAFC+nAne+BwZbvJ6KK6bCIzU6ZKXtqiEgkcLG+LdYw/Mm1I7Ki2qmMpbcdI835UyUHEpWnus5hdru0ersTpv/q7Qjy2zQZFTaoEZlTCcP6XLprwJqxRlu0/pR4Ytr8SNjALZvGR7tpUF1zczYPBimLYwf6KLa2VuwhfkntWjntij1cqJ6rD5aovoFlFVFCUg5u07zmhhwAsgh5tiC1x2f6kcEzQ2vfv+UZpDdYT88ZNaqZpEhBrlSy1aSoCRwxnxDqRj80UVeNF1XfrkMy+apKTxe4J/jhPjcuX4UmMudn+QdvKlqiXBug2EU3ll0sbC14rcwfCT56+8g/xw/xHRKwxxU2gOxAW1mHodYAFV50jfYzEGNPe6GnRL3nuAgwexyuIJ8AG2W/fSzOw093cKY7gnk2v5hFPfcM5+tm1/afXkfmgFPxCUq3yOTvXVx+RuBl4dmcEYw6Hw9mPhilO2rj61ERYV6+gPGLQijp4zABl2MgUWDj20aE8kw6Mq+Hc+8So/W6z3nXE6qKHb1vRrTdAB/k0Qf50uaDmjbpHoI0=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7874.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(7416014)(366016)(376014)(1800799024)(23010399003)(22082099003)(18002099003)(6133799003)(11063799006)(56012099006)(4143699003)(261102123227099003)(261026121527099003)(261022075727099003)(261021121427099003)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?K/J3uzIqc5zeOeuBDzJZrP7hU82HgSsKd4H9EBUvMmq7SAyt3VS3broxd5wp?=
+ =?us-ascii?Q?8yGdsct83FbpefqOtnvTgjjCbIJpkuL51RbLHVxDVaW9uJfLiGY7tUL6tbZe?=
+ =?us-ascii?Q?CwWllQlUfZJ25AvzOMZ1/Fb5AkiDfmsH4CFOcRcI01Zp88IkqRPmpt3ib3VX?=
+ =?us-ascii?Q?2GKyqxPw2c3u4Y6dMp0gYi5JSuN8l7gHoe+niaR9zaC/6+WHIqMn6oGTHxRn?=
+ =?us-ascii?Q?FTfsUgiLBIWzoJYyf4YCiBk6aK2wImgVSK8zQTATK3yg8w7E+fvuWVkPuY0f?=
+ =?us-ascii?Q?byuw3ljXAS9kVFkpGINzPN1+Poqr8AIMZa+HLzcWXowTe7/uXJZnNEmky04H?=
+ =?us-ascii?Q?rfPeF+oTtvsloA5kpH9XPs0tjA4zW8toSCt0K6g1UeqjoONZhNZo9cCHbzCi?=
+ =?us-ascii?Q?JPBKo2fLTqhCO97WXp5bjAVPVi+IQXMPTrrLA30tDm0DE8T3Wr22hqlIDtOW?=
+ =?us-ascii?Q?dGS5FIkS4vLIraRPto2xv8TghvK5MkpKV0CugT2ZjEPdO01+rNhNhydK9D0T?=
+ =?us-ascii?Q?xwAFLDflYzdT9hsQQUT+Xe5G783zLrwTpc7lsYPOY996oL6WMX9B8mvvDrwt?=
+ =?us-ascii?Q?NFSJM5DJ3aQHs3fmbqN8qIH7UM7xR4adWf1uIA2p7diZrU8ZWp/uTnLhUlAo?=
+ =?us-ascii?Q?OUndmoe6Ly+0SaV9ZGunwiBouv1jxvBqfZxRA5n8rsJQAqLebtaPedarSFHy?=
+ =?us-ascii?Q?46e8bsSlAFZ61oWX9f5gIAZtZazPUj9gXIwVxXiuqGTm8CKzAz4UfPzcEMpV?=
+ =?us-ascii?Q?TNU4hU4b4yi16pZFm2ZvseFMPiS5gtp+aCyDPhKU4w2ZJIAT5BiO84/BCAdF?=
+ =?us-ascii?Q?+VqG2oV4B75GrFw48Kvz4sAQB2eNGNs/+pN4xkRmAiUfyrQqgVb4Zce48P15?=
+ =?us-ascii?Q?J5h43FuklHb9VEYV3eTbcRcm6pnyE5ug1m1rIrecQCR8iNe6jPofytWK6c7I?=
+ =?us-ascii?Q?q3ZCbhyuvse9aphzorUKXCRq6GcUl8HEgijeoRsAlBqcKj36hVztaFkTvZPa?=
+ =?us-ascii?Q?7OocyHxIId/uEOQblE0i4adFcCAT6X+15ZcH7Jj4+vaLA+vMJDSNBstptfCu?=
+ =?us-ascii?Q?PYhIfyL1v1BYIGGkceaxV4s5wDcA58LFPJtqQsYWMT97rZ7v9pbzi8bfwQfS?=
+ =?us-ascii?Q?oAy9SuL4smINnkpa45eYJEtQJuvQpu6KwGAaaCN2m6rB8U4OfbJ9YtNk4bt2?=
+ =?us-ascii?Q?2jkNTLd7DLlsaFKrNFwiX2ZXP5LlKHXAeCYQHbhPChApK230oIX062wyiofk?=
+ =?us-ascii?Q?5hOrRtn0O/bnUFDYAMN5Qfs8Y+zaKCEjwxu/pIuNofQ0K1prtdt+t9yYKda2?=
+ =?us-ascii?Q?gkLc5iZ2+sDVGeh15WRBegSqWTaE4yr3QEBXhslhoy70v9UwcvARui2EqxWu?=
+ =?us-ascii?Q?WrGHE59mlkZcDzrFok6ZT0CioJem1hhC5d/ENJ305g/7xzKFrl6Wm6zxmwP/?=
+ =?us-ascii?Q?vAeVXKM04P+iZtxNR4uw8ZNTgE7HEo/L94p0TaUETK2Mg7SMaOiB9cDI+NWI?=
+ =?us-ascii?Q?I9v+XApNBPSVn2Jh4klefAxJHMs33/XVP/Lt1yBSmJIyfKf2JxB8h03in7Yv?=
+ =?us-ascii?Q?QjPYC8DECaifCpjtcoIhjkuV/VJCWuQ+568E2B5+cpHqP2FfR00MKujBdRud?=
+ =?us-ascii?Q?xItSgd/sOVqG2TobcXpIdrbJcazRKydQ0bRyhbpB9ePk8E4pa+FKCgeUm0Ap?=
+ =?us-ascii?Q?WnfetD3J8JS+9Q+5IS+DYRPKi1/VfRh8fZaqCu6jX2EMCkkjYP8kkjy97qGP?=
+ =?us-ascii?Q?WyL5TRTyzw/EiPSIuFWGEP4JILX+MsugeQoj18HEcCS7sZ7xxnQ+?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f0f80f97-a873-4f82-3efc-08df48fb0ec3
+X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7874.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Nov 2026 00:45:23.6452
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1r9gJmOtitVL8fAB0Xl2fZC4SYU0pjW2hNt/ixjtA6rsaZX2QqZvNbKowMuJdIYETYb6hWcp5IO+VN76kUrVhX6oD666IR3I2s5sbkHnN8vIP53QUIdLqybbx1NCg/Hg
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AMBPR04MB644081
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+On Wed, Nov 04, 2026 at 11:36:03AM +0100, Dario Binacchi wrote:
+>The i.MX SCMI OEM extension stores the spread in an 8-bit field, in
+>tenths of a percent, and the modulation frequency in a 16-bit field.
+>
+>FIELD_PREP() silently truncates values that do not fit in the target
+>field. Moreover, the conversion from permyriad to tenths of a percent
+>turns values below 10 permyriad into zero, which is then passed to the
+>firmware as no spread at all.
+>
+>Reject these cases with a warning instead of silently programming a
+>configuration different from the requested one.
+>
+>A request with no spread method disables SSC, so send a zeroed
+>configuration to the firmware in that case, without checking the
+>spread and the modulation frequency, which are meaningless then.
+>
+>Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+>
 
-Low priority / nit picks for your consideration:
-
-- [Low] The comment added in enetc_features_check()
-  (drivers/net/ethernet/freescale/enetc/enetc.c) explains the VLAN_HLEN…
-
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but the patch sits
-  right on top of it and only partly addresses it.
-
---
-
-net: enetc: let core segment GSO skb when headers exceed TSO_HEADER_SIZE
-
-This patch changes enetc_features_check() so that it clears
-NETIF_F_GSO_MASK when the L2+L3+L4 header length of a GSO skb exceeds
-TSO_HEADER_SIZE - VLAN_HLEN. The stack then segments those skbs.
-Otherwise enetc_map_tx_tso_buffs() would copy oversized headers into the
-fixed 256-byte tso_headers slot. The example given is a large IPv6
-Segment Routing Header set through setsockopt(IPV6_RTHDR).
-
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
-> index 6cc519eea5bd3..2bc65cf6f5087 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-> @@ -1138,7 +1138,19 @@ netdev_features_t enetc_features_check(struct sk_buff *skb,
->  		return features;
->  	}
->  
-> -	if (!skb_is_gso(skb) || enetc_skb_uses_lso(priv, skb))
-> +	if (!skb_is_gso(skb))
-> +		return features;
-> +
-> +	/* In case NETIF_F_HW_VLAN_CTAG_TX is disabled, validate_xmit_vlan()
-> +	 * has not yet run and a VLAN may still be in the hwaccel area, so we
-> +	 * need to be one step ahead
-> +	 */
-
-[Severity: Low]
-This isn't a bug, but does this comment cover every case? enetc never
-advertises NETIF_F_HW_VLAN_STAG_TX. enetc_pf_netdev_setup() (and
-enetc_vf.c in the same way) only sets the CTAG variants:
-
-	ndev->hw_features = NETIF_F_SG | NETIF_F_RXCSUM |
-			    NETIF_F_HW_VLAN_CTAG_TX | NETIF_F_HW_VLAN_CTAG_RX |
-			    NETIF_F_HW_VLAN_CTAG_FILTER |
-			    NETIF_F_HW_CSUM | NETIF_F_TSO | NETIF_F_TSO6 |
-			    NETIF_F_GSO_UDP_L4;
-
-Take an skb whose hwaccel tag is ETH_P_8021AD, for example from an
-802.1ad VLAN upper, a tc vlan push with protocol 802.1ad, or an 802.1ad
-bridge. For that skb, validate_xmit_vlan() always pushes the tag into
-the packet after ndo_features_check has run, even when CTAG TX offload
-is enabled:
-
-net/core/dev.c:validate_xmit_vlan() {
-	...
-	if (skb_vlan_tag_present(skb) &&
-	    !vlan_hw_offload_capable(features, skb->vlan_proto))
-		skb = __vlan_hwaccel_push_inside(skb);
-	...
-}
-
-The VLAN_HLEN subtraction is unconditional, so the code already handles
-this. Suppose a later change follows the comment and applies the margin
-only when NETIF_F_HW_VLAN_CTAG_TX is off. Couldn't an 802.1ad-tagged GSO
-skb then write 4 bytes past the tso_headers slot again?
-
-Could the comment mention the 802.1ad case as well?
-
-> +	if (enetc_lso_get_hdr_len(skb) > TSO_HEADER_SIZE - VLAN_HLEN) {
-> +		features &= ~NETIF_F_GSO_MASK;
-> +		return features;
-> +	}
-
-[Severity: High]
-This is a pre-existing issue, not introduced by this patch. It goes back
-to fb8629e2cbfc ("net: enetc: add support for software TSO"), and it sits
-right next to this check.
-
-The new check only looks at header length. What happens to IPv6 GSO skbs
-that carry extension headers but whose headers still fit in 252 bytes?
-Examples are a Segment Routing Header with 1-10 segments, or any routing,
-hop-by-hop or destination options header.
-
-On hardware without ENETC_SI_F_LSO, such as LS1028A, these still go
-through enetc_start_xmit()->enetc_map_tx_tso_buffs(). The software TSO
-path does not seem able to build valid segments for them.
-
-tso_build_hdr() in net/core/tso.c does not count the extension header
-bytes in the IPv6 payload length:
-
-	iph->payload_len = htons(size + tso->tlen);
-
-enetc_tso_complete_csum() builds the pseudo-header from the outer IPv6
-header:
-
-	csum_final = csum_ipv6_magic(&ipv6_hdr(skb)->saddr,
-				     &ipv6_hdr(skb)->daddr,
-				     len, ipv6_hdr(skb)->nexthdr, sum);
-
-Here nexthdr is the extension header type (0, 43 or 60), not
-IPPROTO_TCP or IPPROTO_UDP. With a routing header, daddr is the first
-hop rather than the final destination.
-
-Wouldn't every segment then leave with a short payload_len and a wrong
-TCP/UDP checksum, so the receiver drops it?
-
-An unprivileged user can reach this with setsockopt(IPV6_RTHDR). It can
-also be triggered remotely when forwarding, because
-ipv6_gro_receive()->ipv6_gro_pull_exthdrs() aggregates packets with
-routing or destination options headers into GSO skbs that may egress on
-enetc.
-
-As the commit message notes, enetc does not benefit from the core guard
-in gso_features_check(), because it only advertises NETIF_F_HW_CSUM:
-
-	if (features & NETIF_F_IPV6_CSUM &&
-	    skb_has_ipv6_extension_hdr(skb))
-		features &= ~(NETIF_F_IPV6_CSUM | NETIF_F_TSO6 | NETIF_F_GSO_UDP_L4);
-
-Would it make sense to clear NETIF_F_GSO_MASK in enetc_features_check()
-for any IPv6 GSO skb with extension headers? The stack would then
-segment these correctly. The remaining header lengths would be bounded
-at roughly 14 + 4 + 60 + 60 bytes, which would also close the overflow
-this patch targets.
-
-skb_has_ipv6_extension_hdr() is static in net/core/dev.c, so this would
-need a local check. One option is vlan_get_protocol(skb) ==
-htons(ETH_P_IPV6) && skb_network_header_len(skb) != sizeof(struct
-ipv6hdr).
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261118235055.1225115-1-vladimir.oltean%40nxp.com
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
