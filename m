@@ -1,66 +1,103 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795454581;
-	b=llkDA+gDtNge6xf3sMcfxy+U3sR3GFh79dRxJamUwPtxqXSVnwEENjnOkLfylhx+/i32
-	 BWRnHhS3qoYg5st4CpTJtNVI8yvF3pr5cxbBbJOtYvzv+TeobITKeLPvAQojIrR5gh2et
-	 M+4SNegOoS2qhTeDzD2yqfGEns3Zlae2GsnVJX7K0iXN5o1s8rhkwmyrRe7fjph/0q+pU
-	 4oMt2k1LxwePsoOjIjKyMl6Iw9DlImoIvt6/zc7QGgYSRkSZf85jS0G7FzoHQGdTbGKbK
-	 UBTzKPMk6S6mQOPcQKveDGJrwQX1r+1VeI93ncbDnhiSAPuPd61eO77OT71thzhupdQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795454581;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=HmV9sETKCIqTEm5gpQSn0ZKljOkssnactLIkz6YmI5s=;
-	b=lx3yxXnsF2C0zTYDyRgUKJWc7RO2J0bb0vlk5kcGZC7rZuLIWYbRL8bIlviN+WioUqnA
-	 S79oB6f2m3ubq0QmrJgmbumw3KaDRSvbt9ZT+B6eWnDwQtuZvka1wGBbJWXaOzKijsynH
-	 njEtNiI8dyM2uLfFDtl1jurV4tDXCtV5Rptsdd9kQxrgXb3JQ/7aFQ3QqA/KXeb7fVCBV
-	 Moyq3FT9o0UpnTv9IaCaBO/F2E4/UcjLaJEHq+qJPesEVnGlNQV4SCzds6TmIY/HcIYEY
-	 zHByyjGje0u5KoZRwWBog7nvchRSCuvapwEcNOv1eGA7SngpKnyLy28UhOOKZN8priA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UdWIAy0I;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.84.41
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795454738;
+	b=G+mUC/P6e4z5YR8xCYAsQrEEhtVuEr8egmJPbeS1xyi6w9AgAEtUNIq2Uz+bVrkx2coU
+	 YVmSwu7c8p2A0m/Eaq34VfDtq48F58nCp3ZKFjvun4QNKyhR77/9jVbIh5F8QlXhD0F6N
+	 Q+wqPhNq7lWlUxnGnF8H4vdAQWVxDy9ZbvQaXiXklmQci3hcwBmmBuieNSIz6LrxJujOB
+	 BMHQ7hNY44Ejmh2jQ9tO9lEiLp3a2XqAHCOXsbuEdU24VcUGzE/f1pYQMiv4zNURbj6zq
+	 YUJgivfkIPlcY1AaaRhspi6zeuHTFR5T13hn31eUhlfefO9y4xXAN4UBOAeaoGm5ZEQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795454738;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:Content-Type:Content-Disposition:
+	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=dc8Tb6mFhauNpQHY88UtN1IKiLsK9UgRx4rIm5SsnzE=;
+	b=4Gz6qlG5vLh96x/T15kKW+LEfjwcg/1qSRJP9mIqf5qr9SilYIOq9VfCObRiDGhScXU+
+	 qJ9UNqxhgdRnHTFq8kx+GwOke05UVoNDvLallXHWE4fE8kDkIs8xQmmWrENGwlKtPAOw/
+	 b0yLVNl4xQ+Nx+DJRlcOYd29pYt6MFQGN1sxRvJMsBvb1/rKZebmj3iWrkVn1JnjXkpXF
+	 Zau+7r3wZ+3dFJhrDZa8CxcKlgd/+jyqdn7Jf5mIeNNYeUVjx8nTqxMvtqRM+UlT3/2Gm
+	 T5stxvPnJl+bprIcakT//EpaVQep8MPRjSNGIkkyw9aJIjUrNZSmYIkfLxcxMHkN8Rg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=oss.nxp.com;
+	spf=pass smtp.mailfrom=oss.nxp.com;
+	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=GqE0kMXn;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.84.41
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010041.outbound.protection.outlook.com [52.101.84.41])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F7E6606A31F;
-	Mon, 23 Nov 2026 17:23:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B462606A32C
+	for <imx@lists.linux.dev>; Mon, 23 Nov 2026 17:25:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8B462606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UdWIAy0I
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4729D1F000D0;
-	Mon, 23 Nov 2026 17:22:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795454580;
-	bh=HmV9sETKCIqTEm5gpQSn0ZKljOkssnactLIkz6YmI5s=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=UdWIAy0IYBltJGVJMVfmHqWjwv6Mpp8Pq0EQnRnN4LY4bdqGl9tvW36dWPYuUjipM
-	 fG+6WkatUFaSKiUU7SdiMmcPybvYYg+fDz3X2HgPVi0Kp5wK0UakOut1SyuwjnJXHg
-	 6TtiX/5NcpW6iwm1HtZ/xVb69hkry+/4IMRDPS1Hf7m6zGK5QZ/XKkbJ3oJJT9Wo9q
-	 BxRTLBUCg4yxiUTCXs13qMY6F0Wq7pjl+RfoE4orvHnG8w8NxqJGBb16nQMyzdgrgm
-	 T5vrm7tIEVTXqrn1pAAg6QxhQnzQKS9WQLfW69M4v/8d58sK5yPOXALFdwdBbv1fNP
-	 uEOKxgr3hsrIw==
-From: Lee Jones <lee@kernel.org>
-To: lee@kernel.org,
-	Bjorn Andersson <andersson@kernel.org>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=GqE0kMXn
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ywrxEFPv0tdSYWxwFri2aPRoVqkb6bZu53ZXru2GM0BLzL6OEpVkcO1c7cqx6mUkuafGl02SDfKTM6X5c1t6SUSVPwsRW4a/yDKKH5VQ3dhfB6RNc69um4j3pG6gADpN4a5/ZNQn6TR/bVsvwjam484vLKzgI2AxQ8xppfQ10mYHltZ8kv9fv4CCIWynNOLXxFejMqheWVpttBGmw2xJDOaHbYhRYWHOCRoN9m//s59hWTFqDWcrwOBryjAa543qBBtDI70AvxJUjscM8zm/m3hnCb8/j/pcYTBpEIa0QwKfL9iNf0g7MMsPA/ZULC3YE/xwyB3QXcy47IGrbEg5sg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dc8Tb6mFhauNpQHY88UtN1IKiLsK9UgRx4rIm5SsnzE=;
+ b=Rggy0mkykH9n+vAghx5HuUwtqcOkt0VZWTft2SzupB7SCPZg4MaVR68DXPtdybq5Kwzf+wv4WXDF5k+8VawAGohaesV7Ql99+fuqzMWVtNpWChklFX6gUdWD4Wb9Yd0NUfYhaBVKfaVppLRNzzc7BTeaa7ZSIzf8arKv5hzbRaZzG2F1UKV15KiDJ3w7FyuXn3C0Wpng6IYWNBYbUAC109DLq8N+7IhqLtqN2tY84hInO2tSVam9OMikdnGND1Z1OjK6VYtXMsHPKQA6abL2PeS++MV/tOvtjXl5/C0C1O1HQ31+Nes+0fzQJqNAX2F9V3sJ3RGChsSs813hNiHqXw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dc8Tb6mFhauNpQHY88UtN1IKiLsK9UgRx4rIm5SsnzE=;
+ b=GqE0kMXnXXQ8HTxIVZfI9v+aFborkTOZ6R5oSkuFjVqXG5O3H+39QZjWkFaukEExH/XYYFwr+If54Mz3JDWysDbXPIDc9gEC/7VhIzmlEFl025FX1R/xMIDNISbWv83tJvA97vho7Ej9RprUJJ0C5vFO5+bUGwe33VPrMWOmG75NSgcnXeU+HyOXnuty4BDD9i0oNsJ45JOnViwj4Yk57ZzIUjlwHU0It7wdJFyzBhS6EWHBPMJblxLNlKa9AsQbiYOX15zBrq2KTLTMK5r1h+ooX1/+tWCpPspfGxIgB1TAsr8TXgoBJgylaHzS4CZ6a2yYfc3x5EJJ6rjYOM+Niw==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from MI3PR04MB12438.eurprd04.prod.outlook.com (2603:10a6:290:76::14)
+ by AMBPR04MB226274.eurprd04.prod.outlook.com (2603:10a6:20b:75c::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.14; Mon, 23 Nov
+ 2026 17:25:35 +0000
+Received: from MI3PR04MB12438.eurprd04.prod.outlook.com
+ ([fe80::c715:c32:8bb1:b70b]) by MI3PR04MB12438.eurprd04.prod.outlook.com
+ ([fe80::c715:c32:8bb1:b70b%4]) with mapi id 15.21.0639.012; Mon, 23 Nov 2026
+ 17:25:34 +0000
+Date: Mon, 23 Nov 2026 11:25:24 -0600
+From: Frank Li <Frank.li@oss.nxp.com>
+To: Lee Jones <lee@kernel.org>
+Cc: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Brian Masney <bmasney+clk@redhat.com>,
+	Jerome Brunet <jbrunet+clk@baylibre.com>,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Iuliana Prodan <iuliana.prodan@nxp.com>,
-	linux-remoteproc@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH 10/10] remoteproc: imx_dsp_rproc: Fix off-by-one bitmask for trailing bytes
-Date: Mon, 23 Nov 2026 17:20:54 +0000
-Message-ID: <20261123172140.3547896-11-lee@kernel.org>
-X-Mailer: git-send-email 2.56.1.809.ga0b61035b5-goog
-In-Reply-To: <20261123172140.3547896-1-lee@kernel.org>
-References: <20261123172140.3547896-1-lee@kernel.org>
+	Pengpeng Hou <pengpeng@iscas.ac.cn>,
+	Dong Aisheng <aisheng.dong@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>, linux-clk@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 01/10] clk: imx: imx8qxp-lpcg: Prevent stack overflow
+ when parsing clocks
+Message-ID: <awR3BI1c7j7y9bKf@SMW015318>
+References: <20261123164834.3330320-1-lee@kernel.org>
+ <20261123164834.3330320-2-lee@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261123164834.3330320-2-lee@kernel.org>
+X-ClientProxiedBy: PH3PEPF000040AC.namprd05.prod.outlook.com
+ (2603:10b6:518:1::5b) To MI3PR04MB12438.eurprd04.prod.outlook.com
+ (2603:10a6:290:76::14)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -70,48 +107,100 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|AMBPR04MB226274:EE_
+X-MS-Office365-Filtering-Correlation-Id: f0a4855a-7667-43ee-f143-08df4986c869
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|23010399003|19092799006|10067099003|4143699003|5023799004|11063799006|56012099006|261021121427099003|261022105027099003|261009223027099003|261026140227099003|261028144727099003|261102123227099003|18002099003|22082099003|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	EvUAaxw5NSWoh4Lcn0laHnbBuKVLcXYi599ND4NlaTe/KafuSulqPsmHVjC+/Nh7YKNLGIChfs0kRwPpI+cC3xWz+FwHxmT1midJfJlvBUaTIw4dEl2RZJ74gc1RxhkY4YVxycKmSjsGEpIDgEv+jF0NdxljGA8YgD8H+i37ICDv4iPEt1vRA5udMTUZ1x8T/28dlpns7O8xLWZdVpQ65PgLy4xMrm4J43dD48jgMSIa0swhJAIPvAeX/AUUPjivWdcvB7AvhxZeKsKkY0CDAfD/KiilGM/5a9OA6BbhmwjNiDwVkCD+TFB75sgxu9TG7hG4Q5xTn94ZOCmeUS1jjO15dW7p+3yy8UClxJJZid5xfKjdonHQZ+2QNezjfj/2KemBiXZyWUt1h0cUIUXg7bBQ/pbukl/83VJX7HOCD9p5ZxV0mT+8dtG0KoWrf6qMs5IUQFjDc8RupaoIoR96VUhASySD2lvDGBMjttu2kqXCTiyjovbbhCJVnj/12xuuHRTsSg1ZiUxKaErqvkj6JQBOtJf+D94e/G6jfEViH0U5omw3456LcPJO3no1a3LrrX8mJMlQ9besiqjJaOmnqrM4MWPSQmPVkLKit2K6t3Q=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(23010399003)(19092799006)(10067099003)(4143699003)(5023799004)(11063799006)(56012099006)(261021121427099003)(261022105027099003)(261009223027099003)(261026140227099003)(261028144727099003)(261102123227099003)(18002099003)(22082099003)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?wEHl1VmyexJxEa8Y4HjEBGzSE0eyLyq6xzEw7GTD/cXphkLOMFxgmSbhrJvm?=
+ =?us-ascii?Q?lbo7GE6Vpk6oLBcyc44EXlRPVCutFdp/OBNz06w/r8iQfuY/15BEGpSSq508?=
+ =?us-ascii?Q?QNAK+sLf2euqsJBp7adm1h9TqF639qQUrCQLvSSfjlGZ/6fkkLUxLIO+Uziu?=
+ =?us-ascii?Q?hOHU4xSYkhJS4H/1ojhVexPDtUS2qS2gVr5DlX0lKZZ1UPV8raxm9v5W1fxz?=
+ =?us-ascii?Q?L27c1l4lUejcQ/2BUMR9/jsWFWcNNeij2KZxVMch74daNUnSL2SlsnaMrnkL?=
+ =?us-ascii?Q?Tw3bsy51ce9uO7BBndZ/jfYvh7QwCM1UPHClpSFvz0k1MLUonbD9ZbSqckVR?=
+ =?us-ascii?Q?GgQp9N1Ca0MRHNfKklyF9KA76qrDaAmU4KQOcL5lEucnTnqO9zAQGLeyRTie?=
+ =?us-ascii?Q?X+IpQFhDdcE30346haZefw2Alw5tXk7iA2IejnnSJAWeonFMrwptJFI5vlY5?=
+ =?us-ascii?Q?IE4/ub3tEwW5QZFfAUqW97TTTRU8oeZZ3acFGmugWPPsBAQeh4uNwOYDCrrr?=
+ =?us-ascii?Q?LpLCWWX53oK1Jz3coWIKaL1Z4VvItNiKjJoY7j8l8v9jBqPy0Gr03V2IwMim?=
+ =?us-ascii?Q?AJWCGzDhTqa8u0xvDKMFkOrzHz3tcaIH7iQAwS81cEQS5TyGhiK1CHB+Xp3F?=
+ =?us-ascii?Q?ZG4zFUu3EPSFCPIEVfwzemwDQCeiv9eR2Xgzmf5Yh1rdoPbBeERTYL1WfY3U?=
+ =?us-ascii?Q?5WmZ+S4GFuhC9ChR/pCBveXmT4T8Lj/UbjM1CEGv5kD4uQQKMXW1nz7QwIMy?=
+ =?us-ascii?Q?CsYwZuAyv2+uauIIn/VNVr04cLs/5uzNtXFK9mPbo38jAGGYw0BZZfM109pg?=
+ =?us-ascii?Q?jmAV64ZWOUPRpc3ai0PkbrZYyv2TzQ8UrbvNMS4pR2r4HD/vSRCAFirANGZo?=
+ =?us-ascii?Q?g78TPZ7AU2yuWadDDiIDNDiDPpM5mIjlnAVzfFnIjl5dbYSsJCB0ckx12EaV?=
+ =?us-ascii?Q?n15+Fg1SzYrqh1SHzbVKT7piEtQSHtlSDx2WWAHKV0WQqs2KfLQOUIbw2SoH?=
+ =?us-ascii?Q?u5FNk8DyT3GRYTe+/IcVEbsmh+lwb421Bv+jTb4AkanOlHIZlkvnU4pzM+HX?=
+ =?us-ascii?Q?h235AD01Gagu3dEf9vgsn25B3yH1+1cjnnIC1r9fCTWnuxFBkEMXKj7UkeFN?=
+ =?us-ascii?Q?eIswICJgn+s24jugT5ZkHMPwFQxGginis17cKvSHU6zPpVSPiBUHCcT9Cgw6?=
+ =?us-ascii?Q?m2eomyXo3UDQiKUK9lV5WzS7kakDdcf7DubBpN5oFxFPVGxanivGNqEYybRd?=
+ =?us-ascii?Q?bf+ZuLh8g0yb1bGFI25mq+RlQ2WqheFYbsSmT8iJY60RFJhw/qgELcUJZZt9?=
+ =?us-ascii?Q?qoR+zqltrGwvQafRuiiWozr0v3JSWlIR+KcHZuAmJ0pOkXwVF8+46cstnv9f?=
+ =?us-ascii?Q?J2qb2B0txFyrDjaBIFv3b3w9zb3PD5nSo+kmNQzYJn3dowRXXzR0EMyzr8HN?=
+ =?us-ascii?Q?r9TsSB1lB8Pxq/KzP7uHYg7dVWNhrTd/LYh7i/9I5i0dIgrPrGKROMsx6xgx?=
+ =?us-ascii?Q?1hB5vgtjMzE+rEcqBeT2k0HlnPFko7Ned68TYbmUXLFJi+M5g/S72XwkorcX?=
+ =?us-ascii?Q?y3PskFMfDZL7v2qBoBLixRwTEIMg2rBT5XMPYIT3DPE0/1tah3KrKMI4L5Be?=
+ =?us-ascii?Q?wmpILvncI9f0XzH1RQmeimRsBm2W8ahwpdUGk4AWndfvTpdMmchTLSDJUGj0?=
+ =?us-ascii?Q?L21RYjNGOeK6dmO3Wptw8goZEgisFVihET1tvspP6QFR9Am+WeOI/mKlTLyI?=
+ =?us-ascii?Q?JXtYl+dWIi7tuDdZ+/og4OpTm4cEo6uyhS89hKocPiNdk5DdC794?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f0a4855a-7667-43ee-f143-08df4986c869
+X-MS-Exchange-CrossTenant-AuthSource: MI3PR04MB12438.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Nov 2026 17:25:34.8881
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: gQ9UG5XoE9WECGM6ZUpGd7qvW7fZ76CyIINy5d/Tv7a6kOlGuT7+sbWhHhXGk1QQegweZIZYcHgZuY+o1+eKjtZFMG29TyvGmq71rjb1KcEZIYvEsM/Ze0/76u/SJM6a
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AMBPR04MB226274
 
-When size is not a multiple of 4, both imx_dsp_rproc_memcpy() and
-imx_dsp_rproc_memset() compute affected_mask as GENMASK(8 * r, 0) for
-the remaining r bytes (1 <= r <= 3).  Because GENMASK(h, l) is inclusive
-of bit h, GENMASK(8 * r, 0) sets 8 * r + 1 bits and clears or overwrites
-the least-significant bit of the first byte past the end of the target
-region during the 32-bit read-modify-write.
+On Mon, Nov 23, 2026 at 04:47:34PM +0000, Lee Jones wrote:
+> imx_lpcg_parse_clks_from_dt() allocates output_names, parent_names, and
+> bit_offset on the stack with IMX_LPCG_MAX_CLKS (8) entries each to match
+> the hardware limit of eight clock outputs per LPCG block.  However, it
+> only checks whether of_property_count_u32_elems() returns a negative
+> error code and enforces no upper bound on count.
+>
+> If a Device Tree node specifies more than IMX_LPCG_MAX_CLKS entries in
+> clock-indices, subsequent calls to of_property_read_u32_array(),
+> of_clk_parent_fill(), and of_property_read_string_array() write past the
+> end of these stack buffers.  Reject counts exceeding IMX_LPCG_MAX_CLKS.
+>
+> Fixes: d5f1e6a2bb61 ("clk: imx: imx8qxp-lpcg: add parsing clocks from device tree")
+> Closes: https://sashiko.dev/#/bug/linux-22dfac78-f44b-42f8-985a-995308723fc4
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Lee Jones <lee@kernel.org>
+> ---
 
-Use GENMASK(8 * r - 1, 0) to mask exclusively the r trailing bytes.
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
-Fixes: 408ec1ff0caa ("remoteproc: imx_dsp_rproc: Add custom memory copy implementation for i.MX DSP Cores")
-Closes: https://sashiko.dev/#/bug/linux-2e407b68-a7e9-42ff-a613-e61b47a4461b
-Cc: stable@vger.kernel.org
-Signed-off-by: Lee Jones <lee@kernel.org>
----
- drivers/remoteproc/imx_dsp_rproc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/remoteproc/imx_dsp_rproc.c b/drivers/remoteproc/imx_dsp_rproc.c
-index 2771043ee433..0e0325d5df9f 100644
---- a/drivers/remoteproc/imx_dsp_rproc.c
-+++ b/drivers/remoteproc/imx_dsp_rproc.c
-@@ -799,7 +799,7 @@ static int imx_dsp_rproc_memcpy(void *dst, const void *src, size_t size)
- 		writel(source[i], dest + i * 4);
- 
- 	if (r) {
--		affected_mask = GENMASK(8 * r, 0);
-+		affected_mask = GENMASK(8 * r - 1, 0);
- 
- 		/*
- 		 * first read the 32bit data of dest, then change affected
-@@ -849,7 +849,7 @@ static int imx_dsp_rproc_memset(void *addr, u8 value, size_t size)
- 	}
- 
- 	if (r) {
--		affected_mask = GENMASK(8 * r, 0);
-+		affected_mask = GENMASK(8 * r - 1, 0);
- 
- 		/*
- 		 * first read the 32bit data of addr, then change affected
--- 
-2.56.1.750.gf70dc682cf-goog
-
+>  drivers/clk/imx/clk-imx8qxp-lpcg.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+>
+> diff --git a/drivers/clk/imx/clk-imx8qxp-lpcg.c b/drivers/clk/imx/clk-imx8qxp-lpcg.c
+> index 9ad016106b1e..5eb4bdbaf7d8 100644
+> --- a/drivers/clk/imx/clk-imx8qxp-lpcg.c
+> +++ b/drivers/clk/imx/clk-imx8qxp-lpcg.c
+> @@ -199,6 +199,10 @@ static int imx_lpcg_parse_clks_from_dt(struct platform_device *pdev,
+>  		dev_err(&pdev->dev, "failed to count clocks\n");
+>  		return -EINVAL;
+>  	}
+> +	if (count > IMX_LPCG_MAX_CLKS) {
+> +		dev_err(&pdev->dev, "too many clocks: %d\n", count);
+> +		return -EINVAL;
+> +	}
+>
+>  	/*
+>  	 * A trick here is that we set the num of clks to the MAX instead
+> --
+> 2.56.1.750.gf70dc682cf-goog
+>
+>
