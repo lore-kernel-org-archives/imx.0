@@ -1,84 +1,85 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
 	t=1795433145;
-	b=0vc8dYBmuFvf+h2uzk/5QlmkAIwHJUKTs1cdTmWCPpWEC6zlUy/t1Mx87Oz7m0FgOAeU
-	 uTw/10sP1ypuZQzlJ7pWZTvztWbbSgWDSPubzfxErbe5DUd7Ao/vEMPo9QxiI3dkDsN7K
-	 8AdljZM84BnxoU8Pk0jPWAo2OVdnyQ+8IOPeWLDvII0yS+5RIIvygX44cQZ8Z2Pb/eDtH
-	 GBUKDIOZsY4mdQ+Z7T1fAS9+RDbwQqX1XtFvd7HZYNxBY4o3OlnsBnhV5/5Rg6h0qUov4
-	 30CjNuyCtM9C0TI8C2GSMvickLVCcDiAkIZv6Rlx5KZ6DFYA8XxpkuWq3xoPDhpT/rw==
+	b=dEV4R5q2jn9PYtn3G2iszA4mfra/IvPJBiYVXJ+F0H0aNxuuscw6yXKXuyhNoAw1hXf3
+	 eHyjiC84qPMII7RWlUsrWxAPNjW1n9PNhhFij1XPeovdOtoF8FmW/ja2RuUUWKV1LBUhW
+	 gwnR3e0VdAcWnHB/FzQNji8lBEttf5/Ri84vTkPuuRhupZKAoFbPqxBc0iwp0MapK/NIw
+	 lrERbv9ZARNwW1J8lV6p5pzFNayJCyO7XufA0ZsX9kOIDKcJaIhW+aPHhhQDZuiIB/weT
+	 9m5SOwYEznWOCRdtJG/Qh7nGJDmrPOj/zIpbVhQb6LAxBX76ZGQa2vwXqDFT13/0R1A==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1795433145;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:From:Subject:Date:
-	 Message-Id:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer;
-	bh=FZTB+VKUReCx8XgfvlzddrAeMA7GwaWZltQEpDEq+1w=;
-	b=29nuV+HtvCw0n5hCQJmPkkDK/7sxYN21RsQIGWdOVVsszFjmQJKU74zQOEGSH9GPPSvM
-	 UJPYI5DvuDUS8GRXMynBE4CsxmBG+sa5B1XIkhWujiFaKruAU7sorm8l36lgfimCT67+m
-	 tXYx4Xg8ocNGQLJL9Em4TL6qaBQ7ixSirBzTS8OUzJ96NwiUO0kKfs6drAYNn7wH2adGC
-	 1wvmoB3N2Z7MeFGI/8wnTLFbbzADUzpuvaFWSXpWMQqIY0B0xsxS4xObLms7+9fJyd1Q1
-	 aP20Ii1YPTHuNJR3ICjxw8PQoudUe1uiNSMLQaHiEidW8JvvMmCKQVxYv3vBsOVeL/g==
+	h=DMARC-Filter:Received:DKIM-Signature:Received:From:Date:Subject:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:
+	 References:In-Reply-To:To:Cc:X-Mailer;
+	bh=ZtisJYhM86UyOxDcysd9jBL2fDZTQgOga1PJnW60c8w=;
+	b=KO83hw4eJUtLUYyXEr9GUamWGtYJeQmMYIWWMby4507eL3vMrvC2I48pXOVJZrr4PYPJ
+	 FunyZopf52gH3LaSTin/5nId5tCq8ZfhyX6057K9QzWBuakidt+jxpvbsUomTW1icTq25
+	 qh8WrDWxk03la9FfL35mHesS4FsA2E0JzKbPPn7Gx646/QB9DMAihAb3L6qZ3EQIYPfNM
+	 evvwtRJG4kPjgAah5s5G42oviDV1VdqSYW+HAa0rdwXHYg8n+pwNkhV+WlUoG13FAVjXm
+	 ukU2Tv1wHudjCf20M2U6Umb3pICRU/DjPi1fjyjwiPjCudStCs3fZxcAF88jP1FcZ7Q==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=none header.from=pengutronix.de;
 	spf=pass smtp.mailfrom=pengutronix.de;
-	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b="XC7/GABB";
+	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=g5Gh9NCS;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
 Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 520EC606A32C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 506DE606A321
 	for <imx@lists.linux.dev>; Mon, 23 Nov 2026 11:25:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 520EC606A32C
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 506DE606A321
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=XC7/GABB
+	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=g5Gh9NCS
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 4FAA92004F5;
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id A1B792020DC;
 	Mon, 23 Nov 2026 12:25:42 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	s=20260414; t=1795433142;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=FZTB+VKUReCx8XgfvlzddrAeMA7GwaWZltQEpDEq+1w=;
-	b=XC7/GABBbVCy6qSUBLzaxbF1Tgdso6abzV0o+CLMO7Pyrc+E4bpaPHhMYOPvqBcnH6d8Kz
-	pS744332w9d2Kp0QSlr2pLp+O5LG9/ly1US6YHoFz3jhhV4uM7cFIFjCgkeLnqFaedQ/8X
-	t59iSGt91W1E5YUbdEfD5WV/CvRzJFxllHa5BlVFlLGFnpt08gEWlnnm92Qalp8YzLgSLM
-	EhOje00UR1YbhXNIkbvE1YUmdZC3FMOe8XXkBTblXQzLoTUXRdK6aIoL+B25EFCLoV/oie
-	gwBhmddDSciXPsBhRIct8uprObwmvLzcF1sv0cLEFyP88X/pa4wtRjCzai+/6g==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZtisJYhM86UyOxDcysd9jBL2fDZTQgOga1PJnW60c8w=;
+	b=g5Gh9NCS8DCn5Zb41igXrUOwh8oxz2zAv0RbRFLEz1NvXCerXMjFEpkf9lW4Uarl9cCkW7
+	HGLp1Bjk9YlmoWQ9KEFsTJ4Ts9F56PuL6m88ZhTvMMTQMe55iq6BcQDEV4d/5+cwFdfSPU
+	WJszExLZKzZ9KLJqwaNB/jafPBFAoZkNtdlA/kyklxifF5UO8Gy/ZkKwgaqDG2wz2oUsFN
+	uuW6ggS+/F3TA3pW4hHQMxRjAQHViKV8KcWYG6kS/bkW79w2uzJ7vF4lVmV7iPJbGnV9cX
+	9zba42NdkoibfZaaGsZqutWlr0XHkOPT7jzXRtJ3DZ4Osuko65U0z9Anp6lF8Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	s=20260414; t=1795433142;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=FZTB+VKUReCx8XgfvlzddrAeMA7GwaWZltQEpDEq+1w=;
-	b=CZKb7kQBUh/XBdr74KsMTSaav0Yi7PRhKkXpjI35Isabftlf1S41trm1bBY9rQ2Q/hl2YL
-	Qmmjad12VNfrJkN/zhHa+QjU9aaLXBq5A7vtjkyLRSRoqZ8axd4oPN3e5BEBkRERDYX1hb
-	CH1HCW9BLduGvjeWfcOI2e3zQrC2BT9jDEpalwF4oaKewpLpzMJi2NxB26aOfVHY+hCYk+
-	rKK/3nj8XKBy1stxatUc925dn6NSryBENfIeK7M/S6ex5y4ucm3jEfuFKA5h5nuJ2MZWIA
-	fyx94IpDLymJ9rdQstIPhuRROPv97OXsA3Fsy5DQfkD6m85/bhu4ryET8OANiw==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZtisJYhM86UyOxDcysd9jBL2fDZTQgOga1PJnW60c8w=;
+	b=LwHN8qNjxymoJMW1tf2KTkiiPY9oG162Skwh8Hz9GSGg885POEkhutS1WfZuCPKBD4a6I5
+	AoXFanX+Aepq1hkbgNEGaE0G4tbjyPjS2qvqGDuJkNBbFZbaGL62pMXBYr8TUs0zY4ZqJd
+	ED6TiPtNQAUeRmcxtKgw4Mum0uQ4gJZCGZowrEChs4q5Oi5gMuan28tPQDeUR5q52nTuz6
+	BDRHVyZdPvv38MjccPv9d4PTUhdLwPZ18awhNvtEZead6r6UB3VJqlDLxp3G7GqAWx0du8
+	bgy2MrZafzwZcMWru0Y1un6DfLOYb3YsuTbsBAhMJ+nDHWZkFgCTEC0kyauJ1g==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=f.diener@pengutronix.de
 ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1795433142; a=rsa-sha256;
 	cv=none;
-	b=Px/bp4ZMaZED356D0hsShG2xnXTdCwbJlF2VKHrd0g1sRd1h9xMausOhY1EmQISVZ/QMUO
-	tqqidIDPAUp1tgz2WaxyEVIDpYuvafWx5Oe9BJkefHqTwfE8WUwdvixgM5En6vdWpT7W4T
-	znkivYous1GncOc4DJT0vdwepOQM9fjksa9J/SeSNXEdUSP10aXUInxU8SAtxeG9jL2j7p
-	1Sn30dYn+ygxqbYanRUTyU7QOrD2vIrFkJCrBrU+Ww3TSJIVYgoM+ocb3LOyxhRaZ0qgEg
-	UOY7FA7qYrZN/jomXKqWInUUR2p15ehJFz2/3qGS33qwc8SZbTZcOMgHj4luaw==
+	b=T7olXURK/CaoHX7hbUynCoN1Lh4/GbF22pfbO3CDfgWfVSqw/ESGupcpdaJ6zhhkEEllxb
+	JJxZglSj4fl8M2aGzK7OJMlZRAyGnb2ROFPT9uxCdtWI1b/msn5wQr+5goUnzMvzlQok+5
+	AWpcS3heFASXaXDdxOUX1dmKpa6MKvxCZH7D8bjPJ+ptfoVVaeQF7exZL0RX5PHT2e2Oj6
+	ipTex6R/rGu5WZJla4dBmw4Ti9XJocWLYmqMYaKXKSFkiGxJemM/T8bbqJj0JtnKVSeQ0X
+	C6JPRN27l1monEJ2xZy1KnPT26dgyn7ZMElLpnUiZvyvQgGNpC3agi3sJK9y8g==
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.2])
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <f.diener@pengutronix.de>)
-	id 1xVSB3-0016XI-2L;
+	id 1xVSB4-0016XI-0C;
 	Mon, 23 Nov 2026 12:25:42 +0100
 From: Freimut Diener <f.diener@pengutronix.de>
-Subject: [PATCH v2 0/5] arm64: dts: freescale: Fix i.MX93 FRDM hardware
- descriptions
-Date: Mon, 23 Nov 2026 12:25:14 +0100
-Message-Id: <20261123-imx93-frdm-fixes-v2-0-dd97c7fca4b1@pengutronix.de>
+Date: Mon, 23 Nov 2026 12:25:17 +0100
+Subject: [PATCH v2 3/5] arm64: dts: freescale: imx93-11x11-frdm: restrict
+ USDHC3 to SDIO
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -90,11 +91,9 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/22NwQ6CMBBEf4Xs2TVtDRU98R+GA9ItrAmFtIVgC
- P9uQY8eX2bmzQqBPFOAe7aCp5kDDy6BOmXQdLVrCdkkBiWUllIK5H65XdB606PlhQLm2hYmJys
- arSHNRk9HkFaP6sther6oibtnb3Qc4uDfx+cs995Pr/7oZ4kCr4UxpFSdvqgcybVT9IPj5WwIq
- m3bPsgMzwnHAAAA
-X-Change-ID: 20261110-imx93-frdm-fixes-56f8d5ef0c66
+Message-Id: <20261123-imx93-frdm-fixes-v2-3-dd97c7fca4b1@pengutronix.de>
+References: <20261123-imx93-frdm-fixes-v2-0-dd97c7fca4b1@pengutronix.de>
+In-Reply-To: <20261123-imx93-frdm-fixes-v2-0-dd97c7fca4b1@pengutronix.de>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
  Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
  Sascha Hauer <s.hauer@pengutronix.de>, 
@@ -102,60 +101,37 @@ To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Fabio Estevam <festevam@gmail.com>
 Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- kernel@pengutronix.de, Freimut Diener <f.diener@pengutronix.de>, 
- Marco Felsch <m.felsch@pengutronix.de>
+ kernel@pengutronix.de, Freimut Diener <f.diener@pengutronix.de>
 X-Mailer: b4 0.15.2
 
-This series fixes and completes several hardware descriptions for the
-NXP FRDM-i.MX93 board and the common i.MX91/i.MX93 device tree.
+USDHC3 is connected to the onboard Wi-Fi module by default and can
+alternatively be routed to the M.2 Key E connector. Both interfaces
+provide a 4-bit SDIO connection.
 
-The changes enable the PMIC's I2C level shifter, describe the PCAL6524
-GPIO expander supply and USB2 VBUS supply, and restrict USDHC3 probing
-to SDIO devices.
+Add no-sd and no-mmc to skip unnecessary card detection and avoid
+the HS400 warning from mmc_validate_host_caps():
 
-Additionally, the missing EL2 virtual timer interrupt is added to the
-common i.MX91/i.MX93 timer description, allowing VHE-enabled Linux to
-use the EL2 virtual timer.
-
-The changes have been tested on an NXP FRDM-i.MX93 board.
+     sdhci-esdhc-imx 428b0000.mmc: drop HS400 support since no 8-bit bus
 
 Signed-off-by: Freimut Diener <f.diener@pengutronix.de>
 ---
-Changes in v2:
-- Keep USDHC3 at 4-bit bus width and restrict probing to SDIO.
-- Move the I2C level shifter configuration to the common DTSI.
-- Address review feedback.
-- Link to v1: https://patch.msgid.link/20261120-imx93-frdm-fixes-v1-0-78dde22a56fe@pengutronix.de
+ arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts | 2 ++
+ 1 file changed, 2 insertions(+)
 
-To: Rob Herring <robh@kernel.org>
-To: Krzysztof Kozlowski <krzk+dt@kernel.org>
-To: Conor Dooley <conor+dt@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-To: Pengutronix Kernel Team <kernel@pengutronix.de>
-To: Fabio Estevam <festevam@gmail.com>
-Cc: devicetree@vger.kernel.org
-Cc: imx@lists.linux.dev
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
+diff --git a/arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts b/arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts
+index 6e8351d120160..40997115e4a26 100644
+--- a/arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts
++++ b/arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts
+@@ -73,6 +73,8 @@ &usdhc3 {
+ 	keep-power-in-suspend;
+ 	mmc-pwrseq = <&usdhc3_pwrseq>;
+ 	non-removable;
++	no-mmc;
++	no-sd;
+ 	pinctrl-0 = <&pinctrl_usdhc3>;
+ 	pinctrl-1 = <&pinctrl_usdhc3_100mhz>;
+ 	pinctrl-2 = <&pinctrl_usdhc3_200mhz>;
 
----
-Freimut Diener (5):
-      arm64: dts: freescale: imx93-11x11-frdm-common: Enable I2C level shifter
-      arm64: dts: freescale: imx93-11x11-frdm-common: Describe PCAL6524 supply
-      arm64: dts: freescale: imx93-11x11-frdm: restrict USDHC3 to SDIO
-      arm64: dts: freescale: imx91-93-common: Add EL2 virtual timer interrupt
-      arm64: dts: freescale: imx93-11x11-frdm-common: Describe USB2 VBUS supply
-
- arch/arm64/boot/dts/freescale/imx91_93_common.dtsi |  3 ++-
- .../dts/freescale/imx93-11x11-frdm-common.dtsi     | 29 ++++++++++++++++++++--
- arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts |  2 ++
- 3 files changed, 31 insertions(+), 3 deletions(-)
----
-base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
-change-id: 20261110-imx93-frdm-fixes-56f8d5ef0c66
-
-Best regards,
---  
-Freimut Diener <f.diener@pengutronix.de>
+-- 
+2.56.0
 
