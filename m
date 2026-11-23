@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795393734;
-	b=jYqelRX6Do3UTpXPZEWYFnnHNnXQJ+nQ4JL5qOJ388AD5Pv+tCLOsl5eF/nl9qbywPbb
-	 9WpL0psIv2LEAXC4vuGRyG9Hb1St9MJopu5j+ScDzyPsvfxt2crS8B17uW+Io0fz7pKfD
-	 kRlVw2zE15buSsUE4gENam5I4t8g28pU0Hp2cYgiib4UaScY60Qgr43YIDyVeo39olEnI
-	 aL/cf2/5EIMDIKGEds3/RG7GHq6ED4Dj56MAj3bWcmOO7ztzg8/JjnBir47wib2+vs+jo
-	 uX/tay4JkIAoG/mYOqAb4eAATpxexQWFJ38aTfK6e8SUA7ji5ZNoyL17lJ9k7NHu0Lg==
+	t=1795393736;
+	b=OLhTkfXq8FQCawGIuSC0ENzqx80DadBXHucro43Lj92xWIfqRwd99OrJCfne+Se2ojlX
+	 8XUluhAnU61zEcJIO6z5RiDXh1314oxIA4B56qwq6GLjBuFeILBWK8RKn15RYUutRtbh0
+	 MXMcZC+v/exJOF+M0H4BTfjpp5XOThJqt2XKsE/Z5TYlBdWMqrb/8Pc9NkXhKnJdnljE/
+	 UtY7ySqa+5c0Z6cpAkEG9CKkqars+XXE+tWfc+ngOj3tnU1k78/FDOLjz126vGFjKVhdC
+	 dqc5G+8JOlaRTxujeVa0r1LVbdZZecNIFpv39ioGU2TXi5j/XHc29Un23YmRrxrkiNA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795393734;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795393736;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=U+HLN1k8lco5bdQT0KCTCsJjmlrsMySjcezfIG6VGqg=;
-	b=YXYbXCu8yJe837wmJ73cQMaHwnDxCjNk/p6MvJKKBZciaDBH2xDQJC+iXD3aPq87/C+F
-	 tMlQu2YgyIHjjMsoF+5N1zDPNG6Hjf0f3Sctg6o65o9OAkbCTABXzeiqov77iowdny595
-	 LG1HeWLlni10mNsK58M66F5CnEkYXnjA01UK0c5Ne+hrYHoeE7Rdo6CHXwQMeM/XMfIWm
-	 n+5uH7t5ptr7+2eH9LbxJigoWps1DTPxJdNu5rgGSUcpnRYUZdgeVklCfLeDGp670zASG
-	 9UbydaJyhicXUvkDygaf4pRtiRj2ZKhQbM2GlasOmome9C5NHINoISY+jrxLq1Rt8dQ==
+	bh=j2hyzzDNOVdZB/HbaRnmZg2TF5KrRkGypUydgkuULYM=;
+	b=pdt0JHgCVCaa6lntMpbA6EdftI5s0LhAatY/famfy69dxiMdGIX4jhEADPZFroaDTa5o
+	 vuzpNenXPllqSZSIZuuxNTbUnXW82GiLShBoRTPstrjYcMagWQ+K6m2O96CSg4rvC/30s
+	 TDhIwWeu2bCUfJruGJRPlI4PFmIqJljQAjAf/Yu/DkM+GgPvSa16huln2T0TAidiIqxP0
+	 xYIQARI7FV6b9qtL8YuIBpa7WQZA4B0+a2bda45MchHRPul6v/1S2OTbkMPQBf8iYZ7Ct
+	 0Kd42ZbGko/PuXUqAGXVDPMm6F3UZiHGXhNjDYFWimdm/mrgWJCmMFO9OhC2nI4n0Ag==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=meQNc0ro;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EJRnZver;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDAC4606A31A;
-	Mon, 23 Nov 2026 00:28:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84019606A32D;
+	Mon, 23 Nov 2026 00:28:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=meQNc0ro
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A7471F000CF;
-	Mon, 23 Nov 2026 00:28:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EJRnZver
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 210AC1F000C6;
+	Mon, 23 Nov 2026 00:28:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795393734;
-	bh=U+HLN1k8lco5bdQT0KCTCsJjmlrsMySjcezfIG6VGqg=;
+	s=k20260515; t=1795393735;
+	bh=j2hyzzDNOVdZB/HbaRnmZg2TF5KrRkGypUydgkuULYM=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=meQNc0roy9IBNOVc+GZSaqQzt10PHUrvXHSjkaBJymAAglslM1DJrxqgzHLW1alQR
-	 rbNygEMoXeb/uLZ8q6dEv8aQiraCbrjByuqaxJWbuWXbreVOHXaXVeULMjg5ooYmqF
-	 dFdblTBt61n3VAeAaH7scPVqZqZOtEGvVbrMTz/cGEaUMMNLUsV/0XvaZDax+k9++B
-	 pvBHYc1Nmy7/mUPvmhhr0ld5IodXbsHslKTCO+xkqrgoWEFzp4vwnogo7bi4UQwZy/
-	 IRy4OfBSwH9m3Kc4nRFOSQ26yFDTxyVKy08sw0V52i9StM/zs5+DJ5VuoYUt3mXaaU
-	 jtLgEi80DtAJw==
-Subject: Re: [PATCH v2 net 1/4] net: enetc: let core segment GSO skb when TSO
- would not fit the TX ring
+	b=EJRnZverzv4wtUNpJxZ5r6ESJw3NP586cLPDnlUkmJV82A1bNCwUmgd+PZBzlfjgn
+	 UzOswbqw9B7UpMofAML5b3tXJXhHJEvz9JU1hkQ+XVabQ04dGm8NTS/vV2F8k/eGhB
+	 yLOt0TROoyKwUld7QltyeqLGqfwta8aRO/MS+XuMjiSdJ97CJ4MbhUKavjFa6Bx4a6
+	 cLmtdsCrqOalLg8ExvYz2Hc09X88rb6gJbp1t0hlZ/Oqk0D4NAdjsGeDPLSJCu3dd/
+	 XNPLDZaHyNKxs6cxdcVhR9VJf8AnfP3y/VGmJ3Ai0CGy0BJP/Jm6VxJy868dtmGnU5
+	 EiVU1kKM1ZuLQ==
+Subject: Re: [PATCH v2 net 2/4] net: enetc: reserve VLAN extension BDs for
+ software TSO
 From: netdev-bot+sashiko@kernel.org
 To: vladimir.oltean@nxp.com
 Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
@@ -49,11 +49,11 @@ Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
  claudiu.manoil@nxp.com, wei.fang@nxp.com, xiaoning.wang@nxp.com,
  ioana.ciornei@nxp.com, willemdebruijn.kernel@gmail.com, imx@lists.linux.dev,
  linux-kernel@vger.kernel.org
-Date: Mon, 23 Nov 2026 00:28:52 +0000
-Message-ID: <179539373276.3135.4544992671951430926@kernel.org>
-In-Reply-To: <20261118235055.1225115-2-vladimir.oltean@nxp.com>
-References: <20261118235055.1225115-2-vladimir.oltean@nxp.com>
-X-sashiko-severity: High
+Date: Mon, 23 Nov 2026 00:28:54 +0000
+Message-ID: <179539373470.3135.3154873961019393933@kernel.org>
+In-Reply-To: <20261118235055.1225115-3-vladimir.oltean@nxp.com>
+References: <20261118235055.1225115-3-vladimir.oltean@nxp.com>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: imx@lists.linux.dev
@@ -66,144 +66,140 @@ List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 0
+Low priority / nit picks for your consideration:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+- [Low] The commit message only describes the ring-space check in
+  enetc_start_xmit().
 
-- [High] enetc_features_check()
-  (drivers/net/ethernet/freescale/enetc/enetc.c:1106-1122) decides…
+Pre-existing issues:
+- [High] This problem was not introduced by this patch, but it is a high-
+  severity pre-existing issue: a lost wake-up race between stopping the…
 
 --
 
-net: enetc: let core segment GSO skb when TSO would not fit the TX ring
+net: enetc: reserve VLAN extension BDs for software TSO
 
-This patch adds an ndo_features_check() to enetc. For skbs that take the
-software TSO path, it clears the GSO features when the descriptor estimate
-is at least the TX ring size, so the core segments those skbs before
-ndo_start_xmit(). The goal is to stop the TX queue from stalling on skbs
-that could never fit in the ring.
+This patch adds enetc_tso_count_descs(), which extends tso_count_descs()
+with one extra extension BD per segment when the skb carries a VLAN tag.
+It uses the new helper for the free-BD check in enetc_start_xmit() and
+for the ring-size check in enetc_features_check().
 
 > diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
-> index c6571b5cc8425..1606ac57016f3 100644
+> index 1606ac57016f3..7f089a84d9a65 100644
 > --- a/drivers/net/ethernet/freescale/enetc/enetc.c
 > +++ b/drivers/net/ethernet/freescale/enetc/enetc.c
 
 [ ... ]
 
-> @@ -1098,6 +1103,24 @@ netdev_tx_t enetc_xmit(struct sk_buff *skb, struct net_device *ndev)
->  }
->  EXPORT_SYMBOL_GPL(enetc_xmit);
+> @@ -1034,7 +1045,7 @@ static netdev_tx_t enetc_start_xmit(struct sk_buff *skb,
 >  
-> +netdev_features_t enetc_features_check(struct sk_buff *skb,
-> +				       struct net_device *ndev,
-> +				       netdev_features_t features)
-> +{
-> +	struct enetc_ndev_priv *priv = netdev_priv(ndev);
-> +
-> +	features = vlan_features_check(skb, features);
-> +
-> +	if (!skb_is_gso(skb) || enetc_skb_uses_lso(priv, skb))
-> +		return features;
-> +
-> +	if (tso_count_descs(skb) >= priv->tx_bd_count)
-> +		features &= ~NETIF_F_GSO_MASK;
+>  			count = enetc_lso_hw_offload(tx_ring, skb);
+>  		} else {
+> -			if (enetc_bd_unused(tx_ring) < tso_count_descs(skb)) {
+> +			if (enetc_bd_unused(tx_ring) < enetc_tso_count_descs(skb)) {
+>  				netif_stop_subqueue(ndev, tx_ring->index);
+>  				return NETDEV_TX_BUSY;
+>  			}
 
 [Severity: High]
-Can SKB_GSO_DODGY skbs get past this check, given that their gso_segs is
-still 0 when enetc_features_check() runs?
+This isn't a bug introduced by this patch, but can this stop path lose a
+wake-up from TX completion?
 
-tso_count_descs() is computed from skb_shinfo(skb)->gso_segs.
-virtio_net_hdr_to_skb() clears that field for untrusted skbs, for example
-those sent by af_packet with PACKET_VNET_HDR:
+When the free-BD check fails, enetc_start_xmit() calls
+netif_stop_subqueue() and returns NETDEV_TX_BUSY. There is no smp_mb()
+and no second enetc_bd_unused() check after the stop. The LSO path, the
+non-GSO path and the trailing ENETC_TXBDS_MAX_NEEDED() stop all have the
+same shape.
 
-include/linux/virtio_net.h:virtio_net_hdr_to_skb() {
+On the completion side, enetc_clean_tx_ring() stores next_to_clean only
+after its whole cleaning loop has finished. It then tests the stopped
+state with no barrier in between:
+
+drivers/net/ethernet/freescale/enetc/enetc.c:enetc_clean_tx_ring() {
     ...
-			shinfo->gso_type |= SKB_GSO_DODGY;
-			shinfo->gso_segs = 0;
-    ...
-}
-
-With PACKET_QDISC_BYPASS, nothing recomputes gso_segs before the features
-check. qdisc_pkt_len_segs_init() is only called from __dev_queue_xmit():
-
-packet_xmit()
-  dev_direct_xmit()
-    __dev_direct_xmit()
-      validate_xmit_skb_list()
-        validate_xmit_skb()
-          enetc_features_check()   <- gso_segs == 0, GSO features kept
-
-The estimate is therefore just nr_frags, and NETIF_F_GSO_MASK stays set.
-enetc does not advertise NETIF_F_GSO_ROBUST, so the skb goes through
-__skb_gso_segment(), and tcp_gso_segment() takes this branch:
-
-net/ipv4/tcp_offload.c:tcp_gso_segment() {
-    ...
-	if (skb_gso_ok(skb, features | NETIF_F_GSO_ROBUST)) {
-		/* Packet is from an untrusted source, reset gso_segs. */
-
-		skb_shinfo(skb)->gso_segs = DIV_ROUND_UP(skb->len, mss);
-    ...
-}
-
-This returns NULL, so the original unsegmented skb is passed on, now with
-its real gso_segs. With gso_size as small as 8 and a ~64KB payload, that
-is roughly 8000 segments, or about 16000 BDs for a 2048-entry ring.
-
-enetc_bd_unused() is at most bd_count - 1, so this check in
-enetc_start_xmit() can never become false:
-
-		} else {
-			if (enetc_bd_unused(tx_ring) < tso_count_descs(skb)) {
-				netif_stop_subqueue(ndev, tx_ring->index);
-				return NETDEV_TX_BUSY;
-			}
-
-dev_direct_xmit() frees the skb, but the subqueue stays stopped. The only
-place that wakes it is enetc_clean_tx_ring(), and that needs completed
-frames:
-
+	tx_ring->next_to_clean = i;
+	...
 	if (unlikely(tx_frm_cnt && netif_carrier_ok(ndev) &&
 		     __netif_subqueue_stopped(ndev, tx_ring->index) &&
-		     ...
+		     !test_bit(ENETC_TX_DOWN, &priv->flags) &&
+		     (enetc_bd_unused(tx_ring) >=
+		      ENETC_TXBDS_MAX_NEEDED(priv->max_frags)))) {
 		netif_wake_subqueue(ndev, tx_ring->index);
+	}
+    ...
+}
 
-If the ring is idle when this happens, and with no ndo_tx_timeout, does
-that TX queue stay stopped until the interface is bounced? That would be
-the same stall the commit message describes as triggerable "from any
-source that can craft gso_segs".
+Consider this interleaving:
 
-A tc egress BPF program can probably reach the same state as well.
-bpf_skb_adjust_room() and similar helpers set gso_segs = 0 together with
-SKB_GSO_DODGY, and sch_handle_egress() runs after
-qdisc_pkt_len_segs_init().
+CPU0 (ndo_start_xmit)                CPU1 (NAPI)
+enetc_bd_unused() reads old
+next_to_clean, ring looks full
+                                     finishes reclaiming the last frames
+                                     tx_ring->next_to_clean = i;
+                                     __netif_subqueue_stopped() is false,
+                                     so no netif_wake_subqueue()
+netif_stop_subqueue()
+return NETDEV_TX_BUSY
 
-The af_packet UDP_L4 case does not seem to trigger this, because
-virtio_net_hdr_to_skb() caps it at UDP_MAX_SEGMENTS. The TCP case does
-trigger it.
+The ring is now empty, so no later TX completion will reach this check
+with tx_frm_cnt > 0. Polls driven by RX clean 0 TX frames. The driver has
+no ndo_tx_timeout, and the only other wake is netif_tx_start_all_queues()
+in the open path.
 
-Later patches in the series do not appear to change this. At the end of
-the series, enetc_features_check() still goes through
-enetc_tso_count_descs(), which reads skb_shinfo(skb)->gso_segs.
+Would the queue stay stopped until the interface is brought down and up
+again?
 
-Would it work to derive the segment count from skb->len, the header length
-and gso_size here, at least for SKB_GSO_DODGY skbs? Another option would be
-for enetc_start_xmit() to drop, instead of returning NETDEV_TX_BUSY for,
-any skb whose estimate is >= tx_ring->bd_count.
+enetc_bd_unused() also reads next_to_clean and next_to_use with plain
+loads while both contexts write them, without READ_ONCE()/WRITE_ONCE().
 
-> +
-> +	return features;
-> +}
-> +EXPORT_SYMBOL_GPL(enetc_features_check);
+With this patch, VLAN TSO skbs hit the NETDEV_TX_BUSY path more often,
+because the estimate now includes the per-segment extension BDs. The
+synchronization is unchanged.
+
+Would netif_txq_maybe_stop() and netif_txq_completed_wake() from
+include/net/netdev_queues.h work here? Another option is an open-coded
+stop, smp_mb() and re-check, paired with a barrier after next_to_clean is
+updated. The later patches in this series don't seem to address this.
 
 [ ... ]
+
+> @@ -1114,7 +1125,7 @@ netdev_features_t enetc_features_check(struct sk_buff *skb,
+>  	if (!skb_is_gso(skb) || enetc_skb_uses_lso(priv, skb))
+>  		return features;
+>  
+> -	if (tso_count_descs(skb) >= priv->tx_bd_count)
+> +	if (enetc_tso_count_descs(skb) >= priv->tx_bd_count)
+>  		features &= ~NETIF_F_GSO_MASK;
+
+[Severity: Low]
+This isn't a bug, but should the commit message mention this second call
+site? The body only covers the free-BD check in enetc_start_xmit():
+
+  enetc_start_xmit() uses tso_count_descs() to check whether the TX ring
+  has enough free BDs for a software TSO frame.
+
+This hunk changes runtime behavior. VLAN-tagged software TSO skbs whose
+adjusted estimate reaches priv->tx_bd_count now lose GSO, so the core
+segments them before ndo_start_xmit().
+
+The change is also required. Without it, a VLAN skb where
+tso_count_descs() < tx_bd_count <= enetc_tso_count_descs() would still
+pass as GSO. Since enetc_bd_unused() is at most bd_count - 1,
+enetc_start_xmit() would then return NETDEV_TX_BUSY forever.
+
+That is the stall fixed by the previous patch, "net: enetc: let core
+segment GSO skb when TSO would not fit the TX ring". That patch also added
+enetc_features_check() itself.
+
+Right now only the changelog below the '---' mentions this ("old v5->v1:
+also patch enetc_features_check()"), and that text won't be kept in git.
+
+Could the body describe the enetc_features_check() change and the
+dependency on the previous patch, for stable backports?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261118235055.1225115-1-vladimir.oltean%40nxp.com
