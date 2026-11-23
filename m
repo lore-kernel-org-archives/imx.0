@@ -1,58 +1,174 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.42
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795432047;
-	b=vUL3MRtKu8RwdJmtrEczluyc9zMOhgOkThzvrm4rqyGajLYw5/slXM0q0HXtZU7Ys0Pb
-	 oABi+dn2jbJh+nBxr4TrMDaCL2z+HerXDb8mRbyxUQUigATymKH3pmVXgaYnLjTmPEs2v
-	 9OV6ap6NJ9Ul+yfP8LzdgpCdbAd5MYTysc2K+3i0BerooxFz3RgY5UWLdS4gCYomEsLc4
-	 An3kWlskW7o5//OuR80Jf5pEhcYm0G/bd7cagU/TUj4gLCIz01yNJ5i4sox7MoxCZd5k9
-	 PrnPXgFsih8iPqPEnTYtuiEsF5hsVkMPhRBqFEYHCt2X21wVpxn7kL5wzwn5PNQyAPw==
+	t=1795432740;
+	b=Vn5UqbUXSi0WBQvzsTDg6XPsYAyULGW0Dpm/ZIjla03TRUcZGogJdcE17RSgydZAaqxY
+	 00a/KrBGlo5buO5Z4mzLdP3CPPoHelXW5ttGoZQ0gL9DUNt6tlPkCCgE4Wx0EqiQBNLOq
+	 bIJ0B1okgt5vyxpKLDrwUe8VOIVb/xKk//lqNric13HeNblVshBAPSB8nv0T9cto7hGu4
+	 cYPrVCI+tqIKJgs60bF1SGpUzaQeUr6IHFIIGaIGf0heQLs/oy4EtRuiqImFQ/QxUgtsu
+	 IrzYEXNAP7PB7JRZp9o8rSaZb4+JB/6u6qT3LWKP1SDPApggdYDqn69AHkgCqzynZJQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795432047;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=DKHpltpuTjnnQLiZ/Ai1c8nmsECa5rHnQiL1XcqN74w=;
-	b=lksJNccqMmM1EcMLMnxitpY2vqtAo7Lx1jZjxzpYZQF1ltlbLNLIzjrXc4Ibmpt5WKEB
-	 4+DK4Btfd0gIhCg/0POXtLw7kB6Uu3U7Ou1s7eMbT2Y5y7MUalKLcF3xYVJF5lwpe+j9c
-	 J6qyNJUOuOEgbsFWL4MS+0P/ZLD6H8PzfnW8IyAPHg5NWc0CB+al4Rt3YjOfgN/X+rgXL
-	 JJLnvKBnmRSKhRPFflP0gloVHu2zgAa8h6sv90Ny9H0fomED6RWD4DGX26Ugcq1dpl9Li
-	 0e7r3MXUMvjx9fNSWIp12fWmbwS3C4H611O/+l/3zpkbxppa+PRqZ9pFT5wEZla9uqg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795432740;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:Content-Type:
+	 X-Developer-Signature:X-Developer-Key:Content-Transfer-Encoding;
+	bh=+Bs54xR6o3UqWiUDInUdo2zlGVoF05rGerpAXaT2LIg=;
+	b=OCbT9eG5Ktlkb/TTKsxfJ7gvNJMI/Py+tBSBy6OUKVlohJBB3Ye51VQ0binbC5i2eEev
+	 acreT3rvLMaFzOz7FWvMRwFKreHnFDTzXYKWaIiHmGgRaYuRnkcRR6Ckzh2syTj7QSJCJ
+	 XelNqF7WmM3vmhZ6irvuZtJ5vcEKvp3ruUHRR4qSxCzQ8peOuMso4K1tl30f10z1Q1Lqm
+	 GdadYASEPWmEDYiTn3xIpGtcJpqWa3Nz5PDAwqOsjQKNMm8N2xeNmNgklUG+4LgKL5gYj
+	 NNpc6GXTE6n/nooa0loOx0tj3sjeAMOxDlR2aHij3w70xpV3BcbXpspSklMVVsLDE3A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=M+M3OK3d;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=baylibre.com;
+	spf=pass smtp.mailfrom=baylibre.com;
+	dkim=pass header.d=baylibre.com header.i=@baylibre.com header.a=rsa-sha256 header.s=google header.b=eKRm3OlX;
+	arc=none smtp.remote-ip=209.85.128.42
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D258606A337;
-	Mon, 23 Nov 2026 11:07:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5784606A335
+	for <imx@lists.linux.dev>; Mon, 23 Nov 2026 11:18:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D5784606A335
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=M+M3OK3d
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F32D1F000E6;
-	Mon, 23 Nov 2026 11:07:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795432047;
-	bh=DKHpltpuTjnnQLiZ/Ai1c8nmsECa5rHnQiL1XcqN74w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=M+M3OK3df9XMgE4aQ+VKLf8xE0ss0pkbKppEeIcMwkJv8E7Du39WwQOV7MK64bgLb
-	 h4qADtTOsAlbeudZ59Ue6QwvtqT604pETsN7Y3gVLQyEcfS+KCXPxxUbIjCqpNcQzL
-	 YCuurPECD0Bxg2e6xZNV2Z6v+285EMPyogkWFn5ItKnNwf6+2vPbvEyNDlWiW4jl+l
-	 jQGO4cBsdgs98IYxwsTvRvmXjmxOYR60+civnPQp34IJ7RL3vAu/Mc2d/P3tN0leqL
-	 TjNlMRShjE4DT4tgKC1f0n2HBo6f28IopvQ+2gsxMJ47CiIQCkcTsD/8fShu1Ql10N
-	 CeFPPdpmf8MAw==
-Date: Mon, 23 Nov 2026 12:07:24 +0100
-From: Maxime Ripard <mripard@kernel.org>
-To: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Cc: michael@amarulasolutions.com, linux-amarula@amarulasolutions.com, 
-	David Airlie <airlied@gmail.com>, Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Marek Vasut <marex@denx.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Simona Vetter <simona@ffwll.ch>, Stefan Agner <stefan@agner.ch>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 6/8] drm/mxsfb: Implement hw state readout
-Message-ID: <awQdObBL6kNzvBnj@houat>
-References: <20261122153032.2782768-1-dario.binacchi@amarulasolutions.com>
- <20261122153032.2782768-7-dario.binacchi@amarulasolutions.com>
+	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.a=rsa-sha256 header.s=google header.b=eKRm3OlX
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4a210470b49so29908335e9.2
+        for <imx@lists.linux.dev>; Mon, 23 Nov 2026 03:18:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre.com; s=google; t=1795432738; x=1796037538; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=+Bs54xR6o3UqWiUDInUdo2zlGVoF05rGerpAXaT2LIg=;
+        b=eKRm3OlXTCYMARSZ58X1U4iiYRu9c7nigHUxXVQ0mX6k85/qESGRjGQ2AkJxyD55jz
+         IRHj8Er4Lhnus8cnFm32wlopoZh1LBZeFDnfkxDkPlxqlxWo5BXFdlZq344bCmcYFe1Z
+         On7toUH5f07HbEf2jnCKGEPVFCrq70cTHh9xwbFQQ8ZMzgSJYYRNT5LcUR23gPiLeau/
+         0W+W90Zcj7Xa2R+nlkwEp88+5qjYcOabDibG8lHAU8+ySBmSBU/X6MYjH3G6PGfRTi5G
+         soo0a9zDdU2PwEH9Ok9ANWfBjD5fm85Au3OQBCAxGzj2TmVjiGGKlvKgLuJHYGrxQqLM
+         y0RA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795432738; x=1796037538;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=+Bs54xR6o3UqWiUDInUdo2zlGVoF05rGerpAXaT2LIg=;
+        b=Lq9AmEHNXIrwL/5FYaXKqS4C3i/S0vbwrgtwqkBR6XvavFss9qSeSte2JGAbAvggo4
+         Jy/rrbAiHjKXchqM6lExilvLGLBRoCD4bs3g/mSBRnyeSvzbRv1x4z4Neh1XeGoVIb7z
+         EaIfEz3gpMNluXFj/Fa8cFUG+vEicnWfjUNB4DlLXkl4swMEjKTJnHYx+pNnk3R6hX7b
+         pDbeURKiueOZmcS8+0Ceaqe74NLIWxsIZeG5YbjyTR6SknwwIGd/5T2nHszUVuuKDVCF
+         wq8FO4h4uLYSba/J6mHJ9twqcZNpEZoRE5mmQ/eksRg2TN3XWgxjQrMkZbdTJZ/Ss08u
+         gmJg==
+X-Forwarded-Encrypted: i=1; AL+hErFmfR877rsLb/72r+WmWCoLzeRGP6OmKDgo9o291fV9Tq6cQ7AXaOUz5XYyGbf0ZgDhvNE=@lists.linux.dev
+X-Gm-Message-State: APuU4Z8LbDmMZE0PVbcfLIfng1pggt9klv9zHrJU4ZzPnhcOwYWxveHf
+	LSaKesL1jrG2sCGRlAIA9gF5N3zF7pZQ6TQqKn1onzf5u228wQfIXOhcYrC8lx6Mbzw=
+X-Gm-Gg: AZFdTZcyCKL+eqbs2OSBUO1FbnEG2+2DoB0oElg1qj7trnxDyqfuwW2IXamXYOMPxww
+	meP3fBMClNuQRcFEE0xvAH4mQbMb7nHpwD/xXu5C7N5kwifMDM8QzCg99cKL0ridGm0+JLVMCc0
+	OIWa1TZIgzkfDSYCFnnRRqNH9TUf3zXaKq2mEDT2V20paO/IA1eaWE79En6yWpC6ZOg6OKMaQqu
+	a41R3yRgQSMVW7+aeuHEw3rc2m5oKRGaaiN9Arf3+GhriKrC1GhYAqxSOBPMHU+O4oh3Ie4es5D
+	vjf0tPeJ3NGE3aq8Res+5kPFgMAe4AVgDpJZpqWuT4ApMmbYHvUVgZJK7scOH68pQKE4Jhp5ZOJ
+	P6GeqRI8250qaB9BxrGx/a31/47+240Is8OXQglgCDS7Hk8Dj8/TGV6QJaEngcQStW7DX8773GJ
+	vOBaR5+KgIvA242ixNbi4W8+eBiQim/b8dm+kPcgXMzWvCqy4gjvD2BMdLaJvXhcdAjtCrHNdzj
+	NJhd+pII9LgimBxmWO/XOrSRjY2uMSoif3BqTPUMOf3SMpkDS7d/yjDZnmOfZmMboXTbe0gVxmt
+	qTVIpNdMuqRCsNm22GGWS4WVFuaGbcWZcLOW13vnVkJQ5WozqGyAdidt/3yi5/nvf75MjvUGD2w
+	K7ZWMVOHjwFcuR9cb0PlrMDrTMzmSy4Bnk0R9Ag==
+X-Received: by 2002:a05:600c:6708:b0:4ba:7e6:53d6 with SMTP id 5b1f17b1804b1-4bb88940848mr201826735e9.33.1795432737768;
+        Mon, 23 Nov 2026 03:18:57 -0800 (PST)
+Received: from localhost (p200300f65f19a90438645cebc2ee104e.dip0.t-ipconnect.de. [2003:f6:5f19:a904:3864:5ceb:c2ee:104e])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-4bb884b7515sm470106375e9.13.2026.11.23.03.18.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Nov 2026 03:18:56 -0800 (PST)
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Lee Jones <lee@kernel.org>
+Cc: Pawel Zalewski <pzalewski@thegoodpenguin.co.uk>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	mfd@lists.linux.dev,
+	linux-rpi-kernel@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	linux-mediatek@lists.infradead.org,
+	Benson Leung <bleung@chromium.org>,
+	Guenter Roeck <groeck@chromium.org>,
+	chrome-platform@lists.linux.dev,
+	Xu Yilun <yilun.xu@intel.com>,
+	Tom Rix <trix@redhat.com>,
+	Michael Hennerich <michael.hennerich@analog.com>,
+	Chen-Yu Tsai <wens@kernel.org>,
+	Marek Vasut <marek.vasut+renesas@gmail.com>,
+	James Ogletree <jogletre@opensource.cirrus.com>,
+	Fred Treven <fred.treven@cirrus.com>,
+	Ben Bright <ben.bright@cirrus.com>,
+	Support Opensource <support.opensource@diasemi.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	=?utf-8?q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>,
+	Aaro Koskinen <aaro.koskinen@iki.fi>,
+	Andreas Kemnade <andreas@kemnade.info>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	Tony Lindgren <tony@atomide.com>,
+	Samuel Kayode <samkay014@gmail.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	patches@opensource.cirrus.com,
+	linux-renesas-soc@vger.kernel.org,
+	linux-sound@vger.kernel.org,
+	linux-omap@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Linus Walleij <linusw@kernel.org>,
+	Thomas Richard <thomas.richard@bootlin.com>,
+	linux@ew.tq-group.com,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	David Rhodes <david.rhodes@cirrus.com>,
+	Peter Griffin <peter.griffin@linaro.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Tim Harvey <tharvey@gateworks.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Sven Peter <sven@kernel.org>,
+	Janne Grunau <j@jannau.net>,
+	Neal Gompa <neal@gompa.dev>,
+	Mathieu Dubois-Briand <mathieu.dubois-briand@bootlin.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Saravanan Sekar <sravanhome@gmail.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	=?utf-8?q?Jonathan_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Orson Zhai <orsonzhai@gmail.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Chunyan Zhang <zhang.lyra@gmail.com>,
+	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>,
+	Liviu Dudau <liviu.dudau@arm.com>,
+	Sudeep Holla <sudeep.holla@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	linux-samsung-soc@vger.kernel.org,
+	linux-amlogic@lists.infradead.org,
+	asahi@lists.linux.dev,
+	linux-arm-msm@vger.kernel.org,
+	linux-sunxi@lists.linux.dev,
+	linux-rockchip@lists.infradead.org,
+	Peter Tyser <ptyser@xes-inc.com>
+Subject: [PATCH v5 00/17] mfd: Use named initializers for arrays of *_device_data
+Date: Mon, 23 Nov 2026 12:17:58 +0100
+Message-ID: <cover.1795431460.git.u.kleine-koenig@baylibre.com>
+X-Mailer: git-send-email 2.47.3
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -62,455 +178,224 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha384;
-	protocol="application/pgp-signature"; boundary="x5h4dpsvgdc5hplh"
-Content-Disposition: inline
-In-Reply-To: <20261122153032.2782768-7-dario.binacchi@amarulasolutions.com>
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=9551; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=MGKcHdGed8cdYxfcD47xvikCz5El7VhAAvZbGXZ0H80=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBrBCDmLnAVuv90OgAYSoKkCYiFYXMo4ihUoAK3Y d1hQ2XqpZSJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCawQg5gAKCRCPgPtYfRL+ Tm4uB/4rZI/lAiEuXDT7LfvXemVaA3M3+niMcTXjMkcyGQEX1ihFT+I4Q4ffrO+rGP/ob10jBUZ ZXzrNyyfoJXBMHCDKs5p2zpzDPqYh3N2/0R4c38EtEs2olSJLJ4hjBH73ZhIQ0KHzYOxl2lPtcH aA6lwXYHy87e3acCHGdkDrXD2iqPNIBcMWyMmeWn7ZntNnxxsishZb4Raenn63knuwpnwZxxYtX N+838V3v47+8ZEQHH0quOgD/l5vkYufDAckeeki15Jdhm1kaAgE5q37HtQEOrlaRY8avvEFSODE qowFlYVJo1AJ+ScANBSttk3L9gfou01all6UWmjWvcrDYId0
+X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
+
+Hello Lee,
+
+there were two conflicting patch series with a similar goal:
+
+ - v4 of my series:
+   https://lore.kernel.org/cover.1794347059.git.u.kleine-koenig@baylibre.com 
+
+ - Pawel's "mfd: use designated initializers for acpi_device_id"
+   https://lore.kernel.org/all/20261104-acpi-mfd-v2-0-64b9dee3baaf@thegoodpenguin.co.uk/
+
+Here comes the remainder of my series rebased to
+
+	https://git.kernel.org/pub/scm/linux/kernel/git/lee/mfd.git for-mfd-next
+
+I double checked no new arrays popped up needing adaption. Otherwise the
+things said about v4 stay valid:
+
+ - The objective is adding an anonymous union to the various *_device_id
+   structures, see
+   https://lore.kernel.org/all/cover.1780048925.git.u.kleine-koenig@baylibre.com/
+   for an example.
+
+ - "mfd: bcm2835-pm: Drop unused header" got review feedback vor v2 by
+   Stanimir Varbanov[1] asking to drop that patch as he intends to
+   rework the driver in a conflicting way "soon". That didn't happen
+   though since July, so I consider that request expired
+
+ - I'm happy about every applied patch. There are a few files that are
+   touched by more than one patch. If you apply the series partially and
+   conflicts happen (due to changes in your tree in the mean time or due
+   to skipped patches that you didn't like) just reverting to HEAD for
+   conflict resolution for the conflicting files is safe.
+
+ - The "Unify style of ... arrays" are only cosmetic. If you consider
+   these mostly churn, just drop them.
+
+Best regards
+Uwe
+
+[1] https://lore.kernel.org/b3d228fd-6138-4195-b63c-65b28691e18b@suse.de
+
+Uwe Kleine-König (The Capable Hub) (17):
+  mfd: bcm2835-pm: Remove member of struct bcm2835_pm that is only used
+    locally
+  mfd: bcm2835-pm: Drop unused header
+  mfd: kempld: Simplify device abstraction
+  mfd: lp87565: Explicitly set driver data for the generic dt compatible
+  mfd: mt6360: Drop irrelevant __maybe_unused
+  mfd: rt4831: Drop irrelevant __maybe_unused
+  mfd: Drop unused assignment of i2c_device_id driver data
+  mfd: Drop unused assignment of platform_device_id driver data
+  mfd: intel-m10-bmc-pmci: Use named initializers for dfl_device_id
+    array
+  mfd: Use named initializers for arrays of i2c_device_id
+  mfd: twl6030: Use named initializers for of_device_id
+  mfd: Use PCI_DEVICE* macros to initialize pci_device_id arrays
+  mfd: Use named initializers for platform_device_id array
+  mfd: Unify style of dmi_system_id arrays
+  mfd: Unify style of i2c_device_id arrays
+  mfd: Unify style of of_device_id arrays
+  mfd: Unify style of pci_device_id arrays
+
+ drivers/mfd/88pm800.c              |  4 +-
+ drivers/mfd/88pm805.c              |  4 +-
+ drivers/mfd/88pm860x-core.c        |  8 ++--
+ drivers/mfd/aat2870-core.c         |  2 +-
+ drivers/mfd/ab8500-core.c          |  8 ++--
+ drivers/mfd/ab8500-sysctrl.c       |  4 +-
+ drivers/mfd/ac100.c                |  2 +-
+ drivers/mfd/act8945a.c             |  8 ++--
+ drivers/mfd/adp5520.c              |  4 +-
+ drivers/mfd/altera-a10sr.c         |  2 +-
+ drivers/mfd/altera-sysmgr.c        |  2 +-
+ drivers/mfd/arizona-i2c.c          | 14 +++----
+ drivers/mfd/arizona-spi.c          |  2 +-
+ drivers/mfd/as3711.c               |  8 ++--
+ drivers/mfd/as3722.c               |  8 ++--
+ drivers/mfd/atmel-hlcdc.c          |  2 +-
+ drivers/mfd/atmel-smc.c            |  2 +-
+ drivers/mfd/axp20x-i2c.c           | 24 +++++------
+ drivers/mfd/axp20x-rsb.c           |  2 +-
+ drivers/mfd/bcm2835-pm.c           | 15 +++++--
+ drivers/mfd/bcm590xx.c             |  4 +-
+ drivers/mfd/bd9571mwv.c            |  6 +--
+ drivers/mfd/bq257xx.c              |  8 ++--
+ drivers/mfd/cgbc-core.c            |  2 +-
+ drivers/mfd/cros_ec_dev.c          |  2 +-
+ drivers/mfd/cs40l50-i2c.c          |  6 +--
+ drivers/mfd/cs40l50-spi.c          |  2 +-
+ drivers/mfd/cs42l43-i2c.c          |  2 +-
+ drivers/mfd/cs5535-mfd.c           |  2 +-
+ drivers/mfd/da903x.c               |  6 +--
+ drivers/mfd/da9052-i2c.c           | 12 +++---
+ drivers/mfd/da9055-i2c.c           |  4 +-
+ drivers/mfd/da9062-core.c          |  4 +-
+ drivers/mfd/da9063-i2c.c           | 11 ++---
+ drivers/mfd/da9150-core.c          |  4 +-
+ drivers/mfd/db8500-prcmu.c         |  4 +-
+ drivers/mfd/exynos-lpass.c         |  2 +-
+ drivers/mfd/gateworks-gsc.c        |  2 +-
+ drivers/mfd/hi6421-pmic-core.c     |  6 +--
+ drivers/mfd/hi655x-pmic.c          |  4 +-
+ drivers/mfd/intel-m10-bmc-pmci.c   |  2 +-
+ drivers/mfd/intel_quark_i2c_gpio.c |  6 +--
+ drivers/mfd/intel_soc_pmic_crc.c   |  2 +-
+ drivers/mfd/ioc3.c                 |  4 +-
+ drivers/mfd/janz-cmodio.c          | 14 +++----
+ drivers/mfd/kempld-core.c          | 66 ++++++++----------------------
+ drivers/mfd/khadas-mcu.c           |  2 +-
+ drivers/mfd/lm3533-core.c          |  2 +-
+ drivers/mfd/lochnagar-i2c.c        |  2 +-
+ drivers/mfd/lp3943.c               |  4 +-
+ drivers/mfd/lp873x.c               |  8 ++--
+ drivers/mfd/lp87565.c              |  9 ++--
+ drivers/mfd/lp8788.c               |  2 +-
+ drivers/mfd/lpc_ich.c              |  2 +-
+ drivers/mfd/macsmc.c               |  2 +-
+ drivers/mfd/madera-core.c          |  2 +-
+ drivers/mfd/madera-i2c.c           | 18 ++++----
+ drivers/mfd/max14577.c             |  6 +--
+ drivers/mfd/max7360.c              |  2 +-
+ drivers/mfd/max77541.c             |  4 +-
+ drivers/mfd/max77620.c             |  8 ++--
+ drivers/mfd/max77686.c             |  2 +-
+ drivers/mfd/max77693.c             |  4 +-
+ drivers/mfd/max77714.c             |  2 +-
+ drivers/mfd/max77759.c             |  4 +-
+ drivers/mfd/max77843.c             |  8 ++--
+ drivers/mfd/max8907.c              |  6 +--
+ drivers/mfd/max8925-i2c.c          |  6 +--
+ drivers/mfd/max8997.c              |  6 +--
+ drivers/mfd/max8998.c              |  6 +--
+ drivers/mfd/mc13xxx-spi.c          |  6 +--
+ drivers/mfd/menelaus.c             |  2 +-
+ drivers/mfd/menf21bmc.c            |  2 +-
+ drivers/mfd/mp2629.c               |  2 +-
+ drivers/mfd/mt6360-core.c          |  6 +--
+ drivers/mfd/mt6370.c               |  2 +-
+ drivers/mfd/mt6397-core.c          |  4 +-
+ drivers/mfd/mxs-lradc.c            |  4 +-
+ drivers/mfd/ntxec.c                |  4 +-
+ drivers/mfd/omap-usb-host.c        |  4 +-
+ drivers/mfd/palmas.c               |  8 ++--
+ drivers/mfd/pf1550.c               |  2 +-
+ drivers/mfd/qcom-pm8008.c          |  4 +-
+ drivers/mfd/qcom-pm8xxx.c          |  6 +--
+ drivers/mfd/rave-sp.c              |  4 +-
+ drivers/mfd/rc5t583.c              |  4 +-
+ drivers/mfd/rdc321x-southbridge.c  |  2 +-
+ drivers/mfd/retu-mfd.c             |  4 +-
+ drivers/mfd/rk8xx-i2c.c            |  2 +-
+ drivers/mfd/rk8xx-spi.c            |  2 +-
+ drivers/mfd/rohm-bd71828.c         |  4 +-
+ drivers/mfd/rohm-bd9576.c          |  6 +--
+ drivers/mfd/rsmu_i2c.c             | 18 ++++----
+ drivers/mfd/rsmu_spi.c             |  2 +-
+ drivers/mfd/rt4831.c               |  6 +--
+ drivers/mfd/rt5033.c               |  4 +-
+ drivers/mfd/rt5120.c               |  2 +-
+ drivers/mfd/rz-mtu3.c              |  2 +-
+ drivers/mfd/sec-acpm.c             |  6 +--
+ drivers/mfd/sec-i2c.c              | 22 +++++-----
+ drivers/mfd/si476x-i2c.c           |  8 ++--
+ drivers/mfd/simple-mfd-i2c.c       |  2 +-
+ drivers/mfd/sky81452.c             |  4 +-
+ drivers/mfd/sm501.c                |  4 +-
+ drivers/mfd/smpro-core.c           |  2 +-
+ drivers/mfd/sprd-sc27xx-spi.c      |  2 +-
+ drivers/mfd/ssbi.c                 |  2 +-
+ drivers/mfd/stm32-lptimer.c        |  4 +-
+ drivers/mfd/stm32-timers.c         |  4 +-
+ drivers/mfd/stmfx.c                |  4 +-
+ drivers/mfd/stmpe-i2c.c            | 34 +++++++--------
+ drivers/mfd/stmpe-spi.c            | 14 +++----
+ drivers/mfd/stpmic1.c              |  4 +-
+ drivers/mfd/stw481x.c              |  8 ++--
+ drivers/mfd/sun6i-prcm.c           |  2 +-
+ drivers/mfd/tc3589x.c              | 14 +++----
+ drivers/mfd/ti-lmu.c               | 10 ++---
+ drivers/mfd/timberdale.c           |  2 +-
+ drivers/mfd/tps6105x.c             |  6 +--
+ drivers/mfd/tps65010.c             | 10 ++---
+ drivers/mfd/tps6507x.c             |  6 +--
+ drivers/mfd/tps65086.c             |  4 +-
+ drivers/mfd/tps65090.c             |  6 +--
+ drivers/mfd/tps65217.c             |  6 +--
+ drivers/mfd/tps65218.c             |  8 ++--
+ drivers/mfd/tps65219.c             |  8 ++--
+ drivers/mfd/tps6586x.c             |  6 +--
+ drivers/mfd/tps65910.c             | 12 +++---
+ drivers/mfd/tps65912-i2c.c         |  4 +-
+ drivers/mfd/tps65912-spi.c         |  2 +-
+ drivers/mfd/tps6594-i2c.c          | 12 +++---
+ drivers/mfd/tps6594-spi.c          | 12 +++---
+ drivers/mfd/tqmx86.c               |  2 +-
+ drivers/mfd/twl-core.c             | 22 +++++-----
+ drivers/mfd/twl4030-audio.c        |  4 +-
+ drivers/mfd/twl4030-power.c        |  2 +-
+ drivers/mfd/twl6030-irq.c          |  6 +--
+ drivers/mfd/twl6040.c              |  4 +-
+ drivers/mfd/vexpress-sysreg.c      |  4 +-
+ drivers/mfd/vx855.c                |  2 +-
+ drivers/mfd/wm831x-core.c          |  2 +-
+ drivers/mfd/wm831x-i2c.c           | 14 +++----
+ drivers/mfd/wm8350-i2c.c           |  6 +--
+ drivers/mfd/wm8400-core.c          |  4 +-
+ drivers/mfd/wm8994-core.c          |  8 ++--
+ include/linux/mfd/bcm2835-pm.h     |  9 ----
+ include/linux/mfd/kempld.h         | 12 ------
+ 147 files changed, 430 insertions(+), 472 deletions(-)
 
 
---x5h4dpsvgdc5hplh
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [RFC PATCH 6/8] drm/mxsfb: Implement hw state readout
-MIME-Version: 1.0
+base-commit: 1cb7268b6638c411fc32f373e965eb8ba9e9b2b4
+-- 
+2.47.3
 
-On Sun, Nov 22, 2026 at 04:30:06PM +0100, Dario Binacchi wrote:
-> +/* The overlay plane starts 64 bytes within the framebuffer */
-> +#define MXSFB_AS_BUF_OFFSET	64
-> +
-> +/* Framebuffer read out from the hardware, without a GEM object */
-> +struct mxsfb_readout_fb {
-> +	struct drm_framebuffer base;
-> +	dma_addr_t dma_addr;
-> +};
-
-It's not clear to me why you need to store dma_addr (and thus roll your
-own framebuffer structure). Can you expand on that?
-
-> +static void mxsfb_readout_fb_destroy(struct drm_framebuffer *fb)
-> +{
-> +	drm_framebuffer_cleanup(fb);
-> +	kfree(container_of(fb, struct mxsfb_readout_fb, base));
-> +}
-> +
-> +static const struct drm_framebuffer_funcs mxsfb_readout_fb_funcs =3D {
-> +	.destroy =3D mxsfb_readout_fb_destroy,
-> +};
-> +
-> +static dma_addr_t mxsfb_plane_get_dma_addr(struct drm_plane_state *pstat=
-e)
-> +{
-> +	struct drm_framebuffer *fb =3D pstate->fb;
-> +
-> +	if (fb->funcs =3D=3D &mxsfb_readout_fb_funcs)
-> +		return container_of(fb, struct mxsfb_readout_fb,
-> +				    base)->dma_addr;
-> +
-> +	return drm_fb_dma_get_gem_addr(fb, pstate, 0);
-> +}
-> +
->  /* ---------------------------------------------------------------------=
---------
->   * CRTC
->   */
-> @@ -418,7 +452,7 @@ static void mxsfb_crtc_atomic_enable(struct drm_crtc =
-*crtc,
->  	mxsfb_crtc_mode_set_nofb(mxsfb, bridge_state, bus_format);
-> =20
->  	/* Write cur_buf as well to avoid an initial corrupt frame */
-> -	dma_addr =3D drm_fb_dma_get_gem_addr(new_pstate->fb, new_pstate, 0);
-> +	dma_addr =3D mxsfb_plane_get_dma_addr(new_pstate);
->  	if (dma_addr) {
->  		writel(dma_addr, mxsfb->base + mxsfb->devdata->cur_buf);
->  		writel(dma_addr, mxsfb->base + mxsfb->devdata->next_buf);
-> @@ -463,6 +497,114 @@ static void mxsfb_crtc_hw_reset(struct drm_crtc *cr=
-tc)
->  	mxsfb_hw_put(mxsfb);
->  }
-> =20
-> +static bool mxsfb_is_running(struct mxsfb_drm_private *mxsfb)
-> +{
-> +	u32 mask =3D CTRL_RUN | CTRL_DOTCLK_MODE;
-> +
-> +	/* A controller being stopped keeps running until the end of frame */
-> +	return (readl(mxsfb->base + LCDC_CTRL) & mask) =3D=3D mask;
-> +}
-> +
-> +static int mxsfb_readout_mode(struct mxsfb_drm_private *mxsfb,
-> +			      struct drm_display_mode *mode)
-> +{
-> +	const struct mxsfb_devdata *devdata =3D mxsfb->devdata;
-> +	u32 ctrl, vdctrl0, vdctrl2, vdctrl3, reg;
-> +	u16 hsync_len, vsync_len;
-> +
-> +	ctrl =3D readl(mxsfb->base + LCDC_CTRL);
-> +	if (!(ctrl & CTRL_DOTCLK_MODE) || !(ctrl & CTRL_MASTER))
-> +		return -EINVAL;
-> +
-> +	vdctrl0 =3D readl(mxsfb->base + LCDC_VDCTRL0);
-> +	if (!(vdctrl0 & VDCTRL0_ENABLE_PRESENT) ||
-> +	    !(vdctrl0 & VDCTRL0_VSYNC_PERIOD_UNIT) ||
-> +	    !(vdctrl0 & VDCTRL0_VSYNC_PULSE_WIDTH_UNIT))
-> +		return -EINVAL;
-> +
-> +	reg =3D readl(mxsfb->base + devdata->transfer_count);
-> +	mode->hdisplay =3D TRANSFER_COUNT_GET_HCOUNT(reg);
-> +	mode->vdisplay =3D TRANSFER_COUNT_GET_VCOUNT(reg);
-> +
-> +	mode->vtotal =3D readl(mxsfb->base + LCDC_VDCTRL1);
-> +
-> +	vdctrl2 =3D readl(mxsfb->base + LCDC_VDCTRL2);
-> +	mode->htotal =3D VDCTRL2_GET_HSYNC_PERIOD(vdctrl2);
-> +	hsync_len =3D (vdctrl2 >> devdata->hs_wdth_shift) & devdata->hs_wdth_ma=
-sk;
-> +	vsync_len =3D VDCTRL0_GET_VSYNC_PULSE_WIDTH(vdctrl0);
-> +
-> +	vdctrl3 =3D readl(mxsfb->base + LCDC_VDCTRL3);
-> +	mode->hsync_start =3D mode->htotal - GET_HOR_WAIT_CNT(vdctrl3);
-> +	mode->hsync_end =3D mode->hsync_start + hsync_len;
-> +	mode->vsync_start =3D mode->vtotal - GET_VERT_WAIT_CNT(vdctrl3);
-> +	mode->vsync_end =3D mode->vsync_start + vsync_len;
-> +
-> +	if (!mode->hdisplay || !mode->vdisplay ||
-> +	    mode->hsync_start < mode->hdisplay ||
-> +	    mode->vsync_start < mode->vdisplay)
-> +		return -EINVAL;
-> +
-> +	mode->clock =3D DIV_ROUND_CLOSEST(clk_get_rate(mxsfb->clk), 1000);
-
-Just like the other discussion for tilcdc, you need to be more flexible
-than that and take clock rounding into account. We have a function to do
-that for tidss, dispc_find_closest_refresh_rate_from_clk(), that would
-be useful as a helper.
-
-> +	/* An active low sync signal can't be told from an unspecified one */
-> +	if (vdctrl0 & VDCTRL0_HSYNC_ACT_HIGH)
-> +		mode->flags |=3D DRM_MODE_FLAG_PHSYNC;
-> +	if (vdctrl0 & VDCTRL0_VSYNC_ACT_HIGH)
-> +		mode->flags |=3D DRM_MODE_FLAG_PVSYNC;
-> +
-> +	mode->type |=3D DRM_MODE_TYPE_DRIVER;
-> +	drm_mode_set_name(mode);
-> +	drm_mode_set_crtcinfo(mode, 0);
-> +
-> +	return 0;
-> +}
-> +
-> +static int mxsfb_crtc_readout_state(struct drm_crtc *crtc,
-> +				    struct drm_atomic_sro_state *state,
-> +				    struct drm_crtc_state *crtc_state)
-> +{
-> +	struct mxsfb_drm_private *mxsfb =3D to_mxsfb_drm_private(crtc->dev);
-> +	struct drm_display_mode mode =3D {};
-> +	int ret =3D 0;
-> +
-> +	mxsfb_hw_get(mxsfb);
-> +
-> +	if (!mxsfb_is_running(mxsfb))
-> +		goto out;
-> +
-> +	ret =3D mxsfb_readout_mode(mxsfb, &mode);
-> +	if (ret)
-> +		goto out;
-> +
-> +	ret =3D drm_atomic_set_mode_for_crtc(crtc_state, &mode);
-> +	if (ret)
-> +		goto out;
-> +
-> +	drm_mode_copy(&crtc_state->adjusted_mode, &mode);
-> +	crtc_state->active =3D true;
-> +
-> +out:
-> +	mxsfb_hw_put(mxsfb);
-> +	return ret;
-> +}
-> +
-> +static void mxsfb_crtc_install_state(struct drm_crtc *crtc,
-> +				     struct drm_crtc_state *crtc_state)
-> +{
-> +	struct mxsfb_drm_private *mxsfb =3D to_mxsfb_drm_private(crtc->dev);
-> +
-> +	if (!crtc_state->active)
-> +		return;
-> +
-> +	/* Take the references mxsfb_crtc_atomic_enable() would have taken */
-> +	mxsfb_hw_get(mxsfb);
-> +	if (mxsfb->clk_disp_axi)
-> +		clk_prepare_enable(mxsfb->clk_disp_axi);
-> +	clk_prepare_enable(mxsfb->clk);
-> +
-> +	drm_crtc_vblank_on(crtc);
-> +}
-> +
->  static int mxsfb_crtc_enable_vblank(struct drm_crtc *crtc)
->  {
->  	struct mxsfb_drm_private *mxsfb =3D to_mxsfb_drm_private(crtc->dev);
-> @@ -535,6 +677,9 @@ static const struct drm_crtc_funcs mxsfb_crtc_funcs =
-=3D {
->  	.atomic_destroy_state =3D drm_atomic_helper_crtc_destroy_state,
->  	.enable_vblank =3D mxsfb_crtc_enable_vblank,
->  	.disable_vblank =3D mxsfb_crtc_disable_vblank,
-> +	.atomic_sro_readout_state =3D mxsfb_crtc_readout_state,
-> +	.atomic_sro_install_state =3D mxsfb_crtc_install_state,
-> +	.atomic_sro_compare_state =3D drm_atomic_helper_crtc_compare_state,
->  };
-> =20
->  static const struct drm_crtc_funcs mxsfb_crtc_with_crc_funcs =3D {
-> @@ -546,6 +691,9 @@ static const struct drm_crtc_funcs mxsfb_crtc_with_cr=
-c_funcs =3D {
->  	.atomic_destroy_state =3D drm_atomic_helper_crtc_destroy_state,
->  	.enable_vblank =3D mxsfb_crtc_enable_vblank,
->  	.disable_vblank =3D mxsfb_crtc_disable_vblank,
-> +	.atomic_sro_readout_state =3D mxsfb_crtc_readout_state,
-> +	.atomic_sro_install_state =3D mxsfb_crtc_install_state,
-> +	.atomic_sro_compare_state =3D drm_atomic_helper_crtc_compare_state,
->  	.set_crc_source =3D mxsfb_crtc_set_crc_source,
->  	.verify_crc_source =3D mxsfb_crtc_verify_crc_source,
->  };
-> @@ -554,8 +702,17 @@ static const struct drm_crtc_funcs mxsfb_crtc_with_c=
-rc_funcs =3D {
->   * Encoder
->   */
-> =20
-> +static struct drm_crtc *
-> +mxsfb_encoder_get_current_crtc(struct drm_encoder *encoder)
-> +{
-> +	struct mxsfb_drm_private *mxsfb =3D to_mxsfb_drm_private(encoder->dev);
-> +
-> +	return &mxsfb->crtc;
-> +}
-> +
->  static const struct drm_encoder_funcs mxsfb_encoder_funcs =3D {
->  	.destroy =3D drm_encoder_cleanup,
-> +	.atomic_sro_get_current_crtc =3D mxsfb_encoder_get_current_crtc,
->  };
-> =20
->  /* ---------------------------------------------------------------------=
---------
-> @@ -587,7 +744,7 @@ static void mxsfb_plane_primary_atomic_update(struct =
-drm_plane *plane,
->  									    plane);
->  	dma_addr_t dma_addr;
-> =20
-> -	dma_addr =3D drm_fb_dma_get_gem_addr(new_pstate->fb, new_pstate, 0);
-> +	dma_addr =3D mxsfb_plane_get_dma_addr(new_pstate);
->  	if (dma_addr)
->  		writel(dma_addr, mxsfb->base + mxsfb->devdata->next_buf);
->  }
-> @@ -603,7 +760,7 @@ static void mxsfb_plane_overlay_atomic_update(struct =
-drm_plane *plane,
->  	dma_addr_t dma_addr;
->  	u32 ctrl;
-> =20
-> -	dma_addr =3D drm_fb_dma_get_gem_addr(new_pstate->fb, new_pstate, 0);
-> +	dma_addr =3D mxsfb_plane_get_dma_addr(new_pstate);
->  	if (!dma_addr) {
->  		writel(0, mxsfb->base + LCDC_AS_CTRL);
->  		return;
-> @@ -615,7 +772,7 @@ static void mxsfb_plane_overlay_atomic_update(struct =
-drm_plane *plane,
->  	 * is understood, live with the 16 initial invalid pixels on the first
->  	 * line and start 64 bytes within the framebuffer.
->  	 */
-> -	dma_addr +=3D 64;
-> +	dma_addr +=3D MXSFB_AS_BUF_OFFSET;
-> =20
->  	writel(dma_addr, mxsfb->base + LCDC_AS_NEXT_BUF);
-> =20
-> @@ -663,6 +820,182 @@ static void mxsfb_plane_overlay_atomic_disable(stru=
-ct drm_plane *plane,
->  	writel(0, mxsfb->base + LCDC_AS_CTRL);
->  }
-> =20
-> +static int mxsfb_plane_readout_state(struct drm_plane *plane,
-> +				     struct drm_atomic_sro_state *state,
-> +				     struct drm_plane_state *plane_state,
-> +				     u32 format, dma_addr_t dma_addr)
-> +{
-> +	struct mxsfb_drm_private *mxsfb =3D to_mxsfb_drm_private(plane->dev);
-> +	struct drm_crtc *crtc =3D &mxsfb->crtc;
-> +	struct drm_crtc_state *crtc_state;
-> +	struct mxsfb_readout_fb *rfb;
-> +	struct drm_framebuffer *fb;
-> +	u32 reg;
-> +	int ret;
-> +
-> +	crtc_state =3D drm_atomic_sro_get_crtc_state(state, crtc);
-> +	if (!crtc_state)
-> +		return -ENODEV;
-> +
-> +	rfb =3D kzalloc_obj(*rfb);
-> +	if (!rfb)
-> +		return -ENOMEM;
-> +
-> +	/* The planes can be neither scaled nor positioned */
-> +	reg =3D readl(mxsfb->base + mxsfb->devdata->transfer_count);
-> +
-> +	rfb->dma_addr =3D dma_addr;
-> +	fb =3D &rfb->base;
-> +	fb->dev =3D plane->dev;
-> +	fb->format =3D drm_format_info(format);
-> +	fb->width =3D TRANSFER_COUNT_GET_HCOUNT(reg);
-> +	fb->height =3D TRANSFER_COUNT_GET_VCOUNT(reg);
-> +	fb->pitches[0] =3D fb->width * fb->format->cpp[0];
-> +
-> +	ret =3D drm_framebuffer_init(plane->dev, fb, &mxsfb_readout_fb_funcs);
-> +	if (ret) {
-> +		kfree(rfb);
-> +		return ret;
-> +	}
-> +
-> +	plane_state->fb =3D fb;
-> +	plane_state->crtc =3D crtc;
-> +	plane_state->visible =3D true;
-> +	plane_state->crtc_w =3D fb->width;
-> +	plane_state->crtc_h =3D fb->height;
-> +	plane_state->src_w =3D fb->width << 16;
-> +	plane_state->src_h =3D fb->height << 16;
-> +	plane_state->src.x2 =3D plane_state->src_w;
-> +	plane_state->src.y2 =3D plane_state->src_h;
-> +	plane_state->dst.x2 =3D plane_state->crtc_w;
-> +	plane_state->dst.y2 =3D plane_state->crtc_h;
-> +
-> +	crtc_state->plane_mask |=3D drm_plane_mask(plane);
-> +
-> +	return 0;
-> +}
-> +
-> +static int
-> +mxsfb_plane_primary_readout_state(struct drm_plane *plane,
-> +				  struct drm_atomic_sro_state *state,
-> +				  struct drm_plane_state *plane_state)
-> +{
-> +	struct mxsfb_drm_private *mxsfb =3D to_mxsfb_drm_private(plane->dev);
-> +	u32 ctrl, ctrl1, format;
-> +	dma_addr_t dma_addr;
-> +	int ret =3D 0;
-> +
-> +	mxsfb_hw_get(mxsfb);
-> +
-> +	if (!mxsfb_is_running(mxsfb))
-> +		goto out;
-> +
-> +	ctrl =3D readl(mxsfb->base + LCDC_CTRL);
-> +	ctrl1 =3D readl(mxsfb->base + LCDC_CTRL1);
-> +
-> +	switch (ctrl & CTRL_WORD_LENGTH_MASK) {
-> +	case CTRL_WORD_LENGTH_16:
-> +		format =3D DRM_FORMAT_RGB565;
-> +		break;
-> +	case CTRL_WORD_LENGTH_24:
-> +		/* Packed pixels are not supported */
-> +		if (CTRL1_GET_BYTE_PACKAGING(ctrl1) =3D=3D 0x7) {
-> +			format =3D DRM_FORMAT_XRGB8888;
-> +			break;
-> +		}
-> +		fallthrough;
-> +	default:
-> +		ret =3D -EINVAL;
-> +		goto out;
-> +	}
-> +
-> +	dma_addr =3D readl(mxsfb->base + mxsfb->devdata->next_buf);
-> +	ret =3D mxsfb_plane_readout_state(plane, state, plane_state, format,
-> +					dma_addr);
-> +
-> +out:
-> +	mxsfb_hw_put(mxsfb);
-> +	return ret;
-> +}
-> +
-> +static int
-> +mxsfb_plane_overlay_readout_state(struct drm_plane *plane,
-> +				  struct drm_atomic_sro_state *state,
-> +				  struct drm_plane_state *plane_state)
-> +{
-> +	struct mxsfb_drm_private *mxsfb =3D to_mxsfb_drm_private(plane->dev);
-> +	dma_addr_t dma_addr;
-> +	u32 ctrl, format;
-> +	bool alpha;
-> +	int ret =3D 0;
-> +
-> +	mxsfb_hw_get(mxsfb);
-> +
-> +	if (!mxsfb_is_running(mxsfb))
-> +		goto out;
-> +
-> +	ctrl =3D readl(mxsfb->base + LCDC_AS_CTRL);
-> +	if (!(ctrl & AS_CTRL_AS_ENABLE))
-> +		goto out;
-> +
-> +	alpha =3D (ctrl & AS_CTRL_ALPHA_CTRL_MASK) =3D=3D AS_CTRL_ALPHA_CTRL_EM=
-BEDDED;
-> +
-> +	switch (ctrl & AS_CTRL_FORMAT_MASK) {
-> +	case AS_CTRL_FORMAT_RGB444:
-> +		format =3D DRM_FORMAT_XRGB4444;
-> +		break;
-> +	case AS_CTRL_FORMAT_ARGB4444:
-> +		format =3D DRM_FORMAT_ARGB4444;
-> +		break;
-> +	case AS_CTRL_FORMAT_RGB555:
-> +		format =3D DRM_FORMAT_XRGB1555;
-> +		break;
-> +	case AS_CTRL_FORMAT_ARGB1555:
-> +		format =3D DRM_FORMAT_ARGB1555;
-> +		break;
-> +	case AS_CTRL_FORMAT_RGB565:
-> +		format =3D DRM_FORMAT_RGB565;
-> +		break;
-> +	case AS_CTRL_FORMAT_RGB888:
-> +		format =3D DRM_FORMAT_XRGB8888;
-> +		break;
-> +	case AS_CTRL_FORMAT_ARGB8888:
-> +		format =3D DRM_FORMAT_ARGB8888;
-> +		break;
-> +	default:
-> +		ret =3D -EINVAL;
-> +		goto out;
-> +	}
-> +
-> +	if (alpha !=3D drm_format_info(format)->has_alpha) {
-> +		ret =3D -EINVAL;
-> +		goto out;
-> +	}
-> +
-> +	dma_addr =3D readl(mxsfb->base + LCDC_AS_NEXT_BUF) - MXSFB_AS_BUF_OFFSE=
-T;
-> +	ret =3D mxsfb_plane_readout_state(plane, state, plane_state, format,
-> +					dma_addr);
-> +
-> +out:
-> +	mxsfb_hw_put(mxsfb);
-> +	return ret;
-> +}
-> +
-> +static bool mxsfb_plane_compare_state(struct drm_plane *plane,
-> +				      struct drm_printer *p,
-> +				      struct drm_plane_state *expected,
-> +				      struct drm_plane_state *actual)
-> +{
-> +	struct drm_crtc *crtc =3D expected->crtc;
-> +
-> +	/* The planes can't be read out while the controller is stopped */
-> +	if (crtc && !crtc->state->active && !actual->fb)
-> +		return true;
-
-That one should be fixed in v9, and you can use the helper directly.
-
-Maxime
-
---x5h4dpsvgdc5hplh
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCawQeawAKCRAnX84Zoj2+
-duMBAYDffQpP5knPNYl28GwB6FLsLf/BVXvnBYmd4awIpFVuCPBpBSeon7rvbmAE
-55yz6nEBgL5O/59/ca3Iw9p3T10Z8wOBycf2wdUBTsBXzDz1HWhoOK+iiYact5GI
-6RJdzCCTiw==
-=4td7
------END PGP SIGNATURE-----
-
---x5h4dpsvgdc5hplh--
