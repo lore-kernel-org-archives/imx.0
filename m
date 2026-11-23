@@ -1,77 +1,157 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=212.227.17.11
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795426544;
-	b=XpLxOR70+Zd4oeGA6qvpPFq6gjceIwUCi/76PeGQH8ZjDSxFybEKHyk6hFOu132cmoL4
-	 +ESSvqaBRlnL9lmk4bPP1NHxQ6TWOf+E8cGDAbWoDpdRHnemonyg6TqHJL9UQ7H959sPM
-	 UR7MNd/MLjehXtMCXSYRkrk0ZhpGg7iJLYBym/KMH8QFuRNsH9fnL5Qe6ouy78RQydNj+
-	 1cXI4oJ3mZf5LcM1xGYhbnHjDfDZeyEhr0GF09/gAsJduG9aTw3OUuWvAc+hpxWthjw0z
-	 uYsOm08Chd6kt+nMDLTXGSj1Hv3tKTStsV/zL+YlbfbMwMkf1r3jHgvIyaWAeWSAN0w==
+	t=1795428688;
+	b=YY+cZR/mlj+j5WrprgRpVDF/rfwuJjmd4NvICT3uLzx6Jr8+1L9HCMLMxplyck/WJfhH
+	 idV2f2c6cPbtetgwrNMpQoboPbtSHkx8D3nxe/tgPrLCyPMBjtvLq+Rc4n/3qlkp0moZV
+	 +xiuWgz1U7FCuGsdsHudqv4Tq43vbKWtha+Zgbz06Ai54BEJw566N2SChUkS4uAmale8F
+	 1nbJgC24Y4mQuGStirJwscZ0aQ2cVigvDE5m/YzYadBKMPP5RktADKzpUVfGaGzXw0vPc
+	 i0PrQahie7c22UmW+qbfHFOw9YTWugjMFNBrsgueP7eiV8WCKQ+tJiX89jF36atOZDg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795426544;
-	h=DMARC-Filter:DKIM2-Signature:Message-Instance:DKIM-Signature:
-	 X-UI-Sender-Class:Received:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-Provags-ID:X-Spam-Flag:
-	 UI-OutboundReport;
-	bh=WCWVJvGsHTf7p7hpAY9CtAad3mqMtNmd1EDqnENxKo0=;
-	b=rJZmyxC2yiWSCq85RqK2+iX0QbYC7IBq4nKePBHmN0MLTuwymv7AS3jeMJ41+v19NHXD
-	 GvyMASPF0yXGwtlMeHHgQo7NQ1jo5d9WPuVRM2FJYGni9cA6JOGYmFzXfRXrdfMb4CNXq
-	 zOgH6w/71bd8jzvCn0Sqvc7KAM1I5NeIdUyJJkIZcEqPkG01qSHKmiFgI5qKDsEkcr+ee
-	 y2Dx8sftwpPjjF46GiG3uba2hq883QrdCsABGau+phfs1tsohGn9MY7ak3QnidMmKDcfK
-	 phUW+RG5IAGSXiIU8fK4VQU/rMHswSlCT7Qo2ESZ1uD+j/Qn31+hymDODMKPdc+GVSw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795428688;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=rDFRLPy40I79JiGWrVFkLz2U4fAoPpBfu86dL+TJWTw=;
+	b=wF09ddiZSJOCZSpZuYWULsNgnWNyEA13/d0WOXLKPQ3G6GYKr9fKP0AN9ukVPozF8vxg
+	 H2UdjocQLh/GcI6ypJGSmCH+bJ5nJmwDQJOQJJRGfL5IB1dP/JOmpiCJ+Izx/jpE1KA05
+	 0rE56Lxi1Eccw6v5L8Ym9VBo8KvvTS96nyBq7Z+4kcsbB26GqJ2ls9AlXkJ46zzmxVVb2
+	 ZAZyD1YpPeqiUcS4u20aWDe6OfwGO1JmwYXAt9M7hvK3T6AMU7F8JQZ/3dggB3LQTOQnb
+	 CJeSP25XmrH1cajEcVEGlOPZSSLS4VZltqBVzSGe3WdKZqCSNVe6tWXI0rW6NJ/RmkQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=web.de;
-	spf=pass smtp.mailfrom=web.de;
-	dkim=pass header.d=web.de header.i=markus.elfring@web.de header.a=rsa-sha256 header.s=s29768273 header.b=w3Fh5oLb;
-	arc=none smtp.remote-ip=212.227.17.11
-Received: from mout.web.de (mout.web.de [212.227.17.11])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EQv8DoiR;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25952606A321
-	for <imx@lists.linux.dev>; Mon, 23 Nov 2026 09:35:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 25952606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B836D606A331;
+	Mon, 23 Nov 2026 10:11:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.a=rsa-sha256 header.s=s29768273 header.b=w3Fh5oLb
-DKIM2-Signature:  i=1; m=1; t=1795426541;
- mf=PE1hcmt1cy5FbGZyaW5nQHdlYi5kZT4=;
- rt=PGlteEBsaXN0cy5saW51eC5kZXY+;
- d=web.de;
- s=s29768273:rsa-sha256:ksaA7aBYvs6Uqiz1P1i7P4Kv1wZP
-   jNlLMxTwHIv3dj7etudDCGwdkl2b1/RDOH2etTJFSA4f5x9YmuwnASELUJDLnYP+teIHs0xf83i
-   29vl0v2pR2qCtcYJh35TT+l99yC5a81P7nlrxapnjXrj5chFLuMcAqFlyxmywD4l+SsqbSYnX1R
-   OwJhRrAVf+Mi49BsbJHp/BYHMdqK0zbYJG5OMNLMTVbB2HNV+7eqjbURLl+f0X2ud+lH7h/ME9w
-   FabxsYYYkZoQLfSD2Xdo3I2/6Yo9VIa5iu94jdjaHBq5POq9ZntSObCk8sHXVMtMOFhqm2f2SX3
-   gB0DfZObz+j/qw==;
-Message-Instance:  m=1;
- h=sha256:
-   FKVqVj//k9mFH69+49dexD/IZcr02CfG2F1j8DUxmbU=:
-   JIWVznqsNjDSX1TA4LMH9J6+op0Z1/JN8m//8K59XEo=,
-  sha512:
-   dnx5k3luolfAko1jynfwX86UBjQ2hWlbpiVVhWKflJymJHHfse0oq1MwLcxSPmqf8q4iUK0vw2+hSa3+TbS5kg==:
-   UjEKmuty0XZSTCpzbGwgeWibGzOPqqIORJaPTiQ86DYirCWdR3bURLItEc35J66/NHDqRgycd39osQa6PCfPyQ==;
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1795426527; x=1796031327; i=markus.elfring@web.de;
-	bh=WCWVJvGsHTf7p7hpAY9CtAad3mqMtNmd1EDqnENxKo0=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=w3Fh5oLbu/s6KNyiuPrTGtHqGB0nAu+mvIGfep4woykTYQ4ChuJDGqzPeO9OYTxn
-	 Ul8OZelWlVFoKK9eYOXF3WRkr9d1MpAbyWXmOOFeRsPhh0365e8OIbalow56dvhKJ
-	 uKM8oBwNQwhccREgSuTmgOhsx2E+o6I3NEbuBMVkwbYSf/Vynbqz3mjJCbPcmDn2y
-	 Oky0YJiQlgz9TEboCEh/FYV2feWF6Y0JGBA8G5FcdcHPawWkwYpbB11j3DvFHYI/E
-	 E56uboHIsbGariJgNSUsD6TcqiyN2iYdILjnRWNKeGGTahjuf2plGnbEFwindoGpW
-	 ryKY+aeQuCkZEr/7Fw==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from client.hidden.invalid by smtp.web.de (mrweb105
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MjgX3-1yGc7B4AqB-00ehkO; Mon, 23
- Nov 2026 10:35:27 +0100
-Message-ID: <145a48ef-7652-4ebb-9c5b-b0e9e5b84c09@web.de>
-Date: Mon, 23 Nov 2026 10:35:24 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EQv8DoiR
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC1141F000EF;
+	Mon, 23 Nov 2026 10:11:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795428688;
+	bh=rDFRLPy40I79JiGWrVFkLz2U4fAoPpBfu86dL+TJWTw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=EQv8DoiRck3gy8xgpS3BEeZCIVXlC+5twIrYuAJPvxyh+T6hLul9ehLPpI0/H8Ena
+	 EoHPb6kv2Z1NRHkQj923ovInemiLOUPSnbRP19n0hmOl3DYyi/0U2zQnqNlsdAYgQX
+	 yfIeKn1+n9OIoTJRvbp7rjlMj4wIsTr/xKlt8/kIiAVX5xbKrEtXbYSnqm7V+dLOrM
+	 VyoI9JSIUfP6xwxXeJf8XGivEo78xSGLAZFRbS/S+K2EDg0EQWkh2mc7W/lQNIsXSv
+	 CCH9QPsnErU7JRjGcCJBhGjJ2f+Q+uo3Lw7ckrw1kCFyKD4FZnZKjrPIy1KnGsdlwY
+	 rf74RydNSb3kw==
+From: Maxime Ripard <mripard@kernel.org>
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Maxime Ripard <mripard@kernel.org>
+Cc: dri-devel@lists.freedesktop.org,
+	Janne Grunau <j@jannau.net>,
+	Sasha Finkelstein <k@chaosmail.tech>,
+	asahi@lists.linux.dev,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	amd-gfx@lists.freedesktop.org,
+	sashiko-bot@kernel.org,
+	Liviu Dudau <liviu.dudau@arm.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Dave Airlie <airlied@redhat.com>,
+	Jocelyn Falempe <jfalempe@redhat.com>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Inki Dae <inki.dae@samsung.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Kyungmin Park <kyungmin.park@samsung.com>,
+	Peter Griffin <peter.griffin@linaro.org>,
+	Seung-Woo Kim <sw0312.kim@samsung.com>,
+	linux-samsung-soc@vger.kernel.org,
+	Alison Wang <alison.wang@nxp.com>,
+	Stefan Agner <stefan@agner.ch>,
+	Tian Tao <tiantao6@hisilicon.com>,
+	Xinwei Kong <kong.kongxinwei@hisilicon.com>,
+	Yongbang Shi <shiyongbang@huawei.com>,
+	Dexuan Cui <decui@microsoft.com>,
+	Long Li <longli@microsoft.com>,
+	Saurabh Sengar <ssengar@linux.microsoft.com>,
+	linux-hyperv@vger.kernel.org,
+	Fabio Estevam <festevam@gmail.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	imx@lists.linux.dev,
+	Paul Cercueil <paul@crapouillou.net>,
+	linux-mips@vger.kernel.org,
+	Anitha Chrisanthus <anitha.chrisanthus@intel.com>,
+	Paul Kocialkowski <paulk@sys-base.io>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Icenowy Zheng <zhengxingda@iscas.ac.cn>,
+	Jianmin Lv <lvjianmin@loongson.cn>,
+	Mingcong Bai <jeffbai@aosc.io>,
+	Qianhai Wu <wuqianhai@loongson.cn>,
+	Xi Ruoyao <xry111@xry111.site>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	Abhinav Kumar <abhinav.kumar@linux.dev>,
+	Dmitry Baryshkov <lumag@kernel.org>,
+	Jessica Zhang <jesszhan0024@gmail.com>,
+	Marijn Suijten <marijn.suijten@somainline.org>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Sean Paul <sean@poorly.run>,
+	freedreno@lists.freedesktop.org,
+	linux-arm-msm@vger.kernel.org,
+	Danilo Krummrich <dakr@kernel.org>,
+	Lyude Paul <lyude@redhat.com>,
+	nouveau@lists.freedesktop.org,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Gerd Hoffmann <kraxel@redhat.com>,
+	spice-devel@lists.freedesktop.org,
+	virtualization@lists.linux.dev,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>,
+	linux-renesas-soc@vger.kernel.org,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Marcus Folkesson <marcus.folkesson@gmail.com>,
+	David Lechner <david@lechnology.com>,
+	Iker Pedrosa <ikerpedrosam@gmail.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Chunyan Zhang <zhang.lyra@gmail.com>,
+	Orson Zhai <orsonzhai@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Philippe Cornu <philippe.cornu@foss.st.com>,
+	Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>,
+	Yannick Fertre <yannick.fertre@foss.st.com>,
+	Chen-Yu Tsai <wens@kernel.org>,
+	Samuel Holland <samuel@sholland.org>,
+	linux-sunxi@lists.linux.dev,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Mikko Perttunen <mperttunen@nvidia.com>,
+	Thierry Reding <thierry.reding@kernel.org>,
+	linux-tegra@vger.kernel.org,
+	Jyri Sarha <jyri.sarha@iki.fi>,
+	Alexey Brodkin <abrodkin@synopsys.com>,
+	Hans de Goede <hansg@kernel.org>,
+	Kamlesh Gurudasani <kamlesh.gurudasani@gmail.com>,
+	Alex Lanzano <lanzano.alex@gmail.com>,
+	LiangCheng Wang <zaq14760@gmail.com>,
+	Chia-I Wu <olvaffe@gmail.com>,
+	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+	Gurchetan Singh <gurchetansingh@chromium.org>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Zack Rusin <zack.rusin@broadcom.com>,
+	Oleksandr Andrushchenko <oleksandr_andrushchenko@epam.com>,
+	Michal Simek <michal.simek@amd.com>
+Subject: Re: (subset) [PATCH v2 00/64] drm: Switch drivers to drm_mode_config_create_initial_state
+Date: Mon, 23 Nov 2026 11:11:22 +0100
+Message-ID: <179542861006.1136573.1196433498269800463.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.56.1
+In-Reply-To: <20261116-drm-no-more-config-reset-v2-0-0bb471f4d1e0@kernel.org>
+References: <20261116-drm-no-more-config-reset-v2-0-0bb471f4d1e0@kernel.org>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -81,142 +161,125 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: w1: mxc_w1: Use devm_clk_get_enabled() in mxc_w1_probe()
-To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- kernel@pengutronix.de
-Cc: Bjorn Helgaas <bhelgaas@google.com>, Danilo Krummrich <dakr@kernel.org>,
- Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
- Kees Cook <kees@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>, LKML <linux-kernel@vger.kernel.org>,
- kernel-janitors@vger.kernel.org,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Christophe Jaillet <christophe.jaillet@wanadoo.fr>,
- Florian Fainelli <f.fainelli@gmail.com>, Michal Simek <michal.simek@amd.com>
-References: <4b99426a-d831-4d55-9b3c-ce83ba9fb081@web.de>
- <awP9_l7UNqElhewY@monoceros>
-Content-Language: en-GB, de-DE
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <awP9_l7UNqElhewY@monoceros>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:sr7n+6Xdx+8g/LPRtGn11gktALIM31LAunSWSqDg7gX3RTYRyd9
- xZNhV/tzcLIBDeQyHHGUzINApMdPjsI3PznawUWDHKnX6HpuYXkj0t6bpDTZxUl+80w19mT
- 24gwgAflMqxxC7BfbhQYFOnfep3iCZ35DlU640dM2NkV3rfl6kAsMPF59SteBINkBDTRF5j
- VyysgR5XbtllFiVQNBoag==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:ed+VVTdrW5s=;4PP1HVCAOoL0kdy9XckLj3UZ8J5
- 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
- aLr7gVNxlXSq/1pAHcQUzfF
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-> Not a big issue, but for me the commit log is too detailed, most of the
-> things mentioned here are trivially visible from the patch. So I'd just
-> write:
->=20
-> 	w1: mxc_w1: Simplify probe routine using devm_clk_get_enabled()
->=20
-> 	devm_clk_get_enabled() combines the functionality of
-> 	devm_clk_get() and clk_prepare_enable() with an automatic
-> 	cleanup callback registered to disable the clock in the error
-> 	paths and at unbind time.
->=20
-> 	Simplify accordingly.
-How will the wording preferences evolve further for such change descriptio=
-ns?
+On Mon, 16 Nov 2026 11:30:16 +0100, Maxime Ripard wrote:
+> drm_mode_config_reset() has a dual role: it creates the initial KMS
+> state at probe time, and resets hardware and software state during
+> suspend/resume cycles. However, the two roles need different
+> behaviors, notably for objects like drm_private_obj that must persist
+> across suspend/resume and are excluded from drm_mode_config_reset()
+> by design.
+> 
+> [...]
 
-Regards,
-Markus
+Applied to misc/kernel.git (drm-misc-next)
+
+[01/64] drm/adp: Switch to drm_mode_config_create_initial_state
+        commit: d636d17d3b8ecda8a3db6a77874e652aabac4eb2
+[02/64] drm/amdgpu: Switch to drm_mode_config_create_initial_state
+        commit: 064bc83ffc6eb72ec8af2973517f130d81bcd9bb
+[04/64] drm/hdlcd: Switch to drm_mode_config_create_initial_state
+        commit: 18becfe9b42cb828fc7fcf9703319d34675cd9f1
+[05/64] drm/armada: Switch to drm_mode_config_create_initial_state
+        commit: 69cecb2d921b7ae098c2800cbfa67590c436c3c4
+[06/64] drm/ast: Switch to drm_mode_config_create_initial_state
+        commit: 76dacf729a8dd4a954a5a8457ca49b221055d346
+[07/64] drm/exynos: Switch to drm_mode_config_create_initial_state
+        commit: cbe6da900d937f0de4c73eb574c409c9e2f4a7e8
+[08/64] drm/fsl-dcu: Switch to drm_mode_config_create_initial_state
+        commit: 6a294a6bf06ed0d71a505998bd0fd3abe1e9ea87
+[09/64] drm/hisilicon/hibmc: Remove hibmc_unload() from the load error path
+        commit: f830550f85cd0f5bd955d5b9abdb795f95a25ff8
+[10/64] drm/hisilicon/hibmc: Switch to drm_mode_config_create_initial_state
+        commit: f935c8d2f8c6de0c4b95c5f63874ced18efe1de6
+[12/64] drm/imx/ipuv3: Switch to drm_mode_config_create_initial_state
+        commit: 8799786a618d2a56b8e3dc998b64fb28cb648ca6
+[13/64] drm/ingenic: Move the private object creation before the reset
+        commit: 5cc203c0dcd3352196d8ede54531afc2175193b0
+[14/64] drm/ingenic: Switch to drm_mode_config_create_initial_state
+        commit: 8636f44eb77f5f738708423a104ee2f225f84b97
+[15/64] drm/kmb: Switch to drm_mode_config_create_initial_state
+        commit: f4f4fd2ae13175ef7aa851cdeaa08bf29a0f38b1
+[16/64] drm/logicvc: Switch to drm_mode_config_create_initial_state
+        commit: 7f84f99fa2d9b068e4a51514df0e1f32ad3247aa
+[18/64] drm/mediatek: Switch to drm_mode_config_create_initial_state
+        commit: 333cf2d79ee32c5590787eeb6df1c3c1a9ad6a48
+[19/64] drm/mgag200: Switch to drm_mode_config_create_initial_state
+        commit: 2fb1383d1aed812e4830aec34b890547fe8d496e
+[20/64] drm/msm: Switch to drm_mode_config_create_initial_state
+        commit: 53556096b6e5e07a8c58fe19cfdf5f3d4e1197ab
+[21/64] drm/nouveau: Switch to drm_mode_config_create_initial_state
+        commit: 960f6b7c64cb9536c37e7995262fd465f2fc623b
+[22/64] drm/omap: Switch to drm_mode_config_create_initial_state
+        commit: cf34a54e91f99b80623fee78ad334871a7f39858
+[23/64] drm/qxl: Destroy the monitors object on the modeset init error path
+        commit: bf50dc68880788f9ad85f4411f2d3fa575139ceb
+[24/64] drm/qxl: Switch to drm_mode_config_create_initial_state
+        commit: f364abef006d3867174f9defa5f79c4c6585cead
+[26/64] drm/rz-du: Switch to drm_mode_config_create_initial_state
+        commit: 938dfe76a15263c5fac77ea1f99c265848c219f8
+[27/64] drm/shmobile: Switch to drm_mode_config_create_initial_state
+        commit: 588132787e6df07f0267983881f437990d56c5e8
+[28/64] drm/st7571: Switch to drm_mode_config_create_initial_state
+        commit: e03927d29003912052c64aad83df169243d43484
+[32/64] drm/sprd: Switch to drm_mode_config_create_initial_state
+        commit: 1af982780216d568a4e8ff6790b87de29e52ab90
+[33/64] drm/sti: Fix drm_atomic_helper_shutdown() on the bind error paths
+        commit: d3047688f4bc35ca827ee2994a014c81898d73cc
+[34/64] drm/sti: Move drm_mode_config_create_initial_state() before drm_dev_register()
+        commit: 2798c8d86bf4e4853cbc1b3e2a248d55e714a649
+[36/64] drm/sun4i: Switch to drm_mode_config_create_initial_state
+        commit: ad5e714a08a6d5f6fa39b589a438b40aaac9e2bf
+[38/64] drm/tests: drm_atomic_state_test: Switch to drm_mode_config_create_initial_state
+        commit: 019bfdeb119dc616303a173323fd69853fe99858
+[39/64] drm/tests: drm_atomic_test: Switch to drm_mode_config_create_initial_state
+        commit: 53f0931d45c029f97c611837b8f853c9fad7a82c
+[40/64] drm/tests: drm_bridge_test: Switch to drm_mode_config_create_initial_state
+        commit: 45472c059ac76f982e31f67ef87f9db3caef1f88
+[41/64] drm/tests: drm_hdmi_state_helper_test: Switch to drm_mode_config_create_initial_state
+        commit: 3db9197bbe3fc859fd5b7521d1f4cedd9d62cb8c
+[42/64] drm/tidss: Switch to drm_mode_config_create_initial_state
+        commit: d771b7c8577c0b847d401a22f49a6abc18680ed3
+[44/64] drm/arcpgu: Switch to drm_mode_config_create_initial_state
+        commit: 620165b05363bea94b72970884f6f27ccf7cee3f
+[45/64] drm/bochs: Switch to drm_mode_config_create_initial_state
+        commit: c67548948d8c5ebb422fa03fb5dd89e44e458f20
+[46/64] drm/cirrus-qemu: Switch to drm_mode_config_create_initial_state
+        commit: 10e37ab94f0f10a7fd729a063c26bf1a94e7f2b0
+[47/64] drm/gm12u320: Switch to drm_mode_config_create_initial_state
+        commit: ce7e27979d41b94bb9a1ed66b6957a300a5a8c0a
+[48/64] drm/hx8357d: Switch to drm_mode_config_create_initial_state
+        commit: d9abdda3a6bd4903af87a1ed6d02c1897035cf4e
+[49/64] drm/ili9163: Switch to drm_mode_config_create_initial_state
+        commit: 6fc964d0567e8303cf72adc45dad29e9415fe76c
+[51/64] drm/ili9341: Switch to drm_mode_config_create_initial_state
+        commit: 75269393962354820792fddfe3da359b3be85ca3
+[52/64] drm/ili9486: Switch to drm_mode_config_create_initial_state
+        commit: c4f2890c815c5ac8d68668a072806edf4f466a7e
+[53/64] drm/mi0283qt: Switch to drm_mode_config_create_initial_state
+        commit: dfa078305c262eae2b0449814392e429b6bd58ee
+[54/64] drm/panel-mipi-dbi: Switch to drm_mode_config_create_initial_state
+        commit: 38b37ce4bc5fc406f1e93a90ce9b2b8531c6f5cb
+[55/64] drm/pixpaper: Switch to drm_mode_config_create_initial_state
+        commit: d3cb39a976745195d2d388b5b9194d47bfd2eb41
+[56/64] drm/repaper: Switch to drm_mode_config_create_initial_state
+        commit: ce380404a74260b6bb178b24dfd4125a591e1069
+[57/64] drm/sharp-memory: Switch to drm_mode_config_create_initial_state
+        commit: d4b8b6e920779d568a085eb611c75dc4bb5805a8
+[58/64] drm/udl: Switch to drm_mode_config_create_initial_state
+        commit: 6358c0da712b0170a3f1470c5eb75ec95340875c
+[59/64] drm/vboxvideo: Switch to drm_mode_config_create_initial_state
+        commit: a932fa029dad6b23b4ff5b7fdb44e5819c098b6e
+[60/64] drm/verisilicon: Switch to drm_mode_config_create_initial_state
+        commit: f3b23268607094ff4461119d623a235a2bdc8608
+[61/64] drm/virtio: Switch to drm_mode_config_create_initial_state
+        commit: eb2c77198187b0283f12be28bdb770703da59dca
+[63/64] drm/xen: Switch to drm_mode_config_create_initial_state
+        commit: 51b3e01a42db6100976907b95d224636e6551c98
+[64/64] drm/xlnx: Switch to drm_mode_config_create_initial_state
+        commit: bb8391a1a8d00b11661ab692313a991456d391dd
+
+Thanks!
+Maxime
