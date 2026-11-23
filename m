@@ -1,70 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.180
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795452533;
-	b=MF1ZxEszf4EzZ1nlESyHT+MR5c5h1Lq6SnhRg7QUd33ldqof3GwKY4dBACIo1/nTSGCO
-	 UkY9RiCW51h97ek0vvlJ2kAHrUF1nNFsCbz05ASfdaVTtmM4mUtStX/j0wVmts0EWv111
-	 WXSyVjcmrDEERVtxdRbh9h5fBJoH5yB4ilCm8gKJmRvBBG4jr540/k+HcwAn8a2I9NmWD
-	 5jxyWx3uQux/h2jYbQ7wWVlV+Q+t+s+ZHmWyH1NFhiX1Mu8wX1gjngR/0qHSslgMS15cR
-	 mHx/4ds+86wlNh0SiDwgUDGGXzO0SQzk5mn48whooUwABae3+TqsZ6IG14ATUJREYYQ==
+	t=1795454372;
+	b=kebWGltM2jOYoSKSVMwwDK1UrUb09rqkANj2FZc8A7mZF+6GggVVWXHVoguk4AAzQPAm
+	 gfkNP7gzvJeIGhYxQFbZO2ovXcjeYSgp74o7JKM9u4Kll4uBd5KOE/k+kDS+DKX2y+2LL
+	 ffxKTxoDqxR4DZctSwgUoK7xkketGdhz94gkdRSq2YZMt6Lxi29AfRtNj8nm1jMKDddzE
+	 nOPIJqils64x4Fluioii5zq46yIoj8WHtYNdfWJvPZ7dDTeBLX9jSRlV7wf3ukdJFEN1E
+	 HomK14Zf5kS8Z7ls+r9Mzpg0vo7XBRqaouG6m++EkAHxbQrPBcmvxEV8OCTlgx4DQqg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795452533;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Type:
+	a=rsa-sha256; c=relaxed/relaxed; t=1795454372;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=mj9v3GOHXJKCef8hiMsVWQMXbcKUeIq3msDs56h6kEw=;
-	b=KVybD+VCyHpm2wUGl7uu+MD4B0yKR7yQhkU/Kuci4aGVmPqH5HOXzAxMuue80bK2Qjud
-	 pBj4URsJS3fSoH89QGy0/hDBQw+/p3W+Me5M2vRMSqqW6YZ3DLDND2YpED9e0xlle3gaA
-	 CBQe6GPdQncDlZX/dcJqwYw48yurwTzXwqvGoEBLfUHja/H+Efn5cTxI80pI8X2beBMZ5
-	 vDDkJVAR9vYUSAF9sSamhiP6M0ARt1fxajfkr5ysCQLtEfyMvWU/T4jFQOwAidDUsRbtv
-	 pnNq8Z3E+3fV19ibo4u/FCZo/M0u8vTgu2tWdsn4QUUK2Z7j0zzrfiuvdLtL4QbI8kQ==
+	bh=Pl5LlU8oba1tB9cYFDtFrGCDtd6q3xDmJZtY4vUlwMQ=;
+	b=Mvjz075eYeI7g3I9KjPaDjlbVBi5lDLJ6oK0qEAYAd0fTgXB0fYDhbqF4YTu7hfpw9S2
+	 U5PdT1QlciOPy749FN3oq44oQFoIhJRnA7TUNkiw5NvzADMDpH1u6JTWY6YFtYfsBp8I7
+	 1Jde02NTes0lUAQEvA6lv0vQwr2GtYeBCu/NNjy12ibJAXNQYLFwDR61kU7dpkh7T1R2O
+	 7S+UrjCf+fY6IEQ9NWn1cuuRdmZDZTpqcac+33cTFM4+LCqFMwS0GjBz46z0KCXA4H7Wr
+	 aHm72NpHwIIHo1dE5JO1EzFd2j8h77tQwcNU/sbpBsBnZfroy/WtqyS48X+i/XkXwwQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=StDIdhSu;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=zzLdnhX4;
+	arc=none smtp.remote-ip=209.85.210.180
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 510F2606A690;
-	Mon, 23 Nov 2026 16:48:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4088A606A31F
+	for <imx@lists.linux.dev>; Mon, 23 Nov 2026 17:19:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4088A606A31F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=StDIdhSu
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C3491F000D3;
-	Mon, 23 Nov 2026 16:48:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795452532;
-	bh=mj9v3GOHXJKCef8hiMsVWQMXbcKUeIq3msDs56h6kEw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=StDIdhSulwz6Nl9Q+XH4BeslhAsg/Ce+YaNEbWL/d5RRhcOSjlFB0uOXUJO/UctIh
-	 K4B/1G/rQGt/muE80bXhwsNAnbfimhk6iqwgE4Xub1Zz2yrrsc1U+3WlNDN57p5TeN
-	 zg++LoQCvdK+7irRuiyH+0nXXNI/qxLaZXsJiWwyBv99EEAHFSWeq4sGy0tpjOZW3a
-	 7wa6mGkxB2Pl1VpIKwCXj/3Ckagm38Lu/rFbUFeHVf73fqGTjL/iSSIgkbCeysGAp8
-	 usBJYusSPNAf2/7HwdlEn3k/CzaENf632KrrqrdSFysJNVeTwdW3TYLAhlG1fRlbCU
-	 6I0mR7dNjFNLA==
-From: Lee Jones <lee@kernel.org>
-To: lee@kernel.org,
-	Abel Vesa <abelvesa@kernel.org>,
-	Peng Fan <peng.fan@nxp.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Brian Masney <bmasney+clk@redhat.com>,
-	Jerome Brunet <jbrunet+clk@baylibre.com>,
-	Frank Li <Frank.Li@nxp.com>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=zzLdnhX4
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-8b67f25e6e1so1711805b3a.0
+        for <imx@lists.linux.dev>; Mon, 23 Nov 2026 09:19:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795454371; x=1796059171; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Pl5LlU8oba1tB9cYFDtFrGCDtd6q3xDmJZtY4vUlwMQ=;
+        b=zzLdnhX4SSpNp5AeQj7se2q72dN0aOkUEUblyIxv/KraypjIFYIZ7R5hgkzVvZz92W
+         CN5C+1ElJMCEuYVGoa8OxYTsq8WXSt9tD3MIMSPIscMpG4mb6Ec/+qanP36fU1zsjNQg
+         c3t6ATG+xzR+aajMWY2fC1tG2i9BPIV0vcCnvtqPYFS0JWj9fvnrJxXkm5rNJYyc+Hk4
+         i/gmGkrqGwEF+jkDj+VEt7QEuXXtcT4JDuR8Fv1xsb2ScYWgCtRfi5TsBw4DxxT1MuLn
+         qLLGPMxFJAASNrs9peUrW0y/LsysrrQm+7SV5ABg4EwDWZhRETFavl8FIOe5P9KQkNso
+         5/UA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795454371; x=1796059171;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Pl5LlU8oba1tB9cYFDtFrGCDtd6q3xDmJZtY4vUlwMQ=;
+        b=e1x7Pr7DxfN0Ig1tvX6BXnZjfHVTJAXhXOG9QSM+sN2PuL1eWUEmFIgO7S6ypobrO7
+         ZN5Ko5EMEeggcoKN2fAXiGZkHg3muhcPunPRaVCx5AuxI8O+XNL8TGq6B4l+ZT7E7QVm
+         u3RMy0Qr1kDpM0CNmuGB/vg6nCER6oamXM8UkjVI7xOouy3EPYkJEvr3p3U/buWu4Vda
+         a7X4o2whGTYw7wpD0ek77Pt9mzwlNVmvF3hTv6sHxOvwBxvN0K5zrhRPJ6gZCN8Pm8jt
+         CQlFTSr64vqPKYEDO/uST7QsHtg04f9o0GVZU6hr/zf6gAotbQnS6Zf5R18TkmbD2x5Y
+         LMkw==
+X-Forwarded-Encrypted: i=1; AL+hErFxtTpx54mkBANw9LseHdWIEsr7f7Yzqhg/vc6bOhz7mqqmn+rw0Zi4TtsLLZI98YIypIU=@lists.linux.dev
+X-Gm-Message-State: APuU4Z8bex8AV+Z/wpclD9p+bK9+f1LzokxZUfTw2U3ql4p0DUTJnaRr
+	0sgEmU+dMH22Pmygc9fb4RAKUk+9uy9R/el2e+3O1gR2Bwe0TegRxpc=
+X-Gm-Gg: AZFdTZcW/XQ1l8ZJHZwjDkgt8V49fmEvpmjFn1/QsNya87JZtd5bJfaJPr3bY3gDS2M
+	x9KvvD0w+1beL7FF8BFpW+rMM92S4pLpnXEOyk/QDJLdrm0CCHnQSkP5eMsneY9QMtvPZqg8xK0
+	HcYJgqF8Vm/J7DTTAiAgVEBixKs6e0Q/QuYPx2jAZtilDFlDEpJdeILHkS4X43/M7irhsLvw4Y8
+	TL++dWZ1WAgUiVz+j0Hycoc53n/VxnbS89vE0HZf7RuX5ZqCb09vWVbimTdnUh302Wv+UfNcl8k
+	8nvkaA/nxZA+wUdCOLgGQTsGZfN0i/zj9iZQjWeyKZjsXgJ4MZ1Jk1TbyjBzl4zzFUTznkGsKER
+	CoecNk2edpmeTXrEip2+8STHrpBHlhPM8DPGZZToZJKfgZCv3105C3vB7GiI3CqmjSDg0lmwzb9
+	eXV8j3cz+WhmOr7H+sQjjgB4tCMBvVddlZDpVNjetrEE0nIOO7HPnPXzltZvtHMhnFNcChip13Q
+	oES/v3Fg/XFrn5wW2AyJrkSLUi4gjlSiXAJGJDQHTswOCTQjchiUCpVia9vNSL92kkApGNLu3lq
+	pgfvseH5MQLPi3uOvdHL+kCFnSYWTuDVK1i6nWwn7PCKQQefxGCvKFpVZ6pKxYNPZl0L
+X-Received: by 2002:a05:6a00:844:b0:88b:76e3:cd8a with SMTP id d2e1a72fcca58-8c87cb4bc4dmr11130870b3a.38.1795454371512;
+        Mon, 23 Nov 2026 09:19:31 -0800 (PST)
+Received: from localhost.localdomain ([2406:3003:2002:639c:7883:5066:4773:c572])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8c873c1cf5bsm5985151b3a.52.2026.11.23.09.19.28
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 23 Nov 2026 09:19:31 -0800 (PST)
+From: Yige Jiang <yigejiang86@gmail.com>
+To: Ulf Hansson <ulfh@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>
+Cc: Yige Jiang <yigejiang86@gmail.com>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Pengpeng Hou <pengpeng@iscas.ac.cn>,
-	Dong Aisheng <aisheng.dong@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	linux-clk@vger.kernel.org,
+	linux-pm@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH 01/10] clk: imx: imx8qxp-lpcg: Prevent stack overflow when parsing clocks
-Date: Mon, 23 Nov 2026 16:47:34 +0000
-Message-ID: <20261123164834.3330320-2-lee@kernel.org>
-X-Mailer: git-send-email 2.56.1.750.gf70dc682cf-goog
-In-Reply-To: <20261123164834.3330320-1-lee@kernel.org>
-References: <20261123164834.3330320-1-lee@kernel.org>
+	linux-kernel@vger.kernel.org,
+	Sashiko <sashiko-bot@kernel.org>
+Subject: [PATCH] pmdomain: imx: gpcv2: Take a reference to each PGC node
+Date: Tue, 24 Nov 2026 01:19:23 +0800
+Message-ID: <confirmed-20261105-18-6a8421e1b241@gmail.com>
+X-Mailer: git-send-email 2.50.1
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -74,43 +102,44 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-imx_lpcg_parse_clks_from_dt() allocates output_names, parent_names, and
-bit_offset on the stack with IMX_LPCG_MAX_CLKS (8) entries each to match
-the hardware limit of eight clock outputs per LPCG block.  However, it
-only checks whether of_property_count_u32_elems() returns a negative
-error code and enforces no upper bound on count.
+The child-node iterator owns the reference to each PGC node, but
+imx_gpcv2_probe() assigns the node to a newly allocated platform device
+without taking another reference. If platform_device_add() fails,
+platform_device_put() releases the node through platform_device_release(),
+and the iterator then drops the same reference again.
 
-If a Device Tree node specifies more than IMX_LPCG_MAX_CLKS entries in
-clock-indices, subsequent calls to of_property_read_u32_array(),
-of_clk_parent_fill(), and of_property_read_string_array() write past the
-end of these stack buffers.  Reject counts exceeding IMX_LPCG_MAX_CLKS.
+Use platform_device_set_of_node() to give the child device its own node
+reference, paired with the put in platform_device_release().
 
-Fixes: d5f1e6a2bb61 ("clk: imx: imx8qxp-lpcg: add parsing clocks from device tree")
-Closes: https://sashiko.dev/#/bug/linux-22dfac78-f44b-42f8-985a-995308723fc4
-Cc: stable@vger.kernel.org
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: 03aa12629fc4 ("soc: imx: Add GPCv2 power gating driver")
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Closes: https://lore.kernel.org/r/20260530004541.E04701F00898@smtp.kernel.org/
+Signed-off-by: Yige Jiang <yigejiang86@gmail.com>
 ---
- drivers/clk/imx/clk-imx8qxp-lpcg.c | 4 ++++
- 1 file changed, 4 insertions(+)
+AI assistance was used for analysis and patch preparation.
 
-diff --git a/drivers/clk/imx/clk-imx8qxp-lpcg.c b/drivers/clk/imx/clk-imx8qxp-lpcg.c
-index 9ad016106b1e..5eb4bdbaf7d8 100644
---- a/drivers/clk/imx/clk-imx8qxp-lpcg.c
-+++ b/drivers/clk/imx/clk-imx8qxp-lpcg.c
-@@ -199,6 +199,10 @@ static int imx_lpcg_parse_clks_from_dt(struct platform_device *pdev,
- 		dev_err(&pdev->dev, "failed to count clocks\n");
- 		return -EINVAL;
- 	}
-+	if (count > IMX_LPCG_MAX_CLKS) {
-+		dev_err(&pdev->dev, "too many clocks: %d\n", count);
-+		return -EINVAL;
-+	}
+Based on next-20261104 (8b7179210b22).
+Compile-tested: arm64, GCC 14.2.0, W=1, drivers/pmdomain/imx/gpcv2.o;
+baseline and patched objects built with no warnings.
+Static source review; no hardware, boot, or KASAN test was performed.
+
+ drivers/pmdomain/imx/gpcv2.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/pmdomain/imx/gpcv2.c b/drivers/pmdomain/imx/gpcv2.c
+index 6a54ee734514645db7e0628bdddcf579d1f0d904..7b377bf0196491298e9e772b97d15a2bda9ff83a 100644
+--- a/drivers/pmdomain/imx/gpcv2.c
++++ b/drivers/pmdomain/imx/gpcv2.c
+@@ -1513,7 +1513,7 @@ static int imx_gpcv2_probe(struct platform_device *pdev)
+ 		domain->genpd.power_off = imx_pgc_power_down;
  
- 	/*
- 	 * A trick here is that we set the num of clks to the MAX instead
--- 
-2.56.1.750.gf70dc682cf-goog
+ 		pd_pdev->dev.parent = dev;
+-		device_set_node(&pd_pdev->dev, of_fwnode_handle(np));
++		platform_device_set_of_node(pd_pdev, np);
+ 
+ 		ret = platform_device_add(pd_pdev);
+ 		if (ret) {
 
+base-commit: 8b7179210b22f8e48a82c5ceacb9d56a9c4cfec4
