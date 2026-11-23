@@ -1,55 +1,103 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795454888;
-	b=pQZbXH5aoxPKKBVAV873u94aqYUpgBMLMwNR4JPMdGGY0jFf9RirX2jMBjLzu36egFdh
-	 Ggxuml7XxOZyc4Ohr6NFn/clbqsSFCO9N2Cz//YhjkP9ogen0HhtlHJeFXpYFp0U4nBhc
-	 UobsRcCZOSD8Nx/yC3eqVMjAWbFsFR8g7TlgFh587FySLPH5esorUWHhWyp2JIGblA1su
-	 OoBIghyK+d5TZ2H9tOIZP/8iA1hR76LHHOkQf+NrycIr6wL272gocctYflGkZIezsw+I1
-	 hsteQXMkLefE/GKKspF6ZoljnVgihqiieqQKAHpIiwOC8uS10WHu0coMV+udbIGPMJQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795454888;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=yuLq/CVkn01COKhtaRNHf/SNole7NC0lI8dGY7Uzhd0=;
-	b=Dsah8KIPcIPX/ge5meWyUl+bFAvwQ6a6r05CUOAdBvloV3osBfeAMg5uzZyoxNsnxgvX
-	 vb2yVbIYdOTXO+Tf+9WMH5TAEU+1QL3ttGj4U4CsOul+c4xIh4HVl52PFoGbT7zHIc2jL
-	 nl7UPwwLjyTaj2BL2VPricx3XkiiFfWV27xHB/MkEDx+fWH0L3GTZGT8cI5eiH7vpLenN
-	 Nj8S0vWGJtP+zzWi+OXHseHIZ5GAEnCnGW5faaQaja8i778CEg7o6mQN2lgBUNlBs+cyf
-	 McBRI90MjvjWZmu2DX/3Qev/H1EGAATNwWcWYx/wILszQZXJNnsJCRVPpqMwlUV/2Xg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=khwDD58w;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.66.20
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795455793;
+	b=bnvmGPwVfEHeYZotewuYjVnymZRmZaWCbXt2kUvNy8r30uWPm/eh3owYQTa6zDePsAoV
+	 Ny1CfcR3QVmrRQycObGU3olFv2htOZjyvzfpi8Jg8RfwVThTRQ5Z/osHMballC7J/aDJ7
+	 qcMX6gW3t7afjDcA55xWZ4ubszHMM7e4UdhsQyw+nNeJb/GiJa3b5oBH42MNrIHWrJhZK
+	 ivKj25LaYdiY7tlqz5Ds3F00+jz1B+BJBfFI56Dinr9rNt3adIX3vL8FqZ1eAy04h9HYN
+	 3/lTobBN7blL5KlnA8Lemv6VqRuu2lcB4s/d3J3e9rvque/2V95bOsk9qmMHc6gQDjw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795455793;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:Content-Type:Content-Disposition:
+	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=8ylAHpMtng2B8Uq7sToFe56ldOXngVck65MbAnIvk+g=;
+	b=eRaVnz/HkfIS74jSeZZ/6tp6HD2CLGJJWuhKaL+L0LmtgYOU3b9v7APbsUBw90XcwgKw
+	 KyjQR/zvr3jZf2dIUpRaYk/WGSOLNUPG7zfv71CnIaePMbJXHDpEtRQUKTGdJIW18YueQ
+	 5/FNG6AStuHu6zgEJROTnP61N2B3cB4x7FR41PBY2qRpJdhoF8KgugHuR8C5PHueRl/R0
+	 AYn+6OyoEUO1+U48uSLFaU17Zh5gb3bxtR8b4nreMiFElAgmBiw0SmQRo1u4sUnzkbk+v
+	 OI0Ud67OqJcApZvLFWaBkI4fkZSNEv/drlZLlowXnXUd1tEoRbO+jGwC2PddFvZoJdA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=oss.nxp.com;
+	spf=pass smtp.mailfrom=oss.nxp.com;
+	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=t+ObTVki;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.66.20
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012020.outbound.protection.outlook.com [52.101.66.20])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CB2C606A31A
-	for <imx@lists.linux.dev>; Mon, 23 Nov 2026 17:28:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CE9C606A31A
+	for <imx@lists.linux.dev>; Mon, 23 Nov 2026 17:43:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5CE9C606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=khwDD58w
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C88F1F000CF;
-	Mon, 23 Nov 2026 17:28:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795454887;
-	bh=yuLq/CVkn01COKhtaRNHf/SNole7NC0lI8dGY7Uzhd0=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=khwDD58w7tLmRiMnK2coDzl6edieNM+PzSnZ4iMISlVCXklkaAuxcg7dqtmKOzDsI
-	 q6XOZa7/PLiI0mOKp0MFpkeljpZMXcFUhICBZpKAv51IKJfLgfwJ21p3d1Za9fwo/3
-	 nazABknhBmidc1VmTDJ+s/b5CZHkljKezCGeSRoeFOd0U1a3W+aJLvjnn06Jzo7Ul/
-	 OrR/CHRphBVSwDOGoFH28YgAxaRKkAR8r0agKKj0J7+c69JDjWeLWW9isvQu7Nenws
-	 Yr+EvfHrVv2RUEUZXMWykQ6khzUmhqORyQ4NG57fBZl9PAdNMR3Ph3EFqm3/SF4J2K
-	 c6T6hiuL6krng==
-Message-ID: <sashiko-outbox-229745@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] pmdomain: imx: gpcv2: Take a reference to each PGC node
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Yige Jiang" <yigejiang86@gmail.com>
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <confirmed-20261105-18-6a8421e1b241@gmail.com>
-References: <confirmed-20261105-18-6a8421e1b241@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 23 Nov 2026 17:28:07 +0000
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=t+ObTVki
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=nm9XwdhjHHddLxIQIuPvoSectrwQLj5D+CecoSqcMfchq4lAiuZCYCaM/occVRpwwUP2pYJQpGsLcgkuFRrWBouf+M9NfUHLVlL61mwiq8KIceaCYEk4HxNKpwFsf882OY858On9Jd+qvhFWi+06ozVdHTG4uBoZteXKxZWL+KPqx1Z8rMzJWYZXEzqUUbXk8hLIVffrITCByqIjhrwFmwfsUgrbnzjFE2EIWdk9lkYT+UQdA7TO3XHbFGzj93SmFXYe+5hVKWPlKL19Z8Qqbh4kduPNn0pQ+4kEYdqM5Iu0xJ72myJ69d41noe6Waz6VSPqOopN6ynE1C2Rr+5frw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8ylAHpMtng2B8Uq7sToFe56ldOXngVck65MbAnIvk+g=;
+ b=k6/6jAi2Rd426YJkY0GoL6PGWU0wmQ6kp0EZmYqhlSp1UnTDFnBC1fpJ0/eomswCsXOz9zsDUWfXoeLVriXnXEHr8uFOkg9Tp1uZwG9UykjNRH5SXDKYdyYehtJ3UkjTgS66klfEJckTYpXTm1LB3xYY298RLCa8Qk/CIYOtquo2/Gt0DurIMroIzAoltmVMIEzlIztGvnmC1JLjNIuxRrnuyH+KVtJQy4PTJuNtGYjWXHzSdMAP6eFlQwZw+LRRlVvSYf/+Z5va80HAyr5BBgMkvj9OESk2BJzCVgh6VwiWnw+b62G2ZN98LfeGRB2HUOmCHWZbiDWVZEF+U23p4Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8ylAHpMtng2B8Uq7sToFe56ldOXngVck65MbAnIvk+g=;
+ b=t+ObTVki7Zbhv+o3IlDz0gZcf2eQgMcH2PuEQ2PNiPRcgJRWaBSc0rQj5Zp96Im+4SMc3lu0+vHK1ErVZlOak161EyymIsjFDDPsQc76BN8yXyA5bYDoYmkizlTmmNDFDTmyWB8LhDAKRYGpmi7MhRyyczLBphUPrn8FKmM6G4yTIs4tBfEz6yUGW/yXB2q7v249easRE/LMksrGC/nYCxY4sqnio3tTuIvjGV91MhykyD2v6Ey92vSfTyuclgvcJ6rxRFF/HzXnJlVcWxRCRnUwtBIp5vDpsDzBFAhhesczEiIWuWeaQHGMzCgVDSbllN8PArHu8agxx9fkb5twzQ==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from MI3PR04MB12438.eurprd04.prod.outlook.com (2603:10a6:290:76::14)
+ by AS5PR04MB9893.eurprd04.prod.outlook.com (2603:10a6:20b:653::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.14; Mon, 23 Nov
+ 2026 17:43:10 +0000
+Received: from MI3PR04MB12438.eurprd04.prod.outlook.com
+ ([fe80::c715:c32:8bb1:b70b]) by MI3PR04MB12438.eurprd04.prod.outlook.com
+ ([fe80::c715:c32:8bb1:b70b%4]) with mapi id 15.21.0639.012; Mon, 23 Nov 2026
+ 17:43:10 +0000
+Date: Mon, 23 Nov 2026 11:42:59 -0600
+From: Frank Li <Frank.li@oss.nxp.com>
+To: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Cc: Ulf Hansson <ulfh@kernel.org>, Lucas Stach <l.stach@pengutronix.de>,
+	linux-amarula@amarulasolutions.com, michael@amarulasolutions.com,
+	Peng Fan <peng.fan@nxp.com>, Sashiko <sashiko-bot@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
+	Kees Cook <kees+treewide@kernel.org>, Marek Vasut <marex@denx.de>,
+	Ming Qian <ming.qian@oss.nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>,
+	bui duc phuc <phucduc.bui@gmail.com>, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-pm@vger.kernel.org
+Subject: Re: [PATCH v4 1/4] pmdomain: imx8m-blk-ctrl: Remove the power
+ notifier on probe failure
+Message-ID: <awR7I-p0Ig-QpuP2@SMW015318>
+References: <20261122205136.138173-1-dario.binacchi@amarulasolutions.com>
+ <20261122205136.138173-2-dario.binacchi@amarulasolutions.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261122205136.138173-2-dario.binacchi@amarulasolutions.com>
+X-ClientProxiedBy: PH7PR17CA0060.namprd17.prod.outlook.com
+ (2603:10b6:510:325::24) To MI3PR04MB12438.eurprd04.prod.outlook.com
+ (2603:10a6:290:76::14)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -58,55 +106,107 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|AS5PR04MB9893:EE_
+X-MS-Office365-Filtering-Correlation-Id: a7630e21-dd50-4445-c331-08df49893d74
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|366016|7416014|376014|1800799024|23010399003|18002099003|22082099003|56012099006|11063799006|261009223027099003|4143699003|261028144727099003|261026140227099003|261102123227099003|261022105027099003|261021121427099003|261026121527099003|261021123027099003|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	uo0GSusw+J3ZYZrrUZVKF4GZzWNn0iMcOA3jYCOLpqTfkEa2h7zRYrTq4eCnXHRsEcCAJOpBfxXjl4p/Dw4NLfjwx6v5yuS4BiNfwE/8xhzhMUCa7maFi5cqPec90hU+/tFFdEX0fQveShArFX/nLnJOMwBdAvhU9VPHAfnUiMgEhkgHY73vAh26EnARdRWvywMlKLtzi7yRF1lSODsyA8DUSil+wYvjXm0J2N8WtN0qRNGFD4T1+5cvx9IDm/ODBLvCaEqOsiDSciFpiYabj4QJoiRcuoFlAbez1avw2BP2hTdYKo6QP2v3O5UqXwivFDWtwwlv+s/RfKS2BSVe024EfgkX/CjCPR4pQ0vN2PlzkreHhnc3XQurNLJC0avxlruwXjvDuSdbsVnBFz93N8iPDUlLbUFXwO2UR95xr6U+y2tOG3cWyW+ETa3I5RNgCG1m7nCeWuZ/64d2RWh2Up1uJWtVErajCqqFDTpP3DE+8MNsjoNC3Urm7oDs/2SmB4YOdyfIjahk8hbOjhA71vtNcbYRc2ySAnE2txMeIHpvz8OwXEQXEQJE3eDqjad5dvATaXnaH7hOhiPDvIMJJj2QU0HjcneaBJie+e4eUtp5J0WtC0bVJv8Y4nzkJ8Kh
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(7416014)(376014)(1800799024)(23010399003)(18002099003)(22082099003)(56012099006)(11063799006)(261009223027099003)(4143699003)(261028144727099003)(261026140227099003)(261102123227099003)(261022105027099003)(261021121427099003)(261026121527099003)(261021123027099003)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?/KhYDX6+/Eva51ZjfF2jHJoxeoIxluK/yNJpm5h85lf5K5BWiMpLoQBEvLkA?=
+ =?us-ascii?Q?RHw5u+lG0hixvoiyPvvXzwi2s3eNQLB0PXb3yh5ZqL+jlSwYshx3c6r+VMVg?=
+ =?us-ascii?Q?1RZmuDvG1YpuFzFRXdaO9DiX4zGjcv0CqhKqbbZWlEa4UhgndbS2D1q0CKt7?=
+ =?us-ascii?Q?S9UkAzXgDW2vyS/+40XGUOiX6UhD+t1cO8v7cF34jJJFa4vDb4I4PM3nyPEo?=
+ =?us-ascii?Q?xaqDln4gRuH6y2iG27MbFvmaLO0OhYQeDb7U/a39DzLkWfZgt/W2UbZwL7JJ?=
+ =?us-ascii?Q?Nco9Eif5JPYA0l7MgA5OrlythKwXkTPRuBZxTpZ4tY+wGvniYnVuFOf+Choq?=
+ =?us-ascii?Q?mvh2N8ank2L7NoiSxLkpfbsZ0pUV4tqFXsHN0NAHXLFfDRdR47mwdOXO17GC?=
+ =?us-ascii?Q?hM6q/zdpjjW9BcGi7W0D5J58ehMxqaCwX8c0e2rMgKoTRjQqTW6cc+7yEXR9?=
+ =?us-ascii?Q?Xe5/AcEUhFysLh3iQa1cSpfRWoQPgWjVLrQv3u1aBXiCGn3pkCdPFWsxy393?=
+ =?us-ascii?Q?WS4Zf79V8pcBAqRPfjElwkLX3GeMM5iBbuQyM7NWQon/hATOkXIkRqbyg4jz?=
+ =?us-ascii?Q?SWiuRYvNGlePyaq7Ay1ozV3bMOA1nkR4rlp/wXrWGvnhK6gRDOshV//rHiDx?=
+ =?us-ascii?Q?tzziBv9gHY3XuOaAeM6Q1sIsxmScis38ydoriL5EfDOMFlntnIocq1qGiYUX?=
+ =?us-ascii?Q?RIvAfdBrAWD3Hdc30jBukBv4iWOQwmw0M0S2cyR6dafOU98/ydJMoI9lbaIs?=
+ =?us-ascii?Q?VhTWndLsqbjW7C0QCNXYazz9qUhJwo/gHsVoGtfypeDvSaBrLquGThbLYQAn?=
+ =?us-ascii?Q?NZWZgd3ebhBBgYirFm7gPzJ9yNcdg7Kh56Ocr7EdX8Abp2aK24c+Av14XA8o?=
+ =?us-ascii?Q?e96Nfvh48me2YqBQkU7sgYliZCmPNv/XTNxMJXeCEVXwW9lAIAOjIexvwz4W?=
+ =?us-ascii?Q?dPGFN2PwACaNk1/T6JxzqyzR/fwzV1IIe0MYxc/AotrfN7o22iSIs69yDCcw?=
+ =?us-ascii?Q?TEhNr6FNbn/bEctg67Sl4OC+pMHHmRqQk6KNv4z6rNQrG5VKmrDhEGFhNjnI?=
+ =?us-ascii?Q?H4oP6nUNFbT1F5t4ke7AAj/BAy0nEZbacxORlVDYiLLA1Obhx9BKXCXXA/6w?=
+ =?us-ascii?Q?/ERb+/Y+xzPeEyRiEgGccfxxPmfF8Kwcd5wmDDo5ilVeK/6Ns2HVNxF9TIfP?=
+ =?us-ascii?Q?hVXZudibzU9jVdMwyr5N6+DbAsiMei8pmJ3UdTFwyF4qOypLOCd4VZ0oyzlR?=
+ =?us-ascii?Q?iSeQW2gLhPy4iDiRmM7HoeoqDvlWFYMywMXDNXlDniQfjuhhvl5j9Cr/jF92?=
+ =?us-ascii?Q?7LHO7COiKTapTNHJZbRRrAy9Eb69qUnT2WGjAFkEQ4hCzPyMsjMZv07xyOAb?=
+ =?us-ascii?Q?xJ4vEEQeca6mHTDtVTmrwiLrUhRUKJLiSqr7qmZzU7gAjY7x76SZXhKyPi/l?=
+ =?us-ascii?Q?UGyd7uAWdsQX6qE+dR7BUY9XcYOrBbRAHdjjSUR54oMSfbngtzJeeOzx3R5+?=
+ =?us-ascii?Q?brThTDS1NhvGxpYpnUXAz+BCyItvx0TZM0y/cHhB/u7cmnkMRw7ON9o9jKM/?=
+ =?us-ascii?Q?wujXM0Nf7mUqYk/eDwh7AuGy/WBrQg62L8rDqc+iMzEG1GEL3clZPEkYuAL1?=
+ =?us-ascii?Q?Qh7AO831O9TbF/LsY4ZWyS2Y4v9bLAs1iaVQF3MdXADbuzz1ABa8J2h/Dl2E?=
+ =?us-ascii?Q?3RT3VZGnlJSOhjz8t6v7vAuGSsRRdFcVMhX37zcQuT1CCylnqNbaGpDfhSkH?=
+ =?us-ascii?Q?dig6tIxYFzx5LEafrBJ6u+HRAIPeMiW+6Hi8fMtf2kK627jon+4Y?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a7630e21-dd50-4445-c331-08df49893d74
+X-MS-Exchange-CrossTenant-AuthSource: MI3PR04MB12438.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Nov 2026 17:43:10.2444
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: cqK4tJN7E/Pijyd8b7vZ31LGTLckE71EIbEsMcau3T+Ujh+SPcniKXgImgvTpMqrSGyiZTsDSL0b8pQ3IsXAKO0GVdu9txe75Y6oPqvVcpAuCEPaJwJGTOJ3xLfXn2H4
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS5PR04MB9893
 
-Thank you for your contribution! Sashiko AI review found no new issues
-in this patch, but noticed 1 related pre-existing issue it does not
-introduce:
-- [Critical] pmdomain: imx: gpcv2: use-after-free in imx_gpcv2_probe()
-  [1]
---
+On Sun, Nov 22, 2026 at 09:51:10PM +0100, Dario Binacchi wrote:
+> If devm_of_platform_populate() fails, the probe returns leaving the
+> power notifier registered on the bus power domain, while the memory
+> holding it is released. Remove it.
+>
+> Fixes: 9cb6d1b39a8f ("soc: imx: imx8m-blk-ctrl: Scan subnodes and bind drivers to them")
+> Reported-by: Sashiko <sashiko-bot@kernel.org>
+> Closes: https://lore.kernel.org/r/sashiko-outbox-227073@kernel.org
+> Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+>
+> ---
 
-commit c3636a65fc3cbb73598f1158474f8ad80341a10d
-Author: Yige Jiang <yigejiang86@gmail.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
-pmdomain: imx: gpcv2: Take a reference to each PGC node
-
-This commit replaces device_set_node() with platform_device_set_of_node() in
-imx_gpcv2_probe() so each child platform device holds its own reference to =
-the
-device tree node.
-
-> diff --git a/drivers/pmdomain/imx/gpcv2.c b/drivers/pmdomain/imx/gpcv2.c
-> index 6a54ee7345146..7b377bf019649 100644
-> --- a/drivers/pmdomain/imx/gpcv2.c
-> +++ b/drivers/pmdomain/imx/gpcv2.c
-> @@ -1513,7 +1513,7 @@ static int imx_gpcv2_probe(struct platform_device *=
-pdev)
->  		domain->genpd.power_off =3D imx_pgc_power_down;
-> =20
->  		pd_pdev->dev.parent =3D dev;
-> -		device_set_node(&pd_pdev->dev, of_fwnode_handle(np));
-> +		platform_device_set_of_node(pd_pdev, np);
-> =20
->  		ret =3D platform_device_add(pd_pdev);
->  		if (ret) {
-
-[Severity: Critical]
-This problem wasn't introduced by this patch, but can returning an error fr=
-om
-this loop [1] leave earlier child pd_pdev devices registered with a
-dangling domain->regmap pointer?
-
-When platform_device_add() or platform_device_add_data() fails on a later
-child node, imx_gpcv2_probe() returns without unregistering the child platf=
-orm
-devices added in previous iterations.  The failure of imx_gpcv2_probe() then
-releases the parent device's devm-managed regmap and MMIO mapping, so any
-later power domain operation on the remaining child devices will cause a
-use-after-free on domain->regmap.
-
-[1] https://sashiko.dev/#/bug/linux-e1374cb3-5de8-4163-b459-98d74ba7a1e1
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/confirmed-20261105-=
-18-6a8421e1b241@gmail.com?part=3D1
+>
+> (no changes since v3)
+>
+> Changes in v3:
+> - Add Reported-by and Closes tags
+>
+> Changes in v2:
+> - New patch
+>
+>  drivers/pmdomain/imx/imx8m-blk-ctrl.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/pmdomain/imx/imx8m-blk-ctrl.c b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
+> index 9df933a7a238..7d6735728d8c 100644
+> --- a/drivers/pmdomain/imx/imx8m-blk-ctrl.c
+> +++ b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
+> @@ -345,10 +345,12 @@ static int imx8m_blk_ctrl_probe(struct platform_device *pdev)
+>
+>  	ret = devm_of_platform_populate(dev);
+>  	if (ret)
+> -		goto cleanup_provider;
+> +		goto cleanup_notifier;
+>
+>  	return 0;
+>
+> +cleanup_notifier:
+> +	dev_pm_genpd_remove_notifier(bc->bus_power_dev);
+>  cleanup_provider:
+>  	of_genpd_del_provider(dev->of_node);
+>  cleanup_pds:
+> --
+> 2.43.0
+>
+>
