@@ -1,68 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795420416;
-	b=mLBrzJfqOdLMtTtglyo36QxIBtpTTt+POeqlkVybXsmgMWLnqATJ44wswElDb0k4kBsG
-	 gNflIidVqbvLNUyYxcWO6iF1VvnqjGse40eK0VjveoHMs4i9crUKRyBCCAyd0tbRGes1W
-	 jz1A3auhuKwPkn3aFG+4/WKxlxqksr/JlfyMHe8ORZsZMH0SvknhvQLF3Fq++j0qTWymJ
-	 A7L3MyhvussdOzkwLRr366djnfln4FOdVPTzxUU1e5Kp3AqNopB4RJmLvHHSkNTOQ8CaB
-	 ahDuQxBIkQSlqFSmTA2HMuhnwXJwptxqKT8qTRL74UXqnWd9aH6lvPgcUr+96zdxPsA==
+	t=1795420722;
+	b=2qDieyle6BmUGMmi8t3XefiG2AxB3sKW01Yy8oiTVSHyMUq4fAWTnETB/kwqUAGS2OCD
+	 vfzoDx0J35k4tLdGLDF01BsfqDAdxxX4MT+9SudMnpMiwSwCQS/54hc1Fwl/QgmKT4ZYH
+	 /+THDgMEDzOUYukSzMNetxqLrcu0nMTwUHayBKS4X19Rg6lDY/pfz/+qU9I9KhOUAGork
+	 tT5dqRNLpOjfCxCx2Q8XKIhvJa/zM1oCpyNrmP0UtY2e4RehO43QJJSyL8tKe2o5hOnuw
+	 RPXyKV8AMeGBifp0yyI50NskqrqpddfEJZfrCXj/Kb+dN+FF63o1CImRl5T3tzwZtcw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795420416;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=1kgjCZJ8nKKX16FqAvd18yEVyO1lfwN7tM9UW2vB/JI=;
-	b=t4fDDyzXRahlRSeo5bcdlKsK5myfMNGCc7bxEBzZGxREV98nnCKIjK/gQ+vsOdQoGIfR
-	 o1Z97Cx8kYVa5ewFkea00g7H1DfhRO/knj6rZFjIkCwiKsWLSN93ikpLaSPeryK2zVhvD
-	 lTRysbGleczeYh3YBEZUTUwFHCme7izAoPCafutFTo08jW2qKW8DtIAI0GiPkNGViGeIR
-	 /dHtNl70Ic0JFcZzdyNT3dfX69ci2k2L10pEcHIpGaFsKB/2KItZLYPruWBKERrQNV0qp
-	 1XOddJah+P74QmvTw0FDBDNY5/hGjec86KQlyJiN/eGyDJiL1mPFAgHIv9PSVL8dnOA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795420722;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=Nj2x6B2qr40CBtMzx44yolcJATXa1LrxrC29sIRVQEM=;
+	b=GWXrz93KBeWdScTgu0pw6o2icytMqstOwG15H/N0W64+pOyewUPiv8PbkZI61eeQEjE1
+	 p+AR4so8nzx4R+T4d3jpKdYWhigQ7CYK+DRvj7zkO6fMxiI/NXfzcZYfl2c8G0cINVger
+	 S4U8DrWN5LfYGbyvc9CENmrgXs7eeM/Ww8kTrfanEiyoybUGoe9uLfcQEe2hJa3pAxFBZ
+	 nwoCqRd60WO40kwPqzj9aljNU8Z4sYu/DZLr7SUbmlh8xNxEVASKO6OG1pqnXFaBvuWFL
+	 Sy16n3soKzrLuMLVzkWyepn/FOx0qJOL1PWdB6d9YXVaE6D82qjvO1Nbt9JFqE1QOhg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cOYfqiaH;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="bME2W/ek";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FDA4606A31A;
-	Mon, 23 Nov 2026 07:53:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D6BF606A31A;
+	Mon, 23 Nov 2026 07:58:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cOYfqiaH
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D04BE1F000EB;
-	Mon, 23 Nov 2026 07:53:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bME2W/ek
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B4FA1F000C4;
+	Mon, 23 Nov 2026 07:58:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795420415;
-	bh=1kgjCZJ8nKKX16FqAvd18yEVyO1lfwN7tM9UW2vB/JI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cOYfqiaHCqKz5KHb6ipksV+yDpdHw/eu3V3jjSWiWX/g+UlIlVu72IEHo9UqiD2Sm
-	 9W6FIvamutDPvxfM/68kZo+125IP9JX7Pc5aMwNtw1CVFg+yHKlTVPyNprCZqHiSHG
-	 iTCQ2f5UZeKCTY9KzMnwi1AlwCIwD55yRRZlBtEOnw3ZW2qZO83oZrjTyuiiHUQDeS
-	 lwVNnuTcZfJ5hf4ES9HEMdWRuOzCtzZgPFCBFK5Jj0976i7FS3YBBqfLbCAp8grlBv
-	 qspDCks6NNr1/JrXPgzPdANK9F0U0dgZFlCsF7AdqnEGZf1+M0w0rnmHb0haMbS86r
-	 KiyIm1RRIgR+g==
-From: Lee Jones <lee@kernel.org>
-To: lee@kernel.org,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Chen Wang <chen.wang@linux.dev>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig=20=28The=20Capable=20Hub=29?= <u.kleine-koenig@baylibre.com>,
-	Shawn Guo <shawn.guo@linaro.org>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	linux-pwm@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH v2 1/5] pwm: mxs: Return early when disabling and fix error-path clock leak
-Date: Mon, 23 Nov 2026 07:52:51 +0000
-Message-ID: <20261123075320.379664-2-lee@kernel.org>
-X-Mailer: git-send-email 2.56.1.750.gf70dc682cf-goog
-In-Reply-To: <20261123075320.379664-1-lee@kernel.org>
-References: <20261123075320.379664-1-lee@kernel.org>
+	s=k20260515; t=1795420722;
+	bh=Nj2x6B2qr40CBtMzx44yolcJATXa1LrxrC29sIRVQEM=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=bME2W/ekQtmBYAplpyneLtPXV+5hRLMbWAGQu5680uOoiXZzVBBiGGjfxOYcCwc5A
+	 Go90mErmrNIbPDqMu5UIVBHZ1nB/9HKUDw6KGVBMsifZEzyNREyxtV8g6uD1Wt6100
+	 A6lzDUjikfEtYrzajhTlbmuzR8YwU9DxfNLh4FjsXFEvp+fDgwImXDVRKdNEi51bQK
+	 VxwfDzSnp1ndu14GFJ42p4mM2zByGTUbwGtUceD7fY7cYo+OdUHilBEOMHoa6vkAMs
+	 RwOI4fCl76TVL5Qt+7Sf19S1+wS5EcPEgBtXKdSwXfWMGEVDnTxP2+W0rLD1qL1TZD
+	 vUQ1iZMxCQk2w==
+Message-ID: <sashiko-outbox-228861@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3] usb: typec: tcpm: advance vdm_discovery_state on
+ Discover Identity Not_Supported
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Xu Yang" <xu.yang_2@oss.nxp.com>
+Cc: linux-usb@vger.kernel.org, imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <20261123075136.650549-1-xu.yang_2@oss.nxp.com>
+References: <20261123075136.650549-1-xu.yang_2@oss.nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 23 Nov 2026 07:58:41 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -71,107 +59,65 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-When disabling a PWM channel (!state->enabled), the PWM core permits
-state->period to be zero.  mxs_pwm_apply() currently falls through into
-the period and duty-cycle calculations even when !state->enabled,
-causing do_div(c, state->period) to divide by zero when state->period is
-zero.  In addition, if the requested period exceeds the maximum divider
-(div >= PERIOD_CDIV_MAX) while the PWM channel is currently disabled,
-mxs_pwm_apply() returns -EINVAL without disabling and unpreparing
-mxs->clk.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Medium] usb: typec: tcpm: vdm_discovery_state stuck on DISCOVER_SVIDS
+  Not_Supported
+--
 
-Handle the !state->enabled path upfront and return early, balance
-clk_prepare_enable() on the -EINVAL error path, and check
-pwm->state.enabled directly rather than calling the consumer helper
-pwm_is_enabled().
+commit 547bf5077436d4ff437ef8c78eb36f03f1e9104c
+Author: Xu Yang <xu.yang_2@nxp.com>
 
-Fixes: bf29c2ff82fd ("pwm: mxs: Implement ->apply()")
-Closes: https://sashiko.dev/#/bug/linux-710f863f-6964-4e4f-990a-e5043dbc1a87
-Cc: stable@vger.kernel.org
-Signed-off-by: Lee Jones <lee@kernel.org>
----
+usb: typec: tcpm: advance vdm_discovery_state on Discover Identity Not_Supp=
+orted
 
-v1 => v2:
- - Check pwm->state.enabled directly instead of calling the consumer
-   helper pwm_is_enabled() (Uwe)
- - Drop Frank Li's Reviewed-by due to code changes
+This commit updates port->vdm_discovery_state when PD_CTRL_NOT_SUPP is
+received during a DISCOVER_IDENTITY AMS so that discovery does not loop
+when communicating with a non-modal partner or cable.
 
- drivers/pwm/pwm-mxs.c | 34 +++++++++++++++++++---------------
- 1 file changed, 19 insertions(+), 15 deletions(-)
+> diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
+> index bf7fd632d815e..b695908e410e7 100644
+> --- a/drivers/usb/typec/tcpm/tcpm.c
+> +++ b/drivers/usb/typec/tcpm/tcpm.c
+> @@ -3913,6 +3913,16 @@ static void tcpm_pd_ctrl_request(struct tcpm_port =
+*port,
+>  		case SRC_READY:
+>  		case SNK_READY:
+>  			if (port->vdm_state > VDM_STATE_READY) {
+> +				if (port->ams =3D=3D DISCOVER_IDENTITY) {
+> +					if (rx_sop_type =3D=3D TCPC_TX_SOP) {
+> +						tcpm_update_vdm_discovery_state(port,
+> +								VDM_DISCOVERY_COMPLETE);
+> +					} else if (rx_sop_type =3D=3D TCPC_TX_SOP_PRIME) {
+> +						tcpm_update_vdm_discovery_state(port,
+> +								VDM_DISCOVERY_CABLE_IDENT);
+> +						mod_vdm_discovery_delayed_work(port, 0);
+> +					}
+> +				}
 
-diff --git a/drivers/pwm/pwm-mxs.c b/drivers/pwm/pwm-mxs.c
-index e1a3df6549fc..768401b23dbb 100644
---- a/drivers/pwm/pwm-mxs.c
-+++ b/drivers/pwm/pwm-mxs.c
-@@ -56,20 +56,25 @@ static int mxs_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
- 	unsigned long long c;
- 	unsigned int pol_bits;
- 
-+	if (!state->enabled) {
-+		if (pwm->state.enabled) {
-+			writel(1 << pwm->hwpwm, mxs->base + PWM_CTRL + CLR);
-+			clk_disable_unprepare(mxs->clk);
-+		}
-+		return 0;
-+	}
-+
- 	/*
- 	 * If the PWM channel is disabled, make sure to turn on the
- 	 * clock before calling clk_get_rate() and writing to the
- 	 * registers. Otherwise, just keep it enabled.
- 	 */
--	if (!pwm_is_enabled(pwm)) {
-+	if (!pwm->state.enabled) {
- 		ret = clk_prepare_enable(mxs->clk);
- 		if (ret)
- 			return ret;
- 	}
- 
--	if (!state->enabled && pwm_is_enabled(pwm))
--		writel(1 << pwm->hwpwm, mxs->base + PWM_CTRL + CLR);
--
- 	rate = clk_get_rate(mxs->clk);
- 	while (1) {
- 		c = rate >> cdiv_shift[div];
-@@ -78,8 +83,11 @@ static int mxs_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
- 		if (c < PERIOD_PERIOD_MAX)
- 			break;
- 		div++;
--		if (div >= PERIOD_CDIV_MAX)
-+		if (div >= PERIOD_CDIV_MAX) {
-+			if (!pwm->state.enabled)
-+				clk_disable_unprepare(mxs->clk);
- 			return -EINVAL;
-+		}
- 	}
- 
- 	period_cycles = c;
-@@ -101,16 +109,12 @@ static int mxs_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
- 	writel(PERIOD_PERIOD(period_cycles) | pol_bits | PERIOD_CDIV(div),
- 	       mxs->base + PWM_PERIOD0 + pwm->hwpwm * 0x20);
- 
--	if (state->enabled) {
--		if (!pwm_is_enabled(pwm)) {
--			/*
--			 * The clock was enabled above. Just enable
--			 * the channel in the control register.
--			 */
--			writel(1 << pwm->hwpwm, mxs->base + PWM_CTRL + SET);
--		}
--	} else {
--		clk_disable_unprepare(mxs->clk);
-+	if (!pwm->state.enabled) {
-+		/*
-+		 * The clock was enabled above. Just enable
-+		 * the channel in the control register.
-+		 */
-+		writel(1 << pwm->hwpwm, mxs->base + PWM_CTRL + SET);
- 	}
- 	return 0;
- }
--- 
-2.56.1.750.gf70dc682cf-goog
+[Severity: Medium]
+Can port->vdm_discovery_state remain stuck if a partner or cable replies
+with PD_CTRL_NOT_SUPP to DISCOVER_SVIDS or DISCOVER_MODES?
 
+When a partner ACKs CMD_DISCOVER_IDENT, tcpm_pd_svdm() and
+tcpm_vdm_discovery_work() advance port->vdm_discovery_state to
+VDM_DISCOVERY_PARTNER_IDENT or VDM_DISCOVERY_CABLE_IDENT and send
+CMD_DISCOVER_SVID (with port->ams =3D=3D DISCOVER_SVIDS) before checking
+supports_modal(port).  A partner or cable that supports Discover Identity
+but does not support modal operation can therefore reply with
+PD_CTRL_NOT_SUPP to CMD_DISCOVER_SVID.
+
+In tcpm_pd_svdm(), CMDT_RSP_NAK marks discovery complete for both
+CMD_DISCOVER_IDENT and CMD_DISCOVER_SVID, and vdm_run_state_machine()
+handles SOP' errors for CMD_DISCOVER_SVID and CMD_DISCOVER_MODES by
+calling tcpm_register_partner_altmodes(port) and advancing to
+VDM_DISCOVERY_COMPLETE.  Checking only port->ams =3D=3D DISCOVER_IDENTITY
+here leaves port->vdm_discovery_state incomplete on PD_CTRL_NOT_SUPP for
+DISCOVER_SVIDS or DISCOVER_MODES, so later entries into SRC_READY or
+SNK_READY re-run tcpm_vdm_discovery_work() and deferred partner altmodes
+are not registered if an active cable returns PD_CTRL_NOT_SUPP on SOP'.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261123075136.6505=
+49-1-xu.yang_2@oss.nxp.com?part=3D1
