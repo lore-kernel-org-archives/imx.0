@@ -1,102 +1,136 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.159.9
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795437683;
-	b=iSZJzSh27dn28dOkXx/2ItEEiP5rUYwVCph5HelRy+EJTRwC8ukMj3+XOVeaRaJCNu/5
-	 dH02W8QQMHeLQFREi4TxIpFVvw7Qz1dfnioarP+li4OiOePrVAg968kRR7noLren7W/nK
-	 Sq/pO5omzR98E0J1Hs8BbxUvzDlAiCncWtk3leRIXbA7FUREfKO3UJtHsLxDcDwHJ+L36
-	 B/sQ1bzk5g+N2IJ9dfzUp3Op35621PgBKkapSZHnNB1rZtCoe0cBqioHce9lKPLBuq448
-	 WGPpIUcwnyYZBrOI5aue3VQBcoZV9DcZX1xuoIO55pUrl8O59u7YPMQLVhTxtOH7P+A==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795437683;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:Content-Transfer-Encoding:Content-Type:
-	 X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=pmilN6+LxM/ZNl673QOCte689GCQmYAdWDFbQB2dNb8=;
-	b=dg6ece6TgI4PIof16MMO2GWZ2fwZd6Dt4QBGru91CiVQ5k0+w1ak6TkaZ3qYy4F+c4mt
-	 nGEbzy2vadJ8Zwf/rEjGQLXcFNoOoydu52ia+GgZfXCVemxez8hRlW7oKN832e+ewzN1v
-	 FonMYix5F7iq/rS21ngPJdzToATVPCi5cGEYiZrvpFaYl1HGyRHhlbWUb7s3vRZpQnyQv
-	 PqwXv0o+TjI2B094LMaEAxhTa/2CeLjivCf1Ezdf0OSrwAnguDva0Oh+bGk50cK7b40mj
-	 q4Ru8uOSjOOTJ5NRzCU/eFdmbPTdeLXlW03T2q5vR2kczSlNxYNOM0WNN8Ywkr5uacw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nxp.com;
-	spf=pass smtp.mailfrom=nxp.com;
-	dkim=pass header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=ltpgJ06q;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.159.9
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013009.outbound.protection.outlook.com [40.107.159.9])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795438188;
+	b=budbge6W4/Vgz0r7eM5YoTiXK1bORuLRCWCMo3yqs4Fdgn6MTOqBvXgs1CTCMWoK9KpJ
+	 xbcqzDVrZTM70ljlqq1Uf+G8Ovc2eO7cCy4ZnzVPbY0PBQlrn+NEmh1QGZXJGy4+xiZVH
+	 r5B3d7iW1OYbXVwz+RY5G9+hW3FpuWba2awLszJUUeEX4ruabRnKQv3OaQnQIx4bgqrUz
+	 AnwcDdg/B+NGSX2NMcSbT8ZJEWhTkVn2kgb3qCI8KAVkWD54R75VVFBIWkHxsZ8xssKDR
+	 LWvKirtpz4nY89EFsPSpAtoWuY1M7XQAXEqZqMiDlZ8yT4lvyn97hFGA62cIC9n/mXw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795438188;
+	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:To:Cc:
+	 In-Reply-To:References:Subject:Message-Id:Date:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-Mailer:
+	 X-Last-TLS-Session-Version;
+	bh=9S+zYbf1+35Bjw2Mrwh8qKAGonx8naAVwCL/M52lAos=;
+	b=vopeza6bxGp8R9Y3d4iLTu1Od+0v8etIPljBbDJTXIhtk5baX7ye6RNWUk1EjNQr7MnG
+	 bmZ5KQR6+8mYF/Zts8JM0GHgS0hqm5dKrwHzKIlkGCrCnI76s2l7K8hsvcRADhQ7xm4Sr
+	 +Lu+txk8rHvOI6SgUmhbV/myAAgoxjI/2V75X3cBA0hFtkWZEJILRFlLQtYToXLWslIiR
+	 7JlbxoDcdJF9G8C+NPubBFx8cr8Z+ZKxntkODKL5GuMXjL8o+58gkof5UuIu5EMt8p/nd
+	 WODrBDm8YHayfsc/aiZhxqAEpodiY60bxAUSjVBfRU889P3F4YCD0QQTdz+AGW2CxMg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=bootlin.com;
+	spf=pass smtp.mailfrom=bootlin.com;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=2eVrJ5W7;
+	arc=none smtp.remote-ip=185.171.202.116
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C109C606A327
-	for <imx@lists.linux.dev>; Mon, 23 Nov 2026 12:41:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C109C606A327
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2980B606A31E
+	for <imx@lists.linux.dev>; Mon, 23 Nov 2026 12:49:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2980B606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=ltpgJ06q
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=yib/vZX6Rg9ySESlO5NByfiacmAqhm8YDJrEPXE5bE2PKis8NqPKYYsOcmfnLbzISCewDWXrILSSTKTf8fpa+rxsOLPtHIgB8wU6g9mPipVn563pMoR58ywtPeckkvTLKEZEdVY0OFuTfe6PT7OHros5SkdRX28L3GVt3UKEaZkfXwhrPMigTCsfC231/dv60EWlq0Kzi5P45ySQTEg4aL+ZZlEw/lp6UlkPTInGi09JTO29L/Gn+hqedT+74G4RqnUqNUPtypX5j7A/ZwVGy9NhDB3HKeFaD+D+6xzA5tjpeKwi3SSIjpRwOTRbtHRS7kP9wVPQrO5spamE3F7v7w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pmilN6+LxM/ZNl673QOCte689GCQmYAdWDFbQB2dNb8=;
- b=BU4R2/EtHOyMcWFI27UdY4zmEsGWtl+3HWYZKCiKbUMMatyVrPIw4yU+Z7yKq4Sytkh5PpkS7YAzLozMmBxgPg8kSQrRBpfnA50WEL4zC6ZB0FmW+mpfh6P2vo1ijQPMY/okXt57k4lrobUPRZoio1cNtg4kuRQ20vJlaFnRpRYrZt8QNsjcdBJdqKEqw++PhSqFlk8AV5pwVjnAIY9yIJYd5JEY83E4Zy1UaqVno7in5TOZviY4kU7nRxeHgcFvaafvaiprQAme2pvFYOj/l2kEvwdwDENclZl4lT1CZm4VN2FhhAUqMqH1jBBk8zSEKuP67/OVMqr1V/VhVZ6GQQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pmilN6+LxM/ZNl673QOCte689GCQmYAdWDFbQB2dNb8=;
- b=ltpgJ06q5uMuOKkN/ATmsaBw1AAemaMEQCICX019IOboPypOOaVp45gWLp2h2KcaoXML2ECfrYcE1Rgd25YLdyYWrSVSNdoJ7hrdsAxQCOK30LmBlylxwq4IAf87sO+bJ7UziD0Npkj5FpNGFF4cg23BO9c/YLs3yvGmqBL15EWuttizFqhsxm+2HgwSP4/onuKxeWJaKSPhbAtpdyVPMyw/ar1SWMb5veOBN5wOt5n7KVyULKSAiz10952u6XcEV0RXexWNkAaXZITFBQUwdxjhXjVvD0J/v91XDAdunVG2L/NQePQGOsv2cmcvqXK20TeyiH6xQR3X0RcHJGBzrg==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM6PR04MB4472.eurprd04.prod.outlook.com (2603:10a6:20b:23::20)
- by VE1PR04MB7359.eurprd04.prod.outlook.com (2603:10a6:800:1a0::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.14; Mon, 23 Nov
- 2026 12:41:17 +0000
-Received: from AM6PR04MB4472.eurprd04.prod.outlook.com
- ([fe80::aed9:e8b9:c352:9ba0]) by AM6PR04MB4472.eurprd04.prod.outlook.com
- ([fe80::aed9:e8b9:c352:9ba0%6]) with mapi id 15.21.0639.010; Mon, 23 Nov 2026
- 12:41:17 +0000
-From: Stefan Ghetu <stefan.ghetu@nxp.com>
-To: Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>
-Cc: Rob Herring <robh@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Stefan Ghetu <stefan.ghetu@nxp.com>
-Subject: [PATCH] PCI: imx6: Use dev_err_probe() when parsing Root Port nodes
-Date: Mon, 23 Nov 2026 14:41:10 +0200
-Message-ID: <20261123124110.563397-1-stefan.ghetu@nxp.com>
-X-Mailer: git-send-email 2.53.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: AS4P191CA0009.EURP191.PROD.OUTLOOK.COM
- (2603:10a6:20b:5d5::16) To AM6PR04MB4472.eurprd04.prod.outlook.com
- (2603:10a6:20b:23::20)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=2eVrJ5W7
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 7B880C69149;
+	Mon, 23 Nov 2026 12:49:53 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 6C4BF601E1;
+	Mon, 23 Nov 2026 12:49:46 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 58F5211E6A338;
+	Mon, 23 Nov 2026 13:49:04 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1795438180; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=9S+zYbf1+35Bjw2Mrwh8qKAGonx8naAVwCL/M52lAos=;
+	b=2eVrJ5W7Q2n7kIAXCLAfrUUYblKTfODmq1QVOkzJvI7oWSJXMqLWa2QzpazEjogSDqKzLh
+	s8sAxDfXwnzYNVSFG3dkGdEGmdUXt3V6GstTnIqHqBxkh8XBlm+2KLChquHHZoUNIkU7IX
+	UQyATbEVJjrbrnmNMUfIVKumyb7j01Fkv0K91l3BkJ1SUMdQM9PgFOlheX31bjRmCLMnxw
+	cNWH2JioMQhckzm1o8iOFOfY5k1Uwqf3FjbPF3P5HeZId+1XNnPRN22o00uI7iYRkuBNtR
+	Ug/iv3lmeQrfv8sRhqI1i1om5BfRunNZelsRIHCwZoJKMWlALzPwJIKLHejLUg==
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+To: Douglas Anderson <dianders@chromium.org>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, 
+ Jessica Zhang <jesszhan0024@gmail.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Jyri Sarha <jyri.sarha@iki.fi>, 
+ Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, 
+ Andrzej Hajda <andrzej.hajda@intel.com>, Robert Foss <rfoss@kernel.org>, 
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Paul Cercueil <paul@crapouillou.net>, Marek Vasut <marex@denx.de>, 
+ Stefan Agner <stefan@agner.ch>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, 
+ Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>, 
+ Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>, 
+ Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>, 
+ Geert Uytterhoeven <geert+renesas@glider.be>, 
+ Magnus Damm <magnus.damm@gmail.com>, Biju Das <biju.das.jz@bp.renesas.com>, 
+ Linus Walleij <linusw@kernel.org>, Sandy Huang <hjc@rock-chips.com>, 
+ =?utf-8?q?Heiko_St=C3=BCbner?= <heiko@sntech.de>, 
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+ Randy Dunlap <rdunlap@infradead.org>, Inki Dae <inki.dae@samsung.com>, 
+ Seung-Woo Kim <sw0312.kim@samsung.com>, 
+ Kyungmin Park <kyungmin.park@samsung.com>, 
+ Krzysztof Kozlowski <krzk@kernel.org>, 
+ Peter Griffin <peter.griffin@linaro.org>, 
+ Alim Akhtar <alim.akhtar@samsung.com>, Alison Wang <alison.wang@nxp.com>, 
+ Paul Kocialkowski <paulk@sys-base.io>, 
+ Yannick Fertre <yannick.fertre@foss.st.com>, 
+ Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>, 
+ Philippe Cornu <philippe.cornu@foss.st.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Chen-Yu Tsai <wens@kernel.org>, Samuel Holland <samuel@sholland.org>, 
+ Thierry Reding <thierry.reding@kernel.org>, 
+ Mikko Perttunen <mperttunen@nvidia.com>, 
+ Jonathan Hunter <jonathanh@nvidia.com>, 
+ Jagan Teki <jagan@amarulasolutions.com>, Ondrej Jirman <megi@xff.cz>, 
+ Javier Martinez Canillas <javierm@redhat.com>, 
+ Igor Reznichenko <igor@reznichenko.net>, Michael Walle <mwalle@kernel.org>, 
+ Dario Binacchi <dario.binacchi@amarulasolutions.com>, 
+ Jagan Teki <jagan@edgeble.ai>, Jianhua Lu <lujianhua000@gmail.com>, 
+ =?utf-8?q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>, 
+ Purism Kernel Team <kernel@puri.sm>, 
+ Jerry Han <hanxu5@huaqin.corp-partner.google.com>, 
+ Joel Selvaraj <jo@jsfamily.in>, Icenowy Zheng <icenowy@aosc.io>, 
+ Michael Trimarchi <michael@amarulasolutions.com>, 
+ Sumit Semwal <sumit.semwal@linaro.org>, 
+ Casey Connolly <casey.connolly@linaro.org>, 
+ Michael Tretter <m.tretter@pengutronix.de>, 
+ Cristian Cozzolino <cristian_ci@protonmail.com>, 
+ Junjie Cao <junjie.cao@linux.dev>, Ryan Brue <ryanbrue.dev@gmail.com>, 
+ Nickolay Goppen <setotau@mainlining.org>, 
+ Stefan Mavrodiev <stefan@olimex.com>, 
+ Florian Fainelli <florian.fainelli@broadcom.com>, 
+ Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
+ Robert Chiras <robert.chiras@nxp.com>, 
+ Alexander Koskovich <akoskovich@pm.me>, 
+ Markuss Broks <markuss.broks@gmail.com>, 
+ Artur Weber <aweber.kernel@gmail.com>, David Heidelberg <david@ixit.cz>, 
+ Dzmitry Sankouski <dsankouski@gmail.com>, 
+ Yedaya Katsman <yedaya.ka@gmail.com>, Andy Yan <andyshrk@163.com>, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+ linux-mips@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-renesas-soc@vger.kernel.org, 
+ linux-rockchip@lists.infradead.org, linux-doc@vger.kernel.org, 
+ linux-samsung-soc@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+ linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org, 
+ linux-rpi-kernel@lists.infradead.org
+In-Reply-To: <20261026-drm-panel-funcs-v1-0-5e3070a3478f@oss.qualcomm.com>
+References: <20261026-drm-panel-funcs-v1-0-5e3070a3478f@oss.qualcomm.com>
+Subject: Re: (subset) [PATCH 00/35] drm/panel: let the panels use the
+ atomic state
+Message-Id: <179543814467.190741.17345151948628824699.b4-ty@b4>
+Date: Mon, 23 Nov 2026 13:49:04 +0100
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -106,99 +140,59 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM6PR04MB4472:EE_|VE1PR04MB7359:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7fa724dc-6722-44eb-6055-08df495f111c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|23010399003|1800799024|19092799006|10067099003|261009223027099003|11063799006|56012099006|261021121427099003|261022075727099003|261022105027099003|261021123027099003|261028144727099003|261026140227099003|261102123227099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	xJZN5U5gmq69AKarW4qJFmqRe4n50F6NmJcEdE0PQ2yuLhc+JTIvfRrj58HtL3fkADxhzN+Z076qCX9VAUmgx52a0sHFxts9RlGa2U91aRUU5V64g519cxIT0rgr7tUWRBP64tE8P0yzh+r95zReJmY0+FLzZ3xUPFnRCEor02vr0fNdd2PqM+P+tdDqBwqagXA8j1DjzM72XBMNDoN9th3LlLgp3MSZEUuJY4iLJeF+hdRahJXXg/NfE44NoTCHFw5k3//3WLVZa6PcI2ZkhUO97KtvvrFF1la6vyMIoxoCVO3PBIYJYdlOz07OYf2bpR6YEbnkjQuO+B9tQtnrx/yeIkCmJVFN6DlXQUxsEPRLZIJbCCC6StWjukZ6qankctb7H7mcwpCvzspFg1Y8qMR8Qfciwl7L52VgMoJkRZjBgT+YNN3imLA8rkO6xfNuEDsnAZ8t2tRkWB/55xGfjGztzgNQZJgvonsE3rYnKWnk+dCFvK0cPT3jEGcyDtg9dlaCL4vaCoehR0P0dsRxWoLsvIG+86r3dwdNglAGhzGGZfUNA3kPxHRqyXCF2u53ByL4NbBOhvZWYhwrwvG2NI8FdVpdGX/0JoZeqO6TUyJMFgcoNjyxZGQa6RJw+NCG+mcclVg6EW4fCEst5Tj4JUbBL7BYKk+zCOpj41hvZLg=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4472.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(23010399003)(1800799024)(19092799006)(10067099003)(261009223027099003)(11063799006)(56012099006)(261021121427099003)(261022075727099003)(261022105027099003)(261021123027099003)(261028144727099003)(261026140227099003)(261102123227099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?jWo4vSl+c5XpHOtsNUOTjyZfhTokbAu8s2WEXA7oZWViSSvFSHJggKg0A+Qu?=
- =?us-ascii?Q?DSi9+QfWUG/OMmOE4vhIeXqBt2hqci2rvTgyzut3NnUuQ0xCyQPJjpYRtFJw?=
- =?us-ascii?Q?LaVUtxbS6Yg2k8PdwgbEMETn1gFr1Xm0SCUub6FIzxdTXFPZIeoAzJzn081W?=
- =?us-ascii?Q?Jt5WBI59wD7nmFcU29qVb3KyoFU4FsC3aE9mth9LwFUCMGHfq7PbQQdqt4JP?=
- =?us-ascii?Q?5pWVowSKxM/jc4dJ3oRgUvi8LEext3WBOgphVLDWANscXyMIeg8M9c9MwXj1?=
- =?us-ascii?Q?oQSsuLpiBLTOPkWRBj1oiynDDuvf9HgSy0iwpe7bGLPOQQwMWjQPnQqxru3y?=
- =?us-ascii?Q?h6RmWXq19z6Xu5KspoHkqNlTW3I0syXxgc9YO3iXMEmQpmPMuD5gDvBXP96P?=
- =?us-ascii?Q?nrff5wz9uesMEpaT1U9eZC9uPXxcH+T2toAPIUOIDILdOjrsDduP7UQk7mR8?=
- =?us-ascii?Q?KmHtopVpRbDz6CvloD87/n1sGv+cxWpdcwvKN8/9m7vwprBWtCiJdkPFYvcW?=
- =?us-ascii?Q?D25Nz3Eb8VqNjFgmgfOjHttB15WZDHucXklHUHQLF0zetOL4m6n0Qp2oHa4g?=
- =?us-ascii?Q?961/45rEgc12i5GSxYaDa19zGaghAqoGKCzuKB7RnggAbJ8HNEj6RlO10oam?=
- =?us-ascii?Q?xoC1UDFMx7S9TLqbvPRRLV7Luxxkagyd/DTC8zA6jXc9Zh3/iW+GLdDOkHhV?=
- =?us-ascii?Q?pIP/4nHe7HXLvWYWx2GahR4dLdQVvUDJUJ0CkCNYdpxrGJon72Rrbe8VmpnU?=
- =?us-ascii?Q?6gB5Hvw/ZcIwHu14YJRT4h7spYcwthjFU9HyNtQATf6pqDyli6iwxteQuWrg?=
- =?us-ascii?Q?dhDeWNbUeJlb8KH+xux4a4iCdJzrykS2DHReAEiVH+AGrXxYzQn6oFNoveD7?=
- =?us-ascii?Q?qYQWsQwQ9HSD0llWqtl1/musS/XCjgjLRi+ZQ72eFnkOyANlQ1E2fdaHCfeu?=
- =?us-ascii?Q?ObUKuy5L+ufI749C7Ezhv7pBqy9/Im9HGFsCdP8qPXipTCpVa4N/dGn3Je05?=
- =?us-ascii?Q?CChKhKH2oNR7c5rvAPjKRL7tYCsm+8x2or55GfgF22a0xA0aIKs9crTP5Gg2?=
- =?us-ascii?Q?my9dBYBMDcKlp+nNJlYXRjrOnKCK6zMZmpMmAzVRrG3jB/DRAtxGtkcit6g5?=
- =?us-ascii?Q?uYHNAeg8Q9UpWZYD4uLUmLM7OgaEgL4OV93E3l3W/MnVKMldSNDX0zHLU0kk?=
- =?us-ascii?Q?8Xok2uCdpyirNZG7wxeZkY21q2o4hw4Dhw4QShZDM17D9jR4cGhsP3FuDUm2?=
- =?us-ascii?Q?eJyYybRy7pd09jwBKvwnk5EjtIHgvcVLYbpWspS4sNyefgXpKjsbH0qP7nSQ?=
- =?us-ascii?Q?nzAPbHtZyegZEdiwI75VqLSSFKSLm7S1TCMkF2/t0i6u9aJStet+QhgEVZSU?=
- =?us-ascii?Q?QsEaWg1DO97c1BGPlMaaQPXHt0rJNZ6nFEX7EW8KAd1tX0jXuDSs3Ylks/XZ?=
- =?us-ascii?Q?Z7NtXAiMqe9LrjFvnGISeOvC5E4JjwcrmLfoAlUpJsTMPavjNvMJIrQHERnQ?=
- =?us-ascii?Q?n8//wsGsbdh3epzdhkJJFL2HFKERHYqfvr3b8Z5f+jLVL2HcXjTYkEexqcJ2?=
- =?us-ascii?Q?fJUgSoaGCfv5N4SU7LybPXohPlG4DbBh8nEZ+uwq2CDZRcdhPcVQeBMGdv+W?=
- =?us-ascii?Q?hfFSQRZfrh2sFNeQJmDrrOUoquDDWg1tVQi5Ws1jjbLnup014caIkapYtHgv?=
- =?us-ascii?Q?crlKZImHIgGBIK/aIsoXOexVZzOWNuviZeYfq25hKa9/uK+vUMcbTYebatO/?=
- =?us-ascii?Q?8OaernbhbQ=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7fa724dc-6722-44eb-6055-08df495f111c
-X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4472.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Nov 2026 12:41:16.9862
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: u8xTZvrcdmMOSFrCsndFBSM0U/zIb2n9iw3eDnefzvCzTETAeRPbAvViQnRuNnD0Ruhc92c2DBWsIPespiIOrg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB7359
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.16.0
+X-Last-TLS-Session-Version: TLSv1.3
 
-pci_host_common_parse_ports() returns -EPROBE_DEFER when the PERST#
-GPIO of a Root Port node is provided by a GPIO controller that has not
-probed yet, e.g. an I2C GPIO expander. imx_pcie_host_init() logs this
-at error level on every probe attempt:
 
-  imx6q-pcie 4c300000.pcie: Failed to parse Root Port nodes: -517
+On Mon, 26 Oct 2026 13:09:49 +0200, Dmitry Baryshkov wrote:
+> The panel is the only element of the display pipeline which never sees
+> the atomic commit. Its prepare() and enable() callbacks get nothing but
+> the panel, so a panel which has to be programmed differently depending
+> on the mode can only guess it. The NT35950 driver, for example, saves
+> the connector in get_modes() and reads connector->state->crtc->state
+> while being prepared: without the locks, from the current state rather
+> than from the one being committed, and with no way to reject a mode it
+> doesn't know.
+> 
+> [...]
 
-Probe deferral is expected and not an error, but these messages flood
-the kernel log during boot on boards like the i.MX95 19x19 EVK.
+Applied, thanks!
 
-Use dev_err_probe() so that deferral is only recorded as the deferred
-probe reason, while other errors are still reported.
+[01/35] drm/panel: remove the get_timings() callback
+        commit: 874b9d3ad6e0087ea21aafcb2ada3f6a6a8c5a1c
+[02/35] drm/panel: remove the unused struct panel_bridge
+        commit: 83fa60df1302667ce139457208aee277067732db
+[03/35] drm/tidss: get the panel type from the embedded bridge
+        commit: eb5352d63fee9733f798f53e0418c17a5184d258
+[04/35] drm/bridge: lvds-codec: use devm_drm_panel_bridge_add()
+        commit: 4afe0e580a135dd4917486ccf7cff3442b6596ff
+[05/35] drm/ingenic: use devm_drm_panel_bridge_add()
+        commit: cfac2956bdaabec099fdc471ebd9ae9ac0defd65
+[06/35] drm: mxsfb: use devm_drm_panel_bridge_add()
+        commit: f88a377f94b03796ea5c7d62fb3b061f6a0bb040
+[07/35] drm: rcar-du: use devm_drm_panel_bridge_add()
+        commit: a57b24576b38dafdcd859aff8f129c0c0a29fd04
+[08/35] drm: rz-du: use devm_drm_panel_bridge_add()
+        commit: 666e1e77703cbcff43d48e77a24f72e4147510d8
+[09/35] drm/mcde: use drm_panel_bridge_add()
+        commit: 0f7bcd3b5439845acfa6a381a7cc314262b2d4fe
+[10/35] drm/pl111: use drm_panel_bridge_add()
+        commit: 3f603bf783886f681721218aae4c8c709ee961bf
+[11/35] drm/rockchip: lvds: use drm_panel_bridge_add()
+        commit: 8165f8e83c3a660b7311337aae0469d760ff5f26
+[12/35] drm/rockchip: rgb: use drm_panel_bridge_add()
+        commit: 66acc28d44cd41d9ad63be5840556450f84f6b50
+[13/35] drm/panel: remove the _typed() panel bridge functions
+        commit: bbdf706498e19c35c56e3d69178c3e833f014e06
+[14/35] drm/panel: remove drm_panel.connector_type
+        commit: 5888187709034391aaf7f1ab8d4910285f0b404f
 
-Signed-off-by: Stefan Ghetu <stefan.ghetu@nxp.com>
----
- drivers/pci/controller/dwc/pci-imx6.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-index 865438ffde879..2a7f09630d14c 100644
---- a/drivers/pci/controller/dwc/pci-imx6.c
-+++ b/drivers/pci/controller/dwc/pci-imx6.c
-@@ -1395,10 +1395,9 @@ static int imx_pcie_host_init(struct dw_pcie_rp *pp)
- 	if (bridge && list_empty(&bridge->ports)) {
- 		/* Parse Root Port nodes if present */
- 		ret = pci_host_common_parse_ports(dev, bridge);
--		if (ret) {
--			dev_err(dev, "Failed to parse Root Port nodes: %d\n", ret);
--			return ret;
--		}
-+		if (ret)
-+			return dev_err_probe(dev, ret,
-+					     "Failed to parse Root Port nodes\n");
- 
- 		/* Fall back to legacy binding for DT backwards compatibility */
- 		if (!imx_pcie_perst_found(bridge)) {
-
-base-commit: 7bf2db752515a9020b310984ae3bce1089cfdf20
+Best regards,
 -- 
-2.53.0
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
 
