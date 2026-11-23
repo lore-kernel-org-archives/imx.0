@@ -1,99 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.128.177
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795443077;
-	b=MNItbHgblFpBjKlcypMzXoY58zz9rPP9yCRtG4Rsm6E+QiSxRDclO7SSEp7WMVIbjrJg
-	 /wzstBt3pvZk/fez//FOEwn819wrfDNwnTY7BJkplQZWqzVsuZ0bIR8esiOEbmMJfNdON
-	 bfze01P86dClVxr2oifNvaXD9AL1SEcEdrPtau2RB27R/kmVoffdU0jI3loy/ZFvjKdrt
-	 0Xlf/2q+Zlb8ZO7oi+pOEqpcQdcIyhFYAJoZjdIF37eNH77fwJQ9f5NFmGfQSi6M2D+Ub
-	 pa2U0FHSYKfBqmkVBmhA+KBY7AAkCpEBVwZICKoBFDGGomk335IZtAxYJScw/yexwOw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795443077;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.178
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795443990;
+	b=l2o1sZR1IVfIg8I7ltycv3hhXEwV36iyS0H4FupPYkAyrr0+U4gfAKvoeJAFcK0lDnND
+	 owWlvgTpP+Ouhbd6ECEaS1w8KvNw+kSATEqpTQ7fUxNkbuwsAn87Z1HF4KQNAyZ/OIHSN
+	 wBSEaBd0RhomEhiVEzB21TcRP/gEK38ba1kfJyobMh7Ji2y3VA9Cxs7jaiuNtVDcdUSde
+	 SP7O9TlV+eULMSX06fOhbGnQtQ1vx3JfIMUOyVv2NPBXVEdRg5NAhJ5ULcbYq/U96pDIO
+	 JOWyZHcH3iA+HEJDghrE+SoiqrXHKVzM1S/7Xaxz6HHRSUeyp8yWGAKWmK+U0SSb07g==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795443990;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type;
-	bh=R32xhf3Kvq/DaeS/L7g8lPdJxhRkFnoaSwXaedjNBvc=;
-	b=m8MvqSJJEN05Dl+EoBTjyP4uOHAX1rJJ9tHTzG6iiA2Sx/Dcwex6ei95FjkYgCvpHSwA
-	 VJK5l7FGJQ62ZWbP+pRK/yOeC+nwceiRccUF/lpDJsufYM/keJPQhbKFYRtCIzMcErtIX
-	 9GD1ZGrOFOOyNkg27/znxbM08pRY/lfBlrfVHBVUzaW4Z2zcUP36H57ouMRHPEQ4LIqQW
-	 qIpyiWtvPMolCx+Yd5f3ESgTy0FZW4DhGHogLiF14wQI52yGLiW4yucWnzjCbxNPo8Ebh
-	 wK0/GuTBtJOClrmQ1cIzXuRHbMloV8673DGJFQMUKmnrf6iM9H6YO8xp9c/6W6t+qpQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linaro.org;
-	spf=pass smtp.mailfrom=linaro.org;
-	dkim=pass header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=EihV0rKH;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.128.177
-Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:
+	 Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=MpBy4DQUeAY3YB4hP8JJP2A0Pzqf+41bgmSv+sbuZU8=;
+	b=1j7juYRzJxQjZnbrz84rYmW80OILAWe8jaVCDjInX9JpZz1bS63YSi3XPShhsnI+UigS
+	 10cGbh191oYeRnp5lOcMPei/RQAKw0WQUkVKc5gAGL/XNDQMDup2hHrFxcqLWj0Cq+PNo
+	 Bf4p3TdUB2Rvi2NWFkLYc9BSeAxZGK/vbOal3X7dFwbsSLU4/UN1J0rVJKpOFyv327WhH
+	 JPLjrF8KGL7GMcVrlkdFz+KoJRxZvU6DO3faum+LSiVx4oMzIJHLiKmMy4R4m8I2WJ2sd
+	 qvsW3KS6PtxIaOfWgEX+3Uld4hZeX+waEZ4lVYDAxES7Io4+uxGfYwqjN5HX1Tou8Jw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=qFZYB39J;
+	arc=none smtp.remote-ip=209.85.208.178
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93461606A321
-	for <imx@lists.linux.dev>; Mon, 23 Nov 2026 14:11:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 93461606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B2DD606A32E
+	for <imx@lists.linux.dev>; Mon, 23 Nov 2026 14:26:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3B2DD606A32E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=EihV0rKH
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-8b10d24345dso29102767b3.3
-        for <imx@lists.linux.dev>; Mon, 23 Nov 2026 06:11:16 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795443075; cv=none;
-        d=google.com; s=arc-20260327;
-        b=FqTSNqOBen232mZYGCzJJY0NTHhDipMtGVU4mqpfLf9rXuMOswtehylhky6qOGZG/X
-         FWPCCNw9adebLtzPBGZkbkiQqtX8vL7C3EU5RleE1hZoVr2sYD3KG5tSiF56niL5ISxf
-         IubcVrq8tW/Ld9SEHgLDLOQpactxNTzChPTAi++wL2suzjFnfuRv3HI0H3C/q2viYsYp
-         yQBgXJUxyuvNNRfn8eHefCnOgcqoeVrYjyqrCgKT8zFYbYVtyCC9ry4uHR0aHcTiiO4N
-         X2l++wj6g8RW2dKz/oc3zRO5+Ee5bNSiE60lHXGaClYyZkYAvXsdmNNt0pjCDSEKdbvu
-         czzg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=R32xhf3Kvq/DaeS/L7g8lPdJxhRkFnoaSwXaedjNBvc=;
-        fh=NP4393GKkmrWjVeM9RytoSzEezzdxGSgnHcBOxkzdLQ=;
-        b=NvhdZ1ETDkGFmH0sW3YATVpJjrVYPkdsRyUSGjT/JxZjDGXwNFFJ34Ie0KoEWNSu5F
-         8LNQxV30xCCVcl9cDw/1+/VJFgB72ofSKMe4rLz2m8OcwsbSNuHSybZzhvLx2v5eXdsz
-         qD95RUNdvY9xNroThy/LxYtyHMGekhKDkQ+/SJvq2R+9S6s4FAem9jMRswKvGHcdFcWl
-         zlrNnjypIbPQ23tM+1L7QX35RVz9UGxcujQiqo6b3LIXDTxa/qfm8f2CXLKjjbhMlCnK
-         kkqk8Emz+JrynP6OGOpx9XuLiHDcaHKcGbIiXn9LQme7s/Pg5OiI3Oya3dCFUnsoHKZF
-         hPQg==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=qFZYB39J
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-3ae81ae52ffso22823381fa.2
+        for <imx@lists.linux.dev>; Mon, 23 Nov 2026 06:26:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1795443075; x=1796047875; darn=lists.linux.dev;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20260707; t=1795443988; x=1796048788; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=R32xhf3Kvq/DaeS/L7g8lPdJxhRkFnoaSwXaedjNBvc=;
-        b=EihV0rKHBeOhf5sj74IjXKTBNuY9+AVoasoKobHjh0/FWNwRWCg1gn6iw3cQInURk8
-         sboRcGWTExOxmcdUZXqDk9le59+BasVaxF1XxKyUq4I9ycmmpzUUTQIzo++50FX+AO1D
-         aMtcamRg3TxFSnDqf6Vyj8FcgSvfiBw44HCqg0obAyl5fwrHkYHcun1VRgAny0nV5/PD
-         R2YP5rJmUvK9wOwAhMME16AYCgV0/E3op0/s/0q7McXBNxQhB8NjzoQwumzd2s6zXYlF
-         HJv0IsvLfJz8mqMDh+GAc45DQmD7M3cR8bx9doQ7O+xPR1nAI83JIEoDf/mi7CJWQbbc
-         qXeg==
+        bh=MpBy4DQUeAY3YB4hP8JJP2A0Pzqf+41bgmSv+sbuZU8=;
+        b=qFZYB39JOxl3PRFP/x3IhXtjnOHBjd9TAksIg1AwS3Ljodv8z5QfXQxyDEPsHjcUC3
+         TT9jr/6Ma5C8vzrA+gxK4woC/6JtuYzoPtdmIBTEIIG5/sBkv5RbQB4uJWjFM/kpwgOg
+         UBM0vYLXME4ryz2liB3XxnqKUYPo/SXR0p2ddYC8icI4Gm45w2p9anfqvFD2UeUWIqsa
+         pclWcxLUxNheZurhxS818bMvMmC9c2CIFNRgysgykjl5Oy9yurkE5K6oCjsuAAzpSKKE
+         3EjPW397+btEK8jbYtmZVvHIjWCUXxH59Y3bGrUb9nyDmtTS/lSQj65w8CZCHSP3wxDl
+         DZaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795443075; x=1796047875;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=R32xhf3Kvq/DaeS/L7g8lPdJxhRkFnoaSwXaedjNBvc=;
-        b=FpGT/rEU6fd+n4KV1rY5ivNA5WmPzlxeFjbieCkW6uwTiA1OIxW9xEvn0fNC6FE3gO
-         Qp1zgUNia6MMP+Bv/3PDNxz/HQsjK837M604lbXwAuFc9ivvy7dy/1VPu4PcSSSYIC7y
-         IvfbwF+9HckKnDsUUzuxjg1jyX68TL8NuJk02W546nIL6IBuZ5FoVBvFv9ZcvgOd/OYK
-         r3kO7gBDAaSdbbeCO2fdEm6qeDmJWTQPLQQsEQajxnlUktweQkY3G1owptBfHdIHUvzW
-         q6LYpv4TpKGlB8535SXotUleubFRBaxew2KNdztyg93lXmiKdh7OWhIGh4vwQ6HNJ5xd
-         VNqQ==
-X-Forwarded-Encrypted: i=1; AL+hErF8bizsj1JlINF7wDdic5nwxclWFEEH2dUkntRKGG+jz08Wp9GpS7jHj3F7IfH6GBDyblI=@lists.linux.dev
-X-Gm-Message-State: APuU4Z/gzP/aAGxUW0yRhfoxSoGBMb+3BSzZnTwiwDD/5IImc18YU9H9
-	XFdQ/dasKkVjMIR9at3mTrRuDgdXyd1W2swSRiq37pBBqb9+OidKlpOENUFzlUdbVRb6K5Zmtaq
-	d0z2ftwX431jrtKqkPsqcYaxKWkZkw4oY6rBLEUzygQ==
-X-Gm-Gg: AZFdTZc/ZlDvlOxdwG++QkKm8WKYS7jEtjb+Wlli6b06Vc8QxWLCazPiIMExUzdJpvQ
-	+hdY1oWPS+NVy67a5Xp/0RiIpKbYpvu4NIa86aHvndTiLksaTAB3qjaE3V4+HKOGbzWviuhKE9w
-	Ejz2EeLjelnxMcMeDtXHubBp2k9OEk+u3MC7WRcS4/aQzml85LDQPTBmp72qqNT5YgWm8idS6r/
-	fAGP4ETh9t3RhfPoZbgaMav++7XfG1JTBxv87xWdIBnnjcxshSoBNa/AgMl0TBYDQv6V+qgIldw
-	ucoAz90BCKkM8N/CebirBZxLPL8yLWk8xyGb9npdZhoIQg+4sBykCmOnVQ3TrFnHTwD7Emtieps
-	FAvNVXl2EPhqSnrjoNXEZstyL1IPWkSGbU0TVwl4BcU7f7vpVPtxmpDzV4fFnO2ngQ+QMjRg=
-X-Received: by 2002:a05:690c:6b07:b0:8b5:61d:f3ff with SMTP id
- 00721157ae682-8b5204e9571mr53022067b3.46.1795443075492; Mon, 23 Nov 2026
- 06:11:15 -0800 (PST)
+        d=1e100.net; s=20260707; t=1795443988; x=1796048788;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=MpBy4DQUeAY3YB4hP8JJP2A0Pzqf+41bgmSv+sbuZU8=;
+        b=oKPy3OFaEUthcmoQd63y+dpG0rromBYh6XkZGQ3dDz3AI4GLgGYu73QtfdJ/BfnTKd
+         Ar9bVQQHk7LIivsBP23+nJLr6rKa8egRlU5OucjFrNqsI8iqFUjdCz+v6KoZuNInUi03
+         WFSA97RAKu3wPjwUdGfy1iXPD69+J5xmakGG0FgHnm0gX3lPNP4gqj0FBKKRmc5ivdPt
+         pU90bOSvuwWBPvutUwbkIBkoc7tBrw9cI4iX2tfcCPN268UBuWmTZc1LCdKQNEbW2ykB
+         4vYtASSA2d+w+uiPn8o0DtiJNpTStJ16HCht9ziaZCOKha7tN2zV2WKdK9QXwLUWhWa/
+         EYwg==
+X-Forwarded-Encrypted: i=1; AL+hErGpGpk3T5JLMG0EXMD1bw+ZjBrY+6sz9LLJJ9qAijqONwBKBvBu1wB8ELSzkkEtqjcyaRQ=@lists.linux.dev
+X-Gm-Message-State: APuU4Z8tcOlVB4FO51wLYHzYt8BM24u2HXzrpBuMl3deft3kKEiM+na/
+	2xLspSXsZoTilkBdSH2Z5cwFZjEtFCoUI/unvVEmaQ/LRkrssmh34fuj
+X-Gm-Gg: AZFdTZfakej8eQUubhD9STo2vsUojRPU0aka6/PwoFZF4N50lHmeJCT3YN/ffiouWwl
+	wwR4PL69WMdqMevcwYtjsZxFeBpp63XW4EAS3CNpo1OMUBpPPrRS2riht8QCYlt7E4Xy6n8BBUD
+	ry32AT6es7L7/AyiK9zQv6HgvPWqWn2wLDPci6liFxoOSkDNHR+Nsaa9xksZBexpt4+k7gotmp1
+	/E9BhcfVLY1maPFH3OEOGejX4b1kZo3Pm9SgUBYgriSdnueHE+OXEiHf7WPqcl8cv/2nWON8J4k
+	jpBPNAIVnyWP9WEFuRw6vvh6LTNQPRnmozdpjMIfCH51siGeN8DZmJpe4chiLZ3D2y4SH64EcHe
+	zjgvUhnxcHcpt3m9SIW12VyHGn8zkOo69Tc9emf7C92AA+ul+W+yOegtmFBRZ9epzzWEPUsmpQq
+	L2mY6aScS93p82Rba0uvZSKlvDKEGDgich/3D1ZJwX1HbAMemkz886XRCol5jXOcIsOm8btuKJp
+	kTgqms0TSpePM5ZwItA53+TbVz0YDvC5eUsp/LID2F2+46Ka6NqPrGORWvPit7Jk+d80fLGySxG
+	lqkOIVtFS4OSf8i7OSGCaHqRk992rHeeYdZXAvVEDamW1Wnb5J61yscCdpgIBn08LBXrz0GCTKt
+	FoutBDgQrvg==
+X-Received: by 2002:a2e:ab0a:0:b0:3ac:e4b6:b93d with SMTP id 38308e7fff4ca-3ae7f9a072fmr31420641fa.8.1795443988058;
+        Mon, 23 Nov 2026 06:26:28 -0800 (PST)
+Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3ae80536529sm33679491fa.27.2026.11.23.06.26.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 23 Nov 2026 06:26:27 -0800 (PST)
+Message-ID: <bc178673-54dd-4811-acdf-cb6327ec2417@gmail.com>
+Date: Mon, 23 Nov 2026 16:26:25 +0200
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -103,100 +93,99 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-References: <20261110-imx-rproc-free-mbox-v1-1-3e33ff98570d@linux.dev>
- <avMgJNyGez2Eyr3a@nxa18884-linux-1.ap.freescale.net> <awPmc_4VFkcpW0C_@bombadil>
-In-Reply-To: <awPmc_4VFkcpW0C_@bombadil>
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-Date: Mon, 23 Nov 2026 08:11:04 -0600
-X-Gm-Features: Aa3M54rmzuqQaag6_hKersoZSWqoaB26gF7bb-M07qfK52BJ_PrHvuWnVFcXIfA
-Message-ID: <CANLsYkx=M_TXN10qAcQC0be065TYnzfOae6E8ss-9DTj9MzogA@mail.gmail.com>
-Subject: Re: [PATCH] remoteproc: imx_rproc: revert channel freeing order in imx_rproc_free_mbox
-To: Richard Leitner <richard.leitner@linux.dev>
-Cc: Peng Fan <peng.fan@oss.nxp.com>, Bjorn Andersson <andersson@kernel.org>, 
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>, 
-	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	weinshec@holodeck2.de, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 16/17] mfd: Unify style of of_device_id arrays
+To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+ Lee Jones <lee@kernel.org>
+Cc: Pawel Zalewski <pzalewski@thegoodpenguin.co.uk>,
+ Linus Walleij <linusw@kernel.org>,
+ Nicolas Ferre <nicolas.ferre@microchip.com>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, Chen-Yu Tsai <wens@kernel.org>,
+ Florian Fainelli <florian.fainelli@broadcom.com>,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>,
+ Marek Vasut <marek.vasut+renesas@gmail.com>,
+ James Ogletree <jogletre@opensource.cirrus.com>,
+ Fred Treven <fred.treven@cirrus.com>, Ben Bright <ben.bright@cirrus.com>,
+ David Rhodes <david.rhodes@cirrus.com>,
+ Richard Fitzgerald <rf@opensource.cirrus.com>,
+ Support Opensource <support.opensource@diasemi.com>,
+ Krzysztof Kozlowski <krzk@kernel.org>,
+ Peter Griffin <peter.griffin@linaro.org>,
+ Alim Akhtar <alim.akhtar@samsung.com>, Tim Harvey <tharvey@gateworks.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ Charles Keepax <ckeepax@opensource.cirrus.com>, Sven Peter
+ <sven@kernel.org>, Janne Grunau <j@jannau.net>, Neal Gompa <neal@gompa.dev>,
+ Chanwoo Choi <cw00.choi@samsung.com>,
+ Mathieu Dubois-Briand <mathieu.dubois-briand@bootlin.com>,
+ Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ =?UTF-8?Q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>,
+ Saravanan Sekar <sravanhome@gmail.com>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ =?UTF-8?Q?Jonathan_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
+ Aaro Koskinen <aaro.koskinen@iki.fi>, Andreas Kemnade
+ <andreas@kemnade.info>, Kevin Hilman <khilman@baylibre.com>,
+ Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>,
+ Orson Zhai <orsonzhai@gmail.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Chunyan Zhang <zhang.lyra@gmail.com>,
+ Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Samuel Holland <samuel@sholland.org>, Liviu Dudau <liviu.dudau@arm.com>,
+ Sudeep Holla <sudeep.holla@kernel.org>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Magnus Damm <magnus.damm@gmail.com>, Heiko Stuebner <heiko@sntech.de>,
+ mfd@lists.linux.dev, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, patches@opensource.cirrus.com,
+ linux-rpi-kernel@lists.infradead.org, linux-renesas-soc@vger.kernel.org,
+ linux-sound@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+ linux-amlogic@lists.infradead.org, asahi@lists.linux.dev,
+ linux-mediatek@lists.infradead.org, imx@lists.linux.dev,
+ linux-omap@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com, linux-sunxi@lists.linux.dev,
+ linux-rockchip@lists.infradead.org
+References: <cover.1795431460.git.u.kleine-koenig@baylibre.com>
+ <b69bcdcc394e46e0eb60947f23923e6241d24ff4.1795431460.git.u.kleine-koenig@baylibre.com>
+Content-Language: en-US, en-AU, en-GB, en-BW
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <b69bcdcc394e46e0eb60947f23923e6241d24ff4.1795431460.git.u.kleine-koenig@baylibre.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon, 23 Nov 2026 at 01:09, Richard Leitner <richard.leitner@linux.dev> wrote:
->
-> On Tue, Nov 10, 2026 at 09:46:12PM +0800, Peng Fan wrote:
-> > On Tue, Nov 10, 2026 at 01:29:08PM +0100, Richard Leitner wrote:
-> > >The imx_rproc driver is affected by a race condition in the shutdown
-> > >ordering in imx_rproc_free_mbox(). A received message might cause a
-> > >virtqueue_kick resulting in tx_ch access. When imx_rproc_free_mbox() is
-> > >triggered between the if (!priv->tx_ch) check and the mbox_send_message()
-> > >call in the imx_rproc_kick() function the mbox_send_message() then tries
-> > >to dereference a NULL pointer on the tx_ch (as seen in the call trace
-> > >below).
-> > >
-> > >Therefore fix this behaviour by first freeing the rx channel, so no new
-> > >messages are received and therefore no kicking on tx_ch can happen.
-> > >Afterwards release the tx channel.
-> > >
-> > >This problem was encountered on a fleet of i.MX8MP devices on about 1 in
-> > >500 system shutdowns, resulting in Oops below. This Oops was recorded
-> > >from a v7.3.0 kernel before the work-queue removal.
-> > >
-> > >    remoteproc remoteproc0: stopped remote processor imx8mp-cm7
-> > >    Unable to handle kernel NULL pointer dereference at virtual address 0000000000000008
-> > >    Internal error: Oops: 0000000096000004 [#1]  SMP
-> > >    CPU: 0 UID: 0 PID: 32710 Comm: kworker/0:1 Not tainted 7.3.0-XXX #1 PREEMPT
-> > >    Hardware name: XXX (DT)
-> > >    Workqueue: imx8mp-cm7 imx_rproc_vq_work [imx_rproc]
-> > >    pstate: 40000005 (nZcv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-> > >    pc : mbox_send_message+0x8c/0x178
-> > >    lr : mbox_send_message+0x88/0x178
-> > >    sp : ffff8000897f3b70
-> > >    x29: ffff8000897f3b70 x28: ffff80007a07b248 x27: ffff0000d90e1a20
-> > >    x26: ffff80007a07b328 x25: ffff0000c1d31300 x24: ffff0000d90e1a40
-> > >    x23: 0000000000000001 x22: 0000000000000005 x21: ffff8000897f3ba4
-> > >    x20: 000000000000000b x19: ffff0000c1b24240 x18: 0000000000000000
-> > >    x17: ffff80006a453000 x16: ffff800081ac8000 x15: 0000000000000000
-> > >    x14: 0000000000000040 x13: 0000000000000228 x12: ffff0000c115a3e8
-> > >    x11: 0000000000000000 x10: 0000000000000001 x9 : ffff800080cd6570
-> > >    x8 : ffff8000897f3ba0 x7 : 0000000000000002 x6 : 0000000000000000
-> > >    x5 : 000000000000000c x4 : 0000000004400000 x3 : 0000000000000000
-> > >    x2 : 0000000000000000 x1 : ffff0000cb268000 x0 : 0000000000000000
-> > >    Call trace:
-> > >     mbox_send_message+0x8c/0x178 (P)
-> > >     imx_rproc_kick+0x50/0xc0 [imx_rproc]
-> > >     rproc_virtio_notify+0x3c/0xa0
-> > >     virtqueue_kick+0x4c/0x68
-> > >     rpmsg_recv_done+0x224/0x658 [virtio_rpmsg_bus]
-> > >     vring_interrupt+0xbc/0x158
-> > >     rproc_vq_interrupt+0x40/0xb0
-> > >     imx_rproc_notified_idr_cb+0x20/0x40 [imx_rproc]
-> > >     idr_for_each+0x74/0x100
-> > >     imx_rproc_vq_work+0x2c/0x40 [imx_rproc]
-> > >     process_one_work+0x194/0x520
-> > >     worker_thread+0x19c/0x320
-> > >     kthread+0x134/0x148
-> > >     ret_from_fork+0x10/0x20
-> > >    Code: 37f80574 aa1303e0 97ffff39 f9400a60 (39402001)
-> > >
-> > >Fixes: 99b142cf7191 ("remoteproc: imx_rproc: Request mbox channel later")
-> > >Cc: stable@vger.kernel.org
-> > >Signed-off-by: Richard Leitner <richard.leitner@linux.dev>
-> >
-> > LGTM:
-> >
-> > Reviewed-by: Peng Fan <peng.fan@nxp.com>
-> >
-> > BTW: would you plan to fix the other issue that sashiko reported
-> > regarding imx_rproc_xtr_mbox_init()?
->
-> Thanks for the review and sorry for the late reply.
->
-> Sure. Should this be a separate patch or added to a v2 of this series?
->
+On 23/11/2026 13:18, Uwe Kleine-König wrote:
+> From: Uwe Kleine-König (The Capable Hub) <u.kleine-koenig@baylibre.com>
+> 
+> These arrays already mostly match the most used and generally
+> recommended coding style. That is:
+> 
+>   - no comma after the list terminator;
+>   - a comma after an initializer if (and only if) the closing } is not
+>     directly following;
+>   - no explicit zeros in the list terminator;
+>   - a space after an opening { and before a closing }, a single space in
+>     the list terminator;
+> 
+> Adapt the offenders accordingly.
+> 
+> Reviewed-by: André Draszik <andre.draszik@linaro.org> # for Maxim MAX77759
+> Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+> Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be> # renesas
+> Reviewed-by: Mathieu Dubois-Briand <mathieu.dubois-briand@bootlin.com> # max7360
+> Reviewed-by: Linus Walleij <linusw@kernel.org>
+> Signed-off-by: Uwe Kleine-König (The Capable Hub) <u.kleine-koenig@baylibre.com>
 
-Please send another revision with the fix.
+Reviewed-by: Matti Vaittinen <mazziesaccountw@gmail.com> # rohm
 
-> regards;rl
->
-> >
-> > Regards
-> > Peng
+-- 
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductor
+Oulu Finland
+
+~~ When things go utterly wrong vim users can always type :help! ~~
