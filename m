@@ -1,86 +1,104 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.251.105.195
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795542371;
-	b=H15Np8/qAR96QFRcgEhpUZdGSeWZdwcHDSWj1rnB6+uCRbSDou5AvEuf+dIRzavrUgBj
-	 oUeV2qkvh0ijNE41BCsO4bHA6Zqwu2ptHkJITHg2xE/Xp2mtngKSS1fAzsR+HJ0uzpW8q
-	 N9HBjrQsPSMIWRAU/6DFUpM5m4I+BIcvkDOC3RhnKYxj6WfjoJ31jXY+REmz02QQrgV1z
-	 sCNsE6iBDhJYbkqAnCQrwFYVI9hpFCYA6Qdyc/xPYJ50D1NwxLw2OO30Fw73duZXyrbnO
-	 KAL9lhTNb/2qTdZCHBSnoCnW167F2lWJDrgYGa/VBXKStrx6sS5jj6YEOp95oUkd/tA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795542371;
-	h=DMARC-Filter:DKIM-Signature:Received:Message-ID:Subject:From:To:Cc:
-	 Date:In-Reply-To:References:Autocrypt:Organization:Content-Type:
-	 User-Agent:MIME-Version;
-	bh=fIf2xE0G6RJC+KjMdQDd5uURjWfAdnrxVBZi50T61Wg=;
-	b=JXboe8jNI4CousHw9dP36Q4GXl3jcISqpsDClKkXrilQ54j0v4ntaWU9Uo/scsz68s1f
-	 2zsXbTFIddXyFsS87CmmxMz6fT/2UEadZdiFJ9thqhDGgG4yAGrXfgtxl7jUy3FBYKB6X
-	 9wnQ6dQKYR17dY6f6qVwI619o4RM+qS16DhJKrtGdvl1gO+HuYxt6rtSEXPbSUAVBhKhW
-	 uK/7r58H5dw4nLi/sGfhn+yP0KQDtspHxveItyKL/FN07HUjP3AMkrJgpkwUgcOudLuzR
-	 wXO3Cijka45iWN1oRQyGo06Z+3ceGuCl8pdJH8+ciqjm/XPf79WbJLKhtiT6DDItSCQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=collabora.com;
-	spf=pass smtp.mailfrom=collabora.com;
-	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=eaVgWC6B;
-	arc=none smtp.remote-ip=148.251.105.195
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.84.2
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795543473;
+	b=sPlW1LPiJzJoejTGXZflW0CLJ5/RT2MYem5lhmlDhTsgbBG+lEH7s7uHXjSg1L+3yTWP
+	 m7luwl88eftasOCKhoNMXBV7d2NOwxrc020HM+6QYfgJtsU6YxwqH8gr5/LmjJYkJA+JT
+	 6A7/Mfpw8DW5im9o6y6nFxJLNxy+Gdj2Mdf3I7Tgk3oE3oAim4XNs7DHn8fuR3Jl+qkic
+	 XeMoXN81qiXJxVeI4QfTAXg57kVQ82EGn2EzIogQ1w3Cx6QD+ZL0sTFEtuAZwSh+mqc5J
+	 peGANGkbv/veyVHjOXc4zJRqJCdtKChD/AOjNAyJprnEumiefybO+c8rYmoPb6cQTwA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795543473;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:Content-Type:Content-Disposition:
+	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=k5/B6PL75UGMNVTJq2uCNOwBZ/px3x/G0GnSVP138YI=;
+	b=N9xgzjGB7MkIW8nFbqdopF028mjqdpy/zUJvuikZj3AuBa6n5wkLND1TRG8FVJL4UOZX
+	 7NJXFoZQ+Y1qAdNX0E+/DFNmqcVy5Vihhh3HX0buP4g+XRmR8HQCt0sJAPqRpR5+m5oB3
+	 c74JkWkpoy94tQ0vGjLKEEfsLVH/IjlGN0Ow/whbdyFnyqzQBd7FiUZNmm9NhlSPEYg/0
+	 mC+RtnAhZV6R5WlTZ203kbvNDBMTFC/2o589geeYwNh0ZJH4qDEQtV9QcNH/nR9AsY6sk
+	 NyxLEdl+MELNxbyBiw6R/mrDOZD0IM8YUu1JqBQk19idiEGb1Vdl2dI+wLNUUx1NYuw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=oss.nxp.com;
+	spf=pass smtp.mailfrom=oss.nxp.com;
+	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=GRoown+W;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.84.2
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010002.outbound.protection.outlook.com [52.101.84.2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC197606A31E
-	for <imx@lists.linux.dev>; Tue, 24 Nov 2026 17:46:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CC197606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE007606A326
+	for <imx@lists.linux.dev>; Tue, 24 Nov 2026 18:04:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EE007606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=eaVgWC6B
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1795542368;
-	bh=2vLDKHeR9lc9GUWK07uNhE/Yhexx0rV2NuuZG2KZ9/I=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=eaVgWC6B//DD4cGJKhfbsx18rYHr/87i9c87YOiyJAC71sI3+pWaFp4GdElsa8VrD
-	 RtmQWqvKpPIv7kZx0S6ksxLe3mSHi3R67HbMk1Va3ktUKZPXI2MRUEI1Kt6Qu7Yyba
-	 gEv3zFZTvkq7ia3N3BNuq+w2xQcthZrlk1NqJ5oJhSlZG1eUsjWAitw/rV+OpXemth
-	 ohuP+/DTgAN34UvrOuZvrSQZEC6Xhr12LUxRodnvEvfjHVkE6Jpea2DSH17qCc/2A4
-	 tCzG4MruEX0C91p9dwa1hWZdkihNUxHHrpYuii9ugJgTrkxEMHvYDuHJ5qV9v+hVJs
-	 biyTaDtkxmYoA==
-Received: from [100.64.0.214] (unknown [100.64.0.214])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: nicolas)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 662AF17E0192;
-	Tue, 24 Nov 2026 18:46:07 +0100 (CET)
-Message-ID: <067d32d46788603e18f24040e2a8aabb1b749774.camel@collabora.com>
-Subject: Re: [PATCH] media: amphion: Enable non-coherent allocation for raw
- frame buffers
-From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-To: "Ming Qian(OSS)" <ming.qian@oss.nxp.com>, Frank Li <Frank.li@oss.nxp.com>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, Hans Verkuil	
- <hverkuil@kernel.org>, Zhou Peng <eagle.zhou@nxp.com>, Frank Li
- <Frank.Li@nxp.com>, 	linux-imx@nxp.com, imx@lists.linux.dev,
- linux-media@vger.kernel.org, 	linux-kernel@vger.kernel.org
-Date: Tue, 24 Nov 2026 12:46:06 -0500
-In-Reply-To: <awUiZWa4ZTMhFeVL@lsvm11u0000189.swis.ap-northeast-2.aws.nxp.com>
-References: <20261119-amphion-non-coherent-v1-1-c3154395e448@oss.nxp.com>
-	 <awSn9NyulPPPIIT8@lizhi-Precision-Tower-5810>
-	 <awUiZWa4ZTMhFeVL@lsvm11u0000189.swis.ap-northeast-2.aws.nxp.com>
-Autocrypt: addr=nicolas.dufresne@collabora.com; prefer-encrypt=mutual;
- keydata=mDMEaCN2ixYJKwYBBAHaRw8BAQdAM0EHepTful3JOIzcPv6ekHOenE1u0vDG1gdHFrChD
- /e0J05pY29sYXMgRHVmcmVzbmUgPG5pY29sYXNAbmR1ZnJlc25lLmNhPoicBBMWCgBEAhsDBQsJCA
- cCAiICBhUKCQgLAgQWAgMBAh4HAheABQkJZfd1FiEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrjo
- CGQEACgkQ2UGUUSlgcvQlQwD/RjpU1SZYcKG6pnfnQ8ivgtTkGDRUJ8gP3fK7+XUjRNIA/iXfhXMN
- abIWxO2oCXKf3TdD7aQ4070KO6zSxIcxgNQFtDFOaWNvbGFzIER1ZnJlc25lIDxuaWNvbGFzLmR1Z
- nJlc25lQGNvbGxhYm9yYS5jb20+iJkEExYKAEECGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4
- AWIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaCyyxgUJCWX3dQAKCRDZQZRRKWBy9ARJAP96pFmLffZ
- smBUpkyVBfFAf+zq6BJt769R0al3kHvUKdgD9G7KAHuioxD2v6SX7idpIazjzx8b8rfzwTWyOQWHC
- AAS0LU5pY29sYXMgRHVmcmVzbmUgPG5pY29sYXMuZHVmcmVzbmVAZ21haWwuY29tPoiZBBMWCgBBF
- iEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrGYCGwMFCQll93UFCwkIBwICIgIGFQoJCAsCBBYCAw
- ECHgcCF4AACgkQ2UGUUSlgcvRObgD/YnQjfi4+L8f4fI7p1pPMTwRTcaRdy6aqkKEmKsCArzQBAK8
- bRLv9QjuqsE6oQZra/RB4widZPvphs78H0P6NmpIJ
-Organization: Collabora Canada
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-YgqiAaeSiZb24V1NgmpQ"
-User-Agent: Evolution 3.62.1 (3.62.1-1.fc45) 
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=GRoown+W
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=W7n7zorw9duUoxwXbXNw1ofSz7pFyOldzaYxgnEEorNpSXpzSoXcT0l6z/GA/15siknXV7do9dkoh/apgfS9lBVHmWjuuYQFBNNhKF+5mjR/1gb9bIa/vVyTcl0rXjWWIo2eG2fTnXzDbqsnE0OPycCY4qsa4dk8asBp20SyFjk7hR4G7iyEt7r7kCBTf4+nk6luY42tvHMdswJKY9kiNlup3Goj+55++ByF0REWa8CXi6fsF2xZqLXOPnO+jVcQfpls4ogHYtkt3R6EVHnesaOG76x09vBvNoYvuG9tGOdY2fqIHmge+ntTfdi3j/+zL/MjLJ0XKqNDMgCgRs6dbQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=k5/B6PL75UGMNVTJq2uCNOwBZ/px3x/G0GnSVP138YI=;
+ b=hgg25yHPIbyvCStrH/RMl4EUW1GTImM0lq5RZ5ZWi5a/n4vGO1DJU1JmGX0R2DnXwQMecVUfqXwnxovo/xYhfsgF+WVepOaYvYF1TOm2sxupYX0ctsDpWe2fZ0QBosLrnY+tveHyyqszb3HEgO9y3PwOg8ycWSu/76/aV4bZc3+9JZcKQ9p8wJrthEIDk+OqZYETkH7DrTPSLsHsirViKYDOppcdC9Dyo0y8SI362qMGzq+Ebl7/G1H3qgHZu8ji5UnKb5+Zj7R1oJoSRRm93DXwNxVro+I+hW/p+VowpPLhj6+tz34nkNsImtJS9o+k7VcADBvDthXthfxd2N4iOw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=k5/B6PL75UGMNVTJq2uCNOwBZ/px3x/G0GnSVP138YI=;
+ b=GRoown+WrddWyu4QLAPSq0DjS3hVks7hU2hxWiQpS3kargzGDyE1bQV2lSLm1/G0BYP32ArPXhj8LstRikaISEXL86M3vluxoeVwJakI6YaQ5BnKJjAZgIokFrmmMs9UAfkmC7I7FNnHafLAyFfhxbk44pqPopGG2Pjb1VDC8UDlGTfAnW/91XzCGlw22sIXiA001//ByPkByH74bJoak4A5pQ0tQ+8pcOxhNiYHcOwxkY8D+eRyvyPZkEAy5+y9odFyA6XUisPbKEAZPF8KvSMaVGePAf65OjC7Yfb89UB1Gu2zJCThXEsmDvaOJ3xJyo8tUMmZspAP9lIfwdDdiQ==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from MI3PR04MB12438.eurprd04.prod.outlook.com (2603:10a6:290:76::14)
+ by AM0PR04MB7075.eurprd04.prod.outlook.com (2603:10a6:208:19e::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.14; Tue, 24 Nov
+ 2026 18:04:29 +0000
+Received: from MI3PR04MB12438.eurprd04.prod.outlook.com
+ ([fe80::c715:c32:8bb1:b70b]) by MI3PR04MB12438.eurprd04.prod.outlook.com
+ ([fe80::c715:c32:8bb1:b70b%4]) with mapi id 15.21.0662.004; Tue, 24 Nov 2026
+ 18:04:29 +0000
+Date: Tue, 24 Nov 2026 12:04:17 -0600
+From: Frank Li <Frank.li@oss.nxp.com>
+To: Stefan Wahren <wahrenst@gmx.net>
+Cc: Frank Li <Frank.Li@nxp.com>, Neil Armstrong <neil.armstrong@linaro.org>,
+	Vincent Mailhol <mailhol@kernel.org>,
+	Bartosz Golaszewski <brgl@kernel.org>,
+	Linus Walleij <linusw@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>, kernel@pengutronix.de,
+	Fabio Estevam <festevam@gmail.com>, Andrew Lunn <andrew@lunn.ch>,
+	Manivannan Sadhasivam <mani@kernel.org>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-gpio@vger.kernel.org, linux-can@vger.kernel.org,
+	linux-phy@lists.infradead.org
+Subject: Re: [PATCH V2 0/6] ARM: mxs: add EVAchargeSE board support
+Message-ID: <awXRoV4Ldg8XJ9BP@SMW015318>
+References: <20261112130506.12823-1-wahrenst@gmx.net>
+ <5e2563fb-bc32-45e0-88e9-71ddd1d8b1d2@gmx.net>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5e2563fb-bc32-45e0-88e9-71ddd1d8b1d2@gmx.net>
+X-ClientProxiedBy: PH7PR03CA0010.namprd03.prod.outlook.com
+ (2603:10b6:510:339::27) To AMBPR04MB12445.eurprd04.prod.outlook.com
+ (2603:10a6:20b:75e::21)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -90,117 +108,102 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|AM0PR04MB7075:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3158a5f2-ab67-4f1c-a2aa-08df4a556201
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|23010399003|366016|376014|1800799024|7416014|18002099003|22082099003|261009223027099003|10067099003|56012099006|4143699003|11063799006|261102123227099003|261026121527099003|261021121427099003|261026140227099003|261028144727099003|261026130827099003|261026135527099003|261021133027099003|261022105027099003|261021130227099003|261022075727099003|261022113327099003|261022115727099003|261021135927099003|261021123027099003;
+X-Microsoft-Antispam-Message-Info:
+	cjITTcA+3wO5MHTjJsE/WtLwKpTBp4iglS5c/p9XffmnMLxAZ1luM7M4tQljd3Hwp122Y4BWP7X8tCLqTiBdn7uRkWvQAI1bLhUK8swZyPJUcIBo40ud4KsE1peMUwNm/e8dOn3gS9cV7iZijBVfR/nbusrdhcpPZ9C5y1ExJZIl59kO0YwdTRJFwLzEZlwknOK5FemlcloV+pJOxzcfqKjr23974Friy+nclqfIrPYi+BXxUHHzeqOv5SAvngGWFOLE1LzFJ1BpKWgn4kE6fNPsuln4qstxUqn9oTttG5CyvT5QNP9mVTcGpS23aKOKqlMeMtohoYC1Xv4f0Et1YLwRauo3EZNPDCXA99GBiXdZGstQgn6cMGRxjV/yuvnPeK1w+1gIpfYFeRaqqdWewGiS+XHm/wlyp74T9DWIHea/h2E0e3ggbz2SA865t/RMcQCmrRl25MNatW+0k4FFACdbIOq19LPmiUjcHAQudenW+Hbem4N9B/5Sgngr7Sltja971ctZ805xLC7ib87c6gfk1D3b1TdUcRsZbI45t3oWDSOUtkrQg59yF7xThdh54yV5pOT7HoXj0LSpqGo1SamWABnTlit3loVTQQYT5YW+KSwDU4rVT6SLyPMpIBYEpC2RvF5f4hKy87LzzvE/HmAp/f/C3srdoNrBLUZRFAM=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(23010399003)(366016)(376014)(1800799024)(7416014)(18002099003)(22082099003)(261009223027099003)(10067099003)(56012099006)(4143699003)(11063799006)(261102123227099003)(261026121527099003)(261021121427099003)(261026140227099003)(261028144727099003)(261026130827099003)(261026135527099003)(261021133027099003)(261022105027099003)(261021130227099003)(261022075727099003)(261022113327099003)(261022115727099003)(261021135927099003)(261021123027099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?qGt4qsZyZ/H6oVRpXmNbTnjPQWmuRShRnQwvM7cEFRHJpfrjT4RvE/XoXQIF?=
+ =?us-ascii?Q?MEA8uXOyDeN472E5hkpNTqL6FFjFKjPddo6vbm7tWi6zM3JW7GTEkycusBet?=
+ =?us-ascii?Q?EQwHLnPUssxuAOiQ5THpkv3tRt2lHDK6PSJX4bGy0EEzDnxLQpVeLcibGtEA?=
+ =?us-ascii?Q?egQ6aPMvi+bzYGRnE50PauRj4cO1PSZohd5eFTRNfArIJLvdgo5HUjCnkxYU?=
+ =?us-ascii?Q?+e35oIPMxX0sI+/1OwExKmv3b7Pb63mOAKXS42/Mf/QCJp0nvLPp+GeqH9A0?=
+ =?us-ascii?Q?4GBYzzp1f1nRFyVKHcZ1kf7FANLJHuAZMmgH1A+z19vsyG4dyVggB1OLwuvD?=
+ =?us-ascii?Q?a3uZh6z5ayb3/8Ohn+ZyJ5PlXurRjIb5jS9IReZnqhIcB+osbFoyRdv/YN8V?=
+ =?us-ascii?Q?6WHQ4x7R+7jGSaoj+v0brNbjL4t8icQJTEJqaQpvPzPB2F+AIItYbSgmc7mb?=
+ =?us-ascii?Q?++cTQHyEkvm1/N/HGGsoDFAg8r0TlLoXj6NrQeXyBdk2oxevpgcKb9mJn2DK?=
+ =?us-ascii?Q?4q30yxpxlrKwUfRNHSDzvOpBJS8csfpa1RUFc1FLv+V9c3g0OFErun+chMEt?=
+ =?us-ascii?Q?NrBRZ6QTvu1kfPJNYYcFjjbHj49UfwGizuDTwxgs4uVAT93EZVij1QZ+YEy8?=
+ =?us-ascii?Q?5jThV8TMMeu1seayAPuuGyFP22rzrmKRwoTCTTqbhTJKJi6sjepquGZKTXUQ?=
+ =?us-ascii?Q?YWBzAtbJ5pKAH50hKQWW1RGrtEtGefedfMGbSikt5dfA0k8MosysJbXkhPRl?=
+ =?us-ascii?Q?3APNRTleqSRYTUxM38s3v7ijUg6BxTlNTOLuK48bksU3v+tpC7eknWRApSH9?=
+ =?us-ascii?Q?J/KqisEACmxOSkQH+5dHoM9LBsUJT9Nhd/b0wuOHO07+rtPyD2qDIGvRq7zJ?=
+ =?us-ascii?Q?De5r2ktwjPo7l62AOrUPAmWW8OYEdY3cHpxHNTyj26wvtO4MHFDYOwFURYXU?=
+ =?us-ascii?Q?xg3Q22fRQwTDoxb2N++fmzRRTQJU2x9bKGxwdYByTFdJOScfehYjxYgIxG84?=
+ =?us-ascii?Q?H+i78fx0ClLtqyYN+2CqqWjwMYebZ9ckkWjYlvy8DHFz9GF8aTb4mcBMk0Dh?=
+ =?us-ascii?Q?FkSUW4t4hEGpXaUp/INGAEyL/7j7YfjUU7CWsXBZisRK2eHYbXgqA38ST34o?=
+ =?us-ascii?Q?SMnpuMeF6zJYltUsb2L7RrYVmES2i7zIC00gieOTi4EKjYTvtBwK/HvIgES9?=
+ =?us-ascii?Q?4+SvmjD1cEbGK5G74UXoOCEFhOIOft7r76UPEimsakPMBLWhc2sPeLw36owQ?=
+ =?us-ascii?Q?jbyvWZKXxhzYJ1+Rv296VzEsY/zrKci8FdCXFNwnCAlrQbnoSdA0xY+pUFZf?=
+ =?us-ascii?Q?G2SG7Z0GVKegfy+DJqVZpZB4qEHJmeYa4+Js3FENE8N/SkDyg93jSXyml7Fy?=
+ =?us-ascii?Q?4qouq+PNRoxTaU5g+1cm9VReNrOQOJj7eYmnrCY9Kg2BF+oiwOSuFLihnOnZ?=
+ =?us-ascii?Q?CXeq8Qa2odokk91Xsp1yt4+RIVleaaYncSRj7zy5lLKrG4dc6hrX3YHVYyNY?=
+ =?us-ascii?Q?xA/oj2QmrI5Qxa8RL/faBbjf8uom7oqyNak7G8x6Jl/4tA8H9GZNEnKzxF/6?=
+ =?us-ascii?Q?/ja0vmirrEoef44fIxAZoGZiiLtpGjKEWWG2YFP68bEw1yJ4DlSeXfL4ICnB?=
+ =?us-ascii?Q?cKBUuxyERVhtWXuPpvmZHeITBniFWVo/Sp82VWADLGyg8xNAS8DiSSzERCmX?=
+ =?us-ascii?Q?CDILIKmuHp8ybE3U8SqDJeQ/fUGaZgeIBN8f6T5COWoRChOkb0xFhMpedqb6?=
+ =?us-ascii?Q?vWOgenofvnv+SqlFNkIAeTw8AeEHq6DttVjKE6jEH3cD9MTKw+xg?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3158a5f2-ab67-4f1c-a2aa-08df4a556201
+X-MS-Exchange-CrossTenant-AuthSource: AMBPR04MB12445.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Nov 2026 18:04:29.3067
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: FQnIveVkpcDf+I03SibYDSLM679unuas6I7v10RrOf2Xqu8aDsXCBPKHAzYjf0Gd1CwZkkc5ZmU1w2PRNbs+3jgpiEixtimpBYuPSg+thEaZ9ztNJkJMJn7UvaKj0w1u
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB7075
 
---=-YgqiAaeSiZb24V1NgmpQ
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-Le mardi 24 novembre 2026 =C3=A0 14:42 +0900, Ming Qian(OSS) a =C3=A9crit=
-=C2=A0:
+On Mon, Nov 23, 2026 at 07:22:47PM +0100, Stefan Wahren wrote:
 > Hi Frank,
->=20
-> On Mon, Nov 23, 2026 at 03:54:12PM -0500, Frank Li wrote:
-> > On Thu, Nov 19, 2026 at 04:27:14PM +0900, Ming Qian wrote:
-> > > Allow applications to allocate raw frame buffers with
-> > > V4L2_MEMORY_FLAG_NON_COHERENT for efficient CPU access. The required
-> > > cache synchronization is handled by videobuf2 in its prepare() and
-> > > finish() methods.
-> > >=20
-> > > Set allow_cache_hints only for the encoder OUTPUT and decoder CAPTURE
-> > > queues. Leave it disabled for compressed bitstream queues, as the
-> > > driver may access their payloads through the CPU.
-> >=20
-> > "V4L2_MEMORY_FLAG_NON_COHERENT for efficient CPU access", but here
-> > "Leave it disabled for compressed bitstream queues, as the
-> >  driver may access their payloads through the CPU"
-> >=20
-> > Look like description is contradiction
-> >=20
-> > Frank
-> >=20
->=20
-> Sorry for the confusion. By "efficient CPU access", I meant userspace
-> access to linear frame buffers.
->=20
-> For linear frame buffers, V4L2_MEMORY_FLAG_NON_COHERENT enables cached
-> mmap access from userspace, while videobuf2 maintains coherency through
-> prepare()/finish() during QBUF/DQBUF processing.
->=20
-> For compressed buffers, the amphion driver copies data into the
-> internal ring stream buffer when decoding, and out of it when encoding.
-> Enabling non-coherent allocation for these buffers would require
-> additional synchronization around those CPU copies.
->=20
-> This patch therefore enables the option only for linear frame buffers
-> and leaves compressed bitstream queues unchanged.
+>
+> Am 12.11.26 um 14:04 schrieb Stefan Wahren:
+> > This series adds support for the chargebyte EVAcharge SE, which is a
+> > ISO 15118 compliant controller for electric vehicle & charging stations.
+> >
+> > Changes in V2:
+> > - add Krzysztof's Acked-by to Patches 1-3
+> > - align writing of EVAcharge SE (reported by sashiko)
+> > - add "dts:" to subject of Patch 5 (reported by Andrew)
+> > - add PHY ID of LAN8720Ai (reported by sashiko)
+> > - move enet_out clock to MAC node as in imx28-btt3.dtsi
+> > - adjust IRQ type of PHY (reported by Andrew)
+> > - add new patch to enable EVAcharge SE peripherals in mxs_defconfig
+> any remarks to this series? Vinod already applied Patch 2
 
-Maybe just state that other queues are using vmalloc which is already cacha=
-ble
-memory. What this feature does is allow not getting write combined mapping =
-for
-CPU access, which is terribly slow by letting application manage their own
-coherency (or by using DMABuf sync I believe, can't remember if that was fi=
-xed,
-there was a lot of issue in this API btw, so check its states and make sure=
- it
-working for you).
+Does gpio-mxs.yaml applied? Or Linus Walleij agree go through dts tree?
 
-Nicolas
+Frank
 
->=20
-> Regards,
-> Ming
->=20
-> > >=20
-> > > Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
-> > > ---
-> > >  drivers/media/platform/amphion/vpu_v4l2.c | 4 ++++
-> > >  1 file changed, 4 insertions(+)
-> > >=20
-> > > diff --git a/drivers/media/platform/amphion/vpu_v4l2.c b/drivers/medi=
-a/platform/amphion/vpu_v4l2.c
-> > > index 7cccc994fc50..c8d52f0af879 100644
-> > > --- a/drivers/media/platform/amphion/vpu_v4l2.c
-> > > +++ b/drivers/media/platform/amphion/vpu_v4l2.c
-> > > @@ -664,6 +664,8 @@ static int vpu_m2m_queue_init(void *priv, struct =
-vb2_queue *src_vq, struct vb2_q
-> > >  =09src_vq->mem_ops =3D &vb2_dma_contig_memops;
-> > >  =09if (inst->type =3D=3D VPU_CORE_TYPE_DEC && inst->use_stream_buffe=
-r)
-> > >  =09=09src_vq->mem_ops =3D &vb2_vmalloc_memops;
-> > > +=09if (inst->type =3D=3D VPU_CORE_TYPE_ENC)
-> > > +=09=09src_vq->allow_cache_hints =3D 1;
-> > >  =09src_vq->drv_priv =3D inst;
-> > >  =09src_vq->buf_struct_size =3D sizeof(struct vpu_vb2_buffer);
-> > >  =09src_vq->dev =3D inst->vpu->dev;
-> > > @@ -680,6 +682,8 @@ static int vpu_m2m_queue_init(void *priv, struct =
-vb2_queue *src_vq, struct vb2_q
-> > >  =09dst_vq->mem_ops =3D &vb2_dma_contig_memops;
-> > >  =09if (inst->type =3D=3D VPU_CORE_TYPE_ENC && inst->use_stream_buffe=
-r)
-> > >  =09=09dst_vq->mem_ops =3D &vb2_vmalloc_memops;
-> > > +=09if (inst->type =3D=3D VPU_CORE_TYPE_DEC)
-> > > +=09=09dst_vq->allow_cache_hints =3D 1;
-> > >  =09dst_vq->drv_priv =3D inst;
-> > >  =09dst_vq->buf_struct_size =3D sizeof(struct vpu_vb2_buffer);
-> > >  =09dst_vq->dev =3D inst->vpu->dev;
-> > >=20
-> > > ---
-> > > base-commit: 7969a6f407cf55b5254c824c87875452655ef11e
-> > > change-id: 20261119-amphion-non-coherent-f61009334dff
-> > >=20
-
---=-YgqiAaeSiZb24V1NgmpQ
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCawXNXgAKCRDZQZRRKWBy
-9GkwAPwNJIet0gUqj0ydjwWVNgkYu8wT8/u4PFCvg++Ui/l0KQEA6eoU6SiYf/UX
-F82EobmwaRaUijkbtDkl6BqNdlVYoAs=
-=1W/J
------END PGP SIGNATURE-----
-
---=-YgqiAaeSiZb24V1NgmpQ--
+>
+> Best regards
+> >
+> > Stefan Wahren (6):
+> >    dt-bindings: arm: fsl: support chargebyte EVAcharge SE
+> >    dt-bindings: phy: ti,tcan104x-can: Document Microchip MCP2562
+> >    dt-bindings: gpio: mxs: Allow gpio-line-names to be set
+> >    ARM: dts: imx28: add alternative pinmux for CAN1
+> >    ARM: dts: mxs: add EVAchargeSE board support
+> >    ARM: mxs_defconfig: Enable EVAcharge SE peripherals
+> >
+> >   .../devicetree/bindings/arm/fsl.yaml          |   1 +
+> >   .../devicetree/bindings/gpio/gpio-mxs.yaml    |   4 +
+> >   .../bindings/phy/ti,tcan104x-can.yaml         |   1 +
+> >   arch/arm/boot/dts/nxp/mxs/Makefile            |   1 +
+> >   .../boot/dts/nxp/mxs/imx28-evachargese.dts    | 295 ++++++++++++++++++
+> >   arch/arm/boot/dts/nxp/mxs/imx28.dtsi          |  11 +
+> >   arch/arm/configs/mxs_defconfig                |   2 +
+> >   7 files changed, 315 insertions(+)
+> >   create mode 100644 arch/arm/boot/dts/nxp/mxs/imx28-evachargese.dts
+> >
+>
+>
