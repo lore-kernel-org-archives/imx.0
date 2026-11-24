@@ -1,97 +1,67 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.224.48
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795515769;
-	b=vonVPefwFKY2H+ia6Q8YJY+uz2Xp2bkk+hJ/fwQ769IpmGf/FaTG2V6mBkRbbBN4fAIJ
-	 G7zqj9vlHpM0E/FjkbO6p6mF4BQzqC/8IB0A1pkIbBDTorGj9F9zgLEWo49AP7p2X57Rw
-	 L3njDfNiUEY0HPIByYAOVvoPQgFPYx6RoUyIep3pt1x3Kq2BfkL6lT1hDDTJawXgPaOlE
-	 v5vF0GbcNLNv2C0dAm6th8HPyBkJ5U8c82UTFp/Q6bupxzvypRWeUlPv8lhEDNkeZ4ItJ
-	 EXWu3JhtRcejXQDwLVsreOTbzsJQVZ7EUaWd7xHetJUEFgrCcwBwk/tRsCv/FGJwVYw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795515769;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=ejx0Vx6mlT/oh5f9iEeflN8sMqKcxSOCTfvOWvcm4hc=;
-	b=a3iZR0Ghzu/n7yc5T3+woG/hfADXwRebHZhKf9ZAwvztmKLudyH0/XxpQe6cSByhdwbA
-	 9z0EcIMNEv38tkGOSIH8IuLN2UjEXnA+ZMHrAdpIV6TcWd5iq61DlptrVxkQ83j/IRnfc
-	 My/jhwgVp59Ky19VcGUTEBfw7LvDEHPDlXC+8nJjnEheRgX7jSEN156AQ3MbPzPhyvZ1n
-	 82VZoRNxNlWWrz8yC9lAur+P6MjX5JHBVh3JG907zmZ8AXVZZ7KLcEKuwMMv+e6l7mEjc
-	 7ZpgudsaJ+D9Kh07TbAwoC7GTLEg8Q5YEibN9PLz3qqz5cqM+mFZcWIyZlxjwpNT+yg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=chromium.org;
-	spf=pass smtp.mailfrom=chromium.org;
-	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=E73HZq1A;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.224.48
-Received: from mail-yx1-f48.google.com (mail-yx1-f48.google.com [74.125.224.48])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=161.97.139.27
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795516189;
+	b=VaIv22IAENhm0sP8fjf/ijKgrc3MFqL8lqFeNSWa00CJhCrHBW1q5D0mgkuazouzpyZT
+	 pH5f8tFQvlvvur/oTuKPmJuu8GRFwMy8uiE8SP4/18Cx1B8vR8vfGmFPCxG1tqLPlGzmS
+	 AuS0X4wVh5osz2RhOsCC4sw/VArObOE+5f2DTW5h33497jKlBOrCQ+Ya/m3/z0lQGQX1T
+	 7B17MdGz/qqkKFRsKK3e9uutcWOuB5FZD3F36lrFMKMbfr6Qyjd9iwhHzSlEzy2o6/XT+
+	 U1YVxjq0ukntea9d7DCWsdAcS6a38MiVg9v6elCdgIIG11r8zVAsp8rXLNpvrCVq7aA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795516189;
+	h=DMARC-Filter:Received:DKIM-Signature:Date:From:To:Cc:Subject:
+	 Message-ID:In-Reply-To:References:X-Mailer:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=iaIvSPISVIaDkMa/Njamk42P9grxZ6gnYA4DkbKik8k=;
+	b=3JwUi26d+Uikvqfbnut2pYaZfezeuZvC7vIElSgP0agf2J3fNzHx346rgSCoRdOwEoMi
+	 OAzOtrxzwSZJwF4wgRb51tirX9ltppB2rnDlF55fKcIRlrbsJjOjgozZSyp1A6JZJ3ViA
+	 9+j9VS/8nKHtWnVmWnSudlBzRXU6njHUTqWYBVxJLDLxFtd3E5HG8StPTy2uNQKYp9J+l
+	 KFes8r8mSvNzgzCqiNN7d2962z1MDDm8cv/XGRne/2xqTQrNcv97Uvy8+PWZBQ76amaJ/
+	 D3EjvzVzM9Y49Yr1Pt9kCio0uzk4AOoaUDC+Np9uoA2ZjJ0fNqh+5wIIsCgcLHuqKWw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=kemnade.info;
+	spf=pass smtp.mailfrom=kemnade.info;
+	dkim=pass header.d=kemnade.info header.i=@kemnade.info header.a=rsa-sha256 header.s=20220719 header.b=y4bdz27H;
+	arc=none smtp.remote-ip=161.97.139.27
+Received: from mail2.andi.de1.cc (vmd64148.contaboserver.net [161.97.139.27])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18366606A321
-	for <imx@lists.linux.dev>; Tue, 24 Nov 2026 10:22:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 18366606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4237F606A31E;
+	Tue, 24 Nov 2026 10:29:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4237F606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=E73HZq1A
-Received: by mail-yx1-f48.google.com with SMTP id 956f58d0204a3-67db8985419so5338451d50.1
-        for <imx@lists.linux.dev>; Tue, 24 Nov 2026 02:22:48 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795515768; cv=none;
-        d=google.com; s=arc-20260327;
-        b=g3pYLjISel6yGrIpYqCRvfn4JElHybrBinx3nnba4qPhS+mpecjMycSRUkalz90803
-         LFx99neanu872/PzoRcDw44iYqv4ov32Sif4FwjuAz30vhNTMG1UUnnGiG6SQJjadwtN
-         Amkd7BNGx9qg7m281egM5SFysY7T1c1imanXJ6sLTdhqO/vUk7gmeecfqyLXU/J/h94v
-         t8y51yPVAJXChfQ+dP2+sz5qEkdDqlOiigynIityUUZsQak9f4OerGrUVobxYDAAjolq
-         ckeBwOVqm+ZNQ6T6LkjBAdijWJw1GvyV1n8+uDxxkuXF16LcvbDxkoyYy4IG3/Kb6y7a
-         90Wg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ejx0Vx6mlT/oh5f9iEeflN8sMqKcxSOCTfvOWvcm4hc=;
-        fh=lJrySuB20R4gHTq5ukwgsGNs76vDZ9+pGtsWCMvOHm0=;
-        b=W15c2Gb1NoXzblK4DJEAVZEAAK4PYv4q9wCzRe4NrV5GTfg2pxyBuLNNSXTVm+TRdN
-         ElVavyxrvjfZ4tMrBNK1supwRP40zxm3bMtuwxtUeHqRcQc6647YYsg+hBMgs4kCrDkF
-         cfoniQV9b0QapG+W4wb9FsMZdWXGOnK7ex7oOC5ZUPdhvQw4fR5IVZro3kMxnX5Tgkt1
-         S/z7gDINiOk0Y5uYSqfb76ZEghUcSgZk21bkROMHOOopUe5QOyXUxfRE6fKPLFoCT0yU
-         +W1yXGjec8806nMhxqy2YE0vxkfFXUH95iJEvlWopnNWPv1/OnqaoLP1eTB18gIL6Iul
-         u9Bw==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1795515768; x=1796120568; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ejx0Vx6mlT/oh5f9iEeflN8sMqKcxSOCTfvOWvcm4hc=;
-        b=E73HZq1AZY3A8zSMUOQwiVHyNHj0Fu64cjfjT0o9KkBQXei17HjJJ73maDXhcXtv0O
-         0IQN02+9u0aWg1sAvTCBqdydEqvn9w8IEpmEO2IUG2eAcmYjaDy7oYS+IyKtkszfOBFl
-         7eUl1lnfy4Z8MioWV3d/myqP6dlg7gUa/T1g4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795515768; x=1796120568;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ejx0Vx6mlT/oh5f9iEeflN8sMqKcxSOCTfvOWvcm4hc=;
-        b=j1LzWCkN+OZWEQXYWflctEdMtkeOzJNURc898Fy1zYn9gW1gMYORpSG7Z/jhFLq/xR
-         dpuLU09ljBcL3AB2mMa/WVl2OMvsS9kiORbJS6mKPOAgyvVeMEitBwAbqWqVdvXNDEiv
-         QMCHRnPrWk0sKL46m9lCSJGWGWjPT2Qdvxh3lygy74XqwokehxAKeRAOGdnb39voO4Qz
-         qNXAK2hZGUEfaZPJzag7loFk8Ir/PdgxSVSjMZBy3OR+IoCxOOI7aTVVRXCpBg9RRk7R
-         kqMsEjOwZufXTQxKzaXHK6JiVs8AzUEA3VaWGgMxeNEQck6TLNItP/kLozxZCU0Xli9X
-         dyCQ==
-X-Forwarded-Encrypted: i=1; AL+hErGlehU4x8hzmE8/U7xAcV8dggFN8NDGFJ0IhmFvUtspdwfvYFGP5p8nPuydjZhLI8PR1tI=@lists.linux.dev
-X-Gm-Message-State: APuU4Z8int97PRk2pSzyLM25/hHcIj/c2JsWTzUOakK5NI2kjFZ6XbSP
-	qyg1sSMKngtDQrbDUKvG6tFfvm1MliRt2D3b7iPM/FBek8bgTa5FNpla/pS/b4jh7mroR2l21nG
-	4pIVGdyMjjKXGYjE1u2Z7bgDaBZKbelnNSrAj5k08
-X-Gm-Gg: AZFdTZdt/BUSEu8uYdBUY8rr9b7u/UrOlK+E2EPjT9j7Y+YwKCiAAghqdZuZgsJYf9F
-	dpVI+hJY/WOyMhPOVzXsVVr9JbwhIYl+7457rCnnYq0v4P3RHL6V1+WboEP1UTK1My/XGrdIpQB
-	+w7VvfB+LbEoxMZOWgDChd/b/UTLhw38ffbCEKAPRmos4wmWXFUCfxRINWnBVDi5naeNxKWsOEd
-	zFXQFVV03xihwL4Oe2GRs/1FnbaAz2WWu6ZCBPasiD3d1thIDSfu/9l/HFdRwDeSuJsfriE04Mm
-	zHqG9Bp9VuOTLWfNEkLUWZ86DWB/M1N5R5ibxm7pGFeW4xohsjgSo4mm9pWpwcbbaaexXIuKlD6
-	lZRtJKQHCQzde0GAOecj1JBEZczA5khPq57NHHVSdETroe6dtwmZq8CiD14aYSA5teHM=
-X-Received: by 2002:a05:690c:6e8c:b0:8a8:7e5a:dc2f with SMTP id
- 00721157ae682-8b5204440fdmr67264947b3.12.1795515768163; Tue, 24 Nov 2026
- 02:22:48 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.a=rsa-sha256 header.s=20220719 header.b=y4bdz27H
+Received: from mail.andi.de1.cc ([2a02:c205:3004:2154::1])
+	by mail2.andi.de1.cc with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <andreas@kemnade.info>)
+	id 1xVnmV-00000003kuf-0et3;
+	Tue, 24 Nov 2026 11:29:47 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=References:In-Reply-To:Subject:Cc:To:From:
+	Reply-To:Content-ID:Content-Description;
+	bh=iaIvSPISVIaDkMa/Njamk42P9grxZ6gnYA4DkbKik8k=; t=1795516187; x=1796725787; 
+	b=y4bdz27HVsq7lHN9bmRqfRNFt6tcFQZtJuH4z7zXvKn6u++yWQMZtArx3ujgW06MNBsNEIKBct1
+	wYYh4qbDfCqX2UaxM50JMv7sVe6ul2IdMGUs/te/m/wIpr3y7Gon2zfbsY9EuUHvSAUfJR2jqBW3S
+	uX6jmsiPN9VdMzSyUMu6hDhgBTlG9UMl7ZJJ2HKXxKGbph4gdL6nXMfJj91XrdwTniTlBxmIzODlu
+	cmdbweoSHWGavwbPVuEr1N6Pk5aqeNhgmoMoC+chUyWv5XvNWrmzPVCmR95vS2Pharrn6uR8TzI96
+	/xXxAVNbHs0phCqCrBCvdBiiqD2yHPShUxRA==;
+Date: Tue, 24 Nov 2026 11:28:34 +0100
+From: Andreas Kemnade <andreas@kemnade.info>
+To: sashiko-bot@kernel.org
+Cc: sashiko-reviews@lists.linux.dev, imx@lists.linux.dev,
+ devicetree@vger.kernel.org, robh@kernel.org, conor+dt@kernel.org,
+ Frank.Li@kernel.org
+Subject: Re: [PATCH RFC 1/3] ARM: imx: enable STOP-ON mode in idle if wakeup
+ requirements permit
+Message-ID: <20261124112834.775a1042@kemnade.info>
+In-Reply-To: <sashiko-outbox-230024@kernel.org>
+References: <20261123-imx6-idlestop-v1-0-e32f1f44e46f@kemnade.info>
+	<20261123-imx6-idlestop-v1-1-e32f1f44e46f@kemnade.info>
+	<sashiko-outbox-230024@kernel.org>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; aarch64-unknown-linux-gnu)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -101,173 +71,115 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-References: <20261124074041.115251-1-wenst@chromium.org> <20261124074041.115251-3-wenst@chromium.org>
- <19cd5949-05dc-4107-bd2b-d8ad1e2332eb@suse.de>
-In-Reply-To: <19cd5949-05dc-4107-bd2b-d8ad1e2332eb@suse.de>
-From: Chen-Yu Tsai <wenst@chromium.org>
-Date: Tue, 24 Nov 2026 18:22:37 +0800
-X-Gm-Features: Aa3M54pNfcesZWo4EiEVJfs9QKzf9OEio3h9s-Qk4g3wBzB4RP2yK5vRHxNLzEQ
-Message-ID: <CAGXv+5HSV7MJ96qTcOp+JaKWtmmYYWAmDROrT18pZ9PztNCJ-g@mail.gmail.com>
-Subject: Re: [PATCH RFT v3 2/5] drm/fb-dma-helper: Add drm_fb_dma_get_gem_clipped_addr()
-To: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Liu Ying <victor.liu@nxp.com>, Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>, 
-	Lucas Stach <l.stach@pengutronix.de>, Chen-Yu Tsai <wens@kernel.org>, 
-	Jernej Skrabec <jernej@kernel.org>, Samuel Holland <samuel@sholland.org>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, linux-sunxi@lists.linux.dev, 
-	imx@lists.linux.dev, dri-devel@lists.freedesktop.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, Nov 24, 2026 at 3:57=E2=80=AFPM Thomas Zimmermann <tzimmermann@suse=
-.de> wrote:
->
-> Hi
->
-> Am 24.11.26 um 08:39 schrieb Chen-Yu Tsai:
-> > drm_fb_dma_get_gem_addr() returns the DMA address to the "unclipped"
-> > framebuffer. However some display drivers want the "clipped" framebuffe=
-r
-> > instead, as they are also using the clipped coordinates to program the
-> > hardware.
-> >
-> > Some of these drivers are open-coding drm_fb_dma_get_gem_addr() with
-> > the source coordinates replaced, while others have been incorrectly
-> > converted to using drm_fb_dma_get_gem_addr(), which would end up
-> > causing incorrect parts of the framebuffer to be displayed if it were
-> > somehow clipped.
-> >
-> > Add drm_fb_dma_get_gem_clipped_addr(), a "clipped" version of
-> > drm_fb_dma_get_gem_addr() for these drivers to use.
-> >
-> > Cc: <stable@vger.kernel.org> # dependency for next patch
-> > Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-> > ---
-> > Changes since v1:
-> > - Use new drm_framebuffer_get_block_offset() helper
-> > ---
-> >   drivers/gpu/drm/drm_fb_dma_helper.c | 37 +++++++++++++++++++++++++---=
--
-> >   include/drm/drm_fb_dma_helper.h     |  4 ++++
-> >   2 files changed, 37 insertions(+), 4 deletions(-)
-> >
-> > diff --git a/drivers/gpu/drm/drm_fb_dma_helper.c b/drivers/gpu/drm/drm_=
-fb_dma_helper.c
-> > index ab0f37d8a5ff..0aaf4926db4e 100644
-> > --- a/drivers/gpu/drm/drm_fb_dma_helper.c
-> > +++ b/drivers/gpu/drm/drm_fb_dma_helper.c
-> > @@ -60,15 +60,16 @@ struct drm_gem_dma_object *drm_fb_dma_get_gem_obj(s=
-truct drm_framebuffer *fb,
-> >   EXPORT_SYMBOL_GPL(drm_fb_dma_get_gem_obj);
-> >
-> >   /**
-> > - * drm_fb_dma_get_gem_addr() - Get DMA (bus) address for framebuffer, =
-for pixel
-> > - * formats where values are grouped in blocks this will get you the be=
-ginning of
-> > - * the block
-> > + * drm_fb_dma_get_gem_addr() - Get DMA (bus) address for unclipped fra=
-mebuffer,
-> > + * for pixel formats where values are grouped in blocks this will get =
-you the
-> > + * beginning of the block
-> >    * @fb: The framebuffer
-> >    * @state: Which state of drm plane
-> >    * @plane: Which plane
-> > - * Return the DMA GEM address for given framebuffer.
-> >    *
-> >    * This function will usually be called from the PLANE callback funct=
-ions.
-> > + *
-> > + * Return: GEM DMA address for given framebuffer, unclipped.
-> >    */
-> >   dma_addr_t drm_fb_dma_get_gem_addr(struct drm_framebuffer *fb,
-> >                                  struct drm_plane_state *state,
-> > @@ -86,6 +87,34 @@ dma_addr_t drm_fb_dma_get_gem_addr(struct drm_frameb=
-uffer *fb,
-> >   }
-> >   EXPORT_SYMBOL_GPL(drm_fb_dma_get_gem_addr);
-> >
-> > +/**
-> > + * drm_fb_dma_get_gem_clipped_addr() - Get DMA (bus) address for clipp=
-ed
-> > + * framebuffer, for pixel formats where values are grouped in blocks t=
-his
-> > + * will get you the beginning of the block
-> > + * @fb: The framebuffer
-> > + * @state: Which state of drm plane
-> > + * @plane: Which plane
-> > + *
-> > + * This function will usually be called from the PLANE callback functi=
-ons.
->
-> You should mention what clipping means in this context. It's not obvious
-> what it's clipping against. Or maybe point to other docs that explain it.
+On Mon, 23 Nov 2026 20:49:04 +0000
+sashiko-bot@kernel.org wrote:
 
-What about:
+> Thank you for your contribution! Sashiko AI review found 4 potential
+> issues to consider:
+> - [Medium] ARM: imx: i.MX6SLL-only STOP ON idle state registered on all
+>   i.MX6SX/UL SoCs
+> - [Medium] ARM: imx: imx6sll_check_pll_are_used() omits DCP DMA clock in
+>   CCGR0 check
+> - [Low] ARM: imx: duplicate BIT(21) term in CCGR5 mask in
+>   imx6sll_check_pll_are_used()
+> - [Low] ARM: imx: imx6sx_enter_pll_off() duplicates state 2 power-off
+>   sequence
+> --
+[...]
+> 
+> [Severity: Low]
+> This isn't a bug, but imx6sx_enter_pll_off() duplicates the state 2
+> power-off sequence from imx6sx_enter_wait(), differing only in passing
+> STOP_POWER_ON instead of WAIT_UNCLOCKED to imx6_set_lpm().  Calling
+> imx6_set_int_mem_clk_lpm(true) on every entry is also redundant, since
+> imx6sx_cpuidle_init() sets it at init and imx6q_pm_enter() restores it on
+> resume from suspend.
+> 
+probably these things should be merged.
 
-/**
- * drm_fb_dma_get_gem_clipped_addr() - Get DMA (bus) address for the start
- * of the visible (CRTC-clipped) part of the framebuffer
- * @fb: The framebuffer
- * @state: Which state of drm plane
- * @plane: Which plane
- *
- * A plane may be positioned partially off-screen, in which case it gets
- * clipped to the visible CRTC area by drm_atomic_helper_check_plane_state(=
-)
- * (populating the clipped coordinates in &drm_plane_state.src and
- * &drm_plane_state.dst). For example, if a plane extends past the left or
- * top edge of the screen, only its right and/or bottom portion is visible.
- * Drivers whose hardware cannot clip by itself (i.e. accept negative
- * destination coordinates) should use this helper instead of
- * drm_fb_dma_get_gem_addr() so scanout starts from the visible portion of
- * the framebuffer.
- *
- * For pixel formats where values are grouped in blocks, this returns the
- * beginning of the block.
- *
- * This function will usually be called from the PLANE callback functions.
- *
- * Return: GEM DMA address for the visible part of the framebuffer.
- */
+> > @@ -95,8 +125,18 @@ static struct cpuidle_driver imx6sx_cpuidle_driver = {
+> >  			.name = "LOW-POWER-IDLE",
+> >  			.desc = "ARM power off",
+> >  		},
+> > +		/* STOP ON */
+> > +		{
+> > +			.exit_latency = 500,
+> > +			.target_residency = 800,
+> > +			.flags = CPUIDLE_FLAG_TIMER_STOP |
+> > +				 CPUIDLE_FLAG_RCU_IDLE,
+> > +			.enter = imx6sx_enter_pll_off,
+> > +			.name = "STOP ON",
+> > +			.desc = "ARM power off + PLL off",
+> > +		},
+> >  	},
+> > -	.state_count = 3,
+> > +	.state_count = 4,
+> >  	.safe_state_index = 0,
+> >  };  
+> 
+> [Severity: Medium]
+> Should state 3 only be exposed on i.MX6SLL, and should falling back to
+> state 2 respect dev->states_usage[2].disable?
+> 
+> imx6sx_cpuidle_init() registers imx6sx_cpuidle_driver on i.MX6SX, i.MX6UL,
+> i.MX6ULL and i.MX6ULZ as well as i.MX6SLL.  Unconditionally setting
+> state_count = 4 advertises an enabled state 3 on those other SoCs that
+> always demotes to state 2, causing cpuidle_enter_state() to record false
+> state 2 "below" misses whenever actual idle time reaches 800 us and
+> skewing governor residency bins.  In addition, calling
+> imx6sx_enter_wait(dev, drv, 2) directly bypasses sysfs if state 2 has been
+> disabled by userspace.
+> 
+The idle state is probably good for the other SoCs as well, but
+they need individual checks, so until that is there, probably decrement
+state_count if on non 6sll machines and of course usage.disable should be
+respected.
 
-> > + *
-> > + * Return: GEM DMA address for given framebuffer, clipped.
-> > + */
-> > +dma_addr_t drm_fb_dma_get_gem_clipped_addr(struct drm_framebuffer *fb,
-> > +                                        struct drm_plane_state *state,
-> > +                                        unsigned int plane)
+
+> > diff --git a/arch/arm/mach-imx/pm-imx6.c b/arch/arm/mach-imx/pm-imx6.c
+> > index 3c73e2cdb8ceb..65a5268d31614 100644
+> > --- a/arch/arm/mach-imx/pm-imx6.c
+> > +++ b/arch/arm/mach-imx/pm-imx6.c  
+> [ ... ]
+> > @@ -287,6 +295,21 @@ void imx6_enable_rbc(bool enable)
+> >  	imx_gpc_restore_all();
+> >  }
+> >  
+> > +bool imx6sll_check_pll_are_used(void)
 > > +{
-> > +     struct drm_gem_dma_object *obj;
-> > +
-> > +     obj =3D drm_fb_dma_get_gem_obj(fb, plane);
-> > +     if (!obj)
-> > +             return 0;
-> > +
-> > +     return obj->dma_addr + drm_framebuffer_get_block_offset(fb, plane=
-,
-> > +                                                             state->sr=
-c.x1 >> 16,
-> > +                                                             state->sr=
-c.y1 >> 16);
->
-> I had to look several times to spot the difference to the regular
+> > +	/* check for any clock active which provides more than register access */
+> > +	return readl_relaxed(ccm_base + CCGR0) & BIT(29)  ||  
+> 
+> [Severity: Medium]
+> Does the CCGR0 mask also need BIT(11) for IMX6SLL_CLK_DCP?
+> 
+> In drivers/clk/imx/clk-imx6sll.c, IMX6SLL_CLK_DCP ("dcp", parented to
+> "ahb") is gated by CCGR0 bits 11:10.  When mxs_dcp_start_dma() starts a
+> crypto DMA transfer and sleeps in wait_for_completion_timeout(), the
+> single CPU on i.MX6SLL can enter cpuidle; without BIT(11) in the CCGR0
+> check, entering STOP_POWER_ON stops AHB and PLL clocks mid-transfer and
+> stalls DCP DMA until it times out.
+> 
+Seems that it is a good idea to also add CLK_DCP and teach the driver to
+disable clocks when not used.
 
-I suppose I should add a comment to make the difference more visible:
+> > +		readl_relaxed(ccm_base + CCGR1) & (BIT(25) | BIT(23) | BIT(15) | BIT(13) |
+> > +						   BIT(11) | BIT(7) | BIT(5) | BIT(3) | BIT(1)) ||
+> > +		readl_relaxed(ccm_base + CCGR2) & (BIT(31) | BIT(29) | BIT(11) | BIT(9) |
+> > +						   BIT(7) | BIT(3)) ||
+> > +		readl_relaxed(ccm_base + CCGR3) & (BIT(11) | BIT(5) | BIT(3)) ||
+> > +		readl_relaxed(ccm_base + CCGR4) & (BIT(23) | BIT(21) | BIT(19) | BIT(17)) ||
+> > +		readl_relaxed(ccm_base + CCGR5) & (BIT(25) | BIT(23) | BIT(21) | BIT(21) |
+> > +						   BIT(19) | BIT(15) | BIT(7)) ||  
+> 
+> [Severity: Low]
+> BIT(21) is listed twice in the CCGR5 mask; is one of them redundant or
+> meant to be another bit?
+> 
+That bit seems to be redundant, will clean up that.
 
-    /* Use clipped source coordinates state->src.[xy]1 instead ->src_[xy] *=
-/
-
-> helper. In any case
->
-> Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-
-If the changes above are acceptable to you I'll send out a new version
-with your tag kept.
-
-
-Thanks
-ChenYu
+Regards,
+Andreas
