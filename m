@@ -1,17 +1,19 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.130.3
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.84.11
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795526082;
-	b=L7ZS+sLzaY2zZT1ATla1IUfQqjBNyL7dYuchOrj187YTTNAZbb+trr2VYT7SwdpcjCJt
-	 FCjupUdhEtmi567NudPsmLY87DwrN6ZYYYHd3APcnnLHrZic/YSp0baxhRRNbbbUH+y7s
-	 KGt3jpPesXKafYcgEZ9FsZGASh8nu3rdcW7Ex79+sOo22j5fhBu8CVGoaRb6fv1f1qN0T
-	 BhAOSSGjobgMhS8YAAAPPxa+z4Pr52XURr6qCtlxUQZvk0gMVJyBvTkIxLza4aveloVCb
-	 wK5xf65g1xphqxPfr9tKtFaq1AR3sEv/8na1jnAHmlzgESaMIEMba7EZaPONMqvEGBg==
+	t=1795526405;
+	b=qlMy4cKD+nHUb05cDL1o58C2r6W7uWkiQ1yo4RbOmn8+SsaWd/VP3dVhF6XSBITsYthF
+	 XjqKag3pvOo88F9nWYBiPONTaUwoRO5BRZwU6p8BeCYWLDpBdXYex6qPY37K60576ekcq
+	 QxlOrF8K+26+cTJKOmsQEiWDngOeEbCtXl+yyU9iH6Zhsv7P0NVOfmtdBXLsoLPrhAVI8
+	 /smnVaGHvZmPaaisoVepnALEd1TH1z+j2S89dKqaaeStGuC2pY18Iw5K9zMVdQGSaFc+4
+	 L0jgvEGudPwjD4HVRQC3WaaQzlIo4W0dv+GGA7N9JVYUBmndHaAbz6Z7Jc1roJh0mew==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795526082;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:Content-Transfer-Encoding:Content-Type:
-	 X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	a=rsa-sha256; c=relaxed/relaxed; t=1795526405;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
+	 X-MS-Exchange-MessageSentRepresentingType:X-MS-PublicTrafficType:
 	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SharedMailbox-RoutingAgent-Processed:
 	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
 	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
 	 X-Forefront-Antispam-Report:
@@ -24,80 +26,78 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
 	 X-MS-Exchange-CrossTenant-UserPrincipalName:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=xOFozaMwmo1idqMUiXc1D2U6cKaVfmPBvQCvoagkPaw=;
-	b=s3E4JToSDZ531u9+DJm5uaYCcdcck8O0Fm60rkSx/OrZbJ9c6wf97jzCi6jBDs6jgs21
-	 N/uS3coUrKrM1jH7IYTV7/opQG6DaohmHopncEsSklM0zcCfYBW9CqdMaX3xogBdidMfv
-	 bbSuLsEIxaoUfj4Jmqlj5//UqpIRjjmAFTR3uKThYCCTLMx03cKnA5G4nuoRoZhJvhYPn
-	 KHyjHIwyfQy+RisLfKnEXYIiCX23ljVO1gdBKYqTvXyW//RnOv2yMSoBWATNiCtXB56yQ
-	 ZHdfDcke+zr1eLBJvfbK1LQ5FbTlK88r6fCvvgnAH9Rp9J/eHwFk3D+0ABiZoPgS3Zw==
+	bh=H7q/VmAhp61gvdP861oLrsAyY5kExIGzad6GfqFJS/8=;
+	b=EiMIIoh2AiMOIeoVE0pC3h6N4mmTEE56NXFlJ+Fk70zcigWNJrUiK4/m3tKSTOZ1Jwkp
+	 uWDkG8IuklRNOB8kfX7/0tKIbZMXZdTJLLZU3s+cSP9OKsv/n84Z9PSnqZZKkodGI6gU6
+	 D4Bb5SVRE4KwQzcyk6lbWxRLmJnlS2Uj/e+otlN3xrTQwFBlszNFfz22quJv0CJedObr8
+	 wEor6+1+bThCPAVn03XsryE2QVM2rP5VdTvNNtfb3pNfQwOAcB1w8SIjRMJqgwIFXUxkI
+	 f3XoodEZejHLd5JnAXsPlH3UqryiKnYlxv+fAcMCD6gTwwZwMBuob4mfqxdR96iSlhg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nxp.com;
-	spf=pass smtp.mailfrom=nxp.com;
-	dkim=pass header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=XZmHQMze;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.130.3
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011003.outbound.protection.outlook.com [40.107.130.3])
+	dmarc=pass header.from=oss.nxp.com;
+	spf=pass smtp.mailfrom=oss.nxp.com;
+	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b="MJzj/tHg";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.84.11
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010011.outbound.protection.outlook.com [52.101.84.11])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A457606A32A
-	for <imx@lists.linux.dev>; Tue, 24 Nov 2026 13:14:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5A457606A32A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A44EB606A31E
+	for <imx@lists.linux.dev>; Tue, 24 Nov 2026 13:20:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A44EB606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=XZmHQMze
+	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=MJzj/tHg
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xzjfulqIggLf4vO1TFwCzlbqZ1Gio2+h0MzXxOG7f6guBKFXcyMoRUH3PF11xweYFfw+SDC8SAxDTtMiHCovlsOIQ51mEmtC4FkGuNMfujhVKfLnN++E4Dh91zY4G2Mua91jEay6ohV1TYiCfjhl1fkSJ3dKYYB3DJlKxpmO2o/WUF5aehks4NWOrW36P53waVMU/b34XOK1x7fbFSLXd2s3nLFd5+0iKanOPO58Tnaf/mPLuJIkF0Gv2C7jk0K/WThxkfGB3F2sLfPfX8C5crtGvNeh/922czr3tj+Ae/aKurJfIna9nYbNzrgGyws30/mAVBENwbJec46c+GCEbw==
+ b=KToc22NudMr4QKzbTOyDxXYQxCrajxGvwfV4J05G3zzBmEXszGGqTN5649zHQJVAeqgxyEck00PA7Mj9ihuOKgfeewkXyi8dItXva7dXP1baFxbbEyL8cgxQ+SvTXrrpd+n35z9ozLA/dZnIaaGwRYULMI0zDgOckPqvAQEu6gumxACvWoqZXZYlAWshH4fbMdxHM3cxj58lzYvJBTKl0A6V7DEf0Tw3KuLA0JSYYuv7pZf2dLxgs9Eyq9W3VVrs68rWwwwwtjPXxgHws+REq00NdZNXHMW4ai3St+8fJkrKgZWHLIUOe5+P75655/ykyhsGSqDgHmguZSviRW803g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xOFozaMwmo1idqMUiXc1D2U6cKaVfmPBvQCvoagkPaw=;
- b=eq3EXyncYX//Ow2eMgH8qkJHO3ttiJWd7RDcLNWAvPL5M6SmxZcTMIINENxO8G56/L2h7LOITJk3DzgVrOhr14Tdtyc6PgQINYe8kbcetr69eb5WpSYVHln1Df22s60y7ShwQI6MSI0AbgwAdsek2P/TlA+QCrQqVJIHTnaeGGhz5SwBqFU18Rbh8EXNDa4DC2b9pgZLfsxvC/6maqLjF/DGd4bma2nIV83Ci57E+SCtlv6ofJ0JSLkfShoqi7cdOfoh5X0hKZ2FrYuyeorhSTZhBjrLkwdCQjf8X1GF99kh3CCVvhKV4mG9Wu1ttBwWz5CA4nFfd5E0Gq6DJ8j++g==
+ bh=H7q/VmAhp61gvdP861oLrsAyY5kExIGzad6GfqFJS/8=;
+ b=aF97wheVGR3inS3EyVKGLmmL/ZD2Za+EzUHstWiOq35NMZlESpm/OsPndlSEC2Wi4K/OXrpuRe6/MepHr8aCYGn5OBxfm6lYYoxSRuvPDQcB3cJGlkvKFlhOTCYfY+uWOARIlLeiozy4gl35Tzg8DYH//YMNY1HoUpuH9gUnvOI+mSjwG84RklLivcQc3yg48+8VCDRVmNQwpZhKsCTvAEZC59ZV3ukpEjUtbTyHvgt/Xb1aPq1EGEV4AfvkDcAVZE2azJ7LDThsNM05VJuVXqKc9ExoFcddkFdqrzLBQA4TgiBY5b7l7aAbkxHcqXIi9EUhMv2uO9y5NxNR3I0XDA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xOFozaMwmo1idqMUiXc1D2U6cKaVfmPBvQCvoagkPaw=;
- b=XZmHQMzeeagFqgiUmT1L4aC1dOtainJ2jV0AM9qeEkZad01A40eMZeVVwhN1wa1wenPdxsmm3Z9LA5HAw5oV7gZu3JkCmTh1KApK0rtF6tBlsApN6M3SlUF2lgCRhEr2usIXi+zBUEurQ+opLhTvXakO+nDBdb6DfEoex0GZmwWYFJy51MOV+zVa4kUXrAqDECFombGbeFauS/iKqesiWyp/c/t8dPT6iL28qag1TDBf8UhIYqbAm9MaEiBZYHR7ErbUljOXrVCOPamYrq+wHow1S80I2XAk1OgvIckQTfris7AZrsKeR1eccUcxYCio8JZTfluJjncJuowYOHMHxA==
+ bh=H7q/VmAhp61gvdP861oLrsAyY5kExIGzad6GfqFJS/8=;
+ b=MJzj/tHg5Z9eaHH0NQ2DU85KdEP6bTVPL1C5KEWDHWy8xY6LgWk8t5tAF1TlFwS4JYf7i8N1UGrKC1yMto715kmNhHef36aHwKhFesIbZZrqbQ8YgRjH11NwRYFI3f9wdbAXTu0k2DOAvnlV2p8PUkS3H9sQ25Wu/PVv5+9sZbOb5hZnld6FYxmbgylMObxjDBZtaswpI9CM6XDFNvDDcPoabNrk4r14YH2G9me1EVJjH4xh+ra3U4DYJ0q0aT/W7dkq60FcdKCNfcpjayedHFAmzJmIROT0atJPqGA39Gy7JOSJNpLmEpXG1EfdSumBZRlP4osnq34K06GQxwoQsQ==
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM6PR04MB4472.eurprd04.prod.outlook.com (2603:10a6:20b:23::20)
- by BR2PR04MB325065.eurprd04.prod.outlook.com (2603:10a6:2c8:7::18) with
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GVXPR04MB12316.eurprd04.prod.outlook.com (2603:10a6:150:2c6::8)
+ by MA9PR04MB839208.eurprd04.prod.outlook.com (2603:10a6:250:103::23) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.662.4; Tue, 24 Nov
- 2026 13:14:39 +0000
-Received: from AM6PR04MB4472.eurprd04.prod.outlook.com
- ([fe80::aed9:e8b9:c352:9ba0]) by AM6PR04MB4472.eurprd04.prod.outlook.com
- ([fe80::aed9:e8b9:c352:9ba0%6]) with mapi id 15.21.0639.010; Tue, 24 Nov 2026
- 13:14:39 +0000
-From: Stefan Ghetu <stefan.ghetu@nxp.com>
-To: linux-pci@vger.kernel.org
-Cc: imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Sahil Malhotra <sahil.malhotra@nxp.com>,
-	Stefan Ghetu <stefan.ghetu@nxp.com>
-Subject: [PATCH] PCI: imx6: Fix kernel oops on user-mode external aborts
-Date: Tue, 24 Nov 2026 15:14:32 +0200
-Message-ID: <20261124131432.695946-1-stefan.ghetu@nxp.com>
-X-Mailer: git-send-email 2.53.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: FR4P281CA0138.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:b8::12) To AM6PR04MB4472.eurprd04.prod.outlook.com
- (2603:10a6:20b:23::20)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.14; Tue, 24 Nov
+ 2026 13:20:01 +0000
+Received: from GVXPR04MB12316.eurprd04.prod.outlook.com
+ ([fe80::fc6e:ca22:f065:def4]) by GVXPR04MB12316.eurprd04.prod.outlook.com
+ ([fe80::fc6e:ca22:f065:def4%5]) with mapi id 15.21.0639.012; Tue, 24 Nov 2026
+ 13:20:01 +0000
+Message-ID: <df17c9d7-8ca4-4f51-98ae-5ba4c0f7e406@oss.nxp.com>
+Date: Tue, 24 Nov 2026 15:23:43 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] PCI: imx6: Fix kernel oops on user-mode external aborts
+To: Stefan Ghetu <stefan.ghetu@nxp.com>, linux-pci@vger.kernel.org
+Cc: imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Richard Zhu <hongxing.zhu@nxp.com>,
+ Lucas Stach <l.stach@pengutronix.de>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ Manivannan Sadhasivam <mani@kernel.org>, Rob Herring <robh@kernel.org>,
+ Bjorn Helgaas <bhelgaas@google.com>, Frank Li <Frank.Li@nxp.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Sahil Malhotra <sahil.malhotra@nxp.com>
+References: <20261124131432.695946-1-stefan.ghetu@nxp.com>
+Content-Language: en-US
+From: Daniel Baluta <daniel.baluta@oss.nxp.com>
+In-Reply-To: <20261124131432.695946-1-stefan.ghetu@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: AS4PR10CA0027.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:20b:5d8::17) To GVXPR04MB12316.eurprd04.prod.outlook.com
+ (2603:10a6:150:2c6::8)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -107,137 +107,115 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM6PR04MB4472:EE_|BR2PR04MB325065:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9abc2366-ff2a-418b-7556-08df4a2ce4c4
+X-MS-TrafficTypeDiagnostic: GVXPR04MB12316:EE_|MA9PR04MB839208:EE_
+X-MS-Office365-Filtering-Correlation-Id: d814f26c-0a38-497e-4293-08df4a2da4bd
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|366016|23010399003|1800799024|19092799006|10067099003|11063799006|56012099006|261022075727099003|261022105027099003|261021123027099003|261021121427099003|261026121527099003|261026140227099003|261028144727099003|261102123227099003|261009223027099003|18002099003|6133799003|3023799007;
+	BCL:0;ARA:13230040|19092799006|1800799024|366016|376014|7416014|23010399003|6133799003|18002099003|22082099003|3023799007|56012099006|11063799006|261102123227099003|261028144727099003|261022105027099003|261021123027099003|261022075727099003|261021121427099003|261026121527099003|261026140227099003|261009223027099003|10067099003;
 X-Microsoft-Antispam-Message-Info:
-	P5lKTQh7udyduEObFtgvGqfTvI1V/omho2eHbptgj1PN0kgeVkHv9fjmAPZR95VlHXUtG8epLeSmlMOol8AptYo5xoqyJvrszXcrL+/meqKEOb6RHI59U8uE+IcTL4B+G+QexBU1OoaqXr7MLoRoT9oS8VPa0ruee9AbUnweExjQqUgiu9qu+U6BiTIQQt62ibTlO3AWlgoD91x2bVkms3FA9t9ys74o80aWtRKvPg4vpSZMto0oCnkRcZ+ywG185oV5lWoaB0ts9GdxaHPK2GsPMp9T5gvjHNuEOIrG8TNbjnaDPReeHd31MgE8GKQeSferiB9QJ5cGCm5ooNG4WqfHVjYx9WTmxYJzLvW6pOEWN0szsp9BZhRxVpwHy95wgShTRvaXQFMtC/Wh11Ux+ILXGTyBlpMlS+0waRU/l7ctKtPr41TSESMW6JxM/SomFqSli7Sa9HWXbr1a+F348xGr9VUUwtffgtoT5Skf7kzAZNKbN76rf0hHGZSTgSHnN/nJ5NAiwNebH/k0KZUKwMacCPIdFecMUEGpqZ1tCEq5hAml0hcMdiXQkJih0TZJXP8S8jQwVtoVsZWmgtT9Z/zuId9bxjgUBqMiCu0GQS5Naja1uhDks9YtAUkN0Tf5a1bsBetZGKNaVrJd17MqxWhmHrfeXvraE2wmQ+87sHo=
+	pWc3znYSbs7Z6OoBlBaB7y3BLfkHxlrGA5Er4br7HPNic9SS239ddHoubusUHJXBHNAYMRPse2q1cxmeW6TkAiNiOFGzwut3vSDWwzhgVViAD92K7DDkAdgOuTlsNYYunAkSCphVwsC94JWR39Ze99F3w7drLGLlZBOWZkY8FMQYI9pLb7tAjOzpCmlIOzbomVgFuyfOB0s29voUUQL405ZZqSRp1Qb2xIO3Z5e9n8ORriFKKMkB1AngJoyq6FDMKUX73EXWqJvjEvURF7tyU51/NFIbAEcnGxBU2xY76cSDp6Zuupj3unJHJyfH7mxG1nUW7WuOuzr1QvXqG4qVbguFh5X/3a0Wg5q6Z0HfJnv5rqOrM8nlASLK6HjFYEE6+nUTBDXyv943Y+XV7P1HxyyfsifW/hOTZ1EymYvPW8dpNK6zyBxTpXDFIsY2eOV59ueastF0QZe2aiUJCST+dgrsGnzxTAcLo2CFOEcNsU6mI8vevRGDsA9j6g9HVSNgONR891lBj6BqoJbEtDVh1a4/96IRhx+YlYpLCyE26fVjGn02LIQiljzU4NwDi96dm4hg1teyZEFPx4j3CRKMtZ6Br5xg1BSFGxMwoPuieOovK5P6OHI+mwrIGmKdGRbfeL8YPJ6yC1jmR6bQpg1iUynMlK4nNg3Pl9nGp60EBpI=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4472.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(23010399003)(1800799024)(19092799006)(10067099003)(11063799006)(56012099006)(261022075727099003)(261022105027099003)(261021123027099003)(261021121427099003)(261026121527099003)(261026140227099003)(261028144727099003)(261102123227099003)(261009223027099003)(18002099003)(6133799003)(3023799007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVXPR04MB12316.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(1800799024)(366016)(376014)(7416014)(23010399003)(6133799003)(18002099003)(22082099003)(3023799007)(56012099006)(11063799006)(261102123227099003)(261028144727099003)(261022105027099003)(261021123027099003)(261022075727099003)(261021121427099003)(261026121527099003)(261026140227099003)(261009223027099003)(10067099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Xwpyi0Js9UTX4uMxoVxLnTUHQZCvUQWOreeU4azQCUFEgl9Vl+CxkhyzOQoG?=
- =?us-ascii?Q?WuD4rTSCrAy7fkuw3KLSjVWuIntZ2bQbFp7zkL/hLAqHn3PnLqC2areRtlzU?=
- =?us-ascii?Q?714K3b6zqllL6WPYfySxcbQur676UFEddLQgI7O2nwrKk4gqjBY/IKA6HPWP?=
- =?us-ascii?Q?Ob8IgdV8V7H/9Puo5DrBVjWbJ4nBrsQ87cgxLbvhzWbzb3/rjoe89hd0PslY?=
- =?us-ascii?Q?ws0y/ENdHI8kpcR7COWzzHLkqebHteP713BGHRrIkLCY6zZPMF1dLbZocxfC?=
- =?us-ascii?Q?NqHeVm3RuG5PljlbKsUO6orBtT2f634+bZApTqrUDNTIrPRT8zADFAWVFS+j?=
- =?us-ascii?Q?C5lZzK+nus80roM6JPUz5lC0lRHp24w8MvAjqzCe0u/RgFERcA80jrlYaw0N?=
- =?us-ascii?Q?ALKItPJgbIMot/LrkjwBGzt1amACcKG76y+eta64lK12LqykgpLktUieAmSP?=
- =?us-ascii?Q?7g7Rq+hhbGf6MJIV6V6DAw+DdJoCrKetUNaC+dgKS0b3h9R3S94Mm1AqraTv?=
- =?us-ascii?Q?NHdrWvM4iv1g8aMuGo80f9JzwCIeWRuPNOZssJK9kqq1lYYuXAaGIvTxNger?=
- =?us-ascii?Q?0pxxgVyYO7T3PBuFRllT3pZE6zw7OLmjOPPPamvM28OFEYzWhjJBn6sSfuAe?=
- =?us-ascii?Q?fhz4blNKPmfsVpEXVNy5jJ9M/O7cP3FHg5b7jNic0kuFLtYN/noGlbP02U48?=
- =?us-ascii?Q?f7Gr+0eeRY2OjwSmwOeKkv2HgWYanWB5/GVQ70Hxk1p/VOlGkRMRbu1Fc+mk?=
- =?us-ascii?Q?DeV/TiLbvj++nLleuGAiAUeF1JiBDuK18EzAs4DRkUnP42SUMjRK+JSuU35t?=
- =?us-ascii?Q?gLpU0oGAOOdNIWlKQIva7BYTf8Di6h9lCo1vnOV1IkQ1bwe4keOhJAakOmru?=
- =?us-ascii?Q?i5LWUenwcfyO1qIMXYR1JeF0onj1XxlcynV0zV8mPbBNNt03KUCQSaT0U+4l?=
- =?us-ascii?Q?XOfCkYfAg4kMyTlddd9pi8Bumw4Qc9TK955nXetBRlGeTsai6I26Rl/GLMHX?=
- =?us-ascii?Q?8UBuGP3ZRUDQ9ix+iGLa+Ir9ETcJhcguQx3+d4dk9cpqzlFMGwa6qOcjrKlK?=
- =?us-ascii?Q?Jx/1DmX+IfvVhS1nqh3sXDKB+sVT6EYZ7pY3/sJ5X1tovq849LUJJtFprOn+?=
- =?us-ascii?Q?RTmwM6ELMK+jTY1ObqxQKjqxQhEIa/v3LAn42h0Th71WXD5RdTOw/x6oMGwJ?=
- =?us-ascii?Q?rgETnd1P4b2JIBzHKTPUWc4F+u/hq76oPiQHK3JRJGrlckUJ4nnXF0Sxctq9?=
- =?us-ascii?Q?fVOOTNgskbzLmEkgrl7FfjPiqogwiBZO+v7E2lxm+IX6lH7a/doQnbNLf+Vh?=
- =?us-ascii?Q?ycLl3RJz5o7Q0vx9m6ck9ws9PfWp8eo9uRcHB/XWNR5Qo6lknpbxJ+pd96PJ?=
- =?us-ascii?Q?hpYUs1CnpSha5nHayP1B3P9Z+b35ngguuHn9/Aj+QutaLbnT0K+6/1ssrYZw?=
- =?us-ascii?Q?BBGl3Vfnk+AwkH3ZTP81+FnMdOwWpkaJIjKUEF+FRNm12cJadwOK9OQUiePk?=
- =?us-ascii?Q?nH/Ia1W7qaOm9clZ5mns0B9SkZQb4DXNIxgioLbttgTv895+zl7054wVrVB6?=
- =?us-ascii?Q?hydBHixgbQEC1xQaw/1H3C+1AA43j9/1YHQaS12ZWyzbSqxkoHtSRQ0B9sG2?=
- =?us-ascii?Q?v0GY1Vd4S/3I1oiifILPpqEDX+go4fzddAH7IHsPr9GuldBhdp33j33KnGwb?=
- =?us-ascii?Q?dG8kiLcvdfRTVdo61VC1rCTpFWhSaAmEbJ+aWsukR5pL8LxiDnstLb0EUmtf?=
- =?us-ascii?Q?zlRqBHCPWQ=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9abc2366-ff2a-418b-7556-08df4a2ce4c4
-X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4472.eurprd04.prod.outlook.com
+	=?utf-8?B?K2xLRUM3cnZWSHl5Mk1QdjhwVUJqZ2U4cHNwamprcFJ1b0tmaE1uVWp1a0kz?=
+ =?utf-8?B?V21uR0JtL2ZvbXBVVWM1ak1QbFFtdGk0ZTRMQlpCb3VZL2tNL2hUN2pOVUJQ?=
+ =?utf-8?B?OUhUUVQwRXlaMzA3NjVUWVRFTHFDZUx3cmxoVVJmMEZaQmUzSURlQ0FwQTMz?=
+ =?utf-8?B?Rzg4a2tiVFZ4YVpTaFU5R1JvY1F0emRGa01Kd1oyN2NneXhuelRZa0NRMytm?=
+ =?utf-8?B?V0tZMkpSWXlsbHRDOWRpN2FNZStuQTlCQjV5MHBnZG0rMm5MM0xqWExFenVi?=
+ =?utf-8?B?cndlZ2pzcUVkS0N0dDVXbkpBdEE1MmNpVi9WNkFqTEhsc3RlMlN4U3FtWEda?=
+ =?utf-8?B?Rk5rS0pEdXlyRC8wa3U4SHpLeXZkS3I2ZXNCNHQxN3NWeVZMbnVOSnpFZG1N?=
+ =?utf-8?B?VFNZWWJ0Z2trWUVEV1U3alB6U1p4cVYycGNpM3lGZGZjUW5jZ2l3dTZlYjQ4?=
+ =?utf-8?B?NjhZZnZqU3loUWd5T0VHOFNBdWlwLzhobWdJbm9NTDhpUFpOWGpJYi90RXNs?=
+ =?utf-8?B?VXJQejBuUlNmU29Wc200YXJLU1IwSVN4RGJLMDAwQ21zb1p0NWpMTE44QXdB?=
+ =?utf-8?B?cjkzM0Zsd1FOZTNMVkIzYTdPTHQ2UHUzaDZSVTF4Ly9FQjljWWtJZXVxd2pH?=
+ =?utf-8?B?S0Y2YzBuN0c3czk4M0xpY3paaXFuNVFmd3JiNjVsOU85ZnQ3d0Y1RlZhRXVI?=
+ =?utf-8?B?UDZUZUtIeGdGbnRXaTRVbzFGTzQrcW9ZZWdCbWN6N3ZzQnRETkpZZ1NtRmpS?=
+ =?utf-8?B?ZVZibi9HRnR1bFhGM2NkZEwySGxtTDlDcVFpUU5zb2lLV0ljQVRsUithYlF1?=
+ =?utf-8?B?UzdmT3pLWDhvbTlrVWI2QVZiOTgxMVhObk1YVjJ1OS9RSnJGeXkxaXpqTnA3?=
+ =?utf-8?B?SVJmNzZqZGJTNStiUkxKTitJN2pibU9hdzI5ZjN2NDJYR1I4OWpKVzE5SHk5?=
+ =?utf-8?B?RU9FUkovR1dPYU1UNFBtUlRxM0FyWWMzYnR3QlhZL2MxUGwxVjFiYW05V21R?=
+ =?utf-8?B?NGpMbFlUQXliVnVpVExSZWVPY0tUYUxKbjF6aExnc08vRnY5NmcrS0RPRlIv?=
+ =?utf-8?B?VVhxenVRWVVYeWNISTN6T1U4dllmQWpGREZ1Tmg5aWNRNWI3TWlzb1RNemRp?=
+ =?utf-8?B?dG5mYWJzcHgzZi9yd2dtTnh5aTd0ek4zQXNmQzV3TjRRdWRRcXA0c2VXdmJY?=
+ =?utf-8?B?b1F3aEtiL01Rc3NuVTc3S3JzdnNIV3pkMy9UMWVoYkRwUUhpejJGTlBuSG82?=
+ =?utf-8?B?OGRZY043eDExTDdpbFdoZEQ1VzNacE84RXQ4T25CNFpvVzRTVWNkVDhoaGha?=
+ =?utf-8?B?bFZOWEFQZzBWa2txbTUzSG9iR3lBem5aam1hdEx6ZXFjaUxid0l2SUpKVmJR?=
+ =?utf-8?B?c2gvR2M1aEVBang5VDRQTm5RR2svTktyQXQvdmRFNExwdnJFdExkekVBTFor?=
+ =?utf-8?B?RVdTdUxoWXoybzhlbytydy91R29Ha0g4eFJkdm5FNnorN1djc0prMjREVkRo?=
+ =?utf-8?B?cG5yNVVQcGNNV1o2eEVnQXRRMHlPb2lJSnZaV0hJQUxiN2FCblFkdCtiem9w?=
+ =?utf-8?B?N3ovNWR0M2d1MWdwZExTMGhnM3UwVDk0VitxdFhoenhZRytPSHQwVzY1OVdj?=
+ =?utf-8?B?cVBOL2p3RjJ5bWtwUm83MldvVHFVOGZ2eno1UVlwQktJaHdpdi84V3F3WkFI?=
+ =?utf-8?B?N2t2QytVWHYxUFpaU2dMc0w2NnZ5T3pMVmo1QkY0UkY4WFFQczhlSFlmajNC?=
+ =?utf-8?B?a0h4aHEvMG5tWUYwdHpCK21OUlU2ZlVQVXJGd2NjVmJQaUF5NmhYTnNabkc5?=
+ =?utf-8?B?NU5hL204ZUpVT0VzZnhXem5ZVW5jVGFKcWdla29HVGhhaW01NU9MYWpXWnJW?=
+ =?utf-8?B?dXZNWXN5YWxpcDU5L3JGdkZJTHpBYmV4MGx4N2NhSWl4NTNMQWJiZmR2QnI0?=
+ =?utf-8?B?eTZmN1dYcmdGb3M3NSswdGl2MUFuYjVUd1dXbElLZ1hWYVRhbG5hZDVHbDdZ?=
+ =?utf-8?B?NTdnU3h2Skh0UmV2NXhUbUE4c3QwYnpYSjUzeG1lSnVKaDZSSzkyOWFlMVFz?=
+ =?utf-8?B?QkJ0LzlWTzF2aWhUMkRvQTcyUmVEbHdLYjR4ZENZZitGS3JGd3YyZGEvWnoz?=
+ =?utf-8?B?bU92RDdLeXQxaVlKKzc0SWk3SnNHaFNQeUlIOVd5Wm5TL1VOb2RZdGFVMDVM?=
+ =?utf-8?B?bzR6UWx3OGE1NGlwd1M0THVRUVN6WWJwYlArcDFTa0pITEM4a0tJMnVBV3FS?=
+ =?utf-8?B?bjRzaURqOTBCUDlvZEtONjRieHdiWjY2QTlCTUF3WDNUblNJbFhZaUdYOEl2?=
+ =?utf-8?B?d0NRS0FTaEVycHdUQ3FEdktTMHEwa0I2STFxUjRNTkNkVTRGNzhhUT09?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d814f26c-0a38-497e-4293-08df4a2da4bd
+X-MS-Exchange-CrossTenant-AuthSource: GVXPR04MB12316.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Nov 2026 13:14:38.9800
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Nov 2026 13:20:01.0358
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: TDqy8yfpz7eM51pCK+43XUYNVKcNsbNU4fk4gQy+QMEPpuTU035sF56Pv8Pjhw7C0T8Ufy8PgLfFmAiOyHLJ2Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BR2PR04MB325065
+X-MS-Exchange-CrossTenant-UserPrincipalName: v/Id13c0CgK3PB41t3uiVWuATmzuUBktYH1+wRXgrUDsIaYdL+VKQMjz/w3qEtSa0vDtdXJsY/5ERvwgCxmfIg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MA9PR04MB839208
 
-From: Richard Zhu <hongxing.zhu@nxp.com>
+On 11/24/26 15:14, Stefan Ghetu wrote:
+> From: Richard Zhu <hongxing.zhu@nxp.com>
+> 
+> When a user-space process (e.g., memtool) accesses an OP-TEE protected
+> memory region, the SoC raises an external abort (FSR code 8). The
+> imx6q_pcie_abort_handler() registered for this fault code attempts to
+> decode the faulting instruction by directly dereferencing the saved PC:
+> 
+>     unsigned long instr = *(unsigned long *)pc;
+> 
+> However, for user-mode aborts, the PC points to user-space memory. This
+> unchecked dereference from kernel mode triggers a secondary domain fault,
+> which is not hooked by any handler. The fault then escalates to an
+> "Internal error: Oops" and crashes the kernel:
+> 
+>     Unhandled fault: page domain fault (0x01b) at 0x006e3316
+>     Internal error: : 1b [#1] SMP ARM
+>     CPU: 0 UID: 0 PID: 1415 Comm: memtool
+>     PC is at imx6q_pcie_abort_handler+0x4/0x7c
+>     LR is at do_DataAbort+0x3c/0xb0
+> 
+> The abort handler was designed only for kernel-mode PCIe configuration or
+> I/O space accesses and never hardened for user-mode faults.
+> 
+> Fix this by:
+> 
+> 1. Checking if the abort occurred in user mode and returning early to let
+>    the normal fault path deliver SIGBUS to the faulting task (as already
+>    specified in the hook_fault_code() registration).
+> 
+> 2. Using get_kernel_nofault() to safely read the instruction for
+>    kernel-mode aborts, preventing recursive faults if the kernel PC is
+>    invalid.
+> 
+> This ensures user-mode aborts are handled gracefully without crashing the
+> kernel, while preserving the existing fixup behavior for legitimate
+> kernel-mode PCIe access faults.
+> 
+> Fixes: 415b6185c541 ("PCI: imx6: Fix config read timeout handling")
+> Signed-off-by: Sahil Malhotra <sahil.malhotra@nxp.com>
+> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+> Signed-off-by: Stefan Ghetu <stefan.ghetu@nxp.com>
 
-When a user-space process (e.g., memtool) accesses an OP-TEE protected
-memory region, the SoC raises an external abort (FSR code 8). The
-imx6q_pcie_abort_handler() registered for this fault code attempts to
-decode the faulting instruction by directly dereferencing the saved PC:
 
-    unsigned long instr = *(unsigned long *)pc;
-
-However, for user-mode aborts, the PC points to user-space memory. This
-unchecked dereference from kernel mode triggers a secondary domain fault,
-which is not hooked by any handler. The fault then escalates to an
-"Internal error: Oops" and crashes the kernel:
-
-    Unhandled fault: page domain fault (0x01b) at 0x006e3316
-    Internal error: : 1b [#1] SMP ARM
-    CPU: 0 UID: 0 PID: 1415 Comm: memtool
-    PC is at imx6q_pcie_abort_handler+0x4/0x7c
-    LR is at do_DataAbort+0x3c/0xb0
-
-The abort handler was designed only for kernel-mode PCIe configuration or
-I/O space accesses and never hardened for user-mode faults.
-
-Fix this by:
-
-1. Checking if the abort occurred in user mode and returning early to let
-   the normal fault path deliver SIGBUS to the faulting task (as already
-   specified in the hook_fault_code() registration).
-
-2. Using get_kernel_nofault() to safely read the instruction for
-   kernel-mode aborts, preventing recursive faults if the kernel PC is
-   invalid.
-
-This ensures user-mode aborts are handled gracefully without crashing the
-kernel, while preserving the existing fixup behavior for legitimate
-kernel-mode PCIe access faults.
-
-Fixes: 415b6185c541 ("PCI: imx6: Fix config read timeout handling")
-Signed-off-by: Sahil Malhotra <sahil.malhotra@nxp.com>
-Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-Signed-off-by: Stefan Ghetu <stefan.ghetu@nxp.com>
----
- drivers/pci/controller/dwc/pci-imx6.c | 20 ++++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-index 0377d72b54ea6..9a9cc35f6559f 100644
---- a/drivers/pci/controller/dwc/pci-imx6.c
-+++ b/drivers/pci/controller/dwc/pci-imx6.c
-@@ -669,8 +669,24 @@ static int imx6q_pcie_abort_handler(unsigned long addr,
- 		unsigned int fsr, struct pt_regs *regs)
- {
- 	unsigned long pc = instruction_pointer(regs);
--	unsigned long instr = *(unsigned long *)pc;
--	int reg = (instr >> 12) & 15;
-+	unsigned long instr;
-+	int reg;
-+
-+	/*
-+	 * This handler is only for kernel-mode PCIe config/IO space accesses.
-+	 * User-mode aborts must be handled by the normal fault path, which will
-+	 * deliver SIGBUS to the faulting task. Dereferencing a user-mode PC
-+	 * from kernel context triggers a secondary fault that escalates to an
-+	 * unhandled kernel oops.
-+	 */
-+	if (user_mode(regs))
-+		return 1;
-+
-+	/* Safely read the faulting instruction to prevent recursive faults */
-+	if (get_kernel_nofault(instr, (unsigned long *)pc))
-+		return 1;
-+
-+	reg = (instr >> 12) & 15;
- 
- 	/*
- 	 * If the instruction being executed was a read,
--- 
-2.53.0
+Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
 
