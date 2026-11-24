@@ -1,85 +1,97 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.224.48
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795514289;
-	b=F+6R9Pg2AxIkwyAPjFYrebhxnACP5Z1L9ptFn6FyaMXhgke59MYVeBa0nqIN/FieHR6F
-	 TrVRZY0nvjxuXNd4qOviBpIHyUmCjVfEzN3QrzyGOwd7yV2WC0UKm/tiIvu04lnlliTUI
-	 cQ5CHocJyKNlUfBJdeSzHiRyi8DsHIlFySIwxUQOrHF/4eoCPYeFKdaABDA/z5qR375z8
-	 WS5yJDURLdBtUsrbbUsx1JVIUDBjloDFsWgLPWVSkBB2Is739ZdZTyAwp5wLWwSGnjGRJ
-	 Pd1qslWYLuDk44WUcK7joue0p/iDLBqNSD9lJaOeObPHl9MSqcla6482078dipxQwXg==
+	t=1795515769;
+	b=vonVPefwFKY2H+ia6Q8YJY+uz2Xp2bkk+hJ/fwQ769IpmGf/FaTG2V6mBkRbbBN4fAIJ
+	 G7zqj9vlHpM0E/FjkbO6p6mF4BQzqC/8IB0A1pkIbBDTorGj9F9zgLEWo49AP7p2X57Rw
+	 L3njDfNiUEY0HPIByYAOVvoPQgFPYx6RoUyIep3pt1x3Kq2BfkL6lT1hDDTJawXgPaOlE
+	 v5vF0GbcNLNv2C0dAm6th8HPyBkJ5U8c82UTFp/Q6bupxzvypRWeUlPv8lhEDNkeZ4ItJ
+	 EXWu3JhtRcejXQDwLVsreOTbzsJQVZ7EUaWd7xHetJUEFgrCcwBwk/tRsCv/FGJwVYw==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795514289;
-	h=DMARC-Filter:Received:DKIM-Signature:From:To:Cc:Subject:In-Reply-To:
-	 References:Date:Message-ID:MIME-Version:Content-Type;
-	bh=GREhSGUQtC0PX1E2njt5jFgmaOss9pV5WXnxNri1B20=;
-	b=VgIEFd3ZEpeZKfiii4tEgDTwqXYV/yqeZpuvd1PuBT5MpBy+ezKUsp2+zsZvdhEQwnXY
-	 f+7cuPTa29fRTn7l83ozTyUP+PfON4TDxi99Yo0xjvX+3taDvVGsfOH5LWfsqVeo9xG1Y
-	 2UQUGzOrFApafEQYQTN+iEBjzu/t60u2mTKuQtWrLmF2rVma2Z3bZ8WlpANFuTQB800pe
-	 EcIfAfpzdgfDWTXC5ztcoe25+1BA0Ch9V2xG9dqEf0A6tN9gCfHEqWAwDPOUHHzLvcAVl
-	 qHAa05LPGvI6Xeu//B74O7+ZA0WadCCUSI5bJkiUnPCjUFSGjQchkn7FjvxR9ouawNg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795515769;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=ejx0Vx6mlT/oh5f9iEeflN8sMqKcxSOCTfvOWvcm4hc=;
+	b=a3iZR0Ghzu/n7yc5T3+woG/hfADXwRebHZhKf9ZAwvztmKLudyH0/XxpQe6cSByhdwbA
+	 9z0EcIMNEv38tkGOSIH8IuLN2UjEXnA+ZMHrAdpIV6TcWd5iq61DlptrVxkQ83j/IRnfc
+	 My/jhwgVp59Ky19VcGUTEBfw7LvDEHPDlXC+8nJjnEheRgX7jSEN156AQ3MbPzPhyvZ1n
+	 82VZoRNxNlWWrz8yC9lAur+P6MjX5JHBVh3JG907zmZ8AXVZZ7KLcEKuwMMv+e6l7mEjc
+	 7ZpgudsaJ+D9Kh07TbAwoC7GTLEg8Q5YEibN9PLz3qqz5cqM+mFZcWIyZlxjwpNT+yg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=pengutronix.de;
-	spf=pass smtp.mailfrom=pengutronix.de;
-	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=ghQhe1Fy;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=chromium.org;
+	spf=pass smtp.mailfrom=chromium.org;
+	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=E73HZq1A;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.224.48
+Received: from mail-yx1-f48.google.com (mail-yx1-f48.google.com [74.125.224.48])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A22A606A33C;
-	Tue, 24 Nov 2026 09:58:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5A22A606A33C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18366606A321
+	for <imx@lists.linux.dev>; Tue, 24 Nov 2026 10:22:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 18366606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=ghQhe1Fy
-Received: from localhost (unknown [IPv6:2a0a:edc0:0:701:64eb:cd28:15f0:fe7b])
-	(Authenticated sender: fdi@pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 057F8201D27;
-	Tue, 24 Nov 2026 10:58:06 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1795514286;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GREhSGUQtC0PX1E2njt5jFgmaOss9pV5WXnxNri1B20=;
-	b=ghQhe1FyRht4fL83/c0m6PtumIAjv+8UJg9/UlC7Vi95eyttHKMGSYroQK4vXx04Rh2O/I
-	SupD6fWikyCrWON/wU8A//xH6Hd/Nd6uNd1rxKR9Wg4il+cSgKaHrfZxJQ6SaE69j+SVP2
-	+zG2O7legrI3p/NQ2LGKy8jIguwOUcdPnXK3c9CqIPfhJEDBJuIep5OYV+EdeqNhBLuHLy
-	BZZKfYeY2e3+EB8PhXK+Ptid2ITkZIQkPZ8zSxjoUojVATgRaH4B6UFyoiNl2H5j+Q6wja
-	5madN61bG7E4RC7QjZj3y0dwvrl/zO/2+ZgoqHDSMQrjYE9prrN4ISGVwWh5Ww==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1795514286;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GREhSGUQtC0PX1E2njt5jFgmaOss9pV5WXnxNri1B20=;
-	b=Ql8IGsCac3BTycRTjQ9oEn0IPGu7BgpjvAVdAIChU32q9ya8i1nzqJyAKcC1Hgasg9jGS2
-	Iqz+wWboX0khDoY4VJ2fdmTALbAjoFJe42cmZJ/hi5ZIuUfk+PskVpzyaKoo+4xUksy6Ry
-	sJhvHnW8J1dSJSmLNJl8c0MylFuQZUX7nXBg8S0ma8xHU/sQHmtR3dogQoK5vLVUHvu4I2
-	F5moon1ohUG4HdbNhZbn+g+UqadyBHDGTYDm3+0B7NvlOQhlXkZWWpOMpZxIYMZgdlBX4M
-	m1JmwRXSa6zvD3iWZQvhB7jwGbun0VhB00EWR2isMh0y6ai8XLUCovqhnVJm2Q==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=fdi@pengutronix.de smtp.mailfrom=f.diener@pengutronix.de
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1795514286; a=rsa-sha256;
-	cv=none;
-	b=fFihxgeQQOHq6iNTfu0dQZ5X+NqdsWKXc+TI/hg0QWdJC2RBl9fG4ARm52QwMqJ/gM3A0i
-	wOh0vMHZfHuS2NIkvDnQ1V0fw54Q+r9GvFfQklyTpr4IUF9YHxN2kchCuNdcbns2jDC01w
-	J7mdrDpj9b/OtXY0hbqAteWjkjIWzIGItiWQVQaQ/BP5cVKCpZFf1KRl8Q0bIbx73y8bc4
-	MSr7rr9J7GhxJTTUCptFaVxeD1Jwq10a7sl1Owllimok+S2y84+uJfCOfrdYHdYlBLi95y
-	fmvZAcgKB8qPfTmUIhuNQOYcHb8NSyMNAHX7WpVXJdIGC9fHPL7ugNLb4ULajw==
-From: Freimut Diener <f.diener@pengutronix.de>
-To: Frank Li <Frank.li@oss.nxp.com>, sashiko-reviews@lists.linux.dev
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org,
- conor+dt@kernel.org, Frank.Li@kernel.org
-Subject: Re: [PATCH v2 2/5] arm64: dts: freescale: imx93-11x11-frdm-common:
- Describe PCAL6524 supply
-In-Reply-To: <awRmrCk8tOd_F8MG@SMW015318>
-References: <20261123-imx93-frdm-fixes-v2-0-dd97c7fca4b1@pengutronix.de>
- <20261123-imx93-frdm-fixes-v2-2-dd97c7fca4b1@pengutronix.de>
- <sashiko-outbox-229145@kernel.org> <awRmrCk8tOd_F8MG@SMW015318>
-Date: Tue, 24 Nov 2026 10:58:05 +0100
-Message-ID: <87jym2mtzm.fsf@theta.mail-host-address-is-not-set>
+	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=E73HZq1A
+Received: by mail-yx1-f48.google.com with SMTP id 956f58d0204a3-67db8985419so5338451d50.1
+        for <imx@lists.linux.dev>; Tue, 24 Nov 2026 02:22:48 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795515768; cv=none;
+        d=google.com; s=arc-20260327;
+        b=g3pYLjISel6yGrIpYqCRvfn4JElHybrBinx3nnba4qPhS+mpecjMycSRUkalz90803
+         LFx99neanu872/PzoRcDw44iYqv4ov32Sif4FwjuAz30vhNTMG1UUnnGiG6SQJjadwtN
+         Amkd7BNGx9qg7m281egM5SFysY7T1c1imanXJ6sLTdhqO/vUk7gmeecfqyLXU/J/h94v
+         t8y51yPVAJXChfQ+dP2+sz5qEkdDqlOiigynIityUUZsQak9f4OerGrUVobxYDAAjolq
+         ckeBwOVqm+ZNQ6T6LkjBAdijWJw1GvyV1n8+uDxxkuXF16LcvbDxkoyYy4IG3/Kb6y7a
+         90Wg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ejx0Vx6mlT/oh5f9iEeflN8sMqKcxSOCTfvOWvcm4hc=;
+        fh=lJrySuB20R4gHTq5ukwgsGNs76vDZ9+pGtsWCMvOHm0=;
+        b=W15c2Gb1NoXzblK4DJEAVZEAAK4PYv4q9wCzRe4NrV5GTfg2pxyBuLNNSXTVm+TRdN
+         ElVavyxrvjfZ4tMrBNK1supwRP40zxm3bMtuwxtUeHqRcQc6647YYsg+hBMgs4kCrDkF
+         cfoniQV9b0QapG+W4wb9FsMZdWXGOnK7ex7oOC5ZUPdhvQw4fR5IVZro3kMxnX5Tgkt1
+         S/z7gDINiOk0Y5uYSqfb76ZEghUcSgZk21bkROMHOOopUe5QOyXUxfRE6fKPLFoCT0yU
+         +W1yXGjec8806nMhxqy2YE0vxkfFXUH95iJEvlWopnNWPv1/OnqaoLP1eTB18gIL6Iul
+         u9Bw==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1795515768; x=1796120568; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ejx0Vx6mlT/oh5f9iEeflN8sMqKcxSOCTfvOWvcm4hc=;
+        b=E73HZq1AZY3A8zSMUOQwiVHyNHj0Fu64cjfjT0o9KkBQXei17HjJJ73maDXhcXtv0O
+         0IQN02+9u0aWg1sAvTCBqdydEqvn9w8IEpmEO2IUG2eAcmYjaDy7oYS+IyKtkszfOBFl
+         7eUl1lnfy4Z8MioWV3d/myqP6dlg7gUa/T1g4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795515768; x=1796120568;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ejx0Vx6mlT/oh5f9iEeflN8sMqKcxSOCTfvOWvcm4hc=;
+        b=j1LzWCkN+OZWEQXYWflctEdMtkeOzJNURc898Fy1zYn9gW1gMYORpSG7Z/jhFLq/xR
+         dpuLU09ljBcL3AB2mMa/WVl2OMvsS9kiORbJS6mKPOAgyvVeMEitBwAbqWqVdvXNDEiv
+         QMCHRnPrWk0sKL46m9lCSJGWGWjPT2Qdvxh3lygy74XqwokehxAKeRAOGdnb39voO4Qz
+         qNXAK2hZGUEfaZPJzag7loFk8Ir/PdgxSVSjMZBy3OR+IoCxOOI7aTVVRXCpBg9RRk7R
+         kqMsEjOwZufXTQxKzaXHK6JiVs8AzUEA3VaWGgMxeNEQck6TLNItP/kLozxZCU0Xli9X
+         dyCQ==
+X-Forwarded-Encrypted: i=1; AL+hErGlehU4x8hzmE8/U7xAcV8dggFN8NDGFJ0IhmFvUtspdwfvYFGP5p8nPuydjZhLI8PR1tI=@lists.linux.dev
+X-Gm-Message-State: APuU4Z8int97PRk2pSzyLM25/hHcIj/c2JsWTzUOakK5NI2kjFZ6XbSP
+	qyg1sSMKngtDQrbDUKvG6tFfvm1MliRt2D3b7iPM/FBek8bgTa5FNpla/pS/b4jh7mroR2l21nG
+	4pIVGdyMjjKXGYjE1u2Z7bgDaBZKbelnNSrAj5k08
+X-Gm-Gg: AZFdTZdt/BUSEu8uYdBUY8rr9b7u/UrOlK+E2EPjT9j7Y+YwKCiAAghqdZuZgsJYf9F
+	dpVI+hJY/WOyMhPOVzXsVVr9JbwhIYl+7457rCnnYq0v4P3RHL6V1+WboEP1UTK1My/XGrdIpQB
+	+w7VvfB+LbEoxMZOWgDChd/b/UTLhw38ffbCEKAPRmos4wmWXFUCfxRINWnBVDi5naeNxKWsOEd
+	zFXQFVV03xihwL4Oe2GRs/1FnbaAz2WWu6ZCBPasiD3d1thIDSfu/9l/HFdRwDeSuJsfriE04Mm
+	zHqG9Bp9VuOTLWfNEkLUWZ86DWB/M1N5R5ibxm7pGFeW4xohsjgSo4mm9pWpwcbbaaexXIuKlD6
+	lZRtJKQHCQzde0GAOecj1JBEZczA5khPq57NHHVSdETroe6dtwmZq8CiD14aYSA5teHM=
+X-Received: by 2002:a05:690c:6e8c:b0:8a8:7e5a:dc2f with SMTP id
+ 00721157ae682-8b5204440fdmr67264947b3.12.1795515768163; Tue, 24 Nov 2026
+ 02:22:48 -0800 (PST)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -89,75 +101,173 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20261124074041.115251-1-wenst@chromium.org> <20261124074041.115251-3-wenst@chromium.org>
+ <19cd5949-05dc-4107-bd2b-d8ad1e2332eb@suse.de>
+In-Reply-To: <19cd5949-05dc-4107-bd2b-d8ad1e2332eb@suse.de>
+From: Chen-Yu Tsai <wenst@chromium.org>
+Date: Tue, 24 Nov 2026 18:22:37 +0800
+X-Gm-Features: Aa3M54pNfcesZWo4EiEVJfs9QKzf9OEio3h9s-Qk4g3wBzB4RP2yK5vRHxNLzEQ
+Message-ID: <CAGXv+5HSV7MJ96qTcOp+JaKWtmmYYWAmDROrT18pZ9PztNCJ-g@mail.gmail.com>
+Subject: Re: [PATCH RFT v3 2/5] drm/fb-dma-helper: Add drm_fb_dma_get_gem_clipped_addr()
+To: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Liu Ying <victor.liu@nxp.com>, Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>, 
+	Lucas Stach <l.stach@pengutronix.de>, Chen-Yu Tsai <wens@kernel.org>, 
+	Jernej Skrabec <jernej@kernel.org>, Samuel Holland <samuel@sholland.org>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, linux-sunxi@lists.linux.dev, 
+	imx@lists.linux.dev, dri-devel@lists.freedesktop.org, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Frank Li <Frank.li@oss.nxp.com> writes:
-
->> arm64: dts: freescale: imx93-11x11-frdm-common: Describe PCAL6524 supply
->>
->> This commit adds a fixed 3.3 V regulator node as a proxy for PMIC BUCK4
->> and wires it to the PCAL6524 GPIO expander's vcc-supply to avoid a circular
->> probe dependency between the PMIC and its interrupt parent.
->>
->> > diff --git a/arch/arm64/boot/dts/freescale/imx93-11x11-frdm-common.dtsi b/arch/arm64/boot/dts/freescale/imx93-11x11-frdm-common.dtsi
->> > index b3dfe516b1d55..e81b2342c50dc 100644
->> > --- a/arch/arm64/boot/dts/freescale/imx93-11x11-frdm-common.dtsi
->> > +++ b/arch/arm64/boot/dts/freescale/imx93-11x11-frdm-common.dtsi
->> > @@ -49,6 +49,19 @@ button-k3 {
->> >  		};
->> >  	};
->> >
->> > +	/*
->> > +	 * PCAL6524 is powered by PMIC BUCK4, but the PMIC uses PCAL6524
->> > +	 * as its interrupt controller. Model the supply with a fixed
->> > +	 * regulator to avoid a circular device dependency.
->> > +	 */
->> > +	reg_pcal6524_vcc: regulator-pcal6524-vcc {
->> > +		compatible = "regulator-fixed";
->> > +		regulator-name = "VDD_3V3_PCAL6524";
->> > +		regulator-min-microvolt = <3300000>;
->> > +		regulator-max-microvolt = <3300000>;
->> > +		regulator-always-on;
->> > +	};
->> > +
->> >  	reg_usdhc2_vmmc: regulator-usdhc2 {
->> >  		compatible = "regulator-fixed";
->> >  		off-on-delay-us = <12000>;
->> > @@ -207,8 +220,7 @@ pcal6524: gpio@22 {
->> >  		gpio-controller;
->> >  		pinctrl-0 = <&pinctrl_pcal6524>;
->> >  		pinctrl-names = "default";
->> > -		/* does not boot with supplier set, because it is the bucks interrupt parent */
->> > -		/* vcc-supply = <&buck4>; */
->> > +		vcc-supply = <&reg_pcal6524_vcc>;
->> >  	};
->>
->> [Severity: Medium]
->> Should reg_pcal6524_vcc be added to the Devicetree when no separate
->> fixed regulator exists on the board?
->>
->> Devicetree describes the physical hardware topology rather than encoding
->> workarounds for Linux driver probe ordering or dummy-regulator log
->> messages.  Modeling BUCK4 as a standalone always-on regulator-fixed node
->> misrepresents the board's power tree in the DT ABI and instantiates a
->> redundant platform device duplicating the regulator core's dummy
->> regulator.
->>
->> In Documentation/devicetree/bindings/gpio/gpio-pca95xx.yaml, vcc-supply
->> is optional, and other i.MX91/i.MX93 boards with the same PCA9451A and
->> PCAL6524 topology (such as imx93-11x11-evk-common.dtsi and
->> imx91-11x11-frdm.dts) omit vcc-supply on pcal6524 until the cyclic
->> dependency between PMIC IRQ resolution and expander supply lookup is
->> handled in the kernel drivers.
+On Tue, Nov 24, 2026 at 3:57=E2=80=AFPM Thomas Zimmermann <tzimmermann@suse=
+.de> wrote:
 >
-> Look like you just need remove vcc-supply property.
+> Hi
+>
+> Am 24.11.26 um 08:39 schrieb Chen-Yu Tsai:
+> > drm_fb_dma_get_gem_addr() returns the DMA address to the "unclipped"
+> > framebuffer. However some display drivers want the "clipped" framebuffe=
+r
+> > instead, as they are also using the clipped coordinates to program the
+> > hardware.
+> >
+> > Some of these drivers are open-coding drm_fb_dma_get_gem_addr() with
+> > the source coordinates replaced, while others have been incorrectly
+> > converted to using drm_fb_dma_get_gem_addr(), which would end up
+> > causing incorrect parts of the framebuffer to be displayed if it were
+> > somehow clipped.
+> >
+> > Add drm_fb_dma_get_gem_clipped_addr(), a "clipped" version of
+> > drm_fb_dma_get_gem_addr() for these drivers to use.
+> >
+> > Cc: <stable@vger.kernel.org> # dependency for next patch
+> > Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+> > ---
+> > Changes since v1:
+> > - Use new drm_framebuffer_get_block_offset() helper
+> > ---
+> >   drivers/gpu/drm/drm_fb_dma_helper.c | 37 +++++++++++++++++++++++++---=
+-
+> >   include/drm/drm_fb_dma_helper.h     |  4 ++++
+> >   2 files changed, 37 insertions(+), 4 deletions(-)
+> >
+> > diff --git a/drivers/gpu/drm/drm_fb_dma_helper.c b/drivers/gpu/drm/drm_=
+fb_dma_helper.c
+> > index ab0f37d8a5ff..0aaf4926db4e 100644
+> > --- a/drivers/gpu/drm/drm_fb_dma_helper.c
+> > +++ b/drivers/gpu/drm/drm_fb_dma_helper.c
+> > @@ -60,15 +60,16 @@ struct drm_gem_dma_object *drm_fb_dma_get_gem_obj(s=
+truct drm_framebuffer *fb,
+> >   EXPORT_SYMBOL_GPL(drm_fb_dma_get_gem_obj);
+> >
+> >   /**
+> > - * drm_fb_dma_get_gem_addr() - Get DMA (bus) address for framebuffer, =
+for pixel
+> > - * formats where values are grouped in blocks this will get you the be=
+ginning of
+> > - * the block
+> > + * drm_fb_dma_get_gem_addr() - Get DMA (bus) address for unclipped fra=
+mebuffer,
+> > + * for pixel formats where values are grouped in blocks this will get =
+you the
+> > + * beginning of the block
+> >    * @fb: The framebuffer
+> >    * @state: Which state of drm plane
+> >    * @plane: Which plane
+> > - * Return the DMA GEM address for given framebuffer.
+> >    *
+> >    * This function will usually be called from the PLANE callback funct=
+ions.
+> > + *
+> > + * Return: GEM DMA address for given framebuffer, unclipped.
+> >    */
+> >   dma_addr_t drm_fb_dma_get_gem_addr(struct drm_framebuffer *fb,
+> >                                  struct drm_plane_state *state,
+> > @@ -86,6 +87,34 @@ dma_addr_t drm_fb_dma_get_gem_addr(struct drm_frameb=
+uffer *fb,
+> >   }
+> >   EXPORT_SYMBOL_GPL(drm_fb_dma_get_gem_addr);
+> >
+> > +/**
+> > + * drm_fb_dma_get_gem_clipped_addr() - Get DMA (bus) address for clipp=
+ed
+> > + * framebuffer, for pixel formats where values are grouped in blocks t=
+his
+> > + * will get you the beginning of the block
+> > + * @fb: The framebuffer
+> > + * @state: Which state of drm plane
+> > + * @plane: Which plane
+> > + *
+> > + * This function will usually be called from the PLANE callback functi=
+ons.
+>
+> You should mention what clipping means in this context. It's not obvious
+> what it's clipping against. Or maybe point to other docs that explain it.
 
-This would mean dropping the entire patch and keeping the warning about
-the dummy regulator:
+What about:
 
-    pca953x 1-0022: supply vcc not found, using dummy regulator
+/**
+ * drm_fb_dma_get_gem_clipped_addr() - Get DMA (bus) address for the start
+ * of the visible (CRTC-clipped) part of the framebuffer
+ * @fb: The framebuffer
+ * @state: Which state of drm plane
+ * @plane: Which plane
+ *
+ * A plane may be positioned partially off-screen, in which case it gets
+ * clipped to the visible CRTC area by drm_atomic_helper_check_plane_state(=
+)
+ * (populating the clipped coordinates in &drm_plane_state.src and
+ * &drm_plane_state.dst). For example, if a plane extends past the left or
+ * top edge of the screen, only its right and/or bottom portion is visible.
+ * Drivers whose hardware cannot clip by itself (i.e. accept negative
+ * destination coordinates) should use this helper instead of
+ * drm_fb_dma_get_gem_addr() so scanout starts from the visible portion of
+ * the framebuffer.
+ *
+ * For pixel formats where values are grouped in blocks, this returns the
+ * beginning of the block.
+ *
+ * This function will usually be called from the PLANE callback functions.
+ *
+ * Return: GEM DMA address for the visible part of the framebuffer.
+ */
 
-Is that preferable?
+> > + *
+> > + * Return: GEM DMA address for given framebuffer, clipped.
+> > + */
+> > +dma_addr_t drm_fb_dma_get_gem_clipped_addr(struct drm_framebuffer *fb,
+> > +                                        struct drm_plane_state *state,
+> > +                                        unsigned int plane)
+> > +{
+> > +     struct drm_gem_dma_object *obj;
+> > +
+> > +     obj =3D drm_fb_dma_get_gem_obj(fb, plane);
+> > +     if (!obj)
+> > +             return 0;
+> > +
+> > +     return obj->dma_addr + drm_framebuffer_get_block_offset(fb, plane=
+,
+> > +                                                             state->sr=
+c.x1 >> 16,
+> > +                                                             state->sr=
+c.y1 >> 16);
+>
+> I had to look several times to spot the difference to the regular
 
-Best,
-Freimut
+I suppose I should add a comment to make the difference more visible:
+
+    /* Use clipped source coordinates state->src.[xy]1 instead ->src_[xy] *=
+/
+
+> helper. In any case
+>
+> Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+
+If the changes above are acceptable to you I'll send out a new version
+with your tag kept.
+
+
+Thanks
+ChenYu
