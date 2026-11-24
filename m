@@ -1,104 +1,103 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.135.223.131
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795525742;
-	b=5dKRsGhG6xX3xVfcHrmN5X1IuTHd6lT0eT/ZAsqAFUII+As5DSg3p4D27QHI5AtrXywB
-	 FIgwI/WscQOODBad/XihwiuXAcj1NfryAV0kT3GzHzzt/BNymsV1LH5XBVGnjBAQlR7SE
-	 7//ziGbYqv68P9vbcMG4sO9H+lz+U0Qf8Q81zoTAo8wppe7pbtd1/r9Cxz1+MipqcdQc6
-	 kHsjUIUcLNXCQcWCEVtyIKjX9PBpYJVSROPvQkM69eG06CfQUYax7B/WMhkqv6oJIsUZP
-	 mb7TAHQJ5RQuqhWQGWIJ4zaI2JSc7ZM1FLi6LQd2oy8qU0Fohr7R13NOVUSMjbhLLHw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795525742;
-	h=DMARC-Filter:Received:DKIM-Signature:DKIM-Signature:DKIM-Signature:
-	 DKIM-Signature:Received:Received:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:Autocrypt:
-	 In-Reply-To:Content-Type:Content-Transfer-Encoding:X-Spamd-Result:
-	 X-Rspamd-Server:X-Rspamd-Action:X-Spam-Flag:X-Spam-Score:X-Spam-Level:
-	 X-Rspamd-Queue-Id;
-	bh=WcJSkaqY9Qq8Hd92McHt9i07oPBgHaZhYiQd4F7xNFM=;
-	b=ny4KlfpgAWFMU5OLEwr9aIvS5HSYaGeOc1V7PyFtnrn3RZmkJKuym9OK801cuIS9Vikp
-	 lyfdP6pP/M9Ijw194JPFV5DY/k01XjHCKlZ7vQqwfif7Phmwt/QkJLclcYfvfMIo5oONi
-	 wAmdwzEMqCQChBQzbgFL3XPj0PqPri+LeDeSqX79/TMafzZSxGu08TcVmpZx87ec7C7/L
-	 cV3uTEXhF+VKUw6+ZpBFfVeOVbANulTzilifliirWEE2L1WQQHPBkqfxEfynOaHzRMsra
-	 uiNac7xdYc5OUgpsCTlgv9Xquwf43I4SC/sycf81HIKZsIvYdAblosVx4+zrcj016sA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=suse.de;
-	spf=pass smtp.mailfrom=suse.de;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=mmUD+xsu;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=97c8Gm65;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=no7xFE9k;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=XvYNRNNJ;
-	arc=none smtp.remote-ip=195.135.223.131
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.130.3
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795526082;
+	b=L7ZS+sLzaY2zZT1ATla1IUfQqjBNyL7dYuchOrj187YTTNAZbb+trr2VYT7SwdpcjCJt
+	 FCjupUdhEtmi567NudPsmLY87DwrN6ZYYYHd3APcnnLHrZic/YSp0baxhRRNbbbUH+y7s
+	 KGt3jpPesXKafYcgEZ9FsZGASh8nu3rdcW7Ex79+sOo22j5fhBu8CVGoaRb6fv1f1qN0T
+	 BhAOSSGjobgMhS8YAAAPPxa+z4Pr52XURr6qCtlxUQZvk0gMVJyBvTkIxLza4aveloVCb
+	 wK5xf65g1xphqxPfr9tKtFaq1AR3sEv/8na1jnAHmlzgESaMIEMba7EZaPONMqvEGBg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795526082;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:Content-Transfer-Encoding:Content-Type:
+	 X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=xOFozaMwmo1idqMUiXc1D2U6cKaVfmPBvQCvoagkPaw=;
+	b=s3E4JToSDZ531u9+DJm5uaYCcdcck8O0Fm60rkSx/OrZbJ9c6wf97jzCi6jBDs6jgs21
+	 N/uS3coUrKrM1jH7IYTV7/opQG6DaohmHopncEsSklM0zcCfYBW9CqdMaX3xogBdidMfv
+	 bbSuLsEIxaoUfj4Jmqlj5//UqpIRjjmAFTR3uKThYCCTLMx03cKnA5G4nuoRoZhJvhYPn
+	 KHyjHIwyfQy+RisLfKnEXYIiCX23ljVO1gdBKYqTvXyW//RnOv2yMSoBWATNiCtXB56yQ
+	 ZHdfDcke+zr1eLBJvfbK1LQ5FbTlK88r6fCvvgnAH9Rp9J/eHwFk3D+0ABiZoPgS3Zw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nxp.com;
+	spf=pass smtp.mailfrom=nxp.com;
+	dkim=pass header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=XZmHQMze;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.130.3
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011003.outbound.protection.outlook.com [40.107.130.3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E24D4606A322;
-	Tue, 24 Nov 2026 13:09:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E24D4606A322
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A457606A32A
+	for <imx@lists.linux.dev>; Tue, 24 Nov 2026 13:14:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5A457606A32A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=mmUD+xsu;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=97c8Gm65;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=no7xFE9k;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=XvYNRNNJ
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id C79711F7CD;
-	Tue, 24 Nov 2026 13:08:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1795525740; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=WcJSkaqY9Qq8Hd92McHt9i07oPBgHaZhYiQd4F7xNFM=;
-	b=mmUD+xsuUa7B/iXxIoqUvGyM9xNrE4ua0l7iAxS2Y2M4GtqqEM1XZb2WmCf3R/1AQcQUns
-	R8p59avmbySAHfYg12Ab/nfBoP+gF9UK5o+ZmznsSD3TG41YbJKyeD7j8DkDDROSQ3xPK3
-	QrSlmxbpTqkIOujibWP/aRmmB9859bo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1795525740;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=WcJSkaqY9Qq8Hd92McHt9i07oPBgHaZhYiQd4F7xNFM=;
-	b=97c8Gm65I5xaQNqWkHPOaWRh+xRBvHI5FL66vC6xwgctIrr1cl2kCnl16LzS/ZoPm5Dhla
-	SdHo7QUcZiqvO6Ag==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=no7xFE9k;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=XvYNRNNJ
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1795525739; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=WcJSkaqY9Qq8Hd92McHt9i07oPBgHaZhYiQd4F7xNFM=;
-	b=no7xFE9kf7JGQKe28BZel4ShYaE4zzTL5BIak1zW8v/xo5GPsr/s6sydUbEGQhfrHAYadS
-	QaPpvH2QACCd1dCbW6K34s1EGrihvQBlJkq78AYmE3Dc3zNRA2WinzgizDD2RhMFr5tkBJ
-	HTESxp7jut2xaGEIOPCp5knzhztoMt8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1795525739;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=WcJSkaqY9Qq8Hd92McHt9i07oPBgHaZhYiQd4F7xNFM=;
-	b=XvYNRNNJXqCs9b455USCCnF4QILvmlgIMu6KafQN/mRztUDTVN1o3Xzh/fd/1U8vj1NUT1
-	O8nXZ7CNrzNImrDA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2D1B813505;
-	Tue, 24 Nov 2026 13:08:59 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id zsLdNWqMBWt+MQAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Tue, 24 Nov 2026 13:08:59 +0000
-Message-ID: <93890802-060e-4369-842e-2a02bbd2042c@suse.de>
-Date: Tue, 24 Nov 2026 14:08:58 +0100
+	dkim=pass (2048-bit key, unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=XZmHQMze
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=xzjfulqIggLf4vO1TFwCzlbqZ1Gio2+h0MzXxOG7f6guBKFXcyMoRUH3PF11xweYFfw+SDC8SAxDTtMiHCovlsOIQ51mEmtC4FkGuNMfujhVKfLnN++E4Dh91zY4G2Mua91jEay6ohV1TYiCfjhl1fkSJ3dKYYB3DJlKxpmO2o/WUF5aehks4NWOrW36P53waVMU/b34XOK1x7fbFSLXd2s3nLFd5+0iKanOPO58Tnaf/mPLuJIkF0Gv2C7jk0K/WThxkfGB3F2sLfPfX8C5crtGvNeh/922czr3tj+Ae/aKurJfIna9nYbNzrgGyws30/mAVBENwbJec46c+GCEbw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xOFozaMwmo1idqMUiXc1D2U6cKaVfmPBvQCvoagkPaw=;
+ b=eq3EXyncYX//Ow2eMgH8qkJHO3ttiJWd7RDcLNWAvPL5M6SmxZcTMIINENxO8G56/L2h7LOITJk3DzgVrOhr14Tdtyc6PgQINYe8kbcetr69eb5WpSYVHln1Df22s60y7ShwQI6MSI0AbgwAdsek2P/TlA+QCrQqVJIHTnaeGGhz5SwBqFU18Rbh8EXNDa4DC2b9pgZLfsxvC/6maqLjF/DGd4bma2nIV83Ci57E+SCtlv6ofJ0JSLkfShoqi7cdOfoh5X0hKZ2FrYuyeorhSTZhBjrLkwdCQjf8X1GF99kh3CCVvhKV4mG9Wu1ttBwWz5CA4nFfd5E0Gq6DJ8j++g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=xOFozaMwmo1idqMUiXc1D2U6cKaVfmPBvQCvoagkPaw=;
+ b=XZmHQMzeeagFqgiUmT1L4aC1dOtainJ2jV0AM9qeEkZad01A40eMZeVVwhN1wa1wenPdxsmm3Z9LA5HAw5oV7gZu3JkCmTh1KApK0rtF6tBlsApN6M3SlUF2lgCRhEr2usIXi+zBUEurQ+opLhTvXakO+nDBdb6DfEoex0GZmwWYFJy51MOV+zVa4kUXrAqDECFombGbeFauS/iKqesiWyp/c/t8dPT6iL28qag1TDBf8UhIYqbAm9MaEiBZYHR7ErbUljOXrVCOPamYrq+wHow1S80I2XAk1OgvIckQTfris7AZrsKeR1eccUcxYCio8JZTfluJjncJuowYOHMHxA==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM6PR04MB4472.eurprd04.prod.outlook.com (2603:10a6:20b:23::20)
+ by BR2PR04MB325065.eurprd04.prod.outlook.com (2603:10a6:2c8:7::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.662.4; Tue, 24 Nov
+ 2026 13:14:39 +0000
+Received: from AM6PR04MB4472.eurprd04.prod.outlook.com
+ ([fe80::aed9:e8b9:c352:9ba0]) by AM6PR04MB4472.eurprd04.prod.outlook.com
+ ([fe80::aed9:e8b9:c352:9ba0%6]) with mapi id 15.21.0639.010; Tue, 24 Nov 2026
+ 13:14:39 +0000
+From: Stefan Ghetu <stefan.ghetu@nxp.com>
+To: linux-pci@vger.kernel.org
+Cc: imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Sahil Malhotra <sahil.malhotra@nxp.com>,
+	Stefan Ghetu <stefan.ghetu@nxp.com>
+Subject: [PATCH] PCI: imx6: Fix kernel oops on user-mode external aborts
+Date: Tue, 24 Nov 2026 15:14:32 +0200
+Message-ID: <20261124131432.695946-1-stefan.ghetu@nxp.com>
+X-Mailer: git-send-email 2.53.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: FR4P281CA0138.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:b8::12) To AM6PR04MB4472.eurprd04.prod.outlook.com
+ (2603:10a6:20b:23::20)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -108,235 +107,137 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFT v3 2/5] drm/fb-dma-helper: Add
- drm_fb_dma_get_gem_clipped_addr()
-To: Chen-Yu Tsai <wenst@chromium.org>
-Cc: Liu Ying <victor.liu@nxp.com>,
- Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>,
- Lucas Stach <l.stach@pengutronix.de>, Chen-Yu Tsai <wens@kernel.org>,
- Jernej Skrabec <jernej@kernel.org>, Samuel Holland <samuel@sholland.org>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, linux-sunxi@lists.linux.dev,
- imx@lists.linux.dev, dri-devel@lists.freedesktop.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20261124074041.115251-1-wenst@chromium.org>
- <20261124074041.115251-3-wenst@chromium.org>
- <19cd5949-05dc-4107-bd2b-d8ad1e2332eb@suse.de>
- <CAGXv+5HSV7MJ96qTcOp+JaKWtmmYYWAmDROrT18pZ9PztNCJ-g@mail.gmail.com>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <CAGXv+5HSV7MJ96qTcOp+JaKWtmmYYWAmDROrT18pZ9PztNCJ-g@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-13.50 / 50.00];
-	SUSE_INTERNAL_BYPASS(-9.00)[];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	XM_UA_NO_VERSION(0.01)[];
-	MX_GOOD(-0.01)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	RCVD_TLS_ALL(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[nxp.com,oss.nxp.com,pengutronix.de,kernel.org,sholland.org,linux.intel.com,gmail.com,ffwll.ch,lists.linux.dev,lists.freedesktop.org,lists.infradead.org,vger.kernel.org];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from,2a07:de40:b281:106:10:150:64:167:received];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:url,suse.de:email,suse.de:dkim,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Flag: NO
-X-Spam-Score: -13.50
-X-Spam-Level: 
-X-Rspamd-Queue-Id: C79711F7CD
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM6PR04MB4472:EE_|BR2PR04MB325065:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9abc2366-ff2a-418b-7556-08df4a2ce4c4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|366016|23010399003|1800799024|19092799006|10067099003|11063799006|56012099006|261022075727099003|261022105027099003|261021123027099003|261021121427099003|261026121527099003|261026140227099003|261028144727099003|261102123227099003|261009223027099003|18002099003|6133799003|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	P5lKTQh7udyduEObFtgvGqfTvI1V/omho2eHbptgj1PN0kgeVkHv9fjmAPZR95VlHXUtG8epLeSmlMOol8AptYo5xoqyJvrszXcrL+/meqKEOb6RHI59U8uE+IcTL4B+G+QexBU1OoaqXr7MLoRoT9oS8VPa0ruee9AbUnweExjQqUgiu9qu+U6BiTIQQt62ibTlO3AWlgoD91x2bVkms3FA9t9ys74o80aWtRKvPg4vpSZMto0oCnkRcZ+ywG185oV5lWoaB0ts9GdxaHPK2GsPMp9T5gvjHNuEOIrG8TNbjnaDPReeHd31MgE8GKQeSferiB9QJ5cGCm5ooNG4WqfHVjYx9WTmxYJzLvW6pOEWN0szsp9BZhRxVpwHy95wgShTRvaXQFMtC/Wh11Ux+ILXGTyBlpMlS+0waRU/l7ctKtPr41TSESMW6JxM/SomFqSli7Sa9HWXbr1a+F348xGr9VUUwtffgtoT5Skf7kzAZNKbN76rf0hHGZSTgSHnN/nJ5NAiwNebH/k0KZUKwMacCPIdFecMUEGpqZ1tCEq5hAml0hcMdiXQkJih0TZJXP8S8jQwVtoVsZWmgtT9Z/zuId9bxjgUBqMiCu0GQS5Naja1uhDks9YtAUkN0Tf5a1bsBetZGKNaVrJd17MqxWhmHrfeXvraE2wmQ+87sHo=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4472.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(23010399003)(1800799024)(19092799006)(10067099003)(11063799006)(56012099006)(261022075727099003)(261022105027099003)(261021123027099003)(261021121427099003)(261026121527099003)(261026140227099003)(261028144727099003)(261102123227099003)(261009223027099003)(18002099003)(6133799003)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Xwpyi0Js9UTX4uMxoVxLnTUHQZCvUQWOreeU4azQCUFEgl9Vl+CxkhyzOQoG?=
+ =?us-ascii?Q?WuD4rTSCrAy7fkuw3KLSjVWuIntZ2bQbFp7zkL/hLAqHn3PnLqC2areRtlzU?=
+ =?us-ascii?Q?714K3b6zqllL6WPYfySxcbQur676UFEddLQgI7O2nwrKk4gqjBY/IKA6HPWP?=
+ =?us-ascii?Q?Ob8IgdV8V7H/9Puo5DrBVjWbJ4nBrsQ87cgxLbvhzWbzb3/rjoe89hd0PslY?=
+ =?us-ascii?Q?ws0y/ENdHI8kpcR7COWzzHLkqebHteP713BGHRrIkLCY6zZPMF1dLbZocxfC?=
+ =?us-ascii?Q?NqHeVm3RuG5PljlbKsUO6orBtT2f634+bZApTqrUDNTIrPRT8zADFAWVFS+j?=
+ =?us-ascii?Q?C5lZzK+nus80roM6JPUz5lC0lRHp24w8MvAjqzCe0u/RgFERcA80jrlYaw0N?=
+ =?us-ascii?Q?ALKItPJgbIMot/LrkjwBGzt1amACcKG76y+eta64lK12LqykgpLktUieAmSP?=
+ =?us-ascii?Q?7g7Rq+hhbGf6MJIV6V6DAw+DdJoCrKetUNaC+dgKS0b3h9R3S94Mm1AqraTv?=
+ =?us-ascii?Q?NHdrWvM4iv1g8aMuGo80f9JzwCIeWRuPNOZssJK9kqq1lYYuXAaGIvTxNger?=
+ =?us-ascii?Q?0pxxgVyYO7T3PBuFRllT3pZE6zw7OLmjOPPPamvM28OFEYzWhjJBn6sSfuAe?=
+ =?us-ascii?Q?fhz4blNKPmfsVpEXVNy5jJ9M/O7cP3FHg5b7jNic0kuFLtYN/noGlbP02U48?=
+ =?us-ascii?Q?f7Gr+0eeRY2OjwSmwOeKkv2HgWYanWB5/GVQ70Hxk1p/VOlGkRMRbu1Fc+mk?=
+ =?us-ascii?Q?DeV/TiLbvj++nLleuGAiAUeF1JiBDuK18EzAs4DRkUnP42SUMjRK+JSuU35t?=
+ =?us-ascii?Q?gLpU0oGAOOdNIWlKQIva7BYTf8Di6h9lCo1vnOV1IkQ1bwe4keOhJAakOmru?=
+ =?us-ascii?Q?i5LWUenwcfyO1qIMXYR1JeF0onj1XxlcynV0zV8mPbBNNt03KUCQSaT0U+4l?=
+ =?us-ascii?Q?XOfCkYfAg4kMyTlddd9pi8Bumw4Qc9TK955nXetBRlGeTsai6I26Rl/GLMHX?=
+ =?us-ascii?Q?8UBuGP3ZRUDQ9ix+iGLa+Ir9ETcJhcguQx3+d4dk9cpqzlFMGwa6qOcjrKlK?=
+ =?us-ascii?Q?Jx/1DmX+IfvVhS1nqh3sXDKB+sVT6EYZ7pY3/sJ5X1tovq849LUJJtFprOn+?=
+ =?us-ascii?Q?RTmwM6ELMK+jTY1ObqxQKjqxQhEIa/v3LAn42h0Th71WXD5RdTOw/x6oMGwJ?=
+ =?us-ascii?Q?rgETnd1P4b2JIBzHKTPUWc4F+u/hq76oPiQHK3JRJGrlckUJ4nnXF0Sxctq9?=
+ =?us-ascii?Q?fVOOTNgskbzLmEkgrl7FfjPiqogwiBZO+v7E2lxm+IX6lH7a/doQnbNLf+Vh?=
+ =?us-ascii?Q?ycLl3RJz5o7Q0vx9m6ck9ws9PfWp8eo9uRcHB/XWNR5Qo6lknpbxJ+pd96PJ?=
+ =?us-ascii?Q?hpYUs1CnpSha5nHayP1B3P9Z+b35ngguuHn9/Aj+QutaLbnT0K+6/1ssrYZw?=
+ =?us-ascii?Q?BBGl3Vfnk+AwkH3ZTP81+FnMdOwWpkaJIjKUEF+FRNm12cJadwOK9OQUiePk?=
+ =?us-ascii?Q?nH/Ia1W7qaOm9clZ5mns0B9SkZQb4DXNIxgioLbttgTv895+zl7054wVrVB6?=
+ =?us-ascii?Q?hydBHixgbQEC1xQaw/1H3C+1AA43j9/1YHQaS12ZWyzbSqxkoHtSRQ0B9sG2?=
+ =?us-ascii?Q?v0GY1Vd4S/3I1oiifILPpqEDX+go4fzddAH7IHsPr9GuldBhdp33j33KnGwb?=
+ =?us-ascii?Q?dG8kiLcvdfRTVdo61VC1rCTpFWhSaAmEbJ+aWsukR5pL8LxiDnstLb0EUmtf?=
+ =?us-ascii?Q?zlRqBHCPWQ=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9abc2366-ff2a-418b-7556-08df4a2ce4c4
+X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4472.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Nov 2026 13:14:38.9800
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: TDqy8yfpz7eM51pCK+43XUYNVKcNsbNU4fk4gQy+QMEPpuTU035sF56Pv8Pjhw7C0T8Ufy8PgLfFmAiOyHLJ2Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BR2PR04MB325065
 
-Hi
+From: Richard Zhu <hongxing.zhu@nxp.com>
 
-Am 24.11.26 um 11:22 schrieb Chen-Yu Tsai:
-> On Tue, Nov 24, 2026 at 3:57 PM Thomas Zimmermann <tzimmermann@suse.de> wrote:
->> Hi
->>
->> Am 24.11.26 um 08:39 schrieb Chen-Yu Tsai:
->>> drm_fb_dma_get_gem_addr() returns the DMA address to the "unclipped"
->>> framebuffer. However some display drivers want the "clipped" framebuffer
->>> instead, as they are also using the clipped coordinates to program the
->>> hardware.
->>>
->>> Some of these drivers are open-coding drm_fb_dma_get_gem_addr() with
->>> the source coordinates replaced, while others have been incorrectly
->>> converted to using drm_fb_dma_get_gem_addr(), which would end up
->>> causing incorrect parts of the framebuffer to be displayed if it were
->>> somehow clipped.
->>>
->>> Add drm_fb_dma_get_gem_clipped_addr(), a "clipped" version of
->>> drm_fb_dma_get_gem_addr() for these drivers to use.
->>>
->>> Cc: <stable@vger.kernel.org> # dependency for next patch
->>> Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
->>> ---
->>> Changes since v1:
->>> - Use new drm_framebuffer_get_block_offset() helper
->>> ---
->>>    drivers/gpu/drm/drm_fb_dma_helper.c | 37 +++++++++++++++++++++++++----
->>>    include/drm/drm_fb_dma_helper.h     |  4 ++++
->>>    2 files changed, 37 insertions(+), 4 deletions(-)
->>>
->>> diff --git a/drivers/gpu/drm/drm_fb_dma_helper.c b/drivers/gpu/drm/drm_fb_dma_helper.c
->>> index ab0f37d8a5ff..0aaf4926db4e 100644
->>> --- a/drivers/gpu/drm/drm_fb_dma_helper.c
->>> +++ b/drivers/gpu/drm/drm_fb_dma_helper.c
->>> @@ -60,15 +60,16 @@ struct drm_gem_dma_object *drm_fb_dma_get_gem_obj(struct drm_framebuffer *fb,
->>>    EXPORT_SYMBOL_GPL(drm_fb_dma_get_gem_obj);
->>>
->>>    /**
->>> - * drm_fb_dma_get_gem_addr() - Get DMA (bus) address for framebuffer, for pixel
->>> - * formats where values are grouped in blocks this will get you the beginning of
->>> - * the block
->>> + * drm_fb_dma_get_gem_addr() - Get DMA (bus) address for unclipped framebuffer,
->>> + * for pixel formats where values are grouped in blocks this will get you the
->>> + * beginning of the block
->>>     * @fb: The framebuffer
->>>     * @state: Which state of drm plane
->>>     * @plane: Which plane
->>> - * Return the DMA GEM address for given framebuffer.
->>>     *
->>>     * This function will usually be called from the PLANE callback functions.
->>> + *
->>> + * Return: GEM DMA address for given framebuffer, unclipped.
->>>     */
->>>    dma_addr_t drm_fb_dma_get_gem_addr(struct drm_framebuffer *fb,
->>>                                   struct drm_plane_state *state,
->>> @@ -86,6 +87,34 @@ dma_addr_t drm_fb_dma_get_gem_addr(struct drm_framebuffer *fb,
->>>    }
->>>    EXPORT_SYMBOL_GPL(drm_fb_dma_get_gem_addr);
->>>
->>> +/**
->>> + * drm_fb_dma_get_gem_clipped_addr() - Get DMA (bus) address for clipped
->>> + * framebuffer, for pixel formats where values are grouped in blocks this
->>> + * will get you the beginning of the block
->>> + * @fb: The framebuffer
->>> + * @state: Which state of drm plane
->>> + * @plane: Which plane
->>> + *
->>> + * This function will usually be called from the PLANE callback functions.
->> You should mention what clipping means in this context. It's not obvious
->> what it's clipping against. Or maybe point to other docs that explain it.
-> What about:
->
-> /**
->   * drm_fb_dma_get_gem_clipped_addr() - Get DMA (bus) address for the start
->   * of the visible (CRTC-clipped) part of the framebuffer
->   * @fb: The framebuffer
->   * @state: Which state of drm plane
->   * @plane: Which plane
->   *
->   * A plane may be positioned partially off-screen, in which case it gets
->   * clipped to the visible CRTC area by drm_atomic_helper_check_plane_state()
->   * (populating the clipped coordinates in &drm_plane_state.src and
->   * &drm_plane_state.dst). For example, if a plane extends past the left or
->   * top edge of the screen, only its right and/or bottom portion is visible.
->   * Drivers whose hardware cannot clip by itself (i.e. accept negative
->   * destination coordinates) should use this helper instead of
->   * drm_fb_dma_get_gem_addr() so scanout starts from the visible portion of
->   * the framebuffer.
->   *
->   * For pixel formats where values are grouped in blocks, this returns the
->   * beginning of the block.
->   *
->   * This function will usually be called from the PLANE callback functions.
->   *
->   * Return: GEM DMA address for the visible part of the framebuffer.
->   */
+When a user-space process (e.g., memtool) accesses an OP-TEE protected
+memory region, the SoC raises an external abort (FSR code 8). The
+imx6q_pcie_abort_handler() registered for this fault code attempts to
+decode the faulting instruction by directly dereferencing the saved PC:
 
-Looks good.
+    unsigned long instr = *(unsigned long *)pc;
 
->
->>> + *
->>> + * Return: GEM DMA address for given framebuffer, clipped.
->>> + */
->>> +dma_addr_t drm_fb_dma_get_gem_clipped_addr(struct drm_framebuffer *fb,
->>> +                                        struct drm_plane_state *state,
->>> +                                        unsigned int plane)
->>> +{
->>> +     struct drm_gem_dma_object *obj;
->>> +
->>> +     obj = drm_fb_dma_get_gem_obj(fb, plane);
->>> +     if (!obj)
->>> +             return 0;
->>> +
->>> +     return obj->dma_addr + drm_framebuffer_get_block_offset(fb, plane,
->>> +                                                             state->src.x1 >> 16,
->>> +                                                             state->src.y1 >> 16);
->> I had to look several times to spot the difference to the regular
-> I suppose I should add a comment to make the difference more visible:
->
->      /* Use clipped source coordinates state->src.[xy]1 instead ->src_[xy] */
+However, for user-mode aborts, the PC points to user-space memory. This
+unchecked dereference from kernel mode triggers a secondary domain fault,
+which is not hooked by any handler. The fault then escalates to an
+"Internal error: Oops" and crashes the kernel:
 
-Your choice.
+    Unhandled fault: page domain fault (0x01b) at 0x006e3316
+    Internal error: : 1b [#1] SMP ARM
+    CPU: 0 UID: 0 PID: 1415 Comm: memtool
+    PC is at imx6q_pcie_abort_handler+0x4/0x7c
+    LR is at do_DataAbort+0x3c/0xb0
 
->
->> helper. In any case
->>
->> Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-> If the changes above are acceptable to you I'll send out a new version
-> with your tag kept.
+The abort handler was designed only for kernel-mode PCIe configuration or
+I/O space accesses and never hardened for user-mode faults.
 
-Sure, go ahead.
+Fix this by:
 
-Best regards
-Thomas
+1. Checking if the abort occurred in user mode and returning early to let
+   the normal fault path deliver SIGBUS to the faulting task (as already
+   specified in the hook_fault_code() registration).
 
->
->
-> Thanks
-> ChenYu
+2. Using get_kernel_nofault() to safely read the instruction for
+   kernel-mode aborts, preventing recursive faults if the kernel PC is
+   invalid.
 
+This ensures user-mode aborts are handled gracefully without crashing the
+kernel, while preserving the existing fixup behavior for legitimate
+kernel-mode PCIe access faults.
+
+Fixes: 415b6185c541 ("PCI: imx6: Fix config read timeout handling")
+Signed-off-by: Sahil Malhotra <sahil.malhotra@nxp.com>
+Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+Signed-off-by: Stefan Ghetu <stefan.ghetu@nxp.com>
+---
+ drivers/pci/controller/dwc/pci-imx6.c | 20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+index 0377d72b54ea6..9a9cc35f6559f 100644
+--- a/drivers/pci/controller/dwc/pci-imx6.c
++++ b/drivers/pci/controller/dwc/pci-imx6.c
+@@ -669,8 +669,24 @@ static int imx6q_pcie_abort_handler(unsigned long addr,
+ 		unsigned int fsr, struct pt_regs *regs)
+ {
+ 	unsigned long pc = instruction_pointer(regs);
+-	unsigned long instr = *(unsigned long *)pc;
+-	int reg = (instr >> 12) & 15;
++	unsigned long instr;
++	int reg;
++
++	/*
++	 * This handler is only for kernel-mode PCIe config/IO space accesses.
++	 * User-mode aborts must be handled by the normal fault path, which will
++	 * deliver SIGBUS to the faulting task. Dereferencing a user-mode PC
++	 * from kernel context triggers a secondary fault that escalates to an
++	 * unhandled kernel oops.
++	 */
++	if (user_mode(regs))
++		return 1;
++
++	/* Safely read the faulting instruction to prevent recursive faults */
++	if (get_kernel_nofault(instr, (unsigned long *)pc))
++		return 1;
++
++	reg = (instr >> 12) & 15;
+ 
+ 	/*
+ 	 * If the instruction being executed was a read,
 -- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
-GF: Stefan Gaiser, Jochen Jaser, Abhinav Puri, (HRB 36809, AG Nürnberg)
-
+2.53.0
 
