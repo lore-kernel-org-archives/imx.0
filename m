@@ -1,102 +1,104 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.135.223.130
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795506454;
-	b=At0qZSNiuzakfU+n8eDS/0J+J1mfEjXepyndB6BOkZACrFyh/t0f5ApDo1BUuu1YN1xy
-	 v3nDXHD7VbXdhri7HltVZsh16nH3kZOFGhgGDYPZsyRu2UKaFJPd+s8Rw+mrkg/5hQUg5
-	 txhiO118WjGVsl5D/FSFup9Cn52zQ1RZHBU4sW/FUmvN+CTXIzzSQ1GwasiRalEgcdtyu
-	 2TR11sSIpJAIwRYfevgn5ko5up4qKVzVHdeQ+AaA5GGTXon5GeDY+T7AsfYd67L/r3dq7
-	 icivjLsN/2FUIF1stieYEZoMDGxeb6T2CcnkScH5eBP5RQMkuTfphiA57vy3FEbXOYA==
+	t=1795507079;
+	b=I9aNjaGM/tmhkvMffJw/p/II4ce4NJagfY/iwQGxOklD869m1dpE28DkdN522LZudxCo
+	 obJLkqk7sAtKs5Y+tJD+7kaGGDtVuDjn7WlP1Mvh5pMYaP271GJCfG6LFaI18j52mATX+
+	 vX70mjlMlF348lt0ClbsfgsE+Lhr5kYWZgakIhnRbv4SNLOEuTfQQ58C+FPhcvolrK8/7
+	 cSBIHIFGf6PS+5dZxURqMtOsvkL9V3wrMsRiJi9VL7eb/WXnxf78Du/8PZ9sgsq4tpKAK
+	 wfRr3avykpTRfAUsptZS1sCJK95pEeuhY88OAU+2c8CO6SiSgrCu4fxIicDnwlbJqUA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795506454;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795507079;
 	h=DMARC-Filter:Received:DKIM-Signature:DKIM-Signature:DKIM-Signature:
 	 DKIM-Signature:Received:Received:Message-ID:Date:MIME-Version:
 	 User-Agent:Subject:To:Cc:References:Content-Language:From:Autocrypt:
 	 In-Reply-To:Content-Type:Content-Transfer-Encoding:X-Spamd-Result:
-	 X-Spam-Score:X-Spam-Level:X-Spam-Flag;
-	bh=oOy2yoxFTmtBtmqxddydcBqpF8aGEH7F/iYI6h7X9Aw=;
-	b=Ck+Gvd2u30rUro63K3bDmp7Gn/chrKq1UJ29iYbCxzhf/Cq2xSvGskWhN1O6wqtyIcMG
-	 I6s5P8QckD8uCtMAEihOb0asE5qSBzKUmi5ur2I6Q+/y7kN9Kr+Qyx0U5Azn1aINg+Nlv
-	 /K5W3BpNgivaP6yFDLD9zJ47zm6flPgoSLr5+cMd8vXxnDQa0bXrY3V29FeaFgd3VxSji
-	 0zfewYBCtRfKbskfgOT89zw2oZkr7VP6VKP6TNOf3xtj0Var2CrI8fJIv3j4L2p9prLwT
-	 O+daY+9+m3mkX0MC/mZH7ZNf2TIVOInHUDvJfW8MtsZRYCGqUj1/ja/da3wG5wbvnew==
+	 X-Rspamd-Server:X-Rspamd-Action:X-Spam-Flag:X-Spam-Score:X-Spam-Level:
+	 X-Rspamd-Queue-Id;
+	bh=+lTcW2tHFQB1C3Nlj5p7HmcW5Co2wEM9UlQh+yZacDY=;
+	b=qStT/q7j+otpmUqAO8lvRx36+hvHB+/wBulTnbopPULMYL5ZeTEnh9SkMKUAyQlLTyUV
+	 U9wi72Tc/httHij0r6zQMrQSfQk5o4okayBMBw7k0kTyz72fJ7RN+dZ3+W51PdI3qu+uD
+	 zv89n7beQd48s8f7h2cg2iKFHfhZIvHgha+vaQROblivtSal9rb/MHpW3ZIxY/QNWQiYq
+	 YUCFgtF4XmLKzPAj8eS/logLsUgMT1a9nE1ss1+UNwBmeMjfmp0sk2jqEVj6M3fxoqjP/
+	 /P7klYf7HVz1lZAr2jYpziY5PA9IHrPNgSuS5tvoi7S3qDFNxgLcbUPpYYW6mNzbYnA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=suse.de;
 	spf=pass smtp.mailfrom=suse.de;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=RvfUoK8J;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=QTL0IBEI;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=RvfUoK8J;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=QTL0IBEI;
-	arc=none smtp.remote-ip=195.135.223.131
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=t6QZHWyB;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=2F5ECXx5;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=V5mKWLC2;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=OLVgPb3g;
+	arc=none smtp.remote-ip=195.135.223.130
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 443DE606A322;
-	Tue, 24 Nov 2026 07:47:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 443DE606A322
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 161E9606A31E;
+	Tue, 24 Nov 2026 07:57:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 161E9606A31E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=RvfUoK8J;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=QTL0IBEI;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=RvfUoK8J;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=QTL0IBEI
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=t6QZHWyB;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=2F5ECXx5;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=V5mKWLC2;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=OLVgPb3g
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 4B6501FBF8;
-	Tue, 24 Nov 2026 07:47:31 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id CA2AE222A0;
+	Tue, 24 Nov 2026 07:57:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1795506451; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1795507077; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=oOy2yoxFTmtBtmqxddydcBqpF8aGEH7F/iYI6h7X9Aw=;
-	b=RvfUoK8JJZe4f5lyx5Lz0+zPMnfXTy8v7njLppBgBVYV9+OYxNUS2W9fcwJGqMCAfkOnF3
-	aqFG5+egUF2rBiuN8GPJcDMgqd/0M2D6q7Z3iGEPkkh9zp8dMb7YNVpggKpaJ8hF3Ixw0z
-	Fl/etUjMWvJJT4KVfs6pGp6IH1jdFpA=
+	bh=+lTcW2tHFQB1C3Nlj5p7HmcW5Co2wEM9UlQh+yZacDY=;
+	b=t6QZHWyB+uwrXEMViAOb3jw8v3rFzTwiexBazr/M9jtcQfKL16akSjckIaiPR5aVv1MlZN
+	hreHc7aqXFqryIQDW3XPrFCViGtUMYRSRQ+ZEygQtsmE8otNstFX4UUluGO0QiQNiBJGlu
+	B4pls7m8ILY/4H2Vu+P1QtX42dk+Wns=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1795506451;
+	s=susede2_ed25519; t=1795507077;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=oOy2yoxFTmtBtmqxddydcBqpF8aGEH7F/iYI6h7X9Aw=;
-	b=QTL0IBEIbQT850ndMXYNNwXMSr8MzU9rt2RETzPKXHuYtDSO77baHodckBS+K4wuPZvn+w
-	mwXZhkOS8Gwt32Aw==
-Authentication-Results: smtp-out2.suse.de;
-	none
+	bh=+lTcW2tHFQB1C3Nlj5p7HmcW5Co2wEM9UlQh+yZacDY=;
+	b=2F5ECXx5Gt5cRFJ2/teE9NeAGYBh8u07py1GiJQYxbA9bcZ4O1RUmRuL3vrN5Eol3fsoNz
+	y6nGiypRf5a1A1AA==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=V5mKWLC2;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=OLVgPb3g
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1795506451; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1795507076; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=oOy2yoxFTmtBtmqxddydcBqpF8aGEH7F/iYI6h7X9Aw=;
-	b=RvfUoK8JJZe4f5lyx5Lz0+zPMnfXTy8v7njLppBgBVYV9+OYxNUS2W9fcwJGqMCAfkOnF3
-	aqFG5+egUF2rBiuN8GPJcDMgqd/0M2D6q7Z3iGEPkkh9zp8dMb7YNVpggKpaJ8hF3Ixw0z
-	Fl/etUjMWvJJT4KVfs6pGp6IH1jdFpA=
+	bh=+lTcW2tHFQB1C3Nlj5p7HmcW5Co2wEM9UlQh+yZacDY=;
+	b=V5mKWLC2LKBl7WBvuGIYdTJ8l+f2lZ7B66HdbCZS72OAF+qFWuhpeVaYpHR31luoizoZP7
+	XqD4b5xE6qjLwDUpUE7bg84QWh2cpk7WX0l/FUGpG7IYPPKd/O5aWKw5nqyVDf0Q7QrrFW
+	x3UQbgfkryFqF+Cy6a2ljl+AdRhrKGo=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1795506451;
+	s=susede2_ed25519; t=1795507076;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=oOy2yoxFTmtBtmqxddydcBqpF8aGEH7F/iYI6h7X9Aw=;
-	b=QTL0IBEIbQT850ndMXYNNwXMSr8MzU9rt2RETzPKXHuYtDSO77baHodckBS+K4wuPZvn+w
-	mwXZhkOS8Gwt32Aw==
+	bh=+lTcW2tHFQB1C3Nlj5p7HmcW5Co2wEM9UlQh+yZacDY=;
+	b=OLVgPb3g3TEsd2zNnGv6r47ADixoKiJap6uGDCDRVug5SHA+7W3Vajse22lzZMFXhaKM5J
+	O2ZWnNNbC0f3nFBQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 744561339F;
-	Tue, 24 Nov 2026 07:47:30 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3DF9F1339F;
+	Tue, 24 Nov 2026 07:57:56 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id TsLkCRJBBWuHYQAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Tue, 24 Nov 2026 07:47:30 +0000
-Message-ID: <dfbc0fdf-9490-472a-8649-e392df2e0608@suse.de>
-Date: Tue, 24 Nov 2026 08:47:29 +0100
+	id Xh+vB4RDBWs3bAAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Tue, 24 Nov 2026 07:57:56 +0000
+Message-ID: <19cd5949-05dc-4107-bd2b-d8ad1e2332eb@suse.de>
+Date: Tue, 24 Nov 2026 08:57:55 +0100
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -107,8 +109,8 @@ List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFT v3 1/5] drm: Split framebuffer pixel offset
- calculation from drm_fb_dma_get_gem_addr()
+Subject: Re: [PATCH RFT v3 2/5] drm/fb-dma-helper: Add
+ drm_fb_dma_get_gem_clipped_addr()
 To: Chen-Yu Tsai <wenst@chromium.org>, Liu Ying <victor.liu@nxp.com>,
  Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>,
  Lucas Stach <l.stach@pengutronix.de>, Chen-Yu Tsai <wens@kernel.org>,
@@ -120,7 +122,7 @@ Cc: David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
  dri-devel@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org,
  linux-kernel@vger.kernel.org, stable@vger.kernel.org
 References: <20261124074041.115251-1-wenst@chromium.org>
- <20261124074041.115251-2-wenst@chromium.org>
+ <20261124074041.115251-3-wenst@chromium.org>
 Content-Language: en-US
 From: Thomas Zimmermann <tzimmermann@suse.de>
 Autocrypt: addr=tzimmermann@suse.de; keydata=
@@ -147,200 +149,156 @@ Autocrypt: addr=tzimmermann@suse.de; keydata=
  SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
  Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
  4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <20261124074041.115251-2-wenst@chromium.org>
+In-Reply-To: <20261124074041.115251-3-wenst@chromium.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-13.29 / 50.00];
+X-Spamd-Result: default: False [-13.50 / 50.00];
 	SUSE_INTERNAL_BYPASS(-9.00)[];
 	BAYES_HAM(-3.00)[100.00%];
 	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
 	NEURAL_HAM_SHORT(-0.20)[-1.000];
 	MIME_GOOD(-0.10)[text/plain];
 	XM_UA_NO_VERSION(0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	ARC_NA(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	MX_GOOD(-0.01)[];
 	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
 	FREEMAIL_ENVRCPT(0.00)[gmail.com];
 	RCVD_TLS_ALL(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
 	FROM_EQ_ENVFROM(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FREEMAIL_CC(0.00)[gmail.com,ffwll.ch,lists.linux.dev,lists.freedesktop.org,lists.infradead.org,vger.kernel.org];
-	RCVD_COUNT_TWO(0.00)[2];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received,2a07:de40:b281:104:10:150:64:97:from];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
 	MID_RHS_MATCH_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:url,chromium.org:email,suse.de:email]
-X-Spam-Score: -13.29
-X-Spam-Level: 
+	DKIM_TRACE(0.00)[suse.de:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[chromium.org:email,suse.com:url,suse.de:email,suse.de:dkim,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Rspamd-Action: no action
 X-Spam-Flag: NO
+X-Spam-Score: -13.50
+X-Spam-Level: 
+X-Rspamd-Queue-Id: CA2AE222A0
 
 Hi
 
 Am 24.11.26 um 08:39 schrieb Chen-Yu Tsai:
-> Currently drm_fb_dma_get_gem_addr() calculates the offset into the
-> framebuffer memory for the framebuffer's unclipped source coordinates,
-> adds that to the framebuffer's backing storage, and returns the result.
+> drm_fb_dma_get_gem_addr() returns the DMA address to the "unclipped"
+> framebuffer. However some display drivers want the "clipped" framebuffer
+> instead, as they are also using the clipped coordinates to program the
+> hardware.
 >
-> We are about to add a variant that uses the clipped source coordinates,
-> so there is already some reuse of code. However, calculating the data
-> offset for a given pixel is not specific to the DMA FB helpers. The
-> offset is only related to the framebuffer.
+> Some of these drivers are open-coding drm_fb_dma_get_gem_addr() with
+> the source coordinates replaced, while others have been incorrectly
+> converted to using drm_fb_dma_get_gem_addr(), which would end up
+> causing incorrect parts of the framebuffer to be displayed if it were
+> somehow clipped.
 >
-> Split out the offset calculation into a new framebuffer helper so that
-> non-DMA users can also reuse the same code.
+> Add drm_fb_dma_get_gem_clipped_addr(), a "clipped" version of
+> drm_fb_dma_get_gem_addr() for these drivers to use.
 >
-> Suggested-by: Thomas Zimmermann <tzimmermann@suse.de>
 > Cc: <stable@vger.kernel.org> # dependency for next patch
 > Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-
-This patch is useful on its own and could be merged independently from 
-the others.
-
-Best regards
-Thomas
-
 > ---
-> fb->offsets and fb->pitches are (or should have been) checked by the
-> driver's .fb_create callback, either in drm_gem_fb_init_with_funcs()
-> or reimplementing the checks directly.
->
-> Changes since v2:
-> - Change offset local variable and return type to u64, and use
->    mul_u32_u32() to avoid 32-bit overflow before widening
 > Changes since v1:
-> - New patch
+> - Use new drm_framebuffer_get_block_offset() helper
 > ---
->   drivers/gpu/drm/drm_fb_dma_helper.c | 28 ++----------------
->   drivers/gpu/drm/drm_framebuffer.c   | 46 +++++++++++++++++++++++++++++
->   include/drm/drm_framebuffer.h       |  3 ++
->   3 files changed, 52 insertions(+), 25 deletions(-)
+>   drivers/gpu/drm/drm_fb_dma_helper.c | 37 +++++++++++++++++++++++++----
+>   include/drm/drm_fb_dma_helper.h     |  4 ++++
+>   2 files changed, 37 insertions(+), 4 deletions(-)
 >
 > diff --git a/drivers/gpu/drm/drm_fb_dma_helper.c b/drivers/gpu/drm/drm_fb_dma_helper.c
-> index fd71969d2fb1..ab0f37d8a5ff 100644
+> index ab0f37d8a5ff..0aaf4926db4e 100644
 > --- a/drivers/gpu/drm/drm_fb_dma_helper.c
 > +++ b/drivers/gpu/drm/drm_fb_dma_helper.c
-> @@ -75,36 +75,14 @@ dma_addr_t drm_fb_dma_get_gem_addr(struct drm_framebuffer *fb,
->   				   unsigned int plane)
->   {
->   	struct drm_gem_dma_object *obj;
-> -	dma_addr_t dma_addr;
-> -	u8 h_div = 1, v_div = 1;
-> -	u32 block_w = drm_format_info_block_width(fb->format, plane);
-> -	u32 block_h = drm_format_info_block_height(fb->format, plane);
-> -	u32 block_size = fb->format->char_per_block[plane];
-> -	u32 sample_x;
-> -	u32 sample_y;
-> -	u32 block_start_y;
-> -	u32 num_hblocks;
+> @@ -60,15 +60,16 @@ struct drm_gem_dma_object *drm_fb_dma_get_gem_obj(struct drm_framebuffer *fb,
+>   EXPORT_SYMBOL_GPL(drm_fb_dma_get_gem_obj);
 >   
->   	obj = drm_fb_dma_get_gem_obj(fb, plane);
->   	if (!obj)
->   		return 0;
->   
-> -	dma_addr = obj->dma_addr + fb->offsets[plane];
-> -
-> -	if (plane > 0) {
-> -		h_div = fb->format->hsub;
-> -		v_div = fb->format->vsub;
-> -	}
-> -
-> -	sample_x = (state->src_x >> 16) / h_div;
-> -	sample_y = (state->src_y >> 16) / v_div;
-> -	block_start_y = (sample_y / block_h) * block_h;
-> -	num_hblocks = sample_x / block_w;
-> -
-> -	dma_addr += fb->pitches[plane] * block_start_y;
-> -	dma_addr += block_size * num_hblocks;
-> -
-> -	return dma_addr;
-> +	return obj->dma_addr + drm_framebuffer_get_block_offset(fb, plane,
-> +								state->src_x >> 16,
-> +								state->src_y >> 16);
+>   /**
+> - * drm_fb_dma_get_gem_addr() - Get DMA (bus) address for framebuffer, for pixel
+> - * formats where values are grouped in blocks this will get you the beginning of
+> - * the block
+> + * drm_fb_dma_get_gem_addr() - Get DMA (bus) address for unclipped framebuffer,
+> + * for pixel formats where values are grouped in blocks this will get you the
+> + * beginning of the block
+>    * @fb: The framebuffer
+>    * @state: Which state of drm plane
+>    * @plane: Which plane
+> - * Return the DMA GEM address for given framebuffer.
+>    *
+>    * This function will usually be called from the PLANE callback functions.
+> + *
+> + * Return: GEM DMA address for given framebuffer, unclipped.
+>    */
+>   dma_addr_t drm_fb_dma_get_gem_addr(struct drm_framebuffer *fb,
+>   				   struct drm_plane_state *state,
+> @@ -86,6 +87,34 @@ dma_addr_t drm_fb_dma_get_gem_addr(struct drm_framebuffer *fb,
 >   }
 >   EXPORT_SYMBOL_GPL(drm_fb_dma_get_gem_addr);
 >   
-> diff --git a/drivers/gpu/drm/drm_framebuffer.c b/drivers/gpu/drm/drm_framebuffer.c
-> index d32aceb6ca9b..589619bd8f0b 100644
-> --- a/drivers/gpu/drm/drm_framebuffer.c
-> +++ b/drivers/gpu/drm/drm_framebuffer.c
-> @@ -21,6 +21,7 @@
->    */
->   
->   #include <linux/export.h>
-> +#include <linux/math64.h>
->   #include <linux/uaccess.h>
->   
->   #include <drm/drm_atomic.h>
-> @@ -1208,6 +1209,51 @@ void drm_framebuffer_print_info(struct drm_printer *p, unsigned int indent,
->   	}
->   }
->   
 > +/**
-> + * drm_framebuffer_get_block_offset() - Get offset to start of pixel block for
-> + * the given framebuffer and coordinates.
+> + * drm_fb_dma_get_gem_clipped_addr() - Get DMA (bus) address for clipped
+> + * framebuffer, for pixel formats where values are grouped in blocks this
+> + * will get you the beginning of the block
 > + * @fb: The framebuffer
+> + * @state: Which state of drm plane
 > + * @plane: Which plane
-> + * @x: x coordinate for pixel
-> + * @y: y coordinate for pixel
 > + *
-> + * This function will usually be called from the PLANE callback functions,
-> + * or from one of the helpers that calculates the framebuffer's DMA address.
+> + * This function will usually be called from the PLANE callback functions.
+
+You should mention what clipping means in this context. It's not obvious 
+what it's clipping against. Or maybe point to other docs that explain it.
+
 > + *
-> + * Return: offset from start of framebuffer to start of pixel block
+> + * Return: GEM DMA address for given framebuffer, clipped.
 > + */
-> +u64 drm_framebuffer_get_block_offset(struct drm_framebuffer *fb, unsigned int plane,
-> +				     unsigned int x, unsigned int y)
+> +dma_addr_t drm_fb_dma_get_gem_clipped_addr(struct drm_framebuffer *fb,
+> +					   struct drm_plane_state *state,
+> +					   unsigned int plane)
 > +{
-> +	u8 h_div = 1, v_div = 1;
-> +	u32 block_w = drm_format_info_block_width(fb->format, plane);
-> +	u32 block_h = drm_format_info_block_height(fb->format, plane);
-> +	u32 block_size = fb->format->char_per_block[plane];
-> +	u32 sample_x;
-> +	u32 sample_y;
-> +	u32 block_start_y;
-> +	u32 num_hblocks;
-> +	u64 offset;
+> +	struct drm_gem_dma_object *obj;
 > +
-> +	offset = fb->offsets[plane];
+> +	obj = drm_fb_dma_get_gem_obj(fb, plane);
+> +	if (!obj)
+> +		return 0;
 > +
-> +	if (plane > 0) {
-> +		h_div = fb->format->hsub;
-> +		v_div = fb->format->vsub;
-> +	}
-> +
-> +	sample_x = x / h_div;
-> +	sample_y = y / v_div;
-> +	block_start_y = (sample_y / block_h) * block_h;
-> +	num_hblocks = sample_x / block_w;
-> +
-> +	offset += mul_u32_u32(fb->pitches[plane], block_start_y);
-> +	offset += mul_u32_u32(block_size, num_hblocks);
-> +
-> +	return offset;
+> +	return obj->dma_addr + drm_framebuffer_get_block_offset(fb, plane,
+> +								state->src.x1 >> 16,
+> +								state->src.y1 >> 16);
+
+I had to look several times to spot the difference to the regular 
+helper. In any case
+
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+
 > +}
-> +EXPORT_SYMBOL(drm_framebuffer_get_block_offset);
-> +
->   #ifdef CONFIG_DEBUG_FS
->   static int drm_framebuffer_info(struct seq_file *m, void *data)
->   {
-> diff --git a/include/drm/drm_framebuffer.h b/include/drm/drm_framebuffer.h
-> index 38b24fc8978d..6f838b485730 100644
-> --- a/include/drm/drm_framebuffer.h
-> +++ b/include/drm/drm_framebuffer.h
-> @@ -220,6 +220,9 @@ void drm_framebuffer_remove(struct drm_framebuffer *fb);
->   void drm_framebuffer_cleanup(struct drm_framebuffer *fb);
->   void drm_framebuffer_unregister_private(struct drm_framebuffer *fb);
->   
-> +u64 drm_framebuffer_get_block_offset(struct drm_framebuffer *fb, unsigned int plane,
-> +				     unsigned int x, unsigned int y);
+> +EXPORT_SYMBOL_GPL(drm_fb_dma_get_gem_clipped_addr);
 > +
 >   /**
->    * drm_framebuffer_get - acquire a framebuffer reference
->    * @fb: DRM framebuffer
+>    * drm_fb_dma_sync_non_coherent - Sync GEM object to non-coherent backing
+>    *	memory
+> diff --git a/include/drm/drm_fb_dma_helper.h b/include/drm/drm_fb_dma_helper.h
+> index c950732c6d36..b2a0bd7ef9d0 100644
+> --- a/include/drm/drm_fb_dma_helper.h
+> +++ b/include/drm/drm_fb_dma_helper.h
+> @@ -17,6 +17,10 @@ dma_addr_t drm_fb_dma_get_gem_addr(struct drm_framebuffer *fb,
+>   				   struct drm_plane_state *state,
+>   				   unsigned int plane);
+>   
+> +dma_addr_t drm_fb_dma_get_gem_clipped_addr(struct drm_framebuffer *fb,
+> +					   struct drm_plane_state *state,
+> +					   unsigned int plane);
+> +
+>   void drm_fb_dma_sync_non_coherent(struct drm_device *drm,
+>   				  struct drm_plane_state *old_state,
+>   				  struct drm_plane_state *state);
 
 -- 
 --
