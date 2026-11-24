@@ -1,59 +1,60 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795521279;
-	b=03PQ8SG5JhPqoeKWf/V9KYjrcqKUWPRPP83BYlcFJS7yrare2eDu42gez7Ks1Pwt+13D
-	 mgCLB/tA+ZW5nu4+6/p2Bbspldxku4dZMPSpiOCKAd/pkbzK6jqY7K+rASmbi2QWU8R0b
-	 lRwBwfJeS8vQF39k3CX93tKqflCv4jp+NclPrMfD3Wy8AF2SaD8ECEI3RBzs9fS2tDZsZ
-	 rWAGWK5OqTNiisc5XeWkXzbeR2Q8FveJMeKZbZXHl4lk+EEvK7MMn3e77Xb2y/YcNB2fD
-	 7JVyB7CbtP7cNln/fJGax3OwFKiu3Az4ctOiYFAsDT4L99/KUu7gwYfigsKwwlQtcQw==
+	t=1795521304;
+	b=dOvLMRSICb8uc5LOsw989YquqM6V2WYRZUjElYXHJrzpeq57UdAOcLYgZ2S3d2vnFdvg
+	 uCpyVBsJgLJRr9xMAljAvIWOsckIh5hPgbiMMDNrfoJWaHdnUUcvTGRtSyFvEZo3btXXn
+	 mEiTsb5M/61lk1VtspZCzzN8lrYWfwSmZedp5matzVI5qvU9/i2rIQY5zEWxoSDsfEr8C
+	 qP/V++pxABT5FqapI2qkReTGqeUwAdYEYCm79Yu4/j+CpcwccbGeAs1uMgu3LVa5yB9W8
+	 ioMxnKVb7FGtXFfD+tE4Z5i/iidwsu1xkNZqjlk0EjXlLG7zrvJVc3LhTxP6Rkip03A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795521279;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795521304;
 	h=Received:DKIM-Signature:From:To:Cc:In-Reply-To:References:Subject:
 	 Message-Id:Date:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	 X-Mailer;
-	bh=HAmhaTwlq0ql9vpEfF30JAvsIWV3GCSiNAxons2m7lE=;
-	b=NHuwWWaYiWDn4RzsWBsBqzgRp6vVoZF5Dqm+GjRPYcR5MkcS2oC4mf5k86ioND0WTlvT
-	 y9zUpoHczghLzO1ZpdXVT+kWo+k+JeplvytLWIKwBFlO8JxVML8VlTtb//UHwIDXGZA4u
-	 bu25yd2tBvPICyhoCivDu6U4MNhaLzHMulMcVBNe8tySdhGknMOakZX4qI/IW06KUeKtJ
-	 lX0vr8VebLD/43COGxwVTcUsayk/n8eVdNT3nSV1H3AwtPnEA0JHNyCK2HP67//0tsnXG
-	 6CkqPh+kgjd7emjrIKL+EHI7Vl/6WKVAnqpdQ6lo6IOthXnZvUvem00/wiHXz7+xWTw==
+	bh=fmZo+0Ao3EF+QIl04S3p/W9Lj1cWNEMUZFJap4lCZFU=;
+	b=aueVY4LH+t7D/Zl6ohFFRw+5R7zPSyktkJO+B3svtYAo77IdzUlGHyvZTB/rAzVOMA7A
+	 lmEaE28i9s8sIjUMzk7HkrMPqCG9rrqHJs4UDe015ieQB6tbVPYZbzaqsdszO5R5bj6Xi
+	 eeryzfIxh41vVW+lglW707jGFuuGHBfZ1WUJtnyH1m533zWTsiW9l2i+PvJITQCn0lLmZ
+	 rbuCu2DsyJ8wFT0c74asykWR2ROBFI09J124mx65HMRKLuaMUZg2gW9o2NCUjoXwegpbn
+	 eooidh72kAW9AI1cPEQRaQ9/1ytW4+n17B9sB3tYHwxyil5T6rMa61wuj/Cm3b9hJWQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=klNlh1sd;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=T3pYvJHL;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3AB0606A327;
-	Tue, 24 Nov 2026 11:54:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0667606A31E;
+	Tue, 24 Nov 2026 11:55:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=klNlh1sd
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9A321F000D2;
-	Tue, 24 Nov 2026 11:54:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=T3pYvJHL
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 942CB1F000D0;
+	Tue, 24 Nov 2026 11:55:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795521279;
-	bh=HAmhaTwlq0ql9vpEfF30JAvsIWV3GCSiNAxons2m7lE=;
+	s=k20260515; t=1795521304;
+	bh=fmZo+0Ao3EF+QIl04S3p/W9Lj1cWNEMUZFJap4lCZFU=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=klNlh1sdr91oxUGKW9agsfOzeuWO6an+iHiQdLW3AI0IpE0482b+mUMmEy4k0dZeh
-	 2HIJmzpgS8IlGlE104nDfQycIN2ucAQCHK5yqWpFoJdAB5Nhzexvhe2P/YJr0W+fnC
-	 59y+dJSjUTIKv8eJ4Lx+eoCL8sqt25dhjg1lYzYeytGtcrD5geuOvC2UWZfJsfewFT
-	 YPkUfcx2UOvqiNkIE6ijkELonEnRCPGtksMq1+rRRy68XJ6Ef0OSDc0qx68jl7bNrD
-	 bgXWNNBQl65CxQWnbAcc1M+U7dBKWRaNW0YaFFJUFTekUWjpW+uS5Ai4Vtas73rnKh
-	 rrKERPyHvpUMw==
+	b=T3pYvJHLYy5vKyu8LB3UEg/PMFLBcBDp/eCMnScvwUojcDMDhrMfxUCp8F/oiRU6Q
+	 dkrZgVLgeSgC1FmTIGNbOweOxRlWStQ7Ga4+Gd/OxWijqX36jSP2R5KXFu/CwOiF/Y
+	 EMB7Q3ghlrKevRuJqc580qRP6WIKHFKGTdEM9cp6RXKOPIeK71+E1FX0MbsuoJ5OJG
+	 GY9QEXnjq+KXb672Nqpn2xqwqKGgRh2yBzQYZeFtkpYEdlQBNRFikM/Pc4fB56+CI/
+	 9EJDhi1ZClinNxLTCoCzZBGG2Q6EXKCboUowcKk/2C4Z9soEHBaqnja+lk4Jd9vTV5
+	 Xb59PauHKHmtw==
 From: Manivannan Sadhasivam <mani@kernel.org>
-To: frank.li@oss.nxp.com, jingoohan1@gmail.com, l.stach@pengutronix.de, 
- lpieralisi@kernel.org, kwilczynski@kernel.org, robh@kernel.org, 
- bhelgaas@google.com, s.hauer@pengutronix.de, kernel@pengutronix.de, 
- festevam@gmail.com, hongxing.zhu@oss.nxp.com
-Cc: linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- imx@lists.linux.dev, linux-kernel@vger.kernel.org, 
- Richard Zhu <hongxing.zhu@nxp.com>
-In-Reply-To: <20261109022139.3226052-1-hongxing.zhu@oss.nxp.com>
-References: <20261109022139.3226052-1-hongxing.zhu@oss.nxp.com>
-Subject: Re: [PATCH v2] PCI: imx6: Enable L1SS support when supports_clkreq
- is true
-Message-Id: <179552127457.34411.18338691732347833133.b4-ty@b4>
-Date: Tue, 24 Nov 2026 12:54:34 +0100
+To: =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+ Kishon Vijay Abraham I <kishon@kernel.org>, Frank Li <Frank.Li@kernel.org>, 
+ Bjorn Helgaas <bhelgaas@google.com>, Niklas Cassel <cassel@kernel.org>, 
+ Koichiro Den <den@valinux.co.jp>, 
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+ linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Frank.Li@oss.nxp.com
+Cc: imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>
+In-Reply-To: <20261106222142.86087-1-Frank.Li@oss.nxp.com>
+References: <20261106222142.86087-1-Frank.Li@oss.nxp.com>
+Subject: Re: [PATCH 1/1] PCI: epf-test: Use dmaengine_has_cap() instead of
+ dma_has_cap()
+Message-Id: <179552130022.34532.6770615796596970693.b4-ty@b4>
+Date: Tue, 24 Nov 2026 12:55:00 +0100
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -68,24 +69,15 @@ Content-Transfer-Encoding: 8bit
 X-Mailer: b4 0.16.0
 
 
-On Mon, 09 Nov 2026 10:21:39 +0800, hongxing.zhu@oss.nxp.com wrote:
-> Enable L1SS for the i.MX6 PCIe controller when the `supports_clkreq` flag
-> is set. This ensures that the PCIe endpoint can enter low-power states
-> efficiently when the link is not in use.
-> 
-> The commit a00bba406b5a ("PCI: dwc: Advertise L1 PM Substates only if
-> driver requests it") clears L1SS capabilities by default. However, the
-> i.MX PCIe controller supports L1SS as indicated by the settings in the L1SS
-> capabilities register. By setting `dw_pcie.l1ss_support` to true when
-> `supports_clkreq` is true, enable proper utilization of L1SS for i.MX6 PCIe
-> configurations.
-> 
-> [...]
+On Fri, 06 Nov 2026 17:21:39 -0500, Frank.Li@oss.nxp.com wrote:
+> dmaengine_has_cap() takes a dma_chan pointer and avoids direct access
+> to the cap_mask field inside struct dma_device, which is a step toward
+> making struct dma_device internals private.
 
 Applied, thanks!
 
-[1/1] PCI: imx6: Enable L1SS support when supports_clkreq is true
-      commit: adf478a1cc9985ca1e7143fc185f2a4c59da7a30
+[1/1] PCI: epf-test: Use dmaengine_has_cap() instead of dma_has_cap()
+      commit: dd3bc74bea3263774e30fd6305012eb16dc0ec96
 
 Best regards,
 -- 
