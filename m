@@ -1,95 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.72.1
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795498953;
-	b=tFT6Cann/heP1lnxLI1kDNZ9RpPxpiVGfATQr58GBxZ6Y4M5tOj48iEXnLFsk9C6Whxw
-	 nwWYnj2+I6vcstHsDn1EoOCy7kzbiDAiPUH8dkxXgg1uTR/qoJSQhSfNJLl7aLiFbNOU0
-	 K9AvsL1qZdT95IefZG+FcGss9Hy9Pf4o1ZHnb+lfS7eNryRA7LNbHaN/ZmC1/eogUwUIs
-	 yDtXyTFI8Ei4F462m+YAQScbNe2Nx+IgviKySL0gQFDv0qd+VQ5fD4EuIzbhRdTyGLfG3
-	 xifporNe9lNQQC7XrDE0Q0D1eDjZex3PJ838nKQS/jj4uB1VsP4irWw3uwLLbKYOuCA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795498953;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:Content-Type:Content-Disposition:
-	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=CsEkjb1uWfW/tcjvaGqkhVYdKeGuCnwy7Bq5a8rpit0=;
-	b=UBYv7xLeDVw9ZhSQeN7s8DGq3KIVUDMGA3cFtEZeCJv5dReQv8vy8UJ2+FstrX0hKw7V
-	 WYcC1IAVjGf71ZADttBsrnk+TZHVZ1Ek5ZSiqztf8WuRQVGnxdV/dEkvnXZc3VuNGqSOE
-	 LJg6r2l9+SgFIN/6XvZNH7JbzbWpGYUqTD21kPPZdvkQf+5XYuyYFT+igZaFJAvJznk9t
-	 CpvrllYwdwNCmnQysNWxBiEBv1d2Ia3ASYewg+xt+lhGFrabIkJEld1GDtTaJUcokWxMi
-	 PVF8X2koAYGS9+IoOfnYPW7nDXNJPXufXPMXKoBhOgIAuA5E9sZvYVUw5g2Es0KWrpQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.nxp.com;
-	spf=pass smtp.mailfrom=oss.nxp.com;
-	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=ZBSMcK7d;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.72.1
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013001.outbound.protection.outlook.com [52.101.72.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.46
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795506055;
+	b=rcDOQO/S/LJ4nkpvS3HunD+ZeCI+Pppt7iJMIznXH6YV1nmugyTDYpnKjZPqXUx3gMlD
+	 MMxPNxQ032f4TYMrYLITj6X0ZAUsHwisCffEEInEeTUjj7EoPCuOazU9uF9H69kPPwHiu
+	 eZPh9olPnKfWfEZLWjzxI9ImQjK2LnWiFNPKy0fkTyYs/uPpnxJJsoQgw1lHR5AW9zgnq
+	 7vs/TvpGiFVKSprxQk2gC0mCJFLhDU+H4m7bkSaLb5oVJZA4KlEAhBZS2qf14jaEOhl+r
+	 4ymQ9p4tG8jtsit57VYbDGNwTOtM7UMxSDAS1NzGSLFuFxSObXvN+RYpDd0BFl+ZnAA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795506055;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=yq9KtC/Vr6jX4nQrqLEI9ETBwLEZhdEPTg6w69t4M3Q=;
+	b=c+NvXGZ/8WrH4u6gQfY+Y255+9Et3PPAFwHJBAzXKb26n/7RFMFLycEtBV00okTjki5w
+	 N/XAE/q1qnv0c/KN0vjADAptDbDnM179m/zbiz6UNLX6mJ+VM+SDUxlcwf1yS6H/HEbHN
+	 YVXUdWoNpVaLh2ygET6eTrrgQNMPOSLKSd6G2rBGhcUsGNGF1uEWeKo2JNVHh3gsl6H5L
+	 RefHlkJYPsH2qjyffm7U/ZvipZEimu+k4b4uOfxFLsc6WNa1WnZQxiXAcU9o+ueXiMPXm
+	 7XJ51BFhqsZnSCwJv9+K0YGLJR2O8vvPXIkUpt9N4c6mQmzjRPLHLT07lbjyQ0infcQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=chromium.org;
+	spf=pass smtp.mailfrom=chromium.org;
+	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=irIQYn8I;
+	arc=none smtp.remote-ip=209.85.216.46
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06FCA606A321
-	for <imx@lists.linux.dev>; Tue, 24 Nov 2026 05:42:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 06FCA606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57273606A31E
+	for <imx@lists.linux.dev>; Tue, 24 Nov 2026 07:40:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 57273606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=ZBSMcK7d
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ZN2IIjGzJ4DMoX6b3qIPB17WUp7iT9TH0JNRXax3ZAiRt9SX6MDjRSFtYMnmAUWJxFwv3M+Vig299oYrOWtDsSOX8qXMEEUDFwtdwE1CiAhm8/RjmjdRV36uvCE4H8WrB7geUX6Q1O/VUjl3xQjUnEjqd8teUeX82+92PXZhgOnu39nCbfWJN2byn8s87PbA1qKpRdobeDBUCH7mZ18hcOGv/BWNYMC+n1ShvvJQVYQ8059Uxb7T7WbhVQzsfBium+9ezmlmbRID5DJCuu2N5hD+45XRtZoVS087Yftr7IWxW0r8Ci3yAqmzLs/7WqZrucZYRJibmDoH5gXh01AA3g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CsEkjb1uWfW/tcjvaGqkhVYdKeGuCnwy7Bq5a8rpit0=;
- b=y78MTYdGHnOXjnFGN5VngTdnE/eDs9AE9QClbHzoiI3f5lYrqucACsn4unlTIxoJ+hbGHUvCYqg4/shRgxmdaL3FOb7Quxzng0r1r0DpaABeCbxGhC1XGklhAbix9PDcTF6LkHOikHlKgb3TE/etxq3pMBd5KIhhVlV9eHoOR0VVW/qOKjLIrSwUcx5FpiyNaNZoFKv8uRbLFWrkWYsr5Oq0uT6SRCmmzcQntxtyCjqzz9pAX7zLBM/BN6Ow36tEpWJ7bC4FLFnA4IbbgBKpznaytcblSDmH9oXHIlcuM50lkIh1Au7t3UQxTUBrtbC7Ji6AemPBkSf2l7VbRT4+7w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CsEkjb1uWfW/tcjvaGqkhVYdKeGuCnwy7Bq5a8rpit0=;
- b=ZBSMcK7d7IKh5d1UhbykEqR0j9NCZ2AbVHnZZ+ozSzwc2pZ3Ml6849tbpGIHUU0icaiKpGwJC4wuF1pIhRmD/fpte+ZpEvDF7+J110H/77pDUqKRoX7JetjfNpo63ihDtr0Q34yzUGGc7t24u89jUY3DIS0Y3eLplY5X0wOvyaz4ueqvJQ+uzcupFq/rtNmnPiOESbkgBBotdQeVoVpoW2fR7JEruqLOUNmt59DFd7swVoKvNwMujMUvdrd1KUAoj42dKB4hiPMJ/GyLRwQl+rU7WjK6uQlCj/SPXtIPzOxS99Fmk1S99pTvzSNXOMaSx3Xo/GWkGb5gKYRVRqpA4w==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from DB7PR04MB4698.eurprd04.prod.outlook.com (2603:10a6:10:1c::21)
- by GVXPR04MB11480.eurprd04.prod.outlook.com (2603:10a6:150:285::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.14; Tue, 24 Nov
- 2026 05:42:28 +0000
-Received: from DB7PR04MB4698.eurprd04.prod.outlook.com
- ([fe80::c571:bdf2:afe7:c03c]) by DB7PR04MB4698.eurprd04.prod.outlook.com
- ([fe80::c571:bdf2:afe7:c03c%5]) with mapi id 15.21.0639.012; Tue, 24 Nov 2026
- 05:42:28 +0000
-Date: Tue, 24 Nov 2026 14:42:19 +0900
-From: "Ming Qian(OSS)" <ming.qian@oss.nxp.com>
-To: Frank Li <Frank.li@oss.nxp.com>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, 
-	Hans Verkuil <hverkuil@kernel.org>, Nicolas Dufresne <nicolas.dufresne@collabora.com>, 
-	Zhou Peng <eagle.zhou@nxp.com>, Frank Li <Frank.Li@nxp.com>, linux-imx@nxp.com, 
-	imx@lists.linux.dev, linux-media@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] media: amphion: Enable non-coherent allocation for raw
- frame buffers
-Message-ID: <awUiZWa4ZTMhFeVL@lsvm11u0000189.swis.ap-northeast-2.aws.nxp.com>
-References: <20261119-amphion-non-coherent-v1-1-c3154395e448@oss.nxp.com>
- <awSn9NyulPPPIIT8@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <awSn9NyulPPPIIT8@lizhi-Precision-Tower-5810>
-X-ClientProxiedBy: SG2PR02CA0124.apcprd02.prod.outlook.com
- (2603:1096:4:188::9) To DB7PR04MB4698.eurprd04.prod.outlook.com
- (2603:10a6:10:1c::21)
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=irIQYn8I
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-3b405d8f1cfso2034884a91.3
+        for <imx@lists.linux.dev>; Mon, 23 Nov 2026 23:40:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1795506054; x=1796110854; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=yq9KtC/Vr6jX4nQrqLEI9ETBwLEZhdEPTg6w69t4M3Q=;
+        b=irIQYn8IHaHV3ZhOkzpXNyvE7Yf4yoUelb9AvSpWnCuCVa7B0o8wX6CTkkOvA9yguJ
+         ywmHrCCrZe+QORLvOS1EU1gs5t3Z7aawcm4L0S7w/1uYvWJvipv7nA1p2dCrcMTs9Sou
+         58y9dwtICmZ1WR2CjsV/aIXUVFIDR72WufNL4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795506054; x=1796110854;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=yq9KtC/Vr6jX4nQrqLEI9ETBwLEZhdEPTg6w69t4M3Q=;
+        b=OTyLSrW2z5k41Sn7IzHgAw4plNrU2hswyW1vZjlGa/VK/Y/HbAJtumGVucjJhJaZMt
+         cru+3YaNvg4KyI99Mpxnqm6rD4bo924jIrGbZjZ9zYGoeplbMq1GWCCGhtKWClzjplcF
+         XcpZhr3MBrw0zE0rmuJ4UOiAwTrsUMPhXdLUnZkUn6Ej/j5B+HHQrY9Ae7BPmS+QMsAM
+         VZq1VQ33zFybICZIevndCqUFm+MJ6zKar9yPb9OYf7BBhqNhtU71HJlmFxWYtEbHdTag
+         avQvFUBYeVN8dAM/q8KwseIxW0/8PO3DtjV4SKUiGJEaCulDZEEBQgU0DlHCPbsP7XJb
+         RB3A==
+X-Forwarded-Encrypted: i=1; AL+hErFvQeVqEmQc+i7VVIGA4ZvxqzbhvcFsfBJtkfo5lvl7d/RtjQxUMfArTZggXfbi2F4cKUA=@lists.linux.dev
+X-Gm-Message-State: APuU4Z+uh93BJxTWnF39VwVxB0p6yQzND/KjN3Vz+fVv4Ea30NXD4LHm
+	ueYR3SStIY7Zo1ErlK3Wp5CZ2ZnvoIeK4tQ6MWFh0rP/NYjFKhujlwCsctET924IDg==
+X-Gm-Gg: AZFdTZctrTCb3T7PrYRnW6vYjpoXRuyL1I8MRLqhl2n3ncV8LIynmfkwFRPqYV35vaz
+	dXJU7k0o/Nn9FgwylY+BnIgnUiaxObPP2K1+RE4gMqWnfeTkZl0mwCJ6Lb8xaSbuYQ370i9wEWf
+	J86mOR8vnWjOlv9T/bcLEirVMcbcAj8sViQThbZ25viPM4gCinuf+c+uR5y9OlGEszbp1sdLPtL
+	N5Uc38KwtiKsVVM8uF8gZytg+eHbnn0hdokbNM3j57mZTzxa6miKRtEM040ogxv4v0wwXyNGbWn
+	JqZNR1JNV0qeT4jtAZryAGClWYwtYFEw+MuYtUV7w8zqND5J1JWzGN/57R4bWnZKM++apnyT3qh
+	8d8AjkOcE7WnENltL53ACgIq4a6QXfKA1hZNhXfX0VED5YeKeVvRnQQIZt7afU2tAM3/lCecOh4
+	6/RvczGiGUF7KecPCJy3+RFA87mQSlfGpu1/L7P/z3pgH946fshkamU71V+eOzaouTAXjZ0eyQh
+	oldL00sfP3dBmj/1bic0UCJyOL4FJNdvyO7DEdiqWE3FaccKpcltsdlrc3j0NKaSloU/i7FhLIM
+	reH43BFpj4NOHLYG/3nLaF4g9rK3LTl0oC3154ZGumKWhM0/ErCZdoDHqClc
+X-Received: by 2002:a17:90b:5289:b0:3b3:8094:321d with SMTP id 98e67ed59e1d1-3b41c9080bamr13617140a91.32.1795506053661;
+        Mon, 23 Nov 2026 23:40:53 -0800 (PST)
+Received: from localhost ([2a00:79e0:203d:7:8f32:8910:4727:ea03])
+        by smtp.gmail.com with UTF8SMTPSA id 41be03b00d2f7-cde84cd5ed8sm3771777a12.10.2026.11.23.23.40.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 23 Nov 2026 23:40:53 -0800 (PST)
+From: Chen-Yu Tsai <wenst@chromium.org>
+To: Liu Ying <victor.liu@nxp.com>,
+	Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Chen-Yu Tsai <wens@kernel.org>,
+	Jernej Skrabec <jernej@kernel.org>,
+	Samuel Holland <samuel@sholland.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Chen-Yu Tsai <wenst@chromium.org>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	linux-sunxi@lists.linux.dev,
+	imx@lists.linux.dev,
+	dri-devel@lists.freedesktop.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH RFT v3 0/5] drm: Add and use drm_fb_dma_get_gem_clipped_addr() helper
+Date: Tue, 24 Nov 2026 15:39:28 +0800
+Message-ID: <20261124074041.115251-1-wenst@chromium.org>
+X-Mailer: git-send-email 2.56.1.809.ga0b61035b5-goog
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -99,131 +105,83 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB7PR04MB4698:EE_|GVXPR04MB11480:EE_
-X-MS-Office365-Filtering-Correlation-Id: 166f792f-f23f-458b-bc16-08df49edb9a0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|366016|376014|23010399003|1800799024|18002099003|22082099003|3023799007|56012099006|11063799006|4143699003|261102123227099003|261028144727099003|261009223027099003|261026140227099003|261021121427099003|261022105027099003|261022075727099003|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	UiTJw13blnX/rNfxuivPwa5ugGSCLk5L9v/6ncD9osvJUMg/yF+OUvVuHCIOKpyMnVFupUiVxB/RSRje+G++Nv3bstnlalsb5uB4esps5635YDWSGHE8PI/VIBq6ydRqFikPDx1r0J8DInAQFFtf+OOeODQFcQqDRbmTiFQExBoygjKDbkZ5hU3fvtIthIFmpObG9FwLXiOTs4lEDiXBS3yWlZjr/F2vRrTJJ4i0+CW9d9+oePxQNGFJHfsSnkCVyImV6WxhuOkKDYahJ3uPqV4SMRMTbWuEq1e4fiMx5kpTqtpmZJbgPCUPNRyPmQaMRpWbEX5QRwXWAEToM1UeejoL8XO23gZJe29WCPH6bud8iPgtxCLrRXM6SCHuqEp7DIxjaHE0PoQ1euEKiHDIZ3ICYEtk1srNutVr/SYqxDmIv4HyyF1r6KiGDA3nz8ytR58Tvim6qO2tkATDACm0L1+vb3R0zJlsiWhK884AdFq33DJYMb4ZXZmir7OTzKsWS/z83xqXRulJtNyliy7XQ3fs5y5Z9w0qMCRcBI8Wl73hdya6Hi6zmMxh0r+ns3xZ6pudqhiwCp2EAPBzvzndl8RYfKX6PQGmrpkJtEswcx59SPJ/C031ePLFNcoQpSL7lrCjxkFN3OHCkToj8Auo5n/os1TCtyyn07EodVOlcys=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB7PR04MB4698.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(376014)(23010399003)(1800799024)(18002099003)(22082099003)(3023799007)(56012099006)(11063799006)(4143699003)(261102123227099003)(261028144727099003)(261009223027099003)(261026140227099003)(261021121427099003)(261022105027099003)(261022075727099003)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Y8YUN1BP0OQJt4+xuddfZOy++39jVaD5Sibppn4pls5U1+aeOFv0R3YnV2b9?=
- =?us-ascii?Q?QnOv7vnPTw1hpv78G3cAMl5CDkHswIo52pXNFPbl3URmBSudFTLe8/iAwXlr?=
- =?us-ascii?Q?7NkEKThFF8PGFtsUCVzC9S3m5tC+S19ypSI3PO0+fdyCY+37U4Te/OL+YQUl?=
- =?us-ascii?Q?97/AUiYpcQxr54T3SIvo2ilwMQcU+i45CPCAaantw6TDxATyVpk30WX+36Bf?=
- =?us-ascii?Q?yhvAlBcoxrMEZ9e4rRnMg5VQXyaskqEB4uk59bUT1exLpjO4cfOrWqOxDIZy?=
- =?us-ascii?Q?6XlZ23uyR1UwqkaGNNTsWzoMpxaZTHZKU8wDM1WC3lGR1vnEty6w16H/U7J/?=
- =?us-ascii?Q?+gcLWOLWTua/MYrLXJuwo8OwfrtSt4yvtnY4NdV/acTdIRY/NPgT4aRu6V4b?=
- =?us-ascii?Q?13+wHWBADYUeTw53l/5RfTInnOJCN/hJyheL23ueMtpVKuUV9sb79myeyASR?=
- =?us-ascii?Q?+74yRzEPmnFsJcI1bwyk1hVBfoaIMRaNvzIVZ9vPmEQq5jYoner0EI2OCHqi?=
- =?us-ascii?Q?sjjdj0NMw+yPKeL4vxeOrYEe5RIhzGxrcuIboczbq2Pb2gDytwevr7un+pFZ?=
- =?us-ascii?Q?+0nrcbxWaWihj6MLto6Kej7KviVKKyQdnNAqyBxk10M4qkETNQFJ5HFB0vPC?=
- =?us-ascii?Q?uCbxbblWBK92VXHO1gj2tQ9+faRUqoRzMFiQg306P6DDerec1Zg+Xy/Q7Q6O?=
- =?us-ascii?Q?rvfGhdMwmUUTr8bRBCQDhLub5CjfNAKiS5HSjugcO9JxXxIzfp+DhbKP6ORR?=
- =?us-ascii?Q?HTeEDAxyKbCVQmLw+3Yx4JzUi6g378Sztx7qFsm3UvAEhDr+mmdxytOo4uy2?=
- =?us-ascii?Q?xql2DL2g30BfWTaY/ebrWKuNfDLYgDQmKvz/FZqYkzm/qEKO7Mu5yd32knOg?=
- =?us-ascii?Q?YLWDmuoM+mA/kDEUlShTcAjGDy8kZHcMOd4FyE0n4mWjEbQKBRvwZj6zpxEM?=
- =?us-ascii?Q?/WR1TW2MVAlyK5qF8Cv43F64GfnvB4ncF3YdIVNjN7jStc8X6uNuNfk2r4qm?=
- =?us-ascii?Q?w1fs9HTs84LHOIal9ybl+Tdd0W7Syb5qlz36b6UD/qjpM6+xYhIG+USVlKem?=
- =?us-ascii?Q?+6oxemf+Q0Va1OmBh2F00W6mUg7zTpPYq1tiXXQPMjey/1HhLjLt8HL1HEhM?=
- =?us-ascii?Q?5GfuJO8JYsR+x+CT+UMg/4Bm2IIAHsXDS1fVITseC6GG4646kMCw6+y5AdSF?=
- =?us-ascii?Q?eLAVnSRhXnHrV1a+klxAnWQpkzZJci+UVMuCfs2GrrVV98tVo0nKWcvrQlKZ?=
- =?us-ascii?Q?vReB7SaCoOa6oV7bHnspFKVGlxdfQE0nkf0i1bPDzirj3m0T668w3jDsR15t?=
- =?us-ascii?Q?XBbrHiGLnfwxExUYBAcevkLWYw1r3/qnNYUiXHV4bPqbwSc3JypOgiE228A0?=
- =?us-ascii?Q?j/JzKb/eC5x2BirFbbVZ8tFS56/KboR3azOPzXsuilkYnkDST1zlhFd35cl/?=
- =?us-ascii?Q?5hDTyY7EIhInzfAyhtjnkDCMxj8zmA7Oz/I9JeWpcbzEetIrnw0NQNWC1svs?=
- =?us-ascii?Q?c7HXZ2foO8NB5SJuZbleY17W/3HtL83DIh8q1TAxRwYA+pxWMuYIUvK2WqCM?=
- =?us-ascii?Q?aeVgJzYNfR/uuYQf4eDak3RVmJU9FaVfftpQC+2h3zYzVvjIjXgJrSocjmF3?=
- =?us-ascii?Q?omsiiKYkfiOTYacqTW2cftClPQ1VXnxvlYZdIRcp96Cn9v8ZjWjT4EdwrTUm?=
- =?us-ascii?Q?O/zKn58fS4Vl37Vi6thOjjwRzKwlsdxyChtZPVQOA90UUoDAr+757v0rcHWE?=
- =?us-ascii?Q?SXqIipJ7DCz+3nCWFWuyTSg49W173B7vnj15ahyhEUlK/6p41Sgy?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 166f792f-f23f-458b-bc16-08df49edb9a0
-X-MS-Exchange-CrossTenant-AuthSource: DB7PR04MB4698.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Nov 2026 05:42:28.2630
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: joKyc6yGGSwafjgmqIYnBmJoeql7r4LqS4ifFJlleA72HYZT5hW68VVGAILU5/cbM2QQ38Ol5u4kBKpYqyijg2hAtHlaSjPJCkASBxfyiyOd0LEjHJ4JGoC9WZfH/nGT
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB11480
+Content-Transfer-Encoding: 8bit
 
-Hi Frank,
+Hi,
 
-On Mon, Nov 23, 2026 at 03:54:12PM -0500, Frank Li wrote:
-> On Thu, Nov 19, 2026 at 04:27:14PM +0900, Ming Qian wrote:
-> > Allow applications to allocate raw frame buffers with
-> > V4L2_MEMORY_FLAG_NON_COHERENT for efficient CPU access. The required
-> > cache synchronization is handled by videobuf2 in its prepare() and
-> > finish() methods.
-> >
-> > Set allow_cache_hints only for the encoder OUTPUT and decoder CAPTURE
-> > queues. Leave it disabled for compressed bitstream queues, as the
-> > driver may access their payloads through the CPU.
-> 
-> "V4L2_MEMORY_FLAG_NON_COHERENT for efficient CPU access", but here
-> "Leave it disabled for compressed bitstream queues, as the
->  driver may access their payloads through the CPU"
-> 
-> Look like description is contradiction
-> 
-> Frank
-> 
+This is v3 of my drm_fb_dma_get_gem_clipped_addr() series.
 
-Sorry for the confusion. By "efficient CPU access", I meant userspace
-access to linear frame buffers.
+Changes since v2:
+- Change drm_framebuffer_get_block_offset() offset variable and return
+  type to u64, and use mul_u32_u32() to avoid 32-bit overflow (Thomas)
 
-For linear frame buffers, V4L2_MEMORY_FLAG_NON_COHERENT enables cached
-mmap access from userspace, while videobuf2 maintains coherency through
-prepare()/finish() during QBUF/DQBUF processing.
+Changes since v1:
+- Add and use new drm_framebuffer_get_block_offset() helper (Thomas)
 
-For compressed buffers, the amphion driver copies data into the
-internal ring stream buffer when decoding, and out of it when encoding.
-Enabling non-coherent allocation for these buffers would require
-additional synchronization around those CPU copies.
 
-This patch therefore enables the option only for linear frame buffers
-and leaves compressed bitstream queues unchanged.
+This series adds a helper to retrieve the buffer starting address of a
+"clipped" framebuffer. This contrasts with drm_fb_dma_get_gem_addr(),
+which gives the address of the full buffer.
 
-Regards,
-Ming
+Some drivers program their hardware with clipped dimensions, so they
+should be using the clipped buffer address as well, unless the hardware
+can advance the scanout directly. (Side note: many drivers still use
+the non-clipped dimensions.)
 
-> >
-> > Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
-> > ---
-> >  drivers/media/platform/amphion/vpu_v4l2.c | 4 ++++
-> >  1 file changed, 4 insertions(+)
-> >
-> > diff --git a/drivers/media/platform/amphion/vpu_v4l2.c b/drivers/media/platform/amphion/vpu_v4l2.c
-> > index 7cccc994fc50..c8d52f0af879 100644
-> > --- a/drivers/media/platform/amphion/vpu_v4l2.c
-> > +++ b/drivers/media/platform/amphion/vpu_v4l2.c
-> > @@ -664,6 +664,8 @@ static int vpu_m2m_queue_init(void *priv, struct vb2_queue *src_vq, struct vb2_q
-> >  	src_vq->mem_ops = &vb2_dma_contig_memops;
-> >  	if (inst->type == VPU_CORE_TYPE_DEC && inst->use_stream_buffer)
-> >  		src_vq->mem_ops = &vb2_vmalloc_memops;
-> > +	if (inst->type == VPU_CORE_TYPE_ENC)
-> > +		src_vq->allow_cache_hints = 1;
-> >  	src_vq->drv_priv = inst;
-> >  	src_vq->buf_struct_size = sizeof(struct vpu_vb2_buffer);
-> >  	src_vq->dev = inst->vpu->dev;
-> > @@ -680,6 +682,8 @@ static int vpu_m2m_queue_init(void *priv, struct vb2_queue *src_vq, struct vb2_q
-> >  	dst_vq->mem_ops = &vb2_dma_contig_memops;
-> >  	if (inst->type == VPU_CORE_TYPE_ENC && inst->use_stream_buffer)
-> >  		dst_vq->mem_ops = &vb2_vmalloc_memops;
-> > +	if (inst->type == VPU_CORE_TYPE_DEC)
-> > +		dst_vq->allow_cache_hints = 1;
-> >  	dst_vq->drv_priv = inst;
-> >  	dst_vq->buf_struct_size = sizeof(struct vpu_vb2_buffer);
-> >  	dst_vq->dev = inst->vpu->dev;
-> >
-> > ---
-> > base-commit: 7969a6f407cf55b5254c824c87875452655ef11e
-> > change-id: 20261119-amphion-non-coherent-f61009334dff
-> >
+While at it, also pull out the offset calculation of drm_fb_dma_get_gem_addr()
+into a separate helper in drm_framebuffer.[ch], thereby separating
+responsibilities.
+
+The sun4i driver was recently incorrectly converted to use the unclipped
+drm_fb_dma_get_gem_addr() helper. This broke offsets into subsampled
+pixel groups, but also exposed the mismatch between the dimensions used
+vs the buffer address. Two other drivers were also touched.
+
+
+Patch 1 adds a new helper to return the byte offset into a framebuffer
+for the start of the pixel block of the given pixel coordinates.
+
+Patch 2 adds the new helper to return the buffer address based on
+clipped coordinates.
+
+Patch 3 switches the sun4i driver to the new helper, and fixes the
+luma plane buffer address offset for subsampled YUV formats.
+
+Patch 4 converts the imx/dc driver to use the new helper. This fixes a
+mismatch between the programmed coordinates and the buffer address.
+
+Patch 5 replaces the open coded buffer address calculation in the
+imx/dcss driver with the new helper. Existing behavior, which might be
+wrong, is preserved.
+
+
+Please help test. The series is only compile tested on my end. The sun4i
+changes should revert its behavior to before the drm_fb_dma_get_gem_addr()
+helper was adopted. The imx/dcss changes should not have any behavioral
+difference.
+
+
+Thanks
+ChenYu
+
+Chen-Yu Tsai (5):
+  drm: Split framebuffer pixel offset calculation from
+    drm_fb_dma_get_gem_addr()
+  drm/fb-dma-helper: Add drm_fb_dma_get_gem_clipped_addr()
+  drm/sun4i: layers: Fix VI buffer address for clipped offsets
+  drm/imx/dc: plane: Switch to drm_fb_dma_get_gem_clipped_addr()
+  drm/imx/dcss: plane: Switch to drm_fb_dma_get_gem_clipped_addr()
+
+ drivers/gpu/drm/drm_fb_dma_helper.c    | 61 ++++++++++++++------------
+ drivers/gpu/drm/drm_framebuffer.c      | 46 +++++++++++++++++++
+ drivers/gpu/drm/imx/dc/dc-plane.c      |  4 +-
+ drivers/gpu/drm/imx/dcss/dcss-plane.c  | 34 ++++++--------
+ drivers/gpu/drm/sun4i/sun8i_ui_layer.c |  2 +-
+ drivers/gpu/drm/sun4i/sun8i_vi_layer.c | 16 ++++++-
+ include/drm/drm_fb_dma_helper.h        |  4 ++
+ include/drm/drm_framebuffer.h          |  3 ++
+ 8 files changed, 119 insertions(+), 51 deletions(-)
+
+-- 
+2.56.1.809.ga0b61035b5-goog
+
