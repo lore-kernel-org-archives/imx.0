@@ -1,57 +1,90 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795595559;
-	b=WPdgnQ1o++vJdwI92b6Hod4QebjIbGMcld8o5wd8RfSA9jSn9wFnDVrcSeKvQ8S4yd/m
-	 QzmK6F+voo0dw7j4UUh+KPa+z7IWrLHgqV0ZJ1EKIZMfGWg+H4jqRedy+xbXcWfC8U6kY
-	 cBs15OaCZEJyT69UYcwIejzVyWXRdFiIy3bWoTRSXnCW83b3j2Nh3XLGW5WJTuCG8dz30
-	 60ln1NfSKlI1AwphUsHWUQPtKs151fLx26IQto1tNKDm9LPlCdrvyvHynTySDxA7B3ICg
-	 Ycczd3k+ME/r3U21Ij88364gjNqhKtu2cgW50bSjwRZD3YD+7/77iWKUPL9oaTOXWBA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795595559;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=6b0NRppQoIv/gP4EMBgo/e8en9U7x6Fh8pRvjfiuGvI=;
-	b=yGfGMMuQpQFxQvLXZi1T552j1k9unb7fkByaNpD+ajOMlg/U8J1cJwVmsghncZfrtEUT
-	 mmsPs+bcHyNZjJOE6c4Xz15iKieaEvv/lrjhsuFZBcJGLGTVvYGei76Ig+cJS8VcxjZph
-	 w8rLUAW7yobiKousK48W+j+2gLEi3YU3Wvtqj/oM/uth8aMiMgNHwiLRAxfcohAxKxGG7
-	 NFzxIA3xbtdIeHOUf4UfRBd00fWBNF4WWeCKxMEsC+pdXvvgmlgss4zyoW/1K1eWGnUGU
-	 bWVdZVjDwokMyesR9V+BKTipQrh0gFJHpKREhf+STGscqa4py+JCJcfLEjUV091fQ2Q==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HyKj33mm;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795598340;
+	b=qAXOWk8u0WdVEcQRQ6QzffHrDjn1y8h/eLdmMqwMaaxng+Ihgzer5U6YWxJENWsaHkX3
+	 bWCd2URFq4iyR+6Hg5ZrKgojycNzbzsqyWxOJktaUBPyDE9lThvLJnPifTxs8HLJh43Zg
+	 b099R++Bzgq9LAlLEE+T/dIoUAf68OGbTmjbRKi7goyC3xp4Q6wrDLm+ejqyZ0povdxLi
+	 t4u6stHdML7HCLa7Kg7wnOC6RRbqjCNVEya0s8cUL4+NbeZRmMF3kF9Lzpksh2S2iuN7H
+	 AXpdukP6aVHL+oU+23e1UmGGZcV/GYGtTEWragZcANkHda2V1Ach4b3WZb52FRRxh8g==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795598340;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=G2pU++T3tD+tmGyFtl1Nv5aGN0H0XWEVrsx+kHagZgU=;
+	b=HB48JcPSE2Dj8cAitNs3WsnMoJbGOTy1XSlfXsf329f6cCQGYAZuUvsoVh047uj6P9hA
+	 t1kkFosG/Cbd9v1XDRNKs3eeD8g+6W+M5yyBiMj7VFcqOGLntRgYiXYemS2vy4nllv7DI
+	 DmTK+5Q26XUXrzzwfd5uCt+88JRWCxToCOo0XfQGj3fU/UhVcl9Y0FTjBjVsaidxwaq8V
+	 sHD60iXCB/dfhqbIv8ZOtpbQmV/XCb7pLLSAOOUbxS3y9fhPoF8Gou2ReDKHc8irqExz0
+	 AvVZRZPvChpJkXERtsiKi/SLYugc+Y1ypIo6GEphWm/atpyz7U16IsbUR0DglVlK0pg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=none header.from=pengutronix.de;
+	spf=pass smtp.mailfrom=pengutronix.de;
+	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=NUWHpIRD;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
+Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1CC7606A323;
-	Wed, 25 Nov 2026 08:32:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67BA0606A693
+	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 09:18:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 67BA0606A693
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HyKj33mm
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25CA51F000EB;
-	Wed, 25 Nov 2026 08:32:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795595558;
-	bh=6b0NRppQoIv/gP4EMBgo/e8en9U7x6Fh8pRvjfiuGvI=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=HyKj33mmJWDJcEP0uwzFLiRrdoq+hjgI8/hxRI+h8H5si8kArzlyTKjp7Saiol4yP
-	 7JXD3GNkhKKkNRmnSgUgIpcz1ESsiNGffbrJkz2k9dmxViOrg0Bw9fun/qXiVBGufx
-	 g5Se1ruW80rgygCbropvX9mwihloeQNy1o6fN3t1hEl9aQWPMtzgjhH/8zMXhBNZSd
-	 7KRNUpExuIqH7evdF/pED8T2tsvGCSzYxgWDzM7fdQwU0KDJU7OGJT+lgFLk4hHA0Q
-	 uiNjESFk849lp17HCpkhtDWn+MiYWkJG7rwp2GLaTUHbaeDxTvXTVOZGd2n0MtgLOK
-	 CvODOcR0nunDQ==
-Message-ID: <sashiko-outbox-232908@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 3/3] arm64: dts: imx95: Add ADLINK LEC-iMX95 board
- support
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Dinesh kumar v" <dineshkumarv85@gmail.com>
-Cc: imx@lists.linux.dev, devicetree@vger.kernel.org, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20261125082222.136238-4-dineshkumarv85@gmail.com>
-References: <20261125082222.136238-1-dineshkumarv85@gmail.com>
- <20261125082222.136238-4-dineshkumarv85@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 25 Nov 2026 08:32:37 +0000
+	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=NUWHpIRD
+Received: from ptx.office.stw.pengutronix.de (ptx.office.stw.4.pengutronix.de [10.9.0.3])
+	(Authenticated sender: relay-from-ptx.office.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 03FE420227C;
+	Wed, 25 Nov 2026 10:18:56 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1795598336;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=G2pU++T3tD+tmGyFtl1Nv5aGN0H0XWEVrsx+kHagZgU=;
+	b=NUWHpIRDlROu5QfbaYS1pqZe+7mb6TlYhitoJdVAN7dzZCNPqt0jciWNeFUpQaXN/mwR3V
+	PPv/UdupcQm2oQKDE9qxIWQNYr0G2eej8Hx01Gy+BwJaOBPXSAz5YUjjDrUD96zpdRXmYn
+	+cWlfjzVW4mWu0wIwpRlYNCrXdDOfHLA9Y+26zJC+po9IhcaUXgkvyYEyp/Uo1CoIxKpdy
+	7ZWCCqH/0+FW+g9SACka6JEA4hM8VOoeQheaF2m2SPeJKz/jTLKLzq2r9OVdT00Hdbe2Cs
+	cXgQRvZQh73G6O7nXbUtG02n1qeyceSSCP6aw+CCEhUyykK03KAtAEbb6Etqbw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1795598336;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=G2pU++T3tD+tmGyFtl1Nv5aGN0H0XWEVrsx+kHagZgU=;
+	b=WIQuXForrUxbZj1ZLOKtvyBrWvFaZPIIWR6RaXxWoiWy6dzgnZN/WHtyzDqs3xBL1WKNCf
+	2HDMD3dXkLIYwsbcE9Mrj8Ik1Ran+0siLnPbPZerIQ/w/XICJomT+nfQ54xRj7DgPB1hyO
+	szUdMjl72Tfnl3iOiQBBKeCdtAiYRoyGT9Hzlx/gdjzda85qkEX5LwVtgUHGvSC07KJR2w
+	P+o/poLQ15F68pnCKwqCMTgPVkhE/kAoaEpti3xhcFVvWzi+RDVm6VJwdhzls3adlI+f/q
+	dhvt8DLHfBVJ7u69ge6hg2b7zDcV2ktuetwamDuF9oz0rnPAL0wUn8Dr7Y+ESw==
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=relay-from-ptx.office.stw.pengutronix.de smtp.mailfrom=mfe@pengutronix.de
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1795598336; a=rsa-sha256;
+	cv=none;
+	b=dlRC6oIgk4ou6lgyRk6gIrOaWT4JF6goh6lS+8gbaCvhiby05o6V8EvwZPKYMfCCBG6xsL
+	XUexA9XNQYyinMmQuM9vCkgGNPxM6yQO2TdxieDmSC51+ucvvAzzqXv0uuI+f9FnfpuTFd
+	fY0PpbYb13lKfkeG+MP7s24gCS7PZeDR3/290oPiq7VyLuzHuMNlldaWeJnFxHONlyG5Te
+	C9MXKRiQHD/1m6pNJkozWnE1axyXJ00IqShICWJbPX/NKj6vGJ/Zvq1yMFv/XgXRrXxIzW
+	mCspbzQ5JBXnskgJ39t4XZAqBD5RU5NTjHJDGOF4EUb5kpqOi0fSKnFWAFXlAg==
+Received: by ptx.office.stw.pengutronix.de (Postfix, from userid 1064)
+	id DC69E1BF4F2; Wed, 25 Nov 2026 10:18:55 +0100 (CET)
+Date: Wed, 25 Nov 2026 10:18:55 +0100
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Prasanth R <ragaprasanth@gmail.com>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+	linux-rtc@vger.kernel.org, imx@lists.linux.dev, 
+	Support Opensource <support.opensource@diasemi.com>, Prasanth R <prasanth.r@lineo.co.jp>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Frank Li <Frank.Li@nxp.com>, CL Wang <cl634@andestech.com>, 
+	linux-mips@vger.kernel.org, Paul Cercueil <paul@crapouillou.net>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 01/12] rtc: snvs: clear the wake IRQ on unbind
+Message-ID: <mo4vj2higl2dmabkeslouimdgoeofqlkyjnngytv5wmub2h4w3@t2ayiiw4qaoz>
+References: <20261125072026.2997493-1-prasanth.r@lineo.co.jp>
+ <20261125072026.2997493-2-prasanth.r@lineo.co.jp>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -60,65 +93,72 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261125072026.2997493-2-prasanth.r@lineo.co.jp>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Low] arm64: dts: imx95-lec: non-standard and inverted usb0 and usb1
-  aliases
---
+Hi Prasanth,
 
-commit 30ac215ca7d5d81b59baad65006b81ae04ed8102
-Author: Dinesh kumar v <dineshkumarv85@gmail.com>
+thanks for the patches, please see below.
 
-arm64: dts: imx95: Add ADLINK LEC-iMX95 board support
+On 26-11-25 16:20, Prasanth R wrote:
+> From: Prasanth R <ragaprasanth@gmail.com>
+> 
+> The driver has no remove callback, so the wake IRQ set with
+> dev_pm_set_wake_irq() and the wakeup source enabled with
+> device_init_wakeup() are never released on unbind.
+> 
+> When the driver is bound again, dev_pm_set_wake_irq() finds the old
+> wake IRQ, warns "wake irq already initialized" and returns -EEXIST, so
+> the driver prints "failed to enable irq wake".
+> 
+> Use the device-managed variants so both are released on unbind.
+> 
+> Tested on an i.MX6Q SABRE-SD board by unbinding and binding the driver
+> through sysfs.
+> 
+> I used an AI assistant (Claude) to find this and write the change.
+> 
+> Fixes: e7afddb2b4d2 ("rtc: snvs: use dev_pm_set_wake_irq() to simplify code")
+> Signed-off-by: Prasanth R <prasanth.r@lineo.co.jp>
+> ---
+>  drivers/rtc/rtc-snvs.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/rtc/rtc-snvs.c b/drivers/rtc/rtc-snvs.c
+> index d99a352d6..647952dcd 100644
+> --- a/drivers/rtc/rtc-snvs.c
+> +++ b/drivers/rtc/rtc-snvs.c
+> @@ -383,8 +383,11 @@ static int snvs_rtc_probe(struct platform_device *pdev)
+>  		return ret;
+>  	}
+>  
+> -	device_init_wakeup(&pdev->dev, true);
+> -	ret = dev_pm_set_wake_irq(&pdev->dev, data->irq);
+> +	ret = devm_device_init_wakeup(&pdev->dev);
+> +	if (ret)
+> +		dev_err(&pdev->dev, "failed to init wakeup, %d\n", ret);
 
-This commit adds devicetree support for the ADLINK LEC-iMX95 module and
-the I-Pi SMARC Plus carrier board.
+If there is an error you should return here. I would also suggest to at
+a proper failure handling for devm_device_init_wakeup() on all the other
+patches, albeit these drivers may not handle it today. Furthermore these
+days dev_err_probe() should be used during probe, so you have a pattern
+like:
 
-> diff --git a/arch/arm64/boot/dts/freescale/imx95-lec.dtsi b/arch/arm64/bo=
-ot/dts/freescale/imx95-lec.dtsi
-> new file mode 100644
-> index 0000000000000..079639b8736b1
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx95-lec.dtsi
-> @@ -0,0 +1,631 @@
+if (ret)
+	return dev_err_probe(&pdev->dev, ret, "failed to init wakeup\n");
 
-[ ... ]
+Regards,
+  Marco
 
-> +/ {
-> +	aliases {
-> +		ethernet0 =3D &enetc_port0;
-> +		ethernet1 =3D &enetc_port1;
-> +		gpio0 =3D &gpio1;
-> +		gpio1 =3D &gpio2;
-> +		gpio2 =3D &gpio3;
-> +		gpio3 =3D &gpio4;
-> +		gpio4 =3D &gpio5;
-> +		i2c1 =3D &lpi2c2;
-> +		i2c2 =3D &lpi2c3;
-> +		i2c7 =3D &lpi2c8;
-> +		mmc0 =3D &usdhc1;
-> +		mmc1 =3D &usdhc2;
-> +		rtc0 =3D &rtc_i2c;
-> +		rtc1 =3D &scmi_bbm;
-> +		serial0 =3D &lpuart1;
-> +		serial1 =3D &lpuart2;
-> +		serial2 =3D &lpuart5;
-> +		serial3 =3D &lpuart7;
-> +		spi0 =3D &lpspi6;
-> +		usb0 =3D &usb3_dwc3;
-> +		usb1 =3D &usb2;
-> +	};
-
-[Severity: Low]
-Should the usb0 and usb1 entries in /aliases be dropped?
-
-Custom non-subsystem aliases are not allowed in devicetree sources, and
-the usb subsystem does not define usbN aliases.  In addition, the board
-comments in imx95-lec-ipi-smarc.dts label &usb2 as the first carrier port
-and &usb3_dwc3 as the second, so usb0 and usb1 are inverted relative to
-the hardware port numbering.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261125082222.1362=
-38-1-dineshkumarv85@gmail.com?part=3D3
+> +
+> +	ret = devm_pm_set_wake_irq(&pdev->dev, data->irq);
+>  	if (ret)
+>  		dev_err(&pdev->dev, "failed to enable irq wake\n");
+>  
+> -- 
+> 2.43.0
+> 
+> 
+> 
