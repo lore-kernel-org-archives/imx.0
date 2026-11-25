@@ -1,99 +1,52 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.182
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795652958;
-	b=Xy5oHyImxehR+6YWPHR79inL9oWFV1yqstDmw4n6KXwEpGgj/WHtePS3uPCyw2bWZ571
-	 DJ49asPtoHJTOeajvWxpDf2I+CuNWd3LUh0A3WgYN7aEHVoU9jdBF0I0+sVHFZ3yjMG1I
-	 Oj53msv57+2GFgSHAHWkgbEhZ7FNeAlslOdUL/QdS3QELe9K0UwMNhxeWix9vtFTS+HbH
-	 3kWSf+6HMy4fcAvWbtFQLb8WsZL/072sBXPy8vQg3/LVy6WxC7Se3oWXevS6Dr8IKjvWj
-	 CyD9yQkvS4jmMk6Xyb+PRkR5ewd/LbDS7Op2YKiACkTbAGQ32nnOXVhu0+P14dJ7qXw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795652958;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type;
-	bh=ica91CLq/2YhNsGz5gWhVwzBtrOD+YGQQy5zyrqi82Y=;
-	b=Z8v9cPFh/WTBPto5KauAO24riVQkMid1v8jbwvId79Zoikh3BYWVcslOvmH4EtfWpYNz
-	 4pw93qjQyYRG+vRCqJoZse+rSPvtAInKKm1LGnxZMGPghaxQCudZWP/3+WWHYfHyBUytA
-	 Im5U4SslTrYEPfmN4tkJjp9jbB3yTLVOkypIalhQ8kihcbLkT5vkm6iT5MFLxXLN8Rae2
-	 AgQTUfdmN3Frocz6lBWBHti0HRUwW1sAAOXwA3tWuwitRlj1TC5W7lUuu41EG/aBWsiTg
-	 mGWM3ivc1M52KmUNofL568xVw0QKW0Ww2BFzW85Z67eTHp4kKgssDEjeKCixTJ+YcRg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=nKwtvDc+;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.182
-Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=178.251.229.89
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795653281;
+	b=V+IYcZpQrNUNqYnJihX0Q8PflmrNXsdtvMgRD+bi4oRb1c+yLzI49EUroFvpjZJl7FAN
+	 ljVTHfp2HVB/p4G4cmoEHYOAZvFvyB3oEpjFoq5ov5PrTlDNdepG1g72qlxPCusgX/99P
+	 wyuoJ1+6XvaTKFGwXI+4ks5WTL+zljPpr6ne+1weVYkKAxkwMOfwZEIysXcr6aPrivjh/
+	 AUGVZFOL+AiLGVJKFTcGILjuUdU+xUFcf/fpEst7dUtEKJy0CgEIOEcCj68OGoBHi9Rm4
+	 WF21QWLJvxYLYEeo8C0lN+ztZBFDPq5RNc4qoy75K2x3KVwUvKGxkIjRwBLkUltGH6Q==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795653281;
+	h=DMARC-Filter:Received:DKIM-Signature:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-Last-TLS-Session-Version;
+	bh=5Nw1PUI/8+Dw+uE9Ar24vLwu5Jkm9NnRZmkT/cfK/VY=;
+	b=H9qZkSXCybFbueRBj/i1vgh7Wup18N/3Irm3Ty7IGO0rPLRk2+eVvlanWIEHqB1fV7bw
+	 im5a0vX6Cu4hbMzTF+QIE9UlAPP0ZeEcWG3hk2+kcZtBZA2iF/APcNuvPCJoAzpNk9AD+
+	 QbD+ULvzF3Vd4s0ltvoJsFvT0+TGK4jT/52F/5gnCr2yHt02HMhmuXar5rMUyk/2TswPT
+	 c8Yn68kMv3GQaueHaDMgGR8gKnHoRLNYTxPN9u0fzTi80lth+8FDEb028Z9sPlVG36d0J
+	 PPm/5eZ+9fk8EYaRO2xItPsC5xHhsgZ8IzDabiU1jBuaQvycekXQD28DaKgJehWYHCQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nabladev.com;
+	spf=pass smtp.mailfrom=nabladev.com;
+	dkim=pass header.d=nabladev.com header.i=@nabladev.com header.a=rsa-sha256 header.s=dkim header.b=bQhzdxgG;
+	arc=none smtp.remote-ip=178.251.229.89
+Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E526606A31E
-	for <imx@lists.linux.dev>; Thu, 26 Nov 2026 00:29:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9E526606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A222E606A321
+	for <imx@lists.linux.dev>; Thu, 26 Nov 2026 00:34:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A222E606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=nKwtvDc+
-Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-38431138772so8370700eec.1
-        for <imx@lists.linux.dev>; Wed, 25 Nov 2026 16:29:17 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795652957; cv=none;
-        d=google.com; s=arc-20260327;
-        b=CZ9JJcXfyWyXCflsYJ+iUMpZ0JPRy1C6FbolleNmkQQ4NhVJnxOQFIQrcfhxCtCvda
-         FgjDSKJBe+YVIzaqYzud0CUiCYRAirjakpxdQBp8UUr3EUxTd2dmLzVpZ9PZetO68jk0
-         sB0UQ2zsIWrO2AyHFGC722A/8Zui5zk7G+y/Ho5GRqmrg7/+60mvIvC+PIgWcYRgcSqL
-         z3Zq7CRr0tEN09nlyLZVmojx3WLA2HhrQxqDyCJPS6v6y2fYX0BK6UuKIN76DvZSyUeX
-         cD3/NG3iwGqIDFsnU8THYWJ12p4BeBruceI/0FRjLn2xfs+WUBvg8XZtzAT2qUvbC6ju
-         FJ4w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=ica91CLq/2YhNsGz5gWhVwzBtrOD+YGQQy5zyrqi82Y=;
-        fh=olLZNUCsbQmPF/X223fNr42fnxioOUtr1V4OdKHmQIU=;
-        b=T8BF05N0kNjo3YKX64uLzK2qetgpNKGCuj575X77k8NpIffQLQ4usOJhh705U5w0hL
-         bzZN1cFZSTzyWmPKzRvIrxy33mR/m/tocWeBMaEORlHBAbLPu8ARdJ1g8/4czGsy3E+I
-         KmYVJftPUKbL0Hau/+EaLJr0xKwHjliCrmpf+0Qmf+tdtjowdw6Fcd4wJ8JGZW7sSoGx
-         RhLxWlcryatnlfov0Tlh0cpmgcTwcUt2RFdL3vegikJneqezgNtjnHr1+0s2P4S2LpRn
-         261XlkZTvo2w739unqlUMo+ZeMsfE7PssbQyZ9DlrWUNiRMw5FIX8zgouBZF+EB10QL3
-         Keew==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795652957; x=1796257757; darn=lists.linux.dev;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ica91CLq/2YhNsGz5gWhVwzBtrOD+YGQQy5zyrqi82Y=;
-        b=nKwtvDc+gxdogeY+I/of2x4RSfeUb22hMTCqUomM/XSl9N5Csi6v5ACrzVrqGNg4Ev
-         hXgw/bCcKpCTVDX9GauK+zdhAfOAbuvtJL/ziAhh4B4s09+8ihheN0bD6qaKSpl1dBPm
-         JJbXUjthDYzAl6eIqOnKdNQLHiUWp85+F2CIj6DQS6y0FsDRJX0h3zXA5GtLGCr0X5Y3
-         GSlf1Rt9xuTYojwQjMcV9fwNT5KJVsA5t68vOpLLPsnc5TR91XKKrNP7MDLC7puPm9xK
-         v4oWVOs+0AqvFBBFd3reEaFkSeYXPuKFY0d3PoxSLE9WzJipYXCjlmkHoJ4LS45s9VWu
-         t+cw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795652957; x=1796257757;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=ica91CLq/2YhNsGz5gWhVwzBtrOD+YGQQy5zyrqi82Y=;
-        b=Wd6EOemqEz9cioWoLdl5O3CDXtrzECqwbvyFfRyL4Ax/uLLMbQtBNbfgJuONmN65wp
-         Sdv8fq10O5l3LguBL9gS7p3RkAm4dK14ERr4T4Xg8nKkcQCtbi7M4doqwxynclHSlTYp
-         X7f5I/qHxsmyon/I42Aml/JUqbXNW5qcVVjeyFnDjJLDNTA9+qUCs1nr8cLQ9p6NWFZm
-         xUw95hiRzfOpSiyNi/usRlBcimS3HllvByJAcx8b4+4/9zh/EjkmPcsPpS+GuMwb9MoZ
-         kF0lK92pEhOd1ptfI8k7HPWY88LAf3j11DW5tfjqSeD9Sl7AUytbFuEnC8lSuNS7ZRJr
-         Vphg==
-X-Forwarded-Encrypted: i=1; AL+hErGuEUkHci1+86cHDP9Yj60kB3/lYRVuRfLppBh6k19hKQXfn11DIRgdh9wWHtU5hA5+9sU=@lists.linux.dev
-X-Gm-Message-State: APuU4Z8PYRXU75JEWW3zAPxPQkkc+lFJ3hl10WWhcS79If3PRJM3MPu0
-	w/vbZ5yzxz8WHq6majbRDlh2lrl6Evk5bbmd0Ad7PCzbYe7P2HEji0oeYAVMqcO004W/vQPnq9q
-	St7XAA5TCHt6i/ygo9u2H/RD6ZRiZDfc=
-X-Gm-Gg: AZFdTZdeFEvCVl0uz7625K2JgDMTVzq1Ds4kK30WXb2S0nAr2DFn9ZgRld147iqR2ww
-	dEk6w0iKj41p6khE/q/Hq7fdgiE58+ysLBBySGwnUf5GEht/nLLiUJzStXtqiywUj6DXvpvJiSc
-	sI2JS/x41JFf2uieblfXQIEFo4MN2ealFhjZtqojhTsRDKB9441XzSeZ8EO2h0YDGb8/RQ55DAm
-	xR8TdhCFQ+ztqj1bl4lJ7bEPuKfLdmhvPXAt1oZqgsMuxTh7vyu+AwhU2yTfYc9rM2GCz6xewcg
-	RD2muIVo9bvROcMLmqvsXxkVtwYDi5L9S4vfVXrVz3Qui9xkI0/sdJYuM7DPvL4Ht5qDcMIelMU
-	LvS5YT5pHU0+z6Y2CN8nzcClzed+BrIymbUz4wCo=
-X-Received: by 2002:a05:7301:dd8b:b0:372:32a1:b384 with SMTP id
- 5a478bee46e88-38571510675mr21743896eec.33.1795652956755; Wed, 25 Nov 2026
- 16:29:16 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=nabladev.com header.i=@nabladev.com header.a=rsa-sha256 header.s=dkim header.b=bQhzdxgG
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 230B9108AA8;
+	Thu, 26 Nov 2026 01:34:30 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
+	s=dkim; t=1795653271;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=5Nw1PUI/8+Dw+uE9Ar24vLwu5Jkm9NnRZmkT/cfK/VY=;
+	b=bQhzdxgGhksJwhez1cJ6RJfzVetdIlhj0vPwN9rwGVYBtPNyApvgg/373hbFxzfNxLfqUE
+	giGcpt/g6Riz6NkXX7MlUou5cdiCVwf1iU4EdubtCMUAMaXIInspO7A/7phxpBwMMXnrni
+	rZkV9tfz8DAZHHEWauVaU9rBP+Tv++S3UYDLeTolvZ+3idCuqEbKUefSgQYP8XNh+ee+cl
+	9tGnoIPIgM5ej/IOTSes+0VBnwrWmuyeId3huadFlb3YCiE4o8SHFW1auHf72LHKc0jLnO
+	wcACDZZYitleGOluF4Jki8+2NRNJjKnkwTglkvLdMZ3J3PcuVQeAzrm3DCSRag==
+Message-ID: <a57373f2-dfb2-4344-8e2c-6621a623d170@nabladev.com>
+Date: Wed, 25 Nov 2026 14:56:36 +0100
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -103,34 +56,28 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-References: <20261125072026.2997493-1-prasanth.r@lineo.co.jp>
- <20261125072026.2997493-5-prasanth.r@lineo.co.jp> <awdYin-gfFlMzm5K@SMW015318>
-In-Reply-To: <awdYin-gfFlMzm5K@SMW015318>
-From: Prasanth Ramesh <ragaprasanth@gmail.com>
-Date: Thu, 26 Nov 2026 09:28:39 +0900
-X-Gm-Features: Aa3M54ppWwPKU2GXBN__reMNMjMzYNk4yHpP-osEJU5EF1y5sgVMcffyz3AkPvI
-Message-ID: <CAG7eodGWsRtuQWgN5=7c7b9E7JKhLXAhZxRGgbDW9JpkSzhX2w@mail.gmail.com>
-Subject: Re: [PATCH 04/12] rtc: mxc_v2: clear the wake IRQ on unbind
-To: Frank Li <Frank.li@oss.nxp.com>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>, linux-rtc@vger.kernel.org, 
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Support Opensource <support.opensource@diasemi.com>, Paul Cercueil <paul@crapouillou.net>, 
-	CL Wang <cl634@andestech.com>, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org, 
-	Prasanth R <prasanth.r@lineo.co.jp>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V2] ARM: dts: imx6ull-dhcom: Change eMMC pin configuration
+To: Christoph Niedermaier <cniedermaier@dh-electronics.com>,
+ linux-arm-kernel@lists.infradead.org
+Cc: Pascal Zimmermann <pzimmermann@dh-electronics.com>,
+ Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>,
+ Frank Li <Frank.Li@nxp.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Rob Herring <robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ kernel@dh-electronics.com, devicetree@vger.kernel.org, imx@lists.linux.dev
+References: <20261125125621.6734-1-cniedermaier@dh-electronics.com>
+Content-Language: en-US
+From: Marek Vasut <marex@nabladev.com>
+In-Reply-To: <20261125125621.6734-1-cniedermaier@dh-electronics.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Frank,
+On 11/25/26 1:56 PM, Christoph Niedermaier wrote:
+> From: Pascal Zimmermann <pzimmermann@dh-electronics.com>
+> 
+> Tests have shown that, with the current pin configuration of the
+> eMMC (usdhc2 interface) read errors can occur with a certain
+> type of eMMC chips.
 
-> Needn't it at commit message, you can move it after --- to tell maintainer
-> you use AI help.
-
-Sure, I will move it in v2.
-
-> all devm_*() API need check return value.
-
-Will be fixed in v2.
-
-Thanks,
-Prasanth
+Which chips are those ?
