@@ -1,90 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.162.56
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795598340;
-	b=qAXOWk8u0WdVEcQRQ6QzffHrDjn1y8h/eLdmMqwMaaxng+Ihgzer5U6YWxJENWsaHkX3
-	 bWCd2URFq4iyR+6Hg5ZrKgojycNzbzsqyWxOJktaUBPyDE9lThvLJnPifTxs8HLJh43Zg
-	 b099R++Bzgq9LAlLEE+T/dIoUAf68OGbTmjbRKi7goyC3xp4Q6wrDLm+ejqyZ0povdxLi
-	 t4u6stHdML7HCLa7Kg7wnOC6RRbqjCNVEya0s8cUL4+NbeZRmMF3kF9Lzpksh2S2iuN7H
-	 AXpdukP6aVHL+oU+23e1UmGGZcV/GYGtTEWragZcANkHda2V1Ach4b3WZb52FRRxh8g==
+	t=1795598884;
+	b=kWPFob5LbqutJAbnPHmew25ek22d2VTzEsrSZDD4WdPttwy+sJN0bb555EK4gNYhD25w
+	 7LaECr/VtB/hoJ2v/jktCY7V/9bAjclYYrtQZxFUepSkCDGdyJrXnemqXD9GmX0Rs/ZDI
+	 uNlEVTLcmPE39muORHNuP2iIj/S3Ne9c5yr6yb0+ujl3CpG/jM69XYMcZMn+Qnnpk3if4
+	 MXUnGPe4jDqhXhodleTfTjDn/14sq6eHDKbCdFTlKvrUChLtZv6D5sLjR7dQlt/foEVkf
+	 GXXbylbbf7YSyC753U2lwACcBH9HyIyaU2JvZvqMziDOYYlwTkmwMO5Gc8b5IhF/9GQ==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795598340;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=G2pU++T3tD+tmGyFtl1Nv5aGN0H0XWEVrsx+kHagZgU=;
-	b=HB48JcPSE2Dj8cAitNs3WsnMoJbGOTy1XSlfXsf329f6cCQGYAZuUvsoVh047uj6P9hA
-	 t1kkFosG/Cbd9v1XDRNKs3eeD8g+6W+M5yyBiMj7VFcqOGLntRgYiXYemS2vy4nllv7DI
-	 DmTK+5Q26XUXrzzwfd5uCt+88JRWCxToCOo0XfQGj3fU/UhVcl9Y0FTjBjVsaidxwaq8V
-	 sHD60iXCB/dfhqbIv8ZOtpbQmV/XCb7pLLSAOOUbxS3y9fhPoF8Gou2ReDKHc8irqExz0
-	 AvVZRZPvChpJkXERtsiKi/SLYugc+Y1ypIo6GEphWm/atpyz7U16IsbUR0DglVlK0pg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795598884;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:Content-Transfer-Encoding:Content-Type:
+	 X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=dQBqbiIv1p2VBFGRvFWllkt+MEWE4IbU2cfydV1kTdA=;
+	b=n3eIuTp55lOC5I9jQPqawHqQORMz3XljH3FjFbn4kLz8axdQu304Y9LNWLYslj86izlt
+	 hopGUlBw4+R6ccFz6xyQXqmS44+jxFU3wZJy98r3vpMZwqnRBGoitf++P1O1rnYlituc0
+	 feBF+qhctV2bU3pOi4g2hXbVBS0R4r5t2vglWrQP9eFFOMuzC5RRD1T2r85gz7AqBxKmR
+	 5fOvJ4h52+r5wBqTvP1vm28ZKYg5hREIg5I1WenIVfOaOWbKXQWzEcD4Rv+peYotosE4G
+	 1nG7RA4I37L53BT57xikrddaKQQBz6szCYJN3630A56pbxjud6c/g4Xlbw4ZNf/Dxeg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=pengutronix.de;
-	spf=pass smtp.mailfrom=pengutronix.de;
-	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=NUWHpIRD;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+	dmarc=pass header.from=nxp.com;
+	spf=pass smtp.mailfrom=nxp.com;
+	dkim=pass header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=YR1rLXFZ;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.162.56
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013056.outbound.protection.outlook.com [40.107.162.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67BA0606A693
-	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 09:18:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 67BA0606A693
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67E64606A32E
+	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 09:28:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 67E64606A32E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=NUWHpIRD
-Received: from ptx.office.stw.pengutronix.de (ptx.office.stw.4.pengutronix.de [10.9.0.3])
-	(Authenticated sender: relay-from-ptx.office.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 03FE420227C;
-	Wed, 25 Nov 2026 10:18:56 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1795598336;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=G2pU++T3tD+tmGyFtl1Nv5aGN0H0XWEVrsx+kHagZgU=;
-	b=NUWHpIRDlROu5QfbaYS1pqZe+7mb6TlYhitoJdVAN7dzZCNPqt0jciWNeFUpQaXN/mwR3V
-	PPv/UdupcQm2oQKDE9qxIWQNYr0G2eej8Hx01Gy+BwJaOBPXSAz5YUjjDrUD96zpdRXmYn
-	+cWlfjzVW4mWu0wIwpRlYNCrXdDOfHLA9Y+26zJC+po9IhcaUXgkvyYEyp/Uo1CoIxKpdy
-	7ZWCCqH/0+FW+g9SACka6JEA4hM8VOoeQheaF2m2SPeJKz/jTLKLzq2r9OVdT00Hdbe2Cs
-	cXgQRvZQh73G6O7nXbUtG02n1qeyceSSCP6aw+CCEhUyykK03KAtAEbb6Etqbw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1795598336;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=G2pU++T3tD+tmGyFtl1Nv5aGN0H0XWEVrsx+kHagZgU=;
-	b=WIQuXForrUxbZj1ZLOKtvyBrWvFaZPIIWR6RaXxWoiWy6dzgnZN/WHtyzDqs3xBL1WKNCf
-	2HDMD3dXkLIYwsbcE9Mrj8Ik1Ran+0siLnPbPZerIQ/w/XICJomT+nfQ54xRj7DgPB1hyO
-	szUdMjl72Tfnl3iOiQBBKeCdtAiYRoyGT9Hzlx/gdjzda85qkEX5LwVtgUHGvSC07KJR2w
-	P+o/poLQ15F68pnCKwqCMTgPVkhE/kAoaEpti3xhcFVvWzi+RDVm6VJwdhzls3adlI+f/q
-	dhvt8DLHfBVJ7u69ge6hg2b7zDcV2ktuetwamDuF9oz0rnPAL0wUn8Dr7Y+ESw==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=relay-from-ptx.office.stw.pengutronix.de smtp.mailfrom=mfe@pengutronix.de
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1795598336; a=rsa-sha256;
-	cv=none;
-	b=dlRC6oIgk4ou6lgyRk6gIrOaWT4JF6goh6lS+8gbaCvhiby05o6V8EvwZPKYMfCCBG6xsL
-	XUexA9XNQYyinMmQuM9vCkgGNPxM6yQO2TdxieDmSC51+ucvvAzzqXv0uuI+f9FnfpuTFd
-	fY0PpbYb13lKfkeG+MP7s24gCS7PZeDR3/290oPiq7VyLuzHuMNlldaWeJnFxHONlyG5Te
-	C9MXKRiQHD/1m6pNJkozWnE1axyXJ00IqShICWJbPX/NKj6vGJ/Zvq1yMFv/XgXRrXxIzW
-	mCspbzQ5JBXnskgJ39t4XZAqBD5RU5NTjHJDGOF4EUb5kpqOi0fSKnFWAFXlAg==
-Received: by ptx.office.stw.pengutronix.de (Postfix, from userid 1064)
-	id DC69E1BF4F2; Wed, 25 Nov 2026 10:18:55 +0100 (CET)
-Date: Wed, 25 Nov 2026 10:18:55 +0100
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Prasanth R <ragaprasanth@gmail.com>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>, 
-	linux-rtc@vger.kernel.org, imx@lists.linux.dev, 
-	Support Opensource <support.opensource@diasemi.com>, Prasanth R <prasanth.r@lineo.co.jp>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Frank Li <Frank.Li@nxp.com>, CL Wang <cl634@andestech.com>, 
-	linux-mips@vger.kernel.org, Paul Cercueil <paul@crapouillou.net>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 01/12] rtc: snvs: clear the wake IRQ on unbind
-Message-ID: <mo4vj2higl2dmabkeslouimdgoeofqlkyjnngytv5wmub2h4w3@t2ayiiw4qaoz>
-References: <20261125072026.2997493-1-prasanth.r@lineo.co.jp>
- <20261125072026.2997493-2-prasanth.r@lineo.co.jp>
+	dkim=pass (2048-bit key, unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=YR1rLXFZ
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=V7Ibk+NBI2v2Sdxa3NHDgFZ1pi7tU7lId38OPtqLzt0W1KaFyEqG1Rr1t7zbjL3FY3hv8EubufAYw7SiHyBBhYqX0hQzDW4ZFaWrQgSJDBGFg7AK+4mwATYrTKM5egA2ELpDeoXsjlgb3/V7PCqfu4muxf09kWIq0is7brU5q8gAjAITvSrhnyuKtnC1zDNAk36PH6gJOsOvrlsTXv+YUolYG+6fLcR6hq8q0vWt/rJFmcTiiaxoH8cMMzGYU2Mwdy6MbIsCePC+YK/rsL3pHJGvcWJvwvFngZScU3xsMVVmE2eSFVsWYGuP3X6ogNDqLHYUammEbO2536/CPrH/lQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dQBqbiIv1p2VBFGRvFWllkt+MEWE4IbU2cfydV1kTdA=;
+ b=lB5yGKEx3rBg+O/qQsWYw8O+q9Cr1XBsY2wCal2CPB8J0dfaxtirFSmDhFoZ78XCmSdm1P536+dvxuBGzdtTiwnPkdu9WG5hSXBRJ5JGTcsvu5Gk9kgBc/FOa/S8qxenL59uZzAvyiVTrHhHodOAtrOTxrCilFdh4+ep8qSHwM7XLjgb1xC0AxIVltf+Q8DcmW3jlAoHipOAGn94or5WIuAEFcRRbXxl3U7r3THUIxQlwEGgGHMASuBaApjWg2sMzP9Cd5aHKsBVUwV7mmiyZaM/ZwGWv4wn+Ov2GqNPQ/tUOLYNuILMIHX4vvc+IhQEUH/cdL+aMEfHJCVxIKLmJg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dQBqbiIv1p2VBFGRvFWllkt+MEWE4IbU2cfydV1kTdA=;
+ b=YR1rLXFZ9GkopNtWSCv6Fd/3FPFoJrb8NwLufzgu3xkguoteEp49P5GRMX849jYCZ8PLyaZa70WlfWunwit+q8tGK7U30toQ82B3flwynjm8xbyCnV5ZTDsYhClXt3lGX9gxS5j5fHu8EF8PvCIiWvBfQrQQMTYR4+2Wd5UXfK4BuwLwlezgfC9oAEf9ZjPlfjYU90CvHEBpwy1t1HCF61FbkaxbDZC6p65GEXju9FiWG8zNykxw3X9Q8NSjIsugtp4BSolnF/fIejWoOw2Aq124PS39q6/GVpnB4r7qQQGwNlJG6ZxFMSHfMqqWGycNnNO75+qO1C8x70NBWG0boQ==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from GVXPR04MB12316.eurprd04.prod.outlook.com (2603:10a6:150:2c6::8)
+ by PAXPR04MB8942.eurprd04.prod.outlook.com (2603:10a6:102:20d::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.662.6; Wed, 25 Nov
+ 2026 09:28:00 +0000
+Received: from GVXPR04MB12316.eurprd04.prod.outlook.com
+ ([fe80::fc6e:ca22:f065:def4]) by GVXPR04MB12316.eurprd04.prod.outlook.com
+ ([fe80::fc6e:ca22:f065:def4%5]) with mapi id 15.21.0662.004; Wed, 25 Nov 2026
+ 09:28:00 +0000
+From: Daniel Baluta <daniel.baluta@nxp.com>
+To: Frank.Li@nxp.com,
+	robh@kernel.org
+Cc: krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	aisheng.dong@nxp.com,
+	shengjiu.wang@nxp.com,
+	linusw@kernel.org,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	Gustavo Arambula <gustavo.arambula@nxp.com>,
+	stable@vger.kernel.org,
+	Daniel Baluta <daniel.baluta@nxp.com>
+Subject: [PATCH] arm64: dts: imx8mn: Fix SAI3_RXD_PDM_BIT_STREAM1 input select value
+Date: Wed, 25 Nov 2026 11:31:27 +0200
+Message-ID: <20261125093127.1353451-1-daniel.baluta@nxp.com>
+X-Mailer: git-send-email 2.45.2
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: FR4P281CA0100.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:cb::14) To GVXPR04MB12316.eurprd04.prod.outlook.com
+ (2603:10a6:150:2c6::8)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -94,71 +106,91 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261125072026.2997493-2-prasanth.r@lineo.co.jp>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GVXPR04MB12316:EE_|PAXPR04MB8942:EE_
+X-MS-Office365-Filtering-Correlation-Id: c21dc550-98c4-48b2-637b-08df4ad665bc
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|23010399003|1800799024|366016|19092799006|10067099003|11063799006|56012099006|261102123227099003|261026140227099003|261022105027099003|261026121527099003|261028144727099003|261021121427099003|261021123027099003|261009223027099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	8tpQb0GE74oaIEV9+d8a+2Y7bN0oGC48xKFkr4GSWPfdpIHGrRYrToNnW7u9GHwCL8aTD9NsXPD24K6hD8qkUELo4OXakldaRBU2xEGO8G0SmqLDz5gEyLtmLHu8g4DnLF0D3TNw+QHckU2F7nPOPvQwbeQcEu5xW2R1lk6kvDk/1ElkiyktTRTTC2O0oZ8Z51Q5LR1NF97mKVQ6qaMRTConvKtv0Tc56Dvjk9MTIMxZ+UvzTAd7fkvq22e9EkAyYvUvORPSz7nMBdtWgVqjAeNfiIIhLRKSrASjtrIOcgcIDE0wJgVoAsD1WdRg/Tcg2OzypU631pwb20W17EfBNZ4mAeEdpvgum9pSyOTJDnj5Ico/N2PYhs3r+BLxkNLkUEW7iz6Iy/KT/Le7zYqJ9j3iUb/qdAjzk4XLcfhHVSo7hkIpmCfh+oVu/20I7E8LK9+w1iKmA7de2ltrmRymAsS5T6skgk8Hpl6wxs5KPPi0yB1gb2BL8uH1J5+m51WCo5+spECQ/PrKtJML+OKueYm/RZzTtDkN49yQXDasaywMAUZnL05CZOiP41YpjTO6r1XBSzYIZQ6KdTTChef0VjzBj2CGiDwHrxFRTIZoP/MWj2XZ87Y4pPHYr5Bpsw6GIru16LK7+ZcNfjEnMTWdF+lwVYDD3N2MicmaD4J0y/A=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVXPR04MB12316.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(1800799024)(366016)(19092799006)(10067099003)(11063799006)(56012099006)(261102123227099003)(261026140227099003)(261022105027099003)(261026121527099003)(261028144727099003)(261021121427099003)(261021123027099003)(261009223027099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?QLuOvHoo+JGqRKAOPjfBA1ACI3wZ1KK0O05LVUoOmgGJxtUkieR0vOuTbkLv?=
+ =?us-ascii?Q?NVmxLERWIyMWHuM7DDgOY0DVWRvdPj8jMSZ/Y8sR0MvwSPCWQQhtXJrPh/Wa?=
+ =?us-ascii?Q?oaNyeuCkhOH8a8dS0qZcHSk6Fk7pfZ+eAyU42HjpSEK3Trk6oGdkIOxtgqkr?=
+ =?us-ascii?Q?XxtJMhvm39OWD3hV+kgvp8nQG+i+rBZ42NWWzCuLte6e2GpJbJP+qvPeO3a5?=
+ =?us-ascii?Q?IGH2AfEKFtKGdyh2eq3MADmwR9ZNuTt4i6nwFkJVN4qFWHiIPSEAThbiq/zc?=
+ =?us-ascii?Q?wlLiUG6f+ZDI7PDt50qfA84c/QI26/P79sw4htfkxGbEpmqAzlTwKyXS844Y?=
+ =?us-ascii?Q?GMU+PfMe/ss0u1nhkgtrQly6cm+rSCg9+QD3AwWwfVvPJrz5nSNWtOLzx9+i?=
+ =?us-ascii?Q?WbDDP6n9/nmjgV7lOKf7vAW5XnELvzNqwjkllJG9Ib1wke4scCV5riZEcylM?=
+ =?us-ascii?Q?axme0xptV9EQ3wIy/WP9gTYXEvAsvQGvreQT4pDOCwaTA84Qv6S59wi2gZnF?=
+ =?us-ascii?Q?8ps3ffbm5gwP6wv6JTTn+HStJ9CxskI4V2qW6ZTVDRSLI7UOpAKdssAm6iNq?=
+ =?us-ascii?Q?4pOAzVaukiB6VYkRGZenmvI6wHvZvOHnTNaY9IHGAV2s6v1HNi4hchzh5zJG?=
+ =?us-ascii?Q?BECsFhcuJ7KvmjKNAbWqExGtJbiUw1DtJLLlaqCPHofDdrFenIVXNmBiixv9?=
+ =?us-ascii?Q?/EfYsWuYlDtU5vXos3r2XgAuPg0dC6vN4GMvTee/1dhX/e4zw0i5efzcXR53?=
+ =?us-ascii?Q?U1VjBppDwhx6BKQLgWdgqq8gNOd51/WwnrbcW/GQPAmpeSL1h0HnxpZVH4py?=
+ =?us-ascii?Q?GXkVcTeQ6RskH+YbG+EJMpqX977hJm8ibVlNQybUgiwZX4zUNHDoJzQWIj1a?=
+ =?us-ascii?Q?yRUqb7bPigBg5MQBOegQkwqXJuj3MWeXrbA2vFdiWIBXJO8OwrgKWfy2pFDz?=
+ =?us-ascii?Q?W13d5OyjW4gdi6BJiI76F32Tcio6yLT1ASH1i/ZwQ3IBkPGMy5B78GVZ2RkD?=
+ =?us-ascii?Q?PpCHRAuvRniXJFpPq7MIrT5HZcpVYORTL5ucKdRcgLPFSCPW9E4zOP1Hj7Q2?=
+ =?us-ascii?Q?ICgtwngXAxyr8FLFTRCHKT30nZXGFkDLDvpnBghWx7CEuwkqnjqH1eOi++eU?=
+ =?us-ascii?Q?d6+3xqYtNoWPi0EZHVON2bnzoxypzq5xzW2aJRCtzB0SkBv5GKPb9RQWqAhL?=
+ =?us-ascii?Q?zzLgQQaAOt7AJCZJrcPUbRleyjDf2Y7i4mfFhSECfe+FoddVl435EPyeHUso?=
+ =?us-ascii?Q?laxyEf5fZWuMDbvMuDuJJAe4LIUlfvvtAqlpemNSoAqoxonvLggoS/qJffwd?=
+ =?us-ascii?Q?NpRd9mFA/9D5TyKud3AU0xOBuCX3KGqYvaDXqeEH4STIiOfEmQSLgPMdWmIP?=
+ =?us-ascii?Q?BuX7pQq4le/47QlvWSv52L4zXp4Ji+LvaWigKPUTtcfAqQm9iO+JKQMcIrJV?=
+ =?us-ascii?Q?PQIo27mbhFotcmulVeqgY4w9rx5pPcrqwglH/U1STXBfVxVeg1NhkargfXdi?=
+ =?us-ascii?Q?TcxJbQSPi7WSBJNeiSWBK44CXlrkkGSwbAvhVS0xf7iq6HGJD2OEcDmBfNJE?=
+ =?us-ascii?Q?t8x9xWb2oIsyLe8fJc0yHF9C2coIMsjTfAAycjP5JCJ2O9uU6ax6z6/5MrPm?=
+ =?us-ascii?Q?IGyTY9uvvfUGQttZUfazFilnfOCEVvuXOG3Sn/a5zecahVe6fFPqPIdtAGtK?=
+ =?us-ascii?Q?ol0crdmjUbLw0TpzTbmBfM2sNpDu6NlOv0+AeI311WqgGEUiMz/zzT6YF17N?=
+ =?us-ascii?Q?BSUelwEwVw=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c21dc550-98c4-48b2-637b-08df4ad665bc
+X-MS-Exchange-CrossTenant-AuthSource: GVXPR04MB12316.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Nov 2026 09:28:00.2142
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: XohfsOOdECBSgWfnKUaWzVd+8OuVB4SW2udy1F9ssruqjXHHUMUyxKtE3pYPTXJ4xC1+odvQx5CtJvhCnRhJFA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8942
 
-Hi Prasanth,
+From: Gustavo Arambula <gustavo.arambula@nxp.com>
 
-thanks for the patches, please see below.
+The daisy chain input select value for SAI3_RXD_PDM_BIT_STREAM1 is
+0x10, which looks like a decimal 10 written as hex. The other pads
+for the same input register (0x538) use values 0x0 to 0x9, so the
+correct value for SAI3_RXD is 0xA.
 
-On 26-11-25 16:20, Prasanth R wrote:
-> From: Prasanth R <ragaprasanth@gmail.com>
-> 
-> The driver has no remove callback, so the wake IRQ set with
-> dev_pm_set_wake_irq() and the wakeup source enabled with
-> device_init_wakeup() are never released on unbind.
-> 
-> When the driver is bound again, dev_pm_set_wake_irq() finds the old
-> wake IRQ, warns "wake irq already initialized" and returns -EEXIST, so
-> the driver prints "failed to enable irq wake".
-> 
-> Use the device-managed variants so both are released on unbind.
-> 
-> Tested on an i.MX6Q SABRE-SD board by unbinding and binding the driver
-> through sysfs.
-> 
-> I used an AI assistant (Claude) to find this and write the change.
-> 
-> Fixes: e7afddb2b4d2 ("rtc: snvs: use dev_pm_set_wake_irq() to simplify code")
-> Signed-off-by: Prasanth R <prasanth.r@lineo.co.jp>
-> ---
->  drivers/rtc/rtc-snvs.c | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/rtc/rtc-snvs.c b/drivers/rtc/rtc-snvs.c
-> index d99a352d6..647952dcd 100644
-> --- a/drivers/rtc/rtc-snvs.c
-> +++ b/drivers/rtc/rtc-snvs.c
-> @@ -383,8 +383,11 @@ static int snvs_rtc_probe(struct platform_device *pdev)
->  		return ret;
->  	}
->  
-> -	device_init_wakeup(&pdev->dev, true);
-> -	ret = dev_pm_set_wake_irq(&pdev->dev, data->irq);
-> +	ret = devm_device_init_wakeup(&pdev->dev);
-> +	if (ret)
-> +		dev_err(&pdev->dev, "failed to init wakeup, %d\n", ret);
+Fix it so that PDM bit stream 1 can be routed from the SAI3_RXD pad.
 
-If there is an error you should return here. I would also suggest to at
-a proper failure handling for devm_device_init_wakeup() on all the other
-patches, albeit these drivers may not handle it today. Furthermore these
-days dev_err_probe() should be used during probe, so you have a pattern
-like:
+Fixes: 124ecd6658e7 ("dt-bindings: imx: Add pinctrl binding doc for i.MX8MN")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gustavo Arambula <gustavo.arambula@nxp.com>
+Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
+---
+ arch/arm64/boot/dts/freescale/imx8mn-pinfunc.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-if (ret)
-	return dev_err_probe(&pdev->dev, ret, "failed to init wakeup\n");
+diff --git a/arch/arm64/boot/dts/freescale/imx8mn-pinfunc.h b/arch/arm64/boot/dts/freescale/imx8mn-pinfunc.h
+index faf1e69e742b0..2288b16bb48b1 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mn-pinfunc.h
++++ b/arch/arm64/boot/dts/freescale/imx8mn-pinfunc.h
+@@ -474,7 +474,7 @@
+ #define MX8MN_IOMUXC_SAI3_RXD_UART2_DCE_RTS_B                                  0x1D4 0x43C 0x4F8 0x4 0x3
+ #define MX8MN_IOMUXC_SAI3_RXD_UART2_DTE_CTS_B                                  0x1D4 0x43C 0x000 0x4 0x0
+ #define MX8MN_IOMUXC_SAI3_RXD_GPIO4_IO30                                       0x1D4 0x43C 0x000 0x5 0x0
+-#define MX8MN_IOMUXC_SAI3_RXD_PDM_BIT_STREAM1                                  0x1D4 0x43C 0x538 0x6 0x10
++#define MX8MN_IOMUXC_SAI3_RXD_PDM_BIT_STREAM1                                  0x1D4 0x43C 0x538 0x6 0xA
+ #define MX8MN_IOMUXC_SAI3_TXFS_SAI3_TX_SYNC                                    0x1D8 0x440 0x000 0x0 0x0
+ #define MX8MN_IOMUXC_SAI3_TXFS_GPT1_CAPTURE2                                   0x1D8 0x440 0x5EC 0x1 0x0
+ #define MX8MN_IOMUXC_SAI3_TXFS_SAI5_RX_DATA1                                   0x1D8 0x440 0x4D8 0x2 0x1
+-- 
+2.45.2
 
-Regards,
-  Marco
-
-> +
-> +	ret = devm_pm_set_wake_irq(&pdev->dev, data->irq);
->  	if (ret)
->  		dev_err(&pdev->dev, "failed to enable irq wake\n");
->  
-> -- 
-> 2.43.0
-> 
-> 
-> 
