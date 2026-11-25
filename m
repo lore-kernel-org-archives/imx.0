@@ -1,59 +1,60 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795629191;
-	b=FBaRf6LBMLRfIiVv+SFi4oGMzcGsQcHD6mZK75b5r0jiAfbwU9XnsUB0St1TWMAFJGS9
-	 wMxEw63mCE511RU7leIe9hTNtnbmxLtLy2J/96V+LQ75iIv5Tc/aUucpgQ1vH8dz96lrt
-	 8UNQBUE4VG344/cC2QBlPxwJSo6MTGFIa565vDWn3sByxo/7EQMtJw3LgqL6QXz0ZT/NB
-	 hZccBQqUWic2Rht1WOB+UhB+QB+C6seu2QoJdAS/U831PbLJw8Y/hPQokjAJ3wjmhsRym
-	 1eD3Kthr+vBUh2KGZs0YOkMDBCiVh0qY0SZlYxvAwZpby0nJylY77OCbGRzG3E5/dfw==
+	t=1795629198;
+	b=j/v1cSg58Q5X2Fbdgs2fURC+waM/4j2tWifDQW05wvsKmq07AjvVRaT2R+tw06wG1DtX
+	 Zu9nf1IEc7gInwniaTGYUfxm3WWvfRx5bd1gLu4pBGs3DeOgY5iQaQ+U5nxXww6cqX7gx
+	 ghA0ofsKripIzsWKZkUsaCIorjjdJmEWcCZqmK6Q62YU1/3xSNyQEzRjI0wAYADbmytFJ
+	 5qRFFwzXLr2fu8D66YQH5V3IInFGP249scRz0pjZJmHtO/ARpdDa4GQ9wCvdfOfDpIOvh
+	 ptVx37/nCZp3bqQ2UmF51X3bdGRpXrxOQHQDFXC1k+HSz89L5ryxBQJ+YC8RmEJtncQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795629191;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795629198;
 	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:Date:
 	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Last-TLS-Session-Version;
-	bh=4e/RWoOHhDL2sVy5LbDO8W9W8W0olcvrU1DPDGSNAcg=;
-	b=KM+rcJZPrsMoRSVeeUTsptn8FQI4hIEOW8roG3vWnTwSF7nxBXUJMJYQeTQrvjoG/kzd
-	 fFeTgnVeOpvQIuFKmR1OI2zSEmYtsXVe0bWsmYxZSqbU63pMWpQ0O6HGb8gu0pBM1cvrw
-	 E+czrV5/b97yFu/wyyQf477dt9BF4015l7YeNw0OTF39cX2bQqpaylhZoh/k6r632+Yq0
-	 pOeIvljNWSwyRpfTzBPrqjQEHFraMg/oytyzCGQAEhwnwcDc/rG+Kd2GzUDCfS2ld8Gw0
-	 rl0dG34zwNuS459rsFDvDSTmzQgky3XoH5HOYPuBGEssRMbKru5B2pXDZk7m5LX0gpg==
+	bh=setiKsAawUfI5qZxIEr6a1N6sSJqLT6tqu5WlGOp0jo=;
+	b=SYKbLQlgkRl4Gd5ykXDyq+GS2moukMd8X37GH79kPA5FhqkqREbVu0ldlVzNgXaSl7cj
+	 1eGKekzZMD7e9Ncdp4r/KfeMiG+TqwLsSs4/XvWEkZNYHdwMwpTySpgFmfv0fsg5jejBp
+	 +shYYGr52hnPXqYrDjuhMnQfzgHprszsyP/mkRP1GjfIVj3ssSA7UJ+e4i0XGLIHEqp09
+	 Ew69DqaS1C+PR9a1zKaJReJJz4MH1PbyTUHFz/SChrUFNDiAMRuKqdYOZvRTxb4wUWE7l
+	 88MReD+By/Knv4KGSQjqtwczD/i7RJ/c/u4hnhvDpDQNipT8bIfGE9zB+zewZk5meiw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=bootlin.com;
 	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=0I9axvAt;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=S7SWQWQG;
 	arc=none smtp.remote-ip=185.171.202.116
 Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C14AF60A260E
-	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 17:53:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C14AF60A260E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5D02606A33C
+	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 17:53:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C5D02606A33C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=0I9axvAt
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=S7SWQWQG
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 66CBBC2BB3D;
-	Wed, 25 Nov 2026 17:53:17 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 8737AC2BB3C;
+	Wed, 25 Nov 2026 17:53:24 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 6DC9B60480;
-	Wed, 25 Nov 2026 17:53:09 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6A31611E6B0CE;
-	Wed, 25 Nov 2026 18:52:58 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 8EF1160480;
+	Wed, 25 Nov 2026 17:53:16 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 402C111E6B0D1;
+	Wed, 25 Nov 2026 18:53:05 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1795629183; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1795629190; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=4e/RWoOHhDL2sVy5LbDO8W9W8W0olcvrU1DPDGSNAcg=;
-	b=0I9axvAtYjofLkkZCOhpkZRXZO9wrCEJ9W8xd0tJka7dFgvXC9ZZM3ONe8yTXqcbmWdvmU
-	2u0mC3vpvM8T1YH13qF+TwMiyqy4HUMouxTgv812jL9BdodUDrmSJh+5DlxTB8eTJWCkCp
-	rDMjiGhgogKRV3B9FSVGqeE/jtnNyClRK3hFiSQ+x1v0LB3Ej1kjp8qdQT5IkX1KUGcV90
-	iqn37JYOcUO43avU/it4dEEZ25Lu3wpqlZW6pfJQNCGZfSnkv1IJuCRH3HVTAYlePx5now
-	YOLAwRlHqdIagHAqfLWoZE2oNxTwIAlohyg3QGNtn4pIx4KhaFiynLXm3ndyyA==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-Date: Wed, 25 Nov 2026 18:51:29 +0100
-Subject: [PATCH RFC 15/16] spi: stm32-qspi: Consume dummy cycles directly
+	bh=setiKsAawUfI5qZxIEr6a1N6sSJqLT6tqu5WlGOp0jo=;
+	b=S7SWQWQGsDNqMVWk/loTHnYutCsPERtqteJuE1IyQNjWRLrRb+y3aBrmuztWlyjGBoGRKF
+	EiuLx8ZkNKz0k2jB5Er80bY8ITJDyURXMBIhta/etELZ+HTjcP4yO1QkZyzA3o9yl1rrMA
+	w/RSmR7+iVv8ldU+vsxuIaV85Am0TuxujODuxKkG6iM8YjxjWRQcD+n+wnMZ9F30yfjTvB
+	Xy3e0dOgqKf5UUHfXSA1vf9USaV38Uxss86wdY/XoGFdIc7WTjfuSnMSBAfTe2HlNdXNS8
+	zW21Apble487DaxoOxwaFEt5XxbR9LYGMM0Ss1oBMlOSdKvvcRuNqGW4y14FNA==
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Date: Wed, 25 Nov 2026 18:50:33 +0100
+Subject: [PATCH v4 20/32] drm/bridge: add drm_bridge_get_next() and
+ supporting func
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -65,88 +66,158 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261125-macronix-upstreaming-spi-mem-cycles-v1-15-fd036402fd37@bootlin.com>
-References: <20261125-macronix-upstreaming-spi-mem-cycles-v1-0-fd036402fd37@bootlin.com>
-In-Reply-To: <20261125-macronix-upstreaming-spi-mem-cycles-v1-0-fd036402fd37@bootlin.com>
-To: Mark Brown <broonie@kernel.org>, Liang Yang <liang.yang@amlogic.com>, 
- Feng Chen <feng.chen@amlogic.com>, Xianwei Zhao <xianwei.zhao@amlogic.com>, 
- Han Xu <han.xu@nxp.com>, Conor Dooley <conor.dooley@microchip.com>, 
- Valentina Fernandez <valentina.fernandezalanis@microchip.com>, 
- Daire McNamara <daire.mcnamara@microchip.com>, 
- Haibo Chen <haibo.chen@nxp.com>, Jyan Chou <jyanchou@realtek.com>, 
- Yu-Chun Lin <eleanor.lin@realtek.com>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Pratyush Yadav <pratyush@kernel.org>, Michael Walle <mwalle@kernel.org>, 
- Takahiro Kuwano <takahiro.kuwano@infineon.com>, 
- Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Alvin Zhou <alvinzhou@mxic.com.tw>, 
- Cheng Ming Lin <chengminglin@mxic.com.tw>, linux-spi@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-amlogic@lists.infradead.org, 
- imx@lists.linux.dev, linux-riscv@lists.infradead.org, 
- linux-stm32@st-md-mailman.stormreply.com, 
- linux-arm-kernel@lists.infradead.org, linux-mtd@lists.infradead.org, 
- Miquel Raynal <miquel.raynal@bootlin.com>
-X-Mailer: b4 0.14.3
+Message-Id: <20261125-drm-bridge-hotplug-v4-20-822722850492@bootlin.com>
+References: <20261125-drm-bridge-hotplug-v4-0-822722850492@bootlin.com>
+In-Reply-To: <20261125-drm-bridge-hotplug-v4-0-822722850492@bootlin.com>
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Andrzej Hajda <andrzej.hajda@intel.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Inki Dae <inki.dae@samsung.com>, Jagan Teki <jagan@amarulasolutions.com>, 
+ Marek Szyprowski <m.szyprowski@samsung.com>, 
+ Jessica Zhang <jesszhan0024@gmail.com>, 
+ Douglas Anderson <dianders@chromium.org>, Marek Vasut <marex@denx.de>, 
+ Stefan Agner <stefan@agner.ch>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: Javier Martinez Canillas <javierm@redhat.com>, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
+ Hui Pu <Hui.Pu@gehealthcare.com>, Ian Ray <ian.ray@gehealthcare.com>, 
+ Luca Ceresoli <luca.ceresoli@bootlin.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+X-Mailer: b4 0.16.0
 X-Last-TLS-Session-Version: TLSv1.3
 
-The spi-mem layer is now capable of providing the dummy phase in cycle
-units rather than bytes, provided that drivers advertize the dummy_cycle
-capability. Since this controller is consuming cycles and currently
-converts bytes into cycles, flag it capable to consume cycles directly
-and drop the extra conversions.
+For bridge hotplug we need to successfully probe a card with an incomplete
+bridge chain, i.e. a chain whose last bridge currently in bridge_chain
+needs another bridge at its output. Such a card would have no connector,
+and be able to add one as soon as the following bridges are added up to the
+bridge that requires no further ones (like a panel or a connector_bridge).
 
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+So we need a way to know whether the pipeline is complete in the hardware
+(all bridges probed), in order to complete it in software (attach all
+bridges not yet attached). Currently common DRM code has no way to know
+that.
+
+Add drm_bridge_get_next() and a supporting get_next_bridge func so each
+bridge can expose its next bridge, and whether there's supposed to be one.
+
+A subsequent commit will use this function to detect whether the pipeline
+is complete in the hardware or not.
+
+Link: https://lore.kernel.org/r/20260624-vagabond-neon-gorilla-cd6487@houat
+Suggested-by: Maxime Ripard <mripard@kernel.org>
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+
 ---
- drivers/spi/spi-stm32-qspi.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-stm32-qspi.c b/drivers/spi/spi-stm32-qspi.c
-index b77daba6db83..993b09cc5124 100644
---- a/drivers/spi/spi-stm32-qspi.c
-+++ b/drivers/spi/spi-stm32-qspi.c
-@@ -393,9 +393,8 @@ static int stm32_qspi_send(struct spi_device *spi, const struct spi_mem_op *op)
- 		ccr |= FIELD_PREP(CCR_ADSIZE_MASK, op->addr.nbytes - 1);
- 	}
+Changes in v3:
+- fix and improve kerneldoc
+
+New patch in v2, replacing the is_tail patch in v1
+---
+ drivers/gpu/drm/drm_bridge.c | 30 ++++++++++++++++++++++++++++++
+ include/drm/drm_bridge.h     | 25 +++++++++++++++++++++++++
+ 2 files changed, 55 insertions(+)
+
+diff --git a/drivers/gpu/drm/drm_bridge.c b/drivers/gpu/drm/drm_bridge.c
+index a50709ac8b06..e0e0dd7fc12b 100644
+--- a/drivers/gpu/drm/drm_bridge.c
++++ b/drivers/gpu/drm/drm_bridge.c
+@@ -720,6 +720,36 @@ void drm_bridge_detach(struct drm_bridge *bridge)
+ 	drm_bridge_put(bridge);
+ }
  
--	if (op->dummy.nbytes)
--		ccr |= FIELD_PREP(CCR_DCYC_MASK,
--				  op->dummy.nbytes * 8 / op->dummy.buswidth);
-+	if (op->dummy.ncycles)
-+		ccr |= FIELD_PREP(CCR_DCYC_MASK, op->dummy.ncycles);
- 
- 	if (op->data.nbytes) {
- 		ccr |= FIELD_PREP(CCR_DMODE_MASK,
-@@ -593,7 +592,7 @@ static int stm32_qspi_transfer_one_message(struct spi_controller *ctrl,
- 		 */
- 		if (transfer->dummy_data) {
- 			op.dummy.buswidth = transfer->tx_nbits;
--			op.dummy.nbytes = transfer->len;
-+			op.dummy.ncycles = transfer->len * 8 / transfer->tx_nbits;
- 			dummy_bytes = transfer->len;
- 
- 			/* if happens, means that message is not correctly built */
-@@ -773,6 +772,10 @@ static const struct spi_controller_mem_ops stm32_qspi_mem_ops = {
- 	.poll_status	= stm32_qspi_poll_status,
++/**
++ * drm_bridge_get_next - return the bridge at this bridge's output port
++ * @bridge: the bridge to query
++ *
++ * Return the next bridge, i.e. the bridge that is connected at the output
++ * port of @bridge. Unlike drm_bridge_get_next_bridge(), the next bridge
++ * might or not be in the encoder chain.
++ *
++ * Returns:
++ * * Pointer to a bridge connected to the output port of this bridge,
++ *   with refcount incremented; call drm_bridge_put() when done
++ * * ERR_PTR(-ENODEV): this bridge has an output port where a next bridge
++ *                     needs to be present for video output, but the next
++ *                     bridge is not currently available
++ * * NULL: this bridge does not have an output port where a next bridge
++ *         is expected
++ * * ERR_PTR(-ENOENT): the bridge does not implement the func
++ * * Another negative error returned by the bridge func
++ */
++struct drm_bridge *drm_bridge_get_next(struct drm_bridge *bridge)
++{
++	if (!(bridge->ops & DRM_BRIDGE_OP_GET_NEXT_BRIDGE)) {
++		drm_warn_once(bridge->dev, "get_next_bridge func not implemented!");
++		return ERR_PTR(-ENOENT);
++	}
++
++	return bridge->funcs->get_next_bridge(bridge);
++}
++EXPORT_SYMBOL(drm_bridge_get_next);
++
+ /**
+  * DOC: bridge operations
+  *
+diff --git a/include/drm/drm_bridge.h b/include/drm/drm_bridge.h
+index d6ef020c4cc9..cfa0aff1de4f 100644
+--- a/include/drm/drm_bridge.h
++++ b/include/drm/drm_bridge.h
+@@ -62,6 +62,25 @@ enum drm_bridge_attach_flags {
+  * struct drm_bridge_funcs - drm_bridge control functions
+  */
+ struct drm_bridge_funcs {
++	/**
++	 * @get_next_bridge:
++	 *
++	 * Return a pointer to the bridge connected at the output port of
++	 * this bridge.
++	 *
++	 * Returns:
++	 * * Pointer to a bridge connected to the output port of this bridge,
++	 *   with refcount incremented; call drm_bridge_put() when done
++	 * * ERR_PTR(-ENODEV): this bridge has an output port where a next
++	 *                     bridge needs to be present for video output,
++	 *                     but the next bridge is not currently
++	 *                     available
++	 * * NULL: this bridge does not have an output port where a next
++	 *         bridge is expected (e.g. a panel)
++	 * * Another negative error returned by the bridge func
++	 */
++	struct drm_bridge *(*get_next_bridge)(struct drm_bridge *bridge);
++
+ 	/**
+ 	 * @attach:
+ 	 *
+@@ -1021,6 +1040,11 @@ enum drm_bridge_ops {
+ 	 * &drm_bridge_funcs->hdmi_clear_spd_infoframe callbacks.
+ 	 */
+ 	DRM_BRIDGE_OP_HDMI_SPD_INFOFRAME = BIT(10),
++	/**
++	 * @DRM_BRIDGE_OP_GET_NEXT_BRIDGE: The bridge implements the
++	 * &drm_bridge_funcs->get_next_bridge callback.
++	 */
++	DRM_BRIDGE_OP_GET_NEXT_BRIDGE = BIT(11),
  };
  
-+static const struct spi_controller_mem_caps stm32_qspi_mem_caps = {
-+	.dummy_cycles = true,
-+};
-+
- static int stm32_qspi_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
-@@ -856,6 +859,7 @@ static int stm32_qspi_probe(struct platform_device *pdev)
- 	ctrl->setup = stm32_qspi_setup;
- 	ctrl->bus_num = -1;
- 	ctrl->mem_ops = &stm32_qspi_mem_ops;
-+	ctrl->mem_caps = &stm32_qspi_mem_caps;
- 	ctrl->use_gpio_descriptors = true;
- 	ctrl->transfer_one_message = stm32_qspi_transfer_one_message;
- 	ctrl->num_chipselect = STM32_QSPI_MAX_NORCHIP;
+ /**
+@@ -1272,6 +1296,7 @@ void drm_bridge_remove(struct drm_bridge *bridge);
+ int drm_bridge_attach(struct drm_encoder *encoder, struct drm_bridge *bridge,
+ 		      struct drm_bridge *previous,
+ 		      enum drm_bridge_attach_flags flags);
++struct drm_bridge *drm_bridge_get_next(struct drm_bridge *bridge);
+ 
+ #ifdef CONFIG_OF
+ struct drm_bridge *of_drm_find_and_get_bridge(const struct device_node *np);
 
 -- 
-2.56.0
+2.56.1
 
