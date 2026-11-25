@@ -1,48 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795630012;
-	b=13ZdGMmCgALgVsq+yvVljoD3jR1+KbU3lJWRAbrukmuCzJIw7O2/FzdDHCmtbS+64thi
-	 +oKAEMhb0HdvT82SZVp2+PjAPKC4xzm57xB9GtRd1qz1NqOq9KZRLCQ1jxGgR3PR3etRt
-	 hXVCaz6ovoBRpOnaPvVqFuEpOgLT0Pbi7Qb7xvQ7x3rtmIBXJ0xA5zcLG6c9oM73E3iIQ
-	 hDE+xZDO5fwO/ugQOBLkCMrvG6ZktYUKwncIHSi2dTr9ehCfasxx9lYHDdW5LjpfmsKHp
-	 uzd/82gpmynrug6lE4OgMMKIJhmSw1QRB101rPuvP/FxagXXt3TyFO0pCprgYu3AFqA==
+	t=1795630024;
+	b=rOapjoNGz12EDaDnhi3uZ0SUwsQfJrzfhBEuAszMKrsDArhpz4IO7HCxwrn/XuIFQFCg
+	 tSHcqUuQ5EmzNuGcvvciH9v4ZskwLRlAkv0PeCuKsvxRQkZqGGK5ehlPEpw5UjRjDcZo+
+	 JUdSyHc4XlG3rJbV6muV9AuIcwBTsWNljmw+ABlgLBlYDju6vxYRsQiYCWvl8PSXP3+sc
+	 Oj35DaWSqysxiVG80w4ZwgOE6F4tzjBLLQPsgv0nY5FwqOEKWDZD9I0vD853Q0qyVOSp6
+	 itco9cpoWkuBTWBf2dq7SOcVRGccnJsCL3/rlZYkcODMQSv6wY7bdp4EIr0NCzEmPMg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795630012;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795630024;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=HHdRWEBXfDf2cU3cyNr1uxBhFCBOQ6B2mKFsYYkFHI8=;
-	b=J3LbO92qpkoQ42ty9OPy3r1szRXqXPTXru+m6CpZ33qWLioMaAoZiDIe3BVNfRAjtJyz
-	 agm2QBpSSZJMffNlRBvh3LxOMQFI1v0eAS+B3HGk62MJyoUZk3YPXtIb7wNrSZmUgbWw9
-	 69/LXLgrOUna80gTuHZH+CJamAuxN6+sdISxUFyC8XJVeJBO/YUMoEYOAqIzX/ZF7n5Ab
-	 8r2Ab6alwltn8YFltWcrUI+qwqMBsxR+U7JMtt8Zl7l/nL7BPjhYJlUoA9BAI5ydMsoho
-	 nTAOA0MshCvi9NY5dZOZIDXDlmgKevgbJHCSijaMfq2N5Iq4vb6qvruoO0tAQ/bPq/w==
+	bh=kx3zYbAeKFChjkf+m0qBDI1/KKwb22mPGiwRggcCpQ4=;
+	b=jAAP9Y9/TfbWT3eGN7lB0lobOmNVCclhc3L8H5yiY1tJYq1/xc5Ljz59SLzffRhdBjnt
+	 wXGAm+ZSE2G5yFgi2+FmBv13WU+ghsw+AgpFfjqGO7i0jYXHyrpyWgE6Sqr2PgPttUnQz
+	 3czD1i1YnlhIywVLEIQzdPuJTdn8dKgC23vWSfjKQEw+a0VtBqg1fnm4Vq5947bH9sFIS
+	 QxMSWxInWGXPV3NekfQhvrAMYz2IS17+OdK2VC3UyzbeIxHIYu42HLoRPZXrUa4UahR1K
+	 DIdWX8SefxRWWWs44k1LTizIKw02jfBomz01pe9xQY6m6VGaozshazYNyU+Z/l1zBNg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=POHtSeP3;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lWc6zt7z;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FF93606A6B0
-	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 18:06:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E9AD606A6B5
+	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 18:07:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=POHtSeP3
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A9CF1F000CA;
-	Wed, 25 Nov 2026 18:06:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lWc6zt7z
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB65B1F000EE;
+	Wed, 25 Nov 2026 18:07:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795630011;
-	bh=HHdRWEBXfDf2cU3cyNr1uxBhFCBOQ6B2mKFsYYkFHI8=;
+	s=k20260515; t=1795630024;
+	bh=kx3zYbAeKFChjkf+m0qBDI1/KKwb22mPGiwRggcCpQ4=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=POHtSeP38iBwVU4uIlKqOXshQgc3LsBaaERjLwcH2RsVnaYmjkBcgAPTcibjLgHxs
-	 Snxo/B+Tww1zWJC8odpSgWznqQIeCzlVuAc1zjlWRey3QNegoQrF7TIMylbndFBYrU
-	 wUOZokfikFQUMUrffOjALxd1X8WrDJpOcZjt79/d1eclXpPWqRsmXQMEhaThW2j8c5
-	 uARSuf9sTzRrCLiVd8UtGEsmLh40tfQycYuqWTuOFLov9JVnkjOkfHuw7p6taiz82n
-	 TZA/4MoUjlF0liNKsYVqy8TVcqKILadVz6R1eX6WeOC7sHD6kmZEhJ+B0ThyLKhuA3
-	 c4tuOGBl4ooSQ==
-Message-ID: <sashiko-outbox-233905@kernel.org>
+	b=lWc6zt7zi9rfauFjGA+ikEwBfftWAnSxXNJLG8ilKIIDcN+sDmV2qgilSWeljyc0b
+	 /6vNzkPYjiG6v+UlBInG+qpST3eraq//s5XmhCH6S7+XzU7BDi4/lgek8dNwQbZ5tz
+	 ZS2P8vmsrGL8tLeOf0fFne+KQOiJ2qY6/vbaY2Hx1n8Zhr96of4eZNfci/Y1szLLhZ
+	 N/v0cV+mtJTrNOmSVkR5EZ+ODRGcnR0G1zU+ml0AaPSkKbctpL4FPGo969VyftfNmQ
+	 vyUvQqLL5QKjjYfGhD4ZngDLVz9JQieZbrdf0pfGfuXx3YAnswHAudjv58gHL/F4oV
+	 arbbafci4Ad5Q==
+Message-ID: <sashiko-outbox-233906@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC 09/16] spi: microchip-core-qspi: Consume dummy
- cycles directly
+Subject: Re: [PATCH RFC 03/16] spi: spi-mem: Add support for dummy cycles
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Miquel Raynal" <miquel.raynal@bootlin.com>, "Mark Brown" <broonie@kernel.org>, "Liang
  Yang" <liang.yang@amlogic.com>, "Feng Chen" <feng.chen@amlogic.com>, "Xianwei
@@ -55,12 +54,12 @@ To: "Miquel Raynal" <miquel.raynal@bootlin.com>, "Mark Brown" <broonie@kernel.or
  Weinberger" <richard@nod.at>, "Vignesh Raghavendra" <vigneshr@ti.com>
 Cc: "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>, "Alvin Zhou" <alvinzhou@mxic.com.tw>, "Cheng
  Ming Lin" <chengminglin@mxic.com.tw>, linux-amlogic@lists.infradead.org, imx@lists.linux.dev, linux-stm32@st-md-mailman.stormreply.com, linux-mtd@lists.infradead.org, Frank.Li@kernel.org, neil.armstrong@linaro.org
-In-Reply-To: <20261125-macronix-upstreaming-spi-mem-cycles-v1-9-fd036402fd37@bootlin.com>
+In-Reply-To: <20261125-macronix-upstreaming-spi-mem-cycles-v1-3-fd036402fd37@bootlin.com>
 References: <20261125-macronix-upstreaming-spi-mem-cycles-v1-0-fd036402fd37@bootlin.com>
- <20261125-macronix-upstreaming-spi-mem-cycles-v1-9-fd036402fd37@bootlin.com>
+ <20261125-macronix-upstreaming-spi-mem-cycles-v1-3-fd036402fd37@bootlin.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 25 Nov 2026 18:06:50 +0000
+Date: Wed, 25 Nov 2026 18:07:02 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -70,110 +69,232 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 5 potential
 issues to consider:
-- [High] spi: microchip-core-qspi: dummy_cycles drops dummy phase on
-  GPIO-CS fallback
-- [Medium] spi: microchip-core-qspi: unchecked ncycles shift in
-  mchp_coreqspi_config_op()
+- [High] spi: spi-mem: broken nodirmap fallback in
+  spi_mem_dirmap_create()
+- [High] spi: spi-mem: missing dummy phase on spi_sync() path in
+  spi_mem_exec_op()
+- [Medium] spi: spi-mem: missing dummy conversion in
+  spi_mem_poll_status()
+- [Medium] spi: spi-mem: spi_mem_convert_dummy() bypasses
+  spi_mem_check_op()
+- [Low] spi: spi-mem: trace_spi_mem_start_op() ignores dummy.ncycles
 --
 
-commit 2317911309a9a0d90fc21347c53a3b7c2797fde4
+commit a302459c2782bc8488f61e01f3aac67fe9d71262
 Author: Miquel Raynal <miquel.raynal@bootlin.com>
 
-spi: microchip-core-qspi: Consume dummy cycles directly
+spi: spi-mem: Add support for dummy cycles
 
-This commit advertises the dummy_cycles capability in
-mchp_coreqspi_mem_caps and uses op->dummy.ncycles directly in
-mchp_coreqspi_config_op() instead of converting op->dummy.nbytes.
+This commit adds a dummy.ncycles field to struct spi_mem_op and a
+dummy_cycles controller capability, converting between dummy clock cycles
+and dummy bytes depending on what the SPI memory controller expects.
 
-> diff --git a/drivers/spi/spi-microchip-core-qspi.c b/drivers/spi/spi-micr=
-ochip-core-qspi.c
-> index c0ea65014d2ea..2fc1df7380620 100644
-> --- a/drivers/spi/spi-microchip-core-qspi.c
-> +++ b/drivers/spi/spi-microchip-core-qspi.c
-> @@ -420,7 +420,6 @@ static int mchp_coreqspi_setup_clock(struct mchp_core=
-qspi *qspi, struct spi_devi
+Link: https://lore.kernel.org/all/20220911174551.653599-1-sergiu.moga@micro=
+chip.com/
+Link: https://lore.kernel.org/all/20250115134158.19908-1-pratyush@kernel.or=
+g/
+
+> diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
+> index 9b8b8f2b33877..7f5849bf1a0d7 100644
+> --- a/drivers/spi/spi-mem.c
+> +++ b/drivers/spi/spi-mem.c
+
+[ ... ]
+
+> @@ -231,9 +359,13 @@ static int spi_mem_check_op(const struct spi_mem_op =
+*op)
 > =20
->  static void mchp_coreqspi_config_op(struct mchp_coreqspi *qspi, const st=
-ruct spi_mem_op *op)
->  {
-> -	u32 idle_cycles =3D 0;
->  	int total_bytes, cmd_bytes, frames, ctrl;
+>  	if ((op->addr.nbytes && !op->addr.buswidth) ||
+>  	    (op->dummy.nbytes && !op->dummy.buswidth) ||
+> +	    (op->dummy.ncycles && !op->dummy.buswidth) ||
+>  	    (op->data.nbytes && !op->data.buswidth))
+>  		return -EINVAL;
 > =20
->  	cmd_bytes =3D op->cmd.nbytes + op->addr.nbytes;
-> @@ -459,11 +458,7 @@ static void mchp_coreqspi_config_op(struct mchp_core=
-qspi *qspi, const struct spi
->  	writel_relaxed(frames, qspi->regs + REG_FRAMESUP);
->  	frames =3D total_bytes & BYTESLOWER_MASK;
->  	frames |=3D cmd_bytes << FRAMES_CMDBYTES_SHIFT;
-> -
-> -	if (op->dummy.buswidth)
-> -		idle_cycles =3D op->dummy.nbytes * 8 / op->dummy.buswidth;
-> -
-> -	frames |=3D idle_cycles << FRAMES_IDLE_SHIFT;
-> +	frames |=3D op->dummy.ncycles << FRAMES_IDLE_SHIFT;
+> +	if (op->dummy.nbytes && op->dummy.ncycles)
+> +		return -EINVAL;
+> +
+>  	if (!spi_mem_buswidth_is_valid(op->cmd.buswidth) ||
+>  	    !spi_mem_buswidth_is_valid(op->addr.buswidth) ||
+>  	    !spi_mem_buswidth_is_valid(op->dummy.buswidth) ||
+> @@ -290,6 +422,9 @@ bool spi_mem_supports_op(struct spi_mem *mem, const s=
+truct spi_mem_op *op)
+>  	 */
+>  	spi_mem_adjust_op_freq(mem, &eval_op);
+> =20
+> +	if (spi_mem_convert_dummy(mem, &eval_op))
+> +		return false;
+> +
+>  	if (spi_mem_check_op(&eval_op))
+>  		return false;
 
 [Severity: Medium]
-Can op->dummy.ncycles << FRAMES_IDLE_SHIFT overflow the 4-bit
-FRAMES_IDLE_MASK field in REG_FRAMES?
+Should spi_mem_check_op() run before spi_mem_convert_dummy() in
+spi_mem_supports_op() and spi_mem_exec_op()?
 
-drivers/spi/spi-microchip-core-qspi.c:
-    #define FRAMES_IDLE_MASK	GENMASK(29, 26)
-    #define FRAMES_IDLE_SHIFT	26
-    #define FRAMES_FLAGBYTE		BIT(30)
-    #define FRAMES_FLAGWORD		BIT(31)
+On controllers without the dummy_cycles capability, an operation with both
+dummy.ncycles and dummy.nbytes set enters the if (op->dummy.ncycles) branch
+in spi_mem_convert_dummy(), which overwrites op->dummy.nbytes and zeroes
+op->dummy.ncycles before spi_mem_check_op() can reject it with -EINVAL.
+Running spi_mem_convert_dummy() first also causes spi_mem_exec_op() to
+return -EOPNOTSUPP instead of -EINVAL when dummy.buswidth is 0.
 
-mchp_coreqspi_supports_op() does not reject op->dummy.ncycles > 15.
-When a flash operation requests more than 15 dummy cycles (such as SFDP
-BFPT read modes with 16 or 20 cycles), shifting u8 op->dummy.ncycles (as a
-signed int) by 26 overflows into FRAMES_FLAGBYTE and FRAMES_FLAGWORD (and
-is undefined behavior when ncycles >=3D 32), while truncating the programmed
-idle cycles to op->dummy.ncycles & 0xf.
+[ ... ]
 
-Should mchp_coreqspi_supports_op() reject op->dummy.ncycles > 15?
-
->  	ctrl =3D readl_relaxed(qspi->regs + REG_CONTROL);
+> @@ -390,22 +526,28 @@ static void spi_mem_add_op_stats(struct spi_statist=
+ics __percpu *pcpu_stats,
+>   *
+>   * Return: 0 in case of success, a negative error code otherwise.
+>   */
+> -int spi_mem_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
+> +int spi_mem_exec_op(struct spi_mem *mem, const struct spi_mem_op *ro_op)
+>  {
+>  	unsigned int tmpbufsize, xferpos =3D 0, totalxferlen =3D 0;
+>  	struct spi_controller *ctlr =3D mem->spi->controller;
+> +	struct spi_mem_op wr_op =3D *ro_op, *op =3D &wr_op;
+>  	struct spi_transfer xfers[4] =3D { };
+>  	struct spi_message msg;
+>  	u8 *tmpbuf;
+>  	int ret;
 > =20
->  	if (ctrl & CONTROL_MODE12_MASK)
-> @@ -601,6 +596,7 @@ static const struct spi_controller_mem_ops mchp_coreq=
-spi_mem_ops =3D {
-> =20
->  static const struct spi_controller_mem_caps mchp_coreqspi_mem_caps =3D {
->  	.per_op_freq =3D true,
-> +	.dummy_cycles =3D true,
->  };
+>  	/* Make sure the operation frequency is correct before going futher */
+> -	spi_mem_adjust_op_freq(mem, (struct spi_mem_op *)op);
+> +	spi_mem_adjust_op_freq(mem, op);
+> +
+> +	/* Also make sure the dummy phase can be consumed by the controller */
+> +	ret =3D spi_mem_convert_dummy(mem, op);
+> +	if (ret)
+> +		return ret;
 
 [Severity: High]
-Does setting .dummy_cycles =3D true drop the dummy phase when a SPI memory
-device uses a GPIO chip-select?
+Does calling spi_mem_convert_dummy() here drop the dummy phase when a
+dummy_cycles-capable controller falls back to regular SPI transfers via
+spi_sync()?
 
-mchp_coreqspi_probe() sets ctlr->use_gpio_descriptors =3D true.  In
-spi_mem_exec_op(), spi_mem_convert_dummy() runs before the
-!spi_get_csgpiod(mem->spi, 0) check:
+When the controller advertises dummy_cycles, spi_mem_convert_dummy() stores
+the dummy phase in op->dummy.ncycles and zeroes op->dummy.nbytes.  If
+spi_get_csgpiod(mem->spi, 0) is non-NULL or ctlr->mem_ops->exec_op()
+returns -ENOTSUPP or -EOPNOTSUPP, spi_mem_exec_op() falls back to building
+spi_transfer entries from op->dummy.nbytes:
 
 drivers/spi/spi-mem.c:spi_mem_exec_op() {
-    ...
-	spi_mem_convert_dummy(mem, op);
-    ...
-	if (ctlr->mem_ops && ctlr->mem_ops->exec_op && !spi_get_csgpiod(mem->spi, =
-0)) {
-    ...
+	...
+	tmpbufsize =3D op->cmd.nbytes + op->addr.nbytes + op->dummy.nbytes;
+	...
 	if (op->dummy.nbytes) {
 		memset(tmpbuf + op->addr.nbytes + 1, 0xff, op->dummy.nbytes);
 		xfers[xferpos].tx_buf =3D tmpbuf + op->addr.nbytes + 1;
 		xfers[xferpos].len =3D op->dummy.nbytes;
-    ...
+	...
 }
 
-With .dummy_cycles =3D true, spi_mem_convert_dummy() stores the dummy phase
-in op->dummy.ncycles and sets op->dummy.nbytes =3D 0.  When a GPIO CS is
-used, spi_mem_exec_op() falls back to spi_sync(), which only creates a
-dummy transfer when op->dummy.nbytes is non-zero, while
-mchp_coreqspi_prepare_message() hardcodes idle_cycles =3D 0.  As a result,
-no dummy cycles are transmitted on the bus, corrupting flash reads on
-boards with GPIO chip-selects.
+Because op->dummy.nbytes is 0, the fallback path omits the dummy transfer
+completely instead of converting op->dummy.ncycles back to bytes (or
+returning -EOPNOTSUPP if the cycle count is not byte-aligned), corrupting
+flash transfers.
+
+> =20
+>  	dev_vdbg(&mem->spi->dev, "[cmd: 0x%02x][%dB addr: %#8llx][%2dB dummy][%=
+4dB data %s] %d%c-%d%c-%d%c-%d%c @ %uHz\n",
+>  		 op->cmd.opcode,
+>  		 op->addr.nbytes, (op->addr.nbytes ? op->addr.val : 0),
+> -		 op->dummy.nbytes,
+> +		 spi_mem_get_lossy_dummy_bytes(op),
+
+[Severity: Low]
+Does trace_spi_mem_start_op(mem, op) in spi_mem_exec_op() also need to
+account for op->dummy.ncycles?
+
+On dummy_cycles-capable controllers, op->dummy.nbytes is 0 after
+spi_mem_convert_dummy(), so TRACE_EVENT(spi_mem_start_op) in
+include/trace/events/spi-mem.h sizes its dynamic array with
+op->dummy.nbytes and omits the dummy bytes from the trace event.
+
+[ ... ]
+
+> @@ -781,6 +931,21 @@ spi_mem_dirmap_create(struct spi_mem *mem,
+>  	desc->mem =3D mem;
+>  	desc->info =3D *info;
+>  	desc->info.op_tmpl =3D &desc->info.primary_op_tmpl;
+> +
+> +	ret =3D spi_mem_convert_dummy(mem, &desc->info.primary_op_tmpl);
+> +	if (ret) {
+> +		kfree(desc);
+> +		return ERR_PTR(ret);
+> +	}
+> +
+> +	if (desc->info.secondary_op_tmpl.cmd.opcode) {
+> +		ret =3D spi_mem_convert_dummy(mem, &desc->info.secondary_op_tmpl);
+> +		if (ret) {
+> +			kfree(desc);
+> +			return ERR_PTR(ret);
+> +		}
+> +	}
+
+[Severity: High]
+Does assigning ret =3D spi_mem_convert_dummy() here break the nodirmap
+fallback on controllers that do not implement ctlr->mem_ops->dirmap_create?
+
+spi_mem_dirmap_create() initializes ret to -ENOTSUPP so that when
+ctlr->mem_ops->dirmap_create is absent, the if (ret) block below sets
+desc->nodirmap =3D true and validates primary_op_tmpl:
+
+drivers/spi/spi-mem.c:spi_mem_dirmap_create() {
+	...
+	if (ctlr->mem_ops && ctlr->mem_ops->dirmap_create) {
+		...
+		ret =3D ctlr->mem_ops->dirmap_create(desc);
+
+		spi_mem_access_end(mem);
+	}
+
+	if (ret) {
+		desc->nodirmap =3D true;
+		if (!spi_mem_supports_op(desc->mem, &desc->info.primary_op_tmpl))
+			ret =3D -EOPNOTSUPP;
+		else
+			ret =3D 0;
+	}
+	...
+}
+
+When spi_mem_convert_dummy() succeeds, it sets ret to 0.  If the controller
+does not provide dirmap_create, ret stays 0, leaving desc->nodirmap false
+and causing all subsequent spi_mem_dirmap_read() and spi_mem_dirmap_write()
+calls to fail with -ENOTSUPP.
+
+> +
+>  	if (ctlr->mem_ops && ctlr->mem_ops->dirmap_create) {
+>  		ret =3D spi_mem_access_start(mem);
+>  		if (ret) {
+
+[Severity: Medium]
+Should spi_mem_poll_status() also convert the operation with
+spi_mem_convert_dummy() before calling ctlr->mem_ops->poll_status()?
+
+drivers/spi/spi-mem.c:spi_mem_poll_status() {
+	...
+	if (ctlr->mem_ops && ctlr->mem_ops->poll_status && !spi_get_csgpiod(mem->s=
+pi, 0)) {
+		ret =3D spi_mem_access_start(mem);
+		if (ret)
+			return ret;
+
+		ret =3D ctlr->mem_ops->poll_status(mem, op, mask, match,
+						 initial_delay_us, polling_delay_us,
+						 timeout_ms);
+
+		spi_mem_access_end(mem);
+	}
+	...
+}
+
+Without converting a local copy of op in spi_mem_poll_status(),
+ctlr->mem_ops->poll_status() receives the caller's unconverted dummy phase
+and programs 0 dummy cycles whenever the caller and controller use
+different dummy representations.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261125-macronix-u=
-pstreaming-spi-mem-cycles-v1-0-fd036402fd37@bootlin.com?part=3D9
+pstreaming-spi-mem-cycles-v1-0-fd036402fd37@bootlin.com?part=3D3
