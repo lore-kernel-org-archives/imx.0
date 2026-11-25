@@ -1,60 +1,60 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795629116;
-	b=E9REKdf1VcD+ZJhFIJR56Mi4ysOVwntMJsXaAqk3TOrE/TpTeRC2x7ew4wH6i1h6Zo1U
-	 kPjDM7kiJsjIp5pY27eZrW9zfl4MqAuPgKkaTo2+TA/3W0f//uz2F5dJJ0EVaoJxhg8nB
-	 0JyI7Gj9aWQsycctyuBZXganZwbIn+WV+iVO1eKBXS52yNoLCfsLJOE735ZD2qZmCYZBX
-	 Nibmth29K9xqDlwChmFN/KlQy6/SfpeqHKkIGGuW1F/L6QNdAZ1rwC+64oi3y400YbamW
-	 HVJbXQUV5E4bZfJreB45d3O3sQ/AIa3ZpdsikG489dxPh3yo50ll+eD2oJkWPXiy9eA==
+	t=1795629121;
+	b=U79ROA6ORZHxz04i2+0yhd/Oduu49vXK/kbaXtBuFgGs6EnxaZvlMewRh+p4I+V6foFb
+	 58tRBFiuWwzE+d3DJwbgcCQonT3BlEwmQQ4/7voUafLVvdCBCPAUliDw3si7ZDamLkRB0
+	 yXQdWEegR2rcTpHczfku23X7tg/Ti/YzlFEQqJ60Hq+eXTFjjWt/FfKgu7dp2ySI81AvU
+	 kCLbeF428KJ+zJnvkveyrH18p95/iqTUU+hocAEXETWzAfbrRzDXTr6gGwwokjrDe7Ut5
+	 8BEJ0/KJXLNvd08hgtpkaDlD/bq96USpfu0KgZ5uEhqz8PJ29fk1NCxHvJuTH0CpCKg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795629116;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795629121;
 	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:Date:
 	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Last-TLS-Session-Version;
-	bh=q8BfvstXLNTUj+5boXrPQXXFN+Zijn0f6FlTbabfiXU=;
-	b=gvWRP/G8sYtmObHhWVDUqcGhDRH/u8inqQCWIihBJVhVM/6hr9Vmlu4oLXAdqnRIVjQM
-	 J+XlWQ6QuufO/Tedl1xQgwcN8Z58Sq4YmE8scjYC8YSctMtlXjQ5Gcrblc5xc0sjA2Rlq
-	 5ZKttJ4aEF0SvEHCAHmwQfUt7FWumr2vpIn6nKWE96IlDz6v7ogRFTiFyUWpeyeydGRUj
-	 9OFwtLM37hINAr8B0/D0EAXLJooWIsTvmk2xjMgaGLoyddt+Yb8hnNYhE2XwXETFJchXa
-	 MEiMphrgK47Hb8u/r1szCJc/CC0/iYJlBgSO5Z8+DJL7kEgWtOrreexRZ2QAxpn9DbA==
+	bh=Vr+7UXOJ3o2fU3yHSPB3dtyk35CtU2SSHOcbdMyEPTM=;
+	b=nhJ1WxIMRkzcUvKRDjhGmckZZLyQ0QKHlJTao6dB0CEoKcQCdwbps9mW9avrjtA6G0r1
+	 xjJT4kcbYF8GzPjTSujZlzwe0zEPeCdmZffjLwpzjHkpd77lqInLcdFsW4Kv+OMmj/Vus
+	 4lPfCFkGxkfupB7pdtdR/hCb8MCSqgPUy0NXjsYuxZldhmh28D5oDxSzIg0puSARNqP0H
+	 P/TExXOnVYG4q8VXJz6zfwfDF4f2coC8FuH7VtaKKCGAvCPYQFKmoSguWlNLczrYmcQs+
+	 pK0RZ9tkfNkGciyIG2eorCEoiYv5+lve4ph+YjVb4L3skjqKjjeHem9oJGD7DAnneoA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=bootlin.com;
 	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=c182h5op;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=h5jO4cdD;
 	arc=none smtp.remote-ip=185.246.84.56
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6F9E606A330
-	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 17:51:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C6F9E606A330
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45F44606A31E
+	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 17:52:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 45F44606A31E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=c182h5op
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=h5jO4cdD
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 760041A17F9;
-	Wed, 25 Nov 2026 17:51:54 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 0A61D1A17FA;
+	Wed, 25 Nov 2026 17:51:59 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 40DCC60480;
-	Wed, 25 Nov 2026 17:51:54 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B777211E6B0CF;
-	Wed, 25 Nov 2026 18:51:43 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id D27E160480;
+	Wed, 25 Nov 2026 17:51:58 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1DCA611E6B0CA;
+	Wed, 25 Nov 2026 18:51:49 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1795629108; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1795629116; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=q8BfvstXLNTUj+5boXrPQXXFN+Zijn0f6FlTbabfiXU=;
-	b=c182h5oputdeGdLZCwJ5lOGEwgTpwvAjW5CjoqMTJxuyd2+k364QIcbmwb2hOAu442HocG
-	0ifbjq67c3om7zY2FH0+bVCsrDpUZEcMMQQ5qgSHWUiOolYJ0nNjxB3ngX5AB4XlHanig8
-	z4MeGabdbR9/oZ66HXf3YBvfjP/0LXaxUJgKWT17utiZlQwEho6Aya5vZuZgekVJKi+k4R
-	PiXQKI0EtJiTYhueF0YaiWfaCBYSzBKPumBkJAGRvTFsANKzJ60Ab8GCg1+/cVvKtvGPVr
-	QMm/HdeRkQFtGynCGnrZq1uIKbact2Q+fVCVRKlHzYo73gdFkCM+rF3+3/ZEgQ==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-Date: Wed, 25 Nov 2026 18:51:16 +0100
-Subject: [PATCH RFC 02/16] spi: spi-mem: Stop checking the dummy buswidth
- against board wiring
+	bh=Vr+7UXOJ3o2fU3yHSPB3dtyk35CtU2SSHOcbdMyEPTM=;
+	b=h5jO4cdDvoG2FdgY+Jjl9H/k69qVzlisyLEHEOj/FQwt3dAvmgZ9T3x+g31j/siNwot9zT
+	C6HuYUB7WU+aN3wVV0/NZsxHAH87/gjwmgmUnhyLXhmMvPJotJ0wrs1qUv0Nl6oWxezLe3
+	4vpnOWXesx17dDaF9mHQUT2/XPlgKULDRTiRWY44oMB9zKAu+Bq3JrMgERWPtliQXGgcIT
+	UG9hxF/cB0joxLukmtBzAQ7vdtejDa304BUfaPiy1WZIwoY3tAF3rfIwsZ5nTuDe2R/PJY
+	l0ifRHn3K4X6M26V/DO3vIpBwBjTNY5VVIz84K3b8W18QV5DgXj+Z3Qf0tlGpw==
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Date: Wed, 25 Nov 2026 18:50:23 +0100
+Subject: [PATCH v4 10/32] drm/display: bridge-connector: add APIs to
+ add/remove the connector dynamically
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -66,66 +66,127 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261125-macronix-upstreaming-spi-mem-cycles-v1-2-fd036402fd37@bootlin.com>
-References: <20261125-macronix-upstreaming-spi-mem-cycles-v1-0-fd036402fd37@bootlin.com>
-In-Reply-To: <20261125-macronix-upstreaming-spi-mem-cycles-v1-0-fd036402fd37@bootlin.com>
-To: Mark Brown <broonie@kernel.org>, Liang Yang <liang.yang@amlogic.com>, 
- Feng Chen <feng.chen@amlogic.com>, Xianwei Zhao <xianwei.zhao@amlogic.com>, 
- Han Xu <han.xu@nxp.com>, Conor Dooley <conor.dooley@microchip.com>, 
- Valentina Fernandez <valentina.fernandezalanis@microchip.com>, 
- Daire McNamara <daire.mcnamara@microchip.com>, 
- Haibo Chen <haibo.chen@nxp.com>, Jyan Chou <jyanchou@realtek.com>, 
- Yu-Chun Lin <eleanor.lin@realtek.com>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Pratyush Yadav <pratyush@kernel.org>, Michael Walle <mwalle@kernel.org>, 
- Takahiro Kuwano <takahiro.kuwano@infineon.com>, 
- Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Alvin Zhou <alvinzhou@mxic.com.tw>, 
- Cheng Ming Lin <chengminglin@mxic.com.tw>, linux-spi@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-amlogic@lists.infradead.org, 
- imx@lists.linux.dev, linux-riscv@lists.infradead.org, 
- linux-stm32@st-md-mailman.stormreply.com, 
- linux-arm-kernel@lists.infradead.org, linux-mtd@lists.infradead.org, 
- Miquel Raynal <miquel.raynal@bootlin.com>
-X-Mailer: b4 0.14.3
+Message-Id: <20261125-drm-bridge-hotplug-v4-10-822722850492@bootlin.com>
+References: <20261125-drm-bridge-hotplug-v4-0-822722850492@bootlin.com>
+In-Reply-To: <20261125-drm-bridge-hotplug-v4-0-822722850492@bootlin.com>
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Andrzej Hajda <andrzej.hajda@intel.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Inki Dae <inki.dae@samsung.com>, Jagan Teki <jagan@amarulasolutions.com>, 
+ Marek Szyprowski <m.szyprowski@samsung.com>, 
+ Jessica Zhang <jesszhan0024@gmail.com>, 
+ Douglas Anderson <dianders@chromium.org>, Marek Vasut <marex@denx.de>, 
+ Stefan Agner <stefan@agner.ch>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: Javier Martinez Canillas <javierm@redhat.com>, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
+ Hui Pu <Hui.Pu@gehealthcare.com>, Ian Ray <ian.ray@gehealthcare.com>, 
+ Luca Ceresoli <luca.ceresoli@bootlin.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+X-Mailer: b4 0.16.0
 X-Last-TLS-Session-Version: TLSv1.3
 
-The dummy phase does not transfer any data. Its buswidth only describes
-the pin state during the dummy cycles, so it must not be validated
-against the board's Tx/Rx wiring.
+drm_bridge_connector_init() adds a drmm-allocated connector. For bridge
+hotplug drmm allocations are not suitable because a connector may have to
+be added and removed multiple times in the lifetime of a card.
 
-Drop that check (the sanity check in spi_mem_check_op() stays).
+In preparation for bridge hotplug, add APIs to add and remove a connector
+using regular non-managed allocations.
 
-Suggested-by: Pratyush Yadav <pratyush@kernel.org>
-Link: https://lore.kernel.org/linux-mtd/20241112075242.174010-1-linchengming884@gmail.com/T/#m7cc1a5055702f5a42a8f3949c968842d845914d7
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+For the dynamic connector, this requires the kfree() the allocated struct
+drm_bridge_connector in the destroy func. However that func will be called
+even when using the pre-existing drmm API, leading to a double free
+(kfree() in the destroy callback + drmm).
+
+One option to avoid this issue is introducing two mostly identical
+drm_connector_funcs instances, one with .destroy and one without. But that
+would be an annoying code duplication. Instead take a different approach:
+always allocate using non-drmm kzalloc_obj(), so that deallocation always
+happen in destroy->kfree().
+
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+
 ---
-This is not really a fix, so no fixes/cc:stable is on purpose.
----
- drivers/spi/spi-mem.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
-index c64e906ba919..9b8b8f2b3387 100644
---- a/drivers/spi/spi-mem.c
-+++ b/drivers/spi/spi-mem.c
-@@ -152,9 +152,10 @@ static bool spi_mem_check_buswidth(struct spi_mem *mem,
- 	    spi_check_buswidth_req(mem, op->addr.buswidth, true))
- 		return false;
+Uhm, maybe the change from drmm_kzalloc to kzalloc_obj and addition of
+kfree to the destroy callback should eb a separate commit?
+---
+ drivers/gpu/drm/display/drm_bridge_connector.c | 24 +++++++++++++++++++++++-
+ include/drm/drm_bridge_connector.h             |  4 ++++
+ 2 files changed, 27 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/display/drm_bridge_connector.c b/drivers/gpu/drm/display/drm_bridge_connector.c
+index d81cfc7aa295..07385f87b2e8 100644
+--- a/drivers/gpu/drm/display/drm_bridge_connector.c
++++ b/drivers/gpu/drm/display/drm_bridge_connector.c
+@@ -289,6 +289,7 @@ static void drm_bridge_connector_dynconn_destroy(struct drm_connector *connector
  
--	if (op->dummy.nbytes &&
--	    spi_check_buswidth_req(mem, op->dummy.buswidth, true))
--		return false;
-+	/*
-+	 * The dummy phase implies no actual transmission nor reception.
-+	 * Its buswidth therefore does not matter much.
-+	 */
+ 	drm_connector_cleanup(connector);
+ 	drm_bridge_connector_put_bridges(bridge_connector);
++	kfree(bridge_connector);
+ }
  
- 	if (op->data.dir != SPI_MEM_NO_DATA &&
- 	    spi_check_buswidth_req(mem, op->data.buswidth,
+ static const struct drm_connector_funcs drm_bridge_connector_funcs = {
+@@ -1223,7 +1224,7 @@ struct drm_connector *drm_bridge_connector_init(struct drm_device *drm,
+ 	struct drm_connector *connector;
+ 	int ret;
+ 
+-	bridge_connector = drmm_kzalloc(drm, sizeof(*bridge_connector), GFP_KERNEL);
++	bridge_connector = kzalloc_obj(*bridge_connector);
+ 	if (!bridge_connector)
+ 		return ERR_PTR(-ENOMEM);
+ 
+@@ -1238,3 +1239,24 @@ struct drm_connector *drm_bridge_connector_init(struct drm_device *drm,
+ 	return connector;
+ }
+ EXPORT_SYMBOL_GPL(drm_bridge_connector_init);
++
++struct drm_connector *drm_bridge_connector_dynamic_add(struct drm_device *drm,
++						       struct drm_encoder *encoder)
++{
++	struct drm_bridge_connector *bridge_connector;
++
++	bridge_connector = kzalloc_obj(*bridge_connector);
++	if (!bridge_connector)
++		return ERR_PTR(-ENOMEM);
++
++	return drm_bridge_connector_initialize(bridge_connector, drm, encoder);
++}
++EXPORT_SYMBOL_GPL(drm_bridge_connector_dynamic_add);
++
++void drm_bridge_connector_dynamic_remove(struct drm_connector *connector)
++{
++	struct drm_bridge_connector *bridge_connector = to_drm_bridge_connector(connector);
++
++	drm_bridge_connector_fini(bridge_connector);
++}
++EXPORT_SYMBOL_GPL(drm_bridge_connector_dynamic_remove);
+diff --git a/include/drm/drm_bridge_connector.h b/include/drm/drm_bridge_connector.h
+index 69630815fb09..de6ec91dbfab 100644
+--- a/include/drm/drm_bridge_connector.h
++++ b/include/drm/drm_bridge_connector.h
+@@ -9,8 +9,12 @@
+ struct drm_connector;
+ struct drm_device;
+ struct drm_encoder;
++struct drm_bridge_connector;
+ 
+ struct drm_connector *drm_bridge_connector_init(struct drm_device *drm,
+ 						struct drm_encoder *encoder);
++struct drm_connector *drm_bridge_connector_dynamic_add(struct drm_device *drm,
++						       struct drm_encoder *encoder);
++void drm_bridge_connector_dynamic_remove(struct drm_connector *connector);
+ 
+ #endif /* __DRM_BRIDGE_CONNECTOR_H__ */
 
 -- 
-2.56.0
+2.56.1
 
