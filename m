@@ -1,60 +1,60 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795629136;
-	b=jEfmzQLEPIzXBlrgqMK7cBgOHNBaQRdmqv4h0x1Xg/XTotIKLEvMihaI2pkkMaItik5w
-	 6Vgx/nf1/HMDl5/9aniwj9scOrkUMhmfT+CoR9Me/b8ucoLjTTh0wJIP1x7XB0j5hd928
-	 Wmb5kYhyR+N5vbD73+tDXkFKDMAlHn2FIMmSzIU+MVOxm31125s5a0rY7vLw7F5D2pgJm
-	 HNZn+N9W2rjaj8Cu9Dg5ZXNMlTaoFYZt5GJAbqGQhVzSZCcznJ9ClF1nh4DFjhuN2poMh
-	 uIBBTKsM5xOGW2+5WfM/csLokW2miKia4caNX9fNpEWcduebs2UZhtT+7a8mNdAevyw==
+	t=1795629143;
+	b=R8rhhj+sXT8dFgev6hFvItDBJ5egOOvPjQyV3dxQIHIipSFZV7PsPSlt+OQv6bDTl3Rw
+	 IQyxf2LaFS1BXcsCuU8XFM5nncC7vsDUwzfBuTtAGByjO37cHi5e5RmPOZj+GefRa6cJq
+	 z95FBKGc4BxF3UWfSPN8Kkr8UWnq8g2UxP4qzNDan/nYecG+pYgznnaXCtU14M0MiOJiJ
+	 UIDz8kfR6Kn+YbybDHcBV02XUO46Ve+m5t4oE9RKPKgNhwXl056P5omapZdMgllxVddfz
+	 oux/jMH/OqHGjmJNbhXGkKR+pzUySYzi4mTCrLu0OlFJD5J+9JA0AVdPRCTwBTZzdLQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795629136;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795629143;
 	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:Date:
 	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Last-TLS-Session-Version;
-	bh=0jHuOkcW+tUuXEgN+rjlY+VwX3B9wkvVTb2a5wTh6Hw=;
-	b=ngDN66AKPjNS2MAP9rxL+1AiqQY9NtQkGyPEYmS9yEw0ZGrhq3FvMZUVOBAQfdxdeMOT
-	 xth0eDencmnttFCZQhRB8jFGIvlX5H6Jv+D+UwRZe1LCfza1uSrbhFnnsfLVCfmAxJhhz
-	 MkjlR6SyxpyGCI5ask0ObmrCLfZidEp+cgFOyFrmUg6PcZOdXFhE8jfPdEi2PF/m/lIKB
-	 0Dm0v+5GAe0immK0nP6E42GxjDOyLX5T4zkYgBjCd+JSpUTOxpiyt1Fwi9gZXehmMydQt
-	 OdT3nbuFzdSut7AXKNKqr3fC3uWdUKL3ATfzDfQUobdpJw5vhJDGEKpR8pVNhjyj2og==
+	bh=1DxMNbouVynawZta17OcaCgH7VNF6J/H0q5Ot2fi1p8=;
+	b=SjCOVlUO3O0FTvjKV3JLBPTJ7BRhPWdbzWab6zzAXYyhdmVzquOeDAnFc/6YvOaPWFGa
+	 UHUpkDwtGn0EcPHu0IZvRCqsIPaTTpmyonEByd6bA66GjqpQqYZ6ibq4jQiiXlNWvrqkA
+	 gKtrahcieacsedTY2tT4PJRaVAENJgQBq8Nkyp14PXqRwsl/Va1WfdPG2ygbp9saaXUje
+	 zIXSgtlly4o+4pzPDYIYDhjymXGjxdIN1t4V0Vu7U48ahQSuvJ56yZ/4Ty3uo5xp5PBJO
+	 dKHSyogqQPxCZzMIrCsIjQqwVl8xip8r7+kDTMTFDkt/KEfNrjBUG7BfA2b+BBk+tag==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=bootlin.com;
 	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=wmBirQqP;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=ijCcDjVV;
 	arc=none smtp.remote-ip=185.246.84.56
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5346E606A33D
-	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 17:52:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5346E606A33D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20363606A335
+	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 17:52:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 20363606A335
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=wmBirQqP
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=ijCcDjVV
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 24D3B1A17FF;
-	Wed, 25 Nov 2026 17:52:15 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id CAA171A17F9;
+	Wed, 25 Nov 2026 17:52:21 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id EBD1760480;
-	Wed, 25 Nov 2026 17:52:14 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9E9BB11E6B0CA;
-	Wed, 25 Nov 2026 18:52:08 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 94DF060480;
+	Wed, 25 Nov 2026 17:52:21 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9706311E6B0D0;
+	Wed, 25 Nov 2026 18:52:11 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1795629132; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1795629137; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=0jHuOkcW+tUuXEgN+rjlY+VwX3B9wkvVTb2a5wTh6Hw=;
-	b=wmBirQqPwYrB8cMXgwKVXCQ+dRgEdqiLvomU2P2fI5aIOAtcy3iU7XbOUAhwM3IizD201/
-	C3XFza9eM2aD+WwEWX+dWOUkceFb5V6jKXGVvahBq7f/MipyZOPNQ8bTKCkB3nBcYHkmMS
-	dAatQ6aOTwgKEQdqhjbyNPD8TxLt9uECyAQj8nIKQ9y2z1S72bQhmIJBS4tnOhr5JNUB7f
-	dgdQYHYT7jWrKIymy4D4Y2E9hE7q8cOQz6vcPX2tR8nnVYtLPMlreafxGz/9GfgQw+1e/b
-	coqZKJH9p4b5z0I4Cn31ov6B67gWCgfbZxiL8cpWv9ZcFNXHu25n0On5CX480Q==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-Date: Wed, 25 Nov 2026 18:51:20 +0100
-Subject: [PATCH RFC 06/16] spi: amlogic: spifc-a4: Consume dummy cycles
- directly
+	bh=1DxMNbouVynawZta17OcaCgH7VNF6J/H0q5Ot2fi1p8=;
+	b=ijCcDjVVGumRXpuzom8IfVaX/I0PgOEt2m6cbluiKfknSmeVG6v3LSPqLdimM51uW3ngN3
+	S0DpV16kGFKxLQ1sFQP0b8C9wIObnHFXem+clamSwZiNSL0qeFPo1MB39/zZVNXUojWdge
+	3UT3eZYXLICVPKmXnnv4fS0ZrODq/A9qwxNgvbqVHZiLADLyHRmumPtIbKettb89nSY5E+
+	HwNqx/wibHKXvD2/0VbDKrJtRMIf6WTA1LohmIIkpY6vawENGjrPxGY+iE0c9JSRiykg/5
+	PVZXf9SOCqi33cWehEemmwrsczRQgoaYgqrfPJLEm5k5w6u/r7z/l7RptGjALw==
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Date: Wed, 25 Nov 2026 18:50:26 +0100
+Subject: [PATCH v4 13/32] drm/bridge: initialize chain_node list head on
+ detach and attach errors
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -66,81 +66,76 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261125-macronix-upstreaming-spi-mem-cycles-v1-6-fd036402fd37@bootlin.com>
-References: <20261125-macronix-upstreaming-spi-mem-cycles-v1-0-fd036402fd37@bootlin.com>
-In-Reply-To: <20261125-macronix-upstreaming-spi-mem-cycles-v1-0-fd036402fd37@bootlin.com>
-To: Mark Brown <broonie@kernel.org>, Liang Yang <liang.yang@amlogic.com>, 
- Feng Chen <feng.chen@amlogic.com>, Xianwei Zhao <xianwei.zhao@amlogic.com>, 
- Han Xu <han.xu@nxp.com>, Conor Dooley <conor.dooley@microchip.com>, 
- Valentina Fernandez <valentina.fernandezalanis@microchip.com>, 
- Daire McNamara <daire.mcnamara@microchip.com>, 
- Haibo Chen <haibo.chen@nxp.com>, Jyan Chou <jyanchou@realtek.com>, 
- Yu-Chun Lin <eleanor.lin@realtek.com>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Pratyush Yadav <pratyush@kernel.org>, Michael Walle <mwalle@kernel.org>, 
- Takahiro Kuwano <takahiro.kuwano@infineon.com>, 
- Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Alvin Zhou <alvinzhou@mxic.com.tw>, 
- Cheng Ming Lin <chengminglin@mxic.com.tw>, linux-spi@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-amlogic@lists.infradead.org, 
- imx@lists.linux.dev, linux-riscv@lists.infradead.org, 
- linux-stm32@st-md-mailman.stormreply.com, 
- linux-arm-kernel@lists.infradead.org, linux-mtd@lists.infradead.org, 
- Miquel Raynal <miquel.raynal@bootlin.com>
-X-Mailer: b4 0.14.3
+Message-Id: <20261125-drm-bridge-hotplug-v4-13-822722850492@bootlin.com>
+References: <20261125-drm-bridge-hotplug-v4-0-822722850492@bootlin.com>
+In-Reply-To: <20261125-drm-bridge-hotplug-v4-0-822722850492@bootlin.com>
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Andrzej Hajda <andrzej.hajda@intel.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Inki Dae <inki.dae@samsung.com>, Jagan Teki <jagan@amarulasolutions.com>, 
+ Marek Szyprowski <m.szyprowski@samsung.com>, 
+ Jessica Zhang <jesszhan0024@gmail.com>, 
+ Douglas Anderson <dianders@chromium.org>, Marek Vasut <marex@denx.de>, 
+ Stefan Agner <stefan@agner.ch>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: Javier Martinez Canillas <javierm@redhat.com>, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
+ Hui Pu <Hui.Pu@gehealthcare.com>, Ian Ray <ian.ray@gehealthcare.com>, 
+ Luca Ceresoli <luca.ceresoli@bootlin.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+X-Mailer: b4 0.16.0
 X-Last-TLS-Session-Version: TLSv1.3
 
-The spi-mem layer is now capable of providing the dummy phase in cycle
-units rather than bytes, provided that drivers advertize the dummy_cycle
-capability. Since this controller is consuming cycles and currently
-converts bytes into cycles, flag it capable to consume cycles directly
-and drop the extra conversions.
+When a bridge is detached it is removed from the encoder bridge_chain list,
+but the bridge::chain_node list head is not cleared. This is going to be
+problematic with the upcoming hotplug bridge support because if a bridge is
+detached from the encoder chain but not yet removed, when later detaching
+it the encoder code may think it is still attached, thus trying to detach
+it twice.
 
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Avoid this by clearing the list head on detach, so there's a clear and
+simple way to know when a bridge is not attached anymore.
+
+Do the same in the error management code in drm_bridge_attach(), so that
+chain_node is always empty [as in list_empty()] when it is not
+(yet|anymore) in the bridge chain.
+
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 ---
- drivers/spi/spi-amlogic-spifc-a4.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/drm_bridge.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-amlogic-spifc-a4.c b/drivers/spi/spi-amlogic-spifc-a4.c
-index 16346f50c7d9..ac06ea735133 100644
---- a/drivers/spi/spi-amlogic-spifc-a4.c
-+++ b/drivers/spi/spi-amlogic-spifc-a4.c
-@@ -361,13 +361,8 @@ static int aml_sfc_send_cmd_addr_dummy(struct aml_sfc *sfc, const struct spi_mem
- 	if (ret)
- 		return ret;
+diff --git a/drivers/gpu/drm/drm_bridge.c b/drivers/gpu/drm/drm_bridge.c
+index 14ed4ac52e71..310f03bdb744 100644
+--- a/drivers/gpu/drm/drm_bridge.c
++++ b/drivers/gpu/drm/drm_bridge.c
+@@ -679,7 +679,7 @@ int drm_bridge_attach(struct drm_encoder *encoder, struct drm_bridge *bridge,
+ 	bridge->dev = NULL;
+ 	bridge->encoder = NULL;
+ 	mutex_lock(&encoder->bridge_chain_mutex);
+-	list_del(&bridge->chain_node);
++	list_del_init(&bridge->chain_node);
+ 	mutex_unlock(&encoder->bridge_chain_mutex);
  
--	if (op->dummy.nbytes) {
--		/*  Dummy buswidth configuration is not supported */
--		if (aml_sfc_is_xio_op(op))
--			dummy_cycle = op->dummy.nbytes * 8 / op->data.buswidth;
--		else
--			dummy_cycle = op->dummy.nbytes * 8;
--		cmd = CMD_DUMMY(sfc->cs_sel, dummy_cycle - 1);
-+	if (op->dummy.ncycles) {
-+		cmd = CMD_DUMMY(sfc->cs_sel, op->dummy.ncycles - 1);
- 		return regmap_write(sfc->regmap_base, SFC_CMD, cmd);
- 	}
+ 	if (ret != -EPROBE_DEFER)
+@@ -709,7 +709,7 @@ void drm_bridge_detach(struct drm_bridge *bridge)
+ 	if (bridge->funcs->detach)
+ 		bridge->funcs->detach(bridge);
  
-@@ -803,7 +798,7 @@ static int aml_sfc_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
- 
- 	dev_dbg(sfc->dev, "cmd:0x%02x - addr:%08llX@%d:%u - dummy:%d:%u - data:%d:%u",
- 		op->cmd.opcode, op->addr.val, op->addr.buswidth, op->addr.nbytes,
--		op->dummy.buswidth, op->dummy.nbytes, op->data.buswidth, op->data.nbytes);
-+		op->dummy.buswidth, op->dummy.ncycles, op->data.buswidth, op->data.nbytes);
- 
- 	ret = aml_sfc_pre_transfer(sfc, DEFAULT_PULLUP_CYCLE, CS_SETUP_CYCLE);
- 	if (ret)
-@@ -1057,6 +1052,7 @@ static int aml_sfc_ecc_finish_io_req(struct nand_device *nand,
- 
- static const struct spi_controller_mem_caps aml_sfc_mem_caps = {
- 	.ecc = true,
-+	.dummy_cycles = true,
- };
- 
- static const struct nand_ecc_engine_ops aml_sfc_ecc_engine_ops = {
+-	list_del(&bridge->chain_node);
++	list_del_init(&bridge->chain_node);
+ 	bridge->dev = NULL;
+ 	drm_bridge_put(bridge);
+ }
 
 -- 
-2.56.0
+2.56.1
 
