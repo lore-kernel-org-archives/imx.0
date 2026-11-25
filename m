@@ -1,60 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795629114;
-	b=wIaqeFkianhKRcTCFRLr9WOybif4lX6I1l9Q1Xe0b2GABjAxHdKIkTtq75v8cP3Diyvc
-	 W7YD1P8ATELwHXoVdFrrUDNm2K5KwyvfPFaZkqWhryPixBqLLPhTbXiMr6m5AKFYx3Uz1
-	 IXRgG9scITiqwHg7SAg9i1O9c9xvNxMLsFZu6dwblTErO2P0y4iS+PPzrqkbtTnqPxtHe
-	 0sE3zeVgFgMuqZEWxl9doZjRPxIJzbCMliZviYwQCAfGg2qhPCicNJuAEhbCh/I4Bbt00
-	 XYKF1kf1a722wuedNLrVjtB5bLacqtGR0w158cOVE/WDB3aT0HC6LCppL4IHIuW7JnA==
+	t=1795629116;
+	b=E9REKdf1VcD+ZJhFIJR56Mi4ysOVwntMJsXaAqk3TOrE/TpTeRC2x7ew4wH6i1h6Zo1U
+	 kPjDM7kiJsjIp5pY27eZrW9zfl4MqAuPgKkaTo2+TA/3W0f//uz2F5dJJ0EVaoJxhg8nB
+	 0JyI7Gj9aWQsycctyuBZXganZwbIn+WV+iVO1eKBXS52yNoLCfsLJOE735ZD2qZmCYZBX
+	 Nibmth29K9xqDlwChmFN/KlQy6/SfpeqHKkIGGuW1F/L6QNdAZ1rwC+64oi3y400YbamW
+	 HVJbXQUV5E4bZfJreB45d3O3sQ/AIa3ZpdsikG489dxPh3yo50ll+eD2oJkWPXiy9eA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795629114;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795629116;
 	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:Date:
 	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Last-TLS-Session-Version;
-	bh=r2jMs/sAVEdvLbqLlRGKvjq+NWHj2NwoY8BWjNBdylo=;
-	b=RQjehLB3ScCUttMYvV8qVs2XnlmzQtrKiu8GUJDt/WxgL7KRKCxD7Nj9EeDUCIlUxOGf
-	 u1AxHIfRk6wc+zi+eTqB7N7AnfBpiy3fkEKW4WlP+NK2uRnkUcLlzMUSAOMNuFeHFNXrx
-	 UFMfnZjm2I7wwcjb/HnRCkyGJY3GdLfyb8TeNSQAbbGy6FKwxGD/Eg6CShFzeCOYQQfex
-	 XdfjHK5eiSYtpO93nPh7+MusvJHkmxGGX5vqbnh+rUjAzBF63x2YW9/XAlxDjLdl7iGVg
-	 ff0PySl/eODkmSYNKw2SE98MgJ2s1InU5pHkcXqfu9e2l0CZb+NDQJxK/B7IZlMDcdw==
+	bh=q8BfvstXLNTUj+5boXrPQXXFN+Zijn0f6FlTbabfiXU=;
+	b=gvWRP/G8sYtmObHhWVDUqcGhDRH/u8inqQCWIihBJVhVM/6hr9Vmlu4oLXAdqnRIVjQM
+	 J+XlWQ6QuufO/Tedl1xQgwcN8Z58Sq4YmE8scjYC8YSctMtlXjQ5Gcrblc5xc0sjA2Rlq
+	 5ZKttJ4aEF0SvEHCAHmwQfUt7FWumr2vpIn6nKWE96IlDz6v7ogRFTiFyUWpeyeydGRUj
+	 9OFwtLM37hINAr8B0/D0EAXLJooWIsTvmk2xjMgaGLoyddt+Yb8hnNYhE2XwXETFJchXa
+	 MEiMphrgK47Hb8u/r1szCJc/CC0/iYJlBgSO5Z8+DJL7kEgWtOrreexRZ2QAxpn9DbA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=bootlin.com;
 	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=GT7OfoOY;
-	arc=none smtp.remote-ip=185.171.202.116
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=c182h5op;
+	arc=none smtp.remote-ip=185.246.84.56
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49BFF606A323
-	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 17:51:53 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 49BFF606A323
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6F9E606A330
+	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 17:51:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C6F9E606A330
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=GT7OfoOY
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=c182h5op
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id A7B1EC6221E;
-	Wed, 25 Nov 2026 17:51:59 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 760041A17F9;
+	Wed, 25 Nov 2026 17:51:54 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id B21B860480;
-	Wed, 25 Nov 2026 17:51:51 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 64DFE11E6B0AD;
-	Wed, 25 Nov 2026 18:51:35 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 40DCC60480;
+	Wed, 25 Nov 2026 17:51:54 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B777211E6B0CF;
+	Wed, 25 Nov 2026 18:51:43 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1795629105; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1795629108; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=r2jMs/sAVEdvLbqLlRGKvjq+NWHj2NwoY8BWjNBdylo=;
-	b=GT7OfoOYxgwdwdQyDy7xZ7NVwPNfHuBM8H06pVpmI67hAE7/vEBiy18RfcHUed9QMnajLk
-	lRq64BYAHI04941/7g6dVA0DT2BtGA88ckEGJiYFbqUBjEBieymeyB2kgeXOUkqWdfJiNE
-	H8a4PBQwSPe6t7tSY5Y9Q7RrjJ30kfnwa947IlVbssWPqrMGbXSOAL/AvMOXCgSvDK79lc
-	K/MyiizxGDajxcZFM0bGndrr9PewpGYXHzGriVFGqRb6JlKMBi9C5tNAkuXS9MmdKEXD1t
-	wJ8If3ATVKre1/Pcl/CfXaJ4A2XNp9iVK1YBrkdQd2lcr12AvdX3UtljOu90Fw==
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Date: Wed, 25 Nov 2026 18:50:22 +0100
-Subject: [PATCH v4 09/32] drm/display: bridge-connector: use a dynamic
- connector
+	bh=q8BfvstXLNTUj+5boXrPQXXFN+Zijn0f6FlTbabfiXU=;
+	b=c182h5oputdeGdLZCwJ5lOGEwgTpwvAjW5CjoqMTJxuyd2+k364QIcbmwb2hOAu442HocG
+	0ifbjq67c3om7zY2FH0+bVCsrDpUZEcMMQQ5qgSHWUiOolYJ0nNjxB3ngX5AB4XlHanig8
+	z4MeGabdbR9/oZ66HXf3YBvfjP/0LXaxUJgKWT17utiZlQwEho6Aya5vZuZgekVJKi+k4R
+	PiXQKI0EtJiTYhueF0YaiWfaCBYSzBKPumBkJAGRvTFsANKzJ60Ab8GCg1+/cVvKtvGPVr
+	QMm/HdeRkQFtGynCGnrZq1uIKbact2Q+fVCVRKlHzYo73gdFkCM+rF3+3/ZEgQ==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+Date: Wed, 25 Nov 2026 18:51:16 +0100
+Subject: [PATCH RFC 02/16] spi: spi-mem: Stop checking the dummy buswidth
+ against board wiring
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -66,312 +66,66 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261125-drm-bridge-hotplug-v4-9-822722850492@bootlin.com>
-References: <20261125-drm-bridge-hotplug-v4-0-822722850492@bootlin.com>
-In-Reply-To: <20261125-drm-bridge-hotplug-v4-0-822722850492@bootlin.com>
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Andrzej Hajda <andrzej.hajda@intel.com>, 
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Inki Dae <inki.dae@samsung.com>, Jagan Teki <jagan@amarulasolutions.com>, 
- Marek Szyprowski <m.szyprowski@samsung.com>, 
- Jessica Zhang <jesszhan0024@gmail.com>, 
- Douglas Anderson <dianders@chromium.org>, Marek Vasut <marex@denx.de>, 
- Stefan Agner <stefan@agner.ch>, Frank Li <Frank.Li@nxp.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: Javier Martinez Canillas <javierm@redhat.com>, 
- Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
- Hui Pu <Hui.Pu@gehealthcare.com>, Ian Ray <ian.ray@gehealthcare.com>, 
- Luca Ceresoli <luca.ceresoli@bootlin.com>, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-X-Mailer: b4 0.16.0
+Message-Id: <20261125-macronix-upstreaming-spi-mem-cycles-v1-2-fd036402fd37@bootlin.com>
+References: <20261125-macronix-upstreaming-spi-mem-cycles-v1-0-fd036402fd37@bootlin.com>
+In-Reply-To: <20261125-macronix-upstreaming-spi-mem-cycles-v1-0-fd036402fd37@bootlin.com>
+To: Mark Brown <broonie@kernel.org>, Liang Yang <liang.yang@amlogic.com>, 
+ Feng Chen <feng.chen@amlogic.com>, Xianwei Zhao <xianwei.zhao@amlogic.com>, 
+ Han Xu <han.xu@nxp.com>, Conor Dooley <conor.dooley@microchip.com>, 
+ Valentina Fernandez <valentina.fernandezalanis@microchip.com>, 
+ Daire McNamara <daire.mcnamara@microchip.com>, 
+ Haibo Chen <haibo.chen@nxp.com>, Jyan Chou <jyanchou@realtek.com>, 
+ Yu-Chun Lin <eleanor.lin@realtek.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Pratyush Yadav <pratyush@kernel.org>, Michael Walle <mwalle@kernel.org>, 
+ Takahiro Kuwano <takahiro.kuwano@infineon.com>, 
+ Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Alvin Zhou <alvinzhou@mxic.com.tw>, 
+ Cheng Ming Lin <chengminglin@mxic.com.tw>, linux-spi@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-amlogic@lists.infradead.org, 
+ imx@lists.linux.dev, linux-riscv@lists.infradead.org, 
+ linux-stm32@st-md-mailman.stormreply.com, 
+ linux-arm-kernel@lists.infradead.org, linux-mtd@lists.infradead.org, 
+ Miquel Raynal <miquel.raynal@bootlin.com>
+X-Mailer: b4 0.14.3
 X-Last-TLS-Session-Version: TLSv1.3
 
-Currently the drm_bridge_connector uses drmm functions to add the
-drm_connector. For bridge hotplug drmm allocations are not suitable because
-a connector may have to be added and removed multiple times in the lifetime
-of a card.
+The dummy phase does not transfer any data. Its buswidth only describes
+the pin state during the dummy cycles, so it must not be validated
+against the board's Tx/Rx wiring.
 
-In preparation for bridge hotplug, use the dynamic variants of
-drm_connector[_hdmi]_init() and the non-drmm versions of
-drmm_connector_hdmi_cec[_notifier]_register() so the drm_connector can be
-removed without removing the whole card.
+Drop that check (the sanity check in spi_mem_check_op() stays).
 
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-
+Suggested-by: Pratyush Yadav <pratyush@kernel.org>
+Link: https://lore.kernel.org/linux-mtd/20241112075242.174010-1-linchengming884@gmail.com/T/#m7cc1a5055702f5a42a8f3949c968842d845914d7
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 ---
-
-Changes in v4:
-- Add fwnode_handle_put(connector->fwnode) to fix OF node leak if the OF
-  node is removed by a DT overlay
-
-Changes in v3:
-- convert CEC code to non-drmm too
-- fix connector state error management
-- put the connector on error paths after the dynamic_init() step
-- fix drmm-allocation leak on drm_bridge_connector_init() error path
+This is not really a fix, so no fixes/cc:stable is on purpose.
 ---
- drivers/gpu/drm/display/drm_bridge_connector.c | 149 ++++++++++++++++++-------
- 1 file changed, 110 insertions(+), 39 deletions(-)
+ drivers/spi/spi-mem.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/display/drm_bridge_connector.c b/drivers/gpu/drm/display/drm_bridge_connector.c
-index f4a71801e8a3..d81cfc7aa295 100644
---- a/drivers/gpu/drm/display/drm_bridge_connector.c
-+++ b/drivers/gpu/drm/display/drm_bridge_connector.c
-@@ -132,11 +132,27 @@ struct drm_bridge_connector {
- 	 * bridge connector.
- 	 */
- 	struct drm_connector_hdmi_funcs hdmi_funcs;
-+	/** @has_cec_adapter: true if a CEC adapter is registered */
-+	bool has_cec_adapter;
-+	/** @has_cec_notifier true if a CEC notifier is registered */
-+	bool has_cec_notifier;
- };
+diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
+index c64e906ba919..9b8b8f2b3387 100644
+--- a/drivers/spi/spi-mem.c
++++ b/drivers/spi/spi-mem.c
+@@ -152,9 +152,10 @@ static bool spi_mem_check_buswidth(struct spi_mem *mem,
+ 	    spi_check_buswidth_req(mem, op->addr.buswidth, true))
+ 		return false;
  
- #define to_drm_bridge_connector(x) \
- 	container_of(x, struct drm_bridge_connector, base)
+-	if (op->dummy.nbytes &&
+-	    spi_check_buswidth_req(mem, op->dummy.buswidth, true))
+-		return false;
++	/*
++	 * The dummy phase implies no actual transmission nor reception.
++	 * Its buswidth therefore does not matter much.
++	 */
  
-+static void drm_bridge_connector_put_bridges(struct drm_bridge_connector *bridge_connector)
-+{
-+	drm_bridge_put(bridge_connector->bridge_edid);
-+	drm_bridge_put(bridge_connector->bridge_hpd);
-+	drm_bridge_put(bridge_connector->bridge_detect);
-+	drm_bridge_put(bridge_connector->bridge_modes);
-+	drm_bridge_put(bridge_connector->bridge_hdmi);
-+	drm_bridge_put(bridge_connector->bridge_hdmi_audio);
-+	drm_bridge_put(bridge_connector->bridge_dp_audio);
-+	drm_bridge_put(bridge_connector->bridge_hdmi_cec);
-+}
-+
- /* -----------------------------------------------------------------------------
-  * Bridge Connector Hot-Plug Handling
-  */
-@@ -267,6 +283,14 @@ drm_bridge_connector_color_format(const struct drm_connector_state *conn_state)
- 	return conn_state->color_format;
- }
- 
-+static void drm_bridge_connector_dynconn_destroy(struct drm_connector *connector)
-+{
-+	struct drm_bridge_connector *bridge_connector = to_drm_bridge_connector(connector);
-+
-+	drm_connector_cleanup(connector);
-+	drm_bridge_connector_put_bridges(bridge_connector);
-+}
-+
- static const struct drm_connector_funcs drm_bridge_connector_funcs = {
- 	.fill_modes = drm_helper_probe_single_connector_modes,
- 	.atomic_create_state = drm_bridge_connector_create_state,
-@@ -275,6 +299,7 @@ static const struct drm_connector_funcs drm_bridge_connector_funcs = {
- 	.debugfs_init = drm_bridge_connector_debugfs_init,
- 	.oob_hotplug_event = drm_bridge_connector_oob_hotplug_event,
- 	.color_format = drm_bridge_connector_color_format,
-+	.destroy = drm_bridge_connector_dynconn_destroy,
- };
- 
- /* -----------------------------------------------------------------------------
-@@ -823,20 +848,6 @@ static const struct drm_connector_hdmi_cec_funcs drm_bridge_connector_hdmi_cec_f
-  * Bridge Connector Initialisation
-  */
- 
--static void drm_bridge_connector_put_bridges(struct drm_device *dev, void *data)
--{
--	struct drm_bridge_connector *bridge_connector = (struct drm_bridge_connector *)data;
--
--	drm_bridge_put(bridge_connector->bridge_edid);
--	drm_bridge_put(bridge_connector->bridge_hpd);
--	drm_bridge_put(bridge_connector->bridge_detect);
--	drm_bridge_put(bridge_connector->bridge_modes);
--	drm_bridge_put(bridge_connector->bridge_hdmi);
--	drm_bridge_put(bridge_connector->bridge_hdmi_audio);
--	drm_bridge_put(bridge_connector->bridge_dp_audio);
--	drm_bridge_put(bridge_connector->bridge_hdmi_cec);
--}
--
- static struct drm_connector *
- drm_bridge_connector_initialize(struct drm_bridge_connector *bridge_connector,
- 				struct drm_device *drm,
-@@ -849,10 +860,6 @@ drm_bridge_connector_initialize(struct drm_bridge_connector *bridge_connector,
- 	int connector_type;
- 	int ret;
- 
--	ret = drmm_add_action(drm, drm_bridge_connector_put_bridges, bridge_connector);
--	if (ret)
--		return ERR_PTR(ret);
--
- 	bridge_connector->encoder = encoder;
- 
- 	/*
-@@ -1053,17 +1060,21 @@ drm_bridge_connector_initialize(struct drm_bridge_connector *bridge_connector,
- 				drm_bridge_connector_scrambler_disable;
- 		}
- 
--		ret = drmm_connector_hdmi_init(drm, connector,
--					       &drm_bridge_connector_funcs,
--					       &bridge_connector->hdmi_funcs,
--					       connector_type, ddc);
-+		ret = drm_connector_hdmi_dynamic_init(drm, connector,
-+						      &drm_bridge_connector_funcs,
-+						      &bridge_connector->hdmi_funcs,
-+						      connector_type, ddc);
- 	} else {
--		ret = drmm_connector_init(drm, connector,
--					  &drm_bridge_connector_funcs,
--					  connector_type, ddc);
-+		ret = drm_connector_dynamic_init(drm, connector,
-+						 &drm_bridge_connector_funcs,
-+						 connector_type, ddc);
-+	}
-+	if (ret) {
-+		drm_bridge_connector_put_bridges(bridge_connector);
-+		return ERR_PTR(ret);
- 	}
--	if (ret)
--		return ret;
-+
-+	/* From now on the connector is referenced and has to be put */
- 
- 	if (bridge_connector->bridge_hdmi_audio ||
- 	    bridge_connector->bridge_dp_audio) {
-@@ -1084,35 +1095,48 @@ drm_bridge_connector_initialize(struct drm_bridge_connector *bridge_connector,
- 						    bridge->hdmi_audio_spdif_playback,
- 						    bridge->hdmi_audio_dai_port);
- 		if (ret)
--			return ERR_PTR(ret);
-+			goto err_put_connector;
- 	}
- 
- 	if (bridge_connector->bridge_hdmi_cec &&
- 	    bridge_connector->bridge_hdmi_cec->ops & DRM_BRIDGE_OP_HDMI_CEC_NOTIFIER) {
- 		struct drm_bridge *bridge = bridge_connector->bridge_hdmi_cec;
- 
--		ret = drmm_connector_hdmi_cec_notifier_register(connector,
--								NULL,
--								bridge->hdmi_cec_dev);
-+		ret = drm_connector_hdmi_cec_notifier_register(connector,
-+							       NULL,
-+							       bridge->hdmi_cec_dev);
- 		if (ret)
--			return ERR_PTR(ret);
-+			goto err_put_connector;
-+
-+		bridge_connector->has_cec_notifier = true;
- 	}
- 
- 	if (bridge_connector->bridge_hdmi_cec &&
- 	    bridge_connector->bridge_hdmi_cec->ops & DRM_BRIDGE_OP_HDMI_CEC_ADAPTER) {
- 		struct drm_bridge *bridge = bridge_connector->bridge_hdmi_cec;
- 
--		ret = drmm_connector_hdmi_cec_register(connector,
--						       &drm_bridge_connector_hdmi_cec_funcs,
--						       bridge->hdmi_cec_adapter_name,
--						       bridge->hdmi_cec_available_las,
--						       bridge->hdmi_cec_dev);
-+		ret = drm_connector_hdmi_cec_register(connector,
-+						      &drm_bridge_connector_hdmi_cec_funcs,
-+						      bridge->hdmi_cec_adapter_name,
-+						      bridge->hdmi_cec_available_las,
-+						      bridge->hdmi_cec_dev);
- 		if (ret)
--			return ERR_PTR(ret);
-+			goto err_unregister_cec_notifier;
-+
-+		bridge_connector->has_cec_adapter = true;
- 	}
- 
- 	drm_connector_helper_add(connector, &drm_bridge_connector_helper_funcs);
- 
-+	if (!connector->state) {
-+		struct drm_connector_state *state = drm_bridge_connector_create_state(connector);
-+		if (IS_ERR(state)) {
-+			ret = PTR_ERR(state);
-+			goto err_unregister_cec_adapter;
-+		}
-+		connector->state = state;
-+	}
-+
- 	if (bridge_connector->bridge_hpd)
- 		connector->polled = DRM_CONNECTOR_POLL_HPD;
- 	else if (bridge_connector->bridge_detect)
-@@ -1128,9 +1152,51 @@ drm_bridge_connector_initialize(struct drm_bridge_connector *bridge_connector,
- 
- 	ret = drm_connector_attach_encoder(connector, encoder);
- 	if (ret)
--		return ERR_PTR(ret);
-+		goto err_unregister_cec_adapter;
-+
-+	ret = drm_connector_dynamic_register(connector);
-+	if (ret)
-+		goto err_unregister_cec_adapter;
- 
- 	return connector;
-+
-+err_unregister_cec_adapter:
-+	if (bridge_connector->has_cec_adapter)
-+		drm_connector_hdmi_cec_unregister(connector);
-+err_unregister_cec_notifier:
-+	if (bridge_connector->has_cec_notifier)
-+		drm_connector_hdmi_cec_notifier_unregister(connector);
-+err_put_connector:
-+	drm_connector_put(connector);
-+
-+	return ERR_PTR(ret);
-+}
-+
-+static void drm_bridge_connector_fini(struct drm_bridge_connector *bridge_connector)
-+{
-+	struct drm_connector *connector = &bridge_connector->base;
-+
-+	drm_connector_unregister(connector);
-+	if (bridge_connector->has_cec_adapter)
-+		drm_connector_hdmi_cec_unregister(connector);
-+	if (bridge_connector->has_cec_notifier)
-+		drm_connector_hdmi_cec_notifier_unregister(connector);
-+
-+#ifdef CONFIG_OF
-+	if (connector->fwnode) {
-+		fwnode_handle_put(connector->fwnode);
-+		connector->fwnode = NULL;
-+	}
-+#endif
-+
-+	drm_connector_put(connector);
-+}
-+
-+static void drmm_bridge_connector_fini(struct drm_device *dev, void *res)
-+{
-+	struct drm_bridge_connector *bridge_connector = (struct drm_bridge_connector *)res;
-+
-+	drm_bridge_connector_fini(bridge_connector);
- }
- 
- /**
-@@ -1155,6 +1221,7 @@ struct drm_connector *drm_bridge_connector_init(struct drm_device *drm,
- {
- 	struct drm_bridge_connector *bridge_connector;
- 	struct drm_connector *connector;
-+	int ret;
- 
- 	bridge_connector = drmm_kzalloc(drm, sizeof(*bridge_connector), GFP_KERNEL);
- 	if (!bridge_connector)
-@@ -1164,6 +1231,10 @@ struct drm_connector *drm_bridge_connector_init(struct drm_device *drm,
- 	if (IS_ERR(connector))
- 		return connector;
- 
-+	ret = drmm_add_action_or_reset(drm, drmm_bridge_connector_fini, bridge_connector);
-+	if (ret)
-+		return ERR_PTR(ret);
-+
- 	return connector;
- }
- EXPORT_SYMBOL_GPL(drm_bridge_connector_init);
+ 	if (op->data.dir != SPI_MEM_NO_DATA &&
+ 	    spi_check_buswidth_req(mem, op->data.buswidth,
 
 -- 
-2.56.1
+2.56.0
 
