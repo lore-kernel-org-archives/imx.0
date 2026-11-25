@@ -1,83 +1,83 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.53
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.179
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795581447;
-	b=UNLG0YIk8xLt+VijFnAY1KTfpa1gYh+qy20Uv6z1VdRLgA9OR/PvyLaSZe6TGx3qV/YJ
-	 uT7EPOFsPkjKx3ubjee7a4lBwOZBQGY+SRVLQsYppU3k1/dmBn5nj85fm+es3mXW/hGvW
-	 y3XdEUYMOZzDVSU/e9wbUgFToDUv+RZdJcS12hlOcN5BHNnAjxHKMg6C5Lvdim2MRRtAc
-	 Ksba8OC9Rdhh1FRGM8YB2QnSPTY69ZXBwp1OcL0WCgnnIj52KJ5AYyPBGG4ST4HKSIiX1
-	 aan3P3XEtArqVPJKua/eq0VxsZHCis9rctuoUszg0nQvC/Jqk/ucyaSLZACB8DTzz+A==
+	t=1795581450;
+	b=fVMX33F2DGSCuDmiXnV2cweR7WQTntZBY92jV09A0puWISXt6/0nSLf9uyDCRbI5VLvm
+	 4oDHWSYlo4V+nKrvezcrZEcSaw52f8B5aEf7OB7CDFWLV5ez5kq4JFGV/J4FPlPINaKAH
+	 NjbvO6pyPHzxoB6OWrt4wlhqKYyip9bc0wPBEBD7Uw9x2BRTFjb+JEE5TB/7DCUf4vP7i
+	 D5rmMlfMOfYHr1XL1ojidtNaUOkTuqgUkeOuHT7Tl6egCGlFejrW6gly3i8jSymhCoAHt
+	 c2RQY23XoVIv3HOWCTKZx/AUrw3ptfIDZEFS1ipGKjalKURroZVH3d6Hccx7+lFKSPg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795581447;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795581450;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding;
-	bh=37Yw/Yh5Rz5Fzq741ubEI/Rr+lL1nn4+JbSz5DFAcwM=;
-	b=TJMR6OO/plH1okvs2bDSoP8F6SmjgN+b8pomB71/RQDjOyHE/qvA3xgzOnb895ZUTaQ+
-	 ePdu4LcLaw1VkNa6kriaR4Y3knd9wUjEi2w74SYqU78g48A0TY4VLw1PUMuWSxcFgZYXI
-	 TApmmScMmJydvyNRGHPf85R9vRkqOQzSzNJvE16yzSWY2fjJA58D3I72A8pw5FNaf4lG6
-	 gspLewq5mdiJV5N3FcKm3CAsSLgCHCitTUQX00VJFNR9WgfqnYnGTIpGNB27cUwq0iWV0
-	 gYnUMPseWJY9CqlQCgzBoG8//OxzyHZ3/PIZDxSmF31uettZrYQ878+8ZT+Q/lgFRAw==
+	bh=yC0KWfjZslDYmreM0nokc8PEJN6eo4m1n8xq79uDONU=;
+	b=ZNE5zOG/3KVTZDT4V+1vUXzFGGbdxA/8A5CFQafru4ZoU1cKxLdfssHemV0DcOtyFlXO
+	 KwSNftwA46YFDbdV2CqeHFH9DAvo3LofdUPgAW8Wo11Kguo8hUsuHmAM7a6TP/4JRc3vi
+	 Hmni1aQn+46hlEphFXB/RF4z+Mpzghr/mAisfE5SlsVKHKpnKNjB+0gTsBbLnElPygkAs
+	 Icam6wL/BY3XaUK7cHeMQEKQRj/Ltj3C3Qnzbu+K7gLn+7KCBUovTUBf+w7pDFkQfxIvl
+	 sLcdFDlBpTb9MtK1eV/0DYUYzcDBZp4P7EMYKyyNPk02E0BX8O9iVHXPVN5vF7d3w8Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=tOc4jcz5;
-	arc=none smtp.remote-ip=209.85.216.53
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=qnDF6tOH;
+	arc=none smtp.remote-ip=209.85.210.179
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA465606A327
-	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 04:37:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BA465606A327
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C73D606A334
+	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 04:37:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0C73D606A334
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=tOc4jcz5
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-3b40470fdd8so2592116a91.1
-        for <imx@lists.linux.dev>; Tue, 24 Nov 2026 20:37:26 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=qnDF6tOH
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-8a05b210703so2490625b3a.0
+        for <imx@lists.linux.dev>; Tue, 24 Nov 2026 20:37:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795581446; x=1796186246; darn=lists.linux.dev;
+        d=gmail.com; s=20260707; t=1795581449; x=1796186249; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=37Yw/Yh5Rz5Fzq741ubEI/Rr+lL1nn4+JbSz5DFAcwM=;
-        b=tOc4jcz5H2RmLBRYlEMoy9Fl2QqYPzFCQIK/TmjdIjRfbQZhOh+SM3DOZ/8pjek35z
-         pBmXmJKfcthf+DwJm5pUYjOFmqjQKKq6ZN0WiSfFEvpLmJhdAGt1qomADKCoM/7lkXd8
-         MS5IzeHFk4gxrb4MQeaFlhu1YfVw/Y8yhW7EB/c4EKRWD0rVbpUydS5suwMcqLRzQfTE
-         yq5ysL5AZgVjOACinfVKtF5EVqPZV6g2IytD3kiEDE+Irhh+N6w3OT0BVN0q8AOlLt1a
-         8jB7nlO2BsrbgD6tMv3keYVhuz3sqW2ClRG6yOOtnvG1ZmaKqiUBgvfyUf6XB2u0S4EG
-         /JnQ==
+        bh=yC0KWfjZslDYmreM0nokc8PEJN6eo4m1n8xq79uDONU=;
+        b=qnDF6tOH/WKfniGupmECuMzVa5o7VmemDTyCWXwsfqcdC09KEamrX5HZ4U6S00KCaU
+         hHXotmAX9Q+l3n8nwGZx9KLvr253X0bKykoeVbG4fvY7T9KtsSn/MqaYj4oSoDiOU85F
+         TiJ+tVFScjTEHmp3K/t2UomSGrteuA2ByJLkBxKJ1XnV0MyZHI1b9iv+YtcuDoW9RhOA
+         0wb3oV3yx48BCXHwlx9GnIjiCe3IJfd/A+TP1kEA6PDl7wV/ck3Y3KK8+E7S0Wy9wCpk
+         GljRa4OXGRFoCX48n3fsGKqo28TqCOeGhTp4bBa7+WbloRckJ7kQFpkC98IL/2sg0PTg
+         M0AA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795581446; x=1796186246;
+        d=1e100.net; s=20260707; t=1795581449; x=1796186249;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=37Yw/Yh5Rz5Fzq741ubEI/Rr+lL1nn4+JbSz5DFAcwM=;
-        b=Fzf3U5dsGdUp0gqDLEDxsAu5vr1FBDclIu1Q8oFIHtlOcN/2gRiIPORIIlUHPEprlf
-         eAOR2Nk7clv4+VOwxv5lNWBuPlGvtWaurK4PvdM9K2XXCPoymKPqDivtNqP0JI6s/7xk
-         QMIMKUEdOrAuxlNXpPY3Hiwtxbnz9dHzvMDl5pZvLrblH+raxbIJdafzY+kMVOGCCLM/
-         3EGDBmmg/oT9XVRhQDtPJ8uu5fvURiVG80M9VBEF1v3O/eCx/COM7j/JRQKe8kM+u4IP
-         7iu3faNz0IXMyhp/+dgDDPjWgzq9wKH95XHjR3QFzS22w5tDqo2TH4IuOTvo4jzkH+PA
-         xCyQ==
-X-Forwarded-Encrypted: i=1; AL+hErGItkTsP1Dhwpt2axgikh4D2CQGnHkIdiSVcl4naJ4PmdwRUn/Ab3d6c7cVy5yXQEmT9DA=@lists.linux.dev
-X-Gm-Message-State: APuU4Z+wGqtPZZNr0uXnzqSU8J1i5/T6iqmejXDycmam9J1k30WTbuLQ
-	9RpJ/BNrP4cJp76zQNkP+62y8MkHWIuQU6dBE15Z3gdo1l2JyXvTPrQ2
-X-Gm-Gg: AZFdTZfnSG/ksZ+UyhwGz5/WNazvBM2NpjZxTkaQN0E/09O9jx9CXRhqFgSO8R4R0PV
-	FsJWdSg/0xnIXyUD3P8d/IHeRaDVy/rifVJrm1a7PGgIH9+EJwef/t/2VMIWhVIOc4LmfB6TYGI
-	wS2+HCaQP+eanDFG37X/ywSVw8y8W9AHTFj6lacGHCOzyAMswHMnK2HCwNZNpusb2isUzMTa8zZ
-	uC+4vr4hFFemnM4DSkh4jOoamSbwbYzEofMHLknkJa+9orIl3lrV9OaDEqb1rSIe+ngatFGaV3h
-	HrfImB09NruBSvb/Q7Yt7yoFHf5ZXDyfRyT/Rx67PZaPT33qp181SVzUhj5P1cdpZvL3m2nR/yh
-	o/C47ZARtsmlLyNAJUODaZuwqn4Ix6eJFoWJx+nCIP83KxjInnnEYxMe99+kFOwWolz7SIKoJjL
-	L9YpamFM0RU0dpDjPMlQeS8G6ZTbywr4KPkgrJANv6dsDf3OnBh4E9zZo8YSEjA391i/O/11yD5
-	T/BP9KANlyD/6KbyWElP5FA8dnRyG7b6b5FJshmk9W3irV9gMAslNEljMpN2yv3iqRV5FfpWsZr
-	4UjRirnrzM8Cdsgx94YfxyyF9/0=
-X-Received: by 2002:a17:90b:4a48:b0:3b1:4018:bfdd with SMTP id 98e67ed59e1d1-3b41c7d5cc7mr13865555a91.7.1795581446160;
-        Tue, 24 Nov 2026 20:37:26 -0800 (PST)
+        bh=yC0KWfjZslDYmreM0nokc8PEJN6eo4m1n8xq79uDONU=;
+        b=jdB+hZZAK7x6+oYusi9KVNjAgKoab7+BAlt9ysmD07F8xJSZrn7JFCOYC0VsjMKixm
+         PzNPLCsdt1rNN0AgW9/4UjnD+PF3qFwFQPkvc0sPIjnzO17r/oxNLtoPJL/3PLUJlxsh
+         Ec1zRODsWmuvusLSu+cl4+bOs+0ROuqVnsOw/MvZPyauPx4hoEHRis+d35PTZWzMX+7H
+         mCIizIP8z8LyirRVonmDNifkwGrkFI7HcHI48+CcnyDBUW+lRjI8dUsBk3Rt+XSCKs7q
+         59JnEZeQZBEl8XurbU6BUvq7VX1dEdYmP41HRLNzMMiNsCxYZT4adul0cDoriKQLBtQv
+         vK3g==
+X-Forwarded-Encrypted: i=1; AL+hErFSeeON3oXqHK4MUMktMfFXL7GxabohQ+y1jagiSVBK4klTOhW1iIzmX5xxNSf5+/1IuPs=@lists.linux.dev
+X-Gm-Message-State: APuU4Z+NzU497O8YG1Ddrk4Y8cRz7ueYyD2FrQXBj71ezBlPc/scd40I
+	nRmgsgvjcaPYJjjywu6vko7kTrHVPhoWtOBqLPvvapGwBqK1MCCz92c7
+X-Gm-Gg: AZFdTZdWy33vUZbZzaTwCx+1pJX+OLP+VPxygXtLX+6TJk8HiS3oemx49IeT7E0L+pf
+	L062jnu2NPidGsafHICOBsJEhAHpEcKPkTzhZ5S9ePJcZZEu4d+rwNo8m4j0Lfex0ehsTlxpfZV
+	rUMbcRqrm2e8/4JBIgGSED0QM5bWUZsJheOhFySl2enOgD1qu0Dqy/2WsGnkbbmg70TpGlDO/It
+	Vf6ONSuAroTYgvH/H8BBe1WUAmrDuVpdWhme1y5Q4I/zv3c/tmuzZ3LrmY9ecgGzC8Jpxc65Pyw
+	MjXaQFNdeBDoaWI9wZg6OYC27BPsZ4HH++HxzGxZrkuz2dhnNsjP7ylpW+u5QPiJjCP0+tVrg5P
+	ocILF2UeiCQOv+UMEAwFWI/SvKCLWEV/SNb3MNYkWn3CxZWxC/JAxy5D5DOt5/YCJGob0nfoc/L
+	ckvuSQmp+MkFy+wcZWiIuKvif4S7FqNi2bMGm2YvDIX8jbhdNxEztsYYtpP/w3uUq6eQKB84M8M
+	1t0gi8ANgpuI5+W6g0wwZigtoE3J19IeyTBdhjJe5P4E29mR1xPsi4Ed7uQCptyLMwS4qP1gD9S
+	4bGvE1YqeNdlaMvHsDehyY272j0=
+X-Received: by 2002:a17:90a:d2cf:b0:3ac:9772:8da3 with SMTP id 98e67ed59e1d1-3b41c8fed4bmr13992683a91.31.1795581449240;
+        Tue, 24 Nov 2026 20:37:29 -0800 (PST)
 Received: from localhost ([2001:19f0:8000:4ce8:5400:7ff:fe0e:e6b2])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b405d63728sm30506154a91.8.2026.11.24.20.37.25
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b4b0f482bdsm9985129a91.14.2026.11.24.20.37.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Nov 2026 20:37:25 -0800 (PST)
+        Tue, 24 Nov 2026 20:37:28 -0800 (PST)
 From: Inochi Amaoto <inochiama@gmail.com>
 To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Jonathan Corbet <corbet@lwn.net>,
@@ -113,9 +113,9 @@ Cc: linux-doc@vger.kernel.org,
 	linux-phy@lists.infradead.org,
 	Yixun Lan <dlan@gentoo.org>,
 	Longbin Li <looong.bin@gmail.com>
-Subject: [PATCH v5 3/8] phy: core: Make phy_put() ignore NULL and error pointers
-Date: Wed, 25 Nov 2026 12:36:34 +0800
-Message-ID: <20261125043639.249525-4-inochiama@gmail.com>
+Subject: [PATCH v5 4/8] phy: core: Add phy bulk data helper functions
+Date: Wed, 25 Nov 2026 12:36:35 +0800
+Message-ID: <20261125043639.249525-5-inochiama@gmail.com>
 X-Mailer: git-send-email 2.56.1
 In-Reply-To: <20261125043639.249525-1-inochiama@gmail.com>
 References: <20261125043639.249525-1-inochiama@gmail.com>
@@ -130,29 +130,394 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add NULL and error pointer check to the phy_put(), so it can ignore
-any bad and empty pointer, this will simplify the release handler
-of the bulk data API.
+Add several helper functions that allow drivers to get several phy
+consumers in one operation. If any of the phy cannot be acquired then
+any phys that were got will be put before returning to the caller.
+
+This can relieve the driver owners' life who needs to handle many phys,
+as well as each phy error reporting.
 
 Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
 ---
- drivers/phy/phy-core.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/phy/phy-core.c  | 301 ++++++++++++++++++++++++++++++++++++++++
+ include/linux/phy/phy.h |  38 +++++
+ 2 files changed, 339 insertions(+)
 
 diff --git a/drivers/phy/phy-core.c b/drivers/phy/phy-core.c
-index efbd7e139dce..5004d28b167a 100644
+index 5004d28b167a..87a317a144b4 100644
 --- a/drivers/phy/phy-core.c
 +++ b/drivers/phy/phy-core.c
-@@ -780,6 +780,9 @@ EXPORT_SYMBOL_GPL(of_phy_put);
-  */
- void phy_put(struct device *dev, struct phy *phy)
- {
-+	if (IS_ERR_OR_NULL(phy))
+@@ -1100,6 +1100,307 @@ struct phy *devm_phy_get_by_of_node(struct device *dev, struct device_node *np)
+ }
+ EXPORT_SYMBOL_GPL(devm_phy_get_by_of_node);
+ 
++/**
++ * of_phy_get_count() - Get the number of phys of a device node
++ * @np: device_node for which to get the phy
++ *
++ * Return: the phy count if successful, %0 if no phy handle is found,
++ * negative error value if error occurs.
++ */
++static int of_phy_get_count(const struct device_node *np)
++{
++	int count;
++
++	count = of_count_phandle_with_args(np, "phys", "#phy-cells");
++
++	if (count == -ENOENT)
++		return 0;
++
++	return count;
++}
++
++/**
++ * phy_bulk_put() - release a set of PHYs
++ * @dev: device that acquired the PHYs
++ * @num_phys: number of entries in the phys array
++ * @phys: array of struct phy_bulk_data with PHYs set
++ *
++ * Releases the PHY references in reverse order and clears the PHY pointer in
++ * each entry. The caller owns the phys array and is responsible for freeing it
++ * if necessary.
++ */
++static void phy_bulk_put(struct device *dev, int num_phys,
++			 struct phy_bulk_data *phys)
++{
++	while (num_phys--) {
++		phy_put(dev, phys[num_phys].phy);
++		phys[num_phys].phy = NULL;
++	}
++}
++
++/**
++ * of_phy_bulk_put() - release a set of PHYs
++ * @num_phys: number of entries in the phys array
++ * @phys: array of struct phy_bulk_data with PHYs set
++ *
++ * Releases the PHY references in reverse order and clears the PHY pointer in
++ * each entry. The caller owns the phys array and is responsible for freeing it
++ * if necessary.
++ */
++static void of_phy_bulk_put(int num_phys, struct phy_bulk_data *phys)
++{
++	while (num_phys--) {
++		of_phy_put(phys[num_phys].phy);
++		phys[num_phys].phy = NULL;
++	}
++}
++
++static int of_phy_bulk_get_by_index(struct device_node *np, int num_phys,
++				    struct phy_bulk_data *phys)
++{
++	int ret = 0;
++	int i;
++
++	for (i = 0; i < num_phys; i++) {
++		phys[i].id = NULL;
++		phys[i].phy = NULL;
++	}
++
++	mutex_lock(&phy_provider_mutex);
++
++	for (i = 0; i < num_phys; i++) {
++		of_property_read_string_index(np, "phy-names", i, &phys[i].id);
++
++		phys[i].phy = _of_phy_get_by_index(np, i);
++
++		if (IS_ERR(phys[i].phy)) {
++			ret = PTR_ERR(phys[i].phy);
++			break;
++		}
++	}
++
++	mutex_unlock(&phy_provider_mutex);
++
++	if (ret)
++		of_phy_bulk_put(i, phys);
++
++	return ret;
++}
++
++/**
++ * phy_bulk_get() - lookup and obtain references to multiple PHYs
++ * @dev: device that requests the PHYs
++ * @num_phys: number of entries in the phys array
++ * @phys: array of struct phy_bulk_data with PHY names set
++ *
++ * Gets each PHY using phy_get(). This supports both device tree lookups and
++ * non-device-tree lookups registered with phy_create_lookup(). The caller must
++ * call phy_bulk_put() to release the PHY references.
++ *
++ * Return: %0 if successful, a negative error code otherwise
++ */
++static int phy_bulk_get(struct device *dev, int num_phys,
++			struct phy_bulk_data *phys)
++{
++	int ret, i;
++
++	for (i = 0; i < num_phys; i++)
++		phys[i].phy = NULL;
++
++	for (i = 0; i < num_phys; i++) {
++		phys[i].phy = phy_get(dev, phys[i].id);
++
++		ret = PTR_ERR_OR_ZERO(phys[i].phy);
++		if (ret) {
++			phys[i].phy = NULL;
++
++			dev_err_probe(dev, ret, "Failed to get phy: (%s)\n",
++				      phys[i].id);
++			goto err;
++		}
++	}
++
++	return 0;
++
++err:
++	phy_bulk_put(dev, i, phys);
++
++	return ret;
++}
++
++/**
++ * of_phy_bulk_get_all() - obtain all PHYs from a device node
++ * @np: device node containing the PHY references
++ * @phys: pointer to store the allocated array of struct phy_bulk_data
++ *
++ * Gets every PHY referenced by the phys property in index order. PHY names are
++ * read from phy-names when present.
++ *
++ * Return: the number of PHYs on success, %0 if no PHYs are found, or a
++ * negative error code otherwise
++ */
++static int of_phy_bulk_get_all(struct device_node *np,
++			       struct phy_bulk_data **phys)
++{
++	struct phy_bulk_data *phy_bulk;
++	int num_phys;
++	int ret;
++
++	num_phys = of_phy_get_count(np);
++	if (num_phys <= 0)
++		return num_phys;
++
++	phy_bulk = kmalloc_objs(*phy_bulk, num_phys);
++	if (!phy_bulk)
++		return -ENOMEM;
++
++	ret = of_phy_bulk_get_by_index(np, num_phys, phy_bulk);
++	if (ret) {
++		kfree(phy_bulk);
++		return ret;
++	}
++
++	*phys = phy_bulk;
++
++	return num_phys;
++}
++
++/**
++ * phy_bulk_put_all() - release and free PHYs
++ * @dev: device that acquired the PHYs
++ * @num_phys: number of entries in the phys array
++ * @phys: array of struct phy_bulk_data to release and free
++ */
++static void phy_bulk_put_all(struct device *dev, int num_phys,
++			     struct phy_bulk_data *phys)
++{
++	if (IS_ERR_OR_NULL(phys))
 +		return;
 +
- 	device_link_remove(dev, &phy->dev);
- 	of_phy_put(phy);
++	phy_bulk_put(dev, num_phys, phys);
++	kfree(phys);
++}
++
++/**
++ * phy_bulk_init() - initialize multiple PHYs
++ * @num_phys: number of entries in the phys array
++ * @phys: array of struct phy_bulk_data to initialize
++ *
++ * Initializes the PHYs in array order. If an initialization fails, all PHYs
++ * initialized by this call are exited in reverse order.
++ *
++ * Return: %0 if successful, a negative error code otherwise
++ */
++int phy_bulk_init(int num_phys, struct phy_bulk_data *phys)
++{
++	int ret, i;
++
++	for (i = 0; i < num_phys; i++) {
++		ret = phy_init(phys[i].phy);
++		if (ret)
++			goto err;
++	}
++
++	return 0;
++
++err:
++	while (i--)
++		phy_exit(phys[i].phy);
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(phy_bulk_init);
++
++/**
++ * phy_bulk_exit() - exit multiple PHYs
++ * @num_phys: number of entries in the phys array
++ * @phys: array of struct phy_bulk_data to exit
++ *
++ * Exits the PHYs in reverse array order. If error occurs, all exited
++ * phys are inited again.
++ *
++ * Return: %0 if successful, or negative error code if one fails.
++ */
++int phy_bulk_exit(int num_phys, struct phy_bulk_data *phys)
++{
++	int ret, i;
++
++	for (i = num_phys - 1; i >= 0; i--) {
++		ret = phy_exit(phys[i].phy);
++		if (ret)
++			goto err;
++	}
++
++	return 0;
++
++err:
++	while (++i < num_phys)
++		phy_init(phys[i].phy);
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(phy_bulk_exit);
++
++/**
++ * phy_bulk_power_on() - power on multiple PHYs
++ * @num_phys: number of entries in the phys array
++ * @phys: array of struct phy_bulk_data to power on
++ *
++ * Powers on the PHYs in array order. If a power-on operation fails, all PHYs
++ * powered on by this call are powered off in reverse order.
++ *
++ * Return: %0 if successful, or negative error code if one fails.
++ */
++int phy_bulk_power_on(int num_phys, struct phy_bulk_data *phys)
++{
++	int ret, i;
++
++	for (i = 0; i < num_phys; i++) {
++		ret = phy_power_on(phys[i].phy);
++		if (ret)
++			goto err;
++	}
++
++	return 0;
++
++err:
++	while (i--)
++		phy_power_off(phys[i].phy);
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(phy_bulk_power_on);
++
++/**
++ * phy_bulk_power_off() - power off multiple PHYs
++ * @num_phys: number of entries in the phys array
++ * @phys: array of struct phy_bulk_data to power off
++ *
++ * Power off the PHYs in reverse order. If a powers off fails, already
++ * power-off phys are powered on again.
++ *
++ * Return: %0 if successful, the first negative error code otherwise
++ */
++int phy_bulk_power_off(int num_phys, struct phy_bulk_data *phys)
++{
++	int ret, i;
++
++	for (i = num_phys - 1; i >= 0; i--) {
++		ret = phy_power_off(phys[i].phy);
++		if (ret)
++			goto err;
++	}
++
++	return 0;
++
++err:
++	while (++i < num_phys)
++		phy_power_on(phys[i].phy);
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(phy_bulk_power_off);
++
+ /**
+  * phy_create() - create a new phy
+  * @dev: device that is creating the new phy
+diff --git a/include/linux/phy/phy.h b/include/linux/phy/phy.h
+index c480d6cb42c5..c170d9aeeeb4 100644
+--- a/include/linux/phy/phy.h
++++ b/include/linux/phy/phy.h
+@@ -83,6 +83,18 @@ union phy_configure_opts {
+ 	struct phy_configure_opts_hdmi		hdmi;
+ };
+ 
++/**
++ * struct phy_bulk_data - Data used for bulk phy operations.
++ *
++ * @id: phy consumer ID
++ */
++struct phy_bulk_data {
++	const char	*id;
++
++	/* private: Internal use */
++	struct phy	*phy;
++};
++
+ /**
+  * struct phy_ops - set of function pointers for performing phy operations
+  * @init: operation to be performed for initializing phy
+@@ -313,6 +325,12 @@ void devm_of_phy_provider_unregister(struct device *dev,
+ 	struct phy_provider *phy_provider);
+ int phy_create_lookup(struct phy *phy, const char *con_id, const char *dev_id);
+ void phy_remove_lookup(struct phy *phy, const char *con_id, const char *dev_id);
++
++int phy_bulk_init(int num_phys, struct phy_bulk_data *phys);
++int phy_bulk_exit(int num_phys, struct phy_bulk_data *phys);
++int phy_bulk_power_on(int num_phys, struct phy_bulk_data *phys);
++int phy_bulk_power_off(int num_phys, struct phy_bulk_data *phys);
++
+ #else
+ static inline int phy_pm_runtime_get(struct phy *phy)
+ {
+@@ -584,6 +602,26 @@ phy_create_lookup(struct phy *phy, const char *con_id, const char *dev_id)
  }
+ static inline void phy_remove_lookup(struct phy *phy, const char *con_id,
+ 				     const char *dev_id) { }
++
++static inline int phy_bulk_init(int num_phys, struct phy_bulk_data *phys)
++{
++	return 0;
++}
++
++static inline int phy_bulk_exit(int num_phys, struct phy_bulk_data *phys)
++{
++	return 0;
++}
++
++static inline int phy_bulk_power_on(int num_phys, struct phy_bulk_data *phys)
++{
++	return 0;
++}
++
++static inline int phy_bulk_power_off(int num_phys, struct phy_bulk_data *phys)
++{
++	return 0;
++}
+ #endif
+ 
+ #endif /* __DRIVERS_PHY_H */
 -- 
 2.56.1
 
