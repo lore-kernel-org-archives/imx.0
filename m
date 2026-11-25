@@ -1,88 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.50
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795624137;
-	b=WSf6CGgdIx7G2Y71vX5CYymF3BLKBQ0lkcLGCsnu9ms0rBylnIFt60ruR/shTbedkhGU
-	 xeLklp39uSK5pEgfLm7W365xwJVXfJudZvUep4raY41M/JEdeG7LelPXJyNJNpJXEFudV
-	 f80i2BLhgDs0d9Vd+yIpH6O/etyDhRpJN87tV5XfYc0SHZ1uxKU+Qho1CA5uNcTSs7g3R
-	 iV6EIgYQA9Mp+l+L/rivaI4NPqPWuZzS9ed/salvx2tMker4yeGPYF4XwyQHkmAYPgUFJ
-	 VgP/SZhRaqXHtmueWMmjq7/Qn/DFbwBvsm5JZ9fZ7jO+mxbg5/7y9Qd0jV/dROPuHUg==
+	t=1795624140;
+	b=uf5rzooIlUcatdVtOjrO3VBVDKfpsGihTcYzeOa1F0z2/sFySAnfX/vx0di+iFrrAT3V
+	 268TqwIWh18nSbgaqd3KlKpwIxr8ixs1PwzB1n5C7FMumYVc24lNdsKr7Jyw41NdKot6D
+	 LVof4KxOQ8D5ySJ9q9F3baQCWFEOnt3C6y+I+P2aDlHipL7TNB09GcdmIaqFTll2NADkE
+	 1+HWVHFVGwsxuSmiyUsDi5xxleCeerSF8XyEywPLr+Uri/rkMhotZb9MkP+mduWw4rlAy
+	 EbSvRi0NOADQBf9JxkhpZyq4/BTVb/5EMXU/uWLwUnQV4oAwCPZAUamGx+bktcWZ4Ug==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795624137;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795624140;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:Date:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key;
-	bh=dgcQq5x/Y8QFhx80+Eu+QadOSuCUE1CUEnmcqVfNUk4=;
-	b=NvEaQ+b7uKxX6GD3iPlyatY1pGfpoVkM86TtLQud7zCkZRvYub7R8y8QOsGwi5c1RRDc
-	 JFdkwDp12gYqzhgGYgaOIEODBnbSmfbb+cAtRyFI1WXq4NDDr00ZzVVFPWJnce++41nkT
-	 oSyEh6EmRVc3wvXEQKbfEe/4vsLazTp0o8ta9lgzim0cVbEGBJn/1jNM7SNRXt9aUMPdG
-	 D3YRPDFfqSoIsc51wS+6yzQt+q1wHaVbVLKcLCe5jtxDS428R5L6sAeEPCV2zm35qENhl
-	 XHwocH02np4Rz6UeRtSa+nTpB0OZkrTkABAR4Epz5+ExHpvsOoA7mlG6MVP2Z/5Q5Yw==
+	bh=usivc3aw+SwZhFpcmlLANBBx5LV9rhkWEtYn4/TGjV4=;
+	b=dnTrexMQz8380M+wlalCIGTteY2xX4usTQ3k/aYs4hr10HyU1HuPYfonWQ6RkqdbbfcR
+	 af0CnEwkp/F6YjcsHYH/hSQsFuicG4Ce8bIeIxtgLLEcfXhJaO9XbD3+7FiOoLfpsnF/T
+	 fubkMdAcHdx+Mo1+uPWFtfn9S6zWfhkGvK4x4iWva5Z+dE7wzz1kSi4sQE6GARwgY6N68
+	 48t8sMIWZP+DV/gsGLoiSgpvkaT1adLshdwzVzwVvE233aXRWmhMG4uo7He1NKfp8Vvd6
+	 1dJssHM4hdvdIabe7nZBERS0j3ujs1nlGs3sSjpg3IEtFBi3EbxatxF39VjkZbsOLyg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=thegoodpenguin.co.uk;
 	spf=pass smtp.mailfrom=thegoodpenguin.co.uk;
-	dkim=pass header.d=thegoodpenguin-co-uk.20260707.gappssmtp.com header.i=@thegoodpenguin-co-uk.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=X+4MSztY;
-	arc=none smtp.remote-ip=209.85.128.42
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	dkim=pass header.d=thegoodpenguin-co-uk.20260707.gappssmtp.com header.i=@thegoodpenguin-co-uk.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=rnA6J4e8;
+	arc=none smtp.remote-ip=209.85.128.50
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E16606A337
-	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 16:28:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 77E16606A337
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D05F4606A33C
+	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 16:28:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D05F4606A33C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=thegoodpenguin.co.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=thegoodpenguin.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=thegoodpenguin-co-uk.20260707.gappssmtp.com header.i=@thegoodpenguin-co-uk.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=X+4MSztY
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4a9a8d6cea8so77387525e9.1
-        for <imx@lists.linux.dev>; Wed, 25 Nov 2026 08:28:57 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=thegoodpenguin-co-uk.20260707.gappssmtp.com header.i=@thegoodpenguin-co-uk.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=rnA6J4e8
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4bb64ef5a00so48210595e9.3
+        for <imx@lists.linux.dev>; Wed, 25 Nov 2026 08:28:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=thegoodpenguin-co-uk.20260707.gappssmtp.com; s=20260707; t=1795624136; x=1796228936; darn=lists.linux.dev;
+        d=thegoodpenguin-co-uk.20260707.gappssmtp.com; s=20260707; t=1795624138; x=1796228938; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=dgcQq5x/Y8QFhx80+Eu+QadOSuCUE1CUEnmcqVfNUk4=;
-        b=X+4MSztY0QYfTYrnOLdW/KdCvpCc81GQWgmJIp5EerhOStVTShIlaXMJ9OU2iLtU6e
-         8ahWqNgvX5KWeuxLn4ICMvYqOLOlmFYAF6XX5W3rBCH0gTQrJkGI4/kZ5aHJ/GZRQr+W
-         V1ykfarRfaaknlrGmBx2J3UgBt2bx4/WB+3BQ8LTUQwp9tB0uiNv0kGKkoxobKMylfK3
-         2Zx+F+DnO+tQ2U5QXC5KrZpxPI9u1SfStxBDnZiVpaYQub6vQIvqpmAmWATV/0I8YOxy
-         QgJu65pYuqNk+lnUIaUXYC2eKyiffTh9F1bJa/nmYfJfcYyNMwyUcC5a9ApRObPzCLqX
-         aM/w==
+        bh=usivc3aw+SwZhFpcmlLANBBx5LV9rhkWEtYn4/TGjV4=;
+        b=rnA6J4e8COvgd9jHq2T81kfYqbWqQsrAKa/3s2RM1heLXGXVuuwfB+8YdozzHkcWp4
+         d5MxqwhlQkNJ4wEnZGdp96ORZsjNZaqcgbD7MB/nJ94guyNM7in+nfJOQ7aa/PSXXX1b
+         d15DhIUMSOrg+bcoHRSVLz52ItyEWMKEEoh0rMhQmd5inm7jcQn0UBfbBnXl4AfHWrFg
+         aUwvfGhlZ+ygKvP37AYTtZ6zkQMZByq0kQOoNVrRGUqty8VsC8MA5exeCrleQZZ6VOLi
+         HXm1zeqlRMPMcBllAbToZmF4Ll7DnpreNk1FuKHixb3c3T33mjnFNq+B7yeV57lff85B
+         Pxww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795624136; x=1796228936;
+        d=1e100.net; s=20260707; t=1795624138; x=1796228938;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=dgcQq5x/Y8QFhx80+Eu+QadOSuCUE1CUEnmcqVfNUk4=;
-        b=uXo4pphkHmZ3HjeZq7im2C+7C2jIm8jbV9ivqhW2PGFdBCdNb+CBMS0k8cnGf/kKBj
-         M+qXG2FbJVC6Y6TvlLTqQDDbkZhSHYxZTCteL2C+1rfsyyOOrDbGnKg8k/wnm43UpTX1
-         ZqtYRfRwVHszZLprGHsSUJVAFJJZco5JNObTfZ6AbSRhr1EfWriiUNdbEueJiNrEqc6Q
-         5vmJv5rA8t7x6zrkgO5aR0+vnFI2k0q9htBiShPsNltPoBXGgw6NdUDRUV/A5Pvi8yM0
-         BqUtxD4Ulda9NyacjF6FMM6I6YDftScZtANjE8wtc7uSzo+ppwbzwwuvRW/zM367E2cd
-         iglw==
-X-Forwarded-Encrypted: i=1; AL+hErFT/VCFRlEJPVbzuJkgSnujAG20Uk4+66e9JjyROgF73OAssTfQ0KnCwMMGz5ryvlkVILQ=@lists.linux.dev
-X-Gm-Message-State: APuU4Z8OJRBiSXoyyVILzipBJ0zSw5r3UDCoqOs16ZGFMYF4XGfv3FQL
-	UOiK91BvSfb5/4B6HOiT47dRr7guBZrFgrEWk3ImgvGgb84K5wtsAvNs+AsxPKPwHKI=
-X-Gm-Gg: AZFdTZfcH3/tz8vuO4fKJ95LNIryWCe0lhHF399qar2okYTL5mL4T7MBRE/oScyQyAM
-	E1llFGBeji5TsdnLzq+bYZDIO4b2y65sgAyJa5EhcAhKG7OVwvML16Jfeb2M6q5XtWAMxxevXMA
-	lqHFRjfypEnOT9FsMQhlKwOkOh9boj9+KlqGJKJNL0DZiM2Jtuc90Yer4hDL0VkW7jPSGrz8Igi
-	uNijRbHq8F1I07xy+9CwKAGvMtstpjQIEeaIEQQ88v5iFpjtpKPpD9hzYIDn4SsaCl4X/QsHYYN
-	BFmIgFTGrgz3+PTXGSQ6Qk8Mx/7iQswdqbPiLpxNog2K6T0inSEn5yL1zr+IbWMiWPmp16I+MUa
-	CYaLXEc1jJLkfOYK79/zHItjgbWe8vHrgnVtMTh8SKhb/2a/sLwwW3vXTgBb2oYS8WA+LkbYVgX
-	1CqD3wna1dJOgSuAom7Kqw1V4U9ddBzfjV8WoHy28aE2P5J5BTT8lsBk2bICWD3BJDGh2WJopsl
-	r899BsL25glH0kAJsK5wHSVROcj1ptiHByBEAupZ5Q5xZCyDl6IjZiZeH20mkdHVqfAw4/nLjS4
-	Blgw+Oh2UO57KA7sUWuY+IJXLgwrHcAstocr+xz3c5xCfytzAGnkGlJFeIw86hS/EKI=
-X-Received: by 2002:a05:600c:468b:b0:4bb:5fd1:92aa with SMTP id 5b1f17b1804b1-4bb888160c2mr388121675e9.15.1795624135909;
-        Wed, 25 Nov 2026 08:28:55 -0800 (PST)
+        bh=usivc3aw+SwZhFpcmlLANBBx5LV9rhkWEtYn4/TGjV4=;
+        b=s0ZrmSwUEf5bY8An0QaYXYFVNYfHyw3OkTZfCvg2CH8tLbh9yRmKh1pLFttom448lI
+         mw+cAiG1b2CLc0UtsNQHWJxZlrB7OS2eei3r/N0t2fWD1HW1yc3ZrwRU+BDmOhIWFO0S
+         iN5X6ON3RBxoGh71nBL16HhGa3zMDe7DyyCP+BuJr0SjI9uxS/9GFSJ0BrTGab8G7DF5
+         PYNxf2hIeetOJGrMN3X2f7k3YrG33TX0CDbluEiXYkWfiiVPliK1X2Syp4tiZYA8WGLL
+         zQfLUGM7LIWhJL9U5tI3Dc91lkZaFeLero67/pefkTCY7roLMFpi5myQiQsnRgK5wX2t
+         Rauw==
+X-Forwarded-Encrypted: i=1; AL+hErFp2y2wtE+bv1m1TAQIei7uCtApGuOp6lUp0Cqb/GqxlJ+C+qQdr6TECU1//5VPsahaaDs=@lists.linux.dev
+X-Gm-Message-State: APuU4Z/87dBXu3MwopnlVc0EyKY4+WNdiydwSoK7KZgLZuaG2p/fbDIq
+	D1olonS5S7qbw7JUF19Nqz7dzI9plBCZGZwjzA7cvtRDAHmHThPqyqtpg8fBmkyVz34=
+X-Gm-Gg: AZFdTZcQ0/BJz71PzfAOXuLV87QVVcgJ2Jk9edhHjzmmKVxQ971drxsj52vpORnWzAu
+	pAchsnb/FE7nbHfhQcrccqzhqoAlFCSdRBrOVmRFDkbjkjnlbINAAp5rMoSKICvIWEFb2xTBTVD
+	1Y/95WzWGQ+N4vLynEEcl6YA+Vq926cy4gk39eXIUsoFlF8G6OIv/1oLbeY5ixn0yqzlqdAbpdX
+	my+a/orC/GHyZvlIGESppLcFGrEadLdvdQToyVxVNQ+cqWSKCYOF1s3AY9gpNsORd8ZyjlkgJ9s
+	y5rcYBrgAMg94ErKKUBL/FsFM8sSuFF43zXKB35EXoWx1LE8AyTQUcRVvNOKr/LumC9UfWo996h
+	1SYRkEhmsUyEGePIkypc7fG2O6YJd4iZga7TjzpJf5PKQNY3a8+n3TlA8q7AaIZRBqm8jwgYUf3
+	kn/xMvCdPi/M4NsvIV2pvJJUCYpy0Zj9qMchpYoVJL6zB6VV81OcpnYMGXbQWPFPnLY3LAbuUgB
+	kLyxta9uLx7up7V9te15+fPM7k9ly/GrDnTPL2dUy85kUX6NQwXTnicYjZCo/CBC/ezeplzkJWj
+	omJ672uNdIoSYHWC6WdeAX7cDQlID9Qzo+AkMDRQTVMx8w==
+X-Received: by 2002:a05:600c:6708:b0:4ba:7e6:53d6 with SMTP id 5b1f17b1804b1-4bb88940848mr326163005e9.33.1795624138113;
+        Wed, 25 Nov 2026 08:28:58 -0800 (PST)
 Received: from [10.42.0.1] ([2a00:23c7:1d1a:9c01:f716:ba19:8aaa:f1c2])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb853368d3sm527336375e9.1.2026.11.25.08.28.53
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb853368d3sm527336375e9.1.2026.11.25.08.28.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Nov 2026 08:28:55 -0800 (PST)
+        Wed, 25 Nov 2026 08:28:57 -0800 (PST)
 From: Pawel Zalewski <pzalewski@thegoodpenguin.co.uk>
-Date: Wed, 25 Nov 2026 16:28:34 +0000
-Subject: [PATCH 08/10] mtd: maps: Unify list terminator for of_device_id
+Date: Wed, 25 Nov 2026 16:28:35 +0000
+Subject: [PATCH 09/10] mtd: nand: Unify list terminator for *_device_id
  lists
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -95,7 +95,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261125-acpi-mtd-v1-8-42ad2f645bee@thegoodpenguin.co.uk>
+Message-Id: <20261125-acpi-mtd-v1-9-42ad2f645bee@thegoodpenguin.co.uk>
 References: <20261125-acpi-mtd-v1-0-42ad2f645bee@thegoodpenguin.co.uk>
 In-Reply-To: <20261125-acpi-mtd-v1-0-42ad2f645bee@thegoodpenguin.co.uk>
 To: Miquel Raynal <miquel.raynal@bootlin.com>, 
@@ -156,11 +156,11 @@ Cc: linux-mtd@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
  Pawel Zalewski <pzalewski@thegoodpenguin.co.uk>, 
  =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795624113; l=2018;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795624113; l=3557;
  i=pzalewski@thegoodpenguin.co.uk; s=20260430; h=from:subject:message-id;
- bh=qZ3dtpaE4yo6DqKw2ZZxvSONBhZmYTuwo6Yz4wDKiAA=;
- b=uXOj27KlhNAZizznn9ogyLPuEGUV9GthH9XWkHXihalhOuNlIXntNNK6vnlTDONhse9U1m2BX
- wgOwv22X4fNCfrJ4kS4rB81GgUoV5JAjSZu8Y1OsSvN/EQwWtziAtg6
+ bh=9ka96uW8uhmroEA/0ZZ34Gp8KmZZTisL0Zd9lgRMCU8=;
+ b=yB/JEeg0v8nqIyAE1Ke9wfd7YSoLKw89W0zAl6SaarFMyVewyRV7wv5K6GuML97H9SyfICVK7
+ YkN/iHx9aUKBHks9vSsfAxGp+5LM/eiSvtDjgwuVeS/5BBkSfzY+erw
 X-Developer-Key: i=pzalewski@thegoodpenguin.co.uk; a=ed25519;
  pk=vHq4n9IonORH2GTzLv8r6CWAFHzgfBuNkQPXA8NSly0=
 
@@ -171,59 +171,101 @@ these to the common style with other *_device_id arrays.
 
 Signed-off-by: Pawel Zalewski <pzalewski@thegoodpenguin.co.uk>
 ---
- drivers/mtd/maps/lantiq-flash.c      | 2 +-
- drivers/mtd/maps/physmap-versatile.c | 4 ++--
- drivers/mtd/maps/sun_uflash.c        | 2 +-
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/mtd/nand/ecc-mtk.c                 | 2 +-
+ drivers/mtd/nand/ecc-mxic.c                | 2 +-
+ drivers/mtd/nand/ecc-realtek.c             | 2 +-
+ drivers/mtd/nand/onenand/onenand_omap2.c   | 2 +-
+ drivers/mtd/nand/onenand/onenand_samsung.c | 3 ++-
+ drivers/mtd/nand/spi/core.c                | 4 ++--
+ 6 files changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/mtd/maps/lantiq-flash.c b/drivers/mtd/maps/lantiq-flash.c
-index 519126abb9a5..1ee15d50bd7f 100644
---- a/drivers/mtd/maps/lantiq-flash.c
-+++ b/drivers/mtd/maps/lantiq-flash.c
-@@ -177,7 +177,7 @@ static void ltq_mtd_remove(struct platform_device *pdev)
- 
- static const struct of_device_id ltq_mtd_match[] = {
- 	{ .compatible = "lantiq,nor" },
--	{},
-+	{ }
- };
- MODULE_DEVICE_TABLE(of, ltq_mtd_match);
- 
-diff --git a/drivers/mtd/maps/physmap-versatile.c b/drivers/mtd/maps/physmap-versatile.c
-index 2e779111bf79..9d308c4f21e5 100644
---- a/drivers/mtd/maps/physmap-versatile.c
-+++ b/drivers/mtd/maps/physmap-versatile.c
-@@ -58,7 +58,7 @@ static const struct of_device_id syscon_match[] = {
- 		.compatible = "arm,realview-pbx-syscon",
- 		.data = (void *)REALVIEW_FLASHPROT,
+diff --git a/drivers/mtd/nand/ecc-mtk.c b/drivers/mtd/nand/ecc-mtk.c
+index a3a285170fcd..854f513c4952 100644
+--- a/drivers/mtd/nand/ecc-mtk.c
++++ b/drivers/mtd/nand/ecc-mtk.c
+@@ -530,7 +530,7 @@ static const struct of_device_id mtk_ecc_dt_match[] = {
+ 		.compatible = "mediatek,mt7986-ecc",
+ 		.data = &mtk_ecc_caps_mt7986,
  	},
 -	{},
 +	{ }
  };
  
- /*
-@@ -77,7 +77,7 @@ static const struct of_device_id syscon_match[] = {
- 
- static const struct of_device_id ebi_match[] = {
- 	{ .compatible = "arm,external-bus-interface"},
--	{ },
-+	{ }
- };
- 
- static int ap_flash_init(struct platform_device *pdev)
-diff --git a/drivers/mtd/maps/sun_uflash.c b/drivers/mtd/maps/sun_uflash.c
-index cac780cd23f9..2960cebdb0dd 100644
---- a/drivers/mtd/maps/sun_uflash.c
-+++ b/drivers/mtd/maps/sun_uflash.c
-@@ -138,7 +138,7 @@ static const struct of_device_id uflash_match[] = {
+ static int mtk_ecc_probe(struct platform_device *pdev)
+diff --git a/drivers/mtd/nand/ecc-mxic.c b/drivers/mtd/nand/ecc-mxic.c
+index 41ee49419798..30434ec8f6a0 100644
+--- a/drivers/mtd/nand/ecc-mxic.c
++++ b/drivers/mtd/nand/ecc-mxic.c
+@@ -859,7 +859,7 @@ static const struct of_device_id mxic_ecc_of_ids[] = {
  	{
- 		.name = UFLASH_OBPNAME,
+ 		.compatible = "mxicy,nand-ecc-engine-rev3",
  	},
+-	{ /* sentinel */ },
++	{ }
+ };
+ MODULE_DEVICE_TABLE(of, mxic_ecc_of_ids);
+ 
+diff --git a/drivers/mtd/nand/ecc-realtek.c b/drivers/mtd/nand/ecc-realtek.c
+index fb573c7f2280..a59b6ecbdd19 100644
+--- a/drivers/mtd/nand/ecc-realtek.c
++++ b/drivers/mtd/nand/ecc-realtek.c
+@@ -448,7 +448,7 @@ static const struct of_device_id rtl_ecc_of_ids[] = {
+ 	{
+ 		.compatible = "realtek,rtl9301-ecc",
+ 	},
+-	{ /* sentinel */ },
++	{ }
+ };
+ MODULE_DEVICE_TABLE(of, rtl_ecc_of_ids);
+ 
+diff --git a/drivers/mtd/nand/onenand/onenand_omap2.c b/drivers/mtd/nand/onenand/onenand_omap2.c
+index 4c1379343fbd..9efde604e0eb 100644
+--- a/drivers/mtd/nand/onenand/onenand_omap2.c
++++ b/drivers/mtd/nand/onenand/onenand_omap2.c
+@@ -587,7 +587,7 @@ static void omap2_onenand_remove(struct platform_device *pdev)
+ 
+ static const struct of_device_id omap2_onenand_id_table[] = {
+ 	{ .compatible = "ti,omap2-onenand", },
 -	{},
 +	{ }
  };
+ MODULE_DEVICE_TABLE(of, omap2_onenand_id_table);
  
- MODULE_DEVICE_TABLE(of, uflash_match);
+diff --git a/drivers/mtd/nand/onenand/onenand_samsung.c b/drivers/mtd/nand/onenand/onenand_samsung.c
+index 8c2d3866a6d6..bf516130130e 100644
+--- a/drivers/mtd/nand/onenand/onenand_samsung.c
++++ b/drivers/mtd/nand/onenand/onenand_samsung.c
+@@ -984,7 +984,8 @@ static const struct platform_device_id s3c_onenand_driver_ids[] = {
+ 	}, {
+ 		.name		= "s5pc110-onenand",
+ 		.driver_data	= TYPE_S5PC110,
+-	}, { },
++	},
++	{ }
+ };
+ MODULE_DEVICE_TABLE(platform, s3c_onenand_driver_ids);
+ 
+diff --git a/drivers/mtd/nand/spi/core.c b/drivers/mtd/nand/spi/core.c
+index 22756832eacf..75a012770f63 100644
+--- a/drivers/mtd/nand/spi/core.c
++++ b/drivers/mtd/nand/spi/core.c
+@@ -2104,14 +2104,14 @@ static int spinand_remove(struct spi_mem *mem)
+ 
+ static const struct spi_device_id spinand_ids[] = {
+ 	{ .name = "spi-nand" },
+-	{ /* sentinel */ },
++	{ }
+ };
+ MODULE_DEVICE_TABLE(spi, spinand_ids);
+ 
+ #ifdef CONFIG_OF
+ static const struct of_device_id spinand_of_ids[] = {
+ 	{ .compatible = "spi-nand" },
+-	{ /* sentinel */ },
++	{ }
+ };
+ MODULE_DEVICE_TABLE(of, spinand_of_ids);
+ #endif
 
 -- 
 2.53.0
