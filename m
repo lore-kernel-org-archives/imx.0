@@ -1,59 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795629132;
-	b=fWSWtQZ34I4ij3+zOfWDoVL0uFj3iq6bQLfJ0PLzeHUP2MrNaXZBd7HAouC1wdwa3FwA
-	 1v23sjIzaAM6WnmBlPeGdbAzF51AOrJ5dTpTELwphpN7Kqleu82r1MaRLaeebVL+di9v3
-	 uDPmZbpqFLnZrGLuHfqoYVAdkRrMHTLT35j80Icaav4ryqeocg8CG+1BtkLTQX6Yx/z78
-	 yYPSDN8hU80UPKtkiX4iNBqbKsCjSY2jTvPOlJHyPxy/MmICFkElf+aMtobIFLEIcamXD
-	 cu76hEwxECl/DCXIX6UK6rh8uPA7g8JCg4rJsz2FQb7gQf9pUzj/HKJ4EsfaFh/33sw==
+	t=1795629135;
+	b=X7KuGrELU0WQdEGRKCiNdvrzhMgP6u40tcT8BHtNdkLOS8XcFsG/Ler+6Kqv+xNArRc1
+	 opcdPKvczFsiWBNxgpwCiooBex9dH4GW5n5PxpuzYZ/ISCPQzO6f5WExTxrHbTDTnZsBn
+	 Z6Wws1nXy1stXZrsGdLFI1kQpD9RG8d5fANxZysJchVc1uCM/7zTTKdTqBv4pa/GUWnae
+	 aT4mmtiUKvQexsvM4klXo/u3L97+IkdviYKyYAIhqxwLO/bEQGRlA+DtHbrXP+pr8y8gN
+	 CbPkuN8ejBH52kdiLU/2tv9hT08ULM+sWi4QPv52cQ1xPBQlJPMaEGDp0bXgyn51+BA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795629132;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795629135;
 	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:Date:
 	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Last-TLS-Session-Version;
-	bh=GRvEh7W8Gjjan8aSW0NgE3dBDol3XNo3W6oSUBUObAg=;
-	b=togqmsvUSTUSXuo0soY8j6YLP8rK3uRq8pkwDPGQ5WdmC6T/QetUHkxAybJDPYkP2OuL
-	 KbTaV9Zhtn6P4dsnfAKzM/TEq87EpCv40IY+daJ8TUhatqXL7gsjfWvehv6HcfTUpjVeq
-	 e6Y+ylvkyHvYwcd3eGdL9+w1+Q26j90SN4S8QIQb/sFiy4ZM1iW4vDURWkb4pegRA3jNI
-	 tABG3DwD4owQ4FJkWQfoSPAx9l89aoMKZtFL8ZVoec/KyLE0gj904D2mwrNaL3oMZ0jkX
-	 Qz9lIyQoKnelQaTIVb1ZGKESCBX4y3ylVPFroEu8n4prfYzYFXUDLYe9bDfyJX47F0w==
+	bh=FMid6O9mGLNFycapWTq3yUgUfBXm/Q/2lSdG/OTscvI=;
+	b=pmAnkcnEMZApB29zsKDDt632VFdsniEQzoIrsQth1mLjVncUU0+aJUpPrJbR5OnZzUlD
+	 JdW0sRCvl8bSQaUXy3zHcGJER/gwzu4L+r60O+LsoRx2FZlGa7Nb8MGUBvyxLlHgOD3gS
+	 giQKdqd98L75fVdvAB6f954l68/N7TS51w3/3UlMonJ6wR3FmWNGEKiagimXW5KLG/Faq
+	 NtZ2TYhIjwm6vFYaCaPSGcKln+IYYoHwZL8rYrOcocQB+m8kasAkGACTSGW5u95QNAnhL
+	 aVF15WnK7teeyq2ZSf7o0NYKAAk5UTey8ZnNsdM5UNlVMdJ+sCEsN2lzQdxp31TGOjg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=bootlin.com;
 	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=DvQ+ecRI;
-	arc=none smtp.remote-ip=185.246.85.4
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=Qb0FqT+N;
+	arc=none smtp.remote-ip=185.246.84.56
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2160606A333
-	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 17:52:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B2160606A333
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7707D606A339
+	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 17:52:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7707D606A339
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=DvQ+ecRI
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=Qb0FqT+N
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 64CC94E41789;
-	Wed, 25 Nov 2026 17:52:10 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 572691A17FD;
+	Wed, 25 Nov 2026 17:52:13 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 29E2760480;
-	Wed, 25 Nov 2026 17:52:10 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B4DA311E6B0AE;
-	Wed, 25 Nov 2026 18:52:02 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 2A5BE60480;
+	Wed, 25 Nov 2026 17:52:13 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 39A2D11E6B0C5;
+	Wed, 25 Nov 2026 18:52:03 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1795629128; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1795629130; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=GRvEh7W8Gjjan8aSW0NgE3dBDol3XNo3W6oSUBUObAg=;
-	b=DvQ+ecRIp4ZWXBft+KDUn2D+H2bk1RLiRV5zLdDy2/B/IgMyTrffM1a08oJUWzk9B1IARq
-	lJN01h6ms0R4PsKeOvFsXvjLSye+io6+SylDwxPDvcS91SPCCKsV/qo7s4fnFBaxUyHS8b
-	jAMPrASVj0ZUglQN4E98MjSof9UB+0hEgGBkDmQjDwE8w3mFDnv2SQi2nsRGL8KYREyGah
-	ZF+E5cDzbBMV3QBC1gmR/Tfs0wdIjoKwGQ8VL5FB7xkVZKqIGHucZDgvzQPlPP9NFHEm6A
-	iFfZH09zSNv0zVBLRx6vkrXulUS/HjTucHLi2Mw8IXeqiL42O+UpgaBl9IKjDg==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-Date: Wed, 25 Nov 2026 18:51:19 +0100
-Subject: [PATCH RFC 05/16] spi: amlogic-spifc-a1: Fix a typo in a macro
+	bh=FMid6O9mGLNFycapWTq3yUgUfBXm/Q/2lSdG/OTscvI=;
+	b=Qb0FqT+NefijqTx6CjCGrvFAbYAkLTGXqqp2ExyZwuwqFXsep9cTJ3T4htyLGnHqvGMQo+
+	yxp3YQtRqJnoVdBqMtgTR6VToqgebKdujyUpu/sO4dEO5J2LYtQ+uiTktxizRlYHf32i2Q
+	iLZOghzurnMkFAUmJ7ZydXRiP+bIbjWZKegyfdcA+Yx7t1cKP7XoYAsXM9L//fe0ps/YaT
+	L8/6CxK4ZmkO1cfx5ki/Bwa4S1Zwk1+0vVq8ZwVkaVSRcNf22e0XYlR1OfKqNajPsiup9r
+	fwoUoSnYuJ8lGZLqWkuozH7o3zQKrgyTbOQDOE+dDj+oBV072dnXSs7kkww+xw==
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Date: Wed, 25 Nov 2026 18:50:25 +0100
+Subject: [PATCH v4 12/32] drm/bridge: initialize chain_node list head on
+ allocation
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -65,71 +66,56 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261125-macronix-upstreaming-spi-mem-cycles-v1-5-fd036402fd37@bootlin.com>
-References: <20261125-macronix-upstreaming-spi-mem-cycles-v1-0-fd036402fd37@bootlin.com>
-In-Reply-To: <20261125-macronix-upstreaming-spi-mem-cycles-v1-0-fd036402fd37@bootlin.com>
-To: Mark Brown <broonie@kernel.org>, Liang Yang <liang.yang@amlogic.com>, 
- Feng Chen <feng.chen@amlogic.com>, Xianwei Zhao <xianwei.zhao@amlogic.com>, 
- Han Xu <han.xu@nxp.com>, Conor Dooley <conor.dooley@microchip.com>, 
- Valentina Fernandez <valentina.fernandezalanis@microchip.com>, 
- Daire McNamara <daire.mcnamara@microchip.com>, 
- Haibo Chen <haibo.chen@nxp.com>, Jyan Chou <jyanchou@realtek.com>, 
- Yu-Chun Lin <eleanor.lin@realtek.com>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Pratyush Yadav <pratyush@kernel.org>, Michael Walle <mwalle@kernel.org>, 
- Takahiro Kuwano <takahiro.kuwano@infineon.com>, 
- Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Alvin Zhou <alvinzhou@mxic.com.tw>, 
- Cheng Ming Lin <chengminglin@mxic.com.tw>, linux-spi@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-amlogic@lists.infradead.org, 
- imx@lists.linux.dev, linux-riscv@lists.infradead.org, 
- linux-stm32@st-md-mailman.stormreply.com, 
- linux-arm-kernel@lists.infradead.org, linux-mtd@lists.infradead.org, 
- Miquel Raynal <miquel.raynal@bootlin.com>
-X-Mailer: b4 0.14.3
+Message-Id: <20261125-drm-bridge-hotplug-v4-12-822722850492@bootlin.com>
+References: <20261125-drm-bridge-hotplug-v4-0-822722850492@bootlin.com>
+In-Reply-To: <20261125-drm-bridge-hotplug-v4-0-822722850492@bootlin.com>
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Andrzej Hajda <andrzej.hajda@intel.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Inki Dae <inki.dae@samsung.com>, Jagan Teki <jagan@amarulasolutions.com>, 
+ Marek Szyprowski <m.szyprowski@samsung.com>, 
+ Jessica Zhang <jesszhan0024@gmail.com>, 
+ Douglas Anderson <dianders@chromium.org>, Marek Vasut <marex@denx.de>, 
+ Stefan Agner <stefan@agner.ch>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: Javier Martinez Canillas <javierm@redhat.com>, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
+ Hui Pu <Hui.Pu@gehealthcare.com>, Ian Ray <ian.ray@gehealthcare.com>, 
+ Luca Ceresoli <luca.ceresoli@bootlin.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+X-Mailer: b4 0.16.0
 X-Last-TLS-Session-Version: TLSv1.3
 
-Correct the macro name: sycles -> cycles.
+In preparation to add a check to detect whether a bridge is not yet
+attached, ensure the chain_node list_head is always empty [as in
+list_empty()] since it is allocated, until it is attached.
 
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 ---
- drivers/spi/spi-amlogic-spifc-a1.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/drm_bridge.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/spi-amlogic-spifc-a1.c b/drivers/spi/spi-amlogic-spifc-a1.c
-index 282647cd6b56..d99c72c7a965 100644
---- a/drivers/spi/spi-amlogic-spifc-a1.c
-+++ b/drivers/spi/spi-amlogic-spifc-a1.c
-@@ -43,7 +43,7 @@
- #define SPIFC_A1_USER_CTRL2_REG		0x208
- #define SPIFC_A1_USER_DUMMY_ENABLE	BIT(31)
- #define SPIFC_A1_USER_DUMMY_MODE	GENMASK(30, 29)
--#define SPIFC_A1_USER_DUMMY_CLK_SYCLES	GENMASK(28, 23)
-+#define SPIFC_A1_USER_DUMMY_CLK_CYCLES	GENMASK(28, 23)
+diff --git a/drivers/gpu/drm/drm_bridge.c b/drivers/gpu/drm/drm_bridge.c
+index 76242165292f..14ed4ac52e71 100644
+--- a/drivers/gpu/drm/drm_bridge.c
++++ b/drivers/gpu/drm/drm_bridge.c
+@@ -419,6 +419,7 @@ void *__devm_drm_bridge_alloc(struct device *dev, size_t size, size_t offset,
+ 		return ERR_PTR(-ENOMEM);
  
- #define SPIFC_A1_USER_CTRL3_REG		0x20c
- #define SPIFC_A1_USER_DIN_ENABLE	BIT(31)
-@@ -90,7 +90,7 @@
- #define SPIFC_A1_USER_DUMMY(op) ( \
- 	SPIFC_A1_USER_DUMMY_ENABLE | \
- 	FIELD_PREP(SPIFC_A1_USER_DUMMY_MODE, ilog2((op)->dummy.buswidth)) | \
--	FIELD_PREP(SPIFC_A1_USER_DUMMY_CLK_SYCLES, (op)->dummy.ncycles))
-+	FIELD_PREP(SPIFC_A1_USER_DUMMY_CLK_CYCLES, (op)->dummy.ncycles))
- 
- #define SPIFC_A1_TSLCH_VAL	FIELD_PREP(SPIFC_A1_TSLCH, 1)
- #define SPIFC_A1_TCLSH_VAL	FIELD_PREP(SPIFC_A1_TCLSH, 1)
-@@ -195,7 +195,7 @@ static void amlogic_spifc_a1_set_dummy(struct amlogic_spifc_a1 *spifc,
- {
- 	u32 val = readl(spifc->base + SPIFC_A1_USER_CTRL2_REG);
- 
--	val &= ~(SPIFC_A1_USER_DUMMY_MODE | SPIFC_A1_USER_DUMMY_CLK_SYCLES);
-+	val &= ~(SPIFC_A1_USER_DUMMY_MODE | SPIFC_A1_USER_DUMMY_CLK_CYCLES);
- 	val |= dummy_cfg;
- 	writel(val, spifc->base + SPIFC_A1_USER_CTRL2_REG);
- }
+ 	bridge = container + offset;
++	INIT_LIST_HEAD(&bridge->chain_node);
+ 	INIT_LIST_HEAD(&bridge->list);
+ 	bridge->container = container;
+ 	bridge->funcs = funcs;
 
 -- 
-2.56.0
+2.56.1
 
