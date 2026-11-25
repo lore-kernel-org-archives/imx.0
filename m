@@ -1,57 +1,66 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795630449;
-	b=nvMKAdfKA5GRBLmpDVuLVqOcSOEUkZ4uHEzf/H0FDET3KUOVSfJt5zRgWLfbRmLyhudY
-	 UbB84mlUf1J0AxfjAF1l0RmpCZmY+9IiW6Q/IvctA/MAKaY1jMd7rKKbDhguwk9GF3WXJ
-	 omQRVaIdtjb9/Fxz6YBRLJWmCorkagiYNnEOyFdVeDVPlPcjLp4em/htR3s9YbIdknPS4
-	 jPw/lDXLxEbWSb38C+wHbSMMrRmYR6wp9DwDblt4JF24OnycmKv3lD+wDd6CJkEElqJXG
-	 iuuLaPKIObJIbOHhxKU18J/KmHpNyiF2Nt+79V5QWxuhh/F3nTZ/gUncEbqTyO0Lqpg==
+	t=1795630451;
+	b=3WapAEQUL5bisjAn+DvFym+SIQKCjCqFGss00iser/LyWpZgm1+zUADoYZ79K/FlzFRY
+	 JEDyggK91wh7hMISTw19ZLf3tlYwcnl5KEKqrxm62ZQN0KV89zzrYRhzqwQVhk6SNpwPD
+	 Je4ptjYKh8yVQ/np8gzL0JdWz7AqgnrFLFtaJPwaEydP7hhmUzNOAnwDviKi4Psav75jL
+	 MR/LU1cAoIaJ4ugylxMBb38eeyPN+GNtnxFv4/gp+JpJPku0XZTMTDIQo6AsNvFGObjXS
+	 mvUuAhUHkgNQiFCEWXwP1OGFLyaN708zQmSF68FpF1fat6o16RsdSxsHruGzefWsi1w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795630449;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795630451;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=U/J49RQBCn8X7I3oqHE+nT6dLJxQcWXeno10Iod3HNc=;
-	b=bYr22bnb6Ar065xl7SNR+WJk0ael5/E1wNoy2WwjhFb072OzT9B0h7Cv2kNFERXeDNXU
-	 YM8T4w7yGP9PIz+hsdYSca5p98ny2TPufj94zJD7BJHkc3F7MydSflKjdps1Ya6ATYSEG
-	 +8vM6MykAm58YSRWa+9LRJvOv6ChIVmqcZ1HWQOaRD5tJmIl6kK0prF07bAlBEZ03m9/c
-	 V35XmD0cmxOKu9XUgjX4AK/SSKNPaxX/fjpWBIyruRtFBGfbeQI4P0TAKRZFvU5QLm6cF
-	 pTueCPldL9D/ZCuUWni/aogtuGKCnc1vfTaslqPj1zvJ4Si/paVvp43A2RzfrI4EdCw==
+	bh=Xss2yAo2XUtHtT/HbOssTVw0p9SQ1Jy0dk5U3JbzMf4=;
+	b=Md6i3qvMksEnWl+oi0eSehtpg0hB84eVP6LN6d7WcxN+YzuOmN3YP41628gglWTcJWQA
+	 pUuIw/8EnUWMet8YWQ2FSJSOQQ5h/sWebAV8E0CNXIZChJQ8Lri52hKQY2Ynu2HDJ1FuP
+	 LlNfaYrHivOi4geKay7FT0/Tkc06Zpl6SRoOomxde3+scg1IgNh+eVpsThCrFawSyRPHP
+	 lPth6fXtwViiztfF2eHUFJJZ3xFzE8z62XOgQ0j3r5dcBZMChkrqim17lb0rMmpVvVlui
+	 QEJZYlvMFbxvI1ihsVUesFtQbMJRf0Bc9XU+xyZ+Gc3QWG+86RgM8xJeuWSW76jowtw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kSEHYqf9;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UmS9TzoE;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1D82606A321
-	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 18:14:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CD81606A68C
+	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 18:14:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kSEHYqf9
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ADE61F000E0;
-	Wed, 25 Nov 2026 18:14:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UmS9TzoE
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 954B91F000E1;
+	Wed, 25 Nov 2026 18:14:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795630448;
-	bh=U/J49RQBCn8X7I3oqHE+nT6dLJxQcWXeno10Iod3HNc=;
+	s=k20260515; t=1795630450;
+	bh=Xss2yAo2XUtHtT/HbOssTVw0p9SQ1Jy0dk5U3JbzMf4=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=kSEHYqf9TjtOJKS1IYT0m7nR0/Z0sUhAY0e8mESseAL/Vb4hQVWeyfCmmoxog3oVU
-	 +JCPfiDYuB9NROOCAzMB2VhKe8a0qG9EvRgC4SG1W8f2tX1X71kAO9pP+riQxbK6La
-	 Qh8Hggb1Scp12VS0Yjr0yHcE/azH9rAOa4HFAlYU0xPPcOxdrlr6Cm+iHhs99nfP7q
-	 weXbHEBHrmo/F7N1UJ/zkwC7QbPIb8cz8f0Sy+TeAmbTyXMuX/ZSAsR5+ifrXkM/dY
-	 KGsekLOwJuIn9PMvU0pF2qf2lLH8WK2acq4Ridh5XIrRu9Yf3waOpeWDu1OSjV3kf6
-	 B3ItlG8ZPMNLg==
-Message-ID: <sashiko-outbox-233929@kernel.org>
+	b=UmS9TzoEYsSvAXEgxzw4FGwSFC+aFI3PGGX/hkmKy/xvLsAk3GsqoA/jNCb76CUxQ
+	 sX0sTS3NcFXEC7oHN6vYMbsSvomdJaLmBugZAZMq++5OvwI8OAMjttDE0V1h1L9cqa
+	 PkGe1hXx6eMyGzoV1PAoKTbRyiuXbF98RUTBTnoGxRYm5IJiYzQ21FG9L5RAYVUm1x
+	 nRfDSvKGkvUDJFRZFApIeE2FexG01Hzt0D6txs/Z853JcIoIimhUe7O0fH7rVu1x5s
+	 fYJX6BRRwMmv/5qFLYBACK5UXaAtXuInlW8LL8qljpifxfNRDZ/SQ1R9LWkew5zxhe
+	 Rl0hZMEZDpV9w==
+Message-ID: <sashiko-outbox-233930@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 10/32] drm/display: bridge-connector: add APIs to
- add/remove the connector dynamically
+Subject: Re: [PATCH RFC 15/16] spi: stm32-qspi: Consume dummy cycles
+ directly
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-Cc: dri-devel@lists.freedesktop.org, imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20261125-drm-bridge-hotplug-v4-10-822722850492@bootlin.com>
-References: <20261125-drm-bridge-hotplug-v4-0-822722850492@bootlin.com>
- <20261125-drm-bridge-hotplug-v4-10-822722850492@bootlin.com>
+To: "Miquel Raynal" <miquel.raynal@bootlin.com>, "Mark Brown" <broonie@kernel.org>, "Liang
+ Yang" <liang.yang@amlogic.com>, "Feng Chen" <feng.chen@amlogic.com>, "Xianwei
+ Zhao" <xianwei.zhao@amlogic.com>, "Han Xu" <han.xu@nxp.com>, "Conor Dooley" <conor.dooley@microchip.com>, "Valentina
+ Fernandez" <valentina.fernandezalanis@microchip.com>, "Daire McNamara" <daire.mcnamara@microchip.com>, "Haibo
+ Chen" <haibo.chen@nxp.com>, "Jyan Chou" <jyanchou@realtek.com>, "Yu-Chun
+ Lin" <eleanor.lin@realtek.com>, "Maxime Coquelin" <mcoquelin.stm32@gmail.com>, "Alexandre
+ Torgue" <alexandre.torgue@foss.st.com>, "Pratyush Yadav" <pratyush@kernel.org>, "Michael
+ Walle" <mwalle@kernel.org>, "Takahiro Kuwano" <takahiro.kuwano@infineon.com>, "Richard
+ Weinberger" <richard@nod.at>, "Vignesh Raghavendra" <vigneshr@ti.com>
+Cc: "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>, "Alvin Zhou" <alvinzhou@mxic.com.tw>, "Cheng
+ Ming Lin" <chengminglin@mxic.com.tw>, linux-amlogic@lists.infradead.org, imx@lists.linux.dev, linux-stm32@st-md-mailman.stormreply.com, linux-mtd@lists.infradead.org, Frank.Li@kernel.org, neil.armstrong@linaro.org
+In-Reply-To: <20261125-macronix-upstreaming-spi-mem-cycles-v1-15-fd036402fd37@bootlin.com>
+References: <20261125-macronix-upstreaming-spi-mem-cycles-v1-0-fd036402fd37@bootlin.com>
+ <20261125-macronix-upstreaming-spi-mem-cycles-v1-15-fd036402fd37@bootlin.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 25 Nov 2026 18:14:07 +0000
+Date: Wed, 25 Nov 2026 18:14:09 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -61,205 +70,88 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 
-Thank you for your contribution! Sashiko AI review found 4 potential
-issues to consider:
-- [High] drm/display: bridge_connector UAF when mode_config cleanup
-  precedes drmm
-- [Medium] drm/display: bridge_connector memory leak on early init
-  failure
-- [Medium] drm/display: bridge and fwnode ref leaks in
-  drm_bridge_connector_initialize()
-- [Low] drm/display: missing kernel-doc, unused forward decl, and
-  duplicated init
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [High] spi: stm32-qspi: missing dummy phase on GPIO CS fallback in
+  spi_mem_exec_op()
 --
 
-commit a02e04d142ea4a8a0fe3098841fdb782ae21bfc9
-Author: Luca Ceresoli <luca.ceresoli@bootlin.com>
+commit f2e2b0be96bbca647ad2610bfa7badf82f59967f
+Author: Miquel Raynal <miquel.raynal@bootlin.com>
 
-drm/display: bridge-connector: add APIs to add/remove the connector dynamic=
-ally
+spi: stm32-qspi: Consume dummy cycles directly
 
-This commit switches drm_bridge_connector allocation from drmm_kzalloc() to
-kzalloc_obj() freed in the connector destroy callback, and adds
-drm_bridge_connector_dynamic_add() and drm_bridge_connector_dynamic_remove(=
-).
+This commit advertises dummy_cycles in stm32_qspi_mem_caps and uses
+op->dummy.ncycles directly in stm32_qspi_send() and
+stm32_qspi_transfer_one_message().
 
-> diff --git a/drivers/gpu/drm/display/drm_bridge_connector.c b/drivers/gpu=
-/drm/display/drm_bridge_connector.c
-> index d81cfc7aa295b..07385f87b2e8d 100644
-> --- a/drivers/gpu/drm/display/drm_bridge_connector.c
-> +++ b/drivers/gpu/drm/display/drm_bridge_connector.c
-> @@ -289,6 +289,7 @@ static void drm_bridge_connector_dynconn_destroy(stru=
-ct drm_connector *connector
+> diff --git a/drivers/spi/spi-stm32-qspi.c b/drivers/spi/spi-stm32-qspi.c
+> index b77daba6db83a..993b09cc51240 100644
+> --- a/drivers/spi/spi-stm32-qspi.c
+> +++ b/drivers/spi/spi-stm32-qspi.c
+[ ... ]
+> @@ -593,7 +592,7 @@ static int stm32_qspi_transfer_one_message(struct spi=
+_controller *ctrl,
+>  		 */
+>  		if (transfer->dummy_data) {
+>  			op.dummy.buswidth =3D transfer->tx_nbits;
+> -			op.dummy.nbytes =3D transfer->len;
+> +			op.dummy.ncycles =3D transfer->len * 8 / transfer->tx_nbits;
+>  			dummy_bytes =3D transfer->len;
 > =20
->  	drm_connector_cleanup(connector);
->  	drm_bridge_connector_put_bridges(bridge_connector);
-> +	kfree(bridge_connector);
->  }
+>  			/* if happens, means that message is not correctly built */
+> @@ -773,6 +772,10 @@ static const struct spi_controller_mem_ops stm32_qsp=
+i_mem_ops =3D {
+>  	.poll_status	=3D stm32_qspi_poll_status,
+>  };
 > =20
->  static const struct drm_connector_funcs drm_bridge_connector_funcs =3D {
+> +static const struct spi_controller_mem_caps stm32_qspi_mem_caps =3D {
+> +	.dummy_cycles =3D true,
+> +};
+> +
+>  static int stm32_qspi_probe(struct platform_device *pdev)
+>  {
+>  	struct device *dev =3D &pdev->dev;
+> @@ -856,6 +859,7 @@ static int stm32_qspi_probe(struct platform_device *p=
+dev)
+>  	ctrl->setup =3D stm32_qspi_setup;
+>  	ctrl->bus_num =3D -1;
+>  	ctrl->mem_ops =3D &stm32_qspi_mem_ops;
+> +	ctrl->mem_caps =3D &stm32_qspi_mem_caps;
+>  	ctrl->use_gpio_descriptors =3D true;
+>  	ctrl->transfer_one_message =3D stm32_qspi_transfer_one_message;
+>  	ctrl->num_chipselect =3D STM32_QSPI_MAX_NORCHIP;
 
 [Severity: High]
-Can freeing bridge_connector in drm_bridge_connector_dynconn_destroy() cause
-a use-after-free in drmm_bridge_connector_fini() when a driver using
-drm_bridge_connector_init() runs drm_mode_config_cleanup() before
-drm_dev_put()?
+Does enabling dummy_cycles drop the dummy phase when a GPIO chip-select is
+used?
 
-drm_bridge_connector_init() registers drmm_bridge_connector_fini() with a r=
-aw
-bridge_connector pointer without taking an extra connector reference.
-Drivers such as omapdrm (in omapdrm_cleanup()) and imx/dcss (in
-dcss_kms_detach()) call drm_mode_config_cleanup() before drm_dev_put().
-drm_mode_config_cleanup() drops the connector's sole reference and flushes
-connector_free_work, invoking drm_bridge_connector_dynconn_destroy() and
-freeing bridge_connector.  When drm_dev_put() later runs drmm actions,
-drmm_bridge_connector_fini() calls drm_bridge_connector_fini() on the freed
-bridge_connector, locking the destroyed connector->mutex and calling
-drm_connector_put() on freed memory.
+In spi_mem_exec_op(), spi_mem_convert_dummy() runs first and sets
+op->dummy.nbytes =3D 0 because the controller advertises dummy_cycles.  When
+spi_get_csgpiod(mem->spi, 0) is non-NULL, spi_mem_exec_op() bypasses
+ctlr->mem_ops->exec_op and falls back to building spi_transfers for
+stm32_qspi_transfer_one_message(), but that fallback path only creates a
+dummy_data transfer when op->dummy.nbytes is non-zero:
 
-Conversely, when drmm_mode_config_init() is used so that
-drmm_bridge_connector_fini() runs before drm_mode_config_cleanup(), if the
-connector is still bound to an active CRTC (refcount 2),
-drmm_bridge_connector_fini() only drops the refcount to 1.
-drm_mode_config_cleanup() then drops the remaining reference from 1 to 0,
-and drm_connector_cleanup() -> __drm_atomic_helper_connector_destroy_state()
-calls drm_connector_put(state->connector) on a connector whose refcount is
-already 0.
-
-> @@ -1223,7 +1224,7 @@ struct drm_connector *drm_bridge_connector_init(str=
-uct drm_device *drm,
->  	struct drm_connector *connector;
->  	int ret;
-> =20
-> -	bridge_connector =3D drmm_kzalloc(drm, sizeof(*bridge_connector), GFP_K=
-ERNEL);
-> +	bridge_connector =3D kzalloc_obj(*bridge_connector);
->  	if (!bridge_connector)
->  		return ERR_PTR(-ENOMEM);
-> =20
-> @@ -1238,3 +1239,24 @@ struct drm_connector *drm_bridge_connector_init(st=
-ruct drm_device *drm,
->  	return connector;
->  }
->  EXPORT_SYMBOL_GPL(drm_bridge_connector_init);
-
-[Severity: Medium]
-Does switching from drmm_kzalloc() to kzalloc_obj() leak bridge_connector in
-both drm_bridge_connector_init() and drm_bridge_connector_dynamic_add() when
-drm_bridge_connector_initialize() fails before connector initialization
-succeeds?
-
-kfree(bridge_connector) is only called in
-drm_bridge_connector_dynconn_destroy() via drm_connector_put().  If
-drm_bridge_connector_initialize() returns an error during bridge chain
-inspection, when connector_type is DRM_MODE_CONNECTOR_Unknown, or when
-drm_connector_hdmi_dynamic_init() / drm_connector_dynamic_init() fails:
-
-drivers/gpu/drm/display/drm_bridge_connector.c:drm_bridge_connector_initial=
-ize() {
+drivers/spi/spi-mem.c:spi_mem_exec_op() {
 	...
-	if (ret) {
-		drm_bridge_connector_put_bridges(bridge_connector);
-		return ERR_PTR(ret);
-	}
+	if (ctlr->mem_ops && ctlr->mem_ops->exec_op && !spi_get_csgpiod(mem->spi, =
+0)) {
+	...
+	if (op->dummy.nbytes) {
+		memset(tmpbuf + op->addr.nbytes + 1, 0xff, op->dummy.nbytes);
+		xfers[xferpos].tx_buf =3D tmpbuf + op->addr.nbytes + 1;
+		xfers[xferpos].len =3D op->dummy.nbytes;
+		xfers[xferpos].tx_nbits =3D op->dummy.buswidth;
+		xfers[xferpos].dummy_data =3D 1;
 	...
 }
 
-drm_connector_put() is never called on those paths, so bridge_connector is
-never freed.
-
-> +
-> +struct drm_connector *drm_bridge_connector_dynamic_add(struct drm_device=
- *drm,
-> +						       struct drm_encoder *encoder)
-> +{
-> +	struct drm_bridge_connector *bridge_connector;
-> +
-> +	bridge_connector =3D kzalloc_obj(*bridge_connector);
-> +	if (!bridge_connector)
-> +		return ERR_PTR(-ENOMEM);
-> +
-> +	return drm_bridge_connector_initialize(bridge_connector, drm, encoder);
-> +}
-> +EXPORT_SYMBOL_GPL(drm_bridge_connector_dynamic_add);
-
-[Severity: Medium]
-Does drm_bridge_connector_initialize() also leak bridge and fwnode referenc=
-es
-on its early error paths?
-
-During the drm_for_each_bridge_in_chain() loop,
-drm_bridge_connector_initialize() takes references with drm_bridge_get() and
-fwnode_handle_get(), but returns ERR_PTR() directly on validation errors or
-when connector_type =3D=3D DRM_MODE_CONNECTOR_Unknown without calling
-drm_bridge_connector_put_bridges() or fwnode_handle_put(connector->fwnode):
-
-drivers/gpu/drm/display/drm_bridge_connector.c:drm_bridge_connector_initial=
-ize() {
-		...
-		if (bridge->ops & DRM_BRIDGE_OP_HDMI_CEC_ADAPTER) {
-			if (bridge_connector->bridge_hdmi_cec)
-				return ERR_PTR(-EBUSY);
-
-			bridge_connector->bridge_hdmi_cec =3D drm_bridge_get(bridge);
-
-			if (!bridge->funcs->hdmi_cec_enable ||
-			    !bridge->funcs->hdmi_cec_log_addr ||
-			    !bridge->funcs->hdmi_cec_transmit)
-				return ERR_PTR(-EINVAL);
-		}
-		...
-#ifdef CONFIG_OF
-		if (drm_bridge_is_last(bridge) && bridge->of_node)
-			connector->fwnode =3D fwnode_handle_get(of_fwnode_handle(bridge->of_node=
-));
-#endif
-		...
-	}
-
-	if (connector_type =3D=3D DRM_MODE_CONNECTOR_Unknown)
-		return ERR_PTR(-EINVAL);
-	...
-}
-
-In addition, if drm_connector_dynamic_init() or
-drm_connector_hdmi_dynamic_init() fails before drm_connector_cleanup() can
-run, the error block calls drm_bridge_connector_put_bridges() but still lea=
-ks
-connector->fwnode.
-
-> diff --git a/include/drm/drm_bridge_connector.h b/include/drm/drm_bridge_=
-connector.h
-> index 69630815fb093..de6ec91dbfabd 100644
-> --- a/include/drm/drm_bridge_connector.h
-> +++ b/include/drm/drm_bridge_connector.h
-> @@ -9,8 +9,12 @@
->  struct drm_connector;
->  struct drm_device;
->  struct drm_encoder;
-> +struct drm_bridge_connector;
-> =20
->  struct drm_connector *drm_bridge_connector_init(struct drm_device *drm,
->  						struct drm_encoder *encoder);
-> +struct drm_connector *drm_bridge_connector_dynamic_add(struct drm_device=
- *drm,
-> +						       struct drm_encoder *encoder);
-> +void drm_bridge_connector_dynamic_remove(struct drm_connector *connector=
-);
-> =20
->  #endif /* __DRM_BRIDGE_CONNECTOR_H__ */
-
-[Severity: Low]
-This isn't a bug, but struct drm_bridge_connector is internal to
-drm_bridge_connector.c and unused in this header.  Also,
-Documentation/gpu/drm-kms-helpers.rst pulls in drm_bridge_connector.c with
-the :export: directive, so the newly exported
-drm_bridge_connector_dynamic_add() and drm_bridge_connector_dynamic_remove()
-functions should have kernel-doc comments, and drm_bridge_connector_init()
-could call drm_bridge_connector_dynamic_add() (or move the allocation into
-drm_bridge_connector_initialize()) to avoid duplicating the allocation and
-initialization sequence.
+As a result, no dummy_data transfer is added to the message, so
+stm32_qspi_transfer_one_message() leaves op.dummy.ncycles at 0 and corrupts
+flash operations that require dummy cycles on boards using cs-gpios (such
+as dual-flash configurations).
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261125-drm-bridge=
--hotplug-v4-0-822722850492@bootlin.com?part=3D10
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261125-macronix-u=
+pstreaming-spi-mem-cycles-v1-0-fd036402fd37@bootlin.com?part=3D15
