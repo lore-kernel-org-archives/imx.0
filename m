@@ -1,57 +1,110 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795605798;
-	b=Q8Lk0fZwHCxW4HRkJlRtUhJDWMIyZtH1PrlkS97I13lVVJ8saAIKoWRbtgLpMkU3ivi/
-	 nF0o1M2Wqjw54eHqNHFYCbZb2GrhTDtXf4OLJ0bMR08RPpefloKOy3P/G+ZHEb0TvAhvS
-	 PSmNfZcukscviy+FP3uplzLDzEehyrqGtG3Ce10W1416+JKUTHbD1CT6DZWkdrkPuAe9k
-	 CoE/q4A29XG13h2TgCe8ybt/79sHAFoXL/d5dB0EL8YCckmOgraGaN3kFHSPJ+zWE3+H0
-	 hnyVp0nYq1aWpRuKMAXuCJp8DDI+fq9lYr5q6m1b6FKSg5qy5cDn55yY+9anQrupQMw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795605798;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=LCk8/cYQY1QfYSG+3Fo/M/s86rrQAaJzHmX/7uPSwvw=;
-	b=ClevHKFSStf+ts9c5Yt/XjKyyZZmUCuxuMY2iBmNCC90vguhW/OwYzSPBfUqn/bdNHdJ
-	 6B6JRJvMnW3GigaXOpAS30Z3aB+ytlYW6ljXU5j+5XXjiz+e7NhdWwsmquEOcirnYCwrD
-	 s3hzooKOKWwnXwOCzWhfW7eLMil8l1jTAQJ6HqRSzls3zbVsRd6CtxNYKambX26Sg3w6d
-	 ZsDos8aTtRV+qIo0+cKDUk80YjBNgkGzYL4yPYJ+zfKnR/vELYAanMxRS0fMaqyIxRZBE
-	 BFEL6OtbJcB146ZfqVT4dett9xwiyDta0wUk5g0MruwyavqBzNxgzQ46qt7pN/1kxHw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oNLvXhng;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.83.25
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795606316;
+	b=ofgz4jGEmRiWq0ClZDae8UVnYr/s6Yp8fb/Nag0P7DleYXM+s4TuL1KGWNChxWoneVsi
+	 lTDD8Feu5dtdSW0poHCsZi8k8SxI2uxUs93EMuthHoZrCTVWAAVV8m86byOhmJUMh+82b
+	 VAUUp78/SvVhzRqKPb9XakI1XcYN4MJF1is8K2mG+zPCyBsySI9v1kU7bg+6DJaAugXI5
+	 QqljQg0Xw196QCsf/XZ02KZvuUKB/HdUesvoLrrSPGTgoeiYizc2f7WK5qHD8lA80QnQb
+	 X6qdG2wBZPizYWQpoob/+IVDiDWAbtGrmyFy8TXXUccrpY235at+NScP5mXMDoSIlPw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795606316;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 Content-Transfer-Encoding:Content-Type:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=Y0fnyL7wffLAVv1OHutGX6Ghlq9bs0rDM48l7sf9SQo=;
+	b=ZMW26eJBmb6ptHyoE9gQEXWs3hsCFDzRq8Wnxw9+7KbUvoQyfyjrttKUfX8RIa+YAwE1
+	 nCq3c1gtD14WJ+RE33ywynF0A6x04BW3DywBzFPL4vg9j4YdiBIwCYMev1yo0AVbLP3/l
+	 glQ7WI3t+CxdRVsN5MMRXqpkpRk/ITKVUekjic1aY2urFYguofWtDl4jZQlQoLgBRxGaA
+	 FOw/tlFcSwJpBCv6kBg/GDNAo6MfqJQqAPNJwp6IBj1UwhCVqXUEAxhW/03SvUvJY/Q82
+	 a8jmCQ4O4K4bHr0VpBBgKxBWob+xXx5XeGMbiT5EYRkFekSUGJQlH8e7DC6evleOGdA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=oss.nxp.com;
+	spf=pass smtp.mailfrom=oss.nxp.com;
+	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=VPGO6wta;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.83.25
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013025.outbound.protection.outlook.com [52.101.83.25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99CB0606A321;
-	Wed, 25 Nov 2026 11:23:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC5C1606A335
+	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 11:31:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AC5C1606A335
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oNLvXhng
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B238C1F01563;
-	Wed, 25 Nov 2026 11:23:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795605798;
-	bh=LCk8/cYQY1QfYSG+3Fo/M/s86rrQAaJzHmX/7uPSwvw=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=oNLvXhngZcUstPYrA9s174Jr9m+CNDrQMdRoaq07BLhaYz7XAPj0Td/dpy6/nYnnD
-	 yuU6I+HMPm1miNA4KJ3nh5HMiDzmRKJ3lqwz49Hx4QhnOxGGDi22/Cpg1XjY9T1p6h
-	 +FJ4wZI9a3GfBrOR6Uc0BXvhzWshBpmnVs/jiey9OdSPBMwzjSmpatdQOSXcAhbSWn
-	 n/tfzixpQq8gecyCNETKjG0dPq2mGZcCSimAJfP+1NnxuRSYhWVq42ckNZs6O5WeIo
-	 miZRE7FKUXy/1WXaRdRico6+0V/JmX2ubq/IuaEC5Fb1uc7NMtDfmRbVN4bVYrGFwy
-	 UlbLrbIoJyYMQ==
-Message-ID: <sashiko-outbox-233227@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v8 5/5] dmaengine: fsl-edma: add runtime suspend/resume
- support
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Joy Zou" <joy.zou@oss.nxp.com>
-Cc: imx@lists.linux.dev, dmaengine@vger.kernel.org, vkoul@kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20261125-b4-edma-runtime-opt-mo-v8-5-81345a3bfb52@oss.nxp.com>
-References: <20261125-b4-edma-runtime-opt-mo-v8-0-81345a3bfb52@oss.nxp.com>
- <20261125-b4-edma-runtime-opt-mo-v8-5-81345a3bfb52@oss.nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 25 Nov 2026 11:23:17 +0000
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=VPGO6wta
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=tcxa3l6bbDSriSAxc0Tc0eQVTQzeHVvZIL7kpuTxKgM3r8/DRFaUa9IhpG6lIH0apPfGOyZ07aKrhA0ie/gHFvQ1ZivObQhuBd7K7ucSnP4sGYMsGBWqjp3wxO+Yf0q7yN9p2ED2cd9mrqB720vzPa9u0QmzHdvzGruV/KmxQagHlMbaXcxKSanZiSv7Bgpv8V+lSKIQaFD2cRlIMHRnNAskNRVdd5raM/q02Qkt9jt4WbYnqKaeQysb5Wv4jYGohl6X9+FHVWkUer6sCvE8wOepNYYmz1jTA66CL4H9c1QDya06FpEPBwpgQRVneWMMHoqZFv1j902otXv5r1QWXw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Y0fnyL7wffLAVv1OHutGX6Ghlq9bs0rDM48l7sf9SQo=;
+ b=dc6mDRbEITWOpqaaqkcbm44llTo7uToyyAb6T8SVS6qHn2Kc0aaFH0y0/mjFQb6WD0xtCxCa4Ny3Xco78AkRUZSL9OrTzCCeZifopBHrp7axqgrRfqgmdRFd2TLhyRVLVquFYy7MEnJL2nZpIbSyqhqnocQ/onUS0wjStGnzUoZuzjyTsSo8Wzu4LnALGZ9g1JYePbaQl/AU9J3fy2iwiNDqTAm3p4KJDpu32gSEJ4iNX66zBlZGZ1TbwVCmNTUx/OLfFxYohrVJH8cbQKp0T5PiWdaILF44JZjinHzAwWcmLNGGp0LWkng1GFHY3o5Aduln5lumUdPK8m86sLDpaA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Y0fnyL7wffLAVv1OHutGX6Ghlq9bs0rDM48l7sf9SQo=;
+ b=VPGO6wtaUj8oA4yil+N61u25ecIwvtMouZo8R4Xeas2TH+7Gdsv8JwWedNitXQT3c5TpBpzXXATNKB/5YHdek01S3QphQ9BHjn0jWQcJFzkSfMjWMG8RDljEx//QyOI8198rYCZr93VOzg6/M/50170nFfQ3hkHWnCJoyJ+Lr6x1K78G5/eWMBPFll2u+Qrv9lLuIOV4l53ONEhCEOG6DQ5kdj8vea39UFNc6zbOm77bZvlCRv8Z5DHDYlbRE0wyl9sXmoTmFGRgbMYE8jdYnGbyB4VhujNGOrubQDPOl2RbhjXngGC75HX8Vs7lceq/tFNlChSUYcRwEGYgpST+Ow==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from AM8PR04MB7874.eurprd04.prod.outlook.com (2603:10a6:20b:24d::9)
+ by AM9PR04MB8194.eurprd04.prod.outlook.com (2603:10a6:20b:3e6::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.662.6; Wed, 25 Nov
+ 2026 11:31:50 +0000
+Received: from AM8PR04MB7874.eurprd04.prod.outlook.com
+ ([fe80::ac38:1699:6f18:c5d9]) by AM8PR04MB7874.eurprd04.prod.outlook.com
+ ([fe80::ac38:1699:6f18:c5d9%5]) with mapi id 15.21.0639.012; Wed, 25 Nov 2026
+ 11:31:50 +0000
+From: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+To: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Cc: Peng Fan <peng.fan@oss.nxp.com>,
+	Ulf Hansson <ulfh@kernel.org>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	linux-amarula@amarulasolutions.com,
+	michael@amarulasolutions.com,
+	Peng Fan <peng.fan@nxp.com>,
+	Sashiko <sashiko-bot@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Kees Cook <kees+treewide@kernel.org>,
+	Marek Vasut <marex@denx.de>,
+	Ming Qian <ming.qian@oss.nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	bui duc phuc <phucduc.bui@gmail.com>,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-pm@vger.kernel.org
+Subject: Re: [PATCH v4 1/4] pmdomain: imx8m-blk-ctrl: Remove the power notifier on probe failure
+Date: Wed, 25 Nov 2026 19:28:50 +0800
+Message-ID: <20261125112851.29323-1-peng.fan@oss.nxp.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20261122205136.138173-2-dario.binacchi@amarulasolutions.com>
+References:
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI2PR04CA0012.apcprd04.prod.outlook.com
+ (2603:1096:4:197::14) To AM8PR04MB7874.eurprd04.prod.outlook.com
+ (2603:10a6:20b:24d::9)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -60,480 +113,72 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM8PR04MB7874:EE_|AM9PR04MB8194:EE_
+X-MS-Office365-Filtering-Correlation-Id: ce7ed137-ad88-4bd3-f2e6-08df4ae7b23a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|19092799006|376014|7416014|366016|23010399003|261009223027099003|18002099003|22082099003|10067099003|11063799006|56012099006|261102123227099003|261028144727099003|261026140227099003|261026121527099003|261022105027099003|261021121427099003;
+X-Microsoft-Antispam-Message-Info:
+	NqnYhgt389fgLKoVserWg+nxs2XejNvJZdZm0qVJoZjU48VRWFahZl2NTa0L5hbN7OayK7Yj3GKkRC7rUvz+L6JXK88hI5f8dOGuPRGQjP0OCuiif4g7xvgrQrExH5G52k/wGgyj098Nf2pe/DLgWKhLjT7/mlkyvl2qA0m1g+medjGOR9hguPpDLMl45nV2Dj9Dq645uO91i4gLhKboFnLb/mJ0GhUCjtH1Bq1PObJove4iTrdKYghFK6PpaF2WNRtiJkljVCyrO/kxZ4kG8t/HFgUYHwbyzMR7zcx7cyIBalLrKhlQ4EYmXmT/HCqoIpR08/KKR/EDta841jJGFqX/2VaFwa8H9giUAmTZiWTTx0+ibD+I0fvLWDXH9t6yJqUQDwFbpys5qaHYimaTxHRlg8lltYXSbWXMy+pCq7IEk0jJMBLVLqmUkIJjDXgyLiMyK4mxVede6N22l3oFqe+tIeg97gw1oZnQjnH/duJjcz5sOlEWFj0poRTX4j0g38QbbGyF8AuxMlyYG5CP8IfZwxj8YOAvffMe1C+8swwudwQywuMhEWqeylNp06xRwQYZKcPr7kXD6dt9OmkuEdJjAQ49vZBCsCN+slh41upuyhvHOQswmaJppsjt6+XK
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7874.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(376014)(7416014)(366016)(23010399003)(261009223027099003)(18002099003)(22082099003)(10067099003)(11063799006)(56012099006)(261102123227099003)(261028144727099003)(261026140227099003)(261026121527099003)(261022105027099003)(261021121427099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?ocZ9n6dGX7T7BOyldh53qrsOFHTe4FrlZDBGWjha3XG0jVogr44ldj1/2VfC?=
+ =?us-ascii?Q?Bu5DXcDCfq8P8Tb09T+9iphw9C3nIEiAFZU4DL70c9h2aKeVGtHLK/XfSX1j?=
+ =?us-ascii?Q?AdlEbk2bqRUnZu8OSUIaYTKvqIeFJ8b6V8NhzyFytcgDrTWpzcB9zTKzVtPd?=
+ =?us-ascii?Q?nfb7N2nz6L9x+h4D3/lI63UEs0DuIAHzb/UkxssDFG9dicayYfGtPR8GcsCJ?=
+ =?us-ascii?Q?u6pQWeDVVXEU/ZD++Txv0dVLWCo/lgnSDRsvFl0nK053BhSEJ9P3DEEDgPLb?=
+ =?us-ascii?Q?sF6ITqY9SmyMJV2nYSMBfX5kRpGyiZjNqJuVo9qlH2NsnPQcauVt0NHQeLEC?=
+ =?us-ascii?Q?pteUG3ybBrV7GnQCbKpuZRG6FKpCnrhmO2j/WjFU8ptO6BinmfyOyVm2Z9lO?=
+ =?us-ascii?Q?wsJX4CIPQuPL3zgrlgGLarswhnRAN6a+8Q27AQcVF4EtzcEebIRxAg5CutOv?=
+ =?us-ascii?Q?loZym2D65cWw2N8aLPhan2hKmK8he1fxVErmAzW6MZLxR0ZNuhmoVxrQ83fM?=
+ =?us-ascii?Q?Qk4mSBQpu0uwJnhQn2STK6Mz7Xprt2s66daXagB9cjilrm/UdDKSMsGkqqkt?=
+ =?us-ascii?Q?JktTgc9ry8tf3O+cMAt3fgvvK6rWYxuAf3gXD791MgVrNW3LS6+XAugMSWab?=
+ =?us-ascii?Q?AW2O+cqL7YswRQ5YSeHFje5ccMxu5gzS+cmNyXj4e0wZPAt0BFj0mUe5IKAt?=
+ =?us-ascii?Q?JpMZ6z/5T7bLTG+iaYlnqKUKYYvybWnKhh+ICnUVNxo4VKUD/R9ADfZkJQ4U?=
+ =?us-ascii?Q?lYfcSP0jTqZJ9j4Z+YbfCiG3ZkLaq0hRTXZM3nSP62nrnC+rcrqRXJc5TjyJ?=
+ =?us-ascii?Q?9i6GA31OwZM/KX9ec4yiwCl+OvjLZ6XI/psuxZrjvTP90ObwoZuk0jXp6bP2?=
+ =?us-ascii?Q?nWVFe7hiZdpeUuP5j2+gUvPq4LVpKKxsz0s5iJ6R2yLyN5Ol+cQY6LYKByV/?=
+ =?us-ascii?Q?376YhJd6ImEsiFI7YjY6Y6r62TSQv6D2fF6FXjb5xpGbm1I+XbG0KkiIZ3ws?=
+ =?us-ascii?Q?nFuopgoTZ2KeE/1eegFN4FBw72GG/CilJeLR8r5/pqjbGqy8XJ4P90GytBmi?=
+ =?us-ascii?Q?ZvH80tV5b4l6Qjag24Qtl+xBBN24vDF6wbZdiEvJxbhRb5AsJ3kZSQXdv53S?=
+ =?us-ascii?Q?YNJgIe0g3y5dT32mPfuK5llcOtqD+1KnfpwJpAwfSO2L3EmGvJQxTrGu5aAR?=
+ =?us-ascii?Q?b0b83uVsa2XQoEiRr/Zf/RF723JlbLsemqY1xpbj2f6aCtK/kAluAZ/t0caX?=
+ =?us-ascii?Q?vNVBE4+6kN0hvWQn04XTWaBxkfP/eBpOezg54o6rSi7EP7A2bNyVaph5d5uj?=
+ =?us-ascii?Q?qwKLp1HNic5NibTeV7M7FSmj598A+uQZsxU3h3DX1cPB+n5fb4Q8Y8VBNpf+?=
+ =?us-ascii?Q?zLCZ3oV2WqbtghPoGryVfo6gG1Vu3jHsHFiWFK3bbIm8p7oCWfGgWzA6YRpL?=
+ =?us-ascii?Q?p92tBfePnfyScSbMh0px7gT8i/QkSD/TFufkPuMI8LDcwUU6sIUOKa1OWMPA?=
+ =?us-ascii?Q?02ys+S2u0gjJ3sZQgitftcmg+Q+hNLiwpLVZmVzajKacr5f0dGmPATVr/Khq?=
+ =?us-ascii?Q?UVreWCC1ctFTNdi29vM/1FpwySIx3mXonEXA1nGVJyGCi3Y7/0T2euCR6ISW?=
+ =?us-ascii?Q?AZ24Be47n+kb9qg1k2rAPM9doswZp8fn5N+vCIS9Zcbj2sOCdYpQb5S9MiDY?=
+ =?us-ascii?Q?QAwOC1W99EHL4C2jBEScnUd0oWylXnpLFB/mKOWUxFM0pEIHuXofEQX9B9uD?=
+ =?us-ascii?Q?NhPYiAYCBweEkiQuCqfM6wmbb/h98cMpHzYkFE8VAH4hl/p0ycca?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ce7ed137-ad88-4bd3-f2e6-08df4ae7b23a
+X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7874.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Nov 2026 11:31:50.0309
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: IhG9GzUUFXf4/AHz1Is1ymtygqhA3QoGtI1TlPjLkQQR2hndVu81ytD4NNGs5oBF/q55mpoK42bRcGdMppq8doOrHLBCsKeSyoJCQuEkAIXAbSWeM3Vvn+Yg+FSbXXCA
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8194
 
-Thank you for your contribution! Sashiko AI review found 11 potential
-issues to consider:
-- [High] dmaengine: fsl-edma: NULL dereference on masked channels in
-  fsl_edma3_or_tx_handler()
-- [High] dmaengine: fsl-edma: refcount underflow and unclocked MMIO on
-  pm_runtime_get_if_active() < 0
-- [High] dmaengine: fsl-edma: unclocked MMIO access in fsl_edma_probe()
-  when CONFIG_PM is disabled
-- [High] dmaengine: fsl-edma: missing CR restore in
-  fsl_edma_resume_early()
-- [High] dmaengine: fsl-edma: DMA registration before setup_irq() and
-  channel PM
-- [High] dmaengine: fsl-edma: NULL deref on masked channel in
-  fsl_edma3_or_tx_handler()
-- [High] dmaengine: fsl-edma: fsl_edma_cleanup_vchan() leaks chan_dev
-  and causes UAF
-- [High] dmaengine: fsl-edma: IRQ storm and bad RPM ordering in
-  fsl_edma_tx_handler()
-- [High] dmaengine: fsl-edma: broken channel runtime PM on mcf-edma in
-  mcf_edma_probe()
-- [Medium] dmaengine: fsl-edma: async runtime PM put in fsl_edma_probe()
-  leaks clocks
-- [Medium] dmaengine: fsl-edma: active channels with srcid 0 skipped in
-  suspend/resume
---
+On Sun, 22 Nov 2026 21:51:10 +0100 Dario Binacchi <dario.binacchi@amarulasolutions.com> wrote:
 
-commit 904c5737dc3c2174c965ff0d6fb29328fd87a5f5
-Author: Joy Zou <joy.zou@oss.nxp.com>
+> If devm_of_platform_populate() fails, the probe returns leaving the
+> power notifier registered on the bus power domain, while the memory
+> holding it is released. Remove it.
+> 
+> Fixes: 9cb6d1b39a8f ("soc: imx: imx8m-blk-ctrl: Scan subnodes and bind drivers to them")
+> Reported-by: Sashiko <sashiko-bot@kernel.org>
+> Closes: https://lore.kernel.org/r/sashiko-outbox-227073@kernel.org
+> Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+> 
 
-dmaengine: fsl-edma: add runtime suspend/resume support
-
-This commit adds runtime PM support for the FSL eDMA controller and its
-per-channel devices, managing controller and channel clocks as well as
-per-channel power domains through runtime suspend and resume callbacks.
-
-> diff --git a/drivers/dma/fsl-edma-common.c b/drivers/dma/fsl-edma-common.c
-> index 4f7a942673ebc..4ab56294ac776 100644
-> --- a/drivers/dma/fsl-edma-common.c
-> +++ b/drivers/dma/fsl-edma-common.c
-[ ... ]
-> @@ -1087,7 +1084,12 @@ int fsl_edma_alloc_chan_resources(struct dma_chan =
-*chan)
->  	struct fsl_edma_chan *fsl_chan =3D to_fsl_edma_chan(chan);
->  	int ret =3D 0;
-> =20
-> -	clk_prepare_enable(fsl_chan->clk);
-> +	ret =3D pm_runtime_resume_and_get(&fsl_chan->vchan.chan.dev->device);
-> +	if (ret < 0) {
-> +		dev_err(&fsl_chan->vchan.chan.dev->device, "Failed to resume device: %=
-d\n", ret);
-> +		return ret;
-> +	}
-
-[Severity: High]
-Does this break mcf-edma when CONFIG_PM is enabled?
-
-fsl_edma_alloc_chan_resources() is shared with mcf-edma, so
-pm_runtime_resume_and_get() requires runtime PM to be enabled on the
-registered channel device.  In commit "dmaengine: mcf-edma: enable runtime
-PM for eDMA engine and channel" earlier in this series, mcf_edma_probe()
-calls devm_pm_runtime_enable(chan_dev) before dma_async_device_register()
-allocates mcf_chan->vchan.chan.dev:
-
-drivers/dma/mcf-edma-main.c:mcf_edma_probe() {
-    ...
-	for (i =3D 0; i < mcf_edma->n_chans; i++) {
-		struct fsl_edma_chan *mcf_chan =3D &mcf_edma->chans[i];
-		struct device *chan_dev;
-
-		chan_dev =3D &mcf_chan->vchan.chan.dev->device;
-    ...
-		ret =3D devm_pm_runtime_enable(chan_dev);
-    ...
-	ret =3D dma_async_device_register(&mcf_edma->dma_dev);
-    ...
-}
-
-Because mcf_chan->vchan.chan.dev is still NULL in that loop,
-devm_pm_runtime_enable(chan_dev) dereferences a near-NULL pointer during
-probe when CONFIG_PM=3Dy, and the channel devices allocated later by
-dma_async_device_register() never have runtime PM enabled.
-
-> diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-main.c
-> index fdb2577d1ccb5..5500eb17f579e 100644
-> --- a/drivers/dma/fsl-edma-main.c
-> +++ b/drivers/dma/fsl-edma-main.c
-> @@ -37,15 +37,35 @@ static irqreturn_t fsl_edma_tx_handler(int irq, void =
-*dev_id)
->  	unsigned int intr, ch;
->  	struct edma_regs *regs =3D &fsl_edma->regs;
-> =20
-> +	/*
-> +	 * A racy or spurious interrupt for an already-suspended
-> +	 * controller or channel is an extremely rare corner case and
-> +	 * highly unlikely in practice.
-> +	 */
-> +	if (pm_runtime_get_if_active(fsl_edma->dma_dev.dev) =3D=3D 0)
-> +		return IRQ_NONE;
-> =20
->  	intr =3D edma_readl(fsl_edma, regs->intl);
-> -	if (!intr)
-> +	if (!intr) {
-> +		pm_runtime_put(fsl_edma->dma_dev.dev);
->  		return IRQ_NONE;
-> +	}
-
-[Severity: High]
-Can checking pm_runtime_get_if_active() =3D=3D 0 underflow power.usage_count
-and access unclocked registers when runtime PM is disabled?
-
-pm_runtime_get_if_active() returns -EINVAL without incrementing
-power.usage_count when runtime PM is disabled on a device, such as during
-system suspend and resume transitions after __device_suspend_late()
-disables runtime PM on idle runtime-suspended channels before IRQs are
-masked in dpm_suspend_noirq().  Because -EINVAL !=3D 0, this check (along
-with the matching checks in fsl_edma3_err_check(), fsl_edma3_tx_handler(),
-fsl_edma3_or_err_handler(), and fsl_edma_err_handler()) proceeds to read
-channel registers on suspended channels whose clocks or power domains are
-off and then calls pm_runtime_put() without a matching get.
-
-> +	pm_runtime_put(fsl_edma->dma_dev.dev);
->  	for (ch =3D 0; ch < fsl_edma->n_chans; ch++) {
-> +		struct fsl_edma_chan *fsl_chan =3D &fsl_edma->chans[ch];
-> +
-> +		if (fsl_edma->chan_masked & BIT(ch))
-> +			continue;
-> +
-> +		if (pm_runtime_get_if_active(&fsl_chan->vchan.chan.dev->device) =3D=3D=
- 0)
-> +			continue;
-> +
->  		if (intr & (0x1 << ch)) {
->  			edma_writeb(fsl_edma, EDMA_CINT_CINT(ch), regs->cint);
->  			fsl_edma_tx_chan_handler(&fsl_edma->chans[ch]);
->  		}
-> +		pm_runtime_put(&fsl_chan->vchan.chan.dev->device);
->  	}
->  	return IRQ_HANDLED;
->  }
-
-[Severity: High]
-Can skipping channels when pm_runtime_get_if_active() returns 0 cause a
-hard-IRQ storm and hang in synchronize_irq() during channel suspend?
-
-In fsl_edma_free_chan_resources(), fsl_edma_disable_request() disables
-further DMA requests without clearing an already-latched interrupt flag,
-and then calls pm_runtime_put_sync_suspend().  rpm_suspend() sets the
-channel's runtime_status to RPM_SUSPENDING before calling
-fsl_edma_chan_runtime_suspend() -> synchronize_irq().  While the channel is
-in RPM_SUSPENDING, pm_runtime_get_if_active() returns 0 even though
-fsl_chan->clk is still enabled, so this handler (as well as
-fsl_edma_err_handler(), fsl_edma3_or_err_handler(), fsl_edma3_err_check(),
-and fsl_edma3_tx_handler()) returns IRQ_HANDLED without clearing the
-hardware interrupt status bit, leaving the level-triggered interrupt line
-asserted forever.
-
-In addition, fsl_edma_tx_handler() and fsl_edma_err_handler() call
-pm_runtime_get_if_active() and pm_runtime_put() on every unmasked channel
-before testing whether that channel's bit is set in intr or err, which
-cycles power.lock and usage_count on unrelated active channels and can
-cause a concurrent pm_runtime_put_sync_suspend() on another channel to fail
-with -EAGAIN.
-
-Finally, both handlers call pm_runtime_put(fsl_edma->dma_dev.dev) before
-the loop, even though regs->cint, regs->cerr, regs->cerq, and regs->ceei
-accessed inside the loop are global controller registers clocked by
-fsl_edma->dmaclk.
-
-[ ... ]
-
-> @@ -132,13 +158,23 @@ static irqreturn_t fsl_edma3_tx_handler(int irq, vo=
-id *dev_id)
->  	struct fsl_edma_chan *fsl_chan =3D dev_id;
->  	unsigned int intr;
-> =20
-> -	intr =3D edma_readl_chreg(fsl_chan, ch_int);
-> -	if (!intr)
-> +	/*
-> +	 * A racy or spurious interrupt for an already-suspended
-> +	 * channel is an extremely rare corner case and highly unlikely in
-> +	 * practice.
-> +	 */
-> +	if (pm_runtime_get_if_active(&fsl_chan->vchan.chan.dev->device) =3D=3D =
-0)
->  		return IRQ_NONE;
-
-[Severity: High]
-Can this dereference a NULL fsl_chan->vchan.chan.dev pointer when a channel
-is masked via dma-channel-mask on controllers using
-fsl_edma3_or_irq_init()?
-
-In fsl_edma_probe(), channels matching fsl_edma->chan_masked skip
-vchan_init(), so dmaenginem_async_device_register() never allocates
-fsl_chan->vchan.chan.dev for them.  Unlike the other shared interrupt
-handlers, fsl_edma3_or_tx_handler() calls fsl_edma3_tx_handler() for every
-channel in [start, end) without checking fsl_edma->chan_masked:
-
-drivers/dma/fsl-edma-main.c:fsl_edma3_or_tx_handler() {
-    ...
-	for (i =3D start; i < end; i++) {
-		chan =3D &fsl_edma->chans[i];
-
-		fsl_edma3_tx_handler(irq, chan);
-	}
-    ...
-}
-
-[ ... ]
-
-> @@ -730,11 +828,11 @@ static int fsl_edma_probe(struct platform_device *p=
-dev)
->  		regs =3D &fsl_edma->regs;
->  	}
-> =20
-> -	fsl_edma->dmaclk =3D devm_clk_get_optional_enabled(&pdev->dev, "dma");
-> +	fsl_edma->dmaclk =3D devm_clk_get_optional(&pdev->dev, "dma");
->  	if (IS_ERR(fsl_edma->dmaclk))
->  		return dev_err_probe(&pdev->dev,
->  				     PTR_ERR(fsl_edma->dmaclk),
-> -				     "Failed to get/enable DMA clock.\n");
-> +				     "Failed to get DMA clock.\n");
-
-[Severity: High]
-What enables dmaclk, muxclk, and fsl_chan->clk when CONFIG_PM is disabled?
-
-Although the commit message states that ARCH_MXC selects CONFIG_PM,
-CONFIG_FSL_EDMA does not depend on PM and also supports platforms that do
-not select CONFIG_PM, including ARCH_LAYERSCAPE (fsl,ls1028a-edma and
-fsl,vf610-edma), ARCH_S32 (nxp,s32g2-edma), and 32-bit ARM ARCH_MXC
-(SOC_VF610 and SOC_IMX7ULP).  With devm_clk_get_optional() and
-devm_clk_bulk_get_optional() replacing the _enabled variants here and
-pm_runtime_resume_and_get() replacing clk_prepare_enable() in
-fsl_edma_alloc_chan_resources(), none of the clocks are enabled when
-CONFIG_PM=3Dn, causing unclocked MMIO register accesses during probe and
-channel use.
-
-[ ... ]
-
-> @@ -869,11 +960,56 @@ static int fsl_edma_probe(struct platform_device *p=
-dev)
-> =20
->  	platform_set_drvdata(pdev, fsl_edma);
-> =20
-> +	ret =3D devm_pm_runtime_enable(&pdev->dev);
-> +	if (ret)
-> +		return dev_err_probe(&pdev->dev, ret, "Can't enable eDMA engine PM run=
-time!\n");
-> +
-> +	PM_RUNTIME_ACQUIRE_IF_ENABLED(&pdev->dev, pm);
-> +	ret =3D PM_RUNTIME_ACQUIRE_ERR(&pm);
-> +	if (ret)
-> +		return dev_err_probe(&pdev->dev, ret, "Failed to resume eDMA engine!\n=
-");
-> +
->  	ret =3D dmaenginem_async_device_register(&fsl_edma->dma_dev);
->  	if (ret)
->  		return dev_err_probe(&pdev->dev, ret,
->  				     "Can't register Freescale eDMA engine.\n");
-> =20
-> +	for (i =3D 0; i < fsl_edma->n_chans; i++) {
-> +		struct fsl_edma_chan *fsl_chan =3D &fsl_edma->chans[i];
-> +		struct device *chan_dev;
-> +
-> +		if (fsl_edma->chan_masked & BIT(i))
-> +			continue;
-> +
-> +		chan_dev =3D &fsl_chan->vchan.chan.dev->device;
-> +		dev_set_drvdata(chan_dev, fsl_chan);
-> +		dev_pm_domain_set(chan_dev, &fsl_edma_chan_pm_domain);
-> +
-> +		if (fsl_chan->pd_dev) {
-> +			fsl_chan->pd_dev_link =3D device_link_add(chan_dev, fsl_chan->pd_dev,
-> +								DL_FLAG_STATELESS |
-> +								DL_FLAG_PM_RUNTIME);
-> +			if (!fsl_chan->pd_dev_link) {
-> +				return dev_err_probe(&pdev->dev, -EINVAL,
-> +						     "Failed to add device_link to %d!\n", i);
-> +			}
-> +		}
-> +		ret =3D devm_pm_runtime_enable(chan_dev);
-> +		if (ret)
-> +			return dev_err_probe(&pdev->dev, ret,
-> +					     "Can't enable eDMA channel PM runtime!\n");
-
-[Severity: High]
-Does enabling runtime PM and attaching fsl_edma_chan_pm_domain on chan_dev
-lead to a use-after-free on driver unbind?
-
-dmaenginem_async_device_register() registers a devres action on &pdev->dev
-to run dma_async_device_unregister(), while fsl_edma_remove() runs before
-&pdev->dev devres teardown and calls fsl_edma_cleanup_vchan(), which removes
-every channel from dmadev->channels:
-
-drivers/dma/fsl-edma-common.c:fsl_edma_cleanup_vchan() {
-    ...
-	list_for_each_entry_safe(chan, _chan,
-				&dmadev->channels, vchan.chan.device_node) {
-		list_del(&chan->vchan.chan.device_node);
-		tasklet_kill(&chan->vchan.task);
-	}
-}
-
-When dma_async_device_unregister() subsequently runs during devres release,
-dmadev->channels is already empty, so the per-channel chan_dev devices are
-never unregistered and remain active with runtime PM enabled and drvdata
-pointing to the freed fsl_chan structure.
-
-> +
-> +		PM_RUNTIME_ACQUIRE_IF_ENABLED(chan_dev, pm);
-> +		ret =3D PM_RUNTIME_ACQUIRE_ERR(&pm);
-> +		if (ret)
-> +			return dev_err_probe(&pdev->dev, ret,
-> +					     "Failed to resume eDMA channel %d!\n",
-> +					     fsl_chan->vchan.chan.chan_id);
-> +
-> +		edma_write_tcdreg(fsl_chan, cpu_to_le32(0), csr);
-> +		fsl_edma_chan_mux(fsl_chan, 0, false);
-> +	}
-
-[Severity: Medium]
-Can fsl_edma_probe() leak clock prepare/enable references if a later probe
-step fails?
-
-PM_RUNTIME_ACQUIRE_IF_ENABLED() synchronously resumes &pdev->dev and each
-chan_dev (enabling muxclk, dmaclk, and fsl_chan->clk), but releases them via
-asynchronous pm_runtime_put(), which only queues suspend work on pm_wq.  If
-fsl_edma_probe() fails or defers after resuming the engine or any channel,
-devres teardown disables runtime PM on chan_dev and &pdev->dev, which
-cancels the pending suspend work via __pm_runtime_barrier() without running
-fsl_edma_chan_runtime_suspend() or fsl_edma_runtime_suspend(), leaving the
-clocks prepared and enabled.
-
->  	ret =3D devm_of_dma_controller_register(&pdev->dev, np,
->  			drvdata->dmamuxs ? fsl_edma_xlate : fsl_edma3_xlate,
->  			fsl_edma);
-> @@ -885,6 +1021,10 @@ static int fsl_edma_probe(struct platform_device *p=
-dev)
->  	if (!(drvdata->flags & FSL_EDMA_DRV_SPLIT_REG))
->  		edma_writel(fsl_edma, EDMA_CR_ERGA | EDMA_CR_ERCA, regs->cr);
-> =20
-> +	ret =3D fsl_edma->drvdata->setup_irq(pdev, fsl_edma);
-> +	if (ret)
-> +		return dev_err_probe(&pdev->dev, ret, "Failed to setup IRQ!\n");
-> +
->  	return 0;
->  }
-
-[Severity: High]
-Doesn't registering the DMA device and OF DMA controller before channel
-runtime PM and setup_irq() expose uninitialized channels to consumers and
-to pm_wq?
-
-A client requesting a channel after dmaenginem_async_device_register() or
-devm_of_dma_controller_register() can enter fsl_edma_alloc_chan_resources()
-before devm_pm_runtime_enable(chan_dev) runs (failing in
-pm_runtime_resume_and_get() with -EACCES) or before setup_irq() populates
-fsl_chan->txirq, fsl_chan->errirq, and their handlers (skipping
-request_irq() in fsl_edma_alloc_chan_resources()).  Meanwhile, the
-asynchronous pm_runtime_put(chan_dev) in the channel loop queues
-fsl_edma_chan_runtime_suspend() on pm_wq, which reads fsl_edma->txirq,
-fsl_edma->txirq_16_31, fsl_edma->errirq, fsl_chan->txirq, and
-fsl_chan->errirq concurrently with setup_irq() writing them.
-
-> @@ -907,6 +1047,19 @@ static int fsl_edma_suspend_late(struct device *dev)
->  		fsl_chan =3D &fsl_edma->chans[i];
->  		if (fsl_edma->chan_masked & BIT(i))
->  			continue;
-> +
-> +		/*
-> +		 * Skip channel if:
-> +		 * 1. Runtime PM already suspended.
-> +		 * 2. Channel without power domain, and the channel source ID is zero,
-> +		 * so the channel isn't assigned.
-> +		 */
-> +		if (pm_runtime_status_suspended(&fsl_chan->vchan.chan.dev->device) ||
-> +		    (!(fsl_edma->drvdata->flags & FSL_EDMA_DRV_HAS_PD) &&
-> +		     (fsl_edma->drvdata->flags & FSL_EDMA_DRV_SPLIT_REG) &&
-> +		     !fsl_chan->srcid))
-> +			continue;
-
-[Severity: Medium]
-Doesn't checking !fsl_chan->srcid here and in fsl_edma_resume_early() skip
-active channels that legitimately have srcid =3D=3D 0?
-
-Unassigned channels are already runtime-suspended and caught by
-pm_runtime_status_suspended().  On FSL_EDMA_DRV_SPLIT_REG controllers
-without FSL_EDMA_DRV_HAS_PD (such as imx8ulp, imx93, imx95, and s32g2), an
-allocated, runtime-active channel has srcid =3D=3D 0 when used for DMA_MEMC=
-PY
-or when channel 0 is allocated via fsl_edma3_xlate() on controllers without
-FSL_EDMA_DRV_HAS_CHMUX (such as imx93-edma3 and s32g2-edma).  Skipping
-those channels leaves them in pm_state =3D=3D RUNNING across system suspend=
- and
-skips clearing their TCD csr on resume.
-
-> @@ -926,19 +1079,56 @@ static int fsl_edma_resume_early(struct device *de=
-v)
->  {
->  	struct fsl_edma_engine *fsl_edma =3D dev_get_drvdata(dev);
->  	struct fsl_edma_chan *fsl_chan;
-> -	struct edma_regs *regs =3D &fsl_edma->regs;
->  	int i;
-> =20
->  	for (i =3D 0; i < fsl_edma->n_chans; i++) {
->  		fsl_chan =3D &fsl_edma->chans[i];
->  		if (fsl_edma->chan_masked & BIT(i))
->  			continue;
-> +
-> +		if (pm_runtime_status_suspended(&fsl_chan->vchan.chan.dev->device) ||
-> +		    (!(fsl_edma->drvdata->flags & FSL_EDMA_DRV_HAS_PD) &&
-> +		     (fsl_edma->drvdata->flags & FSL_EDMA_DRV_SPLIT_REG) &&
-> +		     !fsl_chan->srcid))
-> +			continue;
-> +
->  		fsl_chan->pm_state =3D RUNNING;
->  		edma_write_tcdreg(fsl_chan, 0, csr);
->  		if (fsl_chan->srcid !=3D 0)
->  			fsl_edma_chan_mux(fsl_chan, fsl_chan->srcid, true);
->  	}
-> =20
-> +	return 0;
-> +}
-> +
-> +/* edma engine runtime system/resume */
-> +static int fsl_edma_runtime_suspend(struct device *dev)
-> +{
-> +	struct fsl_edma_engine *fsl_edma =3D dev_get_drvdata(dev);
-> +
-> +	clk_bulk_disable_unprepare(fsl_edma->drvdata->dmamuxs, fsl_edma->muxclk=
-);
-> +
-> +	clk_disable_unprepare(fsl_edma->dmaclk);
-> +
-> +	return 0;
-> +}
-> +
-> +static int fsl_edma_runtime_resume(struct device *dev)
-> +{
-> +	struct fsl_edma_engine *fsl_edma =3D dev_get_drvdata(dev);
-> +	struct edma_regs *regs =3D &fsl_edma->regs;
-> +	int ret;
-> +
-> +	ret =3D clk_bulk_prepare_enable(fsl_edma->drvdata->dmamuxs, fsl_edma->m=
-uxclk);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret =3D clk_prepare_enable(fsl_edma->dmaclk);
-> +	if (ret) {
-> +		clk_bulk_disable_unprepare(fsl_edma->drvdata->dmamuxs, fsl_edma->muxcl=
-k);
-> +		return ret;
-> +	}
-> +
->  	if (!(fsl_edma->drvdata->flags & FSL_EDMA_DRV_SPLIT_REG))
->  		edma_writel(fsl_edma, EDMA_CR_ERGA | EDMA_CR_ERCA, regs->cr);
-> =20
->  	return 0;
->  }
-
-[Severity: High]
-Does moving the regs->cr write from fsl_edma_resume_early() to
-fsl_edma_runtime_resume() lose the EDMA_CR_ERGA | EDMA_CR_ERCA setting
-across system suspend when a channel is allocated?
-
-When any channel is allocated, fsl_edma_alloc_chan_resources() holds a
-runtime PM reference that keeps both the channel and the parent controller
-device RPM_ACTIVE across system suspend and resume.  Because
-fsl_edma_pm_ops does not use pm_runtime_force_suspend() and
-pm_runtime_force_resume(), fsl_edma_runtime_resume() does not run during
-system resume in that case, leaving regs->cr unconfigured on non-SPLIT_REG
-controllers (vf610, ls1028a, and imx7ulp).
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261125-b4-edma-ru=
-ntime-opt-mo-v8-0-81345a3bfb52@oss.nxp.com?part=3D5
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
