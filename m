@@ -1,57 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795630910;
-	b=JZpHkYC7NxchxMnk2a0JUb3XjlW1hoR7cYA4bJZqFLiNTRgOgkVJxls/C2czXia1H6YE
-	 +lBxD8UMTawR2q973J4JPNEyeKxgEv3OGEHbwheHRBFQW31zr3mM1cbC2CQRBXAmlvt9w
-	 SYFBQ7dNFaN2x+8fWHqLSjYIJ4Splr7kOJk1A/rYSAlq5bWxA1LL5hCL3o9TB94lg6W2W
-	 V4arfpnCsfO8MxSFb86IeBnP0VU3hJrf6ZPSeuVLhfylUe6U+vKogNbNhD4h6eVbJuMXJ
-	 SSqoJnLXdUgwboUEFKk5Q6kIg2IxY+PlglmaRHeeV8X2Q8y0WK+jVeOcXj2vXJ46nNA==
+	t=1795631334;
+	b=PN+bOy+7NdueteByMSHPs9XprXiEPedgYWqpPtiSexkVZzYaBmSvVDjFUdvTKPcVPMtY
+	 aUGlYAsPiWu/rVBsXG4yUAwcDF4Wf1LMygXRRn1DGl7qHlfgyFZ/9tinsc2xc44gE0BWL
+	 V+eXeT4sthduiVysjU+pq0AzqRr3tzqBJrYiidluO0Xnqi4gZ4laO9MCJJtnuiSsRR4N8
+	 sxnBOlZ/xf/Zu/tL6iG0GDbUhSVPdoH1riVRGngnvJKaHcRS7+CGh+/yryYmK9lgp8yb1
+	 MvDXj33S91QlMLzuCzrgb8nOo+JymlDnQLGQ+eMIuQyQiHoXFguoy90iTjHgxeSJ+gQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795630910;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795631334;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=czMOwjGvjzYcVlMMkBCtLRHbZcW55IfSuyA1dEltLMo=;
-	b=SiHp3IS6/wJBfxjlxLoaiSt1cKWMnZKWcKJrpBg1AvM7d+WAjd92VtU5yp2Xd/4Ua0WJ
-	 eapfRoRSbHX9kbTiDwjz9YdTUSKHSvDLJVy3C2Q5cJatufWOTmsLt4bk2+2m8qv3CceQP
-	 jury5HRlIpKIRRUhqrdWH59b7ZhgkxU7S7a6s9YaRJbejvAyzrBv85IqOYJF84t+sb3eS
-	 lKNG/vd3qrDzZpVQU3HNBEA+eAfOFQQr4jGCe22vzELTydC3i/1plYk1HjSVVqnrGHVIv
-	 cv66U+eaWOMQeakLZEwub8v/peLcyqJiTR6746wAtW9x8TnTb7wJI97q9M0Wfl8ItUg==
+	bh=kBLmM8S7+LArUBZJzYC3OCY4mci6rf9XWasnJyC7E7c=;
+	b=DK/zS316hA7UwYkpUqbtm8o7lqzWTO/hg4DCWOwy7+eT9JPuNBg46R+GA+pOUHnD3mVh
+	 knUTtXLKc48NnvY0JAQgoJ1hKyCUtdXK1WTV/RnNdqIkujKHXpFPMB7O/KykR98yuGyzT
+	 Uflen2pXai6p2YDCpbLHzv8a2nN6TYY5C546fVk7xa1yz7AZXxQvFrxpxCFdXsTxX9j+s
+	 35kGJMHM+0jarbXE1lPT74/XPxavQa8p7fOeGGeIDeaqMFfTF3tbwTjh8rG82BlIenw5m
+	 efVW3SW+5haZv7s4U+CMKUenMa25IkRV28HczTGXjVr7SE/9mNsLQpN6ZKoernOD0GQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jCIilBRK;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jrSasNTU;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8D96606A31E
-	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 18:21:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D75D606A326
+	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 18:28:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jCIilBRK
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8609D1F000C6;
-	Wed, 25 Nov 2026 18:21:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jrSasNTU
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 387DA1F000C6;
+	Wed, 25 Nov 2026 18:28:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795630910;
-	bh=czMOwjGvjzYcVlMMkBCtLRHbZcW55IfSuyA1dEltLMo=;
+	s=k20260515; t=1795631333;
+	bh=kBLmM8S7+LArUBZJzYC3OCY4mci6rf9XWasnJyC7E7c=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=jCIilBRK96voysymIxNhMEKJ9o0abTU5hw8HhkCPCZWP8K17KoI6/34whC37EyCnH
-	 aXP4s+uTsZLxdZdNjjta+6LbYyheu3CAyrVjmI1jwkFvTYtcYPeVibe7pxKILwhgiX
-	 MjJbr9xG5rdGanBcXh8wY8RNS6MaY5oVScuNVbgW5Kk2ZW/a8GAWSthA+V5kkQtFoy
-	 IgsYrOLRF3lszSUXKTD5xwmhCrDsu3yk0fzVmONxO+VPyQjTGr3DflTv0asWfh9qZ1
-	 t+KYHQA2FmeCKAdenn5/6rvIgQhyf2W/OVSvUh1Q6KNOaPzkARM7qbjcTK2rA27iWo
-	 5IEvCOdXOrtlg==
-Message-ID: <sashiko-outbox-233972@kernel.org>
+	b=jrSasNTUmSm7iwUgKqjp4Y6nXnQz65j/NDzhploTyY0k3EFAlQSSQMRiix5p7Dy+u
+	 Lnj9h/mFPltKgV3IAo9Wr0soelb74p8ONgdQs1gBqWq512uiqpUO8x9rWhJqz/VYtz
+	 /XfU2VcDIJN7Asv3nLyI/1Kk//ktLQvdNZ0XHD9+WPIMVgjkY+6asCw7+/LLewnDhn
+	 l2x0FYQZWHTTV+lCLs9xTfnKDBjgwbPb7rbEYK0fgd3mjxZ4C4PFkv2CKdS1x6OENp
+	 xxy0YXWEqOt3xEqKNpmaa2Re+k5Ecig8WDuDxFkwR0QeTZo10arQVCZOvwt8gbXEn8
+	 H1+skzPcxRtGg==
+Message-ID: <sashiko-outbox-233990@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 09/32] drm/display: bridge-connector: use a dynamic
- connector
+Subject: Re: [PATCH v4 30/32] drm/bridge: shutdown encoder and detach
+ downstream bridges on bridge unplug
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
 Cc: dri-devel@lists.freedesktop.org, imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20261125-drm-bridge-hotplug-v4-9-822722850492@bootlin.com>
+In-Reply-To: <20261125-drm-bridge-hotplug-v4-30-822722850492@bootlin.com>
 References: <20261125-drm-bridge-hotplug-v4-0-822722850492@bootlin.com>
- <20261125-drm-bridge-hotplug-v4-9-822722850492@bootlin.com>
+ <20261125-drm-bridge-hotplug-v4-30-822722850492@bootlin.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 25 Nov 2026 18:21:50 +0000
+Date: Wed, 25 Nov 2026 18:28:52 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -61,179 +61,170 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 
-Thank you for your contribution! Sashiko AI review found 3 potential
+Thank you for your contribution! Sashiko AI review found 4 potential
 issues to consider:
-- [High] drm/display: bridge-connector: double teardown in
-  drmm_bridge_connector_fini()
-- [Medium] drm/display: bridge-connector: reference leaks in
-  drm_bridge_connector_initialize()
-- [Low] drm/display: bridge-connector: missing colon in
-  @has_cec_notifier kernel-doc
+- [High] drm/bridge: UAF of shared encoder-bridge container in
+  drm_bridge_remove()
+- [High] drm/bridge: TOCTOU race and NULL deref on encoder in
+  drm_bridge_remove()
+- [High] drm/bridge: cross-thread stack tmplist corruption in
+  drm_bridge_detach_from()
+- [Medium] drm/bridge: bridge left on bridge_list during detach in
+  drm_bridge_remove()
 --
 
-commit 17489de6cf9da07d5d4da90bca09f1c4add46b17
+commit ed101139b3ca92ec58e58cfca1356ce33f6b56c4
 Author: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-drm/display: bridge-connector: use a dynamic connector
+drm/bridge: shutdown encoder and detach downstream bridges on bridge unplug
 
-This commit switches drm_bridge_connector initialization from drmm-managed
-connector and CEC helpers to dynamic connector initialization and explicit
-teardown in preparation for bridge hotplug.
+This commit shuts down the encoder pipeline and detaches the removed
+bridge and any downstream bridges from the encoder chain when
+drm_bridge_remove() is called on an attached bridge.
 
-> diff --git a/drivers/gpu/drm/display/drm_bridge_connector.c b/drivers/gpu=
-/drm/display/drm_bridge_connector.c
-> index f4a71801e8a3b..d81cfc7aa295b 100644
-> --- a/drivers/gpu/drm/display/drm_bridge_connector.c
-> +++ b/drivers/gpu/drm/display/drm_bridge_connector.c
-> @@ -132,11 +132,27 @@ struct drm_bridge_connector {
->  	 * bridge connector.
->  	 */
->  	struct drm_connector_hdmi_funcs hdmi_funcs;
-> +	/** @has_cec_adapter: true if a CEC adapter is registered */
-> +	bool has_cec_adapter;
-> +	/** @has_cec_notifier true if a CEC notifier is registered */
-> +	bool has_cec_notifier;
->  };
-
-[Severity: Low]
-A colon is missing after @has_cec_notifier, which triggers a kernel-doc
-warning for struct drm_bridge_connector.
-
+> diff --git a/drivers/gpu/drm/drm_bridge.c b/drivers/gpu/drm/drm_bridge.c
+> index d82e81b26ace2..d942c776db1a9 100644
+> --- a/drivers/gpu/drm/drm_bridge.c
+> +++ b/drivers/gpu/drm/drm_bridge.c
 [ ... ]
-
-> @@ -849,10 +860,6 @@ drm_bridge_connector_initialize(struct drm_bridge_co=
-nnector *bridge_connector,
->  	int connector_type;
->  	int ret;
-> =20
-> -	ret =3D drmm_add_action(drm, drm_bridge_connector_put_bridges, bridge_c=
-onnector);
-> -	if (ret)
-> -		return ERR_PTR(ret);
-> -
->  	bridge_connector->encoder =3D encoder;
-> =20
->  	/*
-> @@ -1053,17 +1060,21 @@ drm_bridge_connector_initialize(struct drm_bridge=
-_connector *bridge_connector,
->  				drm_bridge_connector_scrambler_disable;
->  		}
-> =20
-> -		ret =3D drmm_connector_hdmi_init(drm, connector,
-> -					       &drm_bridge_connector_funcs,
-> -					       &bridge_connector->hdmi_funcs,
-> -					       connector_type, ddc);
-> +		ret =3D drm_connector_hdmi_dynamic_init(drm, connector,
-> +						      &drm_bridge_connector_funcs,
-> +						      &bridge_connector->hdmi_funcs,
-> +						      connector_type, ddc);
->  	} else {
-> -		ret =3D drmm_connector_init(drm, connector,
-> -					  &drm_bridge_connector_funcs,
-> -					  connector_type, ddc);
-> +		ret =3D drm_connector_dynamic_init(drm, connector,
-> +						 &drm_bridge_connector_funcs,
-> +						 connector_type, ddc);
-> +	}
-> +	if (ret) {
-> +		drm_bridge_connector_put_bridges(bridge_connector);
-> +		return ERR_PTR(ret);
->  	}
-> -	if (ret)
-> -		return ret;
-> +
-> +	/* From now on the connector is referenced and has to be put */
-
-[Severity: Medium]
-Does removing the upfront drmm_add_action() leak bridge_connector->bridge_*
-and connector->fwnode references when drm_bridge_connector_initialize()
-fails earlier?
-
-During drm_for_each_bridge_in_chain(), the loop acquires references with
-drm_bridge_get() and fwnode_handle_get(), but any early return inside the
-loop or at the connector_type =3D=3D DRM_MODE_CONNECTOR_Unknown check retur=
-ns
-directly without calling drm_bridge_connector_put_bridges() or
-fwnode_handle_put(connector->fwnode).  In addition, if
-drm_connector_dynamic_init() fails (or drm_connector_hdmi_dynamic_init()
-fails before reaching drm_connector_cleanup()), the error block above puts
-the bridges but still leaks connector->fwnode.
-
-[ ... ]
-
-> +static void drm_bridge_connector_fini(struct drm_bridge_connector *bridg=
-e_connector)
-> +{
-> +	struct drm_connector *connector =3D &bridge_connector->base;
-> +
-> +	drm_connector_unregister(connector);
-> +	if (bridge_connector->has_cec_adapter)
-> +		drm_connector_hdmi_cec_unregister(connector);
-> +	if (bridge_connector->has_cec_notifier)
-> +		drm_connector_hdmi_cec_notifier_unregister(connector);
-> +
-> +#ifdef CONFIG_OF
-> +	if (connector->fwnode) {
-> +		fwnode_handle_put(connector->fwnode);
-> +		connector->fwnode =3D NULL;
-> +	}
-> +#endif
-> +
-> +	drm_connector_put(connector);
-> +}
-> +
-> +static void drmm_bridge_connector_fini(struct drm_device *dev, void *res)
-> +{
-> +	struct drm_bridge_connector *bridge_connector =3D (struct drm_bridge_co=
-nnector *)res;
-> +
-> +	drm_bridge_connector_fini(bridge_connector);
->  }
-> =20
->  /**
-> @@ -1155,6 +1221,7 @@ struct drm_connector *drm_bridge_connector_init(str=
-uct drm_device *drm,
+> @@ -547,9 +548,17 @@ static void drm_bridge_detach_from(struct drm_bridge=
+ *bridge)
+>   * it won't be found by users via of_drm_find_and_get_bridge(), and add =
+it
+>   * to the lingering bridge list, to keep track of it until its allocated
+>   * memory is eventually freed.
+> + *
+> + * If the bridge is currently attached, also shut down the encoder pipel=
+ine
+> + * and detach this bridge and the following ones.
+>   */
+>  void drm_bridge_remove(struct drm_bridge *bridge)
 >  {
->  	struct drm_bridge_connector *bridge_connector;
->  	struct drm_connector *connector;
-> +	int ret;
-> =20
->  	bridge_connector =3D drmm_kzalloc(drm, sizeof(*bridge_connector), GFP_K=
-ERNEL);
->  	if (!bridge_connector)
-> @@ -1164,6 +1231,10 @@ struct drm_connector *drm_bridge_connector_init(st=
-ruct drm_device *drm,
->  	if (IS_ERR(connector))
->  		return connector;
-> =20
-> +	ret =3D drmm_add_action_or_reset(drm, drmm_bridge_connector_fini, bridg=
-e_connector);
-> +	if (ret)
-> +		return ERR_PTR(ret);
-> +
->  	return connector;
->  }
+> +	if (bridge->encoder) {
+> +		drm_atomic_shutdown_encoder(bridge->encoder);
+> +		drm_bridge_detach_from(bridge);
+> +	}
 
 [Severity: High]
-Can drmm_bridge_connector_fini() tear down a connector that has already
-been destroyed by drm_mode_config_cleanup()?
+Does detaching the bridge in drm_bridge_remove() cause a use-after-free of
+the encoder in drivers that embed struct drm_bridge and struct drm_encoder
+in the same devm_drm_bridge_alloc() container, such as tidss and meson?
 
-Drivers such as omapdrm, tegra, exynos, imx/dcss and kmb create connectors
-with drm_bridge_connector_init() and explicitly call
-drm_mode_config_cleanup() before drm_dev_put().  Because the connector is
-on dev->mode_config.connector_list with a single reference,
-drm_mode_config_cleanup() drops that reference and flushes
-connector_free_work, running drm_bridge_connector_dynconn_destroy() ->
-drm_connector_cleanup(), which destroys connector->mutex and zeroes
-*connector (including connector->cec.data).  When drm_dev_put() then runs
-drmm_bridge_connector_fini(), drm_connector_unregister() locks the
-destroyed connector->mutex and drm_connector_hdmi_cec_unregister()
-dereferences NULL connector->cec.data; once commit "drm/display:
-bridge-connector: add APIs to add/remove the connector dynamically" adds
-kfree(bridge_connector) to drm_bridge_connector_dynconn_destroy(),
-drmm_bridge_connector_fini() also becomes a use-after-free on
-bridge_connector.
+drivers/gpu/drm/tidss/tidss_encoder.c:tidss_encoder_create() {
+	t_enc =3D devm_drm_bridge_alloc(tidss->dev, struct tidss_encoder,
+				      bridge, &tidss_bridge_funcs);
+	if (IS_ERR(t_enc))
+		return PTR_ERR(t_enc);
+
+	ret =3D drm_encoder_init(&tidss->ddev, &t_enc->encoder,
+			       &tidss_encoder_funcs, encoder_type, NULL);
+    ...
+}
+
+In tidss, devm_drm_dev_alloc() and drmm_mode_config_init() are registered
+before tidss_encoder_create() calls devm_drm_bridge_alloc(),
+drm_encoder_init(), devm_drm_bridge_add(), and drm_bridge_attach().
+
+On driver unbind or post-encoder probe failure, devres releases actions in
+reverse order: drm_bridge_remove_void() now detaches t_enc->bridge and
+drops both the attach and add references, and then drm_bridge_put_void()
+drops the final allocation reference.  __drm_bridge_free() calls
+kfree(bridge->container), freeing t_enc while t_enc->encoder is still on
+mode_config.encoder_list.  When devm_drm_dev_init_release() later runs
+drm_mode_config_cleanup(), it calls drm_encoder_cleanup() on the freed
+t_enc->encoder.
+
+[Severity: High]
+Can a concurrent upstream bridge removal clear bridge->encoder while
+drm_atomic_shutdown_encoder() is sleeping, causing a NULL pointer
+dereference in drm_bridge_detach_from()?
+
+CPU0 (downstream bridge B)        CPU1 (upstream bridge A)
+drm_bridge_remove(B)
+  if (B->encoder)
+    drm_atomic_shutdown_encoder()
+                                  drm_bridge_remove(A)
+                                    ...
+                                    drm_bridge_detach_from(A)
+                                      drm_bridge_detach(B)
+                                        B->encoder =3D NULL
+    drm_bridge_detach_from(B)
+      encoder =3D B->encoder
+      mutex_lock(&encoder->bridge_chain_mutex)
+        <-- NULL pointer dereference
+
+drm_bridge_detach_from() re-reads bridge->encoder without a NULL check
+before locking encoder->bridge_chain_mutex.  Similarly, if
+drm_bridge_remove() races with drm_encoder_cleanup(), the encoder and its
+mutex can be destroyed and freed before drm_bridge_detach_from() locks it;
+and if it races with drm_bridge_attach() after bridge->encoder is assigned
+but before bridge->chain_node is added to encoder->bridge_chain,
+drm_bridge_detach_from() sees list_empty(&bridge->chain_node) and leaves
+the removed bridge attached.
+
+[Severity: High]
+Can concurrent calls to drm_bridge_detach_from() on two bridges in the
+same chain corrupt the stack list head in the upstream caller?
+
+drivers/gpu/drm/drm_bridge.c:drm_bridge_detach_from() {
+    ...
+	mutex_lock(&encoder->bridge_chain_mutex);
+	if (!list_empty(&bridge->chain_node))
+		list_for_each_entry_safe_from(bridge, next, &encoder->bridge_chain, chain=
+_node)
+			list_move_tail(&bridge->chain_node, &tmplist);
+	mutex_unlock(&encoder->bridge_chain_mutex);
+
+	while (!list_empty(&tmplist))
+		drm_bridge_detach(list_first_entry(&tmplist, struct drm_bridge, chain_nod=
+e));
+}
+
+When drm_bridge_detach_from() moves bridge A and downstream bridge B onto
+its stack-allocated tmplist and drops encoder->bridge_chain_mutex, B's
+chain_node is still non-empty (linked into that stack tmplist) and
+B->encoder is still non-NULL until drm_bridge_detach(B) reaches
+list_del_init(&B->chain_node):
+
+CPU0 (upstream bridge A)          CPU1 (downstream bridge B)
+drm_bridge_detach_from(A)
+  mutex_lock(&bridge_chain_mutex)
+  /* moves A and B to CPU0 tmplist */
+  mutex_unlock(&bridge_chain_mutex)
+  drm_bridge_detach(A)
+    drm_atomic_private_obj_fini()
+                                  drm_bridge_remove(B)
+                                    ...
+                                    drm_bridge_detach_from(B)
+                                      mutex_lock(&bridge_chain_mutex)
+                                      if (!list_empty(&B->chain_node))
+                                        list_for_each_entry_safe_from(...)
+                                          list_move_tail(..., &tmplist)
+                                            <-- walks CPU0 tmplist past
+                                                its stack list head
+
+Because B->chain_node is on CPU0's tmplist rather than
+encoder->bridge_chain, CPU1's list_for_each_entry_safe_from() never sees
+&encoder->bridge_chain as the termination head.  It moves CPU0's stack
+tmplist head onto CPU1's tmplist and passes a bogus struct drm_bridge
+pointer derived from CPU0's stack frame to drm_bridge_detach().
+
+> +
+>  	mutex_lock(&bridge_lock);
+>  	list_move_tail(&bridge->list, &bridge_lingering_list);
+>  	mutex_unlock(&bridge_lock);
+
+[Severity: Medium]
+Should bridge->list be moved to bridge_lingering_list before shutting down
+the encoder and detaching the bridge?
+
+Leaving the bridge on bridge_list until after drm_bridge_detach_from()
+means the bridge is still discoverable via of_drm_find_and_get_bridge() or
+drm_bridge_get_next() while drm_bridge_detach() emits DRM_BRIDGE_DETACHED
+and clears bridge->dev and bridge->encoder, allowing a concurrent lookup
+to find and re-attach the bridge right before drm_bridge_remove() moves it
+to bridge_lingering_list and destroys its HPD mutexes.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261125-drm-bridge=
--hotplug-v4-0-822722850492@bootlin.com?part=3D9
+-hotplug-v4-0-822722850492@bootlin.com?part=3D30
