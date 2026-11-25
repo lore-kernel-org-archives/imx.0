@@ -1,57 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795630592;
-	b=wPQrcXLYZp+vQ6gUTxj3ThhO3aYAeBoxg5msKZkHCCTMoJdr+4l6JrUVHpym8TKBIVQD
-	 qebbPez2B7+lJn8MT/Som+pxOFbU8R7m7JUSHXwWPHFLU+t/+N+uOmeysYM3XzZAS+KZV
-	 nPm+FFCo8I1R4tb0dDKDmCcyMl86u4+TwcpjU+nW2yMUc4Mmi3Cm8D8+cJh3SG1tiXjC1
-	 B3yx0W3y6WKkmNrz2MZar+TM0k9snXVFo1EXabr1lxnFLZv0s/bOlKWBiW6nQ1t0tQcOm
-	 0dPDi9c1egVY9nHlAnjyA22Gn8+jgP14VAmtvMgjCTNq6LEOgUazt5FekuEvQM9Ff5g==
+	t=1795630714;
+	b=oEPq2sjG9k56K1mXucW4zlvljIGWDGfm3yo1sY+vBLqmdTEhwHd/3L75Acl+r0Ps26B8
+	 7eh5syPav6A34nnnihEHYs86wwt4/6bOGjBSBkg/YnrxMkRx2rocS9CdLs0ffFHnLyNmA
+	 ODzQwrLRJAmJBLg+fHrLUSZchp7zHioLMPgMEFb7xG/jo2Te7OhOH8aBjItDmkVDp4DKz
+	 55xCrUa/O6tJXDstgR2uqBVzvlfv9VsQ1yzqIJyl6D+r5ZZzOV+2yrz1eySL9XTwg/Eih
+	 oj3Z5a+qsJqNeJQY5ymzOpqbQQSIBFnkPORBGDTjNAX2OF+ZceJ/OmNGwPqJP+FgJSA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795630592;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795630714;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=UAPcNrDP7QMdQleQr1VHH52beHerF6JQMHMGMwSexf0=;
-	b=Fy2ePyKC2jxky2E9xjyGgtPRU6rhp8ocaZqYk7YnNZn49rST0uFh/pSgoell2bV4NADL
-	 Kq9sEkb8MYFTA230hv1CoPiw3zX8EkLkfHKH6Cf5LqWgi09+oSLPrtw0U4svjm6BAal0A
-	 zaN0NXmuKEIJUwkn+vt8pLSwpRZuaSIMtlm898u4u1oRiT61mTGZhVz1whfB7yZocM1io
-	 LL5syx/k4NxuO6EwuDLhVmwR+El6bSgEeNpiRVxzou8dPjSrN9k5+Bw3myyNXrojikdxR
-	 ktdBo9sKgEMttAbOkHvPRQoKfIH0521dDZdwadJ1tkMe7cISHCZeoEP2UT/q5rB1NbA==
+	bh=JNwyyTFdADOjhany7yNnMrbOAyashut3uPS6FuhGslk=;
+	b=yQMutYIAOmLcT9BaBQ1QVx0wxVXamPDSzPUINyOk4TDMQFUqMoBet2czxdxN+4lbRc4p
+	 Djl+2+kZ7XSGPHZemNpRZo2p4iUESq3gFnq+Y9M2AXn2DqrAepBVVrMz5BkU0ej3AdtVA
+	 OIGsOeyduMAaau3NUJcInwsDORJ7XsOh/A+5I+z/1Z+Nc819EA32hDLQCf2AdFm06sbsV
+	 Srfp54urS0OIOXH6J7Dy+CrRjoXX3Wut5k2EWNMW3P4OZ/lJdr55DMp/LwP/FWh1+bOlx
+	 zh5a8o4YW307bFMPmgT2qN/bZyc+lW7JH8XtFm15zlhkX5hkM/Aa6al/StB27fQAcpw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aa6+Vmnp;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=m+wfh5D7;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B0CE606A337
-	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 18:16:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29078606A31E
+	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 18:18:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aa6+Vmnp
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E39921F000C6;
-	Wed, 25 Nov 2026 18:16:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=m+wfh5D7
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ABD21F000C4;
+	Wed, 25 Nov 2026 18:18:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795630592;
-	bh=UAPcNrDP7QMdQleQr1VHH52beHerF6JQMHMGMwSexf0=;
+	s=k20260515; t=1795630713;
+	bh=JNwyyTFdADOjhany7yNnMrbOAyashut3uPS6FuhGslk=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=aa6+VmnprloQtSJ6/Xu4G0v/wqbBjbCWN4alUZ2+qSyTmLVHHx/C3tW//qT929Zdk
-	 Ym2KnZYHai8u9P8Qlp9VKOHJJPZzUxeOB4JguLs9jarMjkHLrho2FzW08R5WTPa8LH
-	 +BUrx9IgRDtBgoqUgJuXq6Amrfx5MWv2EEeFi5IJp9UzxylQQpR02YZeF5CcCgkMMy
-	 deJS7lctrswXrdEh3EfaTx4jauYUSHRA14NzIVtwBU1p6PfmfYQ6LToVhKNDiSiY3N
-	 1UDyQNth78WHEu2Ah1kiKyJH270wqyeQDMHv80BNgeaIG1au3ZvJiTqB9k4k/NwDl5
-	 cVy45x4IX/ejw==
-Message-ID: <sashiko-outbox-233947@kernel.org>
+	b=m+wfh5D79lwbI7GbBHW1UYlR4K53MfdXAymlFD5C9svyShVVUUMYWzX/Pcruud2hJ
+	 jiX0PbB/MXG2gIedoY0S8P9ZwJQg2PxsRpVcLP7C2Iql7cBvwzAwRTU/sGs4XHZs6t
+	 KlUvlyy/pT/fbSwYGCbG+DH/drlnumbx2rFlqooKIm20mZmbwhAMWcDpBX3bY2i8Dk
+	 WmhaQbtlwqSZbNRgCiEFK7Tz6pwsiNXA9AwZf7891ylh0hwImhMjGAJYByJ/hn91R9
+	 Op95MO8eYYxXI0p1tJM/5j0VPz5r/6n5MdpXbe+2k7EgrcTSdsASfsYWI4wtIlWu0Y
+	 2oHKFV8cQZCUA==
+Message-ID: <sashiko-outbox-233960@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 14/32] drm/bridge: ti-sn65dsi86: protect device
- resources on unplug
+Subject: Re: [PATCH v4 24/32] drm/bridge: ti-sn65dsi86: implement
+ .get_next_bridge
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
 Cc: dri-devel@lists.freedesktop.org, imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20261125-drm-bridge-hotplug-v4-14-822722850492@bootlin.com>
+In-Reply-To: <20261125-drm-bridge-hotplug-v4-24-822722850492@bootlin.com>
 References: <20261125-drm-bridge-hotplug-v4-0-822722850492@bootlin.com>
- <20261125-drm-bridge-hotplug-v4-14-822722850492@bootlin.com>
+ <20261125-drm-bridge-hotplug-v4-24-822722850492@bootlin.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 25 Nov 2026 18:16:31 +0000
+Date: Wed, 25 Nov 2026 18:18:33 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -61,165 +61,59 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issues to consider:
-- [High] drm/bridge: ti-sn65dsi86: release action registered on wrong
-  device
-- [High] drm/bridge: ti-sn65dsi86: unprotected HPD and debugfs callbacks
-  on unplug
-- [Medium] drm/bridge: unchecked devm_add_action() in
-  ti_sn_bridge_atomic_pre_enable()
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [High] drm/bridge: ti-sn65dsi86: UAF on pdata->next_bridge in
+  sn65dsi86_get_next_bridge()
 --
 
-commit c57970c3929d58f60b46d5db47153169c16eb129
+commit 79f96bd174206efa5c1019cb2a4980bed689b63c
 Author: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-drm/bridge: ti-sn65dsi86: protect device resources on unplug
+drm/bridge: ti-sn65dsi86: implement .get_next_bridge
 
-This commit wraps hardware accesses in bridge callbacks with
-drm_bridge_enter() and drm_bridge_exit(), uses a devres action to release
-resources acquired in ti_sn_bridge_atomic_pre_enable(), and switches
-ti_sn_bridge_remove() to drm_bridge_unplug().
+This commit implements the .get_next_bridge callback and sets
+DRM_BRIDGE_OP_GET_NEXT_BRIDGE to expose the downstream bridge in the
+ti-sn65dsi86 driver.
 
 > diff --git a/drivers/gpu/drm/bridge/ti-sn65dsi86.c b/drivers/gpu/drm/brid=
 ge/ti-sn65dsi86.c
-> index 48b83df9aed61..38318113a534f 100644
+> index 38318113a534f..6dadcd7eb8d18 100644
 > --- a/drivers/gpu/drm/bridge/ti-sn65dsi86.c
 > +++ b/drivers/gpu/drm/bridge/ti-sn65dsi86.c
-[ ... ]
-> @@ -1176,26 +1188,57 @@ static void ti_sn_bridge_atomic_enable(struct drm=
-_bridge *bridge,
-[ ... ]
-> +static void ti_sn_bridge_release_resources(void *data)
-> +{
-> +	struct ti_sn65dsi86 *pdata =3D (struct ti_sn65dsi86 *)data;
-> +
-> +	if (!pdata->refclk)
-> +		ti_sn65dsi86_disable_comms(pdata);
-> +
-> +	pm_runtime_put_sync(pdata->dev);
-> +}
-> =20
->  static void ti_sn_bridge_atomic_pre_enable(struct drm_bridge *bridge,
->  					   struct drm_atomic_commit *state)
->  {
->  	struct ti_sn65dsi86 *pdata =3D bridge_to_ti_sn65dsi86(bridge);
-> +	int idx;
-> +
-> +	if (!drm_bridge_enter(bridge, &idx))
-> +		return;
-> =20
->  	pm_runtime_get_sync(pdata->dev);
-> =20
->  	if (!pdata->refclk)
->  		ti_sn65dsi86_enable_comms(pdata, state);
-> =20
-> +	devm_add_action(pdata->dev, ti_sn_bridge_release_resources, pdata);
-
-[Severity: Medium]
-Does an allocation failure in devm_add_action() leak the runtime PM
-reference and comms state?
-
-If devm_add_action() fails with -ENOMEM, ti_sn_bridge_release_resources()
-is never queued, so a later ti_sn_bridge_atomic_post_disable() hits
-WARN_ON(IS_ERR(dr)) in devm_release_action() and skips releasing the
-resources.  Using devm_add_action_or_reset() would run
-ti_sn_bridge_release_resources() immediately on failure.
-
-> +
->  	/* td7: min 100 us after enable before DSI data */
->  	usleep_range(100, 110);
-> +
-> +	drm_bridge_exit(idx);
+> @@ -743,6 +743,13 @@ static int ti_sn_attach_host(struct auxiliary_device=
+ *adev, struct ti_sn65dsi86
+>  	return devm_mipi_dsi_attach(&adev->dev, dsi);
 >  }
 > =20
->  static void ti_sn_bridge_atomic_post_disable(struct drm_bridge *bridge,
->  					     struct drm_atomic_commit *state)
->  {
->  	struct ti_sn65dsi86 *pdata =3D bridge_to_ti_sn65dsi86(bridge);
-> +	int idx;
+> +static struct drm_bridge *sn65dsi86_get_next_bridge(struct drm_bridge *b=
+ridge)
+> +{
+> +	struct ti_sn65dsi86 *pdata =3D bridge_to_ti_sn65dsi86(bridge);
 > +
-> +	if (!drm_bridge_enter(bridge, &idx))
-> +		return;
-> =20
->  	/* semi auto link training mode OFF */
->  	regmap_write(pdata->regmap, SN_ML_TX_MODE_REG, 0);
-> @@ -1204,17 +1247,21 @@ static void ti_sn_bridge_atomic_post_disable(stru=
-ct drm_bridge *bridge,
->  	/* disable DP PLL */
->  	regmap_write(pdata->regmap, SN_PLL_ENABLE_REG, 0);
-> =20
-> -	if (!pdata->refclk)
-> -		ti_sn65dsi86_disable_comms(pdata);
-> +	devm_release_action(pdata->dev, ti_sn_bridge_release_resources, pdata);
+> +	return pdata->next_bridge ? drm_bridge_get(pdata->next_bridge) : ERR_PT=
+R(-ENODEV);
+> +}
 
 [Severity: High]
-Should ti_sn_bridge_release_resources() be registered on
-&pdata->bridge_aux->dev instead of pdata->dev?
+Can sn65dsi86_get_next_bridge() pass a dangling or ERR_PTR pointer to
+drm_bridge_get()?
 
-During probe, ti_sn_aux_probe() creates pdata->bridge_aux via
-ti_sn65dsi86_add_aux_device() -> __devm_auxiliary_device_create(), which
-queues auxiliary_device_destroy() on pdata->dev.  When
-ti_sn_bridge_atomic_pre_enable() later registers
-ti_sn_bridge_release_resources() on pdata->dev at modeset time, that action
-is queued after auxiliary_device_destroy().
+ti_sn_bridge_probe() obtains pdata->next_bridge with
+devm_drm_of_get_bridge(&adev->dev, np, 1, 0).  For a non-panel downstream
+bridge (such as a DisplayPort connector bridge), devm_drm_of_get_bridge()
+does not hold a reference to the returned bridge, so pdata->next_bridge
+becomes a dangling pointer if the downstream bridge is removed and freed.
 
-Because devres_release_all(pdata->dev) runs actions in reverse order on
-parent I2C device unbind, ti_sn_bridge_release_resources() drops the
-runtime PM reference and powers down the bridge before
-auxiliary_device_destroy() invokes ti_sn_bridge_remove() ->
-drm_bridge_unplug(&pdata->bridge).  Bridge callbacks can then still enter
-drm_bridge_enter() while the chip is powered off, and a concurrent
-ti_sn_bridge_atomic_post_disable() hits WARN_ON(IS_ERR(dr)) in
-devm_release_action() once devres_release_all(pdata->dev) has detached the
-action list.
-
-Conversely, if the bridge auxiliary device is unbound directly (for example
-during ti_sn65dsi86_exit(), which unregisters ti_sn_bridge_driver before
-the I2C driver), ti_sn_bridge_remove() calls drm_bridge_unplug() while
-ti_sn_bridge_release_resources() stays attached to pdata->dev, preventing
-a subsequent ti_sn_bridge_atomic_post_disable() from releasing the runtime
-PM reference.
-
-[ ... ]
-
-> @@ -1475,7 +1535,7 @@ static void ti_sn_bridge_remove(struct auxiliary_de=
-vice *adev)
->  	if (!pdata)
->  		return;
-> =20
-> -	drm_bridge_remove(&pdata->bridge);
-> +	drm_bridge_unplug(&pdata->bridge);
-
-[Severity: High]
-Are ti_sn_bridge_hpd_enable(), ti_sn_bridge_hpd_disable() and status_show()
-still exposed to device resource accesses or runtime PM leaks on unplug?
-
-In DisplayPort mode with an IRQ, ti_sn_bridge_hpd_enable() takes a runtime
-PM reference with pm_runtime_get_sync(pdata->dev) and accesses
-pdata->regmap until ti_sn_bridge_hpd_disable() runs:
-
-drivers/gpu/drm/bridge/ti-sn65dsi86.c:ti_sn_bridge_hpd_enable() {
-	...
-	pm_runtime_get_sync(pdata->dev);
-	...
-	if (client->irq) {
-		ret =3D regmap_set_bits(pdata->regmap, SN_IRQ_EVENTS_EN_REG,
-				      HPD_REMOVAL_EN | HPD_INSERTION_EN);
-	...
-}
-
-Neither HPD callback checks drm_bridge_enter(), and
-ti_sn_bridge_hpd_enable() does not register a devres cleanup action for its
-runtime PM reference.  If the bridge is unplugged while HPD is enabled, the
-runtime PM reference is leaked across device unbind (keeping regulators and
-refclk enabled), or a subsequent HPD disable accesses pdata->regmap after
-drm_bridge_unplug() completes.
-
-Similarly, status_show() in connector debugfs calls
-pm_runtime_get_sync(pdata->dev) and regmap_read(pdata->regmap, ...) without
-drm_bridge_enter() and drm_bridge_exit() protection.
+Even for a panel bridge, its devres release is bound to the child
+auxiliary device (&adev->dev), whereas pdata->bridge lives on the parent
+I2C device and neither ti_sn_bridge_remove() nor the probe error path
+clears pdata->next_bridge.  In addition, ti_sn_bridge_probe() stores the
+result of devm_drm_of_get_bridge() directly into pdata->next_bridge before
+checking IS_ERR(), so a failed re-probe leaves an ERR_PTR in
+pdata->next_bridge that passes the non-NULL check here and is dereferenced
+by drm_bridge_get().
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261125-drm-bridge=
--hotplug-v4-0-822722850492@bootlin.com?part=3D14
+-hotplug-v4-0-822722850492@bootlin.com?part=3D24
