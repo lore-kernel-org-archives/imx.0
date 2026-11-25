@@ -1,59 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795629168;
-	b=fcY2+0iS6JpGUWW56A40owZ5OG8QE9aO7LNDw3vF6+ucXNcogw19lVoQK53zl7PmUGQ6
-	 bMIfi0jC3xARIpYqGAm9PqWwezZNqkRST9SUFE42vxBoskbniXAZBCHBPPjfJRxDzXYDE
-	 WCaHAOFCto7/IsN/cD2JL8Fqi4TvQ7tqpzjkeq5bs0hwol/0n67ko3vSMselGTA3QDqR0
-	 xtcAC1xKx6BG37t+pWnOHXZvkQV4UOhRgBfAOLt4cjNmCgrQV8A928AX9Du8N1CLTKN4T
-	 BUKQLkyuol14jCzTM4hHVdzTtBSky4KmFza/wlGub5Kn92+VeipCHHoRo6Nk3Pgu9Cg==
+	t=1795629170;
+	b=ENTltvi2Jp4EDKT5PQy3UzDUBcfvJ/IbD55lBNUkclrXfrkuYC4Ll0LwIAZd7wSJLZG7
+	 SVrjNV9xZZGK7OhSIyFaoMNff96EngShfCZER+pYt3dP6Vks1MYrn0n/APoy5vl/GYo25
+	 1pfnYg7LijxazQxx5JC+U2wskb9nNarw/GVOFfA46fOVklEEZ2g2g26EGq+A+6nb/ySTH
+	 gmm8OWeCjq/BLRkjxDMLJwSxztRaI98NWrTGmt6DQMZfcoYaMmAWMQ6aCB5uE6UDnkElP
+	 gRdvtNd0kkvyOgUl1d4OdH2QGUjELWRHFjxJGqtJMg4sGoZsMy3lxDzPTXSc61/36lw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795629168;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795629170;
 	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:Date:
 	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Last-TLS-Session-Version;
-	bh=3kouSNyK9R23I+qZ3mr2DQ2vQHuvZbqCaS8A5GKpSiI=;
-	b=oX+MrHdznjVFJyndiCYywwtljLIlTFJYGGbj2sFMobociIUoyRpKhbjfQmGoFfT9Q9vP
-	 0g6ASLHpdrZAEqKiW6WBFOQn3Gu8gnJT4n/2ntCCeeVFanSKl6sW6I6udFImMIFxqAoHw
-	 R95TSgR/3o4kEcA04Dg9pHHG3wGgQg3vlaRXDj3CwMlGWYY9/snvZzmMOPnLfP0qVo/yh
-	 UhDzD5EjRMfJUcx4AaoxpHK2C6y5QEq8m1qmPPVF3fzn+u8Jy1G/JTqOD15OOazdoVkPf
-	 iyu8sZqEy6FYJP29G8jLHVT9uGF+WPL4HqRDxPLfm4/ctR8hpXc0PwjQpCY9Rgvps2g==
+	bh=RnzFylE4eqmz9X0TFyfnFPDf5HfLXIAXRRZ5HrtILc4=;
+	b=x9TWDFLgjxaaXBVj2hdP5OEzGL/EDWoJSryW2y1DYFfLqIMIUfMIM0L85XRbhcDvp4fa
+	 Z9WkUiHntJ4ggQSgJCudiPrd29BCEZ/NHJsNrSchRh5WhDGfCdPZaCiZt+ucdB6Rb5A33
+	 10fnNy8iEqRtQ3akwchQ6ybrq1fIMczKGtvBNDn/mnsmpreG5++FqwlIbyniQ8YZb3K3/
+	 Wb2r7fN3hY/Xf2nbN7tgn/NIEVgrA2CTNnFdsFlyVVh35AFnD5kLYoiC+Jv8Xyj65e0M7
+	 aaIbQO9TniEXpRyXj7noas1augkCVV5boDLxgErab4oaNaYpgA+NKMZXiPOJbPRNtSA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=bootlin.com;
 	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=RYp9veoh;
-	arc=none smtp.remote-ip=185.246.85.4
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=RQojoFzV;
+	arc=none smtp.remote-ip=185.246.84.56
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5431C606A33E
-	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 17:52:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5431C606A33E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C2A5606A32E
+	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 17:52:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4C2A5606A32E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=RYp9veoh
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=RQojoFzV
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 038274E40B00;
-	Wed, 25 Nov 2026 17:52:47 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 14E0B1A17FC;
+	Wed, 25 Nov 2026 17:52:49 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id C0E9260480;
-	Wed, 25 Nov 2026 17:52:46 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5B65A11E6B0D2;
-	Wed, 25 Nov 2026 18:52:40 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id DC27460480;
+	Wed, 25 Nov 2026 17:52:48 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E036D11E6B0CE;
+	Wed, 25 Nov 2026 18:52:38 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1795629164; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1795629166; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=3kouSNyK9R23I+qZ3mr2DQ2vQHuvZbqCaS8A5GKpSiI=;
-	b=RYp9veohHs2JdLBosL+OsjxwlR5ySlzQOAAtmxVHB0PF+kGJfjYwbk9Zr8zNeXJ6OlEbgv
-	6zMyoPjAOXUJULNnrP5XuerZtky0pwNWlOa/oUwIASW95rOPRxAwmAdBoEfqWhjloAAkRz
-	+af48+G//LVpdAxvoMbQb1UibBI5CwcDQtJVmcpSki4kh3KMYcxwHtCgaBDn2SKGwmhk12
-	Ayf5LyU9tRq5MLbV+cfO5AoxQxPhP0QmO9Hhnel5CvxyUPfGLyrWQpzO6gCul208u8Whpu
-	KTRVmtC3+gA1XP/32Aztz+aRTBVY/MvNjItZCiK/GLlZt6TFoHBApm7tO375vw==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-Date: Wed, 25 Nov 2026 18:51:26 +0100
-Subject: [PATCH RFC 12/16] spi: rtk-nor: Consume dummy cycles directly
+	bh=RnzFylE4eqmz9X0TFyfnFPDf5HfLXIAXRRZ5HrtILc4=;
+	b=RQojoFzVUgsQbiwg+QJlkUfgF84tVdad7HtloDKNojeoWwKh7rjTuTDWRPhGAE5gn+mEaV
+	DO/BIC8jLhM9nhzm63yf+jkecJdmDs13QbjGhdiqV8a3sEN6f7C5r2xwdTd43aOzWzIF+0
+	TPLi3g1FEG2HD38YYw9rqF2C+Wrpv3ip6yw6/gN4v1WNQj75imqkhCXPRLVCjSxs7Ruryr
+	LMloxCugzq8ctOkg9n7TBXyGzoV7MQKtFOzrryo/iPUoJZ4JoSH+b3cXtU086r/4ukxYPp
+	+3zBglFhbRO++EwR+35YlVhqZhmEUWRv0ZFiykL55hR0FYZS4vPgeYHmWO00YA==
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Date: Wed, 25 Nov 2026 18:50:30 +0100
+Subject: [PATCH v4 17/32] drm: event-notifier: add mechanism to notify
+ about hotplug events
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -65,129 +66,245 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261125-macronix-upstreaming-spi-mem-cycles-v1-12-fd036402fd37@bootlin.com>
-References: <20261125-macronix-upstreaming-spi-mem-cycles-v1-0-fd036402fd37@bootlin.com>
-In-Reply-To: <20261125-macronix-upstreaming-spi-mem-cycles-v1-0-fd036402fd37@bootlin.com>
-To: Mark Brown <broonie@kernel.org>, Liang Yang <liang.yang@amlogic.com>, 
- Feng Chen <feng.chen@amlogic.com>, Xianwei Zhao <xianwei.zhao@amlogic.com>, 
- Han Xu <han.xu@nxp.com>, Conor Dooley <conor.dooley@microchip.com>, 
- Valentina Fernandez <valentina.fernandezalanis@microchip.com>, 
- Daire McNamara <daire.mcnamara@microchip.com>, 
- Haibo Chen <haibo.chen@nxp.com>, Jyan Chou <jyanchou@realtek.com>, 
- Yu-Chun Lin <eleanor.lin@realtek.com>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Pratyush Yadav <pratyush@kernel.org>, Michael Walle <mwalle@kernel.org>, 
- Takahiro Kuwano <takahiro.kuwano@infineon.com>, 
- Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Alvin Zhou <alvinzhou@mxic.com.tw>, 
- Cheng Ming Lin <chengminglin@mxic.com.tw>, linux-spi@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-amlogic@lists.infradead.org, 
- imx@lists.linux.dev, linux-riscv@lists.infradead.org, 
- linux-stm32@st-md-mailman.stormreply.com, 
- linux-arm-kernel@lists.infradead.org, linux-mtd@lists.infradead.org, 
- Miquel Raynal <miquel.raynal@bootlin.com>
-X-Mailer: b4 0.14.3
+Message-Id: <20261125-drm-bridge-hotplug-v4-17-822722850492@bootlin.com>
+References: <20261125-drm-bridge-hotplug-v4-0-822722850492@bootlin.com>
+In-Reply-To: <20261125-drm-bridge-hotplug-v4-0-822722850492@bootlin.com>
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Andrzej Hajda <andrzej.hajda@intel.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Inki Dae <inki.dae@samsung.com>, Jagan Teki <jagan@amarulasolutions.com>, 
+ Marek Szyprowski <m.szyprowski@samsung.com>, 
+ Jessica Zhang <jesszhan0024@gmail.com>, 
+ Douglas Anderson <dianders@chromium.org>, Marek Vasut <marex@denx.de>, 
+ Stefan Agner <stefan@agner.ch>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: Javier Martinez Canillas <javierm@redhat.com>, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
+ Hui Pu <Hui.Pu@gehealthcare.com>, Ian Ray <ian.ray@gehealthcare.com>, 
+ Luca Ceresoli <luca.ceresoli@bootlin.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+X-Mailer: b4 0.16.0
 X-Last-TLS-Session-Version: TLSv1.3
 
-The spi-mem layer is now capable of providing the dummy phase in cycle
-units rather than bytes, provided that drivers advertize the dummy_cycle
-capability. Since this controller is consuming cycles and currently
-converts bytes into cycles, flag it capable to consume cycles directly
-and drop the extra conversions.
+In preparation for supporting DRM bridge hotplug, add an event notifier to
+allow interested parties to be notified about events they need to react to.
 
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+For the initial implementation of bridge hotplug, a few events are needed:
+
+ * A bridge was added (happening in drm_bridge.c)
+ * A bridge was detached (happening in drm_bridge.c)
+ * A MIPI device was attached to a MIPI host (happening in drm_mipi_dsi.c)
+
+Being originated from different modules, implement the event notifier
+mechanism in a new module with minimal dependencies that event producers
+can easily use to send events.
+
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+
 ---
- drivers/spi/spi-rtk-nor.c | 28 +++++++++++-----------------
- 1 file changed, 11 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/spi/spi-rtk-nor.c b/drivers/spi/spi-rtk-nor.c
-index 55ea7c371854..6febeee2541d 100644
---- a/drivers/spi/spi-rtk-nor.c
-+++ b/drivers/spi/spi-rtk-nor.c
-@@ -92,18 +92,10 @@ struct rtk_spi_host {
- 	size_t			dirmap_size;
- };
+Changes in v3:
+- Renamed to clarify the scope is only about hotplug
+- Extend enum drm_event_notifier_event documentation
+- Add DRM_BRIDGE_ADDED event to support non-DSI (and some DSI too) bridges
+- Reword event description in a more concise way
+- Make DRM_HOTPLUG_EVENT_NOTIFIER a bool, not a tristate: DRM_MIPI_DSI
+  cannot be made a tristate with current code, and it depends on
+  DRM_HOTPLUG_EVENT_NOTIFIER
+- Use EXPORT_SYMBOL_GPL instead of EXPORT_SYMBOL to avoid GPL-bypass of the
+  notifier API
+
+Changes in v2:
+- added missing include
+---
+ MAINTAINERS                                  |  8 ++++
+ drivers/gpu/drm/Kconfig                      |  3 ++
+ drivers/gpu/drm/Makefile                     |  2 +
+ drivers/gpu/drm/drm_hotplug_event_notifier.c | 62 ++++++++++++++++++++++++++++
+ include/drm/drm_hotplug_event_notifier.h     | 52 +++++++++++++++++++++++
+ 5 files changed, 127 insertions(+)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 0afa391498d0..a5e2bf15e59f 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -9320,6 +9320,14 @@ F:	include/drm/drm_gpusvm.h
+ F:	include/drm/drm_pagemap.h
+ F:	include/drm/drm_pagemap_util.h
  
--static u32 rtk_spi_calc_dummy_cycles(const struct spi_mem_op *op)
--{
--	if (!op->dummy.nbytes)
--		return 0;
--
--	return (op->dummy.nbytes * 8) / op->dummy.buswidth;
--}
--
- static void rtk_spi_read_mode(struct rtk_spi_host *host, const struct spi_mem_op *op)
- {
- 	u32 opcode = op->cmd.opcode;
--	u32 dummy_cycles, val;
-+	u32 val;
++DRM HOTPLUG EVENT NOTIFIER
++M:	Luca Ceresoli <luca.ceresoli@bootlin.com>
++L:	dri-devel@lists.freedesktop.org
++S:	Maintained
++T:	git https://gitlab.freedesktop.org/drm/misc/kernel.git
++F:	drivers/gpu/drm/drm_hotplug_event_notifier.c
++F:	include/drm/drm_hotplug_event_notifier.h
++
+ DRM LOG
+ M:	Jocelyn Falempe <jfalempe@redhat.com>
+ M:	Javier Martinez Canillas <javierm@redhat.com>
+diff --git a/drivers/gpu/drm/Kconfig b/drivers/gpu/drm/Kconfig
+index 61111d50b1c6..5268bf47b2e3 100644
+--- a/drivers/gpu/drm/Kconfig
++++ b/drivers/gpu/drm/Kconfig
+@@ -33,6 +33,9 @@ endmenu
  
- 	if (op->data.buswidth == 2)
- 		opcode |= DUAL_MODE_EN;
-@@ -113,10 +105,8 @@ static void rtk_spi_read_mode(struct rtk_spi_host *host, const struct spi_mem_op
- 	val = readl(host->regbase + SFC_CTL);
- 	val |= RW_DATAEN | ADDR_EN;
+ if DRM
  
--	dummy_cycles = rtk_spi_calc_dummy_cycles(op);
--
- 	val &= ~SFC_CTL_DMYCNT_MASK;
--	val |= (dummy_cycles << SFC_CTL_DMYCNT_SHIFT) & SFC_CTL_DMYCNT_MASK;
-+	val |= (op->dummy.ncycles << SFC_CTL_DMYCNT_SHIFT) & SFC_CTL_DMYCNT_MASK;
- 	writel(val, host->regbase + SFC_CTL);
++config DRM_HOTPLUG_EVENT_NOTIFIER
++	bool
++
+ config DRM_MIPI_DBI
+ 	tristate
+ 	depends on DRM
+diff --git a/drivers/gpu/drm/Makefile b/drivers/gpu/drm/Makefile
+index 2c6bc093a923..e4268c5b771a 100644
+--- a/drivers/gpu/drm/Makefile
++++ b/drivers/gpu/drm/Makefile
+@@ -95,6 +95,8 @@ drm-$(CONFIG_DRM_DRAW) += drm_draw.o
+ drm-$(CONFIG_DRM_RAS) += drm_ras.o drm_ras_nl.o drm_ras_genl_family.o
+ obj-$(CONFIG_DRM)	+= drm.o
  
- 	readl(host->iobase);
-@@ -192,7 +182,7 @@ static int rtk_spi_command_read(struct rtk_spi_host *host, const struct spi_mem_
- 	size_t len = op->data.nbytes;
- 	loff_t offset = op->addr.val;
- 	u8 opcode = op->cmd.opcode;
--	u32 dummy_cycles, val;
-+	u32 val;
- 
- 	writel(opcode, host->regbase + SFC_OPCODE);
- 
-@@ -203,8 +193,7 @@ static int rtk_spi_command_read(struct rtk_spi_host *host, const struct spi_mem_
- 	if (op->addr.nbytes > 0)
- 		val |= ADDR_EN;
- 
--	dummy_cycles = rtk_spi_calc_dummy_cycles(op);
--	val |= (dummy_cycles << SFC_CTL_DMYCNT_SHIFT) & SFC_CTL_DMYCNT_MASK;
-+	val |= (op.dummy.ncycles << SFC_CTL_DMYCNT_SHIFT) & SFC_CTL_DMYCNT_MASK;
- 	writel(val, host->regbase + SFC_CTL);
- 
- 	return rtk_spi_byte_transfer(host, offset, len, op->data.buf.in, true);
-@@ -346,8 +335,8 @@ static bool rtk_spi_supports_op(struct spi_mem *mem,
- 	if (!op->addr.nbytes && op->data.nbytes > 1)
- 		return false;
- 
--	if (op->dummy.nbytes != 0) {
--		if (op->dummy.buswidth > 1 || op->dummy.nbytes > 7)
-+	if (op->dummy.ncycles) {
-+		if (op->dummy.buswidth > 1 || op->dummy.ncycles > 7 * BITS_PER_BYTE)
- 			return false;
- 	}
- 
-@@ -464,6 +453,10 @@ static const struct spi_controller_mem_ops rtk_spi_mem_ops = {
- 	.adjust_op_size = rtk_spi_adjust_op_size,
- };
- 
-+static const struct spi_controller_mem_caps rtk_spi_mem_caps = {
-+	.dummy_cycles = true,
++obj-$(CONFIG_DRM_HOTPLUG_EVENT_NOTIFIER) += drm_hotplug_event_notifier.o
++
+ obj-$(CONFIG_DRM_PANEL) += drm_panel.o
+ obj-$(CONFIG_DRM_PANEL_ORIENTATION_QUIRKS) += drm_panel_orientation_quirks.o
+ obj-$(CONFIG_DRM_PANEL_BACKLIGHT_QUIRKS) += drm_panel_backlight_quirks.o
+diff --git a/drivers/gpu/drm/drm_hotplug_event_notifier.c b/drivers/gpu/drm/drm_hotplug_event_notifier.c
+new file mode 100644
+index 000000000000..9cc252d10c73
+--- /dev/null
++++ b/drivers/gpu/drm/drm_hotplug_event_notifier.c
+@@ -0,0 +1,62 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Internal event notifier of events about DRM bridge hotplug
++ *
++ * Copyright (C) 2026 GE HealthCare
++ * Author: Luca Ceresoli <luca.ceresoli@bootlin.com>
++ */
++
++#include <linux/module.h>
++#include <linux/notifier.h>
++
++#include <drm/drm_hotplug_event_notifier.h>
++
++static BLOCKING_NOTIFIER_HEAD(drm_hotplug_event_notifier);
++
++/**
++ * drm_hotplug_event_notifier_register - Register to be notified of DRM
++ *                                       hotplug events
++ * @nb: the notifier block to be registered
++ *
++ * @nb will be notified of events defined in
++ * &drm_hotplug_event_notifier_event
++ *
++ * Returns 0 on success, %-EEXIST on error.
++ */
++int drm_hotplug_event_notifier_register(struct notifier_block *nb)
++{
++	return blocking_notifier_chain_register(&drm_hotplug_event_notifier, nb);
++}
++EXPORT_SYMBOL_GPL(drm_hotplug_event_notifier_register);
++
++/**
++ * drm_hotplug_event_notifier_unregister - Unregister from being notified
++ *                                         of DRM hotplug events
++ * @nb: the notifier block to be unregistered
++ *
++ * @nb will stop being notified of events defined in
++ * &drm_hotplug_event_notifier_event
++ *
++ * Returns zero on success or %-ENOENT on failure.
++ */
++int drm_hotplug_event_notifier_unregister(struct notifier_block *nb)
++{
++	return blocking_notifier_chain_unregister(&drm_hotplug_event_notifier, nb);
++}
++EXPORT_SYMBOL_GPL(drm_hotplug_event_notifier_unregister);
++
++/**
++ * drm_hotplug_event_notifier_notify - Emit an event to be notified to
++ *                                     registered entities
++ * @event: event ID as defined in &drm_hotplug_event_notifier_event
++ * @data: metadata associated to the event
++ */
++void drm_hotplug_event_notifier_notify(unsigned long event, void *data)
++{
++	blocking_notifier_call_chain(&drm_hotplug_event_notifier, event, data);
++}
++EXPORT_SYMBOL_GPL(drm_hotplug_event_notifier_notify);
++
++MODULE_LICENSE("GPL");
++MODULE_AUTHOR("Luca Ceresoli <luca.ceresoli@bootlin.com>");
++MODULE_DESCRIPTION("Notifier for DRM components addition/removal and attach/detach");
+diff --git a/include/drm/drm_hotplug_event_notifier.h b/include/drm/drm_hotplug_event_notifier.h
+new file mode 100644
+index 000000000000..008e041444be
+--- /dev/null
++++ b/include/drm/drm_hotplug_event_notifier.h
+@@ -0,0 +1,52 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * Internal event notifier of events about DRM bridge hotplug
++ *
++ * Copyright (C) 2026 GE HealthCare
++ * Author: Luca Ceresoli <luca.ceresoli@bootlin.com>
++ */
++
++#ifndef _DRM_HOTPLUG_EVENT_NOTIFIER_H_
++#define _DRM_HOTPLUG_EVENT_NOTIFIER_H_
++
++#include <linux/notifier.h>
++
++/**
++ * enum drm_hotplug_event_notifier_event - DRM bridge hotplug and
++ *                                         hotunplug events
++ *
++ * Describe any event about DRM bridge appearing, disappearing, or getting
++ * connected at runtime (hotplug). Any of these events may need to trigger
++ * a response in order to start or stop the video pipeline, including
++ * creating or destroying a drm_connector.
++ *
++ * Each of these events is accompanied by a void* argument, whose meaning
++ * is event-specific and defined per each event.
++ */
++enum drm_hotplug_event_notifier_event {
++	/**
++	 * @DRM_MIPI_DSI_ATTACHED: A MIPI DSI device has just been attached
++	 * to its MIPI DSI host. @data is a pointer to the attached &struct
++	 * mipi_dsi_device.
++	 */
++	DRM_MIPI_DSI_ATTACHED,
++	/**
++	 * @DRM_BRIDGE_ADDED: A bridge has just been added by calling
++	 * drm_bridge_add(). As such, it is not yet attached to an encoder
++	 * and is not part of any encoder bridge chain. @data is a pointer
++	 * to the added &struct drm_bridge.
++	 */
++	DRM_BRIDGE_ADDED,
++	/**
++	 * @DRM_BRIDGE_DETACHED: A bridge has just been detached and
++	 * removed from the encoder bridge chain. @data is a pointer to the
++	 * detached &struct drm_bridge.
++	 */
++	DRM_BRIDGE_DETACHED,
 +};
 +
- static int rtk_spi_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
-@@ -535,6 +528,7 @@ static int rtk_spi_probe(struct platform_device *pdev)
- 	ctrl->mode_bits = SPI_RX_DUAL | SPI_TX_DUAL;
- 	ctrl->bus_num = -1;
- 	ctrl->mem_ops = &rtk_spi_mem_ops;
-+	ctrl->mem_caps = &rtk_spi_mem_caps;
- 	ctrl->num_chipselect = 1;
- 	ctrl->auto_runtime_pm = true;
- 
++int drm_hotplug_event_notifier_register(struct notifier_block *nb);
++int drm_hotplug_event_notifier_unregister(struct notifier_block *nb);
++void drm_hotplug_event_notifier_notify(unsigned long event, void *data);
++
++#endif /* _DRM_HOTPLUG_EVENT_NOTIFIER_H_ */
 
 -- 
-2.56.0
+2.56.1
 
