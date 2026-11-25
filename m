@@ -1,123 +1,108 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=205.220.180.131
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795619254;
-	b=b+vRXxsyZra/rLWgM/euXiz1sZh1gZy5I3QH99IsijP4FOobc99MEBGzOyAp+jSEiiFJ
-	 HSk6v8hsw8PAvBaLCvircu7+ayQxie0pml2w+G2McZoWxHxoHWQnhFwiU+0DfR7a2pDGC
-	 9r064lXmBn0KaJro9JxQAEGkGjqZYIHiDX0dpE9rkzAg8YmuUyOi8S9EIj5WDOGpY+Nhg
-	 CM0HIN9YYIbDaZzKjwYvhf8w2IOnjdYyKNp55Udrwag7pWvj8kczEeDThS2g5qrFoO4JI
-	 3v1BaDaC9YwsJL6emLlXhKtoFV+oQXgqU3639kionZV/3a2IJazn8YSX852ZKnmRh2w==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795619254;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
-	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:MIME-Version:
-	 References:In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:
-	 Cc:Content-Type:Content-Transfer-Encoding:X-Authority-Analysis:
-	 X-Proofpoint-GUID:X-Proofpoint-ORIG-GUID:X-Proofpoint-Spam-Info:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details;
-	bh=db+Ha9wyQwvqpCYlhHffmTpkau51LqeWzqMbVXiyKQ4=;
-	b=A+hhP19MDqkYRDViP+HMX5iuxm7coTMTMZl+RfZLLOZf6mBBbXasxERtQpwOYks3RBK3
-	 FlDxXi8kapJhBBXJOgttHUZxdOw5aajCBWyqpIPy7Af2gZYEVYREbR1W7bXIgWpPm5kzO
-	 hlf7Pc1iC4tvTinGTmmRfObHifs7X/7dyl+MynLcRFVo/mJkzTUgq81Oj24Ambs4FG+aA
-	 mt7Sb7Q+14tnfOmeQnPhfq6oTLek4xCrb7lArtwiznsDO15hHeySlZXu5z6qjKHYa7A/W
-	 z0PC3/0gSaZk4VpCAc8Y6ci9FJ4NzMN8PPDIATLUxqeyyJi2c1L/xHd/tM7SnZlG+hA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.qualcomm.com;
-	spf=pass smtp.mailfrom=oss.qualcomm.com;
-	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=g1iGMU5+;
-	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=CEomMebp;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=205.220.180.131
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.42
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795620043;
+	b=TQPr+AnFpp7/escYSB813eLnrkgE2yAm5XgM5OTCyWecZ7pFD2mw9hSAfO2XZkpYscdq
+	 B5yap/cXZp/sUWUyZG7b0hc7eOH3OTSUG9MYKrOci8ccnbK1rYK2k14u+P1wwDWHWGrsF
+	 JKKt69iGV4QOnChJbDzuhnAsCBfUz3r/oOItTsTyEnC+Mjf4J9DzmDBfc3ReFhu+3gHRp
+	 ynCxWOFqefXLVFg4HbFwHlzXimBEvtQAednVhPnPpp4+xItwqBppu/07J1J08CQJK1UEo
+	 8gpcEQNaBXixQ0mqHM0QlGRobG31C07F5B86RIoANY71zhM+lPKMWO/+ZE0njzO3Q2A==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795620043;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=U7BBvICMuzzfnr5B7tFxaU0ZRbyofyJaoqar4LTl4jM=;
+	b=RsbLzRwLCFIHJ6R5vuS6nosgBxiyHCyG/SBPUqqIQS7n4JD/Yd4sC2V0KLGa1jN6fiSL
+	 dpTI06OcMOqGBSynDi99F15OcwMTpOabBsMObcfYA47yzaM6+fcbsSgagw0fJxrumhbLg
+	 WwoMm4ondVV30sRGq7AMDM+g4ry7EXsEdPyDAdUTngdMerkS4ZRC7RQe4SjCuJ89Hg3Sz
+	 dpLjlFD89kzPaeOn4SKi6j87p7ISLZB61S4mdVbpUl6wincnRXdxO0/eLc/Gc/wzgchcw
+	 3eT/Oiyb/MBvRLYpWS4qobp8WK5uyybEZ4WIwIbqmpdC3FMYUhGGxZupAJoMM1nTsEA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=JcHY77k9;
+	arc=none smtp.remote-ip=209.85.208.42
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F282606A32E
-	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 15:07:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4F282606A32E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C97EA606A32C
+	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 15:20:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C97EA606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=g1iGMU5+;
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=CEomMebp
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6APEM4Df539778
-	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 15:07:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	db+Ha9wyQwvqpCYlhHffmTpkau51LqeWzqMbVXiyKQ4=; b=g1iGMU5+iI+taWPx
-	yLKnXluxP0uaMQZ6O5vPH2iEJkzvOVHnbjFOxlUKSgN9I0PnTwKk9RPx0tz5phAE
-	cWXakaxrTlDBuo7Ig0ayxg17cVaHRUvakyzifrARLhcIgTZpCsEH6XS8Zm9/J4wZ
-	RXv0fAKx89tE2ZoK/4K+jz6tuSEyQjzpKoEat/afA6amSKDrjYvpqTeB9cRZsJbX
-	pRXFEREHLj3Q0aKAwidv2GoSEMoP/vmxEhm0axosUN/os6TTs9KZmu04624uM7Nr
-	ASb1nzQhhyAYBm/r0M49GHRkHxqW+wg42e+m20IdMGvKqw2YgnMNycX1SM6phLCC
-	sLz5Lg==
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4j5vuhsf97-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 15:07:32 +0000 (GMT)
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-3b0a13ae043so6277666a91.0
-        for <imx@lists.linux.dev>; Wed, 25 Nov 2026 07:07:32 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795619252; cv=none;
-        d=google.com; s=arc-20260327;
-        b=T656X5707Je3Gkn+GIEBy3QZNFqYoMZEiIWsYaCXbgqKSFSNYeVI8SYkojyUnOIJej
-         WLCF98VykNQThNNpCBDm78k/Kyu7qglDpDQ+EgSwLNtHNJ+FDOO8gpe75w0lGYWnRz7D
-         809ypakM4JjfcBJ6jA2FZGUCZzwZ0nmBEb2VNTJXig4L+1MZUkX6fh62f634t9gd1HM3
-         pRRwSPZbgbgKyXyY0TdZjZDlbFEo4bXxh+w6xpHyLWoZF1EmX010HaVbauVr9rDZRm0S
-         4rRQBSo1L90G87Ge91GfY++Z1hC20HGu+g7jdn6fvN50UBgLYVwhXcezSwSzO+OMByqu
-         LRMQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=db+Ha9wyQwvqpCYlhHffmTpkau51LqeWzqMbVXiyKQ4=;
-        fh=ew/Y/CDrGUnxldwbetxqRROT3rQSGZeJS8oTpbOWF/U=;
-        b=dId+NaDZyAs+x253bt9IzkWGrOOLAtNk+aOeMPiezQAS5iVyLW76+yj5rGGF8jK+F7
-         j5wG2Z6M8rUwPNEdoipFljLfq/ccgTVFjMZ6hb1bIQSqO1nxFqAsvnul15VF5Rkqtnte
-         7cfaShpfmQq2v/K/D5+wZnMYCmpXIfayFJYs7HibpgDqpS+57g8HCo+zwWv+ZVxzoU1J
-         X0T7NZbXOayB5nAWHeiIp0Dabv8BPICv2JC4f3TzYB3oOR3lLCip0JF8Mqq6E3U+ipZt
-         YdUZigrZhLycA8RQpC6HGJVSrHcLxZJQ9mstGENioLodMXuZonGovL3Mz+7KxYghYeL9
-         Nx9w==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=JcHY77k9
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-6bae06f2b8aso419998a12.2
+        for <imx@lists.linux.dev>; Wed, 25 Nov 2026 07:20:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1795619252; x=1796224052; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+        d=gmail.com; s=20260707; t=1795620041; x=1796224841; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=db+Ha9wyQwvqpCYlhHffmTpkau51LqeWzqMbVXiyKQ4=;
-        b=CEomMebpVmS49rSVLFIlNelto+dZ3PMXctuB97pVuYK5NSimqi+XEUp0QcQkaOYsC5
-         gs+zXb7RTegiNISPwZAgjKosUPT1l/7iBBfOQlCdnqeji67zgj1v9c+Wgx5aAbxs+Fw0
-         gylsOsApj2pJlbPwNOS1KvoA0D3AqgyYuUB0M2ZjvQXQYNtOGMIM/5GsvBIKNTSM8DPd
-         mlsX12J/cYTBlv9bpmgZ3ijHLZwW/09S7CW469oG/XQ/P3cRWpQgkWHNTSR/GP4yv0Iv
-         k9GEsqIHGWyDOTRyCmP6M70Q6lWaT94Ur4Np3vKQAIqoVyp+ysE4Dkehz2Q/uwe+KRTH
-         TPpQ==
+        bh=U7BBvICMuzzfnr5B7tFxaU0ZRbyofyJaoqar4LTl4jM=;
+        b=JcHY77k9pdDiOrSUDoEp/ZNTHUc/4GRA9tmQ9pXVpjtonOrz10Wx/q3pfNaavHfc5L
+         wM3O4R+3rCEcOpmYr81TW3p3mdqrdphQi0TvSw5nSEIBiNtZJUILInxBkKTw8Yqj7FXf
+         uO3PG75XIuDdBYoF8ZGMN6VHcSq34IE7Pv49grxsXHJf3oRo+rOhg1sBalOHuQBPl/Mj
+         Yytc3omvKuEmz5sbpTK7El9Pjr+RCb0hdCPIt6PdOtCi0NxEVbW7j6FiXQ2JcOl5N17e
+         ZXmXPsZFKW+/1nweCRdNOtK7jOaf57ascG0qMSd1X+L2WwpQAzqWf0NN0rd6WOqF4rz9
+         7xOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795619252; x=1796224052;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1795620041; x=1796224841;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=db+Ha9wyQwvqpCYlhHffmTpkau51LqeWzqMbVXiyKQ4=;
-        b=etGtXwtL5RdV9FkHp84MRc2htW68VwHxL2TT+Lm4xp/tcKRG9STwTz4NnNeDKu21Yt
-         c2WVWwlXflL90P6u+QmzIxaRBwhJMTutJdY0PsUwnbS+Hqz5BdL377YG/o1jzc4KNJ1r
-         Ug+iy89YYYVrBgUg3NwLjFNtYfrC/QKKSAwRNfT3cj2LSXhmgPQL3g6Wl9+EAGpApTNL
-         abM25ZfZTd9Vx+myxvfYCRK/akE6dRfDWrXgdDxC7nzgOOjVzng5fPks8fb4MEQ7Ahgn
-         VKfX20zEzFWgLusTVdDsUIM1RTa9/XsD1Fmqxl+mL8+YmTbDKRndC2JdSdSDNoH4YwzG
-         h/fA==
-X-Forwarded-Encrypted: i=1; AL+hErFNPlNrvZn6fvhdcYgZVLTXVTp64uRjcv63chVwMXjEeGZNVTFNxm9e+IOXkkxamFFHvQ8=@lists.linux.dev
-X-Gm-Message-State: APuU4Z+Z0PDQOcsN9v0DnOhznwDKaS0qi6XM9BbQnXPhQlD0vFF4auX1
-	xBuwibjfnInh25pxNUo+EixPs6HXdKpkuD7MXKbJRg0L2JRWvt+KN9zIoq4tM+47JAA7hm29AFj
-	/7lHRCUhZublHVPcFy8zWz47OLqZHBO78LOh1bGkJwiTEH9ulO/XVl5yxxnxdQUHBksdDlkAxwi
-	7eOVSr/KDlW/eEdNHxr8esd7XWDrniAQ==
-X-Gm-Gg: AZFdTZcrEMeR2eilgy/9WtMXlAmuBNJqnTv/GvjT+N9kMr2LDuj9rRu+prv9ZjYbWCL
-	DJAOcUbFYXc1WMNwXGpdZc41kQWNxXEZEcjvwJKpduBy1ZcCpbeyXvo+abWdT7tO8uSkgg1qagp
-	Gv7oZcfaxwF0pUgoHHk7X4Gp5XmUIZmX9Q3/pDu5U0AHDIzj6bdbjCuZZ4HA==
-X-Received: by 2002:a17:90b:4983:b0:3b0:97b8:d6b7 with SMTP id 98e67ed59e1d1-3b41c931d29mr17812832a91.42.1795619251752;
-        Wed, 25 Nov 2026 07:07:31 -0800 (PST)
-X-Received: by 2002:a17:90b:4983:b0:3b0:97b8:d6b7 with SMTP id
- 98e67ed59e1d1-3b41c931d29mr17812748a91.42.1795619251127; Wed, 25 Nov 2026
- 07:07:31 -0800 (PST)
+        bh=U7BBvICMuzzfnr5B7tFxaU0ZRbyofyJaoqar4LTl4jM=;
+        b=Ju38HeoZ+CG2msPt+1XIwSy0cP50onGGJo1fNiNcF3w4IPHNPoV2JAZZmjuMIg0osY
+         Co/SIR3J1OuhqJy27Ll4oBXrAqJQh5bCvkOMk4QenjiRIT8GrcHXDd+9Brps+cvBQqqY
+         XPE4vp0VWIpa5bkalwhBZkBey/gT1u1kjHwgSh/ilSzDHSOgf1kHiy4gPYVEyF8W+o2L
+         135ujCaJS1Tf14qE4g7wpKj6SKUYMMDi0CfyPXTJkqIfDY/ZBVsExpMqoArgwHNKSh2U
+         5bbhMDdqKBcsgLyEIPO7GWHBxdhBVIlk/HYmo+/6HafWLN+MElqpqfs44uZNqiLIFcPf
+         Wgtw==
+X-Forwarded-Encrypted: i=1; AL+hErGWh3P3IVaaQXMWjW2xeuaFxKa/Ffy9gEOz87Pn1iSn7uoAY1Z5eZ4LZ23WJOvGBFM5f6U=@lists.linux.dev
+X-Gm-Message-State: APuU4Z911Y2PfPyRPySRxztIAEilmQhakRW2aHeXrXaV3MkubkU3d1Id
+	ayXeCGspyMLlgWt7Wf9QhG7/kvoRM/ctkH/wCQUYBS/uuB28+hZmdm02
+X-Gm-Gg: AZFdTZdaLYZ7m0eJCByX4kQpUxCWlleur7zNO1WprCMYa3jyIxyhb5Nv4fzVAvnyoTV
+	nPw5U0AvcIG90gYZmJgDwUUyOHifAopWU5cxFNiU9zETkTzq8UzB+Y565HH9Ayq+duN6PVJAcu6
+	boIumO0JLPHaC+EqigYQBsG8AjxeCrnXqGyqmU8qlzB+V9bCf9ciZObytB+7DwheRYkp9jQniXs
+	MtDxQ18CF35FDrcaEsEypekoh7fUlB28/0AMy5XEcmzdc0skVx7qadvDtpSlVyPW1T7v/p8/1fs
+	ikOiu6SQY9L+BbR9WhzpV50OECV8h7JQ4GB0YHADZyI4+9msVSlnX8450xFWlHisiYIpLvY3him
+	0kr55qkyOOyhlnPP9UVr7pS1pJ47cxxXQ1cZeLccT+DsTnvEbI1jBVd0A6KkGUXad4G8qfTLgra
+	1ZJxZTFmEDrFjvm4LrzHvtg/tbdDuVwhmZBNrCIwS487v2TVths2I6jTi2vRXZZmZFpH98nIYTO
+	rUtvznjtuavx1ip4I/lyv4GdS2izibvpWJ2OwLh16FC11jSH50/WjscpjA3gizn4FS6uR7e0lTw
+	YMTucIrPh7a8xQzt6O4V
+X-Received: by 2002:a05:6402:90d:b0:6b7:dace:635d with SMTP id 4fb4d7f45d1cf-6ba37ac9214mr15694051a12.0.1795620041130;
+        Wed, 25 Nov 2026 07:20:41 -0800 (PST)
+Received: from skbuf ([2a02:2f04:d401:2601:d3cc:6bc:a861:f9da])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6ba370e78a7sm8131962a12.16.2026.11.25.07.20.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Nov 2026 07:20:39 -0800 (PST)
+Date: Wed, 25 Nov 2026 17:20:36 +0200
+From: Vladimir Oltean <olteanv@gmail.com>
+To: Inochi Amaoto <inochiama@gmail.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Randy Dunlap <rdunlap@infradead.org>, Damien Le Moal <dlemoal@kernel.org>, 
+	Niklas Cassel <cassel@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Aksh Garg <a-garg7@ti.com>, 
+	Lorenzo Pieralisi <lpieralisi@kernel.org>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	Manivannan Sadhasivam <mani@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Bjorn Helgaas <bhelgaas@google.com>, Vinod Koul <vkoul@kernel.org>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Rhys Tumelty <rhys@tumelty.co.uk>, 
+	Manikandan K Pillai <mpillai@cadence.com>, "vladimir.oltean@nxp.com" <vladimir.oltean@nxp.com>, 
+	Qiang Yu <qiang.yu@oss.qualcomm.com>, Hans Zhang <18255117159@163.com>, Yao Zi <me@ziyao.cc>, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-ide@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org, 
+	linux-phy@lists.infradead.org, Yixun Lan <dlan@gentoo.org>, Longbin Li <looong.bin@gmail.com>
+Subject: Re: [PATCH v5 4/8] phy: core: Add phy bulk data helper functions
+Message-ID: <awb8ZycWk2PJzTUD@skbuf>
+References: <20261125043639.249525-1-inochiama@gmail.com>
+ <20261125043639.249525-1-inochiama@gmail.com>
+ <20261125043639.249525-5-inochiama@gmail.com>
+ <20261125043639.249525-5-inochiama@gmail.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -127,256 +112,32 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-References: <20261117173738.1073856-1-Frank.Li@oss.nxp.com> <20261117173738.1073856-2-Frank.Li@oss.nxp.com>
-In-Reply-To: <20261117173738.1073856-2-Frank.Li@oss.nxp.com>
-From: Ulf Hansson <ulf.hansson@oss.qualcomm.com>
-Date: Wed, 25 Nov 2026 16:07:19 +0100
-X-Gm-Features: Aa3M54qdNdgAc_JRldH76LdEJD_mei5kpsUzvFW9k6ee3hswc_FKGO5qrF_F3iw
-Message-ID: <CAPx+jO9RwkpSKwq6vq00uoXK-mcovJ2LMH7b_ByRnxOUj8nH8w@mail.gmail.com>
-Subject: Re: [PATCH v3 2/2] PM: runtime: fix stub pm_runtime_get_if_in_use()
- for !CONFIG_PM
-To: Frank.Li@oss.nxp.com
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-        Heiko Stuebner <heiko@sntech.de>, Ulf Hansson <ulfh@kernel.org>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        Matthew Auld <matthew.auld@intel.com>,
-        Hans de Goede <hansg@kernel.org>,
-        Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
-        Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-        Mark Brown <broonie@kernel.org>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
-        Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-        Yong Wu <yong.wu@mediatek.com>, Will Deacon <will@kernel.org>,
-        Tomasz Figa <tfiga@chromium.org>, Marek Vasut <marex@denx.de>,
-        Michael Tretter <m.tretter@pengutronix.de>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Hans Verkuil <hverkuil@kernel.org>,
-        "open list:POWER MANAGEMENT CORE" <linux-pm@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        "moderated list:ARM/Mediatek SoC support:Keyword:mediatek" <linux-arm-kernel@lists.infradead.org>,
-        "moderated list:ARM/Mediatek SoC support:Keyword:mediatek" <linux-mediatek@lists.infradead.org>,
-        "open list:ARM/Rockchip SoC support:Keyword:b[Rr]ock[Cc]hipb" <linux-rockchip@lists.infradead.org>,
-        imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Tvrtko Ursulin <tursulin@ursulin.net>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Hellstrom <thomas.hellstrom@linux.intel.com>,
-        Simona Vetter <simona@ffwll.ch>, David Airlie <airlied@gmail.com>,
-        Matthew Brost <matthew.brost@intel.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Alessio Belle <alessio.belle@imgtec.com>,
-        Luigi Santivetti <luigi.santivetti@imgtec.com>,
-        Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        Bard Liao <yung-chuan.liao@linux.intel.com>,
-        Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Dafna Hirschfeld <dafna@fastmail.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Daniel Baluta <daniel.baluta@nxp.com>,
-        Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
-        dri-devel@lists.freedesktop.org, imagination@lists.freedesktop.org,
-        intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
-        iommu@lists.linux.dev, linux-media@vger.kernel.org,
-        linux-sound@vger.kernel.org, sound-open-firmware@alsa-project.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Authority-Analysis: v=2.4 cv=FPmOVOos c=1 sm=1 tr=0 ts=6b06f9b4 cx=c_pps
- a=vVfyC5vLCtgYJKYeQD43oA==:117 a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10
- a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
- a=gowsoOTTUOVcmtlkKump:22 a=8AirrxEcAAAA:8 a=VwQbUJbxAAAA:8 a=QyXUC8HyAAAA:8
- a=GFqr32JmAAAA:8 a=pGLkceISAAAA:8 a=r_1tXGB3AAAA:8 a=iox4zFpeAAAA:8
- a=7CQSdrXTAAAA:8 a=mpaa-ttXAAAA:8 a=QX4gbG5DAAAA:8 a=ZLGELXoPAAAA:8
- a=P1BnusSwAAAA:8 a=zd2uoN0lAAAA:8 a=e5mUnYsNAAAA:8 a=JfrnYn6hAAAA:8
- a=foHCeV_ZAAAA:8 a=Idd5WaZmN1QeKTrTtQEA:9 a=QEXdDO2ut3YA:10
- a=rl5im9kqc5Lf4LNbBjHf:22 a=ST-jHhOKWsTCqRlWije3:22 a=f02Ha7HRcztGgdyUxOxW:22
- a=t8nPyN_e6usw4ciXM-Pk:22 a=WzC6qhA0u3u7Ye7llzcV:22 a=a-qgeE7W1pNrGK8U0ZQC:22
- a=AbAUZ8qAyYyZVLSsDulk:22 a=CFiPc5v16LZhaT-MVE1c:22 a=D0XLA9XvdZm18NrgonBM:22
- a=Vxmtnl_E_bksehYqCbjh:22 a=1CNFftbPRP8L7MoqJWF3:22 a=h8a9FgHX5U4dIE3jaWyr:22
-X-Proofpoint-GUID: m3zDKAG08QBlST0BsG3Hc6Y2QaoMsKxF
-X-Proofpoint-ORIG-GUID: m3zDKAG08QBlST0BsG3Hc6Y2QaoMsKxF
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTI1MDA2MCBTYWx0ZWRfX2ugF5mWGbcnN
- UMStDhyfwhVoh8LF9loDekKr5hCTOjfwHbrKGzoeLxTbvlDB6+RairfEEEMUb25ISzSQU4d9CA/
- CHU8OqyIU1CeHKTeN2aLsXzfTrviI/E=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTI1MDA2MCBTYWx0ZWRfX9+Gr/yPDn2nG
- muXhLO1WHiXSit4J4D/HhX+xtvT6JcZ+NiunlBas+kFKZ1ZYH/8UU3tXOMX2DOIk70vZC1koywq
- YT7ILNRi8ujrz7C+/OuC26lMnybmqtpeZB8ee13cy6keqMym+z87WxqGP9ej9NbOda6w3QELNXi
- hnTMIYRHBvyLmS/oAI9ZqjoHbmgzCz+z7CphQX3WfWTHHJRzj4+/X7vWR70BoUPEb3FlP5azIEv
- cCTKNZApf7WnmJ2ZYyBdYxh6ptDne97V12dlP0DKOMbKL436y3s9b+g/sn+rYEi8JpXWhDpcWLi
- WiIxv2ViQQoBjHZDj+0+CsI2l49/eADzLLfYUKZuHIiT0aZRCSuVtz4edVI02eJQLNnqpLdi4Ip
- gEElQeRH2ybEhpoUT1lwNblHZgad9rVwnnh7sLlI7yX/KCTzv9nkLUN1zG0sB0NIn21dLaqwHic
- +XyGdZe7PcGt47K//Fg==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-25_04,2026-11-23_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 bulkscore=0 malwarescore=0 suspectscore=0 impostorscore=0
- priorityscore=1501 adultscore=0 phishscore=0 clxscore=1015 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611250060
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261125043639.249525-5-inochiama@gmail.com>
+ <20261125043639.249525-5-inochiama@gmail.com>
 
-On Tue, Nov 17, 2026 at 6:38=E2=80=AFPM <Frank.Li@oss.nxp.com> wrote:
->
-> From: Frank Li <Frank.Li@nxp.com>
->
-> The stub for pm_runtime_get_if_in_use() under !CONFIG_PM currently
-> returns -EINVAL.  The real implementation returns:
->   1  - device is active and its usage counter is non-zero (bumped)
->   0  - device is not in use or not active (counter not bumped)
->  -EINVAL - runtime PM disabled for this device
->
-> When CONFIG_PM is not set every device is permanently "active" and
-> always considered "in use", so the stub must return 1, mirroring
-> __pm_runtime_resume() which already returns 1 in the same build.
->
-> Returning -EINVAL breaks callers that test the return value with
-> comparisons other than "!=3D 0 / =3D=3D 0":
->
-> drivers/gpu/drm/i915/intel_runtime_pm.c:
->   if (intel_runtime_pm_get_if_in_use(rpm))
->   which wraps to: ret =3D pm_runtime_get_if_in_use(); return ret > 0;
->   With -EINVAL the wrapper returns false, causing an incorrect error
->   path in the GT fence revocation code.
->
-> drivers/gpu/drm/xe/xe_pm.c:
->   if (pm_runtime_get_if_in_use(xe->drm.dev) > 0)
->   With -EINVAL the condition is false; xe_pm_runtime_get_if_in_use()
->   returns false, so callers believe the device is not usable.
->
-> drivers/gpu/drm/gma500/power.c:
->   return pm_runtime_get_if_in_use(dev) =3D=3D 1;
->   -EINVAL !=3D 1, so the helper always returns false when !CONFIG_PM.
->
-> drivers/gpu/drm/imagination/pvr_power.c:
->   if (pm_runtime_get_if_in_use(...) <=3D 0)
->   -EINVAL <=3D 0 is true, so the driver always takes the "requeue" error
->   path instead of proceeding with the active device.
->
-> sound/soc/sof/debug.c:
->   if (pm_runtime_get_if_in_use(sdev->dev) =3D=3D 1)
->   -EINVAL !=3D 1, so d3_prevented is never set, corrupting exception
->   debug accounting.
->
-> drivers/iommu/mtk_iommu.c:
->   if (pm_runtime_get_if_in_use(dom->plat_dev->dev) <=3D 0)
->   -EINVAL <=3D 0 skips the TLB flush, leaving stale IOMMU mappings.
->
-> drivers/iommu/rockchip-iommu.c:
->   Three call sites use WARN_ON_ONCE(err < 0) or similar patterns.
->   -EINVAL < 0 triggers a spurious WARNING on every call.
->
-> drivers/media/i2c/isl7998x.c:
->   if (pm_runtime_get_if_in_use(dev) <=3D 0)  (two call sites)
->   -EINVAL <=3D 0 causes the driver to always skip register programming
->   when !CONFIG_PM.
->
-> drivers/media/platform/rockchip/rkisp1/rkisp1-debug.c:
->   if (pm_runtime_get_if_in_use(dev) <=3D 0)  (two call sites)
->   -EINVAL <=3D 0 prevents any debug statistics from being collected.
->
-> Fixes: a436b6a19f57 ("PM / runtime: Add new helper for conditional usage =
-count incrementation")
-> Fixes: 3b85b7bcccf4 ("drm/xe: Fix display runtime_pm handling")
-> Fixes: 672c473576ca ("drm/gma500: Rewrite power management code")
-> Fixes: b30289e7fa92 ("ASoC: SOF: Fix runtime pm usage counter balance aft=
-er fw exception")
-> Fixes: c0b57581b73b ("iommu/mediatek: Add power-domain operation")
-> Fixes: 51ef2be546e2 ("media: i2c: isl7998x: Add driver for Intersil ISL79=
-98x")
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+On Wed, Nov 25, 2026 at 12:36:35PM +0800, Inochi Amaoto wrote:
+> Add several helper functions that allow drivers to get several phy
+> consumers in one operation. If any of the phy cannot be acquired then
+> any phys that were got will be put before returning to the caller.
+> 
+> This can relieve the driver owners' life who needs to handle many phys,
+> as well as each phy error reporting.
+> 
+> Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
 > ---
-> Change in v3
-> - drop tag: cbb819c363c5 ("media: rkisp1: debug: Collect input status by =
-sampling ISP_FLAGS_SHD")
-> selected PM at arch config
-> - drop tag: 0f181d3cf7d9 ("iommu/rockchip: Add runtime PM support")
-> selected PM at arch config
-> - drop tag: 9d58aa46291d ("drm/i915: Fix the GT fence revocation runtime =
-PM logic")
-> guard by CONFIG_PM
-> - drop tag 727538a4bbff ("drm/imagination: Implement power management")
-> depend on PM
-> `
-> Change in v2
-> - new patches.
->
-> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-> Cc: linux-pm@vger.kernel.org
-> Cc: Jani Nikula <jani.nikula@linux.intel.com>
-> Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> Cc: Tvrtko Ursulin <tursulin@ursulin.net>
-> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> Cc: Maxime Ripard <mripard@kernel.org>
-> Cc: "Thomas Hellstrom" <thomas.hellstrom@linux.intel.com>
-> Cc: Simona Vetter <simona@ffwll.ch>
-> Cc: David Airlie <airlied@gmail.com>
-> Cc: Matthew Brost <matthew.brost@intel.com>
-> Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> Cc: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
-> Cc: Alessio Belle <alessio.belle@imgtec.com>
-> Cc: Luigi Santivetti <luigi.santivetti@imgtec.com>
-> Cc: Liam Girdwood <lgirdwood@gmail.com>
-> Cc: Mark Brown <broonie@kernel.org>
-> Cc: Jaroslav Kysela <perex@perex.cz>
-> Cc: Takashi Iwai <tiwai@suse.com>
-> Cc: Bard Liao <yung-chuan.liao@linux.intel.com>
-> Cc: Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>
-> Cc: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-> Cc: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-> Cc: Robin Murphy <robin.murphy@arm.com>
-> Cc: Yong Wu <yong.wu@mediatek.com>
-> Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-> Cc: Matthias Brugger <matthias.bgg@gmail.com>
-> Cc: Heiko Stuebner <heiko@sntech.de>
-> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
-> Cc: Dafna Hirschfeld <dafna@fastmail.com>
-> Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> Cc: Michael Tretter <m.tretter@pengutronix.de>
-> Cc: Daniel Baluta <daniel.baluta@nxp.com>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: imagination@lists.freedesktop.org
-> Cc: intel-gfx@lists.freedesktop.org
-> Cc: intel-xe@lists.freedesktop.org
-> Cc: iommu@lists.linux.dev
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-mediatek@lists.infradead.org
-> Cc: linux-media@vger.kernel.org
-> Cc: linux-rockchip@lists.infradead.org
-> Cc: linux-sound@vger.kernel.org
-> Cc: sound-open-firmware@alsa-project.org
-> Cc: imx@lists.linux.dev
-> ---
->  include/linux/pm_runtime.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/include/linux/pm_runtime.h b/include/linux/pm_runtime.h
-> index de9e7518ecef2..1d983fe55a16a 100644
-> --- a/include/linux/pm_runtime.h
-> +++ b/include/linux/pm_runtime.h
-> @@ -276,7 +276,7 @@ static inline int pm_schedule_suspend(struct device *=
-dev, unsigned int delay)
->  }
->  static inline int pm_runtime_get_if_in_use(struct device *dev)
->  {
-> -       return -EINVAL;
-> +       return 1;
 
-This should be return 0, as we did not bump the usage count.
+Transient build warning due to improper patch splitting, please fix.
 
->  }
->  static inline int pm_runtime_get_if_active(struct device *dev)
->  {
-> --
-> 2.43.0
->
-
-Kind regards
-Uffe
+Documentation/.renames.txt: warning: ignored by one of the .gitignore files
+../drivers/phy/phy-core.c:1202:12: warning: unused function 'phy_bulk_get' [-Wunused-function]
+ 1202 | static int phy_bulk_get(struct device *dev, int num_phys,
+      |            ^~~~~~~~~~~~
+../drivers/phy/phy-core.c:1242:12: warning: unused function 'of_phy_bulk_get_all' [-Wunused-function]
+ 1242 | static int of_phy_bulk_get_all(struct device_node *np,
+      |            ^~~~~~~~~~~~~~~~~~~
+../drivers/phy/phy-core.c:1274:13: warning: unused function 'phy_bulk_put_all' [-Wunused-function]
+ 1274 | static void phy_bulk_put_all(struct device *dev, int num_phys,
+      |             ^~~~~~~~~~~~~~~~
+3 warnings generated.
