@@ -1,60 +1,59 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795629184;
-	b=JICRq5TgagMiWUB3Vf2W9k0pqcOyM1B9m8VghUuuSGyxA2HeYmwz/hYDQKtwvmNYlYH4
-	 syJ6D5mrmN8MhAC5Jrjfu/Awev6cK8tPnNHQu5UYfWR0aMH2eU/WgW0LO0m9XUKR0P278
-	 067iUchWskC3ECcde09VBbeubNkxrdb0L1oCPvMBh/SdbREYFUX+NEdGQxdgkwNpEp+1p
-	 JuALQx6g5n34og/BAoFu5gXNACZV38fv0tmzzr438tdsbd7AU013Hd1LCpJdJCnP+qvsI
-	 v2nalPHk6mm72lpgZDW2FkA3vlxa5G2hpdfN4m6963nduyL66ygGLdeeh6UoZ9eBriQ==
+	t=1795629188;
+	b=0GJTUnwude6Ff4QgBf2qGeSmnJ75gqRQZ/v5QV+kp6IvGXAM2AEvzWHZMjf5+xLOxBHV
+	 NM1Bkjn/5Lj44lpbhDeZIX7k/1DEZk5+KWjimHOYBL7mzB6BUHyqqjWCnMQl5xKMv/WBD
+	 5Z8QqqDWRbbELegKp+839RwJ61kh0t9A3RK7a7MhcVUIYi5aT9M8OprPfTt7G/7AzUQy+
+	 BOBHerutCNGMJW0eWX5OdiIAf5XcFwdgB4elMaNHJ0ndXA8LGR0mWj4DlN69cVQGsEZXz
+	 m4OTsgcf0vw4DpvvvQ9gRIVxAaS0ITagqwrPH+asSue+xO/z7PW0lXg93WBNp/jo5AQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795629184;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795629188;
 	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:Date:
 	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Last-TLS-Session-Version;
-	bh=lMt6anh8JalluqU5kZ6TRVlDWq9+fId3H2x7OFRSZmI=;
-	b=mAIrIrJ/w8JBo+ut+aus0r9oUricH7g2Mo5t0isxHtp5TA2Bqpy3jwR5E0ccYlPDmcB9
-	 TXowZWvnnlc2EPXNYnndPs/35bkwRvMoa2Jid5uAJSJdUx+YsWKcmgflZf0thEiVMEI6p
-	 FSn+nJk9YTgs8Hg2vvzl++VU4E43KZqN2n3qH0nbYBr3bBcw+M87U+zSlO+DSMv2p/61/
-	 NHWBGES2QJU6e5KZmHuyVdxahI12aa71XNES5hOKks3DSzT3bc2fHX4zn78z2t9z/oStx
-	 gKWBBGzL5rPOQqHDQksQBr/q0NWCZW/GAJxDje5NbulYvqr6TfpXaIn3rrWk0epTzlg==
+	bh=PawFOJzGO+j7Rk1FiSoFYRQzAZVs1Yl5DoDfqYSRNT4=;
+	b=Y54FoNFSSUXXymzrWJ03pLzumq7xdAqPFhwjMvy3eFU8bAWyXu/ifYvsQhQaZ3QDUbdR
+	 /VHlq5fPSN+sMtiW3yz3nGJZbea6sHO/BFea9744CZ9hYuwqfvV/X7rdPd3iRVTsc/pEr
+	 uQplkSiRl21ot0a6Ri8CHa0PLxgnR1eUGoLW7wKVt/sVhzBr0KR6ydJZq118+8JlFi0Lw
+	 wCVS/0TqNrQHHa+R5fBAb795XBa5rksJ76gB4x3MpdFc81Y10wSsxTyVdsFj8rhl1AxDz
+	 b5108F02OGl1986Vhk848BMuei70kfZuqqTbAfuUqihMhLn8qWjs2l7G0kmSMowi7EA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=bootlin.com;
 	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b="YpdhlpN/";
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=zQ7pWe3f;
 	arc=none smtp.remote-ip=185.246.84.56
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EB70606A6AF
-	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 17:53:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9EB70606A6AF
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09F44606A333
+	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 17:53:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 09F44606A333
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=YpdhlpN/
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=zQ7pWe3f
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 3F7081A17F9;
-	Wed, 25 Nov 2026 17:53:02 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id DD13B1A17FB;
+	Wed, 25 Nov 2026 17:53:06 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 0B24960480;
-	Wed, 25 Nov 2026 17:53:02 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 68B8C11E6B0D5;
-	Wed, 25 Nov 2026 18:52:47 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id A761960480;
+	Wed, 25 Nov 2026 17:53:06 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BFCA611E6B0D3;
+	Wed, 25 Nov 2026 18:52:58 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1795629174; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1795629184; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=lMt6anh8JalluqU5kZ6TRVlDWq9+fId3H2x7OFRSZmI=;
-	b=YpdhlpN/qCOaaG4Tk5QIhmIna5ETohW4LU/v9ZZdHyZRpKdYksArMU0ujj0FGXuOK+qcKF
-	Xkl/GmnG3uGykI+HlLhWWfZNmLV1MTiixbEUmPVZT6VuETg5Rky87AWb5V4Lh64zltjivm
-	YsfEqV6e1g+I9FPskaWw17EePqjUTTVorF5Tj1BkWKPEfPz0pVO0+xXB3DC6+bx+D4pOfi
-	X5XeAl2wYUfEdbauZAd3GSqy16R3DKAyhszLtij9LtZa8J774J58lz85h0L/AtDBgZ37I0
-	CpSuR1vlN9JErQFevz1E1vsgGNnAhoT4RPTj4OKy+0rjN0Jq22wQvMYLm82S4A==
+	bh=PawFOJzGO+j7Rk1FiSoFYRQzAZVs1Yl5DoDfqYSRNT4=;
+	b=zQ7pWe3f+cS3XZjICfwqZVaMvrHfpKIlq+qhOx2skWTGKnrchxcjzuAy8VUInqeUh4hlSM
+	m7v2ll1mvoEHi0fJfVsmUhVKGHnGy7H9bRF5Rf8x1Juf1q+C+a28WcAXFmh86TG9/fT3as
+	8NkpFtbhGYctpiRuCyQwWkCTC+5WGkBCjXwjkbd3kIqGnizEe1oB3PXxYto+QAuCO4CiV+
+	1AOpf7+YjiK0bXGzOxImj1j6/G2qwkRwaVxTb4EESusRr/RMkY/OoB/4wGpOnMt8J05KGS
+	kEd0Qx1/JlZ0GZPUYlOmbHipL6ff6bp56Xtv0Fj5bsuLm85kTfjtfV41HTZPEA==
 From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Date: Wed, 25 Nov 2026 18:50:31 +0100
-Subject: [PATCH v4 18/32] drm/bridge: notify about added and detached
- bridges
+Date: Wed, 25 Nov 2026 18:50:32 +0100
+Subject: [PATCH v4 19/32] drm/mipi-dsi: notify about DSI attach
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -66,7 +65,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261125-drm-bridge-hotplug-v4-18-822722850492@bootlin.com>
+Message-Id: <20261125-drm-bridge-hotplug-v4-19-822722850492@bootlin.com>
 References: <20261125-drm-bridge-hotplug-v4-0-822722850492@bootlin.com>
 In-Reply-To: <20261125-drm-bridge-hotplug-v4-0-822722850492@bootlin.com>
 To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
@@ -94,66 +93,56 @@ Cc: Javier Martinez Canillas <javierm@redhat.com>,
 X-Mailer: b4 0.16.0
 X-Last-TLS-Session-Version: TLSv1.3
 
-In preparation to support DRM bridge hotplug, let the drm_bridge code emit
-an event when a bridge is added and when it is detached, so that this event
-can trigger the actions needed to (de)configure the pipeline and
-(un)register the connector as appropriate.
+In preparation to support DRM bridge hotplug, let the drm_mipi_dsi code
+emit an event when a DSI device is attached to the corresponding DSI host,
+so that this event can trigger the actions needed to configure the pipeline
+and register the connector as appropriate.
 
 Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
 ---
 
 Changes in v3:
-- also notify on added bridges (for non-DSI bridges)
 - use new v3 notifier API name
+- fix commit message
 ---
- drivers/gpu/drm/Kconfig      | 1 +
- drivers/gpu/drm/drm_bridge.c | 6 ++++++
- 2 files changed, 7 insertions(+)
+ drivers/gpu/drm/Kconfig        | 1 +
+ drivers/gpu/drm/drm_mipi_dsi.c | 3 +++
+ 2 files changed, 4 insertions(+)
 
 diff --git a/drivers/gpu/drm/Kconfig b/drivers/gpu/drm/Kconfig
-index 5268bf47b2e3..105dd46a0a45 100644
+index 105dd46a0a45..3ebd9388bdda 100644
 --- a/drivers/gpu/drm/Kconfig
 +++ b/drivers/gpu/drm/Kconfig
-@@ -17,6 +17,7 @@ menuconfig DRM
- # device and dmabuf fd. Let's make sure that is available for our userspace.
- 	select KCMP
- 	select VIDEO
+@@ -45,6 +45,7 @@ config DRM_MIPI_DBI
+ config DRM_MIPI_DSI
+ 	bool
+ 	depends on DRM
 +	select DRM_HOTPLUG_EVENT_NOTIFIER
- 	help
- 	  Kernel-level support for the Direct Rendering Infrastructure (DRI)
- 	  introduced in XFree86 4.0. If you say Y here, you need to select
-diff --git a/drivers/gpu/drm/drm_bridge.c b/drivers/gpu/drm/drm_bridge.c
-index 310f03bdb744..a50709ac8b06 100644
---- a/drivers/gpu/drm/drm_bridge.c
-+++ b/drivers/gpu/drm/drm_bridge.c
+ 
+ config DRM_KMS_HELPER
+ 	tristate
+diff --git a/drivers/gpu/drm/drm_mipi_dsi.c b/drivers/gpu/drm/drm_mipi_dsi.c
+index 3ac1dd5ad640..ae49f3aa1b2b 100644
+--- a/drivers/gpu/drm/drm_mipi_dsi.c
++++ b/drivers/gpu/drm/drm_mipi_dsi.c
 @@ -34,6 +34,7 @@
- #include <drm/drm_debugfs.h>
- #include <drm/drm_edid.h>
- #include <drm/drm_encoder.h>
+ #include <linux/slab.h>
+ 
+ #include <drm/display/drm_dsc.h>
 +#include <drm/drm_hotplug_event_notifier.h>
- #include <drm/drm_file.h>
- #include <drm/drm_of.h>
+ #include <drm/drm_mipi_dsi.h>
  #include <drm/drm_print.h>
-@@ -475,6 +476,8 @@ void drm_bridge_add(struct drm_bridge *bridge)
- 	mutex_lock(&bridge_lock);
- 	list_add_tail(&bridge->list, &bridge_list);
- 	mutex_unlock(&bridge_lock);
-+
-+	drm_hotplug_event_notifier_notify(DRM_BRIDGE_ADDED, bridge);
- }
- EXPORT_SYMBOL(drm_bridge_add);
  
-@@ -710,6 +713,9 @@ void drm_bridge_detach(struct drm_bridge *bridge)
- 		bridge->funcs->detach(bridge);
+@@ -386,6 +387,8 @@ int mipi_dsi_attach(struct mipi_dsi_device *dsi)
  
- 	list_del_init(&bridge->chain_node);
+ 	dsi->attached = true;
+ 
++	drm_hotplug_event_notifier_notify(DRM_MIPI_DSI_ATTACHED, dsi);
 +
-+	drm_hotplug_event_notifier_notify(DRM_BRIDGE_DETACHED, bridge);
-+
- 	bridge->dev = NULL;
- 	drm_bridge_put(bridge);
+ 	return 0;
  }
+ EXPORT_SYMBOL(mipi_dsi_attach);
 
 -- 
 2.56.1
