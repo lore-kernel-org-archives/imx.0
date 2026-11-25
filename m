@@ -1,108 +1,123 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.65.34
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=205.220.168.131
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795618513;
-	b=GcoD4hv+yArD5gjUDkQ99QnFPs3w7CKiE6tgfL74wRJ7rS0XiP0Z2LEl3aNl15mIoXsL
-	 9keuRkTrIj4ksAOyHkD69RT0CtVj1NGLTPZPv4oJxsi/Xy5Um7i0qnWIq61XpkgIdF3Fp
-	 4IhiPro/uUAjkwzLhzE3r2L3tSStRzrvNNTCuZyowv24d0OGnaNX694XT1xbdzgD8zW1M
-	 3hv7za2NfxVqvd3zb3z+Hm2qG3iq84QtD9QJT1LBDEcCgYazX7PIv3el5x02SHXHNDP9e
-	 eS8lAMY6Wjc2QDD0RNfajD86B4+t+5pPhCuhEoV6WTi1O5hzko+OBdktlgJHx3RrWLg==
+	t=1795619193;
+	b=qmD0hC+l+7scBbGNakoL26wrdg7MfMK7brG24QSZDrht9/4z6TxNAvqzthi5w12M4hjd
+	 Vj1HfBiFIdR2J2o+rAVGrvEkJLfq5aSJ5WhpvtJ0kWAefKD/g8bbZ2lAvCnyfiIZW3p6Z
+	 8+xz8wQ+Tlig6Bdxmd7aXED/SU2xs2d9NFMaLrycgKJ7zZachqaWgdUs/HDRPgIif7kvp
+	 nGTeb9sxVq1QyXVBsMWpyorLP/9qjPdBMGj1yayW/YzUQfyg/5xS0gsuZ23FQVF3VND9Y
+	 RyGJJ+Ab47sLa5PMg1BaG4wpscgQKSVCOx7fjlnU0WiEGMohCV4O8IM+2VxN/3ImKdg==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795618513;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:Content-Type:Content-Disposition:
-	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=UVfZCnCS1lfKWlAQxCT2m4GZR6ZyKOxu8kvt/BZqS5Y=;
-	b=yBVQsiRnkEhO2lRHyEKYu7gtSTF+bIV8+RnIVvlSSqdjNQs2meIZNnaskFzlk9TST34c
-	 uX+neXFX5yVX5srmyQKroJVeormjMlUMhG/dAbEILtjsy1C3C3FK91Tzy5RQ2j2Kwso7g
-	 Q/GWw5JkeZnXCmxL5EvrCUAO66dhe3e2efpxmuBXH+EUMPQdTMsXoIfViN06r6REQu388
-	 k+hUhpXAPrWRJmCZMnj21+kPDaN2Ur+jVGoDMmTej0fq3ssEEwig4KiNLMYNRDRSZXa+H
-	 eFIR7gXEhhzWhAwEZ9UlzD14X+GJgjGUyyJIb7cKbtn57Dz5XmdqGtwjA9KByMGAx2A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795619193;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
+	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:MIME-Version:
+	 References:In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:
+	 Cc:Content-Type:Content-Transfer-Encoding:X-Proofpoint-GUID:
+	 X-Proofpoint-ORIG-GUID:X-Authority-Analysis:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Spam-Info:
+	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
+	bh=F8Fmq8LWA4bhtyNOLWl2S9LNOHs1l6eqA9F+R8NUX+A=;
+	b=e75jxXqc2141FhjEyXN1IXdNlqvYOLhsuM29u5/av6iEQu9NX5VabLu0Z2TVtfEljmWh
+	 cbvkGZoL8VstFzjWu7ejn/oeS4dNkDNDFu/eJFvSJvBQXiZLxfDZo/Sj6daI4livTp15X
+	 ouYfMEpn99tNVTGZU6TEr/xfwSgCPJQ6gLVKO4vKe54TGz2WfbQCjKeyQjim4xOYZJOqy
+	 OX7NgkcP6jb4xD0jqcrN+mmjNVB0UxZiB+7ZR7RD6SpfqpdrOXeE3o0nG3DMkE50rJpQm
+	 Xv5o1Yx0aeyje4m0ByKeTDUUCbwgN3+1GSQ034unyd3PDXf1lGstzMgS/kMuAD35rNg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.nxp.com;
-	spf=pass smtp.mailfrom=oss.nxp.com;
-	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=j8HOzmRL;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.65.34
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011034.outbound.protection.outlook.com [52.101.65.34])
+	dmarc=pass header.from=oss.qualcomm.com;
+	spf=pass smtp.mailfrom=oss.qualcomm.com;
+	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=Nzjcr1Jv;
+	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=No3umAvZ;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=205.220.168.131
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6192B606A31E;
-	Wed, 25 Nov 2026 14:55:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6192B606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 269C0606A330
+	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 15:06:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 269C0606A330
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=j8HOzmRL
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=t65I6Sq63mygC2gF3j3ExHLYXAkORyza530HN/vVJY4ogIra4r7+wFuIAj4LSEYkdkdVsBJRpjXKyYfZ0f0M5kUmwV+9efmPbbymkkL8w4sGZ7XsbAwSg0g8bNIruZAr1E/lK8end2qXMDg8LSvtI8uavk/Fhop4tvpP8e1KL3MLw/egH2y4pJKYeTNosWnUdxOLEbXSBzbuD4ttSru8bQ5QV30raipXe6DbVyuJJdSxzKwsQASG63nfYhslqyKUJ6d+7OtIL+00T1GFC1TC1rUthOJwtfLNtp3ji8yTqr5ncyP8HFvcjqHTRgEY1GdX63wdfyxOfcNFd8hLxUshhw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UVfZCnCS1lfKWlAQxCT2m4GZR6ZyKOxu8kvt/BZqS5Y=;
- b=XkhDCzQajR8G8rG4CaquHcvyD/yI8Glz6T2LDZFFwMoSGuztfVi7hGYanon0OviyidB1CqAvkNLVv7heNumsHowFf1uFnZ+EnnMbOxE9QbZDtSVv3gY39d3233nP9WU4zggzharjAWwS+SxldoZt2OYy2s90WMk+2HwqQxPwDlO4qJwe32VvFBQlYMr6Af8DnsNZ90r02aoXCW1LnJYwpQUS2rJJ2+J7xLyV1Grp8ghvJQcrLbXl3VZZSGzZlgBbxqAncP9t9GTDST0sq7n8yl4OSkxItCSH/EsfjepbJrERCZPsH6CulLgwkjRtew+rFQKXHP+kvc2TbCLh5xRusw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UVfZCnCS1lfKWlAQxCT2m4GZR6ZyKOxu8kvt/BZqS5Y=;
- b=j8HOzmRLbX1Xd6Rm9BNIAo2ZIWvJAnBpWD8rJIpMObyafRpNv7/RU+NjQa4nYiumwmWv6k/9kdzTORyg/xpdSMca3ms1OomNS52H5LXAXmMa6pkfgTd7Cox1Noo/SyTIkbMGewKhOGijqf6KaeOhDDx5bFXubkJAM4FaFCvVE/anhJYxcaiXC/BU4kEmMGXkXMyrPK76vxUXlOqqYJnR1gKsJGMYrZ7HZYJL5I3mwgB6ZteNh+gRrY4eBvTaZE9XozyG/E/gRiH/+JqTDkzhV/3jLYzqX6D3UNwv9glVoK79xQGd1XpE6yk9SkoT/2qjRQSGOL1DkIxKmB/JLsAGCw==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from MI3PR04MB12438.eurprd04.prod.outlook.com (2603:10a6:290:76::14)
- by DUYPR04MB12666.eurprd04.prod.outlook.com (2603:10a6:10:65f::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.662.6; Wed, 25 Nov
- 2026 14:55:07 +0000
-Received: from MI3PR04MB12438.eurprd04.prod.outlook.com
- ([fe80::c715:c32:8bb1:b70b]) by MI3PR04MB12438.eurprd04.prod.outlook.com
- ([fe80::c715:c32:8bb1:b70b%4]) with mapi id 15.21.0662.004; Wed, 25 Nov 2026
- 14:55:07 +0000
-Date: Wed, 25 Nov 2026 09:54:58 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Frank Li <Frank.Li@nxp.com>, Sven Peter <sven@kernel.org>,
-	Janne Grunau <j@jannau.net>,
-	Peter Griffin <peter.griffin@linaro.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Tejas Narendra Joglekar <Tejas.Joglekar@synopsys.com>,
-	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-	"linux-arm-msm@vger.kernel.org" <linux-arm-msm@vger.kernel.org>,
-	"linux-samsung-soc@vger.kernel.org" <linux-samsung-soc@vger.kernel.org>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	=?iso-8859-1?Q?Andr=E9?= Draszik <andre.draszik@linaro.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Neal Gompa <neal@gompa.dev>,
-	"asahi@lists.linux.dev" <asahi@lists.linux.dev>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	Fabio Estevam <festevam@gmail.com>
-Subject: Re: [PATCH 3/3] usb: dwc3: Allow glue drivers to override all
- dwc3_properties
-Message-ID: <awb2woyxkeXBU6xB@lizhi-Precision-Tower-5810>
-References: <cover.1795559405.git.Thinh.Nguyen@synopsys.com>
- <b0b118ce86d1046d73fdbe297117f993df38cf20.1795559405.git.Thinh.Nguyen@synopsys.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b0b118ce86d1046d73fdbe297117f993df38cf20.1795559405.git.Thinh.Nguyen@synopsys.com>
-X-ClientProxiedBy: PH7P220CA0061.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:510:32c::25) To MI3PR04MB12438.eurprd04.prod.outlook.com
- (2603:10a6:290:76::14)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=Nzjcr1Jv;
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=No3umAvZ
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6APELlV9724130
+	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 15:06:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	F8Fmq8LWA4bhtyNOLWl2S9LNOHs1l6eqA9F+R8NUX+A=; b=Nzjcr1JvAe8O3y2M
+	nRk02gsmzckXBcRxfri+XHtkdUIEszeIzfFyQQgR/BocgtLFL+n+eCBxHRzQ6Yfq
+	qFzg8RINXEMwOvBf0/oUkncHMiBTksHiHC9BqK7fPOJQt+fer1msKMHomuVFo02M
+	HWlOZeJFWN/NORls8UyWol1U9y/9hHAW4fZgccoU7/Sbqi2bbTFG+4vjo+f4z3En
+	x0PMMHwz77Py3aOkFJX8N0yFo4LC9oqXKJIiDzifeX/5Vv+KdoJ8lIpcubq7K9D4
+	SMLEBhZdEr0PMudXVoqY9KyOzziQXsPFG/RnejlYfRIxAoE94rHnRlkzkztqvvLf
+	0Vovvw==
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4j5yaxrphc-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 15:06:32 +0000 (GMT)
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cdb91e288d7so4574247a12.3
+        for <imx@lists.linux.dev>; Wed, 25 Nov 2026 07:06:32 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795619191; cv=none;
+        d=google.com; s=arc-20260327;
+        b=BUP3dex9zDPGNIm4cq5K9y6394D046qsHoeZJCxdJLV+qPrAWBQLscgLbSUpRnYXmI
+         O8th7VU0scI/niAL/Cgdnx5KULFTvZpc2Wg95z9N/Rnjw7LrKjZvoaIFJD4eoHYWWoWS
+         vEddJCZTBxuklNFfeaQ4X6UQBZECB5pFB4MVdHZghsslx903xfJWZHJRWUUmCdSMN4wM
+         ZLRab/YsVPrCPh1G4zoNo8F9hhmHPWMblHA+DRVEEk3cvFwI9zgRD1OJYilu8QIR6YVi
+         ug2C7giXuvi2ANbp6diEQvRbJaOweLCiEU4lzU2E3Qgho973Bt0Er/BKULSpOZyW0hlT
+         MGug==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=F8Fmq8LWA4bhtyNOLWl2S9LNOHs1l6eqA9F+R8NUX+A=;
+        fh=wVlyBxP54ddnxcHH1nhUx9LZYieM5g+xXzuWBTzMwg4=;
+        b=TOHg7yJ2EiQtAb8Slh9234pLK7jCgM09APsr1rDwTh0btmRssm8+01Pw+av9tfZDsZ
+         bEzYkeD1iAn8LpLQrq13udSQTh6tBitv/bx8CwGzd2adW+NxCCs0J63kMKaMkbrnlQwG
+         bVNzKgnXRyIxJXzKOry834rOhWjvB4jTyrdo39Oyg1oQbm5DvjXw4Z4RZvX5uQ9Y46U7
+         CDmUs3gm7hC6liZC7sOK4XnlYCFJqCsNCBjMD6qCi+6/UA46wx8rIVOqvGpRaVvlYQzC
+         gtK67D0JmtR5z8/KnAdg4B+St9QmfOWecV9/T2NUBeShb3DRGitep1C5/hOQ06vxPUJ3
+         wk6g==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1795619191; x=1796223991; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=F8Fmq8LWA4bhtyNOLWl2S9LNOHs1l6eqA9F+R8NUX+A=;
+        b=No3umAvZPRdDgROa/sG5ZTDTITYZ5K0dQnAcOLbYwJ9pgCm0lLM6nPuMY19+3aQ4Xs
+         llLngO2SF/huzMrZZ9YogI7OmQB1+hkXTVCAyhNes8T9H+39+Ta9RJB2hklg9c5aOUNH
+         VKHlbQ/7wTT4JQoXkqfVRQcfSWZq7r6cg9CMq0DwHyxlaUVPkgnVjBwlac5oJdV9Ndet
+         qiTqmXZpvkS4LkBvrZuAmf2+bNccu3qhGCW9xyvOzPHaCqn7Q0Q9c4g5hX4zg+GERDG5
+         LTvdMCzHfssa5NSIZZhm7MADjb6uPYRMWVHlsYE4b0V168u5Ii7Dk38DgMMzT9XFpRUB
+         yJsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795619191; x=1796223991;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=F8Fmq8LWA4bhtyNOLWl2S9LNOHs1l6eqA9F+R8NUX+A=;
+        b=Z1WXOaKnk3zO+XST7f+/bWGcZRCnymWbz5TcDVQ8GUnZc3F0Wcv7Zsl2v8xVFthtrP
+         6DAmqsn+1QIqHQhXR7vmU0bt6UWuGvKPZ0DqbOjznaIzJMnAIzipgKpQGSpJLj6kXr7+
+         BhikCxZp2UfmjpWYBN8sga5vjv0p/osILIPGuBS1wLeENG9PVq1IafYRao48qWqDpFBG
+         h2s9HBjYOqFfAAzf5ShijoV3giRY7iagAKMVhvCbVJlfkqca4acZudQ+XulcmiaT+DTS
+         NCkY6u+g8uIcxIQ1uMh2Nkp0Wq0Et2hDD72RFa8eHA5XSMqVh1YG/ENw703NGsMO7UNF
+         yQ8w==
+X-Forwarded-Encrypted: i=1; AL+hErF5v3yQ8QWLHwy4RJ2dzzwF6WqMdaNX/Zixi/4jhm9x+ra+soYyQsDZh2QZuZVYd+QvKNA=@lists.linux.dev
+X-Gm-Message-State: APuU4Z/TsrlLfhlgsLyb/G+gWQiUmwv9epZWSETaMRLyFvs477t1ECLV
+	n4+pXkczSQ/tl1tW2IE3J+u+UtodutiuTexqREXmcDqp/MoW6QyMOJqQ01oAUnUuA1A/N+6ImOP
+	FhntQmOYqKqdWe1ZX2L0Fg2z8GmCRJSWCMmOCTVkzttMpIYpzHEBaaS0DOTPFTMQGcGjN893RFj
+	Si1aCrOXAAlArHXepKJms3aRmIKun2ZA==
+X-Gm-Gg: AZFdTZcRq80ntGXlq3jOu39+7qpFjMpH+kW+VQ6LQwYdNzMGry5jPiYvgvYziRL45Ey
+	jIG5E4Z9Bq97M8PxhK7h/TKXD62AsCMxDak+19nk5JSmBulaPwuJKbnY9hoFDj+HX62wvBYv3DD
+	E4PjT3FJp490zpzaYJJFfslPthK/CxvIkgbNp0wYoyBAoLSIaom6V7dBhKuA==
+X-Received: by 2002:a05:6300:8095:b0:3dd:a196:69e4 with SMTP id adf61e73a8af0-4014d14d2d3mr16907598637.63.1795619191487;
+        Wed, 25 Nov 2026 07:06:31 -0800 (PST)
+X-Received: by 2002:a05:6300:8095:b0:3dd:a196:69e4 with SMTP id
+ adf61e73a8af0-4014d14d2d3mr16907537637.63.1795619190966; Wed, 25 Nov 2026
+ 07:06:30 -0800 (PST)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -112,284 +127,236 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|DUYPR04MB12666:EE_
-X-MS-Office365-Filtering-Correlation-Id: 132697d7-1b48-41bc-3c5c-08df4b04188a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|366016|23010399003|1800799024|19092799006|10067099003|56012099006|11063799006|261022105027099003|261026121527099003|261026140227099003|261028144727099003|261021121427099003|261021123027099003|261102123227099003|261009223027099003|18002099003|22082099003|4143699003|6133799003|3023799007;
-X-Microsoft-Antispam-Message-Info:
-	V/HTfwrL1aPkKp68qnKA21w9O7RaKPF+KKrP4L3/e9SBphnaaGQcuoymFRWoxj9E4iZMW0xzeYeBCx2ao73RJkqjX/+Jy0jblTAl33ef9vFkLSvTBYAnmOG+BW4Z+P0cUsBDIq788U99gOBSKnAlC0gStPZ3OIhFEXtaYwoxnCtkPdaYs901K9Gi35QeaNyFaXLzAdD0aVAQ3vEHq8vdisf0l+cGPWPSnFwouOCI9aPdKWBoJYAaQc47gFuaA6ZFY/AOg01Pa7eEo5mNnIFYyoWl2MkCEp56NkSt4eJel/nry/K68lcPelFH2MmjbFI8mlkvGQuwE58oEakohGspPvz02PDsAIaOzPJwIm0EOpgVu+YYnvIWn1yHLLZLE6W29ZHBQWdIlrcWnIdJJWr7AkJiw03FvXP5YNrOmkHoMVA8UjCVzopHhuWK+D0MfPkGL8zKYDDQQ8sRCbYG1Lxf9PRp/R2OuMNEwqfgVfw6/C8QhpQOE2FsMgkGgKqu+S9BS48whjsHrBtR9cMErm8N4/xqvtcLcZF5NvhFoePjpteLZzu47KehgSGoVCRlCFX8ZHUoXLJJZIy13EdpnmYpBumLBlZJesFAm8+8Qr3Vg7vPq3P6HkhVCoEUde1+PK34Ls5VS/60slgShyIVYIoc5S7djMD7iorFBsosNhJTOx8=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(23010399003)(1800799024)(19092799006)(10067099003)(56012099006)(11063799006)(261022105027099003)(261026121527099003)(261026140227099003)(261028144727099003)(261021121427099003)(261021123027099003)(261102123227099003)(261009223027099003)(18002099003)(22082099003)(4143699003)(6133799003)(3023799007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?TPhZ+Fh1BrgkG4QYF52RCiG7Ajccj+UE/0TT3jFKrb0SjdJldlYb9Ba1R7RJ?=
- =?us-ascii?Q?0RUZ2NjnnapgBL6yEfQdlCwEA2TWhiaU/tdAZJluruS8PPW4IXIe0gT+2G/0?=
- =?us-ascii?Q?FdWFJA5x6mANQ+sdhUHUyhjW/wrjCE+te+jIBg+E/GHoUnWdLaVw1vbbbOdb?=
- =?us-ascii?Q?V7kMZhXPIirShPoJLHk/R/x+fPRLO8Ro0kxLkIM0UIPMHze1E+tzGeTvBjyk?=
- =?us-ascii?Q?WPvCJZ/zjNQN21V8kSrByH/ekXA542zvWkxEb15f41X4VzH3mlqyO2IPwj4K?=
- =?us-ascii?Q?FLxEvjwLvN6Kml7kFFmymPxXz+MnFh+T35XkC+OyCbCSLJsrGUqekwbh7mHB?=
- =?us-ascii?Q?UquGax9XqkNhu/vEqb94sNYzOFste0PrihBYNAM4NDnnuAvLPc7VV0xPo42X?=
- =?us-ascii?Q?ogJAXZO33cGRs7e5tZXwsnVOxEuM8JlSdCVcomzV4dEpRneYGZq6cQdfTbNp?=
- =?us-ascii?Q?mVVUzald06aw3dth8xEzqlf3x3Bql4jQJtn+7O4aXzp+9l6SpHMJTswUIf2J?=
- =?us-ascii?Q?2JH5tYI6riGKri+HZ4SFeBAr78A3uOK43FRJf8Vvg3fbTxDTCGa7Ku4TJlxV?=
- =?us-ascii?Q?JYgcfoAQb0fQL1yGxi4weXc11hGISg9ctLAvjYcum8vWu5Kc30DMyTMCdbWJ?=
- =?us-ascii?Q?nFsBuyMHgW6XFdBuLs4AQdCjDI+5MK9kgC4R8AlLttcuoBsxNczO0i1jZ2dj?=
- =?us-ascii?Q?+DMdICELVgxJwsr2HIeEHv8EFrJOy4SzzhI+nIRIxncDke5NITI0A1XAoql1?=
- =?us-ascii?Q?3dMBlB4l8ncqp9MMYpMvAximZVln77xWnh+fOA4BWsYCc+fGSff3N+OO2K2a?=
- =?us-ascii?Q?6/yehgxsfJ7ubFW7IvUQJyVP5W8ocN5B2nH5Qyc2C/p+H61zHRFbTMPNk/Pi?=
- =?us-ascii?Q?LHk0p0a0HQkjI035WdoEF2qEomPv0boHgCEfI3lTLpP3bvrBP1iTHWMEG4Tu?=
- =?us-ascii?Q?R6asI4dM5jTMdl4wC2wN7lw2HodfA6uZ7wLx37gxaXlK1XISmsTceTQoFCK5?=
- =?us-ascii?Q?d3aByUdNkWmw9/TK4tkx25OXeLJGkxgN/iMmqm+qIcDe7HPs/toGyyvpOG+V?=
- =?us-ascii?Q?codqz2zjZVciFJOCNfLJzP6opK3SrQisCMhyjiZezNI18/3oo7Th4fJnLukP?=
- =?us-ascii?Q?2V77IxnjEKWhRNnh3MfBjlCAoHPl674dmzjSvjl1/eHr9BBtgKLBnXhQNUnN?=
- =?us-ascii?Q?fXTej/TWMgwgCAHN/Uwo8aq3hAHt8QvufRJXAEWI2R4VXFeg0YZbkRnaRCE6?=
- =?us-ascii?Q?sEsW9tbOI/vWnp/cZvRKwljOtane1X1neoK4hjrEP05vfRUdZVR1yh8XfoOu?=
- =?us-ascii?Q?GyDZMxMQ9BJazHjnEtMivcino+sWAJOxoLWj8iMaKEf06tDaVLe6yFPzMu3c?=
- =?us-ascii?Q?tE6+dveahbqDgTy3sm2OFl+N9ljt4DIOSAcypwJKyqWGHmUNF9isKkJB679C?=
- =?us-ascii?Q?V5cZ1PlhXILvIPDmH/01w6SZLJpfI5ykfNZsAfi1060b6wBYpzgFphaqXYSN?=
- =?us-ascii?Q?wMOz/8T4rIl7VQRQ1BIU4V3EU/VDb/Kh7+E1DXmxzGL7GxIT5OEcUSVnTP7n?=
- =?us-ascii?Q?/xX3hpiRyMjOB5ucSvFI5stg4OUcrYK4fDGewseRpChxwBzAkP7mTNVNIoBX?=
- =?us-ascii?Q?0pAdEZisCPOHKdvwAPhlWrEy+HySmANEU/AjA+zMk8eKXpP+Dm9NJ1bmzaux?=
- =?us-ascii?Q?Vlq1PNofMHr25nMBvB7U9rDLps3uW5PXRhh+JS92Fa0kQOYACnkX4GyDrwow?=
- =?us-ascii?Q?7mZP/yWArtQxRT0lNVonamcXNQtoW5EhGMiGktudftpEX4uGWQIF?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 132697d7-1b48-41bc-3c5c-08df4b04188a
-X-MS-Exchange-CrossTenant-AuthSource: MI3PR04MB12438.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Nov 2026 14:55:07.4510
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: M+gKpXyWDphR4aLoLJlZeFWoR0xavRNAc5OL4PJ7+l2BX+7uPcPx1ruqcmaG1JPo2R02qKg/vTVDU2E6HceoJJXGTCdYe2eYbq96g2XSll1bq51xidlXJhB7KkO+VSoF
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DUYPR04MB12666
+References: <20261117173738.1073856-1-Frank.Li@oss.nxp.com>
+In-Reply-To: <20261117173738.1073856-1-Frank.Li@oss.nxp.com>
+From: Ulf Hansson <ulf.hansson@oss.qualcomm.com>
+Date: Wed, 25 Nov 2026 16:06:19 +0100
+X-Gm-Features: Aa3M54qxdRmYOsZoBrTl4IfLXTc7pY51UNG7OdOGBQV2sjgdmvbFz8dtj3UY-KM
+Message-ID: <CAPx+jO8oqBcGCSUReJJVMjsnQg+xCv_X8LhFVaGk0NDuOqmEiw@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] PM: runtime: fix stub pm_runtime_get_if_active()
+ for !CONFIG_PM
+To: Frank.Li@oss.nxp.com
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
+        Alex Elder <elder@kernel.org>, Guan-Yu Lin <guanyulin@google.com>,
+        Mathias Nyman <mathias.nyman@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andrzej Kacprowski <Andrzej.Kacprowski@intel.com>,
+        Maciej Falkowski <maciej.falkowski@linux.intel.com>,
+        =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+        "David S. Miller" <davem@davemloft.net>, Will Deacon <will@kernel.org>,
+        Rob Clark <robin.clark@oss.qualcomm.com>,
+        Connor Abbott <cwabbott0@gmail.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Hans Verkuil <hverkuil+cisco@kernel.org>,
+        Bingbu Cao <bingbu.cao@intel.com>,
+        "open list:POWER MANAGEMENT CORE" <linux-pm@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev,
+        Frank Li <Frank.Li@nxp.com>, Alex Elder <elder@riscstar.com>,
+        Andrzej Kacprowski <andrzej.kacprowski@linux.intel.com>,
+        Karol Wachowski <karol.wachowski@linux.intel.com>,
+        Oded Gabbay <ogabbay@kernel.org>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Tvrtko Ursulin <tursulin@ursulin.net>,
+        Matthew Brost <matthew.brost@intel.com>,
+        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+        Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Guenter Roeck <linux@roeck-us.net>, linux-usb@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+        intel-xe@lists.freedesktop.org, linux-hwmon@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, iommu@lists.linux.dev,
+        linux-arm-msm@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-staging@lists.linux.dev, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-GUID: HB8wD-i6AIP9Sm-s_JSiTP1vpwLyoJOd
+X-Proofpoint-ORIG-GUID: HB8wD-i6AIP9Sm-s_JSiTP1vpwLyoJOd
+X-Authority-Analysis: v=2.4 cv=ULpIjyfy c=1 sm=1 tr=0 ts=6b06f978 cx=c_pps
+ a=rz3CxIlbcmazkYymdCej/Q==:117 a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10
+ a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
+ a=Um2Pa8k9VHT-vaBCBUpS:22 a=8AirrxEcAAAA:8 a=ee_2aqc6AAAA:8 a=VwQbUJbxAAAA:8
+ a=ag1SF4gXAAAA:8 a=QyXUC8HyAAAA:8 a=GFqr32JmAAAA:8 a=pGLkceISAAAA:8
+ a=7CQSdrXTAAAA:8 a=tA7aZXjiAAAA:8 a=EUspDBNiAAAA:8 a=_jlGtV7tAAAA:8
+ a=1XWaLZrsAAAA:8 a=e5mUnYsNAAAA:8 a=JfrnYn6hAAAA:8 a=f3U7k-wd2kzf4Rf19YkA:9
+ a=QEXdDO2ut3YA:10 a=bFCP_H2QrGi7Okbo017w:22 a=ST-jHhOKWsTCqRlWije3:22
+ a=VOpmJXOdbJOWo2YY3GeN:22 a=Yupwre4RP9_Eg_Bd0iYG:22 a=f02Ha7HRcztGgdyUxOxW:22
+ a=a-qgeE7W1pNrGK8U0ZQC:22 a=kIIFJ0VLUOy1gFZzwZHL:22 a=nlm17XC03S6CtCLSeiRr:22
+ a=Vxmtnl_E_bksehYqCbjh:22 a=1CNFftbPRP8L7MoqJWF3:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTI1MDA2MCBTYWx0ZWRfX2XGcCqZCOk5D
+ Wj9vmX7Kp/E1m5q95DCGGtv5d4Y8yrn6NKpKu7l0EKRV6sHlMPgD6+jJfdQJ/eFtniCYe+xlK7h
+ FJASj7Yri06UwBEYUP5JaPrLC50xo+fYkZAQP86mBeofXdu/pAh6dGo79UaCosMrYClAelmT47V
+ eBj9wRFNqhheDEDxdv6+F0zzfjZ8+jAvjMWBCzgsLC07dJpYpFKE5FAa0GAlMymyGujwY51vUvV
+ iDLSk/GkIWKhB1txmrpabRPG7ZdLZrcnVtHYp6IEEle1MYC1unn3Zv5H9mjPt+mMb/JlNyZQQCV
+ xft/L3xaqXzdRTgfrXYz8J6K6p8xrGHNDD5GPqO9jT5OSE0U17bRkJhs5zUcm4ZKJPEBrS0e8yh
+ nS5cW+AZFw5Vv4lHLWWDwNb2GeQKfy48Nt66HvhBREdTd0kRa0J6GBDR4+OiFVAe42nBOc3Ilrg
+ EHiHTh2i9WaycUIg1UA==
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTI1MDA2MCBTYWx0ZWRfX20FEQTOwPMZu
+ viqOp3QaggIrPNSXw7R5HL2LBofF5V1OiNND34qhR/w4TNLUbvqDyAf9Xk6S5Ceh7WEF1nWM6a1
+ TiQS1/M8Tu8YW/Mwyt+sMoJE1KNw2UI=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-25_04,2026-11-23_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 clxscore=1015 priorityscore=1501 malwarescore=0 impostorscore=0
+ bulkscore=0 spamscore=0 suspectscore=0 adultscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611250060
 
-On Tue, Nov 24, 2026 at 10:59:31PM +0000, Thinh Nguyen wrote:
-> struct dwc3_properties holds all glue-overridable properties, but glue
-> drivers can only set needs_full_reinit and gsbuscfg0_reqinfo.
+On Tue, Nov 17, 2026 at 6:37=E2=80=AFPM <Frank.Li@oss.nxp.com> wrote:
 >
-> Replace the properties value in struct dwc3_probe_data with a
-> fixup_properties() hook. The core calls it after reading the DT
-> properties, so glue drivers can set properties that DT does not
-> provide, or override DT values, including clearing them, to correct
-> broken SoC settings. Convert imx and ls1028a to the hook.
+> From: Frank Li <Frank.Li@nxp.com>
 >
-> Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+> When CONFIG_PM is not enabled, should be treated as if runtime PM were
+> enabled for the device and the runtime status is active.
+>
+> It's a subtle distinction but the previous behavior returned -EINVAL, whi=
+ch
+> means "runtime PM is disabled for the device"
+>
+> __pm_runtime_resume() returns 1 (called by pm_runtime_get()).
+> pm_runtime_get_if_active() is the try-and-get version of pm_runtime_get()=
+.
+> stub pm_runtime_active() also returns true. So pm_runtime_get_if_active()
+> should return the same value as the stub pm_runtime_get(), which is 1.
+>
+> Analysis of all callers and their behavior with old (-EINVAL) vs new (1):
+>
+> Pattern A: if (!pm_runtime_get_if_active(dev)) -- no impact
+>   Both -EINVAL and 1 are non-zero, so !ret is false in both cases.
+>   Callers: drivers/accel/ethosu/ethosu_perfmon.c,
+>            drivers/gpu/drm/msm/adreno/a6xx_gmu.c,
+>            drivers/gpu/drm/msm/msm_perfcntr.c,
+>            drivers/gpu/drm/v3d/v3d_mmu.c,
+>            drivers/gpu/drm/v3d/v3d_perfmon.c (x4),
+>            drivers/media/i2c/gc08a3.c gc05a2.c og0ve1b.c ov6211.c,
+>            drivers/media/i2c/ccs/ccs-core.c s5kjn1.c lm3560.c (x2),
+>            drivers/media/i2c/s5k3m5.c thp7312.c imx283.c ov64a40.c,
+>            drivers/media/pci/intel/ipu6/ipu6-buttress.c,
+>            sound/hda/core/device.c
+>
+> Pattern B: if (!ret) after get -- no impact
+>   Both -EINVAL and 1 are non-zero, !ret is false in both cases.
+>   drivers/gpu/drm/amd/pm/amdgpu_pm.c (comment says "allow access"
+>     in kernels without CONFIG_PM), drivers/pci/pci.c
+>
+> Pattern C: ret > 0 / ret <=3D 0 / ret !=3D 1 checks -- FIXED
+>   drivers/usb/core/offload.c: checks (!=3D 1), old -EINVAL caused
+>     -EBUSY even with !CONFIG_PM. Fixed: now returns 1, proceeds.
+>   drivers/accel/ivpu/ivpu_job.c: drm_WARN_ON(<=3D 0), old -EINVAL
+>     spuriously triggered WARN. Fixed: 1 > 0, no warn.
+>   drivers/gpu/drm/i915/intel_runtime_pm.c: checks (<=3D 0), old
+>     -EINVAL triggered error path. Fixed: 1 > 0, correct path.
+>   drivers/accel/ivpu/ivpu_sysfs.c: (> 0), old skipped freq read.
+>     Fixed: proceeds correctly without CONFIG_PM.
+>   drivers/gpu/drm/xe/xe_pm.c: wraps (> 0), all xe callers
+>     (xe_bo.c, xe_shrinker.c, xe_vsec.c, xe_ggtt.c, xe_guc_ct.c,
+>     xe_pxp.c) now correctly treat !CONFIG_PM as active.
+>   drivers/net/ipa/ipa_smp2p.c: power_on =3D (> 0), now correctly true.
+>   drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c: (> 0), now correctly
+>     executes stall register update.
+>   drivers/staging/media/ipu7/ipu7-buttress.c: active (<=3D 0) early
+>     return now skipped, correctly proceeds.
+>
+> Pattern D: explicit -EINVAL check
+>   drivers/hwmon/prom21-xhci.c: checks (> 0) then (=3D=3D -EINVAL).
+>     Old: took -EINVAL fallback. New: takes (> 0) fast path.
+>     Both succeed when CONFIG_PM is disabled; functionally equivalent.
+>   drivers/hwmon/eic7700-pvt.c: call is guarded by IS_ENABLED(CONFIG_PM),
+>     stub is never reached. No impact.
+>
+> Fixes: c0ef3df8dbaef ("PM: runtime: Simplify pm_runtime_get_if_active() u=
+sage")
+> Fixes: bd3d245b0fef5 ("usb: core: use dedicated spinlock for offload stat=
+e")
+> Fixes: 7806bad76ac39 ("accel/ivpu: Prevent runtime suspend during context=
+ abort work")
+> Fixes: 1524c28b99527 ("accel/ivpu: Show NPU frequency in sysfs")
+> Fixes: 46edb0a3eb16c ("drm/xe: Fix xe_pm_runtime_get_if_active return")
+> Fixes: a71aeff3dd0a7 ("net: ipa: kill IPA clock reference count")
+> Fixes: 70892277ca2db ("iommu/arm-smmu-qcom: Make set_stall work when the =
+device is on")
+> Fixes: 9ad65684b9285 ("media: staging/ipu7: Ignore interrupts when device=
+ is suspended")
+> Acked-by: Alex Elder <elder@riscstar.com>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+
+Reviewed-by: Ulf Hansson <ulfh@kernel.org
+
+Kind regards
+Uffe
+
 > ---
-
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-
->  drivers/usb/dwc3/core.c              | 18 +++++-------------
->  drivers/usb/dwc3/dwc3-apple.c        |  1 -
->  drivers/usb/dwc3/dwc3-generic-plat.c | 19 +++++++++++--------
->  drivers/usb/dwc3/dwc3-google.c       |  1 -
->  drivers/usb/dwc3/dwc3-imx.c          |  9 +++++++--
->  drivers/usb/dwc3/dwc3-qcom.c         |  1 -
->  drivers/usb/dwc3/glue.h              | 10 ++++------
->  7 files changed, 27 insertions(+), 32 deletions(-)
+> Change in v3
+> - fix drm/xe fixes tag hash (sashiko)
+> - drop i915 fix tag because guard by CONFIG_PM (sashiko)
+> - fix net ipa fixes tag hash (sashiko)
+> - Add c0ef3df8dbae ("PM: runtime: Simplify pm_runtime_get_if_active() usa=
+ge" (sashiko)
 >
-> diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
-> index 3b2b5fcc627a..369c9ce9f1dc 100644
-> --- a/drivers/usb/dwc3/core.c
-> +++ b/drivers/usb/dwc3/core.c
-> @@ -1684,24 +1684,14 @@ static void dwc3_core_exit_mode(struct dwc3 *dwc)
->  	dwc3_set_prtcap(dwc, DWC3_GCTL_PRTCAP_DEVICE, true);
+> Change in v2
+> - add fixes tag for patten C.
+> - add Alex Elder ack tags
+> - change subject to fix stub pm_runtime_get_if_active()
+>
+> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Andrzej Kacprowski <andrzej.kacprowski@linux.intel.com>
+> Cc: Karol Wachowski <karol.wachowski@linux.intel.com>
+> Cc: Oded Gabbay <ogabbay@kernel.org>
+> Cc: Jani Nikula <jani.nikula@linux.intel.com>
+> Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> Cc: Tvrtko Ursulin <tursulin@ursulin.net>
+> Cc: Matthew Brost <matthew.brost@intel.com>
+> Cc: "Thomas Hellstrom" <thomas.hellstrom@linux.intel.com>
+> Cc: David Airlie <airlied@gmail.com>
+> Cc: Simona Vetter <simona@ffwll.ch>
+> Cc: Alex Elder <elder@kernel.org>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Robin Murphy <robin.murphy@arm.com>
+> Cc: "Joerg Roedel" <joro@8bytes.org>
+> Cc: Rob Clark <robin.clark@oss.qualcomm.com>
+> Cc: Sakari Ailus <sakari.ailus@linux.intel.com>
+> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+> Cc: Guenter Roeck <linux@roeck-us.net>
+> Cc: Guan-Yu Lin <guanyulin@google.com>
+> Cc: Mathias Nyman <mathias.nyman@linux.intel.com>
+> Cc: linux-pm@vger.kernel.org
+> Cc: linux-usb@vger.kernel.org
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: intel-gfx@lists.freedesktop.org
+> Cc: intel-xe@lists.freedesktop.org
+> Cc: linux-hwmon@vger.kernel.org
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: iommu@lists.linux.dev
+> Cc: linux-arm-msm@vger.kernel.org
+> Cc: linux-media@vger.kernel.org
+> Cc: linux-staging@lists.linux.dev
+> Cc: netdev@vger.kernel.org
+> Cc: imx@lists.linux.dev
+> ---
+>  include/linux/pm_runtime.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/include/linux/pm_runtime.h b/include/linux/pm_runtime.h
+> index 64921b10ac74f..de9e7518ecef2 100644
+> --- a/include/linux/pm_runtime.h
+> +++ b/include/linux/pm_runtime.h
+> @@ -280,7 +280,7 @@ static inline int pm_runtime_get_if_in_use(struct dev=
+ice *dev)
 >  }
->
-> -static void dwc3_get_software_properties(struct dwc3 *dwc,
-> -					 const struct dwc3_properties *properties)
-> +static void dwc3_get_software_properties(struct dwc3 *dwc)
+>  static inline int pm_runtime_get_if_active(struct device *dev)
 >  {
->  	struct device *tmpdev;
->  	u16 gsbuscfg0_reqinfo;
->  	int ret;
->
-> -	if (properties->needs_full_reinit)
-> -		dwc->needs_full_reinit = true;
-> -
->  	dwc->gsbuscfg0_reqinfo = DWC3_GSBUSCFG0_REQINFO_UNSPECIFIED;
->
-> -	if (properties->gsbuscfg0_reqinfo !=
-> -	    DWC3_GSBUSCFG0_REQINFO_UNSPECIFIED) {
-> -		dwc->gsbuscfg0_reqinfo = properties->gsbuscfg0_reqinfo;
-> -		return;
-> -	}
-> -
->  	/*
->  	 * Iterate over all parent nodes for finding swnode properties
->  	 * and non-DT (non-ABI) properties.
-> @@ -2310,7 +2300,10 @@ int dwc3_core_probe(const struct dwc3_probe_data *data)
->  	dwc->regs_size	= resource_size(&dwc_res);
->
->  	dwc3_get_properties(dwc);
-> -	dwc3_get_software_properties(dwc, &data->properties);
-> +	dwc3_get_software_properties(dwc);
-> +
-> +	if (data->fixup_properties)
-> +		data->fixup_properties(dwc, &dwc->properties);
->
->  	if (dwc->sysdev_is_parent)
->  		dwc->sysdev = dwc->dev->parent;
-> @@ -2470,7 +2463,6 @@ static int dwc3_probe(struct platform_device *pdev)
->
->  	probe_data.dwc = dwc;
->  	probe_data.res = res;
-> -	probe_data.properties = DWC3_DEFAULT_PROPERTIES;
->
->  	return dwc3_core_probe(&probe_data);
+> -       return -EINVAL;
+> +       return 1;
 >  }
-> diff --git a/drivers/usb/dwc3/dwc3-apple.c b/drivers/usb/dwc3/dwc3-apple.c
-> index 1f474a8bc59e..8289d22e5994 100644
-> --- a/drivers/usb/dwc3/dwc3-apple.c
-> +++ b/drivers/usb/dwc3/dwc3-apple.c
-> @@ -181,7 +181,6 @@ static int dwc3_apple_core_probe(struct dwc3_apple *appledwc)
->  	probe_data.res = appledwc->mmio_resource;
->  	probe_data.ignore_clocks_and_resets = true;
->  	probe_data.skip_core_init_mode = true;
-> -	probe_data.properties = DWC3_DEFAULT_PROPERTIES;
->
->  	ret = dwc3_core_probe(&probe_data);
->  	if (ret)
-> diff --git a/drivers/usb/dwc3/dwc3-generic-plat.c b/drivers/usb/dwc3/dwc3-generic-plat.c
-> index 3e90ddf25809..69a6acd84a0f 100644
-> --- a/drivers/usb/dwc3/dwc3-generic-plat.c
-> +++ b/drivers/usb/dwc3/dwc3-generic-plat.c
-> @@ -33,7 +33,8 @@ struct dwc3_generic {
->
->  struct dwc3_generic_config {
->  	int (*init)(struct dwc3_generic *dwc3g);
-> -	struct dwc3_properties properties;
-> +	void (*fixup_properties)(struct dwc3 *dwc,
-> +				 struct dwc3_properties *props);
->  };
->
->  #define to_dwc3_generic(d) container_of((d), struct dwc3_generic, dwc)
-> @@ -137,12 +138,10 @@ static int dwc3_generic_probe(struct platform_device *pdev)
->  	probe_data.ignore_clocks_and_resets = true;
->
->  	plat_config = of_device_get_match_data(dev);
-> -	if (!plat_config) {
-> -		probe_data.properties = DWC3_DEFAULT_PROPERTIES;
-> +	if (!plat_config)
->  		goto core_probe;
-> -	}
->
-> -	probe_data.properties = plat_config->properties;
-> +	probe_data.fixup_properties = plat_config->fixup_properties;
->  	if (plat_config->init) {
->  		ret = plat_config->init(dwc3g);
->  		if (ret)
-> @@ -220,16 +219,20 @@ static const struct dev_pm_ops dwc3_generic_dev_pm_ops = {
->
->  static const struct dwc3_generic_config spacemit_k1_dwc3 = {
->  	.init = dwc3_spacemit_k1_init,
-> -	.properties = DWC3_DEFAULT_PROPERTIES,
->  };
->
-> +static void dwc3_ls1028a_fixup_properties(struct dwc3 *dwc,
-> +					  struct dwc3_properties *props)
-> +{
-> +	props->gsbuscfg0_reqinfo = 0x2222;
-> +}
-> +
->  static const struct dwc3_generic_config fsl_ls1028_dwc3 = {
-> -	.properties.gsbuscfg0_reqinfo = 0x2222,
-> +	.fixup_properties = dwc3_ls1028a_fixup_properties,
->  };
->
->  static const struct dwc3_generic_config eic7700_dwc3 =  {
->  	.init = dwc3_eic7700_init,
-> -	.properties = DWC3_DEFAULT_PROPERTIES,
->  };
->
->  static const struct of_device_id dwc3_generic_of_match[] = {
-> diff --git a/drivers/usb/dwc3/dwc3-google.c b/drivers/usb/dwc3/dwc3-google.c
-> index 67eda7f0d528..213c03048aa0 100644
-> --- a/drivers/usb/dwc3/dwc3-google.c
-> +++ b/drivers/usb/dwc3/dwc3-google.c
-> @@ -440,7 +440,6 @@ static int dwc3_google_probe(struct platform_device *pdev)
->  	probe_data.dwc = &google->dwc;
->  	probe_data.res = res;
->  	probe_data.ignore_clocks_and_resets = true;
-> -	probe_data.properties = DWC3_DEFAULT_PROPERTIES;
->  	ret = dwc3_core_probe(&probe_data);
->  	if (ret)  {
->  		ret = dev_err_probe(dev, ret, "failed to register DWC3 Core\n");
-> diff --git a/drivers/usb/dwc3/dwc3-imx.c b/drivers/usb/dwc3/dwc3-imx.c
-> index 64da121a8f76..396d76311120 100644
-> --- a/drivers/usb/dwc3/dwc3-imx.c
-> +++ b/drivers/usb/dwc3/dwc3-imx.c
-> @@ -192,6 +192,12 @@ static const struct software_node dwc3_imx_swnode = {
->  	.properties = dwc3_imx_properties,
->  };
->
-> +static void dwc3_imx_fixup_properties(struct dwc3 *dwc,
-> +				      struct dwc3_properties *props)
-> +{
-> +	props->needs_full_reinit = true;
-> +}
-> +
->  static int dwc3_imx_probe(struct platform_device *pdev)
->  {
->  	struct device		*dev = &pdev->dev;
-> @@ -265,8 +271,7 @@ static int dwc3_imx_probe(struct platform_device *pdev)
->
->  	probe_data.res = res;
->  	probe_data.dwc = dwc;
-> -	probe_data.properties = DWC3_DEFAULT_PROPERTIES;
-> -	probe_data.properties.needs_full_reinit = true;
-> +	probe_data.fixup_properties = dwc3_imx_fixup_properties;
->
->  	ret = dwc3_core_probe(&probe_data);
->  	if (ret) {
-> diff --git a/drivers/usb/dwc3/dwc3-qcom.c b/drivers/usb/dwc3/dwc3-qcom.c
-> index 5a68025ccea5..ef38308023aa 100644
-> --- a/drivers/usb/dwc3/dwc3-qcom.c
-> +++ b/drivers/usb/dwc3/dwc3-qcom.c
-> @@ -745,7 +745,6 @@ static int dwc3_qcom_probe(struct platform_device *pdev)
->  	probe_data.dwc = &qcom->dwc;
->  	probe_data.res = &res;
->  	probe_data.ignore_clocks_and_resets = true;
-> -	probe_data.properties = DWC3_DEFAULT_PROPERTIES;
->  	ret = dwc3_core_probe(&probe_data);
->  	if (ret)  {
->  		ret = dev_err_probe(dev, ret, "failed to register DWC3 Core\n");
-> diff --git a/drivers/usb/dwc3/glue.h b/drivers/usb/dwc3/glue.h
-> index b7ce196e84ea..e56fee68e4bc 100644
-> --- a/drivers/usb/dwc3/glue.h
-> +++ b/drivers/usb/dwc3/glue.h
-> @@ -9,10 +9,6 @@
->  #include <linux/types.h>
->  #include "core.h"
->
-> -#define DWC3_DEFAULT_PROPERTIES ((struct dwc3_properties){		\
-> -	.gsbuscfg0_reqinfo = DWC3_GSBUSCFG0_REQINFO_UNSPECIFIED,	\
-> -	})
-> -
->  /**
->   * dwc3_probe_data: Initialization parameters passed to dwc3_core_probe()
->   * @dwc: Reference to dwc3 context structure
-> @@ -21,14 +17,16 @@
->   *		be ignored by the DWC3 core, as they are managed by the glue
->   * @skip_core_init_mode: Skip the final initialization of the target mode, as
->   *		it must be managed by the glue
-> - * @properties: dwc3 software manage properties
-> + * @fixup_properties: optional hook to set or override properties after
-> + *		the core reads them from DT
->   */
->  struct dwc3_probe_data {
->  	struct dwc3 *dwc;
->  	struct resource *res;
->  	bool ignore_clocks_and_resets;
->  	bool skip_core_init_mode;
-> -	struct dwc3_properties properties;
-> +	void (*fixup_properties)(struct dwc3 *dwc,
-> +				 struct dwc3_properties *props);
->  };
->
->  /**
+>  static inline int __pm_runtime_set_status(struct device *dev,
+>                                             unsigned int status) { return=
+ 0; }
 > --
-> 2.53.0
+> 2.43.0
