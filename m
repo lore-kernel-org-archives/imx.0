@@ -1,57 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795629817;
-	b=Z6QiBiuL8X16saAcP5FYAAXRe+p641TrouMD1a7rm79ErloLBV2uu7z+z/6Ea15ZeYfG
-	 aAkrbh7G9wfr2h+bd12YMjLUJd42HQSmWlDkbyJIoKRwheHu4E7edgx7x3PcIo5e/b8wv
-	 VtbwadY3A+vX20Tb0qPwiJDL09VwLuuDs7+OScHvZ1rq1/6N6u+N9ajnr0wXjzaoyJW9V
-	 Bta21T5GTyBU1DVmDOR+ZBQcOr97trI3g1gwG8bv9ln97rwaBjahktMgZ5bgBhwAF2pAF
-	 z8r2ltrwvl34kC+EP/Q4oyQqujL8KlMWy8gOULTcqJxPqMp1+OQfG+y9SnuLHOGRJ5Q==
+	t=1795629923;
+	b=lIQX+swrPjjE1LuT7Dyrh3GP4kjeCQg/Yc7c/j/8U4jlkUeBOyA/3gC47fRe2co9/yNq
+	 48Gj0as4mijvEuWZJpRox39Acc3L7js1gRBTRBQCp3DaO+VDTyLqeYJWKrvJ7GTy6TMDC
+	 v4Dg9MZtGM+G7ilpA54kcARMgHoX57ZwzcB8FG6dT1rtOzmlADdcjWkeR/TAPxJ0a+lW3
+	 EyoEEhB+/IJGFUQBqtzfTQBv/lHULxHK5U+rIXFl1g/DMFOK66JRV6FHiQpBEoe8D/roR
+	 w4UPSzKxvya352MORF+oSUJaN94DphVwG7WFG2IKLRiT5rfHuz/fjJaPaMprhcuWg/g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795629817;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=Jjg2AizMoO8fgmQX9TPrWTlZoBJhv6b0qu+vOHQoQVE=;
-	b=TbWrb5v+PxRWZ/dkj409fGry8eYQz9hgNijbHeBWK9rNInSLArDJApvBSqc0Y3CyCFWm
-	 Zf+36Rl75M4AzqRibbOXFjd11BYwsbylkafRzAJreE5E7rWw0TBVlNA7yXbMEXCo50npA
-	 BOs81EvozWzJy+lNUMm4XarJGyGCXEw/SPjvaW69rNuJHO9BM7kETBirnWemkv3beV9PO
-	 zjwKI6RX4xPT15DoYYOZV/hJh6Itzc8zK5mwUhcYwDXUkodCmFYppIeo0pHFGHqMJLDz+
-	 lylDB0jLiM1B4NWNA+WatZtVrYMIyY5OnMI4gbpCZXE9uW7F6a/ai9GNNwtwoYLgdDg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795629923;
+	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:Subject:From:To:Cc:In-Reply-To:
+	 References:Date:Message-Id:X-Mailer:X-Last-TLS-Session-Version;
+	bh=0anl0ccCCCZoc0bFfoM8ANcczII5sgMZtQxxCyWtzo8=;
+	b=BDYZUtoH+xHXmkCKiObcgJTkjLDTrTovJF7lk+UpUHAnjC45OhiUnjB6OWsh3YDbLWay
+	 KM/h/ulmFKdcevq0+17YIAOkDioMd9/Oz3ypc8WRVLAy/hky9Bov1TMDQA60UgFZMWY51
+	 3XhBTSpZNs59haMHy0HeXwpbXqJ98aJ0Fjz2ahBvY3ieq+7GaccWiNa24LP/I13E3r11x
+	 mjXCPNYF8W06dYi4Oxu3GTSvCVFbYl3swoPUt9KdA5nDPyrwneIRyc2d3Yhv3ajtI81k+
+	 SxdgrfTeX2j134d9p+vnSp0pk74oQKzcFvzD+qHSMTQeWKiaiHhSZiW3P0gjXinWfSA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=K3ru4BVM;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=bootlin.com;
+	spf=pass smtp.mailfrom=bootlin.com;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b="mfUz/1l2";
+	arc=none smtp.remote-ip=185.246.84.56
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EC03606A321
-	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 18:03:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 763B6606A323
+	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 18:05:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 763B6606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=K3ru4BVM
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBC961F000CF;
-	Wed, 25 Nov 2026 18:03:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795629817;
-	bh=Jjg2AizMoO8fgmQX9TPrWTlZoBJhv6b0qu+vOHQoQVE=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=K3ru4BVMi1a/1cpmTvefmjUQCfyRawe3Ce6r/Htv1He99OJnaLEGr9A10J8N3v7cN
-	 SwX6cn91KSzn8hUdta9hrw7PlaZOt5EsMxSXOhKyWPJjlkxSsw0fdcb0sPHBed4EjM
-	 D7SpB6j7IkXDBac36tR1Css38nbbPE8Xzpp+9SumJSBUAzrUK1Xgv4m1Pc5CqTdIw6
-	 bwU+sGcf/Jx616UBrhvJnshce9ZeRMR/uJIEvOF6Gcdqsl3d6WtGrt2rSA2+xG2qTx
-	 ggvzSLJf63goWxQdKmpQNg1FI17uoYvKocTOkTtbFG4CjLUXXHMyAnoi+RThhUrayT
-	 thmVDCj1kH/dQ==
-Message-ID: <sashiko-outbox-233898@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 08/32] drm/display: bridge-connector: hoist error
- management to common code
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-Cc: dri-devel@lists.freedesktop.org, imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20261125-drm-bridge-hotplug-v4-8-822722850492@bootlin.com>
-References: <20261125-drm-bridge-hotplug-v4-0-822722850492@bootlin.com>
- <20261125-drm-bridge-hotplug-v4-8-822722850492@bootlin.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 25 Nov 2026 18:03:36 +0000
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=mfUz/1l2
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 2018D1A17E2;
+	Wed, 25 Nov 2026 18:05:21 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id D3B3E60480;
+	Wed, 25 Nov 2026 18:05:20 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 047B911E6B0E0;
+	Wed, 25 Nov 2026 19:05:10 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1795629915; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=0anl0ccCCCZoc0bFfoM8ANcczII5sgMZtQxxCyWtzo8=;
+	b=mfUz/1l2y9B5Q6PYTyl08Q0MPGeJPFMZpJfKF9f2H85BLYXnVbJYV0sNQ22zUAufCKepkb
+	Io2t55gOPfDO9liSeZnvG1Zys75fC1wGTQP4yBD/ORz31SyTAedq/74Q/EhMxOEzdBmpGB
+	U6Lk1CEjUx7XJxAc9NPu+MsghaHtJVDTaRnL63mHusx5uf6jnKvNpkrXIouXBa5xzPbrz7
+	/dxrCjLyC4O5LF90xXlF7CquGb858SGCsEHjZ6Rp18lypoOzkZV2+mVVWqfrwYJ8FRZKbX
+	DouSvjBzu3hp3KbICuKu7eJUO/IvZY+zqXc4eE+nL0NgzdPeGME/WefmWEkC8g==
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -60,51 +58,48 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v13 2/5] drm/imx: Add support for i.MX94 DCIF
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+To: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, 
+ Luca Ceresoli <luca.ceresoli@bootlin.com>, linux-clk@vger.kernel.org, 
+ imx@lists.linux.dev, devicetree@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ dri-devel@lists.freedesktop.org
+In-Reply-To: <20261120-dcif-upstreaming-v13-2-966ac248773f@oss.nxp.com>
+References: <20261120-dcif-upstreaming-v13-0-966ac248773f@oss.nxp.com>
+ <20261120-dcif-upstreaming-v13-2-966ac248773f@oss.nxp.com>
+Date: Wed, 25 Nov 2026 19:05:04 +0100
+Message-Id: <179562990451.846133.506244474972901657.b4-review@b4>
+X-Mailer: b4 0.16.0
+X-Last-TLS-Session-Version: TLSv1.3
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [High] drm/bridge-connector: int return in
-  drm_bridge_connector_initialize()
---
+On Fri, 20 Nov 2026 12:50:37 +0000, Laurentiu Palcu <laurentiu.palcu@oss.nxp.com> wrote:
+> The i.MX94 Display Control Interface features:
+>  * Up to maximum 3 layers of alpha blending:
+>     - 1 background layer(Layer 0);
+>     - 1 foreground layer(Layer 1);
+>     - A programmable constant color behind the background layer;
+>  * Each layer supports:
+>     - programmable plane size;
+>     - programmable background color;
+>     - embedded alpha and global alpha;
+>  * Data output with CRC checksum for 4 programmable regions;
+> 
+> [...]
 
-commit a701ba5bb1c19c7b9fcfc98010ada24b2c5ec042
-Author: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-drm/display: bridge-connector: hoist error management to common code
+-- 
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
-This commit moves the error check for drmm_connector_hdmi_init() and
-drmm_connector_init() out of the if/else branches in
-drm_bridge_connector_initialize().
-
-> diff --git a/drivers/gpu/drm/display/drm_bridge_connector.c b/drivers/gpu=
-/drm/display/drm_bridge_connector.c
-> index 19cacae617dce..f4a71801e8a3b 100644
-> --- a/drivers/gpu/drm/display/drm_bridge_connector.c
-> +++ b/drivers/gpu/drm/display/drm_bridge_connector.c
-> @@ -1057,15 +1057,13 @@ drm_bridge_connector_initialize(struct drm_bridge=
-_connector *bridge_connector,
->  					       &drm_bridge_connector_funcs,
->  					       &bridge_connector->hdmi_funcs,
->  					       connector_type, ddc);
-> -		if (ret)
-> -			return ERR_PTR(ret);
->  	} else {
->  		ret =3D drmm_connector_init(drm, connector,
->  					  &drm_bridge_connector_funcs,
->  					  connector_type, ddc);
-> -		if (ret)
-> -			return ERR_PTR(ret);
->  	}
-> +	if (ret)
-> +		return ret;
-
-[Severity: High]
-Should this return ERR_PTR(ret) instead of ret?
-drm_bridge_connector_initialize() returns a struct drm_connector *, so
-returning an int fails to build with -Werror=3Dint-conversion (and breaks
-git bisect before commit "drm/display: bridge-connector: use a dynamic
-connector" restores ERR_PTR(ret) later in the series).
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261125-drm-bridge=
--hotplug-v4-0-822722850492@bootlin.com?part=3D8
