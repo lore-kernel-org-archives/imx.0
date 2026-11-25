@@ -1,76 +1,142 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795622185;
-	b=W0LWHePHIXZx1hp7C0Qm7aKoGsZBdHJtVD4OuPcc/lfS08qRTu6xXdADHmQbloCqJHlH
-	 2Py0tiwEhPCL2e3RmFqr3VM2sgCtpxrUFP7eHmYEddzl9St9oDPrmyrSV+wlVEKsLjcjA
-	 4j3AS3Pbzlqz99th348fU39two9B0S02B/j1XiYVo/HH96VOVbuNFdzbyynT//Z5vvtfg
-	 3YlULaSUoJLC8hJAufFYWJbdtY6u0ByN/JMwmAcxmNXkuc1WHzr57sQI7Jmp35TiFG8BB
-	 hNQQRfc/MquHBwnwxY6WiFTxo/HSPhqWp/6aAS1MV4HYMn0CqTJO6ydIabHHwRvtBQQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795622185;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=q4uv0asRR2dgGMXvOPx/Lal51OzeJ3KhJ9tib17HZ3c=;
-	b=1tcBtIwMaa+tYBd96Uk/63OcfRZ+qOGERd87GJx5snHpbJsBf5wZ2XZsg0DABbKkdKU6
-	 lL4POVKiMErTgG6Ej6iQvtDOHm6eymBRYrGBGi6dsql4IQDNO/ytbAOfptvHfCkz05tXV
-	 KCkw/zspEj8UVYt2gRzzQvoQjdcLEdrYiZbfvFTD/0F0DAivnzCzb08b/Qa81zbsxvSNC
-	 LHvwojsPnRoHjpP61oIg2WWPPttD6q75tzuP6fdcXNnmDk6GCV+QkU6XD4xcLF7Guw03V
-	 tRRC5EtHHD2HPBtcmOXhxxZbpRmXndgZKwiUPBDHBFLBBpVuzth8d3+KHsdIQId9ayA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=R1qv51xI;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.65.58
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795622463;
+	b=lnv1W5vOfTMsr63MrPr6q95Cav7W2ia7/gavgKvdSCHPnU+wC8bProiS1+PXLgG5zgM2
+	 MUsEF9QNUUalRWkhewn2KxCkhkqn5BtzmU89hBNo1Nn9lYQWmOwkABM/K4dnfWhV4onkn
+	 aObqm+pi0HOwKKokiI2uAnSEh6bUuUbuqAd3GUJkSRt8BdBkLKc46qzfXT/aIrXvZTPSW
+	 9V4WHztrpYas8DCP5bty+s5U+PZGP3g0tOd5vV3bRTPzFizGZSLHPZcYWILCHW2WSVIDv
+	 Ciw6T90aZtDt2Uo+y4FMMAtdEoYWTyVs+ohAuWu2zRPowgcL9r5+vSq7WU9Ph7kAqrQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795622463;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding:In-Reply-To:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=ktvN5VccKKw5i08DfYGBrc6a93lAsKwOjSIw93pxbgM=;
+	b=yZJ58JN1MGJOwSZ1IH+c0mo7s9/4BX+K5I/6MTmLkNPoxRRRYKEpf+joo4FHehiUFgBR
+	 LOJ6CiofPIF5nN9gmv4afA6Tsv+NDtVOwxgfPGkT+/css/SqqaN8paR5Py03KxHy2p/oe
+	 iwPELHA2us8K7+tAhAig1dVMptVrXh05o3eI7+Vpv32scZMLTUNcurPI0BQMV5wCoUYIx
+	 Pnl5bXJ1sv2uMmWwPdC9uWBJiPGlzL+OBaLarm2iFL0YgN/x01a3Ts5EDySmetbXJbyN+
+	 pbdNWENL5XVQU3x/B18Z3XJw6nXjKSOStZRhHIGF6rIleDsc+sM2XruW4XYxzZ7YKQQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=oss.nxp.com;
+	spf=pass smtp.mailfrom=oss.nxp.com;
+	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b="h/azBYeY";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.65.58
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011058.outbound.protection.outlook.com [52.101.65.58])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AC99606A321;
-	Wed, 25 Nov 2026 15:56:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E019606A334;
+	Wed, 25 Nov 2026 16:01:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4E019606A334
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=R1qv51xI
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEF581F0093E;
-	Wed, 25 Nov 2026 15:56:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795622185;
-	bh=q4uv0asRR2dgGMXvOPx/Lal51OzeJ3KhJ9tib17HZ3c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=R1qv51xIK6Mx7z4WavGDaEQcFgwJQvutqhCXM+ZAKWIklnCkqRyE/V1eejVf+E3AL
-	 6AxKgPcQNqzrLC2qdJyMbBwrCyb19pNyVKaPQGesLvn56Tl/XBYq8eAYUat852bM/l
-	 5b3hi1x0qvJEt3xurKf6iBdGDD61GFMmLgwW+mXhjWa47oy/9IXL2ZCrpEj94sTRAd
-	 35S5nmvPcm81hxQX26Rjyh58U7nQU64f1wuLs6hQJkAdo5m+djbb8CjPbE8unnayN+
-	 URJAcJloXrqoOTpUay/QP4Ate0tEStRd/ddouTQgq5MGdiPC8ReUkspwuhWnSCOkQl
-	 HnNVLsx9NnT8Q==
-Date: Wed, 25 Nov 2026 16:56:16 +0100
-From: Niklas Cassel <cassel@kernel.org>
-To: Inochi Amaoto <inochiama@gmail.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Damien Le Moal <dlemoal@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Aksh Garg <a-garg7@ti.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Rhys Tumelty <rhys@tumelty.co.uk>,
-	Manikandan K Pillai <mpillai@cadence.com>,
-	"vladimir.oltean@nxp.com" <vladimir.oltean@nxp.com>,
-	Qiang Yu <qiang.yu@oss.qualcomm.com>,
-	Hans Zhang <18255117159@163.com>, Yao Zi <me@ziyao.cc>,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-ide@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org,
-	linux-phy@lists.infradead.org, Yixun Lan <dlan@gentoo.org>,
-	Longbin Li <looong.bin@gmail.com>
-Subject: Re: [PATCH v5 8/8] ata: ahci_imx: Use bulk PHY APIs for calibration
- PHYs
-Message-ID: <awcFIJlCOxB7nXNz@ryzen>
-References: <20261125043639.249525-1-inochiama@gmail.com>
- <20261125043639.249525-9-inochiama@gmail.com>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=h/azBYeY
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=pmIj9F7X+uSbDI69ts8l+L17FdfkPyAkEMqn0dG9KuEgTOpGQR4sLVBesiXE6Zh16s65V/0vIDmqxxaLiyGdKgz+W0OhQn4kuQRt+IFqsFnxeYohPQfgerROvksO3vtG0sHdeEm5t1xzUuxB6o/iFO5GQPb87vWWP0H6aQPJEcJpzoyVMqKqB6qYXuCRNFuMqMwSXL6gK7DSOoWd936Ik+SDp0GCX77J79UQx4r/G2AldQ0uoBouPjE4r81AXTg6MPcWNM7daIP54aTaSsaBWYU/V72Ko9gDtEY0Ls6BQaXkmYV+v8JeUwMM3gqnxEiKWJQ3HP2b+daUVvj3yi+w+A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ktvN5VccKKw5i08DfYGBrc6a93lAsKwOjSIw93pxbgM=;
+ b=RmBadnbGD6ubpSeXBZRTHudoe/4pa8ym/tOBPcmnV+pH72LbHyhyJ9h0BM9I7GXOfoyUMawXvh/lOjKK0hggK+E6g6aPNG/IupJ4rsYixX3o2rX1I396V0+wTMueod/0AHefCdgLep5k+f8IHayVanxJoEa0U+xKp/005XHPtZ98zcN5KebVxCaO9wB01CrWFjcEjHQAKNsrk1Zlyhp1O8gpKIIJAjLd6XQ7qCWY/LEapNvDc9k8pO2hTmaMKN5u1UYxCH2tP0df9Kl/bSaCUGU9tg/S6HiEaFGjS2zK9VPgQU8YyQ+B7xdVOeWEWnXoF6QHMGhzUDGJUFQHdeH0Hg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ktvN5VccKKw5i08DfYGBrc6a93lAsKwOjSIw93pxbgM=;
+ b=h/azBYeY457SocdCvH02G8TmyoWt0WoUAjQCniOSPa0qnOj+/OQEhAxTzPSQa2H3QFfNeN74abwxWeS6wrsmgU4ODQlAm11KMozXzO/6WlXGv6IfeNnxTSlrFdU5O6Wt1elgD9OY7Jn4NDIOeqTHP8qbwmZr+T6OEyZPmAnon6W2vrJ0so5yGKXrg1mjmmYFOBFBXF4yzOsFNwwXUsNHYtIgHWO30EgI22008WGYQxjGUvHlkziRW72uFiokrHwASTwUq+jZN6p/F4mw1t8GQHIWZSub0Jc9HJku2XA0AmYdCqZ7LvPySNkMRyLs3YP1YdZpzaHZ64HtGEZyVksyzw==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from MI3PR04MB12438.eurprd04.prod.outlook.com (2603:10a6:290:76::14)
+ by GVXPR04MB9735.eurprd04.prod.outlook.com (2603:10a6:150:118::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.662.6; Wed, 25 Nov
+ 2026 16:00:55 +0000
+Received: from MI3PR04MB12438.eurprd04.prod.outlook.com
+ ([fe80::c715:c32:8bb1:b70b]) by MI3PR04MB12438.eurprd04.prod.outlook.com
+ ([fe80::c715:c32:8bb1:b70b%4]) with mapi id 15.21.0662.004; Wed, 25 Nov 2026
+ 16:00:55 +0000
+Date: Wed, 25 Nov 2026 10:00:32 -0600
+From: Frank Li <Frank.li@oss.nxp.com>
+To: "Rafael J. Wysocki (Intel)" <rafael@kernel.org>
+Cc: Ulf Hansson <ulf.hansson@oss.qualcomm.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Heiko Stuebner <heiko@sntech.de>, Ulf Hansson <ulfh@kernel.org>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Hans de Goede <hansg@kernel.org>,
+	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Yong Wu <yong.wu@mediatek.com>, Will Deacon <will@kernel.org>,
+	Tomasz Figa <tfiga@chromium.org>, Marek Vasut <marex@denx.de>,
+	Michael Tretter <m.tretter@pengutronix.de>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@kernel.org>,
+	"open list:POWER MANAGEMENT CORE" <linux-pm@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>,
+	"moderated list:ARM/Mediatek SoC support:Keyword:mediatek" <linux-arm-kernel@lists.infradead.org>,
+	"moderated list:ARM/Mediatek SoC support:Keyword:mediatek" <linux-mediatek@lists.infradead.org>,
+	"open list:ARM/Rockchip SoC support:Keyword:b[Rr]ock[Cc]hipb" <linux-rockchip@lists.infradead.org>,
+	imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Hellstrom <thomas.hellstrom@linux.intel.com>,
+	Simona Vetter <simona@ffwll.ch>, David Airlie <airlied@gmail.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Alessio Belle <alessio.belle@imgtec.com>,
+	Luigi Santivetti <luigi.santivetti@imgtec.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Dafna Hirschfeld <dafna@fastmail.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
+	dri-devel@lists.freedesktop.org, imagination@lists.freedesktop.org,
+	intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
+	iommu@lists.linux.dev, linux-media@vger.kernel.org,
+	linux-sound@vger.kernel.org, sound-open-firmware@alsa-project.org
+Subject: Re: [PATCH v3 2/2] PM: runtime: fix stub pm_runtime_get_if_in_use()
+ for !CONFIG_PM
+Message-ID: <awcGINOZKcD-cTvy@SMW015318>
+References: <20261117173738.1073856-1-Frank.Li@oss.nxp.com>
+ <20261117173738.1073856-2-Frank.Li@oss.nxp.com>
+ <CAPx+jO9RwkpSKwq6vq00uoXK-mcovJ2LMH7b_ByRnxOUj8nH8w@mail.gmail.com>
+ <CAJZ5v0jsnLjEBxa1R4Q3hZLZKrCUW0xSE9SqLB8bd4tNAhXTAQ@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJZ5v0jsnLjEBxa1R4Q3hZLZKrCUW0xSE9SqLB8bd4tNAhXTAQ@mail.gmail.com>
+X-ClientProxiedBy: PH8P220CA0050.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:510:2d9::24) To MI3PR04MB12438.eurprd04.prod.outlook.com
+ (2603:10a6:290:76::14)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -80,185 +146,229 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261125043639.249525-9-inochiama@gmail.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|GVXPR04MB9735:EE_
+X-MS-Office365-Filtering-Correlation-Id: 957e1111-1b15-4336-235b-08df4b0d49b5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|19092799006|23010399003|376014|7416014|366016|6133799003|261009223027099003|18002099003|22082099003|4143699003|11063799006|10067099003|56012099006|261102123227099003|261026121527099003|261021123027099003|261026140227099003|261022105027099003|261022115727099003|261022075727099003|261021121427099003|261028144727099003;
+X-Microsoft-Antispam-Message-Info:
+	NqBWBKjhmOlNIW2l15T7ZmpE7lXkQLhngmyGCozcsWjz/umSbddPpn3j6gNlEvAwg7RZ1x5kK2dp0eC5iS7u84Ok4QDPkpChN3aXXEsJgrWc21iW+W5Tf7R7zhEUWY9CZo1/YCE0iD/1deZokcFFTvF5lSYza1HTCrnQfUa4E5/qFhB6Ux7niCbjkweNs0CM8g5yrJhiO0uSKsL0XAI2HSYikcTfrIYQcMKai60kVy9YpVfK0oB9fnj9Y6IPLx01aZVyWK+XcHGVAI4ihaH4AaYqAxQ1KwP/ps8JliH7XbbNNXUD+QWf/RAjjXJXAb5Aa0zgCZLtugH0Kl1sLJjkmB2J6kZIBAgZ3qv3XPgLUYeWBDiiqsA3VkWKx5+0Sg9V9Ic+nRNJcd6TymwFjYBmBJZju/VpSTF5zkx5o+jL2Lk4N3qtzsjjY9Cg9YGSuTM6AXmPKDhMMe39HG5hLzXQcyrf5I+//tFMHY/7JGtwuwO7y4l6tMsVFOCdcHcxPGPdRPJgqFjNck8CWbgirDVTGIhp22wGPA411n9dIHlBz2K/fzFtj/HrvTDfsb4v+mJufC6xnPpMPOkyWE2Y+QrAFJcoef8v58kZWypy4HjFgfASf6s922FUvBDmulhvHLomkEQFspG6eA1Eyn52Ox8K4A==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(23010399003)(376014)(7416014)(366016)(6133799003)(261009223027099003)(18002099003)(22082099003)(4143699003)(11063799006)(10067099003)(56012099006)(261102123227099003)(261026121527099003)(261021123027099003)(261026140227099003)(261022105027099003)(261022115727099003)(261022075727099003)(261021121427099003)(261028144727099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?VXJLWWU4NFJaek5MQWVPRkdYNVZ3Z2ZxdkgzTjkrY0wwbHpaMDk2OXd3ckwy?=
+ =?utf-8?B?Q05JSk9EQ0JNWTYrU2ZXZ3hVV2tDQk96R3pockd5bWdVMjRoTGFvNDMvMEhN?=
+ =?utf-8?B?VHZwN1hZQnUzYjlnb3M5QzFXY2lzZXo5WkdPSFRFREo2MDd2ZEsrZGNoMWtD?=
+ =?utf-8?B?WEdjOGZTZG5NWkgvaXU4Zlg4MHZBVEFrWVJ0bHVXQjU1bGJrSklMSmlYQ3hH?=
+ =?utf-8?B?eUsrTUhxZUN6UWx6VFNKd2w2aVV5N3ptUWdtcThWNVR5MTAvN2cxaEJISEJ4?=
+ =?utf-8?B?N2pNNWpmRG1xVk53RFZUV2Jxbjlnbm54RndXekFIa1R1aDV3VFQ3dnZEbTY1?=
+ =?utf-8?B?NHp2L0dxV3lqWnJQeERrNzc4eWFQaFhZUkxuTXJGSjhYZFNvUGZXMHI2UWtS?=
+ =?utf-8?B?bEg2NXhnTzVFcnpGWE1ZaWlhTDNtMVZRN3VvRGx1aHpQQ2E0VTREbDhLaSt0?=
+ =?utf-8?B?U0sreGFXUWtOVTBMYnVQSHdCdW5PRENrZkJZSEsvdC9QTWl6ZEFzNFRkUTFu?=
+ =?utf-8?B?cnBHbHJoOXhDd1RXVFozdnJFMzNXa0JNQ2JvMEpneC9QdE9vN1o2R3FXYktr?=
+ =?utf-8?B?V1BQdHBhdGxpQUdnZ3hHeUlESGY4UGt0aFJha0Jtc2ZTN2RINHhqYW13czZL?=
+ =?utf-8?B?aXIxektFMnZzdUZrQnk3b3FJVXJwZ0dDTEFsa1kxVytDdS9xZUYvcnl4N3JP?=
+ =?utf-8?B?NmJXRCt0eUtRTFJFcTRWN0FQTUxVcFFESjBkenVGdEJhTVB5R0UvUmJyZ1o1?=
+ =?utf-8?B?Z0NBNlh2aXRCSU85ZzVCOVJScGtUYUFOOFp3ZVk1TE0wbkkzcUhMbHBtWmRO?=
+ =?utf-8?B?VVhlT3pZaUR4dDVhK2Y2RGZwSTk4RTRxSGFhbFlaU2JzVGRodVVGdjgySGow?=
+ =?utf-8?B?dmRzcSs2cWI4NGU2SC9GTlBGbXJscnRNUUR4WWZJSFE2Z0ZpT2hPSUxPNzdi?=
+ =?utf-8?B?RnRBZ0J5bTF1VXhXRnNESEVoZms3bnNFMnlBbzBxc0V0bFI5V05UYisyUzJq?=
+ =?utf-8?B?VzU0WnhBdDF0bDc3Z1VNT2diOTY5VjV6SmcyMnp1TExPYy83eVo1d0FaQVZT?=
+ =?utf-8?B?LzRDb24rbU5Gb1VIc1B5SXVYSTVoa0NIQ25ORWd0d1I2aVZ5eEZrVVVPVEpR?=
+ =?utf-8?B?ZlFicEFoSXVVSGtkcC9pK0p0N3Vac0w3Y3p0TTJGSzZ1Y0s2ZWxkMERQc3B3?=
+ =?utf-8?B?VFFDSjVUd3FzbmpWWkJlN2Yxb3VESDhBaldxM2drWXRJMDYvNW9Nd0R3aHlj?=
+ =?utf-8?B?blh2dXhkUnQ5VVpQN0EwM2piNWREakNEUm1lUzNaVGZZMWVibitoN2Z0N0VV?=
+ =?utf-8?B?b1FIVWtLdDFzTVNXTmdCMnV2SnI5ZW1Xc0lyUUhrY3gxNDlaSkpSMU1UUXN1?=
+ =?utf-8?B?TFl0NUFyM1poN2dPYjhBV290azVRK3d0S3BvRTJpWW90VEtQaUg0OGVtVVFE?=
+ =?utf-8?B?QmhDTE13WVVIV0hpL1RWQVVBRzhSc1ozN1RhZnRXQTVXZzlaZHlja05aRWs2?=
+ =?utf-8?B?aGh1MXh3eEJrRStkWHluY3ZmS2w1bTlCR1hjc1BPcWFEaUJKUmxEa3JXODJH?=
+ =?utf-8?B?M0tEM0s2Mk9YZlZwRHRwVDBCZ29iRUJHbUxUWWZlb2VyL2tvTSsxSHczTHM1?=
+ =?utf-8?B?a2tKUno3eGRSTndPNERRL0MwTVB6d2g5NU5LZTJ4QXZJc2xOTWI4NDhmUVdF?=
+ =?utf-8?B?OENiWkFKUy9adGJ0dnk2bDQySDY4cWgranhoeXlYSno5MGluanpSdUNtU3Uy?=
+ =?utf-8?B?Z1k2UkVCZXR3VUVTTENjdmRmU3BCUXF5OXl5VnJ1a2Urb0ZPNzJVWTRMSW1H?=
+ =?utf-8?B?cWViN2hPQ2lxZTVFKytuZEhoRzVnUWxMbTVhWWhyRFlpYXRzNjYxbDJKTVZQ?=
+ =?utf-8?B?UHllWHJ1Q2huNG53bDNRc3RmQ0t4U01MWENPUFdxSld2K1JTZnVXWFloM2o1?=
+ =?utf-8?B?K2l6Y1BuYVRYQ3lrZUF2WEhBSVdwSndOd2lTRHNkbUtDMUdoQnhvRWdaajZv?=
+ =?utf-8?B?UXZNR0hUMTJQbk1raHVrYlNydU81NE1DczBQMFhPT3Z6aGQwWTV6cE9PMXA5?=
+ =?utf-8?B?NDREK1AwWEJ4T0lmYVBZa09XTnhIZjIvdFV5NnZ4cHN6YWJoZEVrZ3pXSERO?=
+ =?utf-8?B?RWpZdVhzWVE4ellSUEpucEpOazlLOHBMWm9sSzRKQWJnVWVOMUFEVjM5Qzd2?=
+ =?utf-8?B?M1hFVkdEOXlmTXNvMWFyNDNZb3RucDV5Yk5JdXM0ZXhxQms0UUZNV0pUNUJG?=
+ =?utf-8?B?Z1haM2pZWGFvMFVLNE8vYXhKUlpTa0MvczR1NnRCMU55ZzNtd3NGR3pHMWxV?=
+ =?utf-8?B?cFJQNDhJSXJHcndLc0hzWmsxMkhiNkZrR3JTVXJlalptWlVOZ2w4aW9WaHBv?=
+ =?utf-8?Q?YXIYGIKmiKf3QIwT+239zOqXBAYHTZf2JhrA3?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 957e1111-1b15-4336-235b-08df4b0d49b5
+X-MS-Exchange-CrossTenant-AuthSource: MI3PR04MB12438.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Nov 2026 16:00:55.5685
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: VgMtB6ytRFYj0OYuxVXIxz51RwRfWFTz5mK3PWZkD9as33wlRmsMShOkak5WEW9bVHktNzisSswo0u/bJdDMHFxpaliSDcQy9+T6Ip+EXQXT3yAIR1wZWsV88yf8OVW3
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB9735
 
-Hello Inochi,
+On Wed, Nov 25, 2026 at 04:53:35PM +0100, Rafael J. Wysocki (Intel) wrote:
+> On Wed, Nov 25, 2026 at 4:07 PM Ulf Hansson
+> <ulf.hansson@oss.qualcomm.com> wrote:
+> >
+> > On Tue, Nov 17, 2026 at 6:38 PM <Frank.Li@oss.nxp.com> wrote:
+> > >
+> > > From: Frank Li <Frank.Li@nxp.com>
+> > >
+> > > The stub for pm_runtime_get_if_in_use() under !CONFIG_PM currently
+> > > returns -EINVAL.  The real implementation returns:
+> > >   1  - device is active and its usage counter is non-zero (bumped)
+> > >   0  - device is not in use or not active (counter not bumped)
+> > >  -EINVAL - runtime PM disabled for this device
+> > >
+> > > When CONFIG_PM is not set every device is permanently "active" and
+> > > always considered "in use", so the stub must return 1, mirroring
+> > > __pm_runtime_resume() which already returns 1 in the same build.
+> > >
+> > > Returning -EINVAL breaks callers that test the return value with
+> > > comparisons other than "!= 0 / == 0":
+> > >
+> > > drivers/gpu/drm/i915/intel_runtime_pm.c:
+> > >   if (intel_runtime_pm_get_if_in_use(rpm))
+> > >   which wraps to: ret = pm_runtime_get_if_in_use(); return ret > 0;
+> > >   With -EINVAL the wrapper returns false, causing an incorrect error
+> > >   path in the GT fence revocation code.
+> > >
+> > > drivers/gpu/drm/xe/xe_pm.c:
+> > >   if (pm_runtime_get_if_in_use(xe->drm.dev) > 0)
+> > >   With -EINVAL the condition is false; xe_pm_runtime_get_if_in_use()
+> > >   returns false, so callers believe the device is not usable.
+> > >
+> > > drivers/gpu/drm/gma500/power.c:
+> > >   return pm_runtime_get_if_in_use(dev) == 1;
+> > >   -EINVAL != 1, so the helper always returns false when !CONFIG_PM.
+> > >
+> > > drivers/gpu/drm/imagination/pvr_power.c:
+> > >   if (pm_runtime_get_if_in_use(...) <= 0)
+> > >   -EINVAL <= 0 is true, so the driver always takes the "requeue" error
+> > >   path instead of proceeding with the active device.
+> > >
+> > > sound/soc/sof/debug.c:
+> > >   if (pm_runtime_get_if_in_use(sdev->dev) == 1)
+> > >   -EINVAL != 1, so d3_prevented is never set, corrupting exception
+> > >   debug accounting.
+> > >
+> > > drivers/iommu/mtk_iommu.c:
+> > >   if (pm_runtime_get_if_in_use(dom->plat_dev->dev) <= 0)
+> > >   -EINVAL <= 0 skips the TLB flush, leaving stale IOMMU mappings.
+> > >
+> > > drivers/iommu/rockchip-iommu.c:
+> > >   Three call sites use WARN_ON_ONCE(err < 0) or similar patterns.
+> > >   -EINVAL < 0 triggers a spurious WARNING on every call.
+> > >
+> > > drivers/media/i2c/isl7998x.c:
+> > >   if (pm_runtime_get_if_in_use(dev) <= 0)  (two call sites)
+> > >   -EINVAL <= 0 causes the driver to always skip register programming
+> > >   when !CONFIG_PM.
+> > >
+> > > drivers/media/platform/rockchip/rkisp1/rkisp1-debug.c:
+> > >   if (pm_runtime_get_if_in_use(dev) <= 0)  (two call sites)
+> > >   -EINVAL <= 0 prevents any debug statistics from being collected.
+> > >
+> > > Fixes: a436b6a19f57 ("PM / runtime: Add new helper for conditional usage count incrementation")
+> > > Fixes: 3b85b7bcccf4 ("drm/xe: Fix display runtime_pm handling")
+> > > Fixes: 672c473576ca ("drm/gma500: Rewrite power management code")
+> > > Fixes: b30289e7fa92 ("ASoC: SOF: Fix runtime pm usage counter balance after fw exception")
+> > > Fixes: c0b57581b73b ("iommu/mediatek: Add power-domain operation")
+> > > Fixes: 51ef2be546e2 ("media: i2c: isl7998x: Add driver for Intersil ISL7998x")
+> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > > ---
+> > > Change in v3
+> > > - drop tag: cbb819c363c5 ("media: rkisp1: debug: Collect input status by sampling ISP_FLAGS_SHD")
+> > > selected PM at arch config
+> > > - drop tag: 0f181d3cf7d9 ("iommu/rockchip: Add runtime PM support")
+> > > selected PM at arch config
+> > > - drop tag: 9d58aa46291d ("drm/i915: Fix the GT fence revocation runtime PM logic")
+> > > guard by CONFIG_PM
+> > > - drop tag 727538a4bbff ("drm/imagination: Implement power management")
+> > > depend on PM
+> > > `
+> > > Change in v2
+> > > - new patches.
+> > >
+> > > Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> > > Cc: linux-pm@vger.kernel.org
+> > > Cc: Jani Nikula <jani.nikula@linux.intel.com>
+> > > Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+> > > Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> > > Cc: Tvrtko Ursulin <tursulin@ursulin.net>
+> > > Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> > > Cc: Maxime Ripard <mripard@kernel.org>
+> > > Cc: "Thomas Hellstrom" <thomas.hellstrom@linux.intel.com>
+> > > Cc: Simona Vetter <simona@ffwll.ch>
+> > > Cc: David Airlie <airlied@gmail.com>
+> > > Cc: Matthew Brost <matthew.brost@intel.com>
+> > > Cc: Thomas Zimmermann <tzimmermann@suse.de>
+> > > Cc: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
+> > > Cc: Alessio Belle <alessio.belle@imgtec.com>
+> > > Cc: Luigi Santivetti <luigi.santivetti@imgtec.com>
+> > > Cc: Liam Girdwood <lgirdwood@gmail.com>
+> > > Cc: Mark Brown <broonie@kernel.org>
+> > > Cc: Jaroslav Kysela <perex@perex.cz>
+> > > Cc: Takashi Iwai <tiwai@suse.com>
+> > > Cc: Bard Liao <yung-chuan.liao@linux.intel.com>
+> > > Cc: Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>
+> > > Cc: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+> > > Cc: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+> > > Cc: Robin Murphy <robin.murphy@arm.com>
+> > > Cc: Yong Wu <yong.wu@mediatek.com>
+> > > Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+> > > Cc: Matthias Brugger <matthias.bgg@gmail.com>
+> > > Cc: Heiko Stuebner <heiko@sntech.de>
+> > > Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+> > > Cc: Dafna Hirschfeld <dafna@fastmail.com>
+> > > Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> > > Cc: Michael Tretter <m.tretter@pengutronix.de>
+> > > Cc: Daniel Baluta <daniel.baluta@nxp.com>
+> > > Cc: Will Deacon <will@kernel.org>
+> > > Cc: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+> > > Cc: dri-devel@lists.freedesktop.org
+> > > Cc: imagination@lists.freedesktop.org
+> > > Cc: intel-gfx@lists.freedesktop.org
+> > > Cc: intel-xe@lists.freedesktop.org
+> > > Cc: iommu@lists.linux.dev
+> > > Cc: linux-arm-kernel@lists.infradead.org
+> > > Cc: linux-mediatek@lists.infradead.org
+> > > Cc: linux-media@vger.kernel.org
+> > > Cc: linux-rockchip@lists.infradead.org
+> > > Cc: linux-sound@vger.kernel.org
+> > > Cc: sound-open-firmware@alsa-project.org
+> > > Cc: imx@lists.linux.dev
+> > > ---
+> > >  include/linux/pm_runtime.h | 2 +-
+> > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > >
+> > > diff --git a/include/linux/pm_runtime.h b/include/linux/pm_runtime.h
+> > > index de9e7518ecef2..1d983fe55a16a 100644
+> > > --- a/include/linux/pm_runtime.h
+> > > +++ b/include/linux/pm_runtime.h
+> > > @@ -276,7 +276,7 @@ static inline int pm_schedule_suspend(struct device *dev, unsigned int delay)
+> > >  }
+> > >  static inline int pm_runtime_get_if_in_use(struct device *dev)
+> > >  {
+> > > -       return -EINVAL;
+> > > +       return 1;
+> >
+> > This should be return 0, as we did not bump the usage count.
+>
+> This is kind of moot because there is no usage counter.
+>
+> However, the caller may always take the opportunistic "in use" path
+> because there are no potential costs related to it.
 
-On Wed, Nov 25, 2026 at 12:36:39PM +0800, Inochi Amaoto wrote:
-> The i.MX8QM SATA PHY relies on the first two HSIO lanes for shared
-> impedance calibration. Store these calibration PHYs in a bulk array
-> and acquire them by name with devm_phy_bulk_get().
-> 
-> Initialize both calibration PHYs before powering them on in lane order,
-> then keep the SATA PHY initialization, mode selection and power-on
-> separate. Use the bulk helpers to release the calibration PHYs after
-> SATA startup and to unwind failures without repeating power-off after
-> a failed bulk power-on.
-> 
-> Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
-> ---
->  drivers/ata/ahci_imx.c | 57 ++++++++++++++++--------------------------
->  1 file changed, 21 insertions(+), 36 deletions(-)
-> 
-> diff --git a/drivers/ata/ahci_imx.c b/drivers/ata/ahci_imx.c
-> index 6aaa18e29abc..18faa033e44f 100644
-> --- a/drivers/ata/ahci_imx.c
-> +++ b/drivers/ata/ahci_imx.c
-> @@ -25,6 +25,8 @@
->  
->  #define DRV_NAME "ahci-imx"
->  
-> +#define NUM_CALIPHY		2
-> +
->  enum {
->  	/* Timer 1-ms Register */
->  	IMX_TIMER1MS				= 0x00e0,
-> @@ -66,8 +68,7 @@ struct imx_ahci_priv {
->  	struct clk *ahb_clk;
->  	struct regmap *gpr;
->  	struct phy *sata_phy;
-> -	struct phy *cali_phy0;
-> -	struct phy *cali_phy1;
-> +	struct phy_bulk_data cali_phys[NUM_CALIPHY];
->  	bool no_device;
->  	bool first_time;
->  	u32 phy_params;
-> @@ -428,30 +429,20 @@ static int imx8_sata_enable(struct ahci_host_priv *hpriv)
->  	 * Initialize the first two lane PHYs here, although only the
->  	 * third lane PHY is used by SATA.
->  	 */
-> -	ret = phy_init(imxpriv->cali_phy0);
-> +	ret = phy_bulk_init(NUM_CALIPHY, imxpriv->cali_phys);
->  	if (ret) {
->  		dev_err(dev, "cali PHY init failed\n");
->  		return ret;
->  	}
-> -	ret = phy_power_on(imxpriv->cali_phy0);
-> +	ret = phy_bulk_power_on(NUM_CALIPHY, imxpriv->cali_phys);
->  	if (ret) {
->  		dev_err(dev, "cali PHY power on failed\n");
-> -		goto err_cali_phy0_exit;
-> -	}
-> -	ret = phy_init(imxpriv->cali_phy1);
-> -	if (ret) {
-> -		dev_err(dev, "cali PHY1 init failed\n");
-> -		goto err_cali_phy0_off;
-> -	}
-> -	ret = phy_power_on(imxpriv->cali_phy1);
-> -	if (ret) {
-> -		dev_err(dev, "cali PHY1 power on failed\n");
-> -		goto err_cali_phy1_exit;
-> +		goto err_cali_phy_exit;
+When !CONFIG_PM, all device is active state, which should be equal to bump
+usage count case.
 
-This changes the order the calibration PHYs are brought up in.
+And it'd better return the same value of pm_runtime_get().
 
-The commit message describes the new order:
+Frank
 
-  "Initialize both calibration PHYs before powering them on in lane
-  order"
-
-but doesn't say that it differs from the current sequence. Could the
-commit message mention the change, and why it is safe for the shared
-calibration?
-
-The cover letter mentions that the PHY timing requirements were checked
-against the documentation. Has the new sequence also been tested on
-i.MX8QM hardware?
-
-
->  	}
->  	ret = phy_init(imxpriv->sata_phy);
->  	if (ret) {
->  		dev_err(dev, "sata PHY init failed\n");
-> -		goto err_cali_phy1_off;
-> +		goto err_cali_phy_off;
->  	}
->  	ret = phy_set_mode(imxpriv->sata_phy, PHY_MODE_SATA);
->  	if (ret) {
-> @@ -465,10 +456,8 @@ static int imx8_sata_enable(struct ahci_host_priv *hpriv)
->  	}
->  
->  	/* The cali_phy# can be turned off after SATA PHY is initialized. */
-> -	phy_power_off(imxpriv->cali_phy1);
-> -	phy_exit(imxpriv->cali_phy1);
-> -	phy_power_off(imxpriv->cali_phy0);
-> -	phy_exit(imxpriv->cali_phy0);
-> +	phy_bulk_power_off(NUM_CALIPHY, imxpriv->cali_phys);
-> +	phy_bulk_exit(NUM_CALIPHY, imxpriv->cali_phys);
->  
->  	/* RxWaterMark setting */
->  	val = readl(hpriv->mmio + IMX8QM_SATA_AHCI_PTC);
-> @@ -480,14 +469,10 @@ static int imx8_sata_enable(struct ahci_host_priv *hpriv)
->  
->  err_sata_phy_exit:
->  	phy_exit(imxpriv->sata_phy);
-> -err_cali_phy1_off:
-> -	phy_power_off(imxpriv->cali_phy1);
-> -err_cali_phy1_exit:
-> -	phy_exit(imxpriv->cali_phy1);
-> -err_cali_phy0_off:
-> -	phy_power_off(imxpriv->cali_phy0);
-> -err_cali_phy0_exit:
-> -	phy_exit(imxpriv->cali_phy0);
-> +err_cali_phy_off:
-> +	phy_bulk_power_off(NUM_CALIPHY, imxpriv->cali_phys);
-> +err_cali_phy_exit:
-> +	phy_bulk_exit(NUM_CALIPHY, imxpriv->cali_phys);
->  
->  	return ret;
->  }
-> @@ -839,19 +824,19 @@ static const struct scsi_host_template ahci_platform_sht = {
->  
->  static int imx8_sata_probe(struct device *dev, struct imx_ahci_priv *imxpriv)
->  {
-> +	int ret;
-> +
->  	imxpriv->sata_phy = devm_phy_get(dev, "sata-phy");
->  	if (IS_ERR(imxpriv->sata_phy))
->  		return dev_err_probe(dev, PTR_ERR(imxpriv->sata_phy),
->  				     "Failed to get sata_phy\n");
->  
-> -	imxpriv->cali_phy0 = devm_phy_get(dev, "cali-phy0");
-> -	if (IS_ERR(imxpriv->cali_phy0))
-> -		return dev_err_probe(dev, PTR_ERR(imxpriv->cali_phy0),
-> -				     "Failed to get cali_phy0\n");
-> -	imxpriv->cali_phy1 = devm_phy_get(dev, "cali-phy1");
-> -	if (IS_ERR(imxpriv->cali_phy1))
-> -		return dev_err_probe(dev, PTR_ERR(imxpriv->cali_phy1),
-> -				     "Failed to get cali_phy1\n");
-> +	imxpriv->cali_phys[0].id = "cali-phy0";
-> +	imxpriv->cali_phys[1].id = "cali-phy1";
-> +
-> +	ret = devm_phy_bulk_get(dev, NUM_CALIPHY, imxpriv->cali_phys);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "Failed to get cali_phy\n");
-
-phy_bulk_get() already reports which PHY failed:
-
-drivers/phy/phy-core.c:phy_bulk_get() {
-    ...
-        for (i = 0; i < num_phys; i++) {
-                phys[i].phy = phy_get(dev, phys[i].id);
-
-                ret = PTR_ERR_OR_ZERO(phys[i].phy);
-                if (ret) {
-                        phys[i].phy = NULL;
-
-                        dev_err_probe(dev, ret, "Failed to get phy: (%s)\n",
-                                      phys[i].id);
-                        goto err;
-                }
-        }
-    ...
-}
-
-so a missing cali-phy1 entry in phy-names now prints two errors, and the
-second one doesn't name the PHY.
-
-A plain "return ret;" should be enough here.
-
-
-Kind regards,
-Niklas
