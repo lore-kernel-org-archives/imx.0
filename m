@@ -1,83 +1,83 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.177
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.176
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795581459;
-	b=zZRGVH3R1SMyhbH+Eo+zZXGgJ/la0s8lbbg/sJZo091GhmYcBxbmgfDJGanHCJXesPWZ
-	 0LX+b+xMOsZrN7PBItgUXyH/0fY6Wp6swSkIBTXiD4EHw7HkPntdM8yl0V5fmYHHJp0CO
-	 mK0n2lEKV/qfsitDZDE32ERgVE9ojyACVQckgFHLaWcmyKAqKYjg0YTj6QK4Vno338EL0
-	 cq2VtqpZ8aI8ziRk4b9pYEdIKB4u97GOreGYXf+EkEivIUNxuLW6siIi2jGidEj8XxF15
-	 tne7Ok3dBSwegMUTDnphZod/2etQ9GzV/6wYxYGoZwbCDTm3yriRyZlXqOZUlqk8X6A==
+	t=1795581464;
+	b=UPT8u935N1gT0yExLTxAjRU/yjbqBwBEIlLwmcC/9q+0VTAF/qt3q1FTsSirZLWLFYXl
+	 0yJvG+BtKC3i5aPCSmQnCL7rm9vIncTx+CzXgm7bYJwxlwaXDqrOj70ObP4S1f3b27CmU
+	 KsJzMBRmdWYOL5J/F8u90TPyt17EQRPEXqD5Kb/VVd1rmnP7Oo/rsc7LLXLzghJtU2+Gx
+	 tUkYwfeg3zqWLB1AaNT422eRrVOawLL918yigem80L1l9U77dI5kPTt1iG+LPc+BhW5C+
+	 zMlOi8xGrFrx4rtbU1RzkC54JB0N4F4M1STMalt6nDnjalHg2CikzhIv0CaM0GaWJtA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795581459;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795581464;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding;
-	bh=p0LC0sUIzj6iLFfqcqtwKGB2+VgW9jHKFGlHAfP+Aeo=;
-	b=NQNayxA6z8faLJQPRkOsAQFoFZqOlaJ+AhVbJgiZP6xRz8epyg4qMCewsRPdx7BzseTx
-	 OKr25TPsxRCvngUBjogEXrxzgbG4DI3P5gTvfgqD4fzLbVPNoRU4BlENVVd4TYzLSeNL8
-	 RfH2dKGe2nujzg4aAofHLdBWIfpNqmpuAZSzJGnWFSulGh5AVnHymkP1mw/bWH00FsRE+
-	 /CPXH4CDrceR1tw4PZtD4+Lmfgn8W8HPARAthiZt6kM50cXHutXyV7fWl5XSegdFGLAZO
-	 YxMfnBWs/PxQ5yNsbN8TvJ3wJwW7gR5hJEmlf5TEXKzI++Z4xT8M9s6LQ7DQaoBNcXg==
+	bh=Th0U5TzJmX7EaDDFA+PHgDoYo8RCe0k6TY8cW8gRTLA=;
+	b=wZ6u1iLhoNVDCOEJ5SmXePja3UlDN3Sb+uIocDmSiA1Jt3f/mTYeiQgQx0ih81tirVoZ
+	 yL7HtlJut7r2FV3KEjXWLGDW12JwAIrPUPkb9wDzTCRiFTrI8audpVi0QdHxU7ibpXoka
+	 GVjM/lg2Ru3WWuApDelMJPC6c5x8RUW0qj9Uwsyna/1fbB6jzPXxoDvt+msBeGuXAtuYp
+	 0akJt2eLpGRj0FGS1uc7K93zQgVBTHohil4Ecu7KXVUXWJga62Mgt35xOM2Rwg5VJOCW1
+	 6Pxh07wMG6lgvJg7lOYVjzLdClm8ZfkJUg47IILJOxtBfJzEcw68nXrVfiWrs9GAd/w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=dmFtS7Sl;
-	arc=none smtp.remote-ip=209.85.210.177
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=GyFtl3ZC;
+	arc=none smtp.remote-ip=209.85.214.176
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E579606A327
-	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 04:37:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4E579606A327
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30BF2606A337
+	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 04:37:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 30BF2606A337
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=dmFtS7Sl
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-8cf79c02fb8so300814b3a.3
-        for <imx@lists.linux.dev>; Tue, 24 Nov 2026 20:37:39 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=GyFtl3ZC
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2f046b0adc0so29223465ad.1
+        for <imx@lists.linux.dev>; Tue, 24 Nov 2026 20:37:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795581459; x=1796186259; darn=lists.linux.dev;
+        d=gmail.com; s=20260707; t=1795581462; x=1796186262; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=p0LC0sUIzj6iLFfqcqtwKGB2+VgW9jHKFGlHAfP+Aeo=;
-        b=dmFtS7SlPrs6lOM9MiZj5hkNVsqcdHsghqFEpo7/Oo9gcB4VZ216IDgi5qugXR0vbb
-         txH9lSzlTlpBQ4GBYYtMZjNiqcC90UXhBP2GTlYSUnr9y4tXqlaO6ticbVpfILD8EtQ/
-         qZnnSf2uiOgH5z+fSTzu6X7BAnos5SfkM7a3kinrtC7RwWWOTIgjpe6QBfctHPl6aHdc
-         B5j9RN0DrM4zMSSyIBpxIt4/pDDHx7cqljf8ytN5QyzhdRse5c/uebycv64ymPWPwmWN
-         8b2r11dg7mAyUZppakdrlBBYHiJtuHR8GIsY0/81GYBGGeaAP6dPkNeuLmrE5VHkXofS
-         zBVg==
+        bh=Th0U5TzJmX7EaDDFA+PHgDoYo8RCe0k6TY8cW8gRTLA=;
+        b=GyFtl3ZCBhvLQo9PyUVwsnQ5sOeVbzAw0I0I25wVSp728hNiVMJKjpxW66RUKBwZCz
+         ELOM+BiC7VhRj8ca2Zs6gpgK2ayXSeBIAcs/lFY1hxwtK64bel1gk/ChYeQHj5hSPNYX
+         d2Y2N1qqCQ1AulsTb71h9geivh01u4VhMsZFinWlsSk4+0GF2ZQA6YKmJt5YD2GNtEzB
+         v5KIRhrc/OQtXridRtpMUeLxeyRXB2RMj011IhdaYQmUBhzDTlbW01zYonmFRHC0BVTo
+         aYsxPB5G+xN7mGLQurTXORym7GD4dUwpmncxqyptH6wH/RmkvnH86qq86EzdKslE8Esy
+         8CEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795581459; x=1796186259;
+        d=1e100.net; s=20260707; t=1795581462; x=1796186262;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=p0LC0sUIzj6iLFfqcqtwKGB2+VgW9jHKFGlHAfP+Aeo=;
-        b=iF1ey1lXznhJ86rUQL1ejTM4cS6oSZnN29IJJMfD6/MXSHlo7zFdauxqMHtpJsn0Vb
-         8XZ02tmzcnB6n8lq3pwYEILnov9CccCBx7LJebCv/n0t1JlRA19AtSbOwoN5zI+YtPah
-         +zu0RejddtMM0Xdu6UdZWqNIL2pqqy8J8/GsVCHWd25l5Ju1Y3l3gJG0YmYXu3X+ovj5
-         zlxls1qAZqvtww83Q7LimkfKbTj5V9OuUeAoKVrVk7BV2B+23zaCiaXkxKUQ8wpeHzEC
-         bic4ec3X8FHBqv+AaeByXXWGLcrBj+hWFG3cQRj3G5DL0gn1eNyu0DJLKrr87gD4KSQx
-         b8MA==
-X-Forwarded-Encrypted: i=1; AL+hErEztbLPx1DxqhrDpvOj1q5TI1R2mYzrgIdKG7TL9wdvRG6Vezt2kTdofRgtKy/axw8pON4=@lists.linux.dev
-X-Gm-Message-State: APuU4Z8p+TL/dYBsdTYSFmHdm/7sPqcWZ3yNbuU0atvcms7ZIJNOP6Pw
-	OIbFeWPRt0ZOteI1lmp+7yqzmKihTsaCVUZrxi49U3CVKI6+YSlQ2RtO
-X-Gm-Gg: AZFdTZeRsnvs2yGr05JJRHeAV63yU21aZajEzpA2lV3qLC62FEO9IbHG4/KDLogbz/6
-	02yq1GEzFgcLFlK5y0z68yy8nw6I+dJMXFcbWfquQAzyMmvDKC6EustUIuYme/uhSd+aXD//CtM
-	+ecVg/Fak3tBGGmF/7+cJFEmHTIhIxXpokWbZ5RO0KjVvtHxmJgtlcdJxGlHcydIOrXcfI+iWlO
-	suXOwqTRm2mzy9+w28rbH66qZw39wv8egmGR30iQkMspWcT/L8+9lJdFnvNA8xFr64ebGsZEkxr
-	eX3gRxz/SWbS2j3QWXkBHCHminZZgatAeTOrPi38NXKlg6lWWEoKsOCIsmmDoTAwHOqHN1WZAeY
-	UutnSKwZgW4UCjRinr6m4MZPNkJ1ajW8FZOqLEPVtEKXJMvg+eg7ZWuUIEwAjxYB1UMm4vioEI5
-	STsETpRGIGc88lDs92Gsd7B+sEXZTTzQ6LhF/8sF2ZO62gbcCQmFRYKLaf92K7Padn8c1GD2iNQ
-	Shb0D4iAN9Mv2PsHuBIYarFKNCsoXuDyegOsGE+NIIPJ9q2fcsSCCRqhK2LTQBRXA287XtxqzHZ
-	ZXyWDXMcGuMnC/uJESdE0LH0uBg=
-X-Received: by 2002:a05:6a00:c311:20b0:8c8:e7ae:5ab2 with SMTP id d2e1a72fcca58-8c8e7ae5b89mr11374449b3a.53.1795581458605;
-        Tue, 24 Nov 2026 20:37:38 -0800 (PST)
+        bh=Th0U5TzJmX7EaDDFA+PHgDoYo8RCe0k6TY8cW8gRTLA=;
+        b=bncloocMZsA22Wu2/BIVmWWVX9GeHjoL2nB2QVJFLa2jYAP2Dz8m8NfT/CNVaey4xh
+         iWgm+RWjGgNQVPH0F6NY8bifXK0SA477sAuvi/+CZl25X7oCznEkbNqTE1O1V3EwuTQB
+         v2yuaJ7hrcO8/88m7bm99KV6E4isHOYLjL8rx0rydT6ul3ECBZT/vvPLTaUU3CZbMirI
+         r9Dk9lWoVc8JgCjwYvvzZFrg/kiewIiob98zDm96KZWReGFI/1p9ipHhnDu7It7WJVUF
+         za2B6NiRFFbshywTNB8Do9lAQ/Rt+usiIeqhXYsDVTMxCAEBIa93i9kZF+SceL0Tikx1
+         nwVQ==
+X-Forwarded-Encrypted: i=1; AL+hErHMhB4wCrrysepPrP4nkBbklTtABE242jRspswJU4pFCL0wPO/2Rq8LD9OXeKKts26rnrE=@lists.linux.dev
+X-Gm-Message-State: APuU4Z9KNf/pzcWjXbQrNhTmMQTdPBGt5YPDjipu1MJwyxvUzbJFgDJK
+	FPFqH3q8JxU2iIwT55ms+ScPf8T/B1uNLrpA1/G9uWpYYkzl8MRyT4mo
+X-Gm-Gg: AZFdTZd9xCL1JxfLmWObL193sKttUVQtoBxYQJTvnxM9kyfb6wkuPiIka1meS8AhP9Q
+	qdqZQjPvX/TKWMkUAz9UBzdbpCqFYKXUfrX0Ekt1y0j+jjZk70e3yY+MATzC1ewlSngjzs/5hm1
+	aihcnqjvbuGVJgishjLycQeo7cFoQaa3aJNVS7iFHxxdxIqPlkzv8V4gB1vNCpIlGqhACsiEIR2
+	A3bTE5La8c4mg/XOGe5+8mdm6zyirlQ7oyJ5SBCtgnD62j8X7dUSzIr+jXm5In/MpQ0syhz5IQH
+	Gafv2Q7EubEFy0tusIXzgsX1St443PiFFvVH+B7/Cv0wUiahHaUa9BeZbbpnH0hdw9J2kjINLr8
+	cisLT+vVPnPJvJFQsAd6UaaNJ11sLesF9iO8j79yYZ55S07uAHGdnxQW/3aim2ayaSDqtIWZw09
+	CMEFhm2RHwWa+odunhZF5rGYXh0xixkCBGznPWDYlMofJ6nHYA5d+bGfJI3wskJ9t2m0gnEW8PX
+	/HzYzk+AjFq/WGoTCGGDf0pLZBbU0ZS/JvinwOIXmYPQ+u06jU2XvU2wChhmNYILAAMJYjnxDPx
+	v2CuVaQOAZbPd3as6LSM3u6jlN/6AuVLPRN0jjqF1ZNoTe3t
+X-Received: by 2002:a17:903:294f:b0:2ed:630:40ad with SMTP id d9443c01a7336-2f03f11826cmr93907705ad.19.1795581461579;
+        Tue, 24 Nov 2026 20:37:41 -0800 (PST)
 Received: from localhost ([2001:19f0:8000:4ce8:5400:7ff:fe0e:e6b2])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8c86d821637sm8324761b3a.0.2026.11.24.20.37.37
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2f03f0c2ad2sm78350235ad.16.2026.11.24.20.37.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Nov 2026 20:37:38 -0800 (PST)
+        Tue, 24 Nov 2026 20:37:41 -0800 (PST)
 From: Inochi Amaoto <inochiama@gmail.com>
 To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Jonathan Corbet <corbet@lwn.net>,
@@ -113,9 +113,9 @@ Cc: linux-doc@vger.kernel.org,
 	linux-phy@lists.infradead.org,
 	Yixun Lan <dlan@gentoo.org>,
 	Longbin Li <looong.bin@gmail.com>
-Subject: [PATCH v5 7/8] PCI: cadence: Use phy bulk data api to simplifiy the logic
-Date: Wed, 25 Nov 2026 12:36:38 +0800
-Message-ID: <20261125043639.249525-8-inochiama@gmail.com>
+Subject: [PATCH v5 8/8] ata: ahci_imx: Use bulk PHY APIs for calibration PHYs
+Date: Wed, 25 Nov 2026 12:36:39 +0800
+Message-ID: <20261125043639.249525-9-inochiama@gmail.com>
 X-Mailer: git-send-email 2.56.1
 In-Reply-To: <20261125043639.249525-1-inochiama@gmail.com>
 References: <20261125043639.249525-1-inochiama@gmail.com>
@@ -130,131 +130,139 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-According the document of cadence PCI controller, it use multiple
-phys for multi-lane setup, so replace the loop of phy operation
-with phy bulk apis.
+The i.MX8QM SATA PHY relies on the first two HSIO lanes for shared
+impedance calibration. Store these calibration PHYs in a bulk array
+and acquire them by name with devm_phy_bulk_get().
+
+Initialize both calibration PHYs before powering them on in lane order,
+then keep the SATA PHY initialization, mode selection and power-on
+separate. Use the bulk helpers to release the calibration PHYs after
+SATA startup and to unwind failures without repeating power-off after
+a failed bulk power-on.
 
 Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
 ---
- drivers/pci/controller/cadence/pcie-cadence.c | 62 +++++--------------
- drivers/pci/controller/cadence/pcie-cadence.h |  2 +-
- 2 files changed, 16 insertions(+), 48 deletions(-)
+ drivers/ata/ahci_imx.c | 57 ++++++++++++++++--------------------------
+ 1 file changed, 21 insertions(+), 36 deletions(-)
 
-diff --git a/drivers/pci/controller/cadence/pcie-cadence.c b/drivers/pci/controller/cadence/pcie-cadence.c
-index 0ac980249941..8ed2a679625d 100644
---- a/drivers/pci/controller/cadence/pcie-cadence.c
-+++ b/drivers/pci/controller/cadence/pcie-cadence.c
-@@ -179,39 +179,22 @@ EXPORT_SYMBOL_GPL(cdns_pcie_reset_outbound_region);
+diff --git a/drivers/ata/ahci_imx.c b/drivers/ata/ahci_imx.c
+index 6aaa18e29abc..18faa033e44f 100644
+--- a/drivers/ata/ahci_imx.c
++++ b/drivers/ata/ahci_imx.c
+@@ -25,6 +25,8 @@
  
- void cdns_pcie_disable_phy(struct cdns_pcie *pcie)
- {
--	int i = pcie->phy_count;
--
--	while (i--) {
--		phy_power_off(pcie->phy[i]);
--		phy_exit(pcie->phy[i]);
+ #define DRV_NAME "ahci-imx"
+ 
++#define NUM_CALIPHY		2
++
+ enum {
+ 	/* Timer 1-ms Register */
+ 	IMX_TIMER1MS				= 0x00e0,
+@@ -66,8 +68,7 @@ struct imx_ahci_priv {
+ 	struct clk *ahb_clk;
+ 	struct regmap *gpr;
+ 	struct phy *sata_phy;
+-	struct phy *cali_phy0;
+-	struct phy *cali_phy1;
++	struct phy_bulk_data cali_phys[NUM_CALIPHY];
+ 	bool no_device;
+ 	bool first_time;
+ 	u32 phy_params;
+@@ -428,30 +429,20 @@ static int imx8_sata_enable(struct ahci_host_priv *hpriv)
+ 	 * Initialize the first two lane PHYs here, although only the
+ 	 * third lane PHY is used by SATA.
+ 	 */
+-	ret = phy_init(imxpriv->cali_phy0);
++	ret = phy_bulk_init(NUM_CALIPHY, imxpriv->cali_phys);
+ 	if (ret) {
+ 		dev_err(dev, "cali PHY init failed\n");
+ 		return ret;
+ 	}
+-	ret = phy_power_on(imxpriv->cali_phy0);
++	ret = phy_bulk_power_on(NUM_CALIPHY, imxpriv->cali_phys);
+ 	if (ret) {
+ 		dev_err(dev, "cali PHY power on failed\n");
+-		goto err_cali_phy0_exit;
 -	}
-+	phy_bulk_power_off(pcie->phy_count, pcie->phy);
-+	phy_bulk_exit(pcie->phy_count, pcie->phy);
- }
- EXPORT_SYMBOL_GPL(cdns_pcie_disable_phy);
- 
- int cdns_pcie_enable_phy(struct cdns_pcie *pcie)
- {
- 	int ret;
--	int i;
- 
--	for (i = 0; i < pcie->phy_count; i++) {
--		ret = phy_init(pcie->phy[i]);
--		if (ret < 0)
--			goto err_phy;
-+	ret = phy_bulk_init(pcie->phy_count, pcie->phy);
-+	if (ret)
-+		return ret;
- 
--		ret = phy_power_on(pcie->phy[i]);
--		if (ret < 0) {
--			phy_exit(pcie->phy[i]);
--			goto err_phy;
--		}
+-	ret = phy_init(imxpriv->cali_phy1);
+-	if (ret) {
+-		dev_err(dev, "cali PHY1 init failed\n");
+-		goto err_cali_phy0_off;
 -	}
--
--	return 0;
--
--err_phy:
--	while (--i >= 0) {
--		phy_power_off(pcie->phy[i]);
--		phy_exit(pcie->phy[i]);
--	}
-+	ret = phy_bulk_power_on(pcie->phy_count, pcie->phy);
-+	if (ret)
-+		phy_bulk_exit(pcie->phy_count, pcie->phy);
- 
- 	return ret;
- }
-@@ -221,10 +204,8 @@ int cdns_pcie_init_phy(struct device *dev, struct cdns_pcie *pcie)
- {
- 	struct device_node *np = dev->of_node;
- 	int phy_count;
--	struct phy **phy;
--	int i;
-+	struct phy_bulk_data *phy;
- 	int ret;
--	const char *name;
- 
- 	phy_count = of_property_count_strings(np, "phy-names");
- 	if (phy_count < 1) {
-@@ -233,31 +214,18 @@ int cdns_pcie_init_phy(struct device *dev, struct cdns_pcie *pcie)
- 		return 0;
+-	ret = phy_power_on(imxpriv->cali_phy1);
+-	if (ret) {
+-		dev_err(dev, "cali PHY1 power on failed\n");
+-		goto err_cali_phy1_exit;
++		goto err_cali_phy_exit;
+ 	}
+ 	ret = phy_init(imxpriv->sata_phy);
+ 	if (ret) {
+ 		dev_err(dev, "sata PHY init failed\n");
+-		goto err_cali_phy1_off;
++		goto err_cali_phy_off;
+ 	}
+ 	ret = phy_set_mode(imxpriv->sata_phy, PHY_MODE_SATA);
+ 	if (ret) {
+@@ -465,10 +456,8 @@ static int imx8_sata_enable(struct ahci_host_priv *hpriv)
  	}
  
--	phy = devm_kcalloc(dev, phy_count, sizeof(*phy), GFP_KERNEL);
--	if (!phy)
--		return -ENOMEM;
--
--	for (i = 0; i < phy_count; i++) {
--		of_property_read_string_index(np, "phy-names", i, &name);
--		phy[i] = devm_phy_get(dev, name);
--		if (IS_ERR(phy[i])) {
--			ret = PTR_ERR(phy[i]);
--			goto err_phy;
--		}
--	}
-+	phy_count = devm_phy_bulk_get_all(dev, &phy);
-+	if (phy_count < 0)
-+		return phy_count;
-+	else if (phy_count == 0)
-+		return -ENODEV;
+ 	/* The cali_phy# can be turned off after SATA PHY is initialized. */
+-	phy_power_off(imxpriv->cali_phy1);
+-	phy_exit(imxpriv->cali_phy1);
+-	phy_power_off(imxpriv->cali_phy0);
+-	phy_exit(imxpriv->cali_phy0);
++	phy_bulk_power_off(NUM_CALIPHY, imxpriv->cali_phys);
++	phy_bulk_exit(NUM_CALIPHY, imxpriv->cali_phys);
  
- 	pcie->phy_count = phy_count;
- 	pcie->phy = phy;
+ 	/* RxWaterMark setting */
+ 	val = readl(hpriv->mmio + IMX8QM_SATA_AHCI_PTC);
+@@ -480,14 +469,10 @@ static int imx8_sata_enable(struct ahci_host_priv *hpriv)
  
- 	ret =  cdns_pcie_enable_phy(pcie);
- 	if (ret)
--		goto err_phy;
--
--	return 0;
--
--err_phy:
--	while (--i >= 0)
--		devm_phy_put(dev, phy[i]);
-+		devm_phy_bulk_put_all(dev, phy);
+ err_sata_phy_exit:
+ 	phy_exit(imxpriv->sata_phy);
+-err_cali_phy1_off:
+-	phy_power_off(imxpriv->cali_phy1);
+-err_cali_phy1_exit:
+-	phy_exit(imxpriv->cali_phy1);
+-err_cali_phy0_off:
+-	phy_power_off(imxpriv->cali_phy0);
+-err_cali_phy0_exit:
+-	phy_exit(imxpriv->cali_phy0);
++err_cali_phy_off:
++	phy_bulk_power_off(NUM_CALIPHY, imxpriv->cali_phys);
++err_cali_phy_exit:
++	phy_bulk_exit(NUM_CALIPHY, imxpriv->cali_phys);
  
  	return ret;
  }
-diff --git a/drivers/pci/controller/cadence/pcie-cadence.h b/drivers/pci/controller/cadence/pcie-cadence.h
-index 4a96e1869e53..3cde29592331 100644
---- a/drivers/pci/controller/cadence/pcie-cadence.h
-+++ b/drivers/pci/controller/cadence/pcie-cadence.h
-@@ -274,7 +274,7 @@ struct cdns_pcie {
- 	bool			             is_rc;
- 	bool				     is_hpa;
- 	int			             phy_count;
--	struct phy		             **phy;
-+	struct phy_bulk_data		     *phy;
- 	const  struct cdns_pcie_ops          *ops;
- 	const  struct cdns_plat_pcie_of_data *cdns_pcie_reg_offsets;
- 	int				     max_link_speed;
+@@ -839,19 +824,19 @@ static const struct scsi_host_template ahci_platform_sht = {
+ 
+ static int imx8_sata_probe(struct device *dev, struct imx_ahci_priv *imxpriv)
+ {
++	int ret;
++
+ 	imxpriv->sata_phy = devm_phy_get(dev, "sata-phy");
+ 	if (IS_ERR(imxpriv->sata_phy))
+ 		return dev_err_probe(dev, PTR_ERR(imxpriv->sata_phy),
+ 				     "Failed to get sata_phy\n");
+ 
+-	imxpriv->cali_phy0 = devm_phy_get(dev, "cali-phy0");
+-	if (IS_ERR(imxpriv->cali_phy0))
+-		return dev_err_probe(dev, PTR_ERR(imxpriv->cali_phy0),
+-				     "Failed to get cali_phy0\n");
+-	imxpriv->cali_phy1 = devm_phy_get(dev, "cali-phy1");
+-	if (IS_ERR(imxpriv->cali_phy1))
+-		return dev_err_probe(dev, PTR_ERR(imxpriv->cali_phy1),
+-				     "Failed to get cali_phy1\n");
++	imxpriv->cali_phys[0].id = "cali-phy0";
++	imxpriv->cali_phys[1].id = "cali-phy1";
++
++	ret = devm_phy_bulk_get(dev, NUM_CALIPHY, imxpriv->cali_phys);
++	if (ret)
++		return dev_err_probe(dev, ret, "Failed to get cali_phy\n");
+ 	return 0;
+ }
+ 
 -- 
 2.56.1
 
