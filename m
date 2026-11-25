@@ -1,66 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795630451;
-	b=3WapAEQUL5bisjAn+DvFym+SIQKCjCqFGss00iser/LyWpZgm1+zUADoYZ79K/FlzFRY
-	 JEDyggK91wh7hMISTw19ZLf3tlYwcnl5KEKqrxm62ZQN0KV89zzrYRhzqwQVhk6SNpwPD
-	 Je4ptjYKh8yVQ/np8gzL0JdWz7AqgnrFLFtaJPwaEydP7hhmUzNOAnwDviKi4Psav75jL
-	 MR/LU1cAoIaJ4ugylxMBb38eeyPN+GNtnxFv4/gp+JpJPku0XZTMTDIQo6AsNvFGObjXS
-	 mvUuAhUHkgNQiFCEWXwP1OGFLyaN708zQmSF68FpF1fat6o16RsdSxsHruGzefWsi1w==
+	t=1795630463;
+	b=wwcboCAXfAYRhqM2zXwUtoJFDDG5KIitqFYf1pobhwFWb6/9Ouseqa6UIk6xX0pyPhGz
+	 9iMIj5mx6pRT5cP5tf0qEO7lL0SJNwhsNtfdWZkXvhc90uVBNKaueQ4Ln1VJepXvdkvaT
+	 rbt9VVpscDNGoJSKVX9eZi7S2XFCgZYtolKwRyYWlPd5GtUNJ2R3mijSS2r5eBvjoamNY
+	 j2Nq+xZbAtO7Tey2T05/GSiYjJDFt69Nyisk5TvaA7naGozI57FePWilbE8VoouOrZ5Qc
+	 URu3VJEkWkNBXBGlxGNDyVRqlDsSTzUd4/80uyvfSrY/FzfiVC6ySQUlGG3bOHoqr/g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795630451;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795630463;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=Xss2yAo2XUtHtT/HbOssTVw0p9SQ1Jy0dk5U3JbzMf4=;
-	b=Md6i3qvMksEnWl+oi0eSehtpg0hB84eVP6LN6d7WcxN+YzuOmN3YP41628gglWTcJWQA
-	 pUuIw/8EnUWMet8YWQ2FSJSOQQ5h/sWebAV8E0CNXIZChJQ8Lri52hKQY2Ynu2HDJ1FuP
-	 LlNfaYrHivOi4geKay7FT0/Tkc06Zpl6SRoOomxde3+scg1IgNh+eVpsThCrFawSyRPHP
-	 lPth6fXtwViiztfF2eHUFJJZ3xFzE8z62XOgQ0j3r5dcBZMChkrqim17lb0rMmpVvVlui
-	 QEJZYlvMFbxvI1ihsVUesFtQbMJRf0Bc9XU+xyZ+Gc3QWG+86RgM8xJeuWSW76jowtw==
+	bh=2k9mIGpiUoz/+tRof37PRM5uwmQ6bYmt9mVDu/ksd5Y=;
+	b=oOHhlmHRXIqBksJEQ0Kn7uBqj+Rhkt0PSfDcM+sTxVZ6q1RsY7r/hM0rePrh5CDCqJnp
+	 WsJ0V/q11xeF4r4YAIxGk3w3W/HeMMMDp5byzGaieApB/wL5srcf/T8jt9MxOUNE7ahmJ
+	 mmVFTvo/MgCWQOSSq7IcnYpSG6EcV9t/y8fLTba3fCMqIExApNvJsac705LXn0tSmdhRp
+	 r+MVOznSyfGc1CtUYmqYYUX1F7FU1rJFcYJOQoXd0n0DGdfXeavNiawzBZowx6W9xj8gD
+	 5m2kfx/JmKoEGFdcz2ixRA//u9VyaZZsC6JwGg1E0JRB8rNmrq9OfceDav6SatVPixQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UmS9TzoE;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CmfZWSg3;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CD81606A68C
-	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 18:14:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37B0E606A336
+	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 18:14:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UmS9TzoE
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 954B91F000E1;
-	Wed, 25 Nov 2026 18:14:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CmfZWSg3
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F9301F000D3;
+	Wed, 25 Nov 2026 18:14:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795630450;
-	bh=Xss2yAo2XUtHtT/HbOssTVw0p9SQ1Jy0dk5U3JbzMf4=;
+	s=k20260515; t=1795630462;
+	bh=2k9mIGpiUoz/+tRof37PRM5uwmQ6bYmt9mVDu/ksd5Y=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=UmS9TzoEYsSvAXEgxzw4FGwSFC+aFI3PGGX/hkmKy/xvLsAk3GsqoA/jNCb76CUxQ
-	 sX0sTS3NcFXEC7oHN6vYMbsSvomdJaLmBugZAZMq++5OvwI8OAMjttDE0V1h1L9cqa
-	 PkGe1hXx6eMyGzoV1PAoKTbRyiuXbF98RUTBTnoGxRYm5IJiYzQ21FG9L5RAYVUm1x
-	 nRfDSvKGkvUDJFRZFApIeE2FexG01Hzt0D6txs/Z853JcIoIimhUe7O0fH7rVu1x5s
-	 fYJX6BRRwMmv/5qFLYBACK5UXaAtXuInlW8LL8qljpifxfNRDZ/SQ1R9LWkew5zxhe
-	 Rl0hZMEZDpV9w==
-Message-ID: <sashiko-outbox-233930@kernel.org>
+	b=CmfZWSg3NKt8pFao81aFw6IYUFwJWpGdBC2awkMsdHrMu4Iv523cPt/NiYRX0pJBw
+	 rjHDCbStnFqgz1/P1BnVEKth7/xJYBQFn9dJGw05MSvXW43wVU7Vi7ylZdl7rm/d5A
+	 teR1tmyWHBpFrrlxh8AK0qEkfoLVl6tNd5hM28fKX2lN7hc02W4ieN5KFmX1/YAc8F
+	 G2d6KJF7mwHB+gt2hoabWFXlnlc82Dpmas5YPpl1VZgNCwfkPdXfEg/0MvFa/yPCwX
+	 jZMpRTTnviKB9g5k80BLtMrBzTjK4I6FMj1qGU55uDSdbOrlFWQf2yHahUnomeXxo0
+	 QX0oLN8x5FzPg==
+Message-ID: <sashiko-outbox-233932@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC 15/16] spi: stm32-qspi: Consume dummy cycles
- directly
+Subject: Re: [PATCH v4 23/32] drm/bridge: ti-sn65dsi83: implement
+ .get_next_bridge
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Miquel Raynal" <miquel.raynal@bootlin.com>, "Mark Brown" <broonie@kernel.org>, "Liang
- Yang" <liang.yang@amlogic.com>, "Feng Chen" <feng.chen@amlogic.com>, "Xianwei
- Zhao" <xianwei.zhao@amlogic.com>, "Han Xu" <han.xu@nxp.com>, "Conor Dooley" <conor.dooley@microchip.com>, "Valentina
- Fernandez" <valentina.fernandezalanis@microchip.com>, "Daire McNamara" <daire.mcnamara@microchip.com>, "Haibo
- Chen" <haibo.chen@nxp.com>, "Jyan Chou" <jyanchou@realtek.com>, "Yu-Chun
- Lin" <eleanor.lin@realtek.com>, "Maxime Coquelin" <mcoquelin.stm32@gmail.com>, "Alexandre
- Torgue" <alexandre.torgue@foss.st.com>, "Pratyush Yadav" <pratyush@kernel.org>, "Michael
- Walle" <mwalle@kernel.org>, "Takahiro Kuwano" <takahiro.kuwano@infineon.com>, "Richard
- Weinberger" <richard@nod.at>, "Vignesh Raghavendra" <vigneshr@ti.com>
-Cc: "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>, "Alvin Zhou" <alvinzhou@mxic.com.tw>, "Cheng
- Ming Lin" <chengminglin@mxic.com.tw>, linux-amlogic@lists.infradead.org, imx@lists.linux.dev, linux-stm32@st-md-mailman.stormreply.com, linux-mtd@lists.infradead.org, Frank.Li@kernel.org, neil.armstrong@linaro.org
-In-Reply-To: <20261125-macronix-upstreaming-spi-mem-cycles-v1-15-fd036402fd37@bootlin.com>
-References: <20261125-macronix-upstreaming-spi-mem-cycles-v1-0-fd036402fd37@bootlin.com>
- <20261125-macronix-upstreaming-spi-mem-cycles-v1-15-fd036402fd37@bootlin.com>
+To: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
+Cc: dri-devel@lists.freedesktop.org, imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <20261125-drm-bridge-hotplug-v4-23-822722850492@bootlin.com>
+References: <20261125-drm-bridge-hotplug-v4-0-822722850492@bootlin.com>
+ <20261125-drm-bridge-hotplug-v4-23-822722850492@bootlin.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 25 Nov 2026 18:14:09 +0000
+Date: Wed, 25 Nov 2026 18:14:21 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -72,86 +63,71 @@ Precedence: list
 
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue to consider:
-- [High] spi: stm32-qspi: missing dummy phase on GPIO CS fallback in
-  spi_mem_exec_op()
+- [High] drm/bridge: ti-sn65dsi83: use-after-free in
+  sn65dsi83_get_next_bridge()
 --
 
-commit f2e2b0be96bbca647ad2610bfa7badf82f59967f
-Author: Miquel Raynal <miquel.raynal@bootlin.com>
+commit 07f44b5de19c58e65f65432a2a999004dd04f3ae
+Author: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-spi: stm32-qspi: Consume dummy cycles directly
+drm/bridge: ti-sn65dsi83: implement .get_next_bridge
 
-This commit advertises dummy_cycles in stm32_qspi_mem_caps and uses
-op->dummy.ncycles directly in stm32_qspi_send() and
-stm32_qspi_transfer_one_message().
+This commit implements the .get_next_bridge callback for the ti-sn65dsi83
+bridge driver to return a reference to ctx->panel_bridge.
 
-> diff --git a/drivers/spi/spi-stm32-qspi.c b/drivers/spi/spi-stm32-qspi.c
-> index b77daba6db83a..993b09cc51240 100644
-> --- a/drivers/spi/spi-stm32-qspi.c
-> +++ b/drivers/spi/spi-stm32-qspi.c
-[ ... ]
-> @@ -593,7 +592,7 @@ static int stm32_qspi_transfer_one_message(struct spi=
-_controller *ctrl,
->  		 */
->  		if (transfer->dummy_data) {
->  			op.dummy.buswidth =3D transfer->tx_nbits;
-> -			op.dummy.nbytes =3D transfer->len;
-> +			op.dummy.ncycles =3D transfer->len * 8 / transfer->tx_nbits;
->  			dummy_bytes =3D transfer->len;
+> diff --git a/drivers/gpu/drm/bridge/ti-sn65dsi83.c b/drivers/gpu/drm/brid=
+ge/ti-sn65dsi83.c
+> index 77ef1613c5f51..9e9cf0dda92d8 100644
+> --- a/drivers/gpu/drm/bridge/ti-sn65dsi83.c
+> +++ b/drivers/gpu/drm/bridge/ti-sn65dsi83.c
+> @@ -295,6 +295,13 @@ static struct sn65dsi83 *bridge_to_sn65dsi83(struct =
+drm_bridge *bridge)
+>  	return container_of(bridge, struct sn65dsi83, bridge);
+>  }
 > =20
->  			/* if happens, means that message is not correctly built */
-> @@ -773,6 +772,10 @@ static const struct spi_controller_mem_ops stm32_qsp=
-i_mem_ops =3D {
->  	.poll_status	=3D stm32_qspi_poll_status,
->  };
-> =20
-> +static const struct spi_controller_mem_caps stm32_qspi_mem_caps =3D {
-> +	.dummy_cycles =3D true,
-> +};
+> +static struct drm_bridge *sn65dsi83_get_next_bridge(struct drm_bridge *b=
+ridge)
+> +{
+> +	struct sn65dsi83 *ctx =3D bridge_to_sn65dsi83(bridge);
 > +
->  static int stm32_qspi_probe(struct platform_device *pdev)
->  {
->  	struct device *dev =3D &pdev->dev;
-> @@ -856,6 +859,7 @@ static int stm32_qspi_probe(struct platform_device *p=
-dev)
->  	ctrl->setup =3D stm32_qspi_setup;
->  	ctrl->bus_num =3D -1;
->  	ctrl->mem_ops =3D &stm32_qspi_mem_ops;
-> +	ctrl->mem_caps =3D &stm32_qspi_mem_caps;
->  	ctrl->use_gpio_descriptors =3D true;
->  	ctrl->transfer_one_message =3D stm32_qspi_transfer_one_message;
->  	ctrl->num_chipselect =3D STM32_QSPI_MAX_NORCHIP;
+> +	return ctx->panel_bridge ? drm_bridge_get(ctx->panel_bridge) : ERR_PTR(=
+-ENODEV);
+> +}
 
 [Severity: High]
-Does enabling dummy_cycles drop the dummy phase when a GPIO chip-select is
-used?
+Can sn65dsi83_get_next_bridge() cause a use-after-free on
+ctx->panel_bridge?
 
-In spi_mem_exec_op(), spi_mem_convert_dummy() runs first and sets
-op->dummy.nbytes =3D 0 because the controller advertises dummy_cycles.  When
-spi_get_csgpiod(mem->spi, 0) is non-NULL, spi_mem_exec_op() bypasses
-ctlr->mem_ops->exec_op and falls back to building spi_transfers for
-stm32_qspi_transfer_one_message(), but that fallback path only creates a
-dummy_data transfer when op->dummy.nbytes is non-zero:
+sn65dsi83_parse_dt() acquires ctx->panel_bridge via
+devm_drm_of_get_bridge() -> drm_of_find_panel_or_bridge():
 
-drivers/spi/spi-mem.c:spi_mem_exec_op() {
+drivers/gpu/drm/drm_panel.c:drm_of_find_panel_or_bridge() {
 	...
-	if (ctlr->mem_ops && ctlr->mem_ops->exec_op && !spi_get_csgpiod(mem->spi, =
-0)) {
-	...
-	if (op->dummy.nbytes) {
-		memset(tmpbuf + op->addr.nbytes + 1, 0xff, op->dummy.nbytes);
-		xfers[xferpos].tx_buf =3D tmpbuf + op->addr.nbytes + 1;
-		xfers[xferpos].len =3D op->dummy.nbytes;
-		xfers[xferpos].tx_nbits =3D op->dummy.buswidth;
-		xfers[xferpos].dummy_data =3D 1;
+	if (bridge) {
+		...
+		*bridge =3D of_drm_find_bridge(remote);
+		if (*bridge)
+			return 0;
+	}
 	...
 }
 
-As a result, no dummy_data transfer is added to the message, so
-stm32_qspi_transfer_one_message() leaves op.dummy.ncycles at 0 and corrupts
-flash operations that require dummy cycles on boards using cs-gpios (such
-as dual-flash configurations).
+When the remote DT node is a non-panel bridge, of_drm_find_bridge() drops
+the bridge reference before returning, so ctx->panel_bridge holds no
+reference.  If the downstream bridge is later removed and freed while
+sn65dsi83 stays bound, drm_bridge_get(ctx->panel_bridge) increments the
+refcount on freed memory and returns a dangling pointer.
+
+Even when the remote node is a drm_panel, devm_drm_panel_bridge_add() is
+registered on ctx->dev after devm_drm_bridge_alloc(), so on unbind devres
+puts ctx->panel_bridge before ctx->bridge is destroyed without clearing
+ctx->panel_bridge; a concurrent holder of ctx->bridge calling
+drm_bridge_get_next() can then access ctx->panel_bridge after its
+reference was dropped.  Acquiring the downstream bridge with
+of_drm_get_bridge_by_endpoint() and storing it in ctx->bridge.next_bridge
+(or releasing it in a bridge .destroy callback) would keep the reference
+alive for the lifetime of ctx->bridge.
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261125-macronix-u=
-pstreaming-spi-mem-cycles-v1-0-fd036402fd37@bootlin.com?part=3D15
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261125-drm-bridge=
+-hotplug-v4-0-822722850492@bootlin.com?part=3D23
