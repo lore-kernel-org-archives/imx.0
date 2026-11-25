@@ -1,57 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=116.203.31.6
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795610256;
-	b=Nv0gAv0t95kVACPNHRTb4VcyZ0RWTgRP6oDsPNMsPJchvHAinaI6HWD56kAc+XUgj03l
-	 c25VJFX/6YPa8t8dbOCWVIcllblEB2SxxO3iDriizOGlwNTHREf5M5ByoeavB3ODOsots
-	 blSmgWjiro5p/9Nj1FqLh7wrcn+z2xkLs+mpF98NMQWIWMiJybnGc4cR/WBRh5os5FZyp
-	 kIG7yhzwLsNP/A4zfVn3I6rO6VvU7fTWMleGKFeCDvKawiHNCgHi4UFZJHPIv2zeJwIz1
-	 QnihGLAUEAh29SwT1A0L4Z9WVmjAfpQnXbo2RfG0gc2tK8SwUBVelHAJ58qQNLRGF2A==
+	t=1795610581;
+	b=qt/BQfCZqEwyYiC+Hjq65GBpOJrdWeWMubDv/b+g55fKMl0av2mf7Qk9a7uaPkv4Ffx3
+	 Gn2UkOgo0z80XMU5vK7Hf7nd2kBUoMX58jXKZXz4qIPeRbnsaP1Tg36r78NeTFurBr9lQ
+	 Fn7jZj14CZQ49g0DYCECxxBJQA0wlHJ3rw12KTOjR9Kb77eQ3wiifbcb6+r7byFo21S2h
+	 cCRdYGXTZ4TZxJSmC/4jo2eCd/qifIC610a9WEbtizrOH959pHY5R7jR6HRYqbZoQStEv
+	 pfumvWTQIc+WmTc44xFk0DgHOLR0m0IfUQFWquPnhLxh8YPZlkZU3zVMWvvcchFpalg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795610256;
-	h=DMARC-Filter:DKIM-Signature:From:To:CC:Subject:Date:Message-ID:
-	 X-klartext:MIME-Version:Content-Transfer-Encoding:Content-Type;
-	bh=n//DTZBcx/4hfvqlbxCdXzZBUWO1eReKPjxq+SXr1Kk=;
-	b=bqSXGKBNbYiaiAvMx8B5it3lSFVux5Nxr9m8OOVv9xbqDG3OOzZsKRbU1HF2D9yFtQ6Y
-	 I45Ly5TFLeGiar2u8G38TxztX+3rfA9HxNKjMGWRjVOV34w6rUY1ISyCp4OOfEwwFZPKh
-	 q2viNIGKrvUfPpG/0XHTixck5PVIXJrRmrfIhsF3F5XKJ6NmfOgm56QYcoiJ2/tQIABhV
-	 ylkaGkdYLkTwzayxUtqjIWLjWQam7u9ZMnXB0wM2D4hIjaDrr/mwtwBoWByz+Vias7uFG
-	 qZubnzLEKScmqBs/MaS2Ctg5j+pfrF3AVRRu2EuGZFbHyTC9e1ve2eGx5CtQdOf53mw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795610581;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=HrR6w+1v1Ilovrv/vg+7pGzUf4sEv3IkY00Mavxbaj0=;
+	b=aUeqj/HA5IFnLx7d/xDtV3VUA53+pOALQHFk+75oKF40gfdRC6eXZTsDyuOKrpyq3pHs
+	 yLSnAjnU63Hp2MB60Ke/V2Sib4KkUGd2OLmfbSdVyjyQ9xWnvqC8v6mwwSv9sX8eaILAF
+	 DNMb7CP0JyqJn0ti7gPo3diY8tfjY1jE9J0bBj5ncWX8Rzzy1FgNAPr6xiPciko8kJUQB
+	 JBS3oB2kBr3bKOVs3qfvBeazf8jElMyNqtMVliRxmOgZFay7lFZ7tPXpnH1XVjTfw0ADc
+	 49hrrZiTLX1X0LzK9X2qeCOL9p87+dg2jNGVbONbzPNk7xyEdU8MP9gS1pkLgu/jpNA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=dh-electronics.com;
-	spf=pass smtp.mailfrom=dh-electronics.com;
-	dkim=pass header.d=dh-electronics.com header.i=@dh-electronics.com header.a=rsa-sha256 header.s=dhelectronicscom header.b=uOGHznIT;
-	arc=none smtp.remote-ip=116.203.31.6
-Received: from mx3.securetransport.de (mx3.securetransport.de [116.203.31.6])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ABE4606A327
-	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 12:37:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6ABE4606A327
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=dh-electronics.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dh-electronics.com
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=K4YviM4I;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07C9D606A323;
+	Wed, 25 Nov 2026 12:43:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=dh-electronics.com header.i=@dh-electronics.com header.a=rsa-sha256 header.s=dhelectronicscom header.b=uOGHznIT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dh-electronics.com;
-	s=dhelectronicscom; t=1795610213;
-	bh=n//DTZBcx/4hfvqlbxCdXzZBUWO1eReKPjxq+SXr1Kk=;
-	h=From:To:CC:Subject:Date:From;
-	b=uOGHznITf9fa4EOweyKuhzhXoiR7raT+f1wfVZIv7Pn8kfHdrayQ/PkxCsarQI2xj
-	 2lwuxw8hmWNs2KjuASIizA3apdopog14vFgks+zWWu0EcIvRzFRIbaazufQfKzEwYa
-	 0rfyqUc4MZUHRgom5hMHhvPXUzAtazGEL5gn+gcXhTLZ5IxOwBGnN3Sn0MXnHlGeAx
-	 nlwuIY1Nh0XVHxZNzxaSB+cRCLqplkkPWPOCRZ2ylo+3AHMQOu5MXce5bi4iYaCF7U
-	 krgEo8ZQdRtJEHX3cqkeZGoAIzHDRniLmiHhWd5EgzR8Rtqo1NCkOK5OONOBxo/X6Y
-	 lMK8oZPI4W5fA==
-From: Christoph Niedermaier <cniedermaier@dh-electronics.com>
-To: <linux-arm-kernel@lists.infradead.org>
-CC: Christoph Niedermaier <cniedermaier@dh-electronics.com>, Pascal Zimmermann
-	<pzimmermann@dh-electronics.com>, Conor Dooley <conor+dt@kernel.org>, Fabio
- Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Marek Vasut <marex@nabladev.com>, Rob Herring
-	<robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
-	<kernel@dh-electronics.com>, <devicetree@vger.kernel.org>,
-	<imx@lists.linux.dev>
-Subject: [PATCH] ARM: dts: imx6ull-dhcom: Change eMMC pin configuration
-Date: Wed, 25 Nov 2026 13:35:20 +0100
-Message-ID: <20261125123520.6040-1-cniedermaier@dh-electronics.com>
-X-klartext: yes
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=K4YviM4I
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FB5E1F000C4;
+	Wed, 25 Nov 2026 12:43:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795610580;
+	bh=HrR6w+1v1Ilovrv/vg+7pGzUf4sEv3IkY00Mavxbaj0=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=K4YviM4I6zAeNcxpriyu8SgGh4qPvy9o/aQv1aGE7dzBfGpcSub9Shite1dVvsFkc
+	 EFxh26oI5s/v1MGaneU+efbiNbC9yvsd87o3sU5TR36B+ja0WNBCgVxdbqiQxsGHY6
+	 j/r+/KcTNHO3TuetSogHSip6d7e+rjoeJatZNAND07p4RLnN9kYQ/BO/LbI5CS3BzO
+	 ewLglHtChOuKlOzYP3IkJGYLEJlB5yVSViHOY8vfhl4Y6o6KzXMH9q/fls8Xz0yzKg
+	 wUgyRxj36lJdaiEyLGHlEV9omjCksp+epkmS9gOkbcCeSshRDWqTjv1zxEIe631n6e
+	 Bvb1MMxxmRx2A==
+Message-ID: <sashiko-outbox-233387@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] ARM: dts: imx6ull-dhcom: Change eMMC pin configuration
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Christoph Niedermaier" <cniedermaier@dh-electronics.com>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org
+In-Reply-To: <20261125123520.6040-1-cniedermaier@dh-electronics.com>
+References: <20261125123520.6040-1-cniedermaier@dh-electronics.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 25 Nov 2026 12:43:00 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -60,72 +58,44 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
 
-From: Pascal Zimmermann <pzimmermann@dh-electronics.com>
+Thank you for your contribution! Sashiko AI review found 2 potential
+issues to consider:
+- [Low] ARM: dts: imx6ull-dhcom: missing Fixes trailer for commit
+  611b6c891e40
+- [Low] ARM: dts: imx6ull-dhcom: Co-developed-by trailer used for patch
+  author
+--
 
-Tests have shown that, with the current pin configuration of the
-eMMC (usdhc2 interface) read errors can occur with a certain
-type of eMMC chips. Tests conducted with all eMMC chip types
-used in the DHCOM i.MX6ULL SoM showed that there were no issues
-with the pin configuration currently used in the U-Boot. That is
-why this configuration is being adopted in Linux as well.
+commit 4bb7eb12f6ad509b598e0b39f61b66cdb22619cf
+Author: Pascal Zimmermann <pzimmermann@dh-electronics.com>
 
-Co-developed-by: Pascal Zimmermann <pzimmermann@dh-electronics.com>
-Signed-off-by: Pascal Zimmermann <pzimmermann@dh-electronics.com>
-Co-developed-by: Christoph Niedermaier <cniedermaier@dh-electronics.com>
-Signed-off-by: Christoph Niedermaier <cniedermaier@dh-electronics.com>
----
-Cc: Conor Dooley <conor+dt@kernel.org>
-Cc: Fabio Estevam <festevam@gmail.com>
-Cc: Frank Li <Frank.Li@nxp.com>
-Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
-Cc: Marek Vasut <marex@nabladev.com>
-Cc: Pascal Zimmermann <pzimmermann@dh-electronics.com>
-Cc: Rob Herring <robh@kernel.org>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: kernel@dh-electronics.com
-Cc: devicetree@vger.kernel.org
-Cc: imx@lists.linux.dev
----
- .../boot/dts/nxp/imx/imx6ull-dhcom-som.dtsi   | 22 +++++++++----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+> ARM: dts: imx6ull-dhcom: Change eMMC pin configuration
+>
+> Tests have shown that, with the current pin configuration of the
+> eMMC (usdhc2 interface) read errors can occur with a certain
+> type of eMMC chips. Tests conducted with all eMMC chip types
+> used in the DHCOM i.MX6ULL SoM showed that there were no issues
+> with the pin configuration currently used in the U-Boot. That is
+> why this configuration is being adopted in Linux as well.
+>
+> Co-developed-by: Pascal Zimmermann <pzimmermann@dh-electronics.com>
+> Signed-off-by: Pascal Zimmermann <pzimmermann@dh-electronics.com>
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-dhcom-som.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ull-dhcom-som.dtsi
-index a74f5273f9b3..97d4de84b2ac 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6ull-dhcom-som.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ull-dhcom-som.dtsi
-@@ -568,17 +568,17 @@ MX6UL_PAD_GPIO1_IO05__GPIO1_IO05	0x120b0
- 
- 	pinctrl_usdhc2: usdhc2-grp {
- 		fsl,pins = <
--			MX6UL_PAD_NAND_RE_B__USDHC2_CLK		0x10069
--			MX6UL_PAD_NAND_WE_B__USDHC2_CMD		0x17059
--			MX6UL_PAD_NAND_DATA00__USDHC2_DATA0	0x17059
--			MX6UL_PAD_NAND_DATA01__USDHC2_DATA1	0x17059
--			MX6UL_PAD_NAND_DATA02__USDHC2_DATA2	0x17059
--			MX6UL_PAD_NAND_DATA03__USDHC2_DATA3	0x17059
--			MX6UL_PAD_NAND_DATA04__USDHC2_DATA4	0x17059
--			MX6UL_PAD_NAND_DATA05__USDHC2_DATA5	0x17059
--			MX6UL_PAD_NAND_DATA06__USDHC2_DATA6	0x17059
--			MX6UL_PAD_NAND_DATA07__USDHC2_DATA7	0x17059
--			MX6UL_PAD_NAND_ALE__USDHC2_RESET_B	0x17059 /* SD2 Reset */
-+			MX6UL_PAD_NAND_RE_B__USDHC2_CLK		0x1f019
-+			MX6UL_PAD_NAND_WE_B__USDHC2_CMD		0x1f019
-+			MX6UL_PAD_NAND_DATA00__USDHC2_DATA0	0x1f019
-+			MX6UL_PAD_NAND_DATA01__USDHC2_DATA1	0x1f019
-+			MX6UL_PAD_NAND_DATA02__USDHC2_DATA2	0x1f019
-+			MX6UL_PAD_NAND_DATA03__USDHC2_DATA3	0x1f019
-+			MX6UL_PAD_NAND_DATA04__USDHC2_DATA4	0x1f019
-+			MX6UL_PAD_NAND_DATA05__USDHC2_DATA5	0x1f019
-+			MX6UL_PAD_NAND_DATA06__USDHC2_DATA6	0x1f019
-+			MX6UL_PAD_NAND_DATA07__USDHC2_DATA7	0x1f019
-+			MX6UL_PAD_NAND_ALE__USDHC2_RESET_B	0x1f019 /* SD2 Reset */
- 		>;
- 	};
- };
--- 
-2.30.2
+[Severity: Low]
+Co-developed-by: is only for co-authors in addition to the patch author in
+From:, so the Co-developed-by: line for Pascal Zimmermann should be dropped.
 
+> Co-developed-by: Christoph Niedermaier <cniedermaier@dh-electronics.com>
+> Signed-off-by: Christoph Niedermaier <cniedermaier@dh-electronics.com>
+
+[Severity: Low]
+Since this fixes eMMC read errors with the pinctrl_usdhc2 pad configuration
+added with initial board support, should this include a Fixes: tag?
+
+  Fixes: 611b6c891e40 ("ARM: dts: imx6ull-dhcom: Add DH electronics DHCOM i=
+.MX6ULL SoM and PDK2 board")
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261125123520.6040=
+-1-cniedermaier@dh-electronics.com?part=3D1
