@@ -1,59 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795629188;
-	b=0GJTUnwude6Ff4QgBf2qGeSmnJ75gqRQZ/v5QV+kp6IvGXAM2AEvzWHZMjf5+xLOxBHV
-	 NM1Bkjn/5Lj44lpbhDeZIX7k/1DEZk5+KWjimHOYBL7mzB6BUHyqqjWCnMQl5xKMv/WBD
-	 5Z8QqqDWRbbELegKp+839RwJ61kh0t9A3RK7a7MhcVUIYi5aT9M8OprPfTt7G/7AzUQy+
-	 BOBHerutCNGMJW0eWX5OdiIAf5XcFwdgB4elMaNHJ0ndXA8LGR0mWj4DlN69cVQGsEZXz
-	 m4OTsgcf0vw4DpvvvQ9gRIVxAaS0ITagqwrPH+asSue+xO/z7PW0lXg93WBNp/jo5AQ==
+	t=1795629191;
+	b=FBaRf6LBMLRfIiVv+SFi4oGMzcGsQcHD6mZK75b5r0jiAfbwU9XnsUB0St1TWMAFJGS9
+	 wMxEw63mCE511RU7leIe9hTNtnbmxLtLy2J/96V+LQ75iIv5Tc/aUucpgQ1vH8dz96lrt
+	 8UNQBUE4VG344/cC2QBlPxwJSo6MTGFIa565vDWn3sByxo/7EQMtJw3LgqL6QXz0ZT/NB
+	 hZccBQqUWic2Rht1WOB+UhB+QB+C6seu2QoJdAS/U831PbLJw8Y/hPQokjAJ3wjmhsRym
+	 1eD3Kthr+vBUh2KGZs0YOkMDBCiVh0qY0SZlYxvAwZpby0nJylY77OCbGRzG3E5/dfw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795629188;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795629191;
 	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:Date:
 	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Last-TLS-Session-Version;
-	bh=PawFOJzGO+j7Rk1FiSoFYRQzAZVs1Yl5DoDfqYSRNT4=;
-	b=Y54FoNFSSUXXymzrWJ03pLzumq7xdAqPFhwjMvy3eFU8bAWyXu/ifYvsQhQaZ3QDUbdR
-	 /VHlq5fPSN+sMtiW3yz3nGJZbea6sHO/BFea9744CZ9hYuwqfvV/X7rdPd3iRVTsc/pEr
-	 uQplkSiRl21ot0a6Ri8CHa0PLxgnR1eUGoLW7wKVt/sVhzBr0KR6ydJZq118+8JlFi0Lw
-	 wCVS/0TqNrQHHa+R5fBAb795XBa5rksJ76gB4x3MpdFc81Y10wSsxTyVdsFj8rhl1AxDz
-	 b5108F02OGl1986Vhk848BMuei70kfZuqqTbAfuUqihMhLn8qWjs2l7G0kmSMowi7EA==
+	bh=4e/RWoOHhDL2sVy5LbDO8W9W8W0olcvrU1DPDGSNAcg=;
+	b=KM+rcJZPrsMoRSVeeUTsptn8FQI4hIEOW8roG3vWnTwSF7nxBXUJMJYQeTQrvjoG/kzd
+	 fFeTgnVeOpvQIuFKmR1OI2zSEmYtsXVe0bWsmYxZSqbU63pMWpQ0O6HGb8gu0pBM1cvrw
+	 E+czrV5/b97yFu/wyyQf477dt9BF4015l7YeNw0OTF39cX2bQqpaylhZoh/k6r632+Yq0
+	 pOeIvljNWSwyRpfTzBPrqjQEHFraMg/oytyzCGQAEhwnwcDc/rG+Kd2GzUDCfS2ld8Gw0
+	 rl0dG34zwNuS459rsFDvDSTmzQgky3XoH5HOYPuBGEssRMbKru5B2pXDZk7m5LX0gpg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=bootlin.com;
 	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=zQ7pWe3f;
-	arc=none smtp.remote-ip=185.246.84.56
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=0I9axvAt;
+	arc=none smtp.remote-ip=185.171.202.116
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09F44606A333
-	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 17:53:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 09F44606A333
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C14AF60A260E
+	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 17:53:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C14AF60A260E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=zQ7pWe3f
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=0I9axvAt
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id DD13B1A17FB;
-	Wed, 25 Nov 2026 17:53:06 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 66CBBC2BB3D;
+	Wed, 25 Nov 2026 17:53:17 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id A761960480;
-	Wed, 25 Nov 2026 17:53:06 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BFCA611E6B0D3;
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 6DC9B60480;
+	Wed, 25 Nov 2026 17:53:09 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6A31611E6B0CE;
 	Wed, 25 Nov 2026 18:52:58 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1795629184; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1795629183; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=PawFOJzGO+j7Rk1FiSoFYRQzAZVs1Yl5DoDfqYSRNT4=;
-	b=zQ7pWe3f+cS3XZjICfwqZVaMvrHfpKIlq+qhOx2skWTGKnrchxcjzuAy8VUInqeUh4hlSM
-	m7v2ll1mvoEHi0fJfVsmUhVKGHnGy7H9bRF5Rf8x1Juf1q+C+a28WcAXFmh86TG9/fT3as
-	8NkpFtbhGYctpiRuCyQwWkCTC+5WGkBCjXwjkbd3kIqGnizEe1oB3PXxYto+QAuCO4CiV+
-	1AOpf7+YjiK0bXGzOxImj1j6/G2qwkRwaVxTb4EESusRr/RMkY/OoB/4wGpOnMt8J05KGS
-	kEd0Qx1/JlZ0GZPUYlOmbHipL6ff6bp56Xtv0Fj5bsuLm85kTfjtfV41HTZPEA==
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Date: Wed, 25 Nov 2026 18:50:32 +0100
-Subject: [PATCH v4 19/32] drm/mipi-dsi: notify about DSI attach
+	bh=4e/RWoOHhDL2sVy5LbDO8W9W8W0olcvrU1DPDGSNAcg=;
+	b=0I9axvAtYjofLkkZCOhpkZRXZO9wrCEJ9W8xd0tJka7dFgvXC9ZZM3ONe8yTXqcbmWdvmU
+	2u0mC3vpvM8T1YH13qF+TwMiyqy4HUMouxTgv812jL9BdodUDrmSJh+5DlxTB8eTJWCkCp
+	rDMjiGhgogKRV3B9FSVGqeE/jtnNyClRK3hFiSQ+x1v0LB3Ej1kjp8qdQT5IkX1KUGcV90
+	iqn37JYOcUO43avU/it4dEEZ25Lu3wpqlZW6pfJQNCGZfSnkv1IJuCRH3HVTAYlePx5now
+	YOLAwRlHqdIagHAqfLWoZE2oNxTwIAlohyg3QGNtn4pIx4KhaFiynLXm3ndyyA==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+Date: Wed, 25 Nov 2026 18:51:29 +0100
+Subject: [PATCH RFC 15/16] spi: stm32-qspi: Consume dummy cycles directly
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -65,85 +65,88 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261125-drm-bridge-hotplug-v4-19-822722850492@bootlin.com>
-References: <20261125-drm-bridge-hotplug-v4-0-822722850492@bootlin.com>
-In-Reply-To: <20261125-drm-bridge-hotplug-v4-0-822722850492@bootlin.com>
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Andrzej Hajda <andrzej.hajda@intel.com>, 
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Inki Dae <inki.dae@samsung.com>, Jagan Teki <jagan@amarulasolutions.com>, 
- Marek Szyprowski <m.szyprowski@samsung.com>, 
- Jessica Zhang <jesszhan0024@gmail.com>, 
- Douglas Anderson <dianders@chromium.org>, Marek Vasut <marex@denx.de>, 
- Stefan Agner <stefan@agner.ch>, Frank Li <Frank.Li@nxp.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: Javier Martinez Canillas <javierm@redhat.com>, 
- Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
- Hui Pu <Hui.Pu@gehealthcare.com>, Ian Ray <ian.ray@gehealthcare.com>, 
- Luca Ceresoli <luca.ceresoli@bootlin.com>, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-X-Mailer: b4 0.16.0
+Message-Id: <20261125-macronix-upstreaming-spi-mem-cycles-v1-15-fd036402fd37@bootlin.com>
+References: <20261125-macronix-upstreaming-spi-mem-cycles-v1-0-fd036402fd37@bootlin.com>
+In-Reply-To: <20261125-macronix-upstreaming-spi-mem-cycles-v1-0-fd036402fd37@bootlin.com>
+To: Mark Brown <broonie@kernel.org>, Liang Yang <liang.yang@amlogic.com>, 
+ Feng Chen <feng.chen@amlogic.com>, Xianwei Zhao <xianwei.zhao@amlogic.com>, 
+ Han Xu <han.xu@nxp.com>, Conor Dooley <conor.dooley@microchip.com>, 
+ Valentina Fernandez <valentina.fernandezalanis@microchip.com>, 
+ Daire McNamara <daire.mcnamara@microchip.com>, 
+ Haibo Chen <haibo.chen@nxp.com>, Jyan Chou <jyanchou@realtek.com>, 
+ Yu-Chun Lin <eleanor.lin@realtek.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Pratyush Yadav <pratyush@kernel.org>, Michael Walle <mwalle@kernel.org>, 
+ Takahiro Kuwano <takahiro.kuwano@infineon.com>, 
+ Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Alvin Zhou <alvinzhou@mxic.com.tw>, 
+ Cheng Ming Lin <chengminglin@mxic.com.tw>, linux-spi@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-amlogic@lists.infradead.org, 
+ imx@lists.linux.dev, linux-riscv@lists.infradead.org, 
+ linux-stm32@st-md-mailman.stormreply.com, 
+ linux-arm-kernel@lists.infradead.org, linux-mtd@lists.infradead.org, 
+ Miquel Raynal <miquel.raynal@bootlin.com>
+X-Mailer: b4 0.14.3
 X-Last-TLS-Session-Version: TLSv1.3
 
-In preparation to support DRM bridge hotplug, let the drm_mipi_dsi code
-emit an event when a DSI device is attached to the corresponding DSI host,
-so that this event can trigger the actions needed to configure the pipeline
-and register the connector as appropriate.
+The spi-mem layer is now capable of providing the dummy phase in cycle
+units rather than bytes, provided that drivers advertize the dummy_cycle
+capability. Since this controller is consuming cycles and currently
+converts bytes into cycles, flag it capable to consume cycles directly
+and drop the extra conversions.
 
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 ---
+ drivers/spi/spi-stm32-qspi.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-Changes in v3:
-- use new v3 notifier API name
-- fix commit message
----
- drivers/gpu/drm/Kconfig        | 1 +
- drivers/gpu/drm/drm_mipi_dsi.c | 3 +++
- 2 files changed, 4 insertions(+)
-
-diff --git a/drivers/gpu/drm/Kconfig b/drivers/gpu/drm/Kconfig
-index 105dd46a0a45..3ebd9388bdda 100644
---- a/drivers/gpu/drm/Kconfig
-+++ b/drivers/gpu/drm/Kconfig
-@@ -45,6 +45,7 @@ config DRM_MIPI_DBI
- config DRM_MIPI_DSI
- 	bool
- 	depends on DRM
-+	select DRM_HOTPLUG_EVENT_NOTIFIER
+diff --git a/drivers/spi/spi-stm32-qspi.c b/drivers/spi/spi-stm32-qspi.c
+index b77daba6db83..993b09cc5124 100644
+--- a/drivers/spi/spi-stm32-qspi.c
++++ b/drivers/spi/spi-stm32-qspi.c
+@@ -393,9 +393,8 @@ static int stm32_qspi_send(struct spi_device *spi, const struct spi_mem_op *op)
+ 		ccr |= FIELD_PREP(CCR_ADSIZE_MASK, op->addr.nbytes - 1);
+ 	}
  
- config DRM_KMS_HELPER
- 	tristate
-diff --git a/drivers/gpu/drm/drm_mipi_dsi.c b/drivers/gpu/drm/drm_mipi_dsi.c
-index 3ac1dd5ad640..ae49f3aa1b2b 100644
---- a/drivers/gpu/drm/drm_mipi_dsi.c
-+++ b/drivers/gpu/drm/drm_mipi_dsi.c
-@@ -34,6 +34,7 @@
- #include <linux/slab.h>
+-	if (op->dummy.nbytes)
+-		ccr |= FIELD_PREP(CCR_DCYC_MASK,
+-				  op->dummy.nbytes * 8 / op->dummy.buswidth);
++	if (op->dummy.ncycles)
++		ccr |= FIELD_PREP(CCR_DCYC_MASK, op->dummy.ncycles);
  
- #include <drm/display/drm_dsc.h>
-+#include <drm/drm_hotplug_event_notifier.h>
- #include <drm/drm_mipi_dsi.h>
- #include <drm/drm_print.h>
+ 	if (op->data.nbytes) {
+ 		ccr |= FIELD_PREP(CCR_DMODE_MASK,
+@@ -593,7 +592,7 @@ static int stm32_qspi_transfer_one_message(struct spi_controller *ctrl,
+ 		 */
+ 		if (transfer->dummy_data) {
+ 			op.dummy.buswidth = transfer->tx_nbits;
+-			op.dummy.nbytes = transfer->len;
++			op.dummy.ncycles = transfer->len * 8 / transfer->tx_nbits;
+ 			dummy_bytes = transfer->len;
  
-@@ -386,6 +387,8 @@ int mipi_dsi_attach(struct mipi_dsi_device *dsi)
+ 			/* if happens, means that message is not correctly built */
+@@ -773,6 +772,10 @@ static const struct spi_controller_mem_ops stm32_qspi_mem_ops = {
+ 	.poll_status	= stm32_qspi_poll_status,
+ };
  
- 	dsi->attached = true;
- 
-+	drm_hotplug_event_notifier_notify(DRM_MIPI_DSI_ATTACHED, dsi);
++static const struct spi_controller_mem_caps stm32_qspi_mem_caps = {
++	.dummy_cycles = true,
++};
 +
- 	return 0;
- }
- EXPORT_SYMBOL(mipi_dsi_attach);
+ static int stm32_qspi_probe(struct platform_device *pdev)
+ {
+ 	struct device *dev = &pdev->dev;
+@@ -856,6 +859,7 @@ static int stm32_qspi_probe(struct platform_device *pdev)
+ 	ctrl->setup = stm32_qspi_setup;
+ 	ctrl->bus_num = -1;
+ 	ctrl->mem_ops = &stm32_qspi_mem_ops;
++	ctrl->mem_caps = &stm32_qspi_mem_caps;
+ 	ctrl->use_gpio_descriptors = true;
+ 	ctrl->transfer_one_message = stm32_qspi_transfer_one_message;
+ 	ctrl->num_chipselect = STM32_QSPI_MAX_NORCHIP;
 
 -- 
-2.56.1
+2.56.0
 
