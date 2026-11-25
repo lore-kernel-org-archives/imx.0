@@ -1,59 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795629182;
-	b=z1H3OJAibBWUN+TQhaGzyHIwUy4PVbte9TAhOG+/lWFJh3h6g9YXhL/odcp9TYlbbi/T
-	 cGpinGcrPkurIWbegAkv9SoQw5ipz/nlHX3Jqf3shMqg1+AzJcWgcQFF1IpYpNxoE4GbG
-	 5wY2RmGt4n+ZIVW9YXJFAHQMfSYofyGW8QPvfx0EN8UB9IJMYWAN9ft7M/fx8YIJmNJqt
-	 9jMKaBqPwCrpEe8d4wrWdmVVz4YISYtz9Il0V8sXzoSQ7e6dwYMc0LS4x9Mm4iGruk4eW
-	 UFYaI8nhWn2WyGif9OD8rzRPXWWwEY522151UgDgKFZsB2Gtc0BpQTgIHk4DPjYpULg==
+	t=1795629184;
+	b=JICRq5TgagMiWUB3Vf2W9k0pqcOyM1B9m8VghUuuSGyxA2HeYmwz/hYDQKtwvmNYlYH4
+	 syJ6D5mrmN8MhAC5Jrjfu/Awev6cK8tPnNHQu5UYfWR0aMH2eU/WgW0LO0m9XUKR0P278
+	 067iUchWskC3ECcde09VBbeubNkxrdb0L1oCPvMBh/SdbREYFUX+NEdGQxdgkwNpEp+1p
+	 JuALQx6g5n34og/BAoFu5gXNACZV38fv0tmzzr438tdsbd7AU013Hd1LCpJdJCnP+qvsI
+	 v2nalPHk6mm72lpgZDW2FkA3vlxa5G2hpdfN4m6963nduyL66ygGLdeeh6UoZ9eBriQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795629182;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795629184;
 	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:Date:
 	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Last-TLS-Session-Version;
-	bh=JCAVXopcRhsu0R7W2AJRcPS4xlZfnpyxLhZGemjrQaY=;
-	b=aC1ZUMu4dWSbYfhj3/VWawc6R2Hf+qPALXjYEnLUA0RTAMQdKXbp+MLvE/oLKRK9L0gw
-	 OiR128IJoJaeO172NCL1+p3vASOXC7g40vGpkZgGU19YKxCLkceWURVEv4KJF1l8mnITX
-	 +P7alKjycyyRJmUU7InzmIoGJ80SfKHozPWlnOkaOk/nRbEX5YV5+lezvwHCK210FlhSB
-	 blzFwYwR3wS0pp/h7Kr44W6DbYRAgws19rgxOAoX9ZBUeHBH8SH9+D85wgDM6j3TzT/9e
-	 mMAEEVS/2BGpIH8VN4+teKAjgnes5K5Zu93OJOqgUZ80BGVoFKf+XjvgacxABfYlePw==
+	bh=lMt6anh8JalluqU5kZ6TRVlDWq9+fId3H2x7OFRSZmI=;
+	b=mAIrIrJ/w8JBo+ut+aus0r9oUricH7g2Mo5t0isxHtp5TA2Bqpy3jwR5E0ccYlPDmcB9
+	 TXowZWvnnlc2EPXNYnndPs/35bkwRvMoa2Jid5uAJSJdUx+YsWKcmgflZf0thEiVMEI6p
+	 FSn+nJk9YTgs8Hg2vvzl++VU4E43KZqN2n3qH0nbYBr3bBcw+M87U+zSlO+DSMv2p/61/
+	 NHWBGES2QJU6e5KZmHuyVdxahI12aa71XNES5hOKks3DSzT3bc2fHX4zn78z2t9z/oStx
+	 gKWBBGzL5rPOQqHDQksQBr/q0NWCZW/GAJxDje5NbulYvqr6TfpXaIn3rrWk0epTzlg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=bootlin.com;
 	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=KYGCCatk;
-	arc=none smtp.remote-ip=185.246.85.4
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b="YpdhlpN/";
+	arc=none smtp.remote-ip=185.246.84.56
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89393606A33D
-	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 17:53:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 89393606A33D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EB70606A6AF
+	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 17:53:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9EB70606A6AF
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=KYGCCatk
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=YpdhlpN/
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 41B144E40B00;
-	Wed, 25 Nov 2026 17:53:00 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 3F7081A17F9;
+	Wed, 25 Nov 2026 17:53:02 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 0D09660480;
-	Wed, 25 Nov 2026 17:53:00 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id AA5F911E6B0CA;
-	Wed, 25 Nov 2026 18:52:49 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 0B24960480;
+	Wed, 25 Nov 2026 17:53:02 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 68B8C11E6B0D5;
+	Wed, 25 Nov 2026 18:52:47 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
 	t=1795629174; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=JCAVXopcRhsu0R7W2AJRcPS4xlZfnpyxLhZGemjrQaY=;
-	b=KYGCCatkpDwAP39xFucHg5OhSZCQx2BzoSiOJhGTIvhyjU0iH9MR3Nou9ORwOoHqcQnXWZ
-	k8WtGng3n56RvyZGJYrcqIQmYvx22XJkDzMlShSyJBKI1pVqipDqav+hHfIZm2R/LFJK3Z
-	R6orNWggySMk4Bc/p8PcSNb1BxXblXaYw9rHsTY/CnCvJeuoEbwAJNPf2WEx0KM/Hyp5pe
-	0hJTCcMIveklGb7007f++ldutFB9U0ere1MsT+1fGqCRqCdDgCnONrX7FzjaT87hZFmq75
-	e8h0wMhWaaGOEr+pML/ay1JGJuzjfo0QVZXl39N8Dn+JQqgG8evHxLIQmzJ6BA==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-Date: Wed, 25 Nov 2026 18:51:28 +0100
-Subject: [PATCH RFC 14/16] spi: stm32-ospi: Consume dummy cycles directly
+	bh=lMt6anh8JalluqU5kZ6TRVlDWq9+fId3H2x7OFRSZmI=;
+	b=YpdhlpN/qCOaaG4Tk5QIhmIna5ETohW4LU/v9ZZdHyZRpKdYksArMU0ujj0FGXuOK+qcKF
+	Xkl/GmnG3uGykI+HlLhWWfZNmLV1MTiixbEUmPVZT6VuETg5Rky87AWb5V4Lh64zltjivm
+	YsfEqV6e1g+I9FPskaWw17EePqjUTTVorF5Tj1BkWKPEfPz0pVO0+xXB3DC6+bx+D4pOfi
+	X5XeAl2wYUfEdbauZAd3GSqy16R3DKAyhszLtij9LtZa8J774J58lz85h0L/AtDBgZ37I0
+	CpSuR1vlN9JErQFevz1E1vsgGNnAhoT4RPTj4OKy+0rjN0Jq22wQvMYLm82S4A==
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Date: Wed, 25 Nov 2026 18:50:31 +0100
+Subject: [PATCH v4 18/32] drm/bridge: notify about added and detached
+ bridges
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -65,90 +66,95 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261125-macronix-upstreaming-spi-mem-cycles-v1-14-fd036402fd37@bootlin.com>
-References: <20261125-macronix-upstreaming-spi-mem-cycles-v1-0-fd036402fd37@bootlin.com>
-In-Reply-To: <20261125-macronix-upstreaming-spi-mem-cycles-v1-0-fd036402fd37@bootlin.com>
-To: Mark Brown <broonie@kernel.org>, Liang Yang <liang.yang@amlogic.com>, 
- Feng Chen <feng.chen@amlogic.com>, Xianwei Zhao <xianwei.zhao@amlogic.com>, 
- Han Xu <han.xu@nxp.com>, Conor Dooley <conor.dooley@microchip.com>, 
- Valentina Fernandez <valentina.fernandezalanis@microchip.com>, 
- Daire McNamara <daire.mcnamara@microchip.com>, 
- Haibo Chen <haibo.chen@nxp.com>, Jyan Chou <jyanchou@realtek.com>, 
- Yu-Chun Lin <eleanor.lin@realtek.com>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Pratyush Yadav <pratyush@kernel.org>, Michael Walle <mwalle@kernel.org>, 
- Takahiro Kuwano <takahiro.kuwano@infineon.com>, 
- Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Alvin Zhou <alvinzhou@mxic.com.tw>, 
- Cheng Ming Lin <chengminglin@mxic.com.tw>, linux-spi@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-amlogic@lists.infradead.org, 
- imx@lists.linux.dev, linux-riscv@lists.infradead.org, 
- linux-stm32@st-md-mailman.stormreply.com, 
- linux-arm-kernel@lists.infradead.org, linux-mtd@lists.infradead.org, 
- Miquel Raynal <miquel.raynal@bootlin.com>
-X-Mailer: b4 0.14.3
+Message-Id: <20261125-drm-bridge-hotplug-v4-18-822722850492@bootlin.com>
+References: <20261125-drm-bridge-hotplug-v4-0-822722850492@bootlin.com>
+In-Reply-To: <20261125-drm-bridge-hotplug-v4-0-822722850492@bootlin.com>
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Andrzej Hajda <andrzej.hajda@intel.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Inki Dae <inki.dae@samsung.com>, Jagan Teki <jagan@amarulasolutions.com>, 
+ Marek Szyprowski <m.szyprowski@samsung.com>, 
+ Jessica Zhang <jesszhan0024@gmail.com>, 
+ Douglas Anderson <dianders@chromium.org>, Marek Vasut <marex@denx.de>, 
+ Stefan Agner <stefan@agner.ch>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: Javier Martinez Canillas <javierm@redhat.com>, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
+ Hui Pu <Hui.Pu@gehealthcare.com>, Ian Ray <ian.ray@gehealthcare.com>, 
+ Luca Ceresoli <luca.ceresoli@bootlin.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+X-Mailer: b4 0.16.0
 X-Last-TLS-Session-Version: TLSv1.3
 
-The spi-mem layer is now capable of providing the dummy phase in cycle
-units rather than bytes, provided that drivers advertize the dummy_cycle
-capability. Since this controller is consuming cycles and currently
-converts bytes into cycles, flag it capable to consume cycles directly
-and drop the extra conversions.
+In preparation to support DRM bridge hotplug, let the drm_bridge code emit
+an event when a bridge is added and when it is detached, so that this event
+can trigger the actions needed to (de)configure the pipeline and
+(un)register the connector as appropriate.
 
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+
 ---
- drivers/spi/spi-stm32-ospi.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/spi/spi-stm32-ospi.c b/drivers/spi/spi-stm32-ospi.c
-index fa0e8e83cb1b..9b28d1f24482 100644
---- a/drivers/spi/spi-stm32-ospi.c
-+++ b/drivers/spi/spi-stm32-ospi.c
-@@ -492,10 +492,9 @@ static int stm32_ospi_send(struct spi_device *spi, const struct spi_mem_op *op)
- 	}
- 
- 	tcr = TCR_SSHIFT;
--	if (op->dummy.buswidth && op->dummy.nbytes) {
--		tcr |= FIELD_PREP(TCR_DCYC_MASK,
--				  op->dummy.nbytes * 8 / op->dummy.buswidth);
--	}
-+	if (op->dummy.buswidth && op->dummy.ncycles)
-+		tcr |= FIELD_PREP(TCR_DCYC_MASK, op->dummy.ncycles);
+Changes in v3:
+- also notify on added bridges (for non-DSI bridges)
+- use new v3 notifier API name
+---
+ drivers/gpu/drm/Kconfig      | 1 +
+ drivers/gpu/drm/drm_bridge.c | 6 ++++++
+ 2 files changed, 7 insertions(+)
+
+diff --git a/drivers/gpu/drm/Kconfig b/drivers/gpu/drm/Kconfig
+index 5268bf47b2e3..105dd46a0a45 100644
+--- a/drivers/gpu/drm/Kconfig
++++ b/drivers/gpu/drm/Kconfig
+@@ -17,6 +17,7 @@ menuconfig DRM
+ # device and dmabuf fd. Let's make sure that is available for our userspace.
+ 	select KCMP
+ 	select VIDEO
++	select DRM_HOTPLUG_EVENT_NOTIFIER
+ 	help
+ 	  Kernel-level support for the Direct Rendering Infrastructure (DRI)
+ 	  introduced in XFree86 4.0. If you say Y here, you need to select
+diff --git a/drivers/gpu/drm/drm_bridge.c b/drivers/gpu/drm/drm_bridge.c
+index 310f03bdb744..a50709ac8b06 100644
+--- a/drivers/gpu/drm/drm_bridge.c
++++ b/drivers/gpu/drm/drm_bridge.c
+@@ -34,6 +34,7 @@
+ #include <drm/drm_debugfs.h>
+ #include <drm/drm_edid.h>
+ #include <drm/drm_encoder.h>
++#include <drm/drm_hotplug_event_notifier.h>
+ #include <drm/drm_file.h>
+ #include <drm/drm_of.h>
+ #include <drm/drm_print.h>
+@@ -475,6 +476,8 @@ void drm_bridge_add(struct drm_bridge *bridge)
+ 	mutex_lock(&bridge_lock);
+ 	list_add_tail(&bridge->list, &bridge_list);
+ 	mutex_unlock(&bridge_lock);
 +
- 	writel_relaxed(tcr, regs_base + OSPI_TCR);
++	drm_hotplug_event_notifier_notify(DRM_BRIDGE_ADDED, bridge);
+ }
+ EXPORT_SYMBOL(drm_bridge_add);
  
- 	if (op->data.nbytes) {
-@@ -691,7 +690,7 @@ static int stm32_ospi_transfer_one_message(struct spi_controller *ctrl,
- 		 */
- 		if (transfer->dummy_data) {
- 			op.dummy.buswidth = transfer->tx_nbits;
--			op.dummy.nbytes = transfer->len;
-+			op.dummy.ncycles = transfer->len * 8 / transfer->tx_nbits;
- 			dummy_bytes = transfer->len;
+@@ -710,6 +713,9 @@ void drm_bridge_detach(struct drm_bridge *bridge)
+ 		bridge->funcs->detach(bridge);
  
- 			/* If happens, means that message is not correctly built */
-@@ -784,6 +783,10 @@ static const struct spi_controller_mem_ops stm32_ospi_mem_ops = {
- 	.poll_status	= stm32_ospi_poll_status,
- };
- 
-+static const struct spi_controller_mem_caps stm32_ospi_mem_caps = {
-+	.dummy_cycles = true,
-+};
+ 	list_del_init(&bridge->chain_node);
 +
- static int stm32_ospi_get_resources(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
-@@ -933,6 +936,7 @@ static int stm32_ospi_probe(struct platform_device *pdev)
- 	ctrl->setup = stm32_ospi_setup;
- 	ctrl->bus_num = -1;
- 	ctrl->mem_ops = &stm32_ospi_mem_ops;
-+	ctrl->mem_caps = &stm32_ospi_mem_caps;
- 	ctrl->use_gpio_descriptors = true;
- 	ctrl->transfer_one_message = stm32_ospi_transfer_one_message;
- 	ctrl->num_chipselect = STM32_OSPI_MAX_NORCHIP;
++	drm_hotplug_event_notifier_notify(DRM_BRIDGE_DETACHED, bridge);
++
+ 	bridge->dev = NULL;
+ 	drm_bridge_put(bridge);
+ }
 
 -- 
-2.56.0
+2.56.1
 
