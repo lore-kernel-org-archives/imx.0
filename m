@@ -1,89 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.51
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795624118;
-	b=Rl60MmPNQcB/Djf9IsN0zZcbqY7yE/FErqqy9dkRhMGHWv3dFTIE5lKqi6uq2qk9X7Mz
-	 irl2sZ82t0P8YozCL3Jnc+Z5EwpzN4+TGSXVTPk/Uv9T+JA5Z8sg+iwTX+toZjufKdqIN
-	 /nQLKG1csgpTwwMPtchEBSzYUvXcFYiM5eZXa60rdhVhXdsJqHkxbpGoWej4IcaxWsSFG
-	 gMkB5Y/GeFOReBsLjiF29MnRRAzjatrwPZBVEcnHFbQzZHeuphOaKTaiuhSxVaH6s9/oM
-	 aZjO1MG3EsG7WlLLWTyvqMPSjsn7Akqi4lwN9UXMsjfblxW0Q93TTwDbtDSY4mWK/cw==
+	t=1795624121;
+	b=BfxHamijY6NIKEbzMnSHrWungfRSJ88oAyhHSS/HgqObQ6AAqTb1NqIEQ51sqTl9cuMc
+	 6BpkyDKjY647YKOGPbnThZIDJk5cbVoGCkdAPSrckatvf7wc0CCBLmgOXr+E805uQQRYD
+	 LP/FZjANiRaEqwLTfJ9ylW5pa27HEuEOYI3GCNAQcd92mESxYy+FvYxMkDcL15+sHr0Mv
+	 O8Hz3WtjfXULZ1URORbwDu7VGPYabZnTVVmlcpE23/lK7zDC2/2nqCzSx6MZ88Hbrvgg7
+	 G5XpbJFUwK4E4ExraNTiQY41nb+XkhZ53zHAvSOS5/oiuZxQZoSr39DwLY8oigD5cgg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795624118;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795624121;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:Subject:Date:Message-Id:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 From:Date:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key;
-	bh=F33PfOK0msjzeBxtvP6gRqlD2SQxJhJCJJqwD2eVgsE=;
-	b=GMK2nIvEpw7PP0G8kErPKsgJgO6m9B9RifNxiEALiUf5AtEK2vkgoUi6xyjxrLtMqsqW
-	 0TuGeK0WgvHozWDOMdhOEs0Cw+Q6VzjghXOiTtOYiBjT1ojP5RChuzdJFcq8m4iyCYIrB
-	 U+inNXboSZJesRrT7Rx8y4zG9PLFGBUxegLFDppcN8kpTQ7a9hXolJtU+5JeeQstYuZX+
-	 15G9XAbqGVQff0F+kzKsUipDFGbce3ZJrFkdcyGnY0jE7xf7Lg2dOJ/MnYthhOgl6Djj4
-	 cX/jn7aYH6ZVlBCB5wUsWTunphiPbbcU5+NzNIHzZn+vgR4gpbrDr/Kog53gHUME/Xw==
+	bh=AFDbeCHQMCzywmdZtzco98P0xWzZOKchEiBzgROq0f4=;
+	b=gVrp0ssCfqJf7YeG7REKR3bCcsnJQsCXqOkKfgk4geMHLHTibk3bzKDctBK9TBa0HFEB
+	 oVautuXb04W4HnEXgpNobfpcq3pv7aBlNq1cmGu0Rj0y4wJq1d8u6jnGmwPpxJEBDD+4K
+	 bldwNA8VYun+KUSKiXQO3MXj0zkIdrikq3LQ6zEgR/Cvl/9d2FghPEa0vf0GQ/sXfQKzo
+	 XjSETdV0ZVYim8NdzkKIbj30MXvNw8K/Mb+LGT/zeuNuxZnOK1Sz3CMB+5/eSAvF8AgCk
+	 sYEU+sX8wj1rQ2KFqL1QwboHtaK3nkuR/y/DMm/7/3tzXURUDeTQVHLgTAWLi27YJuQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=thegoodpenguin.co.uk;
 	spf=pass smtp.mailfrom=thegoodpenguin.co.uk;
-	dkim=pass header.d=thegoodpenguin-co-uk.20260707.gappssmtp.com header.i=@thegoodpenguin-co-uk.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=ZWx7gnEZ;
-	arc=none smtp.remote-ip=209.85.128.52
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	dkim=pass header.d=thegoodpenguin-co-uk.20260707.gappssmtp.com header.i=@thegoodpenguin-co-uk.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=P7k8xwmV;
+	arc=none smtp.remote-ip=209.85.128.51
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B77CA606A331
-	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 16:28:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B77CA606A331
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDF47606A334
+	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 16:28:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BDF47606A334
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=thegoodpenguin.co.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=thegoodpenguin.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=thegoodpenguin-co-uk.20260707.gappssmtp.com header.i=@thegoodpenguin-co-uk.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=ZWx7gnEZ
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4bb606491faso32125115e9.3
-        for <imx@lists.linux.dev>; Wed, 25 Nov 2026 08:28:37 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=thegoodpenguin-co-uk.20260707.gappssmtp.com header.i=@thegoodpenguin-co-uk.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=P7k8xwmV
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4bb70074ab2so64610795e9.0
+        for <imx@lists.linux.dev>; Wed, 25 Nov 2026 08:28:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=thegoodpenguin-co-uk.20260707.gappssmtp.com; s=20260707; t=1795624116; x=1796228916; darn=lists.linux.dev;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=F33PfOK0msjzeBxtvP6gRqlD2SQxJhJCJJqwD2eVgsE=;
-        b=ZWx7gnEZ89XUSci6wgIwNkSVWadsfL6jfKo7O5sTt1RSziJjWxp4gBBxZ03gMpKTqM
-         2oks2oOEMHGfjOT4NrxyXfqnLupCGhXr5SjBdPjIzQphoBDHKCAG2NXEvxNw8AwJioVM
-         +mgs5AouLlxA3woFfwTdXEr9ssnpUwPk1nkgXSW9SBminaIL8sSoAD6p1aj/HzuDofOc
-         LhY1VFffSCDFOJ6U4Ci2oFFIkIhloyc+0dqZCbwQ5GF0JSFnl1W8jSf//0xNNEtpwmO7
-         i+KTsTthr2O7+1cQAIxeXeZYeNIzRCqeLjmJyKcbYFOLXaXgIjGAFHsxTUDf986cm1jE
-         09pw==
+        d=thegoodpenguin-co-uk.20260707.gappssmtp.com; s=20260707; t=1795624119; x=1796228919; darn=lists.linux.dev;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=AFDbeCHQMCzywmdZtzco98P0xWzZOKchEiBzgROq0f4=;
+        b=P7k8xwmV5vzq/1hDwwg4/DllkJqnBK8ekpTzxarjCGP4eWw3Khvv8pTHDHM0nFVwaJ
+         lXsB7VYwK9VUUXpm3s41fs3Ny9KkN7/Es8bxz578DzoOvc8rgGDreqGoHiO2B4G1gAaU
+         eZhls07zhPjSIr3MZuWkzAVbx8zkSxJL4wb9x0KGLDKoxYU6ZWA3pR5/r7GHeqvwmDlR
+         S5ujjpe/ww9FEk7B2caJ3daj5kfnJPjM/tsoN1uTA44v3nK1srw5b2yX6aSzuIKTj5tt
+         lSDnOXhl6vL96nR3XH2ACYnwI1zQS1l+kKnfFh6hLGKSKhUK1ssc4JW3X4zH3NjZn4iX
+         5UJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795624116; x=1796228916;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=F33PfOK0msjzeBxtvP6gRqlD2SQxJhJCJJqwD2eVgsE=;
-        b=kts2THd+gzanbOi0bxsx0kEr0VqZTe7zBuT6ZtY8yk19PMulDfVDJmQyQHTpBvFbHl
-         ZYmidIq0+Ip5NNkQrqn3xXhvN0OCnxjIKmPF5n8/ZbGJQkpNcwaCExt+se1/iOTN1Fm7
-         MVm5B1e5vF27brX1pUNsvJLRhJCrRKZ3zPSWQjiGc8vDU9a5Ew3jdgkxlCSmvZZyOm5y
-         l0zcV/he5Rk8O2hwpq7XZADgcK+8ihtNLNatAwkgDqZgY29TJqbWqXLq3zhib4VyBkMa
-         9qnpQT1OTXxB6NujUBESZOiQWyNo8QFrhVdmlyPNCNqmssfDVjPEuxh7z0xRPycWXy2+
-         WZhw==
-X-Forwarded-Encrypted: i=1; AL+hErE7eOkvoInxrb6IyjiQ1OjF/z3njgPs0Uxr3OiQiirurcAfR5J6u2/EKunsSFCc/LuBvmo=@lists.linux.dev
-X-Gm-Message-State: APuU4Z+/qqsZrNhPkS+RnsrS1wh8frLthxthz3iCJezQRS2Yo9/ZeYQh
-	p2v/ez2Ks2ydQXBzhYz3fYwJSeL4DOGdv9lWNB19O4i6JBpQ0on2AbraD19ioXZcy2g=
-X-Gm-Gg: AZFdTZfFiL77ZsFTjMbOEUfOIKfxZq01mhTMM2MhhmyuauqiT9zARBAoIoVzXp3VK5+
-	e1SaSzj6pzuQQio5PCZ6rXlmMQ0vGcrx6ZPYv+tjLp0rGHoQSf18bz4SL4fpZGhSe+p9WsgrDGo
-	KDiwTOHaHU6noVa6HL/td9XhwizlYn+lPz+gFv9lmS/sNpLUb8PDKywDDsBTviZZ202dbO+3E0L
-	+0552DEM0ya0dkcleZKvRXydx+OwK202aOshKGXR8w+omPZDeAmeaahCUpwnTPQDMSDG17DRrsw
-	6ZajM8T8YRX1OUQn/fGXvPUQOJSUOW8HDKthUUMJE2sSpZm2A6ziXORJifgA8benxGLB8LTTemZ
-	Hy4P393vZ7EsNuAWANrmoGnBNGw111J/G65fztRFOC+VpwfEEPuNqzC+br6lNyDxkUOU6Gl6knp
-	VlO1zXrzNxrdLwUmJiRb8CEWNm000X4E5OMPSnXz+C9BN6vZ4NRZa2ta8wm+L5MmWdy8yusL2ZB
-	z2vzgP6XWe3iig0PJND6i1PzsV5wCqSbGVAreaXUl3EW4mlbXXPxoNueqJXkrKVIYjIwAnbwzc7
-	UrvsHhTMZRi2z2/VxNFJX+WA5yS5TsqrXK5+37DNaUM5xij+iiw3S7xTOX8h0Qlm+Zc=
-X-Received: by 2002:a05:600c:5395:b0:4a3:5a98:c279 with SMTP id 5b1f17b1804b1-4bb8880e599mr376023745e9.8.1795624116009;
-        Wed, 25 Nov 2026 08:28:36 -0800 (PST)
+        d=1e100.net; s=20260707; t=1795624119; x=1796228919;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=AFDbeCHQMCzywmdZtzco98P0xWzZOKchEiBzgROq0f4=;
+        b=e9ueKFWinDCPX7MpBb+Fqlb9DJbvCTpn748lZMQqPLV6PfFT2XZ3iv74MkgyB8CDdO
+         BVaKkNHOWmeK3rz6aEtCDn9cwyM57g+1mRIMqmBUkZk+WykQ6CcrBWheA4iPjUWsbaHP
+         ffCFkhHWA0h5ZG3cp3gxWatWenMqCK29YMPclxHeDaPIjnH+QMfZdBRRSD7zwymXPcC0
+         X+K8NUuniuu6gxtlebjA4Qx+2KxXWqyO9Asu5arqTP8BrbkKeZH3OZql+T3ZPl7vRpcU
+         B8XDIj5Nx4NyMmHg7yCTnddREHh0SRW+M6jDi7wbv4q0A+Y2qhQ47AsnhbQs7TMmIP6t
+         GfxA==
+X-Forwarded-Encrypted: i=1; AL+hErE0dDe7gF8o3NZbEOyJo2wZN3xHxG+D2fNUg4YKsnOGmJAu+6tz7WkC9iweueCeaGLNxMk=@lists.linux.dev
+X-Gm-Message-State: APuU4Z+aooIwY2ZuIwOP6UoGe6cA7nbR2JBEWOgooqucyUA8fN6by32s
+	C0s6C7e4hMbLG2p/KtZNdjA7Z1t/6hVBMEwAIyFWpuPPPDBXBo0/47WBCVFrNf4xnH0=
+X-Gm-Gg: AZFdTZc/Ss5V1yOZhWdiArXwCpWn/DoIMDMqbMjM8Hrjnod32gVIXieEKZSCPtdJvMy
+	w/O3fLuPnKDwOVLhAoIirqhOWsNwNEtO3cu2ZDA63tPF66wRcihfyNlOW1vF40T+81HAYUCfcwq
+	fxqbN2nGoLM3b37v/9bJ26Xo/6cEAvyjAyhESM24JYNL8FxyhP0NLnorLGE/vIRdhzySZezVre3
+	02tm93C3/lrUgy/HXU/qEdrJu+4RjMtfjaPrc3JhBdO7nTXCR2c541pkwi/FBnUDIcHE+M6tlVu
+	SdcZPWGG8Bwy9bTlW4C3j7BgdOWMW9bkWSfrJmawkqdIW9dlzM6z29RWsX8csdJAxldhjGg4f4F
+	hyO/daPecoSu13g/mJ7ld2eK7AId9g/s6H6aqjmU75zX4BrDvpa94H7Txy5lO5YLD+F3+DP2jYO
+	fOYLkhQ3pMcb2UV6lUaSbnbgvVAVJuC2dn5RWemDLnv6DW9yhiMfh5Y9H8ZodhKU9mJ8ZWLELl9
+	86VgE+e6aYFxm6u0/8tMZwOjNxQLc2W6was4DZrmiwOX495wqftS7VBZvUKibkZfNsifGAGqq6K
+	a6lO1PhNSiTZj8HTJ8AzgoybzUjUXXOSu7o0MGsL3yD+YA==
+X-Received: by 2002:a05:600c:5246:b0:4bb:6de4:2f7c with SMTP id 5b1f17b1804b1-4bb8881c5bdmr384806975e9.20.1795624119085;
+        Wed, 25 Nov 2026 08:28:39 -0800 (PST)
 Received: from [10.42.0.1] ([2a00:23c7:1d1a:9c01:f716:ba19:8aaa:f1c2])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb853368d3sm527336375e9.1.2026.11.25.08.28.33
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb853368d3sm527336375e9.1.2026.11.25.08.28.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Nov 2026 08:28:35 -0800 (PST)
+        Wed, 25 Nov 2026 08:28:38 -0800 (PST)
 From: Pawel Zalewski <pzalewski@thegoodpenguin.co.uk>
-Subject: [PATCH 00/10] mtd: use desginated initializers in *_device_id
- arrays
-Date: Wed, 25 Nov 2026 16:28:26 +0000
-Message-Id: <20261125-acpi-mtd-v1-0-42ad2f645bee@thegoodpenguin.co.uk>
+Date: Wed, 25 Nov 2026 16:28:27 +0000
+Subject: [PATCH 01/10] mtd: maps: pismo: Use named initializers for
+ i2c_device_id
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -95,10 +95,9 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMQQqAIBCF4avErBPUSqirRAvTqSbIQi2C6O5ZL
- T/437sgoCcM0GQXeDwo0OoSRJ6BmbQbkZFNBsmlEkIWTJuN2BIt4zgoXXHLy9pCyjePA53fVdv
- 9Dns/o4nvHu77AVc++4JsAAAA
-X-Change-ID: 20261123-acpi-mtd-0ef6a50d049d
+Message-Id: <20261125-acpi-mtd-v1-1-42ad2f645bee@thegoodpenguin.co.uk>
+References: <20261125-acpi-mtd-v1-0-42ad2f645bee@thegoodpenguin.co.uk>
+In-Reply-To: <20261125-acpi-mtd-v1-0-42ad2f645bee@thegoodpenguin.co.uk>
 To: Miquel Raynal <miquel.raynal@bootlin.com>, 
  Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>, 
  Pratyush Yadav <pratyush@kernel.org>, Michael Walle <mwalle@kernel.org>, 
@@ -157,152 +156,42 @@ Cc: linux-mtd@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
  Pawel Zalewski <pzalewski@thegoodpenguin.co.uk>, 
  =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795624113; l=7528;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795624113; l=851;
  i=pzalewski@thegoodpenguin.co.uk; s=20260430; h=from:subject:message-id;
- bh=5meG2QA5zHmWMtBw+F49CrqQgn4FVKx2LdaJonRgfn8=;
- b=VsRd3x/iYztgIPcpTxO4VQupjJr1Sy2+c/9eTKQar8LJIPG9KJ1ebtAJORbrWf8vSzuEg1YpX
- faQork5qqUYCOdbRXiu56hLw5mIk8BvbvFb2W3hRkqwPWXFxr+5Gj8A
+ bh=IHAi0qeArnt0Dz3MPX/pMNLkcr4ipLn3XGqru6V8PMg=;
+ b=FYYb5NZv5bMag5GUq5jhUZI3EA/wssPu4IODYyOGaefHzIx0GqzM1xxUbS1yXt9hVm+9RShR6
+ U7w6XKaTkOyAdXUAkIbyQhY8qzilz1ISb3JVyfa0dct/S0WrrapbtfS
 X-Developer-Key: i=pzalewski@thegoodpenguin.co.uk; a=ed25519;
  pk=vHq4n9IonORH2GTzLv8r6CWAFHzgfBuNkQPXA8NSly0=
 
-This series is converting lists that contain the *_device_id structs,
-to make use of named initializers (which they do not use currently).
-This work is part of the on going effort in the kernel associated with
-device-ids [1]
+Use a designated initializer for the i2c_device_id fields which makes the
+code more readable and consistent with how lists are initialized in the
+rest of the kernel code base.
 
-The plan is to convert *_device_id::driver_data to have an anonymous
-union, like it was introduced for PCI and I2C device ID tables.
-The goal is to increase type-safety (most of the existing casts are gone),
-to improve readability and to make use intent a bit more clear:
-
-```
-union {
-	kernel_ulong_t driver_data;
-	const void *driver_data_ptr;
-}
-```
-
-But for that to work all lists containing the structs need to use named
-initializers first to avoid triggering -Wmissing-braces for that field.
-This effort is split per every subsystem into:
-- pre-clean-ups that convert the lists to use named initializers
-  (which is this series)
-- actual implementations that make some of the modules use the new
-  driver_data_ptr member (which is not needed in the mtd subsystem)
-
-That way the task can be fragmented into manageable and independent chunks
-of work and makes this effort easier to review.
-
-Patches 1-3 implement the named initializer change.
-Patched 4-10 are just churn to unify the list termination and can be dropped.
-
-[1] https://lore.kernel.org/all/cover.1780048925.git.u.kleine-koenig@baylibre.com
+Unify the list terminator to have a single space between the brackets and
+no trailing comma.
 
 Signed-off-by: Pawel Zalewski <pzalewski@thegoodpenguin.co.uk>
 ---
-Pawel Zalewski (10):
-      mtd: maps: pismo: Use named initializers for i2c_device_id
-      mtd: spi-nor: Use named initializers for spi_device_id
-      mtd: maps: int0800: Use named initializers for acpi_device_id
-      mtd: spi-nor: Unify of_device_id list terminator
-      mtd: devices: Unify *_device_id list terminator.
-      mtd: nand: raw: Unify list terminator for *_device_id lists
-      mtd: hyperbus: Unify list terminator for *_device_id lists
-      mtd: maps: Unify list terminator for of_device_id lists
-      mtd: nand: Unify list terminator for *_device_id lists
-      mtd: parsers: Unify list terminator for of_device_id lists
+ drivers/mtd/maps/pismo.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
- drivers/mtd/devices/docg3.c                        |  2 +-
- drivers/mtd/devices/mchp23k256.c                   |  4 +-
- drivers/mtd/devices/mchp48l640.c                   |  4 +-
- drivers/mtd/devices/mtd_dataflash.c                |  8 +--
- drivers/mtd/devices/mtd_intel_dg.c                 |  4 +-
- drivers/mtd/devices/phram.c                        |  2 +-
- drivers/mtd/devices/powernv_flash.c                |  2 +-
- drivers/mtd/devices/spear_smi.c                    |  2 +-
- drivers/mtd/devices/st_spi_fsm.c                   |  2 +-
- drivers/mtd/hyperbus/hbmc-am654.c                  |  2 +-
- drivers/mtd/hyperbus/rpc-if.c                      |  2 +-
- drivers/mtd/maps/int0800.c                         |  2 +-
- drivers/mtd/maps/lantiq-flash.c                    |  2 +-
- drivers/mtd/maps/physmap-versatile.c               |  4 +-
- drivers/mtd/maps/pismo.c                           |  4 +-
- drivers/mtd/maps/sun_uflash.c                      |  2 +-
- drivers/mtd/nand/ecc-mtk.c                         |  2 +-
- drivers/mtd/nand/ecc-mxic.c                        |  2 +-
- drivers/mtd/nand/ecc-realtek.c                     |  2 +-
- drivers/mtd/nand/onenand/onenand_omap2.c           |  2 +-
- drivers/mtd/nand/onenand/onenand_samsung.c         |  3 +-
- drivers/mtd/nand/raw/ams-delta.c                   |  7 +-
- drivers/mtd/nand/raw/arasan-nand-controller.c      |  2 +-
- drivers/mtd/nand/raw/atmel/nand-controller.c       |  4 +-
- drivers/mtd/nand/raw/atmel/pmecc.c                 |  4 +-
- drivers/mtd/nand/raw/brcmnand/bcm6368_nand.c       |  2 +-
- drivers/mtd/nand/raw/brcmnand/bcmbca_nand.c        |  2 +-
- drivers/mtd/nand/raw/brcmnand/brcmnand.c           |  2 +-
- drivers/mtd/nand/raw/brcmnand/brcmstb_nand.c       |  2 +-
- drivers/mtd/nand/raw/brcmnand/iproc_nand.c         |  2 +-
- drivers/mtd/nand/raw/cadence-nand-controller.c     |  3 +-
- drivers/mtd/nand/raw/davinci_nand.c                |  2 +-
- drivers/mtd/nand/raw/denali_dt.c                   |  2 +-
- drivers/mtd/nand/raw/fsl_elbc_nand.c               |  2 +-
- drivers/mtd/nand/raw/fsl_ifc_nand.c                |  2 +-
- drivers/mtd/nand/raw/fsl_upm.c                     |  2 +-
- drivers/mtd/nand/raw/fsmc_nand.c                   |  2 +-
- drivers/mtd/nand/raw/gpio.c                        |  2 +-
- drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c         |  2 +-
- drivers/mtd/nand/raw/hisi504_nand.c                |  2 +-
- drivers/mtd/nand/raw/ingenic/ingenic_nand_drv.c    |  2 +-
- drivers/mtd/nand/raw/ingenic/jz4725b_bch.c         |  2 +-
- drivers/mtd/nand/raw/ingenic/jz4740_ecc.c          |  2 +-
- drivers/mtd/nand/raw/ingenic/jz4780_bch.c          |  2 +-
- drivers/mtd/nand/raw/intel-nand-controller.c       |  2 +-
- drivers/mtd/nand/raw/loongson-nand-controller.c    |  2 +-
- drivers/mtd/nand/raw/lpc32xx_mlc.c                 |  2 +-
- drivers/mtd/nand/raw/lpc32xx_slc.c                 |  2 +-
- drivers/mtd/nand/raw/marvell_nand.c                |  4 +-
- drivers/mtd/nand/raw/meson_nand.c                  |  2 +-
- drivers/mtd/nand/raw/mpc5121_nfc.c                 |  2 +-
- drivers/mtd/nand/raw/mtk_nand.c                    |  2 +-
- drivers/mtd/nand/raw/mxc_nand.c                    |  2 +-
- drivers/mtd/nand/raw/mxic_nand.c                   |  2 +-
- drivers/mtd/nand/raw/ndfc.c                        |  2 +-
- .../mtd/nand/raw/nuvoton-ma35d1-nand-controller.c  |  2 +-
- drivers/mtd/nand/raw/omap_elm.c                    |  2 +-
- drivers/mtd/nand/raw/orion_nand.c                  |  2 +-
- drivers/mtd/nand/raw/pasemi_nand.c                 |  2 +-
- drivers/mtd/nand/raw/pl35x-nand-controller.c       |  2 +-
- drivers/mtd/nand/raw/plat_nand.c                   |  2 +-
- drivers/mtd/nand/raw/qcom_nandc.c                  |  2 +-
- drivers/mtd/nand/raw/rockchip-nand-controller.c    |  2 +-
- drivers/mtd/nand/raw/sh_flctl.c                    |  2 +-
- drivers/mtd/nand/raw/socrates_nand.c               |  2 +-
- drivers/mtd/nand/raw/stm32_fmc2_nand.c             |  2 +-
- drivers/mtd/nand/raw/sunxi_nand.c                  |  2 +-
- drivers/mtd/nand/raw/technologic-nand-controller.c |  2 +-
- drivers/mtd/nand/raw/tegra_nand.c                  |  2 +-
- drivers/mtd/nand/raw/vf610_nfc.c                   |  2 +-
- drivers/mtd/nand/raw/xway_nand.c                   |  2 +-
- drivers/mtd/nand/spi/core.c                        |  4 +-
- drivers/mtd/parsers/afs.c                          |  2 +-
- drivers/mtd/parsers/bcm47xxpart.c                  |  2 +-
- drivers/mtd/parsers/bcm63xxpart.c                  |  2 +-
- drivers/mtd/parsers/brcm_u-boot.c                  |  2 +-
- drivers/mtd/parsers/parser_imagetag.c              |  2 +-
- drivers/mtd/parsers/parser_trx.c                   |  2 +-
- drivers/mtd/parsers/qcomsmempart.c                 |  2 +-
- drivers/mtd/parsers/redboot.c                      |  2 +-
- drivers/mtd/parsers/scpart.c                       |  2 +-
- drivers/mtd/parsers/tplink_safeloader.c            |  2 +-
- drivers/mtd/spi-nor/controllers/hisi-sfc.c         |  2 +-
- drivers/mtd/spi-nor/controllers/nxp-spifi.c        |  2 +-
- drivers/mtd/spi-nor/core.c                         | 77 +++++++++++++++-------
- 85 files changed, 153 insertions(+), 123 deletions(-)
----
-base-commit: b6a9fa34ce4187cb69d3c588a4bbffc31ce5db8f
-change-id: 20261123-acpi-mtd-0ef6a50d049d
+diff --git a/drivers/mtd/maps/pismo.c b/drivers/mtd/maps/pismo.c
+index b0310fddcaa3..babb6d367623 100644
+--- a/drivers/mtd/maps/pismo.c
++++ b/drivers/mtd/maps/pismo.c
+@@ -250,8 +250,8 @@ static int pismo_probe(struct i2c_client *client)
+ }
+ 
+ static const struct i2c_device_id pismo_id[] = {
+-	{ "pismo" },
+-	{ },
++	{ .name = "pismo" },
++	{ }
+ };
+ MODULE_DEVICE_TABLE(i2c, pismo_id);
+ 
 
-Best regards,
---  
-Pawel Zalewski <pzalewski@thegoodpenguin.co.uk>
+-- 
+2.53.0
 
