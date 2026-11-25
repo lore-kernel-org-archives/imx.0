@@ -1,79 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.83.63
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795599329;
-	b=y81xYnDW+hUX3mUrKT0iBoLd+UtqiczQHek34oFrmPmXxxseQoV9L//ezYKXaWjoPrDY
-	 SpUJC3tbxb85vllSsDg1/HCDuaavEIUqpwSkb5P4HiX+eb1NIkKeKxpx8FeSSRSc+LfNX
-	 ElnARTJVN6k9jWa08JqRavwzuQ57ZPproE+L7cx+gDBrWVoh7EQqi+Gb3RvDwRBxy9m5q
-	 xPdDNEH04opkDVt++6Z7uzxZDTDxzmovBi68Nd5OLFFSQo5lqgHLpi9UZ8NSkfX/llQDt
-	 xBsNCzpbT9yJrQhPkwkREYNFr+Hbep53t6Vb2ek0sUclFyM/CdUnMywmhk7VZ76rPdA==
+	t=1795599889;
+	b=wfvsztYNyXIohMw7p7O+pp5jaKjXzDf65xdMohjoZsLd0e0+yVVGgIK6sw7KNJ0St+Km
+	 Pyqarz7t894bRAWdivG6nBllaUS4/khlDu37yoKcJwGHlD0BcQzntu9KiLTJAe21OshfA
+	 lTP2m6XJy1URWxL65djtpAFGJIgUxivnvuaIlJHnZ38qJFumftBTdy1RZ9FaqyLV/u5Ox
+	 jzj9TtVfvR9zzAd82q74wZVk7+EIFkg6E29OKGy4d70aCZmEJVT+gVPQP8YTw4gRoeIkM
+	 TT4VvRnF2F6xucaXhw4fzn7lsihgLd79T9KBAhq7SFah5pFMNVwtUdAOAVLrPcj8oZA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795599329;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=0yUkBGKmBoC6GhNX7wcbNe62PEHvACOAwQiXFUd2RPI=;
-	b=vfzetvyxSjIGPqc6RPUvKeV0UVpUpkmfuc30eQ7pdr5/1tojrgMJ+JMrWa5dqA8jYB6j
-	 IlBpcyTW4iYZwXoOaXxeCkDthkx1heIA6k71NcAkqyCJjdTOVRn1lLYqIPs6DmwpRSjS2
-	 TIKVv1+h13NmaO60ibAMiwKS0FjYAfh2ULwnA/OrGBS8lVlFy1jCokZpqmVfKBch+BGnX
-	 ZHt9iaO7wL8YzlKX/1ZIX1fcxYasII5rkM6pxbK2r8SUC7H/Ud93BoLdoWKdlc5OfPaUz
-	 3aXzX3tK6y2QhM9k07WbThfvBXXKIfW9wFg6Rh9BwDB8jI4q9bXcQ366C4u3Ux7MOgg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795599889;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:Content-Transfer-Encoding:Content-Type:
+	 X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=TkrnR4M5ShzVl0vRZK+2K4xCAbUV4Oc5GVLm/ZSOjAk=;
+	b=lQSiLofHY3OL4XajKq+EX+heC6LRrC+DyvRZKApCnDluNY2k5Vt6wBE2FzCe7XFMwniR
+	 RGSKKUwI6b7Ru65eiPQa4STtv5DgZt2yfCIglsHI7t1TYiWXaB1AVpUPRxwiYsvwvYWXW
+	 NePETpU+DYfz7CTODlGalSYPD57T10FrUhQ6SgLK54+fb52v48Mz5eKS8iduIL/QDkExM
+	 YaA1hEUiCFOXap0qU6GTJSSSvorWj5zPQztuUeSPh8fn0wcFf3WieQFakA6NuTPs/XqLL
+	 JxtKJ5weZoCc6gt/hDwoj95FCOnt0WVXCG6pj76Liq2HsVmcKxCC+W7eFrLrH3OPkhw==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="Zex+jN/+";
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=nxp.com;
+	spf=pass smtp.mailfrom=nxp.com;
+	dkim=pass header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=SGKNeLqF;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.83.63
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013063.outbound.protection.outlook.com [52.101.83.63])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09DF1606A686;
-	Wed, 25 Nov 2026 09:35:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C04C606A321
+	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 09:44:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0C04C606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Zex+jN/+
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1795599328;
-	b=ZzB6lleHf7a0HXp5DpV3ipNNvEO8o0onl47+OMH+SJODVRo79gGnqn6Lhoq+Nb0CmncP
-	 52fZOomUL8667LoeH0ZgCw5iQAMxNZy3qFwsp/Gt3bj8A5YmK735DUYEOqckreV/Knk4i
-	 D1uZMlAGtblSRVUr3FNUzLvCoKzykdpPNGKj5sG95KoslKuOrajx9AOWIazL0cXN39Ck2
-	 rOSoJZvjqKZoiwaGRjbkoEuJ6EJ/KciZfV5eB8EalCOVRiuef5HD9lPQhoInELNXIrsgM
-	 N/2zrJKFuJjzhwzzIzx6rDCARk+IzEGPYxwDpQhgG10YeoIx2OrVC+dlhD1QEorURFA==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1795599328;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=0yUkBGKmBoC6GhNX7wcbNe62PEHvACOAwQiXFUd2RPI=;
-	b=3PNh2NfTImGH73IFpmemJDBSXqTphzfqW9SgZszDqRUdSr5IewWB0Zb9W0oLxlv/MRWL
-	 y58PK3Jx0rKrxmT41vq6+G8V09O5+4UWDvFBr5H8EzzaLpBb3F+R26UXcVzdy6O7+exLK
-	 8Tq4zkVIfuGXOuD1euePfGh4oPr3W4Ix72m3TruOV9ng5lNwluUFfaZjluQ9dzLRaBus5
-	 a7A3BOpT41Jjb9miO3VpH5oj07hYhK33X9D4NN05Px56FvGWwNnFGEhnatwy+O1biMV/V
-	 nBZcuCFLeW+uyiR7XIb6g2X2hNnklRB3pXqKFWum1zqtLmuy7LHcYfSOWteKUsV3L1Q==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 6E4BE1F000F0;
-	Wed, 25 Nov 2026 09:34:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795599328;
-	bh=0yUkBGKmBoC6GhNX7wcbNe62PEHvACOAwQiXFUd2RPI=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=Zex+jN/+37HMvNaBECWdUKjnUlubol4xzfXc7I3G3u1Iy2zSoZMMpUSnUMXjVBWjV
-	 2qp8mNfop9TM/bn80ojjR8p2wZSJIeFKLCQGxhYJWznnRK1JIop4EtRFit1LIJrEZ6
-	 mxhGIN624A+pfx6R57Bu+FaYzMAI7VnaI0tc4BigbCSLC/Rtx4fd3ajO5Tt5YJP6J2
-	 JJYWjasA03W/b4mKRLIwz3P9HNyT2Oc4b8PV9dGEfZx548JQOhQ4hygvBi7REXr1jt
-	 wg2FJ9z0QwQUhLHvCf9qDH12IullaBfoEIBhKTeoMqFmXHlQOaeHAiDl++ydAQkj1A
-	 6TrzeN7A7SMJw==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 2FD814CE2A;
-	Wed, 25 Nov 2026 09:34:38 +0000 (UTC)
-From: Jan Petrous via B4 Relay <devnull+jan.petrous.oss.nxp.com@kernel.org>
-Date: Wed, 25 Nov 2026 10:33:57 +0100
-Subject: [PATCH RFC v4 15/15] arm64: dts: s32g: Add S32G3-RDB3 SerDes
- routing variants
+	dkim=pass (2048-bit key, unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=SGKNeLqF
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=hlAH5Q2RnYA1x8lmTfAgyn56QUvwsifuhN8eL3nV5WHXAjNuTZN9A+iITV1GGW/gpDEeKycrPVSKpLm2rNEh56gnbHZ0wDyFjxabDIGojpS2IH3QQ6AJHYmo8dPKq14Xo4tNIemWMoc4I0M1ThD/1cT0lkrmHqkyB1wZdjY+rjhVqotMkLABLsFtNYpul7WqIGSVW2MvkRV1dEXA1TKR8o+9SZc0jLQ3Ukwf/BXwrjd5qf4QlZUFwNFa1oVYel4NofPO6lGNI7sKOiiyNx/0KAcdZVlllQ6BUu/yIRtzu01AjDyCwfzWsrfyWo8n2QHN/SwcXWowZy+/dNAP70wfZA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=TkrnR4M5ShzVl0vRZK+2K4xCAbUV4Oc5GVLm/ZSOjAk=;
+ b=t7gQD0Uopr6gZ/a/okmFxGbQB4VlLZGbxVl5q4w0bhPgzSfJjyHjKfxC0idNGPuoNaeZixPgj+Hi0IFh4YwaFH5L7xI7fdQq1kJnd8p2UZj527NKzsO1YZiGpHXWf5XpGY2FTnixHUNZPXKaNPa+Z5xVzoUwib+J2FF4iyVCoeQ9JvycHq1cMoVZbqIn1XVxdle43P7/dBg6oQ2aJWLjXOMazEIBlIuGfKV264/oONE58MP1thCTp2oNKd4RDxnorlmBsVAgvCUWAnf2SR7+elGNaSimDgY/NSDAYb1TlpDk3bisGqNF2DyGaehKBAUttiwFn0GOzSxRjwf65XOoUA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=TkrnR4M5ShzVl0vRZK+2K4xCAbUV4Oc5GVLm/ZSOjAk=;
+ b=SGKNeLqFcN/etfHxpU+Aggdwa1XCG52R5L0tuCWvOvQEtA/xjQlvS52U7Chopm/sQWEHwMQzopxnz5lwWSFe2QzsBlzRuOsYbJvqR0mylKCuEC/8NFpXUCeLyjAdZb6F0ZcSqufgL8ju7zovyQ06TKt34J7oNEYH609F0wp3oMiUfvIPpeuEfVT5xeYLIXuFgMXFHH2lkfsGPPx6/CuxlJess3dHKCkjCL8546tvVRJ7oCkIuTUeFx/3y9awTU3c4IzqVZtEwy2PZVYFr5cR9jHSq1T/QBX4hoXUYMi5pex53Mry8jdHWXnrNECnGSEhHR154AP0zikJLopZaoY4oQ==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM6PR04MB4472.eurprd04.prod.outlook.com (2603:10a6:20b:23::20)
+ by DBBPR04MB7929.eurprd04.prod.outlook.com (2603:10a6:10:1ec::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.662.6; Wed, 25 Nov
+ 2026 09:44:44 +0000
+Received: from AM6PR04MB4472.eurprd04.prod.outlook.com
+ ([fe80::aed9:e8b9:c352:9ba0]) by AM6PR04MB4472.eurprd04.prod.outlook.com
+ ([fe80::aed9:e8b9:c352:9ba0%6]) with mapi id 15.21.0639.010; Wed, 25 Nov 2026
+ 09:44:44 +0000
+From: Stefan Ghetu <stefan.ghetu@nxp.com>
+To: Frank Li <Frank.Li@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	Sherry Sun <sherry.sun@nxp.com>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	Stefan Ghetu <stefan.ghetu@nxp.com>
+Subject: [PATCH] arm64: dts: imx8dxl-evk: add missing dma interrupt for pcie0
+Date: Wed, 25 Nov 2026 11:44:38 +0200
+Message-ID: <20261125094438.820864-1-stefan.ghetu@nxp.com>
+X-Mailer: git-send-email 2.53.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: AS4P191CA0039.EURP191.PROD.OUTLOOK.COM
+ (2603:10a6:20b:657::24) To AM6PR04MB4472.eurprd04.prod.outlook.com
+ (2603:10a6:20b:23::20)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -83,221 +104,89 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261125-s32g_serdes-v4-15-3bfe0589be8d@oss.nxp.com>
-References: <20261125-s32g_serdes-v4-0-3bfe0589be8d@oss.nxp.com>
-In-Reply-To: <20261125-s32g_serdes-v4-0-3bfe0589be8d@oss.nxp.com>
-To: Vincent Guittot <vincent.guittot@linaro.org>, 
- Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>, 
- Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>, 
- NXP S32 Linux Team <s32@nxp.com>, Vinod Koul <vkoul@kernel.org>, 
- Neil Armstrong <neil.armstrong@linaro.org>, 
- Manivannan Sadhasivam <mani@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Bjorn Helgaas <bhelgaas@google.com>, 
- Lorenzo Pieralisi <lpieralisi@kernel.org>, 
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
- Bogdan Hamciuc <bogdan.hamciuc@nxp.com>, 
- Ionut Vicovan <ionut.vicovan@nxp.com>, Andrew Lunn <andrew@lunn.ch>, 
- Heiner Kallweit <hkallweit1@gmail.com>, 
- Russell King <linux@armlinux.org.uk>, 
- Philipp Zabel <p.zabel@pengutronix.de>, 
- Maxime Chevallier <maxime.chevallier@bootlin.com>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Chester Lin <chester62515@gmail.com>, Matthias Brugger <mbrugger@suse.com>, 
- Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, 
- Richard Cochran <richardcochran@gmail.com>
-Cc: linux-arm-kernel@lists.infradead.org, linux-phy@lists.infradead.org, 
- netdev@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
- linux-pci@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
- "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
-X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795599274; l=5200;
- i=jan.petrous@oss.nxp.com; s=20240922; h=from:subject:message-id;
- bh=ey+259q8NVdz+nmA6w91HlJzOAXDIhQhflExVQ+Y8o0=;
- b=O0br6DpDGuG00R9/Celm9Vz7oEv9fLtAFCfkd5v/N6CHAZKEdn/Imv4bxMILlCtnoOJSiljUK
- aZxBB69RSipClJeod4fr8tGUD+wbk0T49UrIEPVkvvKgfIFgP0hgD4B
-X-Developer-Key: i=jan.petrous@oss.nxp.com; a=ed25519;
- pk=Ke3wwK7rb2Me9UQRf6vR8AsfJZfhTyoDaxkUCqmSWYY=
-X-Endpoint-Received: by B4 Relay for jan.petrous@oss.nxp.com/20240922 with
- auth_id=217
-X-Original-From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
-Reply-To: jan.petrous@oss.nxp.com
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM6PR04MB4472:EE_|DBBPR04MB7929:EE_
+X-MS-Office365-Filtering-Correlation-Id: b07e386e-d5ba-4fef-abc5-08df4ad8bc28
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|366016|23010399003|1800799024|19092799006|10067099003|56012099006|11063799006|261021123027099003|261021121427099003|261102123227099003|261009223027099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	CyaciYvDu0q9njJ/JQ3+uGlq9RLTQyiP0JvwAhlZ5YUVtMNjNnMB669a/MWnG0Ft6Qdoi/vtXPalTj1oXWJ51wtz1L+HXD0v6iRLNQRlueY8wn/HbI3w9U5yb9BUdTLyRhnpSfFufSFqIMrKXWOPzI8+nO+nu31mR6M+4fz1S0IaEY2pyZz3+4FPUnb4k3btBYnbwRVKYdy30niZ8gzSrB5zQFxoXFgnmG0BpnkMvcMV30jmUizv7DEoZj0SFlZVaw1OZUONamQ4VKO4SMUiHF2nuCp8W+xinYvhJQjHPAuUURPixHGmHUvp76AZ6L/8l/amqHCWSNTgvkjfQlvVHOgsWJvbpkEFMc/x98LVs8QcYvz0goUgN0w7zcRCEKHyQK4XS6CLLESJA1MKQx691iOVJATVTUo+VWZRyM+NzxCS8MhdRj3O7zKrK5FohjPteMI0GLXM5bBf+a8aRuxkEN9kVxCAh6g/tC8VJOX42XTfYwLD7rc92tYHnsjXvKZfRmT3TIFdjMz6ww/gUsLpxt63aCqQagy8Ny8WougyduwNe2zM0GPk4/8LiTO6NTnbaET1TD3OJbwWW2nvOyfsPks+z7IMGgK6QtZ0k9CNoyTUFhdmBtk2i2APw9EHYVnZsRGsEcMYMiqXwIcO9RiCI56MT1OcdCubM3Y+T9Yxbs4=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4472.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(23010399003)(1800799024)(19092799006)(10067099003)(56012099006)(11063799006)(261021123027099003)(261021121427099003)(261102123227099003)(261009223027099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?yc2kqg1CB9Sfpnnc0T5ZESQmH/Ke7UOUf/wg59zdVgbLeWiZx0w47ncmWiQ2?=
+ =?us-ascii?Q?8vGDBaJq/Uc+gRp55JU15vFNHKfX/D5X7INnCuYDlJhPVB9OQWWL1OLaH9Ps?=
+ =?us-ascii?Q?YixhiZ8JYL8PpAOFyNZT2LcHAg2m062gL8iRrcvWFrEr52Z98C4kfTL7e7VT?=
+ =?us-ascii?Q?7cR8D+JAowrLUMJ3QurFmJ6IID37w3MwpKKIAuYELfuQ0A3KQASK8TkjPK5V?=
+ =?us-ascii?Q?r80XMriEG62LRGB2wVVK6ZqZ9VAermMJS3rtZmpGcJmn3R6xKXuC+64//qrj?=
+ =?us-ascii?Q?nl5hZIJ0gF303oGhQMb4eA3xzkdtSLLFzPpydN+Y4H2P01ipEpz666GMNCPa?=
+ =?us-ascii?Q?1u4TTqU0vlf3PStu9fr5FIkhZXmDKIl5k/I80d4DeufwN8qqzhICvG9QeC4Q?=
+ =?us-ascii?Q?F2y4/4VX1tOL1OcVKvzJ9H4gyOHnHBYPtB0hKNz8pUVfJiDkS7LcqQf6ISks?=
+ =?us-ascii?Q?Jp7aUuZRXNe5aKyhn58JRrAbZ/RhzUvLQ2Nl590QINUfhIEnax3pVCiEIZ/v?=
+ =?us-ascii?Q?mBN2oY9GL95s11Ldd36xjV60NltuJ+eOWEYf0PbhRh3So6NTCXtFHG5ZPPEA?=
+ =?us-ascii?Q?VRcZQrZWdnav+QJsHVc5Rlx7x0kFJJSnw50+HKYG4ydUr5xIx9cFSndHYub+?=
+ =?us-ascii?Q?icSs03Yva2U/9tgPDGJoBLZ/WepCqR/ldKiEh9dY9ZKM081ItV7oiqNmsjVt?=
+ =?us-ascii?Q?hf9AubOYL7UaA3DzrL4OD4YQDkBqqS0OZGq/j0zVSx6fedYix3i0kbNUu919?=
+ =?us-ascii?Q?slyI+O6jbFh9Z4x+WoWK1sxChYbuOLLAWMMM6lIh1+Ww2KT8J1+qQd0/mtO0?=
+ =?us-ascii?Q?6PmtSimWvkBzmj7u/ZZK2DTpqGHl0l0RuKlzbMcgjSGkmu309c04H1Jq1+Le?=
+ =?us-ascii?Q?pln9RKIM2B62Pm8hrx9x85H+YTn9uAc26dLUEfnywXdcGdDWPfXNsfc6Vlig?=
+ =?us-ascii?Q?dRkCbI+Q5KfXzVkOWzZ1cny+cYF8Ts8s/fq/A8Mz/llDIeJUtoha/LmEHJMw?=
+ =?us-ascii?Q?t8EIjd80ZzB4i6OJyn+g9Tc0Xl0AknJNFC2m2iCuL+/IU8MUkHLCSO8b1Mnl?=
+ =?us-ascii?Q?F5OYD9rPfYg5Dju9fVlVoQlcfZith4kWpF969yQNRfaVep6oRQrTCzqewa0N?=
+ =?us-ascii?Q?H71v7ltldkgBrO4AcJRLuS5o/EuyMrM9l9vEh8ECF61X6Wvo9xUSGc4AJbbL?=
+ =?us-ascii?Q?zPbrM9ZF2k25zQfJU+6d1mUaW5d7IhYbjyT+W7foU9flFD4/l7xdyyvW0h+i?=
+ =?us-ascii?Q?MeagBOz7sUFOoUN7rID2frP8qHUZeHuIiTIDzA+AvotBsl6UViX0oABD2ZRC?=
+ =?us-ascii?Q?zFmimkTRF29mOMUnbL2R2XD75KhcgZNHEj9TOPoVLGN1kA03IuE6KAem5hsv?=
+ =?us-ascii?Q?YBDmcWgZAz3nUm9O8vW708g5BPYAbHRqXeaOO0CbO4YFxqY9LSIAiK+IlqJn?=
+ =?us-ascii?Q?LZCldt04fXVP1uxoIOX/1uJ9SGlWsGGAz6QKIsLGV1RO+BPW06BcPdz8pUPP?=
+ =?us-ascii?Q?BHOMIpnWKnsiihPwY9mvJHVTlQISmN9zXwTgQlkGaHH/m+HAgty/jSnkWRRG?=
+ =?us-ascii?Q?igZ6aMtRLrB3qeffIpx8xf9eypoGhjJnK81wg35OqfQjj2LcBJIn7SqnSXqd?=
+ =?us-ascii?Q?BeYNzrjChopKOk+CWV/ACxPd21uTtj9KJ6uqCs1E//ZEsHfVjFo102k6ZMgy?=
+ =?us-ascii?Q?uBFhZLL4EiV0jvg3LZhE+DJ224G0vAnaGqfmvOC9Fb7R67X4/4Snl7Uw3yXc?=
+ =?us-ascii?Q?dac+WCGEHQ=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b07e386e-d5ba-4fef-abc5-08df4ad8bc28
+X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4472.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Nov 2026 09:44:44.1331
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: w2LCaF8PtxipIMuwwaxPHdONm93deCuygF/jG4Z/INz9kxiyL+WO3ik389S5l10QNxTGDpFIC8PyCdr1QVz1MQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7929
 
-From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+From: Sherry Sun <sherry.sun@nxp.com>
 
-The S32G3-VNP-RDB3 wires GMAC0 to an on-board KSZ9031 RGMII PHY by
-default. Add two board variants which route GMAC0 over SerDes_0 for
-SGMII instead:
+Add missing dma interrupt for pcie0 on imx8dxl-evk, otherwise it may
+print "Invalid eDMA IRQs found" error log.
 
-  - mode 1: PCIe x1 on lane 0, GMAC0 SGMII (XPCS0) on lane 1;
-  - mode 3: GMAC0 SGMII (XPCS0) on lane 0. Lane 1 (XPCS1, PFE_MAC2)
-    has no consumer, as there is no PFE driver, and is not described.
-
-The variants are full .dts files that include s32g399a-rdb3.dts, not
-overlays: they drop the phy-handle of GMAC0, and /delete-property/ has
-no effect in an overlay.
-
-The routing is described by the consumers: the PCIe root ports
-reference lane 0 with PHY_TYPE_PCIE, GMAC0 references its lane with
-PHY_TYPE_SGMII and XPCS0, and takes the PCS from the SerDes through
-pcs-handle.
-
-The mode 1 variant also enables both PCIe root complexes: PCIe_0
-reaches the M.2 slots when board switch SW17-2 is ON, PCIe_1 the PCIe
-card slot. SerDes_1 carries only PCIe_1 on lane 0, as there is no PFE
-driver to reference lane 1, and runs the first matching mode, PCIe x2,
-with an x1 link.
-
-The SGMII lane goes to the on-board SJA1110 switch, which the variants
-do not describe, so the MAC side is a fixed 1G link.
-
-Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+Fixes: 9f7053f67c8a ("arm64: dts: imx8-ss-hsio: Add PCIe and SATA support")
+Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
+Signed-off-by: Stefan Ghetu <stefan.ghetu@nxp.com>
 ---
- arch/arm64/boot/dts/freescale/Makefile             |  2 +
- .../dts/freescale/s32g399a-rdb3-serdes-mode1.dts   | 65 ++++++++++++++++++++++
- .../dts/freescale/s32g399a-rdb3-serdes-mode3.dts   | 40 +++++++++++++
- 3 files changed, 107 insertions(+)
+ arch/arm64/boot/dts/freescale/imx8dxl-ss-hsio.dtsi | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index a80cccf34eb5..f92670254c6a 100644
---- a/arch/arm64/boot/dts/freescale/Makefile
-+++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -1047,5 +1047,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mm-phygate-tauri-l-rs232-rs485.dtb
- dtb-$(CONFIG_ARCH_S32) += s32g274a-evb.dtb
- dtb-$(CONFIG_ARCH_S32) += s32g274a-rdb2.dtb
- dtb-$(CONFIG_ARCH_S32) += s32g399a-rdb3.dtb
-+dtb-$(CONFIG_ARCH_S32) += s32g399a-rdb3-serdes-mode1.dtb
-+dtb-$(CONFIG_ARCH_S32) += s32g399a-rdb3-serdes-mode3.dtb
- dtb-$(CONFIG_ARCH_S32) += s32n79-rdb.dtb
- dtb-$(CONFIG_ARCH_S32) += s32v234-evb.dtb
-diff --git a/arch/arm64/boot/dts/freescale/s32g399a-rdb3-serdes-mode1.dts b/arch/arm64/boot/dts/freescale/s32g399a-rdb3-serdes-mode1.dts
-new file mode 100644
-index 000000000000..c881376db27a
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/s32g399a-rdb3-serdes-mode1.dts
-@@ -0,0 +1,65 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
-+/*
-+ * Copyright 2021-2026 NXP
-+ *
-+ * NXP S32G3 Reference Design Board 3 (S32G-VNP-RDB3),
-+ * SerDes_0 Mode 1: PCIe x1 (lane 0) + 1G SGMII via GMAC0 (XPCS0, lane 1).
-+ */
-+
-+#include <dt-bindings/phy/phy.h>
-+#include "s32g399a-rdb3.dts"
-+
-+/ {
-+	model = "NXP S32G3 Reference Design Board 3 (S32G-VNP-RDB3), SerDes_0 Mode 1";
-+};
-+
-+&serdes0 {
-+	status = "okay";
-+};
-+
-+/*
-+ * SerDes_1: PCIe_1 on lane 0. Lane 1 (PFE) has no consumer, so the first
-+ * matching mode, PCIe x2, is used.
-+ */
-+&serdes1 {
-+	status = "okay";
-+};
-+
-+/*
-+ * PCIe_0 reaches the M.2 slots (M-key or E-key) when board switch SW17-2 is
-+ * ON, PCIe_1 the PCIe card slot.
-+ */
-+&pcie0 {
-+	status = "okay";
-+};
-+
-+&pcie0_rp {
-+	num-lanes = <1>;
-+	phys = <&serdes0 0 PHY_TYPE_PCIE 0 0>;
-+};
-+
-+&pcie1 {
-+	status = "okay";
-+};
-+
-+&pcie1_rp {
-+	num-lanes = <1>;
-+	phys = <&serdes1 0 PHY_TYPE_PCIE 0 0>;
-+};
-+
-+&gmac0 {
-+	/delete-property/ phy-handle;
-+	clocks = <&clks 24>, <&clks 17>, <&clks 16>, <&clks 15>;
-+	clock-names = "stmmaceth", "tx", "rx", "ptp_ref";
-+	phy-mode = "sgmii";
-+	phys = <&serdes0 1 PHY_TYPE_SGMII 0 1000>;
-+	pcs-handle = <&serdes0>;
-+	status = "okay";
-+
-+	/* The lane goes to the on-board SJA1110 switch, not described here */
-+	fixed-link {
-+		speed = <1000>;
-+		full-duplex;
-+		pause;
-+	};
-+};
-diff --git a/arch/arm64/boot/dts/freescale/s32g399a-rdb3-serdes-mode3.dts b/arch/arm64/boot/dts/freescale/s32g399a-rdb3-serdes-mode3.dts
-new file mode 100644
-index 000000000000..8b90d5f14d2a
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/s32g399a-rdb3-serdes-mode3.dts
-@@ -0,0 +1,40 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
-+/*
-+ * Copyright 2021-2026 NXP
-+ *
-+ * NXP S32G3 Reference Design Board 3 (S32G-VNP-RDB3),
-+ * SerDes_0 Mode 3: 1G SGMII via GMAC0 (XPCS0, lane 0). Lane 1 (XPCS1,
-+ * PFE_MAC2) is not described.
-+ */
-+
-+#include <dt-bindings/phy/phy.h>
-+#include "s32g399a-rdb3.dts"
-+
-+/ {
-+	model = "NXP S32G3 Reference Design Board 3 (S32G-VNP-RDB3), SerDes_0 Mode 3";
-+};
-+
-+/*
-+ * SerDes_0 mode 3: GMAC0 via XPCS0 on lane 0. Lane 1, PFE_MAC2 via XPCS1,
-+ * has no consumer, as there is no PFE driver.
-+ */
-+&serdes0 {
-+	status = "okay";
-+};
-+
-+&gmac0 {
-+	/delete-property/ phy-handle;
-+	clocks = <&clks 24>, <&clks 17>, <&clks 16>, <&clks 15>;
-+	clock-names = "stmmaceth", "tx", "rx", "ptp_ref";
-+	phy-mode = "sgmii";
-+	phys = <&serdes0 0 PHY_TYPE_SGMII 0 1000>;
-+	pcs-handle = <&serdes0>;
-+	status = "okay";
-+
-+	/* The lane goes to the on-board SJA1110 switch, not described here */
-+	fixed-link {
-+		speed = <1000>;
-+		full-duplex;
-+		pause;
-+	};
-+};
-
+diff --git a/arch/arm64/boot/dts/freescale/imx8dxl-ss-hsio.dtsi b/arch/arm64/boot/dts/freescale/imx8dxl-ss-hsio.dtsi
+index 5c0d09c5c0862..6045ae9b40d7f 100644
+--- a/arch/arm64/boot/dts/freescale/imx8dxl-ss-hsio.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8dxl-ss-hsio.dtsi
+@@ -40,8 +40,9 @@ hsio_phy: phy@5f1a0000 {
+ 
+ 	pcie0: pcie@5f010000 {
+ 		#interrupt-cells = <1>;
+-		interrupts = <GIC_SPI 44 IRQ_TYPE_LEVEL_HIGH>;
+-		interrupt-names = "msi";
++		interrupts = <GIC_SPI 44 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SPI 46 IRQ_TYPE_LEVEL_HIGH>;
++		interrupt-names = "msi", "dma";
+ 		interrupt-map = <0 0 0 1 &gic GIC_SPI 47 IRQ_TYPE_LEVEL_HIGH>,
+ 				<0 0 0 2 &gic GIC_SPI 48 IRQ_TYPE_LEVEL_HIGH>,
+ 				<0 0 0 3 &gic GIC_SPI 49 IRQ_TYPE_LEVEL_HIGH>,
 -- 
-2.55.0
-
+2.53.0
 
