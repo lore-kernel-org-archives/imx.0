@@ -1,67 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.44
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.175
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795588381;
-	b=smDgfiU9disCbyb7v66482qv9DSs/MH4ggADSmfZgAodOw10Wxsj9uZY2QHHsHtQEBS7
-	 K5CtAPaGu2mM187gIwgeK1G1cnHo8UgJt7Rdw1KNclar9vqoiXNg/PufH60BsW1RO17dk
-	 UCURCLSuBMqsEWBC5WG0RAhs33PyI2pXSvl30nf/sCR34mUlqbwFSw0daxwywJPh7l5/S
-	 NZRxgCJ4UwMr4bm4xMcP+mF/mPAH3dB0bE5YqsT9qjAyBjhxMSL1b9bkmwFvjZp2GnwZW
-	 XnHwXM8XqxBlcCAW7cC2VXliuqk/2eJ0ZRHirN6NyiAkKAsij6ybuQ7KA+gRLBIwoRg==
+	t=1795591241;
+	b=WqSEn3ucjSROLD4RSlCdhPWf8Z/jUvjVuLO30Py7XubMZoPl6cJG3PXzoiHClxPxNtMD
+	 2h2Ko9PDBnLDFhlKegtvAbep4C+Rzy6locCu+DVmxC9Orx+pSC7IBJrZ4CJA7xt04qfbS
+	 vGqNIMF/mNFhtjsrN1mlTZyCM6w+/C4PL5RPEsx7/fBwjbLGcUm6eoh9fhcB7E1fAxGQM
+	 u6Tb0l9u/rAmDZVgLVb4EpUysIGZEX5MvEI5w54mWlVpveV2ADHfDCZovZFxjaCPDPlWG
+	 b2hZjDa1ORfFS5+52fZSWoy4o90+MZArmRiEEybtbbbSGJ4yu4qa7MVHmg7XPxz+tvg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795588381;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=gA1QZAB7HPf+dALo4WYbNOoCQsQN7g2lPKb9/BwTFdQ=;
-	b=aPvkQe3kSgH2+vDDKjwVbXukPtOX+5j5K4sI9pHGVpvcfT5Cp3+9jLmL9liqVwjkHoMy
-	 Fy4ivHWc6D0I7nEFkZ/BbLieiHclj4Meho5g6/hGsR+koRavgngq0F7ZaP3+/BqxjiG40
-	 vTJhofA2OsKKGzUJtXSIHwHzhlSFVFRViLYyDt8IdH3D0ppOpPg5fdQ8NHaYpH71cf/Pt
-	 jyCbCabo/Y9iB96Td4yakwiypYjjdGuUd40osLocGnxuSR7gmIWPA5B5AUW5L66fXtbKJ
-	 GmyBGCYGwE+kDXbZKFsDwGEs6XfBh3UacqEIt1kumeft/wuqwrhKyGOAdC+wXixZwzQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795591241;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:X-Google-Original-From:To:Cc:Subject:Date:Message-Id:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=l1SQBJPQH32GaCf6i6Hpvj4B1BS4U8Mq3RY+38E+QYU=;
+	b=xHwjcPRCT6/DoQWs2/5C9Zj18Z/+4jUXZGk0Yvj7pFgS+Fa6HNEWRc59ar1c6HJvWvl2
+	 yW5FFs9Z5kOIPevjJ+MEYBq6tXgEmtPvpsK3LiLR9qhjffR0fqLGwZtAO55o8KkkuKDl9
+	 13Nyh0YIDOpzmexsCJibxtVe5dpm8x0qDNVQgiAalpbmXuQdwntzoQy/5KfNeHxzzH4+d
+	 sUoCB/AUU9UfiDIKo2rGRRuLW+o7x3ApJGedFmFj6+td31cQEbmb0v8tmJDU6FXebmjbD
+	 ImLH8nQ2vztt8lkur5fWI6RbomF129JodRmTgsBkBZxeaigkm7Lcg0WJQtsUxUbOelA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=pV29axjm;
-	arc=none smtp.remote-ip=91.218.175.44
-Received: from mta0.migadu.com (out-44.mta0.migadu.com [91.218.175.44])
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=SsSy5VrH;
+	arc=none smtp.remote-ip=74.125.82.175
+Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B219606A31E
-	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 06:32:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5B219606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90608606A321
+	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 07:20:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 90608606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=pV29axjm
-X-Envelope-To: imx@lists.linux.dev
-DKIM-Signature: a=rsa-sha256; bh=EXv0sHP9HvBQZ2ybMZ4eUwO2jxKtfElIN3Q1E2u8x3M=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795588378; v=1; x=1796193178;
- b=pV29axjm6x2hepkkga5Xd1V9av8XQJhG5nEfn4wvGUaKImpHhCaG35neZCbo4oHcZmE/lYGu
- PvlZgzdWodGlo4eK0iTfoVAGEe4I6GkKObi3/a9aHkUWf8Ebk3jXy6kPdl6CW8dQr3YXF/hymNO
- yjncksb/qCJn5A4TXK0rFhQE=
-X-Envelope-To: imx@lists.linux.dev
-Received: by smtp.migadu.com with ESMTPS id a407cc287828b350;
-	Wed, 25 Nov 2026 06:32:58 +0000
-X-Mizu-Trace-ID: a407cc287828b350
-X-Migadu-Flow: FLOW_OUT
-Date: Wed, 25 Nov 2026 07:32:52 +0100
-From: Richard Leitner <richard.leitner@linux.dev>
-To: Mathieu Poirier <mathieu.poirier@linaro.org>
-Cc: Peng Fan <peng.fan@oss.nxp.com>, 
-	Bjorn Andersson <andersson@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>, linux-remoteproc@vger.kernel.org, 
-	Lee Jones <lee@kernel.org>, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, weinshec@holodeck2.de, stable@vger.kernel.org
-Subject: Re: [PATCH] remoteproc: imx_rproc: revert channel freeing order in
- imx_rproc_free_mbox
-Message-ID: <awaAMLAk8HJz9T7W@bombadil>
-References: <20261110-imx-rproc-free-mbox-v1-1-3e33ff98570d@linux.dev>
- <avMgJNyGez2Eyr3a@nxa18884-linux-1.ap.freescale.net>
- <awPmc_4VFkcpW0C_@bombadil>
- <CANLsYkx=M_TXN10qAcQC0be065TYnzfOae6E8ss-9DTj9MzogA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=SsSy5VrH
+Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-38190551625so10862394eec.1
+        for <imx@lists.linux.dev>; Tue, 24 Nov 2026 23:20:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795591240; x=1796196040; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=l1SQBJPQH32GaCf6i6Hpvj4B1BS4U8Mq3RY+38E+QYU=;
+        b=SsSy5VrHzUotwg640fwu/DXgIR8/9GYe7A4sHmnomVv6yi3ucZ1V5fATgQu8U2zzsY
+         IclaIbn2MxMtHnsiRKwXR1PRoXXyRYFAaWaTrghHxvFFdN9gCYzdQkEbFBRrM/28r0M0
+         7bjpzA0eqikLxnh34w2G/oUl2bZyiGqzrEFqbSM0Wu0h4G3EpAVhmnInqVRZBRkKMDpW
+         ZyPDBQ56gEfoeLMoEBEydvLBQwpzE5njq8VKS7P+wBJVKkHEZADKPK/i9tLiSS+urhD8
+         Lb5d4GnzqHK6PAt51BtUqMIOuOMrk9stUILBRc1dUXd+idhaNbzyN17Nt5gOoFS60w+0
+         v1lA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795591240; x=1796196040;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=l1SQBJPQH32GaCf6i6Hpvj4B1BS4U8Mq3RY+38E+QYU=;
+        b=oAmcNVyOwX9W1MH+PKa9FK2/ot2wVFV72to3tMQDSXDuJW5ZsgFxufN8eyl2KxZjz8
+         PzhOTMtLiijKMtpwKuQSyvd+K9GXO/yNVVNnkN/k8la971usnOU+bVWeiSvV3SGlRbb7
+         XAJbq4p6n6WsEaTM7STpg2A4IhTAS0Pg9qU+nMqbLD9iJ1wGLlzgjOwYNLbfKCpI9ELL
+         fe6iSJUXONfb65HFplM9nDX8XBegcDTgBKQvsS42f7u8mI2M4/8ptmhhAk705WUCggjt
+         vtUhfSO3usNFoqcwxvUrXkqd9D0IIwoTWeqxrRv7WbJw2ywR9d6b0Q4G9kBESu37Q9I+
+         2ZYA==
+X-Forwarded-Encrypted: i=1; AL+hErG6tCx+B+2QIQhu5hbihGIrMZwAAhmXiqEBXh2h4+0M4HnJjSIiuEDVJllms2Az7leEE+M=@lists.linux.dev
+X-Gm-Message-State: APuU4Z/6cT2uktNjhUiXxJGZFSBdu9gl2EomL5uoHIZZEuTSA0p49w4y
+	irRAiYLpt2lD/m0T+A1MTAmpUyRCI/IuYcJK0mZZBdH1rYlrCZ5OxDTX
+X-Gm-Gg: AZFdTZehyj5808jHylQ+HhYX92FQFYto2WCC+MnAcP3OF0UwG7WGVqdAhUOYxxncnTi
+	aTLIC7cXqZwAoxThFZ9CbTZyNjtDPJba8KjIyJx+tW5RGVdnFv/+OvjQRJ1aseGhDBgesEx5I52
+	ZR7xCZzYDHcNzZ+1aKFFMSdBZxVu/pU7A3DvEiKTmYBs98Wk6jY1DWXVzHKPF7Q2/iK51PmjGaZ
+	l7bANhrrJBcW9BdAkMysyA2TIhArmGJQdqDREIkF3lWphYrYrOIhUck5+DXXuj6sXX+QbpenSdC
+	jVO4+Rg7nijrT0g5kfWigXQlSs/RYwvsCkAJ/ZwJPTgz+jnAvYTBjYbHtNEkAZgUnKgXH9xWVgk
+	l+xYf/ZwNDr5ITAx9A2qUHWlH44TEC6dO/DpWePnCAJygH4R64RhZa4wuUjNJ5yiDylR1qLbgED
+	/wrEAunG/vBWzQ14uTZfQUeOb8F1U+fGI8s/iFcOb1+XqGsQ8ciOjmZKiMw+YaLYyIx5UnffvUd
+	yg23ImeDaQQNLHM0gGrq8xB5/zzvdqmNa44e7Ap5J0EkopGrHJvXFf82EYF5Qy4hHCXEt2v4sEm
+	h3D/yoOlMRnw1L1KnTHTqhyqEOJFvexunPOEKpwihj3ifN05fWpLdndlkNQC8eRW
+X-Received: by 2002:a05:693c:6010:b0:385:2057:eb95 with SMTP id 5a478bee46e88-3857073f2a3mr22650185eec.31.1795591239429;
+        Tue, 24 Nov 2026 23:20:39 -0800 (PST)
+Received: from prasanth.alps.lineo.co.jp (vpn1.lineo.co.jp. [203.141.200.204])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-38567abb870sm42767121eec.25.2026.11.24.23.20.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Nov 2026 23:20:39 -0800 (PST)
+From: Prasanth R <ragaprasanth@gmail.com>
+X-Google-Original-From: Prasanth R <prasanth.r@lineo.co.jp>
+To: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	linux-rtc@vger.kernel.org
+Cc: Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Support Opensource <support.opensource@diasemi.com>,
+	Paul Cercueil <paul@crapouillou.net>,
+	CL Wang <cl634@andestech.com>,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mips@vger.kernel.org,
+	Prasanth R <ragaprasanth@gmail.com>
+Subject: [PATCH 00/12] rtc: clear the wake IRQ on unbind
+Date: Wed, 25 Nov 2026 16:20:14 +0900
+Message-Id: <20261125072026.2997493-1-prasanth.r@lineo.co.jp>
+X-Mailer: git-send-email 2.34.1
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -71,98 +105,52 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CANLsYkx=M_TXN10qAcQC0be065TYnzfOae6E8ss-9DTj9MzogA@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Nov 23, 2026 at 08:11:04AM -0600, Mathieu Poirier wrote:
-> On Mon, 23 Nov 2026 at 01:09, Richard Leitner <richard.leitner@linux.dev> wrote:
-> >
-> > On Tue, Nov 10, 2026 at 09:46:12PM +0800, Peng Fan wrote:
-> > > On Tue, Nov 10, 2026 at 01:29:08PM +0100, Richard Leitner wrote:
-> > > >The imx_rproc driver is affected by a race condition in the shutdown
-> > > >ordering in imx_rproc_free_mbox(). A received message might cause a
-> > > >virtqueue_kick resulting in tx_ch access. When imx_rproc_free_mbox() is
-> > > >triggered between the if (!priv->tx_ch) check and the mbox_send_message()
-> > > >call in the imx_rproc_kick() function the mbox_send_message() then tries
-> > > >to dereference a NULL pointer on the tx_ch (as seen in the call trace
-> > > >below).
-> > > >
-> > > >Therefore fix this behaviour by first freeing the rx channel, so no new
-> > > >messages are received and therefore no kicking on tx_ch can happen.
-> > > >Afterwards release the tx channel.
-> > > >
-> > > >This problem was encountered on a fleet of i.MX8MP devices on about 1 in
-> > > >500 system shutdowns, resulting in Oops below. This Oops was recorded
-> > > >from a v7.3.0 kernel before the work-queue removal.
-> > > >
-> > > >    remoteproc remoteproc0: stopped remote processor imx8mp-cm7
-> > > >    Unable to handle kernel NULL pointer dereference at virtual address 0000000000000008
-> > > >    Internal error: Oops: 0000000096000004 [#1]  SMP
-> > > >    CPU: 0 UID: 0 PID: 32710 Comm: kworker/0:1 Not tainted 7.3.0-XXX #1 PREEMPT
-> > > >    Hardware name: XXX (DT)
-> > > >    Workqueue: imx8mp-cm7 imx_rproc_vq_work [imx_rproc]
-> > > >    pstate: 40000005 (nZcv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-> > > >    pc : mbox_send_message+0x8c/0x178
-> > > >    lr : mbox_send_message+0x88/0x178
-> > > >    sp : ffff8000897f3b70
-> > > >    x29: ffff8000897f3b70 x28: ffff80007a07b248 x27: ffff0000d90e1a20
-> > > >    x26: ffff80007a07b328 x25: ffff0000c1d31300 x24: ffff0000d90e1a40
-> > > >    x23: 0000000000000001 x22: 0000000000000005 x21: ffff8000897f3ba4
-> > > >    x20: 000000000000000b x19: ffff0000c1b24240 x18: 0000000000000000
-> > > >    x17: ffff80006a453000 x16: ffff800081ac8000 x15: 0000000000000000
-> > > >    x14: 0000000000000040 x13: 0000000000000228 x12: ffff0000c115a3e8
-> > > >    x11: 0000000000000000 x10: 0000000000000001 x9 : ffff800080cd6570
-> > > >    x8 : ffff8000897f3ba0 x7 : 0000000000000002 x6 : 0000000000000000
-> > > >    x5 : 000000000000000c x4 : 0000000004400000 x3 : 0000000000000000
-> > > >    x2 : 0000000000000000 x1 : ffff0000cb268000 x0 : 0000000000000000
-> > > >    Call trace:
-> > > >     mbox_send_message+0x8c/0x178 (P)
-> > > >     imx_rproc_kick+0x50/0xc0 [imx_rproc]
-> > > >     rproc_virtio_notify+0x3c/0xa0
-> > > >     virtqueue_kick+0x4c/0x68
-> > > >     rpmsg_recv_done+0x224/0x658 [virtio_rpmsg_bus]
-> > > >     vring_interrupt+0xbc/0x158
-> > > >     rproc_vq_interrupt+0x40/0xb0
-> > > >     imx_rproc_notified_idr_cb+0x20/0x40 [imx_rproc]
-> > > >     idr_for_each+0x74/0x100
-> > > >     imx_rproc_vq_work+0x2c/0x40 [imx_rproc]
-> > > >     process_one_work+0x194/0x520
-> > > >     worker_thread+0x19c/0x320
-> > > >     kthread+0x134/0x148
-> > > >     ret_from_fork+0x10/0x20
-> > > >    Code: 37f80574 aa1303e0 97ffff39 f9400a60 (39402001)
-> > > >
-> > > >Fixes: 99b142cf7191 ("remoteproc: imx_rproc: Request mbox channel later")
-> > > >Cc: stable@vger.kernel.org
-> > > >Signed-off-by: Richard Leitner <richard.leitner@linux.dev>
-> > >
-> > > LGTM:
-> > >
-> > > Reviewed-by: Peng Fan <peng.fan@nxp.com>
-> > >
-> > > BTW: would you plan to fix the other issue that sashiko reported
-> > > regarding imx_rproc_xtr_mbox_init()?
-> >
-> > Thanks for the review and sorry for the late reply.
-> >
-> > Sure. Should this be a separate patch or added to a v2 of this series?
-> >
-> 
-> Please send another revision with the fix.
+From: Prasanth R <ragaprasanth@gmail.com>
 
-As Peng pointed out, the sashiko finding is handled by a series from Lee.
+These drivers set a wake IRQ with dev_pm_set_wake_irq() and never clear
+it. After unbind and bind, dev_pm_set_wake_irq() warns "wake irq already
+initialized" and returns -EEXIST. For jz4740 and atcrtc100 the probe
+then fails.
 
-See: https://lore.kernel.org/lkml/20261123172140.3547896-6-lee@kernel.org/
+Switch them to devm_pm_set_wake_irq() and devm_device_init_wakeup(), as
+was done for rtc-pl031, rtc-stm32 and others. Patch 3 also fixes an
+unbalanced clock disable in the mxc_v2 remove path.
 
-Therefore I will not send a v2 of this one. Please pick this patch (v1),
-ideally as a fix for the next 7.4-rc. Thanks! :-)
+Patch 1 is tested on an i.MX6Q SABRE-SD board by unbinding and binding
+the driver through sysfs. The others are compile-tested only (ARM,
+clang, W=1).
 
-regards;rl
+I used an AI assistant (Claude) to find these and write the changes.
 
-> 
-> > regards;rl
-> >
-> > >
-> > > Regards
-> > > Peng
+Prasanth R (12):
+  rtc: snvs: clear the wake IRQ on unbind
+  rtc: mxc: clear the wake IRQ on unbind
+  rtc: mxc_v2: fix unbalanced clock disable on remove
+  rtc: mxc_v2: clear the wake IRQ on unbind
+  rtc: imxdi: clear the wake IRQ on removal
+  rtc: da9063: clear the wake IRQ on unbind
+  rtc: fsl-ftm-alarm: clear the wake IRQ on unbind
+  rtc: jz4740: clear the wake IRQ on unbind
+  rtc: atcrtc100: clear the wake IRQ on unbind
+  rtc: pcf8523: clear the wake IRQ on unbind
+  rtc: pcf85063: clear the wake IRQ on unbind
+  rtc: rv8803: clear the wake IRQ on unbind
+
+ drivers/rtc/rtc-atcrtc100.c     | 8 +++-----
+ drivers/rtc/rtc-da9063.c        | 4 ++--
+ drivers/rtc/rtc-fsl-ftm-alarm.c | 4 ++--
+ drivers/rtc/rtc-imxdi.c         | 4 ++--
+ drivers/rtc/rtc-jz4740.c        | 4 ++--
+ drivers/rtc/rtc-mxc.c           | 4 ++--
+ drivers/rtc/rtc-mxc_v2.c        | 6 +++---
+ drivers/rtc/rtc-pcf85063.c      | 4 ++--
+ drivers/rtc/rtc-pcf8523.c       | 4 ++--
+ drivers/rtc/rtc-rv8803.c        | 6 +++---
+ drivers/rtc/rtc-snvs.c          | 7 +++++--
+ 11 files changed, 28 insertions(+), 27 deletions(-)
+
+-- 
+2.43.0
+
