@@ -1,79 +1,79 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795599287;
-	b=LdwJT7lvwvBtbZJghMGOZuut3BVZ4CIF2/EVlKAAEvz7aiRTZed+Oq1ta7WjxYZzM4iV
-	 2ea+5ApJRS7aVQYbqT7x3yw0XQEZx7xrQFZ90ViknL5k2jCup/xEfxgj1rWVlFA3032fw
-	 iLU0EmjlO2ZgD/ZwTMt4yChycn1Wp/TiVYa427INMkTEW8pI0TF+V7e5+r6tB654cD7gm
-	 FjC1cBlVGqN2crHlUwuT4GG9cduIH05DB7C4vkqYYSnu3L9KXkt24xPEnhOtRUwvV9pqm
-	 dkUaa4DiPniBnqLRIRXPr/JwdjxcLmkNZ3ag8BusRfYukTs0AtMZkpktN8hwYfQOcgQ==
+	t=1795599289;
+	b=lh5lEkG5frun31XRL25/izJVSvmQ4SgdZGiBqMukp+HNZfZ7bHidW2G0+BmN1radvN44
+	 PNnWnxjTpaCdpVc3zsYfSKsHxeWJ8VmpLSWibCdegw31rVDGLiF6qOCF3VKyUuUJZq9Gy
+	 ZJJoon03Aco2QlpmU8BNP7kfUDsZEL2onYasRvhr7mRV4ResikfvwiXU1e9ivMb5utZRg
+	 Er8q04XKTWsN8lkZJ6s3NvhMhHg9G2BuOlIL1+TkZt8aNQeHqg41hQ+iA53PoPAe/uLbN
+	 Dx5Go4YfhZ0fEtN5IQwQfmZIHNLk6xYH/HUpazni8wweVit76jBg0xjyd4R291OazHA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795599287;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795599289;
 	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
 	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=lF5UuwW4GEyXYzWJ6CNQ8ISStsij2YV9+m0dlGsHQ5I=;
-	b=5KYnBEREdPKqPqUQpxGz5j5yMv8/9qlG8erPHMHNNhvJk6VinXR5M79U9RCWI3k4Y9R5
-	 /02oK5zICM4cmC+gW03XAahJ7mue+w4Hni/cxydoZH2EvAAhGkejxsWpFR5q36OD15jd6
-	 hfI8smIuHLFJ+W9dd7n73YFtor9/UKfD6l7yzfnwPQMHqOEG8OYAemnKB6XZPN9CeAX4U
-	 qnGypl9KyiTLT4CRbCWcS71uVQ4qkMg2Mn1QogFV0KZhZ2vLaCPJJzZGrbku69HXqQWbP
-	 O8uMP/kaDcOV86HYqJCBe16953Y3gfz45zNFf2uCOkTM+Hix9OYwBO3Y9SFxbzrYeGw==
+	bh=FPW2O/CZksG07s1KEeo2I5JR2fFDL0AqSEPRwnJ+rAw=;
+	b=kG9GVb6x8JxoNrmqw28iCMhFZeZNXfADe9lvzQMJGxqrvvJTCjSJdSyQNQJtSC9lELFB
+	 p0Mqo7QYsGi4b3Xynkb8aD6mjNZtpWkT977Fm/CAm3SRjD47RyDh7pTpns5klm9TzCw2J
+	 GfhfcLz2dTR87sPXymN979DIxnfEfJEyPjoXNXxSBwVZ9EkSWeWMX8j6/S3d3yIYiSHzF
+	 BJzCiitUNv/lIyMdyME7wJotG4fdca2ke0FD9qVRhhugHh3XV3lyHqquInutjIiIgEoYc
+	 +4uPOORgg1FSHYalXbSi2Yr/KvxyYs2naeJ/+zAW3B6JLEBQK1g+5sCaB3PGFSCMIgA==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mebzoGBR;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WClvNEeu;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12274606A336;
-	Wed, 25 Nov 2026 09:34:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28F65606A339;
+	Wed, 25 Nov 2026 09:34:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mebzoGBR
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WClvNEeu
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1795599286;
-	b=E3BbchgD7DRDbS6n3Tpstg8pD6LtLETP0ZIZYijze3hez1QyaMGP4UaZ0JNv+UI065VJ
-	 ac64h5z4Mae7uG0WVcqKc5OO4isVM2Oa9T7SdqkTGro+3kPpTSQrdu882d+T0SiR7NoE+
-	 KyvlxxVEi4+vbLQOHwuPawHEekF0i4+TwNSdJYTeONgIlfD5vYWXHXsL6Lrh37mchZXcc
-	 gFw0MiVCPjDwZA/QzUVb8MoYMtaOj+ej9XZNKRYSzUloMdCPD8h4/ZpKMCqTislPRj7MQ
-	 7Qgv/Ad8dXc9aWTOv/P+K+/jFQ36+0oAL450ThE1zwRh+G+otG9eIAdoG/64yVqyqnw==
+	t=1795599288;
+	b=F6sSTVMoPwAuetQzUHUeTV1YZHKOkTB4OZvHvoAAuJ65SfY71FtGcLN/0E1mxBXjFzsd
+	 6TP2gy1SVNV/bsUVWTgApXdswjc8sSkc/BzExp5dD+pRZgg2gJ1lyHPfvP0Y4KRjcweww
+	 RGk4QHJlfhjyPwxOjNC+K4N3IYMvXgwI/3GUNvIwTqyVmAY6yyhaFAfVVwY5gb8R1reKo
+	 Djuf3lBOShUxEqfK+BNf1/GQ42+x6M35zvd1F1uMnESnQWndWczjfV0QZEisna895DjOJ
+	 6EyNZvSrsQk5AucqvzBXwnNG7sxjjzKOV2zc4qsI1uFIvynVmyTqfDs0ArF59gJQykg==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1795599286;
+	c=relaxed/relaxed; t=1795599288;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=lF5UuwW4GEyXYzWJ6CNQ8ISStsij2YV9+m0dlGsHQ5I=;
-	b=ujizd7Xvx50ozHMHqNjNprqFJRplRQZFYU/w6Kk4NfU4udzlLcDeBYbAAzJEz8AqeZAA
-	 bpO7zzGDUtupMA0xKCZKP4GkIpF/B1IVE4ViPrzi0HqtkbLjc8vmRx1lg8OHE6NjTFvlU
-	 SaOMhyGXCuF+wOwioC2h0AyeO4ERMhf1gXWbQwZdUIaxte9sBSOmker9BP/EivRdj1nvY
-	 0IWsknk3H5/RfDgfRuaIOxyXTcHGK1MNnnxljz+BwoLBM0kG2pmfmXazmB9oFeX1SBg8U
-	 T7MbRVHKtMN/ooBGCxhbRqaHwFvHwUjhH/ovQ4dx7ZRviFzW61gOx8FbmV+XqVO24ZQ==
+	bh=FPW2O/CZksG07s1KEeo2I5JR2fFDL0AqSEPRwnJ+rAw=;
+	b=ABAyZ3YxknMTPTz+QL+MCbNcVh3oAlzL54tM8Vng7oFr73MTPAG6iQxDCyJmlSQX1yAj
+	 GefpdTSelpfpngIEGIw/N8FJ7QKdDwZZlQJ28CsPTNcc43y5OxokvFKIvSibv2GhD7qQ2
+	 qz7rwXEv4HuYufYIzZzjstnXAJ6V5aEBgJM9aOSrGvOYs6/SsD5yh08cH5lEXLnfHe3tO
+	 U11AHC3q/lDT0sffH1ZBHucqH5SBthfDkYCB65sFW0sIdTztTYP5qDXK08wGCzG5ZubUu
+	 sj4ju0BjvbvT4FX2/Zn2PcCjOYiX+vdNcOUAy70IpCkZSj6bzjC/iZgaOcMevVUqFgA==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 130C81F000D0;
+	by smtp.kernel.org (Postfix) with ESMTPS id 369111F000D1;
 	Wed, 25 Nov 2026 09:34:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795599286;
-	bh=lF5UuwW4GEyXYzWJ6CNQ8ISStsij2YV9+m0dlGsHQ5I=;
+	s=k20260515; t=1795599288;
+	bh=FPW2O/CZksG07s1KEeo2I5JR2fFDL0AqSEPRwnJ+rAw=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=mebzoGBR8YxE6sIUuYztGqWYTeK2tMHqv0ebtkmP5XRZ0Pa/CJtEGzGQtsDdeo4ko
-	 bp/P5OnVC1zZ/sa2jaKF+3/xgfbWBjBsvxouOnULljTUFNOF9S+AoHFDp94oAlXYeY
-	 fRGtm9dWFe6ALBj1N5rxbyTCjRhnsXrRGscfV2UN+8fNDhEbTy5jUkjx0v1J1AvzA+
-	 9ykTjlb/V6sAcMYSuItcF5wBWvpwQdBMyJvPRwlfg4tpng/LmkrutIsD/8jItW6u7G
-	 FVQTPlP+bMe6Kc6MS2FS9IszV1wj9VMCLKiZm+EtKMYxtFxENfbIw+/7ILCh7ElSvN
-	 9Pp8WXIlIjiSQ==
+	b=WClvNEeu4R4e79Exo+1TmvDr1NaEyRokfzKKYRko5BeGZjUKilF2+PWME/pL2QO7a
+	 nFBc/8fjkeemYy+Yvmuo5FNPX6Nz9f7vM39XsjGL6jGtwKfLLWeKnQxblHnFFj718P
+	 6vhA8WZk0S42AVOVYfoDZzKoJEFcQFwqRsgaoeUzNL6m9bicI0KEVsh3JK3Q1nQG+2
+	 bhsUwBnNx91euH+WHS2E+812zGXTGqAxsR0weY/tRiBycwSRBwNU8wVzfAne5e7C0O
+	 fXdvPj+9NZyypAvkNbWlA8hvXIJAa60gq7Gn4xzWhn8XcHFYVjTHikYaM3UCRed9FP
+	 ufJR9/aOwKwVQ==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 95AD74CDFA;
+	by lkml.kernel.org (Postfix) with ESMTP id B4BFD4CDFE;
 	Wed, 25 Nov 2026 09:34:36 +0000 (UTC)
 From: Jan Petrous via B4 Relay <devnull+jan.petrous.oss.nxp.com@kernel.org>
-Date: Wed, 25 Nov 2026 10:33:45 +0100
-Subject: [PATCH RFC v4 03/15] dt-bindings: PCI: nxp,s32g-pcie: One PHY per
- lane
+Date: Wed, 25 Nov 2026 10:33:46 +0100
+Subject: [PATCH RFC v4 04/15] net: pcs: xpcs: allow a PCS to opt out of
+ soft reset and EEE
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -84,7 +84,7 @@ List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261125-s32g_serdes-v4-3-3bfe0589be8d@oss.nxp.com>
+Message-Id: <20261125-s32g_serdes-v4-4-3bfe0589be8d@oss.nxp.com>
 References: <20261125-s32g_serdes-v4-0-3bfe0589be8d@oss.nxp.com>
 In-Reply-To: <20261125-s32g_serdes-v4-0-3bfe0589be8d@oss.nxp.com>
 To: Vincent Guittot <vincent.guittot@linaro.org>, 
@@ -119,11 +119,11 @@ Cc: linux-arm-kernel@lists.infradead.org, linux-phy@lists.infradead.org,
  linux-pci@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
  "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
 X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795599274; l=1169;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795599274; l=2142;
  i=jan.petrous@oss.nxp.com; s=20240922; h=from:subject:message-id;
- bh=2T8jUwEi3ltYre4gdZGzsO3mt+/q6xBMsHs8FYuEF3c=;
- b=XbAHEFssMX3nbhcwDXGXMqYOtnF2zGW+H0r80LanO7vG672d2emcQaF/5/QcYFy2PXzjshoH5
- 5Z9n+6m6KtKAsPR5RSPzrFIdTz7Sr2W6MhknODVlgLZvrBRJR5fdO1S
+ bh=XscJymCuOoPX6VkV4O1nIKYSBnUzCtjWiHRRdPqdbMk=;
+ b=iE2FYHKkZBcU6n24n7zNpgnccWxNcvMAikDlY+jLN6198179BHbRw1XeT2teHMY9FSK6wFUv8
+ dIL2U1KySspC9q2iEtKQHhV1fidG8GKop8Oba4PFSWj7J2idWFs6aFx
 X-Developer-Key: i=jan.petrous@oss.nxp.com; a=ed25519;
  pk=Ke3wwK7rb2Me9UQRf6vR8AsfJZfhTyoDaxkUCqmSWYY=
 X-Endpoint-Received: by B4 Relay for jan.petrous@oss.nxp.com/20240922 with
@@ -134,39 +134,77 @@ Content-Transfer-Encoding: 7bit
 
 From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
 
-The SerDes binding describes a link with one phys entry per lane,
-<lane PHY_TYPE_PCIE 0 0>. Allow up to two entries on the root port, and
-make the example reference lane 0 that way.
+Add a quirks mask to struct dw_xpcs_desc, with two flags:
+
+ - DW_XPCS_QUIRK_NO_SOFT_RESET: no soft reset in pcs_pre_config(). When
+   the XPCS shares its PMA with another controller, the reset belongs
+   to a bring-up sequence owned by the platform.
+
+ - DW_XPCS_QUIRK_NO_EEE: VR_MII_EEE_MCTRL0/1 are not implemented and
+   must not be written.
+
+No entry sets a quirk yet, so there is no functional change.
 
 Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
 ---
- Documentation/devicetree/bindings/pci/nxp,s32g-pcie.yaml | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/pcs/pcs-xpcs.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/pci/nxp,s32g-pcie.yaml b/Documentation/devicetree/bindings/pci/nxp,s32g-pcie.yaml
-index 66a050028278..b90d169f57ed 100644
---- a/Documentation/devicetree/bindings/pci/nxp,s32g-pcie.yaml
-+++ b/Documentation/devicetree/bindings/pci/nxp,s32g-pcie.yaml
-@@ -57,7 +57,9 @@ properties:
-         maxItems: 1
+diff --git a/drivers/net/pcs/pcs-xpcs.c b/drivers/net/pcs/pcs-xpcs.c
+index 6466e0ff2a98..442c64a731b7 100644
+--- a/drivers/net/pcs/pcs-xpcs.c
++++ b/drivers/net/pcs/pcs-xpcs.c
+@@ -158,10 +158,20 @@ struct dw_xpcs_compat {
+ 	int (*pma_config)(struct dw_xpcs *xpcs);
+ };
  
-       phys:
--        maxItems: 1
-+        minItems: 1
-+        maxItems: 2
-+        description: One entry per SerDes lane of the link.
++/*
++ * The integration owns the PCS reset sequence: skip the soft reset in
++ * pcs_pre_config(). Only for PCS without Clause 73, whose fault recovery
++ * still resets.
++ */
++#define DW_XPCS_QUIRK_NO_SOFT_RESET	BIT(0)
++/* VR_MII_EEE_MCTRL0/1 are not implemented */
++#define DW_XPCS_QUIRK_NO_EEE		BIT(1)
++
+ struct dw_xpcs_desc {
+ 	u32 id;
+ 	u32 mask;
+ 	const struct dw_xpcs_compat *compat;
++	unsigned int quirks;
+ };
  
-     required:
-       - reg
-@@ -124,7 +126,7 @@ examples:
-                 ranges;
+ static const struct dw_xpcs_compat *
+@@ -729,6 +739,9 @@ static void xpcs_pre_config(struct phylink_pcs *pcs, phy_interface_t interface)
+ 		dev_err(&xpcs->mdiodev->dev, "switch interface failed: %pe\n",
+ 			ERR_PTR(ret));
  
-                 device_type = "pci";
--                phys = <&serdes0 PHY_TYPE_PCIE 0 0>;
-+                phys = <&serdes0 0 PHY_TYPE_PCIE 0 0>;
-             };
-         };
-     };
++	if (xpcs->desc->quirks & DW_XPCS_QUIRK_NO_SOFT_RESET)
++		xpcs->need_reset = false;
++
+ 	if (!xpcs->need_reset)
+ 		return;
+ 
+@@ -1318,6 +1331,9 @@ static void xpcs_disable_eee(struct phylink_pcs *pcs)
+ {
+ 	struct dw_xpcs *xpcs = phylink_pcs_to_xpcs(pcs);
+ 
++	if (xpcs->desc->quirks & DW_XPCS_QUIRK_NO_EEE)
++		return;
++
+ 	xpcs_config_eee(xpcs, false);
+ }
+ 
+@@ -1325,6 +1341,9 @@ static void xpcs_enable_eee(struct phylink_pcs *pcs)
+ {
+ 	struct dw_xpcs *xpcs = phylink_pcs_to_xpcs(pcs);
+ 
++	if (xpcs->desc->quirks & DW_XPCS_QUIRK_NO_EEE)
++		return;
++
+ 	xpcs_config_eee(xpcs, true);
+ }
+ 
 
 -- 
 2.55.0
