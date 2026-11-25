@@ -1,88 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.42
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795624140;
-	b=uf5rzooIlUcatdVtOjrO3VBVDKfpsGihTcYzeOa1F0z2/sFySAnfX/vx0di+iFrrAT3V
-	 268TqwIWh18nSbgaqd3KlKpwIxr8ixs1PwzB1n5C7FMumYVc24lNdsKr7Jyw41NdKot6D
-	 LVof4KxOQ8D5ySJ9q9F3baQCWFEOnt3C6y+I+P2aDlHipL7TNB09GcdmIaqFTll2NADkE
-	 1+HWVHFVGwsxuSmiyUsDi5xxleCeerSF8XyEywPLr+Uri/rkMhotZb9MkP+mduWw4rlAy
-	 EbSvRi0NOADQBf9JxkhpZyq4/BTVb/5EMXU/uWLwUnQV4oAwCPZAUamGx+bktcWZ4Ug==
+	t=1795624142;
+	b=dr0ScMM8DB1sgmVaOTCSSTJsIU6vNJCGoIOyqjE30MGmQyviyB+fGxdUCSc0qd4Kwjmk
+	 7mzhFR9jk66nHzYVP3h0p0Hzy3ONf/f/kpH/rmk/tJL9lHcl5fM6kDiAq9+s9s6cC7r4i
+	 LVPhbrHpu96GEp/YuUB1B90T+d/PJcTBK215B9fDBKkcg40ZKLPt3VmQkDsef0NwadxAG
+	 KkBujXD1Xw8XH4ng/fdqV+lcrnW3758pmdTINPcOoLM879kRaZyyhWynLVC/ezRGDouht
+	 c/++/ZOoPBCWrbCcjLS8oDwBdWa+lEYvFPfKWpRY17eXGJM7ANeHkSc7KJdYVn+IVZw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795624140;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795624142;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:Date:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key;
-	bh=usivc3aw+SwZhFpcmlLANBBx5LV9rhkWEtYn4/TGjV4=;
-	b=dnTrexMQz8380M+wlalCIGTteY2xX4usTQ3k/aYs4hr10HyU1HuPYfonWQ6RkqdbbfcR
-	 af0CnEwkp/F6YjcsHYH/hSQsFuicG4Ce8bIeIxtgLLEcfXhJaO9XbD3+7FiOoLfpsnF/T
-	 fubkMdAcHdx+Mo1+uPWFtfn9S6zWfhkGvK4x4iWva5Z+dE7wzz1kSi4sQE6GARwgY6N68
-	 48t8sMIWZP+DV/gsGLoiSgpvkaT1adLshdwzVzwVvE233aXRWmhMG4uo7He1NKfp8Vvd6
-	 1dJssHM4hdvdIabe7nZBERS0j3ujs1nlGs3sSjpg3IEtFBi3EbxatxF39VjkZbsOLyg==
+	bh=b3zipjW6FCv6jer+zbTeZRYq6wiTPflhk4lNUgGm5Zc=;
+	b=4mALeoFQSuj4y+fRD1FHtWlKsA25MjbKSEkNnwSn9lYa98r8tsS+znSe7QlpRDJX6kMK
+	 nfGjhxlSJmHdpeGxcnu+u4wQaCv+epsxuYCmowP/+uWy5jfcntlRxe/y4nrMWB4JFPf6C
+	 j0IgHQ8MRXt2juQc1AtDC/BTmMaHz3QNkSKOJzrio5wWLpCW5AgwU+bweaB7WY6pZ2fo8
+	 L9aD5h1Bb0N+1OucZmqQOJ2FJfwnSrLWQIgDD+Gi19qmHuHuphpWxcGDyv3plgTi8kLZK
+	 r/h5VgBse5D222D+TFC5MG85qj9dHUv2Ug+e9OAh/f0cBAFWVWqHq1fPiN0b1ckFiog==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=thegoodpenguin.co.uk;
 	spf=pass smtp.mailfrom=thegoodpenguin.co.uk;
-	dkim=pass header.d=thegoodpenguin-co-uk.20260707.gappssmtp.com header.i=@thegoodpenguin-co-uk.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=rnA6J4e8;
-	arc=none smtp.remote-ip=209.85.128.50
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	dkim=pass header.d=thegoodpenguin-co-uk.20260707.gappssmtp.com header.i=@thegoodpenguin-co-uk.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=d4IRJI7i;
+	arc=none smtp.remote-ip=209.85.128.42
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D05F4606A33C
-	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 16:28:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D05F4606A33C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EA12606A334
+	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 16:29:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2EA12606A334
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=thegoodpenguin.co.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=thegoodpenguin.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=thegoodpenguin-co-uk.20260707.gappssmtp.com header.i=@thegoodpenguin-co-uk.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=rnA6J4e8
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4bb64ef5a00so48210595e9.3
-        for <imx@lists.linux.dev>; Wed, 25 Nov 2026 08:28:59 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=thegoodpenguin-co-uk.20260707.gappssmtp.com header.i=@thegoodpenguin-co-uk.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=d4IRJI7i
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4ac95761c85so46733025e9.2
+        for <imx@lists.linux.dev>; Wed, 25 Nov 2026 08:29:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=thegoodpenguin-co-uk.20260707.gappssmtp.com; s=20260707; t=1795624138; x=1796228938; darn=lists.linux.dev;
+        d=thegoodpenguin-co-uk.20260707.gappssmtp.com; s=20260707; t=1795624140; x=1796228940; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=usivc3aw+SwZhFpcmlLANBBx5LV9rhkWEtYn4/TGjV4=;
-        b=rnA6J4e8COvgd9jHq2T81kfYqbWqQsrAKa/3s2RM1heLXGXVuuwfB+8YdozzHkcWp4
-         d5MxqwhlQkNJ4wEnZGdp96ORZsjNZaqcgbD7MB/nJ94guyNM7in+nfJOQ7aa/PSXXX1b
-         d15DhIUMSOrg+bcoHRSVLz52ItyEWMKEEoh0rMhQmd5inm7jcQn0UBfbBnXl4AfHWrFg
-         aUwvfGhlZ+ygKvP37AYTtZ6zkQMZByq0kQOoNVrRGUqty8VsC8MA5exeCrleQZZ6VOLi
-         HXm1zeqlRMPMcBllAbToZmF4Ll7DnpreNk1FuKHixb3c3T33mjnFNq+B7yeV57lff85B
-         Pxww==
+        bh=b3zipjW6FCv6jer+zbTeZRYq6wiTPflhk4lNUgGm5Zc=;
+        b=d4IRJI7iUCxnC/Qy0O1NnI5RMp0QtL7PJkufO7MfiD+EiTfnqt2PArPwRpLftH2GBM
+         gaY+cwuuz6xtJ0+Degpc4PdfJeMZXkGMwvI280gEpZZWV+cVcauytLUFtbz4zaFTIOy4
+         EMGTuqRMKFYWiOkkXq5du1aUw3mbt7U2x7NNxEoUlYdTfvpBG1iF/F0pbrOc1J5XGADw
+         G9s90PuKrJU1T5xBqWqcqSgCPXUMtzw/GkXpgHV4b/2xwnzamY9M077kuLwEppYsK92R
+         GIH6e5XFpZ07LFp3KyW3hioezIhTKS0oZOGtdwnMeH1ZJra2wpbmv6Ea6kMNOJlN0o+i
+         Ervw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795624138; x=1796228938;
+        d=1e100.net; s=20260707; t=1795624140; x=1796228940;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=usivc3aw+SwZhFpcmlLANBBx5LV9rhkWEtYn4/TGjV4=;
-        b=s0ZrmSwUEf5bY8An0QaYXYFVNYfHyw3OkTZfCvg2CH8tLbh9yRmKh1pLFttom448lI
-         mw+cAiG1b2CLc0UtsNQHWJxZlrB7OS2eei3r/N0t2fWD1HW1yc3ZrwRU+BDmOhIWFO0S
-         iN5X6ON3RBxoGh71nBL16HhGa3zMDe7DyyCP+BuJr0SjI9uxS/9GFSJ0BrTGab8G7DF5
-         PYNxf2hIeetOJGrMN3X2f7k3YrG33TX0CDbluEiXYkWfiiVPliK1X2Syp4tiZYA8WGLL
-         zQfLUGM7LIWhJL9U5tI3Dc91lkZaFeLero67/pefkTCY7roLMFpi5myQiQsnRgK5wX2t
-         Rauw==
-X-Forwarded-Encrypted: i=1; AL+hErFp2y2wtE+bv1m1TAQIei7uCtApGuOp6lUp0Cqb/GqxlJ+C+qQdr6TECU1//5VPsahaaDs=@lists.linux.dev
-X-Gm-Message-State: APuU4Z/87dBXu3MwopnlVc0EyKY4+WNdiydwSoK7KZgLZuaG2p/fbDIq
-	D1olonS5S7qbw7JUF19Nqz7dzI9plBCZGZwjzA7cvtRDAHmHThPqyqtpg8fBmkyVz34=
-X-Gm-Gg: AZFdTZcQ0/BJz71PzfAOXuLV87QVVcgJ2Jk9edhHjzmmKVxQ971drxsj52vpORnWzAu
-	pAchsnb/FE7nbHfhQcrccqzhqoAlFCSdRBrOVmRFDkbjkjnlbINAAp5rMoSKICvIWEFb2xTBTVD
-	1Y/95WzWGQ+N4vLynEEcl6YA+Vq926cy4gk39eXIUsoFlF8G6OIv/1oLbeY5ixn0yqzlqdAbpdX
-	my+a/orC/GHyZvlIGESppLcFGrEadLdvdQToyVxVNQ+cqWSKCYOF1s3AY9gpNsORd8ZyjlkgJ9s
-	y5rcYBrgAMg94ErKKUBL/FsFM8sSuFF43zXKB35EXoWx1LE8AyTQUcRVvNOKr/LumC9UfWo996h
-	1SYRkEhmsUyEGePIkypc7fG2O6YJd4iZga7TjzpJf5PKQNY3a8+n3TlA8q7AaIZRBqm8jwgYUf3
-	kn/xMvCdPi/M4NsvIV2pvJJUCYpy0Zj9qMchpYoVJL6zB6VV81OcpnYMGXbQWPFPnLY3LAbuUgB
-	kLyxta9uLx7up7V9te15+fPM7k9ly/GrDnTPL2dUy85kUX6NQwXTnicYjZCo/CBC/ezeplzkJWj
-	omJ672uNdIoSYHWC6WdeAX7cDQlID9Qzo+AkMDRQTVMx8w==
-X-Received: by 2002:a05:600c:6708:b0:4ba:7e6:53d6 with SMTP id 5b1f17b1804b1-4bb88940848mr326163005e9.33.1795624138113;
-        Wed, 25 Nov 2026 08:28:58 -0800 (PST)
+        bh=b3zipjW6FCv6jer+zbTeZRYq6wiTPflhk4lNUgGm5Zc=;
+        b=1JlTF/zvN5v1LR9J2oJePkYcxbB3I0xC30dVeLPaBJQlYHAEsrHhbIcnGCztTVz/Ge
+         zk6AQUrEvN3JF75x0o5yxiSH60C8s3tr/jzQZo8KsXEUps+iwo4soN1SIf9kauojFTVZ
+         ZkU6uJXjq+Y4edpGbyXVYRmyTUaLgcVI315sVSJLJqV1KU6gshY2FTnPcBgh9Kd5+Phe
+         lnIlEMifaiN8N/gK/6LCCvxMvfCz/KrC2/ltaEyz+gaYmVcbdzutXkm8YJGtAbS8dj4o
+         Q/QvcAW78OwDN0InSShF0ALtFCmplx2Kb8EBwcFWlYcBe35lh16VdWxigbhBYqmkcAyq
+         FgPw==
+X-Forwarded-Encrypted: i=1; AL+hErHbaOo+K9qpUyYTbJhVliq4byZyCQoKbix0zoiXxXKiDr++NPoMdEmVSpJIh7vG3uJLhl8=@lists.linux.dev
+X-Gm-Message-State: APuU4Z8EAosrayjMP62S+D1VIS0UWmZ2NymA+/sss8vEAfsrfVfPHGV3
+	+3B8zZSa6AjXDrEFwY4E8KK+tHrv/FMZGGipTXRoK1g0YQWwz5jaP402lEyzvpW9KkM=
+X-Gm-Gg: AZFdTZdXLJtfgXrGYB6sU3Ch5z4epu/RLjI2n6K+IBr5mgRWkObCGMRFN5RQDrrX1S0
+	5dvJa/Fc51z4x8IzUxcan1OZzTDpeWp658qvWtCGBSsoVe+iVFuVsUHZDP3Sw5LqGofrNCF2XlY
+	SIPi+DfKc4DFUGw0kiUdBwvNxI0x+MJx7z9QkqoVhV9eayvs2E3FsVDcpJLXokfsNquA96HYV8X
+	QHMqqs9JamrwG2zd6uBy3wwb7to+I1Kvq6ba+L9mR+TxsYBg/IYa/wxKq62DK8ExktYJts8IBYO
+	D8km7Mhl2NFNJriCAywh8zbooms1svjbLxCVxH+ALeRKTb05CS06PQ1qbLPEuY05yykWCDijV8k
+	EgrEV1PuOPJSHzQ+/yWVxFqQ8O3xd+m/boC/rkTX0s9OBBnH73If8SShkUL0wimZUrJRfXbJGyP
+	JNfsgy5BSEKDApv3rq8e9swCLbbp/tQpuhFPsIhqu4rO/4uZJzrXff1Ie4j6b+2p9cHx3MDtxFf
+	y4RylK0ATYTTRF/sRhnerB02qu7ecR/R/OLQosIhEZQAUj9vUpvhyHoKXKk3CN76bgMsdiFyeRe
+	oM6B2OU7UJfgLkLuC6qZTAXH8UTJqX4OLDtcBp6P4CU1xA==
+X-Received: by 2002:a05:600c:4f0f:b0:4bb:87f4:3674 with SMTP id 5b1f17b1804b1-4bb8880ef40mr469106785e9.15.1795624140547;
+        Wed, 25 Nov 2026 08:29:00 -0800 (PST)
 Received: from [10.42.0.1] ([2a00:23c7:1d1a:9c01:f716:ba19:8aaa:f1c2])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb853368d3sm527336375e9.1.2026.11.25.08.28.55
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb853368d3sm527336375e9.1.2026.11.25.08.28.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Nov 2026 08:28:57 -0800 (PST)
+        Wed, 25 Nov 2026 08:29:00 -0800 (PST)
 From: Pawel Zalewski <pzalewski@thegoodpenguin.co.uk>
-Date: Wed, 25 Nov 2026 16:28:35 +0000
-Subject: [PATCH 09/10] mtd: nand: Unify list terminator for *_device_id
+Date: Wed, 25 Nov 2026 16:28:36 +0000
+Subject: [PATCH 10/10] mtd: parsers: Unify list terminator for of_device_id
  lists
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -95,7 +95,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261125-acpi-mtd-v1-9-42ad2f645bee@thegoodpenguin.co.uk>
+Message-Id: <20261125-acpi-mtd-v1-10-42ad2f645bee@thegoodpenguin.co.uk>
 References: <20261125-acpi-mtd-v1-0-42ad2f645bee@thegoodpenguin.co.uk>
 In-Reply-To: <20261125-acpi-mtd-v1-0-42ad2f645bee@thegoodpenguin.co.uk>
 To: Miquel Raynal <miquel.raynal@bootlin.com>, 
@@ -156,11 +156,11 @@ Cc: linux-mtd@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
  Pawel Zalewski <pzalewski@thegoodpenguin.co.uk>, 
  =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795624113; l=3557;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795624113; l=5774;
  i=pzalewski@thegoodpenguin.co.uk; s=20260430; h=from:subject:message-id;
- bh=9ka96uW8uhmroEA/0ZZ34Gp8KmZZTisL0Zd9lgRMCU8=;
- b=yB/JEeg0v8nqIyAE1Ke9wfd7YSoLKw89W0zAl6SaarFMyVewyRV7wv5K6GuML97H9SyfICVK7
- YkN/iHx9aUKBHks9vSsfAxGp+5LM/eiSvtDjgwuVeS/5BBkSfzY+erw
+ bh=KOogzIvhzR8eYf+iMlhb8/yYFLWrj/S1PvoHnBRgitM=;
+ b=VkPD+ID7sV7Ml7e/hOXMxbv8kZ5YRPTjrP5CRzexH7lH8bYIAqCXSWUv8DDuCLt6WWwVQ34Le
+ OZotULTBoziBXkpCQurbY5qTiNItaA5MiH9TUJN3r3pgeSN9ESNfpKu
 X-Developer-Key: i=pzalewski@thegoodpenguin.co.uk; a=ed25519;
  pk=vHq4n9IonORH2GTzLv8r6CWAFHzgfBuNkQPXA8NSly0=
 
@@ -171,101 +171,148 @@ these to the common style with other *_device_id arrays.
 
 Signed-off-by: Pawel Zalewski <pzalewski@thegoodpenguin.co.uk>
 ---
- drivers/mtd/nand/ecc-mtk.c                 | 2 +-
- drivers/mtd/nand/ecc-mxic.c                | 2 +-
- drivers/mtd/nand/ecc-realtek.c             | 2 +-
- drivers/mtd/nand/onenand/onenand_omap2.c   | 2 +-
- drivers/mtd/nand/onenand/onenand_samsung.c | 3 ++-
- drivers/mtd/nand/spi/core.c                | 4 ++--
- 6 files changed, 8 insertions(+), 7 deletions(-)
+ drivers/mtd/parsers/afs.c               | 2 +-
+ drivers/mtd/parsers/bcm47xxpart.c       | 2 +-
+ drivers/mtd/parsers/bcm63xxpart.c       | 2 +-
+ drivers/mtd/parsers/brcm_u-boot.c       | 2 +-
+ drivers/mtd/parsers/parser_imagetag.c   | 2 +-
+ drivers/mtd/parsers/parser_trx.c        | 2 +-
+ drivers/mtd/parsers/qcomsmempart.c      | 2 +-
+ drivers/mtd/parsers/redboot.c           | 2 +-
+ drivers/mtd/parsers/scpart.c            | 2 +-
+ drivers/mtd/parsers/tplink_safeloader.c | 2 +-
+ 10 files changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/mtd/nand/ecc-mtk.c b/drivers/mtd/nand/ecc-mtk.c
-index a3a285170fcd..854f513c4952 100644
---- a/drivers/mtd/nand/ecc-mtk.c
-+++ b/drivers/mtd/nand/ecc-mtk.c
-@@ -530,7 +530,7 @@ static const struct of_device_id mtk_ecc_dt_match[] = {
- 		.compatible = "mediatek,mt7986-ecc",
- 		.data = &mtk_ecc_caps_mt7986,
- 	},
+diff --git a/drivers/mtd/parsers/afs.c b/drivers/mtd/parsers/afs.c
+index 7ab3d50f565e..eb6abf5330ca 100644
+--- a/drivers/mtd/parsers/afs.c
++++ b/drivers/mtd/parsers/afs.c
+@@ -386,7 +386,7 @@ static int parse_afs_partitions(struct mtd_info *mtd,
+ 
+ static const struct of_device_id mtd_parser_afs_of_match_table[] = {
+ 	{ .compatible = "arm,arm-firmware-suite" },
 -	{},
 +	{ }
  };
+ MODULE_DEVICE_TABLE(of, mtd_parser_afs_of_match_table);
  
- static int mtk_ecc_probe(struct platform_device *pdev)
-diff --git a/drivers/mtd/nand/ecc-mxic.c b/drivers/mtd/nand/ecc-mxic.c
-index 41ee49419798..30434ec8f6a0 100644
---- a/drivers/mtd/nand/ecc-mxic.c
-+++ b/drivers/mtd/nand/ecc-mxic.c
-@@ -859,7 +859,7 @@ static const struct of_device_id mxic_ecc_of_ids[] = {
- 	{
- 		.compatible = "mxicy,nand-ecc-engine-rev3",
- 	},
--	{ /* sentinel */ },
-+	{ }
- };
- MODULE_DEVICE_TABLE(of, mxic_ecc_of_ids);
+diff --git a/drivers/mtd/parsers/bcm47xxpart.c b/drivers/mtd/parsers/bcm47xxpart.c
+index a412c0e7bd4e..ee7c81894b9c 100644
+--- a/drivers/mtd/parsers/bcm47xxpart.c
++++ b/drivers/mtd/parsers/bcm47xxpart.c
+@@ -301,7 +301,7 @@ static int bcm47xxpart_parse(struct mtd_info *master,
  
-diff --git a/drivers/mtd/nand/ecc-realtek.c b/drivers/mtd/nand/ecc-realtek.c
-index fb573c7f2280..a59b6ecbdd19 100644
---- a/drivers/mtd/nand/ecc-realtek.c
-+++ b/drivers/mtd/nand/ecc-realtek.c
-@@ -448,7 +448,7 @@ static const struct of_device_id rtl_ecc_of_ids[] = {
- 	{
- 		.compatible = "realtek,rtl9301-ecc",
- 	},
--	{ /* sentinel */ },
-+	{ }
- };
- MODULE_DEVICE_TABLE(of, rtl_ecc_of_ids);
- 
-diff --git a/drivers/mtd/nand/onenand/onenand_omap2.c b/drivers/mtd/nand/onenand/onenand_omap2.c
-index 4c1379343fbd..9efde604e0eb 100644
---- a/drivers/mtd/nand/onenand/onenand_omap2.c
-+++ b/drivers/mtd/nand/onenand/onenand_omap2.c
-@@ -587,7 +587,7 @@ static void omap2_onenand_remove(struct platform_device *pdev)
- 
- static const struct of_device_id omap2_onenand_id_table[] = {
- 	{ .compatible = "ti,omap2-onenand", },
+ static const struct of_device_id bcm47xxpart_of_match_table[] = {
+ 	{ .compatible = "brcm,bcm947xx-cfe-partitions" },
 -	{},
 +	{ }
  };
- MODULE_DEVICE_TABLE(of, omap2_onenand_id_table);
+ MODULE_DEVICE_TABLE(of, bcm47xxpart_of_match_table);
  
-diff --git a/drivers/mtd/nand/onenand/onenand_samsung.c b/drivers/mtd/nand/onenand/onenand_samsung.c
-index 8c2d3866a6d6..bf516130130e 100644
---- a/drivers/mtd/nand/onenand/onenand_samsung.c
-+++ b/drivers/mtd/nand/onenand/onenand_samsung.c
-@@ -984,7 +984,8 @@ static const struct platform_device_id s3c_onenand_driver_ids[] = {
- 	}, {
- 		.name		= "s5pc110-onenand",
- 		.driver_data	= TYPE_S5PC110,
--	}, { },
-+	},
+diff --git a/drivers/mtd/parsers/bcm63xxpart.c b/drivers/mtd/parsers/bcm63xxpart.c
+index 6e7b1ae8f58f..78fbe8a681cb 100644
+--- a/drivers/mtd/parsers/bcm63xxpart.c
++++ b/drivers/mtd/parsers/bcm63xxpart.c
+@@ -153,7 +153,7 @@ static int bcm63xx_parse_cfe_partitions(struct mtd_info *master,
+ 
+ static const struct of_device_id parse_bcm63xx_cfe_match_table[] = {
+ 	{ .compatible = "brcm,bcm963xx-cfe-nor-partitions" },
+-	{},
 +	{ }
  };
- MODULE_DEVICE_TABLE(platform, s3c_onenand_driver_ids);
+ MODULE_DEVICE_TABLE(of, parse_bcm63xx_cfe_match_table);
  
-diff --git a/drivers/mtd/nand/spi/core.c b/drivers/mtd/nand/spi/core.c
-index 22756832eacf..75a012770f63 100644
---- a/drivers/mtd/nand/spi/core.c
-+++ b/drivers/mtd/nand/spi/core.c
-@@ -2104,14 +2104,14 @@ static int spinand_remove(struct spi_mem *mem)
+diff --git a/drivers/mtd/parsers/brcm_u-boot.c b/drivers/mtd/parsers/brcm_u-boot.c
+index cd78e432f1de..d48d8ed73ca0 100644
+--- a/drivers/mtd/parsers/brcm_u-boot.c
++++ b/drivers/mtd/parsers/brcm_u-boot.c
+@@ -70,7 +70,7 @@ static int brcm_u_boot_parse(struct mtd_info *mtd,
  
- static const struct spi_device_id spinand_ids[] = {
- 	{ .name = "spi-nand" },
--	{ /* sentinel */ },
+ static const struct of_device_id brcm_u_boot_of_match_table[] = {
+ 	{ .compatible = "brcm,u-boot" },
+-	{},
 +	{ }
  };
- MODULE_DEVICE_TABLE(spi, spinand_ids);
+ MODULE_DEVICE_TABLE(of, brcm_u_boot_of_match_table);
  
- #ifdef CONFIG_OF
- static const struct of_device_id spinand_of_ids[] = {
- 	{ .compatible = "spi-nand" },
--	{ /* sentinel */ },
+diff --git a/drivers/mtd/parsers/parser_imagetag.c b/drivers/mtd/parsers/parser_imagetag.c
+index fab0949aabba..686ef88e3099 100644
+--- a/drivers/mtd/parsers/parser_imagetag.c
++++ b/drivers/mtd/parsers/parser_imagetag.c
+@@ -202,7 +202,7 @@ static int bcm963xx_parse_imagetag_partitions(struct mtd_info *master,
+ 
+ static const struct of_device_id parse_bcm963xx_imagetag_match_table[] = {
+ 	{ .compatible = "brcm,bcm963xx-imagetag" },
+-	{},
 +	{ }
  };
- MODULE_DEVICE_TABLE(of, spinand_of_ids);
- #endif
+ MODULE_DEVICE_TABLE(of, parse_bcm963xx_imagetag_match_table);
+ 
+diff --git a/drivers/mtd/parsers/parser_trx.c b/drivers/mtd/parsers/parser_trx.c
+index cf3bc9735238..db1129919084 100644
+--- a/drivers/mtd/parsers/parser_trx.c
++++ b/drivers/mtd/parsers/parser_trx.c
+@@ -120,7 +120,7 @@ static int parser_trx_parse(struct mtd_info *mtd,
+ 
+ static const struct of_device_id mtd_parser_trx_of_match_table[] = {
+ 	{ .compatible = "brcm,trx" },
+-	{},
++	{ }
+ };
+ MODULE_DEVICE_TABLE(of, mtd_parser_trx_of_match_table);
+ 
+diff --git a/drivers/mtd/parsers/qcomsmempart.c b/drivers/mtd/parsers/qcomsmempart.c
+index 1591aea48b28..d46555138978 100644
+--- a/drivers/mtd/parsers/qcomsmempart.c
++++ b/drivers/mtd/parsers/qcomsmempart.c
+@@ -180,7 +180,7 @@ static void parse_qcomsmem_cleanup(const struct mtd_partition *pparts,
+ 
+ static const struct of_device_id qcomsmem_of_match_table[] = {
+ 	{ .compatible = "qcom,smem-part" },
+-	{},
++	{ }
+ };
+ MODULE_DEVICE_TABLE(of, qcomsmem_of_match_table);
+ 
+diff --git a/drivers/mtd/parsers/redboot.c b/drivers/mtd/parsers/redboot.c
+index 120b2eab21fc..f8d421a88748 100644
+--- a/drivers/mtd/parsers/redboot.c
++++ b/drivers/mtd/parsers/redboot.c
+@@ -312,7 +312,7 @@ static int parse_redboot_partitions(struct mtd_info *master,
+ 
+ static const struct of_device_id mtd_parser_redboot_of_match_table[] = {
+ 	{ .compatible = "redboot-fis" },
+-	{},
++	{ }
+ };
+ MODULE_DEVICE_TABLE(of, mtd_parser_redboot_of_match_table);
+ 
+diff --git a/drivers/mtd/parsers/scpart.c b/drivers/mtd/parsers/scpart.c
+index ad6e9d5c3daa..e0bed5ef04d8 100644
+--- a/drivers/mtd/parsers/scpart.c
++++ b/drivers/mtd/parsers/scpart.c
+@@ -229,7 +229,7 @@ static int scpart_parse(struct mtd_info *master,
+ 
+ static const struct of_device_id scpart_parser_of_match_table[] = {
+ 	{ .compatible = "sercomm,sc-partitions" },
+-	{},
++	{ }
+ };
+ MODULE_DEVICE_TABLE(of, scpart_parser_of_match_table);
+ 
+diff --git a/drivers/mtd/parsers/tplink_safeloader.c b/drivers/mtd/parsers/tplink_safeloader.c
+index b770f41ef874..e9b25e236eb9 100644
+--- a/drivers/mtd/parsers/tplink_safeloader.c
++++ b/drivers/mtd/parsers/tplink_safeloader.c
+@@ -138,7 +138,7 @@ static void mtd_parser_tplink_safeloader_cleanup(const struct mtd_partition *ppa
+ 
+ static const struct of_device_id mtd_parser_tplink_safeloader_of_match_table[] = {
+ 	{ .compatible = "tplink,safeloader-partitions" },
+-	{},
++	{ }
+ };
+ MODULE_DEVICE_TABLE(of, mtd_parser_tplink_safeloader_of_match_table);
+ 
 
 -- 
 2.53.0
