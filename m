@@ -1,83 +1,83 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.54
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795581440;
-	b=GYwK/mmOGQ3AfKMY2FwXtPdbmZmxE5haNENCF7kt0dD4UwFIMG/FL4eo7MRD2XxXgttZ
-	 R9GSNVHvh/kpZ79PFPKhZCULBKep6QHHqfMruoMlgqHMsyW+SPbU+7vK+42e8Ve1R/Fcs
-	 SZjqIao8cSv+CK4hrVMKgB8FvuJs76gjnZ/o3H5TKAHykccYOSywDLibCcILScQzy1Y9a
-	 26r+tk+U9Jhv5iF2BJJoyyERKmfJoOgczWR9ELuwYpp2M2ZYn/GH4gEuTA+520TE7Cj57
-	 wPjUoxvh351n6KZnxUB90h2X/kZeW+n+yoSlt+axBe2X/8B5Gz6ucsPKMi/S1qTfXFw==
+	t=1795581444;
+	b=UpwNo6YoDz0kLe7i4/SgL3hmJG8J7G2T8uj3Iirp/a7RlO+fA9XEM7YrDFX8uW9+yrTc
+	 8J/t2XU3Xh+ljcwtBl/l6P8W8GHZ75oN7CI76d7DHuGK69SMkenzn5w623i3WV5eMDfed
+	 //7h3vEVq2pIpn2V81KpcEoaUtbrY5BkAo+19tgH760Jt+HMuAN65N+yJLHqIVIKySwOF
+	 NpV+w2gmkb6376/BIFeoHOvlMwDduo8toSpXlkAeGER0gNlzo9UE9HWsvXDH+YIkMnLAw
+	 nARE7aZ9WJAYehNudRQr1SRt7eZpUL9WrJsDLH58u0s1euGIBRyrs/eVzPdNSrE3lig==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795581440;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795581444;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding;
-	bh=v73lnBxXLvBxSu7XkVP0pFYU3Balrjs//m2fQ2pstrU=;
-	b=xWtsCmgzzVnOIX99GDHcvP3xa/Nbj87zZHdsWeQj7gDMHtNZbC9J3YCHNeK+WxGNdWY2
-	 9Y/4uBtwpKQh88QsBVFkq5iMvrbnKyVCGXwwcdlFpjMru3S3ni41ZOwwp8QZkS3wPjqFe
-	 /At2QuQSiD3Rw9ppYpr6gUHVYNCqpj95BpE0aFgb+N9zJYA/TyDNyFCaqYex7YCotBlAb
-	 YLSJa9f2EWIA3hx1qCYswcRn3WuhwxbZE5+Ui3vuyU2+SjcN/CwJjCSUs46WmJOatG5Pj
-	 QhhYeJ9g7h3OgHaGHvgsengwqqAX9bhgsAQkejNc3b3sOrM3LfHq5T5jqsvkafSRJOQ==
+	bh=qTrL4/9jM8t7yAmF2IG8ye/8M/WX8AYVFJWYbaSsj7w=;
+	b=RFEstClLol+wlU8rEUG4Kr+QkIVmy9QPMhLYoXWuanjg20K0J3vsr4+5wuhDUpKavK9w
+	 zJzV2hZVrZHMiZK5fCApzUnnh5AcvSdZBlDncestLXZewoQYhTK1B5JSv4UVCNCEGh9cg
+	 X6ZqqWW1TVC99XoiNFvgfWK3foFIGV1ADAKKg04tszv+NNXftvAUf+7E0B8Ubi3NH9x5k
+	 DmzE0matURNCMguO9g3psVZZsHTrbBJhLG9pleL2wvt9+bwEoUsGmqzO2yEm2/AaJtv8K
+	 /W1rNhPBLQA7b3PmVaIDvWY4VgJ3Gr7Avm6D0baOeXTBNz3MPbZjhMWYkAwG2wIEK8w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=cwGdV+ID;
-	arc=none smtp.remote-ip=209.85.214.177
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=zvWUhksP;
+	arc=none smtp.remote-ip=209.85.216.54
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25242606A32D
-	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 04:37:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 25242606A32D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5AFC606A32E
+	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 04:37:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E5AFC606A32E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=cwGdV+ID
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2f02ee04378so42050115ad.1
-        for <imx@lists.linux.dev>; Tue, 24 Nov 2026 20:37:20 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=zvWUhksP
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-3b3e85baf7cso3200203a91.0
+        for <imx@lists.linux.dev>; Tue, 24 Nov 2026 20:37:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795581439; x=1796186239; darn=lists.linux.dev;
+        d=gmail.com; s=20260707; t=1795581443; x=1796186243; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=v73lnBxXLvBxSu7XkVP0pFYU3Balrjs//m2fQ2pstrU=;
-        b=cwGdV+IDDlV5febtMUO4Pu4TLBkV+udJe5qU0cX9Oy9fmd77vBMk1wSz3nl+cK4P+r
-         5ntEfSaVp1aRVdTj5XTF0p9QFIgm1HwRDtBp4kcj8phZaMVN3LAu3zQ7xyHndvgK95q9
-         FEPXdme7hzj+2EKzEwpsTOWPjcWBtZOeFRQ1yxIKsAmH38Wfo3IA1dMK3nZi11/B3mNC
-         lJ/GnYKRsPKQY619UbSbynbfCIOT1TwmRAtf8VKULCUB8qUaGBft0UKdubfNAtUzBjcM
-         OwTBcFzlBV4eCMYCcVU7Urqw8lUvSnaRXHgIu8JkkqYqpEBPtMPpewLRFjLNE2YspuL+
-         F36Q==
+        bh=qTrL4/9jM8t7yAmF2IG8ye/8M/WX8AYVFJWYbaSsj7w=;
+        b=zvWUhksPIYvv3yfTQdaZVlDhNYe0UEXBdvVXYS4jvwD2TUHT46a0LuHB5W/JV2FLRj
+         bPpOUY/YZsueGujd6H/9rcYSF7L7PxOdEjlEFHtgYa3IDziiVJHgtVh6FzAUIUqL4ObE
+         coWdECZdWirYLdKu4szTohtWw1BNU9f/9VXYc+OBEZruMb3kvf/EcFQkRy3pCH7lxdSl
+         6CO3peGwTdgCCbwqHSNeDOTwXC2saGYWXuWJWuJf7Hqr0ZO2tMapYFUipAqeKmJppc3v
+         aEuW+qVgNC2dGkt8C3YzHmmJDXGEcBnkhPa6AfEyN+WSVJYJoyKWZ7B+DqoXDnxPoCsF
+         FwBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795581439; x=1796186239;
+        d=1e100.net; s=20260707; t=1795581443; x=1796186243;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=v73lnBxXLvBxSu7XkVP0pFYU3Balrjs//m2fQ2pstrU=;
-        b=Jx+oM5F8MZwPCaE4XOGXVNh8Y/mJWnjV3u5YchR5yzSc5N8TSi8xsFM880p3Ish+5s
-         uhXmqJw7TASs8j5iyP47SIA0SKjUej/4bg1lUVyeAOz2wtScGaUGzBQLp14V2s7F1Dw8
-         pAcpfJta8I2Buqwe6fbOk3yAn3Zao6kvQSwz5BDHlaZ9GoYd4qd4ou91wBm3neIcdflO
-         /yk+CnnGu9ouNdMz/k7F2IO2SQHGVm/hBtxpg20SUeB+sn39AALZmKDU97KUnvVEVsGU
-         mho2uwFTg7Y7uG9DcOeLfBnKW+H1zGu6DZV2sYaP88kdf0qoV0m1Vtc4k1hHX22TNy9P
-         cyJg==
-X-Forwarded-Encrypted: i=1; AL+hErExFfdADmAH7w0N46v+wtrcTRsUSi1R3KDHZhzSYGV3WrK+XSwXgm9jy4NySUsHoFVpDTI=@lists.linux.dev
-X-Gm-Message-State: APuU4Z/gNXNxwGhAq4iC1i+Th7VuDA4RAaiWvwX3nE0cqcJqIN7Yjq4m
-	H30EmVeAXiM4HTHcgp8wl7z5EPfo6eMm446TbcGUOIFaZHs1fUHVCXqF
-X-Gm-Gg: AZFdTZdGWaYI2V0PG3VPD8VB4NpiPSuyC4rBO8x71QTr3R2Uv3dDCcX6wRrwIk6fiwg
-	1F2sjLVnXSYYy3CT+rx/ksvDm1e2TNsCuCpCdpC6TI9t5FMTMUap2Tn4gswSHSeGvNGcyrRg3Ou
-	aSB6univWtHoM3eCV/FyluZcCnO+ic3ROmT006rnJyMg0TxCANG8R+b88Eezsoh5QU1VbGveRAS
-	A6z/+D4Jo9CDU5LDfi4L/OV7sIAM+q8zcqbvAPSq4RlU8vq2HsM4HfblVVuwsF6+GRyxQ7t0Hfo
-	gU47aSJhNMq/jXPnMgFSoJKb8UY/mJlWMfMZOcpqWEyAEyrLtx9ddBnR3F7DT4AfXELrX3VLa3W
-	DHQ8mTb4svSVA1CeAgtD4oeD5qmRufRb1z1UtCwutcLahAANZ53ALXqnXYC/x7OcZsj5xF4uvcc
-	Ka30+Cmvo9fkdEHoDGs5JgHLIY/fGqMStgvJv/gJUWSEQuiWKCwlAtbfydV9E2GpKQzHRq09S0G
-	nU9Ohyb1JjNs9/P1B6XGysxs7qWsslDvD4CSdjAIbj+GRS894BHwNoQwt8BLabxgP8TUBGECmdO
-	/n6Ysx3RNU5Wd0Axuv3juW6y2/Q=
-X-Received: by 2002:a17:902:dacc:b0:2ed:472:b9d6 with SMTP id d9443c01a7336-2f03efb1397mr182475285ad.2.1795581439561;
-        Tue, 24 Nov 2026 20:37:19 -0800 (PST)
+        bh=qTrL4/9jM8t7yAmF2IG8ye/8M/WX8AYVFJWYbaSsj7w=;
+        b=K69S9tBC+Qr5jzfBpHOY0ApUg1UWLX0CGUcXOp1tkvxeiZdtR0BDsFv0kU6F2ENigP
+         Tqoh37coxPGygxok+xThFe+m7GGjhVgUgiuFY2/AJDDum+6blAnfhBOlRjenpbWD11ex
+         cb5UR5ld7pXhFbBVJguVycJnHSh0cY2l1dNdqOVp5jK2psoSPCWnZNH5sXW1EyJztQdb
+         DlxQL8F0gaX6miQ+DMGf97/V2f4muqNtuv9wry7Xd2TYXv99BzKcKazmgsijL6bD2TUr
+         Dvoare6ZH2e+CK8VEHGEAg4oxuZEs8+Z3rrDu4uRIMpaNZZTElA0Ks8Oip+f6PRi5HmQ
+         zN3w==
+X-Forwarded-Encrypted: i=1; AL+hErGGoPBwy4IhlTDjY5mw40EVLsF3h+y9Ig5y1RjzpE+R0MWb5s0PSVF54tDtK+iNo1lzdL0=@lists.linux.dev
+X-Gm-Message-State: APuU4Z/zkWKOZ7CxW1TssHkVns8MdYeTY519H88BgYwWPfVA3TEyFNsq
+	OSSzusywxTUjQOT3zM1iqH1CJAvpODGik1/TAvSjD29+KuJNzsLDokyS
+X-Gm-Gg: AZFdTZdyzpue4uzCOEmgfYZQ1CTmGsxC+4n3Rkfp98eI6wb6hYEl5CN08iBgLpeb20x
+	Yu93iNu2DNBj097Bww8aFoC6tRVu5lOyVcMri2tyEsxJzOAVnhJ5mS8FE4uQWYaHnLLdKfM0q2A
+	2CPc4C4vS7aJ+d+45Ip03Fmtr5BzwP41cZdEgY5NgkjdFUBX46DI45t5f2IDUMu6gbdxt7pCfmt
+	ehzG9iLUgHUIZzJHF3YMeuC/TegNwOVUJOcYy6fC3TCSj/ZOHUUrXq0TbOc1CreAgjQ8F9ew0yV
+	xdV3xzxbJjTxmZAkxt7Ro6+onE2/H8wAtlc/2noBFJRhIk+4E0tMHZfxJ7l+8h3kwun7/d1uPKX
+	JAyU+fIGW8p2qET0uxU7yJdHjCRtKpYUeuXO07OQYbM2Kmdg2KuiTth2vwLptGcoATKo3tYibUK
+	1yn1bj5bZwDdgceLeUaW6NSADIkm3Tn8CnzXcIigD98nAjrnnQOQ6f2zX83I73qtr0sQiYlWq5/
+	0C0WwMSJxSM3e8o8UFTOReY6tRTkCY5kMvasxGvRcYjHg0496r0v8tbQlH9haEAau4V7joyPm8T
+	LqI/9U4E+F0d960g1KZ/Z5dMjggDvc7fNk8GuHTrvLUINRVN
+X-Received: by 2002:a17:90b:4c0b:b0:3b4:12a9:2e1 with SMTP id 98e67ed59e1d1-3b41c931d36mr16931812a91.33.1795581443120;
+        Tue, 24 Nov 2026 20:37:23 -0800 (PST)
 Received: from localhost ([2001:19f0:8000:4ce8:5400:7ff:fe0e:e6b2])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2f03f118c72sm78614345ad.54.2026.11.24.20.37.18
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b41abb1b66sm26615594a91.1.2026.11.24.20.37.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Nov 2026 20:37:19 -0800 (PST)
+        Tue, 24 Nov 2026 20:37:22 -0800 (PST)
 From: Inochi Amaoto <inochiama@gmail.com>
 To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Jonathan Corbet <corbet@lwn.net>,
@@ -113,9 +113,9 @@ Cc: linux-doc@vger.kernel.org,
 	linux-phy@lists.infradead.org,
 	Yixun Lan <dlan@gentoo.org>,
 	Longbin Li <looong.bin@gmail.com>
-Subject: [PATCH v5 1/8] phy: core: Add common helper to add phy phandle device link
-Date: Wed, 25 Nov 2026 12:36:32 +0800
-Message-ID: <20261125043639.249525-2-inochiama@gmail.com>
+Subject: [PATCH v5 2/8] phy: core: Add common helper for get phy phandle by index
+Date: Wed, 25 Nov 2026 12:36:33 +0800
+Message-ID: <20261125043639.249525-3-inochiama@gmail.com>
 X-Mailer: git-send-email 2.56.1
 In-Reply-To: <20261125043639.249525-1-inochiama@gmail.com>
 References: <20261125043639.249525-1-inochiama@gmail.com>
@@ -130,129 +130,112 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-It is very common for adding a device link for phy phandle
-for device managed phy helper functions. So add a common
-helper for future reuse.
+Two phy helpers use index to get phy phandle of a device node,
+add a common function for the future reuse.
 
 Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
 Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- drivers/phy/phy-core.c | 46 ++++++++++++++++++++++++------------------
- 1 file changed, 26 insertions(+), 20 deletions(-)
+ drivers/phy/phy-core.c | 57 ++++++++++++++++++++++++------------------
+ 1 file changed, 33 insertions(+), 24 deletions(-)
 
 diff --git a/drivers/phy/phy-core.c b/drivers/phy/phy-core.c
-index 597e6b234f5e..b7550ca37e66 100644
+index b7550ca37e66..efbd7e139dce 100644
 --- a/drivers/phy/phy-core.c
 +++ b/drivers/phy/phy-core.c
-@@ -606,6 +606,27 @@ int phy_validate(struct phy *phy, enum phy_mode mode, int submode,
+@@ -697,38 +697,55 @@ static struct phy *_of_phy_get(struct device_node *np, int index)
+ 	return phy;
  }
- EXPORT_SYMBOL_GPL(phy_validate);
  
 +/**
-+ * phy_add_device_link() - Associate the phy with the device
-+ * @dev: the device consuming the PHY
-+ * @phy: the PHY supplied to @dev
++ * _of_phy_get_by_index() - lookup and obtain a reference to a phy using a
++ * device_node by index.
++ * @np: device_node for which to get the phy
++ * @index: index of the phy from device's point of view
 + *
-+ * Add a device link with @dev as the consumer and @phy as the
-+ * PHY supplier.
++ * Returns: the phy device, after getting a refcount to it; or
++ * -ENODEV if there is no such phy. The caller is responsible for
++ * calling of_phy_put() to release that count.
 + */
-+static void phy_add_device_link(struct device *dev, struct phy *phy)
++static struct phy *_of_phy_get_by_index(struct device_node *np, int index)
 +{
-+	struct device_link *link;
++	struct phy *phy;
 +
-+	if (!phy)
-+		return;
++	phy = _of_phy_get(np, index);
++	if (IS_ERR(phy))
++		return phy;
 +
-+	link = device_link_add(dev, &phy->dev, DL_FLAG_STATELESS);
-+	if (!link)
-+		dev_dbg(dev, "failed to create device link to %s\n",
-+			dev_name(phy->dev.parent));
++	if (!try_module_get(phy->ops->owner)) {
++		phy = ERR_PTR(-EPROBE_DEFER);
++		return phy;
++	}
++
++	get_device(&phy->dev);
++
++	return phy;
 +}
 +
  /**
-  * _of_phy_get_with_args() - lookup and obtain a reference to a phy by of_phandle_args
-  * @args: of_phandle_args to the phy
-@@ -805,7 +826,6 @@ struct phy *phy_get(struct device *dev, const char *string)
+  * of_phy_get() - lookup and obtain a reference to a phy using a device_node.
+  * @np: device_node for which to get the phy
+  * @con_id: name of the phy from device's point of view
+  *
+- * Returns: the phy driver, after getting a refcount to it; or
++ * Returns: the phy device, after getting a refcount to it; or
+  * -ENODEV if there is no such phy. The caller is responsible for
+  * calling of_phy_put() to release that count.
+  */
+ struct phy *of_phy_get(struct device_node *np, const char *con_id)
  {
+-	struct phy *phy = NULL;
++	struct phy *phy;
  	int index = 0;
- 	struct phy *phy;
--	struct device_link *link;
+ 
+ 	if (con_id)
+ 		index = of_property_match_string(np, "phy-names", con_id);
  
  	mutex_lock(&phy_provider_mutex);
- 	if (dev->of_node) {
-@@ -833,10 +853,7 @@ struct phy *phy_get(struct device *dev, const char *string)
- 
- 	get_device(&phy->dev);
- 
--	link = device_link_add(dev, &phy->dev, DL_FLAG_STATELESS);
--	if (!link)
--		dev_dbg(dev, "failed to create device link to %s\n",
--			dev_name(phy->dev.parent));
-+	phy_add_device_link(dev, phy);
- 
- out_unlock:
+-
+-	phy = _of_phy_get(np, index);
+-	if (IS_ERR(phy))
+-		goto out_unlock;
+-
+-	if (!try_module_get(phy->ops->owner)) {
+-		phy = ERR_PTR(-EPROBE_DEFER);
+-		goto out_unlock;
+-	}
+-
+-	get_device(&phy->dev);
+-
+-out_unlock:
++	phy = _of_phy_get_by_index(np, index);
  	mutex_unlock(&phy_provider_mutex);
-@@ -912,7 +929,6 @@ struct phy *devm_of_phy_get(struct device *dev, struct device_node *np,
- 			    const char *con_id)
- {
- 	struct phy **ptr, *phy;
--	struct device_link *link;
++
+ 	return phy;
+ }
+ EXPORT_SYMBOL_GPL(of_phy_get);
+@@ -1001,20 +1018,12 @@ struct phy *devm_of_phy_get_by_index(struct device *dev, struct device_node *np,
+ 		return ERR_PTR(-ENOMEM);
  
- 	ptr = devres_alloc(devm_phy_release, sizeof(*ptr), GFP_KERNEL);
- 	if (!ptr)
-@@ -927,10 +943,7 @@ struct phy *devm_of_phy_get(struct device *dev, struct device_node *np,
- 		return phy;
+ 	mutex_lock(&phy_provider_mutex);
+-	phy = _of_phy_get(np, index);
++	phy = _of_phy_get_by_index(np, index);
+ 	if (IS_ERR(phy)) {
+ 		devres_free(ptr);
+ 		goto out_unlock;
  	}
  
--	link = device_link_add(dev, &phy->dev, DL_FLAG_STATELESS);
--	if (!link)
--		dev_dbg(dev, "failed to create device link to %s\n",
--			dev_name(phy->dev.parent));
-+	phy_add_device_link(dev, phy);
- 
- 	return phy;
- }
-@@ -982,7 +995,6 @@ struct phy *devm_of_phy_get_by_index(struct device *dev, struct device_node *np,
- 				     int index)
- {
- 	struct phy **ptr, *phy;
--	struct device_link *link;
- 
- 	ptr = devres_alloc(devm_phy_release, sizeof(*ptr), GFP_KERNEL);
- 	if (!ptr)
-@@ -1006,10 +1018,7 @@ struct phy *devm_of_phy_get_by_index(struct device *dev, struct device_node *np,
+-	if (!try_module_get(phy->ops->owner)) {
+-		devres_free(ptr);
+-		phy = ERR_PTR(-EPROBE_DEFER);
+-		goto out_unlock;
+-	}
+-
+-	get_device(&phy->dev);
+-
  	*ptr = phy;
  	devres_add(dev, ptr);
  
--	link = device_link_add(dev, &phy->dev, DL_FLAG_STATELESS);
--	if (!link)
--		dev_dbg(dev, "failed to create device link to %s\n",
--			dev_name(phy->dev.parent));
-+	phy_add_device_link(dev, phy);
- 
- out_unlock:
- 	mutex_unlock(&phy_provider_mutex);
-@@ -1059,7 +1068,6 @@ EXPORT_SYMBOL_GPL(phy_get_by_of_node);
- struct phy *devm_phy_get_by_of_node(struct device *dev, struct device_node *np)
- {
- 	struct phy **ptr, *phy;
--	struct device_link *link;
- 
- 	ptr = devres_alloc(devm_phy_release, sizeof(*ptr), GFP_KERNEL);
- 	if (!ptr)
-@@ -1073,10 +1081,8 @@ struct phy *devm_phy_get_by_of_node(struct device *dev, struct device_node *np)
- 
- 	*ptr = phy;
- 	devres_add(dev, ptr);
--	link = device_link_add(dev, &phy->dev, DL_FLAG_STATELESS);
--	if (!link)
--		dev_dbg(dev, "failed to create device link to %s\n",
--			dev_name(phy->dev.parent));
-+
-+	phy_add_device_link(dev, phy);
- 
- 	return phy;
- }
 -- 
 2.56.1
 
