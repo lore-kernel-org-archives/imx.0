@@ -1,89 +1,97 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.42
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795624142;
-	b=dr0ScMM8DB1sgmVaOTCSSTJsIU6vNJCGoIOyqjE30MGmQyviyB+fGxdUCSc0qd4Kwjmk
-	 7mzhFR9jk66nHzYVP3h0p0Hzy3ONf/f/kpH/rmk/tJL9lHcl5fM6kDiAq9+s9s6cC7r4i
-	 LVPhbrHpu96GEp/YuUB1B90T+d/PJcTBK215B9fDBKkcg40ZKLPt3VmQkDsef0NwadxAG
-	 KkBujXD1Xw8XH4ng/fdqV+lcrnW3758pmdTINPcOoLM879kRaZyyhWynLVC/ezRGDouht
-	 c/++/ZOoPBCWrbCcjLS8oDwBdWa+lEYvFPfKWpRY17eXGJM7ANeHkSc7KJdYVn+IVZw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795624142;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:Date:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key;
-	bh=b3zipjW6FCv6jer+zbTeZRYq6wiTPflhk4lNUgGm5Zc=;
-	b=4mALeoFQSuj4y+fRD1FHtWlKsA25MjbKSEkNnwSn9lYa98r8tsS+znSe7QlpRDJX6kMK
-	 nfGjhxlSJmHdpeGxcnu+u4wQaCv+epsxuYCmowP/+uWy5jfcntlRxe/y4nrMWB4JFPf6C
-	 j0IgHQ8MRXt2juQc1AtDC/BTmMaHz3QNkSKOJzrio5wWLpCW5AgwU+bweaB7WY6pZ2fo8
-	 L9aD5h1Bb0N+1OucZmqQOJ2FJfwnSrLWQIgDD+Gi19qmHuHuphpWxcGDyv3plgTi8kLZK
-	 r/h5VgBse5D222D+TFC5MG85qj9dHUv2Ug+e9OAh/f0cBAFWVWqHq1fPiN0b1ckFiog==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=thegoodpenguin.co.uk;
-	spf=pass smtp.mailfrom=thegoodpenguin.co.uk;
-	dkim=pass header.d=thegoodpenguin-co-uk.20260707.gappssmtp.com header.i=@thegoodpenguin-co-uk.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=d4IRJI7i;
-	arc=none smtp.remote-ip=209.85.128.42
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.65.43
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795624359;
+	b=nhyGvi/f1pFw6dJBb9QcKpNVyoYGUCpgMwbibbgk6gL+vGDUP2nKDXI3J17YoGSV9EZP
+	 pY0K4bRX06LMkaI6IHB0tV3tNicAwcVI2T+fwEapEjhCULskO/4VCMW4nupMd5x1+RfCD
+	 E0267ayHISX/bxa08c36T5bW/Srdaqgqk6PVXEll3dyBBz7Z4mncVju29WxbkL+3gcFpm
+	 /12o+I5qKngArnoIElJk0ynUed/Y1qd1JBd301oLgqTpdl6r2xmiRiSa+Ps5939Q4Ugii
+	 K6kks6HdsF+5OMrTTroVMw9fppYZk0p1dVN7MdBpvuz8pF0lJGR2nlroXQUujwzHgaw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795624359;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:Content-Type:Content-Disposition:
+	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=XBDrLAxJ/0gY83X+GTbCxPKiwrBVv2YxhFcNVdxK9PA=;
+	b=ZssoOh7pGJtafRmNc0TcGToOr7+GiA7xr9Cdz892hbt2dYMHCXhJ9Jv68nrHJ4x6ZNR3
+	 qcDrVRfEfcFhJqMyaJR0KOuiEX6EWAvkSCiNm52U/FFeqkGslO2zsELq6WtqbBTO121nK
+	 nQVoSooUqLcWfsxt3WooUj/gCpikNTF1mApdXHdi88I7NEKJ7NI0QBkfftyAJmIG0KAIW
+	 nD21W59K7e798Mt8l/8JRRGD/hUA4clSJ7tlPPlXt0MTPB8kNp892TTo9C/pu1WlIL5ln
+	 /bMdxCFDyAA3FNUsp1R9jrWFsw4TVTpTmPSn1WjiIV8kGI3SDt60o2pk7j7PoGvamSQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=oss.nxp.com;
+	spf=pass smtp.mailfrom=oss.nxp.com;
+	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=j1T7dK6Y;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.65.43
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011043.outbound.protection.outlook.com [52.101.65.43])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EA12606A334
-	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 16:29:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2EA12606A334
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=thegoodpenguin.co.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=thegoodpenguin.co.uk
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83C03606A33C
+	for <imx@lists.linux.dev>; Wed, 25 Nov 2026 16:32:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 83C03606A33C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=thegoodpenguin-co-uk.20260707.gappssmtp.com header.i=@thegoodpenguin-co-uk.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=d4IRJI7i
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4ac95761c85so46733025e9.2
-        for <imx@lists.linux.dev>; Wed, 25 Nov 2026 08:29:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=thegoodpenguin-co-uk.20260707.gappssmtp.com; s=20260707; t=1795624140; x=1796228940; darn=lists.linux.dev;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=b3zipjW6FCv6jer+zbTeZRYq6wiTPflhk4lNUgGm5Zc=;
-        b=d4IRJI7iUCxnC/Qy0O1NnI5RMp0QtL7PJkufO7MfiD+EiTfnqt2PArPwRpLftH2GBM
-         gaY+cwuuz6xtJ0+Degpc4PdfJeMZXkGMwvI280gEpZZWV+cVcauytLUFtbz4zaFTIOy4
-         EMGTuqRMKFYWiOkkXq5du1aUw3mbt7U2x7NNxEoUlYdTfvpBG1iF/F0pbrOc1J5XGADw
-         G9s90PuKrJU1T5xBqWqcqSgCPXUMtzw/GkXpgHV4b/2xwnzamY9M077kuLwEppYsK92R
-         GIH6e5XFpZ07LFp3KyW3hioezIhTKS0oZOGtdwnMeH1ZJra2wpbmv6Ea6kMNOJlN0o+i
-         Ervw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795624140; x=1796228940;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=b3zipjW6FCv6jer+zbTeZRYq6wiTPflhk4lNUgGm5Zc=;
-        b=1JlTF/zvN5v1LR9J2oJePkYcxbB3I0xC30dVeLPaBJQlYHAEsrHhbIcnGCztTVz/Ge
-         zk6AQUrEvN3JF75x0o5yxiSH60C8s3tr/jzQZo8KsXEUps+iwo4soN1SIf9kauojFTVZ
-         ZkU6uJXjq+Y4edpGbyXVYRmyTUaLgcVI315sVSJLJqV1KU6gshY2FTnPcBgh9Kd5+Phe
-         lnIlEMifaiN8N/gK/6LCCvxMvfCz/KrC2/ltaEyz+gaYmVcbdzutXkm8YJGtAbS8dj4o
-         Q/QvcAW78OwDN0InSShF0ALtFCmplx2Kb8EBwcFWlYcBe35lh16VdWxigbhBYqmkcAyq
-         FgPw==
-X-Forwarded-Encrypted: i=1; AL+hErHbaOo+K9qpUyYTbJhVliq4byZyCQoKbix0zoiXxXKiDr++NPoMdEmVSpJIh7vG3uJLhl8=@lists.linux.dev
-X-Gm-Message-State: APuU4Z8EAosrayjMP62S+D1VIS0UWmZ2NymA+/sss8vEAfsrfVfPHGV3
-	+3B8zZSa6AjXDrEFwY4E8KK+tHrv/FMZGGipTXRoK1g0YQWwz5jaP402lEyzvpW9KkM=
-X-Gm-Gg: AZFdTZdXLJtfgXrGYB6sU3Ch5z4epu/RLjI2n6K+IBr5mgRWkObCGMRFN5RQDrrX1S0
-	5dvJa/Fc51z4x8IzUxcan1OZzTDpeWp658qvWtCGBSsoVe+iVFuVsUHZDP3Sw5LqGofrNCF2XlY
-	SIPi+DfKc4DFUGw0kiUdBwvNxI0x+MJx7z9QkqoVhV9eayvs2E3FsVDcpJLXokfsNquA96HYV8X
-	QHMqqs9JamrwG2zd6uBy3wwb7to+I1Kvq6ba+L9mR+TxsYBg/IYa/wxKq62DK8ExktYJts8IBYO
-	D8km7Mhl2NFNJriCAywh8zbooms1svjbLxCVxH+ALeRKTb05CS06PQ1qbLPEuY05yykWCDijV8k
-	EgrEV1PuOPJSHzQ+/yWVxFqQ8O3xd+m/boC/rkTX0s9OBBnH73If8SShkUL0wimZUrJRfXbJGyP
-	JNfsgy5BSEKDApv3rq8e9swCLbbp/tQpuhFPsIhqu4rO/4uZJzrXff1Ie4j6b+2p9cHx3MDtxFf
-	y4RylK0ATYTTRF/sRhnerB02qu7ecR/R/OLQosIhEZQAUj9vUpvhyHoKXKk3CN76bgMsdiFyeRe
-	oM6B2OU7UJfgLkLuC6qZTAXH8UTJqX4OLDtcBp6P4CU1xA==
-X-Received: by 2002:a05:600c:4f0f:b0:4bb:87f4:3674 with SMTP id 5b1f17b1804b1-4bb8880ef40mr469106785e9.15.1795624140547;
-        Wed, 25 Nov 2026 08:29:00 -0800 (PST)
-Received: from [10.42.0.1] ([2a00:23c7:1d1a:9c01:f716:ba19:8aaa:f1c2])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb853368d3sm527336375e9.1.2026.11.25.08.28.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Nov 2026 08:29:00 -0800 (PST)
-From: Pawel Zalewski <pzalewski@thegoodpenguin.co.uk>
-Date: Wed, 25 Nov 2026 16:28:36 +0000
-Subject: [PATCH 10/10] mtd: parsers: Unify list terminator for of_device_id
- lists
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=j1T7dK6Y
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=h+KMYrQcZerEeBxxh5FYT27/BlQ+/HWM4ojOd7Rmh5n2ujjZwerbPQp7/jasdZVr/RNweDtdsnMwv0C9HXgHgRQCdmW2ZB2F10uMWtXaMFlL7iAxa2vSiZqSFbvMdfjzQFYd28XuZs/4e4KJdVb0YBg8++JOcbltKg1W+/9hN+E31JJP1/je2npfKk4UQmAHZtSfVPF3srI1OPM4TGjq2FtOOeKCSzEh9tspMcU9Ih5G+DXZLqY+HzbmLWcmTADAA7lYIWQdGYy0IizmQqQZYxWcLDhXrC8gsHZL4Tu6EeEFTRY4RyFXV7tTlhWmiEwCB4MwNgBtF7mZ/HduFOs2IQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=XBDrLAxJ/0gY83X+GTbCxPKiwrBVv2YxhFcNVdxK9PA=;
+ b=abgrCExvgAOmT4Q9fEXrng22Np0l0DCWEY/yfhfgQae3tZH89POtdkJeqE8EqD5ZAOfcz1r4GCQA5qC5YhiAjO0OrDPHrqq0BjMMGcGWvLjk7/mkq05MCXEMe1E2x1EryaH38kh3lqPHJ747sFUKHbWCSPPUOFe68InZ+uFFSq8/whvLJbM4IyCnTxHWYcfzXSiH9gNUmlzTSn4/qxh7iwnlgEitr8LEubcDg8HRtBfIpgYn5DXPBmqFpV6Z7xzVLOJ2e/1fUqXYDVODVQ4iPhAi9XzdjMEycRVecDMUlzzpDh8oySg4abXHmY0lNFnsOl/SCyR938O36wMD9Gu6Cg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=XBDrLAxJ/0gY83X+GTbCxPKiwrBVv2YxhFcNVdxK9PA=;
+ b=j1T7dK6YQiu/XPWyE9nbRdrC7kEFCP2i3Cp5Qfui2nYL5Jbb2GeWL2Huj++u2hvQQG3Y/IkCRmqPxwNGD2aXWMtU3QnED4u7t4NEBZmPaJsogcscgvfP82R2wmlh0TlAEN4RwLAtHSJcsbELWY676sk1Ig8qblN00aTyZ+apt6Og5j7RabWFk9br0DW1DlbmBZs2Nz8XuWvMps/xP56FrbAsPD2Buo1dH+YK3wV0G0NH7i+SiFZ1OTJ/hbAOwA8yqNcz8gaRGno1Xw7BlzqbiCIiwVnM4d4Vj40zwZJl/m6685L9/PkhneOEOMvpw1acTUEqJ4uoYVksUxQhJoTHvw==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from MI3PR04MB12438.eurprd04.prod.outlook.com (2603:10a6:290:76::14)
+ by GV1PR04MB10425.eurprd04.prod.outlook.com (2603:10a6:150:1d3::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.662.6; Wed, 25 Nov
+ 2026 16:32:33 +0000
+Received: from MI3PR04MB12438.eurprd04.prod.outlook.com
+ ([fe80::c715:c32:8bb1:b70b]) by MI3PR04MB12438.eurprd04.prod.outlook.com
+ ([fe80::c715:c32:8bb1:b70b%4]) with mapi id 15.21.0662.004; Wed, 25 Nov 2026
+ 16:32:26 +0000
+Date: Wed, 25 Nov 2026 10:32:18 -0600
+From: Frank Li <Frank.li@oss.nxp.com>
+To: Dinesh kumar v <dineshkumarv85@gmail.com>
+Cc: Frank Li <Frank.Li@nxp.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>, imx@lists.linux.dev,
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	kernel@pengutronix.de, festevam@gmail.com
+Subject: Re: [PATCH v4 3/3] arm64: dts: imx95: Add ADLINK LEC-iMX95 board
+ support
+Message-ID: <awcNkgqB2YsIOusn@SMW015318>
+References: <20261125113845.297658-1-dineshkumarv85@gmail.com>
+ <20261125113845.297658-4-dineshkumarv85@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261125113845.297658-4-dineshkumarv85@gmail.com>
+X-ClientProxiedBy: CPAP307CA0004.DNKP307.PROD.OUTLOOK.COM
+ (2603:10a6:380:3::17) To MI3PR04MB12438.eurprd04.prod.outlook.com
+ (2603:10a6:290:76::14)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -93,227 +101,187 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261125-acpi-mtd-v1-10-42ad2f645bee@thegoodpenguin.co.uk>
-References: <20261125-acpi-mtd-v1-0-42ad2f645bee@thegoodpenguin.co.uk>
-In-Reply-To: <20261125-acpi-mtd-v1-0-42ad2f645bee@thegoodpenguin.co.uk>
-To: Miquel Raynal <miquel.raynal@bootlin.com>, 
- Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>, 
- Pratyush Yadav <pratyush@kernel.org>, Michael Walle <mwalle@kernel.org>, 
- Takahiro Kuwano <takahiro.kuwano@infineon.com>, 
- Vladimir Zapolskiy <vz@mleia.com>, Robert Jarzmik <robert.jarzmik@free.fr>, 
- Alexander Usyskin <alexander.usyskin@intel.com>, 
- Joern Engel <joern@lazybastard.org>, 
- Madhavan Srinivasan <maddy@linux.ibm.com>, 
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
- "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, 
- Shrikanth Hegde <sshegde@linux.ibm.com>, 
- Michal Simek <michal.simek@amd.com>, 
- Nicolas Ferre <nicolas.ferre@microchip.com>, 
- Alexandre Belloni <alexandre.belloni@bootlin.com>, 
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
- Brian Norris <computersforpeace@gmail.com>, 
- Kamal Dasu <kamal.dasu@broadcom.com>, 
- Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
- William Zhang <william.zhang@broadcom.com>, 
- Anand Gore <anand.gore@broadcom.com>, 
- Kursad Oney <kursad.oney@broadcom.com>, 
- Florian Fainelli <florian.fainelli@broadcom.com>, 
- =?utf-8?q?Rafa=C5=82_Mi=C5=82ecki?= <rafal@milecki.pl>, 
- Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>, 
- Han Xu <han.xu@nxp.com>, Paul Cercueil <paul@crapouillou.net>, 
- Harvey Hunt <harveyhuntnexus@gmail.com>, 
- Keguang Zhang <keguang.zhang@gmail.com>, 
- Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>, 
- Liang Yang <liang.yang@amlogic.com>, 
- Neil Armstrong <neil.armstrong@linaro.org>, 
- Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
- Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Manivannan Sadhasivam <mani@kernel.org>, 
- Heiko Stuebner <heiko@sntech.de>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Chen-Yu Tsai <wens@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Samuel Holland <samuel@sholland.org>, Stefan Agner <stefan@agner.ch>, 
- Lucas Stach <dev@lynxeye.de>, Thierry Reding <thierry.reding@kernel.org>, 
- Jonathan Hunter <jonathanh@nvidia.com>, Jacky Huang <ychuang3@nuvoton.com>, 
- Shan-Chun Hung <schung@nuvoton.com>, 
- Tudor Ambarus <tudor.ambarus@linaro.org>, Linus Walleij <linusw@kernel.org>, 
- Kyungmin Park <kyungmin.park@samsung.com>
-Cc: linux-mtd@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
- linuxppc-dev@lists.ozlabs.org, imx@lists.linux.dev, 
- linux-mips@vger.kernel.org, linux-amlogic@lists.infradead.org, 
- linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org, 
- linux-arm-msm@vger.kernel.org, linux-rockchip@lists.infradead.org, 
- linux-stm32@st-md-mailman.stormreply.com, linux-sunxi@lists.linux.dev, 
- linux-tegra@vger.kernel.org, 
- Pawel Zalewski <pzalewski@thegoodpenguin.co.uk>, 
- =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795624113; l=5774;
- i=pzalewski@thegoodpenguin.co.uk; s=20260430; h=from:subject:message-id;
- bh=KOogzIvhzR8eYf+iMlhb8/yYFLWrj/S1PvoHnBRgitM=;
- b=VkPD+ID7sV7Ml7e/hOXMxbv8kZ5YRPTjrP5CRzexH7lH8bYIAqCXSWUv8DDuCLt6WWwVQ34Le
- OZotULTBoziBXkpCQurbY5qTiNItaA5MiH9TUJN3r3pgeSN9ESNfpKu
-X-Developer-Key: i=pzalewski@thegoodpenguin.co.uk; a=ed25519;
- pk=vHq4n9IonORH2GTzLv8r6CWAFHzgfBuNkQPXA8NSly0=
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|GV1PR04MB10425:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7934d6e3-cddf-41cb-1955-08df4b11b107
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|19092799006|23010399003|376014|7416014|366016|18002099003|22082099003|4143699003|11063799006|10067099003|56012099006|261026140227099003|261022075727099003|261022105027099003|261028144727099003;
+X-Microsoft-Antispam-Message-Info:
+	rMKQYOHKfyT3MEfgIdDhTbucbvwWA/e9pFGx34UgcqLk+7daY0Q7zJgUsXarLf0fSrJLgnNdkfv4Bu/cKKqdZaBWRUPoWnmVDmge5Q8F/WQAAYP87AMJw2u0Qd9MGYW0bwFDkl77rdNaikDn0EXjXRTmHphz7UaO7ufuCEeWCAMwFBbwXL88lUTcjtopCIVfcM0GC2Z5hK5Buq7pESeDmdBEGtmdWZU0786Bl4pE9WzmVcjDoTnbB/9wcKHCB2nu+GkhlrmMsGT7HIys0RkUhQuusAa5Fwd/BjloconfwTydar1lm+oGinZuPY4zMCdaB+VlgPN/rQXOK7N467J0TcSgPEJQM2ME5FRLD37hsV3E1vAHOmwDn2xMkUrSqfJvZMbvL2aS8dBCPxFs3uibXIv1Ggoois6J5W00jo8NxfwFLW/A/e/uBPPWu0a8x0s8FI7wo+PtxnwdXhLy4YXnGzTNu2clhDrCs5De7cv+PIPB0q32oJkVRfBaKZ71mvSz0RLfH5Yb0gFtugK20QVgsatHbp6rwOaDa145iFSV0vUMCROaWCsmihmAya0v+YTxPQPOQbqYDqzIAu038l0piYrOl/Z96XMTjxmdo105h6TCH6MgioCSKEdgVX8q7hvjua/iujGkbJ3Lra2Xys3Jx9hEZm1krv/FxeH+LdrAf1I=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(23010399003)(376014)(7416014)(366016)(18002099003)(22082099003)(4143699003)(11063799006)(10067099003)(56012099006)(261026140227099003)(261022075727099003)(261022105027099003)(261028144727099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?tCAcztSzpRGHys4K/LHNSOiwwtJLtIInEIyG+hGtCGnFeE6LZHeur40xeK0i?=
+ =?us-ascii?Q?fxnjLv/v677XPEVAcg7/xJQ/ApOR5tLOD69IL2IfafBne6tnU/SXvLe8mETD?=
+ =?us-ascii?Q?2JGjfDeMlYfSazK61UxzE3ERZ/5fuPokCRlat+bezebwvsTU5uuh4/jQDCXh?=
+ =?us-ascii?Q?cm2pRoDoFb0cCMtN5pxWG8Ox3lgcGF6/1fXHDP+LENkX4eyhLqfni4W/vK6f?=
+ =?us-ascii?Q?6EkXB0+VHnScXh1C3+PvRfYzVjYfrV8QMW9C6m7Lo02mIzGGnTENomlMmrUR?=
+ =?us-ascii?Q?bs5lkkknfxETFxTjfHzrqzeHu7qXkgN/xtHEuYrtdZFslvOW1RedpA3DUO8d?=
+ =?us-ascii?Q?rBxTtO+BO1emWmapqQDO+yqP47MvmZowJO7ootD84J91p4bz8Q8GFckzYYo2?=
+ =?us-ascii?Q?p6aZL3YLAe3a/jym1BUvGxab7TGYDgt5MnTpAo4LWRAWnXK8LFzd0r2Q7Y8o?=
+ =?us-ascii?Q?bnFOY7V2bEYplyrKZHD0rG+hrvmZMsmzQuP9na5XjHxQuyu9/pbVvm3UdzMB?=
+ =?us-ascii?Q?QYSzyRlTmIaPv7n5NyBOVx5Rn8kvdG6MhvadrePJcO6nrgWcupxFSjakq0GA?=
+ =?us-ascii?Q?vyPMR18zLM/lyaYO9u4mXtZb1HwCLn4CNN9qf9udToD0b7iHq7CjbnxjYAYm?=
+ =?us-ascii?Q?MK2QhmudaFsTXT0foLJAXoWsQYF4oCFX3ygTjdWB4FLqlZaMU1FLLHHwfUOA?=
+ =?us-ascii?Q?pir2VkjeT1NynpmPEIq6H3DNVU6UkX7YcCRxFNgFpIRDmYeJdl9rC0xsPfOS?=
+ =?us-ascii?Q?aA1zEt8OcSnd2+3+5VhWGyU7FmHua9lIgLo/Z7kFAn2BOXUjnryeuwd7k2in?=
+ =?us-ascii?Q?t7rVk0qFZ1JfmtkcsULqXyq9okqQrnaM1AFA3s7pjX8oYH3x4bh0CLVRkvSU?=
+ =?us-ascii?Q?k5NHBY2YUd8ZN69tdqlFQSyiWBAWuS+cnkWW/skHw11LIw6Ufw5cE5v+hu8F?=
+ =?us-ascii?Q?MEXBHa2FpTMr2qfkZN47urI8HkKmPyX0on0RmAr3McP5DBnU3UjxRbRW8oiV?=
+ =?us-ascii?Q?WAyW6vbmtvjLOMC9WkauRioJog7WFaOcpslwJ89wrLJnFaI3bgMaZ7rds2uX?=
+ =?us-ascii?Q?doQ0fEwWzU3julsp0+gFb+37vfEttojjZoTXYn0GWMZ119JwQhGi2ZTf37DJ?=
+ =?us-ascii?Q?T7jeBPL5WSiw6basWJxGmjIzuEA7T0zwhLcVtrAysou7WS84+QWwSBJ2ipE5?=
+ =?us-ascii?Q?nJfdEu5iZxAnTyk9c2cGbXY7SRLy2HVx1k4bTR+0jjuHYa5Q4qoaJ7Y0XoH2?=
+ =?us-ascii?Q?qttPfhSESArOwsbJ4vlvKP1D0H/grEMqkfiQeJgta/CaWOjFA4l3PK656ESU?=
+ =?us-ascii?Q?e7SIOVFf7m9JkrOgXb040A+qjVJwyW1jaBNKcp0UGz70C7Y/c8XNsm+1bwNg?=
+ =?us-ascii?Q?xAcEUF3wWqafzxRWwZEyyoJ+L4y+YhksvpIQCtabojQAE+ofk8zB8DA3ohlS?=
+ =?us-ascii?Q?LcLL5VODmgjmeKRUSzETmSD80ON62OQSki1gXLUfkxukbcNQisqHUKQLE94v?=
+ =?us-ascii?Q?VChWCqZ+PwvqkYWzdqvm2H5pXrHkQxnfn5JGJuY5TVrZDdOnyoQzJTSfN5hD?=
+ =?us-ascii?Q?8j+xqSmEJ4Jtit0j4LtueFb8XXz0mZo86Nyi5VsKd7qziY4SMLYUXibDl+wE?=
+ =?us-ascii?Q?8K49yI8nx9/ZwsydUnLw3S5czqidsWuK7xD+wI2yPB+w38364maKTKB7ass0?=
+ =?us-ascii?Q?qihD5Sz8xgvKbBkbcgSTpeLrAquP60/DtxVwf2iQKUaF00SVWjGRJuPwCO9S?=
+ =?us-ascii?Q?kWiahoJLqUlpHAXAxaKiAeDbflgh7+3ao716g62ivglBkuARwSzR?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7934d6e3-cddf-41cb-1955-08df4b11b107
+X-MS-Exchange-CrossTenant-AuthSource: MI3PR04MB12438.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Nov 2026 16:32:26.8760
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: yv3s6ZNgNFMtM0N35LIccC8SmImvLNhg6hbfxlbtkbLCkOgj2pPnlf946boQ4SF3VE8SDSyQgS9eUYaiTyelW9eRRIyGV03DfNUmYyY2ZR0E2Ms0cTv2ipm7gSRF4zd2
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10425
 
-Unify the list terminator to have a single space between the brackets and
-no trailing comma. This change doesn't introduce any diffs between
-pre/post to the compiled binaries of the modified drivers and just aligns
-these to the common style with other *_device_id arrays.
+On Wed, Nov 25, 2026 at 05:08:45PM +0530, Dinesh kumar v wrote:
+> Add device tree support for the ADLINK LEC-iMX95 module
+> with the I-Pi SMARC Plus carrier board.
+>
+> Signed-off-by: Dinesh kumar v <dineshkumarv85@gmail.com>
+> ---
+...
+> +
+> +&lpi2c8 {
+> +	status = "okay";
+> +
+> +	/* SX1509(2) U1001@IPi SMARC Plus */
+> +	i2c8_gpio_expander_3e: pinctrl@3e {
+> +		/*
+> +		 * GPIO Expander 2 Mapping:
+> +		 * - 0: E_GPIO1_0	<=>	IPi SMARC Plus CN101_PIN29: E_GPIO1_0
+> +		 * - 1: E_GPIO1_1	<=>	IPi SMARC Plus CN101_PIN31: E_GPIO1_1
+> +		 * - 2: E_GPIO1_2	<=>	IPi SMARC Plus CN101_PIN32: E_GPIO1_2
+> +		 * - 3: E_GPIO1_3	<=>	IPi SMARC Plus CN101_PIN33: E_GPIO1_3
+> +		 * - 4: E_GPIO1_4	<=>	IPi SMARC Plus CN101_PIN35: E_GPIO1_4
+> +		 * - 5: E_GPIO1_5	<=>	IPi SMARC Plus CN101_PIN36: E_GPIO1_5
+> +		 * - 6: E_GPIO1_6	<=>	IPi SMARC Plus CN101_PIN37: E_GPIO1_6
+> +		 * - 7: E_GPIO1_7	<=>	IPi SMARC Plus CN101_PIN38: E_GPIO1_7
+> +		 * - 8: E_GPIO2_8	<=>	IPi SMARC Plus CN101_PIN40: E_GPIO2_8
+> +		 * - 9: TP1002		<=>	IPi SMARC Plus TP1002
+> +		 * - 10: TP1003		<=>	IPi SMARC Plus TP1003
+> +		 * - 11: TP1004		<=>	IPi SMARC Plus TP1004
+> +		 * - 12: TP1005		<=>	IPi SMARC Plus TP1005
+> +		 * - 13: TP1006		<=>	IPi SMARC Plus TP1006
+> +		 * - 14: TP1007		<=>	IPi SMARC Plus TP1007
+> +		 * - 15: TP1008		<=>	IPi SMARC Plus TP1008
+> +		 * - 16: OSCIO		<=>	IPi SMARC Plus TP1001
+> +		 */
 
-Signed-off-by: Pawel Zalewski <pzalewski@thegoodpenguin.co.uk>
----
- drivers/mtd/parsers/afs.c               | 2 +-
- drivers/mtd/parsers/bcm47xxpart.c       | 2 +-
- drivers/mtd/parsers/bcm63xxpart.c       | 2 +-
- drivers/mtd/parsers/brcm_u-boot.c       | 2 +-
- drivers/mtd/parsers/parser_imagetag.c   | 2 +-
- drivers/mtd/parsers/parser_trx.c        | 2 +-
- drivers/mtd/parsers/qcomsmempart.c      | 2 +-
- drivers/mtd/parsers/redboot.c           | 2 +-
- drivers/mtd/parsers/scpart.c            | 2 +-
- drivers/mtd/parsers/tplink_safeloader.c | 2 +-
- 10 files changed, 10 insertions(+), 10 deletions(-)
+The below gpio-line-names already include the same informaiton, needn't
+duplicate it here.
 
-diff --git a/drivers/mtd/parsers/afs.c b/drivers/mtd/parsers/afs.c
-index 7ab3d50f565e..eb6abf5330ca 100644
---- a/drivers/mtd/parsers/afs.c
-+++ b/drivers/mtd/parsers/afs.c
-@@ -386,7 +386,7 @@ static int parse_afs_partitions(struct mtd_info *mtd,
- 
- static const struct of_device_id mtd_parser_afs_of_match_table[] = {
- 	{ .compatible = "arm,arm-firmware-suite" },
--	{},
-+	{ }
- };
- MODULE_DEVICE_TABLE(of, mtd_parser_afs_of_match_table);
- 
-diff --git a/drivers/mtd/parsers/bcm47xxpart.c b/drivers/mtd/parsers/bcm47xxpart.c
-index a412c0e7bd4e..ee7c81894b9c 100644
---- a/drivers/mtd/parsers/bcm47xxpart.c
-+++ b/drivers/mtd/parsers/bcm47xxpart.c
-@@ -301,7 +301,7 @@ static int bcm47xxpart_parse(struct mtd_info *master,
- 
- static const struct of_device_id bcm47xxpart_of_match_table[] = {
- 	{ .compatible = "brcm,bcm947xx-cfe-partitions" },
--	{},
-+	{ }
- };
- MODULE_DEVICE_TABLE(of, bcm47xxpart_of_match_table);
- 
-diff --git a/drivers/mtd/parsers/bcm63xxpart.c b/drivers/mtd/parsers/bcm63xxpart.c
-index 6e7b1ae8f58f..78fbe8a681cb 100644
---- a/drivers/mtd/parsers/bcm63xxpart.c
-+++ b/drivers/mtd/parsers/bcm63xxpart.c
-@@ -153,7 +153,7 @@ static int bcm63xx_parse_cfe_partitions(struct mtd_info *master,
- 
- static const struct of_device_id parse_bcm63xx_cfe_match_table[] = {
- 	{ .compatible = "brcm,bcm963xx-cfe-nor-partitions" },
--	{},
-+	{ }
- };
- MODULE_DEVICE_TABLE(of, parse_bcm63xx_cfe_match_table);
- 
-diff --git a/drivers/mtd/parsers/brcm_u-boot.c b/drivers/mtd/parsers/brcm_u-boot.c
-index cd78e432f1de..d48d8ed73ca0 100644
---- a/drivers/mtd/parsers/brcm_u-boot.c
-+++ b/drivers/mtd/parsers/brcm_u-boot.c
-@@ -70,7 +70,7 @@ static int brcm_u_boot_parse(struct mtd_info *mtd,
- 
- static const struct of_device_id brcm_u_boot_of_match_table[] = {
- 	{ .compatible = "brcm,u-boot" },
--	{},
-+	{ }
- };
- MODULE_DEVICE_TABLE(of, brcm_u_boot_of_match_table);
- 
-diff --git a/drivers/mtd/parsers/parser_imagetag.c b/drivers/mtd/parsers/parser_imagetag.c
-index fab0949aabba..686ef88e3099 100644
---- a/drivers/mtd/parsers/parser_imagetag.c
-+++ b/drivers/mtd/parsers/parser_imagetag.c
-@@ -202,7 +202,7 @@ static int bcm963xx_parse_imagetag_partitions(struct mtd_info *master,
- 
- static const struct of_device_id parse_bcm963xx_imagetag_match_table[] = {
- 	{ .compatible = "brcm,bcm963xx-imagetag" },
--	{},
-+	{ }
- };
- MODULE_DEVICE_TABLE(of, parse_bcm963xx_imagetag_match_table);
- 
-diff --git a/drivers/mtd/parsers/parser_trx.c b/drivers/mtd/parsers/parser_trx.c
-index cf3bc9735238..db1129919084 100644
---- a/drivers/mtd/parsers/parser_trx.c
-+++ b/drivers/mtd/parsers/parser_trx.c
-@@ -120,7 +120,7 @@ static int parser_trx_parse(struct mtd_info *mtd,
- 
- static const struct of_device_id mtd_parser_trx_of_match_table[] = {
- 	{ .compatible = "brcm,trx" },
--	{},
-+	{ }
- };
- MODULE_DEVICE_TABLE(of, mtd_parser_trx_of_match_table);
- 
-diff --git a/drivers/mtd/parsers/qcomsmempart.c b/drivers/mtd/parsers/qcomsmempart.c
-index 1591aea48b28..d46555138978 100644
---- a/drivers/mtd/parsers/qcomsmempart.c
-+++ b/drivers/mtd/parsers/qcomsmempart.c
-@@ -180,7 +180,7 @@ static void parse_qcomsmem_cleanup(const struct mtd_partition *pparts,
- 
- static const struct of_device_id qcomsmem_of_match_table[] = {
- 	{ .compatible = "qcom,smem-part" },
--	{},
-+	{ }
- };
- MODULE_DEVICE_TABLE(of, qcomsmem_of_match_table);
- 
-diff --git a/drivers/mtd/parsers/redboot.c b/drivers/mtd/parsers/redboot.c
-index 120b2eab21fc..f8d421a88748 100644
---- a/drivers/mtd/parsers/redboot.c
-+++ b/drivers/mtd/parsers/redboot.c
-@@ -312,7 +312,7 @@ static int parse_redboot_partitions(struct mtd_info *master,
- 
- static const struct of_device_id mtd_parser_redboot_of_match_table[] = {
- 	{ .compatible = "redboot-fis" },
--	{},
-+	{ }
- };
- MODULE_DEVICE_TABLE(of, mtd_parser_redboot_of_match_table);
- 
-diff --git a/drivers/mtd/parsers/scpart.c b/drivers/mtd/parsers/scpart.c
-index ad6e9d5c3daa..e0bed5ef04d8 100644
---- a/drivers/mtd/parsers/scpart.c
-+++ b/drivers/mtd/parsers/scpart.c
-@@ -229,7 +229,7 @@ static int scpart_parse(struct mtd_info *master,
- 
- static const struct of_device_id scpart_parser_of_match_table[] = {
- 	{ .compatible = "sercomm,sc-partitions" },
--	{},
-+	{ }
- };
- MODULE_DEVICE_TABLE(of, scpart_parser_of_match_table);
- 
-diff --git a/drivers/mtd/parsers/tplink_safeloader.c b/drivers/mtd/parsers/tplink_safeloader.c
-index b770f41ef874..e9b25e236eb9 100644
---- a/drivers/mtd/parsers/tplink_safeloader.c
-+++ b/drivers/mtd/parsers/tplink_safeloader.c
-@@ -138,7 +138,7 @@ static void mtd_parser_tplink_safeloader_cleanup(const struct mtd_partition *ppa
- 
- static const struct of_device_id mtd_parser_tplink_safeloader_of_match_table[] = {
- 	{ .compatible = "tplink,safeloader-partitions" },
--	{},
-+	{ }
- };
- MODULE_DEVICE_TABLE(of, mtd_parser_tplink_safeloader_of_match_table);
- 
+> +		compatible = "semtech,sx1509q";
+> +		reg = <0x3e>;
+> +		#gpio-cells = <2>;
+> +		#interrupt-cells = <2>;
+> +		gpio-controller;
+> +		interrupt-controller;
+> +		/* GPIO2_IO22 (module FAN_PWM_1V8) is the expander IRQ on this carrier */
+> +		interrupt-parent = <&gpio2>;
+> +		interrupts = <22 IRQ_TYPE_LEVEL_LOW>;
+> +		pinctrl-0 = <&pinctrl_gpio_exp_3e>;
+> +		pinctrl-names = "default";
+> +		gpio-line-names =
+> +			"E_GPIO1_0",		/* 0 - CN101 Pin 29 */
+> +			"E_GPIO1_1",		/* 1 - CN101 Pin 31 */
+> +			"E_GPIO1_2",		/* 2 - CN101 Pin 32 */
+> +			"E_GPIO1_3",		/* 3 - CN101 Pin 33 */
+> +			"E_GPIO1_4",		/* 4 - CN101 Pin 35 */
+> +			"E_GPIO1_5",		/* 5 - CN101 Pin 36 */
+> +			"E_GPIO1_6",		/* 6 - CN101 Pin 37 */
+> +			"E_GPIO1_7",		/* 7 - CN101 Pin 38 */
+> +			"E_GPIO2_8",		/* 8 - CN101 Pin 40 */
+> +			"",			/* 9 - TP1002 */
+> +			"",			/* 10 - TP1003 */
+> +			"",			/* 11 - TP1004 */
+> +			"",			/* 12 - TP1005 */
+> +			"",			/* 13 - TP1006 */
+> +			"",			/* 14 - TP1007 */
+> +			"",			/* 15 - TP1008 */
+> +			"";			/* 16 - OSCIO / TP1001 */
+> +		semtech,probe-reset;
+> +	};
+> +};
 
--- 
-2.53.0
+...
+> +
+> +	/* U1000 SX1509BIULTRT_SEMTECH on module */
+> +	i2c2_gpio_expander_71: pinctrl@71 {
+> +		/*
+> +		 * GPIO Expander Mapping:
+> +		 * - 0: ENET1_RST_B_3V		=>		U2001
+> +		 * - 1: ENET2_RST_B_3V		=>		U2101
+> +		 * - 2: SERDES_RST#_3V		=>		SMARC S77 PCIE_C_RST
+> +		 * - 3: RC210_EN_3V		=>		U1300, RC21008B001GND
+> +		 * - 4: LT9611_RSTN_3V		=>		U1500
+> +		 * - 5: HDMI_INT_3V		<=		U1500
+> +		 * - 6: PCIEA_RST#_3V		=>		SMARC P75
+> +		 * - 7: PCIEB_RST#_3V		=>		SMARC S76
+> +		 * - 8: TPM_RST_N_1V8		=>		U2400
+> +		 * - 9: LID#_1V8		<=	R1005	SMARC S148
+> +		 * - 10: SLEEP#_1V8		<=	R1010	SMARC S149
+> +		 * - 11: CHARGING#_1V8		<=	R1007	SMARC S151
+> +		 * - 12: CHARGER_PRSNT#_1V8	<=	R1011	SMARC S152
+> +		 * - 13: BATLOW#_1V8		<=	R1014	SMARC S156
+> +		 * - 14: TEST#_1V8		<=	R1015	SMARC S157
+> +		 * - 15: DSI0_TE_1V8		<=	R1087	SMARC S144
+> +		 */
+
+merge to comment of gpio-line-names
+
+Frank
+> +		compatible = "semtech,sx1509q";
+> +		reg = <0x71>;
+> +		#gpio-cells = <2>;
+> +		#interrupt-cells = <2>;
+> +		gpio-controller;
+> +		interrupt-controller;
+> +		interrupt-parent = <&gpio4>;
+> +		interrupts = <15 IRQ_TYPE_LEVEL_LOW>;
+> +		pinctrl-0 = <&pinctrl_sx1509q>;
+> +		pinctrl-names = "default";
+> +		gpio-line-names =
+> +			"ENET1_RST_B_3V",	/* 0 */
+> +			"ENET2_RST_B_3V",	/* 1 */
+> +			"SERDES_RST#_3V",	/* 2 */
+> +			"RC210_EN_3V",		/* 3 */
+> +			"LT9611_RSTN_3V",	/* 4 */
+> +			"HDMI_INT_3V",		/* 5 */
+> +			"PCIEA_RST#_3V",	/* 6 */
+> +			"PCIEB_RST#_3V",	/* 7 */
+> +			"TPM_RST_N_1V8",	/* 8 */
+> +			"SMARC_LID#",		/* 9 */
+> +			"SMARC_SLEEP#",		/* 10 */
+> +			"SMARC_CHARGING#",	/* 11 */
+> +			"SMARC_CHARGER_PRSNT#",	/* 12 */
+> +			"SMARC_BATLOW#",	/* 13 */
+> +			"SMARC_TEST#",		/* 14 */
+> +			"DSI0_TE_1V8",		/* 15 */
+> +			"";			/* 16 - OSCIO */
+> +		semtech,probe-reset;
+> +	};
+> +};
 
