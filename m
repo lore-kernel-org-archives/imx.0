@@ -1,88 +1,90 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.50
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795711274;
-	b=vqRVd0sWenEQLhjRwYjx7VSxuFr0ZsWUe7Pf3PDo1zq3IyYrA1wfZ76F2sw6x/aeNJDL
-	 cDrJLF9MUIwpBc1LOsTHzhq+1AF2KqqTFnBqomUTZSbUU7gViUF4XszA+lCQ8Vlt39hvv
-	 M1e7Qr79s3kbvMd338M9jY0RfZdFE5OhLq8qr4dPlPlyL9bASSu78ug8LuBSvtVLkgLZC
-	 CLMye6gdEIroqfHrAjnlN5x0IVXr8hhqq8JfkZ7ndi0A8Yw4WpDeWz8M2x/u5K+b+o+87
-	 /jXCqdlE2VQ+2Ayo70GtDjbSgJMwIcup61nuyW/r92dBQSUsH0ojEWsT5qiBR1953EQ==
+	t=1795711275;
+	b=Yw7YS9/jltmO4j7sEbPOE1q1EFIxEczeYOnKmrHcHsjhHFUVZB8Ps04GJrlgwuRx/BLC
+	 agu7ZWcXwfxtbcZ5ThqRH8u96frm8dkPvrTGhQKsIq927dpoRAmqkt4M61nBYthCksPsE
+	 RpyCXe47jVNK4B/vDA59Xl0kmRplzt7F8e0CHJ5zw7z7HgZnQrwP+M2fkqKU3JwU+dshI
+	 dI8HntFE/wjW0wQUICWJei/V7z0Lq1x5OyWcaIBpK3QdFzCNoORRqPhn8NN8IEf0+BIx/
+	 oh3kaDSMncejtxCXfDjldKvT8h/PA5gRCGRD5I2xPt57ks+WAF+7JZ7a9q/dfs9yQtw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795711274;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795711275;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=9ic7GIeBAEK//ldCqzOdV9U0524b8pdj40NAXKTVFaA=;
-	b=vKCEZM6wqGzm3tlMGBPjGHWW+PCCqD5XVBXqanHtypQZ/yOOus2T1X8At4CXv6fuGgW0
-	 LZDjZtJ9O+M130YzHK+TO52bgB3JZF35shuBCZyAA0CWHsxdiogWnr+NyQQgET7KkBVWD
-	 th/FnRYRt5yn78nDCRCbLFBvsIcK/ZV6j889u7uIYX0FoO8rjaaH57njf2P9PZSvkTR+Y
-	 ldM/K3eOW4/g4GoFaR9Tz7QU1wGOtJnsg5BNPHXSRMvsGtbKgSlsuEOui6yKBJOtbbAcz
-	 hjSK8aTvecqkFMyhP9WuL25EW8AXJOQ0YRMOcB7XYd3kRUFieXWAXNhm5MZudMEv+Qg==
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=Q+GtbyKG6IlUifjaNkVYhqRiK3cIEWpsM/x3VFQZRLc=;
+	b=Z4a9fVhcRbT5ADpQk6G9I86dTTbGh7PAfwNEyanJDED5IhJ00p11qRGD4pUIsdz00f22
+	 yzepWRQR7y9uRID/JwwtnIlyMUbPl+G86w6mUyu6nJ2Tqgk4fdfEL5UmiIA1W6RJwrswu
+	 oDCMphZwXsto/jwSSdNZgWS9vu9pUpR+3H7bnMugc7tZIn5m8pkb07NewCIF0qntA565x
+	 dtbXvuoXFN7nIM8xLH5ylPS1Acjr4GV6ljUxuliR18JdizNxnm3wR9o2rq9xK4oPD05jw
+	 8pAASw0v3YamqqVFj5ZQwrBP792nJp8vvIxA4icnHQ6BSDQxTCjsktO5b14l1bo+UZA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Ct3zO+im;
-	arc=none smtp.remote-ip=209.85.221.53
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=LCInLPXy;
+	arc=none smtp.remote-ip=209.85.221.50
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BE4A606A321
-	for <imx@lists.linux.dev>; Thu, 26 Nov 2026 16:41:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8BE4A606A321
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4CD8606A32D
+	for <imx@lists.linux.dev>; Thu, 26 Nov 2026 16:41:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D4CD8606A32D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Ct3zO+im
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-48e09aa5264so4225068f8f.2
-        for <imx@lists.linux.dev>; Thu, 26 Nov 2026 08:41:13 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=LCInLPXy
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-4ac08f4a0b2so5127311f8f.3
+        for <imx@lists.linux.dev>; Thu, 26 Nov 2026 08:41:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795711272; x=1796316072; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=9ic7GIeBAEK//ldCqzOdV9U0524b8pdj40NAXKTVFaA=;
-        b=Ct3zO+im41DD+n0QrvvKtkLtwUtifH3zjiT31SvfsF0cBNR1apDiLjW55EC0rx9Zez
-         aVfunYfs2H2LPGv246DkAvw5wtkNaGNuUnG+RZhTxFz0xguFIefWXO1vbiG4BP5+9ZUg
-         h9IN0Vhy4j1ygaEnr5Xz6klNwaoJLdLkLzbl7lzt8VbEDxIFtc2ngnw3EiTYAV5c4NFr
-         WW8gLDVz1DnbQpGT2fcyZ4X4T2lhHPMMhhRBxvnOfW/079P6ze6/FHvDPysOdOOWS2WC
-         u238M1DicH0nes4dAtz4qeUuhIRmqYfIJ1JkgOLTwgLXpApNz87ClxM38zkC7g++Tv1K
-         tOfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795711272; x=1796316072;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20260707; t=1795711273; x=1796316073; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=9ic7GIeBAEK//ldCqzOdV9U0524b8pdj40NAXKTVFaA=;
-        b=v2qZ6xFJZ7/NFliKO5rvdAk1CIz0R55i1lynEIDU6ZEfHi9swpvIrpNba2or7DhZnK
-         lwaTCEhK8IjzMLG1ntro99/d1gtGwCJ1m5EMSz5/k/8J4R+KWpHap3Ysn+nFG4HsCDCD
-         NqzKE6+bgw1NC+vvwHJFWLEMRcemLvHpifMJZuwqQrXhn6278EzY2Do2K94wFtuzdC62
-         C3ELHqH8DOxkuu8Iknv/z4xjjDGVLnXw7etk+meIEl1rJW7I4Ciu3s+Pz/cDA4UJ8C0X
-         dFsDayhxlf328QjaPOfRjN6XZ5HDz2QCxKke3BCJxStDJz9uG5kz5HhUO/vii0mGch1Q
-         3AYw==
-X-Forwarded-Encrypted: i=1; AL+hErFG6n52mqstBiLANrtrLBHBGaFT9igercpRQ8o/pYe6/UnrjsryjqQC242+PkE9dXvX+JY=@lists.linux.dev
-X-Gm-Message-State: APuU4Z+Wx+jsKUhxznl9WAnFIobeEdLpgK8YRBSqaSx/2J/OXe3vOKYL
-	LEXiS4EStO+CHI5xVAIMOJZfsifewBBegifzELa1hWq/r6oCsT5u2EdU
-X-Gm-Gg: AZFdTZeUS9+h/9qQTMwfRtw8L5+R6eTut4PEQHK9DLIRk56l+WwmkzeaE/MNbRsvT4H
-	hwEi4q6u9IQ6emQL/QOLeMiUX1vKQnC6J2vsIfg/Dx282WqVpSg35UnH7NUqNrZzOqgkY7i4WmC
-	LEmqH2yllLyhp4WWHXR7biekjMNb5Q5kG3dgD/PoxPqzwfEMXphdfKzI8wwIZFN2eFAs8MLyusK
-	pieaEv1XAfeyEh9MP7gmWq7/1dou/HVjXnt2F6cOUSUCU6kKo7dvMSiQuvmH23WA7rmEvcE491A
-	xZiTOUw3hqpJTm+EHV+nsLy5MS+9pkAPH/jGlGJrJJclo0etl3/5saysgQ4NEb82Ka0oLuPkt2F
-	qWBRAtjhOH/pSmO8s5jHltNqg4h5k1gUpFY4kJ8nG2x2CxaMvWqzHVXsQS+YOFvnRB9RCHcxIJ2
-	qIjgBtsZHeh6opW67gmIltZ7WJya3IlXKWeNd0X2nXpDUFuPjGQpSU5hm+5E4lTBFX0I3syYDH1
-	/zAWJlct1HUv7TSwsd2i3A19QosUIjnPk0EIxaK6Gczh0P48zOGq/rIVY1+iQb1k0wbWMI56gsC
-	8JEsTC0okoXViVAjLHSfH+p7E7hROBRna+c9KxQ64zoXbcvrjCS97WY=
-X-Received: by 2002:a05:6000:40e0:b0:4b8:5ccc:eed7 with SMTP id ffacd0b85a97d-4b85cccefccmr15497144f8f.51.1795711271385;
-        Thu, 26 Nov 2026 08:41:11 -0800 (PST)
+        bh=Q+GtbyKG6IlUifjaNkVYhqRiK3cIEWpsM/x3VFQZRLc=;
+        b=LCInLPXyjvL1c8Y+Xu+zUYdMmIXJ2DhoU+SZBw3Iw/Msu/QFnm8BuS3iW0Lci7Iuea
+         kYN4y4lTwaH2I6+J7ASIHH5KqKwa21X4MCBo/nWtRJ0criZqbXuqG2MasDk/PjY9GRaS
+         yt0NNuGz9kUGdcI9iT5sEDT7UYfb0sEeIs0mB+NMzhItoXXEPxaDcTyIBiTASw3LtGdD
+         V2cYlK2VGq8Kowl4y4GQP8ptuqG+5xAHjGj0ZzrP51QPWq/zIo8xf4VjxXnoDnQ0bz07
+         l3bt5LAK2gFOPRLi1BtwxkzGbIvWDMYFAE1O9++sXRICTjZYJ1AChb5h39YcStvRwzTj
+         fHig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795711273; x=1796316073;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Q+GtbyKG6IlUifjaNkVYhqRiK3cIEWpsM/x3VFQZRLc=;
+        b=d8oR3761MI+r+ozf8aeu3i3KLFGghPe35E4h/RZ3Z1EdKDIElyc8Zl77o0/mVykVgZ
+         91lI4G2ifuCVIwXQvsDOlxSbYAHeLLO8mzXs8qG3vsHtYZu20+Rxh2O4ad8dnm3sZoJD
+         OdjCTYVpXEYhGmtB8BDg29neIz1fY5K2dVbs+hUlxssXarSirVLJoNE65k9f3lUgzM4c
+         hoA27pG0GItRkslpQN77xW+WCKGwWK8S6npvSZV78u5zRsMsjC/hG5d9arIWYAHtfyXf
+         WaN4zJzu6q8HSH34AwDEOanDKJMP9B8Swn/U/VxZUwZhtvhBYEBghdA+Pty3F+NT4Ez8
+         anOw==
+X-Forwarded-Encrypted: i=1; AL+hErE/rEBsBZYjYoxbjLUj1oST1fc0Bg9Fucv4vc+x9rFgfJ2Qz+NscTbZR+QInmTDuE8RhEA=@lists.linux.dev
+X-Gm-Message-State: APuU4Z/lWxCMVPZ2EPKmBRLXi/mISmpAHa1dDjtaZxOgV/qOCFEx42L4
+	eueS4rmcmYoNG+zJszdVmucrw8lc5EOZAjbfRDBl5UbgvDk1F2j5pCWe
+X-Gm-Gg: AZFdTZe38MFWMQKPfg5BBzuB5SRc/QPNz9YHRX0Og/8ynjECE3GJuFrUggBHIynH1sT
+	rvnX9t010Um7sA6DI/QJsZ5vjmNZWr2Sf7o/i0l/Hz0w17CsEIMIqvZ2AALl3a0RBs1wRW2ys3g
+	Kks3wqTlTO/D0YSMtpie3ktqOyrR619ba0nRyd98oov6MntAP3KBWSKeKkUAfwBqWGZnEdBRd1o
+	BVA/lr365v42Pk5BsxMw+RQxtAJXBK0IfAk32iSEQcYZYll026mg10b9XmQbhfEEYKqKG5ld8Jj
+	/B/QrVZqz2S9fQUzCYU5YAgfphLbdElQSqsP219ehnSYxeaAqkHNmEcFFc428eL+Jz7yXtfHPUo
+	8GXiiBKfVVLE0LL7dUQQmRZEvNw/wwNZcBPfexifzz+P9XHfMpH1+3RO0RHwfo3NI72rGLH1mfF
+	X0HM3HoyyBxorQGvTrJxIulFoOTZvaM4ZzyyheKe/oN1V8GbselGX79+eOXvgsq+BJPIOiA7GIP
+	JqhC1SARHAiANYnEo0kKie6gD/sqB27V2L4TJCFSFuhGnhcO+wIgJwNJ5Bewl8QUNqlpHKwracq
+	a2ZqdshYlJYb0foNaHYycM9lHCytzfGNcA==
+X-Received: by 2002:a05:6000:4616:b0:491:8286:5f0e with SMTP id ffacd0b85a97d-4abb514609amr37651209f8f.55.1795711273012;
+        Thu, 26 Nov 2026 08:41:13 -0800 (PST)
 Received: from vitor-21h1cto1ww ([2001:8a0:c4c6:f00:6ce3:c28c:2097:7d09])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4ab6b10b5f6sm39333942f8f.34.2026.11.26.08.41.09
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4ab6b10b5f6sm39333942f8f.34.2026.11.26.08.41.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Nov 2026 08:41:10 -0800 (PST)
+        Thu, 26 Nov 2026 08:41:12 -0800 (PST)
 From: Vitor Soares <ivitro@gmail.com>
 To: Ulf Hansson <ulfh@kernel.org>,
 	Frank Li <Frank.Li@nxp.com>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
+	Fabio Estevam <festevam@gmail.com>,
+	Marek Vasut <marex@nabladev.com>
 Cc: Vitor Soares <vitor.soares@toradex.com>,
 	linux-pm@vger.kernel.org,
 	imx@lists.linux.dev,
@@ -90,13 +92,16 @@ Cc: Vitor Soares <vitor.soares@toradex.com>,
 	linux-kernel@vger.kernel.org,
 	Lucas Stach <l.stach@pengutronix.de>,
 	Advait Dhamorikar <advaitd@mechasystems.com>,
-	Marek Vasut <marex@nabladev.com>,
 	Peng Fan <peng.fan@nxp.com>,
-	Adam Ford <aford173@gmail.com>
-Subject: [PATCH v2 0/2] pmdomain: imx: fix suspend/resume order of the blk-ctrl virtual devices
-Date: Thu, 26 Nov 2026 16:40:57 +0000
-Message-ID: <20261126164058.2373605-4-ivitro@gmail.com>
+	Adam Ford <aford173@gmail.com>,
+	stable@vger.kernel.org,
+	Francesco Dolcini <francesco.dolcini@toradex.com>
+Subject: [PATCH v2 1/2] pmdomain: imx8m-blk-ctrl: fix suspend/resume order
+Date: Thu, 26 Nov 2026 16:40:58 +0000
+Message-ID: <20261126164058.2373605-5-ivitro@gmail.com>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261126164058.2373605-4-ivitro@gmail.com>
+References: <20261126164058.2373605-4-ivitro@gmail.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -110,73 +115,143 @@ Content-Transfer-Encoding: 8bit
 
 From: Vitor Soares <vitor.soares@toradex.com>
 
-The i.MX8M blk-ctrl drivers drive the GPC domains through the virtual
-devices from dev_pm_domain_attach_by_name(). These devices have no
-parent and no device link, so their position in dpm_list relative to the
-blk-ctrl consumers depends on probe order. When a consumer ends up
-before them, the system hangs in the noirq phase.
+The GPC domains behind a blk-ctrl are driven with runtime PM on the
+virtual devices from dev_pm_domain_attach_by_name(). Runtime PM is
+disabled in the noirq phase, this is why the ->suspend callback exists:
+it keeps the virtual devices runtime active, so the runtime PM calls in
+imx8m_blk_ctrl_power_on() and imx8m_blk_ctrl_power_off() do not fail in
+the noirq phase, while the genpd core powers the GPC domains off and on
+through the virtual devices. This requires the virtual devices to resume
+before the consumers of the blk-ctrl domains: genpd_resume_noirq() of a
+consumer calls imx8m_blk_ctrl_power_on(), which accesses the blk-ctrl
+registers expecting the bus domain to be on.
 
-Patch 1 fixes imx8m-blk-ctrl. It is v1 [2], now also linking the bus
-domain virtual device:
+Nothing orders the virtual devices in dpm_list: they have no parent and
+no device link to the blk-ctrl or its consumers. On i.MX8MM the VPU
+codecs resume before the virtual devices and the CPU hangs in
+genpd_resume_noirq() of 38310000.video-codec. The system never resumes
+from suspend to mem; with a watchdog running, the board is eventually
+reset. The same happens on i.MX8MP with the media blk-ctrl, where the
+CPU hangs in genpd_resume_noirq() of the MIPI CSI-2 receiver, and with
+the VPU blk-ctrl when the hantro-vpu module is loaded after the blk-ctrl
+has probed.
 
-- i.MX8MM, VPU: the codecs resume before the virtual devices and the CPU
-  hangs in genpd_resume_noirq() of 38310000.video-codec. On Verdin
-  iMX8MM this happens on the first suspend to mem.
+Add a stateless device link from the blk-ctrl to each virtual device,
+bus domain included, so they are suspended after and resumed before the
+blk-ctrl and its consumers.
 
-- i.MX8MP, media: reported by Advait [1], the CPU hangs in
-  genpd_resume_noirq() of 32e40000.csi. His debug prints in
-  imx8m_blk_ctrl_power_on() show the stall at the first BLK_SFT_RSTN
-  read, after pm_runtime_get_sync() on the bus device returned 1.
+Fixes: 2684ac05a8c4 ("soc: imx: add i.MX8M blk-ctrl driver")
+Cc: stable@vger.kernel.org
+Reported-by: Advait Dhamorikar <advaitd@mechasystems.com>
+Closes: https://lore.kernel.org/all/CAAPs2HTo=4+AEw1+vcU6c9vt_O2BfF+gv3FFvx9G3KLLzCOsHw@mail.gmail.com/
+Closes: https://lore.kernel.org/all/fccbb040330a706a4f7b34875db1d896a0bf81c8.camel@gmail.com/
+Suggested-by: Lucas Stach <l.stach@pengutronix.de>
+Co-developed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Signed-off-by: Vitor Soares <vitor.soares@toradex.com>
+---
+Changes in v2:
+- Link the bus domain virtual device too (Francesco)
+- Add the per-domain links right after attaching, before pm_genpd_init(),
+  so the error paths stay symmetric (Francesco)
+- Rewrite the commit message: v1 described the ordering as a
+  parent/child effect, but the virtual devices have no parent; their
+  dpm_list position relative to the consumers depends on probe order
+- Explain why the ->suspend callback is needed, as asked by Ulf on v1
+- Add the i.MX8MP media blk-ctrl report from Advait
+- Drop Lucas' Reviewed-by, the diff changed
+- Update the ->suspend comment, the order now comes from the device
+  links
+- Rebase on ulfh/linux-pm fixes
 
-- i.MX8MP, VPU: a normal boot works only because the Hantro codecs defer
-  their probe until the blk-ctrl is bound (the blk-ctrl waits for the
-  imx8mp interconnect module), and the deferred retry moves them to the
-  end of dpm_list. Loading hantro-vpu after the blk-ctrl has probed
-  reproduces the hang on resume.
+v1: https://lore.kernel.org/all/20240418155151.355133-1-ivitro@gmail.com/
+---
+ drivers/pmdomain/imx/imx8m-blk-ctrl.c | 29 +++++++++++++++++++++++++--
+ 1 file changed, 27 insertions(+), 2 deletions(-)
 
-Patch 2 does the same for imx8mp-blk-ctrl (HSIO and HDMI) and is new in
-v2:
-
-- i.MX8MP, HSIO: loading phy-fsl-imx8m-pcie after the blk-ctrl has
-  probed puts the PCIe PHY before the virtual devices. On suspend the
-  HSIO bus domain is powered off first, and genpd_suspend_noirq() of
-  32f00000.pcie-phy never returns. With the module loaded at boot, the
-  PHY defers, ends up after the virtual devices, and suspend works.
-
-On Ulf's question in v1 [3]: the GPC domains cannot be genpd parents of
-the blk-ctrl domains, because their power-up is interleaved with the
-blk-ctrl reset and clocks (see 25e252bcf159), so the blk-ctrl drives
-them with runtime PM on the virtual devices. The consumer drivers only
-see the blk-ctrl domains. Runtime PM is disabled in the noirq phase, so
-->suspend() keeps the virtual devices runtime active, and the runtime PM
-calls of the blk-ctrl do not fail in the noirq phase, while the genpd
-core powers the GPC domains off and on through the virtual devices. That
-requires the virtual devices to be suspended after and resumed before
-the consumers, which is what this series adds.
-
-Lucas pointed to v1 as the correct fix in the original report [4].
-
-Tested on top of ulfh/linux-pm fixes:
-- Verdin iMX8MM: 20/20 suspend-to-mem cycles. Without the series, the
-  first suspend hangs and the watchdog resets the board.
-- Verdin iMX8MP, hantro-vpu and phy-fsl-imx8m-pcie loaded after boot:
-  20/20 cycles. Without the series, the board hangs.
-
-[1] https://lore.kernel.org/all/CAAPs2HTo=4+AEw1+vcU6c9vt_O2BfF+gv3FFvx9G3KLLzCOsHw@mail.gmail.com/
-[2] https://lore.kernel.org/all/20240418155151.355133-1-ivitro@gmail.com/
-[3] https://lore.kernel.org/all/CAPDyKFr9Vzgm2C6Z57Bg5mUQxg5LK6goN2og3+RC3BkTZjiqJw@mail.gmail.com/
-[4] https://lore.kernel.org/all/8636fb8d9809aaafbd8274ec0dbfc250e1113c73.camel@pengutronix.de/
-
-Vitor Soares (2):
-  pmdomain: imx8m-blk-ctrl: fix suspend/resume order
-  pmdomain: imx8mp-blk-ctrl: fix suspend/resume order
-
- drivers/pmdomain/imx/imx8m-blk-ctrl.c  | 29 ++++++++++++++++++++++++--
- drivers/pmdomain/imx/imx8mp-blk-ctrl.c | 29 ++++++++++++++++++++++++--
- 2 files changed, 54 insertions(+), 4 deletions(-)
-
-
-base-commit: 458777762756acfc7d2c20067cca6cc817cc8dec
+diff --git a/drivers/pmdomain/imx/imx8m-blk-ctrl.c b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
+index 9df933a7a238..ba44cad02351 100644
+--- a/drivers/pmdomain/imx/imx8m-blk-ctrl.c
++++ b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
+@@ -250,6 +250,17 @@ static int imx8m_blk_ctrl_probe(struct platform_device *pdev)
+ 					     "failed to attach power domain \"bus\"\n");
+ 	}
+ 
++	/*
++	 * Make the genpd virtual devices suppliers of the blk-ctrl so that
++	 * they are suspended after and resumed before the blk-ctrl and all
++	 * its consumers.
++	 */
++	if (!device_link_add(dev, bc->bus_power_dev, DL_FLAG_STATELESS)) {
++		ret = dev_err_probe(dev, -EINVAL, "failed to link to \"bus\"\n");
++		dev_pm_domain_detach(bc->bus_power_dev, true);
++		return ret;
++	}
++
+ 	for (i = 0; i < bc_data->num_domains; i++) {
+ 		const struct imx8m_blk_ctrl_domain_data *data = &bc_data->domains[i];
+ 		struct imx8m_blk_ctrl_domain *domain = &bc->domains[i];
+@@ -298,6 +309,15 @@ static int imx8m_blk_ctrl_probe(struct platform_device *pdev)
+ 			goto cleanup_pds;
+ 		}
+ 
++		if (!device_link_add(dev, domain->power_dev, DL_FLAG_STATELESS)) {
++			ret = -EINVAL;
++			dev_err_probe(dev, ret,
++				      "failed to link to \"%s\"\n",
++				      data->gpc_name);
++			dev_pm_domain_detach(domain->power_dev, true);
++			goto cleanup_pds;
++		}
++
+ 		domain->genpd.name = data->name;
+ 		domain->genpd.power_on = imx8m_blk_ctrl_power_on;
+ 		domain->genpd.power_off = imx8m_blk_ctrl_power_off;
+@@ -308,6 +328,7 @@ static int imx8m_blk_ctrl_probe(struct platform_device *pdev)
+ 			dev_err_probe(dev, ret,
+ 				      "failed to init power domain \"%s\"\n",
+ 				      data->gpc_name);
++			device_link_remove(dev, domain->power_dev);
+ 			dev_pm_domain_detach(domain->power_dev, true);
+ 			goto cleanup_pds;
+ 		}
+@@ -354,9 +375,11 @@ static int imx8m_blk_ctrl_probe(struct platform_device *pdev)
+ cleanup_pds:
+ 	for (i--; i >= 0; i--) {
+ 		pm_genpd_remove(&bc->domains[i].genpd);
++		device_link_remove(dev, bc->domains[i].power_dev);
+ 		dev_pm_domain_detach(bc->domains[i].power_dev, true);
+ 	}
+ 
++	device_link_remove(dev, bc->bus_power_dev);
+ 	dev_pm_domain_detach(bc->bus_power_dev, true);
+ 
+ 	return ret;
+@@ -373,11 +396,13 @@ static void imx8m_blk_ctrl_remove(struct platform_device *pdev)
+ 		struct imx8m_blk_ctrl_domain *domain = &bc->domains[i];
+ 
+ 		pm_genpd_remove(&domain->genpd);
++		device_link_remove(&pdev->dev, domain->power_dev);
+ 		dev_pm_domain_detach(domain->power_dev, true);
+ 	}
+ 
+ 	dev_pm_genpd_remove_notifier(bc->bus_power_dev);
+ 
++	device_link_remove(&pdev->dev, bc->bus_power_dev);
+ 	dev_pm_domain_detach(bc->bus_power_dev, true);
+ }
+ 
+@@ -392,8 +417,8 @@ static int imx8m_blk_ctrl_suspend(struct device *dev)
+ 	 * can power down our domains and more importantly power them up again
+ 	 * after resume, without tripping over our usage of runtime PM to
+ 	 * control the upstream GPC domains. Things happen in the right order
+-	 * in the system suspend/resume paths due to the device parent/child
+-	 * hierarchy.
++	 * in the system suspend/resume paths due to the device links to the
++	 * genpd virtual devices added in probe.
+ 	 */
+ 	ret = pm_runtime_resume_and_get(bc->bus_power_dev);
+ 	if (ret < 0)
 -- 
 2.53.0
 
