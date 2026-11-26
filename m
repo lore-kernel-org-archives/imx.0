@@ -1,57 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.194.8.81
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795678045;
-	b=M+2451/W3UIrJtTINN9ZuWx1WSxSGfrdlqyDvJakpjIu2BkTDahIDIosoK+8hD3mdDTy
-	 l3J9eEoN3JLJAjytaC0Wfy8YCkWl0imwtVii57ndZJlsxNR6blQOmJlFCBt3daeZEi4TV
-	 z+iZz/hi8OQ8suan9Q5WOZJEPTMbpZTQI6Q1+rA/ERDmTd4i01QHVQfRVjPc401LiUayO
-	 HvhiZVmWHuQwY7n/NVaxPXmpLTU1uSd+3HinMqsh6ZLxrdkaS/8zabm8pd5x5c/KqNfH4
-	 5HhxWv/uX6jbZhnY9E0KYy5kj3+krlyE4Pb/RPSuEe/upGOboCmSuvO6EAUfVjZsR7g==
+	t=1795679672;
+	b=S7ss/QN/1AFUse7BYVwzFDdSBYZXcg3IOZCHDm79/+54nBm5rH7mB9kH6czI3BLhYeAt
+	 QHneZtUkkWyfHzGutLxgNoCFNx458L+QFwQpmPnRme+F/2wOATy11XvsZ4Tnvg5RkJWoW
+	 hPDdvVGdJsNMU3VRzICbhYq7KtSAZonb+LrOpjMIKhaqzMxI3MdqazxmhVNwrWr0TIkTe
+	 O0tM2Ebs50+KrASusU/trmtT+NDevKhu+OWEKT9UHBqrpcuIX2m3plU+nBxe0HEWlTVQl
+	 gmORTIlmfWdpBjD1PlKHju31t923Umpk3tnIVuIj7qCW7wUQqHz28kgxK9c4RQdytvw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795678045;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=yZwJyJmVqd2Mosyi3avlWDhDjjzcOVllfyisjfC451Q=;
-	b=kyj8VvB67IERCIwEcge2QTpVikiw/9md8OafGufMzljKVQHUvYRve71ATBSm+kTCh+Mm
-	 6HNuG66LXJY9E4tO9kMKEF/t1SlZLGtZC+Xlcg2/AbX4lnCssT/J8x8UO00NN+McBWUjE
-	 4am9Eo/nrHZ8VqMHH1lZPTJ19f8EDVIaVh+pug+ZS6ScdKE5u7aJrfJuMzA7Eu7K8fTBq
-	 lEPdkT4CtcVd6e5wcq1WZo0DsBvf5zvVx0MVUjEjkcvkWQDklDOKkGDQnFq3U1D361/9k
-	 DWG0bfE7dxcLcLcWYg1s0hTvzqMA3e6BzAyGFljiBO3u7bXttz+6uck2TE75MUrH/Zw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795679672;
+	h=DMARC-Filter:Received:DKIM-Signature:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=bUb4hYTBPcgn4fPSOAlue7i31G1iMQmFecbSBRUfqRM=;
+	b=ER/EaV4gaJR3N4AeP/90NcqBYMeZqd/ujzFDPZTawoDxMEAC+DimUcBba7QL6lT8PyxN
+	 Qdod6zlMkX1rSUxzK9go6v1RWehy3WaWMDwKnbB2prMgHLP0uWjP5yz0bM+nHxKfz+WE3
+	 MKiZwVSZ+e3rQ30p7ribbUBZaTRdozi3U2YAVCy6YZwCUqNnk3jQ/a9ro1Ri92QPUMv+1
+	 TLHndb1azoR8uj2mtCwUvaxjwnmaasswsjd4i6AW+KBF5Y3xl+fJCJPaB7Uio7Y9yhxx6
+	 AOXDccS5Au5UUzN49TEzbxnc8DffyCe8XUbn7wNzcszFlkZZ3oJMVgRrOsL4Io/fcEg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="dfxZLm/I";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=dolcini.it;
+	spf=pass smtp.mailfrom=dolcini.it;
+	dkim=pass header.d=dolcini.it header.i=@dolcini.it header.a=rsa-sha256 header.s=default header.b=R1wUduC9;
+	arc=none smtp.remote-ip=217.194.8.81
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94AD3606A31E;
-	Thu, 26 Nov 2026 07:27:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F380606A321
+	for <imx@lists.linux.dev>; Thu, 26 Nov 2026 07:54:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7F380606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dfxZLm/I
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0906F1F000C4;
-	Thu, 26 Nov 2026 07:27:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795678045;
-	bh=yZwJyJmVqd2Mosyi3avlWDhDjjzcOVllfyisjfC451Q=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=dfxZLm/IFOfRo3Q43QNR7vIm8DoAKNrOEcShHlpDhkOd+6kWtlMRgUPVrY9p4o11h
-	 i0lGsgLI8QS+PWSOBJP40p82vGqfEBZwEZW2TmoxFoZR93fvQgIKHSD1OijBkcmVWW
-	 6CdORKcqOwfk+0soJ2cCdHNO8wtC9CX71CwW6bvuwa0C7J7YhuZcO1wdewdABzDYVE
-	 yDycOJezbSliKwmvKMKbT/uFOZk8+E+IYIYfpaKehoxBzimTPjdZl9VymeLmcDoOyl
-	 JLmIfJV/l7JNebxqtKSu2z+tzhyQzYi/hIgjaHLMa1uQBBD2bMikIugL+Y89XLvBi/
-	 XBsERRQXsV63A==
-Message-ID: <sashiko-outbox-234954@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFT v4 4/5] drm/imx/dc: plane: Switch to
- drm_fb_dma_get_gem_clipped_addr()
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Chen-Yu Tsai" <wenst@chromium.org>
-Cc: linux-sunxi@lists.linux.dev, imx@lists.linux.dev, dri-devel@lists.freedesktop.org, Frank.Li@kernel.org
-In-Reply-To: <20261126071314.253890-5-wenst@chromium.org>
-References: <20261126071314.253890-1-wenst@chromium.org>
- <20261126071314.253890-5-wenst@chromium.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 26 Nov 2026 07:27:24 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=dolcini.it header.i=@dolcini.it header.a=rsa-sha256 header.s=default header.b=R1wUduC9
+Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id 9C2631F953;
+	Thu, 26 Nov 2026 08:54:21 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1795679662;
+	bh=bUb4hYTBPcgn4fPSOAlue7i31G1iMQmFecbSBRUfqRM=; h=From:To:Subject;
+	b=R1wUduC9jw5X/rsJjGoL7cVRJLM2iRqNJIwvkvI0Ds6VCr7ZLJ3c/CCbg1mWc1+iM
+	 Gv323BquroyQdG2kncCJd4DISfwyMHFGs+0/gxwDkw/jnr0+GItx7Wof5VNsfELzhx
+	 B0zwbA1eNYI/9mf/W9X6zIODhxL4DYnlSWleByrL+Mip85hlmHb4tqzSVOZFtGCNnb
+	 8pygiKYUARwgN4Y0lYkKa672YyRB6QbsooDaNHNk+9JP+3xBcrnK46da59VAL/JDGr
+	 KAzBnpwaevPTC64kV6PwRH4LNBbQ57t+9hTDJlLpoY4ETtq3CuHvhTza5rYIqohRIp
+	 3+1jxc9mkhX+g==
+Date: Thu, 26 Nov 2026 08:54:17 +0100
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Frank.Li@oss.nxp.com, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Francesco Dolcini <francesco@dolcini.it>,
+	Frank Li <Frank.Li@nxp.com>, linux-bsp@toradex.com,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 0/2] arm64: dts: freescale: imx9[135]-toradex-osm-dev:
+ Fix SDIO_B interface
+Message-ID: <20261126075417.GA12954@francesco-nb>
+References: <20261122171931.295307-1-francesco@dolcini.it>
+ <179562955482.3138640.15368712550107593780.b4-ty@b4>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -60,63 +71,33 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <179562955482.3138640.15368712550107593780.b4-ty@b4>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Medium] drm/imx/dc: off-screen plane programs out-of-bounds DMA
-  address and 0 size
---
+Hello Frank,
 
-commit cf4b0408a88e14e3a67afb3b4cd1719d2796a174
-Author: Chen-Yu Tsai <wenst@chromium.org>
+On Wed, Nov 25, 2026 at 01:00:29PM -0500, Frank.Li@oss.nxp.com wrote:
+> Applied, thanks!
+> 
+> [1/2] arm64: dts: freescale: imx93-imx91-toradex-osm-dev: Fix SDIO_B definition
+>       commit: a9f5577f21dbdd097f8bd0bade4777cbc2c5b804
+> [2/2] arm64: dts: freescale: imx95-toradex-osm-dev: Fix SDIO_B definition
+>       commit: 25e472ca356c0395d7af26cb325b80bb09b2a183
+> 
+> drop tag "freescale", every one know imx is chip of nxp.
 
-drm/imx/dc: plane: Switch to drm_fb_dma_get_gem_clipped_addr()
+Do you want us to drop the `freescale:` prefix from now on (it's there
+because the prefix is the directory path, not for other reasons)?
 
-This commit switches dc_plane_check_fb() and dc_plane_atomic_update() to
-drm_fb_dma_get_gem_clipped_addr() so the framebuffer DMA base address uses
-clipped source coordinates.
+So just "arm64: dts: imx9[135]-toradex-osm-dev: ...". Are the DT/SoC
+maintainer fine with that?
 
-> diff --git a/drivers/gpu/drm/imx/dc/dc-plane.c b/drivers/gpu/drm/imx/dc/d=
-c-plane.c
-> index 62dd0576fadcb..35eb5039f5acf 100644
-> --- a/drivers/gpu/drm/imx/dc/dc-plane.c
-> +++ b/drivers/gpu/drm/imx/dc/dc-plane.c
-> @@ -65,7 +65,7 @@ static int dc_plane_check_max_source_resolution(struct =
-drm_plane_state *state)
->  static int dc_plane_check_fb(struct drm_plane_state *state)
->  {
->  	struct drm_framebuffer *fb =3D state->fb;
-> -	dma_addr_t baseaddr =3D drm_fb_dma_get_gem_addr(fb, state, 0);
-> +	dma_addr_t baseaddr =3D drm_fb_dma_get_gem_clipped_addr(fb, state, 0);
-> =20
->  	/* base address alignment */
->  	if (baseaddr & 0x3) {
-> @@ -146,7 +146,7 @@ dc_plane_atomic_update(struct drm_plane *plane, struc=
-t drm_atomic_commit *state)
->  	src_w =3D drm_rect_width(&new_state->src) >> 16;
->  	src_h =3D drm_rect_height(&new_state->src) >> 16;
-> =20
-> -	baseaddr =3D drm_fb_dma_get_gem_addr(fb, new_state, 0);
-> +	baseaddr =3D drm_fb_dma_get_gem_clipped_addr(fb, new_state, 0);
+To be explicit, I do not mind, I just need to know so that we send
+patches with the commit message title you expect.
 
-[Severity: Medium]
-Can drm_fb_dma_get_gem_clipped_addr() compute an out-of-bounds DMA address
-when the plane is positioned completely off-screen?
+BTW, please check https://lore.kernel.org/all/awbs94RtiqAOqhEx@sirena.org.uk/,
+it's related to this "freescale" removal.
 
-dc_plane_atomic_check() calls drm_atomic_helper_check_plane_state() with
-can_position =3D true.  When a plane is moved completely outside the CRTC
-bounds, drm_rect_clip_scaled() sets plane_state->visible =3D false and clips
-src.x1 =3D=3D src.x2 (up to fb->width << 16) or src.y1 =3D=3D src.y2 (up to
-fb->height << 16), while drm_atomic_helper_check_plane_state() still
-returns 0.
-
-Because neither dc_plane_atomic_check() nor dc_plane_atomic_update() checks
-plane_state->visible, drm_fb_dma_get_gem_clipped_addr() computes baseaddr
-at (src.x1 >> 16, src.y1 >> 16), which can point past the end of the
-framebuffer GEM object, and dc_plane_atomic_update() programs that address
-along with zero src_w or src_h into the FetchUnit while enabling the source
-buffer.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261126071314.2538=
-90-1-wenst@chromium.org?part=3D4
+Francesco
