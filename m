@@ -1,54 +1,67 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795723166;
-	b=NrJVA4pmSLNzDPv04t3R+E3HXvpBz1LMquK2ib5CRxnh+PJvIvj9q1UpSlVx8mEnixKF
-	 okhcsVK6d8DZDHnc/+nhWY8iz0oSjGGG8Ug/IMnuxfxC6BGO+2TI9/aREuWJu1zYryNL+
-	 QYd7xPcvKEDgOgyIHwmuUjLqCgyALFq+NsPlzVNyN0+JG99DTm30XBhtXe03JP5TpB4tB
-	 OjFrKnLHLrIJfuReHBKbg05dtsykTr37YxBDldWyc/BxSrYqOMnh706XK/e/WoGXiUJgS
-	 sbDL72w++ujaxovULh1XbzA66QGUjOqlldCeO/KA3mzpCA+CYNvmBfjW5uv8rOCRlHA==
+	t=1795724254;
+	b=iLfl/We5XiRc5vIWt/bWMzFBwbzxOIByxxsCpGVCbkMUDPPHpO44cwnw83CPMSO0D2Au
+	 cm+1UZ8N3EKfO843pzLzpbhZe39pOVVdlFAeul+/If58QI6quCOVVJKb4XGsbaFEDQzt+
+	 6R1OF9J+TPd5nasfSVdkSNCaYRC4z6cu/1SJjDeJtdedrhI1QAipTEO+F4HbZ7xxJoBqP
+	 c5IuHHpqcHKMjj3Ak4TmflKXpD0z8RQd0ULY1phpp0GPH23OFBQGFr3mNAKcLSa7ATVdP
+	 1KduuTjYYkMqtb6y59UT7mwUE94HC0Jb/fCBlkCpkbY0unmP2btlHC+03oJ6A3w5PFQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795723166;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To:
-	 X-Cookie;
-	bh=g7MSQ3YQKbEWyNo+t2pC7DSANAK7/eErvsEIaJ7+yZg=;
-	b=spT/dhsg8cPPXim/kMqaRmFiaabcT4FNChLQtbKnIBYr+MDb1UqWzANCtatYy0JRUnws
-	 Ch0wpZSGloTA00NLdWObA2gyrxQwpNGFrs2e9FvHqK6rl0j093oIXm7TyIPGDzVyxucis
-	 fbYT4MB6X5P8j1LHbMoSwhol8QTaRWqKRYb+xYaFqQgOcWVp/Bl6gdnBC2j2c+e7jJn4+
-	 gh2S+jU+2wzMLQOs6E2puYwajKvm3I6vptA23chuvFNZAj+vB44lXX6N38GyPtU999KY2
-	 +4tm5WYWEbk5Pf+BE1+HowvGS3GhaJ3VVcTBqnGaUKaV8yYYy7R2xcVdXA8wHHdK9GA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795724254;
+	h=Received:DKIM-Signature:From:To:Cc:In-Reply-To:References:Subject:
+	 Message-Id:Date:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=+YqA/EUQPSROfYWDD2Mvnwhj+ldCwxHuIMAYVYFeAJo=;
+	b=3+MwJVQZubz6nMfb9pCRMlCOY8gjKHsdn8JJXXOXbgCbYCsKOmguFDJqwbMAK0aSxrFK
+	 AngkKDt9SQIvsTrG4iW9hmOXMKcPjm6EnRl3bh2FqBjCuVs0/oj4RauZb3MpnCvLME1FB
+	 Gy6BeZKFT0frh2OxNAk7vwfigIsmCGjNlQQMGsFl3F+eSoxDbuSQvzbQTgDW2NppNEWVW
+	 OcSGzQqZJ1qKEynpggi4HpIPvTmaRK4eqqrEyBMWQV1M2dzUvHGNUgeBKY4uLoXSdkZcv
+	 ew5JHaYViZoxhKVcReK+D2d0YgsA5xEJyp1mGtO4X3cNw9US9PTbPhlZZF+jE4BLMMA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kJq+ydBA;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=m86bHrey;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB17D606A31C;
-	Thu, 26 Nov 2026 19:59:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83B04606A32E;
+	Thu, 26 Nov 2026 20:17:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kJq+ydBA
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0818D1F000C0;
-	Thu, 26 Nov 2026 19:59:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=m86bHrey
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B32C91F00895;
+	Thu, 26 Nov 2026 20:17:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795723166;
-	bh=g7MSQ3YQKbEWyNo+t2pC7DSANAK7/eErvsEIaJ7+yZg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=kJq+ydBA6aCKTwUrlnP50MKiHfXYMFpUiJ4qIpmNhzNO/hm9UlXfTLbn5MaZabr+H
-	 En0XB6vqy4Oyjf3PJDff2IkFVDD+6tbYBuA6YtiAzpFO4YA6781zaRiJJ4dvl5r3Ie
-	 JUM3q+OZ/dzMSJ6HcXPg2k3IMYjXWj1NHxo4nTYVVrHmPKlHiCdWTHC6/JKS3vOl8U
-	 LYoNjJFmKuv0A+7ODmtnrkxd16/aQB3ZGhnPVA5NShmtN1aWGkgr8IGS8GTyCYzMm4
-	 ZEqPevMUldA4GSM3AffpxUhdeTDJOYUAxvHoblkD4pH6QnUzXatkqzlJKLew0R9xKO
-	 2gDzqBQejCwXw==
-Date: Thu, 26 Nov 2026 19:59:22 +0000
+	s=k20260515; t=1795724253;
+	bh=+YqA/EUQPSROfYWDD2Mvnwhj+ldCwxHuIMAYVYFeAJo=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=m86bHreyKf05alTxdTLfpkfpZ4/iohEt/1ajg350dyq1y9g0miHep87fG2nEkyt32
+	 Xlvbf++C3rjA8sFUGax3rchbcF6/F4oRnA7ePWnHB1aTIVY+5U5CtkNcHmmyE7q9Dw
+	 Hkr72NTQu/YJILk0Z1pLWMh1bXZ2aWbNIccWYCPYjBxglQPh2cDn7YDQUPfWg1aJwe
+	 eLbNxStJ2vT1nWHK+9uzWNJ2BmLIrBR+iwS3EjEENj82nBNivaKqdFsU0oTe5uEj/h
+	 ZNdehegeXabDpbXFU21ohmQDC+Krjl873lvbirL18IoAzLrOHO6jYDbNo4kTEzrj9a
+	 uhBENFISGI9Tw==
 From: Mark Brown <broonie@kernel.org>
-To: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
-Cc: Frank Li <Frank.Li@nxp.com>, linux-spi@vger.kernel.org,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
-	Heiko =?iso-8859-1?Q?St=FCbner?= <heiko@sntech.de>
-Subject: Re: [RFC PATCH 0/2] spi: panic atomic transfers and fsl_lpspi support
-Message-ID: <4d07263e-348b-49df-9bda-f026b343b8ea@sirena.org.uk>
-References: <20261116094916.4039108-1-chunyuzhiqiang@yinhe.ht>
+To: Liam Girdwood <lgirdwood@gmail.com>, 
+ Peter Ujfalusi <peter.ujfalusi@linux.intel.com>, 
+ Bard Liao <yung-chuan.liao@linux.intel.com>, 
+ Daniel Baluta <daniel.baluta@nxp.com>, 
+ Kai Vehmanen <kai.vehmanen@linux.intel.com>, 
+ Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>, 
+ Vijendar Mukunda <Vijendar.Mukunda@amd.com>, 
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+ Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Philipp Zabel <p.zabel@pengutronix.de>, 
+ sound-open-firmware@alsa-project.org, linux-sound@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ shengjiu.wang@oss.nxp.com
+Cc: Shengjiu Wang <shengjiu.wang@nxp.com>
+In-Reply-To: <20261126102528.1531824-1-shengjiu.wang@oss.nxp.com>
+References: <20261126102528.1531824-1-shengjiu.wang@oss.nxp.com>
+Subject: Re: [PATCH v2] ASoC: SOF: imx8: Switch imx8ulp DSP control to
+ reset framework
+Message-Id: <179570816156.142532.252987832768462132.b4-ty@b4>
+Date: Thu, 26 Nov 2026 15:49:21 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -58,38 +71,46 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="LeEWDUlyL5ewRgyB"
-Content-Disposition: inline
-In-Reply-To: <20261116094916.4039108-1-chunyuzhiqiang@yinhe.ht>
-X-Cookie: Sank heaven for leetle curls.
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1155; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=fqUxoi0I4me6jqtgp/a5cIp3cTRehPE5dY23SN1KjSM=;
+ b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLI5Jt94fGBx/r3sgj8XAo86ee8PPZD0pzWtR/Sk7SflL
+ 2b/pzqu6ShlYRDjYpAVU2SJy+J+WV/yeg3fwYVtMHNYmUCGMHBxCsBELroz/Hefluxa0rXxYdWD
+ G1N/FMfLyLecV7ZT+XyzQdTc5cCeRysY/juqZuu6h6gEnXcvvBq5RDp7Ud7Bt6/YBBuPap85pvp
+ nAQsA
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
+On Thu, 26 Nov 2026 18:25:27 +0800, shengjiu.wang@oss.nxp.com wrote:
+> ASoC: SOF: imx8: Switch imx8ulp DSP control to reset framework
 
---LeEWDUlyL5ewRgyB
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Applied to
 
-On Mon, Nov 16, 2026 at 05:49:13PM +0800, ChunYuZhiQiang wrote:
-> This is a follow-up to Heiko Stuebner's "spi: Implement a atomic transfer
-> as a last resort" series.  These patches are based on that series; they
-> are not standalone.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-7.5
 
-This doesn't apply against current code (which has the above), please
-check and resend.
+Thanks!
 
---LeEWDUlyL5ewRgyB
-Content-Type: application/pgp-signature; name="signature.asc"
+[1/1] ASoC: SOF: imx8: Switch imx8ulp DSP control to reset framework
+      https://git.kernel.org/broonie/sound/c/50529c05b08b
 
------BEGIN PGP SIGNATURE-----
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmsIj5kACgkQJNaLcl1U
-h9CdzAf/cpv63PbfRocwOuxOnrKVr2PyKFKsv70Or0QWMmHVm0Tsm/pSNos2pSE4
-MO0WWLaRKuVF1rZwwkGv2mPZ33KBAk/mpmcW2OXak9tEJjQLX+5o7WhyUuOTjOT4
-J9IQDMRiKmlup1b3ggJVpvnTBzbXACqCrvFXCmbzfjtLoVkrsHzfJtEP8xoNDgpW
-u/8sjyDMdDjESOkygZKCE0SxhgFI9+JNpg0xmkEkPOLj4L4S5O9vA6DZFZtr7B2n
-OZ9T+2T6+PeG7yWSEZt2TWjamZqQq9WP1AkEMoniBZPYiMhg1Z/tcoouaWc4vIw2
-ChxZkbyCtDYyeWAqvRHydprg5ZXOFA==
-=FsxV
------END PGP SIGNATURE-----
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
---LeEWDUlyL5ewRgyB--
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
