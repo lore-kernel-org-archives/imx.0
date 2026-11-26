@@ -1,109 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795697373;
-	b=rDHWbm6VrqfjPKc58ysdaP+WWEDmFUdEGTrLiSVjUJLkvwyqPF2VABJiCpxQZazrFbUp
-	 g3gQ5IqWHokH0SGwnZes9GUh7rGDXe+ofdrTaJYt6f+PROFY+p7ZBOSroCyu7jq0fn2f3
-	 QzHGbXBqghNGBWGbKZECEVfwGIa1ipOLWtAtWdhaC21iYZIvbmARlvkP948aTdugrWBI7
-	 kOEGZGfCWfBDApluVY4viui1YQDhUJjtoqIH0vK/ZxEIlWQzzIqJ24tTc2OSt2dpdo8zv
-	 5w8frhP8JS4nVZB7ARo3Hd7HGeZRy+kfrb2MVngb4dVzZBrI3KeCjbbuKgC7vtx0esA==
+	t=1795697594;
+	b=oJ2TK9oGxs4kPEoIFU+HvlZmgCnfvIS58KUtbK9+ub9UV8LiLtyiV+lyljkRLuOnXl+0
+	 pqeSgS/POE3VEWCTfn+s5NVk4RqSzbEqB0nDpy0h86mw7l+oDWSMlEE70LOTCJJzPVor/
+	 ktuqdwROzyFED9clJgFmM5KUJ8r/mj6S2722T8dB6p8LyyXpr62aZ203zeCBkRCBU3I0I
+	 iTABi+cRGKhfzCj7hilIGQRLekwp3TxcSN7DIV8c75/9gRrzBOXsdiP9IIF3mNS1N5vyR
+	 catxQkh3Z6sT7Ow5CwzpTIEoW2Lkwq0gdGC9cbSXCLkvAgOYvX7XY6ooButubdPnWtg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795697373;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:Content-Transfer-Encoding:User-Agent:MIME-Version;
-	bh=HFgvhPWl12hpkYLquoqeQTH471RDc6o+6JugKxL60ho=;
-	b=Epp8TX4JcnxokTYz1WzrVwgP0mCdRIkubDS7KsSZO1+C8yHbQWHSY9A7mKcOs98kyn0e
-	 smsocOMM2wAr/G6eIK/aGh25gWyXnmlTG3PyGKUjfc+47kMDuaA398PIZCAjY+zP/b4V8
-	 ike/gaongF4PZpiv66HhGy1nNQwtKIEfhDIIXCMcqGka0pGoVzi2kgci0uBKXaEzuEsSL
-	 nZbef+OATafjdf8isA7EnlY0UHtCYvOjpGhWt9V5aOpTzsWJgouXOwJwn8bOxgfXEATZv
-	 T+smzHTv/1yc80oZ1sQm/R5vQ2jaCouwlBTIG9mmqRUNal7WDl7fO+TKrrSt2lnFT5w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795697594;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=q3PzFJ3hbYSCea9rHodUJxc+bUxixgVlxzIsC4nrb7w=;
+	b=1HhFswJw5SiDB7BL+hzuT/CWryT/eOVANiAmiC/0kbL4yZkmS8BKapaPGaAK9sJjQNru
+	 Ylcr8hjHpsgmoQTghuQUrN1RIB0tjk/eJPYM5I+vmSJf1zb6jWHR79EEU41AN1XxDj1Af
+	 130++zzTslQO/P+/+WlrTUV6/tuSHO2FGoYG1kZJ1Mla4b0Ihv99YPcJwv4ogHkx7/5c3
+	 VUrp340una1gr/HlDIQ8fklGlqBxwCdj9c7N1AmSRXyrt42cR7mvK+nX7AU79hLuRhRaz
+	 5PF9dWE57MMhLHfeCWItghCRgsQ2vDnhwGdS2gC9eWQimLNAvJj6CbvDn3Daws2oQLA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linaro.org;
-	spf=pass smtp.mailfrom=linaro.org;
-	dkim=pass header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=HxD4SDC7;
-	arc=none smtp.remote-ip=209.85.221.41
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HPpEeEcK;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19C51606A32D
-	for <imx@lists.linux.dev>; Thu, 26 Nov 2026 12:49:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 19C51606A32D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56830606A329
+	for <imx@lists.linux.dev>; Thu, 26 Nov 2026 12:53:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=HxD4SDC7
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-4a2f4ca0dcfso3997524f8f.1
-        for <imx@lists.linux.dev>; Thu, 26 Nov 2026 04:49:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1795697371; x=1796302171; darn=lists.linux.dev;
-        h=mime-version:user-agent:content-transfer-encoding:content-type
-         :references:in-reply-to:date:cc:to:from:subject:message-id:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=HFgvhPWl12hpkYLquoqeQTH471RDc6o+6JugKxL60ho=;
-        b=HxD4SDC771eqrE7ZcNCPsLOATNKoAtCzXMeljHuofQrvr0XUC7Q+gP1nd9PC3KPC34
-         pMmXzGoq/DJeJ72D0HTYJZ7U8nKnjGJRqQjUhJYNx7kXB9/aDtyj3/1X7EFSo6TtZSkE
-         jrLPVDO1kEJ4PNHdHrdivvOO4zQ5q82gGOq0Rh21hnqkbPGT1vkhzBbWlfjuRY7VvDaz
-         tSBaJ0toP6a+faN39MzSahLCKM69VLxiQF/cCBUUr1rebhU6y9YB/dC/xgtY3uxmR/zt
-         sEkQy59ricmOfbIo8nRSS9lxdTYkJHehB2rYNoiB9G9K5HGDXcDNwaoYMzKZkR9vyIeh
-         JlEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795697371; x=1796302171;
-        h=mime-version:user-agent:content-transfer-encoding:content-type
-         :references:in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=HFgvhPWl12hpkYLquoqeQTH471RDc6o+6JugKxL60ho=;
-        b=RB2UyaCwksTI3Y31e3sDuWPOiDDzRjpMX9EzObM++ou1FlkWKw5wQX6v6b1XAf7QyB
-         +0aE9ohHAaFwG73gD8lgHtND3SdqkdM1KvvvXKacIArbFJmG0IGpZQvzIjsmjVGYBg1N
-         YmTJ3UTNU8Q9/uGu1Hmu8scoqQvJFyyLNFmOm0LruEPW+2YR33zHWnTzN9izuyJxc+Nc
-         NGoYFRHXGq1yCU1rgiVF0AYSLhotf1DIktDiI0D1iUZ9t7zQ8SocMC+GgkQAFmtH/gxw
-         wKuoKPIUcZVX1SZ+ZSwEcmwn1CyUGZb9BAYsma6NzkCu9G7D91ULsR9a/bez6oTtizuQ
-         4Hag==
-X-Forwarded-Encrypted: i=1; AL+hErEC6QzZ2oNleejRtrbWOInAXjur8lF9jnz6UxOKSr0obBjHP941k+7tOXrsr/9IFriLwC0=@lists.linux.dev
-X-Gm-Message-State: APuU4Z+lydcaB/zAZoSrjWFG5V8Ox3J9orcbOcFusIN94RbU7I8oMAim
-	EmRH7YXpvcMY93jePir7RSg1bhSFMWxlj7q20gb/b3lqsqEvASKIEChQJu0pvcx13IE=
-X-Gm-Gg: AZFdTZf+8lYedlEDne3OGF5Yfp38m8dKAK3nzgm7G+aa5HUiX6ZaC6kJaNKvH+PWNC4
-	gkMDPxu+dboE0gu8ri71XuALqkO8Zsn4LjqgGyafjrMXWdL3Qrrvrfq+b8yE00Dz/3EilPzaou7
-	39jLfFKkduj15Pp3vLbFnDMyca/pZLA5g0LC2F9P825tphNZ61sM/9bPRN3n0v/q1M61uf6A9Oo
-	yB5AYvRHC0AEmkIknRMjqAy88O6xnc8Dt2O/SCbktAw9ARTYBJGLfzBq9khgkhO3ltmo5aKxf3p
-	r7nhS2KcAwv0hKjyE0P5pfetOnzxDCQ26w8v9pUbZf00fu13mZaO/Sp6k3elh/GcvaTy7TDNnEP
-	qQFsqtn58AIYurYhczypfrk1TXX/kTGs/WNgKimrn3R56sm2h6fhIakn7qe/gFM4uIPuvmS1kBB
-	9NHDNF/MBC3zFTx6JdSgDcsEKzSJIeP6H/LoEfSyqSV2z8vLiKXZoD5PRlGsruxQ7jgXO8BC5oP
-	SOOuPtGgUQ+dCLIxmcB2m5D33YqBpJLvq3coOLNqy+9g01vdOMRmZ6Kj3zsDY5Kf2koTeCooB3t
-	iMYPb+X5LBw6n6cSJNG3s0ICnFdSNRQPXQ==
-X-Received: by 2002:a5d:4452:0:b0:48e:3767:d885 with SMTP id ffacd0b85a97d-4abb5bcd524mr32707915f8f.53.1795697371481;
-        Thu, 26 Nov 2026 04:49:31 -0800 (PST)
-Received: from [10.1.1.59] ([109.255.181.4])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4ab6b110c3csm38969506f8f.36.2026.11.26.04.49.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Nov 2026 04:49:31 -0800 (PST)
-Message-ID: <b1d73b2f842c8827e6a2a0ed6dcb1d0b979265b9.camel@linaro.org>
-Subject: Re: [PATCH 3/3] usb: dwc3: Allow glue drivers to override all
- dwc3_properties
-From: =?ISO-8859-1?Q?Andr=E9?= Draszik <andre.draszik@linaro.org>
-To: Thinh Nguyen <Thinh.Nguyen@synopsys.com>, Greg Kroah-Hartman
-	 <gregkh@linuxfoundation.org>, Frank Li <Frank.Li@nxp.com>, Sven Peter
-	 <sven@kernel.org>, Janne Grunau <j@jannau.net>, Peter Griffin
-	 <peter.griffin@linaro.org>, Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Tejas Narendra Joglekar <Tejas.Joglekar@synopsys.com>, 
- "linux-usb@vger.kernel.org"	 <linux-usb@vger.kernel.org>,
- "linux-arm-msm@vger.kernel.org"	 <linux-arm-msm@vger.kernel.org>,
- "linux-samsung-soc@vger.kernel.org"	 <linux-samsung-soc@vger.kernel.org>,
- Tudor Ambarus <tudor.ambarus@linaro.org>, 
- "linux-arm-kernel@lists.infradead.org"	
- <linux-arm-kernel@lists.infradead.org>, Pengutronix Kernel Team	
- <kernel@pengutronix.de>, Neal Gompa <neal@gompa.dev>,
- "asahi@lists.linux.dev"	 <asahi@lists.linux.dev>, "imx@lists.linux.dev"
- <imx@lists.linux.dev>, Fabio Estevam <festevam@gmail.com>
-Date: Thu, 26 Nov 2026 12:49:47 +0000
-In-Reply-To: <b0b118ce86d1046d73fdbe297117f993df38cf20.1795559405.git.Thinh.Nguyen@synopsys.com>
-References: <cover.1795559405.git.Thinh.Nguyen@synopsys.com>
-	 <b0b118ce86d1046d73fdbe297117f993df38cf20.1795559405.git.Thinh.Nguyen@synopsys.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-9+build1 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HPpEeEcK
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3E051F00A00
+	for <imx@lists.linux.dev>; Thu, 26 Nov 2026 12:53:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795697593;
+	bh=q3PzFJ3hbYSCea9rHodUJxc+bUxixgVlxzIsC4nrb7w=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=HPpEeEcK7Qisws2Yn2HR2QKFv32My5gHCW/8A9zrInx19MWi11iDKK6VrCbEVVOUc
+	 54mk7Xuyy+fUcUxmEcTpFao5KArkGJ4xRfCrwKfLM5YwpcAoW/4INXtsxGtZFZ4G5l
+	 7k+xY6aEuv4JCnKsfHXJzIdh8femk6oi3DkGXYdY7RKArxdfMAZZtDybnpSkB1KIob
+	 g8WDaS1mIGqnajzeLFzav47q/orkl5QZWAdJ62iMw2zuFzo3PAa2p4129pHOKZ1SsK
+	 VikdTI5+VJ0uSbQMro5L3gt5zEm3hrLNyX+p8xOqjOptcU5nutkiVRi/Qq+VH/1iY8
+	 iu7TcIZjKjh6w==
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-5be3d5927ceso8958558e87.3
+        for <imx@lists.linux.dev>; Thu, 26 Nov 2026 04:53:13 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AL+hErEDLqqH1xUFb2m9MYUVsHeq53u4FAl7rZMBgEKapqSqF3E6/xUxL3lda5J/z38eaW5Z3UE=@lists.linux.dev
+X-Gm-Message-State: APuU4Z8alIFuG4lUxgo87Fsz/R2xOof3mYLBZNOfE7DKTPX9eHlUUu9o
+	FcD0GrQdtUJkkBWRJ5cmnZN8TmtaI2ZlYB4LwO0HOdWW7Xs1qlUr7WAw0/vfGf8WBkRyg2Nd+8a
+	Ss86kZ05l0uBWPElw4NKC8HUxNrkoU48=
+X-Received: by 2002:a05:6512:1111:b0:5bf:a172:db47 with SMTP id
+ 2adb3069b0e04-5c1bc7fbf6emr6119152e87.16.1795697592407; Thu, 26 Nov 2026
+ 04:53:12 -0800 (PST)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -113,32 +59,49 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
+References: <20261118-for-upstream-lx2160a-rcw-pinmux-v1-v8-0-d01bc837593e@free.fr>
+In-Reply-To: <20261118-for-upstream-lx2160a-rcw-pinmux-v1-v8-0-d01bc837593e@free.fr>
+From: Linus Walleij <linusw@kernel.org>
+Date: Thu, 26 Nov 2026 13:53:00 +0100
+X-Gmail-Original-Message-ID: <CAD++jLnRWZrLfyBGGOikx_eeYXirahuB7E7yuDhB6KoSAQoA5w@mail.gmail.com>
+X-Gm-Features: Aa3M54q-CsXp8NzMnoFlWGAu1EmQEOW5kQyf9eE8X0_RcR3iOaRDqKTNl-NFIlo
+Message-ID: <CAD++jLnRWZrLfyBGGOikx_eeYXirahuB7E7yuDhB6KoSAQoA5w@mail.gmail.com>
+Subject: Re: [PATCH v8 0/6] lx2160a: change the pad muxes through the RCW override
+To: vjardin@free.fr
+Cc: Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
+	Frank Li <Frank.Li@nxp.com>, Jacky Bai <ping.bai@nxp.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, NXP S32 Linux Team <s32@nxp.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, linux-gpio@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, 
+	imx@lists.linux.dev, Vladimir Oltean <vladimir.oltean@nxp.com>, 
+	Ioana Ciornei <ioana.ciornei@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 2026-11-24 at 22:59 +0000, Thinh Nguyen wrote:
-> struct dwc3_properties holds all glue-overridable properties, but glue
-> drivers can only set needs_full_reinit and gsbuscfg0_reqinfo.
->=20
-> Replace the properties value in struct dwc3_probe_data with a
-> fixup_properties() hook. The core calls it after reading the DT
-> properties, so glue drivers can set properties that DT does not
-> provide, or override DT values, including clearing them, to correct
-> broken SoC settings. Convert imx and ls1028a to the hook.
->=20
-> Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-> ---
-> =C2=A0drivers/usb/dwc3/core.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 18 +++++-------------
-> =C2=A0drivers/usb/dwc3/dwc3-apple.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 |=C2=A0 1 -
-> =C2=A0drivers/usb/dwc3/dwc3-generic-plat.c | 19 +++++++++++--------
-> =C2=A0drivers/usb/dwc3/dwc3-google.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 =
-|=C2=A0 1 -
-> =C2=A0drivers/usb/dwc3/dwc3-imx.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 |=C2=A0 9 +++++++--
-> =C2=A0drivers/usb/dwc3/dwc3-qcom.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 |=C2=A0 1 -
-> =C2=A0drivers/usb/dwc3/glue.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 10 ++++------
-> =C2=A07 files changed, 27 insertions(+), 32 deletions(-)
+Hi Vincent,
 
-Reviewed-by: Andr=C3=A9 Draszik <andre.draszik@linaro.org>
+On Wed, Nov 18, 2026 at 12:00=E2=80=AFPM Vincent Jardin via B4 Relay
+<devnull+vjardin.free.fr@kernel.org> wrote:
+
+> The LX2160A muxes its IIC, XSPI, SDHC, UART, IRQ and EVT pads from
+> fields of the RCW. They are read-only in RCWSR12..14 of DCFG, and are
+> changed at runtime through the override registers in the DCSR view of
+> DCFG, which read 0 until written.
+>
+> Since commit 8a1365c7bbc1 ("arm64: dts: lx2160a: add pinmux and i2c
+> gpio to support bus recovery"), fsl-lx216x.dtsi drives the override
+> registers with pinctrl-single for the I2C bus recovery. Its first pin
+> state clears every other field of the word: a board whose RCW programs
+> a non-zero pad mux loses those pads at the first I2C probe.
+>
+> This series reads the fields in effect from RCWSR and writes RCWCR, as
+> fsl_guts_rcw_rmw() already does for the SerDes protocols:
+
+Once the review is complete, can I merge all patches except the DTSI
+patch through the pin control tree, i.e. does it have the right ACKs?
+
+Yours,
+Linus Walleij
