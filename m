@@ -1,76 +1,76 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.180
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=116.203.31.6
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795680980;
-	b=UFxb74FXhG7YRh0EP1So8dHShL+Ism66tTOInfARzGQN3H+Yv78TFstOyohjhN1C5srY
-	 DTa+3Jj7KLeZ8+OCdGB6LIB7XgMdWcAJ86JW9dTwa8Ga01f8hd87BRQyzIaX1nMjv3oC2
-	 NYJDXu8m8erZFWnP1UGAqY2bxdhgaDwHMpv18DFP058Xzl4/K6U/cDGfyLW99wVvmZ7tm
-	 osVfIsDVGYgigK1wy+BAj+L1S3ktK2DWyb9sDVLRamoCz9dckwJ0GpqOHKMCdLhxvNkzM
-	 o+QKZKPYrwEeK8vm69TVD0mI0E5uI4iL50i1xddXZFKehGrwq3smpaoe5QRKR/qzMBQ==
+	t=1795681553;
+	b=QGMzqJCR4umBx0lL306fcgH1o4ULxAcRKwNtVdqEzhamo66eVghJAsynWFQGzKemmnqC
+	 2loO5mFGWtzZcsJtv5dxLPG9MgbVHAj4n2YoUD16hfaVBNjAJj4xdTEdp3rmAifb1GyNR
+	 nYXDw/7N+fGeh+nsdVvn45L+80m96tjbw66j1G7V4RRWtY0v91nFDTDurc4biue/GKs5x
+	 5FxKOBYabDZ8On2KGYw/lhn3ovhzq+Raa8JcirhjvVNI82bYyqOBZcB2HgKzSED7Habhv
+	 cvQvc7NDfY7ZCDQL2iXjFALsW/PPEO4uvyWp3RMT5HscBuwq7xd5biFBxPRjdmPtJRQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795680980;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=JGQ6rQ9KjgTLE7XKHXoqOXReY5Cx5tSHHb2hfYg3jtk=;
-	b=nz9pltfL7plm3iPHZtUNrxjQqLyHGy+pvmi1iCayXOa7eL/MVvSD34lXLKf5lPJa4VeI
-	 JqAKlA/Biha0BcBcS7rnRzCxcsTNpowWeYjX9A1Mtf34nQTwsRghzMe3jWv9R/ujddp+i
-	 rt3y0pgJ0K101e5zRvg19ZyfyZy2AJPeK/4ithG4J9GTaAVXtzVrGRIdxGGl6chYM/Zlo
-	 /dsnNcPFdt3LNmYl/UE5JjpUqWj/i4+iqcsl9JdjXQQNVnD1nQKjI0/xnXmJl8u+jy6vQ
-	 pUV+4NPejCnm8/F82AyTNEhpwQTwHqR9gBPu+pHgg6mxNU9rk6UO5AQ21MKSZ6IeiCA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795681553;
+	h=DMARC-Filter:DKIM-Signature:X-secureTransport-forwarded:From:
+	 Complaints-To:To:CC:Subject:Thread-Topic:Thread-Index:Date:Message-ID:
+	 References:In-Reply-To:Accept-Language:Content-Language:
+	 X-MS-Has-Attach:X-MS-TNEF-Correlator:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=GhXefzmZY9gWz2XO5wKueke+JFfkFr9M9YsFaTjCOvU=;
+	b=wRA/68JtViIOVVGTbmLsy3bLY7r9DjNnNKHxiK0/4s6SghjBElQu8AdtnMz7wcCT8p+L
+	 DCHZJnJKQLgQYAMNmcVaHrOmML7rkdOlVyCVUAMssJfcMaIKcHsb3l/HwShB17rvURLo5
+	 G7/Pg+V1VFW+ZJz5M8cvDqT/MaqfY3cvq/wtwu5wcRYbTC9xDyMdt3aJEXDsLfkHwhu3s
+	 yJLprVf6P6SOleN1YdfjffosirtSf/Ul9OZ2v1b3jr/kyJ55FP5lwVoER4Kl4LtHUFNdP
+	 X1SpdceoNoRvdaS21bNIZn3xlXbJYKkblB66hgPciVD6axwWQMRryNKno3EKryAR8Hw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Q0xDfG4z;
-	arc=none smtp.remote-ip=91.218.175.180
-Received: from mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=dh-electronics.com;
+	spf=pass smtp.mailfrom=dh-electronics.com;
+	dkim=pass header.d=dh-electronics.com header.i=@dh-electronics.com header.a=rsa-sha256 header.s=dhelectronicscom header.b=KRftRRxu;
+	arc=none smtp.remote-ip=116.203.31.6
+Received: from mx3.securetransport.de (mx3.securetransport.de [116.203.31.6])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B642D606A31C
-	for <imx@lists.linux.dev>; Thu, 26 Nov 2026 08:16:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B642D606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7583F606A33A
+	for <imx@lists.linux.dev>; Thu, 26 Nov 2026 08:25:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7583F606A33A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=dh-electronics.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dh-electronics.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Q0xDfG4z
-X-Envelope-To: imx@lists.linux.dev
-DKIM-Signature: a=rsa-sha256; bh=2tapKyPOWs6voUGnssNqs09oXMxfImVb3hhu9BetUwA=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795680977; v=1; x=1796285777;
- b=Q0xDfG4zYhDln0rpnHjWfvvKbPYnx353oO5zc59YANx7nucwDWqnSRabK0S668EM2NLmLnrJ
- /1HbnU+OirGUdFWFakPR5E2arECH7edydUeckwzPSpZ9kS1o7wBEov9tP8OLVB2csf+OtqNOfkE
- jnklgkhsySWJgRYbbpU2XUIs=
-X-Envelope-To: imx@lists.linux.dev
-Received: by smtp.migadu.com with ESMTPS id 409d69e45079a162;
-	Thu, 26 Nov 2026 08:16:17 +0000
-X-Mizu-Trace-ID: 409d69e45079a162
-X-Migadu-Flow: FLOW_OUT
-Date: Thu, 26 Nov 2026 16:16:10 +0800
-From: Peng Fan <peng.fan@linux.dev>
-To: Francesco Dolcini <francesco.dolcini@toradex.com>
-Cc: Francesco Dolcini <francesco@dolcini.it>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Peng Fan <peng.fan@oss.nxp.com>, Peng Fan <peng.fan@nxp.com>,
-	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rt-devel@lists.linux.dev,
-	Bjorn Andersson <andersson@kernel.org>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Steven Rostedt <rostedt@goodmis.org>
-Subject: Re: [PATCH v3 00/10] mailbox: imx: Use threaded handler to avoid
- kworker in imx's remoteproc
-Message-ID: <awfqyvcwtK5Hi8j0@fedora>
-References: <av6Wc+kHFKqwFHAR@shlinux89>
- <20261116102331.K8Sc86V9@linutronix.de>
- <20261119114041.GA166708@francesco-nb>
- <av8H7l6C8fmiHdbV@fedora>
- <av8LQa77SbshHmZD@francesco-nb>
+	dkim=pass (2048-bit key, unprotected) header.d=dh-electronics.com header.i=@dh-electronics.com header.a=rsa-sha256 header.s=dhelectronicscom header.b=KRftRRxu
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dh-electronics.com;
+	s=dhelectronicscom; t=1795681531;
+	bh=GhXefzmZY9gWz2XO5wKueke+JFfkFr9M9YsFaTjCOvU=;
+	h=From:To:CC:Subject:Date:References:In-Reply-To:From;
+	b=KRftRRxuzHKoEGcsihtRYRfYTQ6HNy40Yr3998Pnsqg9qdd/TxNAIGeNHnXkPCiKf
+	 XrsxZ/yuPY4TwPRukW/voTuKw/ZcmGOZjm3LeDb6kMj5MdiJ1sJHNXdAivn0QsRLBy
+	 vJeRHR/jzwmZbS7MKCy5O2zycaHaNrqk5y+5DExOoEqPs5Kk54XhiEel1WLBBY5A6m
+	 rYh9nznVIWPmBWlyGM9K/JkFHc4/GFz1b7iL2+j7UsvNnpL7jcyiBz2lXAc4bpL5tQ
+	 9h2K7teuffOQwg6Pq4gTogXckCFK7fnYdiDb54hQnTkY1V9MtI1C7Et+heExTUOyjb
+	 FJE6kftpUt5jQ==
+X-secureTransport-forwarded: yes
+From: Christoph Niedermaier <cniedermaier@dh-electronics.com>
+Complaints-To: abuse@cubewerk.de
+To: Marek Vasut <marex@nabladev.com>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>
+CC: Pascal Zimmermann <pzimmermann@dh-electronics.com>, Conor Dooley
+	<conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>, Frank Li
+	<Frank.Li@nxp.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Rob Herring
+	<robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, kernel
+	<kernel@dh-electronics.com>, "devicetree@vger.kernel.org"
+	<devicetree@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>
+Subject: RE: [PATCH V2] ARM: dts: imx6ull-dhcom: Change eMMC pin configuration
+Thread-Topic: [PATCH V2] ARM: dts: imx6ull-dhcom: Change eMMC pin
+ configuration
+Thread-Index: AQHdfNxvka56chsGIUmKS9A5oSlWCbc+vxUAgAFGNIA=
+Date: Thu, 26 Nov 2026 08:25:29 +0000
+Message-ID: <4ef4ff8128b049d59a0ab23bea906468@dh-electronics.com>
+References: <20261125125621.6734-1-cniedermaier@dh-electronics.com>
+ <a57373f2-dfb2-4344-8e2c-6621a623d170@nabladev.com>
+In-Reply-To: <a57373f2-dfb2-4344-8e2c-6621a623d170@nabladev.com>
+Accept-Language: de-DE, en-US
+Content-Language: de-DE
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -80,131 +80,13 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <av8LQa77SbshHmZD@francesco-nb>
 
-Hi Francesco,
-
-On Thu, Nov 19, 2026 at 03:44:17PM +0100, Francesco Dolcini wrote:
->On Thu, Nov 19, 2026 at 10:30:06PM +0800, Peng Fan wrote:
->> On Thu, Nov 19, 2026 at 12:40:41PM +0100, Francesco Dolcini wrote:
->> >Hello Peng, Sebastian
->> >
->> >On Mon, Nov 16, 2026 at 11:23:31AM +0100, Sebastian Andrzej Siewior wrote:
->> >> On 2026-11-16 10:23:41 [+0100], Francesco Dolcini wrote:
->> >> > Our CI shows a ~10-15% eMMC sequential read throughput drop on i.MX8QXP
->> >> > and i.MX8DX (Colibri iMX8X, Cortex-A35), starting with v7.2-rc1 and
->> >> > still present in v7.4-rc3 (hdparm --direct -t: ~129 MB/s -> 105-120
->> >> > MB/s on i.MX8DX). i.MX8QM, i.MX8M and i.MX9 are not affected.
->> >> > 
->> >> > 5d1c0000.mailbox interrupt count before the test went from ~8k on v6.18
->> >> > to 60k+ on v7.3/v7.4.
->> >> > 
->> >> > Peng: any idea/suggestion? Does it makes any sense to you?
->> >> 
->> >> Can you pin point it to a patch in this series? My guess is that
->> >> something with the masking/ unmasking went wrong. The increase might be
->> >> result of the interrupt keeping firing while the threaded interrupt did
->> >> not have a chance to run.
->> >
->> >Reverting 36cac4b5101f, 3225a745f517, e55bea377d49 and 692e1bc96a5d
->> >restores 149 MB/s with schedutil.
->> >
->> >
->> >On Thu, Nov 19, 2026 at 02:25:55PM +0800, Peng Fan wrote:
->> >> On Mon, Nov 16, 2026 at 10:23:41AM +0100, Francesco Dolcini wrote:
->> >> >Peng: any idea/suggestion? Does it makes any sense to you?
->> >> 
->> >> Please help test whether this helps:
->> >> 
->> >> diff --git a/drivers/mailbox/imx-mailbox.c b/drivers/mailbox/imx-mailbox.c
->> >> index 683ccea6f2ba..e29044cf4b92 100644
->> >> --- a/drivers/mailbox/imx-mailbox.c
->> >> +++ b/drivers/mailbox/imx-mailbox.c
->> >> @@ -635,7 +635,7 @@ static int imx_mu_startup(struct mbox_chan *chan)
->> >>  {
->> >>         struct imx_mu_priv *priv = to_imx_mu_priv(chan->mbox);
->> >>         struct imx_mu_con_priv *cp = chan->con_priv;
->> >> -       unsigned long irq_flag = IRQF_NO_THREAD;
->> >> +       unsigned long irq_flag = IRQF_NO_THREAD | IRQF_ONESHOT;
->> >>         int ret;
->> >> 
->> >>         pm_runtime_get_sync(priv->dev);
->> >
->> >It does not help.
->> >	
->> >The analysis below was done with Claude help, on measurements I took on a
->> >Colibri iMX8QXP. I hope you can pick it up from there, this is not my
->> >area of expertise, and the best I can do is to send a revert for those 4
->> >commits.
->> >
->> >Every SCU RPC now wakes the SCHED_FIFO irq thread (TX done and RX), and
->> >while an RT task is runnable schedutil requests the maximum CPU frequency.
->> >The A35 clock is CLK_GET_RATE_NOCACHE, so each frequency change is
->> >followed by an SCU RPC reading the rate back, which wakes the irq thread
->> >again. The loop never settles, even when idle, and the transitions (ATF +
->> >SCU) are what costs the eMMC throughput (and I assume there is more
->> >impact on performance than just this).
->> 
->> Not sure whether this is root cause, per my understanding, cpu freq update
->> is not that high frequency call.
->
->Moving to `performance` from `schedutil` or reverting those 4 patches
->solve the issue. And the significant increase on ctx switches and irq
->count is real even on idle without any emmc test running.
->
->> Let me setup a i.MX8QXP board and see what's going on there.
->Thanks!
->
->> BTW, i.MX8QM should
->> also have same issue, but seems not impact in your report, a bit werid,
->> might be because i.MX8QM has more cores :)
->
->I agree, I did not run any kind of extensive performance test. What
->happened is just that our emmc test started to fail, and this lead to
->this series. 
->
->> Have you tried pin your emmc test thread to core3, or core2, just not core0.
->
->It was never pinned to any core, so the scheduler decided on its own.
->And multiple runs of the test all lead to the same results.
-
-My test on i.MX8QXP-MEK does not show interrupt increasing a lot, ignore the rootfs name.
-
-root@imx91evk:~# cat /sys/bus/soc/devices/soc0/soc_id
-i.MX8QXP
-root@imx91evk:~# ./hdparm --direct -t /dev/mmcblk0
-
-/dev/mmcblk0:
- Timing O_DIRECT disk reads: 646 MB in  3.00 seconds = 215.27 MB/sec
-root@imx91evk:~# cat /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor
-schedutil
-root@imx91evk:~# cat /proc/interrupts | grep mail
-  14:       6922          0          0          0  GICv3     209 Level     5d1c0000.mailbox[0-0], 5d1c0000.mailbox[1-0], 5d1c0000.mailbox[3-3]
-  35:          0          0          0          0  GICv3     216 Level     5d200000.mailbox[0-1], 5d200000.mailbox[1-1]
-root@imx91evk:~# uname -a
-Linux imx91evk 7.4.0-rc4-next-20261125 #6 SMP PREEMPT_DYNAMIC Thu Nov 26 06:56:40 CST 2026 aarch64 GNU/Linux
-root@imx91evk:~#
-
-root@imx91evk:~# cpufreq-set -g schedutil
-root@imx91evk:~# cat /proc/interrupts | grep mail
-  14:       6954          0          0          0  GICv3     209 Level     5d1c0000.mailbox[0-0], 5d1c0000.mailbox[1-0], 5d1c0000.mailbox[3-3]
-  35:          0          0          0          0  GICv3     216 Level     5d200000.mailbox[0-1], 5d200000.mailbox[1-1]
-root@imx91evk:~# ./hdparm --direct -t /dev/mmcblk0
-
-/dev/mmcblk0:
- Timing O_DIRECT disk reads: 646 MB in  3.00 seconds = 215.24 MB/sec
-root@imx91evk:~# cat /proc/interrupts | grep mail
-  14:       6961          0          0          0  GICv3     209 Level     5d1c0000.mailbox[0-0], 5d1c0000.mailbox[1-0], 5d1c0000.mailbox[3-3]
-  35:          0          0          0          0  GICv3     216 Level     5d200000.mailbox[0-1], 5d200000.mailbox[1-1]
-root@imx91evk:~#
-
-
-Regards
-Peng
-
->
->Francesco
->
->
+RnJvbTogTWFyZWsgVmFzdXQgPG1hcmV4QG5hYmxhZGV2LmNvbT4NClNlbnQ6IFdlZG5lc2RheSwg
+Tm92ZW1iZXIgMjUsIDIwMjYgMjo1NyBQTQ0KPiBPbiAxMS8yNS8yNiAxOjU2IFBNLCBDaHJpc3Rv
+cGggTmllZGVybWFpZXIgd3JvdGU6DQo+PiBGcm9tOiBQYXNjYWwgWmltbWVybWFubiA8cHppbW1l
+cm1hbm5AZGgtZWxlY3Ryb25pY3MuY29tPg0KPj4NCj4+IFRlc3RzIGhhdmUgc2hvd24gdGhhdCwg
+d2l0aCB0aGUgY3VycmVudCBwaW4gY29uZmlndXJhdGlvbiBvZiB0aGUNCj4+IGVNTUMgKHVzZGhj
+MiBpbnRlcmZhY2UpIHJlYWQgZXJyb3JzIGNhbiBvY2N1ciB3aXRoIGEgY2VydGFpbg0KPj4gdHlw
+ZSBvZiBlTU1DIGNoaXBzLg0KPiANCj4gV2hpY2ggY2hpcHMgYXJlIHRob3NlID8NCg0KVGhlIHBy
+b2JsZW1zIG9jY3VycmVkIHdpdGggY2hpcHMgZnJvbSBNYWNyb25peC4NCg0KUmVnYXJkcw0KQ2hy
+aXN0b3BoDQo=
