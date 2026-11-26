@@ -1,93 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.159.2
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795707066;
-	b=E/zjcyX4/ERTYcDh9VD9VSIMb3iOUFNWD+Ct1D3gH6K0sBxrpAX64Up1Wk0Blt9HnfkI
-	 DnGn30L0DDcMBEf9nl4SS+wjdK691ETBymJK2U8dCzN4v+KWmrjYw6vEoyNqeh/cDq2Qk
-	 VNsua6HdvFzQcqGTiFiDkoxcIZEOhPT7I8ir6OUQidpUxlyWFlai+436pl54wA0hF9Ist
-	 BJXRzdWAKRNKE7B3Ko7uYM1f+TEOJeQqgJcv3FuODmqIyVrNOda1IYGl9VrBRFU98LJBp
-	 3VUL88wLq8s2weZeF9ZwFJ9e7gv1DvCsuFC8p98BTqAs0H0NRAykcd4hBzvY+L4vUBg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795707066;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:Content-Transfer-Encoding:Content-Type:
-	 X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=BI61g0uZOCYldJVFInmfMCqoBVASX+vk/SQyyQA7ycA=;
-	b=Sx0BuUDuz5YnxoxLX8M8TZDyTvpP+kgM6wBzfLK1LibDqBJTYDk93ycfXEB45pgjBy/L
-	 at49fnXLh+WEWDxpmEEXO4T4R3/lozBHgVcnJcMMSxyJZlwtNVHGyuHEO1XoYFYAwD7KV
-	 22Pi2RCJhsGl2xp+HYlY3Hnvd+5ECk2hb1FCUHWVbmVS1PQ9cNy61y6r08n1tHmYZ7cRA
-	 eZAJMtjOCtJON03//hotMPWOqo9uZUrzsdhoFvlMAaChVLs8jEStg6xLgRC+Vd/FgCc9C
-	 cWf92SG+YbULzAtFcMspQRzGsAn6E5lZnedY2pKILYfWvo4Fp9xDJgnVBiAs3S0uMfQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.nxp.com;
-	spf=pass smtp.mailfrom=oss.nxp.com;
-	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=E2B42EL9;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.159.2
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013002.outbound.protection.outlook.com [40.107.159.2])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795707193;
+	b=32XoJnfUOOfYkK7r5Aj8q4QQ4wPVM9a0dOfEei7gIavEJCwcig2Pfbusd914QsVm/Oy3
+	 NO7fUGS3N0TucW2LrQFQDFK7ZcWjeMjVDN1BJkRdTasCtrvtYXXT+mk2IvENSxyBTf9Jt
+	 Ce59drwkD9cVES4KWf84InANc5lKoAaU/GJ22MgJpi5GtxU8XXg2g78DRQn4wx/TP5bDf
+	 IHASziLrIBOHhkl0Mti95j32p/wQNYFY/9APK7XwMnCpZeMbnB2gZZh0IWM3XVPbgNRDc
+	 iBAPhesBZ8ZsTn1eeBilDhUeVXjNL6Y0pqVUFCSR9wZDvNrU99HI/XuUVwcoVsB2Mbg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795707193;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=A3Ax0lwyOpCC0MDtRi1mKidzPU6SwPp2p+tk94ZfCDo=;
+	b=Wtnw6CTCgcgM1QH0isM/WKqOTkK5ldKElJZminl+HUxfvoXjrawvyJ+yNwCf1HaI82uK
+	 aBgrvVRsBI8P1+6HN2S5Fxwm8OGWTpbsf/aXOzVy+uKY9OnQ4sP/sDxVkuANh/SOD6Y4J
+	 gB1PWhu+ZUrWmQYdmLzfBGW5AwSM5ImF5CEwg5HvnYsWhiEQV1itbo9hnyMYELEYWq7Zw
+	 tcyJktULps3yoGzoGeW1/84A76opqmU/412d8UcMPBogT/wvBS3cXo73EeimD/Ds+Ig8H
+	 LFlhOMM5MI3Z4UQ8/+Yngx5VruzgPbf8+d+oOwRpB7DsoT7+QRUNSa+KeP6Onfz6CIQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cBVi354s;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B66F606A31C
-	for <imx@lists.linux.dev>; Thu, 26 Nov 2026 15:31:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3B66F606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60CD8606A321;
+	Thu, 26 Nov 2026 15:33:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=E2B42EL9
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KN9rHU/nJk5HLzgo6iQcdTETw48S/SECk2GihrUGMTHRYSaybotIYuj5P31etQsujr5bX8CId2xflIrGIV9Oyyl8lwaqdTz1U/51ViIUcv4jGimUGqJ/dBth62zPNeH/k0Z/lTDEse7vrbocB2xEBxAwESk2wwqDg3WKt15ieeUnNszaz8NAPDWVG78ZLHcbTdwcf74cxwwQSRatm8ggmNlAAyPehY6nYolvtWNYj7Z3p88vNcnEm6VOaPiZ9low9zVRRAKQdxq+IftfGSzupYwtX7omKS1HEqgDVd7Q0o4mDoKzhBiJQNMugqq2q7JIddA0MKyHlYE4PdaWUjGKAw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BI61g0uZOCYldJVFInmfMCqoBVASX+vk/SQyyQA7ycA=;
- b=uD6zY8+ML1lF6PeWSIw69OB2A5C139nu4GbpXYLSbQsSf0Os0Tkm80O+TnEHTqnjX5aTueMv3fXBCDlyAlHBQS9uwjW4FUywZKuvXmWqG9+vFtiw3AKzhckt02dOCHtHFRJ14GkjPowsqFSuzUeb+VSV5hrFWruaPmO31I6hk7SS65/7z6rEZMNs3useoS3DXF2ZpzL1Gdjxc0MNIK76LVTQHlTf0vY7wdfaTZo3iZ5EuFACLD0mePCXhNBk1UGGy3A0bm1ATSx+XQq/y423z7HDMzLjTMr3bc5hDuLtT13Wyc9TOIZjdMoCdLSB7bp+SZ0af+16leIDtASZd6B45Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BI61g0uZOCYldJVFInmfMCqoBVASX+vk/SQyyQA7ycA=;
- b=E2B42EL9CrXtuOKQ6UjUURW0X40Op2jJO8V+oOVSvcFTGaDkeQj1QOkIiBfH5TgetTM6tgNtCn3ZHGNeLDlONkzZbReKdL6Xjc2jqVaqZU/jqcfy7Nkx4+3mCLVwEqdjKPNdz8HUB9zOoIIxZcWo4RSnAFfGV/7SFBB5/U0xvY0CoDQKVwMRSrB3inak9GaETul7H4WKI6glTgR2moYMPnj8S59XxJr1mCVmAvoiKxY9z7LBzEzqvK8IHChRj77IOfIJSz07tf47HFgxFOnV0j1aJxh3TTEgU/pWs2bP98foXY2Nq7g6hJgNjeA4cshcnE0Yfpz4Kfl9K6/2mi+gsQ==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from MI3PR04MB12438.eurprd04.prod.outlook.com (2603:10a6:290:76::14)
- by AMDPR04MB11704.eurprd04.prod.outlook.com (2603:10a6:20b:716::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.662.6; Thu, 26 Nov
- 2026 15:31:02 +0000
-Received: from MI3PR04MB12438.eurprd04.prod.outlook.com
- ([fe80::c715:c32:8bb1:b70b]) by MI3PR04MB12438.eurprd04.prod.outlook.com
- ([fe80::c715:c32:8bb1:b70b%4]) with mapi id 15.21.0662.004; Thu, 26 Nov 2026
- 15:31:00 +0000
-From: Frank.Li@oss.nxp.com
-To: soc@kernel.org
-Cc: Frank.Li@nxp.com,
-	kernel@pengutronix.de,
-	imx@lists.linux.dev,
-	hemanth.selam@gmail.com,
-	hkallweit1@gmail.com
-Subject: [GIT PULL] ARM: soc: imx: cleanup for v7.5
-Date: Thu, 26 Nov 2026 10:30:51 -0500
-Message-ID: <20261126153054.1022080-1-Frank.Li@oss.nxp.com>
-X-Mailer: git-send-email 2.43.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: CPAP307CA0001.DNKP307.PROD.OUTLOOK.COM
- (2603:10a6:380:3::10) To MI3PR04MB12438.eurprd04.prod.outlook.com
- (2603:10a6:290:76::14)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cBVi354s
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0F3C1F000C6;
+	Thu, 26 Nov 2026 15:33:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795707193;
+	bh=A3Ax0lwyOpCC0MDtRi1mKidzPU6SwPp2p+tk94ZfCDo=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=cBVi354sryH0oArg7cqjMSvPLkGejS+SMaCGc4zGUlTMEN7wLWrEciVDIRx9/Ap4R
+	 blEQrRDbOW8DcJA2TBt+Ut5CyWXXHOoKjSZk8KECmSHMyTYKqhK0WzVQPu+aLo9lIn
+	 bkJx+qf00BP5mldVMNKyb2PEnCBXpL551Xr4p4cUeL4CEJwhm7K9x19hR8TUhBJnVF
+	 IKym9DQG1Tad28Mejgxr+0hg+IXekVc9vh0NNU2TBZfOnBDpS6vSiPhMAG/858dT2q
+	 tVSdmC4OZZ7eugKtEC7wHFIq0GrD+OvqQAaViHcgN7uNvEbIeYT9x1zMGMICtIApTc
+	 JwAhv6JvzF2Xw==
+Message-ID: <sashiko-outbox-235805@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 2/6] arm64: dts: imx95-phyflex-libra-rdk: Add
+ phyFLEX-i.MX 95 Libra RDK
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Benjamin Hahn" <B.Hahn@phytec.de>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org
+In-Reply-To: <20261126-wip-bhahn-imx95_upstreaming-v3-2-a2bda009bac8@phytec.de>
+References: <20261126-wip-bhahn-imx95_upstreaming-v3-0-a2bda009bac8@phytec.de>
+ <20261126-wip-bhahn-imx95_upstreaming-v3-2-a2bda009bac8@phytec.de>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 26 Nov 2026 15:33:12 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -96,90 +60,204 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|AMDPR04MB11704:EE_
-X-MS-Office365-Filtering-Correlation-Id: bff0a5d7-614e-43db-47e5-08df4bd24663
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|19092799006|1800799024|23010399003|56012099006|10067099003|11063799006|261021121427099003|261022105027099003|261026140227099003|261021123027099003|261028144727099003|261102123227099003|261009223027099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	4OTP7ajpP8Vx1O9djeJDR/h8tyOmEYJz6cJN4mDhUt7iSeva1K2xye24wUS7gcxdMxbu9f7JB5c0lq20e9uuefg9TtkKdaeusOWcM3wfaHh+KoXglokvROs+zZ3QrnWcokrjSRREOw9yUdUFKmE7w6SNd9lWZvKi7tVnkqLhyEjuioNs6M5SCWic09Ml7gQhBiZqDrVL/SjQUhpb5CJOq1lmR+7AQR7AdZU6uhGR7TRwcBeBDblsR90l0xDUdBL2Zm5mMMfH9UqDOyxjybRUSgh4p0PitBT2/+PWS0/cprN1KEpunD7YAWjz/CFlg4MeVipj+iVWOuPgX8V+dxsxsM2suX4/Mc3ax70jNqoFHCEbWeKG5Xl/ALrQXXBCNVS9KU0xl6SZT0tpk6cYqd/4qFpN20gAX4BNxhIVM8Mzv5f2N+CC+3vkzq/9HXUoX4UIWML9kB2iimfTeRaxlwtclPO5Y0KafD48r6GTUP9efOr7qSapO3Y8PAhDmd53ZtQvJAEOcDR5axICzq8szTaMjMnElWteMiSjHUpDE8fEWnsU8+jckM0r8uDylAu0iQ84Gp4scYIcJQDOQ5URUF83suMNJhVWzq1yV1jmAzRwrPOAU+kXJtAcIV0RCLtBPfLO
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(19092799006)(1800799024)(23010399003)(56012099006)(10067099003)(11063799006)(261021121427099003)(261022105027099003)(261026140227099003)(261021123027099003)(261028144727099003)(261102123227099003)(261009223027099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?WRCkeQJpdMus2JxOtOJV2QPwoe44ianZkkTZPYFwBQXc1YaiLhHp/P8Qaw88?=
- =?us-ascii?Q?PEdsz6HnJjE8HGbtmxccHaQa0k3RPqOwqgW3QLcmnada/+oXjolCuEYHD8HL?=
- =?us-ascii?Q?G0apP4dtRX8lltI1+yq4eMAFb7Tcs6Rc2HNFLrm307VGWtE/2kBWb2QGWsAt?=
- =?us-ascii?Q?XLznN2ss3HsNvUtelP8TatCNcfVMr9tQm5rrtuwJAGXWztG2sNZYk0EYhWxC?=
- =?us-ascii?Q?olGd1L9IhJEOcp33+rv+AZK+vnhKxAmRfYh8/2H2vIvfXL5qxpan4t9yCaYQ?=
- =?us-ascii?Q?7oP3kKiBThqQpPk4r8qnKDIDBWdrFFVHF4EPJ8TnoDqYyU9WLXtT3uexkA9P?=
- =?us-ascii?Q?lIuKo3bbh3wnJ70TqHIZupMVlApUZI64D3uyJTC9E1Mc0H8KdASqhXaP3BBO?=
- =?us-ascii?Q?E3HJhZMfCrrxPk7Q21jYGkvBgyutnF7f49bgGvcf06H9T9hFfaHy8vXJdwuY?=
- =?us-ascii?Q?hD45ZNrJK3X2cRrM4b6dyHgXp+1yTgwdpAAqcEo8dWO9uhodU+R3PqZ4J3j1?=
- =?us-ascii?Q?yy0rbTTjn4wh/31XGshNqwZOJ8VEzO4F/jsXjG1XsaySgqyj/Pwxnk+10Hq0?=
- =?us-ascii?Q?kpcN6NCnOFEUn7d6GjwzNYwwGX5+4Xcw47HTfkwfeG4xSZQ/zWqqdOSKeltP?=
- =?us-ascii?Q?alQAltuzLu10eDFrtutlioYEBrw1ovaP0O3qZuQLdzSHI9v42V6G6vHMl2HD?=
- =?us-ascii?Q?YpXyq2QMO+WF7mKk/7QJGUGrRlPc6HUQZMnXYsFjFYltbV0P+0ot6oziFYy2?=
- =?us-ascii?Q?12irUAZy0RTcQbl0c9dBSXjP4dgUyx/0a3WQPbMYbY3l946kv2GTlab5kcYX?=
- =?us-ascii?Q?4TqXhOWA9Yw6eXRQ5yxd7588QTuBBGe/ZOzyRBGJCB/9CHdLgoCJIbP/Iv8L?=
- =?us-ascii?Q?Rc0UhPkP+9jaFbgwLs9WYJIYvqbWJZx+e1PNdMyxaDn8ikdqjobDCewMQ10U?=
- =?us-ascii?Q?incncwL7+I1zubaSt787wMOG0KTv26yYMooE+16JeKEKSxu+6AjNEHICjJRp?=
- =?us-ascii?Q?F+AIQNVFB1BNyH7YMVQErQXD+ImkJyJPY9CkUhODThEXiYO4LJ5VwkE1NDWA?=
- =?us-ascii?Q?k0/R8gReI3qfmHwqJjPhRi35ebYdvi6f8lVbLYBPGbCaJdZVpLGnLoSM6HbF?=
- =?us-ascii?Q?0ShDsyy95pdmqFpHiEzOrxkFX8rSV+adk+XvDgbdvqZFvn2GdoLZflfDJMyG?=
- =?us-ascii?Q?Wxg5jnXsS9yzzU74SuvQJ238r7njwnjh1jFW24EBu24Ereq1lwrSj3npyjAe?=
- =?us-ascii?Q?IsRXOdRWAU6g7Nk5sEvVfRCaYZEsAXTN8kLHQkh8hlCuwb6MpbEiBifXEJza?=
- =?us-ascii?Q?i3AIFKZJTunqvPtQdvDKV5JHJP6jiwIQDuKGD2jFvctOmRkS9p4vDKKg0ALl?=
- =?us-ascii?Q?C7WfOI8teWwGGNIK1EO2chtWgurp9IgkCv1FvAfyJ9Ta1Kykp1XIxLWqACYg?=
- =?us-ascii?Q?r1CV/lHAfo8hQpuL1bLTqesoe9czw9sXSNS1WR5aziQue6A10+3qOFyGyVK4?=
- =?us-ascii?Q?IQpcdjQ/uEUwgU9a5Bdctm7NW7JsOU4DHZ0IC9NpQWvjtZyvsZB14SfPuMPH?=
- =?us-ascii?Q?3hh3/ug/b4OgfW79C1zZ+UOi7SusVq6s0sUSdhiFiWOAbfconiwcataZ12W2?=
- =?us-ascii?Q?Z/e2hlIfBCYKhSRASXLZb//agWboTQ4NPrGJzO7Yuxti8I/Q7oCoKJ3vJlQp?=
- =?us-ascii?Q?/pNjngPJZZGMiL+o8Zr7/rpbBRCteq6lqm/Nn50eesy7rwM+MeM8Ok6dPtV2?=
- =?us-ascii?Q?l57QDgBPLhDXAeYt+By1gtF9u3CSu2g78Y1AsBWD6UDG+VFI0KPF?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bff0a5d7-614e-43db-47e5-08df4bd24663
-X-MS-Exchange-CrossTenant-AuthSource: MI3PR04MB12438.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Nov 2026 15:31:00.7285
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: dfhVks+wp83SFOGDQ4LiJ1CkakTh7u0DR5yKy8h2akrv63fRc47fHo8ljAbWMPd2MMVjLfc5ir13lfbmj3CX34cot4F0emSO52mOlvwlpn4uR3UCyR8/S31+mYFF7ioI
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AMDPR04MB11704
 
-From: Frank.Li@nxp.com
+Thank you for your contribution! Sashiko AI review found 4 potential
+issues to consider:
+- [High] arm64: dts: freescale: missing OF graph ports on M.2 connectors
+  disable radios
+- [Medium] arm64: dts: imx95-phyflex-libra-rdk: descending
+  cooling-levels breaks pwm-fan
+- [Low] arm64: dts: freescale: custom aliases in
+  imx95-phyflex-fpsc-g-som.dtsi
+- [Low] arm64: dts: imx95-phyflex-libra-rdk: deprecated clock name and
+  dummy regulator
+--
 
-The following changes since commit 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4:
+commit 344d2e7761b7f7fe50aadecc9f7055eddf8720b0
+Author: Benjamin Hahn <B.Hahn@phytec.de>
 
-  Linux 7.4-rc1 (2026-11-01 13:26:31 -0800)
+arm64: dts: imx95-phyflex-libra-rdk: Add phyFLEX-i.MX 95 Libra RDK
 
-are available in the Git repository at:
+This commit adds devicetree support for the PHYTEC phyFLEX-i.MX 95 FPSC
+Gamma SoM and the phyFLEX Libra RDK baseboard.
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/frank.li/linux.git tags/imx-soc-7.5
+> diff --git a/arch/arm64/boot/dts/freescale/imx95-phyflex-fpsc-g-som.dtsi =
+b/arch/arm64/boot/dts/freescale/imx95-phyflex-fpsc-g-som.dtsi
+> new file mode 100644
+> index 0000000000000..2611f6ee5a1b7
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx95-phyflex-fpsc-g-som.dtsi
+> @@ -0,0 +1,746 @@
+[ ... ]
+> +	aliases {
+> +		/* FPSC alias definitions */
+> +		ethernet1 =3D &enetc_port1;
+> +		ethernet2 =3D &enetc_port0;
+> +		gpio0 =3D &gpio1;
+> +		gpio1 =3D &gpio2;
+> +		gpio2 =3D &gpio3;
+> +		gpio3 =3D &gpio4;
+> +		gpio4 =3D &gpio5;
+> +		i2c1 =3D &lpi2c2;
+> +		i2c2 =3D &lpi2c5;
+> +		i2c3 =3D &lpi2c3;
+> +		i2c4 =3D &lpi2c4;
+> +		i2c5 =3D &lpi2c1;
+> +		pcie1 =3D &pcie0;
+> +		pcie2 =3D &pcie1;
+> +		pwm1 =3D &tpm3;
+> +		pwm2 =3D &tpm5;
+> +		sai1 =3D &sai5;
+> +		serial1 =3D &lpuart8;
+> +		serial2 =3D &lpuart5;
+> +		serial3 =3D &lpuart7;
+> +		spi1 =3D &lpspi7;
+> +		spi2 =3D &lpspi3;
+> +		spi3 =3D &lpspi4;
+> +		usb1 =3D &usb3;
+> +	};
 
-for you to fetch changes up to 8cb3211effba221890c15adc80d1d49da5c0947f:
+[Severity: Low]
+Should custom non-standard aliases such as pcie1, pcie2, pwm1, pwm2,
+sai1, and usb1 be dropped from /aliases?
 
-  ARM: imx: fix typo "interupt" in comment (2026-11-25 12:21:07 -0500)
+Devicetree sources only allow established subsystem-generic aliases, and
+pcie1 =3D &pcie0 / pcie2 =3D &pcie1 also conflict with the 0-based
+linux,pci-domain values (<0> and <1>) defined on pcie0 and pcie1 in
+imx95.dtsi.
 
-----------------------------------------------------------------
-ARM: imx: cleanup for v7.5
+> diff --git a/arch/arm64/boot/dts/freescale/imx95-phyflex-libra-rdk.dts b/=
+arch/arm64/boot/dts/freescale/imx95-phyflex-libra-rdk.dts
+> new file mode 100644
+> index 0000000000000..0f44d7f99707d
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx95-phyflex-libra-rdk.dts
+> @@ -0,0 +1,576 @@
+[ ... ]
+> +	m2-key-m-connector {
+> +		compatible =3D "pcie-m2-m-connector";
+> +		clocks =3D <&rv3028>;
+> +		i2c-parent =3D <&lpi2c5>;
+> +		vpcie3v3-supply =3D <&reg_vdd_3v3>;
+> +	};
+> +
+> +	m2-key-e-connector {
+> +		compatible =3D "pcie-m2-e-connector";
+> +		clocks =3D <&rv3028>;
+> +		i2c-parent =3D <&lpi2c3>;
+> +		sdio-reset-gpios =3D <&gpio_expander2 6 GPIO_ACTIVE_LOW>;
+> +		sdio-wake-gpios =3D <&gpio_expander2 5 GPIO_ACTIVE_LOW>;
+> +		uart-wake-gpios =3D <&gpio_expander1 13 GPIO_ACTIVE_LOW>;
+> +		vpcie3v3-supply =3D <&reg_vdd_3v3>;
+> +		w-disable1-gpios =3D <&gpio_expander1 9 GPIO_ACTIVE_LOW>;
+> +		w-disable2-gpios =3D <&gpio_expander1 10 GPIO_ACTIVE_LOW>;
+> +	};
 
-Cleanup:
-- ARM: imx6q: remove unused header includes after KSZ9021 PHY fixup removal
-- ARM: imx: fix typo "interupt" in comment
+[Severity: High]
+Without OF graph ports linking m2-key-e-connector and m2-key-m-connector
+to their host interfaces, does pwrseq_pcie_m2_probe() leave the M.2 Key-E
+radios permanently disabled?
 
-----------------------------------------------------------------
-Heiner Kallweit (1):
-      ARM: imx6q: remove unused header includes
+When pwrseq_pcie_m2_probe() binds to m2-key-e-connector, it requests
+w-disable1-gpios and w-disable2-gpios with GPIOD_OUT_HIGH, asserting both
+active-low disable lines.  Because neither the connectors nor pcie0_port0
+and pcie1_port0 define OF graph endpoints, slot_pwrctrl_probe() sees
+of_graph_is_present() as false and pwrseq_pcie_m2_match() never matches a
+consumer to deassert w-disable1-gpios or w-disable2-gpios.
 
-Hemanth Selam (1):
-      ARM: imx: fix typo "interupt" in comment
+Connecting port@0 (PCIe) between the M.2 connectors and
+pcie0_port0/pcie1_port0 in the base DTS does not claim lpuart8 as a
+serdev (which only happens when port@3 is linked), while connecting
+port@3 to lpuart8 in the Bluetooth overlay allows btnxpuart and the power
+sequencer to deassert w-disable2-gpios when Bluetooth is enabled.
 
- arch/arm/mach-imx/mach-imx6q.c   | 2 --
- arch/arm/mach-imx/suspend-imx6.S | 2 +-
- 2 files changed, 1 insertion(+), 3 deletions(-)
+> +
+> +	uart1_bt_rs_mux: mux-controller-uart1 {
+> +		compatible =3D "gpio-mux";
+> +		#mux-control-cells =3D <0>;
+> +		mux-gpios =3D <&gpio_expander1 14 GPIO_ACTIVE_HIGH>;
+> +		idle-state =3D <0>;
+> +	};
+> +
+> +	osc_mclk: oscillator-mclk {
+> +		compatible =3D "fixed-clock";
+> +		#clock-cells =3D <0>;
+> +		clock-frequency =3D <19200000>;
+> +
+> +		status =3D "disabled";
+> +	};
+> +
+> +	osc_mclk_gated: oscillator-mclk-gated {
+> +		compatible =3D "gpio-gate-clock";
+> +		#clock-cells =3D <0>;
+> +		clocks =3D <&osc_mclk>;
+> +		enable-gpios =3D <&gpio_expander1 8 GPIO_ACTIVE_HIGH>;
+> +
+> +		status =3D "disabled";
+> +	};
+> +
+> +	fan: pwm-fan {
+> +		compatible =3D "pwm-fan";
+> +		interrupt-parent =3D <&gpio1>;
+> +		interrupts =3D <4 IRQ_TYPE_EDGE_RISING>;
+> +		#cooling-cells =3D <2>;
+> +		/* startup 35%, duty cycle 30%-100%;
+> +		 * polarity inversion does not appear to work
+> +		 */
+> +		cooling-levels =3D <255 166 96 0>;
+> +		fan-supply =3D <&reg_vdd_5v0>;
+> +		pwms =3D <&tpm5 3 86958 0>;
+> +		pulses-per-revolution =3D <2>;
+> +	};
+
+[Severity: Medium]
+Does configuring pwm-fan with descending cooling-levels =3D <255 166 96 0>
+and a pull-down (0x51e) on IMX95_PAD_GPIO_IO26__TPM5_CH3 cause the fan to
+run at 100% speed during system suspend and after shutdown?
+
+At cooling state 3 (level 0), set_pwm() calls pwm_fan_power_off(), which
+disables the TPM5_CH3 output driver so the pad pull-down pulls the
+inverted fan input low (full speed).  Because reg_vdd_5v0 is always on,
+pwm_fan_suspend() and pwm_fan_cleanup() enter that same disabled PWM
+state on suspend, shutdown, or unbind and spin the fan at 100% speed.
+
+In addition, pwm_fan_probe() starts at initial_pwm =3D 0 and skips enabling
+the PWM and fan-supply, and pwm_fan_update_state() assumes cooling-levels
+is in ascending order (`if (pwm < ctx->pwm_fan_cooling_levels[i + 1])
+break;`), so writing to pwm1 or pwm1_enable corrupts ctx->pwm_fan_state
+and causes pwm_fan_set_cur_state() to skip thermal state transitions.
+Configuring IMX95_PAD_GPIO_IO26__TPM5_CH3 with a pull-up (0x31e),
+PWM_POLARITY_INVERTED, and ascending cooling-levels with a non-zero
+minimum (such as <1 89 159 255>, as on imx95-19x19-evk.dts) keeps the fan
+off when disabled and preserves ascending state order.
+
+> +
+> +	reg_usb3_phy: regulator-usb-vbus {
+> +		compatible =3D "regulator-fixed";
+> +		regulator-min-microvolt =3D <5000000>;
+> +		regulator-max-microvolt =3D <5000000>;
+> +		regulator-name =3D "usb3-phy-dummy";
+> +	};
+
+[Severity: Low]
+This isn't a runtime bug, but there are a few devicetree binding and
+cleanup issues in this file:
+
+1. reg_usb3_phy defines a dummy regulator ("usb3-phy-dummy") only to
+populate vbus-supply on &usb3_phy; vbus-supply is optional in
+fsl,imx8mq-usb-phy.yaml and VBUS is already supplied by reg_vdd_vbus on
+the usb-c-connector node, so reg_usb3_phy and vbus-supply on &usb3_phy
+can be dropped.
+
+2. fixed-clock.yaml deprecates node names not matching
+^clock-([0-9]+|[a-z0-9-]+)$, so oscillator-mclk above should be named
+clock-mclk.
+
+3. &flexspi1 below repeats pinctrl-0 and pinctrl-names already defined in
+imx95-phyflex-fpsc-g-som.dtsi, and the dt-bindings/mux/mux.h and
+dt-bindings/pwm/pwm.h includes at the top of this file are unused
+(unless PWM_POLARITY_INVERTED from pwm.h is used for the fan node).
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261126-wip-bhahn-=
+imx95_upstreaming-v3-0-a2bda009bac8@phytec.de?part=3D2
