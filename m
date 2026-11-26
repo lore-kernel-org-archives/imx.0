@@ -1,105 +1,76 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.66.17
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795679912;
-	b=NMaGZ9NlQ7aSSpdweShunx5Snf8IjvlekVSAvv0Yt5oHxgu3QYsjNywGvDgsXamSIE/s
-	 e9ooGQn5qngNmulUpor6WgayZehQTJjijXWOY5bouo6FEPW1VhgZylnjaNsdvZ+tDV4sS
-	 1m5MYU/R6LvtLWQ+iNM487Oytkdel2IA3CHOEGjUfJRqhyFMszkyxc7zxap15zrJ/E+tH
-	 Sn+aFZZzf378eWpmjTQvmFmD0QYNfHYIDyXf/DJ+zOs2jaxuhg2KcU1GrY6yCHDFLubAp
-	 TwVl7FrX9WbjRVrtiviM4NzG2zsGo+IiwInBTz0jTblrbaiY9I9dMAkyKgWbObeyWwQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795679912;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:In-Reply-To:
-	 References:Subject:Message-Id:Date:Content-Type:
-	 Content-Transfer-Encoding:X-Mailer:X-ClientProxiedBy:MIME-Version:
-	 X-MS-Exchange-MessageSentRepresentingType:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SharedMailbox-RoutingAgent-Processed:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=Ibjn+Ecec92gz5TjlsMMteNFIWH6VbmlAqzJ1czKOwo=;
-	b=wLQZOvJEGzUMI5PWThse8ihOdLJOmij258F80ix/XHGnjmpbLcztyoeIMnxo5HdJEW3a
-	 UeTX6I0/FHWS3v1/tRbntEecIcQ68CnAVsSzb/tJCdU5EAZ2igJkjIJzSUwHVm0XW6e4N
-	 h261ikx6r3eXQAOv8PQvSuGJYqiT5dtQgdqonn/FagVlkoflpLXkibMynoVRKGkRFkTIt
-	 l38gf8InPjL7R/9mQpXKJzlgMq8iaK5IcY2UwqU8gTbG6zgxDD1l01Lj8BZ/eUsGVBOzv
-	 eGa7DWZRxUXFFmeXnM558G3pV5CkSSBUcWaenQHrKcfLrgtyaobgbcAfwSpNx7TxdnQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.nxp.com;
-	spf=pass smtp.mailfrom=oss.nxp.com;
-	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=ATX7ZpZu;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.66.17
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012017.outbound.protection.outlook.com [52.101.66.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.180
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795680980;
+	b=UFxb74FXhG7YRh0EP1So8dHShL+Ism66tTOInfARzGQN3H+Yv78TFstOyohjhN1C5srY
+	 DTa+3Jj7KLeZ8+OCdGB6LIB7XgMdWcAJ86JW9dTwa8Ga01f8hd87BRQyzIaX1nMjv3oC2
+	 NYJDXu8m8erZFWnP1UGAqY2bxdhgaDwHMpv18DFP058Xzl4/K6U/cDGfyLW99wVvmZ7tm
+	 osVfIsDVGYgigK1wy+BAj+L1S3ktK2DWyb9sDVLRamoCz9dckwJ0GpqOHKMCdLhxvNkzM
+	 o+QKZKPYrwEeK8vm69TVD0mI0E5uI4iL50i1xddXZFKehGrwq3smpaoe5QRKR/qzMBQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795680980;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=JGQ6rQ9KjgTLE7XKHXoqOXReY5Cx5tSHHb2hfYg3jtk=;
+	b=nz9pltfL7plm3iPHZtUNrxjQqLyHGy+pvmi1iCayXOa7eL/MVvSD34lXLKf5lPJa4VeI
+	 JqAKlA/Biha0BcBcS7rnRzCxcsTNpowWeYjX9A1Mtf34nQTwsRghzMe3jWv9R/ujddp+i
+	 rt3y0pgJ0K101e5zRvg19ZyfyZy2AJPeK/4ithG4J9GTaAVXtzVrGRIdxGGl6chYM/Zlo
+	 /dsnNcPFdt3LNmYl/UE5JjpUqWj/i4+iqcsl9JdjXQQNVnD1nQKjI0/xnXmJl8u+jy6vQ
+	 pUV+4NPejCnm8/F82AyTNEhpwQTwHqR9gBPu+pHgg6mxNU9rk6UO5AQ21MKSZ6IeiCA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Q0xDfG4z;
+	arc=none smtp.remote-ip=91.218.175.180
+Received: from mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A8A8606A32C
-	for <imx@lists.linux.dev>; Thu, 26 Nov 2026 07:58:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9A8A8606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B642D606A31C
+	for <imx@lists.linux.dev>; Thu, 26 Nov 2026 08:16:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B642D606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=ATX7ZpZu
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Gt0TR/Urv6HQtMXboX0IstmRvCUsGe8fHvPXW9yXKdyKr9M9nLVogN9PHsSnQp9hAHtYKEJcURiNKi3Ln7MXoaX2BFKfR5hrndnHnwLeYPH+pPXevSrkw0KjLmjCyr/8I8uiywE05pg70S0eWWzxUrxpjG/mHxeD578VaeNyf19uBkyJ9xAM8FmyJXZ2+XcaNloIR/Q7VxiXypaqySzhLf5HKQVAlwbuJXpcDbPpHptzNIQdEfOeKKAy3keEgsWehPJKG/o8t66w/mCISpdQZGsAsm3LHPOh5JU7yzJuu8Lv99xnbxooSdv5f7WALK6D7NV2x3LqkXFrrOWP5RmDrQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Ibjn+Ecec92gz5TjlsMMteNFIWH6VbmlAqzJ1czKOwo=;
- b=F8YRs/jGiYq4hOCWEMBZAb6hUJxqS74vS2HD9Vk7Fq0AH34iKVXQS0n/poxB+JEMvZ5amZZVarvPVgIFfU4m/gDQ5DUfWm4k6UUHg4U9IGD7sac+ybLtjWxUdpfUe8AY+t/jVF8B6P8WaeJ5wP3J5qLbErDuzX16zhuhfKcHJo4snxqpUFD+xdQ2PD75zOIg9yoGHQtGGdBJzbOZxXkgIImm8ez4ocKyrUP2U+kNVDi9XNa+YlWUt6aBrdzsoA1MZndofPc4J6cOR9cezsJRTIBjNCggMMbzMDRa9uGdZvKKF0n3ceWLo7XW8p5biCzm1RIpCD54vMe2z3IRPWGrXw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Ibjn+Ecec92gz5TjlsMMteNFIWH6VbmlAqzJ1czKOwo=;
- b=ATX7ZpZu6HZCIpr4jxBZT5uEQ+8//cpuELaFHzpy4F7oTtlOFm2xO72gMHOIvsUm9NMptaEVcsNtoXERy0bNhCx/pu1f0QcieT6fzRpsiD+VJYsKzEtz+3/3fiIHF1J2sW4BXP04UqK+qYVFBA9qCf1AX/qiN2GnVf69HKfjMUB1GkiUuvj/6S/QKR6QB3NfQUlpAmnvwuX0aYHztgIYM1cKQUWLYP1mAd46SNK32EFrq+QWDmtutj5A7Dct4umhwIRQy9pSO2xvyvGrCR+3laZWdSm0y+bXlrqI6a6ao7iktl0kLNRLsWKmkk4uL2qCFTEJh6S3Q1Djv7++znKUYA==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB12318.eurprd04.prod.outlook.com
- (2603:10a6:150:32b::19) by MI9PR04MB135841.eurprd04.prod.outlook.com
- (2603:10a6:290:86::19) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.662.5; Thu, 26 Nov
- 2026 07:58:28 +0000
-Received: from GV2PR04MB12318.eurprd04.prod.outlook.com
- ([fe80::a498:2b5a:cbdb:d6fa]) by GV2PR04MB12318.eurprd04.prod.outlook.com
- ([fe80::a498:2b5a:cbdb:d6fa%3]) with mapi id 15.21.0662.004; Thu, 26 Nov 2026
- 07:58:23 +0000
-From: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
-To: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>, 
- Denis Arefev <arefev@swemel.ru>
-Cc: Lucas Stach <l.stach@pengutronix.de>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, 
- =?utf-8?q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>, 
- dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- lvc-project@linuxtesting.org, stable@vger.kernel.org
-In-Reply-To: <20261119113031.36945-1-arefev@swemel.ru>
-References: <20261119113031.36945-1-arefev@swemel.ru>
-Subject: Re: [PATCH] drm: imx-dcss: Check return value of
- drm_mode_config_helper_suspend()
-Message-Id: <179567990223.1088660.11027335035345339261.b4-ty@b4>
-Date: Thu, 26 Nov 2026 09:58:22 +0200
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16.0
-X-ClientProxiedBy: AS4P191CA0040.EURP191.PROD.OUTLOOK.COM
- (2603:10a6:20b:657::9) To GV2PR04MB12318.eurprd04.prod.outlook.com
- (2603:10a6:150:32b::19)
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Q0xDfG4z
+X-Envelope-To: imx@lists.linux.dev
+DKIM-Signature: a=rsa-sha256; bh=2tapKyPOWs6voUGnssNqs09oXMxfImVb3hhu9BetUwA=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1795680977; v=1; x=1796285777;
+ b=Q0xDfG4zYhDln0rpnHjWfvvKbPYnx353oO5zc59YANx7nucwDWqnSRabK0S668EM2NLmLnrJ
+ /1HbnU+OirGUdFWFakPR5E2arECH7edydUeckwzPSpZ9kS1o7wBEov9tP8OLVB2csf+OtqNOfkE
+ jnklgkhsySWJgRYbbpU2XUIs=
+X-Envelope-To: imx@lists.linux.dev
+Received: by smtp.migadu.com with ESMTPS id 409d69e45079a162;
+	Thu, 26 Nov 2026 08:16:17 +0000
+X-Mizu-Trace-ID: 409d69e45079a162
+X-Migadu-Flow: FLOW_OUT
+Date: Thu, 26 Nov 2026 16:16:10 +0800
+From: Peng Fan <peng.fan@linux.dev>
+To: Francesco Dolcini <francesco.dolcini@toradex.com>
+Cc: Francesco Dolcini <francesco@dolcini.it>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Peng Fan <peng.fan@oss.nxp.com>, Peng Fan <peng.fan@nxp.com>,
+	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rt-devel@lists.linux.dev,
+	Bjorn Andersson <andersson@kernel.org>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Steven Rostedt <rostedt@goodmis.org>
+Subject: Re: [PATCH v3 00/10] mailbox: imx: Use threaded handler to avoid
+ kworker in imx's remoteproc
+Message-ID: <awfqyvcwtK5Hi8j0@fedora>
+References: <av6Wc+kHFKqwFHAR@shlinux89>
+ <20261116102331.K8Sc86V9@linutronix.de>
+ <20261119114041.GA166708@francesco-nb>
+ <av8H7l6C8fmiHdbV@fedora>
+ <av8LQa77SbshHmZD@francesco-nb>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -109,90 +80,131 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB12318:EE_|MI9PR04MB135841:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8aaeba84-9512-48a5-9b8f-08df4b930b79
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|23010399003|1800799024|366016|19092799006|10067099003|56012099006|11063799006|261022105027099003|261026140227099003|261028144727099003|261009223027099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	jan2FEOimSfiO2lZ8eVgp8/Za0YdWRbsDO9I2UtYyrd7bOm+kwcAJj3wtQVrYvm4ls2yhDCeYUJYn+bWwUhQk13+lcIJqY+/n+l6kkLw0NsD3XqCqqVLGQ6+y8X5uudppsMyKfUoo1ZL7pzIFYGQ+7N7lj2G2kDdcjWDOJNzxMOJKKCNWDwUjvtbf7hL358bE6YY+KJsTVcREjdLIEHhaIngCO/XovOAm/ysc2c/gYePjXzBVrb3gzGYgTmo50j9gRr572QDss0NR0ZS0GkG1RLhP6wN7ZTE/5gvTrSWJqiIFID+K6euYb2M17LjNedZMrArrbwZCqgChYHZCPr+b9nvm9yQbwxvemyMAFQzJG0fKCAA8O6NiH8gtSituSRSjBTrBIVKVl7DLXHDRgs8rAuybDsshCaMC/8YpwYzQZ6c/W9B0OAPwBDBlCKc2NW76n2AK4G3ZkgQswA/VfC0s7g2kYHkt8pSqBxwRwZGdQv2qM+CINqywH28sQCWXVY5AnbvjOtR/DmUMQq9VslJpUs0iIhTk7Oe0QbR7UH5wDC1B6t3Ib8IZ8tpvAqxqJd8HVRT5VDeWgW4PwLiPW9+OBUFn5Q2APKaP1OCwBgGeN2yA2V4qwZMoVSZeSZNdxE//7NHyMjFwEFBPFTutZfm+19X03fTO69w8OLrB6YR6oA=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB12318.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(23010399003)(1800799024)(366016)(19092799006)(10067099003)(56012099006)(11063799006)(261022105027099003)(261026140227099003)(261028144727099003)(261009223027099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MWM3eDB5Z2NDK0tLQ1R1MjJUa3JrR0N2dDBhbzlPOGVIdy9hVGFHaDgxNVVz?=
- =?utf-8?B?U0txeEczWTRyUm9jcTRrVnF5RG84aitGdjRrWHB0SGcwQ2R3NFBtVmNiWDFC?=
- =?utf-8?B?N0dUTDh2MDBKNGJrMU1sRUxERGFFZWt4NXhVREUxekhpaVdQQi9lNThiNVZa?=
- =?utf-8?B?R2N6R1AxbGp6aW5wQU1GRTlQbHJzdlVaWkkzd3M0cVhBVXNBWmpsa0hzb2ZE?=
- =?utf-8?B?MUpjQmFwcHFtcnNreEJsNUNxVTBoNDBlc0M2Ryt4M2JBSnZuZWlVbUVUU0lY?=
- =?utf-8?B?WkZGenNMcjI4V2NXa2NxNFlRUHYvNzV1UWFpSXBPVS9BczhIUFlJOGdtb1Fl?=
- =?utf-8?B?bDg3WFdXVktmVFRyUlYyb1E5VlpyMWl1ZmM0bE0yOXJEb0ZObld1R3dGbVB3?=
- =?utf-8?B?enNNNGh4cE5nQWhMSFhXbFBJUmhGV2FXYVROWU1KZG9IT0E3dFNzemplQjA0?=
- =?utf-8?B?VGRwUTZFdnZIRXY1YXBBSnJsWVBCaUtFbHV2S0V2aDBKQVRQZlh5RXFtUUVp?=
- =?utf-8?B?TUhlQ3NheUNoNFZyZzY2UmpjYzIxaEhCSHJoa1JhVkFaL0UyazRhVnlYUFkv?=
- =?utf-8?B?V0VoK2pHZ2Q1UWhZWVVPcWh2dlRaNHg4MlVsd3RNMVN6VGd1bTl5ejJzQmU2?=
- =?utf-8?B?dHBKcEtNbkVDRHFvTEZmamlmYTZIU2Vzd3QxRmttQ3BFYlkwZjZJS1MzcGdG?=
- =?utf-8?B?WmRBcytUSzRjb3p1aCtUcHk1ZW5xS3ExN2ZqY1JHcHRCOGV3VG1EVG5yS1gw?=
- =?utf-8?B?YzRUdFVaaXdXcW90NWM5OWlaV21Bd1hWU3QwRldidGRyTWFsOHo1TTZualI5?=
- =?utf-8?B?K3JoQmo1dXNSL1lpdTAyTGxPL0ZVd2tNa05Cb2Zvd0JPSFlma1dla0R6MEtI?=
- =?utf-8?B?d2tsVjBDOVg2V0l1aTU5a1pqaEorVXkzRDQ2bVRiOE1RbC9NVUN3Tnd2L05m?=
- =?utf-8?B?bEdmSmNsU3lrMVB4Ump1ZmNNYXlOSFExbDZxWXA2TGxhYTRoQW5XMXJHRUNq?=
- =?utf-8?B?ZzdNbWZYRUtMTHlNWEU2dStQTUlTNEJiWGRRV2I4MmQreGo2aGxYNmd0eVQ5?=
- =?utf-8?B?dFdBUUxqZ09CeG1SZjhFQWpscUVrZ2ZqY21udnBNOFZWbmxzWldxQ09WVU4w?=
- =?utf-8?B?akxuQkxZcVA2TStESUZNV01veVNGdVN1U3dXdGdpdldjenJDQVpHTk55MDRD?=
- =?utf-8?B?MUJnTmI1TzNEeHA2Qy9uRVdUWDEzOVFoenJudWY5TS9ZOVdUTHMyenJ0SWFB?=
- =?utf-8?B?SDBFTDJJSFlhYXpoNG5PQ2g5d0p5dTdjbVpKcTJmS1NKVXNoYkhzUDMwL1FV?=
- =?utf-8?B?K2dJOFVISWJ5TEpqdEljYStVRXVUanJUK1pkSlI5a3BSZVlWYzBnR0RQWUNs?=
- =?utf-8?B?VmNmY2U4VUlTYjExMVZCOWpCNWRRSnlLU3dNZ1RhSmthNzRGWTNKekFvS1lH?=
- =?utf-8?B?dVA1N3h0eGNEU0owZmtzNXQ1S01GamVVYXhDbUdYaE5lcmhVb1RGMm1XMDdW?=
- =?utf-8?B?R251R2prcXJ3SGMvZ28zakNmRmlHZmQ5TElNM1RTaExCZmh0THpMd3RlTFJI?=
- =?utf-8?B?bStlaU9UaVE3NFN6aVhGdk5QMk9ISTVHWGZxTVovcjJ4RUhoMFdiTFh6WTdq?=
- =?utf-8?B?bk1nN253Ny90eXVlcmlkUWRoUkV4N3FCSU1QbFJCY05vRFQydnNES3E4cnpH?=
- =?utf-8?B?eEsya1YrM0RCYjRTOTZ3ODZxc3BBNnhVVzVtdmZrcElnYlQyUGxkaVg0TUw0?=
- =?utf-8?B?Q3UwOEJzNkIwSVFpRkhuVXhobDVaNkRZeTUvTklLMy9Ia1lxY1EzT3piOWUr?=
- =?utf-8?B?N3NmTVVtMVVVV245OHY1U1VGV2FKVzdySGc0U20zeXpzenZhbjdrd1dOZzFG?=
- =?utf-8?B?dll0aVp5YTJONTd2N0tkUTBzMm0wTG05RnhKeElZc1ZzemFXZlJKSHNEa3gr?=
- =?utf-8?B?b0dKeVJKQ0dNVUFZQ09WVmJVNzRiWmd0MGlQVjVRK21OOXlncktrUGpONmxC?=
- =?utf-8?B?MzlmZHNYN3RyV3hWanU5TE05NW8zTG5XOVNJMC9yL0YvbHBxMGdiWXFEZngz?=
- =?utf-8?B?akxwLzVtUVNaSEZ5RWlTMkR3VVpvM1dXY2hwbDVMamEvWGFGNks1YXZwR296?=
- =?utf-8?B?VUNyQ3l6WThYeFNidFM4VXgwUjUxV0l4NERPRDk1YWYremxZa0ZjSFRjVzlz?=
- =?utf-8?B?bnBMOWVFcGhtMENmRWVoQlJyVFpRUll0N3VzVmpzeDFDTFdOZWxzTTFQbVZr?=
- =?utf-8?B?ZGJTZWpmUEErUDBQaHFzKzVWNmdXTlNWRXZ1eVh6MmhFa2hHTEM0aUJ2MVMw?=
- =?utf-8?B?cS9qUFNTd0FNTDJMcGdFb3hkdk5paGMyNnRLdlB2MW5EOHFuZTFMaHo1a3hW?=
- =?utf-8?Q?Ayrsc8hvWvtzF8+o=3D?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8aaeba84-9512-48a5-9b8f-08df4b930b79
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB12318.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Nov 2026 07:58:23.7042
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 542YyzWhabvoSUwvDrawBYvah1TmgMsEJgbprdNB7Q5zrAl6UeU7sKLH0ZOXNBOz57AqzLy+UB5UtI/1dtSz5g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MI9PR04MB135841
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <av8LQa77SbshHmZD@francesco-nb>
+
+Hi Francesco,
+
+On Thu, Nov 19, 2026 at 03:44:17PM +0100, Francesco Dolcini wrote:
+>On Thu, Nov 19, 2026 at 10:30:06PM +0800, Peng Fan wrote:
+>> On Thu, Nov 19, 2026 at 12:40:41PM +0100, Francesco Dolcini wrote:
+>> >Hello Peng, Sebastian
+>> >
+>> >On Mon, Nov 16, 2026 at 11:23:31AM +0100, Sebastian Andrzej Siewior wrote:
+>> >> On 2026-11-16 10:23:41 [+0100], Francesco Dolcini wrote:
+>> >> > Our CI shows a ~10-15% eMMC sequential read throughput drop on i.MX8QXP
+>> >> > and i.MX8DX (Colibri iMX8X, Cortex-A35), starting with v7.2-rc1 and
+>> >> > still present in v7.4-rc3 (hdparm --direct -t: ~129 MB/s -> 105-120
+>> >> > MB/s on i.MX8DX). i.MX8QM, i.MX8M and i.MX9 are not affected.
+>> >> > 
+>> >> > 5d1c0000.mailbox interrupt count before the test went from ~8k on v6.18
+>> >> > to 60k+ on v7.3/v7.4.
+>> >> > 
+>> >> > Peng: any idea/suggestion? Does it makes any sense to you?
+>> >> 
+>> >> Can you pin point it to a patch in this series? My guess is that
+>> >> something with the masking/ unmasking went wrong. The increase might be
+>> >> result of the interrupt keeping firing while the threaded interrupt did
+>> >> not have a chance to run.
+>> >
+>> >Reverting 36cac4b5101f, 3225a745f517, e55bea377d49 and 692e1bc96a5d
+>> >restores 149 MB/s with schedutil.
+>> >
+>> >
+>> >On Thu, Nov 19, 2026 at 02:25:55PM +0800, Peng Fan wrote:
+>> >> On Mon, Nov 16, 2026 at 10:23:41AM +0100, Francesco Dolcini wrote:
+>> >> >Peng: any idea/suggestion? Does it makes any sense to you?
+>> >> 
+>> >> Please help test whether this helps:
+>> >> 
+>> >> diff --git a/drivers/mailbox/imx-mailbox.c b/drivers/mailbox/imx-mailbox.c
+>> >> index 683ccea6f2ba..e29044cf4b92 100644
+>> >> --- a/drivers/mailbox/imx-mailbox.c
+>> >> +++ b/drivers/mailbox/imx-mailbox.c
+>> >> @@ -635,7 +635,7 @@ static int imx_mu_startup(struct mbox_chan *chan)
+>> >>  {
+>> >>         struct imx_mu_priv *priv = to_imx_mu_priv(chan->mbox);
+>> >>         struct imx_mu_con_priv *cp = chan->con_priv;
+>> >> -       unsigned long irq_flag = IRQF_NO_THREAD;
+>> >> +       unsigned long irq_flag = IRQF_NO_THREAD | IRQF_ONESHOT;
+>> >>         int ret;
+>> >> 
+>> >>         pm_runtime_get_sync(priv->dev);
+>> >
+>> >It does not help.
+>> >	
+>> >The analysis below was done with Claude help, on measurements I took on a
+>> >Colibri iMX8QXP. I hope you can pick it up from there, this is not my
+>> >area of expertise, and the best I can do is to send a revert for those 4
+>> >commits.
+>> >
+>> >Every SCU RPC now wakes the SCHED_FIFO irq thread (TX done and RX), and
+>> >while an RT task is runnable schedutil requests the maximum CPU frequency.
+>> >The A35 clock is CLK_GET_RATE_NOCACHE, so each frequency change is
+>> >followed by an SCU RPC reading the rate back, which wakes the irq thread
+>> >again. The loop never settles, even when idle, and the transitions (ATF +
+>> >SCU) are what costs the eMMC throughput (and I assume there is more
+>> >impact on performance than just this).
+>> 
+>> Not sure whether this is root cause, per my understanding, cpu freq update
+>> is not that high frequency call.
+>
+>Moving to `performance` from `schedutil` or reverting those 4 patches
+>solve the issue. And the significant increase on ctx switches and irq
+>count is real even on idle without any emmc test running.
+>
+>> Let me setup a i.MX8QXP board and see what's going on there.
+>Thanks!
+>
+>> BTW, i.MX8QM should
+>> also have same issue, but seems not impact in your report, a bit werid,
+>> might be because i.MX8QM has more cores :)
+>
+>I agree, I did not run any kind of extensive performance test. What
+>happened is just that our emmc test started to fail, and this lead to
+>this series. 
+>
+>> Have you tried pin your emmc test thread to core3, or core2, just not core0.
+>
+>It was never pinned to any core, so the scheduler decided on its own.
+>And multiple runs of the test all lead to the same results.
+
+My test on i.MX8QXP-MEK does not show interrupt increasing a lot, ignore the rootfs name.
+
+root@imx91evk:~# cat /sys/bus/soc/devices/soc0/soc_id
+i.MX8QXP
+root@imx91evk:~# ./hdparm --direct -t /dev/mmcblk0
+
+/dev/mmcblk0:
+ Timing O_DIRECT disk reads: 646 MB in  3.00 seconds = 215.27 MB/sec
+root@imx91evk:~# cat /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor
+schedutil
+root@imx91evk:~# cat /proc/interrupts | grep mail
+  14:       6922          0          0          0  GICv3     209 Level     5d1c0000.mailbox[0-0], 5d1c0000.mailbox[1-0], 5d1c0000.mailbox[3-3]
+  35:          0          0          0          0  GICv3     216 Level     5d200000.mailbox[0-1], 5d200000.mailbox[1-1]
+root@imx91evk:~# uname -a
+Linux imx91evk 7.4.0-rc4-next-20261125 #6 SMP PREEMPT_DYNAMIC Thu Nov 26 06:56:40 CST 2026 aarch64 GNU/Linux
+root@imx91evk:~#
+
+root@imx91evk:~# cpufreq-set -g schedutil
+root@imx91evk:~# cat /proc/interrupts | grep mail
+  14:       6954          0          0          0  GICv3     209 Level     5d1c0000.mailbox[0-0], 5d1c0000.mailbox[1-0], 5d1c0000.mailbox[3-3]
+  35:          0          0          0          0  GICv3     216 Level     5d200000.mailbox[0-1], 5d200000.mailbox[1-1]
+root@imx91evk:~# ./hdparm --direct -t /dev/mmcblk0
+
+/dev/mmcblk0:
+ Timing O_DIRECT disk reads: 646 MB in  3.00 seconds = 215.24 MB/sec
+root@imx91evk:~# cat /proc/interrupts | grep mail
+  14:       6961          0          0          0  GICv3     209 Level     5d1c0000.mailbox[0-0], 5d1c0000.mailbox[1-0], 5d1c0000.mailbox[3-3]
+  35:          0          0          0          0  GICv3     216 Level     5d200000.mailbox[0-1], 5d200000.mailbox[1-1]
+root@imx91evk:~#
 
 
-On Thu, 19 Nov 2026 14:30:29 +0300, Denis Arefev wrote:
-> dcss_dev_suspend() ignores the return value of
-> drm_mode_config_helper_suspend(). On failure that helper rolls back its
-> partial work (re-enables fbdev and polling) and leaves
-> mode_config.suspend_state unset, i.e. the DRM side is not suspended.
-> Continuing to suspend the context loader and disable the clocks then
-> leaves the device in an inconsistent state.
-> 
-> [...]
+Regards
+Peng
 
-Applied, thanks!
-
-[1/1] drm: imx-dcss: Check return value of drm_mode_config_helper_suspend()
-      commit: 8a6e49c8557d3ba0fe4c7f1cb7f428289b13bfed
-
-Best regards,
--- 
-Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
-
+>
+>Francesco
+>
+>
