@@ -1,56 +1,117 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795689191;
-	b=1rW7pheEtMXaPHCTnt4LpCDKPbNxkstFBVuxPdAKKie4iM7Up079VA+R02FUPFHr7k/s
-	 qihneef6bDQhcfsEcLyeT7gq7BbkWYBfbloPtDozUXlvITjjCrNjLu0hpfq0okwBWKTui
-	 puuaSvPRCb3H+yC1wboy7GH/0/dLb922/VNGex3zN+QeyaHyED+TIGmjOU9vXNOpjyFrs
-	 teUo1/81IuPwUbVMGGa1KDiLZ/i+WBEbx/CwmypWTwGCxA+ZNV169z1ermFMFa8wrNlYO
-	 V6pJPCQ2Rx5ObtR0PXvHRu5z2ZvnFOUCh+dgAz0CPXKAymRN5wzEBdHaHSbDr40Yg0g==
+	t=1795689725;
+	b=lVfoucCt3LCdyPBOuoV4oEkzfvCXLYv+VzvmJXe+bu6rCudAToyWMn6eTqEbSqNO9jGI
+	 1dH4weWz6+tOnE8uGH3gJ3RygMhS7t/U9/KdXvndm1QWlg+fj4zd8c3g2wrSDrjQ2qVAX
+	 r4wipyZMlZJVHGQv5iE1lAUny9eYSwYu5idbJWK3h75nS4Ul/Fa/yjSFbqiwXq7o85V86
+	 Sw8RVRi/2s7HqOHSlIqp49dmQsH60iuvTBom2BaSYfImqcOteENUyHtdj0/hDPBx5j7Z1
+	 9UJfGhSsEsKff05Vxf6fqI4kWk5PYbHchZAagcve4/A5JqR6aXAuvbocrZ2husrlgaQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795689191;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=URBTmVc5HIt3ARgLVG0dLuL2usV497Fl4XWuyk4JQdg=;
-	b=rwydPpiBlVjiOPSa5NMiA+CdfdKRRbo3DzCHMI5X5Ne10Z+Ejqa9wCpDQ3ZzuWyhOoLz
-	 Znw3ZogIE2EhWQ6L5CqRXracrDEIBUVoY2lRLEYIt/LUg3UStfGpbaNYRdAz8aAmciPTW
-	 D1S+taU18cyjfCTrbC6BWpQjhsRSbaXECZ1IuBhpItt5EAnH7mH6wdsd7v+C5Q+j6/0lU
-	 bQncImgm6A2jKSn6xYndX0Yn6pSz0dRDOfUMqGcZ6eI7W2+dsSUmLNGlj8JJkRZjZhski
-	 7ifmGAEx+gK7umt01EBBZe3NDZ9ddzU0H+tK9kU+QOp7EXAGUIRCG/dJkZl50ifoiwA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795689725;
+	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:To:Cc:
+	 Subject:In-Reply-To:References:User-Agent:Date:Message-ID:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-Last-TLS-Session-Version;
+	bh=uheoRvhmn+YrPKS27YmgoKtAWg9YwsclVsNF7+M1D2A=;
+	b=izrTVMfLqLtbatrEFsKLRaXZ/BHddVslDOXdatu1HaQRjIYmapTWaab2Wh+BOD4Hwv9r
+	 bwxp+wzTaX6WsxHMRLthIu/L7Rd4WgQPv6P6jNiYOHboVUpVNwkbHLsX7A5alSYFo9V6w
+	 tWwxI2cJrBX7/J2/Uv1HghwuV1VF5tAGjyvYpySWSzkvqgXq/v1jkG6cUBSl2X/viH9kx
+	 bvrqScQrJG2Xb1cCJ0KcXUWZgBZDmxqBpgGCJ9lUoon/hx2HciN18D59DcEm9i/H+xTU/
+	 eA30Hjg09VtB6QX49trdmw+UWpKhTuoYx9eixsrVDltnUXEqYo/RkKW2n9Z/FXu59Sw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BB2g20zR;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=bootlin.com;
+	spf=pass smtp.mailfrom=bootlin.com;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=cTb4l1cJ;
+	arc=none smtp.remote-ip=185.246.84.56
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99DF7606A31C;
-	Thu, 26 Nov 2026 10:33:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82665606A31C
+	for <imx@lists.linux.dev>; Thu, 26 Nov 2026 10:42:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 82665606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BB2g20zR
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EEB51F000C6;
-	Thu, 26 Nov 2026 10:33:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795689191;
-	bh=URBTmVc5HIt3ARgLVG0dLuL2usV497Fl4XWuyk4JQdg=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=BB2g20zRswiZ9KqntoR35uyxA8IZjI/qZYq6s5sEHxf7usYcPLx2Yk+UKSrPiznjR
-	 wM7p+bucwVEVGZ0YwtPfwxnA4nBLkEYPO0I4OB/8p1Lw3jhltc/YEYVWC7VIj22d/g
-	 T0VL96mGwscsmLrCPksM4auxji3DzDZhuz9p8CaX71uhliYfcLb6oLleYBldcG56yx
-	 47lGlrZFaIxZY2eP1t7qRe8nDpokGAJSY+eayrqcbrlfKeae8xE3/JvTIbfn3SUeHO
-	 X0/Funxcg/XlyXpu0xKEvagcbPtAZoHfn51e3Cl2QOweYJwaLI3kw0iIXlUlP5n9to
-	 5aiUKjSvs0t2A==
-Message-ID: <sashiko-outbox-235295@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2] ASoC: SOF: imx8: Switch imx8ulp DSP control to reset
- framework
-Reply-To: sashiko-reviews@lists.linux.dev
-To: shengjiu.wang@oss.nxp.com, linux-sound@vger.kernel.org, imx@lists.linux.dev
-Cc: Frank.Li@kernel.org
-In-Reply-To: <20261126102528.1531824-1-shengjiu.wang@oss.nxp.com>
-References: <20261126102528.1531824-1-shengjiu.wang@oss.nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 26 Nov 2026 10:33:09 +0000
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=cTb4l1cJ
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 64E2A1A1811;
+	Thu, 26 Nov 2026 10:42:02 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 3280C60237;
+	Thu, 26 Nov 2026 10:42:02 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 364FC11E6B305;
+	Thu, 26 Nov 2026 11:41:33 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1795689714; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=uheoRvhmn+YrPKS27YmgoKtAWg9YwsclVsNF7+M1D2A=;
+	b=cTb4l1cJpCcYp3q2aGIWlRj7FvBcgz0uUKYYlYqqa5UwcH1jUj6SQXyQX9kJf5GRsaH3fE
+	7nzKsqBjHYbI4v0yCa6EvGvnchrfXj/QG4Q25dBsKtPEHRP6nOAzZQdKNAcGel8NxWuCl8
+	/UogoCled4Abz5qqLhRfe9EBcPYCKq0lj0YlM421XKJiKVLb8J73HWnTbfFaidWAakRDUI
+	b8g6uiU/7Zm+9NDBBgVq+1RGa6wbQcoFDyM9l3vgGrsGxkIamS5EMGTKNmHk1jRT2TFSKO
+	50QKKDM+v40MpF0N1CCiiA2gnNeu7HhRjnzL0TiEgFu/pSWGmX084+BB/y5b7w==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+Cc: Pawel Zalewski <pzalewski@thegoodpenguin.co.uk>,  Richard Weinberger
+ <richard@nod.at>,  Vignesh Raghavendra <vigneshr@ti.com>,  Pratyush Yadav
+ <pratyush@kernel.org>,  Michael Walle <mwalle@kernel.org>,  Takahiro
+ Kuwano <takahiro.kuwano@infineon.com>,  Vladimir Zapolskiy <vz@mleia.com>,
+  Robert Jarzmik <robert.jarzmik@free.fr>,  Alexander Usyskin
+ <alexander.usyskin@intel.com>,  Joern Engel <joern@lazybastard.org>,
+  Madhavan Srinivasan <maddy@linux.ibm.com>,  Michael Ellerman
+ <mpe@ellerman.id.au>,  Nicholas Piggin <npiggin@gmail.com>,  "Christophe
+ Leroy (CS GROUP)" <chleroy@kernel.org>,  "Ritesh Harjani (IBM)"
+ <ritesh.list@gmail.com>,  Shrikanth Hegde <sshegde@linux.ibm.com>,  Michal
+ Simek <michal.simek@amd.com>,  Nicolas Ferre
+ <nicolas.ferre@microchip.com>,  Alexandre Belloni
+ <alexandre.belloni@bootlin.com>,  Claudiu Beznea
+ <claudiu.beznea@tuxon.dev>,  Brian Norris <computersforpeace@gmail.com>,
+  Kamal Dasu <kamal.dasu@broadcom.com>,  Broadcom internal kernel review
+ list <bcm-kernel-feedback-list@broadcom.com>,  William Zhang
+ <william.zhang@broadcom.com>,  Anand Gore <anand.gore@broadcom.com>,
+  Kursad Oney <kursad.oney@broadcom.com>,  Florian Fainelli
+ <florian.fainelli@broadcom.com>,  =?utf-8?Q?Rafa=C5=82_Mi=C5=82ecki?=
+ <rafal@milecki.pl>,  Ray
+ Jui <rjui@broadcom.com>,  Scott Branden <sbranden@broadcom.com>,  Han Xu
+ <han.xu@nxp.com>,  Paul Cercueil <paul@crapouillou.net>,  Harvey Hunt
+ <harveyhuntnexus@gmail.com>,  Keguang Zhang <keguang.zhang@gmail.com>,
+  Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>,  Liang Yang
+ <liang.yang@amlogic.com>,  Neil Armstrong <neil.armstrong@linaro.org>,
+  Kevin Hilman <khilman@baylibre.com>,  Jerome Brunet
+ <jbrunet@baylibre.com>,  Martin Blumenstingl
+ <martin.blumenstingl@googlemail.com>,  Matthias Brugger
+ <matthias.bgg@gmail.com>,  AngeloGioacchino Del Regno
+ <angelogioacchino.delregno@collabora.com>,  Frank Li <Frank.Li@nxp.com>,
+  Sascha Hauer <s.hauer@pengutronix.de>,  Pengutronix Kernel Team
+ <kernel@pengutronix.de>,  Fabio Estevam <festevam@gmail.com>,  Manivannan
+ Sadhasivam <mani@kernel.org>,  Heiko Stuebner <heiko@sntech.de>,  Maxime
+ Coquelin <mcoquelin.stm32@gmail.com>,  Alexandre Torgue
+ <alexandre.torgue@foss.st.com>,  Chen-Yu Tsai <wens@kernel.org>,  Jernej
+ Skrabec <jernej.skrabec@gmail.com>,  Samuel Holland <samuel@sholland.org>,
+  Stefan Agner <stefan@agner.ch>,  Lucas Stach <dev@lynxeye.de>,  Thierry
+ Reding <thierry.reding@kernel.org>,  Jonathan Hunter
+ <jonathanh@nvidia.com>,  Jacky Huang <ychuang3@nuvoton.com>,  Shan-Chun
+ Hung <schung@nuvoton.com>,  Tudor Ambarus <tudor.ambarus@linaro.org>,
+  Linus Walleij <linusw@kernel.org>,  Kyungmin Park
+ <kyungmin.park@samsung.com>,  linux-mtd@lists.infradead.org,
+  linux-arm-kernel@lists.infradead.org,  linuxppc-dev@lists.ozlabs.org,
+  imx@lists.linux.dev,  linux-mips@vger.kernel.org,
+  linux-amlogic@lists.infradead.org,  linux-kernel@vger.kernel.org,
+  linux-mediatek@lists.infradead.org,  linux-arm-msm@vger.kernel.org,
+  linux-rockchip@lists.infradead.org,
+  linux-stm32@st-md-mailman.stormreply.com,  linux-sunxi@lists.linux.dev,
+  linux-tegra@vger.kernel.org
+Subject: Re: [PATCH 00/10] mtd: use desginated initializers in *_device_id
+ arrays
+In-Reply-To: <awcZcuSbse5g3FWK@monoceros> ("Uwe =?utf-8?Q?Kleine-K=C3=B6ni?=
+ =?utf-8?Q?g=22's?= message of
+	"Wed, 25 Nov 2026 18:25:04 +0100")
+References: <20261125-acpi-mtd-v1-0-42ad2f645bee@thegoodpenguin.co.uk>
+	<awcZcuSbse5g3FWK@monoceros>
+User-Agent: mu4e 1.12.12; emacs 30.2
+Date: Thu, 26 Nov 2026 11:41:33 +0100
+Message-ID: <87v75jyiw2.fsf@bootlin.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -59,144 +120,22 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Last-TLS-Session-Version: TLSv1.3
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Medium] ASoC: SOF: imx8: undocumented dbgreset and optional resets in
-  imx8ulp_probe()
---
 
-commit e612ef7d377466215d3164c95469326c85ff2571
-Author: Shengjiu Wang <shengjiu.wang@nxp.com>
+>> Signed-off-by: Pawel Zalewski <pzalewski@thegoodpenguin.co.uk>
+>
+> Acked-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com>
+>
+> with or without addressing the nitpick I had for one of the patches.
 
-ASoC: SOF: imx8: Switch imx8ulp DSP control to reset framework
+Let me know what you intend to do.
 
-This commit replaces direct syscon regmap accesses in the i.MX8ULP SOF
-DSP driver with the reset controller framework using named reset controls.
+Not related but since you were removing the /* sentinel */ comment
+sometimes, when do we get rid of those extra entries entirely?
 
-> diff --git a/sound/soc/sof/imx/imx8.c b/sound/soc/sof/imx/imx8.c
-> index 5cd3f44c90d2b..80326d2eb1fc0 100644
-> --- a/sound/soc/sof/imx/imx8.c
-> +++ b/sound/soc/sof/imx/imx8.c
-[ ... ]
-> @@ -202,42 +201,31 @@ static int imx8m_probe(struct snd_sof_dev *sdev)
-> =20
->  static int imx8ulp_run(struct snd_sof_dev *sdev)
->  {
-> -	struct regmap *regmap =3D get_chip_pdata(sdev);
-> +	struct imx8ulp_chip_data *chip =3D get_chip_pdata(sdev);
-> =20
-> -	/* Controls the HiFi4 DSP Reset: 1 in reset, 0 out of reset */
-> -	regmap_update_bits(regmap, SYSCTRL0, RESET_BIT, 0);
-> +	reset_control_deassert(chip->soft_rst);
-> =20
-> -	/* Reset HiFi4 DSP Debug logic: 1 debug reset, 0  out of reset*/
-> -	regmap_update_bits(regmap, SYSCTRL0, DEBUG_LOGIC_BIT, 0);
-> +	/* Release HiFi4 DSP Debug logic */
-> +	reset_control_deassert(chip->dbg_rst);
-> =20
-> -	/* Stall HIFI4 DSP Execution: 1 stall, 0 run */
-> -	regmap_update_bits(regmap, SYSCTRL0, EXECUTE_BIT, 0);
-> +	/* Run HIFI4 DSP Execution */
-> +	reset_control_deassert(chip->run_stall);
-> =20
->  	return 0;
->  }
-> =20
->  static int imx8ulp_reset(struct snd_sof_dev *sdev)
->  {
-> +	struct imx8ulp_chip_data *chip =3D get_chip_pdata(sdev);
->  	struct arm_smccc_res smc_res;
-> -	struct regmap *regmap;
-> -
-> -	regmap =3D get_chip_pdata(sdev);
-> -
-> -	/* HiFi4 Platform Clock Enable: 1 enabled, 0 disabled */
-> -	regmap_update_bits(regmap, SYSCTRL0, PLAT_CLK_BIT, PLAT_CLK_BIT);
-> =20
-> -	/* HiFi4 PBCLK clock enable: 1 enabled, 0 disabled */
-> -	regmap_update_bits(regmap, SYSCTRL0, PB_CLK_BIT, PB_CLK_BIT);
-> -
-> -	/* HiFi4 Clock Enable: 1 enabled, 0 disabled */
-> -	regmap_update_bits(regmap, SYSCTRL0, HIFI4_CLK_BIT, HIFI4_CLK_BIT);
-> -
-> -	regmap_update_bits(regmap, SYSCTRL0, RESET_BIT, RESET_BIT);
-> +	reset_control_assert(chip->soft_rst);
-> =20
->  	usleep_range(1, 2);
-> =20
-> -	/* Stall HIFI4 DSP Execution: 1 stall, 0 not stall */
-> -	regmap_update_bits(regmap, SYSCTRL0, EXECUTE_BIT, EXECUTE_BIT);
-> +	/* Stall HIFI4 DSP Execution: */
-> +	reset_control_assert(chip->run_stall);
-> +
->  	usleep_range(1, 2);
-> =20
->  	arm_smccc_smc(FSL_SIP_HIFI_XRDC, 0, 0, 0, 0, 0, 0, 0, &smc_res);
-> @@ -248,16 +236,30 @@ static int imx8ulp_reset(struct snd_sof_dev *sdev)
->  static int imx8ulp_probe(struct snd_sof_dev *sdev)
->  {
->  	struct imx_common_data *common;
-> -	struct regmap *regmap;
-> +	struct imx8ulp_chip_data *chip;
-> +
-> +	chip =3D devm_kzalloc(sdev->dev, sizeof(*chip), GFP_KERNEL);
-> +	if (!chip)
-> +		return -ENOMEM;
-> =20
->  	common =3D sdev->pdata->hw_pdata;
-> =20
-> -	regmap =3D syscon_regmap_lookup_by_phandle(sdev->dev->of_node, "fsl,dsp=
--ctrl");
-> -	if (IS_ERR(regmap))
-> -		return dev_err_probe(sdev->dev, PTR_ERR(regmap),
-> -				     "failed to fetch dsp ctrl regmap\n");
-> +	chip->run_stall =3D devm_reset_control_get_exclusive(sdev->dev, "runsta=
-ll");
-> +	if (IS_ERR(chip->run_stall))
-> +		return dev_err_probe(sdev->dev, PTR_ERR(chip->run_stall),
-> +				     "failed to get dsp runstall reset control\n");
-> +
-> +	chip->soft_rst =3D devm_reset_control_get_optional_exclusive(sdev->dev,=
- "softreset");
-> +	if (IS_ERR(chip->soft_rst))
-> +		return dev_err_probe(sdev->dev, PTR_ERR(chip->soft_rst),
-> +				     "failed to get dsp softreset reset control\n");
-> =20
-> -	common->chip_pdata =3D regmap;
-> +	chip->dbg_rst =3D devm_reset_control_get_optional_exclusive(sdev->dev, =
-"dbgreset");
-> +	if (IS_ERR(chip->dbg_rst))
-> +		return dev_err_probe(sdev->dev, PTR_ERR(chip->dbg_rst),
-> +				     "failed to get dsp dbgreset reset control\n");
-> +
-> +	common->chip_pdata =3D chip;
-> =20
->  	return 0;
->  }
-
-[Severity: Medium]
-Does requesting "dbgreset" here match the fsl,dsp.yaml Devicetree binding,
-and should chip->soft_rst and chip->dbg_rst be optional on i.MX8ULP?
-
-Documentation/devicetree/bindings/dsp/fsl,dsp.yaml only allows "runstall"
-and "softreset" in reset-names:
-
-  reset-names:
-    minItems: 1
-    items:
-      - const: runstall
-      - const: softreset
-
-A Devicetree conforming to that schema cannot specify "dbgreset" (and may
-omit "softreset"), leaving chip->dbg_rst or chip->soft_rst NULL so
-reset_control_assert() in imx8ulp_reset() and reset_control_deassert() in
-imx8ulp_run() become no-ops instead of toggling the SIM_LPAV SYSCTRL0 DSP
-reset and debug reset bits.  In addition, removing the fsl,dsp-ctrl
-syscon lookup without a fallback breaks compatibility with existing DTBs
-that still use fsl,dsp-ctrl, and leaves the linux/mfd/syscon.h include in
-sound/soc/sof/imx/imx8.c unused.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261126102528.1531=
-824-1-shengjiu.wang@oss.nxp.com?part=3D1
+Thanks,
+Miqu=C3=A8l
