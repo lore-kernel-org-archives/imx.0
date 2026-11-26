@@ -1,107 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.41
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795711277;
-	b=IX2SVL6wmXDDHmRncTXSlOqMe59/UjWmXNx4BCcO96yoIKd+eliX0pZbmyxUyXdrlMVv
-	 nCGQvQ7ShhJ+ZufWMaWdBxTS8rGkjFLBzfq07AVGpJvH0GbEJO38WGYuHdqmGfzKP95Fa
-	 nDzdSZTRPyFt+AjeAajr6PPZuop7JUU0eJw74+EiFnQfzjQlmGLgYe5c+WenowgreRQln
-	 YtaoBS1mmX1kFC+/YBxEtx1Ar1lHj1wvc7bdYQ/XAQz+7MxMlWypS/NpnNbVbWpj17R9m
-	 unScslFZ6I1XgDdsGAZSD9c/WmF/Qe8Cy15PGDdAjHDMUMBtcG6/6gjG5K+R8uP55SQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795711277;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=jU16bWHumwV20jpiMrBRT2UNHlED4a7CUl264/set1s=;
-	b=EoDmZI57ZbpnDCVK5FdM8i3YE8w80L0vm6/n4/JqxFy18Hg0/HBuA8ri0EDEq/hzCPQE
-	 ocxc2j3b/TyofJ4w/KMkWHnUTctLBjYlGgY3Iq01SRI4TbbRm/kYy78lyESoib/2PZ1rQ
-	 6H4u0SLse1mJiPEbnRoJTIRn1mtZnHWXi6HS+fnKDyfJFSu4CzEHlC44qR15enosWuSzb
-	 hjTrCJxnsrTWR3mXA+FYNnUfG3JW5EvZu4gs9tr27EhGvl2KlWmjSE8XuwclfgeMubP9+
-	 m2ru3JRoWdAFtMtVdLhj3E6WRtWn4/RZVKUeWok7lxZpy7ORrAj+OiC5CHCKmB6sDZg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=jCL+e2Ct;
-	arc=none smtp.remote-ip=209.85.221.41
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.84.54
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795711573;
+	b=3sBb5ai/E+/R+XVV+HfZrHSVNMG+BMhovYjlHTEp7z9E/wiNricJl8Uetned90JwyrwH
+	 bFvt0+KCaMPlt4mCStDIwfDbfeomMPwAU+vujjSVKcf7Bosp9lp2gJspG2igX1wyZKoin
+	 FLHIQMh+GalwjbvE1NMrQp6p2marv5i4shl0NrOl3zvsBSB+HcdOxDIZfN6oF6q0bFL2h
+	 +BZUlyxILihpbEpZwKoHm8wJsr2hxw6ovcglV81WMLqa6SVx9zDZ/LTdcqS/2Q8zaL9C8
+	 23owCFa7HirMeSNdFoqsSLP5+HJv1yCm6/lENXYHSNao29Kezc4q5h3oT96p9U0IkNQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795711573;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:Content-Type:Content-Disposition:
+	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=B6cne2mBhSQppELH3q2y2KnzWeouhbWTl3rMu1OeJuE=;
+	b=oWN+OpWW8c5zuGfFohEnPNRCzXn0TOUGZU2geHQhE4wo8KGYZ+PwLx75kyTVS8ucgY6Z
+	 JCCfm5jtDsAcsFnXY57a9qWZS0rrkY0p8wJc8Cbio3pJeHPjXIq53QUGX1fm52kHoDdEH
+	 NncGYO4X2XPxzHrIyKFuXJ0/Lo2Z1kX9pJ1kHlvi81ma4n2y5mB2UkVJac0J5SmiGF78S
+	 Wk1NbJcaXJ3vp4mWqNbhtw0sFV1crbi6h5kLhT7u49934WWJKstAuIUDJI7J02NURANlh
+	 i4Xd2iWPy3P3jwUk0H1vd8q+DNmc4bSfeEuGcUj9UsdrdCK/9SfAPbQ6KV67hsnzrlA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=oss.nxp.com;
+	spf=pass smtp.mailfrom=oss.nxp.com;
+	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=lvXeNjwm;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.84.54
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010054.outbound.protection.outlook.com [52.101.84.54])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8995D606A336
-	for <imx@lists.linux.dev>; Thu, 26 Nov 2026 16:41:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8995D606A336
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA08F606A321
+	for <imx@lists.linux.dev>; Thu, 26 Nov 2026 16:46:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CA08F606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=jCL+e2Ct
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-491f34b4e0fso3315112f8f.2
-        for <imx@lists.linux.dev>; Thu, 26 Nov 2026 08:41:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795711275; x=1796316075; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=jU16bWHumwV20jpiMrBRT2UNHlED4a7CUl264/set1s=;
-        b=jCL+e2CtLs90ZZw54ZPnVQVjf5vYhkmT69LYXhQAT67a6puwK77Ct8vfm6UQbBLbmy
-         pM/qy6nlMmL6I/bND6yrpNrKFIMO13D9cK5gejtmDK/WNPxkI6I+2G4kHcEGaxviYOqV
-         FWrB+eFTHsMU9jvTROpmpmCXQpmG2tOj7sWj1rnWUmW1ssabGZ/8mhKOHd2SKwwmtXm8
-         HPM49PLqlYsIz2gvzh3j+qfGm7iS0GFmjRSf5NZntKY5TgCzNGWJ3vZAObVbQ9HvL9lV
-         n8c+sgles4IY/g/iTn69NHelANGkaUpepaq0UjST0mCmPQNQ/331vDFNSG05JoT2xYxP
-         H0TA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795711275; x=1796316075;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=jU16bWHumwV20jpiMrBRT2UNHlED4a7CUl264/set1s=;
-        b=Qb5OZBz+TSO+Lc6fdbqUkZksSK7LiBY22DdVm+9UWjrUU4NRSITfLGuky5uAQwi4rY
-         VGobXYkbacmoypQa3Gzu/f1GPGHmXd4BvXfhUpmfl+GDAI1vT+nPo4+iSUP09UxZVxpA
-         C0oQbH5KneMSzxW5majQURlP0vykYvofNHtSb9PJ9Cg0ScxiGoGCafIfZ7fbdakaQhec
-         39a3fNp874KD5f0UlK1+lfSbsetnzPMz/tEbcsSztmG2JaaqLQdoL2oGQl50UMMbPGeF
-         GaqjDq4eOa8/r80EJGCAVc0Ad9OB6t/uuZCz7HHsPeH7IpIapdv6GQkungHCdJCXX0M9
-         YKaA==
-X-Forwarded-Encrypted: i=1; AL+hErG+iqhhalQ8d3zvAPT1ApclueHTrGGQCwuTEL62jBPSnfoB5YmAElIuHxLH5N5NHUbyDys=@lists.linux.dev
-X-Gm-Message-State: APuU4Z8So0dbGhhaRfZBEhX8bPLp7hjKAtSKsbv3MJP2oYWAlplcDYTi
-	wb5X4cJkgEYK8bYOiNhEEQUrheu5GiA+0cXsjl5uZimjQvQ0kmMTtBCB
-X-Gm-Gg: AZFdTZcZjpk5ahBclWBttv9hmWhut3N2or5/QhR3gquKxxa1IXFkjGjar6q31leSTPV
-	3sgJVoxZDrRnHLHjdmvKxfIQq1tdctA9iVnws5Ceq+po0WEIFFczXFOXw8UkPu9s08t4PiwCHWg
-	jRZW0Uqgdk4AgJeomHISx2MlWtF77DSf0I76nngQggVnW5H01mEwrflKIH375BaQKAhGQkbhfLJ
-	WSvtDTGSkqoHWzJ0LY9OYFrv6lwdrcEMO5miX+YxhU6UMQRgkP1J9wnjnrot2o7dXnhXkX0ayVB
-	xjMPZEOXVHJQ8DLrvs90AyMJ3+9Q33WYVlo8I797HwLJJHkaxxrdX94JAZvHmwYHz7QeYf41OoV
-	aYO47BS7NwXJWhCPI5Az2FiU6oJFvjFSeaFEIH7zcyqZsjOYhu/Fze9NvR14bBNqem5Y+6/CgbJ
-	VvxgJiJOirHw0yR+P1ibwEXnl4kNcQFTbWqdqeflM+9zdaBs3XRtDwN/2Jqh1PhlhYVxUs+OPZz
-	Y6VCEZOzR6gf3MTkzI1wSf7gDJ8OOP+rGuufh0Cwd9qmaHsCYqX9YlZpNsAjFXDhC9VWLZCy2bt
-	7x/TQElSrgqD21Tr9zvL1JdNLh3wvrbWOIG4rw03itOtY/5IQMrDopQ=
-X-Received: by 2002:a05:6000:4b1e:b0:48c:7143:610c with SMTP id ffacd0b85a97d-4abb2910b8fmr41814928f8f.36.1795711274674;
-        Thu, 26 Nov 2026 08:41:14 -0800 (PST)
-Received: from vitor-21h1cto1ww ([2001:8a0:c4c6:f00:6ce3:c28c:2097:7d09])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4ab6b10b5f6sm39333942f8f.34.2026.11.26.08.41.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Nov 2026 08:41:14 -0800 (PST)
-From: Vitor Soares <ivitro@gmail.com>
-To: Ulf Hansson <ulfh@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: Vitor Soares <vitor.soares@toradex.com>,
-	linux-pm@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Advait Dhamorikar <advaitd@mechasystems.com>,
-	Marek Vasut <marex@nabladev.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Adam Ford <aford173@gmail.com>,
-	stable@vger.kernel.org,
-	Francesco Dolcini <francesco.dolcini@toradex.com>
-Subject: [PATCH v2 2/2] pmdomain: imx8mp-blk-ctrl: fix suspend/resume order
-Date: Thu, 26 Nov 2026 16:40:59 +0000
-Message-ID: <20261126164058.2373605-6-ivitro@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261126164058.2373605-4-ivitro@gmail.com>
-References: <20261126164058.2373605-4-ivitro@gmail.com>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=lvXeNjwm
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=igiU04Vsr6paM7J/gVhGJxJBiw9HFw+8q5YazU24zr9Q4ovSEcqo8/duEN2JhhBtn/mV/x4LhXVrD7MEQgAGrhcI+0XzdVU9uPFPXdQwOLJ6E+J2S9VydKKGb87XkaKwN+Viz+tpl67Vb35zQfl72g8A4YQyIlqsrijql45vNuty4oci0BlsVrwc25un/DveoiFr3yN2rzSWXVAm3VKH6ncaFR2mbE++1X9rzgpf28qoxMOdgi5pQ9ucw33yVuyiiO5Pi3qw0fydS4vEMK3uisgMeA/E27hMzVKWtxqtKejKi4SECK8bWoHz4SvXHaugF2o9wg5iHGhf1tcX53i55w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=B6cne2mBhSQppELH3q2y2KnzWeouhbWTl3rMu1OeJuE=;
+ b=Ce8OrS1fC1yqAqOQgo227eLdFGjgkVf5Je+hlRZqCCfF/6nrwn9ZvJydjLtVD0V9jbI95V8z6sPhaZUIBRqriFpggSZGuRdi8ZB1L+rTYRJSX8sPtH0pTiz3R/j5j2UHhe2bxBVD7LwhntGmBrLxRn7YrnLZ/WYQwK9j3VQUm7vkh/5XuKgmrBdrnDadpgaSvX0wFB8BNBSR6m0BcLwSQ3SpA0R/bS5Jx8/HtGWDaWfHgHeiJQgBFT8WQ9ppwPo2DFbnMnPRjGdf4lquQeL97oMg1mvJkvk66S5BYwfZxMBUp5d74446xwQUgkW9wOYKatL0TMdfM2Q5gfy0PhMXOw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=B6cne2mBhSQppELH3q2y2KnzWeouhbWTl3rMu1OeJuE=;
+ b=lvXeNjwm2C4Mw8Rxx8/pMwrAbD6qYB1KWxfLDdIf91pWhxEdmiRF/qeS/tt6QUeMNI91lE21RAk+jO9ikXP/xnrMJ83RDPJOiAWr8mDa/lxhZHcxCt3kkgPRIWCdI7RFqoQvlEd7F7s2HjsdtN8YuvbWdNkPENQlUwf9mP8gRXmC2m1y4KYGEFp+sDzvQ2XhFriJlP7kOPiHimSOL69yMKMZbP5I/nOwfBHF37ldZ8TxTC72qYypSDkRbNV9tuVYPT/Q8q3iXjsr2/GvnCLqUWWHi7stSKi1m4Xltx/U5G1RQMzmw//9V6F1lypOabJVsrjxGQM8kMIs/rqfV5oIGg==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from MI3PR04MB12438.eurprd04.prod.outlook.com (2603:10a6:290:76::14)
+ by PAWPR04MB11609.eurprd04.prod.outlook.com (2603:10a6:102:50d::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.662.6; Thu, 26 Nov
+ 2026 16:46:09 +0000
+Received: from MI3PR04MB12438.eurprd04.prod.outlook.com
+ ([fe80::c715:c32:8bb1:b70b]) by MI3PR04MB12438.eurprd04.prod.outlook.com
+ ([fe80::c715:c32:8bb1:b70b%4]) with mapi id 15.21.0662.004; Thu, 26 Nov 2026
+ 16:46:09 +0000
+Date: Thu, 26 Nov 2026 10:45:58 -0600
+From: Frank Li <Frank.li@oss.nxp.com>
+To: Daniel Baluta <daniel.baluta@nxp.com>
+Cc: Frank.Li@nxp.com, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, lei.xu@nxp.com, haidong.zheng@nxp.com,
+	francesco@valla.it, devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org,
+	Steven Yang <steven.yang@nxp.com>
+Subject: Re: [PATCH] arm64: dts: imx93-11x11-frdm: fix ethernet PHY reset
+ GPIOs
+Message-ID: <awhiRigXGZ50RoDo@SMW015318>
+References: <20261126160835.1811145-1-daniel.baluta@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261126160835.1811145-1-daniel.baluta@nxp.com>
+X-ClientProxiedBy: CPAP307CA0012.DNKP307.PROD.OUTLOOK.COM
+ (2603:10a6:380:3::11) To MI3PR04MB12438.eurprd04.prod.outlook.com
+ (2603:10a6:290:76::14)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -111,119 +100,124 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MI3PR04MB12438:EE_|PAWPR04MB11609:EE_
+X-MS-Office365-Filtering-Correlation-Id: 58948e8d-aceb-4a58-06a9-08df4bdcc586
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|1800799024|19092799006|7416014|376014|366016|261009223027099003|18002099003|22082099003|3023799007|10067099003|56012099006|11063799006|261021123027099003|261021121427099003|261102123227099003;
+X-Microsoft-Antispam-Message-Info:
+	3aGdHRKsZhiW0heV7XwTOEfdQsOX+BvYzXN0Sdr9r9HvcMcuejW4WTz3EIlEmaPMudoBMnJX6wPkLggcviHBNBl7eNjYYAwzRVPGAA9wI2o4cuttkyP5uQ53nkMwKDyeixwp4ss5w/0Gfpr1kI3cdvLQ+IvKtGDhRTKZsCXBSU14XUzGwV4tQRVI4CBFgg1cO4JlOvQmAb3VNiuppdspOi/MrxvMAGGvp9j/IfkqjMS50/sXdfWinUtIkRI0g2mBg2FMLJsnooZkENKSCcH4Q4oond4FJrHIIWQPxmHmnT+DlquamfMTWmE38QHamcPZ4rBtW6ncCmGudT5AqAi1jITLgg9LQgaKi5u8vCzTn7IPgrKwDxa/vjwvIYBkUiFj8knC2WK3HZoGUE7fyo+XJOOPhmUNZN6nYIt51U8SOZyOc4Zm8rjtploIqXmvat2dzcLYKAEMRyX1mPRTY7XFLKGjAX3VBUaVugQZ6vnqXoq7ovm/T/q75XB4SMNt1J1aflDzFLQn8dzw0JYwmY7uLJsHLaugVNIebL1TrinDvn+8y1cLm6aq5pSf5RlmUdf2y96ghCK/tmuuZ+ipMGf8H8sgGQ04LodUiwpKe93gIIdorNZ/bJgAPPRyU3i2U9fJDNYTlso1GVwWLxXWz1CzaNFwQ+umA2cEiFNJgmb0kPE=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI3PR04MB12438.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(19092799006)(7416014)(376014)(366016)(261009223027099003)(18002099003)(22082099003)(3023799007)(10067099003)(56012099006)(11063799006)(261021123027099003)(261021121427099003)(261102123227099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?3knTxTbOwhCzGrmI//t3aqNPisiT61mfvsVx42azc0yLCo+9SE6qezCO2S4v?=
+ =?us-ascii?Q?sfubfZOIV1v6XvQ7MJA1/BK30ecYhF/9yek2BObWBAdq57Sq5cVLLILeE1bV?=
+ =?us-ascii?Q?N0vujVqKOIA0M+WyDloQn6GE9xrZZq6xajrWPwGAzgW5qkJKWq1u+YUSgOSl?=
+ =?us-ascii?Q?iRaiL2MsyOpuWH90X7kYF4T8/g8I1QTmjiD1QNv4W0BbtpKGEVzgHjWNrGPR?=
+ =?us-ascii?Q?HE1uBTRkyttaLgqCOubvW9ehlgSr33LEovZN7SDz6Bt7ZFszydn7ExEuYNLJ?=
+ =?us-ascii?Q?jvfbT4sH6H/q4EEKssdlJRSQpAAeWJH2h8pnWKNsdxEGIfIpogz2jyMIz/Ej?=
+ =?us-ascii?Q?IErutP7k3MqQ01DnEPk0I8rUm+PptKHuH1Y4Hv7j8VCL06N93t0F1/gU5cnf?=
+ =?us-ascii?Q?uo/jQdhapy+GTj2zsMxfkAG9MSVncN+pLE4kDs3akOCM1eeytKIzDNFbtu87?=
+ =?us-ascii?Q?v10R5TEuZBJzWaB7Yx6s4ve2VNxoeMoSnBqPGNZ6GFe1N7oUV0X8Bvgm+2vp?=
+ =?us-ascii?Q?in4Ma5Kb7U4rliMUVjNnLAcJb/LiIv8t3hHtBCSs8FwVW3QarBbLr9f0PJFW?=
+ =?us-ascii?Q?BvPjk/z3tBvygzVIBo0Ld3jC8AOYdEtiC9N6GObHk8V7a8qDbrzQ9Zs6mQYb?=
+ =?us-ascii?Q?Co0yJqHrgPlm5GsXsqKjqTK4SQteZ9QV1Kkq/chocIzsg6UI3hW/8aVcZ6KR?=
+ =?us-ascii?Q?lyhgIHKxb0ktMoe6DG4m98MBTxIJM2eeFhRCYLQtb926N6mhVgbVWXA05PSh?=
+ =?us-ascii?Q?/eJw3KQitODcEgES7170J63wAn1TiFP0uGAvXUnYf7XhxJDFogdbacrDdf7p?=
+ =?us-ascii?Q?/LRX31DZeq/1JwVKsZTkoouyzZIwMrNCZJVtQqmLQJFd21Ku5fFNmD4QGOto?=
+ =?us-ascii?Q?Lg86HLk2CnQ0HyBBlG+nok+SOmYEuDwBKdsFlK3fMpwKoIcODw+XrcvtGmG6?=
+ =?us-ascii?Q?xokvvmoNC3+yDaKtN14h+F3km3RK3M94wQetz3mdopU755YUhtnpU5bCV5VM?=
+ =?us-ascii?Q?zMXqUffSKoj2kywiprwk4JTrJIx3XyDrEqrQXj/jT4rzwmCHWfvAesX2NMlE?=
+ =?us-ascii?Q?zvWL1G5r9TuFr6Cq1pyP0pk/TAnWm4QGDtEYonrwRLo8vDrO5+mvYkFEUyET?=
+ =?us-ascii?Q?wqDLbeYTmEnDLQleOGaZBMdEq8JtxW+XqkPU020lkuRuB5KtDDFJybm3eMGH?=
+ =?us-ascii?Q?PsbFY8/mkTQio5TnBSEbqdfEf3VbwubhtPi5xR00FFXpNcZzEWWXhUcOrJ0Z?=
+ =?us-ascii?Q?mj5fSrfZLMsntAgmF0xWRgF051TBMFEdCZemJafUVo6EhVdOaC343w55NZjM?=
+ =?us-ascii?Q?tvSd5P59mVdVgRWt+u3SL11oX/2HbnOFhVYVXy03DlWu0zT0nR5nBF0yQn4L?=
+ =?us-ascii?Q?K2Airib3o2s7nbv9ZV3DTmobMuYvFFqlkuLgdwKf93yoMljtqd//fqxw5pyW?=
+ =?us-ascii?Q?hgyP64VgXgpXAlINZJB0kRO1k5/tk4R5peSOfReKlprIozTQ63SiCzxGY73N?=
+ =?us-ascii?Q?ObMU5ji6sSnwORCyV93/4AqEo7NtVZ8j3CyzgBMK6cnpd/ZdQydezlwCSQtq?=
+ =?us-ascii?Q?kRx8uOGNwKvtoiHU6W9dKwfC0tY7x9uRdUBbWXSgO8Iw0ChVKElzPsOqGwvd?=
+ =?us-ascii?Q?3FHJ8O9X9EW4rKCXYvX+6EE0SWurlBv2VqNUBtS7B1OPjHD5vIZ3B/iERy/+?=
+ =?us-ascii?Q?v+I54DEMs5/umhSyobhzaGXiXetBs/VTwjHqX0wzvIJw9UPBFhxD5k/TFtRV?=
+ =?us-ascii?Q?IaNnET/84TA3oDOQ2pe0U0G//YmOk3rDLOOvxFO06R8+ooEqv+RF?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 58948e8d-aceb-4a58-06a9-08df4bdcc586
+X-MS-Exchange-CrossTenant-AuthSource: MI3PR04MB12438.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Nov 2026 16:46:09.1642
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ESZ2SaeJhx/wDdgSrqQXPRDs7FAgGG41m3JJz5605d2RezVo7jUeCJKncpg0uK73L3lO++fplWK04djjy5plp+Lvh85qHHzXGEPCRvZC2HW3thhvrX5rp+2BybvfLH5E
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR04MB11609
 
-From: Vitor Soares <vitor.soares@toradex.com>
+On Thu, Nov 26, 2026 at 06:08:34PM +0200, Daniel Baluta wrote:
+> From: Steven Yang <steven.yang@nxp.com>
+>
+> The reset-gpios of both ethernet PHYs point to the PHY interrupt lines
+> instead of the PHY reset lines.
+>
+> On the FRDM-IMX93 board (schematic SPF-94611 rev B2), the PCAL6524 GPIO
+> expander lines going to each PHY are labelled:
+>
+>   P0_4 (line 4)  ENET1_nINT
+>   P1_1 (line 9)  ENET2_nINT
+>   P1_7 (line 15) ENET1_nRST
+>   P2_0 (line 16) ENET2_nRST
 
-As in imx8m-blk-ctrl, the GPC domains behind the HSIO and HDMI blk-ctrl
-are driven through the virtual devices from
-dev_pm_domain_attach_by_name(), which have no parent and no device link
-to the blk-ctrl or its consumers, so nothing orders them in dpm_list.
+schematic error? Should fix schematic also?
 
-On Verdin iMX8MP, with the phy-fsl-imx8m-pcie module loaded after the
-HSIO blk-ctrl has probed, the virtual devices are suspended before the
-PCIe PHY, and the CPU hangs in genpd_suspend_noirq() of
-32f00000.pcie-phy with the HSIO bus domain already off. The system
-never completes suspend to mem.
+Frank
 
-Add a stateless device link from the blk-ctrl to each virtual device,
-bus domain included, so they are suspended after and resumed before the
-blk-ctrl and its consumers.
-
-Fixes: 556f5cf9568a ("soc: imx: add i.MX8MP HSIO blk-ctrl")
-Cc: stable@vger.kernel.org
-Co-developed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Signed-off-by: Vitor Soares <vitor.soares@toradex.com>
----
- drivers/pmdomain/imx/imx8mp-blk-ctrl.c | 29 ++++++++++++++++++++++++--
- 1 file changed, 27 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/pmdomain/imx/imx8mp-blk-ctrl.c b/drivers/pmdomain/imx/imx8mp-blk-ctrl.c
-index 212d491c75e4..e967ae7eda30 100644
---- a/drivers/pmdomain/imx/imx8mp-blk-ctrl.c
-+++ b/drivers/pmdomain/imx/imx8mp-blk-ctrl.c
-@@ -657,6 +657,17 @@ static int imx8mp_blk_ctrl_probe(struct platform_device *pdev)
- 		return dev_err_probe(dev, PTR_ERR(bc->bus_power_dev),
- 				     "failed to attach bus power domain\n");
- 
-+	/*
-+	 * Make the genpd virtual devices suppliers of the blk-ctrl so that
-+	 * they are suspended after and resumed before the blk-ctrl and all
-+	 * its consumers.
-+	 */
-+	if (!device_link_add(dev, bc->bus_power_dev, DL_FLAG_STATELESS)) {
-+		ret = dev_err_probe(dev, -EINVAL, "failed to link to bus\n");
-+		dev_pm_domain_detach(bc->bus_power_dev, true);
-+		return ret;
-+	}
-+
- 	bc->power_off = bc_data->power_off;
- 	bc->power_on = bc_data->power_on;
- 
-@@ -716,6 +727,15 @@ static int imx8mp_blk_ctrl_probe(struct platform_device *pdev)
- 			goto cleanup_pds;
- 		}
- 
-+		if (!device_link_add(dev, domain->power_dev, DL_FLAG_STATELESS)) {
-+			ret = -EINVAL;
-+			dev_err_probe(dev, ret, "failed to link to %s\n",
-+				      data->gpc_name);
-+			dev_pm_genpd_remove_notifier(domain->power_dev);
-+			dev_pm_domain_detach(domain->power_dev, true);
-+			goto cleanup_pds;
-+		}
-+
- 		domain->genpd.name = data->name;
- 		domain->genpd.power_on = imx8mp_blk_ctrl_power_on;
- 		domain->genpd.power_off = imx8mp_blk_ctrl_power_off;
-@@ -726,6 +746,7 @@ static int imx8mp_blk_ctrl_probe(struct platform_device *pdev)
- 		ret = pm_genpd_init(&domain->genpd, NULL, true);
- 		if (ret) {
- 			dev_err_probe(dev, ret, "failed to init power domain\n");
-+			device_link_remove(dev, domain->power_dev);
- 			dev_pm_genpd_remove_notifier(domain->power_dev);
- 			dev_pm_domain_detach(domain->power_dev, true);
- 			goto cleanup_pds;
-@@ -775,10 +796,12 @@ static int imx8mp_blk_ctrl_probe(struct platform_device *pdev)
- cleanup_pds:
- 	for (i--; i >= 0; i--) {
- 		pm_genpd_remove(&bc->domains[i].genpd);
-+		device_link_remove(dev, bc->domains[i].power_dev);
- 		dev_pm_genpd_remove_notifier(bc->domains[i].power_dev);
- 		dev_pm_domain_detach(bc->domains[i].power_dev, true);
- 	}
- 
-+	device_link_remove(dev, bc->bus_power_dev);
- 	dev_pm_domain_detach(bc->bus_power_dev, true);
- 
- 	return ret;
-@@ -795,12 +818,14 @@ static void imx8mp_blk_ctrl_remove(struct platform_device *pdev)
- 		struct imx8mp_blk_ctrl_domain *domain = &bc->domains[i];
- 
- 		pm_genpd_remove(&domain->genpd);
-+		device_link_remove(&pdev->dev, domain->power_dev);
- 		dev_pm_genpd_remove_notifier(domain->power_dev);
- 		dev_pm_domain_detach(domain->power_dev, true);
- 	}
- 
- 	dev_pm_genpd_remove_notifier(bc->bus_power_dev);
- 
-+	device_link_remove(&pdev->dev, bc->bus_power_dev);
- 	dev_pm_domain_detach(bc->bus_power_dev, true);
- }
- 
-@@ -815,8 +840,8 @@ static int imx8mp_blk_ctrl_suspend(struct device *dev)
- 	 * can power down our domains and more importantly power them up again
- 	 * after resume, without tripping over our usage of runtime PM to
- 	 * control the upstream GPC domains. Things happen in the right order
--	 * in the system suspend/resume paths due to the device parent/child
--	 * hierarchy.
-+	 * in the system suspend/resume paths due to the device links to the
-+	 * genpd virtual devices added in probe.
- 	 */
- 	ret = pm_runtime_get_sync(bc->bus_power_dev);
- 	if (ret < 0) {
--- 
-2.53.0
-
+>
+> However, on the PHY side the nRST and nINT nets are swapped, so:
+>
+>   ENET1_nINT (line 4)  -> ENET1 PHY RESET_N
+>   ENET1_nRST (line 15) -> ENET1 PHY INT_N
+>   ENET2_nINT (line 9)  -> ENET2 PHY RESET_N
+>   ENET2_nRST (line 16) -> ENET2 PHY INT_N
+>
+> The device tree followed the expander-side net names and uses lines 15
+> and 16 as reset-gpios. As a result, the PHY reset sequence toggles the
+> INT_N pins, while the real RESET_N pins stay deasserted by their
+> pull-ups and the PHYs are never reset by software.
+>
+> Use lines 4 and 9, which are connected to the PHY RESET_N pins.
+>
+> Fixes: eb2f28413e23 ("arm64: dts: freescale: add support for NXP i.MX93 FRDM")
+> Signed-off-by: Steven Yang <steven.yang@nxp.com>
+> Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
+> ---
+>  arch/arm64/boot/dts/freescale/imx93-11x11-frdm-common.dtsi | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/arch/arm64/boot/dts/freescale/imx93-11x11-frdm-common.dtsi b/arch/arm64/boot/dts/freescale/imx93-11x11-frdm-common.dtsi
+> index 33ed26aafde88..8c7b08894bc0d 100644
+> --- a/arch/arm64/boot/dts/freescale/imx93-11x11-frdm-common.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx93-11x11-frdm-common.dtsi
+> @@ -145,7 +145,7 @@ ethphy1: ethernet-phy@1 {
+>  			reg = <1>;
+>  			reset-assert-us = <10000>;
+>  			reset-deassert-us = <80000>;
+> -			reset-gpios = <&pcal6524 15 GPIO_ACTIVE_LOW>;
+> +			reset-gpios = <&pcal6524 4 GPIO_ACTIVE_LOW>;
+>  			realtek,clkout-disable;
+>  		};
+>  	};
+> @@ -169,7 +169,7 @@ ethphy2: ethernet-phy@2 {
+>  			reg = <2>;
+>  			reset-assert-us = <10000>;
+>  			reset-deassert-us = <80000>;
+> -			reset-gpios = <&pcal6524 16 GPIO_ACTIVE_LOW>;
+> +			reset-gpios = <&pcal6524 9 GPIO_ACTIVE_LOW>;
+>  			realtek,clkout-disable;
+>  		};
+>  	};
+> --
+> 2.45.2
+>
+>
