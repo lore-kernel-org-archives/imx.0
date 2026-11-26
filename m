@@ -1,77 +1,64 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=188.68.39.254
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795683150;
-	b=ghug6e4kgLP49/KkQqrKbOYZ+RFB5EUlmuBpAf5DVXfI6stcaaJ3q4NntylRpUqFtNMF
-	 GljXContmMOeV/BrVU3Wd7gzoHK/ojspIwRb/oQnvwtjitynps3liI3tu4VtKW2n1+qTH
-	 feFd/Gp+Q9YpqvUdvpicWl25evtlo6JUp1C2vNaD8XQKXp/6vpUOK5YucJ0on7JD1mLXi
-	 sWhPbbl9C+SnPrhSIyYq91sJ8RnocP9DKXbmkH0DHxOA30G13gwTnkufU3xJZBj567LXN
-	 mKZcglyViZKQXyYVKLBt7wM/D/Y8nDGR88VypTTXU+bYvHdnBPfCgZ8i/1nHMR2JqyA==
+	t=1795684585;
+	b=D3ZC1YHFcCy887JoaLh7E9UO3suyQRqxHunRTMr9OXSHo7pLrIjP1HAz35Mjx30Wfa0d
+	 0OFBqAP1jfIgNN/fFdFF2YPQgjkHYs1PnB65l9xJTmdaBueXxCZAfuO2AAPeZEBjAAA48
+	 X2oJRKCZuS4NshrbNlOiEbfFyccLc+R+bqFgwCPTy3g9a2QnDaNPddKqAMLS2DMYQRpV6
+	 AFAX4lKA6pDr9xtW2xL8yDyuTYA0A5mpzy/gjNE9i1M79OcWelZ0O3O4S8VGx2/cNfk1v
+	 3al7Jpb8PTM/B7hfH8UCJL0kUYpEiK9h+z3fd6GgzhU3UQDbHcB/6ZYmwFhCEmAgZ/w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795683150;
-	h=DMARC-Filter:DKIM-Signature:X-secureTransport-forwarded:From:
-	 Complaints-To:To:CC:Subject:Thread-Topic:Thread-Index:Date:Message-ID:
-	 References:In-Reply-To:Accept-Language:Content-Language:
-	 X-MS-Has-Attach:X-MS-TNEF-Correlator:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=JRdTm7MLn01nzpZdxxiuJqZxEVjGoxZUMxFX5IpmmAw=;
-	b=jm/vYiSem2HfcFzURwPY2J+Zp0LoPCz13yS+4Btjg08TpbNQYBAgjcPB+39yc2v2CAkQ
-	 e/MqMS+hSzBoUA8hlcy0S/Qc/iTEe3JjaaCY+Cqy72knstqB/ZVV+Q012wq6zf0AF4QYC
-	 2jeC7CDJgf0tMjEaJTossvl6i9MzC6ghrkJyeyGA3bzV6XquVS7aQiEWnSn7uc+x051w+
-	 cOkwDvllHJUqVztkRiNb+d54NcMfvJuBNx3O9+YN5XLEflPCQ6eG4hwTRRpVMQ9DtxJp0
-	 gPtwaeDKq2otnmXyjNQ53WHP/EEJdUeElUKIcl/FR4+p2sahRJCPaa9FCXEtV5DIrvg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795684585;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=FomIFRqNcDYe4Uif/pDykgM4WPczRC7lkjTQd1DRayU=;
+	b=HhxfUfKwzbtKjdWVaH7926zJyZKq4aG3UaLI6uI708gORFxxf/LZklWzOLZuRPc9aPny
+	 jyEH7TywtfP5vSV+JiD+BJTIP8MP/diOP1/jTf3wQIdnL7wMduYy6ye7Q85LVRVmZKaM4
+	 Zsm37bafRMwUrWQEiGyT0ufpbWRcVY8T1KEuCWEjYF5QUwVsBDbaMspsnAzTkOpNMFZTL
+	 qr/zPOa6H7Noap1OnUIu3lQ6ORvmaW9wjCEKBwyZO9FrRjDVdPd5ze8ZrrF79/91VWQyu
+	 K2MhM2O0NEmx/VmrCp7QEz+MxDbN/Di0BEh8xs/Cp7nHMk2aBp9+s9otsty1WuSJiWg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=dh-electronics.com;
-	spf=pass smtp.mailfrom=dh-electronics.com;
-	dkim=pass header.d=dh-electronics.com header.i=@dh-electronics.com header.a=rsa-sha256 header.s=dhelectronicscom header.b="U1iz78/+";
-	arc=none smtp.remote-ip=188.68.39.254
-Received: from mx2.securetransport.de (mx2.securetransport.de [188.68.39.254])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JmniaB5V;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8A91606A31C
-	for <imx@lists.linux.dev>; Thu, 26 Nov 2026 08:52:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D8A91606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=dh-electronics.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dh-electronics.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4826D606A31C;
+	Thu, 26 Nov 2026 09:16:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=dh-electronics.com header.i=@dh-electronics.com header.a=rsa-sha256 header.s=dhelectronicscom header.b=U1iz78/+
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dh-electronics.com;
-	s=dhelectronicscom; t=1795683115;
-	bh=JRdTm7MLn01nzpZdxxiuJqZxEVjGoxZUMxFX5IpmmAw=;
-	h=From:To:CC:Subject:Date:References:In-Reply-To:From;
-	b=U1iz78/+fyPLPWeC2+oR4S3SnaaBmqfe+WSxXzeN0L2hdHDTdBRhanRB1OTQvJLZd
-	 xQzhWUpwaUoMnAXwscUUiVe7NsHQwV2KEM2V46gOHrOxtEpm3hP77PS48hYs8NQfKw
-	 tEnSp8OECKDY/g0smgXwvMkL2L0rzWBaghBMHQ8Io5+yj1lNmQnjsUfZXEnxljIULc
-	 Jhl9GRwjQYqHxCwmfIOLPnDPntApFtCXsCRnm4V9240f4z2rSugfwhJXonb7vUzg6U
-	 6Xx/CnM/aB1cd7ZxPbfvEIuKyewNReJfgJ8GMyAhZFsjwgUADbN1MtgbtT8Wmi8wiO
-	 Xpi+j1geuliww==
-X-secureTransport-forwarded: yes
-From: Christoph Niedermaier <cniedermaier@dh-electronics.com>
-Complaints-To: abuse@cubewerk.de
-To: Marek Vasut <marex@nabladev.com>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>
-CC: Pascal Zimmermann <pzimmermann@dh-electronics.com>, Conor Dooley
-	<conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>, Frank Li
-	<Frank.Li@nxp.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Rob Herring
-	<robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, kernel
-	<kernel@dh-electronics.com>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>
-Subject: RE: [PATCH V2] ARM: dts: imx6ull-dhcom: Change eMMC pin configuration
-Thread-Topic: [PATCH V2] ARM: dts: imx6ull-dhcom: Change eMMC pin
- configuration
-Thread-Index: AQHdfNxvka56chsGIUmKS9A5oSlWCbc+vxUAgAFGNICAAAaZYA==
-Date: Thu, 26 Nov 2026 08:51:54 +0000
-Message-ID: <5e607c068ea54d5a859e1de82c1574b7@dh-electronics.com>
-References: <20261125125621.6734-1-cniedermaier@dh-electronics.com>
- <a57373f2-dfb2-4344-8e2c-6621a623d170@nabladev.com>
- <4ef4ff8128b049d59a0ab23bea906468@dh-electronics.com>
-In-Reply-To: <4ef4ff8128b049d59a0ab23bea906468@dh-electronics.com>
-Accept-Language: de-DE, en-US
-Content-Language: de-DE
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JmniaB5V
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 639B41F000C4;
+	Thu, 26 Nov 2026 09:16:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795684585;
+	bh=FomIFRqNcDYe4Uif/pDykgM4WPczRC7lkjTQd1DRayU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=JmniaB5V7A0mveMIagrKxgCcQ8uJ0ii87tekcvPqPkPhYBIH5BH3XgkekYNep/4LI
+	 BLxXyp1WNtGnta7c7Av13In9YwMH0XQHyStVt/FLEehaBuWzd2y1lVgLpxqq3oq47N
+	 FhCwPcMSwUtC6M+4nLJdHkLPFKuH/N6l/QXalKshvAODAqA3Iuz/fSUjSqhzQ+WLuu
+	 uy8Iy8CV1Y41DTWm42KXwyWqfVn/y7E17Mb5pBFlpVzKf+SPR156CYD1uJTeH+sNQ9
+	 22VN0nwHrVL2ZcVsSlVfOS1lnbpoqav8Jdah77zZZPtyBrpfvhp0upGJoNPNcZ6VxL
+	 JCvFYNE9QAO/Q==
+Date: Thu, 26 Nov 2026 09:16:19 +0000
+From: Lee Jones <lee@kernel.org>
+To: Richard Leitner <richard.leitner@linux.dev>
+Cc: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 05/10] remoteproc: imx_rproc: Avoid stale mailbox
+ pointers on request failure
+Message-ID: <20261126091619.GD38590@joneslee-macbookpro.roam.internal>
+References: <20261123172140.3547896-6-lee@kernel.org>
+ <20261124032344.5314-1-peng.fan@oss.nxp.com>
+ <awZ-XC1efo5QQvNI@bombadil>
+ <awZ_HjrhS3Uiyssd@bombadil>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -81,15 +68,53 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <awZ_HjrhS3Uiyssd@bombadil>
 
-RnJvbTogQ2hyaXN0b3BoIE5pZWRlcm1haWVyIDxjbmllZGVybWFpZXJAZGgtZWxlY3Ryb25pY3Mu
-Y29tPg0KU2VudDogVGh1cnNkYXksIE5vdmVtYmVyIDI2LCAyMDI2IDk6MjUgQU0NCj4+IE9uIDEx
-LzI1LzI2IDE6NTYgUE0sIENocmlzdG9waCBOaWVkZXJtYWllciB3cm90ZToNCj4+PiBGcm9tOiBQ
-YXNjYWwgWmltbWVybWFubiA8cHppbW1lcm1hbm5AZGgtZWxlY3Ryb25pY3MuY29tPg0KPj4+DQo+
-Pj4gVGVzdHMgaGF2ZSBzaG93biB0aGF0LCB3aXRoIHRoZSBjdXJyZW50IHBpbiBjb25maWd1cmF0
-aW9uIG9mIHRoZQ0KPj4+IGVNTUMgKHVzZGhjMiBpbnRlcmZhY2UpIHJlYWQgZXJyb3JzIGNhbiBv
-Y2N1ciB3aXRoIGEgY2VydGFpbg0KPj4+IHR5cGUgb2YgZU1NQyBjaGlwcy4NCj4+DQo+PiBXaGlj
-aCBjaGlwcyBhcmUgdGhvc2UgPw0KPiANCj4gVGhlIHByb2JsZW1zIG9jY3VycmVkIHdpdGggY2hp
-cHMgZnJvbSBNYWNyb25peC4NCg0KVG8gYmUgbW9yZSBzcGVjaWZpYywgdGhlIG1vZGVsIHRoYXQn
-cyBjYXVzaW5nIHByb2JsZW1zIGlzIGNhbGxlZA0KdGhlIE1hY3Jvbml4IE1YNTJMTTA0QTExWFZX
-Lg0KDQpSZWdhcmRzDQpDaHJpc3RvcGgNCg==
+On Wed, 25 Nov 2026, Richard Leitner wrote:
+
+> On Wed, Nov 25, 2026 at 07:23:37AM +0100, Richard Leitner wrote:
+> > Hi Lee, Hi Peng,
+> > 
+> > On Tue, Nov 24, 2026 at 11:23:41AM +0800, Peng Fan (OSS) wrote:
+> > > Hi Lee,
+> > > On Mon, 23 Nov 2026 17:20:49 +0000 Lee Jones <lee@kernel.org> wrote:
+> > > 
+> > > > imx_rproc_xtr_mbox_init() stores the result of
+> > > > mbox_request_channel_byname() directly into priv->tx_ch and priv->rx_ch.
+> > > > Because mailbox channels are freed on stop() and detach() and
+> > > > re-requested on start(), attach(), and system shutdown, a failure while
+> > > > requesting "tx" leaves an ERR_PTR in priv->tx_ch, which is later
+> > > > dereferenced by imx_rproc_kick() and imx_rproc_free_mbox().  If "rx"
+> > > > fails after "tx" succeeds, priv->tx_ch is freed without being cleared
+> > > > while priv->rx_ch retains an ERR_PTR, causing subsequent calls to see
+> > > > both pointers as non-NULL and skip initialisation, leading to a
+> > > > use-after-free on priv->tx_ch and an ERR_PTR dereference on priv->rx_ch.
+> > > > 
+> > > > Request both channels into local variables and assign priv->tx_ch and
+> > > > priv->rx_ch only after both requests succeed.
+> > > 
+> > > I think Richard Leitner <richard.leitner@linux.dev> is working on this.
+> > > 
+> > > https://lore.kernel.org/linux-remoteproc/CANLsYkx=M_TXN10qAcQC0be065TYnzfOae6E8ss-9DTj9MzogA@mail.gmail.com/T/#ma2f8e4c332d47e5bdd1787f82f4dd2feeafc67d6
+> > 
+> > AFAICT my series fixes a similar, but other problem. Mine is about the
+> > free'ing order and a possible race when a kick occurs during
+> > cleanup/close. This one is targeted towards the setup/initialisation.
+> > Therefore IMHO this is a valid, fix for a different problem than mine.
+> > 
+> > What's your opinion on this Lee?
+> 
+> Sorry, was too quick with answering and messed up things, as this fixes the
+> sashiko finding, not the "my" initial bug. So for me it's fine if we keep
+> this one, as I have not sended mine yet. ;-)
+> 
+> Therefore please feel free to add:
+> 
+> Reviewed-by: Richard Leitner <richard.leitner@linux.dev>
+
+Thank you Richard.
+
+-- 
+Lee Jones
