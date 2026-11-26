@@ -1,103 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.169
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795708956;
-	b=aL3vac5N4xitH+54QFWQ0u8fTOb/TRd2uGg5GF6JrrZ0bIE0ex5ZL5DKpunORL0kgYPs
-	 X+bRmyPH/Tphou4ttKPXJhzAmZSQ35Q82ku1v8/QG0opNGlNlTEIM+265W5GyEc/Upz+n
-	 VqgCs+ZpaWvavnjoO6nNNZTW+4CTPBzROZrTm7cpae8NQ74lY1JmALe5MTkIusqGi+A4h
-	 hpnRWhymEvVzddxK8L+fs4dOwD82AwcFHmLNfiWqYN601P0FmN7gLYiP/iyGF0C06dRxm
-	 IQn7NZOkZ9/H5izj8Sf8SWZFOSbmBiMd16CVThkPJ1B4VIRKxvQm6pKc4ffHfvxSBzQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795708956;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:X-Google-Original-From:To:Cc:Subject:Date:Message-Id:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=t/fqj7Fk1lWeFs/i6Ocg/Lv16mYoYdPNp4/eiwP/oTY=;
-	b=eEB9IUQMRvueTz9bZEFtG5Ur0hYvd4fzHJp4RA9VVuLlnqvktT8otPYZu1whZqOLebpz
-	 aqbAPR3MCsc2tiNgaZZwGupmk4M6x98dVzleF0vFnDAkpM/whHLdlh75/Db0m5MSRmI58
-	 lmFXPoOcyjBtS7A+1SKfB5OmKBoYBUxZuTHMeWKE5V65aL9WhAJk02f2+8ge/4xlQW8Yp
-	 0F/rY47kTkyRqfrpMn2ljyIGfLm1cwf58f8R66/UzziNShvF9ouM91eklZQxsHqdqVvHD
-	 sofNS7244y8xFbtMW8bpl3xtS3CFC1OOYoMqo6FRFGRRn/k3iULbejpCIdWIpnud/LQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="R+xo/HWP";
-	arc=none smtp.remote-ip=74.125.82.169
-Received: from mail-dy1-f169.google.com (mail-dy1-f169.google.com [74.125.82.169])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.162.50
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795709106;
+	b=Dih8IEeSj3CISIxQebcuw3xYGHuk96w/1v3BF38WHZA5GJPLEyxrXYFYA1ezIVJU8AJ8
+	 7MMXF4iHVQGWiB+pjFyE2BtyWbvWW694liL0VMKjmx8ERT4Ws4yWfJYKt80Ysho1elBGK
+	 xMD+hZbDoZXEu4t9KbEm4LsoEkS11e9CKSX9BC6yVITConLhS+x8GWsRpgVcrXpivPUKB
+	 OLGVwBgCIm+90DMkY/F5jDoOKMX/vfn+5Cy/UfLrzL6Z7pfyK5FpuKw8E5PasnPsPRDSv
+	 IEcnGQiXsdG+DOZDoRQDThuiDaRzZMjLmE+fiI7SnTMDt1IalIednBi/iCep25ugF6Q==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795709106;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:Content-Transfer-Encoding:Content-Type:
+	 X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=tQLgQpuSH19bItFTN8KsZk4x9XzMmsk7CYiIZOMF45k=;
+	b=oiiYHUzzQig9loZLp7deCD5Qeh0uJ8xKCZ6pf1iMek7HVQnMG+ZC0DK8m981wmFEUjaT
+	 uqXvkvJFlfGqfgutCD7wOdem31JoxjtA0OwQKgp1I7qSZYHKrR11KnWVHAMtPEL0igLGp
+	 VEDFhzlDYxZ2sgpUAB7EH1Kk/On2BVmQCyCRfemb//3MXKi3bik/VK37t0Nw1Bjl775HJ
+	 gf6pOeqHi6Hc8V77vdoXqHPCq7oNa62HDjKiXCK3RDHW649MgsYj3ZUFV28GVH0t2xpuw
+	 GphgC9jEkYZzRV01WxdCZveB8iDFHSDZLEQ0W2662RzD9x9a52IHyRHnu5b8rR8k42A==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nxp.com;
+	spf=pass smtp.mailfrom=nxp.com;
+	dkim=pass header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b="G0HCZro/";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.162.50
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013050.outbound.protection.outlook.com [40.107.162.50])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FC2E606A321
-	for <imx@lists.linux.dev>; Thu, 26 Nov 2026 16:02:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0FC2E606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64D98606A326
+	for <imx@lists.linux.dev>; Thu, 26 Nov 2026 16:05:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 64D98606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=R+xo/HWP
-Received: by mail-dy1-f169.google.com with SMTP id 5a478bee46e88-3869f03af6aso6297873eec.1
-        for <imx@lists.linux.dev>; Thu, 26 Nov 2026 08:02:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795708955; x=1796313755; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=t/fqj7Fk1lWeFs/i6Ocg/Lv16mYoYdPNp4/eiwP/oTY=;
-        b=R+xo/HWPV/f3C9g26uxuMpRfBwBSBw5LSHc1Ui+cLe2gdXGKyifh6c1hSDku+OgHs2
-         SfpBwBCFC6Wev6IHIg6ZRxvpqf9yar9qcsv/falJaHctcFzPyi8QT/13lnkL7unKwoVj
-         vU5HGpwG1Exk9xNTg474dDm/u/mBF8iJ5GgBngB4jx1wdeEWGLTb3y+7zRpSBbZoR18q
-         ETzUs+0xvEVo3ZmQas3RdeQU+r+TwfR3aM9NXxOWpWeIs0XAFjNX/NdRGdyaI123ygcU
-         cSBJbU30GDLg/BfzOzklOU81Z+zFvlbr1pmr8iXE+SBX/ThT9vc0odWgIqcROBbzd2fl
-         /kWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795708955; x=1796313755;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=t/fqj7Fk1lWeFs/i6Ocg/Lv16mYoYdPNp4/eiwP/oTY=;
-        b=Y4SxdmOmzBvjGEvHMbEGSIdm9myuh4VVfOuwvcniAaE60Bx+Pow+DHeeVAiM8su+Zh
-         SNmVdte96MXWSWzHT+TO1bLcdEom3B57jA5byYgcIt5Usx6FjElSlNRjEK9TyDuSD35V
-         U8eF3D9yATwSh34wH16bPswmTj4mSbDt1Y85iopUigkF1erjoveTGXN/EoM93FrAXpuL
-         T189nFtdiF7AXiJyabrqTRYPEuvEC4k32WAJA7E/8ex9gMnDKLOFC35AJ+ZTK7vGS3N+
-         1wcTmE5Z9I7imBOSwSAEJa7luUq4FQDXsyDNRMYDyBYuI+TSRGnNek8fH8n0MclMMy1X
-         i1Jg==
-X-Forwarded-Encrypted: i=1; AL+hErGzFT44is0lyPUFxEDEZNedGSUVKxQyvqilwN/BwOgak82cXxbihCpMUOHFsEzV8YYdkA4=@lists.linux.dev
-X-Gm-Message-State: APuU4Z+TQgV3+q1cQsZ7JH5E1vd4+ytjS0z3BAVinAluQow1ny8Chzas
-	HRBGPvUFFoWfCCGhVxhgOEFbll/YQ+cCKvinFEmeoq946PyeMlgmdC+h
-X-Gm-Gg: AZFdTZcwO5ajBjUL57khH3AQDq5etCRmgBVZwcK+cb+YH1CHRvupq8g5NVV7LpnUbtc
-	AwBEjm4QtL0ypCemQc5CQ7Xqq89PSYhownwZDXX0xtHKEfki/glDcGG8mPCVVwPxBPXZaGRiEiv
-	WlFwrQhU2oQdcbxT7lQigCFm9w27ZN8jpH2EnBZo2bw8z/yZQ6C4om26WRUBIOuUNIpm+qB4aaa
-	G4tfYzVu4dJ6rqOBwAMIW6yMq8AdTOBfWlx/DWX8CLqaMAk7ERUBlAJ+I6/qMjKWX1FwlRpQ/sw
-	NxxNWnvre7yR1eH9Wn8AprWN37Bb8oupMZ0EU7wIDR8lAFGpZ7SHdrLvDkr/ZcUdNqx/hz0pHpI
-	deVxk3jRyftIE3ctkLAVeOYb/sC+odivflmBus9MrjUb8NL5etP+tySX2+VL1QlmVte6SqyzVLP
-	SfgMXs+1dAQsBqcO1ONQqk1nzbRyLZ8I7wmUm69nnULKljxI4gycg5AoWjBlU8l9+LvIT92e2ee
-	R67pR4b0BBALriloEcU5vAXPKEPqgbvd2CkG2ITU30ZvYiHoWxxqyuQL3HK/3NIx9UoUjMCzHxl
-	AZExiQxzIxwQkdVzJyvi7EkzJvHxYYktotKymcuuM2GE
-X-Received: by 2002:a05:7300:e003:b0:386:a75c:4a78 with SMTP id 5a478bee46e88-386a75c4cb3mr14449229eec.15.1795708954927;
-        Thu, 26 Nov 2026 08:02:34 -0800 (PST)
-Received: from localhost.localdomain ([183.82.206.18])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-38566cd46c5sm80062260eec.11.2026.11.26.08.02.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Nov 2026 08:02:34 -0800 (PST)
-From: dineshkumarv85@gmail.com
-X-Google-Original-From: dinesh.v@adlinktech.com
-To: Frank.Li@nxp.com,
-	robh@kernel.org,
-	krzk@kernel.org,
-	conor.dooley@microchip.com,
-	s.hauer@pengutronix.de
-Cc: daniel.baluta@nxp.com,
-	imx@lists.linux.dev,
-	devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
+	dkim=pass (2048-bit key, unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=G0HCZro/
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=nx5QJjFihbo16xfj3L+1pyOwFliBAdOtQ7/WAZ1fuKaXKKSXSGZ5sCGfWvhGi2ymD759DlSCbNhzaa98qXzAl+LgkmC6q1kxOegcGX/CTICK5cqmqRoNd23BbcPC5Xyd6WXn7ZGGElwUiAthnvL3RP+8/WwlFxuiWX4Xe75OeQ8aqC5ogbdZANMGsmSTOFudDvrp8gmGD96i1u9mz8xw8YkWzVg11CNJsNMqjkIJYF2/Ow6QqqtToGlojVYlj0UCA1uFWeFBfFtaalt7lASHO/LTZ4F5iT26tLvbibpei0ByNz9nEQvusZqB/UA7OnjEU9x7aYaJ2lbr6xXz2Ik+FA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=tQLgQpuSH19bItFTN8KsZk4x9XzMmsk7CYiIZOMF45k=;
+ b=OMB065Y4UDuOCnKwSSsEhu+oJHDZjr8Y0xZlYzK9C585OPHmIhpXa39WhM/3vWikHCwGUExSfN9phw++cTKTBmrKPyX0ARbufs1RykvKE3lmLVGcfqXeOciBfTkJdtMoUivrkCbWpcW+BKloGquTFcoe8nA1f7eGysVT9ShBobYTKjX4MeTflycY4T7NBZabLl8k1KydLn5UxPnSSHQSmtged1TuqZ1tf3mjZcRL/44wMJAB19pNik44oFon60cLkjDyxJg7fHG8a71ZjCvlcamyU2V34PDvfqtuBVuBl23NpomNqhPm0yDCN3y4SuAfan18kcfLMLNxLA4DXU2ELA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=tQLgQpuSH19bItFTN8KsZk4x9XzMmsk7CYiIZOMF45k=;
+ b=G0HCZro/SoOU1RyXrFXS+Sj7Ml48vdVszNY5i+qv5s8tXhiB1F1HM0BtwYhmlS/jDPcLbDkF3aeqHG1BLZMBsdDcyN4PM73GcHCr23jqFQ1QDM+8tGYfwNdSuikAW5V9TxeoHn7WqbANSxKU1WmusJsPWat03381g9sZAoBASjyjyWNIZXxsKBqyEZMwVbceY3dnbeGPrNwFsCZ9NylKqixXw5oFp+r06clRTNwzNtwOhEXBu3cYUYKGjfKN41REx9e9J+J2vewPLTt8PmQWpVYcdPuMjqO+5J15vlzKK7wAEoxP7AKEGGL1SY57XtatGskdMiK77HZGAUeDfJ1/qw==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from GVXPR04MB12316.eurprd04.prod.outlook.com (2603:10a6:150:2c6::8)
+ by AM9PR04MB8953.eurprd04.prod.outlook.com (2603:10a6:20b:408::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.662.7; Thu, 26 Nov
+ 2026 16:05:02 +0000
+Received: from GVXPR04MB12316.eurprd04.prod.outlook.com
+ ([fe80::fc6e:ca22:f065:def4]) by GVXPR04MB12316.eurprd04.prod.outlook.com
+ ([fe80::fc6e:ca22:f065:def4%5]) with mapi id 15.21.0662.004; Thu, 26 Nov 2026
+ 16:05:02 +0000
+From: Daniel Baluta <daniel.baluta@nxp.com>
+To: Frank.Li@nxp.com
+Cc: robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	s.hauer@pengutronix.de,
 	kernel@pengutronix.de,
 	festevam@gmail.com,
-	Dinesh kumar v <dineshkumarv85@gmail.com>
-Subject: [PATCH v5 3/3] arm64: dts: imx95: Add ADLINK LEC-iMX95 board support
-Date: Thu, 26 Nov 2026 21:31:02 +0530
-Message-Id: <20261126160102.52163-4-dinesh.v@adlinktech.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20261126160102.52163-1-dinesh.v@adlinktech.com>
-References: <20261126160102.52163-1-dinesh.v@adlinktech.com>
+	lei.xu@nxp.com,
+	haidong.zheng@nxp.com,
+	francesco@valla.it,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	stable@vger.kernel.org,
+	Steven Yang <steven.yang@nxp.com>,
+	Daniel Baluta <daniel.baluta@nxp.com>
+Subject: [PATCH] arm64: dts: imx93-11x11-frdm: fix ethernet PHY reset GPIOs
+Date: Thu, 26 Nov 2026 18:08:34 +0200
+Message-ID: <20261126160835.1811145-1-daniel.baluta@nxp.com>
+X-Mailer: git-send-email 2.45.2
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: FR4P281CA0171.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:b7::18) To GVXPR04MB12316.eurprd04.prod.outlook.com
+ (2603:10a6:150:2c6::8)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -107,773 +106,117 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GVXPR04MB12316:EE_|AM9PR04MB8953:EE_
+X-MS-Office365-Filtering-Correlation-Id: a4ed5963-c22c-4e28-5c0f-08df4bd70717
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|23010399003|19092799006|261021123027099003|261021121427099003|10067099003|11063799006|56012099006|261102123227099003|261009223027099003|18002099003|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	4EgV8ix6aTS/O+6fofRgCMuX3dmh/t2pepvbAvOtzWW4ZrptXM2tU3iqLSyEbWt2lgU8R6uLpcin9r9j1ewAaDxda8W+te0AnnSMSBrDxAaXweMRaLHETa8cZgSaAw+P6sXLbe59PChaWL9qh5KCPtUrVI5+Te5lNDUVpzIjdOVqOvCf4t8NLupNLlyj+e5s6+gKmEs+jHBu6yD2INnar9GQvwu/MZFw1hWXO53tcvOYaCCkMlWh8qifEaHLaMKYhAmqpWERc2cZ85gRlJV8ytNVZxWoj6cXB7oPRJfyRYSrOZd9a165JIOCQmpvASSQDrW5RMvBSPqBWpveKxGzE3Sh9hYf4mEDKGNschJckRIYAa4u0ywlV+OfVOE8nfcwij84nlqPUCP1c4jm4fVa4FEVjdx9cV305XYDPiERBDdkEe4UeAcWQaqadfKyQoq8imuHy/jhrnCARhAVrtJ2LtXtyejt5tOlTBBafynIIY+5qS1uAUv64RZWEu5Ov0h1jaBeiB/7lBR92T+F8mOP281Ch/xfkTIELmPChUN1BGhBoz4PTrIOIg6p2WIo9PL2eGmvh2IaPvZ11nn/JUK/FeuH63EEwUoVpOu1rQXUVG2tdGk4RhoeZWh9RXse2rBbUgnK9S7dSRc8LohpRCW1uPzsydKoQ84KOT4KDNWj6f8=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVXPR04MB12316.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(23010399003)(19092799006)(261021123027099003)(261021121427099003)(10067099003)(11063799006)(56012099006)(261102123227099003)(261009223027099003)(18002099003)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?arGoAoFozlnpSkUNkkmA6LVxSs3y0cIB3X4jg62arwooWeEVDMGGVcjV9ced?=
+ =?us-ascii?Q?p0iHoaSWDcgxBPJl1VqEGSgMH7IOR7ZfjtDBHyomI47hKFG8JvxoQfYQnDXZ?=
+ =?us-ascii?Q?QC/JOt1wd4VhCHaBsV3aJx2wxhNAgymYXRVLZcy8U0GT2JsBkyCMpZViADhu?=
+ =?us-ascii?Q?UPX1NEP7+/Vtjs/bh6bxsYwZWGbxuTeQ2TX6coSbJVckUcjDJl6eIsEWjbbP?=
+ =?us-ascii?Q?GMctBxo5HIkBxmhPo4Q9hE2anY0zOxtxGSMbYvku2fsAzjBo94WK1o7RHsCC?=
+ =?us-ascii?Q?LyDUUBmRiBaoNAJrGLwKELYA/iOx7W4Q/ptmg31JOjVviUk0scA9cpwJJEUg?=
+ =?us-ascii?Q?g4U24JtMsrLp2YeF4EFkDpCGDlzwqJ5+KodndYomsNavSBC6xtZm7TNzyR1V?=
+ =?us-ascii?Q?tgLZuOd4QzpLnfC6Ubk1HEMq2zFfqcarVI139+4SKsvic6H8FpCz0kWZy5uY?=
+ =?us-ascii?Q?CRgoOh4bmsd/ZLYeSJjB4ZHpToXWUl8Ke0Eev4g4iK61SKXiRnemEzjTGF2N?=
+ =?us-ascii?Q?ZcfmZKdgqwwBpBsWtl35pa/DiRrV0PmTs2HJV8I2ailg6T9wuj3VuaUzmHbw?=
+ =?us-ascii?Q?FM5aIrF533FLfHkz9CUHZc1K3UU4GHX5k0vpU8GF8d/WWCYitz3YJp9Ikyby?=
+ =?us-ascii?Q?MUlWGM7Co4OQsimeAh9ubwnBLZ7CbCyU7/h2i58s4KnYioziAREMVt5KpgOg?=
+ =?us-ascii?Q?/oIojbQIWwlruDnQ7z+BGbRvgabb2X37j1QXVgoV/mSR7Yyth1Uq2orY6UCQ?=
+ =?us-ascii?Q?cJFm4+sthlZ6N7GWXZTMxoC2V7+T9Xi4NRUsiVdUackpeARMIEuUeeN73oXl?=
+ =?us-ascii?Q?nNXCVLtuxogiWDew1emxzOAPSyhKqqA/VoX/yQ0GGZUc8gzXNKRmgntGDZpU?=
+ =?us-ascii?Q?MFlXQ3aMw049UDQ8zIZfrokplk6g9IFfQIse84hGKE0uJtqgjammsR1SdgnB?=
+ =?us-ascii?Q?KvAAJo4irT8mfJdAr01teFXNHYfl88NIr4yTCZRkjsaIt0bABqe5GUz/P/YZ?=
+ =?us-ascii?Q?1IkEXE9UaZeVLTiTR5eHKAVtmmoMwESBnCa0bBX62wsrtFdJ27eNmv/pYWGK?=
+ =?us-ascii?Q?O4RCgnNjV5F7u8QLpD+AjrQqxGyVp7vA2rnMBVC2wc/LZmsVFn3UuslNYoQu?=
+ =?us-ascii?Q?6AJutn47opjG3NcW15Qe9zOwS7ERArS3R9+Lrcp3jzjKp5YA4uvfhLw5HoCc?=
+ =?us-ascii?Q?doPFvjnnLAwBmnZHvV64eAJ1et60YSFFMD1jrMylqOB5iAyjErkUOTHaF8zw?=
+ =?us-ascii?Q?slxIFZJEqYFRgHCSaLc5lVHd+GY8cfNgeFFmDJ6DUgdD+sDkC9yXWjVc8zbn?=
+ =?us-ascii?Q?M/7fHomwRM67vxJ9GNeGzVo7VWfBwxvZPpRnE7lHxwoxqyhr5CK5jZBbF0Qg?=
+ =?us-ascii?Q?C1baL9beJ6ZcVJGTpwEGo+rw0fXIdlQ3BMY+dSVeNKsVgzAhyJq6jY9JCE0K?=
+ =?us-ascii?Q?wCVMUDM87KP36P+fDEAWDca7pSHljC9xqvwLcpFaV+cepNEpTvevNHJy3tjz?=
+ =?us-ascii?Q?DhrgMaYphvu+l5LYKBRcpcO2LNbmPADxL+c5nPPhzOeY5hPTANluHvYe4Bd1?=
+ =?us-ascii?Q?sisVA87C7neKD/KDZn4Xmf20ccO2nI0v/w+cO8UvCHatOsqTGAwJNcQUHr3Q?=
+ =?us-ascii?Q?UMzRXiMOWfKcRPR3LNkPuTHq6QjqIOId1ueUbGsJzDKJB9nDaVmJa7sXxjt7?=
+ =?us-ascii?Q?Bjfk71xj6IKYhkyPxm7FbFi2ghgI9+NuLGPYI8CGoTplBSrVhtOe9gZO2FZA?=
+ =?us-ascii?Q?3nykKhXmfA=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a4ed5963-c22c-4e28-5c0f-08df4bd70717
+X-MS-Exchange-CrossTenant-AuthSource: GVXPR04MB12316.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Nov 2026 16:05:02.0094
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: /T59GurxM9JVewVLkOItXYZwLdn4QIpoWDIkaQFpzwzbRu7P1OXGo0UxwxJ9qfEQZnWrcyG51I4UfJ50JXJrrw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8953
 
-From: Dinesh kumar v <dineshkumarv85@gmail.com>
+From: Steven Yang <steven.yang@nxp.com>
 
-Add device tree support for the ADLINK LEC-iMX95 module
-with the I-Pi SMARC Plus carrier board.
+The reset-gpios of both ethernet PHYs point to the PHY interrupt lines
+instead of the PHY reset lines.
 
-Signed-off-by: Dinesh kumar v <dineshkumarv85@gmail.com>
+On the FRDM-IMX93 board (schematic SPF-94611 rev B2), the PCAL6524 GPIO
+expander lines going to each PHY are labelled:
+
+  P0_4 (line 4)  ENET1_nINT
+  P1_1 (line 9)  ENET2_nINT
+  P1_7 (line 15) ENET1_nRST
+  P2_0 (line 16) ENET2_nRST
+
+However, on the PHY side the nRST and nINT nets are swapped, so:
+
+  ENET1_nINT (line 4)  -> ENET1 PHY RESET_N
+  ENET1_nRST (line 15) -> ENET1 PHY INT_N
+  ENET2_nINT (line 9)  -> ENET2 PHY RESET_N
+  ENET2_nRST (line 16) -> ENET2 PHY INT_N
+
+The device tree followed the expander-side net names and uses lines 15
+and 16 as reset-gpios. As a result, the PHY reset sequence toggles the
+INT_N pins, while the real RESET_N pins stay deasserted by their
+pull-ups and the PHYs are never reset by software.
+
+Use lines 4 and 9, which are connected to the PHY RESET_N pins.
+
+Fixes: eb2f28413e23 ("arm64: dts: freescale: add support for NXP i.MX93 FRDM")
+Signed-off-by: Steven Yang <steven.yang@nxp.com>
+Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
 ---
- arch/arm64/boot/dts/freescale/Makefile        |   1 +
- .../dts/freescale/imx95-lec-ipi-smarc.dts     | 118 ++++
- arch/arm64/boot/dts/freescale/imx95-lec.dtsi  | 609 ++++++++++++++++++
- 3 files changed, 728 insertions(+)
- create mode 100644 arch/arm64/boot/dts/freescale/imx95-lec-ipi-smarc.dts
- create mode 100644 arch/arm64/boot/dts/freescale/imx95-lec.dtsi
+ arch/arm64/boot/dts/freescale/imx93-11x11-frdm-common.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index a80cccf34eb5..bb02809bb225 100644
---- a/arch/arm64/boot/dts/freescale/Makefile
-+++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -965,6 +965,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx95-19x19-evk-sof.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx95-19x19-frdm-pro.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx95-aquila-clover.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx95-aquila-dev.dtb
-+dtb-$(CONFIG_ARCH_MXC) += imx95-lec-ipi-smarc.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx95-navq.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx95-toradex-osm-dev.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx95-toradex-smarc-dev.dtb
-diff --git a/arch/arm64/boot/dts/freescale/imx95-lec-ipi-smarc.dts b/arch/arm64/boot/dts/freescale/imx95-lec-ipi-smarc.dts
-new file mode 100644
-index 000000000000..cb5db5e21aae
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx95-lec-ipi-smarc.dts
-@@ -0,0 +1,118 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
-+/*
-+ * Copyright (C) 2026 ADLINK Technology Inc.
-+ *
-+ * https://www.adlinktech.com/products/Computer_on_Modules/SMARC/LEC-IMX95
-+ * https://www.adlinktech.com/products/computer_on_modules/SMARCStarterKits/I-Pi_SMARC_IMX95
-+ */
-+
-+/dts-v1/;
-+
-+#include "imx95-lec.dtsi"
-+
-+/ {
-+	model = "ADLINK LEC-iMX95 on I-Pi SMARC Plus Carrier Board";
-+	compatible = "adlink,lec-imx95-ipi-smarc",
-+		     "adlink,lec-imx95",
-+		     "fsl,imx95";
-+
-+	chosen {
-+		stdout-path = &lpuart1;
-+	};
-+};
-+
-+/* Ethernet SMARC GBE0 */
-+&enetc_port0 {
-+	status = "okay";
-+};
-+
-+/* Ethernet SMARC GBE1 */
-+&enetc_port1 {
-+	status = "okay";
-+};
-+
-+&lpi2c8 {
-+	status = "okay";
-+
-+	/* SX1509(2) U1001@IPi SMARC Plus */
-+	i2c8_gpio_expander_3e: pinctrl@3e {
-+		compatible = "semtech,sx1509q";
-+		reg = <0x3e>;
-+		#gpio-cells = <2>;
-+		#interrupt-cells = <2>;
-+		gpio-controller;
-+		interrupt-controller;
-+		/* GPIO2_IO22 (module FAN_PWM_1V8) is the expander IRQ on this carrier */
-+		interrupt-parent = <&gpio2>;
-+		interrupts = <22 IRQ_TYPE_LEVEL_LOW>;
-+		pinctrl-0 = <&pinctrl_gpio_exp_3e>;
-+		pinctrl-names = "default";
-+		gpio-line-names =
-+			"E_GPIO1_0",		/* 0 - CN101 Pin 29 */
-+			"E_GPIO1_1",		/* 1 - CN101 Pin 31 */
-+			"E_GPIO1_2",		/* 2 - CN101 Pin 32 */
-+			"E_GPIO1_3",		/* 3 - CN101 Pin 33 */
-+			"E_GPIO1_4",		/* 4 - CN101 Pin 35 */
-+			"E_GPIO1_5",		/* 5 - CN101 Pin 36 */
-+			"E_GPIO1_6",		/* 6 - CN101 Pin 37 */
-+			"E_GPIO1_7",		/* 7 - CN101 Pin 38 */
-+			"E_GPIO2_8",		/* 8 - CN101 Pin 40 */
-+			"",			/* 9 - TP1002 */
-+			"",			/* 10 - TP1003 */
-+			"",			/* 11 - TP1004 */
-+			"",			/* 12 - TP1005 */
-+			"",			/* 13 - TP1006 */
-+			"",			/* 14 - TP1007 */
-+			"",			/* 15 - TP1008 */
-+			"";			/* 16 - OSCIO / TP1001 */
-+		semtech,probe-reset;
-+	};
-+};
-+
-+/* SMARC SPI0 */
-+&lpspi6 {
-+	status = "okay";
-+};
-+
-+/* SMARC SER1, used as the Linux Console */
-+&lpuart1 {
-+	status = "okay";
-+};
-+
-+/* SMARC SER3 */
-+&lpuart2 {
-+	status = "okay";
-+};
-+
-+/* SMARC SER0 */
-+&lpuart7 {
-+	status = "okay";
-+};
-+
-+/* SMARC PCIE_A */
-+&pcie0 {
-+	status = "okay";
-+};
-+
-+&usb3_dwc3 {
-+	dr_mode = "host";
-+
-+	status = "okay";
-+};
-+
-+&usb3_phy {
-+	status = "okay";
-+};
-+
-+/* SMARC SDIO, microSD slot */
-+&usdhc2 {
-+	status = "okay";
-+};
-+
-+&scmi_iomuxc {
-+	pinctrl_gpio_exp_3e: gpioexp3egrp {
-+		fsl,pins = <
-+			IMX95_PAD_GPIO_IO22__GPIO2_IO_BIT22		0x1fe
-+		>;
-+	};
-+};
-diff --git a/arch/arm64/boot/dts/freescale/imx95-lec.dtsi b/arch/arm64/boot/dts/freescale/imx95-lec.dtsi
-new file mode 100644
-index 000000000000..4c4b06d65e61
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx95-lec.dtsi
-@@ -0,0 +1,609 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
-+/*
-+ * Copyright (C) 2026 ADLINK Technology Inc.
-+ * https://www.adlinktech.com/products/Computer_on_Modules/SMARC/LEC-IMX95
-+ * https://www.adlinktech.com/products/computer_on_modules/SMARCStarterKits/I-Pi_SMARC_IMX95
-+ */
-+
-+#include "imx95.dtsi"
-+
-+/ {
-+	aliases {
-+		ethernet0 = &enetc_port0;
-+		ethernet1 = &enetc_port1;
-+		gpio0 = &gpio1;
-+		gpio1 = &gpio2;
-+		gpio2 = &gpio3;
-+		gpio3 = &gpio4;
-+		gpio4 = &gpio5;
-+		i2c1 = &lpi2c2;
-+		i2c2 = &lpi2c3;
-+		i2c7 = &lpi2c8;
-+		mmc0 = &usdhc1;
-+		mmc1 = &usdhc2;
-+		rtc0 = &rtc_i2c;
-+		rtc1 = &scmi_bbm;
-+		serial0 = &lpuart1;
-+		serial1 = &lpuart2;
-+		serial2 = &lpuart5;
-+		serial3 = &lpuart7;
-+		spi0 = &lpspi6;
-+	};
-+
-+	memory@80000000 {
-+		device_type = "memory";
-+		reg = <0x0 0x80000000 0x1 0x00000000>;
-+	};
-+
-+	reg_pcie0: regulator-pcie {
-+		compatible = "regulator-fixed";
-+		regulator-name = "RC210_EN_3V";
-+		regulator-min-microvolt = <3300000>;
-+		regulator-max-microvolt = <3300000>;
-+		gpio = <&i2c2_gpio_expander_71 3 GPIO_ACTIVE_HIGH>;
-+		enable-active-high;
-+	};
-+
-+	reg_usdhc2_vmmc: regulator-usdhc2 {
-+		compatible = "regulator-fixed";
-+		bootph-pre-ram;
-+		pinctrl-0 = <&pinctrl_reg_usdhc2_vmmc>;
-+		pinctrl-names = "default";
-+		regulator-name = "VDD_SD2_3V3";
-+		regulator-min-microvolt = <3300000>;
-+		regulator-max-microvolt = <3300000>;
-+		gpio = <&gpio3 7 GPIO_ACTIVE_HIGH>;
-+		enable-active-high;
-+		off-on-delay-us = <12000>;
-+	};
-+
-+	reserved-memory {
-+		ranges;
-+		#address-cells = <2>;
-+		#size-cells = <2>;
-+
-+		linux_cma: linux,cma {
-+			compatible = "shared-dma-pool";
-+			alloc-ranges = <0 0x80000000 0 0x7f000000>;
-+			size = <0 0x3c000000>;
-+			reusable;
-+			linux,cma-default;
-+		};
-+	};
-+};
-+
-+/* Ethernet SMARC GBE0 */
-+&enetc_port0 {
-+	pinctrl-0 = <&pinctrl_enetc0>;
-+	pinctrl-names = "default";
-+	phy-handle = <&ethphy0>;
-+	phy-mode = "rgmii-id";
-+};
-+
-+/* Ethernet SMARC GBE1 */
-+&enetc_port1 {
-+	pinctrl-0 = <&pinctrl_enetc1>;
-+	pinctrl-names = "default";
-+	phy-handle = <&ethphy1>;
-+	phy-mode = "rgmii-id";
-+};
-+
-+&gpio2 {
-+	gpio-line-names =
-+		"SMARC_SPI0_CS0#",	/* 0 - GPIO_IO00 */
-+		"SMARC_SPI0_DIN",	/* 1 - GPIO_IO01 */
-+		"SMARC_SPI0_DO",	/* 2 - GPIO_IO02 */
-+		"SMARC_SPI0_CK",	/* 3 - GPIO_IO03 */
-+		"",			/* 4 - GPIO_IO04 */
-+		"",			/* 5 - GPIO_IO05 */
-+		"",			/* 6 - GPIO_IO06 */
-+		"",			/* 7 - GPIO_IO07 */
-+		"SMARC_UART0_TXD",	/* 8 - GPIO_IO08 */
-+		"SMARC_UART0_RXD",	/* 9 - GPIO_IO09 */
-+		"SMARC_UART0_CTS_B",	/* 10 - GPIO_IO10 */
-+		"SMARC_UART0_RTS_B",	/* 11 - GPIO_IO11 */
-+		"SMARC_I2C_GP_DAT",	/* 12 - GPIO_IO12 */
-+		"SMARC_I2C_GP_CK",	/* 13 - GPIO_IO13 */
-+		"UART3_TXD_1V8",	/* 14 - GPIO_IO14 */
-+		"UART3_RXD_1V8",	/* 15 - GPIO_IO15 */
-+		"SAI3_TXC_1V8",		/* 16 - GPIO_IO16 */
-+		"SAI3_MCLK_1V8",	/* 17 - GPIO_IO17 */
-+		"SMB_INT_B_1V8",	/* 18 - GPIO_IO18 */
-+		"LVDS0_BKLT_PWM_1V8",	/* 19 - GPIO_IO19 */
-+		"SAI3_RXD_1V8",		/* 20 - GPIO_IO20 */
-+		"SAI3_TXD_1V8",		/* 21 - GPIO_IO21 */
-+		"FAN_PWM_1V8",		/* 22 - GPIO_IO22 */
-+		"LVDS1_BKLT_PWM_1V8",	/* 23 - GPIO_IO23 */
-+		"SPI6_SS1_1V8",		/* 24 - GPIO_IO24 */
-+		"",			/* 25 - GPIO_IO25 */
-+		"SAI3_TXFS_1V8",	/* 26 - GPIO_IO26 */
-+		"TPM_INT_N_1V8",	/* 27 - GPIO_IO27 */
-+		"SMARC_I2C_PM_DAT",	/* 28 - GPIO_IO28 */
-+		"SMARC_I2C_PM_CK",	/* 29 - GPIO_IO29 */
-+		"SMARC_CAN1_TX",	/* 30 - GPIO_IO30 (SMARC CAN1_H via transceiver) */
-+		"SMARC_CAN1_RX";	/* 31 - GPIO_IO31 (SMARC CAN1_L via transceiver) */
-+};
-+
-+&gpio3 {
-+	gpio-line-names =
-+		"SD2_CD_B",
-+		"SD2_CLK",
-+		"SD2_CMD",
-+		"SD2_DATA0",
-+		"SD2_DATA1",
-+		"SD2_DATA2",
-+		"SD2_DATA3",
-+		"SD2_RST_B_1V8A3V",
-+		"SD1_CLK",
-+		"SD1_CMD",
-+		"SD1_DATA0",
-+		"SD1_DATA1",
-+		"SD1_DATA2",
-+		"SD1_DATA3",
-+		"SD1_DATA4",
-+		"SD1_DATA5",
-+		"SD1_DATA6",
-+		"SD1_DATA7",
-+		"SD1_STROBE",
-+		"SD2_VSEL_1V8",
-+		"SD3_CLK",
-+		"SD3_CMD",
-+		"SD3_DATA0",
-+		"SD3_DATA1",
-+		"SD3_DATA2",
-+		"SD3_DATA3",
-+		"CCM_CLKO1",
-+		"CCM_CLKO2",
-+		"DAP_TDI",
-+		"DAP_TMS_SWDIO",
-+		"DAP_TCLK_SWCLK",
-+		"DAP_TDO_TRACESWO";
-+};
-+
-+&gpio4 {
-+	gpio-line-names =
-+		"ENET1_MDC",
-+		"ENET1_MDIO",
-+		"ENET1_TD3",
-+		"ENET1_TD2",
-+		"ENET1_TD1",
-+		"ENET1_TD0",
-+		"ENET1_TX_CTL",
-+		"ENET1_TXC",
-+		"ENET1_RX_CTL",
-+		"ENET1_RXC",
-+		"ENET1_RD0",
-+		"ENET1_RD1",
-+		"ENET1_RD2",
-+		"ENET1_RD3",
-+		"RTC_INT#_1V8",
-+		"IOEXP2_INT#_1V8",
-+		"ENET2_TD3",
-+		"ENET2_TD2",
-+		"ENET2_TD1",
-+		"ENET2_TD0",
-+		"ENET2_TX_CTL",
-+		"ENET2_TXC",
-+		"ENET2_RX_CTL",
-+		"ENET2_RXC",
-+		"ENET2_RD0",
-+		"ENET2_RD1",
-+		"ENET2_RD2",
-+		"ENET2_RD3",
-+		"CCM_CLKO3",
-+		"CCM_CLKO4";
-+};
-+
-+&gpio5 {
-+	gpio-line-names =
-+		"QSPIA_DATA0",
-+		"QSPIA_DATA1",
-+		"QSPIA_DATA2",
-+		"QSPIA_DATA3",
-+		"SKU_CONFIG1_1V8",
-+		"SKU_CONFIG2_1V8",
-+		"SKU_CONFIG3_1V8",
-+		"SYS_STATUS_1V8",
-+		"SD2_WP_1V8",
-+		"QSPIA_SCLK",
-+		"QSPIA_nSS0",
-+		"SYS_RST#_1V8",
-+		"PCIE1_IMX_CLKREQ#_1V8",
-+		"MCU_INTB1_1V8",
-+		"MCU_INTB2_1V8",
-+		"PCIE2_IMX_CLKREQ#_1V8",
-+		"ENET1_INT_B_1V8",
-+		"ENET2_INT_B_1V8";
-+};
-+
-+&lpi2c2 {
-+	clock-frequency = <100000>;
-+	pinctrl-0 = <&pinctrl_lpi2c2>;
-+	pinctrl-names = "default";
-+
-+	status = "okay";
-+
-+	eeprom@50 {
-+		compatible = "atmel,24c128";
-+		reg = <0x50>;
-+		pagesize = <64>;
-+	};
-+
-+	/* U1000 SX1509BIULTRT_SEMTECH on module */
-+	i2c2_gpio_expander_71: pinctrl@71 {
-+		compatible = "semtech,sx1509q";
-+		reg = <0x71>;
-+		#gpio-cells = <2>;
-+		#interrupt-cells = <2>;
-+		gpio-controller;
-+		interrupt-controller;
-+		interrupt-parent = <&gpio4>;
-+		interrupts = <15 IRQ_TYPE_LEVEL_LOW>;
-+		pinctrl-0 = <&pinctrl_sx1509q>;
-+		pinctrl-names = "default";
-+		gpio-line-names =
-+			"ENET1_RST_B_3V",	/* U2001 RTL8211F phy 1 reset */
-+			"ENET2_RST_B_3V",	/* U2101 RTL8211F phy 2 reset */
-+			"USB_HUB_RST#_3V",	/* U1800A USB hub reset */
-+			"RC210_EN_3V",		/* U1300 RC21008 PCIe clock generator enable */
-+			"LT9611_RSTN_3V",	/* U1500 LT9611 HDMI bridge reset */
-+			"HDMI_INT_3V",		/* U1500 LT9611 HDMI bridge interrupt */
-+			"PCIEA_RST#_3V",	/* SMARC P75 PCIE_A_RST# */
-+			"PCIEB_RST#_3V",	/* SMARC S76 PCIE_B_RST# */
-+			"TPM_RST_N_1V8",	/* U2400 TPM reset */
-+			"SMARC_LID#",		/* SMARC S148 */
-+			"SMARC_SLEEP#",		/* SMARC S149 */
-+			"SMARC_CHARGING#",	/* SMARC S151 */
-+			"SMARC_CHARGER_PRSNT#",	/* SMARC S152 */
-+			"SMARC_BATLOW#",	/* SMARC S156 */
-+			"SMARC_TEST#",		/* SMARC S157 */
-+			"DSI0_TE_1V8",		/* SMARC S144 DSI0 TE */
-+			"";			/* OSCIO, TP1000 */
-+		semtech,probe-reset;
-+	};
-+};
-+
-+&lpi2c3 {
-+	clock-frequency = <100000>;
-+	pinctrl-0 = <&pinctrl_lpi2c3>;
-+	pinctrl-names = "default";
-+
-+	status = "okay";
-+
-+	rtc_i2c: rtc@32 {
-+		compatible = "epson,rx8130";
-+		reg = <0x32>;
-+	};
-+};
-+
-+&lpi2c8 {
-+	clock-frequency = <100000>;
-+	pinctrl-0 = <&pinctrl_lpi2c8>;
-+	pinctrl-names = "default";
-+};
-+
-+&lpspi6 {
-+	cs-gpios = <&gpio2 0 GPIO_ACTIVE_LOW>, <&gpio2 24 GPIO_ACTIVE_LOW>;
-+	pinctrl-0 = <&pinctrl_lpspi6>;
-+	pinctrl-names = "default";
-+};
-+
-+&lpuart1 {
-+	bootph-pre-ram;
-+	pinctrl-0 = <&pinctrl_uart1>;
-+	pinctrl-names = "default";
-+};
-+
-+&lpuart2 {
-+	pinctrl-0 = <&pinctrl_uart2>;
-+	pinctrl-names = "default";
-+};
-+
-+&lpuart5 {
-+	pinctrl-0 = <&pinctrl_uart5>;
-+	pinctrl-names = "default";
-+};
-+
-+&lpuart7 {
-+	pinctrl-0 = <&pinctrl_uart7>;
-+	pinctrl-names = "default";
-+};
-+
-+&netc_blk_ctrl {
-+	status = "okay";
-+};
-+
-+&netc_emdio {
-+	pinctrl-0 = <&pinctrl_emdio>;
-+	pinctrl-names = "default";
-+
-+	status = "okay";
-+
-+	/* U2001 RTL8211F */
-+	ethphy0: ethernet-phy@1 {
-+		compatible = "ethernet-phy-id001c.c916";
-+		reg = <1>;
-+		reset-assert-us = <10000>;
-+		reset-deassert-us = <80000>;
-+		reset-gpios = <&i2c2_gpio_expander_71 0 GPIO_ACTIVE_LOW>;
-+		eee-broken-1000t;
-+		realtek,clkout-disable;
-+	};
-+
-+	/* U2101 RTL8211F */
-+	ethphy1: ethernet-phy@4 {
-+		compatible = "ethernet-phy-id001c.c916";
-+		reg = <4>;
-+		reset-assert-us = <10000>;
-+		reset-deassert-us = <80000>;
-+		reset-gpios = <&i2c2_gpio_expander_71 1 GPIO_ACTIVE_LOW>;
-+		eee-broken-1000t;
-+		realtek,clkout-disable;
-+	};
-+};
-+
-+&netc_timer {
-+	status = "okay";
-+};
-+
-+&netcmix_blk_ctrl {
-+	status = "okay";
-+};
-+
-+&pcie0 {
-+	pinctrl-0 = <&pinctrl_pcie0>;
-+	pinctrl-names = "default";
-+	supports-clkreq;
-+	vpcie-supply = <&reg_pcie0>;
-+};
-+
-+&pcie0_port0 {
-+	reset-gpios = <&i2c2_gpio_expander_71 6 GPIO_ACTIVE_LOW>; /* PCIEA_RST#_3V */
-+};
-+
-+/* U1900 AW-CM276NF Wi-Fi/BT on module */
-+&pcie1 {
-+	pinctrl-0 = <&pinctrl_pcie1>;
-+	pinctrl-names = "default";
-+	vpcie-supply = <&reg_pcie0>;
-+
-+	status = "okay";
-+};
-+
-+&pcie1_port0 {
-+	reset-gpios = <&i2c2_gpio_expander_71 7 GPIO_ACTIVE_LOW>; /* PCIEB_RST#_3V */
-+};
-+
-+&usb3_dwc3 {
-+	snps,dis-u1-entry-quirk;
-+	snps,dis-u2-entry-quirk;
-+};
-+
-+/* eMMC on module */
-+&usdhc1 {
-+	bootph-pre-ram;
-+	pinctrl-0 = <&pinctrl_usdhc1>;
-+	pinctrl-1 = <&pinctrl_usdhc1>;
-+	pinctrl-2 = <&pinctrl_usdhc1_200mhz>;
-+	pinctrl-names = "default", "state_100mhz", "state_200mhz";
-+	bus-width = <8>;
-+	non-removable;
-+	no-sdio;
-+	no-sd;
-+
-+	status = "okay";
-+};
-+
-+/* SMARC SDIO */
-+&usdhc2 {
-+	bootph-pre-ram;
-+	pinctrl-0 = <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;
-+	pinctrl-1 = <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;
-+	pinctrl-2 = <&pinctrl_usdhc2_200mhz>, <&pinctrl_usdhc2_gpio>;
-+	pinctrl-names = "default", "state_100mhz", "state_200mhz";
-+	cd-gpios = <&gpio3 0 GPIO_ACTIVE_LOW>;
-+	vmmc-supply = <&reg_usdhc2_vmmc>;
-+	bus-width = <4>;
-+};
-+
-+&wdog3 {
-+	status = "okay";
-+};
-+
-+&scmi_iomuxc {
-+	pinctrl_emdio: emdiogrp {
-+		fsl,pins = <
-+			IMX95_PAD_ENET1_MDC__NETCMIX_TOP_NETC_MDC		0x50e
-+			IMX95_PAD_ENET1_MDIO__NETCMIX_TOP_NETC_MDIO		0x90e
-+		>;
-+	};
-+
-+	pinctrl_enetc0: enetc0grp {
-+		fsl,pins = <
-+			IMX95_PAD_ENET1_TD3__NETCMIX_TOP_ETH0_RGMII_TD3		0x50e
-+			IMX95_PAD_ENET1_TD2__NETCMIX_TOP_ETH0_RGMII_TD2		0x50e
-+			IMX95_PAD_ENET1_TD1__NETCMIX_TOP_ETH0_RGMII_TD1		0x50e
-+			IMX95_PAD_ENET1_TD0__NETCMIX_TOP_ETH0_RGMII_TD0		0x50e
-+			IMX95_PAD_ENET1_TX_CTL__NETCMIX_TOP_ETH0_RGMII_TX_CTL	0x57e
-+			IMX95_PAD_ENET1_TXC__NETCMIX_TOP_ETH0_RGMII_TX_CLK	0x58e
-+			IMX95_PAD_ENET1_RX_CTL__NETCMIX_TOP_ETH0_RGMII_RX_CTL	0x57e
-+			IMX95_PAD_ENET1_RXC__NETCMIX_TOP_ETH0_RGMII_RX_CLK	0x58e
-+			IMX95_PAD_ENET1_RD0__NETCMIX_TOP_ETH0_RGMII_RD0		0x57e
-+			IMX95_PAD_ENET1_RD1__NETCMIX_TOP_ETH0_RGMII_RD1		0x57e
-+			IMX95_PAD_ENET1_RD2__NETCMIX_TOP_ETH0_RGMII_RD2		0x57e
-+			IMX95_PAD_ENET1_RD3__NETCMIX_TOP_ETH0_RGMII_RD3		0x57e
-+		>;
-+	};
-+
-+	pinctrl_enetc1: enetc1grp {
-+		fsl,pins = <
-+			IMX95_PAD_ENET2_TD3__NETCMIX_TOP_ETH1_RGMII_TD3		0x50e
-+			IMX95_PAD_ENET2_TD2__NETCMIX_TOP_ETH1_RGMII_TD2		0x50e
-+			IMX95_PAD_ENET2_TD1__NETCMIX_TOP_ETH1_RGMII_TD1		0x50e
-+			IMX95_PAD_ENET2_TD0__NETCMIX_TOP_ETH1_RGMII_TD0		0x50e
-+			IMX95_PAD_ENET2_TX_CTL__NETCMIX_TOP_ETH1_RGMII_TX_CTL	0x57e
-+			IMX95_PAD_ENET2_TXC__NETCMIX_TOP_ETH1_RGMII_TX_CLK	0x58e
-+			IMX95_PAD_ENET2_RX_CTL__NETCMIX_TOP_ETH1_RGMII_RX_CTL	0x57e
-+			IMX95_PAD_ENET2_RXC__NETCMIX_TOP_ETH1_RGMII_RX_CLK	0x58e
-+			IMX95_PAD_ENET2_RD0__NETCMIX_TOP_ETH1_RGMII_RD0		0x57e
-+			IMX95_PAD_ENET2_RD1__NETCMIX_TOP_ETH1_RGMII_RD1		0x57e
-+			IMX95_PAD_ENET2_RD2__NETCMIX_TOP_ETH1_RGMII_RD2		0x57e
-+			IMX95_PAD_ENET2_RD3__NETCMIX_TOP_ETH1_RGMII_RD3		0x57e
-+		>;
-+	};
-+
-+	pinctrl_lpi2c2: lpi2c2grp {
-+		fsl,pins = <
-+			IMX95_PAD_I2C2_SCL__AONMIX_TOP_LPI2C2_SCL		0x40000b9e
-+			IMX95_PAD_I2C2_SDA__AONMIX_TOP_LPI2C2_SDA		0x40000b9e
-+		>;
-+	};
-+
-+	pinctrl_lpi2c3: lpi2c3grp {
-+		fsl,pins = <
-+			IMX95_PAD_GPIO_IO28__LPI2C3_SDA			0x40000b9e
-+			IMX95_PAD_GPIO_IO29__LPI2C3_SCL			0x40000b9e
-+		>;
-+	};
-+
-+	pinctrl_lpi2c8: lpi2c8grp {
-+		fsl,pins = <
-+			IMX95_PAD_GPIO_IO13__LPI2C8_SCL		0x40000b9e
-+			IMX95_PAD_GPIO_IO12__LPI2C8_SDA		0x40000b9e
-+		>;
-+	};
-+
-+	pinctrl_lpspi6: lpspi6grp {
-+		fsl,pins = <
-+			IMX95_PAD_GPIO_IO00__GPIO2_IO_BIT0	0x1fe
-+			IMX95_PAD_GPIO_IO24__GPIO2_IO_BIT24	0x1fe
-+			IMX95_PAD_GPIO_IO01__LPSPI6_SIN		0x3fe
-+			IMX95_PAD_GPIO_IO02__LPSPI6_SOUT	0x3fe
-+			IMX95_PAD_GPIO_IO03__LPSPI6_SCK		0x3fe
-+		>;
-+	};
-+
-+	pinctrl_pcie0: pcie0grp {
-+		fsl,pins = <
-+			IMX95_PAD_GPIO_IO32__HSIOMIX_TOP_PCIE1_CLKREQ_B		0x4000031e
-+		>;
-+	};
-+
-+	pinctrl_pcie1: pcie1grp {
-+		fsl,pins = <
-+			IMX95_PAD_GPIO_IO35__HSIOMIX_TOP_PCIE2_CLKREQ_B		0x4000031e
-+		>;
-+	};
-+
-+	pinctrl_reg_usdhc2_vmmc: regusdhc2vmmcgrp {
-+		fsl,pins = <
-+			IMX95_PAD_SD2_RESET_B__GPIO3_IO_BIT7		0x31e
-+		>;
-+	};
-+
-+	pinctrl_sx1509q: sx1509qgrp {
-+		fsl,pins = <
-+			IMX95_PAD_ENET2_MDIO__GPIO4_IO_BIT15			0x1fe
-+		>;
-+	};
-+
-+	pinctrl_uart1: uart1grp {
-+		bootph-pre-ram;
-+		fsl,pins = <
-+			IMX95_PAD_UART1_RXD__AONMIX_TOP_LPUART1_RX	0x31e
-+			IMX95_PAD_UART1_TXD__AONMIX_TOP_LPUART1_TX	0x31e
-+		>;
-+	};
-+
-+	pinctrl_uart2: uart2grp {
-+		fsl,pins = <
-+			IMX95_PAD_UART2_RXD__AONMIX_TOP_LPUART2_RX	0x31e
-+			IMX95_PAD_UART2_TXD__AONMIX_TOP_LPUART2_TX	0x31e
-+		>;
-+	};
-+
-+	pinctrl_uart5: uart5grp {
-+		fsl,pins = <
-+			IMX95_PAD_DAP_TDO_TRACESWO__LPUART5_TX			0x31e
-+			IMX95_PAD_DAP_TDI__LPUART5_RX				0x31e
-+			IMX95_PAD_DAP_TMS_SWDIO__LPUART5_RTS_B			0x31e
-+			IMX95_PAD_DAP_TCLK_SWCLK__LPUART5_CTS_B			0x31e
-+		>;
-+	};
-+
-+	pinctrl_uart7: uart7grp {
-+		fsl,pins = <
-+			IMX95_PAD_GPIO_IO08__LPUART7_TX				0x31e
-+			IMX95_PAD_GPIO_IO09__LPUART7_RX				0x31e
-+			IMX95_PAD_GPIO_IO11__LPUART7_RTS_B			0x31e
-+			IMX95_PAD_GPIO_IO10__LPUART7_CTS_B			0x31e
-+		>;
-+	};
-+
-+	pinctrl_usdhc1_200mhz: usdhc1-200mhzgrp {
-+		bootph-pre-ram;
-+		fsl,pins = <
-+			IMX95_PAD_SD1_CLK__USDHC1_CLK			0x15fe
-+			IMX95_PAD_SD1_CMD__USDHC1_CMD			0x13fe
-+			IMX95_PAD_SD1_DATA0__USDHC1_DATA0		0x13fe
-+			IMX95_PAD_SD1_DATA1__USDHC1_DATA1		0x13fe
-+			IMX95_PAD_SD1_DATA2__USDHC1_DATA2		0x13fe
-+			IMX95_PAD_SD1_DATA3__USDHC1_DATA3		0x13fe
-+			IMX95_PAD_SD1_DATA4__USDHC1_DATA4		0x13fe
-+			IMX95_PAD_SD1_DATA5__USDHC1_DATA5		0x13fe
-+			IMX95_PAD_SD1_DATA6__USDHC1_DATA6		0x13fe
-+			IMX95_PAD_SD1_DATA7__USDHC1_DATA7		0x13fe
-+			IMX95_PAD_SD1_STROBE__USDHC1_STROBE		0x15fe
-+		>;
-+	};
-+
-+	pinctrl_usdhc1: usdhc1grp {
-+		bootph-pre-ram;
-+		fsl,pins = <
-+			IMX95_PAD_SD1_CLK__USDHC1_CLK			0x158e
-+			IMX95_PAD_SD1_CMD__USDHC1_CMD			0x138e
-+			IMX95_PAD_SD1_DATA0__USDHC1_DATA0		0x138e
-+			IMX95_PAD_SD1_DATA1__USDHC1_DATA1		0x138e
-+			IMX95_PAD_SD1_DATA2__USDHC1_DATA2		0x138e
-+			IMX95_PAD_SD1_DATA3__USDHC1_DATA3		0x138e
-+			IMX95_PAD_SD1_DATA4__USDHC1_DATA4		0x138e
-+			IMX95_PAD_SD1_DATA5__USDHC1_DATA5		0x138e
-+			IMX95_PAD_SD1_DATA6__USDHC1_DATA6		0x138e
-+			IMX95_PAD_SD1_DATA7__USDHC1_DATA7		0x138e
-+			IMX95_PAD_SD1_STROBE__USDHC1_STROBE		0x158e
-+		>;
-+	};
-+
-+	pinctrl_usdhc2_200mhz: usdhc2-200mhzgrp {
-+		bootph-pre-ram;
-+		fsl,pins = <
-+			IMX95_PAD_SD2_CLK__USDHC2_CLK			0x15fe
-+			IMX95_PAD_SD2_CMD__USDHC2_CMD			0x13fe
-+			IMX95_PAD_SD2_DATA0__USDHC2_DATA0		0x13fe
-+			IMX95_PAD_SD2_DATA1__USDHC2_DATA1		0x13fe
-+			IMX95_PAD_SD2_DATA2__USDHC2_DATA2		0x13fe
-+			IMX95_PAD_SD2_DATA3__USDHC2_DATA3		0x13fe
-+			IMX95_PAD_SD2_VSELECT__USDHC2_VSELECT		0x51e
-+		>;
-+	};
-+
-+	pinctrl_usdhc2_gpio: usdhc2gpiogrp {
-+		bootph-pre-ram;
-+		fsl,pins = <
-+			IMX95_PAD_SD2_CD_B__GPIO3_IO_BIT0		0x31e
-+		>;
-+	};
-+
-+	pinctrl_usdhc2: usdhc2grp {
-+		bootph-pre-ram;
-+		fsl,pins = <
-+			IMX95_PAD_SD2_CLK__USDHC2_CLK			0x158e
-+			IMX95_PAD_SD2_CMD__USDHC2_CMD			0x138e
-+			IMX95_PAD_SD2_DATA0__USDHC2_DATA0		0x138e
-+			IMX95_PAD_SD2_DATA1__USDHC2_DATA1		0x138e
-+			IMX95_PAD_SD2_DATA2__USDHC2_DATA2		0x138e
-+			IMX95_PAD_SD2_DATA3__USDHC2_DATA3		0x138e
-+			IMX95_PAD_SD2_VSELECT__USDHC2_VSELECT		0x51e
-+		>;
-+	};
-+};
+diff --git a/arch/arm64/boot/dts/freescale/imx93-11x11-frdm-common.dtsi b/arch/arm64/boot/dts/freescale/imx93-11x11-frdm-common.dtsi
+index 33ed26aafde88..8c7b08894bc0d 100644
+--- a/arch/arm64/boot/dts/freescale/imx93-11x11-frdm-common.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx93-11x11-frdm-common.dtsi
+@@ -145,7 +145,7 @@ ethphy1: ethernet-phy@1 {
+ 			reg = <1>;
+ 			reset-assert-us = <10000>;
+ 			reset-deassert-us = <80000>;
+-			reset-gpios = <&pcal6524 15 GPIO_ACTIVE_LOW>;
++			reset-gpios = <&pcal6524 4 GPIO_ACTIVE_LOW>;
+ 			realtek,clkout-disable;
+ 		};
+ 	};
+@@ -169,7 +169,7 @@ ethphy2: ethernet-phy@2 {
+ 			reg = <2>;
+ 			reset-assert-us = <10000>;
+ 			reset-deassert-us = <80000>;
+-			reset-gpios = <&pcal6524 16 GPIO_ACTIVE_LOW>;
++			reset-gpios = <&pcal6524 9 GPIO_ACTIVE_LOW>;
+ 			realtek,clkout-disable;
+ 		};
+ 	};
 -- 
-2.25.1
+2.45.2
 
