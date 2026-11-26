@@ -1,52 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=178.251.229.89
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795653281;
-	b=V+IYcZpQrNUNqYnJihX0Q8PflmrNXsdtvMgRD+bi4oRb1c+yLzI49EUroFvpjZJl7FAN
-	 ljVTHfp2HVB/p4G4cmoEHYOAZvFvyB3oEpjFoq5ov5PrTlDNdepG1g72qlxPCusgX/99P
-	 wyuoJ1+6XvaTKFGwXI+4ks5WTL+zljPpr6ne+1weVYkKAxkwMOfwZEIysXcr6aPrivjh/
-	 AUGVZFOL+AiLGVJKFTcGILjuUdU+xUFcf/fpEst7dUtEKJy0CgEIOEcCj68OGoBHi9Rm4
-	 WF21QWLJvxYLYEeo8C0lN+ztZBFDPq5RNc4qoy75K2x3KVwUvKGxkIjRwBLkUltGH6Q==
+	t=1795654972;
+	b=wFpETTOfDXmDKBkDLA89j3DQY43LMuQjBB6VINgBQ4eOXC8AHjpJgKjVCktb0bHkykHi
+	 +9GHAoT1VomCSIySFreP/6q6yVFluOB2D9sZ/8WCPLeClPb0rH5eeVcaPDFYvH5mvWtCA
+	 3RWIKDNN2mtls8etQMaL/vZCU+zBbVIU5t5oZpCL284/xVagqHBZ5ojn0PVRRThQRUUSy
+	 +YUXj3er5mpwffZphUn/KVPSnmkYZICsHZ/Jce3lSliVLaxZJltVZJaOJ0wVh1QW8loC4
+	 1ekeBEKUAai0q369aQesSw1/osdtmkFLFOcR4qIlWx0A3osRPscCR/AQirCYatjvA4g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795653281;
-	h=DMARC-Filter:Received:DKIM-Signature:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-Last-TLS-Session-Version;
-	bh=5Nw1PUI/8+Dw+uE9Ar24vLwu5Jkm9NnRZmkT/cfK/VY=;
-	b=H9qZkSXCybFbueRBj/i1vgh7Wup18N/3Irm3Ty7IGO0rPLRk2+eVvlanWIEHqB1fV7bw
-	 im5a0vX6Cu4hbMzTF+QIE9UlAPP0ZeEcWG3hk2+kcZtBZA2iF/APcNuvPCJoAzpNk9AD+
-	 QbD+ULvzF3Vd4s0ltvoJsFvT0+TGK4jT/52F/5gnCr2yHt02HMhmuXar5rMUyk/2TswPT
-	 c8Yn68kMv3GQaueHaDMgGR8gKnHoRLNYTxPN9u0fzTi80lth+8FDEb028Z9sPlVG36d0J
-	 PPm/5eZ+9fk8EYaRO2xItPsC5xHhsgZ8IzDabiU1jBuaQvycekXQD28DaKgJehWYHCQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795654972;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=szOvPNyxohILp8ypzy0QBe0wsGgv+77VvcXMFL1pBiI=;
+	b=THw4rNVuDtVPEp/Kv+oLEUB4s6GCl70+1zB75jYry9ZN2LJPB4QtL8eEdvM0J9KrrO2W
+	 04w+5M2Fs9kpHDZPtiasc+a9NSYPHMa/CN2rnk74ZVyZSCD4pH3+JmMT4Eoq9qEOzxqnv
+	 hNxsfN0Tn2kiJQlvsEnOHorDORQaTfu+HxZV6l4T5M0MKaBoXV3Hy2Dg0eAaQ5FOWXjFK
+	 Q7b3qEsoF/h0Cpxkn+UkHJ8TC5GNzF6Q4HTcggstRiItRQWQycHjmFl5/q1hYfJiWBW+t
+	 vIPJdxKP0joqH3wv65w88IREHXE9wv4YUO6maZ1/7A6vApnn3kUglaX004HrBwn+Qeg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nabladev.com;
-	spf=pass smtp.mailfrom=nabladev.com;
-	dkim=pass header.d=nabladev.com header.i=@nabladev.com header.a=rsa-sha256 header.s=dkim header.b=bQhzdxgG;
-	arc=none smtp.remote-ip=178.251.229.89
-Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GxivgSKK;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A222E606A321
-	for <imx@lists.linux.dev>; Thu, 26 Nov 2026 00:34:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A222E606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C9DF606A326
+	for <imx@lists.linux.dev>; Thu, 26 Nov 2026 01:02:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=nabladev.com header.i=@nabladev.com header.a=rsa-sha256 header.s=dkim header.b=bQhzdxgG
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 230B9108AA8;
-	Thu, 26 Nov 2026 01:34:30 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1795653271;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=5Nw1PUI/8+Dw+uE9Ar24vLwu5Jkm9NnRZmkT/cfK/VY=;
-	b=bQhzdxgGhksJwhez1cJ6RJfzVetdIlhj0vPwN9rwGVYBtPNyApvgg/373hbFxzfNxLfqUE
-	giGcpt/g6Riz6NkXX7MlUou5cdiCVwf1iU4EdubtCMUAMaXIInspO7A/7phxpBwMMXnrni
-	rZkV9tfz8DAZHHEWauVaU9rBP+Tv++S3UYDLeTolvZ+3idCuqEbKUefSgQYP8XNh+ee+cl
-	9tGnoIPIgM5ej/IOTSes+0VBnwrWmuyeId3huadFlb3YCiE4o8SHFW1auHf72LHKc0jLnO
-	wcACDZZYitleGOluF4Jki8+2NRNJjKnkwTglkvLdMZ3J3PcuVQeAzrm3DCSRag==
-Message-ID: <a57373f2-dfb2-4344-8e2c-6621a623d170@nabladev.com>
-Date: Wed, 25 Nov 2026 14:56:36 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GxivgSKK
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B7F21F000D3
+	for <imx@lists.linux.dev>; Thu, 26 Nov 2026 01:02:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795654972;
+	bh=szOvPNyxohILp8ypzy0QBe0wsGgv+77VvcXMFL1pBiI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=GxivgSKKpMAbosqUk66Yg4iqBddCw16F7dBmuZ/OIP0+CNyedhqtebgAKbjN+lZA2
+	 XzrsTS5KEpJLSeD7i+R2egKS22N6blaIWVzB/WxRu41zP6lA0V7+QCkPZvpkqw7h5Q
+	 DcOPg02AYjxyC9fGtPeZRjn5JjC4cMvQzgeZQxsOnejhZh008h9JVM8EDPJVQul17m
+	 7Q/84bX6YEho/gL8wI/w9xIbCWrZKQ6eQ6loBY+e89YwfZc5xTsc96jiVKhMtbisPC
+	 5IYou1zn8i7X+GbyR/XnCH4jYewJzSOCfd0jwZdQwc4RUmVL5gRGW+fKTKoc70yQ3j
+	 Fom+4k4F7afMA==
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5bcdae234ecso906722e87.3
+        for <imx@lists.linux.dev>; Wed, 25 Nov 2026 17:02:51 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AL+hErHSXZEyclvjIshJDlb13BdbzfO9oufS7QVdp7uoaTxv8c/DJfZSsVcxfen7yMwWq1lSGlo=@lists.linux.dev
+X-Gm-Message-State: APuU4Z+zjuUvrk4mPo0kqklHuMzXogcdtQ5fBORlBfAQIE5r/M/TlI8o
+	BuQJM/WiDhIiVLrmroEvPUqurridcYUD5STWm+42Myail3V5zRRFNsAOMZ8HTSeibREi3Uhrq5j
+	rBDweRxqrA5P/QzoY3aNjzWIym4X/BOU=
+X-Received: by 2002:a05:6512:b9d:b0:5c1:5975:a6d0 with SMTP id
+ 2adb3069b0e04-5c1bc813d73mr5576689e87.49.1795654970525; Wed, 25 Nov 2026
+ 17:02:50 -0800 (PST)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -56,28 +59,37 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V2] ARM: dts: imx6ull-dhcom: Change eMMC pin configuration
-To: Christoph Niedermaier <cniedermaier@dh-electronics.com>,
- linux-arm-kernel@lists.infradead.org
-Cc: Pascal Zimmermann <pzimmermann@dh-electronics.com>,
- Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>,
- Frank Li <Frank.Li@nxp.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Rob Herring <robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- kernel@dh-electronics.com, devicetree@vger.kernel.org, imx@lists.linux.dev
-References: <20261125125621.6734-1-cniedermaier@dh-electronics.com>
-Content-Language: en-US
-From: Marek Vasut <marex@nabladev.com>
-In-Reply-To: <20261125125621.6734-1-cniedermaier@dh-electronics.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+References: <20261115-for-upstream-lx2160a-rcw-pinmux-v1-v6-0-fbdce4565a5c@free.fr>
+ <20261115-for-upstream-lx2160a-rcw-pinmux-v1-v6-3-fbdce4565a5c@free.fr>
+ <avs4l1otw6ACW5P4@SMW015318> <avs9fmJqYShOIPMK@l3017729.home>
+In-Reply-To: <avs9fmJqYShOIPMK@l3017729.home>
+From: Linus Walleij <linusw@kernel.org>
+Date: Thu, 26 Nov 2026 02:02:38 +0100
+X-Gmail-Original-Message-ID: <CAD++jLnF07h3Ng5O=xcgKhTEkV9ij2ptzktAfi2Kt45smdEjpw@mail.gmail.com>
+X-Gm-Features: Aa3M54pY2u0gcwGTwDEHxrFaQf4DHIpe5Fj8K7AAC6iAolS08Y7XLFFoVNzoAr8
+Message-ID: <CAD++jLnF07h3Ng5O=xcgKhTEkV9ij2ptzktAfi2Kt45smdEjpw@mail.gmail.com>
+Subject: Re: [PATCH v6 3/5] soc: fsl: guts: add the RCW override of the pad muxes
+To: Vincent Jardin <vjardin@free.fr>
+Cc: Frank Li <Frank.li@oss.nxp.com>, Dong Aisheng <aisheng.dong@nxp.com>, 
+	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>, Jacky Bai <ping.bai@nxp.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, NXP S32 Linux Team <s32@nxp.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, linux-gpio@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, 
+	imx@lists.linux.dev, Vladimir Oltean <vladimir.oltean@nxp.com>, 
+	Ioana Ciornei <ioana.ciornei@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 11/25/26 1:56 PM, Christoph Niedermaier wrote:
-> From: Pascal Zimmermann <pzimmermann@dh-electronics.com>
-> 
-> Tests have shown that, with the current pin configuration of the
-> eMMC (usdhc2 interface) read errors can occur with a certain
-> type of eMMC chips.
+On Mon, Nov 16, 2026 at 6:30=E2=80=AFPM Vincent Jardin <vjardin@free.fr> wr=
+ote:
 
-Which chips are those ?
+> Then, since it was unclear for me if the patch 1..4 are through
+> pinctrl and 5 thru imx (please, Linus Walleij) ?
+
+I could do that as long as I have the proper ACKs.
+
+Yours,
+Linus Walleij
