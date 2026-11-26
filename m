@@ -1,106 +1,87 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795677235;
-	b=qt/r40Pavk0lE9CIvIvpVUd5UATyrT8VTrPMlXunlHX0sIZif9KloPer3TJjCS+Py2Us
-	 XfGKgC028tkai9NbRuPy1bPbZCgEPr/P5c1qM814ibzlv+i4F/gnqHK+mfvDAiyJdDqJ2
-	 dW9iHiO9MCZ7upvU/nF4f3ZV2nGjJe2xgU5E9CBF+PGa+d8N66BYAaS5KFrRhRDTHbMKP
-	 3q7re4GbD96fz6nAmszfPaEm+/Z3oPOxDMShdhogY4l9ank449xqOGQGAQAeWK9pTpd0p
-	 Frz5jSKZfhuP8/lVcxrxfU49HDoHs5+tCO9lRx4NGNLg6Mp3j2EufZRAuyy9Pq/fYdQ==
+	t=1795677278;
+	b=4RsVzU74aZgG70zt+M8x4hE9IYOhGavWwxfUKBLQRkz6B0C8CLG1wAt3NKfhqdquCRvK
+	 p1uO4IxM5GjewxDWya1Np9HsFlbBLc1u/nFN/6/ygOY2DJZ1ZTb8KGvmZrY02/x50reS8
+	 3gBTrxcjTL8I4Y0MR/av7AMIDMB30IQi2CJ7TH28HdTV8XS+Saz+2DLNIlXLy4HGPL/Nn
+	 DmEDQ6YA+M0Nypyow6RFrRG8oz8h7o4ZCpEAsRBj0Cvpf+vj1u5CL3/TQwEm6Cq1jH4hS
+	 R0sk/y5ngSJ7oVQqYiFeDwXvbZ4tKJh9TLu0Q5uerd+n4ScUknQgamTKEwp657HrySg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795677235;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=J5KKQj+Grt6zgozyhH1Cn99N5gjYRol48Ra+q72Y3/4=;
-	b=tahWuyK76s8O6qU8OE/yufYf7NWdkbmdl0Ow1R8ZunBY5i+0qv1LKHp2DN3+80Ngtc79
-	 WFzk0Pz88sZrdL3rk7ciZF5Fn+QhWI/M09GUEKMSrMIkllwO+mjjRdQT29HustXyDvB4G
-	 C3x8+m+2gY53L3EBpOgdgpdHP0jF4ux8H+HSD5R+pW48JYEX7NrLtGxHawbOBHnduff7Q
-	 xGkZH1mBZO6k0ag+LSfFt9KlnPWFSZ8iBfL6GLDpsI5CgS/Gjep5Qs1pRojD/nbGdiLFy
-	 4GbpeJvqYE0zwV68o9BJnGOBY9Y+La0LMxAkuu/ls2uBIvk5RD0qw0GXyGau1VJ3Wqg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795677278;
+	h=Received:DKIM-Signature:From:To:Cc:In-Reply-To:References:Subject:
+	 Message-Id:Date:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-Mailer;
+	bh=53x66dpOysE700lhiF+v1Ti3qORDyr+UbN9kd+D3Gh4=;
+	b=aqnbN+/W3cwlL89IMCMq3cpAjpXxWh/gX2qK/FUoHRgrSnQRA5Ex5dpNfO77jEMzY7e1
+	 F4ID3Kk1okpYWkT3/jEyQc80UfdqO3ufg1P1iBbWkUsRxTNZNKTh9jw+cWiiDIMZSotjq
+	 IM6hHp2uH0sTcEDR/kjUv3oDxc39skvOU1GxlpHs1gmuloOkP79wYfDi06RULZmpLv+JR
+	 mkG7i52NZkrAItnfzFRQBTwRuLWLi6QfS6civX/z4n4e7fTeyvOm40pwto2VyEoZ/25DW
+	 +iq5SJpyUnm0muVw6kFotVr8zj+Q8AnoWDmze821mys793ZXbcFX6rhGk6gXJClD0OQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=chromium.org;
-	spf=pass smtp.mailfrom=chromium.org;
-	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=ORiOu2FY;
-	arc=none smtp.remote-ip=209.85.214.175
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Nx1Y6HzP;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BA25606A326
-	for <imx@lists.linux.dev>; Thu, 26 Nov 2026 07:13:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7BA25606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDDC2606A31C;
+	Thu, 26 Nov 2026 07:14:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=ORiOu2FY
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2f05b465cd1so36778665ad.3
-        for <imx@lists.linux.dev>; Wed, 25 Nov 2026 23:13:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1795677234; x=1796282034; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=J5KKQj+Grt6zgozyhH1Cn99N5gjYRol48Ra+q72Y3/4=;
-        b=ORiOu2FYE0QR/M2J5gUxb15jRVxu3xruswNbjxS8eyvcZMLTK47+BEyLALsu0or/XF
-         sJkzjuM94Y6lWPlOE9h1OSHls8vSaoCUpde3r93Hhov3ujMR+by+3ZiEuVguDg8i0rTI
-         Gk7kdNLj0PQPqEnwXAAE6tkZHLYs7jqptGSGQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795677234; x=1796282034;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=J5KKQj+Grt6zgozyhH1Cn99N5gjYRol48Ra+q72Y3/4=;
-        b=H3X5g58rwm1K6emz4f+g/EsGNjmNZQXrAjc/hh1qOdxL+WYBOZesW9WbxYBMZYXt5u
-         qNlmeVtPZISElA4n1SZHB31XCU2IrTqBrGF2nfRIayq3ibDuNH9waql0We7QCuCKPWiv
-         yzfX/w756rVOdhjXrvLXdLcIrn+87l/vvAyNn/8pPplDIUfh/TJGP3P6A7L1f0O5Tjw+
-         hN+KPOlP76+MV5W0DLvTL3eq2HDs//DLuJee0YVt3yStDs3J/lkMz9eLL0N1T6XA8ANl
-         Udasz2O4W7Aa8JdhIDjc9Z/GNXIzfZ0ieBN2E7d5XQNnzsul8L2b4nMBERvaA2xoUtNv
-         kYjQ==
-X-Forwarded-Encrypted: i=1; AL+hErH/7lWFW3q+YLd83yOY0czOL90MU5SdUDd7RhGykb15G+ByBw0wmxmOATA05wmewNgphYo=@lists.linux.dev
-X-Gm-Message-State: APuU4Z+dcZDsUhAZQLH6oqyzYjUyQvbZzmutY6SSgpqQPxQ1jYTZ2GRL
-	Kpw6FoXwUIU4wXc3eEKp1gLsBkkda0lteqjF1jH1D00dP7+GFKNrID5RQjhm/BoOiyYQ4OIfsxI
-	prA5UGA==
-X-Gm-Gg: AZFdTZf4PQXdDxJ6SgAiv2zHK+Nfp68t6xv+Zb54TNdLzbmjRhUlGTqCndgLSOIcn04
-	5CpKu4rqTG5z2UPtHJFM8PI+WZmmgQSDVGunu/Tw81qX7zZkwZDufnHGi+3TW3SGI6m0aGe/8d+
-	h8hIEDmkvU6XKbte7n7ZZxjdceWZs6CdgloXSQiBFfPj77HcDVbvh9xYtXkA5tPOjdW16i73yUH
-	ejCHqlqAxpDEWw61vbNcgAwAuAcPKLMcu7iZ4S1CG/M848c3OsAcP7nyWSHihbrzhEeTH5+xHbb
-	DSJF7xK2AIo9Y1alayIEwFo0tYaOWLQTO8SboPjYNWHZCW6WYQAibKOwDkFGHNOu7y8bG6jud1s
-	eeIGFOolgPPDLOJeZMonhobtUM0qRBANvVhTHlpC0s8GnuFFaBhPtk99o+AtB3LCfAOid0xCSRJ
-	I1eY+4YoVvSNwMGd1jQRkCFTbSPkM/wSuq4hJ/l+m8/KpjQuIo0qIUgprbBIiy/PD/aT+cwcMxP
-	5RCZhxXPwf5AGk/aTmjQWAx7wb2E6On57d9HbN8/RJxqg/hLZ2tmRAytv+mTr0jhYNJ+MCqsKJ9
-	0xPKAmpUKSWlHUe75gSijIcCN22xF+2hUBjRjzfi36+5YqCDrx7qxsBsAo2aLt3no5f7+O7Yz57
-	7unCwVw==
-X-Received: by 2002:a17:902:f545:b0:2f0:585b:8d8e with SMTP id d9443c01a7336-2f0585b8e12mr169849155ad.60.1795677233916;
-        Wed, 25 Nov 2026 23:13:53 -0800 (PST)
-Received: from localhost ([2a00:79e0:203d:7:418f:e7d0:882d:ceec])
-        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-2f0bc695f31sm41539205ad.49.2026.11.25.23.13.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 25 Nov 2026 23:13:53 -0800 (PST)
-From: Chen-Yu Tsai <wenst@chromium.org>
-To: Liu Ying <victor.liu@nxp.com>,
-	Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Chen-Yu Tsai <wens@kernel.org>,
-	Jernej Skrabec <jernej@kernel.org>,
-	Samuel Holland <samuel@sholland.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Chen-Yu Tsai <wenst@chromium.org>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	linux-sunxi@lists.linux.dev,
-	imx@lists.linux.dev,
-	dri-devel@lists.freedesktop.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH RFT v4 5/5] drm/imx/dcss: plane: Switch to drm_fb_dma_get_gem_clipped_addr()
-Date: Thu, 26 Nov 2026 15:12:53 +0800
-Message-ID: <20261126071314.253890-6-wenst@chromium.org>
-X-Mailer: git-send-email 2.56.1.839.g22a8290db9-goog
-In-Reply-To: <20261126071314.253890-1-wenst@chromium.org>
-References: <20261126071314.253890-1-wenst@chromium.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Nx1Y6HzP
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC9EA1F000C6;
+	Thu, 26 Nov 2026 07:14:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795677277;
+	bh=53x66dpOysE700lhiF+v1Ti3qORDyr+UbN9kd+D3Gh4=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=Nx1Y6HzP6YmxBYDOcJWxCaz8aslRqwn3YbimRiB0dOW5tsFZkgAZVhYAcMt2cMY94
+	 fw6Fk8Qiks7viNmu2NwepgpOnIYubHvDpVIfkf+TC+bqZivNzTGzKK+wCa6wsn0HyG
+	 2Oel27nbR9E/ubhu4qWAzXiN1a58IKzKUDckNABhBiuA9AuE2qgl94pDmZDO9yXCp+
+	 YfXaTY+SlRPmHvH8pbXP16/zWWPDHi7JOAoklCdn7eID6wnrE+1km+JUcikjgf/ckp
+	 gJeIHXNKmFxlsyKZTk/AFmcg6c5xew7eMf206ku52vksInSAl6J+C70lkMbJH/Kmva
+	 /vqGUNvj2PvPA==
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
+ linux-riscv@lists.infradead.org, Lee Jones <lee@kernel.org>
+Cc: linux-kernel@vger.kernel.org, 
+ =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>, 
+ "Zhao, Linaro" <richard.zhao@linaro.org>, Abel Vesa <abelvesa@kernel.org>, 
+ Alim Akhtar <alim.akhtar@samsung.com>, 
+ Amit Daniel Kachhap <amit.daniel@samsung.com>, 
+ Anirudh Srinivasan <asrinivasan@oss.tenstorrent.com>, 
+ Brian Masney <bmasney+clk@redhat.com>, 
+ Chander Kashyap <k.chander@samsung.com>, 
+ Chanwoo Choi <cw00.choi@samsung.com>, Dong Aisheng <aisheng.dong@nxp.com>, 
+ Drew Fustini <fustini@kernel.org>, Fabio Estevam <festevam@gmail.com>, 
+ Francesco Dolcini <francesco.dolcini@toradex.com>, 
+ Frank Li <Frank.Li@nxp.com>, Heiko Stuebner <heiko@sntech.de>, 
+ imx@lists.linux.dev, Jerome Brunet <jbrunet+clk@baylibre.com>, 
+ Joel Stanley <jms@oss.tenstorrent.com>, 
+ Jonathan Hunter <jonathanh@nvidia.com>, Jyri Sarha <jsarha@ti.com>, 
+ Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, 
+ Liam Beguin <lvb@xiphos.com>, Linaro Ltd <mturquette@linaro.org>, 
+ linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org, 
+ linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org, 
+ Lubomir Rintel <lkundrak@v3.sk>, Lukasz Luba <lukasz.luba@arm.com>, 
+ Marian Mihailescu <mihailescu2m@gmail.com>, 
+ Maxime Coquelin <maxime.coquelin@st.com>, 
+ Mike Looijmans <mike.looijmans@topic.nl>, Peng Fan <peng.fan@nxp.com>, 
+ Pengpeng Hou <pengpeng@iscas.ac.cn>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Peter Griffin <peter.griffin@linaro.org>, 
+ Prashant Gaikwad <pgaikwad@nvidia.com>, Rosen Penev <rosenp@gmail.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, Sergej Sawazki <ce3a@gmx.de>, 
+ Shawn Guo <shawnguo@kernel.org>, Stephen Boyd <sboyd@kernel.org>, 
+ Sylwester Nawrocki <s.nawrocki@samsung.com>, 
+ Thierry Reding <thierry.reding@kernel.org>, 
+ Thomas Abraham <thomas.ab@samsung.com>, Tomasz Figa <t.figa@samsung.com>
+In-Reply-To: <20261123164834.3330320-1-lee@kernel.org>
+References: <20261123164834.3330320-1-lee@kernel.org>
+Subject: Re: (subset) [PATCH 00/10] clk: Assorted bug fixes across clock
+ core and drivers
+Message-Id: <179567727106.9086.4007919152692495322.b4-ty@b4>
+Date: Thu, 26 Nov 2026 08:14:31 +0100
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -110,71 +91,75 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-Mailer: b4 0.17-dev
 
-The i.MX DCSS driver is open coding drm_fb_dma_get_gem_clipped_addr(),
-with only a slight difference of rounding down the X offset for the
-first plane if the format is packed, sub-sampled YUV. This is likely
-to correct the buffer address to the first pixel of the 2-pixel group.
-Otherwise the hardware will start the scan-out from the second pixel,
-which leads to the U/V components getting swapped around, and the
-chroma component of the next pixel group being used.
 
-Switch to drm_fb_dma_get_gem_clipped_addr(), and offset the address by
-a pixel if the X offset is odd.
+On Mon, 23 Nov 2026 16:47:33 +0000, Lee Jones wrote:
+> clk: Assorted bug fixes across clock core and drivers
+> 
+> These issues were reported by Sashiko.
+> 
+> None of these changes have been tested on physical hardware.
+> 
+> Cc: "Uwe Kleine-König" <u.kleine-koenig@pengutronix.de>
+> Cc: "Zhao, Linaro" <richard.zhao@linaro.org>
+> Cc: Abel Vesa <abelvesa@kernel.org>
+> Cc: Alim Akhtar <alim.akhtar@samsung.com>
+> Cc: Amit Daniel Kachhap <amit.daniel@samsung.com>
+> Cc: Anirudh Srinivasan <asrinivasan@oss.tenstorrent.com>
+> Cc: Brian Masney <bmasney+clk@redhat.com>
+> Cc: Chander Kashyap <k.chander@samsung.com>
+> Cc: Chanwoo Choi <cw00.choi@samsung.com>
+> Cc: Dong Aisheng <aisheng.dong@nxp.com>
+> Cc: Drew Fustini <fustini@kernel.org>
+> Cc: Fabio Estevam <festevam@gmail.com>
+> Cc: Francesco Dolcini <francesco.dolcini@toradex.com>
+> Cc: Frank Li <Frank.Li@nxp.com>
+> Cc: Heiko Stuebner <heiko@sntech.de>
+> Cc: imx@lists.linux.dev
+> Cc: Jerome Brunet <jbrunet+clk@baylibre.com>
+> Cc: Joel Stanley <jms@oss.tenstorrent.com>
+> Cc: Jonathan Hunter <jonathanh@nvidia.com>
+> Cc: Jyri Sarha <jsarha@ti.com>
+> Cc: Krzysztof Kozlowski <krzk@kernel.org>
+> Cc: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+> Cc: Liam Beguin <lvb@xiphos.com>
+> Cc: Linaro Ltd <mturquette@linaro.org>
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-clk@vger.kernel.org
+> Cc: linux-riscv@lists.infradead.org
+> Cc: linux-samsung-soc@vger.kernel.org
+> Cc: linux-tegra@vger.kernel.org
+> Cc: Lubomir Rintel <lkundrak@v3.sk>
+> Cc: Lukasz Luba <lukasz.luba@arm.com>
+> Cc: Marian Mihailescu <mihailescu2m@gmail.com>
+> Cc: Maxime Coquelin <maxime.coquelin@st.com>
+> Cc: Mike Looijmans <mike.looijmans@topic.nl>
+> Cc: Peng Fan <peng.fan@nxp.com>
+> Cc: Pengpeng Hou <pengpeng@iscas.ac.cn>
+> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+> Cc: Peter Griffin <peter.griffin@linaro.org>
+> Cc: Prashant Gaikwad <pgaikwad@nvidia.com>
+> Cc: Rosen Penev <rosenp@gmail.com>
+> Cc: Sascha Hauer <s.hauer@pengutronix.de>
+> Cc: Sergej Sawazki <ce3a@gmx.de>
+> Cc: Shawn Guo <shawnguo@kernel.org>
+> Cc: Stephen Boyd <sboyd@kernel.org>
+> Cc: Sylwester Nawrocki <s.nawrocki@samsung.com>
+> Cc: Thierry Reding <thierry.reding@kernel.org>
+> Cc: Thomas Abraham <thomas.ab@samsung.com>
+> Cc: Tomasz Figa <t.figa@samsung.com>
+> 
+> [...]
 
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
----
- drivers/gpu/drm/imx/dcss/dcss-plane.c | 34 +++++++++++----------------
- 1 file changed, 14 insertions(+), 20 deletions(-)
+Applied, thanks!
 
-diff --git a/drivers/gpu/drm/imx/dcss/dcss-plane.c b/drivers/gpu/drm/imx/dcss/dcss-plane.c
-index 303e93fd036c..580d9cfb4053 100644
---- a/drivers/gpu/drm/imx/dcss/dcss-plane.c
-+++ b/drivers/gpu/drm/imx/dcss/dcss-plane.c
-@@ -219,28 +219,22 @@ static void dcss_plane_atomic_set_base(struct dcss_plane *dcss_plane)
- 	struct dcss_dev *dcss = plane->dev->dev_private;
- 	struct drm_framebuffer *fb = state->fb;
- 	const struct drm_format_info *format = fb->format;
--	struct drm_gem_dma_object *dma_obj = drm_fb_dma_get_gem_obj(fb, 0);
- 	unsigned long p1_ba = 0, p2_ba = 0;
- 
--	if (!format->is_yuv ||
--	    format->format == DRM_FORMAT_NV12 ||
--	    format->format == DRM_FORMAT_NV21)
--		p1_ba = dma_obj->dma_addr + fb->offsets[0] +
--			fb->pitches[0] * (state->src.y1 >> 16) +
--			format->char_per_block[0] * (state->src.x1 >> 16);
--	else if (format->format == DRM_FORMAT_UYVY ||
--		 format->format == DRM_FORMAT_VYUY ||
--		 format->format == DRM_FORMAT_YUYV ||
--		 format->format == DRM_FORMAT_YVYU)
--		p1_ba = dma_obj->dma_addr + fb->offsets[0] +
--			fb->pitches[0] * (state->src.y1 >> 16) +
--			2 * format->char_per_block[0] * (state->src.x1 >> 17);
--
--	if (format->format == DRM_FORMAT_NV12 ||
--	    format->format == DRM_FORMAT_NV21)
--		p2_ba = dma_obj->dma_addr + fb->offsets[1] +
--			(((fb->pitches[1] >> 1) * (state->src.y1 >> 17) +
--			(state->src.x1 >> 17)) << 1);
-+	p1_ba = drm_fb_dma_get_gem_clipped_addr(fb, state, 0);
-+
-+	/*
-+	 * TODO fix address until helpers know packed, sub-sampled YUV format block size
-+	 *
-+	 * The buffer address for packed, sub-sampled YUV formats such as DRM_FORMAT_UYVY
-+	 * need to be on the first pixel of each pixel group or block. Otherwise the first
-+	 * pixel of the next pixel group is read and the U/V values get swapped around.
-+	 */
-+	if (drm_format_info_is_yuv_packed(format))
-+		p1_ba -= ((state->src.x1 >> 16) & 1) * format->cpp[0];
-+
-+	if (format->num_planes > 1)
-+		p2_ba = drm_fb_dma_get_gem_clipped_addr(fb, state, 1);
- 
- 	dcss_dpr_addr_set(dcss->dpr, dcss_plane->ch_num, p1_ba, p2_ba,
- 			  fb->pitches[0]);
+[07/10] clk: samsung: exynos5420: Terminate PLL rate tables with sentinels
+        https://git.kernel.org/krzk/linux/c/16efc5f5b3963779dd9aa714fdcb55a6bd8469d5
+
+Best regards,
 -- 
-2.56.1.839.g22a8290db9-goog
+Krzysztof Kozlowski <krzk@kernel.org>
 
