@@ -1,47 +1,54 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795718878;
-	b=wpKNl4NTwKSbkMAwH+CELU2o99Asl0EvmwHupiwl4xGotQGQy9jTjGRHr4/ugZuBoCPt
-	 9b+syo5hZNkuLTw6qHxzl+TSmyEupiCotBD1owaa2sc3h1a2nvz6vwNws9SsM0nlGuRhS
-	 5ishPiIw4fGeH91N5HF/WEE6RuRH2+jjYTwKoYmyl6tyOQSreDC5m00UpRvd8hfEcxknc
-	 ey13aaY7ysHW8mPjjr9m1BNiM1CbUBho4lgpN5zlD8heQLOk8fJRjWTO9grLXE/2M3IsK
-	 iBGOf+K/ojMRoYp+OOD3uITtEjwdQLeyyw+w3NtC5fvAKB/TdEB4HBn+2OmPHIeaylw==
+	t=1795723166;
+	b=NrJVA4pmSLNzDPv04t3R+E3HXvpBz1LMquK2ib5CRxnh+PJvIvj9q1UpSlVx8mEnixKF
+	 okhcsVK6d8DZDHnc/+nhWY8iz0oSjGGG8Ug/IMnuxfxC6BGO+2TI9/aREuWJu1zYryNL+
+	 QYd7xPcvKEDgOgyIHwmuUjLqCgyALFq+NsPlzVNyN0+JG99DTm30XBhtXe03JP5TpB4tB
+	 OjFrKnLHLrIJfuReHBKbg05dtsykTr37YxBDldWyc/BxSrYqOMnh706XK/e/WoGXiUJgS
+	 sbDL72w++ujaxovULh1XbzA66QGUjOqlldCeO/KA3mzpCA+CYNvmBfjW5uv8rOCRlHA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795718878;
-	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=DkUy01y7xEbf/+LpBM+I9BkjCedA7NkFboIBCgJYdX4=;
-	b=ou0EYExxngaAZPbMYMu46pqvQUADkpDqH6iQyEiWDbyQMujtYh4tOaRIKK/9DReENuoD
-	 zsy3iaPTmmsXbAAOJbpBs9MvbhUuwEv8IPvYSqSI1kbSx8kajMckHrebvsEFMZ9gzOpTu
-	 XBndWHpC4Y+gVvAGEDY2hd+YJw6tGDuVGZKnlliEpqdBEvFoSWQJvnwmKMWN/AbAdVAjK
-	 FcccnHqF5AaWPIdBvXghBQtXFFWZbbZl7YkZOlU0S9eLQt7ZC+MoDeh9yp44oMyUsue9J
-	 FDyH7LbHTn/ycOqb4x5p8F0612IILjr+O1oyB0ZPFbXPJNuJul0q+ehF8w0ATVAMIjw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795723166;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To:
+	 X-Cookie;
+	bh=g7MSQ3YQKbEWyNo+t2pC7DSANAK7/eErvsEIaJ7+yZg=;
+	b=spT/dhsg8cPPXim/kMqaRmFiaabcT4FNChLQtbKnIBYr+MDb1UqWzANCtatYy0JRUnws
+	 Ch0wpZSGloTA00NLdWObA2gyrxQwpNGFrs2e9FvHqK6rl0j093oIXm7TyIPGDzVyxucis
+	 fbYT4MB6X5P8j1LHbMoSwhol8QTaRWqKRYb+xYaFqQgOcWVp/Bl6gdnBC2j2c+e7jJn4+
+	 gh2S+jU+2wzMLQOs6E2puYwajKvm3I6vptA23chuvFNZAj+vB44lXX6N38GyPtU999KY2
+	 +4tm5WYWEbk5Pf+BE1+HowvGS3GhaJ3VVcTBqnGaUKaV8yYYy7R2xcVdXA8wHHdK9GA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jBF4TsmR;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kJq+ydBA;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2BE5606A31C;
-	Thu, 26 Nov 2026 18:47:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB17D606A31C;
+	Thu, 26 Nov 2026 19:59:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jBF4TsmR
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D96E01F000C4;
-	Thu, 26 Nov 2026 18:47:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kJq+ydBA
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0818D1F000C0;
+	Thu, 26 Nov 2026 19:59:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795718877;
-	bh=DkUy01y7xEbf/+LpBM+I9BkjCedA7NkFboIBCgJYdX4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=jBF4TsmR7GFh0k+NboYQnFAM4Y9gkAG1djVNMrQN9KWPX/AVg8obZFA8aMlb1vSBF
-	 RFXE+SgvQW6oO617L66UefSjI5+Gik4HBNMhBLbx8qSb4SXhxFatRXaZMfhUI2cK2k
-	 YASGpLIcsWeP8Qec2WYUrQc5K1JouNMPZkjtTCCyW3b1GfRV0ptfopc9X9AQFcIuFm
-	 pbqFcvQiCeGUyrhZiu4js0k1W+cESSxlFxtoeahqRnvCCpQ6i0WKbyp6YOJm8CVYbZ
-	 A/sZjS4dVvEiJy7q3qWWJ3svug03JcZNwXzevVScebjbg5dopXjvb0DctlWO6ogOSH
-	 3mTYNeHIVBkqw==
-Message-ID: <cdc5f00b-380c-4c8a-800d-967008c16a4f@kernel.org>
-Date: Thu, 26 Nov 2026 19:47:47 +0100
+	s=k20260515; t=1795723166;
+	bh=g7MSQ3YQKbEWyNo+t2pC7DSANAK7/eErvsEIaJ7+yZg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=kJq+ydBA6aCKTwUrlnP50MKiHfXYMFpUiJ4qIpmNhzNO/hm9UlXfTLbn5MaZabr+H
+	 En0XB6vqy4Oyjf3PJDff2IkFVDD+6tbYBuA6YtiAzpFO4YA6781zaRiJJ4dvl5r3Ie
+	 JUM3q+OZ/dzMSJ6HcXPg2k3IMYjXWj1NHxo4nTYVVrHmPKlHiCdWTHC6/JKS3vOl8U
+	 LYoNjJFmKuv0A+7ODmtnrkxd16/aQB3ZGhnPVA5NShmtN1aWGkgr8IGS8GTyCYzMm4
+	 ZEqPevMUldA4GSM3AffpxUhdeTDJOYUAxvHoblkD4pH6QnUzXatkqzlJKLew0R9xKO
+	 2gDzqBQejCwXw==
+Date: Thu, 26 Nov 2026 19:59:22 +0000
+From: Mark Brown <broonie@kernel.org>
+To: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
+Cc: Frank Li <Frank.Li@nxp.com>, linux-spi@vger.kernel.org,
+	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
+	Heiko =?iso-8859-1?Q?St=FCbner?= <heiko@sntech.de>
+Subject: Re: [RFC PATCH 0/2] spi: panic atomic transfers and fsl_lpspi support
+Message-ID: <4d07263e-348b-49df-9bda-f026b343b8ea@sirena.org.uk>
+References: <20261116094916.4039108-1-chunyuzhiqiang@yinhe.ht>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -51,54 +58,38 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 0/6] lx2160a: change the pad muxes through the RCW
- override
-To: Linus Walleij <linusw@kernel.org>, vjardin@free.fr
-Cc: Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>,
- Frank Li <Frank.Li@nxp.com>, Jacky Bai <ping.bai@nxp.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- NXP S32 Linux Team <s32@nxp.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>, linux-gpio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
- imx@lists.linux.dev, Vladimir Oltean <vladimir.oltean@nxp.com>,
- Ioana Ciornei <ioana.ciornei@nxp.com>
-References: <20261118-for-upstream-lx2160a-rcw-pinmux-v1-v8-0-d01bc837593e@free.fr>
- <CAD++jLnRWZrLfyBGGOikx_eeYXirahuB7E7yuDhB6KoSAQoA5w@mail.gmail.com>
-Content-Language: fr-FR
-From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-In-Reply-To: <CAD++jLnRWZrLfyBGGOikx_eeYXirahuB7E7yuDhB6KoSAQoA5w@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="LeEWDUlyL5ewRgyB"
+Content-Disposition: inline
+In-Reply-To: <20261116094916.4039108-1-chunyuzhiqiang@yinhe.ht>
+X-Cookie: Sank heaven for leetle curls.
 
-Hi Linus,
 
-Le 26/11/2026 à 13:53, Linus Walleij a écrit :
-> Hi Vincent,
-> 
-> On Wed, Nov 18, 2026 at 12:00 PM Vincent Jardin via B4 Relay
-> <devnull+vjardin.free.fr@kernel.org> wrote:
-> 
->> The LX2160A muxes its IIC, XSPI, SDHC, UART, IRQ and EVT pads from
->> fields of the RCW. They are read-only in RCWSR12..14 of DCFG, and are
->> changed at runtime through the override registers in the DCSR view of
->> DCFG, which read 0 until written.
->>
->> Since commit 8a1365c7bbc1 ("arm64: dts: lx2160a: add pinmux and i2c
->> gpio to support bus recovery"), fsl-lx216x.dtsi drives the override
->> registers with pinctrl-single for the I2C bus recovery. Its first pin
->> state clears every other field of the word: a board whose RCW programs
->> a non-zero pad mux loses those pads at the first I2C probe.
->>
->> This series reads the fields in effect from RCWSR and writes RCWCR, as
->> fsl_guts_rcw_rmw() already does for the SerDes protocols:
-> 
-> Once the review is complete, can I merge all patches except the DTSI
-> patch through the pin control tree, i.e. does it have the right ACKs?
+--LeEWDUlyL5ewRgyB
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-I acked patch 3/6 as maintainer of drivers/soc/fsl/ and include/linux/fsl/
+On Mon, Nov 16, 2026 at 05:49:13PM +0800, ChunYuZhiQiang wrote:
+> This is a follow-up to Heiko Stuebner's "spi: Implement a atomic transfer
+> as a last resort" series.  These patches are based on that series; they
+> are not standalone.
 
-Christophe
+This doesn't apply against current code (which has the above), please
+check and resend.
+
+--LeEWDUlyL5ewRgyB
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmsIj5kACgkQJNaLcl1U
+h9CdzAf/cpv63PbfRocwOuxOnrKVr2PyKFKsv70Or0QWMmHVm0Tsm/pSNos2pSE4
+MO0WWLaRKuVF1rZwwkGv2mPZ33KBAk/mpmcW2OXak9tEJjQLX+5o7WhyUuOTjOT4
+J9IQDMRiKmlup1b3ggJVpvnTBzbXACqCrvFXCmbzfjtLoVkrsHzfJtEP8xoNDgpW
+u/8sjyDMdDjESOkygZKCE0SxhgFI9+JNpg0xmkEkPOLj4L4S5O9vA6DZFZtr7B2n
+OZ9T+2T6+PeG7yWSEZt2TWjamZqQq9WP1AkEMoniBZPYiMhg1Z/tcoouaWc4vIw2
+ChxZkbyCtDYyeWAqvRHydprg5ZXOFA==
+=FsxV
+-----END PGP SIGNATURE-----
+
+--LeEWDUlyL5ewRgyB--
