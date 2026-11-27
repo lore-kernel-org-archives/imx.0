@@ -1,144 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=128.30.2.78
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795765540;
-	b=p+MORCbkMelNH/uhscUcw6S7tqtI/QRll8Fw7IiN0oZZOQLq8QnfqqMPw/D5qTgYmSj2
-	 IbQJv3mzZIKzbK+lS7NgUPcUKLHl8mNK+9hPEwLU8l/mxZ5RG4PuUAPVhy9bAdJSOIqiL
-	 2H+DUOkyrzEbc4tPIqDvTFi6yK0dMiIpKnjcUm6IaY9+4UpO0sMfeWu57qkm4l57YC7XY
-	 OGB69upiI/whMuoQWiR28uFPscPsWpQwFUjuZawcBZMq+P4hza06tSLQCv2VfiHWdO0xI
-	 XVZezfOfy33GFw2Elu5049whtPHJVmxpFi9yc4hD9FL6r1ALIwScpcMUPQ2YvpPyhrA==
+	t=1795766364;
+	b=OUZEuN1hO7BqK+Htchf0cuGM6xdNqzo5/jZV0CIhj3XPz7oYn3tcnX8ATKZBAVKa568H
+	 dPac1QFuHKksfKYVcTkaBGLOZy2hb8LxnGtchWMPCPQvei6rwOD9glQoKRwmCkZjNl4Rs
+	 CZrooHpGBEzjlNbKTl2UbE4oYb2t3D6nP1IIafoIHVVaFxDJMiRqag1WHnO+l6LpWPKAq
+	 486yNRr/uvBbW6ZrXtI6Df5/LoT8AzvTyXX8kaXEylxsoLbuKXlpvw6XMc4lKOtkAabvB
+	 WUWdzZSuPeabpWmPWfYg3IJB6/6JqcXn3IbM7vdfm1CWReZTASRBLnBU7WDvvBOYVsQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795765540;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=kWtt4J80wKcGIrTczzzJ5vqcfxic++6ySZn4Y5POe30=;
-	b=wRtoraSJTO9IyJr6wgFW69RB80JsSjIyGMncqRgCDYMZrVxxk5RDJ8OAXY6wenGZFUUO
-	 MIs5rglwl7hR1TVoCzasq/hF7XNmodbKgZ7Cw/t4fY8onoGVn8iTGiQKqBlwEDM7ekZDA
-	 SVCVUvC/pNC952N96hYkOWoad5P1jMy6vK2ZUpvbMi4P3I9RKcgUO1PrzCoZvnsdizP2D
-	 Vfto+ULy8YQ1NXlz/UaeS8JP9GA/1wg8bpdQshYitXseyVphpS70jnvATwkwCGBFdsCbC
-	 vcRtOceqHV3zJ6wZWk/yxbgWztEJ5OyjkqnMW8Bs0c+EsDT7yAkOA50rL0fvvvD5Yuw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795766364;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=bJHGgAfgeXPcuEbgl581CLZ3wqZEbvHYWxNKBe+ALck=;
+	b=WggZi5JYga88Xaup/xpcY9xHiQAsAaXTOP5BAnRki9BnzF+CYT8SZ5o9FhRbeYHM9c0o
+	 lGFl2iplX8YTKRo1TvdiCKr0ag99dZykNAIMjcD2O3hqIX3i66SQ/VG5ncothdICthtCF
+	 3kKQYGws5GgTXtzETzcVhUQt/06rhZ9E8VaqCzmtqybgguPY9bJPL1fUkagng74+14DZD
+	 kzg1lADKLbuxDIBZuhbmQtIJHsTzfQAGqPkZ0twbU3SjF1qBV4UOZ94OexitSzFA7gmWN
+	 RtRnr6NnMFntdWgTFvFqqyjBHXs/IYrhNPt7EuxozyeRUkdiTDDu+f3w1Sl9fSpgj+Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=csail.mit.edu;
-	spf=pass smtp.mailfrom=csail.mit.edu;
-	dkim=pass header.d=outgoing.csail.mit.edu header.i=@outgoing.csail.mit.edu header.a=rsa-sha256 header.s=test20231205 header.b=rW+coxaA;
-	arc=none smtp.remote-ip=128.30.2.78
-Received: from outgoing2021.csail.mit.edu (outgoing2021.csail.mit.edu [128.30.2.78])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CTTqRyIW;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1E7C606A335;
-	Fri, 27 Nov 2026 07:45:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B1E7C606A335
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=csail.mit.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csail.mit.edu
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28623606A323
+	for <imx@lists.linux.dev>; Fri, 27 Nov 2026 07:59:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=outgoing.csail.mit.edu header.i=@outgoing.csail.mit.edu header.a=rsa-sha256 header.s=test20231205 header.b=rW+coxaA
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=outgoing.csail.mit.edu; s=test20231205; h=In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=kWtt4J80wKcGIrTczzzJ5vqcfxic++6ySZn4Y5POe30=; t=1795765539; x=1796629539; 
-	b=rW+coxaAqyAgOctwEfKT+T9LoJDJBBzwT95ctxNxdfPoZuG789bvRWwkFYtNGXDX6yUT+vI5REc
-	12f3QZ9Ug2InByqRk+1hRm1wpsvZ+uf2jBN4Hh+SGPPubI/mu73u4a0rwPyo4CGlxxHef9sp93LW5
-	iZzbtskred1eQN4k0jOabY54r5Qf5W4m0i53BWMzqSzCxmYAzvHPDjjdGgrhmlL+z3vbF6jGKZzAh
-	tE1eMtq/wH2Ny40yDv2VsHTbFM3TmKqp4uWxQJxU5QGiqIb3H0K7xEdWR22TsvrtwrS+HLZpCGvCu
-	S3u0SdeT2TXPnwt8yPB8UDiV6uwTA3xstdCQ==;
-Received: from [167.220.238.14] (helo=csail.mit.edu)
-	by outgoing2021.csail.mit.edu with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <srivatsa@csail.mit.edu>)
-	id 1xWqdU-006z5N-OT;
-	Fri, 27 Nov 2026 02:44:49 -0500
-Date: Fri, 27 Nov 2026 13:14:17 +0530
-From: "Srivatsa S. Bhat" <srivatsa@csail.mit.edu>
-To: Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Minchan Kim <minchan@kernel.org>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Jens Axboe <axboe@kernel.dk>, Chanwoo Choi <cw00.choi@samsung.com>,
-	MyungJoo Ham <myungjoo.ham@samsung.com>,
-	Kyungmin Park <kyungmin.park@samsung.com>,
-	Heiko Stuebner <heiko@sntech.de>, Xu Yilun <yilun.xu@intel.com>,
-	Tom Rix <trix@redhat.com>, Moritz Fischer <mdf@kernel.org>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Mike Leach <mike.leach@arm.com>,
-	James Clark <james.clark@linaro.org>, Leo Yan <leo.yan@arm.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Sizhe Liu <liusizhe5@huawei.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	"Joerg Roedel (AMD)" <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Song Liu <song@kernel.org>,
-	Yu Kuai <yukuai@fygo.io>, Li Nan <magiclinan@didiglobal.com>,
-	Xiao Ni <xiao@kernel.org>, Haren Myneni <haren@linux.ibm.com>,
-	Rick Lindsley <ricklind@linux.ibm.com>,
-	Nick Child <nnac123@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Marcin Wojtas <marcin.s.wojtas@gmail.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Dan Williams <djbw@kernel.org>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Ira Weiny <iweiny@kernel.org>,
-	Shuai Xue <xueshuai@linux.alibaba.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Jing Zhang <renyu.zj@linux.alibaba.com>,
-	Frank Li <Frank.li@nxp.com>, Xu Yang <xu.yang_2@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Yushan Wang <wangyushan12@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Gowthami Thiagarajan <gthiagarajan@marvell.com>,
-	Geetha sowjanya <gakula@marvell.com>,
-	Justin Tee <justin.tee@broadcom.com>,
-	Paul Ely <paul.ely@broadcom.com>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	"Martin K. Petersen" <mkp@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Daniel Jordan <daniel.m.jordan@oracle.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Yosry Ahmed <yosry@kernel.org>, Nhat Pham <nphamcs@gmail.com>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-block@vger.kernel.org, linux-pm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org, linux-fpga@vger.kernel.org,
-	coresight@lists.linaro.org, iommu@lists.linux.dev,
-	linux-raid@vger.kernel.org, netdev@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, virtualization@lists.linux.dev,
-	nvdimm@lists.linux.dev, linux-perf-users@vger.kernel.org,
-	linux-cxl@vger.kernel.org, imx@lists.linux.dev,
-	linux-scsi@vger.kernel.org, linux-crypto@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org, linux-mm@kvack.org,
-	Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
-	Saurabh Sengar <ssengar@linux.microsoft.com>
-Subject: Re: [PATCH] cpu/hotplug: Rename cpuhp_remove_multi_state to be
- symmetric with setup
-Message-ID: <awk00RK93iRx3e3S@csail.mit.edu>
-References: <20261127-fix-rename_cpuhp_remove_multi_state-v1-1-097db4564cbd@csail.mit.edu>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CTTqRyIW
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7339C1F000C1;
+	Fri, 27 Nov 2026 07:59:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795766363;
+	bh=bJHGgAfgeXPcuEbgl581CLZ3wqZEbvHYWxNKBe+ALck=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=CTTqRyIWT6X1mSweqFpl73KvXGHHGHhXspP9jxGN61HP4+MT1Dx7zXaRZ1Y+NwZur
+	 2CC68A4ZeLnarhi2caI2Su9l0CGyuH2M9dugl7GE0jSZr5RbAQoP7/DBKxloGySHrH
+	 PuGxGCU6hD1jAV2mxbsbK5sVgkeyOm8HzNe64kH5EAut3gYkE7SqYbkJcRMKSznu/F
+	 v3apR3coRiDz3d3kZ34zPD96M4w1MKjsxzOyVHpjTnGnQYogjeSQIvuU0kbHCqJqKs
+	 4fj5lIIewRSyCodmB44KVOxOXjS0yS9XmXF+uWDlpIQ8X6S6twW44+zfBYj14uppsn
+	 YHHoEk8sRQWHg==
+Message-ID: <sashiko-outbox-236849@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [RFC PATCH v2 1/1] spi: fsl-lpspi: add atomic transfer support
+Reply-To: sashiko-reviews@lists.linux.dev
+To: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <20261127073454.351296-2-chunyuzhiqiang@yinhe.ht>
+References: <20261127073454.351296-1-chunyuzhiqiang@yinhe.ht>
+ <20261127073454.351296-2-chunyuzhiqiang@yinhe.ht>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 27 Nov 2026 07:59:23 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -147,72 +59,239 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261127-fix-rename_cpuhp_remove_multi_state-v1-1-097db4564cbd@csail.mit.edu>
 
-On Fri, Nov 27, 2026 at 01:07:40PM +0530, Srivatsa S. Bhat wrote:
-> The multi-instance CPU hotplug state setup API is named as
-> cpuhp_setup_state_multi(), whereas the corresponding remove API is
-> currently named as cpuhp_remove_multi_state(). Rename the latter as
-> cpuhp_remove_state_multi() to fix the asymmetry. This also helps
-> maintain consistency in the API names by letting them share a common
-> prefix, i.e., cpuhp_setup/remove_state_*() across all the variants
-> [none|nocalls|nocalls_cpuslocked].
-> 
+Thank you for your contribution! Sashiko AI review found 7 potential
+issues to consider:
+- [High] spi: fsl-lpspi: RX watermark deadlock in
+  fsl_lpspi_pio_xfer_atomic()
+- [High] spi: fsl-lpspi: SR_TCF timeout with TCR_CONT in
+  fsl_lpspi_pio_xfer_atomic()
+- [High] spi: fsl-lpspi: TCR_CONTC set after reset in
+  fsl_lpspi_transfer_atomic()
+- [Medium] spi: fsl-lpspi: CS asserted before CPOL/CPHA in
+  fsl_lpspi_transfer_atomic()
+- [Medium] spi: fsl-lpspi: wrong word-size check in
+  fsl_lpspi_transfer_atomic()
+- [Medium] spi: fsl-lpspi: missing actual_length in
+  fsl_lpspi_transfer_atomic()
+- [Low] spi: fsl-lpspi: unedited AI assistance placeholder note in
+  commit message
+--
 
-I think the prefix in the patch title should have been "treewide:" instead of
-"cpu/hotplug" given that it does a treewide-sweep to perform the rename.
+commit 82f1685db0bb8dc824359af32b18e4e751d9a022
+Author: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
 
-I can do that in a v2 later if there are other any other comments/suggestions to
-address as well.
+spi: fsl-lpspi: add atomic transfer support
 
-Thank you!
+This commit adds a transfer_atomic() callback for the i.MX LPSPI controller
+using polled PIO, caches the peripheral clock rate for atomic context, and
+registers sys-off handlers to runtime-resume the controller before shutdown
+or restart.
 
->  Documentation/core-api/cpu_hotplug.rst       | 6 +++---
->  drivers/block/zram/zram_drv.c                | 6 +++---
->  drivers/devfreq/event/rockchip-dfi.c         | 2 +-
->  drivers/fpga/dfl-fme-perf.c                  | 4 ++--
->  drivers/hwtracing/coresight/coresight-trbe.c | 4 ++--
->  drivers/hwtracing/ptt/hisi_ptt.c             | 4 ++--
->  drivers/iommu/iova.c                         | 2 +-
->  drivers/md/raid5.c                           | 4 ++--
->  drivers/net/ethernet/ibm/ibmvnic.c           | 8 ++++----
->  drivers/net/ethernet/marvell/mvneta.c        | 8 ++++----
->  drivers/net/virtio_net.c                     | 8 ++++----
->  drivers/nvdimm/nd_perf.c                     | 6 +++---
->  drivers/perf/alibaba_uncore_drw_pmu.c        | 4 ++--
->  drivers/perf/arm-ccn.c                       | 4 ++--
->  drivers/perf/arm-cmn.c                       | 4 ++--
->  drivers/perf/arm-ni.c                        | 4 ++--
->  drivers/perf/arm_cspmu/arm_cspmu.c           | 2 +-
->  drivers/perf/arm_dmc620_pmu.c                | 4 ++--
->  drivers/perf/arm_dsu_pmu.c                   | 4 ++--
->  drivers/perf/arm_smmuv3_pmu.c                | 4 ++--
->  drivers/perf/arm_spe_pmu.c                   | 4 ++--
->  drivers/perf/cxl_pmu.c                       | 4 ++--
->  drivers/perf/dwc_pcie_pmu.c                  | 4 ++--
->  drivers/perf/fsl_imx8_ddr_perf.c             | 4 ++--
->  drivers/perf/fsl_imx9_ddr_perf.c             | 4 ++--
->  drivers/perf/fujitsu_uncore_pmu.c            | 4 ++--
->  drivers/perf/hisilicon/hisi_pcie_pmu.c       | 4 ++--
->  drivers/perf/hisilicon/hisi_uncore_l3c_pmu.c | 4 ++--
->  drivers/perf/hisilicon/hisi_uncore_pmu.c     | 2 +-
->  drivers/perf/hisilicon/hns3_pmu.c            | 4 ++--
->  drivers/perf/marvell_cn10k_ddr_pmu.c         | 4 ++--
->  drivers/perf/marvell_cn10k_tad_pmu.c         | 4 ++--
->  drivers/perf/marvell_pem_pmu.c               | 4 ++--
->  drivers/perf/nvidia_t410_c2c_pmu.c           | 2 +-
->  drivers/perf/nvidia_t410_cmem_latency_pmu.c  | 2 +-
->  drivers/perf/thunderx2_pmu.c                 | 4 ++--
->  drivers/scsi/lpfc/lpfc_init.c                | 4 ++--
->  include/linux/cpuhotplug.h                   | 4 ++--
->  kernel/padata.c                              | 2 +-
->  kernel/trace/trace.c                         | 2 +-
->  mm/zswap.c                                   | 2 +-
->  41 files changed, 82 insertions(+), 82 deletions(-)
-> 
+> This patch was prepared with AI assistance; the submitter must review it
+> before submission.
 
-Regards,
-Srivatsa
+[Severity: Low]
+This looks like an unedited reminder from an AI tool that should be
+removed from the commit message before merging.
+
+> diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+> index ed395f822dab1..e37761d05cd5e 100644
+> --- a/drivers/spi/spi-fsl-lpspi.c
+> +++ b/drivers/spi/spi-fsl-lpspi.c
+
+[ ... ]
+
+> @@ -774,6 +785,114 @@ static int fsl_lpspi_pio_transfer(struct fsl_lpspi_=
+data *fsl_lpspi,
+>  	return ret;
+>  }
+> =20
+> +static int fsl_lpspi_pio_xfer_atomic(struct fsl_lpspi_data *fsl_lpspi,
+> +				     struct spi_transfer *t)
+> +{
+> +	u32 sr, timeout_us;
+> +	int ret;
+> +
+> +	/* One frame plus margin, at least 1ms. */
+> +	timeout_us =3D DIV_ROUND_UP(8 * USEC_PER_SEC, fsl_lpspi->config.speed_h=
+z);
+> +	timeout_us =3D max(timeout_us * 2, 1000U);
+> +
+> +	fsl_lpspi->tx_buf =3D t->tx_buf;
+> +	fsl_lpspi->rx_buf =3D t->rx_buf;
+> +	fsl_lpspi->remain =3D t->len;
+> +
+> +	while (fsl_lpspi->remain) {
+> +		ret =3D readl_poll_timeout_atomic(fsl_lpspi->base + IMX7ULP_SR,
+> +						sr, sr & SR_TDF, 0, timeout_us);
+> +		if (ret)
+> +			return ret;
+> +		fsl_lpspi->tx(fsl_lpspi);
+> +
+> +		ret =3D readl_poll_timeout_atomic(fsl_lpspi->base + IMX7ULP_SR,
+> +						sr, sr & SR_RDF, 0, timeout_us);
+> +		if (ret)
+> +			return ret;
+> +		fsl_lpspi->rx(fsl_lpspi);
+> +	}
+
+[Severity: High]
+Will polling SR_RDF after transmitting a single word time out whenever
+t->len >=3D 2?
+
+fsl_lpspi_setup_transfer() sets fsl_lpspi->watermark to
+min(fsl_lpspi->txfifosize, t->len), and fsl_lpspi_set_watermark() writes
+FCR_RXWATER =3D fsl_lpspi->watermark >> 1 (>=3D 1 for t->len >=3D 2).  In t=
+he
+LPSPI controller, SR_RDF only asserts when the RX FIFO word count is
+strictly greater than FCR_RXWATER.  Because this loop only puts one word
+in flight at a time, RXCOUNT reaches 1 and SR_RDF never asserts, so every
+multi-byte transfer fails with -ETIMEDOUT.  (The interrupt PIO path avoids
+this in fsl_lpspi_read_rx_fifo() by checking RSR_RXEMPTY in IMX7ULP_RSR
+instead of SR_RDF.)
+
+> +
+> +	ret =3D readl_poll_timeout_atomic(fsl_lpspi->base + IMX7ULP_SR, sr,
+> +					sr & SR_TCF, 0, timeout_us);
+> +	if (ret)
+> +		return ret;
+
+[Severity: High]
+Can SR_TCF assert here while continuous transfer mode (TCR_CONT) is still
+active?
+
+Because fsl_lpspi->usedma is false, fsl_lpspi_set_cmd() sets TCR_CONT in
+IMX7ULP_TCR, which keeps the transfer active after the TX FIFO drains
+until a new command word without TCR_CONTC is written to IMX7ULP_TCR (as
+fsl_lpspi_write_tx_fifo() and fsl_lpspi_isr() do before waiting for
+SR_FCF).  Without terminating the continuous command in IMX7ULP_TCR, this
+poll on SR_TCF stalls for timeout_us and returns -ETIMEDOUT.
+
+> +
+> +	writel(SR_TCF, fsl_lpspi->base + IMX7ULP_SR);
+> +	return 0;
+> +}
+> +
+> +static int fsl_lpspi_transfer_atomic(struct spi_device *spi,
+> +				     struct spi_message *msg)
+> +{
+> +	struct spi_controller *controller =3D spi->controller;
+> +	struct fsl_lpspi_data *fsl_lpspi =3D
+> +				spi_controller_get_devdata(controller);
+> +	struct spi_transfer *t, *next;
+> +	bool first =3D true;
+> +	bool keep_cs =3D false;
+> +	int ret =3D 0;
+> +
+> +	if (!pm_runtime_active(fsl_lpspi->dev))
+> +		return -ESHUTDOWN;
+> +
+> +	fsl_lpspi->usedma =3D false;
+> +	fsl_lpspi_reset(fsl_lpspi);
+> +	writel(0, fsl_lpspi->base + IMX7ULP_DER);
+> +
+> +	t =3D list_first_entry(&msg->transfers, struct spi_transfer, transfer_l=
+ist);
+> +	spi_set_cs(spi, !t->cs_off, false);
+
+[Severity: Medium]
+Does asserting chip select before fsl_lpspi_setup_transfer() and
+fsl_lpspi_set_cmd() glitch SCLK while CS is active?
+
+In the normal path, fsl_lpspi_prepare_message() programs TCR_CPOL and
+TCR_CPHA before the core asserts CS (see 7ae4d097b752 ("spi:
+spi-fsl-lpspi: Handle clock polarity and phase")).  __spi_sync_atomic()
+does not call prepare_message(), so asserting CS right after
+fsl_lpspi_reset() causes any clock polarity transition to happen while the
+target device is already selected.
+
+> +
+> +	list_for_each_entry(t, &msg->transfers, transfer_list) {
+> +		if (t->len) {
+> +			fsl_lpspi->is_first_byte =3D first;
+> +			ret =3D fsl_lpspi_setup_transfer(controller, spi, t, true);
+> +			if (ret)
+> +				break;
+> +			if (t->len %
+> +			    fsl_lpspi_bytes_per_word(fsl_lpspi->config.bpw)) {
+> +				ret =3D -EINVAL;
+> +				break;
+> +			}
+
+[Severity: Medium]
+Does this length check reject valid 17..24 bits-per-word transfers?
+
+For 17 <=3D bpw <=3D 24, __spi_validate() and fsl_lpspi_buf_tx_u32() /
+fsl_lpspi_buf_rx_u32() use a 4-byte (sizeof(u32)) stride in memory,
+whereas fsl_lpspi_bytes_per_word(bpw) returns DIV_ROUND_UP(bpw, 8) =3D=3D 3.
+A 17..24-bit transfer whose byte length is a multiple of 4 (such as 4 or 8
+bytes) will fail here with -EINVAL.
+
+> +
+> +			fsl_lpspi_set_cmd(fsl_lpspi);
+> +			fsl_lpspi->is_first_byte =3D false;
+> +
+> +			ret =3D fsl_lpspi_pio_xfer_atomic(fsl_lpspi, t);
+> +			if (ret)
+> +				break;
+> +
+> +			fsl_lpspi_reset(fsl_lpspi);
+> +			first =3D false;
+> +		}
+
+[Severity: High]
+Does calling fsl_lpspi_reset() at the end of each transfer break
+subsequent transfers in a multi-transfer message?
+
+fsl_lpspi_reset() clears CR_MEN and flushes the TX and RX FIFOs,
+destroying any active continuous transfer state in the hardware (and
+deasserting native PCS if GPIO CS is not used).  Setting first =3D false
+then causes the next transfer's fsl_lpspi_set_cmd() to write TCR_CONTC =3D 1
+to a freshly reset controller with no active TCR_CONT command, which sets
+the Transmit Error Flag (SR[TEF]) and drops the command.
+
+> +
+> +		spi_transfer_delay_exec(t);
+> +
+> +		if (t->cs_change) {
+> +			if (list_is_last(&t->transfer_list, &msg->transfers)) {
+> +				keep_cs =3D true;
+> +			} else {
+> +				if (!t->cs_off)
+> +					spi_set_cs(spi, false, false);
+> +				spi_transfer_cs_change_delay_exec(msg, t);
+> +				next =3D list_next_entry(t, transfer_list);
+> +				if (!next->cs_off)
+> +					spi_set_cs(spi, true, false);
+> +			}
+> +		} else if (!list_is_last(&t->transfer_list, &msg->transfers)) {
+> +			next =3D list_next_entry(t, transfer_list);
+> +			if (t->cs_off !=3D next->cs_off)
+> +				spi_set_cs(spi, !next->cs_off, false);
+> +		}
+> +	}
+> +
+> +	if (!keep_cs)
+> +		spi_set_cs(spi, false, false);
+> +	fsl_lpspi_reset(fsl_lpspi);
+> +	msg->status =3D ret;
+> +	return ret;
+> +}
+
+[Severity: Medium]
+Should fsl_lpspi_transfer_atomic() update msg->actual_length and
+t->effective_speed_hz?
+
+__spi_sync_atomic() calls controller->transfer_atomic() directly without
+going through spi_transfer_one_message(), so leaving msg->actual_length
+unupdated causes callers that check it (such as spi_mem_exec_op()) to
+treat completed atomic transfers as failed.  Populating
+t->effective_speed_hz after fsl_lpspi_setup_transfer() (as
+fsl_lpspi_transfer_one() does) is also needed for SPI_DELAY_UNIT_SCK
+delays in spi_transfer_delay_exec() and
+spi_transfer_cs_change_delay_exec().
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261127073454.3512=
+96-1-chunyuzhiqiang@yinhe.ht?part=3D1
