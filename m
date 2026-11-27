@@ -1,146 +1,116 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=128.30.2.78
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795769464;
-	b=3vmcZn7Jpe8VKDy7Ay8xuQmiIfOAl6kZO6UQuc3+Pyo8jGm7v/fRuMDD9Xj/oHJvxrv8
-	 cLXJLtNXdAyK6fjz+6gB8eSEiGpNUBlW2Z/6EBFinZ9Cv9UgOO+ooPc66TPrCEOd4HCAc
-	 fcz2KGuvH2bc1uqsRa5mNaonMTDmkECgosdmoIvDauL4pha6Lrj1Kb7V4fgihrUjcvdF8
-	 h6Lm/v+YvEU6Qspd1dxzgd9S0IQtadoVKQsRQ00LuruHWhvQaWClHmyMDOlWbnjeIsEqB
-	 sZ8KJ47GhtgYshTDfyKNDQj9Qimm2MFc7vaUJ1rKpr7BVFRLY98aqw9Zho1BIAlWjzw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795769464;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=njh3SQBBAQE61UxliWgOlIeTiJ2q96ejV3+knyCCvnY=;
-	b=d1DXSzToQ+NSWw3JPfbbCrAQhkNYUaW9zaQ0Kq36JP/8woKgKUTQgShqaZ81EMafXCG8
-	 DiMpPZ97OccqrKo7UFt334tkVjALPM2IZ1xomiHQXsloYBKIPjRZgTPZkfTXEgIuMKm9Q
-	 b7sz4NZ/jrYEC4SK/QralyrpABcEM3c4IqS4+t1BQJ4t0IGFt36KPGh/71hEPyzFmrovC
-	 nxc+Wj+vndn+a79SArUDt7iPLwuEgjZVc4EU2LwUiuG5EFKMkjzbdHTWlbJk9g5Ghhk3i
-	 +gyaUSwMT4DyVt4FMfzdvMPL6rGzFmLXNPqHEwk7ssXWB+RiqyGc5V3rVm/N0hQbEkQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=csail.mit.edu;
-	spf=pass smtp.mailfrom=csail.mit.edu;
-	dkim=pass header.d=outgoing.csail.mit.edu header.i=@outgoing.csail.mit.edu header.a=rsa-sha256 header.s=test20231205 header.b=xCF78GQE;
-	arc=none smtp.remote-ip=128.30.2.78
-Received: from outgoing2021.csail.mit.edu (outgoing2021.csail.mit.edu [128.30.2.78])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.83.67
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795769490;
+	b=v27IEyT8rcKNKDeOcwaNxEFiQx/vdituYurKrKmQ4If+Rpz+3nF1A/NzRF4tBNd1ATWQ
+	 oZ+DKlRVO7IQT2WBlmz50I6aeGzCTBwvAID98jmjn6lCRNvL0/erxGoB9XmAuK5G31cr8
+	 ak3Jy65mB5QyBTsV1uiIJNOAUPFRmcQnX1YRcw/y1fyxIXwjPfsl6ytvuCx3bTpBh/3h6
+	 VjAluz6nFkZlcWSWQfQfdyG9UJEWKQ4Y82tmQAlEZkUdn1WSyeVdo+nIze53gxOfuVbyH
+	 EDJbHD9S42Eqw32Lopg+C2eBlPmt7y21ygWIDR6fpI/VMHw+MLYAtS11mjezjOZ9epw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795769490;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding:In-Reply-To:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=AnXUjv+dim9coSKNQ2JdtELmvpQkxKnWVCscccAJskA=;
+	b=nCnh6p7lt5iZGOHIf7GpsiKmXKsFKjqsx40G0oLZkFE16yWllfQP1utctoncdgQ8lN82
+	 N2FN6eBxVc9R4y/zUbtVfkS3ikPR0fx7MU2Hcfwp2TV67xmZuVEcsFo/c3V8XyQfaBPb+
+	 3ye6QuUk+l3KiwqdRTXq2H9cBMYr+vBOicB/b+Oi4f2OkLU7pw51YtFzz0Qyv8X2JD3QW
+	 HKho91ZpVr9Kty1B0rpRQkFp1TdEnQSngqu2UkUj2PVxtvhK0EA7QHexahvwgYqnCI5Ou
+	 4gW/NJjaw0dqJsLxSNCiM9GrpE2PCiJwywaFCWXVCcQVLStgGCK47Yeg7t1tJYZRi/g==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=oss.nxp.com;
+	spf=pass smtp.mailfrom=oss.nxp.com;
+	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=kalO6M1k;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.83.67
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013067.outbound.protection.outlook.com [52.101.83.67])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48CD4606A31C;
-	Fri, 27 Nov 2026 08:51:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 48CD4606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=csail.mit.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csail.mit.edu
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73B56606A326;
+	Fri, 27 Nov 2026 08:51:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 73B56606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=outgoing.csail.mit.edu header.i=@outgoing.csail.mit.edu header.a=rsa-sha256 header.s=test20231205 header.b=xCF78GQE
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=outgoing.csail.mit.edu; s=test20231205; h=In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=njh3SQBBAQE61UxliWgOlIeTiJ2q96ejV3+knyCCvnY=; t=1795769464; x=1796633464; 
-	b=xCF78GQEoFuR5VSaFZJwsaQMsUqzxgkhr09s1AQlGBjs9gBHC90OExhT7yjx4EsH4WivLTHbGpI
-	p1E/a5+X4T4RCZDkcyYHblwO39qcnCS/jX+2rUBbwS1mQZgFvoM/x2kdWTDEyGuqBWjJm6feGtK2Z
-	wFpefSVLt7txJoZA0iIqI5jyU1zgPndu9WsOj6WeNxR3WovhoLSiXmJUNYFRfVro1Za1MGilJ19PW
-	Hz4feHPtbiuyFMlqUrY+NSp8E4S+LNWmiuwiqTCvoNSDozbzEFxQ7prI17GmZtzkMkrajaIxy6L5f
-	r/0Om6ynlQj5DoUoMwLx+tY8sfilr31FNhtg==;
-Received: from [167.220.238.14] (helo=csail.mit.edu)
-	by outgoing2021.csail.mit.edu with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <srivatsa@csail.mit.edu>)
-	id 1xWreR-007Btx-5B;
-	Fri, 27 Nov 2026 03:49:51 -0500
-Date: Fri, 27 Nov 2026 14:19:20 +0530
-From: "Srivatsa S. Bhat" <srivatsa@csail.mit.edu>
-To: Richard Cheng <icheng@nvidia.com>
-Cc: Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Minchan Kim <minchan@kernel.org>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Jens Axboe <axboe@kernel.dk>, Chanwoo Choi <cw00.choi@samsung.com>,
-	MyungJoo Ham <myungjoo.ham@samsung.com>,
-	Kyungmin Park <kyungmin.park@samsung.com>,
-	Heiko Stuebner <heiko@sntech.de>, Xu Yilun <yilun.xu@intel.com>,
-	Tom Rix <trix@redhat.com>, Moritz Fischer <mdf@kernel.org>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Mike Leach <mike.leach@arm.com>,
-	James Clark <james.clark@linaro.org>, Leo Yan <leo.yan@arm.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Sizhe Liu <liusizhe5@huawei.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	"Joerg Roedel (AMD)" <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Song Liu <song@kernel.org>,
-	Yu Kuai <yukuai@fygo.io>, Li Nan <magiclinan@didiglobal.com>,
-	Xiao Ni <xiao@kernel.org>, Haren Myneni <haren@linux.ibm.com>,
-	Rick Lindsley <ricklind@linux.ibm.com>,
-	Nick Child <nnac123@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Marcin Wojtas <marcin.s.wojtas@gmail.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Dan Williams <djbw@kernel.org>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Ira Weiny <iweiny@kernel.org>,
-	Shuai Xue <xueshuai@linux.alibaba.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Jing Zhang <renyu.zj@linux.alibaba.com>,
-	Frank Li <Frank.li@nxp.com>, Xu Yang <xu.yang_2@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Yushan Wang <wangyushan12@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Gowthami Thiagarajan <gthiagarajan@marvell.com>,
-	Geetha sowjanya <gakula@marvell.com>,
-	Justin Tee <justin.tee@broadcom.com>,
-	Paul Ely <paul.ely@broadcom.com>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	"Martin K. Petersen" <mkp@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Daniel Jordan <daniel.m.jordan@oracle.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Yosry Ahmed <yosry@kernel.org>, Nhat Pham <nphamcs@gmail.com>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-block@vger.kernel.org, linux-pm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org, linux-fpga@vger.kernel.org,
-	coresight@lists.linaro.org, iommu@lists.linux.dev,
-	linux-raid@vger.kernel.org, netdev@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, virtualization@lists.linux.dev,
-	nvdimm@lists.linux.dev, linux-perf-users@vger.kernel.org,
-	linux-cxl@vger.kernel.org, imx@lists.linux.dev,
-	linux-scsi@vger.kernel.org, linux-crypto@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org, linux-mm@kvack.org,
-	Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
-	Saurabh Sengar <ssengar@linux.microsoft.com>
-Subject: Re: [PATCH] cpu/hotplug: Rename cpuhp_remove_multi_state to be
- symmetric with setup
-Message-ID: <awlEEAmT4k7fvQck@csail.mit.edu>
-References: <20261127-fix-rename_cpuhp_remove_multi_state-v1-1-097db4564cbd@csail.mit.edu>
- <awk6TGp9riwDD55i@MWDK4CY14F>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=kalO6M1k
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=sH7PHVjxi4yWX9fLJxFqAltokbtVvcs0yllzNlOKbIfrEmaE7uy6JY7AQqRlcNuTllmCSXOhnjvUNZafaR3uoOvsiqMti64Z7Fz5bSmvf1iU9PqzPjH9FkjF4gkHz5Ca82rnlAaGPs1T4jtCqfWiv+mXRNckCCEz9jyDA1D0dSLy13cjOxKw3aHQZ5LUGOOrrmGslQMhVAWC+yTqN0pvgwUfrbA8Wq1bp38mX3JR7PrJTQuf46P/j1ZhPw9ezWre4OUSR3dMLTHQOZAGMb9Bd4VKtqDeml9iVFVc/cuqqBJyknYlAtiDbeaoG2GeC3D5IbICq/kkoa0woDK2p2WEaA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=AnXUjv+dim9coSKNQ2JdtELmvpQkxKnWVCscccAJskA=;
+ b=yLqQuARCtAdHwTIx3DhSnEKDTX/EXaJJnyqI/iar6MK322x3QvehUMTXMQnap8XKbIcZQ/uoyY2Apfy4DuAHaUQ+EFqyze8a8lgIQYPjcqRzaYBIdmb+P+vjLcohC+ll8N1WyYyYnM+BtSm7+ii08tKCcTqeCJX9U/SchhGnbKlWB+7Xwwdg9WrgsWm1sw8D+tXFnC/jHDoU/rV53hh1fxvdxxw+LhECnBraniJEk3qgU8uYKA0R2EypRLOqHVTFakolZMH4W3FIUmQQYvZSR5FK+MAyUl1eY07or4kV1GppKLlLU6GdLCX7y4VAO17E7y3Jf9opAqVbazrK3i0iTQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=AnXUjv+dim9coSKNQ2JdtELmvpQkxKnWVCscccAJskA=;
+ b=kalO6M1kPRxOQe2QMqvvAJwSAYM03ncrnUWwzfBBMD9P7lOdaL2/U294kUeJluSHhglzvR5qxQh2MDDmvykwKdmAQlRiC9e6OJ5d9R/BI1qr9LYFZxNI2oVXnkySPwgyS78xQkFKWC6AY+qH1uTVa/Nzz1FAGNi3H78o7VzBZ8w/yVzYW/PPufSHBNVvkBCffQ93Fi2C75ZXEu52pcEu1GoCUQv2Uq0zfPP3HgDmD6CjrS7gyHA6Cj8pCtZ7pBYXl+LcQrLcZ3/MuS4PV0huIwc66IG2Oa3NbyDjRta/KCwRcXVHP0nBc7LQ3ymsy4Ra53EMBZZ5loqQsFMwaixvrw==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from PA6PR04MB11909.eurprd04.prod.outlook.com
+ (2603:10a6:102:51c::22) by BESPR04MB12564.eurprd04.prod.outlook.com
+ (2603:10a6:b10:101::10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.662.10; Fri, 27 Nov
+ 2026 08:51:25 +0000
+Received: from PA6PR04MB11909.eurprd04.prod.outlook.com
+ ([fe80::a4b:fa4e:7fe7:e6a2]) by PA6PR04MB11909.eurprd04.prod.outlook.com
+ ([fe80::a4b:fa4e:7fe7:e6a2%7]) with mapi id 15.21.0662.007; Fri, 27 Nov 2026
+ 08:51:25 +0000
+Date: Fri, 27 Nov 2026 16:56:32 +0800
+From: Bough Chen <haibo.chen@oss.nxp.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: Miquel Raynal <miquel.raynal@bootlin.com>,
+	Mark Brown <broonie@kernel.org>,
+	Liang Yang <liang.yang@amlogic.com>,
+	Feng Chen <feng.chen@amlogic.com>,
+	Xianwei Zhao <xianwei.zhao@amlogic.com>, Han Xu <han.xu@nxp.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Valentina Fernandez <valentina.fernandezalanis@microchip.com>,
+	Daire McNamara <daire.mcnamara@microchip.com>,
+	Haibo Chen <haibo.chen@nxp.com>, Jyan Chou <jyanchou@realtek.com>,
+	Yu-Chun Lin <eleanor.lin@realtek.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Michael Walle <mwalle@kernel.org>,
+	Takahiro Kuwano <takahiro.kuwano@infineon.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	Alvin Zhou <alvinzhou@mxic.com.tw>,
+	Cheng Ming Lin <chengminglin@mxic.com.tw>,
+	linux-amlogic@lists.infradead.org, imx@lists.linux.dev,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-mtd@lists.infradead.org, Frank.Li@kernel.org,
+	neil.armstrong@linaro.org
+Subject: Re: [PATCH RFC 08/16] spi: fsl-qspi: Consume dummy cycles directly
+Message-ID: <20261127085632.44irp2necxfqbbn2@shlinux89>
+References: <20261125-macronix-upstreaming-spi-mem-cycles-v1-0-fd036402fd37@bootlin.com>
+ <20261125-macronix-upstreaming-spi-mem-cycles-v1-8-fd036402fd37@bootlin.com>
+ <sashiko-outbox-233875@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <sashiko-outbox-233875@kernel.org>
+X-ClientProxiedBy: SI2P153CA0025.APCP153.PROD.OUTLOOK.COM
+ (2603:1096:4:190::12) To PA6PR04MB11909.eurprd04.prod.outlook.com
+ (2603:10a6:102:51c::22)
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -150,35 +120,145 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <awk6TGp9riwDD55i@MWDK4CY14F>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PA6PR04MB11909:EE_|BESPR04MB12564:EE_
+X-MS-Office365-Filtering-Correlation-Id: c269064e-3314-4f93-809c-08df4c639e76
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|19092799006|1800799024|366016|376014|7416014|4143699003|11063799006|261009223027099003|18002099003|22082099003|10067099003|56012099006|261028144727099003|261026140227099003|261026121527099003|261022105027099003|261022075727099003;
+X-Microsoft-Antispam-Message-Info:
+	Ph4jIp+WEonNMuhReP3apArL4W3/fYmNTnKf8aKtiSz7eoKuNQv8TXu+3ohxWDP7RjE3SJ4OD7sp3gc1eQJU3xkB52NY1hnUQxZBQa6AK9b8lIKO3/yOz0S8Eio7ST4qBskpt8unb7bFEsT09MgB06rEULBRTEb5PC+WiMIb+0CZcuU7FEFaHuFiBmnn7sHdYHUa8fMSoDmgcKPKOX7oi00PnAWEtJ+wFvv8EndmPfcohcPshF4S3JoOpObaeNU9jTpDsRQlBy6ebantKB5I6lE0tbcpthaW3qoXS/WvdRt9QAPSJQZzZDm5bVKD9EsBsmMx0XYkuGc5ZCV+X0mOotLYdhnSZFys8d0cHBI9uSBsqqplpV/hlvkw1TNsZGZQ+h+NGOzvsCsjyVdIco020HwrbilHOHP5Gb7znGR8+W3CDhfe7j/LzH486qClLPvggmU5SCfXDSCOotHfVajzPdFBmwi66g4kZtUBCTiThbQTIzSpWnrRIX+HScD0ct3TaIVpENCWEgewkwhz3L9yNnh3lC7kCGMVgVGrjVvTW0WAFFDyw0D/3e5NGe6SuWN/YH6VFPjGN4Y0aWjMZfcidEGAHAeUGsorDkxDCg9frLY=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA6PR04MB11909.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(19092799006)(1800799024)(366016)(376014)(7416014)(4143699003)(11063799006)(261009223027099003)(18002099003)(22082099003)(10067099003)(56012099006)(261028144727099003)(261026140227099003)(261026121527099003)(261022105027099003)(261022075727099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?d0YxSXBMOGFaSGtrR1piK1Z4S0NWc21lK3hab3hYYWp4d0srcW95bXpkL3Vi?=
+ =?utf-8?B?RWMxdnNKQWI5dExlM01QR0RlV1BuWnljTG9EVFlvSlZYdkxUY2UrN0NWM3lE?=
+ =?utf-8?B?dFNYaGgyQmU0NmlLS3RleG56Z3RhMGJjbVBPdWhrd2ZzZEd1N0V3VkFHVFls?=
+ =?utf-8?B?K3BJdnV5SDFBOEdYRktRYlNBbThIRGV5TUVzWkMvUWpZdHN0YWdTT0VBTDhQ?=
+ =?utf-8?B?M29yT2ZYYU1vb0V0SjIxTmkrNkF6Q0hQOU9LMVdXTFB4c29FbGkxeFlxOWRP?=
+ =?utf-8?B?c0Z3T1pEVHFOUU11M01rclowRXh6eHdZWmlUSGF5RFRmU0hpV2dyaERiZzBo?=
+ =?utf-8?B?K01Sa0NmWS93VUk5dXhMYVFzRmhCS1BXWDd2L1dwNUphejBXNlhHQlVFc0M2?=
+ =?utf-8?B?Mk1CS3ZwWEU2bnBsRTZENWRmQWRIaUYzRktDYTUrdnlrVENNU3M5VzVhVFFn?=
+ =?utf-8?B?dkU0bjlNbDhNWG1WdGIvUTVWdzBvNWEzQmRnNkJIRHVHNURIVm94S0d5dW5o?=
+ =?utf-8?B?REgvSG9STG95c08weW05OHRHUlRkWmNJWEloMk4rbW5iUEcvak1rbUNyRzVQ?=
+ =?utf-8?B?MzFGMVJmYlA2SjlJS0xuUms1aHdpWlBLNE5JNy9rSVVsVUVRVkxWZ1luMDRm?=
+ =?utf-8?B?L0ZPdGpvbDZwZDQ1ZWZCMEJhMFV4d0RFMzNLNS9HWUZ4VEk5cUd2VjZIejBp?=
+ =?utf-8?B?bHFaQ3pXWHZwQUFXUmhGU0Q4bXYyTTVyZVBGckNaOU1ieW10blZNUnAyQ2o3?=
+ =?utf-8?B?a010NzFLd3RwR3hXZ0k3bzkvVGV5R3RRZE95WU1kTW4zSGVGeUVmdElOZ0hC?=
+ =?utf-8?B?cGNrZUN1enFaVDhlSXN5ZGo2dkkvek9LZnlvYzNTN0MyYzMyMElXcmhqMXBt?=
+ =?utf-8?B?SzA5UXpJUXR2V05qT3FkMXlKS04yVDBUQ1hXMS9JdkNBYTBKREF5Wm5aZWo4?=
+ =?utf-8?B?UE1UMjFCMGNmRDNjeTNPWENPbDdSd2tXUW1xT2EwaTZzbXpyWlR0aWNXQ2Yw?=
+ =?utf-8?B?M3pCOWFSOXMyWkU0V1RHK2Q1RUN3TjRQMGhyUlZqZmZaU2JqSkFvN3RJOUlD?=
+ =?utf-8?B?aDVXK3huTGNySlozRmlPa0hXZ2tGaTBqOWtxd0xhNHByQUsySnMzV25jdUNP?=
+ =?utf-8?B?K2RyNlBGaVJkNGRuRk4xTzdZK3lUY1lMc1R2VFpzR0hhWlJ6T1crWk5rRnFl?=
+ =?utf-8?B?WVFpUnMrK3pmNG4rcllPMXg5WUNQK28xTzRheVA2NURrN2pycTY1YkZPNVlT?=
+ =?utf-8?B?U3pvN2lWME1lT0pmSTU1U2VmcVp5V3lhWkRpSXI0QkNYQzRNZ1ZXbHpxS05X?=
+ =?utf-8?B?SW5yaXo5UWRYd0lmTS9aYURqRW1pNjN4MFUwSkVDS1hpbENzSE9KQzRZeFVu?=
+ =?utf-8?B?S1A0T3o3YisxMmZRcEwva1YrVDQ2YzUyVSt0NHlpMHhVU0hDdVphQjIyWFNJ?=
+ =?utf-8?B?Tnk3b1VLaDkrUUJHbUZKcDNTdCtxZFkzVnNxcWN2T2NpV2J5VENUSHp5UTVU?=
+ =?utf-8?B?N2pDTklnVHVJc2VZSFZSTEFEcldaNThtcWFqa05aR3p5QXlmTmZjdmRaUnRM?=
+ =?utf-8?B?ZithWEp4TG9YcEtQbVliRnF5WHBxeUNKUDFPcVFQQ2ticjdFOThQR3hNdzdm?=
+ =?utf-8?B?bVlyazM2azFrcDh4dXBsZU45RFhMblA3ZTVFOTJUN0FpZFRTNnkwYmRUcjRJ?=
+ =?utf-8?B?bFM5YVYyUndPRnlsRTZkQldISTh1RDRsbktTTG0wbTZPS2l2dFVQcEY2S0J1?=
+ =?utf-8?B?NGJ4MVRYeEZXQU53amhqTGQ3NkJvUW9pY3hDZjBqYWM0TmFEUmxyN0graWxM?=
+ =?utf-8?B?ZnVtYUx0clBsMndSRjA4dFBIY2d3ZUNaa3FCSVJvZTg3dUY5V0xHdkNqaUIy?=
+ =?utf-8?B?bUJDWHhVZUhYN3FDSWdkY3ZuVjAwUFRnSEpVUEN2dm1xT3h0Q2Y0aWhRNSs2?=
+ =?utf-8?B?SXkvQ0JTaWlrVTdlZktNaTQ4Ukpoam1VNVNWYWNtaW5yR0tJRHR2M2NaeUJU?=
+ =?utf-8?B?KzAxMGRLN2ZwcGFvNEpLSG5hQ2lYK0x2MUs5aHVqOTRSQVI0UFBwdW5uemQ0?=
+ =?utf-8?B?WVJ3WFBuVWxvcGVrdDl6OW55cWxDVHpIQkhjNDhDRm81MUNOZ1pkS0ZOOHBP?=
+ =?utf-8?B?Y005OEVuTy80K0N1UnpxbXFqRXFSVjBkQnNLcmNraXE2bDR0Sll0bThvRDc1?=
+ =?utf-8?B?N1EwOGJZREg3R3htMnIyNDFRczNSelpDT3NTNGYrODR5eTRtY2RJYXA2QVJX?=
+ =?utf-8?B?RDdQamlkN2tXNU1UMWswbDY5OEhaWU9sNGhpZDJGNUdWM0xOMG1OWmhOem5a?=
+ =?utf-8?B?UnN1dExpZWxHSGgxUklPR1ltaGl1dGdkeWtjSFRxa2k1TG5HaHBzSnlLSlhZ?=
+ =?utf-8?Q?lQohoxld2tPuYiCVm+sRLLtGdOr1xIXLHkKuc?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c269064e-3314-4f93-809c-08df4c639e76
+X-MS-Exchange-CrossTenant-AuthSource: PA6PR04MB11909.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Nov 2026 08:51:25.6068
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: NrM8bnJ8gx37stLDS8c3fCVNayiYcGeGELfCdbHq2aDwOR3UwwEdBo26z0vSYgWo3F2otnFbIPMWVVuMYRFgG0C0x9BmT9yTULLaCjgxWuSz/8rJuhq3Dq1aTZnRI3f0
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BESPR04MB12564
 
-Hi Richard,
-
-On Fri, Nov 27, 2026 at 04:09:11PM +0800, Richard Cheng wrote:
-> On Fri, Nov 27, 2026 at 01:07:40PM +0800, Srivatsa S. Bhat (Microsoft) wrote:
-> > The multi-instance CPU hotplug state setup API is named as
-> > cpuhp_setup_state_multi(), whereas the corresponding remove API is
-> > currently named as cpuhp_remove_multi_state(). Rename the latter as
-> > cpuhp_remove_state_multi() to fix the asymmetry. This also helps
-> > maintain consistency in the API names by letting them share a common
-> > prefix, i.e., cpuhp_setup/remove_state_*() across all the variants
-> > [none|nocalls|nocalls_cpuslocked].
-> > 
-> > Signed-off-by: Srivatsa S. Bhat (Microsoft) <srivatsa@csail.mit.edu>
+On Wed, Nov 25, 2026 at 05:58:22PM +0000, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue to consider:
+> - [High] spi: fsl-qspi: missing dummy_cycles in fsl_qspi_mem_caps zeroes
+>   ncycles
+> --
 > 
-> Hi Srivatsa,
+> commit 96f0741ca2d71f7fc3b26b9f08845776854eb8a4
+> Author: Miquel Raynal <miquel.raynal@bootlin.com>
 > 
-> Not sure whether this is really needed, it doesn't harm anything,
-> but IMHO it doesn't really brings us benefit.
+> spi: fsl-qspi: Consume dummy cycles directly
 > 
+> This commit converts fsl_qspi_supports_op() and fsl_qspi_prepare_lut() to
+> use op->dummy.ncycles directly instead of converting op->dummy.nbytes into
+> clock cycles.
+> 
+> > diff --git a/drivers/spi/spi-fsl-qspi.c b/drivers/spi/spi-fsl-qspi.c
+> > index d2c2090442f84..a1d6357e3203a 100644
+> > --- a/drivers/spi/spi-fsl-qspi.c
+> > +++ b/drivers/spi/spi-fsl-qspi.c
+> > @@ -399,7 +399,7 @@ static bool fsl_qspi_supports_op(struct spi_mem *mem,
+> >  	if (op->addr.nbytes)
+> >  		ret |= fsl_qspi_check_buswidth(q, op->addr.buswidth);
+> >  
+> > -	if (op->dummy.nbytes)
+> > +	if (op->dummy.ncycles)
+> >  		ret |= fsl_qspi_check_buswidth(q, op->dummy.buswidth);
+> >  
+> >  	if (op->data.nbytes)
+> > @@ -413,13 +413,12 @@ static bool fsl_qspi_supports_op(struct spi_mem *mem,
+> >  	 * to fit into a single LUT entry.
+> >  	 */
+> >  	if (op->addr.nbytes +
+> > -	   (op->dummy.nbytes ? 1:0) +
+> > +	   (op->dummy.ncycles ? 1:0) +
+> >  	   (op->data.nbytes ? 1:0) > 6)
+> >  		return false;
+> >  
+> >  	/* Max 64 dummy clock cycles supported */
+> > -	if (op->dummy.nbytes &&
+> > -	    (op->dummy.nbytes * 8 / op->dummy.buswidth > 64))
+> > +	if (op->dummy.ncycles > 64)
+> >  		return false;
+> >  
+> >  	/* Max data length, check controller limits and alignment */
+> > @@ -460,11 +459,10 @@ static void fsl_qspi_prepare_lut(struct fsl_qspi *q,
+> >  		lutidx++;
+> >  	}
+> >  
+> > -	if (op->dummy.nbytes) {
+> > +	if (op->dummy.ncycles) {
+> >  		lutval[lutidx / 2] |= LUT_DEF(lutidx, LUT_DUMMY,
+> >  					      LUT_PAD(op->dummy.buswidth),
+> > -					      op->dummy.nbytes * 8 /
+> > -					      op->dummy.buswidth);
+> > +					      op->dummy.ncycles);
+> >  		lutidx++;
+> >  	}
+> 
+> [Severity: High]
+> Does fsl_qspi_mem_caps also need .dummy_cycles = true?
+> 
+> fsl_qspi_mem_caps only sets .per_op_freq = true.  Without .dummy_cycles =
+> true, spi_mem_convert_dummy() converts any dummy cycles to op->dummy.nbytes
+> and sets op->dummy.ncycles = 0 before invoking the driver callbacks.  As a
+> result, op->dummy.ncycles is always 0 in fsl_qspi_supports_op() and
+> fsl_qspi_prepare_lut(), so dummy validation is skipped and LUT_DUMMY is
+> never programmed into the hardware LUT for operations requiring dummy
+> cycles.
 
-I agree, this is not intended to be a functional change. The cleanup benefit is
-on the side of the CPU hotplug core API to provide better consistency in terms
-of the API naming pattern, but the current callsites that consume this API
-should see no functional difference as a result of this change. The consistency
-will help future callsites though!
+Correct, need .dummy_cycles = true
 
-Regards,
-Srivatsa
+Regards
+Haibo Chen
+> 
+> -- 
+> Sashiko AI review · https://sashiko.dev/#/patchset/20261125-macronix-upstreaming-spi-mem-cycles-v1-0-fd036402fd37@bootlin.com?part=8
