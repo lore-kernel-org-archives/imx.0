@@ -1,48 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795791034;
-	b=qb7lLkxdH0S0xpighfxf1RHkYbmsce/hVovoPYIY/gS5bkLTk3EETpQG0bVVnF6tHXXs
-	 s6aGwAH2z8BjGi2HVBPQLfOImlhBWNzURfP/sfuzmwowV0ai+cLz2unxuVVR2zMirlOFa
-	 +qLIL7hnbN5eDKRC6kKIUeyfLf9dB94j39VhniuD6QwMoS+mLqnP83cCBl7WJ+XtuWoV5
-	 k61k7Wc1rY48J2KNNMDhFmCuZyO1DMfQ0Tpc0XA+9+WpX5Zv0qZ4ymEfV+X7ZF5fj3BzP
-	 SsBnHwGrCBmoueSyBrIwVGMEwZW6zCKxeET4O1zEuVRdg++4KpDFdsMqik+TbOMI1Kw==
+	t=1795791534;
+	b=iTCcZpjtmH+eGYVVaLAsa6sGxACxSH/KBuTb+RkD9suRwHNO9TdMcvro9j7TzcwGAA1l
+	 A8eNB5cwH4Ak0EoxZQzmqKtE5KntEBX3vzGUogCLM/nrjihNLCqYAWnpyfE1rz5rnWFnC
+	 RWiUAiaSZo/JUv3mvjB9cN0Kqkxon3uj1TzR5DMup+LjfGko8AgVaiCou6NFOMPRCyIfM
+	 OXmDMwADTfkM/iAQpMcvmYKzseD0Mv1JYZFrE90DSbo9ODcBbWkF6ETx9Cs6XCU2fgYAC
+	 EGM2Z+QqT1RS17BOuPmokuj74lQzOAwQOC4RYhXze6Kohejc9+yvUVv5OcJO+ud596w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795791034;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795791534;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=gxq3wgw+barjPLXIWEn74CmRmFDc4UPXarLciG8c6xg=;
-	b=YTH3FsaLMm36yeJS6fVmDUQJ89Z67d7D7sYhWlNrdFkw6JuFJ9rQZqt15/1VrS/pEOCM
-	 Wzf3MHX+/a5d01f6vYPuaYrGQgQ9Yrwks8OMYRfJQgODua9HVCNW89VyEyBOTBLd2dn95
-	 jViqrBTq1zJqkejgbhPHN280jac/FBncl1odimyIt4IMu12WoV/8bpxxWsPnB+Ucv6tRK
-	 dmSpN3Istr0UO2taYJNJhpYqWo9vkS5KKSKy/v3BsTEmHbQTMR4R/5bCucsGM+wY74Q0Z
-	 FDGbiKs3I2RkB/I0+8L+WrZTAhs9K4ZwhIePHD72GHWJYXKlEMnZF34hnSadSeN+iUQ==
+	bh=9EdxXWF0MoQta2ocUjikzENKESzXNTXPeM81HlznVmk=;
+	b=Yg7riaAU0HYgaWBtCf8dfZKBIHbWOjQpFuqMdj857wyjESDw3vIu2GwPPQu29b0WMQgL
+	 863V+RF39QOu909x1lz5Wbxeg/E2LkdP1C/fnVp6xI0HBFvKUjoEmCfH3C0QkVwEISlvt
+	 aSbzhSQ9RfrIUwlsSvtp5OIZkXnUSk1SmtCciQE/zuLHDxw86bEbFxjpqYJ/lhsw34bYP
+	 uGFTudHF4fmVL+huiOsapxZSAMLGjeajwr3Txvd+NhiQ4T7NqBOb9McCA9hdOfyzj5tQy
+	 Kge9LtGAeqX9aTWM9QPBH9KNiO9EU4LvcrbZmw30AdDbwE/UzjserQM8Ow2TXhpGvEg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TED4nW9v;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bzD5rd0s;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1525606A31F;
-	Fri, 27 Nov 2026 14:50:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DB35606A31E;
+	Fri, 27 Nov 2026 14:58:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TED4nW9v
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A4701F0089B;
-	Fri, 27 Nov 2026 14:50:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bzD5rd0s
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39D9A1F00897;
+	Fri, 27 Nov 2026 14:58:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795791034;
-	bh=gxq3wgw+barjPLXIWEn74CmRmFDc4UPXarLciG8c6xg=;
+	s=k20260515; t=1795791534;
+	bh=9EdxXWF0MoQta2ocUjikzENKESzXNTXPeM81HlznVmk=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=TED4nW9vOgPd2OvStCjk2PF00jhZuHuSUvhW879VmLpQmVpXIioWRCoVr0mcM7bcF
-	 YVWMtdmXdTlHG28Y+rmPVHxmYB/Z7RG4cgdwOVBdBDLQWpCOhcy40ptKwEmR6UYxu0
-	 OaN1zAL2D3arNsLBOpMKLZerpLUPtFATPJy0Oa81PNnhriQcPfDHY3WUV6WxDqGgUw
-	 1bF+3AN85o5VC2LjPuU5R0GMsWhDEaXjoIpK2FCMlb9QaViA7MbchUSfHC9EK//uti
-	 CLXLy+ainP5AkYjWmCJ9SiAwmhrd6lykH00Sk7jBtKp7xboCkF3EFUIy7eEdzPiWPC
-	 lihqnxW6BL9Mw==
-Message-ID: <sashiko-outbox-237610@kernel.org>
+	b=bzD5rd0s0Z04M6LYUY7OeLU2Arm74Odj6rXpmxsA0tQ5uvzfJbJqxeHU06nMJbm/r
+	 CLkWXeqrqDZQlmjgfqnCNd9EU0noBkWRT9v+21PNsD/GBMm4m2LXMZmQm99QkEQOKJ
+	 YkfZgNH0uhJXwYwlhYz2MxWEUumYNi/9iEaY6kOlTcek7JcfQD8EeFPy8YqV3MH7oI
+	 G3Tw0s5VriahDWUQK/EA963+RvOQx2L67HhYbVmKtnEcQnQe1iP9gDwsp52z1yDSWY
+	 1nV5KVzk8VgWiUtqccPHyvvFzfZfDv2JB6u1q0J+4cYf7CN6uQyrR98OwYyfHPaW+b
+	 e+YwVYoGkcA6w==
+Message-ID: <sashiko-outbox-237651@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC v2 18/35] spi: nxp-fspi: Consume dummy cycles
- directly
+Subject: Re: [PATCH RFC v2 22/35] spi: nxp-xspi: Reject mixed DTR modes
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Miquel Raynal" <miquel.raynal@bootlin.com>, "Mark Brown" <broonie@kernel.org>, "Liang
  Yang" <liang.yang@amlogic.com>, "Feng Chen" <feng.chen@amlogic.com>, "Xianwei
@@ -62,12 +61,12 @@ To: "Miquel Raynal" <miquel.raynal@bootlin.com>, "Mark Brown" <broonie@kernel.or
  =?utf-8?b?c2Now6RmZXI=?= <j.neuschaefer@gmx.net>, "Michal Simek" <michal.simek@amd.com>
 Cc: "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>, "Alvin Zhou" <alvinzhou@mxic.com.tw>, "Cheng
  Ming Lin" <chengminglin@mxic.com.tw>, linux-amlogic@lists.infradead.org, imx@lists.linux.dev, linux-stm32@st-md-mailman.stormreply.com, linux-mtd@lists.infradead.org, linux-trace-kernel@vger.kernel.org, Frank.Li@kernel.org, neil.armstrong@linaro.org
-In-Reply-To: <20261127-macronix-upstreaming-spi-mem-cycles-v2-18-5c93f5e5d630@bootlin.com>
+In-Reply-To: <20261127-macronix-upstreaming-spi-mem-cycles-v2-22-5c93f5e5d630@bootlin.com>
 References: <20261127-macronix-upstreaming-spi-mem-cycles-v2-0-5c93f5e5d630@bootlin.com>
- <20261127-macronix-upstreaming-spi-mem-cycles-v2-18-5c93f5e5d630@bootlin.com>
+ <20261127-macronix-upstreaming-spi-mem-cycles-v2-22-5c93f5e5d630@bootlin.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 27 Nov 2026 14:50:31 +0000
+Date: Fri, 27 Nov 2026 14:58:51 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -79,71 +78,69 @@ Precedence: list
 
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue to consider:
-- [High] spi: nxp-fspi: LUT_DUMMY_DDR operand halved in
-  nxp_fspi_prepare_lut()
+- [Medium] spi: nxp-xspi: inconsistent DTR detection in
+  nxp_xspi_supports_op()
 --
 
-commit 1599225157c651da7c372805ec30cf72cfe8b69c
+commit ce8d7a3ff5fbe9ec51a6d3a172d4b7891aaf62c1
 Author: Miquel Raynal <miquel.raynal@bootlin.com>
 
-spi: nxp-fspi: Consume dummy cycles directly
+spi: nxp-xspi: Reject mixed DTR modes
 
-This commit enables the dummy_cycles capability in the NXP FlexSPI driver
-and replaces the dummy byte-to-cycle conversions with op->dummy.ncycles.
+This commit updates nxp_xspi_supports_op() to reject SPI memory operations
+that mix DTR and SDR phases.
 
-> diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
-> index 66cb58f95fdb1..e6fdded67a00e 100644
-> --- a/drivers/spi/spi-nxp-fspi.c
-> +++ b/drivers/spi/spi-nxp-fspi.c
-[ ... ]
-> @@ -567,8 +567,7 @@ static bool nxp_fspi_supports_op(struct spi_mem *mem,
->  		return false;
+> diff --git a/drivers/spi/spi-nxp-xspi.c b/drivers/spi/spi-nxp-xspi.c
+> index ccd00c744d186..f2a847b5fd27d 100644
+> --- a/drivers/spi/spi-nxp-xspi.c
+> +++ b/drivers/spi/spi-nxp-xspi.c
+> @@ -385,8 +385,18 @@ static bool nxp_xspi_supports_op(struct spi_mem *mem,
+>  				 const struct spi_mem_op *op)
+>  {
+>  	struct nxp_xspi *xspi =3D spi_controller_get_devdata(mem->spi->controll=
+er);
+> +	bool all_true, all_false;
+>  	int ret;
 > =20
->  	/* Max 64 dummy clock cycles supported */
-> -	if (op->dummy.buswidth &&
-> -	    (op->dummy.nbytes * 8 / op->dummy.buswidth > 64))
-> +	if (op->dummy.ncycles > 64)
->  		return false;
-> =20
->  	/* Max data length, check controller limits and alignment */
-> @@ -652,16 +651,15 @@ static void nxp_fspi_prepare_lut(struct nxp_fspi *f,
->  		lutidx++;
->  	}
-> =20
-> -	/* dummy bytes, if needed */
-> -	if (op->dummy.nbytes) {
-> +	/* dummy cycles, if needed */
-> +	if (op->dummy.ncycles) {
->  		lutval[lutidx / 2] |=3D LUT_DEF(lutidx, op->dummy.dtr ? LUT_DUMMY_DDR =
-: LUT_DUMMY,
->  		/*
->  		 * Due to FlexSPI controller limitation number of PAD for dummy
->  		 * buswidth needs to be programmed as equal to data buswidth.
->  		 */
->  					      LUT_PAD(op->data.buswidth),
-> -					      op->dummy.nbytes * 8 /
-> -					      op->dummy.buswidth);
-> +					      op->dummy.ncycles);
->  		lutidx++;
->  	}
+> +	all_true =3D op->cmd.dtr &&
+> +		   (!op->addr.nbytes || op->addr.dtr) &&
+> +		   (!op->data.nbytes || op->data.dtr);
+> +
+> +	all_false =3D !op->cmd.dtr && !op->addr.dtr && !op->data.dtr;
+> +
+> +	if (!all_true && !all_false)
+> +		return false;
 
-[Severity: High]
-Does passing op->dummy.ncycles directly to LUT_DUMMY_DDR halve the dummy
-cycles programmed in DTR mode?
+[Severity: Medium]
+Does this DTR check match how nxp_xspi_select_mem() detects DTR operations
+and how the dummy phase is validated?
 
-In DTR mode, FlexSPI runs the serial root clock at 2x the flash SCLK rate
-and LUT_DUMMY_DDR counts DDR half-cycles (2 * ncycles).  Previously, DTR
-callers doubled op->dummy.nbytes to account for two transfers per clock,
-and op->dummy.nbytes * 8 / op->dummy.buswidth intentionally did not divide
-by 2, yielding 2 * ncycles.  With .dummy_cycles set,
-spi_mem_dummy_bytes_to_cycles() divides by 2 * op->dummy.buswidth when
-op->dummy.dtr is true (and direct ncycles callers pass full SCLK cycles),
-so nxp_fspi_prepare_lut() now programs half the required LUT_DUMMY_DDR
-operand and breaks DTR flash reads.
+In nxp_xspi_select_mem(), op_is_dtr requires dtr to be set on all four
+phases unconditionally:
 
-For the same reason, the > 64 check in nxp_fspi_supports_op() no longer
-accounts for the 2x factor when op->dummy.dtr is set.
+drivers/spi/spi-nxp-xspi.c:nxp_xspi_select_mem() {
+    ...
+	/* xspi only support one DTR mode: 8D-8D-8D */
+	bool op_is_dtr =3D op->cmd.dtr && op->addr.dtr && op->dummy.dtr && op->dat=
+a.dtr;
+    ...
+}
+
+Standard Octal DTR templates that omit an address, dummy, or data phase
+(such as SPINAND_PROG_LOAD_8D_8D_8D_OP or SPINAND_WR_EN_8D_0_0_OP) leave
+dtr as false on the unused phase via SPI_MEM_OP_NO_DUMMY,
+SPI_MEM_OP_NO_ADDR, or SPI_MEM_OP_NO_DATA.  Those operations pass
+all_true here, and nxp_xspi_prepare_lut() emits DDR LUT instructions for
+the active phases, but nxp_xspi_select_mem() evaluates op_is_dtr as false
+and calls nxp_xspi_disable_ddr().
+
+In addition, neither all_true nor all_false checks op->dummy.dtr when
+op->dummy.ncycles > 0.  Because this driver sets dummy_cycles =3D true in
+nxp_xspi_mem_caps, spi_mem_convert_dummy() clears op->dummy.nbytes to 0
+before nxp_xspi_supports_op() and spi_mem_default_supports_op() run, so a
+mismatched op->dummy.dtr is not caught by spi_mem_default_supports_op()
+either.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261127-macronix-u=
-pstreaming-spi-mem-cycles-v2-0-5c93f5e5d630@bootlin.com?part=3D18
+pstreaming-spi-mem-cycles-v2-0-5c93f5e5d630@bootlin.com?part=3D22
