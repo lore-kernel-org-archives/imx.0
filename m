@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795743591;
-	b=x+ILQARBq9X76DhP7SM/G7LIAHkK7JgwTLOyqEjj4ceLl+bD5UO6k6+0IwvPjvXhOaIF
-	 si9sjCgRS51FPrIanU+h77+o6olKxGs8MSrGPhwyM+dK6kPc8QlYyNzcIuFMLVV8A1QoR
-	 WssSm3qFvxIDzqXDRMEZrsXKDbYIEY6gF26/FQlbfJxwI60RRBq3fK80/9Ba0ZfgpNSVd
-	 gGkFvdNzP7/ysXW0yv/RkiIM7IRubzfP+zhWczbBMPilf0PYw/yrnEaHWucsdyR03MzPV
-	 iEdIeBCLBCWXfMJ7++neojuQYV77LPGFF99OIDqzyAq559L65sCJauJouiWkkZgnp+A==
+	t=1795743656;
+	b=tdSzJ/+t10UH3VWpC0k2f+860bCmx37m/xjxT9eOZgK2zSa3ul73y3gSroytJ1t0kXNy
+	 C+gcWGHkuO+0VywfmGXswlXbYoNzS7I1YcM0JD5TasDm9TxcBiKvJzYKFbnJWn9wbMqNl
+	 hiGbW5cFN65DU54PDjt3/VD0BB4ck/lCcMMjiZ0k9pZUf1aDqTl1GMwKIpIUsvWKOU+P6
+	 UoOyRQ5MkA8fK5iMJ58vcfVONy5mewGlpitYlHydmhQhyyp/50fdRwiDI3TE8f3j44Sof
+	 kr2ZqwIn+hbkwv5AtK6ZFcRdu6gxajLGeKWAaXfKyHNjHEJ9pocK4wioXAiy+1tdndg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795743591;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795743656;
 	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
 	 Subject:To:Cc:References:From:Content-Language:Autocrypt:In-Reply-To:
 	 Content-Type:Content-Transfer-Encoding;
-	bh=WFD3rWt/HtU086atBcToGGk7JzeK+DPT77g+GDuiqr8=;
-	b=Ydz9fRWnB8OZKgcZ5r4Bs8CdSIh8jwb+8S5/hS3DWeUAD8SeLUo7e2mWATVfQHxDgMEs
-	 dReqgSnCZ9lM+5ovSEpIUJEkrHYGTDfAdZf9nR/JOuB+E9nSjezKJNLE2001RCq/banfN
-	 UKVQalBppOKNsKkDcykcLOE8qUuUBjhGoc3wPf3aq9xmrOgJwTKL5oyr3vHumx5TceCVc
-	 3v0kc71589zOL0yLf5I77iYLHjz5zLYQffGzbX3d27g6hkyttv8pcbsb/qYeMrf8Q9Mp7
-	 zuWqTBwGxwfV1gPbbTYP5yG6ars1kJ88yflFr1nsyV7XIrz45ZHlzHv3glq8OHtu2xA==
+	bh=ZfsNo4E4bHGYzeWdwCvMJVtk08IzlcvsSGgsUj4aMBY=;
+	b=T3jf7MByS69vnFHYoUPEJaZ8flYfzAjvS/GDXOo6mBmJRw6irQN6zTolNfOHuqjDAKFe
+	 qiRmluh9zbEFyXDfqoe9mLmYsuCMIM2JFhSF2P8CwNHAwa4DE3FtX5P255zKTYDY/Cze0
+	 0I6HcdkeGOvPrdl8WnEBCQqS12vqbdgdnTY/AW+YKIvZBUc3rkz05nQtS9j4k3wt7Fqmr
+	 rMWH69NocxLq2QzJszoom4U4uhJWQ4wqHne0EShzDAVK4IaPXwPeXKh54LIdyEdfByQBh
+	 O86lw5bHvTVYnFrLMitihxCeUZLILWgD+llr2JNGtL8pzWdk7skJ/UfebQMggsdunYQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WMPHlyBm;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="IpF2/UNj";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0287A606A31C;
-	Fri, 27 Nov 2026 01:39:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57E73606A31C;
+	Fri, 27 Nov 2026 01:40:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WMPHlyBm
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DECFE1F00893;
-	Fri, 27 Nov 2026 01:39:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IpF2/UNj
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 035261F000C1;
+	Fri, 27 Nov 2026 01:40:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795743590;
-	bh=WFD3rWt/HtU086atBcToGGk7JzeK+DPT77g+GDuiqr8=;
+	s=k20260515; t=1795743656;
+	bh=ZfsNo4E4bHGYzeWdwCvMJVtk08IzlcvsSGgsUj4aMBY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=WMPHlyBmO2JAKbERicj2D6AYhACv8mif0WLMX27KpIEZUTwLIFRweG17us7OK9OyI
-	 E3Za4rwVR9pyhk+qPfFYRcjkzPv+nSlS70HXuv1BT+otpMGfHUfN0xgAUD7fzCjoWB
-	 kx0+QgqXQNXj4yzUyvWzbLisO2laOTaLJcTU7Nj3ZaRS3PSCM8wpQwd+lUM14eJzXg
-	 kIZosWS6NxLDIGwieoB1fl1YqjaMuTYdynNckWcc//idzWy6S3qm9zXpaWA6Hdi1w4
-	 99BFwfaTBHkGHu+iBTcevAjdS77YKhO87nAuu27ciRijVMsekNO3ZUgHf4taRMW2Ea
-	 JrsXUIug4tdnw==
-Message-ID: <afd0e711-20ea-4926-b40d-0310b721928c@kernel.org>
-Date: Fri, 27 Nov 2026 02:39:45 +0100
+	b=IpF2/UNjssFQ5BoqVwBJ6LHrVSbLMeQzZbtDEEPw+Sf6PWhzX/SmOLKNTSXgtZg/Q
+	 uqUdUiY+qvCLp9xseKjFlyzXjKAhXHovyVxC4OFQMEKp1LVPr81cf5RYkkgyoLDd2X
+	 RUfrRt13G6rMXSInjWaI2dbZ7ObLRmz9qopHjt+u6k4F7ZwpjM7DPjPYhEGXme+n5+
+	 WByLo+Zlqe66WaGaD1bTsdROYp2/hIRbBkmBBIF2Lnjd4IMVyMyakYApKUa7H8jcRp
+	 KlaychPj2TWUxFnl1aU6KwPFI3rNlv1DmvBZVXHJ5AmGuNBTskqgw5wR8COpx0XQcM
+	 TfbCuqnqmbWXw==
+Message-ID: <e281de75-7294-4f7c-a570-d51cceb70c24@kernel.org>
+Date: Fri, 27 Nov 2026 02:40:50 +0100
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -52,14 +52,14 @@ List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 1/3] dt-bindings: vendor-prefixes: Add ADLINK
+Subject: Re: [PATCH v5 2/3] dt-bindings: arm: fsl: Add ADLINK LEC-iMX95
 To: dineshkumarv85@gmail.com, Frank.Li@nxp.com, robh@kernel.org,
  conor.dooley@microchip.com, s.hauer@pengutronix.de
 Cc: daniel.baluta@nxp.com, imx@lists.linux.dev, devicetree@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, kernel@pengutronix.de,
  festevam@gmail.com
 References: <20261126160102.52163-1-dinesh.v@adlinktech.com>
- <20261126160102.52163-2-dinesh.v@adlinktech.com>
+ <20261126160102.52163-3-dinesh.v@adlinktech.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -105,20 +105,20 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  K9bCVaboTA2T77QYkRcRJYSsO1alGX0ome/hMLD1daXlkrNUp1HWa3K4iytLRXjCSIorWiGs
  n+q3krnpXu3TFkA8qtOFZMdnIiFuiq1yLT8hptsV5xh1TA2nsVvSYiaCr3q4s4BKjS/KrLDb
  qoxzw8ISjdUp4pA85vb6YLCmb39NgidD+7PmAr65lBNveIFynTgsja1rRQ4=
-In-Reply-To: <20261126160102.52163-2-dinesh.v@adlinktech.com>
+In-Reply-To: <20261126160102.52163-3-dinesh.v@adlinktech.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 26/11/2026 17:01, dineshkumarv85@gmail.com wrote:
 > From: Dinesh kumar v <dineshkumarv85@gmail.com>
 > 
-> Add the ADLINK Technology vendor prefix for device tree compatible strings.
-> 
-> Signed-off-by: Dinesh kumar v <dineshkumarv85@gmail.com>
-> Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
-> ---
+> Document the ADLINK LEC-iMX95 board compatibles.
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Looks confusing with the actual board. SMARC is often the actual module
+and here you claim board is LEC-IMX95, then what is ipi-smarc?
+
+Explain here hardware briefly.
+
 
 Best regards,
 Krzysztof
